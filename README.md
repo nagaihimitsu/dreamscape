@@ -156,7 +156,7 @@ B/C戦の戦績と途中状態は保存します。反論とカットインは�
 
 同じバージョンで進行中のデートは、保存時の脚本と指紋を照合して再開します。
 
-文字送り速度は「設定」で選べます。台詞をタップすると、表示途中なら全文を表示し、次のタップで会話が進みます。会話枠の「閉じる」「ログ」「高速送り」で、ウィンドウの非表示、表示済み台詞の確認、速い自動送りを操作できます。会話ログは現在のイベントで表示済みの台詞を最大100件読み返せます。ログは画面を開いている間だけ保持し、再読み込み後は表示した台詞から記録します。名前は会話の外で「設定」から変更できます。
+文字送り速度は「設定」で選べます。会話の場面（観光案内・デート・道中の交流・到着とエピローグ・バトルの会話と反論）では、台詞や背景の絵、観光案内の見出し、広い画面では場面の左右の余白など、ボタン・リンクなどの操作以外のどこをタップしても、表示途中なら全文を表示し、次のタップで会話が進みます。画面上部の旅の情報と操作（名前・現在地・予算・AP・所持アイテム・英語・セーブなど）と手がかり帳では進みません。選択肢が出ている間は、絵をタップしても選ばれず先へも進まないので、返答は選択肢を押して選びます。ログ・設定・英語ノート・所持アイテムの詳細などが開いている間はタップしても進まず、それらを閉じるタップでも（台詞の上でも）進みません。移動の演出が出ている間も、画面中央の演出の絵のタップでは進みません（台詞などほかの場所は普段どおり）。所持アイテムの詳細が開いていても、キーボードでは台詞のEnterで、読み上げでは台詞の操作で進みます。道中の交流の英語の3択に答えた後の判定と解説は、バトルの解説と同じく、ボタン（「続きを読む」）だけで進みます。誤タップを防ぐため、ボタン（返答・選択肢・会話枠のボタン・画面上部の操作・ダイアログの「閉じる」など）や隠したウィンドウを戻す操作を押した直後（約0.35秒）のタップでは会話は進まず、会話の場面が始まったとき・終わったとき・ロードで保存した場面に戻ったとき・旅行編を切り替えたときや別のタブの後に「再試行」で開いたときの同じ時間は、画面のどこをタップしても反応しません（素早い2回目のタップで、始まったばかりの場面や開いた旅行編の保存した場面の台詞を読み飛ばしたり、次の画面のボタンを押したりしないため）。会話枠の「閉じる」「ログ」「高速送り」で、ウィンドウの非表示、表示済み台詞の確認、速い自動送りを操作できます。会話ログは現在のイベントで表示済みの台詞を最大100件読み返せます。ログは画面を開いている間だけ保持し、再読み込み後は表示した台詞から記録します。名前は会話の外で「設定」から変更できます。
 
 通常の自動送りは設定で選べます。高速送りは選択肢や問題、ログ・設定、ウィンドウ非表示、中断時に停止します。隠したウィンドウは画面を一度タップすると戻り、そのタップで台詞は進みません。
 
@@ -166,8 +166,8 @@ B/C戦の戦績と途中状態は保存します。反論とカットインは�
 
 ### 基本衣装・表情の画像を追加する
 
-1. 背景を透過した全身PNGまたはWebPを用意します。白背景の参照画像は正式な立ち絵とは別に管理し、拡張子だけを変えて登録しないでください。基本衣装 `default_01` の `standing_01` は **1024×1536px** を共通キャンバスとして設定しています。同じ衣装・ポーズの差分は、人物の位置とキャンバスを揃え、画像ごとにトリミングしません。
-2. 例えば `public/assets/characters/heroine/default_01/standing_01/neutral.png` に置き、`characters.json` の `heroine` → `costumes` → `default_01` → `poses` → `standing_01` の `expressions` に `"neutral": "assets/characters/heroine/default_01/standing_01/neutral.png"` と登録します。パスは `public/` からの相対パスです。
+1. 背景を透過した全身PNGまたはWebPを用意します。白背景の参照画像は正式な立ち絵とは別に管理し、拡張子だけを変えて登録しないでください。基本衣装 `default_01` の `standing_01` は **1024×1536px** を共通キャンバスとして設定しています。同じ衣装・ポーズの差分は、人物の位置とキャンバスを揃え、画像ごとにトリミングしません。配信するファイルは、見た目の変わらない可逆のWebPにすると軽くなります（今の12表情は可逆WebPで、PNGの約4割の大きさ。元のPNGは配信しない `authoring/characters/heroine/default_01/standing_01/` に置いています。可逆のWebPは、例えば sharp の `.webp({ lossless: true, effort: 6 })` や `cwebp -lossless` で作れます）。
+2. 例えば `public/assets/characters/heroine/default_01/standing_01/neutral.webp` に置き、`characters.json` の `heroine` → `costumes` → `default_01` → `poses` → `standing_01` の `expressions` に `"neutral": "assets/characters/heroine/default_01/standing_01/neutral.webp"` と登録します。パスは `public/` からの相対パスです。Dreamscape のために作った絵なので、同じパスを [`content/presentation/own-artwork.json`](content/presentation/own-artwork.json) の立ち絵の `paths` にも1行足します（足さないと `npm run content:check` が「出典のない画像」で止まります。自作の絵は出典の一覧に載せません。[技術構成](docs/02_TECH_ARCHITECTURE.md#画像の出典と自作の絵)）。
 3. 表情IDは `neutral`、`smile`、`happy`、`shy`、`shy_deep`、`surprised`、`surprised_big`、`worried`、`serious`、`teasing`、`teasing_big`、`exasperated` です。差分が届いたら `expressions` に一枚ずつ追加し、未納品のファイルは登録しません。`neutral` だけでもその衣装が使われ、未登録の表情は同じ衣装・ポーズの `neutral` が表示されます。表情の指定にはInkの既存の `emotion` タグを使います。
 4. `npm run content:check` を実行します。登録済みファイルの存在、実際の形式・寸法・透過画素、表情や衣装の参照を検証します。これは背景が適切に切り抜かれたことや透過の縁の品質まで保証するものではないため、下記プレビューで目視確認してください。衣装が未納品の場合は基本素材を使い、画像の読み込みに失敗しても会話は続きます。
 
@@ -207,6 +207,7 @@ public/                           # ファビコン・アプリアイコン（np
   assets/                         # 全旅行編で共有する画像（ヒロイン、演出、共通アイコン）
 authoring/                        # 共通の制作手順とテンプレート
   brand/                          # ファビコン・アプリアイコンの元画像
+  characters/                     # ヒロインの立ち絵の元のPNG（配信しない。配信するのは public/assets/characters/ の可逆WebP）
   journeys/<旅行編ID>/            # 旅行編ごとの下書き・調査記録（ゲームは読み込まない）
   templates/sample_trip/          # 見本の編（開発・テスト専用の架空の「見本の街」。npm run dev:sample で遊べ、本番には入らない。npm run journey:new の元）
   templates/journey-new-checklist.md  # journey:new が新しい旅行編に書く CHECKLIST.md の元
@@ -226,12 +227,14 @@ tests/screens/                    # 人が見る画面一覧の撮影（npm run 
 | `npm run dev` | コンテンツを生成してから開発サーバーを起動 |
 | `npm run dev:sample` | 見本の編（`authoring/templates/sample_trip/`）を含めて生成し、開発サーバーを起動。タイトル画面に「見本の旅」が並ぶ（`npm run dev` に戻すと消える。[見本の編](docs/02_TECH_ARCHITECTURE.md#見本の編)） |
 | `npm run content:build`（`content:check`） | 共通データと全旅行編を検証・統合し、`src/content/generated/` に書き出す。成功すると旅行編ごとに提供内容の件数を1行ずつ表示し、警告は件数だけ出す（`-- --verbose` で一覧。[生成時の検査と報告](docs/02_TECH_ARCHITECTURE.md#生成時の検査と報告)）。会話の全分岐検査は前回の成功結果を再利用する（`-- --no-cache` で再利用せずに全部検査。[キャッシュ](docs/10_DEVELOPMENT_CHECKS.md#会話の全分岐検査のキャッシュ)）。`-- --with-sample` で見本の編も加える（単体テストの前の生成はこの形） |
+| `npm run content:watch` | 生成を1回行い、その後は `content/`・`public/` のファイル（Ink・JSON・画像）を保存するたびに生成し直す（`-- --with-sample` で見本の編も含めて監視）。失敗しても監視を続け、生成物は前回のまま。Ctrl+C で終了 |
+| `npm run dev:watch` | `content:watch` と開発サーバーを一緒に起動し、保存した Ink・JSON・画像を開いている画面へ反映する。開発サーバーは最初に生成に成功してから起動する（`npm run dev` と同じ）。Ctrl+C で両方を終了（`-- --with-sample` で見本の編も） |
 | `npm run test:quick` | コンテンツを生成してから速い組の単体テスト（日常の確認。全件は `npm test`・CI・`verify`。[テストの組](docs/10_DEVELOPMENT_CHECKS.md#単体テストの組と所要時間)） |
 | `npm test` | コンテンツを生成してから全単体テスト |
 | `npm run test:saves` | コンテンツを生成してから保存関連の単体テスト（`src/persistence/`）だけ |
-| `npm run build` | 生成・型検査・本番ビルド（`dist/`）と、`dist/` にDebug・テスト用のコードやデータがないかの検査 |
+| `npm run build` | 生成・型検査・本番ビルド（`dist/`）と、`dist/` にDebug・テスト用のコードやデータがないか、ライブラリのライセンス一覧（`third-party-licenses.json`）があるかの検査 |
 | `npm run verify` | 見本の編を含めた生成・全単体テストの後、見本なしで生成し直して型検査・本番ビルド・`dist/` の検査を行う（公開前・大きな変更）。最初の生成は会話の全分岐検査のキャッシュを使わない |
-| `npm run dist:check` | ビルド済みの `dist/` にDebug・プレビュー・テスト用のコードや旅行編がないかを検査（`build`・`verify` が自動で実行） |
+| `npm run dist:check` | ビルド済みの `dist/` にDebug・プレビュー・テスト用のコードや旅行編がないか、`package.json` の `dependencies` がすべてライブラリのライセンス一覧に載っているかを検査（`build`・`verify` が自動で実行） |
 | `npm run test:e2e` | E2E（Playwright）の開発サーバーの2つの段（合否判定 `gate` とDebug起動台 `debug`）。1つの段だけは `npx playwright test --project=gate`（[E2Eの段](docs/10_DEVELOPMENT_CHECKS.md#e2eの段)） |
 | `npm run test:e2e:prod` | 本番ビルド（`npm run build` の後の `vite preview`）でのE2E。起動・全旅行編の開始画面・ミラノの最初の流れ・本番にDebugがないこと、タイトル画面までの読み込み量の報告 |
 | `npm run test:e2e:sample` | 見本の編を含めて生成した専用の開発サーバー（4175番）でのE2E。見本の編を新しい旅から旅の終わりまで遊ぶ。終わると見本なしで生成し直す。ほかの段と同時に実行しない |
@@ -245,6 +248,7 @@ tests/screens/                    # 人が見る画面一覧の撮影（npm run 
 | `npm run journey:transit -- --journey <旅行編ID>` | 都市ごと・乗り物ごとの交通判断（使う・使わない・走っていない・特定できず）の件数と、出典のない経路を表示（`--json` も可。インド編は「ツアー機能待ち」と表示し、旧方式の `npm run india:transit` を使う。[乗り物と交通判断台帳](docs/02_TECH_ARCHITECTURE.md#乗り物と交通判断台帳)） |
 | `npm run city:bundle` | 都市単位の作業用JSONで地点・交通・背景などを編集（[手順](authoring/CITY_BUNDLES.md)） |
 | `npm run icons:build` | `authoring/brand/favicon-master.png` から `public/` のファビコン（16・32・48px、顔の切り抜き）、Apple touch icon（180px）、アプリアイコン（192・512px）を作り直す。元画像を差し替えたときだけ実行し、生成した画像もコミットする |
+| `npm run images:optimize` | 観光写真を配信用の WebP（品質80）にする。そのままでは確認だけで、`--write` を付けると書き換える（`--journey <旅行編ID>` で1つの旅行編だけ。例 `npm run images:optimize -- --journey <旅行編ID> --write`）。観察で拡大する写真（観光地の画像と観察資料の画像）は同じ大きさ、ほかは幅1600px・高さ1800pxの枠に収め、写真の色の情報（ICCプロファイル）は残す。カタログの `path`・`width`・`height`・`modificationJa` と観察資料の `path`・`sha256` も書き換え、元のファイルを消す（出典と確認日は変えない）。仮の画像（`isPlaceholder`）と見本の画像は変えない。変換できる写真があると `content:build` が警告する |
 
 ゲームは `content/` を直接読まず、`npm run content:build` が書き出す生成物だけを読みます。`src/content/generated/` の `stories.json`・`quizzes.json`（コンパイル済みの会話と出題）、`content/`（統合したデータ）、`public/`（配信する画像）は手動で編集しないでください。Ink・JSON・画像を編集した後は `npm run content:build` を実行します（`dev`・`test`・`test:quick`・`build`・`verify` は自動で実行します）。`vite` を直接起動する場合も先に実行してください。生成していないと、警告なしに画像のない状態で起動します。
 
@@ -295,7 +299,7 @@ npm run test:saves
 
 各旅行編の都市・移動・クイズ・Ink と各カタログの該当項目は、同じ相対パスで `content/journeys/<旅行編ID>/` 以下に置き、`npm run content:build` が `content/` 直下の共通データと統合します。旅行編フォルダの項目は自分の都市だけを扱い、参照先は同じ旅行編か共通データに限ります。共通データには都市・移動・Ink・クイズや旅行編専用のカタログを置けません。
 
-画像は、旅行編だけが使うもの（観光写真・デート背景・その旅行編の品物アイコン）を `content/journeys/<旅行編ID>/public/assets/` に、全旅行編で共有するもの（ヒロイン・演出・共通アイコン）をリポジトリ直下の `public/assets/` に置きます。データには `public/` を除いた配信時のパス（例: `assets/tourism/india/agra_taj_mahal.jpg`）を書き、置き場所によって変わりません。`npm run content:build` がこれらを `src/content/generated/public/`（生成物。Git管理せず、手動編集しない）へまとめ、開発サーバーとビルドはこのフォルダを配信します。同じパスの画像を二か所に置くとビルドが失敗します。画像を追加・差し替えた後も `npm run content:build` を実行してください。
+画像は、旅行編だけが使うもの（観光写真・デート背景・その旅行編の品物アイコン）を `content/journeys/<旅行編ID>/public/assets/` に、全旅行編で共有するもの（ヒロイン・演出・共通アイコン）をリポジトリ直下の `public/assets/` に置きます。データには `public/` を除いた配信時のパス（例: `assets/tourism/india/agra_taj_mahal.webp`）を書き、置き場所によって変わりません。`npm run content:build` がこれらを `src/content/generated/public/`（生成物。Git管理せず、手動編集しない）へまとめ、開発サーバーとビルドはこのフォルダを配信します。同じパスの画像を二か所に置くとビルドが失敗します。画像を追加・差し替えた後も `npm run content:build` を実行してください。
 
 新しい通常デートは、InkとJSON定義・効果を追加するだけで既存のメニューと会話画面に表示されます。`kind` は `normal` / `special` / `confession` / `reassurance`。通常は `choiceCount: 2`、無料イベントは必要に応じて0〜2回の3択を設定できます。`effectCount` は各経路で期待する効果数です。`actionLabelJa` もJSONにあり、Reactにイベント固有の文言を追加する必要はありません。
 
@@ -307,7 +311,7 @@ npm run content:check
 
 `inkjs/compiler/Compiler`（公式inkjsのコンパイラ）でコンパイルし、`src/content/generated/stories.json` を生成します。独自Inkパーサー・外部コマンド・.NETの準備は不要です。生成JSONはGit管理せず、手動編集しません。ブラウザには `inkjs` のランタイムを使用します。
 
-`dev` 起動前、`test` 前、`build` 内で必ずコンパイル・検証します。開発サーバー起動中にInkを改稿したら別ターミナルで `npm run content:build` を実行してください。生成JSON変更をViteが反映します。**Ink原稿そのものの自動監視はありません。**
+`dev` 起動前、`test` 前、`build` 内で必ずコンパイル・検証します。開発サーバー起動中にInkを改稿したら別ターミナルで `npm run content:build` を実行してください。生成JSON変更をViteが反映します。保存のたびに自動で生成し直すには、開発サーバーの代わりに `npm run dev:watch`（すでに開発サーバーを起動しているときは別ターミナルで `npm run content:watch`）を使います。Ink・JSON・画像のどれを保存しても約5秒（会話の全分岐検査のキャッシュがないときは約20秒）で生成し直し、失敗したときは理由を表示して生成物を前回のままにし、直して保存するのを待ちます。`dev:watch` の最初の生成が失敗したときは、直して生成に成功してから開発サーバーを起動します。監視中は `npm test`・`npm run test:quick` を実行しないでください（テストの前の生成は見本の編を含め、次の自動生成が見本なしに戻すため。[生成物](docs/02_TECH_ARCHITECTURE.md#生成物手動で編集しない)は開発サーバーとテストで共通の1つです）。Linux・Node 22 で確かめています。Linux ではフォルダごとに監視するので、一時ファイルに書いて置き換える保存（`city:bundle`・`journey:release` の書き込み、`sed -i`、安全な保存をするエディタ）の後の保存も、新しく作ったフォルダの中の保存も拾います。macOS・Windows では Node の再帰的なファイル監視を使います（未確認です）。
 
 ゲームが読むJSONは、`content/` を検証・統合して `npm run content:build` が書き出す `src/content/generated/content/`（生成物。手動編集しない）です。`content/` のJSONを編集した後も、Inkと同様に `npm run content:build` を実行してください。
 
@@ -383,7 +387,7 @@ Inkには `battle_scene`（catalogのシーン名）、`answer_correct`（直前
 - `src/dev/`: 開発用のDebug（`?debug`・Debug起動URL）と素材のプレビュー。`scenario-builders.ts` は単体テスト・Debug・E2Eが共有する場面の組み立て部品、`test-cities.ts` は仮の場面と単体テストの試験用の都市、`fixture-template.ts` はその元にする都市を役割で選ぶ関数です。本番ビルドには含まれません。
 - `src/content/` / `scripts/`: データ契約・許可タグ・ビルド時検証。`scripts/journeys/<旅行編ID>/` はその旅行編だけの制作ツール（例：インド編の `india:check`）で、共通のコードとツールからは読み込みません。
 
-保存キーは旅行編ごとに `dreamscape.journey.<旅行編ID>.save.v1` です（ミラノは `dreamscape.journey.milano.save.v1`、インドは `dreamscape.journey.golden_triangle.save.v1`）。旅行編ごとにゲーム進行と英語ノートを分離し、データ内の `schemaVersion` は **14** を使います。名前・AP・関係状態・思い出・デート履歴・告白と交際状態、進行中のInk、バトル回答と戦績、観光と発見、現在都市、旅行の現在地・日数・時刻と進行中の活動を保持します。同一バージョン内のデート途中データは、脚本と指紋を照合して再開します。新しい恋愛イベントは開始時に保存した乱数から関係状態に応じた反応を決めます。通常デートを選べず関係を築き直す必要がある場合は、AP不要の短い再交流を利用できます。告白の成否は乱数で変わりません。進行中の確率デートは開始時点のプロフィールを保存し、再開後も同じ設定を使います。`completedEpisodeIds`、`completedCityIds`、`completedGuideIds`、`pendingApRewards`、`battleRewardReceipt` も維持します。
+保存キーは旅行編ごとに `dreamscape.journey.<旅行編ID>.save.v1` です（ミラノは `dreamscape.journey.milano.save.v1`、インドは `dreamscape.journey.golden_triangle.save.v1`）。旅行編ごとにゲーム進行と英語ノートを分離し、データ内の `schemaVersion` は **14** を使います。タイトル画面が開く旅行編は、この端末で最後に開いた公開中の旅行編で、その旅行編IDだけを表示設定と同じ端末ごとの好みとして `dreamscape.last-journey.v1` に置きます（セーブ・バックアップ・英語ノートには含めず、「古い保存データの整理」にも出しません）。名前・AP・関係状態・思い出・デート履歴・告白と交際状態、進行中のInk、バトル回答と戦績、観光と発見、現在都市、旅行の現在地・日数・時刻と進行中の活動を保持します。同一バージョン内のデート途中データは、脚本と指紋を照合して再開します。新しい恋愛イベントは開始時に保存した乱数から関係状態に応じた反応を決めます。通常デートを選べず関係を築き直す必要がある場合は、AP不要の短い再交流を利用できます。告白の成否は乱数で変わりません。進行中の確率デートは開始時点のプロフィールを保存し、再開後も同じ設定を使います。`completedEpisodeIds`、`completedCityIds`、`completedGuideIds`、`pendingApRewards`、`battleRewardReceipt` も維持します。
 
 ゲーム進行の自動保存は設定で切り替えられます。オフの間は進行をメモリに保持し、「セーブ」を押した時点で保存します。未保存の進行がある状態でのロードやブラウザ離脱には確認が出ます。保存先は旅行編ごとに1枠で、他のタブで更新されていた場合は上書きを拒否します。各旅行編はWeb Locksで同じ旅行編の複数タブ同時編集を防ぎます。英語ノートと表示設定はゲーム進行とは別に保存されます。
 

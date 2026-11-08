@@ -149,6 +149,40 @@ export async function placeSave(page: Page, journeyId: string, builder: string, 
 }
 
 /**
+ * placeSave with a story scene on screen: the journey's new game (scenario-builders' newJourney)
+ * with the first sightseeing guide that Debug lists in its first city opened (openTourismScene),
+ * at the guide's first line. Returns the saved state. Development server only.
+ */
+export async function placeGuideSave(page: Page, journeyId: string): Promise<GameState> {
+  const result = await page.evaluate(async ({ journeyId, modules }) => {
+    const builders = await import(/* @vite-ignore */ modules.builders);
+    const { debugTargets } = await import(/* @vite-ignore */ modules.debugState);
+    const { saveGame } = await import(/* @vite-ignore */ modules.persistence);
+    const { journeyStorage } = await import(/* @vite-ignore */ modules.journeyStorage);
+    const start = builders.newJourney(journeyId, ["航", "澪"]);
+    const guide = debugTargets(start.currentCityId).tourism.find((target: { unavailable?: string }) => !target.unavailable);
+    return saveGame(journeyStorage(localStorage, journeyId), builders.openTourismScene(start, guide.id));
+  }, { journeyId, modules: devModules });
+  expect(result, `placing a sightseeing guide as the ${journeyId} save`).toEqual({ ok: true });
+  return readSave(page, journeyId);
+}
+
+/** Where a tap never reads a story scene on: controls and `data-no-advance` areas (src/components/scene-tap.ts). */
+const notReadingOn = "a, button, input, select, textarea, label, summary, dialog, [role=button], [role=link], [data-no-advance]";
+/**
+ * Whether the page shows `surface` (a CSS selector) at the point, and no control or `data-no-advance`
+ * area there other than the surface itself (the line is a button that reads on).
+ */
+function showsAt(page: Page, point: { x: number; y: number }, surface: string): Promise<boolean> {
+  return page.evaluate(({ x, y, surface, controls }) => {
+    const element = document.elementFromPoint(x, y);
+    const shown = element?.closest(surface);
+    const control = element?.closest(controls);
+    return !!shown && (!control || control === shown);
+  }, { ...point, surface, controls: notReadingOn });
+}
+
+/**
  * Every UI operation the specs share, in one place (button names and labels
  * change here, not in each spec).
  */
@@ -173,11 +207,14 @@ export const ops = {
   },
   /** The start button's name on a title in its normal state (no unreadable save); the arrow after it is hidden from the name. */
   startLabel: "旅をはじめる",
-  /** Title screen: choose the journey (a page load opens the first available one; its save, if any, opens with it). */
+  /**
+   * Title screen: choose the journey. A page load opens the playable journey last opened in this browser
+   * (in a new browser context, the first available one); its save, if any, opens with it.
+   */
   async chooseJourney(page: Page, journeyId: string) {
     await page.getByLabel("旅行編").selectOption(journeyId);
   },
-  /** Title screen: the player's and the heroine's names. */
+  /** Title screen: the player's and the heroine's names (an empty name leaves its field empty: the journey starts with the default name shown as its placeholder). */
   async fillNames(page: Page, names: readonly [string, string] = ["航", "澪"]) {
     await page.getByLabel("主人公の名前").fill(names[0]);
     await page.getByLabel("ヒロインの名前").fill(names[1]);
@@ -228,14 +265,34 @@ export const ops = {
     await settings.getByLabel("自動保存する").setChecked(on);
     await ops.closeDialog(settings);
   },
+  /** The 「閉じる」 of the notice shown at the top of the screen (after 「セーブ」, for one). */
+  noticeClose(page: Page): Locator {
+    return page.getByRole("main").getByRole("status").getByRole("button", { name: "閉じる", exact: true });
+  },
   async manualSave(page: Page) {
     await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "セーブ", exact: true }).click();
+  },
+  /**
+   * The header's 「ロード」 while progress is unsaved (manual saving): returns the confirmation
+   * 「保存した場面を読み込みますか？」 with its 「ロードする」 (`loadButton`).
+   */
+  async askToLoad(page: Page): Promise<{ dialog: Locator; loadButton: Locator }> {
+    await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "ロード", exact: true }).click();
+    const dialog = page.getByRole("dialog", { name: "保存した場面を読み込みますか？" });
+    await expect(dialog).toBeVisible();
+    return { dialog, loadButton: dialog.getByRole("button", { name: "ロードする", exact: true }) };
   },
   async openEnglishNote(page: Page): Promise<Locator> {
     await page.getByRole("button", { name: "英語ノートを開く" }).click();
     const note = page.getByRole("dialog", { name: "英語ノート" });
     await expect(note).toBeVisible();
     return note;
+  },
+  /** A destination's button on the travel menu, opening the longer list when needed. */
+  async destination(page: Page, placeId: string): Promise<Locator> {
+    const place = page.getByTestId(`travel-place-${placeId}`);
+    if (!(await place.isVisible())) await page.getByText("ほかの行き先を見る", { exact: true }).click();
+    return place.getByRole("button");
   },
   /**
    * Pick a destination on the travel menu, opening the longer list when needed. A
@@ -244,9 +301,7 @@ export const ops = {
    * 「徒歩」 or 「路面電車」).
    */
   async goTo(page: Page, placeId: string, route?: string) {
-    const place = page.getByTestId(`travel-place-${placeId}`);
-    if (!(await place.isVisible())) await page.getByText("ほかの行き先を見る", { exact: true }).click();
-    await place.getByRole("button").click();
+    await (await ops.destination(page, placeId)).click();
     if (route) await ops.routeButton(page, route).click();
   },
   /** The route dialog's button whose label starts with `route` (the mode's name). */
@@ -265,6 +320,112 @@ export const ops = {
   async toEpilogue(page: Page) {
     await page.getByRole("button", { name: "エピローグへ進む", exact: true }).click();
     await expect(page.getByTestId("city-epilogue-screen")).toBeVisible();
+  },
+  /**
+   * A story scene: a point on its picture above the dialogue window, where no control is
+   * (a tap anywhere but on a control reads on, docs/02 「UX/スマホ」). Taken while the window is
+   * shown, once the page takes taps again (a scene that has just started holds them).
+   */
+  async sceneBackgroundPoint(page: Page): Promise<{ x: number; y: number }> {
+    await ops.settled(page);
+    const picture = (await page.getByTestId("scene-picture").filter({ visible: true }).boundingBox())!;
+    const line = (await page.getByTestId("dialogue-text").boundingBox())!;
+    // A quarter of the way down from the picture's top to the line: well above the window's name plate and tools.
+    const point = { x: picture.x + picture.width / 2, y: picture.y + (line.y - picture.y) / 4 };
+    expect(await showsAt(page, point, '[data-testid="scene-picture"]'), "the point shows the scene's picture, not a control or the window").toBe(true);
+    return point;
+  },
+  /**
+   * Whether a tap at the point would read the story scene on: it shows the line (a button that
+   * reads on), or the scene's picture with no control or `data-no-advance` area there (the same
+   * rule as sceneBackgroundPoint).
+   */
+  async readsOnAt(page: Page, point: { x: number; y: number }): Promise<boolean> {
+    return await showsAt(page, point, '[data-testid="dialogue-text"]') || await showsAt(page, point, '[data-testid="scene-picture"]');
+  },
+  /**
+   * A point in a gap of the dialogue window's tool row (「閉じる」「ログ」「高速送り」), between two
+   * of its buttons: a near miss, which never reads on.
+   */
+  async dialogueToolsGap(page: Page): Promise<{ x: number; y: number }> {
+    await ops.settled(page);
+    const point = await page.getByLabel("会話の操作", { exact: true }).filter({ visible: true }).evaluate((row) => {
+      const buttons = [...row.querySelectorAll(":scope > button, :scope > * > button")].map((button) => button.getBoundingClientRect())
+        .filter((box) => box.width > 0).sort((a, b) => a.left - b.left);
+      for (let index = 1; index < buttons.length; index++) {
+        const [left, right] = [buttons[index - 1], buttons[index]];
+        if (right.left - left.right >= 2) return { x: (left.right + right.left) / 2, y: left.top + left.height / 2 };
+      }
+      return null;
+    });
+    expect(point, "a gap between two buttons of the tool row").not.toBeNull();
+    const hit = await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.getAttribute("aria-label"), point!);
+    expect(hit, "the point is the tool row itself, not one of its buttons").toBe("会話の操作");
+    return point!;
+  },
+  /**
+   * The middle of an element on screen, for taps at a point (`tapAt`, `doubleTap`). The element is
+   * scrolled into view first, as a player scrolls to what they tap: one shown only in part at the
+   * edge of a scrolling area (the battle's reading area after a long explanation, whose length
+   * depends on the fonts) has its middle outside that area, where a tap reaches something else.
+   */
+  async centerOf(locator: Locator): Promise<{ x: number; y: number }> {
+    await expect(locator).toBeVisible();
+    await locator.scrollIntoViewIfNeeded();
+    const box = (await locator.boundingBox())!;
+    return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+  },
+  /** A finger's tap at a point of the page, once the game takes taps again (settled). */
+  async tapAt(page: Page, point: { x: number; y: number }) {
+    await ops.settled(page);
+    await page.touchscreen.tap(point.x, point.y);
+  },
+  /**
+   * Two taps of a finger at a point, as one quick double tap. Hold the page's clock
+   * first (`page.clock.pauseAt`), so they fall within the double-tap window however
+   * slow the machine; `page.clock.fastForward(DOUBLE_TAP_WINDOW_MS)` ends it.
+   */
+  async doubleTap(page: Page, point: { x: number; y: number }) {
+    await page.touchscreen.tap(point.x, point.y);
+    await page.touchscreen.tap(point.x, point.y);
+  },
+  /**
+   * A finger's short sideways drag from a point (Chromium's touch input): the browser takes it
+   * for a pan and cancels the pointer (pointerdown, then pointercancel), so no click follows.
+   */
+  async pan(page: Page, point: { x: number; y: number }) {
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: point.x - 60, y: point.y }] });
+    for (let step = 1; step <= 6; step++)
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: point.x - 60 + step * 20, y: point.y }] });
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    await cdp.detach();
+  },
+  /**
+   * The game takes taps again: right after an answer the battle ignores the second tap of
+   * a double tap (`data-answer-settling`), right after a press on a control (or a tap over
+   * something on a story scene) the scene takes no reading tap (`data-tap-settling`), and
+   * right after a story scene starts or ends, a load, a journey switch or 再試行 no tap reaches the page
+   * (`data-tap-hold` on the root). Each lasts DOUBLE_TAP_WINDOW_MS. A scene that a move
+   * has just started takes no reading tap on the travel transition's card, so this also
+   * waits for the transition to go.
+   */
+  async settled(page: Page) {
+    await expect(page.locator("[data-answer-settling], [data-tap-settling], html[data-tap-hold], [data-testid=travel-transition]")).toHaveCount(0);
+  },
+  /** A story scene's 「ログ」: opens the dialogue log. */
+  async openDialogueLog(page: Page): Promise<Locator> {
+    await page.getByRole("button", { name: "会話ログ", exact: true }).click();
+    const log = page.getByRole("dialog", { name: "会話ログ" });
+    await expect(log).toBeVisible();
+    return log;
+  },
+  /** A story scene's 「閉じる」 in the dialogue window: hides the window; returns the full-scene control that shows it again. */
+  async hideDialogueWindow(page: Page): Promise<Locator> {
+    await page.getByRole("button", { name: "会話ウィンドウを隠す", exact: true }).click();
+    const restore = page.getByRole("button", { name: "会話ウィンドウを表示", exact: true });
+    await expect(restore).toBeVisible();
+    return restore;
   },
   /** Lane 3 (docs/10): open a scene through its Debug launch URL; returns the URL. */
   async openDebugScene(page: Page, settings: DebugSettings, dataMode: DebugDataMode = "real") {
@@ -312,8 +473,8 @@ const nextButtons = ["tourism-advance", "battle-advance", "epilogue-advance", "a
 
 /** One player action in the current scene: answer, choose, or tap the line or its next button. */
 async function act(page: Page, state: GameState, pick: Pick) {
-  // Right after an answer the battle ignores taps for a moment (the second tap of a double tap).
-  await expect(page.locator("[data-answer-settling]")).toHaveCount(0);
+  // Right after an answer, a reply or a scene's end, taps are ignored for a moment (the second tap of a double tap).
+  await ops.settled(page);
   const date = state.activeDate;
   const encounter = state.activeEncounter;
   if (state.activeBattle?.phase === "question") return page.getByTestId(`answer-${pick(state)}`).click();
@@ -341,7 +502,11 @@ export interface PlayOptions {
 export async function playUntil(page: Page, done: (state: GameState) => boolean, { source = savedGame(), pick = firstOption }: PlayOptions = {}) {
   for (let step = 0; step < 200; step++) {
     const state = (await source(page))!;
-    if (done(state)) return state;
+    if (done(state)) {
+      // The caller may tap at once (also with the page's clock held).
+      await ops.settled(page);
+      return state;
+    }
     await act(page, state, pick);
     await expect.poll(async () => (await source(page))?.revision, {
       message: "the scene did not save a response to the player's action", timeout: 10_000,

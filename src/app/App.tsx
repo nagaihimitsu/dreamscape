@@ -1,33 +1,45 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { defaultJourneyId, getJourney } from "../content/journeys";
+import { defaultJourneyId, getJourney, journeys } from "../content/journeys";
 import { journeyStorage } from "../persistence/journey-storage";
+import { openingJourneyId, readLastJourney, rememberJourney } from "./last-journey";
 import { useJourneyLock } from "../persistence/useJourneyLock";
 import { journeyLockNotice, needsJourneyLock } from "../persistence/journey-lock";
 import { loadJourneyDraft, promoteJourneyDraft } from "../persistence/journey-preparation";
 import { PreparingJourney } from "../features/journey/PreparingJourney";
 import { UnavailableJourney } from "../features/journey/UnavailableJourney";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
+import { holdTaps } from "../components/tap-hold";
 import { GameApp } from "./GameApp";
 import type { KeyedStorage } from "../persistence/old-data";
 import { browserKeyedStorage, browserStorage, type AppProps } from "./app-storage";
 
 export default function App(props: AppProps = {}) {
-  const [journeyId, setJourneyId] = useState(defaultJourneyId);
+  const baseStorage = props.storage ?? browserStorage;
+  // The title opens the journey last opened on this device (last-journey.ts); Debug
+  // (isolated storage, its own scene) neither reads nor writes that preference.
+  const [journeyId, setJourneyId] = useState(() =>
+    props.debug ? defaultJourneyId : openingJourneyId(readLastJourney(baseStorage), journeys, defaultJourneyId));
   // A switch rebuilds the screen (key={journeyId}); the new screen's journey
-  // selector takes the keyboard focus back (see JourneySelection).
+  // selector takes the keyboard focus back (see JourneySelection). The other
+  // journey's screen, perhaps its saved story scene, appears under the finger:
+  // the second tap of a double tap on 「切り替える」 must not press or read it
+  // (tap-hold.ts; the new GameApp starts with that scene, so it sees no start).
   const [restoreSelectorFocus, setRestoreSelectorFocus] = useState(false);
   const switchJourney = useCallback((id: string) => {
+    holdTaps();
     setRestoreSelectorFocus(true);
     setJourneyId(id);
-  }, []);
+    if (!props.debug) rememberJourney(baseStorage, getJourney(id));
+  }, [props.debug, baseStorage]);
   const selectorFocusRestored = useCallback(() => setRestoreSelectorFocus(false), []);
   const selectorFocus: SelectorFocus = { restoreFocus: restoreSelectorFocus, onFocusRestored: selectorFocusRestored };
-  const baseStorage = props.storage ?? browserStorage;
   const scopedStorage = useMemo(() => journeyStorage(baseStorage, journeyId), [baseStorage, journeyId]);
   const [lockAttempt, setLockAttempt] = useState(0);
   // 再試行 rebuilds the screen like a switch: the selector keeps the focus
-  // while the lock is checked again, and the new screen takes it at the end.
+  // while the lock is checked again, and the new screen takes it at the end;
+  // taps are held as for a switch.
   const retryLock = useCallback(() => {
+    holdTaps();
     setRestoreSelectorFocus(true);
     setLockAttempt((value) => value + 1);
   }, []);

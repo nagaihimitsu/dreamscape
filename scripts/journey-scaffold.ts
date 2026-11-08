@@ -170,14 +170,17 @@ export function loadJourneyScaffold(root: string, journeyId: string, sources = l
   const plannedLandmarks = Object.fromEntries(cityData.map((city) => [city.id, city.landmarkIdsPlanned]));
   // A journey made by journey:new names the file (authoring.observationFile) but has none yet.
   if (!existsSync(path.resolve(root, profile.observationFile)))
-    throw new Error(`観察資料がありません: ${profile.observationFile}（manifest.json の authoring.observationFile）。journey:scaffold は、観光地ごとの JPEG の画像（仮でないもの）の記録（パスと SHA-256）と、出典を確かめた観察ポイントを観察資料に置いてから使います（authoring/JOURNEY_AUTHORING.md）。`);
+    throw new Error(`観察資料がありません: ${profile.observationFile}（manifest.json の authoring.observationFile）。journey:scaffold は、観光地ごとの JPEG または WebP の画像（仮でないもの）の記録（パスと SHA-256）と、出典を確かめた観察ポイントを観察資料に置いてから使います（authoring/JOURNEY_AUTHORING.md）。`);
   const observationsFile = z.object({ clues: z.array(tourismClueSchema), images: z.record(z.string(), z.object({ path: words, sha256: z.string().regex(/^[0-9a-f]{64}$/) })), provenance: z.record(z.string(), z.object({ needsFurtherResearch: z.boolean() }).loose()) }).loose()
     .parse(json(profile.observationFile));
   if (observationsFile.clues.some((clue) => !observationsFile.provenance[clue.id] || observationsFile.provenance[clue.id].needsFurtherResearch))
     throw new Error("Journey scaffold: observations contain unresolved or missing provenance");
   for (const clue of observationsFile.clues) {
+    // Cards are written before any question exists; links go into the released tourism catalog (docs/07 観察だけの手がかり).
+    if (clue.relatedQuestionIds.length)
+      throw new Error(`観察資料の観察ポイント「${clue.id}」に問題ID（relatedQuestionIds: ${clue.relatedQuestionIds.join(", ")}）が書かれています: ${profile.observationFile}。観察資料には問題IDを書かず、[] のままにします。都市を公開（journey:release -- --apply）した後、旅行編の tourism/catalog.json で、その観察ポイントを本当に使う問題にだけ問題IDを書いてください。`);
     const image = observationsFile.images[clue.landmarkId];
-    if (!image || !image.path.startsWith(`${profile.imageDirectory}/`) || !/^[a-z0-9_]+\.jpg$/.test(image.path.slice(profile.imageDirectory.length + 1)))
+    if (!image || !image.path.startsWith(`${profile.imageDirectory}/`) || !/^[a-z0-9_]+\.(?:jpg|webp)$/.test(image.path.slice(profile.imageDirectory.length + 1)))
       throw new Error(`Journey scaffold: missing observation image ${clue.landmarkId}`);
     const hash = createHash("sha256").update(readFileSync(requireServedFile(sources.publicFiles, image.path))).digest("hex");
     if (hash !== image.sha256) throw new Error(`Journey scaffold: observation image changed ${clue.landmarkId}`);

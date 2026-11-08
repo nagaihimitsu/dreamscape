@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "artworks": [
+    {
+      "noteJa": "Dreamscape のために作者が用意したヒロインの立ち絵",
+      "paths": [
+        "assets/characters/heroine/default_01/standing_01/exasperated.webp",
+        "assets/characters/heroine/default_01/standing_01/happy.webp",
+        "assets/characters/heroine/default_01/standing_01/neutral.webp",
+        "assets/characters/heroine/default_01/standing_01/serious.webp",
+        "assets/characters/heroine/default_01/standing_01/shy.webp",
+        "assets/characters/heroine/default_01/standing_01/shy_deep.webp",
+        "assets/characters/heroine/default_01/standing_01/smile.webp",
+        "assets/characters/heroine/default_01/standing_01/surprised.webp",
+        "assets/characters/heroine/default_01/standing_01/surprised_big.webp",
+        "assets/characters/heroine/default_01/standing_01/teasing.webp",
+        "assets/characters/heroine/default_01/standing_01/teasing_big.webp",
+        "assets/characters/heroine/default_01/standing_01/worried.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作った仮の立ち絵（図形だけのSVG）",
+      "paths": [
+        "assets/presentation/heroine_shy_placeholder.svg"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作った漫符（反応の印、線画のSVG）",
+      "paths": [
+        "assets/effects/anger.svg",
+        "assets/effects/blush.svg",
+        "assets/effects/dizzy.svg",
+        "assets/effects/exclamation.svg",
+        "assets/effects/gloom.svg",
+        "assets/effects/heart.svg",
+        "assets/effects/interrobang.svg",
+        "assets/effects/music.svg",
+        "assets/effects/question.svg",
+        "assets/effects/sigh.svg",
+        "assets/effects/sleep.svg",
+        "assets/effects/sparkle.svg",
+        "assets/effects/sweat.svg"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作った品物のアイコン（SVG）",
+      "paths": [
+        "assets/items/item.svg"
+      ]
+    },
+    {
+      "noteJa": "作者の画像から作ったファビコン・ホーム画面用アイコン",
+      "paths": [
+        "favicon-16.png",
+        "favicon-32.png",
+        "favicon-48.png",
+        "apple-touch-icon.png",
+        "icon-192.png",
+        "icon-512.png"
+      ]
+    }
+  ]
+}

@@ -12,6 +12,7 @@ import { journeyCatalogSchema } from "../src/content/journey-catalog";
 import { journeySchema } from "../src/content/journey-schemas";
 import { learningDetailsSchema } from "../src/content/learning-details";
 import { learningCatalogSchema } from "../src/content/learning-schema";
+import { ownArtworkCatalogSchema } from "../src/content/own-artwork-schema";
 import { reasoningIntroCatalogSchema } from "../src/content/reasoning-intros";
 import {
   balanceSchema, battleCatalogSchema, citySchema, dateCatalogSchema, effectCatalogSchema,
@@ -59,6 +60,8 @@ const runtimeSchemas = {
   "presentation/characters.json": characterCatalogSchema,
   "presentation/dialogue-expressions.json": dialogueExpressionCatalogSchema,
   "presentation/dialogue-reactions.json": dialogueReactionCatalogSchema,
+  // Not imported by the game: content:build checks the served images against it (scripts/image-rights.ts).
+  "presentation/own-artwork.json": ownArtworkCatalogSchema,
   "presentation/reasoning-intros.json": reasoningIntroCatalogSchema,
   "progression/journey.json": journeySchema,
   "romance/balance.json": balanceSchema,

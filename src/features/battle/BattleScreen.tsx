@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { dialogueExpressions, dialogueReactions, landmarks, presentation, reasoningIntroductions, tourismAssets } from "../../content";
+import { dialogueExpressions, dialogueReactions, landmarks, learningTranslations, presentation, reasoningIntroductions, tourismAssets } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
@@ -9,6 +9,8 @@ import { DialogueText } from "../../components/DialogueText";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { DialogueControls } from "../../components/DialogueControls";
+import { useSceneTap } from "../../components/useSceneTap";
+import { holdTaps } from "../../components/tap-hold";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { CanalScene } from "../../components/CanalScene";
 import { BackgroundCredits } from "../../components/BackgroundCredits";
@@ -19,7 +21,8 @@ import { EnemyPortrait } from "./EnemyPortrait";
 import { BattleRewards } from "../journey/BattleRewards";
 import { ReasoningPanel } from "./ReasoningPanel";
 import { ReasoningCutIn } from "./ReasoningCutIn";
-import { DOUBLE_TAP_WINDOW_MS, isAnswerDoubleTap } from "./double-tap";
+import { OutcomeHeading } from "./OutcomeHeading";
+import { DOUBLE_TAP_WINDOW_MS, isSecondTap } from "../../components/double-tap";
 import {
   Translation,
   TranslationAll,
@@ -77,6 +80,9 @@ export function BattleScreen({
   const { battle, quiz } = getActiveBattleContent(active);
   const question = quiz.questions[active.roundIndex];
   const answer = active.answers[active.roundIndex];
+  const outcome = getBattleOutcome(active.score, quiz.questions.length);
+  // The same translation as the option's 「訳を見る」 (shown after a wrong answer whatever the translation settings).
+  const correctTranslation = question && learningTranslations[question.id]?.optionsJa[question.correctOptionId];
   const perfectAnswer = active.phase === "feedback" && !!answer?.correct &&
     active.answers.length === quiz.questions.length && active.score === quiz.questions.length;
   const record = game.battleRecords.find((item) => item.battleId === battle.id);
@@ -229,6 +235,8 @@ export function BattleScreen({
     if (cutIn || (isDialogue && !ready) || windowVisibility.hidden || dialogueObstructed()) return;
     if (rebuttal) {
       if (rebuttal.step.frame.ended) {
+        // A presentation-only scene end: the cut-in's skip must not take the double tap's second tap.
+        holdTaps();
         setRebuttal(null);
         setCutIn(battle.reasoning!.kind);
       } else {
@@ -250,6 +258,7 @@ export function BattleScreen({
     onAdvance: advanceSafely,
     defaultEnabled: autoAdvanceEnabled,
   });
+  const sceneTap = useSceneTap({ active: isDialogue, lineShown: ready, choicesShown: false, windowHidden: windowVisibility.hidden });
   const isResult = active.phase === "result";
   const isSpecial = !!battle.reasoning;
   const showReasoning =
@@ -260,7 +269,7 @@ export function BattleScreen({
       className={`battle-screen ${answer && animatedAnswer === answerKey ? "answer-animating" : ""}`}
       onClickCapture={(event) => {
         // The second tap of a double tap on an answer is ignored, whatever moved under it.
-        if (answeredAt.current !== null && isAnswerDoubleTap(performance.now() - answeredAt.current)) {
+        if (answeredAt.current !== null && isSecondTap(performance.now() - answeredAt.current)) {
           event.preventDefault();
           event.stopPropagation();
         }
@@ -270,6 +279,7 @@ export function BattleScreen({
       data-effect-active={active.phase === "feedback" && effectAnswer === answerKey || undefined}
       data-reduce-motion={reduceMotion || undefined}
       data-dialogue-hidden={isDialogue && windowVisibility.hidden || undefined}
+      {...sceneTap.props}
     >
       {active.phase === "feedback" && answer && effectAnswer === answerKey && (
         <div
@@ -301,6 +311,7 @@ export function BattleScreen({
       )}
       <div
         className={`battle-stage ${isDialogue ? "" : "battle-stage-compact"} ${battle.scope === "city_finale" ? "finale-stage" : ""}`}
+        data-testid={isDialogue ? "scene-picture" : undefined}
       >
         <div className="battle-enemy-info">
           <p className="eyebrow">{battle.titleJa}</p>
@@ -392,15 +403,7 @@ export function BattleScreen({
           <div className="battle-result" data-testid="battle-result">
             <p className="eyebrow">今回の結果</p>
             <div className="battle-result-heading">
-              <h2 className="outcome">
-                {
-                  {
-                    perfect: "PERFECT VICTORY",
-                    victory: "VICTORY",
-                    defeat: "DEFEAT",
-                  }[getBattleOutcome(active.score, quiz.questions.length)]
-                }
-              </h2>
+              <OutcomeHeading outcome={outcome} />
               <p className="battle-score">
                 <strong>{active.score}</strong>
                 <span> / {quiz.questions.length} 問正解</span>
@@ -475,6 +478,7 @@ export function BattleScreen({
           <>
             <DialogueText
               key={rebuttal ? `rebuttal-${rebuttal.index}` : game.revision}
+              ref={sceneTap.line}
               text={frame.text}
               speed={auto.fast ? 0 : speed}
               onReady={onReady}
@@ -613,6 +617,7 @@ export function BattleScreen({
                         )?.textEn
                       }
                     </span>
+                    {correctTranslation && <span>（{correctTranslation}）</span>}
                   </p>
                 )}
                 <p>

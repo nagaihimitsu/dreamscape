@@ -42,6 +42,10 @@ export function journeyTransitDecisionFile(root: string, cityId: string): string
   return ledger?.cities.includes(cityId) ? ledger.file : undefined;
 }
 
+/** One record per city, direction and mode: the key that names it (also in "Duplicate transit decision" errors). */
+export const transitDecisionKey = (decision: { cityId: string; fromPlaceId: string; toPlaceId: string; mode: string }) =>
+  `${decision.cityId}:${decision.fromPlaceId}:${decision.toPlaceId}:${decision.mode}`;
+
 export function readJourneyTransitDecisions(root: string, journeyId: string): JourneyTransitDecisionInput {
   const ledger = getJourneyAuthoringProfile(root, journeyId).transitDecisionLedger;
   if (!ledger) throw new Error(`Journey has no transit decision ledger: ${journeyId}`);
@@ -61,14 +65,13 @@ export function buildJourneyTransitDecisionReview(input: JourneyTransitDecisionI
     return [cityId, catalog];
   })) as Record<string, TravelCatalog>;
   const decisions = decisionsSchema(cityIds as [string, ...string[]]).parse(input.decisions).decisions;
-  const key = (city: string, from: string, to: string, mode: string) => `${city}:${from}:${to}:${mode}`;
   const reviewed = new Map<string, Decision>();
   for (const decision of decisions) {
     const catalog = catalogs[decision.cityId];
     const ids = new Set(catalog.places.map((place) => place.id));
     if (!ids.has(decision.fromPlaceId) || !ids.has(decision.toPlaceId) || decision.fromPlaceId === decision.toPlaceId)
       throw new Error(`Invalid reviewed transit endpoints: ${decision.cityId}/${decision.fromPlaceId}/${decision.toPlaceId}`);
-    const id = key(decision.cityId, decision.fromPlaceId, decision.toPlaceId, decision.mode);
+    const id = transitDecisionKey(decision);
     if (reviewed.has(id)) throw new Error(`Duplicate transit decision: ${id}`);
     if (catalog.routes.some((route) => route.fromPlaceId === decision.fromPlaceId && route.toPlaceId === decision.toPlaceId && route.mode === decision.mode))
       throw new Error(`Reviewed transit decision conflicts with a playable route: ${id}`);
@@ -82,7 +85,7 @@ export function buildJourneyTransitDecisionReview(input: JourneyTransitDecisionI
       if (from.id === to.id) continue;
       for (const mode of journeyTransitDecisionModes) {
         const route = catalog.routes.find((item) => item.fromPlaceId === from.id && item.toPlaceId === to.id && item.mode === mode);
-        const decision = reviewed.get(key(cityId, from.id, to.id, mode));
+        const decision = reviewed.get(transitDecisionKey({ cityId, fromPlaceId: from.id, toPlaceId: to.id, mode }));
         let row: ReviewRow;
         if (route) {
           if (route.estimation !== "game_model" || !route.sources.some((source) => source.claimType === "documented_fact"))

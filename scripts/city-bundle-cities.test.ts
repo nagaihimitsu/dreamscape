@@ -63,7 +63,7 @@ describe("city editing bundle: applying edits to each city", () => {
 
   it("rejects stale edits after unrelated content or image changes without writing", async () => {
     const root = fixture();
-    for (const file of [cityPaths(root, "agra").city, "assets/tourism/india/agra_taj_mahal.jpg", indiaDecisionFile]) {
+    for (const file of [cityPaths(root, "agra").city, "assets/tourism/india/agra_taj_mahal.webp", indiaDecisionFile]) {
       const bundle = exportCityBundle(root, "delhi");
       const target = file.startsWith("assets/") ? resolvePublicFile(root, file) : path.join(root, file);
       const original = readFileSync(target);

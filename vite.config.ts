@@ -1,6 +1,7 @@
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import { listTestFiles, splitTestFiles } from "./scripts/test-sets.ts";
+import { THIRD_PARTY_LICENSES_PATH } from "./scripts/dist-guard.ts";
 
 // `npm run content:build` assembles the served files (root public/ plus every
 // content/journeys/<journeyId>/public/) into this generated folder.
@@ -15,6 +16,10 @@ export default defineConfig({
   base: "./",
   publicDir: "src/content/generated/public",
   plugins: [react()],
+  // Production builds write the licence notices of the bundled libraries next to
+  // index.html (MIT and BSD-2-Clause ask for them in every copy); the credits list
+  // reads them and the dist check (scripts/check-dist.ts) requires them.
+  build: { license: { fileName: THIRD_PARTY_LICENSES_PATH } },
   test: {
     // Content validation compiles every Ink branch, including relationship tones.
     testTimeout: 180_000,

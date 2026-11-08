@@ -3,6 +3,7 @@ import path from "node:path";
 import { generatedPublicDirectory, mirrorDirectory, type CatalogKind } from "./content-layout";
 import type { MergedCatalog } from "./catalog-merge";
 import { listFiles, type ContentSources } from "./content-sources";
+import { imageJourneyIndex } from "./image-rights";
 
 // The outputs of content:build, written after the content was validated:
 // the compiled stories and quizzes, the generated mirror of the merged
@@ -12,6 +13,8 @@ import { listFiles, type ContentSources } from "./content-sources";
 export const GENERATED_DIRECTORY = "src/content/generated";
 /** How the outputs were built: `{ extraJourneyFolders: { <journeyId>: <folder> } }`, empty without extra journey folders. */
 export const BUILD_INFO_FILE = `${GENERATED_DIRECTORY}/build-info.json`;
+/** Which journey provides each tourism image, for the credits list (image-rights.ts imageJourneyIndex). */
+export const IMAGE_JOURNEYS_FILE = `${GENERATED_DIRECTORY}/image-journeys.json`;
 
 /** Write every output of a validated build into `root`. */
 export function writeContentOutputs(
@@ -26,6 +29,7 @@ export function writeContentOutputs(
   writeFileSync(path.join(root, BUILD_INFO_FILE), `${JSON.stringify(buildInfo, null, 2)}\n`);
   writeFileSync(path.join(directory, "quizzes.json"), `${JSON.stringify(validated.quizzes, null, 2)}\n`);
   writeFileSync(path.join(directory, "stories.json"), `${JSON.stringify(validated.stories, null, 2)}\n`);
+  writeFileSync(path.join(root, IMAGE_JOURNEYS_FILE), `${JSON.stringify(imageJourneyIndex(sources), null, 2)}\n`);
   // The game imports the validated, merged catalogs only from this mirror.
   writeContentMirror(sources, mirrorDirectory(root));
   // Vite serves and builds the game's images from this folder (publicDir in vite.config.ts).

@@ -1,8 +1,10 @@
 import { copyFile, cp, mkdir, readFile, readdir, rm, symlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { characterCatalogSchema } from "./character-assets";
+import { ownArtworkCatalogSchema, type OwnArtworkCatalog } from "./own-artwork-schema";
 import type { MergedKind } from "../../scripts/content-layout";
 import { loadContentSources, publicRoots, storyFile } from "../../scripts/content-sources";
+import { OWN_ARTWORK_KIND } from "../../scripts/image-rights";
 
 /**
  * Build an isolated, artwork-undelivered fixture for tests of other content.
@@ -39,6 +41,37 @@ export async function prepareContentFixture(fixture: string): Promise<void> {
   for (const character of catalog.characters)
     for (const costume of character.costumes ?? [])
       for (const pose of costume.poses) pose.expressions = {};
+  await writeFile(file, JSON.stringify(catalog));
+  // content:build refuses a listed own artwork that is not served: the fixture's
+  // list leaves out the character images the fixture does not copy.
+  const uncopied = `${path.relative(path.join(root, "public"), characterAssets).split(path.sep).join("/")}/`;
+  const ownFile = path.join(fixture, "content", OWN_ARTWORK_KIND);
+  const own = ownArtworkCatalogSchema.parse(JSON.parse(await readFile(ownFile, "utf8")));
+  own.artworks = own.artworks
+    .map((group) => ({ ...group, paths: group.paths.filter((assetPath) => !assetPath.startsWith(uncopied)) }))
+    .filter((group) => group.paths.length > 0);
+  await writeFile(ownFile, JSON.stringify(own));
+}
+
+/**
+ * List `paths` (served paths such as assets/title/milano.webp) as artwork made
+ * for Dreamscape in a fixture's layer, for a test that adds images: content:build
+ * accepts a served image only when it is a credited tourism image or listed in
+ * the own-artwork file of the layer that serves it. `layerDirectory` is the
+ * layer's folder relative to the fixture (`content` for the root public/,
+ * `content/journeys/<journeyId>` for that journey's public/); its file is
+ * created when the layer has none.
+ */
+export async function registerOwnArtwork(fixture: string, layerDirectory: string, paths: readonly string[]): Promise<void> {
+  const file = path.join(fixture, layerDirectory, OWN_ARTWORK_KIND);
+  let catalog: OwnArtworkCatalog = { schemaVersion: 1, artworks: [] };
+  try {
+    catalog = ownArtworkCatalogSchema.parse(JSON.parse(await readFile(file, "utf8")));
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+    await mkdir(path.dirname(file), { recursive: true });
+  }
+  catalog.artworks.push({ noteJa: "テストで追加した絵", paths: [...paths] });
   await writeFile(file, JSON.stringify(catalog));
 }
 

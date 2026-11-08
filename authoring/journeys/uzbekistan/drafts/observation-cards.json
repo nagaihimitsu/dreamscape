@@ -1064,68 +1064,68 @@
   ],
   "images": {
     "tashkent_khast_imam": {
-      "path": "assets/tourism/uzbekistan/tashkent_khast_imam.jpg",
-      "sha256": "8dc160d4be899224cafef58006a5342e51cb49d2e89d848d62c49ec898bcaa7a"
+      "path": "assets/tourism/uzbekistan/tashkent_khast_imam.webp",
+      "sha256": "6de53b5bad9579e8923cb31902ec7a1b59a1597d741ae55cc8d73e36a3d52775"
     },
     "tashkent_chorsu_bazaar": {
-      "path": "assets/tourism/uzbekistan/tashkent_chorsu_bazaar.jpg",
-      "sha256": "6be67c0a866bf467cfd267f83f74c7486fde71e168b2c29f0a589d8b0387d30b"
+      "path": "assets/tourism/uzbekistan/tashkent_chorsu_bazaar.webp",
+      "sha256": "1e07bd757f817e3a822c3053ca5e1180f9143a9f72165694a9ca1345ab99b5e0"
     },
     "tashkent_kukeldash": {
-      "path": "assets/tourism/uzbekistan/tashkent_kukeldash.jpg",
-      "sha256": "4382b47c3fe3e7ff3f3585c6ff64542a412cc2389e6808a673fde384f024df06"
+      "path": "assets/tourism/uzbekistan/tashkent_kukeldash.webp",
+      "sha256": "df406d411a96c0c24c363db409cf072f45e824f8439f4eaf3f8e95dc87ec49ee"
     },
     "tashkent_amir_temur_square": {
-      "path": "assets/tourism/uzbekistan/tashkent_amir_temur_square.jpg",
-      "sha256": "a963f085d397789140960d93bf5d3f273da954c2cac2a755b41377de96da437f"
+      "path": "assets/tourism/uzbekistan/tashkent_amir_temur_square.webp",
+      "sha256": "bf08c41eddc5603bc2e098af39a5a7450c14a0377c22ecb87a83dfd7f936c7bf"
     },
     "samarkand_registan": {
-      "path": "assets/tourism/uzbekistan/samarkand_registan.jpg",
-      "sha256": "8c5d515a4786ef02d1d28adeee42ded05bf64a0804794337761a5881bcbf4017"
+      "path": "assets/tourism/uzbekistan/samarkand_registan.webp",
+      "sha256": "d1505f774bf109179fe4b27f34e0e4178546605e0d6c71d2f98d8c14e5426d36"
     },
     "samarkand_shah_i_zinda": {
-      "path": "assets/tourism/uzbekistan/samarkand_shah_i_zinda.jpg",
-      "sha256": "93ea90f2d9df4319f117cc7e1ce8a7edf8aaed718b7d153f4fe0837960f6ce1c"
+      "path": "assets/tourism/uzbekistan/samarkand_shah_i_zinda.webp",
+      "sha256": "e51a3e42060a3c522ce318a2075c5efb531ac369b23f7f6614875103cc40cdd7"
     },
     "samarkand_gur_e_amir": {
-      "path": "assets/tourism/uzbekistan/samarkand_gur_e_amir.jpg",
-      "sha256": "41e7fd94e825df4487936137c627a69f2157b262695a42ecd835805dfc68acb5"
+      "path": "assets/tourism/uzbekistan/samarkand_gur_e_amir.webp",
+      "sha256": "58750872cc9356501e3c4121e31804195fc68298750e08689d079d893de7850f"
     },
     "samarkand_bibi_khanym": {
-      "path": "assets/tourism/uzbekistan/samarkand_bibi_khanym.jpg",
-      "sha256": "c1b1a02d5553cf84d415329c0bbd599a5d31cbcff80c37d6cdde1015c9a4c655"
+      "path": "assets/tourism/uzbekistan/samarkand_bibi_khanym.webp",
+      "sha256": "6bc524e4b231288184520b2c466f5e0e4cf3b83bc97eedf134bd403adf46633b"
     },
     "bukhara_ark": {
-      "path": "assets/tourism/uzbekistan/bukhara_ark.jpg",
-      "sha256": "d35723386ad7b428c84ebfaa3bfe1616682cbb70c73486aa6c9668036204ac2d"
+      "path": "assets/tourism/uzbekistan/bukhara_ark.webp",
+      "sha256": "4e7604a2ec055dd654a13ff0fcbc150180200864d13d8efb8af1a963b7a99112"
     },
     "bukhara_poi_kalyan": {
-      "path": "assets/tourism/uzbekistan/bukhara_poi_kalyan.jpg",
-      "sha256": "8ef423a75a802464c3e57cec8d13fe70869cace24c73cdd4b81f99c9c63c647a"
+      "path": "assets/tourism/uzbekistan/bukhara_poi_kalyan.webp",
+      "sha256": "4f2e7d9cce4407df01c2073421fd231668b6fb9fa1d9ede0e9d0c45940435e60"
     },
     "bukhara_samanid_mausoleum": {
-      "path": "assets/tourism/uzbekistan/bukhara_samanid_mausoleum.jpg",
-      "sha256": "1a153bb3474f10f5b3b3342236f594ac68e242e2cf4c1508c2b198c82936654c"
+      "path": "assets/tourism/uzbekistan/bukhara_samanid_mausoleum.webp",
+      "sha256": "e5e9de6dc08d429f58685f7eb2e08a6bd2232764863824113406ef3da89ee35a"
     },
     "bukhara_lyabi_hauz": {
-      "path": "assets/tourism/uzbekistan/bukhara_lyabi_hauz.jpg",
-      "sha256": "cec57225e6deb0d45d05079876ea94ed9b364c06ae4ef3de24f96eea4de9a293"
+      "path": "assets/tourism/uzbekistan/bukhara_lyabi_hauz.webp",
+      "sha256": "a889b66c1e29c0a564570b87d76add0b5879491576f5b9ac8b3a09af1a740383"
     },
     "khiva_kunya_ark": {
-      "path": "assets/tourism/uzbekistan/khiva_kunya_ark.jpg",
-      "sha256": "d571f14e47207d7e747604607843e97b7fff88a17e90f9c08127f00399ef783b"
+      "path": "assets/tourism/uzbekistan/khiva_kunya_ark.webp",
+      "sha256": "f90a49458eb227c75383afe9dbfb4c74d1994d98c23c75ecbe91b4ead3896fb4"
     },
     "khiva_juma_mosque": {
-      "path": "assets/tourism/uzbekistan/khiva_juma_mosque.jpg",
-      "sha256": "9a44716a32635f971ddcb38aaa12e37958bf25a3ca9e6272af4478ce7e3c2973"
+      "path": "assets/tourism/uzbekistan/khiva_juma_mosque.webp",
+      "sha256": "3d30c8b141531f6ec635cccbcafe9cf91447c225a4eb9b41d75b7e00a6be7a31"
     },
     "khiva_tash_hauli": {
-      "path": "assets/tourism/uzbekistan/khiva_tash_hauli.jpg",
-      "sha256": "08d5c14a4452118213534559306f5dee3aeedb9ee5d777dd29265e482b4a8b1a"
+      "path": "assets/tourism/uzbekistan/khiva_tash_hauli.webp",
+      "sha256": "7363748b2a1f4a30e891a7d5365656e753d9f53d1cadf5651badc47dc14eeee6"
     },
     "khiva_islam_khoja": {
-      "path": "assets/tourism/uzbekistan/khiva_islam_khoja.jpg",
-      "sha256": "80f2665c655a2a89a660aaef95f1a7b2490060a16c860ba985467b687d4622a3"
+      "path": "assets/tourism/uzbekistan/khiva_islam_khoja.webp",
+      "sha256": "a4ad7325267e95e6219d25945a37d0336a20a37da5d3613d551a9ea1787c667f"
     }
   },
   "provenance": {
