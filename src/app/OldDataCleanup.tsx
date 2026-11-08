@@ -43,13 +43,14 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
   // returns to the button it came from.
   const [focusRequest, setFocusRequest] = useState<{ target: "heading" | "notice" | "remove" } | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
+  const body = useRef<HTMLDivElement>(null);
   const noticeLine = useRef<HTMLParagraphElement>(null);
   const removeButton = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     if (!focusRequest) return;
     if (focusRequest.target === "remove" && removeButton.current) removeButton.current.focus();
     else {
-      heading.current?.closest("dialog")?.scrollTo({ top: 0 });
+      body.current?.scrollTo({ top: 0 });
       (focusRequest.target === "notice" && noticeLine.current ? noticeLine.current : heading.current)?.focus({ preventScroll: true });
     }
   }, [focusRequest]);
@@ -86,42 +87,54 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
     }
   }
 
+  // The dialog keeps one size and its buttons stay at its foot in both steps (styles.css,
+  // dialog.old-data), so the confirmation's 「消去せず戻る」 takes the place of 「選んだデータを消去する」
+  // and 「消去する」 that of 「閉じる」: a slow second tap of a double tap on 「選んだデータを消去する」
+  // lands on 「消去せず戻る」, never on 「消去する」 (user decision 2026-11-08). A quick one meets
+  // ConfirmActionButton's wait as well.
   return <Modal labelledBy="old-data-title" className="old-data" onClose={onClose}>
-    {confirming ? <>
-      <h2 id="old-data-title" ref={heading} tabIndex={-1}>選んだ保存データを消去しますか？</h2>
-      <p>次の{chosenItems.length}件（キー{chosenKeys}個）を消去します。元には戻せません。</p>
-      <ul className="old-data-list">
-        {chosenItems.map((item) => <li key={item.id}>
-          <strong>{item.titleJa}</strong>
-          <p className="old-data-impact">{item.impactJa}</p>
-          <KeyList item={item} />
-        </li>)}
-      </ul>
-      <p className="fine-print">一覧にないデータ（開いている旅行編のセーブ、今の版で読み込めるセーブ、この版にある旅行編の英語ノート、表示設定など）は残ります。選んだ旅行編を別のタブで開いている間は消去できません。</p>
-      <button type="button" className="secondary" onClick={() => { setConfirming(false); setFocusRequest({ target: "remove" }); }}>消去せず戻る</button>
-      <ConfirmActionButton className="danger-button" disabled={working} onClick={() => void remove()}>消去する</ConfirmActionButton>
-    </> : <>
-      <h2 id="old-data-title" ref={heading} tabIndex={-1}>古い保存データの整理</h2>
-      <p>このブラウザに残っている、今のゲームでは使わない保存データです。消去するものを選んでください。</p>
-      {notice && <p className="old-data-notice" role={notice.role} ref={noticeLine} tabIndex={-1}>{notice.text}</p>}
-      {!listing ? <p role="alert">保存データを読み取れませんでした。ブラウザの保存設定を確認してください。</p>
-        : items.length === 0 ? <p>整理できる古い保存データはありません。</p>
-        : <ul className="old-data-list">
-          {items.map((item) => <li key={item.id}>
-            <label className="translation-setting">
-              <input type="checkbox" checked={chosen.includes(item.id)}
-                onChange={(event) => setChosen((ids) => event.target.checked ? [...ids, item.id] : ids.filter((id) => id !== item.id))} />
-              <span><strong>{item.titleJa}</strong> <span className="old-data-size">（{formatOldDataSize(item.keys.reduce((sum, entry) => sum + entry.chars, 0))}）</span></span>
-            </label>
+    <div className="old-data-body" ref={body}>
+      {confirming ? <>
+        <h2 id="old-data-title" ref={heading} tabIndex={-1}>選んだ保存データを消去しますか？</h2>
+        <p>次の{chosenItems.length}件（キー{chosenKeys}個）を消去します。元には戻せません。</p>
+        <ul className="old-data-list">
+          {chosenItems.map((item) => <li key={item.id}>
+            <strong>{item.titleJa}</strong>
             <p className="old-data-impact">{item.impactJa}</p>
             <KeyList item={item} />
           </li>)}
-        </ul>}
-      <p className="fine-print">開いている旅行編のセーブ、今の版で読み込めるセーブ、この版にある旅行編の英語ノート、表示設定は一覧に出ず、消去しません。ほかのサイトのデータにも触れません。</p>
-      {items.length > 0 && <button type="button" className="danger-button" ref={removeButton} disabled={!chosenItems.length}
-        onClick={() => { setNotice(null); setConfirming(true); setFocusRequest({ target: "heading" }); }}>選んだデータを消去する</button>}
-      {items.length > 0 && !chosenItems.length && <p className="fine-print old-data-hint">消去するものにチェックを付けると押せます。</p>}
-      <button type="button" className="secondary" onClick={onClose}>閉じる</button>
-    </>}
+        </ul>
+        <p className="fine-print">一覧にないデータ（開いている旅行編のセーブ、今の版で読み込めるセーブ、この版にある旅行編の英語ノート、表示設定など）は残ります。選んだ旅行編を別のタブで開いている間は消去できません。</p>
+      </> : <>
+        <h2 id="old-data-title" ref={heading} tabIndex={-1}>古い保存データの整理</h2>
+        <p>このブラウザに残っている、今のゲームでは使わない保存データです。消去するものを選んでください。</p>
+        {notice && <p className="old-data-notice" role={notice.role} ref={noticeLine} tabIndex={-1}>{notice.text}</p>}
+        {!listing ? <p role="alert">保存データを読み取れませんでした。ブラウザの保存設定を確認してください。</p>
+          : items.length === 0 ? <p>整理できる古い保存データはありません。</p>
+          : <ul className="old-data-list">
+            {items.map((item) => <li key={item.id}>
+              <label className="translation-setting">
+                <input type="checkbox" checked={chosen.includes(item.id)}
+                  onChange={(event) => setChosen((ids) => event.target.checked ? [...ids, item.id] : ids.filter((id) => id !== item.id))} />
+                <span><strong>{item.titleJa}</strong> <span className="old-data-size">（{formatOldDataSize(item.keys.reduce((sum, entry) => sum + entry.chars, 0))}）</span></span>
+              </label>
+              <p className="old-data-impact">{item.impactJa}</p>
+              <KeyList item={item} />
+            </li>)}
+          </ul>}
+        <p className="fine-print">開いている旅行編のセーブ、今の版で読み込めるセーブ、この版にある旅行編の英語ノート、表示設定は一覧に出ず、消去しません。ほかのサイトのデータにも触れません。</p>
+      </>}
+    </div>
+    <div className="old-data-actions">
+      {confirming ? <>
+        <button type="button" className="secondary" onClick={() => { setConfirming(false); setFocusRequest({ target: "remove" }); }}>消去せず戻る</button>
+        <ConfirmActionButton className="danger-button" disabled={working} onClick={() => void remove()}>消去する</ConfirmActionButton>
+      </> : <>
+        {items.length > 0 && !chosenItems.length && <p className="fine-print old-data-hint">消去するものにチェックを付けると押せます。</p>}
+        {items.length > 0 && <button type="button" className="danger-button" ref={removeButton} disabled={!chosenItems.length}
+          onClick={() => { setNotice(null); setConfirming(true); setFocusRequest({ target: "heading" }); }}>選んだデータを消去する</button>}
+        <button type="button" className="secondary" onClick={onClose}>閉じる</button>
+      </>}
+    </div>
   </Modal>;
 }

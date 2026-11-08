@@ -372,11 +372,11 @@ test("old saved data is listed with its keys, removed only after confirmation an
 // The cleanup opened from a journey other than the default one (here the Indian journey) treats that
 // journey as the one open in this tab (GameApp passes its own ID): its backups go without a lock (this
 // tab holds it) and its own slot is never listed, while Milan's old save is another journey's.
-// AGENTS.md 「明示確認」「誤タップ防止」: the confirmation replaces the list and starts at its top, so the
-// second tap of a double tap on 「選んだデータを消去する」 can land on 「消去する」 (it did at 320–390 px).
-// That tap removes nothing: 「消去する」 takes presses only once the confirmation has been on screen a
-// moment (ConfirmActionButton). The page's clock is held, so the second tap comes 300 ms after the
-// first however slow the machine.
+// AGENTS.md 「明示確認」「誤タップ防止」: a quick second tap that reaches 「消去する」 (here tapped on purpose
+// 300 ms after 「選んだデータを消去する」) removes nothing: 「消去する」 takes presses only once the
+// confirmation has been on screen a moment (ConfirmActionButton). The page's clock is held, so the second
+// tap comes 300 ms after the first however slow the machine. (A second tap at the same place lands on
+// 「消去せず戻る」: the next test.)
 test("from another journey, the cleanup lists that journey's own old data, and a double tap cannot pass its confirmation", { tag: tier.gate }, async ({ page }) => {
   await page.clock.install();
   // The Indian journey opens on its arrival talk; 設定 is already there.
@@ -446,6 +446,43 @@ test("from another journey, the cleanup lists that journey's own old data, and a
   const { [saveKey()]: _removedSave, ...left } = withoutBackup;
   expect(await besidesGame()).toEqual(left);
 });
+
+// User decision 2026-11-08 (answer 9), AGENTS.md 「明示確認」「誤タップ防止」: the confirmation's buttons take
+// the places of the list's, so 「消去せず戻る」 is exactly where 「選んだデータを消去する」 was and 「消去する」
+// where 「閉じる」 was. A slow second tap at the same place, after 「消去する」 has stopped waiting (0.5 s),
+// goes back to the list and removes nothing. Checked at the gate's phone and the narrowest one.
+for (const size of [{ width: 390, height: 844 }, { width: 320, height: 568 }]) {
+  test(`a slow second tap where 「選んだデータを消去する」 was goes back to the list and removes nothing (${size.width}×${size.height})`, { tag: tier.gate }, async ({ page }) => {
+    await page.setViewportSize(size);
+    await page.clock.install();
+    await ops.startJourney(page);
+    await page.evaluate((items) => { for (const [key, value] of Object.entries(items)) localStorage.setItem(key, value); }, {
+      [saveKey("golden_triangle")]: JSON.stringify({ schemaVersion: 13, revision: 3, completedChapters: [] }),
+      [`${saveKey()}.backup.1762500000000`]: "{damaged-save",
+      "dreamscape.learning.v1": JSON.stringify({ schemaVersion: 1, records: {} }),
+    });
+    const before = await allStorage(page);
+    const cleanup = await ops.openOldDataCleanup(page);
+    await cleanup.getByRole("checkbox", { name: /ミラノ編のバックアップ/ }).check();
+    const ask = cleanup.getByRole("button", { name: "選んだデータを消去する" });
+    await ask.scrollIntoViewIfNeeded();
+    const box = (await ask.boundingBox())!;
+    const point = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+    const confirm = page.getByRole("dialog", { name: "選んだ保存データを消去しますか？" });
+    await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+    await page.touchscreen.tap(point.x, point.y);
+    await expect(confirm).toBeVisible();
+    await page.clock.runFor(600);
+    // 「消去する」 takes presses by now, and it is not under the finger: 「消去せず戻る」 is.
+    await expect(confirm.getByRole("button", { name: "消去する", exact: true })).toBeEnabled();
+    expect(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest("button")?.textContent, point)).toBe("消去せず戻る");
+    await page.touchscreen.tap(point.x, point.y);
+    await page.clock.resume();
+    await expect(confirm).toBeHidden();
+    await expect(page.getByRole("dialog", { name: "古い保存データの整理" })).toBeVisible();
+    expect(await allStorage(page)).toEqual(before);
+  });
+}
 
 // AGENTS.md 「保存領域の読込失敗…」 and the save rule of docs/02: a write that fails says so,
 // changes nothing, never locks the player out, and the last good save is what a reload resumes.

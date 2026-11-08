@@ -1439,6 +1439,33 @@ dialog.modal::backdrop {
 .old-data-entry + .delete-entry {
   margin-top: 4px;
 }
+/* 「古い保存データの整理」 keeps one size in both steps (the list and its confirmation) and its buttons
+   at its foot: 「消去せず戻る」 appears where 「選んだデータを消去する」 was and 「消去する」 where 「閉じる」
+   was, so a second tap at the same place never reaches 「消去する」. Only the text above scrolls. */
+dialog.old-data[open] {
+  display: flex;
+  flex-direction: column;
+  height: min(90dvh, 760px);
+  padding: 0;
+  overflow: hidden;
+}
+.old-data-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 30px 30px 12px;
+}
+.old-data-actions {
+  flex: none;
+  padding: 0 30px 22px;
+  border-top: 1px solid #ccd2c1;
+}
+/* One height for every button there, so each takes exactly the place of the one before it. */
+.old-data-actions > button {
+  min-height: 48px;
+  margin-top: 12px;
+  padding-block: 0;
+}
 .old-data-list {
   list-style: none;
   margin: 12px 0;
@@ -1494,7 +1521,7 @@ dialog.old-data .old-data-notice:focus {
   font-weight: 600;
 }
 .old-data-hint {
-  margin-top: 4px;
+  margin: 10px 0 0;
 }
 .danger-button {
   width: 100%;
