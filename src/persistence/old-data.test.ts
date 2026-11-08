@@ -2,7 +2,8 @@
 // 明示確認と別タブ競合の保護を維持する」): what may be removed is decided here, not on the screen.
 // Only identified old versions, backups, Milan's keys from before journey slots and the keys of
 // journeys this version does not have are listed; the saves this version loads, this journey's own
-// slot, the notes of existing journeys, the display settings and other sites' keys never are.
+// slot, the notes of existing journeys, the display settings, the remembered journey and other
+// sites' keys never are.
 import { describe, expect, it } from "vitest";
 import { journeys } from "../content/journeys";
 import { createGame } from "../domain";
@@ -52,6 +53,8 @@ const kept = {
   [notes("milano")]: notebook,
   [notes("trip_b")]: notebook,
   "dreamscape.presentation.v1": JSON.stringify({ schemaVersion: 1, confirmChoices: true, reduceMotion: false }),
+  // The journey the title opens (src/app/last-journey.ts): a per-device preference like the settings.
+  "dreamscape.last-journey.v1": "milano",
   "dreamscape.journey.trip_b.unknown": "not a slot key",
   "dreamscape.unknown.v1": "not a known key",
   // Shaped like slot keys, but not as the game writes them (backups are `.backup.<time>[.<n>]`).
@@ -66,7 +69,7 @@ const kept = {
 };
 
 describe("which old saved data can be removed", () => {
-  it("lists nothing for the data in use, the settings, the English notes and other sites' keys", () => {
+  it("lists nothing for the data in use, the settings, the remembered journey, the English notes and other sites' keys", () => {
     expect(list(kept)).toEqual([]);
     // Another journey's save that is not an old version stays: damaged, newer, of another journey
     // (a Milan save in its slot), a preparation draft — its own title handles those.

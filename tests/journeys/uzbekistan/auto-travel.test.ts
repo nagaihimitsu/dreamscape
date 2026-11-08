@@ -50,7 +50,7 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
     if (!memory) throw new Error("No existing memory fixture");
     let state = createGame("旅人", "相手", { journeyId: journey.id, initialState: { ...journey.initialState!, ap: 12 } });
     expect(state.currentCityId).toBe("tashkent");
-    expect(state.travelBudget).toBe(4_000_000);
+    expect(state.travelBudget).toBe(3_000_000);
     expect(state.completedCityIds).toEqual([]);
     expect(state.memories).toEqual([]);
     expect(getNextCity(state)).toBeUndefined();
@@ -158,7 +158,7 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
       const state = createDebugState({ cityId, scene, id, progress: "completed", ap: 12,
         affection: 0, trust: 0, spark: 0, roll: "positive" });
       expect(state.currentCityId).toBe(cityId);
-      expect(state.travelBudget).toBe(4_000_000);
+      expect(state.travelBudget).toBe(3_000_000);
       expect(state.activeTourism || state.activeBattle || state.activeEncounter || state.activeDate).toBeTruthy();
       expect(validateGameState(state)).toEqual(state);
     }

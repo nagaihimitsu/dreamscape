@@ -46,6 +46,16 @@ const flows: FlowScene[] = [
     });
     await ops.openOldDataCleanup(page);
   } },
+  { scene: "flow-old-data-confirm", titleJa: "古い保存データの整理の確認", descriptionJa: "上と同じデータで、ミラノ編のバックアップを選んで「選んだデータを消去する」（ボタンは同じ位置に「消去せず戻る」「消去する」）", open: async (page) => {
+    await ops.startJourney(page);
+    await page.evaluate(() => {
+      localStorage.setItem("dreamscape.journey.golden_triangle.save.v1", JSON.stringify({ schemaVersion: 13, revision: 3 }));
+      localStorage.setItem("dreamscape.journey.milano.save.v1.backup.1762500000000", "{damaged-save");
+      localStorage.setItem("dreamscape.learning.v1", JSON.stringify({ schemaVersion: 1, records: {} }));
+    });
+    const cleanup = await ops.openOldDataCleanup(page);
+    await ops.chooseOldData(page, cleanup, [/ミラノ編のバックアップ/]);
+  } },
   { scene: "flow-route-choice", titleJa: "移動手段の選択", descriptionJa: "旅を始めて「最後の晩餐」を選ぶ（徒歩と路面電車16番）", open: async (page) => {
     await ops.startJourney(page);
     await ops.goTo(page, "p_supper");

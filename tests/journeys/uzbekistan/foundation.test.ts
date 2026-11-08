@@ -37,7 +37,7 @@ describe("Uzbekistan scenario-ready foundation", () => {
     const journey = getJourney("uzbekistan")!;
     expect(journey.status).toBe("preparing");
     expect(journey.cities.map((city) => city.id)).toEqual(cities);
-    expect(journey.initialBudget).toBe(4_000_000);
+    expect(journey.initialBudget).toBe(3_000_000);
     expect(journey.currency.code).toBe("UZS");
     expect(journey.cityPlan).toEqual({ cityClearAp: 4, lodgingCost: 0, mainTourismCount: 4, dateCount: 6 });
     expect(journey.intercityModes).toEqual([]);
@@ -165,7 +165,11 @@ describe("Uzbekistan scenario-ready foundation", () => {
     }
   });
 
-  it("funds all forty planned visits and hotel returns from one initial journey budget", () => {
+  // The cheapest way proves the journey can be finished. The dearest way (a taxi
+  // wherever one runs) is the case the journey budget was chosen to cover.
+  it.each([["cheapest", Math.min, Infinity], ["dearest", Math.max, -Infinity]] as const)(
+    "funds all forty planned visits and hotel returns from one initial journey budget, taking the %s way each time", (_way, pick, none) => {
+    const UNLIMITED = Number.MAX_SAFE_INTEGER;
     let remaining = getJourney("uzbekistan")!.initialBudget!;
     for (const cityId of cities) {
       const { travel, travelSettings } = getCityContent(cityId);
@@ -173,19 +177,22 @@ describe("Uzbekistan scenario-ready foundation", () => {
         const place = travel.places.find((item) => item.id === event.placeId)!;
         const outbound = travel.routes.filter((route) => route.fromPlaceId === travelSettings.hotelPlaceId && route.toPlaceId === place.id);
         const home = findTravelHomeRoutes(travel.routes, place.id, travelSettings.hotelPlaceId);
-        let minimumCost = Infinity;
+        let visitCost: number = none;
         // This verifies the travel budget only. AP comes from future authored
         // scenarios; each visit may take a separate day with free lodging.
+        // Plans are made with an unlimited budget, so the dearest way is never
+        // replaced by a cheaper one that happens to fit; affordability is checked below.
         for (let weekday = 0; weekday < 7; weekday++) for (let minute = DAY_START; minute < DAY_END; minute += 30) {
           const snapshot = { currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId,
-            day: 1, minute, weekday, ap: 12, travelBudget: remaining };
+            day: 1, minute, weekday, ap: 12, travelBudget: UNLIMITED };
           for (const route of outbound) for (const back of home) {
             const plan = planTravelEvent(snapshot, event, route, back, place);
-            if (plan.ok) minimumCost = Math.min(minimumCost, remaining - plan.remainingBudget + back.cost + travelSettings.lodgingCost);
+            if (plan.ok) visitCost = pick(visitCost, UNLIMITED - plan.remainingBudget + back.cost + travelSettings.lodgingCost);
           }
         }
-        expect(Number.isFinite(minimumCost), `${cityId}: ${event.id} within remaining budget ${remaining}`).toBe(true);
-        remaining -= minimumCost;
+        expect(Number.isFinite(visitCost), `${cityId}: ${event.id} can be visited`).toBe(true);
+        expect(visitCost, `${cityId}: ${event.id} within remaining budget ${remaining}`).toBeLessThanOrEqual(remaining);
+        remaining -= visitCost;
       }
       // Leave room to enter any planned venue once again for its later finale.
       remaining -= Math.max(...travel.events.map((event) => event.admissionCost ?? 0));

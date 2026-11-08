@@ -9,7 +9,7 @@ import { getTravelEventAvailability, getTravelEventDefinition } from "../../doma
 import { getTravelDestinations, type TravelDestinationPlace } from "../../domain/travel-destinations";
 import { compareRouteTime } from "../../domain/travel-routes";
 import { Modal } from "../../components/Modal";
-import { withNames } from "../romance/RomanceMenu";
+import { withNames } from "../romance/names";
 import { PlaceMap } from "./PlaceMap";
 import { TravelRentals } from "./TravelRentals";
 import { transportLabel } from "../../content/transport";
