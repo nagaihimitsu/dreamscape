@@ -6,11 +6,14 @@ import { allStorage, bothStorages, expect, ops, test, tier, type Page } from "./
 // User decision 2026-11-08: anyone can turn Debug mode on in 設定 with the password 「adminmode」
 // (not a secret: anyone may see it; it only prevents turning it on by accident). While it is on,
 // the production build opens Debug's 「場面の確認」, and choices show their relationship changes.
-// Real UI only, so it also runs against the production build (prod tier): no Debug test hook, no
+// Production tier only (docs/10): the gate expression (`import.meta.env.DEV || readDebugMode(…)`) and the
+// title page's files matter only in the production build, where Debug ships as lazily loaded files; the
+// development server always offers Debug. Its development-server check (nothing from src/dev/ before
+// Debug is opened) is debug-mode-dev.spec.ts in the debug tier. Real UI only: no Debug test hook, no
 // dev-server modules; Debug is entered through the switch's link and a launch URL built in Node.
 // Not lane 1 (docs/10): it enters Debug, which the real-flow specs never do.
 
-/** Debug is loaded only when opened (a lazy chunk; on the dev server module by module): it gets a page load's time. */
+/** Debug is loaded only when opened (a lazy chunk): it gets a page load's time. */
 const debugTimeout = 30_000;
 
 /** Tap the line on until the date offers its replies. */
@@ -25,10 +28,9 @@ async function readUntilReplies(page: Page) {
 }
 
 // A long flow (docs/10「不安定さと時間の決まり」): five page loads (title, reload, 場面の確認, a launch
-// URL, back to the game), Debug's lazy files on the dev server, and a date read to its replies.
-test("Debug mode: the password in 設定 turns it on for this device, opens 場面の確認 and shows changes, and 設定 turns it off", { tag: [tier.gate, tier.prod] }, async ({ page, baseURL }, testInfo) => {
+// URL, back to the game), Debug's lazy files and a date read to its replies.
+test("Debug mode: the password in 設定 turns it on for this device, opens 場面の確認 and shows changes, and 設定 turns it off", { tag: tier.prod }, async ({ page, baseURL }) => {
   test.setTimeout(120_000);
-  const production = testInfo.project.name === "prod";
   // The game's own scripts and stylesheets (the web fonts' stylesheet comes from another origin).
   const requested: string[] = [];
   page.on("request", (request) => {
@@ -71,14 +73,12 @@ test("Debug mode: the password in 設定 turns it on for this device, opens 場�
   settings = await ops.openSettings(page);
   await expect(on).toBeVisible();
 
-  // Until Debug is opened, the page loads no Debug code: in production only the files index.html loads at
-  // once (Debug's chunks are loaded later, whatever their names); on the dev server nothing from src/dev/.
-  if (production) {
-    const html = await (await page.request.get("/")).text();
-    const eager = new Set(eagerFiles(html).map((file) => `/${file}`));
-    expect(requested.length).toBeGreaterThan(0);
-    for (const path of requested) expect(eager, `${path} is loaded before Debug is opened`).toContain(path);
-  } else expect(requested.filter((path) => path.startsWith("/src/dev/"))).toEqual([]);
+  // Until Debug is opened, the page loads no Debug code: only the files index.html loads at once
+  // (Debug's chunks are loaded later, whatever their names).
+  const html = await (await page.request.get("/")).text();
+  const eager = new Set(eagerFiles(html).map((file) => `/${file}`));
+  expect(requested.length).toBeGreaterThan(0);
+  for (const path of requested) expect(eager, `${path} is loaded before Debug is opened`).toContain(path);
 
   // 「場面の確認を開く」 opens Debug on its own page; Debug leaves the player's storage as it was.
   const kept = await bothStorages(page);
@@ -116,10 +116,8 @@ test("Debug mode: the password in 設定 turns it on for this device, opens 場�
   await expect(start).toBeFocused();
   expect(await allStorage(page)).not.toHaveProperty([DEBUG_MODE_KEY]);
   await ops.closeDialog(settings);
-  // With it off, the production build ignores ?debug again (the dev server always offers Debug).
-  if (production) {
-    await page.goto("/?debug");
-    await expect(page.getByTestId("travel-menu")).toBeVisible();
-    await expect(page.getByTestId("debug-panel")).toHaveCount(0);
-  }
+  // With it off, the production build ignores ?debug again.
+  await page.goto("/?debug");
+  await expect(page.getByTestId("travel-menu")).toBeVisible();
+  await expect(page.getByTestId("debug-panel")).toHaveCount(0);
 });

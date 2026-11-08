@@ -85,7 +85,7 @@ describe("E2E specs", () => {
       expect(source(name), `${name} has tier.prod tests, which run against the production build`).not.toMatch(notInProduction);
   });
 
-  // Debug itself ships (behind Debug mode, debug-mode.spec.ts runs in gate and prod through the real switch);
+  // Debug itself ships (behind Debug mode; debug-mode.spec.ts runs in prod through the real switch);
   // its test hook and the dev server's shortcuts that the @debug tests use do not.
   it("keep Debug launchpad tests out of the gate and production tiers", () => {
     for (const name of specs) for (const test of specTests(source(name)))
