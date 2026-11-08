@@ -153,7 +153,12 @@ test("a Debug launch URL opens its scene, offers the same URL and explains a URL
   // A URL that does not fit the content says why and links back to the settings screen.
   await page.goto("/?debug&city=milano&scene=battle&target=gt_delhi_main_red_fort_battle");
   await expect(page.getByRole("alert")).toHaveText("「gt_delhi_main_red_fort_battle」はミラノの「バトル」にありません。");
-  await page.getByRole("link", { name: "場面の確認（設定画面）へ" }).click();
+  // The link loads the settings screen as a new page (a dev server serves it module by module):
+  // its panel is looked for once that page has loaded, as after page.goto.
+  await Promise.all([
+    page.waitForURL((address) => address.search === "?debug"),
+    page.getByRole("link", { name: "場面の確認（設定画面）へ" }).click(),
+  ]);
   await expect(page.getByTestId("debug-panel")).toBeVisible();
 });
 
@@ -265,10 +270,14 @@ test("rebuttal: the tap that ends it does not also skip the cut-in under the fin
 });
 
 // A story scene that starts under the finger (here the enemy's reaction after an answer's
-// feedback) does not take the second tap of the double tap that started it: taps are held for
-// a moment, so its first line is not read on before it is seen (lines appear whole here). After
-// a long explanation the player scrolls the reading area until the button shows at its bottom
-// edge and taps it there; the second tap falls on the reaction's line, where a tap reads on.
+// feedback) does not take the second tap of the double tap that started it, so its first line is
+// not read on before it is seen (lines appear whole here). Two guards stop that tap: the hold on
+// every tap when a story scene starts (html[data-tap-hold], checked right after the double tap
+// while the clock is held) and the moment in which a press on a control settles the scene
+// (useSceneTap). The revision check at the end fails only when both are gone; the hold alone is
+// also pinned by play.spec.ts (the double tap on a date's destination). After a long explanation
+// the player scrolls the reading area until the button shows at its bottom edge and taps it there;
+// the second tap falls on the reaction's line, where a tap reads on.
 test("battle: a double tap on 「敵の反応を見る」 opens the reaction and stays on its first line", { tag: tier.debug }, async ({ page }) => {
   const target = (await tapTargets(page)).battle;
   expect(target, "a battle that Debug opens in its default city").toBeDefined();
@@ -283,6 +292,7 @@ test("battle: a double tap on 「敵の反応を見る」 opens the reaction and
   await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
   await ops.doubleTap(page, reaction);
   await expect.poll(async () => (await debugGame(page))!.activeBattle?.phase).toBe("dialogue");
+  await expect(page.locator("html[data-tap-hold]"), "taps are held as the reaction starts").toHaveCount(1);
   await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
   await page.clock.resume();
   await ops.settled(page);
