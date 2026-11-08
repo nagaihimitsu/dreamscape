@@ -1,5 +1,8 @@
+import { mkdirSync, mkdtempSync, renameSync, rmSync, writeFileSync } from "node:fs";
+import os from "node:os";
+import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import { createRebuildScheduler, triggersRebuild } from "./content-watch";
+import { createRebuildScheduler, triggersRebuild, watchFolderTree } from "./content-watch";
 
 describe("content:watch", () => {
   it("rebuilds for content files, not for editor swap files, the tools' temporary files or dot folders", () => {
@@ -78,5 +81,61 @@ describe("content:watch", () => {
       await vi.advanceTimersByTimeAsync(1000); await scheduler.idle();
       expect(calls).toBe(2);
     } finally { vi.useRealTimers(); }
+  });
+
+  it("sees every save of a file on the real file system, also after it was replaced by a rename, and in folders added later", async () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), "dreamscape-watch-"));
+    const write = (file: string, text: string) => {
+      mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+      writeFileSync(path.join(root, file), text);
+    };
+    write("cities/milano.json", "{}\n");
+    mkdirSync(path.join(root, "journeys"));
+    const events: (string | null)[] = [];
+    const errors: Error[] = [];
+    const watcher = watchFolderTree(root, (file) => events.push(file), (error) => errors.push(error));
+    let markers = 0;
+    // A marker file written after the previous step: once it is reported, so is everything before it.
+    const settle = async () => {
+      const marker = `cities/settled-${++markers}`;
+      write(marker, "");
+      await vi.waitFor(() => expect(events).toContain(marker), { timeout: 5000, interval: 10 });
+      events.length = 0;
+    };
+    const expectRebuildFor = async (file: string, save: () => void) => {
+      await settle();
+      save();
+      await vi.waitFor(() => expect(events.filter((event) => event === null || triggersRebuild(event))).toContain(file), { timeout: 5000, interval: 10 });
+    };
+    // As city:bundle apply and journey:release --apply write: a temporary file next to the target, renamed over it.
+    const replace = (file: string, temporary: string, text: string) => {
+      write(temporary, text);
+      renameSync(path.join(root, temporary), path.join(root, file));
+    };
+    try {
+      await expectRebuildFor("cities/milano.json", () => write("cities/milano.json", "{\"a\":1}\n"));
+      await expectRebuildFor("cities/milano.json", () => replace("cities/milano.json", "cities/milano.json.city-bundle-1-2-ab", "{\"a\":2}\n"));
+      await expectRebuildFor("cities/milano.json", () => write("cities/milano.json", "{\"a\":3}\n"));
+      await expectRebuildFor("cities/milano.json", () => replace("cities/milano.json", "cities/milano.json.journey-release-1-2-ab", "{\"a\":4}\n"));
+      await expectRebuildFor("cities/milano.json", () => write("cities/milano.json", "{\"a\":5}\n"));
+      // An editor's safe write from a dot file, and sed -i's temporary name.
+      await expectRebuildFor("cities/milano.json", () => replace("cities/milano.json", "cities/.milano.json.tmp", "{\"a\":6}\n"));
+      await expectRebuildFor("cities/milano.json", () => replace("cities/milano.json", "cities/sedAb12Cd", "{\"a\":7}\n"));
+      await expectRebuildFor("cities/milano.json", () => write("cities/milano.json", "{\"a\":8}\n"));
+      // journey:new prepares a journey in a dot folder and renames it into place; saves inside are seen afterwards.
+      await expectRebuildFor("journeys/kyoto", () => {
+        write("journeys/.new-kyoto-1/cities/kyoto.json", "{}\n");
+        renameSync(path.join(root, "journeys/.new-kyoto-1"), path.join(root, "journeys/kyoto"));
+      });
+      await expectRebuildFor("journeys/kyoto/cities/kyoto.json", () => write("journeys/kyoto/cities/kyoto.json", "{\"b\":1}\n"));
+      // A folder removed and made again under the same name.
+      await expectRebuildFor("journeys/kyoto", () => rmSync(path.join(root, "journeys/kyoto"), { recursive: true }));
+      await expectRebuildFor("journeys/kyoto", () => write("journeys/kyoto/cities/kyoto.json", "{}\n"));
+      await expectRebuildFor("journeys/kyoto/cities/kyoto.json", () => write("journeys/kyoto/cities/kyoto.json", "{\"b\":2}\n"));
+      expect(errors).toEqual([]);
+    } finally {
+      watcher.close();
+      rmSync(root, { recursive: true, force: true });
+    }
   });
 });
