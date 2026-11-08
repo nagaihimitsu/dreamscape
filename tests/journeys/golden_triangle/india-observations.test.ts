@@ -3,9 +3,11 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { tourismClueSchema } from "../../../src/content/tourism-schemas";
 import { resolvePublicFile } from "../../../scripts/public-assets";
+import { getJourneyAuthoringProfile } from "../../../scripts/journey-authoring";
 
 const research = "authoring/journeys/golden_triangle/research/golden-triangle-20261103/source/data";
-const draft = JSON.parse(readFileSync("authoring/journeys/golden_triangle/drafts/observation-cards.json", "utf8"));
+const profile = getJourneyAuthoringProfile(process.cwd(), "golden_triangle");
+const draft = JSON.parse(readFileSync(profile.observationFile, "utf8"));
 const facts = JSON.parse(readFileSync(`${research}/TOURISM_FACTS.json`, "utf8")) as Array<{ id: string; sourceId: string; summaryJa: string; cityId: string; classification: string; useWithoutFurtherResearch: boolean }>;
 const sources = JSON.parse(readFileSync(`${research}/SOURCES.json`, "utf8")) as Array<{ id: string; url: string }>;
 
@@ -39,8 +41,9 @@ describe("India authoring observation cards", () => {
     }
   });
 
-  it("ties observed regions to the exact reviewed photos", () => {
+  it("ties observed regions to the exact reviewed photos in the manifest's image folder", () => {
     for (const entry of Object.values(draft.images) as Array<{ path: string; sha256: string }>) {
+      expect(entry.path.startsWith(`${profile.imageDirectory}/`), entry.path).toBe(true);
       expect(createHash("sha256").update(readFileSync(resolvePublicFile(process.cwd(), entry.path))).digest("hex")).toBe(entry.sha256);
     }
   });

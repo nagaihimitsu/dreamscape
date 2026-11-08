@@ -6,6 +6,7 @@ import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import { tourismClueSchema, type ObservationRegion } from "../../../src/content/tourism-schemas";
 import { resolvePublicFile } from "../../public-assets";
+import { getJourneyAuthoringProfile } from "../../journey-authoring";
 
 interface Fact {
   id: string; placeId: string; cityId: string; titleJa: string; summaryJa: string;
@@ -58,7 +59,10 @@ const followup: Record<string, { publisher: string; title: string; url: string; 
   fact_jaipur_city_palace_02: { publisher: "Maharaja Sawai Man Singh II Museum Trust", title: "The City Palace Jaipur: Museum brochure", url: "https://citypalace.org/pdfs/Brochure.pdf", descriptionJa: "プリタム・ニワス中庭には、装飾を施した四つの門がある。この写真には写っていない。" },
 };
 const research = "authoring/journeys/golden_triangle/research/golden-triangle-20261103/source/data";
-const output = "authoring/journeys/golden_triangle/drafts/observation-cards.json";
+// The cards file and the image folder are the ones the manifest names (authoring.observationFile and
+// authoring.imageDirectory); journey:scaffold reads the same file and requires every card image in that folder.
+const profile = getJourneyAuthoringProfile(process.cwd(), "golden_triangle");
+const output = profile.observationFile;
 const facts: Fact[] = JSON.parse(await readFile(`${research}/TOURISM_FACTS.json`, "utf8"));
 const sources: Source[] = JSON.parse(await readFile(`${research}/SOURCES.json`, "utf8"));
 const factById = new Map(facts.map((fact) => [fact.id, fact]));
@@ -72,7 +76,7 @@ const clues = await Promise.all(selected.map(async ({ id, region, visualEvidence
   const source = sourceById.get(fact.sourceId);
   if (!source || source.url !== fact.sourceUrl) throw new Error(`Missing or inconsistent source: ${id}`);
   if (Boolean(region) !== Boolean(visualEvidence)) throw new Error(`Missing visual evidence: ${id}`);
-  const imagePath = `assets/tourism/india/${fact.placeId}.jpg`;
+  const imagePath = `${profile.imageDirectory}/${fact.placeId}.jpg`;
   images[fact.placeId] = { path: imagePath, sha256: createHash("sha256").update(await readFile(resolvePublicFile(process.cwd(), imagePath))).digest("hex") };
   const clueId = `gt_obs_${id}`;
   const supplement = followup[id];
