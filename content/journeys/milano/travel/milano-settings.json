@@ -3,6 +3,6 @@
   "hotelPlaceId": "p_hotel",
   "lodgingCost": 10,
   "retryMinutes": 15,
-  "storyBackgroundAssetId": "milano_cafe",
+  "storyBackgroundId": "milano_cafe",
   "notes": "ゲーム内調整値。予算と宿泊費は二人分。宿泊は予約済み料金への自己負担という設定で実際の宿泊料金ではない。ホテルはコルドゥージオ付近の架空の宿。"
 }

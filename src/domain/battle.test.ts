@@ -1,7 +1,7 @@
 import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { firstCorrect, playBattleToResult } from "../dev/scenario-builders";
 import { describe, expect, it } from "vitest";
-import { recordFinishedEpisodes } from "./chapter";
+import { finalizeBattleProgress } from "./chapter";
 import {
   battles,
   battleQuizzes,
@@ -235,8 +235,9 @@ describe("three-round quiz battle", () => {
     expect(startDate(state, "milano_cafe_01")).toBe(state);
     expect(setNames(state, "変更", "変更")).toBe(state);
     expect(leaveBattle(state, state.revision)).toBe(state);
-    const noChapter = startBattle(createGame(), battleId());
-    expect(recordFinishedEpisodes(noChapter)).toBe(noChapter);
+    // Rewards are recorded only from a battle's result, never while it is still running.
+    const running = startBattle(createGame(), battleId());
+    expect(finalizeBattleProgress(running)).toBe(running);
   });
 });
 

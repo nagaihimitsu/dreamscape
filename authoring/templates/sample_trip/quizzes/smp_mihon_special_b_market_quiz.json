@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "id": "smp_mihon_special_b_market_quiz",
+  "landmarkId": "mihon_market",
+  "englishLevel": "A2",
+  "questions": [
+    {
+      "id": "smp_mihon_market_b_q1",
+      "questionEn": "How does the morning market start?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The tower bell rings."
+        },
+        {
+          "id": "B",
+          "textEn": "The sellers clap their hands."
+        },
+        {
+          "id": "C",
+          "textEn": "A radio calls the time."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "sellers",
+          "meaning": "売り手"
+        },
+        {
+          "word": "clap",
+          "meaning": "手をたたく"
+        }
+      ],
+      "hintJa": "塔の鐘は時刻を知らせない。",
+      "correctExplanationJa": "店主たちが手をたたいた合図で、朝市は一斉に始まる。",
+      "incorrectExplanationJa": "塔の鐘は時刻の合図ではない。朝市は店主たちが手をたたいて始める。",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の言い伝え：朝市は、店主たちが手をたたいた合図で一斉に始まる。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "smp_mihon_market_b_q2",
+      "questionEn": "How does the baker time her bread?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "With the tower clock."
+        },
+        {
+          "id": "B",
+          "textEn": "By asking her neighbor."
+        },
+        {
+          "id": "C",
+          "textEn": "With a sand timer."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "baker",
+          "meaning": "パン屋"
+        },
+        {
+          "word": "sand",
+          "meaning": "砂"
+        },
+        {
+          "word": "timer",
+          "meaning": "タイマー"
+        }
+      ],
+      "hintJa": "塔の時計は止まっている。",
+      "correctExplanationJa": "パン屋は砂時計で焼き時間を計っている。",
+      "incorrectExplanationJa": "塔の時計は止まっているので使えない。パン屋は砂時計で計る。",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の言い伝え：パン屋は焼き時間を砂時計で計る。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "smp_mihon_market_b_q3",
+      "questionEn": "So, do people here keep time?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Yes, each in their own way."
+        },
+        {
+          "id": "B",
+          "textEn": "No, nobody does."
+        },
+        {
+          "id": "C",
+          "textEn": "Only the mayor does."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "keep time",
+          "meaning": "時間を守る"
+        }
+      ],
+      "hintJa": "朝市の合図とパンの焼き時間を思い出す。",
+      "correctExplanationJa": "手の合図や砂時計など、それぞれのやり方で時間を守っている。",
+      "incorrectExplanationJa": "誰も守らないわけではない。朝市の合図や砂時計のように、それぞれのやり方で守っている。",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の言い伝え：街の人は塔の時計の代わりに、手の合図や砂時計で時間を計る。"
+        }
+      ],
+      "difficulty": "easy"
+    }
+  ]
+}

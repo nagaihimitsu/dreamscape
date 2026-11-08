@@ -3,19 +3,19 @@
   "entries": [
     {
       "battleId": "milano_last_supper_b01",
-      "storyId": "battles/milano_last_supper_b_rebuttal"
+      "storyId": "battles/milano_special_b_last_supper_rebuttal"
     },
     {
       "battleId": "milano_last_supper_c01",
-      "storyId": "battles/milano_last_supper_c_rebuttal"
+      "storyId": "battles/milano_special_c_last_supper_rebuttal"
     },
     {
       "battleId": "milano_la_scala_b01",
-      "storyId": "battles/sound_scala_rebuttal"
+      "storyId": "battles/milano_special_b_la_scala_rebuttal"
     },
     {
       "battleId": "milano_brera_c01",
-      "storyId": "battles/sound_brera_rebuttal"
+      "storyId": "battles/milano_special_c_brera_rebuttal"
     }
   ]
 }

@@ -1,0 +1,3270 @@
+{
+  "schemaVersion": 2,
+  "cityId": "tashkent",
+  "sourceRefs": {
+    "fare": {
+      "publisher": "ATTO",
+      "title": "ATTO for passengers — 2026-10-01 fare change",
+      "url": "https://atto.uz/en/news/atto-for-passengers",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "2026年10月1日からタシュケントの地下鉄・市内バスの電子決済は一乗車一人2500スム。現金で発行するQR券は3000スム。"
+    },
+    "fare_policy": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "二人分の公共交通会計",
+      "url": "https://gov.uz/oz/mintrans/news/view/225119",
+      "checkedAt": "2026-11-04",
+      "claimType": "hypothesis",
+      "claimJa": "ゲームでは二人とも通常の銀行カード払いとして一乗車5000スムを計上。専用交通カードの時間内乗換割引は、カード・有効時間を管理しないため適用しない。"
+    },
+    "metro": {
+      "publisher": "Tashkent metro route map (independent)",
+      "title": "Central metro lines and interchange stations",
+      "url": "https://tashmetro.botirbaev.uz/schema",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "中心部ではPaxtakor–Alisher Navoiy、Amir Temur Xiyoboni–Yunus Rajabiy、Oybek–Ming Orikが乗換駅として掲載される。"
+    },
+    "metro_access": {
+      "publisher": "MetroTashkent (independent guide)",
+      "title": "Tashkent attractions near the metro",
+      "url": "https://metrotashkent.com/tashkent-attractions-near-the-metro/",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "Chorsu、アミール・ティムール広場、独立広場、日本庭園などについて地下鉄駅からの徒歩アクセスを案内する。公園の最寄り駅の記述は別資料と不一致のため採用しない。"
+    },
+    "streets": {
+      "publisher": "OpenStreetMap contributors",
+      "title": "Tashkent street map",
+      "url": "https://www.openstreetmap.org/#map=14/41.3210/69.2590",
+      "checkedAt": "2026-11-04",
+      "claimType": "hypothesis",
+      "claimJa": "都市内の街路・水路・公園の配置を参照。代表点や編集用の接続は、調査済み入口・歩道・道路閉鎖を保証するものではない。"
+    },
+    "taxi_model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "Taxi party budget and access model",
+      "url": "https://www.openstreetmap.org/#map=14/41.3210/69.2590",
+      "checkedAt": "2026-11-04",
+      "claimType": "hypothesis",
+      "claimJa": "タクシーは街路回廊のゲーム用乗車分数に乗降待ち5分を加えた暫定モデル。実車の所要時間ではない。歩行者空間は周辺道路で乗降する。料金は配車アプリの料金表の式による（別の出典）。"
+    },
+    "public_model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "Public transport access and waiting model",
+      "url": "https://tashmetro.botirbaev.uz/schema",
+      "checkedAt": "2026-11-04",
+      "claimType": "hypothesis",
+      "claimJa": "運行路線と乗換駅は出典で確認し、アクセス徒歩・乗車・待機時間はゲーム用に設定。地下鉄は改札待ち5分。徒歩より遅い選択や同じ乗降拠点への迂回は不採用とする。"
+    },
+    "yandex_start": {
+      "publisher": "Yandex Go",
+      "title": "Цена на такси, номер телефона: тариф Старт, Ташкент",
+      "url": "https://taxi.yandex.uz/ru_uz/tashkent/tariff/start/",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "タシュケントの配車アプリの「スタート」料金の上限（割増を含まない）：最低4,600スム（1km・3分を含む）、市内1kmごと1,050スム以下、1分ごと500スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+    },
+    "taxi_fare_model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "タクシー料金の計算（配車アプリの料金表の式）",
+      "url": "https://router.project-osrm.org/table/v1/driving/",
+      "checkedAt": "2026-11-07",
+      "claimType": "hypothesis",
+      "claimJa": "料金＝最低4,600スム＋1kmごと1,050スム×（道のり−1km）＋1分ごと500スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
+    }
+  },
+  "decisions": [
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Amir Temur Xiyoboni。駅への徒歩を含むゲーム推定49分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Kosmonavtlar。駅への徒歩を含むゲーム推定53分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Mustaqillik Maydoni。駅への徒歩を含むゲーム推定48分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Milliy Bog。駅への徒歩を含むゲーム推定53分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Milliy Bog。駅への徒歩を含むゲーム推定58分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Amir Temur Xiyoboni。駅への徒歩を含むゲーム推定52分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Amir Temur Xiyoboni。駅への徒歩を含むゲーム推定28分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Bodomzor。駅への徒歩を含むゲーム推定57分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Bodomzor。駅への徒歩を含むゲーム推定49分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Kosmonavtlar。駅への徒歩を含むゲーム推定32分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Mustaqillik Maydoni。駅への徒歩を含むゲーム推定27分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Milliy Bog。駅への徒歩を含むゲーム推定32分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Milliy Bog。駅への徒歩を含むゲーム推定37分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Amir Temur Xiyoboni。駅への徒歩を含むゲーム推定31分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Amir Temur Xiyoboni。駅への徒歩を含むゲーム推定32分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Bodomzor。駅への徒歩を含むゲーム推定61分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Bodomzor。駅への徒歩を含むゲーム推定53分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Kosmonavtlar。駅への徒歩を含むゲーム推定36分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Mustaqillik Maydoni。駅への徒歩を含むゲーム推定31分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Milliy Bog。駅への徒歩を含むゲーム推定41分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Chorsu→Amir Temur Xiyoboni。駅への徒歩を含むゲーム推定35分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Amir Temur Xiyoboni→Chorsu。駅への徒歩を含むゲーム推定49分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Amir Temur Xiyoboni→Chorsu。駅への徒歩を含むゲーム推定28分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Amir Temur Xiyoboni→Chorsu。駅への徒歩を含むゲーム推定32分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Amir Temur Xiyoboni→Bodomzor。駅への徒歩を含むゲーム推定40分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Amir Temur Xiyoboni→Bodomzor。駅への徒歩を含むゲーム推定32分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Amir Temur Xiyoboni→Mustaqillik Maydoni。駅への徒歩を含むゲーム推定16分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Amir Temur Xiyoboni→Milliy Bog。駅への徒歩を含むゲーム推定27分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Amir Temur Xiyoboni→Milliy Bog。駅への徒歩を含むゲーム推定32分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Bodomzor→Chorsu。駅への徒歩を含むゲーム推定57分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Bodomzor→Chorsu。駅への徒歩を含むゲーム推定61分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Bodomzor→Amir Temur Xiyoboni。駅への徒歩を含むゲーム推定40分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Bodomzor→Milliy Bog。駅への徒歩を含むゲーム推定56分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Bodomzor→Milliy Bog。駅への徒歩を含むゲーム推定61分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Bodomzor→Amir Temur Xiyoboni。駅への徒歩を含むゲーム推定43分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Bodomzor→Chorsu。駅への徒歩を含むゲーム推定49分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Bodomzor→Chorsu。駅への徒歩を含むゲーム推定53分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Bodomzor→Amir Temur Xiyoboni。駅への徒歩を含むゲーム推定32分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Bodomzor→Kosmonavtlar。駅への徒歩を含むゲーム推定47分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Bodomzor→Mustaqillik Maydoni。駅への徒歩を含むゲーム推定37分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Bodomzor→Milliy Bog。駅への徒歩を含むゲーム推定48分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Bodomzor→Milliy Bog。駅への徒歩を含むゲーム推定53分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_japanese_garden",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Bodomzor→Amir Temur Xiyoboni。駅への徒歩を含むゲーム推定35分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Kosmonavtlar→Chorsu。駅への徒歩を含むゲーム推定53分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Kosmonavtlar→Chorsu。駅への徒歩を含むゲーム推定32分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Kosmonavtlar→Chorsu。駅への徒歩を含むゲーム推定36分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Kosmonavtlar→Bodomzor。駅への徒歩を含むゲーム推定47分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Kosmonavtlar→Milliy Bog。駅への徒歩を含むゲーム推定41分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Kosmonavtlar→Milliy Bog。駅への徒歩を含むゲーム推定46分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Mustaqillik Maydoni→Chorsu。駅への徒歩を含むゲーム推定48分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Mustaqillik Maydoni→Chorsu。駅への徒歩を含むゲーム推定27分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Mustaqillik Maydoni→Chorsu。駅への徒歩を含むゲーム推定31分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Mustaqillik Maydoni→Amir Temur Xiyoboni。駅への徒歩を含むゲーム推定16分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Mustaqillik Maydoni→Bodomzor。駅への徒歩を含むゲーム推定37分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Mustaqillik Maydoni→Milliy Bog。駅への徒歩を含むゲーム推定26分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Mustaqillik Maydoni→Milliy Bog。駅への徒歩を含むゲーム推定31分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Mustaqillik Maydoni→Amir Temur Xiyoboni。駅への徒歩を含むゲーム推定19分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Milliy Bog→Chorsu。駅への徒歩を含むゲーム推定53分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Milliy Bog→Chorsu。駅への徒歩を含むゲーム推定32分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Milliy Bog→Amir Temur Xiyoboni。駅への徒歩を含むゲーム推定27分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Milliy Bog→Bodomzor。駅への徒歩を含むゲーム推定56分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Milliy Bog→Bodomzor。駅への徒歩を含むゲーム推定48分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Milliy Bog→Kosmonavtlar。駅への徒歩を含むゲーム推定41分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Milliy Bog→Mustaqillik Maydoni。駅への徒歩を含むゲーム推定26分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Milliy Bog→Amir Temur Xiyoboni。駅への徒歩を含むゲーム推定30分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Milliy Bog→Chorsu。駅への徒歩を含むゲーム推定58分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Milliy Bog→Chorsu。駅への徒歩を含むゲーム推定37分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Milliy Bog→Chorsu。駅への徒歩を含むゲーム推定41分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Milliy Bog→Amir Temur Xiyoboni。駅への徒歩を含むゲーム推定32分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Milliy Bog→Bodomzor。駅への徒歩を含むゲーム推定61分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Milliy Bog→Bodomzor。駅への徒歩を含むゲーム推定53分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Milliy Bog→Kosmonavtlar。駅への徒歩を含むゲーム推定46分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Milliy Bog→Mustaqillik Maydoni。駅への徒歩を含むゲーム推定31分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_park",
+      "toPlaceId": "tashkent_hotel_hub",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Milliy Bog→Amir Temur Xiyoboni。駅への徒歩を含むゲーム推定35分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_khast_imam",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Amir Temur Xiyoboni→Chorsu。駅への徒歩を含むゲーム推定52分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Amir Temur Xiyoboni→Chorsu。駅への徒歩を含むゲーム推定31分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_kukeldash",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Amir Temur Xiyoboni→Chorsu。駅への徒歩を含むゲーム推定35分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_anhor_canal",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Amir Temur Xiyoboni→Bodomzor。駅への徒歩を含むゲーム推定43分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_japanese_garden",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Amir Temur Xiyoboni→Bodomzor。駅への徒歩を含むゲーム推定35分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "地下鉄の運行自体は確認済み。同じアクセス駅になるか、駅までの徒歩・待機を加えると登録徒歩より遅くなるためこの方向では候補から省く。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_independence_square",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Amir Temur Xiyoboni→Mustaqillik Maydoni。駅への徒歩を含むゲーム推定19分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_abulkasym",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Amir Temur Xiyoboni→Milliy Bog。駅への徒歩を含むゲーム推定30分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "公道側の乗降を使う二人一台のゲーム推定。料金と時間は実車の見積りではない。",
+      "sourceRefs": [
+        "taxi_model",
+        "streets",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "tashkent_hotel_hub",
+      "toPlaceId": "tashkent_navoi_park",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "Amir Temur Xiyoboni→Milliy Bog。駅への徒歩を含むゲーム推定35分、二人5000スム。",
+      "sourceRefs": [
+        "metro",
+        "metro_access",
+        "fare",
+        "fare_policy",
+        "public_model"
+      ]
+    }
+  ]
+}

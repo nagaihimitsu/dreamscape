@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 2,
+  "cityId": "mihon",
+  "sourceRefs": {
+    "smp_bicycle_model": {
+      "publisher": "Dreamscape 見本の旅（架空）",
+      "title": "見本の街の設定（架空）",
+      "url": "https://example.com/dreamscape-sample",
+      "checkedAt": "2026-11-07",
+      "claimType": "hypothesis",
+      "claimJa": "見本用の架空の自転車の所要時間（ゲーム用の推定）。宿で借りた自転車で走る。"
+    }
+  },
+  "decisions": [
+    {
+      "fromPlaceId": "mihon_hotel",
+      "toPlaceId": "mihon_clock_tower",
+      "mode": "rental_bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "見本用：宿で借りた自転車なら歩くより少し早い（架空のゲーム用の推定）。",
+      "sourceRefs": [
+        "smp_bicycle_model"
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_hotel",
+      "toPlaceId": "mihon_market",
+      "mode": "rental_bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "見本用：宿で借りた自転車なら歩くより少し早い（架空のゲーム用の推定）。",
+      "sourceRefs": [
+        "smp_bicycle_model"
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_hotel",
+      "toPlaceId": "mihon_library",
+      "mode": "rental_bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "見本用：宿で借りた自転車なら歩くより少し早い（架空のゲーム用の推定）。",
+      "sourceRefs": [
+        "smp_bicycle_model"
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_clock_tower",
+      "toPlaceId": "mihon_hotel",
+      "mode": "rental_bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "見本用：宿で借りた自転車なら歩くより少し早い（架空のゲーム用の推定）。",
+      "sourceRefs": [
+        "smp_bicycle_model"
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_clock_tower",
+      "toPlaceId": "mihon_market",
+      "mode": "rental_bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "見本用：宿で借りた自転車なら歩くより少し早い（架空のゲーム用の推定）。",
+      "sourceRefs": [
+        "smp_bicycle_model"
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_clock_tower",
+      "toPlaceId": "mihon_library",
+      "mode": "rental_bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "見本用：宿で借りた自転車なら歩くより少し早い（架空のゲーム用の推定）。",
+      "sourceRefs": [
+        "smp_bicycle_model"
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_market",
+      "toPlaceId": "mihon_hotel",
+      "mode": "rental_bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "見本用：宿で借りた自転車なら歩くより少し早い（架空のゲーム用の推定）。",
+      "sourceRefs": [
+        "smp_bicycle_model"
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_market",
+      "toPlaceId": "mihon_clock_tower",
+      "mode": "rental_bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "見本用：宿で借りた自転車なら歩くより少し早い（架空のゲーム用の推定）。",
+      "sourceRefs": [
+        "smp_bicycle_model"
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_market",
+      "toPlaceId": "mihon_library",
+      "mode": "rental_bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "見本用：宿で借りた自転車なら歩くより少し早い（架空のゲーム用の推定）。",
+      "sourceRefs": [
+        "smp_bicycle_model"
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_library",
+      "toPlaceId": "mihon_hotel",
+      "mode": "rental_bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "見本用：宿で借りた自転車なら歩くより少し早い（架空のゲーム用の推定）。",
+      "sourceRefs": [
+        "smp_bicycle_model"
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_library",
+      "toPlaceId": "mihon_clock_tower",
+      "mode": "rental_bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "見本用：宿で借りた自転車なら歩くより少し早い（架空のゲーム用の推定）。",
+      "sourceRefs": [
+        "smp_bicycle_model"
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_library",
+      "toPlaceId": "mihon_market",
+      "mode": "rental_bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "見本用：宿で借りた自転車なら歩くより少し早い（架空のゲーム用の推定）。",
+      "sourceRefs": [
+        "smp_bicycle_model"
+      ]
+    }
+  ]
+}

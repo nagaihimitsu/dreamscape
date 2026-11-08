@@ -10,7 +10,7 @@ function visit(landmarkId: string): GameState {
   const state = { ...createGame(), visitedLandmarkIds: [landmarkId],
     completedEpisodeIds: ["milano_duomo_episode", "milano_galleria_episode", "milano_last_supper_episode", "milano_castello_episode"],
     battleRecords: ["milano_galleria_01", "milano_la_scala_b01", "milano_brera_c01"].map(battleRecord),
-    inventory: { blue_pick: "held" as const, galleria_ticket: "held" as const, galleria_souvenir: "held" as const },
+    inventory: { blue_pick: "held" as const, galleria_ticket: "held" as const },
   };
   const result = openTourism(state, landmarkId);
   expect(result.activeTourism?.phase).toBe("exploring");
@@ -19,7 +19,7 @@ function visit(landmarkId: string): GameState {
 
 describe("automatic place encounters", () => {
   // Milan's encounters, met in a Milan game (other journeys' encounters belong to their own cities).
-  it.each(encounters.encounters.filter((event) => event.cityId === "milano" && event.availability !== "dormant").map((event) => [event.id, event.landmarkId]))
+  it.each(encounters.encounters.filter((event) => event.cityId === "milano").map((event) => [event.id, event.landmarkId]))
     ("introduces %s when its location and existing conditions are met", (id, landmarkId) => {
       const state = visit(landmarkId);
       expect(getTourismEncounterAvailability(state, id).available).toBe(true);
@@ -27,12 +27,6 @@ describe("automatic place encounters", () => {
       expect(next.activeEncounter?.encounterId).toBe(id);
       expect(next.activeEncounter?.returnTourism?.encounterIds).toContain(id);
     });
-
-  it("never introduces the three dormant encounters", () => {
-    const state = visit("galleria_vittorio_emanuele_ii");
-    for (const event of encounters.encounters.filter((entry) => entry.availability === "dormant"))
-      expect(getTourismEncounterAvailability(state, event.id).available).toBe(false);
-  });
 
   it("runs newly unlocked encounters in sequence without repeating deferred choices", () => {
     let state = visit("galleria_vittorio_emanuele_ii");

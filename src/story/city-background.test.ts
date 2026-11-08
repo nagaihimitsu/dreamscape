@@ -25,12 +25,12 @@ VAR heroine_name = ""
 
 it("starts a city's scenes with its story background, else with the place's (or the hotel's) background", () => {
   // Milan sets one background for all its scenes in its travel settings.
-  expect(getCityContent("milano").travelSettings.storyBackgroundAssetId).toBe("milano_cafe");
+  expect(getCityContent("milano").travelSettings.storyBackgroundId).toBe("milano_cafe");
   expect(getCityStoryBackground("milano", "p_duomo")).toBe("milano_cafe");
   const { travel, travelSettings } = getCityContent("delhi");
-  expect(travelSettings.storyBackgroundAssetId).toBeUndefined();
+  expect(travelSettings.storyBackgroundId).toBeUndefined();
   const place = travel.places.find((item) => item.id !== travelSettings.hotelPlaceId)!;
   const hotel = travel.places.find((item) => item.id === travelSettings.hotelPlaceId)!;
-  expect(getCityStoryBackground("delhi", place.id)).toBe(place.backgroundAssetId);
-  expect(getCityStoryBackground("delhi", "unknown_place")).toBe(hotel.backgroundAssetId);
+  expect(getCityStoryBackground("delhi", place.id)).toBe(place.backgroundId);
+  expect(getCityStoryBackground("delhi", "unknown_place")).toBe(hotel.backgroundId);
 });

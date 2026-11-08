@@ -12,7 +12,7 @@ const json = (value: unknown) => JSON.stringify(value);
 const journeyFolder = (id: string) => `content/journeys/${id}`;
 const manifest = (id: string, order: number, status: "available" | "preparing", cityId: string) => json({
   schemaVersion: 1, order, id, nameJa: "テスト編", status, cities: [{ id: cityId, nameJa: "テスト市" }],
-  currency: { code: "EUR", symbol: "€", unitJa: "ユーロ", unit: "whole" }, initialBudget: 100, intercityModes: [],
+  currency: { code: "EUR", symbol: "€", unitJa: "ユーロ", unit: "whole" }, initialBudget: 100, intercityModes: [], transportModes: [],
 });
 const city = (id: string) => json({
   schemaVersion: 1, id, countryCode: "IT", nameJa: "テスト市", themeJa: "旅の練習",
@@ -71,9 +71,9 @@ describe("validateContent on sources in memory", () => {
   });
 
   it("rejects a reference to another journey's content, naming both files", () => {
-    const tree = { ...files(), [`${journeyFolder("trip_b")}/travel/b_city-settings.json`]: json({ storyBackgroundAssetId: "trip_a_bg" }) };
+    const tree = { ...files(), [`${journeyFolder("trip_b")}/travel/b_city-settings.json`]: json({ storyBackgroundId: "trip_a_bg" }) };
     expect(() => validateContent(load(tree))).toThrow(
-      'Reference to another layer: content/journeys/trip_b/travel/b_city-settings.json storyBackgroundAssetId "trip_a_bg" is the background defined in content/journeys/trip_a/romance/presentation.json; a journey folder may only refer to its own content and the core layer.',
+      'Reference to another layer: content/journeys/trip_b/travel/b_city-settings.json storyBackgroundId "trip_a_bg" is the background defined in content/journeys/trip_a/romance/presentation.json; a journey folder may only refer to its own content and the core layer.',
     );
   });
 
@@ -134,6 +134,22 @@ describe("validateContent on sources in memory", () => {
     expect(() => validateContent(load(withSources("trip_b", "b_city")))).toThrow(NO_TOURISM);
   });
 
+  it("requires a quiz file to be named after its quiz ID (<id>.json, an example quiz <id>.example.json)", () => {
+    const quizzes = (entries: Record<string, unknown>) => ({ ...files(),
+      ...Object.fromEntries(Object.entries(entries).map(([file, data]) => [`${journeyFolder("trip_b")}/quizzes/${file}`, json(data)])) });
+    expect(() => validateContent(load(quizzes({ "tb_main_tower_B1.json": { id: "tb_main_tower_quiz" } })))).toThrow(
+      'クイズのファイル名がクイズIDと違います（Quiz file name differs from its id）: content/journeys/trip_b/quizzes/tb_main_tower_B1.json のIDは ' +
+      '"tb_main_tower_quiz" です。ファイル名を tb_main_tower_quiz.json にしてください（クイズのファイル名は <ID>.json）。',
+    );
+    expect(() => validateContent(load(quizzes({ "tb_tower.example.json": { id: "tb_tower_example_quiz" } })))).toThrow(
+      'クイズのファイル名がクイズIDと違います（Quiz file name differs from its id）: content/journeys/trip_b/quizzes/tb_tower.example.json のIDは ' +
+      '"tb_tower_example_quiz" です。ファイル名を tb_tower_example_quiz.example.json にしてください（例のクイズは <ID>.example.json）。',
+    );
+    // Named after their IDs, the quizzes pass this check (and stop at the missing tourism catalog); an ID that is not a string is left to the schema.
+    expect(() => validateContent(load(quizzes({ "tb_main_tower_quiz.json": { id: "tb_main_tower_quiz" },
+      "tb_tower_example_quiz.example.json": { id: "tb_tower_example_quiz" }, "broken.json": { id: 7 } })))).toThrow(NO_TOURISM);
+  });
+
   it("rejects a city file whose travel file is missing, when the content is loaded", () => {
     const tree = files();
     delete tree[`${journeyFolder("trip_b")}/travel/b_city.json`];
@@ -156,7 +172,7 @@ describe("one journey layer with the core layer (selectJourneys)", () => {
   });
 
   it("drops a cross-journey reference together with the journey it points to", () => {
-    const tree = { ...files(), [`${journeyFolder("trip_b")}/travel/b_city-settings.json`]: json({ storyBackgroundAssetId: "trip_a_bg" }) };
+    const tree = { ...files(), [`${journeyFolder("trip_b")}/travel/b_city-settings.json`]: json({ storyBackgroundId: "trip_a_bg" }) };
     expect(() => validateContent(load(tree))).toThrow("Reference to another layer");
     // trip_b alone: the background is just unknown, which the later checks report.
     expect(() => validateContent(selectJourneys(load(tree), ["trip_b"]))).toThrow(NO_TOURISM);

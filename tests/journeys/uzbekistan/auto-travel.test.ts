@@ -70,6 +70,7 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
       // A memory from the first city (whether the copied date gives one depends on the template city).
       const memories = index === 0 ? [...new Set([...state.memories, memory])] : state.memories;
       state = validateGameState({ ...state, memories, completedEncounterIds: [...state.completedEncounterIds, `${cityId}_encounter`],
+        seenEncounterIds: [...state.seenEncounterIds, `${cityId}_encounter`],
         inventory: { ...state.inventory, [`${cityId}_item`]: "held" },
         travel: { ...state.travel, day: 3, calendar: { journeyDay: 3 + index * 2, cityStartJourneyDay: 1 + index * 2, startWeekday: 0 } } });
       expect(state.claimedRewardIds.some((id) => id.startsWith("milano"))).toBe(false);
@@ -111,7 +112,7 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
       expect(state.inventory[`${cityId}_item`]).toBe("left_behind");
       for (const field of ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark",
         "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds",
-        "battleRecords", "playedDateIds", "completedEncounterIds"] as const) expect(state[field], field).toEqual(before[field]);
+        "battleRecords", "playedDateIds", "completedEncounterIds", "seenEncounterIds", "itemUses"] as const) expect(state[field], field).toEqual(before[field]);
       expect(advanceCompletedJourneyCity(state, lastStep.revision)).toBe(state);
       expect(advanceCompletedJourneyCity(state, state.revision)).toBe(state);
       // A competing tab's newer snapshot blocks this departure's save.

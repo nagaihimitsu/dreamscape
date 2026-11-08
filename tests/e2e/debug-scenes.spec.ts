@@ -89,7 +89,7 @@ function itemEncounter(page: Page): Promise<ItemEncounter | undefined> {
 }
 
 // AGENTS.md 「英語は…道中交流で主人公の返答・行動を選ぶ3択に用いる」「道中の品物は所属都市を登録し…」.
-test("an encounter answered in English gives its item, and the scene ends back at the place", { tag: tier.debug }, async ({ page }) => {
+test("an encounter answered in English gives its item, and the scene ends back in its landmark's observation", { tag: tier.debug }, async ({ page }) => {
   const encounter = await itemEncounter(page);
   expect(encounter, "an encounter with an item that Debug can open").toBeDefined();
   // A won reward needs the saved ticket below its chance: the positive ticket (0) always wins.
@@ -100,9 +100,11 @@ test("an encounter answered in English gives its item, and the scene ends back a
   expect(done.inventory[encounter!.itemId]).toBe("held");
   // The header lists it among the items held in this city.
   await expect(page.getByRole("group", { name: "所持アイテム" }).getByRole("button", { name: `${encounter!.itemName}の詳細` })).toBeVisible();
-  // Encounters waiting at the same place may follow; the scene ends back at the place or the travel menu.
-  await playUntil(page, (state) => !state.activeEncounter, { source: debugGame, pick });
-  await expect(page.getByTestId("observation-viewport").or(page.getByTestId("travel-menu"))).toBeVisible();
+  // Debug meets the encounter in its landmark's observation, as play does (encounters start nowhere else);
+  // encounters waiting in the same observation may follow, and the scene ends back in that observation.
+  const after = await playUntil(page, (state) => !state.activeEncounter, { source: debugGame, pick });
+  expect(after.activeTourism, "the observation the encounter started from").not.toBeNull();
+  await expect(page.getByTestId("observation-viewport")).toBeVisible();
   await ops.backToDebugSettings(page);
 });
 

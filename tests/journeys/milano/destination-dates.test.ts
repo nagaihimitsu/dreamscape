@@ -124,10 +124,11 @@ describe("real-place optional dates", () => {
       const resolutions: NonNullable<GameState["activeDate"]>["resolvedChoices"] = [];
       const after = playDate(before, id, [first, second], [], resolutions);
       const memories = after.memories.filter((memory) => !before.memories.includes(memory));
-      const storyStem = dates.find((date) => date.id === id)!.storyId.split("/").at(-1)!;
+      // The second choice's effects keep their IDs (`sound_<date>_2_<n>`, named in the Ink's effect tags): the v14 renames moved the stories only.
+      const effectStem = `sound_${id.replace(/^milano_/u, "")}`;
       const chosenEffects = [
         effects.find((effect) => effect.id === `common_date_first_${firstProfiles[index][first]}`)!,
-        effects.find((effect) => effect.id === `${storyStem}_2_${second + 1}`)!,
+        effects.find((effect) => effect.id === `${effectStem}_2_${second + 1}`)!,
       ];
       expect(chosenEffects.every(Boolean)).toBe(true);
       // Each destination date records one shared memory, after the second choice.

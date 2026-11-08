@@ -7,7 +7,7 @@
       "nameJa": "民族学センター",
       "nameEn": "Traditional Arts and Ethnology Centre",
       "descriptionJa": "ラオスの民族文化を扱う博物館。展示替えなどで休館する場合がある。",
-      "backgroundAssetId": "lpb_bg_ethnology",
+      "backgroundId": "lpb_bg_ethnology",
       "facts": [
         {
           "publisher": "Wikivoyage / OpenStreetMap",
@@ -25,7 +25,7 @@
       "nameJa": "ヘウアン・チャン文化遺産の家",
       "nameEn": "Heuan Chan Heritage House",
       "descriptionJa": "伝統的な家屋や手仕事を紹介する施設。",
-      "backgroundAssetId": "lpb_bg_heuan_chan",
+      "backgroundId": "lpb_bg_heuan_chan",
       "facts": [
         {
           "publisher": "Wikivoyage / OpenStreetMap",
@@ -43,7 +43,7 @@
       "nameJa": "ワット・セーン",
       "nameEn": "Wat Sensoukharam",
       "descriptionJa": "旧市街の通り沿いにある寺院。",
-      "backgroundAssetId": "lpb_bg_wat_sen",
+      "backgroundId": "lpb_bg_wat_sen",
       "facts": [
         {
           "publisher": "Wikivoyage / OpenStreetMap",
@@ -61,7 +61,7 @@
       "nameJa": "ワット・ポンパオ",
       "nameEn": "Wat Phol Phao",
       "descriptionJa": "ナムカーン川の東側にある寺院。高台へ向かう道路を経由する。",
-      "backgroundAssetId": "lpb_bg_wat_phol_phao",
+      "backgroundId": "lpb_bg_wat_phol_phao",
       "facts": [
         {
           "publisher": "Wikivoyage / OpenStreetMap",
@@ -79,7 +79,7 @@
       "nameJa": "ホー・パバーン",
       "nameEn": "Haw Pha Bang",
       "descriptionJa": "旧王宮の敷地にある礼拝堂。",
-      "backgroundAssetId": "lpb_bg_haw_pha_bang",
+      "backgroundId": "lpb_bg_haw_pha_bang",
       "facts": [
         {
           "publisher": "Wikivoyage / OpenStreetMap",
@@ -97,7 +97,7 @@
       "nameJa": "ルアンパパーン夜市",
       "nameEn": "Luang Prabang Night Market",
       "descriptionJa": "シーサワーンウォン通り周辺で開かれる夜市。時間帯により歩行者で混雑する。",
-      "backgroundAssetId": "lpb_bg_night_market",
+      "backgroundId": "lpb_bg_night_market",
       "facts": [
         {
           "publisher": "Wikivoyage / OpenStreetMap",

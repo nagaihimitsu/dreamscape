@@ -1,6 +1,9 @@
 .travel-menu { margin: 4px 0 0; }
 .travel-menu h2 { margin: 16px 0 8px; font-size: 18px; }
 .travel-reserve { margin: 0; color: var(--muted); font-size: 12px; }
+.travel-rentals { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 4px 0; }
+.travel-rented { margin: 0; color: var(--muted); font-size: 12px; }
+.travel-rent-open { width: auto; min-height: 44px; margin: 0; padding: 7px 12px; font-size: 13px; }
 .travel-utility { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0 16px; margin: 2px 0 6px; }
 .travel-wait summary, .travel-sleep-toggle { display: inline-flex; align-items: center; min-height: 44px; padding: 4px 0; border: 0; background: none; color: var(--green); font: inherit; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .travel-wait summary { list-style: none; }

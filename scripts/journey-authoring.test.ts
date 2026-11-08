@@ -134,6 +134,16 @@ describe("journey authoring with four cities", () => {
     }
   });
 
+  it("does not promote a city whose transit ledger still has inconclusive decisions", () => {
+    const source = loadJourneyReadiness(process.cwd(), "luang_prabang");
+    expect(source.cities.map((entry) => entry.inconclusiveTransit)).toEqual([0]);
+    expect(inspectJourneyReadiness(source).cities[0].issues.some((issue) => issue.code === "transit_inconclusive")).toBe(false);
+    const report = inspectJourneyReadiness({ ...source, cities: source.cities.map((entry) => ({ ...entry, inconclusiveTransit: 2 })) });
+    expect(report.cities[0].issues).toContainEqual({ code: "transit_inconclusive",
+      detail: "交通判断台帳に「特定できず」の判断が2件あります: luang_prabang（調べて available・not_suitable・not_applicable に決めてください）" });
+    expect(report.readyForPromotion).toBe(false);
+  });
+
   it("promotes the city prefix in the journey's own manifest and preserves both unrelated journeys", () => {
     const { root, original } = releaseFixture();
     try {
@@ -193,7 +203,7 @@ describe("journey authoring with four cities", () => {
         [`${layer}/romance/presentation.json`]: write(`${layer}/romance/presentation.json`, ownPresentation) };
       const merged = { "progression/journey.json": coreJourney, "learning/translations.json": coreTranslations,
         "romance/presentation.json": { ...corePresentation, backgrounds: ownPresentation.backgrounds } };
-      const quiz = loadJourneyReadiness(process.cwd(), "golden_triangle").quizzes.find((item) => item.id === "sound_duomo_b1")!;
+      const quiz = loadJourneyReadiness(process.cwd(), "golden_triangle").quizzes.find((item) => item.id === "milano_main_duomo_quiz")!;
       const fragments = { episodes: [{ id: "uz_tashkent_episode", cityId: "tashkent" }], rewards: [],
         battles: [{ id: "uz_tashkent_battle", quizId: quiz.id }], dates: [], landmarks: [], clues: [], finaleEvents: [],
         effects: [{ id: "uz_tashkent_effect" }], memories: { shared_memory: { titleJa: "共有の思い出" }, uz_memory: { titleJa: "タシケント" } },
@@ -258,7 +268,7 @@ describe("journey authoring with four cities", () => {
       const coreTranslations = JSON.parse(readFileSync(path.join(process.cwd(), "src/content/generated/content/learning/translations.json"), "utf8"));
       const merged = { "learning/translations.json": coreTranslations,
         "romance/presentation.json": { ...corePresentation, backgrounds: partial["romance/presentation.json"].backgrounds } };
-      const quiz = loadJourneyReadiness(process.cwd(), "golden_triangle").quizzes.find((item) => item.id === "sound_duomo_b1")!;
+      const quiz = loadJourneyReadiness(process.cwd(), "golden_triangle").quizzes.find((item) => item.id === "milano_main_duomo_quiz")!;
       const fragments = { episodes: [{ id: "uz_tashkent_episode", cityId: "tashkent" }], rewards: [],
         battles: [{ id: "uz_tashkent_battle", quizId: quiz.id }], dates: [], landmarks: [], clues: [], finaleEvents: [],
         effects: [], memories: { shared_memory: { titleJa: "共有の思い出" }, uz_memory: { titleJa: "タシケント" } },

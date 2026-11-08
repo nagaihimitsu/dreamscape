@@ -14,8 +14,8 @@ function catalog() {
   return {
     cityId: "sample_city",
     places: [
-      { id: "hotel", cityId: "sample_city", nameJa: "ホテル", nameEn: "Hotel", latitude: 45, longitude: 9, backgroundAssetId: "hotel", sources: [source] },
-      { id: "museum", cityId: "sample_city", nameJa: "美術館", nameEn: "Museum", latitude: 45.1, longitude: 9.1, backgroundAssetId: "museum", sources: [source] },
+      { id: "hotel", cityId: "sample_city", nameJa: "ホテル", nameEn: "Hotel", latitude: 45, longitude: 9, backgroundId: "hotel", sources: [source] },
+      { id: "museum", cityId: "sample_city", nameJa: "美術館", nameEn: "Museum", latitude: 45.1, longitude: 9.1, backgroundId: "museum", sources: [source] },
     ],
     routes: [{ fromPlaceId: "hotel", toPlaceId: "museum", mode: "walk", minutes: 12, cost: 0, sources: [source] }],
     events: [

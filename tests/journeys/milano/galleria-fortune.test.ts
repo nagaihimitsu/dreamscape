@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { battleQuizzes, battles } from "../../../src/content";
 import { playBattleToResult } from "../../../src/dev/scenario-builders";
 import { leaveBattleResult, startEpisode } from "../../../src/domain/chapter";
-import { advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter, getEncounterAvailability, getTourismEncounterAvailability, proceedFromTourism, startEncounter, startTourismEncounter } from "../../../src/domain/encounter";
+import { advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter, getTourismEncounterAvailability, proceedFromTourism, startTourismEncounter } from "../../../src/domain/encounter";
 import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
 import { closeTourism, openTourism, skipTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
 
@@ -63,8 +63,6 @@ describe("the Galleria conversation during observation", () => {
     const rewards = state.claimedRewardIds;
     const inventory = { ...state.inventory };
     const budget = state.travelBudget;
-    expect(getEncounterAvailability(state, encounter).available).toBe(false);
-    expect(startEncounter(state, encounter, () => 0)).toBe(state);
     expect(getTourismEncounterAvailability(state, encounter).available).toBe(true);
     const revision = state.revision;
     state = restore(startTourismEncounter(state, encounter, revision, () => 0));

@@ -7,7 +7,7 @@
       "nameJa": "スカラ座",
       "nameEn": "Teatro alla Scala",
       "descriptionJa": "開演を待つ人の流れを見ながら、舞台に立つことや言葉を交わす。",
-      "backgroundAssetId": "milano_la_scala_date",
+      "backgroundId": "milano_la_scala_date",
       "facts": [
         {
           "publisher": "Teatro alla Scala（公式）",
@@ -33,7 +33,7 @@
       "nameJa": "ブレラ絵画館",
       "nameEn": "Pinacoteca di Brera",
       "descriptionJa": "ハイエツの『接吻』の前で、違う細部に目を留める。",
-      "backgroundAssetId": "milano_brera_date",
+      "backgroundId": "milano_brera_date",
       "facts": [
         {
           "publisher": "Pinacoteca di Brera（公式）",
@@ -67,7 +67,7 @@
       "nameJa": "ナヴィリオ地区",
       "nameEn": "Navigli District",
       "descriptionJa": "運河に沿って歩き、洗濯場の残る小さな路地へ寄る。",
-      "backgroundAssetId": "milano_navigli_date",
+      "backgroundId": "milano_navigli_date",
       "facts": [
         {
           "publisher": "inLOMBARDIA（ロンバルディア州観光情報）",
@@ -93,7 +93,7 @@
       "nameJa": "サン・サティロ教会",
       "nameEn": "Santa Maria presso San Satiro",
       "descriptionJa": "奥行きの不思議な祭壇を、横からも眺める。",
-      "backgroundAssetId": "milano_san_satiro_date",
+      "backgroundId": "milano_san_satiro_date",
       "facts": [
         {
           "publisher": "Pinacoteca di Brera（公式）",
@@ -119,7 +119,7 @@
       "nameJa": "スターバックス・ロースタリー",
       "nameEn": "Starbucks Reserve Roastery Milano",
       "descriptionJa": "かつて郵便局だった建物で、焙煎を眺める。",
-      "backgroundAssetId": "milano_starbucks_roastery_date",
+      "backgroundId": "milano_starbucks_roastery_date",
       "facts": [
         {
           "publisher": "Starbucks Stories EMEA",
@@ -161,7 +161,7 @@
       "nameJa": "プラダ財団",
       "nameEn": "Fondazione Prada",
       "descriptionJa": "古い蒸留所と現代美術の空間を歩く。",
-      "backgroundAssetId": "milano_fondazione_prada_date",
+      "backgroundId": "milano_fondazione_prada_date",
       "facts": [
         {
           "publisher": "Fondazione Prada",
@@ -187,7 +187,7 @@
       "nameJa": "ナヴィリオ運河のカフェ",
       "nameEn": "Naviglio Grande",
       "descriptionJa": "運河沿いで、水路と大聖堂にまつわる小話を聞きながら過ごす。",
-      "backgroundAssetId": "milano_cafe_landmark",
+      "backgroundId": "milano_cafe_landmark",
       "facts": [
         {
           "publisher": "Veneranda Fabbrica del Duomo di Milano（大聖堂管理財団）",
@@ -205,7 +205,7 @@
       "nameJa": "ドゥオモ広場の散歩",
       "nameEn": "Piazza del Duomo",
       "descriptionJa": "大聖堂の尖塔を見上げ、広場を歩く。",
-      "backgroundAssetId": "milano_walk_landmark",
+      "backgroundId": "milano_walk_landmark",
       "facts": [
         {
           "publisher": "Veneranda Fabbrica del Duomo di Milano（大聖堂管理財団）",
@@ -231,7 +231,7 @@
       "nameJa": "ナヴィリオの夜景",
       "nameEn": "Naviglio Grande at night",
       "descriptionJa": "運河の橋から、揺れる灯りと街の暮らしを眺める。",
-      "backgroundAssetId": "milano_night_landmark",
+      "backgroundId": "milano_night_landmark",
       "facts": [
         {
           "publisher": "inLombardia（ロンバルディア州観光局）",
@@ -257,7 +257,7 @@
       "nameJa": "ガッレリアの帰り道",
       "nameEn": "Galleria Vittorio Emanuele II",
       "descriptionJa": "屋根の下の通りで旅の出来事を振り返る。",
-      "backgroundAssetId": "milano_city_date_landmark",
+      "backgroundId": "milano_city_date_landmark",
       "facts": [
         {
           "publisher": "Lombardia Beni Culturali（ロンバルディア州文化財ポータル）",
@@ -291,7 +291,7 @@
       "nameJa": "ノヴェチェント美術館",
       "nameEn": "Museo del Novecento",
       "descriptionJa": "フォンタナのネオンとドゥオモ広場を同じ窓から眺める。",
-      "backgroundAssetId": "milano_novecento_date",
+      "backgroundId": "milano_novecento_date",
       "facts": [
         {
           "publisher": "Museo del Novecento",
@@ -330,7 +330,7 @@
       "nameJa": "サン・マウリツィオ教会",
       "nameEn": "San Maurizio al Monastero Maggiore",
       "descriptionJa": "仕切りの両側に描かれた壁画を別々に見て、色を持ち寄る。",
-      "backgroundAssetId": "milano_san_maurizio_sound",
+      "backgroundId": "milano_san_maurizio_sound",
       "facts": [
         {
           "publisher": "YesMilano",

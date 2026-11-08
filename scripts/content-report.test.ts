@@ -7,6 +7,7 @@ import {
   unprefixedIds,
   UNPREFIXED_ID_EXCEPTIONS,
   unusedPublicFiles,
+  unusedTransportModes,
   unusedWordMeanings,
   wordUses,
 } from "./content-report";
@@ -76,6 +77,28 @@ describe("unused public files", () => {
       "(neither content nor the game's code refers to assets/tourism/spot.LICENSE.txt; it would be published without being used)",
     ]);
   });
+});
+
+describe("declared transport modes without routes", () => {
+  it("names a declared mode that no route of the journey's cities uses", () => {
+    const tram = { id: "tram", nameJa: "路面電車", movingJa: "路面電車で移動中", kind: "tram" };
+    const taxi = { id: "taxi", nameJa: "タクシー", movingJa: "タクシーで移動中", kind: "car" };
+    const files = journey("trip_a", 10, "a_city");
+    const manifest = JSON.parse(files[`${folder("trip_a")}/manifest.json`]!);
+    const route = (mode: string) => ({ fromPlaceId: "a", toPlaceId: "b", mode, minutes: 5, cost: 0 });
+    const sources = load({ ...files,
+      [`${folder("trip_a")}/manifest.json`]: json({ ...manifest, transportModes: [tram, taxi] }),
+      [`${folder("trip_a")}/travel/a_city.json`]: json({ cityId: "a_city", places: [], events: [], routes: [route("walk"), route("tram")] }),
+      // Another journey's taxi routes do not count for trip_a.
+      ...journey("trip_b", 20, "b_city"),
+      [`${folder("trip_b")}/travel/b_city.json`]: json({ cityId: "b_city", places: [], events: [], routes: [route("taxi")] }),
+    });
+    expect(messages(unusedTransportModes(sources))).toEqual([
+      `Transport mode without routes: content/journeys/trip_a/manifest.json declares "taxi" in transportModes, but no route of trip_a's cities uses it (add its routes or remove the declaration)`,
+    ]);
+    expect(unusedTransportModes(load(journey("trip_c", 30, "c_city")))).toEqual([]);
+  });
+
 });
 
 describe("journey ID prefixes", () => {

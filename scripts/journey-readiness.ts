@@ -12,6 +12,9 @@ import path from "node:path";
 import { SAMPLE_JOURNEY_ID } from "./content-layout";
 import { journeyCatalogOf, journeyFolderPath, loadContentSources, parseCatalog, requireCity, type ContentSources } from "./content-sources";
 import { servedFile } from "./public-assets";
+import { cityTransitPath, cityTransitPlan, journeyTransitPlan } from "./journey-transit";
+import { inspectCityTransit } from "./transit-ledger";
+import type { TransportPending } from "./transport-validation";
 import { describeSampleLeftover, sampleLeftovers, type SampleLeftover } from "./sample-journey";
 
 /** Report from real catalog entries; no additional hand-maintained content list. */
@@ -22,6 +25,8 @@ export type JourneyReadinessInput = {
     city: z.infer<typeof citySchema>;
     travel: z.infer<typeof travelCatalogSchema>;
     settings: z.infer<typeof travelSettingsSchema>;
+    /** Decisions of the city's transit ledger still `inconclusive` (0 without a ledger; content:build checks the rest). */
+    inconclusiveTransit?: number;
   }>;
   tourism: z.infer<typeof tourismCatalogSchema>;
   backgrounds: z.infer<typeof presentationSchema>["backgrounds"];
@@ -34,12 +39,16 @@ export type JourneyReadinessInput = {
   assetExists: (assetPath: string) => boolean;
   /** Sample content left in the journey's folder (paths relative to the repository); none for the sample itself. */
   sampleLeftovers: SampleLeftover[];
+  /** While the journey waits for its transport switch: what it waits for (reported, never an issue). */
+  transportPending?: TransportPending;
 };
 
 export type JourneyReadinessIssue = { code: string; detail: string };
 export type JourneyEventReadiness = { id: string; cityId: string; category: "main" | "date"; placeId: string; issues: JourneyReadinessIssue[] };
 export type JourneyCityReadiness = { cityId: string; events: JourneyEventReadiness[]; issues: JourneyReadinessIssue[] };
-export type JourneyReadinessReport = { journeyId: string; ready: boolean; readyForPromotion: boolean; issues: JourneyReadinessIssue[]; cities: JourneyCityReadiness[] };
+export type JourneyReadinessReport = { journeyId: string; ready: boolean; readyForPromotion: boolean; issues: JourneyReadinessIssue[]; cities: JourneyCityReadiness[];
+  /** The journey still uses the old transport and its old ledger (e.g. 「ツアー機能待ち」); readiness does not depend on it. */
+  transportPending?: TransportPending };
 
 /** Check actual authored references and binaries, not a manually maintained ready flag. */
 export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyReadinessReport {
@@ -88,13 +97,15 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
     }
     const { city, travel, settings } = content;
     if (city.productionStatus !== "complete") problem(cityIssues, "city_incomplete", `都市は制作中: ${cityId}`);
+    if (content.inconclusiveTransit)
+      problem(cityIssues, "transit_inconclusive", `交通判断台帳に「特定できず」の判断が${content.inconclusiveTransit}件あります: ${cityId}（調べて available・not_suitable・not_applicable に決めてください）`);
     if (city.id !== travel.cityId || !travel.places.some((place) => place.id === settings.hotelPlaceId))
       problem(cityIssues, "travel_owner_mismatch", `都市・滞在先が不一致: ${cityId}`);
     if (settings.lodgingCost !== trip.cityPlan!.lodgingCost) problem(cityIssues, "lodging_mismatch", `宿泊費が旅行編の設定と不一致: ${cityId}`);
     for (const place of travel.places) {
       if (place.cityId !== cityId || seenPlaceIds.has(place.id)) problem(cityIssues, "place_mismatch", `地点の都市・IDが不正: ${place.id}`);
       seenPlaceIds.add(place.id);
-      if (place.id === settings.hotelPlaceId) checkImage(place.backgroundAssetId, cityIssues, true);
+      if (place.id === settings.hotelPlaceId) checkImage(place.backgroundId, cityIssues, true);
     }
     const specialIds = new Set(input.journey.storyBattles.filter((entry) => {
       const battle = input.battles.find((item) => item.id === entry.battleId);
@@ -119,7 +130,7 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
       seenEventIds.add(event.id);
       const place = travel.places.find((item) => item.id === event.placeId);
       if (!place) problem(eventIssues, "place_missing", `地点が未登録: ${event.placeId}`);
-      else checkImage(place.backgroundAssetId, eventIssues);
+      else checkImage(place.backgroundId, eventIssues);
       if (event.category === "main" && finales.some((item) => item.id === event.id)) {
         // Finale references, reward and quiz are checked once at city level.
       } else if (event.category === "main" && specialIds.has(event.id)) {
@@ -155,8 +166,8 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
           const destination = input.destinations.find((item) => item.id === date.destinationId);
           if (!destination || destination.cityId !== cityId || date.chapterId !== cityId || !place?.destinationIds?.includes(destination.id))
             problem(eventIssues, "destination_mismatch", `デート行き先・都市が未登録または不一致: ${event.id}`);
-          else if (destination.backgroundAssetId !== date.backgroundAssetId) problem(eventIssues, "date_background_mismatch", `デート背景が不一致: ${event.id}`);
-          if (date.backgroundAssetId !== place?.backgroundAssetId) checkImage(date.backgroundAssetId, eventIssues);
+          else if (destination.backgroundId !== date.backgroundId) problem(eventIssues, "date_background_mismatch", `デート背景が不一致: ${event.id}`);
+          if (date.backgroundId !== place?.backgroundId) checkImage(date.backgroundId, eventIssues);
           if (!input.storyExists(date.storyId)) problem(eventIssues, "date_story_missing", `デート脚本が未登録: ${date.storyId}`);
         }
       }
@@ -180,7 +191,8 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
   });
   const readyForPromotion = issues.every((issue) => issue.code === "journey_unavailable") &&
     cities.every((city) => city.issues.every((issue) => issue.code === "city_incomplete") && city.events.every((event) => event.issues.every((issue) => issue.code === "event_pending")));
-  return { journeyId: trip.id, readyForPromotion, ready: readyForPromotion && issues.length === 0 && cities.every((city) => city.issues.length === 0 && city.events.every((event) => event.issues.length === 0)), issues, cities };
+  return { journeyId: trip.id, readyForPromotion, ready: readyForPromotion && issues.length === 0 && cities.every((city) => city.issues.length === 0 && city.events.every((event) => event.issues.length === 0)), issues, cities,
+    ...(input.transportPending ? { transportPending: input.transportPending } : {}) };
 }
 
 export function loadJourneyReadiness(root: string, journeyId: string): JourneyReadinessInput {
@@ -195,12 +207,16 @@ export function journeyReadinessInput(sources: ContentSources, journeyId: string
     `登録されている旅行編: ${catalog.journeys.map((item) => item.id).join(", ") || "なし"}（Unknown journey）。`);
   const cities = trip.cities.map(({ id }) => {
     const files = requireCity(sources, id);
-    return { city: citySchema.parse(files.data), travel: travelCatalogSchema.parse(files.travel),
-      settings: travelSettingsSchema.parse(files.settings) };
+    const travel = travelCatalogSchema.parse(files.travel);
+    const { modes } = cityTransitPlan(sources, id);
+    const transit = files.transit === undefined || !modes.length ? undefined : inspectCityTransit(travel, files.transit, modes, cityTransitPath(sources, id));
+    return { city: citySchema.parse(files.data), travel, settings: travelSettingsSchema.parse(files.settings),
+      inconclusiveTransit: transit ? Object.values(transit.counts).reduce((sum, byStatus) => sum + byStatus.inconclusive, 0) : 0 };
   });
   const quizzes = sources.quizFiles.filter((quiz) => !quiz.example).map((quiz) => quizSchema.parse(quiz.data));
   const storyIds = new Set(sources.storyFiles.map((story) => story.id));
-  return { trip, cities, quizzes, sampleLeftovers: journeySampleLeftovers(sources, journeyId), journey: parseCatalog(sources, journeySchema, "progression/journey.json"),
+  const { pending } = journeyTransitPlan(sources, journeyId);
+  return { trip, cities, quizzes, sampleLeftovers: journeySampleLeftovers(sources, journeyId), ...(pending ? { transportPending: pending } : {}), journey: parseCatalog(sources, journeySchema, "progression/journey.json"),
     tourism: parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json"),
     backgrounds: parseCatalog(sources, presentationSchema, "romance/presentation.json").backgrounds,
     dates: parseCatalog(sources, dateCatalogSchema, "romance/date_catalog.json").dates,

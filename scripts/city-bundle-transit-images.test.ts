@@ -3,7 +3,9 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { applyCityBundle, compactCityBundle, exportCityBundle, exportEditableCityBundle } from "./city-bundle";
 import { travelCatalogSchema } from "../src/content/travel-schemas";
 import { getJourneyAuthoringProfile } from "./journey-authoring";
-import { cityTransitFile, inspectCityTransit, readTransitLedger } from "./journey-transit-review";
+import { cityTransitPath, cityTransitPlan } from "./journey-transit";
+import { inspectCityTransit } from "./transit-ledger";
+import { loadContentSources } from "./content-sources";
 import { buildJourneyTransitDecisionReview, readJourneyTransitDecisions } from "./journey-transit-decisions";
 import { resolvePublicFile } from "./public-assets";
 import { cityFiles, cityPaths, fingerprint, fixture, indiaDecisionFile, merged, read, readJson, removeFixtures, useArrivalLocationBackground, writeJson } from "./city-bundle-test-helpers";
@@ -50,27 +52,31 @@ describe("city editing bundle: transit ledgers, images and observations", () => 
   it("edits the selected Uzbek transit ledger while rejecting unknown directions and image changes", async () => {
     const root = fixture();
     const cityId = "tashkent";
-    const ledgerFile = cityTransitFile(root, cityId)!;
-    const otherLedger = cityTransitFile(root, "khiva")!;
+    const sources = loadContentSources(root);
+    const ledgerFile = cityTransitPath(sources, cityId)!;
+    expect(ledgerFile).toBe("content/journeys/uzbekistan/travel/tashkent-transit.json");
+    const otherLedger = cityTransitPath(sources, "khiva")!;
     const otherBefore = read(root, otherLedger);
+    const { modes } = cityTransitPlan(sources, cityId);
     const bundle = exportEditableCityBundle(root, cityId);
     const decisions = bundle.transitDecisions as Array<{ status: string; reasonJa: string; sources: unknown[] }>;
-    expect(decisions).toHaveLength(bundle.travel.places.length * (bundle.travel.places.length - 1) * 4);
+    expect(decisions).toHaveLength(bundle.travel.places.length * (bundle.travel.places.length - 1) * modes.length);
     expect(decisions.every((decision) => decision.sources.length > 0)).toBe(true);
     decisions[0].reasonJa += " 編集テストの注記。";
     const changed = await applyCityBundle(root, bundle, true);
     expect(changed.changedFiles).toEqual([ledgerFile]);
     expect(read(root, otherLedger)).toBe(otherBefore);
     const travel = travelCatalogSchema.parse(readJson(root, cityPaths(root, cityId).travel));
-    expect(inspectCityTransit(travel, readTransitLedger(root, ledgerFile)).ready).toBe(true);
+    expect(inspectCityTransit(travel, readJson(root, ledgerFile), modes).ready).toBe(true);
 
     const missing = exportCityBundle(root, cityId);
     missing.transitDecisions!.pop();
     const before = fingerprint(root);
-    await expect(applyCityBundle(root, missing, true)).rejects.toThrow(/Unreviewed transit direction/);
+    await expect(applyCityBundle(root, missing, true)).rejects.toThrow(/Undecided transit direction/);
     const unknown = exportCityBundle(root, cityId);
+    // content:build accepts an inconclusive decision; applying a city with one is refused.
     const absent = (unknown.transitDecisions as typeof decisions).find((decision) => decision.status !== "available")!;
-    absent.status = "unconfirmed";
+    absent.status = "inconclusive";
     await expect(applyCityBundle(root, unknown, true)).rejects.toThrow(/undecided directions/);
     expect(fingerprint(root)).toBe(before);
 
@@ -122,8 +128,8 @@ describe("city editing bundle: transit ledgers, images and observations", () => 
     const agraTravel = cityPaths(root, "agra").travel;
     const agra = readJson(root, agraTravel);
     const delhi = readJson(root, cityPaths(root, "delhi").travel);
-    const sharedId = delhi.places.find((item: { id: string }) => item.id === "delhi_hotel_hub").backgroundAssetId;
-    agra.places.find((item: { id: string }) => item.id === "agra_hotel_hub").backgroundAssetId = sharedId;
+    const sharedId = delhi.places.find((item: { id: string }) => item.id === "delhi_hotel_hub").backgroundId;
+    agra.places.find((item: { id: string }) => item.id === "agra_hotel_hub").backgroundId = sharedId;
     writeJson(root, agraTravel, agra);
     const bundle = exportCityBundle(root, "delhi");
     bundle.backgrounds[sharedId].captionJa = "他都市の共有背景を変更してはならない";
@@ -138,19 +144,19 @@ describe("city editing bundle: transit ledgers, images and observations", () => 
     const agraTravel = cityPaths(root, "agra").travel;
     const agra = readJson(root, agraTravel);
     const delhi = readJson(root, cityPaths(root, "delhi").travel);
-    const sharedId = delhi.places.find((item: { id: string }) => item.id === "delhi_hotel_hub").backgroundAssetId;
-    agra.places.find((item: { id: string }) => item.id === "agra_hotel_hub").backgroundAssetId = sharedId;
+    const sharedId = delhi.places.find((item: { id: string }) => item.id === "delhi_hotel_hub").backgroundId;
+    agra.places.find((item: { id: string }) => item.id === "agra_hotel_hub").backgroundId = sharedId;
     writeJson(root, agraTravel, agra);
     const sharedBackground = merged(root, "romance/presentation.json").backgrounds[sharedId];
     const bundle = exportCityBundle(root, "delhi");
-    bundle.travel.places.find((place) => place.id === "delhi_hotel_hub")!.backgroundAssetId = "delhi_alternate_hotel_bg";
+    bundle.travel.places.find((place) => place.id === "delhi_hotel_hub")!.backgroundId = "delhi_alternate_hotel_bg";
     bundle.backgrounds.delhi_alternate_hotel_bg = { ...bundle.backgrounds[sharedId], captionJa: "デリーの滞在先" };
     delete bundle.backgrounds[sharedId];
     await applyCityBundle(root, bundle, true);
     const presentation = merged(root, "romance/presentation.json");
     expect(presentation.backgrounds[sharedId]).toEqual(sharedBackground);
     expect(presentation.backgrounds.delhi_alternate_hotel_bg.captionJa).toBe("デリーの滞在先");
-    expect(readJson(root, agraTravel).places.find((item: { id: string }) => item.id === "agra_hotel_hub").backgroundAssetId).toBe(sharedId);
+    expect(readJson(root, agraTravel).places.find((item: { id: string }) => item.id === "agra_hotel_hub").backgroundId).toBe(sharedId);
   }, 180_000);
 
   it("edits Milan's observations and image attribution without changing unrelated content", async () => {

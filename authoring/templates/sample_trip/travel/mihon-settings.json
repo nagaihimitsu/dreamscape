@@ -3,5 +3,24 @@
   "hotelPlaceId": "mihon_hotel",
   "lodgingCost": 0,
   "retryMinutes": 15,
+  "rentals": [
+    {
+      "modeId": "rental_bicycle",
+      "placeIds": [
+        "mihon_hotel"
+      ],
+      "cost": 6,
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の貸し出し。宿で2台借りると、見本の街にいるあいだ乗れる。料金はゲーム用の仮の値。"
+        }
+      ]
+    }
+  ],
   "notes": "見本の旅の架空の設定。開始資金・宿泊費・徒歩時間はゲーム用の仮の値で、実在の場所や料金を表さない。"
 }

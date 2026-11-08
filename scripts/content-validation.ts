@@ -55,6 +55,8 @@ import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { validateTourism } from "./tourism-validation";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { validateTravelContent } from "./travel-validation";
+import { checkCityRentals, checkCityTransit, checkRouteModes, checkTransportModeCount, transportSummary } from "./transport-validation";
+import type { CityTransitReview } from "./transit-ledger";
 import { journeySchema } from "../src/content/journey-schemas";
 import { journeyCatalogSchema } from "../src/content/journey-catalog";
 import { validateJourney } from "./journey-validation";
@@ -140,6 +142,23 @@ function checkPublishedSources(sources: ContentSources): void {
   }
 }
 
+/**
+ * A quiz file is named after its quiz ID: `quizzes/<id>.json`, an example
+ * quiz `quizzes/<id>.example.json` (docs/02 「IDの付け方」). Checked on the
+ * loaded data, before the schemas, so the message names the file even when
+ * the quiz is otherwise unfinished (an `id` that is not a string is left to
+ * the schema).
+ */
+function checkQuizFileNames(sources: ContentSources): void {
+  for (const { file, example, data } of sources.quizFiles) {
+    if (!isObject(data) || typeof data.id !== "string") continue;
+    const expected = `${data.id}${example ? ".example.json" : ".json"}`;
+    if (path.basename(file) !== expected)
+      throw new Error(`クイズのファイル名がクイズIDと違います（Quiz file name differs from its id）: ${displayPath(sources.root, file)} のIDは ` +
+        `${JSON.stringify(data.id)} です。ファイル名を ${expected} にしてください（${example ? "例のクイズは <ID>.example.json" : "クイズのファイル名は <ID>.json"}）。`);
+  }
+}
+
 /** The validated content: compiled stories, quizzes and the parsed catalogs content:build reports. */
 export type ValidatedContent = ReturnType<typeof validateContent>;
 
@@ -154,8 +173,13 @@ export type ValidatedContent = ReturnType<typeof validateContent>;
 export function validateContent(sources: ContentSources, options: { storyCache?: StoryValidationCache } = {}) {
   const { root } = sources;
   requireJourneyManifests(sources.manifests);
-  // Only the authoring tools read these profiles; a broken one still fails the build early.
-  for (const manifest of sources.manifests) authoringProfileOf(manifest.data, manifest.file);
+  // The authoring tools read these profiles; a broken one still fails the build early. The
+  // transport checks read one thing of them: whether a journey still waits for its transport switch.
+  const manifestFiles = new Map(sources.manifests.map((manifest) => [manifest.id, displayPath(root, manifest.file)]));
+  const pendingTransport = new Map(sources.manifests.flatMap((manifest) => {
+    const ledger = authoringProfileOf(manifest.data, manifest.file)?.transitDecisionLedger;
+    return ledger ? [[manifest.id, { pendingJa: ledger.pendingJa, inspectCommand: ledger.inspectCommand }] as const] : [];
+  }));
   // Each journey folder keeps to its own cities and content (and the core layer to core content).
   checkContentOwnership(sources);
   // Every journey falls back to the shared default background, so the core layer provides it.
@@ -165,6 +189,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     throw new Error(`Missing default background: content/romance/presentation.json must define backgrounds.${DEFAULT_BACKGROUND_ID} (the shared default of every journey)`);
   checkJourneyCities(sources);
   checkPublishedSources(sources);
+  checkQuizFileNames(sources);
   // The game's static files (root public/ plus every journey's public/), listed by the loader.
   const { publicFiles } = sources;
   // A missing image is named with the public/ folder of the journey whose data file names it.
@@ -208,6 +233,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   // game and Debug; each available journey's starting city is checked below.
   if (!journeyCatalog.journeys.some((item) => item.status === "available"))
     throw new Error('No available journey: at least one content/journeys/<journeyId>/manifest.json needs "status": "available"');
+  for (const plannedJourney of journeyCatalog.journeys)
+    checkTransportModeCount({ journey: plannedJourney, pending: pendingTransport.get(plannedJourney.id), manifestFile: manifestFiles.get(plannedJourney.id) });
   for (const plannedJourney of journeyCatalog.journeys) {
     const art = plannedJourney.titleArt;
     if (art && !servedFile(publicFiles, art.imagePath))
@@ -236,7 +263,9 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const travels = cities.map((item, index) => {
     const files = sources.cities[index];
     const travel = parseSourceFile(travelCatalogSchema, files.travelFile, files.travel);
-    return { city: item, travel, settings: parseSourceFile(travelSettingsSchema, files.settingsFile, files.settings) };
+    return { city: item, travel, travelFile: displayPath(root, files.travelFile), settingsFile: displayPath(root, files.settingsFile),
+      transit: files.transit, transitFile: displayPath(root, files.transitFile),
+      settings: parseSourceFile(travelSettingsSchema, files.settingsFile, files.settings) };
   });
   for (const { city: registeredCity, settings } of travels) {
     const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === registeredCity.id));
@@ -249,8 +278,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   for (const destination of destinations) {
     if (!cities.some((item) => item.id === destination.cityId))
       throw new Error(`Unknown date destination city: ${destination.id}/${destination.cityId}`);
-    if (!presentation.backgrounds[destination.backgroundAssetId])
-      throw new Error(`Unknown date destination background: ${destination.id}/${destination.backgroundAssetId}`);
+    if (!presentation.backgrounds[destination.backgroundId])
+      throw new Error(`Unknown date destination background: ${destination.id}/${destination.backgroundId}`);
   }
   const characters = parseCatalog(characterCatalogSchema, "presentation/characters.json");
   validateBackgroundAssets(publicFiles, presentation.backgrounds, tourism.assets);
@@ -384,7 +413,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
         throw new Error(`Unknown date destination: ${date.id}/${date.destinationId}`);
       if (destination.cityId !== date.chapterId)
         throw new Error(`Date destination city mismatch: ${date.id}/${date.destinationId}`);
-      if (destination.backgroundAssetId !== date.backgroundAssetId)
+      if (destination.backgroundId !== date.backgroundId)
         throw new Error(`Date destination background mismatch: ${date.id}/${date.destinationId}`);
     }
     if (
@@ -394,8 +423,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     ) {
       throw new Error(`Unknown chapter reference: ${date.id}`);
     }
-    if (!presentation.backgrounds[date.backgroundAssetId])
-      throw new Error(`Unknown background: ${date.backgroundAssetId}`);
+    if (!presentation.backgrounds[date.backgroundId])
+      throw new Error(`Unknown background: ${date.backgroundId}`);
     if (date.apCost > balance.apCap)
       throw new Error(`Date cost exceeds AP cap: ${date.id}`);
     unique(date.requiredPlayedDateIds, "required date ID");
@@ -592,8 +621,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       throw new Error(`Battle intermediate scene count mismatch: ${battle.id}`);
     if (!stories[battle.storyId])
       throw new Error(`Unknown battle storyId: ${battle.storyId}`);
-    if (!presentation.backgrounds[battle.backgroundAssetId])
-      throw new Error(`Unknown battle background: ${battle.backgroundAssetId}`);
+    if (!presentation.backgrounds[battle.backgroundId])
+      throw new Error(`Unknown battle background: ${battle.backgroundId}`);
     unique(
       [
         battle.scenes.intro,
@@ -709,9 +738,18 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       throw new Error(`Encounter entry city mismatch: ${encounter.id}`);
   }
   unique([...productionQuestionIds, ...encounterCatalog.encounters.flatMap((event) => event.quiz ? [event.quiz.question.id] : [])], "production quiz question ID");
-  for (const { city: current, travel, settings } of travels) {
+  const transitReviews = new Map<string, CityTransitReview[]>();
+  for (const { city: current, travel, travelFile, settingsFile, transit, transitFile, settings } of travels) {
     const episodes = journey.episodes.filter((episode) => episode.cityId === current.id);
     const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id));
+    // checkContentOwnership keeps every city file in the folder of the journey that lists it.
+    if (owner) {
+      const transport = { journey: owner, pending: pendingTransport.get(owner.id), manifestFile: manifestFiles.get(owner.id) };
+      checkRouteModes(travel, travelFile, transport);
+      checkCityRentals(travel, settings.rentals, settingsFile, transport);
+      const review = checkCityTransit({ travel, transit, transitFile, travelFile }, transport);
+      if (review) transitReviews.set(owner.id, [...(transitReviews.get(owner.id) ?? []), review]);
+    }
     // A journey may publish its first city while keeping later, pre-registered
     // cities unfinished. The city status controls the deferred content gate.
     const isUnpublished = current.productionStatus === "prototype";
@@ -743,7 +781,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     validateEncounterContent({
       catalog: { ...encounterCatalog, items: encounterCatalog.items.filter((item) => item.cityId === current.id),
         encounters: encounterCatalog.encounters.filter((event) => event.cityId === current.id) },
-      cityId: current.id, currencyCode: journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id))!.currency.code,
+      cityId: current.id,
       landmarks: cityLandmarks, journey: cityJourney, stories, quizzes,
       responseProfileIds: responseProfiles.map((profile) => profile.id), memoryIds: Object.keys(presentation.memories), context,
       validateQuiz: validateQuizEntries,
@@ -752,7 +790,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     else if (cityJourney.storyBattles.length) throw new Error(`Prototype battle has no city episodes: ${current.id}`);
     validateTravelContent(travel, settings, current.id, cityJourney, cityDates, battles,
       cityLandmarks.map((landmark) => landmark.id), cityDestinations.map((destination) => destination.id), presentation.backgrounds,
-      { allowPendingContent: isUnpublished, plannedLandmarkIds: current.landmarkIdsPlanned });
+      { allowPendingContent: isUnpublished, plannedLandmarkIds: current.landmarkIdsPlanned,
+        rentalModeIds: owner?.transportModes.filter((mode) => mode.rental).map((mode) => mode.id) });
   }
   let epilogueScenarios = 0;
   unique(cities.flatMap((city) => city.arrivalStoryId ? [city.arrivalStoryId] : []), "city arrival story ID");
@@ -768,7 +807,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     const compiled = stories[storyId];
     if (!compiled) throw new Error(`Unknown arrival story: ${storyId}`);
     validateNoInkRandom(compiled);
-    const backgrounds = travels.find(({ city }) => city.id === current.id)!.travel.places.map((place) => place.backgroundAssetId);
+    const backgrounds = travels.find(({ city }) => city.id === current.id)!.travel.places.map((place) => place.backgroundId);
     epilogueScenarios += withContext(storyLabel(storyId), () =>
       validateEpilogue(compiled, { ...context, backgroundIds: backgrounds }, (text, speaker, explicitEmotion) => {
         if (!["heroine", "narrator"].includes(speaker)) throw new Error("City arrival cannot speak for the player");
@@ -822,6 +861,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     warnings: contentWarnings(sources),
     /** What each journey folder provides, for the build report. */
     journeyContents: journeyContents(sources),
+    /** Each journey's in-city transport (modes, transit ledger counts, or what it waits for), for the build report. */
+    transport: journeyCatalog.journeys.map((item) => transportSummary({ journey: item, pending: pendingTransport.get(item.id) }, transitReviews.get(item.id) ?? [])),
     /** Word meanings no English text uses, for the build report. */
     unusedWordMeanings: unusedWordMeanings(sources),
   };

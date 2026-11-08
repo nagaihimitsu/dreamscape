@@ -18,12 +18,13 @@ import { getJourneyForCity } from "../content/journeys";
 import { advanceBattle, answerBattle, getActiveBattleContent, selectReasoningClue, startBattle, submitBattleEvidence } from "../domain/battle";
 import { getNextEpisode, getNextStoryBattle, leaveBattleResult, startEpisode, storyBattlesForCity } from "../domain/chapter";
 import { departToNextCity } from "../domain/city-travel";
-import { startEncounter, startTourismEncounter } from "../domain/encounter";
+import { startTourismEncounter } from "../domain/encounter";
 import { advanceCityEpilogue, completeArrivalLogo, startCityArrival, startCityEpilogue } from "../domain/epilogue";
 import { createGame, startDate, validateGameState, type GameState } from "../domain/game";
 import { advanceTourismGuide, openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "../domain/tourism";
 import { finishTravelEventIfComplete } from "../domain/travel-game";
 import { minimumHomeFare } from "../domain/travel-routes";
+import { getUsableRoutes } from "../domain/transport";
 
 /** The option chosen for a quiz question (its round index counts from 0). */
 export type AnswerPicker = (question: QuizQuestion, roundIndex: number) => string;
@@ -266,7 +267,7 @@ export function withRelationship(state: GameState, values: Pick<GameState, "affe
 function atPlace(state: GameState, placeId: string): GameState {
   const { travel } = getCityContent(state.currentCityId);
   if (!travel.places.some((place) => place.id === placeId)) throw new Error("この街に場面の地点が見つかりません。");
-  const returnReserve = minimumHomeFare(travel.routes, placeId, state.travel.hotelPlaceId, state.travel.minute);
+  const returnReserve = minimumHomeFare(getUsableRoutes(state), placeId, state.travel.hotelPlaceId, state.travel.minute);
   if (returnReserve === undefined || returnReserve > state.travelBudget)
     throw new Error("この地点から滞在先への帰路を確認できません。");
   return { ...state, travel: { ...state.travel, currentPlaceId: placeId, returnReserve } };
@@ -299,17 +300,18 @@ export function openBattleScene(state: GameState, battleId: string): GameState {
   return validateGameState(next);
 }
 
-/** Start an encounter at its place with a saved reaction ticket (a place encounter opens its observation first). */
+/**
+ * Start an encounter the way play meets it, with a saved reaction ticket: at its place its
+ * landmark's observation opens (a first visit skips the guide) and the encounter starts there
+ * under the observation's own rule (getTourismEncounterAvailability); after the scene the
+ * observation goes on. Encounters have no other moment yet (free time never starts one).
+ */
 export function startEncounterScene(state: GameState, encounterId: string, ticket: number): GameState {
   const encounter = encounters.encounters.find((item) => item.id === encounterId && item.cityId === state.currentCityId);
-  const placed = atPlace(state, scenePlaceId(state.currentCityId, undefined, encounter?.landmarkId ?? undefined));
-  const nextRoll = () => ticket;
-  let next: GameState;
-  if (encounter?.availability === "tourism") {
-    next = openTourism(placed, encounter.landmarkId!);
-    if (next.activeTourism?.phase === "guide") next = skipTourismGuide(next, next.revision);
-    next = startTourismEncounter(next, encounterId, next.revision, nextRoll);
-  } else next = startEncounter(placed, encounterId, nextRoll);
+  const placed = atPlace(state, scenePlaceId(state.currentCityId, undefined, encounter?.landmarkId));
+  let next = encounter ? openTourism(placed, encounter.landmarkId) : placed;
+  if (next.activeTourism?.phase === "guide") next = skipTourismGuide(next, next.revision);
+  next = startTourismEncounter(next, encounterId, next.revision, () => ticket);
   if (!next.activeEncounter) throw new Error("この進行状態では交流を始められません。必要な進行や品物を確認してください。");
   return validateGameState(next);
 }

@@ -14,7 +14,7 @@ describe("city editing bundle: new cities and journey folders", () => {
     for (const unsafeId of ["constructor", "prototype", "__proto__"]) {
       registerJourney(root, { id: "unsafe_test", nameJa: "試験", status: "preparing",
         cities: [{ id: unsafeId, nameJa: "試験" }],
-        currency: { code: "TST", symbol: "¤", unitJa: "試験通貨", unit: "whole" }, intercityModes: [] });
+        currency: { code: "TST", symbol: "¤", unitJa: "試験通貨", unit: "whole" }, intercityModes: [], transportModes: [] });
       expect(() => newCityBundle(root, unsafeId)).toThrow("Reserved city ID");
       rmSync(path.join(root, "content/journeys/unsafe_test"), { recursive: true });
     }
@@ -65,9 +65,9 @@ describe("city editing bundle: new cities and journey folders", () => {
     expect(bundle.city).toEqual(template.city);
     expect(bundle.backgrounds).toEqual(template.backgrounds);
     const destination = { id: "testcity_garden", cityId: "testcity", nameJa: "試験の庭園", nameEn: "Test garden",
-      descriptionJa: "試験用のデート先", backgroundAssetId: "testcity_garden_bg", facts: template.travel.places[0].sources };
+      descriptionJa: "試験用のデート先", backgroundId: "testcity_garden_bg", facts: template.travel.places[0].sources };
     bundle.travel.places[0].destinationIds = [destination.id];
-    bundle.backgrounds[destination.backgroundAssetId] = { nameJa: "試験の庭園", captionJa: "試験用の背景", color: "#6f8a5b" };
+    bundle.backgrounds[destination.backgroundId] = { nameJa: "試験の庭園", captionJa: "試験用の背景", color: "#6f8a5b" };
     bundle.dateDestinations.push(destination);
     bundle.travelSettings.notes += " 編集の検証。";
     const before = fingerprint(root);
@@ -83,7 +83,7 @@ describe("city editing bundle: new cities and journey folders", () => {
     // A background of another layer is shared: it can be used but not changed from this city.
     const shared = exportCityBundle(root, "testcity");
     const coreBackground = Object.entries(readJson(root, "content/romance/presentation.json").backgrounds)[0];
-    shared.travel.places[0].backgroundAssetId = coreBackground[0];
+    shared.travel.places[0].backgroundId = coreBackground[0];
     delete shared.backgrounds.testcity_hotel_bg;
     shared.backgrounds[coreBackground[0]] = { ...(coreBackground[1] as object), captionJa: "他の層の背景を変えてはならない" } as typeof shared.backgrounds[string];
     await expect(applyCityBundle(root, shared, true)).rejects.toThrow(/Cannot change another city's or shared background/);
@@ -110,9 +110,9 @@ describe("city editing bundle: new cities and journey folders", () => {
     const tourism = read(root, tourismFile);
     const bundle = exportEditableCityBundle(root, "testcity");
     const destination = { id: "testcity_garden", cityId: "testcity", nameJa: "試験の庭園", nameEn: "Test garden",
-      descriptionJa: "試験用のデート先", backgroundAssetId: "testcity_garden_bg", facts: template.travel.places[0].sources };
+      descriptionJa: "試験用のデート先", backgroundId: "testcity_garden_bg", facts: template.travel.places[0].sources };
     bundle.travel.places[0].destinationIds = [destination.id];
-    bundle.backgrounds[destination.backgroundAssetId] = { nameJa: "試験の庭園", captionJa: "試験用の背景", color: "#6f8a5b" };
+    bundle.backgrounds[destination.backgroundId] = { nameJa: "試験の庭園", captionJa: "試験用の背景", color: "#6f8a5b" };
     bundle.dateDestinations.push(destination);
     expect((await applyCityBundle(root, bundle, true)).changedFiles).toEqual([`${testLayer}/travel/testcity.json`, presentationFile, destinationsFile]);
     // Keys that stay empty are not added; the untouched partial catalog keeps its bytes.

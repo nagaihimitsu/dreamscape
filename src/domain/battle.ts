@@ -83,6 +83,7 @@ function hashBattle(battle: BattleDefinition, quiz: typeof battleQuizzes[string]
     storyFingerprint(storyId),
   ];
   // Preserve every existing A fingerprint; special proofs also depend on the case evidence.
+  // The whole clue objects are hashed, relatedQuestionIds included (docs/07 「観察だけの手がかり」).
   if (battle.reasoning)
     parts.push(
       battle.reasoning.caseClueIds.map((clueId) =>

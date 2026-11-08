@@ -66,7 +66,7 @@ export function registerJourney(root: string, journey: { id: string; [key: strin
 export const testJourney = { id: "test_journey", nameJa: "試験の旅", status: "preparing",
   cities: [{ id: "testcity", nameJa: "試験都市" }],
   currency: { code: "TST", symbol: "¤", unitJa: "試験通貨", unit: "whole" },
-  initialBudget: 1000, intercityModes: [] };
+  initialBudget: 1000, intercityModes: [], transportModes: [] };
 export const testLayer = "content/journeys/test_journey";
 /** Fill a new-city template with the smallest valid city (a hotel modelled on Delhi's). */
 export function completeTestCity(root: string, template: ReturnType<typeof exportCityBundle>) {
@@ -77,11 +77,11 @@ export function completeTestCity(root: string, template: ReturnType<typeof expor
   hotel.cityId = "testcity";
   hotel.nameJa = "試験の滞在先";
   hotel.nameEn = "Test hotel";
-  hotel.backgroundAssetId = "testcity_hotel_bg";
+  hotel.backgroundId = "testcity_hotel_bg";
   identity.fromPlaceId = hotel.id;
   identity.toPlaceId = hotel.id;
   template.city = { schemaVersion: 1, id: "testcity", countryCode: "ZZ", nameJa: "試験都市", themeJa: "試験用",
-    firstClearReward: { rewardSourceId: "testcity_legacy_placeholder", ap: 0 }, landmarkIdsPlanned: [], productionStatus: "prototype" };
+    firstClearReward: { rewardSourceId: "testcity_first_clear", ap: 0 }, landmarkIdsPlanned: [], productionStatus: "prototype" };
   template.travel = { cityId: "testcity", places: [hotel], routes: [identity], events: [] };
   template.travelSettings = { initialBudget: 1000, hotelPlaceId: hotel.id, lodgingCost: 0, retryMinutes: 15, notes: "試験用設定" };
   template.backgrounds = { testcity_hotel_bg: { nameJa: "試験", captionJa: "試験の滞在先", color: "#817569" } };

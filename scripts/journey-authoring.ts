@@ -7,6 +7,8 @@ export function isRelativePath(value: string): boolean {
   return !value.startsWith("/") && !/^[A-Za-z]:/u.test(value) && !value.includes("\\") &&
     value.split("/").every((segment) => segment !== "" && segment !== "." && segment !== "..");
 }
+const japanese = z.string().trim().min(1).refine(
+  (value) => /[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(value), "Expected Japanese text");
 const relativePath = z.string().min(1).refine(isRelativePath, "Use a relative path with / separators, without .. or an absolute path");
 /** The folder of a journey's authoring files (drafts, research, ledgers): `authoring/journeys/<journeyId>/`. */
 export const authoringFolder = (journeyId: string) => `authoring/journeys/${journeyId}/`;
@@ -22,12 +24,19 @@ export const journeyAuthoringSchema = z.object({
   observationFile: relativePath,
   /** The journey's tourism image folder below public/ (a served path, e.g. `assets/tourism/india`). */
   imageDirectory: relativePath.refine((value) => value.startsWith("assets/"), "The image folder is a served path below assets/"),
-  /** Per-city transit ledgers: `<transitDirectory>/<cityId>/transit-decisions.json`. */
-  transitDirectory: relativePath.optional(),
-  /** One journey-wide transit decision ledger for the listed cities (see journey-transit-decisions.ts). */
-  transitDecisionLedger: z.object({ file: relativePath, cities: z.array(id).min(1) }).strict().optional(),
-}).strict().refine((profile) => !(profile.transitDirectory && profile.transitDecisionLedger),
-  "Use either transitDirectory or transitDecisionLedger, not both");
+  /**
+   * The old journey-wide transit decision ledger for the listed cities (see
+   * journey-transit-decisions.ts). Only a journey that still waits for its
+   * switch to the per-city transport system keeps it; `pendingJa` says what
+   * it waits for (Golden Triangle: 「ツアー機能待ち」) and `inspectCommand` the
+   * journey's own command that checks the old ledger meanwhile (Golden
+   * Triangle: `npm run india:transit`); content:build, journey:transit and
+   * journey:readiness report the journey as waiting instead of applying the
+   * new transport checks (scripts/transport-validation.ts).
+   */
+  transitDecisionLedger: z.object({ file: relativePath, cities: z.array(id).min(1), pendingJa: japanese,
+    inspectCommand: z.string().regex(/^npm run [a-z][a-z0-9:_-]*$/, "Use npm run <script name>") }).strict().optional(),
+}).strict();
 export type JourneyAuthoringProfile = z.infer<typeof journeyAuthoringSchema>;
 
 const isObject = (value: unknown): value is Record<string, unknown> =>
@@ -43,13 +52,12 @@ function profileSchemaOf(manifest: Record<string, unknown>) {
   const folder = authoringFolder(journeyId);
   const cityIds = (Array.isArray(manifest.cities) ? manifest.cities : []).map((city) => (isObject(city) ? city.id : undefined));
   return journeyAuthoringSchema.superRefine((profile, context) => {
-    const paths: [string[], string | undefined, boolean][] = [
-      [["observationFile"], profile.observationFile, false],
-      [["transitDirectory"], profile.transitDirectory, true],
-      [["transitDecisionLedger", "file"], profile.transitDecisionLedger?.file, false],
+    const paths: [string[], string | undefined][] = [
+      [["observationFile"], profile.observationFile],
+      [["transitDecisionLedger", "file"], profile.transitDecisionLedger?.file],
     ];
-    for (const [path, value, directory] of paths)
-      if (value !== undefined && !value.startsWith(folder) && !(directory && `${value}/` === folder))
+    for (const [path, value] of paths)
+      if (value !== undefined && !value.startsWith(folder))
         context.addIssue({ code: "custom", path, message: `Keep the authoring files of ${journeyId} below ${folder}` });
     profile.transitDecisionLedger?.cities.forEach((cityId, index) => {
       if (!cityIds.includes(cityId))

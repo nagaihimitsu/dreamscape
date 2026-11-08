@@ -12,7 +12,8 @@ import { completeFragment, emptyCatalog, trimFragment, type MergedKind } from ".
 import type { CityBundle } from "./city-bundle-schema";
 import { bundleCatalogKinds, cityFiles, existing, layerPath, read } from "./city-bundle-files";
 import { journeyAuthoringProfiles } from "./journey-authoring";
-import { cityTransitFile, readTransitLedger, replaceTransitDecisions } from "./journey-transit-review";
+import { cityTransitPath } from "./journey-transit";
+import { replaceTransitDecisions, transitLedgerFromDecisions, transitLedgerSchema } from "./transit-ledger";
 import { journeyTransitDecisionFile } from "./journey-transit-decisions";
 import { findPublicFile } from "./public-assets";
 
@@ -22,7 +23,7 @@ export const assertUniqueIds = <T>(items: readonly T[], get: (v: T) => string, l
 };
 
 export function referencedBackgrounds(travel: z.infer<typeof travelCatalogSchema>, destinations: z.infer<typeof dateDestinationSchema>[], dateBackgrounds: string[]) {
-  return new Set([...travel.places.map((place) => place.backgroundAssetId), ...destinations.map((destination) => destination.backgroundAssetId), ...dateBackgrounds]);
+  return new Set([...travel.places.map((place) => place.backgroundId), ...destinations.map((destination) => destination.backgroundId), ...dateBackgrounds]);
 }
 
 /** Replace this city's entries in place, remove omitted ones, then append new IDs. */
@@ -50,7 +51,7 @@ function checkObservationImages(root: string, bundle: CityBundle, baseline: City
     for (const place of bundle.travel.places) {
       const expected = observations.images?.[place.id];
       if (!expected) continue;
-      const bg = bundle.backgrounds[place.backgroundAssetId];
+      const bg = bundle.backgrounds[place.backgroundId];
       const asset = bundle.assets.find((entry) => entry.id === bg?.imageAssetId);
       if (!asset || asset.path !== expected.path) throw new Error(`Observation image changed for ${place.id}; review observations first`);
       const absolute = findPublicFile(root, asset.path, publicRoots);
@@ -91,7 +92,7 @@ export function mergeCityCatalogs(sources: ContentSources, bundle: CityBundle, b
   const own = { presentation: ownFragment(sources, layer, presentationKind), tourism: ownFragment(sources, layer, tourismKind),
     destinations: ownFragment(sources, layer, destinationsKind) };
   const dates = parseCatalog(sources, dateCatalogSchema, "romance/date_catalog.json").dates;
-  const dateBackgrounds = dates.filter((item) => item.chapterId === cityId).map((item) => item.backgroundAssetId);
+  const dateBackgrounds = dates.filter((item) => item.chapterId === cityId).map((item) => item.backgroundId);
   const refs = referencedBackgrounds(bundle.travel, bundle.dateDestinations, dateBackgrounds);
   if (Object.keys(bundle.backgrounds).some((id) => !refs.has(id)) || [...refs].some((id) => !bundle.backgrounds[id])) throw new Error("Bundle backgrounds must exactly match city references");
   // Merged view of every layer: used for checks only; writes go to `own`.
@@ -135,14 +136,14 @@ export function mergeCityCatalogs(sources: ContentSources, bundle: CityBundle, b
   assertUniqueIds([...otherDestinations, ...bundle.dateDestinations], (entry) => entry.id, "destination");
   // References from other cities make a background shared and immutable;
   // so does a definition in another layer, which this bundle cannot write.
-  const otherBackgrounds = new Set(otherDestinations.map((item) => item.backgroundAssetId));
+  const otherBackgrounds = new Set(otherDestinations.map((item) => item.backgroundId));
   for (const date of dates) {
-    if (date.chapterId !== cityId) otherBackgrounds.add(date.backgroundAssetId);
+    if (date.chapterId !== cityId) otherBackgrounds.add(date.backgroundId);
   }
   for (const planned of journeyCatalogOf(sources).journeys.flatMap((journey) => journey.cities)) {
     if (planned.id === cityId || !existing(sources, planned.id)) continue;
     for (const place of travelCatalogSchema.parse(requireCity(sources, planned.id).travel).places)
-      otherBackgrounds.add(place.backgroundAssetId);
+      otherBackgrounds.add(place.backgroundId);
   }
   const backgroundFiles = sources.catalogs[presentationKind]?.provenance.keys.backgrounds ?? {};
   const foreignBackgrounds = new Set(Object.keys(presentation.backgrounds).filter((id) => fromOtherLayer(own.presentation, backgroundFiles[id])));
@@ -189,9 +190,13 @@ export function mergeCityCatalogs(sources: ContentSources, bundle: CityBundle, b
     if (fragment.exists) values[fragment.file] = trimFragment(fragment.data, fragment.added);
     else if (!isDeepStrictEqual(fragment.data, emptyCatalog(fragment.kind, fragment.data.schemaVersion))) values[fragment.file] = fragment.data;
   if (bundle.transitDecisions) {
-    const ownFile = cityTransitFile(root, cityId);
+    const ownFile = cityTransitPath(sources, cityId);
     if (ownFile) {
-      values[ownFile] = replaceTransitDecisions(readTransitLedger(root, ownFile), bundle.transitDecisions);
+      const current = existing(sources, cityId) ? requireCity(sources, cityId).transit : undefined;
+      // A city without a ledger keeps none until decisions are given (content:build says when one is required).
+      if (current !== undefined || bundle.transitDecisions.length)
+        values[ownFile] = current === undefined ? transitLedgerFromDecisions(cityId, bundle.transitDecisions)
+          : replaceTransitDecisions(transitLedgerSchema.parse(current), bundle.transitDecisions);
       return values;
     }
     const decisionFile = journeyTransitDecisionFile(root, cityId);

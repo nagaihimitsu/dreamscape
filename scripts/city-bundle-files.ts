@@ -2,7 +2,6 @@ import { createHash } from "node:crypto";
 import { closeSync, existsSync, linkSync, lstatSync, openSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { journeyInputFingerprint } from "./promote-journey";
-import { cityTransitFile } from "./journey-transit-review";
 import { journeyTransitDecisionFile } from "./journey-transit-decisions";
 import { cityLayer, displayPath, loadContentSources, readJourneyCatalog, type ContentLayer, type ContentSources } from "./content-sources";
 import type { MergedKind } from "./content-layout";
@@ -17,16 +16,16 @@ export const cityFiles = (layer: string, id: string) => [`${layer}/cities/${id}.
 export const read = (root: string, file: string): any => JSON.parse(readFileSync(path.join(root, file), "utf8"));
 
 /**
- * Transit decision ledgers of every registered city, as set by the journeys'
- * authoring profiles: per-city files and journey-wide ledgers.
+ * The old journey-wide transit decision ledgers (authoring profiles of the
+ * journeys that still wait for their transport switch). Per-city transit
+ * ledgers are content files (`travel/<city>-transit.json`).
  */
 export function transitLedgerFiles(root: string): string[] {
   return [...new Set(readJourneyCatalog(root).journeys.flatMap((journey) => journey.cities)
-    .flatMap((city) => [cityTransitFile(root, city.id), journeyTransitDecisionFile(root, city.id)])
-    .filter((file): file is string => !!file))];
+    .flatMap((city) => journeyTransitDecisionFile(root, city.id) ?? []))];
 }
 
-/** Fingerprint the actual validation inputs, including the transit decision ledgers. */
+/** Fingerprint the actual validation inputs, including the old journey-wide transit ledgers. */
 export function inputFingerprint(root: string, ignored: ReadonlySet<string> = new Set()): string {
   const h = createHash("sha256").update(journeyInputFingerprint(root, ignored));
   for (const ledger of transitLedgerFiles(root)) {
@@ -44,8 +43,8 @@ export function existing(sources: ContentSources, id: string): boolean {
   return sources.cities.some((item) => item.id === id);
 }
 
-// Files a bundle may write: one city's own files and the bundle catalogs, all in one content layer.
-const layerFile = /^(content(?:\/journeys\/[a-z][a-z0-9_]*)?)\/(?:cities\/([a-z][a-z0-9_]*)\.json|travel\/([a-z][a-z0-9_]*)(?:-settings)?\.json|romance\/(?:presentation|date_destinations)\.json|tourism\/catalog\.json)$/;
+// Files a bundle may write: one city's own files (city, routes, settings, transit ledger) and the bundle catalogs, all in one content layer.
+const layerFile = /^(content(?:\/journeys\/[a-z][a-z0-9_]*)?)\/(?:cities\/([a-z][a-z0-9_]*)\.json|travel\/([a-z][a-z0-9_]*)(?:-settings|-transit)?\.json|romance\/(?:presentation|date_destinations)\.json|tourism\/catalog\.json)$/;
 
 /** True when every content file of a write set belongs to one existing layer, the owner layer of each city of it (see cityLayer). */
 function inOneOwnerLayer(sources: ContentSources, files: readonly string[]): boolean {

@@ -5,7 +5,7 @@
   "nameJa": "ルアンパパーン",
   "themeJa": "川と寺院と手仕事の街",
   "firstClearReward": {
-    "rewardSourceId": "luang_prabang_legacy_episode_placeholder",
+    "rewardSourceId": "lpb_luang_prabang_first_clear",
     "ap": 0
   },
   "landmarkIdsPlanned": [

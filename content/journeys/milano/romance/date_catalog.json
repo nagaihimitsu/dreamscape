@@ -8,12 +8,12 @@
       "descriptionJa": "ロースタリーで彼女の一杯をうらやんだことから、味見の順番を二人で決める。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "milano/sound_cafe_01",
+      "storyId": "dates/milano_date_cafe",
       "requiredCompletedChapters": [
         "milano"
       ],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_starbucks_roastery_date",
+      "backgroundId": "milano_starbucks_roastery_date",
       "kind": "normal",
       "minAffection": 0,
       "requiredPlayedDateIds": [],
@@ -61,13 +61,13 @@
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_walk_01",
+      "storyId": "dates/milano_date_duomo_square_walk",
       "requiredCompletedChapters": [
         "milano"
       ],
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_walk_landmark",
+      "backgroundId": "milano_walk_landmark",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -112,13 +112,13 @@
       "apCost": 0,
       "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "milano/sound_invitation_01",
+      "storyId": "dates/milano_date_invitation",
       "requiredCompletedChapters": [
         "milano"
       ],
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_city_date_landmark",
+      "backgroundId": "milano_city_date_landmark",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 1,
@@ -162,13 +162,13 @@
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_night_01",
+      "storyId": "dates/milano_date_naviglio_night",
       "requiredCompletedChapters": [
         "milano"
       ],
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_night_landmark",
+      "backgroundId": "milano_night_landmark",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -213,13 +213,13 @@
       "apCost": 0,
       "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "milano/sound_confession_01",
+      "storyId": "dates/milano_date_confession",
       "requiredCompletedChapters": [
         "milano"
       ],
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_night_landmark",
+      "backgroundId": "milano_night_landmark",
       "repeatable": true,
       "needsDeferred": false,
       "choiceCount": 1,
@@ -288,13 +288,13 @@
       "apCost": 0,
       "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "milano/sound_reassurance_01",
+      "storyId": "dates/milano_date_reassurance",
       "requiredCompletedChapters": [
         "milano"
       ],
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_city_date_landmark",
+      "backgroundId": "milano_city_date_landmark",
       "repeatable": false,
       "needsDeferred": true,
       "choiceCount": 1,
@@ -337,7 +337,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_city_date_01",
+      "storyId": "dates/milano_date_galleria_revisit",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -347,7 +347,7 @@
       "allowAfterEnding": true,
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_city_date_landmark",
+      "backgroundId": "milano_city_date_landmark",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -392,7 +392,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_la_scala_date_01",
+      "storyId": "dates/milano_date_la_scala",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_galleria_episode"
@@ -400,7 +400,7 @@
       "allowAfterEnding": true,
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_la_scala_date",
+      "backgroundId": "milano_la_scala_date",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -444,7 +444,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_brera_date_01",
+      "storyId": "dates/milano_date_brera",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_last_supper_episode"
@@ -452,7 +452,7 @@
       "allowAfterEnding": true,
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_brera_date",
+      "backgroundId": "milano_brera_date",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -496,7 +496,7 @@
       "apCost": 1,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_navigli_date_01",
+      "storyId": "dates/milano_date_navigli",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_castello_episode"
@@ -504,7 +504,7 @@
       "allowAfterEnding": true,
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_navigli_date",
+      "backgroundId": "milano_navigli_date",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -548,7 +548,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_san_satiro_date_01",
+      "storyId": "dates/milano_date_san_satiro",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_duomo_episode"
@@ -556,7 +556,7 @@
       "allowAfterEnding": true,
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_san_satiro_date",
+      "backgroundId": "milano_san_satiro_date",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -600,7 +600,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_starbucks_roastery_date_01",
+      "storyId": "dates/milano_date_starbucks_roastery",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_galleria_episode"
@@ -608,7 +608,7 @@
       "allowAfterEnding": true,
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_starbucks_roastery_date",
+      "backgroundId": "milano_starbucks_roastery_date",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -652,7 +652,7 @@
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_fondazione_prada_date_01",
+      "storyId": "dates/milano_date_fondazione_prada",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_last_supper_episode"
@@ -660,7 +660,7 @@
       "allowAfterEnding": true,
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_fondazione_prada_date",
+      "backgroundId": "milano_fondazione_prada_date",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -708,7 +708,7 @@
       "apCost": 0,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_rain_pause_01",
+      "storyId": "dates/milano_date_rain_pause",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -720,7 +720,7 @@
       ],
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_city_date_landmark",
+      "backgroundId": "milano_city_date_landmark",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 1,
@@ -760,13 +760,13 @@
       "apCost": 0,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_recovery_01",
+      "storyId": "dates/milano_date_recovery",
       "requiredCompletedChapters": [
         "milano"
       ],
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": false,
-      "backgroundAssetId": "milano_city_date_landmark",
+      "backgroundId": "milano_city_date_landmark",
       "repeatable": true,
       "recovery": true,
       "needsDeferred": false,
@@ -807,7 +807,7 @@
       "apCost": 1,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_novecento_date_01",
+      "storyId": "dates/milano_date_novecento",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_duomo_episode"
@@ -815,7 +815,7 @@
       "allowAfterEnding": true,
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_novecento_date",
+      "backgroundId": "milano_novecento_date",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -859,7 +859,7 @@
       "apCost": 1,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_maurizio_date_sound",
+      "storyId": "dates/milano_date_san_maurizio",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_castello_episode"
@@ -867,7 +867,7 @@
       "allowAfterEnding": true,
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_san_maurizio_sound",
+      "backgroundId": "milano_san_maurizio_sound",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,

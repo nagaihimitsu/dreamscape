@@ -2,6 +2,7 @@ import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it } from "vitest";
 import { advanceDate, chooseDate, createGame, finishDate, startDate, type GameState } from "../domain";
 import { parseGameState } from "./index";
+import { zodIssues } from "../../tests/fixtures/zod-issues";
 
 function started(): GameState {
   return startDate(seedCurrentFreeTime(createGame("晴", "灯")), "milano_cafe_01");
@@ -60,12 +61,12 @@ describe("saved story consistency", () => {
   });
 
   it("rejects a saved choice counter that disagrees with the conversation's Ink turn", () => {
-    // A confession keeps no resolved romance choices (legacy_fixed), so only the Ink turn can tell.
+    // A confession keeps no resolved romance choices (resolutionMode "fixed"), so only the Ink turn can tell.
     // The cafe date's reactions use a fixed middle ticket, with which it reaches romance stage 2 and opens the confession.
     const afterCafe = readDate(startDate(seedCurrentFreeTime(createGame("晴", "灯")), "milano_cafe_01", () => 5000));
     expect(afterCafe.romanceStage).toBe(2);
     const confession = readDate(startDate(afterCafe, "milano_confession_01"), (state) => state.activeDate!.frame.choices.length > 0);
-    expect(confession.activeDate).toMatchObject({ dateId: "milano_confession_01", resolutionMode: "legacy_fixed", choiceCount: 0, resolvedChoices: [] });
+    expect(confession.activeDate).toMatchObject({ dateId: "milano_confession_01", resolutionMode: "fixed", choiceCount: 0, resolvedChoices: [] });
     expect(parseGameState(JSON.stringify(confession))).toEqual(confession);
     expect(() =>
       parseGameState(
@@ -75,6 +76,10 @@ describe("saved story consistency", () => {
         }),
       ),
     ).toThrow("保存された選択回数が一致しません。");
+    // v14 renamed the confession's mode; the v13 name is not part of the format.
+    expect(() =>
+      parseGameState(JSON.stringify({ ...confession, activeDate: { ...confession.activeDate, resolutionMode: "legacy_fixed" } })),
+    ).toThrow(zodIssues({ code: "invalid_value", path: ["activeDate", "resolutionMode"] }));
   });
 
   it("keeps unmodified snapshots loadable", () => {

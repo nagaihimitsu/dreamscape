@@ -1,9 +1,11 @@
-import { battles, dates, effects, episodes, getCities, getCityContent } from "../content";
+import { battles, dates, effects, episodes, getCityContent } from "../content";
 import { validateStorySnapshot } from "../story/runtime";
-import { activeDateStoryId, completedDateCount, dateBelongsToCity } from "./date-rules";
+import { activeDateStoryId, completedDateCount, dateBelongsToCity, hasCompletedChapter } from "./date-rules";
 import type { GameState } from "./game-state-schema";
 import { resolveRomanceChoice } from "./romance-random";
 import { minimumHomeFare } from "./travel-routes";
+import { getTransportMode, WALK_MODE_ID } from "../content/transport";
+import { getUsableRoutes } from "./transport";
 
 /** Cross-check the saved schedule, return fare and currently running scene. */
 export function validateTravelState(state: GameState): void {
@@ -14,8 +16,18 @@ export function validateTravelState(state: GameState): void {
       (travel.activeEvent && (!cityTravel.events.some((event) => event.id === travel.activeEvent!.eventId && event.placeId === travel.activeEvent!.placeId) ||
         travel.activeEvent.placeId !== travel.currentPlaceId || travel.activeEvent.endMinute < travel.minute)))
     throw new Error("旅行の位置や時間枠が一致しません。");
+  // A rental mode is usable once rented and stays usable in the city, so the saved reserve
+  // (computed from the usable routes when it was set) never falls below this minimum.
+  if (travel.rentedModeIds.some((modeId) => !getTransportMode(state.currentCityId, modeId)?.rental ||
+      !getCityContent(state.currentCityId).travelSettings.rentals?.some((offer) => offer.modeId === modeId)))
+    throw new Error("借りた乗り物の記録が一致しません。");
+  // Rides are counted per declared mode other than walking, a rental mode only once rented (both end on departure).
+  if (Object.keys(travel.rideCounts).some((modeId) => {
+    const mode = getTransportMode(state.currentCityId, modeId);
+    return !mode || modeId === WALK_MODE_ID || (!!mode.rental && !travel.rentedModeIds.includes(modeId));
+  })) throw new Error("乗り物に乗った回数の記録が一致しません。");
   const returnMinute = travel.activeEvent?.endMinute ?? travel.minute;
-  const requiredFare = minimumHomeFare(cityTravel.routes, travel.currentPlaceId, travel.hotelPlaceId, returnMinute);
+  const requiredFare = minimumHomeFare(getUsableRoutes(state), travel.currentPlaceId, travel.hotelPlaceId, returnMinute);
   if (requiredFare === undefined || travel.returnReserve < requiredFare)
     throw new Error("帰路の交通費を確保できていません。");
   if (travel.activeEvent) {
@@ -41,7 +53,6 @@ export function validateGameHistory(state: GameState): void {
     effects.flatMap((effect) => (effect.memoryId ? [effect.memoryId] : [])),
   );
   if (
-    state.completedChapters.some((id) => !getCities().some((entry) => entry.id === id)) ||
     state.playedDateIds.some((id) => !dates.some((date) => date.id === id)) ||
     state.memories.some((id) => !knownMemories.has(id)) ||
     state.unlockedEventIds.some(
@@ -49,11 +60,6 @@ export function validateGameHistory(state: GameState): void {
     )
   )
     throw new Error("保存データの参照先が見つかりません。");
-  for (const entry of getCities()) {
-    if (state.completedChapters.includes(entry.id) !==
-      state.completedEpisodeIds.some((id) => episodes.some((episode) => episode.id === id && episode.cityId === entry.id)))
-      throw new Error("章の報酬記録が一致しません。");
-  }
   if (state.endingReached !== (state.confessionStatus === "accepted"))
     throw new Error("エンディングの記録が一致しません。");
   if ((state.completedRecoveryCount > 0) !== state.playedDateIds.some(
@@ -88,13 +94,11 @@ export function validateActiveDateState(state: GameState): void {
       !(date.requiredCompletedEpisodeIds ?? []).every((id) =>
         state.completedEpisodeIds.includes(id),
       ) ||
-      !date.requiredCompletedChapters.every((id) =>
-        state.completedChapters.includes(id),
-      )
+      !date.requiredCompletedChapters.every((id) => hasCompletedChapter(state, id))
     )
       throw new Error("デートの保存状態を確認できません。");
     const storyId = activeDateStoryId(date, active);
-    if (active.resolutionMode === "legacy_fixed") {
+    if (active.resolutionMode === "fixed") {
       if (date.kind !== "confession" || active.randomPlan.length || active.resolvedChoices.length || active.responseSnapshot)
         throw new Error("告白の結果記録が一致しません。");
     } else {
@@ -145,4 +149,16 @@ export function validateActiveDateState(state: GameState): void {
       } : undefined,
     }, state.memories);
   }
+}
+
+/**
+ * The story state of the common condition system: every saved line, step and
+ * flag must be declared (stage 3 declares them in progression/story.json).
+ * No journey declares any yet, so only the empty records are valid.
+ */
+export function validateStoryProgress(state: GameState): void {
+  if (Object.keys(state.storyProgress.lines).length || state.storyProgress.flags.length)
+    throw new Error("物語の進行の記録が一致しません。");
+  if (state.travel.temporaryFlags.length)
+    throw new Error("この都市での物語の印の記録が一致しません。");
 }

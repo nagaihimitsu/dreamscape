@@ -1,0 +1,2680 @@
+{
+  "schemaVersion": 2,
+  "cityId": "samarkand",
+  "sourceRefs": {
+    "network": {
+      "publisher": "WikiRoutes（利用者編集交通台帳）",
+      "title": "Samarkand route catalog",
+      "url": "https://wikiroutes.info/en/samarkand/catalog",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "市内交通台帳はバスとトラムを掲載。列車の欄は都市間鉄道で、今回の市内地点間移動には使用しない。"
+    },
+    "taxi_model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "2人用タクシー編集モデル",
+      "url": "https://sam.uz/en/travel/shahar-transporti",
+      "checkedAt": "2026-11-04",
+      "claimType": "hypothesis",
+      "claimJa": "車道の迂回・配車待ち・車止めからの徒歩を含むゲーム用の所要時間の見積もり。料金は配車アプリの料金表の式による（別の出典）。歩行者専用のタシュケント通りを車で横断する設定ではない。"
+    },
+    "yandex_start": {
+      "publisher": "Yandex Go",
+      "title": "Цена на такси, номер телефона: тариф Старт, Самарканд",
+      "url": "https://taxi.yandex.uz/ru_uz/samarkand/tariff/start/",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "サマルカンドの配車アプリの「スタート」料金の上限（割増を含まない）：最低4,100スム（1km・2分を含む）、市内1kmごと1,020スム以下、1分ごと450スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+    },
+    "taxi_fare_model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "タクシー料金の計算（配車アプリの料金表の式）",
+      "url": "https://router.project-osrm.org/table/v1/driving/",
+      "checkedAt": "2026-11-07",
+      "claimType": "hypothesis",
+      "claimJa": "料金＝最低4,100スム＋1kmごと1,020スム×（道のり−1km）＋1分ごと450スム×（乗車時間−2分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
+    }
+  },
+  "decisions": [
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_registan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_registan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_registan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_registan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_registan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_registan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_registan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_registan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_registan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_registan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_registan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_registan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_registan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_registan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_registan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_registan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_registan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_registan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_registan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_registan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_rukhabad",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録地点間の市内移動に地下鉄・都市間鉄道を使わない。鉄道駅から他都市へ向かう列車はこの都市地図の移動対象外。",
+      "sourceRefs": [
+        "network"
+      ]
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_university_boulevard",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区間を避けた車道と最後の徒歩接続を含むゲーム推定。短距離は徒歩の方が早い場合がある。",
+      "sourceRefs": [
+        "taxi_model",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    }
+  ]
+}

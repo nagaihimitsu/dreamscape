@@ -7,7 +7,7 @@
       "nameJa": "ミノール周辺のアンホール運河",
       "nameEn": "Anhor Canal near Minor",
       "descriptionJa": "ミノール周辺で、タシュケントの街を流れるアンホール運河沿いを歩く候補。背景は同じ運河の参考写真で、代表点そのものの撮影位置と断定しない。",
-      "backgroundAssetId": "uz_bg_tashkent_anhor_canal",
+      "backgroundId": "uz_bg_tashkent_anhor_canal",
       "facts": [
         {
           "publisher": "Uzbekistan Travel",
@@ -25,7 +25,7 @@
       "nameJa": "日本庭園",
       "nameEn": "Japanese Garden",
       "descriptionJa": "池、石、木々を組み合わせたタシュケントの日本庭園。入場料は二人分のゲーム設定。",
-      "backgroundAssetId": "uz_bg_tashkent_japanese_garden",
+      "backgroundId": "uz_bg_tashkent_japanese_garden",
       "facts": [
         {
           "publisher": "Uzbekistan Travel",
@@ -43,7 +43,7 @@
       "nameJa": "ナヴォイ劇場（外観）",
       "nameEn": "Navoi Theatre exterior",
       "descriptionJa": "オペラとバレエの劇場を、外観と前庭から眺める場所。公演鑑賞は含まない。",
-      "backgroundAssetId": "uz_bg_tashkent_navoi_theatre",
+      "backgroundId": "uz_bg_tashkent_navoi_theatre",
       "facts": [
         {
           "publisher": "Uzbekistan Travel",
@@ -61,7 +61,7 @@
       "nameJa": "独立広場の庭園",
       "nameEn": "Independence Square gardens",
       "descriptionJa": "タシュケント中心部の独立広場で、噴水や緑のある公共空間を歩く候補。政府施設の内部には入らない。",
-      "backgroundAssetId": "uz_bg_tashkent_independence_square",
+      "backgroundId": "uz_bg_tashkent_independence_square",
       "facts": [
         {
           "publisher": "Wikipedia",
@@ -79,7 +79,7 @@
       "nameJa": "アブルカシム・マドラサ",
       "nameEn": "Abulkasym Madrasah",
       "descriptionJa": "19世紀のマドラサにある工芸の作業空間。背景は工房入口の部分写真で、建物全景や扉の建造年代を示すものではない。",
-      "backgroundAssetId": "uz_bg_tashkent_abulkasym",
+      "backgroundId": "uz_bg_tashkent_abulkasym",
       "facts": [
         {
           "publisher": "Uzbekistan Travel",
@@ -97,7 +97,7 @@
       "nameJa": "アリシェル・ナヴォイ公園",
       "nameEn": "Alisher Navoi National Park",
       "descriptionJa": "湖と緑の散策空間を持つ公園。背景は改修前の2016年の参考写真で、現在の施設配置を示すものではない。",
-      "backgroundAssetId": "uz_bg_tashkent_navoi_park",
+      "backgroundId": "uz_bg_tashkent_navoi_park",
       "facts": [
         {
           "publisher": "Wikipedia",
@@ -115,7 +115,7 @@
       "nameJa": "シヨブ・バザール",
       "nameEn": "Siyob Bazaar",
       "descriptionJa": "ビビハニム・モスクに隣接する市場で、パン、ドライフルーツ、香辛料などを扱う。",
-      "backgroundAssetId": "uz_bg_samarkand_siyob_bazaar",
+      "backgroundId": "uz_bg_samarkand_siyob_bazaar",
       "facts": [
         {
           "publisher": "sam.uz（独立都市ガイド）",
@@ -133,7 +133,7 @@
       "nameJa": "ウルグベク天文台",
       "nameEn": "Ulugh Beg Observatory",
       "descriptionJa": "ウルグベクの天文台では、岩盤を掘った大型観測器の地下部分が残っている。",
-      "backgroundAssetId": "uz_bg_samarkand_ulugh_beg_observatory",
+      "backgroundId": "uz_bg_samarkand_ulugh_beg_observatory",
       "facts": [
         {
           "publisher": "sam.uz（独立都市ガイド）",
@@ -151,7 +151,7 @@
       "nameJa": "アフラシャブ博物館",
       "nameEn": "Afrasiyab Museum",
       "descriptionJa": "古代サマルカンドの遺跡に隣接し、7世紀の使節を描いた壁画などを収蔵する博物館。",
-      "backgroundAssetId": "uz_bg_samarkand_afrasiab_museum",
+      "backgroundId": "uz_bg_samarkand_afrasiab_museum",
       "facts": [
         {
           "publisher": "sam.uz（独立都市ガイド）",
@@ -169,7 +169,7 @@
       "nameJa": "ハズラティ・ヒズル・モスク前",
       "nameEn": "Hazrat Khizr Mosque Exterior",
       "descriptionJa": "アフラシャブの南端の丘にあるモスク。現在の建物には19世紀以降の増改築が重なる。",
-      "backgroundAssetId": "uz_bg_samarkand_hazrat_khizr",
+      "backgroundId": "uz_bg_samarkand_hazrat_khizr",
       "facts": [
         {
           "publisher": "sam.uz（独立都市ガイド）",
@@ -187,7 +187,7 @@
       "nameJa": "ルハバード廟前",
       "nameEn": "Rukhabad Mausoleum Exterior",
       "descriptionJa": "グーリ・アミールの近くにある、華やかな門構えを持たない煉瓦造の霊廟。",
-      "backgroundAssetId": "uz_bg_samarkand_rukhabad",
+      "backgroundId": "uz_bg_samarkand_rukhabad",
       "facts": [
         {
           "publisher": "sam.uz（独立都市ガイド）",
@@ -205,7 +205,7 @@
       "nameJa": "大学大通り",
       "nameEn": "University Boulevard",
       "descriptionJa": "旧市街と19世紀以降に発展した市街の間を結ぶ、並木のある大通り。",
-      "backgroundAssetId": "uz_bg_samarkand_university_boulevard",
+      "backgroundId": "uz_bg_samarkand_university_boulevard",
       "facts": [
         {
           "publisher": "sam.uz（独立都市ガイド）",
@@ -223,7 +223,7 @@
       "nameJa": "チョル・ミノル外観",
       "nameEn": "Chor Minor exterior",
       "descriptionJa": "チョル・ミノルは1807年に建てられたマドラサの門の建物。四隅の塔には青いドームがあり、単純に礼拝を呼びかける四本のミナレットと断定しない。",
-      "backgroundAssetId": "uz_bg_bukhara_chor_minor",
+      "backgroundId": "uz_bg_bukhara_chor_minor",
       "facts": [
         {
           "publisher": "Uzbekistan Travel",
@@ -241,7 +241,7 @@
       "nameJa": "ボロ・ハウズ外観",
       "nameEn": "Bolo Hauz exterior",
       "descriptionJa": "ボロ・ハウズは池と木の柱が並ぶイーワーンを持つモスクで、アルク城近くに位置する。礼拝空間への無条件の立入りを想定せず外観と列柱を対象とする。",
-      "backgroundAssetId": "uz_bg_bukhara_bolo_hauz",
+      "backgroundId": "uz_bg_bukhara_bolo_hauz",
       "facts": [
         {
           "publisher": "Nomadays",
@@ -259,7 +259,7 @@
       "nameJa": "トキ・ザルガロン",
       "nameEn": "Toki Zargaron",
       "descriptionJa": "リャビ・ハウズからミリ・アラブ方面には交易ドームが続く。トキ・ザルガロンの名は金細工師に由来し、装身具を扱う店が集まっていた。",
-      "backgroundAssetId": "uz_bg_bukhara_toki_zargaron",
+      "backgroundId": "uz_bg_bukhara_toki_zargaron",
       "facts": [
         {
           "publisher": "Advantour",
@@ -277,7 +277,7 @@
       "nameJa": "アブドゥルアジズ・ハン・マドラサ",
       "nameEn": "Abdulaziz Khan Madrasa",
       "descriptionJa": "アブドゥルアジズ・ハン・マドラサは1652年、近くのウルグ・ベク・マドラサは1417年の建築として案内される。向かい合う建物が同時期の作とは限らない。",
-      "backgroundAssetId": "uz_bg_bukhara_abdulaziz_khan",
+      "backgroundId": "uz_bg_bukhara_abdulaziz_khan",
       "facts": [
         {
           "publisher": "Uzbekistan Travel",
@@ -295,7 +295,7 @@
       "nameJa": "ウルグ・ベク・マドラサ",
       "nameEn": "Ulugh Beg Madrasa",
       "descriptionJa": "ウルグ・ベクはブハラにもマドラサを建てた。大学の解説は、その建物に知識の探求を勧める碑文があると紹介している。写真から碑文全文が読めるという主張はしない。",
-      "backgroundAssetId": "uz_bg_bukhara_ulugh_beg",
+      "backgroundId": "uz_bg_bukhara_ulugh_beg",
       "facts": [
         {
           "publisher": "Bukhara State University",
@@ -313,7 +313,7 @@
       "nameJa": "マゴキ・アッタリ",
       "nameEn": "Magoki Attori",
       "descriptionJa": "マゴキ・アッタリはリャビ・ハウズの西に位置する。公式解説は繰り返しの再建と、1930年代の発掘で地中に埋もれた装飾や南側門が現れたことを紹介する。",
-      "backgroundAssetId": "uz_bg_bukhara_magoki_attori",
+      "backgroundId": "uz_bg_bukhara_magoki_attori",
       "facts": [
         {
           "publisher": "Uzbekistan Travel",
@@ -331,7 +331,7 @@
       "nameJa": "カルタ・ミノル外観",
       "nameEn": "Kalta Minor exterior",
       "descriptionJa": "青緑のタイルに覆われた、未完のミナレットを外から眺める場所。",
-      "backgroundAssetId": "uz_bg_khiva_kalta_minor",
+      "backgroundId": "uz_bg_khiva_kalta_minor",
       "facts": [
         {
           "publisher": "Uzbekistan Travel",
@@ -349,7 +349,7 @@
       "nameJa": "パフラヴァン・マフムド廟前",
       "nameEn": "Pahlavan Mahmud Mausoleum exterior",
       "descriptionJa": "詩人・力士として知られる人物をまつる廟。ここでは路地からドームを見上げる外観の訪問を扱う。",
-      "backgroundAssetId": "uz_bg_khiva_pahlavan_mahmud",
+      "backgroundId": "uz_bg_khiva_pahlavan_mahmud",
       "facts": [
         {
           "publisher": "Advantour",
@@ -367,7 +367,7 @@
       "nameJa": "ムハンマド・アミン・ハン・マドラサ外観",
       "nameEn": "Muhammad Amin Khan Madrasa exterior",
       "descriptionJa": "カルタ・ミノルに隣接するマドラサ。二階の居室や装飾された正面を外から見る。",
-      "backgroundAssetId": "uz_bg_khiva_muhammad_amin_khan",
+      "backgroundId": "uz_bg_khiva_muhammad_amin_khan",
       "facts": [
         {
           "publisher": "Uzbekistan Travel",
@@ -385,7 +385,7 @@
       "nameJa": "オタ門",
       "nameEn": "Ota Darvoza (West Gate)",
       "descriptionJa": "イチャン・カラの西門。旧市街と城壁の外をつなぐ入口。",
-      "backgroundAssetId": "uz_bg_khiva_ota_darvoza",
+      "backgroundId": "uz_bg_khiva_ota_darvoza",
       "facts": [
         {
           "publisher": "Khiva Guide",
@@ -403,7 +403,7 @@
       "nameJa": "パルヴァン門",
       "nameEn": "Palvan Darvoza (East Gate)",
       "descriptionJa": "イチャン・カラの東門。通路を抜けると城壁の厚みを感じられる。",
-      "backgroundAssetId": "uz_bg_khiva_palvan_darvoza",
+      "backgroundId": "uz_bg_khiva_palvan_darvoza",
       "facts": [
         {
           "publisher": "Khiva Guide",
@@ -421,7 +421,7 @@
       "nameJa": "バグチャ門・北側城壁",
       "nameEn": "Bogcha Darvoza (North Gate)",
       "descriptionJa": "イチャン・カラ北側の城門。城壁の外から内城の囲いを見渡す。",
-      "backgroundAssetId": "uz_bg_khiva_bogcha_darvoza",
+      "backgroundId": "uz_bg_khiva_bogcha_darvoza",
       "facts": [
         {
           "publisher": "Wikimedia Commons",

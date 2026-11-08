@@ -5,7 +5,7 @@
   "nameJa": "ジャイプール",
   "themeJa": "色彩と知恵の都",
   "firstClearReward": {
-    "rewardSourceId": "jaipur_legacy_episode_placeholder",
+    "rewardSourceId": "gt_jaipur_first_clear",
     "ap": 0
   },
   "landmarkIdsPlanned": [

@@ -235,7 +235,7 @@
         "C": "露店のある屋根付き市場で、街の主要な通りから離れている。"
       }
     },
-    "last_supper_c_apostle_groups": {
+    "milano_last_supper_c_apostle_groups": {
       "source": {
         "questionEn": "How are the twelve apostles arranged around Christ?",
         "options": [
@@ -261,7 +261,7 @@
         "C": "四人ずつ三つの集団で、キリストはその一組に含まれる。"
       }
     },
-    "last_supper_c_room_extension": {
+    "milano_last_supper_c_room_extension": {
       "source": {
         "questionEn": "What effect does the painted room create for people in the refectory?",
         "options": [
@@ -287,7 +287,7 @@
         "C": "場面が、周囲の実際の部屋の続きをなしているように見える。"
       }
     },
-    "last_supper_c_shared_focus": {
+    "milano_last_supper_c_shared_focus": {
       "source": {
         "questionEn": "Which conclusion about the composition is best supported by the two pieces of evidence?",
         "options": [
@@ -521,7 +521,7 @@
         "C": "絵の具をより強く定着させられたが、使える色が少なかった。"
       }
     },
-    "last_supper_b_slow_revision": {
+    "milano_last_supper_b_slow_revision": {
       "source": {
         "questionEn": "Why was painting on dry plaster useful to Leonardo?",
         "options": [
@@ -547,7 +547,7 @@
         "C": "漆喰が乾く前にそれぞれの部分を仕上げられたから。"
       }
     },
-    "last_supper_b_doorway_counterexample": {
+    "milano_last_supper_b_doorway_counterexample": {
       "source": {
         "questionEn": "Which reason best challenges the claim that Leonardo's technique caused ALL the damage?",
         "options": [
@@ -573,7 +573,7 @@
         "C": "出入口は、後の建物の改変による損傷を示している。"
       }
     },
-    "last_supper_b_preventive_care": {
+    "milano_last_supper_b_preventive_care": {
       "source": {
         "questionEn": "Why does the museum filter the air and limit visitor numbers?",
         "options": [

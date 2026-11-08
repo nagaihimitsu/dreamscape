@@ -16,5 +16,19 @@
     "unitJa": "ユーロ",
     "unit": "whole"
   },
-  "intercityModes": []
+  "intercityModes": [],
+  "transportModes": [
+    {
+      "id": "tram",
+      "nameJa": "路面電車",
+      "movingJa": "路面電車で移動中",
+      "kind": "tram"
+    },
+    {
+      "id": "taxi",
+      "nameJa": "タクシー",
+      "movingJa": "タクシーで移動中",
+      "kind": "car"
+    }
+  ]
 }

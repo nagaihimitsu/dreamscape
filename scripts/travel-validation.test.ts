@@ -42,9 +42,9 @@ describe("Milan travel data references", () => {
   });
 
   it("requires a city's story background to be a registered background", () => {
-    const check = (storyBackgroundAssetId: string) => validateTravelContent(travel, { hotelPlaceId: settings.hotelPlaceId, storyBackgroundAssetId },
+    const check = (storyBackgroundId: string) => validateTravelContent(travel, { hotelPlaceId: settings.hotelPlaceId, storyBackgroundId },
       "milano", journey, dates, battles, landmarkIds, destinationIds, backgrounds);
-    expect(() => check(settings.storyBackgroundAssetId!)).not.toThrow();
+    expect(() => check(settings.storyBackgroundId!)).not.toThrow();
     expect(() => check("missing_background")).toThrow("Unknown travel story background: milano/missing_background");
   });
 
@@ -78,6 +78,12 @@ describe("Milan travel data references", () => {
     const walk = travel.routes.find((route) => route.fromPlaceId === "p_duomo" && route.toPlaceId === "p_hotel" && route.mode === "walk")!;
     expect(() => validate({ ...travel, routes: [...routes, { ...walk, mode: "taxi", cost: 10, minutes: 12 * 60 }] }))
       .toThrow(/Missing usable directed route: p_duomo\/p_hotel/);
+    // A rental mode is an extra way: a pair reached only by it is missing for a party that has not rented.
+    const rentalOnly = [...routes, { ...walk, mode: "rental_bicycle", minutes: 5 }];
+    expect(() => validateTravelContent({ ...travel, routes: rentalOnly }, { hotelPlaceId: settings.hotelPlaceId }, "milano", journey, dates, battles,
+      landmarkIds, destinationIds, backgrounds, { rentalModeIds: ["rental_bicycle"] })).toThrow(/Missing usable directed route: p_duomo\/p_hotel/);
+    expect(() => validateTravelContent({ ...travel, routes: rentalOnly }, { hotelPlaceId: settings.hotelPlaceId }, "milano", journey, dates, battles,
+      landmarkIds, destinationIds, backgrounds)).not.toThrow();
   });
 
   it("requires the free zero-time route for events at the current place", () => {
@@ -102,7 +108,7 @@ describe("Milan travel data references", () => {
     expect(() => validate({ ...travel, events: travel.events.filter((event) => event.id !== dates[0].id) })).toThrow(/Missing travel event/);
     const events = travel.events.map((event) => event.id === dates[0].id ? { ...event, apCost: event.apCost + 1 } : event);
     expect(() => validate({ ...travel, events })).toThrow(/AP mismatch/);
-    const places = travel.places.map((place, index) => index === 0 ? { ...place, backgroundAssetId: "missing" } : place);
+    const places = travel.places.map((place, index) => index === 0 ? { ...place, backgroundId: "missing" } : place);
     expect(() => validate({ ...travel, places })).toThrow(/Unknown travel background/);
     expect(() => validate(travel, "missing")).toThrow(/Unknown travel hotel/);
   });

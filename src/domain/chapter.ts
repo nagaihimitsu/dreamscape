@@ -3,7 +3,6 @@ import {
   landmarks,
   episodes,
   journeyConfig,
-  rewardRules,
   allRewardRules,
   type EpisodeDefinition,
   type RewardRule,
@@ -219,10 +218,9 @@ export function isRewardEarned(state: GameState, rule: RewardRule): boolean {
     (rule.trigger === "battle_complete" || record.bestScore >= rule.minScore!)
   );
 }
-/** Chapter is a compatibility token for existing dates; only a finale marks the whole city. */
+/** Records the episodes whose battle is finished; only a finale marks the whole city. */
 function recordEpisodes(state: GameState): GameState {
   const completedEpisodeIds = [...state.completedEpisodeIds];
-  const completedChapters = [...state.completedChapters];
   const completedCityIds = [...state.completedCityIds];
   for (const episode of episodes) {
     if (!hasCompletedBattle(state, episode)) continue;
@@ -235,8 +233,6 @@ function recordEpisodes(state: GameState): GameState {
       continue;
     if (!completedEpisodeIds.includes(episode.id))
       completedEpisodeIds.push(episode.id);
-    if (!completedChapters.includes(episode.cityId))
-      completedChapters.push(episode.cityId);
     if (
       episode.kind === "city_finale" &&
       !completedCityIds.includes(episode.cityId)
@@ -244,10 +240,9 @@ function recordEpisodes(state: GameState): GameState {
       completedCityIds.push(episode.cityId);
   }
   return completedEpisodeIds.length === state.completedEpisodeIds.length &&
-    completedChapters.length === state.completedChapters.length &&
     completedCityIds.length === state.completedCityIds.length
     ? state
-    : { ...state, completedEpisodeIds, completedChapters, completedCityIds };
+    : { ...state, completedEpisodeIds, completedCityIds };
 }
 export function finalizeBattleProgress(state: GameState): GameState {
   const active = state.activeBattle;
@@ -293,52 +288,12 @@ export function recordGuideRead(
     .map((rule) => rule.id);
   return earnRewards(next, ids).state;
 }
-/**
- * Records the city's episodes whose battle this save has finished and pays
- * their episode rewards not received yet. During a scene, without such a
- * battle, or when everything is recorded already, the state comes back
- * unchanged: completing a city's episodes needs real battle evidence and never
- * pays twice.
- */
-export function recordFinishedEpisodes(
-  state: GameState,
-  cityId = state.currentCityId,
-): GameState {
-  if (
-    state.activeEncounter ||
-    state.activeDate ||
-    state.activeTourism ||
-    state.activeBattle ||
-    state.activeEpilogue
-  )
-    return state;
-  const matched = episodes.filter(
-    (episode) =>
-      episode.cityId === cityId &&
-      hasCompletedBattle(state, episode),
-  );
-  if (!matched.length) return state;
-  const next = recordEpisodes(state);
-  const ids = rewardRules
-    .filter(
-      (rule) =>
-        matched.some((episode) => episode.id === rule.episodeId) &&
-        rule.trigger !== "guide_read" &&
-        isRewardEarned(next, rule),
-    )
-    .map((rule) => rule.id);
-  const awarded = earnRewards(next, ids).state;
-  return awarded === state
-    ? state
-    : { ...awarded, revision: state.revision + 1 };
-}
 export function validateJourneyState(state: GameState): void {
   for (const id of state.completedEpisodeIds) {
     const episode = episodes.find((item) => item.id === id);
     if (
       !episode ||
       !hasCompletedBattle(state, episode) ||
-      !state.completedChapters.includes(episode.cityId) ||
       !episode.requiredEpisodeIds.every((required) =>
         state.completedEpisodeIds.includes(required),
       ) ||
@@ -351,7 +306,7 @@ export function validateJourneyState(state: GameState): void {
       hasCompletedBattle(state, episode) !==
       state.completedEpisodeIds.includes(episode.id)
     )
-      throw new Error("完了したバトルと章の記録が一致しません。");
+      throw new Error("完了したバトルと観光エピソードの記録が一致しません。");
     if (
       episode.kind === "city_finale" &&
       state.completedCityIds.includes(episode.cityId) !==

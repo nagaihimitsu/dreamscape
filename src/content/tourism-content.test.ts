@@ -10,7 +10,7 @@ import type { TourismCatalog } from "./tourism-schemas";
 import { resolvePublicFile } from "../../scripts/public-assets";
 
 let fixture: string;
-const guidePath = storySourceFile("tourism/sound_supper");
+const guidePath = storySourceFile("tourism/milano_last_supper_guide");
 // The Last Supper landmark, its first clues and an image asset.
 const assetId = "darsena_finale_photo";
 const landmarkId = "last_supper";

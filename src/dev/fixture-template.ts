@@ -115,7 +115,7 @@ function templateOf(content: DebugTemplateContent, journey: Journey, cityId: str
   })[0];
   // A plain encounter that gives an item of this city: no quiz, no AP alternative, no item needed to choose.
   const encounter = content.encounters.encounters.flatMap((event) => {
-    const item = event.cityId === cityId && event.availability !== "dormant" && !event.quiz && !event.alternativeApRewardId &&
+    const item = event.cityId === cityId && !event.quiz && !event.alternativeApRewardId &&
       event.options.every((option) => !option.requiresItemId && !option.consumeItemId && !option.giftItemId)
       ? content.encounters.items.find((entry) => entry.id === event.completionItemId && entry.cityId === cityId) : undefined;
     return item ? [{ encounter: event, item }] : [];

@@ -188,6 +188,31 @@ export const ops = {
     await expect(settings).toBeVisible();
     return settings;
   },
+  /** Settings → 「古い保存データの整理」 (the settings dialog closes, the cleanup dialog opens). */
+  async openOldDataCleanup(page: Page): Promise<Locator> {
+    const settings = await ops.openSettings(page);
+    await settings.getByRole("button", { name: "古い保存データの整理" }).click();
+    const cleanup = page.getByRole("dialog", { name: "古い保存データの整理" });
+    await expect(cleanup).toBeVisible();
+    return cleanup;
+  },
+  /** In 「古い保存データの整理」: tick the listed items whose titles match, then 「選んだデータを消去する」 (the confirmation opens). */
+  async chooseOldData(page: Page, cleanup: Locator, titles: readonly RegExp[]): Promise<Locator> {
+    for (const title of titles) await cleanup.getByRole("checkbox", { name: title }).check();
+    await cleanup.getByRole("button", { name: "選んだデータを消去する" }).click();
+    const confirm = page.getByRole("dialog", { name: "選んだ保存データを消去しますか？" });
+    await expect(confirm).toBeVisible();
+    return confirm;
+  },
+  /**
+   * A finger tap at the centre of `target` as it is on screen now, without waiting for it to be
+   * enabled or still: a quick second tap lands on whatever has moved under the finger.
+   */
+  async tap(page: Page, target: Locator) {
+    await target.scrollIntoViewIfNeeded();
+    const box = (await target.boundingBox())!;
+    await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2);
+  },
   async closeDialog(dialog: Locator) {
     await dialog.getByRole("button", { name: "閉じる", exact: true }).click();
     await expect(dialog).toBeHidden();
@@ -212,11 +237,21 @@ export const ops = {
     await expect(note).toBeVisible();
     return note;
   },
-  /** Pick a destination on the travel menu, opening the longer list when needed. */
-  async goTo(page: Page, placeId: string) {
+  /**
+   * Pick a destination on the travel menu, opening the longer list when needed. A
+   * destination reached by more than one route opens the route dialog 「{place}へ」;
+   * `route` is the start of the route button to press there (the mode's name, e.g.
+   * 「徒歩」 or 「路面電車」).
+   */
+  async goTo(page: Page, placeId: string, route?: string) {
     const place = page.getByTestId(`travel-place-${placeId}`);
     if (!(await place.isVisible())) await page.getByText("ほかの行き先を見る", { exact: true }).click();
     await place.getByRole("button").click();
+    if (route) await ops.routeButton(page, route).click();
+  },
+  /** The route dialog's button whose label starts with `route` (the mode's name). */
+  routeButton(page: Page, route: string): Locator {
+    return page.getByRole("dialog").getByRole("button", { name: new RegExp(`^${route}`, "u") });
   },
   /** Close a sightseeing guide and go on to the landmark's battle. */
   async skipGuideToBattle(page: Page) {

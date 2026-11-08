@@ -2,12 +2,12 @@
   "schemaVersion": 1,
   "episodes": [
     {
-      "id": "smp_mihon_clock_tower",
+      "id": "smp_mihon_main_clock_tower",
       "kind": "episode",
       "cityId": "mihon",
       "landmarkId": "mihon_clock_tower",
       "requiredEpisodeIds": [],
-      "battleId": "smp_mihon_clock_tower_battle",
+      "battleId": "smp_mihon_main_clock_tower_battle",
       "titleJa": "止まった針の理由",
       "descriptionJa": "時計塔で、時計を直したい時計番のトーマに会う。",
       "clearTitleJa": "いつ来ても三時",
@@ -19,7 +19,7 @@
       "cityId": "mihon",
       "landmarkId": null,
       "requiredEpisodeIds": [
-        "smp_mihon_clock_tower"
+        "smp_mihon_main_clock_tower"
       ],
       "epilogueStoryId": "epilogues/mihon",
       "battleId": "smp_mihon_finale_battle",
@@ -31,9 +31,9 @@
   ],
   "storyBattles": [
     {
-      "battleId": "smp_mihon_market_b",
+      "battleId": "smp_mihon_special_b_market",
       "completionReward": {
-        "id": "smp_mihon_market_b_complete",
+        "id": "smp_mihon_special_b_market_complete",
         "ap": 1,
         "titleJa": "朝市の対決を初めて完了"
       },
@@ -43,9 +43,9 @@
       "actionLabelJa": "朝市へ行く"
     },
     {
-      "battleId": "smp_mihon_library_c",
+      "battleId": "smp_mihon_special_c_library",
       "completionReward": {
-        "id": "smp_mihon_library_c_complete",
+        "id": "smp_mihon_special_c_library_complete",
         "ap": 1,
         "titleJa": "図書室の対決を初めて完了"
       },
@@ -57,24 +57,24 @@
   ],
   "rewards": [
     {
-      "id": "smp_mihon_clock_tower_guide_read",
-      "episodeId": "smp_mihon_clock_tower",
+      "id": "smp_mihon_main_clock_tower_guide_read",
+      "episodeId": "smp_mihon_main_clock_tower",
       "trigger": "guide_read",
       "ap": 1,
       "minScore": null,
       "titleJa": "観光案内を初めて読了"
     },
     {
-      "id": "smp_mihon_clock_tower_battle_complete",
-      "episodeId": "smp_mihon_clock_tower",
+      "id": "smp_mihon_main_clock_tower_battle_complete",
+      "episodeId": "smp_mihon_main_clock_tower",
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
       "titleJa": "対決を初めて完了"
     },
     {
-      "id": "smp_mihon_clock_tower_battle_score",
-      "episodeId": "smp_mihon_clock_tower",
+      "id": "smp_mihon_main_clock_tower_battle_score",
+      "episodeId": "smp_mihon_main_clock_tower",
       "trigger": "battle_score",
       "ap": 1,
       "minScore": 2,
