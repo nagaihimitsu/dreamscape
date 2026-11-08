@@ -1399,6 +1399,11 @@ dialog.old-data .old-data-notice:focus {
 .debug-mode-setting [role="status"]:focus {
   outline: none;
 }
+/* 「Debugモードをオフにしました。」: the status stays on the page so screen readers announce the
+   text put into it; while empty it is taken out of the grid, so it adds no row and no gap. */
+.debug-mode-announcement:empty {
+  position: absolute;
+}
 .debug-mode-setting .secondary {
   margin-top: 0;
   min-height: 48px;

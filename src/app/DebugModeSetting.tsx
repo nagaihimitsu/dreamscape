@@ -71,6 +71,9 @@ export function DebugModeSetting({ debugMode }: { debugMode: ReturnType<typeof u
       <p className="fine-print">
         制作・確認用の機能です。オンにすると「場面の確認」から場面を直接開けて、遊びの中で親しさ・信頼・恋愛の意識の変化が画面に出ます。通常のセーブ・英語ノート・表示設定は変わりません。
       </p>
+      {/* Always on the page, so screen readers announce the text when it is put in (a status
+          region added together with its text is often not read). Empty, it takes no space. */}
+      <p className="debug-mode-announcement" role="status">{turnedOff && !debugMode.on ? "Debugモードをオフにしました。" : null}</p>
       {debugMode.on ? <>
         <p ref={status} tabIndex={-1} role="status">Debugモードはオンです（この端末だけ）。</p>
         <a className="secondary debug-mode-link" href={`${import.meta.env.BASE_URL}?debug`}>場面の確認を開く</a>
@@ -97,10 +100,7 @@ export function DebugModeSetting({ debugMode }: { debugMode: ReturnType<typeof u
             <button type="submit" className="primary" disabled={!password.trim()}>オンにする</button>
           </div>
         </form>
-      ) : <>
-        {turnedOff && <p role="status">Debugモードをオフにしました。</p>}
-        <button ref={start} type="button" className="secondary" onClick={ask}>Debugモードをオンにする</button>
-      </>}
+      ) : <button ref={start} type="button" className="secondary" onClick={ask}>Debugモードをオンにする</button>}
       {debugMode.message && <p role="alert">{debugMode.message}</p>}
     </section>
   );

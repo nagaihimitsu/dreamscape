@@ -385,7 +385,7 @@ export function GameApp({
       )}
       {/* A tap on main's own margin beside a narrow story scene reads on (scene-tap.ts). */}
       <main id="main" ref={main} tabIndex={-1} {...{ [PAGE_MARGIN_ATTRIBUTE]: "" }}>
-        {showChanges && shownChange && shownChange.scene === storyScene && <RelationshipChangeNote change={shownChange.change} />}
+        {showChanges && <RelationshipChangeNote change={shownChange?.scene === storyScene ? shownChange.change : null} />}
         {learning.error && (
           <div className="notice" role="status">
             {learning.error}
@@ -746,7 +746,7 @@ export function GameApp({
           onClose={() => setDeleteSnapshot(null)}
         >
           <h2 id="delete-title">{isDebug ? "Debug用の一時データを消去しますか？" : "保存データを消去しますか？"}</h2>
-          {isDebug ? <p>Debug用の進行と英語ノートを消去して場面の確認へ戻ります。通常のセーブ・英語ノート・表示設定は消去しません。</p> : <><p>
+          {isDebug ? <p>Debug用の進行と英語ノートを消去して、Debugで開いた場面を最初から開き直します。通常のセーブ・英語ノート・表示設定は消去しません。</p> : <><p>
             このブラウザに保存された名前、旅の進行、AP、恋愛・バトルの記録、英語ノートと対訳設定を消去します。元には戻せません。
           </p>
           <p className="fine-print">
