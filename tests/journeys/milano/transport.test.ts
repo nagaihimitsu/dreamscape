@@ -10,6 +10,7 @@ import { createGame, validateGameState, type GameState } from "../../../src/doma
 import { closeTourism, skipTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
 import { beginTravelEvent, finishTravelEventIfComplete, observeLocalLandmark, sleepAtHotel } from "../../../src/domain/travel-game";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
+import { zodIssues } from "../../fixtures/zod-issues";
 
 const { travel } = getCityContent("milano");
 const pairs = (mode: string) => travel.routes.filter((route) => route.mode === mode && route.fromPlaceId !== route.toPlaceId)
@@ -110,7 +111,12 @@ describe("Milano transport", () => {
     // Milano's old bus and rail routes are gone (M), walking is never counted.
     for (const counts of [{ bus: 1 }, { rail: 1 }, { walk: 1 }] as Record<string, number>[])
       expect(() => validateGameState(tampered(counts)), JSON.stringify(counts)).toThrow("乗り物に乗った回数の記録が一致しません。");
-    for (const counts of [{ tram: 0 }, { tram: 1.5 }, { tram: -1 }])
-      expect(() => validateGameState(tampered(counts)), JSON.stringify(counts)).toThrow();
+    // A count is a positive whole number (the schema refuses the rest).
+    for (const [counts, issue] of [
+      [{ tram: 0 }, { code: "too_small", path: ["travel", "rideCounts", "tram"] }],
+      [{ tram: 1.5 }, { code: "invalid_type", path: ["travel", "rideCounts", "tram"], expected: "int" }],
+      [{ tram: -1 }, { code: "too_small", path: ["travel", "rideCounts", "tram"] }],
+    ] as const)
+      expect(() => validateGameState(tampered(counts)), JSON.stringify(counts)).toThrow(zodIssues(issue));
   });
 });

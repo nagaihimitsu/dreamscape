@@ -14,6 +14,7 @@ import { beginTravelEvent, getTravelEventAvailability, getTravelHomeRoutes, getT
 import { minimumHomeFare } from "../../../src/domain/travel-routes";
 import { completedCity } from "../../../src/dev/scenario-builders";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
+import { zodIssues } from "../../fixtures/zod-issues";
 
 const BIKE = "rental_bicycle";
 const EPISODE = "smp_mihon_main_clock_tower";
@@ -129,9 +130,10 @@ describe("rental transport (sample journey)", () => {
     const tampered = (rentedModeIds: string[]) => ({ ...rented, travel: { ...rented.travel, rentedModeIds } });
     expect(() => validateGameState(tampered(["walk"]))).toThrow("借りた乗り物の記録が一致しません。");
     expect(() => validateGameState(tampered(["no_such_mode"]))).toThrow("借りた乗り物の記録が一致しません。");
-    expect(() => validateGameState(tampered([BIKE, BIKE]))).toThrow();
+    expect(() => validateGameState(tampered([BIKE, BIKE]))).toThrow(zodIssues({ code: "custom", path: ["travel", "rentedModeIds"] }));
     const { rentedModeIds: _rented, ...travelWithout } = rented.travel;
-    expect(() => validateGameState({ ...rented, travel: travelWithout } as unknown as GameState)).toThrow();
+    expect(() => validateGameState({ ...rented, travel: travelWithout } as unknown as GameState))
+      .toThrow(zodIssues({ code: "invalid_type", path: ["travel", "rentedModeIds"] }));
   });
 
   it("returns every rental when the party leaves for the next city", () => {
@@ -165,6 +167,6 @@ describe("rental transport (sample journey)", () => {
     for (const counts of [{ [BIKE]: 1 }, { walk: 1 }, { bicycle: 1 }] as Record<string, number>[])
       expect(() => validateGameState(tampered(state, counts)), JSON.stringify(counts)).toThrow("乗り物に乗った回数の記録が一致しません。");
     expect(validateGameState(tampered(rented, { [BIKE]: 4 })).travel.rideCounts).toEqual({ [BIKE]: 4 });
-    expect(() => validateGameState(tampered(rented, { [BIKE]: 0 }))).toThrow();
+    expect(() => validateGameState(tampered(rented, { [BIKE]: 0 }))).toThrow(zodIssues({ code: "too_small", path: ["travel", "rideCounts", BIKE] }));
   });
 });

@@ -272,8 +272,17 @@ describe("save format v14 (docs/07: one format per version, no migration)", () =
     expect(() => validateGameState(story({ lines: {}, flags: ["smp_mihon_lili_drawing_talk"] }))).toThrow("物語の進行の記録が一致しません。");
     expect(() => validateGameState({ ...fresh, travel: { ...fresh.travel, temporaryFlags: ["smp_mihon_lili_just_met"] } }))
       .toThrow("この都市での物語の印の記録が一致しません。");
-    for (const shape of [undefined, { lines: {} }, { lines: {}, flags: [], steps: {} }, { lines: { a: "Bad" }, flags: [] }, { lines: {}, flags: ["a", "a"] }])
-      expect(() => validateGameState(story(shape)), JSON.stringify(shape)).toThrow();
+    // Malformed shapes are refused by the schema itself (pinned to its issues), before the emptiness rule above.
+    for (const [shape, issue] of [
+      [undefined, { code: "invalid_type", path: ["storyProgress"] }],
+      [{ lines: {} }, { code: "invalid_type", path: ["storyProgress", "flags"] }],
+      [{ lines: {}, flags: [], steps: {} }, { code: "unrecognized_keys", path: ["storyProgress"], keys: ["steps"] }],
+      [{ lines: { a: "Bad" }, flags: [] }, { code: "invalid_format", path: ["storyProgress", "lines", "a"] }],
+      [{ lines: { Bad: "a" }, flags: [] }, { code: "invalid_key", path: ["storyProgress", "lines", "Bad"] }],
+      [{ lines: {}, flags: ["a", "a"] }, { code: "custom", path: ["storyProgress", "flags"] }],
+      [{ lines: {}, flags: [""] }, { code: "too_small", path: ["storyProgress", "flags", 0] }],
+    ] as const)
+      expect(() => validateGameState(story(shape)), JSON.stringify(shape)).toThrow(zodIssues(issue));
     // An encounter in progress may continue only from its observation; the after-battle and trip moments are not written yet.
     const meeting = meetEncounter(completedCity("milano"), "duomo_string");
     const { returnTourism, ...active } = meeting.activeEncounter!;
@@ -287,8 +296,11 @@ describe("save format v14 (docs/07: one format per version, no migration)", () =
     expect(() => validateGameState(moment({ trip: { eventId: "milano_duomo_episode", modeId: "tram" } }))).toThrow("道中交流の時点の記録が一致しません。");
     expect(() => validateGameState(moment({ returnTourism, afterBattle: { battleId: "milano_duomo_01", encounterIds: [] } })))
       .toThrow("An encounter has at most one moment to continue from");
-    expect(() => validateGameState(moment({ afterBattle: { battleId: "milano_duomo_01" } }))).toThrow();
-    expect(() => validateGameState(moment({ trip: { eventId: "milano_duomo_episode", modeId: "tram", minutes: 3 } }))).toThrow();
+    // The moments' shapes are strict: refused by the schema before the moment check.
+    expect(() => validateGameState(moment({ afterBattle: { battleId: "milano_duomo_01" } })))
+      .toThrow(zodIssues({ code: "invalid_type", path: ["activeEncounter", "afterBattle", "encounterIds"] }));
+    expect(() => validateGameState(moment({ trip: { eventId: "milano_duomo_episode", modeId: "tram", minutes: 3 } })))
+      .toThrow(zodIssues({ code: "unrecognized_keys", path: ["activeEncounter", "trip"], keys: ["minutes"] }));
   });
 
   it("holds the tour records empty in v14 until the tour system writes them", () => {

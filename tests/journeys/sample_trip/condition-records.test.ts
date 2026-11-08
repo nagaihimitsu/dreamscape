@@ -11,6 +11,7 @@ import { validateGameState, type GameState } from "../../../src/domain/game";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 import { journeyStorage } from "../../../src/persistence/journey-storage";
 import { meetEncounter } from "../../fixtures/encounter-moment";
+import { zodIssues } from "../../fixtures/zod-issues";
 
 const STALL = "smp_mihon_bookmark_stall";
 const GIFT = "smp_mihon_bookmark_gift";
@@ -62,8 +63,10 @@ describe("condition records of the sample journey's encounters (seenEncounterIds
     let state = saved(cityStart("mihon"));
     expect(records(state)).toEqual({ seenEncounterIds: [], completedEncounterIds: [], inventory: {}, itemUses: {} });
 
-    // 「また今度」: seen, not completed, nothing received.
-    state = saved(finish(choose(state, STALL, "later")));
+    // 「また今度」: seen only once the scene ends (the choice alone writes nothing), not completed, nothing received.
+    const putOff = saved(choose(state, STALL, "later"));
+    expect(records(putOff)).toEqual({ seenEncounterIds: [], completedEncounterIds: [], inventory: {}, itemUses: {} });
+    state = saved(finish(putOff));
     expect(records(state)).toEqual({ seenEncounterIds: [STALL], completedEncounterIds: [], inventory: {}, itemUses: {} });
     // Completed later: still seen once; the bookmark is received (receiving writes no use).
     state = saved(finish(choose(state, STALL, "drawn")));
@@ -97,7 +100,7 @@ describe("condition records of the sample journey's encounters (seenEncounterIds
     expect(() => validateGameState(seen([STALL]))).toThrow(seenMessage);
     expect(() => validateGameState(seen([STALL, GIFT, "smp_mihon_no_such_encounter"]))).toThrow(seenMessage);
     expect(() => validateGameState(seen([STALL, GIFT, "duomo_string"]))).toThrow(seenMessage);
-    expect(() => validateGameState(seen([STALL, GIFT, GIFT]))).toThrow();
+    expect(() => validateGameState(seen([STALL, GIFT, GIFT]))).toThrow(zodIssues({ code: "custom", path: ["seenEncounterIds"] }));
     // Item uses: missing, naming an option that does not give the item, another encounter, an unknown option or encounter,
     // or a use of an item that was not given away.
     expect(() => validateGameState(uses({}))).toThrow(usesMessage);
@@ -106,7 +109,8 @@ describe("condition records of the sample journey's encounters (seenEncounterIds
     expect(() => validateGameState(uses({ [BOOKMARK]: { encounterId: GIFT, optionId: "no_such_option" } }))).toThrow(usesMessage);
     expect(() => validateGameState(uses({ [BOOKMARK]: { encounterId: "no_such_encounter", optionId: "give" } }))).toThrow(usesMessage);
     expect(() => validateGameState({ ...state, inventory: { [BOOKMARK]: "held" } })).toThrow(usesMessage);
-    expect(() => validateGameState(uses({ [BOOKMARK]: { encounterId: GIFT, optionId: "give", extra: 1 } as never }))).toThrow();
+    expect(() => validateGameState(uses({ [BOOKMARK]: { encounterId: GIFT, optionId: "give", extra: 1 } as never })))
+      .toThrow(zodIssues({ code: "unrecognized_keys", path: ["itemUses", BOOKMARK], keys: ["extra"] }));
     // The status must match the kind of the recorded option: `give` gives the bookmark away, it does not use it.
     expect(() => validateGameState({ ...state, inventory: { [BOOKMARK]: "used" } })).toThrow(usesMessage);
     // The recorded encounter must be completed (or running with that option): the gift's completion removed, its seen
