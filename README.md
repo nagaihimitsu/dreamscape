@@ -224,6 +224,8 @@ tests/screens/                    # 人が見る画面一覧の撮影（npm run 
 | `npm run dev` | コンテンツを生成してから開発サーバーを起動 |
 | `npm run dev:sample` | 見本の編（`authoring/templates/sample_trip/`）を含めて生成し、開発サーバーを起動。タイトル画面に「見本の旅」が並ぶ（`npm run dev` に戻すと消える。[見本の編](docs/02_TECH_ARCHITECTURE.md#見本の編)） |
 | `npm run content:build`（`content:check`） | 共通データと全旅行編を検証・統合し、`src/content/generated/` に書き出す。成功すると旅行編ごとに提供内容の件数を1行ずつ表示し、警告は件数だけ出す（`-- --verbose` で一覧。[生成時の検査と報告](docs/02_TECH_ARCHITECTURE.md#生成時の検査と報告)）。会話の全分岐検査は前回の成功結果を再利用する（`-- --no-cache` で再利用せずに全部検査。[キャッシュ](docs/10_DEVELOPMENT_CHECKS.md#会話の全分岐検査のキャッシュ)）。`-- --with-sample` で見本の編も加える（単体テストの前の生成はこの形） |
+| `npm run content:watch` | 生成を1回行い、その後は `content/`・`public/` のファイル（Ink・JSON・画像）を保存するたびに生成し直す（`-- --with-sample` で見本の編も含めて監視）。失敗しても監視を続け、生成物は前回のまま。Ctrl+C で終了 |
+| `npm run dev:watch` | `content:watch` と開発サーバーを一緒に起動し、保存した Ink・JSON・画像を開いている画面へ反映する。Ctrl+C で両方を終了（`-- --with-sample` で見本の編も） |
 | `npm run test:quick` | コンテンツを生成してから速い組の単体テスト（日常の確認。全件は `npm test`・CI・`verify`。[テストの組](docs/10_DEVELOPMENT_CHECKS.md#単体テストの組と所要時間)） |
 | `npm test` | コンテンツを生成してから全単体テスト |
 | `npm run test:saves` | コンテンツを生成してから保存関連の単体テスト（`src/persistence/`）だけ |
@@ -304,7 +306,7 @@ npm run content:check
 
 `inkjs/compiler/Compiler`（公式inkjsのコンパイラ）でコンパイルし、`src/content/generated/stories.json` を生成します。独自Inkパーサー・外部コマンド・.NETの準備は不要です。生成JSONはGit管理せず、手動編集しません。ブラウザには `inkjs` のランタイムを使用します。
 
-`dev` 起動前、`test` 前、`build` 内で必ずコンパイル・検証します。開発サーバー起動中にInkを改稿したら別ターミナルで `npm run content:build` を実行してください。生成JSON変更をViteが反映します。**Ink原稿そのものの自動監視はありません。**
+`dev` 起動前、`test` 前、`build` 内で必ずコンパイル・検証します。開発サーバー起動中にInkを改稿したら別ターミナルで `npm run content:build` を実行してください。生成JSON変更をViteが反映します。保存のたびに自動で生成し直すには、開発サーバーの代わりに `npm run dev:watch`（すでに開発サーバーを起動しているときは別ターミナルで `npm run content:watch`）を使います。Ink・JSON・画像のどれを保存しても約5秒（会話の全分岐検査のキャッシュがないときは約20秒）で生成し直し、失敗したときは理由を表示して生成物を前回のままにし、直して保存するのを待ちます。監視中は `npm test`・`npm run test:quick` を実行しないでください（テストの前の生成は見本の編を含め、次の自動生成が見本なしに戻すため。[生成物は1つ](docs/10_DEVELOPMENT_CHECKS.md)）。Linux・Node 22 で確かめています（macOS・Windows でも Node の再帰的なファイル監視で動く想定ですが、未確認です）。
 
 ゲームが読むJSONは、`content/` を検証・統合して `npm run content:build` が書き出す `src/content/generated/content/`（生成物。手動編集しない）です。`content/` のJSONを編集した後も、Inkと同様に `npm run content:build` を実行してください。
 
