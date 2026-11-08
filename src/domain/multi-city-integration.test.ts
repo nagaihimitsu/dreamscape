@@ -84,8 +84,8 @@ describe("two registered cities through the real game runtime", () => {
     expect(after.inventory.blue_pick).toBe("left_behind");
     expect(after.completedEncounterIds).toContain("duomo_string");
     expect(after.seenEncounterIds).toEqual(before.seenEncounterIds);
-    for (const field of ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds"] as const)
-      expect(after[field]).toEqual(before[field]);
+    for (const field of ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds", "tour", "completedTourIds"] as const)
+      expect(after[field], field).toEqual(before[field]);
     expect(departToNextCity(after, before.revision)).toBe(after);
     expect(getNextCity(after)).toBeUndefined();
     const concurrentStorage = new MemoryStorage();

@@ -4,6 +4,7 @@ import { advanceDate, chooseDate, createGame, startDate, validateGameState, type
 import { completedCity } from "../dev/scenario-builders";
 import { advanceEncounter, chooseEncounter, encounterCanFinish, finishEncounter } from "../domain/encounter";
 import { meetEncounter } from "../../tests/fixtures/encounter-moment";
+import { zodIssues } from "../../tests/fixtures/zod-issues";
 // A date in progress saved in the first save format (schemaVersion 1).
 import firstFormatSave from "../../tests/fixtures/save-format-v1.json";
 import {
@@ -288,6 +289,30 @@ describe("save format v14 (docs/07: one format per version, no migration)", () =
       .toThrow("An encounter has at most one moment to continue from");
     expect(() => validateGameState(moment({ afterBattle: { battleId: "milano_duomo_01" } }))).toThrow();
     expect(() => validateGameState(moment({ trip: { eventId: "milano_duomo_episode", modeId: "tram", minutes: 3 } }))).toThrow();
+  });
+
+  it("holds the tour records empty in v14 until the tour system writes them", () => {
+    // Tour design §5.3 (tour decision 2 (i)): both fields join v14 now, empty; stage 2a widens them without a new version.
+    const fresh = createGame();
+    expect(fresh.tour).toBeNull();
+    expect(fresh.completedTourIds).toEqual([]);
+    const storage = new MemoryStorage();
+    expect(saveGame(storage, fresh)).toEqual({ ok: true });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 14, tour: null, completedTourIds: [] });
+    expect(loadGame(storage)).toEqual({ status: "loaded", state: fresh });
+    // A filled value is refused: no tour can be booked, run or finished yet.
+    expect(() => validateGameState({ ...fresh, tour: { status: "booked", tourId: "smp_mihon_tour_cape", offerId: "web", pricePaid: 0, bookedDay: 1 } }))
+      .toThrow(zodIssues({ code: "invalid_type", path: ["tour"], expected: "null" }));
+    expect(() => validateGameState({ ...fresh, completedTourIds: ["smp_mihon_tour_cape"] }))
+      .toThrow(zodIssues({ code: "too_big", path: ["completedTourIds"], maximum: 0 }));
+    // The v14 shape before these fields (development builds only): not an old version, unreadable, kept as it is.
+    const { tour: _tour, completedTourIds: _finished, ...older } = fresh;
+    const raw = JSON.stringify(older);
+    const slot = new MemoryStorage();
+    slot.setItem(SAVE_KEY, raw);
+    expect(loadGame(slot)).toMatchObject({ status: "invalid", kind: "corrupt", raw });
+    expect(saveGame(slot, createGame()).ok).toBe(false);
+    expect(slot.getItem(SAVE_KEY)).toBe(raw);
   });
 
   it("reports a v13 save as an identified old version, never migrates, overwrites or deletes it", () => {

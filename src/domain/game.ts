@@ -80,6 +80,8 @@ export function createGame(
     storyProgress: { lines: {}, flags: [] },
     encounterRewards: {},
     activeEncounter: null,
+    tour: null,
+    completedTourIds: [],
     revision: 0,
     playerName: nameSchema.parse(playerName),
     heroineName: nameSchema.parse(heroineName),

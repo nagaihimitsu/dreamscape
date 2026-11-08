@@ -139,6 +139,10 @@ export const gameStateSchema = z.object({
     won: z.boolean(),
   }).strict()),
   activeEncounter: activeEncounterSchema.nullable(),
+  // The tour system's records (tour design §5.3): the tour booked or running, and the tours finished in this journey.
+  // No tour exists yet, so only the empty values load; stage 2a widens both without a new save version.
+  tour: z.null(),
+  completedTourIds: z.array(stableContentId).max(0),
   currentCityId: stableContentId,
   travel: travelStateSchema,
 }).strict();
