@@ -7,7 +7,7 @@
 - `.json`（都市/観光地/クイズ/デート定義/数値バランス）。スキーマ検証（Zodなど）は必要な範囲だけ導入。
 - 状態は小規模ならReact Context + useReducer等。用途が拡大してから状態管理ライブラリの導入を検討する。
 - `localStorage` と `schemaVersion`。現在のゲームで作成した有効なデータの、同一バージョン内の保存・再開を維持する。将来の汎用移行基盤やJSONエクスポート/インポートは今回の必須要件ではない。
-- 画像 WebP/PNG。最初はプレースホルダーで十分。写真・名画の細部を問う本番問題は、画像使用権と正確性を確認したものを使う。
+- 画像 WebP/PNG。最初はプレースホルダーで十分。写真・名画の細部を問う本番問題は、画像使用権と正確性を確認したものを使う。配信する観光写真は WebP（品質80。観察で拡大する写真は元の大きさ、ほかは幅1600px・高さ1800pxの枠）、ヒロインの立ち絵は可逆の WebP（元のPNGは配信しない `authoring/characters/` に置く）。写真の変換は `npm run images:optimize`（[CONTENT_GUIDE](../authoring/CONTENT_GUIDE.md)）。画像は旅行編ごとに分けて読み込まない（配信物の合計は約41MB、2026-11-08。分けるかどうかは、必要になったときに測り直して決める）。
 
 ## 編集元と生成物の分離
 編集元 `content/journeys/<journeyId>/stories/**/*.ink` → ビルド時にコンパイル → 配信対象となる `.json` → `inkjs` 実行 → Reactで台詞と選択肢を描画 → TypeScriptのルール層にイベント通知。
@@ -37,6 +37,7 @@ scripts/                # Inkコンパイル・コンテンツ検証・共通の
   journeys/<journeyId>/ # その旅行編だけの制作ツール（共通コード・ツールからは読み込まない）
 authoring/              # 共通の制作手順・テンプレート
   brand/                # ファビコンの元画像（npm run icons:build が public/ のアイコンを生成）
+  characters/           # ヒロインの立ち絵の元のPNG（配信しない。配信するのは public/assets/characters/ の可逆WebP）
   journeys/<journeyId>/ # 旅行編ごとの下書き・調査記録（ゲームは読み込まない）
   templates/sample_trip/ # 開発・テスト専用の見本の編（明示したときだけ読み、本番には入らない。npm run journey:new の元。下の「見本の編」）
 public/                # ファビコン・アプリアイコン・manifest.webmanifest（index.html から相対パスで参照）
@@ -181,7 +182,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 
 1. 旅行編ID・都市ID・IDの接頭辞と日本語名を決め、`npm run journey:new -- <旅行編ID> --name <旅行編の日本語名> --city <都市ID> --city-name <都市の日本語名> [--prefix <接頭辞>] [--with-optional]` を実行する（例：`npm run journey:new -- kyoto_trip --name 京都の旅 --city kyoto --city-name 京都 --prefix ky`）。
    - 見本を `content/journeys/<旅行編ID>/` に複製し、見本の旅行編ID `sample_trip`・接頭辞 `smp`・都市ID `mihon` を、IDの一部（`smp_mihon_finale` → `ky_kyoto_finale`）・ストーリーID・ファイル名・画像のパスも含めて置き換える。`--prefix` を省くと旅行編IDを接頭辞にする。任意の部分（特殊戦B・C、品物つきの道中交流）は `--with-optional` を付けたときだけ複製する。
-   - 作った旅行編は準備中（`manifest.json` の `status: "preparing"`、都市は `productionStatus: "prototype"`）で、並び順 `order` は既存の旅行編の最大値の次の10の倍数（見本の予約 9000 は使わない）、観光画像はすべて仮の扱い（`isPlaceholder: true`）。`manifest.json` の `nameJa`・`cities[].nameJa` と都市の `nameJa` は指定した日本語名で、`authoring`（`eventPrefix`・観察資料のパス・画像フォルダ）を必ず持つので、接頭辞の警告と `journey:readiness`・`journey:release`・`city:bundle` がすぐに使える。`journey:scaffold`（観察ポイントからの登録の生成）は観察資料 `authoring/journeys/<旅行編ID>/drafts/observation-cards.json`（`journey:new` はパスだけを決め、ファイルは作らない）に、仮でない JPEG の観光画像ごとの記録（パスと SHA-256）と出典を確かめた観察ポイントを置いてから、`journey:transit` は、`transportModes` に乗り物を宣言したら都市ごとの交通判断台帳を置いて使う（乗り物を宣言しないうちは徒歩だけで台帳は要らない。上の「乗り物と交通判断台帳」。[JOURNEY_AUTHORING](../authoring/JOURNEY_AUTHORING.md)。見本の画像は PNG なので、そのままでは使えない）。置き換えるものの一覧を `CHECKLIST.md` に書く（`.md` は読み込まれない）。
+   - 作った旅行編は準備中（`manifest.json` の `status: "preparing"`、都市は `productionStatus: "prototype"`）で、並び順 `order` は既存の旅行編の最大値の次の10の倍数（見本の予約 9000 は使わない）、観光画像はすべて仮の扱い（`isPlaceholder: true`）。`manifest.json` の `nameJa`・`cities[].nameJa` と都市の `nameJa` は指定した日本語名で、`authoring`（`eventPrefix`・観察資料のパス・画像フォルダ）を必ず持つので、接頭辞の警告と `journey:readiness`・`journey:release`・`city:bundle` がすぐに使える。`journey:scaffold`（観察ポイントからの登録の生成）は観察資料 `authoring/journeys/<旅行編ID>/drafts/observation-cards.json`（`journey:new` はパスだけを決め、ファイルは作らない）に、仮でない JPEG または WebP の観光画像ごとの記録（パスと SHA-256）と出典を確かめた観察ポイントを置いてから、`journey:transit` は、`transportModes` に乗り物を宣言したら都市ごとの交通判断台帳を置いて使う（乗り物を宣言しないうちは徒歩だけで台帳は要らない。上の「乗り物と交通判断台帳」。[JOURNEY_AUTHORING](../authoring/JOURNEY_AUTHORING.md)。見本の画像は PNG なので、そのままでは使えない）。置き換えるものの一覧を `CHECKLIST.md` に書く（`.md` は読み込まれない）。
    - 日本語名（`--name`・`--city-name`）は必須で、省略時の既定値はない。形式に合わないID、見本の名前（上の「予約された名前」）を含むID・接頭辞、既にある旅行編ID（フォルダ）と都市ID、他の旅行編の `authoring.eventPrefix` と同じ接頭辞、既にあるIDが `<接頭辞>_` で始まる接頭辞（接頭辞を宣言していないミラノ編の `milano_…` や `duomo_…`、共通データのIDも含む）を拒否し、作った内容が `content:build` と同じ検証を通らないとき（例：ストーリーIDの重複）も何も書き込まない。書き込みは `content/journeys/.new-…`（ドットで始まるフォルダは読み込まれない）に書いてから名前を変える。
 2. `npm run content:build` を実行し、`npm run dev` のタイトル画面に旅行編が「準備中」として並ぶこと、`?debug` で都市が「制作中」として選べることを確認する。`npm run journey:readiness -- --journey <旅行編ID>` で、残っている見本の内容と未完成の項目（仮の画像など）を確かめる。
 3. `CHECKLIST.md` に沿って、実在する著名な観光地、実際に確認した出典、権利を確認した画像、新しい文章に置き換える（AGENTS.md、[CONTENT_GUIDE](../authoring/CONTENT_GUIDE.md)。ヒロインの台詞は [キャラクターバイブル](09_HEROINE_CHARACTER_BIBLE.md) を読んでから書く）。旅行編の `currency`・`initialBudget`・`cityPlan` なども決める。タイトルの絵は任意の `titleArt` で後から付けられる（下の「既定背景とタイトルの絵」）。見本の出典（`https://example.com/` のURL）、見本と同じ画像、見本の文章が残っているうちは、readiness が `sample_content_left` として一覧し、`journey:release` は公開を止める（下の「見本の編」）。

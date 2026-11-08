@@ -299,7 +299,7 @@ npm run test:saves
 
 各旅行編の都市・移動・クイズ・Ink と各カタログの該当項目は、同じ相対パスで `content/journeys/<旅行編ID>/` 以下に置き、`npm run content:build` が `content/` 直下の共通データと統合します。旅行編フォルダの項目は自分の都市だけを扱い、参照先は同じ旅行編か共通データに限ります。共通データには都市・移動・Ink・クイズや旅行編専用のカタログを置けません。
 
-画像は、旅行編だけが使うもの（観光写真・デート背景・その旅行編の品物アイコン）を `content/journeys/<旅行編ID>/public/assets/` に、全旅行編で共有するもの（ヒロイン・演出・共通アイコン）をリポジトリ直下の `public/assets/` に置きます。データには `public/` を除いた配信時のパス（例: `assets/tourism/india/agra_taj_mahal.jpg`）を書き、置き場所によって変わりません。`npm run content:build` がこれらを `src/content/generated/public/`（生成物。Git管理せず、手動編集しない）へまとめ、開発サーバーとビルドはこのフォルダを配信します。同じパスの画像を二か所に置くとビルドが失敗します。画像を追加・差し替えた後も `npm run content:build` を実行してください。
+画像は、旅行編だけが使うもの（観光写真・デート背景・その旅行編の品物アイコン）を `content/journeys/<旅行編ID>/public/assets/` に、全旅行編で共有するもの（ヒロイン・演出・共通アイコン）をリポジトリ直下の `public/assets/` に置きます。データには `public/` を除いた配信時のパス（例: `assets/tourism/india/agra_taj_mahal.webp`）を書き、置き場所によって変わりません。`npm run content:build` がこれらを `src/content/generated/public/`（生成物。Git管理せず、手動編集しない）へまとめ、開発サーバーとビルドはこのフォルダを配信します。同じパスの画像を二か所に置くとビルドが失敗します。画像を追加・差し替えた後も `npm run content:build` を実行してください。
 
 新しい通常デートは、InkとJSON定義・効果を追加するだけで既存のメニューと会話画面に表示されます。`kind` は `normal` / `special` / `confession` / `reassurance`。通常は `choiceCount: 2`、無料イベントは必要に応じて0〜2回の3択を設定できます。`effectCount` は各経路で期待する効果数です。`actionLabelJa` もJSONにあり、Reactにイベント固有の文言を追加する必要はありません。
 

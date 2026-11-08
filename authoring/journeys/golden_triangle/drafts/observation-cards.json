@@ -3,52 +3,52 @@
   "status": "authoring_only",
   "images": {
     "agra_agra_fort": {
-      "path": "assets/tourism/india/agra_agra_fort.jpg",
-      "sha256": "c1fa6502806ec9e9aa47f3d447ab8b78e80ed1dece9a07c4caa30ac587c0ecf8"
+      "path": "assets/tourism/india/agra_agra_fort.webp",
+      "sha256": "4b0d35f5f3a900777c04ac1d2d42e04d5ce5820553999dc890338986795e1aba"
     },
     "agra_fatehpur_sikri": {
-      "path": "assets/tourism/india/agra_fatehpur_sikri.jpg",
-      "sha256": "c431d55371f025c793480562495cb7909f45294342c0e4c3b3cfce800c1f7fe7"
+      "path": "assets/tourism/india/agra_fatehpur_sikri.webp",
+      "sha256": "4a94da1b067889f747f486ea58217144b8529bfe4a9c005f2fbded2aa8124d09"
     },
     "agra_itimad_tomb": {
-      "path": "assets/tourism/india/agra_itimad_tomb.jpg",
-      "sha256": "fcf9801a95d6869000ef80e80e0f9d7625581c86e68f6504013445a1ee48c03b"
+      "path": "assets/tourism/india/agra_itimad_tomb.webp",
+      "sha256": "10f6d9397b13246d708f0f7e6f2eae8f212a6d4cff1194f0b2df3bf039f39e5b"
     },
     "agra_taj_mahal": {
-      "path": "assets/tourism/india/agra_taj_mahal.jpg",
-      "sha256": "d6b1904519b06bb5eb599806803bc66699e1f4a9a349e797c7903205a58ed8dd"
+      "path": "assets/tourism/india/agra_taj_mahal.webp",
+      "sha256": "760404330c179f1ae9be122c3f9c44d81a0626c66648b911199f5fb68c57f1a2"
     },
     "delhi_humayun_tomb": {
-      "path": "assets/tourism/india/delhi_humayun_tomb.jpg",
-      "sha256": "8ff15fedc01a574f0a1724e76aa543dfe92e47c2541a72f3109256b1dafcaf97"
+      "path": "assets/tourism/india/delhi_humayun_tomb.webp",
+      "sha256": "ea1a7121548d3cd25fe5f2a61c134802162a31a0ea5fa2278975e191c15c21ec"
     },
     "delhi_jama_masjid": {
-      "path": "assets/tourism/india/delhi_jama_masjid.jpg",
-      "sha256": "c9d1bffdd99fdc557b29883fdd20f9fa990a2440afd3a86cd33234e0e4945b4a"
+      "path": "assets/tourism/india/delhi_jama_masjid.webp",
+      "sha256": "718cba936b3f5b9fbb27294568ea949de7735294f6b880f8aa70195326ca248f"
     },
     "delhi_qutb_minar": {
-      "path": "assets/tourism/india/delhi_qutb_minar.jpg",
-      "sha256": "b6b658180e18d6fdb7a0bc38fea5e31a591840e2a1d9b065e079f368ce8aeabe"
+      "path": "assets/tourism/india/delhi_qutb_minar.webp",
+      "sha256": "2fa1231fd1477abc944bf9d1618098d82db697c1c47273315315a6f161bfdf4f"
     },
     "delhi_red_fort": {
-      "path": "assets/tourism/india/delhi_red_fort.jpg",
-      "sha256": "8072643da48a45c5b46b95bbaa95921ddce223b1c126cb8220fa11f879bdc862"
+      "path": "assets/tourism/india/delhi_red_fort.webp",
+      "sha256": "4e194db7e17135b76a11863b6be6106341de12f6253fc8666adbb6776076ca27"
     },
     "jaipur_amber_fort": {
-      "path": "assets/tourism/india/jaipur_amber_fort.jpg",
-      "sha256": "4748e829a950c5e6db76dc50640756f996224a4407f8b0f7b606539507c1d5fe"
+      "path": "assets/tourism/india/jaipur_amber_fort.webp",
+      "sha256": "f8a20c3615d6fa8fb3806a0f4110d932bffc6981b97c95373477a90f0c984266"
     },
     "jaipur_city_palace": {
-      "path": "assets/tourism/india/jaipur_city_palace.jpg",
-      "sha256": "8d72c4bd9f5cbbc33d6df393fb01c602e17c149dc3ae55285b9917695a6c592b"
+      "path": "assets/tourism/india/jaipur_city_palace.webp",
+      "sha256": "0ac8b3caa73619c64e9af4b0823ba4d36afc2982eac400c7c621be4e3e02ad29"
     },
     "jaipur_hawa_mahal": {
-      "path": "assets/tourism/india/jaipur_hawa_mahal.jpg",
-      "sha256": "757f576c4c29af245def0bcb2599b9226d1d8add894b09cc3c8e6d684dccccda"
+      "path": "assets/tourism/india/jaipur_hawa_mahal.webp",
+      "sha256": "8bfc36e8cfed119d790d163c2d7d858fb7536a57267aa7af7fccaaea26e26a24"
     },
     "jaipur_jantar_mantar": {
-      "path": "assets/tourism/india/jaipur_jantar_mantar.jpg",
-      "sha256": "ae3158ac6ccbc5c1eb7a892d0809c36f893237f2dbaff8ca1c9141c5f5930d5d"
+      "path": "assets/tourism/india/jaipur_jantar_mantar.webp",
+      "sha256": "5bce01413dba2d1b2fcbc00f6461dac31a86af2917bed9ea97af84330119b1fd"
     }
   },
   "provenance": {

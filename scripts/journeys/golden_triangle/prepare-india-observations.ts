@@ -76,7 +76,7 @@ const clues = await Promise.all(selected.map(async ({ id, region, visualEvidence
   const source = sourceById.get(fact.sourceId);
   if (!source || source.url !== fact.sourceUrl) throw new Error(`Missing or inconsistent source: ${id}`);
   if (Boolean(region) !== Boolean(visualEvidence)) throw new Error(`Missing visual evidence: ${id}`);
-  const imagePath = `${profile.imageDirectory}/${fact.placeId}.jpg`;
+  const imagePath = `${profile.imageDirectory}/${fact.placeId}.webp`;
   images[fact.placeId] = { path: imagePath, sha256: createHash("sha256").update(await readFile(resolvePublicFile(process.cwd(), imagePath))).digest("hex") };
   const clueId = `gt_obs_${id}`;
   const supplement = followup[id];

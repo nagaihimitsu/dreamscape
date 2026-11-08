@@ -103,7 +103,7 @@ npm run city:bundle -- apply artifacts/city-work/sample-city.json
 | `assets` | 画像のパス、寸法、説明、作者・ライセンス・出典などの情報 |
 | `transitDecisions` | 乗り物を宣言した旅行編では、その都市の交通判断台帳 `travel/<都市ID>-transit.json` の判断（地点の組×乗り物。`reasonJa`・`checkedAt`・出典つき。`apply` で台帳に書き出す）。インド３都市は旧方式の旅行編全体の判断台帳のうち、その都市の判断。乗り物を宣言しない旅行編では `null` |
 
-画像本体は、その旅行編の `content/journeys/<旅行編ID>/public/assets/`（全旅行編で共有する画像はリポジトリ直下の `public/assets/`）に置く必要があります。JSONの `path` には `public/` を除いた配信時のパス（例: `assets/tourism/india/delhi_red_fort.jpg`）を書き、画像の実体は含まれません。画像のファイル名・出典・ライセンス・利用条件を確認し、参照に合うファイルを `export` / `new` の前に用意してください。画像を変える場合は、観察位置や説明も新しい画像で確認が必要です。
+画像本体は、その旅行編の `content/journeys/<旅行編ID>/public/assets/`（全旅行編で共有する画像はリポジトリ直下の `public/assets/`）に置く必要があります。JSONの `path` には `public/` を除いた配信時のパス（例: `assets/tourism/india/delhi_red_fort.webp`）を書き、画像の実体は含まれません。画像のファイル名・出典・ライセンス・利用条件を確認し、参照に合うファイルを `export` / `new` の前に用意してください。画像を変える場合は、観察位置や説明も新しい画像で確認が必要です。
 
 インド編の観察画像は記録済みのハッシュと照合します。ミラノの既存観察画像には旧画像のハッシュがないため、`export` より前に同じパスの画像ファイルを差し替えた場合、その差し替えを自動では検出できません。画像を変更したときは、観察ポイントの位置・説明・出典を必ず再確認してください。
 
