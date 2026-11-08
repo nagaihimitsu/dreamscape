@@ -164,8 +164,8 @@ B/C戦の戦績と途中状態は保存します。反論とカットインは�
 
 ### 基本衣装・表情の画像を追加する
 
-1. 背景を透過した全身PNGまたはWebPを用意します。白背景の参照画像は正式な立ち絵とは別に管理し、拡張子だけを変えて登録しないでください。基本衣装 `default_01` の `standing_01` は **1024×1536px** を共通キャンバスとして設定しています。同じ衣装・ポーズの差分は、人物の位置とキャンバスを揃え、画像ごとにトリミングしません。
-2. 例えば `public/assets/characters/heroine/default_01/standing_01/neutral.png` に置き、`characters.json` の `heroine` → `costumes` → `default_01` → `poses` → `standing_01` の `expressions` に `"neutral": "assets/characters/heroine/default_01/standing_01/neutral.png"` と登録します。パスは `public/` からの相対パスです。
+1. 背景を透過した全身PNGまたはWebPを用意します。白背景の参照画像は正式な立ち絵とは別に管理し、拡張子だけを変えて登録しないでください。基本衣装 `default_01` の `standing_01` は **1024×1536px** を共通キャンバスとして設定しています。同じ衣装・ポーズの差分は、人物の位置とキャンバスを揃え、画像ごとにトリミングしません。配信するファイルは、見た目の変わらない可逆のWebPにすると軽くなります（今の12表情は可逆WebPで、PNGの約4割の大きさ。元のPNGは配信しない `authoring/characters/heroine/default_01/standing_01/` に置いています）。
+2. 例えば `public/assets/characters/heroine/default_01/standing_01/neutral.webp` に置き、`characters.json` の `heroine` → `costumes` → `default_01` → `poses` → `standing_01` の `expressions` に `"neutral": "assets/characters/heroine/default_01/standing_01/neutral.webp"` と登録します。パスは `public/` からの相対パスです。
 3. 表情IDは `neutral`、`smile`、`happy`、`shy`、`shy_deep`、`surprised`、`surprised_big`、`worried`、`serious`、`teasing`、`teasing_big`、`exasperated` です。差分が届いたら `expressions` に一枚ずつ追加し、未納品のファイルは登録しません。`neutral` だけでもその衣装が使われ、未登録の表情は同じ衣装・ポーズの `neutral` が表示されます。表情の指定にはInkの既存の `emotion` タグを使います。
 4. `npm run content:check` を実行します。登録済みファイルの存在、実際の形式・寸法・透過画素、表情や衣装の参照を検証します。これは背景が適切に切り抜かれたことや透過の縁の品質まで保証するものではないため、下記プレビューで目視確認してください。衣装が未納品の場合は基本素材を使い、画像の読み込みに失敗しても会話は続きます。
 
@@ -205,6 +205,7 @@ public/                           # ファビコン・アプリアイコン（np
   assets/                         # 全旅行編で共有する画像（ヒロイン、演出、共通アイコン）
 authoring/                        # 共通の制作手順とテンプレート
   brand/                          # ファビコン・アプリアイコンの元画像
+  characters/                     # ヒロインの立ち絵の元のPNG（配信しない。配信するのは public/assets/characters/ の可逆WebP）
   journeys/<旅行編ID>/            # 旅行編ごとの下書き・調査記録（ゲームは読み込まない）
   templates/sample_trip/          # 見本の編（開発・テスト専用の架空の「見本の街」。npm run dev:sample で遊べ、本番には入らない。npm run journey:new の元）
   templates/journey-new-checklist.md  # journey:new が新しい旅行編に書く CHECKLIST.md の元
