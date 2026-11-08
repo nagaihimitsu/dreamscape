@@ -1,3 +1,7 @@
+// 道中交流「券を一枚、手の中へ」（encounters/catalog.json の galleria_ticket_press）。
+// 今は起こらない：「また今度」以外の選択肢に展示券が要る。展示券は「回らない願掛け」のクイズの当たりでしか手に入らず、そのクイズが今は起こらないため。
+// 入場ルールの条件は『最後の晩餐を終えた』（completedEpisodeId）。
+// シナリオの改稿で見直す（2026-11-08 のユーザー判断）。それまで起こる時は変えない。変えたら、このコメントも直す。
 VAR player_name = ""
 VAR heroine_name = ""
 VAR player_address = ""

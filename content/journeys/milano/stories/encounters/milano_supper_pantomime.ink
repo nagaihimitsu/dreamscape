@@ -1,3 +1,7 @@
+// 道中交流「広場の無声映画」（encounters/catalog.json の supper_pantomime）。
+// 今は起こらない：条件『最後の晩餐を終えた』（入場ルールの completedEpisodeId）を満たすと、最後の晩餐の観察はもう開かないため。
+// 最後の晩餐のバトルを終えると、最後の晩餐は地図の行き先に出なくなる。
+// シナリオの改稿で見直す（2026-11-08 のユーザー判断）。それまで起こる時は変えない。変えたら、このコメントも直す。
 VAR player_name = ""
 VAR heroine_name = ""
 VAR player_address = ""

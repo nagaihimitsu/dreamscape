@@ -1,3 +1,7 @@
+// 道中交流「弦を一本、余らせて」（encounters/catalog.json の castello_pick）。
+// 今は起こらない：条件『スフォルツェスコ城を終えた』（入場ルールの completedEpisodeId）を満たすと、城の観察はもう開かないため。
+// 「また今度」以外の選択肢に要る青いピックも、今は起こらない「切れた三本目」でしか手に入らない。
+// シナリオの改稿で見直す（2026-11-08 のユーザー判断）。それまで起こる時は変えない。変えたら、このコメントも直す。
 VAR player_name = ""
 VAR heroine_name = ""
 VAR player_address = ""

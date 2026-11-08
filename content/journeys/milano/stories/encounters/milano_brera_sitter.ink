@@ -1,3 +1,7 @@
+// 道中交流「モデルは五秒」（encounters/catalog.json の brera_sitter）。
+// 今は起こらない：条件『ブレラ絵画館の特殊戦を戦った』（入場ルールの completedStoryBattleId）を満たすと、ブレラ絵画館の観察はもう開かないため。
+// 特殊戦を戦うと、ブレラ絵画館は地図の行き先に出なくなる。
+// シナリオの改稿で見直す（2026-11-08 のユーザー判断）。それまで起こる時は変えない。変えたら、このコメントも直す。
 VAR player_name = ""
 VAR heroine_name = ""
 VAR player_address = ""
