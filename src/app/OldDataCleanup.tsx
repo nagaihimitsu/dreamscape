@@ -128,7 +128,7 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
               <KeyList item={item} />
             </li>)}
           </ul>}
-        <p className="fine-print">開いている旅行編のセーブ、今の版で読み込めるセーブ、この版にある旅行編の英語ノート、表示設定は一覧に出ず、消去しません。ほかのサイトのデータにも触れません。</p>
+        <p className="fine-print">開いている旅行編のセーブ、今の版で読み込めるセーブ、この版にある旅行編の英語ノート、表示設定などは一覧に出ず、消去しません。ほかのサイトのデータにも触れません。</p>
       </>}
     </div>
     <div className="old-data-actions">
