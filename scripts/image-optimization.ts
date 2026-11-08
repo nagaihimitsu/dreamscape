@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { z } from "zod";
@@ -14,9 +15,9 @@ import { requireServedFile } from "./public-assets";
 // keeping their colour profile; a WebP photo stays as it is unless it is too
 // large for a photo that is not zoomed. `npm run images:optimize`
 // (optimize-images.ts) applies the rule; content:build warns about photos
-// that do not follow it yet. Placeholder images (isPlaceholder) and the sample
-// journey's images are never converted: journey:readiness recognises copied
-// sample images by their bytes (sample-journey.ts).
+// that do not follow it yet. Placeholder images (isPlaceholder), the sample
+// journey's images and copies of them are never converted: journey:readiness
+// recognises copied sample images by their bytes (sample-journey.ts).
 
 /** The box every photo that is not zoomed fits in. */
 export const PHOTO_BOX = { width: 1600, height: 1800 } as const;
@@ -91,8 +92,12 @@ export function readObservationCards(root: string, manifests: readonly JourneyMa
   });
 }
 
-/** Why a photo is never converted: a placeholder (isPlaceholder) or an image of the sample journey (authoring/templates/). */
-export type PhotoSkip = "placeholder" | "sample";
+/**
+ * Why a photo is never converted: a placeholder (isPlaceholder), an image of
+ * the sample journey (authoring/templates/), or a file with the bytes of a
+ * sample image (markSampleCopies).
+ */
+export type PhotoSkip = "placeholder" | "sample" | "sample-copy";
 /** A tourism photo of the loaded content: its record, the catalog file and journey that provide it, its file, and its use. */
 export type TourismPhoto = {
   asset: TourismAsset;
@@ -131,6 +136,17 @@ export function tourismPhotos(
       skip: asset.isPlaceholder ? "placeholder" : catalogFile.startsWith(templates) ? "sample" : undefined,
     };
   });
+}
+
+/**
+ * Mark the PNG photos whose file has the bytes of a sample image
+ * (sampleMarks().imageHashes): `journey:new` copies the sample's PNG images,
+ * and journey:readiness finds a copy left by its bytes, so converting it would
+ * hide that it still has to be replaced. Reads only those PNG files.
+ */
+export function markSampleCopies(photos: readonly TourismPhoto[], sampleImageHashes: ReadonlySet<string>): TourismPhoto[] {
+  return photos.map((photo) => photo.skip || photoFormatOfPath(photo.asset.path) !== "png" ||
+    !sampleImageHashes.has(createHash("sha256").update(readFileSync(photo.file)).digest("hex")) ? photo : { ...photo, skip: "sample-copy" });
 }
 
 const formatNames: Record<PhotoFormat, string> = { jpeg: "JPEG", png: "PNG", webp: "WebP" };

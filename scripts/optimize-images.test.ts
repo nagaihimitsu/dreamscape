@@ -5,7 +5,7 @@ import path from "node:path";
 import sharp, { type Sharp } from "sharp";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { TourismAsset } from "../src/content/tourism-schemas";
-import type { ObservationCards, PhotoSkip, TourismPhoto } from "./image-optimization";
+import { markSampleCopies, type ObservationCards, type PhotoSkip, type TourismPhoto } from "./image-optimization";
 import { applyPhotoSteps, planPhotos } from "./optimize-images";
 import { jsonText } from "./sample-journey";
 
@@ -77,7 +77,7 @@ describe("npm run images:optimize", () => {
       provenance: { demo_clue: { needsFurtherResearch: false } } };
     writeFileSync(cardsFile(), jsonText(cardData));
 
-    const steps = await planPhotos(photos({ demo_sample: "sample" }), new Set([sha256(sampleCopy)]));
+    const steps = await planPhotos(markSampleCopies(photos({ demo_sample: "sample" }), new Set([sha256(sampleCopy)])));
     expect(steps.map((step) => [step.photo.asset.id, step.format, step.outcome])).toEqual([
       ["demo_big", "jpeg", { kind: "convert", resize: true, path: "assets/tourism/demo/big.webp" }],
       ["demo_zoom", "jpeg", { kind: "convert", resize: false, path: "assets/tourism/demo/zoom.webp" }],
@@ -119,7 +119,7 @@ describe("npm run images:optimize", () => {
     const tilted = await sharp(served("assets/tourism/demo/tilted.webp")).metadata();
     expect([tilted.format, tilted.width, tilted.height, tilted.orientation ?? 1]).toEqual(["webp", 200, 300, 1]);
 
-    const again = await planPhotos(photos({ demo_sample: "sample" }), new Set([sha256(sampleCopy)]));
+    const again = await planPhotos(markSampleCopies(photos({ demo_sample: "sample" }), new Set([sha256(sampleCopy)])));
     expect(again.filter((step) => step.outcome.kind === "convert")).toEqual([]);
   });
 
@@ -131,7 +131,7 @@ describe("npm run images:optimize", () => {
     writeFileSync(catalogFile(), catalogText);
     mkdirSync(path.dirname(cardsFile()), { recursive: true });
     writeFileSync(cardsFile(), jsonText({ images: {} }));
-    const steps = await planPhotos(photos(), new Set());
+    const steps = await planPhotos(photos());
     await expect(applyPhotoSteps(root, steps, cards())).rejects.toThrow(
       "変換後のファイル名がすでに使われています: assets/tourism/demo/a.webp。前回の変換が途中で止まった場合は、カタログにないそのファイルを消してから、もう一度実行してください。");
     expect(readFileSync(catalogFile(), "utf8")).toBe(catalogText);

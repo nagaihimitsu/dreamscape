@@ -5,8 +5,8 @@ import sharp from "sharp";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { displayPath, loadContentSources, parseCatalog } from "./content-sources";
 import {
-  noteAfterConversion, PHOTO_BOX, PHOTO_QUALITY, planPhoto, readObservationCards, tourismPhotos, webpPathOf,
-  type ObservationCards, type PhotoFormat, type TourismPhoto,
+  markSampleCopies, noteAfterConversion, PHOTO_BOX, PHOTO_QUALITY, planPhoto, readObservationCards, tourismPhotos, webpPathOf,
+  type ObservationCards, type PhotoFormat, type PhotoSkip, type TourismPhoto,
 } from "./image-optimization";
 import { jsonText, sampleMarks } from "./sample-journey";
 
@@ -17,8 +17,6 @@ import { jsonText, sampleMarks } from "./sample-journey";
 // then removes the old files. Sources and check dates stay: the conversion
 // does not re-check where a photo comes from.
 
-/** Why a photo is left alone: the rule's skips, or the bytes of a sample image (a journey:new copy that is still to be replaced). */
-export type PhotoSkipReason = "placeholder" | "sample" | "sample-copy";
 export type PhotoStep = {
   photo: TourismPhoto;
   /** The file as it is: format, stored size (as the catalog records it) and bytes. */
@@ -27,7 +25,7 @@ export type PhotoStep = {
   rotated: boolean;
   /** The size as shown (after the EXIF orientation), which the rule applies to. */
   shown: { width: number; height: number };
-  outcome: { kind: "skip"; reason: PhotoSkipReason } | { kind: "keep" } | { kind: "convert"; resize: boolean; path: string };
+  outcome: { kind: "skip"; reason: PhotoSkip } | { kind: "keep" } | { kind: "convert"; resize: boolean; path: string };
 };
 /** A converted photo: its new path, size and bytes. */
 export type PhotoWrite = { path: string; width: number; height: number; bytes: number };
@@ -36,7 +34,7 @@ const sha256 = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest(
 const formats = new Set<string>(["jpeg", "png", "webp"]);
 
 /** What npm run images:optimize would do with each photo (reads the files, writes nothing). */
-export async function planPhotos(photos: readonly TourismPhoto[], sampleImageHashes: ReadonlySet<string>): Promise<PhotoStep[]> {
+export async function planPhotos(photos: readonly TourismPhoto[]): Promise<PhotoStep[]> {
   const steps: PhotoStep[] = [];
   for (const photo of photos) {
     const bytes = readFileSync(photo.file);
@@ -45,9 +43,8 @@ export async function planPhotos(photos: readonly TourismPhoto[], sampleImageHas
       throw new Error(`観光写真の形式を読めません: ${photo.asset.path}（JPEG・PNG・WebP のどれでもない）`);
     const file = { format: meta.format as PhotoFormat, width: meta.width, height: meta.height, bytes: bytes.length,
       rotated: (meta.orientation ?? 1) !== 1, shown: meta.autoOrient ?? { width: meta.width, height: meta.height } };
-    const skip = photo.skip ?? (sampleImageHashes.has(sha256(bytes)) ? "sample-copy" : undefined);
     const plan = planPhoto({ format: file.format, ...file.shown, observation: photo.observation });
-    steps.push({ photo, ...file, outcome: skip ? { kind: "skip", reason: skip } : plan.action === "keep" ? { kind: "keep" }
+    steps.push({ photo, ...file, outcome: photo.skip ? { kind: "skip", reason: photo.skip } : plan.action === "keep" ? { kind: "keep" }
       : { kind: "convert", resize: plan.resize, path: webpPathOf(photo.asset.path) } });
   }
   return steps;
@@ -121,13 +118,14 @@ export function loadPhotos(root: string, journeyId?: string): { photos: TourismP
   if (journeyId && !sources.manifests.some((manifest) => manifest.id === journeyId))
     throw new Error(`旅行編「${journeyId}」がありません（content/journeys/<旅行編ID>/manifest.json）。`);
   const cards = readObservationCards(root, sources.manifests, "throw");
-  const photos = tourismPhotos(sources, parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json"), cards);
-  return { photos: journeyId ? photos.filter((photo) => photo.journeyId === journeyId) : photos, cards };
+  const photos = tourismPhotos(sources, parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json"), cards)
+    .filter((photo) => !journeyId || photo.journeyId === journeyId);
+  return { photos: markSampleCopies(photos, sampleMarks().imageHashes), cards };
 }
 
 /** Plan (and with `write`, apply) the conversion of the repository's photos. */
 export async function optimizeImages(root: string, options: { journeyId?: string; write: boolean }): Promise<{ steps: PhotoStep[]; written: Map<string, PhotoWrite> }> {
   const { photos, cards } = loadPhotos(root, options.journeyId);
-  const steps = await planPhotos(photos, sampleMarks().imageHashes);
+  const steps = await planPhotos(photos);
   return { steps, written: options.write ? await applyPhotoSteps(root, steps, cards) : new Map() };
 }

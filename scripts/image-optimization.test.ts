@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -5,7 +6,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import type { TourismAsset } from "../src/content/tourism-schemas";
 import { contentSourcesFromTree, contentTreeFromFiles, type JourneyManifest } from "./content-sources";
 import {
-  hasShareAlikeStatement, noteAfterConversion, photoFormatOfPath, planPhoto, readObservationCards, tourismPhotos,
+  hasShareAlikeStatement, markSampleCopies, noteAfterConversion, photoFormatOfPath, planPhoto, readObservationCards, tourismPhotos,
   tourismPhotoWarnings, webpPathOf,
 } from "./image-optimization";
 
@@ -108,6 +109,28 @@ describe("tourism photos of the loaded content and their warnings", () => {
       "観光写真を軽くできます: content/journeys/trip/tourism/catalog.json の \"t_wide\"（assets/tourism/t/wide.webp、WebP 2400×1000）。" +
         "npm run images:optimize -- --journey trip --write で、WebPにして1600×1800pxの枠に収めます。",
     ]);
+  });
+});
+
+describe("copies of sample images", () => {
+  let directory: string | undefined;
+  afterEach(() => { if (directory) rmSync(directory, { recursive: true, force: true }); });
+  it("leaves a PNG photo with the bytes of a sample image to journey:readiness: no conversion, no warning", () => {
+    directory = mkdtempSync(path.join(tmpdir(), "dreamscape-sample-copy-"));
+    const write = (name: string, text: string) => {
+      writeFileSync(path.join(directory!, name), text);
+      return path.join(directory!, name);
+    };
+    const sampleBytes = "the bytes of a sample image";
+    const sources = contentSourcesFromTree(contentTreeFromFiles(root, journeyFiles("content/journeys/trip", "trip", 10, [])));
+    const photo = (id: string, file: string, skip?: "placeholder") => ({ asset: asset(id, `assets/tourism/t/${path.basename(file)}`, 240, 160),
+      catalogFile: path.join(root, "content/journeys/trip/tourism/catalog.json"), journeyId: "trip", file, observation: false, skip });
+    const marked = markSampleCopies([photo("t_copy", write("copy.png", sampleBytes)), photo("t_own", write("own.png", "a photo of the journey")),
+      photo("t_jpeg", write("copy.jpg", sampleBytes)), photo("t_placeholder", write("placeholder.png", sampleBytes), "placeholder")],
+    new Set([createHash("sha256").update(sampleBytes).digest("hex")]));
+    expect(marked.map((item) => [item.asset.id, item.skip ?? null])).toEqual([["t_copy", "sample-copy"], ["t_own", null], ["t_jpeg", null],
+      ["t_placeholder", "placeholder"]]);
+    expect(tourismPhotoWarnings(sources, marked).map((warning) => warning.message.match(/"(t_[a-z]+)"/u)?.[1])).toEqual(["t_own", "t_jpeg"]);
   });
 });
 
