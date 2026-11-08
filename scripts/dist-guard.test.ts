@@ -184,6 +184,11 @@ describe("production build guard", () => {
       expect(title.stderr).toContain("のタイトル画面で読み込むファイルにDebugのコードが入っています。");
       expect(title.stderr).toContain("- assets/index-abc.js に「debug-panel」");
       expect(title.stderr).not.toContain("ライセンス一覧に問題があります");
+      // A file index.html loads but the build lacks fails at its own check, before the licence check.
+      const missingCss = check(checkedBuild.filter((file) => file.path !== "assets/index-abc.css"));
+      expect(missingCss.status, missingCss.stdout).toBe(1);
+      expect(missingCss.stderr).toContain("index.html が読み込むファイルがビルドにありません: assets/index-abc.css");
+      expect(missingCss.stderr).not.toContain("ライセンス一覧に問題があります");
       // Without the licence list the clean build fails at the licence check.
       const unlicensed = check(checkedBuild.filter((file) => file.path !== THIRD_PARTY_LICENSES_PATH));
       expect(unlicensed.status, unlicensed.stdout).toBe(1);
