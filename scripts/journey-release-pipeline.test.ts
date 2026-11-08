@@ -191,6 +191,10 @@ describe("journey release pipeline (the Golden Triangle as the example)", () => 
       // A rerun of the published city writes nothing.
       expect((await prepareJourneyRelease(root, "golden_triangle", true, "delhi", narrativeFile, translationsFile)).files).toEqual([]);
       expect(readFileSync(journeyFile, "utf8")).toBe(after);
+      // A wrong file path is refused although the published city would not read it.
+      const missing = path.join(root, "missing-narrative.json");
+      await expect(prepareJourneyRelease(root, "golden_triangle", true, "delhi", missing)).rejects.toThrow(`Scenario metadata file not found: ${missing}`);
+      await expect(prepareJourneyRelease(root, "golden_triangle", true, "delhi", narrativeFile, missing)).rejects.toThrow(`Quiz translations file not found: ${missing}`);
 
       // Add only the second city's own hypothetical content. The already
       // published first city must not be regenerated or duplicated.

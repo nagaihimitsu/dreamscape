@@ -1,3 +1,4 @@
+import { namedJa } from "./journey-cli";
 import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
 import { buildContent } from "./content-pipeline";
 
@@ -14,10 +15,10 @@ const input = attempt(() => loadJourneyReadiness(root, journeyId));
 const report = inspectJourneyReadiness(input);
 if (args.includes("--json")) console.log(JSON.stringify(report, null, 2));
 else {
-  console.log(`${named(input.trip)}: ${report.ready ? "参照の準備完了" : "準備中"}`);
+  console.log(`${namedJa(input.trip)}: ${report.ready ? "参照の準備完了" : "準備中"}`);
   for (const issue of report.issues) console.log(`  - ${issue.detail}`);
   for (const city of report.cities) {
-    console.log(`\n${named(input.trip.cities.find((entry) => entry.id === city.cityId) ?? { id: city.cityId })}: ${city.events.length} 候補`);
+    console.log(`\n${namedJa(input.trip.cities.find((entry) => entry.id === city.cityId) ?? { id: city.cityId })}: ${city.events.length} 候補`);
     for (const issue of city.issues) console.log(`  - ${issue.detail}`);
     for (const event of city.events) {
       console.log(`  ${event.id} (${event.category}): ${event.issues.length ? event.issues.map((issue) => issue.code).join(", ") : "参照あり"}`);
@@ -37,11 +38,6 @@ if (args.includes("--require-ready")) {
       process.exitCode = 1;
     }
   }
-}
-
-/** A heading with the Japanese name and the ID, e.g. 「ミラノ（milano）」. */
-function named(item: { id: string; nameJa?: string }): string {
-  return item.nameJa ? `${item.nameJa}（${item.id}）` : item.id;
 }
 
 /** Print a failure before any report output without its stack trace, and stop with exit code 1. */

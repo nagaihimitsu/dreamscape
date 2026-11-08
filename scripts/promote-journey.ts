@@ -324,6 +324,9 @@ export interface JourneyReleaseResult {
 /** Preview in a temporary copy; only explicitly apply after full validation. */
 export async function prepareJourneyRelease(root: string, journeyId: string, apply: boolean, through?: string, narrativeFile?: string, translationsFile?: string): Promise<JourneyReleaseResult> {
   getJourneyAuthoringProfile(root, journeyId);
+  // The files are read only while a selected city is unpublished; a wrong path is reported also when all are published.
+  for (const [file, label] of [[narrativeFile, "Scenario metadata"], [translationsFile, "Quiz translations"]] as const)
+    if (file !== undefined && !existsSync(file)) throw new Error(`${label} file not found: ${file}`);
   const before = loadJourneyReadiness(root, journeyId);
   const cityIds = before.trip.cities.map((city) => city.id);
   const report = inspectJourneyReadiness(before);

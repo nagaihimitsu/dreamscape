@@ -1,3 +1,4 @@
+import { journeyReleaseSummary } from "./journey-cli";
 import { prepareJourneyRelease } from "./promote-journey";
 
 try {
@@ -26,14 +27,8 @@ try {
   if (!journeyId) throw new Error(usage);
   if (translations && !narrative) throw new Error("--translations requires --narrative");
   const apply = mode === "--apply";
-  const { journey, lastCity, files } = await prepareJourneyRelease(process.cwd(), journeyId, apply, through, narrative, translations);
-  const target = `${journey.nameJa}（${journey.id}）の${lastCity.nameJa}（${lastCity.id}）まで`;
-  if (apply) console.log(files.length
-    ? `${target}を公開しました（全体の内容の検証に合格）。書き込んだファイル: ${files.length} 件`
-    : `${target}は公開済みで、内容が変わらないため、書き込んだファイルはありません（全体の内容の検証に合格）。`);
-  else console.log(`${target}の公開の確認に合格しました（全体の内容の検証）。ファイルは変更していません。` +
-    (files.length ? `--apply で書き込むファイル: ${files.length} 件` : "--apply しても、内容が変わらないため書き込むファイルはありません。"));
-  for (const file of files) console.log(`  ${file}`);
+  const result = await prepareJourneyRelease(process.cwd(), journeyId, apply, through, narrative, translations);
+  for (const line of journeyReleaseSummary(result, apply)) console.log(line);
 } catch (error) {
   // The message only: a stack trace would bury it.
   console.error(error instanceof Error ? error.message : error);
