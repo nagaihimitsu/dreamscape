@@ -75,6 +75,25 @@ describe("content build acceptance", () => {
     await writeFile(manifestFile, JSON.stringify({ ...manifest, titleArt: { ...titleArt, imagePath: "assets/title/missing.webp" } }));
     await expect(buildContent(fixture, false)).rejects.toThrow("Missing title art image: milano/assets/title/missing.webp (place it in content/journeys/milano/public/)");
   }, 120000);
+  it("warns about a tourism photo that npm run images:optimize would convert, but not about a placeholder", async () => {
+    // A JPEG larger than 1600×1800 px that no landmark zooms: the build goes on and the warning names the command.
+    const photo = "assets/tourism/content-test-photo.jpg";
+    await sharp({ create: { width: 2000, height: 1000, channels: 3, background: "#7f9fbf" } }).jpeg()
+      .toFile(path.join(fixture, "content/journeys/milano/public", photo));
+    const record = { id: "milano_content_test_photo", path: photo, width: 2000, height: 1000, altJa: "試験用の写真。", isPlaceholder: false,
+      sourceUrl: "https://commons.wikimedia.org/wiki/File:Content_test.jpg", licenseName: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0", creditJa: "写真：試験", modificationJa: "試験用の写真。", checkedAt: "2026-11-08" };
+    const catalogFile = path.join(fixture, "content/journeys/milano/tourism/catalog.json");
+    const catalog = JSON.parse(await readFile(catalogFile, "utf8"));
+    const warningsAbout = async (assets: unknown[]) => {
+      await writeFile(catalogFile, JSON.stringify({ ...catalog, assets: [...catalog.assets, ...assets] }));
+      return (await buildContent(fixture, false)).warnings.filter((warning) => warning.message.includes(record.id));
+    };
+    expect(await warningsAbout([record])).toEqual([{ kind: "tourism-photo", message: "観光写真を軽くできます: content/journeys/milano/tourism/catalog.json の " +
+      "\"milano_content_test_photo\"（assets/tourism/content-test-photo.jpg、JPEG 2000×1000）。npm run images:optimize -- --journey milano --write で、" +
+      "WebPにして1600×1800pxの枠に収めます。" }]);
+    expect(await warningsAbout([{ ...record, isPlaceholder: true }])).toEqual([]);
+  }, 120000);
   it("rejects a registered but missing background image", async () => {
     const file = path.join(fixture, "content/romance/presentation.json");
     const data = JSON.parse(await readFile(file, "utf8"));

@@ -244,6 +244,7 @@ tests/screens/                    # 人が見る画面一覧の撮影（npm run 
 | `npm run journey:scaffold`・`journey:readiness`・`journey:release`・`journey:transit` | 旅行編へシナリオとクイズを取り込む制作ツール（[手順](authoring/JOURNEY_AUTHORING.md)） |
 | `npm run city:bundle` | 都市単位の作業用JSONで地点・交通・背景などを編集（[手順](authoring/CITY_BUNDLES.md)） |
 | `npm run icons:build` | `authoring/brand/favicon-master.png` から `public/` のファビコン（16・32・48px、顔の切り抜き）、Apple touch icon（180px）、アプリアイコン（192・512px）を作り直す。元画像を差し替えたときだけ実行し、生成した画像もコミットする |
+| `npm run images:optimize` | 観光写真を配信用の WebP（品質80）にする。そのままでは確認だけで、`-- --write` で書き換える（`-- --journey <旅行編ID>` で1つの旅行編だけ）。観察で拡大する写真（観光地の画像と観察資料の画像）は同じ大きさ、ほかは幅1600px・高さ1800pxの枠に収め、写真の色の情報（ICCプロファイル）は残す。カタログの `path`・`width`・`height`・`modificationJa` と観察資料の `path`・`sha256` も書き換え、元のファイルを消す（出典と確認日は変えない）。仮の画像（`isPlaceholder`）と見本の画像は変えない。変換できる写真があると `content:build` が警告する |
 
 ゲームは `content/` を直接読まず、`npm run content:build` が書き出す生成物だけを読みます。`src/content/generated/` の `stories.json`・`quizzes.json`（コンパイル済みの会話と出題）、`content/`（統合したデータ）、`public/`（配信する画像）は手動で編集しないでください。Ink・JSON・画像を編集した後は `npm run content:build` を実行します（`dev`・`test`・`test:quick`・`build`・`verify` は自動で実行します）。`vite` を直接起動する場合も先に実行してください。生成していないと、警告なしに画像のない状態で起動します。
 

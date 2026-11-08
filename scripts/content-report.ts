@@ -12,13 +12,14 @@ import { isObservationOnlyClue } from "../src/content/tourism-schemas";
 // the game, and what each journey folder provides. content:build prints the
 // warnings as counts (details with --verbose) and one line per journey.
 
-export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-prefix";
+export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-prefix" | "tourism-photo";
 export type ContentWarning = { kind: ContentWarningKind; message: string };
 /** How content:build counts each kind of warning. */
 export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "unknown-file": "unknown file(s) in journey folders",
   "unused-public-file": "unused public file(s)",
   "id-prefix": "ID(s) without the journey prefix",
+  "tourism-photo": "tourism photo(s) to convert to WebP (npm run images:optimize)",
 };
 
 /**
