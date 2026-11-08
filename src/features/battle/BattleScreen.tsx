@@ -32,6 +32,70 @@ import { InteractiveEnglish } from "../learning/InteractiveEnglish";
 import type { Learning } from "../learning/useLearning";
 import "./battle.css";
 
+/** Room left between the round bar and the first line of a feedback below it. */
+const FEEDBACK_GAP_PX = 8;
+
+/**
+ * How far below the top of the screen the sticky boxes held there reach once
+ * `line` is scrolled up to them: the round bar, and a header held above it
+ * (the journey bar where :has() is missing, styles.css). Those are the sticky
+ * boxes before `line` beside it or beside one of its ancestors; one held at the
+ * top sits at its `top`. Read from styles and boxes, not by hit-testing, which
+ * misses boxes without pointer events (all of them while taps are held after a
+ * load: tap-hold.ts), and the same before and after a scroll.
+ */
+function heldDepth(line: Element) {
+  let depth = 0;
+  for (let node: Element = line; node.parentElement; node = node.parentElement) {
+    for (let box = node.previousElementSibling; box; box = box.previousElementSibling) {
+      const style = getComputedStyle(box);
+      const top = parseFloat(style.top);
+      const height = box.getBoundingClientRect().height;
+      if (style.position === "sticky" && Number.isFinite(top) && height > 0) depth = Math.max(depth, top + height);
+    }
+  }
+  return depth;
+}
+
+/**
+ * Focuses the answer's feedback (screen readers read on from there) and shows
+ * its start: its first line (「正しい答え：…」 after a wrong answer, else the
+ * explanation) just below the sticky round bar. The box's top padding may sit
+ * under the bar, so that as much of the rest shows as can.
+ *
+ * The browser's own focus scroll does most of it: the scroll-margin-top set
+ * here from what is held at the top of the view (the bar, and a header held
+ * above it) keeps that line clear of it, and a feedback that fits below it then
+ * shows whole (one that nearly fills that room may keep some of its top
+ * padding under it). One taller than that room may still be left with its start
+ * under the bar (a hidden one is centred, for example), so it is scrolled back
+ * until the first line shows; the rest and 「敵の反応を見る」 are read by
+ * scrolling on. Both jumps are instant, as the browser's own.
+ */
+function focusFeedbackStart(feedback: HTMLElement, area: HTMLElement | null, bar: HTMLElement | null) {
+  if (!area || !bar) {
+    feedback.focus();
+    return;
+  }
+  const line = feedback.querySelector(":scope > p") ?? feedback;
+  // Below 500 px of portrait height the reading area grows with its content and the
+  // page scrolls instead (battle.css): the bar then sticks to the top of the screen,
+  // and the journey bar above the battle scrolls away with the page (styles.css), or
+  // is held there too where :has() is missing. Otherwise the reading area scrolls and
+  // holds the bar just below its top padding, where the bar is laid out.
+  const pageScrolls = getComputedStyle(area).overflowY === "visible";
+  const viewTop = pageScrolls ? 0 : area.getBoundingClientRect().top;
+  const held = pageScrolls ? heldDepth(line) : bar.getBoundingClientRect().bottom - viewTop;
+  const lineOffset = line.getBoundingClientRect().top - feedback.getBoundingClientRect().top;
+  feedback.style.scrollMarginTop = `${Math.max(0, held + FEEDBACK_GAP_PX - lineOffset)}px`;
+  feedback.focus();
+  const clear = Math.max(viewTop + held, bar.getBoundingClientRect().bottom);
+  const covered = clear + FEEDBACK_GAP_PX - line.getBoundingClientRect().top;
+  if (covered <= 0) return;
+  if (pageScrolls) window.scrollBy(0, -covered);
+  else area.scrollTop -= covered;
+}
+
 interface Props {
   learning: Learning;
   onEnglish: (questionId?: string) => void;
@@ -121,6 +185,7 @@ export function BattleScreen({
   const [creditsOpen, setCreditsOpen] = useState(false);
   const windowVisibility = useDialogueWindow();
   const readingArea = useRef<HTMLElement>(null);
+  const roundBar = useRef<HTMLDivElement>(null);
   const displayedStoryState = rebuttal?.step.storyState ?? (active.phase === "dialogue" ? active.storyState : null);
   // Start each new scene at the top of its own reading area, without moving
   // the page or disturbing a question when a notebook or translation opens.
@@ -168,7 +233,10 @@ export function BattleScreen({
   }, [active.phase, answerKey, effectAnswer, perfectAnswer, reduceMotion]);
   useEffect(() => {
     if (active.phase !== "feedback") return;
-    const focusFeedback = () => document.getElementById("battle-feedback")?.focus();
+    const focusFeedback = () => {
+      const feedback = document.getElementById("battle-feedback");
+      if (feedback) focusFeedbackStart(feedback, readingArea.current, roundBar.current);
+    };
     // A newly saved answer gets a short, optional visual beat. Restored frames,
     // hidden tabs and reduced-motion preferences never wait for an animation.
     if (animatedAnswer !== answerKey || reduceMotion || document.hidden ||
@@ -373,7 +441,7 @@ export function BattleScreen({
         aria-label="クイズバトル"
         data-testid={rebuttal ? "reasoning-rebuttal" : undefined}
       >
-        {!isDialogue && <div className="battle-roundbar">
+        {!isDialogue && <div className="battle-roundbar" data-testid="battle-roundbar" ref={roundBar}>
           <span>
             {isResult
               ? "決着"
@@ -608,7 +676,7 @@ export function BattleScreen({
               >
                 <h3 className="sr-only" role="status">{answer.correct ? "正解" : "不正解"}</h3>
                 {!answer.correct && (
-                  <p className="correct-answer">
+                  <p className="correct-answer" data-testid="correct-answer">
                     正しい答え：
                     <span lang="en">
                       {

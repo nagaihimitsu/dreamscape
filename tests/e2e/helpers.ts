@@ -126,6 +126,7 @@ export const devModules = {
   persistence: "/src/persistence/index.ts",
   journeyStorage: "/src/persistence/journey-storage.ts",
   content: "/src/content/index.ts",
+  journeys: "/src/content/journeys.ts",
   encounters: "/src/content/encounters.ts",
   debugState: "/src/dev/debug-state.ts",
   game: "/src/domain/game.ts",
@@ -219,8 +220,12 @@ export const ops = {
     await page.getByLabel("主人公の名前").fill(names[0]);
     await page.getByLabel("ヒロインの名前").fill(names[1]);
   },
+  /** The header's 「設定」. */
+  settingsButton(page: Page): Locator {
+    return page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "設定", exact: true });
+  },
   async openSettings(page: Page): Promise<Locator> {
-    await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "設定", exact: true }).click();
+    await ops.settingsButton(page).click();
     const settings = page.getByRole("dialog", { name: "設定" });
     await expect(settings).toBeVisible();
     return settings;
@@ -272,12 +277,16 @@ export const ops = {
   async manualSave(page: Page) {
     await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "セーブ", exact: true }).click();
   },
+  /** The header's 「ロード」: with nothing unsaved the saved scene comes back at once (with unsaved progress it asks first: askToLoad). */
+  async load(page: Page) {
+    await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "ロード", exact: true }).click();
+  },
   /**
    * The header's 「ロード」 while progress is unsaved (manual saving): returns the confirmation
    * 「保存した場面を読み込みますか？」 with its 「ロードする」 (`loadButton`).
    */
   async askToLoad(page: Page): Promise<{ dialog: Locator; loadButton: Locator }> {
-    await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "ロード", exact: true }).click();
+    await ops.load(page);
     const dialog = page.getByRole("dialog", { name: "保存した場面を読み込みますか？" });
     await expect(dialog).toBeVisible();
     return { dialog, loadButton: dialog.getByRole("button", { name: "ロードする", exact: true }) };

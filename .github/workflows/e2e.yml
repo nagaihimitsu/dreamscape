@@ -36,7 +36,8 @@ jobs:
           # Main flows on the development server (every test tagged @gate).
           - tier: gate
             command: npx playwright test --project=gate
-          # Debug as a scene launchpad on the development server (@debug).
+          # Debug as a scene launchpad, and screen checks Debug cannot show
+          # (normal saves), on the development server (@debug).
           - tier: debug
             command: npx playwright test --project=debug
           # The production build: `npm run build`, then `vite preview` (@prod).
