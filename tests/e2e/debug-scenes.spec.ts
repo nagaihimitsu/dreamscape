@@ -266,16 +266,18 @@ test("rebuttal: the tap that ends it does not also skip the cut-in under the fin
 
 // A story scene that starts under the finger (here the enemy's reaction after an answer's
 // feedback) does not take the second tap of the double tap that started it: taps are held for
-// a moment, so its first line is not read on before it is seen (lines appear whole here). The
-// button is tapped where it shows (after a long explanation it starts at the bottom edge of the
-// reading area), and the second tap falls on the reaction where a tap reads on.
+// a moment, so its first line is not read on before it is seen (lines appear whole here). After
+// a long explanation the player scrolls the reading area until the button shows at its bottom
+// edge and taps it there; the second tap falls on the reaction's line, where a tap reads on.
 test("battle: a double tap on 「敵の反応を見る」 opens the reaction and stays on its first line", { tag: tier.debug }, async ({ page }) => {
   const target = (await tapTargets(page)).battle;
   expect(target, "a battle that Debug opens in its default city").toBeDefined();
   await page.clock.install();
   await ops.openDebugScene(page, settings(target!));
   const feedback = await playUntil(page, (state) => state.activeBattle?.phase === "feedback", { source: debugGame });
-  const reaction = await ops.centerOf(page.getByTestId("battle-advance"));
+  const advance = page.getByTestId("battle-advance");
+  await advance.evaluate((button) => button.scrollIntoView({ block: "end" }));
+  const reaction = await ops.centerOf(advance);
   expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest('[data-testid="battle-advance"]'), reaction),
     "the double tap lands on 「敵の反応を見る」").toBe(true);
   await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
@@ -286,6 +288,43 @@ test("battle: a double tap on 「敵の反応を見る」 opens the reaction and
   await ops.settled(page);
   expect(await ops.readsOnAt(page, reaction), "the second tap landed where a tap reads the reaction on").toBe(true);
   expect((await debugGame(page))!.revision).toBe(feedback.revision + 1);
+});
+
+// UI_RULES A-18 (nothing important under an overlapping part): after a wrong answer the explanation,
+// which starts with 「正しい答え：英文（訳）」, can be taller than the battle paper's reading area. Focus
+// goes to it (for screen readers), its first line shows just below the round bar that stays at the top
+// of the area, not under it, and 「敵の反応を見る」 at its end is reached by scrolling the area.
+test("battle: a long explanation after a wrong answer starts below the round bar, and 「敵の反応を見る」 is reached by scrolling", { tag: tier.debug }, async ({ page }) => {
+  const target = (await tapTargets(page)).battle;
+  expect(target, "a battle that Debug opens in its default city").toBeDefined();
+  const wrong = await page.evaluate(async ({ modules, battleId }) => {
+    const { battles, battleQuizzes } = await import(/* @vite-ignore */ modules.content);
+    const question = battleQuizzes[battles.find((battle: { id: string }) => battle.id === battleId).quizId].questions[0];
+    return question.options.find((option: { id: string }) => option.id !== question.correctOptionId).id as string;
+  }, { modules: devModules, battleId: target!.id });
+  await ops.openDebugScene(page, settings(target!));
+  await playUntil(page, (state) => state.activeBattle?.phase === "feedback", { source: debugGame, pick: () => wrong });
+  await expect(page.getByTestId("battle-feedback")).toBeFocused();
+  const start = await page.evaluate(() => {
+    const area = document.getElementById("battle-content")!;
+    const bar = area.querySelector(".battle-roundbar")!.getBoundingClientRect();
+    const feedback = document.getElementById("battle-feedback")!.getBoundingClientRect();
+    const first = document.querySelector("#battle-feedback .correct-answer")!;
+    const line = first.getBoundingClientRect();
+    const shown = document.elementFromPoint(line.left + 4, line.top + 1);
+    return { room: area.getBoundingClientRect().bottom - bar.bottom, height: feedback.height, shown: !!shown && first.contains(shown) };
+  });
+  expect(start.height, "the explanation is taller than the reading area below the round bar").toBeGreaterThan(start.room);
+  expect(start.shown, "the first line of the explanation shows, not the round bar over it").toBe(true);
+  const reaction = page.getByRole("button", { name: "敵の反応を見る" });
+  await page.locator("#battle-content").evaluate((area) => area.scrollTo({ top: area.scrollHeight }));
+  expect(await reaction.evaluate((button) => {
+    const box = button.getBoundingClientRect();
+    const at = (y: number) => button.contains(document.elementFromPoint(box.left + box.width / 2, y));
+    return at(box.top + 1) && at(box.bottom - 1);
+  }), "「敵の反応を見る」 shows whole at the end of the reading area").toBe(true);
+  await ops.tapAt(page, await ops.centerOf(reaction));
+  await expect.poll(async () => (await debugGame(page))!.activeBattle?.phase).toBe("dialogue");
 });
 
 // docs/02 「UX/スマホ」: no tap reads on while something is open over the scene. The header's

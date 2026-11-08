@@ -427,6 +427,12 @@
 .battle-screen .quiz-feedback {
   margin: 18px 0;
 }
+/* When focus brings the feedback into view, keep it clear of the sticky round
+   bar (whose bottom is at most 68 px below the top of the reading area). One
+   taller than the area is brought up to the bar by showFeedbackStart (BattleScreen). */
+.battle-paper .quiz-feedback {
+  scroll-margin-top: 76px;
+}
 .question-translation-tools {
   display: flex;
   align-items: flex-start;

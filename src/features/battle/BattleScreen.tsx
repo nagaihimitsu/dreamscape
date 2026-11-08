@@ -32,6 +32,28 @@ import { InteractiveEnglish } from "../learning/InteractiveEnglish";
 import type { Learning } from "../learning/useLearning";
 import "./battle.css";
 
+/** Room left between the round bar and the start of a feedback brought up to it. */
+const FEEDBACK_GAP_PX = 8;
+
+/**
+ * Focusing the answer's feedback lets the browser scroll it into view, and it
+ * centres one that is taller than the reading area: the start (「正しい答え：…」)
+ * then sits under the round bar, which stays at the top of the area, and
+ * 「敵の反応を見る」 below its edge. Scroll back so that the start shows just
+ * below the bar; the rest is read by scrolling on. A feedback that fits stays
+ * where the browser put it (its scroll-margin-top in battle.css keeps it clear
+ * of the bar). The jump is instant, as the browser's own.
+ */
+function showFeedbackStart(feedback: HTMLElement, area: HTMLElement | null) {
+  const bar = area?.querySelector(".battle-roundbar");
+  if (!area || !bar) return;
+  const covered = bar.getBoundingClientRect().bottom + FEEDBACK_GAP_PX - feedback.getBoundingClientRect().top;
+  if (covered <= 0) return;
+  // Below 500 px of portrait height the reading area grows with its content and the page scrolls (battle.css).
+  if (getComputedStyle(area).overflowY === "visible") window.scrollBy(0, -covered);
+  else area.scrollTop -= covered;
+}
+
 interface Props {
   learning: Learning;
   onEnglish: (questionId?: string) => void;
@@ -168,7 +190,12 @@ export function BattleScreen({
   }, [active.phase, answerKey, effectAnswer, perfectAnswer, reduceMotion]);
   useEffect(() => {
     if (active.phase !== "feedback") return;
-    const focusFeedback = () => document.getElementById("battle-feedback")?.focus();
+    const focusFeedback = () => {
+      const feedback = document.getElementById("battle-feedback");
+      if (!feedback) return;
+      feedback.focus();
+      showFeedbackStart(feedback, readingArea.current);
+    };
     // A newly saved answer gets a short, optional visual beat. Restored frames,
     // hidden tabs and reduced-motion preferences never wait for an animation.
     if (animatedAnswer !== answerKey || reduceMotion || document.hidden ||

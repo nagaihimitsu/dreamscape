@@ -69,9 +69,6 @@
   background: var(--paper);
   border-bottom: 1px solid var(--line);
 }
-.battle-paper .quiz-feedback {
-  scroll-margin-top: 76px;
-}
 .tourism-guide.paper {
   padding-top: 25px;
 }
