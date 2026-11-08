@@ -87,7 +87,7 @@ export const CATALOG_RULES = [
   { kind: "romance/effect_catalog.json", fields: { schemaVersion: same, effects: concat } },
   {
     kind: "romance/presentation.json",
-    fields: { schemaVersion: same, deferred: core, ending: core, backgrounds: record, emotions: core, memories: record },
+    fields: { schemaVersion: same, ending: core, backgrounds: record, emotions: core, memories: record },
   },
   {
     kind: "romance/progression.json",

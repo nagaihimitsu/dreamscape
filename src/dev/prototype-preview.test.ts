@@ -11,7 +11,7 @@ describe("prototype city debug preview", () => {
     const { city, travelSettings } = getCityContent(cityId);
     expect(city.productionStatus).toBe("prototype");
     const state = prototypePreviewState(cityId);
-    expect(state).toMatchObject({ currentCityId: cityId, travelBudget: 4_000_000, ap: 0,
+    expect(state).toMatchObject({ currentCityId: cityId, travelBudget: 3_000_000, ap: 0,
       completedCityIds: [], memories: [], inventory: {},
       travel: { currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId, day: 1, minute: 540 } });
     const data = new Map<string, string>();

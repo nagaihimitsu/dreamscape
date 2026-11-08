@@ -59,26 +59,6 @@
 
 .encounter-choice-reason { font-weight: 700; }
 
-.encounter-menu { margin-top: 12px; }
-.encounter-menu > summary { list-style: none; min-height: 44px; padding: 8px 0; cursor: pointer; }
-.encounter-menu > summary::-webkit-details-marker { display: none; }
-.encounter-menu > summary::before { content: "▸"; flex: none; font-size: 13px; }
-.encounter-menu[open] > summary::before { content: "▾"; }
-.encounter-menu-heading, .encounter-menu-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-.encounter-menu-heading > span:first-of-type { flex: 1; font-size: 16px; font-weight: 700; }
-.encounter-menu-heading > span { white-space: nowrap; }
-.encounter-menu-count { font-size: 13px; font-weight: 400; }
-.encounter-menu-row { padding: 6px 0; border-bottom: 1px solid var(--line); }
-.encounter-menu-row > div { min-width: 0; }
-.encounter-menu-row strong { font-size: 15px; }
-.encounter-menu-row p, .encounter-inventory { margin: 2px 0; font-size: 13px; line-height: 1.4; }
-.encounter-menu-row button { width: auto; min-width: 64px; min-height: 44px; padding: 4px 10px; flex: none; }
-
 .encounter-scene-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .encounter-background { width: 100%; height: 100%; display: block; object-fit: cover; }
 .encounter-character-layer { inset: 0; height: 100%; transform: none; }

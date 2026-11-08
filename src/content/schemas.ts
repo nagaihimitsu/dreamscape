@@ -145,7 +145,6 @@ export const balanceSchema = z
 export const presentationSchema = z
   .object({
     schemaVersion: version,
-    deferred: z.object({ titleJa: text, descriptionJa: text }).strict(),
     ending: z
       .object({ titleJa: text, descriptionJa: text, buttonJa: text })
       .strict(),

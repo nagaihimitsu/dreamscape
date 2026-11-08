@@ -28,7 +28,7 @@
     "unitJa": "スム",
     "unit": "whole"
   },
-  "initialBudget": 4000000,
+  "initialBudget": 3000000,
   "startWeekday": 0,
   "initialState": {
     "ap": 0,
