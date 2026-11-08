@@ -5,7 +5,7 @@
 import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import { tourismClueSchema, type ObservationRegion } from "../../../src/content/tourism-schemas";
-import { resolvePublicFile } from "../../public-assets";
+import { findPublicFile, resolvePublicFile } from "../../public-assets";
 import { getJourneyAuthoringProfile } from "../../journey-authoring";
 
 interface Fact {
@@ -76,7 +76,7 @@ const clues = await Promise.all(selected.map(async ({ id, region, visualEvidence
   const source = sourceById.get(fact.sourceId);
   if (!source || source.url !== fact.sourceUrl) throw new Error(`Missing or inconsistent source: ${id}`);
   if (Boolean(region) !== Boolean(visualEvidence)) throw new Error(`Missing visual evidence: ${id}`);
-  const imagePath = `${profile.imageDirectory}/${fact.placeId}.webp`;
+  const imagePath = placeImagePath(fact.placeId);
   images[fact.placeId] = { path: imagePath, sha256: createHash("sha256").update(await readFile(resolvePublicFile(process.cwd(), imagePath))).digest("hex") };
   const clueId = `gt_obs_${id}`;
   const supplement = followup[id];
@@ -86,6 +86,16 @@ const clues = await Promise.all(selected.map(async ({ id, region, visualEvidence
     descriptionJa, factId: fact.id, relatedQuestionIds: [], region: region ?? null,
     sources: [{ publisher: supplement?.publisher ?? source.publisher, title: supplement?.title ?? source.title, url: supplement?.url ?? source.url, checkedAt: supplement ? "2026-11-03" : fact.checkedAt, claimType: fact.classification, claimJa: descriptionJa }] });
 }));
+/**
+ * The place's photo in the image folder, in whichever format it is served (the tourism catalog
+ * allows WebP, PNG and JPEG; npm run images:optimize turns JPEG and PNG photos into WebP).
+ */
+function placeImagePath(placeId: string): string {
+  const found = ["webp", "png", "jpg", "jpeg"].map((extension) => `${profile.imageDirectory}/${placeId}.${extension}`)
+    .filter((candidate) => findPublicFile(process.cwd(), candidate));
+  if (found.length !== 1) throw new Error(`Expected one photo of ${placeId} in ${profile.imageDirectory}: ${found.length ? found.join(", ") : "none"}`);
+  return found[0];
+}
 // Promise completion order is deliberately not used for object serialization.
 const orderedImages = Object.fromEntries(Object.entries(images).sort(([a], [b]) => a.localeCompare(b)));
 const orderedProvenance = Object.fromEntries(Object.entries(provenance).sort(([a], [b]) => a.localeCompare(b)));

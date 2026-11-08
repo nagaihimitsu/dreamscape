@@ -1,6 +1,9 @@
 import { spawnSync } from "node:child_process";
-import { readdirSync, readFileSync } from "node:fs";
+import { cpSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { createRequire } from "node:module";
+import { tmpdir } from "node:os";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
 import { journeyReleaseSummary, namedJa, parseJourneyScaffoldArgs } from "./journey-cli";
 
@@ -44,8 +47,10 @@ describe("journey authoring commands", () => {
       .toEqual(["京都編（kyoto）の祇園（gion）までの公開の確認に合格しました（全体の内容の検証）。ファイルは変更していません。--apply しても、内容が変わらないため書き込むファイルはありません。"]);
   });
 
-  const run = (script: string, args: string[]) =>
-    spawnSync(process.execPath, ["--import", "tsx", path.join("scripts", script), ...args], { cwd: root, encoding: "utf8" });
+  // The commands read the content of their working directory (`cwd`, the repository unless a test gives a copy).
+  const tsx = pathToFileURL(createRequire(import.meta.url).resolve("tsx")).href;
+  const run = (script: string, args: string[], cwd = root) =>
+    spawnSync(process.execPath, ["--import", tsx, path.join(root, "scripts", script), ...args], { cwd, encoding: "utf8" });
   type Manifest = { id: string; nameJa: string; cityPlan?: unknown; cities: { id: string; nameJa: string }[] };
   const manifests = readdirSync(path.join(root, "content/journeys")).sort()
     .map((id) => JSON.parse(readFileSync(path.join(root, "content/journeys", id, "manifest.json"), "utf8")) as Manifest);
@@ -61,13 +66,24 @@ describe("journey authoring commands", () => {
     for (const city of planned.cities) expect(lines).toContainEqual(expect.stringMatching(new RegExp(`^${city.nameJa}（${city.id}）: \\d+ 候補$`, "u")));
   });
 
+  // On a copy of content/ (photos left out) whose first journey has its cityPlan removed, so the check
+  // does not depend on which registered journeys have one.
   it("journey:readiness on a journey without a city plan prints only the message and exits with 1", () => {
-    const unplanned = manifests.find((manifest) => !manifest.cityPlan);
-    expect(unplanned, "a registered journey without cityPlan (today Milan)").toBeDefined();
-    const result = run("inspect-journey-readiness.ts", ["--journey", unplanned!.id]);
-    expect(result.status).toBe(1);
-    expect(result.stdout).toBe("");
-    expect(result.stderr.trim()).toBe(`旅行編「${unplanned!.id}」の manifest.json に都市の計画（cityPlan）がないため、準備を確かめられません（journey:readiness は cityPlan を持つ旅行編を確かめます）。`);
+    const fixture = mkdtempSync(path.join(tmpdir(), "dreamscape-readiness-"));
+    try {
+      const content = path.join(root, "content");
+      cpSync(content, path.join(fixture, "content"), { recursive: true,
+        filter: (source) => !path.relative(content, source).split(path.sep).includes("public") });
+      const file = path.join(fixture, "content/journeys", readdirSync(path.join(content, "journeys")).sort()[0], "manifest.json");
+      const { cityPlan: _plan, ...unplanned } = JSON.parse(readFileSync(file, "utf8")) as Manifest;
+      writeFileSync(file, `${JSON.stringify(unplanned, null, 2)}\n`);
+      const result = run("inspect-journey-readiness.ts", ["--journey", unplanned.id], fixture);
+      expect(result.status, result.stderr).toBe(1);
+      expect(result.stdout).toBe("");
+      expect(result.stderr.trim()).toBe(`旅行編「${unplanned.id}」の manifest.json に都市の計画（cityPlan）がないため、準備を確かめられません（journey:readiness は cityPlan を持つ旅行編を確かめます）。`);
+    } finally {
+      rmSync(fixture, { recursive: true, force: true });
+    }
   });
 
   // The commands themselves, on errors that stop them before any content is read or built (each run takes well under a second).

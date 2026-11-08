@@ -1,7 +1,7 @@
 import type { BattleOutcome } from "../../domain/battle";
 
 /** The result's words: English on screen, Japanese for screen readers (UI stage 0, item C). */
-export const OUTCOME_HEADINGS: Record<BattleOutcome, { en: string; ja: string }> = {
+const OUTCOME_HEADINGS: Record<BattleOutcome, { en: string; ja: string }> = {
   perfect: { en: "PERFECT VICTORY", ja: "完全勝利" },
   victory: { en: "VICTORY", ja: "勝利" },
   defeat: { en: "DEFEAT", ja: "敗北" },
