@@ -703,13 +703,6 @@ footer span {
     margin-top: 4px;
   }
 }
-.confirm-text {
-  margin: 20px 0 28px;
-  font-family: "Noto Serif JP", serif;
-  line-height: 2;
-  font-size: 16px;
-  overflow-wrap: anywhere;
-}
 .secondary {
   width: 100%;
   background: transparent;
@@ -1033,31 +1026,6 @@ dialog.modal::backdrop {
   font-size: 24px;
   margin: 0 10px;
 }
-.battle-entry {
-  margin: 24px auto;
-  padding: 22px 26px;
-  max-width: 576px;
-  border: 1px solid #c4cebe;
-  background: #eff0e6;
-  border-radius: 4px;
-}
-.battle-entry h2 {
-  font-size: 21px;
-  margin: 12px 0 7px;
-}
-.battle-entry p {
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.9;
-}
-.battle-entry .primary {
-  margin: 17px 0 10px;
-}
-.battle-entry > div + div {
-  margin-top: 24px;
-  padding-top: 24px;
-  border-top: 1px solid var(--line);
-}
 .battle-stage {
   position: relative;
   background: radial-gradient(
@@ -1353,16 +1321,6 @@ dialog.modal::backdrop {
   margin-bottom: 18px;
 }
 @media (max-width: 600px) {
-  .battle-entry {
-    margin: 20px 24px;
-    padding: 19px;
-  }
-  .battle-entry h2 {
-    font-size: 19px;
-  }
-  .battle-entry .eyebrow {
-    font-size: 9px;
-  }
   .battle-stage {
     padding: 23px 23px 0;
     gap: 8px;

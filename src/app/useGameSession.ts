@@ -12,7 +12,7 @@ export type GameChange = (state: GameState) => GameState;
 export type GameStorage = StorageLike & { removeItem(key: string): void };
 
 /** Owns the in-memory game and the snapshots used to protect persisted progress. */
-export function useGameSession(storage: GameStorage, autoSave: boolean, onCityChange: () => void) {
+export function useGameSession(storage: GameStorage, autoSave: boolean) {
   const [loaded] = useState(() => loadGame(storage));
   const [game, setGame] = useState<GameState | null>(loaded.status === "loaded" ? loaded.state : null);
   const gameRef = useRef(game);
@@ -43,7 +43,6 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCityCh
       savedGameRef.current = next;
     }
     adopt(next);
-    if (next.currentCityId !== previous.currentCityId) onCityChange();
     setNotice("");
     return true;
   }

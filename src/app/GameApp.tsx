@@ -2,7 +2,6 @@ import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from "re
 import {
   balance,
   dates,
-  dateDestinations,
   presentation,
   landmarks,
   tourismAssets,
@@ -21,7 +20,6 @@ import {
   chooseDate,
   finishDate,
   setNames,
-  startDate,
 } from "../domain/game";
 import { useGameSession } from "./useGameSession";
 import { leaveStep } from "./unsaved-progress";
@@ -91,8 +89,6 @@ import { storySceneChanged, storySceneOnScreen } from "./story-scene-change";
 import { holdTaps } from "../components/tap-hold";
 import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
 
-type Confirmation = { kind: "date"; id: string };
-
 export function GameApp({
   storage = browserStorage,
   nextRomanceRoll = secureRomanceRoll,
@@ -103,9 +99,8 @@ export function GameApp({
   oldDataStorage,
 }: AppProps & { journeyId?: string; onSwitchJourney?: (id: string) => void; selectorFocus?: SelectorFocus; oldDataStorage?: KeyedStorage }) {
   const isDebug = import.meta.env.DEV && debug;
-  const [selectedLandmarkId, setSelectedLandmarkId] = useState<string | null>(null);
   const displaySettings = usePresentationSettings(storage);
-  const session = useGameSession(storage, displaySettings.value.autoSave, () => setSelectedLandmarkId(null));
+  const session = useGameSession(storage, displaySettings.value.autoSave);
   const { game, loaded, invalid, notice, setNotice, commit, getCurrent, save } = session;
   // The second tap of a double tap that starts or ends a story scene must not press the next
   // screen or read the new scene on (story-scene-change.ts).
@@ -132,7 +127,6 @@ export function GameApp({
     setEnglishOpen(true);
   }
   const [deleteSnapshot, setDeleteSnapshot] = useState<DeleteSnapshot | null>(null);
-  const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
   const [confirmDeparture, setConfirmDeparture] = useState(false);
   const [settings, setSettings] = useState(false);
   const [oldDataOpen, setOldDataOpen] = useState(false);
@@ -165,15 +159,10 @@ export function GameApp({
   const setSpeed = (next: number) => displaySettings.update({ dialogueSpeed: next });
   const [confirmLoad, setConfirmLoad] = useState(false);
   const [showRomanceEnding, setShowRomanceEnding] = useState(false);
-  const [placeFocusRequest, setPlaceFocusRequest] = useState(0);
   // The title starts with empty fields (the default names are their placeholders); 設定 fills in the current names.
   const [player, setPlayer] = useState(game?.playerName ?? "");
   const [heroine, setHeroine] = useState(game?.heroineName ?? "");
 
-  function returnToPlace(landmarkId: string | null | undefined) {
-    setSelectedLandmarkId(landmarkId ?? null);
-    if (landmarkId) setPlaceFocusRequest((value) => value + 1);
-  }
   function begin(event: FormEvent) {
     event.preventDefault();
     session.begin(nameOrDefault(player, balance.defaultPlayerName), nameOrDefault(heroine, balance.defaultHeroineName), journeyId);
@@ -196,7 +185,6 @@ export function GameApp({
     // comes back (a date, battle or encounter is a new instance: sceneEpoch): the second tap of a
     // double tap on 「ロード」 or 「ロードする」 must not read the restored line on.
     holdTaps();
-    setConfirmation(null);
     setShowRomanceEnding(false);
     setSceneEpoch((epoch) => epoch + 1);
     setNotebook(false);
@@ -249,13 +237,6 @@ export function GameApp({
     (landmark) => landmark.id === currentLandmarkId,
   );
   const cityNotebook = currentBattle?.scope === "city_finale";
-  const selectedDate =
-    confirmation?.kind === "date"
-      ? dates.find((date) => date.id === confirmation.id)
-      : undefined;
-  const selectedDestination = dateDestinations.find(
-    (destination) => destination.id === selectedDate?.destinationId,
-  );
   const currentCity = game ? getCityContent(game.currentCityId) : undefined;
   // Before the trip starts, the heading names the selected journey's first city.
   const editionCityName = currentCity?.city.nameJa ?? getJourney(journeyId)?.cities[0].nameJa;
@@ -498,20 +479,13 @@ export function GameApp({
                 result: encounterFeedback ? `${encounterFeedback.correct ? "正解" : "不正解"}。${encounterFeedback.explanationJa}` : undefined,
               } : undefined,
             }}
-            onChoose={(index) => {
-              const changed = commit((state) => chooseEncounter(state, index, game.revision));
-              if (changed && !getCurrent()?.activeEncounter && !getCurrent()?.activeTourism)
-                returnToPlace(currentEncounter.landmarkId);
-              return changed;
-            }}
+            onChoose={(index) => commit((state) => chooseEncounter(state, index, game.revision))}
             onAnswer={(index) => commit((state) => answerEncounterQuiz(state, currentEncounter.quiz!.question.options[index].id, game.revision))}
             onAdvance={() => {
-              if (commit((state) => continueTourismEncounters(state, advanceEncounter(state, game.revision), nextRomanceRoll)) && !getCurrent()?.activeEncounter && !getCurrent()?.activeTourism)
-                returnToPlace(currentEncounter.landmarkId);
+              commit((state) => continueTourismEncounters(state, advanceEncounter(state, game.revision), nextRomanceRoll));
             }}
             onFinish={() => {
-              if (commit((state) => continueTourismEncounters(state, finishEncounter(state, game.revision), nextRomanceRoll)) && !getCurrent()?.activeEncounter && !getCurrent()?.activeTourism)
-                returnToPlace(currentEncounter.landmarkId);
+              commit((state) => continueTourismEncounters(state, finishEncounter(state, game.revision), nextRomanceRoll));
             }}
           />
         ) : game.activeEpilogue ? (
@@ -594,8 +568,7 @@ export function GameApp({
                 : undefined
             }
             onLeave={resultExits.leave ? () => {
-              if (commit((state) => leaveBattleResult(state, game.revision)))
-                returnToPlace(currentBattle?.landmarkId);
+              commit((state) => leaveBattleResult(state, game.revision));
             } : undefined}
           />
         ) : active && frame ? (
@@ -647,13 +620,9 @@ export function GameApp({
         ) : (
           <FreeTimeHub
             game={game}
-            selectedLandmarkId={selectedLandmarkId}
-            onSelectLandmark={setSelectedLandmarkId}
-            placeFocusRequest={placeFocusRequest}
             onClaimRewards={() => commit((state) => claimPendingRewards(state, game.revision))}
             onStartEpisode={(id) => commit((state) => startEpisode(state, id))}
             onEpilogue={(id) => commit((state) => startCityEpilogue(state, id, game.revision))}
-            onChooseDate={(id) => setConfirmation({ kind: "date", id })}
             onBattle={(id) => commit((state) => startBattle(state, id))}
             onTravelEvent={(id, mode) => travelToEvent(id, mode, game.revision)}
             onRent={(modeId) => commit((state) => rentTransport(state, modeId, game.revision))}
@@ -735,35 +704,6 @@ export function GameApp({
             setEnglishOpen(false);
           }}
         />
-      )}
-      {confirmation && (
-        <Modal labelledBy="confirm-title" onClose={() => setConfirmation(null)}>
-          <p className="eyebrow">デートのお誘い</p>
-          <h2 id="confirm-title">
-            {selectedDestination
-              ? `${selectedDestination.nameJa}のデートを始めますか？`
-              : `${selectedDate?.titleJa}を始めますか？`}
-          </h2>
-          <p className="confirm-text">
-            {selectedDate?.apCost
-              ? `${selectedDate.apCost}APを使って、デートを始めます。`
-              : "APは使いません。ふたりの時間を始めます。"}
-          </p>
-          <button
-            autoFocus
-            className="primary"
-            onClick={() => {
-              const selected = confirmation;
-              setConfirmation(null);
-              commit((state) => startDate(state, selected.id, nextRomanceRoll));
-            }}
-          >
-            {selectedDate?.apCost ? "APを使って始める" : "この時間を過ごす"}
-          </button>
-          <button className="secondary" onClick={() => setConfirmation(null)}>
-            選び直す
-          </button>
-        </Modal>
       )}
       {confirmLoad && (
         <Modal labelledBy="load-title" onClose={() => setConfirmLoad(false)}>

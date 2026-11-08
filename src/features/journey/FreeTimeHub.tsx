@@ -12,11 +12,7 @@ export function FreeTimeHub({
   onClaimRewards,
   onStartEpisode,
   onEpilogue,
-  onChooseDate,
   onBattle,
-  selectedLandmarkId,
-  onSelectLandmark,
-  placeFocusRequest,
   onTravelEvent,
   onRent,
   nextCityName,
@@ -26,20 +22,13 @@ export function FreeTimeHub({
   onClaimRewards: () => void;
   onStartEpisode: (id: string) => void;
   onEpilogue: (id: string) => void;
-  onChooseDate: (id: string) => void;
   onBattle: (id: string) => void;
-  selectedLandmarkId: string | null;
-  onSelectLandmark: (id: string | null) => void;
-  placeFocusRequest: number;
   onTravelEvent: (id: string, mode: TravelRoute["mode"]) => void;
   onRent: (modeId: string) => boolean;
   nextCityName?: string;
   onDepart: () => void;
 }) {
   const { city } = getCityContent(game.currentCityId);
-  // Retain the existing callback contract for callers; direct navigation from
-  // these callbacks is deliberately not presented in the destination list.
-  void onChooseDate; void selectedLandmarkId; void onSelectLandmark; void placeFocusRequest;
   return (
     <section className="free-time-hub paper" data-testid="free-time-hub">
       <h1 className="sr-only">{city.nameJa}の行き先</h1>
