@@ -2,7 +2,7 @@ import { DOUBLE_TAP_WINDOW_MS } from "../../src/components/double-tap";
 import type { GameState } from "../../src/domain/game";
 import { DEBUG_HOOK_NAME, type DreamscapeDebugHook } from "../../src/dev/debug-hook";
 import { debugQueryString, type DebugSettings } from "../../src/dev/debug-query";
-import { test as base, bothStorages, debugGame, devModules, expect, ops, placeSave, playUntil, tier, type Page } from "./helpers";
+import { test as base, bothStorages, debugGame, devModules, expect, ops, placeSave, playUntil, tier, type Locator, type Page } from "./helpers";
 
 // Lane 3 (docs/10「Debugを場面の起動台にする」): Debug opens scenes that the real
 // flow reaches only after many steps. These tests check that a scene can be played
@@ -471,9 +471,29 @@ test("tourism: a tap on the landmark's heading, and on a wide screen on the page
 
 // AGENTS.md 「選択肢の誤タップ防止」: a city finale has no place name above its stage, so on a portrait
 // phone its 「画像の出典」 takes the top of the stage's row (battle.css) instead of sitting on the round
-// bar's 手がかり帳, where a tap meant for one button would press the other. One finale of Debug's default
-// city at a common and at the smallest phone size; every battle and size stays in the screens gallery.
-test("city finale: 「画像の出典」 does not overlap the question's 手がかり帳 at 390×844 and 320×568", { tag: tier.debug }, async ({ page }) => {
+// bar's 手がかり帳, where a tap meant for one button would press the other. On a short phone (500–599 px
+// tall) every battle's credit moves up beside the place name. Both places are below the header that
+// lies over the battle (UI redesign §3.1): the credit is the element shown at its own centre, not
+// the header over it (a box that is merely "visible" can still be covered). One finale of Debug's
+// default city at a common and at the smallest phone size, and one landmark battle's question at the
+// smallest; every battle and size stays in the screens gallery.
+const creditShownAt = (credit: Locator) => credit.evaluate((button) => {
+  const box = button.getBoundingClientRect();
+  const shown = document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2);
+  return button.contains(shown) ? "the credit" : `${shown?.tagName}.${shown?.className} in ${shown?.closest("[data-testid]")?.getAttribute("data-testid")}`;
+});
+test("battle: 「画像の出典」 shows at its place, below the header and clear of 手がかり帳 (a city finale at 390×844 and 320×568, a landmark battle at 320×568)", { tag: tier.debug }, async ({ page }) => {
+  const credit = page.getByRole("button", { name: "画像の出典", exact: true });
+  const landmarkBattle = (await tapTargets(page)).battle;
+  expect(landmarkBattle, "a landmark battle that Debug opens in its default city").toBeDefined();
+  const phoneSize = page.viewportSize()!;
+  await page.setViewportSize({ width: 320, height: 568 });
+  await ops.openDebugScene(page, settings(landmarkBattle!));
+  await playUntil(page, (state) => state.activeBattle?.phase === "question", { source: debugGame });
+  await expect(credit).toBeVisible();
+  expect(await creditShownAt(credit), "a landmark battle's question at 320×568").toBe("the credit");
+  await ops.backToDebugSettings(page);
+  await page.setViewportSize(phoneSize);
   const finale = await page.evaluate(async (modules) => {
     const { battles } = await import(/* @vite-ignore */ modules.content);
     const { debugTargets, defaultDebugCityId } = await import(/* @vite-ignore */ modules.debugState);
@@ -485,7 +505,6 @@ test("city finale: 「画像の出典」 does not overlap the question's 手が�
   expect(finale, "a city finale that Debug opens in its default city").toBeDefined();
   await ops.openDebugScene(page, settings({ cityId: finale!.cityId, scene: "battle", id: finale!.id }));
   await playUntil(page, (state) => state.activeBattle?.phase === "question", { source: debugGame });
-  const credit = page.getByRole("button", { name: "画像の出典", exact: true });
   const clueBook = page.getByRole("button", { name: "手がかり帳", exact: true });
   for (const [width, height] of [[390, 844], [320, 568]] as const) {
     await page.setViewportSize({ width, height });
@@ -494,6 +513,7 @@ test("city finale: 「画像の出典」 does not overlap the question's 手が�
     const [a, b] = [(await credit.boundingBox())!, (await clueBook.boundingBox())!];
     const overlap = a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height;
     expect(overlap, `「画像の出典」 ${JSON.stringify(a)} and 手がかり帳 ${JSON.stringify(b)} at ${width}×${height}`).toBe(false);
+    expect(await creditShownAt(credit), `the city finale's question at ${width}×${height}`).toBe("the credit");
   }
   await ops.backToDebugSettings(page);
 });

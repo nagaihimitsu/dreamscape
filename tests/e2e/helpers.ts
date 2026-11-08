@@ -7,7 +7,7 @@ import { DEBUG_HOOK_NAME, type DreamscapeDebugHook } from "../../src/dev/debug-h
 import { debugQueryString, settingsQuery, type DebugDataMode, type DebugSettings } from "../../src/dev/debug-query";
 
 export { expect };
-export type { Page };
+export type { Locator, Page };
 
 /**
  * Tiers (docs/10「E2Eの段」): each test names the tiers it runs in, and every
