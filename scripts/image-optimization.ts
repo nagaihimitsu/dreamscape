@@ -51,7 +51,7 @@ export function planPhoto(photo: { format: PhotoFormat; width: number; height: n
  * 「CC BY-SA 4.0に従います。」).
  */
 export function hasShareAlikeStatement(note: string): boolean {
-  return /版も|同じライセンス|元画像と同じ|同条件|に従います/u.test(note);
+  return /版も|変換画像も|同じライセンス|元画像と同じ|同条件|に従います/u.test(note);
 }
 
 /**

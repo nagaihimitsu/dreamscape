@@ -85,14 +85,26 @@ describe("content build acceptance", () => {
       licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0", creditJa: "写真：試験", modificationJa: "試験用の写真。", checkedAt: "2026-11-08" };
     const catalogFile = path.join(fixture, "content/journeys/milano/tourism/catalog.json");
     const catalog = JSON.parse(await readFile(catalogFile, "utf8"));
-    const warningsAbout = async (assets: unknown[]) => {
+    const warningsAbout = async (assets: unknown[], id = record.id) => {
       await writeFile(catalogFile, JSON.stringify({ ...catalog, assets: [...catalog.assets, ...assets] }));
-      return (await buildContent(fixture, false)).warnings.filter((warning) => warning.message.includes(record.id));
+      return (await buildContent(fixture, false)).warnings.filter((warning) => warning.message.includes(id));
     };
     expect(await warningsAbout([record])).toEqual([{ kind: "tourism-photo", message: "観光写真を軽くできます: content/journeys/milano/tourism/catalog.json の " +
       "\"milano_content_test_photo\"（assets/tourism/content-test-photo.jpg、JPEG 2000×1000）。npm run images:optimize -- --journey milano --write で、" +
       "WebPにして1600×1800pxの枠に収めます。" }]);
     expect(await warningsAbout([{ ...record, isPlaceholder: true }])).toEqual([]);
+    // A byte copy of a sample image (what journey:new copies) whose isPlaceholder was cleared: journey:readiness asks to
+    // replace it, and neither npm run images:optimize nor this warning names it (markSampleCopies), although it is a PNG.
+    const sampleImage = path.resolve("authoring/templates/sample_trip/public/assets/tourism/sample_trip/mihon_clock_tower.png");
+    const copy = "assets/tourism/content-test-copy.png";
+    await writeFile(path.join(fixture, "content/journeys/milano/public", copy), await readFile(sampleImage));
+    const { width, height } = await sharp(sampleImage).metadata();
+    const copyRecord = { ...record, id: "milano_content_test_copy", path: copy, width: width!, height: height! };
+    const placeholderPhoto = { ...record, isPlaceholder: true };
+    expect(await warningsAbout([placeholderPhoto, copyRecord], copyRecord.id)).toEqual([]);
+    // The same picture re-encoded (no longer a byte copy) is a photo like any other.
+    await sharp(sampleImage).png({ compressionLevel: 1 }).toFile(path.join(fixture, "content/journeys/milano/public", copy));
+    expect((await warningsAbout([placeholderPhoto, copyRecord], copyRecord.id)).map((warning) => warning.kind)).toEqual(["tourism-photo"]);
   }, 120000);
   it("rejects a registered but missing background image", async () => {
     const file = path.join(fixture, "content/romance/presentation.json");

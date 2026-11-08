@@ -122,6 +122,9 @@ describe("library licence notices of the production build", () => {
       "third-party-licenses.json の 3 件目 に identifier がありません。",
       "third-party-licenses.json の 3 件目 に text がありません。",
     ]);
+    // A text of white space only is no licence text.
+    expect(checkThirdPartyLicenses(JSON.stringify([entry("leaflet", { text: " \n\t " }), entry("zod")]), dependencies)).toEqual([
+      "third-party-licenses.json の leaflet 1.0.0 に text がありません。"]);
     expect(checkThirdPartyLicenses(JSON.stringify([entry("leaflet")]), dependencies)).toEqual([
       "third-party-licenses.json に zod（package.json の dependencies）のライセンスがありません。"]);
   });

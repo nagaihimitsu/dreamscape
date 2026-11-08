@@ -40,7 +40,9 @@ describe("modification notes", () => {
   const lpNote = "Commons配信の1920×1143ピクセル版を使用。描き足し・色変更なし。表示時は端が切れる場合がある。";
   it("recognises the ways the notes already say that the adapted photo keeps the licence", () => {
     for (const note of ["…この縮小版もCC BY-SA 4.0で提供します。", "…縮小版も原本と同じライセンスで提供。", "…画面上では端が切れる場合がある。ライセンスは元画像と同じ。",
-      "…表示時は画面比率により端が切れる場合があります。CC BY-SA 4.0に従います。", "…加工版もCC BY-SA 4.0。", "CC BY-SA 3.0（このWebPも同条件）"])
+      "…表示時は画面比率により端が切れる場合があります。CC BY-SA 4.0に従います。", "…加工版もCC BY-SA 4.0。", "CC BY-SA 3.0（このWebPも同条件）",
+      // Milano's wording (6 notes): a later re-encode must not add a second share-alike sentence.
+      "…縦横比を保ち1600px幅へ縮小しWebP変換。変換画像もCC BY-SA 3.0。"])
       expect(hasShareAlikeStatement(note), note).toBe(true);
     expect(hasShareAlikeStatement(lpNote)).toBe(false);
   });

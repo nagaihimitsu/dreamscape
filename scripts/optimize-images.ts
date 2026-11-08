@@ -69,12 +69,19 @@ function replaceFile(file: string, data: string | Uint8Array): void {
  * Convert the photos planned to `convert`: write each WebP next to its old
  * file, then the catalog records and the observation cards, then remove the
  * old files. Refuses before writing anything when a new path is taken (by
- * another photo's record or by a file). Returns the written photos by asset ID.
+ * another photo's record or by a file) or shared by two converted photos.
+ * Returns the written photos by asset ID.
  */
 export async function applyPhotoSteps(root: string, steps: readonly PhotoStep[], cards: readonly ObservationCards[]): Promise<Map<string, PhotoWrite>> {
   const converts = steps.filter((step): step is PhotoStep & { outcome: { kind: "convert" } } => step.outcome.kind === "convert");
   const taken = new Set(steps.map((step) => step.photo.asset.path));
   const target = (step: (typeof converts)[number]) => path.join(path.dirname(step.photo.file), path.posix.basename(step.outcome.path));
+  // Two photos that differ only in their extension (a.jpg and a.png) would both become a.webp: the second would overwrite the first.
+  const shared = [...new Set(converts.map((step) => step.outcome.path))]
+    .filter((webp) => converts.filter((step) => step.outcome.path === webp).length > 1);
+  if (shared.length)
+    throw new Error(`変換後のファイル名が重なります: ${shared.map((webp) => `${webp}（${converts.filter((step) => step.outcome.path === webp)
+      .map((step) => step.photo.asset.path).join(" と ")}）`).join(", ")}。どちらかの写真の名前を変えてから、もう一度実行してください。`);
   const clashes = converts.filter((step) => step.outcome.path !== step.photo.asset.path && (taken.has(step.outcome.path) || existsSync(target(step))));
   if (clashes.length)
     throw new Error(`変換後のファイル名がすでに使われています: ${clashes.map((step) => step.outcome.path).join(", ")}。` +

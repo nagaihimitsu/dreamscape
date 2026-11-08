@@ -11,17 +11,20 @@ import { japaneseText } from "./schemas";
 // public/, content/journeys/<journeyId>/presentation/own-artwork.json those
 // of that journey's public/.
 
+/** File extensions content:build treats as images, in any letter case (served files with another extension are not checked). */
+export const IMAGE_EXTENSIONS: readonly string[] = [".png", ".webp", ".jpg", ".jpeg", ".svg", ".gif", ".avif", ".ico"];
+
 /**
  * A served image path relative to the public root (the URL path below the
  * game's base, such as assets/effects/heart.svg or favicon-32.png): no
  * leading slash, no empty segment and no segment that starts with a dot (so
- * no `..`; the loader skips dot entries), an image file extension. Folder
- * prefixes are not accepted, so every new image needs its own line.
+ * no `..`; the loader skips dot entries), an image file extension of
+ * IMAGE_EXTENSIONS in any letter case (as the image-rights check reads them,
+ * so a served `Icon.PNG` can be listed). Folder prefixes are not accepted, so
+ * every new image needs its own line.
  */
-export const OWN_ARTWORK_PATH = /^(?:[a-zA-Z0-9_-][a-zA-Z0-9_.-]*\/)*[a-zA-Z0-9_-][a-zA-Z0-9_.-]*\.(?:png|webp|jpe?g|svg|gif|avif|ico)$/u;
-
-/** File extensions content:build treats as images (served files with another extension are not checked). */
-export const IMAGE_EXTENSIONS: readonly string[] = [".png", ".webp", ".jpg", ".jpeg", ".svg", ".gif", ".avif", ".ico"];
+export const OWN_ARTWORK_PATH = new RegExp(
+  `^(?:[a-zA-Z0-9_-][a-zA-Z0-9_.-]*/)*[a-zA-Z0-9_-][a-zA-Z0-9_.-]*\\.(?:${IMAGE_EXTENSIONS.map((extension) => extension.slice(1)).join("|")})$`, "iu");
 
 export const ownArtworkGroupSchema = z
   .object({

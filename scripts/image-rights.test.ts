@@ -35,6 +35,10 @@ const check = (tree: Record<string, string | null>, assets = tourism) => () => c
 describe("image rights", () => {
   it("accepts credited tourism images and listed own artwork, and ignores served files that are not images", () => {
     expect(check(files())).not.toThrow();
+    // An upper-case extension is an image too, and can be listed as such.
+    expect(check({ ...files(), [`${trip}/public/assets/items/Bag.PNG`]: null })).toThrow("出典のない画像");
+    expect(check({ ...files(), [`${trip}/public/assets/items/Bag.PNG`]: null,
+      [`${trip}/${OWN_ARTWORK_KIND}`]: own(["assets/items/ticket.svg", "assets/items/Bag.PNG"]) })).not.toThrow();
     expect(isImagePath("manifest.webmanifest")).toBe(false);
     expect(isImagePath("assets/tourism/x.JPG")).toBe(true);
   });
@@ -99,6 +103,8 @@ describe("image rights", () => {
   it("accepts only exact served image paths in the list", () => {
     const parse = (paths: string[]) => ownArtworkCatalogSchema.safeParse({ schemaVersion: 1, artworks: [{ noteJa: "自作の絵", paths }] }).success;
     expect(parse(["assets/effects/heart.svg", "favicon-16.png", "assets/title/a.b-c_d.webp"])).toBe(true);
+    // Every extension the check treats as an image, in any letter case (a served Icon.PNG must be listable).
+    expect(parse(["a.png", "a.webp", "a.jpg", "a.jpeg", "a.svg", "a.gif", "a.avif", "a.ico", "assets/items/Icon.PNG", "b.JPeG"])).toBe(true);
     for (const bad of ["../public/heart.svg", "assets/../heart.svg", "/assets/heart.svg", "assets//heart.svg", "assets/.hidden/heart.svg",
       "assets/effects/", "assets/effects/heart.txt", "assets/effects/heart"])
       expect(parse([bad]), bad).toBe(false);

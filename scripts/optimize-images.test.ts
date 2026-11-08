@@ -114,6 +114,10 @@ describe("npm run images:optimize", () => {
     expect(lstatSync(served("assets/tourism/demo/wide.webp")).isSymbolicLink()).toBe(false);
     expect(readFileSync(path.join(outside, "wide.webp")).equals(linked)).toBe(true);
     // The colour profile stays (here Display P3); the format and size are what the records say.
+    // The encoder settings (quality 80, effort 6; colour profile kept, EXIF orientation applied): the written file is
+    // byte for byte what sharp makes with them from the original (the zoomed photo keeps its size).
+    expect(readFileSync(served("assets/tourism/demo/zoom.webp")).equals(
+      await sharp(zoom).autoOrient().keepIccProfile().webp({ quality: 80, effort: 6 }).toBuffer())).toBe(true);
     const big = await sharp(served("assets/tourism/demo/big.webp")).metadata();
     expect([big.format, big.width, big.height, (big.icc?.length ?? 0) > 0]).toEqual(["webp", 1600, 800, true]);
     const tilted = await sharp(served("assets/tourism/demo/tilted.webp")).metadata();
@@ -121,6 +125,23 @@ describe("npm run images:optimize", () => {
 
     const again = await planPhotos(markSampleCopies(photos({ demo_sample: "sample" }), new Set([sha256(sampleCopy)])));
     expect(again.filter((step) => step.outcome.kind === "convert")).toEqual([]);
+  });
+
+  it("refuses two photos that would become the same WebP (a.jpg and a.png), before writing anything", async () => {
+    const jpeg = await image(served("assets/tourism/demo/a.jpg"), 400, 300, (item) => item.jpeg());
+    const png = await image(served("assets/tourism/demo/a.png"), 300, 200, (item) => item.png());
+    mkdirSync(path.dirname(catalogFile()), { recursive: true });
+    const catalogText = jsonText({ schemaVersion: 1, assets: [record("demo_a_jpeg", "a.jpg", 400, 300), record("demo_a_png", "a.png", 300, 200)] });
+    writeFileSync(catalogFile(), catalogText);
+    mkdirSync(path.dirname(cardsFile()), { recursive: true });
+    writeFileSync(cardsFile(), jsonText({ images: {} }));
+    const steps = await planPhotos(photos());
+    await expect(applyPhotoSteps(root, steps, cards())).rejects.toThrow(
+      "変換後のファイル名が重なります: assets/tourism/demo/a.webp（assets/tourism/demo/a.jpg と assets/tourism/demo/a.png）。どちらかの写真の名前を変えてから、もう一度実行してください。");
+    expect(readFileSync(catalogFile(), "utf8")).toBe(catalogText);
+    expect(readFileSync(served("assets/tourism/demo/a.jpg")).equals(jpeg)).toBe(true);
+    expect(readFileSync(served("assets/tourism/demo/a.png")).equals(png)).toBe(true);
+    expect(existsSync(served("assets/tourism/demo/a.webp"))).toBe(false);
   });
 
   it("refuses a converted name that is already taken, before writing anything", async () => {
