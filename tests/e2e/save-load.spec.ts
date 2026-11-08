@@ -162,7 +162,7 @@ test("a quick double tap on 「切り替える」 does not read on the other jou
   const settings = await ops.openSettings(page);
   await settings.getByLabel("旅行編").selectOption(other!.id);
   const confirm = await ops.centerOf(page.getByRole("dialog", { name: "旅行編を切り替える" }).getByRole("button", { name: "切り替える", exact: true }));
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await page.touchscreen.tap(confirm.x, confirm.y);
   const line = page.getByTestId("dialogue-text");
   // The second tap comes while the other journey's guide is on screen (the held clock keeps it a double tap).
@@ -217,7 +217,7 @@ test("a quick double tap on 「再試行」 does not read on the saved story sce
   // The closed tab's lock is gone, so the next check opens the journey without waiting.
   await expect.poll(() => second.evaluate(async () => (await navigator.locks.query()).held?.length ?? 0)).toBe(0);
   const point = await ops.centerOf(retry);
-  await second.clock.pauseAt(await second.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(second);
   await second.touchscreen.tap(point.x, point.y);
   const line = second.getByTestId("dialogue-text");
   // The second tap comes while the guide is on screen (the held clock keeps it a double tap).
@@ -372,7 +372,7 @@ test("a save from a newer version is reported as such, and deleting it removes o
   await expect(alert).not.toContainText("保存データを読み込めませんでした");
 
   const seeded = await allStorage(page);
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await ops.tap(page, alert.getByRole("button", { name: "保存データを消去する" }));
   const confirm = page.getByRole("dialog", { name: "保存データを消去しますか？" });
   await expect(confirm).toBeVisible();
@@ -506,7 +506,7 @@ test("from another journey, the cleanup lists that journey's own old data, and a
   const ask = cleanup.getByRole("button", { name: "選んだデータを消去する" });
   const confirm = page.getByRole("dialog", { name: "選んだ保存データを消去しますか？" });
   const remove = confirm.getByRole("button", { name: "消去する", exact: true });
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await ops.tap(page, ask);
   await expect(confirm).toBeVisible();
   await page.clock.runFor(300);
@@ -518,7 +518,7 @@ test("from another journey, the cleanup lists that journey's own old data, and a
   // The wait starts again each time the confirmation opens (here after 「消去せず戻る」).
   await confirm.getByRole("button", { name: "消去せず戻る" }).click();
   await expect(confirm).toBeHidden();
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await ops.tap(page, ask);
   await expect(confirm).toBeVisible();
   await page.clock.runFor(300);
@@ -568,7 +568,7 @@ for (const size of [{ width: 390, height: 844 }, { width: 320, height: 568 }]) {
     const box = (await ask.boundingBox())!;
     const point = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
     const confirm = page.getByRole("dialog", { name: "選んだ保存データを消去しますか？" });
-    await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+    await ops.holdClock(page);
     await page.touchscreen.tap(point.x, point.y);
     await expect(confirm).toBeVisible();
     await page.clock.runFor(600);
@@ -602,7 +602,7 @@ for (const size of [{ width: 390, height: 844 }, { width: 320, height: 568 }]) {
     await expect(remove).toBeEnabled();
     const box = (await remove.boundingBox())!;
     const point = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
-    await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+    await ops.holdClock(page);
     await page.touchscreen.tap(point.x, point.y);
     const result = cleanup.getByRole("status");
     await expect(result).toHaveText("消去しました（キー1個）。");

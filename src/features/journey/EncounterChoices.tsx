@@ -16,14 +16,15 @@ export function EncounterChoices({
   id,
   choices,
   learning,
-  currencySymbol,
+  formatMoney,
   disabled,
   onChoose,
 }: {
   id: string;
   choices: EncounterChoiceView[];
   learning: Learning;
-  currencySymbol: string;
+  /** The journey's money format (formatMoneyForCity). */
+  formatMoney: (amount: number) => string;
   disabled?: boolean;
   onChoose: (index: number) => void;
 }) {
@@ -54,7 +55,7 @@ export function EncounterChoices({
                 onDoubleTap={() => { if (choice.translationJa) revealTranslation(learning, id, part); }}
               />
               <div className="encounter-choice-meta">
-                {hasPrices && <span>{choice.cost ? `${currencySymbol}${choice.cost}` : "無料"}</span>}
+                {hasPrices && <span>{choice.cost ? formatMoney(choice.cost) : "無料"}</span>}
                 {choice.translationJa && <button
                   type="button"
                   className="text-button"

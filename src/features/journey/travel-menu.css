@@ -33,11 +33,9 @@
 .travel-destination-title { font-weight: 700; overflow-wrap: anywhere; }
 .travel-destination-meta { grid-column: 2; min-width: 0; overflow-wrap: anywhere; color: var(--muted); font-size: 12px; text-align: left; }
 .travel-destination-button small { grid-column: 2 / -1; color: var(--muted); font-size: 12px; }
-.travel-choices { padding: 10px; margin: 10px 0; border: 1px solid var(--line); border-radius: 8px; }
-.travel-choices p { margin: 4px 0 8px; font-size: 13px; }
 .travel-choice-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .travel-choice-header h3 { margin: 0; font-size: 16px; }
-.travel-choice-header button, .travel-choices > button { min-height: 44px; }
+.travel-choice-header button { min-height: 44px; }
 .travel-route { width: 100%; min-height: 44px; margin: 3px 0; text-align: left; }
 dialog.modal.travel-choice-modal { width: min(400px, calc(100% - 24px)); max-height: calc(100dvh - 24px); padding: 16px; }
 .travel-choice-modal .travel-choice-header h2 { margin: 0; font-size: 18px; }

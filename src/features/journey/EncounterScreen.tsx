@@ -10,7 +10,7 @@ import { useSceneTap } from "../../components/useSceneTap";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { ComicEffect } from "../../components/ComicEffect";
 import type { ReactionMark } from "../../content/dialogue-reactions";
-import { currencyForCity } from "../../content/currency";
+import { formatMoneyForCity } from "../../content/currency";
 import { InteractiveEnglish } from "../learning/InteractiveEnglish";
 import { revealTranslation, toggleTranslation, visible } from "../learning/Translations";
 import type { Learning } from "../learning/useLearning";
@@ -109,14 +109,14 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
             </button>
             {visible(learning, quiz.id, "question") && <p>{quiz.questionJa}</p>}
             {quiz.result ? <><p role="status">{quiz.result}</p><button type="button" className="next" data-testid="encounter-advance" onClick={onAdvance}>続きを読む →</button></> : (
-              <EncounterChoices currencySymbol={currencyForCity(view.cityId).symbol} id={quiz.id} choices={quiz.options} learning={learning} onChoose={(index) => select(index, onAnswer)} disabled={!choiceReady} />
+              <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={quiz.id} choices={quiz.options} learning={learning} onChoose={(index) => select(index, onAnswer)} disabled={!choiceReady} />
             )}
           </>
         ) : (
           <>
             <DialogueText key={view.revision} ref={sceneTap.line} text={view.text} speed={autoAdvance.fast ? 0 : speed} onReady={onReady} onAdvance={advance} />
             {view.choices.length ? (
-              <EncounterChoices currencySymbol={currencyForCity(view.cityId).symbol} id={view.id} choices={view.choices} learning={learning} onChoose={(index) => select(index, onChoose)} disabled={!ready || !choiceReady} />
+              <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={view.id} choices={view.choices} learning={learning} onChoose={(index) => select(index, onChoose)} disabled={!ready || !choiceReady} />
             ) : view.ended ? (
               <button type="button" className="next" data-testid="encounter-advance" disabled={!ready} onClick={advance}>{view.ended ? view.finishLabel ?? "自由時間へ" : "続きを読む"} <span aria-hidden="true">→</span></button>
             ) : null}

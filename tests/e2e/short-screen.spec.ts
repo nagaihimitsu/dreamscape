@@ -15,6 +15,12 @@ import { devModules, expect, ops, playUntil, savedGame, test, tier } from "./hel
 // first ordinary battle, a wrong first answer).
 test.use({ viewport: { width: 320, height: 480 } });
 
+// Long flow (docs/10「不安定さと時間の決まり」), with the same budget as debug-scenes.spec.ts in this
+// tier: the app loads twice on the development server, then a battle is played and loaded again
+// (ops.load). About 7 s locally, but 15–21 s under a 6x CPU throttle; the runner about four times
+// slower than usual on 2026-11-08 ran that file's long flows out of the default 30 s.
+test.describe.configure({ timeout: 120_000 });
+
 /** In the page: what shows at the top of the screen, and where the explanation's first line starts. */
 function feedbackStart() {
   const area = document.querySelector('[aria-label="クイズバトル"]')!;

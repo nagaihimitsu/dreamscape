@@ -162,30 +162,7 @@
 .vn-dialogue[data-has-choices="true"] .dialogue-next-mark { display: none; }
 .vn-dialogue .next, .vn-dialogue .text-button { color: var(--vn-text); }
 .vn-dialogue .next { min-height: 44px; padding: 2px 0 2px 20px; }
-.vn-dialogue .fine-print, .vn-dialogue .eyebrow, .vn-dialogue .story-tools label { color: var(--vn-muted); }
-.vn-dialogue .story-tools {
-  flex-wrap: wrap;
-  gap: 4px 12px;
-  margin-top: 8px;
-  padding-top: 4px;
-  border-color: rgba(255, 255, 255, .24);
-}
-.vn-dialogue .story-tools .text-button { min-height: 44px; }
-.vn-dialogue .story-tools select { color: var(--vn-text); border-color: rgba(255, 255, 255, .45); background: #34443f; }
-.vn-tools-menu { position: relative; }
-.vn-tools-menu summary {
-  display: flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 4px 6px;
-  color: var(--vn-text);
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  font-size: 12px;
-}
-.vn-tools-menu summary::marker { content: ""; }
-.vn-tools-items { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
+.vn-dialogue .fine-print, .vn-dialogue .eyebrow { color: var(--vn-muted); }
 .vn-dialogue .choices { margin-top: 4px; padding-top: 6px; border-color: rgba(255, 255, 255, .24); }
 .vn-dialogue .choice-hint, .vn-dialogue .choice-hint span { color: var(--vn-muted); }
 .vn-dialogue .choice-hint { margin-bottom: 4px; }
@@ -218,8 +195,6 @@
 }
 @media (min-width: 701px) {
   .date-reference { width: 240px; }
-  .vn-tools-menu, .vn-tools-items { display: contents; }
-  .vn-tools-menu > summary { display: none; }
 }
 @media (max-width: 700px) and (orientation: portrait) {
   .vn-scene .vn-dialogue {

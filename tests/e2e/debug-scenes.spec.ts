@@ -20,6 +20,14 @@ const test = base.extend<{ normalStorageUnchanged: void }>({
   }, { auto: true }],
 });
 
+// Long flows (docs/10「不安定さと時間の決まり」): every test here loads the app at least twice on
+// the development server and plays a scene, where each press of a control is followed by the game's
+// 350-ms guard. On CI they take 6–22 s; on 2026-11-08 a runner about four times slower than usual
+// (its dev server started in 93 s instead of 23 s) ran 9 of the 15 tests this file then had out of
+// the default 30 s (in one of them the page.clock.pauseAt still pending then, now ops.holdClock,
+// also failed with "Cannot fast-forward to the past").
+test.describe.configure({ timeout: 120_000 });
+
 const settings = (input: Pick<DebugSettings, "cityId" | "scene" | "id"> & Partial<DebugSettings>): DebugSettings =>
   ({ progress: "completed", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive", ...input });
 
@@ -137,7 +145,7 @@ test("a Debug launch URL opens its scene and offers the same URL", { tag: tier.d
   const url = debugQueryString({ dataMode: "real", cityId: "milano", scene: "date", target: "milano_brera_date_01",
     progress: "completed", ap: 9, affection: 0, trust: 0, spark: 0, roll: "negative" });
   await page.goto(`/${url}`);
-  await expect(page.getByTestId("debug-session")).toBeVisible();
+  await ops.debugShown(page.getByTestId("debug-session"));
   await expect(page.getByTestId("romance-scene")).toBeVisible();
   // The development-only, read-only hook shows Debug's own game (its date spent AP from 9).
   const debug = await page.evaluate((name) => {
@@ -155,14 +163,15 @@ test("a Debug launch URL opens its scene and offers the same URL", { tag: tier.d
 // Its own test (and time budget): each half loads the app afresh on a dev server, which is slow under load.
 test("a Debug launch URL that does not fit the content says why and links back to the settings screen", { tag: tier.debug }, async ({ page }) => {
   await page.goto("/?debug&city=milano&scene=battle&target=gt_delhi_main_red_fort_battle");
+  await ops.debugShown(page.getByRole("alert"));
   await expect(page.getByRole("alert")).toHaveText("「gt_delhi_main_red_fort_battle」はミラノの「バトル」にありません。");
   // The link loads the settings screen as a new page (a dev server serves it module by module):
-  // its panel is looked for once that page has loaded, as after page.goto.
+  // wait for that page's load, as page.goto does, and then for Debug, which loads after it.
   await Promise.all([
     page.waitForURL((address) => address.search === "?debug"),
     page.getByRole("link", { name: "場面の確認（設定画面）へ" }).click(),
   ]);
-  await expect(page.getByTestId("debug-panel")).toBeVisible();
+  await ops.debugShown(page.getByTestId("debug-panel"));
 });
 
 type TapScene = "encounter" | "epilogue" | "battle" | "rebuttal" | "tourism";
@@ -225,7 +234,7 @@ for (const kind of ["encounter", "epilogue", "battle", "rebuttal"] as const) {
     // behind, within the moment a press on a control settles the scene, and does not read on.
     const log = await ops.openDialogueLog(page);
     const close = await ops.centerOf(log.getByRole("button", { name: "閉じる", exact: true }));
-    await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+    await ops.holdClock(page);
     await ops.doubleTap(page, close);
     await expect(log).toBeHidden();
     await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
@@ -257,7 +266,7 @@ test("rebuttal: the tap that ends it does not also skip the cut-in under the fin
   }
   await expect(last).toBeVisible();
   const end = await ops.sceneBackgroundPoint(page);
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await ops.doubleTap(page, end);
   const cutIn = page.getByTestId("reasoning-cutin");
   await expect(cutIn).toBeVisible();
@@ -292,7 +301,7 @@ test("battle: a double tap on 「敵の反応を見る」 opens the reaction and
   const reaction = await ops.centerOf(advance);
   expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest('[data-testid="battle-advance"]'), reaction),
     "the double tap lands on 「敵の反応を見る」").toBe(true);
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await ops.doubleTap(page, reaction);
   await expect.poll(async () => (await debugGame(page))!.activeBattle?.phase).toBe("dialogue");
   await expect(page.locator("html[data-tap-hold]"), "taps are held as the reaction starts").toHaveCount(1);
@@ -385,7 +394,7 @@ test("encounter: the tap on the picture or the line that closes the held-item de
   const revision = async () => (await debugGame(page))!.revision;
   await openDetail();
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await line.focus();
   await page.keyboard.press("Enter");
   await expect.poll(revision).toBe(held.revision + 1);

@@ -131,7 +131,7 @@ test("the sample journey plays from a new journey through its city finale and ep
   // route a place offers one open event, so going there starts it at once (by the
   // rented bicycle when there is one: hold the page's clock so its short transition,
   // 0.45 s with reduced motion, stays while it is checked).
-  if (rental) await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  if (rental) await ops.holdClock(page);
   await goToPlace(page, route, route.episode.placeId);
   if (rental) {
     const transition = page.getByTestId("travel-transition");

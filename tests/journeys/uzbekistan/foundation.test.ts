@@ -60,11 +60,13 @@ describe("Uzbekistan scenario-ready foundation", () => {
         expect(getTravelEventAvailability(preview, event.id, "walk").available).toBe(false);
       }
       expect(currencyForCity(cityId).code).toBe("UZS");
-      expect(formatMoneyForCity(cityId, 123)).toBe(`${journey.currency.symbol}123`);
+      expect(journey.currency.symbol).toBe("soʻm ");
+      expect(formatMoneyForCity(cityId, 123)).toBe("soʻm\u00a0123");
       expect(formatMoneyForCity(cityId, 123)).not.toMatch(/[€₹]/);
+      expect(formatMoneyForCity(cityId, 4_000_000)).toBe("soʻm\u00a04,000,000");
     }
     expect(formatMoneyForCity("milano", 60)).toBe("€60");
-    expect(formatMoneyForCity("delhi", 30_000)).toBe("₹30000");
+    expect(formatMoneyForCity("delhi", 30_000)).toBe("₹30,000");
   });
 
   it("preserves all three journeys' saves and notes without promoting unfinished content", () => {

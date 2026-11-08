@@ -202,49 +202,9 @@
 .battle-dialogue .next { min-height: 44px; padding: 2px 0 2px 12px; }
 .battle-dialogue .reveal { min-height: 44px; margin: 0 0 0 auto; }
 .battle-dialogue .next,
-.battle-dialogue .text-button,
-.battle-dialogue .story-tools,
-.battle-dialogue .story-tools label {
+.battle-dialogue .text-button {
   color: var(--vn-text, #fffaf4);
 }
-.battle-dialogue .story-tools {
-  margin-top: 8px;
-  padding-top: 4px;
-  border-color: #ffffff40;
-}
-.battle-dialogue .story-tools select {
-  color: #25332d;
-  background: #f9f6ee;
-}
-.battle-tool-menu { position: relative; }
-.battle-tool-menu summary {
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  padding: 6px 8px;
-  cursor: pointer;
-  font-size: 12px;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-.battle-tool-menu-content {
-  position: absolute;
-  z-index: 8;
-  right: 0;
-  bottom: calc(100% + 4px);
-  display: grid;
-  gap: 4px;
-  width: min(240px, 70vw);
-  padding: 10px;
-  border-radius: 8px;
-  background: #faf8f1;
-  color: #294c40;
-  box-shadow: 0 5px 18px #0006;
-}
-.battle-dialogue .battle-tool-menu-content { background: #26333a; color: #fff; }
-.battle-tool-menu-content label { display: grid; gap: 4px; }
-.battle-tool-menu-content button { text-align: left; min-height: 44px; }
-.battle-tool-menu-content select { min-height: 44px; }
 @media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
   .battle-screen[data-phase="dialogue"] .battle-characters {
     bottom: 34%;
