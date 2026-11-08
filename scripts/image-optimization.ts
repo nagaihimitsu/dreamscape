@@ -45,26 +45,32 @@ export function planPhoto(photo: { format: PhotoFormat; width: number; height: n
 }
 
 /**
- * Whether a modification note already says that the adapted photo is shared
- * under the same licence (e.g. 「この縮小版もCC BY-SA 4.0で提供します。」,
- * 「縮小版も原本と同じライセンスで提供。」, 「ライセンスは元画像と同じ。」,
- * 「CC BY-SA 4.0に従います。」).
+ * Whether a modification note says that the served photo is shared under the
+ * same licence (e.g. 「変換版もCC BY-SA 4.0で提供。」, 「変換画像もCC BY-SA 3.0。」,
+ * 「この縮小版もCC BY-SA 4.0で提供します。」, 「ライセンスは元画像と同じ。」,
+ * 「CC BY-SA 4.0に従います。」). The statement has to come after the note's
+ * last conversion to WebP (the step that made the served file): one before it
+ * covers an earlier version only, such as the Commons thumbnail. A note that
+ * names no WebP conversion may state it anywhere.
  */
 export function hasShareAlikeStatement(note: string): boolean {
-  return /版も|変換画像も|同じライセンス|元画像と同じ|同条件|に従います/u.test(note);
+  const lastConversion = note.lastIndexOf("WebP");
+  return /版も|変換画像も|同じライセンス|元画像と同じ|同条件|に従います/u.test(lastConversion < 0 ? note : note.slice(lastConversion));
 }
 
 /**
  * The modification note after a conversion: the note plus one sentence on the
- * EXIF orientation applied to the pixels (if any), the resize and the format, and, for a share-alike licence (CC BY-SA) whose note
- * does not yet say so, that the converted photo keeps that licence.
+ * EXIF orientation applied to the pixels (if any), the resize and the format,
+ * and, for a share-alike licence (CC BY-SA), that the converted photo keeps
+ * that licence (hasShareAlikeStatement: a statement earlier in the note covers
+ * an earlier version, so every conversion adds one after its own sentence).
  */
 export function noteAfterConversion(note: string, change: { licenseName: string; rotated: boolean; resized: boolean; width: number; height: number }): string {
   const format = `WebP形式（品質${PHOTO_QUALITY}）に変換。`;
-  const sentence = `さらに${change.rotated ? "EXIFの向きの情報のとおりに画素の向きを直し、" : ""}` +
+  const converted = `${note}さらに${change.rotated ? "EXIFの向きの情報のとおりに画素の向きを直し、" : ""}` +
     (change.resized ? `縦横比を保って${change.width}×${change.height}pxに縮小し、${format}` : change.rotated ? format : `同じ寸法のまま${format}`);
-  const shareAlike = /BY-SA/u.test(change.licenseName) && !hasShareAlikeStatement(note) ? `変換版も${change.licenseName}で提供。` : "";
-  return `${note}${sentence}${shareAlike}`;
+  const shareAlike = /BY-SA/u.test(change.licenseName) && !hasShareAlikeStatement(converted) ? `変換版も${change.licenseName}で提供。` : "";
+  return `${converted}${shareAlike}`;
 }
 
 /** A journey's observation cards (authoring.observationFile) as far as the photos are concerned: landmark → image record. */

@@ -38,24 +38,40 @@ describe("the photo rule", () => {
 
 describe("modification notes", () => {
   const lpNote = "Commons配信の1920×1143ピクセル版を使用。描き足し・色変更なし。表示時は端が切れる場合がある。";
-  it("recognises the ways the notes already say that the adapted photo keeps the licence", () => {
+  it("recognises the ways the notes say that the served photo keeps the licence", () => {
     for (const note of ["…この縮小版もCC BY-SA 4.0で提供します。", "…縮小版も原本と同じライセンスで提供。", "…画面上では端が切れる場合がある。ライセンスは元画像と同じ。",
       "…表示時は画面比率により端が切れる場合があります。CC BY-SA 4.0に従います。", "…加工版もCC BY-SA 4.0。", "CC BY-SA 3.0（このWebPも同条件）",
       // Milano's wording (6 notes): a later re-encode must not add a second share-alike sentence.
-      "…縦横比を保ち1600px幅へ縮小しWebP変換。変換画像もCC BY-SA 3.0。"])
+      "…縦横比を保ち1600px幅へ縮小しWebP変換。変換画像もCC BY-SA 3.0。",
+      // The tool's wording (Luang Prabang): the statement follows the conversion sentence.
+      `${lpNote}さらに同じ寸法のままWebP形式（品質80）に変換。変換版もCC BY-SA 4.0で提供。`])
       expect(hasShareAlikeStatement(note), note).toBe(true);
     expect(hasShareAlikeStatement(lpNote)).toBe(false);
   });
-  it("adds the conversion, and the share-alike sentence only to a CC BY-SA note without one", () => {
+  it("does not count a statement before the conversion to WebP: it covers an earlier version (e.g. the Commons thumbnail)", () => {
+    for (const note of ["…この縮小版もCC BY-SA 4.0で提供します。さらに縦横比を保って1600×1067pxに縮小し、WebP形式（品質80）に変換。",
+      "…縮小版も原本と同じライセンスで提供。さらに同じ寸法のままWebP形式（品質80）に変換。",
+      "…CC BY-SA 4.0に従います。さらに同じ寸法のままWebP形式（品質80）に変換。",
+      // A second conversion (a WebP photo fitted into the box later) needs its own statement too.
+      `${lpNote}さらに同じ寸法のままWebP形式（品質80）に変換。変換版もCC BY-SA 4.0で提供。さらに縦横比を保って1600×1067pxに縮小し、WebP形式（品質80）に変換。`])
+      expect(hasShareAlikeStatement(note), note).toBe(false);
+  });
+  it("adds the conversion and, to every CC BY-SA note, the share-alike sentence after it", () => {
     expect(noteAfterConversion(lpNote, { licenseName: "CC BY-SA 4.0", rotated: false, resized: false, width: 1920, height: 1143 }))
       .toBe(`${lpNote}さらに同じ寸法のままWebP形式（品質80）に変換。変換版もCC BY-SA 4.0で提供。`);
     expect(noteAfterConversion(lpNote, { licenseName: "CC BY 2.0", rotated: false, resized: true, width: 1600, height: 1065 }))
       .toBe(`${lpNote}さらに縦横比を保って1600×1065pxに縮小し、WebP形式（品質80）に変換。`);
+    // A statement earlier in the note names the version before this conversion.
     const withStatement = "幅1600px以内へ縮小。この縮小版もCC BY-SA 3.0で提供します。";
     expect(noteAfterConversion(withStatement, { licenseName: "CC BY-SA 3.0", rotated: false, resized: true, width: 1350, height: 1800 }))
-      .toBe(`${withStatement}さらに縦横比を保って1350×1800pxに縮小し、WebP形式（品質80）に変換。`);
+      .toBe(`${withStatement}さらに縦横比を保って1350×1800pxに縮小し、WebP形式（品質80）に変換。変換版もCC BY-SA 3.0で提供。`);
     expect(noteAfterConversion(withStatement, { licenseName: "CC BY-SA 3.0", rotated: true, resized: false, width: 1200, height: 1600 }))
-      .toBe(`${withStatement}さらにEXIFの向きの情報のとおりに画素の向きを直し、WebP形式（品質80）に変換。`);
+      .toBe(`${withStatement}さらにEXIFの向きの情報のとおりに画素の向きを直し、WebP形式（品質80）に変換。変換版もCC BY-SA 3.0で提供。`);
+    const converted = noteAfterConversion(lpNote, { licenseName: "CC BY-SA 4.0", rotated: false, resized: false, width: 2400, height: 1600 });
+    expect(noteAfterConversion(converted, { licenseName: "CC BY-SA 4.0", rotated: false, resized: true, width: 1600, height: 1067 }))
+      .toBe(`${converted}さらに縦横比を保って1600×1067pxに縮小し、WebP形式（品質80）に変換。変換版もCC BY-SA 4.0で提供。`);
+    expect(noteAfterConversion("Commons原本を使用。", { licenseName: "CC0 1.0", rotated: false, resized: false, width: 800, height: 600 }))
+      .toBe("Commons原本を使用。さらに同じ寸法のままWebP形式（品質80）に変換。");
   });
 });
 

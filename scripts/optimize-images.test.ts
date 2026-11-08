@@ -25,8 +25,22 @@ function record(id: string, file: string, width: number, height: number, extra: 
     sourceUrl: `https://commons.wikimedia.org/wiki/File:${id}.jpg`, licenseName: "CC BY 2.0", licenseUrl: "https://creativecommons.org/licenses/by/2.0",
     creditJa: "写真：試験", modificationJa: lpNote, checkedAt: "2026-11-08", ...extra };
 }
-async function image(file: string, width: number, height: number, encode: (image: Sharp) => Sharp): Promise<Buffer> {
-  const bytes = await encode(sharp({ create: { width, height, channels: 3, background: { r: 120, g: 150, b: 190 } } })).toBuffer();
+/**
+ * A photo: one flat colour, or (`detailed`) gradients with fine detail, which
+ * make each WebP quality and effort give different bytes (a flat colour
+ * encodes to the same bytes at effort 4 and 6).
+ */
+async function image(file: string, width: number, height: number, encode: (image: Sharp) => Sharp, detailed = false): Promise<Buffer> {
+  const pixels = Buffer.alloc(detailed ? width * height * 3 : 0);
+  if (detailed) for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+    const index = (y * width + x) * 3;
+    pixels[index] = Math.floor((x * 255) / width);
+    pixels[index + 1] = Math.floor((y * 255) / height);
+    pixels[index + 2] = ((x + y) * 7) % 256;
+  }
+  const source = detailed ? sharp(pixels, { raw: { width, height, channels: 3 } })
+    : sharp({ create: { width, height, channels: 3, background: { r: 120, g: 150, b: 190 } } });
+  const bytes = await encode(source).toBuffer();
   mkdirSync(path.dirname(file), { recursive: true });
   writeFileSync(file, bytes);
   return bytes;
@@ -54,7 +68,7 @@ afterEach(() => {
 describe("npm run images:optimize", () => {
   it("converts by the rule, rewrites the records, the cards and the files, and a second run changes nothing", async () => {
     await image(served("assets/tourism/demo/big.jpg"), 2000, 1000, (item) => item.withIccProfile("p3").jpeg());
-    const zoom = await image(served("assets/tourism/demo/zoom.jpg"), 2000, 1500, (item) => item.jpeg());
+    const zoom = await image(served("assets/tourism/demo/zoom.jpg"), 2000, 1500, (item) => item.jpeg(), true);
     const fine = await image(served("assets/tourism/demo/fine.webp"), 800, 600, (item) => item.webp());
     const placeholder = await image(served("assets/tourism/demo/placeholder.png"), 2400, 1600, (item) => item.png());
     const sampleCopy = await image(served("assets/tourism/demo/copy.png"), 240, 160, (item) => item.png());
@@ -66,7 +80,10 @@ describe("npm run images:optimize", () => {
     symlinkSync(path.join(outside, "wide.webp"), served("assets/tourism/demo/wide.webp"));
     const assets = [
       record("demo_big", "big.jpg", 2000, 1000, { licenseName: "CC BY-SA 4.0", licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0" }),
-      record("demo_zoom", "zoom.jpg", 2000, 1500), record("demo_fine", "fine.webp", 800, 600),
+      // A share-alike statement before the conversion names the earlier version: the conversion adds one after its sentence.
+      record("demo_zoom", "zoom.jpg", 2000, 1500, { licenseName: "CC BY-SA 3.0", licenseUrl: "https://creativecommons.org/licenses/by-sa/3.0",
+        modificationJa: `${lpNote}この縮小版もCC BY-SA 3.0で提供します。` }),
+      record("demo_fine", "fine.webp", 800, 600),
       record("demo_placeholder", "placeholder.png", 2400, 1600, { isPlaceholder: true }), record("demo_copy", "copy.png", 240, 160),
       record("demo_sample", "sample.png", 240, 161), record("demo_tilted", "tilted.jpg", 300, 200), record("demo_wide", "wide.webp", 2400, 1000),
     ];
@@ -101,7 +118,7 @@ describe("npm run images:optimize", () => {
         : change.width === item.width && change.height === item.height ? "さらに同じ寸法のままWebP形式（品質80）に変換。"
           : `さらに縦横比を保って${change.width}×${change.height}pxに縮小し、WebP形式（品質80）に変換。`;
       return { ...item, path: change.path, width: change.width, height: change.height,
-        modificationJa: `${lpNote}${sentence}${item.licenseName === "CC BY-SA 4.0" ? "変換版もCC BY-SA 4.0で提供。" : ""}` };
+        modificationJa: `${item.modificationJa}${sentence}${item.licenseName.includes("BY-SA") ? `変換版も${item.licenseName}で提供。` : ""}` };
     });
     expect(readFileSync(catalogFile(), "utf8")).toBe(jsonText({ schemaVersion: 1, assets: expected, landmarks: [], clues: [] }));
     const zoomWebp = readFileSync(served("assets/tourism/demo/zoom.webp"));
@@ -115,7 +132,8 @@ describe("npm run images:optimize", () => {
     expect(readFileSync(path.join(outside, "wide.webp")).equals(linked)).toBe(true);
     // The colour profile stays (here Display P3); the format and size are what the records say.
     // The encoder settings (quality 80, effort 6; colour profile kept, EXIF orientation applied): the written file is
-    // byte for byte what sharp makes with them from the original (the zoomed photo keeps its size).
+    // byte for byte what sharp makes with them from the original (the zoomed photo keeps its size; its detail makes
+    // another quality or effort give other bytes).
     expect(readFileSync(served("assets/tourism/demo/zoom.webp")).equals(
       await sharp(zoom).autoOrient().keepIccProfile().webp({ quality: 80, effort: 6 }).toBuffer())).toBe(true);
     const big = await sharp(served("assets/tourism/demo/big.webp")).metadata();
