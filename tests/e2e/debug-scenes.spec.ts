@@ -20,6 +20,14 @@ const test = base.extend<{ normalStorageUnchanged: void }>({
   }, { auto: true }],
 });
 
+// Long flows (docs/10「不安定さと時間の決まり」): every test here loads the app twice on the
+// development server and plays a scene, where each press of a control is followed by the game's
+// 350-ms guard. On CI they take 6–22 s; on 2026-11-08 a runner about four times slower than usual
+// (its dev server started in 93 s instead of 23 s) ran 8 of 15 out of the default 30 s while they
+// were still progressing (an awaited choice became enabled just as time ran out; a 9th failed in
+// page.clock.pauseAt, now ops.holdClock).
+test.describe.configure({ timeout: 120_000 });
+
 const settings = (input: Pick<DebugSettings, "cityId" | "scene" | "id"> & Partial<DebugSettings>): DebugSettings =>
   ({ progress: "completed", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive", ...input });
 
@@ -217,7 +225,7 @@ for (const kind of ["encounter", "epilogue", "battle", "rebuttal"] as const) {
     // behind, within the moment a press on a control settles the scene, and does not read on.
     const log = await ops.openDialogueLog(page);
     const close = await ops.centerOf(log.getByRole("button", { name: "閉じる", exact: true }));
-    await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+    await ops.holdClock(page);
     await ops.doubleTap(page, close);
     await expect(log).toBeHidden();
     await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
@@ -249,7 +257,7 @@ test("rebuttal: the tap that ends it does not also skip the cut-in under the fin
   }
   await expect(last).toBeVisible();
   const end = await ops.sceneBackgroundPoint(page);
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await ops.doubleTap(page, end);
   const cutIn = page.getByTestId("reasoning-cutin");
   await expect(cutIn).toBeVisible();
@@ -278,7 +286,7 @@ test("battle: a double tap on 「敵の反応を見る」 opens the reaction and
   const reaction = await ops.centerOf(page.getByTestId("battle-advance"));
   expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest('[data-testid="battle-advance"]'), reaction),
     "the double tap lands on 「敵の反応を見る」").toBe(true);
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await ops.doubleTap(page, reaction);
   await expect.poll(async () => (await debugGame(page))!.activeBattle?.phase).toBe("dialogue");
   await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
@@ -325,7 +333,7 @@ test("encounter: the tap on the picture or the line that closes the held-item de
   const revision = async () => (await debugGame(page))!.revision;
   await openDetail();
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await line.focus();
   await page.keyboard.press("Enter");
   await expect.poll(revision).toBe(held.revision + 1);

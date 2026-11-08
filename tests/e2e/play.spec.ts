@@ -29,7 +29,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   // Freeze the page's clock so the next line cannot finish writing by itself (once the
   // guide that has just started takes taps: a new scene holds them for a moment).
   await ops.settled(page);
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   const first = await readSave(page);
   await line.click();
   await expect.poll(async () => (await readSave(page)).revision).toBe(first.revision + 1);
@@ -88,7 +88,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   const answer = page.getByTestId("answer-C");
   await answer.scrollIntoViewIfNeeded();
   const box = (await answer.boundingBox())!;
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await page.mouse.dblclick(box.x + box.width / 2, box.y + box.height / 2);
   await expect(page.getByTestId("battle-feedback")).toBeVisible();
   const answered = await readSave(page);
@@ -120,7 +120,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   // a moment when a story scene starts (lines appear whole here, as with 文字送り「一括表示」).
   const novecento = await ops.centerOf(await ops.destination(page, "p_novecento"));
   const beforeDate = await readSave(page);
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await ops.doubleTap(page, novecento);
   await expect.poll(async () => (await readSave(page)).activeDate?.dateId).toBe("milano_novecento_date_01");
   const started = await readSave(page);
@@ -163,7 +163,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await ops.manualSave(page);
   const closeNotice = await ops.centerOf(ops.noticeClose(page));
   await ops.settled(page);
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await page.touchscreen.tap(closeNotice.x, closeNotice.y);
   await expect(ops.noticeClose(page)).toHaveCount(0);
   await page.touchscreen.tap(sceneryAfterNotice.x, sceneryAfterNotice.y);
@@ -183,7 +183,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await expect(line).not.toHaveText(dateLine!);
   const loading = await ops.askToLoad(page);
   const load = await ops.centerOf(loading.loadButton);
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await ops.doubleTap(page, load);
   await expect(loading.dialog).toBeHidden();
   await expect(line).toHaveText(dateLine!);
@@ -201,7 +201,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   // do with 文字送り「一括表示」, so a second tap that read on would skip a line unread.
   const scenery = await ops.sceneBackgroundPoint(page);
   await ops.hideDialogueWindow(page);
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await ops.doubleTap(page, scenery);
   await expect(page.getByTestId("romance-scene").getByRole("region", { name: "デートの会話" })).toBeVisible();
   expect((await readSave(page)).revision).toBe(opened.revision);
@@ -218,7 +218,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await ops.tapAt(page, await ops.sceneBackgroundPoint(page));
   expect((await readSave(page)).revision).toBe(choosing.revision);
   const replyBox = (await reply.boundingBox())!;
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await ops.doubleTap(page, { x: replyBox.x + replyBox.width / 2, y: replyBox.y + replyBox.height / 2 });
   await expect.poll(async () => (await readSave(page)).revision).toBe(choosing.revision + 1);
   const replied = await readSave(page);
@@ -230,7 +230,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   // destination there acts for a moment (it would start another date or a walk).
   const last = await playUntil(page, (state) => !!state.activeDate?.frame.ended);
   const end = await ops.sceneBackgroundPoint(page);
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await ops.doubleTap(page, end);
   await expect(menu).toBeVisible();
   const destination = (await page.getByTestId(/^travel-place-/u).getByRole("button").filter({ visible: true }).first().boundingBox())!;
@@ -262,7 +262,7 @@ test("a new Milan journey rides tram 16 to the Last Supper, named in the route d
   const tram = ops.routeButton(page, "路面電車（16番） 18分 · €5");
   await expect(tram).toBeEnabled();
   // Hold the page's clock so the short transition (0.45 s with reduced motion) stays while it is checked.
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.holdClock(page);
   await tram.click();
   const transition = page.getByTestId("travel-transition");
   await expect(transition).toHaveAttribute("data-mode", "tram");
@@ -326,7 +326,7 @@ test("in each available journey a new trip's first vehicle route is named and sh
     const { route, button } = ride!;
     const mode = modes.get(route.mode)!;
     test.info().annotations.push({ type: "ride", description: `${journey.id}: ${route.toPlaceId} by ${mode.id} (${mode.nameJa})` });
-    await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+    await ops.holdClock(page);
     await button.click();
     const transition = page.getByTestId("travel-transition");
     await expect(transition).toHaveAttribute("data-mode", mode.id);

@@ -381,9 +381,28 @@ export const ops = {
     await page.touchscreen.tap(point.x, point.y);
   },
   /**
+   * Holds the page's clock (installed with `page.clock.install()`): the timers due in the next
+   * second run, then time stands still until `page.clock.resume()` (`page.clock.fastForward`
+   * moves it on while held). `page.clock.pauseAt` takes a time, and on a slow machine the page's
+   * clock can pass a time read from the page a moment before the call arrives ("Cannot
+   * fast-forward to the past"). That failed call has already stopped the clock (Playwright's
+   * clock pauses before it moves to the time), so the time is read again and the hold retried.
+   */
+  async holdClock(page: Page) {
+    for (let attempt = 1; ; attempt++) {
+      const now = await page.evaluate(() => Date.now());
+      try {
+        await page.clock.pauseAt(now + 1_000);
+        return;
+      } catch (error) {
+        if (attempt === 3 || !String(error).includes("Cannot fast-forward to the past")) throw error;
+      }
+    }
+  },
+  /**
    * Two taps of a finger at a point, as one quick double tap. Hold the page's clock
-   * first (`page.clock.pauseAt`), so they fall within the double-tap window however
-   * slow the machine; `page.clock.fastForward(DOUBLE_TAP_WINDOW_MS)` ends it.
+   * first (`holdClock`), so they fall within the double-tap window however slow the
+   * machine; `page.clock.fastForward(DOUBLE_TAP_WINDOW_MS)` ends it.
    */
   async doubleTap(page: Page, point: { x: number; y: number }) {
     await page.touchscreen.tap(point.x, point.y);
@@ -431,7 +450,11 @@ export const ops = {
   async openDebugScene(page: Page, settings: DebugSettings, dataMode: DebugDataMode = "real") {
     const url = debugQueryString(settingsQuery(dataMode, settings));
     await page.goto(`/${url}`);
-    await expect(page.getByTestId("debug-session")).toBeVisible();
+    // Debug is loaded only after the page's load event (React.lazy in src/main.tsx), module by
+    // module from the development server, and then builds its game: about 1 s here, 1.4–1.7 s
+    // under 6× CPU throttling, and more than the 5 s an assertion waits by default with four
+    // throttled browsers at once. It is part of opening the page, so it gets a page load's time.
+    await expect(page.getByTestId("debug-session")).toBeVisible({ timeout: 30_000 });
     return url;
   },
   async backToDebugSettings(page: Page) {
