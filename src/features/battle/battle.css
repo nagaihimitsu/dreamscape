@@ -403,11 +403,15 @@
   background: #faf8f4;
 }
 /* The bar sticks below the reading area's top padding: fill that strip too, so
-   text scrolled up behind the bar is not left showing, cut, above it (the
-   scrolling paper clips the fill to its own box). */
+   text scrolled up behind the bar is not left showing, cut, above it. 40px
+   covers the largest top padding of the paper (35px, .paper on large screens);
+   the scrolling paper clips the fill to its own box. z-index -1 keeps the fill
+   under the bar's content, so a focus ring that reaches above the bar (the
+   notebook button's, 7px out) is not painted over. */
 .battle-screen .battle-roundbar::before {
   content: "";
   position: absolute;
+  z-index: -1;
   left: 0;
   right: 0;
   bottom: 100%;
@@ -442,12 +446,6 @@
 }
 .battle-screen .quiz-feedback {
   margin: 18px 0;
-}
-/* When focus brings the feedback into view, keep it clear of the sticky round
-   bar (whose bottom is at most 68 px below the top of the reading area). One
-   taller than the area is brought up to the bar by showFeedbackStart (BattleScreen). */
-.battle-paper .quiz-feedback {
-  scroll-margin-top: 76px;
 }
 .question-translation-tools {
   display: flex;

@@ -133,7 +133,7 @@ for (const roll of ["positive", "negative"] as const) {
   });
 }
 
-test("a Debug launch URL opens its scene, offers the same URL and explains a URL that does not fit", { tag: tier.debug }, async ({ page }) => {
+test("a Debug launch URL opens its scene and offers the same URL", { tag: tier.debug }, async ({ page }) => {
   const url = debugQueryString({ dataMode: "real", cityId: "milano", scene: "date", target: "milano_brera_date_01",
     progress: "completed", ap: 9, affection: 0, trust: 0, spark: 0, roll: "negative" });
   await page.goto(`/${url}`);
@@ -150,7 +150,10 @@ test("a Debug launch URL opens its scene, offers the same URL and explains a URL
   // Back on the settings screen, the same scene's URL is offered for copying.
   await ops.backToDebugSettings(page);
   await expect(page.getByTestId("debug-url")).toHaveValue(new URL(url, page.url()).href);
-  // A URL that does not fit the content says why and links back to the settings screen.
+});
+
+// Its own test (and time budget): each half loads the app afresh on a dev server, which is slow under load.
+test("a Debug launch URL that does not fit the content says why and links back to the settings screen", { tag: tier.debug }, async ({ page }) => {
   await page.goto("/?debug&city=milano&scene=battle&target=gt_delhi_main_red_fort_battle");
   await expect(page.getByRole("alert")).toHaveText("「gt_delhi_main_red_fort_battle」はミラノの「バトル」にありません。");
   // The link loads the settings screen as a new page (a dev server serves it module by module):
@@ -300,10 +303,13 @@ test("battle: a double tap on 「敵の反応を見る」 opens the reaction and
   expect((await debugGame(page))!.revision).toBe(feedback.revision + 1);
 });
 
-// UI_RULES A-18 (nothing important under an overlapping part): after a wrong answer the explanation,
-// which starts with 「正しい答え：英文（訳）」, can be taller than the battle paper's reading area. Focus
-// goes to it (for screen readers), its first line shows just below the round bar that stays at the top
-// of the area, not under it, and 「敵の反応を見る」 at its end is reached by scrolling the area.
+// After a wrong answer the explanation, which starts with 「正しい答え：英文（訳）」, can be taller than the
+// battle paper's reading area (UI_REVIEW_CHECKLIST: 「長文・対訳・文字拡大時に内容が切れず、主な操作へ到達
+// できる。必要なスクロールは内容を読む領域に限る。」). Focus goes to it (for screen readers), and its first
+// line shows just below the round bar that stays at the top of the area, not hidden under it. 「敵の反応を
+// 見る」 at its end is reached by scrolling the area and then shows whole, not under the bar or cut at the
+// edge (UI_REVIEW_CHECKLIST: 「スクロールして重なった部品の下に隠れない」; UI_RULES A-18: 「操作パネルの
+// 重要部分だけが見切れる」 is avoided).
 test("battle: a long explanation after a wrong answer starts below the round bar, and 「敵の反応を見る」 is reached by scrolling", { tag: tier.debug }, async ({ page }) => {
   const target = (await tapTargets(page)).battle;
   expect(target, "a battle that Debug opens in its default city").toBeDefined();
@@ -322,10 +328,15 @@ test("battle: a long explanation after a wrong answer starts below the round bar
     const first = document.querySelector("#battle-feedback .correct-answer")!;
     const line = first.getBoundingClientRect();
     const shown = document.elementFromPoint(line.left + 4, line.top + 1);
-    return { room: area.getBoundingClientRect().bottom - bar.bottom, height: feedback.height, shown: !!shown && first.contains(shown) };
+    return {
+      room: area.getBoundingClientRect().bottom - bar.bottom, rest: feedback.bottom - line.top,
+      below: line.top - bar.bottom, shown: !!shown && first.contains(shown),
+    };
   });
-  expect(start.height, "the explanation is taller than the reading area below the round bar").toBeGreaterThan(start.room);
+  expect(start.rest, "the explanation from its first line on is taller than the reading area below the round bar").toBeGreaterThan(start.room);
   expect(start.shown, "the first line of the explanation shows, not the round bar over it").toBe(true);
+  // Only a small gap above that line (the box's top padding may sit under the bar), so as much of the rest shows as can.
+  expect(start.below, "the first line starts just below the round bar").toBeLessThanOrEqual(12);
   const reaction = page.getByRole("button", { name: "敵の反応を見る" });
   await page.locator("#battle-content").evaluate((area) => area.scrollTo({ top: area.scrollHeight }));
   expect(await reaction.evaluate((button) => {

@@ -32,25 +32,40 @@ import { InteractiveEnglish } from "../learning/InteractiveEnglish";
 import type { Learning } from "../learning/useLearning";
 import "./battle.css";
 
-/** Room left between the round bar and the start of a feedback brought up to it. */
+/** Room left between the round bar and the first line of a feedback below it. */
 const FEEDBACK_GAP_PX = 8;
 
 /**
- * Focusing the answer's feedback lets the browser scroll it into view, and it
- * centres one that is taller than the reading area: the start (「正しい答え：…」)
- * then sits under the round bar, which stays at the top of the area, and
- * 「敵の反応を見る」 below its edge. Scroll back so that the start shows just
- * below the bar; the rest is read by scrolling on. A feedback that fits stays
- * where the browser put it (its scroll-margin-top in battle.css keeps it clear
- * of the bar). The jump is instant, as the browser's own.
+ * Focuses the answer's feedback (screen readers read on from there) and shows
+ * its start: its first line (「正しい答え：…」 after a wrong answer, else the
+ * explanation) just below the sticky round bar. The box's top padding may sit
+ * under the bar, so that as much of the rest shows as can.
+ *
+ * The browser's own focus scroll does most of it: the scroll-margin-top set
+ * here from the bar as laid out keeps that line clear of the bar, and a
+ * feedback that fits below the bar then shows whole. One taller than that room
+ * may still be left with its start under the bar (a hidden one is centred, for
+ * example), so it is scrolled back until the first line shows; the rest and
+ * 「敵の反応を見る」 are read by scrolling on. Both jumps are instant, as the
+ * browser's own.
  */
-function showFeedbackStart(feedback: HTMLElement, area: HTMLElement | null) {
-  const bar = area?.querySelector(".battle-roundbar");
-  if (!area || !bar) return;
-  const covered = bar.getBoundingClientRect().bottom + FEEDBACK_GAP_PX - feedback.getBoundingClientRect().top;
+function focusFeedbackStart(feedback: HTMLElement, area: HTMLElement | null, bar: HTMLElement | null) {
+  if (!area || !bar) {
+    feedback.focus();
+    return;
+  }
+  const line = feedback.querySelector(":scope > p") ?? feedback;
+  // Below 500 px of portrait height the reading area grows with its content and the
+  // page scrolls instead (battle.css): the bar then sticks to the top of the screen.
+  const pageScrolls = getComputedStyle(area).overflowY === "visible";
+  const barBox = bar.getBoundingClientRect();
+  const barBottom = pageScrolls ? barBox.height : barBox.bottom - area.getBoundingClientRect().top;
+  const lineOffset = line.getBoundingClientRect().top - feedback.getBoundingClientRect().top;
+  feedback.style.scrollMarginTop = `${Math.max(0, barBottom + FEEDBACK_GAP_PX - lineOffset)}px`;
+  feedback.focus();
+  const covered = bar.getBoundingClientRect().bottom + FEEDBACK_GAP_PX - line.getBoundingClientRect().top;
   if (covered <= 0) return;
-  // Below 500 px of portrait height the reading area grows with its content and the page scrolls (battle.css).
-  if (getComputedStyle(area).overflowY === "visible") window.scrollBy(0, -covered);
+  if (pageScrolls) window.scrollBy(0, -covered);
   else area.scrollTop -= covered;
 }
 
@@ -143,6 +158,7 @@ export function BattleScreen({
   const [creditsOpen, setCreditsOpen] = useState(false);
   const windowVisibility = useDialogueWindow();
   const readingArea = useRef<HTMLElement>(null);
+  const roundBar = useRef<HTMLDivElement>(null);
   const displayedStoryState = rebuttal?.step.storyState ?? (active.phase === "dialogue" ? active.storyState : null);
   // Start each new scene at the top of its own reading area, without moving
   // the page or disturbing a question when a notebook or translation opens.
@@ -192,9 +208,7 @@ export function BattleScreen({
     if (active.phase !== "feedback") return;
     const focusFeedback = () => {
       const feedback = document.getElementById("battle-feedback");
-      if (!feedback) return;
-      feedback.focus();
-      showFeedbackStart(feedback, readingArea.current);
+      if (feedback) focusFeedbackStart(feedback, readingArea.current, roundBar.current);
     };
     // A newly saved answer gets a short, optional visual beat. Restored frames,
     // hidden tabs and reduced-motion preferences never wait for an animation.
@@ -400,7 +414,7 @@ export function BattleScreen({
         aria-label="クイズバトル"
         data-testid={rebuttal ? "reasoning-rebuttal" : undefined}
       >
-        {!isDialogue && <div className="battle-roundbar">
+        {!isDialogue && <div className="battle-roundbar" ref={roundBar}>
           <span>
             {isResult
               ? "決着"
