@@ -8,7 +8,7 @@ import { loadJourneyScaffold, journeyRequirements } from "../../../scripts/journ
 import { createGame, validateGameState } from "../../../src/domain/game";
 import { rentTransport } from "../../../src/domain/transport";
 import { planTravel } from "../../../src/domain/travel";
-import { getTravelEventAvailability } from "../../../src/domain/travel-game";
+import { getTravelEventAvailability, getTravelHomeRoutes } from "../../../src/domain/travel-game";
 import { loadGame, saveGame } from "../../../src/persistence";
 
 describe("Luang Prabang city foundation", () => {
@@ -148,6 +148,25 @@ describe("Luang Prabang city foundation", () => {
       expect(decision.reasonJa.includes("夜市"), `${decision.fromPlaceId}>${decision.toPlaceId}`)
         .toBe(!decision.reasonJa.startsWith("中心の通り（シーサワンウォン通り）を通らない"));
     }
+  });
+
+  it("never lets the rental bicycle hide another way home: renting only adds bicycle options (rule a compares with the walk only)", () => {
+    const state = prototypePreviewState(cityId);
+    const rented = rentTransport(state, "bicycle", state.revision);
+    expect(rented.travel.rentedModeIds).toEqual(["bicycle"]);
+    const { travel, travelSettings } = getCityContent(cityId);
+    const home = (base: typeof state, placeId: string) => getTravelHomeRoutes({ ...base, travel: { ...base.travel, currentPlaceId: placeId } }, placeId);
+    let bicycleBeatsKeptVehicle = 0;
+    for (const place of travel.places.filter((item) => item.id !== travelSettings.hotelPlaceId)) {
+      const before = home(state, place.id);
+      const after = home(rented, place.id);
+      expect(before.some((option) => option.mode === "bicycle"), place.id).toBe(false);
+      expect(after.filter((option) => option.mode !== "bicycle"), place.id).toEqual(before);
+      // A bicycle option faster and cheaper than a tuk-tuk option still leaves that tuk-tuk option in the list.
+      bicycleBeatsKeptVehicle += after.filter((option) => option.mode === "tuk_tuk" && after.some((bicycle) =>
+        bicycle.mode === "bicycle" && bicycle.minutes <= option.minutes && bicycle.cost <= option.cost)).length;
+    }
+    expect(bicycleBeatsKeptVehicle).toBeGreaterThan(0);
   });
 
   it("saves ride counts of the tuk-tuk, and of the bicycle only once it is rented", () => {

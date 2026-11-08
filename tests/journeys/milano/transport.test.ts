@@ -8,7 +8,8 @@ import { playBattleToResult } from "../../../src/dev/scenario-builders";
 import { leaveBattleResult } from "../../../src/domain/chapter";
 import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
 import { closeTourism, skipTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
-import { beginTravelEvent, finishTravelEventIfComplete, observeLocalLandmark, sleepAtHotel } from "../../../src/domain/travel-game";
+import { beginTravelEvent, finishTravelEventIfComplete, getTravelHomeRoutes, observeLocalLandmark, sleepAtHotel } from "../../../src/domain/travel-game";
+import { composeHomeRoutes } from "../../../src/domain/travel-routes";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 import { zodIssues } from "../../fixtures/zod-issues";
 
@@ -54,6 +55,22 @@ describe("Milano transport", () => {
     expect([taxi("p_duomo", "p_prada").minutes, taxi("p_duomo", "p_prada").cost]).toEqual([19, 13]);
     expect([taxi("p_prada", "p_hotel").minutes, taxi("p_prada", "p_hotel").cost]).toEqual([26, 17]);
     expect(taxi("p_duomo", "p_supper").transferNote).toBe("近くの車道から乗り、ルッフィーニ通りで降りる");
+  });
+
+  it("offers 19 ways home in 休む over the 13 places (rule a, user answer 5: 23 without it), one detour left", () => {
+    const state = createGame();
+    const hotel = state.travel.hotelPlaceId;
+    const places = travel.places.filter((place) => place.id !== hotel);
+    const lists = places.map((place) => getTravelHomeRoutes({ ...state, travel: { ...state.travel, currentPlaceId: place.id } }, place.id));
+    expect(places).toHaveLength(13);
+    expect(lists.flat()).toHaveLength(19);
+    expect(places.reduce((sum, place) => sum + composeHomeRoutes(travel.routes, place.id, hotel).length, 0)).toBe(23);
+    // The Duomo and the Last Supper lose their detours (not faster than walking home); Prada keeps the taxi to the
+    // Duomo and the walk from there (28 min, 14 €: faster than walking, 46 min, and cheaper than the direct taxi, 17 €).
+    expect(lists.flat().filter((option) => option.viaPlaceId).map((option) => `${option.fromPlaceId} ${option.mode} via ${option.viaPlaceId} ${option.minutes} ${option.cost}`))
+      .toEqual(["p_prada taxi via p_duomo 28 14"]);
+    expect(lists[places.findIndex((place) => place.id === "p_duomo")].map((option) => option.mode)).toEqual(["walk"]);
+    expect(lists[places.findIndex((place) => place.id === "p_supper")].map((option) => option.mode)).toEqual(["tram", "walk"]);
   });
 
   it("supports every tram and taxi route with a documented fact and a game estimate, and keeps a ready ledger", () => {
