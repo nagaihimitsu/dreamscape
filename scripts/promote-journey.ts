@@ -44,6 +44,9 @@ type FragmentName = keyof typeof fragmentKinds;
 const fragmentFile = (layer: string, name: FragmentName) => `${layer}/${fragmentKinds[name]}`;
 const fragmentFiles = (layer: string) => (Object.keys(fragmentKinds) as FragmentName[]).map((name) => fragmentFile(layer, name));
 const text = (value: unknown) => `${JSON.stringify(value, null, 2)}\n`;
+/** The text of `value`; a file whose data stays the same keeps its exact text, so a release does not rewrite it. */
+const textKeeping = (before: string | null | undefined, value: unknown) =>
+  typeof before === "string" && isDeepStrictEqual(JSON.parse(before), value) ? before : text(value);
 /** Original file contents for a release; null marks a fragment the layer does not have yet. */
 export type ReleaseFiles = Record<string, string | null>;
 /** Merged catalogs of all layers (by kind), for collision checks against other layers. */
@@ -56,7 +59,7 @@ export function journeyReleaseChanges(original: ReleaseFiles, journeyId: string,
   const files = releaseFiles(journeyId, layer, cityIds, through);
   const manifest = JSON.parse(original[files[0]]!);
   manifest.status = "available";
-  result[files[0]] = text(manifest);
+  result[files[0]] = textKeeping(original[files[0]], manifest);
   for (const id of prefix(cityIds, through)) {
     const cityFile = `${layer}/cities/${id}.json`;
     const travelFile = `${layer}/travel/${id}.json`;
@@ -69,8 +72,8 @@ export function journeyReleaseChanges(original: ReleaseFiles, journeyId: string,
       if (contentStatus !== undefined && contentStatus !== "pending_content") throw new Error(`Unknown event status: ${id}`);
       return event;
     });
-    result[cityFile] = text(city);
-    result[travelFile] = text(travel);
+    result[cityFile] = textKeeping(original[cityFile], city);
+    result[travelFile] = textKeeping(original[travelFile], travel);
   }
   return result;
 }
@@ -101,7 +104,7 @@ export function mergeJourneyReleaseFragments(original: ReleaseFiles, release: Re
     const file = fragmentFile(layer, name);
     // A fragment (or a key of it) the layer does not have yet is created only when it gains entries.
     if (typeof original[file] !== "string" && isDeepStrictEqual(value, emptyCatalog(fragmentKinds[name], value.schemaVersion))) return;
-    result[file] = text(trimFragment(value, added.get(name) ?? new Map()));
+    result[file] = textKeeping(original[file], trimFragment(value, added.get(name) ?? new Map()));
   };
   const others = (name: FragmentName, key: string): any[] => merged[fragmentKinds[name]]?.[key] ?? [];
   const merge = (existing: any[], incoming: readonly any[], label: string, all: readonly any[] = []) => {
@@ -184,7 +187,7 @@ export function mergeJourneyReleaseFragments(original: ReleaseFiles, release: Re
       if (!place.landmarkIds.includes(landmark.id)) place.landmarkIds.push(landmark.id);
     }
     merge(travel.events, finales, "finale travel event");
-    result[travelFile] = text(travel);
+    result[travelFile] = textKeeping(original[travelFile], travel);
   }
   return result;
 }
@@ -220,21 +223,24 @@ export function journeyInputFingerprint(root: string, ignore: ReadonlySet<string
  * Only the journey's manifest and the files of its owner `layer` may be
  * written; a fragment the layer does not have yet (original null) is created
  * without overwriting (link), together with its directories, and removed again
- * on rollback.
+ * on rollback. A file whose text stays the same (e.g. an already published
+ * city) is not rewritten, but it must still be unchanged on disk. Returns the
+ * written files.
  */
 export function writeJourneyReleaseFiles(root: string, original: ReleaseFiles, next: Record<string, string>, journeyId: string, move = renameSync,
-  expectedFingerprint?: string, layer: string = CONTENT_DIRECTORY): void {
-  const files = Object.keys(next);
+  expectedFingerprint?: string, layer: string = CONTENT_DIRECTORY): string[] {
+  const requested = Object.keys(next);
   const cityIds = journeyCities(original, journeyId);
   const fragments = new Set(fragmentFiles(layer));
   // The release markers of one city prefix, plus any of the layer's fragments.
   const validSet = cityIds.some((id) => {
     const release = releaseFiles(journeyId, layer, cityIds, id);
-    return release.every((file) => files.includes(file)) && files.every((file) => release.includes(file) || fragments.has(file));
+    return release.every((file) => requested.includes(file)) && requested.every((file) => release.includes(file) || fragments.has(file));
   });
-  if (!validSet || files.some((file) => !Object.hasOwn(original, file) || typeof next[file] !== "string" ||
+  if (!validSet || requested.some((file) => !Object.hasOwn(original, file) || typeof next[file] !== "string" ||
     (typeof original[file] !== "string" && !(original[file] === null && fragments.has(file)))))
     throw new Error("Invalid Journey release file set");
+  const files = changedReleaseFiles(original, next);
   const current = (relative: string) => {
     const target = path.join(root, relative);
     return existsSync(target) ? readFileSync(target, "utf8") : null;
@@ -245,7 +251,8 @@ export function writeJourneyReleaseFiles(root: string, original: ReleaseFiles, n
   let created: string[] = [];
   let committed = false;
   try {
-    for (const relative of files) if (current(relative) !== original[relative]) throw new Error(`File changed while validating: ${relative}`);
+    // Every requested file, also one that is not rewritten: the release was validated against all of them.
+    for (const relative of requested) if (current(relative) !== original[relative]) throw new Error(`File changed while validating: ${relative}`);
     created = createParentDirectories(root, files);
     for (const relative of files) {
       const target = path.join(root, relative);
@@ -254,7 +261,7 @@ export function writeJourneyReleaseFiles(root: string, original: ReleaseFiles, n
       staged.push(temporary);
     }
     // Detect changes even if the files were edited while the temporary files were written.
-    for (const relative of files) if (current(relative) !== original[relative])
+    for (const relative of requested) if (current(relative) !== original[relative])
       throw new Error(`File changed while validating: ${relative}`);
     const ignored = new Set([...staged.map((file) => path.relative(root, file)), ...created]);
     if (expectedFingerprint && journeyInputFingerprint(root, ignored) !== expectedFingerprint)
@@ -273,6 +280,7 @@ export function writeJourneyReleaseFiles(root: string, original: ReleaseFiles, n
       }
     }
     committed = true;
+    return [...changed];
   } catch (error) {
     const failures: string[] = [];
     for (const relative of changed.reverse()) {
@@ -298,8 +306,20 @@ export function writeJourneyReleaseFiles(root: string, original: ReleaseFiles, n
   }
 }
 
+/** The files of `next` whose text differs from `original` (the ones a release writes). */
+const changedReleaseFiles = (original: ReleaseFiles, next: Record<string, string>) =>
+  Object.keys(next).filter((file) => next[file] !== original[file]);
+
+export interface JourneyReleaseResult {
+  /** The journey and the last city of the released city prefix, with their Japanese names. */
+  journey: { id: string; nameJa: string };
+  lastCity: { id: string; nameJa: string };
+  /** Root-relative files the apply wrote, or that an apply would write after a check. */
+  files: string[];
+}
+
 /** Preview in a temporary copy; only explicitly apply after full validation. */
-export async function prepareJourneyRelease(root: string, journeyId: string, apply: boolean, through?: string, narrativeFile?: string, translationsFile?: string): Promise<void> {
+export async function prepareJourneyRelease(root: string, journeyId: string, apply: boolean, through?: string, narrativeFile?: string, translationsFile?: string): Promise<JourneyReleaseResult> {
   getJourneyAuthoringProfile(root, journeyId);
   const before = loadJourneyReadiness(root, journeyId);
   const cityIds = before.trip.cities.map((city) => city.id);
@@ -308,10 +328,11 @@ export async function prepareJourneyRelease(root: string, journeyId: string, app
   const leftovers = report.issues.filter((issue) => issue.code === "sample_content_left");
   if (leftovers.length) throw new Error(`見本の内容が残っているため公開できません。実在の出典・画像・文章に置き換えてから実行し直してください（一覧: npm run journey:readiness -- --journey ${journeyId}）。\n${leftovers.map((issue) => `- ${issue.detail}`).join("\n")}`);
   const ids = prefix(cityIds, through);
+  const last = before.trip.cities.find((city) => city.id === ids.at(-1))!;
   const candidate = report.cities.filter((city) => ids.includes(city.cityId));
   const hasBlocker = report.issues.some((issue) => issue.code !== "journey_unavailable") || candidate.length !== ids.length || candidate.some((city) =>
     city.issues.some((issue) => issue.code !== "city_incomplete") || city.events.some((event) => event.issues.some((issue) => issue.code !== "event_pending")));
-  if (hasBlocker && !narrativeFile) throw new Error(`Journey has unfinished references through ${through}; supply scenario metadata or run the readiness report.`);
+  if (hasBlocker && !narrativeFile) throw new Error(`Journey has unfinished references through ${last.id}; supply scenario metadata or run the readiness report.`);
   const fingerprint = journeyInputFingerprint(root);
   const unpublished = new Set(before.cities.filter((entry) => ids.includes(entry.city.id) && entry.city.productionStatus !== "complete").map((entry) => entry.city.id));
   const includeFragments = !!narrativeFile && unpublished.size > 0;
@@ -346,11 +367,12 @@ export async function prepareJourneyRelease(root: string, journeyId: string, app
     const stagedReport = inspectJourneyReadiness(loadJourneyReadiness(stage, journeyId));
     const stageCities = stagedReport.cities.filter((city) => ids.includes(city.cityId));
     if (stagedReport.issues.length || stageCities.length !== ids.length || stageCities.some((city) => city.issues.length || city.events.some((event) => event.issues.length)))
-      throw new Error(`Journey has unfinished scenario, quiz or content references through ${through}.`);
+      throw new Error(`Journey has unfinished scenario, quiz or content references through ${last.id}.`);
     await buildContent(stage, false);
     if (journeyInputFingerprint(root) !== fingerprint) throw new Error("Content or assets changed during validation; release was not applied.");
     if (narrativeFile && includeFragments && readFileSync(narrativeFile, "utf8") !== narrativeOriginal) throw new Error("Scenario metadata changed during validation; release was not applied.");
     if (translationsFile && includeFragments && readFileSync(translationsFile, "utf8") !== translationsOriginal) throw new Error("Quiz translations changed during validation; release was not applied.");
-    if (apply) writeJourneyReleaseFiles(root, original, next, journeyId, renameSync, fingerprint, layer);
+    const files = apply ? writeJourneyReleaseFiles(root, original, next, journeyId, renameSync, fingerprint, layer) : changedReleaseFiles(original, next);
+    return { journey: { id: journeyId, nameJa: before.trip.nameJa }, lastCity: { id: last.id, nameJa: last.nameJa }, files };
   } finally { rmSync(stage, { recursive: true, force: true }); }
 }

@@ -273,7 +273,20 @@ describe("journey:new in a copy of the repository", () => {
     expect(replaced.readyForPromotion).toBe(true);
     // The release preview validates the released state in a copy and changes nothing.
     const manifest = readFileSync(path.join(journeyDirectory(root, k), "manifest.json"), "utf8");
-    await prepareJourneyRelease(root, k, false);
+    const preview = await prepareJourneyRelease(root, k, false);
     expect(readFileSync(path.join(journeyDirectory(root, k), "manifest.json"), "utf8")).toBe(manifest);
+    // The preview names the journey and its last city (the copy's own, replaced names) and the files an apply
+    // would write: the status markers. The sample's travel events carry no pending marker, so travel stays as it is.
+    const names = JSON.parse(manifest) as { nameJa: string; cities: { id: string; nameJa: string }[] };
+    expect(preview).toEqual({ journey: { id: k, nameJa: names.nameJa }, lastCity: { id: kc, nameJa: names.cities[0].nameJa },
+      files: [`content/journeys/${k}/manifest.json`, `content/journeys/${k}/cities/${kc}.json`] });
+    // Unfinished references name the last city of the release (here the journey's only city).
+    const [battle] = JSON.parse(readFileSync(path.join(journeyDirectory(root, k), "battles/catalog.json"), "utf8")).battles;
+    const story = path.join(journeyDirectory(root, k), "stories", `${battle.storyId}.ink`);
+    const ink = readFileSync(story, "utf8");
+    rmSync(story);
+    try {
+      await expect(prepareJourneyRelease(root, k, false)).rejects.toThrow(`Journey has unfinished references through ${kc};`);
+    } finally { writeFileSync(story, ink); }
   }, 120_000);
 });

@@ -188,7 +188,8 @@ describe("journey release pipeline (the Golden Triangle as the example)", () => 
       const translated = JSON.parse(readFileSync(path.join(root, layer, "learning/translations.json"), "utf8")).questions[`${plan.main[0].quizId}_0`];
       expect(translated.source.questionEn).toBe(originalQuiz.questions[0].questionEn);
       expect(existsSync(path.join(root, layer, "stories", `${plan.finale.epilogueStoryId}.ink`))).toBe(true);
-      await prepareJourneyRelease(root, "golden_triangle", true, "delhi", narrativeFile, translationsFile);
+      // A rerun of the published city writes nothing.
+      expect((await prepareJourneyRelease(root, "golden_triangle", true, "delhi", narrativeFile, translationsFile)).files).toEqual([]);
       expect(readFileSync(journeyFile, "utf8")).toBe(after);
 
       // Add only the second city's own hypothetical content. The already
@@ -225,7 +226,7 @@ describe("journey release pipeline (the Golden Triangle as the example)", () => 
       expect(JSON.parse(after).episodes.map((episode: { cityId: string }) => episode.cityId)).toEqual(Array(5).fill("delhi"));
       const translated = JSON.parse(readFileSync(path.join(root, layer, "learning/translations.json"), "utf8")).questions;
       expect(Object.keys(translated).every((id) => id.startsWith("gt_"))).toBe(true);
-      await prepareJourneyRelease(root, "golden_triangle", true, "delhi", narrativeFile, translationsFile);
+      expect((await prepareJourneyRelease(root, "golden_triangle", true, "delhi", narrativeFile, translationsFile)).files).toEqual([]);
       expect(readFileSync(journeyFile, "utf8")).toBe(after);
     } finally { rmSync(root, { recursive: true, force: true }); }
   }, 120_000);

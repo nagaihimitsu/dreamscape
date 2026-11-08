@@ -85,6 +85,10 @@ describe("journey release rules", () => {
       const combined = { ...original, ...changes };
       const repeated = mergeJourneyReleaseFragments(combined, journeyReleaseChanges(combined, journeyId, "alpha"), fragments, [quiz]);
       expect(repeated).toEqual(changes);
+      // A second release changes no text, so it would write nothing.
+      for (const [file, value] of Object.entries(repeated)) expect(value, file).toBe(combined[file]);
+      // A catalog whose data does not change keeps its text (here compact JSON), so it is not rewritten either.
+      expect(changes["content/learning/translations.json"]).toBe(original["content/learning/translations.json"]);
       expect(JSON.parse(changes["content/progression/journey.json"]).episodes.map((item: { id: string }) => item.id)).toEqual(["other_episode", "alpha_episode"]);
       expect(JSON.parse(changes["content/tourism/catalog.json"]).assets).toEqual([{ id: "other_photo" }]);
       expect(JSON.parse(changes["content/romance/presentation.json"]).backgrounds).toEqual({ other: {} });
@@ -93,6 +97,45 @@ describe("journey release rules", () => {
       const collision = { ...fragments, episodes: [{ id: "other_episode", cityId: "alpha" }] } as typeof fragments;
       expect(() => mergeJourneyReleaseFragments(original, journeyReleaseChanges(original, journeyId, "alpha"), collision, [quiz]))
         .toThrow("Existing episode differs: other_episode");
+    } finally { rmSync(root, { recursive: true, force: true }); }
+  });
+
+  it("writes only the files whose text changes and keeps the text of unchanged ones", () => {
+    const { root, original } = temporaryRoot();
+    try {
+      const released = journeyReleaseChanges(original, journeyId, "alpha");
+      expect(writeJourneyReleaseFiles(root, original, released, journeyId).sort()).toEqual(Object.keys(released).sort());
+      // Releasing the published city again: nothing to write, so nothing is moved.
+      const now = Object.fromEntries(Object.keys(original).map((file) => [file, readFileSync(path.join(root, file), "utf8")]));
+      let moves = 0;
+      const counted: typeof renameSync = (from, to) => { moves++; renameSync(from, to); };
+      expect(writeJourneyReleaseFiles(root, now, journeyReleaseChanges(now, journeyId, "alpha"), journeyId, counted)).toEqual([]);
+      expect(moves).toBe(0);
+      // A published file in another layout (compact JSON) keeps its text; only the next city's markers are written.
+      const compact = "content/cities/alpha.json";
+      const edited = { ...now, [compact]: JSON.stringify(JSON.parse(now[compact])) };
+      writeFileSync(path.join(root, compact), edited[compact]);
+      const next = journeyReleaseChanges(edited, journeyId, "beta");
+      expect(next[compact]).toBe(edited[compact]);
+      expect(writeJourneyReleaseFiles(root, edited, next, journeyId, counted).sort()).toEqual(["content/cities/beta.json", "content/travel/beta.json"]);
+      expect(moves).toBe(2);
+      expect(readFileSync(path.join(root, compact), "utf8")).toBe(edited[compact]);
+    } finally { rmSync(root, { recursive: true, force: true }); }
+  });
+
+  it("refuses a release when a file it validated changed, also one it would not rewrite", () => {
+    const { root, original } = temporaryRoot();
+    try {
+      writeJourneyReleaseFiles(root, original, journeyReleaseChanges(original, journeyId, "alpha"), journeyId);
+      const now = Object.fromEntries(Object.keys(original).map((file) => [file, readFileSync(path.join(root, file), "utf8")]));
+      const next = journeyReleaseChanges(now, journeyId, "beta");
+      // The published first city is validated with the release of the second, but not rewritten.
+      const published = "content/cities/alpha.json";
+      expect(next[published]).toBe(now[published]);
+      writeFileSync(path.join(root, published), "edited elsewhere");
+      expect(() => writeJourneyReleaseFiles(root, now, next, journeyId)).toThrow(`File changed while validating: ${published}`);
+      expect(readFileSync(path.join(root, published), "utf8")).toBe("edited elsewhere");
+      expect(readFileSync(path.join(root, "content/cities/beta.json"), "utf8")).toBe(now["content/cities/beta.json"]);
     } finally { rmSync(root, { recursive: true, force: true }); }
   });
 
