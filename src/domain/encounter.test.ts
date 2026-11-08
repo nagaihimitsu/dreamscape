@@ -300,6 +300,7 @@ describe("travel encounters", () => {
     expect(state.inventory.galleria_ticket).toBe("held");
     state = finish(choose(meetEncounter(state, OUTING, () => 0), 0));
     expect(state.inventory.galleria_ticket).toBe("used");
+    expect(state.itemUses).toEqual({ galleria_ticket: { encounterId: OUTING, optionId: "ticket" } });
     state = fortune(state, "B", 0);
     expect(state.inventory.galleria_ticket).toBe("used");
     expect(state.encounterRewards.galleria_fortune).toEqual({ roll: 0, chancePercent: 25, won: true });

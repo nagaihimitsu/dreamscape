@@ -107,8 +107,20 @@ describe("condition records of the sample journey's encounters (seenEncounterIds
     expect(() => validateGameState(uses({ [BOOKMARK]: { encounterId: "no_such_encounter", optionId: "give" } }))).toThrow(usesMessage);
     expect(() => validateGameState({ ...state, inventory: { [BOOKMARK]: "held" } })).toThrow(usesMessage);
     expect(() => validateGameState(uses({ [BOOKMARK]: { encounterId: GIFT, optionId: "give", extra: 1 } as never }))).toThrow();
+    // The status must match the kind of the recorded option: `give` gives the bookmark away, it does not use it.
+    expect(() => validateGameState({ ...state, inventory: { [BOOKMARK]: "used" } })).toThrow(usesMessage);
+    // The recorded encounter must be completed (or running with that option): the gift's completion removed, its seen
+    // record and the gifted bookmark with its use kept, nothing running.
+    expect(state.activeEncounter).toBeNull();
+    expect(() => validateGameState({ ...state, completedEncounterIds: [STALL] })).toThrow(usesMessage);
     // While the gift is running, its record must name the option actually chosen (both options give the bookmark).
     expect(() => validateGameState({ ...chosen, itemUses: { [BOOKMARK]: { encounterId: GIFT, optionId: "guidebook" } } })).toThrow(usesMessage);
+    // The gift running with 「また今度」 chosen: a gifted bookmark recorded as given by `give` is not that choice.
+    const putOff = choose(finish(choose(cityStart("mihon"), STALL, "drawn")), GIFT, "later");
+    expect(putOff.activeEncounter).toMatchObject({ encounterId: GIFT, selectedOptionId: "later" });
+    expect(putOff.inventory).toEqual({ [BOOKMARK]: "held" });
+    expect(() => validateGameState({ ...putOff, inventory: { [BOOKMARK]: "gifted" },
+      itemUses: { [BOOKMARK]: { encounterId: GIFT, optionId: "give" } } })).toThrow(usesMessage);
     // A record is never written for an encounter that has not reached its choice.
     const before = meetEncounter(finish(choose(cityStart("mihon"), STALL, "drawn")), GIFT);
     expect(() => validateGameState({ ...before, itemUses: { [BOOKMARK]: { encounterId: GIFT, optionId: "give" } } })).toThrow(usesMessage);

@@ -83,6 +83,7 @@ describe("the Milan pick and location encounters", () => {
     expect(state.inventory.galleria_ticket).toBe("held");
     state = play(state, "galleria_ticket_press", "press");
     expect(state.inventory.galleria_ticket).toBe("used");
+    expect(state.itemUses).toEqual({ galleria_ticket: { encounterId: "galleria_ticket_press", optionId: "press" } });
     expect(state.travelBudget).toBe(before - 4);
   });
 });
