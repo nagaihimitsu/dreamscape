@@ -88,6 +88,8 @@ import {
 import { browserStorage, type AppProps } from "./app-storage";
 import { storySceneChanged, storySceneOnScreen } from "./story-scene-change";
 import { holdTaps } from "../components/tap-hold";
+import { useDebugMode } from "./debug-mode";
+import { DebugModeSetting } from "./DebugModeSetting";
 import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
 
 export function GameApp({
@@ -102,6 +104,8 @@ export function GameApp({
   // Only Debug (src/dev/DebugMode.tsx) passes `debug`, on the dev server and, with Debug mode on, in production.
   const isDebug = debug;
   const displaySettings = usePresentationSettings(storage);
+  // This device's Debug-mode switch (journeyStorage passes its key through unscoped).
+  const debugMode = useDebugMode(storage);
   const session = useGameSession(storage, displaySettings.value.autoSave);
   const { game, loaded, invalid, notice, setNotice, commit, getCurrent, save } = session;
   // The second tap of a double tap that starts or ends a story scene must not press the next
@@ -319,6 +323,8 @@ export function GameApp({
             <button type="button" onClick={() => {
               setPlayer(game.playerName);
               setHeroine(game.heroineName);
+              // Another tab may have turned Debug mode on or off meanwhile.
+              debugMode.refresh();
               setSettings(true);
             }}>設定</button>
           </nav>
@@ -838,6 +844,7 @@ export function GameApp({
               </button>
             </form>
           )}
+          {!isDebug && <DebugModeSetting debugMode={debugMode} />}
           {!isDebug && oldDataStorage && <button type="button" className="text-button old-data-entry"
             onClick={() => { setSettings(false); setOldDataOpen(true); }}>古い保存データの整理</button>}
           <button className="text-button delete-entry" onClick={requestDelete}>
