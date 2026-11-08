@@ -323,9 +323,9 @@ test("battle: a long explanation after a wrong answer starts below the round bar
   await expect(page.getByTestId("battle-feedback")).toBeFocused();
   const start = await page.evaluate(() => {
     const area = document.getElementById("battle-content")!;
-    const bar = area.querySelector(".battle-roundbar")!.getBoundingClientRect();
+    const bar = area.querySelector('[data-testid="battle-roundbar"]')!.getBoundingClientRect();
     const feedback = document.getElementById("battle-feedback")!.getBoundingClientRect();
-    const first = document.querySelector("#battle-feedback .correct-answer")!;
+    const first = document.querySelector('[data-testid="battle-feedback"] [data-testid="correct-answer"]')!;
     const line = first.getBoundingClientRect();
     const shown = document.elementFromPoint(line.left + 4, line.top + 1);
     return {

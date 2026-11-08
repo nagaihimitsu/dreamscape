@@ -285,7 +285,7 @@ export function GameApp({
         <span className="edition" data-testid="journey-edition">{editionCityName}の旅</span>
       </header>
       {game && (
-        <div className="journey-bar">
+        <div className="journey-bar" data-testid="journey-bar">
           <span className="travelers" data-testid="travelers">
             {game.playerName}
             <span className="amp"> と </span>

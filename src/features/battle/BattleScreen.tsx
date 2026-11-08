@@ -36,21 +36,25 @@ import "./battle.css";
 const FEEDBACK_GAP_PX = 8;
 
 /**
- * The lowest edge (viewport y) of the boxes held over the top of a scroller's
- * view at `x`, from `top` down: sticky or fixed boxes stacked there, as the
- * round bar, or a header held above it. `top` when nothing is held there.
- * Boxes that hold `line` itself are not over it.
+ * How far below the top of the screen the sticky boxes held there reach once
+ * `line` is scrolled up to them: the round bar, and a header held above it
+ * (the journey bar where :has() is missing, styles.css). Those are the sticky
+ * boxes before `line` beside it or beside one of its ancestors; one held at the
+ * top sits at its `top`. Read from styles and boxes, not by hit-testing, which
+ * misses boxes without pointer events (all of them while taps are held after a
+ * load: tap-hold.ts), and the same before and after a scroll.
  */
-function heldOverTop(x: number, top: number, line: Element) {
-  let edge = top;
-  for (let held = 0; held < 4; held++) {
-    let box = document.elementFromPoint(x, edge + 1);
-    while (box && !box.contains(line) && !/^(sticky|fixed)$/.test(getComputedStyle(box).position)) box = box.parentElement;
-    const bottom = box && !box.contains(line) ? box.getBoundingClientRect().bottom : edge;
-    if (bottom <= edge) break;
-    edge = bottom;
+function heldDepth(line: Element) {
+  let depth = 0;
+  for (let node: Element = line; node.parentElement; node = node.parentElement) {
+    for (let box = node.previousElementSibling; box; box = box.previousElementSibling) {
+      const style = getComputedStyle(box);
+      const top = parseFloat(style.top);
+      const height = box.getBoundingClientRect().height;
+      if (style.position === "sticky" && Number.isFinite(top) && height > 0) depth = Math.max(depth, top + height);
+    }
   }
-  return edge;
+  return depth;
 }
 
 /**
@@ -60,13 +64,13 @@ function heldOverTop(x: number, top: number, line: Element) {
  * under the bar, so that as much of the rest shows as can.
  *
  * The browser's own focus scroll does most of it: the scroll-margin-top set
- * here from the bar as laid out keeps that line clear of the bar, and a
- * feedback that fits below the bar then shows whole. One taller than that room
- * may still be left with its start under the bar (a hidden one is centred, for
- * example), so it is scrolled back until the first line shows below the lowest
- * box held over the top of the view (the bar, and anything held above it); the
- * rest and 「敵の反応を見る」 are read by scrolling on. Both jumps are instant,
- * as the browser's own.
+ * here from what is held at the top of the view (the bar, and a header held
+ * above it) keeps that line clear of it, and a feedback that fits below it then
+ * shows whole (one that nearly fills that room may keep some of its top
+ * padding under it). One taller than that room may still be left with its start
+ * under the bar (a hidden one is centred, for example), so it is scrolled back
+ * until the first line shows; the rest and 「敵の反応を見る」 are read by
+ * scrolling on. Both jumps are instant, as the browser's own.
  */
 function focusFeedbackStart(feedback: HTMLElement, area: HTMLElement | null, bar: HTMLElement | null) {
   if (!area || !bar) {
@@ -76,17 +80,17 @@ function focusFeedbackStart(feedback: HTMLElement, area: HTMLElement | null, bar
   const line = feedback.querySelector(":scope > p") ?? feedback;
   // Below 500 px of portrait height the reading area grows with its content and the
   // page scrolls instead (battle.css): the bar then sticks to the top of the screen,
-  // and the journey bar above the battle scrolls away with the page (styles.css).
+  // and the journey bar above the battle scrolls away with the page (styles.css), or
+  // is held there too where :has() is missing. Otherwise the reading area scrolls and
+  // holds the bar just below its top padding, where the bar is laid out.
   const pageScrolls = getComputedStyle(area).overflowY === "visible";
-  const barBox = bar.getBoundingClientRect();
-  const barBottom = pageScrolls ? barBox.height : barBox.bottom - area.getBoundingClientRect().top;
+  const viewTop = pageScrolls ? 0 : area.getBoundingClientRect().top;
+  const held = pageScrolls ? heldDepth(line) : bar.getBoundingClientRect().bottom - viewTop;
   const lineOffset = line.getBoundingClientRect().top - feedback.getBoundingClientRect().top;
-  feedback.style.scrollMarginTop = `${Math.max(0, barBottom + FEEDBACK_GAP_PX - lineOffset)}px`;
+  feedback.style.scrollMarginTop = `${Math.max(0, held + FEEDBACK_GAP_PX - lineOffset)}px`;
   feedback.focus();
-  const lineBox = line.getBoundingClientRect();
-  const viewTop = pageScrolls ? 0 : area.getBoundingClientRect().top + area.clientTop;
-  const clear = Math.max(bar.getBoundingClientRect().bottom, heldOverTop(lineBox.left + 4, viewTop, line));
-  const covered = clear + FEEDBACK_GAP_PX - lineBox.top;
+  const clear = Math.max(viewTop + held, bar.getBoundingClientRect().bottom);
+  const covered = clear + FEEDBACK_GAP_PX - line.getBoundingClientRect().top;
   if (covered <= 0) return;
   if (pageScrolls) window.scrollBy(0, -covered);
   else area.scrollTop -= covered;
@@ -437,7 +441,7 @@ export function BattleScreen({
         aria-label="クイズバトル"
         data-testid={rebuttal ? "reasoning-rebuttal" : undefined}
       >
-        {!isDialogue && <div className="battle-roundbar" ref={roundBar}>
+        {!isDialogue && <div className="battle-roundbar" data-testid="battle-roundbar" ref={roundBar}>
           <span>
             {isResult
               ? "決着"
@@ -672,7 +676,7 @@ export function BattleScreen({
               >
                 <h3 className="sr-only" role="status">{answer.correct ? "正解" : "不正解"}</h3>
                 {!answer.correct && (
-                  <p className="correct-answer">
+                  <p className="correct-answer" data-testid="correct-answer">
                     正しい答え：
                     <span lang="en">
                       {
