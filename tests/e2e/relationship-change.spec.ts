@@ -7,7 +7,7 @@ import { expect, ops, placeDateSave, playUntil, readSave, test, tier, type Page 
 // save of a started date is placed with the real game functions, then everything goes through the UI.
 // In the debug tier (not the gate, whose count is already over its budget, docs/10): it needs the dev server.
 
-// A long flow (docs/10「不安定さと時間の決まり」): two page loads, a whole date, 設定 twice and a load.
+// Long flows (docs/10「不安定さと時間の決まり」): two page loads, a date's replies, 設定 and a load.
 test.describe.configure({ timeout: 120_000 });
 
 const strip = (page: Page) => page.getByTestId("relationship-change");
@@ -61,4 +61,34 @@ test("with Debug mode on, a date reply's relationship change shows above the sce
   expect(finished.playedDateIds.length).toBeGreaterThan(0);
   await expect(page.getByTestId("travel-menu")).toBeVisible();
   await expect(strip(page)).toHaveCount(0);
+});
+
+// GameApp ignores every commit while Debug mode is off (its handler reads the switch through a ref), so a
+// change made then is never kept and cannot show up once Debug mode is on. The render condition alone
+// would hide it only while the switch is off. (Every date has at most 2 replies, hence its own test.)
+test("a reply made while Debug mode is off is not shown, not even when Debug mode is turned on in the same scene", { tag: tier.debug }, async ({ page }) => {
+  await page.goto("/");
+  await placeDateSave(page);
+  await page.reload();
+  await expect(page.getByTestId("romance-scene")).toBeVisible();
+
+  // Off (as on every device until the password is given): the reply changes the values, nothing is shown.
+  const off = await reply(page);
+  expect(relationshipChange(off.before, off.after)?.axes.length).toBeGreaterThan(0);
+  await expect(strip(page)).toHaveCount(0);
+
+  // Turned on in the same date: the change of the reply made while off does not appear. The empty
+  // status region is already on the page (screen readers announce what is put into it later).
+  await ops.turnOnDebugMode(page);
+  await expect(page.getByTestId("romance-scene")).toBeVisible();
+  await expect(strip(page)).toHaveCount(0);
+  const regionOnPage = page.getByRole("status", { name: "Debug：関係の変化" });
+  await expect(regionOnPage).toBeAttached();
+  const region = await regionOnPage.elementHandle();
+  expect(await region!.evaluate((element) => element.childElementCount)).toBe(0);
+
+  // The next reply shows its own change only, inside that same region.
+  const on = await reply(page);
+  expect(await shownLines(page)).toEqual(describeRelationshipChange(relationshipChange(on.before, on.after)!));
+  expect(await region!.evaluate((element) => element.isConnected && !!element.querySelector("[data-testid=relationship-change]"))).toBe(true);
 });
