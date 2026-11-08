@@ -51,13 +51,6 @@
 .tourism-guide.paper {
   padding-top: 25px;
 }
-.tourism-guide .story-tools {
-  flex-wrap: wrap;
-  gap: 6px 16px;
-}
-.tourism-guide .story-tools > label {
-  margin-left: auto;
-}
 .tourism-observation {
   padding: 0 24px;
 }
@@ -562,16 +555,6 @@
     max-height: 25%;
     overflow-y: auto;
   }
-  .mobile-observation-active > .save-tools {
-    flex: none;
-    display: flex;
-    justify-content: space-evenly;
-    gap: 8px;
-    margin: 0;
-    padding: 0 8px env(safe-area-inset-bottom);
-  }
-  .mobile-observation-active > .save-tools button { flex: 1; min-height: 44px; }
-  .mobile-observation-active > .save-tools > span { display: none; }
 }
 
 /* Keep the picture's viewport stable when a discovery description opens. */

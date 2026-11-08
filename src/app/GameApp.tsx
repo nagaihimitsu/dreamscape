@@ -43,6 +43,7 @@ import { EnglishReview } from "../features/learning/EnglishReview";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import { CityProgressBadge, CityRecords } from "../features/journey/CityProgress";
 import { TravelActions } from "../features/journey/TravelActions";
+import { placeDisplayName } from "../features/journey/travel-labels";
 import { TitleNameFields } from "../features/journey/TitleNameFields";
 import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
@@ -292,7 +293,7 @@ export function GameApp({
             {game.heroineName}
           </span>
           <div className="journey-context" data-testid="journey-context">
-            <span>現在地：{game.travel.currentPlaceId === game.travel.hotelPlaceId ? `滞在先${currentTravelPlace?.nameJa.includes("架空") ? "（架空）" : ""}` : currentTravelPlace?.nameJa ?? "不明"}</span>
+            <span>現在地：{placeDisplayName(game, currentTravelPlace)}</span>
             <strong>{game.travel.day}日目{weekday === undefined ? null : <span aria-label={`ゲーム内の${["月", "火", "水", "木", "金", "土", "日"][weekday]}曜日`}>（{["月", "火", "水", "木", "金", "土", "日"][weekday]}）</span>} {String(Math.floor(game.travel.minute / 60)).padStart(2, "0")}:{String(game.travel.minute % 60).padStart(2, "0")}</strong>
           </div>
           <div className="journey-resources">

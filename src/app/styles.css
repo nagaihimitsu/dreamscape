@@ -13,6 +13,28 @@
   --line: #dddccc;
   --paper: #faf8f1;
   --gold: #947446;
+  /* Shared colours of the redesigned HUD, map, list and dialogue window
+     (UI redesign §2.1). Text colours keep WCAG AA on the surfaces named
+     beside them; a role is never told by colour alone. */
+  --ds-slate-900: #1f2430; /* chip/window base, focus halo, selected-marker disc */
+  --ds-slate-800: #2b3140; /* primary fill, HUD tools, row hint strip, selected-row border */
+  --ds-chip-bg: rgba(31, 36, 48, 0.84); /* status pills over photos */
+  --ds-window-bg: rgba(31, 36, 48, 0.9); /* dialogue window */
+  --ds-on-slate: #fffaf1; /* text on slate */
+  --ds-on-slate-muted: #d9dde3;
+  --ds-plate-blue: #4d658a; /* speaker name plate */
+  --ds-gold: #c9a35f; /* hairlines and icons only, never text on parchment */
+  --ds-parchment: #fbf3e6; /* map card, list card, bottom band, menu panel */
+  --ds-parchment-2: #f3e4c8; /* map banner, ribbon summary, selected row fill */
+  --ds-parchment-line: #d9c39a; /* card borders, row separators */
+  --ds-ink: #3b2f2a; /* text on parchment */
+  --ds-ink-muted: #6b5a4a;
+  --ds-marker: #a23d5a; /* map markers and legend glyphs */
+  --ds-marker-selected: #f6c445; /* selected marker and row badge, always on --ds-slate-900 */
+  --ds-here: #245a48; /* current-place ring, done/cleared text */
+  --ds-focus: #ffd27a; /* focus ring, with a --ds-slate-900 halo */
+  --ds-disabled-bg: #e6dfd2;
+  --ds-disabled-ink: #5c544a;
 }
 * {
   box-sizing: border-box;
@@ -390,25 +412,6 @@ h3 {
   justify-content: space-between;
   gap: 10px;
 }
-.save-tools {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding: 12px 24px;
-  border-top: 1px solid var(--line);
-}
-.save-tools button {
-  background: none;
-  color: #596656;
-  font-size: 12px;
-  padding: 0 10px;
-}
-.save-tools > span {
-  font-size: 10px;
-  color: #78806f;
-}
 footer {
   text-align: center;
   font-family: Georgia, "Noto Serif JP", serif;
@@ -539,32 +542,6 @@ footer span {
   font-size: 13px;
   color: #8a977b;
   flex-shrink: 0;
-}
-.story-tools {
-  border-top: 1px solid var(--line);
-  margin-top: 26px;
-  padding-top: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-}
-.story-tools label {
-  font-size: 10px;
-  color: var(--muted);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.story-tools select {
-  max-width: 100%;
-  background: transparent;
-  color: #51634f;
-  border: 1px solid #d3d7c8;
-  padding: 8px 3px;
-  border-radius: 3px;
-  min-height: 44px;
-  font-size: 12px;
 }
 .paused {
   padding-top: 15px;
@@ -752,18 +729,11 @@ footer span {
     font-size: 10px;
     letter-spacing: 0.12em;
   }
-  .save-tools {
-    gap: 7px;
-    padding: 9px 20px;
-  }
   .modal {
     padding: 26px 23px;
   }
   .modal h2 {
     font-size: 20px;
-  }
-  .story-tools {
-    gap: 8px;
   }
 }
 
@@ -802,21 +772,6 @@ footer span {
     flex: none;
     max-height: 30%;
     overflow-y: auto;
-  }
-  .mobile-play-active > .save-tools {
-    flex: none;
-    display: flex;
-    justify-content: space-evenly;
-    gap: 8px;
-    margin: 0;
-    padding: 0 8px env(safe-area-inset-bottom);
-  }
-  .mobile-play-active > .save-tools button {
-    flex: 1;
-    min-height: 44px;
-  }
-  .mobile-play-active > .save-tools > span {
-    display: none;
   }
   .mobile-play-active #city-epilogue-screen,
   .mobile-play-active .tourism-screen.guide-active {
@@ -905,8 +860,6 @@ dialog.modal::backdrop {
   .free-time-active > .journey-stage,
   .free-time-active > footer { display: none; }
   .free-time-active > .journey-bar { padding: 4px 10px; }
-  .free-time-active > .save-tools { justify-content: space-evenly; }
-  .free-time-active > .save-tools button { min-height: 44px; }
 }
 
 .sr-only {
