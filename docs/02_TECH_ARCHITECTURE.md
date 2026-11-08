@@ -53,7 +53,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 
 ## 共通データと旅行編フォルダ
 
-- `content/`（`content/journeys/` を除く）は全旅行編で共有する基盤データ（共通レイヤー）。置けるのは `romance/balance.json`・`romance/response_profiles.json`・共通デート効果（`common_date_*`）・`romance/presentation.json` の共通部分（保留・エンディング表示、感情、共通の既定背景 `default_scene`）・`romance/progression.json` の段階と告白・`learning/word-meanings.json`・`presentation/characters.json`・`presentation/own-artwork.json`（直下の `public/` が配信する、Dreamscape のために作った絵の一覧。下の「画像の出典と自作の絵」）だけ。都市・移動・Ink・クイズや旅行編専用のカタログは置けず、共通データから都市や旅行編のデータを参照することもできない（`scripts/content-ownership.ts` が検査）。
+- `content/`（`content/journeys/` を除く）は全旅行編で共有する基盤データ（共通レイヤー）。置けるのは `romance/balance.json`・`romance/response_profiles.json`・共通デート効果（`common_date_*`）・`romance/presentation.json` の共通部分（エンディング表示、感情、共通の既定背景 `default_scene`）・`romance/progression.json` の段階と告白・`learning/word-meanings.json`・`presentation/characters.json`・`presentation/own-artwork.json`（直下の `public/` が配信する、Dreamscape のために作った絵の一覧。下の「画像の出典と自作の絵」）だけ。都市・移動・Ink・クイズや旅行編専用のカタログは置けず、共通データから都市や旅行編のデータを参照することもできない（`scripts/content-ownership.ts` が検査）。
 - 各旅行編は `content/journeys/<journeyId>/`（`manifest.json` で登録し、`order` の順に並ぶ）へ同じ相対配置でデータを置く（開発・テスト専用の見本の編だけは `authoring/templates/sample_trip/` に置き、明示したときだけ読む。下の「見本の編」）。`npm run content:build` が共通データと各旅行編を統合・検証して `src/content/generated/content/` に書き出し、ゲームはこの生成物だけを読む。
 - 画像は、全旅行編で共有するものをリポジトリ直下の `public/`、旅行編だけが使うもの（観光写真・デート背景・その旅行編の品物アイコン）を `content/journeys/<journeyId>/public/` に、配信時と同じ相対パス（`assets/tourism/...` など）で置く。`npm run content:build` がこれらを `src/content/generated/public/`（生成物。Git管理しない）へまとめて写し（変更のないファイルはサイズと更新時刻で判定して省略し、元がなくなったファイルは消す）、Viteはこのフォルダを `publicDir` として配信・ビルドする（Viteプラグインや独自のVite処理は使わない）。同じ相対パスの画像を二つのフォルダに置くと `content:build` が失敗する。データ中の画像パスは配信時の相対パスのままで、置き場所によって変わらない。旅行編のデータが使えるのは自分の `public/` と直下の `public/` の画像だけ、共通データは直下の `public/` の画像だけ。
 - 既定の旅行編（タイトル画面で最後に開いた旅行編がないとき・新しいゲーム・Debugの初期値）は、`order` 順で最初の公開中（`status: "available"`）の旅行編とその最初の都市。公開中の旅行編がない場合、`content:build` が失敗する。
@@ -77,7 +77,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 | `progression/journey.json` | `episodes`・`storyBattles`・`rewards` を連結 |
 | `romance/balance.json`・`romance/response_profiles.json` | ファイル全体を共通データだけが持つ |
 | `romance/date_catalog.json`・`date_destinations.json`・`effect_catalog.json` | `dates`・`destinations`・`effects` を連結 |
-| `romance/presentation.json` | `backgrounds`・`memories` をキーごとに統合。`deferred`・`ending`・`emotions` は共通データのみ |
+| `romance/presentation.json` | `backgrounds`・`memories` をキーごとに統合。`ending`・`emotions` は共通データのみ |
 | `romance/progression.json` | `memoryCallbacks` を連結。`stages`・`confession`・`fallbackMemoryCallbackJa` は共通データのみ |
 | `tourism/catalog.json` | `assets`・`landmarks`・`clues` を連結 |
 | `journeys/catalog.json` | 各 `manifest.json` から生成（`schemaVersion`・`order`・`authoring` を除き、`order` 順） |

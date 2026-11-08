@@ -34,7 +34,7 @@ import { usePresentationSettings } from "../components/usePresentationSettings";
 import { RomanceScene } from "../features/romance/RomanceScene";
 import { Modal } from "../components/Modal";
 import { ConfirmActionButton } from "../components/ConfirmActionButton";
-import { withNames } from "../features/romance/RomanceMenu";
+import { withNames } from "../features/romance/names";
 import { BattleScreen } from "../features/battle/BattleScreen";
 import { TourismScreen } from "../features/tourism/TourismScreen";
 import { ClueNotebook } from "../features/tourism/ClueNotebook";

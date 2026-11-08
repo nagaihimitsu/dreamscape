@@ -286,7 +286,7 @@ npm run test:saves
 | `<旅行編>/romance/date_catalog.json`             | 種別、表示文、AP費用、必要章・履歴、シナリオ参照、選択回数・検証条件 |
 | `<旅行編>/romance/effect_catalog.json`           | 好感度差分、思い出ID、告白結果（accepted/deferred）。共通デート効果は `<共通>` |
 | `<共通>/romance/progression.json`                | 4段階の閾値・必要履歴・敬称、告白成立条件（思い出の引用は `<旅行編>`） |
-| `<旅行編>/romance/presentation.json`             | 背景・思い出。表情・保留案内・エンディングの文章と既定背景は `<共通>` |
+| `<旅行編>/romance/presentation.json`             | 背景・思い出。表情・エンディングの文章と既定背景は `<共通>` |
 | `<共通>/romance/balance.json`                    | AP上限・既定名・名前長                                               |
 | `<旅行編>/progression/journey.json`              | 観光と対決の解放条件・都市フィナーレ・章末の表示文・有限AP報酬条件 |
 | `<旅行編>/cities/<都市ID>.json`                  | 都市名・予定観光地・初回クリア報酬（`firstClearReward`）             |
