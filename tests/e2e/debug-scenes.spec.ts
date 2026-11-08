@@ -89,7 +89,7 @@ function itemEncounter(page: Page): Promise<ItemEncounter | undefined> {
 }
 
 // AGENTS.md 「英語は…道中交流で主人公の返答・行動を選ぶ3択に用いる」「道中の品物は所属都市を登録し…」.
-test("an encounter answered in English gives its item, and the scene ends back at the place", { tag: tier.debug }, async ({ page }) => {
+test("an encounter answered in English gives its item, and the scene ends back in its landmark's observation", { tag: tier.debug }, async ({ page }) => {
   const encounter = await itemEncounter(page);
   expect(encounter, "an encounter with an item that Debug can open").toBeDefined();
   // A won reward needs the saved ticket below its chance: the positive ticket (0) always wins.
