@@ -3,6 +3,11 @@ import { transportModeSchema } from "./transport-schemas";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const text = z.string().trim().min(1);
+/**
+ * Kept as written, not trimmed: a symbol of letters ends with the one space that keeps
+ * its number apart (「soʻm 」 → 「soʻm 4,000,000」, formatMoney); a sign has none (「₹」).
+ */
+const currencySymbol = z.string().regex(/^\S+ ?$/u);
 
 /** A journey is a separate game; cities are ordered but may still be unbuilt. */
 export const journeyCatalogSchema = z.object({
@@ -12,7 +17,7 @@ export const journeyCatalogSchema = z.object({
     nameJa: text,
     status: z.enum(["available", "preparing"]),
     cities: z.array(z.object({ id, nameJa: text }).strict()).min(1),
-    currency: z.object({ code: z.string().regex(/^[A-Z]{3}$/), symbol: text,
+    currency: z.object({ code: z.string().regex(/^[A-Z]{3}$/), symbol: currencySymbol,
       unitJa: text, unit: z.literal("whole") }).strict(),
     // An omitted value uses the starting city's existing setting. Null means
     // not yet determined and must never silently become real-world pricing.
