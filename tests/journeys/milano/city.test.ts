@@ -40,9 +40,11 @@ import {
   startTourismBattle,
   openTourism,
   getTourismAvailability,
+  closeTourism,
 } from "../../../src/domain/tourism";
 import { startCityEpilogue, advanceCityEpilogue } from "../../../src/domain/epilogue";
-import { startEncounter, chooseEncounter, advanceEncounter, encounterCanFinish, finishEncounter } from "../../../src/domain/encounter";
+import { chooseEncounter, advanceEncounter, encounterCanFinish, finishEncounter } from "../../../src/domain/encounter";
+import { meetEncounter } from "../../fixtures/encounter-moment";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 const episodes = allEpisodes.filter((episode) => episode.cityId === "milano");
 const restore = (state: GameState) => {
@@ -163,7 +165,7 @@ function playDate(initial: GameState, id: string, choices = [0, 0]): GameState {
 const finale = () => episodes.find((item) => item.kind === "city_finale")!;
 
 function collectPick(initial: GameState): GameState {
-  let state = startEncounter(initial, "duomo_string", () => 0);
+  let state = meetEncounter(initial, "duomo_string");
   expect(state.activeEncounter?.encounterId).toBe("duomo_string");
   for (let count = 0; state.activeEncounter && count < 100; count++) {
     const active = state.activeEncounter;
@@ -175,7 +177,9 @@ function collectPick(initial: GameState): GameState {
   }
   expect(state.activeEncounter).toBeNull();
   expect(state.inventory.blue_pick).toBe("held");
-  return restore(state);
+  // The encounter returned to the Duomo's observation; leave it for free time.
+  expect(state.activeTourism?.landmarkId).toBe("duomo_milano");
+  return restore(closeTourism(state, state.revision));
 }
 
 /** Build an accepted relationship through current dates and confession. */

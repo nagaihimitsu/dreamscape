@@ -185,11 +185,8 @@ export function validateEncounterContent({
       storyIds.push(scene.id);
       const compiled = stories[scene.id];
       if (!compiled) throw new Error(`Unknown encounter story: ${event.id}/${scene.id}`);
-      // Dormant stories are kept for possible future reuse, but are not
-      // startable; require stable choice tags before an event is activated.
-      const existingOrderedChoices = event.availability === "dormant";
       const choiceHasRules = !!scene.options?.some((option) => option.cost || option.requiresItemId || option.consumeItemId || option.giftItemId || option.responseProfileId || option.deferCompletion);
-      try { validateEncounterStory(compiled, context, scene.options, catalog.items.filter((item) => item.cityId === event.cityId).map((item) => item.id), memoryIds, choiceHasRules && !existingOrderedChoices); }
+      try { validateEncounterStory(compiled, context, scene.options, catalog.items.filter((item) => item.cityId === event.cityId).map((item) => item.id), memoryIds, choiceHasRules); }
       catch (error) {
         throw new Error(`Invalid encounter story: ${event.id}/${scene.id}: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
       }

@@ -18,7 +18,7 @@ import { getJourneyForCity } from "../content/journeys";
 import { advanceBattle, answerBattle, getActiveBattleContent, selectReasoningClue, startBattle, submitBattleEvidence } from "../domain/battle";
 import { getNextEpisode, getNextStoryBattle, leaveBattleResult, startEpisode, storyBattlesForCity } from "../domain/chapter";
 import { departToNextCity } from "../domain/city-travel";
-import { startEncounter, startTourismEncounter } from "../domain/encounter";
+import { startTourismEncounter } from "../domain/encounter";
 import { advanceCityEpilogue, completeArrivalLogo, startCityArrival, startCityEpilogue } from "../domain/epilogue";
 import { createGame, startDate, validateGameState, type GameState } from "../domain/game";
 import { advanceTourismGuide, openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "../domain/tourism";
@@ -300,17 +300,18 @@ export function openBattleScene(state: GameState, battleId: string): GameState {
   return validateGameState(next);
 }
 
-/** Start an encounter at its place with a saved reaction ticket (a place encounter opens its observation first). */
+/**
+ * Start an encounter the way play meets it, with a saved reaction ticket: at its place its
+ * landmark's observation opens (a first visit skips the guide) and the encounter starts there
+ * under the observation's own rule (getTourismEncounterAvailability); after the scene the
+ * observation goes on. Encounters have no other moment yet (free time never starts one).
+ */
 export function startEncounterScene(state: GameState, encounterId: string, ticket: number): GameState {
   const encounter = encounters.encounters.find((item) => item.id === encounterId && item.cityId === state.currentCityId);
-  const placed = atPlace(state, scenePlaceId(state.currentCityId, undefined, encounter?.landmarkId ?? undefined));
-  const nextRoll = () => ticket;
-  let next: GameState;
-  if (encounter?.availability === "tourism") {
-    next = openTourism(placed, encounter.landmarkId!);
-    if (next.activeTourism?.phase === "guide") next = skipTourismGuide(next, next.revision);
-    next = startTourismEncounter(next, encounterId, next.revision, nextRoll);
-  } else next = startEncounter(placed, encounterId, nextRoll);
+  const placed = atPlace(state, scenePlaceId(state.currentCityId, undefined, encounter?.landmarkId));
+  let next = encounter ? openTourism(placed, encounter.landmarkId) : placed;
+  if (next.activeTourism?.phase === "guide") next = skipTourismGuide(next, next.revision);
+  next = startTourismEncounter(next, encounterId, next.revision, () => ticket);
   if (!next.activeEncounter) throw new Error("この進行状態では交流を始められません。必要な進行や品物を確認してください。");
   return validateGameState(next);
 }

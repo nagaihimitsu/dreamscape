@@ -19,7 +19,7 @@ function visit(landmarkId: string): GameState {
 
 describe("automatic place encounters", () => {
   // Milan's encounters, met in a Milan game (other journeys' encounters belong to their own cities).
-  it.each(encounters.encounters.filter((event) => event.cityId === "milano" && event.availability !== "dormant").map((event) => [event.id, event.landmarkId]))
+  it.each(encounters.encounters.filter((event) => event.cityId === "milano").map((event) => [event.id, event.landmarkId]))
     ("introduces %s when its location and existing conditions are met", (id, landmarkId) => {
       const state = visit(landmarkId);
       expect(getTourismEncounterAvailability(state, id).available).toBe(true);
@@ -27,18 +27,6 @@ describe("automatic place encounters", () => {
       expect(next.activeEncounter?.encounterId).toBe(id);
       expect(next.activeEncounter?.returnTourism?.encounterIds).toContain(id);
     });
-
-  it("never introduces a dormant encounter", () => {
-    // No published encounter is dormant; the rule is checked on a Galleria encounter made dormant for this test.
-    const state = visit("galleria_vittorio_emanuele_ii");
-    const event = encounters.encounters.find((entry) => entry.id === "galleria_print")!;
-    expect(event.availability).toBeUndefined();
-    expect(getTourismEncounterAvailability(state, event.id).available).toBe(true);
-    event.availability = "dormant";
-    try {
-      expect(getTourismEncounterAvailability(state, event.id).available).toBe(false);
-    } finally { delete event.availability; }
-  });
 
   it("runs newly unlocked encounters in sequence without repeating deferred choices", () => {
     let state = visit("galleria_vittorio_emanuele_ii");

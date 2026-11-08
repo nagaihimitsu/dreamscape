@@ -267,7 +267,6 @@ function summary(): string {
     const battleIds = [...episodes.filter((episode) => cityIds.includes(episode.cityId)).map((episode) => episode.battleId),
       ...cityIds.flatMap((cityId) => storyBattlesForCity(cityId).map((battle) => battle.battleId))].filter((id) => battles.some((battle) => battle.id === id));
     const cityEncounters = encounters.encounters.filter((event) => cityIds.includes(event.cityId));
-    const dormant = cityEncounters.filter((event) => event.availability === "dormant").map((event) => event.id);
     lines.push(`${journey.id} (${seen.steps} steps, journey end reached ${seen.ends} times):`,
       count("cities reached", cityIds, seen.cities),
       count("cities cleared", cityIds, seen.cleared),
@@ -275,9 +274,8 @@ function summary(): string {
       count("stops completed", episodes.filter((episode) => cityIds.includes(episode.cityId)).map((episode) => episode.id), seen.episodes),
       count("battles started", battleIds, seen.battles),
       count("dates started", dateIds, seen.dates),
-      count("place encounters met", cityEncounters.filter((event) => event.availability !== "dormant").map((event) => event.id), seen.encounters),
-      count("rentals made", cityIds.flatMap((cityId) => (getCityContent(cityId).travelSettings.rentals ?? []).map((offer) => `${cityId}/${offer.modeId}`)), seen.rentals),
-      ...(dormant.length ? [`  dormant encounters (offered nowhere by design): ${dormant.join(", ")}`] : []));
+      count("place encounters met", cityEncounters.map((event) => event.id), seen.encounters),
+      count("rentals made", cityIds.flatMap((cityId) => (getCityContent(cityId).travelSettings.rentals ?? []).map((offer) => `${cityId}/${offer.modeId}`)), seen.rentals));
   }
   return lines.join("\n");
 }

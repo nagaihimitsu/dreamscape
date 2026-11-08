@@ -25,7 +25,6 @@ const encounterSchema = z.object({
   titleJa: japaneseText,
   descriptionJa: japaneseText,
   storyId,
-  availability: z.enum(["dormant", "tourism"]).optional(),
   options: z.array(optionSchema).length(3),
   repeatable: z.boolean().optional(),
   completionMoney: money.optional(),

@@ -4,7 +4,8 @@ import { cityContents, episodes, presentation, stories, tagContext } from "../co
 import { encounters } from "../content/encounters";
 import { getBattleAvailability, startBattle } from "./battle";
 import { getAvailableStoryBattles, getEpisodeAvailability, isEpisodeUnlocked } from "./chapter";
-import { getEncounterAvailability, getTourismEncounterAvailability, hasPendingPlaceEncounter, proceedFromTourism, startEncounter } from "./encounter";
+import { getTourismEncounterAvailability, hasPendingPlaceEncounter, proceedFromTourism } from "./encounter";
+import { meetEncounter } from "../../tests/fixtures/encounter-moment";
 import { startCityEpilogue } from "./epilogue";
 import { createGame } from "./game";
 import { installTestCity } from "../dev/test-cities";
@@ -50,7 +51,7 @@ describe("city-specific progression", () => {
     const source = encounters.encounters.find((item) => item.id === "galleria_fortune")!;
     const event = {
       ...structuredClone(source), id: "test_tourism_encounter", cityId: "test_city", landmarkId: "test_special_b_landmark",
-      availability: "tourism" as const, repeatable: false, quiz: undefined,
+      repeatable: false, quiz: undefined,
       options: source.options.map((option) => ({ ...option, requiresItemId: "test_city_item" })),
     };
     encounters.encounters.push(event);
@@ -62,7 +63,6 @@ describe("city-specific progression", () => {
       expect(hasPendingPlaceEncounter(city, "test_special_b_landmark")).toBe(false);
       const withItem = { ...city, inventory: { test_city_item: "held" as const } };
       expect(hasPendingPlaceEncounter(withItem, "test_special_b_landmark")).toBe(true);
-      expect(getEncounterAvailability(withItem, event.id).available).toBe(false);
       const observing = openTourism(withItem, "test_special_b_landmark");
       expect(getTourismEncounterAvailability(observing, event.id).available).toBe(true);
       const started = proceedFromTourism(observing, observing.revision, () => 0);
@@ -90,7 +90,7 @@ describe("city-specific progression", () => {
       const state = { ...initial, currentCityId: "test_city", travel: { ...initial.travel, currentPlaceId: "test_place", hotelPlaceId: "test_hotel" } };
       expect(openTourism(state, "test_landmark").activeTourism?.frame?.background).toBe(backgroundId);
       expect(startBattle(state, "test_battle").activeBattle?.frame?.background).toBe(backgroundId);
-      expect(startEncounter(state, "test_encounter", () => 0).activeEncounter?.frame.background).toBe(backgroundId);
+      expect(meetEncounter(state, "test_encounter").activeEncounter?.frame.background).toBe(backgroundId);
       expect(startCityEpilogue({ ...state, completedCityIds: ["test_city"] }, "test_city", state.revision).activeEpilogue?.frame.background).toBe(backgroundId);
     } finally {
       delete presentation.backgrounds[backgroundId];

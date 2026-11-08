@@ -8,7 +8,7 @@ import generatedQuizzes from "../src/content/generated/quizzes.json";
 import effectsData from "../src/content/generated/content/romance/effect_catalog.json";
 import presentationData from "../src/content/generated/content/romance/presentation.json";
 import profileData from "../src/content/generated/content/romance/response_profiles.json";
-import { encounterCatalogSchema, type EncounterCatalog } from "../src/content/encounter-schemas";
+import { encounterCatalogSchema, normalizeEncounterCatalog, type EncounterCatalog } from "../src/content/encounter-schemas";
 import { journeySchema } from "../src/content/journey-schemas";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { quizSchema } from "../src/content/schemas";
@@ -70,6 +70,19 @@ describe("journey currency rules", () => {
     delete oldPayment.encounters[eventIndex].completionMoney;
     expect(() => encounterCatalogSchema.parse(oldPayment)).toThrow(zodIssues(
       { code: "unrecognized_keys", path: ["encounters", eventIndex], keys: ["completionMoneyEuro"] }));
+  });
+});
+
+describe("encounter catalog fields", () => {
+  it("refuses the `availability` field v14 removed: every encounter is met at its observation (decision 7)", () => {
+    for (const value of ["tourism", "dormant"]) {
+      const data = structuredClone(catalogData) as unknown as { encounters: Array<Record<string, unknown>> };
+      data.encounters[0].availability = value;
+      expect(() => encounterCatalogSchema.parse(data), value).toThrow(zodIssues(
+        { code: "unrecognized_keys", path: ["encounters", 0], keys: ["availability"] }));
+      expect(() => normalizeEncounterCatalog(data, tourismCatalogSchema.parse(tourismData).landmarks), value).toThrow(zodIssues(
+        { code: "unrecognized_keys", path: ["encounters", 0], keys: ["availability"] }));
+    }
   });
 });
 

@@ -116,8 +116,7 @@
         "lostStoryId": "encounters/milano_galleria_fortune_lost",
         "alreadyStoryId": "encounters/milano_galleria_fortune_already"
       },
-      "landmarkId": "galleria_vittorio_emanuele_ii",
-      "availability": "tourism"
+      "landmarkId": "galleria_vittorio_emanuele_ii"
     },
     {
       "id": "duomo_string",

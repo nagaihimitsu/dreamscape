@@ -36,5 +36,5 @@ export type ActiveEncounter = z.infer<typeof activeEncounterSchema>;
 
 export function validObservationEncounterIds(landmarkId: string, ids?: string[]): boolean {
   return !ids || (new Set(ids).size === ids.length && ids.every((id) =>
-    encounters.encounters.some((event) => event.id === id && event.landmarkId === landmarkId && event.availability !== "dormant")));
+    encounters.encounters.some((event) => event.id === id && event.landmarkId === landmarkId)));
 }

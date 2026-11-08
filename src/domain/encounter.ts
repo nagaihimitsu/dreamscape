@@ -58,16 +58,13 @@ function activeStoryId(active: ActiveEncounter, id: string): string {
   return id;
 }
 
-export function getEncounterAvailability(state: GameState, id: string): Availability {
-  const event = findEncounter(id);
-  if (!event) return unavailable("寄り道が見つかりません。");
-  const revisitableQuiz = event.availability === "tourism" && !!entryRule(event)?.quizAfterLandmarkBattle && hasLandmarkBattle(state, event);
-  if (event.availability === "dormant" || (event.availability === "tourism" && !revisitableQuiz))
-    return unavailable("この寄り道は自由時間からは選べません。");
-  return getEncounterEntryAvailability(state, event);
-}
-
-/** Shared rules apply regardless of whether an encounter starts at an observation screen. */
+/**
+ * The entry rules of an encounter apart from the moment it is looked up at
+ * (its entry rule's milestone, the city, no other scene, not completed unless
+ * repeatable, and the items its actionable choices need). Encounters start
+ * only during an observation (getTourismEncounterAvailability); there is no
+ * way to start one from free time.
+ */
 function getEncounterEntryAvailability(state: GameState, event: EncounterDefinition): Availability {
   if (event.cityId !== state.currentCityId) return unavailable("この街では出かけられません。");
   const rule = entryRule(event);
@@ -87,7 +84,7 @@ function getEncounterEntryAvailability(state: GameState, event: EncounterDefinit
 
 /** Used before entering a special encounter's battle, while still in free time. */
 export function hasPendingPlaceEncounter(state: GameState, landmarkId: string): boolean {
-  return encounters.encounters.some((event) => event.landmarkId === landmarkId && event.availability !== "dormant" && getEncounterEntryAvailability(state, event).available);
+  return encounters.encounters.some((event) => event.landmarkId === landmarkId && getEncounterEntryAvailability(state, event).available);
 }
 
 /** Keep the optional cultural quiz after the main battle, so it cannot reveal its answer first. */
@@ -158,25 +155,20 @@ function beginEncounter(state: GameState, event: EncounterDefinition, nextRoll: 
   } };
 }
 
-export function startEncounter(state: GameState, id: string, nextRoll: () => number = secureRomanceRoll): GameState {
-  if (!getEncounterAvailability(state, id).available) return state;
-  return beginEncounter(state, findEncounter(id)!, nextRoll);
-}
-
 /** A place encounter uses the same unlock and item rules as its existing definition. */
 export function getTourismEncounterAvailability(state: GameState, id: string): Availability {
   const event = findEncounter(id);
   const active = state.activeTourism;
-  if (!event || event.availability === "dormant" || event.cityId !== state.currentCityId ||
+  if (!event || event.cityId !== state.currentCityId ||
       !active || active.phase !== "exploring" || active.landmarkId !== event.landmarkId ||
       !state.visitedLandmarkIds.includes(active.landmarkId) ||
       state.activeBattle || state.activeDate || state.activeEncounter || state.activeEpilogue ||
       active.encounterIds?.includes(id) ||
       (!event.repeatable && state.completedEncounterIds.includes(id)))
     return unavailable("今は話しかけられません。");
-  // An encounter with a deferred quiz is available during the first
-  // observation, before its separate post-battle quiz becomes available.
-  if (event.availability === "tourism" && entryRule(event)?.quizAfterLandmarkBattle) return available;
+  // An encounter whose quiz waits for the landmark's battle is met during the
+  // first observation, before its milestone; its story then ends without the quiz.
+  if (entryRule(event)?.quizAfterLandmarkBattle) return available;
   return getEncounterEntryAvailability({ ...state, activeTourism: null }, event);
 }
 
@@ -363,7 +355,7 @@ export function validateEncounterState(state: GameState): void {
   const event = getActiveEncounterDefinition(active);
   if (event.cityId !== state.currentCityId) fail();
   if (state.activeDate || state.activeTourism || state.activeEpilogue || state.activeBattle) fail();
-  if (active.returnTourism && (event.availability === "dormant" || active.returnTourism.landmarkId !== event.landmarkId ||
+  if (active.returnTourism && (active.returnTourism.landmarkId !== event.landmarkId ||
       !validObservationEncounterIds(active.returnTourism.landmarkId, active.returnTourism.encounterIds) ||
       (active.returnTourism.encounterIds && !active.returnTourism.encounterIds.includes(event.id)) ||
       !state.visitedLandmarkIds.includes(active.returnTourism.landmarkId))) fail();

@@ -8,7 +8,9 @@ import { dates, getCityContent, landmarks, stories } from "../src/content";
 import { encounters } from "../src/content/encounters";
 import { normalizeEncounterCatalog } from "../src/content/encounter-schemas";
 import { prepareContentFixture, storySourceFile } from "../src/content/test-fixtures";
-import { advanceEncounter, chooseEncounter, finishEncounter, startEncounter } from "../src/domain/encounter";
+import { advanceEncounter, chooseEncounter, finishEncounter } from "../src/domain/encounter";
+import { closeTourism } from "../src/domain/tourism";
+import { meetEncounter } from "../tests/fixtures/encounter-moment";
 import { advanceDate, chooseDate, finishDate, startDate, validateGameState } from "../src/domain/game";
 import { buildContent } from "./content-pipeline";
 
@@ -169,7 +171,7 @@ VAR heroine_name = ""
 
     // Ink order is deliberately different from the rules catalog. IDs, not
     // position or duplicated English text, must determine the price.
-    state = restore(startEncounter(state, paidEncounterId, () => 0));
+    state = restore(meetEncounter(state, paidEncounterId));
     while (state.activeEncounter && !state.activeEncounter.frame.choices.length && !state.activeEncounter.frame.ended)
       state = restore(advanceEncounter(state, state.revision));
     expect(state.activeEncounter?.frame.choices.map(({ text, optionId, translationJa }) => ({ text, optionId, translationJa }))).toEqual([
@@ -190,6 +192,9 @@ VAR heroine_name = ""
     state = restore(finishEncounter(state, state.revision));
     expect(state.completedEncounterIds).toContain(paidEncounterId);
     expect(state.travelBudget).toBe(initialBudget - 4);
+    // Both encounters returned to the Galleria's observation; leave it for free time.
+    expect(state.activeTourism?.landmarkId).toBe("galleria_vittorio_emanuele_ii");
+    state = restore(closeTourism(state, state.revision));
 
     const apTotal = (game: typeof state) => game.ap + game.pendingApRewards.reduce((total, reward) => total + reward.remainingAp, 0);
     const initialAp = apTotal(state);

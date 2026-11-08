@@ -5,7 +5,8 @@ import { getBattleAvailability, startBattle } from "./battle";
 import { clearCity, playBattleToResult } from "../dev/scenario-builders";
 import { departToNextCity, getNextCity } from "./city-travel";
 import { getEpisodeAvailability, leaveBattleResult, startEpisode } from "./chapter";
-import { advanceEncounter, chooseEncounter, encounterCanFinish, finishEncounter, proceedFromTourism, startEncounter } from "./encounter";
+import { advanceEncounter, chooseEncounter, encounterCanFinish, finishEncounter, proceedFromTourism } from "./encounter";
+import { meetEncounter } from "../../tests/fixtures/encounter-moment";
 import { startCityEpilogue } from "./epilogue";
 import { createGame, getDateAvailability, startDate, validateGameState, type GameState } from "./game";
 import { installTestCity } from "../dev/test-cities";
@@ -52,7 +53,7 @@ describe("two registered cities through the real game runtime", () => {
     const activeMilanTourism = openTourism(before, "duomo_milano");
     expect(activeMilanTourism.activeTourism).not.toBeNull();
     expect(departToNextCity(activeMilanTourism, activeMilanTourism.revision)).toBe(activeMilanTourism);
-    const activeMilanEncounter = startEncounter(before, "supper_pantomime", () => 0);
+    const activeMilanEncounter = meetEncounter(before, "supper_pantomime");
     expect(activeMilanEncounter.activeEncounter).not.toBeNull();
     expect(departToNextCity(activeMilanEncounter, activeMilanEncounter.revision)).toBe(activeMilanEncounter);
     const activeMilanEpilogue = startCityEpilogue(before, "milano", before.revision);

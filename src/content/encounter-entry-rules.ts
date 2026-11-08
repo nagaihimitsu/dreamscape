@@ -8,9 +8,10 @@ const ruleSchema = z.object({
   completedEpisodeId: id.optional(),
   completedStoryBattleId: id.optional(),
   /**
-   * A tourism encounter whose quiz waits for the landmark's battle: it can be
-   * met during the first observation (its story then ends without the quiz)
-   * and, once the battle was played, revisited from free time for the quiz.
+   * An encounter with a quiz that waits for the landmark's battle: it can be
+   * met during the first observation, before the rule's milestone (its story
+   * then ends without the quiz); an observation of the landmark after the
+   * battle was played goes on to the quiz.
    */
   quizAfterLandmarkBattle: z.literal(true).optional(),
 }).strict().refine((rule) => !!rule.completedEpisodeId !== !!rule.completedStoryBattleId,
@@ -30,7 +31,7 @@ export type EncounterEntryRules = z.infer<typeof encounterEntryRulesSchema>;
 /** Entry metadata cannot attach an event to another location or unknown milestone. */
 export function validateEncounterEntryRules(
   rules: EncounterEntryRules,
-  encounters: readonly { id: string; landmarkId: string; storyId: string; availability?: string; quiz?: unknown }[],
+  encounters: readonly { id: string; landmarkId: string; storyId: string; quiz?: unknown }[],
   journey: { episodes: readonly { id: string }[]; storyBattles: readonly { battleId: string }[] },
 ): void {
   for (const rule of rules.entries) {
@@ -39,8 +40,8 @@ export function validateEncounterEntryRules(
       throw new Error(`Unknown or mismatched encounter entry: ${rule.encounterId}/${rule.landmarkId}`);
     if (rule.storyId && event.storyId !== rule.storyId)
       throw new Error(`Mismatched encounter entry story: ${rule.encounterId}/${rule.storyId}`);
-    if (rule.quizAfterLandmarkBattle && (event.availability !== "tourism" || !event.quiz))
-      throw new Error(`A quiz after the landmark battle needs a tourism encounter with a quiz: ${rule.encounterId}`);
+    if (rule.quizAfterLandmarkBattle && !event.quiz)
+      throw new Error(`A quiz after the landmark battle needs an encounter with a quiz: ${rule.encounterId}`);
     if (rule.completedEpisodeId && !journey.episodes.some((item) => item.id === rule.completedEpisodeId))
       throw new Error(`Unknown encounter entry episode: ${rule.encounterId}/${rule.completedEpisodeId}`);
     if (rule.completedStoryBattleId && !journey.storyBattles.some((item) => item.battleId === rule.completedStoryBattleId))

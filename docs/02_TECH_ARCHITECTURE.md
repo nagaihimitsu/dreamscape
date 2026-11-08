@@ -230,7 +230,8 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 - 共通の既定背景はミラノ由来ではなくなった（上の「既定背景とタイトルの絵」）。
 - 都市の会話の初期背景は、その都市の `travel/<cityId>-settings.json` の `storyBackgroundId`（ミラノはミラノ編の背景 `milano_cafe`）。未指定の都市は現在地（なければ宿）の背景を使う。
 - 所持品のアイコンは道中交流カタログの品物の `iconPath`（未指定なら共通の `assets/items/item.svg`）。
-- 観光地のバトル後に自由時間から改めてクイズに挑める道中交流（ミラノのガッレリアの願掛け）は、`encounters/entry-rules.json` の `quizAfterLandmarkBattle` で指定する。
+- 道中交流は、その観光地を観察しているときにだけ始まる（入場ルールを満たす交流が、観察を進めたときにカタログの順に始まり、終わると観察に戻る）。自由時間から交流を始める道はない。交流のカタログの `availability`（`tourism`・`dormant`）はセーブ版 v14 でなくなり、書くと `content:build` が止まる（`Unrecognized key`）。使わない交流はカタログから消す。
+- 最初の観察で会え、クイズはその観光地のバトルの後の観察で出す道中交流（ミラノのガッレリアの願掛け）は、`encounters/entry-rules.json` の `quizAfterLandmarkBattle` で指定する（クイズのある交流だけ）。
 - Debugの「仮の場面」は、ミラノ固定ではなく役割で選んだ都市を元にする（上の「Debugの「仮の場面」」の項）。
 
 ## レイヤー間の依存
