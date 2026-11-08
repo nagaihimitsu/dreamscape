@@ -23,9 +23,9 @@ const test = base.extend<{ normalStorageUnchanged: void }>({
 // Long flows (docs/10「不安定さと時間の決まり」): every test here loads the app twice on the
 // development server and plays a scene, where each press of a control is followed by the game's
 // 350-ms guard. On CI they take 6–22 s; on 2026-11-08 a runner about four times slower than usual
-// (its dev server started in 93 s instead of 23 s) ran 8 of 15 out of the default 30 s while they
-// were still progressing (an awaited choice became enabled just as time ran out; a 9th failed in
-// page.clock.pauseAt, now ops.holdClock).
+// (its dev server started in 93 s instead of 23 s) ran 9 of 15 out of the default 30 s (in one of
+// them the page.clock.pauseAt still pending then, now ops.holdClock, also failed with "Cannot
+// fast-forward to the past").
 test.describe.configure({ timeout: 120_000 });
 
 const settings = (input: Pick<DebugSettings, "cityId" | "scene" | "id"> & Partial<DebugSettings>): DebugSettings =>
@@ -145,7 +145,7 @@ test("a Debug launch URL opens its scene, offers the same URL and explains a URL
   const url = debugQueryString({ dataMode: "real", cityId: "milano", scene: "date", target: "milano_brera_date_01",
     progress: "completed", ap: 9, affection: 0, trust: 0, spark: 0, roll: "negative" });
   await page.goto(`/${url}`);
-  await expect(page.getByTestId("debug-session")).toBeVisible();
+  await ops.debugShown(page.getByTestId("debug-session"));
   await expect(page.getByTestId("romance-scene")).toBeVisible();
   // The development-only, read-only hook shows Debug's own game (its date spent AP from 9).
   const debug = await page.evaluate((name) => {
@@ -160,9 +160,11 @@ test("a Debug launch URL opens its scene, offers the same URL and explains a URL
   await expect(page.getByTestId("debug-url")).toHaveValue(new URL(url, page.url()).href);
   // A URL that does not fit the content says why and links back to the settings screen.
   await page.goto("/?debug&city=milano&scene=battle&target=gt_delhi_main_red_fort_battle");
+  await ops.debugShown(page.getByRole("alert"));
   await expect(page.getByRole("alert")).toHaveText("「gt_delhi_main_red_fort_battle」はミラノの「バトル」にありません。");
+  // The link loads the settings screen as a new page, and Debug loads again after it.
   await page.getByRole("link", { name: "場面の確認（設定画面）へ" }).click();
-  await expect(page.getByTestId("debug-panel")).toBeVisible();
+  await ops.debugShown(page.getByTestId("debug-panel"));
 });
 
 type TapScene = "encounter" | "epilogue" | "battle" | "rebuttal" | "tourism";

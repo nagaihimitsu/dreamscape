@@ -23,7 +23,7 @@ function specTests(text: string): { title: string; tiers: string[] }[] {
 }
 
 /** Helpers that need the development server's modules (Debug, scene builders, in-page imports). */
-const devServerOnly = /placeSave|devModules|openDebugScene|debugGame|import\(/u;
+const devServerOnly = /placeSave|devModules|openDebugScene|debugShown|debugGame|import\(/u;
 /** …and Debug URLs: shortcuts around the real flow. */
 const shortcuts = new RegExp(`${devServerOnly.source}|\\?debug`, "u");
 

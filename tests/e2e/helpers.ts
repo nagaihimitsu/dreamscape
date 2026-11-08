@@ -446,15 +446,21 @@ export const ops = {
     await expect(restore).toBeVisible();
     return restore;
   },
+  /**
+   * After a navigation into Debug (a launch URL, or a link to its settings screen): what Debug
+   * shows first. Debug is loaded only after the page's load event (React.lazy in src/main.tsx),
+   * module by module from the development server, and then builds its game: about 1 s here,
+   * 1.4–1.7 s under 6× CPU throttling, and more than the 5 s an assertion waits by default with
+   * four throttled browsers at once. It is part of opening the page, so it gets a page load's time.
+   */
+  async debugShown(shown: Locator) {
+    await expect(shown).toBeVisible({ timeout: 30_000 });
+  },
   /** Lane 3 (docs/10): open a scene through its Debug launch URL; returns the URL. */
   async openDebugScene(page: Page, settings: DebugSettings, dataMode: DebugDataMode = "real") {
     const url = debugQueryString(settingsQuery(dataMode, settings));
     await page.goto(`/${url}`);
-    // Debug is loaded only after the page's load event (React.lazy in src/main.tsx), module by
-    // module from the development server, and then builds its game: about 1 s here, 1.4–1.7 s
-    // under 6× CPU throttling, and more than the 5 s an assertion waits by default with four
-    // throttled browsers at once. It is part of opening the page, so it gets a page load's time.
-    await expect(page.getByTestId("debug-session")).toBeVisible({ timeout: 30_000 });
+    await ops.debugShown(page.getByTestId("debug-session"));
     return url;
   },
   async backToDebugSettings(page: Page) {
