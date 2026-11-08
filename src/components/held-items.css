@@ -1,9 +1,10 @@
 /* The held items' button sits in the header's row of pressables (journey-hud.css
    gives it the same frame as the other tools); its detail hangs from the header. */
 .held-items { flex: none; }
+/* At least 44×44; the bag grows with its word when the text is enlarged. */
 .held-item-button {
-  width: 44px;
-  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   padding: 0;
   display: inline-flex;
   flex-direction: column;
@@ -22,18 +23,19 @@
 }
 .held-items-bag-icon { position: relative; display: block; line-height: 0; }
 .held-items-bag-icon .icon { width: 20px; height: 20px; }
+/* The count's badge scales with its own text (enlarged text keeps it whole). */
 .held-items-count {
   position: absolute;
-  top: -4px;
-  right: -9px;
-  min-width: 15px;
-  padding: 0 3px;
+  top: -0.35em;
+  right: -0.8em;
+  min-width: 1.4em;
+  padding: 0 0.25em;
   border-radius: 999px;
   background: var(--ds-parchment);
   color: var(--ds-ink);
   font-family: Georgia, serif;
   font-size: 11px;
-  line-height: 15px;
+  line-height: 1.4;
   text-align: center;
 }
 .held-items-word { font-size: 11px; font-weight: 600; line-height: 1; white-space: nowrap; }
@@ -50,7 +52,7 @@
   background: var(--ds-parchment);
   border: 1px solid var(--ds-parchment-line);
   border-radius: 16px;
-  box-shadow: 0 2px 10px rgba(40, 30, 20, 0.18);
+  box-shadow: var(--ds-card-shadow);
   font-family: "Noto Sans JP", sans-serif;
   font-size: 13px;
   line-height: 1.55;
