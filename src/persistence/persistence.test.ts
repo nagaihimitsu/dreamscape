@@ -306,8 +306,8 @@ describe("save format v16 (docs/07: one format per version, no migration)", () =
     expect(() => validateGameState(moment({ landmarkId: "galleria_vittorio_emanuele_ii" }))).toThrow(/一致しません。/u);
     expect(() => validateGameState(moment({ at: "left:observe" }))).toThrow("道中交流の時点の記録が一致しません。");
     // The record's shape is strict: refused by the schema before the moment check.
-    expect(() => validateGameState(moment({ trip: { eventId: "milano_duomo_episode" } })))
-      .toThrow(zodIssues({ code: "unrecognized_keys", path: ["occasion"], keys: ["trip"] }));
+    expect(() => validateGameState(moment({ detour: { eventId: "milano_duomo_episode" } })))
+      .toThrow(zodIssues({ code: "unrecognized_keys", path: ["occasion"], keys: ["detour"] }));
   });
 
   it("saves and resumes the sample tower's encounters before and after its main part when the event, battle and encounter match", () => {

@@ -131,8 +131,11 @@ export function walkScene(input: SceneWalkInput): number {
         if (!option) return true;
         if (option.requires?.some((condition) => !requiredLeaves(condition).length || requiredLeaves(condition).some((leaf) => !guaranteed(leaf)))) return false;
         for (const item of [option.give?.item, option.use].filter((value): value is string => !!value)) if (!itemGuaranteed(item)) return false;
-        if ((option.money ?? 0) < 0 && -(option.money ?? 0) > moneyFloor - reserveMoney) return false;
-        if ((option.ap ?? 0) < 0 && -(option.ap ?? 0) > apFloor - reserveAp) return false;
+        // The head's # when: money/ap guarantees that much as the scene starts; once a then: is decided on the path (the head's or a
+        // choice's), or by this choice, what the then: keeps back may take it (2.3): only a choice that spends nothing is sure then.
+        const thenKeeps = path.thens > 0 || !!option.then;
+        if ((option.money ?? 0) < 0 && -(option.money ?? 0) > (thenKeeps ? 0 : moneyFloor) - reserveMoney) return false;
+        if ((option.ap ?? 0) < 0 && -(option.ap ?? 0) > (thenKeeps ? 0 : apFloor) - reserveAp) return false;
         if (option.then && "move" in option.then && option.then.by && option.then.by !== "walk") return false;
         return true;
       };

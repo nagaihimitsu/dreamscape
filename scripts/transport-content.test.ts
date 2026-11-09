@@ -22,8 +22,9 @@ describe("transport checks in content:build", () => {
   }, 60_000);
 
   it("refuses an undeclared mode, a missing offer, a third mode and a missing ledger", () => {
+    // (The first bicycle ride's scene reads the mode in its condition, stage 4: that check names it first.)
     expect(() => validateContent(edit({ "manifest.json": (data) => ({ ...data, transportModes: [] }) })))
-      .toThrow('乗り物 "rental_bicycle" は authoring/templates/sample_trip/manifest.json の transportModes に宣言されていません');
+      .toThrow(/rental_bicycle.*(transportModes|declare it)/u);
     expect(() => validateContent(edit({ "travel/mihon-settings.json": ({ rentals: _rentals, ...data }) => data })))
       .toThrow('借りる乗り物 "rental_bicycle" の経路がありますが');
     const mode = (id: string) => ({ id, nameJa: "乗り物", movingJa: "乗り物で移動中", kind: "car" });

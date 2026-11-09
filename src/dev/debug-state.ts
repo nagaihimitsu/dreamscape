@@ -47,7 +47,8 @@ export function debugTargets(cityId: string): Record<DebugScene, DebugTarget[]> 
   return {
     tourism: landmarks.filter((item) => item.cityId === cityId).map((item) => ({ id: item.id, name: item.nameJa })),
     battle: battles.filter((item) => battleCityId(item.id) === cityId).map((item) => ({ id: item.id, name: item.titleJa })),
-    encounter: encounters.encounters.filter((item) => item.cityId === cityId).map(encounterTarget),
+    // A landmark's visit's scenes (a scene of another moment, stage 4, runs when its moment opens in play: the date, the hotel…).
+    encounter: encounters.encounters.filter((item) => item.cityId === cityId && item.landmarkId).map(encounterTarget),
     date: dates.filter((item) => item.kind === "normal" && travel.events.some((event) => event.id === item.id)).map((item) => ({ id: item.id, name: item.titleJa })),
     epilogue: episodes.filter((item) => item.cityId === cityId && item.kind === "city_finale" && item.epilogueStoryId)
       .map((item) => ({ id: item.id, name: `${city.nameJa}のエピローグ` })),

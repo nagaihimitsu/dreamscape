@@ -157,7 +157,7 @@ export function validateEncounterContent({
   const itemSources: string[] = [];
   for (const event of catalog.encounters) {
     if (event.cityId !== cityId) throw new Error(`Unknown encounter city: ${event.id}/${event.cityId}`);
-    if (!landmarks.some((landmark) => landmark.id === event.landmarkId && landmark.cityId === event.cityId))
+    if (event.landmarkId !== undefined && !landmarks.some((landmark) => landmark.id === event.landmarkId && landmark.cityId === event.cityId))
       throw new Error(`Unknown encounter landmark: ${event.id}/${event.landmarkId}`);
     // Rev. 5: a repeated encounter may have effects (listed by the balance report), and a 「また今度」 choice may cost money.
     unique(event.options.map((option) => option.id), `encounter option ID: ${event.id}`);

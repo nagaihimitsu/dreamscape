@@ -8,9 +8,10 @@ import { storyFileOf } from "../content/story-address";
  * - `before`: negative priorities, from the map's departure to the landmark until its main part opens;
  * - `observe`: while observing (no priority, or `after observe`), returning to the observation;
  * - `afterGuide` / `afterBattle` (stage 3b): right after that main part, when it ran in the visit;
- * - `after`: positive priorities, after the visit's main group.
+ * - `after`: positive priorities, after the visit's main group;
+ * - `notAtVisit`: after a date or a logo (stage 4), never at a visit.
  */
-export type VisitSlot = "before" | "afterGuide" | "observe" | "afterBattle" | "after";
+export type VisitSlot = "before" | "afterGuide" | "observe" | "afterBattle" | "after" | "notAtVisit";
 
 /**
  * What the order needs of an encounter: its landmark, its story (address; the same priority runs in
@@ -21,6 +22,8 @@ export type MomentEntry = { encounterId: string; landmarkId: string; storyId: st
 export function visitSlot(priority: VisitPriority | undefined): VisitSlot {
   if (priority === "after guide") return "afterGuide";
   if (priority === "after battle") return "afterBattle";
+  // After a date or an arrival's logo (stage 4): a `place` scene of that kind never runs at a landmark's visit.
+  if (priority === "after date" || priority === "after logo") return "notAtVisit";
   return typeof priority !== "number" ? "observe" : priority < 0 ? "before" : "after";
 }
 

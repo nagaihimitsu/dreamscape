@@ -27,6 +27,31 @@ export const relationshipDeltaSchema = z.object(Object.fromEntries(RELATIONSHIP_
   Record<(typeof RELATIONSHIP_AXES)[number], z.ZodOptional<typeof signed>>).strict();
 export type RelationshipDelta = z.infer<typeof relationshipDeltaSchema>;
 
+/**
+ * A moment of `# at:` (2.3). Stage 3: `visit <landmark>`, `visit any` (any landmark of the scene's city) and
+ * `place <place>` (the visits of the landmarks at that transport place, and from stage 4 its dates and finale too).
+ * Stage 4: `date <date>`, `finale <city>`, `epilogue <city>`, `depart <city>` (opens only when the city has a next
+ * city), `arrive <city>` (the first city's is the opening), `hotel` (`any`: the scene's city's hotel) or `hotel <place>`,
+ * `trip <mode>` (`walk` for walking; `from <place>`, `to <place>` narrow it) and `ticket <place>` (the ticket counter
+ * of an admission there).
+ */
+export const sceneAtSchema = z.union([
+  z.object({ visit: id }).strict(),
+  z.object({ place: id }).strict(),
+  z.object({ date: id }).strict(),
+  z.object({ finale: id }).strict(),
+  z.object({ epilogue: id }).strict(),
+  z.object({ depart: id }).strict(),
+  z.object({ arrive: id }).strict(),
+  z.object({ hotel: id }).strict(),
+  z.object({ trip: id, from: id.optional(), to: id.optional() }).strict(),
+  z.object({ ticket: id }).strict(),
+]);
+export type SceneAt = z.infer<typeof sceneAtSchema>;
+/** The main parts an inserted scene may follow (`# priority: after <part>`): a visit's guide, observation and battle, a finale's battle, a date, an arrival's logo. */
+export const AFTER_PARTS = ["guide", "observe", "battle", "date", "logo"] as const;
+export type AfterPart = (typeof AFTER_PARTS)[number];
+
 /** `# then: move <place> [by <mode>]` / `# then: epilogue`: where the game goes right after the scene ends (stage 3b). */
 export const sceneThenSchema = z.union([
   z.object({ move: id, by: id.optional() }).strict(),
@@ -92,14 +117,10 @@ export const sceneEntrySchema = z.object({
   /** Where the scene starts: its story file and, in a place file, its knot. */
   story: z.object({ storyId: z.string().regex(STORY_FILE_PATTERN), knot: id.optional() }).strict(),
   main: sceneMainSchema.optional(),
-  /**
-   * `# at:` (stage 3: the visits of landmarks): `visit <landmark>`, `visit any` (any landmark of the
-   * scene's city) or `place <place>` (the visit of the landmarks at that transport place; its date and
-   * finale moments come with stage 4). Several are allowed: the scene runs at any of them.
-   */
-  at: z.array(z.union([z.object({ visit: id }).strict(), z.object({ place: id }).strict()])),
-  /** `# priority:` (an inserted scene): a whole number, or after one main part of the visit. */
-  priority: z.union([signed, z.literal("after guide"), z.literal("after observe"), z.literal("after battle")]).optional(),
+  /** `# at:` (2.3): the moments the scene runs at (several are allowed: it runs at any of them). */
+  at: z.array(sceneAtSchema),
+  /** `# priority:` (an inserted scene): a whole number, or after one main part of its moment. */
+  priority: z.union([signed, z.literal("after guide"), z.literal("after observe"), z.literal("after battle"), z.literal("after date"), z.literal("after logo")]).optional(),
   /** The scene's place in its file (the same priority runs in written order, then by file name). */
   order: z.number().int().nonnegative(),
   repeat: z.enum(["once", "always"]),

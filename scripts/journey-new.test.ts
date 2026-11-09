@@ -225,8 +225,13 @@ describe("journey:new in a copy of the repository", () => {
       .toEqual([[k, "preparing", "京都の旅"], [n, "preparing", "奈良の旅"]]);
     expect(result.journeyContents.find((journey) => journey.id === n)).toMatchObject({ status: "preparing" });
     // Every ID follows the new prefix and every file is used: no warning names the new journeys (but the sample's
-    // own example of a 「また今度」 that no later moment brings back, copied with its two encounters).
-    expect(result.warnings.filter((warning) => warning.kind !== "later-never-again" &&
+    // own examples, copied with them: a 「また今度」 that no later moment brings back, the city end's two
+    // `then: epilogue` notes, which say on purpose that the rest of that moment does not run, and the finale's -1
+    // of two files, which run in file name order on purpose).
+    const sampleExample = (warning: { kind: string; message: string }) => warning.kind === "later-never-again" ||
+      (warning.kind === "scene-tag" && warning.message.includes("_city_end.ink") && warning.message.includes("then: ends the moment")) ||
+      (warning.kind === "same-priority" && warning.message.includes("_finale_sweets") && warning.message.includes("_bookmark_stall"));
+    expect(result.warnings.filter((warning) => !sampleExample(warning) &&
       [k, kc, kp, n].some((name) => warning.message.includes(name)))).toEqual([]);
   });
 

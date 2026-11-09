@@ -26,7 +26,7 @@ const milanLandmarks = new Set(tourismCatalogSchema.parse(tourismData).landmarks
 const catalogData = {
   ...generatedCatalog,
   items: generatedCatalog.items.filter((item) => item.cityId === "milano"),
-  encounters: generatedCatalog.encounters.filter((event) => milanLandmarks.has(event.landmarkId)),
+  encounters: generatedCatalog.encounters.filter((event) => milanLandmarks.has(event.landmarkId ?? "")),
 } as EncounterCatalog;
 const catalog = encounterCatalogSchema.parse(catalogData);
 const paths = catalog.encounters.flatMap((event) => [event.storyId, ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : [])]);

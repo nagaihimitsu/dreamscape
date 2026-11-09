@@ -1,13 +1,13 @@
 import { encounters } from "../content/encounters";
-import { responseProfiles, scenes } from "../content";
-import type { SceneDone, SceneEntry, SceneOption } from "../content/scene-schemas";
+import { balance, responseProfiles, scenes } from "../content";
+import { INSERTED_KINDS, type SceneDone, type SceneEntry, type SceneOption } from "../content/scene-schemas";
 import { responseProfileSchema } from "../content/schemas";
 import { secureRomanceRoll } from "../random/romance-source";
 import { meets } from "./conditions";
 import { itemUsableIn } from "./item-cities";
 import type { GameState } from "./game-state-schema";
 import { usableAp, usableMoney } from "./reservations";
-import { decideThen, thenProblem } from "./occasion-hooks";
+import { decideThen, thenPlanOf } from "./occasion-hooks";
 import { earnSceneTagAp, settlePendingAp } from "./rewards";
 import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
 
@@ -29,6 +29,11 @@ export const sceneOption = (scene: SceneEntry | undefined, optionId: string | un
 
 /** What a scene keeps back while it runs: its own `# on_done:` that spends (paid when it is done). */
 export const doneReserve = (done: SceneDone | undefined) => ({ money: Math.max(0, -(done?.money ?? 0)), ap: Math.max(0, -(done?.ap ?? 0)) });
+/** An inserted place scene's reserve (a main part's first payment is the occasion's: reservations.ts runningMainPayment). */
+export const insertedDoneReserve = (sceneId: string) => {
+  const scene = placeSceneById(sceneId);
+  return doneReserve(scene && INSERTED_KINDS.includes(scene.kind) ? scene.done : undefined);
+};
 
 export type ChoiceDisplay =
   /** A `# requires:`, `# give:` or `# use:` that does not hold: not shown at all (no reason; decision 43). */
@@ -50,13 +55,22 @@ export function choiceDisplay(state: Readonly<GameState>, option: SceneOption | 
   if (option.requires?.some((condition) => !meets(state, condition))) return { show: "hidden" };
   for (const item of [option.give?.item, option.use]) if (item && !holds(state, item)) return { show: "hidden" };
   const money = -(option.money ?? 0);
+  const ap = -(option.ap ?? 0);
+  // A choice that decides a # then: (2.3, 4.4) is read as it decides it: after its own tags (applyChoiceEffects decides it then),
+  // with the scene's # on_done: still to pay as it ends (unless 「また今度」), against what the then: keeps back where it goes
+  // (today's fare home and the moment's other parts are not kept back then). Greyed when that cannot be paid.
+  if (option.then && state.occasion && !state.occasion.then) {
+    if (money > 0 && state.travelBudget < money) return { show: "grey", reason: "旅行予算が足りません。" };
+    if (ap > 0 && state.ap < ap) return { show: "grey", reason: `APが足りません（AP ${ap}）。` };
+    const after = applyChoiceTags(state as GameState, option, (current, gain) => ({ ...current, ap: current.ap + Math.min(gain, Math.max(0, balance.apCap - current.ap)) }));
+    const plan = thenPlanOf(after, option.then, option.later ? undefined : reserve);
+    if (plan.ok === false) return { show: "grey", reason: plan.reason };
+    if (plan.ok === true) return { show: "open" };
+    // (A then: that does nothing now, an epilogue read already: the choice is read as any other.)
+  }
   if (money > 0 && usableMoney(state) - reserve.money < money)
     return { show: "grey", reason: state.travelBudget - reserve.money >= money ? "帰りの交通費を確保しているため、今は使えません。" : "旅行予算が足りません。" };
-  const ap = -(option.ap ?? 0);
   if (ap > 0 && usableAp(state) - reserve.ap < ap) return { show: "grey", reason: `APが足りません（AP ${ap}）。` };
-  // A # then: whose move (or the epilogue's payment) cannot be paid greys out (2.3).
-  const problem = option.then && state.occasion ? thenProblem(state, option.then) : undefined;
-  if (problem) return { show: "grey", reason: problem };
   return { show: "open" };
 }
 
@@ -89,15 +103,12 @@ const addFlags = (state: GameState, flags: readonly string[] | undefined): GameS
 };
 
 /**
- * Apply a choice's tags, before the choice is passed to Ink: money, AP (giving by the rule
- * "<scene>__<option>", stored as "…@<revision>"), relationship, flags, memories, the item given or
- * used (recorded in itemUses with the scene and option), and the reaction profile (one roll
- * drawn now; decision 39). `revision`: the revision the action saves.
+ * A choice's own tags before its then: and its reaction profile: money, AP (`earn` gives a gain), relationship, flags, memories,
+ * the item given or used. The choice's display reads the then: on this state too, so it shows as the choice decides it.
  */
-export function applyChoiceEffects(state: GameState, sceneId: string, option: SceneOption, revision: number,
-  nextRoll: () => number = secureRomanceRoll): { state: GameState; profile?: ProfileResult } {
+function applyChoiceTags(state: GameState, option: SceneOption, earn: (state: GameState, gain: number) => GameState, sceneId = ""): GameState {
   let next = applyMoney(state, option.money);
-  next = applyAp(next, option.ap, `${sceneId}__${option.id}`, revision);
+  next = (option.ap ?? 0) > 0 ? earn(next, option.ap!) : applyAp(next, option.ap, "", 0);
   next = addRelationship(next, option.rel);
   next = addFlags(next, option.set);
   const memories = (option.memory ?? []).filter((id) => !next.memories.includes(id));
@@ -107,8 +118,21 @@ export function applyChoiceEffects(state: GameState, sceneId: string, option: Sc
     if (next.inventory[item] !== "held") throw new Error("必要な品物を持っていません。");
     next = { ...next, inventory: { ...next.inventory, [item]: status }, itemUses: { ...next.itemUses, [item]: { encounterId: sceneId, optionId: option.id } } };
   }
-  // A # then: is decided (its move paid) with the choice; it runs when the scene ends (stage 3b, 4.1).
-  if (option.then) next = decideThen(next, option.then, sceneId);
+  return next;
+}
+
+/**
+ * Apply a choice's tags, before the choice is passed to Ink: money, AP (giving by the rule
+ * "<scene>__<option>", stored as "…@<revision>"), relationship, flags, memories, the item given or
+ * used (recorded in itemUses with the scene and option), and the reaction profile (one roll
+ * drawn now; decision 39). `revision`: the revision the action saves.
+ */
+export function applyChoiceEffects(state: GameState, sceneId: string, option: SceneOption, revision: number,
+  nextRoll: () => number = secureRomanceRoll): { state: GameState; profile?: ProfileResult } {
+  let next = applyChoiceTags(state, option, (current) => earnSceneTagAp(current, `${sceneId}__${option.id}`, revision), sceneId);
+  // A # then: is decided (its move paid) with the choice; it runs when the scene ends (stage 3b, 4.1), after an inserted
+  // scene's # on_done: is paid (unless 「また今度」).
+  if (option.then) next = decideThen(next, option.then, sceneId, option.later ? undefined : insertedDoneReserve(sceneId));
   if (!option.profile) return { state: next };
   const found = responseProfiles.find((profile) => profile.id === option.profile);
   if (!found) throw new Error("交流のリアクション設定が見つかりません。");

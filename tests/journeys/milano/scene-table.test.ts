@@ -34,7 +34,7 @@ describe("Milan's scene list equals its catalogs", () => {
   });
 
   it("orders each landmark's visit the same from the list as the game does from the catalogs", () => {
-    for (const landmarkId of [...new Set(milan.map((event) => event.landmarkId))])
+    for (const landmarkId of [...new Set(milan.map((event) => event.landmarkId!))])
       for (const slot of ["before", "observe", "after"] as const) {
         const fromList = visitOrder(scenes.filter((scene) => scene.cityId === "milano").map((scene) => ({
           encounterId: scene.id, landmarkId: "visit" in scene.at[0] ? scene.at[0].visit : "", storyId: scene.story.storyId,

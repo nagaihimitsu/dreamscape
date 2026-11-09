@@ -153,11 +153,18 @@ test("the sample journey plays from a new journey through its city finale and ep
   // stall comes first, before the visit's main part (its head tags: priority -1): the
   // bookmark is received; then the guide opens.
   if (rental) {
-    // The first press selects the place; once armed (a timer of the page's clock), the clock is held and the bicycle chosen.
+    // The first press selects the place; once armed (a timer of the page's clock), the bicycle is chosen.
     const row = await ops.selectDestination(page, route.episode.placeId);
     await expect(row).toHaveAttribute("data-armed", "true");
-    await ops.holdClock(page);
+    const hotel = (await readSave(page, JOURNEY)).travel.currentPlaceId;
     await page.getByTestId(`travel-choices-${route.episode.placeId}`).getByTestId(new RegExp(`^travel-route-.+-${rental.mode.id}$`, "u")).click();
+    // The first ride's scene (stage 4: the trip's moment) comes at the hotel, before the party moves. Its last line ends it
+    // with the clock held: the move follows in that action, and its transition plays from the occasion's mark.
+    await expect(page.getByTestId("encounter-screen")).toBeVisible();
+    expect((await readSave(page, JOURNEY)).travel).toMatchObject({ currentPlaceId: hotel, rideCounts: {} });
+    await playUntil(page, (state) => !!state.activeEncounter?.frame.ended && !state.activeEncounter.frame.choices.length, { source, pick });
+    await ops.holdClock(page);
+    await page.getByTestId("encounter-advance").click();
   } else await goToPlace(page, route, route.episode.placeId);
   if (rental) {
     const transition = page.getByTestId("travel-transition");
@@ -170,7 +177,8 @@ test("the sample journey plays from a new journey through its city finale and ep
   }
   await expect(page.getByTestId("encounter-screen")).toBeVisible();
   const stall = await playUntil(page, (state) => !state.activeEncounter, { source, pick });
-  expect(stall.completedEncounterIds).toEqual([route.encounterIds[0]]);
+  // (The first ride's scene, at no landmark, is done too when the bicycle was ridden.)
+  expect(stall.completedEncounterIds.filter((id) => route.encounterIds.includes(id))).toEqual([route.encounterIds[0]]);
   for (const itemId of route.itemIds) expect(stall.inventory[itemId], itemId).toBe("held");
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   await expect(page.getByRole("dialog")).toHaveCount(0);
@@ -192,14 +200,18 @@ test("the sample journey plays from a new journey through its city finale and ep
   await page.getByRole("button", { name: "自由時間へ進む", exact: true }).click();
   await expect(page.getByTestId("encounter-screen")).toBeVisible();
   const met = await playUntil(page, (state) => !state.activeEncounter, { source, pick });
-  expect([...met.completedEncounterIds].sort()).toEqual([...route.encounterIds].sort());
+  expect(met.completedEncounterIds.filter((id) => route.encounterIds.includes(id)).sort()).toEqual([...route.encounterIds].sort());
   for (const itemId of route.itemIds) expect(met.inventory[itemId], itemId).toBe("gifted");
   expect(met.ap).toBe(result.ap - 1);
   await expect(menu).toBeVisible();
   await expect(page.getByLabel(`残り${met.ap}AP`)).toBeVisible();
 
-  // 3. The date: its AP is spent once when it starts, and it ends on the map (docs/07 acceptance 3, 4).
+  // 3. The date: by day the bench painter comes first (stage 4: the date's moment); the date's AP is kept back until the
+  // date starts, then spent once, and the date ends on the map (docs/07 acceptance 3, 4).
   await goToPlace(page, route, route.date.placeId);
+  await expect(page.getByTestId("encounter-screen")).toBeVisible();
+  expect((await readSave(page, JOURNEY)).ap).toBe(met.ap);
+  await playUntil(page, (state) => !state.activeEncounter, { source, pick });
   await expect(page.getByTestId("romance-scene")).toBeVisible();
   const dating = await readSave(page, JOURNEY);
   expect(dating.activeDate?.dateId).toBe(route.date.id);
@@ -227,15 +239,26 @@ test("the sample journey plays from a new journey through its city finale and ep
     await expect(menu).toBeVisible();
   }
 
-  // 5. The city finale clears the city (its clear reward is in the receipt, paid once).
+  // 5. The city finale clears the city (its clear reward is in the receipt, paid once). Before it, the sugar sweets
+  // (stage 4: the finale's -1, paid as they end).
+  const beforeFinale = await readSave(page, JOURNEY);
   await goToPlace(page, route, route.finale.placeId);
+  await expect(page.getByTestId("encounter-screen")).toBeVisible();
+  await playUntil(page, (state) => !state.activeEncounter, { source, pick });
+  expect((await readSave(page, JOURNEY)).travelBudget).toBe(beforeFinale.travelBudget - 20);
   const finale = await playBattleToResult(page, pick);
   expect(finale.completedCityIds).toEqual([route.city.id]);
-  await ops.toEpilogue(page);
+  // The city writes then: epilogue (3.9 (d)): no 「エピローグへ」 on the result; free time leads to the square after the
+  // finale, whose 「今日は、ここまでにしよう」 (the first choice) starts the epilogue (3.4 I), after Lili's farewell.
+  await expect(page.getByRole("button", { name: "エピローグへ進む", exact: true })).toHaveCount(0);
+  await page.getByRole("button", { name: /自由時間へ/u }).click();
+  await expect(page.getByTestId("encounter-screen")).toBeVisible();
+  await playUntil(page, (state) => !!state.activeEpilogue, { source, pick });
+  await expect(page.getByTestId("city-epilogue-screen")).toBeVisible();
 
   // 6. The epilogue, then the end of the journey: its only city is cleared and its
   // ending read, there is no next city to leave for, and the travellers stay in free time.
-  const ended = await playUntil(page, (state) => state.viewedEpilogueCityIds.includes(route.city.id) && !state.activeEpilogue, { source, pick });
+  const ended = await playUntil(page, (state) => state.viewedEpilogueCityIds.includes(route.city.id) && !state.activeEpilogue && !state.occasion, { source, pick });
   await expect(menu).toBeVisible();
   expectNoActiveScene(ended);
   expect(ended).toMatchObject({ currentCityId: route.city.id, completedCityIds: [route.city.id], ap: finale.ap });

@@ -3,7 +3,7 @@ import { battles, dates, episodes, getCityContent } from "../content";
 import { getBattleAvailability, startBattle } from "./battle";
 import { getEpisodeAvailability, isEpisodeUnlocked, isStoryBattleUnlocked } from "./chapter";
 import { getDateAvailability, isDateUnlockedForTravel, isEventVisible, type GameState } from "./game";
-import { openEventOccasion } from "./occasion";
+import { eventPrefix, openEventOccasion, openHotel } from "./occasion";
 import { canReturnByDayEnd, DAY_END, getGameWeekday, planOvernight, planTravelEvent } from "./travel";
 import { compareRouteCost, findTravelHomeRoutes, type HomeRoute } from "./travel-routes";
 import type { TravelEvent, TravelRoute } from "../content/travel-schemas";
@@ -96,7 +96,8 @@ export function getTravelSleepOptions(state: GameState) {
   return routes.map((route) => ({ route, plan: planOvernight(current, route, travelSettings.lodgingCost, allowLateReturn) }));
 }
 
-const reasonJa: Record<string, string> = {
+/** Why a departure cannot be made (the map's reasons; a `# then: move` reads the same). */
+export const reasonJa: Record<string, string> = {
   invalid: "旅行の状態を確認できません。", closed: "到着する時間には、この出来事を始められません。",
   closed_day: "今日は休館日です。",
   time: "今日はホテルへの帰路を含めると時間が足りません。", budget: "移動や帰りのための予算が足りません。",
@@ -144,8 +145,12 @@ export function beginTravelEvent(state: GameState, eventId: string, mode: Travel
   // A ride by vehicle counts once the trip changes place (walking and starting an event here do not).
   const rides = mode !== WALK_MODE_ID && event.placeId !== state.travel.currentPlaceId
     ? { ...state.travel.rideCounts, [mode]: (state.travel.rideCounts[mode] ?? 0) + 1 } : state.travel.rideCounts;
+  // The trip's and the ticket counter's scenes (stage 4) run first when any runs there: the trip's at the place it
+  // leaves, so the party moves after them (the occasion's "move" part); fare and admission are paid now either way.
+  const prefix = replayBattleId ? {} : eventPrefix(state, eventId, { from: state.travel.currentPlaceId, to: event.placeId, modeId: mode, arrivalMinute: availability.plan.arrivalMinute });
   const moved = { ...state, travelBudget: availability.plan.remainingBudget,
-    travel: { ...state.travel, currentPlaceId: event.placeId, minute: availability.plan.arrivalMinute, returnReserve: availability.plan.returnReserve, returnDeadline: DAY_END, rideCounts: rides } };
+    travel: { ...state.travel, returnReserve: availability.plan.returnReserve, returnDeadline: DAY_END,
+      ...(prefix.trip ? {} : { currentPlaceId: event.placeId, minute: availability.plan.arrivalMinute, rideCounts: rides }) } };
   const episode = episodes.find((item) => item.id === eventId);
   if (replayBattleId && (!episode || episode.battleId !== replayBattleId || !battlePlayed(state, replayBattleId))) return state;
   const reserved = { ...moved, travel: { ...moved.travel,
@@ -158,7 +163,7 @@ export function beginTravelEvent(state: GameState, eventId: string, mode: Travel
   // The map event's occasion (stage 3b, 4.2): its main group decided now, run to its first stop (an inserted scene before
   // the main part, the guide, the observation, the battle or the date).
   const cleared = reserved.activeBattle?.phase === "result" ? { ...reserved, activeBattle: null, battleRewardReceipt: null } : reserved;
-  const opened = openEventOccasion(cleared, eventId, nextRoll);
+  const opened = openEventOccasion(cleared, eventId, nextRoll, prefix);
   return opened === cleared ? state : opened;
 }
 
@@ -199,13 +204,17 @@ export function waitForTravel(state: GameState, minutes: number, expectedRevisio
 
 /** `viaPlaceId`: undefined selects a feasible route for legacy callers; null
  * selects the direct route; a place ID selects that exact connection. */
-export function sleepAtHotel(state: GameState, mode: TravelMode, expectedRevision: number, viaPlaceId?: string | null): GameState {
+export function sleepAtHotel(state: GameState, mode: TravelMode, expectedRevision: number, viaPlaceId?: string | null, nextRoll?: () => number): GameState {
   if (state.revision !== expectedRevision || hasActiveScene(state)) return state;
   const plan = getTravelSleepOptions(state)
     .filter(({ route }) => route.mode === mode && (viaPlaceId === undefined || (route.viaPlaceId ?? null) === viaPlaceId))
     .map((option) => option.plan).find((item) => item.ok);
   if (!plan || !plan.ok) return state;
   if (state.travel.calendar && !Number.isSafeInteger(state.travel.calendar.journeyDay + 1)) return state;
+  // The hotel's moment (stage 4) when scenes run there or on the way: paid now, the night comes after its scenes.
+  const paid: GameState = { ...state, revision: state.revision + 1, travelBudget: plan.remainingBudget, travel: { ...state.travel, returnReserve: 0, returnDeadline: DAY_END } };
+  const hotel = openHotel(paid, { from: state.travel.currentPlaceId, to: state.travel.hotelPlaceId, modeId: mode, arrivalMinute: plan.arrivalMinute }, nextRoll);
+  if (hotel) return hotel;
   return { ...state, revision: state.revision + 1, travelBudget: plan.remainingBudget,
     travel: { ...state.travel, currentPlaceId: state.travel.hotelPlaceId, day: plan.nextDay, minute: plan.nextMinute, returnReserve: 0, returnDeadline: DAY_END,
       ...(state.travel.calendar ? { calendar: { ...state.travel.calendar, journeyDay: state.travel.calendar.journeyDay + 1 } } : {}) } };

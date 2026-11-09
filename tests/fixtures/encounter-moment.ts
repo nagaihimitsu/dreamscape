@@ -18,6 +18,7 @@ import { playBattleToResult, startEncounterScene } from "../../src/dev/scenario-
 const landmarkOf = (encounterId: string): string => {
   const encounter = encounters.encounters.find((item) => item.id === encounterId);
   if (!encounter) throw new Error(`no encounter ${encounterId}`);
+  if (!encounter.landmarkId) throw new Error(`${encounterId} is not met at a landmark's visit`);
   return encounter.landmarkId;
 };
 

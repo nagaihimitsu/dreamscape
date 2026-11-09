@@ -1,6 +1,7 @@
 import { battles, dates, episodes, landmarks, scenes } from "../content";
 import type { SceneEntry, SceneMain } from "../content/scene-schemas";
 import type { GameState } from "./game-state-schema";
+import { keptByThen } from "./occasion-hooks";
 
 /**
  * What a main part pays when it is first finished (its `# on_done: money -X`, `ap -N`; the unified
@@ -63,19 +64,63 @@ export function mainPartPayments(state: Readonly<GameState>, eventId: string): {
   }), { money: 0, ap: 0 });
 }
 
-/** What the running occasion keeps back for its main parts still to come (and a date's AP until it starts). */
-export function reservedPayments(state: Readonly<GameState>): { money: number; ap: number } {
+/** A payment of money and AP. */
+export type Payment = { money: number; ap: number };
+const NONE: Payment = { money: 0, ap: 0 };
+const spendOf = (scene: SceneEntry | undefined): Payment => ({ money: Math.max(0, -(scene?.done.money ?? 0)), ap: Math.max(0, -(scene?.done.ap ?? 0)) });
+/**
+ * The city's epilogue while it is still to be read, in its own moment or open by itself (only an authored city's spends on its
+ * first reading: its # on_done:, A21).
+ */
+const unreadEpilogue = (state: Readonly<GameState>): SceneMain | undefined => {
   const occasion = state.occasion;
-  if (!occasion?.eventId) return { money: 0, ap: 0 };
+  const cityId = occasion ? (occasion.kind === "epilogue" ? occasion.cityId : undefined)
+    : state.activeEpilogue && state.activeEpilogue.kind !== "arrival" ? state.currentCityId : undefined;
+  return cityId && !state.viewedEpilogueCityIds.includes(cityId) ? { epilogue: cityId } : undefined;
+};
+
+/**
+ * What the running occasion keeps back for its main parts still to come (and a date's AP until it starts); the epilogue's moment
+ * keeps back its epilogue's first payment (a then: epilogue's, kept from its choice until the epilogue is read; 2.3).
+ */
+export function reservedPayments(state: Readonly<GameState>): Payment {
+  const occasion = state.occasion;
+  const epilogue = unreadEpilogue(state);
+  if (epilogue) return spendOf(mainScene(epilogue));
+  if (!occasion?.eventId) return NONE;
   const pending = new Set(pendingMainParts(state, occasion.eventId).map((main) => Object.keys(main)[0]));
   const parts = occasion.parts.filter((part) => (part === "guide" || part === "battle" || part === "date") && pending.has(part));
   const kept = pendingMainParts(state, occasion.eventId).filter((main) => parts.includes(Object.keys(main)[0] as never)).map(mainScene)
-    .reduce((sum, scene) => ({ money: sum.money + Math.max(0, -(scene?.done.money ?? 0)), ap: sum.ap + Math.max(0, -(scene?.done.ap ?? 0)) }), { money: 0, ap: 0 });
+    .reduce((sum, scene) => ({ money: sum.money + spendOf(scene).money, ap: sum.ap + spendOf(scene).ap }), NONE);
   const dateAp = occasion.kind === "date" && !occasion.ran.includes("date") ? dates.find((item) => item.id === occasion.eventId)?.apCost ?? 0 : 0;
   return { money: kept.money, ap: kept.ap + dateAp };
 }
 
-/** The money that can be spent now: the budget less the fare home and the main parts' payments kept back (A9). */
-export const usableMoney = (state: Readonly<GameState>) => state.travelBudget - state.travel.returnReserve - reservedPayments(state).money;
-/** The AP that can be spent now: stored AP is not counted, the main parts' AP is kept back (A23). */
-export const usableAp = (state: Readonly<GameState>) => state.ap - reservedPayments(state).ap;
+/**
+ * What the main part running now (the occasion's step) pays when it is first finished, before a then: of it runs (4.1 step 1):
+ * its `# on_done: money -X` and `ap -N` while they are still to be paid (a guide, a battle, a date; an authored epilogue not read yet).
+ */
+export function runningMainPayment(state: Readonly<GameState>): Payment {
+  const occasion = state.occasion;
+  const part = occasion?.at?.startsWith("main:") ? occasion.at.slice("main:".length) : undefined;
+  if (!occasion || !part) return NONE;
+  const main = part === "epilogue" ? unreadEpilogue(state)
+    : occasion.eventId ? pendingMainParts(state, occasion.eventId).find((item) => Object.keys(item)[0] === part) : undefined;
+  return main ? spendOf(mainScene(main)) : NONE;
+}
+
+/**
+ * The money that can be spent now: the budget less the fare home and the main parts' payments kept back (A9). Once a `# then:`
+ * is decided, less what the main part running now still pays (the occasion's other parts will not run) and the larger of
+ * today's fare home (kept until the then: runs) and what the then: keeps back.
+ */
+export function usableMoney(state: Readonly<GameState>): number {
+  const keep = keptByThen(state);
+  return keep ? state.travelBudget - runningMainPayment(state).money - Math.max(state.travel.returnReserve, keep.money)
+    : state.travelBudget - state.travel.returnReserve - reservedPayments(state).money;
+}
+/** The AP that can be spent now: stored AP is not counted, the main parts' AP is kept back (A23), and a decided then:'s. */
+export function usableAp(state: Readonly<GameState>): number {
+  const keep = keptByThen(state);
+  return keep ? state.ap - keep.ap - runningMainPayment(state).ap : state.ap - reservedPayments(state).ap;
+}

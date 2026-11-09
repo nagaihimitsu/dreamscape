@@ -14,7 +14,7 @@ import { rentTransport } from "../domain/transport";
 import { getTransportMode } from "../content/transport";
 import { getPlayerDeparture } from "../domain/city-travel";
 import { closeRomanceEnding, openOccasion } from "../domain/occasion";
-import { screenFor } from "../domain/screen";
+import { resultExitLabel, screenFor } from "../domain/screen";
 import {
   advanceDate,
   chooseDate,
@@ -499,7 +499,9 @@ export function GameApp({
                   ...(showEnemy ? { enemy: { emotion: enemy?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral"), mark: enemy?.mark, active: frame.speaker === "enemy" } } : {}),
                 };
               })(),
-              placeJa: encounterLandmark?.nameJa ?? getCityContent(currentEncounter.cityId).city.nameJa,
+              // A scene at no landmark (a date's, the hotel's, a trip's…; stage 4): the place the party is at.
+              placeJa: encounterLandmark?.nameJa ?? getCityContent(currentEncounter.cityId).travel.places.find((place) => place.id === game.travel.currentPlaceId)?.nameJa ??
+                getCityContent(currentEncounter.cityId).city.nameJa,
               background: activeEncounter.frame.background,
               backgroundAsset: encounterImage,
               speaker: activeEncounter.frame.speaker === "heroine" ? game.heroineName : activeEncounter.frame.speaker === "player" ? game.playerName : "旅の風景",
@@ -616,7 +618,7 @@ export function GameApp({
                 : undefined
             }
             // The battle's head then: epilogue (stage 3b): leaving the result goes to the epilogue (4.7).
-            leaveLabel={game.occasion?.then && "epilogue" in game.occasion.then ? "エピローグへ進む" : undefined}
+            leaveLabel={resultExitLabel(game)}
             onLeave={resultExits.leave ? () => {
               commit((state) => leaveBattleToFreeTime(state, game.revision, nextRomanceRoll));
             } : undefined}
@@ -661,7 +663,7 @@ export function GameApp({
                 これからも、旅先でふたりの時間を過ごせます。
               </p>
               <button className="primary" onClick={() => commit((state) => closeRomanceEnding(state, game.revision, nextRomanceRoll))}>
-                自由時間へ <span aria-hidden="true">→</span>
+                {resultExitLabel(game) ?? "自由時間へ"} <span aria-hidden="true">→</span>
               </button>
             </section>
           </>

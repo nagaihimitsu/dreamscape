@@ -8,16 +8,20 @@
 // - 効果は選択肢のすぐ次の行の札（# give:・# rel:・# set:・# ap: など）と、頭の # on_done: にだけ書く。
 //   効果のある選択肢には [ ] の中に # option: <ID> を付ける。ゲームが効果を当ててから、選んだ後の文へ進む。
 // - 本筋の順は既定（案内 → 観察 → バトル）。条件の書き方と札の一覧は docs/02 の「場面の時点と順番」。
+// - 観光地の訪問のほか、デート・エピローグ・移動・宿の時点の場面も書ける（段階4。# at: date・epilogue・trip・hotel など）。
+//   都市の終わり（フィナーレの前後と、エピローグを始める時）は places/smp_mihon_city_end.ink。
 // - 差し込みの場面（道中交流・会話）には、本番の旅行編では出典（scenes/catalog.json の sources）か # sources: none（本当の土地の
 //   事実を言わない場面の印）を必ず書く。見本の街は架空なので、どれも # sources: none。
 INCLUDE modules.ink
 -> DONE
 
 // ───── -1：着いてすぐ、本筋の前。しおりの露店（道中交流）。完了すると、三時のしおりを受け取る。
+// # at: place は、この場所の観光地・デート・フィナーレのどの時点でも（段階4）。「また今度」を選ぶと、
+// 時計塔広場のデートやフィナーレの前に、もう一度出る（完了するまで）。
 === smp_mihon_bookmark_stall ===
 # scene: encounter
 # title: 三時のしおりの露店
-# at: visit mihon_clock_tower
+# at: place mihon_clock_tower
 # priority: -1
 # person: smp_mihon_lili
 # on_done: item smp_mihon_three_bookmark
@@ -223,6 +227,38 @@ Come back at three. Any three will do.
 -
 -> END
 
+// ───── デートの時点の -1（段階4）：デートの前、昼だけ。行き先の小話（ベンチの向き）を先に言わず、デートに渡す。
+// 3つ目の選択肢は、お金を得る例（# money: +20）。
+=== smp_mihon_date_bench_painter ===
+# scene: encounter
+# title: ベンチを塗る人
+# at: date smp_mihon_date_tower_square
+# priority: -1
+# when: time day
+# sources: none
+# background: smp_bg_mihon_clock_tower
+# speaker: narrator
+広場のベンチの一つに「ぬりたて」の札が下がっている。刷毛を持った男の人が、こちらに気づいて手を止めた。
+# speaker: narrator
+男の人「すみませんね。塔のほうを向いたベンチは、毎年この時期に塗り直すんです」
+* [Which bench is dry? # option: dry # translation: どのベンチなら乾いていますか。]
+    # speaker: narrator
+    男の人「端の一つだけ。……三時を待つ人の席は、いつも空けておくんですよ」
+    -> END
+* [Why do they all face the tower? # option: why # translation: どうしてみんな塔を向いているんですか。]
+    # speaker: narrator
+    男の人「それは、座ってみれば分かります」
+    # speaker: heroine
+    「座ってみれば、か。じゃあ、確かめてみよう」
+    -> END
+* [Can I help you paint? # option: help # translation: 塗るのを手伝いましょうか。]
+    # money: +20
+    # speaker: narrator
+    男の人「助かります。端の一本だけ、お願いできますか」。塗り終えると、男の人は小さな硬貨を二枚くれた。
+    # speaker: heroine
+    「手間賃だって。……三時のお茶代くらいには、なるかな」
+    -> END
+
 // ───── デート（本筋。romance/date_catalog.json の storyId がこの住所を指す）。地図に出る条件は頭の # when:。
 // デートの3択（噛み合いの選択）は、このデートの knot の中（stitch を含む）に置き、# option: と # profile: で書く。
 // 手伝いの knot（頭の札なし）の中の選択は「場面の中の選択」：乱数を使わず、札の効果だけが当たる。
@@ -344,3 +380,100 @@ Come back at three. Any three will do.
     # speaker: heroine
     「うん、それがいいよ。リリちゃんが、あなたに選んでくれたんだもん」
 - ->->
+
+// ───── エピローグの時点の -2（段階4）：デートで「もう少し持っていたい」と答え、まだしおりを持っているときだけ。
+// 都市のエピローグの前なので、品物はまだ渡せる（統一イベント設計 3.5 の「街を出る前の砂時計」を、見本のしおりで書いたもの）。
+=== smp_mihon_bookmark_before_leaving ===
+# scene: talk
+# title: 街を出る前のしおり
+# at: epilogue mihon
+# priority: -2
+# when: flag smp_mihon_bookmark_kept
+# when: item smp_mihon_three_bookmark held
+# sources: none
+# background: smp_bg_mihon_hotel
+# speaker: narrator
+街を出る支度をしていると、鞄の中で、三時のしおりの角が指に触れた。
+* [しおりを差し出す # option: give_before_leaving]
+    # give: smp_mihon_three_bookmark heroine
+    # rel: spark +1
+    # speaker: heroine
+    # reaction: heroine,surprised,exclamation
+    「……え、今？　あのとき、持っていたいって言ってたのに」
+    # speaker: heroine
+    # emotion: shy
+    「じゃあ、この街の三時は、わたしが預かっておくね。……ずるいなあ、こういうの」
+* [そのまま鞄にしまっておく # option: keep_before_leaving]
+    # speaker: heroine
+    「なに、その顔。……いいよ。それ、あなたの旅の荷物なんだね」
+-
+-> END
+
+// ───── エピローグの時点の -1（段階4）：露店でしおりをもらった人に、リリが見送りに来る（あなたの「+2 エピローグ」の、もう1つの読み方）。
+=== smp_mihon_lili_seeoff ===
+# scene: talk
+# title: リリの見送り
+# at: epilogue mihon
+# priority: -1
+# when: done smp_mihon_bookmark_stall
+# person: smp_mihon_lili
+# sources: none
+# background: smp_bg_mihon_hotel
+# speaker: narrator
+宿の前に出ると、リリが駆けてきた。手に、色を塗っていないしおりを一枚持っている。
+# speaker: narrator
+リリ「これ、針を描いてないの。次に来るときの時間を、自分で描いてね」
+# speaker: heroine
+# emotion: smile
+「何時にしようかな。……三時じゃなかったら、怒られちゃう？」
+# speaker: narrator
+リリは少し考えてから、首を横に振った。リリ「来られるときの時間で、いいよ」
+-> END
+
+// ───── 移動の時点の -1（段階4）：宿から初めて貸し自転車で出るとき、宿で（動く前に流れる。乗った回数は、動いたときに増える）。
+// 運賃は出発の操作で払ってあるので、このお金で移動が断られることはない（減らす選択肢は、使えるお金に収まるときだけ選べる）。
+// from で宿から出る移動だけにした（「休む」で宿へ帰る道では出ない）。借りた後に歩いてほかの場所へ行き、そこから初めて乗ると、
+// 乗った回数が1になるので、この場面はもう出ない（一度だけの例。どこから乗っても最初の1回に出したいときは from を書かない）。
+=== smp_mihon_first_bicycle ===
+# scene: talk
+# title: 貸し自転車のサドル
+# at: trip rental_bicycle from mihon_hotel
+# priority: -1
+# when: not rides rental_bicycle >= 1
+# sources: none
+# speaker: heroine
+「サドル、高くない？　この街、坂が少ないから、低めでも大丈夫そう」
+* [「直してもらおうか」 # option: fix_saddle]
+    # money: -50
+    # speaker: narrator
+    貸し出しの人が、手早くサドルを下げてくれた。
+* [「このままで行こう」 # option: as_is]
+    # speaker: heroine
+    「……ちょっと高いけど、景色はよく見えるね」
+-
+-> END
+
+// ───── 宿の時点の -1（段階4）：眠る前（「休む」は昼でも選べる）。鐘を聞いた後の、最初の宿で（一度だけ）。
+// 夜だけにしたいときは # when: time night（21時に休むときも夜。時刻は宿に着いた時刻で読む）。
+=== smp_mihon_hotel_bell_night ===
+# scene: talk
+# at: hotel mihon_hotel
+# priority: -1
+# when: done smp_mihon_clock_bell
+# sources: none
+# background: smp_bg_mihon_hotel
+# speaker: heroine
+「窓を開けると、まだ鐘の音が残ってる気がする。……今日、来てよかった」
+-> END
+
+// ───── 宿の時点の +1（段階4）：起きた後。予約したツアーが始まる前。
+=== smp_mihon_hotel_morning ===
+# scene: talk
+# at: hotel mihon_hotel
+# priority: +1
+# when: not visited mihon_clock_tower
+# sources: none
+# background: smp_bg_mihon_hotel
+# speaker: heroine
+「おはよう。窓から時計塔が見えるよ。……今日も三時。行ってみない？」
+-> END

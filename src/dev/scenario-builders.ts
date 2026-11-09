@@ -22,10 +22,11 @@ import {
   advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterCanFinish, encounterEntryRule, encounterVisitSlot, finishEncounter,
   getEncounterOptionAvailability, leaveBattleToFreeTime, proceedFromTourism, startTourismEncounter, visitedLandmarkOfEvent,
 } from "../domain/encounter";
-import { advanceOccasion, closeRomanceEnding } from "../domain/occasion";
+import { advanceOccasion, closeRomanceEnding, openEpilogue, openOccasion } from "../domain/occasion";
+import { sceneById, sceneOption } from "../domain/scene-effects";
 import { isSceneOpen } from "../domain/game-state-schema";
 import { landmarkParts } from "../content/tourism-schemas";
-import { advanceCityEpilogue, chooseCityEpilogue, completeArrivalLogo, epilogueChoiceDisplay, startCityArrival, startCityEpilogue } from "../domain/epilogue";
+import { advanceCityEpilogue, chooseCityEpilogue, completeArrivalLogo, epilogueChoiceDisplay, isAuthoredEpilogueCity } from "../domain/epilogue";
 import { createGame, startDate, validateGameState, type GameState } from "../domain/game";
 import { advanceTourismGuide, chooseTourismGuide, guideChoiceDisplay, openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "../domain/tourism";
 
@@ -181,37 +182,59 @@ export function playCityToFinaleResult(initial: GameState, options: CityPlayOpti
   }
 }
 
-/** Clear the current city: every remaining battle, the finale, and leaving the finale's result. */
+/** Clear the current city: every remaining battle, the finale, and leaving the finale's result (and the scenes after it). */
 export function clearCity(state: GameState, options: CityPlayOptions = {}): GameState {
   const result = playCityToFinaleResult(state, options);
-  return validateGameState(act(result, (current) => leaveBattleResult(current, current.revision), "フィナーレの結果を閉じる", options));
+  return validateGameState(settleScenes(act(result, (current) => leaveBattleResult(current, current.revision), "フィナーレの結果を閉じる", options), 0));
+}
+
+/**
+ * Play the inserted scenes the running occasion shows (stage 4: after the finale, around an arrival, an epilogue, a
+ * night) with their first choices, a choice without a `# then:` first (so a scene that offers to move on or to start
+ * the epilogue stays where it is), until no inserted scene is open. Another scene that starts (a guide, a battle, a
+ * date, an arrival or an epilogue) is left open for its own player.
+ */
+function settleScenes(initial: GameState, ticket: number): GameState {
+  let state = initial;
+  for (let step = 0; state.activeEncounter; step++) {
+    if (step > MAX_STEPS) throw new Error("時点の場面を終えられませんでした。");
+    const active = state.activeEncounter;
+    const scene = sceneById(active.encounterId);
+    const open = active.frame.choices.filter((item) => getEncounterOptionAvailability(state, item.index).available);
+    const choice = open.find((item) => !sceneOption(scene, item.optionId)?.then) ?? open[0];
+    state = choice && active.phase === "story"
+      ? act(state, (current) => advanceOccasion(chooseEncounter(current, choice.index, current.revision, () => ticket), () => ticket), "場面の選択")
+      : playOccasionStep(state, ticket);
+  }
+  return state;
 }
 
 /** Finish the arrival logo and conversation through their real, effect-free transitions. */
 export function settleArrival(initial: GameState): GameState {
-  let state = initial.activeEpilogue?.kind === "arrival" && !initial.activeEpilogue.logoComplete
-    ? completeArrivalLogo(initial, initial.revision) : initial;
-  for (let line = 0; state.activeEpilogue?.kind === "arrival"; line++) {
+  let state = settleScenes(initial, 0);
+  for (let line = 0; state.activeEpilogue?.kind === "arrival" || (state.occasion?.kind === "arrive" && state.activeEncounter); line++) {
     if (line > MAX_STEPS) throw new Error("到着の会話を完了できませんでした。");
-    state = act(state, epilogueStep, "到着の会話");
+    state = state.activeEpilogue?.kind === "arrival" && !state.activeEpilogue.logoComplete
+      ? advanceOccasion(completeArrivalLogo(state, state.revision), () => 0)
+      : state.activeEncounter ? settleScenes(state, 0) : act(state, (current) => advanceOccasion(epilogueStep(current), () => 0), "到着の会話");
   }
   return validateGameState(state);
 }
 
-/** Read the open city epilogue to its end. */
+/** Read the open city epilogue to its end (and the scenes after it). */
 export function readEpilogue(initial: GameState): GameState {
   let state = initial;
   for (let line = 0; state.activeEpilogue && state.activeEpilogue.kind !== "arrival"; line++) {
     if (line > MAX_STEPS) throw new Error("エピローグを読み終えられませんでした。");
-    state = act(state, epilogueStep, "エピローグ");
+    state = act(state, (current) => advanceOccasion(epilogueStep(current), () => 0), "エピローグ");
   }
-  return validateGameState(state);
+  return validateGameState(settleScenes(state, 0));
 }
 
 /** A new game as the title screen starts it: the journey's first city with its arrival read. */
 export function newJourney(journeyId: string, names?: Names): GameState {
   const created = names ? createGame(names[0], names[1], { journeyId }) : createGame(undefined, undefined, { journeyId });
-  return settleArrival(startCityArrival(created, created.revision));
+  return settleArrival(openOccasion(created, { kind: "arrive" }, created.revision, () => 0));
 }
 
 /**
@@ -221,9 +244,9 @@ export function newJourney(journeyId: string, names?: Names): GameState {
 export function departFromClearedCity(state: GameState): GameState {
   const read = getJourneyForCity(state.currentCityId)?.cityTransition === "after_epilogue"
     ? readEpilogue(openEpilogueScene(state)) : state;
-  const departed = departToNextCity(read, read.revision);
+  const departed = advanceOccasion(departToNextCity(read, read.revision), () => 0);
   if (departed === read) throw new Error(`${state.currentCityId} から次の都市へ出発できませんでした。`);
-  return settleArrival(departed);
+  return settleArrival(settleScenes(departed, 0));
 }
 
 /**
@@ -391,7 +414,8 @@ export function startEncounterScene(state: GameState, encounterId: string, ticke
     const unmet = rule?.when && !rule.quizAfterLandmarkBattle ? unmetConditionLabels(at, rule.when) : [];
     return `この進行状態では交流を始められません。必要な進行や品物を確認してください。${unmet.length ? `入場の条件を満たしていません：${unmet.join("、")}` : ""}`;
   };
-  if (encounter && slot !== "observe") {
+  if (encounter && !encounter.landmarkId) throw new Error(`この場面は観光地の訪問の場面ではありません（${encounterId}）。時点を開く操作で流してください。`);
+  if (encounter?.landmarkId && slot !== "observe") {
     let next = untilEncounter(departToLandmark(state, encounter.landmarkId, ticket), encounterId, ticket);
     if (slot === "after" && next.activeEncounter?.encounterId !== encounterId) {
       if (next.activeEncounter) throw new Error(unmetRule(next));
@@ -402,7 +426,7 @@ export function startEncounterScene(state: GameState, encounterId: string, ticke
     return validateGameState(next);
   }
   const placed = atPlace(state, scenePlaceId(state.currentCityId, undefined, encounter?.landmarkId));
-  let observing = encounter ? openTourism(placed, encounter.landmarkId) : placed;
+  let observing = encounter?.landmarkId ? openTourism(placed, encounter.landmarkId) : placed;
   for (let step = 0; observing.activeTourism?.phase === "guide" && step < MAX_STEPS; step++) observing = guideSkip(observing);
   const next = startTourismEncounter(observing, encounterId, observing.revision, () => ticket);
   // The observation reads the rule's `when` (unless the quiz waits for the battle); Debug names what is missing.
@@ -481,9 +505,13 @@ export function startDateScene(state: GameState, dateId: string, ticket: number)
   return validateGameState(next);
 }
 
-/** Open the cleared current city's epilogue (as from its finale result or the city's records). */
+/**
+ * Open the cleared current city's epilogue (as from its finale result or the city's records; a city whose author starts
+ * it with a then: epilogue, as that then: does). The scenes before it (stage 4) are played with their first choices.
+ */
 export function openEpilogueScene(state: GameState): GameState {
-  const next = startCityEpilogue(state, state.currentCityId, state.revision);
+  const cleared = state.completedCityIds.includes(state.currentCityId);
+  const next = cleared ? settleScenes(openEpilogue(state, isAuthoredEpilogueCity(state.currentCityId), () => 0), 0) : state;
   if (!next.activeEpilogue) throw new Error("エピローグは都市クリア後に開けます。旅の進行を「都市クリア後」にしてください。");
   return validateGameState(next);
 }

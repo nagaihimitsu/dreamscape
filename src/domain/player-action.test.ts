@@ -11,7 +11,7 @@ import {
 import { getActiveBattleContent, getBattleOutcome } from "./battle";
 import { battleCityId, storyBattlesForCity } from "./chapter";
 import { isJourneyComplete } from "./city-travel";
-import { startCityArrival } from "./epilogue";
+import { isAuthoredEpilogueCity, startCityArrival } from "./epilogue";
 import { createGame, type GameState } from "./game";
 import { applyPlayerAction, listPlayerActions, playerActionChange, type PlayerAction } from "./player-action";
 import { canClaimPendingRewards } from "./rewards";
@@ -104,7 +104,11 @@ describe("the actions a player can take now", () => {
     for (const result of results) {
       const { battle } = getActiveBattleContent(result.activeBattle!);
       const actions = kinds(listPlayerActions(result));
-      if (battle.scope === "city_finale") {
+      if (battle.scope === "city_finale" && isAuthoredEpilogueCity(battleCityId(battle.id) ?? "")) {
+        // A city whose author starts its epilogue (then: epilogue; the sample's 3.9 (d)): free time, no 「エピローグへ」.
+        expect(actions, battle.id).toEqual(expect.arrayContaining(["battle_leave"]));
+        expect(actions, battle.id).not.toContain("battle_epilogue");
+      } else if (battle.scope === "city_finale") {
         expect(actions, battle.id).toContain("battle_epilogue");
         expect(actions.includes("battle_leave"), battle.id).toBe(transition !== "after_epilogue");
       } else {
