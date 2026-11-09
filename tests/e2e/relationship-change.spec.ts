@@ -36,15 +36,26 @@ test("with Debug mode on, a date reply's relationship change shows above the sce
   await expect(strip(page)).toBeVisible();
   expect(await shownLines(page)).toEqual(describeRelationshipChange(change!));
   await expect(strip(page)).toContainText(/反応：噛み合った（噛み合う確率 \d+%）/u);
-  // The header lies over the scene (UI 1.2): the strip lies right under it, uncovered (the strip is the
-  // element at its own centre), and the scene keeps its controls below the strip (its 「画像の出典」).
+  // The header and the scene label line lie over the scene (UI 1.2, 1.3): the strip lies right under them,
+  // uncovered (the strip is the element at its own centre); the label line's 「出典」 stays above it,
+  // uncovered too, and what the scene shows starts below the strip (its reserve, --scene-top).
   const header = (await page.getByTestId("journey-bar").boundingBox())!;
+  const label = (await ops.sceneLabelLine(page).boundingBox())!;
   const shown = (await strip(page).boundingBox())!;
   expect(shown.y).toBeGreaterThanOrEqual(header.y + header.height - 1);
+  expect(shown.y).toBeGreaterThanOrEqual(label.y + label.height - 1);
   expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest("[data-testid=relationship-change]"),
     { x: shown.x + shown.width / 2, y: shown.y + shown.height / 2 })).toBe(true);
-  const credit = page.getByTestId("romance-scene").getByRole("button", { name: "画像の出典" });
-  if (await credit.count()) expect((await credit.boundingBox())!.y).toBeGreaterThanOrEqual(shown.y + shown.height - 1);
+  const credit = ops.sceneCredit(page);
+  if (await credit.count()) {
+    const box = (await credit.boundingBox())!;
+    expect(box.y + box.height).toBeLessThanOrEqual(shown.y + 1);
+    expect(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest("button")?.getAttribute("aria-label"),
+      { x: box.x + box.width / 2, y: box.y + box.height / 2 })).toBe("画像の出典");
+  }
+  const sceneTop = await page.getByTestId("romance-scene").evaluate((scene) =>
+    scene.getBoundingClientRect().top + parseFloat(getComputedStyle(scene).paddingTop));
+  expect(sceneTop, "the scene starts below the strip").toBeGreaterThanOrEqual(shown.y + shown.height - 1);
 
   // Not in the message log: none of its lines, no before→after values, no reaction, no Debug mark.
   const log = await ops.openDialogueLog(page);

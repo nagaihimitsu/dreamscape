@@ -3,28 +3,8 @@
   max-width: 760px;
   margin: auto;
 }
-.tourism-heading {
-  padding: 30px 36px 16px;
-}
-.tourism-heading h1 {
-  margin: 7px 0 3px;
-}
-.landmark-english {
-  font-family: Georgia, serif;
-  font-size: 14px;
-  color: var(--muted);
-}
-.tourism-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 14px;
-}
-.tourism-screen > .tourism-toolbar {
-  padding: 0 36px;
-  margin: 0 0 8px;
-}
+/* The guide's scene label line (SceneLabelLine) is placed from its top. */
+.tourism-screen.guide-active { position: relative; }
 .notebook-button {
   color: var(--green);
   background: #eeeee3;
@@ -255,9 +235,6 @@
   margin: 18px 0;
 }
 @media (max-width: 480px) {
-  .tourism-heading {
-    padding: 24px 24px 14px;
-  }
   .tourism-observation {
     padding: 0 12px;
   }
@@ -292,30 +269,6 @@
   .tourism-screen:not(.guide-active) {
     display: flex;
     flex-direction: column;
-  }
-  .tourism-screen:not(.guide-active) > .tourism-heading {
-    order: 0;
-    padding: 10px 16px 4px;
-  }
-  .tourism-screen:not(.guide-active) > .tourism-heading h1 {
-    margin: 0;
-    font-size: 20px;
-    line-height: 1.4;
-    overflow-wrap: anywhere;
-  }
-  .tourism-screen:not(.guide-active) .landmark-english {
-    font-size: 12px;
-  }
-  .tourism-screen:not(.guide-active) > .tourism-toolbar {
-    order: 1;
-    position: sticky;
-    top: 0;
-    z-index: 5;
-    min-height: 48px;
-    padding: 0 16px;
-    background: var(--paper);
-    border-bottom: 1px solid var(--line);
-    margin: 0;
   }
   .tourism-screen:not(.guide-active) > .tourism-actions {
     order: 1;
@@ -363,22 +316,8 @@
     min-height: 0;
     overflow: hidden;
   }
-  .mobile-observation-active .tourism-screen:not(.guide-active) > .tourism-heading {
-    padding: 3px 12px 0;
-  }
-  .mobile-observation-active .tourism-screen:not(.guide-active) > .tourism-heading .eyebrow,
-  .mobile-observation-active .tourism-screen:not(.guide-active) > .tourism-heading .landmark-english,
   .mobile-observation-active .tourism-screen:not(.guide-active) > .tourism-actions .fine-print {
     display: none;
-  }
-  .mobile-observation-active .tourism-screen:has(.observation-detail) > .tourism-heading .guide-reward-note {
-    display: none;
-  }
-  .mobile-observation-active .tourism-screen:not(.guide-active) > .tourism-toolbar {
-    position: static;
-    flex: none;
-    min-height: 44px;
-    padding: 0 12px;
   }
   .mobile-observation-active .tourism-screen:not(.guide-active) > .tourism-actions {
     flex: none;

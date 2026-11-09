@@ -26,18 +26,3 @@
   border-radius: 8px;
   background: rgba(25, 30, 42, .91);
 }
-.vn-credit-link {
-  position: absolute;
-  top: calc(var(--scene-top, 0px) + 8px);
-  right: 8px;
-  z-index: 2;
-  min-height: 32px;
-  padding: 4px 6px;
-  border: 0;
-  border-radius: 4px;
-  background: #202a26c9;
-  color: white;
-  font-size: 11px;
-  text-decoration: underline;
-}
-.battle-screen .vn-credit-link { top: calc(var(--scene-top, 0px) + 54px); }

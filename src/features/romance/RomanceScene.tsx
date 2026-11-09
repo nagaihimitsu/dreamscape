@@ -17,6 +17,7 @@ import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "..
 import { useSceneTap } from "../../components/useSceneTap";
 import { resolveRomancePresentation } from "./romance-presentation";
 import { BackgroundCredits } from "../../components/BackgroundCredits";
+import { SceneCreditButton, SceneLabelLine } from "../../components/SceneLabelLine";
 import "./romance-scene.css";
 
 export function RomanceScene({
@@ -142,7 +143,13 @@ export function RomanceScene({
       <div className="vn-background" data-testid="scene-picture">
         <CanalScene backgroundId={frame.background} />
       </div>
-      {backgroundAsset && <button type="button" className="vn-credit-link" onClick={() => setCreditsOpen(true)}>画像の出典</button>}
+      {/* The date's heading (D4): its destination, or 「デート」 when it has none. */}
+      <SceneLabelLine
+        label={destination ? `${getCityContent(destination.cityId).city.nameJa} ／ ${destination.nameJa}` : "デート"}
+        labelProps={destination ? { "data-testid": "date-destination" } : undefined}
+      >
+        {backgroundAsset && <SceneCreditButton onClick={() => setCreditsOpen(true)} />}
+      </SceneLabelLine>
       {destination?.referenceImage && (
         <aside className="date-reference" aria-label="訪問先の写真" data-no-advance>
           <span data-testid="destination-reference-note">{destination.referenceImage.backgroundNoteJa}</span>
@@ -179,19 +186,12 @@ export function RomanceScene({
             {exitingChoice}
           </div>
         )}
-        <div className={destination ? "dialogue-speaker-row" : undefined}>
-          <div className="speaker">
-            <span className={`speaker-dot ${frame.emotion}`} aria-hidden="true" />
-            {speaker}
-            {frame.speaker === "heroine" && frame.emotion !== "neutral" && (
-              <span className="emotion">
-                {presentation.emotions[frame.emotion]}
-              </span>
-            )}
-          </div>
-          {destination && (
-            <span className="dialogue-destination" data-testid="date-destination">
-              {`${getCityContent(destination.cityId).city.nameJa} ／ `}{destination.nameJa}
+        <div className="speaker">
+          <span className={`speaker-dot ${frame.emotion}`} aria-hidden="true" />
+          {speaker}
+          {frame.speaker === "heroine" && frame.emotion !== "neutral" && (
+            <span className="emotion">
+              {presentation.emotions[frame.emotion]}
             </span>
           )}
         </div>
