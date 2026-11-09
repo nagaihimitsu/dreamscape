@@ -294,46 +294,99 @@ export function sceneConditionsOf(scene: SceneEntry): { field: string; condition
   ];
 }
 
-/**
- * An unconditional loop of `then:` (A12, 3.3 check 10): a scene that always moves on (its head's
- * `then:`) to a place whose visit runs the scene again, with no `when`/`until` to stop it and
- * repeated always. (Stage 3 has only the visit moments.)
- */
-export function thenLoopErrors(scenes: readonly SceneEntry[], placeLandmarks: (placeId: string) => readonly string[]): string[] {
-  return scenes.flatMap((scene) => {
-    const then = scene.then;
-    if (!then || !("move" in then) || scene.when || scene.repeat !== "always") return [];
-    const visits = placeLandmarks(then.move);
-    const runsThere = scene.at.some((moment) => runsAtMoveTarget(moment, then.move, visits));
-    return runsThere
-      ? [`An endless then: loop: ${scene.id} moves to ${then.move} by its head's then:, where the visit of ${scene.at.map(momentText).join(", ")} ` +
-        `runs it again, repeated always without # when: or # until: (A12)`]
-      : [];
-  }).concat(scenes.flatMap((scene) => {
-    // The 3.3 example: an epilogue's scene that reopens the epilogue by its head's then: (each opening runs it again).
-    const then = scene.then;
-    return then && "epilogue" in then && !scene.when && scene.repeat === "always" && scene.at.some((moment) => "epilogue" in moment && moment.epilogue === scene.cityId)
-      ? [`An endless then: loop: ${scene.id} runs at the epilogue of ${scene.cityId} and reopens it by its head's then: epilogue, repeated always without # when: or # until: (A12)`]
-      : [];
-  }));
-}
-/** Whether a moment runs at the visit a `then: move` to the place opens (visits there, or the place itself). */
-const runsAtMoveTarget = (moment: SceneAt, placeId: string, visits: readonly string[]) =>
-  "place" in moment ? moment.place === placeId : "visit" in moment ? (moment.visit === "any" ? visits.length > 0 : visits.includes(moment.visit))
-    : "trip" in moment ? (!moment.to || moment.to === placeId) : "ticket" in moment ? moment.ticket === placeId : false;
+/** What the then: loop check reads of the journey besides the scenes (3.3 check 10; stage 4). */
+export type ThenLoopContext = {
+  /** A city's routes: the mode a `then: move` takes (`by`, else walking when a walk route joins the places, else the cheapest; 4.4). */
+  routes?: (cityId: string) => readonly { fromPlaceId: string; toPlaceId: string; mode: string }[];
+  /** Whether the city's departure opens (it has a next city). */
+  departs?: (cityId: string) => boolean;
+  /** Whether the player cannot leave the city without its epilogue (a journey that moves on after it, or its last city). */
+  epilogueRequired?: (cityId: string) => boolean;
+};
+type Loop = { sure: boolean; stops: boolean; text: string };
 
 /**
- * A `then:` loop that can be left only conditionally (3.3 warning): the same loop as thenLoopErrors, but the scene has a
- * `# when:`/`# until:`, so the loop ends only when that condition turns false (not stopped).
+ * The mode a `then: move` to `to` takes from `from` (any place when unset): `by`, else walking when a walk route joins them, else
+ * the only mode of the routes. Undefined: no route (it never moves); null: it depends on the place or on what is rented.
  */
-export function thenLoopWarnings(scenes: readonly SceneEntry[], placeLandmarks: (placeId: string) => readonly string[]): string[] {
+function thenMoveMode(routes: ThenLoopContext["routes"], cityId: string, from: string | undefined, to: string, by: string | undefined): string | undefined | null {
+  if (by) return by;
+  if (!routes) return null;
+  const all = routes(cityId);
+  const froms = from ? [from] : [...new Set(all.filter((route) => route.toPlaceId === to && route.fromPlaceId !== to).map((route) => route.fromPlaceId))];
+  const modes = new Set<string>();
+  for (const place of froms) {
+    const legs = all.filter((route) => route.fromPlaceId === place && route.toPlaceId === to);
+    const kinds = new Set(legs.map((route) => route.mode));
+    if (kinds.has("walk")) modes.add("walk");
+    else if (kinds.size > 1) return null;
+    else if (kinds.size === 1) modes.add([...kinds][0]);
+  }
+  return modes.size === 0 ? undefined : modes.size === 1 ? [...modes][0] : null;
+}
+
+/**
+ * Whether a moment of a scene runs again after its head's `then: move` to the place (the visit there, the place itself, its
+ * ticket counter, or the trip there by the mode the move takes): "yes", "maybe" (the mode is not fixed statically) or "no".
+ */
+function runsAtMoveTarget(scene: SceneEntry, moment: SceneAt, then: { move: string; by?: string }, visits: readonly string[], context: ThenLoopContext): "yes" | "maybe" | "no" {
+  const placeId = then.move;
+  if ("place" in moment) return moment.place === placeId && visits.length > 0 ? "yes" : "no";
+  if ("visit" in moment) return (moment.visit === "any" ? visits.length > 0 : visits.includes(moment.visit)) ? "yes" : "no";
+  if ("ticket" in moment) return moment.ticket === placeId ? "yes" : "no";
+  if (!("trip" in moment) || (moment.to && moment.to !== placeId) || moment.from === placeId) return "no";
+  // The new trip leaves where the scene runs (the move had not been made) by the mode the then: takes.
+  const mode = thenMoveMode(context.routes, scene.cityId, moment.from, placeId, then.by);
+  return mode === undefined ? "no" : mode === null ? "maybe" : mode === moment.trip ? "yes" : "no";
+}
+
+/**
+ * The then: loop a scene repeated always makes with its head (A12, 3.3 check 10), if any: a `then: move` to a place whose visit,
+ * ticket counter or trip runs it again; a `then: move` from before a moment's main step the game needs (stage 4: the hotel's night,
+ * the city's departure, its epilogue), which drops that step each time the moment comes; a `then: epilogue` at the epilogue.
+ */
+function thenLoopOf(scene: SceneEntry, placeLandmarks: (placeId: string) => readonly string[], context: ThenLoopContext): Loop | undefined {
+  const then = scene.then;
+  if (!then || scene.repeat !== "always") return undefined;
+  const before = typeof scene.priority === "number" && scene.priority < 0;
+  if ("epilogue" in then)
+    return scene.at.some((moment) => "epilogue" in moment && moment.epilogue === scene.cityId)
+      ? { sure: true, stops: true, text: `${scene.id} runs at the epilogue of ${scene.cityId} and reopens it by its head's then: epilogue` } : undefined;
+  const visits = placeLandmarks(then.move);
+  const verdicts = scene.at.map((moment) => runsAtMoveTarget(scene, moment, then, visits, context));
+  if (verdicts.includes("yes") || verdicts.includes("maybe"))
+    return { sure: verdicts.includes("yes"), stops: true, text: `${scene.id} moves to ${then.move} by its head's then:, where the visit of ${scene.at.map(momentText).join(", ")} ` +
+      `runs it again${verdicts.includes("yes") ? "" : " when the move goes by the mode of its trip (walking when a walk route joins them, else the cheapest it can use)"}` };
+  const blocked = scene.at.flatMap((moment): { text: string; required: boolean }[] =>
+    "hotel" in moment && before ? [{ text: "the night", required: true }]
+      : "depart" in moment && (context.departs?.(moment.depart) ?? true) ? [{ text: `the departure from ${moment.depart}`, required: true }]
+        : "epilogue" in moment && before ? [{ text: `the epilogue of ${moment.epilogue}`, required: context.epilogueRequired?.(moment.epilogue) ?? true }] : []);
+  return blocked.length ? { sure: true, stops: blocked.some((item) => item.required), text: `${scene.id} runs at ${scene.at.map(momentText).join(", ")} before ` +
+    `${blocked.map((item) => item.text).join(", ")} and moves to ${then.move} by its head's then: each time, so ${blocked.length > 1 ? "they never come" : "it never comes"}` } : undefined;
+}
+
+/**
+ * An unconditional loop of `then:` (A12, 3.3 check 10): a scene repeated always, with no `when`/`until` to stop it, whose head's
+ * `then:` always moves on to a moment that runs it again (or drops a main step the game needs; stage 4), so the game cannot go on.
+ */
+export function thenLoopErrors(scenes: readonly SceneEntry[], placeLandmarks: (placeId: string) => readonly string[], context: ThenLoopContext = {}): string[] {
   return scenes.flatMap((scene) => {
-    const then = scene.then;
-    if (!then || !("move" in then) || !scene.when || scene.repeat !== "always") return [];
-    const visits = placeLandmarks(then.move);
-    const runsThere = scene.at.some((moment) => runsAtMoveTarget(moment, then.move, visits));
-    return runsThere ? [`A then: loop left only conditionally: ${scene.id} moves to ${then.move} by its head's then:, where its visit runs it again ` +
-      `(repeated always); only its # when: / # until: turning false ends the loop`] : [];
+    const loop = scene.when ? undefined : thenLoopOf(scene, placeLandmarks, context);
+    return loop?.sure && loop.stops ? [`An endless then: loop: ${loop.text}, repeated always without # when: or # until: (A12)`] : [];
+  });
+}
+
+/**
+ * A `then:` loop that may not end (3.3 warning; not stopped): the loops of thenLoopErrors with a `# when:`/`# until:` (the loop ends
+ * only when it turns false), a loop that depends on the mode of the move, and an epilogue that never comes in a city the player may
+ * leave without it.
+ */
+export function thenLoopWarnings(scenes: readonly SceneEntry[], placeLandmarks: (placeId: string) => readonly string[], context: ThenLoopContext = {}): string[] {
+  return scenes.flatMap((scene) => {
+    const loop = thenLoopOf(scene, placeLandmarks, context);
+    if (!loop || (!scene.when && loop.sure && loop.stops)) return [];
+    return [scene.when ? `A then: loop left only conditionally: ${loop.text} (repeated always); only its # when: / # until: turning false ends the loop`
+      : `A then: loop that may not end: ${loop.text} (repeated always without # when: or # until:)`];
   });
 }
 

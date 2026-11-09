@@ -75,7 +75,7 @@ import { isPlaceStory, splitStoryAddress, storyFileOf } from "../src/content/sto
 import { readFileChoices, readMainFileHead, readPlaceFile, choiceOption, parseDone, parseThen, type PlaceFile } from "./place-files";
 import { MODULES_FILE, MODULES_INK } from "./modules-ink";
 import { walkScene } from "./scene-walk";
-import { catalogScenes, checkRuleIds, checkSceneReferences, insertedSceneEncounter, mainFileSceneId, mergeCatalogChoiceTags, placeScenes, sceneConditionsOf, sceneTagRules, thenLoopErrors, thenLoopWarnings, type MainAddresses } from "./scene-table";
+import { catalogScenes, checkRuleIds, checkSceneReferences, insertedSceneEncounter, mainFileSceneId, mergeCatalogChoiceTags, placeScenes, sceneConditionsOf, sceneTagRules, thenLoopErrors, thenLoopWarnings, type MainAddresses, type ThenLoopContext } from "./scene-table";
 import { sceneDataCatalogSchema, storyStateCatalogSchema, type SceneEntry, type SceneMain } from "../src/content/scene-schemas";
 import { fnvHash } from "../src/content/fingerprint";
 import { parseConditionText, combineWhenUntil } from "../src/content/condition-text";
@@ -837,9 +837,17 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const placeLandmarks = (placeId: string) => travels.flatMap(({ travel }) => travel.events.filter((event) => event.placeId === placeId)
     .flatMap((event) => [journey.episodes.find((episode) => episode.id === event.id)?.landmarkId, battles.find((battle) => battle.id === event.id)?.landmarkId])
     .filter((id): id is string => !!id));
-  const loops = thenLoopErrors([...taggedScenes, ...catalogEntries], placeLandmarks);
+  const loopContext: ThenLoopContext = {
+    routes: (cityId) => travels.find(({ city: item }) => item.id === cityId)?.travel.routes ?? [],
+    departs: (cityId) => !!cities.find((item) => item.id === cityId)?.nextCityId,
+    epilogueRequired: (cityId) => {
+      const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === cityId));
+      return !owner || owner.cityTransition === "after_epilogue" || owner.cities.at(-1)?.id === cityId;
+    },
+  };
+  const loops = thenLoopErrors([...taggedScenes, ...catalogEntries], placeLandmarks, loopContext);
   if (loops.length) throw new Error(loops.join("\n"));
-  for (const message of thenLoopWarnings([...taggedScenes, ...catalogEntries], placeLandmarks)) sceneNotes.push({ kind: "then-loop", message });
+  for (const message of thenLoopWarnings([...taggedScenes, ...catalogEntries], placeLandmarks, loopContext)) sceneNotes.push({ kind: "then-loop", message });
   // # then: (stage 3b runs it; an arrival's and an epilogue's from stage 4, decision 36): move goes to a place of the scene's city (by a mode it has).
   for (const scene of [...taggedScenes, ...catalogEntries]) for (const then of [scene.then, ...scene.options.map((option) => option.then)]) {
     if (!then) continue;
