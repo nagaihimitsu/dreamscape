@@ -191,6 +191,7 @@ export function TourismScreen({
           >
             <DialogueWindowHead
               speaker={speaker}
+              narration={frame.speaker !== "heroine" && frame.speaker !== "player"}
               controls={<DialogueControls close={<button type="button" className="text-button" data-testid="tourism-skip" aria-label="観光案内を閉じる" onClick={onSkip}><Icon name="close" />閉じる</button>} entries={entries} auto={autoAdvance} />}
             />
             <div ref={dialogueRef} className="vn-window-body">

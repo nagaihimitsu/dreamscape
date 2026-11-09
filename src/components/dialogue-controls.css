@@ -31,6 +31,8 @@
   letter-spacing: 0;
   overflow-wrap: anywhere;
 }
+/* The narration's plate (「旅の風景」) is slate: no one speaks. */
+.vn-window-head > .speaker[data-narration] { background: var(--ds-slate-800); }
 /* The heroine's feeling after her name (D3). */
 .vn-window-head > .speaker .emotion {
   margin-left: 6px;

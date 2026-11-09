@@ -186,6 +186,7 @@ export function RomanceScene({
           </div>
         )}
         <DialogueWindowHead
+          narration={frame.speaker !== "heroine" && frame.speaker !== "player"}
           speaker={<>
             {speaker}
             {frame.speaker === "heroine" && frame.emotion !== "neutral" && (

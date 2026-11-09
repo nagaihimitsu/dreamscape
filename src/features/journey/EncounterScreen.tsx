@@ -30,6 +30,8 @@ export type EncounterScreenView = {
   /** The place's registered photo, shown as the background with its credits. */
   backgroundAsset?: TourismAsset;
   speaker: string;
+  /** The line is the narration (「旅の風景」), no one's words. */
+  narration: boolean;
   text: string;
   choices: EncounterChoiceView[];
   ended: boolean;
@@ -104,9 +106,10 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
           </div>;
         })}
       </div>}
-      <section className="vn-dialogue paper story-paper encounter-dialogue" aria-label="寄り道の会話" inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
+      <section className="vn-dialogue paper story-paper encounter-dialogue" aria-label="寄り道の会話" data-has-choices={!!quiz || view.choices.length > 0} inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
         <DialogueWindowHead
           speaker={view.speaker}
+          narration={view.narration}
           controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
         />
         <div className="vn-window-body">

@@ -464,6 +464,7 @@ export function GameApp({
               background: activeEncounter.frame.background,
               backgroundAsset: encounterImage,
               speaker: activeEncounter.frame.speaker === "heroine" ? game.heroineName : activeEncounter.frame.speaker === "player" ? game.playerName : "旅の風景",
+              narration: activeEncounter.frame.speaker !== "heroine" && activeEncounter.frame.speaker !== "player",
               text: activeEncounter.frame.text,
               choices: activeEncounter.frame.choices.map((choice) => {
                 const option = encounterChoiceOption(currentEncounter, choice);

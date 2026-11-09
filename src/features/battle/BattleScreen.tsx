@@ -426,6 +426,7 @@ export function BattleScreen({
       <div className="battle-paper-shell" aria-hidden={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined} inert={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined}>
       {isDialogue && <DialogueWindowHead
         plateClassName="battle-nameplate"
+        narration={!!frame && frame.speaker !== "enemy" && frame.speaker !== "heroine" && frame.speaker !== "player"}
         speaker={frame && <>
           {speaker}
           {frame.emotion !== "neutral" && (

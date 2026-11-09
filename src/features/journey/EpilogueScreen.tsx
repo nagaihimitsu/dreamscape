@@ -102,6 +102,7 @@ export function EpilogueScreen({
         >
           <DialogueWindowHead
             speaker={speaker}
+            narration={frame.speaker !== "heroine" && frame.speaker !== "player" && frame.speaker !== "enemy"}
             controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
           />
           <div ref={dialogueRef} className="vn-window-body">
