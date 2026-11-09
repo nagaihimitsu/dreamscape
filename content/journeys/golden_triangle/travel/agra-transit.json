@@ -110,9 +110,9 @@
       "publisher": "Dreamscape ゲーム編集",
       "title": "地下鉄の所要時間と運賃の推定（アーグラ）",
       "url": "https://tajmahal.gov.in/pdf/Metro-rail-service-in-Agra.pdf",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "claimType": "hypothesis",
-      "claimJa": "地点と駅のあいだを歩く時間、入場・手荷物検査・待ちの10分（仮定）、1駅2分の乗車（仮定。運転間隔の公式資料は見つからなかった）を足して5分単位で切り上げた値。アーグラ城とDr. Ambedkar Chowk駅のあいだは5分と仮定（地図の歩く経路の計算と合わず、要確認）。運賃は駅数別運賃×2人。"
+      "claimJa": "地点と駅のあいだを歩く時間、入場・手荷物検査・待ちの10分（仮定）、1駅2分の乗車（仮定。運転間隔の公式資料は見つからなかった）を足して5分単位で切り上げた値。アーグラ城とDr. Ambedkar Chowk駅のあいだは5分と仮定（報道では約105mで、あいだに道路と交差点がある。渡る時間を含めた安全側のゲームの仮定。2026-11-07の地図の歩く経路の計算で出た約1.7kmは、駅の点が駅の南側の小道に吸着した誤り）。運賃は駅数別運賃×2人。"
     },
     "walk_station_model": {
       "publisher": "Dreamscape ゲーム編集",
@@ -121,6 +121,46 @@
       "checkedAt": "2026-11-07",
       "claimType": "hypothesis",
       "claimJa": "ゲームの決まり：登録した徒歩が15分以内の組は徒歩だけにする。駅まで歩いて20分以内の地点だけ地下鉄を使う。地下鉄の合計時間が徒歩より長い組には地下鉄を置かない。"
+    },
+    "up_transport_ngt_affidavit": {
+      "publisher": "Transport Department, Uttar Pradesh（Deputy Transport Commissioner, Agra）",
+      "title": "Report by R-11 (Transport Deptt., UP) in O.A. No. 680 of 2023 (Shri Raman Vs Union of India & Ors.)（2024-03-21）",
+      "url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/Report%20by%20R-11%20(Transport%20Deptt.,%20UP)%20in%20OA%20No.%20680%20of%202023%20(Shri%20Raman%20Vs%20Union%20of%20India%20&%20Ors.).pdf",
+      "checkedAt": "2026-11-09",
+      "claimType": "documented_fact",
+      "claimJa": "国家環境裁判所（NGT）への州運輸局の回答（2024-03-21付）の第11項：TTZ機関の別の指示により、タージ・マハルから500m以内には、その範囲に住む人の自家用車（住所を確かめて発行する許可証つき）だけが入れる。"
+    },
+    "inn_transfer_model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+      "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+      "checkedAt": "2026-11-09",
+      "claimType": "hypothesis",
+      "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
+    },
+    "osrm_car_inn": {
+      "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+      "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
+      "url": "https://router.project-osrm.org/table/v1/driving/",
+      "checkedAt": "2026-11-09",
+      "claimType": "hypothesis",
+      "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
+    },
+    "fossgis_foot_inn": {
+      "publisher": "FOSSGIS（routing.openstreetmap.de、routed-foot）／地図 © OpenStreetMap contributors（ODbL）",
+      "title": "アーグラの宿から地下鉄 Taj Mahal 駅までの歩く経路の計算",
+      "url": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/",
+      "checkedAt": "2026-11-09",
+      "claimType": "hypothesis",
+      "claimJa": "宿の代表点から地下鉄 Taj Mahal 駅の出入口まで歩く距離727.5mを2026-11-09に計算した値。歩く分は距離÷分速75mで10分（既存の徒歩経路と同じ換算）。"
+    },
+    "amar_ujala_agra_fort_station": {
+      "publisher": "Amar Ujala",
+      "title": "Agra News: आगरा किले के गेट पर अंडरपास के लिए मेट्रो को मिली एनओसी（2026-01-31）",
+      "url": "https://www.amarujala.com/uttar-pradesh/agra/metro-gets-noc-for-underpass-at-agra-fort-gate-agra-news-c-25-1-agr1070-977394-2026-01-31",
+      "checkedAt": "2026-11-09",
+      "claimType": "documented_fact",
+      "claimJa": "国立記念物機関がUPMRCに、Dr. Ambedkar Chowk駅からアーグラ城の門への地下道の許可を出したと報じる。アーグラ城から地下鉄駅までの距離は105mで、あいだに道路と交差点がある（地下道ができれば、渡らずにアマル・シン門の切符売り場へ行ける）。"
     }
   },
   "decisions": [
@@ -146,13 +186,14 @@
       "toPlaceId": "agra_agra_fort",
       "mode": "metro",
       "status": "available",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "Taj Mahal駅からDr. Ambedkar Chowk駅まで地下鉄（乗り換えなし）。駅まで歩く17分・5分と、入場・検査・待ちの10分を含むゲーム用の推定（35分。徒歩は37分）。運賃は1人₹10×2人。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
         "s7_wikipedia_agra_metro",
         "s18_fossgis_foot",
-        "agra_metro_model"
+        "agra_metro_model",
+        "amar_ujala_agra_fort_station"
       ]
     },
     {
@@ -404,31 +445,26 @@
       "fromPlaceId": "agra_taj_mahal",
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。車はタージ・マハルの500m以内に入れないので、駐車場と門のあいだの10分を含む。",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "歩いて13分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
-        "s11_atp_mehtab_bagh",
-        "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model",
-        "s9_taj_dos_donts",
-        "taj_transfer_model"
+        "walk_station_model"
       ]
     },
     {
       "fromPlaceId": "agra_taj_mahal",
       "toPlaceId": "agra_hotel_hub",
       "mode": "metro",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "Taj Mahal駅からMankameshwar駅まで地下鉄（乗り換えなし）。駅まで歩く17分・7分と、入場・検査・待ちの10分を含むゲーム用の推定（40分。徒歩は46分）。運賃は1人₹15×2人。",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "どちらも最寄りの駅がTaj Mahal駅で、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s18_fossgis_foot",
-        "agra_metro_model"
+        "s19_osm_stations",
+        "fossgis_foot_inn",
+        "walk_station_model"
       ]
     },
     {
@@ -453,13 +489,14 @@
       "toPlaceId": "agra_taj_mahal",
       "mode": "metro",
       "status": "available",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "Dr. Ambedkar Chowk駅からTaj Mahal駅まで地下鉄（乗り換えなし）。駅まで歩く5分・17分と、入場・検査・待ちの10分を含むゲーム用の推定（35分。徒歩は37分）。運賃は1人₹10×2人。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
         "s7_wikipedia_agra_metro",
         "s18_fossgis_foot",
-        "agra_metro_model"
+        "agra_metro_model",
+        "amar_ujala_agra_fort_station"
       ]
     },
     {
@@ -695,24 +732,32 @@
       "fromPlaceId": "agra_agra_fort",
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
-      "status": "not_suitable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "歩いて15分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "status": "available",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
-        "walk_station_model"
+        "s11_atp_mehtab_bagh",
+        "s4_tomtom_delhi",
+        "osrm_car_inn",
+        "agra_jaipur_auto_model",
+        "up_transport_ngt_affidavit",
+        "inn_transfer_model"
       ]
     },
     {
       "fromPlaceId": "agra_agra_fort",
       "toPlaceId": "agra_hotel_hub",
       "mode": "metro",
-      "status": "not_suitable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "歩いて15分で着く（15分以内）ので、地下鉄の経路は置かない。",
+      "status": "available",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "Dr. Ambedkar Chowk駅からTaj Mahal駅まで地下鉄（乗り換えなし）。駅まで歩く5分・10分と、入場・検査・待ちの10分を含むゲーム用の推定（30分。徒歩は38分）。運賃は1人₹10×2人。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
-        "walk_station_model"
+        "s7_wikipedia_agra_metro",
+        "fossgis_foot_inn",
+        "agra_metro_model",
+        "amar_ujala_agra_fort_station"
       ]
     },
     {
@@ -980,14 +1025,16 @@
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
         "s11_atp_mehtab_bagh",
         "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model"
+        "osrm_car_inn",
+        "agra_jaipur_auto_model",
+        "up_transport_ngt_affidavit",
+        "inn_transfer_model"
       ]
     },
     {
@@ -995,7 +1042,7 @@
       "toPlaceId": "agra_hotel_hub",
       "mode": "metro",
       "status": "not_applicable",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "イティマード・ウッダウラ廟の近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
@@ -1269,14 +1316,16 @@
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
         "s11_atp_mehtab_bagh",
         "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model"
+        "osrm_car_inn",
+        "agra_jaipur_auto_model",
+        "up_transport_ngt_affidavit",
+        "inn_transfer_model"
       ]
     },
     {
@@ -1284,7 +1333,7 @@
       "toPlaceId": "agra_hotel_hub",
       "mode": "metro",
       "status": "not_applicable",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "メヘターブ・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
@@ -1534,11 +1583,13 @@
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "fatehpur_provisional_model",
-        "s17_osrm_car"
+        "osrm_car_inn",
+        "inn_transfer_model",
+        "up_transport_ngt_affidavit"
       ]
     },
     {
@@ -1546,7 +1597,7 @@
       "toPlaceId": "agra_hotel_hub",
       "mode": "metro",
       "status": "not_applicable",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "ファテープル・シークリーの近くに営業中の地下鉄の駅がない（アーグラから約40km先で、地下鉄が通っていない）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
@@ -1820,14 +1871,16 @@
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
         "s11_atp_mehtab_bagh",
         "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model"
+        "osrm_car_inn",
+        "agra_jaipur_auto_model",
+        "up_transport_ngt_affidavit",
+        "inn_transfer_model"
       ]
     },
     {
@@ -1835,7 +1888,7 @@
       "toPlaceId": "agra_hotel_hub",
       "mode": "metro",
       "status": "not_applicable",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "アクバル廟の近くに営業中の地下鉄の駅がない（近くの駅（シカンドラ方面）は工事中）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
@@ -2106,14 +2159,16 @@
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
         "s11_atp_mehtab_bagh",
         "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model"
+        "osrm_car_inn",
+        "agra_jaipur_auto_model",
+        "up_transport_ngt_affidavit",
+        "inn_transfer_model"
       ]
     },
     {
@@ -2121,7 +2176,7 @@
       "toPlaceId": "agra_hotel_hub",
       "mode": "metro",
       "status": "not_applicable",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "ラム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
@@ -2392,14 +2447,16 @@
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
         "s11_atp_mehtab_bagh",
         "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model"
+        "osrm_car_inn",
+        "agra_jaipur_auto_model",
+        "up_transport_ngt_affidavit",
+        "inn_transfer_model"
       ]
     },
     {
@@ -2407,7 +2464,7 @@
       "toPlaceId": "agra_hotel_hub",
       "mode": "metro",
       "status": "not_applicable",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "チーニー・カ・ラウザの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
@@ -2681,14 +2738,16 @@
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
         "s11_atp_mehtab_bagh",
         "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model"
+        "osrm_car_inn",
+        "agra_jaipur_auto_model",
+        "up_transport_ngt_affidavit",
+        "inn_transfer_model"
       ]
     },
     {
@@ -2696,7 +2755,7 @@
       "toPlaceId": "agra_hotel_hub",
       "mode": "metro",
       "status": "not_applicable",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "マリアム・ウッザマーニー廟の近くに営業中の地下鉄の駅がない（近くの駅（シカンドラ方面）は工事中）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
@@ -2970,14 +3029,16 @@
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
         "s11_atp_mehtab_bagh",
         "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model"
+        "osrm_car_inn",
+        "agra_jaipur_auto_model",
+        "up_transport_ngt_affidavit",
+        "inn_transfer_model"
       ]
     },
     {
@@ -2985,7 +3046,7 @@
       "toPlaceId": "agra_hotel_hub",
       "mode": "metro",
       "status": "not_applicable",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "グル・カ・タールの近くに営業中の地下鉄の駅がない（近くの駅（グル・カ・タール）は工事中）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
@@ -2998,55 +3059,58 @@
       "fromPlaceId": "agra_hotel_hub",
       "toPlaceId": "agra_taj_mahal",
       "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。車はタージ・マハルの500m以内に入れないので、駐車場と門のあいだの10分を含む。",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "歩いて13分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
-        "s11_atp_mehtab_bagh",
-        "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model",
-        "s9_taj_dos_donts",
-        "taj_transfer_model"
+        "walk_station_model"
       ]
     },
     {
       "fromPlaceId": "agra_hotel_hub",
       "toPlaceId": "agra_taj_mahal",
       "mode": "metro",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "Mankameshwar駅からTaj Mahal駅まで地下鉄（乗り換えなし）。駅まで歩く7分・17分と、入場・検査・待ちの10分を含むゲーム用の推定（40分。徒歩は46分）。運賃は1人₹15×2人。",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "どちらも最寄りの駅がTaj Mahal駅で、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s18_fossgis_foot",
-        "agra_metro_model"
+        "s19_osm_stations",
+        "fossgis_foot_inn",
+        "walk_station_model"
       ]
     },
     {
       "fromPlaceId": "agra_hotel_hub",
       "toPlaceId": "agra_agra_fort",
       "mode": "auto_rickshaw",
-      "status": "not_suitable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "歩いて15分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "status": "available",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
-        "walk_station_model"
+        "s11_atp_mehtab_bagh",
+        "s4_tomtom_delhi",
+        "osrm_car_inn",
+        "agra_jaipur_auto_model",
+        "up_transport_ngt_affidavit",
+        "inn_transfer_model"
       ]
     },
     {
       "fromPlaceId": "agra_hotel_hub",
       "toPlaceId": "agra_agra_fort",
       "mode": "metro",
-      "status": "not_suitable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "歩いて15分で着く（15分以内）ので、地下鉄の経路は置かない。",
+      "status": "available",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "Taj Mahal駅からDr. Ambedkar Chowk駅まで地下鉄（乗り換えなし）。駅まで歩く10分・5分と、入場・検査・待ちの10分を含むゲーム用の推定（30分。徒歩は38分）。運賃は1人₹10×2人。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
-        "walk_station_model"
+        "s7_wikipedia_agra_metro",
+        "fossgis_foot_inn",
+        "agra_metro_model",
+        "amar_ujala_agra_fort_station"
       ]
     },
     {
@@ -3054,14 +3118,16 @@
       "toPlaceId": "agra_itimad_tomb",
       "mode": "auto_rickshaw",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
         "s11_atp_mehtab_bagh",
         "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model"
+        "osrm_car_inn",
+        "agra_jaipur_auto_model",
+        "up_transport_ngt_affidavit",
+        "inn_transfer_model"
       ]
     },
     {
@@ -3069,7 +3135,7 @@
       "toPlaceId": "agra_itimad_tomb",
       "mode": "metro",
       "status": "not_applicable",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "イティマード・ウッダウラ廟の近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
@@ -3083,14 +3149,16 @@
       "toPlaceId": "agra_mehtab_bagh",
       "mode": "auto_rickshaw",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
         "s11_atp_mehtab_bagh",
         "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model"
+        "osrm_car_inn",
+        "agra_jaipur_auto_model",
+        "up_transport_ngt_affidavit",
+        "inn_transfer_model"
       ]
     },
     {
@@ -3098,7 +3166,7 @@
       "toPlaceId": "agra_mehtab_bagh",
       "mode": "metro",
       "status": "not_applicable",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "メヘターブ・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
@@ -3112,11 +3180,13 @@
       "toPlaceId": "agra_fatehpur_sikri",
       "mode": "auto_rickshaw",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "fatehpur_provisional_model",
-        "s17_osrm_car"
+        "osrm_car_inn",
+        "inn_transfer_model",
+        "up_transport_ngt_affidavit"
       ]
     },
     {
@@ -3124,7 +3194,7 @@
       "toPlaceId": "agra_fatehpur_sikri",
       "mode": "metro",
       "status": "not_applicable",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "ファテープル・シークリーの近くに営業中の地下鉄の駅がない（アーグラから約40km先で、地下鉄が通っていない）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
@@ -3138,14 +3208,16 @@
       "toPlaceId": "agra_akbar_tomb",
       "mode": "auto_rickshaw",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
         "s11_atp_mehtab_bagh",
         "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model"
+        "osrm_car_inn",
+        "agra_jaipur_auto_model",
+        "up_transport_ngt_affidavit",
+        "inn_transfer_model"
       ]
     },
     {
@@ -3153,7 +3225,7 @@
       "toPlaceId": "agra_akbar_tomb",
       "mode": "metro",
       "status": "not_applicable",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "アクバル廟の近くに営業中の地下鉄の駅がない（近くの駅（シカンドラ方面）は工事中）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
@@ -3167,14 +3239,16 @@
       "toPlaceId": "agra_ram_bagh",
       "mode": "auto_rickshaw",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
         "s11_atp_mehtab_bagh",
         "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model"
+        "osrm_car_inn",
+        "agra_jaipur_auto_model",
+        "up_transport_ngt_affidavit",
+        "inn_transfer_model"
       ]
     },
     {
@@ -3182,7 +3256,7 @@
       "toPlaceId": "agra_ram_bagh",
       "mode": "metro",
       "status": "not_applicable",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "ラム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
@@ -3196,14 +3270,16 @@
       "toPlaceId": "agra_chini_rauza",
       "mode": "auto_rickshaw",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
         "s11_atp_mehtab_bagh",
         "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model"
+        "osrm_car_inn",
+        "agra_jaipur_auto_model",
+        "up_transport_ngt_affidavit",
+        "inn_transfer_model"
       ]
     },
     {
@@ -3211,7 +3287,7 @@
       "toPlaceId": "agra_chini_rauza",
       "mode": "metro",
       "status": "not_applicable",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "チーニー・カ・ラウザの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
@@ -3225,14 +3301,16 @@
       "toPlaceId": "agra_mariam_tomb",
       "mode": "auto_rickshaw",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
         "s11_atp_mehtab_bagh",
         "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model"
+        "osrm_car_inn",
+        "agra_jaipur_auto_model",
+        "up_transport_ngt_affidavit",
+        "inn_transfer_model"
       ]
     },
     {
@@ -3240,7 +3318,7 @@
       "toPlaceId": "agra_mariam_tomb",
       "mode": "metro",
       "status": "not_applicable",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "マリアム・ウッザマーニー廟の近くに営業中の地下鉄の駅がない（近くの駅（シカンドラ方面）は工事中）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
@@ -3254,14 +3332,16 @@
       "toPlaceId": "agra_guru_ka_taal",
       "mode": "auto_rickshaw",
       "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "checkedAt": "2026-11-09",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
         "s11_atp_mehtab_bagh",
         "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model"
+        "osrm_car_inn",
+        "agra_jaipur_auto_model",
+        "up_transport_ngt_affidavit",
+        "inn_transfer_model"
       ]
     },
     {
@@ -3269,7 +3349,7 @@
       "toPlaceId": "agra_guru_ka_taal",
       "mode": "metro",
       "status": "not_applicable",
-      "checkedAt": "2026-11-07",
+      "checkedAt": "2026-11-09",
       "reasonJa": "グル・カ・タールの近くに営業中の地下鉄の駅がない（近くの駅（グル・カ・タール）は工事中）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",

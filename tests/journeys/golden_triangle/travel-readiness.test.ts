@@ -54,6 +54,40 @@ describe("India city travel data", () => {
     }
   });
 
+  it("lodges the party in Taj Ganj near the Taj Mahal South Gate, a walk from the Taj Mahal and a ride from the fort", () => {
+    const { travel, travelSettings } = getCityContent("agra");
+    const inn = travel.places.find((place) => place.id === travelSettings.hotelPlaceId)!;
+    expect(inn).toMatchObject({ id: "agra_hotel_hub", nameJa: "アーグラの架空宿（タージ・マハル南門付近）", latitude: 27.1687, longitude: 78.0413 });
+    // 「架空」 keeps the place shown as a fictional lodging (placeDisplayName).
+    expect(inn.nameJa).toContain("架空");
+    const between = (from: string, to: string) => travel.routes.filter((route) => route.fromPlaceId === from && route.toPlaceId === to)
+      .map(({ mode, minutes, cost }) => ({ mode, minutes, cost }));
+    for (const [from, to] of [[inn.id, "agra_taj_mahal"], ["agra_taj_mahal", inn.id]])
+      expect(between(from, to), `${from} → ${to}`).toEqual([{ mode: "walk", minutes: 13, cost: 0 }]);
+    for (const [from, to] of [[inn.id, "agra_agra_fort"], ["agra_agra_fort", inn.id]])
+      expect(between(from, to), `${from} → ${to}`).toEqual([
+        { mode: "walk", minutes: 38, cost: 0 }, { mode: "auto_rickshaw", minutes: 25, cost: 120 }, { mode: "metro", minutes: 30, cost: 20 }]);
+    // Autos to and from the inn include the walk to where an auto may stop (TT-a, a game assumption).
+    for (const route of travel.routes.filter((item) => item.mode === "auto_rickshaw" && (item.fromPlaceId === inn.id || item.toPlaceId === inn.id)))
+      expect(route.sources.map((source) => source.title)).toContain("アーグラの宿とオートの乗り降りの場所のあいだの時間");
+  });
+
+  it("lets the Agra finale at the Taj Mahal start with at most ₹3,100 from every place and walks the party home", () => {
+    const { travel, travelSettings } = getCityContent("agra");
+    const finale = travel.events.find((event) => event.id === "gt_agra_finale")!;
+    const place = travel.places.find((item) => item.id === finale.placeId)!;
+    const home = findTravelHomeRoutes(travel.routes, place.id, travelSettings.hotelPlaceId);
+    expect(Math.min(...home.map((route) => route.cost))).toBe(0);
+    expect(home.find((route) => route.cost === 0)).toMatchObject({ mode: "walk", minutes: 13 });
+    for (const origin of travel.places.filter((item) => item.id !== place.id)) {
+      const outgoing = travel.routes.filter((route) => route.fromPlaceId === origin.id && route.toPlaceId === place.id);
+      const feasible = outgoing.some((route) => home.some((returnRoute) => [0, 1, 2, 3, 4, 5, 6].some((weekday) =>
+        planTravelEvent({ currentPlaceId: origin.id, hotelPlaceId: travelSettings.hotelPlaceId, day: 1, minute: DAY_START, weekday, ap: 12, travelBudget: 3_100 },
+          finale, route, returnRoute, place).ok)));
+      expect(feasible, `${origin.id}: start the finale with ₹3,100`).toBe(true);
+    }
+  });
+
   it.each(cities)("keeps the short walks walk-only and gives %s its own metro decision", (cityId) => {
     const { travel } = getCityContent(cityId);
     const walkOnly = travel.places.flatMap((from) => travel.places.filter((to) => to.id !== from.id).flatMap((to) => {

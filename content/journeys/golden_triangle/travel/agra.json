@@ -703,10 +703,10 @@
     {
       "id": "agra_hotel_hub",
       "cityId": "agra",
-      "nameJa": "アーグラの架空宿（アーグラ・フォート駅付近）",
-      "nameEn": "fictional lodging / Agra Fort rail station",
-      "latitude": 27.18225,
-      "longitude": 78.01825,
+      "nameJa": "アーグラの架空宿（タージ・マハル南門付近）",
+      "nameEn": "fictional lodging / Taj Mahal South Gate (Taj Ganj)",
+      "latitude": 27.1687,
+      "longitude": 78.0413,
       "backgroundId": "gt_bg_agra_hotel_hub",
       "openingWindows": [
         {
@@ -716,20 +716,28 @@
       ],
       "sources": [
         {
-          "publisher": "Mapcarta / OpenStreetMap",
-          "title": "fictional lodging / Agra Fort rail station",
-          "url": "https://mapcarta.com/W307766787",
-          "checkedAt": "2026-11-03",
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap way 346806304",
+          "url": "https://www.openstreetmap.org/way/346806304",
+          "checkedAt": "2026-11-09",
           "claimType": "hypothesis",
-          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+          "claimJa": "タージ・ガンジの行き止まりの路地に置いたゲーム用の代表点。実在の宿ではなく、入口や通行の可否を保証しない。"
         },
         {
-          "publisher": "Dreamscape 統合調査",
-          "title": "アーグラの架空宿（アーグラ・フォート駅付近） ゲーム用代表点",
-          "url": "https://agra.nic.in/tourist-place/agra-fort/",
-          "checkedAt": "2026-11-03",
-          "claimType": "hypothesis",
-          "claimJa": "統合調査台帳に記載されたゲーム用の代表点であり、実際の入口・通行経路・宿泊施設を保証しない。"
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap way 163713027 (South Gate)",
+          "url": "https://www.openstreetmap.org/way/163713027",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "OSMはこの建物を South Gate として記録している。代表点はその中心から南西へ直線約210m。"
+        },
+        {
+          "publisher": "Uttar Pradesh Tourism（タージ・マハル公式サイト）",
+          "title": "Entry to Taj Mahal",
+          "url": "https://tajmahal.gov.in/entry-to-taj-mahal.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "公式サイトは南門を、旧ムムターザーバード（今のタージ・ガンジ）に面した歩行者用の門とし、現在は入場口として閉じている（Presently Closed for Entry）と掲載する。"
         }
       ]
     }
@@ -872,9 +880,17 @@
           "publisher": "Dreamscape ゲーム編集",
           "title": "地下鉄の所要時間と運賃の推定（アーグラ）",
           "url": "https://tajmahal.gov.in/pdf/Metro-rail-service-in-Agra.pdf",
-          "checkedAt": "2026-11-07",
+          "checkedAt": "2026-11-09",
           "claimType": "hypothesis",
-          "claimJa": "地点と駅のあいだを歩く時間、入場・手荷物検査・待ちの10分（仮定）、1駅2分の乗車（仮定。運転間隔の公式資料は見つからなかった）を足して5分単位で切り上げた値。アーグラ城とDr. Ambedkar Chowk駅のあいだは5分と仮定（地図の歩く経路の計算と合わず、要確認）。運賃は駅数別運賃×2人。"
+          "claimJa": "地点と駅のあいだを歩く時間、入場・手荷物検査・待ちの10分（仮定）、1駅2分の乗車（仮定。運転間隔の公式資料は見つからなかった）を足して5分単位で切り上げた値。アーグラ城とDr. Ambedkar Chowk駅のあいだは5分と仮定（報道では約105mで、あいだに道路と交差点がある。渡る時間を含めた安全側のゲームの仮定。2026-11-07の地図の歩く経路の計算で出た約1.7kmは、駅の点が駅の南側の小道に吸着した誤り）。運賃は駅数別運賃×2人。"
+        },
+        {
+          "publisher": "Amar Ujala",
+          "title": "Agra News: आगरा किले के गेट पर अंडरपास के लिए मेट्रो को मिली एनओसी（2026-01-31）",
+          "url": "https://www.amarujala.com/uttar-pradesh/agra/metro-gets-noc-for-underpass-at-agra-fort-gate-agra-news-c-25-1-agr1070-977394-2026-01-31",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国立記念物機関がUPMRCに、Dr. Ambedkar Chowk駅からアーグラ城の門への地下道の許可を出したと報じる。アーグラ城から地下鉄駅までの距離は105mで、あいだに道路と交差点がある（地下道ができれば、渡らずにアマル・シン門の切符売り場へ行ける）。"
         }
       ]
     },
@@ -1378,127 +1394,19 @@
       "fromPlaceId": "agra_taj_mahal",
       "toPlaceId": "agra_hotel_hub",
       "mode": "walk",
-      "minutes": 46,
+      "minutes": 13,
       "cost": 0,
       "sources": [
         {
           "publisher": "Dreamscape editorial distance model",
           "title": "Prototype pedestrian movement, not measured OSM walking road",
           "url": "https://www.openstreetmap.org/copyright",
-          "checkedAt": "2026-11-03",
+          "checkedAt": "2026-11-09",
           "claimType": "hypothesis",
           "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
         }
       ],
       "estimation": "game_model"
-    },
-    {
-      "fromPlaceId": "agra_taj_mahal",
-      "toPlaceId": "agra_hotel_hub",
-      "mode": "auto_rickshaw",
-      "minutes": 30,
-      "cost": 150,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Altitude Agra",
-          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
-          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
-        },
-        {
-          "publisher": "Agra Tourist Places",
-          "title": "Mehtab Bagh（日付なし、©2026）",
-          "url": "https://agratouristplaces.com/mehtab-bagh.php",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
-        },
-        {
-          "publisher": "TomTom",
-          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
-          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
-        },
-        {
-          "publisher": "Uttar Pradesh Tourism（タージ・マハル公式サイト）",
-          "title": "Information for Tourists Visiting Taj Mahal",
-          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "タージ・マハルの半径500m以内は汚染車両の乗り入れ禁止。東門はシルプグラム、西門はアムルード・カ・ティーラーに駐車場があり、駐車場から門まで電気バスとゴルフカートがある。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "タージ・マハルの駐車場と門のあいだの時間",
-          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "車は半径500m以内に入れないので、西門側の駐車場で降りて電気バスかゴルフカートで門へ向かう想定。駐車場と門のあいだを10分（仮定）としてオートの時間に足す。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_taj_mahal",
-      "toPlaceId": "agra_hotel_hub",
-      "mode": "metro",
-      "minutes": 40,
-      "cost": 30,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "UPMRC（タージ・マハル公式サイト掲載）",
-          "title": "Agra Metro Welcomes You（PDF、2024-05-03更新）",
-          "url": "https://tajmahal.gov.in/pdf/Metro-rail-service-in-Agra.pdf",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "営業中の優先区間6駅：Taj East Gate、Shaheed Captain Shubham Gupta、Fatehabad Road、Taj Mahal（タージ西門・タージガンジ）、Dr. Ambedkar Chowk（アーグラ城）、Mankameshwar。運賃は1駅₹10、2駅₹15、3〜6駅₹20。"
-        },
-        {
-          "publisher": "Wikipedia",
-          "title": "Agra Metro（2026-10-28編集の版）",
-          "url": "https://en.wikipedia.org/wiki/Agra_Metro",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "優先区間（Taj East Gate〜Mankameshwar、6駅）は2024-03-06開業。シカンドラ、グル・カ・タールの駅は2026年10月時点で工事中。平均速度は時速34km（二次資料）。"
-        },
-        {
-          "publisher": "FOSSGIS（routing.openstreetmap.de、routed-foot）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "地点から地下鉄駅までの歩く経路の計算",
-          "url": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点から地下鉄駅までの歩く距離を2026-11-07に計算した値。歩く分は距離÷分速75m（既存の徒歩経路と同じ換算）。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "地下鉄の所要時間と運賃の推定（アーグラ）",
-          "url": "https://tajmahal.gov.in/pdf/Metro-rail-service-in-Agra.pdf",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点と駅のあいだを歩く時間、入場・手荷物検査・待ちの10分（仮定）、1駅2分の乗車（仮定。運転間隔の公式資料は見つからなかった）を足して5分単位で切り上げた値。アーグラ城とDr. Ambedkar Chowk駅のあいだは5分と仮定（地図の歩く経路の計算と合わず、要確認）。運賃は駅数別運賃×2人。"
-        }
-      ]
     },
     {
       "fromPlaceId": "agra_agra_fort",
@@ -1620,9 +1528,17 @@
           "publisher": "Dreamscape ゲーム編集",
           "title": "地下鉄の所要時間と運賃の推定（アーグラ）",
           "url": "https://tajmahal.gov.in/pdf/Metro-rail-service-in-Agra.pdf",
-          "checkedAt": "2026-11-07",
+          "checkedAt": "2026-11-09",
           "claimType": "hypothesis",
-          "claimJa": "地点と駅のあいだを歩く時間、入場・手荷物検査・待ちの10分（仮定）、1駅2分の乗車（仮定。運転間隔の公式資料は見つからなかった）を足して5分単位で切り上げた値。アーグラ城とDr. Ambedkar Chowk駅のあいだは5分と仮定（地図の歩く経路の計算と合わず、要確認）。運賃は駅数別運賃×2人。"
+          "claimJa": "地点と駅のあいだを歩く時間、入場・手荷物検査・待ちの10分（仮定）、1駅2分の乗車（仮定。運転間隔の公式資料は見つからなかった）を足して5分単位で切り上げた値。アーグラ城とDr. Ambedkar Chowk駅のあいだは5分と仮定（報道では約105mで、あいだに道路と交差点がある。渡る時間を含めた安全側のゲームの仮定。2026-11-07の地図の歩く経路の計算で出た約1.7kmは、駅の点が駅の南側の小道に吸着した誤り）。運賃は駅数別運賃×2人。"
+        },
+        {
+          "publisher": "Amar Ujala",
+          "title": "Agra News: आगरा किले के गेट पर अंडरपास के लिए मेट्रो को मिली एनओसी（2026-01-31）",
+          "url": "https://www.amarujala.com/uttar-pradesh/agra/metro-gets-noc-for-underpass-at-agra-fort-gate-agra-news-c-25-1-agr1070-977394-2026-01-31",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国立記念物機関がUPMRCに、Dr. Ambedkar Chowk駅からアーグラ城の門への地下道の許可を出したと報じる。アーグラ城から地下鉄駅までの距離は105mで、あいだに道路と交差点がある（地下道ができれば、渡らずにアマル・シン門の切符売り場へ行ける）。"
         }
       ]
     },
@@ -2023,19 +1939,135 @@
       "fromPlaceId": "agra_agra_fort",
       "toPlaceId": "agra_hotel_hub",
       "mode": "walk",
-      "minutes": 15,
+      "minutes": 38,
       "cost": 0,
       "sources": [
         {
           "publisher": "Dreamscape editorial distance model",
           "title": "Prototype pedestrian movement, not measured OSM walking road",
           "url": "https://www.openstreetmap.org/copyright",
-          "checkedAt": "2026-11-03",
+          "checkedAt": "2026-11-09",
           "claimType": "hypothesis",
           "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
         }
       ],
       "estimation": "game_model"
+    },
+    {
+      "fromPlaceId": "agra_agra_fort",
+      "toPlaceId": "agra_hotel_hub",
+      "mode": "auto_rickshaw",
+      "minutes": 25,
+      "cost": 120,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Altitude Agra",
+          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
+          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
+        },
+        {
+          "publisher": "Agra Tourist Places",
+          "title": "Mehtab Bagh（日付なし、©2026）",
+          "url": "https://agratouristplaces.com/mehtab-bagh.php",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
+        },
+        {
+          "publisher": "TomTom",
+          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
+          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        },
+        {
+          "publisher": "Transport Department, Uttar Pradesh（Deputy Transport Commissioner, Agra）",
+          "title": "Report by R-11 (Transport Deptt., UP) in O.A. No. 680 of 2023 (Shri Raman Vs Union of India & Ors.)（2024-03-21）",
+          "url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/Report%20by%20R-11%20(Transport%20Deptt.,%20UP)%20in%20OA%20No.%20680%20of%202023%20(Shri%20Raman%20Vs%20Union%20of%20India%20&%20Ors.).pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国家環境裁判所（NGT）への州運輸局の回答（2024-03-21付）の第11項：TTZ機関の別の指示により、タージ・マハルから500m以内には、その範囲に住む人の自家用車（住所を確かめて発行する許可証つき）だけが入れる。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_agra_fort",
+      "toPlaceId": "agra_hotel_hub",
+      "mode": "metro",
+      "minutes": 30,
+      "cost": 20,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "UPMRC（タージ・マハル公式サイト掲載）",
+          "title": "Agra Metro Welcomes You（PDF、2024-05-03更新）",
+          "url": "https://tajmahal.gov.in/pdf/Metro-rail-service-in-Agra.pdf",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "営業中の優先区間6駅：Taj East Gate、Shaheed Captain Shubham Gupta、Fatehabad Road、Taj Mahal（タージ西門・タージガンジ）、Dr. Ambedkar Chowk（アーグラ城）、Mankameshwar。運賃は1駅₹10、2駅₹15、3〜6駅₹20。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Agra Metro（2026-10-28編集の版）",
+          "url": "https://en.wikipedia.org/wiki/Agra_Metro",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "優先区間（Taj East Gate〜Mankameshwar、6駅）は2024-03-06開業。シカンドラ、グル・カ・タールの駅は2026年10月時点で工事中。平均速度は時速34km（二次資料）。"
+        },
+        {
+          "publisher": "FOSSGIS（routing.openstreetmap.de、routed-foot）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "アーグラの宿から地下鉄 Taj Mahal 駅までの歩く経路の計算",
+          "url": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点から地下鉄 Taj Mahal 駅の出入口まで歩く距離727.5mを2026-11-09に計算した値。歩く分は距離÷分速75mで10分（既存の徒歩経路と同じ換算）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "地下鉄の所要時間と運賃の推定（アーグラ）",
+          "url": "https://tajmahal.gov.in/pdf/Metro-rail-service-in-Agra.pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "地点と駅のあいだを歩く時間、入場・手荷物検査・待ちの10分（仮定）、1駅2分の乗車（仮定。運転間隔の公式資料は見つからなかった）を足して5分単位で切り上げた値。アーグラ城とDr. Ambedkar Chowk駅のあいだは5分と仮定（報道では約105mで、あいだに道路と交差点がある。渡る時間を含めた安全側のゲームの仮定。2026-11-07の地図の歩く経路の計算で出た約1.7kmは、駅の点が駅の南側の小道に吸着した誤り）。運賃は駅数別運賃×2人。"
+        },
+        {
+          "publisher": "Amar Ujala",
+          "title": "Agra News: आगरा किले के गेट पर अंडरपास के लिए मेट्रो को मिली एनओसी（2026-01-31）",
+          "url": "https://www.amarujala.com/uttar-pradesh/agra/metro-gets-noc-for-underpass-at-agra-fort-gate-agra-news-c-25-1-agr1070-977394-2026-01-31",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国立記念物機関がUPMRCに、Dr. Ambedkar Chowk駅からアーグラ城の門への地下道の許可を出したと報じる。アーグラ城から地下鉄駅までの距離は105mで、あいだに道路と交差点がある（地下道ができれば、渡らずにアマル・シン門の切符売り場へ行ける）。"
+        }
+      ]
     },
     {
       "fromPlaceId": "agra_itimad_tomb",
@@ -2554,8 +2586,8 @@
       "fromPlaceId": "agra_itimad_tomb",
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
-      "minutes": 20,
-      "cost": 160,
+      "minutes": 35,
+      "cost": 180,
       "estimation": "game_model",
       "sources": [
         {
@@ -2584,11 +2616,11 @@
         },
         {
           "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
           "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
+          "checkedAt": "2026-11-09",
           "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
@@ -2597,6 +2629,22 @@
           "checkedAt": "2026-11-07",
           "claimType": "hypothesis",
           "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        },
+        {
+          "publisher": "Transport Department, Uttar Pradesh（Deputy Transport Commissioner, Agra）",
+          "title": "Report by R-11 (Transport Deptt., UP) in O.A. No. 680 of 2023 (Shri Raman Vs Union of India & Ors.)（2024-03-21）",
+          "url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/Report%20by%20R-11%20(Transport%20Deptt.,%20UP)%20in%20OA%20No.%20680%20of%202023%20(Shri%20Raman%20Vs%20Union%20of%20India%20&%20Ors.).pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国家環境裁判所（NGT）への州運輸局の回答（2024-03-21付）の第11項：TTZ機関の別の指示により、タージ・マハルから500m以内には、その範囲に住む人の自家用車（住所を確かめて発行する許可証つき）だけが入れる。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
         }
       ]
     },
@@ -3117,8 +3165,8 @@
       "fromPlaceId": "agra_mehtab_bagh",
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
-      "minutes": 25,
-      "cost": 200,
+      "minutes": 40,
+      "cost": 210,
       "estimation": "game_model",
       "sources": [
         {
@@ -3147,11 +3195,11 @@
         },
         {
           "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
           "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
+          "checkedAt": "2026-11-09",
           "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
@@ -3160,6 +3208,22 @@
           "checkedAt": "2026-11-07",
           "claimType": "hypothesis",
           "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        },
+        {
+          "publisher": "Transport Department, Uttar Pradesh（Deputy Transport Commissioner, Agra）",
+          "title": "Report by R-11 (Transport Deptt., UP) in O.A. No. 680 of 2023 (Shri Raman Vs Union of India & Ors.)（2024-03-21）",
+          "url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/Report%20by%20R-11%20(Transport%20Deptt.,%20UP)%20in%20OA%20No.%20680%20of%202023%20(Shri%20Raman%20Vs%20Union%20of%20India%20&%20Ors.).pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国家環境裁判所（NGT）への州運輸局の回答（2024-03-21付）の第11項：TTZ機関の別の指示により、タージ・マハルから500m以内には、その範囲に住む人の自家用車（住所を確かめて発行する許可証つき）だけが入れる。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
         }
       ]
     },
@@ -3426,8 +3490,8 @@
       "fromPlaceId": "agra_fatehpur_sikri",
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
-      "minutes": 80,
-      "cost": 820,
+      "minutes": 95,
+      "cost": 880,
       "estimation": "game_model",
       "sources": [
         {
@@ -3440,11 +3504,19 @@
         },
         {
           "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
           "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
+          "checkedAt": "2026-11-09",
           "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
         }
       ]
     },
@@ -3911,8 +3983,8 @@
       "fromPlaceId": "agra_akbar_tomb",
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
-      "minutes": 40,
-      "cost": 300,
+      "minutes": 55,
+      "cost": 350,
       "estimation": "game_model",
       "sources": [
         {
@@ -3941,11 +4013,11 @@
         },
         {
           "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
           "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
+          "checkedAt": "2026-11-09",
           "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
@@ -3954,6 +4026,22 @@
           "checkedAt": "2026-11-07",
           "claimType": "hypothesis",
           "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        },
+        {
+          "publisher": "Transport Department, Uttar Pradesh（Deputy Transport Commissioner, Agra）",
+          "title": "Report by R-11 (Transport Deptt., UP) in O.A. No. 680 of 2023 (Shri Raman Vs Union of India & Ors.)（2024-03-21）",
+          "url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/Report%20by%20R-11%20(Transport%20Deptt.,%20UP)%20in%20OA%20No.%20680%20of%202023%20(Shri%20Raman%20Vs%20Union%20of%20India%20&%20Ors.).pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国家環境裁判所（NGT）への州運輸局の回答（2024-03-21付）の第11項：TTZ機関の別の指示により、タージ・マハルから500m以内には、その範囲に住む人の自家用車（住所を確かめて発行する許可証つき）だけが入れる。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
         }
       ]
     },
@@ -4424,8 +4512,8 @@
       "fromPlaceId": "agra_ram_bagh",
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
-      "minutes": 25,
-      "cost": 200,
+      "minutes": 40,
+      "cost": 210,
       "estimation": "game_model",
       "sources": [
         {
@@ -4454,11 +4542,11 @@
         },
         {
           "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
           "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
+          "checkedAt": "2026-11-09",
           "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
@@ -4467,6 +4555,22 @@
           "checkedAt": "2026-11-07",
           "claimType": "hypothesis",
           "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        },
+        {
+          "publisher": "Transport Department, Uttar Pradesh（Deputy Transport Commissioner, Agra）",
+          "title": "Report by R-11 (Transport Deptt., UP) in O.A. No. 680 of 2023 (Shri Raman Vs Union of India & Ors.)（2024-03-21）",
+          "url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/Report%20by%20R-11%20(Transport%20Deptt.,%20UP)%20in%20OA%20No.%20680%20of%202023%20(Shri%20Raman%20Vs%20Union%20of%20India%20&%20Ors.).pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国家環境裁判所（NGT）への州運輸局の回答（2024-03-21付）の第11項：TTZ機関の別の指示により、タージ・マハルから500m以内には、その範囲に住む人の自家用車（住所を確かめて発行する許可証つき）だけが入れる。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
         }
       ]
     },
@@ -4937,8 +5041,8 @@
       "fromPlaceId": "agra_chini_rauza",
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
-      "minutes": 30,
-      "cost": 210,
+      "minutes": 40,
+      "cost": 220,
       "estimation": "game_model",
       "sources": [
         {
@@ -4967,11 +5071,11 @@
         },
         {
           "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
           "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
+          "checkedAt": "2026-11-09",
           "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
@@ -4980,6 +5084,22 @@
           "checkedAt": "2026-11-07",
           "claimType": "hypothesis",
           "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        },
+        {
+          "publisher": "Transport Department, Uttar Pradesh（Deputy Transport Commissioner, Agra）",
+          "title": "Report by R-11 (Transport Deptt., UP) in O.A. No. 680 of 2023 (Shri Raman Vs Union of India & Ors.)（2024-03-21）",
+          "url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/Report%20by%20R-11%20(Transport%20Deptt.,%20UP)%20in%20OA%20No.%20680%20of%202023%20(Shri%20Raman%20Vs%20Union%20of%20India%20&%20Ors.).pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国家環境裁判所（NGT）への州運輸局の回答（2024-03-21付）の第11項：TTZ機関の別の指示により、タージ・マハルから500m以内には、その範囲に住む人の自家用車（住所を確かめて発行する許可証つき）だけが入れる。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
         }
       ]
     },
@@ -5446,8 +5566,8 @@
       "fromPlaceId": "agra_mariam_tomb",
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
-      "minutes": 45,
-      "cost": 370,
+      "minutes": 60,
+      "cost": 420,
       "estimation": "game_model",
       "sources": [
         {
@@ -5476,11 +5596,11 @@
         },
         {
           "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
           "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
+          "checkedAt": "2026-11-09",
           "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
@@ -5489,6 +5609,22 @@
           "checkedAt": "2026-11-07",
           "claimType": "hypothesis",
           "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        },
+        {
+          "publisher": "Transport Department, Uttar Pradesh（Deputy Transport Commissioner, Agra）",
+          "title": "Report by R-11 (Transport Deptt., UP) in O.A. No. 680 of 2023 (Shri Raman Vs Union of India & Ors.)（2024-03-21）",
+          "url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/Report%20by%20R-11%20(Transport%20Deptt.,%20UP)%20in%20OA%20No.%20680%20of%202023%20(Shri%20Raman%20Vs%20Union%20of%20India%20&%20Ors.).pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国家環境裁判所（NGT）への州運輸局の回答（2024-03-21付）の第11項：TTZ機関の別の指示により、タージ・マハルから500m以内には、その範囲に住む人の自家用車（住所を確かめて発行する許可証つき）だけが入れる。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
         }
       ]
     },
@@ -5955,477 +6091,7 @@
       "fromPlaceId": "agra_guru_ka_taal",
       "toPlaceId": "agra_hotel_hub",
       "mode": "auto_rickshaw",
-      "minutes": 30,
-      "cost": 230,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Altitude Agra",
-          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
-          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
-        },
-        {
-          "publisher": "Agra Tourist Places",
-          "title": "Mehtab Bagh（日付なし、©2026）",
-          "url": "https://agratouristplaces.com/mehtab-bagh.php",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
-        },
-        {
-          "publisher": "TomTom",
-          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
-          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_hotel_hub",
-      "toPlaceId": "agra_taj_mahal",
-      "mode": "walk",
-      "minutes": 46,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "Dreamscape editorial distance model",
-          "title": "Prototype pedestrian movement, not measured OSM walking road",
-          "url": "https://www.openstreetmap.org/copyright",
-          "checkedAt": "2026-11-03",
-          "claimType": "hypothesis",
-          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
-        }
-      ],
-      "estimation": "game_model"
-    },
-    {
-      "fromPlaceId": "agra_hotel_hub",
-      "toPlaceId": "agra_taj_mahal",
-      "mode": "auto_rickshaw",
-      "minutes": 30,
-      "cost": 150,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Altitude Agra",
-          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
-          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
-        },
-        {
-          "publisher": "Agra Tourist Places",
-          "title": "Mehtab Bagh（日付なし、©2026）",
-          "url": "https://agratouristplaces.com/mehtab-bagh.php",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
-        },
-        {
-          "publisher": "TomTom",
-          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
-          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
-        },
-        {
-          "publisher": "Uttar Pradesh Tourism（タージ・マハル公式サイト）",
-          "title": "Information for Tourists Visiting Taj Mahal",
-          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "タージ・マハルの半径500m以内は汚染車両の乗り入れ禁止。東門はシルプグラム、西門はアムルード・カ・ティーラーに駐車場があり、駐車場から門まで電気バスとゴルフカートがある。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "タージ・マハルの駐車場と門のあいだの時間",
-          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "車は半径500m以内に入れないので、西門側の駐車場で降りて電気バスかゴルフカートで門へ向かう想定。駐車場と門のあいだを10分（仮定）としてオートの時間に足す。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_hotel_hub",
-      "toPlaceId": "agra_taj_mahal",
-      "mode": "metro",
-      "minutes": 40,
-      "cost": 30,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "UPMRC（タージ・マハル公式サイト掲載）",
-          "title": "Agra Metro Welcomes You（PDF、2024-05-03更新）",
-          "url": "https://tajmahal.gov.in/pdf/Metro-rail-service-in-Agra.pdf",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "営業中の優先区間6駅：Taj East Gate、Shaheed Captain Shubham Gupta、Fatehabad Road、Taj Mahal（タージ西門・タージガンジ）、Dr. Ambedkar Chowk（アーグラ城）、Mankameshwar。運賃は1駅₹10、2駅₹15、3〜6駅₹20。"
-        },
-        {
-          "publisher": "Wikipedia",
-          "title": "Agra Metro（2026-10-28編集の版）",
-          "url": "https://en.wikipedia.org/wiki/Agra_Metro",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "優先区間（Taj East Gate〜Mankameshwar、6駅）は2024-03-06開業。シカンドラ、グル・カ・タールの駅は2026年10月時点で工事中。平均速度は時速34km（二次資料）。"
-        },
-        {
-          "publisher": "FOSSGIS（routing.openstreetmap.de、routed-foot）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "地点から地下鉄駅までの歩く経路の計算",
-          "url": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点から地下鉄駅までの歩く距離を2026-11-07に計算した値。歩く分は距離÷分速75m（既存の徒歩経路と同じ換算）。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "地下鉄の所要時間と運賃の推定（アーグラ）",
-          "url": "https://tajmahal.gov.in/pdf/Metro-rail-service-in-Agra.pdf",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点と駅のあいだを歩く時間、入場・手荷物検査・待ちの10分（仮定）、1駅2分の乗車（仮定。運転間隔の公式資料は見つからなかった）を足して5分単位で切り上げた値。アーグラ城とDr. Ambedkar Chowk駅のあいだは5分と仮定（地図の歩く経路の計算と合わず、要確認）。運賃は駅数別運賃×2人。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_hotel_hub",
-      "toPlaceId": "agra_agra_fort",
-      "mode": "walk",
-      "minutes": 15,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "Dreamscape editorial distance model",
-          "title": "Prototype pedestrian movement, not measured OSM walking road",
-          "url": "https://www.openstreetmap.org/copyright",
-          "checkedAt": "2026-11-03",
-          "claimType": "hypothesis",
-          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
-        }
-      ],
-      "estimation": "game_model"
-    },
-    {
-      "fromPlaceId": "agra_hotel_hub",
-      "toPlaceId": "agra_itimad_tomb",
-      "mode": "auto_rickshaw",
-      "minutes": 15,
-      "cost": 120,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Altitude Agra",
-          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
-          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
-        },
-        {
-          "publisher": "Agra Tourist Places",
-          "title": "Mehtab Bagh（日付なし、©2026）",
-          "url": "https://agratouristplaces.com/mehtab-bagh.php",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
-        },
-        {
-          "publisher": "TomTom",
-          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
-          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_hotel_hub",
-      "toPlaceId": "agra_mehtab_bagh",
-      "mode": "auto_rickshaw",
-      "minutes": 20,
-      "cost": 160,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Altitude Agra",
-          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
-          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
-        },
-        {
-          "publisher": "Agra Tourist Places",
-          "title": "Mehtab Bagh（日付なし、©2026）",
-          "url": "https://agratouristplaces.com/mehtab-bagh.php",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
-        },
-        {
-          "publisher": "TomTom",
-          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
-          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_hotel_hub",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "minutes": 80,
-      "cost": 830,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_hotel_hub",
-      "toPlaceId": "agra_akbar_tomb",
-      "mode": "auto_rickshaw",
-      "minutes": 40,
-      "cost": 300,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Altitude Agra",
-          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
-          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
-        },
-        {
-          "publisher": "Agra Tourist Places",
-          "title": "Mehtab Bagh（日付なし、©2026）",
-          "url": "https://agratouristplaces.com/mehtab-bagh.php",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
-        },
-        {
-          "publisher": "TomTom",
-          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
-          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_hotel_hub",
-      "toPlaceId": "agra_ram_bagh",
-      "mode": "auto_rickshaw",
-      "minutes": 20,
-      "cost": 150,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Altitude Agra",
-          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
-          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
-        },
-        {
-          "publisher": "Agra Tourist Places",
-          "title": "Mehtab Bagh（日付なし、©2026）",
-          "url": "https://agratouristplaces.com/mehtab-bagh.php",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
-        },
-        {
-          "publisher": "TomTom",
-          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
-          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_hotel_hub",
-      "toPlaceId": "agra_chini_rauza",
-      "mode": "auto_rickshaw",
-      "minutes": 20,
-      "cost": 150,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Altitude Agra",
-          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
-          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
-        },
-        {
-          "publisher": "Agra Tourist Places",
-          "title": "Mehtab Bagh（日付なし、©2026）",
-          "url": "https://agratouristplaces.com/mehtab-bagh.php",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
-        },
-        {
-          "publisher": "TomTom",
-          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
-          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_hotel_hub",
-      "toPlaceId": "agra_mariam_tomb",
-      "mode": "auto_rickshaw",
-      "minutes": 40,
+      "minutes": 50,
       "cost": 310,
       "estimation": "game_model",
       "sources": [
@@ -6455,11 +6121,11 @@
         },
         {
           "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
           "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
+          "checkedAt": "2026-11-09",
           "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
@@ -6468,15 +6134,67 @@
           "checkedAt": "2026-11-07",
           "claimType": "hypothesis",
           "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        },
+        {
+          "publisher": "Transport Department, Uttar Pradesh（Deputy Transport Commissioner, Agra）",
+          "title": "Report by R-11 (Transport Deptt., UP) in O.A. No. 680 of 2023 (Shri Raman Vs Union of India & Ors.)（2024-03-21）",
+          "url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/Report%20by%20R-11%20(Transport%20Deptt.,%20UP)%20in%20OA%20No.%20680%20of%202023%20(Shri%20Raman%20Vs%20Union%20of%20India%20&%20Ors.).pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国家環境裁判所（NGT）への州運輸局の回答（2024-03-21付）の第11項：TTZ機関の別の指示により、タージ・マハルから500m以内には、その範囲に住む人の自家用車（住所を確かめて発行する許可証つき）だけが入れる。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
         }
       ]
     },
     {
       "fromPlaceId": "agra_hotel_hub",
-      "toPlaceId": "agra_guru_ka_taal",
+      "toPlaceId": "agra_taj_mahal",
+      "mode": "walk",
+      "minutes": 13,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ],
+      "estimation": "game_model"
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_agra_fort",
+      "mode": "walk",
+      "minutes": 38,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ],
+      "estimation": "game_model"
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_agra_fort",
       "mode": "auto_rickshaw",
-      "minutes": 35,
-      "cost": 250,
+      "minutes": 25,
+      "cost": 120,
       "estimation": "game_model",
       "sources": [
         {
@@ -6505,11 +6223,11 @@
         },
         {
           "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
           "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
+          "checkedAt": "2026-11-09",
           "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
@@ -6518,6 +6236,568 @@
           "checkedAt": "2026-11-07",
           "claimType": "hypothesis",
           "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        },
+        {
+          "publisher": "Transport Department, Uttar Pradesh（Deputy Transport Commissioner, Agra）",
+          "title": "Report by R-11 (Transport Deptt., UP) in O.A. No. 680 of 2023 (Shri Raman Vs Union of India & Ors.)（2024-03-21）",
+          "url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/Report%20by%20R-11%20(Transport%20Deptt.,%20UP)%20in%20OA%20No.%20680%20of%202023%20(Shri%20Raman%20Vs%20Union%20of%20India%20&%20Ors.).pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国家環境裁判所（NGT）への州運輸局の回答（2024-03-21付）の第11項：TTZ機関の別の指示により、タージ・マハルから500m以内には、その範囲に住む人の自家用車（住所を確かめて発行する許可証つき）だけが入れる。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_agra_fort",
+      "mode": "metro",
+      "minutes": 30,
+      "cost": 20,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "UPMRC（タージ・マハル公式サイト掲載）",
+          "title": "Agra Metro Welcomes You（PDF、2024-05-03更新）",
+          "url": "https://tajmahal.gov.in/pdf/Metro-rail-service-in-Agra.pdf",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "営業中の優先区間6駅：Taj East Gate、Shaheed Captain Shubham Gupta、Fatehabad Road、Taj Mahal（タージ西門・タージガンジ）、Dr. Ambedkar Chowk（アーグラ城）、Mankameshwar。運賃は1駅₹10、2駅₹15、3〜6駅₹20。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Agra Metro（2026-10-28編集の版）",
+          "url": "https://en.wikipedia.org/wiki/Agra_Metro",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "優先区間（Taj East Gate〜Mankameshwar、6駅）は2024-03-06開業。シカンドラ、グル・カ・タールの駅は2026年10月時点で工事中。平均速度は時速34km（二次資料）。"
+        },
+        {
+          "publisher": "FOSSGIS（routing.openstreetmap.de、routed-foot）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "アーグラの宿から地下鉄 Taj Mahal 駅までの歩く経路の計算",
+          "url": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点から地下鉄 Taj Mahal 駅の出入口まで歩く距離727.5mを2026-11-09に計算した値。歩く分は距離÷分速75mで10分（既存の徒歩経路と同じ換算）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "地下鉄の所要時間と運賃の推定（アーグラ）",
+          "url": "https://tajmahal.gov.in/pdf/Metro-rail-service-in-Agra.pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "地点と駅のあいだを歩く時間、入場・手荷物検査・待ちの10分（仮定）、1駅2分の乗車（仮定。運転間隔の公式資料は見つからなかった）を足して5分単位で切り上げた値。アーグラ城とDr. Ambedkar Chowk駅のあいだは5分と仮定（報道では約105mで、あいだに道路と交差点がある。渡る時間を含めた安全側のゲームの仮定。2026-11-07の地図の歩く経路の計算で出た約1.7kmは、駅の点が駅の南側の小道に吸着した誤り）。運賃は駅数別運賃×2人。"
+        },
+        {
+          "publisher": "Amar Ujala",
+          "title": "Agra News: आगरा किले के गेट पर अंडरपास के लिए मेट्रो को मिली एनओसी（2026-01-31）",
+          "url": "https://www.amarujala.com/uttar-pradesh/agra/metro-gets-noc-for-underpass-at-agra-fort-gate-agra-news-c-25-1-agr1070-977394-2026-01-31",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国立記念物機関がUPMRCに、Dr. Ambedkar Chowk駅からアーグラ城の門への地下道の許可を出したと報じる。アーグラ城から地下鉄駅までの距離は105mで、あいだに道路と交差点がある（地下道ができれば、渡らずにアマル・シン門の切符売り場へ行ける）。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_itimad_tomb",
+      "mode": "auto_rickshaw",
+      "minutes": 35,
+      "cost": 180,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Altitude Agra",
+          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
+          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
+        },
+        {
+          "publisher": "Agra Tourist Places",
+          "title": "Mehtab Bagh（日付なし、©2026）",
+          "url": "https://agratouristplaces.com/mehtab-bagh.php",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
+        },
+        {
+          "publisher": "TomTom",
+          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
+          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        },
+        {
+          "publisher": "Transport Department, Uttar Pradesh（Deputy Transport Commissioner, Agra）",
+          "title": "Report by R-11 (Transport Deptt., UP) in O.A. No. 680 of 2023 (Shri Raman Vs Union of India & Ors.)（2024-03-21）",
+          "url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/Report%20by%20R-11%20(Transport%20Deptt.,%20UP)%20in%20OA%20No.%20680%20of%202023%20(Shri%20Raman%20Vs%20Union%20of%20India%20&%20Ors.).pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国家環境裁判所（NGT）への州運輸局の回答（2024-03-21付）の第11項：TTZ機関の別の指示により、タージ・マハルから500m以内には、その範囲に住む人の自家用車（住所を確かめて発行する許可証つき）だけが入れる。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_mehtab_bagh",
+      "mode": "auto_rickshaw",
+      "minutes": 40,
+      "cost": 210,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Altitude Agra",
+          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
+          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
+        },
+        {
+          "publisher": "Agra Tourist Places",
+          "title": "Mehtab Bagh（日付なし、©2026）",
+          "url": "https://agratouristplaces.com/mehtab-bagh.php",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
+        },
+        {
+          "publisher": "TomTom",
+          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
+          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        },
+        {
+          "publisher": "Transport Department, Uttar Pradesh（Deputy Transport Commissioner, Agra）",
+          "title": "Report by R-11 (Transport Deptt., UP) in O.A. No. 680 of 2023 (Shri Raman Vs Union of India & Ors.)（2024-03-21）",
+          "url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/Report%20by%20R-11%20(Transport%20Deptt.,%20UP)%20in%20OA%20No.%20680%20of%202023%20(Shri%20Raman%20Vs%20Union%20of%20India%20&%20Ors.).pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国家環境裁判所（NGT）への州運輸局の回答（2024-03-21付）の第11項：TTZ機関の別の指示により、タージ・マハルから500m以内には、その範囲に住む人の自家用車（住所を確かめて発行する許可証つき）だけが入れる。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_fatehpur_sikri",
+      "mode": "auto_rickshaw",
+      "minutes": 95,
+      "cost": 880,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_akbar_tomb",
+      "mode": "auto_rickshaw",
+      "minutes": 55,
+      "cost": 360,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Altitude Agra",
+          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
+          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
+        },
+        {
+          "publisher": "Agra Tourist Places",
+          "title": "Mehtab Bagh（日付なし、©2026）",
+          "url": "https://agratouristplaces.com/mehtab-bagh.php",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
+        },
+        {
+          "publisher": "TomTom",
+          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
+          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        },
+        {
+          "publisher": "Transport Department, Uttar Pradesh（Deputy Transport Commissioner, Agra）",
+          "title": "Report by R-11 (Transport Deptt., UP) in O.A. No. 680 of 2023 (Shri Raman Vs Union of India & Ors.)（2024-03-21）",
+          "url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/Report%20by%20R-11%20(Transport%20Deptt.,%20UP)%20in%20OA%20No.%20680%20of%202023%20(Shri%20Raman%20Vs%20Union%20of%20India%20&%20Ors.).pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国家環境裁判所（NGT）への州運輸局の回答（2024-03-21付）の第11項：TTZ機関の別の指示により、タージ・マハルから500m以内には、その範囲に住む人の自家用車（住所を確かめて発行する許可証つき）だけが入れる。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_ram_bagh",
+      "mode": "auto_rickshaw",
+      "minutes": 40,
+      "cost": 200,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Altitude Agra",
+          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
+          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
+        },
+        {
+          "publisher": "Agra Tourist Places",
+          "title": "Mehtab Bagh（日付なし、©2026）",
+          "url": "https://agratouristplaces.com/mehtab-bagh.php",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
+        },
+        {
+          "publisher": "TomTom",
+          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
+          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        },
+        {
+          "publisher": "Transport Department, Uttar Pradesh（Deputy Transport Commissioner, Agra）",
+          "title": "Report by R-11 (Transport Deptt., UP) in O.A. No. 680 of 2023 (Shri Raman Vs Union of India & Ors.)（2024-03-21）",
+          "url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/Report%20by%20R-11%20(Transport%20Deptt.,%20UP)%20in%20OA%20No.%20680%20of%202023%20(Shri%20Raman%20Vs%20Union%20of%20India%20&%20Ors.).pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国家環境裁判所（NGT）への州運輸局の回答（2024-03-21付）の第11項：TTZ機関の別の指示により、タージ・マハルから500m以内には、その範囲に住む人の自家用車（住所を確かめて発行する許可証つき）だけが入れる。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_chini_rauza",
+      "mode": "auto_rickshaw",
+      "minutes": 40,
+      "cost": 210,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Altitude Agra",
+          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
+          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
+        },
+        {
+          "publisher": "Agra Tourist Places",
+          "title": "Mehtab Bagh（日付なし、©2026）",
+          "url": "https://agratouristplaces.com/mehtab-bagh.php",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
+        },
+        {
+          "publisher": "TomTom",
+          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
+          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        },
+        {
+          "publisher": "Transport Department, Uttar Pradesh（Deputy Transport Commissioner, Agra）",
+          "title": "Report by R-11 (Transport Deptt., UP) in O.A. No. 680 of 2023 (Shri Raman Vs Union of India & Ors.)（2024-03-21）",
+          "url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/Report%20by%20R-11%20(Transport%20Deptt.,%20UP)%20in%20OA%20No.%20680%20of%202023%20(Shri%20Raman%20Vs%20Union%20of%20India%20&%20Ors.).pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国家環境裁判所（NGT）への州運輸局の回答（2024-03-21付）の第11項：TTZ機関の別の指示により、タージ・マハルから500m以内には、その範囲に住む人の自家用車（住所を確かめて発行する許可証つき）だけが入れる。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_mariam_tomb",
+      "mode": "auto_rickshaw",
+      "minutes": 55,
+      "cost": 360,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Altitude Agra",
+          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
+          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
+        },
+        {
+          "publisher": "Agra Tourist Places",
+          "title": "Mehtab Bagh（日付なし、©2026）",
+          "url": "https://agratouristplaces.com/mehtab-bagh.php",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
+        },
+        {
+          "publisher": "TomTom",
+          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
+          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        },
+        {
+          "publisher": "Transport Department, Uttar Pradesh（Deputy Transport Commissioner, Agra）",
+          "title": "Report by R-11 (Transport Deptt., UP) in O.A. No. 680 of 2023 (Shri Raman Vs Union of India & Ors.)（2024-03-21）",
+          "url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/Report%20by%20R-11%20(Transport%20Deptt.,%20UP)%20in%20OA%20No.%20680%20of%202023%20(Shri%20Raman%20Vs%20Union%20of%20India%20&%20Ors.).pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国家環境裁判所（NGT）への州運輸局の回答（2024-03-21付）の第11項：TTZ機関の別の指示により、タージ・マハルから500m以内には、その範囲に住む人の自家用車（住所を確かめて発行する許可証つき）だけが入れる。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_guru_ka_taal",
+      "mode": "auto_rickshaw",
+      "minutes": 50,
+      "cost": 310,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Altitude Agra",
+          "title": "Agra Cantt to Taj Mahal（2026-10-06）",
+          "url": "https://altitudeagra.com/blog/agra-cantt-to-taj-mahal",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "アーグラ・カント駅→タージ・マハル：駅の前払いブースのオートは片道約₹150〜250、乗車20〜30分（著者は「2026年の大まかな幅で、公定運賃ではない」と明記）。車は500m以内に入れず駐車場で降り、オートが止まってから保安検査の列まで15分ほど見ておく、と案内。"
+        },
+        {
+          "publisher": "Agra Tourist Places",
+          "title": "Mehtab Bagh（日付なし、©2026）",
+          "url": "https://agratouristplaces.com/mehtab-bagh.php",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "メヘターブ・バーグへのオート：アーグラ城から₹150〜250、アーグラ・カントから₹200〜300（「Approximate fares may vary」と注記）。時間の記載はない。"
+        },
+        {
+          "publisher": "TomTom",
+          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
+          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+        },
+        {
+          "publisher": "Transport Department, Uttar Pradesh（Deputy Transport Commissioner, Agra）",
+          "title": "Report by R-11 (Transport Deptt., UP) in O.A. No. 680 of 2023 (Shri Raman Vs Union of India & Ors.)（2024-03-21）",
+          "url": "https://www.greentribunal.gov.in/sites/default/files/news_updates/Report%20by%20R-11%20(Transport%20Deptt.,%20UP)%20in%20OA%20No.%20680%20of%202023%20(Shri%20Raman%20Vs%20Union%20of%20India%20&%20Ors.).pdf",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "国家環境裁判所（NGT）への州運輸局の回答（2024-03-21付）の第11項：TTZ機関の別の指示により、タージ・マハルから500m以内には、その範囲に住む人の自家用車（住所を確かめて発行する許可証つき）だけが入れる。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
+          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
+          "checkedAt": "2026-11-09",
+          "claimType": "hypothesis",
+          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす（2021年・2025年の報道がタージ・ガンジを区域の中として扱うことによる解釈）。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
         }
       ]
     },
