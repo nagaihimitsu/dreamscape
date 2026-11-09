@@ -147,7 +147,7 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
         else {
           if (landmark.cityId !== cityId || (episode && landmark.battleId !== episode.battleId) || !place?.landmarkIds?.includes(landmark.id))
             problem(eventIssues, "landmark_owner_mismatch", `観光地・バトル・地点の参照が不一致: ${event.placeId}`);
-          if (!input.storyExists(landmark.guideStoryId)) problem(eventIssues, "guide_story_missing", `観光案内の脚本が未登録: ${landmark.guideStoryId}`);
+          if (landmark.guideStoryId && !input.storyExists(landmark.guideStoryId)) problem(eventIssues, "guide_story_missing", `観光案内の脚本が未登録: ${landmark.guideStoryId}`);
           const asset = input.tourism.assets.find((item) => item.id === landmark.imageAssetId);
           if (!asset || asset.isPlaceholder || !input.assetExists(asset.path)) problem(eventIssues, "observation_image_missing", `観察用画像が未完成: ${event.placeId}`);
           if (!landmark.clueIds.length) problem(eventIssues, "observations_missing", `観察ポイント・資料が未登録: ${event.placeId}`);
@@ -173,7 +173,8 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
     else {
       const final = finale[0];
       const mainIds = mainEvents.map((event) => event.id);
-      if (final.requiredEpisodeIds.length !== mainIds.length || mainIds.some((id) => !final.requiredEpisodeIds.includes(id)))
+      // A finale with `when` (stage 2b) names its own condition; the build's progression check covers it.
+      if (!final.when && (final.requiredEpisodeIds.length !== mainIds.length || mainIds.some((id) => !final.requiredEpisodeIds.includes(id))))
         problem(cityIssues, "finale_prerequisites_mismatch", `フィナーレに全観光の条件がありません: ${cityId}`);
       if (!travel.events.some((event) => event.id === final.id && event.category === "main"))
         problem(cityIssues, "finale_event_missing", `フィナーレの地点が未登録: ${cityId}`);

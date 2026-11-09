@@ -365,7 +365,7 @@ Inkには `battle_scene`（catalogのシーン名）、`answer_correct`（直前
 
 ### エピソード・報酬の編集
 
-`content/journeys/<旅行編ID>/progression/journey.json` の `episodes` が観光地・バトル・解放条件を結びます。各都市の最初のエピソードは前提なしで始まり、旅行開始時の選択を限定しません。`requiredEpisodeIds` の循環や参照切れを検証します。通常観光は `kind: "episode"`。都市ボスは `kind: "city_finale"`、`landmarkId: null` の独立したフィナーレです。ミラノでは同都市の4観光地と2つの特殊戦、インドでは各都市の4観光地が前提です。架空の5番目の観光地を作りません。
+`content/journeys/<旅行編ID>/progression/journey.json` の `episodes` が観光地・バトル・解放条件を結びます。各都市の最初のエピソードは前提なしで始まり、旅行開始時の選択を限定しません。`requiredEpisodeIds` の循環や参照切れを検証します。通常観光は `kind: "episode"`。都市ボスは `kind: "city_finale"`、`landmarkId: null` の独立したフィナーレです。ミラノでは同都市の4観光地と2つの特殊戦、インドでは各都市の4観光地が前提です（`when` を書かないときの決まり：`requiredEpisodeIds` のエピソードと、その都市の特殊戦をすべて終える）。エピソード・特殊戦・フィナーレには、地図に出る条件 `when`（全部・どれか・いくつ以上。バトルの数・お金・品物・恋愛の値など）も書けます。`when` を書くときは `requiredEpisodeIds` を空にします。架空の5番目の観光地を作りません。
 
 都市ボスのバトル・クイズも `scope: "city_finale"` と都市IDを指定し、`landmarkId: null` にします。クイズは5問、中間シーンは4つ。通常戦の3問・中間2つは維持します。得点上限・ラウンド・結果・保存の整合性は、登録された問題数に照らして判定します。
 

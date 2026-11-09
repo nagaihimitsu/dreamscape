@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { sceneConditionReader } from "./scene-conditions";
+import { hasObservation } from "../content/tourism-schemas";
 import { battleCityId, finalizeBattleProgress, isEpisodeBlockedByStoryBattle, isEpisodeUnlocked, isStoryBattleUnlocked } from "./chapter";
 import {
   battles,
@@ -128,7 +129,12 @@ export function getBattleAvailability(
   return battleAvailability(state, battleId, false);
 }
 
-function battleAvailability(state: GameState, battleId: string, continuingTourism: boolean): Availability {
+/**
+ * `mapChecked`: the battle continues a visit whose departure from the map already checked that it
+ * shows on the map (its observation, or the arrival at a place without one), so the map
+ * condition is not checked again (decision 21; stage 2b).
+ */
+function battleAvailability(state: GameState, battleId: string, mapChecked: boolean): Availability {
   if (!battles.some((item) => item.id === battleId))
     return { available: false, reason: "バトルが見つかりません。" };
   if (battleCityId(battleId) !== state.currentCityId)
@@ -145,6 +151,7 @@ function battleAvailability(state: GameState, battleId: string, continuingTouris
       reason: "途中のクイズバトルを再開してください。",
     };
   const episode = episodes.find((item) => item.battleId === battleId);
+  if (mapChecked) return { available: true, reason: "" };
   if (!isStoryBattleUnlocked(state, battleId))
     return { available: false, reason: "先に必要な観光を終えてから対決できます。" };
   if (episode && !isEpisodeUnlocked(state, episode))
@@ -152,7 +159,7 @@ function battleAvailability(state: GameState, battleId: string, continuingTouris
       available: false,
       reason: "先の観光エピソードを終えると対決できます。",
     };
-  if (episode && !continuingTourism && isEpisodeBlockedByStoryBattle(state, episode))
+  if (episode && isEpisodeBlockedByStoryBattle(state, episode))
     return { available: false, reason: "先に、旅の途中の対決へ進みましょう。" };
   return { available: true, reason: "" };
 }
@@ -211,8 +218,17 @@ export function startBattleFromTourism(state: GameState, battleId: string): Game
   return started === next ? state : started;
 }
 
-function startBattleInternal(state: GameState, battleId: string, continuingTourism: boolean): GameState {
-  if (!battleAvailability(state, battleId, continuingTourism).available) return state;
+/**
+ * Start a battle that opens a visit or continues it (stage 2b): a landmark without a guide or
+ * observation starts its battle on arrival, and one without an observation after its guide.
+ * `mapChecked` as in battleAvailability.
+ */
+export function startVisitBattle(state: GameState, battleId: string, mapChecked: boolean): GameState {
+  return startBattleInternal(state, battleId, mapChecked);
+}
+
+function startBattleInternal(state: GameState, battleId: string, mapChecked: boolean): GameState {
+  if (!battleAvailability(state, battleId, mapChecked).available) return state;
   const battle = battles.find((item) => item.id === battleId)!;
   const active: ActiveBattle = {
     battleId,
@@ -384,7 +400,8 @@ export function getBattleObservationLandmarkId(state: GameState): string | null 
   if (!active || state.activeTourism) return null;
   const { battle } = getActiveBattleContent(active);
   const landmarkId = battle.landmarkId;
-  if (battle.reasoning || !landmarkId || !landmarks.some((landmark) => landmark.id === landmarkId)) return null;
+  // A landmark without an observation (stage 2b) has none to return to.
+  if (battle.reasoning || !landmarkId || !landmarks.some((landmark) => landmark.id === landmarkId && hasObservation(landmark))) return null;
   return landmarkId;
 }
 
@@ -653,7 +670,8 @@ export function validateBattleState(state: GameState): void {
   if (battleCityId(battle.id) !== state.currentCityId)
     throw new Error("対決の都市と現在地が一致しません。");
   const episode = episodes.find((item) => item.battleId === battle.id);
-  if (episode && !isEpisodeUnlocked(state, episode))
+  // A map condition (`when`) was checked on departing and may have turned false since (decision 21).
+  if (episode && !episode.when && !isEpisodeUnlocked(state, episode))
     throw new Error("未解放のバトルの途中記録です。");
   if (
     active.answers.length > quiz.questions.length ||

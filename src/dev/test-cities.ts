@@ -94,7 +94,8 @@ export function installTestCity(options: {
   /** A landmark with its guide and its own copies of its clues; returns the clue ID mapping. */
   const copyLandmark = (source: LandmarkDefinition, landmarkId: string, battleId: string, guideStoryId: string) => {
     const clueIds = new Map<string, string>();
-    const landmark = { ...clone(source), id: landmarkId, cityId, battleId, guideStoryId: ownStory(source.guideStoryId, guideStoryId),
+    const landmark = { ...clone(source), id: landmarkId, cityId, battleId,
+      ...(source.guideStoryId ? { guideStoryId: ownStory(source.guideStoryId, guideStoryId) } : {}),
       clueIds: source.clueIds.map((clueId) => {
         const clue = clone(tourismClues.find((item) => item.id === clueId && item.landmarkId === source.id)!);
         const copyId = `${prefix}_${clueId}`;
@@ -114,10 +115,15 @@ export function installTestCity(options: {
     }
   };
 
-  // Required roles: a normal episode at its landmark and the city finale.
-  const normal = { ...clone(template.normal.episode), id: id("episode"), cityId, landmarkId: id("landmark"),
+  // Required roles: a normal episode at its landmark and the city finale. A map condition (`when`)
+  // names the template's own IDs, so the copies keep the current rule (requiredEpisodeIds) instead.
+  const withoutWhen = <T extends { when?: unknown }>(value: T): Omit<T, "when"> => {
+    const { when: _when, ...rest } = value;
+    return rest;
+  };
+  const normal = { ...withoutWhen(clone(template.normal.episode)), id: id("episode"), cityId, landmarkId: id("landmark"),
     battleId: id("battle"), requiredEpisodeIds: [] };
-  const finale = { ...clone(template.finale.episode), id: id("finale"), cityId, battleId: id("final_battle"),
+  const finale = { ...withoutWhen(clone(template.finale.episode)), id: id("finale"), cityId, battleId: id("final_battle"),
     epilogueStoryId: ownStory(template.finale.episode.epilogueStoryId!, `${cityId}/epilogue`), requiredEpisodeIds: [normal.id] };
   episodes.push(normal, finale);
   copyBattle(template.normal.battle, normal.battleId, normal.landmarkId);
@@ -134,7 +140,7 @@ export function installTestCity(options: {
       battle.reasoning.caseClueIds = battle.reasoning.caseClueIds.map((clueId) => clueIds.get(clueId)!);
       battle.reasoning.correctClueIds = battle.reasoning.correctClueIds.map((clueId) => clueIds.get(clueId)!);
     }
-    const special = { ...clone(role.storyBattle), battleId, requiredEpisodeIds: [] };
+    const special = { ...withoutWhen(clone(role.storyBattle)), battleId, requiredEpisodeIds: [] };
     if (special.completionReward) special.completionReward.id = id(`special_${kind}_first`);
     journeyConfig.storyBattles.push(special);
     allRewardRules.push(...getAllRewardRules({ ...journeyConfig, rewards: [], storyBattles: [special] }));

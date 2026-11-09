@@ -62,7 +62,7 @@ describe("tourism content contract", () => {
       }),
     ]);
     const story = new Story(
-      result.stories[result.tourism.landmarks[0].guideStoryId],
+      result.stories[result.tourism.landmarks[0].guideStoryId!],
     );
     story.variablesState.$("heroine_name", "紫乃");
     story.variablesState.$("player_address", "航さん");

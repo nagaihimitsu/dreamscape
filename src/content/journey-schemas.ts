@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { japaneseText as japanese } from "./text-language";
+import { conditionSchema } from "./condition-schemas";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 
@@ -10,6 +11,13 @@ export const episodeSchema = z
     cityId: id,
     landmarkId: id.nullable(),
     requiredEpisodeIds: z.array(id),
+    /**
+     * When the episode (a landmark's or the city finale) shows on the map (unified event design
+     * stage 2b, 3.9 (a)): checked once, on departing from the map. Without it the current rule
+     * holds: every requiredEpisodeIds episode completed (a finale: also every special battle of
+     * its city played). content:build stops when both are written (check 7).
+     */
+    when: conditionSchema.optional(),
     epilogueStoryId: z
       .string()
       .regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/)
@@ -64,6 +72,8 @@ export const storyBattleSchema = z.object({
   battleId: id,
   completionReward: z.object({ id, ap: z.number().int().positive(), titleJa: japanese }).strict().optional(),
   requiredEpisodeIds: z.array(id),
+  /** When the special battle shows on the map (stage 2b): read like an episode's `when`, instead of requiredEpisodeIds. */
+  when: conditionSchema.optional(),
   titleJa: japanese,
   descriptionJa: japanese,
   actionLabelJa: japanese,

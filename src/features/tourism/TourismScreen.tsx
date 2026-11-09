@@ -82,7 +82,7 @@ export function TourismScreen({
   const shouldScrollToSelection = useRef(true);
   const selected = clues.find((clue) => clue.id === selectedId);
   const frame = active.frame;
-  const guideStoryId = activeGuideStoryId(active) ?? landmark.guideStoryId;
+  const guideStoryId = activeGuideStoryId(active) ?? landmark.guideStoryId ?? "";
   const reaction = frame && active.phase === "guide"
     ? resolveDialogueReaction(dialogueReactions, guideStoryId, frame, "heroine")
     : undefined;
@@ -248,7 +248,7 @@ export function TourismScreen({
             <p>{asset.creditJa}</p>
             <p>{asset.modificationJa}</p>
             <p><a href={asset.sourceUrl} target="_blank" rel="noreferrer">画像の出典</a> · <a href={asset.licenseUrl} target="_blank" rel="noreferrer">{asset.licenseName}</a></p>
-            <button className="text-button" data-testid="guide-replay" onClick={onReplayGuide}>観光案内をもう一度読む</button>
+            {landmark.guideStoryId && <button className="text-button" data-testid="guide-replay" onClick={onReplayGuide}>観光案内をもう一度読む</button>}
           </details>
         </div>
       )}

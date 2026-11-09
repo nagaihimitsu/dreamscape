@@ -9,6 +9,7 @@ import {
   tourismClues,
   getCityStoryBackground,
 } from "../content";
+import { hasObservation } from "../content/tourism-schemas";
 import {
   beginStory,
   continueStory,
@@ -17,7 +18,7 @@ import {
   validateStorySnapshot,
   type StoryStep,
 } from "../story/runtime";
-import { startBattleFromTourism } from "./battle";
+import { startBattleFromTourism, startVisitBattle } from "./battle";
 import type { Availability, GameState } from "./game";
 import { validObservationEncounterIds } from "./encounter-state";
 
@@ -45,19 +46,30 @@ function playerAddress(state: GameState): string {
 export function tourismFingerprint(landmarkId: string): string {
   const landmark = landmarks.find((item) => item.id === landmarkId);
   if (!landmark) throw new Error("観光地が見つかりません。");
-  return `${landmark.guideStoryId}:${storyFingerprint(landmark.guideStoryId)}`;
+  // A landmark without a guide (stage 2b) has only its observation to resume.
+  return landmark.guideStoryId ? `${landmark.guideStoryId}:${storyFingerprint(landmark.guideStoryId)}` : `${landmarkId}:no-guide`;
 }
 
 export function activeGuideStoryId(active: ActiveTourism): string | null {
   const current = landmarks.find((item) => item.id === active.landmarkId);
-  try { if (current && active.contentHash === tourismFingerprint(active.landmarkId)) return current.guideStoryId; }
+  try { if (current && active.contentHash === tourismFingerprint(active.landmarkId)) return current.guideStoryId ?? null; }
   catch { /* Missing or changed content must not be resumed. */ }
   return null;
 }
 
+/** Whether the landmark has a guide to read (re-read) on its visits. */
+export function landmarkHasGuide(landmarkId: string): boolean {
+  return !!landmarks.find((item) => item.id === landmarkId)?.guideStoryId;
+}
+
+/**
+ * Whether the landmark's visit can open now. `mapChecked`: the departure from the map already
+ * checked when the visit shows on the map (decision 21), so it is not checked again (stage 2b).
+ */
 export function getTourismAvailability(
   state: GameState,
   landmarkId: string,
+  mapChecked = false,
 ): Availability {
   if (!landmarks.some((item) => item.id === landmarkId && item.cityId === state.currentCityId))
     return { available: false, reason: "観光地が見つかりません。" };
@@ -79,7 +91,7 @@ export function getTourismAvailability(
       ?.landmarkId !== landmarkId
   )
     return { available: false, reason: "今のバトルと同じ観光地へ戻れます。" };
-  const episode = episodes.find((item) => item.landmarkId === landmarkId);
+  const episode = mapChecked ? undefined : episodes.find((item) => item.landmarkId === landmarkId);
   if (
     episode &&
     !isEpisodeUnlocked(state, episode) &&
@@ -103,17 +115,23 @@ function fromGuide(active: ActiveTourism, result: StoryStep): ActiveTourism {
   return { ...active, storyState: result.storyState, frame: result.frame };
 }
 
-export function openTourism(state: GameState, landmarkId: string): GameState {
+/**
+ * Open the landmark's tourism: its guide on the first visit (when it has one), else its
+ * observation (when it has one). A landmark with neither opens nothing here (openLandmarkVisit
+ * starts its battle at once). `mapChecked`: see getTourismAvailability.
+ */
+export function openTourism(state: GameState, landmarkId: string, mapChecked = false): GameState {
   if (
     state.activeTourism ||
-    !getTourismAvailability(state, landmarkId).available
+    !getTourismAvailability(state, landmarkId, mapChecked).available
   )
     return state;
   const landmark = landmarks.find((item) => item.id === landmarkId)!;
-  const seen = state.visitedLandmarkIds.includes(landmarkId);
+  const guide = !state.visitedLandmarkIds.includes(landmarkId) ? landmark.guideStoryId : undefined;
+  if (!guide && !hasObservation(landmark)) return state;
   const active: ActiveTourism = {
     landmarkId,
-    phase: seen ? "exploring" : "guide",
+    phase: guide ? "guide" : "exploring",
     contentHash: tourismFingerprint(landmarkId),
     storyState: null,
     frame: null,
@@ -121,12 +139,14 @@ export function openTourism(state: GameState, landmarkId: string): GameState {
   return {
     ...state,
     revision: state.revision + 1,
-    activeTourism: seen
+    // A first visit without a guide is recorded as it opens (the observation needs the record).
+    visitedLandmarkIds: guide ? state.visitedLandmarkIds : recordVisit(state, landmarkId),
+    activeTourism: !guide
       ? active
       : fromGuide(
           active,
           beginStory(
-            landmark.guideStoryId,
+            guide,
             state.playerName,
             state.heroineName,
             { player_address: playerAddress(state) },
@@ -134,6 +154,23 @@ export function openTourism(state: GameState, landmarkId: string): GameState {
           ),
         ),
   };
+}
+
+/**
+ * Open a visit of the landmark from the map (its main part, stage 2b): the guide (first visit)
+ * or the observation as openTourism opens them; with neither, its battle starts at once and the
+ * visit is recorded. The map condition is not checked again (`mapChecked`, decision 21).
+ */
+export function openLandmarkVisit(state: GameState, landmarkId: string, mapChecked: boolean): GameState {
+  const opened = openTourism(state, landmarkId, mapChecked);
+  if (opened !== state) return opened;
+  const landmark = landmarks.find((item) => item.id === landmarkId);
+  if (!landmark || state.activeTourism || hasObservation(landmark) ||
+      (landmark.guideStoryId && !state.visitedLandmarkIds.includes(landmarkId)) ||
+      !getTourismAvailability(state, landmarkId, mapChecked).available) return state;
+  const visited = { ...state, visitedLandmarkIds: recordVisit(state, landmarkId) };
+  const started = startVisitBattle(visited, landmark.battleId, mapChecked);
+  return started === visited ? state : started;
 }
 
 function recordVisit(state: GameState, landmarkId: string): string[] {
@@ -153,6 +190,14 @@ export function skipTourismGuide(
     active.phase !== "guide"
   )
     return state;
+  const landmark = landmarks.find((item) => item.id === active.landmarkId);
+  // A landmark without an observation goes from its guide straight to its battle (stage 2b).
+  if (landmark && !hasObservation(landmark)) {
+    const visited = { ...state, activeTourism: null, visitedLandmarkIds: recordVisit(state, active.landmarkId) };
+    if (state.activeBattle) return { ...visited, revision: state.revision + 1 };
+    const started = startVisitBattle(visited, landmark.battleId, true);
+    return started === visited ? state : started;
+  }
   return {
     ...state,
     revision: state.revision + 1,
@@ -210,6 +255,7 @@ export function replayTourismGuide(
   )
     return state;
   const landmark = landmarks.find((item) => item.id === active.landmarkId)!;
+  if (!landmark.guideStoryId) return state;
   const next = {
     ...active,
     phase: "guide" as const,
@@ -319,8 +365,11 @@ export function validateTourismState(state: GameState): void {
   const episode = episodes.find(
     (item) => item.landmarkId === active.landmarkId,
   );
-  if (episode && !isEpisodeUnlocked(state, episode))
+  // A map condition (`when`) was checked on departing and may have turned false since (decision 21).
+  if (episode && !episode.when && !isEpisodeUnlocked(state, episode))
     throw new Error("未解放の観光地の途中記録です。");
+  if (active.phase === "exploring" && !hasObservation(landmark))
+    throw new Error("観察のない観光地の途中記録です。");
   if (
     state.activeBattle &&
     battles.find((item) => item.id === state.activeBattle!.battleId)

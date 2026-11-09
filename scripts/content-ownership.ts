@@ -82,9 +82,10 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
   "progression/journey.json": {
     episodes: (entry) => [
       ...fields(entry, "city", ["cityId"]), ...fields(entry, "landmark", ["landmarkId"]), ...fields(entry, "battle", ["battleId"]),
-      ...fields(entry, "episode", ["requiredEpisodeIds"]), ...fields(entry, "story", ["epilogueStoryId"]),
+      ...fields(entry, "episode", ["requiredEpisodeIds"]), ...fields(entry, "story", ["epilogueStoryId"]), ...conditionReferences(entry.when, "when"),
     ],
-    storyBattles: (entry) => [...fields(entry, "battle", ["battleId"]), ...fields(entry, "episode", ["requiredEpisodeIds"])],
+    storyBattles: (entry) => [...fields(entry, "battle", ["battleId"]), ...fields(entry, "episode", ["requiredEpisodeIds"]),
+      ...conditionReferences(entry.when, "when")],
     rewards: (entry) => [...fields(entry, "episode", ["episodeId"]), ...fields(entry, "battle", ["battleId"])],
   },
   "romance/date_catalog.json": {

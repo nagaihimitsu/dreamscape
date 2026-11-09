@@ -18,9 +18,14 @@
       "kind": "city_finale",
       "cityId": "mihon",
       "landmarkId": null,
-      "requiredEpisodeIds": [
-        "smp_mihon_main_clock_tower"
-      ],
+      "requiredEpisodeIds": [],
+      "when": {
+        "all": [
+          { "battlePlayed": "smp_mihon_main_clock_tower_battle" },
+          { "battlePlayed": "smp_mihon_special_b_market" },
+          { "battlePlayed": "smp_mihon_special_c_library" }
+        ]
+      },
       "epilogueStoryId": "epilogues/mihon",
       "battleId": "smp_mihon_finale_battle",
       "titleJa": "時計を動かす日",

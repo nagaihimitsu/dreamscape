@@ -26,7 +26,8 @@ import { dataLanguageWarnings } from "./data-language";
 import { transitLedgerSchema } from "./transit-ledger";
 import type { z } from "zod";
 import { headEntryRule, HEAD_TAGS, readEncounterHead, type EncounterHead } from "./encounter-head";
-import { checkConditions, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, type ConditionContent, type ConditionOwner } from "./condition-validation";
+import { checkConditions, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, mapConditionOwners, type ConditionContent, type ConditionOwner } from "./condition-validation";
+import { progressionErrors, progressionWarnings, type ProgressionContent } from "./progression-check";
 import { FULL_COND_WALK, parseSceneConditions, readSceneConditions } from "./scene-conditions";
 import type { Condition } from "../src/content/condition-schemas";
 import { validateBackgroundAssets, validateCharacters } from "./presentation-validation";
@@ -65,7 +66,7 @@ import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel
 import { validateTravelContent } from "./travel-validation";
 import { checkCityRentals, checkCityTransit, checkRouteModes, checkTransportModeCount, cityTransitWarnings, transportSummary } from "./transport-validation";
 import type { CityTransitReview } from "./transit-ledger";
-import { journeySchema } from "../src/content/journey-schemas";
+import { getAllRewardRules, journeySchema } from "../src/content/journey-schemas";
 import { journeyCatalogSchema } from "../src/content/journey-catalog";
 import { validateJourney } from "./journey-validation";
 import { validateEpilogue } from "./epilogue-validation";
@@ -273,6 +274,15 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   });
   const encounterEntryRules = encounterEntryRulesSchema.parse({ ...authoredEntryRules, entries: [...authoredEntryRules.entries, ...headRules] });
   validateEncounterEntryRules(encounterEntryRules, encounterCatalog.encounters);
+  // A landmark without an observation (stage 2b) has no moment while observing: an encounter met there could never run.
+  for (const event of encounterCatalog.encounters) {
+    const landmark = tourism.landmarks.find((item) => item.id === event.landmarkId);
+    const rule = encounterEntryRules.entries.find((item) => item.encounterId === event.id);
+    if (landmark?.observation === false && typeof rule?.priority !== "number")
+      throw new Error(`Encounter while observing at a landmark without an observation: ${event.id} is met ` +
+        `${rule?.priority === "after observe" ? "after observe" : "while observing (no priority)"} at ${landmark.id}, which has observation: false ` +
+        `(give it a priority before or after the main part, e.g. # priority: -1)`);
+  }
   // What the generated mirror holds instead of the merged sources (content-outputs.ts).
   const catalogOverrides: Partial<Record<CatalogKind, unknown>> = encounterHeads.size ? {
     "encounters/catalog.json": { ...(sources.catalogs["encounters/catalog.json"]?.value as object), encounters: encounterInput.encounters },
@@ -808,8 +818,25 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
         `the build walked each text true and false at least once, not all ${2 ** texts.length} combinations (not stopped)` });
   }
   const conditionOwners = [...dateConditionOwners(conditionContent), ...entryRuleConditionOwners(conditionContent, encounterEntryRules.entries)];
-  checkConditions(conditionContent, [...conditionOwners, ...sceneConditionOwners]);
-  const conditionNotes: ContentWarning[] = [...conditionWarnings(conditionContent, encounterEntryRules.entries, sceneConditionOwners), ...sceneConditionNotes];
+  // The map conditions of episodes and special battles (stage 2b): read like the others, in their city.
+  const mapOwners = mapConditionOwners(conditionContent, journey);
+  checkConditions(conditionContent, [...conditionOwners, ...sceneConditionOwners, ...mapOwners]);
+  const conditionNotes: ContentWarning[] = [...conditionWarnings(conditionContent, encounterEntryRules.entries, [...sceneConditionOwners, ...mapOwners]), ...sceneConditionNotes];
+  // Check 9 (stage 2b): every city has a way to clear it; its warnings name probable dead ends (progression-check.ts).
+  const progressionContent: ProgressionContent = {
+    journeys: journeyCatalog.journeys, episodes: journey.episodes, storyBattles: journey.storyBattles, battles, landmarks: tourism.landmarks,
+    encounters: encounterCatalog.encounters, items: encounterCatalog.items, dates, rewards: getAllRewardRules(journey), romance: progression,
+    travel: travels.map(({ city: current, travel, settings }) => ({ cityId: current.id, hotelPlaceId: settings.hotelPlaceId, initialBudget: settings.initialBudget,
+      events: travel.events, routes: travel.routes })),
+  };
+  const progressionProblems = progressionErrors(progressionContent);
+  if (progressionProblems.length) throw new Error(progressionProblems.join("\n"));
+  const clueUses = [
+    ...tourism.clues.flatMap((clue) => clue.relatedQuestionIds.map((questionId) => ({ clueId: clue.id, usedBy: `question ${questionId}` }))),
+    ...battles.flatMap((battle) => (battle.reasoning?.correctClueIds ?? []).map((clueId) => ({ clueId, usedBy: `special battle ${battle.id}` }))),
+  ];
+  conditionNotes.push(...progressionWarnings(progressionContent, clueUses,
+    tourism.landmarks.map((landmark) => ({ landmarkId: landmark.id, clueIds: landmark.clueIds }))));
   unique([...productionQuestionIds, ...encounterCatalog.encounters.flatMap((event) => event.quiz ? [event.quiz.question.id] : [])], "production quiz question ID");
   const transitReviews = new Map<string, CityTransitReview[]>();
   // Walks and route sources a city with a ledger lacks: warnings, not errors (transport-validation.ts).
