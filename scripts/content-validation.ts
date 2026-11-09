@@ -22,7 +22,7 @@ import { characterCatalogSchema } from "../src/content/character-assets";
 import { encounterCatalogInputSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
 import { encounterEntryRulesSchema, validateEncounterEntryRules } from "../src/content/encounter-entry-rules";
 import { validateEncounterContent } from "./encounter-validation";
-import { checkConditions, dateConditionOwners, entryRuleConditionOwners, type ConditionContent } from "./condition-validation";
+import { checkConditions, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, type ConditionContent } from "./condition-validation";
 import { validateBackgroundAssets, validateCharacters } from "./presentation-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
 import { dialogueReactionCatalogSchema } from "../src/content/dialogue-reactions";
@@ -700,6 +700,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   };
   const conditionOwners = [...dateConditionOwners(conditionContent), ...entryRuleConditionOwners(conditionContent, encounterEntryRules.entries)];
   checkConditions(conditionContent, conditionOwners);
+  const conditionNotes: ContentWarning[] = conditionWarnings(conditionContent, encounterEntryRules.entries);
   unique([...productionQuestionIds, ...encounterCatalog.encounters.flatMap((event) => event.quiz ? [event.quiz.question.id] : [])], "production quiz question ID");
   const transitReviews = new Map<string, CityTransitReview[]>();
   // Walks and route sources a city with a ledger lacks: warnings, not errors (transport-validation.ts).
@@ -826,7 +827,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     /** Images whose files checkContentImages decodes. */
     images: { characters: characterImages, tourismAssets: tourism.assets },
     /** Probable mistakes that do not stop the build (content-report.ts). */
-    warnings: [...contentWarnings(sources), ...transitWarnings],
+    warnings: [...contentWarnings(sources), ...transitWarnings, ...conditionNotes],
     /** What each journey folder provides, for the build report. */
     journeyContents: journeyContents(sources),
     /** Each journey's in-city transport (modes and transit ledger counts), for the build report. */

@@ -203,5 +203,8 @@ export function validateEncounterContent({
       ),
     );
     if (!hasUse) throw new Error(`Encounter item has no use in its city: ${item.id}/${item.cityId}`);
+    // Without a source the item can never be held, so its uses (and conditions reading it) never happen.
+    if (!itemSources.includes(item.id))
+      throw new Error(`Encounter item has no source: ${item.id} (give it as an encounter's completionItemId or quiz.rewardItemId)`);
   }
 }

@@ -1,5 +1,5 @@
 import {
-  conditionLeaves, leafReference, type Condition, type Leaf, type LeafReference,
+  conditionLeaves, leafReference, requiredLeaves, type Condition, type Leaf, type LeafReference,
 } from "../src/content/condition-schemas";
 import { WALK_MODE_ID } from "../src/content/transport-schemas";
 
@@ -7,7 +7,8 @@ import { WALK_MODE_ID } from "../src/content/transport-schemas";
 // The schema (src/content/condition-schemas.ts) already refused malformed conditions. These
 // checks stop only what would break the game: a condition naming something that does not
 // exist, a transport mode the journey does not declare, an item status that can never be read
-// where the condition is checked. Conditions that are merely never true are left to warnings.
+// where the condition is checked. Conditions that are merely never true are warnings
+// (conditionWarnings): content:build lists them and goes on.
 
 /** The content a condition can name. */
 export type ConditionContent = {
@@ -122,4 +123,95 @@ export function conditionErrors(content: ConditionContent, owners: readonly Cond
 export function checkConditions(content: ConditionContent, owners: readonly ConditionOwner[]): void {
   const errors = [...new Set(conditionErrors(content, owners))];
   if (errors.length) throw new Error(errors.join("\n"));
+}
+
+/** Warnings of conditions: probable mistakes that break nothing (content:build lists them). */
+export type ConditionWarning = { kind: "never-offered" | "date-condition-trip"; message: string };
+type EntryRule = { encounterId: string; at?: readonly string[]; when?: Condition; quizAfterLandmarkBattle?: true };
+
+/**
+ * An observation-only entry rule whose `when` needs its own landmark's episode or battle: the
+ * observation opens before that battle (the first visit) and the encounter is looked up only
+ * then, so it is never offered (the Milan case). A quiz that waits for the landmark's battle is
+ * skipped: its observation ignores `when`.
+ */
+function ownLandmarkWarnings(content: ConditionContent, rules: readonly EntryRule[]): ConditionWarning[] {
+  return rules.flatMap((rule): ConditionWarning[] => {
+    const encounter = content.encounters.find((item) => item.id === rule.encounterId);
+    if (!encounter || !rule.when || rule.quizAfterLandmarkBattle || (rule.at && rule.at.some((moment) => moment !== "observe"))) return [];
+    const own = requiredLeaves(rule.when).flatMap((leaf) => {
+      if ("episodeCompleted" in leaf && content.episodes.find((item) => item.id === leaf.episodeCompleted)?.landmarkId === encounter.landmarkId)
+        return [`episode ${leaf.episodeCompleted}`];
+      if ("battlePlayed" in leaf && content.battles.find((item) => item.id === leaf.battlePlayed)?.landmarkId === encounter.landmarkId)
+        return [`battle ${leaf.battlePlayed}`];
+      return [];
+    });
+    return own.length ? [{ kind: "never-offered", message: `Encounter never offered: ${encounter.id} is looked up only while observing ${encounter.landmarkId}, ` +
+      `but its entry rule's when needs ${own.join(" and ")} of that same landmark, which is played only after the observation ` +
+      `(read another place's progress, or wait for the later moments of stage 3)` }] : [];
+  });
+}
+
+/** Required leaves that name something of a later city of the owner's journey: never true where the condition is checked. */
+function laterCityWarnings(content: ConditionContent, owners: readonly ConditionOwner[]): ConditionWarning[] {
+  return owners.flatMap((owner) => owner.conditions.flatMap(({ field, condition }): ConditionWarning[] => {
+    const journey = journeyOfCity(content, owner.cityId);
+    const order = cityOrder(content, owner.cityId);
+    return requiredLeaves(condition).flatMap((leaf): ConditionWarning[] => {
+      const reference = leafReference(leaf);
+      const city = reference && referenceCity(content, reference);
+      if (!city || !journey || journeyOfCity(content, city) !== journey || cityOrder(content, city) <= order) return [];
+      return [{ kind: "never-offered", message: `Condition never met where it is checked: ${owner.label} (${field}) is read in ${owner.cityId} but needs ` +
+        `${KIND_LABELS[reference.kind]} ${reference.id} of the later city ${city}` }];
+    });
+  }));
+}
+
+/** Journey days and weekdays in a journey without a calendar (startWeekday): those parts are never true. */
+function calendarWarnings(content: ConditionContent, owners: readonly ConditionOwner[]): ConditionWarning[] {
+  return owners.flatMap((owner) => {
+    const journey = journeyOfCity(content, owner.cityId);
+    if (!journey || journey.startWeekday !== undefined) return [];
+    return owner.conditions.flatMap(({ field, condition }): ConditionWarning[] =>
+      conditionLeaves(condition).some((leaf) => "journeyDay" in leaf || "weekday" in leaf)
+        ? [{ kind: "never-offered", message: `Calendar condition without a calendar: ${owner.label} (${field}) reads journeyDay or weekday, ` +
+          `but ${journey.id} has no startWeekday, so they are never true (give the journey a startWeekday or use cityDay)` }]
+        : []);
+  });
+}
+
+/** Dates that wait for each other (required datePlayed in a cycle): none of them can open. */
+function cyclicDateWarnings(content: ConditionContent): ConditionWarning[] {
+  const needs = new Map(content.dates.map((date) => [date.id, date.when ? requiredLeaves(date.when)
+    .flatMap((leaf) => ("datePlayed" in leaf ? [leaf.datePlayed] : [])) : []]));
+  const inCycle = (start: string) => {
+    const seen = new Set<string>();
+    const stack = [...(needs.get(start) ?? [])];
+    while (stack.length) {
+      const id = stack.pop()!;
+      if (id === start) return true;
+      if (seen.has(id)) continue;
+      seen.add(id);
+      stack.push(...(needs.get(id) ?? []));
+    }
+    return false;
+  };
+  return content.dates.filter((date) => inCycle(date.id)).map((date) => ({ kind: "never-offered",
+    message: `Date never offered: ${date.id} waits (datePlayed) for dates that wait for it in turn` }));
+}
+
+/** Time and rides change on the way to a date: the map lists the date by the state before the trip, the start re-checks it on arrival. */
+function dateTripWarnings(content: ConditionContent): ConditionWarning[] {
+  return dateConditionOwners(content).flatMap((owner) => owner.conditions.flatMap(({ field, condition }): ConditionWarning[] =>
+    conditionLeaves(condition).some((leaf) => "time" in leaf || "rides" in leaf)
+      ? [{ kind: "date-condition-trip", message: `Date condition read before and after the trip: ${owner.label} (${field}) reads time or rides, ` +
+        `which the trip to the date changes; the map may offer the date and the start refuse it on arrival (prefer the place's opening windows)` }]
+      : []));
+}
+
+/** Every warning of the dates' and entry rules' conditions. */
+export function conditionWarnings(content: ConditionContent, rules: readonly EntryRule[]): ConditionWarning[] {
+  const owners = [...dateConditionOwners(content), ...entryRuleConditionOwners(content, rules)];
+  return [...ownLandmarkWarnings(content, rules), ...laterCityWarnings(content, owners), ...calendarWarnings(content, owners),
+    ...cyclicDateWarnings(content), ...dateTripWarnings(content)];
 }

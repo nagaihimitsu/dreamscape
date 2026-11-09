@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Condition } from "../src/content/condition-schemas";
-import { checkConditions, conditionErrors, dateConditionOwners, entryRuleConditionOwners, type ConditionContent } from "./condition-validation";
+import { checkConditions, conditionErrors, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, type ConditionContent } from "./condition-validation";
+import { CONTENT_WARNING_LABELS } from "./content-report";
 
 /** A two-city journey (alpha → beta) and a one-city journey (gamma), in memory. */
 const content: ConditionContent = {
@@ -88,5 +89,60 @@ describe("condition build checks", () => {
     const owners = dateConditionOwners({ dates: [{ id: "probe", chapterId: "beta", when: { cityCompleted: "nowhere" }, until: { datePlayed: "nothing" } }] });
     expect(() => checkConditions(content, owners)).toThrow(
       "Unknown city in a condition of date probe (when): nowhere\nUnknown date in a condition of date probe (until): nothing");
+  });
+});
+
+describe("condition build warnings", () => {
+  const warn = (extra: Partial<ConditionContent>, rules: Parameters<typeof conditionWarnings>[1] = []) =>
+    conditionWarnings({ ...content, ...extra }, rules);
+
+  it("warns about an observation-only encounter that needs its own landmark's episode or battle (the Milan case)", () => {
+    const ownEpisode = warn({}, [{ encounterId: "alpha_meeting", at: ["observe"], when: { episodeCompleted: "alpha_episode" } }]);
+    expect(ownEpisode.map((warning) => warning.kind)).toEqual(["never-offered"]);
+    expect(ownEpisode[0].message).toMatch(/^Encounter never offered: alpha_meeting is looked up only while observing alpha_tower, but its entry rule's when needs episode alpha_episode/);
+    expect(warn({}, [{ encounterId: "alpha_meeting", when: { all: [{ battlePlayed: "alpha_battle" }, { time: "day" }] } }])[0].message)
+      .toMatch(/needs battle alpha_battle of that same landmark/);
+    // The quiz that waits for the battle is not looked up by when during the observation.
+    expect(warn({}, [{ encounterId: "alpha_meeting", when: { episodeCompleted: "alpha_episode" }, quizAfterLandmarkBattle: true }])).toEqual([]);
+    // Another landmark's progress, or the own one only as one alternative or negated, can be met.
+    const twoCityEncounter = { encounters: [...content.encounters, { id: "beta_meeting", cityId: "beta", landmarkId: "beta_gate" }] };
+    expect(warn(twoCityEncounter, [{ encounterId: "beta_meeting", when: { episodeCompleted: "alpha_episode" } }])).toEqual([]);
+    expect(warn({}, [{ encounterId: "alpha_meeting", when: { any: [{ episodeCompleted: "alpha_episode" }, { time: "night" }] } }])).toEqual([]);
+    expect(warn({}, [{ encounterId: "alpha_meeting", when: { not: { episodeCompleted: "alpha_episode" } } }])).toEqual([]);
+  });
+
+  it("warns about a required part of a later city, but not of an earlier one", () => {
+    const dates = [{ id: "alpha_date", chapterId: "alpha", when: { all: [{ episodesCompleted: { city: "alpha", atLeast: 1 } }, { episodeCompleted: "beta_episode" }] } },
+      { id: "beta_date", chapterId: "beta", when: { cityCompleted: "alpha" } }];
+    expect(warn({ dates })).toEqual([{ kind: "never-offered",
+      message: "Condition never met where it is checked: date alpha_date (when) is read in alpha but needs episode beta_episode of the later city beta" }]);
+    expect(warn({ dates: [{ id: "alpha_date", chapterId: "alpha", when: { not: { cityCompleted: "beta" } } }] })).toEqual([]);
+  });
+
+  it("warns about a calendar part in a journey without a calendar, and about dates that wait for each other", () => {
+    expect(warn({ dates: [{ id: "alpha_date", chapterId: "alpha", when: { weekday: [5, 6] } }] }).map((warning) => warning.message))
+      .toEqual([expect.stringMatching(/^Calendar condition without a calendar: date alpha_date \(when\) reads journeyDay or weekday, but two has no startWeekday/)]);
+    const calendar = { journeys: [{ ...content.journeys[0], startWeekday: 0 }, content.journeys[1]] };
+    expect(warn({ ...calendar, dates: [{ id: "alpha_date", chapterId: "alpha", when: { journeyDay: { atLeast: 2 } } }] })).toEqual([]);
+    const waiting = warn({ dates: [{ id: "alpha_date", chapterId: "alpha", when: { datePlayed: "beta_date" } },
+      { id: "beta_date", chapterId: "alpha", when: { all: [{ cityDay: { atLeast: 1 } }, { datePlayed: "alpha_date" }] } }] });
+    expect(waiting.map((warning) => warning.message)).toEqual([
+      "Date never offered: alpha_date waits (datePlayed) for dates that wait for it in turn",
+      "Date never offered: beta_date waits (datePlayed) for dates that wait for it in turn",
+    ]);
+  });
+
+  it("warns about a date condition reading the time or rides, which the trip to the date changes", () => {
+    expect(warn({ dates: [{ id: "alpha_date", chapterId: "alpha", when: { time: "night" } },
+      { id: "beta_date", chapterId: "beta", until: { rides: { mode: "tram", atLeast: 3 } } }] }).map((warning) => [warning.kind, warning.message.slice(0, 60)]))
+      .toEqual([["date-condition-trip", "Date condition read before and after the trip: date alpha_da"],
+        ["date-condition-trip", "Date condition read before and after the trip: date beta_dat"]]);
+    // Entry rules read the moment's own state: no such warning.
+    expect(warn({}, [{ encounterId: "alpha_meeting", when: { time: "night" } }])).toEqual([]);
+  });
+
+  it("gives every condition warning kind a label in the build report", () => {
+    expect(CONTENT_WARNING_LABELS["never-offered"]).toBe("encounter(s) or date(s) whose condition can never be met where it is checked");
+    expect(CONTENT_WARNING_LABELS["date-condition-trip"]).toBe("date condition(s) reading the time or rides, which the trip to the date changes");
   });
 });
