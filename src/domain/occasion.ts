@@ -13,7 +13,7 @@ import type { GameState } from "./game-state-schema";
 import type { Occasion, OccasionPart, OccasionThen, OccasionTrip } from "./occasion-state";
 import { mainPartPayments, mainScene } from "./reservations";
 import { beginLandmarkGuide, beginLandmarkObservation } from "./tourism";
-import { compareRouteCost } from "./travel-routes";
+import { compareRouteCost, minimumHomeFare } from "./travel-routes";
 import { getUsableRoutes } from "./transport";
 import { getTravelHomeRoutes, isCompletedTravelEvent, isTravelEventVisible } from "./travel-game";
 import type { AfterPart, SceneEntry, SceneMain, SceneThen } from "../content/scene-schemas";
@@ -165,10 +165,13 @@ function ownSchedule(occasion: Occasion): MomentSchedule {
   return moment ? momentSchedule(moment) : { before: [], after: [], afterPart: {} };
 }
 const keyOf = (step: Step) => ("scene" in step ? step.scene : `main:${step.part}`);
-function nextIndex(steps: readonly Step[], at: string | null): number {
+function nextIndex(steps: readonly Step[], at: string | null, ran: readonly OccasionPart[]): number {
   if (at === null) return 0;
   const key = at === "left:observe" ? "main:observe" : at;
-  const index = steps.findIndex((step) => keyOf(step) === key);
+  // A scene listed at two moments of the occasion (a trip's and the visit's): it ran at its first slot after the furthest main part that ran.
+  const furthest = steps.reduce((last, step, index) => ("part" in step && ran.includes(step.part) ? index : last), -1);
+  const slot = steps.findIndex((step, index) => keyOf(step) === key && ("part" in step || index > furthest));
+  const index = slot < 0 ? steps.findIndex((step) => keyOf(step) === key) : slot;
   return index < 0 ? steps.length : index + 1;
 }
 
@@ -232,7 +235,12 @@ export function advanceOccasion(state: GameState, nextRoll: () => number = secur
 function stepOccasion(state: GameState, nextRoll: () => number): GameState {
   const occasion = state.occasion;
   if (!occasion || sceneRunning(state) || occasion.romanceEnding) return state;
-  if (occasion.then) return runThen(state, nextRoll);
+  if (occasion.then) {
+    // A then: of the confession date itself goes on after its 「交際開始」 screen (2.3, 3.9 (c)): the screen is the date's result.
+    if (occasion.at === "main:date" && occasion.parts.includes("ending") && !occasion.ran.includes("ending") && state.confessionStatus === "accepted")
+      return withOccasion(state, { ...occasion, at: "main:ending", ran: [...occasion.ran, "ending"], romanceEnding: true });
+    return runThen(state, nextRoll);
+  }
   // The observation is where `after observe` scenes return to: the next waiting one, else the observation again.
   if (occasion.at === "main:observe" && occasion.landmarkId) {
     const waiting = nextObservationScene(state);
@@ -240,12 +248,14 @@ function stepOccasion(state: GameState, nextRoll: () => number): GameState {
     return beginLandmarkObservation(state, occasion.landmarkId);
   }
   const steps = sequence(occasion);
-  for (let index = nextIndex(steps, occasion.at); index < steps.length; index++) {
+  for (let index = nextIndex(steps, occasion.at, occasion.ran); index < steps.length; index++) {
     const step = steps[index];
     if ("scene" in step) {
       if ((step.after && !occasion.ran.includes(step.after)) || occasion.started.includes(step.scene) || !momentSceneEligible(state, step.scene)) continue;
       return beginMomentScene(withOccasion(state, { ...occasion, at: step.scene, started: [...occasion.started, step.scene] }), step.scene, nextRoll);
     }
+    // Each main part runs once (a scene listed at two moments of the occasion resumes the walk after its first slot).
+    if (occasion.ran.includes(step.part)) continue;
     const started = startPart(withOccasion(state, { ...occasion, at: `main:${step.part}`, ran: [...occasion.ran, step.part] }), step.part, nextRoll);
     if (started) return started;
   }
@@ -310,6 +320,16 @@ function landmarkAt(state: Readonly<GameState>, placeId: string): string | undef
     .map((event) => visitedLandmarkOfEvent(event.id)).find((id) => !!id);
 }
 
+/**
+ * The fare home a then: epilogue keeps back: a trip whose move has not run is dropped (4.1), so the party stays where it
+ * is; the cheapest way home from there that arrives in time, at the minute the occasion settles (undefined: none).
+ */
+function epilogueReturnFare(state: Readonly<GameState>): number | undefined {
+  const occasion = state.occasion;
+  if (!occasion?.trip || occasion.ran.includes("move")) return state.travel.returnReserve;
+  return minimumHomeFare(getUsableRoutes(state as GameState), state.travel.currentPlaceId, state.travel.hotelPlaceId, state.travel.activeEvent?.endMinute ?? state.travel.minute);
+}
+
 /** The plan of a then: now: the move's fare and the main part's admission and payments there, checked against what is usable after this occasion. */
 export function planThen(state: Readonly<GameState>, then: SceneThen, sceneId: string): ThenPlan {
   if ("epilogue" in then) {
@@ -317,7 +337,9 @@ export function planThen(state: Readonly<GameState>, then: SceneThen, sceneId: s
     const epilogue = mainScene({ epilogue: state.currentCityId });
     const money = Math.max(0, -(epilogue?.done.money ?? 0));
     const ap = Math.max(0, -(epilogue?.done.ap ?? 0));
-    if (state.travelBudget - state.travel.returnReserve < money) return { ok: false, reason: "エピローグでの支払いができません。" };
+    const reserve = epilogueReturnFare(state);
+    if (reserve === undefined) return { ok: false, reason: "ここからホテルへ帰る経路がありません。" };
+    if (state.travelBudget - reserve < money) return { ok: false, reason: "エピローグでの支払いや帰りのための予算が足りません。" };
     if (state.ap < ap) return { ok: false, reason: `APが足りません（AP ${ap}）。` };
     return { ok: true, plan: { epilogue: true, sceneId }, cost: 0 };
   }
@@ -349,7 +371,11 @@ export function commitThen(state: GameState, then: SceneThen, sceneId: string): 
 function runThen(state: GameState, nextRoll: () => number): GameState {
   const then = state.occasion!.then!;
   const closed = closeOccasion(state);
-  if ("epilogue" in then) return openEpilogue(closed, true, nextRoll);
+  // The move still to make is dropped (4.1): the fare home is kept back from where the party is.
+  if ("epilogue" in then) {
+    const reserve = epilogueReturnFare(state);
+    return openEpilogue(reserve === undefined ? closed : { ...closed, travel: { ...closed.travel, returnReserve: reserve } }, true, nextRoll);
+  }
   const cityId = closed.currentCityId;
   const arrival = closed.travel.minute + then.minutes;
   const home = getTravelHomeRoutes(closed, then.move).sort(compareRouteCost)[0];
@@ -357,17 +383,18 @@ function runThen(state: GameState, nextRoll: () => number): GameState {
   const landmarkId = event ? visitedLandmarkOfEvent(event.id) : landmarkAt(closed, then.move);
   const trip: OccasionTrip = { from: closed.travel.currentPlaceId, to: then.move, modeId: then.modeId, arrivalMinute: arrival };
   // The trip's and the ticket counter's scenes (stage 4) run first when any runs there: the move waits for them.
-  const prefix = landmarkId ? (event ? eventPrefix(closed, event.id, trip) : eventPrefix(closed, "", trip)) : {};
+  const prefix = eventPrefix(closed, event?.id ?? "", trip);
   const paid: GameState = { ...closed, travel: { ...closed.travel, returnReserve: home?.cost ?? closed.travel.returnReserve,
     activeEvent: event ? { eventId: event.id, placeId: event.placeId, endMinute: arrival + event.activityMinutes } : null } };
   const rides = then.modeId !== WALK_MODE_ID && then.move !== closed.travel.currentPlaceId
     ? { ...closed.travel.rideCounts, [then.modeId]: (closed.travel.rideCounts[then.modeId] ?? 0) + 1 } : closed.travel.rideCounts;
   const moved: GameState = prefix.trip ? paid : { ...paid, travel: { ...paid.travel, currentPlaceId: then.move, minute: arrival, rideCounts: rides } };
-  const occasion = landmarkId && visitOccasion(moved, landmarkId, event?.id ?? null);
-  // A place with no landmark (a date's or a finale's only): free time there (decision 20).
+  // A place with no landmark (a date's or a finale's only): free time there (decision 20), after the trip's scenes when any runs.
+  const occasion: Occasion | undefined = landmarkId ? visitOccasion(moved, landmarkId, event?.id ?? null)
+    : prefix.trip ? { kind: "visit", cityId, eventId: null, landmarkId: null, parts: [], ran: [], at: null, started: [] } : undefined;
   if (!occasion) return { ...moved, travel: { ...moved.travel, activeEvent: null } };
   if (prefix.trip) return advanceOccasion(withOccasion(moved, withPrefix(occasion, prefix)), nextRoll);
-  return advanceOccasion(recordVisit(withOccasion(moved, { ...withPrefix(occasion, prefix), moved: then.modeId }), landmarkId), nextRoll);
+  return advanceOccasion(recordVisit(withOccasion(moved, { ...withPrefix(occasion, prefix), moved: then.modeId }), occasion.landmarkId), nextRoll);
 }
 
 /**
@@ -393,7 +420,10 @@ export function validateOccasionState(state: GameState): void {
         (occasion.kind === "hotel" && occasion.trip!.to !== state.travel.hotelPlaceId)) fail();
   } else {
     const expected = occasion.eventId === null ? undefined : occasionOf({ ...state, visitedLandmarkIds: [] }, occasion.eventId);
-    if (occasion.cityId !== undefined || occasion.eventId !== (state.travel.activeEvent?.eventId ?? null) || (occasion.eventId !== null && expected?.kind !== occasion.kind) ||
+    // A then: move's trip to a place with no landmark (its trip's scenes, then free time there) names its city.
+    const placeOnly = occasion.kind === "visit" && occasion.eventId === null && occasion.landmarkId === null;
+    if ((placeOnly ? occasion.cityId !== state.currentCityId || !occasion.trip : occasion.cityId !== undefined) ||
+        occasion.eventId !== (state.travel.activeEvent?.eventId ?? null) || (occasion.eventId !== null && expected?.kind !== occasion.kind) ||
         (occasion.eventId !== null && expected?.landmarkId !== occasion.landmarkId) || (occasion.eventId === null && own.some((part) => part !== "guide" && part !== "observe" && part !== "battle")) ||
         (occasion.landmarkId !== null && !landmarks.some((landmark) => landmark.id === occasion.landmarkId && landmark.cityId === state.currentCityId)) ||
         (occasion.landmarkId !== null && !state.visitedLandmarkIds.includes(occasion.landmarkId) && !(occasion.trip && !occasion.ran.includes("move"))))

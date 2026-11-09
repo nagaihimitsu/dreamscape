@@ -75,6 +75,7 @@ export function occasionCandidates(state: GameState): OccasionCandidates {
   }) : [];
   const kindNames = { date: "デート", battle: "バトル", hotel: "宿", epilogue: "エピローグ", depart: "都市の出発", arrive: "到着" } as const;
   const title = (occasion.trip ? `移動（${occasion.trip.modeId}：${occasion.trip.from} → ${occasion.trip.to}）→ ` : "") + (occasion.ticket ? "窓口 → " : "") +
-    (occasion.kind === "visit" ? `観光地：${landmark?.nameJa ?? occasion.landmarkId}${occasion.eventId ? "" : "（本筋なし）"}` : `${kindNames[occasion.kind]}：${occasion.eventId ?? occasion.cityId}`);
+    (occasion.kind === "visit" ? (occasion.landmarkId === null ? "自由時間（観光地なし）" : `観光地：${landmark?.nameJa ?? occasion.landmarkId}${occasion.eventId ? "" : "（本筋なし）"}`)
+      : `${kindNames[occasion.kind]}：${occasion.eventId ?? occasion.cityId}`);
   return { title, rows: [...rows, ...epilogueNote], hiddenChoices, mapConditions };
 }

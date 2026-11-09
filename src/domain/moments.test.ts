@@ -2,8 +2,12 @@ import { afterEach, beforeAll, describe, expect, it } from "vitest";
 import { getCityContent, scenes } from "../content";
 import { encounters } from "../content/encounters";
 import { getJourney } from "../content/journeys";
-import type { SceneAt, SceneEntry } from "../content/scene-schemas";
+import type { SceneAt, SceneEntry, SceneThen } from "../content/scene-schemas";
+import { createDebugState } from "../dev/debug-state";
 import { cityStart, completedCity } from "../dev/scenario-builders";
+import { advanceDate, chooseDate, finishDate, startDate } from "./game";
+import { closeRomanceEnding } from "./occasion";
+import { loadGame, saveGame, type StorageLike } from "../persistence";
 import { encounterEntryRuleList } from "./encounter";
 import { validateGameState, type GameState } from "./game";
 import { atMatches, momentSchedule } from "./moments";
@@ -87,6 +91,53 @@ describe("a date's moment with the 「交際開始」 screen (3.9 (c))", () => {
       .map((step) => ("scene" in step ? step.scene : `main:${step.part}`));
     expect(keys).toEqual(["zz_test_before", "main:date", "zz_test_after_date", "main:ending", "zz_test_after_screen"]);
   });
+
+  /** Milan after its first sightseeing and a date, with the values a confession needs: the confession, departed to from the map. */
+  function confessionDate(then: SceneThen): GameState {
+    // The confession date's head then: (as its file would write it; here in memory, its story is the real one).
+    const entry: SceneEntry = { id: "zz_test_confession", kind: "date", title: "告白", cityId: "milano", story: { storyId: "dates/milano_date_confession" },
+      main: { date: "milano_confession_01" }, at: [], order: 0, repeat: "once", people: [], options: [], done: {}, then, conds: [], knots: [], fingerprint: "test", origin: "file" };
+    (scenes as SceneEntry[]).push(entry);
+    undo.push(() => (scenes as SceneEntry[]).splice((scenes as SceneEntry[]).indexOf(entry), 1));
+    const debug = createDebugState({ scene: "tourism", id: "duomo_milano", progress: "completed", ap: 12, affection: 10, trust: 10, spark: 10, roll: "positive" });
+    let state = restore({ ...debug, activeTourism: null });
+    // The confession needs three dates done (romance/progression.json).
+    for (const dateId of ["milano_cafe_01", "milano_brera_date_01", "milano_la_scala_date_01"]) {
+      state = startDate(state, dateId, () => 0);
+      for (let step = 0; state.activeDate && !state.activeDate.frame.ended; step++) {
+        expect(step).toBeLessThan(200);
+        state = state.activeDate.frame.choices.length ? chooseDate(state, state.activeDate.frame.choices[0].index, state.revision) : advanceDate(state, state.revision);
+      }
+      state = restore(finishDate(state, state.revision));
+    }
+    const trip = restore(applyPlayerAction(state, (current) => beginTravelEvent(current, "milano_confession_01", "walk", current.revision, () => 0), () => 0));
+    expect(trip.occasion).toMatchObject({ kind: "date", parts: ["date", "ending"], then: then && "move" in then ? { move: then.move } : { epilogue: true } });
+    return trip;
+  }
+
+  it("shows the screen before a then: of the accepted confession date; its 「自由時間へ」 then moves on, and a reload keeps the screen", () => {
+    const trip = confessionDate({ move: "p_duomo" });
+    const screen = playUntil(trip, (state) => state.occasion?.romanceEnding === true);
+    expect(screen.confessionStatus).toBe("accepted");
+    expect(screen.occasion).toMatchObject({ at: "main:ending", ran: ["date", "ending"], then: { move: "p_duomo" } });
+    expect(screenFor(screen)).toBe("romance_ending");
+    const storage = new MemoryStorage();
+    expect(saveGame(storage, screen).ok).toBe(true);
+    expect(loadGame(storage)).toEqual({ status: "loaded", state: screen });
+    const moved = restore(closeRomanceEnding(screen, screen.revision, () => 0));
+    expect(moved.occasion?.romanceEnding).toBeUndefined();
+    expect(moved.travel.currentPlaceId).toBe("p_duomo");
+  });
+
+  it("shows the screen before a then: epilogue of the accepted confession date; its 「自由時間へ」 then opens the epilogue", () => {
+    const trip = confessionDate({ epilogue: true });
+    const screen = playUntil(trip, (state) => state.occasion?.romanceEnding === true);
+    expect(screen.occasion).toMatchObject({ at: "main:ending", then: { epilogue: true } });
+    expect(restore(screen)).toEqual(screen);
+    const epilogue = restore(closeRomanceEnding(screen, screen.revision, () => 0));
+    expect(epilogue.activeEpilogue).not.toBeNull();
+    expect(epilogue.endingReached).toBe(true);
+  });
 });
 
 describe("the departure and the arrival (2.3, 4.2)", () => {
@@ -155,3 +206,10 @@ describe("the ticket counter and a trip narrowed by its places (2.3)", () => {
     expect(visit.visitedLandmarkIds.length).toBeGreaterThan(start.visitedLandmarkIds.length);
   });
 });
+
+class MemoryStorage implements StorageLike {
+  private readonly values = new Map<string, string>();
+  getItem(key: string) { return this.values.get(key) ?? null; }
+  setItem(key: string, value: string) { this.values.set(key, value); }
+  removeItem(key: string) { this.values.delete(key); }
+}

@@ -1,18 +1,20 @@
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
-import { dates, scenes } from "../../../src/content";
+import { cityContents, dates, getCityContent, scenes } from "../../../src/content";
 import { getJourney } from "../../../src/content/journeys";
-import { encounterEntryRuleList } from "../../../src/domain/encounter";
+import { encounterChoiceDisplay, encounterEntryRuleList } from "../../../src/domain/encounter";
 import { isJourneyComplete } from "../../../src/domain/city-travel";
 import { isAuthoredEpilogueCity } from "../../../src/domain/epilogue";
 import { validateGameState, type GameState } from "../../../src/domain/game";
 import { occasionSteps } from "../../../src/domain/occasion";
 import type { Occasion } from "../../../src/domain/occasion-state";
+import type { SceneAt, SceneThen } from "../../../src/content/scene-schemas";
 import { applyPlayerAction, listPlayerActions, playerActionChange, type PlayerAction } from "../../../src/domain/player-action";
 import { screenFor } from "../../../src/domain/screen";
 import { DAY_END, DAY_START } from "../../../src/domain/travel";
 import { beginTravelEvent, sleepAtHotel } from "../../../src/domain/travel-game";
 import { occasionCandidates } from "../../../src/dev/occasion-candidates";
 import { cityStart, playBattleToResult } from "../../../src/dev/scenario-builders";
+import { rentTransport } from "../../../src/domain/transport";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 
 // Stage 4 of the unified event design (2.3, 3.4 H/I, 3.5, 3.6, 3.9 (c)(d), 4.2–4.8) on the sample journey (fictional):
@@ -256,6 +258,96 @@ describe("the city's end (3.4 H and I, 3.9 (d))", () => {
     expect(given.inventory.smp_mihon_three_bookmark).toBe("gifted");
     expect(given.spark).toBe(affection + 1);
     expect(given.occasion?.started).toEqual(["smp_mihon_bookmark_before_leaving", "smp_mihon_lili_seeoff"]);
+  });
+});
+
+describe("a then: at a trip's moment (2.3, 3.6, 4.1)", () => {
+  const BIKE = "rental_bicycle";
+  const MARKET = "mihon_market";
+  /** The bicycle rented at the hotel (one action, saved). */
+  const rented = (state: GameState) => restore(applyPlayerAction(state, (current) => rentTransport(current, BIKE, current.revision), () => 0));
+  /** In memory: the market's ways out are bicycle rides that cost 10 (no walking), so the fare home is 10 from the market and 0 from the tower. */
+  function dearMarket() {
+    const content = getCityContent("mihon");
+    const routes = content.travel.routes.filter((route) => !(route.fromPlaceId === MARKET && route.toPlaceId !== MARKET && route.mode === "walk"))
+      .map((route) => (route.fromPlaceId === MARKET && route.mode === BIKE ? { ...route, cost: 10 } : route));
+    cityContents.mihon = { ...content, travel: { ...content.travel, routes } };
+    undo.push(() => { cityContents.mihon = content; });
+  }
+  /** The first ride's scene placed at the trip and its 「このままで行こう」 given a then:, in memory. */
+  function firstRide(at: SceneAt[], then?: SceneThen) {
+    const ride = scene("smp_mihon_first_bicycle");
+    patch(ride, { at, options: ride.options.map((option) => option.id === "as_is" ? { ...option, then } : option) });
+    patch(rule("smp_mihon_first_bicycle"), { when: undefined });
+  }
+  const storage = () => new MemoryStorage();
+
+  it("then: epilogue drops the move and keeps back the fare home from the place the party is at (a map departure)", () => {
+    dearMarket();
+    firstRide([{ trip: BIKE, from: MARKET }], { epilogue: true });
+    const bike = rented(cityStart("mihon"));
+    // At the market (10 home), departing by bicycle to the tower (0 home): the trip's scene runs at the market.
+    const trip = depart(at({ ...bike, travel: { ...bike.travel, returnReserve: 10 } }, MARKET, DAY_START), EPISODE, BIKE);
+    expect(trip.activeEncounter?.encounterId).toBe("smp_mihon_first_bicycle");
+    expect(trip.travel).toMatchObject({ currentPlaceId: MARKET, returnReserve: 0 });
+    const epilogue = playUntil(trip, (state) => !!state.activeEpilogue, ["as_is"]);
+    expect(epilogue.occasion).toMatchObject({ kind: "epilogue" });
+    expect(epilogue.travel).toMatchObject({ currentPlaceId: MARKET, returnReserve: 10, rideCounts: {} });
+    expect(restore(epilogue)).toEqual(epilogue);
+    expect(saveGame(storage(), epilogue).ok).toBe(true);
+  });
+
+  it("then: epilogue on the way home of 「休む」 drops the night and keeps back the fare home again", () => {
+    dearMarket();
+    firstRide([{ trip: BIKE, from: MARKET }], { epilogue: true });
+    const bike = rented(cityStart("mihon"));
+    const trip = restore(applyPlayerAction(at({ ...bike, travel: { ...bike.travel, returnReserve: 10 } }, MARKET, 15 * 60),
+      (current) => sleepAtHotel(current, BIKE, current.revision, undefined, () => 0), () => 0));
+    expect(trip.activeEncounter?.encounterId).toBe("smp_mihon_first_bicycle");
+    expect(trip.travel.returnReserve).toBe(0);
+    const epilogue = playUntil(trip, (state) => !!state.activeEpilogue, ["as_is"]);
+    expect(epilogue.travel).toMatchObject({ currentPlaceId: MARKET, returnReserve: 10, day: 1 });
+    expect(restore(epilogue)).toEqual(epilogue);
+    expect(saveGame(storage(), epilogue).ok).toBe(true);
+  });
+
+  it("greys the then: epilogue choice when the budget cannot keep back the fare home from where the party is", () => {
+    dearMarket();
+    firstRide([{ trip: BIKE, from: MARKET }], { epilogue: true });
+    const bike = rented(cityStart("mihon"));
+    // 15 left: the ride costs 10, leaving 5, less than the fare home from the market.
+    const trip = depart(at({ ...bike, travelBudget: 15, travel: { ...bike.travel, returnReserve: 10 } }, MARKET, DAY_START), EPISODE, BIKE);
+    const shown = playUntil(trip, (state) => !!state.activeEncounter?.frame.choices.length);
+    const choice = shown.activeEncounter!.frame.choices.find((item) => item.optionId === "as_is")!;
+    expect(encounterChoiceDisplay(shown, choice.index)).toMatchObject({ show: "grey", reason: "エピローグでの支払いや帰りのための予算が足りません。" });
+  });
+
+  it("a scene placed at a trip and at the visit runs the move once when it runs at the visit (one ride)", () => {
+    patch(scene("smp_mihon_first_bicycle"), { at: [{ trip: BIKE, from: "mihon_hotel" }, { visit: TOWER }] });
+    patch(rule("smp_mihon_first_bicycle"), { when: { landmarkVisited: TOWER } });
+    const trip = depart(rented(cityStart("mihon")), EPISODE, BIKE);
+    // Not yet visited at the trip: the stall first (same file, written first), then the ride's scene at the visit's -1.
+    expect(trip.activeEncounter?.encounterId).toBe("smp_mihon_bookmark_stall");
+    const ride = playUntil(trip, (state) => state.activeEncounter?.encounterId === "smp_mihon_first_bicycle");
+    expect(ride.occasion?.ran).toEqual(["move"]);
+    const guide = playUntil(ride, (state) => !!state.activeTourism, ["as_is"]);
+    expect(guide.occasion?.ran).toEqual(["move", "guide"]);
+    expect(guide.travel.rideCounts).toEqual({ [BIKE]: 1 });
+    expect(guide.travel.currentPlaceId).toBe(TOWER);
+  });
+
+  it("a then: move to a place with no landmark runs the trip's scenes first, then the move and its ride, then free time there", () => {
+    firstRide([{ trip: BIKE, from: TOWER }]);
+    const stall = scene("smp_mihon_bookmark_stall");
+    patch(stall, { options: stall.options.map((option) => option.id === "drawn" ? { ...option, then: { move: "mihon_hotel", by: BIKE } } : option) });
+    const trip = depart(rented(cityStart("mihon")), EPISODE);
+    const ride = playUntil(trip, (state) => state.activeEncounter?.encounterId === "smp_mihon_first_bicycle", ["drawn"]);
+    expect(ride.occasion).toMatchObject({ kind: "visit", cityId: "mihon", eventId: null, landmarkId: null, parts: ["move"], ran: [] });
+    expect(ride.travel).toMatchObject({ currentPlaceId: TOWER, rideCounts: {} });
+    expect(restore(ride)).toEqual(ride);
+    const home = playUntil(ride, free, ["as_is"]);
+    expect(home.travel).toMatchObject({ currentPlaceId: "mihon_hotel", rideCounts: { [BIKE]: 1 } });
+    expect(home.seenEncounterIds).toContain("smp_mihon_first_bicycle");
   });
 });
 
