@@ -16,6 +16,13 @@ export interface StoryTags {
   effects: string[];
 }
 
+/**
+ * A choice's effect tags (the unified event design, stage 3a): content:build reads them from the Ink
+ * source into the scene table, and the game applies them from the table before passing the choice to
+ * Ink; on screen they are skipped like comments.
+ */
+export const EFFECT_TAG_KEYS: readonly string[] = ["requires", "give", "use", "rel", "profile", "memory", "set", "money", "ap", "then"];
+
 /** Interpret Ink's official currentTags/choice.tags output, never Ink source. */
 export function parseStoryTags(
   tags: readonly string[],
@@ -23,6 +30,7 @@ export function parseStoryTags(
 ): StoryTags {
   const result: StoryTags = { effects: [] };
   for (const tag of tags) {
+    if (tag.trim() === "later") continue;
     const separator = tag.indexOf(":");
     const key = tag.slice(0, separator).trim();
     const value = tag.slice(separator + 1).trim();
@@ -74,6 +82,8 @@ export function parseStoryTags(
     } else if (key === "option") {
       if (!/^[a-z][a-z0-9_]*$/u.test(value) || result.optionId) throw new Error(`Invalid or duplicate option tag: ${value}`);
       result.optionId = value;
+    } else if (EFFECT_TAG_KEYS.includes(key)) {
+      continue;
     } else if (key === "translation") {
       if (result.translationJa) throw new Error("Duplicate translation tag");
       result.translationJa = value;

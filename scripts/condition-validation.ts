@@ -21,14 +21,19 @@ export type ConditionContent = {
   /** The story file orders encounters of one priority; the options and repetition are read by the visit warnings. */
   encounters: readonly { id: string; cityId: string; landmarkId: string; storyId?: string; repeatable?: boolean;
     options?: readonly { id: string; deferCompletion?: boolean }[] }[];
-  items: readonly { id: string; cityId: string }[];
+  items: readonly { id: string; cityId: string; carry?: "journey" }[];
   dates: readonly { id: string; chapterId: string; when?: Condition; until?: Condition }[];
+  /** The declared story state (progression/story.json, stage 3a): flags are read in any city; a person belongs to a city. */
+  flags?: readonly string[];
+  people?: readonly { id: string; cityId: string }[];
+  namedConditions?: Readonly<Record<string, Condition>>;
 };
 /** Something that carries conditions, with the city where they are checked. */
 export type ConditionOwner = { label: string; cityId: string; conditions: { field: string; condition: Condition }[] };
 
 const KIND_LABELS: Record<LeafReference["kind"], string> = {
   episode: "episode", city: "city", battle: "battle", landmark: "landmark", encounter: "encounter", date: "date", item: "item", mode: "transport mode",
+  flag: "flag (progression/story.json)", person: "person (progression/story.json)", condition: "named condition (progression/story.json)",
 };
 
 /** The dates' `when` and `until`, checked in each date's city (its chapterId). */
@@ -87,7 +92,8 @@ export function referenceCity(content: ConditionContent, reference: LeafReferenc
     case "encounter": return content.encounters.find((item) => item.id === reference.id)?.cityId;
     case "date": return content.dates.find((item) => item.id === reference.id)?.chapterId;
     case "item": return content.items.find((item) => item.id === reference.id)?.cityId;
-    case "mode": return undefined;
+    case "person": return content.people?.find((item) => item.id === reference.id)?.cityId;
+    case "mode": case "flag": case "condition": return undefined;
   }
 }
 
@@ -101,6 +107,9 @@ function exists(content: ConditionContent, reference: LeafReference): boolean {
     case "date": return content.dates.some((item) => item.id === reference.id);
     case "item": return content.items.some((item) => item.id === reference.id);
     case "mode": return true;
+    case "flag": return !!content.flags?.includes(reference.id);
+    case "person": return !!content.people?.some((item) => item.id === reference.id);
+    case "condition": return !!content.namedConditions && Object.hasOwn(content.namedConditions, reference.id);
   }
 }
 
@@ -116,6 +125,8 @@ function leafErrors(content: ConditionContent, owner: ConditionOwner, field: str
   const reference = leafReference(leaf);
   if (!reference) return [];
   if (!exists(content, reference)) return [`Unknown ${KIND_LABELS[reference.kind]} in ${where}: ${reference.id}`];
+  // A named condition is declared once for the journey: only its names are checked (each use is read in its own city).
+  if (!owner.cityId) return [];
   const journey = journeyOfCity(content, owner.cityId);
   if (reference.kind === "mode") {
     if (reference.id === WALK_MODE_ID)
@@ -126,8 +137,14 @@ function leafErrors(content: ConditionContent, owner: ConditionOwner, field: str
   }
   if ("item" in leaf) {
     const itemCity = referenceCity(content, reference)!;
-    if (leaf.item.is === "held" && itemCity !== owner.cityId)
-      return [`An item of another city is never held in ${where}: ${leaf.item.id} belongs to ${itemCity}, the condition is read in ${owner.cityId}`];
+    // An item carried through the journey is held in the journey's later cities too; never left behind (the item design §2.5).
+    const carried = content.items.find((item) => item.id === leaf.item.id)?.carry === "journey";
+    const laterCity = journeyOfCity(content, itemCity) === journey && cityOrder(content, itemCity) < cityOrder(content, owner.cityId);
+    if (leaf.item.is === "held" && itemCity !== owner.cityId && !(carried && laterCity))
+      return [`An item of another city is never held in ${where}: ${leaf.item.id} belongs to ${itemCity}, the condition is read in ${owner.cityId}` +
+        `${carried ? " (a carried item is held in its city and the journey's later cities)" : ""}`];
+    if (leaf.item.is === "left_behind" && carried)
+      return [`An item carried through the journey is never left behind, ${where}: ${leaf.item.id}`];
     if (leaf.item.is === "left_behind" &&
         (journeyOfCity(content, itemCity) !== journey || cityOrder(content, itemCity) >= cityOrder(content, owner.cityId)))
       return [`An item is left behind only after leaving its city, ${where}: ${leaf.item.id} belongs to ${itemCity}, ` +
@@ -153,7 +170,7 @@ export type ConditionWarning = {
   kind: "never-offered" | "date-condition-trip" | "later-never-again" | "same-priority" | "repeat-without-until";
   message: string;
 };
-type EntryRule = { encounterId: string; at?: readonly string[]; priority?: number | "after observe"; when?: Condition; quizAfterLandmarkBattle?: true };
+type EntryRule = { encounterId: string; at?: readonly string[]; priority?: number | "after guide" | "after observe" | "after battle"; when?: Condition; quizAfterLandmarkBattle?: true };
 
 /**
  * An entry rule looked up while observing or before the landmark's main part whose `when` needs
@@ -246,7 +263,7 @@ function dateTripWarnings(content: ConditionContent): ConditionWarning[] {
  * - an encounter repeated always (repeatable) without `# until:`: it is met at every visit.
  */
 function visitWarnings(content: ConditionContent, rules: readonly EntryRule[]): ConditionWarning[] {
-  const shown = (priority: number | "after observe") => (typeof priority === "number" && priority > 0 ? `+${priority}` : String(priority));
+  const shown = (priority: number | string) => (typeof priority === "number" && priority > 0 ? `+${priority}` : String(priority));
   const placed = rules.flatMap((rule) => {
     const encounter = content.encounters.find((item) => item.id === rule.encounterId);
     return encounter && rule.priority !== undefined ? [{ rule, encounter, priority: rule.priority }] : [];
@@ -267,9 +284,11 @@ function visitWarnings(content: ConditionContent, rules: readonly EntryRule[]): 
     const key = `${entry.encounter.landmarkId} ${entry.priority}`;
     groups.set(key, [...(groups.get(key) ?? []), entry]);
   }
-  const same = [...groups.values()].filter((group) => group.length > 1).map((group): ConditionWarning => ({ kind: "same-priority",
+  // Only scenes of different story files: within one place file the written order decides (no warning).
+  const fileOf = (storyId: string | undefined) => (storyId ?? "").split(".")[0];
+  const same = [...groups.values()].filter((group) => new Set(group.map((entry) => fileOf(entry.encounter.storyId))).size > 1).map((group): ConditionWarning => ({ kind: "same-priority",
     message: `Encounters share a priority: ${group.map((entry) => entry.encounter.id).join(", ")} have priority ${shown(group[0].priority)} ` +
-      `at the visit of ${group[0].encounter.landmarkId}; they run in the order of their story files' names (${group.map((entry) => entry.encounter.storyId).join(", ")})` }));
+      `at the visit of ${group[0].encounter.landmarkId}; they run in the order of their story files' names (${[...new Set(group.map((entry) => fileOf(entry.encounter.storyId)))].join(", ")})` }));
   // `# until:` becomes a `not` in the rule's when (encounter-head.ts), like a `# when: not …`: either closes the repetition.
   const closes = (condition: Condition | undefined): boolean => !!condition &&
     ("not" in condition || ("all" in condition && condition.all.some(closes)));

@@ -42,12 +42,15 @@ export const rewardRuleSchema = z
     id,
     episodeId: id.optional(),
     battleId: id.optional(),
+    /** The scene whose tag gives the AP (`scene_tag`, written by content:build; stage 3a, 3.3). */
+    sceneId: id.optional(),
     trigger: z.enum([
       "guide_read",
       "battle_complete",
       "battle_score",
       "episode_clear",
       "city_clear",
+      "scene_tag",
     ]),
     ap: z.number().int().positive(),
     minScore: z.number().int().positive().nullable(),
@@ -55,8 +58,10 @@ export const rewardRuleSchema = z
   })
   .strict()
   .refine(
-    (rule) => (rule.episodeId !== undefined) !== (rule.battleId !== undefined),
-    "A reward must target exactly one episode or special battle",
+    (rule) => rule.trigger === "scene_tag"
+      ? rule.sceneId !== undefined && rule.episodeId === undefined && rule.battleId === undefined
+      : rule.sceneId === undefined && (rule.episodeId !== undefined) !== (rule.battleId !== undefined),
+    "A reward must target exactly one episode or special battle (a scene tag's AP: its scene only)",
   )
   .refine(
     (rule) => rule.battleId === undefined || rule.trigger !== "city_clear",
@@ -93,12 +98,17 @@ export type StoryBattle = z.infer<typeof storyBattleSchema>;
 export type RewardRule = z.infer<typeof rewardRuleSchema>;
 export type JourneyConfig = z.infer<typeof journeySchema>;
 
-/** Existing special-battle reward IDs participate in the shared rule engine. */
-export function getAllRewardRules(journey: JourneyConfig): RewardRule[] {
+/**
+ * Existing special-battle reward IDs participate in the shared rule engine, and so do the AP rules
+ * content:build makes for the scenes' tags (`sceneRules`, generated/scenes.json; stage 3a). Only
+ * the game's rule list and the build's ID check pass them: a Debug test city adds its special
+ * battles' rules to the list and takes them out again, without the scenes' rules piling up.
+ */
+export function getAllRewardRules(journey: JourneyConfig, sceneRules: readonly RewardRule[] = []): RewardRule[] {
   return [...journey.storyBattles.flatMap((battle) => battle.completionReward ? [{
     ...battle.completionReward,
     battleId: battle.battleId,
     trigger: "battle_complete" as const,
     minScore: null,
-  }] : []), ...journey.rewards];
+  }] : []), ...journey.rewards, ...sceneRules];
 }

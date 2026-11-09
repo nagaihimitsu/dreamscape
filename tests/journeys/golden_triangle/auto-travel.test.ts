@@ -4,7 +4,14 @@ import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 import { journeyStorage } from "../../../src/persistence/journey-storage";
 import { clearCity, wrongAnswer } from "../../../src/dev/scenario-builders";
 import { advanceCompletedJourneyCity } from "../../../src/domain/city-travel";
-import { advanceCityEpilogue } from "../../../src/domain/epilogue";
+import { advanceCityEpilogue as advanceLine, chooseCityEpilogue } from "../../../src/domain/epilogue";
+import type { GameState as EpilogueState } from "../../../src/domain/game";
+
+/** One step of the epilogue: its first choice when it shows choices (the sample's epilogue has one; stage 3a), else its next line. */
+function advanceCityEpilogue(state: EpilogueState, revision: number): EpilogueState {
+  const choice = state.activeEpilogue?.frame.choices[0];
+  return choice ? chooseCityEpilogue(state, choice.index, revision) : advanceLine(state, revision);
+}
 import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
 import { applyPlayerAction } from "../../../src/domain/player-action";
 import { installTestGoldenTriangle } from "./test-journey";

@@ -67,10 +67,10 @@ const choices = ["a", "b", "c"].map((c) => `* [選択${c}]
     -> END
 `).join("\n");
 
-function validate(source: string) {
+function validate(source: string, onWarning?: (message: string) => void) {
   return validateStory(compileInk(source), context,
     { choiceCount: 1, effectCount: 1, kind: "special" }, {}, effects, undefined,
-    { available: [], known: [] }, true);
+    { available: [], known: [] }, true, undefined, undefined, onWarning);
 }
 
 describe("random reaction Ink validation", () => {
@@ -97,9 +97,11 @@ describe("random reaction Ink validation", () => {
       { available: [], known: [] }, true)).toThrow(/needs a response profile/);
   });
 
-  it("rejects reaction paths that show the same dialogue", () => {
-    expect(() => validate(header + choices.replace("届かなかったa。", "届いたa。")))
-      .toThrow(/different positive and negative reactions/);
+  it("warns, without stopping, about reaction paths that show the same dialogue (decision 39)", () => {
+    const warnings: string[] = [];
+    expect(() => validate(header + choices.replace("届かなかったa。", "届いたa。"), (message) => warnings.push(message))).not.toThrow();
+    expect(warnings).toHaveLength(1);
+    expect(warnings[0]).toContain("read the same");
   });
 
   it("rejects choice effects that depend on the hidden outcome", () => {

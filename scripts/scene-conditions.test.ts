@@ -33,7 +33,8 @@ describe("reading a scene's cond texts", () => {
     expect(parseSceneConditions(["rel affection >= 3", "not couple"]))
       .toEqual({ "rel affection >= 3": { relationship: { axis: "affection", atLeast: 3 } }, "not couple": { not: { couple: true } } });
     expect(() => parseSceneConditions(["money > 3"])).toThrow('cond("money > 3"): Write the condition part "money"');
-    expect(() => parseSceneConditions(["flag smp_x"])).toThrow('cond("flag smp_x"): Condition part "flag" is not available yet (stage 3)');
+    expect(() => parseSceneConditions(["flag smp_x y"])).toThrow('cond("flag smp_x y"): Write the condition part "flag"');
+    expect(parseSceneConditions(["flag smp_x", "ap >= 1"])).toEqual({ "flag smp_x": { flag: "smp_x" }, "ap >= 1": { ap: { atLeast: 1 } } });
   });
 
   it("finds the texts in the compiled story too", () => {

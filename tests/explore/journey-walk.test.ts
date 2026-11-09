@@ -29,6 +29,12 @@
 // ideas2 [WP06a]) without failing.
 // PR/verify: the fixed run. Weekly: DREAMSCAPE_WALK_SEEDS (comma-separated) and
 // DREAMSCAPE_WALK_STEPS (steps per seed) widen it.
+import { screenFor } from "../../src/domain/screen";
+import { itemUsableIn } from "../../src/domain/item-cities";
+import { usableAp, usableMoney } from "../../src/domain/reservations";
+import { placeSceneById } from "../../src/domain/scene-effects";
+import { sceneOfAddress, taggedDateScene } from "../../src/domain/reservations";
+import type { SceneEntry } from "../../src/content/scene-schemas";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { afterAll, describe, expect, it } from "vitest";
 import { allRewardRules, balance, battles, cityContents, dates, episodes, getCityContent, journeyConfig, landmarks, progression } from "../../src/content";
@@ -173,6 +179,34 @@ function spentAp(previous: GameState, next: GameState): number {
   if (!date) throw new Error(`no date has the started ID ${active.dateId}`);
   return date.apCost;
 }
+/**
+ * AP the step's scene tags gave or spent (stage 3a): a choice's # ap: (a place scene's, a guide's not re-read, an
+ * epilogue's, a tagged date's not replayed) and a place scene's # on_done: ap when it closes done. Main parts'
+ * # on_done: ap has no content yet.
+ */
+function tagAp(previous: GameState, next: GameState, action: PlayerAction): number {
+  const optionAp = (scene: SceneEntry | undefined, optionId: string | undefined) => scene?.options.find((option) => option.id === optionId)?.ap ?? 0;
+  const encounter = previous.activeEncounter;
+  const place = encounter && placeSceneById(encounter.encounterId);
+  if (action.kind === "encounter_choose" && place)
+    return optionAp(place, encounter.frame.choices.find((choice) => choice.index === action.index)?.optionId);
+  if ((action.kind === "encounter_finish" || action.kind === "encounter_next") && place && next.activeEncounter?.runId !== encounter.runId)
+    return (encounter.chosen ?? []).some((item) => place.options.find((option) => option.id === item.optionId)?.later) ? 0 : place.done.ap ?? 0;
+  const tourism = previous.activeTourism;
+  if (action.kind === "guide_choose" && tourism && !tourism.replay)
+    return optionAp(sceneOfAddress(landmarks.find((item) => item.id === tourism.landmarkId)?.guideStoryId),
+      tourism.frame?.choices.find((choice) => choice.index === action.index)?.optionId);
+  const epilogue = previous.activeEpilogue;
+  if (action.kind === "epilogue_choose" && epilogue) {
+    const finale = episodes.find((item) => item.id === epilogue.episodeId)!;
+    return optionAp(sceneOfAddress(epilogue.kind === "arrival" ? getCityContent(finale.cityId).city.arrivalStoryId : finale.epilogueStoryId),
+      epilogue.frame.choices.find((choice) => choice.index === action.index)?.optionId);
+  }
+  const date = previous.activeDate;
+  if (action.kind === "date_choose" && date && !date.replay)
+    return optionAp(taggedDateScene(date.dateId), date.frame.choices.find((choice) => choice.index === action.index)?.optionId);
+  return 0;
+}
 const describeAction = (action: PlayerAction) => JSON.stringify(action);
 
 /** What the walks reached, per journey (printed at the end, never asserted). */
@@ -262,13 +296,25 @@ function walk(seed: number, total: number) {
     const changed = run(step, "the action", () => applyPlayerAction(previous, playerActionChange(action, roll)));
     if (changed === previous) fail(step, "an offered action changed nothing");
     if (changed.ap < 0 || changed.ap > balance.apCap) fail(step, `AP out of range: ${changed.ap}`);
+    // Stage 3b (4.8): what may never happen with the moment record.
+    if (screenFor(changed) === "free_time" && changed.occasion) fail(step, "an occasion did not end: free time with the moment record still open");
+    if (usableMoney(changed) < 0) fail(step, `the usable money is below 0: ${usableMoney(changed)}`);
+    if (usableAp(changed) < 0) fail(step, `the usable AP is below 0: ${usableAp(changed)}`);
+    const met = changed.activeEncounter;
+    if (met && met.runId !== previous.activeEncounter?.runId && previous.completedEncounterIds.includes(met.encounterId) &&
+        !encounters.encounters.find((item) => item.id === met.encounterId)?.repeatable)
+      fail(step, `a scene run once started again: ${met.encounterId}`);
+    // A held item is this city's or carried through the journey from a city it has done (the item design §2.8).
+    for (const [itemId, status] of Object.entries(changed.inventory))
+      if (status === "held" && !itemUsableIn(changed, itemId, changed.currentCityId)) fail(step, `an item of another city is held: ${itemId}`);
     const lost = previous.claimedRewardIds.filter((id) => !changed.claimedRewardIds.includes(id));
     if (lost.length) fail(step, `reward IDs were forgotten (and could be paid again): ${lost.join(", ")}`);
     const earned = changed.claimedRewardIds.filter((id) => !previous.claimedRewardIds.includes(id));
     const spent = run(step, "counting the AP of a started date", () => spentAp(previous, changed));
-    const expected = totalAp(previous) + run(step, "counting the AP of the new reward IDs", () => earned.reduce((sum, id) => sum + ruleAp(id), 0)) - spent;
+    const tags = run(step, "counting the AP of the scene tags", () => tagAp(previous, changed, action));
+    const expected = totalAp(previous) + run(step, "counting the AP of the new reward IDs", () => earned.reduce((sum, id) => sum + ruleAp(id), 0)) - spent + tags;
     if (totalAp(changed) !== expected)
-      fail(step, `AP (held + stored) is ${totalAp(changed)}, expected ${expected}: new reward IDs [${earned.join(", ")}], AP of a started date ${spent}`);
+      fail(step, `AP (held + stored) is ${totalAp(changed)}, expected ${expected}: new reward IDs [${earned.join(", ")}], AP of a started date ${spent}, AP of the scene tags ${tags}`);
     const storage = run(step, "opening the journey's storage", () => journeyStorage(base, journeyId));
     // saveGame validates the state (validateGameState) and refuses a revision that did not increase.
     // (No expected previous snapshot: one tab, so the other-tab check would only repeat a validation.)

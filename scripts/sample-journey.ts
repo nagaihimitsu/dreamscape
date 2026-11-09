@@ -60,7 +60,21 @@ export function withoutOptionalParts<T extends Buffer | null>(files: ReadonlyMap
   const optionalFiles = new Set(readme.optional.flatMap((part) => part.files));
   const ids = new Set(readme.optional.flatMap((part) => part.ids));
   return new Map([...files].filter(([file]) => !optionalFiles.has(file)).map(([file, bytes]): [string, T] =>
-    [file, (bytes && file.endsWith(".json") ? Buffer.from(jsonText(withoutIds(JSON.parse(bytes.toString("utf8")), ids))) : bytes) as T]));
+    [file, (bytes && file.endsWith(".json") ? Buffer.from(jsonText(withoutIds(JSON.parse(bytes.toString("utf8")), ids)))
+      : bytes && file.startsWith("stories/places/") ? Buffer.from(withoutKnots(bytes.toString("utf8"), ids)) : bytes) as T]));
+}
+
+/** A place file without the knots an optional part names, and without the lines that name them (their calls). */
+function withoutKnots(source: string, ids: ReadonlySet<string>): string {
+  const kept: string[] = [];
+  let dropping = false;
+  for (const line of source.split("\n")) {
+    const knot = /^\s*={2,}\s*([A-Za-z_][A-Za-z0-9_]*)/u.exec(line);
+    if (knot) dropping = ids.has(knot[1]);
+    if (dropping || [...ids].some((id) => new RegExp(`\\b${id}\\b`, "u").test(line))) continue;
+    kept.push(line);
+  }
+  return kept.join("\n");
 }
 
 /** The sample folder's files (path inside it → bytes) without its README, and the README's lists. */

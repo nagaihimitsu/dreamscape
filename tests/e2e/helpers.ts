@@ -715,6 +715,9 @@ async function act(page: Page, state: GameState, pick: Pick) {
   const encounter = state.activeEncounter;
   if (state.activeBattle?.phase === "question") return page.getByTestId(`answer-${pick(state)}`).click();
   if (date?.frame.choices.length) return page.getByTestId("date-choice").first().click();
+  // A guide's, an arrival's or an epilogue's Japanese choices (stage 3a): the first shown one.
+  if (state.activeTourism?.phase === "guide" && state.activeTourism.frame?.choices.length) return page.getByTestId("guide-choice").first().click();
+  if (state.activeEpilogue?.frame.choices.length) return page.getByTestId("epilogue-choice").first().click();
   if (encounter && !(await page.locator(nextButtons).filter({ visible: true }).count())) {
     const choose = page.getByRole("button", { name: `${pick(state)}を選ぶ`, exact: true });
     if (await choose.count()) return choose.click();
@@ -754,6 +757,6 @@ export async function playUntil(page: Page, done: (state: GameState) => boolean,
 /** No scene is open: the player is back on the travel menu. */
 export function expectNoActiveScene(state: GameState) {
   expect(state).toMatchObject({
-    activeTourism: null, activeBattle: null, activeDate: null, activeEncounter: null, activeEpilogue: null,
+    activeTourism: null, activeBattle: null, activeDate: null, activeEncounter: null, activeEpilogue: null, occasion: null,
   });
 }

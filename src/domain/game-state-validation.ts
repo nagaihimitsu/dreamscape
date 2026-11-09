@@ -1,4 +1,5 @@
-import { battles, dates, effects, episodes, getCityContent } from "../content";
+import { battles, dates, effects, episodes, getCityContent, storyState } from "../content";
+import { fileDateScene, taggedDateScene } from "./reservations";
 import { validateStorySnapshot } from "../story/runtime";
 import { activeDateStoryId, completedDateCount, dateBelongsToCity } from "./date-rules";
 import type { GameState } from "./game-state-schema";
@@ -33,17 +34,13 @@ export function validateTravelState(state: GameState): void {
   if (travel.activeEvent) {
     const id = travel.activeEvent.eventId;
     const episode = episodes.find((item) => item.id === id);
-    // An encounter before a landmark's main part keeps the trip it runs on (validateEncounterState checks its landmark).
-    const sceneMatches = state.activeEncounter?.trip?.eventId === id || (dates.some((item) => item.id === id)
+    // An occasion (stage 3b) keeps the trip it opened for until it closes; a replayed battle keeps its own.
+    const sceneMatches = state.occasion ? state.occasion.eventId === id : (dates.some((item) => item.id === id)
       ? state.activeDate?.dateId === id
       : episode
-        ? state.activeTourism?.landmarkId === episode.landmarkId ||
-          state.activeEncounter?.returnTourism?.landmarkId === episode.landmarkId ||
-          state.activeBattle?.battleId === episode.battleId
+        ? state.activeTourism?.landmarkId === episode.landmarkId || state.activeBattle?.battleId === episode.battleId
         : state.activeBattle?.battleId === id ||
-          battles.some((battle) => battle.id === id && !!battle.landmarkId &&
-            (state.activeTourism?.landmarkId === battle.landmarkId ||
-              state.activeEncounter?.returnTourism?.landmarkId === battle.landmarkId)));
+          battles.some((battle) => battle.id === id && !!battle.landmarkId && state.activeTourism?.landmarkId === battle.landmarkId));
     if (!sceneMatches) throw new Error("旅行の時間枠と進行中の場面が一致しません。");
   }
 }
@@ -96,6 +93,12 @@ export function validateActiveDateState(state: GameState): void {
     )
       throw new Error("デートの保存状態を確認できません。");
     const storyId = activeDateStoryId(date, active);
+    // A date written with tags (stage 3a): its in-scene choices and tags change the values between and after its romance
+    // choices, so only each romance choice's own reaction is checked again; Ink's turn counts every choice.
+    const tagged = taggedDateScene(date.id);
+    const taggedForm = !!tagged;
+    // A one-scene date whose choice tags move the values (stage 3b): the values between and after its choices are not re-derived.
+    const fileMoves = !!fileDateScene(date.id)?.options.some((option) => option.rel);
     if (active.resolutionMode === "fixed") {
       if (date.kind !== "confession" || active.randomPlan.length || active.resolvedChoices.length || active.responseSnapshot)
         throw new Error("告白の結果記録が一致しません。");
@@ -104,13 +107,22 @@ export function validateActiveDateState(state: GameState): void {
           active.resolvedChoices.length !== active.choiceCount)
         throw new Error("恋愛リアクションの進行記録が一致しません。");
       for (const [choiceNumber, saved] of active.resolvedChoices.entries()) {
+        if (taggedForm) {
+          const option = tagged!.options.find((item) => item.id === saved.optionId);
+          const profile = active.responseSnapshot.profiles.find((item) => item.id === option?.profile);
+          if (!option || !profile || saved.effectId !== undefined) throw new Error("保存された選択効果が見つかりません。");
+          const expected = resolveRomanceChoice(profile, saved.before, active.randomPlan[choiceNumber]);
+          if (JSON.stringify(expected) !== JSON.stringify({ result: saved.result, chance: saved.chance, deltas: saved.deltas }))
+            throw new Error("保存された恋愛リアクションが一致しません。");
+          continue;
+        }
         const previous = active.resolvedChoices[choiceNumber - 1];
-        if (previous && (saved.before.affection !== previous.before.affection + (active.replay ? 0 : previous.deltas.affection) ||
+        if (previous && !fileMoves && (saved.before.affection !== previous.before.affection + (active.replay ? 0 : previous.deltas.affection) ||
             saved.before.trust !== previous.before.trust + (active.replay ? 0 : previous.deltas.trust) ||
             saved.before.spark !== previous.before.spark + (active.replay ? 0 : previous.deltas.spark)))
           throw new Error("保存された関係値の履歴が一致しません。");
         const effect = effects.find((item) => item.id === saved.effectId);
-        const profileId = active.responseSnapshot.effectProfiles[saved.effectId];
+        const profileId = saved.effectId === undefined ? undefined : active.responseSnapshot.effectProfiles[saved.effectId];
         const profile = active.responseSnapshot.profiles.find((item) => item.id === profileId);
         if (!effect || effect.outcome || !profile) throw new Error("保存された選択効果が見つかりません。");
         const expected = resolveRomanceChoice(profile, saved.before, active.randomPlan[choiceNumber]);
@@ -130,15 +142,17 @@ export function validateActiveDateState(state: GameState): void {
     )
       throw new Error("会話の進行記録が一致しません。");
     const lastResolution = active.resolvedChoices.at(-1);
-    if (active.resolutionMode === "random_v1" && lastResolution && !active.replay &&
+    if (active.resolutionMode === "random_v1" && lastResolution && !active.replay && !taggedForm && !fileMoves &&
         (state.affection !== lastResolution.before.affection + lastResolution.deltas.affection ||
          state.trust !== lastResolution.before.trust + lastResolution.deltas.trust ||
          state.spark !== lastResolution.before.spark + lastResolution.deltas.spark))
       throw new Error("保存された関係値と選択結果が一致しません。");
+    if (active.turnCount < active.choiceCount || (!taggedForm && active.turnCount !== active.choiceCount))
+      throw new Error("保存された選択回数が一致しません。");
     validateStorySnapshot(storyId, active.storyState, active.frame, {
       playerName: state.playerName,
       heroineName: state.heroineName,
-      choiceCount: active.choiceCount,
+      choiceCount: active.turnCount,
       variables: active.resolutionMode === "random_v1" ? {
         romance_result: lastResolution?.result ?? "neutral",
         affection_delta: lastResolution?.deltas.affection ?? 0,
@@ -155,7 +169,8 @@ export function validateActiveDateState(state: GameState): void {
  * No journey declares any yet, so only the empty records are valid.
  */
 export function validateStoryProgress(state: GameState): void {
-  if (Object.keys(state.storyProgress.lines).length || state.storyProgress.flags.length)
+  // Flags (stage 3a): every one declared in progression/story.json; the lines of the earlier design were dropped (answer 5).
+  if (Object.keys(state.storyProgress.lines).length || state.storyProgress.flags.some((flag) => !storyState.flags.some((item) => item.id === flag)))
     throw new Error("物語の進行の記録が一致しません。");
   if (state.travel.temporaryFlags.length)
     throw new Error("この都市での物語の印の記録が一致しません。");

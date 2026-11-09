@@ -7,7 +7,7 @@ import { defaultJourneyId, getJourney } from "../content/journeys";
 import { debugSceneLabels, debugValueRanges, type DebugQuery, type DebugScene, type DebugSettings } from "./debug-query";
 import {
   cityStart, completedCity, openBattleScene, openEpilogueScene, openTourismScene, rollTickets,
-  startDateScene, startEncounterScene, withAp, withRelationship,
+  startDateScene, startEncounterScene, startOccasionScene, withAp, withRelationship,
 } from "./scenario-builders";
 
 export type { DebugScene, DebugSettings } from "./debug-query";
@@ -51,6 +51,7 @@ export function debugTargets(cityId: string): Record<DebugScene, DebugTarget[]> 
     date: dates.filter((item) => item.kind === "normal" && travel.events.some((event) => event.id === item.id)).map((item) => ({ id: item.id, name: item.titleJa })),
     epilogue: episodes.filter((item) => item.cityId === cityId && item.kind === "city_finale" && item.epilogueStoryId)
       .map((item) => ({ id: item.id, name: `${city.nameJa}のエピローグ` })),
+    occasion: landmarks.filter((item) => item.cityId === cityId).map((item) => ({ id: item.id, name: `${item.nameJa}の時点` })),
   };
 }
 
@@ -85,7 +86,8 @@ export function resolveDebugLaunch(query: DebugQuery): DebugLaunch {
   const defaults = defaultDebugSettings(cityId);
   return { kind: "scene", settings: { ...defaults, scene: query.scene, id,
     progress: query.progress ?? defaults.progress, ap: query.ap ?? defaults.ap, affection: query.affection ?? defaults.affection,
-    trust: query.trust ?? defaults.trust, spark: query.spark ?? defaults.spark, roll: query.roll ?? defaults.roll } };
+    trust: query.trust ?? defaults.trust, spark: query.spark ?? defaults.spark, roll: query.roll ?? defaults.roll,
+    ...(query.from ? { from: query.from } : {}), ...(query.prep ? { prep: query.prep } : {}) } };
 }
 
 // Keyed by the city's content object: installing 仮の場面 again (possibly from another
@@ -113,6 +115,7 @@ export function createDebugState(settings: DebugSettings): GameState {
     case "battle": return openBattleScene(state, settings.id);
     case "encounter": return startEncounterScene(state, settings.id, ticket);
     case "date": return startDateScene(state, settings.id, ticket);
+    case "occasion": return startOccasionScene(state, settings.id, settings.from, settings.prep ?? [], ticket);
     case "epilogue": {
       if (!episodes.some((item) => item.id === settings.id && item.cityId === cityId && item.kind === "city_finale"))
         throw new Error(`「${settings.id}」は${getCityContent(cityId).city.nameJa}のフィナーレではありません。`);

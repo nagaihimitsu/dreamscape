@@ -126,3 +126,28 @@ describe("from the current state (the exploration walk)", () => {
     expect(moneyShortNow(content, "town", now({ money: 0, battles: new Set(["bt_a"]) }))).toBeUndefined();
   });
 });
+
+describe("check 9: the author-started epilogue (then: epilogue; 3.9 (d))", () => {
+  // "town" is the journey's last city: its epilogue must be able to start.
+  it("stops a city whose then: epilogue scenes can never come, and passes one that can", () => {
+    expect(progressionErrors(town({}, { epilogueStarters: [{ sceneId: "fin_head", cityId: "town", battleId: "bt_fin" }] }))).toEqual([]);
+    expect(progressionErrors(town({}, { epilogueStarters: [{ sceneId: "talk_a", cityId: "town", landmarkIds: ["lm_a"] }] }))).toEqual([]);
+    // Its condition can never be met (a battle of no city), or its visit is never reached.
+    expect(progressionErrors(town({}, { epilogueStarters: [{ sceneId: "talk_a", cityId: "town", landmarkIds: ["lm_a"], when: { battlePlayed: "bt_none" } }] }))[0])
+      .toMatch(/^No way to start the epilogue of city town: .*talk_a/);
+    expect(progressionErrors(town({}, { epilogueStarters: [{ sceneId: "talk_x", cityId: "town", landmarkIds: ["lm_nowhere"] }] }))).toHaveLength(1);
+  });
+
+  it("warns, without stopping, for a city the player may leave without it, and where some plays lose it", () => {
+    const twoCities = (starter: NonNullable<ProgressionContent["epilogueStarters"]>[number]) => town({}, {
+      journeys: [{ id: "trip", cities: [{ id: "town" }, { id: "later" }], initialBudget: 120, cityTransition: "manual" }], epilogueStarters: [starter] });
+    const never = twoCities({ sceneId: "talk_x", cityId: "town", landmarkIds: ["lm_nowhere"] });
+    expect(progressionErrors(never)).toEqual([]);
+    expect(kinds(never)).toContain("epilogue-unreachable");
+    // Reached only while an item is still held (it can be given away for good).
+    const fragile = town({}, { epilogueStarters: [{ sceneId: "talk_a", cityId: "town", landmarkIds: ["lm_a"], when: { item: { id: "key", is: "held" } } }] });
+    expect(progressionErrors(fragile)).toEqual([]);
+    expect(kinds(fragile)).toContain("epilogue-unreachable");
+    expect(kinds(town({}, { epilogueStarters: [{ sceneId: "fin_head", cityId: "town", battleId: "bt_fin" }] }))).not.toContain("epilogue-unreachable");
+  });
+});

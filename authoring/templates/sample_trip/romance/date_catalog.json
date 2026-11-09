@@ -8,13 +8,7 @@
       "titleJa": "三時までの席",
       "descriptionJa": "時計塔の広場で、塔を向いたベンチに並んで座る。",
       "apCost": 2,
-      "storyId": "dates/smp_mihon_date_tower_square",
-      "when": {
-        "episodesCompleted": {
-          "city": "mihon",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/smp_mihon_clock_tower.smp_mihon_date_tower_square",
       "destinationId": "mihon_tower_square",
       "backgroundId": "smp_bg_mihon_clock_tower",
       "choiceCount": 2,

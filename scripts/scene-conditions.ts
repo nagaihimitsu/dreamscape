@@ -24,9 +24,10 @@ const fallback = /^\s*={2,}\s*function\s+cond\s*\(/u;
 /**
  * The texts of the `cond("…")` calls of a story source (comments skipped), in the order
  * written, once each. Throws for a call that does not take one literal text, and for a
- * call without the declaration (decision 40: the error shows the three lines to add).
+ * call without the declaration (decision 40: the error shows the three lines to add), unless the
+ * file includes it (`declared`: a place file, whose modules.ink declares cond).
  */
-export function readSceneConditions(source: string): string[] {
+export function readSceneConditions(source: string, declared = false): string[] {
   const code = source.replace(/\/\*[\s\S]*?\*\//gu, (comment) => comment.replace(/[^\n]/gu, " ")).replace(/\/\/.*$/gmu, "");
   const texts: string[] = [];
   code.split("\n").forEach((line, index) => {
@@ -37,7 +38,8 @@ export function readSceneConditions(source: string): string[] {
       if (!texts.includes(literal[1])) texts.push(literal[1]);
     }
   });
-  if (texts.length && !declaration.test(code))
+  // A place file's declaration is in the game's modules.ink (`declared`).
+  if (texts.length && !declared && !declaration.test(code))
     throw new Error(`cond("…") needs its declaration in this file: add the line\n  ${COND_DECLARATION}\nafter the VAR lines, ` +
       `and at the end of the file, for Inky's preview, the two lines\n  ${COND_FALLBACK[0]}\n  ${COND_FALLBACK[1]}`);
   return texts;

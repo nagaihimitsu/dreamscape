@@ -1,14 +1,17 @@
 import { getActiveBattleContent, getBattleObservationLandmarkId, advanceBattle, answerBattle, canSubmitBattleEvidence, canToggleReasoningClue, pressBattleClaim, selectReasoningClue, submitBattleEvidence, toggleBattleHint } from "./battle";
 import { getBattleResultExits } from "./chapter";
-import { advanceCompletedJourneyCity, departToNextCity, getPlayerDeparture } from "./city-travel";
+import { advanceCompletedJourneyCity, getPlayerDeparture } from "./city-travel";
+import { advanceOccasion, closeRomanceEnding, openOccasion } from "./occasion";
+import { screenFor } from "./screen";
+import { secureRomanceRoll } from "../random/romance-source";
 import {
   advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter, leaveBattleToFreeTime,
   getActiveEncounterDefinition, getEncounterOptionAvailability, proceedFromTourism,
 } from "./encounter";
-import { advanceCityEpilogue, canReadCityEpilogue, completeArrivalLogo, startCityEpilogue } from "./epilogue";
-import { advanceDate, chooseDate, finishDate, type GameState } from "./game";
+import { advanceCityEpilogue, canReadCityEpilogue, chooseCityEpilogue, completeArrivalLogo, epilogueChoiceDisplay } from "./epilogue";
+import { advanceDate, chooseDate, dateChoiceDisplay, finishDate, type GameState } from "./game";
 import { canClaimPendingRewards, claimPendingRewards } from "./rewards";
-import { openTourism, advanceTourismGuide, discoverClue, getDiscoverableClueIds, landmarkHasGuide, replayTourismGuide, skipTourismGuide } from "./tourism";
+import { openTourism, advanceTourismGuide, chooseTourismGuide, discoverClue, getDiscoverableClueIds, guideChoiceDisplay, landmarkHasGuide, replayTourismGuide, skipTourismGuide } from "./tourism";
 import { getTravelDestinations, getTravelWaitOptions } from "./travel-destinations";
 import { getRentalOffers, rentTransport } from "./transport";
 import {
@@ -21,16 +24,18 @@ import {
  * automatic departure of a completed city, as one snapshot (the one that is saved). Returns
  * `previous` itself when the action changed nothing.
  */
-export function applyPlayerAction(previous: GameState, change: (state: GameState) => GameState): GameState {
-  const changed = finishTravelEventIfComplete(previous, change(previous));
+export function applyPlayerAction(previous: GameState, change: (state: GameState) => GameState, nextRoll: () => number = secureRomanceRoll): GameState {
+  // The action, its occasion run to its next stop (4.1), the trip's window, the city's automatic move, and the
+  // occasion that move opened (its negative scenes start in the same action).
+  const changed = finishTravelEventIfComplete(previous, advanceOccasion(change(previous), nextRoll));
   if (changed === previous) return previous;
-  return advanceCompletedJourneyCity(changed, changed.revision);
+  return advanceOccasion(advanceCompletedJourneyCity(changed, changed.revision), nextRoll);
 }
 
 /**
  * A control a screen offers that changes the game (the name of the screen is in each group).
- * Presentation-only controls (logs, translations, the English note, settings, the romance
- * ending's 「自由時間へ」, the clue book's page turning) are not actions.
+ * Presentation-only controls (logs, translations, the English note, settings, the clue book's
+ * page turning) are not actions.
  */
 export type PlayerAction =
   // Free time: TravelMenu (TravelRentals: 借りる), FreeTimeHub, TravelActions (待機・休む), PendingRewards, CityProgress.
@@ -44,8 +49,10 @@ export type PlayerAction =
   // Arrival and city epilogue: EpilogueScreen (the arrival logo ends by itself).
   | { kind: "arrival_logo" }
   | { kind: "epilogue_next" }
+  | { kind: "epilogue_choose"; index: number }
   // Sightseeing: TourismScreen, ObservationViewer, the clue book's 「資料を読む」.
   | { kind: "guide_next" }
+  | { kind: "guide_choose"; index: number }
   | { kind: "guide_close" }
   | { kind: "guide_again" }
   | { kind: "discover"; clueId: string }
@@ -68,7 +75,9 @@ export type PlayerAction =
   // Dates: RomanceScene.
   | { kind: "date_choose"; index: number }
   | { kind: "date_next" }
-  | { kind: "date_finish" };
+  | { kind: "date_finish" }
+  // The 「交際開始」 screen (a step of the date's occasion, 3.9 (c)).
+  | { kind: "romance_close" };
 
 /**
  * What the player can do now: every enabled control of the screen this state shows, built from
@@ -77,7 +86,9 @@ export type PlayerAction =
  * when a screen gains or changes a control, change this list with it.
  */
 export function listPlayerActions(state: GameState): PlayerAction[] {
-  const encounter = state.activeEncounter;
+  const screen = screenFor(state);
+  if (screen === "romance_ending") return [{ kind: "romance_close" }];
+  const encounter = screen === "encounter" ? state.activeEncounter : null;
   if (encounter) {
     if (encounter.phase === "quiz")
       return getActiveEncounterDefinition(encounter).quiz!.question.options.map((option) => ({ kind: "encounter_answer", optionId: option.id }));
@@ -88,9 +99,18 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
     return [encounterCanFinish(state) ? { kind: "encounter_finish" } : { kind: "encounter_next" }];
   }
   const epilogue = state.activeEpilogue;
-  if (epilogue) return [epilogue.kind === "arrival" && !epilogue.logoComplete ? { kind: "arrival_logo" } : { kind: "epilogue_next" }];
+  if (epilogue) {
+    if (epilogue.kind === "arrival" && !epilogue.logoComplete) return [{ kind: "arrival_logo" }];
+    if (epilogue.frame.choices.length)
+      return epilogue.frame.choices.filter((choice) => epilogueChoiceDisplay(state, choice.index).show === "open")
+        .map((choice) => ({ kind: "epilogue_choose", index: choice.index }));
+    return [{ kind: "epilogue_next" }];
+  }
   const tourism = state.activeTourism;
   if (tourism) {
+    if (tourism.phase === "guide" && tourism.frame?.choices.length)
+      return tourism.frame.choices.filter((choice) => guideChoiceDisplay(state, choice.index).show === "open")
+        .map((choice) => ({ kind: "guide_choose", index: choice.index }));
     if (tourism.phase === "guide") return [{ kind: "guide_next" }, { kind: "guide_close" }];
     return [
       { kind: "observation_next" }, ...(landmarkHasGuide(tourism.landmarkId) ? [{ kind: "guide_again" as const }] : []),
@@ -127,7 +147,8 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
   }
   const date = state.activeDate;
   if (date) {
-    if (date.frame.choices.length) return date.frame.choices.map((choice) => ({ kind: "date_choose", index: choice.index }));
+    if (date.frame.choices.length) return date.frame.choices.filter((choice) => dateChoiceDisplay(state, choice.index).show === "open")
+      .map((choice) => ({ kind: "date_choose", index: choice.index }));
     return [date.frame.ended ? { kind: "date_finish" } : { kind: "date_next" }];
   }
   return [
@@ -153,17 +174,19 @@ export function playerActionChange(action: PlayerAction, nextRoll: () => number)
       case "wait": return waitForTravel(state, action.minutes, revision);
       case "rent": return rentTransport(state, action.modeId, revision);
       case "rest": return sleepAtHotel(state, action.mode, revision, action.viaPlaceId);
-      case "depart": return departToNextCity(state, revision);
-      case "read_epilogue": case "battle_epilogue": return startCityEpilogue(state, state.currentCityId, revision);
+      case "depart": return openOccasion(state, { kind: "depart" }, revision, nextRoll);
+      case "read_epilogue": case "battle_epilogue": return openOccasion(state, { kind: "epilogue" }, revision, nextRoll);
       case "claim_ap": return claimPendingRewards(state, revision);
       case "arrival_logo": return completeArrivalLogo(state, revision);
       case "epilogue_next": return advanceCityEpilogue(state, revision);
+      case "epilogue_choose": return chooseCityEpilogue(state, action.index, revision, nextRoll);
       case "guide_next": return advanceTourismGuide(state, revision);
+      case "guide_choose": return chooseTourismGuide(state, action.index, revision, nextRoll);
       case "guide_close": return skipTourismGuide(state, revision);
       case "guide_again": return replayTourismGuide(state, revision);
       case "discover": return discoverClue(state, action.clueId, revision);
       case "observation_next": return proceedFromTourism(state, revision, nextRoll);
-      case "encounter_choose": return chooseEncounter(state, action.index, revision);
+      case "encounter_choose": return chooseEncounter(state, action.index, revision, nextRoll);
       case "encounter_answer": return answerEncounterQuiz(state, action.optionId, revision);
       case "encounter_next": return continueTourismEncounters(state, advanceEncounter(state, revision), nextRoll);
       case "encounter_finish": return continueTourismEncounters(state, finishEncounter(state, revision), nextRoll);
@@ -178,6 +201,7 @@ export function playerActionChange(action: PlayerAction, nextRoll: () => number)
       case "date_choose": return chooseDate(state, action.index, revision);
       case "date_next": return advanceDate(state, revision);
       case "date_finish": return finishDate(state, revision);
+      case "romance_close": return closeRomanceEnding(state, revision, nextRoll);
     }
   };
 }

@@ -11,8 +11,8 @@ const sample = readSampleJourney();
 const files = (entries: Record<string, string | Buffer>) =>
   new Map(Object.entries(entries).map(([file, data]): [string, Buffer] => [file, Buffer.isBuffer(data) ? data : Buffer.from(data)]));
 const json = (value: unknown) => JSON.stringify(value);
-const sampleLine = sample.files.get("stories/tourism/smp_mihon_clock_tower_guide.ink")!.toString("utf8").split("\n")
-  .find((line) => line.startsWith("「止まってるんだ。"))!;
+const placeFile = sample.files.get("stories/places/smp_mihon_clock_tower.ink")!.toString("utf8");
+const sampleLine = placeFile.split("\n").find((line) => line.startsWith("「止まってるんだ。"))!;
 
 describe("sample leftovers", () => {
   it("finds every kind in the sample itself, and nothing in the repository's journeys", () => {
@@ -54,7 +54,8 @@ describe("sample leftovers", () => {
 
   it("finds the sample's English Ink lines and choices, compared by their English only", () => {
     // A copied English line of the sample (any language may be written since stage 1 of the unified event design).
-    const gift = sample.files.get("stories/encounters/smp_mihon_bookmark_gift.ink")!.toString("utf8");
+    // The bookmark gift is a knot of the clock tower's place file (stage 3a): its three English choices.
+    const gift = placeFile.slice(placeFile.indexOf("=== smp_mihon_bookmark_gift ==="), placeFile.indexOf("=== smp_mihon_clock_bell ==="));
     expect(sampleMarks().texts.has("Shall we keep it in your guidebook?")).toBe(true);
     const line = "Come back at three. Any three will do.";
     const marks = { texts: new Set([...sampleMarks().texts, line]), imageHashes: sampleMarks().imageHashes };

@@ -19,7 +19,9 @@ class MemoryStorage implements StorageLike {
 /** Skip the guide and win the battle; GameApp settles the map event at the result (so does the builder). */
 function completeMainEvent(initial: GameState): GameState {
   const explored = skipTourismGuide(initial, initial.revision);
-  return playBattleToResult(startTourismBattle(explored, explored.revision));
+  const result = playBattleToResult(startTourismBattle(explored, explored.revision));
+  // The visit's time window settles when its occasion closes: leaving the result (stage 3b).
+  return leaveBattleResult(result, result.revision);
 }
 
 describe("travel save and concurrency", () => {

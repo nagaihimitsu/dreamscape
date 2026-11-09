@@ -1,4 +1,5 @@
 /** In-memory fixtures used only by tests and the development-only Debug entry. */
+import { splitStoryAddress } from "../content/story-address";
 import {
   allRewardRules, battleQuizzes, battles, cityContents, dateDestinations, dates,
   episodes, journeyConfig, landmarks, rewardRules, stories, tourismClues,
@@ -72,6 +73,8 @@ export function installTestCity(options: {
   const addedStories: string[] = [];
   const addedQuizzes: string[] = [];
   const ownStory = (sourceId: string, id: string) => {
+    // A place file's knot (stage 3a) is shared as it is: its scene fingerprint belongs to its address.
+    if (splitStoryAddress(sourceId).path !== undefined) return sourceId;
     stories[id] = stories[sourceId];
     addedStories.push(id);
     return id;

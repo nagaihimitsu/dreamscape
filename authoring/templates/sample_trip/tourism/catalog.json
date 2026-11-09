@@ -52,7 +52,7 @@
       "nameEn": "Mihon Clock Tower",
       "descriptionJa": "針が三時で止まったままの、見本用の架空の時計塔。",
       "imageAssetId": "smp_img_mihon_clock_tower",
-      "guideStoryId": "tourism/smp_mihon_clock_tower_guide",
+      "guideStoryId": "places/smp_mihon_clock_tower.smp_mihon_clock_tower_guide",
       "battleId": "smp_mihon_main_clock_tower_battle",
       "clueIds": [
         "smp_obs_mihon_clock_tower_hands"

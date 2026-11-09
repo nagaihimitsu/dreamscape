@@ -18,6 +18,7 @@ import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
+import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
 import { Icon } from "../../components/icons";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
@@ -42,6 +43,9 @@ interface Props {
   onBattle: () => void;
   onReplayGuide: () => void;
   autoAdvanceEnabled?: boolean;
+  /** The guide's shown choices (stage 3a; hidden ones are left out by the caller) and choosing one. */
+  guideChoices?: SceneChoiceView[];
+  onChooseGuide?: (index: number) => void;
 }
 
 export function TourismScreen({
@@ -55,6 +59,8 @@ export function TourismScreen({
   onNotebook,
   onBattle,
   onReplayGuide,
+  guideChoices = [],
+  onChooseGuide,
 }: Props) {
   const active = game.activeTourism!;
   const windowVisibility = useDialogueWindow();
@@ -103,12 +109,12 @@ export function TourismScreen({
   };
   const autoAdvance = useAutoAdvance({
     ready,
-    canAdvance: active.phase === "guide" && !!frame && !frame.ended && !windowVisibility.hidden,
+    canAdvance: active.phase === "guide" && !!frame && !frame.ended && !frame.choices.length && !windowVisibility.hidden,
     text: frame?.text ?? "",
     onAdvance: advanceSafely,
     defaultEnabled: autoAdvanceEnabled,
   });
-  const sceneTap = useSceneTap({ active: active.phase === "guide" && !!frame, lineShown: ready, choicesShown: false, windowHidden: windowVisibility.hidden });
+  const sceneTap = useSceneTap({ active: active.phase === "guide" && !!frame, lineShown: ready, choicesShown: !!frame?.choices.length, windowHidden: windowVisibility.hidden });
   useEffect(() => {
     const media = window.matchMedia(COMPACT_OBSERVATION);
     const update = () => setCompactObservation(media.matches);
@@ -203,6 +209,7 @@ export function TourismScreen({
               onReady={onReady}
               onAdvance={advanceSafely}
             />
+            {frame.choices.length > 0 && onChooseGuide && <SceneChoices choices={guideChoices} disabled={!ready} onChoose={onChooseGuide} testId="guide-choice" />}
             {frame.ended && <button
               className="next"
               data-testid="tourism-advance"

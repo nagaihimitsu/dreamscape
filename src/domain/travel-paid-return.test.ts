@@ -33,7 +33,7 @@ describe("a destination with no walking route home", () => {
       expect(started.travel.returnReserve).toBe(10);
       expect(started.travelBudget).toBe(10);
       // Once the scene is over, the already-reserved fare pays for the return.
-      const afterScene = { ...started, activeTourism: null, activeBattle: null,
+      const afterScene = { ...started, activeTourism: null, activeBattle: null, occasion: null,
         travel: { ...started.travel, minute: started.travel.activeEvent!.endMinute, activeEvent: null } };
       const home = sleepAtHotel(afterScene, "taxi", afterScene.revision);
       expect(home.travel.currentPlaceId).toBe("p_hotel");

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "flags": [
+    {
+      "id": "smp_mihon_lili_told_why",
+      "noteJa": "リリが、止まった時計を残したい理由を話した（しおりの露店の「自分で描いたの？」）。"
+    },
+    {
+      "id": "smp_mihon_bookmark_to_heroine",
+      "noteJa": "デートで、三時のしおりをヒロインに渡した。"
+    },
+    {
+      "id": "smp_mihon_bookmark_kept",
+      "noteJa": "デートで、三時のしおりを自分で持っておくと答えた。"
+    }
+  ],
+  "people": [
+    {
+      "id": "smp_mihon_lili",
+      "cityId": "mihon",
+      "nameJa": "リリ"
+    },
+    {
+      "id": "smp_mihon_toma",
+      "cityId": "mihon",
+      "nameJa": "トーマ"
+    }
+  ],
+  "conditions": {
+    "smp_mihon_lili_heard": {
+      "all": [
+        {
+          "met": "smp_mihon_lili"
+        },
+        {
+          "flag": "smp_mihon_lili_told_why"
+        }
+      ]
+    }
+  }
+}

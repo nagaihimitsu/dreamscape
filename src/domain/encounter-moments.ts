@@ -1,4 +1,5 @@
 import type { VisitPriority } from "../content/encounter-entry-rules";
+import { storyFileOf } from "../content/story-address";
 
 /**
  * Where the encounters of a landmark's visit run (the unified event design, stage 1). Pure: it
@@ -6,19 +7,28 @@ import type { VisitPriority } from "../content/encounter-entry-rules";
  *
  * - `before`: negative priorities, from the map's departure to the landmark until its main part opens;
  * - `observe`: while observing (no priority, or `after observe`), returning to the observation;
- * - `after`: positive priorities, from the landmark battle result's 「自由時間へ」.
+ * - `afterGuide` / `afterBattle` (stage 3b): right after that main part, when it ran in the visit;
+ * - `after`: positive priorities, after the visit's main group.
  */
-export type VisitSlot = "before" | "observe" | "after";
+export type VisitSlot = "before" | "afterGuide" | "observe" | "afterBattle" | "after";
 
-/** What the order needs of an encounter: its landmark, its story file (the same priority runs in file-name order) and its rule's priority. */
-export type MomentEntry = { encounterId: string; landmarkId: string; storyId: string; priority?: VisitPriority };
+/**
+ * What the order needs of an encounter: its landmark, its story (address; the same priority runs in
+ * file-name order, and within one place file in written order: `order`) and its rule's priority.
+ */
+export type MomentEntry = { encounterId: string; landmarkId: string; storyId: string; priority?: VisitPriority; order?: number };
 
 export function visitSlot(priority: VisitPriority | undefined): VisitSlot {
+  if (priority === "after guide") return "afterGuide";
+  if (priority === "after battle") return "afterBattle";
   return typeof priority !== "number" ? "observe" : priority < 0 ? "before" : "after";
 }
 
-/** Story IDs compared by code units, the same everywhere (not by locale). */
-const byStoryId = (left: MomentEntry, right: MomentEntry) => (left.storyId < right.storyId ? -1 : left.storyId > right.storyId ? 1 : 0);
+/** Story files compared by code units, the same everywhere (not by locale); within one file, in written order. */
+const byStoryId = (left: MomentEntry, right: MomentEntry) => {
+  const [a, b] = [storyFileOf(left.storyId), storyFileOf(right.storyId)];
+  return a < b ? -1 : a > b ? 1 : (left.order ?? 0) - (right.order ?? 0);
+};
 
 /**
  * The encounters of one slot of a landmark's visit, in play order. Before and after the main
@@ -28,6 +38,7 @@ const byStoryId = (left: MomentEntry, right: MomentEntry) => (left.storyId < rig
  */
 export function visitOrder(entries: readonly MomentEntry[], landmarkId: string, slot: VisitSlot): string[] {
   const own = entries.filter((entry) => entry.landmarkId === landmarkId && visitSlot(entry.priority) === slot);
+  if (slot === "afterGuide" || slot === "afterBattle") return own.sort(byStoryId).map((entry) => entry.encounterId);
   if (slot === "observe")
     return [...own.filter((entry) => entry.priority === undefined), ...own.filter((entry) => entry.priority !== undefined).sort(byStoryId)]
       .map((entry) => entry.encounterId);

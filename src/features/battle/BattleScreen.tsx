@@ -109,6 +109,8 @@ interface Props {
   onAnswer: (id: string) => boolean;
   onHint: () => void;
   onLeave?: () => void;
+  /** The leave button's words when it leads somewhere else than free time (a battle whose head says then: epilogue: 「エピローグへ進む」). */
+  leaveLabel?: string;
   onNotebook?: () => void;
   onClaimRewards: () => void;
   onPress: () => void;
@@ -131,6 +133,7 @@ export function BattleScreen({
   onAnswer,
   onHint,
   onLeave,
+  leaveLabel,
   onNotebook,
   onClaimRewards,
   onPress,
@@ -505,7 +508,7 @@ export function BattleScreen({
                 className={onEpilogue || onNextStoryBattle ? "secondary" : "primary"}
                 onClick={onLeave}
               >
-                {isSpecial ? "自由時間へ戻る" : "自由時間へ進む"}{" "}
+                {leaveLabel ?? (isSpecial ? "自由時間へ戻る" : "自由時間へ進む")}{" "}
                 <span aria-hidden="true">→</span>
               </button>}
               {onNextEpisode && (

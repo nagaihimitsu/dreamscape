@@ -10,6 +10,9 @@ import { meetEncounter } from "../../tests/fixtures/encounter-moment";
 import { startCityEpilogue } from "./epilogue";
 import { createGame, getDateAvailability, startDate, validateGameState, type GameState } from "./game";
 import { installTestCity } from "../dev/test-cities";
+import { encounters } from "../content/encounters";
+import { itemUsableIn } from "./item-cities";
+import { choiceDisplay } from "./scene-effects";
 import { closeTourism, openTourism, skipTourismGuide, startTourismBattle } from "./tourism";
 import { beginTravelEvent, waitForTravel } from "./travel-game";
 
@@ -45,6 +48,28 @@ describe("two registered cities through the real game runtime", () => {
   // Milan's IDs below (dates, encounters, items) are part of the test.
   beforeEach(() => { cleanup = installTestCity({ templateCityId: "milano" }); });
   afterEach(() => cleanup());
+
+  it("keeps an item carried through the journey held in the next city, where it may be held, given and used (the item design §2)", () => {
+    const pick = encounters.items.find((item) => item.id === "blue_pick")!;
+    pick.carry = "journey";
+    try {
+      const reached = finishMilan();
+      const before = validateGameState({ ...reached, inventory: { ...reached.inventory, blue_pick: "held" },
+        completedEncounterIds: [...reached.completedEncounterIds, "duomo_string"], seenEncounterIds: [...reached.seenEncounterIds, "duomo_string"] });
+      const after = departToNextCity(before, before.revision);
+      expect(after.currentCityId).toBe("test_city");
+      expect(after.inventory.blue_pick).toBe("held");
+      expect(validateGameState(JSON.parse(JSON.stringify(after)))).toEqual(after);
+      expect(itemUsableIn(after, "blue_pick", "test_city")).toBe(true);
+      // A choice that gives it away shows in the later city (it would be hidden if the item could not be given there).
+      expect(choiceDisplay(after, { id: "give_pick", knot: "test", give: { item: "blue_pick", to: "heroine" } })).toEqual({ show: "open" });
+      // Never left behind; and an item not carried is not held in another city.
+      expect(() => validateGameState({ ...after, inventory: { ...after.inventory, blue_pick: "left_behind" } })).toThrow("道中交流の保存状態が一致しません。");
+      delete pick.carry;
+      expect(itemUsableIn(after, "blue_pick", "test_city")).toBe(false);
+      expect(() => validateGameState(after)).toThrow("道中交流の保存状態が一致しません。");
+    } finally { delete pick.carry; }
+  });
 
   it("departs once, preserves histories and saves, then plays the second city's actual scenes", () => {
     const newGame = createGame();

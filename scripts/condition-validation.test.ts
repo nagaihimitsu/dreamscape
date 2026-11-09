@@ -17,7 +17,8 @@ const content: ConditionContent = {
   battles: [{ id: "alpha_battle", landmarkId: "alpha_tower" }, { id: "beta_finale", cityId: "beta", landmarkId: null }],
   landmarks: [{ id: "alpha_tower", cityId: "alpha" }, { id: "beta_gate", cityId: "beta" }],
   encounters: [{ id: "alpha_meeting", cityId: "alpha", landmarkId: "alpha_tower" }],
-  items: [{ id: "alpha_key", cityId: "alpha" }, { id: "beta_coin", cityId: "beta" }, { id: "gamma_shell", cityId: "gamma" }],
+  items: [{ id: "alpha_key", cityId: "alpha" }, { id: "beta_coin", cityId: "beta" }, { id: "gamma_shell", cityId: "gamma" },
+    { id: "alpha_map", cityId: "alpha", carry: "journey" }],
   dates: [{ id: "alpha_date", chapterId: "alpha" }, { id: "beta_date", chapterId: "beta" }],
 };
 /** The errors of one condition on a date of `cityId`. */
@@ -68,6 +69,11 @@ describe("condition build checks", () => {
 
   it("refuses an item status that can never be read where the condition is checked", () => {
     expect(errorsOf({ item: { id: "alpha_key", is: "held" } })[0]).toMatch(/^An item of another city is never held/);
+    // An item carried through the journey is held in its city and the journey's later cities, never left behind (the item design §2.5).
+    expect(errorsOf({ item: { id: "alpha_map", is: "held" } })).toEqual([]);
+    expect(errorsOf({ item: { id: "alpha_map", is: "held" } }, "alpha")).toEqual([]);
+    expect(errorsOf({ item: { id: "alpha_map", is: "held" } }, "gamma")[0]).toMatch(/^An item of another city is never held/);
+    expect(errorsOf({ item: { id: "alpha_map", is: "left_behind" } })[0]).toMatch(/^An item carried through the journey is never left behind/);
     expect(errorsOf({ item: { id: "beta_coin", is: "left_behind" } })[0]).toMatch(/^An item is left behind only after leaving its city/);
     expect(errorsOf({ item: { id: "beta_coin", is: "left_behind" } }, "alpha")[0]).toMatch(/^An item is left behind only after leaving its city/);
     expect(errorsOf({ item: { id: "gamma_shell", is: "left_behind" } })[0]).toMatch(/^An item is left behind only after leaving its city/);

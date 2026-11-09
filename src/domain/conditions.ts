@@ -1,4 +1,5 @@
-import { battles, episodes, landmarks } from "../content";
+import { battles, episodes, landmarks, scenes, storyState } from "../content";
+import { usableAp, usableMoney } from "./reservations";
 import { leafKind, type Condition, type Leaf, type LeafKind, type LeafValues } from "../content/condition-schemas";
 import type { GameState } from "./game-state-schema";
 import { getGameWeekday, getTimePeriod, NIGHT_START } from "./travel";
@@ -15,8 +16,8 @@ export function battlePlayed(state: Readonly<GameState>, battleId: string): bool
   return state.battleRecords.some((record) => record.battleId === battleId && record.attempts > 0);
 }
 
-/** The money that can be spent now: the budget less the fare home kept back (as an encounter option's cost is checked). */
-export const spendableMoney = (state: Readonly<GameState>) => state.travelBudget - state.travel.returnReserve;
+/** The money that can be spent now: the budget less the fare home and the main parts' payments kept back (reservations.ts). */
+export const spendableMoney = (state: Readonly<GameState>) => usableMoney(state);
 
 const inRange = (value: number, range: { atLeast?: number; atMost?: number }) =>
   (range.atLeast === undefined || value >= range.atLeast) && (range.atMost === undefined || value <= range.atMost);
@@ -52,6 +53,11 @@ const LEAVES: { [K in LeafKind]: (state: Readonly<GameState>, value: LeafValues[
   money: (state, range) => inRange(spendableMoney(state), range),
   romanceStage: (state, range) => inRange(state.romanceStage, range),
   couple: (state) => state.confessionStatus === "accepted",
+  ap: (state, range) => inRange(usableAp(state), range),
+  flag: (state, id) => state.storyProgress.flags.includes(id),
+  // Met: a scene naming the person in # person: was seen (decision 42; seen covers every ending).
+  met: (state, id) => scenes.some((scene) => scene.people.includes(id) && state.seenEncounterIds.includes(scene.id)),
+  condition: (state, name) => Object.hasOwn(storyState.conditions, name) && meets(state, storyState.conditions[name]),
 };
 
 function meetsLeaf(state: Readonly<GameState>, leaf: Leaf): boolean {

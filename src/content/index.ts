@@ -27,6 +27,9 @@ import { reasoningIntroCatalogSchema } from "./reasoning-intros";
 import { dialogueExpressionCatalogSchema } from "./dialogue-expressions";
 import generatedStories from "./generated/stories.json";
 import sceneConditionData from "./generated/scene-conditions.json";
+import sceneData from "./generated/scenes.json";
+import storyStateData from "./generated/content/progression/story.json";
+import { generatedScenesSchema, storyStateCatalogSchema, type SceneEntry } from "./scene-schemas";
 import { sceneConditionsSchema } from "./condition-schemas";
 import {
   battleCatalogSchema,
@@ -49,7 +52,14 @@ export const battles = battleCatalogSchema.parse(battleData).battles;
 export const journeyConfig = journeySchema.parse(journeyData);
 export const episodes = journeyConfig.episodes;
 export const rewardRules = journeyConfig.rewards;
-export const allRewardRules = getAllRewardRules(journeyConfig);
+/** The scenes content:build listed (place files, one-scene files' heads, today's encounter catalogs; scene-schemas.ts). */
+const generatedScenes = generatedScenesSchema.parse(sceneData);
+export const scenes: readonly SceneEntry[] = generatedScenes.scenes;
+/** The AP rules content:build made for the tags that give AP (`scene_tag`). */
+export const sceneRewardRules = generatedScenes.rewards;
+export const allRewardRules = getAllRewardRules(journeyConfig, sceneRewardRules);
+/** The declared story state: flags, people and named conditions (progression/story.json). */
+export const storyState = storyStateCatalogSchema.parse(storyStateData);
 const tourism = tourismCatalogSchema.parse(tourismData);
 export const landmarks = tourism.landmarks;
 export const tourismAssets = tourism.assets;

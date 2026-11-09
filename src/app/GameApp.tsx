@@ -12,7 +12,9 @@ import { JourneySelection, type SelectorFocus } from "../features/journey/Journe
 import { waitForTravel } from "../domain/travel-game";
 import { rentTransport } from "../domain/transport";
 import { getTransportMode } from "../content/transport";
-import { getPlayerDeparture, departToNextCity } from "../domain/city-travel";
+import { getPlayerDeparture } from "../domain/city-travel";
+import { closeRomanceEnding, openOccasion } from "../domain/occasion";
+import { screenFor } from "../domain/screen";
 import {
   advanceDate,
   chooseDate,
@@ -45,9 +47,24 @@ import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
 import { JourneyHud } from "./JourneyHud";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
-import { advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterOptionAvailability, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterCanFinish, proceedFromTourism, continueTourismEncounters, encounterLeadsOnward, leaveBattleToFreeTime } from "../domain/encounter";
+import { advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, encounterChoiceDisplay, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterCanFinish, proceedFromTourism, continueTourismEncounters, encounterLeadsOnward, leaveBattleToFreeTime } from "../domain/encounter";
+import { chooseCityEpilogue, epilogueChoiceDisplay } from "../domain/epilogue";
+import { dateChoiceDisplay, type GameState } from "../domain/game";
+import { chooseTourismGuide, guideChoiceDisplay } from "../domain/tourism";
+import type { ChoiceDisplay } from "../domain/scene-effects";
+import type { SceneChoiceView } from "../components/SceneChoices";
+
+/** The shown choices of a scene's choice point (hidden ones left out; decision 43), with a greyed-out one's reason. */
+function shownSceneChoices(choices: readonly { index: number; text: string; translationJa?: string }[], display: (index: number) => ChoiceDisplay): SceneChoiceView[] {
+  return choices.flatMap((choice) => {
+    const shown = display(choice.index);
+    if (shown.show === "hidden") return [];
+    return [{ index: choice.index, text: choice.text, ...(choice.translationJa ? { translationJa: choice.translationJa } : {}),
+      ...(shown.show === "grey" ? { reason: shown.reason } : {}) }];
+  });
+}
 import { EpilogueScreen } from "../features/journey/EpilogueScreen";
-import { startCityEpilogue, advanceCityEpilogue, completeArrivalLogo } from "../domain/epilogue";
+import { advanceCityEpilogue, completeArrivalLogo } from "../domain/epilogue";
 import {
   getBattleResultExits,
   getCurrentEpisode,
@@ -91,10 +108,16 @@ import { RelationshipChangeNote } from "../components/RelationshipChangeNote";
 import { sceneConditionTruths } from "../domain/scene-conditions";
 import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
 
+/** Where a Debug relationship change shows (decision 23): the story scene on screen, else the map or free time until the next action. */
+function changeScreenKey(state: GameState): string {
+  return storySceneOnScreen(state) ?? `screen:${state.revision}`;
+}
+
 export function GameApp({
   storage = browserStorage,
   nextRomanceRoll = secureRomanceRoll,
   debug = false,
+  debugPanel,
   journeyId = defaultJourneyId,
   onSwitchJourney,
   selectorFocus,
@@ -113,12 +136,14 @@ export function GameApp({
   showChangesRef.current = showChanges;
   const [shownChange, setShownChange] = useState<{ scene: string; change: RelationshipChange } | null>(null);
   useEffect(() => { if (!showChanges) setShownChange(null); }, [showChanges]);
+  // The travel art of a then: move (set once useTravelEffects is ready below).
+  const playMoveRef = useRef<((previous: GameState, next: GameState) => void) | null>(null);
   const session = useGameSession(storage, displaySettings.value.autoSave, (previous, next) => {
+    playMoveRef.current?.(previous, next);
     if (!showChangesRef.current) return;
     const change = relationshipChange(previous, next);
-    // Only inside a story scene: with none on screen, a null key would match the map.
-    const scene = storySceneOnScreen(next);
-    if (change && scene) setShownChange({ scene, change });
+    // Above the story scene on screen, or (decision 23) above the map or free time until the next action.
+    if (change) setShownChange({ scene: changeScreenKey(next), change });
   });
   const { game, loaded, invalid, notice, setNotice, commit, getCurrent, save } = session;
   // The second tap of a double tap that starts or ends a story scene must not press the next
@@ -131,9 +156,10 @@ export function GameApp({
   }, [storyScene]);
   const titleActions = titleSaveActions(loaded);
   const learning = useLearning(game, storage, !isDebug);
-  const { travelToEvent, returnToHotel, effects: travelEffects } = useTravelEffects({
+  const { travelToEvent, returnToHotel, playMove, effects: travelEffects } = useTravelEffects({
     getCurrent, commit, nextRomanceRoll, reduceMotion: displaySettings.value.reduceMotion,
   });
+  playMoveRef.current = playMove;
   const [englishOpen, setEnglishOpen] = useState(
     () => !!learning.data.openQuestion,
   );
@@ -178,7 +204,6 @@ export function GameApp({
   const speed = displaySettings.value.dialogueSpeed;
   const setSpeed = (next: number) => displaySettings.update({ dialogueSpeed: next });
   const [confirmLoad, setConfirmLoad] = useState(false);
-  const [showRomanceEnding, setShowRomanceEnding] = useState(false);
   // The title starts with empty fields (the default names are their placeholders); 設定 fills in the current names.
   const [player, setPlayer] = useState(game?.playerName ?? "");
   const [heroine, setHeroine] = useState(game?.heroineName ?? "");
@@ -207,7 +232,6 @@ export function GameApp({
     // comes back (a date, battle or encounter is a new instance: sceneEpoch): the second tap of a
     // double tap on 「ロード」 or 「ロードする」 must not read the restored line on.
     holdTaps();
-    setShowRomanceEnding(false);
     setSceneEpoch((epoch) => epoch + 1);
     setNotebook(false);
   }
@@ -216,6 +240,8 @@ export function GameApp({
     if (displaySettings.update({ autoSave: enabled })) setNotice("");
   }
   const active = game?.activeDate;
+  // The 「交際開始」 screen is a step of the date's occasion (stage 3b, 3.9 (c)): saved, so a reload shows it again.
+  const showRomanceEnding = !!game && screenFor(game) === "romance_ending";
   const conversationActive = !!(
     active ||
     game?.activeEncounter ||
@@ -368,8 +394,9 @@ export function GameApp({
       )}
       {/* A tap on main's own margin beside a narrow story scene reads on (scene-tap.ts). */}
       <main id="main" ref={main} tabIndex={-1} {...{ [PAGE_MARGIN_ATTRIBUTE]: "" }}>
-        {showChanges && <RelationshipChangeNote change={shownChange?.scene === storyScene ? shownChange.change : null}
+        {showChanges && <RelationshipChangeNote change={game && shownChange && shownChange.scene === changeScreenKey(game) ? shownChange.change : null}
           conditions={storyScene && game ? sceneConditionTruths(game) : []} />}
+        {debugPanel && game && debugPanel(game)}
         {learning.error && (
           <div className="notice" role="status">
             {learning.error}
@@ -478,13 +505,16 @@ export function GameApp({
               speaker: activeEncounter.frame.speaker === "heroine" ? game.heroineName : activeEncounter.frame.speaker === "player" ? game.playerName : "旅の風景",
               narration: activeEncounter.frame.speaker !== "heroine" && activeEncounter.frame.speaker !== "player",
               text: activeEncounter.frame.text,
-              choices: activeEncounter.frame.choices.map((choice) => {
+              // Hidden choices (decision 43) are left out; the letters follow the shown ones.
+              choices: activeEncounter.frame.choices.flatMap((choice) => {
                 const option = encounterChoiceOption(currentEncounter, choice);
-                const availability = getEncounterOptionAvailability(game, choice.index);
-                return { index: choice.index, textEn: choice.text, translationJa: choice.translationJa ?? option?.translationJa ?? "", cost: option?.cost, unavailableReason: availability.available ? undefined : availability.reason };
+                const shown = encounterChoiceDisplay(game, choice.index);
+                if (shown.show === "hidden") return [];
+                return [{ index: choice.index, textEn: choice.text, translationJa: choice.translationJa ?? option?.translationJa ?? "", cost: shown.cost,
+                  unavailableReason: shown.show === "grey" ? shown.reason : undefined, ...(shown.ap ? { apCost: shown.ap } : {}) }];
               }),
               ended: encounterCanFinish(game),
-              finishLabel: activeEncounter.returnTourism ? "観光に戻る" : encounterLeadsOnward(game) ? "先へ進む" : undefined,
+              finishLabel: ({ observe: "観光に戻る", onward: "先へ進む" } as const)[encounterLeadsOnward(game) || "none" as never],
               quiz: (activeEncounter.phase === "quiz" || activeEncounter.phase === "feedback") && currentEncounter.quiz ? {
                 id: currentEncounter.quiz.question.id,
                 questionEn: currentEncounter.quiz.question.questionEn,
@@ -493,7 +523,7 @@ export function GameApp({
                 result: encounterFeedback ? `${encounterFeedback.correct ? "正解" : "不正解"}。${encounterFeedback.explanationJa}` : undefined,
               } : undefined,
             }}
-            onChoose={(index) => commit((state) => chooseEncounter(state, index, game.revision))}
+            onChoose={(index) => commit((state) => chooseEncounter(state, index, game.revision, nextRomanceRoll))}
             onAnswer={(index) => commit((state) => answerEncounterQuiz(state, currentEncounter.quiz!.question.options[index].id, game.revision))}
             onAdvance={() => {
               commit((state) => continueTourismEncounters(state, advanceEncounter(state, game.revision), nextRomanceRoll));
@@ -514,6 +544,8 @@ export function GameApp({
             onAdvance={() =>
               commit((state) => advanceCityEpilogue(state, game.revision))
             }
+            choices={shownSceneChoices(game.activeEpilogue.frame.choices, (index) => epilogueChoiceDisplay(game, index))}
+            onChoose={(index) => commit((state) => chooseCityEpilogue(state, index, game.revision, nextRomanceRoll))}
           />
         ) : game.activeTourism ? (
           <TourismScreen
@@ -532,6 +564,8 @@ export function GameApp({
             onReplayGuide={() =>
               commit((state) => replayTourismGuide(state, game.revision))
             }
+            guideChoices={shownSceneChoices(game.activeTourism.frame?.choices ?? [], (index) => guideChoiceDisplay(game, index))}
+            onChooseGuide={(index) => commit((state) => chooseTourismGuide(state, index, game.revision, nextRomanceRoll))}
             onDiscover={(id) =>
               game.discoveredClueIds.includes(id) ||
               commit((state) => discoverClue(state, id, game.revision))
@@ -578,9 +612,11 @@ export function GameApp({
             onNextStoryBattle={undefined}
             onEpilogue={
               resultExits.epilogue
-                ? () => commit((state) => startCityEpilogue(state, state.currentCityId, game.revision))
+                ? () => commit((state) => openOccasion(state, { kind: "epilogue" }, game.revision, nextRomanceRoll))
                 : undefined
             }
+            // The battle's head then: epilogue (stage 3b): leaving the result goes to the epilogue (4.7).
+            leaveLabel={game.occasion?.then && "epilogue" in game.occasion.then ? "エピローグへ進む" : undefined}
             onLeave={resultExits.leave ? () => {
               commit((state) => leaveBattleToFreeTime(state, game.revision, nextRomanceRoll));
             } : undefined}
@@ -597,19 +633,17 @@ export function GameApp({
             onSelect={(index, revision) =>
               commit((state) => chooseDate(state, index, revision))
             }
+            choiceDisplay={(index) => dateChoiceDisplay(game, index)}
             onAdvance={() => {
               commit((state) => advanceDate(state, game.revision));
             }}
             onFinish={() => {
-              const hadEnding = game.endingReached;
-              if (commit((state) => finishDate(state, game.revision))) {
-                if (!hadEnding && getCurrent()?.endingReached)
-                  setShowRomanceEnding(true);
+              // A confession that succeeded shows 「交際開始」 next: a step of the date's occasion (saved; 3.9 (c)).
+              if (commit((state) => finishDate(state, game.revision)))
                 document.getElementById("main")?.scrollIntoView({ block: "start" });
-              }
             }}
           />
-        ) : game.endingReached && showRomanceEnding ? (
+        ) : showRomanceEnding ? (
           <>
             <CanalScene backgroundId={currentTravelPlace?.backgroundId} />
             <section className="paper ending" data-testid="romance-ending">
@@ -626,7 +660,7 @@ export function GameApp({
               <p className="fine-print">
                 これからも、旅先でふたりの時間を過ごせます。
               </p>
-              <button className="primary" onClick={() => setShowRomanceEnding(false)}>
+              <button className="primary" onClick={() => commit((state) => closeRomanceEnding(state, game.revision, nextRomanceRoll))}>
                 自由時間へ <span aria-hidden="true">→</span>
               </button>
             </section>
@@ -636,7 +670,7 @@ export function GameApp({
             game={game}
             onClaimRewards={() => commit((state) => claimPendingRewards(state, game.revision))}
             onStartEpisode={(id) => commit((state) => startEpisode(state, id))}
-            onEpilogue={(id) => commit((state) => startCityEpilogue(state, id, game.revision))}
+            onEpilogue={() => commit((state) => openOccasion(state, { kind: "epilogue" }, game.revision, nextRomanceRoll))}
             onBattle={(id) => commit((state) => startBattle(state, id))}
             onTravelEvent={(id, mode) => travelToEvent(id, mode, game.revision)}
             onRent={(modeId) => commit((state) => rentTransport(state, modeId, game.revision))}
@@ -652,10 +686,10 @@ export function GameApp({
       </footer>
       {confirmDeparture && game && departure && <Modal labelledBy="departure-title" onClose={() => setConfirmDeparture(false)}>
         <ModalTitle id="departure-title">{departure.city.nameJa}へ出発</ModalTitle>
-        <p>次の街へ進みます。今の街の未使用アイテムは持って行けません。{game.travel.rentedModeIds.length > 0 &&
+        <p>次の街へ進みます。この街でしか使えない未使用アイテムは、持って行けません。{game.travel.rentedModeIds.length > 0 &&
           `借りている${game.travel.rentedModeIds.map((modeId) => getTransportMode(game.currentCityId, modeId)?.nameJa ?? modeId).join("・")}は返します。`}</p>
         <button type="button" className="primary" onClick={() => {
-          if (commit((state) => departToNextCity(state, game.revision))) setConfirmDeparture(false);
+          if (commit((state) => openOccasion(state, { kind: "depart" }, game.revision, nextRomanceRoll))) setConfirmDeparture(false);
         }}>出発する</button>
         <button type="button" className="secondary" onClick={() => setConfirmDeparture(false)}>この街に残る</button>
       </Modal>}

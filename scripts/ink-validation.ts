@@ -22,7 +22,8 @@ export function checkLinesWithoutChoice(count: number): void {
     throw new Error(`Story reads more than ${MAX_LINES_WITHOUT_CHOICE} lines without a choice or an end (an endless loop?)`);
 }
 
-export function compileInk(source: string, filename = "story.ink"): string {
+/** Compile Ink; `includes` are the files an INCLUDE line may name (a place file's modules.ink). */
+export function compileInk(source: string, filename = "story.ink", includes: Record<string, string> = {}): string {
   const compiler = new Compiler(
     source,
     new CompilerOptions(
@@ -30,7 +31,7 @@ export function compileInk(source: string, filename = "story.ink"): string {
       [],
       false,
       null,
-      new JsonFileHandler({ [filename]: source }),
+      new JsonFileHandler({ ...includes, [filename]: source }),
     ),
   );
   try {
@@ -116,6 +117,8 @@ export function validateStory(
   randomReactions = false,
   onEffect?: (effectId: string) => void,
   tone?: RelationshipTone,
+  /** A probable mistake that does not stop the build (the two reactions of a choice read the same; decision 39). */
+  onWarning?: (message: string) => void,
 ): number {
   // Set per walk: each assignment of the story's cond("…") texts (scene-conditions.ts).
   let bindConditions: (story: Story) => void = () => {};
@@ -262,8 +265,9 @@ export function validateStory(
             throw new Error(`Random choice effect needs a response profile: ${immediate[0]}`);
           if (choiceEffect && choiceEffect !== immediate[0])
             throw new Error("Random choice effect must not depend on its reaction result");
-          if (!response || (firstReaction !== undefined && firstReaction === response))
-            throw new Error("Random choice must produce different positive and negative reactions");
+          if (!response) throw new Error("Random choice must produce a reaction");
+          if (firstReaction !== undefined && firstReaction === response)
+            onWarning?.(`A choice's positive and negative reactions read the same (not stopped): "${response}"`);
           firstReaction = response;
           choiceEffect = immediate[0];
         }

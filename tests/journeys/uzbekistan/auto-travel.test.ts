@@ -7,7 +7,14 @@ import { loadGame, saveGame } from "../../../src/persistence";
 import { journeyStorage } from "../../../src/persistence/journey-storage";
 import { getEpisodeAvailability } from "../../../src/domain/chapter";
 import { advanceCompletedJourneyCity, departToNextCity, getNextCity } from "../../../src/domain/city-travel";
-import { advanceCityEpilogue } from "../../../src/domain/epilogue";
+import { advanceCityEpilogue as advanceLine, chooseCityEpilogue } from "../../../src/domain/epilogue";
+import type { GameState as EpilogueState } from "../../../src/domain/game";
+
+/** One step of the epilogue: its first choice when it shows choices (the sample's epilogue has one; stage 3a), else its next line. */
+function advanceCityEpilogue(state: EpilogueState, revision: number): EpilogueState {
+  const choice = state.activeEpilogue?.frame.choices[0];
+  return choice ? chooseCityEpilogue(state, choice.index, revision) : advanceLine(state, revision);
+}
 import { advanceDate, chooseDate, createGame, finishDate, startDate, validateGameState, type GameState } from "../../../src/domain/game";
 import { installJourneyTestCities } from "../../../src/dev/test-cities";
 import { waitForTravel } from "../../../src/domain/travel-game";

@@ -1,5 +1,6 @@
 // 都市エピローグ（stories/epilogues/<都市ID>.ink）：都市フィナーレのあとに読む短い締めくくり。
-// - 選択肢と # effect は置かない。日本語で、表示される行は50行以内。
+// - 日本語の選択肢と、選択肢のすぐ次の行の効果の札（# rel: など）を書ける（段階3a）。# effect は置かない。
+//   効果のある選択肢には # option: を付ける。お金や AP を減らす札（ゲームが自分で始めるエピローグの # on_done:）は書かない。
 // - romance_stage（1〜4）と ending_reached で少しだけ分岐してよい。全組合せで台詞が出るようにする。
 // - # speaker: enemy はフィナーレの対戦相手の名前で表示される。ほかの人物の言葉は地の文に入れる。
 // - 見本の街と人物は架空。
@@ -23,6 +24,14 @@ VAR ending_reached = false
 「あれ？　戻ってきた人のための鐘だよね。わたしたち、今から出るところなのに」
 # speaker: narrator
 トーマが大きく口を動かした。たぶん、「また三時に」。
+* [手を振り返す # option: wave_back]
+    # rel: affection +1
+    # speaker: narrator
+    {heroine_name}と二人で、塔に向かって大きく手を振った。
+* [鐘の音が消えるまで、黙って聞いている # option: listen]
+    # speaker: narrator
+    二人は立ち止まって、鐘の余韻が石畳に消えていくのを聞いていた。
+-
 { romance_stage >= 3:
     # speaker: heroine
     # emotion: shy

@@ -9,6 +9,8 @@ export type EncounterChoiceView = {
   textEn: string;
   translationJa: string;
   cost?: number;
+  /** The AP the choice spends (`# ap: -N`; stage 3a), shown like its price. */
+  apCost?: number;
   unavailableReason?: string;
 };
 
@@ -56,6 +58,7 @@ export function EncounterChoices({
               />
               <div className="encounter-choice-meta">
                 {hasPrices && <span>{choice.cost ? formatMoney(choice.cost) : "無料"}</span>}
+                {choice.apCost ? <span>AP {choice.apCost}</span> : null}
                 {choice.translationJa && <button
                   type="button"
                   className="text-button"

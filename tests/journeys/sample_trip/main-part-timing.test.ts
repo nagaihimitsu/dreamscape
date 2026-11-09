@@ -4,7 +4,7 @@
 // sample's files) turns false during it, and the visit's main part still opens.
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
 import { episodes } from "../../../src/content";
-import { encounters } from "../../../src/content/encounters";
+import { scenes } from "../../../src/content";
 import { getJourney } from "../../../src/content/journeys";
 import { meets, spendableMoney } from "../../../src/domain/conditions";
 import { advanceEncounter, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter } from "../../../src/domain/encounter";
@@ -36,15 +36,16 @@ function playStall(state: GameState, optionId: string): GameState {
 
 describe("the sample clock tower's map condition is read once, on departing", () => {
   const episode = () => episodes.find((item) => item.id === EPISODE)!;
-  const stall = () => encounters.encounters.find((item) => item.id === STALL)!;
+  // The stall is a knot of the clock tower's place file (stage 3a): its choices' money is in the scene table.
+  const stall = () => scenes.find((item) => item.id === STALL)!;
   const costs = new Map<string, number | undefined>();
   beforeAll(() => {
     if (!getJourney("sample_trip")) throw new Error("見本の旅（sample_trip）が生成物にありません。npm run content:build -- --with-sample を実行してください。");
-    for (const option of stall().options) costs.set(option.id, option.cost);
+    for (const option of stall().options) costs.set(option.id, option.money);
   });
   afterEach(() => {
     delete episode().when;
-    for (const option of stall().options) option.cost = costs.get(option.id);
+    for (const option of stall().options) { const money = costs.get(option.id); if (money === undefined) delete option.money; else option.money = money; }
   });
 
   it("opens the guide after the stall gave the item the when reads as not obtained", () => {
@@ -52,7 +53,7 @@ describe("the sample clock tower's map condition is read once, on departing", ()
     const start = restore(createGame("ユウ", "ミオ", { journeyId: "sample_trip" }));
     expect(getTravelEventAvailability(start, EPISODE, "walk").available).toBe(true);
     const trip = act(start, (current) => beginTravelEvent(current, EPISODE, "walk", current.revision, () => 0));
-    expect(trip.activeEncounter).toMatchObject({ encounterId: STALL, trip: { eventId: EPISODE } });
+    expect(trip.activeEncounter).toMatchObject({ encounterId: STALL });
     const visit = playStall(trip, "ask");
     expect(visit.inventory[BOOKMARK]).toBe("held");
     expect(meets(visit, episode().when)).toBe(false);
@@ -60,7 +61,7 @@ describe("the sample clock tower's map condition is read once, on departing", ()
   });
 
   it("opens the guide after the stall spent the money the when needs", () => {
-    stall().options.find((option) => option.id === "ask")!.cost = 30;
+    stall().options.find((option) => option.id === "ask")!.money = -30;
     const start = restore(createGame("ユウ", "ミオ", { journeyId: "sample_trip" }));
     const trip = act(start, (current) => beginTravelEvent(current, EPISODE, "walk", current.revision, () => 0));
     // The condition holds on departing (after the fare), and the stall's 30 makes it false.

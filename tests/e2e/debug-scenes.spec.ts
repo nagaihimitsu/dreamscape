@@ -101,7 +101,7 @@ function itemEncounter(page: Page, byAnswer = false): Promise<ItemEncounter | un
   }, { modules: devModules, byAnswer });
 }
 
-// AGENTS.md 「英語は…道中交流で主人公の返答・行動を選ぶ3択に用いる」「道中の品物は所属都市を登録し…」.
+// AGENTS.md 「英語は…道中交流で主人公の返答・行動を選ぶ3択に用いる」「品物は所属都市を登録し、その都市で入手する…」.
 test("an encounter answered in English gives its item, and the scene ends back in its landmark's observation", { tag: tier.debug }, async ({ page }) => {
   const encounter = await itemEncounter(page);
   expect(encounter, "an encounter with an item that Debug can open").toBeDefined();

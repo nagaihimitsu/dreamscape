@@ -82,6 +82,8 @@ export const CATALOG_RULES = [
   { kind: "presentation/own-artwork.json", fields: { schemaVersion: same, artworks: concat } },
   { kind: "presentation/reasoning-intros.json", fields: entries },
   { kind: "progression/journey.json", fields: { schemaVersion: same, episodes: concat, storyBattles: concat, rewards: concat } },
+  // The story state an author declares (flags, people, named conditions; the unified event design, stage 3a).
+  { kind: "progression/story.json", fields: { schemaVersion: same, flags: concat, people: concat, conditions: record } },
   { kind: "romance/balance.json", file: "core" },
   { kind: "romance/date_catalog.json", fields: { schemaVersion: same, dates: concat } },
   { kind: "romance/date_destinations.json", fields: { schemaVersion: same, destinations: concat } },
@@ -95,6 +97,8 @@ export const CATALOG_RULES = [
     fields: { schemaVersion: same, stages: core, confession: core, memoryCallbacks: concat, fallbackMemoryCallbackJa: core },
   },
   { kind: "romance/response_profiles.json", file: "core" },
+  // The scene JSON: what a place file's tags cannot say, by scene ID (sources; stage 3a, 3.7).
+  { kind: "scenes/catalog.json", fields: { schemaVersion: same, scenes: concat } },
   { kind: "tourism/catalog.json", fields: { schemaVersion: same, assets: concat, landmarks: concat, clues: concat } },
 ] as const satisfies readonly CatalogRule[];
 
@@ -218,6 +222,8 @@ export function classifyContentFile(relative: string, layer: LayerType): Content
   if (city) return { type: "city", id: city[1] };
   const travel = /^travel\/([^/]+?)(?:-(settings|transit))?\.json$/u.exec(relative);
   if (travel) return { type: "travel", cityId: travel[1], part: travel[2] === "settings" ? "settings" : travel[2] === "transit" ? "transit" : "routes" };
+  // A copy of the game's modules.ink next to a place file is for Inky's preview only (content:build uses src/story/modules.ink).
+  if (relative === "stories/places/modules.ink") return { type: "other" };
   const story = storyIdFromPath(relative);
   if (story !== undefined) return { type: "story", id: story };
   if (/^quizzes\/.+\.json$/u.test(relative)) return { type: "quiz", example: relative.endsWith(".example.json") };

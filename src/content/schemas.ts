@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { conditionSchema } from "./condition-schemas";
+import { storyAddressSchema } from "./story-address";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const text = z.string().trim().min(1);
@@ -17,7 +18,7 @@ export const dateSchema = z
     descriptionJa: text.default("ふたりで旅先を訪ねる。"),
     apCost: z.number().int().nonnegative().default(2),
     minRomanceStage: z.number().int().min(1).max(4).default(1),
-    storyId: z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/),
+    storyId: storyAddressSchema,
     /** When the date opens (src/content/condition-schemas.ts); without it the date has no progress condition. */
     when: conditionSchema.optional(),
     /** When the date is over for good, even if it was unlocked: a true `until` closes it. */
@@ -30,8 +31,8 @@ export const dateSchema = z
     repeatable: z.boolean().default(false),
     recovery: z.boolean().optional(),
     needsDeferred: z.boolean().default(false),
-    choiceCount: z.number().int().min(0).max(2).default(2),
-    effectCount: z.number().int().min(0).max(2).default(2),
+    choiceCount: z.number().int().min(0).default(2),
+    effectCount: z.number().int().min(0).default(2),
     validationContexts: z
       .array(
         z
@@ -298,7 +299,7 @@ export const battleSchema = z
     enemyNameJa: japaneseText,
     enemyTitleJa: japaneseText,
     enemyDescriptionJa: japaneseText,
-    storyId: z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/),
+    storyId: storyAddressSchema,
     quizId: id,
     backgroundId: id,
     portrait: z

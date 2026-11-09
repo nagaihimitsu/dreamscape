@@ -1,6 +1,8 @@
 import { Story } from "inkjs";
 import { z } from "zod";
-import { presentation, stories, tagContext } from "../content";
+import { presentation, scenes, stories, tagContext } from "../content";
+import { splitStoryAddress, storyFileOf } from "../content/story-address";
+import { fnvHash } from "../content/fingerprint";
 import { parseStoryTags } from "../content/tags";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import { bindMemoryReader } from "./memory";
@@ -51,15 +53,23 @@ export interface StoryStep {
   effects: string[];
 }
 
-// Detect incompatible in-progress saves instead of loading old pointers into edited Ink.
-export function storyFingerprint(storyId: string): string {
+/**
+ * Detect incompatible in-progress saves instead of loading old pointers into edited Ink. A story
+ * file's fingerprint is its compiled text's; a place file's knot has the scene's own (the file's
+ * declarations, the scene's knots and data, content:build scene-table.ts), so editing another
+ * scene of the file keeps a save inside this one.
+ */
+export function storyFingerprint(address: string): string {
+  const { storyId, path } = splitStoryAddress(address);
   const source = stories[storyId];
   if (!source) throw new Error("シナリオが見つかりません。");
-  let hash = 2166136261;
-  for (let index = 0; index < source.length; index++) {
-    hash = Math.imul(hash ^ source.charCodeAt(index), 16777619);
+  if (path !== undefined) {
+    const knot = path.split(".")[0];
+    const scene = scenes.find((item) => item.story.storyId === storyId && item.story.knot === knot);
+    if (!scene) throw new Error("シナリオが見つかりません。");
+    return scene.fingerprint;
   }
-  return (hash >>> 0).toString(16);
+  return fnvHash(source);
 }
 
 /**
@@ -70,9 +80,9 @@ export function storyFingerprint(storyId: string): string {
 export type StoryConditionReader = (text: string) => boolean;
 const noConditions: StoryConditionReader = (text) => { throw new Error(`この会話では条件を読めません: ${text}`); };
 
-function runtime(storyId: string, saved?: string, memoryIds: readonly string[] = [], inventory: Readonly<Record<string, ItemStatus>> = {},
+function runtime(address: string, saved?: string, memoryIds: readonly string[] = [], inventory: Readonly<Record<string, ItemStatus>> = {},
   conditions: StoryConditionReader = noConditions): Story {
-  const compiled = stories[storyId];
+  const compiled = stories[storyFileOf(address)];
   if (!compiled) throw new Error("シナリオが見つかりません。");
   const story = new Story(compiled);
   bindMemoryReader(story, memoryIds, Object.keys(presentation.memories));
@@ -181,6 +191,9 @@ export function beginStory(
     if (story.variablesState.GlobalVariableExistsWithName(name))
       story.variablesState.$(name, value);
   }
+  // A place file's scene starts at its knot (a battle in the stitch form: at its scene's stitch); its file's top runs nothing.
+  const path = splitStoryAddress(storyId).path;
+  if (path !== undefined) story.ChoosePathString(path);
   return readFrame(story, undefined, [], initialBackground);
 }
 
@@ -261,8 +274,9 @@ export function validateStorySnapshot(
     if (story.variablesState.$(name) !== value)
       throw new Error("保存された会話の条件が一致しません。");
   }
-  // Ink starts at turn -1 and increments once for each ChooseChoiceIndex call.
-  if (story.state.currentTurnIndex + 1 !== expected.choiceCount)
+  // Ink starts at turn -1 and increments once for each ChooseChoiceIndex call (and once for the knot a place file's scene starts at).
+  const started = splitStoryAddress(storyId).path !== undefined ? 1 : 0;
+  if (story.state.currentTurnIndex + 1 !== expected.choiceCount + started)
     throw new Error("保存された選択回数が一致しません。");
   const choices = storyChoices(story);
   if (JSON.stringify(choices) !== JSON.stringify(frame.choices))

@@ -233,17 +233,18 @@ describe("travel encounters", () => {
     useCurrentCatalog();
     for (const finished of finishedSaves) {
       // The finished scene returned to its observation; a later visit is a new observation.
-      expect(finished.activeTourism?.encounterIds).toContain("galleria_fortune");
+      expect(finished.occasion?.started).toContain("galleria_fortune");
       let state = observeLandmark(restored(finished), "galleria_vittorio_emanuele_ii");
       expect(state.activeTourism).toMatchObject({ phase: "exploring", landmarkId: "galleria_vittorio_emanuele_ii" });
-      expect(state.activeTourism?.encounterIds).toBeUndefined();
+      expect(state.occasion).toBeNull();
       const visitBefore = state.activeTourism;
       const begin = startTourismEncounter(state, "galleria_fortune", state.revision, () => 0);
       expect(begin.activeEncounter?.encounterId).toBe("galleria_fortune");
       state = untilPhase(choose(restored(begin), 0), "quiz");
       state = answerEncounterQuiz(state, "A", state.revision);
       state = finish(untilPhase(restored(state), "outcome"));
-      expect(state.activeTourism).toEqual({ ...visitBefore, encounterIds: ["galleria_fortune"] });
+      expect(state.activeTourism).toEqual(visitBefore);
+      expect(state.occasion?.started).toEqual(["galleria_fortune"]);
       expect(state.ap).toBe(finished.ap);
       expect(state.pendingApRewards).toEqual(finished.pendingApRewards);
       expect(state.claimedRewardIds).toEqual(finished.claimedRewardIds);

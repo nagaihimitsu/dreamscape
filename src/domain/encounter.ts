@@ -11,35 +11,77 @@ import { earnRewards } from "./rewards";
 import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
 import { deriveRelationshipTone } from "./romance-tone";
 import { scoreQuizAnswer } from "./quiz-answer";
-import { validObservationEncounterIds, type ActiveEncounter } from "./encounter-state";
+import type { ActiveEncounter } from "./encounter-state";
 import placeRuleData from "../content/generated/content/encounters/entry-rules.json";
 import { encounterEntryRulesSchema } from "../content/encounter-entry-rules";
-import { startTourismBattle } from "./tourism";
+import { beginLandmarkObservation, startTourismBattle } from "./tourism";
 import { battlePlayed, meets } from "./conditions";
-import { nextInOrder, visitOrder, visitSlot, type MomentEntry, type VisitSlot } from "./encounter-moments";
-import { startTravelEventScene } from "./travel-game";
-import { battles, episodes } from "../content";
-import { getTransportMode, WALK_MODE_ID } from "../content/transport";
+import { advanceOccasion, commitThen, leaveObservation, planThen } from "./occasion";
+import { visitOrder, visitSlot, type MomentEntry, type VisitSlot } from "./encounter-moments";
+import { battles, episodes, getCityContent } from "../content";
+import { applyChoiceEffects, applyDoneEffects, changesRelationship, choiceDisplay, doneReserve, placeSceneById, sceneById, sceneOption, type ChoiceDisplay } from "./scene-effects";
+import type { SceneOption } from "../content/scene-schemas";
+import { itemUsableIn } from "./item-cities";
+import { usableAp, usableMoney } from "./reservations";
 
 const findEncounter = (id: string) => encounters.encounters.find((item) => item.id === id);
 const placeRules = encounterEntryRulesSchema.parse(placeRuleData);
 /** An encounter's entry rule (its moment, `when` and quiz timing), if it has one. */
 export const encounterEntryRule = (encounterId: string) => placeRules.entries.find((entry) => entry.encounterId === encounterId);
+/** The entry rules in force (tests add fictional ones to it and take them out again). */
+export const encounterEntryRuleList = placeRules.entries;
 const entryRule = (event: EncounterDefinition) => encounterEntryRule(event.id);
-/** Every encounter's place at its landmark's visit, for the order of each slot (encounter-moments.ts; read each time: test cities add encounters). */
-const momentEntries = (): MomentEntry[] => encounters.encounters.map((event) => ({
-  encounterId: event.id, landmarkId: event.landmarkId, storyId: event.storyId, priority: entryRule(event)?.priority,
-}));
+/**
+ * The landmarks a moment of a scene runs at (stage 3: `visit <landmark>`, `visit any` = every landmark of
+ * the scene's city, `place <place>` = the landmarks visited at that place); a catalog's encounter at its landmark.
+ */
+function sceneLandmarks(event: EncounterDefinition): string[] {
+  const scene = sceneById(event.id);
+  if (!scene || !scene.at.length) return [event.landmarkId];
+  return [...new Set(scene.at.flatMap((moment) => "place" in moment
+    ? getCityContent(event.cityId).travel.events.filter((item) => item.placeId === moment.place).flatMap((item) => visitedLandmarkOfEvent(item.id) ?? [])
+    : moment.visit === "any" ? landmarks.filter((landmark) => landmark.cityId === event.cityId).map((landmark) => landmark.id) : [moment.visit]))];
+}
+/** Whether the encounter runs at the landmark's visit. */
+export const encounterRunsAt = (encounterId: string, landmarkId: string) => {
+  const event = findEncounter(encounterId);
+  return !!event && sceneLandmarks(event).includes(landmarkId);
+};
+/** Every encounter's place at its landmarks' visits, for the order of each slot (encounter-moments.ts; read each time: test cities add encounters). */
+const momentEntries = (): MomentEntry[] => encounters.encounters.flatMap((event) => sceneLandmarks(event).map((landmarkId) => ({
+  encounterId: event.id, landmarkId, storyId: event.storyId, priority: entryRule(event)?.priority,
+  order: placeSceneById(event.id)?.order ?? 0,
+})));
 const slotOf = (event: EncounterDefinition): VisitSlot => visitSlot(entryRule(event)?.priority);
 /** The encounters of a slot of the landmark's visit, in play order. */
 export const landmarkVisitOrder = (landmarkId: string, slot: VisitSlot) => visitOrder(momentEntries(), landmarkId, slot);
-/** The slot of an encounter's landmark visit it runs in (before the main part, while observing, after it). */
+/** The slot of an encounter's landmark visit it runs in (before the main part, after a part, while observing, after it). */
 export function encounterVisitSlot(encounterId: string): VisitSlot | undefined {
   const event = findEncounter(encounterId);
   return event && slotOf(event);
 }
+/** The inserted scenes of a landmark's visit by place in its order (the occasion's sequence, occasion.ts): `after observe` runs from the observation. */
+export function sceneSchedule(landmarkId: string): { before: string[]; after: string[]; afterPart: Record<string, string[]> } {
+  return { before: landmarkVisitOrder(landmarkId, "before"), after: landmarkVisitOrder(landmarkId, "after"),
+    afterPart: { guide: landmarkVisitOrder(landmarkId, "afterGuide"), battle: landmarkVisitOrder(landmarkId, "afterBattle") } };
+}
 const unavailable = (reason: string): Availability => ({ available: false, reason });
 const available: Availability = { available: true, reason: "" };
+
+/**
+ * The choice tags of a one-scene catalog encounter (stage 3b: a one-scene file takes the tags too), joined to its
+ * catalog option by content:build: the part the catalog fields do not apply (requires, rel, money beyond the cost, AP, flags, memories, then:).
+ */
+function catalogTagOption(event: EncounterDefinition, option: EncounterDefinition["options"][number]): SceneOption | undefined {
+  const scene = sceneById(event.id);
+  const tags = scene?.origin === "catalog" ? sceneOption(scene, option.id) : undefined;
+  if (!tags) return undefined;
+  const money = (tags.money ?? 0) + (option.cost ?? 0);
+  const { give: _give, use: _use, profile: _profile, later: _later, requires, ...rest } = tags;
+  const extra = requires?.filter((condition) => !("item" in condition && condition.item.id === option.requiresItemId));
+  const own = { ...rest, ...(money ? { money } : { money: undefined }), ...(extra?.length ? { requires: extra } : {}) };
+  return Object.keys(own).some((key) => key !== "id" && key !== "knot" && key !== "translated" && own[key as keyof typeof own] !== undefined) ? own : undefined;
+}
 
 /** A tagged choice follows its stable ID; older Ink uses its original order. */
 export function encounterChoiceOption(event: EncounterDefinition, choice: StoryFrame["choices"][number]) {
@@ -51,8 +93,9 @@ function itemBelongsToEncounter(event: EncounterDefinition, itemId: string | und
   return itemId === undefined || encounters.items.some((item) => item.id === itemId && item.cityId === event.cityId);
 }
 
-function optionItemsBelongToEncounter(event: EncounterDefinition, option: EncounterDefinition["options"][number]): boolean {
-  return [option.requiresItemId, option.consumeItemId, option.giftItemId].every((itemId) => itemBelongsToEncounter(event, itemId));
+/** The items a choice needs, gives or uses: the encounter's city's, or carried here from a city the journey has done (§2.4). */
+function optionItemsBelongToEncounter(state: Pick<GameState, "completedCityIds">, event: EncounterDefinition, option: EncounterDefinition["options"][number]): boolean {
+  return [option.requiresItemId, option.consumeItemId, option.giftItemId].every((itemId) => itemId === undefined || itemUsableIn(state, itemId, event.cityId));
 }
 
 function encounterFingerprint(event: EncounterDefinition): string {
@@ -92,16 +135,19 @@ function getEncounterEntryAvailability(state: GameState, event: EncounterDefinit
   if (state.activeEncounter || state.activeDate || state.activeTourism || state.activeEpilogue || state.activeBattle)
     return unavailable("途中の場面を終えてから出かけられます。");
   if (!event.repeatable && state.completedEncounterIds.includes(event.id)) return unavailable("この寄り道は終えています。");
+  // A head # then: (stage 3b) that cannot be paid keeps the scene from showing (2.3).
+  const head = sceneById(event.id)?.then;
+  if (head && planThen(state, head, event.id).ok === false) return unavailable("この場面の移動ができません。");
+  // A place file's scene: its own # on_done: that spends must be payable from what is left (it is kept back while it runs).
+  const place = placeSceneById(event.id);
+  if (place) {
+    const reserve = doneReserve(place.done);
+    return usableMoney(state) < reserve.money || usableAp(state) < reserve.ap ? unavailable("この場面の支払いができません。") : available;
+  }
   const actionable = event.options.filter((option) => !option.deferCompletion);
-  if (actionable.length && actionable.every((option) => !optionItemsBelongToEncounter(event, option) || (option.requiresItemId && state.inventory[option.requiresItemId] !== "held")))
+  if (actionable.length && actionable.every((option) => !optionItemsBelongToEncounter(state, event, option) || (option.requiresItemId && state.inventory[option.requiresItemId] !== "held")))
     return unavailable("必要な品物を持っていません。");
   return available;
-}
-
-/** Used before entering a special encounter's battle, while still in free time: an encounter met while observing waits. */
-export function hasPendingPlaceEncounter(state: GameState, landmarkId: string): boolean {
-  return encounters.encounters.some((event) => event.landmarkId === landmarkId && slotOf(event) === "observe" &&
-    getEncounterEntryAvailability(state, event).available);
 }
 
 /** Keep the optional cultural quiz after the main battle, so it cannot reveal its answer first. */
@@ -113,7 +159,10 @@ function hasLandmarkBattle(state: GameState, event: EncounterDefinition): boolea
 /** A deferred quiz's leave branch, or its pre-battle visit, ends without the quiz. */
 function encounterStoryCanFinish(state: GameState): boolean {
   const active = state.activeEncounter;
-  if (!active || active.phase !== "story" || !active.frame.ended || !active.selectedOptionId) return false;
+  if (!active || active.phase !== "story" || !active.frame.ended) return false;
+  // A place file's scene ends with its last line, whatever choices it had (none, one or more).
+  if (placeSceneById(active.encounterId)) return true;
+  if (!active.selectedOptionId) return false;
   const event = getActiveEncounterDefinition(active);
   if (!event.quiz) return true;
   if (!entryRule(event)?.quizAfterLandmarkBattle) return false;
@@ -127,13 +176,50 @@ export function encounterCanFinish(state: GameState): boolean {
   return !!active && active.frame.ended && (active.phase === "outcome" || encounterStoryCanFinish(state));
 }
 
+/**
+ * How a choice of the open encounter shows (decision 43): hidden when what it needs does not hold
+ * (`# requires:`, the item of `# give:`/`# use:`, today's requiresItemId), greyed out with the reason
+ * when it cannot be paid, open otherwise. The screen and listPlayerActions read this one function.
+ */
+export function encounterChoiceDisplay(state: GameState, index: number): ChoiceDisplay & { cost?: number; ap?: number } {
+  const active = state.activeEncounter;
+  const choice = active?.frame.choices.find((item) => item.index === index);
+  const place = active && placeSceneById(active.encounterId);
+  if (active && choice && place) {
+    if (active.phase !== "story") return { show: "grey", reason: "この選択肢は使えません。" };
+    const option = sceneOption(place, choice.optionId);
+    if (choice.optionId !== undefined && !option) return { show: "hidden" };
+    const shown = choiceDisplay(state, option, doneReserve(place.done));
+    // (A Debug test city's copy of a place encounter runs as a catalog encounter: no scene of its own, nothing hidden.)
+    return { ...shown, ...((option?.money ?? 0) < 0 ? { cost: -option!.money! } : {}), ...((option?.ap ?? 0) < 0 ? { ap: -option!.ap! } : {}) };
+  }
+  const event = active && getActiveEncounterDefinition(active);
+  const option = event && choice ? encounterChoiceOption(event, choice) : undefined;
+  if (event && option && (!optionItemsBelongToEncounter(state, event, option) || (option.requiresItemId && state.inventory[option.requiresItemId] !== "held")))
+    return { show: "hidden" };
+  const availability = getEncounterOptionAvailability(state, index);
+  if (!availability.available) return { show: "grey", reason: availability.reason, cost: option?.cost };
+  // Its choice tags (a one-scene file's): hidden or greyed out the same way as a place file's.
+  const tags = event && option ? catalogTagOption(event, option) : undefined;
+  const shown = tags ? choiceDisplay(state, tags) : { show: "open" as const };
+  const ap = (tags?.ap ?? 0) < 0 ? { ap: -tags!.ap! } : {};
+  return shown.show === "open" ? { show: "open", cost: option?.cost, ...ap } : shown.show === "hidden" ? shown : { ...shown, cost: option?.cost, ...ap };
+}
+
 export function getEncounterOptionAvailability(state: GameState, index: number): Availability {
   const active = state.activeEncounter;
+  const place = active && placeSceneById(active.encounterId);
+  if (active && place) {
+    const choice = active.frame.choices.find((item) => item.index === index);
+    if (!choice) return unavailable("この選択肢は使えません。");
+    const shown = encounterChoiceDisplay(state, index);
+    return shown.show === "open" ? available : unavailable(shown.show === "grey" ? shown.reason : "この選択肢は使えません。");
+  }
   const event = active && getActiveEncounterDefinition(active);
   const choice = active?.frame.choices.find((item) => item.index === index);
   const option = event && choice ? encounterChoiceOption(event, choice) : undefined;
   if (!active || active.phase !== "story" || active.selectedOptionId !== null || !option || !active.frame.choices.some((choice) => choice.index === index)) return unavailable("この選択肢は使えません。");
-  if (!event || event.cityId !== state.currentCityId || !optionItemsBelongToEncounter(event, option)) return unavailable("この街では使えない品物です。");
+  if (!event || event.cityId !== state.currentCityId || !optionItemsBelongToEncounter(state, event, option)) return unavailable("この街では使えない品物です。");
   const cost = option.cost ?? 0;
   if (state.travelBudget < cost) return unavailable("旅行予算が足りません。");
   if (state.travelBudget - cost < state.travel.returnReserve) return unavailable("帰りの交通費を確保しているため、今は使えません。");
@@ -169,19 +255,24 @@ function beginEncounter(state: GameState, event: EncounterDefinition, nextRoll: 
     rewardAlreadyDrawn: !!event.quiz && !!state.encounterRewards[id], romanceRoll,
     responseProfiles: responseProfiles.filter((profile) => event.options.some((option) => option.responseProfileId === profile.id)).map((profile) => responseProfileSchema.parse(profile)),
     romanceResolution: null,
+    ...(placeSceneById(id) ? { chosen: [] } : {}),
   } };
 }
 
-/** A place encounter uses the same unlock and item rules as its existing definition. */
+/**
+ * An `after observe` encounter (or one without a priority) can start from the observation of the
+ * landmark's visit now: the occasion's landmark, not started in this occasion, the entry rules.
+ */
 export function getTourismEncounterAvailability(state: GameState, id: string): Availability {
   const event = findEncounter(id);
-  const active = state.activeTourism;
-  if (!event || event.cityId !== state.currentCityId || slotOf(event) !== "observe" ||
-      !active || active.phase !== "exploring" || active.landmarkId !== event.landmarkId ||
-      !state.visitedLandmarkIds.includes(active.landmarkId) ||
+  const occasion = state.occasion;
+  // The observation's landmark: the occasion's, or (an observation opened outside a map trip: Debug, tests) the open one's.
+  const landmarkId = occasion ? occasion.landmarkId : state.activeTourism?.phase === "exploring" ? state.activeTourism.landmarkId : null;
+  if (!event || event.cityId !== state.currentCityId || slotOf(event) !== "observe" || !landmarkId ||
+      (occasion && occasion.at !== "main:observe") || !encounterRunsAt(id, landmarkId) || !state.visitedLandmarkIds.includes(landmarkId) ||
+      (state.activeTourism && (state.activeTourism.phase !== "exploring" || state.activeTourism.landmarkId !== landmarkId)) ||
       state.activeBattle || state.activeDate || state.activeEncounter || state.activeEpilogue ||
-      active.encounterIds?.includes(id) ||
-      (!event.repeatable && state.completedEncounterIds.includes(id)))
+      occasion?.started.includes(id) || (!event.repeatable && state.completedEncounterIds.includes(id)))
     return unavailable("今は話しかけられません。");
   // An encounter whose quiz waits for the landmark's battle is met during the
   // first observation, before its milestone; its story then ends without the quiz.
@@ -189,6 +280,17 @@ export function getTourismEncounterAvailability(state: GameState, id: string): A
   return getEncounterEntryAvailability({ ...state, activeTourism: null }, event);
 }
 
+/** The next `after observe` encounter that can start from the observation now (the observation's 「進む」, and on returning to it). */
+export function nextObservationScene(state: GameState): string | undefined {
+  const landmarkId = state.occasion?.landmarkId ?? state.activeTourism?.landmarkId;
+  return landmarkId ? landmarkVisitOrder(landmarkId, "observe").find((item) => getTourismEncounterAvailability(state, item).available) : undefined;
+}
+
+/**
+ * Start an encounter met from the observation: it returns to the observation (the occasion's position stays there). An
+ * observation opened outside a map trip (Debug, tests) gains its occasion here: a visit without a map event (its
+ * observation, then the landmark's battle when it can start).
+ */
 export function startTourismEncounter(
   state: GameState,
   id: string,
@@ -196,32 +298,32 @@ export function startTourismEncounter(
   nextRoll: () => number = secureRomanceRoll,
 ): GameState {
   if (state.revision !== expectedRevision || !getTourismEncounterAvailability(state, id).available) return state;
-  const tourism = state.activeTourism!;
-  const next = beginEncounter({ ...state, activeTourism: null }, findEncounter(id)!, nextRoll);
-  return { ...next, activeEncounter: { ...next.activeEncounter!, returnTourism: { landmarkId: tourism.landmarkId, contentHash: tourism.contentHash, encounterIds: [...(tourism.encounterIds ?? []), id] } } };
+  const occasion = state.occasion ?? { kind: "visit" as const, eventId: null, landmarkId: state.activeTourism!.landmarkId,
+    parts: ["observe" as const, "battle" as const], ran: ["observe" as const], at: "main:observe", started: [] };
+  return beginMomentScene({ ...state, activeTourism: null, occasion: { ...occasion, started: [...occasion.started, id] } }, id, nextRoll);
 }
 
-/** Start each eligible encounter once per observation visit, then continue normally. */
+/** Start the next eligible encounter of the observation, once per visit. */
 export function nextTourismEncounter(state: GameState, nextRoll: () => number = secureRomanceRoll): GameState {
-  const active = state.activeTourism;
-  if (!active || active.phase !== "exploring") return state;
-  const id = landmarkVisitOrder(active.landmarkId, "observe").find((item) => getTourismEncounterAvailability(state, item).available);
+  const id = state.activeTourism?.phase === "exploring" ? nextObservationScene(state) : undefined;
   return id ? startTourismEncounter(state, id, state.revision, nextRoll) : state;
 }
 
-/** Where an encounter met before or after a landmark's main part goes on from (its saved moment). */
-type VisitMoment = Pick<ActiveEncounter, "trip"> | Pick<ActiveEncounter, "afterBattle">;
-
-/** An encounter before or after the main part can run now (the same entry rules as everywhere, with no scene open). */
-function momentEncounterEligible(state: GameState, id: string): boolean {
+/** An inserted scene of the occasion can start now (its entry rules; no scene is running). */
+export function momentSceneEligible(state: GameState, id: string): boolean {
+  return momentSceneAvailability(state, id).available;
+}
+/** Why an inserted scene can or cannot start now (Debug's candidate table reads the reason). */
+export function momentSceneAvailability(state: GameState, id: string): Availability {
   const event = findEncounter(id);
-  return !!event && getEncounterEntryAvailability(state, event).available;
+  return event ? getEncounterEntryAvailability(state, event) : unavailable("場面が見つかりません。");
 }
 
-/** Begin a moment's encounter, its continuation saved with it. */
-function startMomentEncounter(state: GameState, id: string, moment: VisitMoment, nextRoll: () => number): GameState {
-  const next = beginEncounter(state, findEncounter(id)!, nextRoll);
-  return { ...next, activeEncounter: { ...next.activeEncounter!, ...moment } };
+/** Begin an inserted scene of the occasion: its tickets are drawn now and its head # then: is decided (paid) at its start. */
+export function beginMomentScene(state: GameState, id: string, nextRoll: () => number): GameState {
+  const begun = beginEncounter(state, findEncounter(id)!, nextRoll);
+  const head = sceneById(id)?.then;
+  return head ? commitThen(begun, head, id) : begun;
 }
 
 /**
@@ -234,88 +336,53 @@ export function visitedLandmarkOfEvent(eventId: string): string | undefined {
   return battles.find((battle) => battle.id === eventId)?.landmarkId ?? undefined;
 }
 
-/** The landmark whose visit a battle ends: a sightseeing episode's battle or a special battle at a landmark. */
-function battleVisitLandmark(battleId: string): string | undefined {
-  const episode = episodes.find((item) => item.battleId === battleId);
-  if (episode) return episode.kind === "city_finale" ? undefined : episode.landmarkId ?? undefined;
-  return battles.find((battle) => battle.id === battleId)?.landmarkId ?? undefined;
-}
-
-/**
- * On departing from the map to a landmark (beginTravelEvent, after the fare and time were
- * settled), the first encounter before its main part (a negative priority), if one can run;
- * the state unchanged otherwise. The trip's event and mode are its continuation: after the
- * last of these encounters the main part opens as the departure would have opened it.
- */
-export function startBeforeVisitEncounter(state: GameState, eventId: string, modeId: string, nextRoll: () => number = secureRomanceRoll): GameState {
-  const landmarkId = visitedLandmarkOfEvent(eventId);
-  const id = landmarkId && nextInOrder(landmarkVisitOrder(landmarkId, "before"), undefined, (item) => momentEncounterEligible(state, item));
-  return id ? startMomentEncounter(state, id, { trip: { eventId, modeId } }, nextRoll) : state;
-}
-
-/**
- * On leaving a landmark battle's result to free time (leaveBattleResult), the first encounter
- * after the landmark's main part (a positive priority), if one can run; the state unchanged otherwise.
- */
-export function startAfterVisitEncounter(state: GameState, battleId: string, nextRoll: () => number = secureRomanceRoll): GameState {
-  const landmarkId = battleVisitLandmark(battleId);
-  const id = landmarkId && nextInOrder(landmarkVisitOrder(landmarkId, "after"), undefined, (item) => momentEncounterEligible(state, item));
-  return id ? startMomentEncounter(state, id, { afterBattle: { battleId, encounterIds: [id] } }, nextRoll) : state;
-}
-
-/**
- * The battle result screen's 「自由時間へ戻る／進む」: leave the result (leaveBattleResult), then the
- * encounters after the landmark's main part (a positive priority) start, if one can run.
- */
+/** The battle result screen's 「自由時間へ戻る／進む」: leave the result, then the occasion goes on (after battle, +N, its end). */
 export function leaveBattleToFreeTime(state: GameState, expectedRevision: number, nextRoll: () => number = secureRomanceRoll): GameState {
-  const left = leaveBattleResult(state, expectedRevision);
-  return left === state ? state : startAfterVisitEncounter(left, state.activeBattle!.battleId, nextRoll);
+  return leaveBattleResult(state, expectedRevision, nextRoll);
 }
 
-/** The finished encounter's moment goes on: the next encounter of its slot, else (on a trip) the visit's main part. */
-function continueVisitMoment(active: ActiveEncounter, next: GameState, nextRoll: () => number): GameState {
-  const event = findEncounter(active.encounterId)!;
-  const slot = active.trip ? "before" : "after";
-  const id = nextInOrder(landmarkVisitOrder(event.landmarkId, slot), active.encounterId, (item) => momentEncounterEligible(next, item));
-  if (active.trip)
-    return id ? startMomentEncounter(next, id, { trip: active.trip }, nextRoll) : startTravelEventScene(next, active.trip.eventId, nextRoll);
-  const chain = active.afterBattle!;
-  return id ? startMomentEncounter(next, id, { afterBattle: { battleId: chain.battleId, encounterIds: [...chain.encounterIds, id] } }, nextRoll) : next;
+/** What finishing the open encounter leads to: back to the observation, on to more of the occasion, or free time (the finish button's label). */
+export function encounterLeadsOnward(state: GameState): "observe" | "onward" | false {
+  if (!state.activeEncounter || !encounterCanFinish(state)) return false;
+  const after = advanceOccasion(finishEncounter(state, state.revision), () => 0);
+  if (after.activeTourism?.phase === "exploring") return "observe";
+  return after.activeEncounter || after.activeTourism || after.activeBattle || after.activeDate || after.activeEpilogue ? "onward" : false;
 }
 
-/** Whether finishing the open encounter leads on to more of its moment (another encounter or the visit's main part), not to free time. */
-export function encounterLeadsOnward(state: GameState): boolean {
-  const active = state.activeEncounter;
-  if (!active) return false;
-  if (active.trip || active.returnTourism) return true;
-  if (!active.afterBattle) return false;
-  const event = findEncounter(active.encounterId);
-  return !!event && nextInOrder(landmarkVisitOrder(event.landmarkId, "after"), active.encounterId,
-    (item) => item !== active.encounterId && momentEncounterEligible({ ...state, activeEncounter: null }, item)) !== undefined;
-}
-
+/** The observation's 「進む」: the next waiting `after observe` encounter, else the next main part (or, during a battle, back to it). */
 export function proceedFromTourism(state: GameState, expectedRevision: number, nextRoll: () => number = secureRomanceRoll): GameState {
   if (state.revision !== expectedRevision) return state;
+  if (state.activeBattle) return startTourismBattle(state, expectedRevision);
   const next = nextTourismEncounter(state, nextRoll);
-  return next !== state ? next : startTourismBattle(state, expectedRevision);
+  return next !== state ? next : state.occasion ? leaveObservation(state, nextRoll) : startTourismBattle(state, expectedRevision);
 }
 
-/**
- * After an encounter finishes, its moment goes on: while observing, newly eligible encounters at
- * the same landmark run too; before the main part, the next such encounter or else the main part
- * opens; after it, the next encounter after the battle.
- */
+/** After an encounter's action, its occasion goes on (the next scene, the observation again, the next part, or its end). */
 export function continueTourismEncounters(previous: GameState, next: GameState, nextRoll: () => number = secureRomanceRoll): GameState {
-  const active = previous.activeEncounter;
-  if (!active || next.activeEncounter || next === previous) return next;
-  if (active.returnTourism) return next.activeTourism ? nextTourismEncounter(next, nextRoll) : next;
-  return active.trip || active.afterBattle ? continueVisitMoment(active, next, nextRoll) : next;
+  if (next === previous || next.activeEncounter) return next;
+  // Back in the observation: the next waiting encounter of it starts (once per visit).
+  if (next.activeTourism?.phase === "exploring" && previous.activeEncounter) return nextTourismEncounter(next, nextRoll);
+  return advanceOccasion(next, nextRoll);
 }
 
-export function chooseEncounter(state: GameState, index: number, expectedRevision: number): GameState {
+export function chooseEncounter(state: GameState, index: number, expectedRevision: number, nextRoll: () => number = secureRomanceRoll): GameState {
   const active = state.activeEncounter;
   if (state.revision !== expectedRevision || !active || !getEncounterOptionAvailability(state, index).available) return state;
   const event = getActiveEncounterDefinition(active);
+  const place = placeSceneById(event.id);
+  if (place) {
+    // A place file's scene: the choice's tags apply first (one save), then Ink goes on with the new state (4.4).
+    const choice = active.frame.choices.find((item) => item.index === index)!;
+    const option = sceneOption(place, choice.optionId);
+    const revision = state.revision + 1;
+    const applied = option ? applyChoiceEffects(state, place.id, option, revision, nextRoll) : { state };
+    const next = applied.state;
+    const profile = "profile" in applied ? applied.profile : undefined;
+    const chosen = [...(active.chosen ?? []), { optionId: option?.id ?? `_${choice.index}`, ...(profile ? { result: profile.result, roll: profile.roll } : {}) }];
+    const step = selectStoryChoice(activeStoryId(active, active.storyId), active.storyState, active.frame, index, next.memories, {},
+      { ...variables(next), ...(profile ? { romance_result: profile.result } : {}) }, next.inventory, sceneConditionReader(next));
+    return { ...next, revision, activeEncounter: withStep({ ...active, chosen, selectedOptionId: option?.id ?? active.selectedOptionId }, step) };
+  }
   const choice = active.frame.choices.find((item) => item.index === index)!;
   const option = encounterChoiceOption(event, choice)!;
   if (option.textEn !== undefined && choice.text !== option.textEn) throw new Error("交流の選択肢が一致しません。");
@@ -344,8 +411,15 @@ export function chooseEncounter(state: GameState, index: number, expectedRevisio
     romanceResolution = { profileId: profile.id, before: { affection: state.affection, trust: state.trust, spark: state.spark }, deltas, result: resolution.result };
     next = { ...next, affection: next.affection + deltas.affection, trust: next.trust + deltas.trust, spark: next.spark + deltas.spark };
   }
-  const step = selectStoryChoice(activeStoryId(active, active.storyId), active.storyState, active.frame, index, state.memories, {}, { ...variables(next), romance_result: result }, next.inventory, sceneConditionReader(next));
-  return { ...next, revision: state.revision + 1, activeEncounter: withStep({ ...active, selectedOptionId: option.id, romanceResolution }, step) };
+  // A one-scene file's choice tags, after the catalog's fields, before Ink goes on (4.4).
+  const tags = catalogTagOption(event, option);
+  if (tags) {
+    if (encounterChoiceDisplay(state, index).show !== "open") return state;
+    next = applyChoiceEffects(next, event.id, tags, state.revision + 1, nextRoll).state;
+  }
+  const step = selectStoryChoice(activeStoryId(active, active.storyId), active.storyState, active.frame, index, next.memories, {}, { ...variables(next), romance_result: result }, next.inventory, sceneConditionReader(next));
+  const chosen = { ...next, revision: state.revision + 1, activeEncounter: withStep({ ...active, selectedOptionId: option.id, romanceResolution }, step) };
+  return chosen;
 }
 
 /** Progress dialogue, enter the quiz, or show its recorded outcome. */
@@ -410,9 +484,39 @@ export function getEncounterQuizFeedback(state: GameState): { correct: boolean; 
   return { correct, explanationJa: correct ? quiz.question.correctExplanationJa : quiz.question.incorrectExplanationJa };
 }
 
+/** Close a place file's scene: seen; done unless a 「また今度」 was chosen, with its # on_done: (A24: in this one save). */
+function finishPlaceScene(state: GameState, active: ActiveEncounter, event: EncounterDefinition): GameState {
+  const place = placeSceneById(event.id)!;
+  const chosen = (active.chosen ?? []).map((item) => sceneOption(place, item.optionId)).filter((option) => !!option);
+  const later = chosen.some((option) => option!.later);
+  const seenEncounterIds = state.seenEncounterIds.includes(event.id) ? state.seenEncounterIds : [...state.seenEncounterIds, event.id];
+  let next: GameState = { ...state, revision: state.revision + 1, activeEncounter: null, seenEncounterIds };
+  if (!later) {
+    next = applyDoneEffects({ ...next, completedEncounterIds: next.completedEncounterIds.includes(event.id) ? next.completedEncounterIds : [...next.completedEncounterIds, event.id] },
+      place.id, place.done, next.revision);
+  }
+  return changesRelationship(later ? {} : place.done, chosen as never) ? evaluateProgression(next) : next;
+}
+
 export function finishEncounter(state: GameState, expectedRevision: number): GameState {
+  return backToObservation(finishEncounterScene(state, expectedRevision));
+}
+
+/** An encounter met from the observation returns to it as it closes (its next one, if any, starts in continueTourismEncounters). */
+function backToObservation(state: GameState): GameState {
+  const occasion = state.occasion;
+  if (!occasion?.landmarkId || occasion.at !== "main:observe" || occasion.then || state.activeEncounter || state.activeTourism) return state;
+  return beginLandmarkObservation(state, occasion.landmarkId);
+}
+
+function finishEncounterScene(state: GameState, expectedRevision: number): GameState {
   const active = state.activeEncounter;
-  if (state.revision !== expectedRevision || !active || !active.frame.ended || !active.selectedOptionId || (active.phase !== "outcome" && active.phase !== "story")) return state;
+  if (state.revision !== expectedRevision || !active || !active.frame.ended) return state;
+  if (placeSceneById(active.encounterId) && active.phase === "story") {
+    const placeEvent = getActiveEncounterDefinition(active);
+    return placeEvent.cityId === state.currentCityId ? finishPlaceScene(state, active, placeEvent) : state;
+  }
+  if (!active.selectedOptionId || (active.phase !== "outcome" && active.phase !== "story")) return state;
   const event = getActiveEncounterDefinition(active);
   if (event.cityId !== state.currentCityId || !itemBelongsToEncounter(event, event.completionItemId)) return state;
   if (event.quiz && active.phase !== "outcome" && !encounterStoryCanFinish(state)) return state;
@@ -429,14 +533,10 @@ export function finishEncounter(state: GameState, expectedRevision: number): Gam
       inventory: event.completionItemId ? { ...next.inventory, [event.completionItemId]: "held" } : next.inventory };
     if (event.alternativeApRewardId) next = earnRewards(next, [event.alternativeApRewardId]).state;
   }
-  if (active.returnTourism) {
-    if (active.returnTourism.landmarkId !== event.landmarkId || !next.visitedLandmarkIds.includes(event.landmarkId))
-      throw new Error("観光への復帰先が一致しません。");
-    next = { ...next, activeTourism: { ...active.returnTourism, phase: "exploring", storyState: null, frame: null } };
-  }
   // A gift changes relationship values, but remains distinct from a completed
   // date. Apply the existing thresholds only after its scene finishes.
-  return active.romanceResolution ? evaluateProgression(next) : next;
+  const tags = catalogTagOption(event, option);
+  return active.romanceResolution || tags?.rel ? evaluateProgression(next) : next;
 }
 
 /**
@@ -448,10 +548,20 @@ function validateItemUses(state: GameState): void {
   const spent = Object.entries(state.inventory).filter(([, status]) => status === "gifted" || status === "used");
   const consistent = Object.keys(state.itemUses).length === spent.length && spent.every(([id, status]) => {
     const use = state.itemUses[id];
+    // A tagged scene (a place file's, or a main part's): the option's # give:/# use:, or its # on_done: use (no option).
+    const tagged = use && sceneById(use.encounterId);
+    if (use && tagged && tagged.origin !== "catalog") {
+      if (use.optionId === undefined) return status === "used" && !!tagged.done.use?.includes(id);
+      const option = sceneOption(tagged, use.optionId);
+      const running = state.activeEncounter?.encounterId === tagged.id && !!state.activeEncounter.chosen?.some((item) => item.optionId === option?.id);
+      return !!option && (status === "gifted" ? option.give?.item : option.use) === id &&
+        (!placeSceneById(tagged.id) || tagged.kind === "date" || tagged.kind === "guide" || state.completedEncounterIds.includes(tagged.id) || state.seenEncounterIds.includes(tagged.id) || running);
+    }
+    if (!use?.optionId) return false;
     const event = use && findEncounter(use.encounterId);
     const option = event?.options.find((item) => item.id === use.optionId);
     return !!event && !!option && (status === "gifted" ? option.giftItemId : option.consumeItemId) === id &&
-      optionItemsBelongToEncounter(event, option) &&
+      optionItemsBelongToEncounter(state, event, option) &&
       (state.completedEncounterIds.includes(event.id) ||
         (state.activeEncounter?.encounterId === event.id && state.activeEncounter.selectedOptionId === option.id));
   });
@@ -459,34 +569,17 @@ function validateItemUses(state: GameState): void {
 }
 
 /**
- * An encounter in progress continues from exactly one moment of its landmark's visit (the schema
- * allows one at most), and that moment must match the encounter's slot and the rest of the state:
- * - the observation it returns to (returnTourism) for an encounter met while observing;
- * - the map's trip to the landmark (trip: the map event still running, and its mode) for one before the main part;
- * - the landmark battle it follows (afterBattle: a played battle of that landmark, and the encounters of
- *   that chain in their play order, ending with this one) for one after it.
- * No moment at all is the shape of the removed free-time start.
+ * An encounter in progress belongs to the running occasion (stage 3b): started in it, at its
+ * landmark's visit, and either its current step or (an `after observe` one) met from its observation.
  */
 function validateEncounterMoment(state: GameState, active: ActiveEncounter, event: EncounterDefinition): void {
-  const fail = (): never => { throw new Error("道中交流の時点の記録が一致しません。"); };
-  const slot = slotOf(event);
-  if (active.returnTourism) {
-    if (slot !== "observe" || active.returnTourism.landmarkId !== event.landmarkId ||
-        !validObservationEncounterIds(active.returnTourism.landmarkId, active.returnTourism.encounterIds) ||
-        (active.returnTourism.encounterIds && !active.returnTourism.encounterIds.includes(event.id)) ||
-        !state.visitedLandmarkIds.includes(active.returnTourism.landmarkId)) fail();
-  } else if (active.trip) {
-    const trip = state.travel.activeEvent;
-    if (slot !== "before" || trip?.eventId !== active.trip.eventId || visitedLandmarkOfEvent(active.trip.eventId) !== event.landmarkId ||
-        (active.trip.modeId !== WALK_MODE_ID && !getTransportMode(state.currentCityId, active.trip.modeId))) fail();
-  } else if (active.afterBattle) {
-    const { battleId, encounterIds } = active.afterBattle;
-    const order = landmarkVisitOrder(event.landmarkId, "after");
-    const positions = encounterIds.map((id) => order.indexOf(id));
-    if (slot !== "after" || state.travel.activeEvent || battleVisitLandmark(battleId) !== event.landmarkId || !battlePlayed(state, battleId) ||
-        encounterIds[encounterIds.length - 1] !== event.id ||
-        positions.some((position, index) => position < 0 || (index > 0 && position <= positions[index - 1]))) fail();
-  } else fail();
+  const occasion = state.occasion;
+  const landmarkId = occasion?.landmarkId;
+  if (!occasion || !landmarkId || !occasion.started.includes(event.id) || !encounterRunsAt(event.id, landmarkId) ||
+      (occasion.at !== event.id && !(occasion.at === "main:observe" && slotOf(event) === "observe")) ||
+      (slotOf(event) === "afterGuide" && !occasion.ran.includes("guide")) || (slotOf(event) === "afterBattle" && !occasion.ran.includes("battle")))
+    throw new Error("道中交流の時点の記録が一致しません。");
+  void active;
 }
 
 /** Reject changed scripts, invalid snapshots, impossible item/reward combinations and stale quiz state. */
@@ -505,8 +598,9 @@ export function validateEncounterState(state: GameState): void {
   }
   for (const [id, status] of Object.entries(state.inventory)) {
     const definition = encounters.items.find((item) => item.id === id);
-    if (!definition || (status === "held" && definition.cityId !== state.currentCityId) ||
-        (status === "left_behind" && (definition.cityId === state.currentCityId || !state.completedCityIds.includes(definition.cityId)))) fail();
+    // Held: an item of this city, or one carried through the journey from a city it has done; a carried item is never left behind.
+    if (!definition || (status === "held" && !itemUsableIn(state, id, state.currentCityId)) ||
+        (status === "left_behind" && (definition.carry === "journey" || definition.cityId === state.currentCityId || !state.completedCityIds.includes(definition.cityId)))) fail();
     const prizeEvent = encounters.encounters.find((item) => item.quiz?.rewardItemId === id);
     const completionEvent = encounters.encounters.find((item) => item.completionItemId === id);
     if (prizeEvent && (!itemBelongsToEncounter(prizeEvent, id) || !state.encounterRewards[prizeEvent.id]?.won)) fail();
@@ -526,9 +620,19 @@ export function validateEncounterState(state: GameState): void {
   if (active.storyHash !== storyFingerprint(activeStoryId(active, active.storyId))) fail();
   const validStories = [event!.storyId, ...(event!.quiz ? [event!.quiz.wonStoryId, event!.quiz.lostStoryId, event!.quiz.alreadyStoryId] : [])];
   if (!validStories.includes(active.storyId)) fail();
+  const place = placeSceneById(event.id);
+  if (place) {
+    // A place file's scene: its choices so far are its own options (or free choices), it has no quiz; Ink's turn is their count.
+    if (active.phase !== "story" || active.quizAnswerId !== null || active.romanceResolution || !active.chosen ||
+        active.chosen.some((item) => !item.optionId.startsWith("_") && !sceneOption(place, item.optionId)) ||
+        (active.selectedOptionId !== null && !sceneOption(place, active.selectedOptionId))) fail();
+    validateStorySnapshot(activeStoryId(active, active.storyId), active.storyState, active.frame,
+      { playerName: state.playerName, heroineName: state.heroineName, choiceCount: active.chosen!.length }, state.memories, state.inventory);
+    return;
+  }
   const option = event!.options.find((item) => item.id === active.selectedOptionId);
   if (active.selectedOptionId && !option) fail();
-  if (option && !optionItemsBelongToEncounter(event!, option)) fail();
+  if (option && !optionItemsBelongToEncounter(state, event!, option)) fail();
   if (option?.giftItemId && state.inventory[option.giftItemId] !== "gifted") fail();
   if (option?.consumeItemId && state.inventory[option.consumeItemId] !== "used") fail();
   for (const itemId of [option?.giftItemId, option?.consumeItemId])
@@ -541,8 +645,9 @@ export function validateEncounterState(state: GameState): void {
     if (!profile || option?.responseProfileId !== resolution.profileId) fail();
     const expected = resolveRomanceChoice(profile!, resolution.before, active.romanceRoll);
     const small = (n: number) => Math.max(-1, Math.min(1, n));
+    const tagRel = (option && catalogTagOption(event, option)?.rel) ?? {};
     if (resolution.result !== expected.result || (["affection", "trust", "spark"] as const).some((key) =>
-      resolution.deltas[key] !== small(expected.deltas[key]) || state[key] !== resolution.before[key] + resolution.deltas[key])) fail();
+      resolution.deltas[key] !== small(expected.deltas[key]) || state[key] !== resolution.before[key] + resolution.deltas[key] + (tagRel[key] ?? 0))) fail();
   }
   if (active.phase !== "story" && (!event!.quiz || !active.selectedOptionId)) fail();
   if ((active.phase === "quiz" || active.phase === "feedback") && (active.storyId !== event!.storyId || !active.frame.ended)) fail();

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { storyFileOf } from "./story-address";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const storyId = z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/);
@@ -28,5 +29,5 @@ export type ExpressionFrame = { text: string; speaker: "narrator" | "heroine" | 
 export function resolveDialogueExpression(catalog: DialogueExpressionCatalog, storyId: string, frame: ExpressionFrame): string {
   if (frame.speaker === "enemy" || frame.speaker === "player") return "neutral";
   if (frame.emotion !== "neutral" || frame.emotionExplicit) return frame.emotion;
-  return catalog.entries.find((entry) => entry.storyId === storyId && entry.speaker === frame.speaker && entry.text === frame.text)?.emotion ?? frame.emotion;
+  return catalog.entries.find((entry) => entry.storyId === storyFileOf(storyId) && entry.speaker === frame.speaker && entry.text === frame.text)?.emotion ?? frame.emotion;
 }

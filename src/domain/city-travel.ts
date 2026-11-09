@@ -1,6 +1,8 @@
-import { encounters, getCities, getCityContent } from "../content";
+import { getCities, getCityContent } from "../content";
 import { getJourneyForCity } from "../content/journeys";
-import { startCityArrival, startCityEpilogue } from "./epilogue";
+import { isAuthoredEpilogueCity, startCityArrival, startCityEpilogue } from "./epilogue";
+import { isSceneOpen } from "./game-state-schema";
+import { isCarriedItem, itemUsableIn } from "./item-cities";
 import { DAY_END } from "./travel";
 import type { GameState } from "./game";
 
@@ -26,18 +28,17 @@ export function isJourneyComplete(state: GameState): boolean {
 
 /** Leave once; the caller commits the returned snapshot with the existing save guard. */
 export function departToNextCity(state: GameState, expectedRevision: number): GameState {
-  if (state.revision !== expectedRevision || !state.completedCityIds.includes(state.currentCityId) ||
-      state.activeDate || state.activeBattle || state.activeTourism || state.activeEncounter || state.activeEpilogue || state.travel.activeEvent)
+  if (state.revision !== expectedRevision || !state.completedCityIds.includes(state.currentCityId) || isSceneOpen(state) || state.travel.activeEvent)
     return state;
   const next = getNextCity(state);
   if (!next) return state;
-  // A held item cannot belong to another city. Preserve acquired/used history,
-  // but leave any remaining possessions behind when departing.
+  // A held item is this city's or one carried from an earlier city (a broken state is refused). Preserve the history;
+  // an item carried through the journey stays held, the others are left behind (the item design §2.3).
   const inventory = { ...state.inventory };
   for (const [id, status] of Object.entries(inventory)) {
     if (status !== "held") continue;
-    if (!encounters.items.some((item) => item.id === id && item.cityId === state.currentCityId)) return state;
-    inventory[id] = "left_behind";
+    if (!itemUsableIn(state, id, state.currentCityId)) return state;
+    if (!isCarriedItem(id)) inventory[id] = "left_behind";
   }
   const hotel = next.travelSettings.hotelPlaceId;
   const arrived: GameState = {
@@ -59,9 +60,9 @@ export function departToNextCity(state: GameState, expectedRevision: number): Ga
  */
 export function advanceCompletedJourneyCity(state: GameState, expectedRevision: number): GameState {
   if (state.revision !== expectedRevision || getJourneyForCity(state.currentCityId)?.cityTransition !== "after_epilogue" ||
-      !state.completedCityIds.includes(state.currentCityId) || state.activeDate || state.activeBattle || state.activeTourism ||
-      state.activeEncounter || state.activeEpilogue || state.travel.activeEvent) return state;
+      !state.completedCityIds.includes(state.currentCityId) || isSceneOpen(state) || state.travel.activeEvent) return state;
+  // A city whose epilogue its author starts (3.9 (d)): never started here; it departs once cleared and read.
   if (!state.viewedEpilogueCityIds.includes(state.currentCityId))
-    return startCityEpilogue(state, state.currentCityId, expectedRevision);
+    return isAuthoredEpilogueCity(state.currentCityId) ? state : startCityEpilogue(state, state.currentCityId, expectedRevision);
   return departToNextCity(state, expectedRevision);
 }

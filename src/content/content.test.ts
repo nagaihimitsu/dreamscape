@@ -445,14 +445,18 @@ describe("content build acceptance", () => {
     expect(result.dates.find((date) => date.id === "milano_cafe_01")?.when).toEqual(when);
   });
 
-  it("rejects a paid special event", async () => {
+  it("warns about a paid special event without stopping (decision 32), and still stops when its map event's AP differs", async () => {
     await changeDate("milano_invitation_01", (date) => {
       expect(date.kind).toBe("special");
       date.apCost = 1;
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Special events must be free",
-    );
+    await expect(buildContent(fixture, false)).rejects.toThrow("Travel date category or AP mismatch: milano_invitation_01");
+    const travelFile = path.join(fixture, "content/journeys/milano/travel/milano.json");
+    await replace("content/journeys/milano/travel/milano.json", '"titleJa": "片道だけの先導",\n      "activityMinutes": 15,\n      "apCost": 0', '"titleJa": "片道だけの先導",\n      "activityMinutes": 15,\n      "apCost": 1');
+    expect(await readFile(travelFile, "utf8")).toContain('"apCost": 1');
+    const result = await buildContent(fixture, false);
+    expect(result.warnings.filter((warning) => warning.kind === "special-date-ap")).toEqual([{ kind: "special-date-ap",
+      message: "AP を使う特別なデートです：milano_invitation_01（special）は 1 AP。ふつうは AP 不要（0）です。AP が足りないと始められません（止めません）。" }]);
   });
 
   it("rejects invalid confession readiness branches", async () => {

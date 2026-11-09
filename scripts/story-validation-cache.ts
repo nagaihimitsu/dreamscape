@@ -177,10 +177,12 @@ export function validateStoryCached(
   input: StoryValidationInput,
   observe?: DialogueObserver,
   onEffect?: (effectId: string) => void,
+  /** The walk's warnings (decision 39); a reused result has none (only a run that stopped nothing is cached). */
+  onWarning?: (message: string) => void,
 ): number {
   const run = (watch?: DialogueObserver, effect?: (effectId: string) => void) => validateStory(
     input.compiled, input.context, input.contract, input.variables, input.effects, watch,
-    input.memories, input.randomReactions, effect, input.tone,
+    input.memories, input.randomReactions, effect, input.tone, onWarning,
   );
   if (!cache) return run(observe, onEffect);
   const key = cacheKey(cache.fingerprint, input);

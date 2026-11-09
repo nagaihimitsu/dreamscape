@@ -10,7 +10,7 @@ import { conditionIssues, ITEM_STATUSES, RELATIONSHIP_AXES, type Condition } fro
  * | text | JSON leaf |
  * |---|---|
  * | `item <item> held` (`obtained`・`gifted`・`used`・`left_behind`) | `item` |
- * | `seen <encounter>` / `done <encounter>` | `encounterSeen` / `encounterCompleted` |
+ * | `seen <scene>` / `done <scene>` (an encounter's or, from 3a, a talk's) | `encounterSeen` / `encounterCompleted` |
  * | `visited <landmark>` / `guide <landmark>` | `landmarkVisited` / `guideRead` |
  * | `battle <battle>` / `episode <episode>` / `city <city>` | `battlePlayed` / `episodeCompleted` / `cityCompleted` |
  * | `episodes <city> >= 1` | `episodesCompleted` |
@@ -25,8 +25,12 @@ import { conditionIssues, ITEM_STATUSES, RELATIONSHIP_AXES, type Condition } fro
  * | `money >= 300` / `money <= 0` (2a) | `money` |
  * | `stage >= 2` / `stage <= 3` (2a) | `romanceStage` |
  * | `couple` (2a) | `couple` |
+ * | `ap >= 2` / `ap <= 0` (3a) | `ap` |
+ * | `flag <flag>` (3a) | `flag` |
+ * | `met <person>` (3a) | `met` |
+ * | `condition <name>` (3a) | `condition` |
  */
-const LATER_PARTS: Record<string, number> = { flag: 3, met: 3, ap: 3, condition: 3 };
+const LATER_PARTS: Record<string, number> = {};
 
 const whole = (value: string) => (/^[1-9][0-9]*$/u.test(value) ? Number(value) : undefined);
 /** A whole number as written: 0, or with a sign for a negative relationship value. */
@@ -85,6 +89,10 @@ function leafOf(words: string[]): Condition {
     case "money": return { money: compared("money >= N (or <= N)", 0, integer) };
     case "stage": return { romanceStage: compared("stage >= N (or <= N), N from 1 to 4", 0) };
     case "couple": return rest.length ? fail("couple") : { couple: true };
+    case "ap": return { ap: compared("ap >= N (or <= N)", 0, integer) };
+    case "flag": return { flag: one("flag <flag>") };
+    case "met": return { met: one("met <person>") };
+    case "condition": return { condition: one("condition <name>") };
     case "weekday": {
       const days = one("weekday 5,6 (Monday is 0)").split(",").map((day) => (/^[0-6]$/u.test(day) ? Number(day) : NaN));
       return days.some(Number.isNaN) ? fail("weekday 5,6 (Monday is 0)") : { weekday: days };
