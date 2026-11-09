@@ -1,0 +1,3098 @@
+{
+  "schemaVersion": 2,
+  "cityId": "jaipur",
+  "sourceRefs": {
+    "s4_tomtom_delhi": {
+      "publisher": "TomTom",
+      "title": "TomTom Traffic Index: New Delhi traffic in 2025",
+      "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
+    },
+    "s5_tomtom_india": {
+      "publisher": "TomTom",
+      "title": "TomTom Traffic Index: India",
+      "url": "https://www.tomtom.com/traffic-index/country/india/",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "2025年の混雑度：ニューデリー60.2%（4位）、ジャイプール58.7%（6位）。アーグラは掲載なし。"
+    },
+    "s12_indiaesque_jaipur": {
+      "publisher": "Indiaesque",
+      "title": "Getting Around Jaipur（Facts checked 14 September 2026）",
+      "url": "https://indiaesque.com/jaipur/getting-around/",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "ジャイプールのオート（料金は交渉できると書く）：旧市街内₹50〜150、旧市街→アンベール城₹250〜350、旧市街→ナハルガル城₹150〜250（道路で約14km、坂道を30〜40分）。"
+    },
+    "s15_wikipedia_pink_line": {
+      "publisher": "Wikipedia",
+      "title": "Pink Line (Jaipur Metro)（2026-10-20編集の版）",
+      "url": "https://en.wikipedia.org/wiki/Pink_Line_(Jaipur_Metro)",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "営業中の11駅（Mansarovar〜Badi Chaupar、11.97km）。旧市街側の駅はChandpole、Chhoti Chaupar、Badi Chaupar。Transport Nagar方面の延伸は未開業。"
+    },
+    "s17_osrm_car": {
+      "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+      "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
+      "url": "https://router.project-osrm.org/table/v1/driving/",
+      "checkedAt": "2026-11-07",
+      "claimType": "hypothesis",
+      "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
+    },
+    "s18_fossgis_foot": {
+      "publisher": "FOSSGIS（routing.openstreetmap.de、routed-foot）／地図 © OpenStreetMap contributors（ODbL）",
+      "title": "地点から地下鉄駅までの歩く経路の計算",
+      "url": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/",
+      "checkedAt": "2026-11-07",
+      "claimType": "hypothesis",
+      "claimJa": "地点から地下鉄駅までの歩く距離を2026-11-07に計算した値。歩く分は距離÷分速75m（既存の徒歩経路と同じ換算）。"
+    },
+    "s19_osm_stations": {
+      "publisher": "OpenStreetMap contributors（Overpass API）",
+      "title": "地下鉄駅と門の座標",
+      "url": "https://www.openstreetmap.org/copyright",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "デリー・アーグラ・ジャイプールの地下鉄駅、タージ西門、アマル・シン門の座標（2026-11-07に取得した地図データ）。"
+    },
+    "agra_jaipur_auto_model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
+      "url": "https://router.project-osrm.org/table/v1/driving/",
+      "checkedAt": "2026-11-07",
+      "claimType": "hypothesis",
+      "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+    },
+    "nahargarh_cap_model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "旧市街とナハルガル城のオートの料金（上限₹250）",
+      "url": "https://indiaesque.com/jaipur/getting-around/",
+      "checkedAt": "2026-11-07",
+      "claimType": "hypothesis",
+      "claimJa": "旧市街の5地点（ハワー・マハル、シティ・パレス、ジャンタル・マンタル、ジョーハリー・バザール、宿）とナハルガル城の行き帰りは、式（₹340〜360）ではなく、旅行情報の交渉の目安（₹150〜250）の上限の₹250にする。"
+    },
+    "walk_station_model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "地下鉄を使う地点・使わない組の決め方",
+      "url": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/",
+      "checkedAt": "2026-11-07",
+      "claimType": "hypothesis",
+      "claimJa": "ゲームの決まり：登録した徒歩が15分以内の組は徒歩だけにする。駅まで歩いて20分以内の地点だけ地下鉄を使う。地下鉄の合計時間が徒歩より長い組には地下鉄を置かない。"
+    }
+  },
+  "decisions": [
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アンベール城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アンベール城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アンベール城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アンベール城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。この組の料金の目安は見つからず、式のまま。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アンベール城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アンベール城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アンベール城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アンベール城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アンベール城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アンベール城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アンベール城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて7分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて4分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャル・マハルの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。式では₹350になるが、旅行情報の交渉の目安（旧市街→ナハルガル城 ₹150〜250）に合わせて₹250にした。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model",
+        "nahargarh_cap_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ナハルガル城から最寄りのChhoti Chaupar駅まで歩いて約34分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アルバート・ホール博物館から最寄りのBadi Chaupar駅まで歩いて約26分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャイガル城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて12分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "パンナ・ミーナー・クンドの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて3分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アンベール城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて7分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて4分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャル・マハルの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。式では₹350になるが、旅行情報の交渉の目安（旧市街→ナハルガル城 ₹150〜250）に合わせて₹250にした。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model",
+        "nahargarh_cap_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ナハルガル城から最寄りのChhoti Chaupar駅まで歩いて約34分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アルバート・ホール博物館から最寄りのBadi Chaupar駅まで歩いて約26分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャイガル城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "パンナ・ミーナー・クンドの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて9分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アンベール城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて4分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて4分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャル・マハルの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。式では₹350になるが、旅行情報の交渉の目安（旧市街→ナハルガル城 ₹150〜250）に合わせて₹250にした。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model",
+        "nahargarh_cap_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ナハルガル城から最寄りのChhoti Chaupar駅まで歩いて約34分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アルバート・ホール博物館から最寄りのBadi Chaupar駅まで歩いて約26分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャイガル城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて13分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "パンナ・ミーナー・クンドの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて6分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャル・マハルの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャル・マハルの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャル・マハルの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャル・マハルの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。この組の料金の目安は見つからず、式のまま。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャル・マハルの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャル・マハルの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャル・マハルの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャル・マハルの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャル・マハルの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャル・マハルの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。この組の料金の目安は見つからず、式のまま。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アンベール城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。式では₹350になるが、旅行情報の交渉の目安（旧市街→ナハルガル城 ₹150〜250）に合わせて₹250にした。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model",
+        "nahargarh_cap_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ナハルガル城から最寄りのChhoti Chaupar駅まで歩いて約34分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。式では₹350になるが、旅行情報の交渉の目安（旧市街→ナハルガル城 ₹150〜250）に合わせて₹250にした。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model",
+        "nahargarh_cap_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ナハルガル城から最寄りのChhoti Chaupar駅まで歩いて約34分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。式では₹350になるが、旅行情報の交渉の目安（旧市街→ナハルガル城 ₹150〜250）に合わせて₹250にした。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model",
+        "nahargarh_cap_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ナハルガル城から最寄りのChhoti Chaupar駅まで歩いて約34分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。この組の料金の目安は見つからず、式のまま。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャル・マハルの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。この組の料金の目安は見つからず、式のまま。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ナハルガル城から最寄りのChhoti Chaupar駅まで歩いて約34分。アルバート・ホール博物館から最寄りのBadi Chaupar駅まで歩いて約26分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。この組の料金の目安は見つからず、式のまま。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャイガル城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。式では₹350になるが、旅行情報の交渉の目安（旧市街→ナハルガル城 ₹150〜250）に合わせて₹250にした。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model",
+        "nahargarh_cap_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ナハルガル城から最寄りのChhoti Chaupar駅まで歩いて約34分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。この組の料金の目安は見つからず、式のまま。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "パンナ・ミーナー・クンドの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。式では₹350になるが、旅行情報の交渉の目安（旧市街→ナハルガル城 ₹150〜250）に合わせて₹250にした。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model",
+        "nahargarh_cap_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ナハルガル城から最寄りのChhoti Chaupar駅まで歩いて約34分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アンベール城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アルバート・ホール博物館から最寄りのBadi Chaupar駅まで歩いて約26分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アルバート・ホール博物館から最寄りのBadi Chaupar駅まで歩いて約26分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アルバート・ホール博物館から最寄りのBadi Chaupar駅まで歩いて約26分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャル・マハルの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。この組の料金の目安は見つからず、式のまま。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アルバート・ホール博物館から最寄りのBadi Chaupar駅まで歩いて約26分。ナハルガル城から最寄りのChhoti Chaupar駅まで歩いて約34分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャイガル城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アルバート・ホール博物館から最寄りのBadi Chaupar駅まで歩いて約26分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "パンナ・ミーナー・クンドの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アルバート・ホール博物館から最寄りのBadi Chaupar駅まで歩いて約26分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャイガル城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャイガル城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャイガル城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャイガル城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャイガル城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。この組の料金の目安は見つからず、式のまま。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャイガル城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャイガル城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャイガル城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャイガル城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャイガル城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アンベール城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて12分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて13分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャル・マハルの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。式では₹360になるが、旅行情報の交渉の目安（旧市街→ナハルガル城 ₹150〜250）に合わせて₹250にした。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model",
+        "nahargarh_cap_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ナハルガル城から最寄りのChhoti Chaupar駅まで歩いて約34分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アルバート・ホール博物館から最寄りのBadi Chaupar駅まで歩いて約26分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャイガル城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "パンナ・ミーナー・クンドの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて9分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "パンナ・ミーナー・クンドの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "パンナ・ミーナー・クンドの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "パンナ・ミーナー・クンドの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "パンナ・ミーナー・クンドの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "パンナ・ミーナー・クンドの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。この組の料金の目安は見つからず、式のまま。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "パンナ・ミーナー・クンドの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "パンナ・ミーナー・クンドの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "パンナ・ミーナー・クンドの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "パンナ・ミーナー・クンドの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "パンナ・ミーナー・クンドの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アンベール城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて3分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて9分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて6分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャル・マハルの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。式では₹340になるが、旅行情報の交渉の目安（旧市街→ナハルガル城 ₹150〜250）に合わせて₹250にした。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model",
+        "nahargarh_cap_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ナハルガル城から最寄りのChhoti Chaupar駅まで歩いて約34分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "アルバート・ホール博物館から最寄りのBadi Chaupar駅まで歩いて約26分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。10kmを超える部分は時速40kmで計算した（仮定）。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "ジャイガル城の近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて9分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "どちらも最寄りの駅がBadi Chauparで、地下鉄に乗る意味がないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "sourceRefs": [
+        "s12_indiaesque_jaipur",
+        "s5_tomtom_india",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "agra_jaipur_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "パンナ・ミーナー・クンドの近くに営業中の地下鉄の駅がない（地下鉄の路線（ピンク線）が通っていない）。",
+      "sourceRefs": [
+        "s15_wikipedia_pink_line",
+        "s19_osm_stations"
+      ]
+    }
+  ]
+}

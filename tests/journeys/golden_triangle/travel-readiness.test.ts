@@ -1,20 +1,70 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { getCityContent } from "../../../src/content";
-import { buildJourneyTransitDecisionReview, readJourneyTransitDecisions } from "../../../scripts/journey-transit-decisions";
+import { inspectJourneyTransit } from "../../../scripts/journey-transit";
+import { transitLedgerSchema } from "../../../scripts/transit-ledger";
 import { DAY_END, DAY_START, planOvernight, planTravel, planTravelEvent } from "../../../src/domain/travel";
 import { findTravelHomeRoutes } from "../../../src/domain/travel-routes";
 
 const cities = ["delhi", "agra", "jaipur"] as const;
+const ledgerOf = (cityId: string) =>
+  transitLedgerSchema.parse(JSON.parse(readFileSync(`content/journeys/golden_triangle/travel/${cityId}-transit.json`, "utf8")));
+const vehicle = (cityId: string) => getCityContent(cityId).travel.routes.filter((route) => route.mode !== "walk");
 
 describe("India city travel data", () => {
-  it("records a game decision for every public-transport direction", () => {
-    const review = buildJourneyTransitDecisionReview(readJourneyTransitDecisions(process.cwd(), "golden_triangle"));
-    for (const cityId of cities) {
-      // A decision to omit a game route does not establish whether a real
-      // service exists; its sources must retain any factual uncertainty.
-      expect(review.counts[cityId].unresearched, cityId).toBe(0);
-      expect(review.counts[cityId].inconclusive, cityId).toBe(0);
+  it("records a game decision for every direction and mode in a ready ledger per city", () => {
+    const report = inspectJourneyTransit(process.cwd(), "golden_triangle");
+    if (!("cities" in report)) throw new Error("Golden Triangle reviews its cities");
+    // A decision to omit a game route does not establish whether a real
+    // service exists; its sources must retain any factual uncertainty.
+    expect(report.cities.map(({ cityId, decisions, ready }) => ({ cityId, decisions, ready })))
+      .toEqual(cities.map((cityId) => ({ cityId, decisions: 220, ready: true })));
+  });
+
+  it("caps the 10 old-city ↔ Nahargarh Fort autos at the negotiated ₹250 the travel guide gives", () => {
+    const fort = "jaipur_nahargarh_fort";
+    const oldCity = ["jaipur_hawa_mahal", "jaipur_city_palace", "jaipur_jantar_mantar", "jaipur_johari_bazaar", "jaipur_hotel_hub"];
+    const capped = ledgerOf("jaipur").decisions.filter((decision) => decision.mode === "auto_rickshaw" && decision.reasonJa.includes("₹150〜250"));
+    expect(capped.map((decision) => [decision.fromPlaceId, decision.toPlaceId].sort().join(" ↔ ")).sort())
+      .toEqual(oldCity.flatMap((place) => [[fort, place].sort().join(" ↔ "), [fort, place].sort().join(" ↔ ")]).sort());
+    for (const decision of capped) {
+      expect(decision.reasonJa).toContain("₹250にした");
+      const route = vehicle("jaipur").find((item) => item.mode === "auto_rickshaw" && item.fromPlaceId === decision.fromPlaceId && item.toPlaceId === decision.toPlaceId)!;
+      expect(route.cost, `${route.fromPlaceId} → ${route.toPlaceId}`).toBe(250);
     }
+  });
+
+  it("reaches Fatehpur Sikri by 20 provisional autos without a documented fact, to be replaced by the tour", () => {
+    const fs = "agra_fatehpur_sikri";
+    const routes = vehicle("agra").filter((route) => route.fromPlaceId === fs || route.toPlaceId === fs);
+    expect(routes).toHaveLength(20);
+    expect(routes.every((route) => route.mode === "auto_rickshaw" && route.minutes >= 80 && route.minutes <= 95 && route.cost >= 820 && route.cost <= 940)).toBe(true);
+    // No documented fact covers a ~40 km auto ride (only hypotheses): exactly the routes content:build warns about.
+    expect(routes.every((route) => route.sources.every((source) => source.claimType === "hypothesis"))).toBe(true);
+    const report = inspectJourneyTransit(process.cwd(), "golden_triangle");
+    if (!("cities" in report)) throw new Error("Golden Triangle reviews its cities");
+    expect(report.cities.find((city) => city.cityId === "agra")!.unsupportedRoutes.sort())
+      .toEqual(routes.map((route) => `${route.fromPlaceId} → ${route.toPlaceId}（auto_rickshaw）`).sort());
+    const decisions = ledgerOf("agra").decisions.filter((decision) => decision.mode === "auto_rickshaw" && (decision.fromPlaceId === fs || decision.toPlaceId === fs));
+    expect(decisions).toHaveLength(20);
+    for (const decision of decisions) {
+      expect(decision.status).toBe("available");
+      expect(decision.reasonJa).toContain("仮のゲーム値");
+      expect(decision.reasonJa).toContain("ツアー機能");
+    }
+  });
+
+  it.each(cities)("keeps the short walks walk-only and gives %s its own metro decision", (cityId) => {
+    const { travel } = getCityContent(cityId);
+    const walkOnly = travel.places.flatMap((from) => travel.places.filter((to) => to.id !== from.id).flatMap((to) => {
+      const routes = travel.routes.filter((route) => route.fromPlaceId === from.id && route.toPlaceId === to.id);
+      return routes.every((route) => route.mode === "walk") ? routes : [];
+    }));
+    expect(walkOnly).toHaveLength({ delhi: 2, agra: 4, jaipur: 18 }[cityId]);
+    // A walk of 15 minutes or less leaves no vehicle route (decision T5).
+    expect(walkOnly.every((route) => route.minutes <= 15)).toBe(true);
+    expect(travel.routes.filter((route) => route.mode === "walk" && route.fromPlaceId !== route.toPlaceId && route.minutes <= 15)).toEqual(walkOnly);
+    expect(vehicle(cityId).filter((route) => route.mode === "metro")).toHaveLength({ delhi: 44, agra: 4, jaipur: 0 }[cityId]);
   });
 
   it.each(cities)("offers a budgeted route between every pair and a return in %s", (cityId) => {
