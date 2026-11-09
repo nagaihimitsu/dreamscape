@@ -3,7 +3,7 @@ import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, 
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { exportCityBundle } from "./city-bundle";
-import { inputFingerprint, transitLedgerFiles } from "./city-bundle-files";
+import { inputFingerprint } from "./city-bundle-files";
 import { journeyAuthoringProfiles } from "./journey-authoring";
 import { displayPath, loadContentSources, readJourneyCatalog, requireCity, storyFile } from "./content-sources";
 import type { MergedKind } from "./content-layout";
@@ -19,8 +19,7 @@ export function fixture(): string {
   for (const directory of ["content", "public"]) {
     cpSync(path.join(process.cwd(), directory), path.join(root, directory), { recursive: true });
   }
-  const extraFiles = [...[...journeyAuthoringProfiles(process.cwd()).values()].map((profile) => profile.observationFile),
-    ...transitLedgerFiles(process.cwd())];
+  const extraFiles = [...journeyAuthoringProfiles(process.cwd()).values()].map((profile) => profile.observationFile);
   for (const file of extraFiles) {
     if (!existsSync(path.join(process.cwd(), file))) continue;
     mkdirSync(path.dirname(path.join(root, file)), { recursive: true });

@@ -7,32 +7,21 @@ import { inspectCityTransit, transitStatuses, unsupportedTransitRoutes, type Cit
 
 // Build checks of in-city transport (pure): the modes a journey declares in
 // its manifest, the routes that use them, rentals and the per-city transit
-// ledger. A journey that still keeps the old journey-wide transit ledger
-// (manifest authoring.transitDecisionLedger with pendingJa, today Golden
-// Triangle: 「ツアー機能待ち」) is reported as waiting for its switch and keeps
-// its old modes; the checks marked below do not apply to it.
+// ledger.
 
 /** Transport modes a journey may declare besides walking. */
 export const MAX_TRANSPORT_MODES = 2;
 
-/** What a journey waiting for its transport switch waits for, and its own command that checks the old ledger meanwhile. */
-export type TransportPending = { pendingJa: string; inspectCommand: string };
-
-/** A journey's transport facts the checks need: its declared modes and whether it still waits for its switch. */
-export type JourneyTransport = { journey: Pick<Journey, "id" | "transportModes">; pending?: TransportPending;
+/** A journey's transport facts the checks need: its declared modes. */
+export type JourneyTransport = { journey: Pick<Journey, "id" | "transportModes">;
   /** The journey's manifest as content:build read it (default: content/journeys/<id>/manifest.json). */
   manifestFile?: string };
 const manifestOf = (transport: JourneyTransport) => transport.manifestFile ?? journeyManifestPath(transport.journey.id);
 
-/** The one Japanese line content:build, journey:transit and journey:readiness print for a waiting journey. */
-export function transportWaitingJa({ pendingJa, inspectCommand }: TransportPending): string {
-  return `${pendingJa}（交通は旧方式のまま。都市ごとの交通判断台帳と新しい交通の確認はまだ使いません。旧方式の判断台帳は ${inspectCommand} で確かめます）`;
-}
-
-/** Walking plus at most two declared modes; a journey waiting for its switch keeps its old ones. */
+/** Walking plus at most two declared modes. */
 export function checkTransportModeCount(transport: JourneyTransport): void {
   const count = transport.journey.transportModes.length;
-  if (count <= MAX_TRANSPORT_MODES || transport.pending) return;
+  if (count <= MAX_TRANSPORT_MODES) return;
   const manifest = manifestOf(transport);
   throw new Error(`乗り物は徒歩のほかに${MAX_TRANSPORT_MODES}つまでです: ${manifest} の transportModes に${count}つあります` +
     `（At most ${MAX_TRANSPORT_MODES} transport modes besides walking: ${manifest}）。`);
@@ -65,21 +54,16 @@ export type CityTransitCheck = CityTransitReview & { unsupportedRoutes: TravelRo
 /**
  * The per-city transit ledger: a journey that declares transport modes keeps
  * one ledger per city (all rules of inspectCityTransit); a walk-only journey
- * and a journey still waiting for its switch keep none (the waiting journey
- * keeps its old journey-wide ledger and its own tools). Returns the review
- * with the routes that lack their sources (cityTransitWarnings), or undefined
- * without a ledger.
+ * keeps none. Returns the review with the routes that lack their sources
+ * (cityTransitWarnings), or undefined without a ledger.
  */
 export function checkCityTransit(city: CityTransitFiles, transport: JourneyTransport): CityTransitCheck | undefined {
   const modes = transport.journey.transportModes.map((mode) => mode.id);
   if (city.transit === undefined) {
-    if (modes.length && !transport.pending)
+    if (modes.length)
       throw new Error(`交通判断台帳 ${city.transitFile} がありません。乗り物を宣言した旅行編では、都市ごとに台帳が要ります（Missing transit ledger）。`);
     return undefined;
   }
-  if (transport.pending)
-    throw new Error(`${city.transitFile} は置けません。${transport.journey.id} は交通の切り替えを待っています（${transport.pending.pendingJa}）。` +
-      "それまでは編全体の旧方式の台帳だけを使います（A journey waiting for its transport switch keeps no per-city transit ledger）。");
   if (!modes.length)
     throw new Error(`${city.transitFile} は要りません。${transport.journey.id} は徒歩だけの旅行編です（Transit ledger in a walk-only journey）。`);
   const review = inspectCityTransit(city.travel, city.transit, modes, city.transitFile);
@@ -112,13 +96,11 @@ export function cityTransitWarnings(check: CityTransitCheck, city: Pick<CityTran
 
 /**
  * One line of the build report per journey: its modes and its ledgers'
- * decisions per status, so that `inconclusive` stays visible, or what a
- * waiting journey waits for (e.g. `Transport golden_triangle: ツアー機能待ち …`).
+ * decisions per status, so that `inconclusive` stays visible.
  */
 export function transportSummary(transport: JourneyTransport, reviews: readonly CityTransitReview[]): string {
   const { journey } = transport;
   const modes = ["walk", ...journey.transportModes.map((mode) => mode.id + (mode.rental ? " (rental)" : ""))].join(", ");
-  if (transport.pending) return `Transport ${journey.id}: ${transportWaitingJa(transport.pending)}; modes ${modes}`;
   const totals = Object.fromEntries(transitStatuses.map((status) => [status,
     reviews.reduce((sum, review) => sum + Object.values(review.counts).reduce((inner, byStatus) => inner + byStatus[status], 0), 0)]));
   const ledger = reviews.length ? `; transit ledgers ${reviews.length}: ${transitStatuses.map((status) => `${status} ${totals[status]}`).join(", ")}` : "";
@@ -128,14 +110,11 @@ export function transportSummary(transport: JourneyTransport, reviews: readonly 
 /**
  * Rentals of a city: an offer names a rental mode of the journey that has
  * routes in this city, at places of the city; every rental mode with routes
- * here has an offer (else its routes could never be ridden). A journey
- * waiting for its switch declares no rental mode and keeps no offer.
+ * here has an offer (else its routes could never be ridden).
  */
 export function checkCityRentals(travel: TravelCatalog, rentals: readonly RentalOffer[] | undefined, settingsFile: string, transport: JourneyTransport): void {
   const offers = rentals ?? [];
   const rentalModes = transport.journey.transportModes.filter((mode) => mode.rental).map((mode) => mode.id);
-  if (transport.pending && (rentalModes.length || offers.length))
-    throw new Error(`${transport.journey.id} は交通の切り替えを待っているので（${transport.pending.pendingJa}）、借りる乗り物と貸し出しはまだ使えません（Rentals in a journey waiting for its transport switch）。`);
   const places = new Set(travel.places.map((place) => place.id));
   const routed = new Set(travel.routes.map((route) => route.mode));
   for (const offer of offers) {

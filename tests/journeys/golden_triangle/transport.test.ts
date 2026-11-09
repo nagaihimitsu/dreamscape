@@ -41,7 +41,6 @@ describe("Golden Triangle in-city transport: walk, auto-rickshaw, metro", () => 
     const sources = loadContentSources(process.cwd());
     const report = inspectJourneyTransit(process.cwd(), "golden_triangle", sources);
     expect(report).toMatchObject({ journeyId: "golden_triangle", modes: ["auto_rickshaw", "metro"] });
-    if (!("cities" in report)) throw new Error("Golden Triangle reviews its cities");
     const byCity = Object.fromEntries(report.cities.map((city) => [city.cityId, city]));
     expect(Object.keys(byCity)).toEqual(["delhi", "agra", "jaipur"]);
     for (const cityId of ["delhi", "agra", "jaipur"]) {

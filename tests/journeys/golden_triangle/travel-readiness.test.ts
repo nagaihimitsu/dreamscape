@@ -17,7 +17,6 @@ const vehicle = (cityId: string) => getCityContent(cityId).travel.routes.filter(
 describe("India city travel data", () => {
   it("records a game decision for every direction and mode in a ready ledger per city", () => {
     const report = inspectJourneyTransit(process.cwd(), "golden_triangle");
-    if (!("cities" in report)) throw new Error("Golden Triangle reviews its cities");
     // A decision to omit a game route does not establish whether a real
     // service exists; its sources must retain any factual uncertainty.
     expect(report.cities.map(({ cityId, decisions, ready }) => ({ cityId, decisions, ready })))
@@ -45,7 +44,6 @@ describe("India city travel data", () => {
     // No documented fact covers a ~40 km auto ride (only hypotheses): exactly the routes content:build warns about.
     expect(routes.every((route) => route.sources.every((source) => source.claimType === "hypothesis"))).toBe(true);
     const report = inspectJourneyTransit(process.cwd(), "golden_triangle");
-    if (!("cities" in report)) throw new Error("Golden Triangle reviews its cities");
     expect(report.cities.find((city) => city.cityId === "agra")!.unsupportedRoutes.sort())
       .toEqual(routes.map((route) => `${route.fromPlaceId} → ${route.toPlaceId}（auto_rickshaw）`).sort());
     const decisions = ledgerOf("agra").decisions.filter((decision) => decision.mode === "auto_rickshaw" && (decision.fromPlaceId === fs || decision.toPlaceId === fs));

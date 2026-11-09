@@ -101,7 +101,7 @@ describe("journey-specific tools and tests", () => {
     expect(imports(path.join(root, "scripts/city-bundle.ts"), [
       'import { a } from "./journeys/trip_a/draft";',
       'const b = await import("../scripts/journeys/trip_a/followup");',
-      'import { c } from "./journey-transit-decisions";',
+      'import { c } from "./journey-transit";',
       'import { d } from "../tests/journeys/trip_a/test-journey";',
       'import { e } from "../tests/fixtures/current-game";',
       'import "../tests/journeys/trip_b/setup";',
