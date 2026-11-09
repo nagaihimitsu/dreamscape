@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { conditionSchema } from "./condition-schemas";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const text = z.string().trim().min(1);
@@ -17,16 +18,15 @@ export const dateSchema = z
     apCost: z.number().int().nonnegative().default(2),
     minRomanceStage: z.number().int().min(1).max(4).default(1),
     storyId: z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/),
-    requiredCompletedChapters: z.array(id).optional(),
-    requiredCompletedCityIds: z.array(id).optional(),
-    requiredCompletedEpisodeIds: z.array(id).optional(),
-    forbiddenCompletedEpisodeIds: z.array(id).optional(),
+    /** When the date opens (src/content/condition-schemas.ts); without it the date has no progress condition. */
+    when: conditionSchema.optional(),
+    /** When the date is over for good, even if it was unlocked: a true `until` closes it. */
+    until: conditionSchema.optional(),
     destinationId: id.optional(),
     allowAfterEnding: z.boolean().optional(),
     rewardOnlyOnce: z.boolean().default(true),
     backgroundId: id,
     minAffection: z.number().int().nonnegative().default(0),
-    requiredPlayedDateIds: z.array(id).default([]),
     repeatable: z.boolean().default(false),
     recovery: z.boolean().optional(),
     needsDeferred: z.boolean().default(false),
@@ -56,14 +56,8 @@ export const dateSchema = z
   .strict()
   .transform((date) => ({
     ...date,
-    requiredCompletedChapters: date.requiredCompletedChapters ?? [date.chapterId],
     allowAfterEnding: date.allowAfterEnding ?? (date.kind === "normal"),
   }))
-  .refine(
-    (date) => date.requiredCompletedChapters.length > 0 ||
-      (date.kind === "normal" && !!date.destinationId && !!date.requiredCompletedEpisodeIds?.length),
-    "A date needs a chapter or a destination and completed episode prerequisite",
-  )
   .refine(
     (date) => date.kind === "normal" || !date.destinationId,
     "Destinations are for normal dates",

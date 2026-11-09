@@ -43,7 +43,7 @@ describe("open romance progression", () => {
     for (const id of ["milano_la_scala_date_01", "milano_brera_date_01", "milano_navigli_date_01", "milano_novecento_date_01"]) {
       expect(isEventVisible(state, id)).toBe(true);
       expect(getDateAvailability(state, id).available).toBe(true);
-      expect(dates.find((date) => date.id === id)?.requiredPlayedDateIds).toEqual([]);
+      expect(JSON.stringify(dates.find((date) => date.id === id)?.when)).not.toContain("datePlayed");
     }
     expect(state.playedDateIds).not.toContain("milano_cafe_01");
   });

@@ -129,8 +129,7 @@ describe("integrated journey content contract", () => {
   });
 
   it.each([
-    // A date that requires this episode is checked against the episode's city first.
-    ["cityId", "Unknown date prerequisite episode: milano_san_satiro_date_01/milano_duomo_episode"],
+    ["cityId", "Unknown journey city"],
     ["landmarkId", "Episode tourism/battle mismatch: milano_duomo_episode"],
     ["battleId", "Episode tourism/battle mismatch: milano_duomo_episode"],
   ] as const)(

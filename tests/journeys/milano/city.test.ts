@@ -350,7 +350,7 @@ describe("Milan's four episodes and distinct city finale", () => {
   });
   it("pays the two-choice date that opens after the Milan clear once and keeps a pre-existing relationship ending", () => {
     const date = dates.find((item) =>
-      item.requiredCompletedCityIds?.includes("milano"),
+      item.when && "all" in item.when && item.when.all.some((part) => "cityCompleted" in part && part.cityCompleted === "milano"),
     )!;
     let state = tour();
     // All four sightseeing episodes alone do not satisfy the city-date gate.

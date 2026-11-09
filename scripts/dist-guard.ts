@@ -55,6 +55,8 @@ export const lazyDebugMarkers: readonly DevOnlyMarker[] = [
   { text: "?debug だけで場面の確認を開いてください", source: "src/dev/debug-query.ts" },
   { text: "到着の会話を完了できませんでした", source: "src/dev/scenario-builders.ts" },
   { text: "を結果まで進められませんでした", source: "src/dev/scenario-builders.ts" },
+  // Debug's explanation of an unmet condition.
+  { text: "夜（18:00から眠るまで）", source: "src/dev/condition-explain.ts" },
   { text: "制作中の都市ではありません", source: "src/dev/prototype-preview-state.ts" },
   // 仮の場面 (in-memory test cities, shared by unit tests and Debug).
   { text: "仮の場面の元になる都市がありません", source: "src/dev/fixture-template.ts" },

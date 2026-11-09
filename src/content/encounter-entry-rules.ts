@@ -1,26 +1,34 @@
 import { z } from "zod";
+import { conditionSchema } from "./condition-schemas";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/u);
+/**
+ * When an encounter is looked up. Stage 1 of the condition system has one
+ * moment, the observation at the encounter's own landmark (also when `at` is
+ * left out); after a battle, on a trip and the other moments come later.
+ */
+const momentsSchema = z.custom<["observe"]>().superRefine((value, context) => {
+  if (!Array.isArray(value) || value.length !== 1 || value[0] !== "observe")
+    context.addIssue({ code: "custom", message: 'Encounters are met only while observing for now: at must be ["observe"] (other moments come at stage 3)' });
+});
 const ruleSchema = z.object({
   encounterId: id,
-  landmarkId: id,
-  storyId: z.string().regex(/^[a-z][a-z0-9_]*(?:\/[a-z][a-z0-9_]*)+$/u).optional(),
-  completedEpisodeId: id.optional(),
-  completedStoryBattleId: id.optional(),
+  at: momentsSchema.optional(),
+  /** When the encounter can be met (src/content/condition-schemas.ts); without it, always. */
+  when: conditionSchema.optional(),
   /**
    * An encounter with a quiz that waits for the landmark's battle: it can be
-   * met during the first observation, before the rule's milestone (its story
+   * met during the first observation, before its `when` holds (its story
    * then ends without the quiz); met after the battle was played, it goes on
    * to the quiz. In Milan no observation of the Galleria opens after its
    * battle today, so its quiz is reached only once stage 3's after-battle
    * moment exists.
    */
   quizAfterLandmarkBattle: z.literal(true).optional(),
-}).strict().refine((rule) => !!rule.completedEpisodeId !== !!rule.completedStoryBattleId,
-  "Each entry needs exactly one episode or story battle condition");
+}).strict();
 
 export const encounterEntryRulesSchema = z.object({
-  schemaVersion: z.literal(1),
+  schemaVersion: z.literal(2),
   entries: z.array(ruleSchema),
 }).strict().superRefine(({ entries }, context) => {
   const ids = entries.map((entry) => entry.encounterId);
@@ -29,24 +37,17 @@ export const encounterEntryRulesSchema = z.object({
 });
 
 export type EncounterEntryRules = z.infer<typeof encounterEntryRulesSchema>;
+export type EncounterEntryRule = EncounterEntryRules["entries"][number];
 
-/** Entry metadata cannot attach an event to another location or unknown milestone. */
+/** A rule names an existing encounter; the quiz-after-battle flag needs a quiz. (Its `when` is checked by condition-validation.ts.) */
 export function validateEncounterEntryRules(
   rules: EncounterEntryRules,
-  encounters: readonly { id: string; landmarkId: string; storyId: string; quiz?: unknown }[],
-  journey: { episodes: readonly { id: string }[]; storyBattles: readonly { battleId: string }[] },
+  encounters: readonly { id: string; quiz?: unknown }[],
 ): void {
   for (const rule of rules.entries) {
     const event = encounters.find((item) => item.id === rule.encounterId);
-    if (!event || event.landmarkId !== rule.landmarkId)
-      throw new Error(`Unknown or mismatched encounter entry: ${rule.encounterId}/${rule.landmarkId}`);
-    if (rule.storyId && event.storyId !== rule.storyId)
-      throw new Error(`Mismatched encounter entry story: ${rule.encounterId}/${rule.storyId}`);
+    if (!event) throw new Error(`Unknown encounter entry: ${rule.encounterId}`);
     if (rule.quizAfterLandmarkBattle && !event.quiz)
       throw new Error(`A quiz after the landmark battle needs an encounter with a quiz: ${rule.encounterId}`);
-    if (rule.completedEpisodeId && !journey.episodes.some((item) => item.id === rule.completedEpisodeId))
-      throw new Error(`Unknown encounter entry episode: ${rule.encounterId}/${rule.completedEpisodeId}`);
-    if (rule.completedStoryBattleId && !journey.storyBattles.some((item) => item.battleId === rule.completedStoryBattleId))
-      throw new Error(`Unknown encounter entry battle: ${rule.encounterId}/${rule.completedStoryBattleId}`);
   }
 }

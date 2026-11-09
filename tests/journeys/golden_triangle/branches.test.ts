@@ -58,7 +58,8 @@ describe("Golden Triangle authored branching contracts", () => {
     expect(indiaBattles).toHaveLength(15);
     for (const date of indiaDates) {
       expect(date.kind).toBe("normal");
-      expect(date.requiredPlayedDateIds).toEqual([]);
+      expect(date.when).toEqual({ episodesCompleted: { city: date.chapterId, atLeast: 1 } });
+      expect(date.until).toBeUndefined();
       expect(date.allowAfterEnding).toBe(true);
       expect(date.choiceCount).toBe(2);
       expect(date.effectCount).toBe(2);

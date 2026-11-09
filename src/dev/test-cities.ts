@@ -152,12 +152,12 @@ export function installTestCity(options: {
     encounters.encounters.push({ ...clone(template.encounter.encounter), id: id("encounter"), cityId, landmarkId: normalLandmark.id,
       completionItemId: item.id, storyId: ownStory(template.encounter.encounter.storyId, `${cityId}/encounter`) });
   }
-  // Optional: a normal date at the city's place, open from the start.
+  // Optional: a normal date at the city's place, open from the start (its conditions are not copied).
   const date = template.date && (() => {
     const destination = { ...clone(template.date.destination), id: id("date_destination"), cityId };
     dateDestinations.push(destination);
-    const entry = { ...clone(template.date.date), id: id("date"), chapterId: cityId, destinationId: destination.id,
-      requiredCompletedChapters: [], requiredCompletedCityIds: [], requiredCompletedEpisodeIds: [], requiredPlayedDateIds: [],
+    const { when: _when, until: _until, ...copied } = clone(template.date.date);
+    const entry = { ...copied, id: id("date"), chapterId: cityId, destinationId: destination.id,
       storyId: ownStory(template.date.date.storyId, `${cityId}/date`) };
     dates.push(entry);
     return entry;

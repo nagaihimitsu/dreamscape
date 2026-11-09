@@ -39,8 +39,18 @@ describe("debug scene preparation", () => {
   });
   it("does not open a locked scene and keeps the AP limit", () => {
     expect(() => createDebugState({ ...base, scene: "date", id: "milano_brera_date_01", progress: "initial" })).toThrow("この進行状態ではデートを始められません。APや解放条件を確認してください。");
+    // Debug names the unmet part of the date's condition; AP alone gives no condition text.
+    expect(() => createDebugState({ ...base, scene: "date", id: "milano_brera_date_01", progress: "initial" }))
+      .toThrow("デートの条件を満たしていません：エピソード「五本の指で話す人」を終えた");
+    expect(() => createDebugState({ ...base, scene: "date", id: "milano_brera_date_01", ap: 0 })).toThrow(/^この進行状態ではデートを始められません。APや解放条件を確認してください。$/u);
     expect(() => createDebugState({ ...base, scene: "date", id: "milano_brera_date_01", ap: 0 })).toThrow("この進行状態ではデートを始められません。APや解放条件を確認してください。");
     expect(createDebugState({ ...base, ap: 99 }).ap).toBe(12);
+  });
+  it("names the unmet part of an encounter's entry rule before its milestone", () => {
+    expect(() => createDebugState({ ...base, scene: "encounter", id: "duomo_string", progress: "initial" }))
+      .toThrow("この進行状態では交流を始められません。必要な進行や品物を確認してください。入場の条件を満たしていません：エピソード「無人の広場、一名追加」を終えた");
+    // The fortune teller's quiz waits for the battle: her observation ignores the rule's when.
+    expect(createDebugState({ ...base, scene: "encounter", id: "galleria_fortune", progress: "initial" }).activeEncounter?.encounterId).toBe("galleria_fortune");
   });
   it("opens a cleared city's epilogue, not before the clear", () => {
     const game = createDebugState({ ...base, scene: "epilogue", id: "milano_finale" });

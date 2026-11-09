@@ -1,6 +1,6 @@
 // 道中交流「回らない願掛け」（encounters/catalog.json の galleria_fortune）。
 // 今は、ガッレリアの最初の観察から「進む」でバトルへ向かうときに、いつも最初に起こる。
-// 入場ルールに quizAfterLandmarkBattle があるので、条件『ガッレリアを終えた』（completedEpisodeId）は問わない。
+// 入場ルールに quizAfterLandmarkBattle があるので、条件『ガッレリアを終えた』（when の episodeCompleted）は問わない。
 // まだガッレリアのバトルを戦っていないので、クイズなしで話が終わる。クイズの後の3つの場面（_won・_lost・_already）は今は起こらない。
 // シナリオの改稿で見直す（2026-11-08 のユーザー判断）。それまで起こる時は変えない。変えたら、このコメントも直す。
 VAR player_name = ""

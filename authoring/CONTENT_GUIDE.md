@@ -56,7 +56,7 @@ VAR heroine_name = ""
 
 新しいInk（`content/journeys/milano/stories/dates/milano_date_new.ink`。名前は `dates/<頭>_date_<行き先・出来事>`）に既存の通常デートと同様の変数、2回の3択、結果別の反応を記述します。各分岐では、1回目に `# effect: common_date_first_attentive`、2回目に `# effect: common_date_second_attentive` のような共通効果を使えます。末尾は `attentive`、`playful`、`honest`、`bold`、`provocative` から、その返答に合う既存の確率特性を選びます。結果は `romance_result` の `positive` / `negative` で描き分けます。共通効果は個別の思い出を保存しません。場所固有の思い出が必要な場合は従来どおり固有effectとmemoryを追加します。
 
-`content/journeys/milano/romance/date_catalog.json` の `dates` には、例えば次の最小設定を追加できます。都市クリア後に解放、2 AP、一度限り、交際後も利用可能が標準です。旅の途中で解放したい場合は既存の `destinationId` と `requiredCompletedEpisodeIds` などを明示してください。
+`content/journeys/milano/romance/date_catalog.json` の `dates` には、例えば次の最小設定を追加できます。開く条件 `when` は `{ "episodesCompleted": { "city": "milano", "atLeast": 1 } }`（その都市のエピソードを1つ終えたら）が標準で、2 AP、一度限り、交際後も利用可能が既定です。`when` を書かないデートは、進行の条件なしに最初から開きます。特定の観光地を訪れた後に開きたい場合は、`destinationId` と `when: { "episodeCompleted": "<エピソードID>" }` などを書いてください（書き方は[条件の書き方](#条件の書き方)）。
 
 ```json
 {
@@ -64,6 +64,7 @@ VAR heroine_name = ""
   "chapterId": "milano",
   "titleJa": "新しいデート",
   "storyId": "dates/milano_date_new",
+  "when": { "episodesCompleted": { "city": "milano", "atLeast": 1 } },
   "backgroundId": "milano_cafe"
 }
 ```
@@ -143,7 +144,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 1. `content/journeys/<旅行編ID>/romance/date_destinations.json` の `destinations` に、安定した `id`、`cityId`、日本語・英語の名称、短い `descriptionJa`、`backgroundId`、`facts` を登録します。事実ごとに `publisher`・`title`・`url`・`checkedAt`・`claimType`・`claimJa` を記録し、実際に資料の該当箇所を確認してください。事実・解釈・仮説・伝説は既存の観光資料と同じ区分を使います。
 2. 権利を確認した写真を `content/journeys/<旅行編ID>/public/assets/tourism/` に置き、`content/journeys/<旅行編ID>/tourism/catalog.json` の `assets` に実寸・作者・出典URL・ライセンス・加工内容を登録します。同じ旅行編の `romance/presentation.json` の背景から `imageAssetId` で参照し、必要なら `imagePosition` の x / y を0〜100で指定します。写真家の権利だけでなく被写体の権利も確認してください。近隣の風景を使う場合は実際の場所を代替テキスト・クレジットに明記します。確認できる画像がない場合は `fallback: "neutral"` を使います。出典は会話中の操作メニューから確認できます。出典のある写真ではなく Dreamscape のために作った絵（品物のアイコン、タイトルの絵など）は `tourism/catalog.json` に登録せず、その旅行編の `presentation/own-artwork.json` に配信時のパスを1行ずつ書きます（共通の `public/` に置く絵は `content/presentation/own-artwork.json`）。配信するどの画像も、どちらか一方に登録されていないと `npm run content:build` が「出典のない画像」で止まります（[技術設計](../docs/02_TECH_ARCHITECTURE.md#画像の出典と自作の絵)）。
    背景に訪問対象が写っていないときは、行き先に任意の `referenceImage`（HTTPSの `url`、リンク名 `labelJa`、背景についての `backgroundNoteJa`）を追加し、実物を確認できる公式資料へ案内できます。外部リンクは写真のゲーム内への転載許諾を意味しません。
-3. `content/journeys/<旅行編ID>/romance/date_catalog.json` の通常デートに `destinationId` と必要に応じて `requiredCompletedEpisodeIds` を指定します。デートの `chapterId`、行き先の `cityId`、双方の背景IDを一致させます。訪問後に開放する通常デートでは、必要エピソードを指定したうえで `requiredCompletedChapters` を空配列にできます。交際後も同じ短編を遊べる場合は `allowAfterEnding` を指定します。
+3. `content/journeys/<旅行編ID>/romance/date_catalog.json` の通常デートに `destinationId` と開く条件 `when` を指定します。デートの `chapterId`、行き先の `cityId`、双方の背景IDを一致させます。訪問後に開放する通常デートでは、`when` にそのエピソードだけを書けます（例：`"when": { "episodeCompleted": "milano_galleria_episode" }`）。交際後も同じ短編を遊べる場合は `allowAfterEnding` を指定します。
 4. Inkには、その場所で見られるものや出典を確認した小話を、ヒロインの関心や会話に自然につなげて書きます。選択にかかわらず観光を楽しめるようにします。3択を2回書き、選択肢には共通または固有の `effect` を指定します。固有の思い出を残す場合は対応する `memory` も登録します。必要な表情は `# emotion:`、無言の反応は `# reaction:` で指定します。既存の恋愛進行に新イベントを必須条件として追加するかは、別途慎重に検討してください。
 5. `npm run content:check` でIDの重複、都市・エピソード・背景の参照、出典形式、全分岐と効果を確認し、スマートフォンの画面と脚本をレビューします。
 
@@ -155,7 +156,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 
 ### 通常デートのデータ
 
-デート（`romance/date_catalog.json` の `dates`）の `id`、`chapterId`、`titleJa`、`descriptionJa`、`storyId`、`backgroundId` はイベント、章、表示文、脚本、背景です。`kind` は通常なら `normal`。`apCost`、`minRomanceStage`、`minAffection`、`requiredCompletedChapters` は開始条件で、`destinationId`・`requiredCompletedEpisodeIds`・`requiredCompletedCityIds` は必要な場合のみ。通常デートの `requiredPlayedDateIds` は空配列とし、他のデートを必須にしません。期間限定イベントには `forbiddenCompletedEpisodeIds` で終了条件を指定できます。`repeatable` は再挑戦可否で、通常デートは `false`、告白は再挑戦のため `true` にします。`rewardOnlyOnce` は効果の重複防止、`needsDeferred` は告白保留後の条件、`choiceCount` / `effectCount` は各経路の選択・効果回数です。
+デート（`romance/date_catalog.json` の `dates`）の `id`、`chapterId`、`titleJa`、`descriptionJa`、`storyId`、`backgroundId` はイベント、章、表示文、脚本、背景です。`kind` は通常なら `normal`。`apCost`、`minRomanceStage`、`minAffection` と開く条件 `when` は開始条件で、`destinationId` と閉じる条件 `until` は必要な場合のみ（`when`・`until` の書き方は[条件の書き方](#条件の書き方)）。通常デートも、ほかのデートを遊んだことを開く条件（`when`）にできます。条件を書かない通常デートは順不同で、最初に選んでも成立させます。期間限定イベントには `until` で終了条件を指定できます（例：`"until": { "episodeCompleted": "milano_last_supper_episode" }`。一度地図に出た特別な出来事も、`until` が真になると閉じます）。`repeatable` は再挑戦可否で、通常デートは `false`、告白は再挑戦のため `true` にします。`rewardOnlyOnce` は効果の重複防止、`needsDeferred` は告白保留後の条件、`choiceCount` / `effectCount` は各経路の選択・効果回数です。
 
 `effect_catalog.json` の各 `id` と任意の `memoryId` はInkの `# effect:` に対応します。告白を除く恋愛選択には `responseProfileId` を指定し、`content/romance/response_profiles.json` のリスク特性から選びます。`responseProfileId` を指定した選択の関係値は確率判定で決まり、固定の `affectionDelta`・`trustDelta`・`sparkDelta` は使われません。`affectionDelta` は `0` とし、`trustDelta`・`sparkDelta` は書きません。台詞と選択の性格に合うプロフィールを選び、全段階をレビューしてください。思い出は `presentation.json` の `memories` に同じIDと `titleJa` / `descriptionJa` を登録します。Stage・告白条件は `progression.json` で管理し、特定デートIDを条件にしません。
 
@@ -167,6 +168,61 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 
 順不同のデートで過去の出来事を参照する場合、Inkで `EXTERNAL has_memory(memory_id)` を宣言し、`has_memory("登録済みmemoryId")` を使います。引数は固定の登録済みIDだけで、任意コードを実行せず状態も変更しません。基本本文は思い出がなくても成立させ、`validationContexts` の `memoryIds` で思い出あり・なしの両方を検証します。`romance_stage` と `ending_reached` に応じた反応、告白の `confession_result` も各文脈を登録してください。
 
+## 条件の書き方
+
+デートの開く条件 `when`・閉じる条件 `until`（`romance/date_catalog.json`）と、道中交流の入場ルールの `when`（`encounters/entry-rules.json`）は、共通条件管理システムの同じ形の JSON で書きます。ゲームは条件を1つの関数（`src/domain/conditions.ts` の `meets`）で判定し、条件が真になっても何も記録しません。条件を書かなければ「条件なし」です。今使えるのは、今の記録を読む部品だけです（段階1）。
+
+条件は、キーが1つだけのオブジェクトです。組み合わせは入れ子にできます。
+
+| 組み合わせ | 書き方 | 真になるとき |
+|---|---|---|
+| すべて | `{ "all": [条件, 条件, …] }` | 全部が真（空にはできない） |
+| どれか | `{ "any": [条件, 条件, …] }` | どれかが真（空にはできない） |
+| ではない | `{ "not": 条件 }` | 中の条件が偽 |
+| いくつ以上 | `{ "atLeast": { "count": 2, "of": [条件, 条件, 条件] } }` | `count` 個以上が真（`count` は1〜`of` の数） |
+
+| 部品 | 書き方 | 読む記録 |
+|---|---|---|
+| エピソードを終えた | `{ "episodeCompleted": "<エピソードID>" }` | 終えたエピソード |
+| 都市のエピソードをいくつ終えた | `{ "episodesCompleted": { "city": "<都市ID>", "atLeast": 1 } }` | その都市のエピソード（フィナーレを含む）の数。`atLeast: 1` がデートの標準（旧「章」） |
+| 都市をクリアした | `{ "cityCompleted": "<都市ID>" }` | クリアした都市 |
+| バトルを遊んだ | `{ "battlePlayed": "<バトルID>" }` | 一度でも戦ったバトル（勝ち負けは問わない） |
+| 観光地を訪れた | `{ "landmarkVisited": "<観光地ID>" }` | 訪れた観光地 |
+| 案内を読んだ | `{ "guideRead": "<観光地ID>" }` | 最後まで読んだ観光案内 |
+| 交流を終えた | `{ "encounterCompleted": "<交流ID>" }` | 「また今度」以外で終えた交流 |
+| 交流を見た | `{ "encounterSeen": "<交流ID>" }` | どの選択肢でも最後まで見た交流（「また今度」も） |
+| デートを遊んだ | `{ "datePlayed": "<デートID>" }` | 遊んだデート |
+| エピローグを読んだ | `{ "epilogueViewed": "<都市ID>" }` | 読んだ都市のエピローグ |
+| 品物 | `{ "item": { "id": "<品物ID>", "is": "held" } }` | 品物の状態（下の表） |
+| 時間帯 | `{ "time": "day" }`・`{ "time": "night" }` | `day` は9:00〜18:00、`night` は18:00から眠るまで（21:00の一日の終わりに休むときの、宿へ向かう移動と宿の「眠る前」の場面も夜） |
+| この都市の何日目 | `{ "cityDay": { "atLeast": 2, "atMost": 3 } }` | 都市に着いた日が1日目。`atLeast`・`atMost` の片方だけでもよい |
+| 旅の何日目 | `{ "journeyDay": { "atLeast": 5 } }` | 旅の暦（旅行編の `startWeekday`）がある旅だけ。暦のない旅ではいつも偽 |
+| 曜日 | `{ "weekday": [5, 6] }` | 月曜が0。暦のある旅だけ |
+| 乗った回数 | `{ "rides": { "mode": "<乗り物ID>", "atLeast": 2 } }` | この都市で、これまでにその乗り物に乗った回数（徒歩は数えない） |
+| 借りた | `{ "rented": "<乗り物ID>" }` | この都市で借りた乗り物 |
+
+品物の `is` は5つです。
+
+| `is` | 真になるとき | 読める場所 |
+|---|---|---|
+| `obtained` | 一度でも手に入れた（今の状態は問わない） | どこでも |
+| `held` | 今持っている | その品物の都市の条件だけ（ほかの都市では持てないので、ビルドが止める） |
+| `gifted` | 渡した | どこでも |
+| `used` | 使った | どこでも |
+| `left_behind` | 都市を出るときに置いてきた | 同じ旅の、品物の都市より後の都市の条件だけ（品物の都市の中では決して真にならないので、ビルドが止める） |
+
+例（期間限定の特別な出来事。ガッレリアを終えてから、最後の晩餐を終えるまで）：
+
+```json
+"when": { "all": [ { "episodesCompleted": { "city": "milano", "atLeast": 1 } }, { "episodeCompleted": "milano_galleria_episode" } ] },
+"until": { "episodeCompleted": "milano_last_supper_episode" }
+```
+
+- デートは `when` が真で、`until` が偽で、恋愛の欄（`minRomanceStage`・`minAffection`・`needsDeferred`）を満たすときに開きます。一度地図に出た特別な出来事も、`until` が真になると閉じます。始めた後のデートは、セーブを読み込み直しても条件を調べ直しません。
+- デートが開かない理由の文は今のままの順です（`when` のすぐ下の部品で、都市のクリア → エピソード → `until` → 告白の待ち時間 → そのほか）。ゲームは条件の中身や関係値を理由に出しません。Debugだけが、満たしていない部品を表示します。
+- まだ使えない部品（`flag`・`met`・名前付き条件 `condition`・`money`・`rel`・`stage`・`couple`・`battles`・`ap`、品物の `encounter`・`to`）や、観察以外の時点（`at` の `afterBattle` など）は、ビルドが「まだ使えません（段階…）」で止めます。後の段階で足します。
+- `npm run content:build` が止めるのは、形の誤り、存在しないID、旅行編が宣言していない乗り物（徒歩も数えない）、読める場所でない品物の `held`・`left_behind`、入手元のない品物です。止めずに注意として知らせるのは、決して満たされない条件（`never-offered`：観察だけで調べる交流が自分の観光地のエピソードやバトルを条件にしている、同じ旅の後の都市の進行を前の都市で読む、暦のない旅の `journeyDay`・`weekday`、互いを待つデート）と、デートの条件の `time`・`rides`（`date-condition-trip`：行き先へ向かう移動で変わるので、地図に出ても着くと始まらないことがある。時間や曜日で限るデートは、行き先の時間窓 `startWindows`・`openingWindows`・`closedWeekdays` で書けます）です。
+
 ## 章・都市と報酬
 
 都市エピローグの `# speaker: enemy` は、そのエピソードの `battleId` が参照する対戦相手の名前で表示します。ほかの登場人物の言葉は、誰の発言かを明記した地の文に含めてください。到着会話は従来どおりヒロインとナレーションのみです。
@@ -175,7 +231,7 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 
 現在の小さなミラノの寄り道は `content/journeys/milano/encounters/catalog.json` と `content/journeys/milano/stories/encounters/` で管理します。カタログには安定した交流・選択・品物ID、観光地、必要な費用や条件、実際に確認した出典を記録し、選択肢の英文と任意の訳はInkに書きます。各品物にも `cityId` を付け、入手・所持条件・贈与・使用・Inkからの参照を同じ都市の交流に限ります。入手都市のクリア後も使える機会を設けてください。価格や展示・人物はゲーム内の設定です。旅の予算、品物、APは別に扱い、購入しなくてもメインの観光と恋愛を続けられるようにします。
 
-道中交流は、その観光地を観察しているときにだけ始まります。入場ルール（`encounters/entry-rules.json`）を満たす交流が、観察を進めたときにカタログの順に始まり、終わると観察に戻ります。自由時間から始める道はありません。`quizAfterLandmarkBattle` の印を付けた交流（ガッレリアの親子との会話）は、最初の観察で会えます。同じ観光地の本戦をまだ戦っていないうちはクイズなしで話が終わり、本戦を戦った後に始まった場合だけ、文化クイズと展示券の抽選へ進みます。ただし今は、本戦を戦った後に交流が始まる観察がないため、このクイズと抽選には遊んでいて届きません。本戦を終えるとガッレリアは地図の行き先に出なくなります。バトルの画面から観察に戻ることはできますが、バトルの途中なので交流は始まりません。ミラノの道中交流には、ほかにも今は起こらないものがあります。多くは、条件（その観光地を終えた・特殊戦を戦った）を満たすと、交流が始まる観察がもうないためです。展示券が要る交流は、券が手に入らないため起こりません。ユーザーの判断（2026-11-08）で、これらは今のまま残し、シナリオの改稿でまとめて見直します。各交流が今いつ起こるか（起こらないならその理由）は、`content/journeys/milano/stories/encounters/` の各Inkファイルの先頭のコメントに書いています。JSONにはコメントを書けないので、カタログと入場ルールには書きません。起こる時を変えたら、そのコメントも直してください。カタログに `availability` は書けません（セーブ版 v14 でなくなりました）。使わない交流はカタログから消してください。既存の会話や賞品を差し替える際は、現在のゲームの参照と獲得・使用の整合性を確認してください。
+道中交流は、その観光地を観察しているときにだけ始まります。入場ルール（`encounters/entry-rules.json`、`"schemaVersion": 2`）には、交流ごとに `encounterId`、調べる時点 `at`（今は観察の `["observe"]` だけ。省略しても同じ）、出会える条件 `when`（例：`{ "episodeCompleted": "milano_duomo_episode" }`、`{ "battlePlayed": "milano_la_scala_b01" }`。書き方は[条件の書き方](#条件の書き方)）を書きます。入場ルールのない交流や `when` のない交流は、条件なしに出会えます。`when` を満たす交流が、観察を進めたときにカタログの順に始まり、終わると観察に戻ります。自由時間から始める道はありません。`quizAfterLandmarkBattle` の印を付けた交流（ガッレリアの親子との会話）は、最初の観察で会えます。同じ観光地の本戦をまだ戦っていないうちはクイズなしで話が終わり、本戦を戦った後に始まった場合だけ、文化クイズと展示券の抽選へ進みます。ただし今は、本戦を戦った後に交流が始まる観察がないため、このクイズと抽選には遊んでいて届きません。本戦を終えるとガッレリアは地図の行き先に出なくなります。バトルの画面から観察に戻ることはできますが、バトルの途中なので交流は始まりません。ミラノの道中交流には、ほかにも今は起こらないものがあります。多くは、条件（その観光地を終えた・特殊戦を戦った）を満たすと、交流が始まる観察がもうないためです（観察だけで調べる交流が自分の観光地のエピソードやバトルを条件にすると、`npm run content:build` が注意 `never-offered` で知らせます）。展示券が要る交流は、券が手に入らないため起こりません。ユーザーの判断（2026-11-08）で、これらは今のまま残し、シナリオの改稿でまとめて見直します。各交流が今いつ起こるか（起こらないならその理由）は、`content/journeys/milano/stories/encounters/` の各Inkファイルの先頭のコメントに書いています。JSONにはコメントを書けないので、カタログと入場ルールには書きません。起こる時を変えたら、そのコメントも直してください。カタログに `availability` は書けません（セーブ版 v14 でなくなりました）。使わない交流はカタログから消してください。既存の会話や賞品を差し替える際は、現在のゲームの参照と獲得・使用の整合性を確認してください。
 
 旅行予算とAP・保留APは都市別に初期化しない共通残高です。次の都市へ出発すると、その都市でまだ持っている品物は「置いてきた」になり、持ち越せません。入手・贈与・使用の履歴、交流の履歴、思い出・関係値は残ります。
 
