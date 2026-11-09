@@ -1,17 +1,4 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
+INCLUDE modules.ink
 # background: gt_bg_delhi_red_fort
 # speaker: narrator
 城門の奥、天井のある古い商店街チャッタ・チョーク。{heroine_name}が腕輪の棚に手を伸ばしたとき、紺のセーターの波が押し寄せた。
@@ -46,11 +33,9 @@ VAR battle_score = 0
 列の最後に、一人だけノートを閉じたままの少年がいる。前の子の背中ばかり見ていた。
 # speaker: narrator
 アンジャリが胸を張り、宮殿の奥、白い大理石の広間を指さした。外国人がどれくらい知っているか、試す顔だった。
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: gt_bg_delhi_red_fort
-{ answer_correct:
+{ quiz_correct:
     # speaker: narrator
     アンジャリの眉が、少しだけ下がった。外国人が知っていたのが、ほんの少し悔しいらしい。それでもすぐに付け足す。「書いたのはアミール・フスローです！」
 - else:
@@ -74,11 +59,9 @@ VAR battle_score = 0
 「次！　ソーヌー！」
 # speaker: narrator
 二番手の男の子が、敬礼したまま前に出る。敬礼の角度が妙に本格的で、周りがまた笑った。
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: gt_bg_delhi_red_fort
-{ answer_correct:
+{ quiz_correct:
     # speaker: narrator
     ソーヌーは「正解！」と叫んで、城壁に向かって演説の真似を始めた。手振りが大きすぎて、土産物屋の棚の鈴が一斉に鳴った。
 - else:
@@ -110,11 +93,9 @@ VAR battle_score = 0
 「この楽園に住んでいた人は、ここで、どうなったの」
 # speaker: narrator
 騒いでいた子どもたちが、一人ずつ黙っていった。
--> END
-
-=== conclusion ===
+-> quiz(3) ->
 # background: gt_bg_delhi_red_fort
-{ answer_correct:
+{ quiz_correct:
     # speaker: narrator
     ファイズの目が、初めてまっすぐこちらを見た。そして、続きを自分で話し始めた。「最後の皇帝。詩を書く人だった。自分の家で、裁判にかけられて、遠くへ送られた」
 - else:

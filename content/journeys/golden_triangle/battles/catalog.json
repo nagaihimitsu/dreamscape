@@ -12,15 +12,7 @@
       "storyId": "battles/gt_delhi_main_red_fort",
       "quizId": "gt_delhi_main_red_fort_quiz",
       "backgroundId": "gt_bg_delhi_red_fort",
-      "portrait": "abstract",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      }
+      "portrait": "abstract"
     },
     {
       "id": "gt_delhi_main_qutb_minar_battle",
@@ -33,15 +25,7 @@
       "storyId": "battles/gt_delhi_main_qutb_minar",
       "quizId": "gt_delhi_main_qutb_minar_quiz",
       "backgroundId": "gt_bg_delhi_qutb_minar",
-      "portrait": "abstract",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      }
+      "portrait": "abstract"
     },
     {
       "id": "gt_delhi_main_humayun_tomb_battle",
@@ -54,15 +38,7 @@
       "storyId": "battles/gt_delhi_main_humayun_tomb",
       "quizId": "gt_delhi_main_humayun_tomb_quiz",
       "backgroundId": "gt_bg_delhi_humayun_tomb",
-      "portrait": "abstract",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      }
+      "portrait": "abstract"
     },
     {
       "id": "gt_delhi_main_jama_masjid_battle",
@@ -75,15 +51,7 @@
       "storyId": "battles/gt_delhi_main_jama_masjid",
       "quizId": "gt_delhi_main_jama_masjid_quiz",
       "backgroundId": "gt_bg_delhi_jama_masjid",
-      "portrait": "abstract",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      }
+      "portrait": "abstract"
     },
     {
       "id": "gt_delhi_finale_battle",
@@ -98,17 +66,7 @@
       "storyId": "battles/gt_delhi_finale",
       "quizId": "gt_delhi_finale_quiz",
       "backgroundId": "gt_bg_delhi_red_fort",
-      "portrait": "abstract",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2",
-          "after_3",
-          "after_4"
-        ],
-        "outro": "outro"
-      }
+      "portrait": "abstract"
     },
     {
       "id": "gt_agra_main_taj_mahal_battle",
@@ -121,15 +79,7 @@
       "storyId": "battles/gt_agra_main_taj_mahal",
       "quizId": "gt_agra_main_taj_mahal_quiz",
       "backgroundId": "gt_bg_agra_taj_mahal",
-      "portrait": "abstract",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      }
+      "portrait": "abstract"
     },
     {
       "id": "gt_agra_main_agra_fort_battle",
@@ -142,15 +92,7 @@
       "storyId": "battles/gt_agra_main_agra_fort",
       "quizId": "gt_agra_main_agra_fort_quiz",
       "backgroundId": "gt_bg_agra_agra_fort",
-      "portrait": "abstract",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      }
+      "portrait": "abstract"
     },
     {
       "id": "gt_agra_main_itimad_tomb_battle",
@@ -163,15 +105,7 @@
       "storyId": "battles/gt_agra_main_itimad_tomb",
       "quizId": "gt_agra_main_itimad_tomb_quiz",
       "backgroundId": "gt_bg_agra_itimad_tomb",
-      "portrait": "abstract",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      }
+      "portrait": "abstract"
     },
     {
       "id": "gt_agra_main_fatehpur_sikri_battle",
@@ -184,15 +118,7 @@
       "storyId": "battles/gt_agra_main_fatehpur_sikri",
       "quizId": "gt_agra_main_fatehpur_sikri_quiz",
       "backgroundId": "gt_bg_agra_fatehpur_sikri",
-      "portrait": "abstract",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      }
+      "portrait": "abstract"
     },
     {
       "id": "gt_agra_finale_battle",
@@ -207,17 +133,7 @@
       "storyId": "battles/gt_agra_finale",
       "quizId": "gt_agra_finale_quiz",
       "backgroundId": "gt_bg_agra_taj_mahal",
-      "portrait": "abstract",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2",
-          "after_3",
-          "after_4"
-        ],
-        "outro": "outro"
-      }
+      "portrait": "abstract"
     },
     {
       "id": "gt_jaipur_main_amber_fort_battle",
@@ -230,15 +146,7 @@
       "storyId": "battles/gt_jaipur_main_amber_fort",
       "quizId": "gt_jaipur_main_amber_fort_quiz",
       "backgroundId": "gt_bg_jaipur_amber_fort",
-      "portrait": "abstract",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      }
+      "portrait": "abstract"
     },
     {
       "id": "gt_jaipur_main_hawa_mahal_battle",
@@ -251,15 +159,7 @@
       "storyId": "battles/gt_jaipur_main_hawa_mahal",
       "quizId": "gt_jaipur_main_hawa_mahal_quiz",
       "backgroundId": "gt_bg_jaipur_hawa_mahal",
-      "portrait": "abstract",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      }
+      "portrait": "abstract"
     },
     {
       "id": "gt_jaipur_main_city_palace_battle",
@@ -272,15 +172,7 @@
       "storyId": "battles/gt_jaipur_main_city_palace",
       "quizId": "gt_jaipur_main_city_palace_quiz",
       "backgroundId": "gt_bg_jaipur_city_palace",
-      "portrait": "abstract",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      }
+      "portrait": "abstract"
     },
     {
       "id": "gt_jaipur_main_jantar_mantar_battle",
@@ -293,15 +185,7 @@
       "storyId": "battles/gt_jaipur_main_jantar_mantar",
       "quizId": "gt_jaipur_main_jantar_mantar_quiz",
       "backgroundId": "gt_bg_jaipur_jantar_mantar",
-      "portrait": "abstract",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      }
+      "portrait": "abstract"
     },
     {
       "id": "gt_jaipur_finale_battle",
@@ -316,17 +200,7 @@
       "storyId": "battles/gt_jaipur_finale",
       "quizId": "gt_jaipur_finale_quiz",
       "backgroundId": "gt_bg_jaipur_hawa_mahal",
-      "portrait": "abstract",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2",
-          "after_3",
-          "after_4"
-        ],
-        "outro": "outro"
-      }
+      "portrait": "abstract"
     }
   ]
 }

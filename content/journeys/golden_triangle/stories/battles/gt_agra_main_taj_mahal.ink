@@ -1,17 +1,4 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
+INCLUDE modules.ink
 # background: gt_bg_agra_taj_mahal
 # speaker: narrator
 タージ・マハルへ続く長い水路の途中に、白い大理石のベンチがある。記念写真の列が、今日も二十人ほど伸びていた。
@@ -42,11 +29,9 @@ VAR battle_score = 0
 ニキルが、練習どおりの台詞を始める。「シャー・ジャハーンは、ムムターズをそれほど愛して……」
 # speaker: narrator
 タンヴィが静かに遮った。「ねえ、ニキル。ムムターズがどこで、どうやって亡くなったか、知ってる？」
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: gt_bg_agra_taj_mahal
-{ answer_correct:
+{ quiz_correct:
     # speaker: narrator
     タンヴィはうなずいた。「そう。戦の旅の途中で、出産で。何人目の子かは、資料でも十三とか十四とか揺れるの。それくらい、何度も」
 - else:
@@ -62,11 +47,9 @@ VAR battle_score = 0
 「すぐ、じゃないよ。最初のお墓、どこだったと思う？」
 # speaker: narrator
 ベンチの上で、{heroine_name}は身動きできなかった。立てば、ニキルの計画が終わる。座っていれば、二人の喧嘩の特等席。
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: gt_bg_agra_taj_mahal
-{ answer_correct:
+{ quiz_correct:
     # speaker: narrator
     「そう。遠くの庭に仮に埋めて、何か月もたってから、ここへ運ばれたの」とタンヴィ。
 - else:
@@ -89,11 +72,9 @@ VAR battle_score = 0
 タンヴィは、廟の左右に一つずつ建つ、そっくりな赤い建物を指さした。
 # speaker: narrator
 「あっちはモスク。じゃあ、反対側のそっくりな方は、何のために建てたと思う？」
--> END
-
-=== conclusion ===
+-> quiz(3) ->
 # background: gt_bg_agra_taj_mahal
-{ answer_correct:
+{ quiz_correct:
     # speaker: narrator
     「そう。釣り合いのため。片方があるから、もう片方が要る。きれいだけど、それだけの役目」
 - else:

@@ -94,10 +94,11 @@ describe("draft journey scenario contracts", () => {
   }, 120_000);
 
   it("checks India's real drafts: a knot of a published place file counts as published, and a draft beside it is refused", async () => {
-    // Delhi's guides, dates and epilogue are knots of place files (content:build walks them); its battles are one-scene files.
+    // Delhi's guides, dates and epilogue are knots of place files, its battles one-scene files in the one-flow form (stage 5):
+    // content:build walks them all.
     expect(await validateJourneyScenario(process.cwd(), "golden_triangle", indiaDrafts, "delhi")).toEqual({
       journeyId: "golden_triangle", cities: ["delhi"], stories: 16, placeKnots: 11, guides: 4,
-      battleScenarios: 83, dateRoutes: 0, epilogueScenarios: 0, warnings: [], readyForPublication: false,
+      battleScenarios: 0, dateRoutes: 0, epilogueScenarios: 0, warnings: [], readyForPublication: false,
     });
     const directory = mkdtempSync(path.join(tmpdir(), "dreamscape-scenario-india-"));
     try {

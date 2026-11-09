@@ -1,17 +1,4 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
+INCLUDE modules.ink
 # background: gt_bg_agra_itimad_tomb
 # speaker: narrator
 門をくぐると、庭の奥に白い墓廟が見えた。大きくはない。けれど近づくほど、壁一面に色の石の模様が浮かび上がってくる。
@@ -42,11 +29,9 @@ VAR battle_score = 0
 「署名の前に読む人は、珍しいわね。……どうぞ。三つ、主張を書いてあります」
 # speaker: narrator
 一つ目の主張。この墓は、タージ・マハルの赤ちゃんではない。先に建てられたのは、こちらである。
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: gt_bg_agra_itimad_tomb
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「よろしい。先輩を赤ちゃん呼ばわりしていたのは、世間の方なの」
 - else:
@@ -64,11 +49,9 @@ VAR battle_score = 0
 「偉くなった人、よ。最初から偉かったわけじゃない。そこが大事なの」
 # speaker: narrator
 ヴィムラーは墓廟を見上げた。授業中、一番聞いてほしいところで声を落とす先生のように。
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: gt_bg_agra_itimad_tomb
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「そう。遠い国から来て、自分の力で上った人。その娘が皇妃になって、両親のためにこれを建てた。いい話でしょう」
 - else:
@@ -86,11 +69,9 @@ VAR battle_score = 0
 {heroine_name}のペンが、紙の上で止まった。ヴィムラーがその手元をのぞき込む。
 # speaker: enemy
 「どうしたの。三つとも事実よ。署名して」
--> END
-
-=== conclusion ===
+-> quiz(3) ->
 # background: gt_bg_agra_itimad_tomb
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     # emotion: serious
     「三つ目だけ、資料で確かめられないと思います。タージは、シャー・ジャハーンの建物ですよね」

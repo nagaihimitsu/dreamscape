@@ -1,17 +1,4 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
+INCLUDE modules.ink
 # background: gt_bg_agra_agra_fort
 # speaker: narrator
 川に面した八角形の塔。白い大理石の欄干の向こうに、遠くタージ・マハルが霞んで見える。
@@ -38,11 +25,9 @@ VAR battle_score = 0
 「あの、大佐。何に抗議されてるんですか？」
 # speaker: enemy
 「閉じ込める者すべてにだ。この塔の主を閉じ込めたのが誰だったか、知っているかね」
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: gt_bg_agra_agra_fort
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「そう、実の息子だ。……そして今、わしを閉じ込めようとしているのは、旅行会社のバスだ」
 - else:
@@ -65,11 +50,9 @@ VAR battle_score = 0
 大佐はポケットから飴を出して、口に入れた。生姜の匂い。さっきから三つ目だ。顔色が、塔の大理石と同じくらい白い。
 # speaker: enemy
 「では、監視団に問う。閉じ込められた皇帝の世話を、最後までしたのは誰だったと思う」
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: gt_bg_agra_agra_fort
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「娘だ。ジャハーナーラー。……娘というのは、ありがたいものだ」
 - else:
@@ -94,11 +77,9 @@ VAR battle_score = 0
 リヤは電話中で、こちらの話には気づいていない。大佐は咳払いをして、声を大きくした。
 # speaker: enemy
 「それに、わしがここに残る正当な理由はほかにもある。この城には、今も軍がいるのだ」
--> END
-
-=== conclusion ===
+-> quiz(3) ->
 # background: gt_bg_agra_agra_fort
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「はい。城の一部は、今も陸軍の区域ですよね。……だったら大佐、城の守りは万全です。大佐が座っている必要はないと思います」
 - else:

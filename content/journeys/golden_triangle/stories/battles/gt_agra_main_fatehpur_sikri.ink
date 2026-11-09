@@ -1,17 +1,4 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
+INCLUDE modules.ink
 # background: gt_bg_agra_fatehpur_sikri
 # speaker: narrator
 巨大な門へ続く急な石段の途中で、{heroine_name}は息を整えていた。見上げるアーチの内側に、流れるような文字が刻まれている。
@@ -45,11 +32,9 @@ VAR battle_score = 0
 ムケーシュは鼻を鳴らし、もう一度アーチを見上げた。翻訳の続きを、指で追う。
 # speaker: enemy
 「だいたい、誰が言ったんだ、こんなこと。皇帝か？　自分は町ごと建てたくせに」
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: gt_bg_agra_fatehpur_sikri
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「イエス……？　キリストの？　イスラームの皇帝の門に？」
     # speaker: heroine
@@ -71,11 +56,9 @@ VAR battle_score = 0
 彼は石段の上の、赤い石の町並みを見渡した。宮殿、広場、柱廊。人の住まない町が、どこまでも続いている。
 # speaker: enemy
 「でも、変じゃないですか。家を建てるなと刻んだ皇帝が、そもそも、なんでこんな所に町を一つ建てたんです」
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: gt_bg_agra_fatehpur_sikri
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「跡継ぎが欲しくて、聖者に会いに来た。それで息子が生まれて、町を建てた。……息子のために、町を一つ」
 - else:
@@ -99,11 +82,9 @@ VAR battle_score = 0
 ムケーシュは鼻をすすり、町並みを顎で示した。
 # speaker: enemy
 「で、皇帝は、息子のために建てたこの町に、何年住んだんです」
--> END
-
-=== conclusion ===
+-> quiz(3) ->
 # background: gt_bg_agra_fatehpur_sikri
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「十五年……。皇帝でさえ、出ていったのか」
 - else:

@@ -14,7 +14,8 @@ import { displayPath, journeyLayer, loadContentSources, parseCatalog, storyFile,
 import { withContext } from "./content-validation-utils";
 import { validateEpilogue } from "./epilogue-validation";
 import { compileInk, validateNoInkRandom, validateRelationshipToneSource } from "./ink-validation";
-import { readMainFileHead } from "./place-files";
+import { includesModules, readMainFileHead } from "./place-files";
+import { MODULES_FILE, MODULES_INK } from "./modules-ink";
 import { buildJourneyFragments, journeyNarrativeSchema, journeyRequirements, loadJourneyScaffold } from "./journey-scaffold";
 import { validateTourism } from "./tourism-validation";
 import { checkTourismImages } from "./content-images";
@@ -112,8 +113,10 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
         warnings.push(`${displayPath(root, file)}: the protagonist speaks outside the date choices (# speaker: player); usually the protagonist speaks through the choices (not stopped)`);
       validateMemoryReferences(source, Object.keys(fragments.memories));
       // A scene's cond("…") (stage 2a): declared, literal and written as a condition; content:build checks what it names.
-      parseSceneConditions(readSceneConditions(source));
-      stories[storyId] = compileInk(source, file);
+      // A battle in the one-flow form (stage 5) includes the game's modules.ink (its quiz and reasoning calls).
+      const modules = includesModules(source);
+      parseSceneConditions(readSceneConditions(source, modules));
+      stories[storyId] = modules ? compileInk(source, file, { [MODULES_FILE]: MODULES_INK }) : compileInk(source, file);
       inkSources[storyId] = source;
     });
   }
@@ -135,7 +138,8 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
     city.cityId, input.plannedLandmarks[city.cityId], fragments.battles, {}, stories, context, () => observe,
     (storyId) => storyFiles[storyId] ? displayPath(root, storyFiles[storyId]) : `${storyId}.ink`, (guideStoryId) => placeKnots.has(guideStoryId));
     for (const battle of fragments.battles.filter((battle) => battle.cityId === city.cityId || ownLandmarks.some((landmark) => landmark.battleId === battle.id)))
-      if (!placeKnots.has(battle.storyId))
+      // A place file's knot and a published battle in the one-flow form (stage 5): content:build walks them.
+      if (!placeKnots.has(battle.storyId) && !includesModules(inkSources[battle.storyId] ?? ""))
         battleScenarios += withContext(battle.storyId, () => validateBattleStory(stories[battle.storyId], battle, context, observe));
     if (!placeKnots.has(city.finale.epilogueStoryId))
       epilogueScenarios += withContext(city.finale.epilogueStoryId, () => validateEpilogue(stories[city.finale.epilogueStoryId], context, observe));
