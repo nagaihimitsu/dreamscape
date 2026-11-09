@@ -422,7 +422,7 @@ export function validateOccasionState(state: GameState): void {
     const expected = occasion.eventId === null ? undefined : occasionOf({ ...state, visitedLandmarkIds: [] }, occasion.eventId);
     // A then: move's trip to a place with no landmark (its trip's scenes, then free time there) names its city.
     const placeOnly = occasion.kind === "visit" && occasion.eventId === null && occasion.landmarkId === null;
-    if ((placeOnly ? occasion.cityId !== state.currentCityId || !occasion.trip : occasion.cityId !== undefined) ||
+    if ((placeOnly ? occasion.cityId !== state.currentCityId || !occasion.trip || own.length > 0 : occasion.cityId !== undefined) ||
         occasion.eventId !== (state.travel.activeEvent?.eventId ?? null) || (occasion.eventId !== null && expected?.kind !== occasion.kind) ||
         (occasion.eventId !== null && expected?.landmarkId !== occasion.landmarkId) || (occasion.eventId === null && own.some((part) => part !== "guide" && part !== "observe" && part !== "battle")) ||
         (occasion.landmarkId !== null && !landmarks.some((landmark) => landmark.id === occasion.landmarkId && landmark.cityId === state.currentCityId)) ||
