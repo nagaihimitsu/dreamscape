@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useId, useState } from "react";
+import { Icon } from "./icons";
 import { Modal } from "./Modal";
 import "./dialogue-log.css";
 
@@ -62,7 +63,7 @@ export function DialogueLog({
   return (
     <>
       <button className="text-button" aria-label="会話ログ" onClick={() => setOpen(true)}>
-        {label}
+        <Icon name="log" />{label}
       </button>
       {open && (
         <Modal labelledBy={titleId} onClose={() => setOpen(false)}>

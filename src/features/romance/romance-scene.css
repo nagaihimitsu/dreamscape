@@ -1,15 +1,17 @@
-/* Change these values to retheme every VN dialogue window. */
+/* Change these values to retheme every VN dialogue window (UI redesign §2.1, §3.3). */
 :root {
-  --vn-window-bg: rgba(20, 27, 34, .92);
-  --vn-text: #fffaf1;
-  --vn-muted: #e2e6df;
-  --vn-name-bg: #58756c;
-  --vn-window-radius: 24px;
-  --vn-name-radius: 999px;
+  --vn-window-bg: var(--ds-window-bg);
+  --vn-text: var(--ds-on-slate);
+  --vn-muted: var(--ds-on-slate-muted);
+  --vn-name-bg: var(--ds-plate-blue);
+  --vn-window-radius: 22px;
   --vn-body-size: 18px;
   --vn-window-padding: clamp(12px, 2.5vw, 24px);
   --vn-choice-bg: rgba(255, 255, 255, .08);
   --vn-choice-border: rgba(255, 255, 255, .42);
+  /* The window's head (the speaker's plate and the controls) straddles the window's
+     top edge by this much, half a control, whatever the plate holds (decision H). */
+  --vn-head-overhang: 22px;
 }
 .vn-scene {
   position: relative;
@@ -28,6 +30,8 @@
 .vn-background { position: absolute; inset: 0; z-index: -1; }
 .vn-background .canal-scene { width: 100%; height: 100%; }
 .vn-background .scene-stamp { display: none; }
+/* The visited place's reference photo (D17): a note and its external link,
+   top-left under the scene label line, in the margin beside the portrait. */
 .date-reference {
   position: absolute;
   z-index: 1;
@@ -36,26 +40,34 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: 4px;
   /* Keep the reference in the margin beside the centered character's face.
      A compact width also leaves room for the lower choice window. */
   width: min(118px, calc(35% - 8px));
-  padding: 4px 8px;
-  border-radius: 10px;
-  background: rgba(20, 27, 34, .9);
+  padding: 6px 8px 8px;
+  border-radius: 12px;
+  background: var(--ds-chip-bg);
   color: var(--vn-text);
   font-size: 12px;
   line-height: 1.4;
   overflow-wrap: anywhere;
 }
+/* The link is a pressable rectangle (§2.3): gold hairline, 44 px, ↗ for leaving the game. */
 .date-reference a {
   display: inline-flex;
   align-items: center;
+  gap: 2px;
   width: 100%;
   min-height: 44px;
+  padding: 4px 8px;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 12px;
+  background: var(--ds-slate-800);
   color: var(--vn-text);
-  text-underline-offset: 3px;
+  font-weight: 600;
+  text-decoration: none;
 }
-.date-reference a:focus-visible { outline: 2px solid white; outline-offset: 2px; }
+.date-reference a:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; box-shadow: 0 0 0 6px var(--ds-slate-900); }
 /* The portrait and the window are independent layers over the same backdrop.
    The layer is sized and placed on the area below the header (the whole scene
    where none lies over it) and clipped at that area's top edge only: the top 10.714 %
@@ -69,65 +81,51 @@
   pointer-events: none;
 }
 .reduce-motion .vn-character { transition: none; }
+/* The window (D1): a box whose painted part starts --vn-head-overhang below its
+   top, where its head straddles the edge (DialogueWindowHead), and whose body
+   scrolls under the head when the text is long. The window may grow up to 8 px
+   below what lies over the scene's top (the header and the scene label line,
+   --scene-top): long or enlarged text stays readable, the head never goes under
+   them (UI redesign §3.1). */
 .vn-scene .vn-dialogue {
   position: relative;
   z-index: 2;
+  container: vn-window / inline-size;
+  display: flex;
+  flex-direction: column;
   flex: 0 1 auto;
   width: 90%;
   max-width: 1100px;
-  max-height: calc(100% - clamp(118px, 25dvh, 220px));
+  max-height: calc(100% - 8px - clamp(8px, 1.8dvh, 16px));
   min-height: 0;
   margin: 0 auto clamp(8px, 1.8dvh, 16px);
+  padding: 0;
+  color: var(--vn-text);
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.vn-scene .vn-dialogue::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: var(--vn-head-overhang) 0 0;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: var(--vn-window-radius);
+  background: var(--vn-window-bg);
+  box-shadow: var(--ds-window-shadow);
+  pointer-events: none;
+}
+.vn-scene .vn-window-body {
+  flex: 0 1 auto;
+  min-height: 0;
   padding: 0 var(--vn-window-padding) var(--vn-window-padding);
   overflow-y: auto;
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
-  color: var(--vn-text);
-  /* The name plate straddles the upper edge of the window. The transparent
-     strip is part of the scrollable surface, so long names cannot be clipped. */
-  background:
-    radial-gradient(circle 20px at 100% 100%, var(--vn-window-bg) 98%, transparent 100%) left 14px / 20px 20px no-repeat,
-    radial-gradient(circle 20px at 0 100%, var(--vn-window-bg) 98%, transparent 100%) right 14px / 20px 20px no-repeat,
-    linear-gradient(var(--vn-window-bg), var(--vn-window-bg)) center 14px / calc(100% - 40px) 20px no-repeat,
-    linear-gradient(var(--vn-window-bg), var(--vn-window-bg)) left 34px / 100% calc(100% - 34px) no-repeat;
-  border: 0;
-  border-radius: var(--vn-window-radius);
-  box-shadow: none;
 }
 .vn-dialogue .section-meta { display: none; }
-.vn-dialogue .speaker {
-  display: flex;
-  width: fit-content;
-  max-width: 100%;
-  margin: 0 0 8px;
-  padding: 3px 18px;
-  border-radius: var(--vn-name-radius);
-  background: var(--vn-name-bg);
-  color: var(--vn-text);
-  font-size: 14px;
-  line-height: 1.55;
-  overflow-wrap: anywhere;
-}
-.vn-dialogue .speaker-dot { display: none; }
-.vn-dialogue .emotion { color: var(--vn-muted); }
-.vn-dialogue .dialogue-speaker-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0 8px;
-}
-.vn-dialogue .dialogue-destination {
-  color: var(--vn-text);
-  background: var(--vn-window-bg);
-  border-radius: 12px;
-  font-size: 12px;
-  line-height: 1.5;
-  max-width: 100%;
-  overflow-wrap: anywhere;
-  margin-bottom: 8px;
-  padding: 3px 8px;
-}
 .vn-choice-exit {
   position: absolute;
   z-index: 3;
@@ -161,11 +159,7 @@
 /* A tap on the line goes on to the next one: a one-line line is still a
    44 px tap row (docs/10「タップ領域」); the text stays at its top. */
 .vn-dialogue .dialogue-text[role="button"] { min-height: 44px; }
-.vn-dialogue .dialogue-next-mark {
-  color: var(--vn-muted);
-  font-size: 12px;
-  white-space: nowrap;
-}
+.vn-dialogue .dialogue-next-mark { color: var(--vn-muted); }
 .vn-dialogue[data-has-choices="true"] .dialogue-next-mark { display: none; }
 .vn-dialogue .next, .vn-dialogue .text-button { color: var(--vn-text); }
 .vn-dialogue .next { min-height: 44px; padding: 2px 0 2px 20px; }
@@ -204,13 +198,13 @@
   .date-reference { width: 240px; }
 }
 @media (max-width: 700px) and (orientation: portrait) {
+  :root { --vn-window-radius: 18px; }
   .vn-scene .vn-dialogue {
     width: calc(100% - 16px);
     margin-bottom: 8px;
-    padding: 0 14px 10px;
-    max-height: calc(100% - clamp(112px, 22dvh, 175px));
-    border-radius: 19px;
+    max-height: calc(100% - 16px);
   }
+  .vn-scene .vn-window-body { padding: 0 14px 10px; }
   .vn-dialogue .dialogue-text { font-size: 17px; line-height: 1.6; }
   .vn-character-layer { transform: translateY(-27%); clip-path: polygon(-50% 37.714%, 150% 37.714%, 150% 200%, -50% 200%); }
   .vn-dialogue .choice { line-height: 1.4; padding: 7px 11px; margin: 4px 0; }

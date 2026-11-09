@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Icon } from "./icons";
 import { dialogueObstructed } from "./dialogueObstructed";
 
 /** Optional presentation state. It is never written to the game save. */
@@ -86,7 +87,7 @@ export function AutoAdvanceButton({
       disabled={!state.canStart}
       onClick={state.toggle}
     >
-      {state.active ? "高速送り中" : "高速送り"}
+      <Icon name="fast" />{state.active ? "高速送り中" : "高速送り"}
     </button>
   );
 }

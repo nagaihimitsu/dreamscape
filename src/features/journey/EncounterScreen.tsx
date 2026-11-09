@@ -3,7 +3,7 @@ import { CanalScene } from "../../components/CanalScene";
 import { BackgroundCredits } from "../../components/BackgroundCredits";
 import { SceneCreditButton, SceneLabelLine } from "../../components/SceneLabelLine";
 import { DialogueText } from "../../components/DialogueText";
-import { DialogueControls } from "../../components/DialogueControls";
+import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
@@ -105,10 +105,11 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
         })}
       </div>}
       <section className="vn-dialogue paper story-paper encounter-dialogue" aria-label="寄り道の会話" inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
-        <div className="encounter-scene-heading">
-          <div className="speaker">{view.speaker}</div>
-        </div>
-        <DialogueControls close={<DialogueWindowHide state={windowVisibility} label="閉じる" />} entries={entries} auto={autoAdvance} />
+        <DialogueWindowHead
+          speaker={view.speaker}
+          controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
+        />
+        <div className="vn-window-body">
         {quiz ? (
           <>
             <p className="encounter-quiz-prompt">
@@ -132,6 +133,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
             ) : null}
           </>
         )}
+        </div>
       </section>
       {creditsOpen && view.backgroundAsset && <BackgroundCredits asset={view.backgroundAsset} onClose={() => setCreditsOpen(false)} />}
       <DialogueWindowRestore state={windowVisibility} />

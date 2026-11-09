@@ -8,7 +8,7 @@ import { beginStory, continueStory, type StoryStep } from "../../story/runtime";
 import { DialogueText } from "../../components/DialogueText";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
-import { DialogueControls } from "../../components/DialogueControls";
+import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { useSceneTap } from "../../components/useSceneTap";
 import { holdTaps } from "../../components/tap-hold";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
@@ -424,15 +424,16 @@ export function BattleScreen({
         </div>
       </div>
       <div className="battle-paper-shell" aria-hidden={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined} inert={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined}>
-      {isDialogue && frame && (
-        <div className="speaker battle-nameplate">
+      {isDialogue && <DialogueWindowHead
+        plateClassName="battle-nameplate"
+        speaker={frame && <>
           {speaker}
           {frame.emotion !== "neutral" && (
             <span className="emotion">{presentation.emotions[frame.emotion]}</span>
           )}
-        </div>
-      )}
-      {isDialogue && <DialogueControls close={<DialogueWindowHide state={windowVisibility} label="閉じる" />} entries={entries} auto={auto} />}
+        </>}
+        controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={auto} />}
+      />}
       <section
         ref={readingArea}
         className={`paper battle-paper${isDialogue ? " battle-dialogue" : ""}`}

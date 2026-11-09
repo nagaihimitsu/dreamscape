@@ -126,58 +126,54 @@
   min-height: 0;
 }
 .battle-paper-shell { display: contents; }
+/* The battle's talk uses the story scenes' window (romance-scene.css, §3.3): the
+   shell is the window, painted from its head's overhang down, its head (plate and
+   controls, DialogueWindowHead) straddles the top edge and the paper below scrolls.
+   Its placement stays the battle's own; the head's overhang is added to its room. */
 .battle-screen[data-phase="dialogue"] .battle-paper-shell {
   position: relative;
   z-index: 2;
+  container: vn-window / inline-size;
   display: flex;
   flex-direction: column;
   width: min(90%, 1100px);
-  max-height: calc(100% - clamp(110px, 22vh, 190px));
+  max-height: calc(100% - clamp(110px, 22vh, 190px) + var(--vn-head-overhang, 22px));
   margin: auto auto 16px;
+}
+.battle-screen[data-phase="dialogue"] .battle-paper-shell::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: var(--vn-head-overhang, 22px) 0 0;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: var(--vn-window-radius, 22px);
+  background: var(--vn-window-bg);
+  box-shadow: var(--ds-window-shadow);
+  pointer-events: none;
 }
 .battle-screen[data-phase="dialogue"] .battle-paper.battle-dialogue {
   flex: 0 1 auto;
   width: 100%;
   max-width: none;
-  max-height: 100%;
+  max-height: none;
   min-height: 0;
   margin: 0;
-  padding: 24px 24px 12px;
+  padding: 2px 24px 12px;
   overflow-y: auto;
   overscroll-behavior: contain;
-  border-radius: var(--vn-window-radius, 26px);
-  border: 1px solid #ffffff26;
-  color: var(--vn-text, #fffaf4);
-  background: var(--vn-window-bg, rgba(25, 30, 42, .91));
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--vn-text);
+  background: none;
 }
-.battle-screen .battle-nameplate {
-  position: absolute;
-  z-index: 3;
-  top: 0;
-  left: 24px;
-  transform: translateY(-50%);
-  display: inline-flex;
-  align-items: center;
-  max-width: calc(100% - 48px);
-  margin: 0;
-  padding: 4px 18px;
-  border-radius: 999px;
-  color: #fff;
-  background: var(--vn-name-bg, #8b5d73);
-  overflow-wrap: anywhere;
-}
-.battle-nameplate .emotion { color: inherit; }
 .battle-dialogue .dialogue-text {
   margin: 10px 0 8px;
   min-height: 2.5em;
   font-size: var(--vn-body-size, 18px);
   line-height: 1.8;
 }
-.battle-dialogue .dialogue-next-mark {
-  color: var(--vn-muted, #e2e6df);
-  font-size: 12px;
-  white-space: nowrap;
-}
+.battle-dialogue .dialogue-next-mark { color: var(--vn-muted); }
 .battle-dialogue .next:disabled { visibility: hidden; }
 .battle-dialogue .next { min-height: 44px; padding: 2px 0 2px 12px; }
 .battle-dialogue .reveal { min-height: 44px; margin: 0 0 0 auto; }
@@ -195,12 +191,12 @@
   }
   .battle-screen[data-phase="dialogue"] .battle-paper-shell {
     width: calc(100% - 16px);
-    max-height: calc(100% - 140px);
+    max-height: calc(100% - 140px + var(--vn-head-overhang, 22px));
     margin: auto 8px 8px;
   }
   .battle-screen[data-phase="dialogue"] .battle-paper.battle-dialogue {
     margin: 0;
-    padding: 24px 16px 8px;
+    padding: 2px 16px 8px;
   }
 }
 

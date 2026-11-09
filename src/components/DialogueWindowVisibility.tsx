@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
+import { Icon } from "./icons";
 import "./dialogue-window-visibility.css";
 
 /** Presentation only: hiding the window never changes the saved Ink state. */
@@ -35,14 +36,13 @@ export function useDialogueWindow() {
 
 type DialogueWindow = ReturnType<typeof useDialogueWindow>;
 
+/** 「隠す」 (U6): hides the window only; a tap anywhere on the scene shows it again. */
 export function DialogueWindowHide({
   state,
   onHide,
-  label = "ウィンドウを隠す",
 }: {
   state: DialogueWindow;
   onHide?: () => void;
-  label?: string;
 }) {
   return (
     <button
@@ -54,7 +54,7 @@ export function DialogueWindowHide({
         onHide?.();
       }}
     >
-      {label}
+      <Icon name="eye-off" />隠す
     </button>
   );
 }
@@ -72,7 +72,7 @@ export function DialogueWindowRestore({ state }: { state: DialogueWindow }) {
         state.show();
       }}
     >
-      <span>タップして会話を表示</span>
+      <span className="vn-window-restore-hint"><Icon name="eye" />タップして会話を表示</span>
     </button>
   );
 }

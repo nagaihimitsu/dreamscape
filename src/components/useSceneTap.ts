@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { DialogueTextHandle } from "./DialogueText";
 import { dialogueObstructed, tapsObstructed } from "./dialogueObstructed";
 import { DOUBLE_TAP_WINDOW_MS, isSecondTap } from "./double-tap";
-import { DIALOGUE_LINE_ATTRIBUTE, pressesControl, shouldAdvanceOnTap, type SceneTapState } from "./scene-tap";
+import { DIALOGUE_LINE_ATTRIBUTE, ignoresWindowToolTap, pressesControl, shouldAdvanceOnTap, windowToolAt, type SceneTapState, type TapNode } from "./scene-tap";
 
 const elementOf = (target: EventTarget | null) => target instanceof Element ? target : null;
 
@@ -31,6 +31,9 @@ const elementOf = (target: EventTarget | null) => target instanceof Element ? ta
  * a pointer goes down, and a click with no pointer behind it (`detail` 0: a screen
  * reader's activation, Enter on a button) is never taken for a tap over something;
  * the scene's own check when it reads on is dialogueObstructed, as for the keyboard.
+ * Within that moment a tap on one of the window's own tools (隠す・閉じる・ログ・高速送り)
+ * at the point of that press presses nothing either, unless it is the tool pressed first:
+ * a reply or the log's 「閉じる」 can move the window's head under the finger.
  */
 export function useSceneTap({ active, ...state }: Omit<SceneTapState, "obstructed" | "settling"> & { active: boolean }) {
   const line = useRef<DialogueTextHandle>(null);
@@ -38,8 +41,10 @@ export function useSceneTap({ active, ...state }: Omit<SceneTapState, "obstructe
   const attach = useCallback((element: HTMLElement | null) => {
     root.current = element;
   }, []);
-  // When a control was last pressed.
+  // When a control was last pressed, and which.
   const pressedAt = useRef<number | null>(null);
+  const pressed = useRef<TapNode | null>(null);
+  const pressedPoint = useRef({ x: 0, y: 0 });
   // The same press, shown as data-tap-settling until its double-tap window ends (tests wait for it).
   const [settlingFrom, setSettlingFrom] = useState<number | null>(null);
   useEffect(() => {
@@ -68,7 +73,20 @@ export function useSceneTap({ active, ...state }: Omit<SceneTapState, "obstructe
     const onPress = (event: MouseEvent) => {
       const target = elementOf(event.target);
       if (event.detail === 0) overlaid = false;
+      // A tool of the window's head (隠す・閉じる・ログ・高速送り) tapped right after a press on another
+      // control: the second tap of a double tap, landing on a tool the press moved under the finger (a
+      // reply shrinks the window, the log's 「閉じる」 uncovers it). It presses nothing.
+      const sincePress = pressedAt.current === null ? null : performance.now() - pressedAt.current;
+      const distance = Math.hypot(event.clientX - pressedPoint.current.x, event.clientY - pressedPoint.current.y);
+      if (event.detail > 0 && ignoresWindowToolTap(windowToolAt(target, root.current), pressed.current, sincePress, distance)) {
+        event.preventDefault();
+        event.stopPropagation();
+        overlaid = false;
+        return;
+      }
       if (overlaid || pressesControl(target, root.current)) {
+        pressed.current = windowToolAt(target, root.current) ?? target;
+        pressedPoint.current = { x: event.clientX, y: event.clientY };
         pressedAt.current = performance.now();
         setSettlingFrom(pressedAt.current);
         const tappedLine = target?.closest(`[${DIALOGUE_LINE_ATTRIBUTE}]`);

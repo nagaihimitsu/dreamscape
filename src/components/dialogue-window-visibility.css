@@ -20,10 +20,29 @@
   background: transparent;
   color: #fff;
 }
-.vn-window-restore span {
-  border-radius: 999px;
-  padding: 8px 16px;
-  background: #182c27e8;
-  color: #fff;
+/* Its visible hint (D7): a pressable rectangle at the bottom, above the
+   phone's home indicator. The whole scene is the control (the first tap only
+   shows the window); its focus ring is drawn on the hint. */
+.vn-window-restore { padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
+.vn-window-restore:focus-visible { outline: none; }
+.vn-window-restore-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 12px;
+  background: var(--ds-slate-800);
+  color: var(--ds-on-slate);
+  box-shadow: var(--ds-pill-shadow);
+  font-family: "Noto Sans JP", sans-serif;
   font-size: 14px;
+  font-weight: 600;
+}
+.vn-window-restore-hint .icon { width: 18px; height: 18px; color: var(--ds-gold); }
+.vn-window-restore:focus-visible .vn-window-restore-hint {
+  outline: 3px solid var(--ds-focus);
+  outline-offset: 0;
+  box-shadow: 0 0 0 6px var(--ds-slate-900);
 }

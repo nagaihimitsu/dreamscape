@@ -467,8 +467,8 @@ export const ops = {
     return ops.sceneLabelLine(page).getByRole("button", { name: "画像の出典", exact: true });
   },
   /**
-   * A point in a gap of the dialogue window's tool row (「閉じる」「ログ」「高速送り」), between two
-   * of its buttons: a near miss, which never reads on.
+   * A point in a gap of the dialogue window's tool row (「隠す」or the guide's 「閉じる」, 「ログ」,
+   * 「高速送り」), between two of its buttons: a near miss, which never reads on.
    */
   async dialogueToolsGap(page: Page): Promise<{ x: number; y: number }> {
     await ops.settled(page);
@@ -562,7 +562,7 @@ export const ops = {
     await expect(log).toBeVisible();
     return log;
   },
-  /** A story scene's 「閉じる」 in the dialogue window: hides the window; returns the full-scene control that shows it again. */
+  /** A story scene's 「隠す」 in the dialogue window: hides the window; returns the full-scene control that shows it again. */
   async hideDialogueWindow(page: Page): Promise<Locator> {
     await page.getByRole("button", { name: "会話ウィンドウを隠す", exact: true }).click();
     const restore = page.getByRole("button", { name: "会話ウィンドウを表示", exact: true });

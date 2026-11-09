@@ -11,7 +11,7 @@ import { DialogueText } from "../../components/DialogueText";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
-import { DialogueControls } from "../../components/DialogueControls";
+import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useSceneTap } from "../../components/useSceneTap";
@@ -68,7 +68,7 @@ export function RomanceScene({
   );
   const [creditsOpen, setCreditsOpen] = useState(false);
   const windowVisibility = useDialogueWindow();
-  const dialogueRef = useDialogueScrollReset<HTMLElement>(active.storyState);
+  const dialogueRef = useDialogueScrollReset<HTMLDivElement>(active.storyState);
   const pendingChoice = useRef<{
     revision: number;
     dateId: string;
@@ -170,7 +170,6 @@ export function RomanceScene({
         </CharacterPortrait>
       </div>
       <section
-        ref={dialogueRef}
         className="vn-dialogue paper story-paper"
         aria-label="デートの会話"
         data-has-choices={frame.choices.length > 0}
@@ -186,17 +185,18 @@ export function RomanceScene({
             {exitingChoice}
           </div>
         )}
-        <div className="speaker">
-          <span className={`speaker-dot ${frame.emotion}`} aria-hidden="true" />
-          {speaker}
-          {frame.speaker === "heroine" && frame.emotion !== "neutral" && (
-            <span className="emotion">
-              {presentation.emotions[frame.emotion]}
-            </span>
-          )}
-        </div>
-        <DialogueControls close={<DialogueWindowHide state={windowVisibility} label="閉じる" />} entries={entries} auto={autoAdvance} />
-        <>
+        <DialogueWindowHead
+          speaker={<>
+            {speaker}
+            {frame.speaker === "heroine" && frame.emotion !== "neutral" && (
+              <span className="emotion">
+                {presentation.emotions[frame.emotion]}
+              </span>
+            )}
+          </>}
+          controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
+        />
+        <div ref={dialogueRef} className="vn-window-body">
             <DialogueText
               key={game.revision}
               ref={sceneTap.line}
@@ -247,7 +247,7 @@ export function RomanceScene({
                 <span aria-hidden="true">→</span>
               </button>
             ) : null}
-        </>
+        </div>
       </section>
       {creditsOpen && backgroundAsset && (
         <BackgroundCredits asset={backgroundAsset} onClose={() => setCreditsOpen(false)} />

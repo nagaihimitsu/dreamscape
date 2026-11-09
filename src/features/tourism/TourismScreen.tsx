@@ -17,7 +17,8 @@ import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
-import { DialogueControls } from "../../components/DialogueControls";
+import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
+import { Icon } from "../../components/icons";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { BackgroundCredits } from "../../components/BackgroundCredits";
@@ -148,6 +149,7 @@ export function TourismScreen({
     }
   }
 
+
   return (
     <section
       className={`tourism-screen${active.phase === "guide" ? " guide-active" : ""}`}
@@ -182,14 +184,16 @@ export function TourismScreen({
             </CharacterPortrait>
           </div>
           <div
-            ref={dialogueRef}
             className="tourism-guide paper vn-dialogue"
             data-testid="tourism-guide"
             inert={windowVisibility.hidden}
             aria-hidden={windowVisibility.hidden || undefined}
           >
-            <div className="speaker">{speaker}</div>
-            <DialogueControls close={<button type="button" className="text-button" data-testid="tourism-skip" aria-label="観光案内を閉じる" onClick={onSkip}>閉じる</button>} entries={entries} auto={autoAdvance} />
+            <DialogueWindowHead
+              speaker={speaker}
+              controls={<DialogueControls close={<button type="button" className="text-button" data-testid="tourism-skip" aria-label="観光案内を閉じる" onClick={onSkip}><Icon name="close" />閉じる</button>} entries={entries} auto={autoAdvance} />}
+            />
+            <div ref={dialogueRef} className="vn-window-body">
             <DialogueText
               key={game.revision}
               ref={sceneTap.line}
@@ -207,6 +211,7 @@ export function TourismScreen({
               観察を始める
               <span aria-hidden="true"> →</span>
             </button>}
+            </div>
           </div>
           <DialogueWindowRestore state={windowVisibility} />
         </div>
