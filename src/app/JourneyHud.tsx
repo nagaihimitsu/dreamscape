@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
 import { currencyForCity, formatMoneyForCity } from "../content/currency";
 import { encounters } from "../content/encounters";
 import type { TravelPlace } from "../content/travel-schemas";
@@ -47,6 +47,15 @@ export function JourneyHud({ game, place, freeTimeActions, onRecords, onEnglish,
   onSettings: () => void;
 }) {
   const measured = useMeasuredHeight("--hud-h");
+  const wrapsWhenCut = useWholePlaceName();
+  const header = useCallback((element: HTMLElement | null) => {
+    const unmeasure = measured(element);
+    const unwatch = wrapsWhenCut(element);
+    return () => {
+      unmeasure?.();
+      unwatch?.();
+    };
+  }, [measured, wrapsWhenCut]);
   const weekday = getGameWeekday(game.travel.calendar);
   const money = formatMoneyForCity(game.currentCityId, game.travelBudget);
   const parts = cityProgressParts(cityProgressCounts(game));
@@ -54,7 +63,7 @@ export function JourneyHud({ game, place, freeTimeActions, onRecords, onEnglish,
     .filter((item) => item.cityId === game.currentCityId && game.inventory[item.id] === "held")
     .map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa, iconPath: item.iconPath }));
   return (
-    <div className="journey-hud" data-testid="journey-bar" ref={measured} onMouseDown={keepFocusOffControls}>
+    <div className="journey-hud" data-testid="journey-bar" ref={header} onMouseDown={keepFocusOffControls}>
       <div className="hud-status">
         <p className="hud-plate" data-testid="journey-context">
           <span className="hud-place"><Icon name="pin" /><span className="sr-only">現在地：</span>{placeDisplayName(game, place)}</span>
@@ -92,6 +101,53 @@ export function JourneyHud({ game, place, freeTimeActions, onRecords, onEnglish,
       </div>
     </div>
   );
+}
+
+/** Marks the header whose place name does not fit on one line (journey-hud.css). */
+const WHOLE_PLACE_ATTRIBUTE = "data-place-wraps";
+
+/**
+ * The place name in the header is never cut (user decision 2026-11-09): one line
+ * with an ellipsis is the header's normal layout, and when the name does not fit
+ * that line, whatever the reason (a long name, a long amount beside it, enlarged
+ * text, a narrow or a landscape screen), the header gets WHOLE_PLACE_ATTRIBUTE and
+ * its CSS gives the name the room it needs: the money goes below it, the buttons of
+ * a one-row header go to a row of their own, and a name wider than the whole row
+ * goes on to a second line. The check lays the header out without the attribute
+ * and asks whether the one-line clamp hides part of the name, so a header whose
+ * name fits is laid out exactly as before. It runs when the header is mounted
+ * (before it is painted), and again when the header or the name changes size (the
+ * screen, the text size), when the name or the amount changes, and when the web
+ * fonts arrive; those later checks wait for the next frame, outside the observers'
+ * own callbacks.
+ */
+function useWholePlaceName() {
+  return useCallback((header: HTMLElement | null) => {
+    const place = header?.querySelector<HTMLElement>(".hud-place");
+    if (!header || !place) return;
+    const check = () => {
+      header.removeAttribute(WHOLE_PLACE_ATTRIBUTE);
+      if (place.scrollHeight > place.clientHeight + 1) header.setAttribute(WHOLE_PLACE_ATTRIBUTE, "");
+    };
+    let frame = 0;
+    const later = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(check);
+    };
+    check();
+    const resized = new ResizeObserver(later);
+    resized.observe(header);
+    resized.observe(place);
+    const changed = new MutationObserver(later);
+    changed.observe(header.querySelector(".hud-status") ?? header, { subtree: true, childList: true, characterData: true });
+    document.fonts?.addEventListener("loadingdone", later);
+    return () => {
+      cancelAnimationFrame(frame);
+      resized.disconnect();
+      changed.disconnect();
+      document.fonts?.removeEventListener("loadingdone", later);
+    };
+  }, []);
 }
 
 /**
