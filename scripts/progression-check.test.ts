@@ -138,6 +138,18 @@ describe("check 9: the author-started epilogue (then: epilogue; 3.9 (d))", () =>
     expect(progressionErrors(town({}, { epilogueStarters: [{ sceneId: "talk_x", cityId: "town", landmarkIds: ["lm_nowhere"] }] }))).toHaveLength(1);
   });
 
+  it("reads a stage-4 starter by its moment: an arrival's own then: always, an arrival's scene by its condition at the city's start, a date's", () => {
+    expect(progressionErrors(town({}, { epilogueStarters: [{ sceneId: "town_arrival", cityId: "town", always: true }] }))).toEqual([]);
+    expect(progressionErrors(town({}, { epilogueStarters: [{ sceneId: "talk_arrive", cityId: "town", atArrival: true }] }))).toEqual([]);
+    // The arrival comes once, before anything of the city is played: a battle of the city is never played by then.
+    expect(progressionErrors(town({}, { epilogueStarters: [{ sceneId: "talk_arrive", cityId: "town", atArrival: true, when: { battlePlayed: "bt_a" } }] })))
+      .toHaveLength(1);
+    expect(progressionErrors(town({}, { epilogueStarters: [{ sceneId: "talk_any", cityId: "town", anytime: true, when: { battlePlayed: "bt_a" } }] }))).toEqual([]);
+    expect(progressionErrors(town({}, { epilogueStarters: [{ sceneId: "talk_dt", cityId: "town", dateIds: ["dt"] }] }))).toEqual([]);
+    // A starter with no moment that opens (a ticket counter without admission, a departure): never.
+    expect(progressionErrors(town({}, { epilogueStarters: [{ sceneId: "talk_none", cityId: "town" }] }))).toHaveLength(1);
+  });
+
   it("warns, without stopping, for a city the player may leave without it, and where some plays lose it", () => {
     const twoCities = (starter: NonNullable<ProgressionContent["epilogueStarters"]>[number]) => town({}, {
       journeys: [{ id: "trip", cities: [{ id: "town" }, { id: "later" }], initialBudget: 120, cityTransition: "manual" }], epilogueStarters: [starter] });

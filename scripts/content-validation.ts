@@ -1238,16 +1238,30 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       events: travel.events, routes: travel.routes })),
     // The scenes whose then: epilogue starts their city's epilogue (3.9 (d)): at their visits, or a battle's head.
     epilogueStarters: generatedScenes.scenes.filter((scene) => (scene.then && "epilogue" in scene.then) ||
-      scene.options.some((option) => option.then && "epilogue" in option.then)).map((scene) => ({ sceneId: scene.id, cityId: scene.cityId,
-      ...(scene.main && "battle" in scene.main ? { battleId: scene.main.battle } : {}),
-      ...(scene.main && "date" in scene.main ? { dateId: scene.main.date } : {}),
-      ...(scene.at.length ? { landmarkIds: scene.at.flatMap((moment) => momentLandmarks(moment, scene.cityId)) } : {}),
-      ...(scene.main && "guide" in scene.main ? { landmarkIds: [scene.main.guide] } : {}),
-      // Stage 4: at the finale (its result reached), at a date, or at a moment that comes whenever the player rests, travels or arrives.
-      ...(scene.at.some((moment) => "finale" in moment || ("place" in moment && finalesAtPlace(moment.place).length)) ? { atFinale: true } : {}),
-      ...(scene.at.find((moment) => "date" in moment) ? { dateId: (scene.at.find((moment) => "date" in moment) as { date: string }).date } : {}),
-      ...(scene.at.some((moment) => "hotel" in moment || "trip" in moment || "arrive" in moment || "ticket" in moment) ? { anytime: true } : {}),
-      ...(scene.when ? { when: scene.when } : {}) })),
+      scene.options.some((option) => option.then && "epilogue" in option.then)).map((scene) => {
+      const cityTravel = travels.find(({ city: item }) => item.id === scene.cityId);
+      // Stage 4: a moment that comes whenever the player rests, travels or enters, by its real opening rule (2.3, 4.2): the hotel's
+      // on every rest; a trip's only on a route of its mode between two places it names; a ticket counter's only with an admission there.
+      const comesAgain = (moment: SceneEntry["at"][number]) => "hotel" in moment ||
+        ("trip" in moment && !!cityTravel?.travel.routes.some((route) => route.fromPlaceId !== route.toPlaceId && route.mode === moment.trip &&
+          (!moment.from || route.fromPlaceId === moment.from) && (!moment.to || route.toPlaceId === moment.to))) ||
+        ("ticket" in moment && eventsAtPlace(moment.ticket).some((event) => (event.admissionCost ?? 0) > 0));
+      const dateIds = [...(scene.main && "date" in scene.main ? [scene.main.date] : []),
+        ...scene.at.flatMap((moment) => "date" in moment ? [moment.date] : "place" in moment ? datesAtPlace(moment.place).map((event) => event.id) : [])];
+      return { sceneId: scene.id, cityId: scene.cityId,
+        ...(scene.main && "battle" in scene.main ? { battleId: scene.main.battle } : {}),
+        ...(dateIds.length ? { dateIds } : {}),
+        ...(scene.at.length ? { landmarkIds: scene.at.flatMap((moment) => momentLandmarks(moment, scene.cityId)) } : {}),
+        ...(scene.main && "guide" in scene.main ? { landmarkIds: [scene.main.guide] } : {}),
+        // An arrival's own then: (decision 36): the arrival runs whenever the city is reached.
+        ...(scene.main && "arrival" in scene.main ? { always: true } : {}),
+        // Stage 4: at the finale (its result reached), at an arrival (once, as the city starts; only a city with an arrival), or
+        // at a moment that comes again.
+        ...(scene.at.some((moment) => "finale" in moment || ("place" in moment && finalesAtPlace(moment.place).length)) ? { atFinale: true } : {}),
+        ...(scene.at.some((moment) => "arrive" in moment && !!cities.find((item) => item.id === moment.arrive)?.arrivalStoryId) ? { atArrival: true } : {}),
+        ...(scene.at.some(comesAgain) ? { anytime: true } : {}),
+        ...(scene.when ? { when: scene.when } : {}) };
+    }),
     // The tags' AP (stage 3): once-only scenes' gains (their scene_tag rules) and the main parts' spends.
     sceneAp: generatedScenes.scenes.filter((scene) => scene.repeat === "once").map((scene) => ({ cityId: scene.cityId,
       gained: generatedScenes.rewards.filter((rule) => rule.sceneId === scene.id && !scene.options.some((option) => option.later && `${scene.id}__${option.id}` === rule.id))
