@@ -59,6 +59,11 @@ export function DialogueWindowHide({
   );
 }
 
+/**
+ * The full-scene control that shows the hidden window again (D7). Its name is
+ * its visible words 「タップして会話を表示」 (WCAG 2.5.3: a voice command that
+ * says what is shown reaches it); the icon is decoration.
+ */
 export function DialogueWindowRestore({ state }: { state: DialogueWindow }) {
   if (!state.hidden) return null;
   return (
@@ -66,7 +71,6 @@ export function DialogueWindowRestore({ state }: { state: DialogueWindow }) {
       ref={state.restoreButton}
       className="vn-window-restore"
       type="button"
-      aria-label="会話ウィンドウを表示"
       onClick={(event) => {
         event.stopPropagation();
         state.show();

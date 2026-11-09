@@ -29,16 +29,17 @@ export function DialogueWindowHead({ speaker, controls, narration = false, plate
 
 /**
  * Presentation-only tools in the window's head, in this order: 「隠す」 or, in a
- * sightseeing guide, 「閉じる」 (U6), 「ログ」, 「高速送り」. Words only in a
- * window narrower than 360 px, icon and word in a wider one (dialogue-controls.css).
- * A tap in the gaps between them is a near miss, not a tap on the scene.
+ * sightseeing guide, 「閉じる」 (U6), 「ログ」, 「高速送り」, a group named
+ * 「会話の操作」. Words only in a window narrower than 24 of its characters (360 px
+ * at normal text), icon and word in a wider one (dialogue-controls.css). A tap in
+ * the gaps between them is a near miss, not a tap on the scene.
  */
 export function DialogueControls({ close, entries, auto }: {
   close: ReactNode;
   entries: readonly DialogueLogEntry[];
   auto: ReturnType<typeof useAutoAdvance>;
 }) {
-  return <div className="dialogue-controls" aria-label="会話の操作" data-no-advance {...{ [DIALOGUE_TOOLS_ATTRIBUTE]: "" }}>
+  return <div className="dialogue-controls" role="group" aria-label="会話の操作" data-no-advance {...{ [DIALOGUE_TOOLS_ATTRIBUTE]: "" }}>
     {close}
     <DialogueLog entries={entries} label="ログ" />
     <AutoAdvanceButton state={auto} />

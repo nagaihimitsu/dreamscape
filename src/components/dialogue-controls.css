@@ -39,10 +39,11 @@
 }
 /* The narration's plate (「旅の風景」) is slate: no one speaks. */
 .vn-window-head > .speaker[data-narration] { background: var(--ds-slate-800); }
-/* The heroine's feeling after her name (D3). */
+/* The heroine's feeling after her name (D3): smaller and lighter than the name,
+   in the name's colour (the muted tone is below 4.5:1 on the blue plate). */
 .vn-window-head > .speaker .emotion {
   margin-left: 6px;
-  color: var(--ds-on-slate-muted);
+  color: var(--ds-on-slate);
   font-size: 12px;
   font-weight: 500;
 }

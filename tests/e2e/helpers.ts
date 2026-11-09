@@ -565,7 +565,7 @@ export const ops = {
   /** A story scene's 「隠す」 in the dialogue window: hides the window; returns the full-scene control that shows it again. */
   async hideDialogueWindow(page: Page): Promise<Locator> {
     await page.getByRole("button", { name: "会話ウィンドウを隠す", exact: true }).click();
-    const restore = page.getByRole("button", { name: "会話ウィンドウを表示", exact: true });
+    const restore = page.getByRole("button", { name: "タップして会話を表示", exact: true });
     await expect(restore).toBeVisible();
     return restore;
   },
