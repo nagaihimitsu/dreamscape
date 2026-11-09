@@ -87,6 +87,7 @@ import { useDebugMode } from "./debug-mode";
 import { DebugModeSetting } from "./DebugModeSetting";
 import { relationshipChange, type RelationshipChange } from "../domain/relationship-change";
 import { RelationshipChangeNote } from "../components/RelationshipChangeNote";
+import { sceneConditionTruths } from "../domain/scene-conditions";
 import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
 
 export function GameApp({
@@ -365,7 +366,8 @@ export function GameApp({
       )}
       {/* A tap on main's own margin beside a narrow story scene reads on (scene-tap.ts). */}
       <main id="main" ref={main} tabIndex={-1} {...{ [PAGE_MARGIN_ATTRIBUTE]: "" }}>
-        {showChanges && <RelationshipChangeNote change={shownChange?.scene === storyScene ? shownChange.change : null} />}
+        {showChanges && <RelationshipChangeNote change={shownChange?.scene === storyScene ? shownChange.change : null}
+          conditions={storyScene && game ? sceneConditionTruths(game) : []} />}
         {learning.error && (
           <div className="notice" role="status">
             {learning.error}

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { sceneConditionReader } from "./scene-conditions";
 import { battleCityId, finalizeBattleProgress, isEpisodeBlockedByStoryBattle, isEpisodeUnlocked, isStoryBattleUnlocked } from "./chapter";
 import {
   battles,
@@ -182,7 +183,7 @@ function withDialogue(
     state.playerName,
     state.heroineName,
     { ...sceneVariables(next), player_address: `${state.playerName}${suffix}` },
-    [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId),
+    [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state),
   );
   return fromStory(next, result);
 }
@@ -276,7 +277,7 @@ export function getReasoningContext(
       if (current.frame!.ended) return lines.join("\n");
       current = fromStory(
         current,
-        continueStory(battle.storyId, current.storyState!, current.frame!),
+        continueStory(battle.storyId, current.storyState!, current.frame!, [], {}, {}, sceneConditionReader(state)),
       );
     }
     throw new Error("推理の主張が長すぎます。");
@@ -500,7 +501,7 @@ export function advanceBattle(
   if (active.phase !== "dialogue" || !active.frame || !active.storyState)
     return state;
   if (!active.frame.ended) {
-    const step = continueStory(battle.storyId, active.storyState, active.frame);
+    const step = continueStory(battle.storyId, active.storyState, active.frame, [], {}, {}, sceneConditionReader(state));
     return {
       ...state,
       revision: state.revision + 1,

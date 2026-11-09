@@ -1,10 +1,11 @@
-import { conditionIssues, ITEM_STATUSES, type Condition } from "./condition-schemas";
+import { conditionIssues, ITEM_STATUSES, RELATIONSHIP_AXES, type Condition } from "./condition-schemas";
 
 /**
- * The text form of a condition, as Ink's head tags write it (`# when: item smp_x held`): one
- * part, optionally after `not`. It becomes the JSON condition of condition-schemas.ts. Stage 1
- * of the unified event design reads only the parts today's records answer; the parts of later
- * stages are refused with their stage, since they could never be true until then.
+ * The text form of a condition, as Ink's head tags (`# when: item smp_x held`) and a scene's
+ * `cond("…")` write it: one part, optionally after `not`. It becomes the JSON condition of
+ * condition-schemas.ts. The unified event design's stages 1 and 2a read the parts today's
+ * records answer; the parts of later stages are refused with their stage, since they could
+ * never be true until then.
  *
  * | text | JSON leaf |
  * |---|---|
@@ -19,20 +20,25 @@ import { conditionIssues, ITEM_STATUSES, type Condition } from "./condition-sche
  * | `journey_day >= 5` / `journey_day <= 7` | `journeyDay` |
  * | `weekday 5,6` | `weekday` |
  * | `rides <mode> >= 1` / `rented <mode>` | `rides` / `rented` |
+ * | `battles <city> >= 2` (2a) | `battlesPlayed` |
+ * | `rel affection >= 3` / `rel trust <= -1` (`affection`・`trust`・`spark`; 2a) | `relationship` |
+ * | `money >= 300` / `money <= 0` (2a) | `money` |
+ * | `stage >= 2` / `stage <= 3` (2a) | `romanceStage` |
+ * | `couple` (2a) | `couple` |
  */
-const LATER_PARTS: Record<string, number> = {
-  battles: 2, rel: 2, money: 2, stage: 2, couple: 2, flag: 3, met: 3, ap: 3, condition: 3,
-};
+const LATER_PARTS: Record<string, number> = { flag: 3, met: 3, ap: 3, condition: 3 };
 
 const whole = (value: string) => (/^[1-9][0-9]*$/u.test(value) ? Number(value) : undefined);
+/** A whole number as written: 0, or with a sign for a negative relationship value. */
+const integer = (value: string) => (/^(?:0|-?[1-9][0-9]*)$/u.test(value) ? Number(value) : undefined);
 
 function leafOf(words: string[]): Condition {
   const [part, ...rest] = words;
   const fail = (form: string): never => { throw new Error(`Write the condition part "${part}" as: ${form}`); };
   const one = (form: string) => (rest.length === 1 ? rest[0] : fail(form));
-  const compared = (form: string, start: number) => {
+  const compared = (form: string, start: number, read = whole) => {
     const [operator, number] = rest.slice(start);
-    const value = whole(number ?? "");
+    const value = read(number ?? "");
     if (rest.length !== start + 2 || (operator !== ">=" && operator !== "<=") || value === undefined) return fail(form);
     return operator === ">=" ? { atLeast: value } as { atLeast: number } : { atMost: value } as { atMost: number };
   };
@@ -67,6 +73,18 @@ function leafOf(words: string[]): Condition {
     }
     case "day": return { cityDay: compared("day >= N (or <= N)", 0) };
     case "journey_day": return { journeyDay: compared("journey_day >= N (or <= N)", 0) };
+    case "battles": {
+      const range = compared("battles <city> >= N", 1);
+      return "atLeast" in range ? { battlesPlayed: { city: rest[0], atLeast: range.atLeast } } : fail("battles <city> >= N");
+    }
+    case "rel": {
+      const axis = rest[0] as (typeof RELATIONSHIP_AXES)[number];
+      if (!RELATIONSHIP_AXES.includes(axis)) return fail(`rel ${RELATIONSHIP_AXES.join("|")} >= N (or <= N)`);
+      return { relationship: { axis, ...compared(`rel ${axis} >= N (or <= N)`, 1, integer) } };
+    }
+    case "money": return { money: compared("money >= N (or <= N)", 0, integer) };
+    case "stage": return { romanceStage: compared("stage >= N (or <= N), N from 1 to 4", 0) };
+    case "couple": return rest.length ? fail("couple") : { couple: true };
     case "weekday": {
       const days = one("weekday 5,6 (Monday is 0)").split(",").map((day) => (/^[0-6]$/u.test(day) ? Number(day) : NaN));
       return days.some(Number.isNaN) ? fail("weekday 5,6 (Monday is 0)") : { weekday: days };

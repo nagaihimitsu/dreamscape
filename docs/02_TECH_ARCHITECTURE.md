@@ -100,7 +100,8 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
   - 配信する画像が、出典つきの観光画像でも自作の絵の一覧にある絵でもない（「出典のない画像」）、その両方である、一覧にあるファイルをその層が配信していない、同じ層の一覧に2回ある（下の「画像の出典と自作の絵」）。
   - 道中交流の頭の札の誤り：知らない札、札の中の `{…}`、段階1で使えない位置（`after guide`・`after battle` など）、その段階ではまだ記録されない事実を読む条件（`flag`・`met` など）、頭の札と入場ルールの両方に書いた交流。
   - 選択肢も終わりもないまま1,000行を超える道（会話が輪になっていて終わらない。案内・到着・エピローグ・対決・道中交流・デート・反論のどれでも。場面の長さそのものは止めない）。
-  - デートの `when`・`until` と道中交流の入場ルールの `when`（共通条件管理システムの条件。書き方は[制作ガイドの「条件の書き方」](../authoring/CONTENT_GUIDE.md#条件の書き方)）の形の誤り（キーが1つでない、空の `all`・`any`、まだ使えない部品）、存在しないエピソード・都市・バトル・観光地・交流・デート・品物の名前、旅行編が `transportModes` に宣言していない乗り物（徒歩も数えない）、その品物の都市でない条件の `held`、同じ旅の品物の都市より後の都市でない条件の `left_behind`（`scripts/condition-validation.ts`）。入手元（交流の `completionItemId` かクイズの `rewardItemId`）のない品物（`Encounter item has no source`）。
+  - 1場面1ファイルのInk（`VAR` で始まる今の形）で `cond(` を使うのに、`EXTERNAL cond(text)` の宣言がない（直し方として、宣言の1行と、Inkyで下書きを見るための代わりの関数の2行を出す）。
+  - デートの `when`・`until`、道中交流の入場ルールの `when` と、場面のInkの `cond("…")`（共通条件管理システムの条件。書き方は[制作ガイドの「条件の書き方」](../authoring/CONTENT_GUIDE.md#条件の書き方)）の形の誤り（キーが1つでない、空の `all`・`any`、まだ使えない部品）、存在しないエピソード・都市・バトル・観光地・交流・デート・品物の名前、旅行編が `transportModes` に宣言していない乗り物（徒歩も数えない）、その品物の都市でない条件の `held`、同じ旅の品物の都市より後の都市でない条件の `left_behind`（`scripts/condition-validation.ts`）。入手元（交流の `completionItemId` かクイズの `rewardItemId`）のない品物（`Encounter item has no source`）。
 - 統合したカタログのスキーマエラーは、問題の項目を持つファイルごとに `Invalid content in <ファイル>:` で始まるまとまりで示し、位置（`path`）はそのファイルの中での位置にする（例：旅行編の最初の対決なら、統合後の `battles[9]` ではなく `battles[0]`）。統合後の位置は、エラーの `cause` に残る。
 - 警告（生成は続ける。件数を表示し、`npm run content:build -- --verbose` で一覧。判定は `scripts/content-report.ts`）。警告があっても、単体テスト（`test:quick`・`npm test`）・CI・`npm run verify`・公開は失敗しない。直すかどうかは制作者が一覧を見て判断する
   - 旅行編フォルダの読み込まれず配信もされないファイル（上の「統合の規則」）。
@@ -111,7 +112,8 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
   - その位置では決して満たされない条件（本筋が書く記録を、それより前の交流が条件にしている など）、「また今度」の後にもう来ない時点、別のファイルどうしの同じ優先度、`until` のない繰り返し。
   - データの欄の言葉：日本語の欄（`titleJa`・`descriptionJa`・`hintJa`・出典の `claimJa` など「…Ja」の欄と、道中交流の選択肢の `# translation:`）に日本語がない、クイズの英語の欄（問題文・選択肢と、英語ノートの英文）が英文になっていない（画面は文字をそのまま出すので、止めない）。
   - 決して満たされない条件（`never-offered`。`scripts/condition-validation.ts` の `conditionWarnings`）：観察だけで調べる道中交流の `when` が、その交流の観光地のエピソードやバトル（観察の後にしか遊べない）を必ず要る、同じ旅の後の都市の進行・品物を前の都市の条件が必ず要る、暦（`startWeekday`）のない旅の `journeyDay`・`weekday`、互いを待つデート（`datePlayed` の輪）。今はミラノの5つの交流（`duomo_string`・`supper_pantomime`・`castello_pick`・`scala_mint`・`brera_sitter`）がこれに当たる。
-  - デートの `when`・`until` の `time`・`rides`（`date-condition-trip`）：行き先へ向かう移動で変わるので、地図は出発前の状態で出し、着いてから始めるときに調べ直すと始まらないことがある。
+  - デートの `when`・`until` の `time`・`rides`・`money`（`date-condition-trip`）：行き先へ向かう移動で変わるので、地図は出発前の状態で出し、着いてから始めるときに調べ直すと始まらないことがある。
+  - `cond("…")` の文字が5つ以上ある場面（`cond-walk-partial`）：全部の組み合わせではなく、どの文字も真と偽を少なくとも1回ずつ通る組み合わせで、全部の道を確かめた（4つまでは全部の組み合わせ）。
 - 成功すると、旅行編ごとに1行、そのフォルダが持つ都市・ストーリー・クイズ・配信ファイルの数と、各カタログの項目数（0件の種類は省略）を表示する（例：`Journey uzbekistan (preparing): cities 4, stories 0, quizzes 0, public files 40; destinations 24, backgrounds 44, assets 40`）。置き忘れや、空のまま公開しかけていることに気付くための表示。観光の手がかり（`clues`）の後には、そのうち問題と結び付かない観察だけの手がかりの数を出す（0件なら省略。`clues 29, observation-only clues 29`。[観察だけの手がかり](07_DATA_AND_TESTS.md#観察だけの手がかり)）。
 - 語の意味（共通の `learning/word-meanings.json` と旅行編の断片）のうち、どの英文にも出ない語があれば、その数を表示する（一覧は `--verbose`。判定は `scripts/content-report.ts` の `unusedWordMeanings`）。対象の英文は、クイズの問題文・選択肢（例のクイズ `*.example.json` を除く）と、道中交流の問題・選択肢（カタログの `textEn` と、そのInkの選択肢の文）。使われない語は害がないため警告ではなく、消すかどうかは制作者が判断する。
 
@@ -142,14 +144,14 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 
 `src/content/generated/` は `npm run content:build` の出力で、Git管理しない。`npm run dev`・`npm test`・`npm run test:quick`・`npm run build`・`npm run verify` は先に生成する。単体テスト（`npm test`・`npm run test:quick`）と `npm run verify` の最初の生成は見本の編を含め（`--with-sample`、下の「見本の編」）、`npm run dev`・`npm run build` は含めない。
 
-- `stories.json`（コンパイル済みInk）、`quizzes.json`（出題するクイズ）。
+- `stories.json`（コンパイル済みInk）、`quizzes.json`（出題するクイズ）、`scene-conditions.json`（場面のInkの `cond("…")` の文字と、その条件のJSON。ストーリーごとの文字の一覧も。ゲームの `src/domain/scene-conditions.ts` が読む）。
 - `content/`：統合・検証済みのカタログを、旧 `content/` と同じ相対パス（`battles/catalog.json`、`cities/delhi.json`、`journeys/catalog.json` など）で書き出した写し。都市・移動ファイルは元のバイト列のまま写す。ゲームと参照だけの単体テストはここだけを読む（`scripts/content-boundary.test.ts` が検査）。
 - `public/`：直下の `public/` と各旅行編の `public/` を集めた配信フォルダ（`vite.config.ts` の `publicDir`）。
 - `public/assets/derived/<journeyId>/`：観光写真の縮小版（UI 段階1.4）。検査の後に `content:build` が作り、`content/` にもGitにも書かない。自由時間の行き先の行の写真（`<assetId>.card.webp`。240×160に切り抜き）と都市の背景（`<assetId>.backdrop.webp`。長い辺を1280pxに縮め、拡大しない）で、どちらもWebP（`sharp`）。元の画像のSHA-256と設定ごとに `node_modules/.cache/dreamscape/derived-images` に置いて使い回し、使わなくなった縮小版は他の生成物と同じく消す。パスは `src/content/code-images.ts` の `derivedImageFile` だけが組み立てる（`src/content/derived-images.ts` の `derivedImagePath`）。出典は元の写真のもので、自由時間の「写真の出典」は縮小・切り抜きして表示していることも書く。
 - `image-journeys.json`：旅行編ごとの観光画像のIDの一覧（上の「画像の出典と自作の絵」）。
 - `build-info.json`：生成に含めた `content/journeys/` の外の旅行編フォルダ（`{ "extraJourneyFolders": { "sample_trip": "authoring/templates/sample_trip" } }`、なければ空）。
 
-`stories.json`・`quizzes.json` は毎回書き直す。`content/`・`public/` は変更のないファイルを書き直さず、元がなくなったファイルを削除する。JSONや画像を編集した後も、Inkと同様に `npm run content:build` を実行する。
+`stories.json`・`quizzes.json`・`scene-conditions.json` は毎回書き直す。`content/`・`public/` は変更のないファイルを書き直さず、元がなくなったファイルを削除する。JSONや画像を編集した後も、Inkと同様に `npm run content:build` を実行する。
 
 ### ストーリーIDとIDの名前空間
 
@@ -283,7 +285,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 - `scripts/content-pipeline.ts` の `buildContent`（`content:build`）は、読み込み → 検証 → 書き出しの3段階で動く。
   - 読み込み：`content-sources.ts` だけがコンテンツを読む。`readContentTree` が `content/` と `public/` を一度だけ読み（JSONとInkは中身、画像は一覧だけ）、`contentSourcesFromTree` がディスクに触れずに、層、統合したカタログと各項目の出どころのファイル、都市・移動・クイズのJSON、Inkの本文、配信ファイルの一覧（`ContentSources`）を組み立てる。JSONとして読めないファイル、配置の誤り、統合の衝突はここで止まる。制作ツールも同じ `loadContentSources` の結果を使い、都市・移動・クイズ・Inkを読み直さない（旅行編の一覧だけが要るときは、`readJourneyManifests` が同じ処理で `manifest.json` だけを読む）。読み込み全体は約25ミリ秒で、`content:build` の約15秒の大半はInkの会話経路の検証にかかる（2026年11月、4コアで計測。分割の前後で所要時間は変わらない。検証のキャッシュが使えると約3.4秒）。
   - 検証：`content-validation.ts` の `validateContent` は読み込んだ内容だけを受け取る純粋な関数で、ファイルを読み書きしない（Inkのコンパイルもここ）。旅行編フォルダが自分の都市だけを扱い、同じ旅行編か共通データだけを参照することの検査は `content-ownership.ts`、Inkのコンパイルと会話経路の検証は `ink-validation.ts`、クイズ1件の中の検査は `quiz-validation.ts`、都市のつながり（次の都市と旅行編の順序）の検査は `city-links.ts`、背景画像とキャラクターの参照検証は `presentation-validation.ts` が担当する。画像ファイルの中身（形式・寸法・透過）だけは、検証が通った後に `content-images.ts` が読んで確かめる。デートの全分岐検査（`validateStory`。検証時間の大半）は、`buildContent` が渡す `story-validation-cache.ts` のキャッシュで、入力と検査コードが同じ成功結果を再利用する（`validateContent` が読み書きするのはこのキャッシュだけで、渡さなければ毎回すべて検査する。[キャッシュの規則](10_DEVELOPMENT_CHECKS.md#会話の全分岐検査のキャッシュ)）。
-  - 書き出し：`content-outputs.ts` が `stories.json`・`quizzes.json`・生成ミラー・配信用の画像フォルダを書く。
+  - 書き出し：`content-outputs.ts` が `stories.json`・`quizzes.json`・`scene-conditions.json`・生成ミラー・配信用の画像フォルダを書く。
   - `selectJourneys(sources, [旅行編ID])` は、共通データと指定した旅行編だけの内容を組み立て直す（ほかの旅行編フォルダを外して生成したときと同じ内容）。`contentTreeFromFiles` でメモリ上に作った内容も同じ関数で組み立てて検証できるため、不正なデータを拒否するテストは一時コピーや生成全体なしで書ける（例：`scripts/content-validation.test.ts`）。
   - `content-pipeline.ts` が公開するのは `buildContent` だけで、テストが単独で使う検査関数は上のモジュールから読み込む（単体テストの組の判定のため。[開発時の確認](10_DEVELOPMENT_CHECKS.md#単体テストの組と所要時間)）。
 - `scripts/city-bundle.ts` は都市編集の公開APIと検証手順を担当する。編集形式は `city-bundle-schema.ts`、経路の圧縮・展開は `city-bundle-routes.ts`、共有カタログの統合は `city-bundle-catalogs.ts`、競合確認と原子的なファイル更新は `city-bundle-files.ts` が担当する。交通判断台帳は、乗り物を宣言した旅行編の都市ごとの `travel/<cityId>-transit.json`（その都市の旅行編フォルダ）を使い、旅行編専用のツールは読み込まない。

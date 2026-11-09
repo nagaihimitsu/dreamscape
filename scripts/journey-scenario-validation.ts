@@ -1,4 +1,5 @@
 import { readFileSync, readdirSync } from "node:fs";
+import { parseSceneConditions, readSceneConditions } from "./scene-conditions";
 import path from "node:path";
 import { isDeepStrictEqual } from "node:util";
 import { presentationSchema } from "../src/content/schemas";
@@ -82,6 +83,8 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
       if (/#\s*speaker\s*:\s*player\b/.test(code))
         warnings.push(`${displayPath(root, file)}: the protagonist speaks outside the date choices (# speaker: player); usually the protagonist speaks through the choices (not stopped)`);
       validateMemoryReferences(source, Object.keys(fragments.memories));
+      // A scene's cond("…") (stage 2a): declared, literal and written as a condition; content:build checks what it names.
+      parseSceneConditions(readSceneConditions(source));
       stories[storyId] = compileInk(source, file);
       inkSources[storyId] = source;
     });

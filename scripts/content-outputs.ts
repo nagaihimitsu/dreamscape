@@ -24,7 +24,8 @@ export const IMAGE_JOURNEYS_FILE = `${GENERATED_DIRECTORY}/image-journeys.json`;
 export function writeContentOutputs(
   root: string,
   sources: ContentSources,
-  validated: { stories: Record<string, string>; quizzes: Record<string, unknown>; catalogOverrides?: Partial<Record<CatalogKind, unknown>> },
+  validated: { stories: Record<string, string>; quizzes: Record<string, unknown>; catalogOverrides?: Partial<Record<CatalogKind, unknown>>;
+    sceneConditions?: { conditions: Record<string, unknown>; stories: Record<string, string[]> } },
   derivedFiles: ReadonlyMap<string, string> = new Map(),
 ): void {
   const directory = path.join(root, GENERATED_DIRECTORY);
@@ -34,6 +35,9 @@ export function writeContentOutputs(
   writeFileSync(path.join(root, BUILD_INFO_FILE), `${JSON.stringify(buildInfo, null, 2)}\n`);
   writeFileSync(path.join(directory, "quizzes.json"), `${JSON.stringify(validated.quizzes, null, 2)}\n`);
   writeFileSync(path.join(directory, "stories.json"), `${JSON.stringify(validated.stories, null, 2)}\n`);
+  // The scenes' cond("…") texts and their conditions (scripts/scene-conditions.ts; read by src/domain/scene-conditions.ts).
+  writeFileSync(path.join(directory, "scene-conditions.json"),
+    `${JSON.stringify(validated.sceneConditions ?? { conditions: {}, stories: {} }, null, 2)}\n`);
   writeFileSync(path.join(root, IMAGE_JOURNEYS_FILE), `${JSON.stringify(imageJourneyIndex(sources), null, 2)}\n`);
   // The game imports the validated, merged catalogs only from this mirror.
   writeContentMirror(sources, mirrorDirectory(root), validated.catalogOverrides);

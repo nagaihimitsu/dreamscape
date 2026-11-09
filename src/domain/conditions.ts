@@ -1,11 +1,11 @@
-import { episodes } from "../content";
+import { battles, episodes, landmarks } from "../content";
 import { leafKind, type Condition, type Leaf, type LeafKind, type LeafValues } from "../content/condition-schemas";
 import type { GameState } from "./game-state-schema";
 import { getGameWeekday, getTimePeriod, NIGHT_START } from "./travel";
 
 /**
- * The common condition system's judge (stage 1): a condition is true or false for
- * a game state, read from the existing records only. It writes nothing and gives
+ * The common condition system's judge: a condition is true or false for a game state,
+ * read from the existing records only. It writes nothing and gives
  * no reason text (dates keep their own reason texts; Debug explains a condition,
  * src/dev/condition-explain.ts).
  */
@@ -14,6 +14,9 @@ import { getGameWeekday, getTimePeriod, NIGHT_START } from "./travel";
 export function battlePlayed(state: Readonly<GameState>, battleId: string): boolean {
   return state.battleRecords.some((record) => record.battleId === battleId && record.attempts > 0);
 }
+
+/** The money that can be spent now: the budget less the fare home kept back (as an encounter option's cost is checked). */
+export const spendableMoney = (state: Readonly<GameState>) => state.travelBudget - state.travel.returnReserve;
 
 const inRange = (value: number, range: { atLeast?: number; atMost?: number }) =>
   (range.atLeast === undefined || value >= range.atLeast) && (range.atMost === undefined || value <= range.atMost);
@@ -43,6 +46,12 @@ const LEAVES: { [K in LeafKind]: (state: Readonly<GameState>, value: LeafValues[
   },
   rides: (state, { mode, atLeast }) => (state.travel.rideCounts[mode] ?? 0) >= atLeast,
   rented: (state, id) => state.travel.rentedModeIds.includes(id),
+  battlesPlayed: (state, { city, atLeast }) => battles.filter((battle) => battle.scope !== "city_finale" &&
+    landmarks.find((landmark) => landmark.id === battle.landmarkId)?.cityId === city && battlePlayed(state, battle.id)).length >= atLeast,
+  relationship: (state, { axis, ...range }) => inRange(state[axis], range),
+  money: (state, range) => inRange(spendableMoney(state), range),
+  romanceStage: (state, range) => inRange(state.romanceStage, range),
+  couple: (state) => state.confessionStatus === "accepted",
 };
 
 function meetsLeaf(state: Readonly<GameState>, leaf: Leaf): boolean {

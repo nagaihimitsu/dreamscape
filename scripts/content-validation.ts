@@ -26,7 +26,9 @@ import { dataLanguageWarnings } from "./data-language";
 import { transitLedgerSchema } from "./transit-ledger";
 import type { z } from "zod";
 import { headEntryRule, HEAD_TAGS, readEncounterHead, type EncounterHead } from "./encounter-head";
-import { checkConditions, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, type ConditionContent } from "./condition-validation";
+import { checkConditions, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, type ConditionContent, type ConditionOwner } from "./condition-validation";
+import { FULL_COND_WALK, parseSceneConditions, readSceneConditions } from "./scene-conditions";
+import type { Condition } from "../src/content/condition-schemas";
 import { validateBackgroundAssets, validateCharacters } from "./presentation-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
 import { dialogueReactionCatalogSchema } from "../src/content/dialogue-reactions";
@@ -431,10 +433,13 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const stories: Record<string, string> = {};
   const storySources: Record<string, string> = {};
   const storyMemoryReferences: Record<string, string[]> = {};
+  // The texts of each story's cond("…") (scene-conditions.ts), checked once the scenes' cities are known.
+  const storyConditionTexts: Record<string, string[]> = {};
   let routes = 0;
   for (const { id, file, source: authored } of sources.storyFiles) {
     const source = encounterHeads.has(id) ? withContext(file, () => readEncounterHead(authored).source) : authored;
     storyMemoryReferences[id] = withContext(file, () => validateMemoryReferences(source, Object.keys(presentation.memories)));
+    storyConditionTexts[id] = withContext(file, () => readSceneConditions(source));
     const itemReferences = withContext(file, () => validateItemReferences(source, encounterCatalog.items.map((item) => item.id)));
     if (itemReferences.length && !encounterStoryIds.includes(id))
       throw new Error(`Item references are only supported in encounters: ${id}`);
@@ -777,9 +782,34 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     journeys: journeyCatalog.journeys, cities, episodes: journey.episodes, battles, landmarks: tourism.landmarks,
     encounters: encounterCatalog.encounters, items: encounterCatalog.items, dates,
   };
+  // Scenes' cond("…") (unified event design stage 2a): read in the city where the scene is played, checked like the other conditions.
+  const sceneCity = (storyId: string): string | undefined =>
+    encounterCatalog.encounters.find((event) => event.storyId === storyId ||
+      (event.quiz && [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId].includes(storyId)))?.cityId ??
+    dates.find((date) => date.storyId === storyId)?.chapterId ??
+    battleCity(battles.find((battle) => battle.storyId === storyId)?.id ?? "") ??
+    tourism.landmarks.find((landmark) => landmark.guideStoryId === storyId)?.cityId ??
+    journey.episodes.find((episode) => episode.epilogueStoryId === storyId)?.cityId ??
+    cities.find((city) => city.arrivalStoryId === storyId)?.id;
+  const sceneConditions: { conditions: Record<string, Condition>; stories: Record<string, string[]> } = { conditions: {}, stories: {} };
+  const sceneConditionOwners: ConditionOwner[] = [];
+  const sceneConditionNotes: ContentWarning[] = [];
+  for (const [storyId, texts] of Object.entries(storyConditionTexts)) {
+    if (!texts.length) continue;
+    // English-note explanations and special battles' rebuttals refused cond above (ink-validation.ts).
+    const cityId = sceneCity(storyId);
+    if (!cityId) continue; // A story of no scene: "Story lacks validation contract" below.
+    const parsed = withContext(storyLabel(storyId), () => parseSceneConditions(texts));
+    Object.assign(sceneConditions.conditions, parsed);
+    sceneConditions.stories[storyId] = texts;
+    sceneConditionOwners.push({ label: `the scene ${storyId}`, cityId, conditions: texts.map((text) => ({ field: `cond("${text}")`, condition: parsed[text] })) });
+    if (texts.length > FULL_COND_WALK)
+      sceneConditionNotes.push({ kind: "cond-walk-partial", message: `Scene with ${texts.length} cond texts: ${storyLabel(storyId)}; ` +
+        `the build walked each text true and false at least once, not all ${2 ** texts.length} combinations (not stopped)` });
+  }
   const conditionOwners = [...dateConditionOwners(conditionContent), ...entryRuleConditionOwners(conditionContent, encounterEntryRules.entries)];
-  checkConditions(conditionContent, conditionOwners);
-  const conditionNotes: ContentWarning[] = conditionWarnings(conditionContent, encounterEntryRules.entries);
+  checkConditions(conditionContent, [...conditionOwners, ...sceneConditionOwners]);
+  const conditionNotes: ContentWarning[] = [...conditionWarnings(conditionContent, encounterEntryRules.entries, sceneConditionOwners), ...sceneConditionNotes];
   unique([...productionQuestionIds, ...encounterCatalog.encounters.flatMap((event) => event.quiz ? [event.quiz.question.id] : [])], "production quiz question ID");
   const transitReviews = new Map<string, CityTransitReview[]>();
   // Walks and route sources a city with a ledger lacks: warnings, not errors (transport-validation.ts).
@@ -890,6 +920,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   reactionValidator.finish();
   return {
     stories,
+    /** Every scene's cond("…") texts and their JSON conditions (src/domain/scene-conditions.ts reads them). */
+    sceneConditions,
     routes,
     dates,
     destinations,

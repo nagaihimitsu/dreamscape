@@ -4,6 +4,7 @@ import type { JourneyConfig } from "../src/content/journey-schemas";
 import type { QuizDefinition, QuizQuestion } from "../src/content/schemas";
 import type { LandmarkDefinition } from "../src/content/tourism-schemas";
 import { checkLinesWithoutChoice } from "./ink-validation";
+import { forEachCondAssignment } from "./scene-conditions";
 import { translationLanguageWarning } from "./data-language";
 import type { ContentWarning } from "./content-report";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
@@ -29,86 +30,90 @@ export function validateEncounterStory(
   const inventoryContexts: Readonly<Record<string, ItemStatus>>[] = [
     {}, ...itemIds.flatMap((id) => (["held", "gifted", "used"] as const).map((status) => ({ [id]: status }))),
   ];
-  for (const [contextIndex, inventory] of inventoryContexts.entries()) for (const result of ["positive", "negative"]) {
-    const story = new Story(compiled);
-    bindItemReader(story, inventory, itemIds);
-    bindMemoryReader(story, [], memoryIds);
-    story.onError = (message) => { throw new Error(message); };
-    for (const name of ["player_name", "heroine_name"]) {
-      if (!story.variablesState.GlobalVariableExistsWithName(name))
-        throw new Error(`Missing encounter variable: ${name}`);
-      story.variablesState.$(name, "検証名");
-    }
-    if (story.variablesState.GlobalVariableExistsWithName("romance_result"))
-      story.variablesState.$("romance_result", result);
-    else if (options?.some((option) => option.responseProfileId))
-      throw new Error("Encounter reaction profile needs the romance_result variable");
+  forEachCondAssignment(compiled, (bind) => {
+    for (const [contextIndex, inventory] of inventoryContexts.entries()) for (const result of ["positive", "negative"]) {
+      const story = new Story(compiled);
+      bind(story);
+      bindItemReader(story, inventory, itemIds);
+      bindMemoryReader(story, [], memoryIds);
+      story.onError = (message) => { throw new Error(message); };
+      for (const name of ["player_name", "heroine_name"]) {
+        if (!story.variablesState.GlobalVariableExistsWithName(name))
+          throw new Error(`Missing encounter variable: ${name}`);
+        story.variablesState.$(name, "検証名");
+      }
+      if (story.variablesState.GlobalVariableExistsWithName("romance_result"))
+        story.variablesState.$("romance_result", result);
+      else if (options?.some((option) => option.responseProfileId))
+        throw new Error("Encounter reaction profile needs the romance_result variable");
 
-    const read = (current: Story): string[] => {
-      let steps = 0;
-      const lines: string[] = [];
-      while (current.canContinue) {
-        checkLinesWithoutChoice(++steps);
-        const line = current.Continue()?.trim() ?? "";
-        const tags = parseStoryTags(current.currentTags ?? [], context);
-        if (tags.effects.length) throw new Error("Encounter story cannot apply Ink effects");
-        if (line) lines.push(line);
+      const read = (current: Story): string[] => {
+        let steps = 0;
+        const lines: string[] = [];
+        while (current.canContinue) {
+          checkLinesWithoutChoice(++steps);
+          const line = current.Continue()?.trim() ?? "";
+          const tags = parseStoryTags(current.currentTags ?? [], context);
+          if (tags.effects.length) throw new Error("Encounter story cannot apply Ink effects");
+          if (line) lines.push(line);
+        }
+        return lines;
+      };
+      if (!read(story).length) throw new Error("Empty encounter story");
+      const choices = story.currentChoices;
+      if (!options) {
+        if (choices.length) throw new Error("Encounter conclusion cannot contain choices");
+        continue;
       }
-      return lines;
-    };
-    if (!read(story).length) throw new Error("Empty encounter story");
-    const choices = story.currentChoices;
-    if (!options) {
-      if (choices.length) throw new Error("Encounter conclusion cannot contain choices");
-      continue;
-    }
-    if (choices.length !== options.length)
-      throw new Error(`Encounter choices differ from its catalog options: ${choices.length} in the story, ${options.length} in the catalog`);
-    unique(choices.map((choice) => choice.text.trim().toLowerCase()), "encounter option text");
-    const taggedChoiceCount = choices.filter((choice) => (choice.tags ?? []).some((tag) => /^option\s*:/u.test(tag))).length;
-    if (taggedChoiceCount !== 0 && taggedChoiceCount !== choices.length)
-      throw new Error("Encounter choice IDs must be specified for every choice");
-    if (requireChoiceIds && taggedChoiceCount !== choices.length)
-      throw new Error("Encounter choice effects require stable option IDs");
-    const saved = story.state.ToJson();
-    const choiceOptions = choices.map((choice, index) => {
-      const optionTags = (choice.tags ?? []).filter((tag) => /^option\s*:/u.test(tag));
-      if (optionTags.length > 1) throw new Error("Encounter choice has multiple IDs");
-      const id = optionTags[0]?.slice(optionTags[0].indexOf(":") + 1).trim();
-      const option = id === undefined ? options[index] : options.find((item) => item.id === id);
-      if (!option) throw new Error(`Unknown encounter choice ID: ${id}`);
-      if (choice.index !== index || (option.textEn !== undefined && choice.text.trim() !== option.textEn))
-        throw new Error(`Encounter choice does not match data: ${option.id}`);
-      return option;
-    });
-    unique(choiceOptions.map((option) => option.id), "encounter choice ID");
-    for (const [index, option] of choiceOptions.entries()) {
-      const choice = choices[index];
-      const choiceTags = parseStoryTags(choice.tags ?? [], context);
-      if (choiceTags.effects.length)
-        throw new Error("Encounter story cannot apply Ink effects");
-      if (choiceTags.translationJa) onTranslation?.(choice.text.trim(), choiceTags.translationJa);
-      const branch = new Story(compiled);
-      const branchInventory: Record<string, ItemStatus> = { ...inventory };
-      if (option.requiresItemId) branchInventory[option.requiresItemId] = "held";
-      if (option.consumeItemId) branchInventory[option.consumeItemId] = "used";
-      if (option.giftItemId) branchInventory[option.giftItemId] = "gifted";
-      bindItemReader(branch, branchInventory, itemIds);
-      bindMemoryReader(branch, [], memoryIds);
-      branch.onError = (message) => { throw new Error(message); };
-      branch.state.LoadJson(saved);
-      branch.ChooseChoiceIndex(choice.index);
-      const response = read(branch);
-      if (!response.length) throw new Error(`Empty encounter response: ${option.id}`);
-      if (branch.currentChoices.length) throw new Error(`Encounter has extra choices: ${option.id}`);
-      if (option.responseProfileId) {
-        const reactionKey = `${contextIndex}/${option.id}`;
-        if (result === "positive") positiveResponses.set(reactionKey, response.join("\n"));
-        else if (positiveResponses.get(reactionKey) === response.join("\n"))
-          throw new Error(`Encounter reactions must differ: ${option.id}`);
+      if (choices.length !== options.length)
+        throw new Error(`Encounter choices differ from its catalog options: ${choices.length} in the story, ${options.length} in the catalog`);
+      unique(choices.map((choice) => choice.text.trim().toLowerCase()), "encounter option text");
+      const taggedChoiceCount = choices.filter((choice) => (choice.tags ?? []).some((tag) => /^option\s*:/u.test(tag))).length;
+      if (taggedChoiceCount !== 0 && taggedChoiceCount !== choices.length)
+        throw new Error("Encounter choice IDs must be specified for every choice");
+      if (requireChoiceIds && taggedChoiceCount !== choices.length)
+        throw new Error("Encounter choice effects require stable option IDs");
+      const saved = story.state.ToJson();
+      const choiceOptions = choices.map((choice, index) => {
+        const optionTags = (choice.tags ?? []).filter((tag) => /^option\s*:/u.test(tag));
+        if (optionTags.length > 1) throw new Error("Encounter choice has multiple IDs");
+        const id = optionTags[0]?.slice(optionTags[0].indexOf(":") + 1).trim();
+        const option = id === undefined ? options[index] : options.find((item) => item.id === id);
+        if (!option) throw new Error(`Unknown encounter choice ID: ${id}`);
+        if (choice.index !== index || (option.textEn !== undefined && choice.text.trim() !== option.textEn))
+          throw new Error(`Encounter choice does not match data: ${option.id}`);
+        return option;
+      });
+      unique(choiceOptions.map((option) => option.id), "encounter choice ID");
+      for (const [index, option] of choiceOptions.entries()) {
+        const choice = choices[index];
+        const choiceTags = parseStoryTags(choice.tags ?? [], context);
+        if (choiceTags.effects.length)
+          throw new Error("Encounter story cannot apply Ink effects");
+        if (choiceTags.translationJa) onTranslation?.(choice.text.trim(), choiceTags.translationJa);
+        const branch = new Story(compiled);
+        bind(branch);
+        const branchInventory: Record<string, ItemStatus> = { ...inventory };
+        if (option.requiresItemId) branchInventory[option.requiresItemId] = "held";
+        if (option.consumeItemId) branchInventory[option.consumeItemId] = "used";
+        if (option.giftItemId) branchInventory[option.giftItemId] = "gifted";
+        bindItemReader(branch, branchInventory, itemIds);
+        bindMemoryReader(branch, [], memoryIds);
+        branch.onError = (message) => { throw new Error(message); };
+        branch.state.LoadJson(saved);
+        branch.ChooseChoiceIndex(choice.index);
+        const response = read(branch);
+        if (!response.length) throw new Error(`Empty encounter response: ${option.id}`);
+        if (branch.currentChoices.length) throw new Error(`Encounter has extra choices: ${option.id}`);
+        if (option.responseProfileId) {
+          const reactionKey = `${contextIndex}/${option.id}`;
+          if (result === "positive") positiveResponses.set(reactionKey, response.join("\n"));
+          else if (positiveResponses.get(reactionKey) === response.join("\n"))
+            throw new Error(`Encounter reactions must differ: ${option.id}`);
+        }
       }
     }
-  }
+  });
 }
 
 /** Validate stable IDs and references independently of the runtime game rules. */

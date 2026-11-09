@@ -62,12 +62,26 @@ export function storyFingerprint(storyId: string): string {
   return (hash >>> 0).toString(16);
 }
 
-function runtime(storyId: string, saved?: string, memoryIds: readonly string[] = [], inventory: Readonly<Record<string, ItemStatus>> = {}): Story {
+/**
+ * A scene's `cond("…")`: whether the condition written as text holds now (src/domain/scene-conditions.ts
+ * judges it; Ink gets true or false only). A scene that calls cond without a reader stops: content:build
+ * refuses cond in the stories that are not scenes (English-note explanations, special battles' rebuttals).
+ */
+export type StoryConditionReader = (text: string) => boolean;
+const noConditions: StoryConditionReader = (text) => { throw new Error(`この会話では条件を読めません: ${text}`); };
+
+function runtime(storyId: string, saved?: string, memoryIds: readonly string[] = [], inventory: Readonly<Record<string, ItemStatus>> = {},
+  conditions: StoryConditionReader = noConditions): Story {
   const compiled = stories[storyId];
   if (!compiled) throw new Error("シナリオが見つかりません。");
   const story = new Story(compiled);
   bindMemoryReader(story, memoryIds, Object.keys(presentation.memories));
   bindItemReader(story, inventory, encounters.items.map((item) => item.id));
+  // Read-only and the same for the same state, so Ink may read it ahead (like has_memory).
+  story.BindExternalFunction("cond", (text: unknown) => {
+    if (typeof text !== "string") throw new Error("条件の書き方が正しくありません。");
+    return conditions(text);
+  }, true);
   story.onError = (message) => {
     throw new Error(message);
   };
@@ -157,8 +171,9 @@ export function beginStory(
   memoryIds: readonly string[] = [],
   inventory: Readonly<Record<string, ItemStatus>> = {},
   initialBackground = DEFAULT_BACKGROUND_ID,
+  conditions?: StoryConditionReader,
 ): StoryStep {
-  const story = runtime(storyId, undefined, memoryIds, inventory);
+  const story = runtime(storyId, undefined, memoryIds, inventory, conditions);
   story.variablesState.$("player_name", playerName);
   story.variablesState.$("heroine_name", heroineName);
   for (const [name, value] of Object.entries(variables)) {
@@ -176,8 +191,9 @@ export function continueStory(
   memoryIds: readonly string[] = [],
   optionalVariables: Record<string, string | number | boolean> = {},
   inventory: Readonly<Record<string, ItemStatus>> = {},
+  conditions?: StoryConditionReader,
 ): StoryStep {
-  const story = runtime(storyId, saved, memoryIds, inventory);
+  const story = runtime(storyId, saved, memoryIds, inventory, conditions);
   setOptionalVariables(story, optionalVariables);
   if (!story.canContinue) throw new Error("会話を進められません。");
   return readFrame(story, previous);
@@ -200,8 +216,10 @@ export function selectStoryChoice(
   variables: Record<string, string | number | boolean> = {},
   optionalVariables: Record<string, string | number | boolean> = {},
   inventory: Readonly<Record<string, ItemStatus>> = {},
+  /** Read on the state after the choice's effects, so the lines after the choice read the new values. */
+  conditions?: StoryConditionReader,
 ): StoryStep {
-  const story = runtime(storyId, saved, memoryIds, inventory);
+  const story = runtime(storyId, saved, memoryIds, inventory, conditions);
   for (const [name, value] of Object.entries(variables)) {
     if (!story.variablesState.GlobalVariableExistsWithName(name))
       throw new Error(`シナリオの変数が見つかりません: ${name}`);

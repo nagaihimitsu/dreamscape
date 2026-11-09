@@ -26,6 +26,8 @@ import reasoningIntroData from "./generated/content/presentation/reasoning-intro
 import { reasoningIntroCatalogSchema } from "./reasoning-intros";
 import { dialogueExpressionCatalogSchema } from "./dialogue-expressions";
 import generatedStories from "./generated/stories.json";
+import sceneConditionData from "./generated/scene-conditions.json";
+import { sceneConditionsSchema } from "./condition-schemas";
 import {
   battleCatalogSchema,
   quizSchema,
@@ -113,6 +115,8 @@ export const reasoningIntroductions: Record<string, string> = Object.fromEntries
   reasoningIntroCatalogSchema.parse(reasoningIntroData).entries.map(({ battleId, storyId }) => [battleId, storyId]),
 );
 export const stories: Record<string, string> = generatedStories;
+/** The scenes' `cond("…")` texts (per story) and the condition each text stands for (content:build, scripts/scene-conditions.ts). */
+export const sceneConditions = sceneConditionsSchema.parse(sceneConditionData);
 export const tagContext = {
   effectIds: effects.map((effect) => effect.id),
   backgroundIds: Object.keys(presentation.backgrounds),

@@ -2,6 +2,7 @@ import { Story } from "inkjs";
 import type { BattleDefinition, QuizDefinition } from "../src/content/schemas";
 import type { TourismCatalog } from "../src/content/tourism-schemas";
 import { checkLinesWithoutChoice } from "./ink-validation";
+import { forEachCondAssignment } from "./scene-conditions";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
 import type { DialogueObserver } from "./dialogue-expression-validation";
 
@@ -60,40 +61,43 @@ export function validateTourism(
     if (!compiled)
       throw new Error(`Unknown tourism guideStoryId: ${landmark.guideStoryId}`);
     try {
-      const story = new Story(compiled);
-      story.onError = (message) => {
-        throw new Error(message);
-      };
-      for (const [name, value] of Object.entries({
-        player_name: "検証主人公",
-        heroine_name: "検証ヒロイン",
-        player_address: "検証主人公さん",
-      })) {
-        if (!story.variablesState.GlobalVariableExistsWithName(name))
-          throw new Error(`Missing tourism guide variable: ${name}`);
-        story.variablesState.$(name, value);
-      }
-      let count = 0;
-      let hasText = false;
-      let speaker: string = "narrator";
-      let explicitEmotion = false;
-      while (story.canContinue) {
-        checkLinesWithoutChoice(++count);
-        const line = story.Continue()?.trim() ?? "";
-        const tags = parseStoryTags(story.currentTags ?? [], context);
-        if (tags.speaker) speaker = tags.speaker;
-        if (tags.emotion !== undefined) explicitEmotion = true;
-        if (tags.effects.length)
-          throw new Error("Tourism guide cannot grant effects");
-        if (line) {
-          hasText = true;
-          observeForStory?.(landmark.guideStoryId)(line, speaker, explicitEmotion);
-          explicitEmotion = false;
+      forEachCondAssignment(compiled, (bind) => {
+        const story = new Story(compiled);
+        bind(story);
+        story.onError = (message) => {
+          throw new Error(message);
+        };
+        for (const [name, value] of Object.entries({
+          player_name: "検証主人公",
+          heroine_name: "検証ヒロイン",
+          player_address: "検証主人公さん",
+        })) {
+          if (!story.variablesState.GlobalVariableExistsWithName(name))
+            throw new Error(`Missing tourism guide variable: ${name}`);
+          story.variablesState.$(name, value);
         }
-      }
-      if (!hasText) throw new Error("Tourism guide is empty");
-      if (story.currentChoices.length)
-        throw new Error("Tourism guide cannot contain choices");
+        let count = 0;
+        let hasText = false;
+        let speaker: string = "narrator";
+        let explicitEmotion = false;
+        while (story.canContinue) {
+          checkLinesWithoutChoice(++count);
+          const line = story.Continue()?.trim() ?? "";
+          const tags = parseStoryTags(story.currentTags ?? [], context);
+          if (tags.speaker) speaker = tags.speaker;
+          if (tags.emotion !== undefined) explicitEmotion = true;
+          if (tags.effects.length)
+            throw new Error("Tourism guide cannot grant effects");
+          if (line) {
+            hasText = true;
+            observeForStory?.(landmark.guideStoryId)(line, speaker, explicitEmotion);
+            explicitEmotion = false;
+          }
+        }
+        if (!hasText) throw new Error("Tourism guide is empty");
+        if (story.currentChoices.length)
+          throw new Error("Tourism guide cannot contain choices");
+      });
     } catch (error) {
       throw new Error(
         `${storyLabel(landmark.guideStoryId)} (landmark ${landmark.id}): ${error instanceof Error ? error.message : String(error)}`,

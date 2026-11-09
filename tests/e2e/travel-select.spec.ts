@@ -243,7 +243,11 @@ test.describe("at 320×568", () => {
     const before = await readSave(page, "golden_triangle");
     await page.mouse.click(point.x, point.y);
     await expect(row).toHaveAttribute("data-selected", "true");
-    expect(await boxOf(nameButton(row))).toEqual(pressed);
+    // The button stays under the finger: its top, left and width do not move. It may grow
+    // downwards (the selected badge can wrap a long name onto one more line with some fonts).
+    const after = await boxOf(nameButton(row));
+    expect({ x: after.x, y: after.y, width: after.width }).toEqual({ x: pressed.x, y: pressed.y, width: pressed.width });
+    expect(after.y + after.height).toBeGreaterThan(point.y);
     await page.waitForTimeout(600);
     await page.mouse.click(point.x, point.y);
     await expect(page.getByTestId("travel-transition")).toHaveCount(0);
