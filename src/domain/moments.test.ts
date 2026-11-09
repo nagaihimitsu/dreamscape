@@ -14,7 +14,7 @@ import { atMatches, momentSchedule } from "./moments";
 import { occasionSteps, openOccasion } from "./occasion";
 import { applyPlayerAction, listPlayerActions, playerActionChange } from "./player-action";
 import { resultExitLabel, screenFor } from "./screen";
-import { beginTravelEvent } from "./travel-game";
+import { beginTravelEvent, sleepAtHotel } from "./travel-game";
 
 // The stage-4 moments no journey has a script for yet (the unified event design 2.3, 4.2): a city's departure (its
 // scenes before the items are left behind), an arrival (before its logo, after the logo, after the conversation; its
@@ -232,6 +232,27 @@ describe("a then: move to a main part that cannot open now (4.2, 2.3; the Golden
     expect(late.moved.travel).toMatchObject({ activeEvent: null, minute: 17 * 60 + 14 });
     expect(late.moved.travelBudget).toBe(late.trip.travelBudget);
     expect(saveGame(new MemoryStorage(), late.moved).ok).toBe(true);
+  });
+
+  it("does not record a visit without its main part: the landmark's first real visit keeps its guide (3.9 (b))", () => {
+    addTalk("zz_test_onward", "delhi", [{ visit: "delhi_red_fort" }], -1, 0, { then: { move: "delhi_jama_masjid" } });
+    addTalk("zz_test_at_jama", "delhi", [{ visit: "delhi_jama_masjid" }], -1);
+    const start = cityStart("delhi");
+    const trip = restore(applyPlayerAction({ ...start, travel: { ...start.travel, minute: 14 * 60 } },
+      (state) => beginTravelEvent(state, "gt_delhi_main_red_fort", "walk", state.revision, () => 0), () => 0));
+    // The empty visit at the Jama Masjid (closed at 17:14): its scene runs, the landmark not recorded; every step saves.
+    const empty = playUntil(trip, (state) => state.activeEncounter?.encounterId === "zz_test_at_jama");
+    expect(empty.occasion).toMatchObject({ kind: "visit", eventId: null, landmarkId: "delhi_jama_masjid", parts: [] });
+    expect(empty.visitedLandmarkIds).not.toContain("delhi_jama_masjid");
+    expect(saveGame(new MemoryStorage(), empty).ok).toBe(true);
+    const free = playUntil(empty, (state) => !state.occasion && !state.activeEncounter);
+    expect(free.visitedLandmarkIds).not.toContain("delhi_jama_masjid");
+    // The night, then the map's departure there next morning: the first real visit opens with its guide.
+    const morning = playUntil(restore(applyPlayerAction(free, (state) => sleepAtHotel(state, "walk", state.revision, undefined, () => 0), () => 0)),
+      (state) => state.travel.day === 2 && !state.occasion);
+    const visit = restore(applyPlayerAction(morning, (state) => beginTravelEvent(state, "gt_delhi_main_jama_masjid", "walk", state.revision, () => 0), () => 0));
+    expect(visit.occasion?.parts).toEqual(["guide", "observe", "battle"]);
+    expect(visit.activeTourism?.phase).toBe("guide");
   });
 });
 

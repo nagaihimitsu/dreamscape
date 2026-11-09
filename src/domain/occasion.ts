@@ -273,7 +273,8 @@ function applyTrip(state: GameState): GameState {
   const next: GameState = { ...state, travel: { ...state.travel, currentPlaceId: trip.to, minute: trip.arrivalMinute,
     rideCounts: ride ? { ...state.travel.rideCounts, [trip.modeId]: (state.travel.rideCounts[trip.modeId] ?? 0) + 1 } : state.travel.rideCounts },
     occasion: { ...occasion, ...(moved ? { moved: trip.modeId } : {}) } };
-  return recordVisit(next, occasion.kind === "visit" ? occasion.landmarkId : null);
+  // (A visit without its main part, a then: move's empty visit, is not recorded: the first real visit keeps its guide, 3.9 (b).)
+  return recordVisit(next, occasion.kind === "visit" && occasion.eventId !== null ? occasion.landmarkId : null);
 }
 
 /** The night (the hotel's main part): the next day's morning (decision 44: night until waking). */
@@ -455,7 +456,8 @@ function runThen(state: GameState, nextRoll: () => number): GameState {
     : prefix.trip ? { kind: "visit", cityId, eventId: null, landmarkId: null, parts: [], ran: [], at: null, started: [] } : undefined;
   if (!occasion) return { ...moved, travel: { ...moved.travel, activeEvent: null } };
   if (prefix.trip) return advanceOccasion(withOccasion(moved, withPrefix(occasion, prefix)), nextRoll);
-  return advanceOccasion(recordVisit(withOccasion(moved, { ...withPrefix(occasion, prefix), moved: then.modeId }), occasion.landmarkId), nextRoll);
+  // A visit without its main part (decision 20) is not recorded: the landmark's first real visit keeps its guide (3.9 (b)).
+  return advanceOccasion(recordVisit(withOccasion(moved, { ...withPrefix(occasion, prefix), moved: then.modeId }), occasion.eventId === null ? null : occasion.landmarkId), nextRoll);
 }
 
 /**
@@ -487,7 +489,8 @@ export function validateOccasionState(state: GameState): void {
         occasion.eventId !== (state.travel.activeEvent?.eventId ?? null) || (occasion.eventId !== null && expected?.kind !== occasion.kind) ||
         (occasion.eventId !== null && expected?.landmarkId !== occasion.landmarkId) || (occasion.eventId === null && own.some((part) => part !== "guide" && part !== "observe" && part !== "battle")) ||
         (occasion.landmarkId !== null && !landmarks.some((landmark) => landmark.id === occasion.landmarkId && landmark.cityId === state.currentCityId)) ||
-        (occasion.landmarkId !== null && !state.visitedLandmarkIds.includes(occasion.landmarkId) && !(occasion.trip && !occasion.ran.includes("move"))))
+        (occasion.landmarkId !== null && !state.visitedLandmarkIds.includes(occasion.landmarkId) && !(occasion.trip && !occasion.ran.includes("move")) &&
+          !(occasion.eventId === null && own.length === 0)))
       fail();
   }
   if (occasion.ran.some((part) => !occasion.parts.includes(part)) || new Set(occasion.started).size !== occasion.started.length ||
