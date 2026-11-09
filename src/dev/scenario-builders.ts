@@ -12,19 +12,20 @@
  * relationship.
  * Never imported by production code (scripts/dist-guard.ts checks the build).
  */
-import { balance, battles, episodes, getCities, getCityContent, type QuizQuestion } from "../content";
+import { balance, battles, dates, episodes, getCities, getCityContent, type QuizQuestion } from "../content";
 import { encounters } from "../content/encounters";
 import { getJourneyForCity } from "../content/journeys";
 import { advanceBattle, answerBattle, getActiveBattleContent, selectReasoningClue, startBattle, submitBattleEvidence } from "../domain/battle";
 import { getNextEpisode, getNextStoryBattle, leaveBattleResult, startEpisode, storyBattlesForCity } from "../domain/chapter";
 import { departToNextCity } from "../domain/city-travel";
-import { startTourismEncounter } from "../domain/encounter";
+import { encounterEntryRule, startTourismEncounter } from "../domain/encounter";
 import { advanceCityEpilogue, completeArrivalLogo, startCityArrival, startCityEpilogue } from "../domain/epilogue";
 import { createGame, startDate, validateGameState, type GameState } from "../domain/game";
 import { advanceTourismGuide, openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "../domain/tourism";
 import { finishTravelEventIfComplete } from "../domain/travel-game";
 import { minimumHomeFare } from "../domain/travel-routes";
 import { getUsableRoutes } from "../domain/transport";
+import { unmetConditionLabels } from "./condition-explain";
 
 /** The option chosen for a quiz question (its round index counts from 0). */
 export type AnswerPicker = (question: QuizQuestion, roundIndex: number) => string;
@@ -309,17 +310,29 @@ export function openBattleScene(state: GameState, battleId: string): GameState {
 export function startEncounterScene(state: GameState, encounterId: string, ticket: number): GameState {
   const encounter = encounters.encounters.find((item) => item.id === encounterId && item.cityId === state.currentCityId);
   const placed = atPlace(state, scenePlaceId(state.currentCityId, undefined, encounter?.landmarkId));
-  let next = encounter ? openTourism(placed, encounter.landmarkId) : placed;
-  if (next.activeTourism?.phase === "guide") next = skipTourismGuide(next, next.revision);
-  next = startTourismEncounter(next, encounterId, next.revision, () => ticket);
-  if (!next.activeEncounter) throw new Error("この進行状態では交流を始められません。必要な進行や品物を確認してください。");
+  let observing = encounter ? openTourism(placed, encounter.landmarkId) : placed;
+  if (observing.activeTourism?.phase === "guide") observing = skipTourismGuide(observing, observing.revision);
+  const next = startTourismEncounter(observing, encounterId, observing.revision, () => ticket);
+  if (!next.activeEncounter) {
+    // The observation reads the rule's `when` (unless the quiz waits for the battle); Debug names what is missing.
+    const rule = encounterEntryRule(encounterId);
+    const unmet = rule?.when && !rule.quizAfterLandmarkBattle ? unmetConditionLabels(observing, rule.when) : [];
+    throw new Error(`この進行状態では交流を始められません。必要な進行や品物を確認してください。${unmet.length ? `入場の条件を満たしていません：${unmet.join("、")}` : ""}`);
+  }
   return validateGameState(next);
 }
 
 /** Start a date at its place with a saved reaction ticket; its AP is spent as on the map. */
 export function startDateScene(state: GameState, dateId: string, ticket: number): GameState {
-  const next = startDate(atPlace(state, scenePlaceId(state.currentCityId, dateId, undefined)), dateId, () => ticket);
-  if (!next.activeDate) throw new Error("この進行状態ではデートを始められません。APや解放条件を確認してください。");
+  const placed = atPlace(state, scenePlaceId(state.currentCityId, dateId, undefined));
+  const next = startDate(placed, dateId, () => ticket);
+  if (!next.activeDate) {
+    // Debug names the unmet parts of the date's when, and an until that has been reached.
+    const date = dates.find((item) => item.id === dateId);
+    const parts = [...(date?.when ? [date.when] : []), ...(date?.until ? [{ not: date.until }] : [])];
+    const unmet = parts.length ? unmetConditionLabels(placed, { all: parts }) : [];
+    throw new Error(`この進行状態ではデートを始められません。APや解放条件を確認してください。${unmet.length ? `デートの条件を満たしていません：${unmet.join("、")}` : ""}`);
+  }
   return validateGameState(next);
 }
 

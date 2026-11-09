@@ -18,7 +18,9 @@ import { battlePlayed, meets } from "./conditions";
 
 const findEncounter = (id: string) => encounters.encounters.find((item) => item.id === id);
 const placeRules = encounterEntryRulesSchema.parse(placeRuleData);
-const entryRule = (event: EncounterDefinition) => placeRules.entries.find((entry) => entry.encounterId === event.id);
+/** An encounter's entry rule (its moment, `when` and quiz timing), if it has one. */
+export const encounterEntryRule = (encounterId: string) => placeRules.entries.find((entry) => entry.encounterId === encounterId);
+const entryRule = (event: EncounterDefinition) => encounterEntryRule(event.id);
 const unavailable = (reason: string): Availability => ({ available: false, reason });
 const available: Availability = { available: true, reason: "" };
 
