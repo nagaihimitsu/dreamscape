@@ -4,35 +4,12 @@
 .travel-rentals { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 4px 0; }
 .travel-rented { margin: 0; color: var(--muted); font-size: 12px; }
 .travel-rent-open { width: auto; min-height: 44px; margin: 0; padding: 7px 12px; font-size: 13px; }
-.travel-utility { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0 16px; margin: 2px 0 6px; }
-.travel-wait summary, .travel-sleep-toggle { display: inline-flex; align-items: center; min-height: 44px; padding: 4px 0; border: 0; background: none; color: var(--green); font: inherit; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
-.travel-wait summary { list-style: none; }
-.travel-wait summary::-webkit-details-marker { display: none; }
-.travel-wait summary::after { content: " ▾"; margin-left: 4px; text-decoration: none; }
-.travel-wait[open] summary::after { content: " ▴"; }
-.travel-wait-actions { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 0 6px; }
-.travel-wait-actions button { width: auto; min-height: 44px; margin: 0; padding: 7px 10px; font: inherit; font-size: 13px; }
-.travel-map { margin: 2px 0; }
-.travel-map summary, .travel-menu > details > summary { min-height: 44px; padding: 10px 0; cursor: pointer; }
-.travel-map-frame { width: 100%; height: clamp(170px, 26vh, 210px); border-radius: 10px; background: #e8ece8; }
 .travel-map-frame .leaflet-control-zoom a { width: 44px; height: 44px; line-height: 44px; }
 .travel-map-marker-wrap { background: transparent; border: 0; }
-.travel-map-marker { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #a23d5a; font-size: 17px; font-weight: bold; text-shadow: -1px -1px white, 1px -1px white, -1px 1px white, 1px 1px white; }
-.travel-map-marker.is-here { border: 3px solid #245a48; border-radius: 50%; background: #fff9; }
+.travel-map-marker { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: var(--ds-marker); font-size: 17px; font-weight: bold; text-shadow: -1px -1px white, 1px -1px white, -1px 1px white, 1px 1px white, 0 1px 3px rgba(0, 0, 0, 0.3); }
+.travel-map-marker.is-here { border: 3px solid var(--ds-here); border-radius: 50%; background: #fff9; }
 .travel-map-marker.is-visited::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: white; box-shadow: 0 0 0 1px #53655a; }
-.travel-map-places { margin: 0; font-size: 13px; }
-.travel-map-places label { display: flex; gap: 8px; align-items: center; }
-.travel-map-places select { flex: 1; min-width: 0; min-height: 44px; font: inherit; }
-.travel-map p { margin: 6px 0; font-size: 13px; }
-.travel-map small { color: var(--muted); font-size: 11px; }
 .travel-list { display: grid; }
-.travel-destination { border-bottom: 1px solid var(--line); }
-.travel-destination-button { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 2px 8px; width: 100%; min-height: 44px; padding: 5px 0; color: inherit; border: 0; background: none; text-align: left; cursor: pointer; font: inherit; }
-.travel-destination-button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
-.travel-category { align-self: baseline; color: var(--green); font-size: 12px; white-space: nowrap; }
-.travel-destination-title { font-weight: 700; overflow-wrap: anywhere; }
-.travel-destination-meta { grid-column: 2; min-width: 0; overflow-wrap: anywhere; color: var(--muted); font-size: 12px; text-align: left; }
-.travel-destination-button small { grid-column: 2 / -1; color: var(--muted); font-size: 12px; }
 .travel-choice-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .travel-choice-header h3 { margin: 0; font-size: 16px; }
 .travel-choice-header button { min-height: 44px; }
@@ -47,3 +24,189 @@ dialog.modal.travel-choice-modal { width: min(400px, calc(100% - 24px)); max-hei
 .travel-event-button span { min-width: 0; overflow-wrap: anywhere; }
 .travel-event-button small { flex: none; color: var(--muted); }
 .travel-event p { margin: 4px 2px; font-size: 13px; }
+
+
+/* Free time's cards over the city's picture (UI redesign §3.4, §2.4): every
+   block has its own opaque parchment; the map block, its notes and the list
+   card follow each other inside the travel-menu section, which is what the
+   sticky map block stays over. */
+.free-time-hub .travel-menu { display: flex; flex-direction: column; gap: 8px; margin: 0; }
+/* F4: a display-only note, so a pill. */
+.free-time-hub .travel-reserve {
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink-muted);
+  box-shadow: var(--ds-pill-shadow);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.free-time-hub .travel-rentals {
+  margin: 0;
+  padding: 0 12px;
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  box-shadow: var(--ds-pill-shadow);
+}
+.free-time-hub .travel-rented { color: var(--ds-ink-muted); }
+
+/* The list card (§3.6): 「近くの行き先」, the rows and 「ほかの行き先を見る」. */
+.travel-list-card {
+  padding: 0 8px 4px;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 16px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  box-shadow: var(--ds-card-shadow);
+  touch-action: manipulation;
+}
+.travel-list-card h2 {
+  margin: 0;
+  padding: 2px 4px 0;
+  font-family: "Noto Serif JP", serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 28px;
+}
+.travel-list-card > p { margin: 4px; font-size: 13px; line-height: 1.5; }
+.travel-destination { border-bottom: 1px solid var(--ds-parchment-line); }
+.travel-list > .travel-destination:last-child { border-bottom: 0; }
+/* One button for the whole row: photo, category words, name, route line, reason. */
+.travel-destination-button {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  min-height: 64px;
+  margin: 0;
+  padding: 8px 4px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.travel-destination-button:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; box-shadow: inset 0 0 0 3px var(--ds-slate-900); }
+.travel-thumb {
+  flex: none;
+  width: 64px;
+  height: 43px;
+  margin-top: 2px;
+  border-radius: 6px;
+  object-fit: cover;
+  background: var(--ds-parchment-2);
+}
+.travel-thumb.is-plain {
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 18px;
+}
+.travel-destination-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+.travel-destination-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 17px; }
+.travel-category { color: var(--ds-here); font-size: 12px; font-weight: 500; line-height: 1.4; white-space: nowrap; }
+/* 「おすすめ」: display only, a pill without an edge (§2.3). */
+.travel-recommended {
+  flex: none;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--ds-slate-800);
+  color: var(--ds-on-slate);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 18px;
+}
+.travel-destination-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  font-family: "Noto Serif JP", serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.travel-destination-title > span { min-width: 0; overflow-wrap: anywhere; }
+.travel-destination-title .icon { flex: none; width: 16px; height: 16px; color: var(--ds-ink-muted); }
+.travel-destination-meta { min-width: 0; overflow-wrap: anywhere; color: var(--ds-ink-muted); font-size: 13px; line-height: 1.5; }
+.travel-destination-reason { color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }
+.travel-destination.is-unavailable .travel-thumb { opacity: 0.55; }
+.travel-destination.is-unavailable .travel-destination-title { color: var(--ds-ink-muted); }
+/* F17: a ribbon summary (pressable: a chevron). */
+.travel-other { margin: 4px 0 4px; }
+.travel-other > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background: var(--ds-parchment-2);
+  font-size: 14px;
+  font-weight: 600;
+  list-style: none;
+  cursor: pointer;
+}
+.travel-other > summary::-webkit-details-marker { display: none; }
+.travel-other > summary .icon { width: 16px; height: 16px; }
+.travel-other[open] > summary .icon { transform: rotate(180deg); }
+
+/* The bottom band (§3.4 item 7): opaque, fixed to the screen's bottom, under the
+   header (z 20) and ⚙設定's dismiss layer (z 19), over the stuck map (z 3). */
+.travel-band {
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 7px 16px calc(8px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--ds-parchment-line);
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  box-shadow: 0 -2px 10px rgba(40, 30, 20, 0.18);
+  touch-action: manipulation;
+}
+.travel-band-row { display: flex; gap: 8px; max-width: 648px; margin: 0 auto; }
+.travel-band .travel-wait summary,
+.travel-band .travel-sleep-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  margin: 0;
+  padding: 4px 14px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.travel-band .icon { width: 20px; height: 20px; color: var(--ds-slate-800); }
+.travel-band .travel-wait summary { list-style: none; }
+.travel-band .travel-wait summary::-webkit-details-marker { display: none; }
+.travel-band .travel-wait summary .travel-band-word::after { content: "▾"; margin-left: 2px; }
+.travel-band .travel-wait[open] summary .travel-band-word::after { content: "▴"; }
+.travel-band .travel-wait[open] summary { background: var(--ds-parchment-2); }
+/* The open 待機 menu rises above the band (the band is its containing block). */
+.travel-band .travel-wait-actions {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  padding: 8px;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 16px;
+  background: var(--ds-parchment);
+  box-shadow: var(--ds-card-shadow);
+}
+.travel-band .travel-wait-actions button { width: auto; min-height: 44px; margin: 0; padding: 7px 12px; font-size: 13px; }

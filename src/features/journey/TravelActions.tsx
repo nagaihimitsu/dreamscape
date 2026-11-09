@@ -5,6 +5,7 @@ import { getJourneyForCity } from "../../content/journeys";
 import type { TravelRoute } from "../../content/travel-schemas";
 import { Modal } from "../../components/Modal";
 import { Icon } from "../../components/icons";
+import { useMeasuredHeight } from "../../components/useMeasuredHeight";
 import type { GameState } from "../../domain/game";
 import { getTravelWaitOptions } from "../../domain/travel-destinations";
 import { getTravelSleepOptions } from "../../domain/travel-game";
@@ -12,9 +13,11 @@ import { formatTravelTime } from "./travel-time";
 import { transportLabel } from "../../content/transport";
 
 /**
- * Time and lodging use the same game rules as the destination menu. Shown in the
- * header's row of pressables during free time (UI redesign step 1.2), until the
- * free-time screen gets its own bottom band.
+ * Free time's bottom band (UI redesign §3.4 item 7): 待機 and 休む on an opaque
+ * band fixed to the bottom of the screen, with the same game rules as the
+ * destination menu. Its height is measured as `--bottom-h` (the page's reserve at
+ * its end and the free-time scroll padding). The open 待機 menu rises above the
+ * band; 休む still asks in its dialog (the two-step selection is step 1.6).
  */
 export function TravelActions({ game, onTravelWait, onTravelSleep }: {
   game: GameState;
@@ -25,14 +28,17 @@ export function TravelActions({ game, onTravelWait, onTravelSleep }: {
   const [showSleep, setShowSleep] = useState(false);
   const waitOptions = getTravelWaitOptions(game);
   const sleepOptions = getTravelSleepOptions(game);
-  return <div className="travel-utility" data-testid="travel-actions">
+  const measured = useMeasuredHeight("--bottom-h");
+  return <div className="travel-band" data-testid="travel-actions" ref={measured}>
+    <div className="travel-band-row">
     <details className="travel-wait">
-      <summary aria-label="時間を進める"><Icon name="hourglass" /><span className="hud-tool-word">待機</span></summary>
+      <summary aria-label="時間を進める"><Icon name="hourglass" /><span className="travel-band-word">待機</span></summary>
       <div className="travel-wait-actions">
         {waitOptions.map((option) => <button key={option.until ?? "minutes"} type="button" className="secondary" disabled={!option.available} onClick={() => onTravelWait(option.minutes)}>{option.until === null ? `${option.minutes}分待つ` : `${formatTravelTime(option.until)}まで待つ`}</button>)}
       </div>
     </details>
-    <button type="button" className="travel-sleep-toggle" aria-label="滞在先で休む" onClick={() => setShowSleep(true)}><Icon name="bed" /><span className="hud-tool-word">休む</span></button>
+    <button type="button" className="travel-sleep-toggle" aria-label="滞在先で休む" onClick={() => setShowSleep(true)}><Icon name="bed" /><span className="travel-band-word">休む</span></button>
+    </div>
     {showSleep && <Modal labelledBy="travel-sleep-title" className="travel-choice-modal" onClose={() => setShowSleep(false)}>
       <div className="travel-choice-header"><h2 id="travel-sleep-title">滞在先で休む</h2><button type="button" className="secondary" onClick={() => setShowSleep(false)}>閉じる</button></div>
       <p>滞在先へ戻り、翌日9:00に出発します。ゲーム内の宿泊費は{formatMoneyForCity(game.currentCityId, travelSettings.lodgingCost)}、APは使いません。予算の不足分は補助されます。{getJourneyForCity(game.currentCityId)?.farePartySize === 2 && "移動料金は2人分のゲーム内の目安です。"}</p>

@@ -14,6 +14,9 @@ const out = process.env.SCREENS_OUT ?? path.resolve("artifacts/screens");
 async function save(page: Page, scene: string, titleJa: string, route: Shot["route"], width: number) {
   // The settled screen: no travel transition over it, every image loaded (so two runs match).
   await expect(page.getByTestId("travel-transition")).toHaveCount(0);
+  // The full-page shot shows rows far below the fold; lazy images there would never
+  // start loading, so ask for them now (the game itself keeps loading them lazily).
+  await page.evaluate(() => { for (const image of document.images) if (image.loading === "lazy") image.loading = "eager"; });
   await expect.poll(() => page.evaluate(() => [...document.images].every((image) => image.complete))).toBe(true);
   const file = `shots/${width}/${scene}.png`;
   mkdirSync(path.join(out, `shots/${width}`), { recursive: true });

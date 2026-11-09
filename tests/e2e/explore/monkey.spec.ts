@@ -76,7 +76,8 @@ function choose(page: Page, roll: number) {
   return page.evaluate(({ roll, excludedLabels }) => {
     document.querySelectorAll("[data-monkey-target]").forEach((element) => element.removeAttribute("data-monkey-target"));
     const dialogs = [...document.querySelectorAll("dialog[open]")];
-    const roots = dialogs.length ? [dialogs[dialogs.length - 1]] : [document.getElementById("main"), document.querySelector('[data-testid="travel-actions"]')];
+    // Free time's 待機・休む band is inside #main (UI redesign step 1.5); the header (⚙設定) stays out.
+    const roots = dialogs.length ? [dialogs[dialogs.length - 1]] : [document.getElementById("main")];
     const label = (element: Element) => (element.getAttribute("aria-label") ?? element.textContent ?? "").trim().replace(/\s+/gu, " ").slice(0, 60);
     const shown = (element: Element) => {
       const box = element.getBoundingClientRect();
