@@ -13,7 +13,7 @@
 編集元 `content/journeys/<journeyId>/stories/**/*.ink` → ビルド時にコンパイル → 配信対象となる `.json` → `inkjs` 実行 → Reactで台詞と選択肢を描画 → TypeScriptのルール層にイベント通知。
 - `.ink` から生成したJSONは手動で編集しない。
 - `.ink` はゲームの文章と分岐を担当。AP計算/好感度/保存はTypeScript側。
-- Inkのタグは制限付きのメタデータ: `speaker: heroine`, `background: milano_cafe`, `emotion: shy`, `effect: memory_milano_promise` など。
+- Inkのタグは制限付きのメタデータ: `speaker: heroine`, `background: milano_cafe`, `emotion: shy`, `effect: memory_milano_promise` など。道中交流のInkの頭に書く札（`at:`・`priority:`・`when:`・`until:`・`repeat:`）は、起きる時点・順番・条件を表し、`content:build` が条件のJSONに変えて検査する（下の「場面の時点と順番」）。
 - `effect` は**許可済みイベントIDをルール層に渡す**だけ。文字列をコードとして評価しない。同一効果の適用はイベント単位で冪等にする。
 - ヒロイン/主人公名や現在の呼称は、GameStateから読み込み、Inkの変数または安全なプレースホルダーに渡す。新規台詞に固定名を直書きしない。
 
@@ -98,6 +98,8 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
   - データの画像（観光画像の `path`、背景の `imagePath`、品物の `iconPath`、人物画像、タイトルの絵）が、別の旅行編の `public/` の画像を指す。旅行編のデータが使えるのは自分の `public/` と直下の `public/` の画像、共通データが使えるのは直下の `public/` の画像だけ（`Reference to another layer`）。
   - `manifest.json` の `authoring` のパス（`observationFile`）が、`/` 区切りのリポジトリからの相対パスでない（絶対パス、`..`、`\` を含む）か、`authoring/journeys/<旅行編ID>/` の外を指す。`imageDirectory` は配信時のパス（`assets/` で始まる相対パス）。
   - 配信する画像が、出典つきの観光画像でも自作の絵の一覧にある絵でもない（「出典のない画像」）、その両方である、一覧にあるファイルをその層が配信していない、同じ層の一覧に2回ある（下の「画像の出典と自作の絵」）。
+  - 道中交流の頭の札の誤り：知らない札、札の中の `{…}`、段階1で使えない位置（`after guide`・`after battle` など）、その段階ではまだ記録されない事実を読む条件（`flag`・`met` など）、頭の札と入場ルールの両方に書いた交流。
+  - 選択肢も終わりもないまま1,000行を超える道（会話が輪になっていて終わらない。案内・到着・エピローグ・対決・道中交流・デート・反論のどれでも。場面の長さそのものは止めない）。
   - デートの `when`・`until` と道中交流の入場ルールの `when`（共通条件管理システムの条件。書き方は[制作ガイドの「条件の書き方」](../authoring/CONTENT_GUIDE.md#条件の書き方)）の形の誤り（キーが1つでない、空の `all`・`any`、まだ使えない部品）、存在しないエピソード・都市・バトル・観光地・交流・デート・品物の名前、旅行編が `transportModes` に宣言していない乗り物（徒歩も数えない）、その品物の都市でない条件の `held`、同じ旅の品物の都市より後の都市でない条件の `left_behind`（`scripts/condition-validation.ts`）。入手元（交流の `completionItemId` かクイズの `rewardItemId`）のない品物（`Encounter item has no source`）。
 - 統合したカタログのスキーマエラーは、問題の項目を持つファイルごとに `Invalid content in <ファイル>:` で始まるまとまりで示し、位置（`path`）はそのファイルの中での位置にする（例：旅行編の最初の対決なら、統合後の `battles[9]` ではなく `battles[0]`）。統合後の位置は、エラーの `cause` に残る。
 - 警告（生成は続ける。件数を表示し、`npm run content:build -- --verbose` で一覧。判定は `scripts/content-report.ts`）。警告があっても、単体テスト（`test:quick`・`npm test`）・CI・`npm run verify`・公開は失敗しない。直すかどうかは制作者が一覧を見て判断する
@@ -106,6 +108,8 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
   - `npm run images:optimize` で軽くできる観光写真：JPEG・PNG の写真と、観察で拡大しないのに幅1600px・高さ1800pxの枠を超える WebP の写真（観察で拡大する写真は、観光地の `imageAssetId` と、公開前の都市の観察資料 `authoring.observationFile` の画像。仮の画像（`isPlaceholder`）と見本の編の画像は対象外。判定は `scripts/image-optimization.ts`。観察資料は `authoring/` にあるので、この判定だけはそれも読む）。
   - `authoring.eventPrefix` を持つ旅行編の、接頭辞の決まり（下の「ストーリーIDとIDの名前空間」）に合わないID。既存の例外は `scripts/content-report.ts` の `UNPREFIXED_ID_EXCEPTIONS` に挙げ、新しいIDは例外に足さず接頭辞を付ける。例外に挙げたIDが実データから無くなると、単体テスト（`scripts/content-report.test.ts`）が失敗する（使われない例外を残さないため）。
   - `manifest.json` の `transportModes` に宣言したのに、その旅行編のどの都市の経路にも使われていない乗り物（`unusedTransportModes`。経路を足すか、宣言を消す）。
+  - その位置では決して満たされない条件（本筋が書く記録を、それより前の交流が条件にしている など）、「また今度」の後にもう来ない時点、別のファイルどうしの同じ優先度、`until` のない繰り返し。
+  - データの欄の言葉：日本語の欄（`titleJa`・`descriptionJa`・`hintJa`・出典の `claimJa` など「…Ja」の欄と、道中交流の選択肢の `# translation:`）に日本語がない、クイズの英語の欄（問題文・選択肢と、英語ノートの英文）が英文になっていない（画面は文字をそのまま出すので、止めない）。
   - 決して満たされない条件（`never-offered`。`scripts/condition-validation.ts` の `conditionWarnings`）：観察だけで調べる道中交流の `when` が、その交流の観光地のエピソードやバトル（観察の後にしか遊べない）を必ず要る、同じ旅の後の都市の進行・品物を前の都市の条件が必ず要る、暦（`startWeekday`）のない旅の `journeyDay`・`weekday`、互いを待つデート（`datePlayed` の輪）。今はミラノの5つの交流（`duomo_string`・`supper_pantomime`・`castello_pick`・`scala_mint`・`brera_sitter`）がこれに当たる。
   - デートの `when`・`until` の `time`・`rides`（`date-condition-trip`）：行き先へ向かう移動で変わるので、地図は出発前の状態で出し、着いてから始めるときに調べ直すと始まらないことがある。
 - 成功すると、旅行編ごとに1行、そのフォルダが持つ都市・ストーリー・クイズ・配信ファイルの数と、各カタログの項目数（0件の種類は省略）を表示する（例：`Journey uzbekistan (preparing): cities 4, stories 0, quizzes 0, public files 40; destinations 24, backgrounds 44, assets 40`）。置き忘れや、空のまま公開しかけていることに気付くための表示。観光の手がかり（`clues`）の後には、そのうち問題と結び付かない観察だけの手がかりの数を出す（0件なら省略。`clues 29, observation-only clues 29`。[観察だけの手がかり](07_DATA_AND_TESTS.md#観察だけの手がかり)）。
@@ -247,9 +251,16 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 - 共通の既定背景はミラノ由来ではなくなった（上の「既定背景とタイトルの絵」）。
 - 都市の会話の初期背景は、その都市の `travel/<cityId>-settings.json` の `storyBackgroundId`（ミラノはミラノ編の背景 `milano_cafe`）。未指定の都市は現在地（なければ宿）の背景を使う。
 - 所持品のアイコンは道中交流カタログの品物の `iconPath`（未指定なら共通の `assets/items/item.svg`）。
-- 道中交流は、その観光地を観察しているときにだけ始まる（入場ルールを満たす交流が、観察を進めたときにカタログの順に始まり、終わると観察に戻る）。自由時間から交流を始める道はない。交流のカタログの `availability`（`tourism`・`dormant`）はセーブ版 v14 でなくなり、書くと `content:build` が止まる（`Unrecognized key`）。使わない交流はカタログから消す。
+- 道中交流は観光地の時点で始まる。頭の札を書いた交流（今は見本の編だけ）は、本筋の前（`-1` など）・観察の後（`after observe`）・本筋の後（`+1` など）に置ける（下の「場面の時点と順番」）。札を書かない交流は今の入場ルール（`encounters/entry-rules.json`）のまま、観察を進めたときにカタログの順に始まり、終わると観察に戻る（ミラノ編はシナリオ改稿のときに頭の札へ移す）。自由時間から交流を始める道はない。交流のカタログの `availability`（`tourism`・`dormant`）はセーブ版 v14 でなくなり、書くと `content:build` が止まる（`Unrecognized key`）。使わない交流はカタログから消す。
 - 入場ルール（`encounters/entry-rules.json`、`schemaVersion: 2`）は、交流ごとに調べる時点 `at`（今は観察の `["observe"]` だけ）と出会える条件 `when` を持つ。クイズをその観光地のバトルの後まで待たせる道中交流（ミラノのガッレリアの願掛け）は、同じファイルの `quizAfterLandmarkBattle` で指定する（クイズのある交流だけ。観察はこの交流の `when` を調べない）。この印のある交流は最初の観察で会え、その観光地のバトルを一度も戦っていないうちは、クイズなしで話が終わる。バトルを戦った後に始まった場合だけクイズへ進む。ただし今のミラノ編には、ガッレリアのバトルを戦った後に交流が始まる観察がないため、願掛けのクイズ（と展示券の抽選）には遊んでいて届かない（バトルを終えるとガッレリアは地図の行き先に出なくなる。バトルの画面から観察に戻れるが、バトルの途中なので交流は始まらない）。ユーザーの判断（2026-11-08）で、今は起こらないミラノの道中交流は今のまま残し、シナリオの改稿でまとめて見直す（各Inkファイルの先頭のコメントに、今いつ起こるかを書いている。[開発時の確認](10_DEVELOPMENT_CHECKS.md#関数の層のランダムウォーク)）。
 - Debugの「仮の場面」は、ミラノ固定ではなく役割で選んだ都市を元にする（上の「Debugの「仮の場面」」の項）。
+
+### 場面の時点と順番
+
+- 道中交流は「時点」（観光地への訪問など）の中で、本筋（案内・観察・バトル）と並んで流れる。並びは頭の札の優先度で決める：負の数は本筋の前、`after observe` は観察で「進む」を押した後（終わると観察に戻る）、正の数は本筋の後。小さいほど先。同じ優先度は、ファイルの名前の順（今は交流ごとに別のファイル。`content:build` が注意を出す）。
+- 条件（`when:`・`until:`）は、その交流の番が来た直前に調べる。完了した交流はもう出ない（`repeat: always` を除く）。「また今度」を選んだ交流は、次に同じ時点が来たときにまた出る。
+- 運賃・入場料・デートの AP と乱数は、今どおり地図で出発する操作で払い・決める（道中交流の乱数は、その交流を始めるときに引いて保存する）。だから、前の交流の後で、払いが足りずに本筋が断られることはない。
+- 今これを使うのは見本の編の観光地だけ。デート・宿・乗り物などの時点は、使う台本ができたときに足す。
 
 ## レイヤー間の依存
 - `screens/components` → アプリ操作サービス → `domain` 純粋関数 → `persistence`

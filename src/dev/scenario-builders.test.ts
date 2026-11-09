@@ -6,6 +6,11 @@ import { storyBattlesForCity } from "../domain/chapter";
 import { advanceDate, chooseDate, createGame, validateGameState, type GameState } from "../domain/game";
 import { startTourismBattle } from "../domain/tourism";
 import { beginTravelEvent } from "../domain/travel-game";
+import { encounters } from "../content/encounters";
+import {
+  advanceEncounter, chooseEncounter, continueTourismEncounters, encounterChoiceOption, encounterVisitSlot, finishEncounter,
+  getActiveEncounterDefinition,
+} from "../domain/encounter";
 import {
   cityFinaleResult, cityMidway, cityStart, completedCity, correctAnswer, finishEpisode, firstCorrect, newJourney,
   openBattleScene, openEpilogueScene, openTourismScene, playBattleToResult, playEpisodeToResult, readEpilogue,
@@ -13,6 +18,23 @@ import {
 } from "./scenario-builders";
 
 const noScene = { activeTourism: null, activeBattle: null, activeDate: null, activeEncounter: null, activeEpilogue: null };
+
+/** Play the open encounter with the option `optionId` to its end; its moment goes on (continueTourismEncounters). */
+function playEncounter(initial: GameState, optionId: string): GameState {
+  let state = initial;
+  const event = getActiveEncounterDefinition(state.activeEncounter!);
+  for (let step = 0; !state.activeEncounter!.frame.choices.length; step++) {
+    expect(step).toBeLessThan(50);
+    state = advanceEncounter(state, state.revision);
+  }
+  const choice = state.activeEncounter!.frame.choices.find((item) => encounterChoiceOption(event, item)?.id === optionId)!;
+  state = chooseEncounter(state, choice.index, state.revision);
+  for (let step = 0; !state.activeEncounter!.frame.ended; step++) {
+    expect(step).toBeLessThan(50);
+    state = advanceEncounter(state, state.revision);
+  }
+  return continueTourismEncounters(state, finishEncounter(state, state.revision), () => 0);
+}
 const finaleOf = (cityId: string) => episodes.find((item) => item.cityId === cityId && item.kind === "city_finale")!;
 
 // Every complete city of every playable journey in the generated content (the
@@ -124,7 +146,12 @@ describe("scenario builders", () => {
     const travelling = beginTravelEvent(fresh, "smp_mihon_main_clock_tower", "walk", fresh.revision, () => 0);
     const event = travelling.travel.activeEvent!;
     expect(event.eventId).toBe("smp_mihon_main_clock_tower");
-    const guided = readGuide(travelling);
+    // The tower's stall (priority -1) comes first on the trip; after it, the visit's guide opens.
+    expect(travelling.activeEncounter).toMatchObject({ encounterId: "smp_mihon_bookmark_stall", trip: { eventId: "smp_mihon_main_clock_tower", modeId: "walk" } });
+    const arrived = playEncounter(travelling, "later");
+    expect(arrived.activeTourism).toMatchObject({ landmarkId: "mihon_clock_tower", phase: "guide" });
+    expect(arrived.travel.activeEvent).toEqual(event);
+    const guided = readGuide(arrived);
     const result = playBattleToResult(startTourismBattle(guided, guided.revision));
     expect(result.activeBattle?.phase).toBe("result");
     expect(result.travel).toMatchObject({ activeEvent: null, minute: event.endMinute, currentPlaceId: event.placeId });
@@ -140,14 +167,32 @@ describe("scenario builders", () => {
     expect(tower.activeTourism).toMatchObject({ landmarkId: "mihon_clock_tower", phase: "guide" });
     expect(tower.travel.currentPlaceId).toBe(getCityContent("mihon").travel.places.find((place) => place.landmarkIds?.includes("mihon_clock_tower"))!.id);
 
-    const encounter = startEncounterScene(cityStart("mihon"), "smp_mihon_bookmark_stall", rollTickets.positive);
-    expect(encounter.activeEncounter?.encounterId).toBe("smp_mihon_bookmark_stall");
-    // Met as play meets it: in the observation of its landmark (the first visit's guide skipped), which it returns to.
-    expect(encounter.activeEncounter?.returnTourism).toMatchObject({ landmarkId: "mihon_clock_tower", encounterIds: ["smp_mihon_bookmark_stall"] });
-    expect(encounter.visitedLandmarkIds).toEqual(["mihon_clock_tower"]);
-    // An encounter whose observation refuses it (every choice needs an item nobody holds yet) does not start.
-    expect(() => startEncounterScene(cityStart("mihon"), "smp_mihon_bookmark_gift", rollTickets.positive))
-      .toThrow("この進行状態では交流を始められません。必要な進行や品物を確認してください。");
+    // Met as play meets them, at the moment of the clock tower's visit their head tags name: the stall (-1) on the
+    // departure from the map, before the guide; the gift (+1) on leaving the tower battle's result, after the stall
+    // was played with its first choice (ask: it gives the bookmark the gift needs).
+    const stall = startEncounterScene(cityStart("mihon"), "smp_mihon_bookmark_stall", rollTickets.positive);
+    expect(stall.activeEncounter).toMatchObject({ encounterId: "smp_mihon_bookmark_stall", trip: { eventId: "smp_mihon_main_clock_tower" } });
+    expect(stall.travel.activeEvent?.eventId).toBe("smp_mihon_main_clock_tower");
+    expect(stall.visitedLandmarkIds).toEqual([]);
+    const gift = startEncounterScene(cityStart("mihon"), "smp_mihon_bookmark_gift", rollTickets.positive);
+    expect(gift.activeEncounter).toMatchObject({ encounterId: "smp_mihon_bookmark_gift",
+      afterBattle: { battleId: "smp_mihon_main_clock_tower_battle", encounterIds: ["smp_mihon_bookmark_gift"] } });
+    expect(gift).toMatchObject({ inventory: { smp_mihon_three_bookmark: "held" }, completedEncounterIds: ["smp_mihon_bookmark_stall"],
+      activeBattle: null, completedEpisodeIds: ["smp_mihon_main_clock_tower"] });
+    expect(gift.travel.activeEvent).toBeNull();
+    // Every encounter of the sample's clock tower starts this way, each at its slot's moment.
+    const moment = { before: "trip", observe: "returnTourism", after: "afterBattle" } as const;
+    const towerEncounters = encounters.encounters.filter((item) => item.landmarkId === "mihon_clock_tower");
+    expect(towerEncounters.map((item) => item.id).sort()).toEqual(["smp_mihon_bookmark_gift", "smp_mihon_bookmark_stall"]);
+    for (const item of towerEncounters) {
+      const started = startEncounterScene(cityStart("mihon"), item.id, rollTickets.positive);
+      expect(started.activeEncounter?.encounterId, item.id).toBe(item.id);
+      expect(started.activeEncounter?.[moment[encounterVisitSlot(item.id)!]], item.id).toBeDefined();
+      expect(validateGameState(JSON.parse(JSON.stringify(started))), item.id).toEqual(started);
+    }
+    // A cleared city no longer leads to the tower from the map, so neither can start there.
+    expect(() => startEncounterScene(completedCity("mihon"), "smp_mihon_bookmark_gift", rollTickets.positive))
+      .toThrow("この交流は、地図から観光地へ出発したときに起きます。");
 
     for (const [roll, ticket] of Object.entries(rollTickets)) {
       let date = startDateScene(cleared, "smp_mihon_date_tower_square", ticket);

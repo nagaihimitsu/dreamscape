@@ -15,10 +15,12 @@ export type ConditionContent = {
   /** Journeys in catalog order; each one's cities in travel order. */
   journeys: readonly { id: string; cities: readonly { id: string }[]; transportModes: readonly { id: string }[]; startWeekday?: number }[];
   cities: readonly { id: string }[];
-  episodes: readonly { id: string; cityId: string; landmarkId: string | null }[];
+  episodes: readonly { id: string; cityId: string; landmarkId: string | null; battleId?: string }[];
   battles: readonly { id: string; cityId?: string; landmarkId: string | null }[];
   landmarks: readonly { id: string; cityId: string }[];
-  encounters: readonly { id: string; cityId: string; landmarkId: string }[];
+  /** The story file orders encounters of one priority; the options and repetition are read by the visit warnings. */
+  encounters: readonly { id: string; cityId: string; landmarkId: string; storyId?: string; repeatable?: boolean;
+    options?: readonly { id: string; deferCompletion?: boolean }[] }[];
   items: readonly { id: string; cityId: string }[];
   dates: readonly { id: string; chapterId: string; when?: Condition; until?: Condition }[];
 };
@@ -126,19 +128,23 @@ export function checkConditions(content: ConditionContent, owners: readonly Cond
 }
 
 /** Warnings of conditions: probable mistakes that break nothing (content:build lists them). */
-export type ConditionWarning = { kind: "never-offered" | "date-condition-trip"; message: string };
-type EntryRule = { encounterId: string; at?: readonly string[]; when?: Condition; quizAfterLandmarkBattle?: true };
+export type ConditionWarning = {
+  kind: "never-offered" | "date-condition-trip" | "later-never-again" | "same-priority" | "repeat-without-until";
+  message: string;
+};
+type EntryRule = { encounterId: string; at?: readonly string[]; priority?: number | "after observe"; when?: Condition; quizAfterLandmarkBattle?: true };
 
 /**
- * An observation-only entry rule whose `when` needs its own landmark's episode or battle: the
- * observation opens before that battle (the first visit) and the encounter is looked up only
- * then, so it is never offered (the Milan case). A quiz that waits for the landmark's battle is
- * skipped: its observation ignores `when`.
+ * An entry rule looked up while observing or before the landmark's main part whose `when` needs
+ * its own landmark's episode or battle: those come only after the observation (the first visit),
+ * and then the map no longer leads to the landmark, so it is never offered (the Milan case). A
+ * quiz that waits for the landmark's battle is skipped: its observation ignores `when`.
  */
 function ownLandmarkWarnings(content: ConditionContent, rules: readonly EntryRule[]): ConditionWarning[] {
   return rules.flatMap((rule): ConditionWarning[] => {
     const encounter = content.encounters.find((item) => item.id === rule.encounterId);
-    if (!encounter || !rule.when || rule.quizAfterLandmarkBattle || (rule.at && rule.at.some((moment) => moment !== "observe"))) return [];
+    if (!encounter || !rule.when || rule.quizAfterLandmarkBattle || (rule.at && rule.at.some((moment) => moment !== "observe")) ||
+        (typeof rule.priority === "number" && rule.priority > 0)) return [];
     const own = requiredLeaves(rule.when).flatMap((leaf) => {
       if ("episodeCompleted" in leaf && content.episodes.find((item) => item.id === leaf.episodeCompleted)?.landmarkId === encounter.landmarkId)
         return [`episode ${leaf.episodeCompleted}`];
@@ -146,7 +152,8 @@ function ownLandmarkWarnings(content: ConditionContent, rules: readonly EntryRul
         return [`battle ${leaf.battlePlayed}`];
       return [];
     });
-    return own.length ? [{ kind: "never-offered", message: `Encounter never offered: ${encounter.id} is looked up only while observing ${encounter.landmarkId}, ` +
+    const where = typeof rule.priority === "number" ? `before the main part of ${encounter.landmarkId}'s visit` : `while observing ${encounter.landmarkId}`;
+    return own.length ? [{ kind: "never-offered", message: `Encounter never offered: ${encounter.id} is looked up only ${where}, ` +
       `but its entry rule's when needs ${own.join(" and ")} of that same landmark, which is played only after the observation ` +
       `(read another place's progress, or wait for the later moments of stage 3)` }] : [];
   });
@@ -209,9 +216,51 @@ function dateTripWarnings(content: ConditionContent): ConditionWarning[] {
       : []));
 }
 
+/**
+ * Warnings of the encounters placed at a landmark's visit by their head tags (a `priority`):
+ * - 「また今度」 leads to no later moment: the encounter can be ended with 「また今度」 (an option with
+ *   deferCompletion), but the map leads to its landmark only once (one sightseeing episode or special
+ *   battle there), so it is never met again;
+ * - two story files share a priority at one landmark's visit: they run in file-name order;
+ * - an encounter repeated always (repeatable) without `# until:`: it is met at every visit.
+ */
+function visitWarnings(content: ConditionContent, rules: readonly EntryRule[]): ConditionWarning[] {
+  const shown = (priority: number | "after observe") => (typeof priority === "number" && priority > 0 ? `+${priority}` : String(priority));
+  const placed = rules.flatMap((rule) => {
+    const encounter = content.encounters.find((item) => item.id === rule.encounterId);
+    return encounter && rule.priority !== undefined ? [{ rule, encounter, priority: rule.priority }] : [];
+  });
+  // Map events that visit the landmark: its sightseeing episodes and the special battles held there.
+  const visitsOf = (landmarkId: string) => content.episodes.filter((episode) => episode.landmarkId === landmarkId).length +
+    content.battles.filter((battle) => battle.landmarkId === landmarkId && !content.episodes.some((episode) => episode.battleId === battle.id)).length;
+  const later = placed.flatMap(({ encounter, priority }): ConditionWarning[] => {
+    const deferred = encounter.options?.find((option) => option.deferCompletion);
+    return deferred && visitsOf(encounter.landmarkId) <= 1
+      ? [{ kind: "later-never-again", message: `「また今度」 leads to no later moment: ${encounter.id} (priority ${shown(priority)} at the visit of ${encounter.landmarkId}) ` +
+        `can be ended with 「また今度」 (option ${deferred.id}), but the map leads to ${encounter.landmarkId} only once, so it is never met again there ` +
+        `(a later stage lets it come back at the place's other moments)` }]
+      : [];
+  });
+  const groups = new Map<string, typeof placed>();
+  for (const entry of placed) {
+    const key = `${entry.encounter.landmarkId} ${entry.priority}`;
+    groups.set(key, [...(groups.get(key) ?? []), entry]);
+  }
+  const same = [...groups.values()].filter((group) => group.length > 1).map((group): ConditionWarning => ({ kind: "same-priority",
+    message: `Encounters share a priority: ${group.map((entry) => entry.encounter.id).join(", ")} have priority ${shown(group[0].priority)} ` +
+      `at the visit of ${group[0].encounter.landmarkId}; they run in the order of their story files' names (${group.map((entry) => entry.encounter.storyId).join(", ")})` }));
+  // `# until:` becomes a `not` in the rule's when (encounter-head.ts), like a `# when: not …`: either closes the repetition.
+  const closes = (condition: Condition | undefined): boolean => !!condition &&
+    ("not" in condition || ("all" in condition && condition.all.some(closes)));
+  const repeated = placed.flatMap(({ rule, encounter }): ConditionWarning[] => encounter.repeatable && !closes(rule.when)
+    ? [{ kind: "repeat-without-until", message: `Repeated encounter without until: ${encounter.id} (# repeat: always) has no # until:, so it is met at every visit of ${encounter.landmarkId}` }]
+    : []);
+  return [...later, ...same, ...repeated];
+}
+
 /** Every warning of the dates' and entry rules' conditions. */
 export function conditionWarnings(content: ConditionContent, rules: readonly EntryRule[]): ConditionWarning[] {
   const owners = [...dateConditionOwners(content), ...entryRuleConditionOwners(content, rules)];
   return [...ownLandmarkWarnings(content, rules), ...laterCityWarnings(content, owners), ...calendarWarnings(content, owners),
-    ...cyclicDateWarnings(content), ...dateTripWarnings(content)];
+    ...cyclicDateWarnings(content), ...dateTripWarnings(content), ...visitWarnings(content, rules)];
 }

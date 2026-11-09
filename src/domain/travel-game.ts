@@ -2,7 +2,7 @@ import { battles, dates, episodes, getCityContent } from "../content";
 import { getBattleAvailability, startBattle } from "./battle";
 import { getEpisodeAvailability, isEpisodeUnlocked, isStoryBattleUnlocked, startEpisode } from "./chapter";
 import { getDateAvailability, isDateUnlockedForTravel, isEventVisible, startDate, type GameState } from "./game";
-import { hasPendingPlaceEncounter } from "./encounter";
+import { hasPendingPlaceEncounter, startBeforeVisitEncounter } from "./encounter";
 import { openTourism } from "./tourism";
 import { canReturnByDayEnd, DAY_END, getGameWeekday, planOvernight, planTravelEvent } from "./travel";
 import { compareRouteCost, findTravelHomeRoutes, type HomeRoute } from "./travel-routes";
@@ -143,23 +143,39 @@ export function beginTravelEvent(state: GameState, eventId: string, mode: Travel
     travel: { ...state.travel, currentPlaceId: event.placeId, minute: availability.plan.arrivalMinute, returnReserve: availability.plan.returnReserve, returnDeadline: DAY_END, rideCounts: rides } };
   const episode = episodes.find((item) => item.id === eventId);
   if (replayBattleId && (!episode || episode.battleId !== replayBattleId || !battlePlayed(state, replayBattleId))) return state;
+  const reserved = { ...moved, travel: { ...moved.travel,
+    activeEvent: { eventId, placeId: event.placeId, endMinute: availability.plan.endMinute } } };
+  // Arriving at a landmark (not a replayed battle), its encounters before the main part run first;
+  // the last of them opens the main part (startTravelEventScene) from the saved trip.
+  const cleared = reserved.activeBattle?.phase === "result" ? { ...reserved, activeBattle: null, battleRewardReceipt: null } : reserved;
+  const before = replayBattleId ? cleared : startBeforeVisitEncounter(cleared, eventId, mode, nextRoll);
+  if (before !== cleared) return before;
+  const started = replayBattleId ? startBattle(reserved, replayBattleId) : startTravelEventScene(reserved, eventId, nextRoll);
+  return started === reserved ? state : started;
+}
+
+/**
+ * Open the main part of a map event at its place (the fare and time are settled by the caller):
+ * an episode's sightseeing (its finale battle), a date, or a special battle, whose first visit
+ * (or a visit with an encounter waiting at its landmark) opens the landmark's observation first.
+ * Returns the state unchanged when the scene cannot start.
+ */
+export function startTravelEventScene(state: GameState, eventId: string, nextRoll?: () => number): GameState {
+  const episode = episodes.find((item) => item.id === eventId);
   const isDate = dates.some((date) => date.id === eventId);
   const special = !episode && !isDate ? battles.find((battle) => battle.id === eventId && battle.landmarkId) : undefined;
   // First visits include the same optional guide/observation as normal tourism.
   // Later visits may still open observation for an eligible local encounter.
-  const sceneState = special && moved.activeBattle?.phase === "result"
-    ? { ...moved, activeBattle: null, battleRewardReceipt: null }
-    : moved;
+  const sceneState = special && state.activeBattle?.phase === "result"
+    ? { ...state, activeBattle: null, battleRewardReceipt: null }
+    : state;
   const observeFirst = !!special?.landmarkId &&
     (!battlePlayed(state, special.id) ||
       hasPendingPlaceEncounter(sceneState, special.landmarkId));
-  const started = replayBattleId ? startBattle(moved, replayBattleId)
-    : episode ? startEpisode(moved, eventId)
-    : isDate ? startDate(moved, eventId, nextRoll)
-      : observeFirst ? openTourism(sceneState, special!.landmarkId!) : startBattle(moved, eventId);
-  if (started === (observeFirst ? sceneState : moved)) return state;
-  return { ...started, travel: { ...started.travel,
-    activeEvent: { eventId, placeId: event.placeId, endMinute: availability.plan.endMinute } } };
+  const started = episode ? startEpisode(state, eventId)
+    : isDate ? startDate(state, eventId, nextRoll)
+      : observeFirst ? openTourism(sceneState, special!.landmarkId!) : startBattle(state, eventId);
+  return started === (observeFirst ? sceneState : state) ? state : started;
 }
 
 /** Settle the saved time reservation once the current scene completes or is left. */

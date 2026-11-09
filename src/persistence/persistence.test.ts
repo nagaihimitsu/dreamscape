@@ -1,8 +1,9 @@
 import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it, vi } from "vitest";
 import { advanceDate, chooseDate, createGame, startDate, validateGameState, type GameState } from "../domain";
-import { completedCity } from "../dev/scenario-builders";
-import { advanceEncounter, chooseEncounter, encounterCanFinish, finishEncounter } from "../domain/encounter";
+import { cityStart, completedCity } from "../dev/scenario-builders";
+import { advanceEncounter, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter } from "../domain/encounter";
+import { finishTravelEventIfComplete } from "../domain/travel-game";
 import { meetEncounter } from "../../tests/fixtures/encounter-moment";
 import { zodIssues } from "../../tests/fixtures/zod-issues";
 // A date in progress saved in the first save format (schemaVersion 1).
@@ -31,6 +32,16 @@ class MemoryStorage implements StorageLike {
   removeItem(key: string) {
     this.values.delete(key);
   }
+}
+
+/** Play the stall with its first choice (ask: the bookmark) to its end; the trip goes on to the tower's guide. */
+function finishStall(state: GameState): GameState {
+  let next = state;
+  for (let step = 0; next.activeEncounter && !next.activeEncounter.frame.choices.length && !next.activeEncounter.frame.ended; step++)
+    next = advanceEncounter(next, next.revision);
+  next = chooseEncounter(next, next.activeEncounter!.frame.choices[0].index, next.revision);
+  for (let step = 0; !encounterCanFinish(next); step++) next = advanceEncounter(next, next.revision);
+  return finishTravelEventIfComplete(next, continueTourismEncounters(next, finishEncounter(next, next.revision), () => 0));
 }
 
 describe("local save persistence", () => {
@@ -262,7 +273,7 @@ describe("save format v15 (docs/07: one format per version, no migration)", () =
     expect(slot.getItem(SAVE_KEY)).toBe(raw);
   });
 
-  it("holds the condition system's story state and moments empty until stage 3 declares and writes them", () => {
+  it("holds the condition system's story state empty until stage 3 declares it, and an encounter's moment matching its slot", () => {
     const fresh = createGame();
     expect(fresh.storyProgress).toEqual({ lines: {}, flags: [] });
     expect(fresh.travel.temporaryFlags).toEqual([]);
@@ -283,7 +294,8 @@ describe("save format v15 (docs/07: one format per version, no migration)", () =
       [{ lines: {}, flags: [""] }, { code: "too_small", path: ["storyProgress", "flags", 0] }],
     ] as const)
       expect(() => validateGameState(story(shape)), JSON.stringify(shape)).toThrow(zodIssues(issue));
-    // An encounter in progress may continue only from its observation; the after-battle and trip moments are not written yet.
+    // An encounter in progress continues from the moment of its slot: an encounter met while observing (Milan's) only
+    // from its observation; a trip or an after-battle moment does not match it.
     const meeting = meetEncounter(completedCity("milano"), "duomo_string");
     const { returnTourism, ...active } = meeting.activeEncounter!;
     expect(returnTourism).toBeDefined();
@@ -301,6 +313,37 @@ describe("save format v15 (docs/07: one format per version, no migration)", () =
       .toThrow(zodIssues({ code: "invalid_type", path: ["activeEncounter", "afterBattle", "encounterIds"] }));
     expect(() => validateGameState(moment({ trip: { eventId: "milano_duomo_episode", modeId: "tram", minutes: 3 } })))
       .toThrow(zodIssues({ code: "unrecognized_keys", path: ["activeEncounter", "trip"], keys: ["minutes"] }));
+  });
+
+  it("saves and resumes the sample tower's encounters before and after its main part when the event, battle and encounter match", () => {
+    const placed = "道中交流の時点の記録が一致しません。";
+    const resumed = (state: GameState) => {
+      const storage = new MemoryStorage();
+      expect(saveGame(storage, state).ok).toBe(true);
+      expect(loadGame(storage)).toEqual({ status: "loaded", state });
+    };
+    // Before the main part (priority -1): the trip to the tower's episode, with the map event still running.
+    const stall = meetEncounter(cityStart("mihon"), "smp_mihon_bookmark_stall");
+    expect(stall.activeEncounter?.trip).toEqual({ eventId: "smp_mihon_main_clock_tower", modeId: "walk" });
+    resumed(stall);
+    const trip = (fields: object, travel: object = {}) => ({ ...stall, travel: { ...stall.travel, ...travel },
+      activeEncounter: { ...stall.activeEncounter!, ...fields } });
+    // Another event than the running one (the travel record refuses it first), an undeclared mode, the after-battle moment.
+    expect(() => validateGameState(trip({ trip: { eventId: "smp_mihon_special_b_market", modeId: "walk" } }))).toThrow("旅行の時間枠と進行中の場面が一致しません。");
+    expect(() => validateGameState(trip({ trip: { eventId: "smp_mihon_main_clock_tower", modeId: "tram" } }))).toThrow(placed);
+    expect(() => validateGameState(trip({ trip: undefined, afterBattle: { battleId: "smp_mihon_main_clock_tower_battle", encounterIds: ["smp_mihon_bookmark_stall"] } })))
+      .toThrow(/一致しません。/u);
+    // After the main part (priority +1): the tower battle played and the chain so far, ending with this encounter.
+    const gift = meetEncounter(finishStall(stall), "smp_mihon_bookmark_gift");
+    expect(gift.activeEncounter?.afterBattle).toEqual({ battleId: "smp_mihon_main_clock_tower_battle", encounterIds: ["smp_mihon_bookmark_gift"] });
+    resumed(gift);
+    const after = (afterBattle: object) => ({ ...gift, activeEncounter: { ...gift.activeEncounter!, afterBattle } });
+    for (const bad of [{ battleId: "smp_mihon_special_b_market", encounterIds: ["smp_mihon_bookmark_gift"] },
+      { battleId: "smp_mihon_main_clock_tower_battle", encounterIds: [] },
+      { battleId: "smp_mihon_main_clock_tower_battle", encounterIds: ["smp_mihon_bookmark_stall", "smp_mihon_bookmark_gift"] }])
+      expect(() => validateGameState(after(bad)), JSON.stringify(bad)).toThrow(placed);
+    expect(() => validateGameState({ ...gift, activeEncounter: { ...gift.activeEncounter!, afterBattle: undefined,
+      trip: { eventId: "smp_mihon_main_clock_tower", modeId: "walk" } } })).toThrow(placed);
   });
 
   it("holds the tour records empty until the tour system writes them", () => {

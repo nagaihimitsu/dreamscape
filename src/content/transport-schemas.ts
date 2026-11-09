@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { japaneseText as japanese } from "./text-language";
 
 /**
  * In-city transport. Walking is built in; a journey declares up to two more
@@ -13,8 +14,7 @@ export type TransportArtKind = "walk" | TransportKind;
 export const WALK_MODE_ID = "walk";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
-const japanese = z.string().trim().min(1).refine(
-  (value) => /[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(value), "Expected Japanese transport text");
+
 
 export const transportModeSchema = z.object({
   /** Journey-local and saved (rented modes), so it never changes once the journey is public. */

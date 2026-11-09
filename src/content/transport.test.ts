@@ -1,3 +1,4 @@
+import { misplacedLanguages } from "../../scripts/data-language";
 import { describe, expect, it } from "vitest";
 import { journeyCatalogSchema } from "./journey-catalog";
 import { journeys } from "./journeys";
@@ -15,11 +16,14 @@ describe("transport mode declarations", () => {
     expect(transportModeSchema.parse({ id: "rental_bicycle", nameJa: "貸し自転車", movingJa: "貸し自転車で移動中", kind: "bicycle", rental: true }).rental).toBe(true);
   });
 
-  it("refuses walk (built in), an unknown kind, an English label and extra keys", () => {
+  it("refuses walk (built in), an unknown kind and extra keys; an English label is only a warning", () => {
     expect(transportModeSchema.safeParse({ ...tram, id: "walk" }).success).toBe(false);
     expect(transportModeSchema.safeParse({ ...tram, kind: "boat" }).success).toBe(false);
-    expect(transportModeSchema.safeParse({ ...tram, nameJa: "Tram" }).success).toBe(false);
-    expect(transportModeSchema.safeParse({ ...tram, movingJa: "riding" }).success).toBe(false);
+    // The labels' language is content:build's data-language warning (decision 32), not a schema rule.
+    expect(transportModeSchema.safeParse({ ...tram, nameJa: "Tram" }).success).toBe(true);
+    expect(transportModeSchema.safeParse({ ...tram, movingJa: "riding" }).success).toBe(true);
+    expect(misplacedLanguages(transportModeSchema, { ...tram, nameJa: "Tram", movingJa: "riding" }))
+      .toEqual([{ path: "nameJa", value: "Tram", language: "ja" }, { path: "movingJa", value: "riding", language: "ja" }]);
     expect(transportModeSchema.safeParse({ ...tram, rental: false }).success).toBe(false);
     expect(transportModeSchema.safeParse({ ...tram, color: "red" }).success).toBe(false);
   });

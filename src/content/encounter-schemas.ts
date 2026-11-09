@@ -25,7 +25,8 @@ const encounterSchema = z.object({
   titleJa: japaneseText,
   descriptionJa: japaneseText,
   storyId,
-  options: z.array(optionSchema).length(3),
+  // One option per choice of the story, in any number (decision 41).
+  options: z.array(optionSchema).min(1),
   repeatable: z.boolean().optional(),
   completionMoney: money.optional(),
   completionItemId: id.optional(),
@@ -57,9 +58,9 @@ const encounterInputSchema = encounterSchema.extend({
   cityId: id.optional(),
   descriptionJa: japaneseText.optional(),
   sources: quizQuestionSchema.shape.sources.optional(),
-  options: z.array(optionSchema).length(3).optional(),
+  options: z.array(optionSchema).min(1).optional(),
 });
-/** Author-facing catalog: plain three-choice encounters need no rule boilerplate. */
+/** Author-facing catalog: plain three-choice encounters need no rule boilerplate (other counts list their options). */
 export const encounterCatalogInputSchema = encounterCatalogSchema.extend({
   encounters: z.array(encounterInputSchema),
 });

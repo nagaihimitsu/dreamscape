@@ -243,12 +243,12 @@ describe("integrated journey content contract", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow(/Unrecognized key: .*affectionDelta/);
   });
 
-  it("keeps episode descriptions in editable Japanese data", async () => {
+  it("keeps episode descriptions in editable data, warning when one has no Japanese (data-language)", async () => {
     await changeEpisode((episode) => {
       episode.clearDescriptionJa = "The city is complete.";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Expected Japanese journey text",
-    );
+    const warnings = (await buildContent(fixture, false)).warnings.filter((warning) => warning.kind === "data-language");
+    expect(warnings).toHaveLength(1);
+    expect(warnings[0].message).toMatch(/^日本語の欄に日本語がありません：.+ の episodes\[\d+\]\.clearDescriptionJa「The city is complete…」/u);
   });
 });

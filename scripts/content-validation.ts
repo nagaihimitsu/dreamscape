@@ -22,6 +22,10 @@ import { characterCatalogSchema } from "../src/content/character-assets";
 import { encounterCatalogInputSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
 import { encounterEntryRulesSchema, validateEncounterEntryRules } from "../src/content/encounter-entry-rules";
 import { validateEncounterContent } from "./encounter-validation";
+import { dataLanguageWarnings } from "./data-language";
+import { transitLedgerSchema } from "./transit-ledger";
+import type { z } from "zod";
+import { headEntryRule, HEAD_TAGS, readEncounterHead, type EncounterHead } from "./encounter-head";
 import { checkConditions, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, type ConditionContent } from "./condition-validation";
 import { validateBackgroundAssets, validateCharacters } from "./presentation-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
@@ -161,6 +165,34 @@ function checkQuizFileNames(sources: ContentSources): void {
   }
 }
 
+/**
+ * The head of every encounter story that has head tags (by story ID). A head tag in any other
+ * story stops the build, as do a malformed head, a head naming another landmark than the
+ * catalog's, and a priority `after observe` at a landmark without an observation.
+ */
+function readEncounterHeads(sources: ContentSources, encounters: readonly { id: string; storyId: string; landmarkId: string }[],
+  landmarks: readonly { id: string }[], storyLabel: (storyId: string) => string): Map<string, EncounterHead> {
+  const heads = new Map<string, EncounterHead>();
+  const headTag = new RegExp(`^\\s*#\\s*(?:${HEAD_TAGS.join("|")})\\s*:`, "mu");
+  for (const { id, source } of sources.storyFiles) {
+    const event = encounters.find((item) => item.storyId === id);
+    if (!event) {
+      if (headTag.test(source))
+        throw new Error(`Head tags (# at:, # priority:, # when:, # until:, # repeat:) are written only in an encounter's story for now: ${storyLabel(id)}`);
+      continue;
+    }
+    const { head } = withContext(storyLabel(id), () => readEncounterHead(source));
+    if (!head) continue;
+    if (head.landmarkId !== event.landmarkId)
+      throw new Error(`Encounter head names another landmark: ${storyLabel(id)} has # at: visit ${head.landmarkId}, encounters/catalog.json gives ${event.id} the landmark ${event.landmarkId}`);
+    // Every landmark has an observation until stage 2b lets a place leave it out.
+    if (head.priority === "after observe" && !landmarks.some((landmark) => landmark.id === event.landmarkId))
+      throw new Error(`# priority: after observe needs a landmark with an observation: ${storyLabel(id)}`);
+    heads.set(id, head);
+  }
+  return heads;
+}
+
 /** The validated content: compiled stories, quizzes and the parsed catalogs content:build reports. */
 export type ValidatedContent = ReturnType<typeof validateContent>;
 
@@ -196,16 +228,54 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       : sources.layers.find((item) => item.type === "journey" && file.startsWith(item.directory + path.sep));
     return layer && displayPath(root, layer.directory);
   };
-  const parseCatalog = <T>(schema: { parse(value: unknown): T }, kind: CatalogKind): T => parseSourceCatalog(sources, schema, kind);
+  // The fields whose text is not in their marked language: warnings, not errors (data-language.ts).
+  const languageNotes: ContentWarning[] = [];
+  /** The file a merged catalog's field comes from: the layer of its list item or record key, else the catalog's first file. */
+  const catalogFileOf = (kind: CatalogKind, fieldPath: string) => {
+    const merged = sources.catalogs[kind];
+    const [, key, index] = /^([^.[]+)(?:\[(\d+)\]|\.([^.[]+))?/u.exec(fieldPath) ?? [];
+    const recordKey = /^[^.[]+\.([^.[]+)/u.exec(fieldPath)?.[1];
+    const file = (index !== undefined ? merged?.provenance.items[key]?.[Number(index)] : undefined) ??
+      (recordKey !== undefined ? merged?.provenance.keys[key]?.[recordKey] : undefined) ?? merged?.provenance.files[0];
+    return file ? displayPath(root, file) : kind;
+  };
+  const parseCatalog = <T>(schema: z.ZodType<T>, kind: CatalogKind): T => {
+    const parsed = parseSourceCatalog(sources, schema, kind);
+    const merged = sources.catalogs[kind];
+    if (merged) languageNotes.push(...dataLanguageWarnings(schema, merged.value, (fieldPath) => catalogFileOf(kind, fieldPath)));
+    return parsed;
+  };
   // Messages name the real Ink file of a story, whichever layer it is in.
   const storyFiles = new Map(sources.storyFiles.map((story) => [story.id, displayPath(root, story.file)]));
   const storyLabel = (storyId: string) => storyFiles.get(storyId) ?? `${storyId}.ink`;
   const journey = parseCatalog(journeySchema, "progression/journey.json");
   const tourism = parseCatalog(tourismCatalogSchema, "tourism/catalog.json");
-  const encounterInput = parseCatalog(encounterCatalogInputSchema, "encounters/catalog.json");
+  const authoredEncounterInput = parseCatalog(encounterCatalogInputSchema, "encounters/catalog.json");
+  // The head tags of the encounters' Ink (encounter-head.ts): read and removed before compiling,
+  // they become the encounters' entry rules and `repeatable` (written to the generated catalogs).
+  const encounterHeads = readEncounterHeads(sources, authoredEncounterInput.encounters, tourism.landmarks, storyLabel);
+  const encounterInput = { ...authoredEncounterInput, encounters: authoredEncounterInput.encounters.map((event) => {
+    const head = encounterHeads.get(event.storyId);
+    if (head?.repeat !== undefined && event.repeatable !== undefined)
+      throw new Error(`Encounter repetition is written twice: ${event.id} has repeatable in encounters/catalog.json and # repeat: in ${storyLabel(event.storyId)} (keep one)`);
+    return head?.repeat === "always" ? { ...event, repeatable: true } : event;
+  }) };
   const encounterCatalog = normalizeEncounterCatalog(encounterInput, tourism.landmarks);
-  const encounterEntryRules = parseCatalog(encounterEntryRulesSchema, "encounters/entry-rules.json");
+  const authoredEntryRules = parseCatalog(encounterEntryRulesSchema, "encounters/entry-rules.json");
+  const headRules = encounterCatalog.encounters.flatMap((event) => {
+    const head = encounterHeads.get(event.storyId);
+    if (!head) return [];
+    if (authoredEntryRules.entries.some((rule) => rule.encounterId === event.id))
+      throw new Error(`Encounter entry rule is written twice: ${event.id} has a rule in encounters/entry-rules.json and head tags in ${storyLabel(event.storyId)} (keep one)`);
+    return [headEntryRule(event.id, head)];
+  });
+  const encounterEntryRules = encounterEntryRulesSchema.parse({ ...authoredEntryRules, entries: [...authoredEntryRules.entries, ...headRules] });
   validateEncounterEntryRules(encounterEntryRules, encounterCatalog.encounters);
+  // What the generated mirror holds instead of the merged sources (content-outputs.ts).
+  const catalogOverrides: Partial<Record<CatalogKind, unknown>> = encounterHeads.size ? {
+    "encounters/catalog.json": { ...(sources.catalogs["encounters/catalog.json"]?.value as object), encounters: encounterInput.encounters },
+    "encounters/entry-rules.json": encounterEntryRules,
+  } : {};
   const encounterStoryIds = [...new Set(encounterCatalog.encounters.flatMap((event) => [
     event.storyId,
     ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : []),
@@ -362,7 +432,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const storySources: Record<string, string> = {};
   const storyMemoryReferences: Record<string, string[]> = {};
   let routes = 0;
-  for (const { id, file, source } of sources.storyFiles) {
+  for (const { id, file, source: authored } of sources.storyFiles) {
+    const source = encounterHeads.has(id) ? withContext(file, () => readEncounterHead(authored).source) : authored;
     storyMemoryReferences[id] = withContext(file, () => validateMemoryReferences(source, Object.keys(presentation.memories)));
     const itemReferences = withContext(file, () => validateItemReferences(source, encounterCatalog.items.map((item) => item.id)));
     if (itemReferences.length && !encounterStoryIds.includes(id))
@@ -543,6 +614,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     const quiz = isExample
       ? parseSourceFile(quizExampleSchema, file, data)
       : parseSourceFile(quizSchema, file, data);
+    languageNotes.push(...dataLanguageWarnings(isExample ? quizExampleSchema : quizSchema, data, displayPath(root, file)));
     if (!isExample) {
       if (quizzes[quiz.id]) throw new Error(`Duplicate quizId: ${quiz.id}`);
       quizzes[quiz.id] = quiz as QuizDefinition;
@@ -721,6 +793,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       checkRouteModes(travel, travelFile, transport);
       checkCityRentals(travel, settings.rentals, settingsFile, transport);
       const review = checkCityTransit({ travel, transit, transitFile, travelFile }, transport);
+      if (transit !== undefined) languageNotes.push(...dataLanguageWarnings(transitLedgerSchema, transit, transitFile));
       if (review) {
         transitReviews.set(owner.id, [...(transitReviews.get(owner.id) ?? []), review]);
         transitWarnings.push(...cityTransitWarnings(review, { travel, transitFile, travelFile }));
@@ -761,6 +834,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       landmarks: cityLandmarks, journey: cityJourney, stories, quizzes,
       responseProfileIds: responseProfiles.map((profile) => profile.id), memoryIds: Object.keys(presentation.memories), context,
       validateQuiz: validateQuizEntries,
+      onWarning: (warning) => languageNotes.push(warning),
     });
     if (episodes.length) validateJourney(cityJourney, current, balance.apCap, cityLandmarks, battles, quizzes);
     else if (cityJourney.storyBattles.length) throw new Error(`Prototype battle has no city episodes: ${current.id}`);
@@ -785,10 +859,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     validateNoInkRandom(compiled);
     const backgrounds = travels.find(({ city }) => city.id === current.id)!.travel.places.map((place) => place.backgroundId);
     epilogueScenarios += withContext(storyLabel(storyId), () =>
-      validateEpilogue(compiled, { ...context, backgroundIds: backgrounds }, (text, speaker, explicitEmotion) => {
-        if (!["heroine", "narrator"].includes(speaker)) throw new Error("City arrival cannot speak for the player");
-        observeForStory(storyId)(text, speaker, explicitEmotion);
-      }));
+      validateEpilogue(compiled, { ...context, backgroundIds: backgrounds }, observeForStory(storyId)));
   }
   for (const episode of journey.episodes) {
     if (!episode.epilogueStoryId) continue;
@@ -838,8 +909,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       cities: travels.map(({ city, travel, settings }) => ({ city, places: travel.places, hotelPlaceId: settings.hotelPlaceId })),
       backgrounds: presentation.backgrounds,
     },
+    /** The generated mirror's catalogs that differ from the merged sources (the encounters' head tags). */
+    catalogOverrides,
     /** Probable mistakes that do not stop the build (content-report.ts). */
-    warnings: [...contentWarnings(sources), ...transitWarnings, ...conditionNotes],
+    warnings: [...contentWarnings(sources), ...transitWarnings, ...conditionNotes, ...languageNotes],
     /** What each journey folder provides, for the build report. */
     journeyContents: journeyContents(sources),
     /** Each journey's in-city transport (modes and transit ledger counts), for the build report. */

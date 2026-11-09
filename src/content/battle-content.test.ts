@@ -1,3 +1,4 @@
+import { dataLanguageWarnings } from "../../scripts/data-language";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { readFileSync } from "node:fs";
@@ -7,7 +8,7 @@ import { Story } from "inkjs";
 import { buildContent } from "../../scripts/content-pipeline";
 import { changeCatalogEntry, prepareContentFixture, quizSourceFile, storySourceFile } from "./test-fixtures";
 import battleData from "./generated/content/battles/catalog.json";
-import type { BattleDefinition } from "./schemas";
+import { quizSchema, type BattleDefinition } from "./schemas";
 import { parseStoryTags } from "./tags";
 
 let fixture: string;
@@ -182,19 +183,20 @@ describe("battle content contract", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow(/"claimType"[\s\S]*Invalid option/);
   });
 
-  it("rejects Japanese questions and English explanations", async () => {
-    await changeQuiz((quiz) => {
-      quiz.questions[0].questionEn = "どこに座っていますか？";
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "must be English",
-    );
+  it("warns about Japanese questions and English explanations without stopping the build (data-language)", async () => {
+    const languageWarnings = async () => (await buildContent(fixture, false)).warnings.filter((warning) => warning.kind === "data-language");
+    expect(await languageWarnings()).toEqual([]);
+    // The English fields (a question in Japanese; its translation's source is checked on its own, so read with the schema here).
+    const japaneseQuestion = structuredClone(quizData);
+    japaneseQuestion.questions[0].questionEn = "どこに座っていますか？";
+    expect(dataLanguageWarnings(quizSchema, japaneseQuestion, "q.json").map((warning) => warning.message)).toEqual([
+      "クイズの英語の欄が英文になっていません：q.json の questions[0].questionEn「どこに座っていますか？」。クイズの画面と英語ノートは、この欄を英文として扱います（止めません）。"]);
     await changeQuiz((quiz) => {
       quiz.questions[0].correctExplanationJa = "He sits in the center.";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Expected Japanese text",
-    );
+    const japanese = await languageWarnings();
+    expect(japanese).toHaveLength(1);
+    expect(japanese[0].message).toMatch(/^日本語の欄に日本語がありません：.+ の questions\[0\]\.correctExplanationJa「He sits in the cente…」/u);
   });
 
   it("rejects duplicate production quiz IDs across files", async () => {
@@ -245,14 +247,12 @@ describe("battle content contract", () => {
     );
   });
 
-  it("requires Japanese dialogue on non-default branches", async () => {
+  it("accepts English dialogue on non-default branches (any language may be written: decision 28)", async () => {
     await changeInk(
       "「ランプを探してた。こっちの部屋の窓と、絵の光を合わせたんですね。」",
       "You missed it.",
     );
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Battle dialogue must be Japanese",
-    );
+    await expect(buildContent(fixture, false)).resolves.toBeDefined();
   });
 
   it("accepts the enemy speaker through the shared allowlisted metadata parser", () => {

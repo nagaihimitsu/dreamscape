@@ -33,7 +33,8 @@ export function validateTravelState(state: GameState): void {
   if (travel.activeEvent) {
     const id = travel.activeEvent.eventId;
     const episode = episodes.find((item) => item.id === id);
-    const sceneMatches = dates.some((item) => item.id === id)
+    // An encounter before a landmark's main part keeps the trip it runs on (validateEncounterState checks its landmark).
+    const sceneMatches = state.activeEncounter?.trip?.eventId === id || (dates.some((item) => item.id === id)
       ? state.activeDate?.dateId === id
       : episode
         ? state.activeTourism?.landmarkId === episode.landmarkId ||
@@ -42,7 +43,7 @@ export function validateTravelState(state: GameState): void {
         : state.activeBattle?.battleId === id ||
           battles.some((battle) => battle.id === id && !!battle.landmarkId &&
             (state.activeTourism?.landmarkId === battle.landmarkId ||
-              state.activeEncounter?.returnTourism?.landmarkId === battle.landmarkId));
+              state.activeEncounter?.returnTourism?.landmarkId === battle.landmarkId)));
     if (!sceneMatches) throw new Error("旅行の時間枠と進行中の場面が一致しません。");
   }
 }

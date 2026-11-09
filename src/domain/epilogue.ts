@@ -39,11 +39,10 @@ function variables(state: GameState) {
     ending_reached: state.endingReached,
   };
 }
-function checkedStep(step: StoryStep, arrival = false) {
+/** Arrivals and epilogues have no choices or effects yet (stage 3); any speaker may talk (decision 36). */
+function checkedStep(step: StoryStep) {
   if (step.effects.length || step.frame.choices.length)
     throw new Error("都市エピローグに恋愛効果や選択肢は含められません。");
-  if (arrival && !["heroine", "narrator"].includes(step.frame.speaker))
-    throw new Error("到着の会話はヒロインとナレーションだけで進みます。");
   return { storyState: step.storyState, frame: step.frame };
 }
 
@@ -56,7 +55,7 @@ export function startCityArrival(state: GameState, expectedRevision: number): Ga
   return { ...state, revision: state.revision + 1, activeEpilogue: {
     episodeId: finale.id, kind: "arrival", logoComplete: false, contentHash: storyFingerprint(storyId),
     ...checkedStep(beginStory(storyId, state.playerName, state.heroineName, variables(state), [], {},
-      getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId)), true),
+      getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId))),
   } };
 }
 
@@ -136,7 +135,7 @@ export function advanceCityEpilogue(
     activeEpilogue: {
       ...active,
       ...checkedStep(
-        continueStory(activeEpilogueStoryId(active)!, active.storyState, active.frame), arrival,
+        continueStory(activeEpilogueStoryId(active)!, active.storyState, active.frame),
       ),
     },
   };
@@ -166,7 +165,7 @@ export function validateEpilogueState(state: GameState): void {
     state.activeTourism ||
     state.activeBattle ||
     !storyId ||
-    active.frame.choices.length || (arrival && !["heroine", "narrator"].includes(active.frame.speaker))
+    active.frame.choices.length
   )
     throw new Error(
       "都市エピローグの途中データを確認できません。元のデータは保管されています。",

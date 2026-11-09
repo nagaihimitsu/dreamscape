@@ -6,7 +6,8 @@
 import { describe, expect, it } from "vitest";
 import { getJourney } from "../../../src/content/journeys";
 import { cityStart } from "../../../src/dev/scenario-builders";
-import { advanceEncounter, chooseEncounter, encounterCanFinish, finishEncounter } from "../../../src/domain/encounter";
+import { advanceEncounter, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter } from "../../../src/domain/encounter";
+import { finishTravelEventIfComplete } from "../../../src/domain/travel-game";
 import { validateGameState, type GameState } from "../../../src/domain/game";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 import { journeyStorage } from "../../../src/persistence/journey-storage";
@@ -32,7 +33,7 @@ function saved(state: GameState): GameState {
 const records = ({ seenEncounterIds, completedEncounterIds, inventory, itemUses }: GameState) =>
   ({ seenEncounterIds, completedEncounterIds, inventory, itemUses });
 
-/** Read the encounter (met in a new observation of its landmark) up to its choice and pick the option. */
+/** Read the encounter (met at its moment: the stall on a departure to the tower, the gift after its battle) up to its choice and pick the option. */
 function choose(state: GameState, encounterId: string, optionId: string): GameState {
   let next = meetEncounter(state, encounterId);
   expect(next.activeEncounter?.encounterId).toBe(encounterId);
@@ -44,14 +45,14 @@ function choose(state: GameState, encounterId: string, optionId: string): GameSt
   return validateGameState(JSON.parse(JSON.stringify(chooseEncounter(next, choice.index, next.revision))));
 }
 
-/** Read the chosen encounter to its end and finish it (back to the observation). */
+/** Read the chosen encounter to its end and finish it; its moment goes on (after the stall, the tower's guide opens). */
 function finish(state: GameState): GameState {
   let next = state;
   for (let step = 0; !encounterCanFinish(next); step++) {
     expect(step).toBeLessThan(60);
     next = advanceEncounter(next, next.revision);
   }
-  const done = finishEncounter(next, next.revision);
+  const done = finishTravelEventIfComplete(next, continueTourismEncounters(next, finishEncounter(next, next.revision), () => 0));
   expect(done.activeEncounter).toBeNull();
   return validateGameState(JSON.parse(JSON.stringify(done)));
 }

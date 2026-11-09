@@ -1,3 +1,4 @@
+import { encounterVisitSlot } from "../domain/encounter";
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { getJourney } from "../content/journeys";
@@ -98,7 +99,9 @@ describe("Debug launch URLs against the content", () => {
       for (const [scene, targets] of Object.entries(debugTargets(cityId)) as Array<[DebugSettings["scene"], DebugTarget[]]>) {
         expect(firstDebugTarget(targets), `${cityId} ${scene}`).not.toBe("");
         for (const target of targets) {
-          const settings = { ...base, cityId, scene, id: target.id };
+          // An encounter before or after a landmark's main part starts on the departure to it: from the journey's start.
+          const settings: DebugSettings = { ...base, cityId, scene, id: target.id,
+            ...(scene === "encounter" && encounterVisitSlot(target.id) !== "observe" ? { progress: "initial" } : {}) };
           if (!target.unavailable) {
             const game = createDebugState(settings);
             expect(validateGameState(game), `${cityId} ${scene} ${target.id}`).toEqual(game);
@@ -112,11 +115,14 @@ describe("Debug launch URLs against the content", () => {
         }
       }
     }
-    expect(unavailable).toEqual(expect.arrayContaining(["castello_pick", "smp_mihon_bookmark_gift"]));
+    expect(unavailable).toEqual(expect.arrayContaining(["castello_pick"]));
+    // The gift needs the bookmark, which the stall before it (played with its first choice) gives.
     expect(debugTargets("mihon").encounter).toEqual([
       { id: "smp_mihon_bookmark_stall", name: "三時のしおりの露店" },
-      { id: "smp_mihon_bookmark_gift", name: "しおりを渡す", unavailable: "品物「三時のしおり」が必要なため開けません" },
+      { id: "smp_mihon_bookmark_gift", name: "しおりを渡す" },
     ]);
+    expect(() => createDebugState({ ...base, cityId: "mihon", scene: "encounter", id: "smp_mihon_bookmark_stall" }))
+      .toThrow("旅の進行を「旅の開始時」にしてください。");
   });
 });
 

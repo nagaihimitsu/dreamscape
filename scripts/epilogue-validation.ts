@@ -1,4 +1,5 @@
 import { Story } from "inkjs";
+import { checkLinesWithoutChoice } from "./ink-validation";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
 import type { DialogueObserver } from "./dialogue-expression-validation";
 
@@ -34,7 +35,7 @@ export function validateEpilogue(
       let speaker: string = "narrator";
       let explicitEmotion = false;
       while (story.canContinue) {
-        if (++lines > 50) throw new Error("City epilogue is too long or loops");
+        checkLinesWithoutChoice(++lines);
         const line = story.Continue()?.trim() ?? "";
         const tags = parseStoryTags(story.currentTags ?? [], context);
         if (tags.speaker) speaker = tags.speaker;
@@ -45,12 +46,6 @@ export function validateEpilogue(
           hasText = true;
           observe?.(line, speaker, explicitEmotion);
           explicitEmotion = false;
-          if (
-            !/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(
-              line,
-            )
-          )
-            throw new Error("City epilogue must be Japanese");
         }
       }
       if (!hasText || story.currentChoices.length)
