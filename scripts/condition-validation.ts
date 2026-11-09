@@ -39,6 +39,17 @@ export function dateConditionOwners(content: Pick<ConditionContent, "dates">): C
   }));
 }
 
+/** The entry rules' `when`, checked in each encounter's city. Rules naming an unknown encounter are refused elsewhere. */
+export function entryRuleConditionOwners(content: Pick<ConditionContent, "encounters">,
+  rules: readonly { encounterId: string; when?: Condition }[]): ConditionOwner[] {
+  return rules.flatMap((rule) => {
+    const encounter = content.encounters.find((item) => item.id === rule.encounterId);
+    return encounter && rule.when
+      ? [{ label: `the entry rule of encounter ${rule.encounterId}`, cityId: encounter.cityId, conditions: [{ field: "when", condition: rule.when }] }]
+      : [];
+  });
+}
+
 /** The city that owns what a leaf names, when it has one. */
 export function referenceCity(content: ConditionContent, reference: LeafReference): string | undefined {
   switch (reference.kind) {

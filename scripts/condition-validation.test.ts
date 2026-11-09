@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Condition } from "../src/content/condition-schemas";
-import { checkConditions, conditionErrors, dateConditionOwners, type ConditionContent } from "./condition-validation";
+import { checkConditions, conditionErrors, dateConditionOwners, entryRuleConditionOwners, type ConditionContent } from "./condition-validation";
 
 /** A two-city journey (alpha → beta) and a one-city journey (gamma), in memory. */
 const content: ConditionContent = {
@@ -68,6 +68,20 @@ describe("condition build checks", () => {
     expect(errorsOf({ item: { id: "gamma_shell", is: "left_behind" } })[0]).toMatch(/^An item is left behind only after leaving its city/);
     // Other statuses of another city's item are history and may be read anywhere.
     expect(errorsOf({ item: { id: "beta_coin", is: "used" } }, "alpha")).toEqual([]);
+  });
+
+  it("checks an entry rule's when in its encounter's city", () => {
+    const owners = entryRuleConditionOwners(content, [
+      { encounterId: "alpha_meeting", when: { all: [{ battlePlayed: "alpha_battle" }, { item: { id: "alpha_key", is: "held" } }] } },
+      { encounterId: "alpha_meeting" },
+      { encounterId: "missing_meeting", when: { episodeCompleted: "missing" } },
+    ]);
+    expect(owners).toHaveLength(1);
+    expect(conditionErrors(content, owners)).toEqual([]);
+    expect(conditionErrors(content, entryRuleConditionOwners(content, [{ encounterId: "alpha_meeting", when: { item: { id: "beta_coin", is: "held" } } }])))
+      .toEqual([expect.stringMatching(/^An item of another city is never held in a condition of the entry rule of encounter alpha_meeting \(when\)/)]);
+    expect(conditionErrors(content, entryRuleConditionOwners(content, [{ encounterId: "alpha_meeting", when: { not: { landmarkVisited: "nowhere" } } }])))
+      .toEqual(["Unknown landmark in a condition of the entry rule of encounter alpha_meeting (when): nowhere"]);
   });
 
   it("checks until as well as when and lists every problem at once", () => {

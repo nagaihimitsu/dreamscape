@@ -65,11 +65,7 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
     ],
   },
   "encounters/entry-rules.json": {
-    entries: (entry) => [
-      ...fields(entry, "encounter", ["encounterId"]), ...fields(entry, "landmark", ["landmarkId"]),
-      ...fields(entry, "episode", ["completedEpisodeId"]), ...fields(entry, "story", ["storyId"]),
-      ...fields(entry, "battle", ["completedStoryBattleId"]),
-    ],
+    entries: (entry) => [...fields(entry, "encounter", ["encounterId"]), ...conditionReferences(entry.when, "when")],
   },
   "learning/details.json": { questions: (entry, key) => [ref("question", "question ID", key), ...fields(entry, "story", ["storyId"])] },
   "learning/translations.json": { questions: (_, key) => [ref("question", "question ID", key)] },

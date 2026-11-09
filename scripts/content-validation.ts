@@ -22,7 +22,7 @@ import { characterCatalogSchema } from "../src/content/character-assets";
 import { encounterCatalogInputSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
 import { encounterEntryRulesSchema, validateEncounterEntryRules } from "../src/content/encounter-entry-rules";
 import { validateEncounterContent } from "./encounter-validation";
-import { checkConditions, dateConditionOwners, type ConditionContent } from "./condition-validation";
+import { checkConditions, dateConditionOwners, entryRuleConditionOwners, type ConditionContent } from "./condition-validation";
 import { validateBackgroundAssets, validateCharacters } from "./presentation-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
 import { dialogueReactionCatalogSchema } from "../src/content/dialogue-reactions";
@@ -205,7 +205,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const encounterInput = parseCatalog(encounterCatalogInputSchema, "encounters/catalog.json");
   const encounterCatalog = normalizeEncounterCatalog(encounterInput, tourism.landmarks);
   const encounterEntryRules = parseCatalog(encounterEntryRulesSchema, "encounters/entry-rules.json");
-  validateEncounterEntryRules(encounterEntryRules, encounterCatalog.encounters, journey);
+  validateEncounterEntryRules(encounterEntryRules, encounterCatalog.encounters);
   const encounterStoryIds = [...new Set(encounterCatalog.encounters.flatMap((event) => [
     event.storyId,
     ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : []),
@@ -693,20 +693,13 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     throw new Error("Unknown reward episode");
   if (journey.rewards.some((reward) => reward.battleId !== undefined && !journey.storyBattles.some((battle) => battle.battleId === reward.battleId)))
     throw new Error("Unknown reward story battle");
-  // Conditions of dates (scripts/condition-validation.ts): names that exist, readable where checked.
+  // Conditions of dates and encounter entry rules (scripts/condition-validation.ts): names that exist, readable where checked.
   const conditionContent: ConditionContent = {
     journeys: journeyCatalog.journeys, cities, episodes: journey.episodes, battles, landmarks: tourism.landmarks,
     encounters: encounterCatalog.encounters, items: encounterCatalog.items, dates,
   };
-  checkConditions(conditionContent, dateConditionOwners(conditionContent));
-  for (const rule of encounterEntryRules.entries) {
-    const encounter = encounterCatalog.encounters.find((item) => item.id === rule.encounterId)!;
-    const prerequisiteCity = rule.completedEpisodeId
-      ? journey.episodes.find((episode) => episode.id === rule.completedEpisodeId)?.cityId
-      : rule.completedStoryBattleId ? battleCity(rule.completedStoryBattleId) : undefined;
-    if (prerequisiteCity !== encounter.cityId)
-      throw new Error(`Encounter entry city mismatch: ${encounter.id}`);
-  }
+  const conditionOwners = [...dateConditionOwners(conditionContent), ...entryRuleConditionOwners(conditionContent, encounterEntryRules.entries)];
+  checkConditions(conditionContent, conditionOwners);
   unique([...productionQuestionIds, ...encounterCatalog.encounters.flatMap((event) => event.quiz ? [event.quiz.question.id] : [])], "production quiz question ID");
   const transitReviews = new Map<string, CityTransitReview[]>();
   // Walks and route sources a city with a ledger lacks: warnings, not errors (transport-validation.ts).
