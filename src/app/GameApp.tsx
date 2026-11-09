@@ -44,7 +44,7 @@ import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
 import { JourneyHud } from "./JourneyHud";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
-import { advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterOptionAvailability, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterCanFinish, proceedFromTourism, continueTourismEncounters } from "../domain/encounter";
+import { advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterOptionAvailability, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterCanFinish, proceedFromTourism, continueTourismEncounters, encounterLeadsOnward, leaveBattleToFreeTime } from "../domain/encounter";
 import { EpilogueScreen } from "../features/journey/EpilogueScreen";
 import { startCityEpilogue, advanceCityEpilogue, completeArrivalLogo } from "../domain/epilogue";
 import {
@@ -52,7 +52,6 @@ import {
   getCurrentEpisode,
   getNextEpisode,
   getNextStoryBattle,
-  leaveBattleResult,
   startEpisode,
 } from "../domain/chapter";
 import { claimPendingRewards } from "../domain/rewards";
@@ -468,7 +467,7 @@ export function GameApp({
                 return { index: choice.index, textEn: choice.text, translationJa: choice.translationJa ?? option?.translationJa ?? "", cost: option?.cost, unavailableReason: availability.available ? undefined : availability.reason };
               }),
               ended: encounterCanFinish(game),
-              finishLabel: activeEncounter.returnTourism ? "観光に戻る" : undefined,
+              finishLabel: activeEncounter.returnTourism ? "観光に戻る" : encounterLeadsOnward(game) ? "先へ進む" : undefined,
               quiz: (activeEncounter.phase === "quiz" || activeEncounter.phase === "feedback") && currentEncounter.quiz ? {
                 id: currentEncounter.quiz.question.id,
                 questionEn: currentEncounter.quiz.question.questionEn,
@@ -566,7 +565,7 @@ export function GameApp({
                 : undefined
             }
             onLeave={resultExits.leave ? () => {
-              commit((state) => leaveBattleResult(state, game.revision));
+              commit((state) => leaveBattleToFreeTime(state, game.revision, nextRomanceRoll));
             } : undefined}
           />
         ) : active && frame ? (

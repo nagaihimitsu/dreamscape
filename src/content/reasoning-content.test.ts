@@ -231,7 +231,9 @@ describe("special battle content contract", () => {
   });
 
   it.each([
-    ["Only English.\n-> END", "Battle dialogue must be Japanese"],
+    // English lines are accepted (decision 28); an endless loop is not (decision 38).
+    ["Only English.\n-> END", null],
+    ["- (again)\n輪の中の一行。\n-> again", "Story reads more than 1000 lines without a choice or an end"],
     [
       "# effect: forbidden\n不正な報酬。\n-> END",
       "Battle story cannot apply effects",
@@ -260,13 +262,14 @@ describe("special battle content contract", () => {
           invalid,
         ].join("\n"),
       );
-      expect(() =>
+      const validate = () =>
         validateBattleStory(compiled, battle, {
           effectIds: ["forbidden"],
           backgroundIds: [],
           emotionIds: [],
-        }),
-      ).toThrow(message);
+        });
+      if (message === null) expect(validate()).toBeGreaterThan(0);
+      else expect(validate).toThrow(message);
     },
   );
 

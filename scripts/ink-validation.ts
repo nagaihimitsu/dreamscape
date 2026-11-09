@@ -9,6 +9,18 @@ import { unique } from "./content-validation-utils";
 
 export const commonDateEffect = /^common_date_(first|second)_(attentive|playful|honest|bold|provocative)$/;
 
+/**
+ * The one length check of a scene's Ink (decision 38): a path that reads more than this many
+ * lines without reaching a choice or its end stops the build (it loops without end). Scenes
+ * have no length limit by kind; the runtime's own guard (src/story/runtime.ts) is separate.
+ */
+export const MAX_LINES_WITHOUT_CHOICE = 1000;
+/** Call with the count of lines read since the last choice (or the start); throws past the limit. */
+export function checkLinesWithoutChoice(count: number): void {
+  if (count > MAX_LINES_WITHOUT_CHOICE)
+    throw new Error(`Story reads more than ${MAX_LINES_WITHOUT_CHOICE} lines without a choice or an end (an endless loop?)`);
+}
+
 export function compileInk(source: string, filename = "story.ink"): string {
   const compiler = new Compiler(
     source,
@@ -159,8 +171,7 @@ export function validateStory(
     let explicitEmotion = choiceMetadata.emotion !== undefined;
     let lineCount = 0;
     while (story.canContinue) {
-      if (++lineCount > 200)
-        throw new Error("Story contains a loop or too many lines");
+      checkLinesWithoutChoice(++lineCount);
       const text = story.Continue()?.trim() ?? "";
       const tags = parseStoryTags(story.currentTags ?? [], context);
       seenEffects = appendEffects(seenEffects, tags.effects);
@@ -194,8 +205,8 @@ export function validateStory(
       routes += 1;
       return;
     }
-    if (choices.length !== 3)
-      throw new Error(`Expected three choices; found ${choices.length}`);
+    // A choice moment offers at least one choice; how many is the author's (decision 41).
+    // (With none, the route ends here and the count of choice moments above stops it.)
     if (choiceCount >= contract.choiceCount)
       throw new Error("Too many choice moments");
     unique(
@@ -232,7 +243,7 @@ export function validateStory(
           let guard = 0;
           let response = "";
           while (probe.canContinue) {
-            if (++guard > 200) throw new Error("Story contains a loop or too many lines");
+            checkLinesWithoutChoice(++guard);
             const line = probe.Continue()?.trim() ?? "";
             immediate = appendEffects(immediate, parseStoryTags(probe.currentTags ?? [], context).effects);
             if (line) { response = line; break; }
@@ -263,9 +274,7 @@ export function validateStory(
     }
   };
   visit(initial.state.ToJson(), 0, [], "narrator");
-  const expectedRoutes = (randomReactions ? 6 : 3) ** contract.choiceCount;
-  if (routes !== expectedRoutes)
-    throw new Error(`Expected ${expectedRoutes} routes; found ${routes}`);
+  // Every route was followed to its end above (each choice, with both reactions when random).
   return routes;
 }
 
@@ -283,7 +292,7 @@ export function validateReasoningIntroduction(compiled: string, context: TagCont
   let lines = 0;
   let frames = 0;
   while (story.canContinue) {
-    if (++lines > 100) throw new Error("Reasoning introduction is too long");
+    checkLinesWithoutChoice(++lines);
     const text = story.Continue()?.trim() ?? "";
     const tags = parseStoryTags(story.currentTags ?? [], context);
     if (tags.speaker) speaker = tags.speaker;
@@ -293,8 +302,6 @@ export function validateReasoningIntroduction(compiled: string, context: TagCont
       observe?.(text, speaker, explicitEmotion);
       explicitEmotion = false;
       if (speaker !== "heroine") throw new Error("Reasoning introduction must be spoken by the heroine");
-      if (!/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(text))
-        throw new Error("Reasoning introduction must be in Japanese");
       frames++;
     }
   }

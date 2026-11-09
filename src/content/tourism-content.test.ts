@@ -203,13 +203,13 @@ describe("tourism content contract", () => {
     );
   });
 
-  it("requires Japanese explanation text and a known claim classification", async () => {
+  it("warns about an explanation without Japanese (data-language) and requires a known claim classification", async () => {
     await changeEntry("clues", clueIds[0], (clue) => {
       clue.descriptionJa = "Just look here.";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Expected Japanese tourism text",
-    );
+    const warnings = (await buildContent(fixture, false)).warnings.filter((warning) => warning.kind === "data-language");
+    expect(warnings).toHaveLength(1);
+    expect(warnings[0].message).toMatch(/^日本語の欄に日本語がありません：.+ の clues\[\d+\]\.descriptionJa「Just look here\.」/u);
     await changeEntry("clues", clueIds[0], (clue) => {
       (clue.sources[0] as { claimType: string }).claimType = "maybe_true";
     });
@@ -225,7 +225,7 @@ describe("tourism content contract", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow("(landmark last_supper): Missing tourism guide variable: player_address");
   });
 
-  it("forbids rewards, choices and non-Japanese prose in tourism guides", async () => {
+  it("forbids rewards and choices in tourism guides, and accepts English prose", async () => {
     const original = await readFile(path.join(fixture, guidePath), "utf8");
     await writeFile(
       path.join(fixture, guidePath),
@@ -248,8 +248,7 @@ describe("tourism content contract", () => {
       path.join(fixture, guidePath),
       original.replace("-> END", "Look at this painting.\n-> END"),
     );
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Tourism guide must be Japanese",
-    );
+    // Any language may be written (decision 28).
+    await expect(buildContent(fixture, false)).resolves.toBeDefined();
   });
 });

@@ -1,12 +1,9 @@
 import { z } from "zod";
 import { tourismSourceSchema } from "./tourism-schemas";
+import { japaneseText as japanese } from "./text-language";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const text = z.string().trim().min(1);
-const japanese = text.refine(
-  (value) => /[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(value),
-  "Expected Japanese destination text",
-);
 
 /** Real places visited on dates; they do not imply an observation or battle. */
 export const dateDestinationSchema = z.object({

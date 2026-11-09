@@ -1,5 +1,5 @@
 import { InteractiveEnglish } from "../learning/InteractiveEnglish";
-import { revealTranslation, toggleTranslation, visible, TranslationAll, type Part } from "../learning/Translations";
+import { choiceMark, revealTranslation, toggleTranslation, visible, TranslationAll } from "../learning/Translations";
 import type { Learning } from "../learning/useLearning";
 import "./encounter.css";
 
@@ -31,9 +31,9 @@ export function EncounterChoices({
   const hasPrices = choices.some((choice) => (choice.cost ?? 0) > 0);
   return (
     <div className="encounter-choices" aria-label="返答を選ぶ">
-      {choices.some((choice) => choice.translationJa) && <TranslationAll learning={learning} id={id} />}
+      {choices.some((choice) => choice.translationJa) && <TranslationAll learning={learning} id={id} parts={["question", ...choices.map((_, ordinal) => choiceMark(ordinal))]} />}
       {choices.map((choice, ordinal) => {
-        const part = (["A", "B", "C"] as const)[ordinal] as Part;
+        const part = choiceMark(ordinal);
         const isOpen = visible(learning, id, part);
         return (
           <div className="encounter-choice" key={choice.index}>

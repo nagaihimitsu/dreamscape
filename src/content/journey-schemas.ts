@@ -1,15 +1,7 @@
 import { z } from "zod";
+import { japaneseText as japanese } from "./text-language";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
-const japanese = z
-  .string()
-  .trim()
-  .min(1)
-  .refine(
-    (value) =>
-      /[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(value),
-    "Expected Japanese journey text",
-  );
 
 export const episodeSchema = z
   .object({

@@ -3,10 +3,14 @@
 // - 品物や費用のルールがある交流は、各選択肢に # option: で安定IDを付け、カタログの options と結ぶ。
 // - 選択後の会話は日本語で、どの枝も最後まで進む。# effect や所持金・品物の操作はInkに書かない（ゲーム側が行う）。
 // - 他の人物の言葉は、誰の発言かが分かる地の文に入れる。見本の人物と品物は架空。
+// - 【任意：頭の札】ファイルの頭（VAR の後、最初の文の前）の # at: と # priority: で、起きる時点と順番を決める。
+//   -1 は「着いてすぐ、本筋（案内・観察・対決）の前」。地図で時計塔へ出発すると、この交流から始まる。
 VAR player_name = ""
 VAR heroine_name = ""
 VAR player_address = ""
 
+# at: visit mihon_clock_tower
+# priority: -1
 # background: smp_bg_mihon_clock_tower
 # speaker: narrator
 時計塔の下で、小さな女の子が布の上に手描きのしおりを並べている。どれも、針が三時を指していた。

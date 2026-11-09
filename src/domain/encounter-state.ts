@@ -29,14 +29,15 @@ export const activeEncounterSchema = z.object({
     deltas: z.object({ affection: z.number().int(), trust: z.number().int(), spark: z.number().int() }).strict(),
     result: z.enum(["positive", "negative"]),
   }).strict().nullable(),
-  // The landmark observation the encounter returns to (a return point, not a second active scene). Optional
-  // because stage 3's moments below take its place; until then validateEncounterState requires it (decision 7).
+  // Where the encounter goes on from: exactly one of these (validateEncounterState checks it matches the
+  // encounter's slot of its landmark's visit). The landmark observation it returns to (a return point,
+  // not a second active scene), for an encounter met while observing.
   returnTourism: z.object({ landmarkId: z.string().min(1), contentHash: z.string().min(1), encounterIds: z.array(z.string().min(1)).optional() }).strict().optional(),
-  // The other moments of the common condition system (design p5 §2.10, Appendix A), declared in the v14
-  // format for stage 3, which writes them: an encounter met on leaving a battle's result (the battle and the
-  // encounters of that chain), or on a trip to a map event (the event and the mode). Nothing writes them yet,
-  // so validateEncounterState refuses a save that holds one.
+  // After the landmark's main part: the battle whose result was left to free time and the encounters of
+  // that chain so far, in play order (the last is this one).
   afterBattle: z.object({ battleId: stableContentId, encounterIds: z.array(stableContentId) }).strict().optional(),
+  // Before the main part: the map event the trip goes to and its mode; the main part opens after the last
+  // of these encounters (the unified event design, stage 1).
   trip: z.object({ eventId: stableContentId, modeId: stableContentId }).strict().optional(),
 }).strict().refine((active) => [active.returnTourism, active.afterBattle, active.trip].filter(Boolean).length <= 1,
   "An encounter has at most one moment to continue from");

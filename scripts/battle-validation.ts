@@ -1,6 +1,7 @@
 import { Story } from "inkjs";
 import type { BattleDefinition } from "../src/content/schemas";
 import type { TourismClue } from "../src/content/tourism-schemas";
+import { checkLinesWithoutChoice } from "./ink-validation";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
 import type { DialogueObserver } from "./dialogue-expression-validation";
 
@@ -92,8 +93,7 @@ export function validateBattleStory(
     let speaker: string = "narrator";
     let explicitEmotion = false;
     while (story.canContinue) {
-      if (++lines > 200)
-        throw new Error("Battle story contains a loop or too many lines");
+      checkLinesWithoutChoice(++lines);
       const line = story.Continue()?.trim() ?? "";
       const tags = parseStoryTags(story.currentTags ?? [], context);
       if (tags.speaker) speaker = tags.speaker;
@@ -104,10 +104,6 @@ export function validateBattleStory(
         hasText = true;
         observe?.(line, speaker, explicitEmotion);
         explicitEmotion = false;
-        if (
-          !/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(line)
-        )
-          throw new Error(`Battle dialogue must be Japanese: ${line}`);
       }
     }
     if (story.currentChoices.length)

@@ -1,3 +1,4 @@
+import { encounterVisitSlot } from "../domain/encounter";
 import { battles, dateDestinations, dates, episodes, getCities, getCityContent, landmarks, type CityContent } from "../content";
 import { encounters } from "../content/encounters";
 import { battleCityId } from "../domain/chapter";
@@ -20,11 +21,14 @@ export type DebugTarget = { id: string; name: string; unavailable?: string };
 type Encounter = (typeof encounters.encounters)[number];
 
 /**
- * Debug's states hold no items: items come only from encounters, and Debug
- * never plays one before the scene. An encounter whose every choice needs an
- * item therefore never starts there (its observation refuses it: 必要な品物を持っていません).
+ * Debug's states hold no items: items come only from encounters. An encounter met while observing
+ * starts with no encounter played before it, so one whose every choice needs an item never starts
+ * there (its observation refuses it: 必要な品物を持っていません). One met before or after a
+ * landmark's main part follows its moment, playing the encounters before it with their first
+ * choices (startEncounterScene), which may give the item; when not, its start explains the rule.
  */
 function encounterTarget(item: Encounter): DebugTarget {
+  if (encounterVisitSlot(item.id) !== "observe") return { id: item.id, name: item.titleJa };
   const choices = item.options.filter((option) => !option.deferCompletion);
   const needed = choices.length && choices.every((option) => option.requiresItemId)
     ? [...new Set(choices.map((option) => option.requiresItemId!))] : [];

@@ -64,7 +64,7 @@ describe("draft journey scenario contracts", () => {
       renameSync(path.join(directory, "delhi/stories", guide), path.join(root, publishedStories, guide));
       expect(await validateJourneyScenario(root, "golden_triangle", directory, "delhi")).toEqual({
         journeyId: "golden_triangle", cities: ["delhi"], stories: 16, guides: 4,
-        battleScenarios: 83, dateRoutes: 10368, epilogueScenarios: 8, readyForPublication: false,
+        battleScenarios: 83, dateRoutes: 10368, epilogueScenarios: 8, warnings: [], readyForPublication: false,
       });
       // No journey (not only the checked one) is registered or released by a scenario check.
       expect({ project: manifests(process.cwd()), fixture: manifests(root) }).toEqual(before);
@@ -72,7 +72,7 @@ describe("draft journey scenario contracts", () => {
     } finally { rmSync(root, { recursive: true, force: true }); }
   }, 120_000);
 
-  it("rejects missing/extra scripts and protagonist dialogue, including unreachable branches", async () => {
+  it("rejects missing/extra scripts; protagonist dialogue, also in unreachable branches, is one warning", async () => {
     const { root, directory, plan, story } = fixture();
     const check = () => validateJourneyScenario(root, "golden_triangle", directory, "delhi");
     try {
@@ -89,7 +89,10 @@ describe("draft journey scenario contracts", () => {
       await expect(check()).rejects.toThrow(/extra.*unregistered/);
       rmSync(extra);
       writeFileSync(file, `${original}\n=== unused ===\n# speaker: player\n「勝手に話す主人公」\n-> END`);
-      await expect(check()).rejects.toThrow(/protagonist speaks only/);
+      // Not stopped (decision 36): one warning names the file.
+      const result = await check();
+      expect(result.warnings).toHaveLength(1);
+      expect(result.warnings[0]).toMatch(new RegExp(`${plan.main[0].guideStoryId}\\.ink: the protagonist speaks outside the date choices`));
     } finally { rmSync(root, { recursive: true, force: true }); }
   });
 
@@ -106,6 +109,16 @@ describe("draft journey scenario contracts", () => {
       const guideOriginal = readFileSync(guide, "utf8");
       writeFileSync(guide, guideOriginal.replace("# speaker: narrator", "# background: milano_duomo\n# speaker: narrator"));
       await expect(check()).rejects.toThrow(/Unknown background: milano_duomo/);
+      writeFileSync(guide, guideOriginal);
+      // Any background of the journey's own romance/presentation.json is accepted, also one that is no place of the city (an Agra one in Delhi).
+      const dateFile = path.join(directory, "delhi/stories", `${plan.dates[0].storyId}.ink`);
+      const dateOriginal = readFileSync(dateFile, "utf8");
+      writeFileSync(dateFile, dateOriginal.replace("# speaker: heroine\n「選択肢の検証です」", "# background: gt_bg_agra_taj_mahal\n# speaker: heroine\n「選択肢の検証です」"));
+      await expect(check()).resolves.toMatchObject({ warnings: [] });
+      writeFileSync(dateFile, dateOriginal);
+      // Lines in English only pass too (any language may be written: decision 28).
+      writeFileSync(guide, guideOriginal.replace("案内の検証です。", "This guide line is in English only."));
+      await expect(check()).resolves.toMatchObject({ warnings: [] });
       writeFileSync(guide, guideOriginal);
       const date = path.join(directory, "delhi/stories", `${plan.dates[0].storyId}.ink`);
       writeFileSync(date, readFileSync(date, "utf8").replace(`${plan.dates[0].eventId}_first_attentive`, `${plan.dates[1].eventId}_first_attentive`));

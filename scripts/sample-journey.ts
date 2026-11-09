@@ -84,17 +84,37 @@ const englishQuizKeys = new Set(["questionEn", "textEn"]);
 const englishQuizText = (key: string | undefined, value: string) => !!key && englishQuizKeys.has(key) && value.trim().split(/\s+/u).length >= 3;
 
 /**
+ * The English of an Ink line, compared on its own (any language may be written since stage 1 of
+ * the unified event design): a choice's text from `[` to its first `#` (without `# option:` and
+ * `# translation:`), another line without its closing `# …` tags; `{…}` is left out. Tag-only
+ * lines, knots and stitches, diverts, INCLUDE, VAR, CONST, EXTERNAL and `~` lines have none.
+ * Undefined unless it has 3 or more English words and no Japanese.
+ */
+function inkEnglish(line: string): string | undefined {
+  if (/^(?:#|=|->|~|INCLUDE\s|VAR\s|CONST\s|EXTERNAL\s)/u.test(line)) return undefined;
+  // Code in braces is not text: whole `{…}`, an opening `{ cond:` left open, and the end of a block `… }`.
+  const plain = line.replace(/\{[^{}]*\}/gu, " ").replace(/\{.*$/u, " ").replace(/^.*\}/u, " ");
+  const choice = /^[*+][\s*+]*(?:\([^)]*\)\s*)?\[([^\]#]*)/u.exec(plain);
+  const english = (choice ? choice[1] : plain.replace(/^[*+-][\s*+-]*/u, "").split("#")[0]).replace(/->.*$/u, "").trim();
+  return !japanese.test(english) && (english.match(/[A-Za-z]+(?:'[A-Za-z]+)?/gu) ?? []).length >= 3 ? english : undefined;
+}
+
+/**
  * The texts of a sample file that another journey must not keep: of JSON,
  * every string with Japanese of 8 or more characters or with the sample's
  * label (見本, Mihon), and the English quiz questions and options of 3 or
  * more words, except shared phrasing (sharedTextFiles, sharedTextKeys); of
- * Ink, every line with Japanese of 8 or more characters (trimmed) except
+ * Ink, every line with Japanese of 8 or more characters (trimmed) and the
+ * English of every line with 3 or more English words (inkEnglish), except
  * `//` comments, which explain the rules of the script and may stay.
  */
 export function sampleTextsOf(file: string, text: string): string[] {
   const kept = (value: string) => sampleLabel.test(value) || (japanese.test(value) && [...value].length >= 8);
   if (file.endsWith(".ink"))
-    return text.split("\n").map((line) => line.trim()).filter((line) => !line.startsWith("//") && japanese.test(line) && [...line].length >= 8);
+    return text.split("\n").map((line) => line.trim()).filter((line) => !line.startsWith("//")).flatMap((line) => [
+      ...(japanese.test(line) && [...line].length >= 8 ? [line] : []),
+      ...(inkEnglish(line) !== undefined ? [inkEnglish(line)!] : []),
+    ]);
   if (!file.endsWith(".json") || sharedTextFiles.has(file)) return [];
   const texts: string[] = [];
   const visit = (value: unknown, key?: string) => {

@@ -359,14 +359,19 @@ describe("content build acceptance", () => {
     );
   });
 
-  it("rejects branches with fewer than three choices", async () => {
+  it("accepts a choice moment with two choices, and stops one with none left (decision 41)", async () => {
+    // How many choices a moment offers is the author's (one or more).
     await replace(
       storyFile,
       "* [「その一口目、実況しようか」]",
       "* {false} [「その一口目、実況しようか」]",
     );
+    await expect(buildContent(fixture, false)).resolves.toBeDefined();
+    // With every choice of the first moment hidden, the route ends before it: the date stops.
+    await replace(storyFile, "* [「冷めるまで焙煎を見よう」]", "* {false} [「冷めるまで焙煎を見よう」]");
+    await replace(storyFile, "* [「同じのを頼めばよかった」]", "* {false} [「同じのを頼めばよかった」]");
     await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Expected three choices",
+      "Expected 2 choice moments; found 0",
     );
   });
 

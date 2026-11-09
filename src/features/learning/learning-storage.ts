@@ -10,7 +10,8 @@ const schema = z
     alwaysTranslate: z.boolean(),
     revealed: z.record(
       z.string(),
-      z.array(z.enum(["question", "A", "B", "C"])),
+      // "question" or a choice's mark: A, B, C, then D, E… (choiceMark in Translations.tsx).
+      z.array(z.union([z.literal("question"), z.string().regex(/^(?:[A-Z]|[1-9][0-9]*)$/u)])),
     ),
     marks: z.record(z.string(), z.string()),
     records: z.record(

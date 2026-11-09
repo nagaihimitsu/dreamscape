@@ -1,12 +1,8 @@
 import { z } from "zod";
+import { japaneseText as japanese } from "./text-language";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const text = z.string().trim().min(1);
-const japanese = text.refine(
-  (value) =>
-    /[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(value),
-  "Expected Japanese tourism text",
-);
 const https = z.url({ protocol: /^https$/ });
 const uniqueIds = z
   .array(id)

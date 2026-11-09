@@ -1,3 +1,4 @@
+import { hasJapanese } from "../src/content/text-language";
 import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { CONTENT_DIRECTORY, JOURNEYS_DIRECTORY, MANIFEST_FILE, SAMPLE_JOURNEY_DIRECTORY, journeyDirectory, journeysDirectory } from "./content-layout";
@@ -36,7 +37,6 @@ export const CHECKLIST_FILE = "CHECKLIST.md";
 
 const idPattern = /^[a-z][a-z0-9_]*$/u;
 const prefixPattern = /^[a-z](?:[a-z0-9_]*[a-z0-9])?$/u;
-const japanese = /[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u;
 
 /** The command line of journey:new as options; a missing, repeated or unknown argument is an error with the usage. */
 export function parseNewJourneyArgs(args: readonly string[]): NewJourneyOptions {
@@ -99,9 +99,10 @@ export function checkNewJourneyOptions(options: NewJourneyOptions, reserved: { j
     if (!idPattern.test(value)) throw new Error(`${label}「${value}」は使えません。英小文字で始め、英小文字・数字・_ だけで書いてください。`);
     notSample(value, label);
   };
+  // The name's language is the author's: a name without Japanese is only noted (newJourneyNameNotes).
   const name = (value: string, flag: string, example: string) => {
-    if (value.trim() !== value || !value || /[\r\n]/u.test(value) || !japanese.test(value))
-      throw new Error(`${flag} には日本語の名前を1行で指定してください（例：${example}）。`);
+    if (value.trim() !== value || !value || /[\r\n]/u.test(value))
+      throw new Error(`${flag} には名前を1行で指定してください（例：${example}）。`);
   };
   id(options.journeyId, "旅行編ID");
   id(options.cityId, "都市ID");
@@ -176,7 +177,19 @@ function nextOrder(orders: readonly number[], reserved: number): number {
   return order;
 }
 
-export type CreatedJourney = { journeyId: string; prefix: string; cityId: string; order: number; folder: string; files: string[] };
+/** `notes`: what journey:new reports without stopping (a name without Japanese: newJourneyNameNotes). */
+export type CreatedJourney = { journeyId: string; prefix: string; cityId: string; order: number; folder: string; files: string[]; notes: string[] };
+
+/**
+ * The names (`--name`, `--city-name`) that have no Japanese: they become the manifest's and the
+ * city's `nameJa`, shown as Japanese text, so journey:new notes them like content:build's
+ * data-language warning, and goes on.
+ */
+export function newJourneyNameNotes(options: Pick<NewJourneyOptions, "nameJa" | "cityNameJa">): string[] {
+  return ([["--name", options.nameJa, "manifest.json の nameJa"], ["--city-name", options.cityNameJa, "都市の nameJa"]] as const)
+    .filter(([, value]) => !hasJapanese(value))
+    .map(([flag, value, field]) => `日本語の欄に日本語がありません：${flag}「${value}」（${field}）。画面はこの欄を日本語の文として出します（止めません）。`);
+}
 
 /**
  * Create `content/journeys/<journeyId>/` in `root` from the sample journey of
@@ -238,5 +251,5 @@ export function createJourney(root: string, options: NewJourneyOptions, { storyC
       removeCreatedDirectories(root, created);
     }
   }
-  return { journeyId, prefix, cityId, order, folder, files: [...files.keys()].sort() };
+  return { journeyId, prefix, cityId, order, folder, files: [...files.keys()].sort(), notes: newJourneyNameNotes(checked) };
 }

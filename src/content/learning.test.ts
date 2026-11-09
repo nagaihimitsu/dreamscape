@@ -1,3 +1,4 @@
+import { misplacedLanguages } from "../../scripts/data-language";
 import { describe, expect, it } from "vitest";
 import { zodIssues } from "../../tests/fixtures/zod-issues";
 import raw from "./generated/content/learning/translations.json";
@@ -44,13 +45,15 @@ describe("learning content", () => {
       ).toThrow(expected[field]);
     }
   });
-  it("rejects a missing option and non-Japanese translation", () => {
+  it("rejects a missing option; a non-Japanese translation is only a warning", () => {
     const missing = structuredClone(raw) as any;
     delete missing.questions.milano_last_supper_q1.optionsJa.A;
     expect(() => learningCatalogSchema.parse(missing)).toThrow(zodIssues({ code: "invalid_type", path: ["questions", "milano_last_supper_q1", "optionsJa", "A"] }));
     const english = structuredClone(raw);
     english.questions.milano_last_supper_q1.questionJa = "English only";
-    expect(() => learningCatalogSchema.parse(english)).toThrow(zodIssues({ code: "custom", path: ["questions", "milano_last_supper_q1", "questionJa"], message: "Expected Japanese text" }));
+    // The language is content:build's data-language warning (decision 32): it parses, and the warning names the field.
+    expect(learningCatalogSchema.safeParse(english).success).toBe(true);
+    expect(misplacedLanguages(learningCatalogSchema, english)).toEqual([{ path: "questions.milano_last_supper_q1.questionJa", value: "English only", language: "ja" }]);
   });
   it("checks detailed explanations refer to actual English", () => {
     const value = learningDetailsSchema.parse(details);

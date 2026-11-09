@@ -52,6 +52,27 @@ describe("sample leftovers", () => {
     expect(sampleMarks().texts.has(question.questionEn)).toBe(true);
   });
 
+  it("finds the sample's English Ink lines and choices, compared by their English only", () => {
+    // A copied English line of the sample (any language may be written since stage 1 of the unified event design).
+    const gift = sample.files.get("stories/encounters/smp_mihon_bookmark_gift.ink")!.toString("utf8");
+    expect(sampleMarks().texts.has("Shall we keep it in your guidebook?")).toBe(true);
+    const line = "Come back at three. Any three will do.";
+    const marks = { texts: new Set([...sampleMarks().texts, line]), imageHashes: sampleMarks().imageHashes };
+    expect(sampleLeftovers(files({ "stories/battles/b.ink": `# speaker: enemy\n${line} # speaker: enemy\n` }), marks))
+      .toEqual([{ file: "stories/battles/b.ink", kind: "text", count: 1 }]);
+    // A choice copied with only its # translation: (or # option:) changed is still the sample's choice.
+    const changed = gift.split("\n").filter((row) => row.startsWith("* [")).map((row) =>
+      row.replace(/# option: \w+/u, "# option: kept").replace(/# translation: [^\]]+/u, "# translation: 新しい訳"));
+    expect(changed).toHaveLength(3);
+    expect(sampleLeftovers(files({ "stories/encounters/kyoto_gift.ink": changed.join("\n") })))
+      .toEqual([{ file: "stories/encounters/kyoto_gift.ink", kind: "text", count: 3 }]);
+    // Lines of tags, knots and `cond` code only have no English to count.
+    const code = ["# at: visit mihon_clock_tower", "# priority: after observe", "=== smp_mihon_clock_tower_stall ===",
+      '{ cond("item smp_mihon_three_bookmark held") }', '{ romance_result == "negative":', "- else:", "-> smp_mihon_return_to_square"];
+    const codeMarks = { texts: new Set([...sampleMarks().texts, ...code]), imageHashes: new Set<string>() };
+    expect(sampleLeftovers(files({ "stories/encounters/kyoto.ink": code.join("\n") }), codeMarks)).toEqual([]);
+  });
+
   it("leaves shared phrasing alone: word meanings, reward titles and the currency", () => {
     const words = sample.files.get("learning/word-meanings.json")!;
     const rewards = JSON.parse(sample.files.get("progression/journey.json")!.toString("utf8")).rewards;

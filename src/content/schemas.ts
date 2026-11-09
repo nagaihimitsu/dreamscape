@@ -242,17 +242,9 @@ export const progressionSchema = z
   })
   .strict();
 
-export const englishText = text.refine(
-  (value) =>
-    /[A-Za-z]/.test(value) &&
-    !/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(value),
-  "Quiz questions and options must be English",
-);
-export const japaneseText = text.refine(
-  (value) =>
-    /[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(value),
-  "Expected Japanese text",
-);
+// The language of these fields is a content:build warning, not a schema rule (text-language.ts).
+export { englishText, japaneseText } from "./text-language";
+import { englishText, japaneseText } from "./text-language";
 
 const uniqueEvidenceIds = z
   .array(id)

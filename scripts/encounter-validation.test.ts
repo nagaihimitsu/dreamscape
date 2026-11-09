@@ -268,6 +268,30 @@ describe("encounter content validation", () => {
     expect(() => validateEncounterContent(data)).toThrow("Encounter story cannot apply Ink effects");
   });
 
+  it("accepts English-only lines and any number of choices (decisions 28 and 41), and warns once about a translation without Japanese", () => {
+    const data = input();
+    const event = data.catalog.encounters.find((item) => item.id === "galleria_print")!;
+    const source = sources[event.storyId];
+    // A narrator's line in English only does not stop the build.
+    const english = source.replace(/ガッレリアで架空の出店[^\n]+/u, "A small stall shows a hand press in the Galleria.");
+    data.stories[event.storyId] = compileInk(english);
+    expect(() => validateEncounterContent(data)).not.toThrow();
+    // Two choices in the story and two options in the catalog (the sample choice left out).
+    const two = source.replace(/\* \[Can we look at the sample\?[\s\S]*?-> END\n/u, "");
+    data.stories[event.storyId] = compileInk(two);
+    event.options = event.options.filter((option) => option.id !== "sample");
+    expect(() => validateEncounterContent(data)).not.toThrow();
+    // Story and catalog must still name the same choices.
+    data.stories[event.storyId] = compileInk(source);
+    expect(() => validateEncounterContent(data)).toThrow("Encounter choices differ from its catalog options: 3 in the story, 2 in the catalog");
+    // A translation without Japanese is reported once (data-language), however many contexts the check walks.
+    const warnings: { kind: string; message: string }[] = [];
+    data.stories[event.storyId] = compileInk(two.replace("# translation: 刷りたてを見せてください。", "# translation: A fresh print, please."));
+    expect(() => validateEncounterContent({ ...data, onWarning: (warning) => warnings.push(warning) })).not.toThrow();
+    expect(warnings).toEqual([{ kind: "data-language",
+      message: "`# translation:` に日本語がありません：encounters/milano_galleria_print の選択肢「Show us a fresh prin…」。選択肢の訳として、そのまま出ます（止めません）。" }]);
+  });
+
   it("rejects dynamic or unknown item queries and unrecognised statuses", () => {
     expect(validateItemReferences('EXTERNAL has_item_status(id, status)\n{has_item_status("blue_pick", "gifted"): はい}', ["blue_pick"])).toEqual(["blue_pick"]);
     for (const call of ['has_item_status(item, "held")', 'has_item_status("unknown", "held")', 'has_item_status("blue_pick", "sold")'])

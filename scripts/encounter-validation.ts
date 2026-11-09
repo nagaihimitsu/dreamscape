@@ -3,6 +3,9 @@ import type { EncounterCatalog, EncounterDefinition } from "../src/content/encou
 import type { JourneyConfig } from "../src/content/journey-schemas";
 import type { QuizDefinition, QuizQuestion } from "../src/content/schemas";
 import type { LandmarkDefinition } from "../src/content/tourism-schemas";
+import { checkLinesWithoutChoice } from "./ink-validation";
+import { translationLanguageWarning } from "./data-language";
+import type { ContentWarning } from "./content-report";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
 import { bindItemReader, type ItemStatus } from "../src/story/items";
 import { bindMemoryReader } from "../src/story/memory";
@@ -19,6 +22,8 @@ export function validateEncounterStory(
   itemIds: string[],
   memoryIds: string[],
   requireChoiceIds = false,
+  /** Called with each choice's text and its `# translation:` (for the data-language warning). */
+  onTranslation?: (choiceText: string, translation: string) => void,
 ): void {
   const positiveResponses = new Map<string, string>();
   const inventoryContexts: Readonly<Record<string, ItemStatus>>[] = [
@@ -43,15 +48,11 @@ export function validateEncounterStory(
       let steps = 0;
       const lines: string[] = [];
       while (current.canContinue) {
-        if (++steps > 200) throw new Error("Encounter story contains a loop or too many lines");
+        checkLinesWithoutChoice(++steps);
         const line = current.Continue()?.trim() ?? "";
         const tags = parseStoryTags(current.currentTags ?? [], context);
         if (tags.effects.length) throw new Error("Encounter story cannot apply Ink effects");
-        if (line) {
-          if (!/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(line))
-            throw new Error(`Encounter dialogue must be Japanese: ${line}`);
-          lines.push(line);
-        }
+        if (line) lines.push(line);
       }
       return lines;
     };
@@ -62,7 +63,7 @@ export function validateEncounterStory(
       continue;
     }
     if (choices.length !== options.length)
-      throw new Error(`Encounter needs three choices; found ${choices.length}`);
+      throw new Error(`Encounter choices differ from its catalog options: ${choices.length} in the story, ${options.length} in the catalog`);
     unique(choices.map((choice) => choice.text.trim().toLowerCase()), "encounter option text");
     const taggedChoiceCount = choices.filter((choice) => (choice.tags ?? []).some((tag) => /^option\s*:/u.test(tag))).length;
     if (taggedChoiceCount !== 0 && taggedChoiceCount !== choices.length)
@@ -83,8 +84,10 @@ export function validateEncounterStory(
     unique(choiceOptions.map((option) => option.id), "encounter choice ID");
     for (const [index, option] of choiceOptions.entries()) {
       const choice = choices[index];
-      if (parseStoryTags(choice.tags ?? [], context).effects.length)
+      const choiceTags = parseStoryTags(choice.tags ?? [], context);
+      if (choiceTags.effects.length)
         throw new Error("Encounter story cannot apply Ink effects");
+      if (choiceTags.translationJa) onTranslation?.(choice.text.trim(), choiceTags.translationJa);
       const branch = new Story(compiled);
       const branchInventory: Record<string, ItemStatus> = { ...inventory };
       if (option.requiresItemId) branchInventory[option.requiresItemId] = "held";
@@ -111,7 +114,7 @@ export function validateEncounterStory(
 /** Validate stable IDs and references independently of the runtime game rules. */
 export function validateEncounterContent({
   catalog, cityId, landmarks, journey, stories, quizzes, responseProfileIds, memoryIds, context,
-  validateQuiz,
+  validateQuiz, onWarning,
 }: {
   catalog: EncounterCatalog;
   cityId: string;
@@ -123,7 +126,10 @@ export function validateEncounterContent({
   memoryIds: string[];
   context: TagContext;
   validateQuiz: (quiz: { questions: QuizQuestion[] }) => void;
+  /** Receives the warnings that do not stop the build (a `# translation:` without Japanese), once each. */
+  onWarning?: (warning: ContentWarning) => void;
 }): void {
+  const reported = new Set<string>();
   unique(catalog.items.map((item) => item.id), "encounter item ID");
   unique(catalog.encounters.map((event) => event.id), "encounter ID");
   const itemIds = new Set(catalog.items.map((item) => item.id));
@@ -186,7 +192,14 @@ export function validateEncounterContent({
       const compiled = stories[scene.id];
       if (!compiled) throw new Error(`Unknown encounter story: ${event.id}/${scene.id}`);
       const choiceHasRules = !!scene.options?.some((option) => option.cost || option.requiresItemId || option.consumeItemId || option.giftItemId || option.responseProfileId || option.deferCompletion);
-      try { validateEncounterStory(compiled, context, scene.options, catalog.items.filter((item) => item.cityId === event.cityId).map((item) => item.id), memoryIds, choiceHasRules); }
+      const onTranslation = (choiceText: string, translation: string) => {
+        const warning = translationLanguageWarning(scene.id, choiceText, translation);
+        if (warning && !reported.has(warning.message)) {
+          reported.add(warning.message);
+          onWarning?.(warning);
+        }
+      };
+      try { validateEncounterStory(compiled, context, scene.options, catalog.items.filter((item) => item.cityId === event.cityId).map((item) => item.id), memoryIds, choiceHasRules, onTranslation); }
       catch (error) {
         throw new Error(`Invalid encounter story: ${event.id}/${scene.id}: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
       }

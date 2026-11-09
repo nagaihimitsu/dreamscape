@@ -20,12 +20,19 @@ describe("location-based encounters", () => {
     expect(duomo).toEqual({ encounterId: "duomo_string", at: ["observe"], when: { episodeCompleted: "milano_duomo_episode" } });
     expect(() => validateEncounterEntryRules({ ...rules, entries: [{ ...duomo, quizAfterLandmarkBattle: true }] }, encounters.encounters))
       .toThrow("A quiz after the landmark battle needs an encounter with a quiz: duomo_string");
-    // `at` is optional (= observe) and takes only the observation for now; `when` is optional too.
+    // `at` is optional (= observe) and takes only the observation; `when` is optional too.
     expect(encounterEntryRulesSchema.safeParse({ schemaVersion: 2, entries: [{ encounterId: "duomo_string" }] }).success).toBe(true);
     for (const at of [["afterBattle"], [], ["observe", "observe"], "observe"]) {
       const result = encounterEntryRulesSchema.safeParse({ schemaVersion: 2, entries: [{ ...duomo, at }] });
-      expect(result.error?.issues.map((issue) => issue.message)).toEqual(['Encounters are met only while observing for now: at must be ["observe"] (other moments come at stage 3)']);
+      expect(result.error?.issues.map((issue) => issue.message)).toEqual(['Encounters written in JSON are met while observing: at must be ["observe"] (place an encounter elsewhere with the head tags of its Ink)']);
     }
+    // The head tags' place at the landmark's visit (content:build writes it): a non-zero priority or "after observe", without `at`.
+    for (const priority of [-2, 1, "after observe"])
+      expect(encounterEntryRulesSchema.safeParse({ schemaVersion: 2, entries: [{ encounterId: "duomo_string", priority }] }).success, String(priority)).toBe(true);
+    for (const priority of [0, 1.5, "after battle"])
+      expect(encounterEntryRulesSchema.safeParse({ schemaVersion: 2, entries: [{ encounterId: "duomo_string", priority }] }).success, String(priority)).toBe(false);
+    expect(encounterEntryRulesSchema.safeParse({ schemaVersion: 2, entries: [{ ...duomo, priority: -1 }] }).error?.issues[0].message)
+      .toBe("An entry rule has either at or priority");
     expect(encounterEntryRulesSchema.safeParse({ schemaVersion: 2, entries: [{ ...duomo, when: { flag: "x" } }] }).error?.issues[0].message)
       .toBe('Condition part "flag" is not available yet (stage 3)');
     // Version 1 and its fields are refused.
