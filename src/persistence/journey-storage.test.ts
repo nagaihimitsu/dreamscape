@@ -4,6 +4,7 @@ import { cityContents, getCityContent } from "../content";
 import { getJourney } from "../content/journeys";
 import { backupAndCreate, deleteSaveData, isSaveBackupKey, LEARNING_KEY, loadGame, SAVE_KEY, saveBackupTime, saveGame } from "./index";
 import { journeyPhysicalKey, journeyStorage, parseJourneyPhysicalKey, storagePhysicalKey } from "./journey-storage";
+import { DEBUG_MODE_KEY } from "../app/debug-mode";
 import { journeyDraftStartParameters, loadJourneyDraft, promoteJourneyDraft, saveJourneyDraft } from "./journey-preparation";
 
 function memoryStorage() {
@@ -53,6 +54,16 @@ describe("independent journey saves", () => {
     expect(saveGame(india, { ...indiaState, currentCityId: "unknown_city" }).ok).toBe(false);
     expect(backupAndCreate(india, indiaState, unknown).ok).toBe(false);
     expect(india.getItem(SAVE_KEY)).toBe(unknown);
+  });
+
+  it("passes the device's Debug-mode switch through unscoped, so 設定 and src/main.tsx read the same key", () => {
+    // src/main.tsx reads the browser storage, 設定 the journey's scoped storage (src/app/debug-mode.ts).
+    const base = memoryStorage();
+    journeyStorage(base, "milano").setItem(DEBUG_MODE_KEY, "on");
+    expect(Object.fromEntries(base.data)).toEqual({ [DEBUG_MODE_KEY]: "on" });
+    expect(journeyStorage(base, "golden_triangle").getItem(DEBUG_MODE_KEY)).toBe("on");
+    journeyStorage(base, "golden_triangle").removeItem(DEBUG_MODE_KEY);
+    expect(base.data.size).toBe(0);
   });
 
   it("gives Milan its own journey slots and leaves unprefixed keys untouched", () => {

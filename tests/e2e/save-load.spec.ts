@@ -1,6 +1,7 @@
 import { DOUBLE_TAP_WINDOW_MS } from "../../src/components/double-tap";
 import { CONFIRM_SETTLE_MS } from "../../src/components/ConfirmActionButton";
 import { LAST_JOURNEY_KEY } from "../../src/app/last-journey";
+import { DEBUG_MODE_KEY } from "../../src/app/debug-mode";
 import { allStorage, expect, generated, journeyCatalog, learningKey, ops, placeGuideSave, playUntil, presentationKey, readSave, saveKey, test, tier } from "./helpers";
 
 // Lane 1 (docs/10): saving and resuming are only ever checked through the real flow.
@@ -505,7 +506,7 @@ test("old saved data is listed with its keys, removed only after confirmation an
   await page.evaluate((items) => {
     for (const [key, value] of Object.entries(items)) localStorage.setItem(key, value);
     localStorage.setItem("another-app.on-this-origin", "kept");
-  }, { ...old, [learningKey("golden_triangle")]: JSON.stringify({ schemaVersion: 1, records: {} }) });
+  }, { ...old, [learningKey("golden_triangle")]: JSON.stringify({ schemaVersion: 1, records: {} }), [DEBUG_MODE_KEY]: "on" });
   const seeded = await allStorage(page);
   expect(seeded[LAST_JOURNEY_KEY]).not.toBe("golden_triangle");
 
@@ -523,8 +524,8 @@ test("old saved data is listed with its keys, removed only after confirmation an
 
   let cleanup = await ops.openOldDataCleanup(page);
   for (const key of Object.keys(old)) await expect(cleanup.getByText(key, { exact: true })).toBeVisible();
-  // The save in use, every journey's English notes, the settings, the remembered journey and other apps' keys are not listed.
-  for (const key of [saveKey(), learningKey(), learningKey("golden_triangle"), presentationKey, LAST_JOURNEY_KEY, "another-app.on-this-origin"])
+  // The save in use, every journey's English notes, the settings, the remembered journey, the Debug-mode switch and other apps' keys are not listed.
+  for (const key of [saveKey(), learningKey(), learningKey("golden_triangle"), presentationKey, LAST_JOURNEY_KEY, DEBUG_MODE_KEY, "another-app.on-this-origin"])
     await expect(cleanup.getByText(key, { exact: true })).toHaveCount(0);
 
   // 「消去せず戻る」 changes nothing.

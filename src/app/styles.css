@@ -1314,6 +1314,75 @@ dialog.old-data .old-data-notice:focus {
 .old-data-hint {
   margin: 10px 0 0;
 }
+/* ゲームの設定 → Debugモード (DebugModeSetting): after 名前の設定, before the data entries. Every control 44 px or more. */
+.debug-mode-setting {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+.debug-mode-setting .fine-print {
+  margin: 0;
+}
+.debug-mode-setting [role="status"],
+.debug-mode-setting [role="alert"] {
+  font-size: 13px;
+  line-height: 1.7;
+}
+.debug-mode-setting [role="alert"] {
+  color: #873b34;
+}
+.debug-mode-setting [role="status"]:focus {
+  outline: none;
+}
+/* 「Debugモードをオフにしました。」: the status stays on the page so screen readers announce the
+   text put into it; while empty it is taken out of the grid, so it adds no row and no gap. */
+.debug-mode-announcement:empty {
+  position: absolute;
+}
+.debug-mode-setting .secondary {
+  margin-top: 0;
+  min-height: 48px;
+}
+/* A link (full navigation to Debug's own page) shown as a secondary button. */
+.debug-mode-setting a.secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+.debug-mode-password {
+  display: grid;
+  gap: 8px;
+}
+.debug-mode-password label {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  letter-spacing: 0.07em;
+}
+/* 16 px text: phones do not zoom into the field. */
+.debug-mode-password input {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  background: #fffdf7;
+  border: 1px solid #c9cebf;
+  border-radius: 3px;
+  padding: 10px 15px;
+  color: #303d36;
+  font-size: 16px;
+}
+.debug-mode-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.debug-mode-actions .primary {
+  justify-content: center;
+  min-height: 48px;
+  padding: 8px 12px;
+  text-align: center;
+}
 .danger-button {
   width: 100%;
   margin-top: 12px;

@@ -2,6 +2,7 @@ import { DOUBLE_TAP_WINDOW_MS } from "../../src/components/double-tap";
 import type { GameState } from "../../src/domain/game";
 import { DEBUG_HOOK_NAME, type DreamscapeDebugHook } from "../../src/dev/debug-hook";
 import { debugQueryString, type DebugSettings } from "../../src/dev/debug-query";
+import { describeRelationshipChange, relationshipChange } from "../../src/domain/relationship-change";
 import { test as base, bothStorages, debugGame, devModules, expect, ops, placeSave, playUntil, tier, type Locator, type Page } from "./helpers";
 
 // Lane 3 (docs/10「Debugを場面の起動台にする」): Debug opens scenes that the real
@@ -135,6 +136,12 @@ for (const roll of ["positive", "negative"] as const) {
     await expect(page.getByTestId("romance-scene")).toBeVisible();
     const opened = (await debugGame(page))!;
     expect(opened.activeDate?.dateId).toBe(date.dateId);
+    // Debug always shows a reply's relationship change (as Debug mode does in play): exactly the saved difference.
+    const choosing = await playUntil(page, (state) => !!state.activeDate?.frame.choices.length, { source: debugGame });
+    await page.getByTestId("date-choice").first().click();
+    await expect.poll(async () => (await debugGame(page))!.revision).toBe(choosing.revision + 1);
+    const change = relationshipChange(choosing, (await debugGame(page))!);
+    await expect.poll(() => page.getByTestId("relationship-change").locator("p").allTextContents()).toEqual(describeRelationshipChange(change!));
     const finished = await playUntil(page, (state) => !state.activeDate, { source: debugGame });
     expect(finished.playedDateIds).toContain(date.dateId);
     expect(finished.ap).toBe(opened.ap);
@@ -157,21 +164,21 @@ test("a Debug launch URL opens its scene and offers the same URL", { tag: tier.d
   expect(debug.state?.activeDate?.dateId).toBe("milano_brera_date_01");
   expect(debug.state?.ap).toBeLessThan(9);
   expect(debug.scene?.url).toBe(url);
-  // Back on the settings screen, the same scene's URL is offered for copying.
+  // Back on the scene picker, the same scene's URL is offered for copying.
   await ops.backToDebugSettings(page);
   await expect(page.getByTestId("debug-url")).toHaveValue(new URL(url, page.url()).href);
 });
 
 // Its own test (and time budget): each half loads the app afresh on a dev server, which is slow under load.
-test("a Debug launch URL that does not fit the content says why and links back to the settings screen", { tag: tier.debug }, async ({ page }) => {
+test("a Debug launch URL that does not fit the content says why and links back to the scene picker", { tag: tier.debug }, async ({ page }) => {
   await page.goto("/?debug&city=milano&scene=battle&target=gt_delhi_main_red_fort_battle");
   await ops.debugShown(page.getByRole("alert"));
   await expect(page.getByRole("alert")).toHaveText("「gt_delhi_main_red_fort_battle」はミラノの「バトル」にありません。");
-  // The link loads the settings screen as a new page (a dev server serves it module by module):
+  // The link loads the scene picker as a new page (a dev server serves it module by module):
   // wait for that page's load, as page.goto does, and then for Debug, which loads after it.
   await Promise.all([
     page.waitForURL((address) => address.search === "?debug"),
-    page.getByRole("link", { name: "場面の確認（設定画面）へ" }).click(),
+    page.getByRole("link", { name: "場面の確認へ" }).click(),
   ]);
   await ops.debugShown(page.getByTestId("debug-panel"));
 });

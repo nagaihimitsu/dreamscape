@@ -73,8 +73,12 @@ export function findDebugTemplate(content: DebugTemplateContent, cityId?: string
     if (!template) throw new Error(`都市「${cityId}」は仮の場面の元にできません。元にする都市には、${requiredRolesJa}が必要です。`);
     return template;
   }
-  const sample = content.journeys.filter((journey) => journey.id === sampleJourneyId);
-  const available = content.journeys.filter((journey) => journey.status === "available" && journey.id !== sampleJourneyId);
+  // The sample journey is in the catalogs only on the development server (and in unit tests), never in
+  // a production build, where Debug also ships: there both filters were no-ops, so the ID is used only
+  // under DEV and stays out of the build (its text is a never-in-dist marker, scripts/dist-guard.ts).
+  const sampleId = import.meta.env.DEV ? sampleJourneyId : undefined;
+  const sample = content.journeys.filter((journey) => journey.id === sampleId);
+  const available = content.journeys.filter((journey) => journey.status === "available" && journey.id !== sampleId);
   for (const journey of [...sample, ...available])
     for (const city of journey.cities) {
       const template = templateOf(content, journey, city.id);

@@ -32,12 +32,12 @@ function encounterTarget(item: Encounter): DebugTarget {
   return { id: item.id, name: item.titleJa, ...(needed.length ? { unavailable: `品物${names}が必要なため開けません` } : {}) };
 }
 
-/** The first target Debug can open, as the settings screen preselects it. */
+/** The first target Debug can open, as the scene picker (場面の確認) preselects it. */
 export function firstDebugTarget(targets: readonly DebugTarget[]): string {
   return targets.find((item) => !item.unavailable)?.id ?? "";
 }
 
-/** What each scene of the settings screen lists for a city. */
+/** What each scene of the scene picker (場面の確認) lists for a city. */
 export function debugTargets(cityId: string): Record<DebugScene, DebugTarget[]> {
   const { city, travel } = getCityContent(cityId);
   return {
@@ -50,7 +50,7 @@ export function debugTargets(cityId: string): Record<DebugScene, DebugTarget[]> 
   };
 }
 
-/** The settings screen's starting values for a city. */
+/** The scene picker's starting values for a city. */
 export function defaultDebugSettings(cityId = defaultDebugCityId): DebugSettings {
   return { cityId, scene: "tourism", id: firstDebugTarget(debugTargets(cityId).tourism), progress: "completed",
     ap: debugValueRanges.ap[1], affection: 0, trust: 0, spark: 0, roll: "positive" };
@@ -73,7 +73,7 @@ export function resolveDebugLaunch(query: DebugQuery): DebugLaunch {
   const targets = debugTargets(cityId)[query.scene];
   if (!targets.length) throw new Error(`${city.nameJa}には「${label}」の場面がありません。`);
   const id = query.target ?? firstDebugTarget(targets);
-  if (!id) throw new Error(`${city.nameJa}の「${label}」は、どれもDebugでは開けません（理由は設定画面の一覧にあります）。`);
+  if (!id) throw new Error(`${city.nameJa}の「${label}」は、どれもDebugでは開けません（理由は場面の確認の一覧にあります）。`);
   const target = targets.find((item) => item.id === id);
   if (!target) throw new Error(`「${id}」は${city.nameJa}の「${label}」にありません。`);
   if (target.unavailable)
