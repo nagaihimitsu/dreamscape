@@ -463,10 +463,12 @@
       "mode": "auto_rickshaw",
       "status": "not_suitable",
       "checkedAt": "2026-11-09",
-      "reasonJa": "歩いて13分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "reasonJa": "歩いて13分で着く（15分以内）ので、オートの経路は置かない。宿もタージ・マハルも500m圏の中で、旅行者のオートはどちらの前にも入れない（宿が圏内なのは解釈）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
-        "walk_station_model"
+        "walk_station_model",
+        "s9_taj_dos_donts",
+        "inn_transfer_model"
       ]
     },
     {
@@ -3095,10 +3097,12 @@
       "mode": "auto_rickshaw",
       "status": "not_suitable",
       "checkedAt": "2026-11-09",
-      "reasonJa": "歩いて13分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "reasonJa": "歩いて13分で着く（15分以内）ので、オートの経路は置かない。宿もタージ・マハルも500m圏の中で、旅行者のオートはどちらの前にも入れない（宿が圏内なのは解釈）。",
       "sourceRefs": [
         "s10_altitude_cantt_taj",
-        "walk_station_model"
+        "walk_station_model",
+        "s9_taj_dos_donts",
+        "inn_transfer_model"
       ]
     },
     {
