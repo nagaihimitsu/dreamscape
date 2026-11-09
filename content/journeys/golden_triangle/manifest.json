@@ -24,7 +24,7 @@
     "unitJa": "ルピー",
     "unit": "whole"
   },
-  "initialBudget": 30000,
+  "initialBudget": 3000000,
   "startWeekday": 0,
   "initialState": {
     "ap": 0,

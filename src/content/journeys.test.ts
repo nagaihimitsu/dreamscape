@@ -9,7 +9,8 @@ describe("journey catalog", () => {
     expect(india.status).toBe("available");
     expect(india.cities.map((city) => city.id)).toEqual(["delhi", "agra", "jaipur"]);
     expect(india.currency.code).toBe("INR");
-    expect(india.initialBudget).toBe(30_000);
+    // Generous until the final balance pass sets the real amount (user decision 2026-11-09).
+    expect(india.initialBudget).toBe(3_000_000);
     expect(india.cityPlan).toEqual({ cityClearAp: 4, lodgingCost: 0, mainTourismCount: 4, dateCount: 6 });
     expect(india.initialState).toMatchObject({ ap: 0, pendingAp: 0, affection: 0, trust: 0, spark: 0, romanceStage: 1, confessionStatus: "none" });
     expect(getJourneyForCity("milano")?.currency.code).toBe("EUR");

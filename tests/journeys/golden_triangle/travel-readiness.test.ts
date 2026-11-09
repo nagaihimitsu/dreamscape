@@ -1,12 +1,15 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { getCityContent } from "../../../src/content";
+import { getJourney } from "../../../src/content/journeys";
 import { inspectJourneyTransit } from "../../../scripts/journey-transit";
 import { transitLedgerSchema } from "../../../scripts/transit-ledger";
 import { DAY_END, DAY_START, planOvernight, planTravel, planTravelEvent } from "../../../src/domain/travel";
 import { findTravelHomeRoutes } from "../../../src/domain/travel-routes";
 
 const cities = ["delhi", "agra", "jaipur"] as const;
+/** The journey's budget (generous until the final balance pass; the finale test below checks the money it really needs). */
+const budget = getJourney("golden_triangle")!.initialBudget!;
 const ledgerOf = (cityId: string) =>
   transitLedgerSchema.parse(JSON.parse(readFileSync(`content/journeys/golden_triangle/travel/${cityId}-transit.json`, "utf8")));
 const vehicle = (cityId: string) => getCityContent(cityId).travel.routes.filter((route) => route.mode !== "walk");
@@ -108,7 +111,7 @@ describe("India city travel data", () => {
     for (const from of travel.places) for (const to of travel.places) {
       const routes = travel.routes.filter((item) => item.fromPlaceId === from.id && item.toPlaceId === to.id);
       expect(routes.length, `${cityId}: ${from.id} → ${to.id}`).toBeGreaterThan(0);
-      const snapshot = { currentPlaceId: from.id, hotelPlaceId: hotel, day: 1, minute: DAY_START, ap: 12, travelBudget: 30_000 };
+      const snapshot = { currentPlaceId: from.id, hotelPlaceId: hotel, day: 1, minute: DAY_START, ap: 12, travelBudget: budget };
       const returnRoutes = findTravelHomeRoutes(travel.routes, to.id, hotel);
       expect(returnRoutes.length, `${cityId}: return from ${to.id}`).toBeGreaterThan(0);
       // At least one authored route and hotel return must fit an ordinary day.
@@ -137,7 +140,7 @@ describe("India city travel data", () => {
       for (let weekday = 0; weekday < 7 && !feasible; weekday++) {
         for (let minute = DAY_START; minute < DAY_END && !feasible; minute += 30) {
           const snapshot = { currentPlaceId: origin.id, hotelPlaceId: travelSettings.hotelPlaceId,
-            day: 1, minute, weekday, ap: 12, travelBudget: 30_000 };
+            day: 1, minute, weekday, ap: 12, travelBudget: budget };
           feasible = outgoing.some((route) => home.some((returnRoute) =>
             planTravelEvent(snapshot, event, route, returnRoute, place).ok));
         }

@@ -8,7 +8,7 @@
     "jaipur"
   ],
   "currency": "INR",
-  "initialBudget": 30000,
+  "initialBudget": 3000000,
   "cityPlan": {
     "cityClearAp": 4,
     "lodgingCost": 0,
