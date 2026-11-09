@@ -3,6 +3,9 @@
    role, never the colour alone (§2.3). Its height is measured into --hud-h. */
 .journey-hud {
   --hud-pill-bg: var(--ds-on-slate-pill);
+  /* Its width is the screen's (never its content's), so it can be the query
+     container for enlarged text (row 1, below). */
+  container: journey-hud / inline-size;
   position: sticky;
   top: 0;
   z-index: 20;
@@ -20,8 +23,8 @@
 .journey-hud .icon { flex: none; color: var(--ds-gold); }
 
 /* Row 1: where and when, the budget and AP. Nothing here is pressed. When the
-   plate's time line and the money do not fit side by side (enlarged text), the
-   money goes below the plate: the row wraps (the header's height is measured). */
+   plate and the money do not fit side by side, the money goes below the plate:
+   the row wraps (the header's height is measured). */
 .hud-status { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; min-height: 40px; }
 .hud-plate,
 .hud-wallet {
@@ -31,10 +34,10 @@
   box-shadow: var(--ds-pill-shadow);
 }
 /* The plate takes the row beside the money. It needs at least about nine
-   characters (9em, which grows with enlarged text) and never less than its time
-   line (its minimum: the place's line has none of its own); with less room the
-   money goes below it. A place longer than the plate ends in an ellipsis; its
-   full name stays in the text. At normal text sizes the plate is always wider. */
+   characters (9em) and never less than its time line (its minimum: the place's
+   line has none of its own); with less room the money goes below it. At normal
+   text a place longer than the plate ends in an ellipsis (its full name stays in
+   the text); enlarged text never cuts it (below). */
 .hud-plate {
   flex: 1 1 9em;
   max-width: 100%;
@@ -70,6 +73,18 @@
   font-variant-numeric: tabular-nums;
 }
 .hud-plate .icon { width: 13px; height: 13px; margin-right: 3px; vertical-align: -2px; }
+/* Enlarged text on a phone held upright (UI redesign §5.1: rows may wrap, never
+   clip): when the header holds fewer than about 25 of its characters across —
+   at normal text even a 320-px phone holds more, so these rules never apply
+   there — the plate asks for its whole place name on one line, so the money goes
+   below whenever the name does not fit beside it, and a name wider than the
+   whole row goes on to a second line instead of ending in an ellipsis. */
+@media (max-width: 700px) and (orientation: portrait) {
+  @container journey-hud (max-width: 25em) {
+    .hud-plate { flex-basis: auto; }
+    .hud-place { display: block; -webkit-line-clamp: none; line-clamp: none; }
+  }
+}
 .hud-wallet {
   flex: none;
   display: flex;
