@@ -1,4 +1,5 @@
 import { defaultJourneyId, getJourney, type Journey } from "../content/journeys";
+import { sceneConditionReader } from "./scene-conditions";
 import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
 import { deriveRelationshipTone } from "./romance-tone";
 import { secureRomanceRoll } from "../random/romance-source";
@@ -211,7 +212,7 @@ export function startDate(state: GameState, dateId: string, nextRoll: () => numb
     ending_reached: state.endingReached,
     confession_ready: canConfessSuccessfully(state),
     confession_result: confessionResult(state),
-  }, state.memories, {}, getCityStoryBackground(state.currentCityId, placeId));
+  }, state.memories, {}, getCityStoryBackground(state.currentCityId, placeId), sceneConditionReader(state));
   const next = {
     ...state,
     revision: state.revision + 1,
@@ -265,7 +266,7 @@ export function advanceDate(
       relationship_tone: deriveRelationshipTone(state),
       relationship_tone_before: deriveRelationshipTone(active.resolvedChoices.at(-1)?.before ?? state),
       relationship_tone_after: deriveRelationshipTone(state),
-    }),
+    }, undefined, sceneConditionReader(state)),
   );
 }
 
@@ -292,7 +293,7 @@ export function chooseDate(
         relationship_tone: toneBefore,
         relationship_tone_before: toneBefore,
         relationship_tone_after: toneBefore,
-      }),
+      }, undefined, sceneConditionReader(state)),
     );
   }
   const ticket = active.randomPlan[active.choiceCount];
@@ -302,7 +303,7 @@ export function chooseDate(
   // setting variables and consuming the choice in the real story.
   const probe = selectStoryChoice(storyId, active.storyState, active.frame, index, state.memories, {
     romance_result: "positive", affection_delta: 0, trust_delta: 0, spark_delta: 0,
-  });
+  }, {}, undefined, sceneConditionReader(state));
   if (probe.effects.length !== 1) throw new Error("選択肢の効果を確認できません。");
   const effectId = probe.effects[0];
   const effect = effects.find((item) => item.id === effectId);
@@ -327,7 +328,7 @@ export function chooseDate(
     relationship_tone: toneAfter,
     relationship_tone_before: toneBefore,
     relationship_tone_after: toneAfter,
-  });
+  }, undefined, sceneConditionReader({ ...state, ...after }));
   if (step.effects.length !== 1 || step.effects[0] !== effectId)
     throw new Error("選択肢の結果と会話の効果が一致しません。");
   return applyStep(

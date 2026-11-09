@@ -207,11 +207,11 @@ function cyclicDateWarnings(content: ConditionContent): ConditionWarning[] {
     message: `Date never offered: ${date.id} waits (datePlayed) for dates that wait for it in turn` }));
 }
 
-/** Time and rides change on the way to a date: the map lists the date by the state before the trip, the start re-checks it on arrival. */
+/** Time, rides and money change on the way to a date: the map lists the date by the state before the trip, the start re-checks it on arrival. */
 function dateTripWarnings(content: ConditionContent): ConditionWarning[] {
   return dateConditionOwners(content).flatMap((owner) => owner.conditions.flatMap(({ field, condition }): ConditionWarning[] =>
-    conditionLeaves(condition).some((leaf) => "time" in leaf || "rides" in leaf)
-      ? [{ kind: "date-condition-trip", message: `Date condition read before and after the trip: ${owner.label} (${field}) reads time or rides, ` +
+    conditionLeaves(condition).some((leaf) => "time" in leaf || "rides" in leaf || "money" in leaf)
+      ? [{ kind: "date-condition-trip", message: `Date condition read before and after the trip: ${owner.label} (${field}) reads time, rides or money, ` +
         `which the trip to the date changes; the map may offer the date and the start refuse it on arrival (prefer the place's opening windows)` }]
       : []));
 }
@@ -258,9 +258,9 @@ function visitWarnings(content: ConditionContent, rules: readonly EntryRule[]): 
   return [...later, ...same, ...repeated];
 }
 
-/** Every warning of the dates' and entry rules' conditions. */
-export function conditionWarnings(content: ConditionContent, rules: readonly EntryRule[]): ConditionWarning[] {
-  const owners = [...dateConditionOwners(content), ...entryRuleConditionOwners(content, rules)];
+/** Every warning of the dates', entry rules' and scenes' (`cond("…")`, `sceneOwners`) conditions. */
+export function conditionWarnings(content: ConditionContent, rules: readonly EntryRule[], sceneOwners: readonly ConditionOwner[] = []): ConditionWarning[] {
+  const owners = [...dateConditionOwners(content), ...entryRuleConditionOwners(content, rules), ...sceneOwners];
   return [...ownLandmarkWarnings(content, rules), ...laterCityWarnings(content, owners), ...calendarWarnings(content, owners),
     ...cyclicDateWarnings(content), ...dateTripWarnings(content), ...visitWarnings(content, rules)];
 }

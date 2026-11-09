@@ -6,6 +6,7 @@ import type { DateDefinition, EffectDefinition } from "../src/content/schemas";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
 import type { DialogueObserver } from "./dialogue-expression-validation";
 import { unique } from "./content-validation-utils";
+import { compiledConditionTexts, forEachCondAssignment } from "./scene-conditions";
 
 export const commonDateEffect = /^common_date_(first|second)_(attentive|playful|honest|bold|provocative)$/;
 
@@ -116,9 +117,12 @@ export function validateStory(
   onEffect?: (effectId: string) => void,
   tone?: RelationshipTone,
 ): number {
+  // Set per walk: each assignment of the story's cond("…") texts (scene-conditions.ts).
+  let bindConditions: (story: Story) => void = () => {};
   const createStory = () => {
     const story = new Story(compiled);
     bindMemoryReader(story, memories.available, memories.known);
+    bindConditions(story);
     story.onError = (message) => { throw new Error(message); };
     return story;
   };
@@ -273,13 +277,18 @@ export function validateStory(
       }
     }
   };
-  visit(initial.state.ToJson(), 0, [], "narrator");
-  // Every route was followed to its end above (each choice, with both reactions when random).
+  forEachCondAssignment(compiled, (bind) => {
+    bindConditions = bind;
+    visit(initial.state.ToJson(), 0, [], "narrator");
+  });
+  // Every route was followed to its end above (each choice, with both reactions when random, for every cond assignment).
   return routes;
 }
 
 /** Validate the short presentation-only scene that introduces a special battle. */
 export function validateReasoningIntroduction(compiled: string, context: TagContext, observe?: DialogueObserver): void {
+  if (compiledConditionTexts(compiled).length)
+    throw new Error(`cond("…") is not available yet in a special battle's rebuttal (stage 5)`);
   const story = new Story(compiled);
   story.onError = (message) => { throw new Error(message); };
   for (const name of ["player_name", "heroine_name"]) {
@@ -311,6 +320,8 @@ export function validateReasoningIntroduction(compiled: string, context: TagCont
 
 /** Check one learning topic without changing the shared story or game state. */
 export function validateLearningTopic(compiled: string, context: TagContext, topicId: string): void {
+  if (compiledConditionTexts(compiled).length)
+    throw new Error(`cond("…") is not available in an English-note topic explanation (it is not a scene)`);
   const story = new Story(compiled);
   story.variablesState.$("topic", topicId);
   let lines = 0;

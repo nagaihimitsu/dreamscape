@@ -2,6 +2,7 @@ import { Story } from "inkjs";
 import type { BattleDefinition } from "../src/content/schemas";
 import type { TourismClue } from "../src/content/tourism-schemas";
 import { checkLinesWithoutChoice } from "./ink-validation";
+import { forEachCondAssignment } from "./scene-conditions";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
 import type { DialogueObserver } from "./dialogue-expression-validation";
 
@@ -68,49 +69,52 @@ export function validateBattleStory(
       }
     }
   }
-  for (const input of inputs) {
-    const story = new Story(compiled);
-    story.onError = (message) => {
-      throw new Error(message);
-    };
-    const variables = {
-      player_name: "検証主人公",
-      heroine_name: "検証ヒロイン",
-      player_address: "検証主人公さん",
-      battle_scene: input.scene,
-      answer_correct: input.correct,
-      battle_score: input.score,
-    };
-    for (const [key, value] of Object.entries(variables)) {
-      if (!story.variablesState.GlobalVariableExistsWithName(key)) {
-        if (key === "player_address") continue;
-        throw new Error(`Missing required battle Ink variable: ${key}`);
+  return forEachCondAssignment(compiled, (bind) => {
+    for (const input of inputs) {
+      const story = new Story(compiled);
+      bind(story);
+      story.onError = (message) => {
+        throw new Error(message);
+      };
+      const variables = {
+        player_name: "検証主人公",
+        heroine_name: "検証ヒロイン",
+        player_address: "検証主人公さん",
+        battle_scene: input.scene,
+        answer_correct: input.correct,
+        battle_score: input.score,
+      };
+      for (const [key, value] of Object.entries(variables)) {
+        if (!story.variablesState.GlobalVariableExistsWithName(key)) {
+          if (key === "player_address") continue;
+          throw new Error(`Missing required battle Ink variable: ${key}`);
+        }
+        story.variablesState.$(key, value);
       }
-      story.variablesState.$(key, value);
-    }
-    let lines = 0;
-    let hasText = false;
-    let speaker: string = "narrator";
-    let explicitEmotion = false;
-    while (story.canContinue) {
-      checkLinesWithoutChoice(++lines);
-      const line = story.Continue()?.trim() ?? "";
-      const tags = parseStoryTags(story.currentTags ?? [], context);
-      if (tags.speaker) speaker = tags.speaker;
-      if (tags.emotion !== undefined) explicitEmotion = true;
-      if (tags.effects.length)
-        throw new Error("Battle story cannot apply effects");
-      if (line) {
-        hasText = true;
-        observe?.(line, speaker, explicitEmotion);
-        explicitEmotion = false;
+      let lines = 0;
+      let hasText = false;
+      let speaker: string = "narrator";
+      let explicitEmotion = false;
+      while (story.canContinue) {
+        checkLinesWithoutChoice(++lines);
+        const line = story.Continue()?.trim() ?? "";
+        const tags = parseStoryTags(story.currentTags ?? [], context);
+        if (tags.speaker) speaker = tags.speaker;
+        if (tags.emotion !== undefined) explicitEmotion = true;
+        if (tags.effects.length)
+          throw new Error("Battle story cannot apply effects");
+        if (line) {
+          hasText = true;
+          observe?.(line, speaker, explicitEmotion);
+          explicitEmotion = false;
+        }
       }
+      if (story.currentChoices.length)
+        throw new Error(
+          "Battle story cannot contain choices; quiz choices belong in JSON",
+        );
+      if (!hasText) throw new Error(`Empty battle scene: ${input.scene}`);
     }
-    if (story.currentChoices.length)
-      throw new Error(
-        "Battle story cannot contain choices; quiz choices belong in JSON",
-      );
-    if (!hasText) throw new Error(`Empty battle scene: ${input.scene}`);
-  }
-  return inputs.length;
+    return inputs.length;
+  });
 }

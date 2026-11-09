@@ -6,6 +6,7 @@ import { transportLabel } from "../content/transport";
 import { isLeaf, leafKind, type Condition, type Leaf } from "../content/condition-schemas";
 import { meets } from "../domain/conditions";
 import type { GameState } from "../domain/game";
+import { relationshipAxisLabels } from "../domain/relationship-change";
 
 /** A condition node with its value now and a Japanese description. */
 export type ExplainedNode = { kind: "all" | "any" | "not" | "atLeast" | "leaf"; label: string; value: boolean; children: ExplainedNode[] };
@@ -17,6 +18,9 @@ const landmarkName = (id: string) => landmarks.find((landmark) => landmark.id ==
 const range = (prefix: string, { atLeast, atMost }: { atLeast?: number; atMost?: number }) =>
   atLeast !== undefined && atMost !== undefined ? `${prefix}${atLeast}〜${atMost}日目`
     : atLeast !== undefined ? `${prefix}${atLeast}日目以降` : `${prefix}${atMost}日目まで`;
+
+const bounds = ({ atLeast, atMost }: { atLeast?: number; atMost?: number }) =>
+  atLeast !== undefined && atMost !== undefined ? `${atLeast}〜${atMost}` : atLeast !== undefined ? `${atLeast}以上` : `${atMost}以下`;
 
 /** One leaf in Japanese (names from the content; the ID when the content lacks it). */
 function leafLabel(state: Readonly<GameState>, leaf: Leaf): string {
@@ -37,6 +41,11 @@ function leafLabel(state: Readonly<GameState>, leaf: Leaf): string {
   if ("weekday" in leaf) return `${leaf.weekday.map((day) => WEEKDAYS[day]).join("・")}曜日`;
   if ("rides" in leaf) return `${transportLabel(state.currentCityId, leaf.rides.mode)}に${leaf.rides.atLeast}回以上乗った`;
   if ("rented" in leaf) return `${transportLabel(state.currentCityId, leaf.rented)}を借りた`;
+  if ("battlesPlayed" in leaf) return `${cityName(leaf.battlesPlayed.city)}のバトル（フィナーレを除く）を${leaf.battlesPlayed.atLeast}つ以上遊んだ`;
+  if ("relationship" in leaf) return `${relationshipAxisLabels[leaf.relationship.axis]}が${bounds(leaf.relationship)}（今は${state[leaf.relationship.axis]}）`;
+  if ("money" in leaf) return `使えるお金が${bounds(leaf.money)}`;
+  if ("romanceStage" in leaf) return `恋愛の段階が${bounds(leaf.romanceStage)}（今は${state.romanceStage}）`;
+  if ("couple" in leaf) return "交際している";
   return leafKind(leaf);
 }
 

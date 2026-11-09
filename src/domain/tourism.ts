@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { sceneConditionReader } from "./scene-conditions";
 import { isEpisodeBlockedByStoryBattle, recordGuideRead, isEpisodeUnlocked } from "./chapter";
 import {
   battles,
@@ -129,7 +130,7 @@ export function openTourism(state: GameState, landmarkId: string): GameState {
             state.playerName,
             state.heroineName,
             { player_address: playerAddress(state) },
-            [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId),
+            [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state),
           ),
         ),
   };
@@ -191,7 +192,7 @@ export function advanceTourismGuide(
     revision: state.revision + 1,
     activeTourism: fromGuide(
       active,
-      continueStory(storyId, active.storyState, active.frame),
+      continueStory(storyId, active.storyState, active.frame, [], {}, {}, sceneConditionReader(state)),
     ),
   };
 }
@@ -221,7 +222,7 @@ export function replayTourismGuide(
       next,
       beginStory(landmark.guideStoryId, state.playerName, state.heroineName, {
         player_address: playerAddress(state),
-      }, [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId)),
+      }, [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state)),
     ),
   };
 }
