@@ -54,8 +54,24 @@
       "noteJa": "最後の一つを主人公が食べ、主人公がお腹を壊した（その夜の宿の差し込み）"
     },
     {
+      "id": "gt_delhi_roohi_metro_essay",
+      "noteJa": "宿の宿題の場面で、ルーヒーの作文の題がメトロになった"
+    },
+    {
       "id": "gt_delhi_said_bas",
       "noteJa": "チャンドニー・チョークで、彼女が自分で「バス」と言えた（耳打ち・二人で）"
+    },
+    {
+      "id": "gt_delhi_scam_checked",
+      "noteJa": "駅で、鉄道の公式アプリで列車を確かめた"
+    },
+    {
+      "id": "gt_delhi_scam_doubted",
+      "noteJa": "駅で、先に電光掲示板を見ようと言った"
+    },
+    {
+      "id": "gt_delhi_scam_paid",
+      "noteJa": "パハールガンジの「案内所」で手付金を払ってしまった"
     },
     {
       "id": "gt_delhi_suresh_encouraged",
@@ -64,6 +80,10 @@
     {
       "id": "gt_delhi_suresh_kept_secret",
       "noteJa": "ローディー・ガーデンで、スレーシュの秘密を守った（今日も誰にも会っていない・ミーナさんに聞く）"
+    },
+    {
+      "id": "gt_jaipur_envelope_letter",
+      "noteJa": "祝儀袋を、一ルピーと手紙にした"
     },
     {
       "id": "gt_jaipur_mehndi_her_secret",

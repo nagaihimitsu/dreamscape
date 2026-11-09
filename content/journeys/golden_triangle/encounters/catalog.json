@@ -41,10 +41,23 @@
       "descriptionJa": "シティ・パレスで、審判の報酬にもらった。"
     },
     {
+      "id": "gt_delhi_family_photo",
+      "cityId": "delhi",
+      "nameJa": "十四人の写真",
+      "descriptionJa": "インド門で、写真屋がその場で刷った写真。知らない家族と、二人。",
+      "carry": "journey"
+    },
+    {
       "id": "gt_jaipur_lac_bangles",
       "cityId": "jaipur",
       "nameJa": "ラックの腕輪",
       "descriptionJa": "ジョーハリー・バザールの腕輪屋で、自分で値切って買った一組。割れやすい。"
+    },
+    {
+      "id": "gt_jaipur_wedding_envelope",
+      "cityId": "jaipur",
+      "nameJa": "祝儀袋",
+      "descriptionJa": "金額の最後に一ルピーを足した、結婚祝いの封筒。"
     }
   ],
   "encounters": []

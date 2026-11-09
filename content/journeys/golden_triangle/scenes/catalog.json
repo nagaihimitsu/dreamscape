@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "scenes": [
+    {
+      "id": "gt_delhi_hotel_homework",
+      "sources": [
+        {
+          "publisher": "India TV News",
+          "title": "DMRC extends first coach 'woman only' regulation to all routes",
+          "url": "https://www.indiatvnews.com/news/india-dmrc-extends-first-coach-woman-only-regulation-to-all-routes-red-line-exempted-496528",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "デリー・メトロでは、進行方向の先頭の車両が女性専用（2019年1月から、レッドライン以外の全線）。"
+        }
+      ]
+    },
+    {
+      "id": "gt_delhi_hotel_sick_morning",
+      "sources": [
+        {
+          "publisher": "Gulf News",
+          "title": "India's comfort food in a bowl: Khichdi",
+          "url": "https://gulfnews.com/food/indias-comfort-food-in-a-bowl-khichdi-1.1668672572023",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "キチュリーは米と豆（ムング豆）を煮た料理で、お腹にやさしく、病人の食べ物とも呼ばれる。"
+        }
+      ]
+    },
+    {
+      "id": "gt_delhi_depart_scam",
+      "sources": [
+        {
+          "publisher": "Travel India Smart",
+          "title": "Common India Travel Scams in 2026 and How to Spot Them",
+          "url": "https://www.travelindiasmart.com/trip-planning/india-travel-scams-2026",
+          "checkedAt": "2026-11-08",
+          "claimType": "documented_fact",
+          "claimJa": "ニューデリー駅では「列車は運休、振り替えは上の階で」と声をかけ、近くの路地の私設の旅行会社へ連れて行く手口がある。対策は電光掲示板と公式アプリで確かめ、黒い上着の検札係や駅長に聞くこと。"
+        },
+        {
+          "publisher": "Travel Trends Today",
+          "title": "Indiatourism Delhi office curbs cheating of foreign tourists",
+          "url": "https://www.traveltrendstoday.in/indiatourism-delhi-office-curbs-cheating-of-foreign-tourists",
+          "checkedAt": "2026-11-08",
+          "claimType": "documented_fact",
+          "claimJa": "政府の観光案内所を装う事務所が外国人旅行者をだましてきたため、インド政府観光局は駅などに正しい案内所を示す表示を置いた。"
+        },
+        {
+          "publisher": "erail.in",
+          "title": "Foreign Tourists Train Reservation & Facilities in Indian Railway",
+          "url": "https://erail.in/info/ticket-booking-foreign-tourist/207",
+          "checkedAt": "2026-11-08",
+          "claimType": "documented_fact",
+          "claimJa": "外国人旅行者向けの窓口（International Tourist Bureau）は、ニューデリー駅の2階にある。"
+        }
+      ]
+    },
+    {
+      "id": "gt_delhi_depart_station",
+      "sources": [
+        {
+          "publisher": "The Goan",
+          "title": "No more coolie, they are now sahayaks",
+          "url": "https://www.thegoan.net/goa-news/no-more-coolie-they-are-now-sahayaks/11901.html",
+          "checkedAt": "2026-11-08",
+          "claimType": "documented_fact",
+          "claimJa": "鉄道の荷運びの呼び名は「クーリー」から「サハーヤク」に変わった。"
+        }
+      ]
+    },
+    {
+      "id": "gt_jaipur_hotel_mehndi_night",
+      "sources": [
+        {
+          "publisher": "Wikipedia",
+          "title": "Henna",
+          "url": "https://en.wikipedia.org/wiki/Henna",
+          "checkedAt": "2026-11-08",
+          "claimType": "documented_fact",
+          "claimJa": "ヘナの模様は、ペーストを落とした直後はオレンジ色で、その後の三日ほどで、深い赤茶色に濃くなる。"
+        }
+      ]
+    },
+    {
+      "id": "gt_jaipur_hotel_mehndi_morning",
+      "sources": [
+        {
+          "publisher": "Cathay Pacific",
+          "title": "A look at India's henna tradition",
+          "url": "https://www.cathaypacific.com/cx/en_GB/inspiration/travel/look-indias-henna-tradition.html",
+          "checkedAt": "2026-11-08",
+          "claimType": "legend",
+          "claimJa": "メヘンディの色が濃く出るほど、結婚がうまくいくと言われる。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Henna",
+          "url": "https://en.wikipedia.org/wiki/Henna",
+          "checkedAt": "2026-11-09",
+          "claimType": "documented_fact",
+          "claimJa": "ヘナの模様は、ペーストを落とした直後はオレンジ色で、その後の三日ほどで、深い赤茶色に濃くなる。"
+        }
+      ]
+    },
+    {
+      "id": "gt_jaipur_finale_before_envelope",
+      "sources": [
+        {
+          "publisher": "The Quint",
+          "title": "Curious Case of The One Rupee: Why It's in Your 'Shagun' Envelope",
+          "url": "https://www.thequint.com/news/india/curious-case-of-the-one-rupee-why-its-in-your-shagun-envelope",
+          "checkedAt": "2026-11-09",
+          "claimType": "interpretation",
+          "claimJa": "祝儀の金額の最後に一ルピーを足すのは、割り切れない数が縁起がよく、終わりではなく続いていくことを表すから。"
+        }
+      ]
+    },
+    {
+      "id": "gt_jaipur_finale_after_envelope",
+      "sources": [
+        {
+          "publisher": "The Quint",
+          "title": "Curious Case of The One Rupee: Why It's in Your 'Shagun' Envelope",
+          "url": "https://www.thequint.com/news/india/curious-case-of-the-one-rupee-why-its-in-your-shagun-envelope",
+          "checkedAt": "2026-11-08",
+          "claimType": "documented_fact",
+          "claimJa": "祝儀の金額は、最後が一で終わるのが縁起がよいとされる。"
+        }
+      ]
+    }
+  ]
+}

@@ -103,7 +103,7 @@ INCLUDE modules.ink
         # reaction: heroine,shy,blush
         「背中じゃなくて、声で言うって約束したから。……はい、言った。じゃあ、次はそっちの番」
     }
-    { cond("flag gt_jaipur_mehndi_her_secret"):
+    { cond("flag gt_jaipur_mehndi_her_secret") and cond("seen gt_jaipur_hotel_mehndi_morning"):
         # speaker: narrator
         彼女は、手のひらを一度開いて、また閉じた。メヘンディの模様は、まだ濃く残っている。
     }

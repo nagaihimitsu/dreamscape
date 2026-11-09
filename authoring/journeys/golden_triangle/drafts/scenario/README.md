@@ -38,6 +38,7 @@
 | 通常戦・ボス | `content/journeys/golden_triangle/stories/battles/gt_*.ink` |
 | デート | `content/journeys/golden_triangle/stories/places/gt_<都市>_<行き先>.ink` の knot（デートID）。宿の屋上の告白・「待って」の後は `places/gt_<都市>_hotel_hub_dates.ink`（`romance/date_catalog.json` の `storyId` から参照） |
 | 都市の締め | `content/journeys/golden_triangle/stories/places/gt_{delhi,agra,jaipur}_hotel_hub.ink` の knot `gt_<都市>_epilogue`（フィナーレの `epilogueStoryId` から参照） |
+| 差し込みの場面（宿の夜と朝、デリーの出発、アーグラの到着、ジャイプールのフィナーレの前後、インド門のデートの後） | `content/journeys/golden_triangle/stories/places/gt_{delhi,agra,jaipur}_inserts.ink` の knot（時点は頭の `# at:`・`# priority:`）。土地の事実を言う場面の出典は `content/journeys/golden_triangle/scenes/catalog.json`、ほかは `# sources: none` |
 | クイズ | `content/journeys/golden_triangle/quizzes/gt_*_quiz.json` |
 | 対訳・語義 | `content/journeys/golden_triangle/learning/translations.json`、語義はインド編だけで使う語を `content/journeys/golden_triangle/learning/word-meanings.json`、ほかの旅行編とも使う語を共通の `content/learning/word-meanings.json` |
 | 旅行・画像・地点・出典 | 既存の都市bundleおよび `content/journeys/golden_triangle/` の都市・移動・各カタログ（画像は `content/journeys/golden_triangle/public/assets/tourism/india/`）。編集手順は `authoring/CITY_BUNDLES.md` |

@@ -29,8 +29,13 @@ test("finishing a journey's first city reads its ending and moves the journey to
   expect(finale.completedCityIds).toEqual([from.id]);
   await ops.toEpilogue(page);
 
-  // The ending is followed automatically by the next city's arrival and its own map.
-  const arrived = await playUntil(page, (state) => state.currentCityId === to.id && !state.activeEpilogue, { source });
+  // The ending is followed automatically by the departure (a city's departure scenes play in it and may spend money,
+  // as Delhi's station does) and the next city's arrival and its own map. The move itself keeps every value.
+  let leaving = finale;
+  const arrived = await playUntil(page, (state) => {
+    if (state.currentCityId === from.id) leaving = state;
+    return state.currentCityId === to.id && !state.activeEpilogue;
+  }, { source });
   const menu = page.getByTestId("travel-menu");
   await expect(menu).toHaveAttribute("aria-label", `${to.nameJa}の行き先`);
   await expect(page.getByTestId("travel-map-canvas")).toBeVisible();
@@ -40,6 +45,8 @@ test("finishing a journey's first city reads its ending and moves the journey to
   expect(arrived.viewedEpilogueCityIds).toEqual([from.id]);
   expect(arrived.travel.currentPlaceId).toBe(arrived.travel.hotelPlaceId);
   for (const field of ["playerName", "heroineName", "ap", "travelBudget", "completedCityIds", "completedEpisodeIds", "memories"] as const)
+    expect(arrived[field], field).toEqual(leaving[field]);
+  for (const field of ["playerName", "heroineName", "ap", "completedCityIds", "completedEpisodeIds", "memories"] as const)
     expect(arrived[field], field).toEqual(finale[field]);
 
   // A reload reopens the journey last opened on this device with its save, without choosing it again.

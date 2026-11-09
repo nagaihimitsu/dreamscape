@@ -10,7 +10,8 @@ import { getCityContent } from "../../../src/content";
 import { getJourney } from "../../../src/content/journeys";
 import { completedCity } from "../../../src/dev/scenario-builders";
 import { departToNextCity } from "../../../src/domain/city-travel";
-import { createGame, validateGameState } from "../../../src/domain/game";
+import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
+import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../../src/domain/player-action";
 import { beginTravelEvent, getTravelEventAvailability } from "../../../src/domain/travel-game";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 
@@ -19,6 +20,16 @@ class MemoryStorage implements StorageLike {
   getItem(key: string) { return this.values.get(key) ?? null; }
   setItem(key: string, value: string) { this.values.set(key, value); }
   removeItem(key: string) { this.values.delete(key); }
+}
+
+/** Delhi's departure has its own scenes (GT-4): play them with the first action the screen offers until the party is in the next city. */
+function playToNextCity(departing: GameState): GameState {
+  let state = departing;
+  for (let step = 0; state.currentCityId === departing.currentCityId; step++) {
+    expect(step).toBeLessThan(200);
+    state = applyPlayerAction(state, playerActionChange(listPlayerActions(state)[0], () => 0), () => 0);
+  }
+  return state;
 }
 
 const statuses = (available: number, notSuitable: number, notApplicable = 0) =>
@@ -74,7 +85,9 @@ describe("Golden Triangle in-city transport: walk, auto-rickshaw, metro", () => 
       expect(() => validateGameState({ ...cleared, travel: { ...cleared.travel, rideCounts } }), JSON.stringify(rideCounts))
         .toThrow("乗り物に乗った回数の記録が一致しません。");
     const counted = validateGameState({ ...cleared, travel: { ...cleared.travel, rideCounts: { auto_rickshaw: 2, metro: 1 } } });
-    const agra = departToNextCity(counted, counted.revision);
+    const departing = departToNextCity(counted, counted.revision);
+    expect(departing.occasion).toMatchObject({ kind: "depart", cityId: "delhi" });
+    const agra = playToNextCity(departing);
     expect(agra.currentCityId).toBe("agra");
     expect(agra.travel.rideCounts).toEqual({});
     expect(validateGameState(JSON.parse(JSON.stringify(agra)))).toEqual(agra);

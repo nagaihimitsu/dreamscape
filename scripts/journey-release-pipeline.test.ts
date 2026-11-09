@@ -67,6 +67,8 @@ function prepareUnpublishedFixture(root: string) {
   rmSync(path.join(root, layer, "stories/places"), { recursive: true, force: true });
   edit(`${layer}/encounters/catalog.json`, (data) => { data.items = data.items.filter((item: any) => !cityIds.has(item.cityId)); });
   edit(`${layer}/progression/story.json`, (data) => { data.flags = []; });
+  // The sources of their inserted scenes (GT-4) go with them too.
+  edit(`${layer}/scenes/catalog.json`, (data) => { data.scenes = []; });
   const questionIds = new Set<string>();
   for (const file of readdirSync(path.join(root, layer, "quizzes"))) {
     if (!file.endsWith(".json")) continue;
