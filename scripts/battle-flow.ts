@@ -76,7 +76,8 @@ function fileScenes(source: string, label: string): { scenes: Map<string, string
     if (END_LINE.test(line) || isBlank(line) && !lines[index].trim()) continue;
     if (/^\s*(INCLUDE|EXTERNAL|CONST)\s/u.test(line)) throw new Error(`${label} has ${line.trim()}: convert it by hand`);
     if (/^\s*#/u.test(line)) { if (!seenVar) throw new Error(`${label}: a tag before its VAR lines`); head.push(lines[index]); continue; }
-    if (!line.trim()) { if (!seenVar) preamble.push(lines[index]); continue; }
+    // A comment line stays where it was: before the VAR lines (the file's top), or after them (with the head's tags).
+    if (!line.trim()) { (seenVar ? head : preamble).push(lines[index]); continue; }
     throw new Error(`${label} has a line at its top that is not a VAR, a tag or its battle_scene dispatch: ${line.trim()}`);
   }
   const scenes = new Map<string, string[]>();
@@ -166,11 +167,11 @@ function rebuttalLines(source: string, label: string): string[] {
   const lines = source.split("\n");
   const code = withoutComments(source).split("\n");
   if (code.some((line) => KNOT.test(line) || STITCH.test(line))) throw new Error(`The rebuttal ${label} has knots: convert it by hand`);
-  const kept = lines.map((line, index) => (/^\s*VAR\s/u.test(code[index]) ? "" : line));
-  const keptCode = code.map((line) => (/^\s*VAR\s/u.test(line) ? "" : line));
-  let first = 0;
-  while (first < kept.length && (!keptCode[first].trim())) first++;
-  return sceneBody(kept.slice(first), keptCode.slice(first), label);
+  // Its VAR lines left out, and the blank lines among the comments before its first line.
+  const rows = lines.map((line, index) => ({ line, code: code[index] })).filter((row) => !/^\s*VAR\s/u.test(row.code));
+  const first = rows.findIndex((row) => row.code.trim());
+  const kept = [...rows.slice(0, Math.max(first, 0)).filter((row) => row.line.trim()), ...rows.slice(Math.max(first, 0))];
+  return sceneBody(kept.map((row) => row.line), kept.map((row) => row.code), label);
 }
 
 /**
@@ -178,6 +179,16 @@ function rebuttalLines(source: string, label: string): string[] {
  * file: a one-scene file, or the place file with the battle's knot replaced) and the new catalog entry.
  */
 export function convertBattle(input: SceneFormBattle, questions: number): { source: string; battle: BattleDefinition } {
+  const result = convertBattleSource(input, questions);
+  // Only the form changes: every comment line of the story (and of its rebuttal) stays in the converted file.
+  const comments = (text: string) => text.split("\n").map((line) => line.trim()).filter((line) => line.startsWith("//"));
+  const kept = comments(result.source);
+  const lost = [...comments(input.source), ...comments(input.rebuttal?.source ?? "")].filter((line) => !kept.includes(line));
+  if (lost.length) throw new Error(`Converting ${input.battle.id} would drop the comment ${lost[0]}: convert it by hand`);
+  return result;
+}
+
+function convertBattleSource(input: SceneFormBattle, questions: number): { source: string; battle: BattleDefinition } {
   const { battle } = input;
   if (!battle.scenes) throw new Error(`The battle ${battle.id} is in the one-flow form already`);
   const { storyId, path } = splitStoryAddress(battle.storyId);

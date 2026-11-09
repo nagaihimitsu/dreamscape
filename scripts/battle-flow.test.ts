@@ -46,7 +46,7 @@ describe("the battle converter (stage 5)", () => {
     expect(entry.reasoning).toEqual({ kind: "contradiction", roundIndex: 1, caseClueIds: ["a", "b", "c"], correctClueIds: ["b"] });
     expect(source).toContain("// 試験の特殊戦（架空）。\nINCLUDE modules.ink\n# background: zz_bg\n");
     expect(source).toContain("-> quiz(1) ->\n# background: zz_bg\n{ quiz_correct:");
-    expect(source).toContain("-> zz_test_b_claim ->\n# background: zz_bg\n# speaker: heroine\n「待って」\n- (stop)\n-> reasoning ->\n" +
+    expect(source).toContain("-> zz_test_b_claim ->\n// 反論\n# background: zz_bg\n# speaker: heroine\n「待って」\n- (stop)\n-> reasoning ->\n" +
       "{ reasoning_action == \"press\":\n    -> zz_test_b_press ->\n    -> stop\n}\n{ evidence_result == \"failure\":\n");
     expect(source).toContain("=== zz_test_b_claim ===\n# background: zz_bg\n# speaker: narrator\n相手は胸を張った。\n# speaker: enemy\n「全部そうだ」\n->->");
     expect(source).not.toMatch(/battle_scene|answer_correct|^VAR/mu);
@@ -74,10 +74,10 @@ describe("the battle converter (stage 5)", () => {
     expect(() => convertBattle({ battle, source: SOURCE.replace("    「正しい」\n", "    「正しい」\n    -> END\n") }, 3)).toThrow(/ends elsewhere than its last line/u);
   });
 
-  it("converts every battle still in the scene form (Milan's and the Golden Triangle's) with the same lines, without writing", () => {
+  it("converts every battle still in the scene form (Milan's, until its scenario revision) with the same lines, without writing", () => {
     const journeys = readdirSync("content/journeys").filter((id) => existsSync(`content/journeys/${id}/battles/catalog.json`));
     const results = journeys.flatMap((id) => convertJourneyBattles(`content/journeys/${id}`));
-    expect(results.length).toBeGreaterThanOrEqual(24);
+    expect(results.length).toBeGreaterThanOrEqual(9);
     expect(results.filter((result) => result.difference)).toEqual([]);
   });
 
@@ -92,7 +92,10 @@ describe("the battle converter (stage 5)", () => {
     expect(JSON.parse(readFileSync(path.join(root, "milano/presentation/reasoning-intros.json"), "utf8")).entries).toEqual([]);
     expect(existsSync(path.join(root, "milano/stories/battles/milano_special_b_last_supper_rebuttal.ink"))).toBe(false);
     const story = readFileSync(path.join(root, "milano/stories/battles/milano_special_b_last_supper.ink"), "utf8");
-    expect(story).toContain("-> milano_special_b_last_supper_claim ->\n# background: milano_refectory\n# speaker: heroine\n# emotion: surprised\n「待って。本当に、全部が同じ理由なんですか？」");
+    // Only the form changed: the comments stay (the file's top, the rebuttal's).
+    expect(story).toContain("// Phase 6 / B型。証拠の判定と英語3択はJSON・TypeScript側。");
+    expect(story).toContain("// 矛盾追及の導入。証拠や結論を先に明かさない。");
+    expect(story).toContain("-> milano_special_b_last_supper_claim ->\n// 矛盾追及の導入。証拠や結論を先に明かさない。\n# background: milano_refectory\n# speaker: heroine\n# emotion: surprised\n「待って。本当に、全部が同じ理由なんですか？」");
     expect(() => compileFile(story)).not.toThrow();
   });
 });
