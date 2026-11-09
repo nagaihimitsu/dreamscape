@@ -3,17 +3,30 @@ import { conditionSchema } from "./condition-schemas";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/u);
 /**
- * When an encounter is looked up. Stage 1 of the condition system has one
- * moment, the observation at the encounter's own landmark (also when `at` is
- * left out); after a battle, on a trip and the other moments come later.
+ * When an encounter is looked up: the observation at the encounter's own
+ * landmark (also when `at` and `priority` are left out). An encounter whose Ink
+ * starts with the head tags `# at: visit <landmark>` and `# priority:` gets its
+ * rule from content:build (scripts/encounter-head.ts) with `priority` instead.
  */
 const momentsSchema = z.custom<["observe"]>().superRefine((value, context) => {
   if (!Array.isArray(value) || value.length !== 1 || value[0] !== "observe")
-    context.addIssue({ code: "custom", message: 'Encounters are met only while observing for now: at must be ["observe"] (other moments come at stage 3)' });
+    context.addIssue({ code: "custom", message: 'Encounters written in JSON are met while observing: at must be ["observe"] (place an encounter elsewhere with the head tags of its Ink)' });
 });
+/**
+ * The encounter's place at its landmark's visit (the unified event design, stage 1): a negative
+ * number before the main part (guide, observation, battle), a positive one after it (from the
+ * battle result's 「自由時間へ」), "after observe" while observing (as an encounter without it);
+ * smaller numbers first, the same priority in the order of the story files' names.
+ */
+export const visitPrioritySchema = z.union([
+  z.number().int().safe().refine((value) => value !== 0, "Priority 0 is the main part itself: write a negative or positive number"),
+  z.literal("after observe"),
+]);
+export type VisitPriority = z.infer<typeof visitPrioritySchema>;
 const ruleSchema = z.object({
   encounterId: id,
   at: momentsSchema.optional(),
+  priority: visitPrioritySchema.optional(),
   /** When the encounter can be met (src/content/condition-schemas.ts); without it, always. */
   when: conditionSchema.optional(),
   /**
@@ -25,7 +38,8 @@ const ruleSchema = z.object({
    * moment exists.
    */
   quizAfterLandmarkBattle: z.literal(true).optional(),
-}).strict();
+}).strict().refine((rule) => rule.at === undefined || rule.priority === undefined,
+  "An entry rule has either at or priority");
 
 export const encounterEntryRulesSchema = z.object({
   schemaVersion: z.literal(2),
@@ -49,5 +63,7 @@ export function validateEncounterEntryRules(
     if (!event) throw new Error(`Unknown encounter entry: ${rule.encounterId}`);
     if (rule.quizAfterLandmarkBattle && !event.quiz)
       throw new Error(`A quiz after the landmark battle needs an encounter with a quiz: ${rule.encounterId}`);
+    if (rule.quizAfterLandmarkBattle && typeof rule.priority === "number")
+      throw new Error(`A quiz after the landmark battle is met while observing: ${rule.encounterId} has priority ${rule.priority}`);
   }
 }

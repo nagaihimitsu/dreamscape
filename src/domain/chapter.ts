@@ -177,7 +177,11 @@ export function getBattleResultExits(state: GameState): { epilogue: boolean; lea
   return { epilogue, leave: !(automatic && epilogue) };
 }
 
-/** The result screen's 「自由時間へ戻る／進む」: a special battle returns to its place, the others to free time. */
+/**
+ * Leaving a battle's result screen: a special battle returns to its place, the others to free time.
+ * The screen's 「自由時間へ戻る／進む」 is leaveBattleToFreeTime (encounter.ts), which then meets the
+ * encounters after a landmark's main part.
+ */
 export function leaveBattleResult(state: GameState, expectedRevision: number): GameState {
   const active = state.activeBattle;
   if (!active || active.phase !== "result" || state.activeTourism) return state;

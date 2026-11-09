@@ -223,8 +223,10 @@ describe("journey:new in a copy of the repository", () => {
     expect(catalog.journeys.filter((journey) => journey.id === k || journey.id === n).map((journey) => [journey.id, journey.status, journey.nameJa]))
       .toEqual([[k, "preparing", "京都の旅"], [n, "preparing", "奈良の旅"]]);
     expect(result.journeyContents.find((journey) => journey.id === n)).toMatchObject({ status: "preparing" });
-    // Every ID follows the new prefix and every file is used: no warning names the new journeys.
-    expect(result.warnings.filter((warning) => [k, kc, kp, n].some((name) => warning.message.includes(name)))).toEqual([]);
+    // Every ID follows the new prefix and every file is used: no warning names the new journeys (but the sample's
+    // own example of a 「また今度」 that no later moment brings back, copied with its two encounters).
+    expect(result.warnings.filter((warning) => warning.kind !== "later-never-again" &&
+      [k, kc, kp, n].some((name) => warning.message.includes(name)))).toEqual([]);
   });
 
   it("works with city:bundle at once; journey:scaffold says what it needs first and journey:transit needs nothing for a walk-only journey", async () => {

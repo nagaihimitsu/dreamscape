@@ -24,7 +24,7 @@ export const IMAGE_JOURNEYS_FILE = `${GENERATED_DIRECTORY}/image-journeys.json`;
 export function writeContentOutputs(
   root: string,
   sources: ContentSources,
-  validated: { stories: Record<string, string>; quizzes: Record<string, unknown> },
+  validated: { stories: Record<string, string>; quizzes: Record<string, unknown>; catalogOverrides?: Partial<Record<CatalogKind, unknown>> },
   derivedFiles: ReadonlyMap<string, string> = new Map(),
 ): void {
   const directory = path.join(root, GENERATED_DIRECTORY);
@@ -36,7 +36,7 @@ export function writeContentOutputs(
   writeFileSync(path.join(directory, "stories.json"), `${JSON.stringify(validated.stories, null, 2)}\n`);
   writeFileSync(path.join(root, IMAGE_JOURNEYS_FILE), `${JSON.stringify(imageJourneyIndex(sources), null, 2)}\n`);
   // The game imports the validated, merged catalogs only from this mirror.
-  writeContentMirror(sources, mirrorDirectory(root));
+  writeContentMirror(sources, mirrorDirectory(root), validated.catalogOverrides);
   // Vite serves and builds the game's images from this folder (publicDir in vite.config.ts).
   assemblePublicDirectory(new Map([...sources.publicFiles, ...derivedFiles]), generatedPublicDirectory(root));
 }
@@ -44,13 +44,16 @@ export function writeContentOutputs(
 /**
  * Write the validated merged view to `directory` (the generated mirror) with
  * the old `content/` relative paths: catalogs as formatted JSON, city and
- * travel files byte for byte. Files are written in place, unchanged files
- * are left untouched and files no longer produced are removed.
+ * travel files byte for byte. `overrides` replaces (or adds) whole catalogs
+ * the validation derived (the encounters' head tags). Files are written in
+ * place, unchanged files are left untouched and files no longer produced are removed.
  */
-export function writeContentMirror(sources: ContentSources, directory: string): void {
+export function writeContentMirror(sources: ContentSources, directory: string, overrides: Partial<Record<CatalogKind, unknown>> = {}): void {
   const outputs = new Map<string, Buffer>();
   for (const [kind, merged] of Object.entries(sources.catalogs) as [CatalogKind, MergedCatalog][])
     outputs.set(kind, Buffer.from(`${JSON.stringify(merged.value, null, 2)}\n`));
+  for (const [kind, value] of Object.entries(overrides))
+    outputs.set(kind, Buffer.from(`${JSON.stringify(value, null, 2)}\n`));
   for (const city of sources.cities) {
     outputs.set(`cities/${city.id}.json`, city.bytes.city);
     outputs.set(`travel/${city.id}.json`, city.bytes.travel);

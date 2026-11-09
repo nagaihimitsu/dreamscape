@@ -143,7 +143,9 @@ test("the sample journey plays from a new journey through its city finale and ep
   // 1. Sightseeing. The tower also holds the date and the finale; at each step of this
   // route a place offers one open event, so going there starts it at once (by the
   // rented bicycle when there is one: hold the page's clock so its short transition,
-  // 0.45 s with reduced motion, stays while it is checked).
+  // 0.45 s with reduced motion, stays while it is checked). (Optional part) The tower's
+  // stall comes first, before the visit's main part (its head tags: priority -1): the
+  // bookmark is received; then the guide opens.
   if (rental) await ops.holdClock(page);
   await goToPlace(page, route, route.episode.placeId);
   if (rental) {
@@ -155,25 +157,28 @@ test("the sample journey plays from a new journey through its city finale and ep
     await page.clock.resume();
     await expect(transition).toHaveCount(0);
   }
+  await expect(page.getByTestId("encounter-screen")).toBeVisible();
+  const stall = await playUntil(page, (state) => !state.activeEncounter, { source, pick });
+  expect(stall.completedEncounterIds).toEqual([route.encounterIds[0]]);
+  for (const itemId of route.itemIds) expect(stall.inventory[itemId], itemId).toBe("held");
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await playUntil(page, (state) => state.activeTourism?.phase === "exploring", { source, pick });
   await expect(page.getByTestId("observation-viewport")).toBeVisible();
-  // (Optional part) Going on, the tower's encounters run first: the bookmark is received,
-  // then given (AGENTS.md: an item is gained, given and used in its own city).
-  await page.getByTestId("observation-proceed").click();
-  await expect(page.getByTestId("encounter-screen")).toBeVisible();
-  const met = await playUntil(page, (state) => !state.activeEncounter, { source, pick });
-  expect(met.completedEncounterIds).toEqual(route.encounterIds);
-  for (const itemId of route.itemIds) expect(met.inventory[itemId], itemId).toBe("gifted");
-  expect(met.activeTourism?.phase).toBe("exploring");
 
-  // 2. The normal battle and its rewards.
+  // 2. The normal battle and its rewards: going on from the observation, no encounter waits there now.
   await page.getByTestId("observation-proceed").click();
   const result = await playBattleToResult(page, pick);
   expect(result.completedEpisodeIds).toEqual([route.episode.id]);
   expect(result.ap).toBeGreaterThan(0);
-  await ops.toFreeTime(page);
+  // (Optional part) 「自由時間へ」 meets the gift encounter after the main part (priority +1, while the
+  // bookmark is held): the bookmark is given (AGENTS.md: an item is gained, given and used in its own city).
+  await page.getByRole("button", { name: "自由時間へ進む", exact: true }).click();
+  await expect(page.getByTestId("encounter-screen")).toBeVisible();
+  const met = await playUntil(page, (state) => !state.activeEncounter, { source, pick });
+  expect(met.completedEncounterIds).toEqual(route.encounterIds);
+  for (const itemId of route.itemIds) expect(met.inventory[itemId], itemId).toBe("gifted");
+  await expect(menu).toBeVisible();
   await expect(page.getByLabel(`残り${result.ap}AP`)).toBeVisible();
 
   // 3. The date: its AP is spent once when it starts, and it ends on the map (docs/07 acceptance 3, 4).

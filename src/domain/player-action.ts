@@ -1,8 +1,8 @@
 import { getActiveBattleContent, getBattleObservationLandmarkId, advanceBattle, answerBattle, canSubmitBattleEvidence, canToggleReasoningClue, pressBattleClaim, selectReasoningClue, submitBattleEvidence, toggleBattleHint } from "./battle";
-import { getBattleResultExits, leaveBattleResult } from "./chapter";
+import { getBattleResultExits } from "./chapter";
 import { advanceCompletedJourneyCity, departToNextCity, getPlayerDeparture } from "./city-travel";
 import {
-  advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter,
+  advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter, leaveBattleToFreeTime,
   getActiveEncounterDefinition, getEncounterOptionAvailability, proceedFromTourism,
 } from "./encounter";
 import { advanceCityEpilogue, canReadCityEpilogue, completeArrivalLogo, startCityEpilogue } from "./epilogue";
@@ -174,7 +174,7 @@ export function playerActionChange(action: PlayerAction, nextRoll: () => number)
       case "evidence_toggle": return selectReasoningClue(state, action.clueId, revision);
       case "evidence_submit": return submitBattleEvidence(state, revision);
       case "battle_observe": return openTourism(state, action.landmarkId);
-      case "battle_leave": return leaveBattleResult(state, revision);
+      case "battle_leave": return leaveBattleToFreeTime(state, revision, nextRoll);
       case "date_choose": return chooseDate(state, action.index, revision);
       case "date_next": return advanceDate(state, revision);
       case "date_finish": return finishDate(state, revision);

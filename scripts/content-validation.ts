@@ -25,6 +25,7 @@ import { validateEncounterContent } from "./encounter-validation";
 import { dataLanguageWarnings } from "./data-language";
 import { transitLedgerSchema } from "./transit-ledger";
 import type { z } from "zod";
+import { headEntryRule, HEAD_TAGS, readEncounterHead, type EncounterHead } from "./encounter-head";
 import { checkConditions, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, type ConditionContent } from "./condition-validation";
 import { validateBackgroundAssets, validateCharacters } from "./presentation-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
@@ -164,6 +165,34 @@ function checkQuizFileNames(sources: ContentSources): void {
   }
 }
 
+/**
+ * The head of every encounter story that has head tags (by story ID). A head tag in any other
+ * story stops the build, as do a malformed head, a head naming another landmark than the
+ * catalog's, and a priority `after observe` at a landmark without an observation.
+ */
+function readEncounterHeads(sources: ContentSources, encounters: readonly { id: string; storyId: string; landmarkId: string }[],
+  landmarks: readonly { id: string }[], storyLabel: (storyId: string) => string): Map<string, EncounterHead> {
+  const heads = new Map<string, EncounterHead>();
+  const headTag = new RegExp(`^\\s*#\\s*(?:${HEAD_TAGS.join("|")})\\s*:`, "mu");
+  for (const { id, source } of sources.storyFiles) {
+    const event = encounters.find((item) => item.storyId === id);
+    if (!event) {
+      if (headTag.test(source))
+        throw new Error(`Head tags (# at:, # priority:, # when:, # until:, # repeat:) are written only in an encounter's story for now: ${storyLabel(id)}`);
+      continue;
+    }
+    const { head } = withContext(storyLabel(id), () => readEncounterHead(source));
+    if (!head) continue;
+    if (head.landmarkId !== event.landmarkId)
+      throw new Error(`Encounter head names another landmark: ${storyLabel(id)} has # at: visit ${head.landmarkId}, encounters/catalog.json gives ${event.id} the landmark ${event.landmarkId}`);
+    // Every landmark has an observation until stage 2b lets a place leave it out.
+    if (head.priority === "after observe" && !landmarks.some((landmark) => landmark.id === event.landmarkId))
+      throw new Error(`# priority: after observe needs a landmark with an observation: ${storyLabel(id)}`);
+    heads.set(id, head);
+  }
+  return heads;
+}
+
 /** The validated content: compiled stories, quizzes and the parsed catalogs content:build reports. */
 export type ValidatedContent = ReturnType<typeof validateContent>;
 
@@ -221,10 +250,32 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const storyLabel = (storyId: string) => storyFiles.get(storyId) ?? `${storyId}.ink`;
   const journey = parseCatalog(journeySchema, "progression/journey.json");
   const tourism = parseCatalog(tourismCatalogSchema, "tourism/catalog.json");
-  const encounterInput = parseCatalog(encounterCatalogInputSchema, "encounters/catalog.json");
+  const authoredEncounterInput = parseCatalog(encounterCatalogInputSchema, "encounters/catalog.json");
+  // The head tags of the encounters' Ink (encounter-head.ts): read and removed before compiling,
+  // they become the encounters' entry rules and `repeatable` (written to the generated catalogs).
+  const encounterHeads = readEncounterHeads(sources, authoredEncounterInput.encounters, tourism.landmarks, storyLabel);
+  const encounterInput = { ...authoredEncounterInput, encounters: authoredEncounterInput.encounters.map((event) => {
+    const head = encounterHeads.get(event.storyId);
+    if (head?.repeat !== undefined && event.repeatable !== undefined)
+      throw new Error(`Encounter repetition is written twice: ${event.id} has repeatable in encounters/catalog.json and # repeat: in ${storyLabel(event.storyId)} (keep one)`);
+    return head?.repeat === "always" ? { ...event, repeatable: true } : event;
+  }) };
   const encounterCatalog = normalizeEncounterCatalog(encounterInput, tourism.landmarks);
-  const encounterEntryRules = parseCatalog(encounterEntryRulesSchema, "encounters/entry-rules.json");
+  const authoredEntryRules = parseCatalog(encounterEntryRulesSchema, "encounters/entry-rules.json");
+  const headRules = encounterCatalog.encounters.flatMap((event) => {
+    const head = encounterHeads.get(event.storyId);
+    if (!head) return [];
+    if (authoredEntryRules.entries.some((rule) => rule.encounterId === event.id))
+      throw new Error(`Encounter entry rule is written twice: ${event.id} has a rule in encounters/entry-rules.json and head tags in ${storyLabel(event.storyId)} (keep one)`);
+    return [headEntryRule(event.id, head)];
+  });
+  const encounterEntryRules = encounterEntryRulesSchema.parse({ ...authoredEntryRules, entries: [...authoredEntryRules.entries, ...headRules] });
   validateEncounterEntryRules(encounterEntryRules, encounterCatalog.encounters);
+  // What the generated mirror holds instead of the merged sources (content-outputs.ts).
+  const catalogOverrides: Partial<Record<CatalogKind, unknown>> = encounterHeads.size ? {
+    "encounters/catalog.json": { ...(sources.catalogs["encounters/catalog.json"]?.value as object), encounters: encounterInput.encounters },
+    "encounters/entry-rules.json": encounterEntryRules,
+  } : {};
   const encounterStoryIds = [...new Set(encounterCatalog.encounters.flatMap((event) => [
     event.storyId,
     ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : []),
@@ -381,7 +432,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const storySources: Record<string, string> = {};
   const storyMemoryReferences: Record<string, string[]> = {};
   let routes = 0;
-  for (const { id, file, source } of sources.storyFiles) {
+  for (const { id, file, source: authored } of sources.storyFiles) {
+    const source = encounterHeads.has(id) ? withContext(file, () => readEncounterHead(authored).source) : authored;
     storyMemoryReferences[id] = withContext(file, () => validateMemoryReferences(source, Object.keys(presentation.memories)));
     const itemReferences = withContext(file, () => validateItemReferences(source, encounterCatalog.items.map((item) => item.id)));
     if (itemReferences.length && !encounterStoryIds.includes(id))
@@ -857,6 +909,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       cities: travels.map(({ city, travel, settings }) => ({ city, places: travel.places, hotelPlaceId: settings.hotelPlaceId })),
       backgrounds: presentation.backgrounds,
     },
+    /** The generated mirror's catalogs that differ from the merged sources (the encounters' head tags). */
+    catalogOverrides,
     /** Probable mistakes that do not stop the build (content-report.ts). */
     warnings: [...contentWarnings(sources), ...transitWarnings, ...conditionNotes, ...languageNotes],
     /** What each journey folder provides, for the build report. */
