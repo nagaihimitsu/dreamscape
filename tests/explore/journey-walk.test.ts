@@ -37,9 +37,9 @@ import { sceneOfAddress, taggedDateScene } from "../../src/domain/reservations";
 import type { SceneEntry } from "../../src/content/scene-schemas";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { afterAll, describe, expect, it } from "vitest";
-import { allRewardRules, balance, battles, cityContents, dates, episodes, getCityContent, journeyConfig, landmarks, progression } from "../../src/content";
+import { allRewardRules, balance, battles, cityContents, dates, episodes, getCityContent, journeyConfig, landmarks, progression, scenes } from "../../src/content";
 import { spendableMoney } from "../../src/domain/conditions";
-import { apShortNow, canStillClearCity, moneyShortNow, type ProgressionContent, type ProgressionSnapshot } from "../../scripts/progression-check";
+import { apShortNow, canStillClearCity, moneyShortNow, sceneItemsOf, type ProgressionContent, type ProgressionSnapshot } from "../../scripts/progression-check";
 import { encounters } from "../../src/content/encounters";
 import { journeys } from "../../src/content/journeys";
 import { cityStart } from "../../src/dev/scenario-builders";
@@ -141,7 +141,7 @@ function pick(state: GameState, actions: PlayerAction[], next: () => number): Pl
 /** The content the progression check reads, from the runtime catalogs (the same check as content:build's). */
 const progressionContent: ProgressionContent = {
   journeys, episodes, storyBattles: journeyConfig.storyBattles, battles, landmarks, encounters: encounters.encounters, items: encounters.items, dates,
-  rewards: allRewardRules, romance: progression,
+  rewards: allRewardRules, romance: progression, sceneItems: sceneItemsOf(scenes),
   // Registered cities only (a journey may list cities not built yet).
   travel: playable.flatMap((journey) => journey.cities).filter((city) => city.id in cityContents).map((city) => {
     const { travel, travelSettings } = getCityContent(city.id);

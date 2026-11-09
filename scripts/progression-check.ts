@@ -25,7 +25,13 @@ export type ProgressionContent = {
   landmarks: readonly { id: string; cityId: string; guideStoryId?: string; observation?: boolean }[];
   encounters: readonly { id: string; cityId: string; repeatable?: boolean; completionMoney?: number; completionItemId?: string;
     quiz?: { rewardItemId: string }; options: readonly { cost?: number; giftItemId?: string; consumeItemId?: string }[] }[];
-  items: readonly { id: string; cityId: string }[];
+  items: readonly { id: string; cityId: string; carry?: "journey" }[];
+  /**
+   * What the scenes (stage 3 tags) do with items: the ones their `# on_done: item` gives, and the ones a choice's `# give:` /
+   * `# use:` or the head's `# on_done: use` gives away or uses. A main part's scene gives only once its part comes: a battle's
+   * once the battle is played (`battleId`), a guide's once it is read (`guideLandmarkId`), an epilogue's after the finale.
+   */
+  sceneItems?: readonly { cityId: string; gives: readonly string[]; spends: readonly string[]; battleId?: string; guideLandmarkId?: string; afterFinale?: boolean }[];
   dates: readonly { id: string; chapterId: string; kind: string; apCost: number; when?: Condition }[];
   /** Each city's travel: the hotel, the map events' places and admissions, the routes' fares, the starting budget. */
   travel: readonly { cityId: string; hotelPlaceId: string; initialBudget: number;
@@ -48,6 +54,16 @@ export type ProgressionContent = {
   sceneAp?: readonly { cityId: string; gained: number; spent: number }[];
 };
 
+/** The scenes' items as the check reads them (ProgressionContent.sceneItems), from the scene list content:build makes. */
+export function sceneItemsOf(scenes: readonly { cityId: string; main?: Record<string, string>; done: { items?: readonly string[]; use?: readonly string[] };
+  options: readonly { give?: { item: string }; use?: string }[] }[]): NonNullable<ProgressionContent["sceneItems"]> {
+  return scenes.filter((scene) => scene.done.items?.length || scene.done.use?.length || scene.options.some((option) => option.give || option.use))
+    .map((scene) => ({ cityId: scene.cityId, gives: scene.done.items ?? [],
+      spends: [...(scene.done.use ?? []), ...scene.options.flatMap((option) => [option.give?.item, option.use].filter((id): id is string => !!id))],
+      ...(scene.main?.battle ? { battleId: scene.main.battle } : {}), ...(scene.main?.guide ? { guideLandmarkId: scene.main.guide } : {}),
+      ...(scene.main?.epilogue ? { afterFinale: true } : {}) }));
+}
+
 /**
  * The records the check starts from. `exact`: the records of a real game state (the walk), so
  * other cities' records are fixed; without it (the build) each city is checked from its start
@@ -67,8 +83,8 @@ type MainEvent = { id: string; kind: "episode" | "finale" | "special"; battleId:
 type City = {
   id: string; journeyId?: string; order: number;
   events: MainEvent[];
-  /** Items a scene of the city gives, and those an option gives away or uses. */
-  itemSources: Set<string>; itemSpends: Set<string>;
+  /** Items a scene of the city gives (with the main part it comes after, if any), and those a choice or a scene's end gives away or uses. */
+  itemSources: Map<string, ItemSource[]>; itemSpends: Set<string>;
   /** The most money the party can have in the city (Infinity when a repeated scene pays). */
   maxMoney: number;
 };
@@ -87,7 +103,12 @@ type Mode = {
   fragile?: boolean;
   /** These battles are never played (the battle left after the epilogue). */
   without?: ReadonlySet<string>;
+  /** A play started at this city without the earlier cities' items (Debug, the walk's city starts; the item design §2.5 9). */
+  noEarlierItems?: boolean;
 };
+
+/** A source of an item: always there (an encounter, a talk, an arrival), or after a main part of its city. */
+type ItemSource = { battleId?: string; guideLandmarkId?: string; afterFinale?: boolean };
 
 const journeyOf = (content: ProgressionContent, cityId: string) => content.journeys.find((journey) => journey.cities.some((city) => city.id === cityId));
 const orderOf = (content: ProgressionContent, cityId: string) => journeyOf(content, cityId)?.cities.findIndex((city) => city.id === cityId) ?? -1;
@@ -124,10 +145,17 @@ function cityModel(content: ProgressionContent, cityId: string): City {
   const upTo = journey ? journey.cities.slice(0, orderOf(content, cityId) + 1).map((city) => city.id) : [cityId];
   const paying = content.encounters.filter((item) => upTo.includes(item.cityId) && (item.completionMoney ?? 0) > 0);
   const start = journey?.initialBudget ?? content.travel.find((item) => item.cityId === (journey?.cities[0]?.id ?? cityId))?.initialBudget ?? 0;
+  const scenes = (content.sceneItems ?? []).filter((item) => item.cityId === cityId);
+  const itemSources = new Map<string, ItemSource[]>();
+  const addSource = (itemId: string, source: ItemSource) => itemSources.set(itemId, [...(itemSources.get(itemId) ?? []), source]);
+  for (const item of encounters) for (const id of [item.completionItemId, item.quiz?.rewardItemId]) if (id) addSource(id, {});
+  for (const scene of scenes) for (const id of scene.gives)
+    addSource(id, { ...(scene.battleId ? { battleId: scene.battleId } : {}), ...(scene.guideLandmarkId ? { guideLandmarkId: scene.guideLandmarkId } : {}),
+      ...(scene.afterFinale ? { afterFinale: true } : {}) });
   return {
-    id: cityId, journeyId: journey?.id, order: orderOf(content, cityId), events,
-    itemSources: new Set(encounters.flatMap((item) => [item.completionItemId, item.quiz?.rewardItemId].filter((id): id is string => !!id))),
-    itemSpends: new Set(encounters.flatMap((item) => item.options.flatMap((option) => [option.giftItemId, option.consumeItemId].filter((id): id is string => !!id)))),
+    id: cityId, journeyId: journey?.id, order: orderOf(content, cityId), events, itemSources,
+    itemSpends: new Set([...encounters.flatMap((item) => item.options.flatMap((option) => [option.giftItemId, option.consumeItemId].filter((id): id is string => !!id))),
+      ...scenes.flatMap((scene) => scene.spends)]),
     maxMoney: paying.some((item) => item.repeatable) ? Infinity : start + paying.reduce((sum, item) => sum + (item.completionMoney ?? 0), 0),
   };
 }
@@ -160,11 +188,11 @@ function judge(content: ProgressionContent, city: City, now: ProgressionSnapshot
 function judgeLeaf(content: ProgressionContent, city: City, now: ProgressionSnapshot, reach: Reach, mode: Mode, leaf: Leaf): Truth {
   const kind = leafKind(leaf);
   if (mode.noRomance && ROMANCE.includes(kind)) return { canTrue: false, canFalse: true };
-  const truth = rawLeaf(content, city, now, reach, leaf);
+  const truth = rawLeaf(content, city, now, reach, leaf, mode);
   if (!mode.fragile) return truth;
   // The parts that may turn false for good (3.3 「二度と満たされなくなるおそれ」).
   if (MONOTONE.includes(kind) || ("romanceStage" in leaf && leaf.romanceStage.atLeast !== undefined)) return { ...truth, canFalse: false };
-  if (("money" in leaf && leaf.money.atLeast !== undefined) || ("item" in leaf && leaf.item.is === "held" && city.itemSpends.has(leaf.item.id)) ||
+  if (("money" in leaf && leaf.money.atLeast !== undefined) || ("item" in leaf && leaf.item.is === "held" && spentOnTheWay(content, city, leaf.item.id)) ||
       ("cityDay" in leaf && leaf.cityDay.atMost !== undefined) || ("journeyDay" in leaf && leaf.journeyDay.atMost !== undefined) ||
       ("romanceStage" in leaf && leaf.romanceStage.atMost !== undefined))
     return { ...truth, canTrue: false };
@@ -179,7 +207,35 @@ function fact(content: ProgressionContent, city: City, now: ProgressionSnapshot,
   return { canTrue: earlier || isNow, canFalse: !isNow };
 }
 
-function rawLeaf(content: ProgressionContent, city: City, now: ProgressionSnapshot, reach: Reach, leaf: Leaf): Truth {
+/** Whether a source of the item comes in the reach: it needs no main part, or its battle, guide or the finale is reached. */
+const sourceReached = (city: City, reach: Reach, itemId: string) => (city.itemSources.get(itemId) ?? []).some((source) =>
+  (!source.battleId || reach.battles.has(source.battleId)) && (!source.guideLandmarkId || reach.guides.has(source.guideLandmarkId)) &&
+  (!source.afterFinale || reach.finale));
+
+/** An item carried through the journey (`"carry": "journey"`) from a city before `city` in the same journey. */
+function carriedFromEarlier(content: ProgressionContent, city: City, itemId: string) {
+  const item = content.items.find((entry) => entry.id === itemId);
+  return !!item && item.carry === "journey" && journeyOf(content, item.cityId)?.id === city.journeyId && orderOf(content, item.cityId) < city.order ? item : undefined;
+}
+
+/**
+ * Whether a choice or a scene's end can give the item away or use it before (or in) `city`: in the city, or, for an item
+ * carried from an earlier city, in any city from its own to `city` (the item design §2.5 8).
+ */
+function spentOnTheWay(content: ProgressionContent, city: City, itemId: string): boolean {
+  if (city.itemSpends.has(itemId)) return true;
+  const carried = carriedFromEarlier(content, city, itemId);
+  return !!carried && journeyOf(content, carried.cityId)!.cities.slice(orderOf(content, carried.cityId), city.order)
+    .some(({ id }) => cityModel(content, id).itemSpends.has(itemId));
+}
+
+/** Whether a carried item's source in its own (earlier) city can come there, playing that city from its start (the item design §2.5 7). */
+function earlierSourceReachable(content: ProgressionContent, cityId: string, itemId: string): boolean {
+  const city = cityModel(content, cityId);
+  return sourceReached(city, reachCity(content, city, startSnapshot(), {}), itemId);
+}
+
+function rawLeaf(content: ProgressionContent, city: City, now: ProgressionSnapshot, reach: Reach, leaf: Leaf, mode: Mode = {}): Truth {
   const both = { canTrue: true, canFalse: true };
   const landmarkCity = (id: string) => content.landmarks.find((item) => item.id === id)?.cityId;
   const cityBattles = (cityId: string) => content.battles.filter((battle) => battle.scope !== "city_finale" && battleCityOf(content, battle.id) === cityId).map((battle) => battle.id);
@@ -210,9 +266,22 @@ function rawLeaf(content: ProgressionContent, city: City, now: ProgressionSnapsh
   if ("item" in leaf) {
     const { id, is } = leaf.item;
     const status = now.items[id];
-    if (content.items.find((item) => item.id === id)?.cityId !== city.id) return now.exact ? { canTrue: status === is || (is === "obtained" && !!status), canFalse: !(status === is || (is === "obtained" && !!status)) } : both;
-    const obtainable = !status && city.itemSources.has(id);
-    if (is === "obtained") return { canTrue: !!status || city.itemSources.has(id), canFalse: !status };
+    const itemCity = content.items.find((item) => item.id === id)?.cityId;
+    // Started here without the earlier cities' items (a Debug or walk start), they have no records.
+    if (mode.noEarlierItems && itemCity !== undefined && itemCity !== city.id && journeyOf(content, itemCity)?.id === city.journeyId &&
+        orderOf(content, itemCity) < city.order) return { canTrue: false, canFalse: true };
+    const carried = carriedFromEarlier(content, city, id);
+    if (carried && is === "held") {
+      // Held here: still held, or (from a city's start) some day true when its earlier city's source can come (the item design §2.5 7).
+      if (now.exact) return { canTrue: status === "held", canFalse: status !== "held" || city.itemSpends.has(id) };
+      return { canTrue: earlierSourceReachable(content, carried.cityId, id), canFalse: true };
+    }
+    // Given or used here: a carried item still held can still be (exact records; from a city's start either way, below).
+    if (carried && now.exact && (is === "gifted" || is === "used"))
+      return { canTrue: status === is || (status === "held" && city.itemSpends.has(id)), canFalse: status !== is };
+    if (itemCity !== city.id) return now.exact ? { canTrue: status === is || (is === "obtained" && !!status), canFalse: !(status === is || (is === "obtained" && !!status)) } : both;
+    const obtainable = !status && sourceReached(city, reach, id);
+    if (is === "obtained") return { canTrue: !!status || sourceReached(city, reach, id), canFalse: !status };
     if (is === "held") return { canTrue: status === "held" || obtainable, canFalse: true };
     if (is === "left_behind") return { canTrue: status === is, canFalse: status !== is };
     return { canTrue: status === is || ((status === "held" || obtainable) && city.itemSpends.has(id)), canFalse: status !== is };
@@ -325,7 +394,7 @@ export function progressionErrors(content: ProgressionContent): string[] {
 
 export type ProgressionWarning = {
   kind: "never-met-again" | "romance-only-city" | "unfindable-clue" | "battle-after-epilogue" | "never-offered" | "money-shortfall" | "ap-shortfall"
-    | "epilogue-unreachable";
+    | "epilogue-unreachable" | "earlier-item-start";
   message: string;
 };
 
@@ -442,8 +511,18 @@ export function progressionWarnings(content: ProgressionContent, clueUses: reado
     const finale = finaleOf(city)!;
     if (!reachCity(content, city, start, { fragile: true }).finale)
       warnings.push({ kind: "never-met-again", message: `Finale condition may never be met again: city ${cityId}'s finale ${finale.id} (or a main part it needs) ` +
-        `shows on the map only while a part holds that can turn false for good (money spent, an item given or used, a battle played or ` +
-        `a date or the couple under not, a day limit), and no other way is left` });
+        `shows on the map only while a part holds that can turn false for good (money spent, an item given or used — an item carried ` +
+        `through the journey also by a choice in an earlier city —, a battle played or a date or the couple under not, a day limit), and no other way is left` });
+    if (!reachCity(content, city, start, { noEarlierItems: true }).finale) {
+      const items = [...new Set(city.events.flatMap((event) => (event.condition ? conditionLeaves(event.condition) : []))
+        .flatMap((leaf) => ("item" in leaf ? [leaf.item.id] : [])).filter((id) => {
+          const itemCity = content.items.find((item) => item.id === id)?.cityId;
+          return itemCity !== undefined && itemCity !== cityId && journeyOf(content, itemCity)?.id === city.journeyId && orderOf(content, itemCity) < city.order;
+        }))];
+      warnings.push({ kind: "earlier-item-start", message: `City ${cityId} needs an item from an earlier city to clear: its finale ${finale.id} ` +
+        `(or a main part it needs) shows on the map only with ${items.join(", ")}; a play started at ${cityId} (Debug, the exploration walk's ` +
+        `start of a later city) may have none of the earlier cities' items and then cannot clear it (normal play starts at the first city; not stopped)` });
+    }
     if (!reachCity(content, city, start, { noRomance: true }).finale)
       warnings.push({ kind: "romance-only-city", message: `City ${cityId} can be cleared only through the romance: without the romance values ` +
         `(the couple, dates, the stage, the relationship values) its finale ${finale.id} never shows on the map, so a player who plays no dates cannot clear it` });
