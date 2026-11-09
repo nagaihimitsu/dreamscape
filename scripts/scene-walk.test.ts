@@ -180,13 +180,13 @@ describe("the moments of stage 4 in the scene table (2.3)", () => {
     const narrow = Object.fromEntries(rest.flatMap((word, index) => (index % 2 === 0 ? [[word, rest[index + 1]]] : [])));
     return { ...scenesAt("hotel x_hotel", priority)[0], at: [{ trip, ...narrow }], repeat: "always" as const, then };
   };
-  const route = (fromPlaceId: string, toPlaceId: string, mode: string, cost = 0) => ({ fromPlaceId, toPlaceId, mode, cost });
+  const route = (fromPlaceId: string, toPlaceId: string, mode: string, cost = 0, minutes = 5) => ({ fromPlaceId, toPlaceId, mode, cost, minutes });
 
   it("counts a trip's then: move as a loop when, from some place it leaves, the move surely goes by the trip's mode for no fare (4.4)", () => {
     const routes = [route("x_hotel", "x_tower", "walk"), route("x_hotel", "x_tower", "x_bike"), route("x_gate", "x_tower", "x_bike"),
       route("x_park", "x_tower", "x_bike"), route("x_park", "x_tower", "x_taxi", 5), route("x_inn", "x_tower", "x_taxi", 3),
-      route("x_pier", "x_tower", "x_bike"), route("x_pier", "x_tower", "x_taxi"),
-      ...["x_tower", "x_gate", "x_park", "x_inn", "x_pier"].map((place) => route(place, "x_hotel", "walk"))];
+      route("x_pier", "x_tower", "x_taxi"), route("x_pier", "x_tower", "x_bike"), route("x_dock", "x_tower", "x_bike"), route("x_dock", "x_tower", "x_taxi"),
+      ...["x_tower", "x_gate", "x_park", "x_inn", "x_pier", "x_dock"].map((place) => route(place, "x_hotel", "walk"))];
     const context = { routes: () => routes, hotel: () => "x_hotel" };
     // By another mode (the bicycle's scene, a move on foot): its trip never runs it again.
     expect(thenLoopErrors([ride("trip x_bike", { move: "x_tower", by: "walk" })], () => [], context)).toEqual([]);
@@ -200,11 +200,19 @@ describe("the moments of stage 4 in the scene table (2.3)", () => {
     expect(thenLoopErrors([ride("trip x_bike", { move: "x_tower" })], () => [], context)[0]).toContain("An endless then: loop");
     // From the park the bicycle is free and the taxi costs 5: whenever the bicycle's scene runs, the bicycle is the cheapest.
     expect(thenLoopErrors([ride("trip x_bike from x_park", { move: "x_tower" })], () => [], context)[0]).toContain("An endless then: loop");
-    // Only maybe: from the pier the taxi is as cheap (what is rented decides), or each round pays a fare (the inn).
-    for (const scene of [ride("trip x_bike from x_pier", { move: "x_tower" }), ride("trip x_taxi from x_inn", { move: "x_tower" })]) {
-      expect(thenLoopErrors([scene], () => [], context)).toEqual([]);
-      expect(thenLoopWarnings([scene], () => [], context)[0]).toContain("A then: loop that may not end");
+    // A free tie goes to the route listed first, as planThen takes it: the bicycle first from the dock loops for good.
+    expect(thenLoopErrors([ride("trip x_bike from x_dock", { move: "x_tower" })], () => [], context)[0]).toContain("An endless then: loop");
+    // From the pier the taxi is listed first: a rental taxi (or one not known) leaves it to renting, a warning; a plain taxi always
+    // wins, so the bicycle's trip never runs it again.
+    const pier = ride("trip x_bike from x_pier", { move: "x_tower" });
+    for (const rental of [undefined, (_city: string, mode: string) => mode === "x_taxi"]) {
+      expect(thenLoopErrors([pier], () => [], { ...context, rental })).toEqual([]);
+      expect(thenLoopWarnings([pier], () => [], { ...context, rental })[0]).toContain("A then: loop that may not end");
     }
+    expect(thenLoopWarnings([pier], () => [], { ...context, rental: () => false })).toEqual([]);
+    // Each round pays a fare (the inn): a warning.
+    expect(thenLoopErrors([ride("trip x_taxi from x_inn", { move: "x_tower" })], () => [], context)).toEqual([]);
+    expect(thenLoopWarnings([ride("trip x_taxi from x_inn", { move: "x_tower" })], () => [], context)[0]).toContain("A then: loop that may not end");
     // Its trip leaves from the place it moves to, or goes elsewhere: no trip there runs it.
     expect(thenLoopErrors([ride("trip x_bike from x_tower", { move: "x_tower", by: "x_bike" }), ride("trip x_bike to x_gate", { move: "x_tower", by: "x_bike" })], () => [], context)).toEqual([]);
   });
@@ -233,6 +241,32 @@ describe("the moments of stage 4 in the scene table (2.3)", () => {
     // The only way home there charges a fare (the boat from the isle): each round pays it, a warning. A move to the hotel: nothing.
     expect(thenLoopErrors([ride("trip x_boat", { move: "x_isle" })], () => [], context)).toEqual([]);
     expect(thenLoopWarnings([ride("trip x_boat", { move: "x_isle" })], () => [], context)[0]).toContain("A then: loop that may not end");
+    // Walking home: a free plain way home faster than the walk (a tram, 2 minutes against 5) is open to everyone: a warning; a
+    // rental one, or a slower one, leaves the walk the way home: a stop.
+    const tram = [...routes, route("x_gate", "x_hotel", "x_tram", 0, 2)];
+    const walkHome = ride("trip walk to x_hotel", { move: "x_gate" });
+    expect(thenLoopErrors([walkHome], () => [], { ...context, routes: () => tram, rental: () => false })).toEqual([]);
+    expect(thenLoopWarnings([walkHome], () => [], { ...context, routes: () => tram, rental: () => false })[0]).toContain("A then: loop that may not end");
+    expect(thenLoopErrors([walkHome], () => [], { ...context, routes: () => tram, rental: (_city: string, mode: string) => mode === "x_tram" })).toHaveLength(1);
+    expect(thenLoopErrors([walkHome], () => [], { ...context, routes: () => [...routes, route("x_gate", "x_hotel", "x_tram", 0, 9)], rental: () => false })).toHaveLength(1);
     expect(thenLoopWarnings([ride("trip walk to x_hotel", { move: "x_hotel" })], () => [], context)).toEqual([]);
+  });
+
+  it("follows the night of 「休む」 across scenes that move the party between each other's places (each alone would not loop)", () => {
+    const routes = ["x_gate", "x_park", "x_tower"].map((place) => route(place, "x_hotel", "walk"));
+    const context = { routes: () => routes, hotel: () => "x_hotel" };
+    const gate = { ...ride("trip walk from x_gate to x_hotel", { move: "x_park" }), id: "from_gate" };
+    const park = { ...ride("trip walk from x_park to x_hotel", { move: "x_gate" }), id: "from_park" };
+    expect(thenLoopErrors([gate], () => [], context)).toEqual([]);
+    expect(thenLoopWarnings([gate], () => [], context)).toEqual([]);
+    // Together: from the gate to the park, from the park to the gate, … the night never comes.
+    expect(thenLoopErrors([gate, park], () => [], context)).toHaveLength(2);
+    // One of them with a condition: the cycle may end, a warning for both.
+    const careful = { ...park, when: { flag: "f" } };
+    expect(thenLoopErrors([gate, careful], () => [], context)).toEqual([]);
+    expect(thenLoopWarnings([gate, careful], () => [], context)).toHaveLength(2);
+    // A chain that ends at a place where no such scene runs: the night comes there.
+    const tower = { ...ride("trip walk from x_park to x_hotel", { move: "x_tower" }), id: "to_tower" };
+    expect(thenLoopWarnings([gate, tower], () => [], context)).toEqual([]);
   });
 });

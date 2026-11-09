@@ -854,6 +854,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const loopContext: ThenLoopContext = {
     routes: (cityId) => travels.find(({ city: item }) => item.id === cityId)?.travel.routes ?? [],
     hotel: (cityId) => travels.find(({ city: item }) => item.id === cityId)?.settings.hotelPlaceId,
+    rental: (cityId, modeId) => !!journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === cityId))
+      ?.transportModes.some((mode) => mode.id === modeId && mode.rental),
     finaleAt: (placeId) => {
       const event = finalesAtPlace(placeId)[0];
       const cityId = event && journey.episodes.find((episode) => episode.id === event.id)?.cityId;

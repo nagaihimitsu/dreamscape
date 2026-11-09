@@ -297,7 +297,9 @@ export function sceneConditionsOf(scene: SceneEntry): { field: string; condition
 /** What the then: loop check reads of the journey besides the scenes (3.3 check 10; stage 4). */
 export type ThenLoopContext = {
   /** A city's routes: the mode a `then: move` takes (`by`, else walking when a walk route joins the places, else the cheapest; 4.4). */
-  routes?: (cityId: string) => readonly { fromPlaceId: string; toPlaceId: string; mode: string; cost: number }[];
+  routes?: (cityId: string) => readonly { fromPlaceId: string; toPlaceId: string; mode: string; cost: number; minutes: number }[];
+  /** Whether a mode of the city is a rental (usable only once rented). Unknown: any other mode may be one. */
+  rental?: (cityId: string, modeId: string) => boolean;
   /** Whether the city's departure opens (it has a next city). */
   departs?: (cityId: string) => boolean;
   /** Whether the player cannot leave the city without its epilogue (a journey that moves on after it, or its last city). */
@@ -330,33 +332,72 @@ function tripLoop(context: ThenLoopContext, cityId: string, moment: Extract<Scen
     const usable = then.by ? legs.filter((route) => route.mode === then.by) : legs.some((route) => route.mode === WALK) ? legs.filter((route) => route.mode === WALK) : legs;
     const own = usable.filter((route) => route.mode === moment.trip);
     if (!own.length) continue;
-    // Its own mode is usable whenever its scene runs: the cheapest leg wins (4.4) when it is free and every other leg costs more.
-    if (own.some((route) => route.cost === 0) && usable.every((route) => route.mode === moment.trip || route.cost > 0)) return "yes";
+    // Its own mode is usable whenever its scene runs, and planThen takes the cheapest leg, the first listed on a tie (4.4): a free own
+    // leg wins unless another free leg is listed before it. That one wins when it is a plain mode (no loop from here); when it is
+    // a rental, renting it decides.
+    const first = usable.findIndex((route) => route.mode === moment.trip && route.cost === 0);
+    if (first >= 0) {
+      const before = usable.slice(0, first).filter((route) => route.cost === 0);
+      if (!before.length) return "yes";
+      if (context.rental && before.some((route) => !context.rental!(cityId, route.mode))) continue;
+    }
     maybe = true;
   }
   return maybe ? "maybe" : "no";
 }
 
 /**
- * Whether a trip scene that moves elsewhere drops the night of 「休む」 for good: the next 「休む」 leaves from where its `then: move`
- * left the party, so the scene runs on that way home only when its `from` allows that place and its mode is a way home there.
- * "yes": by walking (a walk home there), or by the only way home there for no fare; "maybe": the player may rest by another mode,
- * or that only way home charges a fare (each round pays until the money runs out); "no": that way home never runs it.
+ * Whether a trip scene runs on the way home of 「休む」 pressed at a place: its `from` allows the place and its mode is a way home there
+ * that the player takes. "yes": walking home (a walk home there, and no free plain way home faster than it), or the only way home
+ * there for no fare; "maybe": the player may rest by another mode, or that only way home charges a fare (each round pays it until
+ * the money runs out); "no": the rest from there never runs it.
  */
-function restTripBlocked(context: ThenLoopContext, cityId: string, moment: Extract<SceneAt, { trip: string }>, then: { move: string }): Verdict {
-  if (moment.from && moment.from !== then.move) return "no";
+function restTripRuns(context: ThenLoopContext, cityId: string, moment: Extract<SceneAt, { trip: string }>, place: string): Verdict {
+  if (moment.from && moment.from !== place) return "no";
   const hotel = context.hotel?.(cityId);
+  if (place === hotel) return "no";
   if (!context.routes || !hotel) return moment.trip === WALK ? "yes" : "maybe";
   const all = context.routes(cityId);
-  // The ways home from there: a route to the hotel, or a ride and a walk to it (their fares added).
-  const ways = all.filter((route) => route.fromPlaceId === then.move && route.toPlaceId !== then.move).flatMap((route) => route.toPlaceId === hotel ? [route]
+  // The ways home from there: a route to the hotel, or a ride and a walk to it (their fares and minutes added).
+  const ways = all.filter((route) => route.fromPlaceId === place && route.toPlaceId !== place).flatMap((route) => route.toPlaceId === hotel ? [route]
     : route.mode === WALK ? [] : all.filter((walk) => walk.fromPlaceId === route.toPlaceId && walk.toPlaceId === hotel && walk.mode === WALK)
-      .map((walk) => ({ ...route, cost: route.cost + walk.cost })));
+      .map((walk) => ({ ...route, cost: route.cost + walk.cost, minutes: route.minutes + walk.minutes })));
   const own = ways.filter((way) => way.mode === moment.trip);
   if (!own.length) return "no";
-  if (moment.trip === WALK) return "yes";
+  if (moment.trip === WALK) {
+    // 「休む」 also offers a faster way home (rule a): a free one of a plain mode is open to every player.
+    const walk = Math.min(...own.map((way) => way.minutes));
+    return ways.some((way) => way.mode !== WALK && way.cost === 0 && way.minutes < walk && context.rental && !context.rental(cityId, way.mode)) ? "maybe" : "yes";
+  }
   if (ways.every((way) => way.mode === moment.trip)) return own.some((way) => way.cost === 0) ? "yes" : "maybe";
   return "maybe";
+}
+
+/**
+ * Whether the night of 「休む」 is dropped for good after a scene's `then: move` on the way home: the next 「休む」 leaves from where
+ * the move left the party; a scene repeated always that runs on that way home (this one, or another) moves the party on again.
+ * Followed from place to place until a place comes again (dropped: "yes" when every link is sure, else "maybe") or no such scene
+ * runs there (the night comes: "no").
+ */
+function restChain(scenes: readonly SceneEntry[], context: ThenLoopContext, scene: SceneEntry, then: { move: string }): Verdict {
+  const hotel = context.hotel?.(scene.cityId);
+  const movers = scenes.filter((item) => item.cityId === scene.cityId && item.repeat === "always" && item.then && "move" in item.then &&
+    item.then.move !== hotel && item.at.some((at) => "trip" in at && (!at.to || at.to === hotel)));
+  const seen = new Set<string>();
+  let verdict: Verdict = "yes";
+  for (let place = then.move; ;) {
+    if (seen.has(place)) return verdict;
+    seen.add(place);
+    const links = movers.map((item) => {
+      const runs = item.at.map((at) => ("trip" in at && (!at.to || at.to === hotel) ? restTripRuns(context, item.cityId, at, place) : "no" as Verdict));
+      const best: Verdict = runs.includes("yes") ? (item.when ? "maybe" : "yes") : runs.includes("maybe") ? "maybe" : "no";
+      return { item, best };
+    }).filter((link) => link.best !== "no");
+    const link = links.find((item) => item.best === "yes") ?? links[0];
+    if (!link) return "no";
+    if (link.best === "maybe") verdict = "maybe";
+    place = (link.item.then as { move: string }).move;
+  }
 }
 
 /**
@@ -378,7 +419,7 @@ function runsAtMoveTarget(scene: SceneEntry, moment: SceneAt, then: { move: stri
  * also on the trip home of 「休む」, the city's finale, also at its place and its ticket counter, the departure, the epilogue), which
  * drops that step each time the moment comes; a `then: epilogue` at the epilogue.
  */
-function thenLoopOf(scene: SceneEntry, placeLandmarks: (placeId: string) => readonly string[], context: ThenLoopContext): Loop | undefined {
+function thenLoopOf(scenes: readonly SceneEntry[], scene: SceneEntry, placeLandmarks: (placeId: string) => readonly string[], context: ThenLoopContext): Loop | undefined {
   const then = scene.then;
   if (!then || scene.repeat !== "always") return undefined;
   const before = typeof scene.priority === "number" && scene.priority < 0;
@@ -391,12 +432,12 @@ function thenLoopOf(scene: SceneEntry, placeLandmarks: (placeId: string) => read
     ? { sure: verdicts.includes("yes"), stops: true, text: `${scene.id} moves to ${then.move} by its head's then:, where the visit of ${scene.at.map(momentText).join(", ")} ` +
       `runs it again${verdicts.includes("yes") ? "" : " when the move goes by the mode of its trip (walking when a walk route joins them, else the cheapest it can use)"}` } : undefined;
   if (again?.sure) return again;
-  const dropped = droppedStep(scene, then, before, context);
+  const dropped = droppedStep(scenes, scene, then, before, context);
   return dropped?.sure && dropped.stops ? dropped : again ?? dropped;
 }
 
 /** A scene before a main step the game needs that always moves elsewhere drops that step each time its moment comes (stage 4). */
-function droppedStep(scene: SceneEntry, then: { move: string }, before: boolean, context: ThenLoopContext): Loop | undefined {
+function droppedStep(scenes: readonly SceneEntry[], scene: SceneEntry, then: { move: string }, before: boolean, context: ThenLoopContext): Loop | undefined {
   const hotel = context.hotel?.(scene.cityId);
   const blocked = scene.at.flatMap((moment): { text: string; required: boolean; sure: boolean }[] => {
     if ("hotel" in moment) return before ? [{ text: "the night", required: true, sure: true }] : [];
@@ -407,7 +448,7 @@ function droppedStep(scene: SceneEntry, then: { move: string }, before: boolean,
     if (finale) return [{ text: `the finale of ${finale}`, required: true, sure: true }];
     // The trip home of 「休む」 (to the hotel, or anywhere); a move to the hotel itself gets there (the night comes next time).
     if ("trip" in moment && then.move !== hotel && (!moment.to || moment.to === hotel)) {
-      const rest = restTripBlocked(context, scene.cityId, moment, then);
+      const rest = restChain(scenes, context, scene, then);
       return rest === "no" ? [] : [{ text: "the night (on the way home of 「休む」)", required: true, sure: rest === "yes" }];
     }
     return [];
@@ -426,7 +467,7 @@ function droppedStep(scene: SceneEntry, then: { move: string }, before: boolean,
  */
 export function thenLoopErrors(scenes: readonly SceneEntry[], placeLandmarks: (placeId: string) => readonly string[], context: ThenLoopContext = {}): string[] {
   return scenes.flatMap((scene) => {
-    const loop = scene.when ? undefined : thenLoopOf(scene, placeLandmarks, context);
+    const loop = scene.when ? undefined : thenLoopOf(scenes, scene, placeLandmarks, context);
     return loop?.sure && loop.stops ? [`An endless then: loop: ${loop.text}, repeated always without # when: or # until: (A12)`] : [];
   });
 }
@@ -438,7 +479,7 @@ export function thenLoopErrors(scenes: readonly SceneEntry[], placeLandmarks: (p
  */
 export function thenLoopWarnings(scenes: readonly SceneEntry[], placeLandmarks: (placeId: string) => readonly string[], context: ThenLoopContext = {}): string[] {
   return scenes.flatMap((scene) => {
-    const loop = thenLoopOf(scene, placeLandmarks, context);
+    const loop = thenLoopOf(scenes, scene, placeLandmarks, context);
     if (!loop || (!scene.when && loop.sure && loop.stops)) return [];
     return [scene.when ? `A then: loop left only conditionally: ${loop.text} (repeated always); only its # when: / # until: turning false ends the loop`
       : `A then: loop that may not end: ${loop.text} (repeated always without # when: or # until:)`];

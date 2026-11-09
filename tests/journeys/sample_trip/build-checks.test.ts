@@ -85,7 +85,11 @@ describe("check 10: a scene that always moves elsewhere before a step the game n
   it("stops one on the way home of 「休む」 on foot; by bicycle (the player may walk home instead) it warns", () => {
     expect(() => validateContent(sampleWith({ [CITY_END]: (text) => `${text}${detour("trip walk to mihon_hotel", "", "mihon_market")}` }))).toThrow(/before the night/u);
     // Only from the library: the next 「休む」 leaves the market, where it does not run (the night comes).
-    expect(() => validateContent(sampleWith({ [CITY_END]: (text) => `${text}${detour("trip walk from mihon_library to mihon_hotel", "", "mihon_market")}` }))).not.toThrow();
+    const fromLibrary = detour("trip walk from mihon_library to mihon_hotel", "", "mihon_market");
+    expect(() => validateContent(sampleWith({ [CITY_END]: (text) => `${text}${fromLibrary}` }))).not.toThrow();
+    // …unless another such scene runs there and moves the party back: library, market, library, … the night never comes.
+    const fromMarket = detour("trip walk from mihon_market to mihon_hotel", "", "mihon_library").replace("smp_mihon_zz_detour", "smp_mihon_zz_back");
+    expect(() => validateContent(sampleWith({ [CITY_END]: (text) => `${text}${fromLibrary}${fromMarket}` }))).toThrow(/smp_mihon_zz_back .*before the night/u);
     expect(loopNotes(sampleWith({ [CITY_END]: (text) => `${text}${detour("trip rental_bicycle to mihon_hotel")}` })))
       .toContainEqual(expect.stringMatching(/^A then: loop that may not end: smp_mihon_zz_detour/u));
   });
