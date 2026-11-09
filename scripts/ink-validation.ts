@@ -292,7 +292,8 @@ export function validateStory(
 /** Validate the short presentation-only scene that introduces a special battle. */
 export function validateReasoningIntroduction(compiled: string, context: TagContext, observe?: DialogueObserver): void {
   if (compiledConditionTexts(compiled).length)
-    throw new Error(`cond("…") is not available yet in a special battle's rebuttal (stage 5)`);
+    throw new Error(`cond("…") is not available in a special battle's rebuttal story (presentation/reasoning-intros.json, the scene form): ` +
+      `in the one-flow form (stage 5) the rebuttal is lines of the battle's flow, which may read cond`);
   const story = new Story(compiled);
   story.onError = (message) => { throw new Error(message); };
   for (const name of ["player_name", "heroine_name"]) {

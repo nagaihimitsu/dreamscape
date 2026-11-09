@@ -167,8 +167,17 @@ export function readPlaceFile(storyId: string, raw: string): PlaceFile {
   return { storyId, knots, source: kept.join("\n") };
 }
 
-/** Where a target goes from a knot: another knot, inside the knot (its stitch, label, a stitch's label), the end, or nowhere known. */
-export function resolveTarget(file: Pick<PlaceFile, "knots">, from: PlaceKnot, target: string): { knot: string } | "inside" | "end" | undefined {
+/** The knots of the game's modules.ink a scene may call (a battle's calls, stage 5): `-> quiz(n) ->`, `-> reasoning ->`. */
+export const MODULE_KNOTS = ["quiz", "reasoning"] as const;
+
+/** Whether a story file includes the game's modules.ink (a place file, or a one-scene battle in the one-flow form; stage 5). */
+export const includesModules = (source: string) => /^\s*INCLUDE\s+modules\.ink\s*$/mu.test(withoutComments(source));
+
+/**
+ * Where a target goes from a knot: another knot, inside the knot (its stitch, label, a stitch's label), the end, a knot
+ * of modules.ink (a battle's call), or nowhere known.
+ */
+export function resolveTarget(file: Pick<PlaceFile, "knots">, from: PlaceKnot, target: string): { knot: string } | { module: string } | "inside" | "end" | undefined {
   if (target === "DONE" || target === "END") return "end";
   const [first, second] = target.split(".");
   const knot = file.knots.find((item) => item.name === first);
@@ -177,7 +186,18 @@ export function resolveTarget(file: Pick<PlaceFile, "knots">, from: PlaceKnot, t
     return { knot: knot.name };
   }
   if (from.stitches.includes(first) || from.labels.includes(first)) return "inside";
+  if (second === undefined && (MODULE_KNOTS as readonly string[]).includes(first)) return { module: first };
   return undefined;
+}
+
+/** The modules.ink knots the given knots call (they join a scene's fingerprint: editing modules.ink refuses a save inside it). */
+export function moduleCalls(file: Pick<PlaceFile, "knots">, knots: readonly PlaceKnot[]): string[] {
+  const called = new Set<string>();
+  for (const knot of knots) for (const target of knot.targets) {
+    const resolved = resolveTarget(file, knot, target.name);
+    if (resolved && typeof resolved === "object" && "module" in resolved) called.add(resolved.module);
+  }
+  return [...called];
 }
 
 /** The knots a knot reaches (itself first), following knot targets; throws for a target that is not a knot, stitch, label or end (A2). */
@@ -195,7 +215,7 @@ export function reachableKnots(file: Pick<PlaceFile, "knots" | "storyId">, start
       if (resolved === undefined)
         throw new Error(`A divert goes to no knot, stitch or label: -> ${target.name} (line ${target.line} of ${knot.name}); ` +
           `write the knot's name (a variable target cannot be followed by the build's AP rules and fingerprints, A2)`);
-      if (typeof resolved === "object") queue.push(resolved.knot);
+      if (typeof resolved === "object" && "knot" in resolved) queue.push(resolved.knot);
     }
   }
   return seen;

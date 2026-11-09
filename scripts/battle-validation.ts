@@ -6,14 +6,15 @@ import { forEachCondAssignment } from "./scene-conditions";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
 import type { DialogueObserver } from "./dialogue-expression-validation";
 
+/** A scene-form battle's reasoning scenes (stages 3–4; the one-flow form names none). */
 export function reasoningScenes(battle: BattleDefinition): string[] {
   const reasoning = battle.reasoning;
-  if (!reasoning) return [];
+  if (!reasoning || !battle.scenes) return [];
   return [
-    reasoning.claimScene,
-    ...(reasoning.kind === "contradiction" ? [reasoning.pressScene] : []),
-    reasoning.successScene,
-    reasoning.failureScene,
+    reasoning.claimScene!,
+    ...(reasoning.kind === "contradiction" ? [reasoning.pressScene!] : []),
+    reasoning.successScene!,
+    reasoning.failureScene!,
   ];
 }
 
@@ -30,7 +31,10 @@ export function validateBattleEvidence(
   }
 }
 
-/** Exercise every reachable scene/last-answer/score input with the official Ink runtime. */
+/**
+ * Exercise every reachable scene/last-answer/score input of a scene-form battle (stages 3–4) with the official Ink runtime.
+ * A battle in the one-flow form (stage 5) is walked as a scene instead (scene-walk.ts, its calls answered).
+ */
 export function validateBattleStory(
   compiled: string,
   battle: BattleDefinition,
@@ -39,8 +43,10 @@ export function validateBattleStory(
   /** The battle's knot in a place file (the stitch form, stages 3–4): each scene starts at <knot>.<scene>, without battle_scene. */
   knot?: string,
 ): number {
-  const inputs = [{ scene: battle.scenes.intro, correct: false, score: 0 }];
-  const afterAnswers = [...battle.scenes.afterRounds, battle.scenes.outro];
+  const scenes = battle.scenes;
+  if (!scenes) throw new Error(`The battle ${battle.id} is in the one-flow form (no scenes): walk it as a scene`);
+  const inputs = [{ scene: scenes.intro, correct: false, score: 0 }];
+  const afterAnswers = [...scenes.afterRounds, scenes.outro];
   afterAnswers.forEach((scene, index) => {
     const answered = index + 1;
     for (const correct of [false, true]) {
@@ -114,7 +120,8 @@ export function validateBattleStory(
       }
       if (story.currentChoices.length)
         throw new Error(
-          "Battle story cannot contain choices; quiz choices belong in JSON",
+          "A battle in the scene form (scenes in battles/catalog.json) cannot contain choices; quiz choices belong in JSON, " +
+          "and a battle in the one-flow form (stage 5) may have the conversation's choices (A15)",
         );
       if (!hasText) throw new Error(`Empty battle scene: ${input.scene}`);
     }
