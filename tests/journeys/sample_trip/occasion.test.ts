@@ -171,4 +171,26 @@ describe("Debug: the candidate table and 「場面から始める」", () => {
     expect(() => createDebugState({ cityId: "mihon", scene: "occasion", id: TOWER, progress: "initial", ap: 0, affection: 0, trust: 0, spark: 0,
       roll: "positive", from: "duomo_string" })).toThrow("場面 duomo_string はこの時点で始まりませんでした。");
   });
+
+  // The item design §2.7: Debug starts a city without the earlier cities' items, and prep= plays only the city's own scenes.
+  const debugAt = (change: { from?: string; prep?: string[] }) => createDebugState({ cityId: "mihon", scene: "occasion", id: TOWER, progress: "initial",
+    ap: 0, affection: 0, trust: 0, spark: 0, roll: "positive", ...change });
+  it("stops prep= on another city's scene, naming both cities", () => {
+    const milan = encounters.encounters.find((item) => item.cityId === "milano")!;
+    expect(() => debugAt({ from: "smp_mihon_clock_gears", prep: [milan.id] }))
+      .toThrow(`prep= の ${milan.id} はミラノの場面です。prep= は同じ都市（見本の街）の場面だけを流します。`);
+  });
+
+  it("names an item of another city that keeps the scene from, which no prep= of this city can give", () => {
+    // A stand-in for a later city's scene that needs an earlier city's item: here the gears talk needs Milan's pick.
+    const rule = encounterEntryRuleList.find((item) => item.encounterId === "smp_mihon_clock_gears")! as { when?: unknown };
+    const before = rule.when;
+    rule.when = { item: { id: "blue_pick", is: "held" } };
+    try {
+      expect(() => debugAt({ from: "smp_mihon_clock_gears" })).toThrow(
+        "ミラノの品物 blue_pick が要ります（Debug は前の都市の品物を持たずに始まり、prep= は同じ都市の場面だけを流します）。");
+    } finally {
+      if (before === undefined) delete rule.when; else rule.when = before;
+    }
+  });
 });

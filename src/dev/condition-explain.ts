@@ -65,6 +65,28 @@ function line(node: ExplainedNode): string {
   return node.kind === "leaf" ? node.label : `${node.label}（${node.children.map(line).join("／")}）`;
 }
 
+/**
+ * The items of other cities whose parts keep the condition false now (outside `not`), e.g. a scene of Agra that needs
+ * Delhi's memo held: Debug starts a city without the earlier cities' items, and 「場面から始める」 plays only the city's own
+ * scenes (the item design §2.7).
+ */
+export function otherCityItemsMissing(state: Readonly<GameState>, condition: Condition): { itemId: string; cityId: string; cityNameJa: string }[] {
+  const missing = new Map<string, { itemId: string; cityId: string; cityNameJa: string }>();
+  const walk = (node: Condition) => {
+    if (meets(state, node)) return;
+    if (isLeaf(node)) {
+      const item = "item" in node ? encounters.items.find((entry) => entry.id === node.item.id) : undefined;
+      if (item && item.cityId !== state.currentCityId) missing.set(item.id, { itemId: item.id, cityId: item.cityId, cityNameJa: cityName(item.cityId) });
+      return;
+    }
+    if ("all" in node) node.all.forEach(walk);
+    else if ("any" in node) node.any.forEach(walk);
+    else if ("atLeast" in node) node.atLeast.of.forEach(walk);
+  };
+  walk(condition);
+  return [...missing.values()];
+}
+
 /** What keeps the condition from being true now (empty when it is true). */
 export function unmetConditionLabels(state: Readonly<GameState>, condition: Condition): string[] {
   const unmet = (node: ExplainedNode): string[] => {
