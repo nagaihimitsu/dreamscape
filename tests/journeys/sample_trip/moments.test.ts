@@ -322,6 +322,15 @@ describe("a then: at a trip's moment (2.3, 3.6, 4.1)", () => {
     expect(encounterChoiceDisplay(shown, choice.index)).toMatchObject({ show: "grey", reason: "エピローグでの支払いや帰りのための予算が足りません。" });
   });
 
+  it("plays the first ride's scene only on a ride from the hotel, as its comment and the README say; a first ride from elsewhere passes it for good", () => {
+    const bike = rented(cityStart("mihon"));
+    expect(depart(bike, EPISODE, BIKE).activeEncounter?.encounterId).toBe("smp_mihon_first_bicycle");
+    const elsewhere = depart(at(bike, MARKET, DAY_START), EPISODE, BIKE);
+    expect(elsewhere.activeEncounter?.encounterId).toBe("smp_mihon_bookmark_stall");
+    expect(elsewhere.travel.rideCounts).toEqual({ [BIKE]: 1 });
+    expect(elsewhere.occasion?.started).not.toContain("smp_mihon_first_bicycle");
+  });
+
   it("a scene placed at a trip and at the visit runs the move once when it runs at the visit (one ride)", () => {
     patch(scene("smp_mihon_first_bicycle"), { at: [{ trip: BIKE, from: "mihon_hotel" }, { visit: TOWER }] });
     patch(rule("smp_mihon_first_bicycle"), { when: { landmarkVisited: TOWER } });
