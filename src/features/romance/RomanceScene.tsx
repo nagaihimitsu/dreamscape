@@ -11,12 +11,13 @@ import { DialogueText } from "../../components/DialogueText";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
-import { DialogueControls } from "../../components/DialogueControls";
+import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useSceneTap } from "../../components/useSceneTap";
 import { resolveRomancePresentation } from "./romance-presentation";
 import { BackgroundCredits } from "../../components/BackgroundCredits";
+import { SceneCreditButton, SceneLabelLine } from "../../components/SceneLabelLine";
 import "./romance-scene.css";
 
 export function RomanceScene({
@@ -67,7 +68,7 @@ export function RomanceScene({
   );
   const [creditsOpen, setCreditsOpen] = useState(false);
   const windowVisibility = useDialogueWindow();
-  const dialogueRef = useDialogueScrollReset<HTMLElement>(active.storyState);
+  const dialogueRef = useDialogueScrollReset<HTMLDivElement>(active.storyState);
   const pendingChoice = useRef<{
     revision: number;
     dateId: string;
@@ -142,7 +143,13 @@ export function RomanceScene({
       <div className="vn-background" data-testid="scene-picture">
         <CanalScene backgroundId={frame.background} />
       </div>
-      {backgroundAsset && <button type="button" className="vn-credit-link" onClick={() => setCreditsOpen(true)}>画像の出典</button>}
+      {/* The date's heading (D4): its destination, or 「デート」 when it has none. */}
+      <SceneLabelLine
+        label={destination ? `${getCityContent(destination.cityId).city.nameJa} ／ ${destination.nameJa}` : "デート"}
+        labelProps={destination ? { "data-testid": "date-destination" } : undefined}
+      >
+        {backgroundAsset && <SceneCreditButton onClick={() => setCreditsOpen(true)} />}
+      </SceneLabelLine>
       {destination?.referenceImage && (
         <aside className="date-reference" aria-label="訪問先の写真" data-no-advance>
           <span data-testid="destination-reference-note">{destination.referenceImage.backgroundNoteJa}</span>
@@ -163,7 +170,6 @@ export function RomanceScene({
         </CharacterPortrait>
       </div>
       <section
-        ref={dialogueRef}
         className="vn-dialogue paper story-paper"
         aria-label="デートの会話"
         data-has-choices={frame.choices.length > 0}
@@ -179,24 +185,19 @@ export function RomanceScene({
             {exitingChoice}
           </div>
         )}
-        <div className={destination ? "dialogue-speaker-row" : undefined}>
-          <div className="speaker">
-            <span className={`speaker-dot ${frame.emotion}`} aria-hidden="true" />
+        <DialogueWindowHead
+          narration={frame.speaker !== "heroine" && frame.speaker !== "player"}
+          speaker={<>
             {speaker}
             {frame.speaker === "heroine" && frame.emotion !== "neutral" && (
               <span className="emotion">
                 {presentation.emotions[frame.emotion]}
               </span>
             )}
-          </div>
-          {destination && (
-            <span className="dialogue-destination" data-testid="date-destination">
-              {`${getCityContent(destination.cityId).city.nameJa} ／ `}{destination.nameJa}
-            </span>
-          )}
-        </div>
-        <DialogueControls close={<DialogueWindowHide state={windowVisibility} label="閉じる" />} entries={entries} auto={autoAdvance} />
-        <>
+          </>}
+          controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
+        />
+        <div ref={dialogueRef} className="vn-window-body">
             <DialogueText
               key={game.revision}
               ref={sceneTap.line}
@@ -247,7 +248,7 @@ export function RomanceScene({
                 <span aria-hidden="true">→</span>
               </button>
             ) : null}
-        </>
+        </div>
       </section>
       {creditsOpen && backgroundAsset && (
         <BackgroundCredits asset={backgroundAsset} onClose={() => setCreditsOpen(false)} />

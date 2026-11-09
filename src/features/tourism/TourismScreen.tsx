@@ -17,10 +17,12 @@ import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
-import { DialogueControls } from "../../components/DialogueControls";
+import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
+import { Icon } from "../../components/icons";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
-import { useMeasuredHeight } from "../../components/useMeasuredHeight";
 import { DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
+import { BackgroundCredits } from "../../components/BackgroundCredits";
+import { SceneCreditButton, SceneLabelLine, SceneNotebookTab } from "../../components/SceneLabelLine";
 import { useSceneTap } from "../../components/useSceneTap";
 import { ObservationViewer } from "./ObservationViewer";
 import { ClueDetails } from "./ClueDetails";
@@ -72,6 +74,7 @@ export function TourismScreen({
     }));
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
+  const [creditsOpen, setCreditsOpen] = useState(false);
   const [compactObservation, setCompactObservation] = useState(
     () => window.matchMedia(COMPACT_OBSERVATION).matches,
   );
@@ -146,14 +149,6 @@ export function TourismScreen({
     }
   }
 
-  // The guide's heading lies under the header over the picture on phones; its
-  // height is the scene's reserve below the header (--label-h, styles.css).
-  const measuredHeading = useMeasuredHeight("--label-h");
-  const toolbar = (
-    <div className="tourism-toolbar" data-no-advance>
-      <button className="notebook-button" onClick={onNotebook}>手がかり帳</button>
-    </div>
-  );
 
   return (
     <section
@@ -162,12 +157,10 @@ export function TourismScreen({
       data-testid="tourism-screen"
       {...sceneTap.props}
     >
-      {active.phase === "guide" && <header className="tourism-heading" ref={measuredHeading}>
-        <p className="eyebrow">観光と観察 · 旅先の発見</p>
-        <h1>{landmark.nameJa}</h1>
-        <p className="landmark-english" lang="en">{landmark.nameEn}</p>
-        {toolbar}
-      </header>}
+      {active.phase === "guide" && <SceneLabelLine label={landmark.nameJa}>
+        <SceneCreditButton onClick={() => setCreditsOpen(true)} />
+        <SceneNotebookTab onClick={onNotebook} />
+      </SceneLabelLine>}
       {asset.isPlaceholder && (
         <p className="image-placeholder-note">
           仮画像です。実物の細部を再現した資料ではありません。
@@ -191,14 +184,17 @@ export function TourismScreen({
             </CharacterPortrait>
           </div>
           <div
-            ref={dialogueRef}
             className="tourism-guide paper vn-dialogue"
             data-testid="tourism-guide"
             inert={windowVisibility.hidden}
             aria-hidden={windowVisibility.hidden || undefined}
           >
-            <div className="speaker">{speaker}</div>
-            <DialogueControls close={<button type="button" className="text-button" data-testid="tourism-skip" aria-label="観光案内を閉じる" onClick={onSkip}>閉じる</button>} entries={entries} auto={autoAdvance} />
+            <DialogueWindowHead
+              speaker={speaker}
+              narration={frame.speaker !== "heroine" && frame.speaker !== "player"}
+              controls={<DialogueControls close={<button type="button" className="text-button" data-testid="tourism-skip" aria-label="観光案内を閉じる" onClick={onSkip}><Icon name="close" />閉じる</button>} entries={entries} auto={autoAdvance} />}
+            />
+            <div ref={dialogueRef} className="vn-window-body">
             <DialogueText
               key={game.revision}
               ref={sceneTap.line}
@@ -216,6 +212,7 @@ export function TourismScreen({
               観察を始める
               <span aria-hidden="true"> →</span>
             </button>}
+            </div>
           </div>
           <DialogueWindowRestore state={windowVisibility} />
         </div>
@@ -255,20 +252,7 @@ export function TourismScreen({
           </details>
         </div>
       )}
-      {active.phase === "guide" && <details className="tourism-credits" data-no-advance>
-        <summary>画像の出典と利用条件</summary>
-        <p>{asset.creditJa}</p>
-        <p>{asset.modificationJa}</p>
-        <p>
-          <a href={asset.sourceUrl} target="_blank" rel="noreferrer">
-            画像の出典
-          </a>{" "}
-          ·{" "}
-          <a href={asset.licenseUrl} target="_blank" rel="noreferrer">
-            {asset.licenseName}
-          </a>
-        </p>
-      </details>}
+      {active.phase === "guide" && creditsOpen && <BackgroundCredits asset={asset} onClose={() => setCreditsOpen(false)} />}
     </section>
   );
 }

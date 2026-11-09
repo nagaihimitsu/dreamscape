@@ -32,22 +32,6 @@
 .battle-backdrop .scene-stamp {
   display: none;
 }
-.battle-location {
-  position: relative;
-  z-index: 2;
-  align-self: flex-start;
-  flex: 0 0 auto;
-  max-width: calc(100% - 150px);
-  margin: 8px 0 0 10px;
-  padding: 5px 10px;
-  border-radius: 4px;
-  color: #fffaf4;
-  background: rgba(31, 50, 43, .88);
-  font-size: 12px;
-  line-height: 1.4;
-  overflow-wrap: anywhere;
-  pointer-events: none;
-}
 .battle-characters,
 .battle-character-slot {
   position: absolute;
@@ -65,7 +49,7 @@
   flex: none;
   padding: 0;
 }
-.battle-screen[data-phase="dialogue"] .battle-enemy-info h1 {
+.battle-screen[data-phase="dialogue"] .battle-enemy-info h2 {
   margin: 0;
   font-size: 18px;
 }
@@ -116,13 +100,6 @@
 .battle-screen .battle-stage:before {
   display: none;
 }
-.battle-screen .battle-stage-notebook {
-  position: absolute;
-  top: calc(var(--scene-top, 0px) + 8px);
-  right: 10px;
-  z-index: 3;
-  background: #f7f5edeb;
-}
 .battle-screen[data-phase="dialogue"] .battle-paper {
   margin-top: -28px;
   background: #fcfaf4;
@@ -149,58 +126,57 @@
   min-height: 0;
 }
 .battle-paper-shell { display: contents; }
+/* The battle's talk uses the story scenes' window (romance-scene.css, §3.3): the
+   shell is the window, painted from its head's overhang down, its head (plate and
+   controls, DialogueWindowHead) straddles the top edge and the paper below scrolls.
+   Its placement stays the battle's own; the head's overhang is added to its room.
+   The room it leaves above for the faces gives way to enlarged text: the window may
+   always be 9em high (its head and about two lines of the talk at 200 %; at normal
+   text the faces' room leaves it more on every screen), up to the whole stage. */
 .battle-screen[data-phase="dialogue"] .battle-paper-shell {
   position: relative;
   z-index: 2;
+  container: vn-window / inline-size;
   display: flex;
   flex-direction: column;
   width: min(90%, 1100px);
-  max-height: calc(100% - clamp(110px, 22vh, 190px));
+  max-height: max(calc(100% - clamp(110px, 22vh, 190px) + var(--vn-head-overhang, 22px)), min(calc(100% - 16px), 9em));
   margin: auto auto 16px;
+}
+.battle-screen[data-phase="dialogue"] .battle-paper-shell::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: var(--vn-head-overhang, 22px) 0 0;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: var(--vn-window-radius, 22px);
+  background: var(--vn-window-bg);
+  box-shadow: var(--ds-window-shadow);
+  pointer-events: none;
 }
 .battle-screen[data-phase="dialogue"] .battle-paper.battle-dialogue {
   flex: 0 1 auto;
   width: 100%;
   max-width: none;
-  max-height: 100%;
+  max-height: none;
   min-height: 0;
   margin: 0;
-  padding: 24px 24px 12px;
+  padding: 2px 24px 12px;
   overflow-y: auto;
   overscroll-behavior: contain;
-  border-radius: var(--vn-window-radius, 26px);
-  border: 1px solid #ffffff26;
-  color: var(--vn-text, #fffaf4);
-  background: var(--vn-window-bg, rgba(25, 30, 42, .91));
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--vn-text);
+  background: none;
 }
-.battle-screen .battle-nameplate {
-  position: absolute;
-  z-index: 3;
-  top: 0;
-  left: 24px;
-  transform: translateY(-50%);
-  display: inline-flex;
-  align-items: center;
-  max-width: calc(100% - 48px);
-  margin: 0;
-  padding: 4px 18px;
-  border-radius: 999px;
-  color: #fff;
-  background: var(--vn-name-bg, #8b5d73);
-  overflow-wrap: anywhere;
-}
-.battle-nameplate .emotion { color: inherit; }
 .battle-dialogue .dialogue-text {
   margin: 10px 0 8px;
   min-height: 2.5em;
   font-size: var(--vn-body-size, 18px);
   line-height: 1.8;
 }
-.battle-dialogue .dialogue-next-mark {
-  color: var(--vn-muted, #e2e6df);
-  font-size: 12px;
-  white-space: nowrap;
-}
+.battle-dialogue .dialogue-next-mark { color: var(--vn-muted); }
 .battle-dialogue .next:disabled { visibility: hidden; }
 .battle-dialogue .next { min-height: 44px; padding: 2px 0 2px 12px; }
 .battle-dialogue .reveal { min-height: 44px; margin: 0 0 0 auto; }
@@ -218,12 +194,12 @@
   }
   .battle-screen[data-phase="dialogue"] .battle-paper-shell {
     width: calc(100% - 16px);
-    max-height: calc(100% - 140px);
+    max-height: max(calc(100% - 140px + var(--vn-head-overhang, 22px)), min(calc(100% - 8px), 9em));
     margin: auto 8px 8px;
   }
   .battle-screen[data-phase="dialogue"] .battle-paper.battle-dialogue {
     margin: 0;
-    padding: 24px 16px 8px;
+    padding: 2px 16px 8px;
   }
 }
 
@@ -255,10 +231,6 @@
 
 @media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
   .battle-screen[data-phase="result"] .battle-stage { display: none; }
-  /* Without the stage, 54 px down is the round bar's 手がかり帳: keep the
-     image credit beside the place name (centred on its row, above the paper),
-     in the space the name leaves free. */
-  .battle-screen[data-phase="result"] .vn-credit-link { top: calc(var(--scene-top, 0px) + 5px); }
   .battle-screen[data-phase="result"] .battle-paper { padding: 6px 12px 12px; }
   .battle-result { padding-top: 0; }
   .battle-result-heading {
@@ -296,7 +268,7 @@
     height: 64px;
     padding: 4px 20px 0;
   }
-  .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact h1 {
+  .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact h2 {
     margin: 0;
     font-size: 16px;
     line-height: 1.35;
@@ -684,7 +656,7 @@
     flex-basis: 65%;
     padding-bottom: 9px;
   }
-  .battle-screen .battle-stage-compact h1 {
+  .battle-screen .battle-stage-compact h2 {
     font-size: 15px;
     line-height: 1.35;
   }
@@ -692,10 +664,6 @@
   .battle-screen .battle-stage-compact .eyebrow {
     display: none;
   }
-  /* Without a place name (city finale) the credit comes right before the stage: 54 px down would sit
-     on the round bar's 手がかり帳, so it takes the top of the stage's row beside the enemy's name
-     (the stage starts below the header where that lies over the battle, --scene-top). */
-  .battle-screen .vn-credit-link:has(+ .battle-stage-compact) { top: calc(var(--scene-top, 0px) + 5px); }
   .battle-screen .battle-paper {
     flex: 1 1 auto;
     min-height: 0;
@@ -769,23 +737,32 @@
 }
 
 /* Short phones (320×568 and the like): the enemy header and the round bar
-   shrink so the third answer stays above the fold under today's journey bar.
-   The image credit moves up beside the place name, as on the result screen
-   (below the header, at the stage's top: --scene-top). */
+   shrink so the third answer stays above the fold under the header (UI stage 0,
+   item F). The scene label line keeps only the place's pill in its height: its
+   44-px 「出典」 reaches down beside the enemy's name, into the right end of the
+   stage's row (the enemy's name and portrait keep to its left), as the credit did
+   before the line existed. The result has no stage row and keeps the full line. */
 @media (max-width: 700px) and (min-height: 500px) and (max-height: 599px) and (orientation: portrait) {
-  .battle-screen:not([data-phase="dialogue"]) .vn-credit-link { top: calc(var(--scene-top, 0px) + 5px); }
   .battle-screen .battle-stage-compact {
     min-height: 28px;
     height: 28px;
     padding-top: 2px;
   }
-  /* Without a place name (city finale) the credit shares the stage's row: keep it clear of the paper. */
-  .battle-screen .vn-credit-link + .battle-stage-compact {
-    min-height: 40px;
-    height: 40px;
-  }
   .battle-screen .battle-stage-compact .battle-enemy-info { padding-bottom: 4px; }
   .battle-screen .battle-roundbar { padding: 0; }
+  .battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .scene-label-line {
+    align-items: flex-start;
+    min-height: 0;
+    padding-top: 2px;
+    padding-bottom: 0;
+  }
+  .battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .scene-label {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  .battle-screen:is([data-phase="question"], [data-phase="feedback"], [data-phase="reasoning"]) .scene-label-tools {
+    margin-bottom: -18px;
+  }
 }
 
 /* Letter badges are the answer controls; English and translation remain

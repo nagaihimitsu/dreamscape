@@ -13,7 +13,7 @@ import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
-import { DialogueControls } from "../../components/DialogueControls";
+import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useSceneTap } from "../../components/useSceneTap";
@@ -41,7 +41,7 @@ export function EpilogueScreen({
   const city = getCityContent(game.currentCityId).city;
   const nextCity = getJourneyForCity(game.currentCityId)?.cityTransition === "after_epilogue" ? getNextCity(game) : undefined;
   const windowVisibility = useDialogueWindow();
-  const dialogueRef = useDialogueScrollReset<HTMLElement>(active.storyState);
+  const dialogueRef = useDialogueScrollReset<HTMLDivElement>(active.storyState);
   const frame = active.frame;
   const episode = episodes.find((item) => item.id === active.episodeId)!;
   const storyId = activeEpilogueStoryId(active) ?? episode.epilogueStoryId!;
@@ -95,14 +95,17 @@ export function EpilogueScreen({
           </CharacterPortrait>
         </div>
         <section
-          ref={dialogueRef}
           className="paper story-paper vn-dialogue"
           aria-label={arrival ? "到着の会話" : "都市エピローグ"}
           inert={windowVisibility.hidden || showLogo}
           aria-hidden={windowVisibility.hidden || showLogo || undefined}
         >
-          <div className="speaker">{speaker}</div>
-          <DialogueControls close={<DialogueWindowHide state={windowVisibility} label="閉じる" />} entries={entries} auto={autoAdvance} />
+          <DialogueWindowHead
+            speaker={speaker}
+            narration={frame.speaker !== "heroine" && frame.speaker !== "player" && frame.speaker !== "enemy"}
+            controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
+          />
+          <div ref={dialogueRef} className="vn-window-body">
           <p className="eyebrow">{arrival ? "旅のはじまり" : "都市エピローグ"}</p>
           <h1>{arrival ? `${city.nameJa}に到着` : episode.clearTitleJa}</h1>
           <DialogueText
@@ -122,6 +125,7 @@ export function EpilogueScreen({
             {arrival ? "街を見に行く" : nextCity ? `${nextCity.city.nameJa}へ進む` : "ふたりの自由時間へ"}{" "}
             <span aria-hidden="true">→</span>
           </button>}
+          </div>
         </section>
         <DialogueWindowRestore state={windowVisibility} />
       </div>

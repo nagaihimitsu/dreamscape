@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
+import { Icon } from "./icons";
 import "./dialogue-window-visibility.css";
 
 /** Presentation only: hiding the window never changes the saved Ink state. */
@@ -35,14 +36,13 @@ export function useDialogueWindow() {
 
 type DialogueWindow = ReturnType<typeof useDialogueWindow>;
 
+/** 「隠す」 (U6): hides the window only; a tap anywhere on the scene shows it again. */
 export function DialogueWindowHide({
   state,
   onHide,
-  label = "ウィンドウを隠す",
 }: {
   state: DialogueWindow;
   onHide?: () => void;
-  label?: string;
 }) {
   return (
     <button
@@ -54,11 +54,16 @@ export function DialogueWindowHide({
         onHide?.();
       }}
     >
-      {label}
+      <Icon name="eye-off" />隠す
     </button>
   );
 }
 
+/**
+ * The full-scene control that shows the hidden window again (D7). Its name is
+ * its visible words 「タップして会話を表示」 (WCAG 2.5.3: a voice command that
+ * says what is shown reaches it); the icon is decoration.
+ */
 export function DialogueWindowRestore({ state }: { state: DialogueWindow }) {
   if (!state.hidden) return null;
   return (
@@ -66,13 +71,12 @@ export function DialogueWindowRestore({ state }: { state: DialogueWindow }) {
       ref={state.restoreButton}
       className="vn-window-restore"
       type="button"
-      aria-label="会話ウィンドウを表示"
       onClick={(event) => {
         event.stopPropagation();
         state.show();
       }}
     >
-      <span>タップして会話を表示</span>
+      <span className="vn-window-restore-hint"><Icon name="eye" />タップして会話を表示</span>
     </button>
   );
 }

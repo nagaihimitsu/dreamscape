@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { CanalScene } from "../../components/CanalScene";
+import { BackgroundCredits } from "../../components/BackgroundCredits";
+import { SceneCreditButton, SceneLabelLine } from "../../components/SceneLabelLine";
 import { DialogueText } from "../../components/DialogueText";
-import { DialogueControls } from "../../components/DialogueControls";
+import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
@@ -10,6 +12,7 @@ import { useSceneTap } from "../../components/useSceneTap";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { ComicEffect } from "../../components/ComicEffect";
 import type { ReactionMark } from "../../content/dialogue-reactions";
+import type { TourismAsset } from "../../content/tourism-schemas";
 import { formatMoneyForCity } from "../../content/currency";
 import { InteractiveEnglish } from "../learning/InteractiveEnglish";
 import { revealTranslation, toggleTranslation, visible } from "../learning/Translations";
@@ -21,9 +24,14 @@ import "./encounter.css";
 export type EncounterScreenView = {
   id: string;
   revision: number;
+  /** The scene's heading: the name of the place where it happens (unified event design, decision 1). */
+  placeJa: string;
   background: string;
-  backgroundImage?: string;
+  /** The place's registered photo, shown as the background with its credits. */
+  backgroundAsset?: TourismAsset;
   speaker: string;
+  /** The line is the narration (「旅の風景」), no one's words. */
+  narration: boolean;
   text: string;
   choices: EncounterChoiceView[];
   ended: boolean;
@@ -55,6 +63,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
 }) {
   const { ready, onReady, entries } = useDialogueLog(view.id, view.revision, view.speaker, view.quiz ? "" : view.text);
   const windowVisibility = useDialogueWindow();
+  const [creditsOpen, setCreditsOpen] = useState(false);
   const [choiceReady, setChoiceReady] = useState(false);
   const lock = useRef(false);
   useEffect(() => {
@@ -83,7 +92,10 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
   const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: !!quiz || view.choices.length > 0, windowHidden: windowVisibility.hidden });
   return (
     <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} {...sceneTap.props}>
-      <div className="vn-background" data-testid="scene-picture">{view.backgroundImage ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundImage}`} alt="" /> : <CanalScene backgroundId={view.background} />}</div>
+      <div className="vn-background" data-testid="scene-picture">{view.backgroundAsset ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundAsset.path}`} alt="" /> : <CanalScene backgroundId={view.background} />}</div>
+      <SceneLabelLine label={view.placeJa}>
+        {view.backgroundAsset && <SceneCreditButton onClick={() => setCreditsOpen(true)} />}
+      </SceneLabelLine>
       {!quiz && view.portraits && <div className="vn-character-layer encounter-character-layer" data-two-characters={!!view.portraits.heroine && !!view.portraits.enemy}>
         {(["heroine", "enemy"] as const).map((id) => {
           const portrait = view.portraits?.[id];
@@ -94,11 +106,13 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
           </div>;
         })}
       </div>}
-      <section className="vn-dialogue paper story-paper encounter-dialogue" aria-label="寄り道の会話" inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
-        <div className="encounter-scene-heading">
-          <div className="speaker">{view.speaker}</div>
-        </div>
-        <DialogueControls close={<DialogueWindowHide state={windowVisibility} label="閉じる" />} entries={entries} auto={autoAdvance} />
+      <section className="vn-dialogue paper story-paper encounter-dialogue" aria-label="寄り道の会話" data-has-choices={!!quiz || view.choices.length > 0} inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
+        <DialogueWindowHead
+          speaker={view.speaker}
+          narration={view.narration}
+          controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
+        />
+        <div className="vn-window-body">
         {quiz ? (
           <>
             <p className="encounter-quiz-prompt">
@@ -122,7 +136,9 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
             ) : null}
           </>
         )}
+        </div>
       </section>
+      {creditsOpen && view.backgroundAsset && <BackgroundCredits asset={view.backgroundAsset} onClose={() => setCreditsOpen(false)} />}
       <DialogueWindowRestore state={windowVisibility} />
     </div>
   );

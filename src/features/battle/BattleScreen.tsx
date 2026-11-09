@@ -8,12 +8,13 @@ import { beginStory, continueStory, type StoryStep } from "../../story/runtime";
 import { DialogueText } from "../../components/DialogueText";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
-import { DialogueControls } from "../../components/DialogueControls";
+import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { useSceneTap } from "../../components/useSceneTap";
 import { holdTaps } from "../../components/tap-hold";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { CanalScene } from "../../components/CanalScene";
 import { BackgroundCredits } from "../../components/BackgroundCredits";
+import { SceneCreditButton, SceneLabelLine, SceneNotebookTab } from "../../components/SceneLabelLine";
 import { CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
@@ -371,12 +372,15 @@ export function BattleScreen({
       <div className="battle-backdrop">
         <CanalScene backgroundId={backgroundId} imageAssetId={landmarkAsset?.id} />
       </div>
-      {backgroundAsset && <button type="button" className="vn-credit-link" onClick={() => setCreditsOpen(true)}>画像の出典</button>}
-      {landmark && (
-        <div className="battle-location" data-testid="battle-location" aria-label={`現在の場所: ${landmark.nameJa}`}>
-          {landmark.nameJa}
-        </div>
-      )}
+      {/* The battle's heading in every phase (S5): its landmark, or the battle's title for a city
+          finale; 手がかり帳 joins it while the battle talks (the round bar holds its own). */}
+      <SceneLabelLine
+        label={landmark?.nameJa ?? battle.titleJa}
+        labelProps={landmark ? { "data-testid": "battle-location", "aria-label": `現在の場所: ${landmark.nameJa}` } : undefined}
+      >
+        {backgroundAsset && <SceneCreditButton onClick={() => setCreditsOpen(true)} />}
+        {isDialogue && !rebuttal && onNotebook && <SceneNotebookTab onClick={onNotebook} />}
+      </SceneLabelLine>
       <div
         className={`battle-stage ${isDialogue ? "" : "battle-stage-compact"} ${battle.scope === "city_finale" ? "finale-stage" : ""}`}
         data-testid={isDialogue ? "scene-picture" : undefined}
@@ -384,7 +388,7 @@ export function BattleScreen({
         <div className="battle-enemy-info">
           <p className="eyebrow">{battle.titleJa}</p>
           <p className="enemy-title">{battle.enemyTitleJa}</p>
-          <h1>{battle.enemyNameJa}</h1>
+          <h2>{battle.enemyNameJa}</h2>
           <p className="enemy-detail">{battle.enemyDescriptionJa}</p>
         </div>
         <div className="battle-characters">
@@ -419,21 +423,18 @@ export function BattleScreen({
           </div>
         </div>
       </div>
-      {isDialogue && !rebuttal && onNotebook && (
-        <button className="notebook-button battle-stage-notebook" onClick={onNotebook}>
-          手がかり帳
-        </button>
-      )}
       <div className="battle-paper-shell" aria-hidden={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined} inert={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined}>
-      {isDialogue && frame && (
-        <div className="speaker battle-nameplate">
+      {isDialogue && <DialogueWindowHead
+        plateClassName="battle-nameplate"
+        narration={!!frame && frame.speaker !== "enemy" && frame.speaker !== "heroine" && frame.speaker !== "player"}
+        speaker={frame && <>
           {speaker}
           {frame.emotion !== "neutral" && (
             <span className="emotion">{presentation.emotions[frame.emotion]}</span>
           )}
-        </div>
-      )}
-      {isDialogue && <DialogueControls close={<DialogueWindowHide state={windowVisibility} label="閉じる" />} entries={entries} auto={auto} />}
+        </>}
+        controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={auto} />}
+      />}
       <section
         ref={readingArea}
         className={`paper battle-paper${isDialogue ? " battle-dialogue" : ""}`}

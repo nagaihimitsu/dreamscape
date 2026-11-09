@@ -465,10 +465,11 @@ test("encounter: the tap on the picture or the line that closes the held-item de
   await expect.poll(revision).toBeGreaterThan(held.revision + 1);
 });
 
-// User idea (2026-11-07): the whole screen reads on, not only the scene's picture. The guide's
-// heading strip (the landmark's name beside 手がかり帳) on a phone, and on a wide screen the page's
-// margin beside the guide, which keeps a phone-like width there.
-test("tourism: a tap on the landmark's heading, and on a wide screen on the page's margin, reads one step on", { tag: tier.debug }, async ({ page }) => {
+// User idea (2026-11-07): the whole screen reads on, not only the scene's picture: on a wide screen
+// also the page's margin beside the guide, which keeps a phone-like width there. The landmark's name
+// is a pill of the scene label line under the header (UI redesign §3.2), a near miss like the header:
+// a tap on it, or between it and 出典・手がかり帳, does not read on (it did before step 1.3, docs/02).
+test("tourism: a tap on the landmark's pill does not read on, and on a wide screen the page's margin reads one step on", { tag: tier.debug }, async ({ page }) => {
   const target = (await tapTargets(page)).tourism;
   expect(target, "a guide that Debug opens in its default city").toBeDefined();
   await ops.openDebugScene(page, settings(target!));
@@ -476,8 +477,17 @@ test("tourism: a tap on the landmark's heading, and on a wide screen on the page
   const line = page.getByTestId("dialogue-text");
   const before = (await debugGame(page))!;
   const heading = page.getByTestId("tourism-screen").getByRole("heading", { level: 1 });
+  await expect(heading).toBeVisible();
+  const firstLine = await line.textContent();
   await ops.tapAt(page, await ops.centerOf(heading));
-  await expect.poll(async () => (await debugGame(page))!.revision).toBe(before.revision + 1);
+  const gap = await ops.sceneLabelLine(page).evaluate((row) => {
+    const pill = row.querySelector("h1")!.getBoundingClientRect();
+    const next = row.querySelector("button")!.getBoundingClientRect();
+    return { x: (pill.right + next.left) / 2, y: next.top + next.height / 2 };
+  });
+  await ops.tapAt(page, gap);
+  await expect(line).toHaveText(firstLine!);
+  expect((await debugGame(page))!.revision, "taps on the label line do not read on").toBe(before.revision);
   await page.setViewportSize({ width: 1280, height: 800 });
   const text = await line.textContent();
   const margin = await page.getByTestId("tourism-screen").evaluate((screen) => {
@@ -489,16 +499,16 @@ test("tourism: a tap on the landmark's heading, and on a wide screen on the page
   await ops.settled(page);
   await page.mouse.click(margin.x, margin.y);
   await expect(line).not.toHaveText(text!);
-  expect((await debugGame(page))!.revision).toBe(before.revision + 2);
+  expect((await debugGame(page))!.revision).toBe(before.revision + 1);
 });
 
-// AGENTS.md 「選択肢の誤タップ防止」: a city finale has no place name above its stage, so on a portrait
-// phone its 「画像の出典」 takes the top of the stage's row (battle.css) instead of sitting on the round
-// bar's 手がかり帳, where a tap meant for one button would press the other. On a short phone (500–599 px
-// tall) every battle's credit moves up beside the place name. Both places are below the header that
-// lies over the battle (UI redesign §3.1): the credit is the element shown at its own centre, not
-// the header over it (a box that is merely "visible" can still be covered). One finale of Debug's
-// default city at a common and at the smallest phone size, and one landmark battle's question at the
+// AGENTS.md 「選択肢の誤タップ防止」: a battle's 「出典」 (named 「画像の出典」) is on the scene label line
+// under the header in every phase (UI redesign §3.2), never on the round bar's 手がかり帳, where a tap
+// meant for one button would press the other. On a short phone (500–599 px tall) it reaches down beside
+// the enemy's name (battle.css, item F). It is below the header that lies over the battle (§3.1): the
+// credit is the element shown at its own centre, not the header or the stage over it (a box that is
+// merely "visible" can still be covered). One finale of Debug's default city (no landmark: its title is
+// the label) at a common and at the smallest phone size, and one landmark battle's question at the
 // smallest; every battle and size stays in the screens gallery.
 const creditShownAt = (credit: Locator) => credit.evaluate((button) => {
   const box = button.getBoundingClientRect();
@@ -506,7 +516,7 @@ const creditShownAt = (credit: Locator) => credit.evaluate((button) => {
   return button.contains(shown) ? "the credit" : `${shown?.tagName}.${shown?.className} in ${shown?.closest("[data-testid]")?.getAttribute("data-testid")}`;
 });
 test("battle: 「画像の出典」 shows at its place, below the header and clear of 手がかり帳 (a city finale at 390×844 and 320×568, a landmark battle at 320×568)", { tag: tier.debug }, async ({ page }) => {
-  const credit = page.getByRole("button", { name: "画像の出典", exact: true });
+  const credit = ops.sceneCredit(page);
   const landmarkBattle = (await tapTargets(page)).battle;
   expect(landmarkBattle, "a landmark battle that Debug opens in its default city").toBeDefined();
   const phoneSize = page.viewportSize()!;

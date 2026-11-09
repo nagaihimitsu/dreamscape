@@ -108,9 +108,9 @@ export function DialogueText({
           <span
             className="dialogue-next-mark"
             aria-hidden="true"
-            style={{ visibility: ready ? "visible" : "hidden" }}
+            style={{ visibility: ready ? "inherit" : "hidden" }}
           >
-            {" ▾"}
+            ▼
           </span>
         )}
       </p>

@@ -460,9 +460,11 @@ export function GameApp({
                   ...(showEnemy ? { enemy: { emotion: enemy?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral"), mark: enemy?.mark, active: frame.speaker === "enemy" } } : {}),
                 };
               })(),
+              placeJa: encounterLandmark?.nameJa ?? getCityContent(currentEncounter.cityId).city.nameJa,
               background: activeEncounter.frame.background,
-              backgroundImage: encounterImage?.path,
+              backgroundAsset: encounterImage,
               speaker: activeEncounter.frame.speaker === "heroine" ? game.heroineName : activeEncounter.frame.speaker === "player" ? game.playerName : "旅の風景",
+              narration: activeEncounter.frame.speaker !== "heroine" && activeEncounter.frame.speaker !== "player",
               text: activeEncounter.frame.text,
               choices: activeEncounter.frame.choices.map((choice) => {
                 const option = encounterChoiceOption(currentEncounter, choice);

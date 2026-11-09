@@ -80,6 +80,16 @@ const flows: FlowScene[] = [
     await ops.goTo(page, "p_duomo");
     await expect(page.getByTestId("tourism-guide")).toBeVisible();
   } },
+  { scene: "flow-battle-dialogue", titleJa: "バトルの会話", descriptionJa: "ドゥオモの案内を閉じて「進む」で対決の会話へ（場面の名前の札の行と会話の窓）", open: async (page) => {
+    await toBattle(page);
+    await expect(page.getByTestId("dialogue-text")).toBeVisible();
+    await ops.settled(page);
+  } },
+  { scene: "flow-dialogue-hidden", titleJa: "会話の窓を隠した状態", descriptionJa: "対決の会話で「隠す」（タップして会話を表示）", open: async (page) => {
+    await toBattle(page);
+    await ops.settled(page);
+    await ops.hideDialogueWindow(page);
+  } },
   { scene: "flow-battle-question", titleJa: "クイズバトルの問題", descriptionJa: "ドゥオモの案内を閉じて対決へ", open: async (page) => {
     await toBattle(page);
     await playUntil(page, (state) => state.activeBattle?.phase === "question");
@@ -91,6 +101,14 @@ const flows: FlowScene[] = [
   { scene: "flow-battle-result", titleJa: "バトルの結果と報酬", descriptionJa: "ドゥオモの対決をすべてAで答えた後", open: async (page) => {
     await toBattle(page);
     await playUntil(page, (state) => state.activeBattle?.phase === "result");
+  } },
+  { scene: "flow-date", titleJa: "デート（行き先と訪問先の写真）", descriptionJa: "ドゥオモの対決の後、ノヴェチェント美術館のデートを始める", open: async (page) => {
+    await toBattle(page);
+    await playUntil(page, (state) => state.activeBattle?.phase === "result");
+    await ops.toFreeTime(page);
+    await ops.goTo(page, "p_novecento");
+    await expect(page.getByTestId("date-destination")).toBeVisible();
+    await ops.settled(page);
   } },
   { scene: "flow-english-note", titleJa: "英語ノート", descriptionJa: "ドゥオモの対決の後、最初の問題を選ぶ", open: async (page) => {
     await toBattle(page);

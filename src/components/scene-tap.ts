@@ -1,3 +1,5 @@
+import { isSecondTap } from "./double-tap";
+
 /**
  * Tap anywhere to read on (user idea, 2026-11-07): in a story scene a tap or
  * click on the scene acts like a tap on the dialogue line (the first tap
@@ -96,4 +98,34 @@ export function pressesControl(target: TapNode | null, scene: TapNode | null): b
     if (isNearMiss(node)) return false;
   }
   return false;
+}
+
+/** Marks the dialogue window's tool row (DialogueControls: 隠す・閉じる・ログ・高速送り). */
+export const DIALOGUE_TOOLS_ATTRIBUTE = "data-dialogue-tools";
+
+/** The tool of the scene's dialogue window that a tap lands on (a control in the tool row), if any. */
+export function windowToolAt(target: TapNode | null, scene: TapNode | null): TapNode | null {
+  let tool: TapNode | null = null;
+  for (let node = target; node; node = node.parentElement) {
+    if (node === scene) return null;
+    // A dialog a tool opened (the log) is not the tool, even where it lies inside the row.
+    if (node.tagName.toLowerCase() === "dialog" || node.getAttribute("role")?.split(/\s+/u).includes("dialog")) return null;
+    if (!tool && isInteractive(node)) tool = node;
+    if (node.getAttribute(DIALOGUE_TOOLS_ATTRIBUTE) !== null) return tool;
+  }
+  return null;
+}
+
+/** How far a finger's second tap of a double tap may land from its first (CSS px). */
+export const DOUBLE_TAP_SLOP_PX = 24;
+
+/**
+ * Whether a tap on a tool of the window (windowToolAt) presses nothing: it lands where a press on
+ * another control landed (within DOUBLE_TAP_SLOP_PX, `distancePx`) and within the double-tap window
+ * after it (`sincePressMs`; null when none was pressed), so it is that press's second tap, landing on
+ * a tool the press moved under the finger — a reply shrinks the window, the log's 「閉じる」 uncovers
+ * it. A second tap on the tool pressed first acts as usual, and so does a tap elsewhere.
+ */
+export function ignoresWindowToolTap(tool: TapNode | null, pressed: TapNode | null, sincePressMs: number | null, distancePx: number): boolean {
+  return tool !== null && tool !== pressed && sincePressMs !== null && isSecondTap(sincePressMs) && distancePx <= DOUBLE_TAP_SLOP_PX;
 }

@@ -432,9 +432,9 @@ export const ops = {
     await ops.settled(page);
     const picture = (await page.getByTestId("scene-picture").filter({ visible: true }).boundingBox())!;
     const line = (await page.getByTestId("dialogue-text").boundingBox())!;
-    // The picture runs on behind the header (and the guide's heading) that lie over its top:
+    // The picture runs on behind the header and the scene label line that lie over its top:
     // what shows of it starts below them.
-    const covered = await page.evaluate(() => Math.max(0, ...[...document.querySelectorAll('[data-testid="journey-bar"], .tourism-heading')]
+    const covered = await page.evaluate(() => Math.max(0, ...[...document.querySelectorAll('[data-testid="journey-bar"], [data-testid="scene-label-line"]')]
       .map((element) => element.getBoundingClientRect()).filter((box) => box.height > 0).map((box) => box.bottom)));
     const top = Math.max(picture.y, covered);
     // A quarter of the way down from the picture's shown top to the line: well above the window's name plate and tools.
@@ -451,8 +451,24 @@ export const ops = {
     return await showsAt(page, point, '[data-testid="dialogue-text"]') || await showsAt(page, point, '[data-testid="scene-picture"]');
   },
   /**
-   * A point in a gap of the dialogue window's tool row (「閉じる」「ログ」「高速送り」), between two
-   * of its buttons: a near miss, which never reads on.
+   * The scene label line under the header (UI redesign §3.2) of a sightseeing guide, a battle, a date
+   * or an encounter: the scene's heading as a pill, and its 出典・手がかり帳. A `data-no-advance` area:
+   * a tap on it never reads the story on.
+   */
+  sceneLabelLine(page: Page): Locator {
+    return page.getByTestId("scene-label-line");
+  },
+  /** The scene's heading pill on the label line (level 1: the landmark, the date's destination, the encounter's place). */
+  sceneLabel(page: Page): Locator {
+    return ops.sceneLabelLine(page).getByRole("heading", { level: 1 });
+  },
+  /** The label line's 「出典」 (named 「画像の出典」): the credits of the scene's photo. */
+  sceneCredit(page: Page): Locator {
+    return ops.sceneLabelLine(page).getByRole("button", { name: "画像の出典", exact: true });
+  },
+  /**
+   * A point in a gap of the dialogue window's tool row (「隠す」or the guide's 「閉じる」, 「ログ」,
+   * 「高速送り」), between two of its buttons: a near miss, which never reads on.
    */
   async dialogueToolsGap(page: Page): Promise<{ x: number; y: number }> {
     await ops.settled(page);
@@ -546,10 +562,10 @@ export const ops = {
     await expect(log).toBeVisible();
     return log;
   },
-  /** A story scene's 「閉じる」 in the dialogue window: hides the window; returns the full-scene control that shows it again. */
+  /** A story scene's 「隠す」 in the dialogue window: hides the window; returns the full-scene control that shows it again. */
   async hideDialogueWindow(page: Page): Promise<Locator> {
     await page.getByRole("button", { name: "会話ウィンドウを隠す", exact: true }).click();
-    const restore = page.getByRole("button", { name: "会話ウィンドウを表示", exact: true });
+    const restore = page.getByRole("button", { name: "タップして会話を表示", exact: true });
     await expect(restore).toBeVisible();
     return restore;
   },
