@@ -104,3 +104,17 @@ describe("A10 after a then: (3.3 check 6, 2.3)", () => {
       .toThrow(/No choice can be chosen at a choice point of .*smp_mihon_first_bicycle/u);
   });
 });
+
+describe("an epilogue's spending # on_done: (A21)", () => {
+  const EPILOGUE = "stories/epilogues/mihon.ink";
+  const spends = (text: string) => text.replace("# background: smp_bg_mihon_hotel\n", "# on_done: money -5\n# on_done: ap -1\n# background: smp_bg_mihon_hotel\n");
+  const STOP = /An arrival or an epilogue the game starts by itself takes no # on_done: that spends money or AP/u;
+
+  it("lets an epilogue its city starts by a then: epilogue spend, and stops one the game starts by itself, and an arrival's", () => {
+    expect(() => validateContent(sampleWith({ [EPILOGUE]: spends }))).not.toThrow();
+    // Without the city's then: epilogue lines, the game starts the epilogue by itself.
+    expect(() => validateContent(sampleWith({ [EPILOGUE]: spends, [CITY_END]: onlyStarter("") }))).toThrow(STOP);
+    const { added, ...city } = arrival("# on_done: money -5\n");
+    expect(() => validateContent(sampleWith(city, added))).toThrow(STOP);
+  });
+});

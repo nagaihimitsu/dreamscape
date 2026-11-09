@@ -682,13 +682,18 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   for (const person of storyStateCatalog.people) if (!cities.some((city) => city.id === person.cityId))
     throw new Error(`Unknown city of the person ${person.id} in progression/story.json: ${person.cityId}`);
   const journeyOfCityId = (cityId: string) => journeyCatalog.journeys.find((item) => item.cities.some((city) => city.id === cityId))?.id;
+  // The cities whose epilogue the author starts (a then: epilogue in any of their scenes; 3.9 (d)): the game never starts it by itself.
+  const authoredEpilogueCities = new Set(taggedScenes.filter((scene) => (scene.then && "epilogue" in scene.then) ||
+    scene.options.some((option) => option.then && "epilogue" in option.then)).map((scene) => scene.cityId));
   for (const scene of taggedScenes) {
     const label = `${storyLabel(scene.story.storyId)}${scene.story.knot ? ` (${scene.story.knot})` : ""}`;
     withContext(label, () => checkSceneReferences(scene, sceneRefs));
     if (scene.main && scene.options.some((option) => option.later))
       throw new Error(`A main part takes no # later (「また今度」; its end is the game's record, A13): ${label}`);
-    if ((scene.kind === "arrival" || scene.kind === "epilogue") && ((scene.done.money ?? 0) < 0 || (scene.done.ap ?? 0) < 0))
-      throw new Error(`An arrival or an epilogue the game starts by itself takes no # on_done: that spends money or AP (it cannot be refused; A21, A23): ${label}`);
+    // An epilogue a then: epilogue starts may spend: the then: keeps it back and greys when it cannot be paid (A21).
+    if ((scene.kind === "arrival" || (scene.kind === "epilogue" && !authoredEpilogueCities.has(scene.cityId))) && ((scene.done.money ?? 0) < 0 || (scene.done.ap ?? 0) < 0))
+      throw new Error(`An arrival or an epilogue the game starts by itself takes no # on_done: that spends money or AP (it cannot be refused; A21, A23; ` +
+        `an epilogue its city starts by a then: epilogue may): ${label}`);
     if (scene.kind === "battle" && scene.options.length)
       throw new Error(`A battle takes no choices before stage 5 (A15): ${label}`);
     if (scene.origin === "place" && scene.options.some((option) => option.effect))
