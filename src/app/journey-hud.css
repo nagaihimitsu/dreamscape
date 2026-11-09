@@ -76,8 +76,9 @@
    when the line's clamp would hide part of it) is never cut, at any text size
    (user decision 2026-11-09; UI redesign §5.1: rows may wrap, never clip): the
    plate asks for the whole name on one line, so the money goes below whenever
-   the name does not fit beside it, and a name wider than the whole row goes on
-   to a second line. Headers whose name fits keep the layout above. */
+   the name does not fit beside it, and a name wider than the whole row wraps
+   (two lines, at 200 % on 320 px up to three). Headers whose name fits keep
+   the layout above. */
 .journey-hud[data-place-wraps] .hud-plate { flex-basis: auto; }
 .journey-hud[data-place-wraps] .hud-place { display: block; -webkit-line-clamp: none; line-clamp: none; }
 .hud-wallet {
@@ -272,8 +273,7 @@
   /* A place name the row cannot hold whole (data-place-wraps): the status asks
      for the whole name beside the money, so the buttons go to a row of their
      own; with still too little room the money goes below the name, and a name
-     wider than the whole header goes on to a second line, as on a phone held
-     upright. */
+     wider than the whole header wraps, as on a phone held upright. */
   .journey-hud[data-place-wraps] .hud-status { flex: 1 1 auto; flex-wrap: wrap; min-width: 0; max-width: 100%; }
   .journey-hud[data-place-wraps] .hud-plate { flex: 1 1 auto; }
 }
