@@ -249,6 +249,7 @@ tests/screens/                    # 人が見る画面一覧の撮影（npm run 
 | `npm run journey:scaffold`・`journey:readiness`・`journey:release` | 旅行編へシナリオとクイズを取り込む制作ツール（[手順](authoring/JOURNEY_AUTHORING.md)） |
 | `npm run journey:transit -- --journey <旅行編ID>` | 都市ごと・乗り物ごとの交通判断（使う・使わない・走っていない・特定できず）の件数と、徒歩の経路がない向き・出典のない経路（どちらも注意）を表示（`--json` も可。「特定できず」が残ると終了コード1。[乗り物と交通判断台帳](docs/02_TECH_ARCHITECTURE.md#乗り物と交通判断台帳)） |
 | `npm run city:bundle` | 都市単位の作業用JSONで地点・交通・背景などを編集（[手順](authoring/CITY_BUNDLES.md)） |
+| `npm run schemas:build` | エディタの入力補助（JSON Schema）を作り直す。`authoring/schemas/` に、旅行編の `manifest.json`・都市・経路・旅行設定・交通判断台帳・クイズ・各カタログのスキーマを書き、`.vscode/settings.json` でそれぞれのファイルに結び付ける（VS Code で項目の候補・型・書き間違いが出る）。データの書式を変えたときに実行し、作ったファイルもコミットする。入力の補助だけで、検査は `content:build` |
 | `npm run icons:build` | `authoring/brand/favicon-master.png` から `public/` のファビコン（16・32・48px、顔の切り抜き）、Apple touch icon（180px）、アプリアイコン（192・512px）を作り直す。元画像を差し替えたときだけ実行し、生成した画像もコミットする |
 | `npm run images:optimize` | 観光写真を配信用の WebP（品質80）にする。そのままでは確認だけで、`--write` を付けると書き換える（`--journey <旅行編ID>` で1つの旅行編だけ。例 `npm run images:optimize -- --journey <旅行編ID> --write`）。観察で拡大する写真（観光地の画像と観察資料の画像）は同じ大きさ、ほかは幅1600px・高さ1800pxの枠に収め、写真の色の情報（ICCプロファイル）は残す。カタログの `path`・`width`・`height`・`modificationJa` と観察資料の `path`・`sha256` も書き換え、元のファイルを消す（出典と確認日は変えない）。仮の画像（`isPlaceholder`）と見本の画像は変えない。変換できる写真があると `content:build` が警告する |
 

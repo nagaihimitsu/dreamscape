@@ -1,6 +1,6 @@
 # コンテンツ制作ガイド
 
-Dreamscapeの正式データは `content/` です（全旅行編で共有する共通データは `content/` 直下、各旅行編のデータは `content/journeys/<旅行編ID>/`）。文章はInk、クイズ・設定はJSON、画像は旅行編の `content/journeys/<旅行編ID>/public/assets/`（全旅行編で共有する画像は `public/assets/`）に置きます。テキストエディタで直接編集できます。人間の原稿も、どのAIの出力も、同じファイル形式・同じ検証を使います。AIや外部APIは不要です。任意の作業途中原稿は `authoring/journeys/<旅行編ID>/drafts/` などに置けますが、必須ではありません。Gitの差分とレビューで採用を決めます。
+Dreamscapeの正式データは `content/` です（全旅行編で共有する共通データは `content/` 直下、各旅行編のデータは `content/journeys/<旅行編ID>/`）。文章はInk、クイズ・設定はJSON、画像は旅行編の `content/journeys/<旅行編ID>/public/assets/`（全旅行編で共有する画像は `public/assets/`）に置きます。テキストエディタで直接編集できます。VS Code では、JSON の項目の候補・型・書き間違いが出ます（`authoring/schemas/` のスキーマを `.vscode/settings.json` で結び付けています。データの書式を変えたら `npm run schemas:build`。検査は `npm run content:build`）。人間の原稿も、どのAIの出力も、同じファイル形式・同じ検証を使います。AIや外部APIは不要です。任意の作業途中原稿は `authoring/journeys/<旅行編ID>/drafts/` などに置けますが、必須ではありません。Gitの差分とレビューで採用を決めます。
 
 ## Inkで会話と演出を作る
 

@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dreamscape: クイズの解説（learning/details.json）",
+  "$comment": "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "questions": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "storyId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "summaryJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "segments": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "textEn": {
+                  "type": "string",
+                  "minLength": 1,
+                  "language": "en"
+                },
+                "meaningJa": {
+                  "type": "string",
+                  "minLength": 1,
+                  "language": "ja"
+                }
+              },
+              "required": [
+                "textEn",
+                "meaningJa"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "topics": {
+            "minItems": 1,
+            "maxItems": 2,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "category": {
+                  "type": "string",
+                  "enum": [
+                    "grammar",
+                    "expression"
+                  ]
+                },
+                "titleJa": {
+                  "type": "string",
+                  "minLength": 1,
+                  "language": "ja"
+                },
+                "explanationJa": {
+                  "type": "string",
+                  "minLength": 1,
+                  "language": "ja"
+                },
+                "targetEn": {
+                  "type": "string",
+                  "minLength": 1,
+                  "language": "en"
+                },
+                "exampleEn": {
+                  "type": "string",
+                  "minLength": 1,
+                  "language": "en"
+                },
+                "exampleJa": {
+                  "type": "string",
+                  "minLength": 1,
+                  "language": "ja"
+                },
+                "sourceUrl": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "checkedAt": {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                }
+              },
+              "required": [
+                "id",
+                "category",
+                "titleJa",
+                "explanationJa",
+                "targetEn",
+                "exampleEn",
+                "exampleJa",
+                "sourceUrl",
+                "checkedAt"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "storyId",
+          "summaryJa",
+          "segments",
+          "topics"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

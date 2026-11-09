@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dreamscape: 背景と思い出（romance/presentation.json）",
+  "$comment": "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "ending": {
+      "type": "object",
+      "properties": {
+        "titleJa": {
+          "type": "string",
+          "minLength": 1
+        },
+        "descriptionJa": {
+          "type": "string",
+          "minLength": 1
+        },
+        "buttonJa": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "titleJa",
+        "descriptionJa",
+        "buttonJa"
+      ],
+      "additionalProperties": false
+    },
+    "backgrounds": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "nameJa": {
+            "type": "string",
+            "minLength": 1
+          },
+          "captionJa": {
+            "type": "string",
+            "minLength": 1
+          },
+          "color": {
+            "type": "string",
+            "pattern": "^#[0-9a-fA-F]{6}$"
+          },
+          "fallback": {
+            "type": "string",
+            "enum": [
+              "canal",
+              "neutral"
+            ]
+          },
+          "imagePath": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^assets\\/(?!.*(?:^|\\/)\\.\\.(?:\\/|$))[a-zA-Z0-9_./-]+\\.(?:png|webp|svg)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "imageAssetId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "imagePosition": {
+            "type": "object",
+            "properties": {
+              "x": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "y": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              }
+            },
+            "required": [
+              "x",
+              "y"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "nameJa",
+          "captionJa",
+          "color"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "emotions": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "memories": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "titleJa": {
+            "type": "string",
+            "minLength": 1
+          },
+          "descriptionJa": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "titleJa",
+          "descriptionJa"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

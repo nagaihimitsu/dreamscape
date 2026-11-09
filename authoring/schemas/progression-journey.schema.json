@@ -1,0 +1,232 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dreamscape: 本筋の回・特殊戦・報酬（progression/journey.json）",
+  "$comment": "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "episodes": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "episode",
+              "city_finale"
+            ]
+          },
+          "cityId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "landmarkId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "requiredEpisodeIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*$"
+            }
+          },
+          "when": {},
+          "epilogueStoryId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(?:\\/[a-z][a-z0-9_]*)+(?:\\.[a-z][a-z0-9_]*){0,2}$"
+          },
+          "battleId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "titleJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "descriptionJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "clearTitleJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "clearDescriptionJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "cityId",
+          "landmarkId",
+          "requiredEpisodeIds",
+          "battleId",
+          "titleJa",
+          "descriptionJa",
+          "clearTitleJa",
+          "clearDescriptionJa"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "storyBattles": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "battleId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "completionReward": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "ap": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              },
+              "titleJa": {
+                "type": "string",
+                "minLength": 1,
+                "language": "ja"
+              }
+            },
+            "required": [
+              "id",
+              "ap",
+              "titleJa"
+            ],
+            "additionalProperties": false
+          },
+          "requiredEpisodeIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*$"
+            }
+          },
+          "when": {},
+          "titleJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "descriptionJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "actionLabelJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          }
+        },
+        "required": [
+          "battleId",
+          "requiredEpisodeIds",
+          "titleJa",
+          "descriptionJa",
+          "actionLabelJa"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "rewards": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "episodeId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "battleId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "sceneId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "trigger": {
+            "type": "string",
+            "enum": [
+              "guide_read",
+              "battle_complete",
+              "battle_score",
+              "episode_clear",
+              "city_clear",
+              "scene_tag"
+            ]
+          },
+          "ap": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "minScore": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "titleJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          }
+        },
+        "required": [
+          "id",
+          "trigger",
+          "ap",
+          "minScore",
+          "titleJa"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

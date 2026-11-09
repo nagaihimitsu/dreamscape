@@ -1,0 +1,221 @@
+{
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "/content/journeys/*/manifest.json",
+        "/authoring/templates/*/manifest.json"
+      ],
+      "url": "./authoring/schemas/manifest.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/cities/*.json",
+        "/authoring/templates/*/cities/*.json"
+      ],
+      "url": "./authoring/schemas/city.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/travel/*.json",
+        "/authoring/templates/*/travel/*.json",
+        "!/content/journeys/*/travel/*-settings.json",
+        "!/authoring/templates/*/travel/*-settings.json",
+        "!/content/journeys/*/travel/*-transit.json",
+        "!/authoring/templates/*/travel/*-transit.json"
+      ],
+      "url": "./authoring/schemas/travel.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/travel/*-settings.json",
+        "/authoring/templates/*/travel/*-settings.json"
+      ],
+      "url": "./authoring/schemas/travel-settings.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/travel/*-transit.json",
+        "/authoring/templates/*/travel/*-transit.json"
+      ],
+      "url": "./authoring/schemas/transit-ledger.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/quizzes/*.json",
+        "/authoring/templates/*/quizzes/*.json",
+        "!/content/journeys/*/quizzes/*.example.json",
+        "!/authoring/templates/*/quizzes/*.example.json"
+      ],
+      "url": "./authoring/schemas/quiz.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/quizzes/*.example.json",
+        "/authoring/templates/*/quizzes/*.example.json"
+      ],
+      "url": "./authoring/schemas/quiz-example.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/battles/catalog.json",
+        "/authoring/templates/*/battles/catalog.json"
+      ],
+      "url": "./authoring/schemas/battles-catalog.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/encounters/catalog.json",
+        "/authoring/templates/*/encounters/catalog.json"
+      ],
+      "url": "./authoring/schemas/encounters-catalog.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/encounters/entry-rules.json",
+        "/authoring/templates/*/encounters/entry-rules.json"
+      ],
+      "url": "./authoring/schemas/encounters-entry-rules.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/learning/details.json",
+        "/authoring/templates/*/learning/details.json"
+      ],
+      "url": "./authoring/schemas/learning-details.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/learning/translations.json",
+        "/authoring/templates/*/learning/translations.json"
+      ],
+      "url": "./authoring/schemas/learning-translations.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/learning/word-meanings.json",
+        "/content/journeys/*/learning/word-meanings.json",
+        "/authoring/templates/*/learning/word-meanings.json"
+      ],
+      "url": "./authoring/schemas/learning-word-meanings.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/presentation/characters.json",
+        "/content/journeys/*/presentation/characters.json",
+        "/authoring/templates/*/presentation/characters.json"
+      ],
+      "url": "./authoring/schemas/presentation-characters.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/presentation/dialogue-expressions.json",
+        "/authoring/templates/*/presentation/dialogue-expressions.json"
+      ],
+      "url": "./authoring/schemas/presentation-dialogue-expressions.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/presentation/dialogue-reactions.json",
+        "/authoring/templates/*/presentation/dialogue-reactions.json"
+      ],
+      "url": "./authoring/schemas/presentation-dialogue-reactions.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/presentation/own-artwork.json",
+        "/content/journeys/*/presentation/own-artwork.json",
+        "/authoring/templates/*/presentation/own-artwork.json"
+      ],
+      "url": "./authoring/schemas/presentation-own-artwork.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/presentation/reasoning-intros.json",
+        "/authoring/templates/*/presentation/reasoning-intros.json"
+      ],
+      "url": "./authoring/schemas/presentation-reasoning-intros.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/progression/journey.json",
+        "/authoring/templates/*/progression/journey.json"
+      ],
+      "url": "./authoring/schemas/progression-journey.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/progression/story.json",
+        "/authoring/templates/*/progression/story.json"
+      ],
+      "url": "./authoring/schemas/progression-story.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/romance/balance.json",
+        "/content/journeys/*/romance/balance.json",
+        "/authoring/templates/*/romance/balance.json"
+      ],
+      "url": "./authoring/schemas/romance-balance.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/romance/date_catalog.json",
+        "/authoring/templates/*/romance/date_catalog.json"
+      ],
+      "url": "./authoring/schemas/romance-date_catalog.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/romance/date_destinations.json",
+        "/authoring/templates/*/romance/date_destinations.json"
+      ],
+      "url": "./authoring/schemas/romance-date_destinations.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/romance/effect_catalog.json",
+        "/content/journeys/*/romance/effect_catalog.json",
+        "/authoring/templates/*/romance/effect_catalog.json"
+      ],
+      "url": "./authoring/schemas/romance-effect_catalog.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/romance/presentation.json",
+        "/content/journeys/*/romance/presentation.json",
+        "/authoring/templates/*/romance/presentation.json"
+      ],
+      "url": "./authoring/schemas/romance-presentation.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/romance/progression.json",
+        "/content/journeys/*/romance/progression.json",
+        "/authoring/templates/*/romance/progression.json"
+      ],
+      "url": "./authoring/schemas/romance-progression.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/romance/response_profiles.json",
+        "/content/journeys/*/romance/response_profiles.json",
+        "/authoring/templates/*/romance/response_profiles.json"
+      ],
+      "url": "./authoring/schemas/romance-response_profiles.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/scenes/catalog.json",
+        "/authoring/templates/*/scenes/catalog.json"
+      ],
+      "url": "./authoring/schemas/scenes-catalog.schema.json"
+    },
+    {
+      "fileMatch": [
+        "/content/journeys/*/tourism/catalog.json",
+        "/authoring/templates/*/tourism/catalog.json"
+      ],
+      "url": "./authoring/schemas/tourism-catalog.schema.json"
+    }
+  ]
+}

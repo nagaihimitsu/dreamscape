@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dreamscape: 例のクイズ（quizzes/*.example.json）",
+  "$comment": "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "landmarkId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "englishLevel": {
+      "type": "string",
+      "enum": [
+        "A2",
+        "B1",
+        "B2"
+      ]
+    },
+    "productionStatus": {
+      "type": "string",
+      "const": "example_not_for_publication_without_review"
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "publisher": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "publisher",
+        "url"
+      ],
+      "additionalProperties": false
+    },
+    "questions": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "questionEn": {
+            "type": "string",
+            "minLength": 1
+          },
+          "options": {
+            "minItems": 3,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "textEn": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "id",
+                "textEn"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "correctOptionId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "vocabularyJa": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "word": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "meaning": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "word",
+                "meaning"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "hintJa": {
+            "type": "string",
+            "minLength": 1
+          },
+          "explanationJa": {
+            "type": "string",
+            "minLength": 1
+          },
+          "historicalClaimType": {
+            "type": "string",
+            "enum": [
+              "documented_fact",
+              "interpretation",
+              "legend"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "questionEn",
+          "options",
+          "correctOptionId",
+          "vocabularyJa",
+          "hintJa",
+          "explanationJa",
+          "historicalClaimType"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "landmarkId",
+    "englishLevel",
+    "productionStatus",
+    "source",
+    "questions"
+  ]
+}

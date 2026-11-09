@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dreamscape: 台詞の反応（presentation/dialogue-reactions.json）",
+  "$comment": "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "storyId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\/[a-z][a-z0-9_]*)+$"
+          },
+          "speaker": {
+            "type": "string",
+            "enum": [
+              "narrator",
+              "heroine",
+              "player",
+              "enemy"
+            ]
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "targetCharacterId": {
+            "type": "string",
+            "enum": [
+              "heroine",
+              "enemy"
+            ]
+          },
+          "expression": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "mark": {
+            "type": "string",
+            "enum": [
+              "question",
+              "exclamation",
+              "interrobang",
+              "anger",
+              "sweat",
+              "blush",
+              "gloom",
+              "dizzy",
+              "music",
+              "heart",
+              "sparkle",
+              "sleep",
+              "sigh"
+            ]
+          }
+        },
+        "required": [
+          "storyId",
+          "speaker",
+          "text",
+          "targetCharacterId"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

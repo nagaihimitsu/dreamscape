@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dreamscape: デートのカタログ（romance/date_catalog.json）",
+  "$comment": "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "dates": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "kind": {
+            "default": "normal",
+            "type": "string",
+            "enum": [
+              "normal",
+              "special",
+              "confession",
+              "reassurance"
+            ]
+          },
+          "chapterId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "titleJa": {
+            "type": "string",
+            "minLength": 1
+          },
+          "descriptionJa": {
+            "default": "ふたりで旅先を訪ねる。",
+            "type": "string",
+            "minLength": 1
+          },
+          "apCost": {
+            "default": 2,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "minRomanceStage": {
+            "default": 1,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4
+          },
+          "storyId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(?:\\/[a-z][a-z0-9_]*)+(?:\\.[a-z][a-z0-9_]*){0,2}$"
+          },
+          "when": {},
+          "until": {},
+          "destinationId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "allowAfterEnding": {
+            "type": "boolean"
+          },
+          "rewardOnlyOnce": {
+            "default": true,
+            "type": "boolean"
+          },
+          "backgroundId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "minAffection": {
+            "default": 0,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "repeatable": {
+            "default": false,
+            "type": "boolean"
+          },
+          "recovery": {
+            "type": "boolean"
+          },
+          "needsDeferred": {
+            "default": false,
+            "type": "boolean"
+          },
+          "choiceCount": {
+            "default": 2,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "effectCount": {
+            "default": 2,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "validationContexts": {
+            "default": [
+              {
+                "romanceStage": 1,
+                "confessionReady": false
+              }
+            ],
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "romanceStage": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4
+                },
+                "confessionReady": {
+                  "type": "boolean"
+                },
+                "confessionResult": {
+                  "type": "string",
+                  "enum": [
+                    "accepted",
+                    "deferred",
+                    "rejected"
+                  ]
+                },
+                "memoryId": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "memoryIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]*$"
+                  }
+                },
+                "endingReached": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "romanceStage",
+                "confessionReady"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "chapterId",
+          "titleJa",
+          "storyId",
+          "backgroundId"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

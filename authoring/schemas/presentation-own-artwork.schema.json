@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dreamscape: Dreamscape のために作った絵（presentation/own-artwork.json）",
+  "$comment": "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "artworks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "noteJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "paths": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^(?:[a-zA-Z0-9_-][a-zA-Z0-9_.-]*\\/)*[a-zA-Z0-9_-][a-zA-Z0-9_.-]*\\.(?:png|webp|jpg|jpeg|svg|gif|avif|ico)$"
+            }
+          }
+        },
+        "required": [
+          "noteJa",
+          "paths"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
