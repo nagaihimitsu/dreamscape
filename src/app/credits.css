@@ -1,0 +1,54 @@
+/* 「出典・権利の一覧」 (CreditsDialog): the shared frame, wider on tablets; sections under plain
+   headings, separated by hairlines (no side accents). Disclosures are 44 px rows. */
+dialog.modal.credits-modal {
+  --modal-pad-top: 16px;
+  --modal-pad-inline: 16px;
+  width: min(560px, calc(100% - 24px));
+  max-height: calc(100dvh - 24px);
+}
+.credits-modal .modal-title-bar { margin-bottom: 8px; }
+.credits-list > section { padding: 12px 0; border-top: 1px solid var(--ds-parchment-line); }
+.credits-list > section:first-child { padding-top: 0; border-top: 0; }
+.credits-list h3 { margin: 0 0 6px; font-size: 16px; }
+.credits-list h4 { margin: 12px 0 4px; font-size: 13px; color: var(--ds-ink-muted); }
+.credits-list p { margin: 4px 0; font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+.credits-list .fine-print { font-size: 12px; line-height: 1.7; }
+.credits-list summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding: 11px 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+  overflow-wrap: anywhere;
+}
+.credits-journey { border-bottom: 1px solid var(--ds-parchment-line); }
+.credits-journey:last-child { border-bottom: 0; }
+.credits-journey[open] { padding-bottom: 8px; }
+.credits-journey > section:first-of-type h4 { margin-top: 0; }
+.credits-photos,
+.credits-licences { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.credits-photos li { padding-top: 8px; border-top: 1px solid var(--ds-parchment-line); }
+.credits-photos li:first-child { border-top: 0; }
+.credits-photos p { margin: 2px 0; font-size: 12px; line-height: 1.5; }
+.credits-list .credits-place { font-size: 13px; font-weight: 600; }
+.credits-licences { gap: 0; }
+.credits-licences li { border-bottom: 1px solid var(--ds-parchment-line); }
+.credits-licences summary { font-weight: 500; font-size: 13px; }
+.credits-licences pre {
+  margin: 0 0 10px;
+  padding: 8px;
+  background: #fffaf1;
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.credits-list .credits-own-artwork { margin-top: 12px; }
+/* The entries: the title screen's below its note, ゲームの設定's above the data entries. */
+.credits-entry { display: block; min-height: 44px; }
+.intro > .credits-entry { margin: 4px auto 0; }
+.modal .credits-entry { margin-top: 22px; }
+.modal .credits-entry + .old-data-entry,
+.modal .credits-entry + .delete-entry { margin-top: 4px; }

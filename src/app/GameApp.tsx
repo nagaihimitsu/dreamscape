@@ -23,6 +23,7 @@ import { useGameSession } from "./useGameSession";
 import { leaveStep } from "./unsaved-progress";
 import { titleSaveActions } from "./save-recovery";
 import type { DeleteSnapshot } from "./save-deletion";
+import { CreditsDialog } from "./CreditsDialog";
 import { OldDataCleanup } from "./OldDataCleanup";
 import { oldDataContext, type KeyedStorage } from "../persistence/old-data";
 import { CanalScene } from "../components/CanalScene";
@@ -148,6 +149,7 @@ export function GameApp({
   const [confirmDeparture, setConfirmDeparture] = useState(false);
   const [settings, setSettings] = useState(false);
   const [oldDataOpen, setOldDataOpen] = useState(false);
+  const [creditsOpen, setCreditsOpen] = useState(false);
   const [switchJourneyTo, setSwitchJourneyTo] = useState<string | null>(null);
   // This journey's screen is the end of a switch (or of the lock's 再試行):
   // the title's selector has taken the focus back (child effects run first).
@@ -440,6 +442,7 @@ export function GameApp({
                 <br />
                 名前はあとから設定で変更できます。
               </p>
+              <button type="button" className="text-button credits-entry" onClick={() => setCreditsOpen(true)}>出典・権利の一覧</button>
             </section>
           </>
         ) : activeEncounter && currentEncounter ? (
@@ -854,6 +857,8 @@ export function GameApp({
             </form>
           )}
           {!isDebug && <DebugModeSetting debugMode={debugMode} />}
+          <button type="button" className="text-button credits-entry"
+            onClick={() => { setSettings(false); setCreditsOpen(true); }}>出典・権利の一覧</button>
           {!isDebug && oldDataStorage && <button type="button" className="text-button old-data-entry"
             onClick={() => { setSettings(false); setOldDataOpen(true); }}>古い保存データの整理</button>}
           <button className="text-button delete-entry" onClick={requestDelete}>
@@ -868,6 +873,7 @@ export function GameApp({
           </button>
         </Modal>
       )}
+      {creditsOpen && <CreditsDialog onClose={() => setCreditsOpen(false)} />}
       {oldDataOpen && oldDataStorage && <OldDataCleanup storage={oldDataStorage}
         context={oldDataContext(journeyId)} onClose={() => setOldDataOpen(false)} />}
       {travelEffects}
