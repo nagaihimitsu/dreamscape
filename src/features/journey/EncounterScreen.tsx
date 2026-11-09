@@ -29,6 +29,8 @@ export type EncounterScreenView = {
   background: string;
   /** The place's registered photo, shown as the background with its credits. */
   backgroundAsset?: TourismAsset;
+  /** A scene at no landmark: the registered photo of its `# background:` (drawn by the backdrop), credited by 出典. */
+  backgroundCredit?: TourismAsset;
   speaker: string;
   /** The line is the narration (「旅の風景」), no one's words. */
   narration: boolean;
@@ -64,6 +66,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
   const { ready, onReady, entries } = useDialogueLog(view.id, view.revision, view.speaker, view.quiz ? "" : view.text);
   const windowVisibility = useDialogueWindow();
   const [creditsOpen, setCreditsOpen] = useState(false);
+  const credited = view.backgroundAsset ?? view.backgroundCredit;
   const [choiceReady, setChoiceReady] = useState(false);
   const lock = useRef(false);
   useEffect(() => {
@@ -94,7 +97,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
     <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} {...sceneTap.props}>
       <div className="vn-background" data-testid="scene-picture">{view.backgroundAsset ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundAsset.path}`} alt="" /> : <CanalScene backgroundId={view.background} />}</div>
       <SceneLabelLine label={view.placeJa}>
-        {view.backgroundAsset && <SceneCreditButton onClick={() => setCreditsOpen(true)} />}
+        {credited && <SceneCreditButton onClick={() => setCreditsOpen(true)} />}
       </SceneLabelLine>
       {!quiz && view.portraits && <div className="vn-character-layer encounter-character-layer" data-two-characters={!!view.portraits.heroine && !!view.portraits.enemy}>
         {(["heroine", "enemy"] as const).map((id) => {
@@ -138,7 +141,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
         )}
         </div>
       </section>
-      {creditsOpen && view.backgroundAsset && <BackgroundCredits asset={view.backgroundAsset} onClose={() => setCreditsOpen(false)} />}
+      {creditsOpen && credited && <BackgroundCredits asset={credited} onClose={() => setCreditsOpen(false)} />}
       <DialogueWindowRestore state={windowVisibility} />
     </div>
   );

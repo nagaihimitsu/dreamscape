@@ -47,6 +47,7 @@ import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
 import { JourneyHud } from "./JourneyHud";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
+import { sceneBackdropPhoto } from "../features/journey/travel-labels";
 import { advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, encounterChoiceDisplay, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterCanFinish, proceedFromTourism, continueTourismEncounters, encounterLeadsOnward, leaveBattleToFreeTime } from "../domain/encounter";
 import { chooseCityEpilogue, epilogueChoiceDisplay } from "../domain/epilogue";
 import { dateChoiceDisplay, type GameState } from "../domain/game";
@@ -284,6 +285,8 @@ export function GameApp({
   const currentEncounter = activeEncounter ? getActiveEncounterDefinition(activeEncounter) : undefined;
   const encounterLandmark = landmarks.find((landmark) => landmark.id === currentEncounter?.landmarkId);
   const encounterImage = tourismAssets.find((asset) => asset.id === encounterLandmark?.imageAssetId);
+  const encounterBackdrop = activeEncounter && !encounterLandmark
+    ? sceneBackdropPhoto(activeEncounter.frame.background, presentation.backgrounds, tourismAssets) : undefined;
   const encounterFeedback = game ? getEncounterQuizFeedback(game) : null;
   const activeBattleContent = game?.activeBattle ? getActiveBattleContent(game.activeBattle) : undefined;
   const currentBattle = activeBattleContent?.battle;
@@ -499,11 +502,13 @@ export function GameApp({
                   ...(showEnemy ? { enemy: { emotion: enemy?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral"), mark: enemy?.mark, active: frame.speaker === "enemy" } } : {}),
                 };
               })(),
-              // A scene at no landmark (a date's, the hotel's, a trip's…; stage 4): the place the party is at.
-              placeJa: encounterLandmark?.nameJa ?? getCityContent(currentEncounter.cityId).travel.places.find((place) => place.id === game.travel.currentPlaceId)?.nameJa ??
+              // A scene at no landmark (a date's, the hotel's, a trip's…; stage 4): its background photo's name, else the
+              // place the party is at.
+              placeJa: encounterLandmark?.nameJa ?? encounterBackdrop?.nameJa ?? getCityContent(currentEncounter.cityId).travel.places.find((place) => place.id === game.travel.currentPlaceId)?.nameJa ??
                 getCityContent(currentEncounter.cityId).city.nameJa,
               background: activeEncounter.frame.background,
               backgroundAsset: encounterImage,
+              backgroundCredit: encounterBackdrop?.asset,
               speaker: activeEncounter.frame.speaker === "heroine" ? game.heroineName : activeEncounter.frame.speaker === "player" ? game.playerName : "旅の風景",
               narration: activeEncounter.frame.speaker !== "heroine" && activeEncounter.frame.speaker !== "player",
               text: activeEncounter.frame.text,
