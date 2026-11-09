@@ -20,9 +20,10 @@ test("the title's 「出典・権利の一覧」 lists a photo with its source, 
   const { asset, fileName } = duomo();
   await expect(credits.getByRole("link", { name: `元の画像：${fileName}`, exact: true })).toHaveAttribute("href", asset.sourceUrl);
   await expect(credits.getByTestId("credits-map")).toContainText("地図データ © OpenStreetMap contributors");
-  const library = credits.getByTestId("credits-licences").getByText(`${react.name} ${react.version}（${react.identifier}）`, { exact: true });
-  await library.click();
-  await expect(credits.getByTestId("credits-licences").locator("pre").filter({ hasText: react.text.split("\n")[0] }).first()).toBeVisible();
+  const library = credits.getByTestId("credits-licences").getByRole("listitem")
+    .filter({ has: page.getByText(`${react.name} ${react.version}（${react.identifier}）`, { exact: true }) });
+  await library.locator("summary").click();
+  await expect(library.locator("pre")).toContainText(react.text.split("\n")[0]);
   await page.keyboard.press("Escape");
   await expect(credits).toBeHidden();
   await expect(page.getByRole("main").getByRole("button", { name: "出典・権利の一覧", exact: true })).toBeFocused();
