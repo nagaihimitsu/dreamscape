@@ -13,9 +13,10 @@ import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
  * GT-4: the Golden Triangle's 13 inserted scenes (talks at the stage-4 moments: the hotel's night and morning,
  * Delhi's departure, Agra's arrival, the Jaipur finale and the India Gate date), each played at its moment with the
  * real actions as the screens commit them, each step saved and loaded again. Their two items are given (the envelope
- * handed over once), their money is paid once, and some are also tried where their conditions do not hold: Delhi's
- * night scenes after a daytime rest, the print without the photographer, Roohi's news without the homework, and the
- * two reels without the stepwell date.
+ * handed over once), their money is paid once (the station deposit through to Agra; each envelope gift in its scene,
+ * nothing more after the battle up to the epilogue), and some are also tried where their conditions do not hold:
+ * Delhi's night scenes after a daytime rest, the print without the photographer, Roohi's news without the homework,
+ * and the two reels without the stepwell date.
  */
 
 const GT = "content/journeys/golden_triangle";
@@ -279,13 +280,18 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
         if (!state.completedEpisodeIds.includes(episode.id)) state = finishEpisode(state, episode.id);
       let budgetAtEnvelope: number | undefined;
       let budgetAtBattle: number | undefined;
+      let budgetAfterBattle: number | undefined;
+      let budgetAtEpilogue: number | undefined;
       const played = travel(withAp(state, 12), "gt_jaipur_finale", (current) => {
         if (current.activeEncounter?.encounterId === "gt_jaipur_finale_before_envelope") budgetAtEnvelope ??= current.travelBudget;
         if (current.activeBattle) budgetAtBattle ??= current.travelBudget;
         if (current.activeBattle) expect(current.inventory.gt_jaipur_wedding_envelope).toBe("held");
+        if (current.activeEncounter?.encounterId === "gt_jaipur_finale_after_envelope") budgetAfterBattle ??= current.travelBudget;
+        if (current.activeEpilogue) budgetAtEpilogue ??= current.travelBudget;
         return !!current.activeEpilogue;
       }, prefer);
-      return { played, spent: budgetAtEnvelope! - budgetAtBattle! };
+      // Paid in the envelope scene before the battle; nothing more from the scenes after it up to the epilogue.
+      return { played, spent: budgetAtEnvelope! - budgetAtBattle!, spentAfter: budgetAfterBattle! - budgetAtEpilogue! };
     }
 
     it("gives the wedding envelope before the finale and hands it over after it (given and used once)", () => {
@@ -293,6 +299,7 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
       expect(ids(letter.played)).toEqual(["gt_jaipur_finale_before_envelope", "gt_jaipur_finale_after_envelope"]);
       expect(letter.played.chosen).toContain("letter_gift");
       expect(letter.spent).toBe(0);
+      expect(letter.spentAfter).toBe(0);
       expect(letter.played.state.inventory.gt_jaipur_wedding_envelope).toBe("used");
       expect(letter.played.state.storyProgress.flags).toContain("gt_jaipur_envelope_letter");
       expect(shown(letter.played, "手紙も入ってるね。……毎日言葉にしなさい、か。")).toBe(true);
@@ -302,8 +309,17 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
       const modest = finale(["modest_gift"]);
       expect(modest.played.chosen).toContain("modest_gift");
       expect(modest.spent).toBe(501);
+      expect(modest.spentAfter).toBe(0);
       expect(modest.played.state.inventory.gt_jaipur_wedding_envelope).toBe("used");
       expect(shown(modest.played, "……ふん。割り切れないね。よろしい")).toBe(true);
+    }, 300_000);
+
+    it("charges the generous gift once, in the envelope scene", () => {
+      const generous = finale(["generous_gift"]);
+      expect(generous.played.chosen).toContain("generous_gift");
+      expect(generous.spent).toBe(1101);
+      expect(generous.spentAfter).toBe(0);
+      expect(generous.played.state.inventory.gt_jaipur_wedding_envelope).toBe("used");
     }, 300_000);
 
     it("plays the stepwell reel after the envelope, before the epilogue, once the Delhi stepwell date was played", () => {

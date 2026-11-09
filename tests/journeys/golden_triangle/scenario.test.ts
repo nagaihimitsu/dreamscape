@@ -175,8 +175,10 @@ describe("authored Golden Triangle journey", () => {
       const departureScenes = cityId === "delhi";
       expect(departed.leaving.occasion?.kind === "depart").toBe(departureScenes);
       const fields = ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds"] as const;
-      // The move itself keeps all of them; since the clear, only the departure's scenes may change the money and the relationship.
-      for (const field of fields) expect(state[field], field).toEqual(departed.leaving[field]);
+      // The move itself keeps all of them (the last city does not move: its state is the one it left with); since the clear,
+      // only the departure's scenes may change the money and the relationship.
+      const moved = cityIndex < journey.cities.length - 1;
+      if (moved) for (const field of fields) expect(state[field], field).toEqual(departed.leaving[field]);
       const scenesChange = departureScenes ? ["travelBudget", "affection", "trust", "spark", "romanceStage"] : [];
       for (const field of fields.filter((item) => !scenesChange.includes(item))) expect(state[field], field).toEqual(completed[field]);
       // The station's deposit (# money: -500 with # set: gt_delhi_scam_paid) is the only money spent there.
