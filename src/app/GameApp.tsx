@@ -14,7 +14,7 @@ import { rentTransport } from "../domain/transport";
 import { getTransportMode } from "../content/transport";
 import { getPlayerDeparture } from "../domain/city-travel";
 import { closeRomanceEnding, openOccasion } from "../domain/occasion";
-import { screenFor } from "../domain/screen";
+import { resultExitLabel, screenFor } from "../domain/screen";
 import {
   advanceDate,
   chooseDate,
@@ -618,7 +618,7 @@ export function GameApp({
                 : undefined
             }
             // The battle's head then: epilogue (stage 3b): leaving the result goes to the epilogue (4.7).
-            leaveLabel={game.occasion?.then && "epilogue" in game.occasion.then ? "エピローグへ進む" : undefined}
+            leaveLabel={resultExitLabel(game)}
             onLeave={resultExits.leave ? () => {
               commit((state) => leaveBattleToFreeTime(state, game.revision, nextRomanceRoll));
             } : undefined}
@@ -663,7 +663,7 @@ export function GameApp({
                 これからも、旅先でふたりの時間を過ごせます。
               </p>
               <button className="primary" onClick={() => commit((state) => closeRomanceEnding(state, game.revision, nextRomanceRoll))}>
-                自由時間へ <span aria-hidden="true">→</span>
+                {resultExitLabel(game) ?? "自由時間へ"} <span aria-hidden="true">→</span>
               </button>
             </section>
           </>

@@ -13,7 +13,7 @@ import { validateGameState, type GameState } from "./game";
 import { atMatches, momentSchedule } from "./moments";
 import { occasionSteps, openOccasion } from "./occasion";
 import { applyPlayerAction, listPlayerActions, playerActionChange } from "./player-action";
-import { screenFor } from "./screen";
+import { resultExitLabel, screenFor } from "./screen";
 import { beginTravelEvent } from "./travel-game";
 
 // The stage-4 moments no journey has a script for yet (the unified event design 2.3, 4.2): a city's departure (its
@@ -121,6 +121,7 @@ describe("a date's moment with the 「交際開始」 screen (3.9 (c))", () => {
     expect(screen.confessionStatus).toBe("accepted");
     expect(screen.occasion).toMatchObject({ at: "main:ending", ran: ["date", "ending"], then: { move: "p_duomo" } });
     expect(screenFor(screen)).toBe("romance_ending");
+    expect(resultExitLabel(screen)).toBeUndefined();
     const storage = new MemoryStorage();
     expect(saveGame(storage, screen).ok).toBe(true);
     expect(loadGame(storage)).toEqual({ status: "loaded", state: screen });
@@ -134,6 +135,8 @@ describe("a date's moment with the 「交際開始」 screen (3.9 (c))", () => {
     const screen = playUntil(trip, (state) => state.occasion?.romanceEnding === true);
     expect(screen.occasion).toMatchObject({ at: "main:ending", then: { epilogue: true } });
     expect(restore(screen)).toEqual(screen);
+    // Its exit names what comes next (2.7, 4.7), as a battle result's does.
+    expect(resultExitLabel(screen)).toBe("エピローグへ進む");
     const epilogue = restore(closeRomanceEnding(screen, screen.revision, () => 0));
     expect(epilogue.activeEpilogue).not.toBeNull();
     expect(epilogue.endingReached).toBe(true);

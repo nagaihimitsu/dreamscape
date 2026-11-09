@@ -16,3 +16,10 @@ export function screenFor(state: Pick<GameState, "activeEncounter" | "activeEpil
   if (state.occasion?.romanceEnding) return "romance_ending";
   return "free_time";
 }
+
+/**
+ * The exit of a result screen (a battle's result, the 「交際開始」 screen) names what comes next (2.7, 4.7): 「エピローグへ進む」
+ * when a then: epilogue waits for it; otherwise undefined (the screen's own label, e.g. 「自由時間へ」).
+ */
+export const resultExitLabel = (state: Pick<GameState, "occasion">): string | undefined =>
+  state.occasion?.then && "epilogue" in state.occasion.then ? "エピローグへ進む" : undefined;
