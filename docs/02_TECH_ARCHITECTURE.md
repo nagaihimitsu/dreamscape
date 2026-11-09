@@ -96,7 +96,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
   - `manifest.json` の `cities[].nameJa` と、その都市の `cities/<都市ID>.json` の `nameJa` が違う（`City name differs from the manifest`）。
   - `productionStatus: "complete"` の都市に、その都市の `kind: "city_finale"` のエピソード（`progression/journey.json`）がない（`Complete city has no city finale`）。都市クリア・エピローグ・次の都市への出発はフィナーレの後に起きるため。
   - データの画像（観光画像の `path`、背景の `imagePath`、品物の `iconPath`、人物画像、タイトルの絵）が、別の旅行編の `public/` の画像を指す。旅行編のデータが使えるのは自分の `public/` と直下の `public/` の画像、共通データが使えるのは直下の `public/` の画像だけ（`Reference to another layer`）。
-  - `manifest.json` の `authoring` のパス（`observationFile`・`transitDecisionLedger.file`）が、`/` 区切りのリポジトリからの相対パスでない（絶対パス、`..`、`\` を含む）か、`authoring/journeys/<旅行編ID>/` の外を指す。`transitDecisionLedger.cities` にその旅行編の都市以外がある。`imageDirectory` は配信時のパス（`assets/` で始まる相対パス）。
+  - `manifest.json` の `authoring` のパス（`observationFile`）が、`/` 区切りのリポジトリからの相対パスでない（絶対パス、`..`、`\` を含む）か、`authoring/journeys/<旅行編ID>/` の外を指す。`imageDirectory` は配信時のパス（`assets/` で始まる相対パス）。
   - 配信する画像が、出典つきの観光画像でも自作の絵の一覧にある絵でもない（「出典のない画像」）、その両方である、一覧にあるファイルをその層が配信していない、同じ層の一覧に2回ある（下の「画像の出典と自作の絵」）。
 - 統合したカタログのスキーマエラーは、問題の項目を持つファイルごとに `Invalid content in <ファイル>:` で始まるまとまりで示し、位置（`path`）はそのファイルの中での位置にする（例：旅行編の最初の対決なら、統合後の `battles[9]` ではなく `battles[0]`）。統合後の位置は、エラーの `cause` に残る。
 - 警告（生成は続ける。件数を表示し、`npm run content:build -- --verbose` で一覧。判定は `scripts/content-report.ts`）。警告があっても、単体テスト（`test:quick`・`npm test`）・CI・`npm run verify`・公開は失敗しない。直すかどうかは制作者が一覧を見て判断する
@@ -127,7 +127,6 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 - 宿への帰り道（「休む」の一覧、帰りの交通費の確保 `returnReserve`、時間内に帰れるかの判定）：直接の経路と、乗り物の後に宿まで歩く経路から作り、同じ乗り物の中では時間か料金で得のある候補だけを残す。さらに、宿まで直接歩けるときは、その徒歩より速くも安くもない乗り物の候補（直通も乗り継ぎも）を出さない（規則a。2026-11-08 のユーザー判断）。比べる相手はその直接の徒歩だけで、ほかの乗り物どうしでは比べない。借りていない乗り物は、もともと候補に入らない。徒歩は無料で、外した候補より遅くないので、帰りの交通費の確保・時間内に帰れるかの判定・宿泊の計画は規則aがないときと同じになる（`src/domain/travel-routes.ts` の `findTravelHomeRoutes`。全旅行編と見本の編の全地点で `src/domain/home-route-rule.test.ts` が確かめる）。ミラノ編の「休む」の一覧は13地点で23件から19件になった。
 - 交通判断台帳：乗り物を宣言した旅行編は、都市ごとに `travel/<cityId>-transit.json`（`schemaVersion: 2`、`cityId`、出典の一覧 `sourceRefs`、判断 `decisions`）を置く。判断は、地点の組（向きを区別）×宣言した乗り物ごとに1件で、`status` は `available`（経路あり）・`not_suitable`（使わない）・`not_applicable`（走っていない）・`inconclusive`（特定できず）。`available` と経路の有無は一致させ、`available` 以外には事実の出典（`claimType: "documented_fact"`）を付ける。台帳のある都市で徒歩の経路がない向きは、`content:build` の注意に出す（都市ごとに向きの数と最初の1つ。どの地点へも行けることは、徒歩か借りない乗り物の経路があるかを確かめる別の検査が止める）。台帳の理由で徒歩と比べる組（「歩いて◯分で着く」など）には徒歩の経路を置く（制作の点検で見る）。`checkedAt`（確かめた日）と日本語の理由 `reasonJa` は必須。`inconclusive` は生成を止めないが、`journey:readiness` が公開前の問題（`transit_inconclusive`）として示す。検査は `scripts/transit-ledger.ts`・`scripts/transport-validation.ts`。
 - 経路の出典：宣言した乗り物の経路は、ゲーム用の推定の印（`"estimation": "game_model"`）と、事実の出典（`documented_fact`）を1つ以上持つ。印か事実の出典のない経路は `content:build` の注意に出す（都市と乗り物ごとに本数と最初の1本。生成は止めない）。資料のない仮の値は、台帳の理由にそう書く。ゲーム用の推定の経路が仮説（`hypothesis`）の出典を持つことは、経路の形式の決まりとして止める。
-- 移行待ちの印：`authoring.transitDecisionLedger.pendingJa`（例「ツアー機能待ち」）を持つ旅行編（今はインド編）は、旧方式の交通（旅行編全体の判断台帳と専用の制作ツール）のままにする。台帳・2つまでの制限・経路の出典の検査をまだ受けず、借りる乗り物も置けない。印には、そのあいだ旧方式の台帳を確かめるコマンド `inspectCommand`（`npm run <スクリプト名>`。インド編は `npm run india:transit`）も書く。`content:build` の最後の `Transport <旅行編ID>:` の行、`journey:transit`、`journey:readiness`（`交通:` の行。準備の判定には影響しない）が、印の文とそのコマンドを同じ文で出す（`scripts/transport-validation.ts` の `transportWaitingJa`。`content:build` はほかの旅行編について、乗り物と台帳の判断の件数を出す）。
 - 制作ツール：`npm run journey:transit -- --journey <旅行編ID>` が、都市ごと・乗り物ごとの判断の件数と、徒歩の経路がない向き・出典のない経路（どちらも注意）を示す（`--json` も可。「特定できず」の判断があると終了コード1）。都市別の作業用JSON（[CITY_BUNDLES](../authoring/CITY_BUNDLES.md)）の `transitDecisions` は、その都市の台帳に書き出す。
 
 ### 生成物（手動で編集しない）
@@ -269,7 +268,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
   - 書き出し：`content-outputs.ts` が `stories.json`・`quizzes.json`・生成ミラー・配信用の画像フォルダを書く。
   - `selectJourneys(sources, [旅行編ID])` は、共通データと指定した旅行編だけの内容を組み立て直す（ほかの旅行編フォルダを外して生成したときと同じ内容）。`contentTreeFromFiles` でメモリ上に作った内容も同じ関数で組み立てて検証できるため、不正なデータを拒否するテストは一時コピーや生成全体なしで書ける（例：`scripts/content-validation.test.ts`）。
   - `content-pipeline.ts` が公開するのは `buildContent` だけで、テストが単独で使う検査関数は上のモジュールから読み込む（単体テストの組の判定のため。[開発時の確認](10_DEVELOPMENT_CHECKS.md#単体テストの組と所要時間)）。
-- `scripts/city-bundle.ts` は都市編集の公開APIと検証手順を担当する。編集形式は `city-bundle-schema.ts`、経路の圧縮・展開は `city-bundle-routes.ts`、共有カタログの統合は `city-bundle-catalogs.ts`、競合確認と原子的なファイル更新は `city-bundle-files.ts` が担当する。交通判断台帳は、乗り物を宣言した旅行編では都市ごとの `travel/<cityId>-transit.json`（その都市の旅行編フォルダ）、交通の切り替えを待つ旅行編（インド編）では `manifest.json` の `authoring.transitDecisionLedger` に書いた旅行編全体で1つの台帳を使い、旅行編専用のツールは読み込まない。
+- `scripts/city-bundle.ts` は都市編集の公開APIと検証手順を担当する。編集形式は `city-bundle-schema.ts`、経路の圧縮・展開は `city-bundle-routes.ts`、共有カタログの統合は `city-bundle-catalogs.ts`、競合確認と原子的なファイル更新は `city-bundle-files.ts` が担当する。交通判断台帳は、乗り物を宣言した旅行編の都市ごとの `travel/<cityId>-transit.json`（その都市の旅行編フォルダ）を使い、旅行編専用のツールは読み込まない。
 
 機能を追加するときは該当する責務へ実装し、画面や入口のファイルへ個別の保存・進行・検証ルールを戻さない。分離したモジュール間で型だけが必要な場合は `import type` を使い、実行時の循環参照を避ける。
 

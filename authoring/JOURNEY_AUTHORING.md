@@ -8,7 +8,7 @@
 
 - 都市の施設・営業時間のゲーム設定・料金・交通・写真・出典：既存の [city:bundle](CITY_BUNDLES.md) で都市単位に編集。
 - 旅行編全体の通貨・開始予算・都市順・都市クリア報酬：`content/journeys/<旅行編ID>/manifest.json`。
-- 制作ツールの設定（イベントIDの接頭辞、観察資料のファイル、画像フォルダ。インド編だけは、旧方式の交通のための旅行編全体の判断台帳 `transitDecisionLedger` と、移行待ちの印 `pendingJa`、そのあいだ台帳を確かめるコマンド `inspectCommand`）：同じ `manifest.json` の `authoring`。`authoring` がない旅行編（ミラノ編）は、この生成・検査・反映ツールの対象外です。観察資料・交通判断台帳のパスは、`/` 区切りのリポジトリからの相対パスで、その旅行編の `authoring/journeys/<旅行編ID>/` の中に置きます（`..` や絶対パス、他の旅行編のフォルダは `content:build` がエラーにします。`transitDecisionLedger.cities` もその旅行編の都市だけ）。`eventPrefix` を設定した旅行編では、接頭辞のないIDを `content:build` が警告します（[IDの名前空間](../docs/02_TECH_ARCHITECTURE.md#ストーリーidとidの名前空間)）。
+- 制作ツールの設定（イベントIDの接頭辞、観察資料のファイル、画像フォルダ）：同じ `manifest.json` の `authoring`。`authoring` がない旅行編（ミラノ編）は、この生成・検査・反映ツールの対象外です。観察資料のパスは、`/` 区切りのリポジトリからの相対パスで、その旅行編の `authoring/journeys/<旅行編ID>/` の中に置きます（`..` や絶対パス、他の旅行編のフォルダは `content:build` がエラーにします）。`eventPrefix` を設定した旅行編では、接頭辞のないIDを `content:build` が警告します（[IDの名前空間](../docs/02_TECH_ARCHITECTURE.md#ストーリーidとidの名前空間)）。
 - 乗り物：`manifest.json` の `transportModes`（徒歩のほかに2つまで）と、都市ごとの交通判断台帳 `content/journeys/<旅行編ID>/travel/<都市ID>-transit.json`（[技術設計](../docs/02_TECH_ARCHITECTURE.md#乗り物と交通判断台帳)）。都市の編集用JSONの `transitDecisions` からも書き出せます。
 - 写真に対応する観察ポイント：各旅行編の `authoring/journeys/<旅行編ID>/drafts/observation-cards.json`。画像変更時には実画像を確認し、領域とSHA-256を更新。
 - シナリオ：Ink、紹介・クリア文・登場人物・思い出のメタデータJSON。
@@ -45,7 +45,7 @@ npm run journey:release -- --check --journey uzbekistan --through tashkent --nar
 
 通常観光は順不同で訪問でき、案内初読了・初完了・初好成績・エピソードクリアが各1APです。フィナーレは同じ都市の主観光を参照し、都市クリア報酬は旅行編の設定を使います。特殊戦B/Cの場所・証拠・対戦人物は脚本とクイズの制作時に決め、見本の編の特殊戦B・C（[見本の編](templates/sample_trip/README.md) の「任意の部分」）やミラノ編と同じ形式で追加してください。
 
-インド編には `--journey golden_triangle` を指定します。`india:scaffold`、`india:readiness`、`india:release` は `--journey golden_triangle` を付けた同じコマンドの別名です。インド編だけの調査・下書きの検査ツール（`india:check`、`india:draft`、`india:transit`）は `scripts/journeys/golden_triangle/` にあります。インド編の交通は、ツアー機能の指示があるまで旧方式（旅行編全体の判断台帳と `india:transit`）のままで、`journey:transit` は「ツアー機能待ち」と表示します。
+インド編には `--journey golden_triangle` を指定します。`india:scaffold`、`india:readiness`、`india:release` は `--journey golden_triangle` を付けた同じコマンドの別名です。インド編だけの調査・下書きの検査ツール（`india:check`、`india:draft`）は `scripts/journeys/golden_triangle/` にあります。インド編の交通は、ほかの旅行編と同じく都市ごとの交通判断台帳（`travel/<都市ID>-transit.json`）で、`journey:transit` で確かめます（`india:check` の最後の段も同じ確認）。
 
 ## クイズより先に脚本を制作する場合
 
