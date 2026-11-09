@@ -129,7 +129,10 @@
 /* The battle's talk uses the story scenes' window (romance-scene.css, §3.3): the
    shell is the window, painted from its head's overhang down, its head (plate and
    controls, DialogueWindowHead) straddles the top edge and the paper below scrolls.
-   Its placement stays the battle's own; the head's overhang is added to its room. */
+   Its placement stays the battle's own; the head's overhang is added to its room.
+   The room it leaves above for the faces gives way to enlarged text: the window may
+   always be 9em high (its head and about two lines of the talk at 200 %; at normal
+   text the faces' room leaves it more on every screen), up to the whole stage. */
 .battle-screen[data-phase="dialogue"] .battle-paper-shell {
   position: relative;
   z-index: 2;
@@ -137,7 +140,7 @@
   display: flex;
   flex-direction: column;
   width: min(90%, 1100px);
-  max-height: calc(100% - clamp(110px, 22vh, 190px) + var(--vn-head-overhang, 22px));
+  max-height: max(calc(100% - clamp(110px, 22vh, 190px) + var(--vn-head-overhang, 22px)), min(calc(100% - 16px), 9em));
   margin: auto auto 16px;
 }
 .battle-screen[data-phase="dialogue"] .battle-paper-shell::before {
@@ -191,7 +194,7 @@
   }
   .battle-screen[data-phase="dialogue"] .battle-paper-shell {
     width: calc(100% - 16px);
-    max-height: calc(100% - 140px + var(--vn-head-overhang, 22px));
+    max-height: max(calc(100% - 140px + var(--vn-head-overhang, 22px)), min(calc(100% - 8px), 9em));
     margin: auto 8px 8px;
   }
   .battle-screen[data-phase="dialogue"] .battle-paper.battle-dialogue {

@@ -3,6 +3,9 @@
    role, never the colour alone (§2.3). Its height is measured into --hud-h. */
 .journey-hud {
   --hud-pill-bg: var(--ds-on-slate-pill);
+  /* Its width is the screen's (never its content's), so it can be the query
+     container for enlarged text (row 1, below). */
+  container: journey-hud / inline-size;
   position: sticky;
   top: 0;
   z-index: 20;
@@ -71,16 +74,26 @@
   font-variant-numeric: tabular-nums;
 }
 .hud-plate .icon { width: 13px; height: 13px; margin-right: 3px; vertical-align: -2px; }
-/* A place name that does not fit its one line (a long name, a long amount
-   beside it, enlarged text, a narrow screen; JourneyHud sets data-place-wraps
-   when the line's clamp would hide part of it) is never cut, at any text size
-   (user decision 2026-11-09; UI redesign §5.1: rows may wrap, never clip): the
-   plate asks for the whole name on one line, so the money goes below whenever
-   the name does not fit beside it, and a name wider than the whole row wraps
-   (two lines, at 200 % on 320 px up to three). Headers whose name fits keep
-   the layout above. */
+/* A place name is never cut, at any text size (user decision 2026-11-09; UI
+   redesign §5.1: rows may wrap, never clip). Where it does not fit its one line
+   (a long name, a long amount beside it, enlarged text, a narrow screen),
+   JourneyHud sets data-place-wraps: the plate then asks for the whole name on
+   one line, so the money goes below whenever the name does not fit beside it,
+   and a name wider than the whole row wraps (two lines, at 200 % on 320 px up
+   to three). Headers whose name fits keep the layout above. */
 .journey-hud[data-place-wraps] .hud-plate { flex-basis: auto; }
 .journey-hud[data-place-wraps] .hud-place { display: block; -webkit-line-clamp: none; line-clamp: none; }
+/* Enlarged text on a phone held upright: when the header holds fewer than
+   about 25 of its characters across (at normal text even a 320-px phone holds
+   more, so this never applies there), every name gets that layout, short or
+   long: the plate is as wide as its name (the nine characters above would push
+   the money below even a short name at this size) and the name is not clamped. */
+@media (max-width: 700px) and (orientation: portrait) {
+  @container journey-hud (max-width: 25em) {
+    .hud-plate { flex-basis: auto; }
+    .hud-place { display: block; -webkit-line-clamp: none; line-clamp: none; }
+  }
+}
 .hud-wallet {
   flex: none;
   display: flex;
@@ -263,8 +276,9 @@
   .journey-hud { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 4px 8px; min-height: 52px; }
   /* The status takes what row 2 leaves, at least the plate's time line and the
      money; with less, row 2 goes on a line of its own. In it the plate is as wide
-     as its place (down to its time line, the place then ending in an ellipsis)
-     and the money follows it: the rest is open space before the pressables. */
+     as its place (down to its time line; a name the row then cannot hold gets
+     data-place-wraps, below, and is never cut) and the money follows it: the
+     rest is open space before the pressables. */
   .hud-status { flex: 1 1 0; flex-wrap: nowrap; min-width: min-content; }
   .hud-plate { flex: 0 1 auto; }
   .hud-status > .hud-wallet { margin-left: 0; }

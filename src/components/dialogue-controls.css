@@ -3,22 +3,28 @@
    that straddles the window's top edge (the window paints itself from
    --vn-head-overhang down). The plate takes what the controls leave and wraps
    there, so a long name never runs under them; the row then grows down into the
-   window, never upward. */
+   window, never upward. When the controls would leave the plate less than 5.5em
+   (about four of its characters; enlarged text on a narrow phone), they go to a
+   row of their own under the plate, at the right: the head still grows downward
+   only. */
 .vn-window-head {
   position: relative;
   z-index: 1;
   flex: none;
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   gap: 6px;
   padding: 0 6px 0 14px;
 }
-/* The plate (D2): a blue tab, no edge; its one line sits on the window's edge. */
+/* The plate (D2): a blue tab, no edge; its one line sits on the window's edge.
+   Its basis only decides when the controls go below it: it then takes the room
+   up to its own width, before the trail takes the rest. */
 .vn-window-head > .speaker {
   display: block;
-  flex: 0 1 auto;
+  flex: 1000 1 5.5em;
   min-width: 0;
-  max-width: none;
+  max-width: max-content;
   margin: 7px 0 0;
   padding: 5px 14px;
   border-radius: 10px 10px 0 0;
@@ -73,13 +79,15 @@
   .vn-plate-trail .icon { display: none; }
 }
 /* The controls (D5): pressable rectangles on slate, 44 px high, in the order
-   隠す／閉じる · ログ · 高速送り. Words only in a window narrower than 360 px
-   (at 320–375-px phones), icon and word in a wider one (§2.5). */
+   隠す／閉じる · ログ · 高速送り. Words only in a window narrower than 24 of its
+   characters (360 px at normal text: 320–375-px phones, and any phone once the
+   text is enlarged), icon and word in a wider one (§2.5). */
 .dialogue-controls {
   flex: none;
   display: flex;
   align-items: center;
   gap: 4px;
+  margin-left: auto;
 }
 .dialogue-controls .text-button {
   display: inline-flex;
@@ -104,13 +112,13 @@
   white-space: nowrap;
 }
 .dialogue-controls .icon { display: none; width: 16px; height: 16px; color: var(--ds-gold); }
-@container vn-window (min-width: 360px) {
+@container vn-window (width >= 24em) {
   .dialogue-controls .icon { display: inline-block; }
   .dialogue-controls .text-button { padding: 0 8px; }
 }
 /* A narrow window (320–375-px phones) gives the plate what it can: a long name
    (24 characters at most) then takes three lines beside the controls. */
-@container vn-window (max-width: 359px) {
+@container vn-window (width < 24em) {
   .vn-window-head { gap: 4px; padding: 0 4px 0 10px; }
   .vn-window-head > .speaker { padding: 5px 10px; font-size: 14px; }
   .dialogue-controls .text-button { padding: 0 5px; }

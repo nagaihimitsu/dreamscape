@@ -12,7 +12,7 @@ import { cityProgressCounts } from "../features/journey/CityProgress";
 import { cityProgressParts, type CityProgressPart } from "../features/journey/city-progress-label";
 import { placeDisplayName } from "../features/journey/travel-labels";
 import { formatTravelTime } from "../features/journey/travel-time";
-import { moneyLength, weekdayLabel } from "./journey-hud-text";
+import { moneyLength, placeNameIsCut, weekdayLabel } from "./journey-hud-text";
 import { useMeasuredHeight } from "../components/useMeasuredHeight";
 import "./journey-hud.css";
 
@@ -107,19 +107,19 @@ export function JourneyHud({ game, place, freeTimeActions, onRecords, onEnglish,
 const WHOLE_PLACE_ATTRIBUTE = "data-place-wraps";
 
 /**
- * The place name in the header is never cut (user decision 2026-11-09): one line
- * with an ellipsis is the header's normal layout, and when the name does not fit
- * that line, whatever the reason (a long name, a long amount beside it, enlarged
- * text, a narrow or a landscape screen), the header gets WHOLE_PLACE_ATTRIBUTE and
- * its CSS gives the name the room it needs: the money goes below it, the buttons of
- * a one-row header go to a row of their own, and a name wider than the whole row
- * goes on to a second line. The check lays the header out without the attribute
- * and asks whether the one-line clamp hides part of the name, so a header whose
- * name fits is laid out exactly as before. It runs when the header is mounted
- * (before it is painted), and again when the header or the name changes size (the
- * screen, the text size), when the name or the amount changes, and when the web
- * fonts arrive; those later checks wait for the next frame, outside the observers'
- * own callbacks.
+ * The place name in the header is never cut (user decision 2026-11-09). It is
+ * laid out on one line, and a name that line cannot hold, whatever the reason (a
+ * long name, a long amount beside it, enlarged text, a narrow or a landscape
+ * screen), gets WHOLE_PLACE_ATTRIBUTE on the header, whose CSS gives the name the
+ * room it needs instead of cutting it: the money goes below it, the buttons of a
+ * one-row header go to a row of their own, and a name wider than the whole row
+ * wraps. The check lays the header out without the attribute and asks whether the
+ * one-line clamp hides a line of the name (placeNameIsCut: glyphs reaching a pixel
+ * past the line do not count), so a header whose name fits is laid out exactly as
+ * before. It runs when the header is mounted (before it is painted), and again
+ * when the header or the name changes size (the screen, the text size), when the
+ * name or the amount changes, and when the web fonts arrive; those later checks
+ * wait for the next frame, outside the observers' own callbacks.
  */
 function useWholePlaceName() {
   return useCallback((header: HTMLElement | null) => {
@@ -127,7 +127,10 @@ function useWholePlaceName() {
     if (!header || !place) return;
     const check = () => {
       header.removeAttribute(WHOLE_PLACE_ATTRIBUTE);
-      if (place.scrollHeight > place.clientHeight + 1) header.setAttribute(WHOLE_PLACE_ATTRIBUTE, "");
+      const lineHeight = parseFloat(getComputedStyle(place).lineHeight);
+      if (placeNameIsCut({ scrollHeight: place.scrollHeight, clientHeight: place.clientHeight, lineHeight })) {
+        header.setAttribute(WHOLE_PLACE_ATTRIBUTE, "");
+      }
     };
     let frame = 0;
     const later = () => {

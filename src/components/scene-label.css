@@ -12,18 +12,23 @@
   left: 0;
   right: 0;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 4px 8px;
   min-height: 44px;
   padding: 0 8px;
   font-family: "Noto Sans JP", sans-serif;
 }
 /* The heading as a status pill (§2.3: display only, no edge, no chevron). It
-   wraps and is never cut: a long landmark takes two or three lines and the
-   line grows with it. */
+   wraps and is never cut: a long landmark takes two or three lines beside the
+   buttons and the line grows with it. When the buttons would leave it less than
+   6em (about four of its characters; enlarged text on a narrow phone), they go
+   to a row of their own under it, at the right (UI redesign §5.1). The basis
+   only decides that: the pill then takes the room up to its own width. */
 .scene-label {
-  flex: 0 1 auto;
+  flex: 1 1 6em;
   min-width: 0;
+  max-width: max-content;
   margin: 0 auto 0 0;
   padding: 6px 12px;
   border-radius: 22px;
@@ -39,6 +44,7 @@
 .scene-label-tools {
   flex: none;
   display: flex;
+  margin-left: auto;
   align-items: center;
   gap: 8px;
 }
