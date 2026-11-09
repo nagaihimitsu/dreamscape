@@ -42,6 +42,19 @@ describe("the scene walk", () => {
     expect(walk(talk("", `{ cond("item smp_x_card held"):\n${body}- else:\n    none\n    -> END\n}\n`))).toBe(3);
   });
 
+  it("does not credit the head's money or AP floor after a then: is decided: what the then: keeps back may take it (2.3, A10)", () => {
+    const spends = "* [A # option: a]\n    # money: -8\n    a\n    -> END\n* [B # option: b]\n    # money: -50\n    b\n    -> END\n";
+    expect(walk(talk("# when: money >= 8\n", spends))).toBe(2);
+    // The head's then: is decided as the scene starts.
+    expect(() => walk(talk("# when: money >= 8\n# then: move x_tower\n", spends))).toThrow("No choice can be chosen");
+    // A choice's then: decided before a later choice point; a choice that decides one itself.
+    const later = "* [Go # option: go]\n    # then: move x_tower\n    -> next\n* [Stay # option: stay]\n    -> next\n- (next)\n" + spends;
+    expect(() => walk(talk("# when: money >= 8\n", later))).toThrow("No choice can be chosen");
+    const deciding = "* [A # option: a]\n    # money: -8\n    # then: move x_tower\n    a\n    -> END\n* [B # option: b]\n    # ap: -1\n    b\n    -> END\n";
+    expect(() => walk(talk("# when: money >= 8\n# when: ap >= 1\n", deciding))).not.toThrow();
+    expect(() => walk(talk("# when: money >= 8\n", deciding))).toThrow("No choice can be chosen");
+  });
+
   it("warns about a choice point with only 「また今度」 and choices needing an item not guaranteed there", () => {
     const warnings: string[] = [];
     walk(talk("", "* [A # option: a]\n    # give: smp_x_card heroine\n    a\n    -> END\n* [Later # option: later]\n    # later\n    l\n    -> END\n"),

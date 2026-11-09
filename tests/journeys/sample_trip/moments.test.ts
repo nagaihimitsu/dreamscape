@@ -565,6 +565,23 @@ describe("a then: at a trip's moment (2.3, 3.6, 4.1)", () => {
     }
   });
 
+  it("a head then: takes what the head's money floor guaranteed: the dead choice point the build now stops (A10)", () => {
+    dearMarket();
+    firstRide([{ trip: "walk", from: "mihon_hotel" }]);
+    const ride = scene("smp_mihon_first_bicycle");
+    patch(ride, { options: ride.options.map((option) => option.id === "as_is" ? { ...option, money: -8 } : option) });
+    patch(rule("smp_mihon_first_bicycle"), { when: { money: { atLeast: 8 } } });
+    const started = () => untilChoice(depart({ ...rented(cityStart("mihon")), travelBudget: 12 }, EPISODE));
+    // Without a then: the floor holds: 「このままで行こう」 can be chosen.
+    expect(shownChoice(started(), "as_is")).toEqual({ show: "open", cost: 8 });
+    expect(listPlayerActions(started()).filter((action) => action.kind === "encounter_choose")).toHaveLength(1);
+    // With the head's then: move to the market (10 kept back for the way home from there): nothing can be chosen.
+    patch(ride, { then: { move: MARKET } });
+    const dead = started();
+    expect(dead.occasion?.then).toMatchObject({ move: MARKET });
+    expect(listPlayerActions(dead).filter((action) => action.kind === "encounter_choose")).toEqual([]);
+  });
+
   it("names why a then: epilogue from the trip's start cannot keep a fare home: no way home, or none in time", () => {
     firstRide([{ trip: "walk", from: "mihon_library" }], { epilogue: true });
     const reason = (state: GameState) => {

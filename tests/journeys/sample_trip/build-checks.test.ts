@@ -90,3 +90,17 @@ describe("check 10: a scene that always moves elsewhere before a step the game n
       .toContainEqual(expect.stringMatching(/^A then: loop that may not end: smp_mihon_zz_detour/u));
   });
 });
+
+describe("A10 after a then: (3.3 check 6, 2.3)", () => {
+  const TOWER_FILE = "stories/places/smp_mihon_clock_tower.ink";
+  /** The first ride's scene with a head `# when: money >= 8`, both choices spending (「このままで行こう」 -8), and a head then: or not. */
+  const ride = (head: string) => (text: string) => text
+    .replace("# when: not rides rental_bicycle >= 1\n", `# when: money >= 8\n${head}`)
+    .replace("* [「このままで行こう」 # option: as_is]\n", "* [「このままで行こう」 # option: as_is]\n    # money: -8\n");
+
+  it("stops a choice point the head's money floor no longer guarantees once its head then: is decided", () => {
+    expect(() => validateContent(sampleWith({ [TOWER_FILE]: ride("") }))).not.toThrow();
+    expect(() => validateContent(sampleWith({ [TOWER_FILE]: ride("# then: move mihon_market\n") })))
+      .toThrow(/No choice can be chosen at a choice point of .*smp_mihon_first_bicycle/u);
+  });
+});
