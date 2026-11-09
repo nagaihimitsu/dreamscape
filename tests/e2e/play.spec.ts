@@ -322,11 +322,11 @@ test("a new Milan journey rides tram 16 to the Last Supper, named in the route d
   await expect(page.getByText("現在地：最後の晩餐")).toBeVisible();
 });
 
-// Every available journey (from the generated catalog, Golden Triangle included with the
-// modes it keeps while it waits for its switch): at the start, the first listed place that
-// is reached on foot and by one of its vehicles (the city's travel data) and that the party
-// can ride to now opens the route dialog with the vehicle named as its manifest declares it
-// (nameJa), and the transition shows its caption (movingJa), ID and art kind.
+// Every available journey (from the generated catalog, Golden Triangle with its auto-rickshaw
+// and metro included): at the start, the first listed place that is reached on foot and by one
+// of its vehicles (the city's travel data) and that the party can ride to now opens the route
+// dialog with the vehicle named as its manifest declares it (nameJa), and the transition shows
+// its caption (movingJa), ID and art kind.
 test("in each available journey a new trip's first vehicle route is named and shown as its manifest declares", { tag: tier.gate }, async ({ page }) => {
   await page.clock.install();
   const journeys = journeyCatalog().journeys.filter((item) => item.status === "available" && item.transportModes.length);

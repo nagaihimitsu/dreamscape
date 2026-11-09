@@ -3,8 +3,8 @@ import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, 
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { exportCityBundle } from "./city-bundle";
-import { inputFingerprint, transitLedgerFiles } from "./city-bundle-files";
-import { getJourneyAuthoringProfile, journeyAuthoringProfiles } from "./journey-authoring";
+import { inputFingerprint } from "./city-bundle-files";
+import { journeyAuthoringProfiles } from "./journey-authoring";
 import { displayPath, loadContentSources, readJourneyCatalog, requireCity, storyFile } from "./content-sources";
 import type { MergedKind } from "./content-layout";
 
@@ -13,16 +13,13 @@ import type { MergedKind } from "./content-layout";
 
 const roots: string[] = [];
 export const allCities = readJourneyCatalog(process.cwd()).journeys.flatMap((journey) => journey.cities.map((city) => city.id));
-/** Golden Triangle's journey-wide transit decision ledger (manifest authoring profile). */
-export const indiaDecisionFile = getJourneyAuthoringProfile(process.cwd(), "golden_triangle").transitDecisionLedger!.file;
 export function fixture(): string {
   const root = mkdtempSync(path.join(tmpdir(), "dreamscape-city-bundle-"));
   roots.push(root);
   for (const directory of ["content", "public"]) {
     cpSync(path.join(process.cwd(), directory), path.join(root, directory), { recursive: true });
   }
-  const extraFiles = [...[...journeyAuthoringProfiles(process.cwd()).values()].map((profile) => profile.observationFile),
-    ...transitLedgerFiles(process.cwd())];
+  const extraFiles = [...journeyAuthoringProfiles(process.cwd()).values()].map((profile) => profile.observationFile);
   for (const file of extraFiles) {
     if (!existsSync(path.join(process.cwd(), file))) continue;
     mkdirSync(path.dirname(path.join(root, file)), { recursive: true });

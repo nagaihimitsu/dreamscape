@@ -52,7 +52,7 @@ describe("city arrival conversations", () => {
     const state = startCityArrival(original, original.revision);
     const episode = episodes.find((episode) => episode.cityId === "delhi" && episode.kind === "episode")!;
     expect(startEpisode(state, episode.id)).toBe(state);
-    expect(beginTravelEvent(state, episode.id, "taxi", state.revision)).toBe(state);
+    expect(beginTravelEvent(state, episode.id, "auto_rickshaw", state.revision)).toBe(state);
     expect(waitForTravel(state, 30, state.revision)).toBe(state);
     expect(sleepAtHotel(state, "walk", state.revision)).toBe(state);
     expect(departToNextCity(state, state.revision)).toBe(state);

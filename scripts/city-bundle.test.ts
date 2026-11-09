@@ -4,7 +4,9 @@ import path from "node:path";
 import { applyCityBundle, compactCityBundle, exportCityBundle, exportEditableCityBundle, writeCityBundleFiles } from "./city-bundle";
 import { compactTravel, expandTravel, type CompactTravel } from "./city-bundle-routes";
 import { travelCatalogSchema } from "../src/content/travel-schemas";
-import { allCities, cityPaths, fingerprint, fixture, indiaDecisionFile, merged, read, readJson, registerJourney, removeFixtures, testJourney, testLayer } from "./city-bundle-test-helpers";
+import { allCities, cityPaths, fingerprint, fixture, merged, read, readJson, registerJourney, removeFixtures, testJourney, testLayer } from "./city-bundle-test-helpers";
+import { loadContentSources } from "./content-sources";
+import { cityTransitPath } from "./journey-transit";
 
 afterEach(removeFixtures);
 
@@ -58,7 +60,11 @@ describe("city editing bundle: routes, export and atomic writes", () => {
   it("round-trips compact city routes without changing direction, order, sources or transit reviews", async () => {
     const root = fixture();
     const before = fingerprint(root);
-    const decisions = read(root, indiaDecisionFile);
+    // Every city of a journey with vehicles keeps its own transit ledger (Golden Triangle included).
+    const sources = loadContentSources(root);
+    const ledgers = new Map(allCities.flatMap((cityId) => { const file = cityTransitPath(sources, cityId); return file ? [[cityId, file] as const] : []; }));
+    expect(ledgers.get("delhi")).toBe("content/journeys/golden_triangle/travel/delhi-transit.json");
+    const ledgersBefore = new Map([...ledgers.values()].map((file) => [file, read(root, file)]));
     for (const cityId of allCities) {
       const file = cityPaths(root, cityId).travel;
       const original = read(root, file);
@@ -70,7 +76,7 @@ describe("city editing bundle: routes, export and atomic writes", () => {
       // Compare the full file, not just times and fares: array order, all
       // direction-specific evidence, transfer notes and estimates matter.
       expect(read(root, file), cityId).toBe(original);
-      expect(read(root, indiaDecisionFile), cityId).toBe(decisions);
+      for (const [file, text] of ledgersBefore) expect(read(root, file), `${cityId}: ${file}`).toBe(text);
     }
     expect(fingerprint(root)).toBe(before);
   }, 480_000);

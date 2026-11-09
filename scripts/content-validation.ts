@@ -17,7 +17,7 @@ import { DEFAULT_BACKGROUND_ID } from "../src/content/default-background";
 import { authoringProfileOf } from "./journey-authoring";
 import { checkContentOwnership } from "./content-ownership";
 import { checkImageRights } from "./image-rights";
-import { contentWarnings, journeyContents, unusedWordMeanings } from "./content-report";
+import { contentWarnings, journeyContents, unusedWordMeanings, type ContentWarning } from "./content-report";
 import { characterCatalogSchema } from "../src/content/character-assets";
 import { encounterCatalogInputSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
 import { encounterEntryRulesSchema, validateEncounterEntryRules } from "../src/content/encounter-entry-rules";
@@ -56,7 +56,7 @@ import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { validateTourism } from "./tourism-validation";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { validateTravelContent } from "./travel-validation";
-import { checkCityRentals, checkCityTransit, checkRouteModes, checkTransportModeCount, transportSummary } from "./transport-validation";
+import { checkCityRentals, checkCityTransit, checkRouteModes, checkTransportModeCount, cityTransitWarnings, transportSummary } from "./transport-validation";
 import type { CityTransitReview } from "./transit-ledger";
 import { journeySchema } from "../src/content/journey-schemas";
 import { journeyCatalogSchema } from "../src/content/journey-catalog";
@@ -174,13 +174,9 @@ export type ValidatedContent = ReturnType<typeof validateContent>;
 export function validateContent(sources: ContentSources, options: { storyCache?: StoryValidationCache } = {}) {
   const { root } = sources;
   requireJourneyManifests(sources.manifests);
-  // The authoring tools read these profiles; a broken one still fails the build early. The
-  // transport checks read one thing of them: whether a journey still waits for its transport switch.
+  // The authoring tools read these profiles; a broken one still fails the build early.
+  for (const manifest of sources.manifests) authoringProfileOf(manifest.data, manifest.file);
   const manifestFiles = new Map(sources.manifests.map((manifest) => [manifest.id, displayPath(root, manifest.file)]));
-  const pendingTransport = new Map(sources.manifests.flatMap((manifest) => {
-    const ledger = authoringProfileOf(manifest.data, manifest.file)?.transitDecisionLedger;
-    return ledger ? [[manifest.id, { pendingJa: ledger.pendingJa, inspectCommand: ledger.inspectCommand }] as const] : [];
-  }));
   // Each journey folder keeps to its own cities and content (and the core layer to core content).
   checkContentOwnership(sources);
   // Every journey falls back to the shared default background, so the core layer provides it.
@@ -235,7 +231,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   if (!journeyCatalog.journeys.some((item) => item.status === "available"))
     throw new Error('No available journey: at least one content/journeys/<journeyId>/manifest.json needs "status": "available"');
   for (const plannedJourney of journeyCatalog.journeys)
-    checkTransportModeCount({ journey: plannedJourney, pending: pendingTransport.get(plannedJourney.id), manifestFile: manifestFiles.get(plannedJourney.id) });
+    checkTransportModeCount({ journey: plannedJourney, manifestFile: manifestFiles.get(plannedJourney.id) });
   for (const plannedJourney of journeyCatalog.journeys) {
     const art = plannedJourney.titleArt;
     if (art && !servedFile(publicFiles, art.imagePath))
@@ -742,16 +738,21 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   }
   unique([...productionQuestionIds, ...encounterCatalog.encounters.flatMap((event) => event.quiz ? [event.quiz.question.id] : [])], "production quiz question ID");
   const transitReviews = new Map<string, CityTransitReview[]>();
+  // Walks and route sources a city with a ledger lacks: warnings, not errors (transport-validation.ts).
+  const transitWarnings: ContentWarning[] = [];
   for (const { city: current, travel, travelFile, settingsFile, transit, transitFile, settings } of travels) {
     const episodes = journey.episodes.filter((episode) => episode.cityId === current.id);
     const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id));
     // checkContentOwnership keeps every city file in the folder of the journey that lists it.
     if (owner) {
-      const transport = { journey: owner, pending: pendingTransport.get(owner.id), manifestFile: manifestFiles.get(owner.id) };
+      const transport = { journey: owner, manifestFile: manifestFiles.get(owner.id) };
       checkRouteModes(travel, travelFile, transport);
       checkCityRentals(travel, settings.rentals, settingsFile, transport);
       const review = checkCityTransit({ travel, transit, transitFile, travelFile }, transport);
-      if (review) transitReviews.set(owner.id, [...(transitReviews.get(owner.id) ?? []), review]);
+      if (review) {
+        transitReviews.set(owner.id, [...(transitReviews.get(owner.id) ?? []), review]);
+        transitWarnings.push(...cityTransitWarnings(review, { travel, transitFile, travelFile }));
+      }
     }
     // A journey may publish its first city while keeping later, pre-registered
     // cities unfinished. The city status controls the deferred content gate.
@@ -861,11 +862,11 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     /** Images whose files checkContentImages decodes. */
     images: { characters: characterImages, tourismAssets: tourism.assets },
     /** Probable mistakes that do not stop the build (content-report.ts). */
-    warnings: contentWarnings(sources),
+    warnings: [...contentWarnings(sources), ...transitWarnings],
     /** What each journey folder provides, for the build report. */
     journeyContents: journeyContents(sources),
-    /** Each journey's in-city transport (modes, transit ledger counts, or what it waits for), for the build report. */
-    transport: journeyCatalog.journeys.map((item) => transportSummary({ journey: item, pending: pendingTransport.get(item.id) }, transitReviews.get(item.id) ?? [])),
+    /** Each journey's in-city transport (modes and transit ledger counts), for the build report. */
+    transport: journeyCatalog.journeys.map((item) => transportSummary({ journey: item }, transitReviews.get(item.id) ?? [])),
     /** Word meanings no English text uses, for the build report. */
     unusedWordMeanings: unusedWordMeanings(sources),
   };

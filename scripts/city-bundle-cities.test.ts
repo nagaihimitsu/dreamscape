@@ -4,7 +4,13 @@ import path from "node:path";
 import { applyCityBundle, exportCityBundle } from "./city-bundle";
 import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
 import { resolvePublicFile } from "./public-assets";
-import { allCities, catalogFiles, cityFiles, cityPaths, fingerprint, fixture, indiaDecisionFile, merged, read, readJson, removeFixtures } from "./city-bundle-test-helpers";
+import { allCities, catalogFiles, cityFiles, cityPaths, fingerprint, fixture, merged, read, readJson, removeFixtures } from "./city-bundle-test-helpers";
+import { loadContentSources } from "./content-sources";
+import { cityTransitPath } from "./journey-transit";
+import { exportTransitDecisions, transitLedgerSchema } from "./transit-ledger";
+
+/** The transit ledgers of every city that keeps one. */
+const transitLedgers = (root: string) => { const sources = loadContentSources(root); return allCities.flatMap((cityId) => cityTransitPath(sources, cityId) ?? []); };
 
 afterEach(removeFixtures);
 
@@ -21,7 +27,7 @@ describe("city editing bundle: applying edits to each city", () => {
     const beforeReadiness = inspectJourneyReadiness(loadJourneyReadiness(root, "golden_triangle"));
     bundle.city.themeJa = "試験用の都市テーマ";
     bundle.travel.places.find((place) => place.id === "delhi_hotel_hub")!.nameJa = "試験用の滞在先";
-    const route = bundle.travel.routes.find((item) => item.mode === "taxi" && item.fromPlaceId !== item.toPlaceId)!;
+    const route = bundle.travel.routes.find((item) => item.mode === "auto_rickshaw" && item.fromPlaceId !== item.toPlaceId)!;
     route.minutes += 1;
     route.cost += 1;
     bundle.travelSettings.notes = "試験用の旅行設定";
@@ -61,9 +67,20 @@ describe("city editing bundle: applying edits to each city", () => {
     expect(afterReadiness.cities.map((city) => city.issues.map((issue) => issue.code))).toEqual(beforeReadiness.cities.map((city) => city.issues.map((issue) => issue.code)));
   }, 180_000);
 
+  it("exports a Golden Triangle city's decisions from its own ledger and applies them unchanged", async () => {
+    const root = fixture();
+    const before = fingerprint(root);
+    const bundle = exportCityBundle(root, "delhi");
+    const ledger = transitLedgerSchema.parse(readJson(root, "content/journeys/golden_triangle/travel/delhi-transit.json"));
+    expect(bundle.transitDecisions).toEqual(exportTransitDecisions(ledger));
+    expect(bundle.transitDecisions).toHaveLength(220);
+    expect((await applyCityBundle(root, bundle, true)).changedFiles).toEqual([]);
+    expect(fingerprint(root)).toBe(before);
+  }, 180_000);
+
   it("rejects stale edits after unrelated content or image changes without writing", async () => {
     const root = fixture();
-    for (const file of [cityPaths(root, "agra").city, "assets/tourism/india/agra_taj_mahal.webp", indiaDecisionFile]) {
+    for (const file of [cityPaths(root, "agra").city, "assets/tourism/india/agra_taj_mahal.webp", "content/journeys/golden_triangle/travel/agra-transit.json"]) {
       const bundle = exportCityBundle(root, "delhi");
       const target = file.startsWith("assets/") ? resolvePublicFile(root, file) : path.join(root, file);
       const original = readFileSync(target);
@@ -100,7 +117,7 @@ describe("city editing bundle: applying edits to each city", () => {
       const untouched = cities.filter((id) => id !== cityId).flatMap((id) => cityFiles(root, id));
       const before = Object.fromEntries(untouched.map((file) => [file, read(root, file)]));
       const sharedFiles = [...catalogFiles(root, ["tourism/catalog.json", "romance/presentation.json", "romance/date_destinations.json"]),
-        indiaDecisionFile];
+        ...transitLedgers(root)];
       const sharedBefore = Object.fromEntries(sharedFiles.map((file) => [file, read(root, file)]));
       const bundle = exportCityBundle(root, cityId);
       bundle.travelSettings.notes += " 都市ごとの編集検証。";

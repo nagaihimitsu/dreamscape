@@ -14,7 +14,6 @@ import { bundleCatalogKinds, cityFiles, existing, layerPath, read } from "./city
 import { journeyAuthoringProfiles } from "./journey-authoring";
 import { cityTransitPath } from "./journey-transit";
 import { replaceTransitDecisions, transitLedgerFromDecisions, transitLedgerSchema } from "./transit-ledger";
-import { journeyTransitDecisionFile, transitDecisionKey } from "./journey-transit-decisions";
 import { findPublicFile } from "./public-assets";
 
 export const assertUniqueIds = <T>(items: readonly T[], get: (v: T) => string, label: string) => {
@@ -191,35 +190,12 @@ export function mergeCityCatalogs(sources: ContentSources, bundle: CityBundle, b
     else if (!isDeepStrictEqual(fragment.data, emptyCatalog(fragment.kind, fragment.data.schemaVersion))) values[fragment.file] = fragment.data;
   if (bundle.transitDecisions) {
     const ownFile = cityTransitPath(sources, cityId);
-    if (ownFile) {
-      const current = existing(sources, cityId) ? requireCity(sources, cityId).transit : undefined;
-      // A city without a ledger keeps none until decisions are given (content:build says when one is required).
-      if (current !== undefined || bundle.transitDecisions.length)
-        values[ownFile] = current === undefined ? transitLedgerFromDecisions(cityId, bundle.transitDecisions)
-          : replaceTransitDecisions(transitLedgerSchema.parse(current), bundle.transitDecisions);
-      return values;
-    }
-    const decisionFile = journeyTransitDecisionFile(root, cityId);
-    if (!decisionFile) throw new Error(`No transit decision ledger for city: ${cityId}`);
-    const ledger = read(root, decisionFile);
-    if (!isDeepStrictEqual(baseline?.transitDecisions, bundle.transitDecisions)) {
-      // Replace each of this city's records where it stands (one direction and mode), drop removed
-      // ones and append new ones, so an edit changes only its own lines; other cities' records stay.
-      type Decision = Parameters<typeof transitDecisionKey>[0];
-      const pending = new Map<string, Decision>();
-      for (const entry of bundle.transitDecisions as Decision[]) {
-        if (pending.has(transitDecisionKey(entry))) throw new Error(`Duplicate transit decision: ${transitDecisionKey(entry)}`);
-        pending.set(transitDecisionKey(entry), entry);
-      }
-      ledger.decisions = ledger.decisions.flatMap((entry: Decision) => {
-        if (entry.cityId !== cityId) return [entry];
-        const replacement = pending.get(transitDecisionKey(entry));
-        pending.delete(transitDecisionKey(entry));
-        return replacement ? [replacement] : [];
-      });
-      ledger.decisions.push(...pending.values());
-    }
-    values[decisionFile] = ledger;
+    if (!ownFile) throw new Error(`No transit decision ledger for city: ${cityId}`);
+    const current = existing(sources, cityId) ? requireCity(sources, cityId).transit : undefined;
+    // A city without a ledger keeps none until decisions are given (content:build says when one is required).
+    if (current !== undefined || bundle.transitDecisions.length)
+      values[ownFile] = current === undefined ? transitLedgerFromDecisions(cityId, bundle.transitDecisions)
+        : replaceTransitDecisions(transitLedgerSchema.parse(current), bundle.transitDecisions);
   }
   return values;
 }

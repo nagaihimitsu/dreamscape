@@ -136,7 +136,6 @@ export function beginTravelEvent(state: GameState, eventId: string, mode: Travel
   const event = getTravelEventDefinition(state, eventId);
   if (!availability.available || !availability.plan || !event) return state;
   // A ride by vehicle counts once the trip changes place (walking and starting an event here do not).
-  // The journey waiting for its transport switch (ツアー機能待ち) counts its current declared modes the same way.
   const rides = mode !== WALK_MODE_ID && event.placeId !== state.travel.currentPlaceId
     ? { ...state.travel.rideCounts, [mode]: (state.travel.rideCounts[mode] ?? 0) + 1 } : state.travel.rideCounts;
   const moved = { ...state, travelBudget: availability.plan.remainingBudget,

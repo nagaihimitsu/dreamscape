@@ -62,6 +62,13 @@ export type CityTransitReview = {
   counts: TransitCounts;
   /** No decision is `inconclusive`. */
   ready: boolean;
+  /**
+   * Directions ("from → to") without a walking route. content:build warns about
+   * them (a review rule: a ledger reason that weighs a vehicle against walking
+   * needs that walk); that every place stays reachable is checked elsewhere
+   * (travel-validation.ts, `Missing usable directed route`).
+   */
+  missingWalks: string[];
 };
 
 const pairKey = (from: string, to: string, mode: string) => `${from} → ${to}（${mode}）`;
@@ -72,10 +79,10 @@ const pairKey = (from: string, to: string, mode: string) => `${from} → ${to}�
  * where a route of that mode exists, resolvable sources, and a documented
  * fact (isFactSource) behind every decision that is not `available` (what the
  * fact shows: the service does not reach the place, the service exists there,
- * or what was checked), and a walking route for every direction: the ledger
- * weighs each vehicle against walking there (e.g. 「徒歩が20分未満」), so a
- * city with a ledger keeps walking everywhere. `file` names the ledger in the
- * errors.
+ * or what was checked). Directions without a walking route are listed, not
+ * refused (`missingWalks`): a ledger reason that weighs a vehicle against
+ * walking there (e.g. 「徒歩が20分未満」) needs that walk, which is a review
+ * rule. `file` names the ledger in the errors.
  */
 export function inspectCityTransit(travel: TravelCatalog, raw: unknown, modes: readonly string[], file = "transit ledger"): CityTransitReview {
   const parsed = transitLedgerSchema.safeParse(raw);
@@ -107,25 +114,27 @@ export function inspectCityTransit(travel: TravelCatalog, raw: unknown, modes: r
     decided.add(key);
     counts[decision.mode][decision.status]++;
   }
+  const missingWalks: string[] = [];
   for (const from of places) for (const to of places) {
     if (from === to) continue;
-    if (!walks.has(`${from} → ${to}`))
-      throw fail(`徒歩の経路がない方向があります: ${from} → ${to}`, `Walking game model missing: ${from} → ${to}`);
+    if (!walks.has(`${from} → ${to}`)) missingWalks.push(`${from} → ${to}`);
     for (const mode of modes) {
       const key = pairKey(from, to, mode);
       if (!decided.has(key)) throw fail(`判断のない方向があります: ${key}`, `Undecided transit direction: ${key}`);
     }
   }
   const inconclusive = modes.reduce((sum, mode) => sum + counts[mode].inconclusive, 0);
-  return { cityId: travel.cityId, directions: places.size * (places.size - 1), decisions: decided.size, counts, ready: inconclusive === 0 };
+  return { cityId: travel.cityId, directions: places.size * (places.size - 1), decisions: decided.size, counts, ready: inconclusive === 0, missingWalks };
 }
 
 /**
  * Routes of declared modes whose sources do not support them as a game
- * estimate: every such route is `estimation: "game_model"` with a hypothesis
- * (the schema's own rule) and at least one documented fact (isFactSource)
- * for this mode and kind of trip. Whether the fact reaches the trip is a
- * review rule (authoring/CONTENT_GUIDE.md).
+ * estimate: a route of a declared mode should be `estimation: "game_model"`
+ * with a hypothesis (the schema's own rule, an error) and at least one
+ * documented fact (isFactSource) for this mode and kind of trip. A route that
+ * lacks the mark or the fact is listed (content:build warns, journey:transit
+ * prints it); whether the fact reaches the trip is a review rule
+ * (authoring/CONTENT_GUIDE.md).
  */
 export function unsupportedTransitRoutes(travel: TravelCatalog, modes: readonly string[]): TravelRoute[] {
   const declared = new Set(modes);

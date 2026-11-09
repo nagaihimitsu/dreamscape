@@ -9,10 +9,9 @@ import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { dateDestinationsSchema } from "../src/content/date-destinations";
 import { loadContentSources, parseCatalog, readJourneyCatalog, requireCity } from "./content-sources";
 import { buildContent } from "./content-pipeline";
-import { buildJourneyTransitDecisionReview, journeyTransitDecisionFile, readJourneyTransitDecisions } from "./journey-transit-decisions";
 import { compactTravel, expandTravel } from "./city-bundle-routes";
 import { idSchema, bundleSchema, completeBundleSchema, editableBundleSchema, completeEditableBundleSchema, type CityBundle, type EditableCityBundle } from "./city-bundle-schema";
-import { bundleCatalogKinds, existing, inputFingerprint, read, writeCityBundleFiles } from "./city-bundle-files";
+import { bundleCatalogKinds, existing, inputFingerprint, writeCityBundleFiles } from "./city-bundle-files";
 import { assertUniqueIds, mergeCityCatalogs, referencedBackgrounds } from "./city-bundle-catalogs";
 import { cityTransitPath, cityTransitPlan } from "./journey-transit";
 import { exportTransitDecisions, inspectCityTransit, transitLedgerSchema } from "./transit-ledger";
@@ -73,12 +72,7 @@ export function exportCityBundle(root: string, cityId: string): CityBundle {
   const assets = tourism.assets.filter((item) => assetIds.has(item.id));
   if (assets.length !== assetIds.size) throw new Error(`Missing city image asset: ${cityId}`);
   let transitDecisions: unknown[] | null = null;
-  const journeyLedger = journeyTransitDecisionFile(root, cityId);
-  if (journeyLedger) {
-    const ledger = read(root, journeyLedger);
-    if (!Array.isArray(ledger.decisions)) throw new Error("Invalid transit decision ledger");
-    transitDecisions = ledger.decisions.filter((item: { cityId?: string }) => item.cityId === cityId);
-  } else if (cityTransitPath(sources, cityId)) {
+  if (cityTransitPath(sources, cityId)) {
     // A journey with transport modes: the city's ledger decisions (none yet without a ledger).
     transitDecisions = files.transit === undefined ? [] : exportTransitDecisions(transitLedgerSchema.parse(files.transit));
   }
@@ -92,7 +86,6 @@ export function newCityBundle(root: string, cityId: string): unknown {
   owner(root, cityId);
   const sources = loadContentSources(root);
   if (existing(sources, cityId)) throw new Error(`City already exists: ${cityId}`);
-  if (journeyTransitDecisionFile(root, cityId)) throw new Error(`Registered city files must be restored before editing: ${cityId} (its transit decisions are kept in its journey's ledger)`);
   const hotel = `${cityId}_hotel`;
   const background = `${cityId}_hotel_bg`;
   return { schemaVersion: 1, cityId, baseFingerprint: inputFingerprint(root),
@@ -127,8 +120,7 @@ export async function applyCityBundle(root: string, raw: unknown, apply = false)
     throw new Error(`City ownership mismatch: ${cityId}`);
   if (bundle.city.productionStatus !== (baseline?.city.productionStatus ?? "prototype")) throw new Error("City release status cannot be changed with a bundle");
   const ownDecisionFile = cityTransitPath(sources, cityId);
-  const journeyLedger = journeyTransitDecisionFile(root, cityId);
-  if (!!(journeyLedger || ownDecisionFile) !== (bundle.transitDecisions !== null)) throw new Error("Transit decision ledger does not match city");
+  if (!!ownDecisionFile !== (bundle.transitDecisions !== null)) throw new Error("Transit decision ledger does not match city");
   if (baseline) for (const event of bundle.travel.events) {
     const previous = baseline.travel.events.find((entry) => entry.id === event.id);
     if (previous && previous.contentStatus !== event.contentStatus) throw new Error(`Event release status cannot be changed with a bundle: ${event.id}`);
@@ -154,8 +146,6 @@ export async function applyCityBundle(root: string, raw: unknown, apply = false)
     cpSync(path.join(root, "public"), path.join(stage, "public"), { recursive: true });
     for (const [file, value] of Object.entries(next)) {
       const target = path.join(stage, file);
-      // The old journey-wide ledger is not content; the per-city ledger is, and content:build checks it below.
-      if (file === journeyLedger) continue;
       mkdirSync(path.dirname(target), { recursive: true });
       writeFileSync(target, value);
     }
@@ -163,11 +153,6 @@ export async function applyCityBundle(root: string, raw: unknown, apply = false)
       // content:build accepts inconclusive decisions; an applied city has none.
       if (!inspectCityTransit(bundle.travel, JSON.parse(next[ownDecisionFile]), cityTransitPlan(sources, cityId).modes, ownDecisionFile).ready)
         throw new Error(`Transit has undecided directions: ${cityId}`);
-    } else if (bundle.transitDecisions && journeyLedger) {
-      const transit = readJourneyTransitDecisions(root, owner(root, cityId).id);
-      const check = buildJourneyTransitDecisionReview({ catalogs: { ...transit.catalogs, [cityId]: bundle.travel }, decisions: JSON.parse(next[journeyLedger]) });
-      const counts = check.counts[cityId];
-      if (counts.unresearched || counts.inconclusive) throw new Error(`Transit has undecided directions: ${cityId}`);
     }
     await buildContent(stage, false);
     if (inputFingerprint(root) !== fingerprint) throw new Error("Content or assets changed during validation; bundle was not applied");
