@@ -61,6 +61,10 @@ export function validateJourney(
   );
   for (const encounter of journey.storyBattles) {
     const battle = battles.find((item) => item.id === encounter.battleId);
+    // One place for a map condition (check 7): `when` or the prerequisites, not both.
+    if (encounter.when && encounter.requiredEpisodeIds.length)
+      throw new Error(`Map condition written twice: story battle ${encounter.battleId} has both when and requiredEpisodeIds (keep one; ` +
+        `with when, leave requiredEpisodeIds empty)`);
     if (encounter.completionReward && encounter.completionReward.ap > apCap)
       throw new Error(`Journey reward exceeds AP cap: ${encounter.completionReward.id}`);
     unique(encounter.requiredEpisodeIds, "story battle prerequisite");
@@ -71,14 +75,21 @@ export function validateJourney(
       throw new Error(`Invalid story battle: ${encounter.battleId}`);
     const rules = getAllRewardRules(journey).filter((rule) => rule.battleId === encounter.battleId);
     unique(rules.map((rule) => rule.trigger), "story battle reward trigger");
+    const landmark = landmarks.find((item) => item.id === battle.landmarkId);
     for (const rule of rules) {
       if (rule.trigger === "city_clear")
         throw new Error(`Reward trigger does not fit the story battle: ${encounter.battleId}`);
+      if (rule.trigger === "guide_read" && !landmark?.guideStoryId)
+        throw new Error(`Guide reward at a landmark without a guide: ${rule.id} (${battle.landmarkId} has no guideStoryId, so it can never be earned)`);
       validateRewardAmount(rule, quizzes[battle.quizId], apCap);
     }
   }
   for (const [index, episode] of journey.episodes.entries()) {
     unique(episode.requiredEpisodeIds, "episode prerequisite");
+    // One place for a map condition (check 7): `when` or the prerequisites, not both.
+    if (episode.when && episode.requiredEpisodeIds.length)
+      throw new Error(`Map condition written twice: episode ${episode.id} has both when and requiredEpisodeIds (keep one; ` +
+        `with when, leave requiredEpisodeIds empty)`);
     for (const required of episode.requiredEpisodeIds) {
       const prerequisiteIndex = journey.episodes.findIndex(
         (item) => item.id === required,
@@ -103,8 +114,9 @@ export function validateJourney(
         battle.scope !== "city_finale" ||
         battle.cityId !== episode.cityId ||
         episode.landmarkId !== null ||
-        episode.requiredEpisodeIds.length !== stops.length ||
-        !stops.every((stop) => episode.requiredEpisodeIds.includes(stop.id))
+        // A finale with `when` (stage 2b) names its condition there instead.
+        (!episode.when && (episode.requiredEpisodeIds.length !== stops.length ||
+        !stops.every((stop) => episode.requiredEpisodeIds.includes(stop.id))))
       )
         throw new Error(
           `City finale must require every sightseeing episode: ${episode.id}`,
@@ -123,10 +135,15 @@ export function validateJourney(
     const rules = journey.rewards.filter(
       (rule) => rule.episodeId === episode.id,
     );
+    // A landmark without a guide has no guide AP (decision 26): a guide reward there could never be earned.
+    const guided = episode.kind !== "city_finale" && !!landmark?.guideStoryId;
+    if (episode.kind !== "city_finale" && !guided && rules.some((rule) => rule.trigger === "guide_read"))
+      throw new Error(`Guide reward at a landmark without a guide: ${episode.id} (${episode.landmarkId} has no guideStoryId, ` +
+        `so its guide_read reward can never be earned; remove it)`);
     const triggers =
       episode.kind === "city_finale"
         ? ["battle_complete", "battle_score", "city_clear"]
-        : ["guide_read", "battle_complete", "battle_score", "episode_clear"];
+        : [...(guided ? ["guide_read"] : []), "battle_complete", "battle_score", "episode_clear"];
     if (rules.some((rule) => !triggers.includes(rule.trigger)))
       throw new Error(`Reward trigger does not fit the episode: ${episode.id}`);
     for (const trigger of triggers) {

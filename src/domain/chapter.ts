@@ -9,26 +9,29 @@ import {
   type StoryBattle,
 } from "../content";
 import { getJourneyForCity } from "../content/journeys";
-import { openTourism } from "./tourism";
-import { getActiveBattleContent, leaveBattle, startBattle } from "./battle";
+import { openLandmarkVisit } from "./tourism";
+import { getActiveBattleContent, leaveBattle, startBattle, startVisitBattle } from "./battle";
 import { canReadCityEpilogue } from "./epilogue";
 import { earnRewards } from "./rewards";
 import { rewardBattleId, rewardLandmarkId } from "./reward-rules";
 import { encounters } from "../content/encounters";
-import { battlePlayed } from "./conditions";
+import { battlePlayed, meets } from "./conditions";
 import type { GameState, Availability } from "./game";
 
+/**
+ * Whether the episode shows on the map: its `when` when written (stage 2b), else the current
+ * rule (every requiredEpisodeIds episode completed; a finale: every special battle of its city
+ * played too). A completed episode stays unlocked.
+ */
 export function isEpisodeUnlocked(
   state: GameState,
   episode: EpisodeDefinition,
 ): boolean {
-  return (
-    episode.cityId === state.currentCityId && (
-    state.completedEpisodeIds.includes(episode.id) ||
-    (episode.requiredEpisodeIds.every((id) =>
-      state.completedEpisodeIds.includes(id),
-    ) && (episode.kind !== "city_finale" || allStoryBattlesCompleted(state, episode.cityId))))
-  );
+  if (episode.cityId !== state.currentCityId) return false;
+  if (state.completedEpisodeIds.includes(episode.id)) return true;
+  if (episode.when) return meets(state, episode.when);
+  return episode.requiredEpisodeIds.every((id) => state.completedEpisodeIds.includes(id)) &&
+    (episode.kind !== "city_finale" || allStoryBattlesCompleted(state, episode.cityId));
 }
 
 /** The city finale is explicitly owned; normal and special battles inherit their landmark's city. */
@@ -47,9 +50,11 @@ function allStoryBattlesCompleted(state: GameState, cityId: string): boolean {
   return storyBattlesForCity(cityId).every((battle) => battlePlayed(state, battle.battleId));
 }
 
+/** Whether the special battle shows on the map: its `when` when written (stage 2b), else its requiredEpisodeIds completed. */
 export function isStoryBattleUnlocked(state: GameState, battleId: string): boolean {
   if (battleCityId(battleId) !== state.currentCityId) return false;
   const battle = journeyConfig.storyBattles.find((item) => item.battleId === battleId);
+  if (battle?.when) return meets(state, battle.when);
   return !battle || battle.requiredEpisodeIds.every((id) => state.completedEpisodeIds.includes(id));
 }
 
@@ -68,7 +73,9 @@ export function getNextStoryBattle(state: GameState): StoryBattle | null {
 
 /** Completed destinations remain revisitable for older saved games. */
 export function isEpisodeBlockedByStoryBattle(state: GameState, episode: EpisodeDefinition): boolean {
-  return episode.kind === "city_finale" && !state.completedEpisodeIds.includes(episode.id) && !allStoryBattlesCompleted(state, episode.cityId);
+  // A finale with `when` (stage 2b) reads only its condition.
+  return episode.kind === "city_finale" && !episode.when && !state.completedEpisodeIds.includes(episode.id) &&
+    !allStoryBattlesCompleted(state, episode.cityId);
 }
 
 export function getNextEpisode(state: GameState): EpisodeDefinition | null {
@@ -100,13 +107,7 @@ export function getEpisodeAvailability(
   const episode = episodes.find((item) => item.id === episodeId);
   if (!episode)
     return { available: false, reason: "旅の予定が見つかりません。" };
-  if (
-    state.activeEncounter ||
-    state.activeDate ||
-    state.activeEpilogue ||
-    state.activeTourism ||
-    (state.activeBattle && state.activeBattle.phase !== "result")
-  )
+  if (sceneOpen(state))
     return { available: false, reason: "途中の場面を終えてから出発できます。" };
   if (!isEpisodeUnlocked(state, episode))
     return {
@@ -123,22 +124,37 @@ export function getEpisodeAvailability(
     return { available: false, reason: "先に、旅の途中の対決へ進みましょう。" };
   return { available: true, reason: "" };
 }
+/** A scene is open that an episode cannot start over. */
+function sceneOpen(state: GameState): boolean {
+  return !!(state.activeEncounter || state.activeDate || state.activeEpilogue || state.activeTourism ||
+    (state.activeBattle && state.activeBattle.phase !== "result"));
+}
 export function canAccessFreeTime(_state: GameState): boolean {
   // The initial destination is a choice too; no sightseeing stop is mandatory first.
   return true;
 }
+/**
+ * Start the episode's main part: a finale's battle, or the landmark's visit (its guide,
+ * observation, or battle at once, openLandmarkVisit). `mapChecked`: the departure from the map
+ * already checked that the episode shows on the map (decision 21), so a trip's encounters before
+ * the main part may have spent money or given items without refusing it; only an open scene
+ * still refuses (stage 2b).
+ */
 export function startEpisode(
   state: GameState,
   episodeId = getCurrentEpisode(state).id,
+  mapChecked = false,
 ): GameState {
-  if (!getEpisodeAvailability(state, episodeId).available) return state;
-  const episode = episodes.find((item) => item.id === episodeId)!;
+  const episode = episodes.find((item) => item.id === episodeId);
+  if (!episode || (mapChecked ? sceneOpen(state) || episode.cityId !== state.currentCityId : !getEpisodeAvailability(state, episodeId).available))
+    return state;
   const next = state.activeBattle
     ? { ...state, activeBattle: null, battleRewardReceipt: null }
     : state;
-  return episode.kind === "city_finale"
-    ? startBattle(next, episode.battleId)
-    : openTourism(next, episode.landmarkId!);
+  const started = episode.kind === "city_finale"
+    ? (mapChecked ? startVisitBattle(next, episode.battleId, true) : startBattle(next, episode.battleId))
+    : openLandmarkVisit(next, episode.landmarkId!, mapChecked);
+  return started === next ? state : started;
 }
 export function enterFreeTime(
   state: GameState,
@@ -221,8 +237,9 @@ function recordEpisodes(state: GameState): GameState {
   const completedCityIds = [...state.completedCityIds];
   for (const episode of episodes) {
     if (!battlePlayed(state, episode.battleId)) continue;
+    // A finale with `when` is not checked again once played (4.2): its condition may have turned false.
     if (
-      episode.kind === "city_finale" &&
+      episode.kind === "city_finale" && !episode.when &&
       (!allStoryBattlesCompleted(state, episode.cityId) || !episode.requiredEpisodeIds.every((id) =>
         completedEpisodeIds.includes(id),
       ))
@@ -288,13 +305,14 @@ export function recordGuideRead(
 export function validateJourneyState(state: GameState): void {
   for (const id of state.completedEpisodeIds) {
     const episode = episodes.find((item) => item.id === id);
+    // An episode with `when` is checked only for its played battle (4.2): money or items may have changed since.
     if (
       !episode ||
       !battlePlayed(state, episode.battleId) ||
-      !episode.requiredEpisodeIds.every((required) =>
+      (!episode.when && (!episode.requiredEpisodeIds.every((required) =>
         state.completedEpisodeIds.includes(required),
       ) ||
-      (episode.kind === "city_finale" && !allStoryBattlesCompleted(state, episode.cityId))
+      (episode.kind === "city_finale" && !allStoryBattlesCompleted(state, episode.cityId))))
     )
       throw new Error("観光エピソードのクリア記録が一致しません。");
   }

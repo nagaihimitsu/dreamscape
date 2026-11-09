@@ -42,6 +42,27 @@ export function dateConditionOwners(content: Pick<ConditionContent, "dates">): C
   }));
 }
 
+/**
+ * The map conditions (`when`) of episodes and special battles (stage 2b, progression/journey.json),
+ * checked in the city of each one (a special battle's: its landmark's).
+ */
+export function mapConditionOwners(content: Pick<ConditionContent, "episodes" | "battles" | "landmarks">,
+  journey: { episodes: readonly { id: string; cityId: string; when?: Condition }[]; storyBattles: readonly { battleId: string; when?: Condition }[] }): ConditionOwner[] {
+  const battleCity = (id: string) => {
+    const battle = content.battles.find((item) => item.id === id);
+    return battle?.cityId ?? content.landmarks.find((item) => item.id === battle?.landmarkId)?.cityId;
+  };
+  return [
+    ...journey.episodes.flatMap((episode) => episode.when
+      ? [{ label: `the map condition of episode ${episode.id}`, cityId: episode.cityId, conditions: [{ field: "when", condition: episode.when }] }] : []),
+    ...journey.storyBattles.flatMap((battle) => {
+      const cityId = battleCity(battle.battleId);
+      return battle.when && cityId
+        ? [{ label: `the map condition of special battle ${battle.battleId}`, cityId, conditions: [{ field: "when", condition: battle.when }] }] : [];
+    }),
+  ];
+}
+
 /** The entry rules' `when`, checked in each encounter's city. Rules naming an unknown encounter are refused elsewhere. */
 export function entryRuleConditionOwners(content: Pick<ConditionContent, "encounters">,
   rules: readonly { encounterId: string; when?: Condition }[]): ConditionOwner[] {

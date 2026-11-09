@@ -94,8 +94,11 @@ export const landmarkSchema = z
     nameEn: text,
     descriptionJa: japanese,
     imageAssetId: id,
-    guideStoryId: z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/),
+    /** The landmark's guide (Ink); without it the visit has no guide and no guide AP (stage 2b, decision 26). */
+    guideStoryId: z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/).optional(),
     battleId: id,
+    /** false: the visit has no observation (stage 2b). Without a guide either, the battle starts on arrival. */
+    observation: z.boolean().optional(),
     clueIds: uniqueIds,
   })
   .strict();
@@ -108,6 +111,9 @@ export const tourismCatalogSchema = z
     clues: z.array(tourismClueSchema),
   })
   .strict();
+
+/** Whether a visit of the landmark has an observation (it has unless `observation: false`). */
+export const hasObservation = (landmark: { observation?: boolean }) => landmark.observation !== false;
 
 /** An observation-only clue: no quiz question depends on it (empty relatedQuestionIds). */
 export function isObservationOnlyClue(clue: { relatedQuestionIds: readonly string[] }): boolean {

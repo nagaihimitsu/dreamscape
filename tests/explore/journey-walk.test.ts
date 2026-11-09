@@ -7,6 +7,11 @@
 //   rewards whose IDs are newly recorded (each ID once) minus the AP of a date started in that step,
 //   every offered action changes the state, and the save → load round trip gives the same state;
 // - liveness: before the end of the journey there is always something to do (zero actions = stuck);
+// - progression (unified event design stage 2b): a city not yet cleared can still be cleared — the
+//   build's progression check (scripts/progression-check.ts) run from the current state finds a way
+//   to its finale ("the city can no longer be cleared" otherwise). Money and AP that no longer cover
+//   the main parts or dates a city's finale still needs are listed in the summary, never failed
+//   (they are set when balancing the finished scenario);
 // - progress (the fixed run only): every start's run leaves its first city at least once (a departure,
 //   or the end of the journey from its last city), and the walks clear every city of every available
 //   journey and read its epilogue. A soft lock that leaves something to press but no way out of a
@@ -26,7 +31,9 @@
 // DREAMSCAPE_WALK_STEPS (steps per seed) widen it.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { afterAll, describe, expect, it } from "vitest";
-import { allRewardRules, balance, battles, dates, episodes, getCityContent } from "../../src/content";
+import { allRewardRules, balance, battles, cityContents, dates, episodes, getCityContent, journeyConfig, landmarks, progression } from "../../src/content";
+import { spendableMoney } from "../../src/domain/conditions";
+import { apShortNow, canStillClearCity, moneyShortNow, type ProgressionContent, type ProgressionSnapshot } from "../../scripts/progression-check";
 import { encounters } from "../../src/content/encounters";
 import { journeys } from "../../src/content/journeys";
 import { cityStart } from "../../src/dev/scenario-builders";
@@ -124,6 +131,33 @@ function pick(state: GameState, actions: PlayerAction[], next: () => number): Pl
   }
   return actions[actions.length - 1];
 }
+
+/** The content the progression check reads, from the runtime catalogs (the same check as content:build's). */
+const progressionContent: ProgressionContent = {
+  journeys, episodes, storyBattles: journeyConfig.storyBattles, battles, landmarks, encounters: encounters.encounters, items: encounters.items, dates,
+  rewards: allRewardRules, romance: progression,
+  // Registered cities only (a journey may list cities not built yet).
+  travel: playable.flatMap((journey) => journey.cities).filter((city) => city.id in cityContents).map((city) => {
+    const { travel, travelSettings } = getCityContent(city.id);
+    return { cityId: city.id, hotelPlaceId: travelSettings.hotelPlaceId, initialBudget: travelSettings.initialBudget, events: travel.events, routes: travel.routes };
+  }),
+};
+/** The records of a game state, as the progression check reads them. */
+const snapshotOf = (state: GameState): ProgressionSnapshot => ({
+  exact: true, battles: new Set(state.battleRecords.filter((item) => item.attempts > 0).map((item) => item.battleId)),
+  episodes: new Set(state.completedEpisodeIds), cities: new Set(state.completedCityIds), landmarks: new Set(state.visitedLandmarkIds),
+  guides: new Set(state.completedGuideIds), encounters: new Set(state.completedEncounterIds), seenEncounters: new Set(state.seenEncounterIds),
+  dates: new Set(state.playedDateIds), epilogues: new Set(state.viewedEpilogueCityIds), items: state.inventory,
+  couple: state.confessionStatus === "accepted", romanceStage: state.romanceStage, cityDay: state.travel.day,
+  journeyDay: state.travel.calendar?.journeyDay, money: spendableMoney(state),
+});
+/** Seeds whose walk had too little money or AP for what a city's finale still needs, by city (the summary; never failed). */
+const shortOf = { money: new Map<string, Set<number>>(), ap: new Map<string, Set<number>>() };
+const noteShort = (kind: keyof typeof shortOf, cityId: string, seed: number) => {
+  if (!shortOf[kind].has(cityId)) shortOf[kind].set(cityId, new Set());
+  shortOf[kind].get(cityId)!.add(seed);
+};
+const hasFinale = (cityId: string) => episodes.some((episode) => episode.cityId === cityId && episode.kind === "city_finale");
 
 const totalAp = (state: GameState) => state.ap + state.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
 function ruleAp(id: string): number {
@@ -249,6 +283,16 @@ function walk(seed: number, total: number) {
     const restored = (loaded as Extract<typeof loaded, { status: "loaded" }>).state;
     try { expect(restored).toEqual(changed); }
     catch { fail(step, "the save → load round trip changed the state"); }
+    // Stage 2b: a city not yet cleared can still be cleared from here (the build's check, from the current state).
+    const cityId = restored.currentCityId;
+    if (hasFinale(cityId) && !restored.completedCityIds.includes(cityId)) {
+      const now = snapshotOf(restored);
+      if (!run(step, "the progression check", () => canStillClearCity(progressionContent, cityId, now)))
+        fail(step, `the city can no longer be cleared: ${cityId}'s finale can never show on the map from this state (scripts/progression-check.ts)`);
+      if (run(step, "the money summary", () => moneyShortNow(progressionContent, cityId, now)) !== undefined) noteShort("money", cityId, seed);
+      if (run(step, "the AP summary", () => apShortNow(progressionContent, cityId, now, totalAp(restored), new Set(restored.claimedRewardIds))) !== undefined)
+        noteShort("ap", cityId, seed);
+    }
     state = restored;
     since++;
     run(step, "recording what the step reached", () => record(start!, previous, restored));
@@ -283,6 +327,8 @@ function summary(): string {
       count("vehicles ridden", cityIds.flatMap((cityId) => [...new Set(getCityContent(cityId).travel.routes
         .filter((route) => route.mode !== "walk").map((route) => `${cityId}/${route.mode}`))]), seen.rides));
   }
+  for (const [kind, label] of [["money", "money too short for the main parts a finale still needs"], ["ap", "AP too short for the dates a finale still needs"]] as const)
+    lines.push(`${label} (not failed): ${shortOf[kind].size ? [...shortOf[kind]].map(([cityId, seen]) => `${cityId} (seeds ${[...seen].join(", ")})`).join("; ") : "none"}`);
   return lines.join("\n");
 }
 

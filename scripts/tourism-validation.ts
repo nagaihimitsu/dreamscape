@@ -57,9 +57,12 @@ export function validateTourism(
       if (!clue || clue.landmarkId !== landmark.id)
         throw new Error(`Unknown or mismatched tourism clue: ${clueId}`);
     }
-    const compiled = stories[landmark.guideStoryId];
+    // A landmark without a guide (stage 2b) has no guide to check.
+    const guideStoryId = landmark.guideStoryId;
+    if (!guideStoryId) continue;
+    const compiled = stories[guideStoryId];
     if (!compiled)
-      throw new Error(`Unknown tourism guideStoryId: ${landmark.guideStoryId}`);
+      throw new Error(`Unknown tourism guideStoryId: ${guideStoryId}`);
     try {
       forEachCondAssignment(compiled, (bind) => {
         const story = new Story(compiled);
@@ -90,7 +93,7 @@ export function validateTourism(
             throw new Error("Tourism guide cannot grant effects");
           if (line) {
             hasText = true;
-            observeForStory?.(landmark.guideStoryId)(line, speaker, explicitEmotion);
+            observeForStory?.(guideStoryId)(line, speaker, explicitEmotion);
             explicitEmotion = false;
           }
         }
@@ -100,7 +103,7 @@ export function validateTourism(
       });
     } catch (error) {
       throw new Error(
-        `${storyLabel(landmark.guideStoryId)} (landmark ${landmark.id}): ${error instanceof Error ? error.message : String(error)}`,
+        `${storyLabel(guideStoryId)} (landmark ${landmark.id}): ${error instanceof Error ? error.message : String(error)}`,
         { cause: error },
       );
     }

@@ -252,3 +252,39 @@ describe("integrated journey content contract", () => {
     expect(warnings[0].message).toMatch(/^日本語の欄に日本語がありません：.+ の episodes\[\d+\]\.clearDescriptionJa「The city is complete…」/u);
   });
 });
+
+describe("the main parts' shape and the progression check in the build (unified event design stage 2b)", () => {
+  const changeFinale = (change: (episode: Episode) => void) =>
+    changeCatalogEntry(fixture, "progression/journey.json", "episodes", "milano_finale", change);
+
+  it("stops a city whose finale's when can never be met (check 9), and warns of one cleared only through the romance", async () => {
+    await changeFinale((episode) => {
+      episode.requiredEpisodeIds = [];
+      Object.assign(episode, { when: { battlesPlayed: { city: "milano", atLeast: 9 } } });
+    });
+    await expect(buildContent(fixture, false)).rejects.toThrow(/No way to clear city milano: the map condition of the finale milano_finale can never be met/);
+    // Each change starts from the repository's file (changeCatalogEntry), so it writes both fields again.
+    await changeFinale((episode) => Object.assign(episode, { requiredEpisodeIds: [], when: { couple: true } }));
+    const warnings = (await buildContent(fixture, false)).warnings.map((warning) => warning.kind);
+    expect(warnings).toContain("romance-only-city");
+  });
+
+  it("builds a landmark without a guide (and without its guide reward), and stops an encounter met while observing at one without an observation", async () => {
+    await changeCatalogEntry(fixture, "tourism/catalog.json", "landmarks", "last_supper", (landmark: { guideStoryId?: string }) => {
+      delete landmark.guideStoryId;
+    });
+    await rm(path.join(fixture, "content/journeys/milano/stories/tourism/milano_last_supper_guide.ink"));
+    await expect(buildContent(fixture, false)).rejects.toThrow(/Guide reward at a landmark without a guide: milano_last_supper_episode/);
+    await changeReward(rewardIds[0], (_rule, journey) => {
+      journey.rewards = journey.rewards.filter((rule) => rule.id !== rewardIds[0]);
+    });
+    const result = await buildContent(fixture, false);
+    expect(result.tourism.landmarks.find((landmark) => landmark.id === "last_supper")?.guideStoryId).toBeUndefined();
+    // Each change starts from the repository's file (changeCatalogEntry), so it removes the guide again.
+    await changeCatalogEntry(fixture, "tourism/catalog.json", "landmarks", "last_supper", (landmark: { guideStoryId?: string; observation?: boolean }) => {
+      delete landmark.guideStoryId;
+      landmark.observation = false;
+    });
+    await expect(buildContent(fixture, false)).rejects.toThrow(/Encounter while observing at a landmark without an observation: supper_pantomime/);
+  });
+});

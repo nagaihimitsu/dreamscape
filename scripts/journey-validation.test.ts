@@ -144,3 +144,45 @@ describe("story battle references in the journey", () => {
     expect(() => check(milanWithoutFirstClear)).toThrow(/Episode needs one episode_clear reward/);
   });
 });
+
+describe("map conditions and guides (unified event design stage 2b)", () => {
+  const finaleOf = (journey: JourneyConfig) => journey.episodes.find((episode) => episode.kind === "city_finale")!;
+  const all = { all: [{ battlePlayed: "milano_duomo_01" }] };
+
+  it("accepts a finale's when with empty prerequisites, and stops when both are written (check 7)", () => {
+    const journey = structuredClone(journeyConfig);
+    const finale = finaleOf(journey);
+    finale.when = all;
+    expect(() => check(journey)).toThrow(/Map condition written twice: episode milano_finale/);
+    finale.requiredEpisodeIds = [];
+    expect(() => check(journey)).not.toThrow();
+    // Without when, the current rule still needs every sightseeing episode.
+    delete finale.when;
+    expect(() => check(journey)).toThrow(/City finale must require every sightseeing episode/);
+  });
+
+  it("stops a special battle with both when and prerequisites", () => {
+    const journey = structuredClone(journeyConfig);
+    journey.storyBattles[0].when = all;
+    journey.storyBattles[0].requiredEpisodeIds = [journey.episodes[0].id];
+    expect(() => check(journey)).toThrow(/Map condition written twice: story battle/);
+    journey.storyBattles[0].requiredEpisodeIds = [];
+    expect(() => check(journey)).not.toThrow();
+  });
+
+  it("gives a landmark without a guide no guide reward, and stops one written there (decision 26)", () => {
+    const journey = structuredClone(journeyConfig);
+    const episode = journey.episodes[0];
+    const guideless = landmarks.map((landmark) => {
+      if (landmark.id !== episode.landmarkId) return landmark;
+      const { guideStoryId: _guide, ...rest } = landmark;
+      return rest;
+    });
+    const run = () => validateJourney(journey, city, balance.apCap, guideless, battles, battleQuizzes);
+    expect(run).toThrow(/Guide reward at a landmark without a guide: milano_duomo_episode/);
+    journey.rewards = journey.rewards.filter((rule) => !(rule.episodeId === episode.id && rule.trigger === "guide_read"));
+    expect(run).not.toThrow();
+    // A landmark with a guide still needs its one guide reward.
+    expect(() => check(journey)).toThrow(/Episode needs one guide_read reward/);
+  });
+});

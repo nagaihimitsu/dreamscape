@@ -14,7 +14,8 @@ import { isObservationOnlyClue } from "../src/content/tourism-schemas";
 
 export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-prefix" | "unused-transport-mode" | "tourism-photo"
   | "transit-walk-missing" | "transit-route-unsourced" | "never-offered" | "date-condition-trip"
-  | "later-never-again" | "same-priority" | "repeat-without-until" | "data-language" | "cond-walk-partial";
+  | "later-never-again" | "same-priority" | "repeat-without-until" | "data-language" | "cond-walk-partial"
+  | "never-met-again" | "romance-only-city" | "unfindable-clue" | "battle-after-epilogue" | "money-shortfall" | "ap-shortfall";
 export type ContentWarning = { kind: ContentWarningKind; message: string };
 /** How content:build counts each kind of warning. */
 export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
@@ -32,6 +33,12 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "repeat-without-until": "repeated encounter(s) without # until:",
   "data-language": "data field(s) whose text is not in the field's language (Japanese fields, the quizzes' English)",
   "cond-walk-partial": "scene(s) with more than four cond texts, walked with each text true and false rather than in every combination",
+  "never-met-again": "city(ies) whose finale condition may never be met again (money spent, an item given, a battle or date under not; no other way)",
+  "romance-only-city": "city(ies) that can be cleared only through the romance values",
+  "unfindable-clue": "landmark(s) without an observation that list clues no observation finds",
+  "battle-after-epilogue": "battle(s) that may be left unplayable after the epilogue (the journey moves on after it)",
+  "money-shortfall": "journey(s) whose budget may run short for a city's required main parts after the other events (not stopped)",
+  "ap-shortfall": "city(ies) whose finale needs dates that the city's AP may not cover after the other dates (not stopped)",
 };
 
 /**

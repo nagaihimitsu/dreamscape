@@ -8,7 +8,7 @@ import {
 import { advanceCityEpilogue, canReadCityEpilogue, completeArrivalLogo, startCityEpilogue } from "./epilogue";
 import { advanceDate, chooseDate, finishDate, type GameState } from "./game";
 import { canClaimPendingRewards, claimPendingRewards } from "./rewards";
-import { openTourism, advanceTourismGuide, discoverClue, getDiscoverableClueIds, replayTourismGuide, skipTourismGuide } from "./tourism";
+import { openTourism, advanceTourismGuide, discoverClue, getDiscoverableClueIds, landmarkHasGuide, replayTourismGuide, skipTourismGuide } from "./tourism";
 import { getTravelDestinations, getTravelWaitOptions } from "./travel-destinations";
 import { getRentalOffers, rentTransport } from "./transport";
 import {
@@ -93,7 +93,7 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
   if (tourism) {
     if (tourism.phase === "guide") return [{ kind: "guide_next" }, { kind: "guide_close" }];
     return [
-      { kind: "observation_next" }, { kind: "guide_again" },
+      { kind: "observation_next" }, ...(landmarkHasGuide(tourism.landmarkId) ? [{ kind: "guide_again" as const }] : []),
       ...getDiscoverableClueIds(state).map((clueId) => ({ kind: "discover" as const, clueId })),
     ];
   }

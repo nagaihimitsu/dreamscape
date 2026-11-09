@@ -1,9 +1,9 @@
 import { battles, dates, episodes, getCityContent } from "../content";
-import { getBattleAvailability, startBattle } from "./battle";
+import { getBattleAvailability, startBattle, startVisitBattle } from "./battle";
 import { getEpisodeAvailability, isEpisodeUnlocked, isStoryBattleUnlocked, startEpisode } from "./chapter";
 import { getDateAvailability, isDateUnlockedForTravel, isEventVisible, startDate, type GameState } from "./game";
 import { hasPendingPlaceEncounter, startBeforeVisitEncounter } from "./encounter";
-import { openTourism } from "./tourism";
+import { openLandmarkVisit } from "./tourism";
 import { canReturnByDayEnd, DAY_END, getGameWeekday, planOvernight, planTravelEvent } from "./travel";
 import { compareRouteCost, findTravelHomeRoutes, type HomeRoute } from "./travel-routes";
 import type { TravelEvent, TravelRoute } from "../content/travel-schemas";
@@ -159,6 +159,10 @@ export function beginTravelEvent(state: GameState, eventId: string, mode: Travel
  * an episode's sightseeing (its finale battle), a date, or a special battle, whose first visit
  * (or a visit with an encounter waiting at its landmark) opens the landmark's observation first.
  * Returns the state unchanged when the scene cannot start.
+ * Whether the episode or special battle shows on the map was checked on departing
+ * (getTravelEventAvailability) and is not checked again here, after the fare, the arrival time
+ * and the trip's encounters before the main part (decision 21; stage 2b): only an open scene
+ * still refuses it.
  */
 export function startTravelEventScene(state: GameState, eventId: string, nextRoll?: () => number): GameState {
   const episode = episodes.find((item) => item.id === eventId);
@@ -172,9 +176,9 @@ export function startTravelEventScene(state: GameState, eventId: string, nextRol
   const observeFirst = !!special?.landmarkId &&
     (!battlePlayed(state, special.id) ||
       hasPendingPlaceEncounter(sceneState, special.landmarkId));
-  const started = episode ? startEpisode(state, eventId)
+  const started = episode ? startEpisode(state, eventId, true)
     : isDate ? startDate(state, eventId, nextRoll)
-      : observeFirst ? openTourism(sceneState, special!.landmarkId!) : startBattle(state, eventId);
+      : observeFirst ? openLandmarkVisit(sceneState, special!.landmarkId!, true) : startVisitBattle(state, eventId, true);
   return started === (observeFirst ? sceneState : state) ? state : started;
 }
 
