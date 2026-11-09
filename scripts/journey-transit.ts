@@ -11,14 +11,15 @@ export type JourneyTransitPlan = { journeyId: string; modes: string[] };
 
 export function journeyTransitPlan(sources: ContentSources, journeyId: string): JourneyTransitPlan {
   const journey = journeyCatalogOf(sources).journeys.find((entry) => entry.id === journeyId);
-  if (!journey) throw new Error(`Unknown journey: ${journeyId}`);
+  if (!journey) throw new Error(`旅行編「${journeyId}」は登録されていません（content/journeys/<旅行編ID>/manifest.json）。` +
+    `登録されている旅行編: ${journeyCatalogOf(sources).journeys.map((entry) => entry.id).join(", ") || "なし"}`);
   return { journeyId, modes: journey.transportModes.map((mode) => mode.id) };
 }
 
 /** The plan of the journey a city belongs to. */
 export function cityTransitPlan(sources: ContentSources, cityId: string): JourneyTransitPlan {
   const owner = journeyCatalogOf(sources).journeys.find((journey) => journey.cities.some((city) => city.id === cityId));
-  if (!owner) throw new Error(`City belongs to no journey: ${cityId}`);
+  if (!owner) throw new Error(`都市「${cityId}」はどの旅行編の manifest.json の cities にもありません。`);
   return journeyTransitPlan(sources, owner.id);
 }
 

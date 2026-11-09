@@ -8,7 +8,8 @@ import { z } from "zod";
 import { learningCatalogSchema, questionSource, translationSchema } from "../src/content/learning-schema";
 import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
 import { buildJourneyFragments, loadJourneyScaffold } from "./journey-scaffold";
-import { authoringProfileOf, getJourneyAuthoringProfile, journeyAuthoringProfiles } from "./journey-authoring";
+import { authoringProfileOf, getJourneyAuthoringProfile, journeyAuthoringProfiles, unknownAuthoringJourney } from "./journey-authoring";
+import { namedJa } from "./journey-cli";
 import { CONTENT_DIRECTORY, completeFragment, emptyCatalog, journeyManifestPath, trimFragment, type MergedKind } from "./content-layout";
 import { displayPath, journeyLayer, loadContentSources } from "./content-sources";
 import { createParentDirectories, removeCreatedDirectories } from "./created-directories";
@@ -18,15 +19,15 @@ const journeyCities = (original: ReleaseFiles, journeyId: string): string[] => {
   const file = journeyManifestPath(journeyId);
   const text = original[file];
   const manifest = typeof text === "string" ? JSON.parse(text) : undefined;
-  if (!manifest || !authoringProfileOf(manifest, file)) throw new Error(`Unknown authoring journey: ${journeyId}`);
+  if (!manifest || !authoringProfileOf(manifest, file)) throw new Error(unknownAuthoringJourney(journeyId));
   const ids: string[] = Array.isArray(manifest.cities) ? manifest.cities.map((city: { id: string }) => city.id) : [];
   if (manifest.id !== journeyId || !ids.length || new Set(ids).size !== ids.length || ids.some((id) => !/^[a-z][a-z0-9_]*$/.test(id)))
-    throw new Error(`Journey or city order is invalid: ${journeyId}`);
+    throw new Error(`旅行編 ${journeyId} の manifest.json の id か、都市の並び（cities）が正しくありません。`);
   return ids;
 };
 const prefix = (cityIds: readonly string[], through = cityIds.at(-1)!): readonly string[] => {
   const end = cityIds.indexOf(through);
-  if (end < 0) throw new Error(`Unknown journey release city: ${through}`);
+  if (end < 0) throw new Error(`--through の都市 ${through} は、この旅行編の cities にありません。`);
   return cityIds.slice(0, end + 1);
 };
 // `layer` is the root-relative directory of the content layer that owns the
@@ -63,13 +64,13 @@ export function journeyReleaseChanges(original: ReleaseFiles, journeyId: string,
   for (const id of prefix(cityIds, through)) {
     const cityFile = `${layer}/cities/${id}.json`;
     const travelFile = `${layer}/travel/${id}.json`;
-    if (typeof original[cityFile] !== "string" || typeof original[travelFile] !== "string") throw new Error(`Journey city mismatch: ${id}`);
+    if (typeof original[cityFile] !== "string" || typeof original[travelFile] !== "string") throw new Error(`都市 ${id} の都市ファイルか travel ファイルがないか、中の都市IDが違います。`);
     const city = JSON.parse(original[cityFile]);
     const travel = JSON.parse(original[travelFile]);
-    if (city.id !== id || travel.cityId !== id || !Array.isArray(travel.events)) throw new Error(`Journey city mismatch: ${id}`);
+    if (city.id !== id || travel.cityId !== id || !Array.isArray(travel.events)) throw new Error(`都市 ${id} の都市ファイルか travel ファイルがないか、中の都市IDが違います。`);
     city.productionStatus = "complete";
     travel.events = travel.events.map(({ contentStatus, ...event }: { contentStatus?: string; [key: string]: unknown }) => {
-      if (contentStatus !== undefined && contentStatus !== "pending_content") throw new Error(`Unknown event status: ${id}`);
+      if (contentStatus !== undefined && contentStatus !== "pending_content") throw new Error(`都市 ${id} の地図の出来事に、知らない公開状態（contentStatus）があります（"pending_content" にするか、書きません）。`);
       return event;
     });
     result[cityFile] = textKeeping(original[cityFile], city);
@@ -110,41 +111,41 @@ export function mergeJourneyReleaseFragments(original: ReleaseFiles, release: Re
   const merge = (existing: any[], incoming: readonly any[], label: string, all: readonly any[] = []) => {
     const ids = new Set<string>();
     for (const item of existing) {
-      if (!item.id || ids.has(item.id)) throw new Error(`Duplicate existing ${label} ID: ${item.id}`);
+      if (!item.id || ids.has(item.id)) throw new Error(`今のファイルで${label}の ID が重複しています: ${item.id}`);
       ids.add(item.id);
     }
     const incomingIds = new Set<string>();
     for (const item of incoming) {
-      if (!item.id || incomingIds.has(item.id)) throw new Error(`Duplicate fragment ${label} ID: ${item.id}`);
+      if (!item.id || incomingIds.has(item.id)) throw new Error(`作った断片で${label}の ID が重複しています: ${item.id}`);
       incomingIds.add(item.id);
       const previous = existing.find((entry) => entry.id === item.id) ?? all.find((entry) => entry.id === item.id);
-      if (previous && !isDeepStrictEqual(previous, item)) throw new Error(`Existing ${label} differs: ${item.id}`);
+      if (previous && !isDeepStrictEqual(previous, item)) throw new Error(`登録済みの${label}と内容が違います: ${item.id}（登録済みの内容は journey:release では書き換えません）`);
       if (!previous) { existing.push(item); ids.add(item.id); }
     }
   };
   const journey = fragment("journey");
-  merge(journey.episodes, fragments.episodes, "episode", others("journey", "episodes"));
-  merge(journey.rewards, fragments.rewards, "reward", others("journey", "rewards"));
+  merge(journey.episodes, fragments.episodes, "本筋の回", others("journey", "episodes"));
+  merge(journey.rewards, fragments.rewards, "報酬", others("journey", "rewards"));
   write("journey", journey);
   const battles = fragment("battles");
-  merge(battles.battles, fragments.battles, "battle", others("battles", "battles"));
+  merge(battles.battles, fragments.battles, "対決", others("battles", "battles"));
   write("battles", battles);
   const dates = fragment("dates");
-  merge(dates.dates, fragments.dates, "date", others("dates", "dates"));
+  merge(dates.dates, fragments.dates, "デート", others("dates", "dates"));
   write("dates", dates);
   const tourism = fragment("tourism");
-  merge(tourism.landmarks, fragments.landmarks, "landmark", others("tourism", "landmarks"));
-  merge(tourism.clues, fragments.clues, "observation", others("tourism", "clues"));
+  merge(tourism.landmarks, fragments.landmarks, "観光地", others("tourism", "landmarks"));
+  merge(tourism.clues, fragments.clues, "観察ポイント", others("tourism", "clues"));
   write("tourism", tourism);
   const effects = fragment("effects");
-  merge(effects.effects, fragments.effects, "effect", others("effects", "effects"));
+  merge(effects.effects, fragments.effects, "効果", others("effects", "effects"));
   write("effects", effects);
   const presentation = fragment("presentation");
   const mergedMemories: Record<string, unknown> = merged[fragmentKinds.presentation]?.memories ?? {};
   for (const [id, memory] of Object.entries(fragments.memories)) {
     const previous = Object.hasOwn(presentation.memories, id) ? presentation.memories[id] : mergedMemories[id];
     if (previous !== undefined && !isDeepStrictEqual(previous, memory))
-      throw new Error(`Existing memory differs: ${id}`);
+      throw new Error(`登録済みの思い出と内容が違います: ${id}（登録済みの内容は journey:release では書き換えません）`);
     if (previous === undefined || Object.hasOwn(presentation.memories, id)) presentation.memories[id] = memory;
   }
   write("presentation", presentation);
@@ -155,38 +156,38 @@ export function mergeJourneyReleaseFragments(original: ReleaseFiles, release: Re
   const usedQuestions = new Set<string>();
   for (const quizId of quizIds) {
     const quiz = quizzes.find((item) => item.id === quizId);
-    if (!quiz) throw new Error(`Journey quiz is missing: ${quizId}`);
+    if (!quiz) throw new Error(`クイズがありません: ${quizId}`);
     for (const question of quiz.questions) {
       usedQuestions.add(question.id);
       const translated = supplied[question.id];
       const own = Object.hasOwn(learning.questions, question.id);
       const existing = own ? learning.questions[question.id] : mergedQuestions[question.id];
-      if (!translated && !existing) throw new Error(`Journey quiz translation is missing: ${question.id}`);
+      if (!translated && !existing) throw new Error(`クイズの和訳がありません: ${question.id}（--translations のファイルに書きます）`);
       if (translated) {
         const entry = translationSchema.parse({ source: questionSource(question), ...translated });
-        if (existing && !isDeepStrictEqual(existing, entry)) throw new Error(`Existing translation differs: ${question.id}`);
+        if (existing && !isDeepStrictEqual(existing, entry)) throw new Error(`登録済みの和訳と内容が違います: ${question.id}`);
         if (own || !existing) learning.questions[question.id] = entry;
-      } else if (!isDeepStrictEqual(existing.source, questionSource(question))) throw new Error(`Existing translation source differs: ${question.id}`);
+      } else if (!isDeepStrictEqual(existing.source, questionSource(question))) throw new Error(`登録済みの和訳の元の英文が、今のクイズと違います: ${question.id}（和訳を直して --translations で渡します）`);
     }
   }
-  if (Object.keys(supplied).some((id) => !usedQuestions.has(id))) throw new Error("Translation contains an unknown or unselected question");
+  if (Object.keys(supplied).some((id) => !usedQuestions.has(id))) throw new Error("和訳のファイルに、知らない問題か、今回公開しない都市の問題があります。");
   write("translations", learning);
   const cityIds = new Set([...fragments.episodes.map((item) => item.cityId), ...fragments.landmarks.map((item) => item.cityId),
     ...fragments.finaleEvents.map((item) => item.cityId)]);
   for (const cityId of cityIds) {
     const travelFile = `${layer}/travel/${cityId}.json`;
-    if (!(travelFile in release)) throw new Error(`Journey fragments include unselected city: ${cityId}`);
+    if (!(travelFile in release)) throw new Error(`作った断片に、今回公開しない都市があります: ${cityId}`);
     const cityLandmarks = fragments.landmarks.filter((item) => item.cityId === cityId);
     const finales = fragments.finaleEvents.filter((item) => item.cityId === cityId).map(({ contentStatus: _pending, ...event }) => event);
     if (!cityLandmarks.length && !finales.length) continue;
     const travel = read(travelFile);
     for (const landmark of cityLandmarks) {
       const place = travel.places.find((item: { id: string }) => item.id === landmark.id);
-      if (!place) throw new Error(`Journey fragment has unknown place: ${landmark.id}`);
+      if (!place) throw new Error(`作った断片の観光地 ${landmark.id} の地点が、都市の travel にありません。`);
       place.landmarkIds ??= [];
       if (!place.landmarkIds.includes(landmark.id)) place.landmarkIds.push(landmark.id);
     }
-    merge(travel.events, finales, "finale travel event");
+    merge(travel.events, finales, "フィナーレの地図の出来事");
     result[travelFile] = textKeeping(original[travelFile], travel);
   }
   return result;
@@ -199,7 +200,7 @@ export function journeyInputFingerprint(root: string, ignore: ReadonlySet<string
     if (ignore.has(relative)) return;
     const absolute = path.join(root, relative);
     const stat = lstatSync(absolute);
-    if (stat.isSymbolicLink()) throw new Error(`Cannot safely validate a symlink: ${relative}`);
+    if (stat.isSymbolicLink()) throw new Error(`シンボリックリンクは確かめられません: ${relative}`);
     if (stat.isDirectory()) {
       hash.update(`dir\0${relative}\0`);
       for (const child of readdirSync(absolute).sort()) walk(path.join(relative, child));
@@ -207,7 +208,7 @@ export function journeyInputFingerprint(root: string, ignore: ReadonlySet<string
       const content = readFileSync(absolute);
       hash.update(`file\0${relative}\0${content.length}\0`);
       hash.update(content);
-    } else throw new Error(`Unsupported validation input: ${relative}`);
+    } else throw new Error(`確かめられない種類のファイルです: ${relative}`);
   };
   walk("content");
   walk("public");
@@ -241,7 +242,7 @@ export function writeJourneyReleaseFiles(root: string, original: ReleaseFiles, n
   });
   if (!validSet || requested.some((file) => !Object.hasOwn(original, file) || typeof next[file] !== "string" ||
     (typeof original[file] !== "string" && !(original[file] === null && fragments.has(file)))))
-    throw new Error("Invalid Journey release file set");
+    throw new Error("書き込むファイルの組が正しくありません（旅行編の登録・都市・travel・断片のファイルだけを書きます）。");
   const files = changedReleaseFiles(original, next);
   const current = (relative: string) => {
     const target = path.join(root, relative);
@@ -254,7 +255,7 @@ export function writeJourneyReleaseFiles(root: string, original: ReleaseFiles, n
   let committed = false;
   try {
     // Every requested file, also one that is not rewritten: the release was validated against all of them.
-    for (const relative of requested) if (current(relative) !== original[relative]) throw new Error(`File changed while validating: ${relative}`);
+    for (const relative of requested) if (current(relative) !== original[relative]) throw new Error(`検証の途中でファイルが変わりました: ${relative}。書き込んでいません。`);
     created = createParentDirectories(root, files);
     for (const relative of files) {
       const target = path.join(root, relative);
@@ -265,10 +266,10 @@ export function writeJourneyReleaseFiles(root: string, original: ReleaseFiles, n
     afterStaging?.();
     // Detect changes even if the files were edited while the temporary files were written.
     for (const relative of requested) if (current(relative) !== original[relative])
-      throw new Error(`File changed while validating: ${relative}`);
+      throw new Error(`検証の途中でファイルが変わりました: ${relative}。書き込んでいません。`);
     const ignored = new Set([...staged.map((file) => path.relative(root, file)), ...created]);
     if (expectedFingerprint && journeyInputFingerprint(root, ignored) !== expectedFingerprint)
-      throw new Error("Content or assets changed while preparing release files.");
+      throw new Error("公開するファイルの準備中に content/ か public/ が変わりました。書き込んでいません。");
     for (const relative of files) {
       const target = path.join(root, relative);
       const temporary = `${target}.journey-release-${token}`;
@@ -301,7 +302,7 @@ export function writeJourneyReleaseFiles(root: string, original: ReleaseFiles, n
         renameSync(temporary, target);
       } catch { failures.push(relative); }
     }
-    if (failures.length) throw new Error(`Release failed and rollback failed for ${failures.join(", ")}; restore these files from version control.`, { cause: error });
+    if (failures.length) throw new Error(`公開に失敗し、元に戻せなかったファイルがあります: ${failures.join(", ")}。git で元に戻してください。`, { cause: error });
     throw error;
   } finally {
     for (const file of staged) if (existsSync(file)) rmSync(file, { force: true });
@@ -325,8 +326,8 @@ export interface JourneyReleaseResult {
 export async function prepareJourneyRelease(root: string, journeyId: string, apply: boolean, through?: string, narrativeFile?: string, translationsFile?: string): Promise<JourneyReleaseResult> {
   getJourneyAuthoringProfile(root, journeyId);
   // The files are read only while a selected city is unpublished; a wrong path is reported also when all are published.
-  for (const [file, label] of [[narrativeFile, "Scenario metadata"], [translationsFile, "Quiz translations"]] as const)
-    if (file !== undefined && !existsSync(file)) throw new Error(`${label} file not found: ${file}`);
+  for (const [file, label] of [[narrativeFile, "脚本の情報（--narrative）"], [translationsFile, "クイズの和訳（--translations）"]] as const)
+    if (file !== undefined && !existsSync(file)) throw new Error(`${label}のファイルがありません: ${file}`);
   const before = loadJourneyReadiness(root, journeyId);
   const cityIds = before.trip.cities.map((city) => city.id);
   const report = inspectJourneyReadiness(before);
@@ -338,7 +339,7 @@ export async function prepareJourneyRelease(root: string, journeyId: string, app
   const candidate = report.cities.filter((city) => ids.includes(city.cityId));
   const hasBlocker = report.issues.some((issue) => issue.code !== "journey_unavailable") || candidate.length !== ids.length || candidate.some((city) =>
     city.issues.some((issue) => issue.code !== "city_incomplete") || city.events.some((event) => event.issues.some((issue) => issue.code !== "event_pending")));
-  if (hasBlocker && !narrativeFile) throw new Error(`Journey has unfinished references through ${last.id}; supply scenario metadata or run the readiness report.`);
+  if (hasBlocker && !narrativeFile) throw new Error(`${namedJa(last)}までに、まだ揃っていない参照があります。脚本の情報（--narrative）を渡すか、journey:readiness で足りないものを確かめてください。`);
   const fingerprint = journeyInputFingerprint(root);
   const unpublished = new Set(before.cities.filter((entry) => ids.includes(entry.city.id) && entry.city.productionStatus !== "complete").map((entry) => entry.city.id));
   const includeFragments = !!narrativeFile && unpublished.size > 0;
@@ -373,11 +374,11 @@ export async function prepareJourneyRelease(root: string, journeyId: string, app
     const stagedReport = inspectJourneyReadiness(loadJourneyReadiness(stage, journeyId));
     const stageCities = stagedReport.cities.filter((city) => ids.includes(city.cityId));
     if (stagedReport.issues.length || stageCities.length !== ids.length || stageCities.some((city) => city.issues.length || city.events.some((event) => event.issues.length)))
-      throw new Error(`Journey has unfinished scenario, quiz or content references through ${last.id}.`);
+      throw new Error(`${namedJa(last)}までに、脚本・クイズ・内容の参照がまだ揃っていません（journey:readiness で確かめられます）。`);
     await buildContent(stage, false);
-    if (journeyInputFingerprint(root) !== fingerprint) throw new Error("Content or assets changed during validation; release was not applied.");
-    if (narrativeFile && includeFragments && readFileSync(narrativeFile, "utf8") !== narrativeOriginal) throw new Error("Scenario metadata changed during validation; release was not applied.");
-    if (translationsFile && includeFragments && readFileSync(translationsFile, "utf8") !== translationsOriginal) throw new Error("Quiz translations changed during validation; release was not applied.");
+    if (journeyInputFingerprint(root) !== fingerprint) throw new Error("検証の途中で content/ か public/ が変わりました。公開していません。");
+    if (narrativeFile && includeFragments && readFileSync(narrativeFile, "utf8") !== narrativeOriginal) throw new Error("検証の途中で脚本の情報（--narrative）のファイルが変わりました。公開していません。");
+    if (translationsFile && includeFragments && readFileSync(translationsFile, "utf8") !== translationsOriginal) throw new Error("検証の途中でクイズの和訳（--translations）のファイルが変わりました。公開していません。");
     const written = apply ? writeJourneyReleaseFiles(root, original, next, journeyId, renameSync, fingerprint, layer) : changedReleaseFiles(original, next);
     return { journey: { id: journeyId, nameJa: before.trip.nameJa }, lastCity: { id: last.id, nameJa: last.nameJa }, files: written };
   } finally { rmSync(stage, { recursive: true, force: true }); }

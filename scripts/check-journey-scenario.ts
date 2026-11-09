@@ -5,7 +5,7 @@ try {
   const noCache = process.argv.includes("--no-cache");
   const args = process.argv.slice(2).filter((arg) => arg !== "--no-cache");
   const options: Record<string, string> = {};
-  const usage = "Usage: npm run journey:scenario -- --journey ID --directory PATH [--city CITY] [--no-cache]";
+  const usage = "使い方: npm run journey:scenario -- --journey 旅行編ID --directory 下書きのフォルダ [--city 都市ID] [--no-cache]";
   for (let index = 0; index < args.length; index += 2) {
     const flag = args[index];
     const value = args[index + 1];

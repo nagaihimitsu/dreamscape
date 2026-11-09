@@ -156,7 +156,9 @@ if (
   path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
 ) {
   run(process.argv.slice(2)).catch((error: unknown) => {
-    console.error(error);
+    // The message (and what caused it) only: a stack trace would bury it.
+    const message = (value: unknown) => (value instanceof Error ? value.message : String(value));
+    console.error(error instanceof Error && error.cause !== undefined ? `${error.message}\n${message(error.cause)}` : message(error));
     process.exitCode = 1;
   });
 }

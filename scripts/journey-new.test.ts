@@ -303,7 +303,7 @@ describe("journey:new in a copy of the repository", () => {
     const ink = readFileSync(story, "utf8");
     rmSync(story);
     try {
-      await expect(prepareJourneyRelease(root, k, false)).rejects.toThrow(`Journey has unfinished references through ${kc};`);
+      await expect(prepareJourneyRelease(root, k, false)).rejects.toThrow(`（${kc}）までに、まだ揃っていない参照があります。`);
     } finally { writeFileSync(story, ink); }
   }, 120_000);
 });

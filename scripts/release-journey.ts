@@ -3,7 +3,7 @@ import { prepareJourneyRelease } from "./promote-journey";
 
 try {
   const args = process.argv.slice(2);
-  const usage = "Usage: npx tsx scripts/release-journey.ts --check|--apply --journey ID [--through CITY] [--narrative path] [--translations path]";
+  const usage = "使い方: npm run journey:release -- --check|--apply --journey 旅行編ID [--through 都市ID] [--narrative 脚本の情報.json] [--translations 和訳.json]";
   // The mode may follow other options (e.g. `npm run india:release -- --check`).
   const modeIndex = args.findIndex((arg) => arg === "--check" || arg === "--apply");
   if (modeIndex < 0) throw new Error(usage);
@@ -25,7 +25,7 @@ try {
     else throw new Error(usage);
   }
   if (!journeyId) throw new Error(usage);
-  if (translations && !narrative) throw new Error("--translations requires --narrative");
+  if (translations && !narrative) throw new Error("--translations は --narrative と一緒に使います。");
   const apply = mode === "--apply";
   const result = await prepareJourneyRelease(process.cwd(), journeyId, apply, through, narrative, translations);
   for (const line of journeyReleaseSummary(result, apply)) console.log(line);
