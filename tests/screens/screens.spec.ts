@@ -36,6 +36,15 @@ const flows: FlowScene[] = [
     await page.goto("/");
     await expect(ops.startButton(page)).toBeVisible();
   } },
+  { scene: "flow-credits", titleJa: "出典・権利の一覧", descriptionJa: "タイトル画面の「出典・権利の一覧」（開発用のサーバーなので、ライブラリの一覧は公開版で出るという案内）", open: async (page) => {
+    await page.goto("/");
+    await ops.openCredits(page, "title");
+  } },
+  { scene: "flow-credits-photos", titleJa: "出典・権利の一覧（ミラノ編の写真）", descriptionJa: "タイトル画面の「出典・権利の一覧」で「ミラノ編」を開く", open: async (page) => {
+    await page.goto("/");
+    const credits = await ops.openCredits(page, "title");
+    await credits.getByTestId("credits-journey-milano").locator("summary").click();
+  } },
   { scene: "flow-travel-menu", titleJa: "旅の始まりの行き先", descriptionJa: "ミラノの旅を始めた直後", open: (page) => ops.startJourney(page) },
   { scene: "flow-hud-menu", titleJa: "⚙設定を開いた状態", descriptionJa: "旅を始めて上の「設定」（セーブ・ロード・ゲームの設定）", open: async (page) => {
     await ops.startJourney(page);

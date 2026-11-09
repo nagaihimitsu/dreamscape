@@ -276,6 +276,18 @@ export const ops = {
     await expect(cleanup).toBeVisible();
     return cleanup;
   },
+  /**
+   * 「出典・権利の一覧」 from the title screen (under its note) or from ⚙設定 → ゲームの設定 (which closes);
+   * returns the dialog once it takes presses (it opens under the finger: Modal's settlePresses).
+   */
+  async openCredits(page: Page, from: "title" | "settings"): Promise<Locator> {
+    const scope = from === "title" ? page.getByRole("main") : await ops.openSettings(page);
+    await scope.getByRole("button", { name: "出典・権利の一覧", exact: true }).click();
+    const credits = page.getByRole("dialog", { name: "出典・権利の一覧" });
+    await expect(credits).toBeVisible();
+    await expect(credits).not.toHaveAttribute("data-settling");
+    return credits;
+  },
   /** In 「古い保存データの整理」: tick the listed items whose titles match, then 「選んだデータを消去する」 (the confirmation opens). */
   async chooseOldData(page: Page, cleanup: Locator, titles: readonly RegExp[]): Promise<Locator> {
     for (const title of titles) await cleanup.getByRole("checkbox", { name: title }).check();
