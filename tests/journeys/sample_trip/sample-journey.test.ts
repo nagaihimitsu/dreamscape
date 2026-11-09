@@ -95,6 +95,14 @@ describe("sample journey", () => {
     expect(inspectJourneyReadiness(journeyReadinessInput(sourcesWith(minimal), SAMPLE_JOURNEY_ID)).ready).toBe(true);
   });
 
+  it("(b) still builds without any one optional part (each can be taken out alone, as the README says)", () => {
+    expect(readme.optional.length).toBeGreaterThan(1);
+    for (const part of readme.optional) {
+      const files = withoutOptionalParts(full, { ...readme, optional: [part] });
+      expect(() => validateContent(sourcesWith(files)), part.title).not.toThrow();
+    }
+  });
+
   it("spreads its correct answers over the options, also without the optional parts (journey:new copies them)", () => {
     const correctLetters = (files: ReadonlyMap<string, Buffer | null>) => [...files]
       .filter(([file, bytes]) => file.startsWith("quizzes/") && bytes)

@@ -69,7 +69,7 @@
 時計塔に着くとすぐ（観光案内の前）、子どもから「三時のしおり」を受け取り（入手）、対決の後の交流でヒロインに渡せます（贈与）。受け取る交流と渡す交流の2件で1組です（使い道が要るのは、次の都市がある都市の、持ち歩く印のない品物だけです。見本の街は旅の最後の都市ですが、使い道のある形を手本にしています）。観察の後の会話（近道を教わり、APを1得る）と、対決の後の鐘の会話（APを1使って鐘楼に上がると、ときめきが上がる）、デートの中でしおりを渡すかの「場面の中の選択」もあります。どれも時計塔の場所のファイルの knot で、起きる時と順番は knot の頭の札（`at:`・`priority:`・`when:`）で決めています（`-1` は本筋の前、`after observe` は観察の後、`+1`・`+2` は本筋の後）。品物は `encounters/catalog.json` の `items`、フラグ・人物・名前付きの条件は `progression/story.json` に宣言します。
 
 - ファイル：`encounters/catalog.json`、`progression/story.json`
-- 項目のID：`smp_mihon_bookmark_stall`、`smp_mihon_bookmark_gift`、`smp_mihon_clock_gears`、`smp_mihon_clock_bell`、`smp_mihon_date_bookmark_aside`、`smp_mihon_three_bookmark`（場所のファイルからは、その knot と、その ID を書いた行を消す）
+- 項目のID：`smp_mihon_bookmark_stall`、`smp_mihon_bookmark_gift`、`smp_mihon_clock_gears`、`smp_mihon_clock_bell`、`smp_mihon_date_bookmark_aside`、`smp_mihon_three_bookmark`、`smp_mihon_bookmark_before_leaving`、`smp_mihon_lili_seeoff`（場所のファイルからは、その knot と、その ID を書いた行を消す。最後の2つは下の「ほかの時点の場面と都市の終わり」のエピローグの前の場面で、ここで宣言するリリとフラグを使うので、この部分と一緒に外す）
 
 ### ほかの時点の場面と都市の終わり（段階4）
 
@@ -82,14 +82,14 @@
 - 都市の終わり（`stories/places/smp_mihon_city_end.ink`。設計 3.9 の (d)）：フィナーレの前の砂糖菓子（`# on_done: money -20`）、結果の後の広場（「今日は、ここまでにしよう」の `then: epilogue`）、「もう少し、歩こう」を選んだ人の受け皿の翌朝（宿の `+2`、`then: epilogue`）。この都市は `then: epilogue` を書いたので、ゲームは自分ではエピローグを始めず、「エピローグへ」も出しません。
 
 - ファイル：`stories/places/smp_mihon_city_end.ink`
-- 項目のID：`smp_mihon_date_bench_painter`、`smp_mihon_first_bicycle`、`smp_mihon_hotel_bell_night`、`smp_mihon_hotel_morning`、`smp_mihon_bookmark_before_leaving`、`smp_mihon_lili_seeoff`（場所のファイルからは、その knot と、その ID を書いた行を消す）
+- 項目のID：`smp_mihon_date_bench_painter`、`smp_mihon_hotel_bell_night`、`smp_mihon_hotel_morning`（場所のファイルからは、その knot と、その ID を書いた行を消す。エピローグの前の2つの場面は「道中交流・会話と品物」の、移動の場面は「乗り物（貸し自転車）」の項目のIDにあり、それぞれの部分と一緒に外れる）
 
 ### 乗り物（貸し自転車）
 
 徒歩のほかに、宿で借りる貸し自転車で街を回れます。借りるまでは自転車の経路に乗れず、借りなくてもどこへでも歩いて行けて、宿に帰れます。宿で一度払うと、見本の街にいるあいだ乗れます（次の都市へ出発すると返したことになります）。乗り物の宣言（`manifest.json` の `transportModes`、`"rental": true`）、自転車の経路、宿の貸し出し（`travel/mihon-settings.json` の `rentals`）、都市ごとの交通判断台帳（`travel/mihon-transit.json`）の書き方を示します。初めて乗るときの会話（移動の時点の場面）は、上の「ほかの時点の場面と都市の終わり」にあります。
 
 - ファイル：`travel/mihon-transit.json`
-- 項目のID：`rental_bicycle`
+- 項目のID：`rental_bicycle`、`smp_mihon_first_bicycle`（場所のファイルからは、その knot と、その ID を書いた行を消す）
 
 任意の英文だけが使う語は `learning/word-meanings.json` に残ります。使われない語はエラーではなく、`npm run content:build -- --verbose` で一覧できます。
 
