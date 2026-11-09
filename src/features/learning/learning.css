@@ -146,14 +146,14 @@
 }
 
 .learning-summary {
-  background: #eef0e6;
+  background: var(--ds-parchment-2);
   padding: 10px 12px;
 }
 
 .english-instructions {
   font-size: 12px;
   line-height: 1.5;
-  color: #526454;
+  color: var(--ds-ink-muted);
   margin: 10px 0;
 }
 .interactive-english {
@@ -170,15 +170,16 @@
   color: inherit;
   font: inherit;
   line-height: inherit;
-  text-decoration: underline dotted #829582;
+  text-decoration: underline dotted #8f7c66;
   text-underline-offset: 4px;
   touch-action: manipulation;
 }
 .english-word:hover,
 .english-word:focus-visible {
-  color: var(--green);
-  background: #e4ebdc;
+  color: var(--ds-ink);
+  background: var(--ds-parchment-2);
 }
+/* A word's meaning: a display-only parchment note under the sentence. */
 .word-meaning {
   display: block;
   font-family: "Noto Sans JP", sans-serif;
@@ -186,8 +187,9 @@
   font-weight: 400;
   line-height: 1.65;
   letter-spacing: normal;
-  color: #294c40;
-  background: #e8efe2;
+  color: var(--ds-ink);
+  background: var(--ds-parchment-2);
+  border-radius: 8px;
   padding: 8px 10px;
   margin-top: 8px;
 }
@@ -199,7 +201,7 @@
   min-width: 36px;
   padding: 2px;
   background: transparent;
-  color: var(--green);
+  color: var(--ds-ink);
   font-size: 18px;
 }
 .option-body {

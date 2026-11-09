@@ -45,7 +45,7 @@
   font-size: 11px;
 }
 .battle-rewards {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--ds-parchment-line);
   padding-top: 18px;
   margin: 24px 0;
   text-align: left;
@@ -61,7 +61,7 @@
   font:
     30px Georgia,
     serif;
-  color: var(--green);
+  color: var(--ds-ink);
   white-space: nowrap;
 }
 .reward-total small {
@@ -80,7 +80,7 @@
   gap: 16px;
   font-size: 12px;
   padding: 8px 0;
-  border-bottom: 1px solid #e7e4d6;
+  border-bottom: 1px solid var(--ds-parchment-line);
 }
 .battle-rewards li > span:last-child {
   flex-shrink: 0;
@@ -96,12 +96,13 @@
   display: flex;
   justify-content: space-between;
 }
+/* A cleared episode: a parchment panel; done is told by its heading's words (§2.1). */
 .episode-clear {
   padding: 22px 20px;
-  background: #eeeee2;
+  background: var(--ds-parchment-2);
   margin: 24px 0 20px;
   text-align: left;
-  border-radius: 4px;
+  border-radius: 12px;
 }
 .episode-clear h2 {
   font-size: 21px;
@@ -117,7 +118,7 @@
 }
 .guide-reward-note {
   font-size: 11px;
-  color: #5c7254;
+  color: var(--ds-here);
   margin-top: 12px;
 }
 .replay-guide {
