@@ -170,7 +170,7 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 
 ## 条件の書き方
 
-デートの開く条件 `when`・閉じる条件 `until`（`romance/date_catalog.json`）と、道中交流の入場ルールの `when`（`encounters/entry-rules.json`）は、共通条件管理システムの同じ形の JSON で書きます。ゲームは条件を1つの関数（`src/domain/conditions.ts` の `meets`）で判定し、条件が真になっても何も記録しません。条件を書かなければ「条件なし」です。今使えるのは、今の記録を読む部品だけです（段階1）。
+デートの開く条件 `when`・閉じる条件 `until`（`romance/date_catalog.json`）と、道中交流の入場ルールの `when`（`encounters/entry-rules.json`）は、共通条件管理システムの同じ形の JSON で書きます。ゲームは条件を1つの関数（`src/domain/conditions.ts` の `meets`）で判定し、条件が真になっても何も記録しません。条件を書かなければ「条件なし」です。今使えるのは、今の記録を読む部品だけです（段階1と2a）。場面のInkの中では、同じ部品を文字で書いた `cond("…")` で分岐できます（下の「場面の中の分岐」）。
 
 条件は、キーが1つだけのオブジェクトです。組み合わせは入れ子にできます。
 
@@ -200,6 +200,11 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 | 曜日 | `{ "weekday": [5, 6] }` | 月曜が0。暦のある旅だけ |
 | 乗った回数 | `{ "rides": { "mode": "<乗り物ID>", "atLeast": 2 } }` | この都市で、これまでにその乗り物に乗った回数（徒歩は数えない） |
 | 借りた | `{ "rented": "<乗り物ID>" }` | この都市で借りた乗り物 |
+| 都市のバトルをいくつ遊んだ | `{ "battlesPlayed": { "city": "<都市ID>", "atLeast": 2 } }` | その都市のバトル（フィナーレを除く。勝ち負けは問わない）を遊んだ数 |
+| 関係の値 | `{ "relationship": { "axis": "affection", "atLeast": 3 } }` | 親しさ `affection`・信頼 `trust`・恋愛の意識 `spark` の今の値（`atMost` も。負の数も書ける）。プレイヤーには、値も、条件が満たされたかも見せない |
+| 使えるお金 | `{ "money": { "atLeast": 300 } }` | 旅行予算から帰りの交通費の取り置きを引いた額（`atMost` も） |
+| 恋愛の段階 | `{ "romanceStage": { "atLeast": 2 } }` | 今の段階（1〜4。`atMost` も） |
+| 交際している | `{ "couple": true }` | 告白が成立した |
 
 品物の `is` は5つです。
 
@@ -220,8 +225,38 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 
 - デートは `when` が真で、`until` が偽で、恋愛の欄（`minRomanceStage`・`minAffection`・`needsDeferred`）を満たすときに開きます。一度地図に出た特別な出来事も、`until` が真になると閉じます。始めた後のデートは、セーブを読み込み直しても条件を調べ直しません。
 - デートが開かない理由の文は今のままの順です（`when` のすぐ下の部品で、都市のクリア → エピソード → `until` → 告白の待ち時間 → そのほか）。ゲームは条件の中身や関係値を理由に出しません。Debugだけが、満たしていない部品を表示します。
-- まだ使えない部品（`flag`・`met`・名前付き条件 `condition`・`money`・`rel`・`stage`・`couple`・`battles`・`ap`、品物の `encounter`・`to`）や、観察以外の時点（`at` の `afterBattle` など）は、ビルドが「まだ使えません（段階…）」で止めます。後の段階で足します。
-- `npm run content:build` が止めるのは、形の誤り、存在しないID、旅行編が宣言していない乗り物（徒歩も数えない）、読める場所でない品物の `held`・`left_behind`、入手元のない品物です。止めずに注意として知らせるのは、決して満たされない条件（`never-offered`：観察だけで調べる交流が自分の観光地のエピソードやバトルを条件にしている、同じ旅の後の都市の進行を前の都市で読む、暦のない旅の `journeyDay`・`weekday`、互いを待つデート）と、デートの条件の `time`・`rides`（`date-condition-trip`：行き先へ向かう移動で変わるので、地図に出ても着くと始まらないことがある。時間や曜日で限るデートは、行き先の時間窓 `startWindows`・`openingWindows`・`closedWeekdays` で書けます）です。
+- まだ使えない部品（`flag`・`met`・名前付き条件 `condition`・`ap`、品物の `encounter`・`to`）や、観察以外の時点（`at` の `afterBattle` など）は、ビルドが「まだ使えません（段階…）」で止めます。後の段階で足します。
+- `npm run content:build` が止めるのは、形の誤り、存在しないID、旅行編が宣言していない乗り物（徒歩も数えない）、読める場所でない品物の `held`・`left_behind`、入手元のない品物です。止めずに注意として知らせるのは、決して満たされない条件（`never-offered`：観察だけで調べる交流が自分の観光地のエピソードやバトルを条件にしている、同じ旅の後の都市の進行を前の都市で読む、暦のない旅の `journeyDay`・`weekday`、互いを待つデート）と、デートの条件の `time`・`rides`・`money`（`date-condition-trip`：行き先へ向かう移動で変わるので、地図に出ても着くと始まらないことがある。時間や曜日で限るデートは、行き先の時間窓 `startWindows`・`openingWindows`・`closedWeekdays` で書けます）です。
+
+### 場面の中の分岐
+
+場面（案内・到着・エピローグ・対決の会話・道中交流・デート）のInkの中では、`cond("…")` で、条件が今満たされているかを読んで分岐できます（統一イベント設計の段階2a）。文字は、道中交流の頭の札 `# when:` と同じ書き方で、部品を1つ書きます（前に `not` を付けられます）。`cond` は真か偽だけを返し、数はInkに渡りません。読むだけで、何も変えません。
+
+```ink
+VAR player_name = ""
+VAR heroine_name = ""
+EXTERNAL cond(text)
+
+{ cond("rel affection >= 3"): 「また来ようね。」 | 「次は、どこへ行く？」 }
+* {cond("money >= 300")} [Let me buy you a coffee.]
+  # speaker: heroine
+  「じゃあ、窓ぎわの席で。」
+* [Let's just walk.]
+  # speaker: heroine
+  「うん、川のほうまで。」
+- -> END
+
+=== function cond(text) ===
+~ return false
+```
+
+- 今の「1場面1ファイル」のInk（`VAR` で始まる形）で `cond` を使うときは、`VAR` の行の後に `EXTERNAL cond(text)` を1行、ファイルの最後に、Inkyで下書きを見るための代わりの関数 `=== function cond(text) ===` と `~ return false` の2行を書きます（`EXTERNAL has_memory(memory_id)` と同じ書き方）。宣言がないと、`npm run content:build` が直し方を示して止めます。代わりの関数はInkyだけが使い、ゲームは本当の値を渡します。
+- 書ける文字：`item <品物> held`（`obtained`・`gifted`・`used`・`left_behind`）、`seen <交流>`・`done <交流>`、`visited <観光地>`・`guide <観光地>`、`battle <バトル>`・`episode <エピソード>`・`city <都市>`、`episodes <都市> >= 1`、`battles <都市> >= 2`、`date <デート>`・`epilogue <都市>`、`time day`・`time night`、`day >= 2`（`<=` も）、`journey_day >= 5`、`weekday 5,6`、`rides <乗り物> >= 1`・`rented <乗り物>`、`rel affection >= 3`（`trust`・`spark`、`<=` も）、`money >= 300`（`<=` も）、`stage >= 2`（`<=` も）、`couple`。それぞれ上の表の部品と同じ意味です。`flag`・`met`・`ap`・名前付き条件は段階3からです。
+- 引数は、引用符で囲んだ文字だけです（変数や式は書けません）。
+- `npm run content:build` は、`cond` の文字を頭の札と同じ読み方で条件にし、ほかの条件と同じ検査（形・存在しない名前・品物の都市など）をして、誤りがあれば止めます。そのうえで、文字が4つまでなら真と偽の全部の組み合わせで、5つ以上なら、どの文字も真と偽を少なくとも1回ずつ通る組み合わせで、全部の道が最後まで進むかを確かめます（5つ以上のときは注意 `cond-walk-partial` で知らせます。止めません）。
+- 選択肢を選んだ直後の行の `cond` は、その選択肢の効果（品物を渡した・関係の値が変わった など）の後の状態を読みます。
+- 関係の値の条件は制作者が書くものです。プレイヤーには、条件が満たされたかも見せません。Debugモードがオンの間だけ、場面の上に、今の場面の `cond` の文字ごとの真偽を出します。
+- 英語ノートの話題の説明（場面ではありません）と、特殊戦の反論（段階5から）では使えません。ビルドが止めます。
 
 ## 章・都市と報酬
 
