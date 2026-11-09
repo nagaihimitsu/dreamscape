@@ -68,6 +68,11 @@ export const occasionSchema = z.object({
   then: occasionThenSchema.optional(),
   /** A then: move opened this visit: the mode it moved by; the travel art plays from this mark (4.7). */
   moved: stableContentId.optional(),
+  /**
+   * The finale result's 「エピローグへ」 was pressed (stage 4): the rest of the finale's moment (after battle, its positive
+   * scenes) runs first, and the city's epilogue opens as it ends.
+   */
+  onClose: z.literal("epilogue").optional(),
   /** The 「交際開始」 screen is showing (a step of the date's occasion; saved, so a reload shows it again). */
   romanceEnding: z.literal(true).optional(),
 }).strict();

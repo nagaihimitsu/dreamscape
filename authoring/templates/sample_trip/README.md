@@ -71,9 +71,22 @@
 - ファイル：`encounters/catalog.json`、`progression/story.json`
 - 項目のID：`smp_mihon_bookmark_stall`、`smp_mihon_bookmark_gift`、`smp_mihon_clock_gears`、`smp_mihon_clock_bell`、`smp_mihon_date_bookmark_aside`、`smp_mihon_three_bookmark`（場所のファイルからは、その knot と、その ID を書いた行を消す）
 
+### ほかの時点の場面と都市の終わり（段階4）
+
+観光地の訪問のほかの時点（デート・フィナーレ・エピローグ・移動・宿）に置いた場面の例です（統一イベント設計 段階4）。
+
+- デートの前（`at: date`、昼だけ）：ベンチを塗る男の人（英語の3択。手伝うと少しお金を得る）。露店（`at: place`）は「また今度」の後、デートやフィナーレの前にもう一度出ます。
+- 移動（`at: trip rental_bicycle from mihon_hotel`）：初めて貸し自転車に乗るとき、宿を出る前に。
+- 宿（`at: hotel mihon_hotel`）：鐘を聞いた日の眠る前（`-1`）と、時計塔へまだ行っていない朝（`+1`）。
+- エピローグの前（`at: epilogue mihon`）：デートで「もう少し持っていたい」と答えたしおりを、街を出る前に渡すか（`-2`。設計の「街を出る前の砂時計」を見本のしおりで書いたもの）と、露店のリリの見送り（`-1`）。
+- 都市の終わり（`stories/places/smp_mihon_city_end.ink`。設計 3.9 の (d)）：フィナーレの前の砂糖菓子（`# on_done: money -20`）、結果の後の広場（「今日は、ここまでにしよう」の `then: epilogue`）、「もう少し、歩こう」を選んだ人の受け皿の翌朝（宿の `+2`、`then: epilogue`）。この都市は `then: epilogue` を書いたので、ゲームは自分ではエピローグを始めず、「エピローグへ」も出しません。
+
+- ファイル：`stories/places/smp_mihon_city_end.ink`
+- 項目のID：`smp_mihon_date_bench_painter`、`smp_mihon_first_bicycle`、`smp_mihon_hotel_bell_night`、`smp_mihon_hotel_morning`、`smp_mihon_bookmark_before_leaving`、`smp_mihon_lili_seeoff`（場所のファイルからは、その knot と、その ID を書いた行を消す）
+
 ### 乗り物（貸し自転車）
 
-徒歩のほかに、宿で借りる貸し自転車で街を回れます。借りるまでは自転車の経路に乗れず、借りなくてもどこへでも歩いて行けて、宿に帰れます。宿で一度払うと、見本の街にいるあいだ乗れます（次の都市へ出発すると返したことになります）。乗り物の宣言（`manifest.json` の `transportModes`、`"rental": true`）、自転車の経路、宿の貸し出し（`travel/mihon-settings.json` の `rentals`）、都市ごとの交通判断台帳（`travel/mihon-transit.json`）の書き方を示します。乗っているときの会話（乗車イベント）は入れていません。
+徒歩のほかに、宿で借りる貸し自転車で街を回れます。借りるまでは自転車の経路に乗れず、借りなくてもどこへでも歩いて行けて、宿に帰れます。宿で一度払うと、見本の街にいるあいだ乗れます（次の都市へ出発すると返したことになります）。乗り物の宣言（`manifest.json` の `transportModes`、`"rental": true`）、自転車の経路、宿の貸し出し（`travel/mihon-settings.json` の `rentals`）、都市ごとの交通判断台帳（`travel/mihon-transit.json`）の書き方を示します。初めて乗るときの会話（移動の時点の場面）は、上の「ほかの時点の場面と都市の終わり」にあります。
 
 - ファイル：`travel/mihon-transit.json`
 - 項目のID：`rental_bicycle`

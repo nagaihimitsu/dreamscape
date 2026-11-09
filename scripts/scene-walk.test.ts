@@ -92,3 +92,29 @@ describe("the then: loop (A12)", () => {
     expect(thenLoopWarnings(scenes, () => ["x_tower"])).toEqual([]);
   });
 });
+
+describe("the moments of stage 4 in the scene table (2.3)", () => {
+  const scenesAt = (at: string, priority = "-1", input: Partial<Parameters<typeof placeScenes>[0]> = {}) => {
+    const file = readPlaceFile("places/smp_x_tower", `${top}\n=== smp_x_moment ===\n# scene: talk\n# at: ${at}\n# priority: ${priority}\nx\n-> END\n`);
+    const compiled = compileInk(file.source, "places/smp_x_tower.ink", { [MODULES_FILE]: MODULES_INK });
+    return placeScenes({ file, compiled, apCap: 12, mains: [], landmarkCity: () => "x", placeCity: (place) => (place.startsWith("x_") ? "x" : undefined),
+      dateCity: (date) => (date === "smp_x_date" ? "x" : undefined), cityExists: (city) => city === "x", ...input }).map((item) => item.entry);
+  };
+  it("gives each scene its moments' city, and stops at a date, a place or a city it does not know (A2)", () => {
+    expect(scenesAt("date smp_x_date", "after date")[0]).toMatchObject({ cityId: "x", at: [{ date: "smp_x_date" }], priority: "after date" });
+    expect(scenesAt("hotel x_hotel")[0].cityId).toBe("x");
+    expect(scenesAt("trip walk from x_hotel to x_tower")[0].at).toEqual([{ trip: "walk", from: "x_hotel", to: "x_tower" }]);
+    expect(() => scenesAt("date smp_y_date")).toThrow("Unknown date in # at: date smp_y_date");
+    expect(() => scenesAt("ticket y_gate")).toThrow("Unknown place in # at: ticket y_gate");
+    expect(() => scenesAt("depart y")).toThrow("Unknown city in # at: depart y");
+    // A bare hotel or a trip without places names no city: the city of the file's other scenes; alone, it stops.
+    expect(() => scenesAt("hotel")).toThrow("which names no city");
+  });
+
+  it("stops an epilogue's scene that reopens the epilogue by its head's then:, repeated always without a condition (the 3.3 example)", () => {
+    const loop = { ...scenesAt("epilogue x")[0], repeat: "always" as const, then: { epilogue: true as const } };
+    expect(thenLoopErrors([loop], () => [])[0]).toContain("reopens it by its head's then: epilogue");
+    expect(thenLoopErrors([{ ...loop, when: { flag: "f" } }], () => [])).toEqual([]);
+    expect(thenLoopErrors([{ ...loop, repeat: "once" }], () => [])).toEqual([]);
+  });
+});

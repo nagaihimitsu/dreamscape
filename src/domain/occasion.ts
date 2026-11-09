@@ -249,7 +249,8 @@ function stepOccasion(state: GameState, nextRoll: () => number): GameState {
     const started = startPart(withOccasion(state, { ...occasion, at: `main:${step.part}`, ran: [...occasion.ran, step.part] }), step.part, nextRoll);
     if (started) return started;
   }
-  return closeOccasion(state);
+  // The finale result's 「エピローグへ」: the epilogue follows its moment's end.
+  return occasion.onClose === "epilogue" ? openEpilogue(closeOccasion(state), false, nextRoll) : closeOccasion(state);
 }
 
 /** The trip's move (stage 4): the place, the arrival time and a ride (a rest's walk home counts none, as before); the visit is recorded on arriving. */
@@ -399,6 +400,7 @@ export function validateOccasionState(state: GameState): void {
       fail();
   }
   if (occasion.ran.some((part) => !occasion.parts.includes(part)) || new Set(occasion.started).size !== occasion.started.length ||
+      (occasion.onClose && (occasion.kind !== "battle" || !occasion.ran.includes("battle"))) ||
       (occasion.romanceEnding && !occasion.ran.includes("ending"))) fail();
   const steps = sequence(occasion);
   if (occasion.at !== null && occasion.at !== "left:observe" && occasion.at !== "main:observe" && !steps.some((step) => keyOf(step) === occasion.at) &&
@@ -437,6 +439,12 @@ const hasThen = (scene: SceneEntry | undefined) => !!scene && (!!scene.then || s
  */
 export function openEpilogue(state: GameState, authored: boolean, nextRoll: () => number = secureRomanceRoll): GameState {
   const cityId = state.currentCityId;
+  const finale = state.occasion;
+  // The finale result's 「エピローグへ」 (stage 4): the rest of the finale's moment runs first (after battle, +N); the epilogue opens as it ends.
+  if (!authored && state.activeBattle?.phase === "result" && finale?.kind === "battle" && !finale.then && !finale.onClose) {
+    if (!epilogueOpening(state, cityId)) return state;
+    return advanceOccasion({ ...state, revision: state.revision + 1, activeBattle: null, battleRewardReceipt: null, occasion: { ...finale, onClose: "epilogue" } }, nextRoll);
+  }
   const opening = epilogueOpening(state, cityId, authored);
   if (!opening) return state;
   if (!momentHasScenes({ kind: "epilogue", cityId }) && !hasThen(mainScene({ epilogue: cityId }))) return beginCityEpilogue(opening, cityId);

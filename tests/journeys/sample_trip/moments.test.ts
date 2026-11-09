@@ -3,6 +3,7 @@ import { dates, scenes } from "../../../src/content";
 import { getJourney } from "../../../src/content/journeys";
 import { encounterEntryRuleList } from "../../../src/domain/encounter";
 import { isJourneyComplete } from "../../../src/domain/city-travel";
+import { isAuthoredEpilogueCity } from "../../../src/domain/epilogue";
 import { validateGameState, type GameState } from "../../../src/domain/game";
 import { occasionSteps } from "../../../src/domain/occasion";
 import type { Occasion } from "../../../src/domain/occasion-state";
@@ -192,9 +193,24 @@ describe("the city's end (3.4 H and I, 3.9 (d))", () => {
     const result = playUntil(trip, (current) => current.activeBattle?.phase === "result");
     expect(result.travelBudget).toBe(sweetsBudget - 20);
     expect(restore(result).travelBudget).toBe(sweetsBudget - 20);
-    expect(listPlayerActions(result).some((action) => action.kind === "battle_epilogue")).toBe(false);
+    expect(listPlayerActions(result).some((action) => action.kind === "battle_epilogue")).toBe(isAuthoredEpilogueCity("mihon") ? false : true);
     return result;
   }
+
+  it("the finale result's 「エピローグへ」 of a city that does not write then: epilogue runs the rest of the finale's moment first, then the epilogue", () => {
+    // In memory, the city's then: epilogue is taken out: the game offers 「エピローグへ」 on the finale's result (as in Milan and the Golden Triangle).
+    const square = scene("smp_mihon_after_finale");
+    patch(square, { options: square.options.map(({ then: _then, ...option }) => option) });
+    patch(scene("smp_mihon_last_morning"), { then: undefined });
+    expect(isAuthoredEpilogueCity("mihon")).toBe(false);
+    const result = toFinaleResult();
+    const after = restore(applyPlayerAction(result, playerActionChange({ kind: "battle_epilogue" }, () => 0), () => 0));
+    expect(after.activeEncounter?.encounterId).toBe("smp_mihon_after_finale");
+    expect(after.occasion).toMatchObject({ kind: "battle", onClose: "epilogue" });
+    const epilogue = playUntil(after, (state) => !!state.activeEpilogue, ["stay"]);
+    expect(epilogue.occasion).toMatchObject({ kind: "epilogue" });
+    expect(epilogue.travel.activeEvent).toBeNull();
+  });
 
   it("H: 「もう少し、歩こう」 back to free time without an epilogue button; after the night the last morning starts the epilogue", () => {
     const result = toFinaleResult();
