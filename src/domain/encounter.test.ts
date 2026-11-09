@@ -3,7 +3,8 @@ import { completedDateCount, createGame, validateGameState, type GameState } fro
 import { compileInk } from "../../scripts/ink-validation";
 import { encounters } from "../content/encounters";
 import type { EncounterDefinition } from "../content/encounter-schemas";
-import { responseProfiles, stories } from "../content";
+import { responseProfiles, sceneConditions, stories } from "../content";
+import { sceneConditionTruths } from "./scene-conditions";
 import { finishEpisode } from "../dev/scenario-builders";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
 import { startTourismEncounter, chooseEncounter, advanceEncounter, answerEncounterQuiz, finishEncounter, getEncounterOptionAvailability, validateEncounterState } from "./encounter";
@@ -328,6 +329,47 @@ describe("travel encounters", () => {
     expect(happy.itemUses[SOUVENIR]).toEqual({ encounterId: GIFT, optionId: "offer" });
     expect(() => validateEncounterState({ ...happy, inventory: { ...happy.inventory, [SOUVENIR]: "held" } })).toThrow("品物を渡した・使った記録が一致しません。");
     expect(() => validateEncounterState({ ...happy, inventory: { ...happy.inventory, [SOUVENIR]: "held" }, itemUses: {} })).toThrow("道中交流の保存状態が一致しません。");
+  });
+  it("reads cond(\"…\") before the choice on the state then, after it on the state with the choice's effects (stage 2a)", () => {
+    const text = `item ${SOUVENIR} held`;
+    const storyId = `encounters/${GIFT}`;
+    sceneConditions.conditions[text] = { item: { id: SOUVENIR, is: "held" } };
+    sceneConditions.stories[storyId] = [text];
+    stories[storyId] = compileInk(`VAR player_name = ""
+VAR heroine_name = ""
+VAR romance_result = "positive"
+EXTERNAL cond(text)
+# background: milano_galleria
+# speaker: heroine
+{ cond("${text}"): 「そのしおり、どうするの？」 | 「しおりはどこ？」 }
+* [Would you like this bookmark?]
+    -> given
+* [This bookmark made me think of you.]
+    -> given
+* [I'll keep it for now.]
+    -> END
+=== given ===
+# speaker: narrator
+{ cond("${text}"): まだ持っている。 | 彼女はしおりを手帳にはさんだ。}
+-> END
+=== function cond(text) ===
+~ return false
+`, `${storyId}.ink`);
+    try {
+      const withItem = finish(choose(meetEncounter(ready(), CAFE, () => 0), 2));
+      const offered = untilChoice(meetEncounter(withItem, GIFT, () => 0));
+      expect(offered.activeEncounter!.frame.text).toBe("「そのしおり、どうするの？」");
+      expect(sceneConditionTruths(offered)).toEqual([{ text, met: true }]);
+      // The gift is applied before the choice reaches Ink: the next line already reads it as given.
+      const given = restored(chooseEncounter(offered, 0, offered.revision));
+      expect(given.inventory[SOUVENIR]).toBe("gifted");
+      expect(given.activeEncounter!.frame.text).toBe("彼女はしおりを手帳にはさんだ。");
+      expect(sceneConditionTruths(given)).toEqual([{ text, met: false }]);
+      expect(sceneConditionTruths({ ...offered, inventory: {} })).toEqual([{ text, met: false }]);
+    } finally {
+      delete sceneConditions.conditions[text];
+      delete sceneConditions.stories[storyId];
+    }
   });
   it("requires the running gift's own use record even when another completed encounter could have given the item", () => {
     const again: EncounterDefinition = { ...structuredClone(testEncounterIn(GIFT)), id: "test_gift_again" };

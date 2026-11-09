@@ -1,4 +1,5 @@
 import { encounters } from "../content/encounters";
+import { sceneConditionReader } from "./scene-conditions";
 import { responseProfileSchema } from "../content/schemas";
 import { getCityStoryBackground, landmarks, responseProfiles } from "../content";
 import type { EncounterDefinition } from "../content/encounter-schemas";
@@ -158,7 +159,7 @@ function beginEncounter(state: GameState, event: EncounterDefinition, nextRoll: 
   const [romanceRoll] = createRomanceRollPlan(1, nextRoll);
   const [rewardTicket] = createRomanceRollPlan(1, nextRoll);
   const step = checkedStep(beginStory(event.storyId, state.playerName, state.heroineName, variables(state), state.memories, state.inventory,
-    getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId)));
+    getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state)));
   const next = { ...state, revision: state.revision + 1 };
   return { ...next, activeEncounter: {
     encounterId: id, runId: `${id}:${next.revision}`, contentHash: encounterFingerprint(event),
@@ -343,7 +344,7 @@ export function chooseEncounter(state: GameState, index: number, expectedRevisio
     romanceResolution = { profileId: profile.id, before: { affection: state.affection, trust: state.trust, spark: state.spark }, deltas, result: resolution.result };
     next = { ...next, affection: next.affection + deltas.affection, trust: next.trust + deltas.trust, spark: next.spark + deltas.spark };
   }
-  const step = selectStoryChoice(activeStoryId(active, active.storyId), active.storyState, active.frame, index, state.memories, {}, { ...variables(next), romance_result: result }, next.inventory);
+  const step = selectStoryChoice(activeStoryId(active, active.storyId), active.storyState, active.frame, index, state.memories, {}, { ...variables(next), romance_result: result }, next.inventory, sceneConditionReader(next));
   return { ...next, revision: state.revision + 1, activeEncounter: withStep({ ...active, selectedOptionId: option.id, romanceResolution }, step) };
 }
 
@@ -362,7 +363,7 @@ export function advanceEncounter(state: GameState, expectedRevision: number): Ga
     const storyId = !correct ? quiz.lostStoryId : active.rewardAlreadyDrawn ? quiz.alreadyStoryId : record?.won ? quiz.wonStoryId : quiz.lostStoryId;
     const resolvedStoryId = activeStoryId(active, storyId);
     const step = checkedStep(beginStory(resolvedStoryId, state.playerName, state.heroineName, variables(state), state.memories, state.inventory,
-      getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId)));
+      getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state)));
     return { ...state, revision: state.revision + 1, activeEncounter: withStep({ ...active, phase: "outcome", storyId, storyHash: storyFingerprint(resolvedStoryId) }, step) };
   }
   if (active.phase === "quiz" || active.frame.choices.length) return state;
@@ -372,7 +373,7 @@ export function advanceEncounter(state: GameState, expectedRevision: number): Ga
       return { ...state, revision: state.revision + 1, activeEncounter: { ...active, phase: "quiz" } };
     return state;
   }
-  return { ...state, revision: state.revision + 1, activeEncounter: withStep(active, continueStory(activeStoryId(active, active.storyId), active.storyState, active.frame, state.memories, variables(state), state.inventory)) };
+  return { ...state, revision: state.revision + 1, activeEncounter: withStep(active, continueStory(activeStoryId(active, active.storyId), active.storyState, active.frame, state.memories, variables(state), state.inventory, sceneConditionReader(state))) };
 }
 
 export function answerEncounterQuiz(state: GameState, optionId: string, expectedRevision: number): GameState {

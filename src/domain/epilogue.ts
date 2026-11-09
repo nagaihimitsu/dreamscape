@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { sceneConditionReader } from "./scene-conditions";
 import { episodes, getCityContent, getCityStoryBackground, progression } from "../content";
 import {
   beginStory,
@@ -55,7 +56,7 @@ export function startCityArrival(state: GameState, expectedRevision: number): Ga
   return { ...state, revision: state.revision + 1, activeEpilogue: {
     episodeId: finale.id, kind: "arrival", logoComplete: false, contentHash: storyFingerprint(storyId),
     ...checkedStep(beginStory(storyId, state.playerName, state.heroineName, variables(state), [], {},
-      getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId))),
+      getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state))),
   } };
 }
 
@@ -105,7 +106,7 @@ export function startCityEpilogue(
           state.playerName,
           state.heroineName,
           variables(state),
-          [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId),
+          [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state),
         ),
       ),
     },
@@ -135,7 +136,7 @@ export function advanceCityEpilogue(
     activeEpilogue: {
       ...active,
       ...checkedStep(
-        continueStory(activeEpilogueStoryId(active)!, active.storyState, active.frame),
+        continueStory(activeEpilogueStoryId(active)!, active.storyState, active.frame, [], {}, {}, sceneConditionReader(state)),
       ),
     },
   };

@@ -1,8 +1,9 @@
 import { z } from "zod";
 
 /**
- * Conditions (the common condition system, stage 1): JSON written by authors in
- * date catalogs (`when`/`until`) and encounter entry rules (`when`), judged only by
+ * Conditions (the common condition system): JSON written by authors in date catalogs
+ * (`when`/`until`) and encounter entry rules (`when`), and made by content:build from the
+ * text of Ink's head tags and of a scene's `cond("…")` (condition-text.ts), judged only by
  * `meets` (src/domain/conditions.ts). Light module (zod only): the runtime parses
  * the generated catalogs with it.
  *
@@ -16,6 +17,12 @@ const range = z.object({ atLeast: positive.optional(), atMost: positive.optional
   .refine((value) => value.atLeast !== undefined || value.atMost !== undefined, "A range needs atLeast or atMost")
   .refine((value) => value.atLeast === undefined || value.atMost === undefined || value.atLeast <= value.atMost,
     "A range's atLeast is greater than its atMost");
+/** A range's checks: at least one bound, in order. */
+const ordered = <T extends { atLeast?: number; atMost?: number }>(schema: z.ZodType<T>) => schema
+  .refine((value) => value.atLeast !== undefined || value.atMost !== undefined, "A range needs atLeast or atMost")
+  .refine((value) => value.atLeast === undefined || value.atMost === undefined || value.atLeast <= value.atMost,
+    "A range's atLeast is greater than its atMost");
+export const RELATIONSHIP_AXES = ["affection", "trust", "spark"] as const;
 export const ITEM_STATUSES = ["obtained", "held", "gifted", "used", "left_behind"] as const;
 
 /** The value each leaf takes. */
@@ -50,6 +57,16 @@ export type LeafValues = {
   rides: { mode: string; atLeast: number };
   /** The mode was rented in the current city. */
   rented: string;
+  /** At least `atLeast` battles of the city were played (won or lost; the city finale's battle is not counted). Stage 2a. */
+  battlesPlayed: { city: string; atLeast: number };
+  /** A hidden relationship value (docs/03): written by the author, never shown to the player. Stage 2a. */
+  relationship: { axis: (typeof RELATIONSHIP_AXES)[number]; atLeast?: number; atMost?: number };
+  /** The money that can be spent: the travel budget less the fare home kept back (travel.returnReserve). Stage 2a. */
+  money: { atLeast?: number; atMost?: number };
+  /** The romance stage (1–4). Stage 2a. */
+  romanceStage: { atLeast?: number; atMost?: number };
+  /** The confession was accepted (the two are a couple). Stage 2a. */
+  couple: true;
 };
 export type LeafKind = keyof LeafValues;
 export type Leaf = { [K in LeafKind]: { [P in K]: LeafValues[K] } }[LeafKind];
@@ -79,13 +96,17 @@ const LEAF_VALUE_SCHEMAS: { [K in LeafKind]: z.ZodType<LeafValues[K]> } = {
     .refine((days) => new Set(days).size === days.length, "A weekday is listed twice"),
   rides: z.object({ mode: id, atLeast: positive }).strict(),
   rented: id,
+  battlesPlayed: z.object({ city: id, atLeast: positive }).strict(),
+  // Relationship values may be negative; money may be 0.
+  relationship: ordered(z.object({ axis: z.enum(RELATIONSHIP_AXES), atLeast: z.number().int().optional(), atMost: z.number().int().optional() }).strict()),
+  money: ordered(z.object({ atLeast: z.number().int().min(0).optional(), atMost: z.number().int().min(0).optional() }).strict()),
+  romanceStage: ordered(z.object({ atLeast: z.number().int().min(1).max(4).optional(), atMost: z.number().int().min(1).max(4).optional() }).strict()),
+  couple: z.literal(true),
 };
 export const LEAF_KINDS = Object.keys(LEAF_VALUE_SCHEMAS) as LeafKind[];
 const COMBINATORS = ["all", "any", "not", "atLeast"] as const;
 /** Parts planned for later stages of the condition system (docs: the unified event design's condition table). */
-const LATER_PARTS: Record<string, number> = {
-  battles: 2, rel: 2, money: 2, stage: 2, couple: 2, ap: 3, met: 3, flag: 3, condition: 3,
-};
+const LATER_PARTS: Record<string, number> = { ap: 3, met: 3, flag: 3, condition: 3 };
 
 type Issue = { message: string; path: (string | number)[] };
 const isObject = (value: unknown): value is Record<string, unknown> =>
@@ -147,6 +168,12 @@ export const conditionSchema: z.ZodType<Condition> = z.custom<Condition>().super
   for (const issue of conditionIssues(value)) context.addIssue({ code: "custom", message: issue.message, path: issue.path });
 });
 
+/** content:build's list of the scenes' `cond("…")`: each text's condition, and each story's texts in the order written. */
+export const sceneConditionsSchema = z.object({
+  conditions: z.record(z.string(), conditionSchema),
+  stories: z.record(z.string(), z.array(z.string())),
+}).strict();
+
 /** A leaf, not a combinator (all, any, not, atLeast). */
 export const isLeaf = (condition: Condition): condition is Leaf =>
   !(COMBINATORS as readonly string[]).includes(Object.keys(condition)[0]);
@@ -203,5 +230,6 @@ export function leafReference(leaf: Leaf): LeafReference | undefined {
   if ("item" in leaf) return { kind: "item", id: leaf.item.id };
   if ("rides" in leaf) return { kind: "mode", id: leaf.rides.mode };
   if ("rented" in leaf) return { kind: "mode", id: leaf.rented };
+  if ("battlesPlayed" in leaf) return { kind: "city", id: leaf.battlesPlayed.city };
   return undefined;
 }

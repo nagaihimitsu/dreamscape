@@ -22,11 +22,16 @@ const EXAMPLES: Record<(typeof LEAF_KINDS)[number], Leaf> = {
   weekday: { weekday: [5, 6] },
   rides: { rides: { mode: "tram", atLeast: 2 } },
   rented: { rented: "bicycle" },
+  battlesPlayed: { battlesPlayed: { city: "a_city", atLeast: 2 } },
+  relationship: { relationship: { axis: "affection", atLeast: -1, atMost: 3 } },
+  money: { money: { atLeast: 0 } },
+  romanceStage: { romanceStage: { atMost: 4 } },
+  couple: { couple: true },
 };
 const messages = (value: unknown) => conditionIssues(value).map((issue) => issue.message);
 
 describe("condition schema", () => {
-  it("accepts every stage-1 leaf, the combinators and their nesting", () => {
+  it("accepts every leaf of stages 1 and 2a, the combinators and their nesting", () => {
     expect(Object.keys(EXAMPLES).sort()).toEqual([...LEAF_KINDS].sort());
     for (const leaf of Object.values(EXAMPLES)) expect(conditionSchema.safeParse(leaf).success).toBe(true);
     for (const status of ["obtained", "held", "gifted", "used", "left_behind"])
@@ -41,7 +46,7 @@ describe("condition schema", () => {
 
   it("refuses unknown parts, naming the stage of a later one", () => {
     expect(messages({ flag: "x" })).toEqual(['Condition part "flag" is not available yet (stage 3)']);
-    expect(messages({ money: { atLeast: 300 } })).toEqual(['Condition part "money" is not available yet (stage 2)']);
+    expect(messages({ ap: { atLeast: 2 } })).toEqual(['Condition part "ap" is not available yet (stage 3)']);
     expect(messages({ all: [{ placeVisited: "x" }] })).toEqual(["Unknown condition part: placeVisited"]);
     expect(conditionIssues({ all: [EXAMPLES.time, { met: "x" }] })[0].path).toEqual(["all", 1, "met"]);
   });
@@ -71,6 +76,15 @@ describe("condition schema", () => {
     expect(messages({ weekday: [7] })).toHaveLength(1);
     expect(messages({ weekday: [1, 1] })).toEqual(["weekday: A weekday is listed twice"]);
     expect(messages({ rides: { mode: "tram", atLeast: 0 } })).toHaveLength(1);
+    expect(messages({ battlesPlayed: { city: "a", atLeast: 0 } })).toHaveLength(1);
+    expect(messages({ relationship: { axis: "charm", atLeast: 1 } })).toHaveLength(1);
+    expect(messages({ relationship: { axis: "trust" } })).toEqual(["relationship: A range needs atLeast or atMost"]);
+    expect(messages({ relationship: { axis: "trust", atLeast: 2, atMost: 1 } })).toEqual(["relationship: A range's atLeast is greater than its atMost"]);
+    expect(messages({ money: { atLeast: -1 } })).toHaveLength(1);
+    expect(messages({ money: { atMost: 1.5 } })).toHaveLength(1);
+    expect(messages({ romanceStage: { atLeast: 5 } })).toHaveLength(1);
+    expect(messages({ romanceStage: { atLeast: 0 } })).toHaveLength(1);
+    expect(messages({ couple: false })).toHaveLength(1);
   });
 });
 

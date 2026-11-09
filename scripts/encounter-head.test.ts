@@ -36,7 +36,7 @@ describe("encounter head tags", () => {
     ["# at: visit x\n# priority: -1\n# when: {flag_x}\n", "A head tag is plain text, without {…}"],
     ["# at: visit x # priority: -1\n# speaker: narrator # when: time day\n", "Write each head tag on its own line"],
     ["# at: visit x\n# priority: -1\n# when: flag smp_lili_met\n", 'Condition part "flag" is not available yet (stage 3)'],
-    ["# at: visit x\n# priority: -1\n# when: money >= 300\n", 'Condition part "money" is not available yet (stage 2)'],
+    ["# at: visit x\n# priority: -1\n# when: ap >= 2\n", 'Condition part "ap" is not available yet (stage 3)'],
   ])("refuses %j", (head, message) => {
     expect(() => readEncounterHead(`${names}${head}${body}`)).toThrow(message);
   });
@@ -63,6 +63,16 @@ describe("condition texts", () => {
     ["weekday 5,6", { weekday: [5, 6] }],
     ["rides rental_bicycle >= 1", { rides: { mode: "rental_bicycle", atLeast: 1 } }],
     ["rented rental_bicycle", { rented: "rental_bicycle" }],
+    // Stage 2a (decision 3): relationship values, money, the romance stage, the couple, a city's battles.
+    ["battles mihon >= 2", { battlesPlayed: { city: "mihon", atLeast: 2 } }],
+    ["rel affection >= 3", { relationship: { axis: "affection", atLeast: 3 } }],
+    ["rel trust <= -1", { relationship: { axis: "trust", atMost: -1 } }],
+    ["rel spark >= 0", { relationship: { axis: "spark", atLeast: 0 } }],
+    ["money >= 300", { money: { atLeast: 300 } }],
+    ["money <= 0", { money: { atMost: 0 } }],
+    ["stage >= 2", { romanceStage: { atLeast: 2 } }],
+    ["couple", { couple: true }],
+    ["not couple", { not: { couple: true } }],
   ])("reads %s", (text, condition) => {
     expect(parseConditionText(text)).toEqual(condition);
   });
@@ -70,9 +80,10 @@ describe("condition texts", () => {
   it.each([
     ["", "Empty condition"], ["not", "Empty condition after not"], ["item smp_x sold", "Write the condition part \"item\""],
     ["time noon", "time day|night"], ["day > 2", "day >= N"], ["weekday 7", "weekday 5,6"], ["visited", "visited <landmark>"],
-    ["rel affection >= 3", 'Condition part "rel" is not available yet (stage 2)'], ["couple", '"couple" is not available yet'],
-    ["battles mihon >= 2", '"battles" is not available yet (stage 2)'], ["met smp_lili", '"met" is not available yet (stage 3)'],
-    ["stage >= 2", '"stage" is not available yet'], ["wish upon a star", "Unknown condition part: wish"],
+    ["ap >= 2", 'Condition part "ap" is not available yet (stage 3)'], ["met smp_lili", '"met" is not available yet (stage 3)'],
+    ["rel charm >= 3", "rel affection|trust|spark"], ["rel affection > 3", "rel affection >= N"], ["rel affection >= 1.5", "rel affection >= N"],
+    ["money >= -1", "Invalid condition"], ["stage >= 5", "Invalid condition"], ["couple yes", 'Write the condition part "couple" as: couple'],
+    ["battles mihon <= 2", "battles <city> >= N"], ["wish upon a star", "Unknown condition part: wish"],
   ])("refuses %j", (text, message) => {
     expect(() => parseConditionText(text)).toThrow(message);
   });

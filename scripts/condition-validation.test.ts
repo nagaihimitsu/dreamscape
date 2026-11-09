@@ -34,6 +34,9 @@ describe("condition build checks", () => {
       // An item of an earlier city: its history is read later; held only in its own city.
       { item: { id: "alpha_key", is: "left_behind" } }, { item: { id: "alpha_key", is: "gifted" } }, { item: { id: "beta_coin", is: "held" } },
       { time: "night" }, { cityDay: { atLeast: 2 } },
+      // Stage 2a: a city's battle count, relationship values, money, the stage and the couple.
+      { battlesPlayed: { city: "alpha", atLeast: 1 } }, { relationship: { axis: "trust", atLeast: -1 } }, { money: { atLeast: 300 } },
+      { romanceStage: { atLeast: 2 } }, { couple: true },
     ] };
     expect(errorsOf(when)).toEqual([]);
     expect(() => checkConditions(content, dateConditionOwners({ dates: [{ id: "probe", chapterId: "beta", when, until: { not: when } }] })))
@@ -51,6 +54,7 @@ describe("condition build checks", () => {
     [{ encounterSeen: "missing" }, "Unknown encounter in a condition of date probe (when): missing"],
     [{ datePlayed: "missing" }, "Unknown date in a condition of date probe (when): missing"],
     [{ item: { id: "missing", is: "obtained" } }, "Unknown item in a condition of date probe (when): missing"],
+    [{ battlesPlayed: { city: "missing", atLeast: 1 } }, "Unknown city in a condition of date probe (when): missing"],
   ] as [Condition, string][])("refuses an unknown name: %j", (leaf, message) => {
     expect(errorsOf({ not: { any: [{ time: "day" }, leaf] } })).toEqual([message]);
   });
@@ -117,6 +121,12 @@ describe("condition build warnings", () => {
     expect(warn({ dates })).toEqual([{ kind: "never-offered",
       message: "Condition never met where it is checked: date alpha_date (when) is read in alpha but needs episode beta_episode of the later city beta" }]);
     expect(warn({ dates: [{ id: "alpha_date", chapterId: "alpha", when: { not: { cityCompleted: "beta" } } }] })).toEqual([]);
+    // A scene's cond("…") is read in the scene's city like the other conditions (stage 2a).
+    const scene = { label: "the scene encounters/alpha_talk", cityId: "alpha", conditions: [{ field: 'cond("battles beta >= 1")', condition: { battlesPlayed: { city: "beta", atLeast: 1 } } }] };
+    expect(conditionWarnings(content, [], [scene])).toEqual([{ kind: "never-offered", message: "Condition never met where it is checked: " +
+      'the scene encounters/alpha_talk (cond("battles beta >= 1")) is read in alpha but needs city beta of the later city beta' }]);
+    expect(conditionErrors(content, [{ ...scene, conditions: [{ field: "cond", condition: { item: { id: "beta_coin", is: "held" } } }] }])).toEqual([
+      "An item of another city is never held in a condition of the scene encounters/alpha_talk (cond): beta_coin belongs to beta, the condition is read in alpha"]);
   });
 
   it("warns about a calendar part in a journey without a calendar, and about dates that wait for each other", () => {
@@ -132,17 +142,19 @@ describe("condition build warnings", () => {
     ]);
   });
 
-  it("warns about a date condition reading the time or rides, which the trip to the date changes", () => {
+  it("warns about a date condition reading the time, rides or money, which the trip to the date changes", () => {
     expect(warn({ dates: [{ id: "alpha_date", chapterId: "alpha", when: { time: "night" } },
-      { id: "beta_date", chapterId: "beta", until: { rides: { mode: "tram", atLeast: 3 } } }] }).map((warning) => [warning.kind, warning.message.slice(0, 60)]))
+      { id: "beta_date", chapterId: "beta", until: { rides: { mode: "tram", atLeast: 3 } } },
+      { id: "gamma_date", chapterId: "alpha", when: { money: { atLeast: 300 } } }] }).map((warning) => [warning.kind, warning.message.slice(0, 60)]))
       .toEqual([["date-condition-trip", "Date condition read before and after the trip: date alpha_da"],
-        ["date-condition-trip", "Date condition read before and after the trip: date beta_dat"]]);
+        ["date-condition-trip", "Date condition read before and after the trip: date beta_dat"],
+        ["date-condition-trip", "Date condition read before and after the trip: date gamma_da"]]);
     // Entry rules read the moment's own state: no such warning.
     expect(warn({}, [{ encounterId: "alpha_meeting", when: { time: "night" } }])).toEqual([]);
   });
 
   it("gives every condition warning kind a label in the build report", () => {
     expect(CONTENT_WARNING_LABELS["never-offered"]).toBe("encounter(s) or date(s) whose condition can never be met where it is checked");
-    expect(CONTENT_WARNING_LABELS["date-condition-trip"]).toBe("date condition(s) reading the time or rides, which the trip to the date changes");
+    expect(CONTENT_WARNING_LABELS["date-condition-trip"]).toBe("date condition(s) reading the time, rides or money, which the trip to the date changes");
   });
 });

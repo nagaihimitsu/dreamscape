@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { episodes } from "../content";
+import { battles, episodes, landmarks } from "../content";
 import { LEAF_KINDS, type Condition, type Leaf } from "../content/condition-schemas";
 import { battlePlayed, meets } from "./conditions";
 import { createGame, type GameState } from "./game";
@@ -39,6 +39,21 @@ const TRUTH: Record<(typeof LEAF_KINDS)[number], [Leaf, GameState, GameState]> =
   rides: [{ rides: { mode: "tram", atLeast: 2 } }, { ...base, travel: { ...base.travel, rideCounts: { tram: 2 } } },
     { ...base, travel: { ...base.travel, rideCounts: { tram: 1, taxi: 3 } } }],
   rented: [{ rented: "bicycle" }, { ...base, travel: { ...base.travel, rentedModeIds: ["bicycle"] } }, base],
+  // Stage 2a: a city's battles played (won or lost, its finale not counted).
+  battlesPlayed: (() => {
+    const cityOf = (battle: (typeof battles)[number]) => landmarks.find((landmark) => landmark.id === battle.landmarkId)?.cityId;
+    const city = cityOf(battles.find((battle) => battle.scope !== "city_finale")!)!;
+    const own = battles.filter((battle) => battle.scope !== "city_finale" && cityOf(battle) === city).map((battle) => battle.id);
+    const finale = battles.find((battle) => battle.scope === "city_finale" && battle.cityId === city)!;
+    return [{ battlesPlayed: { city, atLeast: 2 } }, { ...base, battleRecords: [record(own[0]), record(own[1], 1)] },
+      { ...base, battleRecords: [record(own[0]), record(finale.id), record(own[1], 0)] }];
+  })(),
+  relationship: [{ relationship: { axis: "trust", atMost: -1 } }, { ...base, trust: -1 }, { ...base, trust: 0, affection: -5 }],
+  // The money that can be spent: the fare home kept back is not.
+  money: [{ money: { atLeast: 300 } }, { ...base, travelBudget: 400, travel: { ...base.travel, returnReserve: 100 } },
+    { ...base, travelBudget: 400, travel: { ...base.travel, returnReserve: 101 } }],
+  romanceStage: [{ romanceStage: { atLeast: 2, atMost: 3 } }, { ...base, romanceStage: 3 }, { ...base, romanceStage: 4 }],
+  couple: [{ couple: true }, { ...base, confessionStatus: "accepted" }, { ...base, confessionStatus: "deferred" }],
 };
 
 describe("meets", () => {
