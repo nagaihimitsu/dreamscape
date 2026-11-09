@@ -1,8 +1,10 @@
 import { checkContentImages } from "./content-images";
+import { derivedImageList, prepareDerivedImages } from "./derived-images";
 import { writeContentOutputs } from "./content-outputs";
 import { loadContentSources, type ContentLoadOptions } from "./content-sources";
 import { validateContent } from "./content-validation";
 import { markSampleCopies, readObservationCards, tourismPhotos, tourismPhotoWarnings } from "./image-optimization";
+import { imageJourneyIndex } from "./image-rights";
 import { sampleMarks } from "./sample-journey";
 import { chooseStoryCache, type StoryValidationCache } from "./story-validation-cache";
 
@@ -34,7 +36,18 @@ export async function buildContent(
   const storyCache = chooseStoryCache(options.storyCache);
   const content = validateContent(sources, { storyCache });
   await checkContentImages(sources.publicFiles, content.images);
-  if (writeOutput) writeContentOutputs(root, sources, content);
+  // The reduced copies of the free-time photos (derived-images.ts), served beside the other public files.
+  let derivedImages: { count: number; made: number } | undefined;
+  if (writeOutput) {
+    const journeyOf = new Map(Object.entries(imageJourneyIndex(sources).journeys)
+      .flatMap(([journeyId, assetIds]) => assetIds.map((assetId): [string, string] => [assetId, journeyId])));
+    const derived = await prepareDerivedImages(derivedImageList({
+      content: { assets: content.tourism.assets, landmarks: content.tourism.landmarks, backgrounds: content.photoContent.backgrounds },
+      cities: content.photoContent.cities, journeyOf, publicFiles: sources.publicFiles,
+    }));
+    writeContentOutputs(root, sources, content, derived.files);
+    derivedImages = { count: derived.files.size, made: derived.made };
+  }
   const photos = markSampleCopies(tourismPhotos(sources, content.tourism, readObservationCards(root, sources.manifests, "skip")), sampleMarks().imageHashes);
-  return { ...content, warnings: [...content.warnings, ...tourismPhotoWarnings(sources, photos)] };
+  return { ...content, derivedImages, warnings: [...content.warnings, ...tourismPhotoWarnings(sources, photos)] };
 }

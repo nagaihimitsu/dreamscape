@@ -8,7 +8,7 @@ import { imageJourneyIndex } from "./image-rights";
 // The outputs of content:build, written after the content was validated:
 // the compiled stories and quizzes, the generated mirror of the merged
 // catalogs (src/content/generated/content/) and the served static files
-// (src/content/generated/public/).
+// (src/content/generated/public/, with the reduced photo copies of derived-images.ts).
 
 export const GENERATED_DIRECTORY = "src/content/generated";
 /** How the outputs were built: `{ extraJourneyFolders: { <journeyId>: <folder> } }`, empty without extra journey folders. */
@@ -16,11 +16,16 @@ export const BUILD_INFO_FILE = `${GENERATED_DIRECTORY}/build-info.json`;
 /** Which journey provides each tourism image, for the credits list (image-rights.ts imageJourneyIndex). */
 export const IMAGE_JOURNEYS_FILE = `${GENERATED_DIRECTORY}/image-journeys.json`;
 
-/** Write every output of a validated build into `root`. */
+/**
+ * Write every output of a validated build into `root`. `derivedFiles` (served
+ * path → file) are the reduced photo copies of derived-images.ts, served with
+ * the public files.
+ */
 export function writeContentOutputs(
   root: string,
   sources: ContentSources,
   validated: { stories: Record<string, string>; quizzes: Record<string, unknown> },
+  derivedFiles: ReadonlyMap<string, string> = new Map(),
 ): void {
   const directory = path.join(root, GENERATED_DIRECTORY);
   mkdirSync(directory, { recursive: true });
@@ -33,7 +38,7 @@ export function writeContentOutputs(
   // The game imports the validated, merged catalogs only from this mirror.
   writeContentMirror(sources, mirrorDirectory(root));
   // Vite serves and builds the game's images from this folder (publicDir in vite.config.ts).
-  assemblePublicDirectory(sources.publicFiles, generatedPublicDirectory(root));
+  assemblePublicDirectory(new Map([...sources.publicFiles, ...derivedFiles]), generatedPublicDirectory(root));
 }
 
 /**

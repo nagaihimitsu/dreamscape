@@ -1,3 +1,4 @@
+import { derivedImageFile } from "../../src/content/code-images";
 import type { GameState } from "../../src/domain/game";
 import { expect, expectNoActiveScene, generated, journeyCatalog, ops, playUntil, quizCatalog, readSave, savedGame, test, tier, type Page, type Pick } from "./helpers";
 
@@ -103,6 +104,18 @@ test("the sample journey plays from a new journey through its city finale and ep
   expect(await ops.readTravelers(page)).toContain("ユウ");
   expect(await readSave(page, JOURNEY)).toMatchObject({ currentCityId: route.city.id, ap: 0 });
   await expect(page.getByLabel("残り0AP")).toBeVisible();
+  // The city's free-time backdrop (cities/<city>.json backdropAssetId): the reduced copy that content:build
+  // derives from the photo loads on the free-time page. (From UI step 1.5 the screen shows it as its background.)
+  const backdropId = generated<{ backdropAssetId?: string }>(`cities/${route.city.id}.json`).backdropAssetId;
+  expect(backdropId, "the sample city's backdropAssetId").toBeDefined();
+  const backdrop = await page.evaluate(async (src) => {
+    const image = new Image();
+    image.src = src;
+    await image.decode();
+    return { width: image.naturalWidth, height: image.naturalHeight };
+  }, derivedImageFile(JOURNEY, backdropId!, "backdrop"));
+  // The sample's photo is 240×160 px; a backdrop copy is never enlarged.
+  expect(backdrop).toEqual({ width: 240, height: 160 });
 
   // 0. (Optional part) The rental bicycle. Its route is listed but closed until the
   // bicycle is rented at the hotel; renting asks once more, pays once and takes no time.

@@ -77,6 +77,18 @@ describe("validateContent on sources in memory", () => {
     );
   });
 
+  it("rejects a city backdrop that is another journey's photo", () => {
+    const cityFile = `${journeyFolder("trip_b")}/cities/b_city.json`;
+    const tree = {
+      ...files(),
+      [`${journeyFolder("trip_a")}/tourism/catalog.json`]: json({ schemaVersion: 1, assets: [{ id: "trip_a_photo" }], landmarks: [], clues: [] }),
+      [cityFile]: json({ ...JSON.parse(city("b_city")), backdropAssetId: "trip_a_photo" }),
+    };
+    expect(() => validateContent(load(tree))).toThrow(
+      'Reference to another layer: content/journeys/trip_b/cities/b_city.json backdropAssetId "trip_a_photo" is the asset defined in content/journeys/trip_a/tourism/catalog.json',
+    );
+  });
+
   it("requires the shared default background from the core layer", () => {
     const missing = "Missing default background: content/romance/presentation.json must define backgrounds.default_scene";
     const withoutDefault = { ...files(), "content/romance/presentation.json": json({ schemaVersion: 1, backgrounds: {}, memories: {} }) };

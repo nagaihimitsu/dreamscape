@@ -13,5 +13,6 @@
     "mihon_market",
     "mihon_library"
   ],
-  "productionStatus": "complete"
+  "productionStatus": "complete",
+  "backdropAssetId": "smp_img_mihon_clock_tower"
 }
