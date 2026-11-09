@@ -1,25 +1,31 @@
+/* The site's progress line on wide screens (stage 2.4): a parchment band; the phase is a
+   display-only pill (§2.3). */
 .journey-stage {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  padding: 12px 24px;
+  padding: 10px 24px;
   font-size: 11px;
-  background: #e9eadd;
-  color: #566749;
-  border-bottom: 1px solid #d9ddcc;
+  background: var(--ds-parchment-2);
+  color: var(--ds-ink);
+  border-bottom: 1px solid var(--ds-parchment-line);
 }
 .journey-stage span:last-child {
   flex-shrink: 0;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--ds-slate-800);
+  color: var(--ds-on-slate);
   font-weight: 600;
 }
 .pending-rewards {
   padding: 18px 22px;
   margin: 20px auto;
   max-width: 576px;
-  background: #f0eadb;
-  border: 1px solid #dac8a6;
-  border-radius: 4px;
+  background: var(--ds-parchment);
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 16px;
 }
 .pending-rewards h2 {
   font-size: 18px;

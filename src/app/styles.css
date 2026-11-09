@@ -329,13 +329,14 @@ h3 {
   margin-top: 12px;
   font-size: 13px;
 }
+/* A display-only label (§2.3): a flat slate pill without an edge. */
 .pill {
   font-size: 10px;
   letter-spacing: 0.09em;
-  background: #e9eadc;
-  color: #657058;
+  background: var(--ds-slate-800);
+  color: var(--ds-on-slate);
   padding: 4px 9px;
-  border-radius: 2px;
+  border-radius: 999px;
 }
 .section-meta {
   display: flex;
@@ -932,8 +933,28 @@ dialog.modal::backdrop {
   white-space: nowrap;
   border: 0;
 }
+/* 交際開始 (UI redesign stage 2.4): the title card's parchment over the place's picture. */
 .ending {
   padding-top: 42px;
+}
+.paper.ending {
+  position: relative;
+  margin-top: -16px;
+  color: var(--ds-ink);
+  background: var(--ds-parchment);
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 16px;
+  box-shadow: var(--ds-card-shadow);
+}
+/* The picture's caption stays clear of the card's rounded top. */
+.canal-scene:has(+ .paper.ending) .scene-stamp {
+  transform: translateY(-16px);
+}
+@media (max-width: 719px) {
+  .paper.ending {
+    border-width: 1px 0 0;
+    border-radius: 16px 16px 0 0;
+  }
 }
 .ending h1 {
   font-size: 28px;
@@ -950,7 +971,7 @@ dialog.modal::backdrop {
 }
 .ending-names span {
   font-family: Georgia, serif;
-  color: var(--gold);
+  color: var(--ds-ink-muted);
   font-size: 24px;
   margin: 0 10px;
 }

@@ -4,14 +4,17 @@
   margin-top: 8px;
 }
 
+/* An English choice of an encounter (UI redesign stage 2.4): a display row in the window
+   (its words and translation are reading targets); the letter is its pressable, slate with
+   the gold hairline like the battle's A·B·C. */
 .encounter-choice {
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr);
   gap: 8px;
   padding: 5px;
-  border: 1px solid var(--vn-choice-border, #a1aaa0);
-  border-radius: 8px;
-  background: var(--vn-choice-bg, #f2f3ec);
+  border: 1px solid rgba(255, 255, 255, .22);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .06);
 }
 
 .encounter-choice-select {
@@ -19,16 +22,21 @@
   min-width: 44px;
   min-height: 44px;
   padding: 5px;
-  border: 1px solid currentColor;
-  border-radius: 6px;
-  background: #e5eee2;
-  color: #29483b;
-  font-weight: 700;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 12px;
+  background: var(--ds-slate-800);
+  color: var(--ds-on-slate);
+  font-family: Georgia, serif;
+  font-size: 18px;
+  font-weight: 400;
   cursor: pointer;
 }
 
 .encounter-choice-select:disabled {
-  opacity: .45;
+  opacity: 1;
+  border-color: transparent;
+  background: var(--ds-disabled-bg);
+  color: var(--ds-disabled-ink);
   cursor: not-allowed;
 }
 
