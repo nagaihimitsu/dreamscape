@@ -28,20 +28,34 @@ function closeBattleResult(result: GameState): GameState {
   return epilogue;
 }
 
-/**
- * Play a moment's inserted scenes (GT-4: Delhi's departure at the station, Agra's arrival reel) with the first
- * action the screen offers, each step through `save`, while `going` holds. Returns the last state and the
- * last one before the journey moved to another city (the departure's scenes are played in the city they leave).
- */
-function playScenes(initial: GameState, going: (state: GameState) => boolean, save: (state: GameState) => GameState = (state) => state) {
+type Save = (state: GameState) => GameState;
+const firstAction = (state: GameState) => applyPlayerAction(state, playerActionChange(listPlayerActions(state)[0], () => 0), () => 0);
+
+/** Play a moment's inserted scenes (GT-4: Agra's arrival reel) with the first action the screen offers, each step through `save`, while `going` holds. */
+function playScenes(initial: GameState, going: (state: GameState) => boolean, save: Save) {
   let state = initial;
-  let leaving = initial;
   for (let steps = 0; going(state); steps++) {
     expect(steps).toBeLessThan(200);
-    if (state.currentCityId === initial.currentCityId) leaving = state;
-    state = save(applyPlayerAction(state, playerActionChange(listPlayerActions(state)[0], () => 0), () => 0));
+    state = save(firstAction(state));
   }
-  return { state, leaving: state.currentCityId === initial.currentCityId ? state : leaving };
+  return state;
+}
+
+/**
+ * Leave a cleared city whose epilogue was read, as the journey does by itself (advanceCompletedJourneyCity), playing
+ * its departure's scenes (GT-4: Delhi's at the station, in the city they leave) the same way. Returns the state after
+ * the move and the last state in the city: the departure's last scene, or `before` itself when the departure has no
+ * scenes (never the state after the move).
+ */
+function leaveCity(before: GameState, save: Save) {
+  let state = save(advanceCompletedJourneyCity(before, before.revision));
+  let leaving = before;
+  for (let steps = 0; state.currentCityId === before.currentCityId && state.occasion?.kind === "depart"; steps++) {
+    expect(steps).toBeLessThan(200);
+    leaving = state;
+    state = save(firstAction(state));
+  }
+  return { state, leaving };
 }
 
 /** Exercise the actual published scripts, questions and definitions, not Debug fixtures. */
@@ -86,7 +100,7 @@ describe("authored Golden Triangle journey", () => {
         state = checkpoint(advanceCityEpilogue(state, state.revision));
       }
       // Agra's arrival goes on with its reel (GT-4: the Delhi stepwell date was played); then the arrival's moment closes.
-      state = playScenes(state, (current) => !!current.activeEncounter, checkpoint).state;
+      state = playScenes(state, (current) => !!current.activeEncounter, checkpoint);
       expect(state.occasion).toBeNull();
       const { revision: arrivalRevision, activeEpilogue: arrivalScene, inventory: arrivalInventory, occasion: arrivalMoment,
         seenEncounterIds: arrivalSeen, completedEncounterIds: arrivalDone, ...beforeWelcome } = arrival;
@@ -153,17 +167,21 @@ describe("authored Golden Triangle journey", () => {
         state = checkpoint(state);
         state = advanceCityEpilogue(state, state.revision);
       }
-      state = checkpoint(advanceCompletedJourneyCity(state, state.revision));
-      expect(state.viewedEpilogueCityIds).toContain(cityId);
-      // Delhi's departure has its scenes at the station (GT-4): played in Delhi, they may spend and change the relationship.
-      expect(state.occasion?.kind === "depart").toBe(cityId === "delhi");
-      const departed = playScenes(state, (current) => current.currentCityId === cityId && current.occasion?.kind === "depart", checkpoint);
+      const departed = leaveCity(state, checkpoint);
       state = departed.state;
+      expect(state.viewedEpilogueCityIds).toContain(cityId);
       expect(state.currentCityId).toBe(journey.cities[cityIndex + 1]?.id ?? cityId);
+      // Only Delhi's departure has scenes (GT-4: at the station); played in Delhi, they may spend and change the relationship.
+      const departureScenes = cityId === "delhi";
+      expect(departed.leaving.occasion?.kind === "depart").toBe(departureScenes);
       const fields = ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds"] as const;
+      // The move itself keeps all of them; since the clear, only the departure's scenes may change the money and the relationship.
       for (const field of fields) expect(state[field], field).toEqual(departed.leaving[field]);
-      for (const field of fields.filter((item) => !["travelBudget", "affection", "trust", "spark", "romanceStage"].includes(item)))
-        expect(state[field], field).toEqual(completed[field]);
+      const scenesChange = departureScenes ? ["travelBudget", "affection", "trust", "spark", "romanceStage"] : [];
+      for (const field of fields.filter((item) => !scenesChange.includes(item))) expect(state[field], field).toEqual(completed[field]);
+      // The station's deposit (# money: -500 with # set: gt_delhi_scam_paid) is the only money spent there.
+      if (departureScenes)
+        expect(state.travelBudget).toBe(completed.travelBudget - (state.storyProgress.flags.includes("gt_delhi_scam_paid") ? 500 : 0));
       expect(advanceCompletedJourneyCity(state, state.revision)).toBe(state);
       expect(loadGame(milanSlot)).toEqual({ status: "loaded", state: milan });
     }
@@ -243,9 +261,8 @@ it("finishes the three-city story without any date or optional memory, in altern
       expect(state.activeEpilogue.frame.speaker).not.toBe("player");
       state = roundtrip(advanceCityEpilogue(state, state.revision));
     }
-    state = advanceCompletedJourneyCity(state, state.revision);
     // Delhi's departure has its scenes at the station (GT-4); the next city's arrival then opens by itself.
-    state = playScenes(state, (current) => current.currentCityId === city.id && current.occasion?.kind === "depart", roundtrip).state;
+    state = leaveCity(state, roundtrip).state;
     expect(state.currentCityId).toBe(journey.cities[cityIndex + 1]?.id ?? city.id);
   }
   expect(state.viewedEpilogueCityIds).toEqual(["delhi", "agra", "jaipur"]);
