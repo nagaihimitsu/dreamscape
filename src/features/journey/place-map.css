@@ -36,12 +36,8 @@
 .travel-map-legend > span { white-space: nowrap; }
 .travel-map-legend-glyph { color: var(--ds-marker); }
 .free-time-hub .travel-map-notes > :last-child:not(.travel-map-error) { padding-bottom: 6px; }
-.travel-map-error,
-.travel-map-selected { margin: 4px 0 0; font-size: 13px; line-height: 1.5; }
-.travel-map-places { margin: 0; font-size: 13px; }
-.travel-map-places summary { min-height: 44px; padding: 10px 0; cursor: pointer; }
-.travel-map-places label { display: flex; gap: 8px; align-items: center; }
-.travel-map-places select { flex: 1; min-width: 0; min-height: 44px; font: inherit; }
+.travel-map-error { margin: 4px 0 0; font-size: 13px; line-height: 1.5; }
+.travel-map-legend-disc { display: inline-block; width: 12px; height: 12px; margin: 0 3px 0 2px; border-radius: 50%; background: var(--ds-slate-900); box-shadow: 0 0 0 1.5px #fff, 0 0 0 2.5px var(--ds-slate-900); vertical-align: -1px; }
 .leaflet-container .leaflet-control-zoom { border: 1.5px solid var(--ds-slate-800); border-radius: 12px; overflow: hidden; }
 
 /* Free time (§3.4): the map block is the part that stays under the header while
@@ -73,23 +69,27 @@
   background: var(--ds-parchment);
   color: var(--ds-ink);
 }
-.free-time-hub .travel-map-places {
-  padding: 0 12px;
-  border-radius: 12px;
-  background: var(--ds-parchment);
-}
+/* The expanded map (§3.5): a fixed header, then a scroll area with the map (sticky at its
+   top), the legend, 「地点を名前で探す」 and the 「選んだ行き先」 slot. */
 dialog.modal.travel-map-modal {
   width: min(760px, calc(100% - 24px));
   max-height: calc(100dvh - 24px);
   padding: 12px;
+  overflow: hidden;
 }
+dialog.modal.travel-map-modal[open] { display: flex; flex-direction: column; }
+.travel-map-modal-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.travel-map-modal-map { position: sticky; z-index: 1; top: 0; padding-bottom: 6px; background: var(--paper, #fff); isolation: isolate; }
+.travel-map-modal-body > .travel-map-legend { margin-top: 2px; }
+.travel-map-selection { margin-top: 8px; padding: 0 0 4px; touch-action: manipulation; }
+.travel-map-selection h3 { margin: 0 0 4px; font-size: 15px; }
+.travel-map-selection > p { margin: 4px 0; font-size: 13px; line-height: 1.5; }
 .travel-map-modal-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
 .travel-map-modal-heading h2 { margin: 0; font-size: 18px; }
 .travel-map-modal-heading button { flex: none; width: auto; min-height: 44px; padding: 6px 12px; }
-dialog.modal.travel-map-modal .travel-map-frame { height: min(60dvh, 520px); }
+dialog.modal.travel-map-modal .travel-map-frame { height: clamp(180px, calc(100svh - 356px), 520px); }
 .travel-map-modal-place { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 13px; }
 .travel-map-modal-place select { flex: 1; min-width: 0; min-height: 44px; font: inherit; }
-.travel-map-modal-legend { margin: 6px 0 0; font-size: 12px; }
 @media (max-height: 500px) and (orientation: landscape) {
-  dialog.modal.travel-map-modal .travel-map-frame { height: 42dvh; }
+  dialog.modal.travel-map-modal .travel-map-frame { height: max(140px, 42dvh); }
 }

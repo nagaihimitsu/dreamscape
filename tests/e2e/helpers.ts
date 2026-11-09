@@ -396,19 +396,54 @@ export const ops = {
     if (!(await place.isVisible())) await page.getByText("ほかの行き先を見る", { exact: true }).click();
     return place.getByRole("button");
   },
-  /**
-   * Pick a destination on the travel menu, opening the longer list when needed. A
-   * destination reached by more than one route opens the route dialog 「{place}へ」;
-   * `route` is the start of the route button to press there (the mode's name, e.g.
-   * 「徒歩」 or 「路面電車」).
-   */
-  async goTo(page: Page, placeId: string, route?: string) {
+  /** The first press on a destination's row (it selects the place and shows it on the map); returns the row. */
+  async selectDestination(page: Page, placeId: string): Promise<Locator> {
     await (await ops.destination(page, placeId)).click();
-    if (route) await ops.routeButton(page, route).click();
+    const row = page.getByTestId(`travel-place-${placeId}`);
+    await expect(row).toHaveAttribute("data-selected", "true");
+    return row;
   },
-  /** The route dialog's button whose label starts with `route` (the mode's name). */
-  routeButton(page: Page, route: string): Locator {
-    return page.getByRole("dialog").getByRole("button", { name: new RegExp(`^${route}`, "u") });
+  /**
+   * Go to a destination the two-step way (UI redesign §3.5), opening the longer list when
+   * needed: the first press on its row selects it; a row with one way is pressed again once
+   * armed (`data-armed`); otherwise its inline choices are used: the event `eventId` (when the
+   * place has several) and the mode `mode` (walking unless named; when the event has several).
+   * Fails with a clear message when the requested choice is not offered. The page's clock must
+   * run (the arming waits on a timer): hold it only after the last press.
+   */
+  async goTo(page: Page, placeId: string, choice: TravelChoice = {}) {
+    const row = page.getByTestId(`travel-place-${placeId}`);
+    await (await ops.destination(page, placeId)).click();
+    await chooseInRow(row, placeId, choice);
+  },
+  /**
+   * The same from the expanded map: 「地図を大きく見る」, the place's marker by keyboard (Enter
+   * selects it), then the same steps in the dialog's 「選んだ行き先」 (whose row has its own testid).
+   */
+  async goToFromMap(page: Page, placeId: string, choice: TravelChoice = {}) {
+    await page.getByRole("button", { name: "地図を大きく見る" }).click();
+    const dialog = page.getByRole("dialog", { name: /の地図$/u });
+    await expect(dialog).toBeVisible();
+    await dialog.getByTestId(`map-marker-${placeId}`).focus();
+    await page.keyboard.press("Enter");
+    await chooseInRow(dialog.getByTestId("map-selection").getByTestId(`map-selection-place-${placeId}`), placeId, choice);
+  },
+  /**
+   * 休む the two-step way: 「休む」 selects the hotel and shows the ways home in the band; then
+   * 「休む」 again (one way home, once armed) or the way home `mode` (via `viaPlaceId`).
+   */
+  async sleep(page: Page, { mode = "walk", viaPlaceId }: { mode?: string; viaPlaceId?: string } = {}) {
+    const band = page.getByTestId("travel-actions");
+    const rest = band.getByRole("button", { name: "滞在先で休む" });
+    await rest.click();
+    await expect(band).toHaveAttribute("data-selected", "true");
+    await expect(band).toHaveAttribute("data-armed", "true");
+    const routes = band.locator('[data-testid^="travel-sleep-route-"]');
+    const route = band.getByTestId(`travel-sleep-route-${mode}${viaPlaceId ? `-${viaPlaceId}` : ""}`);
+    expect(await route.count(), `a way home by ${mode}${viaPlaceId ? ` via ${viaPlaceId}` : ""}`).toBe(1);
+    // One way home: 「休む」 again; several: the way home itself.
+    if (await routes.count() === 1 && await route.isEnabled()) await rest.click();
+    else await route.click();
   },
   /** Close a sightseeing guide and go on to the landmark's battle. */
   async skipGuideToBattle(page: Page) {
@@ -618,6 +653,42 @@ export const ops = {
 };
 
 /** A 3-choice pick: the option ID (A/B/C) to press for a question, encounter choice or quiz. */
+/** What ops.goTo chooses in a row's inline choices: the event (a place with several) and the mode (walking by default). */
+export type TravelChoice = { eventId?: string; mode?: string };
+
+/** The steps after a row (or the expanded map's slot row) was selected: see ops.goTo. */
+async function chooseInRow(row: Locator, placeId: string, { eventId, mode = "walk" }: TravelChoice) {
+  await expect(row).toHaveAttribute("data-selected", "true");
+  const name = row.getByRole("button").first();
+  const choices = row.getByTestId(`travel-choices-${placeId}`);
+  await expect(row).toHaveAttribute("data-armed", "true");
+  if (!(await choices.count())) {
+    await name.click();
+    return;
+  }
+  const events = choices.locator('[data-testid^="travel-event-"]');
+  let event = eventId;
+  if (await events.count()) {
+    const ids = await events.evaluateAll((items) => items.map((item) => item.getAttribute("data-testid")!.slice("travel-event-".length)));
+    if (!event || !ids.includes(event)) throw new Error(`${placeId} offers the events ${ids.join(", ")}: name one of them (eventId${event ? `, not ${event}` : ""})`);
+    const button = choices.getByTestId(`travel-event-${event}`);
+    // An event with one route goes at once; one with several opens its modes (and re-arms).
+    if (await button.getAttribute("aria-expanded") === null) {
+      await button.click();
+      return;
+    }
+    await button.click();
+    await expect(button).toHaveAttribute("aria-expanded", "true");
+    await expect(row).toHaveAttribute("data-armed", "true");
+  }
+  const route = event ? choices.getByTestId(`travel-route-${event}-${mode}`) : choices.locator(`[data-testid^="travel-route-"][data-testid$="-${mode}"]`);
+  if (!(await route.count())) {
+    const offered = await choices.locator('[data-testid^="travel-route-"]').evaluateAll((items) => items.map((item) => item.getAttribute("data-testid")));
+    throw new Error(`${placeId}${event ? ` (${event})` : ""} is not reached by ${mode}; offered: ${offered.join(", ")}`);
+  }
+  await route.click();
+}
+
 export type Pick = (state: GameState) => string;
 const firstOption: Pick = () => "A";
 
