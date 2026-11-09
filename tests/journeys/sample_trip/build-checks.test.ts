@@ -122,3 +122,17 @@ describe("an epilogue's spending # on_done: (A21)", () => {
     expect(() => validateContent(sampleWith(city, added))).toThrow(STOP);
   });
 });
+
+describe("A10 and a then: move (3.3 check 6, 2.3, 4.2)", () => {
+  it("stops a choice point whose only free choice is a then: move (it greys when no way home gets back in time)", () => {
+    const TOWER_FILE = "stories/places/smp_mihon_clock_tower.ink";
+    // The first ride's scene on the way home of 「休む」 on foot: 「直してもらおうか」 costs 50, 「このままで行こう」 moves on to the library.
+    const ride = (then: string) => (text: string) => text
+      .replace("# at: trip rental_bicycle from mihon_hotel\n", "# at: trip walk to mihon_hotel\n")
+      .replace("# when: not rides rental_bicycle >= 1\n", "")
+      .replace("* [「このままで行こう」 # option: as_is]\n", `* [「このままで行こう」 # option: as_is]\n${then}`);
+    expect(() => validateContent(sampleWith({ [TOWER_FILE]: ride("") }))).not.toThrow();
+    expect(() => validateContent(sampleWith({ [TOWER_FILE]: ride("    # then: move mihon_library\n") })))
+      .toThrow(/No choice can be chosen at a choice point of .*smp_mihon_first_bicycle/u);
+  });
+});

@@ -136,13 +136,17 @@ export function walkScene(input: SceneWalkInput): number {
         const thenKeeps = path.thens > 0 || !!option.then;
         if ((option.money ?? 0) < 0 && -(option.money ?? 0) > (thenKeeps ? 0 : moneyFloor) - reserveMoney) return false;
         if ((option.ap ?? 0) < 0 && -(option.ap ?? 0) > (thenKeeps ? 0 : apFloor) - reserveAp) return false;
-        if (option.then && "move" in option.then && option.then.by && option.then.by !== "walk") return false;
+        // A then: move is never sure (2.3, 4.2): even walking it greys when no way home gets back in time from there (before 21:00, home
+        // by 21:00), or when the main part there opens and its admission or payments cannot be paid.
+        if (option.then && "move" in option.then) return false;
         return true;
       };
       const open = options.filter(choosable);
       if (!open.length)
         throw new Error(`No choice can be chosen at a choice point of ${input.label} (line of "${choices[0].text.trim()}"): every choice needs ` +
-          `something not guaranteed there (A10); add a choice that needs nothing, or a # when: in the head that guarantees it`);
+          `something not guaranteed there (A10); ${path.thens > 0 || options.some((option) => option?.then)
+            ? "after a then: is decided, what it keeps back (the fare home from where it goes, the payments there) may take the money or AP a # when: in the head guarantees, so add a choice that needs nothing"
+            : "add a choice that needs nothing, or a # when: in the head that guarantees it"}`);
       const needsItem = (option: SceneOption | undefined) => !!(option?.give || option?.use);
       if (options.every((option) => option?.later || needsItem(option)) && options.some(needsItem) && !open.some(needsItem))
         warn(`Only 「また今度」 and choices that need an item at a choice point of ${input.label} ("${choices[0].text.trim()}"); ` +
