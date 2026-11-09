@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import { getCityContent } from "../../content";
 import type { TravelEvent, TravelPlace } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
+import { battlePlayed } from "../../domain/conditions";
 import { Modal } from "../../components/Modal";
 import "./place-map.css";
 
@@ -70,7 +71,7 @@ function MapCanvas({ game, events, places, onSelect, mapRef, initialView, expand
       const categories = new Set(events.filter((event) => event.placeId === place.id).map((event) => event.category));
       // A remaining destination may share a place with a completed event.
       // Keep the place's visit history without showing the completed event's category.
-      const visited = travel.events.some((event) => event.placeId === place.id && (game.completedEpisodeIds.includes(event.id) || game.playedDateIds.includes(event.id) || game.battleRecords.some((record) => record.battleId === event.id && record.attempts > 0)));
+      const visited = travel.events.some((event) => event.placeId === place.id && (game.completedEpisodeIds.includes(event.id) || game.playedDateIds.includes(event.id) || battlePlayed(game, event.id)));
       const label = `${place.nameJa}${here ? "、現在地" : ""}${categories.has("main") ? "、観光" : ""}${categories.has("date") ? "、デート" : ""}${visited ? "、訪問済み" : "、未訪問"}`;
       const symbol = `${categories.has("main") ? "◆" : ""}${categories.has("date") ? "♥" : ""}` || "●";
       const icon = L.divIcon({ className: "travel-map-marker-wrap", html: `<span class="travel-map-marker${here ? " is-here" : ""}${visited ? " is-visited" : ""}">${symbol}</span>`, iconSize: [32, 32], iconAnchor: [16, 16] });

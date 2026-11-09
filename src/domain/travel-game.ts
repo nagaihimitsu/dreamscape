@@ -10,6 +10,7 @@ import type { TravelEvent, TravelRoute } from "../content/travel-schemas";
 import { getTransportMode, WALK_MODE_ID } from "../content/transport";
 import { getUsableRoutes, isTransportModeUsable, rentalReason } from "./transport";
 import { hasActiveScene } from "./game-state-schema";
+import { battlePlayed } from "./conditions";
 
 /** `walk` or a transport mode ID declared by the journey (src/content/transport.ts). */
 export type TravelMode = TravelRoute["mode"];
@@ -37,8 +38,8 @@ export function getTravelEventDefinition(state: GameState, eventId: string) {
   if (!event) return undefined;
   const episode = episodes.find((item) => item.id === event.id);
   const isRetry = episode
-    ? state.battleRecords.some((record) => record.battleId === episode.battleId && record.attempts > 0)
-    : event.category === "main" && state.battleRecords.some((record) => record.battleId === event.id && record.attempts > 0);
+    ? battlePlayed(state, episode.battleId)
+    : event.category === "main" && battlePlayed(state, event.id);
   return {
     ...event,
     activityMinutes: isRetry ? travelSettings.retryMinutes : event.activityMinutes,
@@ -66,7 +67,7 @@ export function isUnclearedMainTravelEvent(state: GameState, eventId: string): b
   if (!event || event.category !== "main") return false;
   if (episodes.some((episode) => episode.id === eventId))
     return !state.completedEpisodeIds.includes(eventId);
-  return !state.battleRecords.some((record) => record.battleId === eventId && record.attempts > 0);
+  return !battlePlayed(state, eventId);
 }
 
 /** Ordinary dates and completed main events are not offered for replay.
@@ -141,7 +142,7 @@ export function beginTravelEvent(state: GameState, eventId: string, mode: Travel
   const moved = { ...state, travelBudget: availability.plan.remainingBudget,
     travel: { ...state.travel, currentPlaceId: event.placeId, minute: availability.plan.arrivalMinute, returnReserve: availability.plan.returnReserve, returnDeadline: DAY_END, rideCounts: rides } };
   const episode = episodes.find((item) => item.id === eventId);
-  if (replayBattleId && (!episode || episode.battleId !== replayBattleId || !state.battleRecords.some((record) => record.battleId === replayBattleId && record.attempts > 0))) return state;
+  if (replayBattleId && (!episode || episode.battleId !== replayBattleId || !battlePlayed(state, replayBattleId))) return state;
   const isDate = dates.some((date) => date.id === eventId);
   const special = !episode && !isDate ? battles.find((battle) => battle.id === eventId && battle.landmarkId) : undefined;
   // First visits include the same optional guide/observation as normal tourism.
@@ -150,7 +151,7 @@ export function beginTravelEvent(state: GameState, eventId: string, mode: Travel
     ? { ...moved, activeBattle: null, battleRewardReceipt: null }
     : moved;
   const observeFirst = !!special?.landmarkId &&
-    (!state.battleRecords.some((record) => record.battleId === special.id && record.attempts > 0) ||
+    (!battlePlayed(state, special.id) ||
       hasPendingPlaceEncounter(sceneState, special.landmarkId));
   const started = replayBattleId ? startBattle(moved, replayBattleId)
     : episode ? startEpisode(moved, eventId)

@@ -14,6 +14,7 @@ import { validObservationEncounterIds, type ActiveEncounter } from "./encounter-
 import placeRuleData from "../content/generated/content/encounters/entry-rules.json";
 import { encounterEntryRulesSchema } from "../content/encounter-entry-rules";
 import { startTourismBattle } from "./tourism";
+import { battlePlayed } from "./conditions";
 
 const findEncounter = (id: string) => encounters.encounters.find((item) => item.id === id);
 const placeRules = encounterEntryRulesSchema.parse(placeRuleData);
@@ -70,7 +71,7 @@ function getEncounterEntryAvailability(state: GameState, event: EncounterDefinit
   const rule = entryRule(event);
   if (rule?.completedEpisodeId && !state.completedEpisodeIds.includes(rule.completedEpisodeId))
     return unavailable("この場所を訪れたあとに出会えます。");
-  if (rule?.completedStoryBattleId && !state.battleRecords.some((record) => record.battleId === rule.completedStoryBattleId && record.attempts > 0))
+  if (rule?.completedStoryBattleId && !battlePlayed(state, rule.completedStoryBattleId))
     return unavailable("この場所を訪れたあとに出会えます。");
   if (!canAccessFreeTime(state)) return unavailable("旅を進めると出かけられます。");
   if (state.activeEncounter || state.activeDate || state.activeTourism || state.activeEpilogue || state.activeBattle)
@@ -90,7 +91,7 @@ export function hasPendingPlaceEncounter(state: GameState, landmarkId: string): 
 /** Keep the optional cultural quiz after the main battle, so it cannot reveal its answer first. */
 function hasLandmarkBattle(state: GameState, event: EncounterDefinition): boolean {
   const battleId = landmarks.find((landmark) => landmark.id === event.landmarkId)?.battleId;
-  return state.battleRecords.some((record) => record.battleId === battleId && record.attempts > 0);
+  return !!battleId && battlePlayed(state, battleId);
 }
 
 /** A deferred quiz's leave branch, or its pre-battle visit, ends without the quiz. */

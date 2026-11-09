@@ -7,6 +7,7 @@ import {
 } from "../../content";
 import { getEpisodeAvailability, getNextEpisode, getNextStoryBattle, storyBattlesForCity } from "../../domain/chapter";
 import type { GameState } from "../../domain/game";
+import { battlePlayed } from "../../domain/conditions";
 import { canReadCityEpilogue } from "../../domain/epilogue";
 import type { CityProgressCounts } from "./city-progress-label";
 import "./city.css";
@@ -91,7 +92,7 @@ export function cityProgressCounts(game: GameState): CityProgressCounts {
   return {
     completedStops: stops.filter((episode) => game.completedEpisodeIds.includes(episode.id)).length,
     stops: stops.length,
-    completedSpecialBattles: storyBattles.filter((item) => game.battleRecords.some((record) => record.battleId === item.battleId && record.attempts > 0)).length,
+    completedSpecialBattles: storyBattles.filter((item) => battlePlayed(game, item.battleId)).length,
     specialBattles: storyBattles.length,
     cityCompleted: game.completedCityIds.includes(city.id),
   };
