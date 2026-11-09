@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { episodes, presentation, scenes, tourismAssets } from "../../../src/content";
 import { encounters } from "../../../src/content/encounters";
-import { clearCity, cityStart, finishEpisode, newJourney, withAp } from "../../../src/dev/scenario-builders";
+import { clearCity, cityStart, departFromClearedCity, finishEpisode, newJourney, withAp } from "../../../src/dev/scenario-builders";
 import { getActiveBattleContent } from "../../../src/domain/battle";
 import { startDate, validateGameState, type GameState } from "../../../src/domain/game";
 import { applyPlayerAction, listPlayerActions, playerActionChange, type PlayerAction } from "../../../src/domain/player-action";
@@ -11,9 +11,11 @@ import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 
 /**
  * GT-4: the Golden Triangle's 13 inserted scenes (talks at the stage-4 moments: the hotel's night and morning,
- * Delhi's departure, Agra's arrival, the Jaipur finale and the India Gate date), played with the real actions as
- * the screens commit them, each step saved and loaded again. Their items are given and used once, their money
- * is paid once, and each scene runs at its moment only when its conditions hold (night only for the night scenes).
+ * Delhi's departure, Agra's arrival, the Jaipur finale and the India Gate date), each played at its moment with the
+ * real actions as the screens commit them, each step saved and loaded again. Their two items are given (the envelope
+ * handed over once), their money is paid once, and some are also tried where their conditions do not hold: Delhi's
+ * night scenes after a daytime rest, the print without the photographer, Roohi's news without the homework, and the
+ * two reels without the stepwell date.
  */
 
 const GT = "content/journeys/golden_triangle";
@@ -171,11 +173,23 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
     expect(night.state.completedEncounterIds).toEqual(expect.arrayContaining(ids(night)));
     // Once each: the next night has none of them.
     expect(ids(rest(night.state, 20 * 60))).toEqual([]);
+
+    // A daytime rest after the same date: neither night scene, only the morning (without the night before it).
+    const day = rest(chandni.state, 12 * 60);
+    expect(ids(day)).toEqual(["gt_delhi_hotel_sick_morning"]);
+    expect(shown(day, "ノックの音で、隣の部屋の扉も開いた。彼女が、心配そうに顔を出す。")).toBe(true);
+    // The next night: the homework, but not the sick night (# until: seen the morning).
+    expect(ids(rest(day.state, 20 * 60))).toEqual(["gt_delhi_hotel_homework"]);
   }, 120_000);
 
-  it("after the heroine's sick day and a daytime rest, plays the morning only; the night scene never follows it", () => {
+  it("plays the heroine's sick night at night; after a daytime rest the morning only, and the night scene never follows it", () => {
     const chandni = playDate(delhiStart(), "gt_delhi_date_chandni_chowk", ["give_her_last"]);
     expect(chandni.chosen).toContain("give_her_last");
+    const sickNight = rest(chandni.state, 20 * 60);
+    expect(ids(sickNight)).toEqual(["gt_delhi_hotel_homework", "gt_delhi_hotel_sick_night_heroine", "gt_delhi_hotel_sick_morning"]);
+    expect(sickNight.scenes.map((scene) => scene.day)).toEqual([1, 1, 2]);
+    expect(shown(sickNight, "夜中の二時。携帯が一度だけ震えた。")).toBe(true);
+
     const day = rest(chandni.state, 12 * 60);
     expect(ids(day)).toEqual(["gt_delhi_hotel_sick_morning"]);
     expect(shown(day, "彼女の部屋の扉が、細く開いた。")).toBe(true);
@@ -258,9 +272,9 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
       expect(ids(rest(second.state, 20 * 60))).toEqual([]);
     }, 300_000);
 
-    /** Every Jaipur sightseeing done; the map's finale (its moment opens with it) played to its epilogue. */
-    function finale(prefer: readonly string[]) {
-      let state = jaipurStart();
+    /** From `start` in Jaipur, every Jaipur sightseeing done; the map's finale (its moment opens with it) played to its epilogue. */
+    function finale(prefer: readonly string[], start: GameState = jaipurStart()) {
+      let state = start;
       for (const episode of episodes.filter((item) => item.cityId === "jaipur" && item.kind === "episode"))
         if (!state.completedEpisodeIds.includes(episode.id)) state = finishEpisode(state, episode.id);
       let budgetAtEnvelope: number | undefined;
@@ -290,6 +304,15 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
       expect(modest.spent).toBe(501);
       expect(modest.played.state.inventory.gt_jaipur_wedding_envelope).toBe("used");
       expect(shown(modest.played, "……ふん。割り切れないね。よろしい")).toBe(true);
+    }, 300_000);
+
+    it("plays the stepwell reel after the envelope, before the epilogue, once the Delhi stepwell date was played", () => {
+      const baoli = playDate(delhiStart(), "gt_delhi_date_agrasen_baoli", []);
+      const start = departFromClearedCity(clearCity(departFromClearedCity(clearCity(baoli.state))));
+      expect(start.currentCityId).toBe("jaipur");
+      const reel = finale(["letter_gift"], start);
+      expect(ids(reel.played)).toEqual(["gt_jaipur_finale_before_envelope", "gt_jaipur_finale_after_envelope", "gt_jaipur_finale_after_reel"]);
+      expect(shown(reel.played, "踊りの輪がほどけたころ、花嫁のいとこのプージャーが、携帯を握りしめて走ってきた。")).toBe(true);
     }, 300_000);
   });
 });
