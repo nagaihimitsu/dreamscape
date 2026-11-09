@@ -206,3 +206,8 @@ dialog.modal.photo-credits-modal { width: min(560px, calc(100% - 24px)); max-hei
     border-radius: 16px;
   }
 }
+
+/* In free time the list scrolls under the header (and under the stuck map's
+   top edge); the translucent chip background let that text show through.
+   Free time gets the opaque base so the header stays readable at any text size. */
+.app-shell.free-time-active .journey-hud { background: var(--ds-slate-900); }
