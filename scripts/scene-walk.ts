@@ -142,7 +142,9 @@ export function walkScene(input: SceneWalkInput): number {
       const open = options.filter(choosable);
       if (!open.length)
         throw new Error(`No choice can be chosen at a choice point of ${input.label} (line of "${choices[0].text.trim()}"): every choice needs ` +
-          `something not guaranteed there (A10); add a choice that needs nothing, or a # when: in the head that guarantees it`);
+          `something not guaranteed there (A10); ${path.thens > 0 || options.some((option) => option?.then)
+            ? "after a then: is decided, what it keeps back (the fare home from where it goes, the payments there) may take the money or AP a # when: in the head guarantees, so add a choice that needs nothing"
+            : "add a choice that needs nothing, or a # when: in the head that guarantees it"}`);
       const needsItem = (option: SceneOption | undefined) => !!(option?.give || option?.use);
       if (options.every((option) => option?.later || needsItem(option)) && options.some(needsItem) && !open.some(needsItem))
         warn(`Only 「また今度」 and choices that need an item at a choice point of ${input.label} ("${choices[0].text.trim()}"); ` +

@@ -46,7 +46,7 @@ describe("the scene walk", () => {
     const spends = "* [A # option: a]\n    # money: -8\n    a\n    -> END\n* [B # option: b]\n    # money: -50\n    b\n    -> END\n";
     expect(walk(talk("# when: money >= 8\n", spends))).toBe(2);
     // The head's then: is decided as the scene starts.
-    expect(() => walk(talk("# when: money >= 8\n# then: move x_tower\n", spends))).toThrow("No choice can be chosen");
+    expect(() => walk(talk("# when: money >= 8\n# then: move x_tower\n", spends))).toThrow(/No choice can be chosen.*after a then: is decided.*add a choice that needs nothing/u);
     // A choice's then: decided before a later choice point; a choice that decides one itself.
     const later = "* [Go # option: go]\n    # then: move x_tower\n    -> next\n* [Stay # option: stay]\n    -> next\n- (next)\n" + spends;
     expect(() => walk(talk("# when: money >= 8\n", later))).toThrow("No choice can be chosen");
