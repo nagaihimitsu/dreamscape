@@ -25,9 +25,6 @@
   background: var(--paper);
   border-bottom: 1px solid var(--line);
 }
-.tourism-guide.paper {
-  padding-top: 25px;
-}
 .tourism-observation {
   padding: 0 24px;
 }
