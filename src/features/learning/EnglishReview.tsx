@@ -6,7 +6,7 @@ import {
 import { getBattleContentByHash } from "../../domain/battle";
 import type { GameState } from "../../domain/game";
 import { beginStory, continueStory, type StoryStep } from "../../story/runtime";
-import { Modal } from "../../components/Modal";
+import { Modal, ModalTitle } from "../../components/Modal";
 import type { Learning } from "./useLearning";
 import { InteractiveEnglish } from "./InteractiveEnglish";
 import { toggleTranslation, type Part } from "./Translations";
@@ -97,12 +97,7 @@ export function EnglishReview({
       onClose={onClose}
       className="english-review"
     >
-      <div className="english-review-header">
-        <h2 id="english-review-title">英語ノート</h2>
-        <button type="button" className="text-button" onClick={onClose}>
-          閉じる
-        </button>
-      </div>
+      <ModalTitle id="english-review-title" className="english-review-header" onClose={onClose}>英語ノート</ModalTitle>
       {!selected && <p>回答済みの問題を振り返れます。復習しても得点やAPは変わりません。</p>}
       {!allEntries.length && <p>まだ回答済みの問題はありません。</p>}
       {!game.activeBattle &&

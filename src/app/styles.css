@@ -159,9 +159,6 @@ h3 {
   color: var(--muted);
   letter-spacing: 0.12em;
 }
-.records-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.records-heading h2 { margin: 0 0 10px; }
-.records-heading button { width: auto; min-height: 44px; padding: 8px 12px; }
 /* 旅の記録's header line: the couple's names (as text, never HTML) and 交際中. */
 .records-travelers { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin: 0 0 12px; font-size: 15px; overflow-wrap: anywhere; }
 .records-relationship { padding: 2px 10px; border-radius: 999px; background: var(--ds-parchment-2); color: var(--ds-ink); font-size: 12px; white-space: nowrap; }
@@ -527,15 +524,21 @@ footer span {
   overflow: auto;
   backdrop-filter: blur(4px);
 }
+/* The shared dialog frame (UI redesign stage 2.3): parchment with its hairline and 16-px
+   corners, ink text, a title bar (ModalTitle) across its top. A dialog sets its padding
+   through --modal-pad-top / --modal-pad-inline, so the title bar can reach its edges. */
 .modal {
-  background: var(--paper);
-  padding: 30px;
-  border-radius: 5px;
+  --modal-pad-top: 30px;
+  --modal-pad-inline: 30px;
+  background: var(--ds-parchment);
+  padding: var(--modal-pad-top) var(--modal-pad-inline);
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 16px;
   max-width: 440px;
   width: 100%;
   max-height: 90dvh;
   overflow: auto;
-  box-shadow: 0 18px 60px #11221b35;
+  box-shadow: var(--ds-window-shadow);
 }
 /* Opened under the finger (Modal's settlePresses): no press reaches it for a moment. */
 .modal[data-settling] { pointer-events: none; }
@@ -543,6 +546,54 @@ footer span {
   font-size: 22px;
   margin: 10px 0 20px;
 }
+/* The title bar: a display-only parchment band (no edge, §2.3) that stays at the top while
+   the dialog scrolls; the heading wraps, the close keeps its 44 px. */
+.modal-title-bar {
+  position: sticky;
+  /* Chrome and Safari hold a sticky box inside the scroller's padding: reach its edge. */
+  top: calc(-1 * var(--modal-pad-top, 0px));
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  min-height: 56px;
+  margin: calc(-1 * var(--modal-pad-top, 0px)) calc(-1 * var(--modal-pad-inline, 0px)) 16px;
+  padding: 6px 10px 6px max(16px, var(--modal-pad-inline, 0px));
+  background: var(--ds-parchment-2);
+  border-bottom: 1px solid var(--ds-parchment-line);
+}
+.modal .modal-title-bar h2 {
+  min-width: 0;
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.modal-title-text { min-width: 0; }
+.modal-title-text .eyebrow { margin: 0; line-height: 1.4; }
+/* 「閉じる」 in the title bar: a secondary pressable with the × (§2.3, §2.5), 44 px. */
+.modal-close {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: auto;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0 0 0 auto;
+  padding: 4px 12px 4px 8px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.modal-close:hover { background: var(--ds-parchment-2); }
+.modal-close .icon { width: 18px; height: 18px; }
 .modal .translation-setting {
   display: flex;
   align-items: flex-start;
@@ -557,14 +608,17 @@ footer span {
   height: 18px;
   margin: 2px 0 0;
 }
-/* The text speed select fills its 44 px row instead of the browser's ~19 px box. */
-.modal .translation-setting select { min-height: 44px; margin: -10px 0; }
+/* Checkboxes in the slate of the pressables (the native box keeps its size and focus). */
+input[type="checkbox"] { accent-color: var(--ds-slate-800); }
+/* The text speed select fills its 44 px row instead of the browser's ~19 px box (field look, stage 2.3). */
+.modal .translation-setting select { min-height: 44px; margin: -10px 0; padding: 0 8px; border: 1px solid var(--ds-field-edge); border-radius: 8px; background: #fffaf1; color: var(--ds-ink); }
 @media (max-width: 600px) {
   dialog.modal[aria-labelledby="settings-title"] {
-    padding: 18px 22px;
+    --modal-pad-top: 18px;
+    --modal-pad-inline: 22px;
   }
-  dialog.modal[aria-labelledby="settings-title"] h2 {
-    margin: 0 0 8px;
+  dialog.modal[aria-labelledby="settings-title"] .modal-title-bar {
+    margin-bottom: 8px;
   }
   dialog.modal[aria-labelledby="settings-title"] .name-form {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -675,7 +729,8 @@ footer span {
     letter-spacing: 0.12em;
   }
   .modal {
-    padding: 26px 23px;
+    --modal-pad-top: 26px;
+    --modal-pad-inline: 23px;
   }
   .modal h2 {
     font-size: 20px;
@@ -848,14 +903,13 @@ footer span {
   }
 }
 dialog.modal {
-  border: 0;
   /* Dialogs can be mounted inside the dark VN scene. Do not inherit its
-     light text onto the paper-coloured modal surface. */
-  color: #303d36;
+     light text onto the parchment of the dialog. */
+  color: var(--ds-ink);
   margin: auto;
 }
 dialog.modal::backdrop {
-  background: #1d302ad9;
+  background: rgba(20, 24, 32, 0.72);
   backdrop-filter: blur(4px);
 }
 
@@ -1314,7 +1368,7 @@ dialog.old-data[open] {
 .old-data-actions {
   flex: none;
   padding: 0 30px 22px;
-  border-top: 1px solid #ccd2c1;
+  border-top: 1px solid var(--ds-parchment-line);
 }
 /* One height for every button there, so each takes exactly the place of the one before it. */
 .old-data-actions > button {
@@ -1330,8 +1384,8 @@ dialog.old-data[open] {
 .old-data-list > li {
   padding: 10px 12px;
   margin-bottom: 10px;
-  background: #f1ede1;
-  border-radius: 4px;
+  background: var(--ds-parchment-2);
+  border-radius: 12px;
 }
 .old-data-list .translation-setting {
   align-items: center;
@@ -1360,7 +1414,7 @@ dialog.old-data .old-data-notice:focus {
   padding: 0;
   font-size: 11px;
   line-height: 1.6;
-  color: #5c6459;
+  color: var(--ds-ink-muted);
 }
 .old-data-keys li + li {
   margin-top: 4px;
@@ -1370,7 +1424,7 @@ dialog.old-data .old-data-notice:focus {
   display: block;
   overflow-wrap: anywhere;
   font-size: 11px;
-  color: #303d36;
+  color: var(--ds-ink);
 }
 .old-data-notice {
   margin: 10px 0;
@@ -1450,16 +1504,14 @@ dialog.old-data .old-data-notice:focus {
   background: var(--ds-parchment);
   min-height: 48px;
 }
-#delete-title + p {
-  margin: 12px 0;
-}
 
 /* A complete view of the photograph, including details hidden by portraits. */
 dialog.date-background-viewer {
+  --modal-pad-top: 16px;
+  --modal-pad-inline: 16px;
   width: min(92vw, 700px);
-  padding: 16px;
 }
-dialog.date-background-viewer h2 { margin: 0 0 8px; }
+dialog.date-background-viewer .modal-title-bar { margin-bottom: 8px; }
 dialog.date-background-viewer > img {
   display: block;
   width: 100%;

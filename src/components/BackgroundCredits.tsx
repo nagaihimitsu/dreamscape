@@ -1,6 +1,6 @@
 import { tourismAssets } from "../content";
 import { ImageCredit } from "./ImageCredit";
-import { Modal } from "./Modal";
+import { Modal, ModalTitle } from "./Modal";
 
 /** The same image and attribution are available wherever a scene uses it. */
 export function BackgroundCredits({
@@ -12,7 +12,7 @@ export function BackgroundCredits({
 }) {
   return (
     <Modal labelledBy="background-credits-title" className="date-background-viewer" onClose={onClose}>
-      <h2 id="background-credits-title">背景画像</h2>
+      <ModalTitle id="background-credits-title">背景画像</ModalTitle>
       <img src={`${import.meta.env.BASE_URL}${asset.path}`} alt={asset.altJa} />
       <details>
         <summary>画像の説明・出典と利用条件</summary>

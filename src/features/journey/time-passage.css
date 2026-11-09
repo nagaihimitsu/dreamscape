@@ -13,22 +13,29 @@
   overflow: hidden;
   width: min(230px, 68vw);
   height: 112px;
-  border-radius: 12px;
-  box-shadow: 0 5px 22px #1f302c44;
+  border: 4px solid var(--ds-parchment);
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px var(--ds-parchment-line), var(--ds-window-shadow);
   animation: time-passage-sky 2.8s ease both;
 }
 .time-passage-label {
   position: absolute;
   z-index: 1;
-  top: 12px;
-  left: 0;
-  right: 0;
-  color: #fffdf4;
+  top: 6px;
+  left: 50%;
+  max-width: calc(100% - 12px);
+  transform: translateX(-50%);
+  padding: 2px 12px;
+  border-radius: 999px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  box-shadow: var(--ds-pill-shadow);
   font-size: 15px;
   font-weight: 700;
+  line-height: 1.5;
   letter-spacing: .12em;
   text-align: center;
-  text-shadow: 0 1px 5px #172c25cc;
+  width: max-content;
 }
 .time-passage-sun, .time-passage-moon {
   position: absolute;

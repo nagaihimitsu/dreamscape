@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { getCityContent, landmarks, tourismClues } from "../../content";
-import { Modal } from "../../components/Modal";
+import { Modal, ModalTitle } from "../../components/Modal";
 import { ClueDetails } from "./ClueDetails";
 import { ClueImage, ClueImageCredits } from "./ClueImage";
 import "./notebook.css";
@@ -67,19 +67,15 @@ export function ClueNotebook({
       onClose={onClose}
       className={`clue-notebook${reasoning ? " case-notebook" : ""}`}
     >
-      <div className="cluebook-header">
-        <div>
-          <p className="eyebrow">{landmark?.nameJa ?? (cityId ? getCityContent(cityId).city.nameJa : "旅の記録")}</p>
-          <h2 id="cluebook-title">手がかり帳</h2>
-        </div>
-        <button
-          className="text-button"
-          data-testid="cluebook-close"
-          onClick={onClose}
-        >
-          閉じる
-        </button>
-      </div>
+      <ModalTitle
+        id="cluebook-title"
+        className="cluebook-header"
+        eyebrow={landmark?.nameJa ?? (cityId ? getCityContent(cityId).city.nameJa : "旅の記録")}
+        onClose={onClose}
+        closeTestId="cluebook-close"
+      >
+        手がかり帳
+      </ModalTitle>
       {reasoning && (
         <aside
           className="case-context"

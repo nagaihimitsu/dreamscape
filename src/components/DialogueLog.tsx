@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useState } from "react";
 import { Icon } from "./icons";
-import { Modal } from "./Modal";
+import { Modal, ModalTitle } from "./Modal";
 import "./dialogue-log.css";
 
 export interface DialogueLogEntry {
@@ -67,7 +67,7 @@ export function DialogueLog({
       </button>
       {open && (
         <Modal labelledBy={titleId} onClose={() => setOpen(false)}>
-          <h2 id={titleId}>会話ログ</h2>
+          <ModalTitle id={titleId}>会話ログ</ModalTitle>
           {entries.length ? (
             <ol className="vn-log">
               {entries.map((entry) => (

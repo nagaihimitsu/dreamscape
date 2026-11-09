@@ -5,7 +5,7 @@ import { derivedImagePath } from "../../content/derived-images";
 import { getPlacePhoto } from "../../content/place-photo";
 import type { TourismAsset } from "../../content/tourism-schemas";
 import { ImageCredit } from "../../components/ImageCredit";
-import { Modal } from "../../components/Modal";
+import { Modal, ModalTitle } from "../../components/Modal";
 import type { GameState } from "../../domain/game";
 import { getTravelDestinations } from "../../domain/travel-destinations";
 
@@ -26,7 +26,7 @@ export function freeTimePhotos(game: GameState): ShownPhoto[] {
 /** 「写真の出典」 (UI redesign §3.4 item 6): the credit and licence of each photo on the free-time screen. */
 export function PhotoCredits({ photos, onClose }: { photos: ShownPhoto[]; onClose: () => void }) {
   return <Modal labelledBy="photo-credits-title" className="photo-credits-modal" onClose={onClose}>
-    <div className="travel-choice-header"><h2 id="photo-credits-title">写真の出典</h2><button type="button" className="secondary" onClick={onClose}>閉じる</button></div>
+    <ModalTitle id="photo-credits-title" onClose={onClose}>写真の出典</ModalTitle>
     <p className="fine-print">{DERIVED_PHOTO_NOTE_JA}</p>
     <ul className="photo-credits-list" data-testid="photo-credits">
       {photos.map((photo) => <li key={photo.key}>
