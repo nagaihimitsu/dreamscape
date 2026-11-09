@@ -39,7 +39,7 @@ describe("per-city transit ledger", () => {
   it("has one decision per ordered pair and declared mode, counted per mode and status", () => {
     const { travel, ledger } = fixture();
     expect(inspectCityTransit(travel, ledger, modes, FILE)).toEqual({ cityId: "test_city", directions: 2, decisions: 4,
-      counts: counts({ available: 2 }, { not_applicable: 2 }), ready: true });
+      counts: counts({ available: 2 }, { not_applicable: 2 }), ready: true, missingWalks: [] });
   });
 
   it("builds an inconclusive decision but does not call the city ready", () => {
@@ -57,11 +57,10 @@ describe("per-city transit ledger", () => {
     expect(() => inspectCityTransit(travel, ledger, ["walk", ...modes], FILE)).toThrow("Walking is not a transit ledger mode");
   });
 
-  it("requires a walking route for every direction (the decisions weigh each vehicle against walking)", () => {
+  it("lists the directions without a walking route instead of refusing them (content:build warns)", () => {
     const { travel, ledger } = fixture();
     const noWalk = { ...travel, routes: travel.routes.filter((route) => !(route.mode === "walk" && route.fromPlaceId === "test_b" && route.toPlaceId === "test_a")) };
-    expect(() => inspectCityTransit(noWalk, ledger, modes, FILE))
-      .toThrow(`徒歩の経路がない方向があります: test_b → test_a: ${FILE}（Walking game model missing: test_b → test_a）`);
+    expect(inspectCityTransit(noWalk, ledger, modes, FILE)).toMatchObject({ ready: true, decisions: 4, missingWalks: ["test_b → test_a"] });
   });
 
   it("keeps available and route in step, both ways", () => {

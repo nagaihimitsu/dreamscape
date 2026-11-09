@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { TravelCatalog } from "../src/content/travel-schemas";
-import { checkCityRentals, checkCityTransit, checkRouteModes, checkTransportModeCount, transportSummary, type JourneyTransport } from "./transport-validation";
+import { checkCityRentals, checkCityTransit, checkRouteModes, checkTransportModeCount, cityTransitWarnings, transportSummary, type JourneyTransport } from "./transport-validation";
 
 const source = [{ publisher: "試験", title: "試験", url: "https://example.org/test", checkedAt: "2026-11-07", claimType: "hypothesis" as const, claimJa: "試験用。" }];
 const place = (id: string) => ({ id, cityId: "test_city", nameJa: "地点", nameEn: "Place", latitude: 0, longitude: 0, backgroundId: "test_bg", sources: source });
@@ -118,7 +118,7 @@ describe("the transport limits", () => {
     expect(() => checkTransportModeCount(journey([mode("a"), mode("b"), mode("c")], "ツアー機能待ち"))).not.toThrow();
   });
 
-  it("refuses a route of a declared mode without a game estimate backed by a documented fact", () => {
+  it("returns, without refusing, the routes of a declared mode without a game estimate backed by a documented fact", () => {
     const fact = { ...source[0], claimType: "documented_fact" as const };
     const taxi = mode("taxi");
     const ledger = (status: string) => ({ schemaVersion: 2, cityId: "test_city", sourceRefs: { fact }, decisions: [
@@ -128,9 +128,30 @@ describe("the transport limits", () => {
     const supported = { ...route("a", "b", "taxi", 5, 3), estimation: "game_model" as const, sources: [...source, fact] };
     const files = (taxiRoute: TravelCatalog["routes"][number]) => ({ travel: travel([route("a", "a", "walk", 0), route("a", "b", "walk"), route("b", "b", "walk", 0), route("b", "a", "walk"), taxiRoute]),
       transit: ledger("available"), transitFile: "x-transit.json", travelFile: "content/journeys/test_trip/travel/test_city.json" });
-    expect(checkCityTransit(files(supported), journey([taxi]))).toMatchObject({ ready: true });
-    for (const weak of [{ ...supported, sources: source }, { ...supported, estimation: undefined }])
-      expect(() => checkCityTransit(files(weak), journey([taxi]))).toThrow(
-        "乗り物の経路1本に、ゲーム用の推定の印（\"estimation\": \"game_model\"）か事実の出典（documented_fact）がありません。最初の1本: content/journeys/test_trip/travel/test_city.json の a → b（taxi）");
+    expect(checkCityTransit(files(supported), journey([taxi]))).toMatchObject({ ready: true, unsupportedRoutes: [] });
+    expect(cityTransitWarnings(checkCityTransit(files(supported), journey([taxi]))!, files(supported))).toEqual([]);
+    for (const weak of [{ ...supported, sources: source }, { ...supported, estimation: undefined }]) {
+      const check = checkCityTransit(files(weak), journey([taxi]))!;
+      expect(check).toMatchObject({ ready: true, unsupportedRoutes: [weak] });
+      expect(cityTransitWarnings(check, files(weak))).toEqual([{ kind: "transit-route-unsourced", message:
+        'Vehicle routes without a game-model estimate or a documented fact: content/journeys/test_trip/travel/test_city.json has 1 "taxi" route(s) ' +
+        'without "estimation": "game_model" or a documented_fact source, first a → b (say in the ledger reason that the value is provisional and has no source; authoring/CONTENT_GUIDE.md)' }]);
+    }
+  });
+
+  it("warns once per city about the directions without a walking route", () => {
+    const taxi = mode("taxi");
+    const fact = { ...source[0], claimType: "documented_fact" as const };
+    const taxiRoute = (from: string, to: string) => ({ ...route(from, to, "taxi", 5, 3), estimation: "game_model" as const, sources: [...source, fact] });
+    const decision = (from: string, to: string) => ({ fromPlaceId: from, toPlaceId: to, mode: "taxi", status: "available", checkedAt: "2026-11-07", reasonJa: "試験の判断です。", sourceRefs: ["fact"] });
+    const city = { travel: travel([route("a", "a", "walk", 0), route("b", "b", "walk", 0), taxiRoute("a", "b"), taxiRoute("b", "a")]),
+      transit: { schemaVersion: 2, cityId: "test_city", sourceRefs: { fact }, decisions: [decision("a", "b"), decision("b", "a")] },
+      transitFile: "content/journeys/test_trip/travel/test_city-transit.json", travelFile: "content/journeys/test_trip/travel/test_city.json" };
+    const check = checkCityTransit(city, journey([taxi]))!;
+    expect(check.missingWalks).toEqual(["a → b", "b → a"]);
+    expect(cityTransitWarnings(check, city)).toEqual([{ kind: "transit-walk-missing", message:
+      "Directions without a walking route: content/journeys/test_trip/travel/test_city.json has no walk route for 2 direction(s), first a → b " +
+      "(the city has a transit ledger, content/journeys/test_trip/travel/test_city-transit.json: a ledger reason that weighs a vehicle against walking needs that walk; " +
+      "every place must still be reachable by some route)" }]);
   });
 });

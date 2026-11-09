@@ -8,6 +8,8 @@ import { validateContent } from "./content-validation";
 const sample = selectJourneys(loadContentSources(process.cwd(), { extraJourneyDirectories: [SAMPLE_JOURNEY_DIRECTORY] }), ["sample_trip"]);
 const folder = SAMPLE_JOURNEY_DIRECTORY;
 const read = (file: string) => JSON.parse(sample.tree.files.get(`${folder}/${file}`)!.toString("utf8"));
+const isWalkToMarket = (route: { mode: string; fromPlaceId: string; toPlaceId: string }) =>
+  route.mode === "walk" && route.fromPlaceId === "mihon_hotel" && route.toPlaceId === "mihon_market";
 function edit(changes: Record<string, (data: any) => unknown>): ContentSources {
   const files = new Map(sample.tree.files);
   for (const [file, change] of Object.entries(changes)) files.set(`${folder}/${file}`, Buffer.from(JSON.stringify(change(read(file)))));
@@ -32,22 +34,36 @@ describe("transport checks in content:build", () => {
     expect(() => validateContent(contentSourcesFromTree({ ...sample.tree, files }))).toThrow("交通判断台帳 authoring/templates/sample_trip/travel/mihon-transit.json がありません");
   }, 60_000);
 
-  it("refuses a ledger that disagrees with the routes, a pair reached only by the rental, and a route without its sources", () => {
+  it("refuses a ledger that disagrees with the routes and a pair reached only by the rental", () => {
     expect(() => validateContent(edit({ "travel/mihon.json": (data) => ({ ...data,
       routes: data.routes.filter((route: { mode: string; fromPlaceId: string; toPlaceId: string }) => !(route.mode === "rental_bicycle" && route.toPlaceId === "mihon_market" && route.fromPlaceId === "mihon_hotel")) }) })))
       .toThrow("Transit decision and route disagree: mihon_hotel → mihon_market（rental_bicycle）");
-    // A city with a ledger walks every direction; a walk longer than the day leaves only the rental to reach the market.
-    const isWalkToMarket = (route: { mode: string; fromPlaceId: string; toPlaceId: string }) =>
-      route.mode === "walk" && route.fromPlaceId === "mihon_hotel" && route.toPlaceId === "mihon_market";
+    // Without the walk, or with a walk longer than the day, only the rental reaches the market.
     expect(() => validateContent(edit({ "travel/mihon.json": (data) => ({ ...data,
       routes: data.routes.filter((route: { mode: string; fromPlaceId: string; toPlaceId: string }) => !isWalkToMarket(route)) }) })))
-      .toThrow("徒歩の経路がない方向があります: mihon_hotel → mihon_market: authoring/templates/sample_trip/travel/mihon-transit.json（Walking game model missing: mihon_hotel → mihon_market）");
+      .toThrow("Missing usable directed route: mihon_hotel/mihon_market");
     expect(() => validateContent(edit({ "travel/mihon.json": (data) => ({ ...data,
       routes: data.routes.map((route: { mode: string; fromPlaceId: string; toPlaceId: string; minutes: number }) => isWalkToMarket(route) ? { ...route, minutes: 12 * 60 } : route) }) })))
       .toThrow("Missing usable directed route: mihon_hotel/mihon_market");
-    expect(() => validateContent(edit({ "travel/mihon.json": (data) => ({ ...data,
-      routes: data.routes.map((route: { mode: string; estimation?: string }) => route.mode === "rental_bicycle" ? { ...route, estimation: undefined } : route) }) })))
-      .toThrow("乗り物の経路12本に、ゲーム用の推定の印");
+  }, 60_000);
+
+  it("only warns about a direction without a walking route and about routes without their sources", () => {
+    // The bicycle as an ordinary (not rented) mode still reaches the market without the walk.
+    const withoutWalk = validateContent(edit({
+      "manifest.json": (data) => ({ ...data, transportModes: data.transportModes.map(({ rental: _rental, ...mode }: { rental?: boolean }) => mode) }),
+      "travel/mihon-settings.json": ({ rentals: _rentals, ...data }) => data,
+      "travel/mihon.json": (data) => ({ ...data, routes: data.routes.filter((route: { mode: string; fromPlaceId: string; toPlaceId: string }) => !isWalkToMarket(route)) }),
+    }));
+    expect(withoutWalk.warnings.filter((warning) => warning.kind.startsWith("transit-"))).toEqual([{ kind: "transit-walk-missing", message:
+      "Directions without a walking route: authoring/templates/sample_trip/travel/mihon.json has no walk route for 1 direction(s), first mihon_hotel → mihon_market " +
+      "(the city has a transit ledger, authoring/templates/sample_trip/travel/mihon-transit.json: a ledger reason that weighs a vehicle against walking needs that walk; " +
+      "every place must still be reachable by some route)" }]);
+    const unmarked = validateContent(edit({ "travel/mihon.json": (data) => ({ ...data,
+      routes: data.routes.map((route: { mode: string; estimation?: string }) => route.mode === "rental_bicycle" ? { ...route, estimation: undefined } : route) }) }));
+    expect(unmarked.warnings.filter((warning) => warning.kind.startsWith("transit-")).map((warning) => warning.kind)).toEqual(["transit-route-unsourced"]);
+    expect(unmarked.warnings.find((warning) => warning.kind === "transit-route-unsourced")!.message)
+      .toContain('authoring/templates/sample_trip/travel/mihon.json has 12 "rental_bicycle" route(s) without "estimation": "game_model" or a documented_fact source, first mihon_hotel → mihon_clock_tower');
+    expect(validateContent(sample).warnings.filter((warning) => warning.kind.startsWith("transit-"))).toEqual([]);
   }, 60_000);
 
   it("refuses a vehicle route from the hotel to the hotel (no ledger decision covers it)", () => {

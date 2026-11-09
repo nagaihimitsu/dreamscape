@@ -5,7 +5,8 @@ import { formatTransitCounts } from "./transit-ledger";
 import { transportWaitingJa } from "./transport-validation";
 
 // npm run journey:transit -- --journey <journeyId> [--json]: every city's transit ledger against its routes.
-// Exits 1 while a decision is inconclusive or a route of a declared mode lacks its sources.
+// Also lists the directions without a walking route and the routes of declared modes that lack their
+// sources (content:build warns about both). Exits 1 while a decision is inconclusive.
 const args = process.argv.slice(2);
 const json = args.includes("--json");
 const rest = args.filter((arg) => arg !== "--json");
@@ -23,8 +24,10 @@ else if ("pending" in report) {
   for (const city of report.cities) {
     console.log(`${city.cityId}（${city.file}）: ${city.directions}方向、判断 ${city.decisions}件${city.ready ? "" : "、特定できずの判断が残っています"}`);
     for (const line of formatTransitCounts(city.counts, (mode) => transportLabel(firstCity, mode))) console.log(`  ${line}`);
+    if (city.missingWalks.length)
+      console.log(`  徒歩の経路がない方向 ${city.missingWalks.length}: ${city.missingWalks.slice(0, 3).join("、")}${city.missingWalks.length > 3 ? " ほか" : ""}（注意）`);
     if (city.unsupportedRoutes.length)
-      console.log(`  事実の出典かゲーム用の推定の印（estimation: "game_model"）がない経路 ${city.unsupportedRoutes.length}本: ${city.unsupportedRoutes.slice(0, 3).join("、")}${city.unsupportedRoutes.length > 3 ? " ほか" : ""}`);
+      console.log(`  事実の出典かゲーム用の推定の印（estimation: "game_model"）がない経路 ${city.unsupportedRoutes.length}本: ${city.unsupportedRoutes.slice(0, 3).join("、")}${city.unsupportedRoutes.length > 3 ? " ほか" : ""}（注意）`);
   }
 }
-if (!("pending" in report) && report.cities.some((city) => !city.ready || city.unsupportedRoutes.length)) process.exitCode = 1;
+if (!("pending" in report) && report.cities.some((city) => !city.ready)) process.exitCode = 1;

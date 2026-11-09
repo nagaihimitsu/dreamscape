@@ -1,7 +1,8 @@
 import type { Journey } from "../src/content/journey-catalog";
-import type { RentalOffer, TravelCatalog } from "../src/content/travel-schemas";
+import type { RentalOffer, TravelCatalog, TravelRoute } from "../src/content/travel-schemas";
 import { WALK_MODE_ID } from "../src/content/transport-schemas";
 import { journeyManifestPath } from "./content-layout";
+import type { ContentWarning } from "./content-report";
 import { inspectCityTransit, transitStatuses, unsupportedTransitRoutes, type CityTransitReview } from "./transit-ledger";
 
 // Build checks of in-city transport (pure): the modes a journey declares in
@@ -58,14 +59,18 @@ export function checkRouteModes(travel: TravelCatalog, travelFile: string, trans
 /** A city's travel files as content:build has them (paths for the messages). */
 export type CityTransitFiles = { travel: TravelCatalog; transit: unknown; transitFile: string; travelFile?: string };
 
+/** A city's ledger review and the routes of declared modes that lack their sources (unsupportedTransitRoutes). */
+export type CityTransitCheck = CityTransitReview & { unsupportedRoutes: TravelRoute[] };
+
 /**
  * The per-city transit ledger: a journey that declares transport modes keeps
  * one ledger per city (all rules of inspectCityTransit); a walk-only journey
  * and a journey still waiting for its switch keep none (the waiting journey
- * keeps its old journey-wide ledger and its own tools). Returns the review,
- * or undefined without a ledger.
+ * keeps its old journey-wide ledger and its own tools). Returns the review
+ * with the routes that lack their sources (cityTransitWarnings), or undefined
+ * without a ledger.
  */
-export function checkCityTransit(city: CityTransitFiles, transport: JourneyTransport): CityTransitReview | undefined {
+export function checkCityTransit(city: CityTransitFiles, transport: JourneyTransport): CityTransitCheck | undefined {
   const modes = transport.journey.transportModes.map((mode) => mode.id);
   if (city.transit === undefined) {
     if (modes.length && !transport.pending)
@@ -78,15 +83,31 @@ export function checkCityTransit(city: CityTransitFiles, transport: JourneyTrans
   if (!modes.length)
     throw new Error(`${city.transitFile} は要りません。${transport.journey.id} は徒歩だけの旅行編です（Transit ledger in a walk-only journey）。`);
   const review = inspectCityTransit(city.travel, city.transit, modes, city.transitFile);
-  // A route of a declared mode is a game estimate backed by a documented fact (the fact's reach is a review rule).
-  const unsupported = unsupportedTransitRoutes(city.travel, modes);
-  if (unsupported.length) {
-    const [first] = unsupported;
-    throw new Error(`乗り物の経路${unsupported.length}本に、ゲーム用の推定の印（"estimation": "game_model"）か事実の出典（documented_fact）がありません。` +
-      `最初の1本: ${city.travelFile ?? city.travel.cityId} の ${first.fromPlaceId} → ${first.toPlaceId}（${first.mode}）` +
-      `（A route of a declared transport mode needs a game-model estimate and a documented fact）。`);
+  // A route of a declared mode should be a game estimate backed by a documented fact; one that is not only warns.
+  return { ...review, unsupportedRoutes: unsupportedTransitRoutes(city.travel, modes) };
+}
+
+/**
+ * content:build's warnings for a city with a ledger (they do not stop the
+ * build; AGENTS.md first principle): one for its directions without a walking
+ * route, and one per declared mode whose routes lack the game-model mark or a
+ * documented fact, each with the count and the first one. That every place
+ * stays reachable is an error elsewhere (`Missing usable directed route`).
+ */
+export function cityTransitWarnings(check: CityTransitCheck, city: Pick<CityTransitFiles, "travel" | "transitFile" | "travelFile">): ContentWarning[] {
+  const travelFile = city.travelFile ?? city.travel.cityId;
+  const warnings: ContentWarning[] = [];
+  if (check.missingWalks.length)
+    warnings.push({ kind: "transit-walk-missing", message: `Directions without a walking route: ${travelFile} has no walk route for ` +
+      `${check.missingWalks.length} direction(s), first ${check.missingWalks[0]} (the city has a transit ledger, ${city.transitFile}: ` +
+      "a ledger reason that weighs a vehicle against walking needs that walk; every place must still be reachable by some route)" });
+  for (const mode of [...new Set(check.unsupportedRoutes.map((route) => route.mode))]) {
+    const routes = check.unsupportedRoutes.filter((route) => route.mode === mode);
+    warnings.push({ kind: "transit-route-unsourced", message: `Vehicle routes without a game-model estimate or a documented fact: ${travelFile} has ` +
+      `${routes.length} "${mode}" route(s) without "estimation": "game_model" or a documented_fact source, first ${routes[0].fromPlaceId} → ${routes[0].toPlaceId} ` +
+      "(say in the ledger reason that the value is provisional and has no source; authoring/CONTENT_GUIDE.md)" });
   }
-  return review;
+  return warnings;
 }
 
 /**

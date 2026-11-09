@@ -30,7 +30,7 @@ npm run journey:scaffold -- --requirements --journey uzbekistan --city tashkent
 # 不足している実ファイルと参照を確認（未制作時は未完了を報告）
 npm run journey:readiness -- --journey uzbekistan
 
-# 都市ごと・乗り物ごとの交通判断の件数と、出典のない経路を確認（「特定できず」が残ると終了コード1）
+# 都市ごと・乗り物ごとの交通判断の件数と、徒歩の経路がない向き・出典のない経路（注意）を確認（「特定できず」が残ると終了コード1）
 npm run journey:transit -- --journey uzbekistan
 
 # 物語・クイズを用意した後、一時領域で実際の統合を検証

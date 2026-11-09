@@ -12,7 +12,8 @@ import { isObservationOnlyClue } from "../src/content/tourism-schemas";
 // the game, and what each journey folder provides. content:build prints the
 // warnings as counts (details with --verbose) and one line per journey.
 
-export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-prefix" | "unused-transport-mode" | "tourism-photo";
+export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-prefix" | "unused-transport-mode" | "tourism-photo"
+  | "transit-walk-missing" | "transit-route-unsourced";
 export type ContentWarning = { kind: ContentWarningKind; message: string };
 /** How content:build counts each kind of warning. */
 export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
@@ -21,6 +22,8 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "id-prefix": "ID(s) without the journey prefix",
   "unused-transport-mode": "declared transport mode(s) without routes",
   "tourism-photo": "tourism photo(s) to convert to WebP (npm run images:optimize)",
+  "transit-walk-missing": "city(ies) with a transit ledger and direction(s) without a walking route",
+  "transit-route-unsourced": "city transport mode(s) with route(s) lacking a game-model estimate or a documented fact",
 };
 
 /**

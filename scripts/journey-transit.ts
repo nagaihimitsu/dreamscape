@@ -41,7 +41,7 @@ export function cityTransitPath(sources: ContentSources, cityId: string): string
 
 export type CityTransitReport = CityTransitReview & {
   file: string;
-  /** Routes of declared modes without a game-model estimate backed by a documented fact (transit-ledger.ts). */
+  /** Routes of declared modes without a game-model estimate backed by a documented fact (transit-ledger.ts; a warning). */
   unsupportedRoutes: string[];
 };
 export type JourneyTransitReport =
