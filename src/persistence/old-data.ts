@@ -9,7 +9,7 @@ import { runWithSlotLocks, slotLockName, type LockedRun, type LockManagerLike } 
  * 対象キーと影響範囲を示し、明示確認と別タブ競合の保護を維持する」, docs/07 「古い保存データの整理」).
  *
  * Listed (each item = keys removed together):
- * - another journey's game save identified as an old version (loadGame `legacy`: v1 to v13);
+ * - another journey's game save identified as an old version (loadGame `legacy`: v1 to v14);
  * - backups of unreadable saves (`….save.v1.backup.<time>[.<n>]`, as backupAndCreate names them),
  *   of every journey including this one;
  * - the keys Milan used before journeys had their own slots (`dreamscape.save.v1` with its backups,
