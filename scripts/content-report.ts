@@ -287,7 +287,7 @@ export function unusedWordMeanings(sources: ContentSources): UnusedWordMeanings[
 }
 
 /** What a journey folder provides: its cities, stories, quizzes and served files, and its entries of each catalog. */
-export type JourneyContents = { id: string; status: unknown; counts: [string, number][] };
+export type JourneyContents = { id: string; nameJa?: string; status: unknown; counts: [string, number][] };
 
 /** A short name for the entries of a catalog key: the key (`dates`, `wardrobe cities`), or the file for generic keys. */
 function entryLabel(kind: MergedKind, key: string): string {
@@ -339,13 +339,17 @@ export function journeyContents(sources: ContentSources): JourneyContents[] {
         if (observationOnly) counts.push(["observation-only clues", observationOnly]);
       }
     }
-    return { id: manifest.id, status: manifest.data.status, counts };
+    return { id: manifest.id, ...(typeof manifest.data.nameJa === "string" ? { nameJa: manifest.data.nameJa } : {}), status: manifest.data.status, counts };
   });
 }
 
-/** One line for content:build, e.g. `Journey milano (available): cities 1, stories 63, …; battles 9, …`. */
+/**
+ * One line for content:build, headed by the journey's Japanese name and ID (as journey:readiness and
+ * journey:transit head theirs), e.g. `Journey ミラノ編（milano） (available): cities 1, stories 63, …; battles 9, …`.
+ */
 export function formatJourneyContents(contents: JourneyContents): string {
   const [files, entries] = [contents.counts.slice(0, 4), contents.counts.slice(4)];
   const text = (counts: [string, number][]) => counts.map(([label, count]) => `${label} ${count}`).join(", ");
-  return `Journey ${contents.id} (${String(contents.status)}): ${text(files)}${entries.length ? `; ${text(entries)}` : ""}`;
+  const name = contents.nameJa ? `${contents.nameJa}（${contents.id}）` : contents.id;
+  return `Journey ${name} (${String(contents.status)}): ${text(files)}${entries.length ? `; ${text(entries)}` : ""}`;
 }
