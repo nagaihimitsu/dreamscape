@@ -11,7 +11,7 @@ import { eventCity, eventPlace, momentHasScenes, momentSchedule, tripMoment, typ
 import { DAY_START } from "./travel";
 import type { GameState } from "./game-state-schema";
 import type { Occasion, OccasionPart, OccasionThen, OccasionTrip } from "./occasion-state";
-import { mainPartPayments, mainScene, runningMainPayment } from "./reservations";
+import { mainPartPayments, mainScene, runningMainPayment, type Payment } from "./reservations";
 import { beginLandmarkGuide, beginLandmarkObservation } from "./tourism";
 import { cheapestOnTimeFare, compareRouteCost, findTravelHomeRoutes } from "./travel-routes";
 import { getUsableRoutes } from "./transport";
@@ -334,12 +334,32 @@ function epilogueReturnFare(state: Readonly<GameState>): number | "none" | "late
 }
 
 /**
- * The plan of a then: now: the move's fare and the main part's admission and payments there, checked against what is usable
- * after this occasion. `spend`: the money its scene still pays before the then: runs (the choice's own `# money:`, an inserted
- * scene's `# on_done:`); the main part running now adds its first payment (4.1 step 1).
+ * What a decided `# then:` keeps back until it runs (2.3, 4.4): the fare home from where it leaves the party (as runThen keeps it
+ * back), and what it pays there: the main parts of the visit a then: move opens (its fare and admission were paid as it was
+ * decided), or the epilogue's first payment. The scene's later choices spend only what is left (reservations.ts).
  */
-export function planThen(state: Readonly<GameState>, then: SceneThen, sceneId: string, spend = 0): ThenPlan {
-  const paying = spend + runningMainPayment(state);
+export function thenKeepBack(state: Readonly<GameState>): Payment | undefined {
+  const then = state.occasion?.then;
+  if (!then) return undefined;
+  if ("epilogue" in then) {
+    const fare = epilogueReturnFare(state);
+    const epilogue = mainScene({ epilogue: state.currentCityId })?.done;
+    return { money: (typeof fare === "number" ? fare : state.travel.returnReserve) + Math.max(0, -(epilogue?.money ?? 0)), ap: Math.max(0, -(epilogue?.ap ?? 0)) };
+  }
+  const home = getTravelHomeRoutes(state as GameState, then.move).sort(compareRouteCost)[0];
+  const payments = then.eventId ? mainPartPayments(state, then.eventId) : { money: 0, ap: 0 };
+  return { money: (home?.cost ?? state.travel.returnReserve) + payments.money, ap: payments.ap };
+}
+
+/**
+ * The plan of a then: now: the move's fare and the main part's admission and payments there, checked against what is usable
+ * after this occasion. `spend`: the money and AP its scene still pays before the then: runs (an inserted scene's `# on_done:`;
+ * a choice's own tags are applied to `state` first); the main part running now adds its first payment (4.1 step 1).
+ */
+export function planThen(state: Readonly<GameState>, then: SceneThen, sceneId: string, spend: Payment = { money: 0, ap: 0 }): ThenPlan {
+  const running = runningMainPayment(state);
+  const paying = spend.money + running.money;
+  const payingAp = spend.ap + running.ap;
   if ("epilogue" in then) {
     if (!canStartAuthoredEpilogue(state as GameState, state.currentCityId)) return { ok: "still" };
     const epilogue = mainScene({ epilogue: state.currentCityId });
@@ -348,8 +368,9 @@ export function planThen(state: Readonly<GameState>, then: SceneThen, sceneId: s
     const reserve = epilogueReturnFare(state);
     if (reserve === "none") return { ok: false, reason: "ここからホテルへ帰る経路がありません。" };
     if (reserve === "late") return { ok: false, reason: "今日はホテルへの帰路を含めると時間が足りません。" };
-    if (state.travelBudget - paying - reserve < money) return { ok: false, reason: "エピローグでの支払いや帰りのための予算が足りません。" };
-    if (state.ap < ap) return { ok: false, reason: `APが足りません（AP ${ap}）。` };
+    // (Until it runs, the fare home of today stays kept back too: every save in between keeps it.)
+    if (state.travelBudget - paying < Math.max(state.travel.returnReserve, reserve + money)) return { ok: false, reason: "エピローグでの支払いや帰りのための予算が足りません。" };
+    if (state.ap - payingAp < ap) return { ok: false, reason: `APが足りません（AP ${ap}）。` };
     return { ok: true, plan: { epilogue: true, sceneId }, cost: 0 };
   }
   const from = state.travel.currentPlaceId;
@@ -362,13 +383,14 @@ export function planThen(state: Readonly<GameState>, then: SceneThen, sceneId: s
   const payments = event ? mainPartPayments(state, event.id) : { money: 0, ap: 0 };
   const home = getTravelHomeRoutes(state as GameState, then.move).sort(compareRouteCost)[0];
   const cost = route.cost + admission;
-  if (!home || state.travelBudget - paying - cost < home.cost + payments.money) return { ok: false, reason: "移動・入場や帰りのための予算が足りません。" };
-  if (state.ap < payments.ap) return { ok: false, reason: "APが足りません。" };
+  if (!home || state.travelBudget - paying - cost < Math.max(state.travel.returnReserve, home.cost + payments.money))
+    return { ok: false, reason: "移動・入場や帰りのための予算が足りません。" };
+  if (state.ap - payingAp < payments.ap) return { ok: false, reason: "APが足りません。" };
   return { ok: true, plan: { move: then.move, modeId: route.mode, minutes: route.minutes, eventId: event?.id ?? null, sceneId }, cost };
 }
 
 /** Decide a then: (chosen, or the head of a scene that starts): its move is paid now; it runs when its scene ends. Nothing without an occasion, or when it cannot move. */
-export function commitThen(state: GameState, then: SceneThen, sceneId: string, spend = 0): GameState {
+export function commitThen(state: GameState, then: SceneThen, sceneId: string, spend?: Payment): GameState {
   const occasion = state.occasion;
   if (!occasion || occasion.then) return state;
   const plan = planThen(state, then, sceneId, spend);
@@ -526,6 +548,7 @@ registerMomentOpeners({ depart: (state) => openDeparture(state), epilogue: (stat
 
 registerOccasionHooks({
   advance: (state, nextRoll) => advanceOccasion(state, nextRoll),
-  thenProblem: (state, then, spend) => { const plan = planThen(state, then, "", spend); return plan.ok === false ? plan.reason : undefined; },
+  thenPlan: (state, then, spend) => planThen(state, then, "", spend),
   commitThen,
+  keepBack: thenKeepBack,
 });

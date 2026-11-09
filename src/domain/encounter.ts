@@ -138,10 +138,13 @@ function getEncounterEntryAvailability(state: GameState, event: EncounterDefinit
   if (!event.repeatable && state.completedEncounterIds.includes(event.id)) return unavailable("この寄り道は終えています。");
   // A head # then: (stage 3b) that cannot be paid keeps the scene from showing (2.3).
   const head = sceneById(event.id)?.then;
-  if (head && planThen(state, head, event.id, insertedDoneReserve(event.id).money).ok === false) return unavailable("この場面の移動ができません。");
-  // A place file's scene: its own # on_done: that spends must be payable from what is left (it is kept back while it runs).
+  const plan = head && planThen(state, head, event.id, insertedDoneReserve(event.id));
+  if (plan && plan.ok === false) return unavailable("この場面の移動ができません。");
+  // A place file's scene: its own # on_done: that spends must be payable from what is left (it is kept back while it runs). With
+  // a head then: decided as it starts, the plan read it against what the then: keeps back (the moment's other parts do not run).
   const place = placeSceneById(event.id);
   if (place) {
+    if (plan && plan.ok === true && state.occasion) return available;
     const reserve = doneReserve(place.done);
     return usableMoney(state) < reserve.money || usableAp(state) < reserve.ap ? unavailable("この場面の支払いができません。") : available;
   }
@@ -324,7 +327,7 @@ export function momentSceneAvailability(state: GameState, id: string): Availabil
 export function beginMomentScene(state: GameState, id: string, nextRoll: () => number): GameState {
   const begun = beginEncounter(state, findEncounter(id)!, nextRoll);
   const head = sceneById(id)?.then;
-  return head ? commitThen(begun, head, id, insertedDoneReserve(id).money) : begun;
+  return head ? commitThen(begun, head, id, insertedDoneReserve(id)) : begun;
 }
 
 /**

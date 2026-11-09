@@ -4,7 +4,7 @@ import { getJourney } from "../../../src/content/journeys";
 import { encounterChoiceDisplay, encounterEntryRuleList } from "../../../src/domain/encounter";
 import { isJourneyComplete } from "../../../src/domain/city-travel";
 import { isAuthoredEpilogueCity } from "../../../src/domain/epilogue";
-import { validateGameState, type GameState } from "../../../src/domain/game";
+import { dateChoiceDisplay, validateGameState, type GameState } from "../../../src/domain/game";
 import { occasionSteps } from "../../../src/domain/occasion";
 import type { Occasion } from "../../../src/domain/occasion-state";
 import type { SceneAt, SceneThen } from "../../../src/content/scene-schemas";
@@ -13,9 +13,10 @@ import { screenFor } from "../../../src/domain/screen";
 import { DAY_END, DAY_START } from "../../../src/domain/travel";
 import { beginTravelEvent, sleepAtHotel } from "../../../src/domain/travel-game";
 import { occasionCandidates } from "../../../src/dev/occasion-candidates";
-import { cityStart, playBattleToResult } from "../../../src/dev/scenario-builders";
+import { cityStart, playBattleToResult, withAp } from "../../../src/dev/scenario-builders";
 import { rentTransport } from "../../../src/domain/transport";
-import { mainScene, runningMainPayment } from "../../../src/domain/reservations";
+import { mainScene, runningMainPayment, usableAp, usableMoney } from "../../../src/domain/reservations";
+import { epilogueChoiceDisplay } from "../../../src/domain/epilogue";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 
 // Stage 4 of the unified event design (2.3, 3.4 H/I, 3.5, 3.6, 3.9 (c)(d), 4.2–4.8) on the sample journey (fictional):
@@ -386,10 +387,156 @@ describe("a then: at a trip's moment (2.3, 3.6, 4.1)", () => {
     patch(guide, { done: { ...guide.done, money: -5 } });
     const reading = playUntil(depart(cityStart("mihon"), EPISODE), (state) => !!state.activeTourism, ["ask"]);
     expect(reading.occasion?.at).toBe("main:guide");
-    expect(runningMainPayment(reading)).toBe(5);
+    expect(runningMainPayment(reading)).toEqual({ money: 5, ap: 0 });
     const read = playUntil(reading, (state) => !state.activeTourism || state.activeTourism.phase !== "guide");
     expect(read.completedGuideIds).toContain(TOWER);
-    expect(runningMainPayment({ ...read, occasion: read.occasion && { ...read.occasion, at: "main:guide" } })).toBe(0);
+    expect(runningMainPayment({ ...read, occasion: read.occasion && { ...read.occasion, at: "main:guide" } })).toEqual({ money: 0, ap: 0 });
+  });
+
+  /** How a choice of the open encounter (by its option ID) shows. */
+  const shownChoice = (state: GameState, optionId: string) =>
+    encounterChoiceDisplay(state, state.activeEncounter!.frame.choices.find((item) => item.optionId === optionId)!.index);
+  const untilChoice = (state: GameState) => playUntil(state, (current) => !!(current.activeEncounter ?? current.activeDate)?.frame.choices.length);
+
+  it("keeps back what a decided then: move needs from the scene's later choices: the fare home from where it moves (a head then:)", () => {
+    dearMarket();
+    firstRide([{ trip: "walk", from: "mihon_hotel" }]);
+    const ride = scene("smp_mihon_first_bicycle");
+    patch(ride, { then: { move: MARKET }, options: ride.options.map((option) => option.id === "as_is" ? { ...option, money: -8 } : option) });
+    const started = (budget: number) => untilChoice(depart({ ...rented(cityStart("mihon")), travelBudget: budget }, EPISODE));
+    // Decided as the scene starts: 14 left, 10 kept back for the way home from the market.
+    const poor = started(14);
+    expect(poor.occasion?.then).toMatchObject({ move: MARKET });
+    expect(shownChoice(poor, "as_is")).toEqual({ show: "grey", reason: "帰りの交通費を確保しているため、今は使えません。", cost: 8 });
+    const rich = started(18);
+    expect(shownChoice(rich, "as_is")).toEqual({ show: "open", cost: 8 });
+    const moved = playUntil(rich, (state) => state.travel.currentPlaceId === MARKET && !state.activeEncounter, ["as_is"]);
+    expect(moved.travelBudget).toBe(10);
+    expect(moved.travel.returnReserve).toBe(10);
+    expect(saveGame(new MemoryStorage(), moved).ok).toBe(true);
+  });
+
+  it("keeps back what a decided then: epilogue needs from the scene's later choices (the fare home from the trip's start)", () => {
+    dearMarket();
+    firstRide([{ trip: BIKE, from: MARKET }]);
+    const ride = scene("smp_mihon_first_bicycle");
+    patch(ride, { then: { epilogue: true }, options: ride.options.map((option) => option.id === "as_is" ? { ...option, money: -8 } : option) });
+    const started = (budget: number) => {
+      const bike = rented(cityStart("mihon"));
+      return untilChoice(depart(at({ ...bike, travelBudget: budget, travel: { ...bike.travel, returnReserve: 10 } }, MARKET, DAY_START), EPISODE, BIKE));
+    };
+    // 15 left after the ride, 10 kept back for the way home from the market.
+    expect(shownChoice(started(25), "as_is")).toMatchObject({ show: "grey" });
+    const epilogue = playUntil(started(35), (state) => !!state.activeEpilogue, ["as_is"]);
+    expect(epilogue.travel).toMatchObject({ currentPlaceId: MARKET, returnReserve: 10 });
+    expect(epilogue.travelBudget).toBe(17);
+    expect(restore(epilogue)).toEqual(epilogue);
+  });
+
+  it("keeps back a then: move chosen in a date from the date's later money choice", () => {
+    dearMarket();
+    const date = scene(DATE);
+    patch(date, { options: date.options.map((option) => option.id.startsWith("first_") ? { ...option, then: { move: MARKET } }
+      : option.id.startsWith("second_") ? { ...option, money: -8 } : option) });
+    // By night (no painter), with the bicycle rented: the market's ways home are by bicycle (10).
+    const ready = playUntil(depart(rented(cityStart("mihon")), EPISODE), free);
+    const dated = playUntil(depart(at({ ...ready, travelBudget: 12 }, "mihon_hotel", 18 * 60), DATE), (state) => !!state.activeDate?.frame.choices.length);
+    const first = dated.activeDate!.frame.choices.find((choice) => choice.optionId?.startsWith("first_"))!;
+    expect(dateChoiceDisplay(dated, first.index)).toEqual({ show: "open" });
+    const second = playUntil(dated, (state) => !!state.activeDate?.frame.choices.some((choice) => choice.optionId?.startsWith("second_")), [first.optionId!]);
+    expect(second.occasion?.then).toMatchObject({ move: MARKET });
+    for (const choice of second.activeDate!.frame.choices) expect(dateChoiceDisplay(second, choice.index)).toMatchObject({ show: "grey" });
+  });
+
+  it("counts the AP the scene still spends before its then: epilogue, and keeps back the epilogue's AP once it is decided", () => {
+    firstRide([{ trip: "walk", from: "mihon_hotel" }], { epilogue: true });
+    const ride = scene("smp_mihon_first_bicycle");
+    const epilogue = mainScene({ epilogue: "mihon" })!;
+    patch(epilogue, { done: { ...epilogue.done, ap: -1 } });
+    // (a) The scene's # on_done: ap -1, then the epilogue's ap -1: one AP is not enough.
+    patch(ride, { done: { ap: -1 } });
+    const started = (ap: number) => untilChoice(depart(withAp(cityStart("mihon"), ap), EPISODE));
+    expect(shownChoice(started(1), "as_is")).toEqual({ show: "grey", reason: "APが足りません（AP 1）。" });
+    const read = playUntil(started(2), (state) => !state.activeEpilogue && state.viewedEpilogueCityIds.includes("mihon"), ["as_is"]);
+    expect(read.ap).toBe(0);
+    expect(restore(read)).toEqual(read);
+    // (b) The choice's own # ap: -1 with its then: epilogue.
+    patch(ride, { done: {}, options: ride.options.map((option) => option.id === "as_is" ? { ...option, ap: -1 } : option) });
+    expect(shownChoice(started(1), "as_is")).toEqual({ show: "grey", reason: "APが足りません（AP 1）。", ap: 1 });
+    // A head then: epilogue decided: the epilogue's AP is kept back from the scene's choices.
+    patch(ride, { then: { epilogue: true }, options: ride.options.map(({ then: _then, ...option }) => option) });
+    const decided = started(1);
+    expect(decided.occasion?.then).toMatchObject({ epilogue: true });
+    expect(shownChoice(decided, "as_is")).toMatchObject({ show: "grey" });
+  });
+
+  it("keeps back an authored epilogue's first payment while it is to be read: through its moment, and open by itself", () => {
+    const epilogue = mainScene({ epilogue: "mihon" })!;
+    patch(epilogue, { done: { ...epilogue.done, money: -5, ap: -1 }, options: epilogue.options.map((option) => option.id === "wave_back" ? { ...option, ap: -1 } : option) });
+    patch(scene("smp_mihon_bookmark_stall"), { then: { epilogue: true } });
+    // Through its moment: Lili's farewell (-1) runs before it.
+    const seeoff = playUntil(depart(withAp(cityStart("mihon"), 2), EPISODE), (state) => state.activeEncounter?.encounterId === "smp_mihon_lili_seeoff");
+    expect(seeoff.occasion?.kind).toBe("epilogue");
+    expect(usableAp(seeoff)).toBe(seeoff.ap - 1);
+    expect(usableMoney(seeoff)).toBe(seeoff.travelBudget - seeoff.travel.returnReserve - 5);
+    // Open by itself (no scene before or after it): its own choice that spends AP leaves the epilogue's AP.
+    patch(scene("smp_mihon_lili_seeoff"), { at: [] });
+    patch(scene("smp_mihon_bookmark_before_leaving"), { at: [] });
+    const reading = playUntil(depart(withAp(cityStart("mihon"), 1), EPISODE), (state) => !!state.activeEpilogue?.frame.choices.length);
+    expect(reading.occasion).toBeNull();
+    expect(usableAp(reading)).toBe(0);
+    const wave = reading.activeEpilogue!.frame.choices.find((choice) => choice.optionId === "wave_back")!;
+    expect(epilogueChoiceDisplay(reading, wave.index)).toEqual({ show: "grey", reason: "APが足りません（AP 1）。" });
+    const read = playUntil(reading, (state) => !state.activeEpilogue, ["listen"]);
+    expect(read.ap).toBe(0);
+    expect(restore(read)).toEqual(read);
+  });
+
+  it("reads a choice that decides a then: move without the moment's parts it drops; today's fare home stays kept until it runs", () => {
+    // The tower's battle pays 10 when first played: kept back from the visit's choices, but not from one that moves on before it.
+    const battle = mainScene({ battle: "smp_mihon_main_clock_tower_battle" })!;
+    patch(battle, { done: { ...battle.done, money: -10 } });
+    const stall = scene("smp_mihon_bookmark_stall");
+    patch(stall, { options: stall.options.map((option) => option.id === "drawn" ? { ...option, money: -8, then: { move: MARKET } }
+      : option.id === "ask" ? { ...option, money: -8 } : option) });
+    const visit = untilChoice(depart({ ...cityStart("mihon"), travelBudget: 15 }, EPISODE));
+    expect(usableMoney(visit)).toBe(5);
+    expect(shownChoice(visit, "ask")).toMatchObject({ show: "grey" });
+    expect(shownChoice(visit, "drawn")).toEqual({ show: "open", cost: 8 });
+    const moved = playUntil(visit, (state) => state.travel.currentPlaceId === MARKET && !state.activeEncounter, ["drawn"]);
+    expect(moved.travelBudget).toBe(7);
+    expect(restore(moved)).toEqual(moved);
+  });
+
+  it("keeps today's fare home until a then: move runs: a head then: whose fare would dip below it does not show", () => {
+    dearMarket();
+    const ready = playUntil(depart(rented(cityStart("mihon")), EPISODE), free);
+    const painter = scene(PAINTER);
+    patch(painter, { at: [{ place: MARKET }], then: { move: TOWER } });
+    // At the market, 10 kept back for the way home; the ride to the tower costs 10.
+    const poor = depart(at({ ...ready, travelBudget: 15 }, "mihon_hotel", DAY_START), "smp_mihon_special_b_market");
+    expect(poor.travel).toMatchObject({ currentPlaceId: MARKET, returnReserve: 10 });
+    expect(poor.occasion?.started).not.toContain(PAINTER);
+    const rich = playUntil(depart(at({ ...ready, travelBudget: 25 }, "mihon_hotel", DAY_START), "smp_mihon_special_b_market"),
+      (state) => state.activeEncounter?.encounterId === PAINTER);
+    expect(rich.travelBudget).toBe(15);
+    const moved = playUntil(rich, (state) => state.travel.currentPlaceId === TOWER && !state.activeEncounter, ["dry"]);
+    expect(moved.travel.returnReserve).toBe(0);
+    expect(restore(moved)).toEqual(moved);
+  });
+
+  it("reads a choice's own money gain before its then: (the display matches the choice)", () => {
+    dearMarket();
+    const painter = scene(PAINTER);
+    patch(painter, { options: painter.options.map((option) => option.id === "help" ? { ...option, then: { move: MARKET } } : option) });
+    const ready = playUntil(depart(rented(cityStart("mihon")), EPISODE), free);
+    const trip = untilChoice(depart(at({ ...ready, travelBudget: 5 }, "mihon_hotel", DAY_START), DATE));
+    expect(trip.activeEncounter?.encounterId).toBe(PAINTER);
+    // 5 + 20 from helping: the way home from the market (10) is kept.
+    expect(shownChoice(trip, "help")).toEqual({ show: "open" });
+    expect(shownChoice({ ...trip, travelBudget: 4 }, "help")).toEqual({ show: "open" });
+    const helped = playUntil(trip, (state) => !!state.occasion?.then, ["help"]);
+    expect(helped.occasion?.then).toMatchObject({ move: MARKET });
   });
 
   it("names why a then: epilogue from the trip's start cannot keep a fare home: no way home, or none in time", () => {
