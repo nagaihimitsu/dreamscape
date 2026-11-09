@@ -34,6 +34,13 @@ export type ProgressionContent = {
   rewards: readonly { id?: string; episodeId?: string; battleId?: string; ap: number; trigger: string }[];
   /** The romance thresholds (romance/progression.json): the dates a stage and the confession need. */
   romance: { stages: readonly { stage: number; minCompletedDates: number }[]; confession: { minCompletedDates: number } };
+  /**
+   * The scenes whose `then: epilogue` (head or choice) starts their city's epilogue (stage 3b; 3.9 (d)): an inserted
+   * scene at the visits of `landmarkIds` with its `when`, or a battle's head (`battleId`).
+   */
+  epilogueStarters?: readonly { sceneId: string; cityId: string; landmarkIds?: readonly string[]; battleId?: string; dateId?: string; when?: Condition }[];
+  /** The AP of the scenes' tags (stage 3): gained once by a scene's `# ap: +N` / `# on_done: ap +N` (its scene_tag rules), spent by the main parts' `# on_done: ap -N`. */
+  sceneAp?: readonly { cityId: string; gained: number; spent: number }[];
 };
 
 /**
@@ -267,9 +274,31 @@ function finaleOf(city: City) {
 /** The cities with a finale (the ones the check reads). */
 const finaleCities = (content: ProgressionContent) => [...new Set(content.episodes.filter((episode) => episode.kind === "city_finale").map((episode) => episode.cityId))];
 
-/** Check 9's errors: a city whose finale can never show on the map, however well the player plays. */
+/** Whether one of the city's then: epilogue scenes can come in the reach (its visit reached and its condition true some day, or its battle played). */
+function epilogueReachable(content: ProgressionContent, city: City, reach: Reach, mode: Mode): boolean {
+  const dateWhen = (dateId: string) => content.dates.find((date) => date.id === dateId)?.when;
+  return (content.epilogueStarters ?? []).filter((starter) => starter.cityId === city.id).some((starter) => starter.battleId
+    ? reach.battles.has(starter.battleId)
+    : starter.dateId ? !dateWhen(starter.dateId) || judge(content, city, startSnapshot(), reach, mode, dateWhen(starter.dateId)!).canTrue
+    : (starter.landmarkIds ?? []).some((id) => reach.landmarks.has(id)) && (!starter.when || judge(content, city, startSnapshot(), reach, mode, starter.when).canTrue));
+}
+const authoredCities = (content: ProgressionContent) => [...new Set((content.epilogueStarters ?? []).map((starter) => starter.cityId))];
+/** A city the player cannot leave without its epilogue: one of a journey that moves on after the epilogue, or the journey's last city. */
+const epilogueRequired = (content: ProgressionContent, cityId: string) => {
+  const journey = journeyOf(content, cityId);
+  return journey?.cityTransition === "after_epilogue" || journey?.cities.at(-1)?.id === cityId;
+};
+
+/** Check 9's errors: a city whose finale can never show on the map, however well the player plays; a city whose author-started epilogue can never begin. */
 export function progressionErrors(content: ProgressionContent): string[] {
-  return finaleCities(content).flatMap((cityId) => {
+  const epilogues = authoredCities(content).filter((cityId) => epilogueRequired(content, cityId)).flatMap((cityId) => {
+    const city = cityModel(content, cityId);
+    return epilogueReachable(content, city, reachCity(content, city, startSnapshot(), {}), {}) ? [] : [`No way to start the epilogue of city ${cityId}: ` +
+      `its epilogue begins only with a then: epilogue, and none of its scenes with one (${(content.epilogueStarters ?? []).filter((item) => item.cityId === cityId)
+        .map((item) => item.sceneId).join(", ")}) can ever come, however the city is played; ${journeyOf(content, cityId)?.cityTransition === "after_epilogue"
+        ? "the journey moves on only after the epilogue" : "the journey ends only with its last city's epilogue"} (A19)`];
+  });
+  return [...epilogues, ...finaleCities(content).flatMap((cityId) => {
     const city = cityModel(content, cityId);
     const reach = reachCity(content, city, startSnapshot(), {});
     if (reach.finale) return [];
@@ -278,11 +307,12 @@ export function progressionErrors(content: ProgressionContent): string[] {
     return [`No way to clear city ${cityId}: the map condition of the finale ${finale.id} can never be met, however the city is played ` +
       `(battles that can be played: ${reach.battles.size}${unreached.length ? `; never shown on the map: ${unreached.join(", ")}` : ""}). ` +
       `Change its when in progression/journey.json (a part without not that names a romance value counts as met some day)`];
-  });
+  })];
 }
 
 export type ProgressionWarning = {
-  kind: "never-met-again" | "romance-only-city" | "unfindable-clue" | "battle-after-epilogue" | "never-offered" | "money-shortfall" | "ap-shortfall";
+  kind: "never-met-again" | "romance-only-city" | "unfindable-clue" | "battle-after-epilogue" | "never-offered" | "money-shortfall" | "ap-shortfall"
+    | "epilogue-unreachable";
   message: string;
 };
 
@@ -375,11 +405,13 @@ function apWarnings(content: ProgressionContent): ProgressionWarning[] {
     const gained = (journey?.cities[0]?.id === cityId ? journey.initialState?.ap ?? 0 : 0) + content.rewards
       .filter((rule) => (rule.episodeId !== undefined && eventIds.has(rule.episodeId)) || (rule.battleId !== undefined && battleIds.has(rule.battleId)))
       .reduce((sum, rule) => sum + rule.ap, 0);
-    const others = dates.filter((date) => !named.has(date.id)).reduce((sum, date) => sum + date.apCost, 0);
-    const left = Math.max(0, gained - others);
+    const tags = (content.sceneAp ?? []).filter((item) => item.cityId === cityId);
+    const gainedWithTags = gained + tags.reduce((sum, item) => sum + item.gained, 0);
+    const others = dates.filter((date) => !named.has(date.id)).reduce((sum, date) => sum + date.apCost, 0) + tags.reduce((sum, item) => sum + item.spent, 0);
+    const left = Math.max(0, gainedWithTags - others);
     return left < needed
       ? [{ kind: "ap-shortfall", message: `AP may run short in city ${cityId}: its finale needs dates (${leaves.map((leaf) => JSON.stringify(leaf)).join(", ")}, ` +
-        `${needed} AP), the city gives ${gained} AP, and the other dates may use ${others} AP first, leaving ${left} (${needed - left} short; ` +
+        `${needed} AP), the city gives ${gainedWithTags} AP (with its scenes' tags), and the other dates may use ${others} AP first, leaving ${left} (${needed - left} short; ` +
         `not stopped: AP is set when balancing)` }]
       : [];
   });
@@ -425,6 +457,19 @@ export function progressionWarnings(content: ProgressionContent, clueUses: reado
     warnings.push({ kind: "unfindable-clue", message: `Clues that can never be found: ${landmarkId} has no observation (observation: false) but lists ` +
       `${clueIds.join(", ")}${used.length ? `, used by ${used.map((use) => `${use.usedBy} (${use.clueId})`).join(", ")}` : ""} ` +
       `(not stopped: a question or the evidence can be answered without them)` });
+  }
+  // The author-started epilogue (3.9 (d)): a city of a journey the player leaves by choice may never reach its then: epilogue
+  // scenes (the city is left without the epilogue), and any such city may lose them in some plays (fragile parts).
+  for (const cityId of authoredCities(content)) {
+    const city = cityModel(content, cityId);
+    const start = startSnapshot();
+    const reachable = epilogueReachable(content, city, reachCity(content, city, start, {}), {});
+    if (!reachable && !epilogueRequired(content, cityId))
+      warnings.push({ kind: "epilogue-unreachable", message: `The epilogue of city ${cityId} may never start: no scene with its then: epilogue can come, ` +
+        `however the city is played; the player may leave for the next city without it (not stopped)` });
+    else if (reachable && !epilogueReachable(content, city, reachCity(content, city, start, { fragile: true }), { fragile: true }))
+      warnings.push({ kind: "epilogue-unreachable", message: `The epilogue of city ${cityId} may become impossible to start in some plays: its then: epilogue ` +
+        `scenes come only while a part holds that can turn false for good (money spent, an item given or used, a battle played, a day limit)` });
   }
   return [...warnings, ...moneyWarnings(content), ...apWarnings(content)];
 }

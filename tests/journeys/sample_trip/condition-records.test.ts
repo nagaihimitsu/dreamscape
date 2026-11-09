@@ -52,7 +52,12 @@ function finish(state: GameState): GameState {
     expect(step).toBeLessThan(60);
     next = advanceEncounter(next, next.revision);
   }
-  const done = finishTravelEventIfComplete(next, continueTourismEncounters(next, finishEncounter(next, next.revision), () => 0));
+  // After the gift, the visit's next scene (the bell, priority +2) is not played here: the gift's records are compared.
+  const finished = finishEncounter(next, next.revision);
+  // (The bell is left out by ending the visit's occasion here, as if nothing followed the gift: its window settles.)
+  const endVisit = (s: GameState): GameState => ({ ...s, occasion: null,
+    travel: { ...s.travel, minute: s.travel.activeEvent?.endMinute ?? s.travel.minute, activeEvent: null } });
+  const done = next.activeEncounter?.encounterId === STALL ? finishTravelEventIfComplete(next, continueTourismEncounters(next, finished, () => 0)) : endVisit(finished);
   expect(done.activeEncounter).toBeNull();
   return validateGameState(JSON.parse(JSON.stringify(done)));
 }
@@ -114,10 +119,11 @@ describe("condition records of the sample journey's encounters (seenEncounterIds
       .toThrow(zodIssues({ code: "unrecognized_keys", path: ["itemUses", BOOKMARK], keys: ["extra"] }));
     // The status must match the kind of the recorded option: `give` gives the bookmark away, it does not use it.
     expect(() => validateGameState({ ...state, inventory: { [BOOKMARK]: "used" } })).toThrow(usesMessage);
-    // The recorded encounter must be completed (or running with that option): the gift's completion removed, its seen
-    // record and the gifted bookmark with its use kept, nothing running.
+    // The recorded scene must have been played (seen: a place file's scene may give an item and end with 「また今度」 in
+    // another choice; stage 3a) or be running with that option: the gift's records removed, the gifted bookmark with its
+    // use kept, nothing running.
     expect(state.activeEncounter).toBeNull();
-    expect(() => validateGameState({ ...state, completedEncounterIds: [STALL] })).toThrow(usesMessage);
+    expect(() => validateGameState({ ...state, completedEncounterIds: [STALL], seenEncounterIds: [STALL] })).toThrow(usesMessage);
     // While the gift is running, its record must name the option actually chosen (both options give the bookmark).
     expect(() => validateGameState({ ...chosen, itemUses: { [BOOKMARK]: { encounterId: GIFT, optionId: "guidebook" } } })).toThrow(usesMessage);
     // The gift running with 「また今度」 chosen: a gifted bookmark recorded as given by `give` is not that choice.

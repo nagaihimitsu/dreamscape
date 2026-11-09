@@ -15,6 +15,7 @@ import {
 import { rollTickets } from "./scenario-builders";
 import { relationshipAxisLabels } from "../domain/relationship-change";
 import { PrototypePreview } from "./PrototypePreview";
+import { OccasionCandidatesView } from "./OccasionCandidatesView";
 import "./debug-mode.css";
 
 type MemoryStorage = { getItem(key: string): string | null; setItem(key: string, value: string): void; removeItem(key: string): void };
@@ -160,7 +161,7 @@ export default function DebugMode() {
   if (session) return (
     <div className="debug-session" data-testid="debug-session">
       <header className="debug-session-bar"><div><strong>Debug · 通常セーブとは別</strong><span data-testid="debug-place">開始地点: {session.info.location}</span></div><button type="button" onClick={backToSettings}>場面の選択へ戻る</button></header>
-      <App key={session.key} storage={session.storage} nextRomanceRoll={session.roll} debug />
+      <App key={session.key} storage={session.storage} nextRomanceRoll={session.roll} debug debugPanel={(state) => <OccasionCandidatesView state={state} />} />
     </div>
   );
   return (

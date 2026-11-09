@@ -4,7 +4,7 @@ import { cityContents, episodes, presentation, stories, tagContext } from "../co
 import { encounters } from "../content/encounters";
 import { getBattleAvailability, startBattle } from "./battle";
 import { getAvailableStoryBattles, getEpisodeAvailability, isEpisodeUnlocked } from "./chapter";
-import { getTourismEncounterAvailability, hasPendingPlaceEncounter, proceedFromTourism } from "./encounter";
+import { getTourismEncounterAvailability, nextObservationScene, proceedFromTourism } from "./encounter";
 import { meetEncounter } from "../../tests/fixtures/encounter-moment";
 import { startCityEpilogue } from "./epilogue";
 import { createGame } from "./game";
@@ -60,14 +60,14 @@ describe("city-specific progression", () => {
       const initial = createGame();
       const city = { ...initial, currentCityId: "test_city", visitedLandmarkIds: ["test_special_b_landmark"],
         travel: { ...initial.travel, currentPlaceId: "test_place", hotelPlaceId: "test_hotel" } };
-      expect(hasPendingPlaceEncounter(city, "test_special_b_landmark")).toBe(false);
+      expect(nextObservationScene(openTourism(city, "test_special_b_landmark"))).toBeUndefined();
       const withItem = { ...city, inventory: { test_city_item: "held" as const } };
-      expect(hasPendingPlaceEncounter(withItem, "test_special_b_landmark")).toBe(true);
+      expect(nextObservationScene(openTourism(withItem, "test_special_b_landmark"))).toBe(event.id);
       const observing = openTourism(withItem, "test_special_b_landmark");
       expect(getTourismEncounterAvailability(observing, event.id).available).toBe(true);
       const started = proceedFromTourism(observing, observing.revision, () => 0);
       expect(started.activeEncounter?.encounterId).toBe(event.id);
-      expect(started.activeEncounter?.returnTourism?.landmarkId).toBe("test_special_b_landmark");
+      expect(started.occasion?.landmarkId).toBe("test_special_b_landmark");
       expect(getTourismEncounterAvailability({ ...observing, completedEncounterIds: [event.id] }, event.id).available).toBe(false);
     } finally {
       encounters.encounters.pop();

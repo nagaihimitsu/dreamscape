@@ -25,6 +25,8 @@ export function validateEncounterStory(
   requireChoiceIds = false,
   /** Called with each choice's text and its `# translation:` (for the data-language warning). */
   onTranslation?: (choiceText: string, translation: string) => void,
+  /** A choice's two reactions that read the same (a warning; decision 39). */
+  onReactionWarning?: (message: string) => void,
 ): void {
   const positiveResponses = new Map<string, string>();
   const inventoryContexts: Readonly<Record<string, ItemStatus>>[] = [
@@ -109,7 +111,7 @@ export function validateEncounterStory(
           const reactionKey = `${contextIndex}/${option.id}`;
           if (result === "positive") positiveResponses.set(reactionKey, response.join("\n"));
           else if (positiveResponses.get(reactionKey) === response.join("\n"))
-            throw new Error(`Encounter reactions must differ: ${option.id}`);
+            onReactionWarning?.(`The two reactions of the encounter choice ${option.id} read the same (not stopped)`);
         }
       }
     }
@@ -119,7 +121,7 @@ export function validateEncounterStory(
 /** Validate stable IDs and references independently of the runtime game rules. */
 export function validateEncounterContent({
   catalog, cityId, landmarks, journey, stories, quizzes, responseProfileIds, memoryIds, context,
-  validateQuiz, onWarning,
+  validateQuiz, onWarning, sceneItems = { uses: [], sources: [] }, carriedItems = [], hasNextCity = false,
 }: {
   catalog: EncounterCatalog;
   cityId: string;
@@ -133,11 +135,17 @@ export function validateEncounterContent({
   validateQuiz: (quiz: { questions: QuizQuestion[] }) => void;
   /** Receives the warnings that do not stop the build (a `# translation:` without Japanese), once each. */
   onWarning?: (warning: ContentWarning) => void;
+  /** The items the tagged scenes use (# give:, # use:, # on_done: use) and give (# on_done: item; stage 3a). */
+  sceneItems?: { uses: readonly string[]; sources: readonly string[] };
+  /** Items carried through the journey from its earlier cities (`"carry": "journey"`): held, given and used here too (the item design §2.5). */
+  carriedItems?: readonly { id: string; cityId: string }[];
+  /** The city has a next city: its own items that are not carried need a use in it (else they are left behind unused). */
+  hasNextCity?: boolean;
 }): void {
   const reported = new Set<string>();
   unique(catalog.items.map((item) => item.id), "encounter item ID");
   unique(catalog.encounters.map((event) => event.id), "encounter ID");
-  const itemIds = new Set(catalog.items.map((item) => item.id));
+  const itemIds = new Set([...catalog.items, ...carriedItems].map((item) => item.id));
   // The current route has one city; journey data also lets isolated tests
   // exercise another city without registering new production content.
   const knownCities = new Set([cityId, ...journey.episodes.map((episode) => episode.cityId)]);
@@ -151,22 +159,21 @@ export function validateEncounterContent({
     if (event.cityId !== cityId) throw new Error(`Unknown encounter city: ${event.id}/${event.cityId}`);
     if (!landmarks.some((landmark) => landmark.id === event.landmarkId && landmark.cityId === event.cityId))
       throw new Error(`Unknown encounter landmark: ${event.id}/${event.landmarkId}`);
-    if (event.repeatable && (event.completionMoney || event.completionItemId ||
-      event.options.some((option) => option.cost || option.requiresItemId || option.consumeItemId || option.giftItemId || option.responseProfileId)))
-      throw new Error(`Repeatable encounter must be free and without item, money or choice effects: ${event.id}`);
+    // Rev. 5: a repeated encounter may have effects (listed by the balance report), and a 「また今度」 choice may cost money.
     unique(event.options.map((option) => option.id), `encounter option ID: ${event.id}`);
     for (const option of event.options) {
       for (const item of [option.requiresItemId, option.consumeItemId, option.giftItemId]) {
         if (item && !itemIds.has(item)) throw new Error(`Unknown encounter item: ${event.id}/${option.id}/${item}`);
-        if (item && catalog.items.find((entry) => entry.id === item)?.cityId !== event.cityId)
+        if (item && catalog.items.find((entry) => entry.id === item)?.cityId !== event.cityId && !carriedItems.some((entry) => entry.id === item))
           throw new Error(`Encounter item city mismatch: ${event.id}/${option.id}/${item}`);
       }
       if (option.consumeItemId && option.giftItemId) throw new Error(`Conflicting encounter item action: ${event.id}/${option.id}`);
       const spentItem = option.consumeItemId ?? option.giftItemId;
       if (spentItem && option.requiresItemId !== spentItem)
         throw new Error(`Encounter item action needs matching requirement: ${event.id}/${option.id}`);
-      if (option.deferCompletion && (option.cost || option.requiresItemId || spentItem || option.responseProfileId))
-        throw new Error(`Deferred encounter choice must have no cost or effects: ${event.id}/${option.id}`);
+      // Today's catalog records a given or used item only for a completed encounter (validateItemUses), so a 「また今度」 choice cannot give one.
+      if (option.deferCompletion && (option.requiresItemId || spentItem))
+        throw new Error(`A 「また今度」 choice of an encounter catalog cannot need or give an item (move the encounter to a place file): ${event.id}/${option.id}`);
       if (option.responseProfileId && !responseProfileIds.includes(option.responseProfileId))
         throw new Error(`Unknown encounter response profile: ${event.id}/${option.id}/${option.responseProfileId}`);
     }
@@ -204,7 +211,8 @@ export function validateEncounterContent({
           onWarning?.(warning);
         }
       };
-      try { validateEncounterStory(compiled, context, scene.options, catalog.items.filter((item) => item.cityId === event.cityId).map((item) => item.id), memoryIds, choiceHasRules, onTranslation); }
+      try { validateEncounterStory(compiled, context, scene.options, catalog.items.filter((item) => item.cityId === event.cityId).map((item) => item.id), memoryIds, choiceHasRules, onTranslation,
+        (message) => onWarning?.({ kind: "scene-tag", message: `${event.id}: ${message}` })); }
       catch (error) {
         throw new Error(`Invalid encounter story: ${event.id}/${scene.id}: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
       }
@@ -215,14 +223,15 @@ export function validateEncounterContent({
   unique(alternativeRewards, "encounter alternative reward");
   unique(itemSources, "encounter item source");
   for (const item of catalog.items) {
-    const hasUse = catalog.encounters.some((event) =>
+    const hasUse = sceneItems.uses.includes(item.id) || catalog.encounters.some((event) =>
       event.cityId === item.cityId && event.options.some((option) =>
         option.consumeItemId === item.id || option.giftItemId === item.id,
       ),
     );
-    if (!hasUse) throw new Error(`Encounter item has no use in its city: ${item.id}/${item.cityId}`);
+    // Only an item that may be left behind needs a use: one not carried, in a city with a next city (a keepsake may just be held).
+    if (!hasUse && hasNextCity && item.carry !== "journey") throw new Error(`Encounter item has no use in its city: ${item.id}/${item.cityId}`);
     // Without a source the item can never be held, so its uses (and conditions reading it) never happen.
-    if (!itemSources.includes(item.id))
-      throw new Error(`Encounter item has no source: ${item.id} (give it as an encounter's completionItemId or quiz.rewardItemId)`);
+    if (!itemSources.includes(item.id) && !sceneItems.sources.includes(item.id))
+      throw new Error(`Encounter item has no source: ${item.id} (give it as an encounter's completionItemId or quiz.rewardItemId, or a scene's # on_done: item)`);
   }
 }

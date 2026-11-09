@@ -1,13 +1,13 @@
 import { encounters } from "../../src/content/encounters";
-import { getCityContent, landmarks } from "../../src/content";
-import { startBattle } from "../../src/domain/battle";
 import {
-  encounterVisitSlot, getTourismEncounterAvailability, leaveBattleToFreeTime, startTourismEncounter, visitedLandmarkOfEvent,
+  encounterVisitSlot, getTourismEncounterAvailability, leaveBattleToFreeTime, startTourismEncounter,
 } from "../../src/domain/encounter";
+import { landmarks } from "../../src/content";
+import { advanceOccasion } from "../../src/domain/occasion";
 import type { Availability, GameState } from "../../src/domain/game";
 import { closeTourism, openTourism, skipTourismGuide } from "../../src/domain/tourism";
-import { beginTravelEvent, finishTravelEventIfComplete } from "../../src/domain/travel-game";
-import { playBattleToResult } from "../../src/dev/scenario-builders";
+import { finishTravelEventIfComplete } from "../../src/domain/travel-game";
+import { playBattleToResult, startEncounterScene } from "../../src/dev/scenario-builders";
 
 // Encounters start only at their landmark's visit (the free-time start was
 // removed with the save format v14; condition system decision 7): most while
@@ -51,14 +51,19 @@ function inFreeTime(state: GameState): GameState {
 export function meetEncounter(state: GameState, encounterId: string, nextRoll: () => number = () => 0): GameState {
   const landmarkId = landmarkOf(encounterId);
   const slot = encounterVisitSlot(encounterId);
-  if (slot === "before") {
+  if (slot !== "observe") {
+    // Before, after a part or after the main group: the visit's occasion from the map (as Debug opens it).
     const free = inFreeTime(state);
-    const event = getCityContent(free.currentCityId).travel.events.find((item) => visitedLandmarkOfEvent(item.id) === landmarkId)!;
-    return beginTravelEvent(free, event.id, "walk", free.revision, nextRoll);
-  }
-  if (slot === "after") {
-    const result = playBattleToResult(startBattle(inFreeTime(state), landmarks.find((item) => item.id === landmarkId)!.battleId!));
-    return leaveBattleToFreeTime(result, result.revision, nextRoll);
+    try { return startEncounterScene(free, encounterId, nextRoll()); }
+    catch {
+      // After the battle of a landmark the map no longer leads to: the battle played again in a visit of its own.
+      if (slot !== "after" && slot !== "afterBattle") return free;
+      const battleId = landmarks.find((item) => item.id === landmarkId)!.battleId;
+      const replay = advanceOccasion({ ...free, occasion: { kind: "visit", eventId: null, landmarkId, parts: ["battle"], ran: [], at: null, started: [] } }, nextRoll);
+      if (replay.activeBattle?.battleId !== battleId) return free;
+      const result = playBattleToResult(replay);
+      return leaveBattleToFreeTime(result, result.revision, nextRoll);
+    }
   }
   const observing = observeLandmark(state, landmarkId);
   return startTourismEncounter(observing, encounterId, observing.revision, nextRoll);

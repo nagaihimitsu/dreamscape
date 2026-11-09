@@ -8,55 +8,5 @@
       "descriptionJa": "針が三時を指す絵のしおり。時計番の妹リリの手描き。"
     }
   ],
-  "encounters": [
-    {
-      "id": "smp_mihon_bookmark_stall",
-      "landmarkId": "mihon_clock_tower",
-      "titleJa": "三時のしおりの露店",
-      "descriptionJa": "時計塔の下で、子どもが手描きのしおりを並べている。",
-      "storyId": "encounters/smp_mihon_bookmark_stall",
-      "completionItemId": "smp_mihon_three_bookmark",
-      "options": [
-        {
-          "id": "ask",
-          "cost": 0
-        },
-        {
-          "id": "drawn",
-          "cost": 0
-        },
-        {
-          "id": "later",
-          "cost": 0,
-          "deferCompletion": true
-        }
-      ]
-    },
-    {
-      "id": "smp_mihon_bookmark_gift",
-      "landmarkId": "mihon_clock_tower",
-      "titleJa": "しおりを渡す",
-      "descriptionJa": "もらった三時のしおりを、隣の人に渡すか考える。",
-      "storyId": "encounters/smp_mihon_bookmark_gift",
-      "options": [
-        {
-          "id": "give",
-          "cost": 0,
-          "requiresItemId": "smp_mihon_three_bookmark",
-          "giftItemId": "smp_mihon_three_bookmark"
-        },
-        {
-          "id": "guidebook",
-          "cost": 0,
-          "requiresItemId": "smp_mihon_three_bookmark",
-          "giftItemId": "smp_mihon_three_bookmark"
-        },
-        {
-          "id": "later",
-          "cost": 0,
-          "deferCompletion": true
-        }
-      ]
-    }
-  ]
+  "encounters": []
 }

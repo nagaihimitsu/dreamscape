@@ -1,4 +1,5 @@
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { sceneDataCatalogSchema, storyStateCatalogSchema } from "../src/content/scene-schemas";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -64,6 +65,7 @@ const runtimeSchemas = {
   "presentation/own-artwork.json": ownArtworkCatalogSchema,
   "presentation/reasoning-intros.json": reasoningIntroCatalogSchema,
   "progression/journey.json": journeySchema,
+  "progression/story.json": storyStateCatalogSchema,
   "romance/balance.json": balanceSchema,
   "romance/date_catalog.json": dateCatalogSchema,
   "romance/date_destinations.json": dateDestinationsSchema,
@@ -71,6 +73,7 @@ const runtimeSchemas = {
   "romance/presentation.json": presentationSchema,
   "romance/progression.json": progressionSchema,
   "romance/response_profiles.json": responseProfileCatalogSchema,
+  "scenes/catalog.json": sceneDataCatalogSchema,
   "tourism/catalog.json": tourismCatalogSchema,
 } satisfies Record<CatalogKind, { parse(value: unknown): unknown }>;
 

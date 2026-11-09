@@ -47,11 +47,11 @@ describe("cond in a scene's Ink", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow(/cond\("…"\) needs its declaration in this file: add the line\n {2}EXTERNAL cond\(text\)/u);
   }, 120000);
 
-  it("stops a condition naming what does not exist, or a part of a later stage", async () => {
+  it("stops a condition naming what does not exist (an undeclared flag too)", async () => {
     await epilogueWith("battle no_such_battle");
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown battle in a condition of the scene epilogues/milano (cond(\"battle no_such_battle\")): no_such_battle");
     await epilogueWith("flag milano_x");
-    await expect(buildContent(fixture, false)).rejects.toThrow('cond("flag milano_x"): Condition part "flag" is not available yet (stage 3)');
+    await expect(buildContent(fixture, false)).rejects.toThrow("Unknown flag (progression/story.json) in a condition of the scene epilogues/milano (cond(\"flag milano_x\")): milano_x");
   }, 120000);
 
   it("stops cond in an English-note topic explanation, which is not a scene", async () => {

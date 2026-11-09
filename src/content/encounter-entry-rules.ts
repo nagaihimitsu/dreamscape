@@ -21,6 +21,9 @@ const momentsSchema = z.custom<["observe"]>().superRefine((value, context) => {
 export const visitPrioritySchema = z.union([
   z.number().int().safe().refine((value) => value !== 0, "Priority 0 is the main part itself: write a negative or positive number"),
   z.literal("after observe"),
+  // After the visit's guide or battle (stage 3b): only when that part ran in this visit.
+  z.literal("after guide"),
+  z.literal("after battle"),
 ]);
 export type VisitPriority = z.infer<typeof visitPrioritySchema>;
 const ruleSchema = z.object({

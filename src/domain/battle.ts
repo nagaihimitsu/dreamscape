@@ -1,6 +1,11 @@
 import { z } from "zod";
 import { sceneConditionReader } from "./scene-conditions";
 import { hasObservation } from "../content/tourism-schemas";
+import { splitStoryAddress } from "../content/story-address";
+import { applyDoneEffects } from "./scene-effects";
+import { mainScene } from "./reservations";
+import { advanceRunningOccasion } from "./occasion-hooks";
+import { evaluateProgression } from "./date-rules";
 import { battleCityId, finalizeBattleProgress, isEpisodeBlockedByStoryBattle, isEpisodeUnlocked, isStoryBattleUnlocked } from "./chapter";
 import {
   battles,
@@ -163,9 +168,11 @@ function battleAvailability(state: GameState, battleId: string, mapChecked: bool
     return { available: false, reason: "先に、旅の途中の対決へ進みましょう。" };
   return { available: true, reason: "" };
 }
-function sceneVariables(active: ActiveBattle) {
+/** A battle of a place file (the stitch form, stages 3–4): its knot's scene stitches start by name, without battle_scene. */
+const stitchForm = (battle: BattleDefinition) => splitStoryAddress(battle.storyId).path !== undefined;
+function sceneVariables(active: ActiveBattle, battle?: BattleDefinition) {
   return {
-    battle_scene: active.dialogueScene!,
+    ...(battle && stitchForm(battle) ? {} : { battle_scene: active.dialogueScene! }),
     answer_correct: active.answers.at(-1)?.correct ?? false,
     battle_score: active.score,
   };
@@ -186,10 +193,10 @@ function withDialogue(
     (item) => item.stage === state.romanceStage,
   )!.playerSuffix;
   const result = beginStory(
-    battle.storyId,
+    stitchForm(battle) ? `${battle.storyId}.${scene}` : battle.storyId,
     state.playerName,
     state.heroineName,
-    { ...sceneVariables(next), player_address: `${state.playerName}${suffix}` },
+    { ...sceneVariables(next, battle), player_address: `${state.playerName}${suffix}` },
     [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state),
   );
   return fromStory(next, result);
@@ -559,7 +566,7 @@ export function advanceBattle(
           bestScore: active.score,
           lastScore: active.score,
         };
-    return finalizeBattleProgress({
+    const recorded = finalizeBattleProgress({
       ...state,
       revision: state.revision + 1,
       activeBattle: {
@@ -577,6 +584,11 @@ export function advanceBattle(
         record,
       ],
     });
+    // The battle's main # on_done: (its knot head or its file's head), once: when its first result is recorded (any score).
+    const doneScene = previous ? undefined : mainScene({ battle: active.battleId });
+    if (!doneScene) return recorded;
+    const paid = applyDoneEffects(recorded, doneScene.id, doneScene.done, recorded.revision);
+    return doneScene.done.rel ? evaluateProgression(paid) : paid;
   }
   const config = battle.reasoning;
   if (
@@ -631,12 +643,13 @@ export function leaveBattle(
     state.activeBattle?.phase !== "result"
   )
     return state;
-  return {
+  // The battle is one part of its occasion: what follows runs now (stage 3b).
+  return advanceRunningOccasion({
     ...state,
     revision: state.revision + 1,
     activeBattle: null,
     battleRewardReceipt: null,
-  };
+  });
 }
 
 export function validateBattleState(state: GameState): void {
@@ -752,7 +765,7 @@ export function validateBattleState(state: GameState): void {
       playerName: state.playerName,
       heroineName: state.heroineName,
       choiceCount: 0,
-      variables: sceneVariables(active),
+      variables: sceneVariables(active, battle),
     });
   } else if (
     active.storyState !== null ||

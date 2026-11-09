@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { currencyForCity, formatMoneyForCity } from "../content/currency";
 import { encounters } from "../content/encounters";
+import { getCities } from "../content";
+import { itemUsableIn } from "../domain/item-cities";
 import type { TravelPlace } from "../content/travel-schemas";
 import { DismissLayer } from "../components/DismissLayer";
 import { HeldItems } from "../components/HeldItems";
@@ -58,9 +60,11 @@ export function JourneyHud({ game, place, onRecords, onEnglish, onSave, onLoad, 
   const weekday = getGameWeekday(game.travel.calendar);
   const money = formatMoneyForCity(game.currentCityId, game.travelBudget);
   const parts = cityProgressParts(cityProgressCounts(game));
+  // This city's items, and those carried through the journey from an earlier city (the item design §2.6).
   const items = encounters.items
-    .filter((item) => item.cityId === game.currentCityId && game.inventory[item.id] === "held")
-    .map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa, iconPath: item.iconPath }));
+    .filter((item) => itemUsableIn(game, item.id, game.currentCityId) && game.inventory[item.id] === "held")
+    .map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa, iconPath: item.iconPath,
+      ...(item.cityId !== game.currentCityId ? { origin: `${getCities().find((city) => city.id === item.cityId)?.nameJa ?? item.cityId}から持ってきた` } : {}) }));
   return (
     <div className="journey-hud" data-testid="journey-bar" ref={header} onMouseDown={keepFocusOffControls}>
       <div className="hud-status">

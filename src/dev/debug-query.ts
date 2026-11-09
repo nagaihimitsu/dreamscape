@@ -6,10 +6,10 @@
  * The format is for development and may change without compatibility.
  */
 
-export const debugScenes = ["tourism", "battle", "encounter", "date", "epilogue"] as const;
+export const debugScenes = ["tourism", "battle", "encounter", "date", "epilogue", "occasion"] as const;
 export type DebugScene = (typeof debugScenes)[number];
 export const debugSceneLabels: Record<DebugScene, string> = {
-  tourism: "観光・場所", battle: "バトル", encounter: "人物との交流", date: "デート", epilogue: "エピローグ",
+  tourism: "観光・場所", battle: "バトル", encounter: "人物との交流", date: "デート", epilogue: "エピローグ", occasion: "観光地の時点（場面から始める）",
 };
 export type DebugDataMode = "real" | "fixture";
 
@@ -24,6 +24,9 @@ export type DebugSettings = {
   trust: number;
   spark: number;
   roll: "positive" | "negative";
+  /** 「場面から始める」 (scene=occasion; the unified event design 4.8): the scene to stop at, and the scenes played first. */
+  from?: string;
+  prep?: string[];
 };
 
 /** The value range the scene picker (場面の確認) offers (AP is also capped by the game's AP limit). */
@@ -43,6 +46,8 @@ export interface DebugQuery {
   trust?: number;
   spark?: number;
   roll?: DebugSettings["roll"];
+  from?: string;
+  prep?: string[];
 }
 
 export type ParsedDebugQuery =
@@ -58,12 +63,19 @@ const choices = {
   roll: ["positive", "negative"],
 } as const;
 /** URL items in the order a copied URL lists them. */
-export const debugQueryKeys = ["data", "city", "scene", "target", "progress", "ap", "affection", "trust", "spark", "roll"] as const;
+export const debugQueryKeys = ["data", "city", "scene", "target", "progress", "ap", "affection", "trust", "spark", "roll", "from", "prep"] as const;
 type QueryKey = (typeof debugQueryKeys)[number];
 const idPattern = /^[a-z][a-z0-9_]*$/;
 
 function parseValue(key: QueryKey, value: string): string | number {
-  if (key === "city" || key === "target") {
+  if (key === "prep") {
+    const ids = value.split(",");
+    if (ids.some((id) => !idPattern.test(id))) throw new Error(`「prep=${value}」はIDの形ではありません（場面のIDを , で区切ります）。`);
+    return value;
+  }
+  if (key === "city" || key === "target" || key === "from") {
+    // A moment's target may say its kind (target=visit:<landmark>).
+    if (key === "target" && value.startsWith("visit:")) value = value.slice("visit:".length);
     if (!idPattern.test(value)) throw new Error(`「${key}=${value}」はIDの形ではありません（小文字の英字で始まり、小文字の英数字と _ だけ）。`);
     return value;
   }
@@ -101,6 +113,9 @@ export function parseDebugQuery(search: string): ParsedDebugQuery {
     for (const key of Object.keys(debugValueRanges) as NumberKey[])
       if (values[key] !== undefined) query[key] = values[key] as number;
     if (values.roll !== undefined) query.roll = values.roll as DebugSettings["roll"];
+    if (values.from !== undefined) query.from = values.from as string;
+    if (values.prep !== undefined) query.prep = (values.prep as string).split(",");
+    if ((query.from || query.prep) && query.scene !== "occasion") throw new Error("from と prep は scene=occasion（場面から始める）で使います。");
     return { kind: "launch", query };
   } catch (error) {
     return { kind: "error", message: error instanceof Error ? error.message : String(error) };
@@ -112,7 +127,7 @@ export function debugQueryString(query: DebugQuery): string {
   const values: Record<QueryKey, string | number | undefined> = {
     data: query.dataMode === "fixture" ? "fixture" : undefined, city: query.cityId, scene: query.scene,
     target: query.target, progress: query.progress, ap: query.ap, affection: query.affection,
-    trust: query.trust, spark: query.spark, roll: query.roll,
+    trust: query.trust, spark: query.spark, roll: query.roll, from: query.from, prep: query.prep?.join(","),
   };
   return ["?debug", ...debugQueryKeys.flatMap((key) =>
     values[key] === undefined ? [] : [`${key}=${encodeURIComponent(String(values[key]))}`])].join("&");
@@ -121,5 +136,6 @@ export function debugQueryString(query: DebugQuery): string {
 /** Every item of the settings, so the URL opens the same scene even if a default changes later. */
 export function settingsQuery(dataMode: DebugDataMode, settings: DebugSettings): DebugQuery {
   return { dataMode, cityId: settings.cityId, scene: settings.scene, target: settings.id || undefined, progress: settings.progress,
-    ap: settings.ap, affection: settings.affection, trust: settings.trust, spark: settings.spark, roll: settings.roll };
+    ap: settings.ap, affection: settings.affection, trust: settings.trust, spark: settings.spark, roll: settings.roll,
+    ...(settings.from ? { from: settings.from } : {}), ...(settings.prep?.length ? { prep: settings.prep } : {}) };
 }

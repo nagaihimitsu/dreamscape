@@ -9,7 +9,7 @@ import { beginTravelEvent } from "../domain/travel-game";
 import { encounters } from "../content/encounters";
 import {
   advanceEncounter, chooseEncounter, continueTourismEncounters, encounterChoiceOption, encounterVisitSlot, finishEncounter,
-  getActiveEncounterDefinition,
+  getActiveEncounterDefinition, leaveBattleToFreeTime,
 } from "../domain/encounter";
 import {
   cityFinaleResult, cityMidway, cityStart, completedCity, correctAnswer, finishEpisode, firstCorrect, newJourney,
@@ -147,14 +147,23 @@ describe("scenario builders", () => {
     const event = travelling.travel.activeEvent!;
     expect(event.eventId).toBe("smp_mihon_main_clock_tower");
     // The tower's stall (priority -1) comes first on the trip; after it, the visit's guide opens.
-    expect(travelling.activeEncounter).toMatchObject({ encounterId: "smp_mihon_bookmark_stall", trip: { eventId: "smp_mihon_main_clock_tower", modeId: "walk" } });
+    expect(travelling.activeEncounter).toMatchObject({ encounterId: "smp_mihon_bookmark_stall" });
     const arrived = playEncounter(travelling, "later");
     expect(arrived.activeTourism).toMatchObject({ landmarkId: "mihon_clock_tower", phase: "guide" });
     expect(arrived.travel.activeEvent).toEqual(event);
     const guided = readGuide(arrived);
     const result = playBattleToResult(startTourismBattle(guided, guided.revision));
     expect(result.activeBattle?.phase).toBe("result");
-    expect(result.travel).toMatchObject({ activeEvent: null, minute: event.endMinute, currentPlaceId: event.placeId });
+    // The time window settles when the visit's occasion closes (stage 3b): leaving the result, after its +N scenes.
+    expect(result.travel).toMatchObject({ activeEvent: event, currentPlaceId: event.placeId });
+    let left = leaveBattleToFreeTime(result, result.revision, () => 0);
+    for (let guard = 0; left.activeEncounter && guard < 200; guard++) {
+      const active = left.activeEncounter;
+      const current = left;
+      left = active.frame.choices.length ? chooseEncounter(current, active.frame.choices[0].index, current.revision)
+        : continueTourismEncounters(current, active.frame.ended ? finishEncounter(current, current.revision) : advanceEncounter(current, current.revision), () => 0);
+    }
+    expect(left.travel).toMatchObject({ activeEvent: null, minute: event.endMinute, currentPlaceId: event.placeId });
   });
 
   it("opens Debug's scenes at their places with the saved reaction ticket", () => {
@@ -171,23 +180,25 @@ describe("scenario builders", () => {
     // departure from the map, before the guide; the gift (+1) on leaving the tower battle's result, after the stall
     // was played with its first choice (ask: it gives the bookmark the gift needs).
     const stall = startEncounterScene(cityStart("mihon"), "smp_mihon_bookmark_stall", rollTickets.positive);
-    expect(stall.activeEncounter).toMatchObject({ encounterId: "smp_mihon_bookmark_stall", trip: { eventId: "smp_mihon_main_clock_tower" } });
+    expect(stall.activeEncounter).toMatchObject({ encounterId: "smp_mihon_bookmark_stall" });
+    expect(stall.occasion).toMatchObject({ eventId: "smp_mihon_main_clock_tower", at: "smp_mihon_bookmark_stall" });
     expect(stall.travel.activeEvent?.eventId).toBe("smp_mihon_main_clock_tower");
-    expect(stall.visitedLandmarkIds).toEqual([]);
+    // The visit is recorded as it opens (any order; stage 3b, 3.9 (b)).
+    expect(stall.visitedLandmarkIds).toEqual(["mihon_clock_tower"]);
     const gift = startEncounterScene(cityStart("mihon"), "smp_mihon_bookmark_gift", rollTickets.positive);
-    expect(gift.activeEncounter).toMatchObject({ encounterId: "smp_mihon_bookmark_gift",
-      afterBattle: { battleId: "smp_mihon_main_clock_tower_battle", encounterIds: ["smp_mihon_bookmark_gift"] } });
+    expect(gift.activeEncounter).toMatchObject({ encounterId: "smp_mihon_bookmark_gift" });
+    expect(gift.occasion).toMatchObject({ at: "smp_mihon_bookmark_gift", ran: ["guide", "observe", "battle"] });
     expect(gift).toMatchObject({ inventory: { smp_mihon_three_bookmark: "held" }, completedEncounterIds: ["smp_mihon_bookmark_stall"],
       activeBattle: null, completedEpisodeIds: ["smp_mihon_main_clock_tower"] });
-    expect(gift.travel.activeEvent).toBeNull();
+    // The time window settles when the visit's occasion closes (after its +N scenes; stage 3b).
+    expect(gift.travel.activeEvent?.eventId).toBe("smp_mihon_main_clock_tower");
     // Every encounter of the sample's clock tower starts this way, each at its slot's moment.
-    const moment = { before: "trip", observe: "returnTourism", after: "afterBattle" } as const;
     const towerEncounters = encounters.encounters.filter((item) => item.landmarkId === "mihon_clock_tower");
-    expect(towerEncounters.map((item) => item.id).sort()).toEqual(["smp_mihon_bookmark_gift", "smp_mihon_bookmark_stall"]);
+    expect(towerEncounters.map((item) => item.id).sort()).toEqual(["smp_mihon_bookmark_gift", "smp_mihon_bookmark_stall", "smp_mihon_clock_bell", "smp_mihon_clock_gears"]);
     for (const item of towerEncounters) {
       const started = startEncounterScene(cityStart("mihon"), item.id, rollTickets.positive);
       expect(started.activeEncounter?.encounterId, item.id).toBe(item.id);
-      expect(started.activeEncounter?.[moment[encounterVisitSlot(item.id)!]], item.id).toBeDefined();
+      expect(started.occasion?.started, item.id).toContain(item.id);
       expect(validateGameState(JSON.parse(JSON.stringify(started))), item.id).toEqual(started);
     }
     // A cleared city no longer leads to the tower from the map, so neither can start there.

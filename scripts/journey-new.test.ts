@@ -1,3 +1,4 @@
+import { storyFileOf } from "../src/content/story-address";
 import { cpSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -216,7 +217,7 @@ describe("journey:new in a copy of the repository", () => {
     expect(created.files).toHaveLength(sample.readme.core.length + 1);
     const n = second.journeyId;
     expect(createJourney(root, { ...second, withOptional: true }))
-      .toMatchObject({ prefix: n, order: nextOrder([...orders, order]), files: expect.arrayContaining([`stories/encounters/${n}_${n}_bookmark_gift.ink`]) });
+      .toMatchObject({ prefix: n, order: nextOrder([...orders, order]), files: expect.arrayContaining(["progression/story.json"]) });
     expect(journeyFolders()).toEqual([...before, k, n].sort());
     const result = await buildContent(root);
     const catalog = journeyCatalogSchema.parse(JSON.parse(readFileSync(path.join(root, MIRROR_DIRECTORY, "journeys/catalog.json"), "utf8")));
@@ -272,8 +273,9 @@ describe("journey:new in a copy of the repository", () => {
     expect(left).toEqual(expect.arrayContaining([
       `見本の出典（example.com）が残っています: content/journeys/${k}/quizzes/${kp}_${kc}_main_clock_tower_quiz.json（3件）`,
       `見本の画像のままです: content/journeys/${k}/public/assets/tourism/${k}/${kc}_clock_tower.png`,
-      `見本の文章が残っています: content/journeys/${k}/stories/tourism/${kp}_${kc}_clock_tower_guide.ink（6か所）`,
     ]));
+    // The clock tower's place file (stage 3a) keeps the sample's guide, battle and date lines.
+    expect(left.some((detail) => detail.startsWith(`見本の文章が残っています: content/journeys/${k}/stories/places/${kp}_${kc}_clock_tower.ink（`))).toBe(true);
     expect(report).toMatchObject({ ready: false, readyForPromotion: false });
     await expect(prepareJourneyRelease(root, k, false)).rejects.toThrow(/^見本の内容が残っているため公開できません。[\s\S]*見本の画像のままです/u);
 
@@ -292,7 +294,7 @@ describe("journey:new in a copy of the repository", () => {
       files: [`content/journeys/${k}/manifest.json`, `content/journeys/${k}/cities/${kc}.json`] });
     // Unfinished references name the last city of the release (here the journey's only city).
     const [battle] = JSON.parse(readFileSync(path.join(journeyDirectory(root, k), "battles/catalog.json"), "utf8")).battles;
-    const story = path.join(journeyDirectory(root, k), "stories", `${battle.storyId}.ink`);
+    const story = path.join(journeyDirectory(root, k), "stories", `${storyFileOf(battle.storyId)}.ink`);
     const ink = readFileSync(story, "utf8");
     rmSync(story);
     try {

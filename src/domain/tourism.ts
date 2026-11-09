@@ -13,6 +13,7 @@ import { hasObservation } from "../content/tourism-schemas";
 import {
   beginStory,
   continueStory,
+  selectStoryChoice,
   storyFingerprint,
   storyFrameSchema,
   validateStorySnapshot,
@@ -20,7 +21,10 @@ import {
 } from "../story/runtime";
 import { startBattleFromTourism, startVisitBattle } from "./battle";
 import type { Availability, GameState } from "./game";
-import { validObservationEncounterIds } from "./encounter-state";
+import { applyChoiceEffects, choiceDisplay, sceneOption, type ChoiceDisplay } from "./scene-effects";
+import { sceneOfAddress } from "./reservations";
+import { evaluateProgression } from "./date-rules";
+import { advanceRunningOccasion as advanceOccasion } from "./occasion-hooks";
 
 export const activeTourismSchema = z
   .object({
@@ -29,8 +33,10 @@ export const activeTourismSchema = z
     contentHash: z.string().min(1),
     storyState: z.string().nullable(),
     frame: storyFrameSchema.nullable(),
-    /** Encounters already introduced during this observation visit. */
-    encounterIds: z.array(z.string().min(1)).optional(),
+    /** The guide was opened again from the observation (「観光案内をもう一度読む」): its choices apply no effect (stage 3a, decision 10). */
+    replay: z.literal(true).optional(),
+    /** The guide's choices made so far (Ink's turn; stage 3a). */
+    chosenCount: z.number().int().positive().optional(),
   })
   .strict();
 export type ActiveTourism = z.infer<typeof activeTourismSchema>;
@@ -110,9 +116,43 @@ export function getTourismAvailability(
 }
 
 function fromGuide(active: ActiveTourism, result: StoryStep): ActiveTourism {
-  if (result.effects.length || result.frame.choices.length)
-    throw new Error("観光案内に恋愛効果や選択肢を含められません。");
+  // A guide may have choices from stage 3a; their tags apply from the scene table (chooseTourismGuide), never Ink's # effect:.
+  if (result.effects.length)
+    throw new Error("観光案内に恋愛効果を含められません。");
   return { ...active, storyState: result.storyState, frame: result.frame };
+}
+
+/** The scene of a landmark's guide (its tags), by the guide's address. */
+const guideScene = (landmarkId: string) => sceneOfAddress(landmarks.find((item) => item.id === landmarkId)?.guideStoryId);
+
+/** How a choice of the open guide shows (decision 43): its tags from the guide's scene (a place file's knot or its file's choices). */
+export function guideChoiceDisplay(state: GameState, index: number): ChoiceDisplay {
+  const active = state.activeTourism;
+  const choice = active?.phase === "guide" ? active.frame?.choices.find((item) => item.index === index) : undefined;
+  if (!active || !choice) return { show: "grey", reason: "この選択肢は使えません。" };
+  const scene = guideScene(active.landmarkId);
+  const option = sceneOption(scene, choice.optionId);
+  if (scene && choice.optionId !== undefined && !option) return { show: "hidden" };
+  return choiceDisplay(state, option);
+}
+
+/** Choose in the guide: its tags apply first (not when re-read), then Ink goes on (4.4). */
+export function chooseTourismGuide(state: GameState, index: number, expectedRevision: number, nextRoll?: () => number): GameState {
+  const active = state.activeTourism;
+  if (state.revision !== expectedRevision || !active || active.phase !== "guide" || !active.frame || !active.storyState ||
+      guideChoiceDisplay(state, index).show !== "open") return state;
+  const storyId = activeGuideStoryId(active);
+  if (!storyId) throw new Error("観光案内の旧版が見つかりません。");
+  const choice = active.frame.choices.find((item) => item.index === index)!;
+  const scene = guideScene(active.landmarkId);
+  const option = sceneOption(scene, choice.optionId);
+  const revision = state.revision + 1;
+  const applied = option && scene && !active.replay ? applyChoiceEffects(state, scene.id, option, revision, nextRoll) : { state };
+  const next = applied.state;
+  const result: Record<string, string> = "profile" in applied && applied.profile ? { romance_result: applied.profile.result } : {};
+  const step = selectStoryChoice(storyId, active.storyState, active.frame, index, next.memories, {}, result, next.inventory, sceneConditionReader(next));
+  const changed = { ...next, revision, activeTourism: fromGuide({ ...active, chosenCount: (active.chosenCount ?? 0) + 1 }, step) };
+  return option?.rel || option?.profile ? evaluateProgression(changed) : changed;
 }
 
 /**
@@ -157,6 +197,27 @@ export function openTourism(state: GameState, landmarkId: string, mapChecked = f
 }
 
 /**
+ * The guide of a landmark's visit, as its occasion starts it (stage 3b; occasion.ts): the visit is
+ * already recorded and its main group decided, so this opens the guide whatever the record says.
+ */
+export function beginLandmarkGuide(state: GameState, landmarkId: string): GameState {
+  const landmark = landmarks.find((item) => item.id === landmarkId);
+  if (!landmark?.guideStoryId || state.activeTourism) return state;
+  return { ...state, revision: state.revision + 1, activeTourism: fromGuide(
+    { landmarkId, phase: "guide", contentHash: tourismFingerprint(landmarkId), storyState: null, frame: null },
+    beginStory(landmark.guideStoryId, state.playerName, state.heroineName, { player_address: playerAddress(state) },
+      [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state))) };
+}
+
+/** The observation of a landmark's visit, as its occasion opens it (first, or again after an `after observe` scene). */
+export function beginLandmarkObservation(state: GameState, landmarkId: string): GameState {
+  const landmark = landmarks.find((item) => item.id === landmarkId);
+  if (!landmark || !hasObservation(landmark) || state.activeTourism) return state;
+  return { ...state, revision: state.revision + 1,
+    activeTourism: { landmarkId, phase: "exploring", contentHash: tourismFingerprint(landmarkId), storyState: null, frame: null } };
+}
+
+/**
  * Open a visit of the landmark from the map (its main part, stage 2b): the guide (first visit)
  * or the observation as openTourism opens them; with neither, its battle starts at once and the
  * visit is recorded. The map condition is not checked again (`mapChecked`, decision 21).
@@ -179,6 +240,10 @@ function recordVisit(state: GameState, landmarkId: string): string[] {
     : [...state.visitedLandmarkIds, landmarkId];
 }
 
+/**
+ * 「とばす」 (4.7, decision 37): the guide reads on to its next choice and stops there (choose, then skip
+ * again); with no choice ahead it closes, without counting as read (no AP, no # on_done:, no `guide`).
+ */
 export function skipTourismGuide(
   state: GameState,
   expectedRevision: number,
@@ -190,6 +255,25 @@ export function skipTourismGuide(
     active.phase !== "guide"
   )
     return state;
+  if (active.frame?.choices.length) return state;
+  const storyId = activeGuideStoryId(active);
+  if (active.frame && active.storyState && storyId) {
+    let step: StoryStep | undefined;
+    let current = { storyState: active.storyState, frame: active.frame };
+    for (let guard = 0; !current.frame.ended && !current.frame.choices.length && guard < 1000; guard++) {
+      step = continueStory(storyId, current.storyState, current.frame, state.memories, {}, state.inventory, sceneConditionReader(state));
+      current = { storyState: step.storyState, frame: step.frame };
+    }
+    if (step && current.frame.choices.length)
+      return { ...state, revision: state.revision + 1, activeTourism: fromGuide(active, step) };
+  }
+  return advanceOccasion(closeGuide(state, active));
+}
+
+/** Close the guide: to the observation, or (a landmark without one) to its battle. Not counted as read here. */
+function closeGuide(state: GameState, active: ActiveTourism): GameState {
+  // In a visit's occasion (stage 3b) the guide is one main part: it closes, the occasion starts what follows (its order).
+  if (state.occasion && !active.replay) return { ...state, revision: state.revision + 1, activeTourism: null };
   const landmark = landmarks.find((item) => item.id === active.landmarkId);
   // A landmark without an observation goes from its guide straight to its battle (stage 2b).
   if (landmark && !hasObservation(landmark)) {
@@ -198,12 +282,13 @@ export function skipTourismGuide(
     const started = startVisitBattle(visited, landmark.battleId, true);
     return started === visited ? state : started;
   }
+  const { replay: _replay, chosenCount: _count, ...rest } = active;
   return {
     ...state,
     revision: state.revision + 1,
     visitedLandmarkIds: recordVisit(state, active.landmarkId),
     activeTourism: {
-      ...active,
+      ...rest,
       phase: "exploring",
       storyState: null,
       frame: null,
@@ -225,11 +310,13 @@ export function advanceTourismGuide(
   )
     return state;
   if (active.frame.ended) {
-    return recordGuideRead(
-      skipTourismGuide(state, expectedRevision),
+    // Read to its end: counted as read first, so what follows in the occasion reads the record (`guide <landmark>`).
+    return advanceOccasion(recordGuideRead(
+      closeGuide(state, active),
       active.landmarkId,
-    );
+    ));
   }
+  if (active.frame.choices.length) return state;
   const storyId = activeGuideStoryId(active);
   if (!storyId) throw new Error("観光案内の旧版が見つかりません。");
   return {
@@ -237,7 +324,7 @@ export function advanceTourismGuide(
     revision: state.revision + 1,
     activeTourism: fromGuide(
       active,
-      continueStory(storyId, active.storyState, active.frame, [], {}, {}, sceneConditionReader(state)),
+      continueStory(storyId, active.storyState, active.frame, state.memories, {}, state.inventory, sceneConditionReader(state)),
     ),
   };
 }
@@ -260,6 +347,7 @@ export function replayTourismGuide(
     ...active,
     phase: "guide" as const,
     contentHash: tourismFingerprint(active.landmarkId),
+    replay: true as const,
   };
   return {
     ...state,
@@ -278,7 +366,10 @@ export function closeTourism(
   expectedRevision: number,
 ): GameState {
   if (state.revision !== expectedRevision || !state.activeTourism) return state;
-  return { ...state, revision: state.revision + 1, activeTourism: null };
+  // Leaving the visit closes its occasion (nothing else of it runs) and settles its trip's window.
+  const trip = state.occasion ? state.travel.activeEvent : null;
+  return { ...state, revision: state.revision + 1, activeTourism: null, occasion: state.activeBattle ? state.occasion : null,
+    travel: trip && !state.activeBattle ? { ...state.travel, minute: trip.endMinute, activeEvent: null } : state.travel };
 }
 
 /** The clues the observation image marks (ObservationViewer): the landmark's hotspots that have a region. */
@@ -343,13 +434,14 @@ export function startTourismBattle(
     visitedLandmarkIds: recordVisit(state, active.landmarkId),
   };
   if (state.activeBattle) return { ...next, revision: state.revision + 1 };
+  // In a visit's occasion the observation is left for its next part (its order; stage 3b).
+  if (state.occasion?.at === "main:observe" && active.phase === "exploring")
+    return advanceOccasion({ ...next, revision: state.revision + 1, occasion: { ...state.occasion, at: "left:observe" } });
   return startBattleFromTourism(state, landmark.battleId);
 }
 
 export function validateTourismState(state: GameState): void {
   const knownLandmarks = new Set(landmarks.map((item) => item.id));
-  if (state.activeTourism && !validObservationEncounterIds(state.activeTourism.landmarkId, state.activeTourism.encounterIds))
-    throw new Error("観光中の出会いの記録が一致しません。");
   if (state.visitedLandmarkIds.some((id) => !knownLandmarks.has(id)))
     throw new Error("訪問した観光地が見つかりません。");
   for (const id of state.discoveredClueIds) {
@@ -381,8 +473,7 @@ export function validateTourismState(state: GameState): void {
     if (
       !storyId ||
       !active.frame ||
-      !active.storyState ||
-      active.frame.choices.length
+      !active.storyState
     )
       throw new Error(
         "観光案内が更新されたか、途中の案内が一致しません。元のデータは保管されています。",
@@ -394,14 +485,15 @@ export function validateTourismState(state: GameState): void {
       {
         playerName: state.playerName,
         heroineName: state.heroineName,
-        choiceCount: 0,
+        choiceCount: active.chosenCount ?? 0,
         variables: { player_address: playerAddress(state) },
       },
     );
   } else if (
     !state.visitedLandmarkIds.includes(active.landmarkId) ||
     active.frame !== null ||
-    active.storyState !== null
+    active.storyState !== null ||
+    active.replay !== undefined || active.chosenCount !== undefined
   )
     throw new Error("観察の進行記録が一致しません。");
 }

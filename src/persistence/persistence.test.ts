@@ -218,21 +218,21 @@ describe("local save persistence", () => {
   });
 });
 
-describe("save format v15 (docs/07: one format per version, no migration)", () => {
+describe("save format v16 (docs/07: one format per version, no migration)", () => {
   // A save as v13 wrote it: the same shape plus the completedChapters record v14 removed.
   const v13Save = () => JSON.stringify({ ...createGame(), schemaVersion: 13, completedChapters: ["milano"] });
 
   it("is the version every new game is written in", () => {
-    expect(SUPPORTED_SAVE_VERSION).toBe(15);
-    expect(createGame().schemaVersion).toBe(15);
+    expect(SUPPORTED_SAVE_VERSION).toBe(16);
+    expect(createGame().schemaVersion).toBe(16);
   });
 
-  it("round-trips a v15 save with a date in progress", () => {
+  it("round-trips a v16 save with a date in progress", () => {
     const storage = new MemoryStorage();
     const state = startDate(seedCurrentFreeTime(createGame("旅人", "小春")), "milano_cafe_01");
     expect(state.activeDate).not.toBeNull();
     expect(saveGame(storage, state)).toEqual({ ok: true });
-    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 15 });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 16 });
     expect(loadGame(storage)).toEqual({ status: "loaded", state });
   });
 
@@ -259,7 +259,7 @@ describe("save format v15 (docs/07: one format per version, no migration)", () =
     state = { ...state, travel: { ...state.travel, rideCounts: { tram: 2 } } };
     const storage = new MemoryStorage();
     expect(saveGame(storage, state)).toEqual({ ok: true });
-    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 15, seenEncounterIds: state.seenEncounterIds,
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 16, seenEncounterIds: state.seenEncounterIds,
       itemUses: state.itemUses, travel: { rideCounts: { tram: 2 } } });
     expect(loadGame(storage)).toEqual({ status: "loaded", state });
     // The shape development builds of v14 wrote before these records, with this version's number: not an old version, unreadable, kept as it is.
@@ -273,7 +273,7 @@ describe("save format v15 (docs/07: one format per version, no migration)", () =
     expect(slot.getItem(SAVE_KEY)).toBe(raw);
   });
 
-  it("holds the condition system's story state empty until stage 3 declares it, and an encounter's moment matching its slot", () => {
+  it("holds only declared flags in the story state (stage 3a), no lines, and an encounter's moment matching its slot", () => {
     const fresh = createGame();
     expect(fresh.storyProgress).toEqual({ lines: {}, flags: [] });
     expect(fresh.travel.temporaryFlags).toEqual([]);
@@ -294,56 +294,44 @@ describe("save format v15 (docs/07: one format per version, no migration)", () =
       [{ lines: {}, flags: [""] }, { code: "too_small", path: ["storyProgress", "flags", 0] }],
     ] as const)
       expect(() => validateGameState(story(shape)), JSON.stringify(shape)).toThrow(zodIssues(issue));
-    // An encounter in progress continues from the moment of its slot: an encounter met while observing (Milan's) only
-    // from its observation; a trip or an after-battle moment does not match it.
+    // An encounter in progress belongs to the moment record (stage 3b): started in it, at its landmark's visit, its
+    // current step (or, met while observing, from the observation).
     const meeting = meetEncounter(completedCity("milano"), "duomo_string");
-    const { returnTourism, ...active } = meeting.activeEncounter!;
-    expect(returnTourism).toBeDefined();
-    const moment = (fields: object) => ({ ...meeting, activeTourism: null, activeEncounter: { ...active, ...fields } });
-    expect(validateGameState(JSON.parse(JSON.stringify(moment({ returnTourism }))))).toEqual(meeting);
+    expect(meeting.occasion).toMatchObject({ landmarkId: "duomo_milano", at: "main:observe", started: ["duomo_string"] });
+    expect(validateGameState(JSON.parse(JSON.stringify(meeting)))).toEqual(meeting);
+    const moment = (fields: object) => ({ ...meeting, occasion: { ...meeting.occasion!, ...fields } });
     // No moment at all: the shape of the removed free-time start.
-    expect(() => validateGameState(moment({}))).toThrow("道中交流の時点の記録が一致しません。");
-    expect(() => validateGameState(moment({ afterBattle: { battleId: "milano_duomo_01", encounterIds: ["duomo_string"] } })))
-      .toThrow("道中交流の時点の記録が一致しません。");
-    expect(() => validateGameState(moment({ trip: { eventId: "milano_duomo_episode", modeId: "tram" } }))).toThrow("道中交流の時点の記録が一致しません。");
-    expect(() => validateGameState(moment({ returnTourism, afterBattle: { battleId: "milano_duomo_01", encounterIds: [] } })))
-      .toThrow("An encounter has at most one moment to continue from");
-    // The moments' shapes are strict: refused by the schema before the moment check.
-    expect(() => validateGameState(moment({ afterBattle: { battleId: "milano_duomo_01" } })))
-      .toThrow(zodIssues({ code: "invalid_type", path: ["activeEncounter", "afterBattle", "encounterIds"] }));
-    expect(() => validateGameState(moment({ trip: { eventId: "milano_duomo_episode", modeId: "tram", minutes: 3 } })))
-      .toThrow(zodIssues({ code: "unrecognized_keys", path: ["activeEncounter", "trip"], keys: ["minutes"] }));
+    expect(() => validateGameState({ ...meeting, occasion: null })).toThrow("道中交流の時点の記録が一致しません。");
+    expect(() => validateGameState(moment({ started: [] }))).toThrow("道中交流の時点の記録が一致しません。");
+    expect(() => validateGameState(moment({ landmarkId: "galleria_vittorio_emanuele_ii" }))).toThrow(/一致しません。/u);
+    expect(() => validateGameState(moment({ at: "left:observe" }))).toThrow("道中交流の時点の記録が一致しません。");
+    // The record's shape is strict: refused by the schema before the moment check.
+    expect(() => validateGameState(moment({ trip: { eventId: "milano_duomo_episode" } })))
+      .toThrow(zodIssues({ code: "unrecognized_keys", path: ["occasion"], keys: ["trip"] }));
   });
 
   it("saves and resumes the sample tower's encounters before and after its main part when the event, battle and encounter match", () => {
-    const placed = "道中交流の時点の記録が一致しません。";
     const resumed = (state: GameState) => {
       const storage = new MemoryStorage();
       expect(saveGame(storage, state).ok).toBe(true);
       expect(loadGame(storage)).toEqual({ status: "loaded", state });
     };
-    // Before the main part (priority -1): the trip to the tower's episode, with the map event still running.
+    // Before the main part (priority -1): the occasion of the trip to the tower's episode, with the map event still running.
     const stall = meetEncounter(cityStart("mihon"), "smp_mihon_bookmark_stall");
-    expect(stall.activeEncounter?.trip).toEqual({ eventId: "smp_mihon_main_clock_tower", modeId: "walk" });
+    expect(stall.occasion).toMatchObject({ eventId: "smp_mihon_main_clock_tower", landmarkId: "mihon_clock_tower", at: "smp_mihon_bookmark_stall", ran: [] });
     resumed(stall);
-    const trip = (fields: object, travel: object = {}) => ({ ...stall, travel: { ...stall.travel, ...travel },
-      activeEncounter: { ...stall.activeEncounter!, ...fields } });
-    // Another event than the running one (the travel record refuses it first), an undeclared mode, the after-battle moment.
-    expect(() => validateGameState(trip({ trip: { eventId: "smp_mihon_special_b_market", modeId: "walk" } }))).toThrow("旅行の時間枠と進行中の場面が一致しません。");
-    expect(() => validateGameState(trip({ trip: { eventId: "smp_mihon_main_clock_tower", modeId: "tram" } }))).toThrow(placed);
-    expect(() => validateGameState(trip({ trip: undefined, afterBattle: { battleId: "smp_mihon_main_clock_tower_battle", encounterIds: ["smp_mihon_bookmark_stall"] } })))
-      .toThrow(/一致しません。/u);
-    // After the main part (priority +1): the tower battle played and the chain so far, ending with this encounter.
+    const with_ = (state: GameState, fields: object) => ({ ...state, occasion: { ...state.occasion!, ...fields } });
+    // Another event than the running one (the travel record refuses it first), a step not of this visit, another landmark.
+    expect(() => validateGameState(with_(stall, { eventId: "smp_mihon_special_b_market" }))).toThrow("旅行の時間枠と進行中の場面が一致しません。");
+    expect(() => validateGameState(with_(stall, { at: "main:battle" }))).toThrow("道中交流の時点の記録が一致しません。");
+    expect(() => validateGameState(with_(stall, { ran: ["date"] }))).toThrow(/一致しません。/u);
+    // After the main part (priority +1): the tower battle played, this encounter the occasion's step.
     const gift = meetEncounter(finishStall(stall), "smp_mihon_bookmark_gift");
-    expect(gift.activeEncounter?.afterBattle).toEqual({ battleId: "smp_mihon_main_clock_tower_battle", encounterIds: ["smp_mihon_bookmark_gift"] });
+    expect(gift.occasion).toMatchObject({ at: "smp_mihon_bookmark_gift" });
+    expect(gift.occasion?.ran).toContain("battle");
     resumed(gift);
-    const after = (afterBattle: object) => ({ ...gift, activeEncounter: { ...gift.activeEncounter!, afterBattle } });
-    for (const bad of [{ battleId: "smp_mihon_special_b_market", encounterIds: ["smp_mihon_bookmark_gift"] },
-      { battleId: "smp_mihon_main_clock_tower_battle", encounterIds: [] },
-      { battleId: "smp_mihon_main_clock_tower_battle", encounterIds: ["smp_mihon_bookmark_stall", "smp_mihon_bookmark_gift"] }])
-      expect(() => validateGameState(after(bad)), JSON.stringify(bad)).toThrow(placed);
-    expect(() => validateGameState({ ...gift, activeEncounter: { ...gift.activeEncounter!, afterBattle: undefined,
-      trip: { eventId: "smp_mihon_main_clock_tower", modeId: "walk" } } })).toThrow(placed);
+    expect(() => validateGameState(with_(gift, { started: ["smp_mihon_bookmark_stall"] }))).toThrow("道中交流の時点の記録が一致しません。");
+    expect(() => validateGameState(with_(gift, { at: "smp_mihon_bookmark_stall" }))).toThrow("道中交流の時点の記録が一致しません。");
   });
 
   it("holds the tour records empty until the tour system writes them", () => {
@@ -353,7 +341,7 @@ describe("save format v15 (docs/07: one format per version, no migration)", () =
     expect(fresh.completedTourIds).toEqual([]);
     const storage = new MemoryStorage();
     expect(saveGame(storage, fresh)).toEqual({ ok: true });
-    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 15, tour: null, completedTourIds: [] });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 16, tour: null, completedTourIds: [] });
     expect(loadGame(storage)).toEqual({ status: "loaded", state: fresh });
     // A filled value is refused: no tour can be booked, run or finished yet.
     expect(() => validateGameState({ ...fresh, tour: { status: "booked", tourId: "smp_mihon_tour_cape", offerId: "web", pricePaid: 0, bookedDay: 1 } }))
@@ -386,25 +374,25 @@ describe("save format v15 (docs/07: one format per version, no migration)", () =
     expect(backups.map(([, value]) => value)).toEqual([raw]);
   });
 
-  it("reports a v14 save of any journey as an identified old version and keeps it byte-identical", () => {
-    // v15 switched the Golden Triangle's in-city transport (modes, routes, the Agra inn); a v14 save of every journey is old now.
-    for (const journeyId of ["milano", "golden_triangle"]) {
+  it("reports a v14 or v15 save of any journey as an identified old version and keeps it byte-identical", () => {
+    // v15 switched the Golden Triangle's in-city transport (modes, routes, the Agra inn); v16 is the unified events' stage 3
+    // (place files, tag effects, the dates' Ink turn): a v14 or v15 save of every journey is old now (not migrated).
+    for (const [journeyId, version] of [["milano", 14], ["golden_triangle", 14], ["milano", 15], ["golden_triangle", 15]] as const) {
       const storage = new MemoryStorage();
-      // A save as v14 wrote it: the same shape (v15 changed the Golden Triangle's routes and modes, not the format).
-      const raw = JSON.stringify({ ...createGame(undefined, undefined, { journeyId }), schemaVersion: 14 });
+      const raw = JSON.stringify({ ...createGame(undefined, undefined, { journeyId }), schemaVersion: version });
       storage.setItem(SAVE_KEY, raw);
       expect(loadGame(storage)).toEqual({
         status: "invalid", kind: "legacy", raw,
-        message: "保存データの形式はバージョン14です。現在のバージョンでは読み込めません。データの破損によって読み込めない場合もあります。元のデータは残っています。",
+        message: `保存データの形式はバージョン${version}です。現在のバージョンでは読み込めません。データの破損によって読み込めない場合もあります。元のデータは残っています。`,
       });
       expect(saveGame(storage, createGame()).ok).toBe(false);
       expect(storage.getItem(SAVE_KEY)).toBe(raw);
     }
   });
 
-  it("leaves an unknown newer version (v16) unchanged", () => {
+  it("leaves an unknown newer version (v17) unchanged", () => {
     const storage = new MemoryStorage();
-    const raw = JSON.stringify({ ...createGame(), schemaVersion: 16 });
+    const raw = JSON.stringify({ ...createGame(), schemaVersion: 17 });
     storage.setItem(SAVE_KEY, raw);
     expect(loadGame(storage)).toMatchObject({ status: "invalid", kind: "newer", raw });
     expect(saveGame(storage, createGame()).ok).toBe(false);

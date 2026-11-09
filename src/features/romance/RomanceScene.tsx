@@ -1,3 +1,4 @@
+import type { ChoiceDisplay } from "../../domain/scene-effects";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { getCityContent, dateDestinations, dialogueExpressions, dialogueReactions, presentation, tourismAssets } from "../../content";
 import type { DateDefinition } from "../../content";
@@ -27,6 +28,7 @@ export function RomanceScene({
   autoAdvanceEnabled = false,
   reduceMotion,
   onSelect,
+  choiceDisplay,
   onAdvance,
   onFinish,
 }: {
@@ -37,6 +39,8 @@ export function RomanceScene({
   autoAdvanceEnabled?: boolean;
   reduceMotion: boolean;
   onSelect: (index: number, revision: number) => boolean;
+  /** How each choice shows (decision 43: a date written with tags hides or greys some); all open when left out. */
+  choiceDisplay?: (index: number) => ChoiceDisplay;
   onAdvance: () => void;
   onFinish: () => void;
 }) {
@@ -212,9 +216,9 @@ export function RomanceScene({
                   あなたは、どう返す？
                   <span>返答を選んでください</span>
                 </p>
-                {frame.choices.map((choice, index) => (
+                {frame.choices.filter((choice) => choiceDisplay?.(choice.index).show !== "hidden").map((choice, index) => (
                   <button
-                    disabled={!ready || choiceReadyRevision !== game.revision}
+                    disabled={!ready || choiceReadyRevision !== game.revision || choiceDisplay?.(choice.index).show === "grey"}
                     key={`${game.revision}-${choice.index}`}
                     className="choice"
                     data-testid="date-choice"

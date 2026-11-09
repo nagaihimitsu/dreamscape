@@ -25,7 +25,7 @@ describe("automatic place encounters", () => {
       expect(getTourismEncounterAvailability(state, id).available).toBe(true);
       const next = startTourismEncounter(state, id, state.revision, () => 0);
       expect(next.activeEncounter?.encounterId).toBe(id);
-      expect(next.activeEncounter?.returnTourism?.encounterIds).toContain(id);
+      expect(next.occasion?.started).toContain(id);
     });
 
   it("runs newly unlocked encounters in sequence without repeating deferred choices", () => {
@@ -49,7 +49,7 @@ describe("automatic place encounters", () => {
     }
     expect(seen).toEqual(["galleria_fortune", "galleria_print", "galleria_ticket_press"]);
     expect(state.activeEncounter).toBeNull();
-    expect(state.activeTourism?.encounterIds).toEqual(seen);
+    expect(state.occasion?.started).toEqual(seen);
     expect(state.inventory.galleria_ticket).toBe("held");
     expect(getTourismEncounterAvailability(state, "galleria_ticket_press").available).toBe(false);
   });

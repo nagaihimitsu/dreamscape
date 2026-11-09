@@ -15,10 +15,15 @@ import { isObservationOnlyClue } from "../src/content/tourism-schemas";
 export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-prefix" | "unused-transport-mode" | "tourism-photo"
   | "transit-walk-missing" | "transit-route-unsourced" | "never-offered" | "date-condition-trip"
   | "later-never-again" | "same-priority" | "repeat-without-until" | "data-language" | "cond-walk-partial"
-  | "never-met-again" | "romance-only-city" | "unfindable-clue" | "battle-after-epilogue" | "money-shortfall" | "ap-shortfall";
+  | "never-met-again" | "romance-only-city" | "unfindable-clue" | "battle-after-epilogue" | "money-shortfall" | "ap-shortfall"
+  | "scene-tag" | "special-date-ap" | "epilogue-unreachable" | "then-loop";
 export type ContentWarning = { kind: ContentWarningKind; message: string };
 /** How content:build counts each kind of warning. */
 export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
+  "scene-tag": "scene tag note(s) (place files and choice tags)",
+  "special-date-ap": "special date(s) that cost AP",
+  "epilogue-unreachable": "city(ies) whose author-started epilogue may never start (then: epilogue out of reach in some or all plays)",
+  "then-loop": "then: loop(s) left only when a condition turns false",
   "unknown-file": "unknown file(s) in journey folders",
   "unused-public-file": "unused public file(s)",
   "id-prefix": "ID(s) without the journey prefix",

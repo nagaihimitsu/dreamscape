@@ -45,6 +45,13 @@ export function useTravelEffects({ getCurrent, commit, nextRomanceRoll, reduceMo
     }
     return succeeded;
   }
+  /** A `# then: move` (stage 3b, 4.7): the move happened inside a scene's last action; its art plays from the occasion's "moved" mark. */
+  function playMove(previous: GameState, next: GameState) {
+    const mode = next.occasion?.moved;
+    if (!mode || previous.occasion?.moved || pending.current) return;
+    pending.current = true;
+    setTransition({ mode: presentation(next.currentCityId, mode), thenSleep: false });
+  }
   const effects = <>
     {transition && <TravelTransition mode={transition.mode} reduceMotion={reduceMotion} onEnd={() => {
       setTransition(null);
@@ -56,5 +63,5 @@ export function useTravelEffects({ getCurrent, commit, nextRomanceRoll, reduceMo
       pending.current = false;
     }} />}
   </>;
-  return { travelToEvent, returnToHotel, effects };
+  return { travelToEvent, returnToHotel, playMove, effects };
 }

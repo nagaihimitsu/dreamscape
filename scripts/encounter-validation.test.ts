@@ -162,7 +162,12 @@ describe("encounter content validation", () => {
         (["giftItemId", "consumeItemId"] as const).filter((field) => option[field] === id).map((field) => ({ option, field }))));
       expect(uses.length).toBeGreaterThan(0);
       for (const { option, field } of uses) delete option[field];
-      expect(() => validateEncounterContent(data)).toThrow(`Encounter item has no use in its city: ${id}/milano`);
+      // Only an item that may be left behind needs a use (the item design §2.5): one not carried, in a city with a next city.
+      expect(() => validateEncounterContent({ ...data, hasNextCity: true })).toThrow(`Encounter item has no use in its city: ${id}/milano`);
+      expect(() => validateEncounterContent(data)).not.toThrow();
+      const item = data.catalog.items.find((entry) => entry.id === id)!;
+      expect(() => validateEncounterContent({ ...data, hasNextCity: true, catalog: { ...data.catalog,
+        items: data.catalog.items.map((entry) => entry === item ? { ...entry, carry: "journey" as const } : entry) } })).not.toThrow();
       for (const { option, field } of uses) option[field] = id;
       expect(() => validateEncounterContent(data)).not.toThrow();
     }
@@ -197,22 +202,28 @@ describe("encounter content validation", () => {
     expect(() => validateEncounterContent(data)).toThrow("Unknown encounter response profile");
   });
 
-  it("rejects repeatable paid choices, deferred effects and duplicate quiz questions", () => {
+  it("allows a repeated paid choice and a paid 「また今度」 (rev. 5), but no item on a 「また今度」 of a catalog, and duplicate quiz questions", () => {
     const data = input();
     const fortune = data.catalog.encounters.find((event) => event.id === "galleria_fortune")!;
     fortune.options[0].cost = 4;
-    expect(() => validateEncounterContent(data)).toThrow("Repeatable encounter must be free");
+    expect(() => validateEncounterContent(data)).not.toThrow();
     fortune.options[0].cost = 0;
     const gift = data.catalog.encounters.find((event) => event.id === "castello_pick")!;
     expect(gift.options[2].deferCompletion).toBe(true);
     gift.options[2].cost = 1;
-    expect(() => validateEncounterContent(data)).toThrow("Deferred encounter choice must have no cost or effects");
+    expect(() => validateEncounterContent(data)).not.toThrow();
     gift.options[2].cost = 0;
+    // Today's catalog records a given item only for a completed encounter: a 「また今度」 cannot give one (the save would break).
+    gift.options[2].requiresItemId = gift.options[0].requiresItemId ?? data.catalog.items[0].id;
+    gift.options[2].giftItemId = gift.options[2].requiresItemId;
+    expect(() => validateEncounterContent(data)).toThrow("cannot need or give an item");
+    delete gift.options[2].requiresItemId;
+    delete gift.options[2].giftItemId;
     fortune.quiz!.question.id = Object.values(data.quizzes)[0].questions[0].id;
     expect(() => validateEncounterContent(data)).toThrow("Duplicate production quiz question ID");
   });
 
-  it("allows a repeatable conversation sharing an AP reward, but rejects item, money and choice effects", () => {
+  it("allows a repeatable conversation sharing an AP reward, with item, money and choice effects too (rev. 5)", () => {
     const data = input();
     const event = data.catalog.encounters.find((item) => item.id === "galleria_fortune")!;
     expect(event.repeatable).toBe(true);
@@ -228,7 +239,8 @@ describe("encounter content validation", () => {
     ]) {
       const snapshot = structuredClone(event);
       change();
-      expect(() => validateEncounterContent(data)).toThrow("Repeatable encounter must be free");
+      // The rule against a repeated encounter's effects is gone; what the change breaks otherwise (its story, its items) still stops.
+      expect(() => validateEncounterContent(data)).not.toThrow("Repeatable encounter");
       Object.keys(event).forEach((key) => { delete (event as Record<string, unknown>)[key]; });
       Object.assign(event, snapshot);
     }

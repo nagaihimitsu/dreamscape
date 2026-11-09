@@ -54,6 +54,13 @@ const TRUTH: Record<(typeof LEAF_KINDS)[number], [Leaf, GameState, GameState]> =
     { ...base, travelBudget: 400, travel: { ...base.travel, returnReserve: 101 } }],
   romanceStage: [{ romanceStage: { atLeast: 2, atMost: 3 } }, { ...base, romanceStage: 3 }, { ...base, romanceStage: 4 }],
   couple: [{ couple: true }, { ...base, confessionStatus: "accepted" }, { ...base, confessionStatus: "deferred" }],
+  // Stage 3a: the AP that can be spent, a flag, a person met (a seen scene naming them), a named condition.
+  ap: [{ ap: { atLeast: 2 } }, { ...base, ap: 2 }, { ...base, ap: 1 }],
+  flag: [{ flag: "smp_mihon_lili_told_why" }, { ...base, storyProgress: { lines: {}, flags: ["smp_mihon_lili_told_why"] } }, base],
+  met: [{ met: "smp_mihon_lili" }, { ...base, seenEncounterIds: ["smp_mihon_bookmark_stall"] }, { ...base, seenEncounterIds: ["smp_mihon_bookmark_gift"] }],
+  condition: [{ condition: "smp_mihon_lili_heard" },
+    { ...base, seenEncounterIds: ["smp_mihon_bookmark_stall"], storyProgress: { lines: {}, flags: ["smp_mihon_lili_told_why"] } },
+    { ...base, seenEncounterIds: ["smp_mihon_bookmark_stall"] }],
 };
 
 describe("meets", () => {

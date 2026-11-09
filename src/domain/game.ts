@@ -42,6 +42,11 @@ import {
 } from "./date-rules";
 
 import { validateTravelState, validateGameHistory, validateActiveDateState, validateStoryProgress } from "./game-state-validation";
+import { applyChoiceEffects, applyDoneEffects, choiceDisplay, sceneOption, type ChoiceDisplay } from "./scene-effects";
+import { fileDateScene, mainScene, taggedDateScene } from "./reservations";
+import type { SceneOption } from "../content/scene-schemas";
+import { validateOccasionState } from "./occasion";
+import { advanceRunningOccasion } from "./occasion-hooks";
 
 export { GAME_STATE_VERSION, gameStateSchema } from "./game-state-schema";
 export type { GameState, ActiveDate } from "./game-state-schema";
@@ -81,6 +86,7 @@ export function createGame(
     storyProgress: { lines: {}, flags: [] },
     encounterRewards: {},
     activeEncounter: null,
+    occasion: null,
     tour: null,
     completedTourIds: [],
     revision: 0,
@@ -228,6 +234,7 @@ export function startDate(state: GameState, dateId: string, nextRoll: () => numb
       storyHash: storyFingerprint(date.storyId),
       frame: result.frame,
       choiceCount: 0,
+      turnCount: 0,
       step: 1,
       appliedEffectIds: [],
       pendingOutcome: null,
@@ -274,6 +281,8 @@ export function chooseDate(
   state: GameState,
   index: number,
   expectedRevision: number,
+  /** Internal: a one-scene date's choice tags were applied already (this same action). */
+  tagsApplied = false,
 ): GameState {
   const active = state.activeDate;
   if (
@@ -285,10 +294,18 @@ export function chooseDate(
   const date = dates.find((item) => item.id === active.dateId)!;
   const storyId = activeDateStoryId(date, active);
   const toneBefore = deriveRelationshipTone(state);
+  const tagged = taggedDateScene(date.id);
+  if (tagged) return chooseTaggedDate(state, active, tagged, index);
+  // A one-scene date's choice tags apply first (not on a replay), then the choice goes on as before (4.4).
+  const fileTags = fileTagOption(date.id, active.frame.choices.find((choice) => choice.index === index)?.optionId);
+  if (fileTags && !tagsApplied) {
+    if (dateChoiceDisplay(state, index).show !== "open") return state;
+    if (!active.replay) return chooseDate(applyChoiceEffects(state, fileDateScene(date.id)!.id, fileTags, state.revision + 1).state, index, expectedRevision, true);
+  }
   if (active.resolutionMode === "fixed") {
     return applyStep(
       { ...state, revision: state.revision + 1 },
-      { ...active, choiceCount: active.choiceCount + 1, step: active.step + 1 },
+      { ...active, choiceCount: active.choiceCount + 1, turnCount: active.turnCount + 1, step: active.step + 1 },
       selectStoryChoice(storyId, active.storyState, active.frame, index, state.memories, {}, {
         relationship_tone: toneBefore,
         relationship_tone_before: toneBefore,
@@ -333,10 +350,80 @@ export function chooseDate(
     throw new Error("選択肢の結果と会話の効果が一致しません。");
   return applyStep(
     { ...state, revision: state.revision + 1 },
-    { ...active, choiceCount: active.choiceCount + 1, step: active.step + 1,
+    { ...active, choiceCount: active.choiceCount + 1, turnCount: active.turnCount + 1, step: active.step + 1,
       resolvedChoices: [...active.resolvedChoices, { choiceIndex: index, effectId, before, ...resolution }] },
     step,
   );
+}
+
+export { taggedDateScene } from "./reservations";
+
+/**
+ * A choice of a date written with tags. A choice of the date's own knot is a romance choice: it uses
+ * the next saved ticket with its `# profile:` (the date's choiceCount counts these), and its other
+ * tags (`# memory:`, `# rel:`…) apply too. A choice of a helper knot is an in-scene choice: no ticket,
+ * no reaction, only its tags (3.5). A replayed date applies no effect (A17).
+ */
+/** How a choice of the open date shows (decision 43): a date written with tags hides and greys its choices like any scene; today's dates show all. */
+export function dateChoiceDisplay(state: GameState, index: number): ChoiceDisplay {
+  const active = state.activeDate;
+  const choice = active?.frame.choices.find((item) => item.index === index);
+  if (!active || !choice) return { show: "grey", reason: "この選択肢は使えません。" };
+  const scene = taggedDateScene(active.dateId);
+  if (!scene) {
+    // A one-scene date's choice tags (stage 3b): hidden or greyed out like a place file's (a replay asks nothing to be paid).
+    const tags = fileTagOption(active.dateId, choice.optionId);
+    const shown = tags ? choiceDisplay(state, tags) : { show: "open" as const };
+    return active.replay && shown.show === "grey" ? { show: "open" } : shown;
+  }
+  const option = sceneOption(scene, choice.optionId);
+  if (!option) return { show: "hidden" };
+  // A replayed date applies nothing, so it asks nothing to be paid; what a choice needs to show still holds.
+  const shown = choiceDisplay(state, option);
+  return active.replay && shown.show === "grey" ? { show: "open" } : shown;
+}
+
+/** A one-scene date's choice tags by option ID, without its romance part (the # effect: keeps that). */
+function fileTagOption(dateId: string, optionId: string | undefined): SceneOption | undefined {
+  const option = sceneOption(fileDateScene(dateId), optionId);
+  return option && { ...option, profile: undefined, effect: undefined };
+}
+
+function chooseTaggedDate(state: GameState, active: ActiveDate, scene: NonNullable<ReturnType<typeof taggedDateScene>>, index: number): GameState {
+  if (dateChoiceDisplay(state, index).show !== "open") return state;
+  const date = dates.find((item) => item.id === active.dateId)!;
+  const storyId = activeDateStoryId(date, active);
+  const choice = active.frame.choices.find((item) => item.index === index)!;
+  const option = sceneOption(scene, choice.optionId);
+  if (!option) throw new Error("選択肢の効果を確認できません。");
+  const revision = state.revision + 1;
+  const toneBefore = deriveRelationshipTone(state);
+  const romance = option.knot === scene.story.knot;
+  if (!romance) {
+    const next = active.replay ? state : applyChoiceEffects(state, scene.id, option, revision).state;
+    const tone = deriveRelationshipTone(next);
+    const step = selectStoryChoice(storyId, active.storyState, active.frame, index, next.memories, {}, {
+      relationship_tone: tone, relationship_tone_before: toneBefore, relationship_tone_after: tone,
+    }, next.inventory, sceneConditionReader(next));
+    return applyStep({ ...next, revision }, { ...active, turnCount: active.turnCount + 1, step: active.step + 1 }, step);
+  }
+  const ticket = active.randomPlan[active.choiceCount];
+  const profile = active.responseSnapshot?.profiles.find((item) => item.id === option.profile);
+  if (!ticket || !profile || active.resolvedChoices.length !== active.choiceCount) throw new Error("恋愛リアクションの保存状態が一致しません。");
+  const before = { affection: state.affection, trust: state.trust, spark: state.spark };
+  const resolution = resolveRomanceChoice(profile, before, ticket);
+  let next: GameState = state;
+  if (!active.replay) {
+    next = { ...state, affection: before.affection + resolution.deltas.affection, trust: before.trust + resolution.deltas.trust, spark: before.spark + resolution.deltas.spark };
+    next = applyChoiceEffects(next, scene.id, { ...option, profile: undefined }, revision).state;
+  }
+  const toneAfter = deriveRelationshipTone(next);
+  const step = selectStoryChoice(storyId, active.storyState, active.frame, index, next.memories, {
+    romance_result: resolution.result, affection_delta: resolution.deltas.affection, trust_delta: resolution.deltas.trust, spark_delta: resolution.deltas.spark,
+  }, { relationship_tone: toneAfter, relationship_tone_before: toneBefore, relationship_tone_after: toneAfter }, next.inventory, sceneConditionReader(next));
+  return applyStep({ ...next, revision },
+    { ...active, choiceCount: active.choiceCount + 1, turnCount: active.turnCount + 1, step: active.step + 1,
+      resolvedChoices: [...active.resolvedChoices, { choiceIndex: index, optionId: option.id, before, ...resolution }] }, step);
 }
 
 export function finishDate(
@@ -356,6 +443,10 @@ export function finishDate(
     date.kind === "confession"
       ? active.pendingOutcome!
       : state.confessionStatus;
+  // The date's main # on_done: (a place file's knot or a one-scene file's head), the first time it is finished.
+  const doneScene = mainScene({ date: date.id });
+  if (doneScene && !active.replay && !state.playedDateIds.includes(date.id))
+    state = applyDoneEffects(state, doneScene.id, doneScene.done, state.revision + 1);
   const memories = [...state.memories];
   // A deferred attempt is replayable; the first eventual acceptance still earns its one ending memory.
   // Commit this together with the ending, not while displaying the confession response.
@@ -370,7 +461,8 @@ export function finishDate(
         memories.push(effect.memoryId);
     }
   }
-  return evaluateProgression({
+  // The date is one part of its occasion: the 「交際開始」 screen or the occasion's end follows now (stage 3b).
+  return advanceRunningOccasion(evaluateProgression({
     ...state,
     memories,
     revision: state.revision + 1,
@@ -387,7 +479,7 @@ export function finishDate(
     playedDateIds: state.playedDateIds.includes(active.dateId)
       ? state.playedDateIds
       : [...state.playedDateIds, active.dateId],
-  });
+  }));
 }
 
 export function validateGameState(input: unknown): GameState {
@@ -396,6 +488,7 @@ export function validateGameState(input: unknown): GameState {
   if (state.activeEncounter && (state.activeDate || state.activeBattle || state.activeTourism || state.activeEpilogue))
     throw new Error("道中の交流と他の進行が重複しています。");
   validateBattleState(state);
+  validateOccasionState(state);
   validateEncounterState(state);
   validateTourismState(state);
   validateJourneyState(state);

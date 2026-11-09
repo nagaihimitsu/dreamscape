@@ -1,8 +1,9 @@
 import { z } from "zod";
 import { englishText, japaneseText, quizQuestionSchema } from "./schemas";
+import { storyAddressSchema } from "./story-address";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
-const storyId = z.string().regex(/^[a-z][a-z0-9_]*(?:\/[a-z][a-z0-9_]*)+$/);
+const storyId = storyAddressSchema;
 const money = z.number().int().nonnegative().safe();
 const optionSchema = z.object({
   id,
@@ -25,8 +26,8 @@ const encounterSchema = z.object({
   titleJa: japaneseText,
   descriptionJa: japaneseText,
   storyId,
-  // One option per choice of the story, in any number (decision 41).
-  options: z.array(optionSchema).min(1),
+  // One option per choice of the story, in any number (decision 41); a place file's talk may have none (stage 3a).
+  options: z.array(optionSchema),
   repeatable: z.boolean().optional(),
   completionMoney: money.optional(),
   completionItemId: id.optional(),
@@ -49,6 +50,12 @@ export const encounterCatalogSchema = z.object({
   schemaVersion: z.literal(1),
   items: z.array(z.object({
     id, cityId: id, nameJa: japaneseText, descriptionJa: japaneseText,
+    /**
+     * `"journey"`: an item carried through the journey (the item design §2.2): obtained in its city, kept on
+     * departing, and held, given and used in the journey's later cities too. Without it, the item stays in its city.
+     * Not changed after publishing (a save holding it may then be refused).
+     */
+    carry: z.literal("journey").optional(),
     /** Icon among the held items (a served file such as assets/items/x.svg); a generic icon otherwise. */
     iconPath: z.string().regex(/^assets\/(?!.*(?:^|\/)\.\.(?:\/|$))[a-zA-Z0-9_./-]+\.(?:png|webp|svg)$/).optional(),
   }).strict()),
@@ -58,7 +65,7 @@ const encounterInputSchema = encounterSchema.extend({
   cityId: id.optional(),
   descriptionJa: japaneseText.optional(),
   sources: quizQuestionSchema.shape.sources.optional(),
-  options: z.array(optionSchema).min(1).optional(),
+  options: z.array(optionSchema).optional(),
 });
 /** Author-facing catalog: plain three-choice encounters need no rule boilerplate (other counts list their options). */
 export const encounterCatalogInputSchema = encounterCatalogSchema.extend({

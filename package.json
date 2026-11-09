@@ -43,7 +43,9 @@
     "journey:readiness": "tsx scripts/inspect-journey-readiness.ts",
     "journey:release": "tsx scripts/release-journey.ts",
     "journey:transit": "tsx scripts/inspect-journey-transit.ts",
-    "journey:scenario": "tsx scripts/check-journey-scenario.ts"
+    "journey:scenario": "tsx scripts/check-journey-scenario.ts",
+    "journey:readthrough": "tsx scripts/inspect-journey-readthrough.ts",
+    "story:move-memos": "tsx scripts/move-story-memos.ts"
   },
   "dependencies": {
     "inkjs": "^2.4.0",

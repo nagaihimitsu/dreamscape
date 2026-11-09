@@ -36,6 +36,8 @@ export function validateBattleStory(
   battle: BattleDefinition,
   context: TagContext,
   observe?: DialogueObserver,
+  /** The battle's knot in a place file (the stitch form, stages 3–4): each scene starts at <knot>.<scene>, without battle_scene. */
+  knot?: string,
 ): number {
   const inputs = [{ scene: battle.scenes.intro, correct: false, score: 0 }];
   const afterAnswers = [...battle.scenes.afterRounds, battle.scenes.outro];
@@ -80,7 +82,7 @@ export function validateBattleStory(
         player_name: "検証主人公",
         heroine_name: "検証ヒロイン",
         player_address: "検証主人公さん",
-        battle_scene: input.scene,
+        ...(knot ? {} : { battle_scene: input.scene }),
         answer_correct: input.correct,
         battle_score: input.score,
       };
@@ -91,6 +93,7 @@ export function validateBattleStory(
         }
         story.variablesState.$(key, value);
       }
+      if (knot) story.ChoosePathString(`${knot}.${input.scene}`);
       let lines = 0;
       let hasText = false;
       let speaker: string = "narrator";

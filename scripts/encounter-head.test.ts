@@ -35,8 +35,6 @@ describe("encounter head tags", () => {
     ["# at: visit x\n# priority: -1\n# repeat: twice\n", "Unknown # repeat: twice"],
     ["# at: visit x\n# priority: -1\n# when: {flag_x}\n", "A head tag is plain text, without {…}"],
     ["# at: visit x # priority: -1\n# speaker: narrator # when: time day\n", "Write each head tag on its own line"],
-    ["# at: visit x\n# priority: -1\n# when: flag smp_lili_met\n", 'Condition part "flag" is not available yet (stage 3)'],
-    ["# at: visit x\n# priority: -1\n# when: ap >= 2\n", 'Condition part "ap" is not available yet (stage 3)'],
   ])("refuses %j", (head, message) => {
     expect(() => readEncounterHead(`${names}${head}${body}`)).toThrow(message);
   });
@@ -80,7 +78,7 @@ describe("condition texts", () => {
   it.each([
     ["", "Empty condition"], ["not", "Empty condition after not"], ["item smp_x sold", "Write the condition part \"item\""],
     ["time noon", "time day|night"], ["day > 2", "day >= N"], ["weekday 7", "weekday 5,6"], ["visited", "visited <landmark>"],
-    ["ap >= 2", 'Condition part "ap" is not available yet (stage 3)'], ["met smp_lili", '"met" is not available yet (stage 3)'],
+    ["ap >= -1", "Invalid condition"], ["met", "met <person>"], ["flag a b", "flag <flag>"], ["condition", "condition <name>"],
     ["rel charm >= 3", "rel affection|trust|spark"], ["rel affection > 3", "rel affection >= N"], ["rel affection >= 1.5", "rel affection >= N"],
     ["money >= -1", "Invalid condition"], ["stage >= 5", "Invalid condition"], ["couple yes", 'Write the condition part "couple" as: couple'],
     ["battles mihon <= 2", "battles <city> >= N"], ["wish upon a star", "Unknown condition part: wish"],

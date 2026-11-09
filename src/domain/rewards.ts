@@ -60,6 +60,31 @@ export function earnRewards(
   return { state: next, entries };
 }
 
+/**
+ * The AP of a tag that gives AP (`# ap: +N`, `# on_done: ap +N`; stage 3a), by its `scene_tag` rule:
+ * up to the cap into the wallet, the rest stored as "<rule ID>@<revision>" (the revision the action
+ * saves), like earnRewards but without claimedRewardIds: a tag gives its AP each time it is newly
+ * played (a repeated scene, a 「また今度」 choice; A24). The caller applies it in the action that
+ * passes the choice to Ink or closes the scene, so a reload or a second tap never gives it twice.
+ */
+export function earnSceneTagAp(state: GameState, ruleId: string, revision: number): GameState {
+  const rule = allRewardRules.find((item) => item.id === ruleId && item.trigger === "scene_tag");
+  if (!rule) throw new Error("報酬の定義が見つかりません。");
+  const creditedAp = Math.min(rule.ap, balance.apCap - state.ap);
+  const pendingAp = rule.ap - creditedAp;
+  const rewardId = `${ruleId}@${revision}`;
+  if (pendingAp && state.pendingApRewards.some((item) => item.rewardId === rewardId)) throw new Error("未受取の報酬が重複しています。");
+  return {
+    ...state,
+    ap: state.ap + creditedAp,
+    pendingApRewards: pendingAp ? [...state.pendingApRewards, { rewardId, earnedAp: rule.ap, remainingAp: pendingAp }] : state.pendingApRewards,
+  };
+}
+/** A stored tag AP's record ("<rule ID>@<revision>"): checked by its shape only (its rule may have changed since). */
+export const SCENE_TAG_PENDING = /^[a-z][a-z0-9_]*@\d+$/u;
+/** The rule ID of a stored AP record (before the @ of a tag's AP). */
+export const pendingRuleId = (rewardId: string) => rewardId.split("@")[0];
+
 /** Pay only stored remainders. Their original amounts survive later balance-data tuning. */
 export function settlePendingAp(state: GameState): GameState {
   let ap = state.ap;
@@ -103,10 +128,13 @@ export function validateRewardState(state: GameState): void {
   if (new Set(ids).size !== ids.length)
     throw new Error("未受取の報酬が重複しています。");
   for (const item of state.pendingApRewards) {
-    if (
-      !allRewardRules.some((rule) => rule.id === item.rewardId) ||
-      !state.claimedRewardIds.includes(item.rewardId)
-    )
+    // A tag's AP: its shape only, whatever its rule became (the earned and remaining AP are in the record).
+    if (item.rewardId.includes("@")) {
+      if (!SCENE_TAG_PENDING.test(item.rewardId)) throw new Error("未受取の報酬記録が一致しません。");
+      continue;
+    }
+    const rule = allRewardRules.find((entry) => entry.id === item.rewardId);
+    if (!rule || rule.trigger === "scene_tag" || !state.claimedRewardIds.includes(item.rewardId))
       throw new Error("未受取の報酬記録が一致しません。");
   }
   const receipt = state.battleRewardReceipt;

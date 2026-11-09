@@ -117,9 +117,12 @@ describe("Debug launch URLs against the content", () => {
     }
     expect(unavailable).toEqual(expect.arrayContaining(["castello_pick"]));
     // The gift needs the bookmark, which the stall before it (played with its first choice) gives.
+    // The clock tower's place file (stage 3a) also has two talks; a talk without # title: is named after its place.
     expect(debugTargets("mihon").encounter).toEqual([
       { id: "smp_mihon_bookmark_stall", name: "三時のしおりの露店" },
+      { id: "smp_mihon_clock_gears", name: "見本の時計塔" },
       { id: "smp_mihon_bookmark_gift", name: "しおりを渡す" },
+      { id: "smp_mihon_clock_bell", name: "見本の時計塔" },
     ]);
     expect(() => createDebugState({ ...base, cityId: "mihon", scene: "encounter", id: "smp_mihon_bookmark_stall" }))
       .toThrow("旅の進行を「旅の開始時」にしてください。");

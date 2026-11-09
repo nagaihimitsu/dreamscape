@@ -52,14 +52,14 @@ describe("response profile cross-file validation", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow(/Ink randomness is forbidden.*RANDOM/);
   }, 30_000);
 
-  it("rejects a recovery event that consumes AP or cannot repeat", async () => {
+  it("rejects a recovery event that cannot repeat (its AP is a warning, decision 32)", async () => {
     await changeCatalogEntry(fixture, "romance/date_catalog.json", "dates", "milano_invitation_01", (date: any) => {
       expect(date.kind).toBe("special");
       date.recovery = true;
       date.repeatable = false;
       date.rewardOnlyOnce = false;
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/Recovery event must be a free, repeatable special/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/Recovery event must be a repeatable special with one choice and effect/);
   });
 
   it("rejects an unused memoryless effect even if its response profile exists", async () => {

@@ -19,7 +19,7 @@
 - 画像は図形だけで描いた自作のPNG（240×160、CC0）です。地点の座標は海上の 0,0 付近です。
 - 本番の旅行編にこの文章・出典・画像を残さないでください。複製して使うときは、実在の観光地、確認した出典、権利を確認した画像に置き換えます。
 
-## 必須の20ファイル
+## 必須の18ファイル
 
 どれか1つを外すと `content:build` が止まります（`tests/journeys/sample_trip/sample-journey.test.ts` が、任意の部分を外した最小の構成から1つずつ外して確かめます）。エラーの「…」は省いた部分で、パソコンごとに違う絶対パスを含みます。
 
@@ -31,7 +31,7 @@
 | `travel/mihon-settings.json` | 宿の地点・宿泊費・再挑戦の間隔 | `移動の設定 …/sample_trip/travel/mihon-settings.json がありません` |
 | `romance/presentation.json` | 背景（宿は画像なしの `neutral`、時計塔は画像つき） | `Unknown date destination background` |
 | `romance/date_destinations.json` | デートの行き先（時計塔の広場）と小話 | `Unknown date destination` |
-| `romance/date_catalog.json` | 通常デート1件（2回の3択、共通効果） | `Invalid content in romance/date_catalog.json` |
+| `romance/date_catalog.json` | 通常デート1件（2回の3択。Inkの場所のファイルの knot を住所で指す） | `Invalid content in romance/date_catalog.json` |
 | `tourism/catalog.json` | 画像台帳・観光地・観察ポイント（hotspot） | `Invalid content in tourism/catalog.json` |
 | `progression/journey.json` | 観光エピソードと都市フィナーレ（エピローグつき）、報酬 | `Complete city has no city finale` |
 | `battles/catalog.json` | 通常戦（中間2場面）と都市フィナーレ（中間4場面） | `Invalid content in battles/catalog.json` |
@@ -39,14 +39,12 @@
 | `quizzes/smp_mihon_finale_quiz.json` | 都市フィナーレの英語3択5問 | `Unknown battle quizId: smp_mihon_finale_quiz` |
 | `learning/translations.json` | 全問題の和訳（原文の写しと照合される） | `Missing translation` |
 | `learning/word-meanings.json` | 共通の辞書（`content/learning/word-meanings.json`）にない英単語だけ | `Missing word meaning` |
-| `stories/tourism/smp_mihon_clock_tower_guide.ink` | 観光案内 | `Unknown tourism guideStoryId: tourism/smp_mihon_clock_tower_guide` |
-| `stories/battles/smp_mihon_main_clock_tower.ink` | 通常戦の会話 | `Unknown battle storyId: battles/smp_mihon_main_clock_tower` |
+| `stories/places/smp_mihon_clock_tower.ink` | 時計塔の場所のファイル：観光案内・通常戦の会話（stitch の形）・通常デートの会話と、時計塔で起きる差し込みの場面（任意の部分） | `Unknown storyId: places/smp_mihon_clock_tower.smp_mihon_date_tower_square` |
 | `stories/battles/smp_mihon_finale.ink` | 都市フィナーレの会話 | `Unknown battle storyId: battles/smp_mihon_finale` |
 | `stories/epilogues/mihon.ink` | 都市エピローグ | `Unknown epilogue story: epilogues/mihon` |
-| `stories/dates/smp_mihon_date_tower_square.ink` | 通常デートの会話 | `Unknown storyId: dates/smp_mihon_date_tower_square` |
 | `public/assets/tourism/sample_trip/mihon_clock_tower.png` | 時計塔の自作画像（観察・背景） | `Missing public file: assets/tourism/sample_trip/mihon_clock_tower.png (searched public/ and authoring/templates/sample_trip/public/)` |
 
-各Inkの冒頭の `//` コメントに、その種類の脚本の規則を書いています。
+各Inkの冒頭の `//` コメントに、その種類の脚本の規則を書いています。場所のファイル（`stories/places/`）は、1つの場所の場面を knot ごとに1本にまとめる形です（knot の頭の札で種類・時点・順番を決め、カタログは「ストーリーID.knot」の住所で本筋を指す）。ほかの観光地（朝市・図書室）とフィナーレ・エピローグは、今の1場面1ファイルの形のまま書いています。
 
 ## 任意の部分
 
@@ -66,12 +64,12 @@
 - ファイル：`quizzes/smp_mihon_special_c_library_quiz.json`、`stories/battles/smp_mihon_special_c_library.ink`、`stories/tourism/smp_mihon_library_guide.ink`、`public/assets/tourism/sample_trip/mihon_library.png`
 - 項目のID：`smp_mihon_special_c_library`、`mihon_library`、`smp_bg_mihon_library`、`smp_img_mihon_library`、`smp_obs_mihon_library_diary`、`smp_obs_mihon_library_letters`、`smp_obs_mihon_library_weather`、`smp_obs_mihon_library_hours`、`smp_mihon_library_c_q1`、`smp_mihon_library_c_q2`、`smp_mihon_library_c_q3`
 
-### 道中交流と品物
+### 道中交流・会話と品物（場所のファイルの差し込み）
 
-時計塔に着くとすぐ（観光案内の前）、子どもから「三時のしおり」を受け取り（入手）、対決の後の交流でヒロインに渡せます（贈与）。品物には同じ都市での使い道が必要なため、受け取る交流と渡す交流の2件で1組です。起きる時と順番は、交流のInkの頭の札（`at:`・`priority:`・`when:`）で決めています（`-1` は本筋の前、`+1` は本筋の後）。
+時計塔に着くとすぐ（観光案内の前）、子どもから「三時のしおり」を受け取り（入手）、対決の後の交流でヒロインに渡せます（贈与）。受け取る交流と渡す交流の2件で1組です（使い道が要るのは、次の都市がある都市の、持ち歩く印のない品物だけです。見本の街は旅の最後の都市ですが、使い道のある形を手本にしています）。観察の後の会話（近道を教わり、APを1得る）と、対決の後の鐘の会話（APを1使って鐘楼に上がると、ときめきが上がる）、デートの中でしおりを渡すかの「場面の中の選択」もあります。どれも時計塔の場所のファイルの knot で、起きる時と順番は knot の頭の札（`at:`・`priority:`・`when:`）で決めています（`-1` は本筋の前、`after observe` は観察の後、`+1`・`+2` は本筋の後）。品物は `encounters/catalog.json` の `items`、フラグ・人物・名前付きの条件は `progression/story.json` に宣言します。
 
-- ファイル：`encounters/catalog.json`、`stories/encounters/smp_mihon_bookmark_stall.ink`、`stories/encounters/smp_mihon_bookmark_gift.ink`
-- 項目のID：（必須のファイルには項目がありません）
+- ファイル：`encounters/catalog.json`、`progression/story.json`
+- 項目のID：`smp_mihon_bookmark_stall`、`smp_mihon_bookmark_gift`、`smp_mihon_clock_gears`、`smp_mihon_clock_bell`、`smp_mihon_date_bookmark_aside`、`smp_mihon_three_bookmark`（場所のファイルからは、その knot と、その ID を書いた行を消す）
 
 ### 乗り物（貸し自転車）
 
@@ -86,7 +84,7 @@
 
 1. 宿から時計塔へ移動し、観光「止まった針の理由」を選ぶ。観光案内を読み、観察ポイントを見て、時計番のトーマと通常戦（3問）。初回の読了・完了・2問以上正解でAPが1ずつ入る。
 2. 都市の最初の観光を終えると、デート「三時までの席」（2 AP）を始められる。
-3. （任意）時計塔の道中交流は、手順1で時計塔に着いたとき（観光案内の前）と、対決の後に起きる。朝市の特殊戦B・図書室の特殊戦C（初回完了で1 APずつ）は、初めて訪ねると観光案内のあとに始まる。特殊戦がある都市では、都市フィナーレの前に特殊戦を終える（見本のフィナーレは、地図に出る条件 `when`（`progression/journey.json`）に、時計塔・朝市・図書室の3つの対決を全部書いている。`requiredEpisodeIds` は空）。
+3. （任意）時計塔の道中交流は、手順1で時計塔に着いたとき（観光案内の前）と、対決の後に起きる（観察の後と、対決の後の最後に会話もある）。朝市の特殊戦B・図書室の特殊戦C（初回完了で1 APずつ）は、初めて訪ねると観光案内のあとに始まる。特殊戦がある都市では、都市フィナーレの前に特殊戦を終える（見本のフィナーレは、地図に出る条件 `when`（`progression/journey.json`）に、時計塔・朝市・図書室の3つの対決を全部書いている。`requiredEpisodeIds` は空）。
 4. 時計塔で都市フィナーレ「時計を動かす日」（5問）。完了・3問以上正解で1 APずつ、都市クリアで2 AP。
 5. エピローグを読んで旅が終わる（2都市目はない）。
 
@@ -103,13 +101,14 @@
 
 | 種類 | ストーリーID（`stories/` の下の場所と同じ） | クイズID（ファイル名も同じ） | 見本の例 |
 | --- | --- | --- | --- |
-| 通常戦 | `battles/<頭>_main_<観光地>` | `<頭>_main_<観光地>_quiz` | `battles/smp_mihon_main_clock_tower`、`smp_mihon_main_clock_tower_quiz` |
+| 通常戦 | `battles/<頭>_main_<観光地>` | `<頭>_main_<観光地>_quiz` | `places/smp_mihon_clock_tower.smp_mihon_main_clock_tower`（場所のファイルの knot）、`smp_mihon_main_clock_tower_quiz` |
 | 特殊戦B・C | `battles/<頭>_special_b_<観光地>`（Cは `special_c`） | `<頭>_special_b_<観光地>_quiz` | `battles/smp_mihon_special_b_market`、`smp_mihon_special_c_library_quiz` |
 | 特殊戦の反論の場面 | `battles/<特殊戦の名前>_rebuttal` | なし | （見本にはない） |
 | 都市フィナーレ | `battles/<頭>_finale` | `<頭>_finale_quiz` | `battles/smp_mihon_finale`、`smp_mihon_finale_quiz` |
-| 観光案内 | `tourism/<頭>_<観光地>_guide` | なし | `tourism/smp_mihon_clock_tower_guide` |
-| デート・恋愛の出来事 | `dates/<頭>_date_<行き先・出来事>` | なし | `dates/smp_mihon_date_tower_square` |
-| 道中交流 | `encounters/<頭>_<交流>`（くじの結果は `_won`・`_lost`・`_already`） | なし | `encounters/smp_mihon_bookmark_stall` |
+| 観光案内 | `tourism/<頭>_<観光地>_guide` | なし | `tourism/smp_mihon_market_guide` |
+| 場所のファイル（その場所の場面をまとめる） | `places/<頭>_<場所>`（場所は観光地IDから都市名を除いた名前。場面の住所は「ストーリーID.knot」） | なし | `places/smp_mihon_clock_tower`（`places/smp_mihon_clock_tower.smp_mihon_clock_tower_guide`） |
+| デート・恋愛の出来事 | `dates/<頭>_date_<行き先・出来事>` | なし | `places/smp_mihon_clock_tower.smp_mihon_date_tower_square`（場所のファイルの knot） |
+| 道中交流 | `encounters/<頭>_<交流>`（くじの結果は `_won`・`_lost`・`_already`） | なし | `places/smp_mihon_clock_tower.smp_mihon_bookmark_stall`（場所のファイルの knot） |
 | 到着・エピローグ | `arrivals/<都市ID>`、`epilogues/<都市ID>` | なし | `epilogues/mihon` |
 | 英語ノートの解説 | `learning/<頭>_english`（編に1本だけなら `learning/<接頭辞>_english` でもよい。2本目からは `learning/<頭>_<話題>_english`） | なし | （見本にはない） |
 

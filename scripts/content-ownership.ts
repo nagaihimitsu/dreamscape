@@ -40,7 +40,9 @@ function conditionReferences(raw: unknown, field: string): Reference[] {
   if (!parsed.success) return [];
   return conditionLeaves(parsed.data).flatMap((leaf) => {
     const reference = leafReference(leaf);
-    return reference && reference.kind !== "mode" ? [ref(reference.kind, `${field}.${leafKind(leaf)}`, reference.id)] : [];
+    // Transport modes, flags, people and named conditions are checked by condition-validation.ts.
+    return reference && !["mode", "flag", "person", "condition"].includes(reference.kind)
+      ? [ref(reference.kind as Namespace, `${field}.${leafKind(leaf)}`, reference.id)] : [];
   });
 }
 

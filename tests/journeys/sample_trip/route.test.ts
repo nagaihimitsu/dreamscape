@@ -5,6 +5,8 @@
 // B/C → city finale → epilogue. Every step is restored from JSON and checked
 // with validateGameState; AP is checked where it is earned and spent, and the
 // normal battle is repeated the ways a reload or a re-clear repeats it.
+import { chooseTourismGuide } from "../../../src/domain/tourism";
+import { chooseCityEpilogue } from "../../../src/domain/epilogue";
 import { beforeAll, describe, expect, it } from "vitest";
 import { getJourney } from "../../../src/content/journeys";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
@@ -48,7 +50,9 @@ function sightsee(state: GameState, clueId?: string): GameState {
   let s = state;
   for (let step = 0; s.activeTourism?.phase === "guide"; step++) {
     expect(step, "guide stuck").toBeLessThan(60);
-    s = act(s, (current) => advanceTourismGuide(current, current.revision));
+    // A guide may have Japanese choices (stage 3a): the first one.
+    const choice = s.activeTourism.frame?.choices[0];
+    s = act(s, (current) => choice ? chooseTourismGuide(current, choice.index, current.revision) : advanceTourismGuide(current, current.revision));
   }
   expect(s.activeTourism?.phase).toBe("exploring");
   if (clueId) s = act(s, (current) => discoverClue(current, clueId, current.revision));
@@ -135,7 +139,7 @@ describe("sample journey route", () => {
     // 1. Clock tower. (Optional part) Departing from the map, the stall comes first (its head tags: priority -1,
     // before the visit's main part) on the trip, whose fare and time the departure settled: receive the bookmark.
     s = begin(s, EPISODE);
-    expect(s.activeEncounter).toMatchObject({ encounterId: "smp_mihon_bookmark_stall", trip: { eventId: EPISODE, modeId: "walk" } });
+    expect(s.activeEncounter).toMatchObject({ encounterId: "smp_mihon_bookmark_stall" });
     expect(s.travel.activeEvent?.eventId).toBe(EPISODE);
     expect(s.activeTourism).toBeNull();
     s = playEncounter(s, "ask");
@@ -145,36 +149,46 @@ describe("sample journey route", () => {
     expect(s.travel.activeEvent?.eventId).toBe(EPISODE);
     s = sightsee(s, "smp_obs_mihon_clock_tower_hands");
     expect(s.discoveredClueIds).toContain("smp_obs_mihon_clock_tower_hands");
-    // Going on from the observation, no encounter waits there now: the battle (+1 complete, +1 for 2 or more correct).
+    // Going on from the observation, the talk placed after observe runs (a place file's knot, stage 3a), back to the
+    // observation; its # on_done: ap +1 gives an AP by its tag's rule.
+    expect(s.activeEncounter).toMatchObject({ encounterId: "smp_mihon_clock_gears" });
+    s = playEncounter(s);
+    expect(s.activeTourism?.phase).toBe("exploring");
+    expect(totalAp(s)).toBe(2);
+    s = act(s, (current) => proceedFromTourism(current, current.revision, () => 0));
+    // Then no encounter waits there now: the battle (+1 complete, +1 for 2 or more correct).
     expect(s.activeEncounter).toBeNull();
     expect(s.activeBattle?.battleId).toBe(BATTLE);
     const lastSave = playBattle(s, true);
-    expect(totalAp(lastSave)).toBe(1);
+    expect(totalAp(lastSave)).toBe(2);
     s = playBattle(lastSave);
     expect(s.completedEpisodeIds).toEqual([EPISODE]);
-    expect(totalAp(s)).toBe(3);
+    expect(totalAp(s)).toBe(4);
     // What a reload can repeat pays nothing twice: the final answer again from the save made before the result ...
     expect(playBattle(restore(lastSave))).toEqual(s);
     // ... leaving the restored result, also with a second (stale) tap: 「自由時間へ」 meets the gift encounter
     // (priority +1, after the main part; its when: the bookmark is held), the time settled at the result ...
     const meeting = act(restore(s), (current) => leaveBattleToFreeTime(current, current.revision, () => 0));
     expect(leaveBattleToFreeTime(meeting, s.revision, () => 0)).toBe(meeting);
-    expect(meeting.activeEncounter).toMatchObject({ encounterId: "smp_mihon_bookmark_gift", afterBattle: { battleId: BATTLE, encounterIds: ["smp_mihon_bookmark_gift"] } });
-    expect(meeting.travel.activeEvent).toBeNull();
-    const left = playEncounter(meeting, "give");
+    expect(meeting.activeEncounter).toMatchObject({ encounterId: "smp_mihon_bookmark_gift" });
+    // The time window settles when the visit's occasion closes, after its +N scenes (stage 3b).
+    expect(meeting.travel.activeEvent?.eventId).toBe(EPISODE);
+    // The gift, then the bell (+2; looking up from below needs nothing).
+    const left = playEncounter(meeting, "give", "stay_below");
     expect(left.inventory.smp_mihon_three_bookmark).toBe("gifted");
-    expect(left.completedEncounterIds).toEqual(["smp_mihon_bookmark_stall", "smp_mihon_bookmark_gift"]);
-    expect(left.seenEncounterIds).toEqual(["smp_mihon_bookmark_stall", "smp_mihon_bookmark_gift"]);
+    const all = ["smp_mihon_bookmark_stall", "smp_mihon_clock_gears", "smp_mihon_bookmark_gift", "smp_mihon_clock_bell"];
+    expect(left.completedEncounterIds).toEqual(all);
+    expect(left.seenEncounterIds).toEqual(all);
     expect(left.itemUses).toEqual({ smp_mihon_three_bookmark: { encounterId: "smp_mihon_bookmark_gift", optionId: "give" } });
     expect(left).toMatchObject({ activeEncounter: null, activeBattle: null, activeTourism: null });
-    expect(totalAp(left)).toBe(3);
+    expect(totalAp(left)).toBe(4);
     // ... and clearing the battle again from the map (re-clear), whose result meets no encounter now.
     const again = playBattle(act(left, (current) => startBattle(current, BATTLE)));
     expect(again.battleRewardReceipt?.entries ?? []).toEqual([]);
     const replayed = act(again, (current) => leaveBattleToFreeTime(current, current.revision, () => 0));
     expect(replayed.activeEncounter).toBeNull();
     expect(replayed.battleRecords.find((record) => record.battleId === BATTLE)?.attempts).toBe(2);
-    expect(totalAp(replayed)).toBe(3);
+    expect(totalAp(replayed)).toBe(4);
     expect(replayed.claimedRewardIds).toEqual(left.claimedRewardIds);
     s = left;
 
@@ -186,10 +200,10 @@ describe("sample journey route", () => {
     expect(getTravelEventAvailability(s, DATE, "walk").available).toBe(true);
     s = begin(s, DATE);
     expect(s.activeDate?.dateId).toBe(DATE);
-    expect(totalAp(s)).toBe(1);
+    expect(totalAp(s)).toBe(2);
     s = playDate(s);
     expect(s.playedDateIds).toEqual([DATE]);
-    expect(totalAp(s)).toBe(1);
+    expect(totalAp(s)).toBe(2);
 
     // (Optional part) Special battles B and C: first visit opens the place's guide, then the battle (+1 each).
     s = begin(s, "smp_mihon_special_b_market");
@@ -202,7 +216,7 @@ describe("sample journey route", () => {
     expect(s.activeBattle?.battleId).toBe("smp_mihon_special_c_library");
     s = playBattle(s);
     s = act(s, (current) => leaveBattle(current, current.revision));
-    expect(totalAp(s)).toBe(3);
+    expect(totalAp(s)).toBe(4);
 
     // 3. City finale (+1 complete, +1 for 3 or more correct, +2 city clear).
     s = begin(s, FINALE);
@@ -210,7 +224,7 @@ describe("sample journey route", () => {
     s = playBattle(s);
     s = act(s, (current) => leaveBattleToFreeTime(current, current.revision, () => 0));
     expect(s.completedCityIds).toEqual([CITY]);
-    expect(totalAp(s)).toBe(7);
+    expect(totalAp(s)).toBe(8);
 
     // A normal save of the cleared city resumes as it was (same save version).
     const storage = journeyStorage(new MemoryStorage(), JOURNEY);
@@ -219,12 +233,16 @@ describe("sample journey route", () => {
 
     // 4. Epilogue.
     s = act(s, (current) => startCityEpilogue(current, CITY, current.revision));
+    // The epilogue's choice (stage 3a): waving back is affection +1, applied once.
+    const affection = s.affection;
     for (let step = 0; s.activeEpilogue; step++) {
       expect(step, "epilogue stuck").toBeLessThan(60);
-      s = act(s, (current) => advanceCityEpilogue(current, current.revision));
+      const choice = s.activeEpilogue.frame.choices[0];
+      s = act(s, (current) => choice ? chooseCityEpilogue(current, choice.index, current.revision) : advanceCityEpilogue(current, current.revision));
     }
+    expect(s.affection).toBe(affection + 1);
     expect(s.viewedEpilogueCityIds).toEqual([CITY]);
     expect(s.currentCityId).toBe(CITY);
-    expect(totalAp(s)).toBe(7);
+    expect(totalAp(s)).toBe(8);
   });
 });

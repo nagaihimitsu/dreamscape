@@ -12,19 +12,44 @@
  * relationship.
  * Never imported by production code (scripts/dist-guard.ts checks the build).
  */
-import { balance, battles, dates, episodes, getCities, getCityContent, type QuizQuestion } from "../content";
+import { balance, battles, dates, episodes, getCities, getCityContent, landmarks, type QuizQuestion } from "../content";
 import { encounters } from "../content/encounters";
 import { getJourneyForCity } from "../content/journeys";
 import { advanceBattle, answerBattle, getActiveBattleContent, selectReasoningClue, startBattle, submitBattleEvidence } from "../domain/battle";
 import { getNextEpisode, getNextStoryBattle, leaveBattleResult, startEpisode, storyBattlesForCity } from "../domain/chapter";
 import { departToNextCity } from "../domain/city-travel";
 import {
-  advanceEncounter, chooseEncounter, continueTourismEncounters, encounterEntryRule, encounterVisitSlot, finishEncounter,
-  getEncounterOptionAvailability, leaveBattleToFreeTime, startTourismEncounter, visitedLandmarkOfEvent,
+  advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterCanFinish, encounterEntryRule, encounterVisitSlot, finishEncounter,
+  getEncounterOptionAvailability, leaveBattleToFreeTime, proceedFromTourism, startTourismEncounter, visitedLandmarkOfEvent,
 } from "../domain/encounter";
-import { advanceCityEpilogue, completeArrivalLogo, startCityArrival, startCityEpilogue } from "../domain/epilogue";
+import { advanceOccasion, closeRomanceEnding } from "../domain/occasion";
+import { isSceneOpen } from "../domain/game-state-schema";
+import { landmarkParts } from "../content/tourism-schemas";
+import { advanceCityEpilogue, chooseCityEpilogue, completeArrivalLogo, epilogueChoiceDisplay, startCityArrival, startCityEpilogue } from "../domain/epilogue";
 import { createGame, startDate, validateGameState, type GameState } from "../domain/game";
-import { advanceTourismGuide, openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "../domain/tourism";
+import { advanceTourismGuide, chooseTourismGuide, guideChoiceDisplay, openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "../domain/tourism";
+
+/** The first shown, choosable choice of the open guide (stage 3a: a guide may have choices), if any. */
+const firstGuideChoice = (state: GameState) =>
+  state.activeTourism?.frame?.choices.find((choice) => guideChoiceDisplay(state, choice.index).show === "open");
+/** The first choosable choice of the open arrival or epilogue, if any. */
+const firstEpilogueChoice = (state: GameState) =>
+  state.activeEpilogue?.frame.choices.find((choice) => epilogueChoiceDisplay(state, choice.index).show === "open");
+/** Go on in the open guide: its first choice when it shows choices, else its next line. */
+const guideStep = (current: GameState) => {
+  const choice = firstGuideChoice(current);
+  return choice ? chooseTourismGuide(current, choice.index, current.revision) : advanceTourismGuide(current, current.revision);
+};
+/** Skip the open guide (「閉じる」): it stops at a choice (decision 37), where the first is taken. */
+const guideSkip = (current: GameState) => {
+  const choice = firstGuideChoice(current);
+  return choice ? chooseTourismGuide(current, choice.index, current.revision) : skipTourismGuide(current, current.revision);
+};
+/** Go on in the open arrival or epilogue: its first choice when it shows choices, else its next line. */
+const epilogueStep = (current: GameState) => {
+  const choice = firstEpilogueChoice(current);
+  return choice ? chooseCityEpilogue(current, choice.index, current.revision) : advanceCityEpilogue(current, current.revision);
+};
 import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability } from "../domain/travel-game";
 import { getTransportModes, WALK_MODE_ID } from "../content/transport";
 import { minimumHomeFare } from "../domain/travel-routes";
@@ -98,7 +123,7 @@ export function readGuide(initial: GameState, options: PlayOptions = {}): GameSt
   let state = initial;
   for (let line = 0; state.activeTourism?.phase === "guide"; line++) {
     if (line > MAX_STEPS) throw new Error(`観光案内 ${state.activeTourism.landmarkId} を読み終えられませんでした。`);
-    state = act(state, (current) => advanceTourismGuide(current, current.revision), "観光案内", options);
+    state = act(state, guideStep, "観光案内", options);
   }
   return validateGameState(state);
 }
@@ -106,9 +131,13 @@ export function readGuide(initial: GameState, options: PlayOptions = {}): GameSt
 /** From an opened guide or observation, go on to the landmark's battle (read or skip the guide first). */
 function tourismToBattle(initial: GameState, options: EpisodePlayOptions): GameState {
   let state = initial;
-  if (state.activeTourism?.phase === "guide")
-    state = options.guide === "read" ? readGuide(state, options)
-      : act(state, (current) => skipTourismGuide(current, current.revision), "観光案内を飛ばす", options);
+  if (state.activeTourism?.phase === "guide") {
+    if (options.guide === "read") state = readGuide(state, options);
+    else for (let step = 0; state.activeTourism?.phase === "guide"; step++) {
+      if (step > MAX_STEPS) throw new Error("観光案内を飛ばせませんでした。");
+      state = act(state, guideSkip, "観光案内を飛ばす", options);
+    }
+  }
   if (state.activeTourism)
     state = act(state, (current) => startTourismBattle(current, current.revision), "観光地の対決", options);
   return state;
@@ -164,7 +193,7 @@ export function settleArrival(initial: GameState): GameState {
     ? completeArrivalLogo(initial, initial.revision) : initial;
   for (let line = 0; state.activeEpilogue?.kind === "arrival"; line++) {
     if (line > MAX_STEPS) throw new Error("到着の会話を完了できませんでした。");
-    state = act(state, (current) => advanceCityEpilogue(current, current.revision), "到着の会話");
+    state = act(state, epilogueStep, "到着の会話");
   }
   return validateGameState(state);
 }
@@ -174,7 +203,7 @@ export function readEpilogue(initial: GameState): GameState {
   let state = initial;
   for (let line = 0; state.activeEpilogue && state.activeEpilogue.kind !== "arrival"; line++) {
     if (line > MAX_STEPS) throw new Error("エピローグを読み終えられませんでした。");
-    state = act(state, (current) => advanceCityEpilogue(current, current.revision), "エピローグ");
+    state = act(state, epilogueStep, "エピローグ");
   }
   return validateGameState(state);
 }
@@ -374,11 +403,68 @@ export function startEncounterScene(state: GameState, encounterId: string, ticke
   }
   const placed = atPlace(state, scenePlaceId(state.currentCityId, undefined, encounter?.landmarkId));
   let observing = encounter ? openTourism(placed, encounter.landmarkId) : placed;
-  if (observing.activeTourism?.phase === "guide") observing = skipTourismGuide(observing, observing.revision);
+  for (let step = 0; observing.activeTourism?.phase === "guide" && step < MAX_STEPS; step++) observing = guideSkip(observing);
   const next = startTourismEncounter(observing, encounterId, observing.revision, () => ticket);
   // The observation reads the rule's `when` (unless the quiz waits for the battle); Debug names what is missing.
   if (!next.activeEncounter) throw new Error(unmetRule(observing));
   return validateGameState(next);
+}
+
+/**
+ * 「場面から始める」 (the unified event design 4.8, decision 6 (a)): open the landmark's visit the ordinary way
+ * (from the map when it shows there, else a visit without a map event) and play it with the real functions — the
+ * first selectable choice, correct answers, the observation's 「進む」 — until the scene `from` starts. `prep`: scenes
+ * played first (each at its own moment, also with the real functions), for the items `from` needs. Without `from`, it
+ * stops at the occasion's first stop. When `from` does not come, it says which parts of its condition are false and
+ * which scenes give the items they name.
+ */
+export function startOccasionScene(state: GameState, landmarkId: string, from: string | undefined, prep: readonly string[], ticket: number): GameState {
+  let current = state;
+  for (const id of prep) {
+    current = untilEncounter(startEncounterScene(current, id, ticket), id, ticket);
+    current = playEncounterFirstChoice(current, ticket);
+    for (let step = 0; isSceneOpen(current) && step < MAX_STEPS; step++) current = playOccasionStep(current, ticket);
+  }
+  const placed = atPlace(current, scenePlaceId(current.currentCityId, undefined, landmarkId));
+  const event = getCityContent(current.currentCityId).travel.events.find((item) => visitedLandmarkOfEvent(item.id) === landmarkId);
+  const mode = event && [WALK_MODE_ID, ...getTransportModes(current.currentCityId).map((item) => item.id)]
+    .find((item) => getTravelEventAvailability(current, event.id, item).available);
+  let next = event && mode ? act(current, (s) => beginTravelEvent(s, event.id, mode, s.revision, () => ticket), `${landmarkId} へ出発`)
+    : advanceOccasion({ ...placed, occasion: { kind: "visit", eventId: null, landmarkId,
+      parts: landmarkParts(landmarks.find((item) => item.id === landmarkId)!).filter((part) => part !== "guide" || !placed.visitedLandmarkIds.includes(landmarkId)),
+      ran: [], at: null, started: [] }, visitedLandmarkIds: placed.visitedLandmarkIds.includes(landmarkId) ? placed.visitedLandmarkIds : [...placed.visitedLandmarkIds, landmarkId] }, () => ticket);
+  if (!from) return validateGameState(next);
+  for (let step = 0; next.activeEncounter?.encounterId !== from; step++) {
+    if (!isSceneOpen(next) || step > MAX_STEPS) {
+      const rule = encounterEntryRule(from)?.when;
+      const unmet = rule ? unmetConditionLabels(next, rule) : [];
+      const givers = encounters.encounters.filter((item) => rule && JSON.stringify(rule).includes(`"${item.completionItemId}"`)).map((item) => item.id);
+      throw new Error(`場面 ${from} はこの時点で始まりませんでした。${unmet.length ? `偽の部品：${unmet.join("、")}。` : ""}${givers.length ? `品物をくれる場面：${givers.join("、")}（prep= で先に流せます）。` : ""}`);
+    }
+    next = playOccasionStep(next, ticket);
+  }
+  return validateGameState(next);
+}
+
+/** One step of an occasion as a player would take it (Debug's 「場面から始める」). */
+function playOccasionStep(state: GameState, ticket: number): GameState {
+  if (state.activeEncounter) {
+    const active = state.activeEncounter;
+    if (active.phase === "quiz") {
+      const quiz = encounters.encounters.find((item) => item.id === active.encounterId)!.quiz!.question;
+      return act(state, (current) => answerEncounterQuiz(current, quiz.correctOptionId, current.revision), "交流のクイズ");
+    }
+    const choice = active.frame.choices.find((item) => getEncounterOptionAvailability(state, item.index).available);
+    if (choice) return act(state, (current) => chooseEncounter(current, choice.index, current.revision, () => ticket), "交流の選択");
+    return act(state, (current) => continueTourismEncounters(current, encounterCanFinish(current) ? finishEncounter(current, current.revision)
+      : advanceEncounter(current, current.revision), () => ticket), "交流を進める");
+  }
+  if (state.activeTourism?.phase === "guide") return guideSkip(state);
+  if (state.activeTourism) return act(state, (current) => proceedFromTourism(current, current.revision, () => ticket), "観察の「進む」");
+  if (state.activeBattle?.phase === "result") return act(state, (current) => leaveBattleToFreeTime(current, current.revision, () => ticket), "対決の結果を閉じる");
+  if (state.activeBattle) return playBattleToResult(state);
+  if (state.occasion?.romanceEnding) return act(state, (current) => closeRomanceEnding(current, current.revision, () => ticket), "「交際開始」");
+  throw new Error("この時点を進められませんでした。");
 }
 
 /** Start a date at its place with a saved reaction ticket; its AP is spent as on the map. */

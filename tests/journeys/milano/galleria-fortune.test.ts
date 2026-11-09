@@ -49,7 +49,7 @@ describe("the Galleria conversation during observation", () => {
         : encounterCanFinish(state) ? finishEncounter(state, state.revision) : advanceEncounter(state, state.revision);
       state = restore(continueTourismEncounters(before, updated, () => 0));
     }
-    expect(state.activeTourism?.encounterIds).toEqual([encounter]);
+    expect(state.occasion?.started).toEqual([encounter]);
     expect(state.completedEncounterIds).not.toContain(encounter);
     state = restore(proceedFromTourism(state, state.revision, () => 0));
     expect(state.activeEncounter).toBeNull();
@@ -83,7 +83,8 @@ describe("the Galleria conversation during observation", () => {
           : advanceEncounter(state, state.revision);
     }
     expect(state.activeEncounter).toBeNull();
-    expect(state.activeTourism).toEqual({ ...savedTourism, encounterIds: [encounter] });
+    expect(state.activeTourism).toEqual(savedTourism);
+    expect(state.occasion?.started).toEqual([encounter]);
     expect(state.completedEncounterIds).toContain(encounter);
     expect(getTourismEncounterAvailability(state, encounter).available).toBe(false);
     expect(state.ap).toBe(ap + 1);
@@ -109,7 +110,8 @@ describe("the Galleria conversation during observation", () => {
           : advanceEncounter(state, state.revision);
     }
     expect(state.activeEncounter).toBeNull();
-    expect(state.activeTourism).toEqual({ ...savedTourism, encounterIds: [encounter] });
+    expect(state.activeTourism).toEqual(savedTourism);
+    expect(state.occasion?.started).toEqual([encounter]);
     expect(state.completedEncounterIds.filter((id) => id === encounter)).toHaveLength(1);
     expect(state.ap).toBe(ap + 1);
     expect(state.claimedRewardIds).toEqual([...rewards, "victory_galleria_first"]);

@@ -5,7 +5,8 @@ import { Icon } from "./icons";
 import "./held-items.css";
 
 /** `iconPath`: the item's own icon from its catalog entry; a generic icon otherwise. */
-export type HeldItem = { id: string; name: string; description: string; iconPath?: string };
+/** `origin`: for an item carried from an earlier city, where it came from (「デリーから持ってきた」; the item design §2.6). */
+export type HeldItem = { id: string; name: string; description: string; iconPath?: string; origin?: string };
 
 const iconSource = (item: HeldItem) => `${import.meta.env.BASE_URL}${item.iconPath ?? DEFAULT_ITEM_ICON}`;
 
@@ -107,10 +108,10 @@ export function HeldItems({ items, onOpen }: { items: HeldItem[]; onOpen?: () =>
             }}>×</button>
           </div>
           {single
-            ? <p>{single.description}</p>
+            ? <><p>{single.description}</p>{single.origin && <p className="held-item-origin">{single.origin}</p>}</>
             : <ul className="held-item-list">{items.map((item) => <li key={item.id}>
               <img src={iconSource(item)} alt="" />
-              <div><strong>{item.name}</strong><p>{item.description}</p></div>
+              <div><strong>{item.name}</strong><p>{item.description}</p>{item.origin && <p className="held-item-origin">{item.origin}</p>}</div>
             </li>)}</ul>}
         </div>
       </>}

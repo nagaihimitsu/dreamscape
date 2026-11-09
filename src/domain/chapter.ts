@@ -1,3 +1,5 @@
+import { applyDoneEffects } from "./scene-effects";
+import { mainScene } from "./reservations";
 import {
   battles,
   landmarks,
@@ -10,6 +12,7 @@ import {
 } from "../content";
 import { getJourneyForCity } from "../content/journeys";
 import { openLandmarkVisit } from "./tourism";
+import { advanceRunningOccasion } from "./occasion-hooks";
 import { getActiveBattleContent, leaveBattle, startBattle, startVisitBattle } from "./battle";
 import { canReadCityEpilogue } from "./epilogue";
 import { earnRewards } from "./rewards";
@@ -198,12 +201,14 @@ export function getBattleResultExits(state: GameState): { epilogue: boolean; lea
  * The screen's 「自由時間へ戻る／進む」 is leaveBattleToFreeTime (encounter.ts), which then meets the
  * encounters after a landmark's main part.
  */
-export function leaveBattleResult(state: GameState, expectedRevision: number): GameState {
+export function leaveBattleResult(state: GameState, expectedRevision: number, nextRoll?: () => number): GameState {
   const active = state.activeBattle;
   if (!active || active.phase !== "result" || state.activeTourism) return state;
-  return getActiveBattleContent(active).battle.reasoning
+  const left = getActiveBattleContent(active).battle.reasoning
     ? leaveBattle(state, expectedRevision)
     : enterFreeTime(state, expectedRevision);
+  // The battle (its result screen included) is one part of its occasion: what follows runs now (stage 3b).
+  return left === state ? state : advanceRunningOccasion(left, nextRoll);
 }
 
 export function isRewardEarned(state: GameState, rule: RewardRule): boolean {
@@ -290,9 +295,11 @@ export function recordGuideRead(
   state: GameState,
   landmarkId: string,
 ): GameState {
-  const next = state.completedGuideIds.includes(landmarkId)
-    ? state
-    : { ...state, completedGuideIds: [...state.completedGuideIds, landmarkId] };
+  const first = !state.completedGuideIds.includes(landmarkId);
+  let next = first ? { ...state, completedGuideIds: [...state.completedGuideIds, landmarkId] } : state;
+  // The guide's main # on_done: (its knot head or its file's head): the first time it is read to its end (decision 37).
+  const doneScene = first ? mainScene({ guide: landmarkId }) : undefined;
+  if (doneScene) next = applyDoneEffects(next, doneScene.id, doneScene.done, next.revision);
   const ids = allRewardRules
     .filter(
       (rule) =>

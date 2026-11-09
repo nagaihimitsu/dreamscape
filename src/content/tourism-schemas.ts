@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { japaneseText as japanese } from "./text-language";
+import { storyAddressSchema } from "./story-address";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const text = z.string().trim().min(1);
@@ -95,10 +96,16 @@ export const landmarkSchema = z
     descriptionJa: japanese,
     imageAssetId: id,
     /** The landmark's guide (Ink); without it the visit has no guide and no guide AP (stage 2b, decision 26). */
-    guideStoryId: z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/).optional(),
+    guideStoryId: storyAddressSchema.optional(),
     battleId: id,
     /** false: the visit has no observation (stage 2b). Without a guide either, the battle starts on arrival. */
     observation: z.boolean().optional(),
+    /**
+     * The order of the visit's main parts (stage 3b, 3.9 (b)): each part the landmark has, once
+     * (`guide` with a guideStoryId, `observe` unless observation is false, and `battle`); content:build
+     * checks it. Without it: guide, observe, battle.
+     */
+    order: z.array(z.enum(["guide", "observe", "battle"])).min(1).optional(),
     clueIds: uniqueIds,
   })
   .strict();
@@ -114,6 +121,24 @@ export const tourismCatalogSchema = z
 
 /** Whether a visit of the landmark has an observation (it has unless `observation: false`). */
 export const hasObservation = (landmark: { observation?: boolean }) => landmark.observation !== false;
+export type VisitPart = "guide" | "observe" | "battle";
+/** The main parts a visit of the landmark has, in its order (`order`, else guide, observe, battle). */
+export function landmarkParts(landmark: { guideStoryId?: string; observation?: boolean; order?: readonly VisitPart[] }): VisitPart[] {
+  const has = (part: VisitPart) => part === "battle" || (part === "guide" ? !!landmark.guideStoryId : hasObservation(landmark));
+  return (landmark.order ?? ["guide", "observe", "battle"]).filter(has);
+}
+/** The problem with a landmark's `order`, if any: a part it does not have, one it has left out, or one written twice (A2). */
+export function landmarkOrderError(landmark: { id: string; guideStoryId?: string; observation?: boolean; order?: readonly VisitPart[] }): string | undefined {
+  if (!landmark.order) return undefined;
+  const has = (part: VisitPart) => part === "battle" || (part === "guide" ? !!landmark.guideStoryId : hasObservation(landmark));
+  const parts: VisitPart[] = ["guide", "observe", "battle"];
+  const missing = parts.filter((part) => has(part) && !landmark.order!.includes(part));
+  const extra = landmark.order.filter((part) => !has(part));
+  const twice = landmark.order.filter((part, index) => landmark.order!.indexOf(part) !== index);
+  if (!missing.length && !extra.length && !twice.length) return undefined;
+  return `The order of ${landmark.id} lists each part the landmark has once (guide with a guideStoryId, observe unless observation is false, battle)` +
+    `${missing.length ? `; missing: ${missing.join(", ")}` : ""}${extra.length ? `; not at this landmark: ${extra.join(", ")}` : ""}${twice.length ? `; twice: ${twice.join(", ")}` : ""}`;
+}
 
 /** An observation-only clue: no quiz question depends on it (empty relatedQuestionIds). */
 export function isObservationOnlyClue(clue: { relatedQuestionIds: readonly string[] }): boolean {

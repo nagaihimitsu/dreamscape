@@ -67,7 +67,7 @@ Debugの進行・学習記録・設定はメモリ内だけで、通常の保存
 
 都市内の4観光地は好きな順に訪問できます。すべてを完了すると都市ボスが解放され、成績にかかわらず都市クリアとなります。ボス後のエピローグを読み終えると、デリーからアーグラ、アーグラからジャイプールへ自動で進みます。デートは任意なので、体験したいものはエピローグ読了前に選んでください。最終都市ではクリア後も滞在できます。都市間の地図・交通費・移動時間は設けません。
 
-都市間では予算・AP・関係値・思い出・履歴を維持し、新都市の滞在先で1日目9:00から再開します。都市固有の品物は持ち越さず、入手・使用履歴は残ります。現行の脚本の設計は [インド編改稿の設計](authoring/journeys/golden_triangle/drafts/SCENARIO_REWRITE.md)、旧稿の脚本・出典・検証方法は [インド編の制作記録](authoring/journeys/golden_triangle/drafts/scenario/README.md)、追加・編集手順は [旅行編共通の制作手順](authoring/JOURNEY_AUTHORING.md) を参照してください。
+都市間では予算・AP・関係値・思い出・履歴を維持し、新都市の滞在先で1日目9:00から再開します。都市固有の品物は持ち越さず（旅の間持ち歩く品物 `"carry": "journey"` だけは持ち越します）、入手・使用履歴は残ります。現行の脚本の設計は [インド編改稿の設計](authoring/journeys/golden_triangle/drafts/SCENARIO_REWRITE.md)、旧稿の脚本・出典・検証方法は [インド編の制作記録](authoring/journeys/golden_triangle/drafts/scenario/README.md)、追加・編集手順は [旅行編共通の制作手順](authoring/JOURNEY_AUTHORING.md) を参照してください。
 
 ここでいう実装済み・`available` は、このソースでのビルド登録状態です。サイトへの反映は別途GitHub Pagesへのデプロイが必要です。
 
@@ -90,7 +90,7 @@ APの獲得量は案内の読了やクイズの成績により変わります。
 
 ガッレリアでは、通常戦での2問以上の正解と、親子との会話の完了が同じ1APの代替条件です。どちらを先に達成しても、同じ報酬は一度だけ受け取れます。すでに受け取った報酬は重複しません。
 
-所持上限は**12AP**。上限を超える統合報酬は「保留中のAP」として保存し、空きができてから受け取れます。デートでAPを使った際も、保留分を自動で受け取ります。報酬IDと残額を別々に保存し、リロード・連打・再戦による重複や取りこぼしを防ぎます。
+所持上限は**12AP**。上限を超える統合報酬と、場面の札（Inkの `ap`）で得たAPの上限を超える分は「保留中のAP」として保存し、空きができてから受け取れます。デートや場面の札でAPを使った際も、保留分を自動で受け取ります。報酬IDと残額を別々に保存し、リロード・連打・再戦による重複や取りこぼしを防ぎます。
 
 報酬IDは一度だけ適用し、都市クリア報酬は個別のIDで管理します。
 
@@ -286,7 +286,7 @@ npm run test:saves
 | ------------------------------------------------ | -------------------------------------------------------------------- |
 | `<旅行編>/stories/**/*.ink`                      | 会話、選択肢、リアクション、タグ                                     |
 | `<旅行編>/romance/date_catalog.json`             | 種別、表示文、AP費用、必要章・履歴、シナリオ参照、選択回数・検証条件 |
-| `<旅行編>/romance/effect_catalog.json`           | 好感度差分、思い出ID、告白結果（accepted/deferred）。共通デート効果は `<共通>` |
+| `<旅行編>/romance/effect_catalog.json` | 好感度差分、思い出ID、告白結果（accepted/deferred）。共通デート効果は `<共通>`。新しい台本は、Inkの選択肢の札にも書ける |
 | `<共通>/romance/progression.json`                | 4段階の閾値・必要履歴・敬称、告白成立条件（思い出の引用は `<旅行編>`） |
 | `<旅行編>/romance/presentation.json`             | 背景・思い出。表情・エンディングの文章と既定背景は `<共通>` |
 | `<共通>/romance/balance.json`                    | AP上限・既定名・名前長                                               |
@@ -367,13 +367,13 @@ Inkには `battle_scene`（catalogのシーン名）、`answer_correct`（直前
 
 ### エピソード・報酬の編集
 
-`content/journeys/<旅行編ID>/progression/journey.json` の `episodes` が観光地・バトル・解放条件を結びます。各都市の最初のエピソードは前提なしで始まり、旅行開始時の選択を限定しません。`requiredEpisodeIds` の循環や参照切れを検証します。通常観光は `kind: "episode"`。都市ボスは `kind: "city_finale"`、`landmarkId: null` の独立したフィナーレです。ミラノでは同都市の4観光地と2つの特殊戦、インドでは各都市の4観光地が前提です（`when` を書かないときの決まり：`requiredEpisodeIds` のエピソードと、その都市の特殊戦をすべて終える）。エピソード・特殊戦・フィナーレには、地図に出る条件 `when`（全部・どれか・いくつ以上。バトルの数・お金・品物・恋愛の値など）も書けます。`when` を書くときは `requiredEpisodeIds` を空にします。架空の5番目の観光地を作りません。
+`content/journeys/<旅行編ID>/progression/journey.json` の `episodes` が観光地・バトル・解放条件を結びます。各都市の最初のエピソードは前提なしで始まり、旅行開始時の選択を限定しません。`requiredEpisodeIds` の循環や参照切れを検証します。通常観光は `kind: "episode"`。都市ボスは `kind: "city_finale"`、`landmarkId: null` の独立したフィナーレです。ミラノでは同都市の4観光地と2つの特殊戦、インドでは各都市の4観光地が前提です（`when` を書かないときの決まり：`requiredEpisodeIds` のエピソードと、その都市の特殊戦をすべて終える）。エピソード・特殊戦・フィナーレには、地図に出る条件 `when`（全部・どれか・いくつ以上。バトルの数・お金・品物・恋愛の値など）も書けます。`when` を書くときは `requiredEpisodeIds` を空にします。バトル・デートの knot の頭に `# when:` を書くと、ビルドが同じ `when` に変えます（JSON と両方に書くと止まります）。架空の5番目の観光地を作りません。
 
 都市ボスのバトル・クイズも `scope: "city_finale"` と都市IDを指定し、`landmarkId: null` にします。クイズは5問、中間シーンは4つ。通常戦の3問・中間2つは維持します。得点上限・ラウンド・結果・保存の整合性は、登録された問題数に照らして判定します。
 
 報酬の条件は `guide_read` / `battle_complete` / `battle_score` / `episode_clear` / `city_clear`。対象は通常の `episodeId` または特殊戦の `battleId` のどちらか一方を指定します。特殊戦の `episode_clear` はその対決の初完了を条件とし、観光エピソード数や都市のクリア条件は増やしません。`minScore` は好成績報酬だけに指定します。特殊戦の既存 `completionReward` は `battle_complete` として共通の報酬処理で扱います。IDは保存に使うため、公開後に変更しないでください。ミラノの `firstClearReward`（`chapter_milano_first_clear`、4AP）は『最後の晩餐』の `episode_clear` 報酬で、都市クリアのIDとは別です。章末の短い地の文はこのJSON、人物の台詞はInkに置きます。
 
-フィナーレの `epilogueStoryId` は都市ごとに設定します（ミラノは `epilogues/milano`）。Inkに名前・呼称・`romance_stage`・`ending_reached` を渡し、恋愛効果や選択肢は許可しません。デート間の固定順序はなく、実体験だけを思い出として参照します。都市クリアと交際状態は別々に記録します。
+フィナーレの `epilogueStoryId` は都市ごとに設定します（ミラノは `epilogues/milano`）。Inkに名前・呼称・`romance_stage`・`ending_reached` を渡します。デートの恋愛効果（`# effect:`）は使いませんが、日本語の選択肢と効果の札（関係値・お金・APなど）は書けます（ゲームが自分で始めるエピローグでは、お金やAPを減らす `on_done:` は書けません）。デート間の固定順序はなく、実体験だけを思い出として参照します。都市クリアと交際状態は別々に記録します。
 
 ## 実装とセーブ
 

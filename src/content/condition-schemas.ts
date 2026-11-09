@@ -67,6 +67,14 @@ export type LeafValues = {
   romanceStage: { atLeast?: number; atMost?: number };
   /** The confession was accepted (the two are a couple). Stage 2a. */
   couple: true;
+  /** The AP that can be spent: the AP less the AP kept back for a main part (stored AP not counted). Stage 3a. */
+  ap: { atLeast?: number; atMost?: number };
+  /** A story flag (progression/story.json) was set by a scene's `# set:`; flags never clear. Stage 3a. */
+  flag: string;
+  /** A scene with the person in its `# person:` was seen (any ending, 「また今度」 included; decision 42). Stage 3a. */
+  met: string;
+  /** A named condition of progression/story.json holds. Stage 3a. */
+  condition: string;
 };
 export type LeafKind = keyof LeafValues;
 export type Leaf = { [K in LeafKind]: { [P in K]: LeafValues[K] } }[LeafKind];
@@ -102,11 +110,15 @@ const LEAF_VALUE_SCHEMAS: { [K in LeafKind]: z.ZodType<LeafValues[K]> } = {
   money: ordered(z.object({ atLeast: z.number().int().min(0).optional(), atMost: z.number().int().min(0).optional() }).strict()),
   romanceStage: ordered(z.object({ atLeast: z.number().int().min(1).max(4).optional(), atMost: z.number().int().min(1).max(4).optional() }).strict()),
   couple: z.literal(true),
+  ap: ordered(z.object({ atLeast: z.number().int().min(0).optional(), atMost: z.number().int().min(0).optional() }).strict()),
+  flag: id,
+  met: id,
+  condition: id,
 };
 export const LEAF_KINDS = Object.keys(LEAF_VALUE_SCHEMAS) as LeafKind[];
 const COMBINATORS = ["all", "any", "not", "atLeast"] as const;
 /** Parts planned for later stages of the condition system (docs: the unified event design's condition table). */
-const LATER_PARTS: Record<string, number> = { ap: 3, met: 3, flag: 3, condition: 3 };
+const LATER_PARTS: Record<string, number> = {};
 
 type Issue = { message: string; path: (string | number)[] };
 const isObject = (value: unknown): value is Record<string, unknown> =>
@@ -212,7 +224,7 @@ export function requiredLeaves(condition: Condition): Leaf[] {
 }
 
 export type LeafReference = {
-  kind: "episode" | "city" | "battle" | "landmark" | "encounter" | "date" | "item" | "mode";
+  kind: "episode" | "city" | "battle" | "landmark" | "encounter" | "date" | "item" | "mode" | "flag" | "person" | "condition";
   id: string;
 };
 /** What a leaf names (situational leaves such as time and days name nothing). */
@@ -231,5 +243,8 @@ export function leafReference(leaf: Leaf): LeafReference | undefined {
   if ("rides" in leaf) return { kind: "mode", id: leaf.rides.mode };
   if ("rented" in leaf) return { kind: "mode", id: leaf.rented };
   if ("battlesPlayed" in leaf) return { kind: "city", id: leaf.battlesPlayed.city };
+  if ("flag" in leaf) return { kind: "flag", id: leaf.flag };
+  if ("met" in leaf) return { kind: "person", id: leaf.met };
+  if ("condition" in leaf) return { kind: "condition", id: leaf.condition };
   return undefined;
 }

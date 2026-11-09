@@ -18,6 +18,7 @@ import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useSceneTap } from "../../components/useSceneTap";
 import { CityArrivalLogo } from "./CityArrivalLogo";
+import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
 
 export function EpilogueScreen({
   game,
@@ -26,6 +27,8 @@ export function EpilogueScreen({
   autoAdvanceEnabled = false,
   onAdvance,
   onLogoComplete,
+  choices = [],
+  onChoose,
 }: {
   game: GameState;
   speed: number;
@@ -34,6 +37,9 @@ export function EpilogueScreen({
   autoAdvanceEnabled?: boolean;
   onAdvance: () => void;
   onLogoComplete?: () => void;
+  /** The shown choices of the open choice point (stage 3a; hidden ones are left out by the caller). */
+  choices?: SceneChoiceView[];
+  onChoose?: (index: number) => void;
 }) {
   const active = game.activeEpilogue!;
   const arrival = active.kind === "arrival";
@@ -65,12 +71,12 @@ export function EpilogueScreen({
   };
   const autoAdvance = useAutoAdvance({
     ready,
-    canAdvance: !frame.ended && !showLogo && !windowVisibility.hidden,
+    canAdvance: !frame.ended && !frame.choices.length && !showLogo && !windowVisibility.hidden,
     text: frame.text,
     onAdvance: advanceSafely,
     defaultEnabled: autoAdvanceEnabled,
   });
-  const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: false, windowHidden: windowVisibility.hidden });
+  const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: frame.choices.length > 0, windowHidden: windowVisibility.hidden });
   useEffect(() => {
     document
       .getElementById("city-epilogue-screen")
@@ -117,6 +123,7 @@ export function EpilogueScreen({
             onReady={onReady}
             onAdvance={advanceSafely}
           />
+          {frame.choices.length > 0 && onChoose && <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="epilogue-choice" />}
           {frame.ended && <button
             className="next"
             disabled={!ready}

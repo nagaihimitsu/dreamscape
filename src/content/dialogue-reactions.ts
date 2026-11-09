@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { storyFileOf } from "./story-address";
 
 /** Named display assets only; these do not change the story or game state. */
 export const REACTION_MARKS = [
@@ -42,7 +43,7 @@ export function resolveDialogueReaction(
   frame: { text: string; speaker: "narrator" | "heroine" | "player" | "enemy"; emotionExplicit?: boolean; reactions?: Partial<Record<ReactionTarget, DialogueReaction>> },
   targetCharacterId: ReactionTarget,
 ): DialogueReaction | undefined {
-  const found = catalog.entries.find((entry) => entry.storyId === storyId && entry.speaker === frame.speaker && entry.text === frame.text && entry.targetCharacterId === targetCharacterId);
+  const found = catalog.entries.find((entry) => entry.storyId === storyFileOf(storyId) && entry.speaker === frame.speaker && entry.text === frame.text && entry.targetCharacterId === targetCharacterId);
   const authored = frame.reactions?.[targetCharacterId];
   if (!found && !authored) return undefined;
   // The speaker's explicit Ink emotion outranks old text-keyed expressions;

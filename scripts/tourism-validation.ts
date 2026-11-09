@@ -26,6 +26,8 @@ export function validateTourism(
   observeForStory?: (storyId: string) => DialogueObserver,
   /** How messages name a story's Ink file (its real path). */
   storyLabel: (storyId: string) => string = (storyId) => `${storyId}.ink`,
+  /** A guide content:build walks as a scene instead (a place file's knot, or a guide with choices; stage 3a): counted, not walked here. */
+  walkedAsScene: (guideStoryId: string) => boolean = () => false,
 ): number {
   unique(
     catalog.landmarks.map((item) => item.id),
@@ -60,6 +62,7 @@ export function validateTourism(
     // A landmark without a guide (stage 2b) has no guide to check.
     const guideStoryId = landmark.guideStoryId;
     if (!guideStoryId) continue;
+    if (walkedAsScene(guideStoryId)) { guideCount++; continue; }
     const compiled = stories[guideStoryId];
     if (!compiled)
       throw new Error(`Unknown tourism guideStoryId: ${guideStoryId}`);

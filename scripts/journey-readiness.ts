@@ -1,3 +1,4 @@
+import { splitStoryAddress, STORY_ADDRESS_PATTERN } from "../src/content/story-address";
 import { isDeepStrictEqual } from "node:util";
 import { z } from "zod";
 import { citySchema, battleCatalogSchema, dateCatalogSchema, presentationSchema, quizSchema } from "../src/content/schemas";
@@ -217,7 +218,13 @@ export function journeyReadinessInput(sources: ContentSources, journeyId: string
     destinations: parseCatalog(sources, dateDestinationsSchema, "romance/date_destinations.json").destinations,
     battles: parseCatalog(sources, battleCatalogSchema, "battles/catalog.json").battles,
     translations: parseCatalog(sources, learningCatalogSchema, "learning/translations.json").questions,
-    storyExists: (id) => /^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/.test(id) && storyIds.has(id),
+    // A place file's knot (stage 3a): its file exists and has the knot (=== name ===).
+    storyExists: (id) => {
+      const { storyId, path: knot } = splitStoryAddress(id);
+      if (!STORY_ADDRESS_PATTERN.test(id) || !storyIds.has(storyId)) return false;
+      const source = sources.storyFiles.find((story) => story.id === storyId)!.source;
+      return knot === undefined || new RegExp(`^\\s*={2,}\\s*${knot.split(".")[0]}\\b`, "mu").test(source);
+    },
     assetExists: (assetPath) => servedFile(sources.publicFiles, assetPath) !== undefined };
 }
 

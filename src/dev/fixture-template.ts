@@ -10,6 +10,7 @@
  * otherwise. Candidates: the sample journey when it is loaded (npm run
  * dev:sample, unit tests), then the available journeys in manifest order.
  */
+import { placeSceneById } from "../domain/scene-effects";
 import type {
   BattleDefinition, CityContent, DateDefinition, DateDestination, EpisodeDefinition, LandmarkDefinition,
   StoryBattle, TourismClue,
@@ -118,10 +119,14 @@ function templateOf(content: DebugTemplateContent, journey: Journey, cityId: str
     return battle && landmark && battle.reasoning && ownClues(battle.reasoning.caseClueIds) ? [{ storyBattle, battle, landmark }] : [];
   })[0];
   // A plain encounter that gives an item of this city: no quiz, no AP alternative, no item needed to choose.
+  // A place file's encounter (stage 3a) gives its item by # on_done: item and needs nothing by # give:/# use:/# requires:.
   const encounter = content.encounters.encounters.flatMap((event) => {
-    const item = event.cityId === cityId && !event.quiz && !event.alternativeApRewardId &&
-      event.options.every((option) => !option.requiresItemId && !option.consumeItemId && !option.giftItemId)
-      ? content.encounters.items.find((entry) => entry.id === event.completionItemId && entry.cityId === cityId) : undefined;
+    const place = placeSceneById(event.id);
+    const plain = place ? place.kind === "encounter" && place.options.every((option) => !option.give && !option.use && !option.requires)
+      : event.options.every((option) => !option.requiresItemId && !option.consumeItemId && !option.giftItemId);
+    const itemId = place ? place.done.items?.[0] : event.completionItemId;
+    const item = event.cityId === cityId && !event.quiz && !event.alternativeApRewardId && plain
+      ? content.encounters.items.find((entry) => entry.id === itemId && entry.cityId === cityId) : undefined;
     return item ? [{ encounter: event, item }] : [];
   })[0];
   const date = content.dates.flatMap((entry) => {

@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+import type { GameState } from "../domain/game";
 import type { KeyedStorage } from "../persistence/old-data";
 
 export const browserStorage = {
@@ -17,5 +19,7 @@ export type AppProps = {
   storage?: typeof browserStorage;
   nextRomanceRoll?: () => number;
   debug?: boolean;
+  /** Debug sessions only (src/dev/DebugMode.tsx): an author's panel over the game (the candidate table, 4.8). */
+  debugPanel?: (state: GameState) => ReactNode;
 };
 

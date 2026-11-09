@@ -225,7 +225,7 @@ describe("tourism content contract", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow("(landmark last_supper): Missing tourism guide variable: player_address");
   });
 
-  it("forbids rewards and choices in tourism guides, and accepts English prose", async () => {
+  it("forbids Ink effects in tourism guides, accepts choices (stage 3a, walked as a scene) and English prose", async () => {
     const original = await readFile(path.join(fixture, guidePath), "utf8");
     await writeFile(
       path.join(fixture, guidePath),
@@ -241,9 +241,7 @@ describe("tourism content contract", () => {
       path.join(fixture, guidePath),
       original.replace("-> END", "* [選ぶ]\n    次へ。\n-> END"),
     );
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Tourism guide cannot contain choices",
-    );
+    await expect(buildContent(fixture, false)).resolves.toBeDefined();
     await writeFile(
       path.join(fixture, guidePath),
       original.replace("-> END", "Look at this painting.\n-> END"),

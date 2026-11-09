@@ -1,9 +1,9 @@
+import { mainPartPayments } from "./reservations";
 import { battles, dates, episodes, getCityContent } from "../content";
-import { getBattleAvailability, startBattle, startVisitBattle } from "./battle";
-import { getEpisodeAvailability, isEpisodeUnlocked, isStoryBattleUnlocked, startEpisode } from "./chapter";
-import { getDateAvailability, isDateUnlockedForTravel, isEventVisible, startDate, type GameState } from "./game";
-import { hasPendingPlaceEncounter, startBeforeVisitEncounter } from "./encounter";
-import { openLandmarkVisit } from "./tourism";
+import { getBattleAvailability, startBattle } from "./battle";
+import { getEpisodeAvailability, isEpisodeUnlocked, isStoryBattleUnlocked } from "./chapter";
+import { getDateAvailability, isDateUnlockedForTravel, isEventVisible, type GameState } from "./game";
+import { openEventOccasion } from "./occasion";
 import { canReturnByDayEnd, DAY_END, getGameWeekday, planOvernight, planTravelEvent } from "./travel";
 import { compareRouteCost, findTravelHomeRoutes, type HomeRoute } from "./travel-routes";
 import type { TravelEvent, TravelRoute } from "../content/travel-schemas";
@@ -120,8 +120,13 @@ export function getTravelEventAvailability(state: GameState, eventId: string, mo
   const returns = getTravelHomeRoutes(state, event.placeId)
     .sort(compareRouteCost);
   let reason = reasonJa.route;
+  // The main parts' payments (their # on_done: money -X, ap -N; stage 3a) are checked now and kept back during the trip.
+  const payments = mainPartPayments(state, eventId);
+  const dateAp = dates.find((item) => item.id === eventId)?.apCost ?? 0;
+  if (payments.ap && state.ap - dateAp < payments.ap) return { available: false, reason: reasonJa.ap };
   for (const returnRoute of returns) {
     const plan = planTravelEvent(snapshot(state), event, outbound, returnRoute, place);
+    if (plan.ok && plan.remainingBudget - returnRoute.cost < payments.money) { reason = reasonJa.budget; continue; }
     if (plan.ok) return { available: true, reason: "", plan: { ...plan, returnReserve: returnRoute.cost } };
     reason = plan.reason === "budget" && (event.admissionCost ?? 0) > 0
       ? "移動・入場や帰りのための予算が足りません。"
@@ -145,45 +150,30 @@ export function beginTravelEvent(state: GameState, eventId: string, mode: Travel
   if (replayBattleId && (!episode || episode.battleId !== replayBattleId || !battlePlayed(state, replayBattleId))) return state;
   const reserved = { ...moved, travel: { ...moved.travel,
     activeEvent: { eventId, placeId: event.placeId, endMinute: availability.plan.endMinute } } };
-  // Arriving at a landmark (not a replayed battle), its encounters before the main part run first;
-  // the last of them opens the main part (startTravelEventScene) from the saved trip.
+  // A replayed battle starts by itself (no occasion; its time window settles at its result as before).
+  if (replayBattleId) {
+    const started = startBattle(reserved, replayBattleId);
+    return started === reserved ? state : started;
+  }
+  // The map event's occasion (stage 3b, 4.2): its main group decided now, run to its first stop (an inserted scene before
+  // the main part, the guide, the observation, the battle or the date).
   const cleared = reserved.activeBattle?.phase === "result" ? { ...reserved, activeBattle: null, battleRewardReceipt: null } : reserved;
-  const before = replayBattleId ? cleared : startBeforeVisitEncounter(cleared, eventId, mode, nextRoll);
-  if (before !== cleared) return before;
-  const started = replayBattleId ? startBattle(reserved, replayBattleId) : startTravelEventScene(reserved, eventId, nextRoll);
-  return started === reserved ? state : started;
+  const opened = openEventOccasion(cleared, eventId, nextRoll);
+  return opened === cleared ? state : opened;
 }
 
 /**
- * Open the main part of a map event at its place (the fare and time are settled by the caller):
- * an episode's sightseeing (its finale battle), a date, or a special battle, whose first visit
- * (or a visit with an encounter waiting at its landmark) opens the landmark's observation first.
- * Returns the state unchanged when the scene cannot start.
- * Whether the episode or special battle shows on the map was checked on departing
- * (getTravelEventAvailability) and is not checked again here, after the fare, the arrival time
- * and the trip's encounters before the main part (decision 21; stage 2b): only an open scene
- * still refuses it.
+ * Open the main part of a map event at its place (the fare and time are settled by the caller),
+ * through its occasion (stage 3b; occasion.ts). Returns the state unchanged when nothing can start.
  */
 export function startTravelEventScene(state: GameState, eventId: string, nextRoll?: () => number): GameState {
-  const episode = episodes.find((item) => item.id === eventId);
-  const isDate = dates.some((date) => date.id === eventId);
-  const special = !episode && !isDate ? battles.find((battle) => battle.id === eventId && battle.landmarkId) : undefined;
-  // First visits include the same optional guide/observation as normal tourism.
-  // Later visits may still open observation for an eligible local encounter.
-  const sceneState = special && state.activeBattle?.phase === "result"
-    ? { ...state, activeBattle: null, battleRewardReceipt: null }
-    : state;
-  const observeFirst = !!special?.landmarkId &&
-    (!battlePlayed(state, special.id) ||
-      hasPendingPlaceEncounter(sceneState, special.landmarkId));
-  const started = episode ? startEpisode(state, eventId, true)
-    : isDate ? startDate(state, eventId, nextRoll)
-      : observeFirst ? openLandmarkVisit(sceneState, special!.landmarkId!, true) : startVisitBattle(state, eventId, true);
-  return started === (observeFirst ? sceneState : state) ? state : started;
+  return openEventOccasion(state, eventId, nextRoll);
 }
 
 /** Settle the saved time reservation once the current scene completes or is left. */
 export function finishTravelEventIfComplete(previous: GameState, next: GameState): GameState {
+  // An occasion settles its window when it closes (stage 3b, 4.2).
+  if (previous.occasion || next.occasion) return next;
   const active = previous.travel.activeEvent;
   if (!active || next.travel.activeEvent?.eventId !== active.eventId) return next;
   const episode = episodes.find((entry) => entry.id === active.eventId);

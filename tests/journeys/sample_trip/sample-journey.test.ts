@@ -48,7 +48,7 @@ describe("sample journey", () => {
   });
 
   it("(c) lists every file of the folder in its README, each once, as required or optional", () => {
-    expect(readme.core).toHaveLength(20);
+    expect(readme.core).toHaveLength(18);
     const listed = [...readme.core.map((item) => item.file), ...optionalFiles];
     expect(new Set(listed).size).toBe(listed.length);
     expect(listed.sort()).toEqual(sampleFiles);

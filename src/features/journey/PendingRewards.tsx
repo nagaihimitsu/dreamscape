@@ -1,6 +1,10 @@
 import { allRewardRules, balance } from "../../content";
 import type { GameState } from "../../domain/game";
-import { canClaimPendingRewards } from "../../domain/rewards";
+import { canClaimPendingRewards, pendingRuleId } from "../../domain/rewards";
+
+/** A stored AP's title: its rule's, by the ID before the @ of a scene tag's AP; a scene's AP whose rule is gone says so. */
+const pendingTitle = (rewardId: string) =>
+  allRewardRules.find((rule) => rule.id === pendingRuleId(rewardId))?.titleJa ?? (rewardId.includes("@") ? "場面で得たAP" : "");
 
 export function PendingRewards({
   game,
@@ -39,7 +43,7 @@ export function PendingRewards({
           <ul>
             {game.pendingApRewards.map((item) => (
               <li key={item.rewardId}>
-                {allRewardRules.find((rule) => rule.id === item.rewardId)?.titleJa}：
+                {pendingTitle(item.rewardId)}：
                 {item.remainingAp}AP
               </li>
             ))}
@@ -60,7 +64,7 @@ export function PendingRewards({
         <ul>
           {game.pendingApRewards.map((item) => (
             <li key={item.rewardId}>
-              {allRewardRules.find((rule) => rule.id === item.rewardId)?.titleJa}：
+              {pendingTitle(item.rewardId)}：
               {item.remainingAp}AP
             </li>
           ))}

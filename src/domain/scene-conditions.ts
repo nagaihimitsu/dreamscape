@@ -1,4 +1,5 @@
-import { battles, dates, episodes, getCityContent, landmarks, sceneConditions } from "../content";
+import { battles, dates, episodes, getCityContent, landmarks, sceneConditions, scenes } from "../content";
+import { splitStoryAddress } from "../content/story-address";
 import { meets } from "./conditions";
 import type { GameState } from "./game-state-schema";
 
@@ -42,7 +43,11 @@ export function activeSceneStoryId(state: Readonly<GameState>): string | null {
 
 /** Each `cond("…")` text of the story, with whether it holds in `state` (for Debug mode; empty for a story without any). */
 export function sceneConditionTruths(state: Readonly<GameState>, storyId = activeSceneStoryId(state)): { text: string; met: boolean }[] {
-  if (!storyId || !Object.hasOwn(sceneConditions.stories, storyId)) return [];
+  if (!storyId) return [];
+  // A place file's scene reads the texts of its own knots (generated/scenes.json), not the whole file's.
+  const { storyId: file, path } = splitStoryAddress(storyId);
+  const scene = path === undefined ? undefined : scenes.find((item) => item.story.storyId === file && item.story.knot === path.split(".")[0]);
+  const texts = scene ? scene.conds : Object.hasOwn(sceneConditions.stories, file) ? sceneConditions.stories[file] : [];
   const read = sceneConditionReader(state);
-  return sceneConditions.stories[storyId].map((text) => ({ text, met: read(text) }));
+  return texts.map((text) => ({ text, met: read(text) }));
 }

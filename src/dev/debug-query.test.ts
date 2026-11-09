@@ -31,10 +31,10 @@ describe("Debug launch URLs", () => {
 
   it.each([
     ["?debug&city=milano", "場面（scene）がありません。"],
-    ["?debug&scene=battle&targt=x", "URLの項目「targt」は使えません。使える項目: data, city, scene, target, progress, ap, affection, trust, spark, roll"],
+    ["?debug&scene=battle&targt=x", "URLの項目「targt」は使えません。使える項目: data, city, scene, target, progress, ap, affection, trust, spark, roll, from, prep"],
     ["?debug&scene=battle&scene=date", "URLの項目「scene」が2回以上あります。"],
     ["?debug&scene=battle&city=", "URLの項目「city」に値がありません。"],
-    ["?debug&scene=fight", "「scene=fight」は使えません。scene には tourism / battle / encounter / date / epilogue / map のどれかを書きます。"],
+    ["?debug&scene=fight", "「scene=fight」は使えません。scene には tourism / battle / encounter / date / epilogue / occasion / map のどれかを書きます。"],
     ["?debug&scene=battle&city=Milano", "「city=Milano」はIDの形ではありません"],
     ["?debug&scene=battle&target=a%20b", "「target=a b」はIDの形ではありません"],
     ["?debug&scene=battle&ap=13", "「ap=13」は使えません。ap には 0〜12 の整数を書きます。"],

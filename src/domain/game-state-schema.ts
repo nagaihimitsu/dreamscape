@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { occasionSchema } from "./occasion-state";
 import { balance } from "../content";
 import { responseProfileSchema } from "../content/schemas";
 import { storyFrameSchema } from "../story/runtime";
@@ -11,7 +12,7 @@ import { battleRewardReceiptSchema, pendingApRewardSchema } from "./rewards";
 import { activeBattleSchema, battleRecordSchema } from "./battle";
 
 /** The only saved game format this build reads; older versions are not migrated. */
-export const GAME_STATE_VERSION = 15;
+export const GAME_STATE_VERSION = 16;
 
 const uniqueStrings = z
   .array(z.string().min(1))
@@ -27,8 +28,10 @@ const romanceRollTicketSchema = z.object({
   spark: z.number().int().min(0).max(9999),
 }).strict();
 const resolvedChoiceSchema = z.object({
-  choiceIndex: z.number().int().min(0).max(2),
-  effectId: z.string().min(1),
+  choiceIndex: z.number().int().nonnegative(),
+  /** Today's date effect (`# effect:`), or the option of a date written with tags (`# option:` and `# profile:`; stage 3a). */
+  effectId: z.string().min(1).optional(),
+  optionId: z.string().min(1).optional(),
   before: relationshipValuesSchema,
   result: z.enum(["positive", "negative"]),
   chance: z.number().min(0).max(100),
@@ -48,7 +51,10 @@ const activeDateSchema = z.object({
   storyState: z.string().min(1),
   storyHash: z.string(),
   frame: storyFrameSchema,
+  /** The romance choices made (the random tickets used; the date's choiceCount at its end). */
   choiceCount: z.number().int().nonnegative(),
+  /** Every choice passed to Ink, the in-scene choices of helper knots included (the saved Ink's turn; stage 3a). */
+  turnCount: z.number().int().nonnegative(),
   step: z.number().int().positive(),
   appliedEffectIds: uniqueStrings,
   pendingOutcome: z.enum(["accepted", "deferred", "rejected"]).nullable(),
@@ -129,7 +135,8 @@ export const gameStateSchema = z.object({
   // Every encounter finished, with any choice (「また今度」 included); completedEncounterIds is a subset.
   seenEncounterIds: uniqueStrings,
   // The encounter and option that gave away or used each gifted/used item, written with its inventory status.
-  itemUses: z.record(stableContentId, z.object({ encounterId: stableContentId, optionId: stableContentId }).strict()),
+  // A scene's `# on_done: use` records the scene without an option (stage 3a); the field keeps its name.
+  itemUses: z.record(stableContentId, z.object({ encounterId: stableContentId, optionId: stableContentId.optional() }).strict()),
   // The authored story state of the common condition system (stage 3: lines → reached step, permanent flags,
   // declared in progression/story.json and written by encounter effects). None is declared yet, so it stays empty.
   storyProgress: z.object({ lines: z.record(stableContentId, stableContentId), flags: uniqueStrings }).strict(),
@@ -139,6 +146,8 @@ export const gameStateSchema = z.object({
     won: z.boolean(),
   }).strict()),
   activeEncounter: activeEncounterSchema.nullable(),
+  // The moment record (stage 3b): the visit, finale or date running now, with its main group and position.
+  occasion: occasionSchema.nullable(),
   // The tour system's records (tour design §5.3): the tour booked or running, and the tours finished in this journey.
   // No tour exists yet, so only the empty values load; stage 2a widens both without a new save version.
   tour: z.null(),
@@ -149,7 +158,16 @@ export const gameStateSchema = z.object({
 export type GameState = z.infer<typeof gameStateSchema>;
 export type ActiveDate = NonNullable<GameState["activeDate"]>;
 
-/** A scene is in progress: a map event, a date, a battle, a tourism scene, an encounter or an epilogue. */
+/** A scene is in progress: a map event, a date, a battle, a tourism scene, an encounter, an epilogue or a moment. */
 export function hasActiveScene(state: GameState): boolean {
-  return !!(state.travel.activeEvent || state.activeDate || state.activeBattle || state.activeTourism || state.activeEncounter || state.activeEpilogue);
+  return !!(state.travel.activeEvent || isSceneOpen(state));
+}
+
+/**
+ * Whether a scene is open (4.1): any of the scene fields, or the moment record. Every watcher that
+ * starts something by itself (the city's automatic epilogue and departure, the entries of 4.2)
+ * does nothing while this holds.
+ */
+export function isSceneOpen(state: Pick<GameState, "activeDate" | "activeBattle" | "activeTourism" | "activeEncounter" | "activeEpilogue" | "occasion">): boolean {
+  return !!(state.activeDate || state.activeBattle || state.activeTourism || state.activeEncounter || state.activeEpilogue || state.occasion);
 }

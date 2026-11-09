@@ -27,14 +27,14 @@ describe("location-based encounters", () => {
       expect(result.error?.issues.map((issue) => issue.message)).toEqual(['Encounters written in JSON are met while observing: at must be ["observe"] (place an encounter elsewhere with the head tags of its Ink)']);
     }
     // The head tags' place at the landmark's visit (content:build writes it): a non-zero priority or "after observe", without `at`.
-    for (const priority of [-2, 1, "after observe"])
+    for (const priority of [-2, 1, "after observe", "after guide", "after battle"])
       expect(encounterEntryRulesSchema.safeParse({ schemaVersion: 2, entries: [{ encounterId: "duomo_string", priority }] }).success, String(priority)).toBe(true);
-    for (const priority of [0, 1.5, "after battle"])
+    for (const priority of [0, 1.5, "after date"])
       expect(encounterEntryRulesSchema.safeParse({ schemaVersion: 2, entries: [{ encounterId: "duomo_string", priority }] }).success, String(priority)).toBe(false);
     expect(encounterEntryRulesSchema.safeParse({ schemaVersion: 2, entries: [{ ...duomo, priority: -1 }] }).error?.issues[0].message)
       .toBe("An entry rule has either at or priority");
-    expect(encounterEntryRulesSchema.safeParse({ schemaVersion: 2, entries: [{ ...duomo, when: { flag: "x" } }] }).error?.issues[0].message)
-      .toBe('Condition part "flag" is not available yet (stage 3)');
+    expect(encounterEntryRulesSchema.safeParse({ schemaVersion: 2, entries: [{ ...duomo, when: { spell: "x" } }] }).error?.issues[0].message)
+      .toBe("Unknown condition part: spell");
     // Version 1 and its fields are refused.
     expect(encounterEntryRulesSchema.safeParse({ ...rules, schemaVersion: 1 }).success).toBe(false);
     for (const old of [{ landmarkId: "duomo_milano" }, { storyId: "encounters/milano_duomo_string" }, { completedEpisodeId: "milano_duomo_episode" }, { completedStoryBattleId: "milano_la_scala_b01" }])

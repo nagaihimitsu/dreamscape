@@ -177,27 +177,33 @@ test("the sample journey plays from a new journey through its city finale and ep
   await playUntil(page, (state) => state.activeTourism?.phase === "exploring", { source, pick });
   await expect(page.getByTestId("observation-viewport")).toBeVisible();
 
-  // 2. The normal battle and its rewards: going on from the observation, no encounter waits there now.
+  // 2. Going on from the observation, the talk placed after observe (the place file's knot) runs and goes back to the
+  // observation; then the normal battle and its rewards.
+  await page.getByTestId("observation-proceed").click();
+  await expect(page.getByTestId("encounter-screen")).toBeVisible();
+  await playUntil(page, (state) => !state.activeEncounter && state.activeTourism?.phase === "exploring", { source, pick });
   await page.getByTestId("observation-proceed").click();
   const result = await playBattleToResult(page, pick);
   expect(result.completedEpisodeIds).toEqual([route.episode.id]);
   expect(result.ap).toBeGreaterThan(0);
   // (Optional part) 「自由時間へ」 meets the gift encounter after the main part (priority +1, while the
-  // bookmark is held): the bookmark is given (AGENTS.md: an item is gained, given and used in its own city).
+  // bookmark is held): the bookmark is given (AGENTS.md: an item is gained, given and used in its own city). Then the
+  // bell (+2): its first choice spends an AP (# ap: -1).
   await page.getByRole("button", { name: "自由時間へ進む", exact: true }).click();
   await expect(page.getByTestId("encounter-screen")).toBeVisible();
   const met = await playUntil(page, (state) => !state.activeEncounter, { source, pick });
-  expect(met.completedEncounterIds).toEqual(route.encounterIds);
+  expect([...met.completedEncounterIds].sort()).toEqual([...route.encounterIds].sort());
   for (const itemId of route.itemIds) expect(met.inventory[itemId], itemId).toBe("gifted");
+  expect(met.ap).toBe(result.ap - 1);
   await expect(menu).toBeVisible();
-  await expect(page.getByLabel(`残り${result.ap}AP`)).toBeVisible();
+  await expect(page.getByLabel(`残り${met.ap}AP`)).toBeVisible();
 
   // 3. The date: its AP is spent once when it starts, and it ends on the map (docs/07 acceptance 3, 4).
   await goToPlace(page, route, route.date.placeId);
   await expect(page.getByTestId("romance-scene")).toBeVisible();
   const dating = await readSave(page, JOURNEY);
   expect(dating.activeDate?.dateId).toBe(route.date.id);
-  expect(dating.ap).toBe(result.ap - route.date.apCost);
+  expect(dating.ap).toBe(met.ap - route.date.apCost);
   const dated = await playUntil(page, (state) => !state.activeDate, { source, pick });
   await expect(menu).toBeVisible();
   expect(dated.playedDateIds).toEqual([route.date.id]);

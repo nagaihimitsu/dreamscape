@@ -27,6 +27,10 @@ const EXAMPLES: Record<(typeof LEAF_KINDS)[number], Leaf> = {
   money: { money: { atLeast: 0 } },
   romanceStage: { romanceStage: { atMost: 4 } },
   couple: { couple: true },
+  ap: { ap: { atLeast: 2 } },
+  flag: { flag: "a_flag" },
+  met: { met: "a_person" },
+  condition: { condition: "a_condition" },
 };
 const messages = (value: unknown) => conditionIssues(value).map((issue) => issue.message);
 
@@ -44,11 +48,12 @@ describe("condition schema", () => {
     expect(conditionSchema.parse(nested)).toEqual(nested);
   });
 
-  it("refuses unknown parts, naming the stage of a later one", () => {
-    expect(messages({ flag: "x" })).toEqual(['Condition part "flag" is not available yet (stage 3)']);
-    expect(messages({ ap: { atLeast: 2 } })).toEqual(['Condition part "ap" is not available yet (stage 3)']);
+  it("refuses unknown parts (stage 3a reads every planned part)", () => {
+    // Stage 3a reads flags and the AP that can be spent.
+    expect(messages({ flag: "x" })).toEqual([]);
+    expect(messages({ ap: { atLeast: 2 } })).toEqual([]);
     expect(messages({ all: [{ placeVisited: "x" }] })).toEqual(["Unknown condition part: placeVisited"]);
-    expect(conditionIssues({ all: [EXAMPLES.time, { met: "x" }] })[0].path).toEqual(["all", 1, "met"]);
+    expect(conditionIssues({ all: [EXAMPLES.time, { met: "X" }] })[0].path).toEqual(["all", 1, "met"]);
   });
 
   it("refuses nodes without exactly one key, empty lists and out-of-range counts", () => {

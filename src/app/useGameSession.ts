@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createGame, type GameState } from "../domain/game";
 import { advanceCompletedJourneyCity } from "../domain/city-travel";
-import { startCityArrival } from "../domain/epilogue";
+import { openOccasion } from "../domain/occasion";
 import { applyPlayerAction } from "../domain/player-action";
 import { deleteSaveData, loadGame, saveGame, type StorageLike } from "../persistence";
 import { checkDeleteRequest, type DeleteSnapshot } from "./save-deletion";
@@ -76,7 +76,8 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
   }
   function begin(player: string, heroine: string, journeyId: string) {
     const initial = createGame(player.trim(), heroine.trim(), { journeyId });
-    const next = startCityArrival(initial, initial.revision);
+    // The new journey's arrival opens through the same entry as the others (4.2).
+    const next = openOccasion(initial, { kind: "arrive" }, initial.revision);
     if (!adoptBaseline(writeNewGame(storage, next, loaded, autoSave))) return;
     adopt(next);
     setInvalid("");
