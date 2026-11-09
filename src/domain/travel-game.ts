@@ -96,7 +96,8 @@ export function getTravelSleepOptions(state: GameState) {
   return routes.map((route) => ({ route, plan: planOvernight(current, route, travelSettings.lodgingCost, allowLateReturn) }));
 }
 
-const reasonJa: Record<string, string> = {
+/** Why a departure cannot be made (the map's reasons; a `# then: move` reads the same). */
+export const reasonJa: Record<string, string> = {
   invalid: "旅行の状態を確認できません。", closed: "到着する時間には、この出来事を始められません。",
   closed_day: "今日は休館日です。",
   time: "今日はホテルへの帰路を含めると時間が足りません。", budget: "移動や帰りのための予算が足りません。",

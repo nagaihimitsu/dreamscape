@@ -539,6 +539,32 @@ describe("a then: at a trip's moment (2.3, 3.6, 4.1)", () => {
     expect(helped.occasion?.then).toMatchObject({ move: MARKET });
   });
 
+  it("checks a then: move's time like a map departure: a main part there that would end past the day does not open (4.2)", () => {
+    // The way home of 「休む」 from the market: a once-only scene whose head moves on to the library (its special battle, 40 minutes).
+    firstRide([{ trip: "walk", to: "mihon_hotel" }]);
+    patch(scene("smp_mihon_first_bicycle"), { then: { move: "mihon_library" } });
+    const ready = afterTower();
+    const restAt = (minute: number) => restore(applyPlayerAction(at(ready, MARKET, minute),
+      (current) => sleepAtHotel(current, "walk", current.revision, undefined, () => 0), () => 0));
+    // 20:00: the library's battle fits the day (20:06–20:46, home by 20:53); the scene runs and its then: is decided.
+    const early = restAt(20 * 60);
+    expect(early.activeEncounter?.encounterId).toBe("smp_mihon_first_bicycle");
+    expect(early.occasion?.then).toMatchObject({ move: "mihon_library", eventId: "smp_mihon_special_c_library" });
+    const visit = playUntil(early, (state) => state.travel.currentPlaceId === "mihon_library" && !state.activeEncounter);
+    expect(visit.travel.activeEvent?.endMinute).toBe(20 * 60 + 46);
+    expect(saveGame(new MemoryStorage(), visit).ok).toBe(true);
+    // 21:00 and 21:30: the map would not depart (the day is over): the scene does not show, the night comes; every step saves.
+    for (const minute of [21 * 60, 21 * 60 + 30]) {
+      const late = restAt(minute);
+      expect(late.occasion?.started ?? []).not.toContain("smp_mihon_first_bicycle");
+      expect(saveGame(new MemoryStorage(), late).ok).toBe(true);
+      // (The hotel's own scenes, the bell night, run before it.)
+      const morning = playUntil(late, (state) => state.travel.day === 2);
+      expect(morning.travel.currentPlaceId).toBe("mihon_hotel");
+      expect(morning.seenEncounterIds).not.toContain("smp_mihon_first_bicycle");
+    }
+  });
+
   it("names why a then: epilogue from the trip's start cannot keep a fare home: no way home, or none in time", () => {
     firstRide([{ trip: "walk", from: "mihon_library" }], { epilogue: true });
     const reason = (state: GameState) => {
