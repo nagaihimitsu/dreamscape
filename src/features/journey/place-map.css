@@ -79,7 +79,7 @@ dialog.modal.travel-map-modal {
 }
 dialog.modal.travel-map-modal[open] { display: flex; flex-direction: column; }
 .travel-map-modal-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
-.travel-map-modal-map { position: sticky; z-index: 1; top: 0; padding-bottom: 6px; background: var(--paper, #fff); isolation: isolate; }
+.travel-map-modal-map { position: sticky; z-index: 1; top: 0; padding-bottom: 6px; background: var(--ds-parchment); isolation: isolate; }
 .travel-map-modal-body > .travel-map-legend { margin-top: 2px; }
 .travel-map-selection { margin-top: 8px; padding: 0 0 4px; touch-action: manipulation; }
 .travel-map-selection h3 { margin: 0 0 4px; font-size: 15px; }

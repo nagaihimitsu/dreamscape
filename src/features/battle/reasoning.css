@@ -6,9 +6,9 @@
   margin: 8px 0 16px;
 }
 .reasoning-claim {
-  background: #eef0e6;
+  background: var(--ds-parchment-2);
   padding: 12px 15px;
-  border-radius: 10px;
+  border-radius: 12px;
 }
 .reasoning-claim .fine-print {
   margin: 0 0 5px;
@@ -41,8 +41,8 @@
 .selected-evidence {
   margin: 16px 0;
   padding: 14px;
-  border: 1px dashed #acb5a5;
-  border-radius: 10px;
+  border: 1px dashed var(--ds-ink-muted);
+  border-radius: 12px;
 }
 .selected-evidence p {
   margin: 0;
@@ -75,7 +75,7 @@
 .reasoning-ready {
   font-size: 0.85rem;
   line-height: 1.8;
-  color: #4f675b;
+  color: var(--ds-here);
 }
 .special-entry-heading {
   margin: 28px 0 8px;
@@ -85,8 +85,8 @@
   line-height: 1.8;
   font-size: 0.9rem;
   padding: 14px;
-  border-radius: 10px;
-  background: #edf0e6;
+  border-radius: 12px;
+  background: var(--ds-parchment-2);
 }
 
 /* Keep the claim and reasoning actions together on a phone. Long claims or

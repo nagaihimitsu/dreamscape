@@ -35,6 +35,7 @@
   --ds-focus: #ffd27a; /* focus ring, with a --ds-slate-900 halo */
   --ds-disabled-bg: #e6dfd2;
   --ds-disabled-ink: #5c544a;
+  --ds-field-edge: #8f7c66; /* text fields and selects: 3.6:1 on --ds-parchment */
   --ds-gold-hairline: rgba(201, 163, 95, 0.7); /* --ds-gold at 70 %: the edge of pressables on slate */
   --ds-on-slate-pill: rgba(255, 255, 255, 0.08); /* status pills on the header's own slate band (free time) */
   --ds-photo-shade: rgba(20, 24, 32, 0.55); /* top of the gradient behind the header over a photo (§2.4) */
@@ -69,13 +70,15 @@ button:disabled {
   opacity: 0.45;
   cursor: default;
 }
+/* The two-tone focus ring of the redesign (§2.1): visible on slate, on parchment and over photos. */
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 select:focus-visible,
 summary:focus-visible {
-  outline: 3px solid #ba8f4d;
-  outline-offset: 4px;
+  outline: 3px solid var(--ds-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px var(--ds-slate-900);
 }
 /* The game's main area takes the focus only as a starting point (after a
    switch or 再試行, or the brand link); it is not a control to outline. */
@@ -156,9 +159,6 @@ h3 {
   color: var(--muted);
   letter-spacing: 0.12em;
 }
-.records-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.records-heading h2 { margin: 0 0 10px; }
-.records-heading button { width: auto; min-height: 44px; padding: 8px 12px; }
 /* 旅の記録's header line: the couple's names (as text, never HTML) and 交際中. */
 .records-travelers { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin: 0 0 12px; font-size: 15px; overflow-wrap: anywhere; }
 .records-relationship { padding: 2px 10px; border-radius: 999px; background: var(--ds-parchment-2); color: var(--ds-ink); font-size: 12px; white-space: nowrap; }
@@ -191,12 +191,15 @@ h3 {
 .canal-scene.compact {
   height: 245px;
 }
+/* The art's caption: a display-only pill over the picture (§2.3, §2.4). */
 .scene-stamp {
   position: absolute;
   bottom: 18px;
   left: 30px;
-  color: #f9f4e7;
-  background: #29483ddd;
+  color: var(--ds-on-slate);
+  background: var(--ds-chip-bg);
+  border-radius: 999px;
+  box-shadow: var(--ds-pill-shadow);
   font-size: 10px;
   padding: 5px 12px;
   letter-spacing: 0.16em;
@@ -209,17 +212,44 @@ h3 {
 .eyebrow {
   font-size: 11px;
   letter-spacing: 0.2em;
-  color: var(--gold);
+  /* Small text on paper or parchment: the muted ink (6.0:1), never the gold (§2.1). */
+  color: var(--ds-ink-muted);
   font-weight: 500;
 }
 .lead {
   font-size: 14px;
   line-height: 2.1;
-  color: #656b60;
+  color: var(--ds-ink-muted);
   margin-bottom: 27px;
 }
 .intro {
   padding-top: 36px;
+}
+/* The title card (UI redesign stage 2.2): parchment with its hairline, rising over the
+   journey's title art with rounded top corners; its width and padding are the page's. */
+.paper.intro {
+  position: relative;
+  color: var(--ds-ink);
+  background: var(--ds-parchment);
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 16px;
+  box-shadow: var(--ds-card-shadow);
+}
+.intro-art + .paper.intro {
+  margin-top: -16px;
+}
+/* The caption stays clear of the card's rounded top. */
+.intro-art .scene-stamp {
+  transform: translateY(-16px);
+}
+@media (max-width: 719px) {
+  .paper.intro {
+    border-width: 1px 0 0;
+    border-radius: 16px 16px 0 0;
+  }
+}
+.intro h1 {
+  color: var(--ds-ink);
 }
 .name-form {
   display: grid;
@@ -231,25 +261,31 @@ h3 {
   font-size: 12px;
   letter-spacing: 0.07em;
 }
-.name-form input {
+/* Text fields (title, settings, Debug password): a light field with an edge of 3.6:1 on
+   parchment (WCAG 1.4.11), 8-px corners so it does not read as a button (§2.3). */
+.name-form input,
+.debug-mode-password input {
   width: 100%;
   min-width: 0;
   min-height: 50px;
-  background: #fffdf7;
-  border: 1px solid #c9cebf;
-  border-radius: 3px;
+  background: #fffaf1;
+  border: 1px solid var(--ds-field-edge);
+  border-radius: 8px;
   padding: 10px 15px;
-  color: #303d36;
+  color: var(--ds-ink);
   font-size: 16px;
 }
+/* Primary pressable (§2.3): a 12-px rectangle filled with slate and edged with the gold
+   hairline (drawn inside, so the box keeps its size). */
 .primary {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  background: var(--green);
-  color: #fffdf2;
-  border-radius: 3px;
+  background: var(--ds-slate-800);
+  color: var(--ds-on-slate);
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1px var(--ds-gold-hairline);
   padding: 15px 20px;
   min-height: 54px;
   width: 100%;
@@ -259,14 +295,15 @@ h3 {
   transition: background 0.15s;
 }
 .primary:hover:enabled {
-  background: #365e4f;
+  background: var(--ds-slate-900);
 }
+.primary:focus-visible { box-shadow: inset 0 0 0 1px var(--ds-gold-hairline), 0 0 0 6px var(--ds-slate-900); }
 .name-form .primary {
   margin-top: 7px;
 }
-/* The default names shown as placeholders: lighter than a typed name, still readable (about 4.6:1). */
+/* The default names shown as placeholders: lighter than a typed name, still readable (6.0:1). */
 .name-form input::placeholder {
-  color: #70756a;
+  color: var(--ds-ink-muted);
   opacity: 1;
 }
 .name-form .name-defaults {
@@ -275,7 +312,7 @@ h3 {
 }
 .fine-print {
   font-size: 11px;
-  color: #70756a;
+  color: var(--ds-ink-muted);
   line-height: 1.9;
 }
 .intro > .fine-print {
@@ -292,13 +329,14 @@ h3 {
   margin-top: 12px;
   font-size: 13px;
 }
+/* A display-only label (§2.3): a flat slate pill without an edge. */
 .pill {
   font-size: 10px;
   letter-spacing: 0.09em;
-  background: #e9eadc;
-  color: #657058;
+  background: var(--ds-slate-800);
+  color: var(--ds-on-slate);
   padding: 4px 9px;
-  border-radius: 2px;
+  border-radius: 999px;
 }
 .section-meta {
   display: flex;
@@ -371,7 +409,7 @@ footer span {
 }
 .text-button {
   background: none;
-  color: #596b59;
+  color: var(--ds-ink);
   text-decoration: underline;
   text-underline-offset: 4px;
   padding: 5px;
@@ -470,6 +508,7 @@ footer span {
 .warning {
   background: #f1e7d1;
   margin: 20px 0;
+  border-radius: 12px;
 }
 .warning p {
   margin-top: 8px;
@@ -486,15 +525,21 @@ footer span {
   overflow: auto;
   backdrop-filter: blur(4px);
 }
+/* The shared dialog frame (UI redesign stage 2.3): parchment with its hairline and 16-px
+   corners, ink text, a title bar (ModalTitle) across its top. A dialog sets its padding
+   through --modal-pad-top / --modal-pad-inline, so the title bar can reach its edges. */
 .modal {
-  background: var(--paper);
-  padding: 30px;
-  border-radius: 5px;
+  --modal-pad-top: 30px;
+  --modal-pad-inline: 30px;
+  background: var(--ds-parchment);
+  padding: var(--modal-pad-top) var(--modal-pad-inline);
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 16px;
   max-width: 440px;
   width: 100%;
   max-height: 90dvh;
   overflow: auto;
-  box-shadow: 0 18px 60px #11221b35;
+  box-shadow: var(--ds-window-shadow);
 }
 /* Opened under the finger (Modal's settlePresses): no press reaches it for a moment. */
 .modal[data-settling] { pointer-events: none; }
@@ -502,6 +547,54 @@ footer span {
   font-size: 22px;
   margin: 10px 0 20px;
 }
+/* The title bar: a display-only parchment band (no edge, §2.3) that stays at the top while
+   the dialog scrolls; the heading wraps, the close keeps its 44 px. */
+.modal-title-bar {
+  position: sticky;
+  /* Chrome and Safari hold a sticky box inside the scroller's padding: reach its edge. */
+  top: calc(-1 * var(--modal-pad-top, 0px));
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  min-height: 56px;
+  margin: calc(-1 * var(--modal-pad-top, 0px)) calc(-1 * var(--modal-pad-inline, 0px)) 16px;
+  padding: 6px 10px 6px max(16px, var(--modal-pad-inline, 0px));
+  background: var(--ds-parchment-2);
+  border-bottom: 1px solid var(--ds-parchment-line);
+}
+.modal .modal-title-bar h2 {
+  min-width: 0;
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.modal-title-text { min-width: 0; }
+.modal-title-text .eyebrow { margin: 0; line-height: 1.4; }
+/* 「閉じる」 in the title bar: a secondary pressable with the × (§2.3, §2.5), 44 px. */
+.modal-close {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: auto;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0 0 0 auto;
+  padding: 4px 12px 4px 8px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.modal-close:hover { background: var(--ds-parchment-2); }
+.modal-close .icon { width: 18px; height: 18px; }
 .modal .translation-setting {
   display: flex;
   align-items: flex-start;
@@ -516,14 +609,17 @@ footer span {
   height: 18px;
   margin: 2px 0 0;
 }
-/* The text speed select fills its 44 px row instead of the browser's ~19 px box. */
-.modal .translation-setting select { min-height: 44px; margin: -10px 0; }
+/* Checkboxes in the slate of the pressables (the native box keeps its size and focus). */
+input[type="checkbox"] { accent-color: var(--ds-slate-800); }
+/* The text speed select fills its 44 px row instead of the browser's ~19 px box (field look, stage 2.3). */
+.modal .translation-setting select { min-height: 44px; margin: -10px 0; padding: 0 8px; border: 1px solid var(--ds-field-edge); border-radius: 8px; background: #fffaf1; color: var(--ds-ink); }
 @media (max-width: 600px) {
   dialog.modal[aria-labelledby="settings-title"] {
-    padding: 18px 22px;
+    --modal-pad-top: 18px;
+    --modal-pad-inline: 22px;
   }
-  dialog.modal[aria-labelledby="settings-title"] h2 {
-    margin: 0 0 8px;
+  dialog.modal[aria-labelledby="settings-title"] .modal-title-bar {
+    margin-bottom: 8px;
   }
   dialog.modal[aria-labelledby="settings-title"] .name-form {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -545,14 +641,25 @@ footer span {
     margin-top: 4px;
   }
 }
+/* Secondary pressable (§2.3): parchment with a 1.5-px slate edge. */
 .secondary {
   width: 100%;
-  background: transparent;
-  color: var(--green);
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
   margin-top: 12px;
   font-size: 13px;
-  border: 1px solid #ccd2c1;
-  border-radius: 3px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+}
+.secondary:hover:enabled { background: var(--ds-parchment-2); }
+/* Disabled (§2.1): its own ground and ink, no edge; the reason stays in the text beside it. */
+.primary:disabled,
+.secondary:disabled {
+  opacity: 1;
+  background: var(--ds-disabled-bg);
+  color: var(--ds-disabled-ink);
+  border-color: transparent;
+  box-shadow: none;
 }
 .modal .name-form {
   margin-bottom: 20px;
@@ -623,7 +730,8 @@ footer span {
     letter-spacing: 0.12em;
   }
   .modal {
-    padding: 26px 23px;
+    --modal-pad-top: 26px;
+    --modal-pad-inline: 23px;
   }
   .modal h2 {
     font-size: 20px;
@@ -796,14 +904,13 @@ footer span {
   }
 }
 dialog.modal {
-  border: 0;
   /* Dialogs can be mounted inside the dark VN scene. Do not inherit its
-     light text onto the paper-coloured modal surface. */
-  color: #303d36;
+     light text onto the parchment of the dialog. */
+  color: var(--ds-ink);
   margin: auto;
 }
 dialog.modal::backdrop {
-  background: #1d302ad9;
+  background: rgba(20, 24, 32, 0.72);
   backdrop-filter: blur(4px);
 }
 
@@ -826,8 +933,28 @@ dialog.modal::backdrop {
   white-space: nowrap;
   border: 0;
 }
+/* 交際開始 (UI redesign stage 2.4): the title card's parchment over the place's picture. */
 .ending {
   padding-top: 42px;
+}
+.paper.ending {
+  position: relative;
+  margin-top: -16px;
+  color: var(--ds-ink);
+  background: var(--ds-parchment);
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 16px;
+  box-shadow: var(--ds-card-shadow);
+}
+/* The picture's caption stays clear of the card's rounded top. */
+.canal-scene:has(+ .paper.ending) .scene-stamp {
+  transform: translateY(-16px);
+}
+@media (max-width: 719px) {
+  .paper.ending {
+    border-width: 1px 0 0;
+    border-radius: 16px 16px 0 0;
+  }
 }
 .ending h1 {
   font-size: 28px;
@@ -844,7 +971,7 @@ dialog.modal::backdrop {
 }
 .ending-names span {
   font-family: Georgia, serif;
-  color: var(--gold);
+  color: var(--ds-ink-muted);
   font-size: 24px;
   margin: 0 10px;
 }
@@ -935,9 +1062,9 @@ dialog.modal::backdrop {
   display: flex;
   justify-content: space-between;
   gap: 15px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--ds-parchment-line);
   padding-bottom: 12px;
-  color: var(--gold);
+  color: var(--ds-ink-muted);
   font-size: 11px;
   letter-spacing: 0.08em;
 }
@@ -961,37 +1088,39 @@ dialog.modal::backdrop {
   width: 100%;
   padding: 16px;
   text-align: left;
-  border: 1px solid #cbd0c1;
-  background: #f6f5ed;
-  color: #324635;
-  border-radius: 4px;
+  border: 1px solid var(--ds-parchment-line);
+  background: #fffaf1;
+  color: var(--ds-ink);
+  border-radius: 12px;
   font-size: 16px;
   line-height: 1.65;
   overflow-wrap: anywhere;
 }
 .quiz-choice .option-id {
   font-family: Georgia, serif;
-  color: #7c866e;
+  color: var(--ds-ink-muted);
   font-size: 18px;
 }
 .quiz-choice:disabled {
   opacity: 1;
   cursor: default;
 }
+/* The chosen answer: the selected-row look (§2.3), a 2-px slate edge and the parchment fill. */
 .quiz-choice.chosen {
-  border: 2px solid #7e826a;
+  border: 2px solid var(--ds-slate-800);
   padding: 15px;
-  background: #eeeadd;
+  background: var(--ds-parchment-2);
 }
+/* The correct answer: the done colour's edge (its mark says 正解 in words). */
 .quiz-choice.correct {
-  border: 2px solid #50704e;
+  border: 2px solid var(--ds-here);
   padding: 15px;
-  background: #e9efe1;
+  background: #eef3e6;
 }
 .option-mark {
   grid-column: 2;
   font-size: 10px;
-  color: #56654b;
+  color: var(--ds-ink-muted);
   letter-spacing: 0.04em;
   min-height: 0;
 }
@@ -1001,11 +1130,11 @@ dialog.modal::backdrop {
 .vocabulary {
   margin-top: 24px;
   padding-top: 17px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--ds-parchment-line);
 }
 .vocabulary h3 {
   font-size: 11px;
-  color: var(--muted);
+  color: var(--ds-ink-muted);
   font-weight: 400;
   letter-spacing: 0.08em;
 }
@@ -1022,16 +1151,16 @@ dialog.modal::backdrop {
   align-items: baseline;
 }
 .vocabulary dt {
-  color: #39513d;
+  color: var(--ds-ink);
 }
 .vocabulary dd {
   margin: 0;
-  color: var(--muted);
+  color: var(--ds-ink-muted);
   font-size: 11px;
 }
 .hint-button {
   background: transparent;
-  color: #6b795b;
+  color: var(--ds-ink);
   font-size: 12px;
   padding: 8px 2px;
   text-decoration: underline;
@@ -1041,20 +1170,21 @@ dialog.modal::backdrop {
   font-size: 13px;
   line-height: 1.9;
   padding: 15px 18px;
-  background: #efecdf;
-  border-radius: 3px;
+  background: var(--ds-parchment-2);
+  border-radius: 12px;
   margin: 8px 0 18px;
 }
+/* The explanation: a parchment panel inside the paper; the verdict pill above says right or wrong. */
 .quiz-feedback {
   margin-top: 23px;
   padding: 20px;
-  border: 1px solid #d1c9b8;
-  background: #f1ece2;
-  border-radius: 4px;
+  border: 1px solid var(--ds-parchment-line);
+  background: var(--ds-parchment-2);
+  border-radius: 12px;
 }
 .quiz-feedback.correct-feedback {
-  background: #edf1e5;
-  border-color: #bdcbb0;
+  background: #eef3e6;
+  border-color: #b9c9ac;
 }
 .quiz-feedback h3 {
   font-size: 20px;
@@ -1094,7 +1224,7 @@ dialog.modal::backdrop {
   line-height: 1.35;
   letter-spacing: 0.03em;
   margin: 15px 0;
-  color: #405f44;
+  color: var(--ds-ink);
   overflow-wrap: anywhere;
 }
 .battle-score {
@@ -1102,7 +1232,7 @@ dialog.modal::backdrop {
   align-items: baseline;
   gap: 10px;
   margin: 20px 0;
-  color: var(--green);
+  color: var(--ds-ink);
 }
 .battle-score strong {
   font-family: Georgia, serif;
@@ -1119,21 +1249,21 @@ dialog.modal::backdrop {
   margin: 15px 0;
 }
 .answer-history li {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--ds-parchment-line);
   display: flex;
   gap: 20px;
   padding: 12px 0;
   font-size: 12px;
 }
 .correct-label {
-  color: #406e3c;
+  color: var(--ds-here);
 }
 .incorrect-label {
   color: #8a674c;
 }
 .record-summary {
   font-size: 11px;
-  color: var(--muted);
+  color: var(--ds-ink-muted);
   margin: 20px 0 25px;
 }
 .battle-screen .paused {
@@ -1259,7 +1389,7 @@ dialog.old-data[open] {
 .old-data-actions {
   flex: none;
   padding: 0 30px 22px;
-  border-top: 1px solid #ccd2c1;
+  border-top: 1px solid var(--ds-parchment-line);
 }
 /* One height for every button there, so each takes exactly the place of the one before it. */
 .old-data-actions > button {
@@ -1275,8 +1405,8 @@ dialog.old-data[open] {
 .old-data-list > li {
   padding: 10px 12px;
   margin-bottom: 10px;
-  background: #f1ede1;
-  border-radius: 4px;
+  background: var(--ds-parchment-2);
+  border-radius: 12px;
 }
 .old-data-list .translation-setting {
   align-items: center;
@@ -1305,7 +1435,7 @@ dialog.old-data .old-data-notice:focus {
   padding: 0;
   font-size: 11px;
   line-height: 1.6;
-  color: #5c6459;
+  color: var(--ds-ink-muted);
 }
 .old-data-keys li + li {
   margin-top: 4px;
@@ -1315,7 +1445,7 @@ dialog.old-data .old-data-notice:focus {
   display: block;
   overflow-wrap: anywhere;
   font-size: 11px;
-  color: #303d36;
+  color: var(--ds-ink);
 }
 .old-data-notice {
   margin: 10px 0;
@@ -1370,17 +1500,9 @@ dialog.old-data .old-data-notice:focus {
   font-size: 12px;
   letter-spacing: 0.07em;
 }
-/* 16 px text: phones do not zoom into the field. */
+/* 16 px text: phones do not zoom into the field (its look: the text fields above). */
 .debug-mode-password input {
-  width: 100%;
-  min-width: 0;
   min-height: 48px;
-  background: #fffdf7;
-  border: 1px solid #c9cebf;
-  border-radius: 3px;
-  padding: 10px 15px;
-  color: #303d36;
-  font-size: 16px;
 }
 .debug-mode-actions {
   display: grid;
@@ -1397,22 +1519,20 @@ dialog.old-data .old-data-notice:focus {
   width: 100%;
   margin-top: 12px;
   padding: 12px 16px;
-  border: 1px solid #93443c;
-  border-radius: 3px;
+  border: 1.5px solid #93443c;
+  border-radius: 12px;
   color: #873b34;
-  background: transparent;
+  background: var(--ds-parchment);
   min-height: 48px;
-}
-#delete-title + p {
-  margin: 12px 0;
 }
 
 /* A complete view of the photograph, including details hidden by portraits. */
 dialog.date-background-viewer {
+  --modal-pad-top: 16px;
+  --modal-pad-inline: 16px;
   width: min(92vw, 700px);
-  padding: 16px;
 }
-dialog.date-background-viewer h2 { margin: 0 0 8px; }
+dialog.date-background-viewer .modal-title-bar { margin-bottom: 8px; }
 dialog.date-background-viewer > img {
   display: block;
   width: 100%;

@@ -5,11 +5,12 @@
 }
 /* The guide's scene label line (SceneLabelLine) is placed from its top. */
 .tourism-screen.guide-active { position: relative; }
+/* 手がかり帳 on the page: a secondary pressable (§2.3). */
 .notebook-button {
-  color: var(--green);
-  background: #eeeee3;
-  border: 1px solid #bac5ae;
-  border-radius: 4px;
+  color: var(--ds-ink);
+  background: var(--ds-parchment);
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
   padding: 8px 18px;
   font-size: 13px;
   min-height: 48px;
@@ -43,15 +44,17 @@
   min-height: 56px;
   padding: 10px 14px;
   text-align: left;
-  border: 1px solid #d1d4c4;
-  background: #f2f1e7;
-  color: var(--green);
-  border-radius: 4px;
+  border: 1.5px solid var(--ds-slate-800);
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  border-radius: 12px;
   font-size: 13px;
 }
+/* The open point: the selected-row look (2-px slate edge, parchment fill). */
 .discovery-list button[aria-pressed="true"] {
-  border-color: var(--green);
-  background: #e6eadb;
+  border: 2px solid var(--ds-slate-800);
+  padding: 9.5px 13.5px;
+  background: var(--ds-parchment-2);
 }
 .discovery-number {
   width: 25px;
@@ -72,15 +75,15 @@
 .discovery-detail {
   margin-top: 16px;
   padding: 20px;
-  background: #f0eee2;
-  border-radius: 3px;
+  background: var(--ds-parchment-2);
+  border-radius: 12px;
 }
 .recorded-label {
   font-size: 11px;
-  color: var(--green);
+  color: var(--ds-here);
   padding-bottom: 12px;
   margin-bottom: 13px;
-  border-bottom: 1px solid #d9d9c7;
+  border-bottom: 1px solid var(--ds-parchment-line);
 }
 .observation-detail .clue-heading {
   display: flex;
@@ -93,7 +96,7 @@
   min-height: 44px;
 }
 .clue-kind {
-  color: var(--gold);
+  color: var(--ds-ink-muted);
   font-size: 10px;
   letter-spacing: 0.12em;
   margin-bottom: 5px;
@@ -121,7 +124,7 @@
 .clue-sources {
   margin-top: 14px;
   font-size: 11px;
-  color: #5e685a;
+  color: var(--ds-ink-muted);
   overflow-wrap: anywhere;
 }
 .clue-sources summary {
@@ -193,29 +196,10 @@
   background: #f0e5cb;
 }
 .modal:has(.cluebook-header) {
+  --modal-pad-top: 0px;
+  --modal-pad-inline: 0px;
   width: min(620px, calc(100vw - 24px));
   max-width: 620px;
-  padding: 0;
-  border: 1px solid #c3c8b8;
-}
-.cluebook-header {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 18px 22px 12px;
-  border-bottom: 1px solid var(--line);
-  background: var(--paper);
-}
-.cluebook-header h2 {
-  margin: 2px 0;
-}
-.cluebook-header .text-button {
-  padding: 8px;
-  flex-shrink: 0;
 }
 .cluebook-body {
   padding: 18px 22px 26px;
@@ -224,7 +208,7 @@
   padding: 20px 0;
 }
 .notebook-clue + .notebook-clue {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--ds-parchment-line);
 }
 .empty-clues {
   font-size: 14px;
@@ -253,7 +237,6 @@
     padding-left: 24px;
     padding-right: 24px;
   }
-  .cluebook-header,
   .cluebook-body {
     padding-left: 18px;
     padding-right: 18px;
@@ -373,7 +356,7 @@
     position: sticky;
     z-index: 1;
     top: 0;
-    background: #f0eee2;
+    background: var(--ds-parchment-2);
   }
   .mobile-observation-active .observation-detail .clue-kind {
     margin: 0;
@@ -409,10 +392,10 @@
     overflow-y: auto;
     overscroll-behavior: contain;
     padding: 0 16px 18px;
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    background: var(--paper);
-    box-shadow: 0 2px 18px #0004;
+    border: 1px solid var(--ds-parchment-line);
+    border-radius: 16px;
+    background: var(--ds-parchment);
+    box-shadow: var(--ds-card-shadow);
   }
   .mobile-observation-active .observation-notes[data-open="true"] { display: block; }
   .mobile-observation-active .observation-notes-header {

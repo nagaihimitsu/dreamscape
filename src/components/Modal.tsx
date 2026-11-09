@@ -1,5 +1,6 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { useSettling } from "./ConfirmActionButton";
+import { Icon } from "./icons";
 /**
  * Native modal keeps keyboard focus inside and the underlying page inert.
  *
@@ -82,5 +83,32 @@ export function Modal({
     >
       {children}
     </dialog>
+  );
+}
+
+/**
+ * The shared frame's title bar (UI redesign stage 2.3): the dialog's heading on a parchment
+ * band at the top. A dialog whose close was at its top passes `onClose` and gets the 44-px
+ * 「閉じる」 there; a dialog whose close sits at its foot keeps it there (within thumb reach,
+ * and clear of the header's controls under the top of the dialog).
+ */
+export function ModalTitle({ id, children, eyebrow, onClose, closeTestId, className = "" }: {
+  id: string;
+  children: ReactNode;
+  eyebrow?: ReactNode;
+  onClose?: () => void;
+  closeTestId?: string;
+  className?: string;
+}) {
+  const heading = <h2 id={id}>{children}</h2>;
+  return (
+    <div className={`modal-title-bar ${className}`.trim()}>
+      {eyebrow ? <div className="modal-title-text"><p className="eyebrow">{eyebrow}</p>{heading}</div> : heading}
+      {onClose && (
+        <button type="button" className="modal-close" data-testid={closeTestId} onClick={onClose}>
+          <Icon name="close" />閉じる
+        </button>
+      )}
+    </div>
   );
 }

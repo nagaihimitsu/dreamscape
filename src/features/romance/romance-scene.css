@@ -7,8 +7,9 @@
   --vn-window-radius: 22px;
   --vn-body-size: 18px;
   --vn-window-padding: clamp(12px, 2.5vw, 24px);
-  --vn-choice-bg: rgba(255, 255, 255, .08);
-  --vn-choice-border: rgba(255, 255, 255, .42);
+  /* A choice in the window: a pressable on slate (§2.3), gold hairline (UI redesign stage 2.4). */
+  --vn-choice-bg: var(--ds-slate-800);
+  --vn-choice-border: var(--ds-gold-hairline);
   /* The window's head (the speaker's plate and the controls) straddles the window's
      top edge by this much, half a control, whatever the plate holds (decision H). */
   --vn-head-overhang: 22px;
@@ -175,11 +176,20 @@
   color: var(--vn-text);
   background: var(--vn-choice-bg);
   border: 1px solid var(--vn-choice-border);
-  border-radius: 10px;
+  border-radius: 12px;
 }
-.vn-dialogue .choice:hover:enabled, .vn-dialogue .choice:focus-visible { background: rgba(255,255,255,.18); }
-.vn-dialogue .choice-number { color: var(--vn-muted); }
-.vn-dialogue .primary { background: #dfe9db; color: #1e382f; }
+/* The trailing chevron of a pressable row (§2.3), drawn in the gold of the icons. */
+.vn-dialogue .choice::after {
+  content: "›" / "";
+  flex: none;
+  margin-left: auto;
+  color: var(--ds-gold);
+  font-size: 20px;
+  line-height: 1;
+}
+.vn-dialogue .choice:hover:enabled, .vn-dialogue .choice:focus-visible { background: var(--ds-slate-900); }
+.vn-dialogue .choice-number { color: var(--ds-gold); }
+.vn-dialogue .choice:disabled { opacity: 1; color: var(--ds-on-slate-muted); background: rgba(255, 255, 255, .06); border-color: transparent; }
 .vn-dialogue .paused { color: var(--vn-text); }
 .vn-dialogue h1 { font-size: 18px; margin: 2px 0 8px; color: var(--vn-text); }
 

@@ -8,25 +8,36 @@
   pointer-events: auto;
   animation: travel-transition-overlay 1.8s ease both;
 }
+/* The little scene in the dialogs' frame (UI redesign stage 2.3): a parchment mount with its
+   hairline and 16-px corners; the caption is a display-only parchment pill (§2.3). */
 .travel-transition-scene {
   position: relative;
   overflow: hidden;
   width: min(230px, 68vw);
   height: 112px;
-  border-radius: 12px;
+  border: 4px solid var(--ds-parchment);
+  border-radius: 16px;
   background: linear-gradient(#c7e0dd, #eef1df 78%);
-  box-shadow: 0 5px 22px #1f302c44;
+  box-shadow: 0 0 0 1px var(--ds-parchment-line), var(--ds-window-shadow);
 }
 .travel-transition-label {
   position: absolute;
   z-index: 3;
-  top: 10px;
-  inset-inline: 4px;
-  color: #294f41;
+  top: 6px;
+  left: 50%;
+  max-width: calc(100% - 12px);
+  transform: translateX(-50%);
+  padding: 2px 12px;
+  border-radius: 999px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  box-shadow: var(--ds-pill-shadow);
   font-size: 14px;
   font-weight: 700;
+  line-height: 1.5;
   letter-spacing: .06em;
   text-align: center;
+  width: max-content;
 }
 .travel-transition-hill {
   position: absolute;

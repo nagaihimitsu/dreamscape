@@ -13,8 +13,8 @@
 .travel-choice-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .travel-choice-header h3 { margin: 0; font-size: 16px; }
 .travel-choice-header button { min-height: 44px; }
-dialog.modal.travel-choice-modal { width: min(400px, calc(100% - 24px)); max-height: calc(100dvh - 24px); padding: 16px; }
-.travel-choice-modal .travel-choice-header h2 { margin: 0; font-size: 18px; }
+dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16px; width: min(400px, calc(100% - 24px)); max-height: calc(100dvh - 24px); }
+.travel-choice-modal .modal-title-bar { margin-bottom: 8px; }
 .travel-choice-modal .travel-choice-header button { flex: 0 0 auto; width: auto; min-height: 44px; padding: 8px 12px; white-space: nowrap; }
 .travel-choice-modal p { margin: 8px 0; font-size: 13px; line-height: 1.45; }
 .travel-choice-routes { display: grid; gap: 3px; }

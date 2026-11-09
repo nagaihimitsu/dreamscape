@@ -3,7 +3,7 @@ import { getCityContent } from "../../content";
 import { formatMoneyForCity } from "../../content/currency";
 import { getJourneyForCity } from "../../content/journeys";
 import { getTransportMode } from "../../content/transport";
-import { Modal } from "../../components/Modal";
+import { Modal, ModalTitle } from "../../components/Modal";
 import type { GameState } from "../../domain/game";
 import { getRentalOffers } from "../../domain/transport";
 
@@ -25,7 +25,7 @@ export function TravelRentals({ game, onRent }: { game: GameState; onRent: (mode
       {offers.map((choice) => choice.mode.nameJa).join("・")}を借りる
     </button>}
     {open && <Modal labelledBy="travel-rent-title" className="travel-choice-modal" onClose={() => setOpen(false)}>
-      <div className="travel-choice-header"><h2 id="travel-rent-title">乗り物を借りる</h2><button type="button" className="secondary" onClick={() => setOpen(false)}>閉じる</button></div>
+      <ModalTitle id="travel-rent-title" onClose={() => setOpen(false)}>乗り物を借りる</ModalTitle>
       <p>借りると、{city.nameJa}にいるあいだ乗れます。次の街へ出発するときに返します。料金はゲーム内の目安です。{forTwo && "料金は2人分です。"}</p>
       <div className="travel-choice-routes">{offers.map((choice) => <div key={choice.offer.modeId}>
         <button type="button" className="secondary travel-route" data-testid={`travel-rent-${choice.offer.modeId}`} disabled={!choice.available}

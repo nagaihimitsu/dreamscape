@@ -29,7 +29,7 @@ import { CanalScene } from "../components/CanalScene";
 import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
 import { RomanceScene } from "../features/romance/RomanceScene";
-import { Modal } from "../components/Modal";
+import { Modal, ModalTitle } from "../components/Modal";
 import { ConfirmActionButton } from "../components/ConfirmActionButton";
 import { withNames } from "../features/romance/names";
 import { BattleScreen } from "../features/battle/BattleScreen";
@@ -648,7 +648,7 @@ export function GameApp({
         Dreamscape <span>·</span> 旅の余白に、ふたりの物語。
       </footer>
       {confirmDeparture && game && departure && <Modal labelledBy="departure-title" onClose={() => setConfirmDeparture(false)}>
-        <h2 id="departure-title">{departure.city.nameJa}へ出発</h2>
+        <ModalTitle id="departure-title">{departure.city.nameJa}へ出発</ModalTitle>
         <p>次の街へ進みます。今の街の未使用アイテムは持って行けません。{game.travel.rentedModeIds.length > 0 &&
           `借りている${game.travel.rentedModeIds.map((modeId) => getTransportMode(game.currentCityId, modeId)?.nameJa ?? modeId).join("・")}は返します。`}</p>
         <button type="button" className="primary" onClick={() => {
@@ -657,7 +657,7 @@ export function GameApp({
         <button type="button" className="secondary" onClick={() => setConfirmDeparture(false)}>この街に残る</button>
       </Modal>}
       {recordsOpen && game && <Modal labelledBy="city-records-title" onClose={() => setRecordsOpen(false)}>
-        <div className="records-heading"><h2 id="city-records-title">旅の記録</h2><button type="button" className="secondary" onClick={() => setRecordsOpen(false)}>閉じる</button></div>
+        <ModalTitle id="city-records-title" onClose={() => setRecordsOpen(false)}>旅の記録</ModalTitle>
         <p className="records-travelers">
           <span data-testid="travelers">{game.playerName}<span className="amp"> と </span>{game.heroineName}</span>
           {game.endingReached && <span className="records-relationship">交際中</span>}
@@ -724,7 +724,7 @@ export function GameApp({
       )}
       {confirmLoad && (
         <Modal labelledBy="load-title" onClose={() => setConfirmLoad(false)} settlePresses>
-          <h2 id="load-title">保存した場面を読み込みますか？</h2>
+          <ModalTitle id="load-title">保存した場面を読み込みますか？</ModalTitle>
           <p>まだ保存していない進行は失われます。</p>
           <button className="secondary" autoFocus onClick={() => setConfirmLoad(false)}>戻る</button>
           <button className="primary" onClick={() => { setConfirmLoad(false); loadSavedGame(); }}>ロードする</button>
@@ -735,7 +735,7 @@ export function GameApp({
           labelledBy="delete-title"
           onClose={() => setDeleteSnapshot(null)}
         >
-          <h2 id="delete-title">{isDebug ? "Debug用の一時データを消去しますか？" : "保存データを消去しますか？"}</h2>
+          <ModalTitle id="delete-title">{isDebug ? "Debug用の一時データを消去しますか？" : "保存データを消去しますか？"}</ModalTitle>
           {isDebug ? <p>Debug用の進行と英語ノートを消去して、Debugで開いた場面を最初から開き直します。通常のセーブ・英語ノート・表示設定は消去しません。</p> : <><p>
             このブラウザに保存された名前、旅の進行、AP、恋愛・バトルの記録、英語ノートと対訳設定を消去します。元には戻せません。
           </p>
@@ -765,7 +765,7 @@ export function GameApp({
       )}
       {switchJourneyTo && (
         <Modal labelledBy="switch-journey-title" onClose={() => setSwitchJourneyTo(null)}>
-          <h2 id="switch-journey-title">旅行編を切り替える</h2>
+          <ModalTitle id="switch-journey-title">旅行編を切り替える</ModalTitle>
           <p>手動セーブしていない進行は失われます。切り替えますか？</p>
           <button className="primary" onClick={() => onSwitchJourney?.(switchJourneyTo)}>切り替える</button>
           <button className="secondary" autoFocus onClick={() => setSwitchJourneyTo(null)}>戻る</button>
@@ -773,7 +773,7 @@ export function GameApp({
       )}
       {settings && game && (
         <Modal labelledBy="settings-title" onClose={() => setSettings(false)} settlePresses>
-          <h2 id="settings-title">ゲームの設定</h2>
+          <ModalTitle id="settings-title">ゲームの設定</ModalTitle>
           {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} />}
           <label className="translation-setting">
             <input type="checkbox" checked={displaySettings.value.autoSave} disabled={!!displaySettings.error}

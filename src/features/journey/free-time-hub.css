@@ -155,9 +155,8 @@
   font-weight: 600;
 }
 .free-time-credits-open .icon { width: 18px; height: 18px; }
-dialog.modal.photo-credits-modal { width: min(560px, calc(100% - 24px)); max-height: calc(100dvh - 24px); padding: 16px; }
-.photo-credits-modal .travel-choice-header h2 { margin: 0; font-size: 18px; }
-.photo-credits-modal .travel-choice-header button { flex: none; width: auto; min-height: 44px; margin: 0; padding: 8px 12px; }
+dialog.modal.photo-credits-modal { --modal-pad-top: 16px; --modal-pad-inline: 16px; width: min(560px, calc(100% - 24px)); max-height: calc(100dvh - 24px); }
+.photo-credits-modal .modal-title-bar { margin-bottom: 8px; }
 .photo-credits-list { display: grid; gap: 12px; margin: 8px 0 0; padding: 0; list-style: none; }
 .photo-credits-list li { display: flex; gap: 12px; align-items: flex-start; padding-top: 12px; border-top: 1px solid var(--ds-parchment-line); }
 .photo-credits-list img { flex: none; width: 96px; height: 64px; border-radius: 6px; object-fit: cover; }

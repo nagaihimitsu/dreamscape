@@ -8,10 +8,12 @@ dialog.modal.clue-notebook {
   padding: 0;
   overflow: hidden;
 }
+/* The notebook's title bar (ModalTitle): a fixed row of the notebook's column. */
 .clue-notebook .cluebook-header {
   position: static;
   flex-shrink: 0;
-  padding: 6px 20px;
+  margin: 0;
+  padding: 6px 10px 6px 20px;
 }
 .clue-notebook .cluebook-header h2 {
   font-size: 20px;
@@ -21,14 +23,14 @@ dialog.modal.clue-notebook {
 .case-context {
   flex-shrink: 0;
   padding: 6px 20px;
-  background: #e9eddf;
-  border-bottom: 1px solid #c4cdb5;
+  background: var(--ds-parchment-2);
+  border-bottom: 1px solid var(--ds-parchment-line);
   max-height: 28dvh;
   overflow: auto;
   overscroll-behavior: contain;
 }
 .case-context-label {
-  color: var(--green);
+  color: var(--ds-ink-muted);
   font-size: 10px;
   letter-spacing: .08em;
   margin-bottom: 4px;
@@ -60,29 +62,35 @@ dialog.modal.clue-notebook {
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  border-bottom: 1px solid var(--line);
-  background: var(--paper);
+  border-bottom: 1px solid var(--ds-parchment-line);
+  background: var(--ds-parchment);
 }
 .clue-picker { flex: 1; min-width: 0; }
 .clue-picker select {
   width: 100%;
   min-height: 44px;
   padding: 6px 8px;
-  border: 1px solid #a8b397;
-  border-radius: 4px;
-  background: #fffdf7;
-  color: var(--green);
+  border: 1px solid var(--ds-field-edge);
+  border-radius: 8px;
+  background: #fffaf1;
+  color: var(--ds-ink);
   font-size: 14px;
 }
 .clue-page-button {
   flex: none;
   min-height: 44px;
   padding: 6px 10px;
-  border: 1px solid #bac5ae;
-  border-radius: 4px;
-  background: #eeeee3;
-  color: var(--green);
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
   font-size: 13px;
+}
+.clue-page-button:disabled {
+  opacity: 1;
+  border-color: transparent;
+  background: var(--ds-disabled-bg);
+  color: var(--ds-disabled-ink);
 }
 .clue-notebook .notebook-clue { padding: 0; }
 .clue-notebook .notebook-clue .case-provenance,
@@ -93,32 +101,34 @@ dialog.modal.clue-notebook {
 .clue-notebook .clue-sources { display: inline-block; vertical-align: top; margin: 0; }
 .clue-notebook .clue-sources[open] { display: block; width: 100%; }
 .clue-notebook .clue-sources > summary { min-height: 44px; }
+/* Display-only labels of a clue: pills (§2.3). */
 .case-provenance {
   display: inline-block;
   padding: 3px 8px;
   margin-bottom: 10px;
   font-size: 11px;
-  background: #e8ebdf;
-  color: var(--green);
-  border-radius: 3px;
+  background: var(--ds-parchment-2);
+  color: var(--ds-ink);
+  border-radius: 999px;
 }
 .case-selected .case-provenance {
-  background: #dce8cf;
+  background: #e6eedb;
 }
+/* Choosing a clue as evidence: a secondary pressable; chosen = the selected-row look. */
 .case-select {
   width: 100%;
   min-height: 48px;
   margin: 0;
   padding: 10px 12px;
-  border: 1px solid #a8b397;
-  border-radius: 3px;
-  background: #f2f3e9;
-  color: var(--green);
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
   font-size: 13px;
 }
 .case-select[aria-pressed="true"] {
-  border: 2px solid var(--green);
-  background: #e1ead6;
+  border: 2px solid var(--ds-slate-800);
+  background: var(--ds-parchment-2);
   font-weight: 600;
 }
 .case-select:disabled {
@@ -167,22 +177,22 @@ dialog.modal.clue-notebook {
 }
 .case-image .fine-print,
 .clue-image-unavailable { margin: 4px 0 0; font-size: 11px; line-height: 1.4; }
-.case-image-credits { color: var(--muted); font-size: 11px; line-height: 1.6; }
-.case-image-credits a { color: var(--green); min-height: 44px; padding: 12px 8px 8px 0; }
+.case-image-credits { color: var(--ds-ink-muted); font-size: 11px; line-height: 1.6; }
+.case-image-credits a { color: var(--ds-ink); min-height: 44px; padding: 12px 8px 8px 0; }
 .case-footer {
   flex-shrink: 0;
   padding: 6px 20px max(8px, env(safe-area-inset-bottom));
-  background: var(--paper);
-  border-top: 1px solid var(--line);
+  background: var(--ds-parchment);
+  border-top: 1px solid var(--ds-parchment-line);
 }
 .case-footer-actions { display: flex; gap: 8px; align-items: stretch; }
 .case-footer-actions > button { flex: 1 1 0; min-width: 0; }
-.clue-footer { flex: none; padding: 8px 16px max(8px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line); }
+.clue-footer { flex: none; padding: 8px 16px max(8px, env(safe-area-inset-bottom)); border-top: 1px solid var(--ds-parchment-line); }
 .clue-footer .secondary { min-height: 44px; margin: 0; }
 .case-footer p {
   margin-bottom: 4px;
   font-size: 12px;
-  color: var(--green);
+  color: var(--ds-ink);
   line-height: 1.35;
 }
 .case-footer p span {
@@ -202,7 +212,7 @@ dialog.modal.clue-notebook {
     height: 96dvh;
     max-height: 96dvh;
     margin: auto 0 0;
-    border-radius: 14px 14px 0 0;
+    border-radius: 16px 16px 0 0;
   }
   .clue-notebook .cluebook-header,
   .case-context,
