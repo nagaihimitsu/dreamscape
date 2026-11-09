@@ -5,7 +5,7 @@ import { encounterChoiceDisplay, encounterEntryRuleList } from "../../../src/dom
 import { isJourneyComplete } from "../../../src/domain/city-travel";
 import { isAuthoredEpilogueCity } from "../../../src/domain/epilogue";
 import { dateChoiceDisplay, validateGameState, type GameState } from "../../../src/domain/game";
-import { occasionSteps } from "../../../src/domain/occasion";
+import { occasionSteps, planThen } from "../../../src/domain/occasion";
 import type { Occasion } from "../../../src/domain/occasion-state";
 import type { SceneAt, SceneThen } from "../../../src/content/scene-schemas";
 import { applyPlayerAction, listPlayerActions, playerActionChange, type PlayerAction } from "../../../src/domain/player-action";
@@ -539,30 +539,50 @@ describe("a then: at a trip's moment (2.3, 3.6, 4.1)", () => {
     expect(helped.occasion?.then).toMatchObject({ move: MARKET });
   });
 
-  it("checks a then: move's time like a map departure: a main part there that would end past the day does not open (4.2)", () => {
-    // The way home of 「休む」 from the market: a once-only scene whose head moves on to the library (its special battle, 40 minutes).
-    firstRide([{ trip: "walk", to: "mihon_hotel" }]);
-    patch(scene("smp_mihon_first_bicycle"), { then: { move: "mihon_library" } });
+  it("checks a then: move's time like a map departure: a main part that cannot fit opens no more; the visit opens without it (4.2, 2.3)", () => {
+    // The way home of 「休む」 from the market: a once-only scene whose 「このままで行こう」 moves on to the library (its special
+    // battle, 40 minutes; the walk there 6, home from there 7). 「直してもらおうか」 costs 50 (greyed with 40).
+    firstRide([{ trip: "walk", to: "mihon_hotel" }], { move: "mihon_library" });
     const ready = afterTower();
-    const restAt = (minute: number) => restore(applyPlayerAction(at(ready, MARKET, minute),
-      (current) => sleepAtHotel(current, "walk", current.revision, undefined, () => 0), () => 0));
-    // 20:00: the library's battle fits the day (20:06–20:46, home by 20:53); the scene runs and its then: is decided.
+    const restAt = (minute: number) => untilChoice(restore(applyPlayerAction(at({ ...ready, travelBudget: 40 }, MARKET, minute),
+      (current) => sleepAtHotel(current, "walk", current.revision, undefined, () => 0), () => 0)));
+    // 20:00: the library's battle fits the day (20:06–20:46, home by 20:53): it opens.
     const early = restAt(20 * 60);
-    expect(early.activeEncounter?.encounterId).toBe("smp_mihon_first_bicycle");
-    expect(early.occasion?.then).toMatchObject({ move: "mihon_library", eventId: "smp_mihon_special_c_library" });
-    const visit = playUntil(early, (state) => state.travel.currentPlaceId === "mihon_library" && !state.activeEncounter);
+    expect(shownChoice(early, "as_is")).toEqual({ show: "open" });
+    const visit = playUntil(early, (state) => state.travel.currentPlaceId === "mihon_library" && !state.activeEncounter, ["as_is"]);
+    expect(visit.occasion).toMatchObject({ eventId: "smp_mihon_special_c_library" });
     expect(visit.travel.activeEvent?.endMinute).toBe(20 * 60 + 46);
     expect(saveGame(new MemoryStorage(), visit).ok).toBe(true);
-    // 21:00 and 21:30: the map would not depart (the day is over): the scene does not show, the night comes; every step saves.
-    for (const minute of [21 * 60, 21 * 60 + 30]) {
+    // 20:15 to 21:30: the battle would end past the day: the then: still moves, and the library's visit opens without it.
+    for (const minute of [20 * 60 + 15, 20 * 60 + 30, 21 * 60, 21 * 60 + 10, 21 * 60 + 30]) {
       const late = restAt(minute);
-      expect(late.occasion?.started ?? []).not.toContain("smp_mihon_first_bicycle");
-      expect(saveGame(new MemoryStorage(), late).ok).toBe(true);
-      // (The hotel's own scenes, the bell night, run before it.)
-      const morning = playUntil(late, (state) => state.travel.day === 2);
-      expect(morning.travel.currentPlaceId).toBe("mihon_hotel");
-      expect(morning.seenEncounterIds).not.toContain("smp_mihon_first_bicycle");
+      expect(shownChoice(late, "as_is"), String(minute)).toEqual({ show: "open" });
+      const moved = playUntil(late, (state) => state.travel.currentPlaceId === "mihon_library" && !state.activeEncounter, ["as_is"]);
+      expect(moved.travel).toMatchObject({ activeEvent: null, minute: minute + 6 });
+      expect(moved.battleRecords.some((record) => record.battleId === "smp_mihon_special_c_library")).toBe(false);
+      expect(saveGame(new MemoryStorage(), moved).ok).toBe(true);
     }
+    // 20:48 to 20:53: arriving at 20:54–20:59, no way home reaches the hotel by 21:00 (the save's rule before 21:00): it cannot be
+    // chosen, and with 「直してもらおうか」 unaffordable nothing can (the only stuck spot of this content; the build stops it: A10
+    // counts no then: move as sure, build-checks.test.ts).
+    for (const minute of [20 * 60 + 48, 20 * 60 + 50, 20 * 60 + 52]) {
+      const stuck = restAt(minute);
+      expect(shownChoice(stuck, "as_is"), String(minute)).toEqual({ show: "grey", reason: "今日はホテルへの帰路を含めると時間が足りません。" });
+      expect(listPlayerActions(stuck).filter((action) => action.kind === "encounter_choose")).toEqual([]);
+    }
+    // Just outside it, the choice is open again (20:47: home by 21:00; 20:54: arriving after 21:00, the late way home).
+    for (const minute of [20 * 60 + 47, 20 * 60 + 54]) expect(shownChoice(restAt(minute), "as_is"), String(minute)).toEqual({ show: "open" });
+  });
+
+  it("reads a retry's shorter time at the place a then: move goes to, as the map does (its battle played, the episode not done)", () => {
+    // In memory: the tower's battle played, its episode not done yet (the map then gives it its retry time, 15 minutes).
+    const played = afterTower();
+    const retry = at({ ...played, completedEpisodeIds: played.completedEpisodeIds.filter((id) => id !== EPISODE) }, MARKET, 20 * 60);
+    // 20:04 at the tower, 15 minutes (not 60), home by 20:24: its main part opens.
+    expect(planThen(retry, { move: TOWER }, "x")).toMatchObject({ ok: true, plan: { eventId: EPISODE } });
+    // Not a retry: 60 minutes would end at 21:04: the visit opens without it.
+    expect(planThen({ ...played, completedEpisodeIds: [], battleRecords: [], travel: { ...retry.travel } }, { move: TOWER }, "x"))
+      .toMatchObject({ ok: true, plan: { eventId: null } });
   });
 
   it("a head then: takes what the head's money floor guaranteed: the dead choice point the build now stops (A10)", () => {
