@@ -3,6 +3,7 @@ import { displayPath, type ContentLayer, type ContentSources } from "./content-s
 import { CORE_LAYER_KINDS, type MergedKind } from "./content-layout";
 import { localIssuePath } from "./catalog-merge";
 import { servedFile } from "./public-assets";
+import { conditionLeaves, conditionSchema, leafKind, leafReference } from "../src/content/condition-schemas";
 
 // Ownership of content across layers. Every journey folder must stay
 // removable on its own: its entries describe only its own cities, and what
@@ -28,6 +29,20 @@ const isObject = (value: unknown): value is Entry => typeof value === "object" &
 const list = (value: unknown): Entry[] => (Array.isArray(value) ? value.filter(isObject) : []);
 const ref = (namespace: Reference["namespace"], field: string, ids: unknown): Reference => ({ namespace, field, ids });
 const fields = (entry: Entry, namespace: Namespace, names: string[]) => names.map((name) => ref(namespace, name, entry[name]));
+/**
+ * What a condition (src/content/condition-schemas.ts) names, field `when.episodeCompleted` and
+ * so on. A malformed condition names nothing here: its schema error follows with its own message.
+ * Transport modes are checked against the journey's manifest by condition-validation.ts.
+ */
+function conditionReferences(raw: unknown, field: string): Reference[] {
+  if (raw === undefined) return [];
+  const parsed = conditionSchema.safeParse(raw);
+  if (!parsed.success) return [];
+  return conditionLeaves(parsed.data).flatMap((leaf) => {
+    const reference = leafReference(leaf);
+    return reference && reference.kind !== "mode" ? [ref(reference.kind, `${field}.${leafKind(leaf)}`, reference.id)] : [];
+  });
+}
 
 /** References of an array element (`key`) or a record entry (`key` with `recordKey`) of a catalog. */
 const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry, recordKey: string) => Reference[]>>> = {
@@ -50,11 +65,7 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
     ],
   },
   "encounters/entry-rules.json": {
-    entries: (entry) => [
-      ...fields(entry, "encounter", ["encounterId"]), ...fields(entry, "landmark", ["landmarkId"]),
-      ...fields(entry, "episode", ["completedEpisodeId"]), ...fields(entry, "story", ["storyId"]),
-      ...fields(entry, "battle", ["completedStoryBattleId"]),
-    ],
+    entries: (entry) => [...fields(entry, "encounter", ["encounterId"]), ...conditionReferences(entry.when, "when")],
   },
   "learning/details.json": { questions: (entry, key) => [ref("question", "question ID", key), ...fields(entry, "story", ["storyId"])] },
   "learning/translations.json": { questions: (_, key) => [ref("question", "question ID", key)] },
@@ -78,10 +89,9 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
   },
   "romance/date_catalog.json": {
     dates: (entry) => [
-      ...fields(entry, "city", ["chapterId", "requiredCompletedChapters", "requiredCompletedCityIds"]),
+      ...fields(entry, "city", ["chapterId"]), ...conditionReferences(entry.when, "when"), ...conditionReferences(entry.until, "until"),
       ...fields(entry, "story", ["storyId"]), ...fields(entry, "background", ["backgroundId"]),
-      ...fields(entry, "destination", ["destinationId"]), ...fields(entry, "date", ["requiredPlayedDateIds"]),
-      ...fields(entry, "episode", ["requiredCompletedEpisodeIds", "forbiddenCompletedEpisodeIds"]),
+      ...fields(entry, "destination", ["destinationId"]),
       ...list(entry.validationContexts).flatMap((context) => fields(context, "memory", ["memoryId", "memoryIds"])),
     ],
   },

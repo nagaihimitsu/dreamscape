@@ -15,6 +15,7 @@ import { canReadCityEpilogue } from "./epilogue";
 import { earnRewards } from "./rewards";
 import { rewardBattleId, rewardLandmarkId } from "./reward-rules";
 import { encounters } from "../content/encounters";
+import { battlePlayed } from "./conditions";
 import type { GameState, Availability } from "./game";
 
 export function isEpisodeUnlocked(
@@ -28,9 +29,6 @@ export function isEpisodeUnlocked(
       state.completedEpisodeIds.includes(id),
     ) && (episode.kind !== "city_finale" || allStoryBattlesCompleted(state, episode.cityId))))
   );
-}
-function storyBattleCompleted(state: GameState, battleId: string): boolean {
-  return state.battleRecords.some((record) => record.battleId === battleId && record.attempts > 0);
 }
 
 /** The city finale is explicitly owned; normal and special battles inherit their landmark's city. */
@@ -46,7 +44,7 @@ export function storyBattlesForCity(cityId: string): StoryBattle[] {
 }
 
 function allStoryBattlesCompleted(state: GameState, cityId: string): boolean {
-  return storyBattlesForCity(cityId).every((battle) => storyBattleCompleted(state, battle.battleId));
+  return storyBattlesForCity(cityId).every((battle) => battlePlayed(state, battle.battleId));
 }
 
 export function isStoryBattleUnlocked(state: GameState, battleId: string): boolean {
@@ -59,7 +57,7 @@ export function isStoryBattleUnlocked(state: GameState, battleId: string): boole
 export function getAvailableStoryBattles(state: GameState): StoryBattle[] {
   return storyBattlesForCity(state.currentCityId).filter((battle) =>
     isStoryBattleUnlocked(state, battle.battleId) &&
-    !storyBattleCompleted(state, battle.battleId),
+    !battlePlayed(state, battle.battleId),
   );
 }
 
@@ -188,11 +186,6 @@ export function leaveBattleResult(state: GameState, expectedRevision: number): G
     : enterFreeTime(state, expectedRevision);
 }
 
-function hasCompletedBattle(state: GameState, episode: EpisodeDefinition) {
-  return state.battleRecords.some(
-    (record) => record.battleId === episode.battleId && record.attempts > 0,
-  );
-}
 export function isRewardEarned(state: GameState, rule: RewardRule): boolean {
   const episode = episodes.find((item) => item.id === rule.episodeId);
   // An optional cultural encounter may earn the very same entitlement as a
@@ -207,7 +200,7 @@ export function isRewardEarned(state: GameState, rule: RewardRule): boolean {
   }
   if (rule.trigger === "episode_clear")
     return episode ? state.completedEpisodeIds.includes(episode.id)
-      : !!rule.battleId && storyBattleCompleted(state, rule.battleId);
+      : !!rule.battleId && battlePlayed(state, rule.battleId);
   if (rule.trigger === "city_clear")
     return !!episode && state.completedCityIds.includes(episode.cityId);
   const record = state.battleRecords.find(
@@ -223,7 +216,7 @@ function recordEpisodes(state: GameState): GameState {
   const completedEpisodeIds = [...state.completedEpisodeIds];
   const completedCityIds = [...state.completedCityIds];
   for (const episode of episodes) {
-    if (!hasCompletedBattle(state, episode)) continue;
+    if (!battlePlayed(state, episode.battleId)) continue;
     if (
       episode.kind === "city_finale" &&
       (!allStoryBattlesCompleted(state, episode.cityId) || !episode.requiredEpisodeIds.every((id) =>
@@ -293,7 +286,7 @@ export function validateJourneyState(state: GameState): void {
     const episode = episodes.find((item) => item.id === id);
     if (
       !episode ||
-      !hasCompletedBattle(state, episode) ||
+      !battlePlayed(state, episode.battleId) ||
       !episode.requiredEpisodeIds.every((required) =>
         state.completedEpisodeIds.includes(required),
       ) ||
@@ -303,7 +296,7 @@ export function validateJourneyState(state: GameState): void {
   }
   for (const episode of episodes) {
     if (
-      hasCompletedBattle(state, episode) !==
+      battlePlayed(state, episode.battleId) !==
       state.completedEpisodeIds.includes(episode.id)
     )
       throw new Error("完了したバトルと観光エピソードの記録が一致しません。");

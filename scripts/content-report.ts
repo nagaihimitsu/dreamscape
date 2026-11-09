@@ -13,7 +13,7 @@ import { isObservationOnlyClue } from "../src/content/tourism-schemas";
 // warnings as counts (details with --verbose) and one line per journey.
 
 export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-prefix" | "unused-transport-mode" | "tourism-photo"
-  | "transit-walk-missing" | "transit-route-unsourced";
+  | "transit-walk-missing" | "transit-route-unsourced" | "never-offered" | "date-condition-trip";
 export type ContentWarning = { kind: ContentWarningKind; message: string };
 /** How content:build counts each kind of warning. */
 export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
@@ -24,6 +24,8 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "tourism-photo": "tourism photo(s) to convert to WebP (npm run images:optimize)",
   "transit-walk-missing": "city(ies) with a transit ledger and direction(s) without a walking route",
   "transit-route-unsourced": "city transport mode(s) with route(s) lacking a game-model estimate or a documented fact",
+  "never-offered": "encounter(s) or date(s) whose condition can never be met where it is checked",
+  "date-condition-trip": "date condition(s) reading the time or rides, which the trip to the date changes",
 };
 
 /**

@@ -6,7 +6,8 @@ import { journeyStorage } from "../../../src/persistence/journey-storage";
 import { advanceBattle, answerBattle, getActiveBattleContent } from "../../../src/domain/battle";
 import { getBattleResultExits, leaveBattleResult, startEpisode } from "../../../src/domain/chapter";
 import { advanceCompletedJourneyCity, getNextCity } from "../../../src/domain/city-travel";
-import { hasCompletedChapter, isDateUnlockedForTravel } from "../../../src/domain/date-rules";
+import { isDateUnlockedForTravel } from "../../../src/domain/date-rules";
+import { meets } from "../../../src/domain/conditions";
 import { advanceCityEpilogue, completeArrivalLogo, startCityArrival, startCityEpilogue } from "../../../src/domain/epilogue";
 import { advanceDate, chooseDate, createGame, finishDate, startDate, validateGameState, type GameState } from "../../../src/domain/game";
 import { applyPlayerAction, playerActionChange } from "../../../src/domain/player-action";
@@ -90,7 +91,7 @@ describe("authored Golden Triangle journey", () => {
         expect(state.completedCityIds).not.toContain(cityId);
         if (index === 0) {
           // A date's chapter is completed by any local main episode, not by city completion.
-          expect(hasCompletedChapter(state, cityId)).toBe(true);
+          expect(meets(state, { episodesCompleted: { city: cityId, atLeast: 1 } })).toBe(true);
           expect(ownDates.every((date) => isDateUnlockedForTravel(state, date.id))).toBe(true);
           expect(dates.filter((date) => date.chapterId !== cityId).every((date) => !isDateUnlockedForTravel(state, date.id))).toBe(true);
         }

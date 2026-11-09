@@ -50,7 +50,8 @@ export type FieldTable = { readonly [key: string]: FieldRule };
 
 /** A catalog is merged key by key (`fields`) or provided as a whole file by the core layer only (`file: "core"`). */
 export type CatalogRule =
-  | { readonly kind: string; readonly fields: FieldTable }
+  /** `schemaVersion`: the version an absent or new empty catalog of the kind gets (default 1). */
+  | { readonly kind: string; readonly fields: FieldTable; readonly schemaVersion?: number }
   | { readonly kind: string; readonly file: "core" };
 
 const same = { mode: "same" } as const;
@@ -62,7 +63,7 @@ const entries = { schemaVersion: same, entries: concat };
 export const CATALOG_RULES = [
   { kind: "battles/catalog.json", fields: { schemaVersion: same, battles: concat } },
   { kind: "encounters/catalog.json", fields: { schemaVersion: same, items: concat, encounters: concat } },
-  { kind: "encounters/entry-rules.json", fields: entries },
+  { kind: "encounters/entry-rules.json", fields: entries, schemaVersion: 2 },
   { kind: "learning/details.json", fields: { schemaVersion: same, questions: record } },
   { kind: "learning/translations.json", fields: { schemaVersion: same, questions: record } },
   { kind: "learning/word-meanings.json", fields: { schemaVersion: same, words: { mode: "record", equalDuplicates: true } } },
@@ -137,12 +138,18 @@ export function absentCatalog(kind: MergedKind): Record<string, unknown> | undef
   return CORE_LAYER_KINDS.has(kind) ? undefined : emptyCatalog(kind);
 }
 
+/** The schemaVersion an absent or new catalog of the kind gets: its rule's, else 1. */
+export function defaultSchemaVersion(kind: MergedKind): number {
+  const rule: CatalogRule = catalogRule(kind);
+  return "fields" in rule ? rule.schemaVersion ?? 1 : 1;
+}
+
 /**
  * An empty fragment of a merged catalog, for a layer that does not have the
  * file yet: schemaVersion plus every mergeable key, empty. Core-only keys are
  * left out (a journey layer may not set them).
  */
-export function emptyCatalog(kind: MergedKind, schemaVersion: unknown = 1): Record<string, unknown> {
+export function emptyCatalog(kind: MergedKind, schemaVersion: unknown = defaultSchemaVersion(kind)): Record<string, unknown> {
   const rule = catalogRule(kind);
   if ("file" in rule) throw new Error(`${kind} is provided as a whole file and has no empty fragment`);
   const empty = (table: FieldTable): Record<string, unknown> => Object.fromEntries(Object.entries(table).flatMap(([key, field]) => {

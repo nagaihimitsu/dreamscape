@@ -1,6 +1,6 @@
 import { battles, dates, effects, episodes, getCityContent } from "../content";
 import { validateStorySnapshot } from "../story/runtime";
-import { activeDateStoryId, completedDateCount, dateBelongsToCity, hasCompletedChapter } from "./date-rules";
+import { activeDateStoryId, completedDateCount, dateBelongsToCity } from "./date-rules";
 import type { GameState } from "./game-state-schema";
 import { resolveRomanceChoice } from "./romance-random";
 import { minimumHomeFare } from "./travel-routes";
@@ -80,21 +80,18 @@ export function validateGameHistory(state: GameState): void {
     throw new Error("告白の記録が一致しません。");
 }
 
-/** Reproduce saved choice outcomes before restoring an active story. */
+/**
+ * Reproduce saved choice outcomes before restoring an active story. A running
+ * date's `when`/`until` is not checked again: it was met when the date started,
+ * and changing a condition in the content must not make a save unreadable.
+ */
 export function validateActiveDateState(state: GameState): void {
   const active = state.activeDate;
   if (active) {
     const date = dates.find((item) => item.id === active.dateId);
     if (
       !date || !dateBelongsToCity(state, date) ||
-      (state.endingReached && date.kind !== "normal" && !date.allowAfterEnding) ||
-      !(date.requiredCompletedCityIds ?? []).every((id) =>
-        state.completedCityIds.includes(id),
-      ) ||
-      !(date.requiredCompletedEpisodeIds ?? []).every((id) =>
-        state.completedEpisodeIds.includes(id),
-      ) ||
-      !date.requiredCompletedChapters.every((id) => hasCompletedChapter(state, id))
+      (state.endingReached && date.kind !== "normal" && !date.allowAfterEnding)
     )
       throw new Error("デートの保存状態を確認できません。");
     const storyId = activeDateStoryId(date, active);

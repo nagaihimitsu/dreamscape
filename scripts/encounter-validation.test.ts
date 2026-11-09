@@ -168,6 +168,15 @@ describe("encounter content validation", () => {
     }
   });
 
+  it("requires each item to have a source (a completion item or a quiz prize)", () => {
+    const data = input();
+    const giver = data.catalog.encounters.find((event) => event.completionItemId === "blue_pick")!;
+    delete giver.completionItemId;
+    expect(() => validateEncounterContent(data)).toThrow("Encounter item has no source: blue_pick");
+    giver.completionItemId = "blue_pick";
+    expect(() => validateEncounterContent(data)).not.toThrow();
+  });
+
   it("rejects wrong city, place, story, AP reward or response profile", () => {
     const data = input();
     const event = data.catalog.encounters.find((item) => item.id === "galleria_fortune")!;

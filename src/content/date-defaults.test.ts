@@ -15,8 +15,6 @@ describe("ordinary date defaults", () => {
     expect(date).toMatchObject({
       ...minimal,
       kind: "normal",
-      requiredCompletedChapters: ["milano"],
-      requiredPlayedDateIds: [],
       apCost: 2,
       minRomanceStage: 1,
       minAffection: 0,
@@ -28,6 +26,8 @@ describe("ordinary date defaults", () => {
       allowAfterEnding: true,
       validationContexts: [{ romanceStage: 1, confessionReady: false }],
     });
+    expect(date.when).toBeUndefined();
+    expect(date.until).toBeUndefined();
   });
 
   it("keeps an explicitly configured existing date's conditions", () => {
@@ -35,19 +35,27 @@ describe("ordinary date defaults", () => {
       ...minimal,
       apCost: 3,
       minRomanceStage: 2,
-      requiredCompletedChapters: [],
-      requiredCompletedEpisodeIds: ["milano_galleria_episode"],
+      when: { episodeCompleted: "milano_galleria_episode" },
+      until: { any: [{ episodeCompleted: "milano_last_supper_episode" }, { cityCompleted: "milano" }] },
       destinationId: "milano_brera",
       allowAfterEnding: false,
     });
     expect(date.apCost).toBe(3);
     expect(date.minRomanceStage).toBe(2);
-    expect(date.requiredCompletedChapters).toEqual([]);
+    expect(date.when).toEqual({ episodeCompleted: "milano_galleria_episode" });
+    expect(date.until).toEqual({ any: [{ episodeCompleted: "milano_last_supper_episode" }, { cityCompleted: "milano" }] });
     expect(date.allowAfterEnding).toBe(false);
   });
 
-  it("does not silently turn an explicitly empty prerequisite into a city clear", () => {
-    expect(dateSchema.safeParse({ ...minimal, requiredCompletedChapters: [] }).success).toBe(false);
+  it("gives a date without when no progress condition, and refuses the old progress fields and malformed conditions", () => {
+    expect(dateSchema.parse(minimal).when).toBeUndefined();
+    for (const old of ["requiredCompletedChapters", "requiredCompletedCityIds", "requiredCompletedEpisodeIds", "forbiddenCompletedEpisodeIds", "requiredPlayedDateIds"]) {
+      const result = dateSchema.safeParse({ ...minimal, [old]: [] });
+      expect(result.success).toBe(false);
+      expect(result.error?.issues[0].message).toMatch(/Unrecognized key/);
+    }
+    const malformed = dateSchema.safeParse({ ...minimal, when: { all: [] } });
+    expect(malformed.error?.issues.map((issue) => [issue.message, issue.path])).toEqual([["A condition list must be a non-empty array", ["when", "all"]]]);
   });
 
   it("rejects a validation context that repeats another one, whatever the field order", () => {

@@ -98,6 +98,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
   - データの画像（観光画像の `path`、背景の `imagePath`、品物の `iconPath`、人物画像、タイトルの絵）が、別の旅行編の `public/` の画像を指す。旅行編のデータが使えるのは自分の `public/` と直下の `public/` の画像、共通データが使えるのは直下の `public/` の画像だけ（`Reference to another layer`）。
   - `manifest.json` の `authoring` のパス（`observationFile`）が、`/` 区切りのリポジトリからの相対パスでない（絶対パス、`..`、`\` を含む）か、`authoring/journeys/<旅行編ID>/` の外を指す。`imageDirectory` は配信時のパス（`assets/` で始まる相対パス）。
   - 配信する画像が、出典つきの観光画像でも自作の絵の一覧にある絵でもない（「出典のない画像」）、その両方である、一覧にあるファイルをその層が配信していない、同じ層の一覧に2回ある（下の「画像の出典と自作の絵」）。
+  - デートの `when`・`until` と道中交流の入場ルールの `when`（共通条件管理システムの条件。書き方は[制作ガイドの「条件の書き方」](../authoring/CONTENT_GUIDE.md#条件の書き方)）の形の誤り（キーが1つでない、空の `all`・`any`、まだ使えない部品）、存在しないエピソード・都市・バトル・観光地・交流・デート・品物の名前、旅行編が `transportModes` に宣言していない乗り物（徒歩も数えない）、その品物の都市でない条件の `held`、同じ旅の品物の都市より後の都市でない条件の `left_behind`（`scripts/condition-validation.ts`）。入手元（交流の `completionItemId` かクイズの `rewardItemId`）のない品物（`Encounter item has no source`）。
 - 統合したカタログのスキーマエラーは、問題の項目を持つファイルごとに `Invalid content in <ファイル>:` で始まるまとまりで示し、位置（`path`）はそのファイルの中での位置にする（例：旅行編の最初の対決なら、統合後の `battles[9]` ではなく `battles[0]`）。統合後の位置は、エラーの `cause` に残る。
 - 警告（生成は続ける。件数を表示し、`npm run content:build -- --verbose` で一覧。判定は `scripts/content-report.ts`）。警告があっても、単体テスト（`test:quick`・`npm test`）・CI・`npm run verify`・公開は失敗しない。直すかどうかは制作者が一覧を見て判断する
   - 旅行編フォルダの読み込まれず配信もされないファイル（上の「統合の規則」）。
@@ -105,6 +106,8 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
   - `npm run images:optimize` で軽くできる観光写真：JPEG・PNG の写真と、観察で拡大しないのに幅1600px・高さ1800pxの枠を超える WebP の写真（観察で拡大する写真は、観光地の `imageAssetId` と、公開前の都市の観察資料 `authoring.observationFile` の画像。仮の画像（`isPlaceholder`）と見本の編の画像は対象外。判定は `scripts/image-optimization.ts`。観察資料は `authoring/` にあるので、この判定だけはそれも読む）。
   - `authoring.eventPrefix` を持つ旅行編の、接頭辞の決まり（下の「ストーリーIDとIDの名前空間」）に合わないID。既存の例外は `scripts/content-report.ts` の `UNPREFIXED_ID_EXCEPTIONS` に挙げ、新しいIDは例外に足さず接頭辞を付ける。例外に挙げたIDが実データから無くなると、単体テスト（`scripts/content-report.test.ts`）が失敗する（使われない例外を残さないため）。
   - `manifest.json` の `transportModes` に宣言したのに、その旅行編のどの都市の経路にも使われていない乗り物（`unusedTransportModes`。経路を足すか、宣言を消す）。
+  - 決して満たされない条件（`never-offered`。`scripts/condition-validation.ts` の `conditionWarnings`）：観察だけで調べる道中交流の `when` が、その交流の観光地のエピソードやバトル（観察の後にしか遊べない）を必ず要る、同じ旅の後の都市の進行・品物を前の都市の条件が必ず要る、暦（`startWeekday`）のない旅の `journeyDay`・`weekday`、互いを待つデート（`datePlayed` の輪）。今はミラノの5つの交流（`duomo_string`・`supper_pantomime`・`castello_pick`・`scala_mint`・`brera_sitter`）がこれに当たる。
+  - デートの `when`・`until` の `time`・`rides`（`date-condition-trip`）：行き先へ向かう移動で変わるので、地図は出発前の状態で出し、着いてから始めるときに調べ直すと始まらないことがある。
 - 成功すると、旅行編ごとに1行、そのフォルダが持つ都市・ストーリー・クイズ・配信ファイルの数と、各カタログの項目数（0件の種類は省略）を表示する（例：`Journey uzbekistan (preparing): cities 4, stories 0, quizzes 0, public files 40; destinations 24, backgrounds 44, assets 40`）。置き忘れや、空のまま公開しかけていることに気付くための表示。観光の手がかり（`clues`）の後には、そのうち問題と結び付かない観察だけの手がかりの数を出す（0件なら省略。`clues 29, observation-only clues 29`。[観察だけの手がかり](07_DATA_AND_TESTS.md#観察だけの手がかり)）。
 - 語の意味（共通の `learning/word-meanings.json` と旅行編の断片）のうち、どの英文にも出ない語があれば、その数を表示する（一覧は `--verbose`。判定は `scripts/content-report.ts` の `unusedWordMeanings`）。対象の英文は、クイズの問題文・選択肢（例のクイズ `*.example.json` を除く）と、道中交流の問題・選択肢（カタログの `textEn` と、そのInkの選択肢の文）。使われない語は害がないため警告ではなく、消すかどうかは制作者が判断する。
 
@@ -245,7 +248,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 - 都市の会話の初期背景は、その都市の `travel/<cityId>-settings.json` の `storyBackgroundId`（ミラノはミラノ編の背景 `milano_cafe`）。未指定の都市は現在地（なければ宿）の背景を使う。
 - 所持品のアイコンは道中交流カタログの品物の `iconPath`（未指定なら共通の `assets/items/item.svg`）。
 - 道中交流は、その観光地を観察しているときにだけ始まる（入場ルールを満たす交流が、観察を進めたときにカタログの順に始まり、終わると観察に戻る）。自由時間から交流を始める道はない。交流のカタログの `availability`（`tourism`・`dormant`）はセーブ版 v14 でなくなり、書くと `content:build` が止まる（`Unrecognized key`）。使わない交流はカタログから消す。
-- クイズをその観光地のバトルの後まで待たせる道中交流（ミラノのガッレリアの願掛け）は、`encounters/entry-rules.json` の `quizAfterLandmarkBattle` で指定する（クイズのある交流だけ）。この印のある交流は最初の観察で会え、その観光地のバトルを一度も戦っていないうちは、クイズなしで話が終わる。バトルを戦った後に始まった場合だけクイズへ進む。ただし今のミラノ編には、ガッレリアのバトルを戦った後に交流が始まる観察がないため、願掛けのクイズ（と展示券の抽選）には遊んでいて届かない（バトルを終えるとガッレリアは地図の行き先に出なくなる。バトルの画面から観察に戻れるが、バトルの途中なので交流は始まらない）。ユーザーの判断（2026-11-08）で、今は起こらないミラノの道中交流は今のまま残し、シナリオの改稿でまとめて見直す（各Inkファイルの先頭のコメントに、今いつ起こるかを書いている。[開発時の確認](10_DEVELOPMENT_CHECKS.md#関数の層のランダムウォーク)）。
+- 入場ルール（`encounters/entry-rules.json`、`schemaVersion: 2`）は、交流ごとに調べる時点 `at`（今は観察の `["observe"]` だけ）と出会える条件 `when` を持つ。クイズをその観光地のバトルの後まで待たせる道中交流（ミラノのガッレリアの願掛け）は、同じファイルの `quizAfterLandmarkBattle` で指定する（クイズのある交流だけ。観察はこの交流の `when` を調べない）。この印のある交流は最初の観察で会え、その観光地のバトルを一度も戦っていないうちは、クイズなしで話が終わる。バトルを戦った後に始まった場合だけクイズへ進む。ただし今のミラノ編には、ガッレリアのバトルを戦った後に交流が始まる観察がないため、願掛けのクイズ（と展示券の抽選）には遊んでいて届かない（バトルを終えるとガッレリアは地図の行き先に出なくなる。バトルの画面から観察に戻れるが、バトルの途中なので交流は始まらない）。ユーザーの判断（2026-11-08）で、今は起こらないミラノの道中交流は今のまま残し、シナリオの改稿でまとめて見直す（各Inkファイルの先頭のコメントに、今いつ起こるかを書いている。[開発時の確認](10_DEVELOPMENT_CHECKS.md#関数の層のランダムウォーク)）。
 - Debugの「仮の場面」は、ミラノ固定ではなく役割で選んだ都市を元にする（上の「Debugの「仮の場面」」の項）。
 
 ## レイヤー間の依存
@@ -261,6 +264,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 
 - `src/app/App.tsx` は旅行編の選択と保存領域のロック、`GameApp.tsx` はゲーム画面と画面間の操作を担当する。`useGameSession.ts` が状態更新・保存・復元・削除時の競合確認をまとめ（1回の操作の反映は `src/domain/player-action.ts` の `applyPlayerAction`。地図の行き先の完了と、クリアした都市からの自動の出発を同じ保存単位にする。ミラノの通しテストも同じ関数で操作する。同じファイルの `listPlayerActions` は、画面が出す操作を画面と同じ判定の関数から並べ、探索テストが使う）、`useTravelEffects.tsx` が成功した移動の演出を扱う。保存と別タブの保護の判定は画面から分けた関数（`src/app/save-recovery.ts`・`unsaved-progress.ts`・`save-deletion.ts`、`src/persistence/journey-lock.ts`）が持つ（[画面の保護を担う関数](10_DEVELOPMENT_CHECKS.md#画面の保護を担う関数)）。
 - `src/domain/game.ts` はゲームの状態遷移を扱う。保存形式の定義は `game-state-schema.ts`、デートの条件判定は `date-rules.ts`、保存された進行の整合確認は `game-state-validation.ts` に分ける。既存の公開関数と型は `game.ts` から引き続き利用できる。
+- 共通条件管理システム（段階1）：条件の形は `src/content/condition-schemas.ts`（zod だけを読む軽いモジュール。生成したカタログを実行時に読むときも使う）、判定は `src/domain/conditions.ts` の `meets(state, condition)`（今の記録を読むだけで何も書かない）。デートの `when`・`until`（`date-rules.ts`）と入場ルールの `when`（`encounter.ts`）は `meets` だけで判定する。バトルを遊んだか（`battleRecords` の `attempts`）を読むのは同じファイルの `battlePlayed` だけ。セーブの読み込みでは、進行中のデートの条件を調べ直さない（始めたときに満たしていたため。条件を直してもセーブが読めなくならない）。Debugの説明は `src/dev/condition-explain.ts`。
 - `src/domain/travel-destinations.ts` は行き先候補と待機時刻を計算する。帰宿候補と宿泊計画は `travel-game.ts` を画面表示と実際の操作で共用し、画面内に同じルールを重複実装しない。
 - `scripts/content-pipeline.ts` の `buildContent`（`content:build`）は、読み込み → 検証 → 書き出しの3段階で動く。
   - 読み込み：`content-sources.ts` だけがコンテンツを読む。`readContentTree` が `content/` と `public/` を一度だけ読み（JSONとInkは中身、画像は一覧だけ）、`contentSourcesFromTree` がディスクに触れずに、層、統合したカタログと各項目の出どころのファイル、都市・移動・クイズのJSON、Inkの本文、配信ファイルの一覧（`ContentSources`）を組み立てる。JSONとして読めないファイル、配置の誤り、統合の衝突はここで止まる。制作ツールも同じ `loadContentSources` の結果を使い、都市・移動・クイズ・Inkを読み直さない（旅行編の一覧だけが要るときは、`readJourneyManifests` が同じ処理で `manifest.json` だけを読む）。読み込み全体は約25ミリ秒で、`content:build` の約15秒の大半はInkの会話経路の検証にかかる（2026年11月、4コアで計測。分割の前後で所要時間は変わらない。検証のキャッシュが使えると約3.4秒）。

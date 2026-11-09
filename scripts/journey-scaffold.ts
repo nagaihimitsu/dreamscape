@@ -132,7 +132,7 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
       }
       dates.push(dateSchema.parse({ id: item.eventId, kind: "normal", chapterId: plan.cityId,
         titleJa: script.titleJa, descriptionJa: script.descriptionJa, apCost: event.apCost, storyId: item.storyId,
-        requiredCompletedChapters: [plan.cityId], destinationId: destination.id, backgroundId: place.backgroundId,
+        when: { episodesCompleted: { city: plan.cityId, atLeast: 1 } }, destinationId: destination.id, backgroundId: place.backgroundId,
         choiceCount: 2, effectCount: 2 }));
     }
     const script = narrative.finales[plan.cityId];

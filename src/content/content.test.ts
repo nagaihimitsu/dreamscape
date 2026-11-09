@@ -426,18 +426,18 @@ describe("content build acceptance", () => {
     await replace(
       "content/romance/progression.json",
       '"stage": 2,',
-      '"stage": 2, "requiredPlayedDateIds": ["milano_walk_01"],',
+      '"stage": 2, "when": { "datePlayed": "milano_walk_01" },',
     );
-    await expect(buildContent(fixture, false)).rejects.toThrow(/Unrecognized key: .*requiredPlayedDateIds/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/Unrecognized key: .*when/);
   });
 
-  it("rejects a normal date requiring another date", async () => {
+  it("builds a normal date that waits for another date (the author decides; the old rule against it is gone)", async () => {
+    const when = { all: [{ episodesCompleted: { city: "milano", atLeast: 1 } }, { datePlayed: "milano_walk_01" }] };
     await changeDate("milano_cafe_01", (date) => {
-      (date.requiredPlayedDateIds as string[]).push("milano_walk_01");
+      (date as { when: unknown }).when = when;
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Normal dates cannot require other dates",
-    );
+    const result = await buildContent(fixture, false);
+    expect(result.dates.find((date) => date.id === "milano_cafe_01")?.when).toEqual(when);
   });
 
   it("rejects a paid special event", async () => {
