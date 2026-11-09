@@ -390,5 +390,68 @@ export function thenLoopWarnings(scenes: readonly SceneEntry[], placeLandmarks: 
   });
 }
 
+/** What the warnings of the stage-4 moments read of the journey: the landmarks, dates and finale (its city) at a place. */
+export type MomentPlaces = {
+  landmarksAt: (placeId: string) => readonly string[];
+  datesAt: (placeId: string) => readonly string[];
+  finaleAt: (placeId: string) => string | undefined;
+};
+export type MomentWarning = { kind: "same-priority" | "repeat-without-until" | "later-never-again"; message: string };
+
+/**
+ * The warnings of 2.5 and 2.6 at the moments other than a landmark's visit (stage 4; a visit's are condition-validation.ts's,
+ * read through the scene's landmark): inserted scenes of different files that share a priority at one moment (they run in file
+ * name order), a scene repeated always without `# until:` (it runs every time its moment comes), and 「また今度」 at moments that
+ * come only once (the epilogue, an arrival, a departure, after the finale's battle). Warnings only.
+ */
+export function momentWarnings(scenes: readonly SceneEntry[], places: MomentPlaces): MomentWarning[] {
+  const shown = (priority: SceneEntry["priority"]) => (typeof priority === "number" && priority > 0 ? `+${priority}` : String(priority));
+  const hasVisit = (scene: SceneEntry) => scene.at.some((moment) => "visit" in moment || ("place" in moment && places.landmarksAt(moment.place).length > 0));
+  /** The moments an `at` names here (a visit's are read elsewhere; `place` names the dates and the finale there). */
+  const keysOf = (scene: SceneEntry, moment: SceneAt): { key: string; from?: string; to?: string }[] => {
+    if ("visit" in moment) return [];
+    if ("place" in moment) {
+      const finale = places.finaleAt(moment.place);
+      return [...places.datesAt(moment.place).map((id) => ({ key: `date ${id}` })), ...(finale ? [{ key: `finale ${finale}` }] : [])];
+    }
+    if ("hotel" in moment) return [{ key: `hotel ${scene.cityId}` }];
+    if ("trip" in moment) return [{ key: `trip ${moment.trip} in ${scene.cityId}`, from: moment.from, to: moment.to }];
+    return [{ key: momentText(moment) }];
+  };
+  const inserted = scenes.filter((scene) => INSERTED_KINDS.includes(scene.kind) && scene.priority !== undefined);
+  const groups = new Map<string, { scene: SceneEntry; from?: string; to?: string; key: string }[]>();
+  for (const scene of inserted) for (const moment of scene.at) for (const item of keysOf(scene, moment)) {
+    const group = `${item.key}\u0000${scene.priority}`;
+    groups.set(group, [...(groups.get(group) ?? []), { ...item, scene }]);
+  }
+  // A trip's scenes share it only when their from and to can name the same trip.
+  const meets = (a: { from?: string; to?: string }, b: { from?: string; to?: string }) => (!a.from || !b.from || a.from === b.from) && (!a.to || !b.to || a.to === b.to);
+  const same = [...groups.values()].flatMap((group): MomentWarning[] => {
+    const shared = [...new Map(group.filter((item) => group.some((other) => other.scene.story.storyId !== item.scene.story.storyId && meets(item, other)))
+      .map((item) => [item.scene.id, item])).values()];
+    const files = [...new Set(shared.map((item) => item.scene.story.storyId))];
+    return files.length > 1 ? [{ kind: "same-priority", message: `Scenes share a priority: ${shared.map((item) => item.scene.id).join(", ")} have priority ` +
+      `${shown(shared[0].scene.priority)} at ${shared[0].key}; they run in the order of their story files' names (${files.join(", ")})` }] : [];
+  });
+  // `# until:` becomes a `not` in the scene's when, like a `# when: not …`: either closes the repetition.
+  const closes = (condition: Condition | undefined): boolean => !!condition && ("not" in condition || ("all" in condition && condition.all.some(closes)));
+  const stageFour = (scene: SceneEntry) => scene.at.filter((moment) => keysOf(scene, moment).length > 0);
+  const repeated = inserted.filter((scene) => scene.repeat === "always" && !closes(scene.when) && !hasVisit(scene) && stageFour(scene).length)
+    .map((scene): MomentWarning => ({ kind: "repeat-without-until", message: `Repeated scene without until: ${scene.id} (# repeat: always) has no # until:, ` +
+      `so it runs every time ${stageFour(scene).map(momentText).join(", ")} comes` }));
+  const afterFinale = (scene: SceneEntry) => (typeof scene.priority === "number" ? scene.priority > 0 : scene.priority === "after battle");
+  const once = (scene: SceneEntry, moment: SceneAt) => "epilogue" in moment || "arrive" in moment || "depart" in moment ||
+    (("finale" in moment || ("place" in moment && !places.landmarksAt(moment.place).length && !places.datesAt(moment.place).length && !!places.finaleAt(moment.place))) &&
+      afterFinale(scene));
+  const later = inserted.flatMap((scene): MomentWarning[] => {
+    const option = scene.options.find((item) => item.later);
+    return option && scene.at.length && scene.at.every((moment) => once(scene, moment))
+      ? [{ kind: "later-never-again", message: `「また今度」 leads to no later moment: ${scene.id} (at ${scene.at.map(momentText).join(", ")}, priority ${shown(scene.priority)}) ` +
+        `can be ended with 「また今度」 (option ${option.id}), but that moment comes only once, so it is never met again (add a moment where it can come back)` }]
+      : [];
+  });
+  return [...later, ...same, ...repeated];
+}
+
 /** The leaves a condition reads (for the stage-3a parts' references). */
 export const conditionParts = (condition: Condition) => conditionLeaves(condition);

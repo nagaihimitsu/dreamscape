@@ -55,3 +55,16 @@ describe("check 9: a then: epilogue at a stage-4 moment (3.3, 3.9 (d))", () => {
       [CITY_END]: onlyStarter(talk("arrive mihon", "# when: visited mihon_clock_tower\n")) }, plain.added))).toThrow(NO_WAY);
   });
 });
+
+describe("the warnings of every moment (2.5, 2.6)", () => {
+  it("names a moment that never opens, and the sample's -1 of two files at the finale (they run in file name order)", () => {
+    const knot = (name: string, at: string) => `\n=== ${name} ===\n# scene: talk\n# at: ${at}\n# priority: -1\n# sources: none\n# speaker: heroine\n「うん」\n-> END\n`;
+    const result = validateContent(sampleWith({ [CITY_END]: (text) => `${text}${knot("smp_mihon_zz_arrive", "arrive mihon")}` +
+      `${knot("smp_mihon_zz_trip", "trip walk from mihon_library to mihon_library")}` }));
+    const notes = result.warnings.filter((warning) => warning.kind === "scene-tag").map((warning) => warning.message);
+    expect(notes).toContainEqual(expect.stringMatching(/^smp_mihon_zz_arrive: # at: arrive mihon never runs/u));
+    expect(notes).toContainEqual(expect.stringMatching(/^smp_mihon_zz_trip: # at: trip walk from mihon_library to mihon_library never runs/u));
+    expect(result.warnings).toContainEqual({ kind: "same-priority",
+      message: expect.stringContaining("smp_mihon_finale_sweets, smp_mihon_bookmark_stall have priority -1 at finale mihon") });
+  });
+});

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { compileInk } from "./ink-validation";
 import { MODULES_FILE, MODULES_INK } from "./modules-ink";
 import { readPlaceFile } from "./place-files";
-import { placeScenes, sceneTagRules, checkRuleIds, thenLoopErrors, thenLoopWarnings } from "./scene-table";
+import { placeScenes, sceneTagRules, checkRuleIds, momentWarnings, thenLoopErrors, thenLoopWarnings } from "./scene-table";
 import { walkScene } from "./scene-walk";
 import type { SceneEntry } from "../src/content/scene-schemas";
 
@@ -135,6 +135,30 @@ describe("the moments of stage 4 in the scene table (2.3)", () => {
     expect(thenLoopWarnings([away("epilogue x")], () => [], { epilogueRequired: () => false })[0]).toContain("A then: loop that may not end");
     // A then: epilogue there opens the epilogue once (read, it does nothing): no loop.
     expect(thenLoopErrors([{ ...away("hotel x_hotel"), then: { epilogue: true as const } }], () => [], context)).toEqual([]);
+  });
+
+  it("warns at every moment, not only a visit: the same priority in two files, a repetition without until, 「また今度」 that never comes back (2.5, 2.6)", () => {
+    const places = { landmarksAt: (place: string) => (place === "x_tower" ? ["x_tower"] : []), datesAt: (place: string) => (place === "x_square" ? ["smp_x_date"] : []),
+      finaleAt: (place: string) => (place === "x_square" ? "x" : undefined) };
+    const at = (moment: string, priority = "-1", file = "places/smp_x_tower") => ({ ...scenesAt(moment, priority)[0], story: { storyId: file, knot: "smp_x_moment" } });
+    const kinds = (scenes: ReturnType<typeof at>[]) => momentWarnings(scenes, places).map((warning) => warning.kind);
+    // The hotel's -1 in two files; the date's -1 by date and by its place; a trip's from two places never meet.
+    const hotel = momentWarnings([{ ...at("hotel x_hotel"), id: "a" }, { ...at("hotel x_hotel", "-1", "places/smp_x_end"), id: "b" }], places);
+    expect(hotel).toEqual([{ kind: "same-priority", message: expect.stringMatching(/^Scenes share a priority: a, b have priority -1 at hotel x; .*places\/smp_x_tower, places\/smp_x_end/u) }]);
+    expect(kinds([{ ...at("date smp_x_date"), id: "a" }, { ...at("place x_square", "-1", "places/smp_x_end"), id: "b" }])).toEqual(["same-priority"]);
+    expect(kinds([{ ...at("hotel x_hotel"), id: "a" }, { ...at("hotel x_hotel", "+1", "places/smp_x_end"), id: "b" }, { ...at("hotel x_hotel"), id: "c" }])).toEqual([]);
+    const trip = (from: string, file: string, id: string) => ({ ...at("hotel x_hotel", "-1", file), id, at: [{ trip: "walk", from }] });
+    expect(kinds([trip("x_hotel", "places/smp_x_tower", "a"), trip("x_gate", "places/smp_x_end", "b")])).toEqual([]);
+    expect(kinds([trip("x_hotel", "places/smp_x_tower", "a"), { ...trip("x_hotel", "places/smp_x_end", "b"), at: [{ trip: "walk" }] }])).toEqual(["same-priority"]);
+    // Repeated always: without until it warns; with an until (a not in its when), or at a visit (read there), not.
+    expect(momentWarnings([{ ...at("hotel x_hotel"), repeat: "always" as const }], places)[0].message).toContain("Repeated scene without until: smp_x_moment");
+    expect(kinds([{ ...at("hotel x_hotel"), repeat: "always" as const, when: { not: { flag: "f" } } }])).toEqual([]);
+    expect(kinds([{ ...at("hotel x_hotel"), repeat: "always" as const, at: [{ hotel: "x_hotel" }, { visit: "x_tower" }] }])).toEqual([]);
+    // 「また今度」 at the epilogue, or after the finale's battle: that moment comes once.
+    const later = (moment: string, priority: string) => ({ ...at(moment, priority), options: [{ id: "later", knot: "smp_x_moment", later: true as const }] });
+    expect(kinds([later("epilogue x", "-1")])).toEqual(["later-never-again"]);
+    expect(kinds([later("finale x", "+1")])).toEqual(["later-never-again"]);
+    expect(kinds([later("finale x", "-1"), later("hotel x_hotel", "-1"), { ...later("epilogue x", "-1"), at: [{ epilogue: "x" }, { hotel: "x_hotel" }] }])).toEqual([]);
   });
 
   it("counts a trip's then: move as a loop only when the move goes by the trip's mode (4.4: by, else walking, else the only mode)", () => {

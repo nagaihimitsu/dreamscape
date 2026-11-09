@@ -75,7 +75,7 @@ import { isPlaceStory, splitStoryAddress, storyFileOf } from "../src/content/sto
 import { readFileChoices, readMainFileHead, readPlaceFile, choiceOption, parseDone, parseThen, type PlaceFile } from "./place-files";
 import { MODULES_FILE, MODULES_INK } from "./modules-ink";
 import { walkScene } from "./scene-walk";
-import { catalogScenes, checkRuleIds, checkSceneReferences, insertedSceneEncounter, mainFileSceneId, mergeCatalogChoiceTags, placeScenes, sceneConditionsOf, sceneTagRules, thenLoopErrors, thenLoopWarnings, type MainAddresses, type ThenLoopContext } from "./scene-table";
+import { catalogScenes, checkRuleIds, checkSceneReferences, insertedSceneEncounter, mainFileSceneId, mergeCatalogChoiceTags, placeScenes, sceneConditionsOf, sceneTagRules, thenLoopErrors, thenLoopWarnings, momentText, momentWarnings, type MainAddresses, type ThenLoopContext } from "./scene-table";
 import { sceneDataCatalogSchema, storyStateCatalogSchema, type SceneEntry, type SceneMain } from "../src/content/scene-schemas";
 import { fnvHash } from "../src/content/fingerprint";
 import { parseConditionText, combineWhenUntil } from "../src/content/condition-text";
@@ -775,6 +775,11 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       sceneWarn(`${scene.id}: # at: ticket ${moment.ticket} never runs (no destination there charges admission; the ticket counter opens only with an admission)`);
     if ("depart" in moment && !cities.find((city) => city.id === moment.depart)?.nextCityId)
       sceneWarn(`${scene.id}: # at: depart ${moment.depart} never runs (the city has no next city, so its departure never opens)`);
+    if ("arrive" in moment && !cities.find((city) => city.id === moment.arrive)?.arrivalStoryId)
+      sceneWarn(`${scene.id}: # at: arrive ${moment.arrive} never runs (the city has no arrival, so its arrival's moment never opens)`);
+    if ("trip" in moment && !cityTravel?.travel.routes.some((route) => route.mode === moment.trip && route.fromPlaceId !== route.toPlaceId &&
+        (!moment.from || route.fromPlaceId === moment.from) && (!moment.to || route.toPlaceId === moment.to)))
+      sceneWarn(`${scene.id}: # at: ${momentText(moment)} never runs (no route by ${moment.trip} joins two places as its from and to say)`);
     if ("finale" in moment && !journey.episodes.some((episode) => episode.kind === "city_finale" && episode.cityId === moment.finale))
       throw new Error(`# at: finale ${moment.finale}: the city has no finale (${scene.id}, A2)`);
     if (scene.priority === "after date" && "place" in moment && !datesAtPlace(moment.place).length)
@@ -788,6 +793,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     if (named ? having.length !== landmarksThere.length : !having.length)
       throw new Error(`# priority: after ${part} needs a landmark with a ${part === "observe" ? "observation" : part}: ${scene.id} at ${landmarksThere.map((landmark) => landmark.id).join(", ")} (A2)`);
   }
+  // 2.5/2.6's warnings at the moments other than a visit (stage 4): the same priority, a repetition without until, 「また今度」 there.
+  sceneNotes.push(...momentWarnings(placeEntries, { landmarksAt: (placeId) => [...new Set(landmarksAtPlace(placeId))],
+    datesAt: (placeId) => datesAtPlace(placeId).map((event) => event.id),
+    finaleAt: (placeId) => journey.episodes.find((episode) => episode.kind === "city_finale" && finalesAtPlace(placeId).some((event) => event.id === episode.id))?.cityId }));
   // The order of each landmark's main parts (3.9 (b)): each part it has, once.
   for (const landmark of tourism.landmarks) {
     const problem = landmarkOrderError(landmark);
