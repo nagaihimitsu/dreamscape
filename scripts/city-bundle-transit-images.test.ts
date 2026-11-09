@@ -6,78 +6,12 @@ import { getJourneyAuthoringProfile } from "./journey-authoring";
 import { cityTransitPath, cityTransitPlan } from "./journey-transit";
 import { inspectCityTransit } from "./transit-ledger";
 import { loadContentSources } from "./content-sources";
-import { buildJourneyTransitDecisionReview, readJourneyTransitDecisions } from "./journey-transit-decisions";
 import { resolvePublicFile } from "./public-assets";
-import { cityFiles, cityPaths, fingerprint, fixture, indiaDecisionFile, merged, read, readJson, removeFixtures, useArrivalLocationBackground, writeJson } from "./city-bundle-test-helpers";
+import { cityFiles, cityPaths, fingerprint, fixture, merged, read, readJson, removeFixtures, useArrivalLocationBackground, writeJson } from "./city-bundle-test-helpers";
 
 afterEach(removeFixtures);
 
 describe("city editing bundle: transit ledgers, images and observations", () => {
-  it("checks a city's transit decisions alongside its edited routes", async () => {
-    const root = fixture();
-    const bundle = exportCityBundle(root, "delhi");
-    expect(bundle.transitDecisions).not.toBeNull();
-    const decisions = bundle.transitDecisions as { cityId: string; fromPlaceId: string; toPlaceId: string; mode: "rail" | "bus"; status: string }[];
-    const decision = decisions[0];
-    expect(decision).toMatchObject({ cityId: "delhi", status: "not_suitable" });
-    const template = bundle.travel.routes.find((route) => route.mode === decision.mode && route.fromPlaceId !== route.toPlaceId)!;
-    bundle.travel.routes.push({ ...structuredClone(template), fromPlaceId: decision.fromPlaceId, toPlaceId: decision.toPlaceId });
-    const before = fingerprint(root);
-    await expect(applyCityBundle(root, bundle, true)).rejects.toThrow("Reviewed transit decision conflicts with a playable route: delhi:");
-    expect(fingerprint(root)).toBe(before);
-    // Compacting the same edit must still reject a route that was recorded as
-    // unsuitable; an absent route is not equivalent to a confirmed service.
-    await expect(applyCityBundle(root, compactCityBundle(bundle), true)).rejects.toThrow("Reviewed transit decision conflicts with a playable route: delhi:");
-    expect(fingerprint(root)).toBe(before);
-    const unreviewed = exportEditableCityBundle(root, "delhi");
-    const index = unreviewed.travel.routes.findIndex((route) => route.mode === "bus");
-    expect(index).toBeGreaterThanOrEqual(0);
-    unreviewed.travel.routes.splice(index, 1);
-    await expect(applyCityBundle(root, unreviewed, true)).rejects.toThrow(/undecided/i);
-    expect(fingerprint(root)).toBe(before);
-    bundle.transitDecisions = decisions.filter((item) => item !== decision);
-    const original = readJson(root, indiaDecisionFile);
-    await applyCityBundle(root, bundle, true);
-    const updated = readJson(root, indiaDecisionFile);
-    expect(updated.decisions.filter((item: { cityId: string }) => item.cityId !== "delhi"))
-      .toEqual(original.decisions.filter((item: { cityId: string }) => item.cityId !== "delhi"));
-    expect(updated.decisions.some((item: { cityId: string; fromPlaceId: string; toPlaceId: string; mode: string }) =>
-      item.cityId === "delhi" && item.fromPlaceId === decision.fromPlaceId && item.toPlaceId === decision.toPlaceId && item.mode === decision.mode)).toBe(false);
-    const report = buildJourneyTransitDecisionReview(readJourneyTransitDecisions(root, "golden_triangle"));
-    expect(report.counts.delhi.unresearched).toBe(0);
-    expect(report.counts.delhi.inconclusive).toBe(0);
-    expect(report.counts.delhi.available).toBeGreaterThan(0);
-    // The journey-wide ledger interleaves the cities (Delhi's records come first and last). The removal
-    // dropped only that record, and an edit replaces its record where it stands: nothing else moves.
-    type Decision = (typeof decisions)[number];
-    const same = (a: Decision, b: Decision) => a.cityId === b.cityId && a.fromPlaceId === b.fromPlaceId && a.toPlaceId === b.toPlaceId && a.mode === b.mode;
-    expect(updated.decisions).toEqual(original.decisions.filter((item: Decision) => !same(item, decision)));
-    const edit = exportCityBundle(root, "delhi");
-    const last = (edit.transitDecisions as (Decision & { reasonJa: string })[]).at(-1)!;
-    last.reasonJa += " 編集テストの注記。";
-    await applyCityBundle(root, edit, true);
-    const position = updated.decisions.findIndex((item: Decision) => same(item, last));
-    expect(position).toBeGreaterThan(updated.decisions.findIndex((item: Decision) => item.cityId !== "delhi"));
-    expect(readJson(root, indiaDecisionFile).decisions).toEqual(updated.decisions.map((item: Decision, index: number) => (index === position ? last : item)));
-    // Two records for one direction and mode are refused, writing nothing.
-    const duplicate = exportCityBundle(root, "delhi");
-    const [first] = duplicate.transitDecisions as Decision[];
-    (duplicate.transitDecisions as Decision[]).push(structuredClone(first));
-    const beforeDuplicate = fingerprint(root);
-    await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow(`Duplicate transit decision: delhi:${first.fromPlaceId}:${first.toPlaceId}:${first.mode}`);
-    expect(fingerprint(root)).toBe(beforeDuplicate);
-    // A new record (here one taken out of the ledger first) is added once, at the end of the ledger.
-    const ledger = readJson(root, indiaDecisionFile);
-    const added = ledger.decisions.find((item: Decision) => item.cityId === "delhi") as Decision;
-    const without = ledger.decisions.filter((item: Decision) => item !== added);
-    writeJson(root, indiaDecisionFile, { ...ledger, decisions: without });
-    const addition = exportCityBundle(root, "delhi");
-    expect((addition.transitDecisions as Decision[]).some((item) => same(item, added))).toBe(false);
-    (addition.transitDecisions as Decision[]).push(added);
-    await applyCityBundle(root, addition, true);
-    expect(readJson(root, indiaDecisionFile)).toEqual({ ...ledger, decisions: [...without, added] });
-  }, 180_000);
-
   it("edits the selected Uzbek transit ledger while rejecting unknown directions and image changes", async () => {
     const root = fixture();
     const cityId = "tashkent";
@@ -107,6 +41,19 @@ describe("city editing bundle: transit ledgers, images and observations", () => 
     const absent = (unknown.transitDecisions as typeof decisions).find((decision) => decision.status !== "available")!;
     absent.status = "inconclusive";
     await expect(applyCityBundle(root, unknown, true)).rejects.toThrow(/undecided directions/);
+    // Two decisions for one direction and mode are refused.
+    const duplicate = exportCityBundle(root, cityId);
+    duplicate.transitDecisions!.push(structuredClone(duplicate.transitDecisions![0]));
+    await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow(/Invalid or duplicate transit direction/);
+    // A route where the ledger decided against its mode is refused, also from the compact form: an
+    // absent route is not equivalent to a confirmed service.
+    type Decision = { fromPlaceId: string; toPlaceId: string; mode: string; status: string };
+    const conflicting = exportCityBundle(root, cityId);
+    const refused = (conflicting.transitDecisions as Decision[]).find((decision) => decision.status === "not_suitable")!;
+    const template = conflicting.travel.routes.find((route) => route.mode === refused.mode && route.fromPlaceId !== route.toPlaceId)!;
+    conflicting.travel.routes.push({ ...structuredClone(template), fromPlaceId: refused.fromPlaceId, toPlaceId: refused.toPlaceId });
+    await expect(applyCityBundle(root, conflicting, true)).rejects.toThrow(/Transit decision and route disagree/);
+    await expect(applyCityBundle(root, compactCityBundle(conflicting), true)).rejects.toThrow(/Transit decision and route disagree/);
     expect(fingerprint(root)).toBe(before);
 
     const observations = readJson(root, getJourneyAuthoringProfile(root, "uzbekistan").observationFile);

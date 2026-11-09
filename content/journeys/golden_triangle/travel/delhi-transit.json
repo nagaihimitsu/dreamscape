@@ -1,0 +1,3194 @@
+{
+  "schemaVersion": 2,
+  "cityId": "delhi",
+  "sourceRefs": {
+    "s1_delhi_auto_fare": {
+      "publisher": "Government of NCT of Delhi, Transport Department",
+      "title": "Delhi Gazette Extraordinary No. 16（2023-01-09）F.No.23(488)/TPT/ARU/2010/452/4673",
+      "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "デリーのオートの運賃：最初の1.5km（メーター起動）₹30、その後1kmごとに₹11（GPS等の₹0.50を含む）。深夜（23:00〜5:00）は25%増し、待ち時間は1分₹0.75、荷物は1個₹10。2023年以降の改定は検索で見つからなかった（改定がないとは断定しない）。"
+    },
+    "s2_dmrc_fare_2025": {
+      "publisher": "Business Today",
+      "title": "Delhi Metro fare hike: DMRC increases prices by up to Rs 4 from Aug 25（2025-08-25）",
+      "url": "https://www.businesstoday.in/india/story/delhi-metro-fare-hike-dmrc-increases-prices-by-up-to-rs-4-from-aug-25-check-details-490867-2025-08-25",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "2025年8月25日からのデリー地下鉄の平日運賃：2kmまで₹11、2〜5km ₹21、5〜12km ₹32、12〜21km ₹43、21〜32km ₹54、32km超 ₹64。日曜・祝日は1段階安い。DMRC公式の運賃表はページを取得できず未確認。"
+    },
+    "s3_delhi_route_finder": {
+      "publisher": "Delhi Metro Route Finder（民間の経路案内、delhi.metro.org.in）",
+      "title": "駅間の経路ページ（56件）",
+      "url": "https://delhi.metro.org.in/route/rajiv-chowk/lal-quila/",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "駅間の最速経路の乗車時間、普通運賃、停車駅数、乗換駅を掲載（運賃はS2の平日運賃の段階と一致）。区間距離は概算に見え、境目に近い区間はDMRCの正式な距離で段階が変わる可能性がある（未確認）。"
+    },
+    "s4_tomtom_delhi": {
+      "publisher": "TomTom",
+      "title": "TomTom Traffic Index: New Delhi traffic in 2025",
+      "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
+    },
+    "s17_osrm_car": {
+      "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+      "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
+      "url": "https://router.project-osrm.org/table/v1/driving/",
+      "checkedAt": "2026-11-07",
+      "claimType": "hypothesis",
+      "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
+    },
+    "s18_fossgis_foot": {
+      "publisher": "FOSSGIS（routing.openstreetmap.de、routed-foot）／地図 © OpenStreetMap contributors（ODbL）",
+      "title": "地点から地下鉄駅までの歩く経路の計算",
+      "url": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/",
+      "checkedAt": "2026-11-07",
+      "claimType": "hypothesis",
+      "claimJa": "地点から地下鉄駅までの歩く距離を2026-11-07に計算した値。歩く分は距離÷分速75m（既存の徒歩経路と同じ換算）。"
+    },
+    "s22_dmrc_station_names": {
+      "publisher": "DMRC",
+      "title": "Entry/Exit Points to the Metro Stations for Hassle Free Access to Divyangjan（PDF、2019-07-17作成）",
+      "url": "https://backend.delhimetrorail.com/documents/1061/Divyangjan_Website-6-03-21.pdf",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "運営会社の駅名の表記：Chawri Bazar、Barakhamba Road、Lal Quila、Jama Masjid、Patel Chowk、Jor Bagh、Kalkaji Mandir（駅名の確認にだけ使う）。"
+    },
+    "delhi_auto_model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "オートリキシャの所要時間と料金の推定（デリー）",
+      "url": "https://router.project-osrm.org/table/v1/driving/",
+      "checkedAt": "2026-11-07",
+      "claimType": "hypothesis",
+      "claimJa": "料金は告示のメーター運賃（最初の1.5km ₹30、その後1kmごとに₹11）を道路距離に当て、₹10単位で切り上げた1台（2人）分。深夜・待ち・荷物の料金は入れない。時間はオートを探して料金を決める5分（仮定）＋道路距離÷時速20.8km（朝夕の平均速度）を5分単位で切り上げた値。実際の運賃・時間ではない。"
+    },
+    "delhi_metro_model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "地下鉄の所要時間と運賃の推定（デリー）",
+      "url": "https://delhi.metro.org.in/route/rajiv-chowk/lal-quila/",
+      "checkedAt": "2026-11-07",
+      "claimType": "hypothesis",
+      "claimJa": "地点と駅のあいだを歩く時間（地図の歩く距離÷分速75m）、入場・手荷物検査・待ちの10分（仮定）、経路案内の乗車時間を足して5分単位で切り上げた値。運賃は経路案内の普通運賃（平日）×2人。日曜・祝日の割引は入れない。実際の所要時間・運賃ではない。"
+    },
+    "walk_station_model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "地下鉄を使う地点・使わない組の決め方",
+      "url": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/",
+      "checkedAt": "2026-11-07",
+      "claimType": "hypothesis",
+      "claimJa": "ゲームの決まり：登録した徒歩が15分以内の組は徒歩だけにする。駅まで歩いて20分以内の地点だけ地下鉄を使う。地下鉄の合計時間が徒歩より長い組には地下鉄を置かない。"
+    }
+  },
+  "decisions": [
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "地下鉄（Lal Quila駅→Jama Masjid駅、駅まで歩く時間を含めて30分）は歩く（16分）より遅いので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "地下鉄（Lal Quila駅→Chawri Bazar駅、駅まで歩く時間を含めて40分）は歩く（22分）より遅いので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Lal Quila駅からJor Bagh駅まで地下鉄（Central Secretariatで乗り換え）。駅まで歩く7分・18分と、入場・検査・待ちの10分を含むゲーム用の推定（65分。徒歩の経路はない）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Lal Quila駅からBarakhamba Road駅まで地下鉄（Mandi Houseで乗り換え）。駅まで歩く7分・10分と、入場・検査・待ちの10分を含むゲーム用の推定（45分。徒歩は66分）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Lal Quila駅からKalkaji Mandir駅まで地下鉄（乗り換えなし）。駅まで歩く7分・16分と、入場・検査・待ちの10分を含むゲーム用の推定（75分。徒歩の経路はない）。運賃は1人₹43×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Lal Quila駅からPatel Chowk駅まで地下鉄（Kashmere Gateで乗り換え）。駅まで歩く7分・13分と、入場・検査・待ちの10分を含むゲーム用の推定（55分。徒歩は80分）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Lal Quila駅からRajiv Chowk駅まで地下鉄（Kashmere Gateで乗り換え）。駅まで歩く7分・1分と、入場・検査・待ちの10分を含むゲーム用の推定（40分。徒歩は58分）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "地下鉄（Jama Masjid駅→Lal Quila駅、駅まで歩く時間を含めて30分）は歩く（16分）より遅いので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて9分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて9分で着く（15分以内）ので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Jama Masjid駅からJor Bagh駅まで地下鉄（Central Secretariatで乗り換え）。駅まで歩く6分・18分と、入場・検査・待ちの10分を含むゲーム用の推定（60分。徒歩の経路はない）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Jama Masjid駅からBarakhamba Road駅まで地下鉄（Mandi Houseで乗り換え）。駅まで歩く6分・10分と、入場・検査・待ちの10分を含むゲーム用の推定（45分。徒歩は60分）。運賃は1人₹21×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Jama Masjid駅からKalkaji Mandir駅まで地下鉄（乗り換えなし）。駅まで歩く6分・16分と、入場・検査・待ちの10分を含むゲーム用の推定（70分。徒歩の経路はない）。運賃は1人₹43×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Jama Masjid駅からPatel Chowk駅まで地下鉄（Central Secretariatで乗り換え）。駅まで歩く6分・13分と、入場・検査・待ちの10分を含むゲーム用の推定（50分。徒歩は75分）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Jama Masjid駅からRajiv Chowk駅まで地下鉄（Mandi Houseで乗り換え）。駅まで歩く6分・1分と、入場・検査・待ちの10分を含むゲーム用の推定（35分。徒歩は50分）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "地下鉄（Chawri Bazar駅→Lal Quila駅、駅まで歩く時間を含めて40分）は歩く（22分）より遅いので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "auto_rickshaw",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて9分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて9分で着く（15分以内）ので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Chawri Bazar駅からJor Bagh駅まで地下鉄（乗り換えなし）。駅まで歩く6分・18分と、入場・検査・待ちの10分を含むゲーム用の推定（55分。徒歩の経路はない）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Chawri Bazar駅からBarakhamba Road駅まで地下鉄（Rajiv Chowkで乗り換え）。駅まで歩く6分・10分と、入場・検査・待ちの10分を含むゲーム用の推定（40分。徒歩は59分）。運賃は1人₹21×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Chawri Bazar駅からKalkaji Mandir駅まで地下鉄（Central Secretariatで乗り換え）。駅まで歩く6分・16分と、入場・検査・待ちの10分を含むゲーム用の推定（70分。徒歩の経路はない）。運賃は1人₹43×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Chawri Bazar駅からPatel Chowk駅まで地下鉄（乗り換えなし）。駅まで歩く6分・13分と、入場・検査・待ちの10分を含むゲーム用の推定（40分。徒歩は71分）。運賃は1人₹21×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Chawri Bazar駅からRajiv Chowk駅まで地下鉄（乗り換えなし）。駅まで歩く6分・1分と、入場・検査・待ちの10分を含むゲーム用の推定（25分。徒歩は47分）。運賃は1人₹21×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Jor Bagh駅からLal Quila駅まで地下鉄（Central Secretariatで乗り換え）。駅まで歩く18分・7分と、入場・検査・待ちの10分を含むゲーム用の推定（65分。徒歩の経路はない）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Jor Bagh駅からJama Masjid駅まで地下鉄（Central Secretariatで乗り換え）。駅まで歩く18分・6分と、入場・検査・待ちの10分を含むゲーム用の推定（60分。徒歩の経路はない）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Jor Bagh駅からChawri Bazar駅まで地下鉄（乗り換えなし）。駅まで歩く18分・6分と、入場・検査・待ちの10分を含むゲーム用の推定（55分。徒歩の経路はない）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Jor Bagh駅からBarakhamba Road駅まで地下鉄（Rajiv Chowkで乗り換え）。駅まで歩く18分・10分と、入場・検査・待ちの10分を含むゲーム用の推定（60分。徒歩の経路はない）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Jor Bagh駅からKalkaji Mandir駅まで地下鉄（Hauz Khasで乗り換え）。駅まで歩く18分・16分と、入場・検査・待ちの10分を含むゲーム用の推定（80分。徒歩の経路はない）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Jor Bagh駅からPatel Chowk駅まで地下鉄（乗り換えなし）。駅まで歩く18分・13分と、入場・検査・待ちの10分を含むゲーム用の推定（55分。徒歩の経路はない）。運賃は1人₹21×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Jor Bagh駅からRajiv Chowk駅まで地下鉄（乗り換えなし）。駅まで歩く18分・1分と、入場・検査・待ちの10分を含むゲーム用の推定（45分。徒歩の経路はない）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Barakhamba Road駅からLal Quila駅まで地下鉄（Mandi Houseで乗り換え）。駅まで歩く10分・7分と、入場・検査・待ちの10分を含むゲーム用の推定（45分。徒歩は66分）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Barakhamba Road駅からJama Masjid駅まで地下鉄（Mandi Houseで乗り換え）。駅まで歩く10分・6分と、入場・検査・待ちの10分を含むゲーム用の推定（45分。徒歩は60分）。運賃は1人₹21×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Barakhamba Road駅からChawri Bazar駅まで地下鉄（Rajiv Chowkで乗り換え）。駅まで歩く10分・6分と、入場・検査・待ちの10分を含むゲーム用の推定（40分。徒歩は59分）。運賃は1人₹21×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Barakhamba Road駅からJor Bagh駅まで地下鉄（Rajiv Chowkで乗り換え）。駅まで歩く10分・18分と、入場・検査・待ちの10分を含むゲーム用の推定（60分。徒歩の経路はない）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Barakhamba Road駅からKalkaji Mandir駅まで地下鉄（Mandi Houseで乗り換え）。駅まで歩く10分・16分と、入場・検査・待ちの10分を含むゲーム用の推定（70分。徒歩の経路はない）。運賃は1人₹43×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "地下鉄（Barakhamba Road駅→Patel Chowk駅、駅まで歩く時間を含めて45分）は歩く（29分）より遅いので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "地下鉄（Barakhamba Road駅→Rajiv Chowk駅、駅まで歩く時間を含めて30分）は歩く（17分）より遅いので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Kalkaji Mandir駅からLal Quila駅まで地下鉄（乗り換えなし）。駅まで歩く16分・7分と、入場・検査・待ちの10分を含むゲーム用の推定（75分。徒歩の経路はない）。運賃は1人₹43×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Kalkaji Mandir駅からJama Masjid駅まで地下鉄（乗り換えなし）。駅まで歩く16分・6分と、入場・検査・待ちの10分を含むゲーム用の推定（70分。徒歩の経路はない）。運賃は1人₹43×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Kalkaji Mandir駅からChawri Bazar駅まで地下鉄（Central Secretariatで乗り換え）。駅まで歩く16分・6分と、入場・検査・待ちの10分を含むゲーム用の推定（70分。徒歩の経路はない）。運賃は1人₹43×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Kalkaji Mandir駅からJor Bagh駅まで地下鉄（Hauz Khasで乗り換え）。駅まで歩く16分・18分と、入場・検査・待ちの10分を含むゲーム用の推定（80分。徒歩の経路はない）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Kalkaji Mandir駅からBarakhamba Road駅まで地下鉄（Mandi Houseで乗り換え）。駅まで歩く16分・10分と、入場・検査・待ちの10分を含むゲーム用の推定（70分。徒歩の経路はない）。運賃は1人₹43×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Kalkaji Mandir駅からPatel Chowk駅まで地下鉄（Central Secretariatで乗り換え）。駅まで歩く16分・13分と、入場・検査・待ちの10分を含むゲーム用の推定（70分。徒歩の経路はない）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Kalkaji Mandir駅からRajiv Chowk駅まで地下鉄（Central Secretariatで乗り換え）。駅まで歩く16分・1分と、入場・検査・待ちの10分を含むゲーム用の推定（60分。徒歩の経路はない）。運賃は1人₹43×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Patel Chowk駅からLal Quila駅まで地下鉄（Kashmere Gateで乗り換え）。駅まで歩く13分・7分と、入場・検査・待ちの10分を含むゲーム用の推定（55分。徒歩は80分）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Patel Chowk駅からJama Masjid駅まで地下鉄（Central Secretariatで乗り換え）。駅まで歩く13分・6分と、入場・検査・待ちの10分を含むゲーム用の推定（50分。徒歩は75分）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Patel Chowk駅からChawri Bazar駅まで地下鉄（乗り換えなし）。駅まで歩く13分・6分と、入場・検査・待ちの10分を含むゲーム用の推定（40分。徒歩は71分）。運賃は1人₹21×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Patel Chowk駅からJor Bagh駅まで地下鉄（乗り換えなし）。駅まで歩く13分・18分と、入場・検査・待ちの10分を含むゲーム用の推定（55分。徒歩の経路はない）。運賃は1人₹21×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "地下鉄（Patel Chowk駅→Barakhamba Road駅、駅まで歩く時間を含めて45分）は歩く（29分）より遅いので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Patel Chowk駅からKalkaji Mandir駅まで地下鉄（Central Secretariatで乗り換え）。駅まで歩く13分・16分と、入場・検査・待ちの10分を含むゲーム用の推定（70分。徒歩の経路はない）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "地下鉄（Patel Chowk駅→Rajiv Chowk駅、駅まで歩く時間を含めて30分）は歩く（24分）より遅いので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Rajiv Chowk駅からLal Quila駅まで地下鉄（Kashmere Gateで乗り換え）。駅まで歩く1分・7分と、入場・検査・待ちの10分を含むゲーム用の推定（40分。徒歩は58分）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "クトゥブ・ミナールから最寄りのQutab Minar駅まで歩く経路は、地図の計算で確かめられなかった（計算では7.4kmと出て不自然）。駅まで歩いて20分以内というゲームの決まりに合わない、または確かめられないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "フマユーン廟から最寄りのJawaharlal Nehru Stadium駅まで歩いて約30分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "インド門から最寄りのKhan Market駅まで歩いて約22分。駅まで歩いて20分以内というゲームの決まりに合わないので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Rajiv Chowk駅からJama Masjid駅まで地下鉄（Mandi Houseで乗り換え）。駅まで歩く1分・6分と、入場・検査・待ちの10分を含むゲーム用の推定（35分。徒歩は50分）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Rajiv Chowk駅からChawri Bazar駅まで地下鉄（乗り換えなし）。駅まで歩く1分・6分と、入場・検査・待ちの10分を含むゲーム用の推定（25分。徒歩は47分）。運賃は1人₹21×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Rajiv Chowk駅からJor Bagh駅まで地下鉄（乗り換えなし）。駅まで歩く1分・18分と、入場・検査・待ちの10分を含むゲーム用の推定（45分。徒歩の経路はない）。運賃は1人₹32×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "地下鉄（Rajiv Chowk駅→Barakhamba Road駅、駅まで歩く時間を含めて30分）は歩く（17分）より遅いので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "metro",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "Rajiv Chowk駅からKalkaji Mandir駅まで地下鉄（Central Secretariatで乗り換え）。駅まで歩く1分・16分と、入場・検査・待ちの10分を含むゲーム用の推定（60分。徒歩の経路はない）。運賃は1人₹43×2人。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s2_dmrc_fare_2025",
+        "s22_dmrc_station_names",
+        "s18_fossgis_foot",
+        "delhi_metro_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "auto_rickshaw",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "メーターの公定運賃（2023年の告示）で計算した1台（2人）分の料金と、朝夕の平均速度で出した時間（ゲーム用の推定）。",
+      "sourceRefs": [
+        "s1_delhi_auto_fare",
+        "s4_tomtom_delhi",
+        "s17_osrm_car",
+        "delhi_auto_model"
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "metro",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "地下鉄（Rajiv Chowk駅→Patel Chowk駅、駅まで歩く時間を含めて30分）は歩く（24分）より遅いので、地下鉄の経路は置かない。",
+      "sourceRefs": [
+        "s3_delhi_route_finder",
+        "s18_fossgis_foot",
+        "walk_station_model"
+      ]
+    }
+  ]
+}

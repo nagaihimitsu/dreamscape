@@ -1,9 +1,7 @@
-import { createHash } from "node:crypto";
-import { closeSync, existsSync, linkSync, lstatSync, openSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { closeSync, existsSync, linkSync, openSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { journeyInputFingerprint } from "./promote-journey";
-import { journeyTransitDecisionFile } from "./journey-transit-decisions";
-import { cityLayer, displayPath, loadContentSources, readJourneyCatalog, type ContentLayer, type ContentSources } from "./content-sources";
+import { cityLayer, displayPath, loadContentSources, type ContentLayer, type ContentSources } from "./content-sources";
 import type { MergedKind } from "./content-layout";
 import { createParentDirectories, removeCreatedDirectories } from "./created-directories";
 
@@ -15,28 +13,9 @@ export const layerPath = (root: string, layer: ContentLayer) => displayPath(root
 export const cityFiles = (layer: string, id: string) => [`${layer}/cities/${id}.json`, `${layer}/travel/${id}.json`, `${layer}/travel/${id}-settings.json`];
 export const read = (root: string, file: string): any => JSON.parse(readFileSync(path.join(root, file), "utf8"));
 
-/**
- * The old journey-wide transit decision ledgers (authoring profiles of the
- * journeys that still wait for their transport switch). Per-city transit
- * ledgers are content files (`travel/<city>-transit.json`).
- */
-export function transitLedgerFiles(root: string): string[] {
-  return [...new Set(readJourneyCatalog(root).journeys.flatMap((journey) => journey.cities)
-    .flatMap((city) => journeyTransitDecisionFile(root, city.id) ?? []))];
-}
-
-/** Fingerprint the actual validation inputs, including the old journey-wide transit ledgers. */
+/** Fingerprint the actual validation inputs (content and public files; per-city transit ledgers are content files). */
 export function inputFingerprint(root: string, ignored: ReadonlySet<string> = new Set()): string {
-  const h = createHash("sha256").update(journeyInputFingerprint(root, ignored));
-  for (const ledger of transitLedgerFiles(root)) {
-    const absolute = path.join(root, ledger);
-    h.update(ledger).update("\0");
-    if (existsSync(absolute)) {
-      if (lstatSync(absolute).isSymbolicLink()) throw new Error("Transit decisions must not be a symlink");
-      h.update(readFileSync(absolute));
-    } else h.update("missing");
-  }
-  return h.digest("hex");
+  return journeyInputFingerprint(root, ignored);
 }
 /** Whether a city's files exist (the loader rejects a city without its travel files, and travel files without their city). */
 export function existing(sources: ContentSources, id: string): boolean {
@@ -65,8 +44,7 @@ function inOneOwnerLayer(sources: ContentSources, files: readonly string[]): boo
 export function writeCityBundleFiles(root: string, original: Record<string, string | null>, next: Record<string, string>, fingerprint: string,
   move: typeof renameSync = renameSync, createLink: typeof linkSync = linkSync) {
   const files = Object.keys(next);
-  const ledgers = new Set(transitLedgerFiles(root));
-  if (files.some((file) => (!layerFile.test(file) && !ledgers.has(file)) || !Object.hasOwn(original, file) || typeof next[file] !== "string")
+  if (files.some((file) => !layerFile.test(file) || !Object.hasOwn(original, file) || typeof next[file] !== "string")
     || !inOneOwnerLayer(loadContentSources(root), files))
     throw new Error("Invalid city bundle file set");
   const token = `${process.pid}-${Date.now()}-${Math.random().toString(36).slice(2)}`;

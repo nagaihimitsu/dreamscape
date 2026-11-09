@@ -42,7 +42,7 @@ describe("authored Golden Triangle journey", () => {
     expect(journey.status).toBe("available");
     expect(journey.cities.map((city) => city.id)).toEqual(["delhi", "agra", "jaipur"]);
     let state = createGame("インドの旅人", "インドの同行者", { journeyId: journey.id });
-    expect(state).toMatchObject({ currentCityId: "delhi", travelBudget: 30_000, ap: 0, affection: 0, trust: 0, spark: 0,
+    expect(state).toMatchObject({ currentCityId: "delhi", travelBudget: journey.initialBudget, ap: 0, affection: 0, trust: 0, spark: 0,
       confessionStatus: "none", completedCityIds: [], memories: [], playedDateIds: [], claimedRewardIds: [] });
     let saved: GameState | null = null;
     const checkpoint = (next: GameState) => {

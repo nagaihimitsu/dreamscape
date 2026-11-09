@@ -32,7 +32,7 @@ npm run city:bundle -- apply artifacts/city-work/india-delhi.json
 
 現在の9都市のIDは `milano`、`delhi`、`agra`、`jaipur`、`tashkent`、`samarkand`、`bukhara`、`khiva`、`luang_prabang` です。例えばミラノは `npm run city:bundle -- export milano artifacts/city-work/italy-milano.json` のように書き出します。ミラノとインド3都市には登録済みの観光地と観察ポイントも含まれます。ウズベキスタン4都市は制作基盤の状態で、脚本やクイズの登録は別途必要です。
 
-書き出してから `content/` や `public/` のいずれか、インド編の観察カードや公共交通の調査台帳が変更された場合、他都市の変更や画像の追加も含め、古い作業コピーの反映は拒否されます。その場合は、画像・元データを準備したうえで、別名へ再度 `export` し、編集した項目を新しいコピーへ移してください。新しいコピーの `baseFingerprint` は移し替えず、そのまま残します。`baseFingerprint` は競合検出に使うため、手で変更しないでください。都市IDや公開状態もこの操作では変更できません。
+書き出してから `content/` や `public/` のいずれか、インド編の観察カードが変更された場合、他都市の変更や画像の追加も含め、古い作業コピーの反映は拒否されます。その場合は、画像・元データを準備したうえで、別名へ再度 `export` し、編集した項目を新しいコピーへ移してください。新しいコピーの `baseFingerprint` は移し替えず、そのまま残します。`baseFingerprint` は競合検出に使うため、手で変更しないでください。都市IDや公開状態もこの操作では変更できません。
 
 都市の到着会話を付ける場合は、都市定義の `arrivalStoryId` に登録済みInkのIDを指定します。ロゴに使う都市名も同じ都市定義から表示します。本文の作り方は [旅行編の制作手順](JOURNEY_AUTHORING.md#都市に到着したときの会話) を参照してください。
 
@@ -101,7 +101,7 @@ npm run city:bundle -- apply artifacts/city-work/sample-city.json
 | `clues` | 各観光地の観察ポイント・資料とその出典 |
 | `backgrounds` | 地点で表示する背景名、表示色、画像アセットへの参照 |
 | `assets` | 画像のパス、寸法、説明、作者・ライセンス・出典などの情報 |
-| `transitDecisions` | 乗り物を宣言した旅行編では、その都市の交通判断台帳 `travel/<都市ID>-transit.json` の判断（地点の組×乗り物。`reasonJa`・`checkedAt`・出典つき。`apply` で台帳に書き出す）。インド３都市は旧方式の旅行編全体の判断台帳のうち、その都市の判断。乗り物を宣言しない旅行編では `null` |
+| `transitDecisions` | 乗り物を宣言した旅行編では、その都市の交通判断台帳 `travel/<都市ID>-transit.json` の判断（地点の組×乗り物。`reasonJa`・`checkedAt`・出典つき。`apply` で台帳に書き出す）。乗り物を宣言しない旅行編では `null` |
 
 画像本体は、その旅行編の `content/journeys/<旅行編ID>/public/assets/`（全旅行編で共有する画像はリポジトリ直下の `public/assets/`）に置く必要があります。JSONの `path` には `public/` を除いた配信時のパス（例: `assets/tourism/india/delhi_red_fort.webp`）を書き、画像の実体は含まれません。画像のファイル名・出典・ライセンス・利用条件を確認し、参照に合うファイルを `export` / `new` の前に用意してください。画像を変える場合は、観察位置や説明も新しい画像で確認が必要です。
 
@@ -111,7 +111,7 @@ npm run city:bundle -- apply artifacts/city-work/sample-city.json
 
 交通時間・料金・座標・営業時間にはゲーム用の推定値があります。実際の時刻や運賃と混同せず、出典や推定の根拠も各項目に残してください。徒歩経路を座標の直線距離だけから現実の経路として扱うことはできません。
 
-経路を追加・削除したときは、同じ方向・乗り物の判断を `available` かそれ以外に直します（違うと `check`・`apply` が止まります）。インド３都市で公共交通の経路を追加したときは、`transitDecisions` に同じ方向・手段の不採用または未特定の判断が残らないよう、あわせて編集します。ゲームで採用しない判断は、現実の路線が存在しないことを意味しません。
+経路を追加・削除したときは、同じ方向・乗り物の判断を `available` かそれ以外に直します（違うと `check`・`apply` が止まります）。ゲームで採用しない判断は、現実の路線が存在しないことを意味しません。
 
 ## ほかに必要な作業
 

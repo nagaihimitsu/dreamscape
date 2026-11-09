@@ -2,6 +2,8 @@
 
 > 記録の注記：本文のパス・コマンドは作成当時の配置のままです。現在、この旅行編のデータは `content/journeys/golden_triangle/`、制作資料は `authoring/journeys/golden_triangle/` にあります（[旧配置との対応表](../../../README.md#当時の配置と現在の配置)）。
 
+> 交通判断台帳の注記（2026-11-09）：この調査の `decisions.json` と各都市のメモは記録として残します。インド編の都市内の交通は 2026-11-09 に徒歩・オートリキシャ（`auto_rickshaw`）・地下鉄（`metro`）へ切り替え、タクシー・鉄道・バスの経路はなくなりました。ゲームが使う台帳は都市ごとの `content/journeys/golden_triangle/travel/<都市ID>-transit.json` で、`npm run journey:transit -- --journey golden_triangle` で確かめます。下のコマンド（`inspect-india-transit.ts`）はそのとき削除したので、以下の手順と状態の説明は当時の記録です。切り替えの作り方は [都市内の交通](../golden-triangle-transport-20261107/README.md) にあります。
+
 デリー、アーグラ、ジャイプールの地点間について、地下鉄・鉄道（`rail`）とバス（`bus`）を片道ずつ区別して確認します。同じ地点への移動は対象外です。都市ごとの調査内容と出典は `delhi.md`、`agra.md`、`jaipur.md` を参照してください。
 
 次のコマンドは `content/travel/<都市ID>.json` の実際の経路と `decisions.json` を照合し、登録済み・確認済み不採用・調査したが特定できず・未調査を数えます。`--json` を付けると全地点・全方向・交通手段ごとの状態を出力します。

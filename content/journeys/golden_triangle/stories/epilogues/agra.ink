@@ -17,7 +17,7 @@ VAR ending_reached = false
 # speaker: narrator
 彼はチャイを飲み干し、甥の肩を叩いて立ち上がった。部屋のことは片付けさせた、と言い残して。
 # speaker: narrator
-部屋の扉を開けると、ハートも白鳥も消えていた。寝台は、ただの白い寝台に戻っている。
+二つの部屋の扉を開けると、どちらも、ハートも白鳥も消えていた。寝台は、ただの白い寝台に戻っている。
 {
 - ending_reached:
     # speaker: heroine

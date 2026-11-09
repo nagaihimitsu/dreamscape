@@ -208,7 +208,7 @@ describe("independent journey saves", () => {
       expect(result.status).toBe("loaded");
       if (result.status !== "loaded") throw new Error("Expected a game");
       expect(result.state).toMatchObject({ currentCityId: "delhi", playerName: "旅人", heroineName: "小春",
-        travelBudget: 30_000, ap: 0, memories: [], claimedRewardIds: [], completedCityIds: [] });
+        travelBudget: journey.initialBudget, ap: 0, memories: [], claimedRewardIds: [], completedCityIds: [] });
       expect(result.state.travel.calendar).toEqual({ journeyDay: 1, cityStartJourneyDay: 1, startWeekday: 0 });
       expect(promoteJourneyDraft(india, draft.raw).ok).toBe(false);
     } finally {
