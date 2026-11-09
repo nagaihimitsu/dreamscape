@@ -1,26 +1,10 @@
 // 【任意】特殊戦C・証拠連結（battles/catalog.json の format: "C"、reasoning.kind: "connection"）。
-// - 場面は intro・after_1・after_2・outro に加え、reasoning の claim（主張）・evidence_success・evidence_failure。
-//   C には press はない。reasoning.roundIndex 番目の問題の前に、資料を2枚組み合わせて示す。
+// - 1本の流れ（段階5）。書き方は朝市の特殊戦B（smp_mihon_special_b_market.ink）と同じで、C には追及がない（reasoning_action は
+//   いつも "evidence"）。reasoning.roundIndex（ここでは2）のとおり、第2問の後・第3問の前に、資料を2枚組み合わせて示す。
 // - 正しい資料（correctClueIds）は異なる2枚で、順不同。1枚だけでは言えないことが2枚で言えるようにする。
-// - 観察できる事実と、そこからの解釈を台詞で区別する。選択肢・# effect は置かない。
+// - 観察できる事実と、そこからの解釈を台詞で区別する。
 // - 見本の図書室と人物は架空。
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "claim": -> claim }
-{ battle_scene == "evidence_failure": -> evidence_failure }
-{ battle_scene == "evidence_success": -> evidence_success }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
+INCLUDE modules.ink
 # background: smp_bg_mihon_library
 # speaker: enemy
 「三時の言い伝え？　記録にないことは、起きていないのと同じです」
@@ -30,55 +14,43 @@ VAR battle_score = 0
 「記録なら、ここにたくさんありますよね。一緒に読んでもいいですか」
 # speaker: enemy
 「どうぞ。読めば分かります。言い伝えなんて、あとから付けた飾りだって」
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: smp_bg_mihon_library
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「鐘の修理は何度も。……鐘を直す職人は、この街にいたわけですね」
 - else:
     # speaker: enemy
     「日誌に何度も出てくるのは、鐘の修理です。時計の修理は……見当たりません」
 }
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: smp_bg_mihon_library
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「『三時に広場で』。招待状なんて、ただの私信だと思っていました」
 - else:
     # speaker: enemy
     「古い招待状には、『三時に広場で』とあります。何通も、同じ書き方で」
 }
--> END
-
-=== claim ===
-# background: smp_bg_mihon_library
-# speaker: enemy
-「時計が止まったままなのは、ただの偶然です。わざと残したという記録は、一つもありません」
--> END
-
-=== evidence_failure ===
-# background: smp_bg_mihon_library
-# speaker: enemy
-「その二枚では、わざとだとは言えませんね。偶然という説明で足ります」
-# speaker: heroine
-「直せたのに直さなかったこと、それから三時の使われ方。その二つを並べてみよう」
--> END
-
-=== evidence_success ===
+-> smp_mihon_special_c_library_claim ->
+- (stop)
+-> reasoning ->
+{ evidence_result == "failure":
+    # background: smp_bg_mihon_library
+    # speaker: enemy
+    「その二枚では、わざとだとは言えませんね。偶然という説明で足ります」
+    # speaker: heroine
+    「直せたのに直さなかったこと、それから三時の使われ方。その二つを並べてみよう」
+    -> stop
+}
 # background: smp_bg_mihon_library
 # speaker: narrator
 イオは二枚の資料を並べ、しばらく黙って見比べた。
 # speaker: enemy
 「……一枚ずつなら、どちらも偶然で片付けられたのに。では、二枚から何が言えますか」
--> END
-
-=== conclusion ===
+-> quiz(3) ->
 # background: smp_bg_mihon_library
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「直せたのに直さず、三時を誘いに使った。わざと、と考えるのが自然ですね」
 - else:
@@ -101,3 +73,9 @@ VAR battle_score = 0
     「助かります。次は、わたしも最初から一緒に探させてください」
 }
 -> END
+
+=== smp_mihon_special_c_library_claim ===
+# background: smp_bg_mihon_library
+# speaker: enemy
+「時計が止まったままなのは、ただの偶然です。わざと残したという記録は、一つもありません」
+->->

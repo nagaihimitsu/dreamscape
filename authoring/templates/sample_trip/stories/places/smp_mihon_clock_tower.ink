@@ -97,12 +97,11 @@ INCLUDE modules.ink
 「近道、教えてもらっちゃった。……ちょっと得した気分」
 -> END
 
-// ───── 0：バトル（本筋。段階3〜4の stitch の形。battles/catalog.json の storyId がこの住所を指す）。
-// 頭の札と -> DONE の後に、カタログの場面名（intro・after_1・after_2・outro）の stitch を置く。ゲームが stitch を名指しで始める。
+// ───── 0：バトル（本筋。battles/catalog.json の storyId がこの住所を指す）。1本の流れ（段階5）：頭の札の後に台詞を書き、
+// -> quiz(1) -> 〜 -> quiz(3) -> でクイズの画面を出す。戻ると quiz_correct（その問いの正誤）と battle_score（そこまでの正解数）が入る。
+// 呼び口の後の最初の行は、場面の始まりと同じく話し手と背景を書き直す。-> END の後に結果の画面。
 === smp_mihon_main_clock_tower ===
 # scene: battle
--> DONE
-= intro
 # background: smp_bg_mihon_clock_tower
 # speaker: enemy
 「旅の人？　三時ですよ。……そう言うと、みんな自分の時計を見て笑うんです」
@@ -114,10 +113,9 @@ INCLUDE modules.ink
 「直す前に、止まった理由を聞いてもいいですか」
 # speaker: enemy
 「古いから止まった。それだけ……のはずです。じゃあ、街の言い伝えで確かめましょうか」
--> END
-= after_1
+-> quiz(1) ->
 # background: smp_bg_mihon_clock_tower
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「直さずに、三時のまま残した。……修理代がなかったんだと思ってました」
 - else:
@@ -126,10 +124,9 @@ INCLUDE modules.ink
 }
 # speaker: heroine
 「お金の話なら、言い伝えにまではならない気がする。三時に何か意味があったのかな」
--> END
-= after_2
+-> quiz(2) ->
 # background: smp_bg_mihon_clock_tower
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「『来られるときに来て』……祖母の口癖でした。時刻のことじゃなかったのか」
 - else:
@@ -139,10 +136,9 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,smile,sparkle
 「いつ来ても三時なら、待ち合わせに遅刻がないね」
--> END
-= outro
+-> quiz(3) ->
 # background: smp_bg_mihon_clock_tower
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「戻ってきた人のための鐘。……毎朝の油差しは、そのためだったんですね」
 - else:

@@ -1,27 +1,14 @@
 // 【任意】特殊戦B・矛盾追及（battles/catalog.json の format: "B"、reasoning.kind: "contradiction"）。
-// - 場面は intro・after_1・after_2・outro に加え、reasoning の claim（主張）・press（追及）・
-//   evidence_success（正しい資料）・evidence_failure（違う資料）。reasoning.roundIndex 番目の問題の前に資料を選ぶ。
+// - 1本の流れ（段階5）：-> quiz(n) -> でクイズ、-> reasoning -> が止まる所（資料を選ぶ画面）。reasoning.roundIndex（ここでは1）の
+//   とおり、第1問の後・第2問の前に止まる。主張は手伝いの knot <バトル>_claim に書き、止まる所の前に -> <バトル>_claim -> で流す
+//   （手がかり帳の「主張」も、ゲームがこの knot を読んで出す）。追及（ゆさぶり）の文は <バトル>_press（手がかり帳の「追及で聞いたこと」）。
+// - 止まる所から戻ると reasoning_action が "press"（追及）か "evidence"（資料）で、資料なら evidence_result が "success" か "failure"。
+//   追及と違う資料の後に -> stop と書くと、止まる所（- (stop)）へ戻って選び直せる（決定35。書かなければ次へ進む）。
+//   正しい資料の後は -> stop と書かずに次の問いへ進む（戻ってばかりの流れはビルドが止める）。資料は得点を変えない。
 // - 正しい資料（correctClueIds）は1つ。どの資料が正しいかは台詞で明かさない。証拠の判定と英語3択はゲーム側。
-// - 主張は大きすぎる断言にし、資料1枚で崩れるようにする。選択肢・# effect は置かない。
+// - 主張は大きすぎる断言にし、資料1枚で崩れるようにする。
 // - 見本の朝市と人物は架空。
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "claim": -> claim }
-{ battle_scene == "press": -> press }
-{ battle_scene == "evidence_failure": -> evidence_failure }
-{ battle_scene == "evidence_success": -> evidence_success }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
+INCLUDE modules.ink
 # background: smp_bg_mihon_market
 # speaker: enemy
 「焼きたては今なの。今！　なのに、この街の人は好きな時間にしか来ない」
@@ -31,52 +18,38 @@ VAR battle_score = 0
 「みんな、来られるときに来るんですよね。三時に会おう、って」
 # speaker: enemy
 「それよ。あの時計のせいで、街じゅうがのんびりになったの。朝市の始まり方から教えてあげる」
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: smp_bg_mihon_market
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「手をたたく合図で始まる。……鐘じゃないって、よく知ってたわね」
 - else:
     # speaker: enemy
     「朝市は、店主たちが手をたたいて始めるの。鐘なんて待っていたら、日が暮れるわ」
 }
--> END
-
-=== claim ===
-# background: smp_bg_mihon_market
-# speaker: enemy
-「時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！」
--> END
-
-=== press ===
-# background: smp_bg_mihon_market
-# speaker: enemy
-「誰も、よ。だから焼きたてを出しても、いつも冷めてから売れるの」
-# speaker: heroine
-「……一人残らず、ですか。朝市の中にも、時間を計っている人はいませんか」
--> END
-
-=== evidence_failure ===
-# background: smp_bg_mihon_market
-# speaker: enemy
-「その資料で、誰かが時間を守っていると言える？　わたしの『誰も』は、まだ崩れないわ」
-# speaker: heroine
-「この資料じゃ足りないみたい。時間を計る道具が書いてあるものを探そう」
--> END
-
-=== evidence_success ===
+-> smp_mihon_special_b_market_claim ->
+- (stop)
+-> reasoning ->
+{ reasoning_action == "press":
+    -> smp_mihon_special_b_market_press ->
+    -> stop
+}
+{ evidence_result == "failure":
+    # background: smp_bg_mihon_market
+    # speaker: enemy
+    「その資料で、誰かが時間を守っていると言える？　わたしの『誰も』は、まだ崩れないわ」
+    # speaker: heroine
+    「この資料じゃ足りないみたい。時間を計る道具が書いてあるものを探そう」
+    -> stop
+}
 # background: smp_bg_mihon_market
 # speaker: narrator
 サラは資料を読むと、自分の店の棚をふり返った。砂時計が、ちょうど落ちきるところだった。
 # speaker: enemy
 「……これ、わたしのことじゃない。でも、まだ答えは聞いてないわよ」
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: smp_bg_mihon_market
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「砂時計で計る。一度も焦がしたことがない。……時間を守ってる人、ここにいたわ」
 - else:
@@ -85,11 +58,9 @@ VAR battle_score = 0
 }
 # speaker: heroine
 「塔の時計がなくても、時間の計り方はあるんですね」
--> END
-
-=== conclusion ===
+-> quiz(3) ->
 # background: smp_bg_mihon_market
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「それぞれのやり方で守ってる。……わたしが怒ってたのは、時計じゃなくて冷めたパンね」
 - else:
@@ -113,3 +84,17 @@ VAR battle_score = 0
     「はい。今度はちゃんと、間に合うように来ます」
 }
 -> END
+
+=== smp_mihon_special_b_market_claim ===
+# background: smp_bg_mihon_market
+# speaker: enemy
+「時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！」
+->->
+
+=== smp_mihon_special_b_market_press ===
+# background: smp_bg_mihon_market
+# speaker: enemy
+「誰も、よ。だから焼きたてを出しても、いつも冷めてから売れるの」
+# speaker: heroine
+「……一人残らず、ですか。朝市の中にも、時間を計っている人はいませんか」
+->->
