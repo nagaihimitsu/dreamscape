@@ -562,8 +562,16 @@ describe("a then: at a trip's moment (2.3, 3.6, 4.1)", () => {
       expect(moved.battleRecords.some((record) => record.battleId === "smp_mihon_special_c_library")).toBe(false);
       expect(saveGame(new MemoryStorage(), moved).ok).toBe(true);
     }
-    // 20:50: arriving at 20:56, no way home reaches the hotel by 21:00 (the save's rule before 21:00): it cannot be chosen.
-    expect(shownChoice(restAt(20 * 60 + 50), "as_is")).toEqual({ show: "grey", reason: "今日はホテルへの帰路を含めると時間が足りません。" });
+    // 20:48 to 20:53: arriving at 20:54–20:59, no way home reaches the hotel by 21:00 (the save's rule before 21:00): it cannot be
+    // chosen, and with 「直してもらおうか」 unaffordable nothing can (the only stuck spot of this content; the build stops it: A10
+    // counts no then: move as sure, build-checks.test.ts).
+    for (const minute of [20 * 60 + 48, 20 * 60 + 50, 20 * 60 + 52]) {
+      const stuck = restAt(minute);
+      expect(shownChoice(stuck, "as_is"), String(minute)).toEqual({ show: "grey", reason: "今日はホテルへの帰路を含めると時間が足りません。" });
+      expect(listPlayerActions(stuck).filter((action) => action.kind === "encounter_choose")).toEqual([]);
+    }
+    // Just outside it, the choice is open again (20:47: home by 21:00; 20:54: arriving after 21:00, the late way home).
+    for (const minute of [20 * 60 + 47, 20 * 60 + 54]) expect(shownChoice(restAt(minute), "as_is"), String(minute)).toEqual({ show: "open" });
   });
 
   it("reads a retry's shorter time at the place a then: move goes to, as the map does (its battle played, the episode not done)", () => {

@@ -55,6 +55,12 @@ describe("the scene walk", () => {
     expect(() => walk(talk("# when: money >= 8\n", deciding))).toThrow("No choice can be chosen");
   });
 
+  it("does not count a then: move as sure, even on foot: it greys when no way home gets back in time or the main part there cannot be paid (A10)", () => {
+    const moveOrPay = "* [Go # option: go]\n    # then: move x_tower\n    -> END\n* [Pay # option: pay]\n    # money: -50\n    -> END\n";
+    expect(() => walk(talk("", moveOrPay))).toThrow(/No choice can be chosen.*add a choice that needs nothing/u);
+    expect(walk(talk("", "* [Go # option: go]\n    # then: move x_tower\n    -> END\n* [Stay # option: stay]\n    -> END\n"))).toBe(2);
+  });
+
   it("warns about a choice point with only 「また今度」 and choices needing an item not guaranteed there", () => {
     const warnings: string[] = [];
     walk(talk("", "* [A # option: a]\n    # give: smp_x_card heroine\n    a\n    -> END\n* [Later # option: later]\n    # later\n    l\n    -> END\n"),
