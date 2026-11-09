@@ -171,4 +171,17 @@ describe("the clock tower's place file at play", () => {
     expect(end.viewedEpilogueCityIds).toContain("mihon");
     expect(end.affection).toBe(affection + 1);
   });
+
+  it("saves an epilogue whose choice raises the romance stage: the lines after it read the new stage", () => {
+    let s = openEpilogueScene(completedCity("mihon"));
+    for (let step = 0; !s.activeEpilogue!.frame.choices.length; step++) { expect(step).toBeLessThan(40); s = saved(advanceCityEpilogue(s, s.revision)); }
+    // One affection short of stage 2 (a date played, trust 1): waving back (affection +1) reaches it.
+    s = saved({ ...s, affection: 1, trust: 1, spark: 0, romanceStage: 1, playedDateIds: ["smp_mihon_date_tower_square"] });
+    const wave = s.activeEpilogue!.frame.choices.find((choice) => choice.optionId === "wave_back")!;
+    const chosen = saved(chooseCityEpilogue(s, wave.index, s.revision));
+    expect(chosen.romanceStage).toBe(2);
+    let end = chosen;
+    for (let step = 0; end.activeEpilogue; step++) { expect(step).toBeLessThan(40); end = saved(advanceCityEpilogue(end, end.revision)); }
+    expect(end.viewedEpilogueCityIds).toContain("mihon");
+  });
 });

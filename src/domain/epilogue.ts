@@ -83,11 +83,12 @@ export function chooseCityEpilogue(state: GameState, index: number, expectedRevi
   const option = sceneOption(scene, choice.optionId);
   const revision = state.revision + 1;
   const applied = option && scene ? applyChoiceEffects(state, scene.id, option, revision, nextRoll) : { state };
-  const next = applied.state;
-  const result: Record<string, string> = "profile" in applied && applied.profile ? { romance_result: applied.profile.result } : {};
+  // The romance progress is read again before Ink goes on: the lines after the choice (and the saved conversation, which
+  // keeps the stage and the address it was given) read the new stage, as a reload checks them.
+  const next = option?.rel || option?.profile ? evaluateProgression(applied.state) : applied.state;
+  const result: Record<string, string | number | boolean> = { ...variables(next), ...("profile" in applied && applied.profile ? { romance_result: applied.profile.result } : {}) };
   const step = selectStoryChoice(storyId, active.storyState, active.frame, index, next.memories, {}, result, next.inventory, sceneConditionReader(next));
-  const changed: GameState = { ...next, revision, activeEpilogue: { ...active, chosenCount: (active.chosenCount ?? 0) + 1, ...checkedStep(step) } };
-  return option?.rel || option?.profile ? evaluateProgression(changed) : changed;
+  return { ...next, revision, activeEpilogue: { ...active, chosenCount: (active.chosenCount ?? 0) + 1, ...checkedStep(step) } };
 }
 
 /** Whether the current city's arrival can begin (a new journey or a city just reached; no scene of another kind open). */
