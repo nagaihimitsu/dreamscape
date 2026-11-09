@@ -119,7 +119,7 @@
 | 特殊戦の反論の場面 | `battles/<特殊戦の名前>_rebuttal` | なし | （見本にはない） |
 | 都市フィナーレ | `battles/<頭>_finale` | `<頭>_finale_quiz` | `battles/smp_mihon_finale`、`smp_mihon_finale_quiz` |
 | 観光案内 | `tourism/<頭>_<観光地>_guide` | なし | `tourism/smp_mihon_market_guide` |
-| 場所のファイル（その場所の場面をまとめる） | `places/<頭>_<場所>`（場所は観光地IDから都市名を除いた名前。場面の住所は「ストーリーID.knot」） | なし | `places/smp_mihon_clock_tower`（`places/smp_mihon_clock_tower.smp_mihon_clock_tower_guide`） |
+| 場所のファイル（その場所の場面をまとめる） | `places/<頭>_<場所>`（場所は観光地・デートの行き先・地図の地点のIDから都市名を除いた名前。場面の住所は「ストーリーID.knot」。一つの場所の場面は、`_<内容>` を付けた別のファイルに分けてもよい） | なし | `places/smp_mihon_clock_tower`（`places/smp_mihon_clock_tower.smp_mihon_clock_tower_guide`） |
 | デート・恋愛の出来事 | `dates/<頭>_date_<行き先・出来事>` | なし | `places/smp_mihon_clock_tower.smp_mihon_date_tower_square`（場所のファイルの knot） |
 | 道中交流 | `encounters/<頭>_<交流>`（くじの結果は `_won`・`_lost`・`_already`） | なし | `places/smp_mihon_clock_tower.smp_mihon_bookmark_stall`（場所のファイルの knot） |
 | 到着・エピローグ | `arrivals/<都市ID>`、`epilogues/<都市ID>` | なし | `epilogues/mihon` |

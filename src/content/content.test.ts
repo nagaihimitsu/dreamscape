@@ -15,6 +15,8 @@ import { reasoningIntroCatalogSchema } from "./reasoning-intros";
 import { battleCatalogSchema, citySchema, dateCatalogSchema } from "./schemas";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import { parseStoryTags } from "./tags";
+import { isPlaceStory, storyFileOf } from "./story-address";
+import { RELATIONSHIP_TONES } from "../domain/romance-tone";
 import { changeCatalogEntry, prepareContentFixture, quizSourceFile, registerOwnArtwork, storySourceFile } from "./test-fixtures";
 
 let fixture: string;
@@ -254,13 +256,6 @@ describe("content build acceptance", () => {
     // output may hold other journeys (the unit tests build it with the sample journey).
     const mirror = async (relative: string) => JSON.parse(await readFile(path.join(fixture, MIRROR_DIRECTORY, relative), "utf8"));
     const dates = dateCatalogSchema.parse(await mirror("romance/date_catalog.json")).dates;
-    expect(result.routes).toBe(
-      dates.reduce(
-        (sum, date) =>
-          sum + (date.kind === "confession" ? 3 : 6) ** date.choiceCount * date.validationContexts.length,
-        0,
-      ),
-    );
     const encounterCatalog = normalizeEncounterCatalog(await mirror("encounters/catalog.json"), result.tourism.landmarks);
     const cities = await Promise.all(listFiles(path.join(fixture, MIRROR_DIRECTORY, "cities"))
       .map(async (file) => citySchema.parse(await mirror(`cities/${file}`))));
@@ -270,6 +265,7 @@ describe("content build acceptance", () => {
         "utf8",
       ),
     );
+    // A catalog's address names a story file, or a knot of a place file (the generated stories are by file).
     expect(Object.keys(generated).sort()).toEqual(
       [...new Set([
         "learning/milano_english",
@@ -280,13 +276,30 @@ describe("content build acceptance", () => {
           event.storyId,
           ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : []),
         ]),
-        ...tourismCatalogSchema.parse(await mirror("tourism/catalog.json")).landmarks.map((landmark) => landmark.guideStoryId),
+        ...tourismCatalogSchema.parse(await mirror("tourism/catalog.json")).landmarks.flatMap((landmark) => landmark.guideStoryId ? [landmark.guideStoryId] : []),
         ...cities.flatMap((city) => city.arrivalStoryId ? [city.arrivalStoryId] : []),
         ...result.journey.episodes.flatMap((episode) =>
           episode.epilogueStoryId ? [episode.epilogueStoryId] : [],
         ),
-      ])].sort(),
+      ].map(storyFileOf))].sort(),
     );
+    // Every date is walked in every validation context. A one-scene date: each declared romance combination. A place
+    // file's date: path by path (scene-walk.ts; helper knots and cond texts make its paths differ from its declared
+    // combinations), in each context and tone, and a confession that reads confession_result once per outcome its
+    // contexts give (DA-1).
+    expect(Object.keys(result.dateRoutes).sort()).toEqual(dates.map((date) => date.id).sort());
+    expect(dates.some((date) => isPlaceStory(date.storyId))).toBe(true);
+    for (const date of dates) {
+      if (!isPlaceStory(date.storyId)) {
+        expect(result.dateRoutes[date.id], date.id).toBe((date.kind === "confession" ? 3 : 6) ** date.choiceCount * date.validationContexts.length);
+        continue;
+      }
+      expect(result.dateRoutes[date.id], date.id).toBeGreaterThanOrEqual(date.validationContexts.length * RELATIONSHIP_TONES.length);
+      if (date.kind === "confession" && (generated[storyFileOf(date.storyId)] as string).includes('"VAR?":"confession_result"'))
+        expect(new Set(result.placeDateWalks[date.id].map((walk) => walk.confession_result)), date.id).toEqual(new Set(
+          date.validationContexts.map((context) => context.confessionResult ?? (context.confessionReady ? "accepted" : "deferred"))));
+    }
+    expect(result.routes).toBe(Object.values(result.dateRoutes).reduce((sum, count) => sum + count, 0));
   });
 
   it("reflects edited Ink prose in runtime without a UI source change", async () => {

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import destinationsData from "../../../src/content/generated/content/romance/date_destinations.json";
 import { dateDestinationsSchema } from "../../../src/content/date-destinations";
 import { dates, getCityContent, presentation, stories } from "../../../src/content/index";
+import { storyFileOf } from "../../../src/content/story-address";
 
 describe("authored Indian date destinations", () => {
   it.each(["delhi", "agra", "jaipur"])("registers six independently sourced locations in %s", (cityId) => {
@@ -21,7 +22,7 @@ describe("authored Indian date destinations", () => {
       const date = dates.find((date) => date.id === event?.id);
       expect(date?.destinationId).toBe(destination.id);
       expect(date?.chapterId).toBe(cityId);
-      expect(date && stories[date.storyId]).toBeDefined();
+      expect(date && stories[storyFileOf(date.storyId)]).toBeDefined();
     }
   });
 });

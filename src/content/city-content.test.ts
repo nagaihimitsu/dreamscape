@@ -222,7 +222,8 @@ describe("Milan city content", () => {
   );
 
   it("accepts the protagonist's and an opponent's lines in a city arrival (decision 36)", async () => {
-    const file = path.join(fixture, storySourceFile("arrivals/delhi"));
+    // India's Delhi arrival is the first knot of the hotel's place file (GT-3a).
+    const file = path.join(fixture, storySourceFile("places/gt_delhi_hotel_hub"));
     const original = await readFile(file, "utf8");
     await writeFile(file, original.replace("# speaker: heroine\n", "# speaker: player\n「着いたね。まずは宿だ」\n# speaker: enemy\n「そこの旅の人、荷物を持とうか」\n# speaker: heroine\n"));
     const result = await buildContent(fixture, false);

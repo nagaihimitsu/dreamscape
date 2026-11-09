@@ -18,8 +18,8 @@ import { AFTER_PARTS, type AfterPart, type RelationshipDelta, type SceneAt, type
 
 export const PLACE_HEAD_TAGS = ["scene", "title", "at", "priority", "when", "until", "repeat", "person", "on_done", "then", "sources"] as const;
 export const CHOICE_EFFECT_TAGS = ["requires", "give", "use", "rel", "profile", "memory", "effect", "set", "money", "ap", "then", "later"] as const;
-/** Kinds a place file may hold (arrivals and epilogues stay one-scene files; their moments' talks may be in any place file). */
-export const PLACE_KINDS: readonly SceneKind[] = ["talk", "encounter", "guide", "battle", "date"];
+/** Kinds a place file may hold (a hotel's place file may hold its city's arrival and epilogue knots; their moments' talks may be in any place file). */
+export const PLACE_KINDS: readonly SceneKind[] = ["talk", "encounter", "guide", "battle", "date", "arrival", "epilogue"];
 /** The game's include line and the line after it (the file's top runs nothing). */
 export const PLACE_TOP = ["INCLUDE modules.ink", "-> DONE"] as const;
 
@@ -403,7 +403,7 @@ export function readHead(knot: PlaceKnot, apCap: number): PlaceHead | undefined 
   const kind = single("scene");
   if (!kind) throw new Error(`The head of ${knot.name} needs # scene: (${PLACE_KINDS.join(", ")}); a knot without a head is a helper knot`);
   if (!(PLACE_KINDS as readonly string[]).includes(kind))
-    throw new Error(`# scene: ${kind} is not available in a place file yet (stage 3a: ${PLACE_KINDS.join(", ")}; arrivals and epilogues stay one-scene files)`);
+    throw new Error(`# scene: ${kind} is not available in a place file (${PLACE_KINDS.join(", ")})`);
   const at = values("at").map((value) => parseAt(value));
   const priorityText = single("priority");
   let priority: PlaceHead["priority"];

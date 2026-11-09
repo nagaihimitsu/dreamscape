@@ -4,6 +4,8 @@ VAR player_address = ""
 VAR battle_scene = "intro"
 VAR answer_correct = false
 VAR battle_score = 0
+// 【3】1場面1ファイルの頭の札（結果を初めて記録したとき1回当たる）。足した札：審判の報酬のライムの漬物を受け取る
+# on_done: item gt_jaipur_sushma_lime_pickle
 
 { battle_scene == "intro": -> introduction }
 { battle_scene == "after_1": -> after_first }

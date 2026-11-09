@@ -7185,6 +7185,26 @@
       "activityMinutes": 30,
       "apCost": 0,
       "admissionCost": 2200
+    },
+    {
+      "id": "gt_agra_date_confession",
+      "cityId": "agra",
+      "placeId": "agra_hotel_hub",
+      "category": "date",
+      "titleJa": "屋上の、言いたいこと",
+      "activityMinutes": 15,
+      "apCost": 0,
+      "admissionCost": 0
+    },
+    {
+      "id": "gt_agra_date_reassurance",
+      "cityId": "agra",
+      "placeId": "agra_hotel_hub",
+      "category": "date",
+      "titleJa": "チャイが冷めるまで",
+      "activityMinutes": 15,
+      "apCost": 0,
+      "admissionCost": 0
     }
   ]
 }

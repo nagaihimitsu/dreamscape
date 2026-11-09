@@ -117,7 +117,8 @@ export const citySchema = z
     countryCode: z.string().length(2),
     nameJa: text,
     themeJa: text,
-    arrivalStoryId: z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/).optional(),
+    /** A one-scene file (`arrivals/<city>`) or a place file's arrival knot (`places/<file>.<knot>`; stage 3). */
+    arrivalStoryId: storyAddressSchema.optional(),
     firstClearReward: z
       .object({ rewardSourceId: id, ap: z.number().int().nonnegative() })
       .strict(),

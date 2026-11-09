@@ -42,7 +42,8 @@ function prepareUnpublishedFixture(root: string) {
       delete data.arrivalStoryId;
     });
     edit(`${layer}/travel/${city.cityId}.json`, (data) => {
-      data.events = data.events.filter((event: any) => event.id !== city.finale.eventId).map((event: any) => ({ ...event, contentStatus: "pending_content" }));
+      // The rooftop dates (no scaffold dates) leave with their place files below.
+      data.events = data.events.filter((event: any) => event.id !== city.finale.eventId && (event.category !== "date" || dateIds.has(event.id))).map((event: any) => ({ ...event, contentStatus: "pending_content" }));
       for (const place of data.places) if (place.landmarkIds) place.landmarkIds = place.landmarkIds.filter((id: string) => !landmarkIds.has(id));
     });
   }
@@ -51,16 +52,21 @@ function prepareUnpublishedFixture(root: string) {
     data.rewards = data.rewards.filter((entry: any) => !eventIds.has(entry.episodeId));
   });
   edit(`${layer}/battles/catalog.json`, (data) => { data.battles = data.battles.filter((entry: any) => !battleIds.has(entry.id)); });
-  edit(`${layer}/romance/date_catalog.json`, (data) => { data.dates = data.dates.filter((entry: any) => !dateIds.has(entry.id)); });
+  // Every India date, also the rooftop dates at the hotel (no scaffold dates: their knots go with the place files below).
+  edit(`${layer}/romance/date_catalog.json`, (data) => { data.dates = data.dates.filter((entry: any) => !cityIds.has(entry.chapterId)); });
   edit(`${layer}/tourism/catalog.json`, (data) => {
     data.landmarks = data.landmarks.filter((entry: any) => !cityIds.has(entry.cityId));
     data.clues = data.clues.filter((entry: any) => !landmarkIds.has(entry.landmarkId));
   });
-  edit(`${layer}/romance/effect_catalog.json`, (data) => { data.effects = data.effects.filter((entry: any) => !memoryIds.has(entry.memoryId)); });
   edit(`${layer}/romance/presentation.json`, (data) => { for (const id of memoryIds) delete data.memories[id]; });
   for (const file of ["presentation/dialogue-expressions.json", "presentation/dialogue-reactions.json"].map((kind) => `${layer}/${kind}`))
     if (existsSync(path.join(root, file))) edit(file, (data) => { data.entries = data.entries.filter((entry: any) => !storyIds.has(entry.storyId)); });
   for (const id of storyIds) rmSync(path.join(root, layer, "stories", `${id}.ink`), { force: true });
+  // India's guides, arrivals, dates and epilogues are knots of its place files (GT-3): unpublished with them, and with
+  // the items and flags those scenes give and set.
+  rmSync(path.join(root, layer, "stories/places"), { recursive: true, force: true });
+  edit(`${layer}/encounters/catalog.json`, (data) => { data.items = data.items.filter((item: any) => !cityIds.has(item.cityId)); });
+  edit(`${layer}/progression/story.json`, (data) => { data.flags = []; });
   const questionIds = new Set<string>();
   for (const file of readdirSync(path.join(root, layer, "quizzes"))) {
     if (!file.endsWith(".json")) continue;
@@ -105,6 +111,7 @@ function unpublishedProject({ withoutEmptyCatalogs = false } = {}) {
   prepareUnpublishedFixture(root);
   if (withoutEmptyCatalogs) for (const kind of emptiedCatalogs) {
     const file = path.join(root, layer, kind);
+    if (!existsSync(file)) continue; // India has no romance/effect_catalog.json since its dates use choice tags (GT-3b).
     const data = JSON.parse(readFileSync(file, "utf8"));
     expect(Object.values(data).filter(Array.isArray).every((items) => !(items as unknown[]).length), kind).toBe(true);
     if (kind === "learning/translations.json") expect(data.questions).toEqual({});

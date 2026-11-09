@@ -6506,6 +6506,26 @@
       "activityMinutes": 45,
       "apCost": 0,
       "admissionCost": 1200
+    },
+    {
+      "id": "gt_jaipur_date_confession",
+      "cityId": "jaipur",
+      "placeId": "jaipur_hotel_hub",
+      "category": "date",
+      "titleJa": "屋上の、言いたいこと",
+      "activityMinutes": 15,
+      "apCost": 0,
+      "admissionCost": 0
+    },
+    {
+      "id": "gt_jaipur_date_reassurance",
+      "cityId": "jaipur",
+      "placeId": "jaipur_hotel_hub",
+      "category": "date",
+      "titleJa": "チャイが冷めるまで",
+      "activityMinutes": 15,
+      "apCost": 0,
+      "admissionCost": 0
     }
   ]
 }

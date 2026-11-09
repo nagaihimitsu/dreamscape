@@ -34,10 +34,10 @@ describe("cond in a scene's Ink", () => {
   it("builds, walks both values and lists the text with its condition for the game", async () => {
     await epilogueWith("rel affection >= 3");
     const result = await buildContent(fixture);
-    expect(result.sceneConditions).toEqual({
-      conditions: { "rel affection >= 3": { relationship: { axis: "affection", atLeast: 3 } } },
-      stories: { "epilogues/milano": ["rel affection >= 3"] },
-    });
+    // The epilogue's text and its condition, beside the scenes of other journeys that read cond (India's place files).
+    expect(result.sceneConditions.conditions["rel affection >= 3"]).toEqual({ relationship: { axis: "affection", atLeast: 3 } });
+    expect(Object.entries(result.sceneConditions.stories).filter(([storyId]) => !storyId.startsWith("places/gt_")))
+      .toEqual([["epilogues/milano", ["rel affection >= 3"]]]);
     const generated = JSON.parse(await readFile(path.join(fixture, "src/content/generated/scene-conditions.json"), "utf8"));
     expect(generated).toEqual(result.sceneConditions);
   }, 120000);

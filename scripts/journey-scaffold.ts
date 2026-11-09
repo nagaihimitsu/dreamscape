@@ -47,7 +47,9 @@ export function journeyRequirements(input: JourneyScaffoldInput, selectedCityIds
       eventId: event.id, landmarkId: event.placeId, battleId: `${event.id}_battle`, quizId: `${event.id}_quiz`,
       guideStoryId: `tourism/${input.eventPrefix}_${event.placeId}_guide`, battleStoryId: `battles/${event.id}`,
     })),
-    dates: travel.events.filter((event) => event.category === "date" && event.id.startsWith(`${input.eventPrefix}_${travel.cityId}_date_`)).map((event) => ({
+    // The dates at a destination (normal dates); a special date at another place (India's hotel roof) is no scaffold date.
+    dates: travel.events.filter((event) => event.category === "date" && event.id.startsWith(`${input.eventPrefix}_${travel.cityId}_date_`) &&
+      !!travel.places.find((place) => place.id === event.placeId)?.destinationIds?.includes(event.placeId)).map((event) => ({
       eventId: event.id, destinationId: event.placeId, storyId: `dates/${event.id}`, memoryId: `${event.id}_memory`,
       effectIds: Object.fromEntries((["first", "second"] as const).map((round) => [round,
         Object.fromEntries(profiles.map((profile) => [profile, `${event.id}_${round}_${profile}`]))])),

@@ -60,7 +60,7 @@
         "gt_delhi_main_humayun_tomb",
         "gt_delhi_main_jama_masjid"
       ],
-      "epilogueStoryId": "epilogues/delhi",
+      "epilogueStoryId": "places/gt_delhi_hotel_hub.gt_delhi_epilogue",
       "battleId": "gt_delhi_finale_battle",
       "titleJa": "月が落ちた通り",
       "descriptionJa": "デリー最後の日、カムラが姿を消した。暗号の地図を手がかりに、孫のアマンと夜の旧市街を捜す。",
@@ -126,7 +126,7 @@
         "gt_agra_main_itimad_tomb",
         "gt_agra_main_fatehpur_sikri"
       ],
-      "epilogueStoryId": "epilogues/agra",
+      "epilogueStoryId": "places/gt_agra_hotel_hub.gt_agra_epilogue",
       "battleId": "gt_agra_finale_battle",
       "titleJa": "一番いい話",
       "descriptionJa": "名物ガイドに「新婚さん」として観客に紹介される。泣ける伝説と本当の話の、公開の勝負。",
@@ -192,7 +192,7 @@
         "gt_jaipur_main_city_palace",
         "gt_jaipur_main_jantar_mantar"
       ],
-      "epilogueStoryId": "epilogues/jaipur",
+      "epilogueStoryId": "places/gt_jaipur_hotel_hub.gt_jaipur_epilogue",
       "battleId": "gt_jaipur_finale_battle",
       "titleJa": "窓の外へ",
       "descriptionJa": "旅の最後の夜、花婿の行列。花嫁の家の門の前で、花婿側の代表として問題に答える。",

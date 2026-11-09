@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "gt_delhi_kamla_memo",
+      "cityId": "delhi",
+      "nameJa": "カムラの段ボールのメモ",
+      "descriptionJa": "カムラが書いてくれた五行のデリー。",
+      "carry": "journey"
+    },
+    {
+      "id": "gt_delhi_rain_attar",
+      "cityId": "delhi",
+      "nameJa": "雨の匂いの小瓶",
+      "descriptionJa": "ジャーマー・マスジドの路地で、自分で買った香油。夏の終わりの、最初の雨の匂い。",
+      "carry": "journey"
+    },
+    {
+      "id": "gt_delhi_aman_wedding_invitation",
+      "cityId": "delhi",
+      "nameJa": "アマンの結婚式の案内",
+      "descriptionJa": "ジャイプールの旧市街での結婚式の知らせ。",
+      "carry": "journey"
+    },
+    {
+      "id": "gt_agra_anwar_petha",
+      "cityId": "agra",
+      "nameJa": "ペーター",
+      "descriptionJa": "アンワルの詫びの印の砂糖漬け。"
+    },
+    {
+      "id": "gt_jaipur_salim_miniature",
+      "cityId": "jaipur",
+      "nameJa": "サリームの細密画",
+      "descriptionJa": "裏に名前のある、初めて自分のために買った絵。"
+    },
+    {
+      "id": "gt_jaipur_sushma_lime_pickle",
+      "cityId": "jaipur",
+      "nameJa": "ライムの漬物（二百グラム）",
+      "descriptionJa": "シティ・パレスで、審判の報酬にもらった。"
+    },
+    {
+      "id": "gt_jaipur_lac_bangles",
+      "cityId": "jaipur",
+      "nameJa": "ラックの腕輪",
+      "descriptionJa": "ジョーハリー・バザールの腕輪屋で、自分で値切って買った一組。割れやすい。"
+    }
+  ],
+  "encounters": []
+}

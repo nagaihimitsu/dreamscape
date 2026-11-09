@@ -177,10 +177,18 @@ describe("the departure and the arrival (2.3, 4.2)", () => {
   it("an arrival's # then: (decision 36) moves on from it: the arrival's moment opens for it, the move follows the conversation", () => {
     const { arrivalStoryId } = getCityContent("agra").city;
     const place = getCityContent("agra").travel.places.find((item) => item.id !== getCityContent("agra").travelSettings.hotelPlaceId)!.id;
-    const entry: SceneEntry = { id: "agra_arrival", kind: "arrival", title: "到着", cityId: "agra", story: { storyId: arrivalStoryId! }, main: { arrival: "agra" },
-      at: [], order: 0, repeat: "once", people: [], options: [], done: {}, then: { move: place }, conds: [], knots: [], fingerprint: "test", origin: "file" };
-    (scenes as SceneEntry[]).push(entry);
-    undo.push(() => (scenes as SceneEntry[]).splice((scenes as SceneEntry[]).indexOf(entry), 1));
+    // The arrival's own scene entry gets the then: (a place-file knot already has one; a one-scene file may not).
+    const existing = (scenes as SceneEntry[]).find((scene) => scene.main && "arrival" in scene.main && scene.main.arrival === "agra");
+    if (existing) {
+      const before = existing.then;
+      existing.then = { move: place };
+      undo.push(() => { existing.then = before; });
+    } else {
+      const entry: SceneEntry = { id: "agra_arrival", kind: "arrival", title: "到着", cityId: "agra", story: { storyId: arrivalStoryId! }, main: { arrival: "agra" },
+        at: [], order: 0, repeat: "once", people: [], options: [], done: {}, then: { move: place }, conds: [], knots: [], fingerprint: "test", origin: "file" };
+      (scenes as SceneEntry[]).push(entry);
+      undo.push(() => (scenes as SceneEntry[]).splice((scenes as SceneEntry[]).indexOf(entry), 1));
+    }
     const arrived = playUntil(restore(openOccasion(completedCity("delhi"), { kind: "epilogue" }, completedCity("delhi").revision, () => 0)),
       (state) => state.currentCityId === "agra" && state.activeEpilogue?.kind === "arrival" && !!state.activeEpilogue.logoComplete);
     expect(arrived.occasion).toMatchObject({ kind: "arrive", then: { move: place } });

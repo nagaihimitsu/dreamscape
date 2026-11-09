@@ -434,6 +434,20 @@
       "creditJa": "写真：Andrew Plumb／Wikimedia Commons／CC BY-SA 2.0",
       "modificationJa": "原画像2272×1704pxのCommons配信1280×960px縮小版を使用。縦横比を維持し、切り抜き・描き足し・AI生成は行っていません。表示時は画面比率により端が切れる場合があります。縮小版もCC BY-SA 2.0で提供します。さらに同じ寸法のままWebP形式（品質80）に変換。変換版もCC BY-SA 2.0で提供。",
       "checkedAt": "2026-11-03"
+    },
+    {
+      "id": "gt_img_hotel_rooftop_night",
+      "path": "assets/tourism/india/hotel_rooftop_night.webp",
+      "width": 1600,
+      "height": 1100,
+      "altJa": "デリー南部の住宅街ザキール・ナガルを建物の上から見た夜景。灯りのともる窓と屋上の貯水タンク、遠くの街明かりと、地平線の小さなドームの影が見える。3都市の宿の屋上からの眺めを表すイメージ。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Night_View_of_Zakir_Nagar.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Emir Nayef／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons配信の1920×1440px縮小版を使用。元画像は4080×3060px。下端の撮影機種名の表示（透かし）を含む帯を切り取り、1920×1320pxにしました。描き足しやAI生成は行っていません。表示時は画面比率により端が切れる場合があります。この切り取った版もCC BY-SA 4.0で提供します。さらに縦横比を保って1600×1100pxに縮小し、WebP形式（品質80）に変換。変換版もCC BY-SA 4.0で提供。",
+      "checkedAt": "2026-11-08"
     }
   ],
   "landmarks": [
@@ -444,7 +458,7 @@
       "nameEn": "Red Fort",
       "descriptionJa": "城門の奥の古い商店街で、遠足の中学生たちに英語の質問攻めにされる。",
       "imageAssetId": "gt_img_delhi_red_fort",
-      "guideStoryId": "tourism/gt_delhi_red_fort_guide",
+      "guideStoryId": "places/gt_delhi_red_fort.gt_delhi_red_fort_guide",
       "battleId": "gt_delhi_main_red_fort_battle",
       "clueIds": [
         "gt_obs_fact_delhi_red_fort_01",
@@ -459,7 +473,7 @@
       "nameEn": "Qutb Minar",
       "descriptionJa": "空へ伸びる塔の足もと、柵に囲まれた鉄の柱の前で、一人の父親が柵の高さを測っている。",
       "imageAssetId": "gt_img_delhi_qutb_minar",
-      "guideStoryId": "tourism/gt_delhi_qutb_minar_guide",
+      "guideStoryId": "places/gt_delhi_qutb_minar.gt_delhi_qutb_minar_guide",
       "battleId": "gt_delhi_main_qutb_minar_battle",
       "clueIds": [
         "gt_obs_fact_delhi_qutb_minar_01",
@@ -473,7 +487,7 @@
       "nameEn": "Humayun’s Tomb",
       "descriptionJa": "水路で四つに区切られた庭。木陰のベンチには、少し離れて座る二人組が多い。",
       "imageAssetId": "gt_img_delhi_humayun_tomb",
-      "guideStoryId": "tourism/gt_delhi_humayun_tomb_guide",
+      "guideStoryId": "places/gt_delhi_humayun_tomb.gt_delhi_humayun_tomb_guide",
       "battleId": "gt_delhi_main_humayun_tomb_battle",
       "clueIds": [
         "gt_obs_fact_delhi_humayun_tomb_01",
@@ -488,7 +502,7 @@
       "nameEn": "Jama Masjid",
       "descriptionJa": "長い階段の上の大モスク。階段を下りた路地から、香油の匂いが流れてくる。",
       "imageAssetId": "gt_img_delhi_jama_masjid",
-      "guideStoryId": "tourism/gt_delhi_jama_masjid_guide",
+      "guideStoryId": "places/gt_delhi_jama_masjid.gt_delhi_jama_masjid_guide",
       "battleId": "gt_delhi_main_jama_masjid_battle",
       "clueIds": [
         "gt_obs_fact_delhi_jama_masjid_01",
@@ -502,7 +516,7 @@
       "nameEn": "Taj Mahal",
       "descriptionJa": "白い墓廟へ続く水路の途中に、記念写真の列ができる大理石のベンチがある。",
       "imageAssetId": "gt_img_agra_taj_mahal",
-      "guideStoryId": "tourism/gt_agra_taj_mahal_guide",
+      "guideStoryId": "places/gt_agra_taj_mahal.gt_agra_taj_mahal_guide",
       "battleId": "gt_agra_main_taj_mahal_battle",
       "clueIds": [
         "gt_obs_fact_agra_taj_mahal_01",
@@ -517,7 +531,7 @@
       "nameEn": "Agra Fort",
       "descriptionJa": "赤い城壁の奥に、遠くタージを望む八角形の塔。ツアーの一行から、一人だけ動かない老人がいる。",
       "imageAssetId": "gt_img_agra_agra_fort",
-      "guideStoryId": "tourism/gt_agra_agra_fort_guide",
+      "guideStoryId": "places/gt_agra_agra_fort.gt_agra_agra_fort_guide",
       "battleId": "gt_agra_main_agra_fort_battle",
       "clueIds": [
         "gt_obs_fact_agra_agra_fort_01",
@@ -531,7 +545,7 @@
       "nameEn": "Itimad-ud-Daulah’s Tomb",
       "descriptionJa": "川向こうの静かな岸に建つ、色の石をはめ込んだ白い墓廟。木陰に、請願書を抱えた元教師がいる。",
       "imageAssetId": "gt_img_agra_itimad_tomb",
-      "guideStoryId": "tourism/gt_agra_itimad_tomb_guide",
+      "guideStoryId": "places/gt_agra_itimad_tomb.gt_agra_itimad_tomb_guide",
       "battleId": "gt_agra_main_itimad_tomb_battle",
       "clueIds": [
         "gt_obs_fact_agra_itimad_tomb_01",
@@ -546,7 +560,7 @@
       "nameEn": "Fatehpur Sikri",
       "descriptionJa": "尾根の上に残る赤い石の都。巨大な門の石段で、碑文を読んだ男が崩れ落ちている。",
       "imageAssetId": "gt_img_agra_fatehpur_sikri",
-      "guideStoryId": "tourism/gt_agra_fatehpur_sikri_guide",
+      "guideStoryId": "places/gt_agra_fatehpur_sikri.gt_agra_fatehpur_sikri_guide",
       "battleId": "gt_agra_main_fatehpur_sikri_battle",
       "clueIds": [
         "gt_obs_fact_agra_fatehpur_sikri_01",
@@ -560,7 +574,7 @@
       "nameEn": "Amber Fort and Palace",
       "descriptionJa": "丘に沿って城壁が続く城。中庭の隅で、若い画家が極細の筆で城を描いている。",
       "imageAssetId": "gt_img_jaipur_amber_fort",
-      "guideStoryId": "tourism/gt_jaipur_amber_fort_guide",
+      "guideStoryId": "places/gt_jaipur_amber_fort.gt_jaipur_amber_fort_guide",
       "battleId": "gt_jaipur_main_amber_fort_battle",
       "clueIds": [
         "gt_obs_fact_jaipur_amber_fort_01",
@@ -574,7 +588,7 @@
       "nameEn": "Hawa Mahal",
       "descriptionJa": "小窓が無数に並ぶ桃色の宮殿。その下の歩道で、四十年野菜を売り続ける女性がいる。",
       "imageAssetId": "gt_img_jaipur_hawa_mahal",
-      "guideStoryId": "tourism/gt_jaipur_hawa_mahal_guide",
+      "guideStoryId": "places/gt_jaipur_hawa_mahal.gt_jaipur_hawa_mahal_guide",
       "battleId": "gt_jaipur_main_hawa_mahal_battle",
       "clueIds": [
         "gt_obs_fact_jaipur_hawa_mahal_01",
@@ -588,7 +602,7 @@
       "nameEn": "City Palace Jaipur",
       "descriptionJa": "中庭が連なる王宮。人の背丈ほどの銀の壺の前で、母と息子が言い争っている。",
       "imageAssetId": "gt_img_jaipur_city_palace",
-      "guideStoryId": "tourism/gt_jaipur_city_palace_guide",
+      "guideStoryId": "places/gt_jaipur_city_palace.gt_jaipur_city_palace_guide",
       "battleId": "gt_jaipur_main_city_palace_battle",
       "clueIds": [
         "gt_obs_fact_jaipur_city_palace_01",
@@ -602,7 +616,7 @@
       "nameEn": "Jantar Mantar Jaipur",
       "descriptionJa": "石の巨大な観測器が並ぶ天文台。大日時計の日陰で、天文学者が占星術師に詰め寄っている。",
       "imageAssetId": "gt_img_jaipur_jantar_mantar",
-      "guideStoryId": "tourism/gt_jaipur_jantar_mantar_guide",
+      "guideStoryId": "places/gt_jaipur_jantar_mantar.gt_jaipur_jantar_mantar_guide",
       "battleId": "gt_jaipur_main_jantar_mantar_battle",
       "clueIds": [
         "gt_obs_fact_jaipur_jantar_mantar_01",
