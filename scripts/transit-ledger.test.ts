@@ -1,9 +1,10 @@
+import { dataLanguageWarnings } from "./data-language";
 import { describe, expect, it } from "vitest";
 import { travelCatalogSchema, type TravelCatalog } from "../src/content/travel-schemas";
 import { SAMPLE_SOURCE_URL } from "./sample-journey";
 import {
   exportTransitDecisions, formatTransitCounts, inspectCityTransit, isFactSource, replaceTransitDecisions,
-  transitLedgerFromDecisions, unsupportedTransitRoutes, type TransitLedger,
+  transitLedgerFromDecisions, transitLedgerSchema, unsupportedTransitRoutes, type TransitLedger,
 } from "./transit-ledger";
 
 const fact = { publisher: "試験の交通局", title: "運賃表", url: "https://example.org/fare", checkedAt: "2026-11-04",
@@ -96,13 +97,18 @@ describe("per-city transit ledger", () => {
     expect(isFactSource({ claimType: "documented_fact", url: "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/x/research/field-note.md" })).toBe(true);
   });
 
-  it("refuses a bad date, a non-Japanese reason and the old format", () => {
+  it("refuses a bad date, an unknown status and the old format; a non-Japanese reason is only a warning", () => {
     const { travel, ledger } = fixture();
     const [first] = ledger.decisions;
-    for (const bad of [{ ...first, checkedAt: "2026-07" }, { ...first, reasonJa: "no tram" }, { ...first, status: "unconfirmed" }])
+    for (const bad of [{ ...first, checkedAt: "2026-07" }, { ...first, status: "unconfirmed" }])
       expect(() => inspectCityTransit(travel, { ...ledger, decisions: [bad, ...ledger.decisions.slice(1)] }, modes, FILE))
         .toThrow(`交通判断台帳の形式が違います: ${FILE}（Invalid transit ledger）`);
     expect(() => inspectCityTransit(travel, { ...ledger, schemaVersion: 1 }, modes, FILE)).toThrow("Invalid transit ledger");
+    // The reason's language is content:build's data-language warning (decision 32).
+    const english = { ...ledger, decisions: [{ ...first, reasonJa: "no tram" }, ...ledger.decisions.slice(1)] };
+    expect(inspectCityTransit(travel, english, modes, FILE)).toBeDefined();
+    expect(dataLanguageWarnings(transitLedgerSchema, english, FILE).map((warning) => [warning.kind, warning.message]))
+      .toEqual([["data-language", `日本語の欄に日本語がありません：${FILE} の decisions[0].reasonJa「no tram」。画面はこの欄を日本語の文として出します（止めません）。`]]);
   });
 
   it("lists routes of declared modes without a game estimate backed by a documented fact", () => {

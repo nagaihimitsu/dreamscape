@@ -7,7 +7,7 @@ import type { TagContext } from "../src/content/tags";
 import { RELATIONSHIP_TONES } from "../src/domain/romance-tone";
 import { validateMemoryReferences } from "../src/story/memory";
 import { validateBattleStory } from "./battle-validation";
-import { displayPath, loadContentSources, parseCatalog, storyFile } from "./content-sources";
+import { displayPath, journeyLayer, loadContentSources, parseCatalog, storyFile } from "./content-sources";
 import { withContext } from "./content-validation-utils";
 import { validateEpilogue } from "./epilogue-validation";
 import { compileInk, validateNoInkRandom, validateRelationshipToneSource } from "./ink-validation";
@@ -26,7 +26,8 @@ function inkFiles(directory: string): string[] {
 /** Check authored scripts with the production contracts, without inventing quizzes
  * or writing generated content/release markers. This is not a release gate.
  * The date routes use the Ink validation cache like content:build (storyCache
- * null: without it). */
+ * null: without it). `warnings` lists what is reported without stopping (a
+ * protagonist line outside the date choices: decision 36). */
 export async function validateJourneyScenario(root: string, journeyId: string, directory: string, selectedCityId?: string,
   options: { storyCache?: StoryValidationCache | null } = {}) {
   const storyCache = chooseStoryCache(options.storyCache);
@@ -38,6 +39,13 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
   const narrative = journeyNarrativeSchema.parse(json(path.join(base, selectedCityId ?? "", "narrative.json")));
   const fragments = buildJourneyFragments(input, narrative, requirements.map((city) => city.cityId));
   const presentation = parseCatalog(sources, presentationSchema, "romance/presentation.json");
+  // Any background of the journey's own romance/presentation.json (dates and scenes away from the
+  // map's places), besides the backgrounds of the city's places.
+  const journeyDirectory = journeyLayer(sources, journeyId).directory + path.sep;
+  const backgroundFiles = sources.catalogs["romance/presentation.json"]?.provenance.keys.backgrounds ?? {};
+  const journeyBackgroundIds = Object.keys(presentation.backgrounds)
+    .filter((id) => backgroundFiles[id]?.startsWith(journeyDirectory));
+  const warnings: string[] = [];
   const tourism = parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json");
   const expected = requirements.flatMap((city) => [
     ...city.main.flatMap((event) => [event.guideStoryId, event.battleStoryId]),
@@ -69,9 +77,10 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
     // A draft is read from the scenario folder; a published story comes from the loaded content.
     const source = actualFiles.has(draftFile) ? readFileSync(draftFile, "utf8") : sources.storyFiles.find((story) => story.id === storyId)!.source;
     withContext(file, () => {
-      // Also reject an unwanted protagonist line in a currently unreachable branch.
+      // A protagonist line (also in a currently unreachable branch) is reported, not refused (decision 36).
       const code = source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
-      if (/#\s*speaker\s*:\s*player\b/.test(code)) throw new Error("The protagonist speaks only through date choices");
+      if (/#\s*speaker\s*:\s*player\b/.test(code))
+        warnings.push(`${displayPath(root, file)}: the protagonist speaks outside the date choices (# speaker: player); usually the protagonist speaks through the choices (not stopped)`);
       validateMemoryReferences(source, Object.keys(fragments.memories));
       stories[storyId] = compileInk(source, file);
       inkSources[storyId] = source;
@@ -81,14 +90,12 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
   let battleScenarios = 0;
   let dateRoutes = 0;
   let epilogueScenarios = 0;
-  const observe = (text: string, speaker: string) => {
-    if (speaker === "player") throw new Error("The protagonist speaks only through date choices");
-    if (!/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(text)) throw new Error("Scenario dialogue must be Japanese");
-  };
+  // Lines are only read here (the protagonist's lines were reported above; any language may be written).
+  const observe = () => {};
   for (const city of requirements) {
     const travel = input.cities.find((item) => item.cityId === city.cityId)!;
     const context: TagContext = { effectIds: [], emotionIds: Object.keys(presentation.emotions),
-      backgroundIds: [...new Set(travel.places.map((place) => place.backgroundId))] };
+      backgroundIds: [...new Set([...travel.places.map((place) => place.backgroundId), ...journeyBackgroundIds])] };
     const ownLandmarks = fragments.landmarks.filter((landmark) => landmark.cityId === city.cityId);
     const ownClues = fragments.clues.filter((clue) => ownLandmarks.some((landmark) => landmark.id === clue.landmarkId));
     const ownAssets = tourism.assets.filter((asset) => ownLandmarks.some((landmark) => landmark.imageAssetId === asset.id));
@@ -133,5 +140,5 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
     }
   }
   return { journeyId, cities: requirements.map((city) => city.cityId), stories: expected.length,
-    guides, battleScenarios, dateRoutes, epilogueScenarios, readyForPublication: false as const };
+    guides, battleScenarios, dateRoutes, epilogueScenarios, warnings, readyForPublication: false as const };
 }

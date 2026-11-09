@@ -7,6 +7,7 @@ try {
   console.log(`旅行編「${id}」を見本の編から作りました: ${created.folder}/（${created.files.length} ファイル、準備中、並び順 ${created.order}）`);
   console.log(`  都市ID ${created.cityId}、IDの接頭辞 ${created.prefix}_（manifest.json の authoring.eventPrefix）`);
   console.log(`  文章・出典・画像は見本の架空の内容のままです。置き換えるものは ${created.folder}/${CHECKLIST_FILE} にあります。`);
+  for (const note of created.notes) console.log(`  注意: ${note}`);
   console.log("\n次の手順:");
   console.log("  1. npm run content:build");
   console.log(`  2. npm run journey:readiness -- --journey ${id}   （残っている見本の内容と未完成の項目）`);

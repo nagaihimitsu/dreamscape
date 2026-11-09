@@ -1,6 +1,7 @@
 import { Story } from "inkjs";
 import type { BattleDefinition, QuizDefinition } from "../src/content/schemas";
 import type { TourismCatalog } from "../src/content/tourism-schemas";
+import { checkLinesWithoutChoice } from "./ink-validation";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
 import type { DialogueObserver } from "./dialogue-expression-validation";
 
@@ -77,7 +78,7 @@ export function validateTourism(
       let speaker: string = "narrator";
       let explicitEmotion = false;
       while (story.canContinue) {
-        if (++count > 40) throw new Error("Tourism guide loops or is too long");
+        checkLinesWithoutChoice(++count);
         const line = story.Continue()?.trim() ?? "";
         const tags = parseStoryTags(story.currentTags ?? [], context);
         if (tags.speaker) speaker = tags.speaker;
@@ -88,12 +89,6 @@ export function validateTourism(
           hasText = true;
           observeForStory?.(landmark.guideStoryId)(line, speaker, explicitEmotion);
           explicitEmotion = false;
-          if (
-            !/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(
-              line,
-            )
-          )
-            throw new Error("Tourism guide must be Japanese");
         }
       }
       if (!hasText) throw new Error("Tourism guide is empty");

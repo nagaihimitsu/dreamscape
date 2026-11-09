@@ -41,8 +41,7 @@ export const storyFrameSchema = z
             translationJa: z.string().min(1).optional(),
           })
           .strict(),
-      )
-      .max(3),
+      ),
     ended: z.boolean(),
   })
   .strict();

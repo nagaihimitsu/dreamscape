@@ -22,6 +22,9 @@ import { characterCatalogSchema } from "../src/content/character-assets";
 import { encounterCatalogInputSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
 import { encounterEntryRulesSchema, validateEncounterEntryRules } from "../src/content/encounter-entry-rules";
 import { validateEncounterContent } from "./encounter-validation";
+import { dataLanguageWarnings } from "./data-language";
+import { transitLedgerSchema } from "./transit-ledger";
+import type { z } from "zod";
 import { checkConditions, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, type ConditionContent } from "./condition-validation";
 import { validateBackgroundAssets, validateCharacters } from "./presentation-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
@@ -196,7 +199,23 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       : sources.layers.find((item) => item.type === "journey" && file.startsWith(item.directory + path.sep));
     return layer && displayPath(root, layer.directory);
   };
-  const parseCatalog = <T>(schema: { parse(value: unknown): T }, kind: CatalogKind): T => parseSourceCatalog(sources, schema, kind);
+  // The fields whose text is not in their marked language: warnings, not errors (data-language.ts).
+  const languageNotes: ContentWarning[] = [];
+  /** The file a merged catalog's field comes from: the layer of its list item or record key, else the catalog's first file. */
+  const catalogFileOf = (kind: CatalogKind, fieldPath: string) => {
+    const merged = sources.catalogs[kind];
+    const [, key, index] = /^([^.[]+)(?:\[(\d+)\]|\.([^.[]+))?/u.exec(fieldPath) ?? [];
+    const recordKey = /^[^.[]+\.([^.[]+)/u.exec(fieldPath)?.[1];
+    const file = (index !== undefined ? merged?.provenance.items[key]?.[Number(index)] : undefined) ??
+      (recordKey !== undefined ? merged?.provenance.keys[key]?.[recordKey] : undefined) ?? merged?.provenance.files[0];
+    return file ? displayPath(root, file) : kind;
+  };
+  const parseCatalog = <T>(schema: z.ZodType<T>, kind: CatalogKind): T => {
+    const parsed = parseSourceCatalog(sources, schema, kind);
+    const merged = sources.catalogs[kind];
+    if (merged) languageNotes.push(...dataLanguageWarnings(schema, merged.value, (fieldPath) => catalogFileOf(kind, fieldPath)));
+    return parsed;
+  };
   // Messages name the real Ink file of a story, whichever layer it is in.
   const storyFiles = new Map(sources.storyFiles.map((story) => [story.id, displayPath(root, story.file)]));
   const storyLabel = (storyId: string) => storyFiles.get(storyId) ?? `${storyId}.ink`;
@@ -543,6 +562,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     const quiz = isExample
       ? parseSourceFile(quizExampleSchema, file, data)
       : parseSourceFile(quizSchema, file, data);
+    languageNotes.push(...dataLanguageWarnings(isExample ? quizExampleSchema : quizSchema, data, displayPath(root, file)));
     if (!isExample) {
       if (quizzes[quiz.id]) throw new Error(`Duplicate quizId: ${quiz.id}`);
       quizzes[quiz.id] = quiz as QuizDefinition;
@@ -721,6 +741,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       checkRouteModes(travel, travelFile, transport);
       checkCityRentals(travel, settings.rentals, settingsFile, transport);
       const review = checkCityTransit({ travel, transit, transitFile, travelFile }, transport);
+      if (transit !== undefined) languageNotes.push(...dataLanguageWarnings(transitLedgerSchema, transit, transitFile));
       if (review) {
         transitReviews.set(owner.id, [...(transitReviews.get(owner.id) ?? []), review]);
         transitWarnings.push(...cityTransitWarnings(review, { travel, transitFile, travelFile }));
@@ -761,6 +782,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       landmarks: cityLandmarks, journey: cityJourney, stories, quizzes,
       responseProfileIds: responseProfiles.map((profile) => profile.id), memoryIds: Object.keys(presentation.memories), context,
       validateQuiz: validateQuizEntries,
+      onWarning: (warning) => languageNotes.push(warning),
     });
     if (episodes.length) validateJourney(cityJourney, current, balance.apCap, cityLandmarks, battles, quizzes);
     else if (cityJourney.storyBattles.length) throw new Error(`Prototype battle has no city episodes: ${current.id}`);
@@ -785,10 +807,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     validateNoInkRandom(compiled);
     const backgrounds = travels.find(({ city }) => city.id === current.id)!.travel.places.map((place) => place.backgroundId);
     epilogueScenarios += withContext(storyLabel(storyId), () =>
-      validateEpilogue(compiled, { ...context, backgroundIds: backgrounds }, (text, speaker, explicitEmotion) => {
-        if (!["heroine", "narrator"].includes(speaker)) throw new Error("City arrival cannot speak for the player");
-        observeForStory(storyId)(text, speaker, explicitEmotion);
-      }));
+      validateEpilogue(compiled, { ...context, backgroundIds: backgrounds }, observeForStory(storyId)));
   }
   for (const episode of journey.episodes) {
     if (!episode.epilogueStoryId) continue;
@@ -839,7 +858,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       backgrounds: presentation.backgrounds,
     },
     /** Probable mistakes that do not stop the build (content-report.ts). */
-    warnings: [...contentWarnings(sources), ...transitWarnings, ...conditionNotes],
+    warnings: [...contentWarnings(sources), ...transitWarnings, ...conditionNotes, ...languageNotes],
     /** What each journey folder provides, for the build report. */
     journeyContents: journeyContents(sources),
     /** Each journey's in-city transport (modes and transit ledger counts), for the build report. */

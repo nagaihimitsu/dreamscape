@@ -1,3 +1,4 @@
+import { misplacedLanguages } from "./data-language";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { ownArtworkCatalogSchema } from "../src/content/own-artwork-schema";
@@ -110,7 +111,10 @@ describe("image rights", () => {
       expect(parse([bad]), bad).toBe(false);
     expect(parse([])).toBe(false);
     expect(parse(["favicon-16.png", "favicon-16.png"])).toBe(false);
-    expect(ownArtworkCatalogSchema.safeParse({ schemaVersion: 1, artworks: [{ noteJa: "own art", paths: ["favicon-16.png"] }] }).success).toBe(false);
+    // The note's language is content:build's data-language warning (decision 32), not a schema rule.
+    const english = { schemaVersion: 1, artworks: [{ noteJa: "own art", paths: ["favicon-16.png"] }] };
+    expect(ownArtworkCatalogSchema.safeParse(english).success).toBe(true);
+    expect(misplacedLanguages(ownArtworkCatalogSchema, english)).toEqual([{ path: "artworks[0].noteJa", value: "own art", language: "ja" }]);
     expect(ownArtworkCatalogSchema.safeParse({ schemaVersion: 1, artworks: [{ noteJa: "自作の絵", paths: ["favicon-16.png"], extra: 1 }] }).success).toBe(false);
   });
 });

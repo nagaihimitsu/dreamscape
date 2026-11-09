@@ -1,13 +1,21 @@
 import { describe, expect, it } from "vitest";
 import { zodIssues } from "../../tests/fixtures/zod-issues";
 import { battles, battleQuizzes, reasoningIntroductions, stories } from ".";
-import { compileInk } from "../../scripts/ink-validation";
+import { compileInk, validateReasoningIntroduction } from "../../scripts/ink-validation";
 import { reasoningIntroCatalogSchema } from "./reasoning-intros";
 import { beginStory, continueStory } from "../story/runtime";
 import { advanceBattle, answerBattle, battleFingerprint, getReasoningContext, selectReasoningClue, startBattle } from "../domain/battle";
 import { createGame, validateGameState } from "../domain/game";
 
 describe("reasoning introductions", () => {
+  it("accepts a heroine's line in English only, and stops an endless loop (decisions 28 and 38)", () => {
+    const intro = (body: string) => compileInk(['VAR player_name = ""', 'VAR heroine_name = ""', "# speaker: heroine", body].join("\n"));
+    const context = { effectIds: [], backgroundIds: [], emotionIds: [] };
+    expect(() => validateReasoningIntroduction(intro("Wait. Look at the window first.\n-> END"), context)).not.toThrow();
+    expect(() => validateReasoningIntroduction(intro("- (again)\n「もう一度」\n-> again"), context))
+      .toThrow("Story reads more than 1000 lines without a choice or an end");
+  });
+
   it("rejects duplicate battle entries and invalid story identifiers", () => {
     expect(() => reasoningIntroCatalogSchema.parse({ schemaVersion: 1, entries: [
       { battleId: "milano_last_supper_b01", storyId: "battles/rebuttal" },

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { tourismSourceSchema } from "../src/content/tourism-schemas";
 import type { TravelCatalog, TravelRoute } from "../src/content/travel-schemas";
 import { WALK_MODE_ID } from "../src/content/transport-schemas";
+import { japaneseText as japanese } from "../src/content/text-language";
 import { SAMPLE_SOURCE_URL } from "./sample-journey";
 
 type TourismSource = z.infer<typeof tourismSourceSchema>;
@@ -17,8 +18,7 @@ type TourismSource = z.infer<typeof tourismSourceSchema>;
 // builds but is not ready for release (journey:transit, city:bundle apply).
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
-const japanese = z.string().trim().min(1).refine(
-  (value) => /[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(value), "Expected Japanese transit text");
+
 /**
  * available: a route of this mode exists. not_suitable: the service exists
  * there but the game does not use it (e.g. walking is short). not_applicable:

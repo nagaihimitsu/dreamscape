@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { Story } from "inkjs";
 import { buildContent } from "../../scripts/content-pipeline";
 import { compileInk } from "../../scripts/ink-validation";
-import { changeCatalogEntry, prepareContentFixture } from "./test-fixtures";
+import { changeCatalogEntry, prepareContentFixture, storySourceFile } from "./test-fixtures";
 import { validateEpilogue } from "../../scripts/epilogue-validation";
 import { validateJourney } from "../../scripts/journey-validation";
 import { battleCatalogSchema, battleSchema, quizSchema } from "./schemas";
@@ -197,32 +197,43 @@ describe("Milan city content", () => {
     expect(new Set(versions).size).toBe(3);
   });
 
+  const epilogueInk = (body: string) => compileInk(
+    [
+      'VAR player_name = "名前"',
+      'VAR heroine_name = "名前"',
+      'VAR player_address = "名前さん"',
+      "VAR romance_stage = 1",
+      "VAR ending_reached = false",
+      body,
+    ].join("\n"),
+  );
+  const epilogueContext = { effectIds: ["forbidden"], backgroundIds: [], emotionIds: [] };
+
   it.each([
     ["# effect: forbidden\n不正な効果。\n-> END", "cannot grant"],
     ["* [交際する]\n    自動的に進める。\n    -> END", "linear conversation"],
-    ["Only English.\n-> END", "must be Japanese"],
+    // A loop with no choice and no end (decision 38): the one length check left.
+    ["- (again)\n輪の中の一行。\n-> again", "Story reads more than 1000 lines without a choice or an end"],
   ])(
-    "forbids epilogue effects, choices and untranslated prose: %s",
+    "forbids epilogue effects, choices and endless loops: %s",
     (body, message) => {
-      const compiled = compileInk(
-        [
-          'VAR player_name = "名前"',
-          'VAR heroine_name = "名前"',
-          'VAR player_address = "名前さん"',
-          "VAR romance_stage = 1",
-          "VAR ending_reached = false",
-          body,
-        ].join("\n"),
-      );
-      expect(() =>
-        validateEpilogue(compiled, {
-          effectIds: ["forbidden"],
-          backgroundIds: [],
-          emotionIds: [],
-        }),
-      ).toThrow(message);
+      expect(() => validateEpilogue(epilogueInk(body), epilogueContext)).toThrow(message);
     },
   );
+
+  it("accepts the protagonist's and an opponent's lines in a city arrival (decision 36)", async () => {
+    const file = path.join(fixture, storySourceFile("arrivals/delhi"));
+    const original = await readFile(file, "utf8");
+    await writeFile(file, original.replace("# speaker: heroine\n", "# speaker: player\n「着いたね。まずは宿だ」\n# speaker: enemy\n「そこの旅の人、荷物を持とうか」\n# speaker: heroine\n"));
+    const result = await buildContent(fixture, false);
+    expect(result.epilogueScenarios).toBeGreaterThan(0);
+  });
+
+  it("accepts an English epilogue line and a long epilogue (no length limit by kind: decisions 28 and 38)", () => {
+    expect(validateEpilogue(epilogueInk("Only English.\n-> END"), epilogueContext)).toBeGreaterThan(0);
+    const long = Array.from({ length: 120 }, (_, index) => `長いエピローグの${index + 1}行目。`).join("\n");
+    expect(validateEpilogue(epilogueInk(`${long}\n-> END`), epilogueContext)).toBeGreaterThan(0);
+  });
 
   it("keeps the city date gated while allowing every unplayed normal date after the relationship ending", async () => {
     const result = await buildContent(fixture, false);
