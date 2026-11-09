@@ -173,7 +173,7 @@ export function playerActionChange(action: PlayerAction, nextRoll: () => number)
       case "travel": return beginTravelEvent(state, action.eventId, action.mode, revision, nextRoll);
       case "wait": return waitForTravel(state, action.minutes, revision);
       case "rent": return rentTransport(state, action.modeId, revision);
-      case "rest": return sleepAtHotel(state, action.mode, revision, action.viaPlaceId);
+      case "rest": return sleepAtHotel(state, action.mode, revision, action.viaPlaceId, nextRoll);
       case "depart": return openOccasion(state, { kind: "depart" }, revision, nextRoll);
       case "read_epilogue": case "battle_epilogue": return openOccasion(state, { kind: "epilogue" }, revision, nextRoll);
       case "claim_ap": return claimPendingRewards(state, revision);

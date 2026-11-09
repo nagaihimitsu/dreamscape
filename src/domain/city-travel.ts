@@ -23,13 +23,25 @@ export function getPlayerDeparture(state: GameState): ReturnType<typeof getCityC
 /** The end of a journey: its last city cleared and that city's epilogue read, with no next city to go to. */
 export function isJourneyComplete(state: GameState): boolean {
   return state.completedCityIds.includes(state.currentCityId) && state.viewedEpilogueCityIds.includes(state.currentCityId) &&
-    !getNextCity(state) && !state.activeEpilogue;
+    !getNextCity(state) && !state.activeEpilogue && !state.occasion;
 }
 
-/** Leave once; the caller commits the returned snapshot with the existing save guard. */
+/**
+ * Leave once; the caller commits the returned snapshot with the existing save guard. The departure's moment
+ * (stage 4: `depart <city>` scenes before the items are left behind) and the next city's arrival open through
+ * the occasion (occasion.ts registers it); without scenes there, the city changes and the arrival begins at once.
+ */
 export function departToNextCity(state: GameState, expectedRevision: number): GameState {
-  if (state.revision !== expectedRevision || !state.completedCityIds.includes(state.currentCityId) || isSceneOpen(state) || state.travel.activeEvent)
-    return state;
+  if (state.revision !== expectedRevision || !canDepart(state)) return state;
+  return openDepartureMoment(state);
+}
+
+/** Whether the city can be left now (cleared, a next city, no scene open, no trip). */
+export const canDepart = (state: GameState) =>
+  state.completedCityIds.includes(state.currentCityId) && !isSceneOpen(state) && !state.travel.activeEvent && !!getNextCity(state);
+
+/** The departure itself (the departure moment's main part): the items left behind and the next city reached, its arrival not begun. */
+export function leaveForNextCity(state: GameState): GameState {
   const next = getNextCity(state);
   if (!next) return state;
   // A held item is this city's or one carried from an earlier city (a broken state is refused). Preserve the history;
@@ -51,8 +63,18 @@ export function departToNextCity(state: GameState, expectedRevision: number): Ga
       returnReserve: 0, returnDeadline: DAY_END, activeEvent: null, rentedModeIds: [], rideCounts: {}, temporaryFlags: [],
       ...(state.travel.calendar ? { calendar: { ...state.travel.calendar, cityStartJourneyDay: state.travel.calendar.journeyDay } } : {}) },
   };
-  return startCityArrival(arrived, arrived.revision);
+  return arrived;
 }
+
+/** The moments' entries (occasion.ts registers them: a stage-4 moment opens when scenes run there; else as before). */
+type MomentOpeners = { depart: (state: GameState) => GameState; epilogue: (state: GameState) => GameState };
+let openers: MomentOpeners | undefined;
+export function registerMomentOpeners(next: MomentOpeners): void { openers = next; }
+const openDepartureMoment = (state: GameState): GameState => {
+  if (openers) return openers.depart(state);
+  const arrived = leaveForNextCity(state);
+  return arrived === state ? state : startCityArrival(arrived, arrived.revision);
+};
 
 /** Advance a configured journey only after the current city's result and epilogue.
  * Read the ending even in the last city; only depart to a completed successor.
@@ -63,6 +85,6 @@ export function advanceCompletedJourneyCity(state: GameState, expectedRevision: 
       !state.completedCityIds.includes(state.currentCityId) || isSceneOpen(state) || state.travel.activeEvent) return state;
   // A city whose epilogue its author starts (3.9 (d)): never started here; it departs once cleared and read.
   if (!state.viewedEpilogueCityIds.includes(state.currentCityId))
-    return isAuthoredEpilogueCity(state.currentCityId) ? state : startCityEpilogue(state, state.currentCityId, expectedRevision);
+    return isAuthoredEpilogueCity(state.currentCityId) ? state : openers ? openers.epilogue(state) : startCityEpilogue(state, state.currentCityId, expectedRevision);
   return departToNextCity(state, expectedRevision);
 }

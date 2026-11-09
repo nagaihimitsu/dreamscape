@@ -117,7 +117,8 @@ describe("# then:", () => {
     const trip = depart(start, EPISODE);
     const epilogue = playUntil(trip, (state) => !!state.activeEpilogue);
     expect(epilogue.completedCityIds).not.toContain("mihon");
-    expect(epilogue.occasion).toBeNull();
+    // The epilogue's moment (stage 4): Lili's farewell (the stall done) ran before it.
+    expect(epilogue.occasion).toMatchObject({ kind: "epilogue", cityId: "mihon", started: ["smp_mihon_lili_seeoff"], at: "main:epilogue" });
     const read = playUntil(epilogue, (state) => !state.activeEpilogue);
     expect(read.viewedEpilogueCityIds).toEqual(["mihon"]);
     // The save check reads an epilogue read before the city is cleared (4.5).

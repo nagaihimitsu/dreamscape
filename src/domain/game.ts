@@ -38,7 +38,7 @@ import { GAME_STATE_VERSION, gameStateSchema, nameSchema, type GameState, type A
 import {
   activeDateStoryId, completedDateCount, evaluateProgression, getPlayerAddress,
   getMemoryCallback, canConfessSuccessfully, confessionResult,
-  getDateAvailability,
+  getDateAvailability, dateBelongsToCity,
 } from "./date-rules";
 
 import { validateTravelState, validateGameHistory, validateActiveDateState, validateStoryProgress } from "./game-state-validation";
@@ -204,9 +204,17 @@ function applyStep(
   };
 }
 
-export function startDate(state: GameState, dateId: string, nextRoll: () => number = secureRomanceRoll): GameState {
-  if (!getDateAvailability(state, dateId).available) return state;
-  const date = dates.find((item) => item.id === dateId)!;
+/**
+ * Start a date. `decided`: its occasion decided it when it opened from the map (4.2, decision 21; the AP was
+ * kept back): the scenes before it may have changed items, flags or money, so its map conditions are not read
+ * again; only what makes it impossible still refuses (another city, a scene open, played already, the AP).
+ */
+export function startDate(state: GameState, dateId: string, nextRoll: () => number = secureRomanceRoll, decided = false): GameState {
+  const date = dates.find((item) => item.id === dateId);
+  if (!date) return state;
+  const impossible = !dateBelongsToCity(state, date) || !!(state.activeDate || state.activeBattle || state.activeTourism || state.activeEpilogue || state.activeEncounter) ||
+    ((date.kind === "normal" || !date.repeatable) && state.playedDateIds.includes(dateId)) || state.ap < date.apCost;
+  if (decided ? impossible : !getDateAvailability(state, dateId).available) return state;
   const placeId = getCityContent(state.currentCityId).travel.events.find((item) => item.id === dateId)?.placeId ?? state.travel.currentPlaceId;
   const result = beginStory(date.storyId, state.playerName, state.heroineName, {
     relationship_tone: deriveRelationshipTone(state),

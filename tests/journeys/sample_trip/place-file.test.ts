@@ -17,6 +17,7 @@ import { beginTravelEvent, finishTravelEventIfComplete } from "../../../src/doma
 import { advanceCityEpilogue, chooseCityEpilogue } from "../../../src/domain/epilogue";
 import { earnSceneTagAp, validateRewardState } from "../../../src/domain/rewards";
 import { openEpilogueScene, completedCity } from "../../../src/dev/scenario-builders";
+import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../../src/domain/player-action";
 
 const BOOKMARK = "smp_mihon_three_bookmark";
 const saved = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
@@ -108,6 +109,12 @@ describe("the clock tower's place file at play", () => {
     const afterBell = play(play(gift, "later"), "stay_below");
     expect(afterBell.inventory[BOOKMARK]).toBe("held");
     let s = saved(beginTravelEvent(afterBell, "smp_mihon_date_tower_square", "walk", afterBell.revision, () => 0));
+    // The bench painter before the date (stage 4: the date's moment, by day), with its first choice.
+    expect(s.activeEncounter?.encounterId).toBe("smp_mihon_date_bench_painter");
+    for (let step = 0; s.activeEncounter; step++) {
+      expect(step).toBeLessThan(20);
+      s = saved(applyPlayerAction(s, playerActionChange(listPlayerActions(s)[0], () => 0), () => 0));
+    }
     expect(s.activeDate).toMatchObject({ dateId: "smp_mihon_date_tower_square", choiceCount: 0, turnCount: 0 });
     const before = { affection: s.affection, trust: s.trust };
     for (let step = 0; s.activeDate; step++) {

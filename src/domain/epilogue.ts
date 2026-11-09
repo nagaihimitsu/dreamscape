@@ -14,6 +14,7 @@ import type { GameState } from "./game";
 import { applyChoiceEffects, applyDoneEffects, choiceDisplay, sceneOption, type ChoiceDisplay } from "./scene-effects";
 import { sceneOfAddress } from "./reservations";
 import { evaluateProgression } from "./date-rules";
+import { advanceRunningOccasion } from "./occasion-hooks";
 
 export const activeEpilogueSchema = z
   .object({
@@ -89,23 +90,42 @@ export function chooseCityEpilogue(state: GameState, index: number, expectedRevi
   return option?.rel || option?.profile ? evaluateProgression(changed) : changed;
 }
 
-/** Called only at a new journey or a successful city departure, never on load. */
-export function startCityArrival(state: GameState, expectedRevision: number): GameState {
+/** Whether the current city's arrival can begin (a new journey or a city just reached; no scene of another kind open). */
+export function canBeginArrival(state: GameState): boolean {
   const storyId = getCityContent(state.currentCityId).city.arrivalStoryId;
   const finale = episodes.find((episode) => episode.cityId === state.currentCityId && episode.kind === "city_finale");
-  if (state.revision !== expectedRevision || !storyId || !finale || state.completedCityIds.includes(state.currentCityId) || state.activeDate || state.activeBattle ||
-      state.activeTourism || state.activeEncounter || state.activeEpilogue || state.travel.activeEvent) return state;
+  return !!storyId && !!finale && !state.completedCityIds.includes(state.currentCityId) && !state.activeDate && !state.activeBattle &&
+    !state.activeTourism && !state.activeEncounter && !state.activeEpilogue && !state.travel.activeEvent;
+}
+
+/**
+ * Begin the arrival conversation: with its logo first, or (an arrival's moment, stage 4: after the logo's
+ * `after logo` scenes) the conversation itself, from its start.
+ */
+export function beginArrival(state: GameState, logoComplete = false): GameState {
+  if (!canBeginArrival(state)) return state;
+  const storyId = getCityContent(state.currentCityId).city.arrivalStoryId!;
+  const finale = episodes.find((episode) => episode.cityId === state.currentCityId && episode.kind === "city_finale")!;
   return { ...state, revision: state.revision + 1, activeEpilogue: {
-    episodeId: finale.id, kind: "arrival", logoComplete: false, contentHash: storyFingerprint(storyId),
+    episodeId: finale.id, kind: "arrival", logoComplete, contentHash: storyFingerprint(storyId),
     ...checkedStep(beginStory(storyId, state.playerName, state.heroineName, variables(state), [], {},
       getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state))),
   } };
 }
 
-/** Persist the decorative logo boundary so reload continues with the conversation. */
+/** Called only at a new journey or a successful city departure, never on load. */
+export function startCityArrival(state: GameState, expectedRevision: number): GameState {
+  return state.revision === expectedRevision ? beginArrival(state) : state;
+}
+
+/**
+ * Persist the decorative logo boundary so reload continues with the conversation. In an arrival's moment (stage 4),
+ * the logo is its own main part: it ends here, and the conversation begins after the `after logo` scenes.
+ */
 export function completeArrivalLogo(state: GameState, expectedRevision: number): GameState {
   const active = state.activeEpilogue;
   if (state.revision !== expectedRevision || active?.kind !== "arrival" || active.logoComplete) return state;
+  if (state.occasion?.kind === "arrive" && state.occasion.at === "main:logo") return advanceRunningOccasion({ ...state, revision: state.revision + 1, activeEpilogue: null });
   return { ...state, revision: state.revision + 1, activeEpilogue: { ...active, logoComplete: true } };
 }
 /**
@@ -128,6 +148,25 @@ export function canStartAuthoredEpilogue(state: GameState, cityId = state.curren
     !!episodes.find((episode) => episode.kind === "city_finale" && episode.cityId === cityId)?.epilogueStoryId;
 }
 
+/**
+ * The state the city's epilogue can open from (null: it cannot): the finale result's 「エピローグへ」 leaves the result
+ * and closes its occasion first (its trip's window settles). `authored`: started by a `# then: epilogue` (its occasion
+ * has closed), an authored city's epilogue, cleared or not.
+ */
+export function epilogueOpening(input: GameState, cityId: string, authored = false): GameState | null {
+  let state = input;
+  if (state.activeBattle?.phase === "result" && state.occasion && !state.occasion.then && !authored) {
+    const trip = state.travel.activeEvent;
+    state = { ...state, occasion: null, travel: trip ? { ...state.travel, minute: trip.endMinute, activeEvent: null } : state.travel };
+  }
+  const finale = episodes.find((episode) => episode.kind === "city_finale" && episode.cityId === cityId);
+  if (cityId !== state.currentCityId || state.activeDate || state.activeTourism || state.activeEpilogue || state.activeEncounter ||
+      (state.activeBattle && state.activeBattle.phase !== "result") || !finale?.epilogueStoryId || state.occasion ||
+      (authored ? !canStartAuthoredEpilogue(state, cityId) : !state.completedCityIds.includes(cityId) || isAuthoredEpilogueCity(cityId)))
+    return null;
+  return { ...state, activeBattle: null, battleRewardReceipt: null };
+}
+
 export function startCityEpilogue(
   input: GameState,
   cityId: string,
@@ -135,27 +174,14 @@ export function startCityEpilogue(
   /** Started by a `# then: epilogue` (its occasion has closed): an authored city's epilogue, cleared or not. */
   authored = false,
 ): GameState {
-  let state = input;
-  // The finale result's 「エピローグへ」: the result is left and its occasion closes first (its trip's window settles).
-  if (state.activeBattle?.phase === "result" && state.occasion && !state.occasion.then && !authored) {
-    const trip = state.travel.activeEvent;
-    state = { ...state, occasion: null, travel: trip ? { ...state.travel, minute: trip.endMinute, activeEvent: null } : state.travel };
-  }
-  const finale = episodes.find(
-    (episode) => episode.kind === "city_finale" && episode.cityId === cityId,
-  );
-  if (
-    state.revision !== expectedRevision ||
-    cityId !== state.currentCityId ||
-    state.activeDate ||
-    state.activeTourism ||
-    state.activeEpilogue ||
-    state.activeEncounter ||
-    (state.activeBattle && state.activeBattle.phase !== "result") ||
-    !finale?.epilogueStoryId || state.occasion ||
-    (authored ? !canStartAuthoredEpilogue(state, cityId) : !state.completedCityIds.includes(cityId) || isAuthoredEpilogueCity(cityId))
-  )
-    return input;
+  const opening = input.revision === expectedRevision ? epilogueOpening(input, cityId, authored) : null;
+  return opening ? beginCityEpilogue(opening, cityId) : input;
+}
+
+/** Begin the city's epilogue conversation (the caller checked it may open: epilogueOpening). */
+export function beginCityEpilogue(state: GameState, cityId: string): GameState {
+  const finale = episodes.find((episode) => episode.kind === "city_finale" && episode.cityId === cityId);
+  if (!finale?.epilogueStoryId || state.activeEpilogue) return state;
   const storyId = finale.epilogueStoryId;
   return {
     ...state,
@@ -199,9 +225,10 @@ export function advanceCityEpilogue(
     };
     // Its file's head # on_done: (the arrival: once per city; the epilogue: the first time it is read).
     const scene = first ? epilogueScene(active) : undefined;
-    if (!scene) return closed;
+    // Its moment (stage 4) goes on: the scenes after it, a then: of it.
+    if (!scene) return advanceRunningOccasion(closed);
     const paid = applyDoneEffects(closed, scene.id, scene.done, closed.revision);
-    return scene.done.rel ? evaluateProgression(paid) : paid;
+    return advanceRunningOccasion(scene.done.rel ? evaluateProgression(paid) : paid);
   }
   return {
     ...state,

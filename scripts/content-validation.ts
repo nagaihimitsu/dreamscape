@@ -182,7 +182,7 @@ function checkQuizFileNames(sources: ContentSources): void {
  * story stops the build, as do a malformed head, a head naming another landmark than the
  * catalog's, and a priority `after observe` at a landmark without an observation.
  */
-function readEncounterHeads(sources: ContentSources, encounters: readonly { id: string; storyId: string; landmarkId: string }[],
+function readEncounterHeads(sources: ContentSources, encounters: readonly { id: string; storyId: string; landmarkId?: string }[],
   landmarks: readonly { id: string }[], storyLabel: (storyId: string) => string): Map<string, EncounterHead> {
   const heads = new Map<string, EncounterHead>();
   const headTag = new RegExp(`^\\s*#\\s*(?:${HEAD_TAGS.join("|")})\\s*:`, "mu");
@@ -275,6 +275,9 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   unique(sceneData.scenes.map((scene) => scene.id), "scene JSON ID");
   const tourism = parseCatalog(tourismCatalogSchema, "tourism/catalog.json");
   const authoredEncounterInput = parseCatalog(encounterCatalogInputSchema, "encounters/catalog.json");
+  // An encounter written in JSON is met at its landmark's visit (a place file's scene names its moments with # at:).
+  for (const event of authoredEncounterInput.encounters) if (!event.landmarkId)
+    throw new Error(`An encounter of encounters/catalog.json needs its landmarkId: ${event.id}`);
   // The head tags of the encounters' Ink (encounter-head.ts): read and removed before compiling,
   // they become the encounters' entry rules and `repeatable` (written to the generated catalogs).
   const encounterHeads = readEncounterHeads(sources, authoredEncounterInput.encounters, tourism.landmarks, storyLabel);
@@ -607,7 +610,11 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       battles.find((battle) => battle.id === event.id)?.landmarkId])
     .filter((id): id is string => !!id));
   const momentLandmarks = (moment: SceneEntry["at"][number], cityId: string): string[] => "place" in moment ? [...new Set(landmarksAtPlace(moment.place))]
-    : moment.visit === "any" ? tourism.landmarks.filter((landmark) => landmark.cityId === cityId).map((landmark) => landmark.id) : [moment.visit];
+    : !("visit" in moment) ? [] : moment.visit === "any" ? tourism.landmarks.filter((landmark) => landmark.cityId === cityId).map((landmark) => landmark.id) : [moment.visit];
+  // The dates and finales of a place (stage 4: `place <place>` runs at them too).
+  const eventsAtPlace = (placeId: string) => travels.flatMap(({ travel }) => travel.events.filter((event) => event.placeId === placeId));
+  const datesAtPlace = (placeId: string) => eventsAtPlace(placeId).filter((event) => dates.some((date) => date.id === event.id));
+  const finalesAtPlace = (placeId: string) => eventsAtPlace(placeId).filter((event) => journey.episodes.some((episode) => episode.id === event.id && episode.kind === "city_finale"));
   const placeEntries: SceneEntry[] = [];
   // The data-language warning of a place file's `# translation:` (as for today's encounters).
   for (const file of placeFiles.values()) for (const knot of file.knots) for (const choice of knot.choices) if (choice.translation) {
@@ -617,6 +624,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   for (const file of placeFiles.values()) {
     const read = withContext(storyLabel(file.storyId), () => placeScenes({
       file, compiled: stories[file.storyId], apCap: balance.apCap, mains, landmarkCity, placeCity,
+      dateCity: (dateId) => dates.find((date) => date.id === dateId)?.chapterId, cityExists: (cityId) => cities.some((city) => city.id === cityId),
       onWarning: sceneWarn,
     }));
     if (!read.length) throw new Error(`A place file without scenes: ${storyLabel(file.storyId)} (give a knot the head tag # scene:)`);
@@ -751,14 +759,29 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   for (const { encounter } of insertedEncounters)
     if (encounterCatalog.encounters.some((event) => event.id === encounter.id))
       throw new Error(`The scene ${encounter.id} is written twice: a place file's knot and encounters/catalog.json (keep one; A4)`);
-  // A2: a landmark the moment names exists, and `after <part>` names a part the landmark has (3.3 check 2; visit any and place: at least one).
+  // A2: a landmark, place, date, city, mode the moment names exists, and `after <part>` names a part the moment has
+  // (3.3 check 2; visit any and place: at least one). Stage 4: the other moments of 2.3.
   for (const scene of placeEntries) for (const moment of scene.at) {
+    const cityTravel = travels.find(({ city: item }) => item.id === scene.cityId);
     if ("visit" in moment && moment.visit !== "any" && !tourism.landmarks.some((landmark) => landmark.id === moment.visit))
       throw new Error(`Unknown landmark in # at: visit ${moment.visit} (${scene.id})`);
-    if ("place" in moment && !landmarksAtPlace(moment.place).length)
-      throw new Error(`No landmark is visited at the place of # at: place ${moment.place} (${scene.id}); stage 3 runs place at its landmarks' visits (its dates and finale come with stage 4)`);
+    if ("place" in moment && !landmarksAtPlace(moment.place).length && !datesAtPlace(moment.place).length && !finalesAtPlace(moment.place).length)
+      throw new Error(`No landmark, date or finale is at the place of # at: place ${moment.place} (${scene.id}); place runs at their moments (A2)`);
+    if ("hotel" in moment && moment.hotel !== "any" && cityTravel?.settings.hotelPlaceId !== moment.hotel)
+      throw new Error(`# at: hotel ${moment.hotel} names no hotel (${scene.id}): the hotel of ${scene.cityId} is ${cityTravel?.settings.hotelPlaceId} (A2)`);
+    if ("trip" in moment && moment.trip !== "walk" && !cityTravel?.travel.routes.some((route) => route.mode === moment.trip))
+      throw new Error(`# at: trip ${moment.trip} names no mode of ${scene.cityId} (${scene.id}; walk, or a mode of its routes, A2)`);
+    if ("ticket" in moment && !eventsAtPlace(moment.ticket).some((event) => (event.admissionCost ?? 0) > 0))
+      sceneWarn(`${scene.id}: # at: ticket ${moment.ticket} never runs (no destination there charges admission; the ticket counter opens only with an admission)`);
+    if ("depart" in moment && !cities.find((city) => city.id === moment.depart)?.nextCityId)
+      sceneWarn(`${scene.id}: # at: depart ${moment.depart} never runs (the city has no next city, so its departure never opens)`);
+    if ("finale" in moment && !journey.episodes.some((episode) => episode.kind === "city_finale" && episode.cityId === moment.finale))
+      throw new Error(`# at: finale ${moment.finale}: the city has no finale (${scene.id}, A2)`);
+    if (scene.priority === "after date" && "place" in moment && !datesAtPlace(moment.place).length)
+      throw new Error(`# priority: after date needs a date at the place: ${scene.id} at place ${moment.place} (A2)`);
+    if (!("visit" in moment) && !("place" in moment)) continue;
     const part = typeof scene.priority === "string" ? scene.priority.slice("after ".length) as VisitPart : undefined;
-    if (!part) continue;
+    if (!part || (part as string) === "date" || ("place" in moment && !landmarksAtPlace(moment.place).length && part === "battle" && finalesAtPlace(moment.place).length)) continue;
     const landmarksThere = momentLandmarks(moment, scene.cityId).map((id) => tourism.landmarks.find((landmark) => landmark.id === id)!);
     const named = "visit" in moment && moment.visit !== "any";
     const having = landmarksThere.filter((landmark) => landmarkParts(landmark).includes(part));
@@ -817,12 +840,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const loops = thenLoopErrors([...taggedScenes, ...catalogEntries], placeLandmarks);
   if (loops.length) throw new Error(loops.join("\n"));
   for (const message of thenLoopWarnings([...taggedScenes, ...catalogEntries], placeLandmarks)) sceneNotes.push({ kind: "then-loop", message });
-  // # then: (stage 3b runs it): move goes to a place of the scene's city (by a mode it has), and arrivals and epilogues take none yet (stage 4).
+  // # then: (stage 3b runs it; an arrival's and an epilogue's from stage 4, decision 36): move goes to a place of the scene's city (by a mode it has).
   for (const scene of [...taggedScenes, ...catalogEntries]) for (const then of [scene.then, ...scene.options.map((option) => option.then)]) {
     if (!then) continue;
     const label = `${storyLabel(scene.story.storyId)}${scene.story.knot ? ` (${scene.story.knot})` : ""}`;
-    if (scene.kind === "arrival" || scene.kind === "epilogue")
-      throw new Error(`# then: is not available in an ${scene.kind} yet (stage 4): ${label}`);
     if (!("move" in then)) continue;
     const cityTravel = travels.find(({ city: item }) => item.id === scene.cityId)?.travel;
     if (!cityTravel?.places.some((place) => place.id === then.move))
@@ -849,7 +870,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   // The tags' AP rules (scene_tag), made from the Ink text; their IDs may not collide with the authors' rewards.
   if (journey.rewards.some((rule) => rule.trigger === "scene_tag"))
     throw new Error("progression/journey.json rewards cannot use the trigger scene_tag: content:build makes those rules from the scenes' # ap: tags");
-  const sceneTitle = (scene: SceneEntry) => scene.title ?? tourism.landmarks.find((landmark) => scene.at[0] && landmark.id === momentLandmarks(scene.at[0], scene.cityId)[0])?.nameJa ?? scene.id;
+  const sceneTitle = (scene: SceneEntry) => scene.title ?? tourism.landmarks.find((landmark) => scene.at[0] && landmark.id === momentLandmarks(scene.at[0], scene.cityId)[0])?.nameJa ??
+    cities.find((city) => city.id === scene.cityId)?.nameJa ?? scene.id;
   const tagRules = sceneTagRules([...taggedScenes, ...catalogEntries], sceneTitle);
   checkRuleIds(tagRules, [
     ...journey.rewards.map((rule) => ({ id: rule.id, origin: `the reward ${rule.id} of progression/journey.json` })),
@@ -1170,6 +1192,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     journeys: journeyCatalog.journeys, cities, episodes: journey.episodes, battles, landmarks: tourism.landmarks,
     encounters: runtimeEncounters, items: encounterCatalog.items, dates,
     flags: storyStateCatalog.flags.map((flag) => flag.id), people: storyStateCatalog.people, namedConditions: storyStateCatalog.conditions,
+    returningScenes: new Set(placeEntries.filter((scene) => scene.at.some((moment) => !("visit" in moment) &&
+      (!("place" in moment) || datesAtPlace(moment.place).length > 0 || finalesAtPlace(moment.place).length > 0))).map((scene) => scene.id)),
   };
   // Scenes' cond("…") (unified event design stage 2a): read in the city where the scene is played, checked like the other conditions.
   const sceneCity = (storyId: string): string | undefined =>
@@ -1219,6 +1243,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       ...(scene.main && "date" in scene.main ? { dateId: scene.main.date } : {}),
       ...(scene.at.length ? { landmarkIds: scene.at.flatMap((moment) => momentLandmarks(moment, scene.cityId)) } : {}),
       ...(scene.main && "guide" in scene.main ? { landmarkIds: [scene.main.guide] } : {}),
+      // Stage 4: at the finale (its result reached), at a date, or at a moment that comes whenever the player rests, travels or arrives.
+      ...(scene.at.some((moment) => "finale" in moment || ("place" in moment && finalesAtPlace(moment.place).length)) ? { atFinale: true } : {}),
+      ...(scene.at.find((moment) => "date" in moment) ? { dateId: (scene.at.find((moment) => "date" in moment) as { date: string }).date } : {}),
+      ...(scene.at.some((moment) => "hotel" in moment || "trip" in moment || "arrive" in moment || "ticket" in moment) ? { anytime: true } : {}),
       ...(scene.when ? { when: scene.when } : {}) })),
     // The tags' AP (stage 3): once-only scenes' gains (their scene_tag rules) and the main parts' spends.
     sceneAp: generatedScenes.scenes.filter((scene) => scene.repeat === "once").map((scene) => ({ cityId: scene.cityId,

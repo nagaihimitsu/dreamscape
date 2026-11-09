@@ -24,6 +24,9 @@ export const visitPrioritySchema = z.union([
   // After the visit's guide or battle (stage 3b): only when that part ran in this visit.
   z.literal("after guide"),
   z.literal("after battle"),
+  // After a date (before the 「交際開始」 screen) and after an arrival's logo (stage 4).
+  z.literal("after date"),
+  z.literal("after logo"),
 ]);
 export type VisitPriority = z.infer<typeof visitPrioritySchema>;
 const ruleSchema = z.object({

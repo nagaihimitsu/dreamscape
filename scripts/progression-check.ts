@@ -38,7 +38,9 @@ export type ProgressionContent = {
    * The scenes whose `then: epilogue` (head or choice) starts their city's epilogue (stage 3b; 3.9 (d)): an inserted
    * scene at the visits of `landmarkIds` with its `when`, or a battle's head (`battleId`).
    */
-  epilogueStarters?: readonly { sceneId: string; cityId: string; landmarkIds?: readonly string[]; battleId?: string; dateId?: string; when?: Condition }[];
+  epilogueStarters?: readonly { sceneId: string; cityId: string; landmarkIds?: readonly string[]; battleId?: string; dateId?: string; when?: Condition;
+    /** Stage 4: at the city's finale (once its finale shows), or at a moment that comes whenever the player rests, travels or arrives. */
+    atFinale?: boolean; anytime?: boolean }[];
   /** The AP of the scenes' tags (stage 3): gained once by a scene's `# ap: +N` / `# on_done: ap +N` (its scene_tag rules), spent by the main parts' `# on_done: ap -N`. */
   sceneAp?: readonly { cityId: string; gained: number; spent: number }[];
 };
@@ -277,10 +279,12 @@ const finaleCities = (content: ProgressionContent) => [...new Set(content.episod
 /** Whether one of the city's then: epilogue scenes can come in the reach (its visit reached and its condition true some day, or its battle played). */
 function epilogueReachable(content: ProgressionContent, city: City, reach: Reach, mode: Mode): boolean {
   const dateWhen = (dateId: string) => content.dates.find((date) => date.id === dateId)?.when;
+  const when = (condition: Condition | undefined) => !condition || judge(content, city, startSnapshot(), reach, mode, condition).canTrue;
   return (content.epilogueStarters ?? []).filter((starter) => starter.cityId === city.id).some((starter) => starter.battleId
     ? reach.battles.has(starter.battleId)
-    : starter.dateId ? !dateWhen(starter.dateId) || judge(content, city, startSnapshot(), reach, mode, dateWhen(starter.dateId)!).canTrue
-    : (starter.landmarkIds ?? []).some((id) => reach.landmarks.has(id)) && (!starter.when || judge(content, city, startSnapshot(), reach, mode, starter.when).canTrue));
+    : starter.anytime || (starter.atFinale && reach.finale) ? when(starter.when)
+    : starter.dateId ? when(dateWhen(starter.dateId)) && when(starter.when)
+    : (starter.landmarkIds ?? []).some((id) => reach.landmarks.has(id)) && when(starter.when));
 }
 const authoredCities = (content: ProgressionContent) => [...new Set((content.epilogueStarters ?? []).map((starter) => starter.cityId))];
 /** A city the player cannot leave without its epilogue: one of a journey that moves on after the epilogue, or the journey's last city. */

@@ -12,10 +12,13 @@ import { getUsableRoutes } from "./transport";
 export function validateTravelState(state: GameState): void {
   const travel = state.travel;
   const { travel: cityTravel, travelSettings } = getCityContent(state.currentCityId);
+  // A trip whose move waits for its scenes (stage 4): the party is still where it leaves, already paid for where it goes.
+  const pending = state.occasion?.trip && !state.occasion.ran.includes("move") ? state.occasion.trip : undefined;
+  const placeId = pending?.to ?? travel.currentPlaceId;
   if (travel.hotelPlaceId !== travelSettings.hotelPlaceId || travel.returnReserve > state.travelBudget ||
       !cityTravel.places.some((place) => place.id === travel.currentPlaceId) ||
       (travel.activeEvent && (!cityTravel.events.some((event) => event.id === travel.activeEvent!.eventId && event.placeId === travel.activeEvent!.placeId) ||
-        travel.activeEvent.placeId !== travel.currentPlaceId || travel.activeEvent.endMinute < travel.minute)))
+        travel.activeEvent.placeId !== placeId || travel.activeEvent.endMinute < travel.minute)))
     throw new Error("旅行の位置や時間枠が一致しません。");
   // A rental mode is usable once rented and stays usable in the city, so the saved reserve
   // (computed from the usable routes when it was set) never falls below this minimum.
@@ -28,7 +31,7 @@ export function validateTravelState(state: GameState): void {
     return !mode || modeId === WALK_MODE_ID || (!!mode.rental && !travel.rentedModeIds.includes(modeId));
   })) throw new Error("乗り物に乗った回数の記録が一致しません。");
   const returnMinute = travel.activeEvent?.endMinute ?? travel.minute;
-  const requiredFare = minimumHomeFare(getUsableRoutes(state), travel.currentPlaceId, travel.hotelPlaceId, returnMinute);
+  const requiredFare = minimumHomeFare(getUsableRoutes(state), placeId, travel.hotelPlaceId, returnMinute);
   if (requiredFare === undefined || travel.returnReserve < requiredFare)
     throw new Error("帰路の交通費を確保できていません。");
   if (travel.activeEvent) {

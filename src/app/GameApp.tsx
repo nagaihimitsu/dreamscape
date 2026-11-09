@@ -499,7 +499,9 @@ export function GameApp({
                   ...(showEnemy ? { enemy: { emotion: enemy?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral"), mark: enemy?.mark, active: frame.speaker === "enemy" } } : {}),
                 };
               })(),
-              placeJa: encounterLandmark?.nameJa ?? getCityContent(currentEncounter.cityId).city.nameJa,
+              // A scene at no landmark (a date's, the hotel's, a trip's…; stage 4): the place the party is at.
+              placeJa: encounterLandmark?.nameJa ?? getCityContent(currentEncounter.cityId).travel.places.find((place) => place.id === game.travel.currentPlaceId)?.nameJa ??
+                getCityContent(currentEncounter.cityId).city.nameJa,
               background: activeEncounter.frame.background,
               backgroundAsset: encounterImage,
               speaker: activeEncounter.frame.speaker === "heroine" ? game.heroineName : activeEncounter.frame.speaker === "player" ? game.playerName : "旅の風景",

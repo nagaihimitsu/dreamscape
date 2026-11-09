@@ -6,7 +6,7 @@ import { describe, expect, it } from "vitest";
 import { cityContents, getCityContent } from "../../../src/content";
 import { departToNextCity } from "../../../src/domain/city-travel";
 import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
-import { listPlayerActions, playerActionChange } from "../../../src/domain/player-action";
+import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../../src/domain/player-action";
 import { getRentalOffers, getUsableRoutes, isTransportModeUsable, rentalReason, rentTransport } from "../../../src/domain/transport";
 import { DAY_END } from "../../../src/domain/travel";
 import { getTravelDestinations } from "../../../src/domain/travel-destinations";
@@ -29,6 +29,23 @@ class MemoryStorage implements StorageLike {
 }
 const start = () => createGame("旅人", "相手", { journeyId: "sample_trip" });
 const offer = () => getCityContent("mihon").travelSettings.rentals!.find((item) => item.modeId === BIKE)!;
+
+/**
+ * The first bicycle ride's scene (stage 4: the trip's moment, at the place it leaves): the party is still at the hotel and has
+ * not ridden yet; keeping the saddle as it is (nothing to pay) finishes it, and the move follows.
+ */
+function rideOn(state: GameState): GameState {
+  expect(state.activeEncounter?.encounterId).toBe("smp_mihon_first_bicycle");
+  expect(state.travel).toMatchObject({ currentPlaceId: HOTEL, rideCounts: {} });
+  expect(validateGameState(JSON.parse(JSON.stringify(state)))).toEqual(state);
+  let next = state;
+  for (let step = 0; next.activeEncounter?.encounterId === "smp_mihon_first_bicycle"; step++) {
+    expect(step).toBeLessThan(20);
+    const keep = next.activeEncounter.frame.choices.find((choice) => choice.optionId === "as_is");
+    next = applyPlayerAction(next, playerActionChange(keep ? { kind: "encounter_choose", index: keep.index } : listPlayerActions(next)[0], () => 0), () => 0);
+  }
+  return next;
+}
 
 describe("rental transport (sample journey)", () => {
   it("lists the bicycle route before renting, with the reason, and keeps it out of the ways home and the reserve", () => {
@@ -113,7 +130,7 @@ describe("rental transport (sample journey)", () => {
     expect(getTravelDestinations(rented).candidates.find((item) => item.id === EPISODE)!.describedRoutes.map((route) => route.mode).sort())
       .toEqual([BIKE, "walk"]);
     const bike = getCityContent("mihon").travel.routes.find((route) => route.fromPlaceId === HOTEL && route.toPlaceId === TOWER && route.mode === BIKE)!;
-    const moved = beginTravelEvent(rented, EPISODE, BIKE, rented.revision);
+    const moved = rideOn(beginTravelEvent(rented, EPISODE, BIKE, rented.revision, () => 0));
     expect(moved.travel).toMatchObject({ currentPlaceId: TOWER, minute: rented.travel.minute + bike.minutes, rentedModeIds: [BIKE] });
     const tower = { ...rented, travel: { ...rented.travel, currentPlaceId: TOWER } };
     expect(getTravelHomeRoutes(tower, TOWER).map((route) => route.mode).sort()).toEqual([BIKE, "walk"]);
@@ -153,7 +170,7 @@ describe("rental transport (sample journey)", () => {
     expect(beginTravelEvent(state, EPISODE, "walk", state.revision).travel.rideCounts).toEqual({});
     const rented = rentTransport(state, BIKE, state.revision);
     expect(rented.travel.rideCounts).toEqual({});
-    const moved = beginTravelEvent(rented, EPISODE, BIKE, rented.revision);
+    const moved = rideOn(beginTravelEvent(rented, EPISODE, BIKE, rented.revision, () => 0));
     expect(moved.travel).toMatchObject({ currentPlaceId: TOWER });
     expect(moved.travel.rideCounts).toEqual({ [BIKE]: 1 });
     const storage = new MemoryStorage();

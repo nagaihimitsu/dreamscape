@@ -1,9 +1,7 @@
 import type { Condition } from "../src/content/condition-schemas";
 import { combineWhenUntil, parseConditionText } from "../src/content/condition-text";
 import { RELATIONSHIP_AXES } from "../src/content/condition-schemas";
-import type { RelationshipDelta, SceneDone, SceneEntry, SceneKind, SceneOption, SceneThen } from "../src/content/scene-schemas";
-
-type SceneAt = SceneEntry["at"][number];
+import { AFTER_PARTS, type AfterPart, type RelationshipDelta, type SceneAt, type SceneDone, type SceneKind, type SceneOption, type SceneThen } from "../src/content/scene-schemas";
 
 // The place files and the tags of scenes (the unified event design, stage 3a, 3.1): one Ink file
 // holds every scene of a place, each a knot whose head tags (the tag lines right below the knot
@@ -326,12 +324,63 @@ export function parseDone(values: readonly string[], apCap: number): SceneDone {
   return done;
 }
 
+/** The moments of 2.3 (stage 4 added all but the visits; tours come later, A3). */
+const AT_FORMS: { pattern: RegExp; read: (match: RegExpExecArray) => SceneAt }[] = [
+  { pattern: /^visit\s+([a-z][a-z0-9_]*)$/u, read: (match) => ({ visit: match[1] }) },
+  { pattern: /^place\s+([a-z][a-z0-9_]*)$/u, read: (match) => ({ place: match[1] }) },
+  { pattern: /^date\s+([a-z][a-z0-9_]*)$/u, read: (match) => ({ date: match[1] }) },
+  { pattern: /^finale\s+([a-z][a-z0-9_]*)$/u, read: (match) => ({ finale: match[1] }) },
+  { pattern: /^epilogue\s+([a-z][a-z0-9_]*)$/u, read: (match) => ({ epilogue: match[1] }) },
+  { pattern: /^depart\s+([a-z][a-z0-9_]*)$/u, read: (match) => ({ depart: match[1] }) },
+  { pattern: /^arrive\s+([a-z][a-z0-9_]*)$/u, read: (match) => ({ arrive: match[1] }) },
+  { pattern: /^hotel(?:\s+([a-z][a-z0-9_]*))?$/u, read: (match) => ({ hotel: match[1] ?? "any" }) },
+  { pattern: /^ticket\s+([a-z][a-z0-9_]*)$/u, read: (match) => ({ ticket: match[1] }) },
+  { pattern: /^trip\s+([a-z][a-z0-9_]*)((?:\s+(?:from|to)\s+[a-z][a-z0-9_]*)*)$/u, read: (match) => {
+    const words = match[2].trim().split(/\s+/u).filter(Boolean);
+    const at: SceneAt = { trip: match[1] };
+    for (let index = 0; index < words.length; index += 2) {
+      const key = words[index] as "from" | "to";
+      if (key in at) throw new Error(`# at: trip names ${key} once: ${match[0]}`);
+      Object.assign(at, { [key]: words[index + 1] });
+    }
+    return at;
+  } },
+];
+
+/** One `# at:` value (2.3). */
+export function parseAt(value: string): SceneAt {
+  for (const form of AT_FORMS) {
+    const match = form.pattern.exec(value.trim());
+    if (match) return form.read(match);
+  }
+  if (/^tour\s/u.test(value.trim())) throw new Error(`# at: ${value} is not available yet (tours come with stage 6)`);
+  throw new Error(`# at: takes visit <landmark>, visit any, place <place>, date <date>, finale <city>, epilogue <city>, depart <city>, ` +
+    `arrive <city>, hotel [<place>], trip <mode> [from <place>] [to <place>] or ticket <place>: ${value}`);
+}
+
+/** The positions each moment has (2.3): which `after <part>`, and whether it has a positive side. A2: a position the moment lacks stops. */
+export function positionProblem(at: SceneAt, priority: number | `after ${AfterPart}` | undefined): string | undefined {
+  const kind = Object.keys(at)[0] as string;
+  const afters: Record<string, readonly AfterPart[]> = {
+    visit: ["guide", "observe", "battle"], place: ["guide", "observe", "battle", "date"], date: ["date"], finale: ["battle"], arrive: ["logo"],
+    epilogue: [], depart: [], hotel: [], trip: [], ticket: [],
+  };
+  const name = Object.entries(at).map(([key, value]) => `${key} ${value}`).join(" ");
+  if (typeof priority === "string") {
+    const part = priority.slice("after ".length) as AfterPart;
+    if (!afters[kind].includes(part)) return `# at: ${name} has no ${priority} (A2; ${afters[kind].length ? `it has ${afters[kind].map((item) => `after ${item}`).join(", ")}` : "write a negative or a positive number"})`;
+  }
+  if (typeof priority === "number" && priority > 0 && (kind === "trip" || kind === "ticket" || kind === "depart"))
+    return `# at: ${name} has no positive priority (A2; the scenes after it are written at the next moment's negative priority: the arrival's, the visit's)`;
+  return undefined;
+}
+
 /** A knot head, read. */
 export type PlaceHead = {
   kind: SceneKind;
   title?: string;
   at: SceneAt[];
-  priority?: number | "after guide" | "after observe" | "after battle";
+  priority?: number | `after ${AfterPart}`;
   when?: Condition;
   whenTexts: string[];
   untilTexts: string[];
@@ -355,24 +404,21 @@ export function readHead(knot: PlaceKnot, apCap: number): PlaceHead | undefined 
   if (!kind) throw new Error(`The head of ${knot.name} needs # scene: (${PLACE_KINDS.join(", ")}); a knot without a head is a helper knot`);
   if (!(PLACE_KINDS as readonly string[]).includes(kind))
     throw new Error(`# scene: ${kind} is not available in a place file yet (stage 3a: ${PLACE_KINDS.join(", ")}; arrivals and epilogues stay one-scene files)`);
-  // Stage 3: the visits of landmarks (visit <landmark>, visit any, place <place>); the other moments are stage 4 (A3).
-  const at = values("at").map((value): SceneAt => {
-    const visit = /^visit\s+([a-z][a-z0-9_]*)$/u.exec(value);
-    if (visit) return { visit: visit[1] };
-    const place = /^place\s+([a-z][a-z0-9_]*)$/u.exec(value);
-    if (place) return { place: place[1] };
-    throw new Error(`# at: ${value} is not available yet (stage 4); stage 3 places a scene at visit <landmark>, visit any or place <place>`);
-  });
+  const at = values("at").map((value) => parseAt(value));
   const priorityText = single("priority");
   let priority: PlaceHead["priority"];
   if (priorityText !== undefined) {
-    if (priorityText === "after observe" || priorityText === "after guide" || priorityText === "after battle") priority = priorityText;
+    const after = /^after\s+([a-z]+)$/u.exec(priorityText);
+    if (after && (AFTER_PARTS as readonly string[]).includes(after[1])) priority = priorityText as PlaceHead["priority"];
     else if (/^[+-]?[0-9]+$/u.test(priorityText)) {
       priority = Number(priorityText);
       if (priority === 0) throw new Error(`# priority: 0 is the main part itself (${knot.name}); write a negative or a positive number`);
       if (!Number.isSafeInteger(priority)) throw new Error(`# priority: ${priorityText} is too large`);
-    } else if (/^after\s/u.test(priorityText)) throw new Error(`# priority: ${priorityText} is not available yet (stage 4: after date, after logo); a visit has after guide, after observe and after battle`);
-    else throw new Error(`# priority: takes a whole number, after guide, after observe or after battle (${knot.name}): ${priorityText}`);
+    } else throw new Error(`# priority: takes a whole number or after <part> (${AFTER_PARTS.join(", ")}) (${knot.name}): ${priorityText}`);
+  }
+  for (const moment of at) {
+    const problem = positionProblem(moment, priority);
+    if (problem) throw new Error(`${problem} (${knot.name})`);
   }
   const repeat = single("repeat");
   if (repeat !== undefined && repeat !== "once" && repeat !== "always") throw new Error(`Unknown # repeat: ${repeat} (once or always)`);

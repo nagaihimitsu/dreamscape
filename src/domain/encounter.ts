@@ -16,7 +16,7 @@ import placeRuleData from "../content/generated/content/encounters/entry-rules.j
 import { encounterEntryRulesSchema } from "../content/encounter-entry-rules";
 import { beginLandmarkObservation, startTourismBattle } from "./tourism";
 import { battlePlayed, meets } from "./conditions";
-import { advanceOccasion, commitThen, leaveObservation, planThen } from "./occasion";
+import { advanceOccasion, commitThen, leaveObservation, occasionSteps, planThen } from "./occasion";
 import { visitOrder, visitSlot, type MomentEntry, type VisitSlot } from "./encounter-moments";
 import { battles, episodes, getCityContent } from "../content";
 import { applyChoiceEffects, applyDoneEffects, changesRelationship, choiceDisplay, doneReserve, placeSceneById, sceneById, sceneOption, type ChoiceDisplay } from "./scene-effects";
@@ -37,10 +37,11 @@ const entryRule = (event: EncounterDefinition) => encounterEntryRule(event.id);
  */
 function sceneLandmarks(event: EncounterDefinition): string[] {
   const scene = sceneById(event.id);
-  if (!scene || !scene.at.length) return [event.landmarkId];
+  if (!scene || !scene.at.length) return event.landmarkId ? [event.landmarkId] : [];
+  // (A stage-4 moment other than a visit runs at no landmark: moments.ts places it.)
   return [...new Set(scene.at.flatMap((moment) => "place" in moment
     ? getCityContent(event.cityId).travel.events.filter((item) => item.placeId === moment.place).flatMap((item) => visitedLandmarkOfEvent(item.id) ?? [])
-    : moment.visit === "any" ? landmarks.filter((landmark) => landmark.cityId === event.cityId).map((landmark) => landmark.id) : [moment.visit]))];
+    : !("visit" in moment) ? [] : moment.visit === "any" ? landmarks.filter((landmark) => landmark.cityId === event.cityId).map((landmark) => landmark.id) : [moment.visit]))];
 }
 /** Whether the encounter runs at the landmark's visit. */
 export const encounterRunsAt = (encounterId: string, landmarkId: string) => {
@@ -152,7 +153,7 @@ function getEncounterEntryAvailability(state: GameState, event: EncounterDefinit
 
 /** Keep the optional cultural quiz after the main battle, so it cannot reveal its answer first. */
 function hasLandmarkBattle(state: GameState, event: EncounterDefinition): boolean {
-  const battleId = landmarks.find((landmark) => landmark.id === event.landmarkId)?.battleId;
+  const battleId = event.landmarkId && landmarks.find((landmark) => landmark.id === event.landmarkId)?.battleId;
   return !!battleId && battlePlayed(state, battleId);
 }
 
@@ -574,11 +575,14 @@ function validateItemUses(state: GameState): void {
  */
 function validateEncounterMoment(state: GameState, active: ActiveEncounter, event: EncounterDefinition): void {
   const occasion = state.occasion;
-  const landmarkId = occasion?.landmarkId;
-  if (!occasion || !landmarkId || !occasion.started.includes(event.id) || !encounterRunsAt(event.id, landmarkId) ||
-      (occasion.at !== event.id && !(occasion.at === "main:observe" && slotOf(event) === "observe")) ||
-      (slotOf(event) === "afterGuide" && !occasion.ran.includes("guide")) || (slotOf(event) === "afterBattle" && !occasion.ran.includes("battle")))
-    throw new Error("道中交流の時点の記録が一致しません。");
+  const fail = () => { throw new Error("道中交流の時点の記録が一致しません。"); };
+  if (!occasion || !occasion.started.includes(event.id)) return fail();
+  // Met from a visit's observation (it returns there).
+  if (occasion.at === "main:observe" && slotOf(event) === "observe")
+    return occasion.landmarkId && encounterRunsAt(event.id, occasion.landmarkId) ? undefined : fail();
+  // A step of the occasion's sequence (a visit's, or a stage-4 moment's: its trip, ticket counter, date, finale, hotel, …), after its part when it follows one.
+  const step = occasionSteps(occasion).find((item) => "scene" in item && item.scene === event.id);
+  if (occasion.at !== event.id || !step || ("after" in step && step.after && !occasion.ran.includes(step.after))) fail();
   void active;
 }
 

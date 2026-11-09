@@ -15,7 +15,7 @@ import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle, selec
 import {
   advanceEncounter, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter, leaveBattleToFreeTime, proceedFromTourism,
 } from "../../../src/domain/encounter";
-import { advanceCityEpilogue, startCityEpilogue } from "../../../src/domain/epilogue";
+import { advanceCityEpilogue } from "../../../src/domain/epilogue";
 import { advanceDate, chooseDate, createGame, finishDate, validateGameState, type GameState } from "../../../src/domain/game";
 import { advanceTourismGuide, discoverClue } from "../../../src/domain/tourism";
 import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability } from "../../../src/domain/travel-game";
@@ -198,7 +198,14 @@ describe("sample journey route", () => {
     expect(beginTravelEvent(short, DATE, "walk", short.revision, () => 0)).toBe(short);
     // With enough AP it is spent once, although every step of the date is saved and restored.
     expect(getTravelEventAvailability(s, DATE, "walk").available).toBe(true);
+    // By day, the bench painter comes before the date (stage 4: the date's moment). The date's AP is kept back, not spent:
+    // helping him earns a little money; then the date starts and spends its AP once.
     s = begin(s, DATE);
+    expect(s.activeEncounter?.encounterId).toBe("smp_mihon_date_bench_painter");
+    expect(totalAp(s)).toBe(4);
+    const budget = s.travelBudget;
+    s = playEncounter(s, "help");
+    expect(s.travelBudget).toBe(budget + 20);
     expect(s.activeDate?.dateId).toBe(DATE);
     expect(totalAp(s)).toBe(2);
     s = playDate(s);
@@ -218,12 +225,19 @@ describe("sample journey route", () => {
     s = act(s, (current) => leaveBattle(current, current.revision));
     expect(totalAp(s)).toBe(4);
 
-    // 3. City finale (+1 complete, +1 for 3 or more correct, +2 city clear).
+    // 3. City finale (+1 complete, +1 for 3 or more correct, +2 city clear). Before it, the sugar sweets (stage 4: the
+    // finale's -1; its # on_done: money -20 is kept back while it runs and paid as it ends).
+    const beforeFinale = s.travelBudget;
     s = begin(s, FINALE);
+    expect(s.activeEncounter?.encounterId).toBe("smp_mihon_finale_sweets");
+    s = playEncounter(s);
+    expect(s.travelBudget).toBe(beforeFinale - 20);
     expect(s.activeBattle?.battleId).toBe("smp_mihon_finale_battle");
     s = playBattle(s);
+    // The city writes then: epilogue (3.9 (d)): the result offers no 「エピローグへ」; leaving it, the square after the finale (+1).
     s = act(s, (current) => leaveBattleToFreeTime(current, current.revision, () => 0));
     expect(s.completedCityIds).toEqual([CITY]);
+    expect(s.activeEncounter?.encounterId).toBe("smp_mihon_after_finale");
     expect(totalAp(s)).toBe(8);
 
     // A normal save of the cleared city resumes as it was (same save version).
@@ -231,8 +245,11 @@ describe("sample journey route", () => {
     expect(saveGame(storage, s).ok).toBe(true);
     expect(loadGame(storage)).toEqual({ status: "loaded", state: s });
 
-    // 4. Epilogue.
-    s = act(s, (current) => startCityEpilogue(current, CITY, current.revision));
+    // 4. Epilogue (3.4 I): 「今日は、ここまでにしよう」 starts it right after the scene; Lili's farewell (-1) comes first.
+    s = playEncounter(s, "to_epilogue");
+    expect(s.occasion).toMatchObject({ kind: "epilogue", started: ["smp_mihon_lili_seeoff"], at: "main:epilogue" });
+    expect(s.completedEncounterIds).toContain("smp_mihon_lili_seeoff");
+    expect(s.activeEpilogue).not.toBeNull();
     // The epilogue's choice (stage 3a): waving back is affection +1, applied once.
     const affection = s.affection;
     for (let step = 0; s.activeEpilogue; step++) {

@@ -4,7 +4,7 @@ import type { EncounterDefinition } from "../src/content/encounter-schemas";
 import type { EncounterEntryRule } from "../src/content/encounter-entry-rules";
 import { fnvHash } from "../src/content/fingerprint";
 import type { RewardRule } from "../src/content/journey-schemas";
-import { INSERTED_KINDS, type SceneDone, type SceneEntry, type SceneKind, type SceneMain, type SceneOption } from "../src/content/scene-schemas";
+import { INSERTED_KINDS, type SceneAt, type SceneDone, type SceneEntry, type SceneKind, type SceneMain, type SceneOption } from "../src/content/scene-schemas";
 import { knotAddress } from "../src/content/story-address";
 import { choiceOption, readHead, reachableKnots, type PlaceFile, type PlaceHead } from "./place-files";
 
@@ -34,8 +34,12 @@ export type PlaceTableInput = {
   mains: MainAddresses;
   /** The landmark's city of each landmark (an inserted scene's city is its visit's). */
   landmarkCity: (landmarkId: string) => string | undefined;
-  /** The city of a transport place (`# at: place <place>`). */
+  /** The city of a transport place (`# at: place <place>`, `hotel <place>`, `ticket <place>`, `trip … from/to <place>`). */
   placeCity?: (placeId: string) => string | undefined;
+  /** The city of a date (`# at: date <date>`). */
+  dateCity?: (dateId: string) => string | undefined;
+  /** Whether a city exists (`# at: finale|epilogue|depart|arrive <city>`). */
+  cityExists?: (cityId: string) => boolean;
   /** The file's position among all place files (scenes of one priority: written order, then file name). */
   onWarning?: (message: string) => void;
 };
@@ -74,12 +78,8 @@ export function placeScenes(input: PlaceTableInput): { entry: SceneEntry; head: 
       if ((head.whenTexts.length && head.kind !== "battle" && head.kind !== "date") || (head.untilTexts.length && head.kind !== "date"))
         throw new Error(`Only a battle's knot takes # when: and only a date's # until: as its map condition (${label})`);
     }
-    // An inserted scene's city: its visits' (visit any: the city of the file's other scenes, settled by the caller).
-    const atCity = (moment: SceneEntry["at"][number]) => "place" in moment ? input.placeCity?.(moment.place)
-      : moment.visit === "any" ? undefined : input.landmarkCity(moment.visit);
-    const cities = inserted ? [...new Set(head.at.map(atCity).filter((city): city is string => !!city))] : [main!.cityId];
-    for (const moment of head.at) if (atCity(moment) === undefined && !("visit" in moment && moment.visit === "any"))
-      throw new Error("place" in moment ? `Unknown place in # at: place ${moment.place} (${label})` : `Unknown landmark in # at: visit ${moment.visit} (${label})`);
+    // An inserted scene's city: its moments' (visit any, bare hotel and a trip without places: the city of the file's other scenes, settled below).
+    const cities = inserted ? [...new Set(head.at.map((moment) => momentCity(input, moment, label)).filter((city): city is string => !!city))] : [main!.cityId];
     if (cities.length > 1) throw new Error(`The moments of ${label} are in different cities (${cities.join(", ")}); one scene belongs to one city`);
     const cityId = cities[0] ?? "";
     const knots = reached.map((item) => item.name);
@@ -95,25 +95,51 @@ export function placeScenes(input: PlaceTableInput): { entry: SceneEntry; head: 
       conds, knots, fingerprint: placeFingerprint(input.compiled, knots, data), origin: "place",
     } });
   });
-  // `visit any` alone names no city: the scene is of the city of the file's other scenes.
+  // `visit any`, a bare `hotel` or a trip without places names no city: the scene is of the city of the file's other scenes.
   const fileCity = result.find((item) => item.entry.cityId)?.entry.cityId;
   for (const item of result) if (!item.entry.cityId) {
-    if (!fileCity) throw new Error(`The scene ${file.storyId} (${item.entry.id}) says # at: visit any, but no scene of its file names a landmark or place of a city: put it in a place file of its city`);
+    if (!fileCity) throw new Error(`The scene ${file.storyId} (${item.entry.id}) says # at: ${item.entry.at.map(momentText).join(", ")}, which names no city, and no scene of its file names a landmark, place, date or city: put it in a place file of its city`);
     item.entry.cityId = fileCity;
   }
   return result;
 }
 
+/**
+ * The city of a moment (null: it names none, `visit any`, a bare `hotel`, a trip without places); throws for an
+ * unknown landmark, place, date or city (A2).
+ */
+function momentCity(input: PlaceTableInput, moment: SceneAt, label: string): string | null {
+  const known = (city: string | undefined, what: string) => {
+    if (!city) throw new Error(`Unknown ${what} in # at: ${Object.entries(moment).map(([key, value]) => `${key} ${value}`).join(" ")} (${label})`);
+    return city;
+  };
+  if ("visit" in moment) return moment.visit === "any" ? null : known(input.landmarkCity(moment.visit), "landmark");
+  if ("place" in moment) return known(input.placeCity?.(moment.place), "place");
+  if ("ticket" in moment) return known(input.placeCity?.(moment.ticket), "place");
+  if ("hotel" in moment) return moment.hotel === "any" ? null : known(input.placeCity?.(moment.hotel), "place");
+  if ("date" in moment) return known(input.dateCity?.(moment.date), "date");
+  if ("trip" in moment) {
+    const cities = [moment.from, moment.to].filter((place): place is string => !!place).map((place) => known(input.placeCity?.(place), "place"));
+    if (new Set(cities).size > 1) throw new Error(`# at: trip from and to are places of different cities (${label})`);
+    return cities[0] ?? null;
+  }
+  const city = "finale" in moment ? moment.finale : "epilogue" in moment ? moment.epilogue : "depart" in moment ? moment.depart : moment.arrive;
+  return known(input.cityExists?.(city) ? city : undefined, "city");
+}
+
+/** The words of a moment, for messages (`visit mihon_clock_tower`, `trip walk to mihon_market`). */
+export const momentText = (moment: SceneAt) => Object.entries(moment).map(([key, value]) => `${key} ${value}`).join(" ");
+
 /** The encounter definition and entry rule the game runs an inserted place scene with (generated catalogs; the runtime's encounter path). */
 export function insertedSceneEncounter(entry: SceneEntry, landmarkName: (landmarkId: string) => string,
   landmarksOf: (moment: SceneEntry["at"][number], cityId: string) => readonly string[] = (moment) => ("visit" in moment ? [moment.visit] : [])): { encounter: EncounterDefinition; rule: EncounterEntryRule } {
   // The definition keeps one landmark (its title's place; the checks of today's catalog read it); the scene table's `at` says where it runs.
+  // A scene at no visit (a date, a finale, the hotel, … stage 4) has none: its title is its own or its city's.
   const landmarkId = entry.at.flatMap((moment) => landmarksOf(moment, entry.cityId))[0];
-  if (!landmarkId) throw new Error(`The scene ${entry.id} is placed where no landmark is (# at: ${entry.at.map((moment) => "place" in moment ? `place ${moment.place}` : `visit ${moment.visit}`).join(", ")})`);
-  const title = entry.title ?? landmarkName(landmarkId);
+  const title = entry.title ?? (landmarkId ? landmarkName(landmarkId) : entry.id);
   return {
     encounter: {
-      id: entry.id, cityId: entry.cityId, landmarkId, titleJa: title, descriptionJa: title,
+      id: entry.id, cityId: entry.cityId, ...(landmarkId ? { landmarkId } : {}), titleJa: title, descriptionJa: title,
       storyId: knotAddress(entry.story.storyId, entry.story.knot!),
       // The catalog's item fields mirror the tags for the checks that read today's catalog shape (the progression check's
       // item sources and spends, the save's item records); the game applies a place scene's effects from the scene table.
@@ -139,7 +165,7 @@ export function catalogScenes(encounters: readonly EncounterDefinition[], rules:
     };
     return {
       id: event.id, kind: "encounter", title: event.titleJa, cityId: event.cityId, story: { storyId: event.storyId },
-      at: [{ visit: event.landmarkId }], ...(rule?.priority !== undefined ? { priority: rule.priority } : { priority: "after observe" as const }), order,
+      at: event.landmarkId ? [{ visit: event.landmarkId }] : [], ...(rule?.priority !== undefined ? { priority: rule.priority } : { priority: "after observe" as const }), order,
       repeat: event.repeatable ? "always" : "once", people: [], ...(rule?.when ? { when: rule.when } : {}),
       options: event.options.map((option) => ({
         id: option.id, knot: event.storyId.split("/").at(-1)!,
@@ -278,13 +304,23 @@ export function thenLoopErrors(scenes: readonly SceneEntry[], placeLandmarks: (p
     const then = scene.then;
     if (!then || !("move" in then) || scene.when || scene.repeat !== "always") return [];
     const visits = placeLandmarks(then.move);
-    const runsThere = scene.at.some((moment) => "place" in moment ? moment.place === then.move : moment.visit === "any" ? visits.length > 0 : visits.includes(moment.visit));
+    const runsThere = scene.at.some((moment) => runsAtMoveTarget(moment, then.move, visits));
     return runsThere
-      ? [`An endless then: loop: ${scene.id} moves to ${then.move} by its head's then:, where the visit of ${scene.at.map((moment) => "place" in moment ? moment.place : moment.visit).join(", ")} ` +
+      ? [`An endless then: loop: ${scene.id} moves to ${then.move} by its head's then:, where the visit of ${scene.at.map(momentText).join(", ")} ` +
         `runs it again, repeated always without # when: or # until: (A12)`]
       : [];
-  });
+  }).concat(scenes.flatMap((scene) => {
+    // The 3.3 example: an epilogue's scene that reopens the epilogue by its head's then: (each opening runs it again).
+    const then = scene.then;
+    return then && "epilogue" in then && !scene.when && scene.repeat === "always" && scene.at.some((moment) => "epilogue" in moment && moment.epilogue === scene.cityId)
+      ? [`An endless then: loop: ${scene.id} runs at the epilogue of ${scene.cityId} and reopens it by its head's then: epilogue, repeated always without # when: or # until: (A12)`]
+      : [];
+  }));
 }
+/** Whether a moment runs at the visit a `then: move` to the place opens (visits there, or the place itself). */
+const runsAtMoveTarget = (moment: SceneAt, placeId: string, visits: readonly string[]) =>
+  "place" in moment ? moment.place === placeId : "visit" in moment ? (moment.visit === "any" ? visits.length > 0 : visits.includes(moment.visit))
+    : "trip" in moment ? (!moment.to || moment.to === placeId) : "ticket" in moment ? moment.ticket === placeId : false;
 
 /**
  * A `then:` loop that can be left only conditionally (3.3 warning): the same loop as thenLoopErrors, but the scene has a
@@ -295,7 +331,7 @@ export function thenLoopWarnings(scenes: readonly SceneEntry[], placeLandmarks: 
     const then = scene.then;
     if (!then || !("move" in then) || !scene.when || scene.repeat !== "always") return [];
     const visits = placeLandmarks(then.move);
-    const runsThere = scene.at.some((moment) => "place" in moment ? moment.place === then.move : moment.visit === "any" ? visits.length > 0 : visits.includes(moment.visit));
+    const runsThere = scene.at.some((moment) => runsAtMoveTarget(moment, then.move, visits));
     return runsThere ? [`A then: loop left only conditionally: ${scene.id} moves to ${then.move} by its head's then:, where its visit runs it again ` +
       `(repeated always); only its # when: / # until: turning false ends the loop`] : [];
   });

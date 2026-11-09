@@ -76,8 +76,18 @@ describe("place files", () => {
     // Stage 3b opens place, visit any, several moments and after guide / after battle; the other moments are stage 4.
     expect(head("# at: place x\n# at: visit any\n# priority: after guide\n")).toMatchObject({ at: [{ place: "x" }, { visit: "any" }], priority: "after guide" });
     expect(head("# at: visit x\n# priority: after battle\n")).toMatchObject({ priority: "after battle" });
-    expect(() => head("# at: date smp_x_date\n# priority: -1\n")).toThrow("stage 4");
-    expect(() => head("# at: visit x\n# priority: after date\n")).toThrow("stage 4");
+    // Stage 4 opens the other moments of 2.3 and their positions; a position a moment lacks stops (A2), a tour waits (stage 6).
+    expect(head("# at: date smp_x_date\n# priority: after date\n")).toMatchObject({ at: [{ date: "smp_x_date" }], priority: "after date" });
+    expect(head("# at: hotel\n# at: hotel x_hotel\n# priority: -1\n")).toMatchObject({ at: [{ hotel: "any" }, { hotel: "x_hotel" }] });
+    expect(head("# at: trip walk from x_a to x_b\n# priority: -1\n")).toMatchObject({ at: [{ trip: "walk", from: "x_a", to: "x_b" }] });
+    expect(head("# at: arrive x\n# at: finale x\n# at: epilogue x\n# at: depart x\n# at: ticket x_gate\n# priority: -1\n")?.at)
+      .toEqual([{ arrive: "x" }, { finale: "x" }, { epilogue: "x" }, { depart: "x" }, { ticket: "x_gate" }]);
+    expect(head("# at: arrive x\n# priority: after logo\n")).toMatchObject({ priority: "after logo" });
+    expect(() => head("# at: visit x\n# priority: after date\n")).toThrow("has no after date");
+    expect(() => head("# at: hotel\n# priority: after battle\n")).toThrow("has no after battle");
+    expect(() => head("# at: trip walk\n# priority: +1\n")).toThrow("has no positive priority");
+    expect(() => head("# at: tour x first\n# priority: -1\n")).toThrow("stage 6");
+    expect(() => head("# at: somewhere x\n# priority: -1\n")).toThrow("# at: takes");
     expect(parseDone(["money -300", "rel affection +1", "use smp_x_card", "set smp_x_flag"], 12))
       .toEqual({ money: -300, rel: { affection: 1 }, use: ["smp_x_card"], set: ["smp_x_flag"] });
     expect(() => parseDone(["ap +13"], 12)).toThrow("at most 12");

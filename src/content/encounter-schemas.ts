@@ -22,7 +22,8 @@ const optionSchema = z.object({
 const encounterSchema = z.object({
   id,
   cityId: id,
-  landmarkId: id,
+  /** The landmark whose visit it is met at (a place file's scene at another moment, stage 4: none). */
+  landmarkId: id.optional(),
   titleJa: japaneseText,
   descriptionJa: japaneseText,
   storyId,

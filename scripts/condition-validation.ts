@@ -19,7 +19,7 @@ export type ConditionContent = {
   battles: readonly { id: string; cityId?: string; landmarkId: string | null }[];
   landmarks: readonly { id: string; cityId: string }[];
   /** The story file orders encounters of one priority; the options and repetition are read by the visit warnings. */
-  encounters: readonly { id: string; cityId: string; landmarkId: string; storyId?: string; repeatable?: boolean;
+  encounters: readonly { id: string; cityId: string; landmarkId?: string; storyId?: string; repeatable?: boolean;
     options?: readonly { id: string; deferCompletion?: boolean }[] }[];
   items: readonly { id: string; cityId: string; carry?: "journey" }[];
   dates: readonly { id: string; chapterId: string; when?: Condition; until?: Condition }[];
@@ -27,6 +27,8 @@ export type ConditionContent = {
   flags?: readonly string[];
   people?: readonly { id: string; cityId: string }[];
   namedConditions?: Readonly<Record<string, Condition>>;
+  /** Scenes that also run at other moments than their landmark's visit (stage 4: a `place` with a date or a finale): 「また今度」 brings them back there. */
+  returningScenes?: ReadonlySet<string>;
 };
 /** Something that carries conditions, with the city where they are checked. */
 export type ConditionOwner = { label: string; cityId: string; conditions: { field: string; condition: Condition }[] };
@@ -170,7 +172,7 @@ export type ConditionWarning = {
   kind: "never-offered" | "date-condition-trip" | "later-never-again" | "same-priority" | "repeat-without-until";
   message: string;
 };
-type EntryRule = { encounterId: string; at?: readonly string[]; priority?: number | "after guide" | "after observe" | "after battle"; when?: Condition; quizAfterLandmarkBattle?: true };
+type EntryRule = { encounterId: string; at?: readonly string[]; priority?: number | `after ${string}`; when?: Condition; quizAfterLandmarkBattle?: true };
 
 /**
  * An entry rule looked up while observing or before the landmark's main part whose `when` needs
@@ -181,7 +183,7 @@ type EntryRule = { encounterId: string; at?: readonly string[]; priority?: numbe
 function ownLandmarkWarnings(content: ConditionContent, rules: readonly EntryRule[]): ConditionWarning[] {
   return rules.flatMap((rule): ConditionWarning[] => {
     const encounter = content.encounters.find((item) => item.id === rule.encounterId);
-    if (!encounter || !rule.when || rule.quizAfterLandmarkBattle || (rule.at && rule.at.some((moment) => moment !== "observe")) ||
+    if (!encounter?.landmarkId || !rule.when || rule.quizAfterLandmarkBattle || (rule.at && rule.at.some((moment) => moment !== "observe")) ||
         (typeof rule.priority === "number" && rule.priority > 0)) return [];
     const own = requiredLeaves(rule.when).flatMap((leaf) => {
       if ("episodeCompleted" in leaf && content.episodes.find((item) => item.id === leaf.episodeCompleted)?.landmarkId === encounter.landmarkId)
@@ -266,14 +268,15 @@ function visitWarnings(content: ConditionContent, rules: readonly EntryRule[]): 
   const shown = (priority: number | string) => (typeof priority === "number" && priority > 0 ? `+${priority}` : String(priority));
   const placed = rules.flatMap((rule) => {
     const encounter = content.encounters.find((item) => item.id === rule.encounterId);
-    return encounter && rule.priority !== undefined ? [{ rule, encounter, priority: rule.priority }] : [];
+    // A scene at a moment other than a visit (stage 4) has no landmark: the visit's warnings do not read it.
+    return encounter?.landmarkId && rule.priority !== undefined ? [{ rule, encounter: { ...encounter, landmarkId: encounter.landmarkId }, priority: rule.priority }] : [];
   });
   // Map events that visit the landmark: its sightseeing episodes and the special battles held there.
   const visitsOf = (landmarkId: string) => content.episodes.filter((episode) => episode.landmarkId === landmarkId).length +
     content.battles.filter((battle) => battle.landmarkId === landmarkId && !content.episodes.some((episode) => episode.battleId === battle.id)).length;
   const later = placed.flatMap(({ encounter, priority }): ConditionWarning[] => {
     const deferred = encounter.options?.find((option) => option.deferCompletion);
-    return deferred && visitsOf(encounter.landmarkId) <= 1
+    return deferred && visitsOf(encounter.landmarkId) <= 1 && !content.returningScenes?.has(encounter.id)
       ? [{ kind: "later-never-again", message: `「また今度」 leads to no later moment: ${encounter.id} (priority ${shown(priority)} at the visit of ${encounter.landmarkId}) ` +
         `can be ended with 「また今度」 (option ${deferred.id}), but the map leads to ${encounter.landmarkId} only once, so it is never met again there ` +
         `(a later stage lets it come back at the place's other moments)` }]

@@ -4,17 +4,19 @@ import { secureRomanceRoll } from "../random/romance-source";
 import { startVisitBattle } from "./battle";
 import { battlePlayed } from "./conditions";
 import { beginMomentScene, momentSceneEligible, nextObservationScene, sceneSchedule, visitedLandmarkOfEvent } from "./encounter";
-import { canStartAuthoredEpilogue, startCityArrival, startCityEpilogue } from "./epilogue";
-import { departToNextCity } from "./city-travel";
+import { beginArrival, beginCityEpilogue, canBeginArrival, canStartAuthoredEpilogue, epilogueOpening, startCityEpilogue } from "./epilogue";
+import { canDepart, departToNextCity, leaveForNextCity, registerMomentOpeners } from "./city-travel";
 import { startDate } from "./game";
+import { eventCity, eventPlace, momentHasScenes, momentSchedule, tripMoment, type Moment, type MomentSchedule } from "./moments";
+import { DAY_START } from "./travel";
 import type { GameState } from "./game-state-schema";
-import type { Occasion, OccasionPart, OccasionThen } from "./occasion-state";
+import type { Occasion, OccasionPart, OccasionThen, OccasionTrip } from "./occasion-state";
 import { mainPartPayments, mainScene } from "./reservations";
 import { beginLandmarkGuide, beginLandmarkObservation } from "./tourism";
 import { compareRouteCost } from "./travel-routes";
 import { getUsableRoutes } from "./transport";
 import { getTravelHomeRoutes, isCompletedTravelEvent, isTravelEventVisible } from "./travel-game";
-import type { SceneEntry, SceneMain, SceneThen } from "../content/scene-schemas";
+import type { AfterPart, SceneEntry, SceneMain, SceneThen } from "../content/scene-schemas";
 import { WALK_MODE_ID } from "../content/transport";
 import { registerOccasionHooks } from "./occasion-hooks";
 
@@ -27,6 +29,14 @@ import { registerOccasionHooks } from "./occasion-hooks";
  * scenes, the observation as the place `after observe` scenes return to, the positive
  * priorities — and closes the occasion (the time window settles) when nothing is left. A scene's
  * `# then:` ends the occasion right after the scene: the move (or the epilogue) opens next.
+ *
+ * Stage 4 adds the other moments of 2.3, each opened only when a scene runs there (otherwise the
+ * game goes on as before): the date's and the finale's scenes around their main part (`after date`,
+ * `after battle`; `place <place>` matches them too), a trip's scenes at the place it leaves (the
+ * "move" part applies the move afterwards) and the ticket counter's before the entry, the hotel's
+ * before and after the night (the "sleep" part; the party is at the hotel at its arrival time first,
+ * decision 44), the city's epilogue, its departure (then the next city's arrival) and an arrival
+ * (its logo, `after logo`, its conversation).
  * Pure: the random source is passed in.
  */
 
@@ -66,17 +76,37 @@ const recordVisit = (state: GameState, landmarkId: string | null): GameState => 
   ? state : { ...state, visitedLandmarkIds: [...state.visitedLandmarkIds, landmarkId] };
 
 /**
+ * The trip and ticket steps before a map event's moment (stage 4): the trip's scenes run at the place it
+ * leaves when any runs at that trip (the move waits for them), the ticket counter's when the event charges
+ * admission and any runs there. Otherwise none: the caller has moved already, as before.
+ */
+export type OccasionPrefix = { trip?: OccasionTrip; ticket?: string };
+export function eventPrefix(state: Readonly<GameState>, eventId: string, trip: OccasionTrip | undefined): OccasionPrefix {
+  const event = getCityContent(state.currentCityId).travel.events.find((item) => item.id === eventId);
+  const tripRuns = !!trip && trip.from !== trip.to && momentHasScenes(tripMoment(state.currentCityId, trip.modeId, trip.from, trip.to));
+  const ticketRuns = !!event && (event.admissionCost ?? 0) > 0 && momentHasScenes({ kind: "ticket", cityId: state.currentCityId, placeId: event.placeId });
+  return { ...(tripRuns ? { trip } : {}), ...(ticketRuns && event ? { ticket: event.placeId } : {}) };
+}
+/** An occasion with its prefix: the "move" and "ticket" parts before its own. */
+const withPrefix = (occasion: Occasion, prefix: OccasionPrefix): Occasion => ({ ...occasion,
+  ...(prefix.trip ? { trip: prefix.trip } : {}), ...(prefix.ticket ? { ticket: prefix.ticket } : {}),
+  parts: [...(prefix.trip ? ["move" as const] : []), ...(prefix.ticket ? ["ticket" as const] : []), ...occasion.parts] });
+
+/**
  * Open the occasion of a map event (4.2) after its departure was paid (beginTravelEvent), and run it
  * to its first stop. Returns the state unchanged when nothing could start (the caller then refuses
- * the departure as before).
+ * the departure as before). `prefix` (stage 4): a trip still to make (the state has not moved yet) and
+ * the ticket counter.
  */
-export function openEventOccasion(state: GameState, eventId: string, nextRoll: () => number = secureRomanceRoll): GameState {
+export function openEventOccasion(state: GameState, eventId: string, nextRoll: () => number = secureRomanceRoll, prefix: OccasionPrefix = {}): GameState {
   if (sceneRunning(state) || state.occasion) return state;
-  const occasion = occasionOf(state, eventId);
-  if (!occasion) return state;
-  const opened = advanceOccasion(recordVisit(withOccasion(state, occasion), occasion.landmarkId), nextRoll);
+  const own = occasionOf(state, eventId);
+  if (!own) return state;
+  const occasion = withPrefix(own, prefix);
+  // The visit is recorded as it opens (3.9 (b)), or on arriving when the trip's move waits.
+  const opened = advanceOccasion(prefix.trip ? withOccasion(state, occasion) : recordVisit(withOccasion(state, occasion), occasion.landmarkId), nextRoll);
   // Nothing of the occasion started (its main part refused): no departure.
-  return opened.occasion?.ran.length || opened.occasion?.started.length || sceneRunning(opened) ? opened : state;
+  return opened.occasion?.ran.some((part) => part !== "move" && part !== "ticket") || opened.occasion?.started.length || sceneRunning(opened) ? opened : state;
 }
 
 /** The sequence of an occasion (4.3): negative scenes, each main part with its `after <part>` scenes (not observe's), positive scenes. */
@@ -85,13 +115,54 @@ type Step = OccasionStep;
 /** The occasion's steps in order (also read by Debug's candidate table, src/dev/occasion-candidates.ts). */
 export const occasionSteps = (occasion: Occasion): OccasionStep[] => sequence(occasion);
 function sequence(occasion: Occasion): Step[] {
-  const schedule = occasion.landmarkId ? sceneSchedule(occasion.landmarkId) : { before: [], after: [], afterPart: {} as Record<string, string[]> };
+  const schedule = ownSchedule(occasion);
+  const prefix: Step[] = [];
+  const city = occasionCity(occasion);
+  if (occasion.parts.includes("move") && occasion.trip && city)
+    // (A rest at the hotel itself makes no trip: its move part only reads the time.)
+    prefix.push(...(occasion.trip.from === occasion.trip.to ? [] : momentSchedule(tripMoment(city, occasion.trip.modeId, occasion.trip.from, occasion.trip.to)).before.map((scene) => ({ scene }))),
+      { part: "move" });
+  if (occasion.parts.includes("ticket") && occasion.ticket && city)
+    prefix.push(...momentSchedule({ kind: "ticket", cityId: city, placeId: occasion.ticket }).before.map((scene) => ({ scene })), { part: "ticket" });
   return [
+    ...prefix,
     ...schedule.before.map((scene) => ({ scene })),
-    ...occasion.parts.flatMap((part): Step[] => [{ part },
-      ...(part === "observe" ? [] : (schedule.afterPart[part] ?? []).map((scene) => ({ scene, after: part })))]),
+    ...occasion.parts.filter((part) => part !== "move" && part !== "ticket").flatMap((part): Step[] => [{ part },
+      ...(part === "observe" ? [] : (schedule.afterPart[part as AfterPart] ?? []).map((scene) => ({ scene, after: part })))]),
     ...schedule.after.map((scene) => ({ scene })),
   ];
+}
+
+/** The city of an occasion (its moments' scenes are of that city). */
+function occasionCity(occasion: Occasion): string | undefined {
+  return occasion.cityId ?? landmarks.find((item) => item.id === occasion.landmarkId)?.cityId ?? eventCity(occasion.eventId) ??
+    battles.find((item) => item.id === occasion.eventId)?.cityId ?? undefined;
+}
+
+/** The moment of an occasion other than a visit (stage 4), for its scenes. */
+export function occasionMoment(occasion: Occasion): Moment | undefined {
+  const city = occasionCity(occasion);
+  if (!city) return undefined;
+  switch (occasion.kind) {
+    case "visit": return undefined;
+    case "date": return occasion.eventId ? { kind: "date", dateId: occasion.eventId, placeId: eventPlace(city, occasion.eventId) } : undefined;
+    case "battle": return { kind: "finale", cityId: city, placeId: eventPlace(city, occasion.eventId) };
+    case "hotel": return { kind: "hotel", cityId: city, placeId: getCityContent(city).travelSettings.hotelPlaceId };
+    case "epilogue": case "depart": case "arrive": return { kind: occasion.kind, cityId: city };
+  }
+}
+
+/** The scenes of the occasion's own moment: a visit's (encounter.ts places today's catalogs too), or a stage-4 moment's. */
+function ownSchedule(occasion: Occasion): MomentSchedule {
+  if (occasion.kind === "visit") {
+    if (!occasion.landmarkId) return { before: [], after: [], afterPart: {} };
+    const visit = sceneSchedule(occasion.landmarkId);
+    return { before: visit.before, after: visit.after, afterPart: visit.afterPart };
+  }
+  // A finale or a battle without a landmark: a special battle's (no city finale) has no moment of its own.
+  if (occasion.kind === "battle" && !episodes.some((item) => item.id === occasion.eventId && item.kind === "city_finale")) return { before: [], after: [], afterPart: {} };
+  const moment = occasionMoment(occasion);
+  return moment ? momentSchedule(moment) : { before: [], after: [], afterPart: {} };
 }
 const keyOf = (step: Step) => ("scene" in step ? step.scene : `main:${step.part}`);
 function nextIndex(steps: readonly Step[], at: string | null): number {
@@ -106,7 +177,9 @@ function partScene(occasion: Occasion, part: OccasionPart): SceneEntry | undefin
   const landmark = landmarks.find((item) => item.id === occasion.landmarkId);
   const main: SceneMain | undefined = part === "guide" && landmark ? { guide: landmark.id }
     : part === "battle" ? { battle: landmark?.battleId ?? episodes.find((item) => item.id === occasion.eventId)?.battleId ?? occasion.eventId ?? "" }
-      : part === "date" && occasion.eventId ? { date: occasion.eventId } : undefined;
+      : part === "date" && occasion.eventId ? { date: occasion.eventId }
+        : part === "arrival" && occasion.cityId ? { arrival: occasion.cityId }
+          : part === "epilogue" && occasion.cityId ? { epilogue: occasion.cityId } : undefined;
   return main && mainScene(main);
 }
 
@@ -122,11 +195,20 @@ function startPart(state: GameState, part: OccasionPart, nextRoll: () => number)
   } else if (part === "battle") {
     const battleId = landmark?.battleId ?? episodes.find((item) => item.id === occasion.eventId)?.battleId ?? occasion.eventId;
     if (battleId) started = startVisitBattle(state, battleId, true);
-  } else if (part === "date" && occasion.eventId) started = startDate(state, occasion.eventId, nextRoll);
+  } else if (part === "date" && occasion.eventId) started = startDate(state, occasion.eventId, nextRoll, true);
   else if (part === "ending") {
     // 「交際開始」 (3.9 (c)): only when the confession of this date succeeded.
     return state.confessionStatus === "accepted" ? { ...state, occasion: { ...occasion, romanceEnding: true } } : undefined;
   }
+  // Stage 4: the steps that change the state and go on (no stop): the trip's move, the ticket counter's entry
+  // (admission was paid on departing), the night, the departure (then the next city's arrival opens).
+  else if (part === "move") return applyTrip(state);
+  else if (part === "ticket") return state;
+  else if (part === "sleep") return sleep(state);
+  else if (part === "depart") return openArrival(leaveForNextCity({ ...state, occasion: null }));
+  else if (part === "epilogue" && occasion.cityId) started = beginCityEpilogue(state, occasion.cityId);
+  else if (part === "logo") started = beginArrival(state, false);
+  else if (part === "arrival") started = beginArrival(state, true);
   if (!started || started === state) return undefined;
   const scene = partScene(occasion, part);
   return scene?.then ? commitThen(started, scene.then, scene.id) : started;
@@ -168,6 +250,26 @@ function stepOccasion(state: GameState, nextRoll: () => number): GameState {
     if (started) return started;
   }
   return closeOccasion(state);
+}
+
+/** The trip's move (stage 4): the place, the arrival time and a ride (a rest's walk home counts none, as before); the visit is recorded on arriving. */
+function applyTrip(state: GameState): GameState {
+  const occasion = state.occasion!;
+  const trip = occasion.trip;
+  if (!trip) return state;
+  const moved = trip.to !== trip.from;
+  const ride = moved && trip.modeId !== WALK_MODE_ID && occasion.kind !== "hotel";
+  const next: GameState = { ...state, travel: { ...state.travel, currentPlaceId: trip.to, minute: trip.arrivalMinute,
+    rideCounts: ride ? { ...state.travel.rideCounts, [trip.modeId]: (state.travel.rideCounts[trip.modeId] ?? 0) + 1 } : state.travel.rideCounts },
+    occasion: { ...occasion, ...(moved ? { moved: trip.modeId } : {}) } };
+  return recordVisit(next, occasion.kind === "visit" ? occasion.landmarkId : null);
+}
+
+/** The night (the hotel's main part): the next day's morning (decision 44: night until waking). */
+function sleep(state: GameState): GameState {
+  const calendar = state.travel.calendar;
+  return { ...state, travel: { ...state.travel, day: state.travel.day + 1, minute: DAY_START,
+    ...(calendar ? { calendar: { ...calendar, journeyDay: calendar.journeyDay + 1 } } : {}) } };
 }
 
 /** Close the occasion: the trip's time window settles here (4.2), at the end of the connected occasion. */
@@ -246,24 +348,25 @@ export function commitThen(state: GameState, then: SceneThen, sceneId: string): 
 function runThen(state: GameState, nextRoll: () => number): GameState {
   const then = state.occasion!.then!;
   const closed = closeOccasion(state);
-  if ("epilogue" in then) {
-    const opened = startCityEpilogue(closed, closed.currentCityId, closed.revision, true);
-    return opened === closed ? closed : opened;
-  }
+  if ("epilogue" in then) return openEpilogue(closed, true, nextRoll);
   const cityId = closed.currentCityId;
-  const rides = then.modeId !== WALK_MODE_ID && then.move !== closed.travel.currentPlaceId
-    ? { ...closed.travel.rideCounts, [then.modeId]: (closed.travel.rideCounts[then.modeId] ?? 0) + 1 } : closed.travel.rideCounts;
   const arrival = closed.travel.minute + then.minutes;
   const home = getTravelHomeRoutes(closed, then.move).sort(compareRouteCost)[0];
   const event = then.eventId ? getCityContent(cityId).travel.events.find((item) => item.id === then.eventId) : undefined;
-  const moved: GameState = { ...closed, travel: { ...closed.travel, currentPlaceId: then.move, minute: arrival, rideCounts: rides,
-    returnReserve: home?.cost ?? closed.travel.returnReserve,
-    activeEvent: event ? { eventId: event.id, placeId: event.placeId, endMinute: arrival + event.activityMinutes } : null } };
   const landmarkId = event ? visitedLandmarkOfEvent(event.id) : landmarkAt(closed, then.move);
+  const trip: OccasionTrip = { from: closed.travel.currentPlaceId, to: then.move, modeId: then.modeId, arrivalMinute: arrival };
+  // The trip's and the ticket counter's scenes (stage 4) run first when any runs there: the move waits for them.
+  const prefix = landmarkId ? (event ? eventPrefix(closed, event.id, trip) : eventPrefix(closed, "", trip)) : {};
+  const paid: GameState = { ...closed, travel: { ...closed.travel, returnReserve: home?.cost ?? closed.travel.returnReserve,
+    activeEvent: event ? { eventId: event.id, placeId: event.placeId, endMinute: arrival + event.activityMinutes } : null } };
+  const rides = then.modeId !== WALK_MODE_ID && then.move !== closed.travel.currentPlaceId
+    ? { ...closed.travel.rideCounts, [then.modeId]: (closed.travel.rideCounts[then.modeId] ?? 0) + 1 } : closed.travel.rideCounts;
+  const moved: GameState = prefix.trip ? paid : { ...paid, travel: { ...paid.travel, currentPlaceId: then.move, minute: arrival, rideCounts: rides } };
   const occasion = landmarkId && visitOccasion(moved, landmarkId, event?.id ?? null);
   // A place with no landmark (a date's or a finale's only): free time there (decision 20).
   if (!occasion) return { ...moved, travel: { ...moved.travel, activeEvent: null } };
-  return advanceOccasion(recordVisit(withOccasion(moved, { ...occasion, moved: then.modeId }), landmarkId), nextRoll);
+  if (prefix.trip) return advanceOccasion(withOccasion(moved, withPrefix(occasion, prefix)), nextRoll);
+  return advanceOccasion(recordVisit(withOccasion(moved, { ...withPrefix(occasion, prefix), moved: then.modeId }), landmarkId), nextRoll);
 }
 
 /**
@@ -275,13 +378,28 @@ export function validateOccasionState(state: GameState): void {
   const occasion = state.occasion;
   if (!occasion) return;
   const fail = (): never => { throw new Error("時点の記録が一致しません。元のデータは保管されています。"); };
-  const expected = occasion.eventId === null ? undefined : occasionOf({ ...state, visitedLandmarkIds: [] }, occasion.eventId);
-  if (occasion.eventId !== (state.travel.activeEvent?.eventId ?? null) || (occasion.eventId !== null && expected?.kind !== occasion.kind) ||
-      (occasion.eventId !== null && expected?.landmarkId !== occasion.landmarkId) || (occasion.eventId === null && occasion.parts.some((part) => part !== "guide" && part !== "observe" && part !== "battle")) ||
-      (occasion.landmarkId !== null && !landmarks.some((landmark) => landmark.id === occasion.landmarkId && landmark.cityId === state.currentCityId)) ||
-      occasion.ran.some((part) => !occasion.parts.includes(part)) || new Set(occasion.started).size !== occasion.started.length ||
-      (occasion.romanceEnding && !occasion.ran.includes("ending")) || (occasion.landmarkId !== null && !state.visitedLandmarkIds.includes(occasion.landmarkId)))
-    fail();
+  const prefix = occasion.parts.filter((part) => part === "move" || part === "ticket");
+  const own = occasion.parts.filter((part) => part !== "move" && part !== "ticket");
+  if ((occasion.parts.includes("move") !== !!occasion.trip) || (occasion.parts.includes("ticket") !== !!occasion.ticket) ||
+      prefix.some((part, index) => occasion.parts[index] !== part) ||
+      (occasion.trip && !getCityContent(state.currentCityId).travel.places.some((place) => place.id === occasion.trip!.to)) ||
+      (occasion.trip && !occasion.ran.includes("move") && state.travel.currentPlaceId !== occasion.trip.from)) fail();
+  if (occasion.kind === "hotel" || occasion.kind === "epilogue" || occasion.kind === "depart" || occasion.kind === "arrive") {
+    // A stage-4 moment of its own: its city (the current one), its fixed main parts, no map event nor landmark.
+    const parts = { hotel: ["move", "sleep"], epilogue: ["epilogue"], depart: ["depart"], arrive: ["logo", "arrival"] }[occasion.kind];
+    if (occasion.cityId !== state.currentCityId || occasion.eventId !== null || occasion.landmarkId !== null || state.travel.activeEvent ||
+        occasion.parts.join() !== parts.join() || occasion.ticket || (occasion.kind === "hotel") !== !!occasion.trip ||
+        (occasion.kind === "hotel" && occasion.trip!.to !== state.travel.hotelPlaceId)) fail();
+  } else {
+    const expected = occasion.eventId === null ? undefined : occasionOf({ ...state, visitedLandmarkIds: [] }, occasion.eventId);
+    if (occasion.cityId !== undefined || occasion.eventId !== (state.travel.activeEvent?.eventId ?? null) || (occasion.eventId !== null && expected?.kind !== occasion.kind) ||
+        (occasion.eventId !== null && expected?.landmarkId !== occasion.landmarkId) || (occasion.eventId === null && own.some((part) => part !== "guide" && part !== "observe" && part !== "battle")) ||
+        (occasion.landmarkId !== null && !landmarks.some((landmark) => landmark.id === occasion.landmarkId && landmark.cityId === state.currentCityId)) ||
+        (occasion.landmarkId !== null && !state.visitedLandmarkIds.includes(occasion.landmarkId) && !(occasion.trip && !occasion.ran.includes("move"))))
+      fail();
+  }
+  if (occasion.ran.some((part) => !occasion.parts.includes(part)) || new Set(occasion.started).size !== occasion.started.length ||
+      (occasion.romanceEnding && !occasion.ran.includes("ending"))) fail();
   const steps = sequence(occasion);
   if (occasion.at !== null && occasion.at !== "left:observe" && occasion.at !== "main:observe" && !steps.some((step) => keyOf(step) === occasion.at) &&
       !occasion.started.includes(occasion.at)) fail();
@@ -297,12 +415,67 @@ export function validateOccasionState(state: GameState): void {
 export type OccasionEntry = { kind: "arrive" } | { kind: "epilogue" } | { kind: "depart" };
 export function openOccasion(state: GameState, entry: OccasionEntry, expectedRevision: number, nextRoll: () => number = secureRomanceRoll): GameState {
   if (state.revision !== expectedRevision) return state;
-  if (entry.kind === "arrive") return advanceOccasion(startCityArrival(state, expectedRevision), nextRoll);
+  if (entry.kind === "arrive") return advanceOccasion(openArrival(state, nextRoll), nextRoll);
   if (entry.kind === "depart") return advanceOccasion(departToNextCity(state, expectedRevision), nextRoll);
-  // (The finale result's 「エピローグへ」 leaves the result and closes its occasion first: startCityEpilogue.)
-  const opened = startCityEpilogue(state, state.currentCityId, expectedRevision);
+  // (The finale result's 「エピローグへ」 leaves the result and closes its occasion first: epilogueOpening.)
+  const opened = openEpilogue(state, false, nextRoll);
   return opened === state ? state : advanceOccasion(opened, nextRoll);
 }
+
+// ── Stage 4's moments that open by themselves (2.3): the epilogue, the departure, the arrival, the hotel ───────────
+
+/** A moment's occasion with no map event (the hotel's, the epilogue's, the departure's, an arrival's). */
+const momentOccasion = (kind: "hotel" | "epilogue" | "depart" | "arrive", cityId: string, parts: OccasionPart[], trip?: OccasionTrip): Occasion =>
+  ({ kind, cityId, eventId: null, landmarkId: null, parts, ran: [], at: null, started: [], ...(trip ? { trip } : {}) });
+
+/** Whether a main part's scene has a `# then:` (its head or a choice; an arrival's or an epilogue's runs only inside its moment). */
+const hasThen = (scene: SceneEntry | undefined) => !!scene && (!!scene.then || scene.options.some((option) => !!option.then));
+
+/**
+ * The city's epilogue (free time's or the finale result's 「エピローグへ」, the automatic one, or a `then: epilogue`):
+ * through its moment when scenes run there or the epilogue has a then: (stage 4), else at once as before.
+ */
+export function openEpilogue(state: GameState, authored: boolean, nextRoll: () => number = secureRomanceRoll): GameState {
+  const cityId = state.currentCityId;
+  const opening = epilogueOpening(state, cityId, authored);
+  if (!opening) return state;
+  if (!momentHasScenes({ kind: "epilogue", cityId }) && !hasThen(mainScene({ epilogue: cityId }))) return beginCityEpilogue(opening, cityId);
+  return advanceOccasion({ ...opening, revision: opening.revision + 1, occasion: momentOccasion("epilogue", cityId, ["epilogue"]) }, nextRoll);
+}
+
+/** The next city's arrival (a new journey's first city: its opening): through its moment when scenes run there or the arrival has a then:. */
+export function openArrival(state: GameState, nextRoll: () => number = secureRomanceRoll): GameState {
+  const cityId = state.currentCityId;
+  if (!canBeginArrival(state) || state.occasion) return state;
+  if (!momentHasScenes({ kind: "arrive", cityId }) && !hasThen(mainScene({ arrival: cityId }))) return beginArrival(state);
+  return advanceOccasion({ ...state, revision: state.revision + 1, occasion: momentOccasion("arrive", cityId, ["logo", "arrival"]) }, nextRoll);
+}
+
+/** The departure to the next city: through its moment when scenes run there (they come before the items are left behind). */
+function openDeparture(state: GameState, nextRoll: () => number = secureRomanceRoll): GameState {
+  if (!canDepart(state)) return state;
+  const cityId = state.currentCityId;
+  if (!momentHasScenes({ kind: "depart", cityId })) {
+    const arrived = leaveForNextCity(state);
+    return arrived === state ? state : openArrival(arrived, nextRoll);
+  }
+  return advanceOccasion({ ...state, revision: state.revision + 1, occasion: momentOccasion("depart", cityId, ["depart"]) }, nextRoll);
+}
+
+/**
+ * A rest (「休む」, paid by the caller) through the hotel's moment when scenes run there or on the trip home (stage 4):
+ * the trip's scenes at the place it leaves (the time 「休む」 was pressed), the move (the party at the hotel at its
+ * arrival time, which may pass 21:00; decision 44), the hotel's negative scenes, the night, the positive ones.
+ * Undefined when no scene runs there (the caller sleeps at once, as before).
+ */
+export function openHotel(state: GameState, trip: OccasionTrip, nextRoll: () => number = secureRomanceRoll): GameState | undefined {
+  const cityId = state.currentCityId;
+  const moving = trip.from !== trip.to;
+  if (!momentHasScenes({ kind: "hotel", cityId, placeId: trip.to }) && !(moving && momentHasScenes(tripMoment(cityId, trip.modeId, trip.from, trip.to)))) return undefined;
+  return advanceOccasion({ ...state, occasion: momentOccasion("hotel", cityId, ["move", "sleep"], trip) }, nextRoll);
+}
+
+registerMomentOpeners({ depart: (state) => openDeparture(state), epilogue: (state) => openEpilogue(state, false) });
 
 registerOccasionHooks({
   advance: (state, nextRoll) => advanceOccasion(state, nextRoll),
