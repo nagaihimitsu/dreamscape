@@ -1,24 +1,29 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import * as L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { getCityContent } from "../../content";
 import type { TravelEvent, TravelPlace } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
 import { battlePlayed } from "../../domain/conditions";
+import { Icon } from "../../components/icons";
 import { Modal } from "../../components/Modal";
 import "./place-map.css";
+
+const TILE_ERROR_JA = "地図の一部を読み込めません。通信を確認してください。行き先一覧は引き続き利用できます。";
 
 type Props = { game: GameState; events: TravelEvent[] };
 type Place = TravelPlace;
 type MapView = { center: L.LatLng; zoom: number };
 
 /** Both map sizes use the same tiles, markers and selection behavior. */
-function MapCanvas({ game, events, places, onSelect, mapRef, initialView, expanded = false }: Props & {
+function MapCanvas({ game, events, places, onSelect, mapRef, initialView, expanded = false, onTilesFailed }: Props & {
   places: Place[];
   onSelect: (id: string) => void;
   mapRef: { current: L.Map | null };
   initialView?: MapView | null;
   expanded?: boolean;
+  /** Where the caller shows the tile error itself (the small map: under its legend, U10). */
+  onTilesFailed?: () => void;
 }) {
   const [tilesFailed, setTilesFailed] = useState(false);
   const { city, travel } = getCityContent(game.currentCityId);
@@ -40,7 +45,11 @@ function MapCanvas({ game, events, places, onSelect, mapRef, initialView, expand
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
-    }).on("tileerror", () => { if (++errors >= 2) setTilesFailed(true); }).addTo(map);
+    }).on("tileerror", () => {
+      if (++errors < 2) return;
+      setTilesFailed(true);
+      onTilesFailed?.();
+    }).addTo(map);
     markersRef.current = L.layerGroup().addTo(map);
     // A modal's children mount before showModal(): wait until it has a visible size.
     const frame = requestAnimationFrame(() => {
@@ -81,15 +90,32 @@ function MapCanvas({ game, events, places, onSelect, mapRef, initialView, expand
   }, [places, events, travel.events, game.travel.currentPlaceId, game.completedEpisodeIds, game.playedDateIds, game.battleRecords, onSelect]);
 
   return <>
-    <div ref={container} className="travel-map-frame" aria-label={`${city.nameJa}の地図。ドラッグで移動、ピンチまたはプラス・マイナスで拡大縮小できます。`} data-testid={expanded ? "travel-map-expanded-canvas" : "travel-map-canvas"} />
-    {tilesFailed && <p role="status">地図の一部を読み込めません。通信を確認してください。行き先一覧は引き続き利用できます。</p>}
+    <div ref={container} className="travel-map-frame" role="region" aria-label={`${city.nameJa}の地図。ドラッグで移動、ピンチまたはプラス・マイナスで拡大縮小できます。`} data-testid={expanded ? "travel-map-expanded-canvas" : "travel-map-canvas"} />
+    {tilesFailed && !onTilesFailed && <p role="status">{TILE_ERROR_JA}</p>}
   </>;
 }
 
-/** Itinerary selection remains available even if map tiles fail to load. */
-export function PlaceMap({ game, events }: Props) {
+/** The map's legend: each mark named by its shape, never by its colour alone (UI redesign §3.5). */
+function MapLegend() {
+  return <p className="travel-map-legend">
+    <span><span className="travel-map-legend-glyph" aria-hidden="true">◆</span> 観光</span>
+    <span><span className="travel-map-legend-glyph" aria-hidden="true">♥</span> デート</span>
+    <span><span className="travel-map-legend-glyph" aria-hidden="true">●</span> 滞在先など</span>
+    <span>輪つき 現在地</span>
+    <span>白い点 訪問済み</span>
+  </p>;
+}
+
+/**
+ * The city's map (UI redesign §3.4–§3.5): the map block (the part that stays
+ * under the header while the list scrolls, with 「大きく」 in its corner), then
+ * its legend, the tile error and, after the list (children), the place select.
+ * Itinerary selection remains available even if map tiles fail to load.
+ */
+export function PlaceMap({ game, events, children }: Props & { children?: ReactNode }) {
   const { city, travel } = getCityContent(game.currentCityId);
   const [expanded, setExpanded] = useState(false);
+  const [tilesFailed, setTilesFailed] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
   const mapRef = useRef<L.Map | null>(null);
   const expandedMapRef = useRef<L.Map | null>(null);
@@ -115,26 +141,34 @@ export function PlaceMap({ game, events }: Props) {
     if (place) map?.panTo([place.latitude, place.longitude]);
   }
 
-  return <div className="travel-map" data-testid="travel-map">
+  return <>
+    <div className="travel-map" data-testid="travel-map">
       <div className="travel-map-preview">
-        <MapCanvas game={game} events={events} places={places} onSelect={setSelected} mapRef={mapRef} />
-        <button type="button" className="travel-map-expand" onClick={openExpanded}>地図を大きく見る</button>
+        <MapCanvas game={game} events={events} places={places} onSelect={setSelected} mapRef={mapRef} onTilesFailed={() => setTilesFailed(true)} />
+        <button type="button" className="travel-map-expand" data-testid="map-expand" aria-label="地図を大きく見る" onClick={openExpanded}>
+          <Icon name="map" /><span>大きく</span>
+        </button>
       </div>
-      {selectedPlace && <p aria-live="polite"><strong>{selectedPlace.nameJa}</strong>{selected === game.travel.currentPlaceId ? "（現在地）" : ""}</p>}
-      <details className="travel-map-places">
-        <summary>地点を選ぶ</summary>
-        <label>地点 <select value={selected ?? ""} onChange={(event) => choosePlace(event.currentTarget.value, mapRef.current)}>
-          <option value="">地点を選択</option>{places.map((place) => <option key={place.id} value={place.id}>{place.nameJa}</option>)}
-        </select></label>
-        <p>緑の輪：現在地　◆：観光　♥：デート　白い点：訪問済み</p>
-      </details>
-      {expanded && <Modal labelledBy="travel-map-expanded-title" className="travel-map-modal" onClose={closeExpanded}>
-        <div className="travel-map-modal-heading"><h2 id="travel-map-expanded-title">{city.nameJa}の地図</h2><button type="button" className="secondary" onClick={closeExpanded}>閉じる</button></div>
-        <MapCanvas game={game} events={events} places={places} onSelect={setSelected} mapRef={expandedMapRef} initialView={initialView.current} expanded />
-        <label className="travel-map-modal-place">地点 <select value={selected ?? ""} onChange={(event) => choosePlace(event.currentTarget.value, expandedMapRef.current)}>
-          <option value="">地点を選択</option>{places.map((place) => <option key={place.id} value={place.id}>{place.nameJa}</option>)}
-        </select></label>
-        <p className="travel-map-modal-legend">緑の輪：現在地　◆：観光　♥：デート　白い点：訪問済み</p>
-      </Modal>}
-  </div>;
+    </div>
+    <div className="travel-map-notes">
+      <MapLegend />
+      {tilesFailed && <p role="status" className="travel-map-error">{TILE_ERROR_JA}</p>}
+      {selectedPlace && <p aria-live="polite" className="travel-map-selected"><strong>{selectedPlace.nameJa}</strong>{selected === game.travel.currentPlaceId ? "（現在地）" : ""}</p>}
+    </div>
+    {children}
+    <details className="travel-map-places">
+      <summary>地点を選ぶ</summary>
+      <label>地点 <select value={selected ?? ""} onChange={(event) => choosePlace(event.currentTarget.value, mapRef.current)}>
+        <option value="">地点を選択</option>{places.map((place) => <option key={place.id} value={place.id}>{place.nameJa}</option>)}
+      </select></label>
+    </details>
+    {expanded && <Modal labelledBy="travel-map-expanded-title" className="travel-map-modal" onClose={closeExpanded}>
+      <div className="travel-map-modal-heading"><h2 id="travel-map-expanded-title">{city.nameJa}の地図</h2><button type="button" className="secondary" onClick={closeExpanded}>閉じる</button></div>
+      <MapCanvas game={game} events={events} places={places} onSelect={setSelected} mapRef={expandedMapRef} initialView={initialView.current} expanded />
+      <label className="travel-map-modal-place">地点 <select value={selected ?? ""} onChange={(event) => choosePlace(event.currentTarget.value, expandedMapRef.current)}>
+        <option value="">地点を選択</option>{places.map((place) => <option key={place.id} value={place.id}>{place.nameJa}</option>)}
+      </select></label>
+      <MapLegend />
+    </Modal>}
+  </>;
 }

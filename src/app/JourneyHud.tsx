@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { currencyForCity, formatMoneyForCity } from "../content/currency";
 import { encounters } from "../content/encounters";
 import type { TravelPlace } from "../content/travel-schemas";
@@ -22,24 +22,23 @@ const progressIcons: Record<CityProgressPart["kind"], IconName> = { tourism: "ca
  * The header's popovers open one at a time, all hanging from its bottom edge:
  * ⚙設定's panel and the held items' detail close each other (a press outside
  * either closes it), and opening one of them also closes free time's open 待機
- * menu (a `<details>`, which closes only when its own summary is pressed).
+ * menu in the bottom band (a `<details>`, which closes only when its own summary
+ * is pressed).
  */
 function closeWaitMenu() {
-  for (const details of document.querySelectorAll<HTMLDetailsElement>(".journey-hud details[open]")) details.open = false;
+  for (const details of document.querySelectorAll<HTMLDetailsElement>('[data-testid="travel-actions"] details[open]')) details.open = false;
 }
 
 /**
  * The header of every game screen (UI redesign §3.1): row 1 shows where and when
  * the couple are and what they have (display only), row 2 holds what can be
- * pressed: the city's progress (opens 旅の記録), 待機・休む in free time (until
- * they move to the free-time band), the held items, 英語ノート and ⚙設定 with
+ * pressed: the city's progress (opens 旅の記録), the held items, 英語ノート and ⚙設定 with
  * セーブ・ロード・ゲームの設定. Its height is measured as `--hud-h` for the
  * reserves of the scenes it lies over.
  */
-export function JourneyHud({ game, place, freeTimeActions, onRecords, onEnglish, onSave, onLoad, onSettings }: {
+export function JourneyHud({ game, place, onRecords, onEnglish, onSave, onLoad, onSettings }: {
   game: GameState;
   place: TravelPlace | undefined;
-  freeTimeActions?: ReactNode;
   onRecords: () => void;
   onEnglish: () => void;
   onSave: () => void;
@@ -90,7 +89,6 @@ export function JourneyHud({ game, place, freeTimeActions, onRecords, onEnglish,
           </span>
           <Icon name="chevron-right" className="hud-chevron" />
         </button>
-        {freeTimeActions}
         <HeldItems items={items} onOpen={closeWaitMenu} />
         <nav className="hud-tools" aria-label="旅の操作">
           <button type="button" className="hud-tool" aria-label="英語ノートを開く" onClick={onEnglish}>

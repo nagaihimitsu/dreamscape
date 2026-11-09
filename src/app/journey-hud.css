@@ -117,13 +117,11 @@
 /* Row 2: what is pressed. Words stay at every width; icons go first. */
 .hud-actions { display: flex; flex-wrap: wrap; align-items: stretch; gap: 4px; }
 .hud-actions > * { flex: none; }
-/* At the row's right end, also when a crowded row wraps (free time with an item, below 380 px). */
+/* At the row's right end, also when a crowded row wraps (a held item, below 380 px). */
 .hud-tools { display: flex; gap: 4px; margin-left: auto; }
 .hud-progress,
 .hud-tool,
-.journey-hud .held-item-button,
-.journey-hud .travel-wait summary,
-.journey-hud .travel-sleep-toggle {
+.journey-hud .held-item-button {
   min-height: 44px;
   margin: 0;
   border: 1px solid var(--ds-gold-hairline);
@@ -162,9 +160,7 @@
 .hud-progress-part .icon { display: none; }
 .hud-chevron { width: 12px; height: 12px; }
 .hud-tool,
-.journey-hud .held-item-button,
-.journey-hud .travel-wait summary,
-.journey-hud .travel-sleep-toggle {
+.journey-hud .held-item-button {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
@@ -173,36 +169,10 @@
   min-width: 44px;
   padding: 3px 4px;
 }
-.hud-tool .icon,
-.journey-hud .travel-wait summary .icon,
-.journey-hud .travel-sleep-toggle .icon { width: 20px; height: 20px; }
+.hud-tool .icon { width: 20px; height: 20px; }
 .hud-tool-word { font-size: 11px; font-weight: 600; line-height: 1; white-space: nowrap; }
 .journey-hud .held-item-button[aria-expanded="true"],
-.hud-tool[aria-expanded="true"],
-.journey-hud .travel-wait[open] summary { background: var(--ds-slate-900); border-color: var(--ds-gold); }
-
-/* 待機・休む in free time (until the free-time band takes them). */
-.journey-hud .travel-utility { display: flex; flex-wrap: nowrap; gap: 4px; margin: 0; }
-.journey-hud .travel-wait summary { list-style: none; }
-.journey-hud .travel-wait summary::after { content: none; }
-.journey-hud .travel-wait summary .hud-tool-word::after { content: "▾"; margin-left: 1px; }
-.journey-hud .travel-wait[open] summary .hud-tool-word::after { content: "▴"; }
-/* The open 待機 menu hangs from the header's bottom edge (the header is its
-   containing block), so it never covers the header's other buttons. */
-.journey-hud .travel-wait-actions {
-  position: absolute;
-  z-index: 1;
-  top: calc(100% + 4px);
-  left: 8px;
-  width: max-content;
-  max-width: min(260px, calc(100% - 16px));
-  padding: 8px;
-  border: 1px solid var(--ds-parchment-line);
-  border-radius: 16px;
-  background: var(--ds-parchment);
-  color: var(--ds-ink);
-  box-shadow: var(--ds-card-shadow);
-}
+.hud-tool[aria-expanded="true"] { background: var(--ds-slate-900); border-color: var(--ds-gold); }
 
 /* ⚙設定's panel: under the header, its right edge on the button's. */
 .hud-menu-panel {

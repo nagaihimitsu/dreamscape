@@ -105,7 +105,7 @@ test("the sample journey plays from a new journey through its city finale and ep
   expect(await readSave(page, JOURNEY)).toMatchObject({ currentCityId: route.city.id, ap: 0 });
   await expect(page.getByLabel("残り0AP")).toBeVisible();
   // The city's free-time backdrop (cities/<city>.json backdropAssetId): the reduced copy that content:build
-  // derives from the photo loads on the free-time page. (From UI step 1.5 the screen shows it as its background.)
+  // derives from the photo loads on the free-time page, where the screen shows it as its background.
   const backdropId = generated<{ backdropAssetId?: string }>(`cities/${route.city.id}.json`).backdropAssetId;
   expect(backdropId, "the sample city's backdropAssetId").toBeDefined();
   const backdrop = await page.evaluate(async (src) => {
@@ -116,6 +116,10 @@ test("the sample journey plays from a new journey through its city finale and ep
   }, derivedImageFile(JOURNEY, backdropId!, "backdrop"));
   // The sample's photo is 240×160 px; a backdrop copy is never enlarged.
   expect(backdrop).toEqual({ width: 240, height: 160 });
+  // The free-time screen shows that copy as its background (UI step 1.5).
+  const shown = page.getByTestId("free-time-backdrop").locator("img");
+  await expect(shown).toHaveAttribute("src", new RegExp(`${derivedImageFile(JOURNEY, backdropId!, "backdrop").replaceAll(".", "\\.")}$`));
+  await expect.poll(() => shown.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth)).toBe(240);
 
   // 0. (Optional part) The rental bicycle. Its route is listed but closed until the
   // bicycle is rented at the hotel; renting asks once more, pays once and takes no time.

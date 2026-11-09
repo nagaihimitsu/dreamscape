@@ -39,7 +39,6 @@ import { useLearning } from "../features/learning/useLearning";
 import { EnglishReview } from "../features/learning/EnglishReview";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import { CityRecords } from "../features/journey/CityProgress";
-import { TravelActions } from "../features/journey/TravelActions";
 import { TitleNameFields } from "../features/journey/TitleNameFields";
 import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
@@ -306,9 +305,6 @@ export function GameApp({
       {game && <JourneyHud
         game={game}
         place={currentTravelPlace}
-        freeTimeActions={idle && !showRomanceEnding ? <TravelActions game={game}
-          onTravelWait={(minutes) => commit((state) => waitForTravel(state, minutes, game.revision))}
-          onTravelSleep={(mode, viaPlaceId) => returnToHotel(mode, viaPlaceId, game.revision)} /> : undefined}
         onRecords={() => setRecordsOpen(true)}
         onEnglish={() => openEnglish()}
         onSave={save}
@@ -628,6 +624,8 @@ export function GameApp({
             onBattle={(id) => commit((state) => startBattle(state, id))}
             onTravelEvent={(id, mode) => travelToEvent(id, mode, game.revision)}
             onRent={(modeId) => commit((state) => rentTransport(state, modeId, game.revision))}
+            onTravelWait={(minutes) => commit((state) => waitForTravel(state, minutes, game.revision))}
+            onTravelSleep={(mode, viaPlaceId) => returnToHotel(mode, viaPlaceId, game.revision)}
             nextCityName={departure?.city.nameJa}
             onDepart={() => setConfirmDeparture(true)}
           />
