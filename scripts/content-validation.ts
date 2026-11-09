@@ -848,6 +848,12 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     .filter((id): id is string => !!id));
   const loopContext: ThenLoopContext = {
     routes: (cityId) => travels.find(({ city: item }) => item.id === cityId)?.travel.routes ?? [],
+    hotel: (cityId) => travels.find(({ city: item }) => item.id === cityId)?.settings.hotelPlaceId,
+    finaleAt: (placeId) => {
+      const event = finalesAtPlace(placeId)[0];
+      const cityId = event && journey.episodes.find((episode) => episode.id === event.id)?.cityId;
+      return cityId ? { cityId, admission: (event.admissionCost ?? 0) > 0 } : undefined;
+    },
     departs: (cityId) => !!cities.find((item) => item.id === cityId)?.nextCityId,
     epilogueRequired: (cityId) => {
       const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === cityId));
