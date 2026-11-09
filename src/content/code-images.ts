@@ -14,5 +14,17 @@ export function reactionMarkImage(mark: ReactionMark): string {
   return `assets/effects/${mark}.svg`;
 }
 
+/** The reduced copies of tourism photos that content:build writes (scripts/derived-images.ts). */
+export type DerivedImageKind = "card" | "backdrop";
+
+/**
+ * The served file of a tourism photo's reduced copy, written by content:build
+ * into the generated public folder only (never into a public/ folder). The game
+ * names it through derivedImagePath (derived-images.ts).
+ */
+export function derivedImageFile(journeyId: string, assetId: string, kind: DerivedImageKind): string {
+  return `assets/derived/${journeyId}/${assetId}.${kind}.webp`;
+}
+
 /** Every served file the code uses; they belong to the root public/ (shared by every journey). */
 export const CODE_IMAGE_FILES: readonly string[] = [...REACTION_MARKS.map(reactionMarkImage), DEFAULT_ITEM_ICON];

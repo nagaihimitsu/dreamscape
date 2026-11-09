@@ -122,6 +122,12 @@ export const citySchema = z
       .strict(),
     landmarkIdsPlanned: z.array(id),
     productionStatus: z.enum(["prototype", "complete"]),
+    /**
+     * The free-time backdrop: a tourism asset of the same journey (content:build
+     * checks it). Absent, or a placeholder asset, shows the plain background
+     * (src/content/city-backdrop.ts).
+     */
+    backdropAssetId: id.optional(),
   })
   .strict();
 export const balanceSchema = z

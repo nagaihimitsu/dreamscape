@@ -110,7 +110,10 @@ describe("journey:new copy of the sample", () => {
       id: "kyoto_trip", nameJa: "京都の旅", order: 50, status: "preparing", cities: [{ id: "kyoto", nameJa: "京都" }],
       authoring: { eventPrefix: "ky", observationFile: "authoring/journeys/kyoto_trip/drafts/observation-cards.json", imageDirectory: "assets/tourism/kyoto_trip" },
     });
-    expect(json(minimal, "cities/kyoto.json")).toMatchObject({ id: "kyoto", nameJa: "京都", productionStatus: "prototype", landmarkIdsPlanned: ["kyoto_clock_tower"] });
+    // The free-time backdrop names the copied clock tower photo (a placeholder: the game shows the plain background).
+    expect(json(minimal, "cities/kyoto.json")).toMatchObject({ id: "kyoto", nameJa: "京都", productionStatus: "prototype", landmarkIdsPlanned: ["kyoto_clock_tower"],
+      backdropAssetId: "ky_img_kyoto_clock_tower" });
+    expect(json(minimal, "tourism/catalog.json").assets.map((asset: { id: string }) => asset.id)).toEqual(["ky_img_kyoto_clock_tower"]);
     expect(json(minimal, "tourism/catalog.json").assets.map((asset: { isPlaceholder: boolean }) => asset.isPlaceholder)).toEqual([true]);
     // The images are the sample's bytes (journey:readiness reports them until replaced).
     expect(minimal.get("public/assets/tourism/kyoto_trip/kyoto_clock_tower.png")!.equals(sample.files.get("public/assets/tourism/sample_trip/mihon_clock_tower.png")!)).toBe(true);

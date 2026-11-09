@@ -13,6 +13,7 @@
 - [ ] 画像：`public/assets/tourism/{{journeyId}}/` の見本の画像を、権利を確認した画像に差し替える。`tourism/catalog.json` の幅・高さ・説明・ライセンス・クレジット・加工内容を直し、`isPlaceholder` を `false` にする。JPEG・PNG の写真は `npm run images:optimize -- --journey {{journeyId}} --write` で WebP にする。品物のアイコンやタイトルの絵など、Dreamscape のために作った絵は `presentation/own-artwork.json` に配信時のパスを登録する（出典のない画像があると `npm run content:build` が止まる）。
 - [ ] 文章：観光案内・対決・デート・都市フィナーレ・エピローグ（含めた場合は特殊戦・道中交流）の会話と、カタログの表示文、クイズと和訳を書き直す。ヒロインの台詞・デートは `docs/09_HEROINE_CHARACTER_BIBLE.md` を読んでから書く。各Inkの冒頭の `//` コメントは書き方の規則なので残してよい。
 - [ ] 英単語：`learning/word-meanings.json` を新しい英文に合わせる（共通の辞書 `content/learning/word-meanings.json` にない語だけを置く。どの英文も使わない語は `npm run content:build -- --verbose` で一覧できる）。
+- [ ] 自由時間の背景（任意）：`cities/{{cityId}}.json` の `backdropAssetId` に登録済みの観光写真のID。なければ無地で表示（複製した直後は見本の時計塔の画像のIDで、仮の画像のあいだは無地で表示）。
 - [ ] 旅行編と都市の設定：`manifest.json` の通貨・開始資金・`cityPlan`、都市の国コード `countryCode`（見本は `XX`）と `themeJa`、`travel/{{cityId}}-settings.json` の宿泊費・メモ。
 
 ## ファイル

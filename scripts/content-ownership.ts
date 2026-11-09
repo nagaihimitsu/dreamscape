@@ -331,7 +331,7 @@ export function checkContentOwnership(sources: ContentSources): void {
     if (isObject(data))
       checkReferences(city.file, "", [
         ref("city", "nextCityId", data.nextCityId), ref("story", "arrivalStoryId", data.arrivalStoryId),
-        ref("landmark", "landmarkIdsPlanned", data.landmarkIdsPlanned),
+        ref("landmark", "landmarkIdsPlanned", data.landmarkIdsPlanned), ref("asset", "backdropAssetId", data.backdropAssetId),
       ]);
     if (isObject(settings)) checkReferences(city.settingsFile, "", fields(settings, "background", ["storyBackgroundId"]));
     if (!isObject(travel)) continue;

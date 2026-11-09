@@ -326,6 +326,13 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     throw new Error("Unknown or mismatched tourism clue");
   if (tourism.landmarks.some((landmark) => !cities.some((entry) => entry.id === landmark.cityId && entry.landmarkIdsPlanned.includes(landmark.id))))
     throw new Error("Unknown tourism city/landmark");
+  // The free-time backdrop names a tourism asset (of the same journey: checkContentOwnership). A placeholder
+  // asset is allowed (journey:new marks every copied image so); the game shows the plain background for it.
+  cities.forEach((item, index) => {
+    if (item.backdropAssetId && !tourism.assets.some((asset) => asset.id === item.backdropAssetId))
+      throw new Error(`Unknown city backdrop asset: ${displayPath(root, sources.cities[index].file)} backdropAssetId ` +
+        `"${item.backdropAssetId}" is not an asset of tourism/catalog.json; use the ID of a registered tourism photo or remove the field`);
+  });
   if (
     balance.defaultPlayerName.length > balance.maxNameLength ||
     balance.defaultHeroineName.length > balance.maxNameLength
@@ -826,6 +833,11 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     journey,
     /** Images whose files checkContentImages decodes. */
     images: { characters: characterImages, tourismAssets: tourism.assets },
+    /** What chooses the free-time photos (src/content/photo-choice.ts), for their derived copies (scripts/derived-images.ts). */
+    photoContent: {
+      cities: travels.map(({ city, travel, settings }) => ({ city, places: travel.places, hotelPlaceId: settings.hotelPlaceId })),
+      backgrounds: presentation.backgrounds,
+    },
     /** Probable mistakes that do not stop the build (content-report.ts). */
     warnings: [...contentWarnings(sources), ...transitWarnings, ...conditionNotes],
     /** What each journey folder provides, for the build report. */

@@ -184,3 +184,10 @@ export const FONT_CREDIT = {
 export const OWN_ARTWORK_NOTE_JA =
   "Dreamscape のために作った絵（キャラクターの立ち絵・アイコンなど）は、この一覧に載せていません。" +
   "情報の出典は、手がかり帳とクイズの解説に表示しています。";
+
+/**
+ * The note of the free-time screen's 「写真の出典」 (UI step 1.5): its list rows and its backdrop show the
+ * copies that content:build reduced (the rows also cropped) from the credited photo (derived-images.ts).
+ * The copies keep the photo's own credit and licence; this note adds the change to `modificationJa`.
+ */
+export const DERIVED_PHOTO_NOTE_JA = "この画面では、写真を縮小して表示しています（一覧の写真は切り抜きもしています）。";
