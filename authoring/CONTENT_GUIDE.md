@@ -131,7 +131,7 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 
 ### 敵・バトルの項目
 
-`battle_*.json` の `id`、`titleJa`、`descriptionJa`、`enemyNameJa`、`enemyTitleJa`、`enemyDescriptionJa` は対決と人物の識別・表示。`landmarkId`、`storyId`、`quizId`、`backgroundId` は観光地・Ink・問題セット・登録済み背景への参照です。新しく書く対決は1本の流れ（下）にし、`scenes` を書きません。`scenes.intro`、`afterRounds`、`outro` は場面の形（ミラノ編とインド編の今の対決）だけの項目で、Inkの `battle_scene` に渡される場面名です（通常戦は中間2つ）。`format` はAでは省略可能、B/Cは明示。任意の `portrait` は既存で定義済みの表示種別に限られます。新規の立ち絵種類には実装作業が別途必要です。
+`battle_*.json` の `id`、`titleJa`、`descriptionJa`、`enemyNameJa`、`enemyTitleJa`、`enemyDescriptionJa` は対決と人物の識別・表示。`landmarkId`、`storyId`、`quizId`、`backgroundId` は観光地・Ink・問題セット・登録済み背景への参照です。新しく書く対決は1本の流れ（下）にし、`scenes` を書きません。`scenes.intro`、`afterRounds`、`outro` は場面の形（ミラノ編の今の対決）だけの項目で、Inkの `battle_scene` に渡される場面名です（通常戦は中間2つ）。`format` はAでは省略可能、B/Cは明示。任意の `portrait` は既存で定義済みの表示種別に限られます。新規の立ち絵種類には実装作業が別途必要です。
 
 B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）、0から数える `roundIndex`（何問目の前で資料を選ぶか）、候補 `caseClueIds`、正解 `correctClueIds` を記入します。正解証拠はBが1つ、Cは異なる2つを順不同で組み合わせます。証拠は未発見でもケース資料として開けるよう候補に含めます。英語3択の正解はクイズ側で別に指定します。場面の形の対決だけは、主張・成功・失敗の `claimScene` / `successScene` / `failureScene`（Bは `pressScene` も）を書きます。
 
@@ -170,7 +170,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 ```
 
 - 会話の中に日本語の選択肢を書けます（`* [「…」 # option: <ID>]` と、そのすぐ次の行の札。書き方は道中交流・会話と同じ「選択肢の札」）。札（関係値・お金・AP・フラグ・品物・噛み合いの `# profile:` など）は、その対決を初めて遊ぶときだけ、1回の対決の中で選択肢ごとに1回だけ当たります（同じ止まる所へ戻ってもう一度選んでも、遊び直しても当たりません）。`# later` は書けません。どの選択の場にも、何も要らない選択肢か、頭の札などで保証された選択肢を1つは置きます（`content:build` が確かめます）。
-- 今の場面の形の対決（ミラノ編・インド編）は、そのまま動きます。1本の流れへは `npm run battle:flow -- --journey <旅行編ID> [--battle <対決ID>]` で、台詞を変えずに形だけを変えられます（`--write` なしは、すべての正誤・追及・外れた資料の組み合わせで出る行が同じかを比べるだけ。`--write` で、同じときだけ書き込み、カタログの `scenes` を消し、反論の話を流れへ移します）。
+- 今の場面の形の対決（ミラノ編）は、そのまま動きます（見本の編とインド編の対決は、この道具で1本の流れに変えました）。1本の流れへは `npm run battle:flow -- --journey <旅行編ID> [--battle <対決ID>]` で、台詞を変えずに形だけを変えられます（`--write` なしは、すべての正誤・追及・外れた資料の組み合わせで出る行が同じかを比べるだけ。`--write` で、同じときだけ書き込み、カタログの `scenes` を消し、反論の話を流れへ移します）。
 
 ## 恋愛とInk
 
