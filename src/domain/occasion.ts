@@ -11,9 +11,9 @@ import { eventCity, eventPlace, momentHasScenes, momentSchedule, tripMoment, typ
 import { DAY_START } from "./travel";
 import type { GameState } from "./game-state-schema";
 import type { Occasion, OccasionPart, OccasionThen, OccasionTrip } from "./occasion-state";
-import { mainPartPayments, mainScene } from "./reservations";
+import { mainPartPayments, mainScene, runningMainPayment } from "./reservations";
 import { beginLandmarkGuide, beginLandmarkObservation } from "./tourism";
-import { compareRouteCost, minimumHomeFare } from "./travel-routes";
+import { cheapestOnTimeFare, compareRouteCost, findTravelHomeRoutes } from "./travel-routes";
 import { getUsableRoutes } from "./transport";
 import { getTravelHomeRoutes, isCompletedTravelEvent, isTravelEventVisible } from "./travel-game";
 import type { AfterPart, SceneEntry, SceneMain, SceneThen } from "../content/scene-schemas";
@@ -322,24 +322,33 @@ function landmarkAt(state: Readonly<GameState>, placeId: string): string | undef
 
 /**
  * The fare home a then: epilogue keeps back: a trip whose move has not run is dropped (4.1), so the party stays where it
- * is; the cheapest way home from there that arrives in time, at the minute the occasion settles (undefined: none).
+ * is; the cheapest way home from there that arrives in time, at the minute the occasion settles ("none": no way home from
+ * there; "late": none arrives in time).
  */
-function epilogueReturnFare(state: Readonly<GameState>): number | undefined {
+function epilogueReturnFare(state: Readonly<GameState>): number | "none" | "late" {
   const occasion = state.occasion;
   if (!occasion?.trip || occasion.ran.includes("move")) return state.travel.returnReserve;
-  return minimumHomeFare(getUsableRoutes(state as GameState), state.travel.currentPlaceId, state.travel.hotelPlaceId, state.travel.activeEvent?.endMinute ?? state.travel.minute);
+  const homes = findTravelHomeRoutes(getUsableRoutes(state as GameState), state.travel.currentPlaceId, state.travel.hotelPlaceId);
+  if (!homes.length) return "none";
+  return cheapestOnTimeFare(homes, state.travel.activeEvent?.endMinute ?? state.travel.minute) ?? "late";
 }
 
-/** The plan of a then: now: the move's fare and the main part's admission and payments there, checked against what is usable after this occasion. */
-export function planThen(state: Readonly<GameState>, then: SceneThen, sceneId: string): ThenPlan {
+/**
+ * The plan of a then: now: the move's fare and the main part's admission and payments there, checked against what is usable
+ * after this occasion. `spend`: the money its scene still pays before the then: runs (the choice's own `# money:`, an inserted
+ * scene's `# on_done:`); the main part running now adds its first payment (4.1 step 1).
+ */
+export function planThen(state: Readonly<GameState>, then: SceneThen, sceneId: string, spend = 0): ThenPlan {
+  const paying = spend + runningMainPayment(state);
   if ("epilogue" in then) {
     if (!canStartAuthoredEpilogue(state as GameState, state.currentCityId)) return { ok: "still" };
     const epilogue = mainScene({ epilogue: state.currentCityId });
     const money = Math.max(0, -(epilogue?.done.money ?? 0));
     const ap = Math.max(0, -(epilogue?.done.ap ?? 0));
     const reserve = epilogueReturnFare(state);
-    if (reserve === undefined) return { ok: false, reason: "ここからホテルへ帰る経路がありません。" };
-    if (state.travelBudget - reserve < money) return { ok: false, reason: "エピローグでの支払いや帰りのための予算が足りません。" };
+    if (reserve === "none") return { ok: false, reason: "ここからホテルへ帰る経路がありません。" };
+    if (reserve === "late") return { ok: false, reason: "今日はホテルへの帰路を含めると時間が足りません。" };
+    if (state.travelBudget - paying - reserve < money) return { ok: false, reason: "エピローグでの支払いや帰りのための予算が足りません。" };
     if (state.ap < ap) return { ok: false, reason: `APが足りません（AP ${ap}）。` };
     return { ok: true, plan: { epilogue: true, sceneId }, cost: 0 };
   }
@@ -353,16 +362,16 @@ export function planThen(state: Readonly<GameState>, then: SceneThen, sceneId: s
   const payments = event ? mainPartPayments(state, event.id) : { money: 0, ap: 0 };
   const home = getTravelHomeRoutes(state as GameState, then.move).sort(compareRouteCost)[0];
   const cost = route.cost + admission;
-  if (!home || state.travelBudget - cost < home.cost + payments.money) return { ok: false, reason: "移動・入場や帰りのための予算が足りません。" };
+  if (!home || state.travelBudget - paying - cost < home.cost + payments.money) return { ok: false, reason: "移動・入場や帰りのための予算が足りません。" };
   if (state.ap < payments.ap) return { ok: false, reason: "APが足りません。" };
   return { ok: true, plan: { move: then.move, modeId: route.mode, minutes: route.minutes, eventId: event?.id ?? null, sceneId }, cost };
 }
 
 /** Decide a then: (chosen, or the head of a scene that starts): its move is paid now; it runs when its scene ends. Nothing without an occasion, or when it cannot move. */
-export function commitThen(state: GameState, then: SceneThen, sceneId: string): GameState {
+export function commitThen(state: GameState, then: SceneThen, sceneId: string, spend = 0): GameState {
   const occasion = state.occasion;
   if (!occasion || occasion.then) return state;
-  const plan = planThen(state, then, sceneId);
+  const plan = planThen(state, then, sceneId, spend);
   if (plan.ok !== true) return state;
   return { ...state, travelBudget: state.travelBudget - plan.cost, occasion: { ...occasion, then: plan.plan } };
 }
@@ -374,7 +383,7 @@ function runThen(state: GameState, nextRoll: () => number): GameState {
   // The move still to make is dropped (4.1): the fare home is kept back from where the party is.
   if ("epilogue" in then) {
     const reserve = epilogueReturnFare(state);
-    return openEpilogue(reserve === undefined ? closed : { ...closed, travel: { ...closed.travel, returnReserve: reserve } }, true, nextRoll);
+    return openEpilogue(typeof reserve !== "number" ? closed : { ...closed, travel: { ...closed.travel, returnReserve: reserve } }, true, nextRoll);
   }
   const cityId = closed.currentCityId;
   const arrival = closed.travel.minute + then.minutes;
@@ -517,6 +526,6 @@ registerMomentOpeners({ depart: (state) => openDeparture(state), epilogue: (stat
 
 registerOccasionHooks({
   advance: (state, nextRoll) => advanceOccasion(state, nextRoll),
-  thenProblem: (state, then) => { const plan = planThen(state, then, ""); return plan.ok === false ? plan.reason : undefined; },
+  thenProblem: (state, then, spend) => { const plan = planThen(state, then, "", spend); return plan.ok === false ? plan.reason : undefined; },
   commitThen,
 });

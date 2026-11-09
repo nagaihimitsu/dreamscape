@@ -75,6 +75,19 @@ export function reservedPayments(state: Readonly<GameState>): { money: number; a
   return { money: kept.money, ap: kept.ap + dateAp };
 }
 
+/**
+ * What the main part running now (the occasion's step) pays when it is first finished, before a then: of it runs (4.1 step 1):
+ * its `# on_done: money -X` while it is still to be paid (a guide, a battle, a date; an authored epilogue not read yet).
+ */
+export function runningMainPayment(state: Readonly<GameState>): number {
+  const occasion = state.occasion;
+  const part = occasion?.at?.startsWith("main:") ? occasion.at.slice("main:".length) : undefined;
+  if (!occasion || !part) return 0;
+  const main = part === "epilogue" && occasion.cityId && !state.viewedEpilogueCityIds.includes(occasion.cityId) ? { epilogue: occasion.cityId }
+    : occasion.eventId ? pendingMainParts(state, occasion.eventId).find((item) => Object.keys(item)[0] === part) : undefined;
+  return main ? Math.max(0, -(mainScene(main)?.done.money ?? 0)) : 0;
+}
+
 /** The money that can be spent now: the budget less the fare home and the main parts' payments kept back (A9). */
 export const usableMoney = (state: Readonly<GameState>) => state.travelBudget - state.travel.returnReserve - reservedPayments(state).money;
 /** The AP that can be spent now: stored AP is not counted, the main parts' AP is kept back (A23). */

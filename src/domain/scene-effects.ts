@@ -1,6 +1,6 @@
 import { encounters } from "../content/encounters";
 import { responseProfiles, scenes } from "../content";
-import type { SceneDone, SceneEntry, SceneOption } from "../content/scene-schemas";
+import { INSERTED_KINDS, type SceneDone, type SceneEntry, type SceneOption } from "../content/scene-schemas";
 import { responseProfileSchema } from "../content/schemas";
 import { secureRomanceRoll } from "../random/romance-source";
 import { meets } from "./conditions";
@@ -29,6 +29,11 @@ export const sceneOption = (scene: SceneEntry | undefined, optionId: string | un
 
 /** What a scene keeps back while it runs: its own `# on_done:` that spends (paid when it is done). */
 export const doneReserve = (done: SceneDone | undefined) => ({ money: Math.max(0, -(done?.money ?? 0)), ap: Math.max(0, -(done?.ap ?? 0)) });
+/** An inserted place scene's reserve (a main part's first payment is the occasion's: reservations.ts runningMainPayment). */
+export const insertedDoneReserve = (sceneId: string) => {
+  const scene = placeSceneById(sceneId);
+  return doneReserve(scene && INSERTED_KINDS.includes(scene.kind) ? scene.done : undefined);
+};
 
 export type ChoiceDisplay =
   /** A `# requires:`, `# give:` or `# use:` that does not hold: not shown at all (no reason; decision 43). */
@@ -54,8 +59,9 @@ export function choiceDisplay(state: Readonly<GameState>, option: SceneOption | 
     return { show: "grey", reason: state.travelBudget - reserve.money >= money ? "帰りの交通費を確保しているため、今は使えません。" : "旅行予算が足りません。" };
   const ap = -(option.ap ?? 0);
   if (ap > 0 && usableAp(state) - reserve.ap < ap) return { show: "grey", reason: `APが足りません（AP ${ap}）。` };
-  // A # then: whose move (or the epilogue's payment) cannot be paid greys out (2.3).
-  const problem = option.then && state.occasion ? thenProblem(state, option.then) : undefined;
+  // A # then: whose move (or the epilogue's payment) cannot be paid greys out (2.3): after this choice's money and the scene's
+  // # on_done: (paid as it ends, unless 「また今度」), which the scene pays before the then: runs.
+  const problem = option.then && state.occasion ? thenProblem(state, option.then, Math.max(0, money) + (option.later ? 0 : reserve.money)) : undefined;
   if (problem) return { show: "grey", reason: problem };
   return { show: "open" };
 }
@@ -107,8 +113,9 @@ export function applyChoiceEffects(state: GameState, sceneId: string, option: Sc
     if (next.inventory[item] !== "held") throw new Error("必要な品物を持っていません。");
     next = { ...next, inventory: { ...next.inventory, [item]: status }, itemUses: { ...next.itemUses, [item]: { encounterId: sceneId, optionId: option.id } } };
   }
-  // A # then: is decided (its move paid) with the choice; it runs when the scene ends (stage 3b, 4.1).
-  if (option.then) next = decideThen(next, option.then, sceneId);
+  // A # then: is decided (its move paid) with the choice; it runs when the scene ends (stage 3b, 4.1), after an inserted
+  // scene's # on_done: is paid (unless 「また今度」).
+  if (option.then) next = decideThen(next, option.then, sceneId, option.later ? 0 : insertedDoneReserve(sceneId).money);
   if (!option.profile) return { state: next };
   const found = responseProfiles.find((profile) => profile.id === option.profile);
   if (!found) throw new Error("交流のリアクション設定が見つかりません。");

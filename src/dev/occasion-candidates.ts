@@ -9,7 +9,7 @@ import { encounterChoiceDisplay, encounterEntryRule, encounterRunsAt, encounterV
 import { canStartAuthoredEpilogue, isAuthoredEpilogueCity } from "../domain/epilogue";
 import type { GameState } from "../domain/game";
 import { occasionSteps, planThen } from "../domain/occasion";
-import { sceneById, sceneOption } from "../domain/scene-effects";
+import { insertedDoneReserve, sceneById, sceneOption } from "../domain/scene-effects";
 import { explainCondition, type ExplainedNode } from "./condition-explain";
 
 export type CandidatePart = { label: string; value: boolean };
@@ -59,7 +59,7 @@ export function occasionCandidates(state: GameState): OccasionCandidates {
     const id = step.scene;
     const started = occasion.started.includes(id);
     const availability = momentSceneAvailability({ ...state, activeTourism: null, activeEncounter: null, activeBattle: null }, id);
-    const thenPlan = sceneById(id)?.then && planThen(state, sceneById(id)!.then!, id);
+    const thenPlan = sceneById(id)?.then && planThen(state, sceneById(id)!.then!, id, insertedDoneReserve(id).money);
     const reason = started ? "" : occasion.then ? "前の場面の then: で時点が終わる" :
       step.after && !occasion.ran.includes(step.after) ? `${partNames[step.after]}がこの時点で流れていない` :
         thenPlan && thenPlan.ok === false ? `then: が払えない（${thenPlan.reason}）` : availability.available ? "" : availability.reason;

@@ -15,6 +15,7 @@ import { beginTravelEvent, sleepAtHotel } from "../../../src/domain/travel-game"
 import { occasionCandidates } from "../../../src/dev/occasion-candidates";
 import { cityStart, playBattleToResult } from "../../../src/dev/scenario-builders";
 import { rentTransport } from "../../../src/domain/transport";
+import { mainScene, runningMainPayment } from "../../../src/domain/reservations";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 
 // Stage 4 of the unified event design (2.3, 3.4 H/I, 3.5, 3.6, 3.9 (c)(d), 4.2–4.8) on the sample journey (fictional):
@@ -329,6 +330,81 @@ describe("a then: at a trip's moment (2.3, 3.6, 4.1)", () => {
     expect(elsewhere.activeEncounter?.encounterId).toBe("smp_mihon_bookmark_stall");
     expect(elsewhere.travel.rideCounts).toEqual({ [BIKE]: 1 });
     expect(elsewhere.occasion?.started).not.toContain("smp_mihon_first_bicycle");
+  });
+
+  it("counts the money the scene still pays before its then: epilogue (its # on_done:, the choice's own) against the fare home", () => {
+    dearMarket();
+    firstRide([{ trip: BIKE, from: MARKET }], { epilogue: true });
+    const ride = scene("smp_mihon_first_bicycle");
+    const departed = (budget: number) => {
+      const bike = rented(cityStart("mihon"));
+      // The ride costs 10; the fare home from the market is 10.
+      return playUntil(depart(at({ ...bike, travelBudget: budget, travel: { ...bike.travel, returnReserve: 10 } }, MARKET, DAY_START), EPISODE, BIKE),
+        (state) => !!state.activeEncounter?.frame.choices.length);
+    };
+    const display = (state: GameState) => encounterChoiceDisplay(state, state.activeEncounter!.frame.choices.find((item) => item.optionId === "as_is")!.index);
+    // Its # on_done: money -8, paid as it ends: 15 left after the ride, 7 after the scene, less than the fare home (10).
+    patch(ride, { done: { money: -8 } });
+    expect(display(departed(25))).toMatchObject({ show: "grey", reason: "エピローグでの支払いや帰りのための予算が足りません。" });
+    const enough = playUntil(departed(35), (state) => !!state.activeEpilogue, ["as_is"]);
+    expect(enough.travel).toMatchObject({ currentPlaceId: MARKET, returnReserve: 10 });
+    expect(enough.travelBudget).toBe(35 - 10 - 8);
+    expect(restore(enough)).toEqual(enough);
+    // The choice's own # money: -8 the same way.
+    patch(ride, { done: {}, options: ride.options.map((option) => option.id === "as_is" ? { ...option, money: -8 } : option) });
+    expect(display(departed(25))).toMatchObject({ show: "grey", reason: "エピローグでの支払いや帰りのための予算が足りません。" });
+    // A head then: epilogue with its # on_done: that the fare home leaves no room for: the scene does not show, the trip goes on.
+    patch(ride, { then: { epilogue: true }, done: { money: -8 }, options: ride.options.map(({ then: _then, ...option }) => option) });
+    const bike = rented(cityStart("mihon"));
+    const trip = depart(at({ ...bike, travelBudget: 25, travel: { ...bike.travel, returnReserve: 10 } }, MARKET, DAY_START), EPISODE, BIKE);
+    expect(trip.occasion?.started).not.toContain("smp_mihon_first_bicycle");
+    expect(trip.travel.currentPlaceId).toBe(TOWER);
+    expect(saveGame(new MemoryStorage(), trip).ok).toBe(true);
+  });
+
+  it("counts the scene's # on_done: money before its then: move too (the fare home from where it moves)", () => {
+    dearMarket();
+    const stall = scene("smp_mihon_bookmark_stall");
+    patch(stall, { done: { ...stall.done, money: -8 }, options: stall.options.map((option) => option.id === "drawn" ? { ...option, then: { move: MARKET } } : option) });
+    const shown = (budget: number) => {
+      // (The bicycle rented: the market's only ways home are by bicycle.)
+      const state = playUntil(depart({ ...rented(cityStart("mihon")), travelBudget: budget }, EPISODE), (current) => !!current.activeEncounter?.frame.choices.length);
+      return { state, display: encounterChoiceDisplay(state, state.activeEncounter!.frame.choices.find((item) => item.optionId === "drawn")!.index) };
+    };
+    // 15 left, 7 after the stall's 8: less than the fare home from the market (10).
+    expect(shown(15).display).toEqual({ show: "grey", reason: "移動・入場や帰りのための予算が足りません。" });
+    const { state, display } = shown(18);
+    expect(display).toEqual({ show: "open" });
+    const moved = playUntil(state, (current) => current.travel.currentPlaceId === MARKET && !current.activeEncounter, ["drawn"]);
+    expect(moved.travel).toMatchObject({ returnReserve: 10 });
+    expect(moved.travelBudget).toBe(10);
+    expect(restore(moved)).toEqual(moved);
+  });
+
+  it("counts a main part's first # on_done: money while it runs (it is paid before a then: of it runs)", () => {
+    const guide = mainScene({ guide: TOWER })!;
+    patch(guide, { done: { ...guide.done, money: -5 } });
+    const reading = playUntil(depart(cityStart("mihon"), EPISODE), (state) => !!state.activeTourism, ["ask"]);
+    expect(reading.occasion?.at).toBe("main:guide");
+    expect(runningMainPayment(reading)).toBe(5);
+    const read = playUntil(reading, (state) => !state.activeTourism || state.activeTourism.phase !== "guide");
+    expect(read.completedGuideIds).toContain(TOWER);
+    expect(runningMainPayment({ ...read, occasion: read.occasion && { ...read.occasion, at: "main:guide" } })).toBe(0);
+  });
+
+  it("names why a then: epilogue from the trip's start cannot keep a fare home: no way home, or none in time", () => {
+    firstRide([{ trip: "walk", from: "mihon_library" }], { epilogue: true });
+    const reason = (state: GameState) => {
+      const shown = playUntil(depart(at(state, "mihon_library", 19 * 60 + 50), EPISODE), (current) => !!current.activeEncounter?.frame.choices.length);
+      return encounterChoiceDisplay(shown, shown.activeEncounter!.frame.choices.find((item) => item.optionId === "as_is")!.index);
+    };
+    // 19:50 at the library: the visit ends at 20:55; the 7-minute walk home from the library would end after 21:00.
+    expect(reason(cityStart("mihon"))).toEqual({ show: "grey", reason: "今日はホテルへの帰路を含めると時間が足りません。" });
+    // In memory, no way from the library to the hotel at all.
+    const content = getCityContent("mihon");
+    cityContents.mihon = { ...content, travel: { ...content.travel, routes: content.travel.routes.filter((route) => !(route.fromPlaceId === "mihon_library" && route.toPlaceId === "mihon_hotel")) } };
+    undo.push(() => { cityContents.mihon = content; });
+    expect(reason(cityStart("mihon"))).toEqual({ show: "grey", reason: "ここからホテルへ帰る経路がありません。" });
   });
 
   it("a scene placed at a trip and at the visit runs the move once when it runs at the visit (one ride)", () => {

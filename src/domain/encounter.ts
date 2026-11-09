@@ -19,7 +19,7 @@ import { battlePlayed, meets } from "./conditions";
 import { advanceOccasion, commitThen, leaveObservation, occasionSteps, planThen } from "./occasion";
 import { visitOrder, visitSlot, type MomentEntry, type VisitSlot } from "./encounter-moments";
 import { battles, episodes, getCityContent } from "../content";
-import { applyChoiceEffects, applyDoneEffects, changesRelationship, choiceDisplay, doneReserve, placeSceneById, sceneById, sceneOption, type ChoiceDisplay } from "./scene-effects";
+import { applyChoiceEffects, applyDoneEffects, changesRelationship, choiceDisplay, doneReserve, insertedDoneReserve, placeSceneById, sceneById, sceneOption, type ChoiceDisplay } from "./scene-effects";
 import type { SceneOption } from "../content/scene-schemas";
 import { itemUsableIn } from "./item-cities";
 import { usableAp, usableMoney } from "./reservations";
@@ -138,7 +138,7 @@ function getEncounterEntryAvailability(state: GameState, event: EncounterDefinit
   if (!event.repeatable && state.completedEncounterIds.includes(event.id)) return unavailable("この寄り道は終えています。");
   // A head # then: (stage 3b) that cannot be paid keeps the scene from showing (2.3).
   const head = sceneById(event.id)?.then;
-  if (head && planThen(state, head, event.id).ok === false) return unavailable("この場面の移動ができません。");
+  if (head && planThen(state, head, event.id, insertedDoneReserve(event.id).money).ok === false) return unavailable("この場面の移動ができません。");
   // A place file's scene: its own # on_done: that spends must be payable from what is left (it is kept back while it runs).
   const place = placeSceneById(event.id);
   if (place) {
@@ -324,7 +324,7 @@ export function momentSceneAvailability(state: GameState, id: string): Availabil
 export function beginMomentScene(state: GameState, id: string, nextRoll: () => number): GameState {
   const begun = beginEncounter(state, findEncounter(id)!, nextRoll);
   const head = sceneById(id)?.then;
-  return head ? commitThen(begun, head, id) : begun;
+  return head ? commitThen(begun, head, id, insertedDoneReserve(id).money) : begun;
 }
 
 /**
