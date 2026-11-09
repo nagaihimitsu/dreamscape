@@ -190,6 +190,10 @@ test("a marker by keyboard selects the row and moves focus to it; Enter then goe
   await expect(row).toHaveAttribute("data-armed", "true");
   await page.keyboard.press("Enter");
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
+  // UI redesign §3.7 E: the new scene's visible heading takes the focus the row's name had,
+  // with the two-tone ring after a key.
+  await expect(ops.sceneLabel(page)).toBeFocused();
+  await expect(ops.sceneLabel(page)).toHaveCSS("outline-style", "solid");
 });
 
 test.describe("at 320×568", () => {
@@ -197,8 +201,8 @@ test.describe("at 320×568", () => {
 
   test("a marker press never moves the map: unscrolled no page scroll, stuck the list scrolls to the row", { tag: tier.gate }, async ({ page }) => {
     await ops.startJourney(page);
-    // The title's start button may have scrolled the page: free time from its top.
-    await page.evaluate(() => window.scrollTo(0, 0));
+    // Free time opens at the top of the page, not where the title's start button scrolled it (§3.7 E).
+    expect(await page.evaluate(() => window.scrollY)).toBe(0);
     const canvas = page.getByTestId("travel-map-canvas");
     const marker = page.getByTestId("map-marker-p_castello");
     const map = await boxOf(canvas);
@@ -272,6 +276,12 @@ for (const viewport of [{ width: 320, height: 568 }, { width: 320, height: 460 }
       await expect(attribution).toBeVisible();
       const at = centre(await boxOf(attribution));
       expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest(".leaflet-control-attribution"), at)).toBe(true);
+      // One panel at a time: opening 待機 clears 休む; 休む again selects it and closes 待機.
+      await band.getByLabel("時間を進める").click();
+      await expect(band).not.toHaveAttribute("data-selected");
+      await expect(band.getByTestId("travel-sleep-choices")).toHaveCount(0);
+      await band.getByRole("button", { name: "滞在先で休む" }).click();
+      await expect(band.locator("details.travel-wait")).not.toHaveAttribute("open");
       await expect(band).toHaveAttribute("data-armed", "true");
       await band.getByRole("button", { name: "滞在先で休む" }).click();
       await expect(page.getByTestId("time-passage")).toBeVisible();

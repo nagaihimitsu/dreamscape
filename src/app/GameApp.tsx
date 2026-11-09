@@ -80,7 +80,8 @@ import {
 } from "../domain/battle";
 
 import { browserStorage, type AppProps } from "./app-storage";
-import { storySceneChanged, storySceneOnScreen } from "./story-scene-change";
+import { screenOnShow, storySceneChanged, storySceneOnScreen } from "./story-scene-change";
+import { focusSceneHeading } from "../components/scene-focus";
 import { holdTaps } from "../components/tap-hold";
 import { useDebugMode } from "./debug-mode";
 import { DebugModeSetting } from "./DebugModeSetting";
@@ -235,6 +236,17 @@ export function GameApp({
   const nextEpisode = game ? getNextEpisode(game) : null;
   const nextStoryBattle = game ? getNextStoryBattle(game) : null;
   const frame = active?.frame;
+  // A new screen takes a lost focus on its visible heading (scene-focus.ts, UI redesign §3.7 E);
+  // free time opens at the top of the page, not at the scroll position of the screen before it
+  // (the title, scrolled to 「旅をはじめる」 on a short phone).
+  const screen = screenOnShow(game, { sceneEpoch, showRomanceEnding });
+  const shownScreen = useRef(screen);
+  useEffect(() => {
+    if (shownScreen.current === screen) return;
+    shownScreen.current = screen;
+    if (screen.startsWith("free:")) window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    focusSceneHeading(main.current);
+  }, [screen]);
   useEffect(() => {
     if (active?.dateId || showRomanceEnding)
       document.getElementById("main")?.scrollIntoView({ block: "start" });
@@ -599,7 +611,7 @@ export function GameApp({
             <CanalScene backgroundId={currentTravelPlace?.backgroundId} />
             <section className="paper ending" data-testid="romance-ending">
               <p className="eyebrow">交際開始</p>
-              <h1>{presentation.ending.titleJa}</h1>
+              <h1 tabIndex={-1}>{presentation.ending.titleJa}</h1>
               <p className="ending-names">
                 {game.playerName}
                 <span> & </span>
