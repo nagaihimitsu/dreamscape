@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { defaultJourneyId, getJourney, journeys } from "../content/journeys";
 import { journeyStorage } from "../persistence/journey-storage";
 import { openingJourneyId, readLastJourney, rememberJourney } from "./last-journey";
 import { useJourneyLock } from "../persistence/useJourneyLock";
-import { journeyLockNotice, needsJourneyLock } from "../persistence/journey-lock";
+import { journeyLockNotice, needsJourneyLock, type JourneyLockNotice } from "../persistence/journey-lock";
+import { focusIsLost, focusQuietly } from "../components/scene-focus";
 import { loadJourneyDraft, promoteJourneyDraft } from "../persistence/journey-preparation";
 import { PreparingJourney } from "../features/journey/PreparingJourney";
 import { UnavailableJourney } from "../features/journey/UnavailableJourney";
@@ -48,12 +49,9 @@ export default function App(props: AppProps = {}) {
   // Debug supplies an isolated, pre-populated game; do not alter its storage.
   if (props.debug) return <GameApp {...props} />;
   const lockNotice = journeyLockNotice(lockStatus);
-  if (lockNotice) return <div className="app-shell"><main id="main"><section className="paper intro">
-    <JourneySelection value={journeyId} onChange={switchJourney} restoreFocus={restoreSelectorFocus}
-      onFocusRestored={lockStatus === "loading" ? undefined : selectorFocusRestored} />
-    <p role={lockNotice.role}>{lockNotice.message}</p>
-    {lockNotice.retry && <button type="button" className="secondary" onClick={retryLock}>再試行</button>}
-  </section></main></div>;
+  if (lockNotice) return <JourneyLockScreen journeyName={journey?.nameJa ?? "旅行編"} notice={lockNotice} onRetry={retryLock}
+    selector={<JourneySelection value={journeyId} onChange={switchJourney} restoreFocus={restoreSelectorFocus}
+      onFocusRestored={lockStatus === "loading" ? undefined : selectorFocusRestored} />} />;
   if (journey?.status === "preparing") {
     return journey.initialState
       ? <PreparingJourney key={journeyId} journey={journey} storage={scopedStorage} onSwitchJourney={switchJourney} selectorFocus={selectorFocus} />
@@ -63,6 +61,28 @@ export default function App(props: AppProps = {}) {
   const oldDataStorage = props.storage ? undefined : browserKeyedStorage;
   if (journey?.initialState) return <PlayableJourney key={journeyId} {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={switchJourney} selectorFocus={selectorFocus} oldDataStorage={oldDataStorage} />;
   return <GameApp key={journeyId} {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={switchJourney} selectorFocus={selectorFocus} oldDataStorage={oldDataStorage} />;
+}
+
+/**
+ * The journey cannot open here (journey-lock.ts): it is being checked, another tab has it, or
+ * the browser cannot protect its save. Once the answer stays (not while checking), the heading
+ * takes a lost focus (UI redesign §3.7 K; a page opened on this screen leaves it on the body):
+ * one Tab then reaches 「再試行」. A switch or 再試行 keeps it on the journey selector.
+ */
+function JourneyLockScreen({ journeyName, notice, selector, onRetry }: {
+  journeyName: string; notice: JourneyLockNotice; selector: ReactNode; onRetry: () => void;
+}) {
+  const heading = useRef<HTMLHeadingElement>(null);
+  const settled = notice.role === "alert";
+  useEffect(() => {
+    if (settled && heading.current && focusIsLost(null)) focusQuietly(heading.current);
+  }, [settled]);
+  return <div className="app-shell"><main id="main"><section className="paper intro">
+    {selector}
+    <h1 ref={heading} tabIndex={-1}>{journeyName}</h1>
+    <p role={notice.role}>{notice.message}</p>
+    {notice.retry && <button type="button" className="secondary" onClick={onRetry}>再試行</button>}
+  </section></main></div>;
 }
 
 function PlayableJourney(props: AppProps & { storage: typeof browserStorage; journeyId: string; onSwitchJourney: (id: string) => void; selectorFocus: SelectorFocus; oldDataStorage?: KeyedStorage }) {

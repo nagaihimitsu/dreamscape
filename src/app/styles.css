@@ -80,6 +80,15 @@ summary:focus-visible {
 /* The game's main area takes the focus only as a starting point (after a
    switch or 再試行, or the brand link); it is not a control to outline. */
 main[tabindex="-1"]:focus { outline: none; }
+/* A screen's heading that takes a lost focus (src/components/scene-focus.ts, UI
+   redesign §3.7 E and K): the two-tone ring (§2.1) while the focus is visible,
+   never after a finger (data-quiet-focus). */
+h1[tabindex="-1"]:focus { outline: none; }
+h1[tabindex="-1"]:focus-visible:not([data-quiet-focus]) {
+  outline: 3px solid var(--ds-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px var(--ds-slate-900);
+}
 button {
   min-height: 48px;
   border: 0;

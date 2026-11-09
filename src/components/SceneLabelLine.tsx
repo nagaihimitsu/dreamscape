@@ -15,6 +15,9 @@ import "./scene-label.css";
  * The line is part of the scene but marked `data-no-advance` (tap anywhere,
  * scene-tap.ts): a tap on the pill or between the buttons is a near miss and
  * never reads the story on, as a tap on the header above it.
+ *
+ * The pill is the scene's heading that takes a lost focus when the scene opens
+ * (`tabIndex={-1}`, scene-focus.ts; UI redesign §3.7 E).
  */
 export function SceneLabelLine({ label, labelProps, children }: {
   label: ReactNode;
@@ -26,7 +29,7 @@ export function SceneLabelLine({ label, labelProps, children }: {
   const measured = useMeasuredHeight("--label-h");
   return (
     <div className="scene-label-line" data-testid="scene-label-line" data-no-advance ref={measured}>
-      <h1 className="scene-label" {...labelProps}>{label}</h1>
+      <h1 className="scene-label" tabIndex={-1} {...labelProps}>{label}</h1>
       {children && <div className="scene-label-tools">{children}</div>}
     </div>
   );

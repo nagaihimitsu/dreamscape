@@ -107,7 +107,8 @@ export function EpilogueScreen({
           />
           <div ref={dialogueRef} className="vn-window-body">
           <p className="eyebrow">{arrival ? "旅のはじまり" : "都市エピローグ"}</p>
-          <h1>{arrival ? `${city.nameJa}に到着` : episode.clearTitleJa}</h1>
+          {/* Takes a lost focus when the talk opens (scene-focus.ts); inert under an arrival's title card. */}
+          <h1 tabIndex={-1}>{arrival ? `${city.nameJa}に到着` : episode.clearTitleJa}</h1>
           <DialogueText
             key={game.revision}
             ref={sceneTap.line}

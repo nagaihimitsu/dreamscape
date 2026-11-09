@@ -43,3 +43,30 @@ export function storySceneOnScreen(state: SceneState | null): string | null {
 export function storySceneChanged(before: string | null, after: string | null): boolean {
   return after !== before;
 }
+
+/** The parts of the game state that say which screen is shown (GameApp's order of screens). */
+export interface ScreenState extends SceneState {
+  currentCityId: string;
+  endingReached?: boolean;
+  activeEpilogue: { episodeId: string; kind?: "arrival"; logoComplete?: boolean } | null;
+}
+
+/**
+ * The screen on show, named so that a new screen has a new name (UI redesign §3.7 E: a lost
+ * focus goes to the new screen's heading, free time opens at the top). A scene a load brings
+ * back is a new screen (`sceneEpoch`, as the date, battle and encounter are rebuilt); the
+ * sightseeing guide and the free observation are two screens; an arrival's title card is one
+ * screen and its talk the next (the window, with its heading, is inert under the card).
+ */
+export function screenOnShow(state: ScreenState | null, view: { sceneEpoch: number; showRomanceEnding: boolean }): string {
+  if (!state) return "title";
+  const epoch = view.sceneEpoch;
+  if (state.activeEncounter) return `encounter:${state.activeEncounter.runId}:${epoch}`;
+  const epilogue = state.activeEpilogue;
+  if (epilogue) return `epilogue:${epilogue.episodeId}:${epilogue.kind ?? "ending"}${epilogue.kind === "arrival" && !epilogue.logoComplete ? ":card" : ""}`;
+  if (state.activeTourism) return `tourism:${state.activeTourism.landmarkId}:${state.activeTourism.phase}`;
+  if (state.activeBattle) return `battle:${state.activeBattle.runId}:${epoch}`;
+  if (state.activeDate) return `date:${state.activeDate.runId}:${epoch}`;
+  if (state.endingReached && view.showRomanceEnding) return "romance-ending";
+  return `free:${state.currentCityId}`;
+}

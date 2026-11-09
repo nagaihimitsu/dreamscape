@@ -112,11 +112,12 @@ function MapCanvas({ game, events, places, selectedId, onMarker, onFocusEnd, map
       const html = `<span class="${classes}" aria-hidden="true">${symbol}</span>${selected ? `<span class="travel-map-marker-label" aria-hidden="true">${escapeHtml(placeDisplayName(game, place))}</span>` : ""}`;
       const size = selected ? 40 : 32;
       const icon = L.divIcon({ className: "travel-map-marker-wrap", html, iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
-      const marker = L.marker([place.latitude, place.longitude], { icon, title: label, keyboard: true, zIndexOffset: selected ? 1000 : 0 });
+      const marker = L.marker([place.latitude, place.longitude], { icon, keyboard: true, zIndexOffset: selected ? 1000 : 0 });
       // The element exists once the map has its first view (Leaflet adds layers then).
       marker.on("add", () => {
         const element = marker.getElement();
         if (!element) return;
+        // The name is the label only: no `title` tooltip repeating it beside the marker.
         element.setAttribute("aria-label", `${label}${selected ? "、選択中" : ""}`);
         element.dataset.testid = `map-marker-${place.id}`;
         if (selected) element.dataset.selected = "true";

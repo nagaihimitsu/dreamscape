@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { storySceneChanged, storySceneOnScreen, type SceneState } from "./story-scene-change";
+import { screenOnShow, storySceneChanged, storySceneOnScreen, type SceneState } from "./story-scene-change";
 
 const none: SceneState = { activeEncounter: null, activeEpilogue: null, activeTourism: null, activeBattle: null, activeDate: null };
 const date = { ...none, activeDate: { runId: "date-run-1" } };
@@ -58,5 +58,30 @@ describe("a story scene starting or ending", () => {
     expect(storySceneChanged(name(observing), name(battleQuestion))).toBe(false);
     expect(storySceneChanged(name(none), name(battleQuestion))).toBe(false);
     expect(storySceneChanged(null, null)).toBe(false);
+  });
+});
+
+// UI redesign §3.7 E: a new screen takes a lost focus on its heading, and free time opens at the top.
+describe("which screen is on show", () => {
+  const view = { sceneEpoch: 0, showRomanceEnding: false };
+  const at = (state: SceneState) => ({ ...state, currentCityId: "milano" });
+  it("names each screen, a new scene with a new name", () => {
+    expect(screenOnShow(null, view)).toBe("title");
+    expect(screenOnShow(at(none), view)).toBe("free:milano");
+    expect(screenOnShow(at(guide), view)).toBe("tourism:p_duomo:guide");
+    expect(screenOnShow(at(observing), view)).toBe("tourism:p_duomo:exploring");
+    expect(screenOnShow(at(battleDialogue), view)).toBe(screenOnShow(at(battleQuestion), view));
+    expect(screenOnShow(at(date), view)).toBe("date:date-run-1:0");
+    expect(screenOnShow(at(encounter("e1")), view)).toBe("encounter:e1:0");
+    expect(screenOnShow(at(epilogue), view)).toBe("epilogue:milano_finale:ending");
+  });
+
+  it("makes a loaded scene, the talk after an arrival's title card and the romance ending new screens", () => {
+    expect(screenOnShow(at(date), { ...view, sceneEpoch: 1 })).not.toBe(screenOnShow(at(date), view));
+    const card = { ...at(none), activeEpilogue: { episodeId: "e", kind: "arrival" as const, logoComplete: false } };
+    const talk = { ...card, activeEpilogue: { ...card.activeEpilogue, logoComplete: true } };
+    expect(screenOnShow(card, view)).not.toBe(screenOnShow(talk, view));
+    expect(screenOnShow({ ...at(none), endingReached: true }, { ...view, showRomanceEnding: true })).toBe("romance-ending");
+    expect(screenOnShow({ ...at(none), endingReached: true }, view)).toBe("free:milano");
   });
 });

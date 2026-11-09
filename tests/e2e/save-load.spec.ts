@@ -282,6 +282,8 @@ test("a second tab cannot open a journey that is already open", { tag: tier.gate
   const second = await context.newPage();
   await second.goto("/");
   await expect(second.getByRole("alert")).toContainText("別のタブで開いています");
+  // UI redesign §3.7 K: the lock screen's heading takes the focus (one Tab then reaches 「再試行」).
+  await expect(second.getByRole("heading", { level: 1 })).toBeFocused();
   await expect(ops.startButton(second)).toHaveCount(0);
   expect(await allStorage(second)).toEqual(saved);
 

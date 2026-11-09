@@ -67,8 +67,6 @@
 .free-time-banner span { min-width: 0; overflow-wrap: anywhere; }
 .free-time-banner .icon { flex: none; width: 20px; height: 20px; color: var(--ds-ink-muted); }
 .free-time-banner .free-time-banner-plane { margin-left: auto; color: var(--ds-gold); }
-.free-time-banner:focus { outline: none; }
-.free-time-banner:focus-visible { outline: 3px solid var(--ds-focus); box-shadow: 0 0 0 6px var(--ds-slate-900); }
 @media (max-width: 379px) {
   .free-time-banner .free-time-banner-plane { display: none; }
 }

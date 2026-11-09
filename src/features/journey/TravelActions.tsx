@@ -56,7 +56,8 @@ export function TravelActions({ game, api, onTravelWait }: {
   }, [selected]);
   return <div className="travel-band" data-testid="travel-actions" ref={measured} data-selected={selected ? "true" : undefined} data-armed={selected && api.armed ? "true" : undefined}>
     <div className="travel-band-row">
-      <details className="travel-wait" ref={wait}>
+      {/* One panel at a time: opening 待機 clears a selected 休む (its ways home would lie under the menu). */}
+      <details className="travel-wait" ref={wait} onToggle={(toggle) => { if (toggle.currentTarget.open && selected) api.clear(); }}>
         <summary aria-label="時間を進める"><Icon name="hourglass" /><span className="travel-band-word">待機</span></summary>
         <div className="travel-wait-actions">
           {waitOptions.map((option) => <button key={option.until ?? "minutes"} type="button" className="secondary" disabled={!option.available} onClick={() => onTravelWait(option.minutes)}>{option.until === null ? `${option.minutes}分待つ` : `${formatTravelTime(option.until)}まで待つ`}</button>)}
