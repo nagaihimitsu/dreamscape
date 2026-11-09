@@ -18,7 +18,7 @@ import { AFTER_PARTS, type AfterPart, type RelationshipDelta, type SceneAt, type
 
 export const PLACE_HEAD_TAGS = ["scene", "title", "at", "priority", "when", "until", "repeat", "person", "on_done", "then", "sources"] as const;
 export const CHOICE_EFFECT_TAGS = ["requires", "give", "use", "rel", "profile", "memory", "effect", "set", "money", "ap", "then", "later"] as const;
-/** Kinds a place file may hold at stage 3a (arrivals and epilogues stay one-scene files; the city's end file is stage 4). */
+/** Kinds a place file may hold (arrivals and epilogues stay one-scene files; their moments' talks may be in any place file). */
 export const PLACE_KINDS: readonly SceneKind[] = ["talk", "encounter", "guide", "battle", "date"];
 /** The game's include line and the line after it (the file's top runs nothing). */
 export const PLACE_TOP = ["INCLUDE modules.ink", "-> DONE"] as const;
