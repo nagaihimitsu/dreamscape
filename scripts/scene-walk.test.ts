@@ -172,7 +172,8 @@ describe("the moments of stage 4 in the scene table (2.3)", () => {
   it("counts a trip's then: move as a loop when, from some place it leaves, the move surely goes by the trip's mode for no fare (4.4)", () => {
     const routes = [route("x_hotel", "x_tower", "walk"), route("x_hotel", "x_tower", "x_bike"), route("x_gate", "x_tower", "x_bike"),
       route("x_park", "x_tower", "x_bike"), route("x_park", "x_tower", "x_taxi", 5), route("x_inn", "x_tower", "x_taxi", 3),
-      ...["x_tower", "x_gate", "x_park", "x_inn"].map((place) => route(place, "x_hotel", "walk"))];
+      route("x_pier", "x_tower", "x_bike"), route("x_pier", "x_tower", "x_taxi"),
+      ...["x_tower", "x_gate", "x_park", "x_inn", "x_pier"].map((place) => route(place, "x_hotel", "walk"))];
     const context = { routes: () => routes, hotel: () => "x_hotel" };
     // By another mode (the bicycle's scene, a move on foot): its trip never runs it again.
     expect(thenLoopErrors([ride("trip x_bike", { move: "x_tower", by: "walk" })], () => [], context)).toEqual([]);
@@ -184,8 +185,10 @@ describe("the moments of stage 4 in the scene table (2.3)", () => {
     expect(thenLoopErrors([ride("trip walk from x_hotel", { move: "x_tower" })], () => [], context)[0]).toContain("An endless then: loop");
     // From anywhere: walking from the hotel, but surely the bicycle from the gate, which loops for good.
     expect(thenLoopErrors([ride("trip x_bike", { move: "x_tower" })], () => [], context)[0]).toContain("An endless then: loop");
-    // Only maybe: the cheapest mode it can use depends on what is rented (the park), or each round pays a fare (the inn).
-    for (const scene of [ride("trip x_bike from x_park", { move: "x_tower" }), ride("trip x_taxi from x_inn", { move: "x_tower" })]) {
+    // From the park the bicycle is free and the taxi costs 5: whenever the bicycle's scene runs, the bicycle is the cheapest.
+    expect(thenLoopErrors([ride("trip x_bike from x_park", { move: "x_tower" })], () => [], context)[0]).toContain("An endless then: loop");
+    // Only maybe: from the pier the taxi is as cheap (what is rented decides), or each round pays a fare (the inn).
+    for (const scene of [ride("trip x_bike from x_pier", { move: "x_tower" }), ride("trip x_taxi from x_inn", { move: "x_tower" })]) {
       expect(thenLoopErrors([scene], () => [], context)).toEqual([]);
       expect(thenLoopWarnings([scene], () => [], context)[0]).toContain("A then: loop that may not end");
     }
@@ -195,7 +198,8 @@ describe("the moments of stage 4 in the scene table (2.3)", () => {
 
   it("stops a scene that always moves elsewhere before the finale (also at its place and ticket counter) or on the way home of 「休む」", () => {
     const routes = [route("x_gate", "x_hotel", "walk"), route("x_tower", "x_hotel", "walk"), route("x_tower", "x_hotel", "x_bike"), route("x_park", "x_hotel", "x_taxi", 4),
-      route("x_hotel", "x_gate", "walk"), route("x_park", "x_gate", "x_taxi", 4)];
+      route("x_hotel", "x_gate", "walk"), route("x_park", "x_gate", "x_taxi", 4), route("x_pier", "x_hotel", "x_boat"), route("x_gate", "x_pier", "x_boat"),
+      route("x_isle", "x_hotel", "x_boat", 6), route("x_gate", "x_isle", "x_boat", 6)];
     const context = { routes: () => routes, hotel: () => "x_hotel", finaleAt: (place: string) => (place === "x_square" ? { cityId: "x", admission: true } : undefined) };
     const away = (at: string, priority = "-1") => ({ ...scenesAt(at, priority)[0], repeat: "always" as const, then: { move: "x_gate" } });
     expect(thenLoopErrors([away("finale x")], () => [], context)[0]).toMatch(/An endless then: loop: .*before the finale of x/u);
@@ -206,12 +210,16 @@ describe("the moments of stage 4 in the scene table (2.3)", () => {
     expect(thenLoopErrors([away("ticket x_square")], () => [], { ...context, finaleAt: () => ({ cityId: "x", admission: false }) })).toEqual([]);
     expect(thenLoopErrors([{ ...away("finale x"), when: { flag: "f" } }], () => [], context)).toEqual([]);
     expect(thenLoopWarnings([{ ...away("finale x"), when: { flag: "f" } }], () => [], context)[0]).toContain("A then: loop left only conditionally");
-    // The trip home of 「休む」: on foot, or by the only way home from a place (the taxi from the park).
+    // The trip home of 「休む」, read from where the then: move leaves the party (the next 「休む」 leaves there): on foot (a walk home
+    // from the gate), or by the only way home there for no fare (the boat from the pier).
     expect(thenLoopErrors([ride("trip walk to x_hotel", { move: "x_gate" })], () => [], context)[0]).toMatch(/before the night \(on the way home of 「休む」\)/u);
-    expect(thenLoopErrors([ride("trip x_taxi", { move: "x_gate" })], () => [], context)[0]).toMatch(/before the night/u);
-    // By bicycle the player can walk home instead: a warning. A move to the hotel itself gets there: nothing.
-    expect(thenLoopErrors([ride("trip x_bike to x_hotel", { move: "x_gate" })], () => [], context)).toEqual([]);
-    expect(thenLoopWarnings([ride("trip x_bike to x_hotel", { move: "x_gate" })], () => [], context)[0]).toContain("A then: loop that may not end");
+    expect(thenLoopErrors([{ ...ride("trip x_boat to x_hotel", { move: "x_pier" }), id: "boat" }], () => [], context)[0]).toMatch(/boat .*before the night/u);
+    // Not from there: a scene whose from is elsewhere, a mode that is no way home there (the taxi, the bicycle from the gate).
+    expect(thenLoopWarnings([ride("trip walk from x_tower to x_hotel", { move: "x_gate" }), ride("trip x_bike to x_hotel", { move: "x_gate" })], () => [], context)).toEqual([]);
+    expect(thenLoopErrors([ride("trip x_taxi", { move: "x_gate" })], () => [], context)).toEqual([]);
+    // The only way home there charges a fare (the boat from the isle): each round pays it, a warning. A move to the hotel: nothing.
+    expect(thenLoopErrors([ride("trip x_boat", { move: "x_isle" })], () => [], context)).toEqual([]);
+    expect(thenLoopWarnings([ride("trip x_boat", { move: "x_isle" })], () => [], context)[0]).toContain("A then: loop that may not end");
     expect(thenLoopWarnings([ride("trip walk to x_hotel", { move: "x_hotel" })], () => [], context)).toEqual([]);
   });
 });
