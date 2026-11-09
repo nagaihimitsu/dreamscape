@@ -127,6 +127,13 @@
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_lotus_temple"
     },
+    "gt_bg_delhi_paharganj": {
+      "nameJa": "パハールガンジ",
+      "captionJa": "デリー ／ パハールガンジ",
+      "color": "#8a6a3a",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_paharganj"
+    },
     "gt_bg_delhi_qutb_minar": {
       "nameJa": "クトゥブ・ミナール",
       "captionJa": "デリー ／ クトゥブ・ミナール",
@@ -140,6 +147,28 @@
       "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_delhi_red_fort"
+    },
+    "gt_bg_delhi_station": {
+      "nameJa": "ニューデリー駅",
+      "captionJa": "デリー ／ ニューデリー駅",
+      "color": "#7a5a4a",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_station",
+      "imagePosition": {
+        "x": 60,
+        "y": 10
+      }
+    },
+    "gt_bg_delhi_station_front": {
+      "nameJa": "ニューデリー駅（正面）",
+      "captionJa": "デリー ／ ニューデリー駅",
+      "color": "#8a6a52",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_station_front",
+      "imagePosition": {
+        "x": 35,
+        "y": 70
+      }
     },
     "gt_bg_jaipur_albert_hall": {
       "nameJa": "アルバート・ホール博物館",

@@ -254,6 +254,20 @@
       "checkedAt": "2026-11-03"
     },
     {
+      "id": "gt_img_delhi_paharganj",
+      "path": "assets/tourism/india/delhi_paharganj.webp",
+      "width": 1188,
+      "height": 1800,
+      "altJa": "パハールガンジ。商店や宿の看板が並ぶ通りと、行き交う人やオートリキシャが見える。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Paharganj_Market_StreetView_HDR.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Pallav.journo／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons配信の1920×2910px縮小版を使用。元画像は2560×3880px（撮影者によるHDR処理済み）。縦横比を維持し、描き足しやAI生成は行っていません。表示時は画面比率により端が切れる場合があります。この縮小版もCC BY-SA 4.0で提供します。さらに縦横比を保って1188×1800pxに縮小し、WebP形式（品質80）に変換。変換版もCC BY-SA 4.0で提供。",
+      "checkedAt": "2026-11-08"
+    },
+    {
       "id": "gt_img_delhi_qutb_minar",
       "path": "assets/tourism/india/delhi_qutb_minar.webp",
       "width": 1920,
@@ -280,6 +294,34 @@
       "creditJa": "写真：Mahesh Bhanupanth／Wikimedia Commons／CC BY-SA 3.0",
       "modificationJa": "Wikimedia Commons配信の1920×1225px縮小版を使用。元画像は5071×3235px。縦横比を維持し、描き足しやAI生成は行っていません。表示時は画面比率により端が切れる場合があります。この縮小版もCC BY-SA 3.0で提供します。さらに同じ寸法のままWebP形式（品質80）に変換。変換版もCC BY-SA 3.0で提供。",
       "checkedAt": "2026-11-03"
+    },
+    {
+      "id": "gt_img_delhi_station",
+      "path": "assets/tourism/india/delhi_station.webp",
+      "width": 1600,
+      "height": 1200,
+      "altJa": "ニューデリー駅。1番ホームの番線の表示と、ホームに座る赤い服の人たちが見える。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:New_Delhi_railway_station_Platform_1.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Ravi Dwivedi／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons配信の1920×1440px縮小版を使用。元画像は4000×3000px。縦横比を維持し、描き足しやAI生成は行っていません。表示時は画面比率により端が切れる場合があります。この縮小版もCC BY-SA 4.0で提供します。さらに縦横比を保って1600×1200pxに縮小し、WebP形式（品質80）に変換。変換版もCC BY-SA 4.0で提供。",
+      "checkedAt": "2026-11-08"
+    },
+    {
+      "id": "gt_img_delhi_station_front",
+      "path": "assets/tourism/india/delhi_station_front.webp",
+      "width": 1600,
+      "height": 1200,
+      "altJa": "ニューデリー駅のパハールガンジ側の入口。駅名の看板と時計のある駅舎、壁画と、荷物を持って行き交う人やオートリキシャが見える。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:New_Delhi_railway_station,_Paharganj_2022.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Pulakit／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons配信の1920×1440px縮小版を使用。元画像は4608×3456px。縦横比を維持し、描き足しやAI生成は行っていません。表示時は画面比率により端が切れる場合があります。この縮小版もCC BY-SA 4.0で提供します。さらに縦横比を保って1600×1200pxに縮小し、WebP形式（品質80）に変換。変換版もCC BY-SA 4.0で提供。",
+      "checkedAt": "2026-11-08"
     },
     {
       "id": "gt_img_jaipur_albert_hall",

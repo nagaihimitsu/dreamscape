@@ -16,11 +16,12 @@ import { applyPlayerAction, listPlayerActions, playerActionChange } from "./play
 import { resultExitLabel, screenFor } from "./screen";
 import { beginTravelEvent, sleepAtHotel } from "./travel-game";
 
-// The stage-4 moments no journey has a script for yet (the unified event design 2.3, 4.2): a city's departure (its
-// scenes before the items are left behind), an arrival (before its logo, after the logo, after the conversation; its
-// # then:), the ticket counter and a trip narrowed by from/to. Small fictional scenes added in memory to the Golden
-// Triangle's Delhi → Agra (the journey moves on after the epilogue), each a one-line talk that reuses a compiled knot of
-// the sample journey as its story; removed after each test.
+// The stage-4 moments (the unified event design 2.3, 4.2): a city's departure (its scenes before the items are left
+// behind), an arrival (before its logo, after the logo, after the conversation; its # then:), the ticket counter and a
+// trip narrowed by from/to. Small fictional scenes added in memory to the Golden Triangle's Delhi → Agra (the journey
+// moves on after the epilogue), each a one-line talk that reuses a compiled knot of the sample journey as its story;
+// removed after each test. Delhi's departure and Agra's arrival also have Golden Triangle's own scenes (GT-4: the
+// station at -2 and -1, the reel at +1 when a date was played); the fictional ones run among them.
 
 const STORY = { storyId: "places/smp_mihon_clock_tower", knot: "smp_mihon_hotel_bell_night" };
 const restore = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
@@ -77,8 +78,9 @@ describe("matching a scene's # at: to a moment (moments.ts)", () => {
     addTalk("zz_test_first", "agra", [{ arrive: "agra" }], -3);
     addTalk("zz_test_logo", "agra", [{ arrive: "agra" }], "after logo");
     addTalk("zz_test_after", "agra", [{ arrive: "agra" }], 2);
+    // (Agra's own +1, the reel of GT-4, comes before the fictional +2.)
     expect(momentSchedule({ kind: "arrive", cityId: "agra" })).toEqual({
-      before: ["zz_test_first", "zz_test_a", "zz_test_b"], after: ["zz_test_after"], afterPart: { logo: ["zz_test_logo"] } });
+      before: ["zz_test_first", "zz_test_a", "zz_test_b"], after: ["gt_agra_arrive_reel", "zz_test_after"], afterPart: { logo: ["zz_test_logo"] } });
   });
 });
 

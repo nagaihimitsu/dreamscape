@@ -159,7 +159,13 @@ describe("rental transport (sample journey)", () => {
     const cleared = completedCity("delhi");
     const before = { ...cleared, travel: { ...cleared.travel, rentedModeIds: [BIKE] } };
     expect(() => validateGameState(before)).toThrow("借りた乗り物の記録が一致しません。");
-    const after = departToNextCity(before, before.revision);
+    // Delhi's departure has its own scenes (GT-4): they play in Delhi with the first actions, then the party leaves.
+    let after = departToNextCity(before, before.revision);
+    expect(after.occasion?.kind).toBe("depart");
+    for (let step = 0; after.currentCityId === "delhi"; step++) {
+      expect(step).toBeLessThan(200);
+      after = applyPlayerAction(after, playerActionChange(listPlayerActions(after)[0], () => 0), () => 0);
+    }
     expect(after.currentCityId).not.toBe("delhi");
     expect(after.travel.rentedModeIds).toEqual([]);
     expect(validateGameState(JSON.parse(JSON.stringify(after)))).toEqual(after);
