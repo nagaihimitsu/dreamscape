@@ -18,16 +18,24 @@ export type ReadthroughInput = {
   stories: Readonly<Record<string, string>>;
   landmarks: readonly { id: string; cityId: string; nameJa: string; guideStoryId?: string; battleId: string }[];
   cityIds: readonly string[];
+  /** The map events by place (stage 4: `place <place>` runs at the visits, the dates and the finale there). */
+  events?: readonly MapEvent[];
   context: TagContext;
   maxPaths?: number;
 };
+/** A map event at a place: the landmark its visit opens, the date it is or the city whose finale it is. */
+export type MapEvent = { placeId: string; landmarkId?: string; dateId?: string; finaleCityId?: string };
 
 const position = (scene: SceneEntry) =>
   typeof scene.priority === "string" ? scene.priority : typeof scene.priority === "number" ? (scene.priority > 0 ? `+${scene.priority}` : String(scene.priority)) : "0";
 
-/** The order of a landmark's visit: negative, then while observing, then positive (the same priority: file, then written order). */
-export function visitTable(scenes: readonly SceneEntry[], landmarkId: string): SceneEntry[] {
-  const own = scenes.filter((scene) => scene.at.some((moment) => "visit" in moment && (moment.visit === landmarkId || moment.visit === "any")));
+/**
+ * The order of a landmark's visit: negative, then while observing, then positive (the same priority: file, then written order).
+ * `visit any` (pass the scenes of the landmark's city) and `place <place>` of the landmark's place (`events`) run there too.
+ */
+export function visitTable(scenes: readonly SceneEntry[], landmarkId: string, events: readonly MapEvent[] = []): SceneEntry[] {
+  const own = scenes.filter((scene) => scene.at.some((moment) => "visit" in moment ? moment.visit === landmarkId || moment.visit === "any"
+    : "place" in moment && events.some((event) => event.placeId === moment.place && event.landmarkId === landmarkId)));
   const rank = (scene: SceneEntry) => (typeof scene.priority === "number" ? scene.priority : 0);
   return [...own].sort((left, right) => rank(left) - rank(right) || (left.story.storyId < right.story.storyId ? -1 : left.story.storyId > right.story.storyId ? 1 : left.order - right.order));
 }
@@ -78,8 +86,9 @@ export function scenePaths(scene: SceneEntry, compiled: string, context: TagCont
 export function journeyReadthrough(input: ReadthroughInput): string[] {
   const out: string[] = [];
   const max = input.maxPaths ?? 12;
+  const events = input.events ?? [];
   for (const cityId of input.cityIds) for (const landmark of input.landmarks.filter((item) => item.cityId === cityId)) {
-    const order = visitTable(input.scenes, landmark.id);
+    const order = visitTable(input.scenes.filter((scene) => scene.cityId === cityId), landmark.id, events);
     out.push(`${landmark.nameJa}  visit ${landmark.id}`);
     const show = (scene: SceneEntry) => out.push(`  ${position(scene).padStart(13)}  ${scene.id}  ${scene.kind}` +
       `${scene.when ? `  when: ${JSON.stringify(scene.when)}` : ""}${scene.repeat === "always" ? "  repeat: always" : ""}`);
@@ -101,15 +110,18 @@ export function journeyReadthrough(input: ReadthroughInput): string[] {
     }
   }
   // Stage 4: the other moments of each city (a date, the finale, the epilogue, the departure, an arrival, the hotel, a trip, a ticket counter).
+  // `place <place>` runs at the visits (above), the dates and the finale there: it is listed in their tables.
   for (const cityId of input.cityIds) {
     const moments = new Map<string, SceneEntry[]>();
     for (const scene of input.scenes.filter((item) => item.cityId === cityId)) for (const at of scene.at) {
       if ("visit" in at) continue;
-      const key = Object.entries(at).map(([name, value]) => `${name} ${value}`).join(" ");
-      moments.set(key, [...(moments.get(key) ?? []), scene]);
+      const keys = "place" in at ? events.filter((event) => event.placeId === at.place).flatMap((event) =>
+        event.dateId ? [`date ${event.dateId}`] : event.finaleCityId === cityId ? [`finale ${cityId}`] : [])
+        : [Object.entries(at).map(([name, value]) => `${name} ${value}`).join(" ")];
+      for (const key of keys) if (!moments.get(key)?.includes(scene)) moments.set(key, [...(moments.get(key) ?? []), scene]);
     }
     const main: Record<string, string> = { date: "〔デート〕（告白なら「交際開始」の画面）", finale: "〔フィナーレのバトル〕", epilogue: "〔エピローグ〕", depart: "〔出発：品物を置いていく → 次の都市〕",
-      arrive: "〔ロゴ〕→〔到着の会話〕", hotel: "〔眠る〕", trip: "〔移動〕", ticket: "〔入場〕", place: "〔その場所の観光地・デート・フィナーレの本筋〕" };
+      arrive: "〔ロゴ〕→〔到着の会話〕", hotel: "〔眠る〕", trip: "〔移動〕", ticket: "〔入場〕" };
     for (const [key, own] of moments) {
       const rank = (scene: SceneEntry) => (typeof scene.priority === "number" ? scene.priority : 0);
       const order = [...own].sort((left, right) => rank(left) - rank(right) || (left.story.storyId < right.story.storyId ? -1 : left.story.storyId > right.story.storyId ? 1 : left.order - right.order));

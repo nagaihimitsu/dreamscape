@@ -18,11 +18,22 @@ const read = (file: string) => JSON.parse(readFileSync(path.join(generated, file
 const journey = (read("content/journeys/catalog.json") as { journeys: { id: string; cities: { id: string }[] }[] }).journeys.find((item) => item.id === journeyId);
 if (!journey) throw new Error(`Unknown journey in the last content:build: ${journeyId}`);
 const presentation = read("content/romance/presentation.json") as { backgrounds: Record<string, unknown>; emotions: Record<string, unknown> };
+// The map events by place: the landmark a visit opens (an episode's or a special battle's), a date, a city's finale.
+const progressionJson = read("content/progression/journey.json") as { episodes: { id: string; kind: string; cityId: string; landmarkId: string | null }[] };
+const battleJson = read("content/battles/catalog.json") as { battles: { id: string; landmarkId?: string | null }[] };
+const dateJson = read("content/romance/date_catalog.json") as { dates: { id: string }[] };
+const events = journey.cities.flatMap((city) => (read(`content/travel/${city.id}.json`) as { events: { id: string; placeId: string }[] }).events.map((event) => {
+  const episode = progressionJson.episodes.find((item) => item.id === event.id);
+  const landmarkId = episode?.kind === "episode" ? episode.landmarkId : battleJson.battles.find((item) => item.id === event.id)?.landmarkId;
+  return { placeId: event.placeId, ...(landmarkId ? { landmarkId } : {}), ...(dateJson.dates.some((item) => item.id === event.id) ? { dateId: event.id } : {}),
+    ...(episode?.kind === "city_finale" ? { finaleCityId: episode.cityId } : {}) };
+}));
 const lines = journeyReadthrough({
   scenes: generatedScenesSchema.parse(read("scenes.json")).scenes,
   stories: read("stories.json"),
   landmarks: (read("content/tourism/catalog.json") as { landmarks: { id: string; cityId: string; nameJa: string; guideStoryId?: string; battleId: string }[] }).landmarks,
   cityIds: journey.cities.map((city) => city.id),
+  events,
   context: { effectIds: (read("content/romance/effect_catalog.json") as { effects: { id: string }[] }).effects.map((effect) => effect.id),
     backgroundIds: Object.keys(presentation.backgrounds), emotionIds: Object.keys(presentation.emotions) },
   maxPaths,
