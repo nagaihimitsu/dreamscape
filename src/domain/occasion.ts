@@ -15,7 +15,7 @@ import { mainPartPayments, mainScene, runningMainPayment, type Payment } from ".
 import { beginLandmarkGuide, beginLandmarkObservation } from "./tourism";
 import { cheapestOnTimeFare, compareRouteCost, findTravelHomeRoutes } from "./travel-routes";
 import { getUsableRoutes } from "./transport";
-import { getTravelHomeRoutes, isCompletedTravelEvent, isTravelEventVisible, reasonJa } from "./travel-game";
+import { getTravelEventDefinition, getTravelHomeRoutes, isCompletedTravelEvent, isTravelEventVisible, reasonJa } from "./travel-game";
 import type { AfterPart, SceneEntry, SceneMain, SceneThen } from "../content/scene-schemas";
 import { WALK_MODE_ID } from "../content/transport";
 import { registerOccasionHooks } from "./occasion-hooks";
@@ -334,30 +334,29 @@ function epilogueReturnFare(state: Readonly<GameState>): number | "none" | "late
 }
 
 /**
- * The time of a `# then: move` (4.2: the same commitment as a map departure): it leaves as this occasion settles; a main part
- * there must start in its windows and leave the way home within the day (planTravelEvent, as the map checks it); and the fare
- * home kept back is the cheapest way that arrives in time after it (or on arriving, with no main part), as the save checks it.
+ * The time of a `# then: move` (4.2: the same commitment as a map departure): it leaves as this occasion settles. A main part there
+ * opens when it passes the map's check (planTravelEvent: arrival before the day's end, the place's and the event's windows, closed
+ * weekdays, the way home within the day; the event's time as the map reads it, a retry's included); when it cannot open now, the
+ * visit opens without it (`dropped`: an empty visit, decision 20; the then: still moves, 2.3). Either way the party must find a
+ * way home in time from there: the fare kept back is the cheapest one, as the save checks it.
  */
 function moveTiming(state: Readonly<GameState>, to: string, route: { mode: string; cost: number; minutes: number }, eventId: string | null):
-  { arrival: number; end?: number; fare: number } | { reason: string } {
+  { arrival: number; end?: number; fare: number; dropped?: true } | { reason: string } {
   const start = state.travel.activeEvent?.endMinute ?? state.travel.minute;
   const arrival = start + route.minutes;
   const homes = getTravelHomeRoutes(state as GameState, to).sort(compareRouteCost);
   if (!homes.length) return { reason: "移動・入場や帰りのための予算が足りません。" };
-  const { travel } = getCityContent(state.currentCityId);
-  const event = eventId === null ? undefined : travel.events.find((item) => item.id === eventId);
-  const place = travel.places.find((item) => item.id === to);
+  const event = eventId === null ? undefined : getTravelEventDefinition(state as GameState, eventId);
+  const place = getCityContent(state.currentCityId).travel.places.find((item) => item.id === to);
   if (event && place) {
     // (Money and AP are checked by planThen; only the time and the windows are read here.)
     const snapshot = { ...state.travel, minute: start, weekday: getGameWeekday(state.travel.calendar), ap: Number.MAX_SAFE_INTEGER, travelBudget: Number.MAX_SAFE_INTEGER };
     const outbound = { fromPlaceId: state.travel.currentPlaceId, toPlaceId: to, mode: route.mode, cost: route.cost, minutes: route.minutes };
-    const plans = homes.map((home) => planTravelEvent(snapshot, event, outbound, home, place));
-    const fit = plans.find((plan) => plan.ok);
-    if (!fit || !fit.ok) return { reason: reasonJa[(plans[0] as { reason: string }).reason] ?? reasonJa.time };
-    return { arrival, end: fit.endMinute, fare: cheapestOnTimeFare(homes, fit.endMinute) ?? homes[0].cost };
+    const fit = homes.map((home) => planTravelEvent(snapshot, event, outbound, home, place)).find((plan) => plan.ok);
+    if (fit?.ok) return { arrival, end: fit.endMinute, fare: cheapestOnTimeFare(homes, fit.endMinute) ?? homes[0].cost };
   }
   const fare = arrival > 24 * 60 + 9 * 60 ? undefined : cheapestOnTimeFare(homes, arrival);
-  return fare === undefined ? { reason: reasonJa.time } : { arrival, fare };
+  return fare === undefined ? { reason: reasonJa.time } : { arrival, fare, ...(event ? { dropped: true as const } : {}) };
 }
 
 /**
@@ -405,11 +404,12 @@ export function planThen(state: Readonly<GameState>, then: SceneThen, sceneId: s
     (!then.by || route.mode === then.by)).sort((left, right) => (left.mode === WALK_MODE_ID ? -1 : 0) - (right.mode === WALK_MODE_ID ? -1 : 0) || left.cost - right.cost);
   const route = from === then.move ? { mode: then.by ?? WALK_MODE_ID, cost: 0, minutes: 0 } : routes[0];
   if (!route) return { ok: false, reason: "この移動経路はまだ利用できません。" };
-  const event = mainEventAt(state, then.move);
+  const timing = moveTiming(state, then.move, route, mainEventAt(state, then.move)?.id ?? null);
+  if ("reason" in timing) return { ok: false, reason: timing.reason };
+  // A main part there that cannot open now (its time, windows or closed day) is not opened: the visit opens without it.
+  const event = "dropped" in timing ? undefined : mainEventAt(state, then.move);
   const admission = event?.admissionCost ?? 0;
   const payments = event ? mainPartPayments(state, event.id) : { money: 0, ap: 0 };
-  const timing = moveTiming(state, then.move, route, event?.id ?? null);
-  if ("reason" in timing) return { ok: false, reason: timing.reason };
   const cost = route.cost + admission;
   if (state.travelBudget - paying - cost < Math.max(state.travel.returnReserve, timing.fare + payments.money))
     return { ok: false, reason: "移動・入場や帰りのための予算が足りません。" };
@@ -440,7 +440,7 @@ function runThen(state: GameState, nextRoll: () => number): GameState {
   // The fare home kept back as planThen planned it (the cheapest way home in time after the main part there, or on arriving).
   const timing = moveTiming(closed, then.move, { mode: then.modeId, cost: 0, minutes: then.minutes }, then.eventId);
   const home = "fare" in timing ? { cost: timing.fare } : getTravelHomeRoutes(closed, then.move).sort(compareRouteCost)[0];
-  const event = then.eventId ? getCityContent(cityId).travel.events.find((item) => item.id === then.eventId) : undefined;
+  const event = then.eventId ? getTravelEventDefinition(closed, then.eventId) : undefined;
   const landmarkId = event ? visitedLandmarkOfEvent(event.id) : landmarkAt(closed, then.move);
   const trip: OccasionTrip = { from: closed.travel.currentPlaceId, to: then.move, modeId: then.modeId, arrivalMinute: arrival };
   // The trip's and the ticket counter's scenes (stage 4) run first when any runs there: the move waits for them.

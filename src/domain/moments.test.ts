@@ -28,9 +28,9 @@ const undo: (() => void)[] = [];
 afterEach(() => { while (undo.length) undo.pop()!(); });
 
 /** A fictional talk at a moment, as content:build would list it (scenes.json, the runtime's encounter and its rule). */
-function addTalk(id: string, cityId: string, at: SceneAt[], priority: SceneEntry["priority"], order = 0) {
+function addTalk(id: string, cityId: string, at: SceneAt[], priority: SceneEntry["priority"], order = 0, extra: Partial<SceneEntry> = {}) {
   const entry: SceneEntry = { id, kind: "talk", title: id, cityId, story: STORY, at, priority, order, repeat: "once", people: [], options: [], done: {},
-    conds: [], knots: [STORY.knot], fingerprint: "test", origin: "place" };
+    conds: [], knots: [STORY.knot], fingerprint: "test", origin: "place", ...extra };
   const list = scenes as SceneEntry[];
   list.push(entry);
   encounters.encounters.push({ id, cityId, titleJa: "テスト", descriptionJa: "テスト", storyId: `${STORY.storyId}.${STORY.knot}`, options: [], sources: [] });
@@ -207,6 +207,31 @@ describe("the ticket counter and a trip narrowed by its places (2.3)", () => {
     const visit = playUntil(counter, (state) => !state.activeEncounter);
     expect(visit.occasion?.ran).toContain("ticket");
     expect(visit.visitedLandmarkIds.length).toBeGreaterThan(start.visitedLandmarkIds.length);
+  });
+});
+
+describe("a then: move to a main part that cannot open now (4.2, 2.3; the Golden Triangle's opening hours)", () => {
+  it("opens the main part when it fits the day and the place's hours, and the visit without it once the place has closed", () => {
+    // A talk before the Red Fort's main part moves on to the Jama Masjid (16 minutes on foot; open 9:00–17:00, admission 800).
+    addTalk("zz_test_onward", "delhi", [{ visit: "delhi_red_fort" }], -1, 0, { then: { move: "delhi_jama_masjid" } });
+    const play = (minute: number) => {
+      const start = cityStart("delhi");
+      const trip = restore(applyPlayerAction({ ...start, travel: { ...start.travel, minute } },
+        (state) => beginTravelEvent(state, "gt_delhi_main_red_fort", "walk", state.revision, () => 0), () => 0));
+      expect(trip.activeEncounter?.encounterId).toBe("zz_test_onward");
+      return { trip, moved: playUntil(trip, (state) => state.travel.currentPlaceId === "delhi_jama_masjid" && !state.activeEncounter) };
+    };
+    // Leaving at 9:00: the Red Fort's time settles at 11:58, the Jama Masjid at 12:14 is open: its main part opens, its admission paid.
+    const early = play(9 * 60);
+    expect(early.trip.occasion?.then).toMatchObject({ eventId: "gt_delhi_main_jama_masjid" });
+    expect(early.moved.occasion).toMatchObject({ eventId: "gt_delhi_main_jama_masjid", landmarkId: "delhi_jama_masjid" });
+    expect(early.moved.travel.activeEvent?.eventId).toBe("gt_delhi_main_jama_masjid");
+    // Leaving at 14:00: the Jama Masjid at 17:14 has closed: the then: still moves, the visit opens without its main part, no admission.
+    const late = play(14 * 60);
+    expect(late.trip.occasion?.then).toMatchObject({ move: "delhi_jama_masjid", eventId: null });
+    expect(late.moved.travel).toMatchObject({ activeEvent: null, minute: 17 * 60 + 14 });
+    expect(late.moved.travelBudget).toBe(late.trip.travelBudget);
+    expect(saveGame(new MemoryStorage(), late.moved).ok).toBe(true);
   });
 });
 
