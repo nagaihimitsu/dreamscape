@@ -2,7 +2,7 @@
 
 都市の地点・旅行データ・背景・観察資料が用意された旅行編に、脚本とクイズを追加する手順です。旅行編フォルダそのものは `npm run journey:new` で見本の編から作れます（[技術設計](../docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順)）。作った旅行編は `authoring`（`eventPrefix` など）を持つので、`journey:readiness`・`journey:release` と都市データの [city:bundle](CITY_BUNDLES.md) はすぐに使えます。`journey:scaffold` は、観察資料（`authoring.observationFile`。`journey:new` はパスだけを決め、ファイルは作りません）に仮でない JPEG（`.jpg`）または WebP（`.webp`）の観光画像ごとの記録と出典を確かめた観察ポイントを置き、背景の画像を差し替えてから（見本の画像は PNG で仮の扱い）、`journey:transit` は、`manifest.json` の `transportModes` に乗り物を宣言したら、都市ごとの交通判断台帳 `travel/<都市ID>-transit.json` を置いて使います（乗り物を宣言しないうちは徒歩だけで、台帳は要りません。下の「編集するもの」）。見本の出典・画像・文章が残っているうちは `journey:readiness` が「見本の…が残っています」と示し、`journey:release` は止まります。インド編、ウズベキスタン編、ルアンパパーン編は同じ生成・検査・反映処理を使います。都市数や都市の順序は各旅行編の `content/journeys/<旅行編ID>/manifest.json` に従います。
 
-インド3都市は脚本51本（到着会話3本を含む）・クイズ51問・デート18件・都市フィナーレ3件を登録済みです。[完成版の構成と制作記録](journeys/golden_triangle/drafts/scenario/README.md)を参照できます。登録済みInkは `content/journeys/golden_triangle/stories/` のみを編集し、クイズは同じフォルダの `quizzes/` と対訳、メタデータは対応するカタログを更新します。制作時の `narrative.json` は初期登録入力として残し、更新内容を自動同期する正本にはしません。以下の新規登録手順は、未制作のウズベキスタン編などにも利用できます。
+インド3都市は脚本51本（場所のファイル36本：観光案内・到着・エピローグ・デート。バトル15本）・クイズ51問・デート24件（宿の屋上の告白と「待って」の後の6件を含む）・都市フィナーレ3件を登録済みです。[完成版の構成と制作記録](journeys/golden_triangle/drafts/scenario/README.md)を参照できます。登録済みInkは `content/journeys/golden_triangle/stories/` のみを編集し、クイズは同じフォルダの `quizzes/` と対訳、メタデータは対応するカタログを更新します。制作時の `narrative.json` は初期登録入力として残し、更新内容を自動同期する正本にはしません。以下の新規登録手順は、未制作のウズベキスタン編などにも利用できます。
 
 ## 編集するもの
 
@@ -59,7 +59,7 @@ npm run journey:scenario -- --journey golden_triangle --directory authoring/jour
 
 この検査は既存のInkコンパイラ・案内・戦闘・デート・エピローグ検証を使い、ファイル対応、都市内の背景、デート固有の効果、3択の全経路、関係段階と反応、戦績別の場面を確認します。デートの選択肢でのみ返答する脚本を想定し、主人公の直接台詞（`# speaker: player`）があると注意を出します（止めません）。仮クイズや公開カタログは作りません。成功は脚本の契約検証であり、公開準備完了を意味しません。
 
-クイズ・和訳を用意したら、各都市の `stories/` の中身を `content/journeys/<旅行編ID>/stories/` へ**移動**し、既存の `journey:release --check` で実コンテンツ全体を検証します。以後のInkの正本は旅行編フォルダの `stories/` だけです。脚本検査も同じIDの本番ファイルを読み、draftと本番の両方にある場合は二重管理としてエラーにします。初期登録入力として残す `narrative.json` は公開後の自動同期元ではありません。公開後の定義変更は既存カタログ・都市bundleを編集します。旅の公開可否は引き続き既存の統合検証で判定します。
+クイズ・和訳を用意したら、各都市の `stories/` の中身を `content/journeys/<旅行編ID>/stories/` へ**移動**し、既存の `journey:release --check` で実コンテンツ全体を検証します。以後のInkの正本は旅行編フォルダの `stories/` だけです。脚本検査も同じIDの本番ファイルを読み、draftと本番の両方にある場合は二重管理としてエラーにします。本番の場面が場所のファイル（`stories/places/`）の knot のとき（インド編の案内・デート・エピローグ。カタログの `guideStoryId`・`storyId`・`epilogueStoryId` がその knot を指す）は、公開済みとして数え（結果の `placeKnots`）、この検査では読み直しません。その knot は `content:build` が場面として通しで確かめます。同じ場面の下書きを置くと、同じく二重管理のエラーです。初期登録入力として残す `narrative.json` は公開後の自動同期元ではありません。公開後の定義変更は既存カタログ・都市bundleを編集します。旅の公開可否は引き続き既存の統合検証で判定します。
 
 ## 都市に到着したときの会話
 

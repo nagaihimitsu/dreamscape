@@ -33,11 +33,11 @@
 
 | 内容 | 正本 |
 | --- | --- |
-| 到着会話 | `content/journeys/golden_triangle/stories/arrivals/{delhi,agra,jaipur}.ink`（都市定義の `arrivalStoryId` から参照） |
-| 案内 | `content/journeys/golden_triangle/stories/tourism/gt_*_guide.ink` |
+| 到着会話 | `content/journeys/golden_triangle/stories/places/gt_{delhi,agra,jaipur}_hotel_hub.ink` の knot `gt_<都市>_arrival`（都市定義の `arrivalStoryId` から参照） |
+| 案内 | `content/journeys/golden_triangle/stories/places/gt_<観光地>.ink` の knot `gt_<観光地>_guide`（`tourism/catalog.json` の `guideStoryId` から参照） |
 | 通常戦・ボス | `content/journeys/golden_triangle/stories/battles/gt_*.ink` |
-| デート | `content/journeys/golden_triangle/stories/dates/gt_*.ink` |
-| 都市の締め | `content/journeys/golden_triangle/stories/epilogues/{delhi,agra,jaipur}.ink` |
+| デート | `content/journeys/golden_triangle/stories/places/gt_<都市>_<行き先>.ink` の knot（デートID）。宿の屋上の告白・「待って」の後は `places/gt_<都市>_hotel_hub_dates.ink`（`romance/date_catalog.json` の `storyId` から参照） |
+| 都市の締め | `content/journeys/golden_triangle/stories/places/gt_{delhi,agra,jaipur}_hotel_hub.ink` の knot `gt_<都市>_epilogue`（フィナーレの `epilogueStoryId` から参照） |
 | クイズ | `content/journeys/golden_triangle/quizzes/gt_*_quiz.json` |
 | 対訳・語義 | `content/journeys/golden_triangle/learning/translations.json`、語義はインド編だけで使う語を `content/journeys/golden_triangle/learning/word-meanings.json`、ほかの旅行編とも使う語を共通の `content/learning/word-meanings.json` |
 | 旅行・画像・地点・出典 | 既存の都市bundleおよび `content/journeys/golden_triangle/` の都市・移動・各カタログ（画像は `content/journeys/golden_triangle/public/assets/tourism/india/`）。編集手順は `authoring/CITY_BUNDLES.md` |
@@ -51,7 +51,7 @@ npm run verify
 npm run test:e2e
 ```
 
-脚本検査は正本を読み、主人公の発話（止めずに注意）、都市の背景・効果所属、通常戦・都市ボスの正誤と得点、18デートの選択肢と関係の分岐、エピローグを検証する。到着会話3本の効果・選択肢・背景所属と、公開判定は別途既存コンテンツ検査で行う。
+脚本検査は正本を読み、主人公の発話（止めずに注意）、都市の背景、通常戦・都市ボスの正誤と得点を検証する。案内・デート・エピローグは場所のファイルの knot なので公開済みとして数え（結果の `placeKnots`）、この検査では読み直さない。その選択肢と関係の分岐、エピローグは `content:build` が場面として通しで確かめる。到着会話3本の効果・選択肢・背景所属と、公開判定も既存コンテンツ検査で行う。
 
 執筆担当とは別のエージェントによる編集レビューでは、6本のボス・エピローグ、18デートの全選択枝、クイズと台詞の対応を通読。都市間の人物紹介、未選択の台詞への依存、同名の別人物、撮影禁止区域の扱い、川の対岸と正面の取り違え、似た導入の重複を修正した。登場人物の意見や恋愛の好みは史実やクイズの正解と区別する。
 

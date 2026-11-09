@@ -1,4 +1,4 @@
-import { battles, dates, effects, episodes, getCityContent, storyState } from "../content";
+import { battles, dates, effects, episodes, getCityContent, scenes, storyState } from "../content";
 import { fileDateScene, taggedDateScene } from "./reservations";
 import { validateStorySnapshot } from "../story/runtime";
 import { activeDateStoryId, completedDateCount, dateBelongsToCity } from "./date-rules";
@@ -50,9 +50,11 @@ export function validateTravelState(state: GameState): void {
 
 /** Check durable history and relationship records after subsystem validation. */
 export function validateGameHistory(state: GameState): void {
-  const knownMemories = new Set(
-    effects.flatMap((effect) => (effect.memoryId ? [effect.memoryId] : [])),
-  );
+  // A memory comes from a date's # effect: (effect_catalog.json) or a choice's # memory: tag (the scene table).
+  const knownMemories = new Set([
+    ...effects.flatMap((effect) => (effect.memoryId ? [effect.memoryId] : [])),
+    ...scenes.flatMap((scene) => scene.options.flatMap((option) => option.memory ?? [])),
+  ]);
   if (
     state.playedDateIds.some((id) => !dates.some((date) => date.id === id)) ||
     state.memories.some((id) => !knownMemories.has(id)) ||

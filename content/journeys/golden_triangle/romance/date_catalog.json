@@ -5,17 +5,11 @@
       "id": "gt_delhi_date_india_gate",
       "kind": "normal",
       "chapterId": "delhi",
-      "titleJa": "シャッターより早い言葉",
-      "descriptionJa": "インド門で二人の写真を撮ってもらう。並ぶ直前のひと言で、笑い方が分からなくなる。",
+      "titleJa": "十三人目",
+      "descriptionJa": "ハリヤーナーから来た十二人の家族に、写真を頼まれる。祖母は、門に刻まれた自分の祖父の名前を、毎年探しに来ている。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_delhi_date_india_gate",
-      "when": {
-        "episodesCompleted": {
-          "city": "delhi",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_delhi_india_gate.gt_delhi_date_india_gate",
       "destinationId": "delhi_india_gate",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_delhi_india_gate",
@@ -36,17 +30,11 @@
       "id": "gt_delhi_date_chandni_chowk",
       "kind": "normal",
       "chapterId": "delhi",
-      "titleJa": "買わない日の口実",
-      "descriptionJa": "チャンドニー・チョークで広がる布と、言えない「買いません」。断る練習は二人の間へ持ち越される。",
+      "titleJa": "バス、と言うまで",
+      "descriptionJa": "ゴルガッパの屋台で、彼女は「もう十分」が言えない。最後の一つを誰が食べるかで、その夜にお腹を壊す人が決まる。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_delhi_date_chandni_chowk",
-      "when": {
-        "episodesCompleted": {
-          "city": "delhi",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_delhi_chandni_chowk.gt_delhi_date_chandni_chowk",
       "destinationId": "delhi_chandni_chowk",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_delhi_chandni_chowk",
@@ -67,17 +55,11 @@
       "id": "gt_delhi_date_lodhi_garden",
       "kind": "normal",
       "chapterId": "delhi",
-      "titleJa": "二人しかいない生中継",
-      "descriptionJa": "ロディ・ガーデンで座った二人が、互いの休憩を実況する。元気なふりは見破られる。",
+      "titleJa": "笑う会の秘密",
+      "descriptionJa": "墓の間の芝生で、元駅の案内放送係が率いる「笑う会」に入る。理由のない笑いの輪の向こうに、胸に薔薇をさした老人がいる。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_delhi_date_lodhi_garden",
-      "when": {
-        "episodesCompleted": {
-          "city": "delhi",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_delhi_lodhi_garden.gt_delhi_date_lodhi_garden",
       "destinationId": "delhi_lodhi_garden",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_delhi_lodhi_garden",
@@ -98,17 +80,11 @@
       "id": "gt_delhi_date_agrasen_baoli",
       "kind": "normal",
       "chapterId": "delhi",
-      "titleJa": "横へ一歩の探検",
-      "descriptionJa": "アグラセン・キ・バオリの奥行きに足がすくむ。怖さを隠さず、見たい場所を自分で決める。",
+      "titleJa": "本物の悲鳴",
+      "descriptionJa": "階段井戸で、大学生の怖い動画の撮影に巻き込まれる。彼女の悲鳴は「質問」にしかならない。鳩が来るまでは。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_delhi_date_agrasen_baoli",
-      "when": {
-        "episodesCompleted": {
-          "city": "delhi",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_delhi_agrasen_baoli.gt_delhi_date_agrasen_baoli",
       "destinationId": "delhi_agrasen_baoli",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_delhi_agrasen_baoli",
@@ -129,17 +105,11 @@
       "id": "gt_delhi_date_lotus_temple",
       "kind": "normal",
       "chapterId": "delhi",
-      "titleJa": "持ち帰る沈黙",
-      "descriptionJa": "ロータス寺院を出た後、今は話したくないこともあると言われる。隣にいる距離を選ぶ。",
+      "titleJa": "背中の字あて",
+      "descriptionJa": "話してはいけない礼拝堂で、彼女が背中に指で字を書いてくる。最後の五文字だけは、外に出ても教えてくれない。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_delhi_date_lotus_temple",
-      "when": {
-        "episodesCompleted": {
-          "city": "delhi",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_delhi_lotus_temple.gt_delhi_date_lotus_temple",
       "destinationId": "delhi_lotus_temple",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_delhi_lotus_temple",
@@ -160,17 +130,11 @@
       "id": "gt_delhi_date_bangla_sahib",
       "kind": "normal",
       "chapterId": "delhi",
-      "titleJa": "助ける番が回ってくる",
-      "descriptionJa": "バングラ・サーヒブで覆い布を整え直す。訪問を終えると、今度は彼女が助ける番になる。",
+      "titleJa": "世界地図のローティー",
+      "descriptionJa": "無料の食堂の台所で、元トラック運転手とローティーを丸める。彼女の一枚は、どう見てもインドの地図。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_delhi_date_bangla_sahib",
-      "when": {
-        "episodesCompleted": {
-          "city": "delhi",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_delhi_bangla_sahib.gt_delhi_date_bangla_sahib",
       "destinationId": "delhi_bangla_sahib",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_delhi_bangla_sahib",
@@ -191,17 +155,11 @@
       "id": "gt_agra_date_mehtab_bagh",
       "kind": "normal",
       "chapterId": "agra",
-      "titleJa": "次に立つ場所",
-      "descriptionJa": "メヘターブ・バーグで、写真を一枚にして川向こうを眺める。今日の立ち位置から、まだ決まっていない次の旅の話へ。",
+      "titleJa": "塀を越えたらアウト",
+      "descriptionJa": "庭の塀の外の空き地で、村の子どもたちとクリケット。彼女は投げる方を選び、最後の一球は主人公が打つ。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_agra_date_mehtab_bagh",
-      "when": {
-        "episodesCompleted": {
-          "city": "agra",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_agra_mehtab_bagh.gt_agra_date_mehtab_bagh",
       "destinationId": "agra_mehtab_bagh",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_agra_mehtab_bagh",
@@ -222,17 +180,11 @@
       "id": "gt_agra_date_akbar_tomb",
       "kind": "normal",
       "chapterId": "agra",
-      "titleJa": "解説係、語彙を失う",
-      "descriptionJa": "アクバル廟の門の前で、気取った解説が「門、すごい」に戻る。途中まで始めた感想の、その先を二人で続ける。",
+      "titleJa": "猿との取引",
+      "descriptionJa": "ブラックバックのいる廟の庭で、猿に持ち物を盗まれる。字の読めなかった皇帝の墓の前で、案内のページを読み上げる係になる。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_agra_date_akbar_tomb",
-      "when": {
-        "episodesCompleted": {
-          "city": "agra",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_agra_akbar_tomb.gt_agra_date_akbar_tomb",
       "destinationId": "agra_akbar_tomb",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_agra_akbar_tomb",
@@ -253,17 +205,11 @@
       "id": "gt_agra_date_ram_bagh",
       "kind": "normal",
       "chapterId": "agra",
-      "titleJa": "最下位になりたい",
-      "descriptionJa": "ラム・バーグで疲れた見栄を取り消すと、一番遅く歩く競争が始まる。勝とうとすると、かえって疲れてしまう。",
+      "titleJa": "皇帝の不満リスト",
+      "descriptionJa": "インドへの文句を書き残した初代皇帝の庭で、二人もインドの不満リストを作る。裏返すと、帰ったら恋しくなるもののリストになる。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_agra_date_ram_bagh",
-      "when": {
-        "episodesCompleted": {
-          "city": "agra",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_agra_ram_bagh.gt_agra_date_ram_bagh",
       "destinationId": "agra_ram_bagh",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_agra_ram_bagh",
@@ -284,17 +230,11 @@
       "id": "gt_agra_date_chini_rauza",
       "kind": "normal",
       "chapterId": "agra",
-      "titleJa": "無断朗読お断り",
-      "descriptionJa": "チーニー・カ・ラウザの青いタイルを前に、一行の詩で照れてしまう。消したい言葉と、覚えて帰りたい声。",
+      "titleJa": "代役の二人",
+      "descriptionJa": "遅れてくるカップルの代わりに、写真家の試し撮りの代役になる。膝をつくポーズまで。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_agra_date_chini_rauza",
-      "when": {
-        "episodesCompleted": {
-          "city": "agra",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_agra_chini_rauza.gt_agra_date_chini_rauza",
       "destinationId": "agra_chini_rauza",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_agra_chini_rauza",
@@ -315,17 +255,11 @@
       "id": "gt_agra_date_mariam_tomb",
       "kind": "normal",
       "chapterId": "agra",
-      "titleJa": "本人から訂正があります",
-      "descriptionJa": "マリアム・ウッザマーニー廟で、彼女を一行で紹介する。合わせたつもりの行き先に、本人から小さな訂正が入る。",
+      "titleJa": "本当の名前",
+      "descriptionJa": "死んだ後に付いた名前で、今も呼ばれる妃の墓。最後に、二人がお互いをどう呼ぶかの話になる。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_agra_date_mariam_tomb",
-      "when": {
-        "episodesCompleted": {
-          "city": "agra",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_agra_mariam_tomb.gt_agra_date_mariam_tomb",
       "destinationId": "agra_mariam_tomb",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_agra_mariam_tomb",
@@ -346,17 +280,11 @@
       "id": "gt_agra_date_guru_ka_taal",
       "kind": "normal",
       "chapterId": "agra",
-      "titleJa": "目配せには字幕がない",
-      "descriptionJa": "グル・カ・タールで、塔を見たい合図が帰る合図に。見学のあと、今度は場所ではなく気持ちを伝えてみる。",
+      "titleJa": "寒い国へは、夏だけ",
+      "descriptionJa": "幹線道路沿いの古い貯水池で、カナダへ来いという息子と、行かないという父。彼女は伝言を運ぶのを断る。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_agra_date_guru_ka_taal",
-      "when": {
-        "episodesCompleted": {
-          "city": "agra",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_agra_guru_ka_taal.gt_agra_date_guru_ka_taal",
       "destinationId": "agra_guru_ka_taal",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_agra_guru_ka_taal",
@@ -377,17 +305,11 @@
       "id": "gt_jaipur_date_jal_mahal",
       "kind": "normal",
       "chapterId": "jaipur",
-      "titleJa": "黙る約束、最初の声",
-      "descriptionJa": "湖に映るジャル・マハルを黙って眺める約束。真っ先に声を上げるのは、約束を作った本人だった。",
+      "titleJa": "手のひらに隠した名前",
+      "descriptionJa": "湖の遊歩道で、メヘンディを描いてもらう。模様の中に何を隠すか。乾くまで手が使えない彼女に、焼きとうもろこしを。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_jaipur_date_jal_mahal",
-      "when": {
-        "episodesCompleted": {
-          "city": "jaipur",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_jaipur_jal_mahal.gt_jaipur_date_jal_mahal",
       "destinationId": "jaipur_jal_mahal",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_jaipur_jal_mahal",
@@ -408,17 +330,11 @@
       "id": "gt_jaipur_date_nahargarh_fort",
       "kind": "normal",
       "chapterId": "jaipur",
-      "titleJa": "見栄を休む順番",
-      "descriptionJa": "ナハルガル城で、景色に夢中のヒロインが足を止めた主人公に気づく。今日は彼女が待つ番になる。",
+      "titleJa": "同じ形の部屋",
+      "descriptionJa": "王妃の部屋が同じ造りで並ぶ宮殿で、かくれんぼ。王が廊下を通って会いに来た建物で、彼女は「正面から来てほしい」と言う。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_jaipur_date_nahargarh_fort",
-      "when": {
-        "episodesCompleted": {
-          "city": "jaipur",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_jaipur_nahargarh_fort.gt_jaipur_date_nahargarh_fort",
       "destinationId": "jaipur_nahargarh_fort",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_jaipur_nahargarh_fort",
@@ -439,17 +355,11 @@
       "id": "gt_jaipur_date_albert_hall",
       "kind": "normal",
       "chapterId": "jaipur",
-      "titleJa": "当たらなかった鑑賞予報",
-      "descriptionJa": "アルバート・ホールで、互いに何を気に入るか予想する。好きな物を当てるより、外れた理由が気になり始める。",
+      "titleJa": "ミイラより鳩",
+      "descriptionJa": "鳩だらけの広場と、地下のミイラ。遠足で一人取り残された女の子を、階段の下の先生のところまで送る。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_jaipur_date_albert_hall",
-      "when": {
-        "episodesCompleted": {
-          "city": "jaipur",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_jaipur_albert_hall.gt_jaipur_date_albert_hall",
       "destinationId": "jaipur_albert_hall",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_jaipur_albert_hall",
@@ -470,17 +380,11 @@
       "id": "gt_jaipur_date_jaigarh_fort",
       "kind": "normal",
       "chapterId": "jaipur",
-      "titleJa": "城主への申し出",
-      "descriptionJa": "地下通路でつながる二つの城の話から、突然始まる城主ごっこ。大げさな降参と、正面からの本音。",
+      "titleJa": "最後のバツ印",
+      "descriptionJa": "男の子の手描きの宝の地図をたどると、大砲、貯水槽、そして最後のバツ印は祖父の茶屋。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_jaipur_date_jaigarh_fort",
-      "when": {
-        "episodesCompleted": {
-          "city": "jaipur",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_jaipur_jaigarh_fort.gt_jaipur_date_jaigarh_fort",
       "destinationId": "jaipur_jaigarh_fort",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_jaipur_jaigarh_fort",
@@ -501,17 +405,11 @@
       "id": "gt_jaipur_date_johari_bazaar",
       "kind": "normal",
       "chapterId": "jaipur",
-      "titleJa": "口説き文句は会計の外",
-      "descriptionJa": "ジョーハリー・バザールの店先で、商売の都合を隠さない店主に出会う。品物の話と、口説きたい気持ちは別の話。",
+      "titleJa": "欲しいものは、欲しいと",
+      "descriptionJa": "宝石街の端の腕輪屋で、初めての値切り。デリーの赤い城で買えなかった腕輪の続き。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_jaipur_date_johari_bazaar",
-      "when": {
-        "episodesCompleted": {
-          "city": "jaipur",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_jaipur_johari_bazaar.gt_jaipur_date_johari_bazaar",
       "destinationId": "jaipur_johari_bazaar",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_jaipur_johari_bazaar",
@@ -532,17 +430,11 @@
       "id": "gt_jaipur_date_panna_meena_kund",
       "kind": "normal",
       "chapterId": "jaipur",
-      "titleJa": "一歩も動かない遭難",
-      "descriptionJa": "パンナ・ミーナー・クンドを眺める小さな勝負で、ヒロインの負けず嫌いが顔を出す。笑えるまでの時間も同じとは限らない。",
+      "titleJa": "文字どおりの井戸端会議",
+      "descriptionJa": "交差する階段の井戸のふちで、旅で会った人たちの噂話。最後の噂は、二人自身について。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/gt_jaipur_date_panna_meena_kund",
-      "when": {
-        "episodesCompleted": {
-          "city": "jaipur",
-          "atLeast": 1
-        }
-      },
+      "storyId": "places/gt_jaipur_panna_meena_kund.gt_jaipur_date_panna_meena_kund",
       "destinationId": "jaipur_panna_meena_kund",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_jaipur_panna_meena_kund",
@@ -558,6 +450,285 @@
         }
       ],
       "allowAfterEnding": true
+    },
+    {
+      "id": "gt_delhi_date_confession",
+      "kind": "confession",
+      "chapterId": "delhi",
+      "titleJa": "屋上の、言いたいこと",
+      "descriptionJa": "デリーの宿の屋上で、夜。言いかけている顔を、彼女は見逃さない。「先に、聞かせて」",
+      "apCost": 0,
+      "minRomanceStage": 2,
+      "minAffection": 0,
+      "storyId": "places/gt_delhi_hotel_hub_dates.gt_delhi_date_confession",
+      "rewardOnlyOnce": true,
+      "backgroundId": "gt_bg_hotel_rooftop_night",
+      "repeatable": true,
+      "needsDeferred": false,
+      "choiceCount": 1,
+      "effectCount": 1,
+      "validationContexts": [
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "confessionResult": "rejected"
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "confessionResult": "deferred"
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": true,
+          "confessionResult": "accepted"
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "confessionResult": "rejected"
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": false,
+          "confessionResult": "deferred"
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "confessionResult": "accepted"
+        }
+      ]
+    },
+    {
+      "id": "gt_delhi_date_reassurance",
+      "kind": "reassurance",
+      "chapterId": "delhi",
+      "titleJa": "チャイが冷めるまで",
+      "descriptionJa": "「待って」と言われた後の屋上。返事の話はしない。チャイが冷めるまで、いつもの、どうでもいい話をする。",
+      "apCost": 0,
+      "minRomanceStage": 2,
+      "minAffection": 0,
+      "storyId": "places/gt_delhi_hotel_hub_dates.gt_delhi_date_reassurance",
+      "rewardOnlyOnce": true,
+      "backgroundId": "gt_bg_hotel_rooftop_night",
+      "repeatable": false,
+      "needsDeferred": true,
+      "choiceCount": 1,
+      "effectCount": 1,
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false,
+          "endingReached": false
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "endingReached": false
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "endingReached": false
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": false
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true
+        }
+      ]
+    },
+    {
+      "id": "gt_agra_date_confession",
+      "kind": "confession",
+      "chapterId": "agra",
+      "titleJa": "屋上の、言いたいこと",
+      "descriptionJa": "アーグラの宿の屋上で、夜。言いかけている顔を、彼女は見逃さない。「先に、聞かせて」",
+      "apCost": 0,
+      "minRomanceStage": 2,
+      "minAffection": 0,
+      "storyId": "places/gt_agra_hotel_hub_dates.gt_agra_date_confession",
+      "rewardOnlyOnce": true,
+      "backgroundId": "gt_bg_hotel_rooftop_night",
+      "repeatable": true,
+      "needsDeferred": false,
+      "choiceCount": 1,
+      "effectCount": 1,
+      "validationContexts": [
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "confessionResult": "rejected"
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "confessionResult": "deferred"
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": true,
+          "confessionResult": "accepted"
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "confessionResult": "rejected"
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": false,
+          "confessionResult": "deferred"
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "confessionResult": "accepted"
+        }
+      ]
+    },
+    {
+      "id": "gt_agra_date_reassurance",
+      "kind": "reassurance",
+      "chapterId": "agra",
+      "titleJa": "チャイが冷めるまで",
+      "descriptionJa": "「待って」と言われた後の屋上。返事の話はしない。チャイが冷めるまで、いつもの、どうでもいい話をする。",
+      "apCost": 0,
+      "minRomanceStage": 2,
+      "minAffection": 0,
+      "storyId": "places/gt_agra_hotel_hub_dates.gt_agra_date_reassurance",
+      "rewardOnlyOnce": true,
+      "backgroundId": "gt_bg_hotel_rooftop_night",
+      "repeatable": false,
+      "needsDeferred": true,
+      "choiceCount": 1,
+      "effectCount": 1,
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false,
+          "endingReached": false
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "endingReached": false
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "endingReached": false
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": false
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true
+        }
+      ]
+    },
+    {
+      "id": "gt_jaipur_date_confession",
+      "kind": "confession",
+      "chapterId": "jaipur",
+      "titleJa": "屋上の、言いたいこと",
+      "descriptionJa": "ジャイプールの宿の屋上で、夜。言いかけている顔を、彼女は見逃さない。「先に、聞かせて」",
+      "apCost": 0,
+      "minRomanceStage": 2,
+      "minAffection": 0,
+      "storyId": "places/gt_jaipur_hotel_hub_dates.gt_jaipur_date_confession",
+      "rewardOnlyOnce": true,
+      "backgroundId": "gt_bg_hotel_rooftop_night",
+      "repeatable": true,
+      "needsDeferred": false,
+      "choiceCount": 1,
+      "effectCount": 1,
+      "validationContexts": [
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "confessionResult": "rejected"
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "confessionResult": "deferred"
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": true,
+          "confessionResult": "accepted"
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "confessionResult": "rejected"
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": false,
+          "confessionResult": "deferred"
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "confessionResult": "accepted"
+        }
+      ]
+    },
+    {
+      "id": "gt_jaipur_date_reassurance",
+      "kind": "reassurance",
+      "chapterId": "jaipur",
+      "titleJa": "チャイが冷めるまで",
+      "descriptionJa": "「待って」と言われた後の屋上。返事の話はしない。チャイが冷めるまで、いつもの、どうでもいい話をする。",
+      "apCost": 0,
+      "minRomanceStage": 2,
+      "minAffection": 0,
+      "storyId": "places/gt_jaipur_hotel_hub_dates.gt_jaipur_date_reassurance",
+      "rewardOnlyOnce": true,
+      "backgroundId": "gt_bg_hotel_rooftop_night",
+      "repeatable": false,
+      "needsDeferred": true,
+      "choiceCount": 1,
+      "effectCount": 1,
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false,
+          "endingReached": false
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "endingReached": false
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "endingReached": false
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": false
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true
+        }
+      ]
     }
   ]
 }

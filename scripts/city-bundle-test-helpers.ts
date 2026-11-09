@@ -7,6 +7,7 @@ import { inputFingerprint } from "./city-bundle-files";
 import { journeyAuthoringProfiles } from "./journey-authoring";
 import { displayPath, loadContentSources, readJourneyCatalog, requireCity, storyFile } from "./content-sources";
 import type { MergedKind } from "./content-layout";
+import { storyFileOf, storyKnotOf } from "../src/content/story-address";
 
 // Fixtures and helpers shared by the city-bundle tests (scripts/city-bundle*.test.ts).
 // The tests are split over several files so that their slow content builds run in parallel.
@@ -36,8 +37,15 @@ export const writeJson = (root: string, file: string, value: unknown) =>
 export function useArrivalLocationBackground(root: string, cityId: string) {
   const city = readJson(root, cityPaths(root, cityId).city);
   if (!city.arrivalStoryId) return;
-  const file = storyFile(loadContentSources(root), city.arrivalStoryId)!;
-  writeFileSync(file, readFileSync(file, "utf8").replace(/^# background:.*\n/gm, ""));
+  const file = storyFile(loadContentSources(root), storyFileOf(city.arrivalStoryId))!;
+  const source = readFileSync(file, "utf8");
+  // A place file's arrival knot (India): only that knot's lines, up to the next knot.
+  const knot = storyKnotOf(city.arrivalStoryId);
+  const start = knot ? source.indexOf(`=== ${knot} ===`) : 0;
+  const end = knot ? source.indexOf("\n===", start + 1) : -1;
+  if (start < 0) throw new Error(`No arrival knot ${knot} in ${file}`);
+  const arrival = source.slice(start, end < 0 ? undefined : end).replace(/^# background:.*\n/gm, "");
+  writeFileSync(file, source.slice(0, start) + arrival + (end < 0 ? "" : source.slice(end)));
 }
 export const fingerprint = inputFingerprint;
 /** Root-relative paths of a city's files and of the content layer holding them, wherever the fixture keeps them. */

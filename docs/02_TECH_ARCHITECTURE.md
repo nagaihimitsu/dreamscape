@@ -183,8 +183,8 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 | 観光案内 | `tourism/<頭>_<観光地>_guide` | なし |
 | デート・恋愛の出来事 | `dates/<頭>_date_<行き先・出来事>` | なし |
 | 道中交流 | `encounters/<頭>_<交流>`（くじの結果は `_won`・`_lost`・`_already`） | なし |
-| 到着・エピローグ | `arrivals/<都市ID>`、`epilogues/<都市ID>` | なし |
-| 場所のファイル（その場所の場面をまとめる） | `places/<頭>_<場所>`（場所は観光地IDから都市名を除いた名前） | なし |
+| 到着・エピローグ | `arrivals/<都市ID>`、`epilogues/<都市ID>`（宿の場所のファイル `places/<頭>_hotel_hub` の knot `<頭>_arrival`・`<頭>_epilogue` にも書ける。インド編） | なし |
+| 場所のファイル（その場所の場面をまとめる） | `places/<頭>_<場所>`（場所は観光地・デートの行き先・地図の地点のIDから都市名を除いた名前。例：`places/gt_delhi_red_fort`、`places/gt_delhi_lodhi_garden`、`places/gt_delhi_hotel_hub`）。一つの場所の場面は、`_<内容>` を付けた別のファイルに分けてもよい（例：宿の屋上の告白と「待って」の後の `places/gt_delhi_hotel_hub_dates`） | なし |
 | 英語ノートの解説 | `learning/<頭>_english`（編に1本だけなら `learning/<接頭辞>_english` でもよい。2本目からは `learning/<頭>_<話題>_english`） | なし |
 
 - 使う文字は英小文字・数字・`_` だけ。英語のレベル（`B1`）や連番（`_01`）は名前に入れない。番号で区別せず、違いを表す語を選ぶ。

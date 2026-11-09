@@ -526,6 +526,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   // The texts of each story's cond("…") (scene-conditions.ts), checked once the scenes' cities are known.
   const storyConditionTexts: Record<string, string[]> = {};
   let routes = 0;
+  /** The routes walked for each date, by date ID (their sum is routes). */
+  const dateRoutes: Record<string, number> = {};
+  /** A place file's date: the distinct variable sets it was walked with (only the variables its file reads). */
+  const placeDateWalks: Record<string, Record<string, unknown>[]> = {};
   // Where the catalogs point at a main part (a story file, or a place file's knot; 3.1).
   const earlyBattleCity = (battleId: string) => {
     const battle = battles.find((item) => item.id === battleId);
@@ -546,8 +550,6 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     const { storyId, path: knot } = splitStoryAddress(main.address);
     if (knot !== undefined && (!isPlaceStory(storyId) || knot.includes(".")))
       throw new Error(`A catalog names a knot only in a place file (stories/places/…): ${main.address} (${JSON.stringify(main.main)})`);
-    if (knot !== undefined && (main.kind === "arrival" || main.kind === "epilogue"))
-      throw new Error(`An arrival or an epilogue stays a one-scene file at stage 3a: ${main.address}`);
   }
   // The one-scene files of main parts: their head # on_done: / # then: (read and blanked) and their choices.
   const mainFileHeads = new Map<string, { onDone: string[]; then?: string }>();
@@ -661,6 +663,11 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   }
   const taggedScenes = [...placeEntries, ...fileEntries];
   unique(taggedScenes.map((scene) => scene.id), "scene ID");
+  // A date scene's catalog date: the one whose address names the scene (its knot name need not be the date ID).
+  const dateOf = (scene: SceneEntry) => {
+    const dateId = scene.main && "date" in scene.main ? scene.main.date : undefined;
+    return dateId === undefined ? undefined : dates.find((date) => date.id === dateId);
+  };
   const itemCities = new Map(encounterCatalog.items.map((item) => [item.id, item.cityId]));
   // An item carried through the journey ("carry": "journey") is held, given and used in its journey's later cities (the item design §2.5).
   const journeyCityPosition = (cityId: string) => {
@@ -699,12 +706,20 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       throw new Error(`The sources of ${scene.id} are written twice: # sources: none in ${label} and sources in scenes/catalog.json (keep one; A4)`);
     if (scene.title !== undefined && !/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(scene.title) && scene.origin === "place")
       languageNotes.push({ kind: "data-language", message: `\`# title:\` に日本語がありません：${scene.id}「${scene.title}」。道中交流の題名や保留 AP の題名として、そのまま出ます（止めません）。` });
-    for (const option of scene.options) if (option.profile && scene.kind === "date" && dates.find((date) => date.id === (scene.main && "date" in scene.main ? scene.main.date : ""))?.kind === "confession")
+    for (const option of scene.options) if (option.profile && scene.kind === "date" && dateOf(scene)?.kind === "confession")
       throw new Error(`A confession date takes no # profile: (its outcome is never random; B2): ${label}`);
+  }
+  // A date knot's # title: and the date catalog's titleJa (what the map and the records show) are kept equal (DA-5; a note, not stopped).
+  for (const scene of placeEntries) if (scene.kind === "date") {
+    const date = dateOf(scene);
+    if (date && scene.title !== date.titleJa)
+      sceneWarn(`${storyLabel(scene.story.storyId)} (${scene.id}${date.id === scene.id ? "" : `, the date ${date.id}`}): # title: 「${scene.title}」 differs from titleJa 「${date.titleJa}」 in romance/date_catalog.json (the map shows titleJa)`);
   }
   // A place file's date: its own knot's choices are the romance choices (# profile:), a helper knot's are in-scene choices (no profile; 3.5).
   for (const scene of placeEntries) if (scene.kind === "date") for (const option of scene.options) {
     const own = option.knot === scene.story.knot;
+    // A confession's own choices are its direct choices (no # profile:, B2; its outcome is confession_result, DA-1).
+    if (own && dateOf(scene)?.kind === "confession") continue;
     if (own && !option.profile)
       throw new Error(`A romance choice of the date ${scene.id} needs # profile: (the choice ${option.id}); an in-scene choice goes in a helper knot`);
     if (!own && option.profile)
@@ -821,22 +836,38 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     if (scene.kind === "battle") continue; // validateBattleStory walks it below (the stitch form).
     if (scene.kind === "date") {
       if (scene.origin !== "place") continue; // today's dates: validateStory below.
-      const date = dates.find((item) => scene.main && "date" in scene.main && item.id === scene.main.date)!;
-      if (date.kind === "confession") throw new Error(`A confession date stays a one-scene file at stage 3a: ${label}`);
-      for (const seed of date.validationContexts) for (const tone of RELATIONSHIP_TONES)
-        routes += withContext(label, () => walkScene({ ...base, variables: { romance_stage: seed.romanceStage, ending_reached: seed.endingReached ?? false,
+      const date = dateOf(scene)!;
+      // A confession is walked with each validation context's outcome (confession_result; DA-1): its own choice points
+      // (no # profile:) are the direct choices its choiceCount counts.
+      // Contexts that differ only in variables the file never reads walk the same paths: each distinct one is walked
+      // once and counted for every context (the route total is unchanged).
+      const compiledText = stories[storyId];
+      const walked = new Map<string, number>();
+      for (const seed of date.validationContexts) for (const tone of RELATIONSHIP_TONES) {
+        const variables = { romance_stage: seed.romanceStage, ending_reached: seed.endingReached ?? false,
           relationship_tone: tone, relationship_tone_before: tone, relationship_tone_after: tone,
-          memory_callback: progression.fallbackMemoryCallbackJa, confession_ready: false, confession_result: "deferred" },
-          romanceChoices: { knot: scene.story.knot!, count: date.choiceCount } }));
+          memory_callback: progression.fallbackMemoryCallbackJa, confession_ready: date.kind === "confession" && seed.confessionReady,
+          confession_result: date.kind === "confession" ? seed.confessionResult ?? (seed.confessionReady ? "accepted" : "deferred") : "deferred" };
+        const key = JSON.stringify(Object.entries(variables).filter(([name]) => compiledText.includes(`"VAR?":"${name}"`)));
+        if (!walked.has(key)) walked.set(key, withContext(label, () => walkScene({ ...base, variables,
+          romanceChoices: { knot: scene.story.knot!, count: date.choiceCount } })));
+        routes += walked.get(key)!;
+        dateRoutes[date.id] = (dateRoutes[date.id] ?? 0) + walked.get(key)!;
+      }
+      placeDateWalks[date.id] = [...walked.keys()].map((key) => Object.fromEntries(JSON.parse(key) as [string, unknown][]));
       continue;
     }
     if (scene.kind === "guide") walkedGuides.add(scene.story.knot ? `${storyId}.${scene.story.knot}` : storyId);
-    if ((scene.kind === "arrival" || scene.kind === "epilogue") && !fileChoiceStories.has(storyId)) continue;
+    // A one-scene arrival or epilogue without choices: validateEpilogue below; a place file's knot is walked here.
+    if ((scene.kind === "arrival" || scene.kind === "epilogue") && scene.origin !== "place" && !fileChoiceStories.has(storyId)) continue;
     if (scene.kind === "guide" && scene.origin === "file" && !fileChoiceStories.has(storyId)) { walkedGuides.delete(storyId); continue; }
     const contexts = scene.kind === "arrival" || scene.kind === "epilogue"
       ? [1, 2, 3, 4].flatMap((stage) => [false, true].map((ending) => ({ romance_stage: stage, ending_reached: ending })))
       : [{ romance_stage: 1, ending_reached: false }];
-    for (const variables of contexts) withContext(label, () => walkScene({ ...base, variables }));
+    // An arrival's background tags name its city's places' backgrounds (as validateEpilogue checks a one-scene arrival).
+    const arrivalContext = scene.kind === "arrival"
+      ? { context: { ...context, backgroundIds: travels.find(({ city }) => city.id === scene.cityId)?.travel.places.map((place) => place.backgroundId) ?? [] } } : {};
+    for (const variables of contexts) withContext(label, () => walkScene({ ...base, ...arrivalContext, variables }));
   }
   // Guides with choices (one-scene files) are walked as scenes even without tags.
   for (const storyId of fileChoiceStories) {
@@ -1026,7 +1057,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
                 (message) => sceneNotes.push({ kind: "scene-tag", message: `${storyLabel(storyId)} (date ${date.id}): ${message}` }),
               ),
           );
-          if (storyId === date.storyId && seedIndex < date.validationContexts.length) routes += checkedRoutes;
+          if (storyId === date.storyId && seedIndex < date.validationContexts.length) {
+            routes += checkedRoutes;
+            dateRoutes[date.id] = (dateRoutes[date.id] ?? 0) + checkedRoutes;
+          }
         }
       }
     });
@@ -1389,9 +1423,16 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
         dates.some((date) => date.storyId === storyId) || battles.some((battle) => battle.storyId === storyId) ||
         tourism.landmarks.some((landmark) => landmark.guideStoryId === storyId))
       throw new Error(`Arrival story is used by another system: ${storyId}`);
-    const compiled = stories[storyId];
+    const compiled = stories[storyFileOf(storyId)];
     if (!compiled) throw new Error(`Unknown arrival story: ${storyId}`);
     validateNoInkRandom(compiled);
+    // A place file's arrival knot was walked as a scene above (8 contexts).
+    if (storyId !== storyFileOf(storyId)) {
+      if (!placeEntries.some((scene) => scene.kind === "arrival" && `${scene.story.storyId}.${scene.story.knot}` === storyId))
+        throw new Error(`Unknown arrival knot: ${storyId} (give it the head tag # scene: arrival)`);
+      epilogueScenarios += 8;
+      continue;
+    }
     const backgrounds = travels.find(({ city }) => city.id === current.id)!.travel.places.map((place) => place.backgroundId);
     if (fileChoiceStories.has(storyId)) { epilogueScenarios += 8; continue; } // walked as a scene above (choices, stage 3a)
     epilogueScenarios += withContext(storyLabel(storyId), () =>
@@ -1399,9 +1440,16 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   }
   for (const episode of journey.episodes) {
     if (!episode.epilogueStoryId) continue;
-    const compiled = stories[episode.epilogueStoryId];
+    const compiled = stories[storyFileOf(episode.epilogueStoryId)];
     if (!compiled)
       throw new Error(`Unknown epilogue story: ${episode.epilogueStoryId}`);
+    // A place file's epilogue knot was walked as a scene above (8 contexts).
+    if (episode.epilogueStoryId !== storyFileOf(episode.epilogueStoryId)) {
+      if (!placeEntries.some((scene) => scene.kind === "epilogue" && `${scene.story.storyId}.${scene.story.knot}` === episode.epilogueStoryId))
+        throw new Error(`Unknown epilogue knot: ${episode.epilogueStoryId} (give it the head tag # scene: epilogue)`);
+      epilogueScenarios += 8;
+      continue;
+    }
     if (fileChoiceStories.has(episode.epilogueStoryId)) { epilogueScenarios += 8; continue; } // walked as a scene above (choices, stage 3a)
     epilogueScenarios += withContext(
       storyLabel(episode.epilogueStoryId),
@@ -1431,6 +1479,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     /** Every scene's cond("…") texts and their JSON conditions (src/domain/scene-conditions.ts reads them). */
     sceneConditions,
     routes,
+    dateRoutes,
+    placeDateWalks,
     dates,
     destinations,
     effects,

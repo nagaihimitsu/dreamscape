@@ -245,7 +245,9 @@ export function startDate(state: GameState, dateId: string, nextRoll: () => numb
       turnCount: 0,
       step: 1,
       appliedEffectIds: [],
-      pendingOutcome: null,
+      // A confession written with tags (a place file's knot; DA-1): its outcome is confession_result, fixed now from the
+      // relationship state and passed to Ink as the same value (never random; no # effect: sets it).
+      pendingOutcome: date.kind === "confession" && taggedDateScene(date.id) ? confessionResult(state) : null,
       resolutionMode: date.kind === "confession" ? "fixed" : "random_v1",
       randomPlan: date.kind === "confession" ? [] : createRomanceRollPlan(date.choiceCount, nextRoll),
       resolvedChoices: [],
@@ -406,14 +408,17 @@ function chooseTaggedDate(state: GameState, active: ActiveDate, scene: NonNullab
   if (!option) throw new Error("選択肢の効果を確認できません。");
   const revision = state.revision + 1;
   const toneBefore = deriveRelationshipTone(state);
-  const romance = option.knot === scene.story.knot;
-  if (!romance) {
+  const own = option.knot === scene.story.knot;
+  // A confession's own choices are its direct choices (counted by choiceCount, DA-1): no ticket, no reaction, only their tags.
+  const direct = own && date.kind === "confession";
+  if (!own || direct) {
     const next = active.replay ? state : applyChoiceEffects(state, scene.id, option, revision).state;
     const tone = deriveRelationshipTone(next);
     const step = selectStoryChoice(storyId, active.storyState, active.frame, index, next.memories, {}, {
       relationship_tone: tone, relationship_tone_before: toneBefore, relationship_tone_after: tone,
     }, next.inventory, sceneConditionReader(next));
-    return applyStep({ ...next, revision }, { ...active, turnCount: active.turnCount + 1, step: active.step + 1 }, step);
+    return applyStep({ ...next, revision }, { ...active, choiceCount: active.choiceCount + (direct ? 1 : 0),
+      turnCount: active.turnCount + 1, step: active.step + 1 }, step);
   }
   const ticket = active.randomPlan[active.choiceCount];
   const profile = active.responseSnapshot?.profiles.find((item) => item.id === option.profile);

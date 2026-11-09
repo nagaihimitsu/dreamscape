@@ -4,6 +4,8 @@ VAR player_address = ""
 VAR battle_scene = "intro"
 VAR answer_correct = false
 VAR battle_score = 0
+// 【3】1場面1ファイルの頭の札（結果を初めて記録したとき1回当たる）。足した札：アンワルの詫びのペーターを受け取る（アーグラのエピローグで食べ切る）
+# on_done: item gt_agra_anwar_petha
 
 { battle_scene == "intro": -> introduction }
 { battle_scene == "after_1": -> after_first }

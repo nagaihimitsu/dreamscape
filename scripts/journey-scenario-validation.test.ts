@@ -11,6 +11,8 @@ const manifests = (root: string) => Object.fromEntries(readJourneyManifests(root
 
 /** India's published Ink lives in its journey folder; story IDs are paths below `stories/`. */
 const publishedStories = "content/journeys/golden_triangle/stories";
+/** India's scenario drafts (its scenes are all published; the folder holds the narrative metadata). */
+const indiaDrafts = "authoring/journeys/golden_triangle/drafts/scenario";
 const names = 'VAR player_name = "検証主人公"\nVAR heroine_name = "検証ヒロイン"\nVAR player_address = "検証主人公さん"\n';
 function fixture() {
   const root = mkdtempSync(path.join(tmpdir(), "dreamscape-scenario-test-"));
@@ -19,8 +21,25 @@ function fixture() {
   cpSync(path.join(process.cwd(), "content"), path.join(root, "content"), { recursive: true });
   symlinkSync(path.join(process.cwd(), "public"), path.join(root, "public"));
   symlinkSync(path.join(process.cwd(), "authoring"), path.join(root, "authoring"));
+  // Delhi unpublished: its one-scene files (the battles) removed, and the catalogs that name a knot of a place file
+  // (guides, dates, the epilogue) pointed back at the planned one-scene story IDs, which the drafts below provide.
   for (const storyId of [...plan.main.flatMap((main) => [main.guideStoryId, main.battleStoryId]), ...plan.dates.map((date) => date.storyId), plan.finale.battleStoryId, plan.finale.epilogueStoryId])
     rmSync(path.join(root, publishedStories, `${storyId}.ink`), { force: true });
+  const catalog = (relative: string, change: (data: any) => void) => {
+    const file = path.join(root, "content/journeys/golden_triangle", relative);
+    const data = JSON.parse(readFileSync(file, "utf8"));
+    change(data);
+    writeFileSync(file, JSON.stringify(data));
+  };
+  catalog("tourism/catalog.json", (data) => {
+    for (const main of plan.main) data.landmarks.find((item: { id: string }) => item.id === main.landmarkId).guideStoryId = main.guideStoryId;
+  });
+  catalog("romance/date_catalog.json", (data) => {
+    for (const date of plan.dates) data.dates.find((item: { id: string }) => item.id === date.eventId).storyId = date.storyId;
+  });
+  catalog("progression/journey.json", (data) => {
+    data.episodes.find((item: { id: string }) => item.id === plan.finale.eventId).epilogueStoryId = plan.finale.epilogueStoryId;
+  });
   const write = (relative: string, content: string) => {
     const target = path.join(directory, relative);
     mkdirSync(path.dirname(target), { recursive: true });
@@ -61,15 +80,38 @@ describe("draft journey scenario contracts", () => {
     try {
       // A promoted file has one canonical copy and still uses the same checker.
       const guide = `${plan.main[0].guideStoryId}.ink`;
+      // India publishes its guides as knots of place files: a promoted one-scene guide goes to its own folder.
+      mkdirSync(path.dirname(path.join(root, publishedStories, guide)), { recursive: true });
       renameSync(path.join(directory, "delhi/stories", guide), path.join(root, publishedStories, guide));
       expect(await validateJourneyScenario(root, "golden_triangle", directory, "delhi")).toEqual({
-        journeyId: "golden_triangle", cities: ["delhi"], stories: 16, guides: 4,
+        journeyId: "golden_triangle", cities: ["delhi"], stories: 16, placeKnots: 0, guides: 4,
         battleScenarios: 83, dateRoutes: 10368, epilogueScenarios: 8, warnings: [], readyForPublication: false,
       });
       // No journey (not only the checked one) is registered or released by a scenario check.
       expect({ project: manifests(process.cwd()), fixture: manifests(root) }).toEqual(before);
       expect(readFileSync("src/content/generated/stories.json", "utf8")).toBe(generated);
     } finally { rmSync(root, { recursive: true, force: true }); }
+  }, 120_000);
+
+  it("checks India's real drafts: a knot of a published place file counts as published, and a draft beside it is refused", async () => {
+    // Delhi's guides, dates and epilogue are knots of place files (content:build walks them); its battles are one-scene files.
+    expect(await validateJourneyScenario(process.cwd(), "golden_triangle", indiaDrafts, "delhi")).toEqual({
+      journeyId: "golden_triangle", cities: ["delhi"], stories: 16, placeKnots: 11, guides: 4,
+      battleScenarios: 83, dateRoutes: 0, epilogueScenarios: 0, warnings: [], readyForPublication: false,
+    });
+    const directory = mkdtempSync(path.join(tmpdir(), "dreamscape-scenario-india-"));
+    try {
+      cpSync(indiaDrafts, directory, { recursive: true });
+      const plan = journeyRequirements(loadJourneyScaffold(process.cwd(), "golden_triangle"), ["delhi"])[0];
+      for (const storyId of [plan.main[0].guideStoryId, plan.dates[0].storyId, plan.finale.epilogueStoryId]) {
+        const draft = path.join(directory, "delhi/stories", `${storyId}.ink`);
+        mkdirSync(path.dirname(draft), { recursive: true });
+        writeFileSync(draft, `${names}# speaker: narrator\n下書きの検証です。\n-> END`);
+        await expect(validateJourneyScenario(process.cwd(), "golden_triangle", directory, "delhi"))
+          .rejects.toThrow(`Scenario has both draft and published Ink: ${storyId}; keep one source`);
+        rmSync(draft);
+      }
+    } finally { rmSync(directory, { recursive: true, force: true }); }
   }, 120_000);
 
   it("rejects missing/extra scripts; protagonist dialogue, also in unreachable branches, is one warning", async () => {
@@ -79,6 +121,7 @@ describe("draft journey scenario contracts", () => {
       const file = path.join(directory, "delhi/stories", `${plan.main[0].guideStoryId}.ink`);
       const original = readFileSync(file, "utf8");
       const published = path.join(root, publishedStories, `${plan.main[0].guideStoryId}.ink`);
+      mkdirSync(path.dirname(published), { recursive: true });
       writeFileSync(published, original);
       await expect(check()).rejects.toThrow(/both draft and published Ink/);
       rmSync(published);

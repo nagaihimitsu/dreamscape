@@ -2,16 +2,19 @@ import { readFileSync, readdirSync } from "node:fs";
 import { parseSceneConditions, readSceneConditions } from "./scene-conditions";
 import path from "node:path";
 import { isDeepStrictEqual } from "node:util";
-import { presentationSchema } from "../src/content/schemas";
+import { journeySchema } from "../src/content/journey-schemas";
+import { battleCatalogSchema, dateCatalogSchema, presentationSchema } from "../src/content/schemas";
+import { isPlaceStory, storyFileOf } from "../src/content/story-address";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import type { TagContext } from "../src/content/tags";
 import { RELATIONSHIP_TONES } from "../src/domain/romance-tone";
 import { validateMemoryReferences } from "../src/story/memory";
 import { validateBattleStory } from "./battle-validation";
-import { displayPath, journeyLayer, loadContentSources, parseCatalog, storyFile } from "./content-sources";
+import { displayPath, journeyLayer, loadContentSources, parseCatalog, storyFile, type ContentSources } from "./content-sources";
 import { withContext } from "./content-validation-utils";
 import { validateEpilogue } from "./epilogue-validation";
 import { compileInk, validateNoInkRandom, validateRelationshipToneSource } from "./ink-validation";
+import { readMainFileHead } from "./place-files";
 import { buildJourneyFragments, journeyNarrativeSchema, journeyRequirements, loadJourneyScaffold } from "./journey-scaffold";
 import { validateTourism } from "./tourism-validation";
 import { checkTourismImages } from "./content-images";
@@ -24,11 +27,31 @@ function inkFiles(directory: string): string[] {
   });
 }
 
+/**
+ * The planned stories (journeyRequirements' one-scene story IDs) that the journey already publishes as a knot of a
+ * place file (stories/places/…): the catalogs' address of that knot, by planned story ID.
+ */
+function publishedPlaceKnots(sources: ContentSources, requirements: ReturnType<typeof journeyRequirements>): Map<string, string> {
+  const { landmarks } = parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json");
+  const { battles } = parseCatalog(sources, battleCatalogSchema, "battles/catalog.json");
+  const { dates } = parseCatalog(sources, dateCatalogSchema, "romance/date_catalog.json");
+  const { episodes } = parseCatalog(sources, journeySchema, "progression/journey.json");
+  const addresses = requirements.flatMap((city) => [
+    ...city.main.flatMap((main) => [[main.guideStoryId, landmarks.find((item) => item.id === main.landmarkId)?.guideStoryId],
+      [main.battleStoryId, battles.find((item) => item.id === main.battleId)?.storyId]]),
+    ...city.dates.map((date) => [date.storyId, dates.find((item) => item.id === date.eventId)?.storyId]),
+    [city.finale.battleStoryId, battles.find((item) => item.id === city.finale.battleId)?.storyId],
+    [city.finale.epilogueStoryId, episodes.find((item) => item.id === city.finale.eventId)?.epilogueStoryId],
+  ]);
+  return new Map(addresses.filter((entry): entry is [string, string] => !!entry[1] && isPlaceStory(entry[1])));
+}
+
 /** Check authored scripts with the production contracts, without inventing quizzes
  * or writing generated content/release markers. This is not a release gate.
  * The date routes use the Ink validation cache like content:build (storyCache
  * null: without it). `warnings` lists what is reported without stopping (a
- * protagonist line outside the date choices: decision 36). */
+ * protagonist line outside the date choices: decision 36). A scene the journey already publishes as a knot of a
+ * place file counts as published and is not checked again here: content:build walks it (`placeKnots`). */
 export async function validateJourneyScenario(root: string, journeyId: string, directory: string, selectedCityId?: string,
   options: { storyCache?: StoryValidationCache | null } = {}) {
   const storyCache = chooseStoryCache(options.storyCache);
@@ -48,12 +71,14 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
     .filter((id) => backgroundFiles[id]?.startsWith(journeyDirectory));
   const warnings: string[] = [];
   const tourism = parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json");
+  const placeKnots = publishedPlaceKnots(sources, requirements);
   const expected = requirements.flatMap((city) => [
     ...city.main.flatMap((event) => [event.guideStoryId, event.battleStoryId]),
     ...city.dates.map((event) => event.storyId), city.finale.battleStoryId, city.finale.epilogueStoryId,
   ].map((storyId) => ({ cityId: city.cityId, storyId,
     draftFile: path.join(base, city.cityId, "stories", `${storyId}.ink`),
-    publishedFile: storyFile(sources, storyId) })));
+    // A published scene: its one-scene file, or the place file of the knot the catalogs name.
+    publishedFile: storyFile(sources, placeKnots.has(storyId) ? storyFileOf(placeKnots.get(storyId)!) : storyId) })));
   const actualFiles = new Set(inkFiles(path.join(base, selectedCityId ?? "")));
   const expectedFiles = new Set(expected.map((story) => story.draftFile));
   const duplicate = expected.filter((story) => actualFiles.has(story.draftFile) && story.publishedFile);
@@ -73,11 +98,14 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
   const inkSources: Record<string, string> = {};
   const storyFiles: Record<string, string> = {};
   for (const { storyId, draftFile, publishedFile } of expected) {
+    if (placeKnots.has(storyId) && !actualFiles.has(draftFile)) continue; // a place file's knot: content:build walks it.
     const file = actualFiles.has(draftFile) ? draftFile : publishedFile!;
     storyFiles[storyId] = file;
     // A draft is read from the scenario folder; a published story comes from the loaded content.
-    const source = actualFiles.has(draftFile) ? readFileSync(draftFile, "utf8") : sources.storyFiles.find((story) => story.id === storyId)!.source;
+    const authored = actualFiles.has(draftFile) ? readFileSync(draftFile, "utf8") : sources.storyFiles.find((story) => story.id === storyId)!.source;
     withContext(file, () => {
+      // A main part's one-scene head (# on_done:, # then:; 3.1) is read and blanked, as content:build does.
+      const source = readMainFileHead(authored).source;
       // A protagonist line (also in a currently unreachable branch) is reported, not refused (decision 36).
       const code = source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
       if (/#\s*speaker\s*:\s*player\b/.test(code))
@@ -105,11 +133,13 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
     await checkTourismImages(sources.publicFiles, ownAssets);
     guides += validateTourism({ schemaVersion: 1, landmarks: ownLandmarks, clues: ownClues, assets: ownAssets },
     city.cityId, input.plannedLandmarks[city.cityId], fragments.battles, {}, stories, context, () => observe,
-    (storyId) => storyFiles[storyId] ? displayPath(root, storyFiles[storyId]) : `${storyId}.ink`);
+    (storyId) => storyFiles[storyId] ? displayPath(root, storyFiles[storyId]) : `${storyId}.ink`, (guideStoryId) => placeKnots.has(guideStoryId));
     for (const battle of fragments.battles.filter((battle) => battle.cityId === city.cityId || ownLandmarks.some((landmark) => landmark.battleId === battle.id)))
-      battleScenarios += withContext(battle.storyId, () => validateBattleStory(stories[battle.storyId], battle, context, observe));
-    epilogueScenarios += withContext(city.finale.epilogueStoryId, () => validateEpilogue(stories[city.finale.epilogueStoryId], context, observe));
-    for (const date of fragments.dates.filter((date) => date.chapterId === city.cityId)) {
+      if (!placeKnots.has(battle.storyId))
+        battleScenarios += withContext(battle.storyId, () => validateBattleStory(stories[battle.storyId], battle, context, observe));
+    if (!placeKnots.has(city.finale.epilogueStoryId))
+      epilogueScenarios += withContext(city.finale.epilogueStoryId, () => validateEpilogue(stories[city.finale.epilogueStoryId], context, observe));
+    for (const date of fragments.dates.filter((date) => date.chapterId === city.cityId && !placeKnots.has(date.storyId))) {
       const source = inkSources[date.storyId];
       const compiled = stories[date.storyId];
       const effects = fragments.effects.filter((effect) => effect.id.startsWith(`${date.id}_`));
@@ -142,6 +172,6 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
       });
     }
   }
-  return { journeyId, cities: requirements.map((city) => city.cityId), stories: expected.length,
+  return { journeyId, cities: requirements.map((city) => city.cityId), stories: expected.length, placeKnots: placeKnots.size,
     guides, battleScenarios, dateRoutes, epilogueScenarios, warnings, readyForPublication: false as const };
 }

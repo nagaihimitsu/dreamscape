@@ -113,9 +113,16 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
       if (!travel.events.some((event) => event.category === "main" && event.id === specialId))
         problem(cityIssues, "special_event_missing", `特殊戦の地点が未登録: ${specialId}`);
     }
+    // The plan's dateCount counts the dates at a destination (normal dates); a special date (confession, reassurance…)
+    // has no destination and runs at a place of its city, beside them (Milan's at the canal, India's on the hotel roof).
+    const specialDate = (eventId: string) => {
+      const date = input.dates.find((item) => item.id === eventId);
+      return !!date && date.kind !== "normal" && !date.destinationId;
+    };
     for (const category of ["main", "date"] as const) {
       const expected = category === "main" ? trip.cityPlan!.mainTourismCount : trip.cityPlan!.dateCount;
-      const actual = category === "main" ? mainEvents.length : travel.events.filter((event) => event.category === "date").length;
+      const actual = category === "main" ? mainEvents.length
+        : travel.events.filter((event) => event.category === "date" && !specialDate(event.id)).length;
       if (actual !== expected)
         problem(cityIssues, "event_count_mismatch", `${cityId} の ${category} は${expected}件必要です。`);
     }
@@ -158,7 +165,11 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
       } else {
         const date = input.dates.find((item) => item.id === event.id);
         if (!date) problem(eventIssues, "date_missing", `デート定義が未登録: ${event.id}`);
-        else {
+        else if (specialDate(event.id)) {
+          if (date.chapterId !== cityId || !place) problem(eventIssues, "destination_mismatch", `デートの都市・地点が不一致: ${event.id}`);
+          if (date.backgroundId !== place?.backgroundId) checkImage(date.backgroundId, eventIssues);
+          if (!input.storyExists(date.storyId)) problem(eventIssues, "date_story_missing", `デート脚本が未登録: ${date.storyId}`);
+        } else {
           const destination = input.destinations.find((item) => item.id === date.destinationId);
           if (!destination || destination.cityId !== cityId || date.chapterId !== cityId || !place?.destinationIds?.includes(destination.id))
             problem(eventIssues, "destination_mismatch", `デート行き先・都市が未登録または不一致: ${event.id}`);

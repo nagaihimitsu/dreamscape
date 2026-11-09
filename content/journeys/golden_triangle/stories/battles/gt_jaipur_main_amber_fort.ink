@@ -4,6 +4,10 @@ VAR player_address = ""
 VAR battle_scene = "intro"
 VAR answer_correct = false
 VAR battle_score = 0
+// 【3】1場面1ファイルの頭の札（結果を初めて記録したとき1回当たる）。足した札：細密画を受け取り、細密画（-900）と印刷の写し（-300）の代金を払う。金額は案
+# on_done: item gt_jaipur_salim_miniature
+# on_done: money -900
+# on_done: money -300
 
 { battle_scene == "intro": -> introduction }
 { battle_scene == "after_1": -> after_first }

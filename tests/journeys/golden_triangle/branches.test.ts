@@ -1,21 +1,23 @@
 import { Story } from "inkjs";
 import { describe, expect, it } from "vitest";
-import { battles, battleQuizzes, dates, encounters, presentation, stories, tagContext } from "../../../src/content";
+import { battles, battleQuizzes, dates, encounters, presentation, scenes, stories, tagContext } from "../../../src/content";
+import { splitStoryAddress } from "../../../src/content/story-address";
 import { parseStoryTags, type StoryTags } from "../../../src/content/tags";
 import { bindItemReader } from "../../../src/story/items";
 import { bindMemoryReader } from "../../../src/story/memory";
-import { RELATIONSHIP_TONES } from "../../../src/domain/romance-tone";
 
 const indiaCities = ["delhi", "agra", "jaipur"];
 const indiaDates = dates.filter((date) => indiaCities.includes(date.chapterId));
 const indiaBattles = battles.filter((battle) => battle.id.startsWith("gt_"));
 
-function runtime(storyId: string, variables: Record<string, string | boolean | number>) {
+function runtime(storyId: string, variables: Record<string, string | boolean | number>, cond?: (text: string) => boolean) {
   const story = new Story(stories[storyId]);
   story.onError = (message) => { throw new Error(`${storyId}: ${message}`); };
   // Every route is exercised without memories or items from optional dates.
   bindMemoryReader(story, [], Object.keys(presentation.memories));
   bindItemReader(story, {}, encounters.items.map((item) => item.id));
+  // A place file's cond("…"): every text read the same way (all true, then all false).
+  if (cond) story.BindExternalFunction("cond", (text: unknown) => cond(String(text)), true);
   for (const [key, value] of Object.entries({ player_name: "航", heroine_name: "澪", player_address: "航さん", ...variables })) {
     if (story.variablesState.GlobalVariableExistsWithName(key)) story.variablesState.$(key, value);
   }
@@ -54,63 +56,64 @@ function choose(story: Story, index: number, result: "positive" | "negative", sp
 
 describe("Golden Triangle authored branching contracts", () => {
   it("covers the complete published cast and independent date set", () => {
-    expect(indiaDates).toHaveLength(18);
+    expect(indiaDates).toHaveLength(24);
     expect(indiaBattles).toHaveLength(15);
-    for (const date of indiaDates) {
-      expect(date.kind).toBe("normal");
+    const normal = indiaDates.filter((date) => date.kind === "normal");
+    expect(normal).toHaveLength(18);
+    for (const date of normal) {
+      // The map condition is the knot head's # when: (GT-3b; one place only).
       expect(date.when).toEqual({ episodesCompleted: { city: date.chapterId, atLeast: 1 } });
       expect(date.until).toBeUndefined();
       expect(date.allowAfterEnding).toBe(true);
       expect(date.choiceCount).toBe(2);
-      expect(date.effectCount).toBe(2);
+      expect(date.storyId).toMatch(new RegExp(`^places/gt_${date.chapterId}_[a-z_]+\\.${date.id}$`));
     }
+    expect(indiaDates.filter((date) => date.kind !== "normal").map((date) => date.kind).sort())
+      .toEqual(["confession", "confession", "confession", "reassurance", "reassurance", "reassurance"]);
   });
 
-  for (const date of indiaDates) {
-    it(`${date.id}: all 9 choice paths, 4 outcome pairs and 12 relationship contexts finish independently`, () => {
+  // The 18 normal dates (place-file knots with tags, GT-3b): every path, with every cond text true and false and both
+  // reaction results, ends; meets the two romance choices; keeps exactly one memory; and each romance choice reacts to the roll.
+  for (const date of indiaDates.filter((item) => item.kind === "normal")) {
+    it(`${date.id}: every path ends with two romance choices and one memory, and each romance choice reacts to the roll`, () => {
+      const scene = scenes.find((item) => item.id === date.id)!;
+      const { storyId, path } = splitStoryAddress(date.storyId);
+      const options = new Map(scene.options.map((option) => [option.id, option]));
       let endings = 0;
-      for (const tone of RELATIONSHIP_TONES) for (const dating of [false, true]) {
-        const story = runtime(date.storyId, {
-          romance_stage: dating ? 4 : 1, ending_reached: dating,
-          relationship_tone: tone, relationship_tone_before: tone, relationship_tone_after: tone,
-        });
+      for (const truth of [false, true]) for (const dating of [false, true]) {
+        const story = runtime(storyId, { romance_stage: dating ? 4 : 1, ending_reached: dating,
+          relationship_tone: "warm", relationship_tone_before: "warm", relationship_tone_after: "warm" }, () => truth);
+        story.ChoosePathString(path!);
         const intro = segment(story);
         expect(intro.effects).toEqual([]);
-        expect(story.currentChoices).toHaveLength(3);
-        const firstSnapshot = story.state.ToJson();
-        for (let first = 0; first < 3; first++) {
-          const firstResponses: string[] = [];
-          for (const firstResult of ["positive", "negative"] as const) {
-            story.state.LoadJson(firstSnapshot);
-            const middle = choose(story, first, firstResult, intro.speaker);
-            firstResponses.push(middle.text);
-            expect(middle.effects, `${date.id}/${tone}/${first}/${firstResult}`).toHaveLength(1);
-            expect(story.currentChoices).toHaveLength(3);
-            const secondSnapshot = story.state.ToJson();
-            for (let second = 0; second < 3; second++) {
-              const secondResponses: string[] = [];
-              for (const secondResult of ["positive", "negative"] as const) {
-                story.state.LoadJson(secondSnapshot);
-                const ending = choose(story, second, secondResult, middle.speaker);
-                secondResponses.push(ending.text);
-                const context = `${date.id}/${tone}/${dating}/${first}:${firstResult}/${second}:${secondResult}`;
-                expect(ending.text, context).not.toBe("");
-                expect(story.currentChoices, context).toHaveLength(0);
-                expect(story.canContinue, context).toBe(false);
-                expect(ending.effects, context).toHaveLength(1);
-                expect(new Set([...middle.effects, ...ending.effects]).size, context).toBe(2);
-                // Bold dialogue is still an ordinary date, never a formal confession.
-                expect(story.variablesState.$("ending_reached"), context).toBe(dating);
-                expect(story.variablesState.$("romance_stage"), context).toBe(dating ? 4 : 1);
-                endings++;
-              }
-              expect(secondResponses[0], `${date.id}: second choice ${second} must react to the saved roll`).not.toBe(secondResponses[1]);
-            }
+        const walk = (snapshot: string, speaker: StoryTags["speaker"], romance: number, memories: string[]) => {
+          story.state.LoadJson(snapshot);
+          const choices = story.currentChoices;
+          const context = `${date.id}/${truth}/${dating}/${romance}`;
+          if (!choices.length) {
+            expect(story.canContinue, context).toBe(false);
+            expect(romance, context).toBe(2);
+            expect(memories, context).toEqual([`${date.id}_memory`]);
+            endings++;
+            return;
           }
-          expect(firstResponses[0], `${date.id}: first choice ${first} must react to the saved roll`).not.toBe(firstResponses[1]);
-        }
+          for (let index = 0; index < choices.length; index++) {
+            const option = options.get(parseStoryTags(choices[index].tags ?? [], tagContext).optionId ?? "");
+            const own = option?.knot === scene.story.knot;
+            const responses: string[] = [];
+            for (const result of own ? (["positive", "negative"] as const) : (["positive"] as const)) {
+              story.state.LoadJson(snapshot);
+              const next = choose(story, index, result, speaker);
+              expect(next.effects, context).toEqual([]);
+              responses.push(next.text);
+              walk(story.state.ToJson(), next.speaker, romance + (own ? 1 : 0), [...memories, ...(option?.memory ?? [])]);
+            }
+            if (own) expect(responses[0], `${context}: ${option!.id} must react to the saved roll`).not.toBe(responses[1]);
+          }
+        };
+        walk(story.state.ToJson(), intro.speaker, 0, []);
       }
-      expect(endings).toBe(9 * 4 * RELATIONSHIP_TONES.length * 2);
+      expect(endings).toBeGreaterThan(0);
     }, 60_000);
   }
 

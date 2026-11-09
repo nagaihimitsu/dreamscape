@@ -69,13 +69,16 @@ describe("authored Golden Triangle journey", () => {
         expect(steps).toBeLessThan(15);
         state = checkpoint(advanceCityEpilogue(state, state.revision));
       }
-      const { revision: arrivalRevision, activeEpilogue: arrivalScene, ...beforeWelcome } = arrival;
-      const { revision: welcomedRevision, activeEpilogue: welcomedScene, ...afterWelcome } = state;
+      const { revision: arrivalRevision, activeEpilogue: arrivalScene, inventory: arrivalInventory, ...beforeWelcome } = arrival;
+      const { revision: welcomedRevision, activeEpilogue: welcomedScene, inventory: welcomedInventory, ...afterWelcome } = state;
       void arrivalRevision; void arrivalScene; void welcomedRevision;
       expect(welcomedScene).toBeNull();
       expect(afterWelcome).toEqual(beforeWelcome);
+      // Only Delhi's arrival gives something when it ends: Kamla's memo (its knot's head # on_done: item).
+      expect(welcomedInventory).toEqual({ ...arrivalInventory, ...(cityId === "delhi" ? { gt_delhi_kamla_memo: "held" } : {}) });
       const main = episodes.filter((episode) => episode.cityId === cityId && episode.kind === "episode").reverse();
-      const ownDates = dates.filter((date) => date.chapterId === cityId);
+      // The six dates at a destination; the rooftop confession and reassurance are played in rooftop-dates.test.ts.
+      const ownDates = dates.filter((date) => date.chapterId === cityId && date.kind === "normal");
       expect(main).toHaveLength(4);
       expect(ownDates).toHaveLength(6);
       expect(ownDates.every((date) => !isDateUnlockedForTravel(state, date.id))).toBe(true);

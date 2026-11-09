@@ -231,80 +231,91 @@
       "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_hotel_illustration"
+    },
+    "gt_bg_hotel_rooftop_night": {
+      "nameJa": "宿の屋上（夜）",
+      "captionJa": "宿の屋上（デリーの住宅街の夜景を用いたイメージ）",
+      "color": "#383932",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_hotel_rooftop_night",
+      "imagePosition": {
+        "x": 60,
+        "y": 80
+      }
     }
   },
   "memories": {
     "gt_delhi_date_india_gate_memory": {
-      "titleJa": "シャッターより早い言葉",
-      "descriptionJa": "インド門を背に、落ち着かない顔と閉じかけた目を残した。写真の前に交わした言葉も一緒に。"
+      "titleJa": "十三人目",
+      "descriptionJa": "インド門の芝生で、知らない家族の写真に、一人だけ顔立ちの違う人が入った。名前を探す祖母と、続いていく家族と。"
     },
     "gt_delhi_date_chandni_chowk_memory": {
-      "titleJa": "見るだけ、を言えた日",
-      "descriptionJa": "気に入った布にも、隣の人にも、自分の希望を伝えた。買い物袋は増えず、言えることが増えた。"
+      "titleJa": "バス、と言うまで",
+      "descriptionJa": "止まらない屋台の手と、乗り物の名前の「もう十分」。酸っぱくて辛い、緑の水。"
     },
     "gt_delhi_date_lodhi_garden_memory": {
-      "titleJa": "ベンチからお伝えします",
-      "descriptionJa": "廟の見えるベンチで、録音も観客もいない実況をした。休む顔と、格好をつける顔を見比べた。"
+      "titleJa": "笑う会の秘密",
+      "descriptionJa": "理由もなく笑う輪の中で、作り笑いが本物になった朝。胸の薔薇と、言えない秘密。"
     },
     "gt_delhi_date_agrasen_baoli_memory": {
-      "titleJa": "横へ一歩の探検",
-      "descriptionJa": "階段井戸を、下へ進まず横の見学路から眺めた。帰り道は、隣の手を借りた。"
+      "titleJa": "本物の悲鳴",
+      "descriptionJa": "百八段あるという階段の底で上げた、質問みたいな悲鳴と、本物の悲鳴。上りきっても減らなかった煩悩。"
     },
     "gt_delhi_date_lotus_temple_memory": {
-      "titleJa": "言わずに持って帰るもの",
-      "descriptionJa": "静かな礼拝堂を訪ね、感想をすべて言葉にしないまま並んで歩いた。"
+      "titleJa": "背中の字あて",
+      "descriptionJa": "白い花びらの静けさの中で、背中に書かれた五文字。点々が二つあったか、なかったか。"
     },
     "gt_delhi_date_bangla_sahib_memory": {
-      "titleJa": "後ろまで完成",
-      "descriptionJa": "頭を覆う布を確かめ直し、帰りには鞄のねじれを二人で直した。分かった顔だけでは終わらせなかった。"
+      "titleJa": "世界地図のローティー",
+      "descriptionJa": "誰のお腹に入ったか分からない、地図の形のローティー。四十年走った人の、街道の話。"
     },
     "gt_agra_date_mehtab_bagh_memory": {
-      "titleJa": "印を付けなかった場所",
-      "descriptionJa": "川向こうのタージを眺め、戻ると立ち位置が一歩違う気もした。地面に印を付けず、今日ここにいたことを覚えて帰る。"
+      "titleJa": "塀を越えたらアウト",
+      "descriptionJa": "タージを背にした空き地で、初めて最初に選ばれた日。本気で投げた一球。"
     },
     "gt_agra_date_akbar_tomb_memory": {
-      "titleJa": "門、すごい。の続き",
-      "descriptionJa": "アクバル廟で、知らないことを足さない解説に挑戦した。書き足したメモにも、最初の短い感想は残した。"
+      "titleJa": "猿との取引",
+      "descriptionJa": "ブラックバックの芝生と、見習いの猿との一騒動。読んでもらうことは、信じること。"
     },
     "gt_agra_date_ram_bagh_memory": {
-      "titleJa": "競争をやめた園路",
-      "descriptionJa": "ラム・バーグを遅く歩こうとして、普通に歩く方が楽だと笑った。見たい水路の先まで行き、競わず二人で戻った。"
+      "titleJa": "皇帝の不満リスト",
+      "descriptionJa": "メロンで泣いた皇帝の庭で、裏返した不満リスト。日本の味がしないのに懐かしいマギー。"
     },
     "gt_agra_date_chini_rauza_memory": {
-      "titleJa": "まだ続きのある一行",
-      "descriptionJa": "詩人の廟で、気取った一行が思いがけない会話になった。好きな青の位置を確かめ、詩の続きは決めずに帰った。"
+      "titleJa": "代役の二人",
+      "descriptionJa": "剥がれたタイルが少しだけ残る墓廟で、代役として膝をついた試し撮り。"
     },
     "gt_agra_date_mariam_tomb_memory": {
-      "titleJa": "右も左も、二人で",
-      "descriptionJa": "紹介文だけでは言い切れない希望を聞いた。右から見たかった建物も、左からの眺めも、二人で確かめた。"
+      "titleJa": "本当の名前",
+      "descriptionJa": "違う名前で呼ばれ続けた人の墓の前で、お互いの呼び方を確かめた。"
     },
     "gt_agra_date_guru_ka_taal_memory": {
-      "titleJa": "言葉で伝えた合図",
-      "descriptionJa": "貯水施設の歴史につながる砂岩の塔を見た。目配せだけでは伝わらなかったことを、帰りには言葉で確かめた。"
+      "titleJa": "寒い国へは、夏だけ",
+      "descriptionJa": "トラックの音の横で、父と息子のあいだの一人分の隙間が埋まった。伝言ではなく、自分の口で。"
     },
     "gt_jaipur_date_jal_mahal_memory": {
-      "titleJa": "我慢できなかった「今」",
-      "descriptionJa": "湖面の宮殿が揃う瞬間を待った。黙って眺めるより、見えたことを隣へ伝えたくなる時間だった。"
+      "titleJa": "手のひらに隠した名前",
+      "descriptionJa": "湖の宮殿を眺めながら、手のひらの模様に隠したもの。食べさせてもらった焼きとうもろこし。"
     },
     "gt_jaipur_date_nahargarh_fort_memory": {
-      "titleJa": "いつもの高さへ戻るまで",
-      "descriptionJa": "ナハルガル城で高さに足が止まった時、彼女が戻ってきてくれた。落ち着ける位置から町を眺め、帰り道はゆっくり歩いた。"
+      "titleJa": "同じ形の部屋",
+      "descriptionJa": "同じ形の部屋の迷路で探し合ったかくれんぼ。廊下ではなく、正面から。"
     },
     "gt_jaipur_date_albert_hall_memory": {
-      "titleJa": "予想の外に残ったもの",
-      "descriptionJa": "細密画や金工を見て回り、庭園で感想を話した。相手の好みを分かった顔で決めず、続きを聞きたいと思った。"
+      "titleJa": "ミイラより鳩",
+      "descriptionJa": "トゥトゥに会いに下りた階段と、怖いと言えた女の子。広場を埋める鳩。"
     },
     "gt_jaipur_date_jaigarh_fort_memory": {
-      "titleJa": "国の向きを直して",
-      "descriptionJa": "ジャイガル城で案内図を逆に持った城主は、旅人へ戻った。冗談も本音も、相手に聞こえる所から伝えた。"
+      "titleJa": "最後のバツ印",
+      "descriptionJa": "宝の地図の最後のバツ印で飲んだ、濃くて甘いチャイ。見つからない宝。"
     },
     "gt_jaipur_date_johari_bazaar_memory": {
-      "titleJa": "売買はしなかった店先",
-      "descriptionJa": "腕飾りを買わずに店を出た。似合うと言われたい気持ちと、自分で選びたい気持ちを話した。"
+      "titleJa": "欲しいものは、欲しいと",
+      "descriptionJa": "自分で選んで、欲しいと言って買った腕輪の、からんという音。"
     },
     "gt_jaipur_date_panna_meena_kund_memory": {
-      "titleJa": "悔しい顔も一緒に",
-      "descriptionJa": "階段井戸の周縁で線をたどり、見間違いに悔しがった。勝ちたい気持ちと、一緒に楽しみたい気持ちを話した。"
+      "titleJa": "文字どおりの井戸端会議",
+      "descriptionJa": "同じ階段では戻れない井戸のふちで、旅の噂話。最後の噂は、二人のこと。"
     }
   }
 }

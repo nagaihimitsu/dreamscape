@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "flags": [
+    {
+      "id": "gt_agra_rain_on_lawn",
+      "noteJa": "アクバル廟で、猿に盗まれた雨の匂いの小瓶が割れ、ブラックバックのいる芝生にこぼれた（追いかけた・待った）"
+    },
+    {
+      "id": "gt_agra_said_for_now",
+      "noteJa": "ラーム・バーグの茶屋で「新婚じゃありません。……今のところは」と答えた"
+    },
+    {
+      "id": "gt_agra_sat_between",
+      "noteJa": "グル・カ・タールで、父と息子の間の一人分の隙間に座った"
+    },
+    {
+      "id": "gt_delhi_back_word_secret",
+      "noteJa": "ロータス寺院で、背中に書かれた五文字を「読めなかった」と答えた（告白の前に彼女が明かす）"
+    },
+    {
+      "id": "gt_delhi_baoli_player_pigeon",
+      "noteJa": "アグラセン・キ・バオリの撮り直しで、主人公が鳩の役をした"
+    },
+    {
+      "id": "gt_delhi_bas_for_her",
+      "noteJa": "チャンドニー・チョークで、彼女の代わりに主人公が「バス」と言った"
+    },
+    {
+      "id": "gt_delhi_golgappa_sick",
+      "noteJa": "ゴルガッパの最後の一つで、どちらかがお腹を壊した（翌朝の宿の差し込みが出る）"
+    },
+    {
+      "id": "gt_delhi_harbans_fear_told",
+      "noteJa": "バングラー・サーヒブで、ハルバンスがカナダへ行かない本当の理由を話した"
+    },
+    {
+      "id": "gt_delhi_heroine_sick",
+      "noteJa": "最後の一つを彼女に譲り、彼女がお腹を壊した（その夜の宿の差し込み）"
+    },
+    {
+      "id": "gt_delhi_lotus_made_her_laugh",
+      "noteJa": "ロータス寺院で、背中に「じぶんも」と書き返して、彼女を笑わせた"
+    },
+    {
+      "id": "gt_delhi_monu_zoom",
+      "noteJa": "インド門で、モヌの携帯の望遠で名前を探した"
+    },
+    {
+      "id": "gt_delhi_photo_both_in",
+      "noteJa": "インド門で写真屋を呼び、二人とも家族の写真に入った（デートの後の差し込みで写真をもらう）"
+    },
+    {
+      "id": "gt_delhi_player_sick",
+      "noteJa": "最後の一つを主人公が食べ、主人公がお腹を壊した（その夜の宿の差し込み）"
+    },
+    {
+      "id": "gt_delhi_said_bas",
+      "noteJa": "チャンドニー・チョークで、彼女が自分で「バス」と言えた（耳打ち・二人で）"
+    },
+    {
+      "id": "gt_delhi_suresh_encouraged",
+      "noteJa": "ローディー・ガーデンで、スレーシュに笑う会の写真をメヘルさんに送ってみたらと勧めた"
+    },
+    {
+      "id": "gt_delhi_suresh_kept_secret",
+      "noteJa": "ローディー・ガーデンで、スレーシュの秘密を守った（今日も誰にも会っていない・ミーナさんに聞く）"
+    },
+    {
+      "id": "gt_jaipur_mehndi_her_secret",
+      "noteJa": "メヘンディの模様に何を隠すかを、彼女に任せた（その夜と翌朝に分かる）"
+    },
+    {
+      "id": "gt_jaipur_mehndi_his_name",
+      "noteJa": "メヘンディの模様に、主人公の名前を隠した"
+    },
+    {
+      "id": "gt_jaipur_raju_guided",
+      "noteJa": "ジャイガル砦で地図を買わず、ラージューが自分で案内した"
+    }
+  ],
+  "people": []
+}

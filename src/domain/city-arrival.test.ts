@@ -11,7 +11,7 @@ import { journeyStorage } from "../persistence/journey-storage";
 const withoutScene = ({ revision: _revision, activeEpilogue: _scene, ...game }: GameState) => game;
 
 describe("city arrival conversations", () => {
-  it.each(["delhi", "agra", "jaipur"])("saves and resumes every %s boundary without any reward, relationship or clock change", (cityId) => {
+  it.each(["delhi", "agra", "jaipur"])("saves and resumes every %s boundary without any reward, relationship or clock change (Delhi's gives Kamla's memo at its end)", (cityId) => {
     const initial = createGame("旅人", "同行者", { journeyId: "golden_triangle" });
     const { travelSettings } = getCityContent(cityId);
     const state = { ...initial, currentCityId: cityId, travel: { ...initial.travel,
@@ -36,7 +36,9 @@ describe("city arrival conversations", () => {
       const prior = current;
       current = advanceCityEpilogue(current, current.revision);
       expect(current.revision).toBe(prior.revision + 1);
-      expect(withoutScene(current)).toEqual(withoutScene(state));
+      // The Delhi arrival's knot head gives Kamla's memo once, when the conversation ends (# on_done: item).
+      const given: GameState["inventory"] = !current.activeEpilogue && cityId === "delhi" ? { gt_delhi_kamla_memo: "held" } : {};
+      expect(withoutScene(current)).toEqual(withoutScene({ ...state, inventory: { ...state.inventory, ...given } }));
       expect(saveGame(storage, current).ok).toBe(true);
       const loaded = loadGame(storage);
       expect(loaded).toEqual({ status: "loaded", state: current });

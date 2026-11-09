@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { japaneseText as japanese } from "./text-language";
 import { conditionSchema } from "./condition-schemas";
+import { storyAddressSchema } from "./story-address";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 
@@ -18,10 +19,8 @@ export const episodeSchema = z
      * its city played). content:build stops when both are written (check 7).
      */
     when: conditionSchema.optional(),
-    epilogueStoryId: z
-      .string()
-      .regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/)
-      .optional(),
+    /** A one-scene file (`epilogues/<city>`) or a place file's epilogue knot (`places/<file>.<knot>`; stage 3). */
+    epilogueStoryId: storyAddressSchema.optional(),
     battleId: id,
     titleJa: japanese,
     descriptionJa: japanese,
