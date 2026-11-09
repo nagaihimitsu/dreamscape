@@ -9,8 +9,8 @@ afterEach(removeFixtures);
 describe("city editing bundle: new cities and journey folders", () => {
   it("requires a registered journey and complete input before creating a new prototype city", async () => {
     const root = fixture();
-    expect(() => newCityBundle(root, "unregistered_city")).toThrow("Register city unregistered_city in exactly one journey before creating its bundle");
-    expect(() => newCityBundle(root, "delhi")).toThrow("City already exists: delhi");
+    expect(() => newCityBundle(root, "unregistered_city")).toThrow("都市 unregistered_city は、ちょうど1つの旅行編の manifest.json の cities に登録してから使います。");
+    expect(() => newCityBundle(root, "delhi")).toThrow("都市 delhi はもうあります");
     for (const unsafeId of ["constructor", "prototype", "__proto__"]) {
       registerJourney(root, { id: "unsafe_test", nameJa: "試験", status: "preparing",
         cities: [{ id: unsafeId, nameJa: "試験" }],
@@ -45,7 +45,7 @@ describe("city editing bundle: new cities and journey folders", () => {
     expect(readJson(root, newFiles[1])).toEqual(template.travel);
     expect(read(root, milan)).toBe(beforeMilan);
     expect(read(root, delhi)).toBe(beforeDelhi);
-    expect(() => newCityBundle(root, "testcity")).toThrow("City already exists: testcity");
+    expect(() => newCityBundle(root, "testcity")).toThrow("都市 testcity はもうあります");
   }, 180_000);
 
   it("edits a city of a journey folder only there, creating the folder's missing catalogs", async () => {
@@ -86,7 +86,7 @@ describe("city editing bundle: new cities and journey folders", () => {
     shared.travel.places[0].backgroundId = coreBackground[0];
     delete shared.backgrounds.testcity_hotel_bg;
     shared.backgrounds[coreBackground[0]] = { ...(coreBackground[1] as object), captionJa: "他の層の背景を変えてはならない" } as typeof shared.backgrounds[string];
-    await expect(applyCityBundle(root, shared, true)).rejects.toThrow(/Cannot change another city's or shared background/);
+    await expect(applyCityBundle(root, shared, true)).rejects.toThrow(/ほかの都市の背景や共有の背景は変えられません/);
     expect(filesOutside(root, testLayer)).toEqual(others);
   }, 180_000);
 
@@ -144,13 +144,13 @@ describe("city editing bundle: new cities and journey folders", () => {
     // One bundle writes one layer: never a journey folder and the core layer together.
     const core = "content/romance/presentation.json";
     expect(() => writeCityBundleFiles(root, { [city]: null, [core]: read(root, core) }, { [city]: "new", [core]: `${read(root, core)}\n` }, before))
-      .toThrow("Invalid city bundle file set");
+      .toThrow("書き込むファイルの組が正しくありません");
     expect(() => writeCityBundleFiles(root, { "content/journeys/unknown_journey/cities/testcity.json": null },
-      { "content/journeys/unknown_journey/cities/testcity.json": "new" }, before)).toThrow("Invalid city bundle file set");
+      { "content/journeys/unknown_journey/cities/testcity.json": "new" }, before)).toThrow("書き込むファイルの組が正しくありません");
     // A new city's files belong to its own journey's layer, not to another registered one.
     for (const layer of [otherLayer, "content"]) {
       const file = `${layer}/cities/testcity.json`;
-      expect(() => writeCityBundleFiles(root, { [file]: null }, { [file]: "new" }, before), layer).toThrow("Invalid city bundle file set");
+      expect(() => writeCityBundleFiles(root, { [file]: null }, { [file]: "new" }, before), layer).toThrow("書き込むファイルの組が正しくありません");
     }
     expect(fingerprint(root)).toBe(before);
   }, 180_000);

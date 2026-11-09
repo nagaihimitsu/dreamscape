@@ -107,7 +107,7 @@ describe("city editing bundle: routes, export and atomic writes", () => {
     const before = fingerprint(root);
     const brokenSource = exportEditableCityBundle(root, "milano");
     brokenSource.travel.routes[0].sourceRef = "missing_source";
-    await expect(applyCityBundle(root, brokenSource, true)).rejects.toThrow("Unknown route source: missing_source");
+    await expect(applyCityBundle(root, brokenSource, true)).rejects.toThrow("経路の出典ID（sourceRef）が routeSources にありません: missing_source");
     expect(fingerprint(root)).toBe(before);
 
     const duplicate = exportEditableCityBundle(root, "milano");
@@ -115,7 +115,7 @@ describe("city editing bundle: routes, export and atomic writes", () => {
     const reverse = { ...shared, fromPlaceId: shared.toPlaceId, toPlaceId: shared.fromPlaceId };
     delete reverse.bothDirections;
     duplicate.travel.routes.push(reverse);
-    await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow("Duplicate directed route: p_galleria:p_duomo:walk");
+    await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow("同じ向き・同じ乗り物の経路が2つあります: p_galleria:p_duomo:walk");
     expect(fingerprint(root)).toBe(before);
 
     const missingPlace = exportEditableCityBundle(root, "milano");
@@ -142,7 +142,7 @@ describe("city editing bundle: routes, export and atomic writes", () => {
     }
     await applyCityBundle(root, exportCityBundle(root, "delhi"));
     expect(fingerprint(root)).toBe(before);
-    expect(() => exportCityBundle(root, "unknown_city")).toThrow("Register city unknown_city in exactly one journey before creating its bundle");
+    expect(() => exportCityBundle(root, "unknown_city")).toThrow("都市 unknown_city は、ちょうど1つの旅行編の manifest.json の cities に登録してから使います。");
   }, 180_000);
 
   it("rolls back earlier writes if a later file cannot be replaced", () => {

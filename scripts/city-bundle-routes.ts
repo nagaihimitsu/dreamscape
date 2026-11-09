@@ -34,13 +34,13 @@ const routeDetails = (route: TravelRoute) => {
 
 /** This also accepts an intentionally incomplete new-city template with no routes. */
 export function compactTravel(raw: unknown): unknown {
-  if (!raw || typeof raw !== "object" || Array.isArray(raw)) throw new Error("Invalid travel document");
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) throw new Error("travel の形が違います（JSON のオブジェクトにします）。");
   const value = raw as Record<string, unknown>;
-  if (!Array.isArray(value.routes) || !Array.isArray(value.places)) throw new Error("Invalid travel routes or places");
+  if (!Array.isArray(value.routes) || !Array.isArray(value.places)) throw new Error("travel には routes と places の配列が要ります。");
   const routes = value.routes.map((route) => travelRouteSchema.parse(route));
   const byKey = new Map<string, TravelRoute>();
   for (const route of routes) {
-    if (byKey.has(key(route))) throw new Error(`Duplicate directed route: ${key(route)}`);
+    if (byKey.has(key(route))) throw new Error(`同じ向き・同じ乗り物の経路が2つあります: ${key(route)}`);
     byKey.set(key(route), route);
   }
   const routeSources: Record<string, RouteSource> = {};
@@ -88,13 +88,13 @@ export function expandTravel(raw: unknown, baseline: readonly TravelRoute[] = []
   const routes: TravelRoute[] = [];
   const seen = new Set<string>();
   const sources = (reference: string): RouteSource => {
-    if (!Object.hasOwn(compact.routeSources, reference)) throw new Error(`Unknown route source: ${reference}`);
+    if (!Object.hasOwn(compact.routeSources, reference)) throw new Error(`経路の出典ID（sourceRef）が routeSources にありません: ${reference}`);
     return structuredClone(compact.routeSources[reference]);
   };
   const add = (rawRoute: unknown) => {
     const route = travelRouteSchema.parse(rawRoute);
     const routeKey = key(route);
-    if (seen.has(routeKey)) throw new Error(`Duplicate directed route: ${routeKey}`);
+    if (seen.has(routeKey)) throw new Error(`同じ向き・同じ乗り物の経路が2つあります: ${routeKey}`);
     seen.add(routeKey); routes.push(route);
   };
   if (compact.samePlaceRoute) {
