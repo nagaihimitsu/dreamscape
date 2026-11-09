@@ -2,21 +2,81 @@
    so the sticky journey bar stays on top (and tappable) when the map scrolls
    under it. */
 .travel-map-preview { position: relative; isolation: isolate; }
+.travel-map-frame { width: 100%; height: clamp(170px, 26vh, 210px); border-radius: 10px; background: #e8ece8; }
+/* F8: 「大きく」 in the frame's top-right corner (10-px insets like Leaflet's zoom
+   column), above the markers (Leaflet's controls are at 1000 too). */
 .travel-map-expand {
   position: absolute;
-  z-index: 500;
-  top: 8px;
-  right: 8px;
-  width: auto;
+  z-index: 1000;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 44px;
   min-height: 44px;
-  padding: 6px 10px;
-  border: 1px solid #aab4aa;
-  border-radius: 4px;
-  background: #fff;
-  color: #273c31;
+  margin: 0;
+  padding: 3px 2px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
   font: inherit;
-  font-size: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
   cursor: pointer;
+}
+.travel-map-expand .icon { width: 18px; height: 18px; color: var(--ds-slate-800); }
+/* The legend names each mark by its shape (§3.5); each item stays whole. */
+.travel-map-legend { display: flex; flex-wrap: wrap; gap: 0 12px; margin: 0; font-size: 12px; font-weight: 500; line-height: 1.4; }
+.travel-map-legend > span { white-space: nowrap; }
+.travel-map-legend-glyph { color: var(--ds-marker); }
+.free-time-hub .travel-map-notes > :last-child:not(.travel-map-error) { padding-bottom: 6px; }
+.travel-map-error,
+.travel-map-selected { margin: 4px 0 0; font-size: 13px; line-height: 1.5; }
+.travel-map-places { margin: 0; font-size: 13px; }
+.travel-map-places summary { min-height: 44px; padding: 10px 0; cursor: pointer; }
+.travel-map-places label { display: flex; gap: 8px; align-items: center; }
+.travel-map-places select { flex: 1; min-width: 0; min-height: 44px; font: inherit; }
+.leaflet-container .leaflet-control-zoom { border: 1.5px solid var(--ds-slate-800); border-radius: 12px; overflow: hidden; }
+
+/* Free time (§3.4): the map block is the part that stays under the header while
+   the list scrolls (z 3 over the rows, with an opaque background including its
+   bottom padding, so no row shows or is pressed through it). Its frame's height
+   follows the visible height (svh: the collapsing address bar never resizes
+   Leaflet while scrolling), between 140 and 210 px, keeping about 264 px of list. */
+.free-time-hub .travel-map {
+  position: sticky;
+  z-index: 3;
+  top: var(--hud-h, 96px);
+  margin: 0;
+  padding: 0 0 8px;
+  border-radius: 16px 16px 0 0;
+  background: var(--ds-parchment);
+}
+.free-time-hub[data-map-sticky="false"] .travel-map { position: relative; top: auto; }
+.free-time-hub .travel-map-frame {
+  height: clamp(140px, calc(100svh - var(--hud-h, 96px) - var(--bottom-h, 60px) - 272px), 210px);
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 16px 16px 10px 10px;
+}
+.free-time-hub .travel-menu > .travel-map + .travel-map-notes { margin-top: -8px; }
+/* No bottom padding under the tile error: the unscrolled first row must clear the
+   band at 320×568 and 375×553 (§3.4's arithmetic, measured). */
+.free-time-hub .travel-map-notes {
+  padding: 0 12px;
+  border-radius: 0 0 16px 16px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+}
+.free-time-hub .travel-map-places {
+  padding: 0 12px;
+  border-radius: 12px;
+  background: var(--ds-parchment);
 }
 dialog.modal.travel-map-modal {
   width: min(760px, calc(100% - 24px));

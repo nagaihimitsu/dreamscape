@@ -1,45 +1,106 @@
+/* Free time (UI redesign §3.4): the city's picture behind the screen, and every
+   text on its own opaque card (§2.4). The picture shows under the
+   semi-transparent header, in the side gutters and between the cards. */
+.app-shell.free-time-active { background: transparent; }
+/* Wide screens keep the site's header lines; they sit on their own paper. */
+.free-time-active > .masthead,
+.free-time-active > .journey-stage,
+.free-time-active > footer { background: var(--paper); }
+
+/* A fixed layer under the page's flow (no ancestor makes a stacking context in
+   free time, so z-index -1 places it under every card and over the canvas only).
+   Its height is the largest viewport's, so a collapsing address bar never
+   resizes it while the page scrolls. */
+.free-time-backdrop {
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100lvh;
+  background: linear-gradient(var(--ds-parchment-2), var(--ds-parchment));
+  pointer-events: none;
+}
+.free-time-backdrop img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.free-time-backdrop:not(.is-plain)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 24, 32, 0.25);
+}
+
 .free-time-hub {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   width: 100%;
   max-width: 680px;
   margin: 0 auto;
+  padding: 8px 16px 24px;
+  color: var(--ds-ink);
 }
 
-.free-time-hub .city-progress {
-  max-width: none;
-  margin: 14px 0 0;
-  padding: 0 0 8px;
-  border: 0;
-  border-bottom: 1px solid var(--line);
+/* The screen's heading, drawn as the map notebook's banner: a ribbon with no
+   edge and no chevron (display-only, §2.3). */
+.free-time-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  margin: 0;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background: var(--ds-parchment-2);
+  color: var(--ds-ink);
+  box-shadow: var(--ds-pill-shadow);
+  font-family: "Noto Serif JP", serif;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+}
+.free-time-banner span { min-width: 0; overflow-wrap: anywhere; }
+.free-time-banner .icon { flex: none; width: 20px; height: 20px; color: var(--ds-ink-muted); }
+.free-time-banner .free-time-banner-plane { margin-left: auto; color: var(--ds-gold); }
+.free-time-banner:focus { outline: none; }
+.free-time-banner:focus-visible { outline: 3px solid var(--ds-focus); box-shadow: 0 0 0 6px var(--ds-slate-900); }
+@media (max-width: 379px) {
+  .free-time-banner .free-time-banner-plane { display: none; }
 }
 
-.free-time-hub .next-destination {
-  padding: 6px 0 0;
-}
-
-.free-time-hub .next-destination h3 {
-  margin: 3px 0 6px;
-  font-size: 16px;
-  line-height: 1.5;
-}
-
-.free-time-hub .next-destination > p:not(.eyebrow):not(.fine-print) {
-  margin: 0 0 8px;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.free-time-hub .next-destination .fine-print {
-  display: none;
-}
-
-.free-time-hub .city-records summary {
+/* F2 「エピローグを読む」: the screen's primary action when the city is finished. */
+.free-time-hub .city-progress { max-width: none; margin: 0; padding: 0; border: 0; }
+.free-time-hub .city-complete .secondary {
+  margin: 0;
   min-height: 44px;
-  padding: 10px 0;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 12px;
+  background: var(--ds-slate-800);
+  color: var(--ds-on-slate);
+  font-size: 15px;
+  font-weight: 600;
 }
+
+/* F20–F22: the remaining actions of the city, one card without a heading. */
+.free-time-extras {
+  display: grid;
+  gap: 8px;
+  padding: 8px 12px 12px;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 16px;
+  background: var(--ds-parchment);
+  box-shadow: var(--ds-card-shadow);
+}
+.free-time-extras > .secondary { margin: 0; min-height: 44px; }
 
 .free-time-hub .pending-rewards {
   max-width: none;
-  margin: 14px 0;
+  margin: 0;
 }
 
 .free-time-hub .pending-rewards-compact {
@@ -76,12 +137,77 @@
   padding: 10px 0;
 }
 
-@media (max-width: 600px) {
-  .free-time-active .free-time-hub {
-    padding: 14px 16px 20px;
-  }
+/* The page ends above the bottom band (its measured height, --bottom-h). */
+.app-shell.free-time-active { padding-bottom: var(--bottom-h, 60px); }
 
-  .free-time-active .free-time-hub .city-progress {
-    padding: 0 0 8px;
+/* 「写真の出典」 (§3.4 item 6): a pressable rectangle on its own parchment. */
+.free-time-credits-open {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  margin: 0;
+  padding: 4px 14px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+.free-time-credits-open .icon { width: 18px; height: 18px; }
+dialog.modal.photo-credits-modal { width: min(560px, calc(100% - 24px)); max-height: calc(100dvh - 24px); padding: 16px; }
+.photo-credits-modal .travel-choice-header h2 { margin: 0; font-size: 18px; }
+.photo-credits-modal .travel-choice-header button { flex: none; width: auto; min-height: 44px; margin: 0; padding: 8px 12px; }
+.photo-credits-list { display: grid; gap: 12px; margin: 8px 0 0; padding: 0; list-style: none; }
+.photo-credits-list li { display: flex; gap: 12px; align-items: flex-start; padding-top: 12px; border-top: 1px solid var(--ds-parchment-line); }
+.photo-credits-list img { flex: none; width: 96px; height: 64px; border-radius: 6px; object-fit: cover; }
+.photo-credits-list div { min-width: 0; }
+.photo-credits-list h3 { margin: 0 0 4px; font-size: 14px; font-weight: 600; }
+.photo-credits-list p { margin: 2px 0; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+
+/* The visible height with the browser's bars shown, measured by FreeTimeHub. */
+.free-time-svh-probe {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100svh;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Phones held sideways (§3.4): the map on the left (40 %, as tall as the space
+   between the header and the band, sticky), the notes and the list on the right. */
+@media (orientation: landscape) and (max-height: 559px) {
+  /* As on narrow phones (styles.css), the site's header lines give their height to the screen. */
+  .free-time-active > .masthead,
+  .free-time-active > .journey-stage,
+  .free-time-active > footer { display: none; }
+  .free-time-hub { max-width: none; }
+  .free-time-hub .travel-menu {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    column-gap: 8px;
+    row-gap: 0;
+    align-items: start;
+  }
+  .free-time-hub .travel-menu > * { grid-column: 2; margin-bottom: 8px; }
+  .free-time-hub .travel-menu > .travel-map {
+    grid-column: 1;
+    grid-row: 1 / span 30;
+    padding: 0;
+    border-radius: 16px;
+  }
+  .free-time-hub .travel-menu > .travel-map + .travel-map-notes { margin-top: 0; border-radius: 16px; padding-top: 6px; }
+  .free-time-hub .travel-map-frame {
+    height: calc(100svh - var(--hud-h, 52px) - var(--bottom-h, 60px) - 16px);
+    border-radius: 16px;
   }
 }
+
+/* In free time the list scrolls under the header (and under the stuck map's
+   top edge); the translucent chip background let that text show through.
+   Free time gets the opaque base so the header stays readable at any text size. */
+.app-shell.free-time-active .journey-hud { background: var(--ds-slate-900); }

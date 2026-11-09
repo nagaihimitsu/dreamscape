@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { dates, episodes, journeyConfig, getCityContent } from "../../content";
+import { dates, episodes, journeyConfig, getCityContent, presentation } from "../../content";
 import { formatMoneyForCity } from "../../content/currency";
 import { getJourneyForCity } from "../../content/journeys";
 import type { TravelPlace, TravelRoute } from "../../content/travel-schemas";
@@ -8,7 +8,10 @@ import { getDirection } from "../../domain/travel";
 import { getTravelEventAvailability, getTravelEventDefinition } from "../../domain/travel-game";
 import { getTravelDestinations, type TravelDestinationPlace } from "../../domain/travel-destinations";
 import { compareRouteTime } from "../../domain/travel-routes";
+import { Icon } from "../../components/icons";
 import { Modal } from "../../components/Modal";
+import { derivedImagePath } from "../../content/derived-images";
+import { getPlacePhoto } from "../../content/place-photo";
 import { withNames } from "../romance/names";
 import { PlaceMap } from "./PlaceMap";
 import { TravelRentals } from "./TravelRentals";
@@ -44,10 +47,12 @@ export function TravelMenu({ game, onTravelEvent, onRent }: {
   return <section className="travel-menu" aria-label={`${city.nameJa}の行き先`} data-testid="travel-menu">
     {game.travel.returnReserve > 0 && <p className="travel-reserve">帰路用に{formatMoneyForCity(game.currentCityId, game.travel.returnReserve)}を確保（所持金に含む）</p>}
     <TravelRentals game={game} onRent={onRent} />
-    <PlaceMap game={game} events={candidates} />
-    {nearby.length === 0 && <p>今すぐ行ける場所はありません。時間を待つか、滞在先で休めます。</p>}
-    <div className="travel-list">{nearby.map((place) => <Destination key={place.id} place={place} game={game} current={current} recommended={place.id === recommendedMainId} onSelect={() => selectPlace(place)} />)}</div>
-    {other.length > 0 && <details open={showOther} onToggle={(event) => setShowOther(event.currentTarget.open)}><summary>ほかの行き先を見る</summary><div className="travel-list">{other.map((place) => <Destination key={place.id} place={place} game={game} current={current} onSelect={() => selectPlace(place)} />)}</div></details>}
+    <PlaceMap game={game} events={candidates}><div className="travel-list-card">
+      <h2>近くの行き先</h2>
+      {nearby.length === 0 && <p>今すぐ行ける場所はありません。時間を待つか、滞在先で休めます。</p>}
+      <div className="travel-list">{nearby.map((place) => <Destination key={place.id} place={place} game={game} current={current} recommended={place.id === recommendedMainId} onSelect={() => selectPlace(place)} />)}</div>
+      {other.length > 0 && <details className="travel-other" open={showOther} onToggle={(event) => setShowOther(event.currentTarget.open)}><summary>ほかの行き先を見る<Icon name="chevron-down" /></summary><div className="travel-list">{other.map((place) => <Destination key={place.id} place={place} game={game} current={current} onSelect={() => selectPlace(place)} />)}</div></details>}
+    </div></PlaceMap>
     {selectedPlace && <Modal labelledBy="travel-events-title" className="travel-choice-modal" onClose={() => setSelectedPlaceId(null)}>
       <div className="travel-choice-header"><h2 id="travel-events-title">{selectedPlace.events[0].place.nameJa}のイベント</h2><button type="button" className="secondary" onClick={() => setSelectedPlaceId(null)}>閉じる</button></div>
       <div className="travel-event-list">{selectedPlace.events.map((event) => {
@@ -89,13 +94,30 @@ function Destination({ place, game, current, recommended, onSelect }: {
   const onlyRoute = routes.length === 1 ? routes[0] : undefined;
   const fastestRoute = event.walkMinutes === null ? [...routes].sort(compareRouteTime)[0] : undefined;
   const shownRoute = onlyRoute ?? fastestRoute ?? routes.find((route) => route.mode === "walk");
-  return <article className="travel-destination" data-testid={`travel-place-${place.id}`}>
+  const meta = `${onlyRoute ? `${transportLabel(game.currentCityId, onlyRoute.mode)}約${onlyRoute.minutes}分 · ${formatMoneyForCity(game.currentCityId, onlyRoute.cost)}` : fastestRoute ? `${transportLabel(game.currentCityId, fastestRoute.mode)}約${fastestRoute.minutes}分` : `徒歩約${event.walkMinutes}分`}${shownRoute?.transferNote ? `（${shownRoute.transferNote}）` : ""}${shownRoute?.estimation === "game_model" ? "（ゲーム内の推定）" : ""}${event.walkMinutes === null ? " · 徒歩の所要時間不明" : ""}（${direction}）${place.events.length === 1 && apCost ? ` · ${apCost} AP` : ""}${place.events.length === 1 && event.admissionCost ? ` · 入場料 ${formatMoneyForCity(game.currentCityId, event.admissionCost)}（2人分・ゲーム設定）` : ""}`;
+  return <article className={`travel-destination${place.available ? "" : " is-unavailable"}`} data-testid={`travel-place-${place.id}`}>
     <button type="button" className="travel-destination-button" onClick={onSelect}>
-      <span className="travel-category">{categories.has("main") && "◇ 観光"}{categories.size > 1 && " · "}{categories.has("date") && "♡ デート"}</span>
-      <span className="travel-destination-title">{event.place.nameJa}</span>
-      <span className="travel-destination-meta">{onlyRoute ? `${transportLabel(game.currentCityId, onlyRoute.mode)}約${onlyRoute.minutes}分 · ${formatMoneyForCity(game.currentCityId, onlyRoute.cost)}` : fastestRoute ? `${transportLabel(game.currentCityId, fastestRoute.mode)}約${fastestRoute.minutes}分` : `徒歩約${event.walkMinutes}分`}{shownRoute?.transferNote && `（${shownRoute.transferNote}）`}{shownRoute?.estimation === "game_model" && "（ゲーム内の推定）"}{event.walkMinutes === null && " · 徒歩の所要時間不明"}（{direction}）{place.events.length === 1 && apCost ? ` · ${apCost} AP` : ""}{place.events.length === 1 && event.admissionCost ? ` · 入場料 ${formatMoneyForCity(game.currentCityId, event.admissionCost)}（2人分・ゲーム設定）` : ""}</span>
-      {recommended && <small>おすすめ</small>}
-      {!place.available && <small>{event.unavailableReason || "今は行けません。"}</small>}
+      <PlaceThumbnail game={game} place={event.place} glyph={categories.has("main") ? "◇" : "♡"} />
+      <span className="travel-destination-text">
+        <span className="travel-destination-head">
+          <span className="travel-category">{categories.has("main") && "◇ 観光"}{categories.size > 1 && " · "}{categories.has("date") && "♡ デート"}</span>
+          {recommended && <small className="travel-recommended">おすすめ</small>}
+        </span>
+        <span className="travel-destination-title"><span>{event.place.nameJa}</span><Icon name="chevron-right" /></span>
+        <span className="travel-destination-meta">{meta}</span>
+        {!place.available && <small className="travel-destination-reason">{event.unavailableReason || "今は行けません。"}</small>}
+      </span>
     </button>
   </article>;
+}
+
+/**
+ * The row's photo (UI redesign §3.6): the reduced `card` copy of the place's
+ * registered photo, or a plain tile in the place's background colour with the
+ * category mark. Decorative (the name is beside it); its credit is in 「写真の出典」.
+ */
+function PlaceThumbnail({ game, place, glyph }: { game: GameState; place: TravelPlace; glyph: string }) {
+  const photo = getPlacePhoto(game.currentCityId, place.id);
+  if (photo) return <img className="travel-thumb" src={`${import.meta.env.BASE_URL}${derivedImagePath(photo, "card")}`} alt="" width={64} height={43} loading="lazy" decoding="async" />;
+  return <span className="travel-thumb is-plain" style={{ backgroundColor: presentation.backgrounds[place.backgroundId]?.color }} aria-hidden="true">{glyph}</span>;
 }
