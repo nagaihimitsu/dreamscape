@@ -16,10 +16,10 @@ export function dialogueObstructed(): boolean {
  * something lies over the scene there: all that dialogueObstructed counts, a
  * non-modal dialog such as the header's held-item detail (`role="dialog"`,
  * rendered only while open; a tap anywhere beside it closes it), and the travel
- * transition's card in the middle of the screen (TravelTransition: its overlay
- * lets taps through to the scene that has just started under it, so a tap on the
- * picture of the move would read that scene on; the rest of the scene stays in
- * view and takes taps as usual). Pointer taps only (useSceneTap): the detail and
+ * transition's card in the middle of the screen (TravelTransition). The transition's
+ * and the time passage's overlays take every pointer tap while they show (UI redesign
+ * H22: a double tap on a destination ends on them and reads nothing on); the card
+ * check stays for a tap that went down on the card as the overlay went away. Pointer taps only (useSceneTap): the detail and
  * the transition leave the keyboard, the typewriter and the auto-advance as they are.
  */
 export function tapsObstructed(point: { x: number; y: number }): boolean {

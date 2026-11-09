@@ -4,7 +4,8 @@
   inset: 0;
   display: grid;
   place-items: center;
-  pointer-events: none;
+  /* Takes stray taps while it shows (a double tap on a destination never reaches the next scene, §3.3 H22). */
+  pointer-events: auto;
   animation: time-passage-overlay 2.8s ease both;
 }
 .time-passage-sky {

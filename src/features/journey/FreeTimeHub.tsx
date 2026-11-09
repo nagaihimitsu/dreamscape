@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, type KeyboardEvent } from "react";
 import { getCityContent } from "../../content";
 import type { TravelRoute } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
@@ -10,6 +10,7 @@ import { PendingRewards } from "./PendingRewards";
 import { freeTimePhotos, PhotoCredits } from "./PhotoCredits";
 import { TravelActions } from "./TravelActions";
 import { TravelMenu } from "./TravelMenu";
+import { useTravelSelection } from "./useTravelSelection";
 import "./free-time-hub.css";
 
 /**
@@ -47,8 +48,26 @@ export function FreeTimeHub({
   const photos = useMemo(() => freeTimePhotos(game), [game]);
   const layout = useFreeTimeLayout();
   const extras = game.pendingApRewards.length > 0 || !!nextCityName;
+  // One selection for the list, both maps and the band's 休む (§3.5).
+  const selection = useTravelSelection(game, { onTravelEvent, onTravelSleep });
+  // Esc (outside a dialog) closes an open 待機 menu first, then clears the selection; focus goes to its name.
+  function onKeyDown(event: KeyboardEvent<HTMLElement>) {
+    if (event.key !== "Escape" || (event.target as Element).closest("dialog")) return;
+    const hub = event.currentTarget;
+    const wait = hub.querySelector("details.travel-wait[open]");
+    if (wait) {
+      wait.removeAttribute("open");
+      hub.querySelector<HTMLElement>(".travel-wait summary")?.focus();
+      return;
+    }
+    const cleared = selection.clear();
+    if (!cleared) return;
+    const name = cleared.kind === "sleep" ? hub.querySelector<HTMLElement>(".travel-sleep-toggle")
+      : hub.querySelector<HTMLElement>(`[data-testid="travel-place-${cleared.placeId}"] .travel-destination-button`);
+    name?.focus({ preventScroll: true });
+  }
   return (
-    <section className="free-time-hub" data-testid="free-time-hub" ref={layout}>
+    <section className="free-time-hub" data-testid="free-time-hub" ref={layout} onKeyDown={onKeyDown}>
       <FreeTimeBackdrop cityId={game.currentCityId} />
       {/* The screen's heading, drawn as the map notebook's banner (not pressable: no edge, no chevron). */}
       <h1 className="free-time-banner" tabIndex={-1}>
@@ -58,7 +77,7 @@ export function FreeTimeHub({
       </h1>
       <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} showNext={false} />
 
-      <TravelMenu key={game.currentCityId} game={game} onTravelEvent={onTravelEvent} onRent={onRent} />
+      <TravelMenu key={game.currentCityId} game={game} api={selection} onRent={onRent} />
 
       {extras && <div className="free-time-extras">
         <PendingRewards game={game} onClaim={onClaimRewards} compact />
@@ -70,7 +89,7 @@ export function FreeTimeHub({
       {creditsOpen && <PhotoCredits photos={photos} onClose={() => setCreditsOpen(false)} />}
       {/* Hidden: its height is the visible height with the browser's bars shown (100svh). */}
       <div className="free-time-svh-probe" aria-hidden="true" />
-      <TravelActions game={game} onTravelWait={onTravelWait} onTravelSleep={onTravelSleep} />
+      <TravelActions game={game} api={selection} onTravelWait={onTravelWait} />
     </section>
   );
 }

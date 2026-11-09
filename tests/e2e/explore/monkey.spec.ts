@@ -50,23 +50,25 @@ const debugUrls = debugSessionExampleUrls(readFileSync(new URL("../../../docs/10
 const excludedLabels = ["消去", "通常プレイに戻る", "場面の選択へ戻る"];
 
 type Source = { kind: "save"; journeyId: string } | { kind: "debug" };
-type Check = { revision: number | null; error: string | null; ended: boolean };
+type Check = { revision: number | null; error: string | null; ended: boolean; place: string | null };
 
 /** Read the game the way a test may (the normal save or Debug's read-only hook) and check it in the page. */
 function check(page: Page, source: Source): Promise<Check> {
   return page.evaluate(async ({ key, hook, modules }) => {
     const raw = key ? localStorage.getItem(key) : null;
     const state = key ? (raw === null ? null : JSON.parse(raw)) : (window as unknown as Record<string, { getState(): unknown } | undefined>)[hook]?.getState() ?? null;
-    if (!state) return { revision: null, error: null, ended: false };
+    if (!state) return { revision: null, error: null, ended: false, place: null };
     const { validateGameState } = await import(/* @vite-ignore */ modules.game);
     const { balance } = await import(/* @vite-ignore */ modules.content);
     const { isJourneyComplete } = await import(/* @vite-ignore */ modules.cityTravel);
     try {
       const valid = validateGameState(state);
       const error = valid.ap < 0 || valid.ap > balance.apCap ? `AP out of range: ${valid.ap}` : null;
-      return { revision: valid.revision as number, error, ended: isJourneyComplete(valid) as boolean };
+      // Where the party is (city, place, day): the coverage line counts its changes.
+      const place = `${valid.currentCityId} ${valid.travel.currentPlaceId} ${valid.travel.day}`;
+      return { revision: valid.revision as number, error, ended: isJourneyComplete(valid) as boolean, place };
     } catch (failure) {
-      return { revision: null, error: `validateGameState: ${(failure as Error).message}`, ended: false };
+      return { revision: null, error: `validateGameState: ${(failure as Error).message}`, ended: false, place: null };
     }
   }, { key: source.kind === "save" ? saveKey(source.journeyId) : null, hook: DEBUG_HOOK_NAME, modules: devModules });
 }
@@ -193,11 +195,15 @@ startPoints.forEach((start, index) => {
     let before: Awaited<ReturnType<typeof bothStorages>> | undefined;
     let opened: Start | undefined;
     let lastRevision = -1;
+    // Coverage: how often the party moved (a travel, a sleep or a new city: the place or the day changed).
+    let moves = 0;
+    let lastPlace: string | null = null;
     const openStart = async (again: boolean) => {
       opened = await must("choosing the start point", async () => start.pick(next));
       log(`(start${again ? " again" : ""} ${opened.label})`);
       await must(`the start point did not open (${opened.label})`, () => opened!.open(page));
       lastRevision = -1;
+      lastPlace = null;
     };
     const deadline = Date.now() + seconds * 1000;
     let presses = 0;
@@ -270,6 +276,10 @@ startPoints.forEach((start, index) => {
           if (state.revision < lastRevision) fail(`the saved revision went back from ${lastRevision} to ${state.revision}`);
           lastRevision = state.revision;
         }
+        if (state.place !== null) {
+          if (lastPlace !== null && state.place !== lastPlace) moves++;
+          lastPlace = state.place;
+        }
       }
       // Debug works in memory only: the browser's storage is as it was before Debug opened.
       if (opened!.source.kind === "debug") {
@@ -282,7 +292,9 @@ startPoints.forEach((start, index) => {
       }
     } finally {
       const file = testInfo.outputPath("monkey-trace.txt");
-      writeFileSync(file, [`MONKEY_SEED=${seed} MONKEY_SECONDS=${seconds} start point ${index} (${start.name}), ${presses} presses, last start: ${opened?.label ?? "none"}`,
+      const summary = `MONKEY_SEED=${seed} MONKEY_SECONDS=${seconds} start point ${index} (${start.name}), ${presses} presses, ${moves} moves, last start: ${opened?.label ?? "none"}`;
+      console.log(`coverage: ${summary}`);
+      writeFileSync(file, [summary,
         `rerun: ${rerun}`, ...trace].join("\n") + "\n");
       await testInfo.attach("monkey-trace.txt", { path: file, contentType: "text/plain" });
     }

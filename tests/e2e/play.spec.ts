@@ -1,5 +1,5 @@
 import { DOUBLE_TAP_WINDOW_MS } from "../../src/components/double-tap";
-import { allStorage, expect, expectNoActiveScene, generated, journeyCatalog, learningKey, ops, playUntil, readSave, savedGame, test, tier } from "./helpers";
+import { allStorage, expect, expectNoActiveScene, generated, journeyCatalog, learningKey, ops, playUntil, readSave, savedGame, test, tier, type Locator } from "./helpers";
 
 // Lane 1 (docs/10): the real flow from the title screen, no Debug, no state shortcut.
 // docs/07 acceptance 1–4 (names, AP from the first battle, a date spending AP once and finishing).
@@ -164,9 +164,13 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await expect(page.getByTestId("city-progress")).toContainText("観光 1 / 4");
 
   // A date costs AP when it starts and returns to the travel menu when it ends (docs/07 acceptance 3, 4).
-  // A quick double tap on the destination starts it once, and the second tap, landing on the
-  // date that opens under the finger, does not read its first line on unseen: taps are held for
-  // a moment when a story scene starts (lines appear whole here, as with 文字送り「一括表示」).
+  // The first press on the destination selects it (two steps, UI step 1.6); a quick double tap on the
+  // selected row then starts it once, and the second tap, landing on the travel transition that opens
+  // under the finger, does not read the date's first line on unseen: the transition takes taps while
+  // it shows (H22), and taps are held for a moment when a story scene starts (lines appear whole here,
+  // as with 文字送り「一括表示」).
+  const novecentoRow = await ops.selectDestination(page, "p_novecento");
+  await expect(novecentoRow).toHaveAttribute("data-armed", "true");
   const novecento = await ops.centerOf(await ops.destination(page, "p_novecento"));
   const beforeDate = await readSave(page);
   await ops.holdClock(page);
@@ -176,18 +180,17 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   expect(started.revision).toBe(beforeDate.revision + 1);
   expect(started.ap).toBeLessThan(result.ap);
   await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
-  // The travel transition outlasts that hold (0.45 s with reduced motion). Its card in the middle of
-  // the screen lets taps through to the date under it: a tap on the card does not reach the date (the
-  // picture of the move is not the date's picture). The rest of the date is in view and takes taps as
-  // usual: a tap on its line reads one line on. The clock is held, so the transition stays meanwhile.
+  // The travel transition outlasts that hold (0.45 s with reduced motion). Its overlay takes every tap
+  // while it shows (UI redesign H22): a tap on the date's line under it does not read on, nor one on
+  // its card. The clock is held, so the transition stays meanwhile.
   const transition = page.getByTestId("travel-transition");
   await expect(transition).toBeVisible();
   await expect(page.locator("[data-tap-settling], html[data-tap-hold]"), "the start hold is over").toHaveCount(0);
   const firstLine = await line.textContent();
   const onLine = await ops.centerOf(line);
   await page.touchscreen.tap(onLine.x, onLine.y);
-  await expect.poll(async () => (await readSave(page)).revision).toBe(started.revision + 1);
-  await expect(line).not.toHaveText(firstLine!);
+  await expect(line).toHaveText(firstLine!);
+  expect((await readSave(page)).revision).toBe(started.revision);
   // The card sits in the middle of the transition's overlay.
   const card = await ops.centerOf(transition);
   await page.touchscreen.tap(card.x, card.y);
@@ -197,7 +200,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await page.clock.resume();
   await ops.settled(page);
   const opened = await readSave(page);
-  expect(opened.revision).toBe(started.revision + 1);
+  expect(opened.revision).toBe(started.revision);
   expect(opened.activeDate?.runId).toBe(started.activeDate!.runId);
   // The note beside the visited place's reference photo is not the picture: a tap on it does nothing.
   // Neither does a tap on the date's destination, a pill of the scene label line now (UI redesign §3.2;
@@ -307,18 +310,25 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await expect(page.getByLabel(`残り${finished.ap}AP`)).toBeVisible();
 });
 
-// The journey's own transport modes (manifest transportModes): the route dialog names
-// them with the line, the ride is paid and timed by its route, and the transition shows
-// the mode's caption and art.
-test("a new Milan journey rides tram 16 to the Last Supper, named in the route dialog and shown on the way", { tag: tier.gate }, async ({ page }) => {
+// The journey's own transport modes (manifest transportModes): the destination's inline
+// choices name them with the line, the ride is paid and timed by its route, and the
+// transition shows the mode's caption and art.
+test("a new Milan journey rides tram 16 to the Last Supper, named in the inline choices and shown on the way", { tag: tier.gate }, async ({ page }) => {
   await page.clock.install();
   await ops.startJourney(page, "milano");
   const before = await readSave(page);
-  await ops.goTo(page, "p_supper");
-  await expect(page.getByRole("dialog", { name: "最後の晩餐へ" })).toBeVisible();
-  await expect(ops.routeButton(page, "徒歩 19分")).toBeEnabled();
-  const tram = ops.routeButton(page, "路面電車（16番） 18分 · €5");
+  const row = await ops.selectDestination(page, "p_supper");
+  const choices = page.getByTestId("travel-choices-p_supper");
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  const walk = choices.getByTestId("travel-route-milano_last_supper_episode-walk");
+  await expect(walk).toBeEnabled();
+  await expect(walk).toContainText("19分");
+  const tram = choices.getByTestId("travel-route-milano_last_supper_episode-tram");
   await expect(tram).toBeEnabled();
+  await expect(tram).toContainText("路面電車");
+  await expect(tram).toContainText("16番");
+  await expect(tram).toContainText("18分 · €5");
+  await expect(row).toHaveAttribute("data-armed", "true");
   // Hold the page's clock so the short transition (0.45 s with reduced motion) stays while it is checked.
   await ops.holdClock(page);
   await tram.click();
@@ -339,14 +349,13 @@ test("a new Milan journey rides tram 16 to the Last Supper, named in the route d
 
 // Every available journey (from the generated catalog, Golden Triangle with its auto-rickshaw
 // and metro included): at the start, the first listed place that is reached on foot and by one
-// of its vehicles (the city's travel data) and that the party can ride to now opens the route
-// dialog with the vehicle named as its manifest declares it (nameJa), and the transition shows
-// its caption (movingJa), ID and art kind.
+// of its vehicles (the city's travel data) and that the party can ride to now shows the modes
+// inline when chosen, with the vehicle named as its manifest declares it (nameJa), and the
+// transition shows its caption (movingJa), ID and art kind.
 test("in each available journey a new trip's first vehicle route is named and shown as its manifest declares", { tag: tier.gate }, async ({ page }) => {
   await page.clock.install();
   const journeys = journeyCatalog().journeys.filter((item) => item.status === "available" && item.transportModes.length);
   expect(journeys.map((journey) => journey.id)).toEqual(expect.arrayContaining(["milano", "golden_triangle"]));
-  const pattern = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
   await page.goto("/");
   for (const [index, journey] of journeys.entries()) {
     // The next journey from 設定 (a page load would resume the journey just played).
@@ -361,28 +370,32 @@ test("in each available journey a new trip's first vehicle route is named and sh
     const modes = new Map(journey.transportModes.map((mode) => [mode.id, mode]));
     const from = before.travel.currentPlaceId;
     const routesTo = (to: string) => travel.routes.filter((route) => route.fromPlaceId === from && route.toPlaceId === to);
-    // One event at the place, so choosing it opens the route dialog (walk and a vehicle) at once.
+    // One event at the place, so choosing it shows the modes (walk and a vehicle) at once.
     const targets = [...new Set(travel.events.map((event) => event.placeId))].filter((to) => to !== from &&
       travel.events.filter((event) => event.placeId === to).length === 1 &&
       routesTo(to).some((route) => route.mode === "walk") && routesTo(to).some((route) => modes.has(route.mode)));
     const more = page.getByText("ほかの行き先を見る", { exact: true });
     if (await more.isVisible()) await more.click();
-    let ride: { route: Route; button: ReturnType<typeof ops.routeButton> } | undefined;
+    let ride: { route: Route; button: Locator } | undefined;
     for (const to of targets) {
       const place = page.getByTestId(`travel-place-${to}`);
       if (!(await place.count())) continue;
-      await place.getByRole("button").click();
-      await expect(page.getByRole("dialog")).toBeVisible();
+      await place.getByRole("button").first().click();
+      const choices = page.getByTestId(`travel-choices-${to}`);
+      await expect(choices).toBeVisible();
+      await expect(page.getByRole("dialog")).toHaveCount(0);
       for (const route of routesTo(to).filter((item) => modes.has(item.mode))) {
-        const button = ops.routeButton(page, pattern(modes.get(route.mode)!.nameJa));
+        const button = choices.locator(`[data-testid^="travel-route-"][data-testid$="-${route.mode}"]`);
+        await expect(button).toContainText(modes.get(route.mode)!.nameJa);
         if (await button.isEnabled()) { ride = { route, button }; break; }
       }
       if (ride) break;
-      await page.getByRole("dialog").getByRole("button", { name: "閉じる", exact: true }).click();
+      await choices.getByTestId("travel-choices-close").click();
     }
     expect(ride, `${journey.id}: a listed place reached on foot and by a vehicle the party can take at the start`).toBeDefined();
     const { route, button } = ride!;
     const mode = modes.get(route.mode)!;
+    await expect(page.getByTestId(`travel-place-${route.toPlaceId}`)).toHaveAttribute("data-armed", "true");
     test.info().annotations.push({ type: "ride", description: `${journey.id}: ${route.toPlaceId} by ${mode.id} (${mode.nameJa})` });
     await ops.holdClock(page);
     await button.click();

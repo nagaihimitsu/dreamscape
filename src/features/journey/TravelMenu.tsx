@@ -1,123 +1,46 @@
-import { useState } from "react";
-import { dates, episodes, journeyConfig, getCityContent, presentation } from "../../content";
+import { getCityContent } from "../../content";
 import { formatMoneyForCity } from "../../content/currency";
-import { getJourneyForCity } from "../../content/journeys";
-import type { TravelPlace, TravelRoute } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
-import { getDirection } from "../../domain/travel";
-import { getTravelEventAvailability, getTravelEventDefinition } from "../../domain/travel-game";
-import { getTravelDestinations, type TravelDestinationPlace } from "../../domain/travel-destinations";
-import { compareRouteTime } from "../../domain/travel-routes";
 import { Icon } from "../../components/icons";
-import { Modal } from "../../components/Modal";
-import { derivedImagePath } from "../../content/derived-images";
-import { getPlacePhoto } from "../../content/place-photo";
-import { withNames } from "../romance/names";
+import { DestinationRow, SleepChoice } from "./DestinationRow";
 import { PlaceMap } from "./PlaceMap";
 import { TravelRentals } from "./TravelRentals";
-import { transportLabel } from "../../content/transport";
+import type { TravelSelectionApi } from "./useTravelSelection";
 import "./travel-menu.css";
 
-type Mode = TravelRoute["mode"];
-export function TravelMenu({ game, onTravelEvent, onRent }: {
+/**
+ * The city's destinations (UI redesign §3.4–§3.6): the return reserve, rentals, the
+ * map block and the list card. A destination is chosen in two steps (the shared
+ * selection of FreeTimeHub): the first press shows it on the map, the second goes.
+ */
+export function TravelMenu({ game, api, onRent }: {
   game: GameState;
-  onTravelEvent: (eventId: string, mode: Mode) => void;
+  api: TravelSelectionApi;
   onRent: (modeId: string) => boolean;
 }) {
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
-  const [showOther, setShowOther] = useState(false);
   const { city } = getCityContent(game.currentCityId);
-  const { current, candidates, places, nearby, other, recommendedMainId } = getTravelDestinations(game);
+  const { current, candidates, nearby, other, recommendedMainId } = api.destinations;
   if (!current) return <p role="alert">現在地を確認できません。保存状態を確認してください。</p>;
-  const selected = candidates.find((event) => event.id === selectedId);
-  const selectedPlace = places.find((place) => place.id === selectedPlaceId);
-  function selectDestination(event: (typeof candidates)[number]) {
-    setSelectedPlaceId(null);
-    if (event.routes.length === 1 && event.available) {
-      onTravelEvent(event.id, event.routes[0].mode);
-      return;
-    }
-    setSelectedId(event.id);
-  }
-  function selectPlace(place: (typeof places)[number]) {
-    if (place.events.length === 1) selectDestination(place.events[0]);
-    else setSelectedPlaceId(place.id);
-  }
+  const row = (place: (typeof nearby)[number], recommended = false) =>
+    <DestinationRow key={place.id} game={game} place={place} choices={api.choices.get(place.id)!} current={current} recommended={recommended} api={api} />;
+  // The expanded map's 「選んだ行き先」: the selected row (its own testids), or the ways home.
+  const target = api.target;
+  const selectedRow = target?.kind === "place" ? [...nearby, ...other].find((place) => place.id === target.placeId) : undefined;
+  const slot = target?.kind === "sleep" ? <SleepChoice game={game} sleep={api.sleep} api={api} scope="dialog" />
+    : selectedRow ? <DestinationRow game={game} place={selectedRow} choices={api.choices.get(selectedRow.id)!} current={current} api={api} scope="dialog" testId="map-selection-place" />
+    : target?.kind === "place" ? <p>{current.nameJa}（現在地）には、ここで始められる予定はありません。</p>
+    : <p>地図の印か「地点を名前で探す」で選ぶと、ここに行き先が出ます。</p>;
   return <section className="travel-menu" aria-label={`${city.nameJa}の行き先`} data-testid="travel-menu">
     {game.travel.returnReserve > 0 && <p className="travel-reserve">帰路用に{formatMoneyForCity(game.currentCityId, game.travel.returnReserve)}を確保（所持金に含む）</p>}
     <TravelRentals game={game} onRent={onRent} />
-    <PlaceMap game={game} events={candidates}><div className="travel-list-card">
+    <PlaceMap game={game} events={candidates} selection={{ api, slot }}><div className="travel-list-card">
       <h2>近くの行き先</h2>
       {nearby.length === 0 && <p>今すぐ行ける場所はありません。時間を待つか、滞在先で休めます。</p>}
-      <div className="travel-list">{nearby.map((place) => <Destination key={place.id} place={place} game={game} current={current} recommended={place.id === recommendedMainId} onSelect={() => selectPlace(place)} />)}</div>
-      {other.length > 0 && <details className="travel-other" open={showOther} onToggle={(event) => setShowOther(event.currentTarget.open)}><summary>ほかの行き先を見る<Icon name="chevron-down" /></summary><div className="travel-list">{other.map((place) => <Destination key={place.id} place={place} game={game} current={current} onSelect={() => selectPlace(place)} />)}</div></details>}
+      <div className="travel-list">{nearby.map((place) => row(place, place.id === recommendedMainId))}</div>
+      {other.length > 0 && <details className="travel-other" open={api.showOther} onToggle={(event) => api.setShowOther(event.currentTarget.open)}>
+        <summary>ほかの行き先を見る<Icon name="chevron-down" /></summary>
+        <div className="travel-list">{other.map((place) => row(place))}</div>
+      </details>}
     </div></PlaceMap>
-    {selectedPlace && <Modal labelledBy="travel-events-title" className="travel-choice-modal" onClose={() => setSelectedPlaceId(null)}>
-      <div className="travel-choice-header"><h2 id="travel-events-title">{selectedPlace.events[0].place.nameJa}のイベント</h2><button type="button" className="secondary" onClick={() => setSelectedPlaceId(null)}>閉じる</button></div>
-      <div className="travel-event-list">{selectedPlace.events.map((event) => {
-        const date = dates.find((item) => item.id === event.id);
-        const episode = episodes.find((item) => item.id === event.id);
-        const storyBattle = journeyConfig.storyBattles.find((item) => item.battleId === event.id);
-        const description = date?.descriptionJa ?? episode?.descriptionJa ?? storyBattle?.descriptionJa ?? "";
-        const definition = getTravelEventDefinition(game, event.id) ?? event;
-        return <div className="travel-event" key={event.id}>
-          <button type="button" className="secondary travel-event-button" data-testid={`travel-event-${event.id}`} disabled={!event.available} onClick={() => selectDestination(event)}>
-            <span>{event.category === "main" ? "◇ 観光" : "♡ デート"} · {withNames(event.titleJa, game)}</span>
-            <small>{definition.apCost ? `${definition.apCost} AP` : "AP不要"} · {definition.activityMinutes}分{definition.admissionCost ? ` · 入場料 ${formatMoneyForCity(game.currentCityId, definition.admissionCost)}（2人分・ゲーム設定）` : ""}</small>
-          </button>
-          {description && <p>{withNames(description, game)}</p>}
-          {!event.available && <p className="fine-print">{event.unavailableReason || "今は利用できません。"}</p>}
-        </div>;
-      })}</div>
-    </Modal>}
-    {selected && <Modal labelledBy="travel-choice-title" className="travel-choice-modal" onClose={() => setSelectedId(null)}><div className="travel-choice-header"><h2 id="travel-choice-title">{selected.place.nameJa}へ</h2><button type="button" className="secondary" onClick={() => setSelectedId(null)}>閉じる</button></div><p>移動手段を選んでください。時間・料金はゲーム内の目安です。{getJourneyForCity(game.currentCityId)?.farePartySize === 2 && "料金は2人分です。"}</p>{selected.admissionCost ? <p>入場料 {formatMoneyForCity(game.currentCityId, selected.admissionCost)}（2人分・ゲーム設定）</p> : null}<div className="travel-choice-routes">{selected.routes.map((route) => {
-      const availability = getTravelEventAvailability(game, selected.id, route.mode);
-      return <div key={route.mode}><button type="button" className="secondary travel-route" disabled={!availability.available} onClick={() => { onTravelEvent(selected.id, route.mode); setSelectedId(null); }}>{transportLabel(game.currentCityId, route.mode)}{route.transferNote ? `（${route.transferNote}）` : ""} {route.minutes}分 · {formatMoneyForCity(game.currentCityId, route.cost)}{route.estimation === "game_model" ? "（ゲーム内の推定）" : ""}</button>{!availability.available && <p className="fine-print">{availability.reason}</p>}</div>;
-    })}</div></Modal>}
   </section>;
-}
-
-function Destination({ place, game, current, recommended, onSelect }: {
-  place: TravelDestinationPlace;
-  game: GameState;
-  current: TravelPlace;
-  recommended?: boolean;
-  onSelect: () => void;
-}) {
-  const event = place.events[0];
-  const direction = getDirection(current, event.place);
-  const apCost = getTravelEventDefinition(game, event.id)?.apCost ?? event.apCost;
-  const categories = new Set(place.events.map((item) => item.category));
-  // The line describes the routes the party can ride now (a rental mode once rented).
-  const routes = event.describedRoutes;
-  const onlyRoute = routes.length === 1 ? routes[0] : undefined;
-  const fastestRoute = event.walkMinutes === null ? [...routes].sort(compareRouteTime)[0] : undefined;
-  const shownRoute = onlyRoute ?? fastestRoute ?? routes.find((route) => route.mode === "walk");
-  const meta = `${onlyRoute ? `${transportLabel(game.currentCityId, onlyRoute.mode)}約${onlyRoute.minutes}分 · ${formatMoneyForCity(game.currentCityId, onlyRoute.cost)}` : fastestRoute ? `${transportLabel(game.currentCityId, fastestRoute.mode)}約${fastestRoute.minutes}分` : `徒歩約${event.walkMinutes}分`}${shownRoute?.transferNote ? `（${shownRoute.transferNote}）` : ""}${shownRoute?.estimation === "game_model" ? "（ゲーム内の推定）" : ""}${event.walkMinutes === null ? " · 徒歩の所要時間不明" : ""}（${direction}）${place.events.length === 1 && apCost ? ` · ${apCost} AP` : ""}${place.events.length === 1 && event.admissionCost ? ` · 入場料 ${formatMoneyForCity(game.currentCityId, event.admissionCost)}（2人分・ゲーム設定）` : ""}`;
-  return <article className={`travel-destination${place.available ? "" : " is-unavailable"}`} data-testid={`travel-place-${place.id}`}>
-    <button type="button" className="travel-destination-button" onClick={onSelect}>
-      <PlaceThumbnail game={game} place={event.place} glyph={categories.has("main") ? "◇" : "♡"} />
-      <span className="travel-destination-text">
-        <span className="travel-destination-head">
-          <span className="travel-category">{categories.has("main") && "◇ 観光"}{categories.size > 1 && " · "}{categories.has("date") && "♡ デート"}</span>
-          {recommended && <small className="travel-recommended">おすすめ</small>}
-        </span>
-        <span className="travel-destination-title"><span>{event.place.nameJa}</span><Icon name="chevron-right" /></span>
-        <span className="travel-destination-meta">{meta}</span>
-        {!place.available && <small className="travel-destination-reason">{event.unavailableReason || "今は行けません。"}</small>}
-      </span>
-    </button>
-  </article>;
-}
-
-/**
- * The row's photo (UI redesign §3.6): the reduced `card` copy of the place's
- * registered photo, or a plain tile in the place's background colour with the
- * category mark. Decorative (the name is beside it); its credit is in 「写真の出典」.
- */
-function PlaceThumbnail({ game, place, glyph }: { game: GameState; place: TravelPlace; glyph: string }) {
-  const photo = getPlacePhoto(game.currentCityId, place.id);
-  if (photo) return <img className="travel-thumb" src={`${import.meta.env.BASE_URL}${derivedImagePath(photo, "card")}`} alt="" width={64} height={43} loading="lazy" decoding="async" />;
-  return <span className="travel-thumb is-plain" style={{ backgroundColor: presentation.backgrounds[place.backgroundId]?.color }} aria-hidden="true">{glyph}</span>;
 }

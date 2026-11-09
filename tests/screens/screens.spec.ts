@@ -73,10 +73,10 @@ const flows: FlowScene[] = [
     const cleanup = await ops.openOldDataCleanup(page);
     await ops.chooseOldData(page, cleanup, [/ミラノ編のバックアップ/]);
   } },
-  { scene: "flow-route-choice", titleJa: "移動手段の選択", descriptionJa: "旅を始めて「最後の晩餐」を選ぶ（徒歩と路面電車16番）", open: async (page) => {
+  { scene: "flow-route-choice", titleJa: "移動手段の選択", descriptionJa: "旅を始めて「最後の晩餐」を1回押す（行の中に徒歩と路面電車16番）", open: async (page) => {
     await ops.startJourney(page);
-    await ops.goTo(page, "p_supper");
-    await expect(ops.routeButton(page, "路面電車")).toBeVisible();
+    await ops.selectDestination(page, "p_supper");
+    await expect(page.getByTestId("travel-choices-p_supper")).toBeVisible();
   } },
   { scene: "flow-tourism-guide", titleJa: "観光案内", descriptionJa: "ドゥオモ広場へ歩いた直後", open: async (page) => {
     await ops.startJourney(page);

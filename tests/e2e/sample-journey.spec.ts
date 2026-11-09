@@ -56,14 +56,14 @@ type SampleRoute = ReturnType<typeof sampleRoute>;
 
 /**
  * Go to a place like a player: by the rented mode when a route of it leads there
- * (the route dialog lists walking and the rental), else on the only route, walking.
+ * (the row's inline choices list walking and the rental), else walking.
  */
 async function goToPlace(page: Page, route: SampleRoute, placeId: string) {
   const state = await readSave(page, JOURNEY);
   const mode = route.rental?.mode;
   const ride = mode && state.travel.rentedModeIds.includes(mode.id) &&
     route.routes.some((item) => item.fromPlaceId === state.travel.currentPlaceId && item.toPlaceId === placeId && item.mode === mode.id);
-  await ops.goTo(page, placeId, ride ? mode.nameJa : undefined);
+  await ops.goTo(page, placeId, ride ? { mode: mode.id } : {});
 }
 
 /** The correct answer of the open question, like a player who followed the story; "A" for other choices. */
@@ -126,12 +126,14 @@ test("the sample journey plays from a new journey through its city finale and ep
   const rental = route.rental;
   if (rental) {
     const { offer, mode } = rental;
-    await ops.goTo(page, route.episode.placeId);
-    await expect(ops.routeButton(page, mode.nameJa)).toBeDisabled();
-    await expect(page.getByRole("dialog")).toContainText(`${mode.nameJa}は滞在先で借りると乗れます。`);
-    await expect(ops.routeButton(page, "徒歩")).toBeEnabled();
-    await page.getByRole("dialog").getByRole("button", { name: "閉じる", exact: true }).click();
+    await ops.selectDestination(page, route.episode.placeId);
+    const choices = page.getByTestId(`travel-choices-${route.episode.placeId}`);
+    await expect(choices.locator(`[data-testid^="travel-route-"][data-testid$="-${mode.id}"]`)).toBeDisabled();
+    await expect(choices).toContainText(`${mode.nameJa}は滞在先で借りると乗れます。`);
+    await expect(choices.locator('[data-testid^="travel-route-"][data-testid$="-walk"]')).toBeEnabled();
     await expect(page.getByRole("dialog")).toHaveCount(0);
+    await choices.getByTestId("travel-choices-close").click();
+    await expect(choices).toHaveCount(0);
     const before = await readSave(page, JOURNEY);
     await page.getByTestId("travel-rentals").getByRole("button", { name: `${mode.nameJa}を借りる`, exact: true }).click();
     await expect(page.getByRole("dialog", { name: "乗り物を借りる" })).toBeVisible();
@@ -150,8 +152,13 @@ test("the sample journey plays from a new journey through its city finale and ep
   // 0.45 s with reduced motion, stays while it is checked). (Optional part) The tower's
   // stall comes first, before the visit's main part (its head tags: priority -1): the
   // bookmark is received; then the guide opens.
-  if (rental) await ops.holdClock(page);
-  await goToPlace(page, route, route.episode.placeId);
+  if (rental) {
+    // The first press selects the place; once armed (a timer of the page's clock), the clock is held and the bicycle chosen.
+    const row = await ops.selectDestination(page, route.episode.placeId);
+    await expect(row).toHaveAttribute("data-armed", "true");
+    await ops.holdClock(page);
+    await page.getByTestId(`travel-choices-${route.episode.placeId}`).getByTestId(new RegExp(`^travel-route-.+-${rental.mode.id}$`, "u")).click();
+  } else await goToPlace(page, route, route.episode.placeId);
   if (rental) {
     const transition = page.getByTestId("travel-transition");
     await expect(transition).toHaveAttribute("data-mode", rental.mode.id);
