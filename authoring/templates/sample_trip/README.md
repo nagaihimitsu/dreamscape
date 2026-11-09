@@ -34,17 +34,19 @@
 | `romance/date_catalog.json` | 通常デート1件（2回の3択。Inkの場所のファイルの knot を住所で指す） | `Invalid content in romance/date_catalog.json` |
 | `tourism/catalog.json` | 画像台帳・観光地・観察ポイント（hotspot） | `Invalid content in tourism/catalog.json` |
 | `progression/journey.json` | 観光エピソードと都市フィナーレ（エピローグつき）、報酬 | `Complete city has no city finale` |
-| `battles/catalog.json` | 通常戦（中間2場面）と都市フィナーレ（中間4場面） | `Invalid content in battles/catalog.json` |
+| `battles/catalog.json` | 通常戦（3問）と都市フィナーレ（5問）。どちらも1本の流れ（段階5）なので `scenes` を書かない | `Invalid content in battles/catalog.json` |
 | `quizzes/smp_mihon_main_clock_tower_quiz.json` | 通常戦の英語3択3問 | `Unknown battle quizId: smp_mihon_main_clock_tower_quiz` |
 | `quizzes/smp_mihon_finale_quiz.json` | 都市フィナーレの英語3択5問 | `Unknown battle quizId: smp_mihon_finale_quiz` |
 | `learning/translations.json` | 全問題の和訳（原文の写しと照合される） | `Missing translation` |
 | `learning/word-meanings.json` | 共通の辞書（`content/learning/word-meanings.json`）にない英単語だけ | `Missing word meaning` |
-| `stories/places/smp_mihon_clock_tower.ink` | 時計塔の場所のファイル：観光案内・通常戦の会話（stitch の形）・通常デートの会話と、時計塔で起きる差し込みの場面（任意の部分） | `Unknown storyId: places/smp_mihon_clock_tower.smp_mihon_date_tower_square` |
-| `stories/battles/smp_mihon_finale.ink` | 都市フィナーレの会話 | `Unknown battle storyId: battles/smp_mihon_finale` |
+| `stories/places/smp_mihon_clock_tower.ink` | 時計塔の場所のファイル：観光案内・通常戦の会話（1本の流れ。段階5）・通常デートの会話と、時計塔で起きる差し込みの場面（任意の部分） | `Unknown storyId: places/smp_mihon_clock_tower.smp_mihon_date_tower_square` |
+| `stories/battles/smp_mihon_finale.ink` | 都市フィナーレの会話（1本の流れ。1行目は `INCLUDE modules.ink`） | `Unknown battle storyId: battles/smp_mihon_finale` |
 | `stories/epilogues/mihon.ink` | 都市エピローグ | `Unknown epilogue story: epilogues/mihon` |
 | `public/assets/tourism/sample_trip/mihon_clock_tower.png` | 時計塔の自作画像（観察・背景） | `Missing public file: assets/tourism/sample_trip/mihon_clock_tower.png (searched public/ and authoring/templates/sample_trip/public/)` |
 
 各Inkの冒頭の `//` コメントに、その種類の脚本の規則を書いています。場所のファイル（`stories/places/`）は、1つの場所の場面を knot ごとに1本にまとめる形です（knot の頭の札で種類・時点・順番を決め、カタログは「ストーリーID.knot」の住所で本筋を指す）。ほかの観光地（朝市・図書室）とフィナーレ・エピローグは、今の1場面1ファイルの形のまま書いています。
+
+4本の対決は、どれも1本の流れ（統一イベント設計の段階5）です。上から流れ、`-> quiz(1) ->` などでクイズの画面を出し、特殊戦は `-> reasoning ->` で資料を選ぶ画面に止まります（主張は手伝いの knot `<バトル>_claim`、追及は `<バトル>_press`。追及と違う資料の後は `-> stop` で止まる所へ戻る形）。書き方は [制作ガイド](../../CONTENT_GUIDE.md#対決の会話を1本の流れで書く段階5)。4本は、段階4までの場面の形（`scenes` と場面ごとの knot・stitch）から `npm run battle:flow -- --journey sample_trip --write` で変えたもので、すべての正誤・追及・違う資料の組み合わせで、出る台詞は変える前と同じです。
 
 ## 任意の部分
 
@@ -116,7 +118,7 @@
 | --- | --- | --- | --- |
 | 通常戦 | `battles/<頭>_main_<観光地>` | `<頭>_main_<観光地>_quiz` | `places/smp_mihon_clock_tower.smp_mihon_main_clock_tower`（場所のファイルの knot）、`smp_mihon_main_clock_tower_quiz` |
 | 特殊戦B・C | `battles/<頭>_special_b_<観光地>`（Cは `special_c`） | `<頭>_special_b_<観光地>_quiz` | `battles/smp_mihon_special_b_market`、`smp_mihon_special_c_library_quiz` |
-| 特殊戦の反論の場面 | `battles/<特殊戦の名前>_rebuttal` | なし | （見本にはない） |
+| 特殊戦の反論の場面（場面の形の対決だけ。1本の流れでは主張の後に書く） | `battles/<特殊戦の名前>_rebuttal` | なし | （見本にはない） |
 | 都市フィナーレ | `battles/<頭>_finale` | `<頭>_finale_quiz` | `battles/smp_mihon_finale`、`smp_mihon_finale_quiz` |
 | 観光案内 | `tourism/<頭>_<観光地>_guide` | なし | `tourism/smp_mihon_market_guide` |
 | 場所のファイル（その場所の場面をまとめる） | `places/<頭>_<場所>`（場所は観光地・デートの行き先・地図の地点のIDから都市名を除いた名前。場面の住所は「ストーリーID.knot」。一つの場所の場面は、`_<内容>` を付けた別のファイルに分けてもよい） | なし | `places/smp_mihon_clock_tower`（`places/smp_mihon_clock_tower.smp_mihon_clock_tower_guide`） |
