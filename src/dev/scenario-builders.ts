@@ -15,7 +15,7 @@
 import { balance, battles, dates, episodes, getCities, getCityContent, landmarks, type QuizQuestion } from "../content";
 import { encounters } from "../content/encounters";
 import { getJourneyForCity } from "../content/journeys";
-import { advanceBattle, answerBattle, getActiveBattleContent, selectReasoningClue, startBattle, submitBattleEvidence } from "../domain/battle";
+import { advanceBattle, answerBattle, battleChoiceDisplay, battleDialogueStop, chooseBattle, getActiveBattleContent, selectReasoningClue, startBattle, submitBattleEvidence } from "../domain/battle";
 import { getNextEpisode, getNextStoryBattle, leaveBattleResult, startEpisode, storyBattlesForCity } from "../domain/chapter";
 import { departToNextCity } from "../domain/city-travel";
 import {
@@ -96,7 +96,7 @@ function act(state: GameState, change: (current: GameState) => GameState, what: 
   return options.after ? options.after(settled, state) : settled;
 }
 
-/** Play the active battle to its result screen: correct evidence for B/C, answers by `options.answer`. */
+/** Play the active battle to its result screen: correct evidence for B/C, answers by `options.answer`, a conversation's first open choice. */
 export function playBattleToResult(initial: GameState, options: PlayOptions = {}): GameState {
   const answer = options.answer ?? correctAnswer;
   let state = initial;
@@ -114,6 +114,10 @@ export function playBattleToResult(initial: GameState, options: PlayOptions = {}
     } else if (active.phase === "question") {
       const optionId = answer(quiz.questions[active.roundIndex], active.roundIndex);
       state = act(state, (current) => answerBattle(current, optionId, current.revision), what, options);
+    } else if (active.phase === "dialogue" && battleDialogueStop(active) === "choices") {
+      const choice = active.frame!.choices.find((item) => battleChoiceDisplay(state, item.index).show === "open");
+      if (!choice) throw new Error(`${what}：選べる選択肢がありません。`);
+      state = act(state, (current) => chooseBattle(current, choice.index, current.revision), what, options);
     } else state = act(state, (current) => advanceBattle(current, current.revision), what, options);
   }
   return validateGameState(state);

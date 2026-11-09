@@ -95,7 +95,7 @@ VAR battle_score = 0
       // Updating the in-memory script changes its fingerprint. Match the
       // synthetic run to its current script.
       state.activeBattle!.contentHash = battleFingerprint(battle.id);
-      state.activeBattle!.reasoning = { statementId: battle.reasoning!.claimScene, status: "selecting", selectedClueIds: [], pressed: true, submittedClueIds: [] };
+      state.activeBattle!.reasoning = { statementId: battle.reasoning!.claimScene!, status: "selecting", selectedClueIds: [], pressed: true, submittedClueIds: [] };
       const result = getReasoningContext(state)!;
       expect(result.claimText).toBe("敵だけの主張。");
       expect(result.pressedText).toContain("追及の答え。");

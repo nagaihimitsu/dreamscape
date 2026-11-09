@@ -3,25 +3,16 @@ import { z } from "zod";
 import { presentation, scenes, stories, tagContext } from "../content";
 import { splitStoryAddress, storyFileOf } from "../content/story-address";
 import { fnvHash } from "../content/fingerprint";
-import { parseStoryTags } from "../content/tags";
+import { parseStoryTags, STORY_CALLS, type StoryCall } from "../content/tags";
+import { readStoryFrame, storyChoicesOf, type Speaker, type StoryStep } from "./frame-reader";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import { bindMemoryReader } from "./memory";
 import { bindItemReader, type ItemStatus } from "./items";
 import { encounters } from "../content/encounters";
-import { REACTION_MARKS, type DialogueReaction, type ReactionTarget } from "../content/dialogue-reactions";
+import { REACTION_MARKS } from "../content/dialogue-reactions";
 
-export type Speaker = "narrator" | "heroine" | "player" | "enemy";
-export interface StoryFrame {
-  text: string;
-  speaker: Speaker;
-  background: string;
-  emotion: string;
-  /** Optional because frames saved before inline presentation have no flag. */
-  emotionExplicit?: true;
-  reactions?: Partial<Record<ReactionTarget, DialogueReaction>>;
-  choices: { index: number; text: string; optionId?: string; translationJa?: string }[];
-  ended: boolean;
-}
+export type { Speaker, StoryFrame } from "./frame-reader";
+import type { StoryFrame } from "./frame-reader";
 export const storyFrameSchema = z
   .object({
     text: z.string(),
@@ -41,17 +32,15 @@ export const storyFrameSchema = z
             text: z.string().min(1),
             optionId: z.string().regex(/^[a-z][a-z0-9_]*$/u).optional(),
             translationJa: z.string().min(1).optional(),
+            call: z.enum(STORY_CALLS).optional(),
           })
           .strict(),
       ),
     ended: z.boolean(),
   })
   .strict();
-export interface StoryStep {
-  storyState: string;
-  frame: StoryFrame;
-  effects: string[];
-}
+export type { StoryStep } from "./frame-reader";
+export { frameCall } from "./frame-reader";
 
 /**
  * Detect incompatible in-progress saves instead of loading old pointers into edited Ink. A story
@@ -106,72 +95,9 @@ function runtime(address: string, saved?: string, memoryIds: readonly string[] =
   return story;
 }
 
-function readTags(
-  tags: readonly string[],
-  frame: StoryFrame,
-  events: string[],
-) {
-  const parsed = parseStoryTags(tags, tagContext);
-  if (parsed.speaker) frame.speaker = parsed.speaker;
-  if (parsed.background) frame.background = parsed.background;
-  if (parsed.emotion) {
-    frame.emotion = parsed.emotion;
-    frame.emotionExplicit = true;
-  }
-  if (parsed.reactions) {
-    for (const target of ["heroine", "enemy"] as const) {
-      if (parsed.reactions[target] && frame.reactions?.[target]) throw new Error(`Duplicate reaction target: ${target}`);
-    }
-    frame.reactions = { ...frame.reactions, ...parsed.reactions };
-  }
-  events.push(...parsed.effects);
-}
-
-function readFrame(
-  story: Story,
-  previous?: StoryFrame,
-  choiceTags: readonly string[] = [],
-  initialBackground = DEFAULT_BACKGROUND_ID,
-): StoryStep {
-  const frame: StoryFrame = {
-    text: previous?.text ?? "",
-    speaker: previous?.speaker ?? "narrator",
-    background: previous?.background ?? initialBackground,
-    emotion: "neutral",
-    choices: [],
-    ended: false,
-  };
-  const events: string[] = [];
-  readTags(choiceTags, frame, events);
-  // Ink may emit metadata-only lines. Read those without adding an empty UI step.
-  let iterations = 0;
-  while (story.canContinue) {
-    if (++iterations > 200)
-      throw new Error("シナリオの進行を確認してください。");
-    const text = story.Continue()?.trim() ?? "";
-    readTags(story.currentTags ?? [], frame, events);
-    if (text) {
-      frame.text = text;
-      break;
-    }
-  }
-  frame.choices = storyChoices(story);
-  frame.ended = !story.canContinue && frame.choices.length === 0;
-  return { storyState: story.state.ToJson(), frame, effects: events };
-}
-
-/** Choice tags are presentation/identity metadata. Old choices keep their original shape. */
-function storyChoices(story: Story): StoryFrame["choices"] {
-  return story.currentChoices.map(({ index, text, tags }) => {
-    const parsed = parseStoryTags(tags ?? [], tagContext);
-    return {
-      index,
-      text: text.trim(),
-      ...(parsed.optionId ? { optionId: parsed.optionId } : {}),
-      ...(parsed.translationJa ? { translationJa: parsed.translationJa } : {}),
-    };
-  });
-}
+const readFrame = (story: Story, previous?: StoryFrame, choiceTags: readonly string[] = [], initialBackground = DEFAULT_BACKGROUND_ID): StoryStep =>
+  readStoryFrame(story, tagContext, previous, choiceTags, initialBackground);
+const storyChoices = (story: Story) => storyChoicesOf(story, tagContext);
 
 export function beginStory(
   storyId: string,
@@ -223,7 +149,8 @@ function setOptionalVariables(story: Story, variables: Record<string, string | n
 export function selectStoryChoice(
   storyId: string,
   saved: string,
-  previous: StoryFrame,
+  /** The frame the choice was made at; undefined starts a fresh one (a battle's call returns as a scene starts, stage 5). */
+  previous: StoryFrame | undefined,
   index: number,
   memoryIds: readonly string[] = [],
   variables: Record<string, string | number | boolean> = {},
@@ -231,6 +158,8 @@ export function selectStoryChoice(
   inventory: Readonly<Record<string, ItemStatus>> = {},
   /** Read on the state after the choice's effects, so the lines after the choice read the new values. */
   conditions?: StoryConditionReader,
+  /** The background of a fresh frame (no `previous`). */
+  initialBackground = DEFAULT_BACKGROUND_ID,
 ): StoryStep {
   const story = runtime(storyId, saved, memoryIds, inventory, conditions);
   for (const [name, value] of Object.entries(variables)) {
@@ -243,7 +172,55 @@ export function selectStoryChoice(
   if (!choice) throw new Error("選択肢が見つかりません。");
   const tags = choice.tags ?? [];
   story.ChooseChoiceIndex(index);
-  return readFrame(story, previous, tags);
+  return readFrame(story, previous, tags, initialBackground);
+}
+
+/**
+ * The lines of a helper knot read on their own (a special battle's claim and press for the clue
+ * book; stage 5): from the knot to its `->->` (read alone it has nowhere to return to) or its end.
+ */
+export function readStoryKnotLines(
+  address: string,
+  variables: Record<string, string | number | boolean>,
+  conditions?: StoryConditionReader,
+): { text: string; speaker: Speaker }[] {
+  const story = runtime(address, undefined, [], {}, conditions);
+  for (const [name, value] of Object.entries(variables))
+    if (story.variablesState.GlobalVariableExistsWithName(name)) story.variablesState.$(name, value);
+  let ended = false;
+  story.onError = (message) => {
+    if (!/tunnel onwards/u.test(message)) throw new Error(message);
+    ended = true;
+  };
+  const path = splitStoryAddress(address).path;
+  if (path === undefined) throw new Error("手伝いの knot の住所ではありません。");
+  story.ChoosePathString(path);
+  const lines: { text: string; speaker: Speaker }[] = [];
+  let speaker: Speaker = "narrator";
+  for (let count = 0; story.canContinue && !ended; count++) {
+    if (count > 200) throw new Error("シナリオの進行を確認してください。");
+    const text = story.Continue()?.trim() ?? "";
+    const parsed = parseStoryTags(story.currentTags ?? [], tagContext);
+    if (parsed.speaker) speaker = parsed.speaker;
+    if (text && !ended) lines.push({ text, speaker });
+  }
+  if (story.currentChoices.length) throw new Error("主張の knot には選択肢を書けません。");
+  return lines;
+}
+
+/** Where a saved story stops at a battle's call (stage 5): the call, its argument (call_arg) and Ink's turn; null when it does not. */
+export function storyCallAt(address: string, saved: string): { call: StoryCall; arg: number; turn: number } | null {
+  const story = runtime(address, saved);
+  const choices = storyChoices(story);
+  if (story.canContinue || choices.length !== 1 || !choices[0].call) return null;
+  const arg = story.variablesState.$("call_arg");
+  return { call: choices[0].call, arg: typeof arg === "number" ? arg : 0, turn: story.state.currentTurnIndex };
+}
+
+/** Story variables' saved values (undefined when not declared; stage 5: a flow battle's variables, checked on loading). */
+export function storyVariables(address: string, saved: string, names: readonly string[]): Record<string, unknown> {
+  const story = runtime(address, saved);
+  return Object.fromEntries(names.map((name) => [name, story.variablesState.GlobalVariableExistsWithName(name) ? story.variablesState.$(name) : undefined]));
 }
 
 export function validateStorySnapshot(

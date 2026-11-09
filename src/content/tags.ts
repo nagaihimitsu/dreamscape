@@ -13,8 +13,14 @@ export interface StoryTags {
   reactions?: Partial<Record<ReactionTarget, DialogueReaction>>;
   optionId?: string;
   translationJa?: string;
+  /** `# call: quiz` / `# call: reasoning`: the one choice of modules.ink's battle calls (stage 5). */
+  call?: StoryCall;
   effects: string[];
 }
+
+/** What a battle's call choice asks the game for (modules.ink: `-> quiz(n) ->`, `-> reasoning ->`; stage 5). */
+export const STORY_CALLS = ["quiz", "reasoning"] as const;
+export type StoryCall = (typeof STORY_CALLS)[number];
 
 /**
  * A choice's effect tags (the unified event design, stage 3a): content:build reads them from the Ink
@@ -84,6 +90,9 @@ export function parseStoryTags(
       result.optionId = value;
     } else if (EFFECT_TAG_KEYS.includes(key)) {
       continue;
+    } else if (key === "call") {
+      if (!(STORY_CALLS as readonly string[]).includes(value) || result.call) throw new Error(`Invalid or duplicate call tag: ${value}`);
+      result.call = value as StoryCall;
     } else if (key === "translation") {
       if (result.translationJa) throw new Error("Duplicate translation tag");
       result.translationJa = value;

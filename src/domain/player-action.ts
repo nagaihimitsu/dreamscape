@@ -1,4 +1,4 @@
-import { getActiveBattleContent, getBattleObservationLandmarkId, advanceBattle, answerBattle, canSubmitBattleEvidence, canToggleReasoningClue, pressBattleClaim, selectReasoningClue, submitBattleEvidence, toggleBattleHint } from "./battle";
+import { getActiveBattleContent, getBattleObservationLandmarkId, advanceBattle, answerBattle, battleChoiceDisplay, battleDialogueStop, canSubmitBattleEvidence, canToggleReasoningClue, chooseBattle, pressBattleClaim, selectReasoningClue, submitBattleEvidence, toggleBattleHint } from "./battle";
 import { getBattleResultExits } from "./chapter";
 import { advanceCompletedJourneyCity, getPlayerDeparture } from "./city-travel";
 import { advanceOccasion, closeRomanceEnding, openOccasion } from "./occasion";
@@ -64,6 +64,7 @@ export type PlayerAction =
   | { kind: "encounter_finish" }
   // Battles: BattleScreen, ReasoningPanel, the clue book (evidence, 「観光に戻って調べる」).
   | { kind: "battle_next" }
+  | { kind: "battle_choose"; index: number }
   | { kind: "battle_answer"; optionId: string }
   | { kind: "battle_hint" }
   | { kind: "battle_press" }
@@ -121,6 +122,10 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
   if (battle) {
     const observe = getBattleObservationLandmarkId(state);
     const back: PlayerAction[] = observe ? [{ kind: "battle_observe", landmarkId: observe }] : [];
+    // A flow battle's conversation may stop at its choices (stage 5).
+    if (battle.phase === "dialogue" && battleDialogueStop(battle) === "choices")
+      return [...battle.frame!.choices.filter((choice) => battleChoiceDisplay(state, choice.index).show === "open")
+        .map((choice) => ({ kind: "battle_choose" as const, index: choice.index })), ...back];
     if (battle.phase === "dialogue" || battle.phase === "feedback") return [{ kind: "battle_next" }, ...back];
     if (battle.phase === "question") {
       const { quiz } = getActiveBattleContent(battle);
@@ -191,6 +196,7 @@ export function playerActionChange(action: PlayerAction, nextRoll: () => number)
       case "encounter_next": return continueTourismEncounters(state, advanceEncounter(state, revision), nextRoll);
       case "encounter_finish": return continueTourismEncounters(state, finishEncounter(state, revision), nextRoll);
       case "battle_next": return advanceBattle(state, revision);
+      case "battle_choose": return chooseBattle(state, action.index, revision, nextRoll);
       case "battle_answer": return answerBattle(state, action.optionId, revision);
       case "battle_hint": return toggleBattleHint(state, revision);
       case "battle_press": return pressBattleClaim(state, revision);

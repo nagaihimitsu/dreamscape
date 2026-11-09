@@ -6,6 +6,7 @@ import {
 import { encounters } from "../content/encounters";
 import { getJourney, journeys } from "../content/journeys";
 import { storyBattlesForCity } from "../domain/chapter";
+import { getReasoningContext } from "../domain/battle";
 import { validateGameState } from "../domain/game";
 import { createDebugState, debugTargets, type DebugSettings } from "./debug-state";
 import { sampleJourneyId } from "./fixture-template";
@@ -77,6 +78,8 @@ describe("the fictional test cities", () => {
           const game = createDebugState(settings(scene, id));
           expect(game.currentCityId, `${scene} ${id}`).toBe("test_city");
           expect(validateGameState(game)).toEqual(game);
+          // A special battle's clue book reads its claim (a one-flow battle's helper knot keeps its story's name, stage 5).
+          if (scene === "battle" && id.startsWith("test_special")) expect(getReasoningContext(game)?.claimText, id).toMatch(/\S/u);
         }
     } finally { cleanup(); }
     const after = snapshot();

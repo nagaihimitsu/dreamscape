@@ -120,10 +120,10 @@ describe("Golden Triangle authored branching contracts", () => {
   for (const battle of indiaBattles) {
     it(`${battle.id}: correct/incorrect responses and every final score leave the story playable`, () => {
       const quiz = battleQuizzes[battle.quizId];
-      const intro = segment(runtime(battle.storyId, { battle_scene: battle.scenes.intro, battle_score: 0, answer_correct: false }));
+      const intro = segment(runtime(battle.storyId, { battle_scene: battle.scenes!.intro, battle_score: 0, answer_correct: false }));
       expect(intro.text).not.toBe("");
       expect(intro.effects).toEqual([]);
-      for (const scene of battle.scenes.afterRounds) for (const correct of [false, true]) {
+      for (const scene of battle.scenes!.afterRounds) for (const correct of [false, true]) {
         const story = runtime(battle.storyId, { battle_scene: scene, battle_score: correct ? 1 : 0, answer_correct: correct });
         const response = segment(story);
         expect(response.text, `${battle.id}/${scene}/${correct}`).not.toBe("");
@@ -133,7 +133,7 @@ describe("Golden Triangle authored branching contracts", () => {
       for (let score = 0; score <= quiz.questions.length; score++) for (const correct of [false, true]) {
         // Only possible score/last-answer combinations are meaningful.
         if ((score === 0 && correct) || (score === quiz.questions.length && !correct)) continue;
-        const story = runtime(battle.storyId, { battle_scene: battle.scenes.outro, battle_score: score, answer_correct: correct });
+        const story = runtime(battle.storyId, { battle_scene: battle.scenes!.outro, battle_score: score, answer_correct: correct });
         const ending = segment(story);
         expect(ending.text, `${battle.id}/${score}/${correct}`).not.toBe("");
         expect(ending.effects).toEqual([]);

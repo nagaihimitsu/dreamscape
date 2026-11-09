@@ -96,6 +96,8 @@ import {
   canToggleReasoningClue,
   getBattleObservationLandmarkId,
   reasoningEvidenceCount,
+  battleChoiceDisplay,
+  chooseBattle,
 } from "../domain/battle";
 
 import { browserStorage, type AppProps } from "./app-storage";
@@ -601,6 +603,9 @@ export function GameApp({
             onAdvance={() =>
               commit((state) => advanceBattle(state, game.revision))
             }
+            choices={shownSceneChoices(game.activeBattle.phase === "dialogue" ? game.activeBattle.frame?.choices.filter((choice) => !choice.call) ?? [] : [],
+              (index) => battleChoiceDisplay(game, index))}
+            onChoose={(index) => commit((state) => chooseBattle(state, index, game.revision, nextRomanceRoll))}
             onAnswer={(id) =>
               commit((state) => answerBattle(state, id, game.revision))
             }
