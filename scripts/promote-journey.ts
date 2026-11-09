@@ -10,6 +10,7 @@ import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readine
 import { buildJourneyFragments, loadJourneyScaffold } from "./journey-scaffold";
 import { authoringProfileOf, getJourneyAuthoringProfile, journeyAuthoringProfiles, unknownAuthoringJourney } from "./journey-authoring";
 import { namedJa } from "./journey-cli";
+import { jsonTextKeeping } from "./json-text";
 import { CONTENT_DIRECTORY, completeFragment, emptyCatalog, journeyManifestPath, trimFragment, type MergedKind } from "./content-layout";
 import { displayPath, journeyLayer, loadContentSources } from "./content-sources";
 import { createParentDirectories, removeCreatedDirectories } from "./created-directories";
@@ -44,10 +45,8 @@ const fragmentKinds = {
 type FragmentName = keyof typeof fragmentKinds;
 const fragmentFile = (layer: string, name: FragmentName) => `${layer}/${fragmentKinds[name]}`;
 const fragmentFiles = (layer: string) => (Object.keys(fragmentKinds) as FragmentName[]).map((name) => fragmentFile(layer, name));
-const text = (value: unknown) => `${JSON.stringify(value, null, 2)}\n`;
-/** The text of `value`; a file whose data stays the same keeps its exact text, so a release does not rewrite it. */
-const textKeeping = (before: string | null | undefined, value: unknown) =>
-  typeof before === "string" && isDeepStrictEqual(JSON.parse(before), value) ? before : text(value);
+// An unchanged file keeps its exact text, a changed one its own key order (json-text.ts).
+const textKeeping = jsonTextKeeping;
 /** Original file contents for a release; null marks a fragment the layer does not have yet. */
 export type ReleaseFiles = Record<string, string | null>;
 /** Merged catalogs of all layers (by kind), for collision checks against other layers. */

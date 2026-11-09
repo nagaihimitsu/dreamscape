@@ -1,7 +1,6 @@
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { isDeepStrictEqual } from "node:util";
 import { citySchema, dateCatalogSchema, presentationSchema } from "../src/content/schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
@@ -13,12 +12,12 @@ import { idSchema, bundleSchema, editableBundleSchema, type CityBundle, type Edi
 import { bundleCatalogKinds, existing, inputFingerprint, writeCityBundleFiles } from "./city-bundle-files";
 import { assertUniqueIds, mergeCityCatalogs, referencedBackgrounds } from "./city-bundle-catalogs";
 import { cityTransitPath, cityTransitPlan } from "./journey-transit";
+import { jsonTextKeeping } from "./json-text";
 import { exportTransitDecisions, inspectCityTransit, transitLedgerSchema } from "./transit-ledger";
 
 export type { CityBundle, EditableCityBundle } from "./city-bundle-schema";
 export { writeCityBundleFiles } from "./city-bundle-files";
 
-const output = (value: unknown) => `${JSON.stringify(value, null, 2)}\n`;
 
 /** Convert a v1 bundle or an incomplete new-city template without inventing data. */
 export function compactCityBundle(raw: unknown): unknown {
@@ -133,9 +132,8 @@ export async function applyCityBundle(root: string, raw: unknown, apply = false)
   if (bundle.transitDecisions?.some((item: any) => item?.cityId !== cityId)) throw new Error(`交通の判断がほかの都市のものです。この都市（${cityId}）の判断だけを書きます。`);
   const values = mergeCityCatalogs(sources, bundle, baseline);
   const original: Record<string, string | null> = Object.fromEntries(Object.keys(values).map((file) => [file, existsSync(path.join(root, file)) ? readFileSync(path.join(root, file), "utf8") : null]));
-  // Keep formatting and array ordering for semantically unchanged documents.
-  const next: Record<string, string> = Object.fromEntries(Object.entries(values).map(([file, value]) => [file,
-    original[file] !== null && isDeepStrictEqual(JSON.parse(original[file]!), value) ? original[file]! : output(value)]));
+  // An unchanged document keeps its exact text; a changed one keeps the file's key order (json-text.ts).
+  const next: Record<string, string> = Object.fromEntries(Object.entries(values).map(([file, value]) => [file, jsonTextKeeping(original[file], value)]));
   const changedFiles = Object.keys(next).filter((file) => original[file] !== next[file]);
   const stage = mkdtempSync(path.join(tmpdir(), "dreamscape-city-bundle-"));
   try {

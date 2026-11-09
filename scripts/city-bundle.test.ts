@@ -85,6 +85,7 @@ describe("city editing bundle: routes, export and atomic writes", () => {
     const root = fixture();
     const milan = cityPaths(root, "milano").travel;
     const before = readJson(root, milan);
+    const beforeText = read(root, milan);
     const bundle = exportEditableCityBundle(root, "milano");
     const route = bundle.travel.routes.find((item) => item.bothDirections && item.mode === "walk")!;
     expect(route).toBeDefined();
@@ -100,6 +101,10 @@ describe("city editing bundle: routes, export and atomic writes", () => {
           (previous.fromPlaceId === toPlaceId && previous.toPlaceId === fromPlaceId));
       expect(after.routes[index]).toEqual(selected ? { ...previous, minutes: previous.minutes + 1 } : previous);
     }
+    // The file keeps its own key order (its places' keys are not in the schema's order), so the diff is the two edited lines.
+    const afterLines = read(root, milan).split("\n");
+    expect(afterLines.filter((line, index) => line !== beforeText.split("\n")[index])).toEqual([
+      `      "minutes": ${route.minutes},`, `      "minutes": ${route.minutes},`]);
   }, 180_000);
 
   it("rejects missing source references, duplicate directed routes and unknown places without writing", async () => {
