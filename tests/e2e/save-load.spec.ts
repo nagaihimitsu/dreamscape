@@ -1,4 +1,5 @@
 import { DOUBLE_TAP_WINDOW_MS } from "../../src/components/double-tap";
+import { CONFIRM_SETTLE_MS } from "../../src/components/ConfirmActionButton";
 import { LAST_JOURNEY_KEY } from "../../src/app/last-journey";
 import { DEBUG_MODE_KEY } from "../../src/app/debug-mode";
 import { allStorage, expect, generated, journeyCatalog, learningKey, ops, placeGuideSave, playUntil, presentationKey, readSave, saveKey, test, tier } from "./helpers";
@@ -99,14 +100,102 @@ test("a preparing journey saved with empty name fields keeps the default names",
 });
 
 test("a manual save keeps the saved position and settings when unsaved changes are discarded", { tag: tier.gate }, async ({ page }) => {
+  await page.clock.install();
   await ops.startJourney(page);
+
+  // セーブ・ロード・ゲームの設定 live in the header's ⚙設定 (UI redesign §3.1, U2/U24/U28), a
+  // disclosure: by keyboard it opens on セーブ, the arrows move between its three items, Esc
+  // closes it back on ⚙設定, and leaving it with Tab closes it.
+  const gear = ops.settingsButton(page);
+  const panel = page.getByTestId("hud-menu-panel");
+  const item = (name: string) => panel.getByRole("button", { name, exact: true });
+  await gear.focus();
+  await page.keyboard.press("Enter");
+  await expect(panel.getByRole("button")).toHaveText(["セーブ", "ロード", "ゲームの設定"]);
+  await expect(item("セーブ")).toBeFocused();
+  await page.keyboard.press("ArrowDown");
+  await expect(item("ロード")).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(panel).toBeHidden();
+  await expect(gear).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(item("セーブ")).toBeFocused();
+  for (let step = 0; step < 3; step++) await page.keyboard.press("Tab");
+  await expect(panel).toBeHidden();
+  // ゲームの設定 opens the settings dialog, which gives the focus back to ⚙設定 when it closes.
+  await gear.focus();
+  await page.keyboard.press("Enter");
+  await item("ゲームの設定").focus();
+  await page.keyboard.press("Enter");
+  await ops.closeDialog(page.getByRole("dialog", { name: "ゲームの設定" }));
+  await expect(gear).toBeFocused();
+  // A tap outside the panel only closes it: nothing under it is pressed (here a destination),
+  // the save stays as it was, and the focus is back on ⚙設定.
+  const untouched = await readSave(page);
+  await ops.openMenu(page);
+  await expect(item("セーブ")).toBeFocused();
+  await ops.tapAt(page, await ops.centerOf(await ops.destination(page, "p_duomo")));
+  await expect(panel).toBeHidden();
+  await expect(gear).toBeFocused();
+  await expect(page.getByTestId("travel-menu")).toBeVisible();
+  expect(await readSave(page)).toEqual(untouched);
+  // A quick double tap on 「ゲームの設定」 (AGENTS.md 選択肢の誤タップ防止): the dialog opens under the
+  // finger, and on a phone the point is one of its controls (the autosave checkbox at 320–390 px).
+  // The second tap changes nothing, as the dialog takes no press for a moment (Modal's
+  // settlePresses), then takes them as usual. The page's clock is held, so the second tap comes
+  // within that moment however slow the machine.
+  {
+    const point = await ops.centerOf((await ops.openMenu(page)).getByRole("button", { name: "ゲームの設定", exact: true }));
+    await ops.holdClock(page);
+    await page.touchscreen.tap(point.x, point.y);
+    const settings = page.getByRole("dialog", { name: "ゲームの設定" });
+    await expect(settings).toBeVisible();
+    const autosave = settings.getByLabel("自動保存する");
+    const speed = settings.getByLabel("文字送り");
+    await expect(autosave).toBeChecked();
+    const speedBefore = await speed.inputValue();
+    expect(await settings.evaluate((dialog, { x, y }) => [...dialog.querySelectorAll("label, button, select, input")].some((control) => {
+      const box = control.getBoundingClientRect();
+      return x >= box.left && x <= box.right && y >= box.top && y <= box.bottom;
+    }), point), "the second tap's point is one of the settings' controls").toBe(true);
+    await page.touchscreen.tap(point.x, point.y);
+    await expect(settings).toBeVisible();
+    await expect(autosave).toBeChecked();
+    expect(await speed.inputValue()).toBe(speedBefore);
+    await page.clock.fastForward(CONFIRM_SETTLE_MS);
+    await page.clock.resume();
+    await expect(settings).not.toHaveAttribute("data-settling");
+    expect(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest("dialog")?.getAttribute("aria-labelledby"), point),
+      "a later tap at that point reaches the settings").toBe("settings-title");
+    await ops.closeDialog(settings);
+  }
+  expect(await readSave(page)).toEqual(untouched);
+
   await ops.setAutoSave(page, false);
   const initial = await readSave(page);
 
   await ops.goTo(page, "p_duomo");
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   expect(await readSave(page)).toEqual(initial);
-  await ops.manualSave(page);
+  // A quick double tap on ⚙設定 → 「セーブ」 over the guide (AGENTS.md 選択肢の誤タップ防止): the panel
+  // leaves from under the finger, and on a phone a control of the guide lies under セーブ's point
+  // (手がかり帳 at 320–390 px). The scene is saved, and the second tap presses nothing: no tap reaches
+  // the page for a moment after セーブ, as after a scene change. The page's clock is held, so the
+  // second tap comes within that moment however slow the machine.
+  const savePoint = await ops.centerOf((await ops.openMenu(page)).getByRole("button", { name: "セーブ", exact: true }));
+  await ops.holdClock(page);
+  await page.touchscreen.tap(savePoint.x, savePoint.y);
+  await expect(panel).toBeHidden();
+  expect(await page.evaluate(({ x, y }) => [...document.querySelectorAll("#tourism-screen button")].some((control) => {
+    const box = control.getBoundingClientRect();
+    return x >= box.left && x <= box.right && y >= box.top && y <= box.bottom;
+  }), savePoint), "the second tap's point is one of the guide's controls").toBe(true);
+  await page.touchscreen.tap(savePoint.x, savePoint.y);
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await page.clock.resume();
+  await ops.settled(page);
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect(page.getByTestId("tourism-guide")).toBeVisible();
   const manual = await readSave(page);
   expect(manual.travel.currentPlaceId).toBe("p_duomo");
   expect(manual.activeTourism?.landmarkId).toBe("duomo_milano");
@@ -135,8 +224,14 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await expect(reopened.getByLabel("自動保存する")).not.toBeChecked();
   await ops.closeDialog(reopened);
 
-  // ロード asks too, and loading brings the manual save's scene back.
+  // ロード asks too: 戻る keeps the scene and gives the focus back to ⚙設定, and loading brings
+  // the manual save's scene back.
   await page.getByTestId("tourism-skip").click();
+  const asked = await ops.askToLoad(page);
+  await asked.dialog.getByRole("button", { name: "戻る", exact: true }).click();
+  await expect(asked.dialog).toBeHidden();
+  await expect(gear).toBeFocused();
+  await expect(page.getByTestId("tourism-guide")).toHaveCount(0);
   const loading = await ops.askToLoad(page);
   await loading.loadButton.click();
   await expect(loading.dialog).toBeHidden();
@@ -197,7 +292,7 @@ test("a second tab cannot open a journey that is already open", { tag: tier.gate
   // AGENTS.md 「アクセシビリティを考慮する」: 再試行 disappears with the lock message, so the
   // resumed game's main area takes the focus instead of leaving it on the page body.
   await expect(second.getByRole("main")).toBeFocused();
-  await expect(second.getByTestId("travelers")).toContainText("先の名前");
+  expect(await ops.readTravelers(second)).toContain("先の名前");
   expect(await allStorage(second)).toEqual(saved);
 });
 

@@ -1,0 +1,9 @@
+/* Just under the header (z-index 20) and over everything else on the page:
+   the scenes (12 at most), the free-time map (isolated) and its later bands. */
+.dismiss-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 19;
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+}

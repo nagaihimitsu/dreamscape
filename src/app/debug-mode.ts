@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { StorageLike } from "../persistence";
 
 /**
- * Debug mode (user decision 2026-11-08): anyone can turn it on in 設定 with the
+ * Debug mode (user decision 2026-11-08): anyone can turn it on in ゲームの設定 with the
  * password below. While it is on, this device's production build opens Debug's
  * 「場面の確認」 (`?debug`, src/main.tsx) and the game shows each choice's
  * relationship changes (src/domain/relationship-change.ts). It is this device's
@@ -64,7 +64,7 @@ export function writeDebugMode(storage: DebugModeStorage, on: boolean): DebugMod
 }
 
 /**
- * The switch for 設定. `refresh` reads the stored value again (when the dialog
+ * The switch for ゲームの設定. `refresh` reads the stored value again (when the dialog
  * opens, so a change made in another tab shows; there is no live sync between tabs).
  */
 export function useDebugMode(storage: DebugModeStorage) {

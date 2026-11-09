@@ -8,6 +8,9 @@
   min-height: 0;
   height: 100%;
   background: radial-gradient(ellipse at 75% 18%, #70816d, #344e42 48%, var(--scene-edge) 100%);
+  /* The backdrop runs on behind the header where it lies over the battle
+     (--scene-top, styles.css); the stage and the reading panels start below it. */
+  padding-top: var(--scene-top, 0px);
   padding-bottom: 24px;
   overflow: clip;
 }
@@ -115,7 +118,7 @@
 }
 .battle-screen .battle-stage-notebook {
   position: absolute;
-  top: 8px;
+  top: calc(var(--scene-top, 0px) + 8px);
   right: 10px;
   z-index: 3;
   background: #f7f5edeb;
@@ -129,9 +132,9 @@
    changes: the dialogue window floats above the characters and scenery. */
 .battle-screen[data-phase="dialogue"] .battle-stage {
   position: absolute;
-  inset: 0;
+  inset: var(--scene-top, 0px) 0 0;
   width: 100%;
-  height: 100%;
+  height: auto;
   min-height: 0;
   padding: 0;
 }
@@ -255,7 +258,7 @@
   /* Without the stage, 54 px down is the round bar's 手がかり帳: keep the
      image credit beside the place name (centred on its row, above the paper),
      in the space the name leaves free. */
-  .battle-screen[data-phase="result"] .vn-credit-link { top: 5px; }
+  .battle-screen[data-phase="result"] .vn-credit-link { top: calc(var(--scene-top, 0px) + 5px); }
   .battle-screen[data-phase="result"] .battle-paper { padding: 6px 12px 12px; }
   .battle-result { padding-top: 0; }
   .battle-result-heading {
@@ -379,7 +382,7 @@
   background: inherit;
 }
 /* There the page scrolls and the bar sticks to the top of the screen, where the
-   journey bar above the battle has scrolled away (styles.css): no padding above it. */
+   header above the battle has scrolled away (styles.css): no padding above it. */
 @media (max-width: 700px) and (max-height: 499px) and (orientation: portrait) {
   .battle-screen .battle-roundbar::before { display: none; }
 }
@@ -445,7 +448,7 @@
   --effect-bright: #f9d66d;
   position: absolute;
   z-index: 10;
-  inset: 0;
+  inset: var(--scene-top, 0px) 0 0;
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -690,8 +693,9 @@
     display: none;
   }
   /* Without a place name (city finale) the credit comes right before the stage: 54 px down would sit
-     on the round bar's 手がかり帳, so it takes the top of the stage's row beside the enemy's name. */
-  .battle-screen .vn-credit-link:has(+ .battle-stage-compact) { top: 5px; }
+     on the round bar's 手がかり帳, so it takes the top of the stage's row beside the enemy's name
+     (the stage starts below the header where that lies over the battle, --scene-top). */
+  .battle-screen .vn-credit-link:has(+ .battle-stage-compact) { top: calc(var(--scene-top, 0px) + 5px); }
   .battle-screen .battle-paper {
     flex: 1 1 auto;
     min-height: 0;
@@ -766,9 +770,10 @@
 
 /* Short phones (320×568 and the like): the enemy header and the round bar
    shrink so the third answer stays above the fold under today's journey bar.
-   The image credit moves up beside the place name, as on the result screen. */
+   The image credit moves up beside the place name, as on the result screen
+   (below the header, at the stage's top: --scene-top). */
 @media (max-width: 700px) and (min-height: 500px) and (max-height: 599px) and (orientation: portrait) {
-  .battle-screen:not([data-phase="dialogue"]) .vn-credit-link { top: 5px; }
+  .battle-screen:not([data-phase="dialogue"]) .vn-credit-link { top: calc(var(--scene-top, 0px) + 5px); }
   .battle-screen .battle-stage-compact {
     min-height: 28px;
     height: 28px;

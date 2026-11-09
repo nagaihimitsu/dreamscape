@@ -3,7 +3,7 @@ import type { GameState } from "../../src/domain/game";
 import { DEBUG_HOOK_NAME, type DreamscapeDebugHook } from "../../src/dev/debug-hook";
 import { debugQueryString, type DebugSettings } from "../../src/dev/debug-query";
 import { describeRelationshipChange, relationshipChange } from "../../src/domain/relationship-change";
-import { test as base, bothStorages, debugGame, devModules, expect, ops, placeSave, playUntil, tier, type Page } from "./helpers";
+import { test as base, bothStorages, debugGame, devModules, expect, ops, placeSave, playUntil, tier, type Locator, type Page } from "./helpers";
 
 // Lane 3 (docs/10「Debugを場面の起動台にする」): Debug opens scenes that the real
 // flow reaches only after many steps. These tests check that a scene can be played
@@ -111,8 +111,10 @@ test("an encounter answered in English gives its item, and the scene ends back i
   const pick = (state: GameState) => state.activeEncounter?.phase === "quiz" ? encounter!.correctOptionId! : "A";
   const done = await playUntil(page, (state) => state.completedEncounterIds.includes(encounter!.encounterId), { source: debugGame, pick });
   expect(done.inventory[encounter!.itemId]).toBe("held");
-  // The header lists it among the items held in this city.
-  await expect(page.getByRole("group", { name: "所持アイテム" }).getByRole("button", { name: `${encounter!.itemName}の詳細` })).toBeVisible();
+  // The header lists it among the items held in this city: its detail (or, with more items, the
+  // list of every held item) names it.
+  await expect(await ops.openHeldItems(page)).toContainText(encounter!.itemName);
+  await page.keyboard.press("Escape");
   // Debug meets the encounter in its landmark's observation, as play does (encounters start nowhere else);
   // encounters waiting in the same observation may follow, and the scene ends back in that observation.
   const after = await playUntil(page, (state) => !state.activeEncounter, { source: debugGame, pick });
@@ -366,9 +368,12 @@ test("battle: a long explanation after a wrong answer starts below the round bar
 
 // docs/02 「UX/スマホ」: no tap reads on while something is open over the scene. The header's
 // held-item detail closes on a tap anywhere outside it; that tap only closes it, on the picture and
-// on the line alike. The detail is not modal: the keyboard reads on while it is open, as before, and
-// a screen reader's activation of the line reads on after the detail has gone; so do taps again.
-test("encounter: the tap on the picture or the line that closes the held-item detail does not read on, Enter on the line does", { tag: tier.debug }, async ({ page }) => {
+// on the line alike (its layer takes the tap, outside the scene). While it is open it counts as open
+// over the scene like ⚙設定's panel (UI redesign §3.1): Enter on the line waits and the line is not
+// written on; the focus leaving it closes it; once it is closed (Esc, Tab past it, or a pan that
+// starts over the picture) the line reads on again, by the keyboard, by a screen reader's activation
+// and by taps.
+test("encounter: the tap on the picture or the line that closes the held-item detail does not read on, nor does Enter while it is open", { tag: tier.debug }, async ({ page }) => {
   const encounter = await itemEncounter(page, true);
   expect(encounter, "an encounter whose English answer gives an item, that Debug can open").toBeDefined();
   // Time runs normally; it is held below so that a line stays half written.
@@ -380,13 +385,21 @@ test("encounter: the tap on the picture or the line that closes the held-item de
   expect(held.activeEncounter, "a line to read after the item is given").not.toBeNull();
   const line = page.getByTestId("dialogue-text");
   const text = await line.textContent();
-  const picture = await ops.sceneBackgroundPoint(page);
-  const items = page.getByRole("group", { name: "所持アイテム" });
-  const detail = items.getByRole("dialog");
+  const detail = page.getByRole("group", { name: "所持アイテム" }).getByRole("dialog");
   const openDetail = async () => {
-    await items.getByRole("button", { name: `${encounter!.itemName}の詳細` }).click();
-    await expect(detail).toBeVisible();
+    await expect(await ops.openHeldItems(page)).toContainText(encounter!.itemName);
   };
+  // The detail hangs from the header over the picture's top, as far down as its text takes (the
+  // fonts decide): the picture's point is taken below it, halfway to the line.
+  const column = await ops.sceneBackgroundPoint(page);
+  await openDetail();
+  const foot = await detail.evaluate((element) => element.getBoundingClientRect().bottom);
+  await page.keyboard.press("Escape");
+  await expect(detail).toBeHidden();
+  const lineTop = (await line.boundingBox())!.y;
+  expect(foot, "the open detail ends above the line").toBeLessThan(lineTop);
+  const picture = { x: column.x, y: Math.max(column.y, (foot + lineTop) / 2) };
+  expect(await ops.readsOnAt(page, picture), "the point below the detail shows the scene's picture").toBe(true);
   await openDetail();
   await ops.tapAt(page, picture);
   await expect(detail).toBeHidden();
@@ -396,19 +409,46 @@ test("encounter: the tap on the picture or the line that closes the held-item de
   await expect(detail).toBeHidden();
   await expect(line).toHaveText(text!);
   expect((await debugGame(page))!.revision).toBe(held.revision);
-  // Enter on the line reads one line on with the detail open: the closing taps did not. The next line
-  // is written letter by letter (motion not reduced), and the clock is held, so it stays half written.
+  // A press that leaves the focus on the line (Safari does not focus a pressed button) opens the
+  // detail with the line still focused: Enter on the line waits while the detail is open, and Esc
+  // closes it (back on its button).
   const revision = async () => (await debugGame(page))!.revision;
-  await openDetail();
   await page.emulateMedia({ reducedMotion: "no-preference" });
+  await line.focus();
+  await ops.heldItemsButton(page).evaluate((button) => (button as HTMLElement).click());
+  await expect(detail).toBeVisible();
+  await expect(line).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(detail).toBeVisible();
+  expect(await revision(), "Enter did not read on while the detail was open").toBe(held.revision);
+  await page.keyboard.press("Escape");
+  await expect(detail).toBeHidden();
+  await expect(ops.heldItemsButton(page)).toBeFocused();
+  // By keyboard the detail never stays open behind the focus: Tab goes to its × and, past it, out of
+  // the 所持アイテム group, which closes the detail (as leaving ⚙設定's panel closes it) and leaves the
+  // focus where Tab took it. Enter on the line then reads one line on. The next line is written
+  // letter by letter (motion not reduced), and the clock is held, so it stays half written; with
+  // the detail open again it is not written on.
+  await page.keyboard.press("Enter");
+  await expect(detail).toBeVisible();
+  await page.keyboard.press("Tab");
+  await expect(detail.getByRole("button", { name: /を閉じる$/u })).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(detail).toBeHidden();
+  await expect(page.getByTestId("dismiss-layer")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "英語ノートを開く" })).toBeFocused();
   await ops.holdClock(page);
   await line.focus();
   await page.keyboard.press("Enter");
   await expect.poll(revision).toBe(held.revision + 1);
   const next = (await debugGame(page))!.activeEncounter;
   expect(next && !next.frame.choices.length, "the encounter shows another line (perhaps its last), not choices").toBeTruthy();
-  await expect(detail).toBeVisible();
   await expect(line).toHaveAttribute("data-ready", "false");
+  await openDetail();
+  const unrevealed = () => line.locator(".unrevealed").evaluate((element) => element.textContent!.length);
+  const left = await unrevealed();
+  await page.clock.fastForward(2_000);
+  expect(await unrevealed(), "the line waits while the detail is open").toBe(left);
   // A pan that starts over the picture closes the detail with no click. A click on the line with no
   // pointer behind it (as a screen reader activates it) is then no tap over the detail: like a tap on
   // the line, it writes the line out at once.
@@ -454,9 +494,29 @@ test("tourism: a tap on the landmark's heading, and on a wide screen on the page
 
 // AGENTS.md 「選択肢の誤タップ防止」: a city finale has no place name above its stage, so on a portrait
 // phone its 「画像の出典」 takes the top of the stage's row (battle.css) instead of sitting on the round
-// bar's 手がかり帳, where a tap meant for one button would press the other. One finale of Debug's default
-// city at a common and at the smallest phone size; every battle and size stays in the screens gallery.
-test("city finale: 「画像の出典」 does not overlap the question's 手がかり帳 at 390×844 and 320×568", { tag: tier.debug }, async ({ page }) => {
+// bar's 手がかり帳, where a tap meant for one button would press the other. On a short phone (500–599 px
+// tall) every battle's credit moves up beside the place name. Both places are below the header that
+// lies over the battle (UI redesign §3.1): the credit is the element shown at its own centre, not
+// the header over it (a box that is merely "visible" can still be covered). One finale of Debug's
+// default city at a common and at the smallest phone size, and one landmark battle's question at the
+// smallest; every battle and size stays in the screens gallery.
+const creditShownAt = (credit: Locator) => credit.evaluate((button) => {
+  const box = button.getBoundingClientRect();
+  const shown = document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2);
+  return button.contains(shown) ? "the credit" : `${shown?.tagName}.${shown?.className} in ${shown?.closest("[data-testid]")?.getAttribute("data-testid")}`;
+});
+test("battle: 「画像の出典」 shows at its place, below the header and clear of 手がかり帳 (a city finale at 390×844 and 320×568, a landmark battle at 320×568)", { tag: tier.debug }, async ({ page }) => {
+  const credit = page.getByRole("button", { name: "画像の出典", exact: true });
+  const landmarkBattle = (await tapTargets(page)).battle;
+  expect(landmarkBattle, "a landmark battle that Debug opens in its default city").toBeDefined();
+  const phoneSize = page.viewportSize()!;
+  await page.setViewportSize({ width: 320, height: 568 });
+  await ops.openDebugScene(page, settings(landmarkBattle!));
+  await playUntil(page, (state) => state.activeBattle?.phase === "question", { source: debugGame });
+  await expect(credit).toBeVisible();
+  expect(await creditShownAt(credit), "a landmark battle's question at 320×568").toBe("the credit");
+  await ops.backToDebugSettings(page);
+  await page.setViewportSize(phoneSize);
   const finale = await page.evaluate(async (modules) => {
     const { battles } = await import(/* @vite-ignore */ modules.content);
     const { debugTargets, defaultDebugCityId } = await import(/* @vite-ignore */ modules.debugState);
@@ -468,7 +528,6 @@ test("city finale: 「画像の出典」 does not overlap the question's 手が�
   expect(finale, "a city finale that Debug opens in its default city").toBeDefined();
   await ops.openDebugScene(page, settings({ cityId: finale!.cityId, scene: "battle", id: finale!.id }));
   await playUntil(page, (state) => state.activeBattle?.phase === "question", { source: debugGame });
-  const credit = page.getByRole("button", { name: "画像の出典", exact: true });
   const clueBook = page.getByRole("button", { name: "手がかり帳", exact: true });
   for (const [width, height] of [[390, 844], [320, 568]] as const) {
     await page.setViewportSize({ width, height });
@@ -477,6 +536,7 @@ test("city finale: 「画像の出典」 does not overlap the question's 手が�
     const [a, b] = [(await credit.boundingBox())!, (await clueBook.boundingBox())!];
     const overlap = a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height;
     expect(overlap, `「画像の出典」 ${JSON.stringify(a)} and 手がかり帳 ${JSON.stringify(b)} at ${width}×${height}`).toBe(false);
+    expect(await creditShownAt(credit), `the city finale's question at ${width}×${height}`).toBe("the credit");
   }
   await ops.backToDebugSettings(page);
 });

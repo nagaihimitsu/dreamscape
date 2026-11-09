@@ -1,0 +1,285 @@
+/* The header of every game screen (UI redesign §3.1): row 1 shows (status pills,
+   no edge), row 2 is pressed (rectangles with a gold hairline). Shape tells the
+   role, never the colour alone (§2.3). Its height is measured into --hud-h. */
+.journey-hud {
+  --hud-pill-bg: var(--ds-on-slate-pill);
+  /* Its width is the screen's (never its content's), so it can be the query
+     container for enlarged text (row 1, below). */
+  container: journey-hud / inline-size;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: calc(4px + env(safe-area-inset-top)) 8px 4px;
+  color: var(--ds-on-slate);
+  background: var(--ds-chip-bg);
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 12px;
+  line-height: 1.2;
+}
+.journey-hud p { margin: 0; }
+.journey-hud .icon { flex: none; color: var(--ds-gold); }
+
+/* Row 1: where and when, the budget and AP. Nothing here is pressed. When the
+   plate and the money do not fit side by side, the money goes below the plate:
+   the row wraps (the header's height is measured). */
+.hud-status { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; min-height: 40px; }
+.hud-plate,
+.hud-wallet {
+  min-height: 40px;
+  border-radius: 999px;
+  background: var(--hud-pill-bg);
+  box-shadow: var(--ds-pill-shadow);
+}
+/* The plate takes the row beside the money. It needs at least about nine
+   characters (9em) and never less than its time line (its minimum: the place's
+   line has none of its own); with less room the money goes below it. A place
+   longer than the plate ends in an ellipsis (its full name stays in the text),
+   except on a phone held upright once the text is enlarged past the threshold
+   below. */
+.hud-plate {
+  flex: 1 1 9em;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  padding: 3px 14px;
+}
+.hud-place,
+.hud-time { min-width: 0; overflow: hidden; }
+/* One line with an ellipsis that, unlike a nowrap line, lets the plate be
+   narrower than the name (line-clamp) while its full width still counts where
+   the plate takes its content's width (one-row header, below). */
+.hud-place {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  overflow-wrap: anywhere;
+  font-family: "Noto Serif JP", serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.hud-time {
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ds-on-slate-muted);
+  font-size: 12px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.hud-plate .icon { width: 13px; height: 13px; margin-right: 3px; vertical-align: -2px; }
+/* Enlarged text on a phone held upright (UI redesign §5.1: rows may wrap, never
+   clip): when the header holds fewer than about 25 of its characters across —
+   at normal text even a 320-px phone holds more, so these rules never apply
+   there — the plate asks for its whole place name on one line, so the money goes
+   below whenever the name does not fit beside it, and a name wider than the
+   whole row goes on to a second line instead of ending in an ellipsis.
+   The threshold depends on the width (the content box is the screen less 16 px,
+   the header's text 12 px at normal size): text enlarged to about 115 % at
+   360 px, 120 % at 375 px, 125 % at 390 px, 132 % at 412 px and 138 % at
+   430 px. Text enlarged less than that keeps the one-line ellipsis of normal
+   text, so long names can still end in "…" there (at 412 px, anything up to
+   about 131 %), and so does the one-row header (landscape, wider than 700 px)
+   at every text size. */
+@media (max-width: 700px) and (orientation: portrait) {
+  @container journey-hud (max-width: 25em) {
+    .hud-plate { flex-basis: auto; }
+    .hud-place { display: block; -webkit-line-clamp: none; line-clamp: none; }
+  }
+}
+.hud-wallet {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 2px 14px;
+  font-family: Georgia, serif;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+/* At the row's right end, also on a line of its own. */
+.hud-status > .hud-wallet { margin-left: auto; }
+.hud-wallet .travel-budget { font-size: 16px; }
+.hud-wallet .travel-budget[data-length="long"] { font-size: 14px; }
+.hud-wallet .travel-budget[data-length="longer"] { font-size: 13px; }
+.hud-wallet .ap { font-size: 13px; }
+.hud-wallet .ap small { font-family: "Noto Sans JP", sans-serif; font-size: 10px; letter-spacing: 0.1em; }
+.hud-wallet .icon { width: 12px; height: 12px; margin-right: 3px; vertical-align: -1px; }
+
+/* Row 2: what is pressed. Words stay at every width; icons go first. */
+.hud-actions { display: flex; flex-wrap: wrap; align-items: stretch; gap: 4px; }
+.hud-actions > * { flex: none; }
+/* At the row's right end, also when a crowded row wraps (free time with an item, below 380 px). */
+.hud-tools { display: flex; gap: 4px; margin-left: auto; }
+.hud-progress,
+.hud-tool,
+.journey-hud .held-item-button,
+.journey-hud .travel-wait summary,
+.journey-hud .travel-sleep-toggle {
+  min-height: 44px;
+  margin: 0;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 12px;
+  background: var(--ds-slate-800);
+  color: var(--ds-on-slate);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.hud-progress {
+  /* Grows into the row's free width; below its one-line width the two counts
+     go on two lines (each count stays whole), so no width needs a breakpoint. */
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px 3px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+}
+.hud-progress-parts {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 14px;
+  row-gap: 2px;
+  overflow: hidden;
+}
+/* The dot between the counts sits in the gap before each count; at the start of
+   a line it falls outside the box and is clipped, so a wrapped count starts clean. */
+.hud-progress-part { margin-left: -14px; white-space: nowrap; }
+.hud-progress-part::before { content: "·"; display: inline-block; width: 14px; text-align: center; }
+.hud-progress-part .icon { display: none; }
+.hud-chevron { width: 12px; height: 12px; }
+.hud-tool,
+.journey-hud .held-item-button,
+.journey-hud .travel-wait summary,
+.journey-hud .travel-sleep-toggle {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-width: 44px;
+  padding: 3px 4px;
+}
+.hud-tool .icon,
+.journey-hud .travel-wait summary .icon,
+.journey-hud .travel-sleep-toggle .icon { width: 20px; height: 20px; }
+.hud-tool-word { font-size: 11px; font-weight: 600; line-height: 1; white-space: nowrap; }
+.journey-hud .held-item-button[aria-expanded="true"],
+.hud-tool[aria-expanded="true"],
+.journey-hud .travel-wait[open] summary { background: var(--ds-slate-900); border-color: var(--ds-gold); }
+
+/* 待機・休む in free time (until the free-time band takes them). */
+.journey-hud .travel-utility { display: flex; flex-wrap: nowrap; gap: 4px; margin: 0; }
+.journey-hud .travel-wait summary { list-style: none; }
+.journey-hud .travel-wait summary::after { content: none; }
+.journey-hud .travel-wait summary .hud-tool-word::after { content: "▾"; margin-left: 1px; }
+.journey-hud .travel-wait[open] summary .hud-tool-word::after { content: "▴"; }
+/* The open 待機 menu hangs from the header's bottom edge (the header is its
+   containing block), so it never covers the header's other buttons. */
+.journey-hud .travel-wait-actions {
+  position: absolute;
+  z-index: 1;
+  top: calc(100% + 4px);
+  left: 8px;
+  width: max-content;
+  max-width: min(260px, calc(100% - 16px));
+  padding: 8px;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 16px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  box-shadow: var(--ds-card-shadow);
+}
+
+/* ⚙設定's panel: under the header, its right edge on the button's. */
+.hud-menu-panel {
+  position: absolute;
+  z-index: 1;
+  top: calc(100% + 4px);
+  right: 8px;
+  display: grid;
+  gap: 4px;
+  width: 168px;
+  padding: 8px;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 16px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  box-shadow: var(--ds-card-shadow);
+  animation: hud-menu-in 120ms ease-out;
+}
+.hud-menu-panel[hidden] { display: none; }
+.hud-menu-panel button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 12px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: left;
+}
+.hud-menu-panel .icon { width: 20px; height: 20px; color: var(--ds-slate-800); }
+@keyframes hud-menu-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+.reduce-motion .hud-menu-panel { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .hud-menu-panel { animation: none; }
+}
+
+/* The two-tone focus ring (§2.1): seen on slate, on parchment and over photos. */
+.journey-hud button:focus-visible,
+.journey-hud summary:focus-visible {
+  outline: 3px solid var(--ds-focus);
+  outline-offset: 0;
+  box-shadow: 0 0 0 6px var(--ds-slate-900);
+}
+
+@media (min-width: 380px) {
+  .hud-wallet { flex-direction: row; align-items: center; gap: 10px; }
+  .hud-wallet .travel-budget,
+  .hud-wallet .ap { font-size: 17px; }
+  .hud-wallet .travel-budget[data-length="long"] { font-size: 15px; }
+  .hud-wallet .travel-budget[data-length="longer"] { font-size: 14px; }
+  .hud-wallet .ap small { font-size: 11px; }
+  .hud-progress-part .icon { display: inline-block; width: 16px; height: 16px; margin-right: 3px; vertical-align: -3px; }
+}
+@media (max-width: 359px) {
+  .hud-place { font-size: 13px; }
+}
+
+/* Wide screens and phones on their side: one row of about 52 px. */
+@media (min-width: 701px), (orientation: landscape) {
+  .journey-hud { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 4px 8px; min-height: 52px; }
+  /* The status takes what row 2 leaves, at least the plate's time line and the
+     money; with less, row 2 goes on a line of its own. In it the plate is as wide
+     as its place (down to its time line, the place then ending in an ellipsis)
+     and the money follows it: the rest is open space before the pressables. */
+  .hud-status { flex: 1 1 0; flex-wrap: nowrap; min-width: min-content; }
+  .hud-plate { flex: 0 1 auto; }
+  .hud-status > .hud-wallet { margin-left: 0; }
+  .hud-actions { flex: 0 1 auto; justify-content: flex-end; }
+  .hud-progress { flex: 0 1 auto; }
+}

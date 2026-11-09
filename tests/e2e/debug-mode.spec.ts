@@ -3,7 +3,7 @@ import { debugQueryString } from "../../src/dev/debug-query";
 import { eagerFiles } from "../../scripts/dist-guard";
 import { allStorage, bothStorages, expect, ops, test, tier, type Page } from "./helpers";
 
-// User decision 2026-11-08: anyone can turn Debug mode on in 設定 with the password 「adminmode」
+// User decision 2026-11-08: anyone can turn Debug mode on in ゲームの設定 (⚙設定) with the password 「adminmode」
 // (not a secret: anyone may see it; it only prevents turning it on by accident). While it is on,
 // the production build opens Debug's 「場面の確認」, and choices show their relationship changes.
 // Production tier only (docs/10): the gate expression (`import.meta.env.DEV || readDebugMode(…)`) and the
@@ -29,7 +29,7 @@ async function readUntilReplies(page: Page) {
 
 // A long flow (docs/10「不安定さと時間の決まり」): five page loads (title, reload, 場面の確認, a launch
 // URL, back to the game), Debug's lazy files and a date read to its replies.
-test("Debug mode: the password in 設定 turns it on for this device, opens 場面の確認 and shows changes, and 設定 turns it off", { tag: tier.prod }, async ({ page, baseURL }) => {
+test("Debug mode: the password in ゲームの設定 turns it on for this device, opens 場面の確認 and shows changes, and ゲームの設定 turns it off", { tag: tier.prod }, async ({ page, baseURL }) => {
   test.setTimeout(120_000);
   // The game's own scripts and stylesheets (the web fonts' stylesheet comes from another origin).
   const requested: string[] = [];
@@ -95,7 +95,7 @@ test("Debug mode: the password in 設定 turns it on for this device, opens 場�
   const strip = page.getByTestId("relationship-change");
   await expect(strip).toContainText(/(親しさ|信頼|恋愛の意識) [+−]\d+（−?\d+→−?\d+）/u);
   await expect(strip).toContainText(/反応：噛み合った（噛み合う確率 \d+%）/u);
-  // Debug's own 設定 has no Debug-mode switch and keeps Debug's wording (also in production).
+  // Debug's own ゲームの設定 has no Debug-mode switch and keeps Debug's wording (also in production).
   settings = await ops.openSettings(page);
   await expect(settings.getByTestId("debug-mode-setting")).toHaveCount(0);
   await expect(settings.getByRole("button", { name: "Debug用の一時データの消去" })).toBeVisible();

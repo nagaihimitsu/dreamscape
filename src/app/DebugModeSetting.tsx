@@ -6,7 +6,7 @@ import type { useDebugMode } from "./debug-mode";
 type Focus = "field" | "start" | "status";
 
 /**
- * 設定 → 「Debugモード」 (user decision 2026-11-08): turned on with the password, off
+ * ⚙設定 → ゲームの設定 → 「Debugモード」 (user decision 2026-11-08): turned on with the password, off
  * without one. The password is not a secret (src/app/debug-mode.ts), so the field is
  * a plain text field: phones neither hide what was typed nor offer to store it.
  * The section is not shown inside a Debug session (Debug mode is on there by definition).

@@ -17,7 +17,7 @@ test.use({ viewport: { width: 320, height: 480 } });
 
 // Long flow (docs/10「不安定さと時間の決まり」), with the same budget as debug-scenes.spec.ts in this
 // tier: the app loads twice on the development server, then a battle is played and loaded again
-// (ops.load). About 7 s locally, but 15–21 s under a 6x CPU throttle; the runner about four times
+// (ops.loadSaved). About 7 s locally, but 15–21 s under a 6x CPU throttle; the runner about four times
 // slower than usual on 2026-11-08 ran that file's long flows out of the default 30 s.
 test.describe.configure({ timeout: 120_000 });
 
@@ -104,19 +104,20 @@ test("battle on a 320×480 screen: after a wrong answer the round bar, 手がか
   expect(ring.kept, "focusing 手がかり帳 does not scroll").toBe(true);
   expect(ring.clear, "手がかり帳 and its focus ring show on the screen, with nothing over them").toBe(true);
 
-  // Scrolled back to the top of the page, the journey bar's controls show again, and 設定 opens.
+  // Scrolled back to the top of the page, the header's controls show again, and ⚙設定 →
+  // ゲームの設定 opens.
   await page.evaluate(() => scrollTo({ top: 0 }));
   await expect(ops.settingsButton(page)).toBeInViewport();
   await ops.closeDialog(await ops.openSettings(page));
 
-  // Where :has() is missing (Safari before 15.4) the journey bar stays held at the top of the
-  // screen above the round bar (styles.css). A load brings the explanation back and focuses it
-  // at once, while no tap reaches the page (tap-hold.ts): its first line then starts just below
-  // the held journey bar.
+  // Were the header held at the top of the screen above the round bar (as it was where :has()
+  // was missing, before UI step 1.2): a load brings the explanation back and focuses it at once,
+  // while no tap reaches the page (tap-hold.ts), and its first line then starts just below the
+  // held header.
   const stillHeld = await page.addStyleTag({ content: '[data-testid="journey-bar"] { position: sticky !important; }' });
   await page.evaluate(() => scrollTo({ top: document.documentElement.scrollHeight }));
   expect((await page.evaluate(feedbackStart)).lineTop, "at the end of the page the first line is above the screen").toBeLessThan(0);
-  await ops.load(page);
+  await ops.loadSaved(page);
   await expect(page.getByTestId("battle-feedback")).toBeFocused();
   await ops.settled(page);
   const held = await page.evaluate(feedbackStart);

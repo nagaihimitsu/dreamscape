@@ -28,7 +28,7 @@
 }
 .vn-credit-link {
   position: absolute;
-  top: 8px;
+  top: calc(var(--scene-top, 0px) + 8px);
   right: 8px;
   z-index: 2;
   min-height: 32px;
@@ -40,4 +40,4 @@
   font-size: 11px;
   text-decoration: underline;
 }
-.battle-screen .vn-credit-link { top: 54px; }
+.battle-screen .vn-credit-link { top: calc(var(--scene-top, 0px) + 54px); }

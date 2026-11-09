@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { DebugModeSetting } from "./DebugModeSetting";
 
-// 設定 → Debugモード: the status that says 「Debugモードをオフにしました。」 is on the page, empty, before
+// ゲームの設定 → Debugモード: the status that says 「Debugモードをオフにしました。」 is on the page, empty, before
 // the switch is turned off, so screen readers announce the text put into it.
 describe("Debug mode setting", () => {
   const debugMode = (on: boolean) => ({ on, message: "", refresh: () => {}, turnOn: () => "wrong" as const, turnOff: () => "ok" as const });

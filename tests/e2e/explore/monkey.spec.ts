@@ -114,7 +114,7 @@ function choose(page: Page, roll: number) {
  */
 async function resume(page: Page, journeyId: string) {
   const selector = page.getByLabel("旅行編");
-  const game = page.getByTestId("travelers");
+  const game = page.getByTestId("journey-context");
   await expect(game.or(selector).first()).toBeVisible();
   if (!(await game.isVisible()) && await selector.inputValue() !== journeyId) await ops.chooseJourney(page, journeyId);
   await expect(game).toBeVisible();

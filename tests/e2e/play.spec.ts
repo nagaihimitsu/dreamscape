@@ -10,8 +10,11 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   // A name that looks like markup is shown as plain text (AGENTS.md: player input is text, never HTML).
   await ops.startJourney(page, "milano", ["<b>航</b>", "澪"]);
   const menu = page.getByTestId("travel-menu");
-  await expect(page.getByTestId("travelers")).toContainText("<b>航</b>");
-  await expect(page.getByTestId("travelers").locator("b")).toHaveCount(0);
+  // The names head 旅の記録 (opened from the header's progress).
+  const records = await ops.openRecords(page);
+  await expect(records.getByTestId("travelers")).toContainText("<b>航</b>");
+  await expect(records.getByTestId("travelers").locator("b")).toHaveCount(0);
+  await ops.closeDialog(records);
   await expect(page.getByLabel("残り0AP")).toBeVisible();
 
   // Walking to the Duomo opens its sightseeing guide on arrival.
@@ -62,6 +65,22 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
     "the second tap landed on the guide").toBe(true);
   expect((await readSave(page)).revision).toBe(first.revision + 3);
   await expect(line).toHaveAttribute("data-ready", "false");
+  // ⚙設定's panel over the guide (UI redesign §3.1): while it is open the line is not written
+  // on (the clock moves 2 s), and a tap on the picture only closes the panel (its layer takes
+  // the tap, outside the scene) and gives the focus back to ⚙設定; the line stays as it was.
+  // That tap counts as a tap over something, so the tap on the line below is still its second.
+  const unrevealed = () => line.locator(".unrevealed").evaluate((element) => element.textContent!.length);
+  const left = await unrevealed();
+  const panel = await ops.openMenu(page);
+  await expect(panel.getByRole("button", { name: "セーブ", exact: true })).toBeFocused();
+  await page.clock.fastForward(2_000);
+  expect(await unrevealed(), "the line waits while the panel is open").toBe(left);
+  await ops.tapAt(page, picture);
+  await expect(panel).toBeHidden();
+  await expect(ops.settingsButton(page)).toBeFocused();
+  await expect(line).toHaveAttribute("data-ready", "false");
+  expect(await unrevealed()).toBe(left);
+  expect((await readSave(page)).revision).toBe(first.revision + 3);
   // A tap on the line itself right after those presses counts as a press's second tap (the
   // clock is held, so it falls within the double-tap window): it does not finish the line.
   const lineBox = (await line.boundingBox())!;
@@ -70,6 +89,28 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   expect((await readSave(page)).revision).toBe(first.revision + 3);
   await page.clock.resume();
   // The line now being written finishes by itself; later lines appear whole.
+  await expect(line).toHaveAttribute("data-ready", "true");
+  // 自動送り (ゲームの設定) waits while ⚙設定's panel is open too (UI redesign §5.3). With the line
+  // written in full and the clock held, the clock moves past the longest wait (7 s) with the panel
+  // open: the story stays. Once the panel is closed the line reads on by itself. 自動送り is turned
+  // off again for the rest of the journey.
+  const settings = await ops.openSettings(page);
+  await settings.getByLabel("自動送りする").check();
+  await ops.holdClock(page);
+  await ops.closeDialog(settings);
+  const waiting = await readSave(page);
+  const waitingText = await line.textContent();
+  const menuPanel = await ops.openMenu(page);
+  await page.clock.fastForward(8_000);
+  await expect(line).toHaveText(waitingText!);
+  expect((await readSave(page)).revision, "自動送り waited while the panel was open").toBe(waiting.revision);
+  await page.keyboard.press("Escape");
+  await expect(menuPanel).toBeHidden();
+  await page.clock.fastForward(8_000);
+  await expect.poll(async () => (await readSave(page)).revision, "自動送り read on once the panel was closed").toBe(waiting.revision + 1);
+  await page.clock.resume();
+  await ops.setAutoAdvance(page, false);
+  // The line it read on to is written letter by letter (it waited while the settings were open).
   await expect(line).toHaveAttribute("data-ready", "true");
   await page.emulateMedia({ reducedMotion: "reduce" });
   await playUntil(page, (state) => state.activeTourism?.phase === "exploring");

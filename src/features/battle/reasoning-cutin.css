@@ -8,7 +8,8 @@
   justify-content: center;
   align-items: center;
   gap: clamp(8px, 2dvh, 20px);
-  padding: max(18px, env(safe-area-inset-top)) 20px max(18px, env(safe-area-inset-bottom));
+  /* Below the header where it lies over the battle (--scene-top, styles.css). */
+  padding: max(18px, env(safe-area-inset-top), calc(var(--scene-top, 0px) + 8px)) 20px max(18px, env(safe-area-inset-bottom));
   overflow: auto;
   overscroll-behavior: contain;
   color: #fffdf2;

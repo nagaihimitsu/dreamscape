@@ -11,7 +11,7 @@ import "./app/styles.css";
 const CharacterPreview = React.lazy(() => import("./dev/CharacterPreview"));
 const DebugMode = React.lazy(() => import("./dev/DebugMode"));
 // The development server always offers Debug; a production build only on a device whose
-// Debug mode is on (設定, password 「adminmode」, src/app/debug-mode.ts). With it off,
+// Debug mode is on (⚙設定 → ゲームの設定, password 「adminmode」, src/app/debug-mode.ts). With it off,
 // ?debug… and ?character-preview open the normal title.
 const debugAllowed = import.meta.env.DEV || readDebugMode(browserStorage);
 const query = new URLSearchParams(window.location.search);

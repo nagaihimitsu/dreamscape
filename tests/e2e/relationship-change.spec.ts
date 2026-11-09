@@ -7,7 +7,7 @@ import { expect, ops, placeDateSave, playUntil, readSave, test, tier, type Page 
 // save of a started date is placed with the real game functions, then everything goes through the UI.
 // In the debug tier (not the gate, whose count is already over its budget, docs/10): it needs the dev server.
 
-// Long flows (docs/10「不安定さと時間の決まり」): two page loads, a date's replies, 設定 and a load.
+// Long flows (docs/10「不安定さと時間の決まり」): two page loads, a date's replies, ゲームの設定 and a load.
 test.describe.configure({ timeout: 120_000 });
 
 const strip = (page: Page) => page.getByTestId("relationship-change");
@@ -36,6 +36,15 @@ test("with Debug mode on, a date reply's relationship change shows above the sce
   await expect(strip(page)).toBeVisible();
   expect(await shownLines(page)).toEqual(describeRelationshipChange(change!));
   await expect(strip(page)).toContainText(/反応：噛み合った（噛み合う確率 \d+%）/u);
+  // The header lies over the scene (UI 1.2): the strip lies right under it, uncovered (the strip is the
+  // element at its own centre), and the scene keeps its controls below the strip (its 「画像の出典」).
+  const header = (await page.getByTestId("journey-bar").boundingBox())!;
+  const shown = (await strip(page).boundingBox())!;
+  expect(shown.y).toBeGreaterThanOrEqual(header.y + header.height - 1);
+  expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest("[data-testid=relationship-change]"),
+    { x: shown.x + shown.width / 2, y: shown.y + shown.height / 2 })).toBe(true);
+  const credit = page.getByTestId("romance-scene").getByRole("button", { name: "画像の出典" });
+  if (await credit.count()) expect((await credit.boundingBox())!.y).toBeGreaterThanOrEqual(shown.y + shown.height - 1);
 
   // Not in the message log: none of its lines, no before→after values, no reaction, no Debug mark.
   const log = await ops.openDialogueLog(page);
@@ -46,7 +55,7 @@ test("with Debug mode on, a date reply's relationship change shows above the sce
   await expect(strip(page)).toBeVisible();
 
   // A load brings back the same date run: the earlier change is not shown again.
-  await ops.load(page);
+  await ops.loadSaved(page);
   await expect(page.getByTestId("romance-scene")).toBeVisible();
   await expect(strip(page)).toHaveCount(0);
 

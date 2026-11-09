@@ -34,11 +34,15 @@ const flows: FlowScene[] = [
     await expect(ops.startButton(page)).toBeVisible();
   } },
   { scene: "flow-travel-menu", titleJa: "旅の始まりの行き先", descriptionJa: "ミラノの旅を始めた直後", open: (page) => ops.startJourney(page) },
-  { scene: "flow-settings", titleJa: "設定", descriptionJa: "旅を始めて「設定」", open: async (page) => {
+  { scene: "flow-hud-menu", titleJa: "⚙設定を開いた状態", descriptionJa: "旅を始めて上の「設定」（セーブ・ロード・ゲームの設定）", open: async (page) => {
+    await ops.startJourney(page);
+    await ops.openMenu(page);
+  } },
+  { scene: "flow-settings", titleJa: "ゲームの設定", descriptionJa: "旅を始めて「設定」→「ゲームの設定」", open: async (page) => {
     await ops.startJourney(page);
     await ops.openSettings(page);
   } },
-  { scene: "flow-settings-debug-mode", titleJa: "設定のDebugモード（パスワード）", descriptionJa: "旅を始めて「設定」→「Debugモードをオンにする」、違うパスワードで「オンにする」", open: async (page) => {
+  { scene: "flow-settings-debug-mode", titleJa: "ゲームの設定のDebugモード（パスワード）", descriptionJa: "旅を始めて「設定」→「ゲームの設定」→「Debugモードをオンにする」、違うパスワードで「オンにする」", open: async (page) => {
     await ops.startJourney(page);
     const section = (await ops.openSettings(page)).getByTestId("debug-mode-setting");
     await section.getByRole("button", { name: "Debugモードをオンにする" }).click();
@@ -47,7 +51,7 @@ const flows: FlowScene[] = [
     await expect(section.getByRole("alert")).toBeVisible();
     await section.scrollIntoViewIfNeeded();
   } },
-  { scene: "flow-old-data", titleJa: "古い保存データの整理", descriptionJa: "旅を始め、旧版のセーブ・バックアップ・以前のミラノ編の英語ノートを置いて「設定」→「古い保存データの整理」", open: async (page) => {
+  { scene: "flow-old-data", titleJa: "古い保存データの整理", descriptionJa: "旅を始め、旧版のセーブ・バックアップ・以前のミラノ編の英語ノートを置いて「設定」→「ゲームの設定」→「古い保存データの整理」", open: async (page) => {
     await ops.startJourney(page);
     await page.evaluate(() => {
       localStorage.setItem("dreamscape.journey.golden_triangle.save.v1", JSON.stringify({ schemaVersion: 13, revision: 3 }));

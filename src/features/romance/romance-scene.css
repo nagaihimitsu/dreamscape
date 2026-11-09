@@ -22,13 +22,16 @@
   background: #5b6258;
 }
 .conversation-active .journey-stage { display: none; }
+/* Where the header lies over the scene (--scene-top, styles.css), the picture
+   runs on behind it and the rest of the scene keeps to the area below it. */
+.vn-scene { padding-top: var(--scene-top, 0px); }
 .vn-background { position: absolute; inset: 0; z-index: -1; }
 .vn-background .canal-scene { width: 100%; height: 100%; }
 .vn-background .scene-stamp { display: none; }
 .date-reference {
   position: absolute;
   z-index: 1;
-  top: 8px;
+  top: calc(var(--scene-top, 0px) + 8px);
   left: 8px;
   display: flex;
   flex-direction: column;
@@ -53,12 +56,16 @@
   text-underline-offset: 3px;
 }
 .date-reference a:focus-visible { outline: 2px solid white; outline-offset: 2px; }
-/* The portrait and the window are independent layers over the same backdrop. */
+/* The portrait and the window are independent layers over the same backdrop.
+   The layer is sized and placed on the area below the header (the whole scene
+   where none lies over it) and clipped at that area's top edge only: the top 10.714 %
+   of the layer (its 12 % over 112 %) plus its raise lie above it. */
 .vn-character-layer {
   position: absolute;
-  inset: -12% 0 0;
-  height: 112%;
+  inset: calc(var(--scene-top, 0px) * 1.12 - 12%) 0 0;
+  height: calc(112% - var(--scene-top, 0px) * 1.12);
   transform: translateY(-20%);
+  clip-path: polygon(-50% 30.714%, 150% 30.714%, 150% 200%, -50% 200%);
   pointer-events: none;
 }
 .reduce-motion .vn-character { transition: none; }
@@ -125,7 +132,7 @@
   position: absolute;
   z-index: 3;
   right: 12px;
-  top: 8px;
+  top: calc(var(--scene-top, 0px) + 8px);
   max-width: min(65%, 260px);
   max-height: 48px;
   overflow: hidden;
@@ -205,6 +212,6 @@
     border-radius: 19px;
   }
   .vn-dialogue .dialogue-text { font-size: 17px; line-height: 1.6; }
-  .vn-character-layer { transform: translateY(-27%); }
+  .vn-character-layer { transform: translateY(-27%); clip-path: polygon(-50% 37.714%, 150% 37.714%, 150% 200%, -50% 200%); }
   .vn-dialogue .choice { line-height: 1.4; padding: 7px 11px; margin: 4px 0; }
 }

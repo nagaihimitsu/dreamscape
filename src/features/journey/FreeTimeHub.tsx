@@ -32,7 +32,7 @@ export function FreeTimeHub({
   return (
     <section className="free-time-hub paper" data-testid="free-time-hub">
       <h1 className="sr-only">{city.nameJa}の行き先</h1>
-      <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} showNext={false} showSummary={false} />
+      <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} showNext={false} />
 
       <TravelMenu key={game.currentCityId} game={game} onTravelEvent={onTravelEvent} onRent={onRent} />
 
