@@ -1,4 +1,5 @@
 import { describeRelationshipChange, type RelationshipChange } from "../domain/relationship-change";
+import { useMeasuredHeight } from "./useMeasuredHeight";
 import "./relationship-change.css";
 
 /**
@@ -9,10 +10,15 @@ import "./relationship-change.css";
  * GameApp keeps the status region mounted (empty while `change` is null) for as long as
  * Debug mode is on, so it is on the page before a change is put into it: screen readers
  * often do not announce a live region that is added together with its text.
+ * Where the header lies over the scene, the region lies right under it and its
+ * height (`--change-h`, 0 while empty) is part of the scene's reserve below the
+ * header (`--scene-top`, styles.css), so the header never covers it and it never
+ * covers what the scene shows.
  */
 export function RelationshipChangeNote({ change }: { change: RelationshipChange | null }) {
+  const measured = useMeasuredHeight("--change-h");
   return (
-    <div className="relationship-change-region" role="status" aria-label="Debug：関係の変化">
+    <div className="relationship-change-region" ref={measured} role="status" aria-label="Debug：関係の変化">
       {change && (
         <section className="relationship-change" data-testid="relationship-change">
           <span className="relationship-change-label" aria-hidden="true">Debug</span>

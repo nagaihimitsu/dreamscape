@@ -627,10 +627,11 @@ footer span {
      from its top (UI redesign §3.1): the picture runs on behind the header, and
      what the scene shows starts below it. --scene-top is that reserve: the
      header's measured height, plus the scene's own heading line where it has
-     one (--label-h, the sightseeing guide's heading). */
+     one (--label-h, the sightseeing guide's heading), plus Debug mode's
+     relationship-change strip while it shows a change (--change-h, below). */
   .app-shell.mobile-play-active {
     position: relative;
-    --scene-top: calc(var(--hud-h, calc(96px + env(safe-area-inset-top))) + var(--label-h, 0px));
+    --scene-top: calc(var(--hud-h, calc(96px + env(safe-area-inset-top))) + var(--label-h, 0px) + var(--change-h, 0px));
   }
   .mobile-play-active > .journey-hud {
     position: absolute;
@@ -651,6 +652,17 @@ footer span {
     height: max(120px, 100%);
     background: linear-gradient(var(--ds-photo-shade), transparent);
     pointer-events: none;
+  }
+  /* Debug mode's relationship-change strip lies right under the header (and the guide's
+     heading), over the picture; its measured height is part of --scene-top, so the
+     header never covers it and it never covers the scene's controls. Outside the scene:
+     a tap on it never reads on. Above the scene's layers (≤ 12), below notices. */
+  .mobile-play-active > main > .relationship-change-region {
+    position: absolute;
+    z-index: 13;
+    top: calc(var(--hud-h, calc(96px + env(safe-area-inset-top))) + var(--label-h, 0px));
+    left: 0;
+    right: 0;
   }
   /* Notices sit below the header, over the scene (they are outside it, so a tap never reads on). */
   .mobile-play-active > main > .notice {
