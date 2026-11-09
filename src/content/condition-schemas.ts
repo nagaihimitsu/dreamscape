@@ -147,8 +147,10 @@ export const conditionSchema: z.ZodType<Condition> = z.custom<Condition>().super
   for (const issue of conditionIssues(value)) context.addIssue({ code: "custom", message: issue.message, path: issue.path });
 });
 
-const isCombinator = (condition: Condition): condition is Exclude<Condition, Leaf> =>
-  (COMBINATORS as readonly string[]).includes(Object.keys(condition)[0]);
+/** A leaf, not a combinator (all, any, not, atLeast). */
+export const isLeaf = (condition: Condition): condition is Leaf =>
+  !(COMBINATORS as readonly string[]).includes(Object.keys(condition)[0]);
+const isCombinator = (condition: Condition): condition is Exclude<Condition, Leaf> => !isLeaf(condition);
 export const leafKind = (leaf: Leaf): LeafKind => Object.keys(leaf)[0] as LeafKind;
 
 function children(condition: Exclude<Condition, Leaf>): Condition[] {

@@ -22,6 +22,7 @@ import { characterCatalogSchema } from "../src/content/character-assets";
 import { encounterCatalogInputSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
 import { encounterEntryRulesSchema, validateEncounterEntryRules } from "../src/content/encounter-entry-rules";
 import { validateEncounterContent } from "./encounter-validation";
+import { checkConditions, dateConditionOwners, type ConditionContent } from "./condition-validation";
 import { validateBackgroundAssets, validateCharacters } from "./presentation-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
 import { dialogueReactionCatalogSchema } from "../src/content/dialogue-reactions";
@@ -413,40 +414,16 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       if (destination.backgroundId !== date.backgroundId)
         throw new Error(`Date destination background mismatch: ${date.id}/${date.destinationId}`);
     }
-    if (
-      !cities.some((item) => item.id === date.chapterId) ||
-      date.requiredCompletedChapters.some((id) => !cities.some((item) => item.id === id)) ||
-      date.requiredCompletedCityIds?.some((id) => !cities.some((item) => item.id === id))
-    ) {
+    if (!cities.some((item) => item.id === date.chapterId))
       throw new Error(`Unknown chapter reference: ${date.id}`);
-    }
     if (!presentation.backgrounds[date.backgroundId])
       throw new Error(`Unknown background: ${date.backgroundId}`);
     if (date.apCost > balance.apCap)
       throw new Error(`Date cost exceeds AP cap: ${date.id}`);
-    unique(date.requiredPlayedDateIds, "required date ID");
-    unique(date.requiredCompletedCityIds ?? [], "required city ID");
-    unique(date.requiredCompletedEpisodeIds ?? [], "required episode ID");
-    unique(date.forbiddenCompletedEpisodeIds ?? [], "forbidden episode ID");
-    if ((date.forbiddenCompletedEpisodeIds ?? []).some((id) => date.requiredCompletedEpisodeIds?.includes(id)))
-      throw new Error(`Episode cannot be both required and forbidden: ${date.id}`);
-    for (const episodeId of [...(date.requiredCompletedEpisodeIds ?? []), ...(date.forbiddenCompletedEpisodeIds ?? [])]) {
-      const episode = journey.episodes.find((item) => item.id === episodeId);
-      if (!episode || episode.cityId !== date.chapterId)
-        throw new Error(`Unknown date prerequisite episode: ${date.id}/${episodeId}`);
-    }
     if (
       date.allowAfterEnding && date.kind !== "normal"
     )
       throw new Error(`After-ending date must be normal: ${date.id}`);
-    if (
-      date.requiredPlayedDateIds.some(
-        (id) => !dates.some((other) => other.id === id),
-      )
-    )
-      throw new Error(`Unknown prerequisite date: ${date.id}`);
-    if (date.kind === "normal" && date.requiredPlayedDateIds.length)
-      throw new Error(`Normal dates cannot require other dates: ${date.id}`);
     if (date.kind !== "normal" && date.apCost !== 0)
       throw new Error(`Special events must be free: ${date.id}`);
     if (date.recovery && (date.kind !== "special" || !date.repeatable || date.rewardOnlyOnce ||
@@ -552,18 +529,6 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     if (!presentation.memories[callback.memoryId])
       throw new Error(`Unknown callback memory: ${callback.memoryId}`);
   }
-  const visiting = new Set<string>();
-  const visited = new Set<string>();
-  const visitPrerequisites = (date: DateDefinition) => {
-    if (visiting.has(date.id)) throw new Error("Cyclic date prerequisites");
-    if (visited.has(date.id)) return;
-    visiting.add(date.id);
-    for (const id of date.requiredPlayedDateIds)
-      visitPrerequisites(dates.find((other) => other.id === id)!);
-    visiting.delete(date.id);
-    visited.add(date.id);
-  };
-  dates.forEach(visitPrerequisites);
   // Example quizzes (*.example.json) are validated but never played. Production quizzes are discovered by data alone.
   const quizzes: Record<string, QuizDefinition> = {};
   const productionQuestionIds: string[] = [];
@@ -728,6 +693,12 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     throw new Error("Unknown reward episode");
   if (journey.rewards.some((reward) => reward.battleId !== undefined && !journey.storyBattles.some((battle) => battle.battleId === reward.battleId)))
     throw new Error("Unknown reward story battle");
+  // Conditions of dates (scripts/condition-validation.ts): names that exist, readable where checked.
+  const conditionContent: ConditionContent = {
+    journeys: journeyCatalog.journeys, cities, episodes: journey.episodes, battles, landmarks: tourism.landmarks,
+    encounters: encounterCatalog.encounters, items: encounterCatalog.items, dates,
+  };
+  checkConditions(conditionContent, dateConditionOwners(conditionContent));
   for (const rule of encounterEntryRules.entries) {
     const encounter = encounterCatalog.encounters.find((item) => item.id === rule.encounterId)!;
     const prerequisiteCity = rule.completedEpisodeId

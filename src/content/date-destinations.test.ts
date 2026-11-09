@@ -13,8 +13,7 @@ type Destination = {
 };
 type DateEntry = {
   id: string; destinationId?: string;
-  chapterId: string; backgroundId: string; requiredCompletedChapters: string[];
-  requiredCompletedEpisodeIds?: string[];
+  chapterId: string; backgroundId: string; when?: unknown;
 };
 let fixture: string;
 beforeEach(async () => {
@@ -78,8 +77,9 @@ describe("date destination content references", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow(/"claimType"[\s\S]*Invalid option/);
   });
 
-  it("rejects a reference to an unknown episode prerequisite", async () => {
-    await editScalaDate((date) => { date.requiredCompletedEpisodeIds = ["missing_episode"]; });
-    await expect(buildContent(fixture, false)).rejects.toThrow("Unknown date prerequisite episode");
+  it("rejects a reference to an unknown episode in the date's condition", async () => {
+    await editScalaDate((date) => { date.when = { episodeCompleted: "missing_episode" }; });
+    await expect(buildContent(fixture, false)).rejects.toThrow(
+      "Unknown episode in a condition of date milano_la_scala_date_01 (when): missing_episode");
   });
 });

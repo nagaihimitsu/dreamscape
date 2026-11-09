@@ -10,14 +10,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_delhi_date_india_gate",
-      "requiredCompletedChapters": [
-        "delhi"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "delhi",
+          "atLeast": 1
+        }
+      },
       "destinationId": "delhi_india_gate",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_delhi_india_gate",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -39,14 +41,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_delhi_date_chandni_chowk",
-      "requiredCompletedChapters": [
-        "delhi"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "delhi",
+          "atLeast": 1
+        }
+      },
       "destinationId": "delhi_chandni_chowk",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_delhi_chandni_chowk",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -68,14 +72,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_delhi_date_lodhi_garden",
-      "requiredCompletedChapters": [
-        "delhi"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "delhi",
+          "atLeast": 1
+        }
+      },
       "destinationId": "delhi_lodhi_garden",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_delhi_lodhi_garden",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -97,14 +103,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_delhi_date_agrasen_baoli",
-      "requiredCompletedChapters": [
-        "delhi"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "delhi",
+          "atLeast": 1
+        }
+      },
       "destinationId": "delhi_agrasen_baoli",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_delhi_agrasen_baoli",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -126,14 +134,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_delhi_date_lotus_temple",
-      "requiredCompletedChapters": [
-        "delhi"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "delhi",
+          "atLeast": 1
+        }
+      },
       "destinationId": "delhi_lotus_temple",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_delhi_lotus_temple",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -155,14 +165,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_delhi_date_bangla_sahib",
-      "requiredCompletedChapters": [
-        "delhi"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "delhi",
+          "atLeast": 1
+        }
+      },
       "destinationId": "delhi_bangla_sahib",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_delhi_bangla_sahib",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -184,14 +196,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_agra_date_mehtab_bagh",
-      "requiredCompletedChapters": [
-        "agra"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "agra",
+          "atLeast": 1
+        }
+      },
       "destinationId": "agra_mehtab_bagh",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_agra_mehtab_bagh",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -213,14 +227,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_agra_date_akbar_tomb",
-      "requiredCompletedChapters": [
-        "agra"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "agra",
+          "atLeast": 1
+        }
+      },
       "destinationId": "agra_akbar_tomb",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_agra_akbar_tomb",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -242,14 +258,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_agra_date_ram_bagh",
-      "requiredCompletedChapters": [
-        "agra"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "agra",
+          "atLeast": 1
+        }
+      },
       "destinationId": "agra_ram_bagh",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_agra_ram_bagh",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -271,14 +289,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_agra_date_chini_rauza",
-      "requiredCompletedChapters": [
-        "agra"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "agra",
+          "atLeast": 1
+        }
+      },
       "destinationId": "agra_chini_rauza",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_agra_chini_rauza",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -300,14 +320,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_agra_date_mariam_tomb",
-      "requiredCompletedChapters": [
-        "agra"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "agra",
+          "atLeast": 1
+        }
+      },
       "destinationId": "agra_mariam_tomb",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_agra_mariam_tomb",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -329,14 +351,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_agra_date_guru_ka_taal",
-      "requiredCompletedChapters": [
-        "agra"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "agra",
+          "atLeast": 1
+        }
+      },
       "destinationId": "agra_guru_ka_taal",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_agra_guru_ka_taal",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -358,14 +382,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_jaipur_date_jal_mahal",
-      "requiredCompletedChapters": [
-        "jaipur"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "jaipur",
+          "atLeast": 1
+        }
+      },
       "destinationId": "jaipur_jal_mahal",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_jaipur_jal_mahal",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -387,14 +413,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_jaipur_date_nahargarh_fort",
-      "requiredCompletedChapters": [
-        "jaipur"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "jaipur",
+          "atLeast": 1
+        }
+      },
       "destinationId": "jaipur_nahargarh_fort",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_jaipur_nahargarh_fort",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -416,14 +444,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_jaipur_date_albert_hall",
-      "requiredCompletedChapters": [
-        "jaipur"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "jaipur",
+          "atLeast": 1
+        }
+      },
       "destinationId": "jaipur_albert_hall",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_jaipur_albert_hall",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -445,14 +475,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_jaipur_date_jaigarh_fort",
-      "requiredCompletedChapters": [
-        "jaipur"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "jaipur",
+          "atLeast": 1
+        }
+      },
       "destinationId": "jaipur_jaigarh_fort",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_jaipur_jaigarh_fort",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -474,14 +506,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_jaipur_date_johari_bazaar",
-      "requiredCompletedChapters": [
-        "jaipur"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "jaipur",
+          "atLeast": 1
+        }
+      },
       "destinationId": "jaipur_johari_bazaar",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_jaipur_johari_bazaar",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -503,14 +537,16 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "storyId": "dates/gt_jaipur_date_panna_meena_kund",
-      "requiredCompletedChapters": [
-        "jaipur"
-      ],
+      "when": {
+        "episodesCompleted": {
+          "city": "jaipur",
+          "atLeast": 1
+        }
+      },
       "destinationId": "jaipur_panna_meena_kund",
       "rewardOnlyOnce": true,
       "backgroundId": "gt_bg_jaipur_panna_meena_kund",
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,

@@ -1,32 +1,17 @@
-import { dates, dateDestinations, episodes, getCityContent, progression, type DateDefinition } from "../content";
+import { dates, dateDestinations, getCityContent, progression, type DateDefinition } from "../content";
 import type { GameState, ActiveDate } from "./game-state-schema";
 import { storyFingerprint } from "../story/runtime";
 import type { Availability } from "./game";
+import { meets } from "./conditions";
+import { isLeaf, type Leaf } from "../content/condition-schemas";
 
-/**
- * A date's chapter is a city ID (its `requiredCompletedChapters`): it counts as
- * completed once any episode of that city is, so it is derived, not saved.
- */
-export function hasCompletedChapter(state: GameState, chapterId: string): boolean {
-  return state.completedEpisodeIds.some((id) =>
-    episodes.some((episode) => episode.id === id && episode.cityId === chapterId));
-}
+/** A true `until` closes the date for good (before its `when`, and even after an unlock was recorded). */
+const untilReached = (state: GameState, date: DateDefinition) => !!date.until && meets(state, date.until);
 
+/** The date's `when` and `until`, then its relationship requirements (hidden values: dates keep their own fields). */
 function meetsDateConditions(state: GameState, date: DateDefinition): boolean {
   return (
-    date.requiredCompletedChapters.every((id) => hasCompletedChapter(state, id)) &&
-    (date.requiredCompletedCityIds ?? []).every((id) =>
-      state.completedCityIds.includes(id),
-    ) &&
-    (date.requiredCompletedEpisodeIds ?? []).every((id) =>
-      state.completedEpisodeIds.includes(id),
-    ) &&
-    (date.forbiddenCompletedEpisodeIds ?? []).every((id) =>
-      !state.completedEpisodeIds.includes(id),
-    ) &&
-    date.requiredPlayedDateIds.every((id) =>
-      state.playedDateIds.includes(id),
-    ) &&
+    meets(state, date.when) && !untilReached(state, date) &&
     state.romanceStage >= date.minRomanceStage &&
     (date.minAffection === 0 || state.affection >= date.minAffection) &&
     (!date.needsDeferred || state.confessionStatus === "deferred")
@@ -137,10 +122,9 @@ export function isEventVisible(state: GameState, dateId: string): boolean {
     date && dateBelongsToCity(state, date) &&
       (!date.recovery || canRecoverRelationship(state)) &&
       (!state.endingReached || date.kind === "normal" || date.allowAfterEnding) &&
-      (date.forbiddenCompletedEpisodeIds ?? []).every((id) => !state.completedEpisodeIds.includes(id)) &&
+      !untilReached(state, date) &&
       (date.kind === "normal"
-        ? !state.playedDateIds.includes(dateId) &&
-          (date.requiredCompletedEpisodeIds ?? []).every((id) => state.completedEpisodeIds.includes(id))
+        ? !state.playedDateIds.includes(dateId) && meets(state, date.when)
         : state.unlockedEventIds.includes(dateId) || meetsDateConditions(state, date)),
   );
 }
@@ -175,18 +159,18 @@ export function getDateAvailability(
       available: false,
       reason: "このひとときは、もう思い出になりました。",
     };
-  if (
-    !(date.requiredCompletedCityIds ?? []).every((id) =>
-      state.completedCityIds.includes(id),
-    )
-  )
+  // The reasons keep their order: an unmet city clear, an unmet episode (the
+  // top-level parts of `when`), a reached `until`; any other unmet part gives
+  // the general reason below.
+  const parts: Leaf[] = !date.when ? [] : "all" in date.when ? date.when.all.filter(isLeaf) : isLeaf(date.when) ? [date.when] : [];
+  if (parts.some((part) => "cityCompleted" in part && !meets(state, part)))
     return {
       available: false,
       reason: "都市の旅を終えると、このデートに誘えます。",
     };
-  if (!(date.requiredCompletedEpisodeIds ?? []).every((id) => state.completedEpisodeIds.includes(id)))
+  if (parts.some((part) => "episodeCompleted" in part && !meets(state, part)))
     return { available: false, reason: "旅を進めると、この場所に誘えます。" };
-  if ((date.forbiddenCompletedEpisodeIds ?? []).some((id) => state.completedEpisodeIds.includes(id)))
+  if (untilReached(state, date))
     return { available: false, reason: "この機会は過ぎました。" };
   if (isConfessionOnCooldown(state, date))
     return { available: false, reason: "新しいひとときを過ごしてから、もう一度話せます。" };

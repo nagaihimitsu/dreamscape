@@ -1,5 +1,6 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { allRewardRules, dates, effects, episodes as allEpisodes, progression } from "../../../src/content";
+import { conditionLeaves } from "../../../src/content/condition-schemas";
 import { playBattleToResult, wrongAnswer } from "../../../src/dev/scenario-builders";
 import {
   advanceDate, chooseDate, createGame, finishDate, getDateAvailability,
@@ -88,8 +89,7 @@ describe("real-place optional dates", () => {
     for (const [index, id] of ids.entries()) {
       const date = dates.find((item) => item.id === id)!;
       const episodeIndex = episodes.findIndex((episode) => episode.id === milestones[index]);
-      expect(date.requiredCompletedEpisodeIds).toContain(milestones[index]);
-      expect(date.requiredCompletedChapters).toEqual([]);
+      expect(date.when).toEqual({ episodeCompleted: milestones[index] });
       for (const state of checkpoints.slice(0, episodeIndex + 1)) {
         expect(isEventVisible(state, id)).toBe(false);
         expect(getDateAvailability(state, id).available).toBe(false);
@@ -102,7 +102,8 @@ describe("real-place optional dates", () => {
 
   it.each(ids)("%s refuses insufficient AP and a second completion", (id) => {
     const date = dates.find((item) => item.id === id)!;
-    const state = checkpoints[episodes.findIndex((item) => item.id === date.requiredCompletedEpisodeIds![0]) + 1];
+    const milestone = (date.when as { episodeCompleted: string }).episodeCompleted;
+    const state = checkpoints[episodes.findIndex((item) => item.id === milestone) + 1];
     const poor = { ...state, ap: date.apCost - 1 };
     expect(getDateAvailability(poor, id).available).toBe(false);
     expect(startDate(poor, id)).toBe(poor);
@@ -146,10 +147,12 @@ describe("real-place optional dates", () => {
   it("does not add these optional dates to stage, confession or existing event requirements", () => {
     const forbidden = new Set<string>(ids);
     for (const stage of progression.stages)
-      expect(stage).not.toHaveProperty("requiredPlayedDateIds");
-    expect(progression.confession).not.toHaveProperty("requiredPlayedDateIds");
+      expect(stage).not.toHaveProperty("when");
+    expect(progression.confession).not.toHaveProperty("when");
+    const readDates = (date: (typeof dates)[number]) => [date.when, date.until].flatMap((condition) => (condition ? conditionLeaves(condition) : []))
+      .flatMap((leaf) => ("datePlayed" in leaf ? [leaf.datePlayed] : []));
     for (const event of dates.filter((date) => !forbidden.has(date.id)))
-      expect(event.requiredPlayedDateIds.some((id) => forbidden.has(id))).toBe(false);
+      expect(readDates(event).some((id) => forbidden.has(id))).toBe(false);
   });
 
   it("raises the romance stage with a destination date alone, before any cafe, walk or invitation date, and leaves the cafe date available", () => {

@@ -62,7 +62,7 @@ beforeEach(() => {
   write(`${gt}/romance/effect_catalog.json`, { schemaVersion: 1, effects: [{ id: "gt_effect", memoryId: "gt_memory" }] });
   write(`${gt}/romance/date_catalog.json`, { schemaVersion: 1, dates: [{
     id: "gt_date", chapterId: "delhi", storyId: "dates/gt_date", backgroundId: "default_scene",
-    requiredCompletedChapters: ["delhi"], requiredCompletedEpisodeIds: ["gt_delhi_episode"],
+    when: { all: [{ episodesCompleted: { city: "delhi", atLeast: 1 } }, { episodeCompleted: "gt_delhi_episode" }] },
   }] });
   write(`${gt}/progression/journey.json`, { schemaVersion: 1,
     episodes: [{ id: "gt_delhi_episode", cityId: "delhi", landmarkId: "delhi_red_fort", battleId: "gt_battle" }],

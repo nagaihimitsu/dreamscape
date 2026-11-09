@@ -227,12 +227,12 @@ describe("Milan city content", () => {
   it("keeps the city date gated while allowing every unplayed normal date after the relationship ending", async () => {
     const result = await buildContent(fixture, false);
     const date = result.dates.find((item) => item.id === "milano_city_date_01")!;
-    expect(date.requiredCompletedCityIds).toEqual(["milano"]);
+    expect(date.when).toEqual({ all: [{ episodesCompleted: { city: "milano", atLeast: 1 } }, { cityCompleted: "milano" }] });
     expect(date.choiceCount).toBe(2);
     const normalDates = result.dates.filter((item) => item.kind === "normal");
     expect(normalDates.length).toBeGreaterThan(1);
     expect(normalDates.every((item) => item.allowAfterEnding)).toBe(true);
     // Unlocking ordinary destinations does not require this city-specific date.
-    expect(normalDates.every((item) => !item.requiredPlayedDateIds.includes(date.id))).toBe(true);
+    expect(normalDates.every((item) => !JSON.stringify(item.when ?? {}).includes(`"datePlayed":"${date.id}"`))).toBe(true);
   });
 });
