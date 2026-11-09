@@ -89,7 +89,6 @@ function MapCanvas({ game, events, places, onSelect, mapRef, initialView, expand
 /** Itinerary selection remains available even if map tiles fail to load. */
 export function PlaceMap({ game, events }: Props) {
   const { city, travel } = getCityContent(game.currentCityId);
-  const [open, setOpen] = useState(true);
   const [expanded, setExpanded] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
   const mapRef = useRef<L.Map | null>(null);
@@ -116,9 +115,7 @@ export function PlaceMap({ game, events }: Props) {
     if (place) map?.panTo([place.latitude, place.longitude]);
   }
 
-  return <details className="travel-map" data-testid="travel-map" open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
-    <summary>{city.nameJa}の地図</summary>
-    {open && <>
+  return <div className="travel-map" data-testid="travel-map">
       <div className="travel-map-preview">
         <MapCanvas game={game} events={events} places={places} onSelect={setSelected} mapRef={mapRef} />
         <button type="button" className="travel-map-expand" onClick={openExpanded}>地図を大きく見る</button>
@@ -139,6 +136,5 @@ export function PlaceMap({ game, events }: Props) {
         </select></label>
         <p className="travel-map-modal-legend">緑の輪：現在地　◆：観光　♥：デート　白い点：訪問済み</p>
       </Modal>}
-    </>}
-  </details>;
+  </div>;
 }

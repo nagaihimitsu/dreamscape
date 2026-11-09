@@ -45,9 +45,12 @@ export function TravelMenu({ game, onTravelEvent, onRent }: {
     {game.travel.returnReserve > 0 && <p className="travel-reserve">帰路用に{formatMoneyForCity(game.currentCityId, game.travel.returnReserve)}を確保（所持金に含む）</p>}
     <TravelRentals game={game} onRent={onRent} />
     <PlaceMap game={game} events={candidates} />
-    {nearby.length === 0 && <p>今すぐ行ける場所はありません。時間を待つか、滞在先で休めます。</p>}
-    <div className="travel-list">{nearby.map((place) => <Destination key={place.id} place={place} game={game} current={current} recommended={place.id === recommendedMainId} onSelect={() => selectPlace(place)} />)}</div>
-    {other.length > 0 && <details open={showOther} onToggle={(event) => setShowOther(event.currentTarget.open)}><summary>ほかの行き先を見る</summary><div className="travel-list">{other.map((place) => <Destination key={place.id} place={place} game={game} current={current} onSelect={() => selectPlace(place)} />)}</div></details>}
+    <div className="travel-list-card">
+      <h2>近くの行き先</h2>
+      {nearby.length === 0 && <p>今すぐ行ける場所はありません。時間を待つか、滞在先で休めます。</p>}
+      <div className="travel-list">{nearby.map((place) => <Destination key={place.id} place={place} game={game} current={current} recommended={place.id === recommendedMainId} onSelect={() => selectPlace(place)} />)}</div>
+      {other.length > 0 && <details className="travel-other" open={showOther} onToggle={(event) => setShowOther(event.currentTarget.open)}><summary>ほかの行き先を見る</summary><div className="travel-list">{other.map((place) => <Destination key={place.id} place={place} game={game} current={current} onSelect={() => selectPlace(place)} />)}</div></details>}
+    </div>
     {selectedPlace && <Modal labelledBy="travel-events-title" className="travel-choice-modal" onClose={() => setSelectedPlaceId(null)}>
       <div className="travel-choice-header"><h2 id="travel-events-title">{selectedPlace.events[0].place.nameJa}のイベント</h2><button type="button" className="secondary" onClick={() => setSelectedPlaceId(null)}>閉じる</button></div>
       <div className="travel-event-list">{selectedPlace.events.map((event) => {

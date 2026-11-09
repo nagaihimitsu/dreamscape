@@ -47,3 +47,49 @@ dialog.modal.travel-choice-modal { width: min(400px, calc(100% - 24px)); max-hei
 .travel-event-button span { min-width: 0; overflow-wrap: anywhere; }
 .travel-event-button small { flex: none; color: var(--muted); }
 .travel-event p { margin: 4px 2px; font-size: 13px; }
+
+/* Free time's cards over the city's picture (UI redesign §3.4, §2.4): every
+   block has its own opaque parchment. */
+.free-time-hub .travel-menu { display: flex; flex-direction: column; gap: 8px; margin: 0; }
+.free-time-hub .travel-reserve {
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink-muted);
+  box-shadow: var(--ds-pill-shadow);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.free-time-hub .travel-rentals {
+  margin: 0;
+  padding: 0 12px;
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  box-shadow: var(--ds-pill-shadow);
+}
+.free-time-hub .travel-rented { color: var(--ds-ink-muted); }
+.free-time-hub .travel-map,
+.free-time-hub .travel-list-card {
+  margin: 0;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 16px;
+  background: var(--ds-parchment);
+  box-shadow: var(--ds-card-shadow);
+}
+.free-time-hub .travel-map { padding: 0 0 8px; }
+.free-time-hub .travel-map > :not(.travel-map-preview) { margin-left: 12px; margin-right: 12px; }
+.free-time-hub .travel-map-frame { border-radius: 15px 15px 10px 10px; }
+.free-time-hub .travel-list-card { padding: 0 12px 4px; }
+.free-time-hub .travel-list-card h2 {
+  margin: 0;
+  padding: 6px 0 2px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.free-time-hub .travel-destination { border-bottom-color: var(--ds-parchment-line); }
+.free-time-hub .travel-category { color: var(--ds-here); }
+.free-time-hub .travel-destination-meta,
+.free-time-hub .travel-destination-button small { color: var(--ds-ink-muted); }
+.free-time-hub .travel-map-preview > p { margin: 6px 12px 0; font-size: 13px; line-height: 1.5; }
