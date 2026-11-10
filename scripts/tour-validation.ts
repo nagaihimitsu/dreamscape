@@ -46,8 +46,11 @@ export function parseTourFiles(sources: Pick<ContentSources, "root" | "tourFiles
 export type TourCheckContent = {
   root: string;
   tours: readonly TourFile[];
-  /** Every city with its journey (the journey that lists it), its travel data and its hotel. */
-  cities: readonly { id: string; journeyId?: string; travel: TravelCatalog; hotelPlaceId: string }[];
+  /**
+   * Every city with its journey (the journey that lists it), its travel data and its hotel; `prototype`: an unpublished city (no
+   * scene can be played there yet), whose tours may name events still to be written (`pending_content`).
+   */
+  cities: readonly { id: string; journeyId?: string; travel: TravelCatalog; hotelPlaceId: string; prototype?: boolean }[];
   episodes: readonly { id: string; kind: "episode" | "city_finale"; cityId: string; landmarkId: string | null; battleId: string }[];
   /** The special battles (B, C) by battle ID. */
   storyBattleIds: readonly string[];
@@ -127,7 +130,8 @@ export function validateTours(content: TourCheckContent): ContentWarning[] {
         fail(`行程 ${step.id} の出来事 ${event.id} はツアー専用の地点（"access": "tour"）の出来事ではありません（Tour event at a normal place）`);
       const episode = content.episodes.find((item) => item.id === event.id);
       const special = content.storyBattleIds.includes(event.id);
-      if (event.contentStatus === "pending_content" || event.category !== "main" || (episode ? episode.kind !== "episode" : !special))
+      // An event still to be written opens nothing; in a prototype city no tour can run yet (as its map events wait), so it waits too.
+      if (event.contentStatus === "pending_content" ? !city.prototype : event.category !== "main" || (episode ? episode.kind !== "episode" : !special))
         fail(`行程 ${step.id} の出来事 ${event.id} は、観光地のエピソードか特殊戦にしてください（都市フィナーレ・デート・制作中の出来事はツアーで開けません）（Invalid tour event kind）`);
       const end = minute + event.activityMinutes;
       timed.push({ index, from: place, to: place, start: minute, end, event });

@@ -1350,7 +1350,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   // The tours against their cities (tour stage 2a; tour-validation.ts): before the progression check, which reads them.
   const tourNotes = validateTours({ root, tours: tourFiles,
     cities: travels.map(({ city: current, travel, settings }) => ({ id: current.id, travel, hotelPlaceId: settings.hotelPlaceId,
-      journeyId: journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id))?.id })),
+      journeyId: journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id))?.id,
+      prototype: current.productionStatus === "prototype" })),
     episodes: journey.episodes, storyBattleIds: journey.storyBattles.map((battle) => battle.battleId), battles,
     publishedJourneyIds: new Set(journeyCatalog.journeys.filter((item) => item.status === "available" && item.id !== SAMPLE_JOURNEY_ID).map((item) => item.id)),
     scenes: generatedScenes.scenes });

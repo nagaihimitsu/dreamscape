@@ -80,6 +80,13 @@ describe("tour checks of content:build (tour stage 2a)", () => {
     expect(() => validateTours(input)).toThrow(shown);
   });
 
+  it("lets a prototype city's tour name an event still to be written, and stops it in a playable city", () => {
+    const pending = (prototype: boolean) => content([tour()], { cities: [{ id: "tst_city", journeyId: "trip", hotelPlaceId: "tst_hotel", prototype,
+      travel: travel({ events: travel().events.map((event) => (event.id === "tst_fort_episode" ? { ...event, contentStatus: "pending_content" as const } : event)) }) }] });
+    expect(validateTours(pending(true))).toEqual([]);
+    expect(() => validateTours(pending(false))).toThrow("Invalid tour event kind");
+  });
+
   it("lets a preparing journey keep a placeholder, and reports every error at once", () => {
     expect(validateTours(content([tour({ summaryJa: "<要調査>" })], { publishedJourneyIds: new Set() }))).toEqual([]);
     expect(() => validateTours(content([tour({ cityId: "nowhere" }), tour({ id: "tst_tour_other", steps: [leg("out", "tst_fort"), visit] })])))

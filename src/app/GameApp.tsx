@@ -527,8 +527,10 @@ export function GameApp({
               }),
               ended: encounterCanFinish(game),
               // On a running tour (stage 2a) the visit's last scene leads on to the tour's next step.
+              // On a booked tour's morning (the hotel's scenes after waking) the last scene leads to the tour's start.
               finishLabel: ({ observe: "観光に戻る", onward: "先へ進む" } as const)[encounterLeadsOnward(game) || "none" as never] ??
-                (game.tour?.status === "running" ? "ツアーを続ける" : undefined),
+                (game.tour?.status === "running" ? "ツアーを続ける"
+                  : game.tour?.status === "booked" && game.occasion?.kind === "hotel" && game.occasion.ran.includes("sleep") ? "ツアーに出発する" : undefined),
               badgeJa: tourSceneBadge(game),
               quiz: (activeEncounter.phase === "quiz" || activeEncounter.phase === "feedback") && currentEncounter.quiz ? {
                 id: currentEncounter.quiz.question.id,

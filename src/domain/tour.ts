@@ -192,7 +192,7 @@ export function departureAfterTour(state: GameState, nextCityNameJa: string | un
 }
 
 /**
- * The tour records of a loaded save (tour design App. D, with the corrections of the 2a brief §2 #2 and §5): finished tours of this
+ * The tour records of a loaded save (tour design App. D, as corrected for stage 2a): finished tours of this
  * journey's cities up to the current one; a tour booked or running of the current city, not finished. Booked: on its day, or on the
  * next morning while the hotel's scenes after waking run (the night has run). Running: the next day, its fingerprint, at an event step
  * with its visit open at its place and time window, no fare home kept and no epilogue. A state the post-step would still advance (a
