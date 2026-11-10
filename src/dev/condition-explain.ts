@@ -65,6 +65,36 @@ function line(node: ExplainedNode): string {
   return node.kind === "leaf" ? node.label : `${node.label}（${node.children.map(line).join("／")}）`;
 }
 
+/**
+ * The items of other cities whose parts keep the condition false now (outside `not`), with the status the part asks for,
+ * e.g. a scene of Agra that needs Delhi's family photo held. Debug starts a later city after playing the earlier ones
+ * along their main path (arrival, battles, finale, and the epilogue when the journey moves on after it; guides skipped:
+ * cityStart), so it holds what those scenes give but may lack an item only an optional date, inserted scene, guide or
+ * encounter gives, or a record of a choice that gave or used one;
+ * and 「場面から始める」 plays only the city's own scenes (the item design §2.7).
+ */
+export function otherCityItemsMissing(state: Readonly<GameState>, condition: Condition): MissingItem[] {
+  const missing = new Map<string, MissingItem>();
+  const walk = (node: Condition) => {
+    if (meets(state, node)) return;
+    if (isLeaf(node)) {
+      const item = "item" in node ? encounters.items.find((entry) => entry.id === node.item.id) : undefined;
+      if (item && "item" in node && item.cityId !== state.currentCityId)
+        missing.set(`${item.id} ${node.item.is}`, { itemId: item.id, cityId: item.cityId, cityNameJa: cityName(item.cityId),
+          statusJa: ITEM_STATUS_LABELS[node.item.is] });
+      return;
+    }
+    if ("all" in node) node.all.forEach(walk);
+    else if ("any" in node) node.any.forEach(walk);
+    else if ("atLeast" in node) node.atLeast.of.forEach(walk);
+  };
+  walk(condition);
+  return [...missing.values()];
+}
+
+/** An item of another city a condition asks for, with the status in Japanese (e.g. 「を持っている」). */
+export type MissingItem = { itemId: string; cityId: string; cityNameJa: string; statusJa: string };
+
 /** What keeps the condition from being true now (empty when it is true). */
 export function unmetConditionLabels(state: Readonly<GameState>, condition: Condition): string[] {
   const unmet = (node: ExplainedNode): string[] => {

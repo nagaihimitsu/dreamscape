@@ -1,0 +1,384 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dreamscape: 登場人物と衣装（presentation/characters.json）",
+  "$comment": "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "characters": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "imagePath": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^assets\\/(?!.*\\.\\.)[a-zA-Z0-9_./-]+\\.(?:png|webp|svg)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "placement": {
+            "type": "object",
+            "properties": {
+              "x": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "bottom": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "width": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 150
+              },
+              "height": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 150
+              },
+              "scale": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 3
+              },
+              "originX": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "originY": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              }
+            },
+            "required": [
+              "x",
+              "bottom",
+              "width",
+              "height",
+              "scale",
+              "originX",
+              "originY"
+            ],
+            "additionalProperties": false
+          },
+          "placeholderColor": {
+            "type": "string",
+            "pattern": "^#[0-9a-fA-F]{6}$"
+          },
+          "variants": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "emotion": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "costume": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "pose": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "imagePath": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^assets\\/(?!.*\\.\\.)[a-zA-Z0-9_./-]+\\.(?:png|webp|svg)$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "imagePath"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "costumes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "poses": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9_]*$"
+                      },
+                      "canvas": {
+                        "type": "object",
+                        "properties": {
+                          "width": {
+                            "type": "integer",
+                            "exclusiveMinimum": 0,
+                            "maximum": 9007199254740991
+                          },
+                          "height": {
+                            "type": "integer",
+                            "exclusiveMinimum": 0,
+                            "maximum": 9007199254740991
+                          }
+                        },
+                        "required": [
+                          "width",
+                          "height"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "placement": {
+                        "type": "object",
+                        "properties": {
+                          "x": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 100
+                          },
+                          "bottom": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 100
+                          },
+                          "width": {
+                            "type": "number",
+                            "exclusiveMinimum": 0,
+                            "maximum": 150
+                          },
+                          "height": {
+                            "type": "number",
+                            "exclusiveMinimum": 0,
+                            "maximum": 150
+                          },
+                          "scale": {
+                            "type": "number",
+                            "exclusiveMinimum": 0,
+                            "maximum": 3
+                          },
+                          "originX": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 100
+                          },
+                          "originY": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 100
+                          }
+                        },
+                        "required": [
+                          "x",
+                          "bottom",
+                          "width",
+                          "height",
+                          "scale",
+                          "originX",
+                          "originY"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "expressions": {
+                        "type": "object",
+                        "propertyNames": {
+                          "type": "string",
+                          "pattern": "^[a-z][a-z0-9_]*$"
+                        },
+                        "additionalProperties": {
+                          "type": "string",
+                          "pattern": "^assets\\/(?!.*\\.\\.)[a-zA-Z0-9_./-]+\\.(?:png|webp)$"
+                        }
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "canvas",
+                      "expressions"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "poses"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "defaultCostume": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "defaultPose": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          }
+        },
+        "required": [
+          "id",
+          "imagePath",
+          "placement",
+          "placeholderColor",
+          "variants"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "battleCharacters": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    "expressionIds": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    "wardrobe": {
+      "type": "object",
+      "properties": {
+        "regions": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "defaultCostume": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              }
+            },
+            "required": [
+              "defaultCostume"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "countries": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "region": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "costume": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "pose": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              }
+            },
+            "required": [
+              "region"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "cities": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "country": {
+                "type": "string",
+                "pattern": "^[A-Z]{2}$"
+              },
+              "costume": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "pose": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              }
+            },
+            "required": [
+              "country"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "scenes": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "costume": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "pose": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              }
+            },
+            "required": [
+              "costume"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

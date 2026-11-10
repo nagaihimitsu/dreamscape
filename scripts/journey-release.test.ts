@@ -115,7 +115,7 @@ describe("journey release rules", () => {
       expect(changes["content/cities/beta.json"]).toBeUndefined();
       const collision = { ...fragments, episodes: [{ id: "other_episode", cityId: "alpha" }] } as typeof fragments;
       expect(() => mergeJourneyReleaseFragments(original, journeyReleaseChanges(original, journeyId, "alpha"), collision, [quiz]))
-        .toThrow("Existing episode differs: other_episode");
+        .toThrow("登録済みの本筋の回と内容が違います: other_episode");
     } finally { rmSync(root, { recursive: true, force: true }); }
   });
 
@@ -154,7 +154,7 @@ describe("journey release rules", () => {
       writeFileSync(path.join(root, published), "edited elsewhere");
       let staged = false;
       expect(() => writeJourneyReleaseFiles(root, now, next, journeyId, undefined, undefined, undefined, () => { staged = true; }))
-        .toThrow(`File changed while validating: ${published}`);
+        .toThrow(`検証の途中でファイルが変わりました: ${published}`);
       // Refused before any temporary file was written.
       expect(staged).toBe(false);
       expect(readFileSync(path.join(root, published), "utf8")).toBe("edited elsewhere");
@@ -172,7 +172,7 @@ describe("journey release rules", () => {
       expect(next[published]).toBe(now[published]);
       let moves = 0;
       expect(() => writeJourneyReleaseFiles(root, now, next, journeyId, (from, to) => { moves++; renameSync(from, to); }, undefined, undefined,
-        () => writeFileSync(path.join(root, published), "edited while staging"))).toThrow(`File changed while validating: ${published}`);
+        () => writeFileSync(path.join(root, published), "edited while staging"))).toThrow(`検証の途中でファイルが変わりました: ${published}`);
       expect(moves).toBe(0);
       expect(readFileSync(path.join(root, published), "utf8")).toBe("edited while staging");
       for (const file of ["content/cities/beta.json", "content/travel/beta.json", ownManifest]) expect(readFileSync(path.join(root, file), "utf8"), file).toBe(now[file]);
@@ -189,12 +189,12 @@ describe("journey release rules", () => {
       writeFileSync(path.join(root, "content/journeys/new.json"), "new");
       expect(journeyInputFingerprint(root)).not.toBe(before);
       expect(() => writeJourneyReleaseFiles(root, original, journeyReleaseChanges(original, journeyId), journeyId, undefined, before))
-        .toThrow("Content or assets changed while preparing release files.");
+        .toThrow("公開するファイルの準備中に content/ か public/ が変わりました。書き込んでいません。");
       expect(readFileSync(path.join(root, ownManifest), "utf8")).toBe(original[ownManifest]);
       const changed = "content/cities/alpha.json";
       writeFileSync(path.join(root, changed), "edited elsewhere");
       expect(() => writeJourneyReleaseFiles(root, original, journeyReleaseChanges(original, journeyId), journeyId))
-        .toThrow(`File changed while validating: ${changed}`);
+        .toThrow(`検証の途中でファイルが変わりました: ${changed}`);
       expect(readFileSync(path.join(root, changed), "utf8")).toBe("edited elsewhere");
       expect(readFileSync(path.join(root, ownManifest), "utf8")).toBe(original[ownManifest]);
     } finally { rmSync(root, { recursive: true, force: true }); }

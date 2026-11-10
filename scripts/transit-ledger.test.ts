@@ -131,8 +131,48 @@ describe("per-city transit ledger", () => {
     const replaced = replaceTransitDecisions(ledger, exported);
     expect(exportTransitDecisions(replaced)).toEqual(exported);
     expect(inspectCityTransit(travel, replaced, modes, FILE).ready).toBe(true);
-    expect(transitLedgerFromDecisions("test_city", exported)).toEqual(replaced);
-    expect(() => replaceTransitDecisions({ ...ledger, cityId: "other_city" }, exported)).toThrow("Transit decision belongs to another city");
+    // A new city's ledger numbers its sources; an existing ledger keeps its own keys (below).
+    expect(transitLedgerFromDecisions("test_city", exported)).toEqual({ ...replaced, sourceRefs: { source_1: fact, source_2: model },
+      decisions: replaced.decisions.map((decision) => ({ ...decision, sourceRefs: decision.sourceRefs.map((ref) => (ref === "fact" ? "source_1" : "source_2")) })) });
+    expect(() => replaceTransitDecisions({ ...ledger, cityId: "other_city" }, exported)).toThrow("交通の判断がほかの都市（test_city）のものです");
+  });
+
+  it("keeps the ledger's source keys and their order when a bundle edits a decision (small diffs)", () => {
+    const { ledger } = fixture();
+    // The keys are the research's names, in the file's order; an unused one that was there before stays.
+    const unused = { ...model, title: "使っていない出典" };
+    const named: TransitLedger = { ...ledger, sourceRefs: { model: ledger.sourceRefs.model, spare: unused, fact: ledger.sourceRefs.fact } };
+    const edited = exportTransitDecisions(named);
+    edited[1].reasonJa += "（編集）";
+    const replaced = replaceTransitDecisions(named, edited);
+    expect(Object.keys(replaced.sourceRefs)).toEqual(["model", "spare", "fact"]);
+    expect(replaced.decisions).toEqual(named.decisions.map((decision, index) => (index === 1 ? { ...decision, reasonJa: edited[1].reasonJa } : decision)));
+    expect(JSON.stringify(replaced, null, 2).split("\n").filter((line, index) => line !== JSON.stringify(named, null, 2).split("\n")[index])).toHaveLength(1);
+    // A new source gets the first free source_N after the others; the source the edit leaves unused (fact) goes.
+    const fresh = { ...fact, title: "新しい運賃表", url: "https://example.org/fare-2026" };
+    const resourced = exportTransitDecisions(named).map((decision) => (decision.mode === "tram" ? { ...decision, sources: [fresh] } : decision));
+    const withNew = replaceTransitDecisions({ ...named, sourceRefs: { ...named.sourceRefs, source_1: unused } }, resourced);
+    expect(withNew.sourceRefs).toEqual({ model: ledger.sourceRefs.model, spare: unused, source_1: unused, source_2: fresh });
+    expect(withNew.decisions.filter((decision) => decision.mode === "tram").map((decision) => decision.sourceRefs)).toEqual([["source_2"], ["source_2"]]);
+    expect(withNew.decisions.filter((decision) => decision.mode === "taxi").map((decision) => decision.sourceRefs)).toEqual([["model"], ["model"]]);
+  });
+
+  it("keeps each unchanged decision's refs when two keys hold the same source; a changed one takes the first key", () => {
+    const { ledger } = fixture();
+    // "copy" holds the same source as "fact" (a hand-written or imported ledger); the second tram decision uses it.
+    const twin: TransitLedger = { ...ledger, sourceRefs: { ...ledger.sourceRefs, copy: { ...ledger.sourceRefs.fact } },
+      decisions: ledger.decisions.map((decision, index) => (index === 3 ? { ...decision, sourceRefs: ["copy"] } : decision)) };
+    const edited = exportTransitDecisions(twin);
+    edited[0].reasonJa += "（編集）";
+    const replaced = replaceTransitDecisions(twin, edited);
+    expect(Object.keys(replaced.sourceRefs)).toEqual(["fact", "model", "copy"]);
+    expect(replaced.decisions).toEqual(twin.decisions.map((decision, index) => (index === 0 ? { ...decision, reasonJa: edited[0].reasonJa } : decision)));
+    // A decision whose sources change to that source takes the first key that holds it.
+    const resourced = exportTransitDecisions(twin);
+    resourced[1].sources = [fact];
+    expect(replaceTransitDecisions(twin, resourced).decisions[1].sourceRefs).toEqual(["fact"]);
+    expect(() => exportTransitDecisions({ ...twin, decisions: [{ ...twin.decisions[0], sourceRefs: ["nowhere"] }] }))
+      .toThrow("交通判断台帳の判断の出典 nowhere が、台帳の sourceRefs にありません（都市 test_city）。");
   });
 
   it("formats the counts per mode in Japanese", () => {

@@ -171,4 +171,35 @@ describe("Debug: the candidate table and 「場面から始める」", () => {
     expect(() => createDebugState({ cityId: "mihon", scene: "occasion", id: TOWER, progress: "initial", ap: 0, affection: 0, trust: 0, spark: 0,
       roll: "positive", from: "duomo_string" })).toThrow("場面 duomo_string はこの時点で始まりませんでした。");
   });
+
+  // The item design §2.7: Debug starts a city without the earlier cities' items, and prep= plays only the city's own scenes.
+  const debugAt = (change: { from?: string; prep?: string[] }) => createDebugState({ cityId: "mihon", scene: "occasion", id: TOWER, progress: "initial",
+    ap: 0, affection: 0, trust: 0, spark: 0, roll: "positive", ...change });
+  it("stops prep= on another city's scene, naming both cities", () => {
+    const milan = encounters.encounters.find((item) => item.cityId === "milano")!;
+    expect(() => debugAt({ from: "smp_mihon_clock_gears", prep: [milan.id] }))
+      .toThrow(`prep= の ${milan.id} はミラノの場面です。prep= は同じ都市（見本の街）の場面だけを流します。`);
+  });
+
+  it("names an item of another city that keeps the scene from, and suggests no other city's scene that gives it", () => {
+    // A stand-in for a later city's scene that needs an earlier city's item: here the gears talk needs Milan's pick
+    // (Milan's duomo_string gives it, but prep= plays only this city's scenes).
+    const rule = encounterEntryRuleList.find((item) => item.encounterId === "smp_mihon_clock_gears")! as { when?: unknown };
+    const before = rule.when;
+    rule.when = { item: { id: "blue_pick", is: "held" } };
+    try {
+      let message = "";
+      try {
+        debugAt({ from: "smp_mihon_clock_gears" });
+      } catch (error) {
+        message = (error as Error).message;
+      }
+      expect(message).toBe("場面 smp_mihon_clock_gears はこの時点で始まりませんでした。偽の部品：品物「青いピック」を持っている。" +
+        "ミラノの品物 blue_pick を持っていることが要ります（Debug は前の都市を本筋（到着・バトル・フィナーレと、エピローグの後に次の都市へ進む旅行編ではエピローグ。観光の案内は飛ばす）に沿って遊んでから始まるので、" +
+        "デート・差し込み・観光の案内・道中交流でしかもらえない品物や、選択肢で渡した・使った記録はないことがあります。prep= は同じ都市の場面だけを流します）。");
+      expect(message).not.toMatch(/品物をくれる場面|duomo_string/u);
+    } finally {
+      if (before === undefined) delete rule.when; else rule.when = before;
+    }
+  });
 });

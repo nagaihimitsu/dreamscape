@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dreamscape: クイズの和訳（learning/translations.json）",
+  "$comment": "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "questions": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "object",
+            "properties": {
+              "questionEn": {
+                "type": "string",
+                "minLength": 1,
+                "language": "en"
+              },
+              "options": {
+                "minItems": 3,
+                "maxItems": 3,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "enum": [
+                        "A",
+                        "B",
+                        "C"
+                      ]
+                    },
+                    "textEn": {
+                      "type": "string",
+                      "minLength": 1,
+                      "language": "en"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "textEn"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "correctOptionId": {
+                "type": "string",
+                "enum": [
+                  "A",
+                  "B",
+                  "C"
+                ]
+              }
+            },
+            "required": [
+              "questionEn",
+              "options",
+              "correctOptionId"
+            ],
+            "additionalProperties": false
+          },
+          "questionJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "optionsJa": {
+            "type": "object",
+            "properties": {
+              "A": {
+                "type": "string",
+                "minLength": 1,
+                "language": "ja"
+              },
+              "B": {
+                "type": "string",
+                "minLength": 1,
+                "language": "ja"
+              },
+              "C": {
+                "type": "string",
+                "minLength": 1,
+                "language": "ja"
+              }
+            },
+            "required": [
+              "A",
+              "B",
+              "C"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "source",
+          "questionJa",
+          "optionsJa"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -41,6 +41,8 @@
     "mainTourismCount": 4,
     "dateCount": 6
   },
+  "cityTransition": "after_epilogue",
+  "farePartySize": 2,
   "intercityModes": [],
   "transportModes": [
     {
@@ -56,8 +58,6 @@
       "kind": "rail"
     }
   ],
-  "cityTransition": "after_epilogue",
-  "farePartySize": 2,
   "authoring": {
     "eventPrefix": "gt",
     "observationFile": "authoring/journeys/golden_triangle/drafts/observation-cards.json",

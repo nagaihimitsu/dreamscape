@@ -20,9 +20,9 @@ const root = path.join(path.sep, "virtual", "dreamscape");
 const json = (value: unknown) => JSON.stringify(value);
 const folder = (id: string) => `content/journeys/${id}`;
 /** A journey folder with one city and, with a prefix, an authoring profile. */
-function journey(id: string, order: number, cityId: string, prefix?: string): Record<string, string | null> {
+function journey(id: string, order: number, cityId: string, prefix?: string, nameJa?: string): Record<string, string | null> {
   return {
-    [`${folder(id)}/manifest.json`]: json({ schemaVersion: 1, order, id, status: "preparing", cities: [{ id: cityId, nameJa: "テスト市" }],
+    [`${folder(id)}/manifest.json`]: json({ schemaVersion: 1, order, id, ...(nameJa ? { nameJa } : {}), status: "preparing", cities: [{ id: cityId, nameJa: "テスト市" }],
       ...(prefix ? { authoring: { eventPrefix: prefix } } : {}) }),
     [`${folder(id)}/cities/${cityId}.json`]: json({ id: cityId, firstClearReward: { rewardSourceId: `${prefix ?? id}_${cityId}_clear` } }),
     [`${folder(id)}/travel/${cityId}.json`]: json({ cityId, places: [], events: [] }),
@@ -201,7 +201,7 @@ describe("the repository's content", () => {
 describe("what each journey provides", () => {
   it("counts each journey folder's files and catalog entries", () => {
     const sources = load({
-      ...journey("trip_a", 10, "a_city", "ta"),
+      ...journey("trip_a", 10, "a_city", "ta", "試験の旅"),
       ...journey("trip_b", 20, "b_city"),
       "content/romance/presentation.json": json({ schemaVersion: 1, backgrounds: { default_scene: {} }, memories: {} }),
       [`${folder("trip_a")}/romance/presentation.json`]: json({ schemaVersion: 1, backgrounds: { ta_bg: {}, ta_bg2: {} }, memories: { ta_memory: {} } }),
@@ -213,7 +213,8 @@ describe("what each journey provides", () => {
       [`${folder("trip_a")}/public/assets/tourism/spot.webp`]: null,
     });
     expect(journeyContents(sources).map(formatJourneyContents)).toEqual([
-      "Journey trip_a (preparing): cities 1, stories 1, quizzes 1, public files 1; translations 1, wardrobe cities 1, backgrounds 2, memories 1",
+      // The heading names the journey in Japanese with its ID (the ID alone when the manifest has no name yet).
+      "Journey 試験の旅（trip_a） (preparing): cities 1, stories 1, quizzes 1, public files 1; translations 1, wardrobe cities 1, backgrounds 2, memories 1",
       "Journey trip_b (preparing): cities 1, stories 0, quizzes 0, public files 0",
     ]);
   });

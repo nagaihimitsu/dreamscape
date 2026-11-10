@@ -14,6 +14,7 @@ import { applyCityBundle, exportEditableCityBundle } from "./city-bundle";
 import { loadJourneyScaffold } from "./journey-scaffold";
 import { inspectJourneyTransit } from "./journey-transit";
 import { CHECKLIST_FILE, CHECKLIST_TEMPLATE, checkNewJourneyOptions, createJourney, newJourneyNameNotes, parseNewJourneyArgs, scaffoldJourney } from "./journey-new";
+import { manifestKeyOrderProblems } from "./json-schemas";
 import { prepareJourneyRelease } from "./promote-journey";
 import { readSampleJourney } from "./sample-journey";
 
@@ -115,6 +116,8 @@ describe("journey:new copy of the sample", () => {
       id: "kyoto_trip", nameJa: "京都の旅", order: 50, status: "preparing", cities: [{ id: "kyoto", nameJa: "京都" }],
       authoring: { eventPrefix: "ky", observationFile: "authoring/journeys/kyoto_trip/drafts/observation-cards.json", imageDirectory: "assets/tourism/kyoto_trip" },
     });
+    // A copy keeps the manifests' one key order (the sample's; scripts/json-schemas.ts).
+    for (const copy of [minimal, full]) expect(manifestKeyOrderProblems(json(copy, "manifest.json"))).toEqual([]);
     // The free-time backdrop names the copied clock tower photo (a placeholder: the game shows the plain background).
     expect(json(minimal, "cities/kyoto.json")).toMatchObject({ id: "kyoto", nameJa: "京都", productionStatus: "prototype", landmarkIdsPlanned: ["kyoto_clock_tower"],
       backdropAssetId: "ky_img_kyoto_clock_tower" });
@@ -303,7 +306,7 @@ describe("journey:new in a copy of the repository", () => {
     const ink = readFileSync(story, "utf8");
     rmSync(story);
     try {
-      await expect(prepareJourneyRelease(root, k, false)).rejects.toThrow(`Journey has unfinished references through ${kc};`);
+      await expect(prepareJourneyRelease(root, k, false)).rejects.toThrow(`（${kc}）までに、まだ揃っていない参照があります。`);
     } finally { writeFileSync(story, ink); }
   }, 120_000);
 });

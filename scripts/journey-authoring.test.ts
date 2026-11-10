@@ -82,8 +82,8 @@ describe("journey authoring with four cities", () => {
     expect(fragments.episodes.filter((episode) => episode.kind === "episode").every((episode) => episode.requiredEpisodeIds.length === 0)).toBe(true);
     expect(new Set(fragments.rewards.map((reward) => reward.id)).size).toBe(fragments.rewards.length);
     expect(requirements.at(-1)?.finale.battleStoryId).toBe("battles/uz_khiva_finale");
-    expect(() => getJourneyAuthoringProfile(process.cwd(), "missing")).toThrow(/Unknown authoring journey/);
-    expect(() => getJourneyAuthoringProfile(process.cwd(), "milano")).toThrow(/Unknown authoring journey/);
+    expect(() => getJourneyAuthoringProfile(process.cwd(), "missing")).toThrow(/は登録されていないか、制作ツールの設定（manifest.json の authoring）がありません/u);
+    expect(() => getJourneyAuthoringProfile(process.cwd(), "milano")).toThrow(/は登録されていないか、制作ツールの設定（manifest.json の authoring）がありません/u);
   });
 
   it("keeps a later finale or special battle at a main attraction out of the main-event requirements", () => {
@@ -96,15 +96,15 @@ describe("journey authoring with four cities", () => {
 
   it("rejects invalid city selections, missing scenario data and a finale at another city's attraction", () => {
     const input = scaffoldFixture();
-    expect(() => journeyRequirements(input, [])).toThrow("Journey scaffold: invalid city selection");
-    expect(() => journeyRequirements(input, ["missing"])).toThrow("Journey scaffold: invalid city selection");
-    expect(() => journeyRequirements(input, ["tashkent", "tashkent"])).toThrow("Journey scaffold: invalid city selection");
+    expect(() => journeyRequirements(input, [])).toThrow("journey:scaffold: --city の都市がこの旅行編にないか、都市の選び方が正しくありません。");
+    expect(() => journeyRequirements(input, ["missing"])).toThrow("journey:scaffold: --city の都市がこの旅行編にないか、都市の選び方が正しくありません。");
+    expect(() => journeyRequirements(input, ["tashkent", "tashkent"])).toThrow("journey:scaffold: --city の都市がこの旅行編にないか、都市の選び方が正しくありません。");
     const missing = testNarrative(journeyRequirements(input, ["tashkent"]));
     delete missing.main[Object.keys(missing.main)[0]];
-    expect(() => buildJourneyFragments(input, missing, ["tashkent"])).toThrow("Journey scaffold: main scenarios must contain exactly the registered IDs");
+    expect(() => buildJourneyFragments(input, missing, ["tashkent"])).toThrow("journey:scaffold: 脚本の情報の main には、登録した ID をちょうど全部書きます");
     const wrongCity = testNarrative(journeyRequirements(input, ["tashkent"]));
     wrongCity.finales.tashkent.placeId = journeyRequirements(input, ["samarkand"])[0].main[0].landmarkId;
-    expect(() => buildJourneyFragments(input, wrongCity, ["tashkent"])).toThrow("Journey scaffold: finale must use a registered attraction in tashkent");
+    expect(() => buildJourneyFragments(input, wrongCity, ["tashkent"])).toThrow("journey:scaffold: 都市 tashkent のフィナーレの placeId には、地図の出来事がある地点を書きます。");
     expect(buildJourneyFragments(input, testNarrative(journeyRequirements(input, ["samarkand"])), ["samarkand"]).episodes
       .every((episode) => episode.cityId === "samarkand")).toBe(true);
   });
@@ -180,11 +180,11 @@ describe("journey authoring with four cities", () => {
       expect(two["content/cities/bukhara.json"]).toBeUndefined();
       expect(Object.keys(two).filter((file) => file.startsWith("content/journeys/"))).toEqual([uzbekManifest]);
       expect(JSON.parse(two[uzbekManifest])).toEqual({ ...JSON.parse(original[uzbekManifest]), status: "available" });
-      expect(() => journeyReleaseChanges(original, "milano")).toThrow(/Unknown authoring journey/);
+      expect(() => journeyReleaseChanges(original, "milano")).toThrow(/は登録されていないか、制作ツールの設定（manifest.json の authoring）がありません/u);
       const all = journeyReleaseChanges(original, "uzbekistan");
       expect(Object.keys(all)).toHaveLength(9);
       expect(JSON.parse(all["content/cities/khiva.json"]).productionStatus).toBe("complete");
-      expect(() => journeyReleaseChanges(original, "uzbekistan", "delhi")).toThrow(/Unknown journey release city/);
+      expect(() => journeyReleaseChanges(original, "uzbekistan", "delhi")).toThrow("--through の都市 delhi は、この旅行編の cities にありません。");
     } finally { rmSync(root, { recursive: true, force: true }); }
   });
 
@@ -203,7 +203,7 @@ describe("journey authoring with four cities", () => {
       mkdirSync(path.dirname(observation), { recursive: true });
       writeFileSync(observation, "{}");
       expect(journeyInputFingerprint(root)).not.toBe(before);
-      expect(() => writeJourneyReleaseFiles(root, original, next, "uzbekistan", undefined, before)).toThrow(/Content or assets changed/);
+      expect(() => writeJourneyReleaseFiles(root, original, next, "uzbekistan", undefined, before)).toThrow("公開するファイルの準備中に content/ か public/ が変わりました。書き込んでいません。");
       expect(readFileSync(path.join(root, "content/cities/tashkent.json"), "utf8")).toBe(original["content/cities/tashkent.json"]);
     } finally { rmSync(root, { recursive: true, force: true }); }
   });
@@ -245,7 +245,7 @@ describe("journey authoring with four cities", () => {
       expect(JSON.parse(next[`${layer}/romance/presentation.json`])).toEqual({ ...ownPresentation, memories: { uz_memory: { titleJa: "タシケント" } } });
       const collision = { ...fragments, episodes: [{ id: "milano_episode", cityId: "tashkent" }] } as typeof fragments;
       expect(() => mergeJourneyReleaseFragments(releaseOriginal, release, collision, [quiz], undefined, { layer, merged }))
-        .toThrow("Existing episode differs: milano_episode");
+        .toThrow("登録済みの本筋の回と内容が違います: milano_episode");
 
       // Three renames of release markers, three new catalogs, then the existing presentation fails.
       let moves = 0;
@@ -260,7 +260,7 @@ describe("journey authoring with four cities", () => {
       expect(readdirSync(path.join(root, layer, "romance"))).toEqual(["presentation.json"]);
       // Only the journey's manifest and its own folder may be written.
       expect(() => writeJourneyReleaseFiles(root, releaseOriginal, { ...next, "content/progression/journey.json": "{}" }, "uzbekistan", undefined, undefined, layer))
-        .toThrow("Invalid Journey release file set");
+        .toThrow("書き込むファイルの組が正しくありません");
 
       writeJourneyReleaseFiles(root, releaseOriginal, next, "uzbekistan", undefined, undefined, layer);
       for (const [file, content] of Object.entries(next)) expect(readFileSync(path.join(root, file), "utf8"), file).toBe(content);

@@ -86,7 +86,7 @@ describe("city editing bundle: applying edits to each city", () => {
       const original = readFileSync(target);
       writeFileSync(target, Buffer.concat([original, Buffer.from("\n")]));
       const before = fingerprint(root);
-      await expect(applyCityBundle(root, bundle, true)).rejects.toThrow("City bundle is stale: content or assets changed since export");
+      await expect(applyCityBundle(root, bundle, true)).rejects.toThrow("作業コピーが古くなっています: 書き出した後に content/ か public/ が変わりました。");
       expect(fingerprint(root)).toBe(before);
       expect(readFileSync(target)).toEqual(Buffer.concat([original, Buffer.from("\n")]));
       writeFileSync(target, original);
@@ -102,7 +102,7 @@ describe("city editing bundle: applying edits to each city", () => {
     expect(fingerprint(root)).toBe(before);
     const duplicate = exportCityBundle(root, "delhi");
     duplicate.dateDestinations[0].id = "agra_mehtab_bagh";
-    await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow("Duplicate destination ID");
+    await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow("デート先の ID が重複しています");
     expect(fingerprint(root)).toBe(before);
     const wrongCity = exportCityBundle(root, "delhi");
     wrongCity.travel.places[0].cityId = "agra";

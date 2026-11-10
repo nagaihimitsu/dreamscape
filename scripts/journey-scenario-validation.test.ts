@@ -108,7 +108,7 @@ describe("draft journey scenario contracts", () => {
         mkdirSync(path.dirname(draft), { recursive: true });
         writeFileSync(draft, `${names}# speaker: narrator\n下書きの検証です。\n-> END`);
         await expect(validateJourneyScenario(process.cwd(), "golden_triangle", directory, "delhi"))
-          .rejects.toThrow(`Scenario has both draft and published Ink: ${storyId}; keep one source`);
+          .rejects.toThrow(`下書きと公開済みの両方に同じ Ink があります: ${storyId}。どちらか1つにします。`);
         rmSync(draft);
       }
     } finally { rmSync(directory, { recursive: true, force: true }); }
@@ -123,13 +123,13 @@ describe("draft journey scenario contracts", () => {
       const published = path.join(root, publishedStories, `${plan.main[0].guideStoryId}.ink`);
       mkdirSync(path.dirname(published), { recursive: true });
       writeFileSync(published, original);
-      await expect(check()).rejects.toThrow(/both draft and published Ink/);
+      await expect(check()).rejects.toThrow(/下書きと公開済みの両方に同じ Ink があります/u);
       rmSync(published);
       rmSync(file);
-      await expect(check()).rejects.toThrow(/Ink file mismatch: missing/);
+      await expect(check()).rejects.toThrow(/下書きの Ink ファイルが要るものと合いません。足りない: \[[^\]]+\]/u);
       writeFileSync(file, original);
       const extra = story("tourism/unregistered", original);
-      await expect(check()).rejects.toThrow(/extra.*unregistered/);
+      await expect(check()).rejects.toThrow(/余分: \[[^\]]*unregistered/u);
       rmSync(extra);
       writeFileSync(file, `${original}\n=== unused ===\n# speaker: player\n「勝手に話す主人公」\n-> END`);
       // Not stopped (decision 36): one warning names the file.

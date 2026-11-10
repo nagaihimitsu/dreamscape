@@ -24,10 +24,6 @@ export const journeyCatalogSchema = z.object({
     initialBudget: z.number().int().nonnegative().nullable().optional(),
     /** Fictional game-calendar weekday on day one; Monday is 0. */
     startWeekday: z.number().int().min(0).max(6).optional(),
-    /** Whether completing the epilogue advances to the next released city. */
-    cityTransition: z.enum(["manual", "after_epilogue"]).optional(),
-    /** Number of travellers included in the authored transport fares. */
-    farePartySize: z.number().int().positive().optional(),
     // Optional for existing journeys that already have an initial state.
     initialState: z.object({
       ap: z.number().int().nonnegative(), pendingAp: z.literal(0),
@@ -44,6 +40,11 @@ export const journeyCatalogSchema = z.object({
       mainTourismCount: z.number().int().nonnegative(),
       dateCount: z.number().int().nonnegative(),
     }).strict().optional(),
+    /** Whether completing the epilogue advances to the next released city. */
+    cityTransition: z.enum(["manual", "after_epilogue"]).optional(),
+    /** Number of travellers included in the authored transport fares. */
+    farePartySize: z.number().int().positive().optional(),
+    // The key order is the manifests' order (scripts/json-schemas.ts MANIFEST_KEY_ORDER).
     intercityModes: z.array(z.enum(["train", "car"])),
     // In-city transport besides walking (built in): see transport-schemas.ts.
     // content:build allows at most two (a journey still waiting for its

@@ -46,7 +46,7 @@ export function writeCityBundleFiles(root: string, original: Record<string, stri
   const files = Object.keys(next);
   if (files.some((file) => !layerFile.test(file) || !Object.hasOwn(original, file) || typeof next[file] !== "string")
     || !inOneOwnerLayer(loadContentSources(root), files))
-    throw new Error("Invalid city bundle file set");
+    throw new Error("書き込むファイルの組が正しくありません（都市の旅行編フォルダの、読み込んだファイルだけを書きます）。");
   const token = `${process.pid}-${Date.now()}-${Math.random().toString(36).slice(2)}`;
   const staged: string[] = [], changed: string[] = [];
   const ignored = new Set<string>();
@@ -57,24 +57,24 @@ export function writeCityBundleFiles(root: string, original: Record<string, stri
   const lockPath = path.join(root, ".city-bundle.lock");
   let lock: number;
   try { lock = openSync(lockPath, "wx", 0o600); }
-  catch (error) { throw new Error("Another city bundle apply is in progress (or its lock needs recovery)", { cause: error }); }
+  catch (error) { throw new Error("ほかの city:bundle apply が動いています（または、止まった apply のロックファイル .city-bundle.lock が残っています。authoring/CITY_BUNDLES.md）。", { cause: error }); }
   try {
-    if (inputFingerprint(root) !== fingerprint) throw new Error("Content or assets changed during validation");
+    if (inputFingerprint(root) !== fingerprint) throw new Error("検証の途中で content/ か public/ が変わりました。反映していません。");
     // The owner layer may not have this kind of file yet (e.g. a journey's first tourism catalog).
     created = createParentDirectories(root, files);
     for (const directory of created) ignored.add(directory);
     for (const file of files) {
       const target = path.join(root, file), before = original[file];
-      if ((existsSync(target) ? readFileSync(target, "utf8") : null) !== before) throw new Error(`File changed during validation: ${file}`);
+      if ((existsSync(target) ? readFileSync(target, "utf8") : null) !== before) throw new Error(`検証の途中でファイルが変わりました: ${file}。反映していません。`);
       const tmp = `${target}.city-bundle-${token}`;
       writeFileSync(tmp, next[file], { flag: "wx", mode: before === null ? 0o644 : statSync(target).mode });
       staged.push(tmp); ignored.add(path.relative(root, tmp));
     }
     for (const file of files) {
       const target = path.join(root, file);
-      if ((existsSync(target) ? readFileSync(target, "utf8") : null) !== original[file]) throw new Error(`File changed during validation: ${file}`);
+      if ((existsSync(target) ? readFileSync(target, "utf8") : null) !== original[file]) throw new Error(`検証の途中でファイルが変わりました: ${file}。反映していません。`);
     }
-    if (inputFingerprint(root, ignored) !== fingerprint) throw new Error("Content or assets changed during validation");
+    if (inputFingerprint(root, ignored) !== fingerprint) throw new Error("検証の途中で content/ か public/ が変わりました。反映していません。");
     for (const file of files) {
       const target = path.join(root, file), tmp = `${target}.city-bundle-${token}`;
       if (original[file] === null) {
@@ -107,7 +107,7 @@ export function writeCityBundleFiles(root: string, original: Record<string, stri
         }
       } catch { failures.push(file); }
     }
-    if (failures.length) throw new Error(`City bundle rollback failed: ${failures.join(", ")}`, { cause: error });
+    if (failures.length) throw new Error(`反映に失敗し、元に戻せなかったファイルがあります（rollback failed）: ${failures.join(", ")}。git で元に戻してください。`, { cause: error });
     throw error;
   } finally {
     for (const tmp of staged) if (existsSync(tmp)) rmSync(tmp, { force: true });

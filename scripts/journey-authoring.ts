@@ -39,7 +39,7 @@ function profileSchemaOf(manifest: Record<string, unknown>) {
 export function authoringProfileOf(manifest: Record<string, unknown>, label: string): JourneyAuthoringProfile | undefined {
   if (manifest.authoring === undefined) return undefined;
   const parsed = profileSchemaOf(manifest).safeParse(manifest.authoring);
-  if (!parsed.success) throw new Error(`Invalid authoring profile in ${label}: ${parsed.error.message}`, { cause: parsed.error });
+  if (!parsed.success) throw new Error(`制作ツールの設定（authoring）の形が違います: ${label}: ${parsed.error.message}`, { cause: parsed.error });
   return parsed.data;
 }
 
@@ -55,6 +55,11 @@ export function journeyAuthoringProfiles(root: string): Map<string, JourneyAutho
 
 export function getJourneyAuthoringProfile(root: string, journeyId: string): JourneyAuthoringProfile {
   const profile = journeyAuthoringProfiles(root).get(journeyId);
-  if (!profile) throw new Error(`Unknown authoring journey: ${journeyId}`);
+  if (!profile) throw new Error(`${unknownAuthoringJourney(journeyId)}制作ツールを使える旅行編: ${[...journeyAuthoringProfiles(root).keys()].join(", ") || "なし"}`);
   return profile;
+}
+
+/** The refusal of a journey ID the authoring tools do not know (journey:scaffold, journey:release, journey:scenario). */
+export function unknownAuthoringJourney(journeyId: string): string {
+  return `旅行編「${journeyId}」は登録されていないか、制作ツールの設定（manifest.json の authoring）がありません。`;
 }

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dreamscape: 語彙の意味（learning/word-meanings.json）",
+  "$comment": "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "words": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "language": "ja"
+      }
+    }
+  },
+  "additionalProperties": false
+}
