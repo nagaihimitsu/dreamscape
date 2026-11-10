@@ -41,17 +41,17 @@
     },
     {
       "fileMatch": [
-        "/content/journeys/*/quizzes/*.json",
-        "/authoring/templates/*/quizzes/*.json",
-        "!/content/journeys/*/quizzes/*.example.json",
-        "!/authoring/templates/*/quizzes/*.example.json"
+        "/content/journeys/*/quizzes/**/*.json",
+        "/authoring/templates/*/quizzes/**/*.json",
+        "!/content/journeys/*/quizzes/**/*.example.json",
+        "!/authoring/templates/*/quizzes/**/*.example.json"
       ],
       "url": "./authoring/schemas/quiz.schema.json"
     },
     {
       "fileMatch": [
-        "/content/journeys/*/quizzes/*.example.json",
-        "/authoring/templates/*/quizzes/*.example.json"
+        "/content/journeys/*/quizzes/**/*.example.json",
+        "/authoring/templates/*/quizzes/**/*.example.json"
       ],
       "url": "./authoring/schemas/quiz-example.schema.json"
     },

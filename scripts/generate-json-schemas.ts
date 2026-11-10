@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { EDITOR_SETTINGS_FILE, SCHEMA_DIRECTORY, generatedSchemaFiles } from "./json-schemas";
+import { EDITOR_SETTINGS_FILE, SCHEMA_DIRECTORY, generatedSchemaFiles, readEditorSettings } from "./json-schemas";
 
 // npm run schemas:build: write the editor's JSON Schema files (authoring/schemas/) and their mapping in
 // .vscode/settings.json (`json.schemas`; the file's other settings stay). Unchanged files are not rewritten,
@@ -8,7 +8,7 @@ import { EDITOR_SETTINGS_FILE, SCHEMA_DIRECTORY, generatedSchemaFiles } from "./
 try {
   const root = process.cwd();
   const settingsFile = path.join(root, EDITOR_SETTINGS_FILE);
-  const settings = existsSync(settingsFile) ? JSON.parse(readFileSync(settingsFile, "utf8")) as Record<string, unknown> : {};
+  const settings = existsSync(settingsFile) ? readEditorSettings(readFileSync(settingsFile, "utf8")) : {};
   const files = generatedSchemaFiles(settings);
   const written: string[] = [];
   for (const [relative, text] of files) {

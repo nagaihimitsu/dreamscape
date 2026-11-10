@@ -16,7 +16,7 @@ import { sceneDataCatalogSchema, storyStateCatalogSchema } from "../src/content/
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { wordMeaningsSchema } from "../src/content/word-meanings";
-import { CORE_LAYER_KINDS, type MergedKind } from "./content-layout";
+import { CORE_LAYER_KINDS, catalogRule, type FieldTable, type MergedKind } from "./content-layout";
 import { journeyAuthoringSchema } from "./journey-authoring";
 import { transitLedgerSchema } from "./transit-ledger";
 
@@ -42,7 +42,9 @@ export const journeyManifestSchema = z.object({
 export const MANIFEST_KEY_ORDER: readonly string[] = Object.keys(journeyManifestSchema.shape);
 
 /** Where a kind of file lives: below every content layer (the core `content/`, each journey folder and the sample journey). */
-type Target = { file: string; titleJa: string; schema: z.ZodType; patterns: string[]; exclude?: string[]; fragment?: boolean };
+type Target = { file: string; titleJa: string; schema: z.ZodType; patterns: string[]; exclude?: string[];
+  /** A catalog merged from layers: its merge table (a layer's file may leave out the keys it lists). */
+  fragment?: FieldTable };
 const layers = ["content", "content/journeys/*", "authoring/templates/*"];
 const inLayers = (relative: string) => layers.map((layer) => `/${layer}/${relative}`);
 const inJourneys = (relative: string) => layers.slice(1).map((layer) => `/${layer}/${relative}`);
@@ -80,25 +82,59 @@ export const SCHEMA_TARGETS: readonly Target[] = [
     exclude: [...inJourneys("travel/*-settings.json"), ...inJourneys("travel/*-transit.json")] },
   { file: "travel-settings", titleJa: "都市の旅行設定（travel/<都市ID>-settings.json）", schema: travelSettingsSchema, patterns: inJourneys("travel/*-settings.json") },
   { file: "transit-ledger", titleJa: "交通判断台帳（travel/<都市ID>-transit.json）", schema: transitLedgerSchema, patterns: inJourneys("travel/*-transit.json") },
-  { file: "quiz", titleJa: "クイズ（quizzes/*.json）", schema: content.quizSchema, patterns: inJourneys("quizzes/*.json"), exclude: inJourneys("quizzes/*.example.json") },
-  { file: "quiz-example", titleJa: "例のクイズ（quizzes/*.example.json）", schema: content.quizExampleSchema, patterns: inJourneys("quizzes/*.example.json") },
+  // A quiz may sit in a folder below quizzes/ (content-layout.ts; docs/02 `quizzes/**/*.json`).
+  { file: "quiz", titleJa: "クイズ（quizzes/**/*.json）", schema: content.quizSchema, patterns: inJourneys("quizzes/**/*.json"),
+    exclude: inJourneys("quizzes/**/*.example.json") },
+  { file: "quiz-example", titleJa: "例のクイズ（quizzes/**/*.example.json）", schema: content.quizExampleSchema, patterns: inJourneys("quizzes/**/*.example.json") },
   ...Object.entries(CATALOG_SCHEMAS).map(([kind, { titleJa, schema }]) => ({
     file: kind.replace(".json", "").replace("/", "-"), titleJa: `${titleJa}（${kind}）`, schema,
-    patterns: CORE_LAYER_KINDS.has(kind as MergedKind) ? inLayers(kind) : inJourneys(kind), fragment: true })),
+    patterns: CORE_LAYER_KINDS.has(kind as MergedKind) ? inLayers(kind) : inJourneys(kind), fragment: catalogFields(kind as MergedKind) })),
 ];
+
+/** The merge table of a catalog kind (CATALOG_RULES): which keys, at every depth, a layer's file may leave out. */
+function catalogFields(kind: MergedKind): FieldTable {
+  const rule = catalogRule(kind);
+  return "fields" in rule ? rule.fields : {};
+}
+
+/**
+ * A layer's catalog file holds its part of the merged catalog: no key the merge table lists is required, at the top
+ * and inside every nested key (e.g. a journey's characters.json writes only `wardrobe.cities`).
+ */
+function withoutMergedRequired(schema: Record<string, unknown>, fields: FieldTable): Record<string, unknown> {
+  return Object.fromEntries(Object.entries(schema).filter(([key]) => key !== "required").map(([key, value]) => [key, key !== "properties" ? value
+    : Object.fromEntries(Object.entries(value as Record<string, Record<string, unknown>>).map(([name, property]) => {
+      const rule = fields[name];
+      return [name, rule?.mode === "nested" ? withoutMergedRequired(property, rule.fields) : property];
+    }))]));
+}
 
 /** The JSON Schema of a target: zod's input form; conditions and other custom parts accept any value. */
 function jsonSchemaOf(target: Target): Record<string, unknown> {
   const generated = z.toJSONSchema(target.schema, { io: "input", unrepresentable: "any" }) as Record<string, unknown>;
-  const { $schema, required, ...rest } = generated;
-  // A catalog of a layer may leave out any key (the merged catalog has them all; content:build checks it).
-  const keep = target.fragment ? {} : required === undefined ? {} : { required };
+  // A catalog of a layer may leave out the keys the merge table lists (the merged catalog has them all; content:build checks it).
+  const { $schema, required, ...body } = target.fragment ? withoutMergedRequired(generated, target.fragment) : generated;
   return { $schema, title: `Dreamscape: ${target.titleJa}`,
     $comment: "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
-    ...rest, ...keep };
+    ...body, ...(required === undefined ? {} : { required }) };
 }
 
 const text = (value: unknown) => `${JSON.stringify(value, null, 2)}\n`;
+
+/**
+ * The editor settings' current text as an object (its other settings stay when schemas:build writes `json.schemas`).
+ * VS Code accepts comments there, but schemas:build writes the file as plain JSON: a comment stops it with this message.
+ */
+export function readEditorSettings(content: string): Record<string, unknown> {
+  try {
+    const value: unknown = JSON.parse(content);
+    if (value && typeof value === "object" && !Array.isArray(value)) return value as Record<string, unknown>;
+    throw new Error("JSON のオブジェクトではありません");
+  } catch (error) {
+    throw new Error(`${EDITOR_SETTINGS_FILE} を JSON として読めません（コメントや末尾のカンマは書けません。npm run schemas:build がこのファイルを書き直すため）: ` +
+      `${error instanceof Error ? error.message : String(error)}`);
+  }
+}
 
 /** Every generated file (root-relative path → text): the schema files and the editor settings' `json.schemas`. */
 export function generatedSchemaFiles(currentSettings: Record<string, unknown> = {}): Map<string, string> {
@@ -115,7 +151,9 @@ export function generatedSchemaFiles(currentSettings: Record<string, unknown> = 
  * and a file matches when one pattern does and none of its exclusions (patterns starting with `!`).
  */
 export function matchingTargets(relative: string): Target[] {
-  const regex = (pattern: string) => new RegExp(`^${pattern.split("*").map((part) => part.replace(/[.+?^${}()|[\]\\]/gu, "\\$&")).join("[^/]*")}$`, "u");
+  // `**/` is any number of folders (also none); `*` stays within one.
+  const regex = (pattern: string) => new RegExp(`^${pattern.split("**/").map((part) => part.split("*")
+    .map((piece) => piece.replace(/[.+?^${}()|[\]\\]/gu, "\\$&")).join("[^/]*")).join("(?:[^/]+/)*")}$`, "u");
   const file = `/${relative}`;
   return SCHEMA_TARGETS.filter((target) => target.patterns.some((pattern) => regex(pattern).test(file)) &&
     !(target.exclude ?? []).some((pattern) => regex(pattern).test(file)));

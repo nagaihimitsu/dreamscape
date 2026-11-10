@@ -377,12 +377,6 @@
           }
         }
       },
-      "required": [
-        "regions",
-        "countries",
-        "cities",
-        "scenes"
-      ],
       "additionalProperties": false
     }
   },
