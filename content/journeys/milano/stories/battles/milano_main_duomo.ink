@@ -1,17 +1,4 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> s_intro }
-{ battle_scene == "after_1": -> s_after_1 }
-{ battle_scene == "after_2": -> s_after_2 }
-{ battle_scene == "outro": -> s_outro }
--> END
-
-=== s_intro ===
+INCLUDE modules.ink
 # background: milano_duomo
 # speaker: narrator
 布の下から棒つきのマイクだけが出ている。先端が彼女の袖を追った。
@@ -30,11 +17,9 @@ VAR battle_score = 0
 「鳩しかいない朝から。あいつらの羽音を消したら、今度は俺の腹が鳴った。」
 # speaker: heroine
 「私、あそこも見てきます。広場って、上だけじゃなさそう。」
--> END
-
-=== s_after_1 ===
+-> quiz(1) ->
 # background: milano_duomo
-{ answer_correct:
+{ quiz_correct:
 # speaker: heroine
 「地下にも先客がいましたね。」
 - else:
@@ -47,11 +32,9 @@ VAR battle_score = 0
 「わざわざ下まで行くのか。足音、録ってもいいか？」
 # speaker: heroine
 「私の分だけなら。後ろの人の分は、その人に聞いて。」
--> END
-
-=== s_after_2 ===
+-> quiz(2) ->
 # background: milano_duomo
-{ answer_correct:
+{ quiz_correct:
 # speaker: heroine
 「あの形で、水に入る人を迎えたんですね。」
 - else:
@@ -66,11 +49,9 @@ VAR battle_score = 0
 「両方上げる値段は、もらってない。」
 # speaker: heroine
 「誰の足音か分からなくなっても、誰かがここに来たことは残りますね。」
--> END
-
-=== s_outro ===
+-> quiz(3) ->
 # background: milano_duomo
-{ answer_correct:
+{ quiz_correct:
 # speaker: heroine
 「名簿の名前は、石には見えない支えですね。」
 - else:

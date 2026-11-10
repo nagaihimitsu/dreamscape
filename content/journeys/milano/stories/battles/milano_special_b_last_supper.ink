@@ -1,23 +1,6 @@
 // Phase 6 / B型。証拠の判定と英語3択はJSON・TypeScript側。
 // claimは証拠帳でも繰り返し参照する、短い日本語の主張。
-VAR player_name = "ユウ"
-VAR heroine_name = "ミオ"
-VAR player_address = "ユウさん"
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "claim": -> claim }
-{ battle_scene == "press": -> press }
-{ battle_scene == "evidence_failure": -> evidence_failure }
-{ battle_scene == "evidence_success": -> evidence_success }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
+INCLUDE modules.ink
 # background: milano_refectory
 # speaker: narrator
 『最後の晩餐』の前で、男が帳簿に「同上」の印を押していた。まだ一行目だった。
@@ -30,11 +13,9 @@ VAR battle_score = 0
 # speaker: enemy
 「ニーノ・ウニコ。世界を、一つの原因欄に収める男だ。この絵の傷みも、レオナルドの技法で片付く」
 「実験などしなければよかった。まずは、その妙な描き方に何の得があったか聞こう」
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: milano_refectory
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「ゆっくり直せる……私の帳簿には、やり直す欄がない」
     # speaker: heroine
@@ -50,41 +31,38 @@ VAR battle_score = 0
 }
 # speaker: narrator
 ニーノは、絵の傷みを指でひとまとめにした。空中に、大きな丸ができた。
--> END
-
-=== claim ===
+-> milano_special_b_last_supper_claim ->
+// 矛盾追及の導入。証拠や結論を先に明かさない。
 # background: milano_refectory
-# speaker: enemy
-「この絵の損傷は、すべてレオナルドの実験的な絵画技法が原因だ。中央の下部まで、例外はない！」
--> END
-
-=== press ===
-# background: milano_refectory
-# speaker: enemy
-「『すべて』だ。絵の具が弱かった。それで上から下まで説明できる。後から起きたことなど、備考で十分！」
 # speaker: heroine
-「……その備考に、原因欄へ移したほうがいい出来事はありませんか」
--> END
-
-=== evidence_failure ===
-# background: milano_refectory
-# speaker: enemy
-「その資料で、別の原因による損傷が示せるかね？　私の大きな丸は、まだ消せん」
-# speaker: heroine
-「構図の説明だけでは足りないみたい。傷んだ場所と、そこで後から起きた出来事を比べてみよう」
--> END
-
-=== evidence_success ===
+# emotion: surprised
+「待って。本当に、全部が同じ理由なんですか？」
+# emotion: serious
+「一つでも違う出来事が見つかれば、その説明は揺らぎますよね」
+# emotion: neutral
+「わたしも気になる。資料を一緒に見直してみましょう」
+- (stop)
+-> reasoning ->
+{ reasoning_action == "press":
+    -> milano_special_b_last_supper_press ->
+    -> stop
+}
+{ evidence_result == "failure":
+    # background: milano_refectory
+    # speaker: enemy
+    「その資料で、別の原因による損傷が示せるかね？　私の大きな丸は、まだ消せん」
+    # speaker: heroine
+    「構図の説明だけでは足りないみたい。傷んだ場所と、そこで後から起きた出来事を比べてみよう」
+    -> stop
+}
 # background: milano_refectory
 # speaker: narrator
 ニーノは差し出された資料を見て、押しかけた「同上」の印を宙に浮かせた。
 # speaker: enemy
 「……その資料は受け取ろう。ただし、反論はまだだ。私の『すべて』に、どう関わる？」
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: milano_refectory
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「十七世紀の出入口の拡張……絵の具が弱いのと、壁を広げて通るのは、別の出来事か」
     「原因欄が二つ要る。困った。私の定規は、縦線を引いたことがない」
@@ -100,11 +78,9 @@ VAR battle_score = 0
 }
 # speaker: enemy
 「では現在の保存だ。原因を分けて考えると、何を守る手が増える？」
--> END
-
-=== conclusion ===
+-> quiz(3) ->
 # background: milano_refectory
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「湿気や微粒子を減らす。過去の扉は戻せなくても、今の空気には手を打てる……」
 - else:
@@ -149,3 +125,17 @@ VAR battle_score = 0
     「悔しい。でも、わからないところを『同上』にはしたくないね。私も、もう一度読んでみる」
 }
 -> END
+
+=== milano_special_b_last_supper_claim ===
+# background: milano_refectory
+# speaker: enemy
+「この絵の損傷は、すべてレオナルドの実験的な絵画技法が原因だ。中央の下部まで、例外はない！」
+->->
+
+=== milano_special_b_last_supper_press ===
+# background: milano_refectory
+# speaker: enemy
+「『すべて』だ。絵の具が弱かった。それで上から下まで説明できる。後から起きたことなど、備考で十分！」
+# speaker: heroine
+「……その備考に、原因欄へ移したほうがいい出来事はありませんか」
+->->

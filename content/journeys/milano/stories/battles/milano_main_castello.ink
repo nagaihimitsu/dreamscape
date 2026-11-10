@@ -1,17 +1,4 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> s_intro }
-{ battle_scene == "after_1": -> s_after_1 }
-{ battle_scene == "after_2": -> s_after_2 }
-{ battle_scene == "outro": -> s_outro }
--> END
-
-=== s_intro ===
+INCLUDE modules.ink
 # background: milano_castello
 # speaker: enemy
 # reaction: heroine,smile
@@ -27,11 +14,9 @@ VAR battle_score = 0
 「写真、一枚でよかったんだ。新しい顔を作るのは待ってくれよ。」
 # speaker: narrator
 城の展示に入るため、粘土は小箱にしまわれた。父だけが、閉じたふたを見ていた。
--> END
-
-=== s_after_1 ===
+-> quiz(1) ->
 # background: milano_castello
-{ answer_correct:
+{ quiz_correct:
 # speaker: enemy
 「ここで以前、誰が横になってたのか。部屋の見え方が変わるな。」
 - else:
@@ -46,11 +31,9 @@ VAR battle_score = 0
 「しみの形、聞いたことあります？」
 # speaker: enemy
 「……聞けばよかったな。」
--> END
-
-=== s_after_2 ===
+-> quiz(2) ->
 # background: milano_castello
-{ answer_correct:
+{ quiz_correct:
 # speaker: enemy
 「作り直した時間も、今の形に入ってるんだな。」
 - else:
@@ -63,11 +46,9 @@ VAR battle_score = 0
 「私は、こっちの横顔が好き。そっちからはどうですか？」
 # speaker: enemy
 「ここから動いたら、好きだった形を忘れそうでね。」
--> END
-
-=== s_outro ===
+-> quiz(3) ->
 # background: milano_castello
-{ answer_correct:
+{ quiz_correct:
 # speaker: enemy
 「横へ一歩行けば、同じ像がまた違う。」
 - else:

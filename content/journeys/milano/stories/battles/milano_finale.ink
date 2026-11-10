@@ -1,19 +1,4 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> s_intro }
-{ battle_scene == "after_1": -> s_after_1 }
-{ battle_scene == "after_2": -> s_after_2 }
-{ battle_scene == "after_3": -> s_after_3 }
-{ battle_scene == "after_4": -> s_after_4 }
-{ battle_scene == "outro": -> s_outro }
--> END
-
-=== s_intro ===
+INCLUDE modules.ink
 # background: milano_darsena_finale
 # speaker: narrator
 ダルセナの岸に折り畳み椅子と小さな送信機がある。椅子に座ったリヴィオは、膝にパン屑を落としたまま片手を挙げた。
@@ -28,11 +13,9 @@ VAR battle_score = 0
 「じゃあ、空腹の音は避けたほうが。」
 # speaker: enemy
 「あれは朝の番組に取っといた。」
--> END
-
-=== s_after_1 ===
+-> quiz(1) ->
 # background: milano_darsena_finale
-{ answer_correct:
+{ quiz_correct:
 # speaker: heroine
 「昔は、水辺で荷を待つ人がいたんですね。」
 - else:
@@ -45,11 +28,9 @@ VAR battle_score = 0
 「水だけじゃ、ここが何に使われてきたかまでは録れんな。」
 # speaker: heroine
 「広場だって地下に人がいた。最初の十秒、上ばっかり向いてましたね。」
--> END
-
-=== s_after_2 ===
+-> quiz(2) ->
 # background: milano_darsena_finale
-{ answer_correct:
+{ quiz_correct:
 # speaker: heroine
 「ここからあの広場まで、石も旅をした。」
 - else:
@@ -62,11 +43,9 @@ VAR battle_score = 0
 「ない音をあるとは言えない。代わりに君がそう言えば、聴く人は想像できる。」
 # speaker: narrator
 差し出されたマイクを、彼女はまだ受け取らなかった。
--> END
-
-=== s_after_3 ===
+-> quiz(3) ->
 # background: milano_darsena_finale
-{ answer_correct:
+{ quiz_correct:
 # speaker: heroine
 「見られる時間の短さにも、絵を守る理由があった。」
 - else:
@@ -79,11 +58,9 @@ VAR battle_score = 0
 「残しておくのと、聴かせるのって、別ですね。」
 # speaker: enemy
 「放送屋としては残念だが、本人の持ち物だ。」
--> END
-
-=== s_after_4 ===
+-> quiz(4) ->
 # background: milano_darsena_finale
-{ answer_correct:
+{ quiz_correct:
 # speaker: heroine
 「床を空けると、聴く人が踊る人に変わる。」
 - else:
@@ -100,11 +77,9 @@ VAR battle_score = 0
 「椅子の話はいい。パンの話なら提供料を払ってほしい。」
 # speaker: narrator
 彼女が吹き出した。まだスイッチは入っていない。
--> END
-
-=== s_outro ===
+-> quiz(5) ->
 # background: milano_darsena_finale
-{ answer_correct:
+{ quiz_correct:
 # speaker: heroine
 「水の音の中に、働いていた人の手が見える気がします。」
 - else:
