@@ -218,21 +218,21 @@ describe("local save persistence", () => {
   });
 });
 
-describe("save format v17 (docs/07: one format per version, no migration)", () => {
+describe("save format v18 (docs/07: one format per version, no migration)", () => {
   // A save as v13 wrote it: the same shape plus the completedChapters record v14 removed.
   const v13Save = () => JSON.stringify({ ...createGame(), schemaVersion: 13, completedChapters: ["milano"] });
 
   it("is the version every new game is written in", () => {
-    expect(SUPPORTED_SAVE_VERSION).toBe(17);
-    expect(createGame().schemaVersion).toBe(17);
+    expect(SUPPORTED_SAVE_VERSION).toBe(18);
+    expect(createGame().schemaVersion).toBe(18);
   });
 
-  it("round-trips a v17 save with a date in progress", () => {
+  it("round-trips a v18 save with a date in progress", () => {
     const storage = new MemoryStorage();
     const state = startDate(seedCurrentFreeTime(createGame("旅人", "小春")), "milano_cafe_01");
     expect(state.activeDate).not.toBeNull();
     expect(saveGame(storage, state)).toEqual({ ok: true });
-    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 17 });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 18 });
     expect(loadGame(storage)).toEqual({ status: "loaded", state });
   });
 
@@ -259,7 +259,7 @@ describe("save format v17 (docs/07: one format per version, no migration)", () =
     state = { ...state, travel: { ...state.travel, rideCounts: { tram: 2 } } };
     const storage = new MemoryStorage();
     expect(saveGame(storage, state)).toEqual({ ok: true });
-    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 17, seenEncounterIds: state.seenEncounterIds,
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 18, seenEncounterIds: state.seenEncounterIds,
       itemUses: state.itemUses, travel: { rideCounts: { tram: 2 } } });
     expect(loadGame(storage)).toEqual({ status: "loaded", state });
     // The shape development builds of v14 wrote before these records, with this version's number: not an old version, unreadable, kept as it is.
@@ -334,21 +334,22 @@ describe("save format v17 (docs/07: one format per version, no migration)", () =
     expect(() => validateGameState(with_(gift, { at: "smp_mihon_bookmark_stall" }))).toThrow("道中交流の時点の記録が一致しません。");
   });
 
-  it("holds the tour records empty until the tour system writes them", () => {
-    // Tour design §5.3 (tour decision 2 (i)): both fields joined v14, empty; stage 2a widens them without a new version.
+  it("writes the tour records of v18 (tour stage 2a): empty in a new game, and required", () => {
+    // The tour booked or running and the tours finished (src/persistence/tour-save.test.ts plays them through save and load).
     const fresh = createGame();
     expect(fresh.tour).toBeNull();
     expect(fresh.completedTourIds).toEqual([]);
     const storage = new MemoryStorage();
     expect(saveGame(storage, fresh)).toEqual({ ok: true });
-    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 17, tour: null, completedTourIds: [] });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 18, tour: null, completedTourIds: [] });
     expect(loadGame(storage)).toEqual({ status: "loaded", state: fresh });
-    // A filled value is refused: no tour can be booked, run or finished yet.
-    expect(() => validateGameState({ ...fresh, tour: { status: "booked", tourId: "smp_mihon_tour_cape", offerId: "web", pricePaid: 0, bookedDay: 1 } }))
-      .toThrow(zodIssues({ code: "invalid_type", path: ["tour"], expected: "null" }));
-    expect(() => validateGameState({ ...fresh, completedTourIds: ["smp_mihon_tour_cape"] }))
-      .toThrow(zodIssues({ code: "too_big", path: ["completedTourIds"], maximum: 0 }));
-    // The shape development builds of v14 wrote before these fields, with this version's number: not an old version, unreadable, kept as it is.
+    // A record of the wrong shape, or of a tour no content has, is refused.
+    expect(() => validateGameState({ ...fresh, tour: { status: "planned", tourId: "milano_tour_none", offerId: "web", pricePaid: 0, bookedDay: 1 } }))
+      .toThrow(/"path": \[\s*"tour",\s*"status"\s*\]|"tour"/u);
+    expect(() => validateGameState({ ...fresh, tour: { status: "booked", tourId: "milano_tour_none", offerId: "web", pricePaid: 0, bookedDay: 1 } }))
+      .toThrow("ツアーの記録が一致しません。");
+    expect(() => validateGameState({ ...fresh, completedTourIds: ["milano_tour_none"] })).toThrow("ツアーの記録が一致しません。");
+    // A save of this version without the fields: not an old version, unreadable, kept as it is.
     const { tour: _tour, completedTourIds: _finished, ...older } = fresh;
     const raw = JSON.stringify(older);
     const slot = new MemoryStorage();
@@ -374,12 +375,13 @@ describe("save format v17 (docs/07: one format per version, no migration)", () =
     expect(backups.map(([, value]) => value)).toEqual([raw]);
   });
 
-  it("reports a v14, v15 or v16 save of any journey as an identified old version and keeps it byte-identical", () => {
+  it("reports a v14 to v17 save of any journey as an identified old version and keeps it byte-identical", () => {
     // v15 switched the Golden Triangle's in-city transport (modes, routes, the Agra inn); v16 is the unified events' stage 3
     // (place files, tag effects, the dates' Ink turn); v17 is stage 5 (a battle as one flow: its Ink turns and the choices it
-    // applied): a v14, v15 or v16 save of every journey is old now (not migrated).
+    // applied); v18 is the tour (its records filled, Fatehpur Sikri reached only on a tour): a v14 to v17 save of every journey
+    // is old now (not migrated).
     for (const [journeyId, version] of [["milano", 14], ["golden_triangle", 14], ["milano", 15], ["golden_triangle", 15],
-      ["milano", 16], ["golden_triangle", 16]] as const) {
+      ["milano", 16], ["golden_triangle", 16], ["milano", 17], ["golden_triangle", 17]] as const) {
       const storage = new MemoryStorage();
       const raw = JSON.stringify({ ...createGame(undefined, undefined, { journeyId }), schemaVersion: version });
       storage.setItem(SAVE_KEY, raw);
@@ -392,9 +394,9 @@ describe("save format v17 (docs/07: one format per version, no migration)", () =
     }
   });
 
-  it("leaves an unknown newer version (v18) unchanged", () => {
+  it("leaves an unknown newer version (v19) unchanged", () => {
     const storage = new MemoryStorage();
-    const raw = JSON.stringify({ ...createGame(), schemaVersion: 18 });
+    const raw = JSON.stringify({ ...createGame(), schemaVersion: 19 });
     storage.setItem(SAVE_KEY, raw);
     expect(loadGame(storage)).toMatchObject({ status: "invalid", kind: "newer", raw });
     expect(saveGame(storage, createGame()).ok).toBe(false);

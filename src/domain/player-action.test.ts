@@ -16,6 +16,7 @@ import { createGame, type GameState } from "./game";
 import { applyPlayerAction, listPlayerActions, playerActionChange, type PlayerAction } from "./player-action";
 import { canClaimPendingRewards } from "./rewards";
 import { getTravelWaitOptions } from "./travel-destinations";
+import { installTourTestCity, testTour } from "../dev/test-tours";
 import { DAY_END } from "./travel";
 
 const roll = () => 0;
@@ -152,6 +153,21 @@ describe("the actions a player can take now", () => {
     expect(canClaimPendingRewards(state)).toBe(false);
     expect(canClaimPendingRewards(stored)).toBe(true);
     expect(canClaimPendingRewards({ ...stored, ap: 10_000 })).toBe(false);
+  });
+
+  it("free time offers each available tour offer and, once booked, its cancel instead; neither during a scene (tour stage 2a)", () => {
+    const cleanup = installTourTestCity();
+    try {
+      const state = newJourney(testTour.journeyId);
+      const bookings = listPlayerActions(state).filter((action) => action.kind === "book_tour");
+      expect(bookings).toEqual([{ kind: "book_tour", tourId: testTour.tourId, offerId: "hotel_desk" }, { kind: "book_tour", tourId: testTour.tourId, offerId: "web" }]);
+      for (const action of bookings) expect(apply(state, action)).not.toBe(state);
+      const booked = apply(state, bookings[0]);
+      expect(kinds(listPlayerActions(booked)).filter((kind) => kind === "book_tour" || kind === "cancel_tour")).toEqual(["cancel_tour"]);
+      expect(kinds(listPlayerActions(openBattleScene(booked, "smp_mihon_special_b_market")))).not.toContain("cancel_tour");
+      // Tight on money: the offers it does not cover are not listed.
+      expect(listPlayerActions({ ...state, travelBudget: 11 }).filter((action) => action.kind === "book_tour")).toEqual([bookings[0]]);
+    } finally { cleanup(); }
   });
 
   it("waiting offers 30 minutes and the next opening, each only while it still ends before the day does", () => {

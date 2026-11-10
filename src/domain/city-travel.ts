@@ -15,9 +15,12 @@ export function getNextCity(state: GameState): ReturnType<typeof getCityContent>
   return getCityContent(next.id);
 }
 
-/** The next city free time offers to leave for (「…へ出発」): none for a journey that moves on by itself after the epilogue. */
+/**
+ * The next city free time offers to leave for (「…へ出発」): none for a journey that moves on by itself after the epilogue, and
+ * none while a tour is booked or running (the departure waits for its end or its cancel).
+ */
 export function getPlayerDeparture(state: GameState): ReturnType<typeof getCityContent> | undefined {
-  return getJourneyForCity(state.currentCityId)?.cityTransition === "after_epilogue" ? undefined : getNextCity(state);
+  return getJourneyForCity(state.currentCityId)?.cityTransition === "after_epilogue" || state.tour !== null ? undefined : getNextCity(state);
 }
 
 /** The end of a journey: its last city cleared and that city's epilogue read, with no next city to go to. */
@@ -36,9 +39,9 @@ export function departToNextCity(state: GameState, expectedRevision: number): Ga
   return openDepartureMoment(state);
 }
 
-/** Whether the city can be left now (cleared, a next city, no scene open, no trip). */
+/** Whether the city can be left now (cleared, a next city, no scene open, no trip, no tour booked or running). */
 export const canDepart = (state: GameState) =>
-  state.completedCityIds.includes(state.currentCityId) && !isSceneOpen(state) && !state.travel.activeEvent && !!getNextCity(state);
+  state.completedCityIds.includes(state.currentCityId) && !isSceneOpen(state) && !state.travel.activeEvent && state.tour === null && !!getNextCity(state);
 
 /** The departure itself (the departure moment's main part): the items left behind and the next city reached, its arrival not begun. */
 export function leaveForNextCity(state: GameState): GameState {
