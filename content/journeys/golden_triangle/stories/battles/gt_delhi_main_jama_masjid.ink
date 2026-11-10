@@ -1,20 +1,7 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
+INCLUDE modules.ink
 // 【3】1場面1ファイルの頭の札（結果を初めて記録したとき1回当たる）。足した札：香油（雨の匂いの小瓶）を受け取り、代金を払う。金額は案
 # on_done: item gt_delhi_rain_attar
 # on_done: money -300
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
 # background: gt_bg_delhi_jama_masjid
 # speaker: narrator
 モスクの長い階段を下りきった先、人ひとりがやっと通れる路地で、{heroine_name}の足が止まった。
@@ -48,11 +35,9 @@ VAR battle_score = 0
 「この店はな、世界を見下ろすモスクの足もとにある。名前からして、そういう意味なんだ」
 # speaker: narrator
 「また爺さんの作り話だ」とゾヘブが笑う。ハミードは笑わず、こちらの答えを待っていた。
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: gt_bg_delhi_jama_masjid
-{ answer_correct:
+{ quiz_correct:
     # speaker: narrator
     ゾヘブが目を丸くした。「……合ってんのかよ」
     # speaker: enemy
@@ -78,11 +63,9 @@ VAR battle_score = 0
 「この通りは、もっと悪い時代を越えてきた。あのモスクだってそうだ」
 # speaker: narrator
 「出た、昔話」とゾヘブ。ハミードは顎で、路地の先の階段を指した。千八百五十七年の後、あのモスクに何が起きたか。
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: gt_bg_delhi_jama_masjid
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「そうだ。五年、取り上げられていた。返ってきたのは、町の人間が何度も何度も頼んだからだ。しつこさは、この町の取り柄だ」
 - else:
@@ -109,11 +92,9 @@ VAR battle_score = 0
 ゾヘブは答えなかった。答えを知らない顔だった。
 # speaker: narrator
 店の奥で、ハミードが古い帳面をめくっている。断食月の夕方には、通り中がモスクからの合図を待っていた。親父はその直前に、礼拝へ向かう男たちにアタルを売った。そんな話を、独り言のように続けていた。
--> END
-
-=== conclusion ===
+-> quiz(3) ->
 # background: gt_bg_delhi_jama_masjid
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「そう、断食を終える時刻だ。合図の直前は、通りが一番いい匂いになる。揚げ物と、香油と、人の汗で」
 - else:

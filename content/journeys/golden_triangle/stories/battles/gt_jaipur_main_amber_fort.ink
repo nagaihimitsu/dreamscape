@@ -1,21 +1,8 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
+INCLUDE modules.ink
 // 【3】1場面1ファイルの頭の札（結果を初めて記録したとき1回当たる）。足した札：細密画を受け取り、細密画（-900）と印刷の写し（-300）の代金を払う。金額は案
 # on_done: item gt_jaipur_salim_miniature
 # on_done: money -900
 # on_done: money -300
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
 # background: gt_bg_jaipur_amber_fort
 # speaker: narrator
 十分前、{heroine_name}は一枚の絵を買った。中庭の隅の小さな露店で、若い画家が描いていた、アンベール城の細密画。手のひらほどの紙に、門も宮殿も、細い筆で描き込まれている。
@@ -46,11 +33,9 @@ VAR battle_score = 0
 「答えなくていい。顔に書いてある。……向こうの一枚を持ってこい。並べて見ろ。実物を見た人間にしか、描けないものがある」
 # speaker: narrator
 {heroine_name}は印刷の一枚を買って戻り、二枚を並べた。まず目に入ったのは、王の宮殿へ入る、色鮮やかな門。その上に描かれた姿が、二枚で違っていた。
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: gt_bg_jaipur_amber_fort
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「サリームさんの絵が、ガネーシャ。……門の名前と同じ。向こうのは、孔雀になってる」
 - else:
@@ -73,11 +58,9 @@ VAR battle_score = 0
 「……サリームさん、これ、何日描いたんですか」
 # speaker: enemy
 「鏡の間に、四日座った。警備員に顔を覚えられた」
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: gt_bg_jaipur_amber_fort
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「何千もの小さな鏡。だから点で描いたんですね。……星じゃない。鏡なんだ」
 - else:
@@ -97,11 +80,9 @@ VAR battle_score = 0
 印刷の絵の下に、英語の説明が刷り込まれていた。この城は、ジャイプールを築いた王が建てた、と。
 # speaker: enemy
 「おれの絵には、説明は書かない。書くなら、正しいことを書く」
--> END
-
-=== conclusion ===
+-> quiz(3) ->
 # background: gt_bg_jaipur_amber_fort
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「城を建てたのは、マーン・シング一世。ジャイプールができる、ずっと前です。向こうの説明は、二人の王を混ぜてる」
 - else:

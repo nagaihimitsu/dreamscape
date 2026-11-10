@@ -3,7 +3,8 @@ import { dialogueExpressions, dialogueReactions, landmarks, learningTranslations
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
-import { getActiveBattleContent, getBattleOutcome } from "../../domain/battle";
+import { battleChrome, getActiveBattleContent, getBattleOutcome, isFlowBattle } from "../../domain/battle";
+import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
 import { beginStory, continueStory, type StoryStep } from "../../story/runtime";
 import { DialogueText } from "../../components/DialogueText";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
@@ -106,6 +107,9 @@ interface Props {
   reduceMotion: boolean;
   onSpeed: (speed: number) => void;
   onAdvance: () => void;
+  /** The shown choices of a battle's conversation (the one-flow form, stage 5), and choosing one. */
+  choices?: SceneChoiceView[];
+  onChoose?: (index: number) => void;
   onAnswer: (id: string) => boolean;
   onHint: () => void;
   onLeave?: () => void;
@@ -130,6 +134,8 @@ export function BattleScreen({
   reduceMotion,
   autoAdvanceEnabled = false,
   onAdvance,
+  choices = [],
+  onChoose,
   onAnswer,
   onHint,
   onLeave,
@@ -157,9 +163,10 @@ export function BattleScreen({
   // The claim transition is already saved before these presentation-only
   // frames appear. Mounting directly in reasoning (reload or old save) never
   // replays them, and a different run cannot inherit the prior transition.
+  const flow = isFlowBattle(battle);
   const previousBattle = useRef({
     runId: active.runId, phase: active.phase, scene: active.dialogueScene,
-    ended: active.frame?.ended ?? false,
+    ended: active.frame?.ended ?? false, proof: !!active.reasoning,
   });
   const [rebuttal, setRebuttal] = useState<{ storyId: string; step: StoryStep; index: number } | null>(null);
   const [cutIn, setCutIn] = useState<"contradiction" | "connection" | null>(null);
@@ -167,13 +174,20 @@ export function BattleScreen({
     const previous = previousBattle.current;
     previousBattle.current = {
       runId: active.runId, phase: active.phase, scene: active.dialogueScene,
-      ended: active.frame?.ended ?? false,
+      ended: active.frame?.ended ?? false, proof: !!active.reasoning,
     };
     if (previous.runId !== active.runId || active.phase !== "reasoning") {
       setRebuttal(null);
       setCutIn(null);
     }
     const config = battle.reasoning;
+    // The one-flow form (stage 5): its rebuttal is lines of its flow (saved, decision 1); the cut-in plays as the flow first
+    // reaches its stop point in this mounted screen (a reload there never replays it).
+    if (flow) {
+      if (config && previous.runId === active.runId && previous.phase === "dialogue" && !previous.proof && active.phase === "reasoning" && active.reasoning)
+        setCutIn(config.kind);
+      return;
+    }
     if (!config || previous.runId !== active.runId || previous.phase !== "dialogue" ||
         previous.scene !== config.claimScene || !previous.ended || active.phase !== "reasoning") return;
     const storyId = reasoningIntroductions[battle.id];
@@ -185,7 +199,7 @@ export function BattleScreen({
     }
     const step = beginStory(storyId, game.playerName, game.heroineName);
     setRebuttal({ storyId, step, index: 0 });
-  }, [active.runId, active.phase, active.dialogueScene, active.frame?.ended, battle, game.playerName, game.heroineName]);
+  }, [active.runId, active.phase, active.dialogueScene, active.frame?.ended, active.reasoning, battle, flow, game.playerName, game.heroineName]);
   const [creditsOpen, setCreditsOpen] = useState(false);
   const windowVisibility = useDialogueWindow();
   const readingArea = useRef<HTMLElement>(null);
@@ -269,6 +283,11 @@ export function BattleScreen({
   }, [active.phase, active.roundIndex, animatedAnswer, answerKey, reduceMotion]);
   const frame = rebuttal?.step.frame ?? active.frame;
   const isDialogue = active.phase === "dialogue" || !!rebuttal;
+  // What the line's screen shows (one rule for both forms: a flow battle looks as the scene form did, stage 5): the next
+  // button at the end of a part, the conversation's choices, and what a rebuttal line hides.
+  const chrome = battleChrome(active, battle, rebuttal?.step.frame);
+  const choosing = chrome.choosing;
+  const partEnd = !!chrome.advance;
   const backgroundId = frame?.background ?? battle.backgroundId;
   const landmark = landmarks.find((item) => item.id === battle.landmarkId);
   // Keep the same registered location photograph across dialogue, questions
@@ -304,7 +323,7 @@ export function BattleScreen({
     frame?.text ?? "",
   );
   const advanceSafely = () => {
-    if (cutIn || (isDialogue && !ready) || windowVisibility.hidden || dialogueObstructed()) return;
+    if (cutIn || (isDialogue && !ready) || windowVisibility.hidden || dialogueObstructed() || choosing) return;
     if (rebuttal) {
       if (rebuttal.step.frame.ended) {
         // A presentation-only scene end: the cut-in's skip must not take the double tap's second tap.
@@ -325,12 +344,12 @@ export function BattleScreen({
   }, [isDialogue, show]);
   const auto = useAutoAdvance({
     ready,
-    canAdvance: isDialogue && !creditsOpen && !windowVisibility.hidden && !!frame && !frame.ended,
+    canAdvance: isDialogue && !creditsOpen && !windowVisibility.hidden && !!frame && !partEnd && !choosing,
     text: frame?.text ?? "",
     onAdvance: advanceSafely,
     defaultEnabled: autoAdvanceEnabled,
   });
-  const sceneTap = useSceneTap({ active: isDialogue, lineShown: ready, choicesShown: false, windowHidden: windowVisibility.hidden });
+  const sceneTap = useSceneTap({ active: isDialogue, lineShown: ready, choicesShown: choosing, windowHidden: windowVisibility.hidden });
   const isResult = active.phase === "result";
   const isSpecial = !!battle.reasoning;
   const showReasoning =
@@ -382,7 +401,7 @@ export function BattleScreen({
         labelProps={landmark ? { "data-testid": "battle-location", "aria-label": `現在の場所: ${landmark.nameJa}` } : undefined}
       >
         {backgroundAsset && <SceneCreditButton onClick={() => setCreditsOpen(true)} />}
-        {isDialogue && !rebuttal && onNotebook && <SceneNotebookTab onClick={onNotebook} />}
+        {chrome.notebookTab && onNotebook && <SceneNotebookTab onClick={onNotebook} />}
       </SceneLabelLine>
       <div
         className={`battle-stage ${isDialogue ? "" : "battle-stage-compact"} ${battle.scope === "city_finale" ? "finale-stage" : ""}`}
@@ -443,7 +462,7 @@ export function BattleScreen({
         className={`paper battle-paper${isDialogue ? " battle-dialogue" : ""}`}
         id="battle-content"
         aria-label="クイズバトル"
-        data-testid={rebuttal ? "reasoning-rebuttal" : undefined}
+        data-testid={chrome.rebuttal ? "reasoning-rebuttal" : undefined}
       >
         {!isDialogue && <div className="battle-roundbar" data-testid="battle-roundbar" ref={roundBar}>
           <span>
@@ -466,7 +485,7 @@ export function BattleScreen({
             </button>
           )}
         </div>}
-        {!isResult && active.phase !== "reasoning" && active.answers.length > 0 && (
+        {chrome.reviewAnswers && (
           <button className="text-button" onClick={() => onEnglish()}>
             回答した問題を振り返る
           </button>
@@ -556,17 +575,14 @@ export function BattleScreen({
               onReady={onReady}
               onAdvance={advanceSafely}
             />
-            {frame.ended && <button
+            {choosing && onChoose && <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="battle-choice" />}
+            {chrome.advance && <button
               className="next"
-              data-testid={rebuttal ? "reasoning-rebuttal-advance" : "battle-advance"}
+              data-testid={chrome.advance.testId}
               disabled={!ready}
               onClick={advanceSafely}
             >
-              {active.dialogueScene === battle.scenes.outro
-                  ? "結果を見る"
-                  : isSpecial
-                    ? "次へ進む"
-                    : "問題へ進む"}{" "}
+              {chrome.advance.label}{" "}
               <span aria-hidden="true">→</span>
             </button>}
           </>

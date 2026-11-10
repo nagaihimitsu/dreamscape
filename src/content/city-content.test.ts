@@ -70,7 +70,7 @@ describe("Milan city content", () => {
         (item) => item.id === episode.battleId,
       )!;
       expect(battle.reasoning).toBeUndefined();
-      expect(battle.scenes.afterRounds).toHaveLength(2);
+      expect(battle.scenes!.afterRounds).toHaveLength(2);
       const questions = result.quizzes[battle.quizId].questions;
       expect(questions).toHaveLength(3);
       // The rewritten quiz set chooses difficulty per question instead of
@@ -85,7 +85,7 @@ describe("Milan city content", () => {
     expect(finale.landmarkId).toBeNull();
     expect(finale.cityId).toBe("milano");
     expect(result.quizzes[finale.quizId].questions).toHaveLength(5);
-    expect(finale.scenes.afterRounds).toHaveLength(4);
+    expect(finale.scenes!.afterRounds).toHaveLength(4);
     expect(
       result.tourism.landmarks.some(
         (landmark) => landmark.battleId === finale.id,
@@ -111,8 +111,8 @@ describe("Milan city content", () => {
       battleSchema.parse({
         ...boss,
         scenes: {
-          ...boss.scenes,
-          afterRounds: boss.scenes.afterRounds.slice(0, 2),
+          ...boss.scenes!,
+          afterRounds: boss.scenes!.afterRounds.slice(0, 2),
         },
       }),
     ).toThrow("Only a city finale has no landmark and four intermediate scenes");
@@ -120,7 +120,7 @@ describe("Milan city content", () => {
     expect(() =>
       battleSchema.parse({
         ...ordinary,
-        scenes: { ...ordinary.scenes, afterRounds: boss.scenes.afterRounds },
+        scenes: { ...ordinary.scenes!, afterRounds: boss.scenes!.afterRounds },
       }),
     ).toThrow("Only a city finale has no landmark and four intermediate scenes");
   });

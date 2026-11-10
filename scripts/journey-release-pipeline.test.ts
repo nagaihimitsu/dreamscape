@@ -4,6 +4,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { journeyRequirements, loadJourneyScaffold } from "./journey-scaffold";
 import { prepareJourneyRelease } from "./promote-journey";
+import { convertBattle } from "./battle-flow";
 
 // The whole journey:release pipeline (prepareJourneyRelease) on a copy of the
 // project. It needs a journey with an authoring profile, travel data and
@@ -94,6 +95,12 @@ const originalTranslations = JSON.parse(read(`${milano}/learning/translations.js
 const inkTemplate = (storyId: string) =>
   read(`${milano}/stories/${storyId}.ink`).replace(/#\s*background\s*:\s*[A-Za-z0-9_]+/gu, "# background: default_scene");
 const dateTemplate = inkTemplate("dates/milano_date_cafe");
+/** A Milan battle as a template in the one-flow form (stage 5; journey:scaffold writes no scenes), converted by the battle tool. */
+const battleTemplate = (battleId: string, questions: number) => {
+  const battle = JSON.parse(read(`${milano}/battles/catalog.json`)).battles.find((item: { id: string }) => item.id === battleId);
+  return convertBattle({ battle, source: read(`${milano}/stories/${battle.storyId}.ink`) }, questions).source
+    .replace(/#\s*background\s*:\s*[A-Za-z0-9_]+/gu, "# background: default_scene");
+};
 
 /** India's catalogs that hold nothing but India's unpublished entries. */
 const emptiedCatalogs = ["progression/journey.json", "battles/catalog.json", "romance/date_catalog.json",
@@ -133,7 +140,7 @@ function authorCity(root: string, plan: ReturnType<typeof journeyRequirements>[n
   const translations: Record<string, { questionJa: string; optionsJa: Record<string, string> }> = {};
   for (const item of plan.main) {
     write(`${layer}/stories/${item.guideStoryId}.ink`, inkTemplate("tourism/milano_duomo_guide"));
-    write(`${layer}/stories/${item.battleStoryId}.ink`, inkTemplate("battles/milano_main_duomo"));
+    write(`${layer}/stories/${item.battleStoryId}.ink`, battleTemplate("milano_duomo_01", 3));
     const quiz = { ...structuredClone(originalQuiz), id: item.quizId, landmarkId: item.landmarkId };
     quiz.questions.forEach((question: { id: string }, index: number) => {
       const translated = originalTranslations[question.id];
@@ -152,7 +159,7 @@ function authorCity(root: string, plan: ReturnType<typeof journeyRequirements>[n
     for (const [from, to] of Object.entries(map)) story = story.replaceAll(from, to);
     write(`${layer}/stories/${item.storyId}.ink`, story);
   }
-  write(`${layer}/stories/${plan.finale.battleStoryId}.ink`, inkTemplate("battles/milano_finale"));
+  write(`${layer}/stories/${plan.finale.battleStoryId}.ink`, battleTemplate("milano_city_boss_01", 5));
   write(`${layer}/stories/${plan.finale.epilogueStoryId}.ink`, inkTemplate("epilogues/milano"));
   const finalQuiz = JSON.parse(read(`${milano}/quizzes/milano_finale_quiz.json`));
   finalQuiz.id = plan.finale.quizId; finalQuiz.cityId = plan.cityId;

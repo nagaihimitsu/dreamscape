@@ -1,17 +1,4 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
+INCLUDE modules.ink
 # background: gt_bg_delhi_qutb_minar
 # speaker: narrator
 塔の足元、低い柵に囲まれた黒い鉄の柱の前で、男が一人、柵の高さを手のひらで測っていた。
@@ -43,11 +30,9 @@ VAR battle_score = 0
 「理由？　知ってますよ。貧乏人の願いがかなうと困る人がいるんでしょう」
 # speaker: narrator
 冗談の形をしていたが、目は笑っていなかった。
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: gt_bg_delhi_qutb_minar
-{ answer_correct:
+{ quiz_correct:
     # speaker: narrator
     {heroine_name}の答えを聞くと、ラームキシャンは、ふっと肩の力を抜いた。柵をまたいでいた足が、ゆっくり外側へ戻る。
     # speaker: enemy
@@ -69,11 +54,9 @@ VAR battle_score = 0
 「なので、あなたにも聞きます。千六百年、雨ざらしで、なぜ錆びないのか」
 # speaker: narrator
 ボールペンの先が、こちらに向いた。教室で何百回も繰り返した角度だった。
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: gt_bg_delhi_qutb_minar
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     # reaction: enemy,music
     「合格。うちの生徒より速い。……魔法じゃない、材料と作り方の話です」
@@ -96,11 +79,9 @@ VAR battle_score = 0
 「抱く代わりになるもの、何か……」
 # speaker: narrator
 {heroine_name}は案内板の前へ回り込んだ。小さな文字を、指でたどる。この柱が、どこから来たのか。
--> END
-
-=== conclusion ===
+-> quiz(3) ->
 # background: gt_bg_delhi_qutb_minar
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     # reaction: heroine,smile,sparkle
     「この柱、ここで生まれたんじゃないんですね。ずっと遠くの丘から運ばれてきて、知らない町で、何百年も立ってる」

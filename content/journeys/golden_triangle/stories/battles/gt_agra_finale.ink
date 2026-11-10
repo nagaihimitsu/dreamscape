@@ -1,21 +1,6 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
+INCLUDE modules.ink
 // 【3】1場面1ファイルの頭の札（結果を初めて記録したとき1回当たる）。足した札：アンワルの詫びのペーターを受け取る（アーグラのエピローグで食べ切る）
 # on_done: item gt_agra_anwar_petha
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "after_3": -> after_third }
-{ battle_scene == "after_4": -> after_fourth }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
 # background: gt_bg_agra_taj_mahal
 # speaker: narrator
 タージ・マハルの正門の近くに、ひときわ大きな人だかりができていた。真ん中に、白いクルタに銀の握りの杖を持った老ガイドが立っている。
@@ -45,11 +30,9 @@ VAR battle_score = 0
 観客が、一斉にこちらを振り向いた。アンワルの笑顔は崩れない。
 # speaker: enemy
 「お嬢さん。この町では、昔からみんながそう語ってきた。それを違うと言うなら、証明できるかね」
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: gt_bg_agra_taj_mahal
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「記録が、ないんです。歴史家の人たちも、根拠のない伝説だって言ってます」
 - else:
@@ -69,11 +52,9 @@ VAR battle_score = 0
 「皇帝は、この岸に、自分のための黒いタージを建てるつもりだった。白い妃と、黒い皇帝。川を挟んで、永遠に見つめ合うはずだったのです」
 # speaker: narrator
 観客がまた息をのむ。アンワルは横目で、{heroine_name}を見た。今度は何と言う、という目で。
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: gt_bg_agra_mehtab_bagh
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「調べた人たちが見つけたのは、黒い墓の土台じゃなくて、庭でした。タージと、水に映るタージを眺めるための」
 - else:
@@ -96,11 +77,9 @@ VAR battle_score = 0
 「……やってみます。下手でも、本当の話をします」
 # speaker: enemy
 「では、聞こう。手を切られなかったというなら、職人たちはそのあと、どこへ行った」
--> END
-
-=== after_third ===
+-> quiz(3) ->
 # background: gt_bg_agra_mehtab_bagh
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「デリーです。皇帝の新しい都。赤いお城と、大きなモスクのある町。……わたしたち、デリーで見てきました。あの壁も、同じ人たちの手だったのかもしれない」
 - else:
@@ -117,11 +96,9 @@ VAR battle_score = 0
 「名前、ありますよ。一人だけ、タージに自分の名前を書き残した人がいるんです」
 # speaker: narrator
 アンワルの眉が、わずかに上がった。四十年、聞かれたことのない方向からの話だった。
--> END
-
-=== after_fourth ===
+-> quiz(4) ->
 # background: gt_bg_agra_mehtab_bagh
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「書家のアマーナト・ハーン。壁の文字を書いた人です。一六三八年って、日付まで入れて」
 - else:
@@ -143,11 +120,9 @@ VAR battle_score = 0
 アンワルは杖の先で地面を叩き、苦笑いした。
 # speaker: enemy
 「参った。……では、わしの番だ。わしの家がどこか、お嬢さんは知っているかね。タージの南門の外、タージ・ガンジだ。七代、あそこに住んでいる」
--> END
-
-=== conclusion ===
+-> quiz(5) ->
 # background: gt_bg_agra_mehtab_bagh
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「タージ・ガンジは、市場と隊商宿の町。最初から、タージの計画の一部だったんですよね」
 - else:

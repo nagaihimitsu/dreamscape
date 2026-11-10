@@ -188,7 +188,11 @@ describe("special battle content contract", () => {
         ...b,
         reasoning: { ...b.reasoning, pressScene: undefined },
       }),
-    ).toThrow(/"pressScene"[\s\S]*Invalid input: expected string, received undefined/);
+    // A scene-form B names all its scenes; the one-flow form (no scenes) names none (stage 5).
+    ).toThrow(/A battle's reasoning names its scenes \(claimScene, pressScene, successScene, failureScene\) only in the scene form/);
+    expect(() => battleSchema.parse({ ...b, scenes: undefined })).toThrow(/names its scenes .* only in the scene form/);
+    const { claimScene: _claim, pressScene: _press, successScene: _success, failureScene: _failure, ...flowReasoning } = b.reasoning as Record<string, unknown>;
+    expect(() => battleSchema.parse({ ...b, scenes: undefined, reasoning: flowReasoning })).not.toThrow();
     const c = special("C");
     expect(() =>
       battleSchema.parse({
@@ -217,7 +221,7 @@ describe("special battle content contract", () => {
 
   it("rejects colliding special scenes and nonexistent special Ink routes", async () => {
     await changeBattle("B", (battle) => {
-      battle.reasoning!.failureScene = battle.scenes.outro;
+      battle.reasoning!.failureScene = battle.scenes!.outro;
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Duplicate battle scene",
@@ -240,7 +244,7 @@ describe("special battle content contract", () => {
     ],
     [
       "* [余分な選択]\n    進む。\n    -> END",
-      "Battle story cannot contain choices",
+      "A battle in the scene form (scenes in battles/catalog.json) cannot contain choices",
     ],
   ])(
     "validates failure branches as rigorously as the main battle: %s",
@@ -284,7 +288,7 @@ describe("special battle content contract", () => {
       ),
     ).toBe(true);
     const story = new Story(result.stories[battle.storyId]);
-    story.variablesState.$("battle_scene", battle.reasoning!.successScene);
+    story.variablesState.$("battle_scene", battle.reasoning!.successScene!);
     const lines: string[] = [];
     while (story.canContinue) lines.push(story.Continue() ?? "");
     expect(story.currentChoices).toHaveLength(0);

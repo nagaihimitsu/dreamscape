@@ -6,7 +6,7 @@ import { fnvHash } from "../src/content/fingerprint";
 import type { RewardRule } from "../src/content/journey-schemas";
 import { INSERTED_KINDS, type SceneAt, type SceneDone, type SceneEntry, type SceneKind, type SceneMain, type SceneOption } from "../src/content/scene-schemas";
 import { knotAddress } from "../src/content/story-address";
-import { choiceOption, readHead, reachableKnots, type PlaceFile, type PlaceHead } from "./place-files";
+import { choiceOption, moduleCalls, readHead, reachableKnots, type PlaceFile, type PlaceHead } from "./place-files";
 
 // The scene table of content:build (the unified event design, stage 3a, 3.3): the scenes of the
 // place files with their option tables, the head `# on_done:` of one-scene main files, and
@@ -82,7 +82,8 @@ export function placeScenes(input: PlaceTableInput): { entry: SceneEntry; head: 
     const cities = inserted ? [...new Set(head.at.map((moment) => momentCity(input, moment, label)).filter((city): city is string => !!city))] : [main!.cityId];
     if (cities.length > 1) throw new Error(`The moments of ${label} are in different cities (${cities.join(", ")}); one scene belongs to one city`);
     const cityId = cities[0] ?? "";
-    const knots = reached.map((item) => item.name);
+    // The helper knots, then the calls of modules.ink (a battle's -> quiz(n) -> and -> reasoning ->, stage 5).
+    const knots = [...reached.map((item) => item.name), ...moduleCalls(file, reached)];
     const conds = [...new Set(reached.flatMap((item) => item.conds))];
     const data = { options, done: head.done, people: head.people, kind: head.kind };
     result.push({ head, entry: {

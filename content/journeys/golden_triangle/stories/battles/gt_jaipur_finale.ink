@@ -1,19 +1,4 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "after_3": -> after_third }
-{ battle_scene == "after_4": -> after_fourth }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
+INCLUDE modules.ink
 # background: gt_bg_jaipur_hawa_mahal
 # speaker: narrator
 旅の最後の日。昼のうちに、二人はハワー・マハルの前で、行列が通る道を確かめておいた。そして、日が暮れた。
@@ -57,11 +42,9 @@ VAR battle_score = 0
 「……やります。わたしが、答えます」
 # speaker: narrator
 いとこたちの先頭、プージャーという娘がにやりと笑った。最初の問題。この町は、なぜピンク色なのか。
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: gt_bg_jaipur_hawa_mahal
-{ answer_correct:
+{ quiz_correct:
     # speaker: narrator
     プージャーが悔しそうに舌打ちした。「……正解。値下げしてあげる」。花婿側から歓声が上がる。
 - else:
@@ -79,11 +62,9 @@ VAR battle_score = 0
 プージャーが、指を二本立てた。二問目。花婿側を、横目で見ながら。
 # speaker: narrator
 「この町の王様の称号、サワーイー。その意味、デリーの人は知らないでしょう？」
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: gt_bg_jaipur_hawa_mahal
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「一と、四分の一。……です！」
     # speaker: narrator
@@ -103,11 +84,9 @@ VAR battle_score = 0
 プージャーは負けじと胸を張った。ジャイプールの自慢といえば、これだという顔で。
 # speaker: narrator
 「三問目。この町はね、きちんと設計して造られたの。誰が、どうやって設計したと思う？」
--> END
-
-=== after_third ===
+-> quiz(3) ->
 # background: gt_bg_jaipur_hawa_mahal
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「ヴィディヤーダルという人が、古い建築の手引きに沿って、線を引いた町、です」
     # speaker: narrator
@@ -124,11 +103,9 @@ VAR battle_score = 0
 窓の老婦人が、プージャーに何か伝えた。プージャーがうなずき、声を張る。
 # speaker: narrator
 「最後の二問は、ナーニーが出すって！　一問目。春になると、女の人たちの行列がこの通りを通る。何のお祭り？」
--> END
-
-=== after_fourth ===
+-> quiz(4) ->
 # background: gt_bg_jaipur_hawa_mahal
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「ガンガウル。女神さまを敬う、春のお祭り」
 - else:
@@ -147,11 +124,9 @@ VAR battle_score = 0
 二人の祖母が、窓の内と外で見つめ合う。通りの喧騒が、一瞬遠のいた。
 # speaker: narrator
 窓の奥の声が、最後の問題を告げた。この窓は、向かいの宮殿の窓と同じ作り。こんな細かな格子は、何のためにあったのか。
--> END
-
-=== conclusion ===
+-> quiz(5) ->
 # background: gt_bg_jaipur_hawa_mahal
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「中の人が、見られずに、外を見るため。……通りも、お祭りも、市場も」
 - else:

@@ -1,17 +1,4 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
+INCLUDE modules.ink
 # background: gt_bg_jaipur_jantar_mantar
 # speaker: narrator
 巨大な三角の斜面が、空に向かって伸びていた。世界でも指折りの大きな日時計、サムラート・ヤントラ。その日陰で、言い争いが始まっていた。
@@ -34,11 +21,9 @@ VAR battle_score = 0
 「ちょうどいい。あなた、外国の人ですよね。証人になってください。十二時になったら、この日時計が、わたしの正しさを証明しますから」
 # speaker: narrator
 {heroine_name}は、斜面の影と、女性の自信に満ちた顔を見比べた。ふと、素朴な疑問が浮かぶ。この影は、何の時刻を示しているのだろう。
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: gt_bg_jaipur_jantar_mantar
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「この日時計が示すのは、ジャイプールの太陽で決まる時刻、なんですよね。携帯の時刻とは、別の」
     # speaker: enemy
@@ -58,11 +43,9 @@ VAR battle_score = 0
 # speaker: heroine
 # emotion: smile
 「わ……目盛りが、すごく細かい。大きいのは、見せびらかすためじゃなかったんだ」
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: gt_bg_jaipur_jantar_mantar
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「……二秒。石の装置で、二秒？　三百年近く前に？」
 - else:
@@ -84,11 +67,9 @@ VAR battle_score = 0
 「どうして？　太陽が一番高いのは、十二時のはずなのに」
 # speaker: narrator
 シャーストリーは暦の冊子を閉じ、ようやく立ち上がった。若い天文学者に向ける目は、意地悪ではなかった。孫の宿題を見る目だった。
--> END
-
-=== conclusion ===
+-> quiz(3) ->
 # background: gt_bg_jaipur_jantar_mantar
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「携帯の時刻は、国の標準時ですよね。ジャイプールの太陽の時刻にするには、経度の差と、季節のずれを直さないといけないんだと思います」
 - else:

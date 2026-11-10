@@ -88,26 +88,26 @@ describe("battle content contract", () => {
     const result = await buildContent(fixture, false);
     const battle = result.battles[0];
     const compiled = result.stories[battle.storyId];
-    for (const [index, scene] of battle.scenes.afterRounds.entries()) {
+    for (const [index, scene] of battle.scenes!.afterRounds.entries()) {
       expect(dialogue(compiled, scene, true, index + 1)).not.toBe(
         dialogue(compiled, scene, false, 0),
       );
     }
     const endings = [0, 2, 3].map((score) =>
-      dialogue(compiled, battle.scenes.outro, score > 0, score),
+      dialogue(compiled, battle.scenes!.outro, score > 0, score),
     );
     // The revised scene responds to the last answer, while the score still
     // remains available for the battle result and reward calculations.
     expect(endings[0]).not.toBe(endings[1]);
     expect(endings[1]).toBe(endings[2]);
     // The discovery for a later round must not be explained by the preceding scene.
-    const intro = dialogue(compiled, battle.scenes.intro, false, 0);
+    const intro = dialogue(compiled, battle.scenes!.intro, false, 0);
     expect(intro).not.toMatch(/三角形|こめかみ|乾いた/);
     expect(
-      dialogue(compiled, battle.scenes.afterRounds[0], true, 1),
+      dialogue(compiled, battle.scenes!.afterRounds[0], true, 1),
     ).not.toMatch(/こめかみ|乾いた/);
     expect(
-      dialogue(compiled, battle.scenes.afterRounds[1], true, 2),
+      dialogue(compiled, battle.scenes!.afterRounds[1], true, 2),
     ).not.toMatch(/乾いた|漆喰/);
   });
 
@@ -213,7 +213,7 @@ describe("battle content contract", () => {
 
   it("validates configured scenes rather than assuming an Ink route shape", async () => {
     await changeBattle((battle) => {
-      battle.scenes.afterRounds[1] = "absent_scene";
+      battle.scenes!.afterRounds[1] = "absent_scene";
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Empty battle scene",
@@ -243,7 +243,7 @@ describe("battle content contract", () => {
       "* [選ぶ]\n    続き",
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Battle story cannot contain choices",
+      "A battle in the scene form (scenes in battles/catalog.json) cannot contain choices",
     );
   });
 

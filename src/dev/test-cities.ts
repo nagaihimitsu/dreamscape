@@ -89,7 +89,8 @@ export function installTestCity(options: {
     quiz.questions = quiz.questions.map((question) => ({ ...question, id: `${prefix}_${question.id}` }));
     battleQuizzes[quizId] = quiz;
     addedQuizzes.push(quizId);
-    const battle = { ...clone(source), id: battleId, quizId, storyId: ownStory(source.storyId, `${cityId}/${battleId}`),
+    // A battle in the one-flow form (stage 5) keeps its story: its helper knots (<battle>_claim, _press) are named after it.
+    const battle = { ...clone(source), id: battleId, quizId, storyId: source.scenes ? ownStory(source.storyId, `${cityId}/${battleId}`) : source.storyId,
       ...(landmarkId ? { landmarkId } : { cityId }) };
     battles.push(battle);
     return battle;

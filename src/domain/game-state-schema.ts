@@ -12,7 +12,7 @@ import { battleRewardReceiptSchema, pendingApRewardSchema } from "./rewards";
 import { activeBattleSchema, battleRecordSchema } from "./battle";
 
 /** The only saved game format this build reads; older versions are not migrated. */
-export const GAME_STATE_VERSION = 16;
+export const GAME_STATE_VERSION = 17;
 
 const uniqueStrings = z
   .array(z.string().min(1))

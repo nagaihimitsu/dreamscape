@@ -1,19 +1,4 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "after_3": -> after_third }
-{ battle_scene == "after_4": -> after_fourth }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
+INCLUDE modules.ink
 # background: gt_bg_delhi_red_fort
 # speaker: narrator
 赤い城、暗くなってから。カムラの一覧の一行目が気になって、二人はもう一度、レッド・フォートの城門の前に来ていた。そこへ、宿の主人から電話が入った。隣のカムラさんの孫が、あなたたちを探している、と。
@@ -49,11 +34,9 @@ VAR battle_score = 0
 # speaker: enemy
 # reaction: enemy,anger
 「女性車両？　そんなもの、あるわけない。……ほら。やっぱり、話がおかしいんです」
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: gt_bg_delhi_hotel_hub
-{ answer_correct:
+{ quiz_correct:
     # speaker: narrator
     アマンは黙って携帯で調べ、画面を見つめたまま動かなくなった。
     # speaker: enemy
@@ -77,11 +60,9 @@ VAR battle_score = 0
 # speaker: heroine
 # emotion: serious
 「昔の話なら、昔の地図で読めばいいんだと思います」
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: gt_bg_delhi_chandni_chowk
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「チャンドニー・チョーク。月光の広場。昔の池に、月が映ったから」
 - else:
@@ -100,11 +81,9 @@ VAR battle_score = 0
 「ああ、あのばあさんか。ジャレビー百グラムで三回値切った。それから聞かれたよ。一年分の香辛料を、一番安く買えるのはどこかって」
 # speaker: enemy
 「一年分……？　ジャイプールにも店はあるのに」
--> END
-
-=== after_third ===
+-> quiz(3) ->
 # background: gt_bg_delhi_chandni_chowk
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「カーリー・バーオリー。通りの西の端の、香辛料の市場です」
 - else:
@@ -135,11 +114,9 @@ VAR battle_score = 0
 「でも、城はもう閉まってる。日が暮れたら入れない」
 # speaker: narrator
 {heroine_name}は一覧を開いた。一行目。赤い城、と書いた横の注釈は、最初の日からずっと気になっていた。「暗くなってから」
--> END
-
-=== after_fourth ===
+-> quiz(4) ->
 # background: gt_bg_delhi_red_fort
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「夜の光と音のショー。城の中を歩きながら見るんです。暗くなってから、です」
 - else:
@@ -158,11 +135,9 @@ VAR battle_score = 0
 「六十年前ですよ。光のショーなんて、あったはずがない。祖母の思い出は、どこかで混ざってるんです」
 # speaker: narrator
 光が、内謁の間の白いアーチを照らし出した。その奥に、まだ誰の姿も見えない。
--> END
-
-=== conclusion ===
+-> quiz(5) ->
 # background: gt_bg_delhi_red_fort
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「一九六五年に始まってます。アジアで最初のころの、光と音のショー。カムラさんの記憶は、混ざってなんかいません」
 - else:

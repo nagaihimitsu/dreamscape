@@ -1,19 +1,6 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
+INCLUDE modules.ink
 // 【3】1場面1ファイルの頭の札（結果を初めて記録したとき1回当たる）。足した札：審判の報酬のライムの漬物を受け取る
 # on_done: item gt_jaipur_sushma_lime_pickle
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
 # background: gt_bg_jaipur_city_palace
 # speaker: narrator
 宮殿の中庭の一角に、人の背丈ほどもある銀の壺が二つ、並んで光っていた。{heroine_name}がその大きさに口を開けていると、すぐ隣で言い争う声が始まった。
@@ -41,11 +28,9 @@ VAR battle_score = 0
 スシュマは返事を待たず、銀の壺を指さした。勝ちを確信した弁護士のような手つきだった。
 # speaker: enemy
 「この壺はね、昔の王様が外国へ持っていったのよ。中に何を入れていったと思う？」
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: gt_bg_jaipur_city_palace
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「そう！　ガンジスの水！　王様だって、自分の家の水を持っていったのよ。漬物五キロくらい、何よ」
 - else:
@@ -68,11 +53,9 @@ VAR battle_score = 0
 スシュマは聞こえないふりをして、二人を隣の中庭へ引っぱっていった。四方に、色の違う四つの門が並んでいる。
 # speaker: enemy
 「ほら、この門。何を表してるか、あんたは知ってる？　小さい頃に連れてきたのに、どうせ覚えてないでしょう」
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: gt_bg_jaipur_city_palace
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「四つの季節。春も、夏も、秋も、冬も。……うちの台所には、季節ごとの漬物があったの。あんたが忘れても、瓶は覚えてる」
 - else:
@@ -93,11 +76,9 @@ VAR battle_score = 0
 スシュマが、こちらを見た。勝ち誇った顔ではなかった。息子が、遠くへ行ってしまうことを、今さら思い知った顔だった。
 # speaker: enemy
 「……ねえ、上を見て。この宮殿の奥には、今も住んでる人がいるのよ。出ていかずに。知ってた？」
--> END
-
-=== conclusion ===
+-> quiz(3) ->
 # background: gt_bg_jaipur_city_palace
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「はい。宮殿の一部は、今も王家の方の住まいなんですよね」
 - else:

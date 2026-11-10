@@ -56,6 +56,7 @@ import {
 } from "../src/content/schemas";
 import type { TagContext } from "../src/content/tags";
 import {
+  checkHelperKnot,
   reasoningScenes,
   validateBattleEvidence,
   validateBattleStory,
@@ -72,7 +73,7 @@ import { journeyCatalogSchema } from "../src/content/journey-catalog";
 import { validateJourney } from "./journey-validation";
 import { validateEpilogue } from "./epilogue-validation";
 import { isPlaceStory, splitStoryAddress, storyFileOf } from "../src/content/story-address";
-import { readFileChoices, readMainFileHead, readPlaceFile, choiceOption, parseDone, parseThen, type PlaceFile } from "./place-files";
+import { includesModules, readFileChoices, readMainFileHead, readPlaceFile, choiceOption, parseDone, parseThen, type PlaceFile } from "./place-files";
 import { MODULES_FILE, MODULES_INK } from "./modules-ink";
 import { walkScene } from "./scene-walk";
 import { catalogScenes, checkRuleIds, checkSceneReferences, insertedSceneEncounter, mainFileSceneId, mergeCatalogChoiceTags, placeScenes, sceneConditionsOf, sceneTagRules, thenLoopErrors, thenLoopWarnings, momentText, momentWarnings, type MainAddresses, type ThenLoopContext } from "./scene-table";
@@ -560,8 +561,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     if (mainHead && (mainHead.onDone.length || mainHead.then !== undefined)) mainFileHeads.set(id, mainHead);
     const source = place ? place.source : mainHead ? mainHead.source
       : encounterHeads.has(id) ? withContext(file, () => readEncounterHead(authored).source) : authored;
+    // A place file, or a one-scene file that includes the game's modules.ink (a battle in the one-flow form, stage 5).
+    const modules = !!place || includesModules(source);
     storyMemoryReferences[id] = withContext(file, () => validateMemoryReferences(source, Object.keys(presentation.memories)));
-    storyConditionTexts[id] = withContext(file, () => readSceneConditions(source, !!place));
+    storyConditionTexts[id] = withContext(file, () => readSceneConditions(source, modules));
     const itemReferences = withContext(file, () => validateItemReferences(source, encounterCatalog.items.map((item) => item.id)));
     if (itemReferences.length && !encounterStoryIds.includes(id))
       throw new Error(`Item references are only supported in encounters: ${id}`);
@@ -574,7 +577,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
           throw new Error(`Encounter story item city mismatch: ${id}/${itemId}`);
       }
     }
-    const compiled = place ? compileInk(source, file, { [MODULES_FILE]: MODULES_INK }) : compileInk(source, file);
+    const compiled = modules ? compileInk(source, file, { [MODULES_FILE]: MODULES_INK }) : compileInk(source, file);
     stories[id] = compiled;
     storySources[id] = source;
   }
@@ -638,7 +641,9 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   for (const main of mains) {
     if (splitStoryAddress(main.address).path !== undefined || !stories[main.address]) continue;
     const head = mainFileHeads.get(main.address);
-    const choices = main.kind === "guide" || main.kind === "arrival" || main.kind === "epilogue"
+    // A battle in the one-flow form (stage 5) may have its conversation's choices too (A15 lifted).
+    const flowBattle = main.kind === "battle" && battles.some((battle) => battle.storyId === main.address && !battle.scenes);
+    const choices = main.kind === "guide" || main.kind === "arrival" || main.kind === "epilogue" || flowBattle
       ? withContext(storyLabel(main.address), () => readFileChoices(main.address, storySources[main.address])) : [];
     if (choices.length) fileChoiceStories.add(main.address);
     const options = choices.flatMap((choice) => {
@@ -694,8 +699,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     withContext(label, () => checkSceneReferences(scene, sceneRefs));
     if (scene.main && scene.options.some((option) => option.later))
       throw new Error(`A main part takes no # later (「また今度」; its end is the game's record, A13): ${label}`);
-    if (scene.kind === "battle" && scene.options.length)
-      throw new Error(`A battle takes no choices before stage 5 (A15): ${label}`);
+    const sceneBattle = scene.main && "battle" in scene.main ? battles.find((battle) => battle.id === (scene.main as { battle: string }).battle) : undefined;
+    if (scene.kind === "battle" && scene.options.length && sceneBattle?.scenes)
+      throw new Error(`A battle in the scene form (scenes in battles/catalog.json) takes no choices (A15): ${label}; ` +
+        `write it in the one-flow form (stage 5: no scenes, -> quiz(n) -> in its Ink) to give its conversation choices`);
     if (scene.origin === "place" && scene.options.some((option) => option.effect))
       throw new Error(`A place file's date writes its choices with # profile: (and # memory:, # rel:) instead of # effect: (A14): ${label}`);
     // B4: a production journey's conversation or encounter says where its facts come from, or that it states none.
@@ -872,6 +879,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   // Guides with choices (one-scene files) are walked as scenes even without tags.
   for (const storyId of fileChoiceStories) {
     const main = mains.find((item) => item.address === storyId)!;
+    // A battle in the one-flow form (its choices, plain or tagged): the battle walk below walks it with its calls answered.
+    if (main.kind === "battle") continue;
     if (taggedScenes.some((scene) => scene.story.storyId === storyId && !scene.story.knot)) continue;
     if (main.kind === "guide") walkedGuides.add(storyId);
     const contexts = main.kind === "guide" ? [{ romance_stage: 1, ending_reached: false }]
@@ -1136,13 +1145,41 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       quiz.scope
     )
       throw new Error(`Battle landmark mismatch: ${battle.id}`);
-    if (battle.scenes.afterRounds.length !== quiz.questions.length - 1)
+    if (battle.scenes && battle.scenes.afterRounds.length !== quiz.questions.length - 1)
       throw new Error(`Battle intermediate scene count mismatch: ${battle.id}`);
     const battleAddress = splitStoryAddress(battle.storyId);
     if (!stories[battleAddress.storyId] || (battleAddress.path !== undefined && !placeEntries.some((scene) => scene.main && "battle" in scene.main && scene.main.battle === battle.id)))
       throw new Error(`Unknown battle storyId: ${battle.storyId}`);
     if (!presentation.backgrounds[battle.backgroundId])
       throw new Error(`Unknown battle background: ${battle.backgroundId}`);
+    if (!battle.scenes) {
+      // The one-flow form (stage 5): the battle's Ink runs from its start and calls -> quiz(n) -> and -> reasoning -> (modules.ink).
+      const label = `${storyLabel(battleAddress.storyId)}${battleAddress.path ? ` (${battleAddress.path})` : ""} (battle ${battle.id})`;
+      if (battleAddress.path === undefined && !includesModules(storySources[battle.storyId]))
+        throw new Error(`A battle in the one-flow form (no scenes in battles/catalog.json) calls the game's -> quiz(n) -> and -> reasoning ->: ` +
+          `${label} starts with INCLUDE modules.ink in place of its VAR lines (or is a knot of a place file)`);
+      const knotName = battleAddress.path ?? battleAddress.storyId.split("/").at(-1)!;
+      const named = (JSON.parse(stories[battleAddress.storyId]) as { root: unknown[] }).root.at(-1) as Record<string, unknown>;
+      if (battle.reasoning && !Object.hasOwn(named, `${knotName}_claim`))
+        throw new Error(`The claim of the special battle ${battle.id} is the helper knot ${knotName}_claim (=== ${knotName}_claim === … ->->), ` +
+          `which the flow calls before -> reasoning -> and the clue book reads on its own: ${label} has none`);
+      // The clue book reads the claim (and the press) on their own, as the game does: a choice they reach (their own, or one in a
+      // knot they call, a quiz's or the reasoning's call included) has no one to choose it, and an error stops the battle's screen.
+      for (const helper of battle.reasoning ? [`${knotName}_claim`, `${knotName}_press`] : [])
+        if (Object.hasOwn(named, helper))
+          withContext(label, () => checkHelperKnot(stories[battleAddress.storyId], helper, storyConditionTexts[battleAddress.storyId] ?? [],
+            { memoryIds: Object.keys(presentation.memories), itemIds: encounterCatalog.items.map((item) => item.id) }));
+      const scene = taggedScenes.find((item) => item.main && "battle" in item.main && item.main.battle === battle.id);
+      battleScenarios += withContext(label, () => walkScene({
+        compiled: stories[battleAddress.storyId], ...(battleAddress.path ? { start: battleAddress.path } : {}), label, context,
+        conds: scene?.conds ?? storyConditionTexts[battleAddress.storyId] ?? [], options: scene?.options ?? [], headThen: !!scene?.then, done: scene?.done,
+        itemIds: encounterCatalog.items.map((item) => item.id), memoryIds: Object.keys(presentation.memories), observe: observeForStory(battleAddress.storyId),
+        variables: { call_arg: 0, quiz_correct: false, answer_correct: false, battle_score: 0, reasoning_action: "", evidence_result: "" },
+        battle: { quizzes: quiz.questions.length, ...(battle.reasoning ? { reasoning: { kind: battle.reasoning.kind, roundIndex: battle.reasoning.roundIndex } } : {}) },
+        onWarning: sceneWarn,
+      }));
+      continue;
+    }
     unique(
       [
         battle.scenes.intro,
@@ -1163,6 +1200,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   for (const { battleId, storyId } of reasoningIntros.entries) {
     const battle = battles.find((item) => item.id === battleId);
     if (!battle?.reasoning) throw new Error(`Unknown special battle introduction: ${battleId}`);
+    // Decision 1 (stage 5): a flow battle's rebuttal is lines of its flow (saved as they are read), not a separate story.
+    if (!battle.scenes)
+      throw new Error(`The special battle ${battleId} is in the one-flow form: its rebuttal is written in its flow (after the claim, before -> reasoning ->); ` +
+        `remove its entry from presentation/reasoning-intros.json (and the story ${storyId})`);
     if (!stories[storyId]) throw new Error(`Unknown reasoning introduction story: ${battleId}/${storyId}`);
     withContext(`${storyLabel(storyId)} (reasoning introduction ${battleId})`, () => {
       validateReasoningIntroduction(stories[storyId], context, observeForStory(storyId));

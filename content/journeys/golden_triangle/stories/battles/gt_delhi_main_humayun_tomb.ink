@@ -1,17 +1,4 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
+INCLUDE modules.ink
 # background: gt_bg_delhi_humayun_tomb
 # speaker: narrator
 水路沿いの木陰で、{heroine_name}が廟のドームを見上げていたとき、誰かに腕をつかまれた。
@@ -45,11 +32,9 @@ VAR battle_score = 0
 スレーシュはこちらに鼻を向け、本当に匂いをかぐ仕草をした。それから新聞を丸め、指揮棒のように振る。
 # speaker: enemy
 「案内してもらったんなら、答えられるな？　ここに眠る皇帝は、どうやって死んだ」
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: gt_bg_delhi_humayun_tomb
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「……図書室の階段。ほう。ちゃんと聞いていたようだな」
     # speaker: narrator
@@ -74,11 +59,9 @@ VAR battle_score = 0
 新聞の先が、正門の方を指した。カビールが答えかけ、叔父の一睨みで口を閉じる。
 # speaker: enemy
 「お前には聞いていない。お客さんに聞いている」
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: gt_bg_delhi_humayun_tomb
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「イーサー・ハーン。正解だ。……フマユーンの廟の入口で、別の王に仕えた男の墓が出迎える。面白いだろう」
     # speaker: narrator
@@ -103,11 +86,9 @@ VAR battle_score = 0
 咳払いを一つ。声が、少しだけ大きくなった。
 # speaker: enemy
 「最後の項目だ。千八百五十七年の九月、この廟で何があった」
--> END
-
-=== conclusion ===
+-> quiz(3) ->
 # background: gt_bg_delhi_humayun_tomb
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「最後の皇帝が、先祖の墓に逃げ込んで、ここで捕まった。……合格だ。申告に誤りなし」
 - else:

@@ -1,17 +1,4 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
+INCLUDE modules.ink
 # background: gt_bg_jaipur_hawa_mahal
 # speaker: narrator
 ハワー・マハルの正面は、通りに向かって無数の小窓を広げていた。{heroine_name}が見上げて立ち止まると、足もとから声が飛んだ。
@@ -45,11 +32,9 @@ VAR battle_score = 0
 「……はい。ちゃんと見てきます」
 # speaker: enemy
 「ついでに、あの屋根の形。ガイドが毎日、何かにたとえてるのよ。四十年聞いてるのに、いつも途中で客が来て聞きそびれる」
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: gt_bg_jaipur_hawa_mahal
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「クリシュナ様の冠！　それそれ。四十年かかって、やっと最後まで聞けた」
 - else:
@@ -65,11 +50,9 @@ VAR battle_score = 0
 # speaker: heroine
 # reaction: heroine,surprised,question
 「あれ……どうやって上がるの？」
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: gt_bg_jaipur_hawa_mahal
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「坂道だ。階段じゃなくて、ゆるい坂でぐるぐる上がっていくんだ」
 - else:
@@ -87,11 +70,9 @@ VAR battle_score = 0
 「……ここにいた人たちも、毎日こうやって見てたんだ。下の人は、上に誰がいるか知らないまま」
 # speaker: narrator
 窓の数を数えようとして、{heroine_name}はすぐに諦めた。中からでは、とても数えきれない。ガウラは四十年、外から数え続けてきたのだ。
--> END
-
-=== conclusion ===
+-> quiz(3) ->
 # background: gt_bg_jaipur_hawa_mahal
-{ answer_correct:
+{ quiz_correct:
     # speaker: heroine
     「九百五十三、なんだって。ガウラさんの九百五十一、ほとんど合ってます」
 - else:

@@ -104,7 +104,7 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 1. 事実・解釈・伝説を区別し、各項目の出典と日付を記録します。写真の作者、ライセンス、加工内容と利用条件も確認します。
 2. 見本の `tourism/catalog.json` を見ながら、画像を `assets`、場所を `landmarks`、その発見を `clues` に登録します。画像は旅行編の `content/journeys/<旅行編ID>/public/` 以下に配置し、`path` に `public/` を除いたパス（配信時のパス）を書きます。
 3. 3問のクイズ（見本の `quizzes/smp_mihon_main_clock_tower_quiz.json`）と、要る場所なら観光案内（`stories/tourism/smp_mihon_market_guide.ink`。場所のファイルなら knot）を作り、対応するIDをそろえます。
-4. 見本の `battles/catalog.json` の通常戦と `stories/battles/smp_mihon_special_b_market.ink`（場所のファイルの stitch の形は `stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_main_clock_tower`）を参考に、敵・会話と問題を結びます。演出背景は `<旅行編>/romance/presentation.json` に登録します。
+4. 見本の `battles/catalog.json` の通常戦と `stories/battles/smp_mihon_special_b_market.ink`（場所のファイルの knot の形は `stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_main_clock_tower`）を参考に、敵・会話と問題を結びます（下の「対決の会話を1本の流れで書く」）。演出背景は `<旅行編>/romance/presentation.json` に登録します。
 5. 順路・報酬を `<旅行編>/progression/journey.json` の既存配列に追加し、参照関係を確認します。新都市の追加には後述の現行制約があります。
 6. 後述の検証と編集者レビューを済ませてからGitで採用します。
 
@@ -131,9 +131,47 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 
 ### 敵・バトルの項目
 
-`battle_*.json` の `id`、`titleJa`、`descriptionJa`、`enemyNameJa`、`enemyTitleJa`、`enemyDescriptionJa` は対決と人物の識別・表示。`landmarkId`、`storyId`、`quizId`、`backgroundId` は観光地・Ink・問題セット・登録済み背景への参照です。`scenes.intro`、`afterRounds`、`outro` はInkの `battle_scene` に渡される場面名で、通常戦は中間2つ。`format` はAでは省略可能、B/Cは明示。任意の `portrait` は既存で定義済みの表示種別に限られます。新規の立ち絵種類には実装作業が別途必要です。
+`battle_*.json` の `id`、`titleJa`、`descriptionJa`、`enemyNameJa`、`enemyTitleJa`、`enemyDescriptionJa` は対決と人物の識別・表示。`landmarkId`、`storyId`、`quizId`、`backgroundId` は観光地・Ink・問題セット・登録済み背景への参照です。新しく書く対決は1本の流れ（下）にし、`scenes` を書きません。`scenes.intro`、`afterRounds`、`outro` は場面の形（ミラノ編の今の対決）だけの項目で、Inkの `battle_scene` に渡される場面名です（通常戦は中間2つ）。`format` はAでは省略可能、B/Cは明示。任意の `portrait` は既存で定義済みの表示種別に限られます。新規の立ち絵種類には実装作業が別途必要です。
 
-B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）、0から数える `roundIndex`、候補 `caseClueIds`、正解 `correctClueIds`、主張・成功・失敗の `claimScene` / `successScene` / `failureScene` を記入します。Bは `pressScene` も指定し、正解証拠は1つ。Cは異なる2つを順不同で組み合わせます。証拠は未発見でもケース資料として開けるよう候補に含めます。英語3択の正解はクイズ側で別に指定します。
+B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）、0から数える `roundIndex`（何問目の前で資料を選ぶか）、候補 `caseClueIds`、正解 `correctClueIds` を記入します。正解証拠はBが1つ、Cは異なる2つを順不同で組み合わせます。証拠は未発見でもケース資料として開けるよう候補に含めます。英語3択の正解はクイズ側で別に指定します。場面の形の対決だけは、主張・成功・失敗の `claimScene` / `successScene` / `failureScene`（Bは `pressScene` も）を書きます。
+
+### 対決の会話を1本の流れで書く（段階5）
+
+対決の会話は、上から下へ1本に流れるInkに書きます。見本の編の4本（`stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_main_clock_tower`、`stories/battles/smp_mihon_special_b_market.ink`・`smp_mihon_special_c_library.ink`・`smp_mihon_finale.ink`）が手本です。
+
+- 置き場所は、その場所の場所のファイルの knot（頭の札は `# scene: battle`）か、1場面1ファイル（`stories/battles/<頭>_…`）です。1場面1ファイルは、1行目を `INCLUDE modules.ink` にし、`VAR` を書きません（ゲームが用意する呼び口と変数。Inkyで見るときは、場所のファイルと同じく `src/story/modules.ink` の写しを隣に置く）。
+- `-> quiz(1) ->` と書いた所で、ゲームがクイズの画面（ヒント・答え・正誤と解説）を出します。正誤の画面から進むと、`quiz_correct`（その問いの正誤）と `battle_score`（そこまでの正解数）が入って続きます。クイズは第1問から順に、どの道でも1回ずつ呼びます（通常戦は3問、都市フィナーレは5問。順が違う・足りない道は `content:build` が止めます）。最後の `-> END` の後に結果の画面が出ます。
+- 呼び口の後の最初の行は、場面の始まりと同じく、話し手と背景（`# speaker:`・`# background:`）を書き直します（書かないと地の文になります）。
+- 特殊戦B・Cでは、`-> reasoning ->` が資料を選ぶ画面です。`reasoning.roundIndex` のとおり、`-> quiz(<roundIndex>) ->` の後・次のクイズの前に置きます（`roundIndex: 1` なら第1問の後）。
+  - 主張は手伝いの knot `<バトル>_claim` に書き（`=== smp_mihon_special_b_market_claim ===` … `->->`）、止まる所の前に `-> <バトル>_claim ->` で流します。手がかり帳の「主張」は、ゲームがこの knot の相手の台詞を読んで出します。`<バトル>` は、場所のファイルなら対決の knot の名前、1場面1ファイルならファイルの名前です。ゲームは手がかり帳のためにこの knot（と下の `<バトル>_press`）だけを読むので、その中（そこから呼ぶ knot の中も）には選択肢もクイズ・推理の呼び口も書けません（届くと `content:build` が knot の名前を出して止めます）。主張の文の名前（`{player_name}` など）は、流れと同じく設定した名前で出ます。
+  - 主張の後に、反論の前置き（ヒロインの「待って」など）をそのまま続けて書けます。ほかの台詞と同じく1行ごとに保存されます（場面の形では `presentation/reasoning-intros.json` の別の話でした）。
+  - 止まる所は `- (stop)` の次の行に `-> reasoning ->` と書きます。戻ると `reasoning_action` が `"press"`（Bの追及）か `"evidence"`（資料）で、資料なら `evidence_result` が `"success"` か `"failure"` です。追及や違う資料の文の後に `-> stop` と書くと、止まる所へ戻って選び直せます。書かなければ次の問いへ進みます（どちらにするかは作者が決めます。見本は戻る形）。正しい資料の後は `-> stop` を書かずに進みます（戻ってばかりで終わりに届かない流れは `content:build` が止めます）。資料は得点を変えません。
+  - 追及の文を手伝いの knot `<バトル>_press` に書いて `-> <バトル>_press ->` で流すと、手がかり帳の「追及で聞いたこと」にもその文が出ます。追及の文を流れの中（`{ reasoning_action == "press": … }` の中）にそのまま書いても遊べますが、そのときは「追及で聞いたこと」に出ません。
+  - 画面は場面の形と同じに見えます：主張の前の場面の最後の行と、反論の前の主張の最後の行に「次へ進む」が出て（自動送りもそこで止まる）、主張と反論の間、手がかり帳の問題は資料で答える問題を出し、反論の行の間は手がかり帳の札と「回答した問題を振り返る」を出しません（ゲームが、行が主張の knot から来たかを見て決める）。
+
+```ink
+-> quiz(1) ->
+# speaker: enemy
+{ quiz_correct: 「……そう、三時はただの時刻じゃない」|「三時は三時よ」 }
+-> smp_mihon_special_b_market_claim ->
+- (stop)
+-> reasoning ->
+{ reasoning_action == "press":
+    -> smp_mihon_special_b_market_press ->
+    -> stop
+}
+{ evidence_result == "failure":
+    # speaker: enemy
+    「それは今年の帳面よ。昔の話をしているの」
+    -> stop
+}
+# speaker: enemy
+「三時の欄……。昔の人も、好きな時間に買いに来てたのね」
+-> quiz(2) ->
+```
+
+- 会話の中に日本語の選択肢を書けます（`* [「…」 # option: <ID>]` と、そのすぐ次の行の札。書き方は道中交流・会話と同じ「選択肢の札」）。札（関係値・お金・AP・フラグ・品物・噛み合いの `# profile:` など）は、その対決を初めて遊ぶときだけ、1回の対決の中で選択肢ごとに1回だけ当たります（同じ止まる所へ戻ってもう一度選んでも、遊び直しても当たりません）。`# later` は書けません。どの選択の場にも、何も要らない選択肢か、頭の札などで保証された選択肢を1つは置きます（`content:build` が確かめます）。
+- 今の場面の形の対決（ミラノ編）は、そのまま動きます（見本の編とインド編の対決は、この道具で1本の流れに変えました）。1本の流れへは `npm run battle:flow -- --journey <旅行編ID> [--battle <対決ID>]` で、台詞を変えずに形だけを変えられます（`--write` なしは、すべての正誤・追及・外れた資料の組み合わせで出る行が同じかを比べるだけ。`--write` で、同じときだけ書き込み、カタログの `scenes` を消し、反論の話を流れへ移します）。
 
 ## 恋愛とInk
 
@@ -160,7 +198,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 
 `effect_catalog.json` の各 `id` と任意の `memoryId` はInkの `# effect:` に対応します。新しい台本では、選択肢の札（`# profile:`・`# memory:`・`# rel:`）で同じことを直接書けます（ビルドが選択肢ごとの表にします。改稿前のミラノ編は `# effect:` のまま。インド編のデートは場所のファイル `stories/places/` の札で書いています。例：`places/gt_delhi_lodhi_garden.ink`）。告白を除く恋愛選択には `responseProfileId` を指定し、`content/romance/response_profiles.json` のリスク特性から選びます。`responseProfileId` を指定した選択の関係値は確率判定で決まり、固定の `affectionDelta`・`trustDelta`・`sparkDelta` は使われません。`affectionDelta` は `0` とし、`trustDelta`・`sparkDelta` は書きません。台詞と選択の性格に合うプロフィールを選び、全段階をレビューしてください。思い出は `presentation.json` の `memories` に同じIDと `titleJa` / `descriptionJa` を登録します。Stage・告白条件は `progression.json` で管理し、特定デートIDを条件にしません。
 
-Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受け取ります。`# speaker: narrator` / `heroine` / `player` / `enemy`、`# background: 登録済みID`、`# emotion: 登録済みID` を使い、本文はふつう日本語で書きます（英語の台詞や選択肢も書けます。ビルドは止めません）。デートの `* [選択肢]` と各分岐直後の札（`# option:` と `# profile:`）、`->` の合流例は見本の場所のファイル `stories/places/smp_mihon_clock_tower.ink` のデート `smp_mihon_date_tower_square` を参照（今の1場面1ファイルのデートは、各分岐直後に `# effect: 登録済みID`）。通常デートは3択を2回、各選択直後・最初の発話の前に対応する `# effect:` を1つ置きます。Inkで `romance_result` と `affection_delta`・`trust_delta`・`spark_delta` を宣言し、`romance_result` の positive と negative それぞれで異なる人物らしい反応を書きます。確率計算と乱数はInkに書きません。告白は確定的な別契約です（場所のファイルの告白は `# profile:` も結果の `# effect:` も書かず、始めたときにゲームが関係状態から決めた `confession_result` で返事を分けます。デートの knot の中の選択の回数が `choiceCount` です。例：インド編の `places/gt_delhi_hotel_hub_dates.ink`）。案内とバトルには恋愛effectを置きません。バトルInkは `battle_scene`、`answer_correct`、`battle_score` で分岐し、各場面を `-> END` で閉じます。場所のファイル（`stories/places/`）では、変数はゲームが用意する `modules.ink` が宣言するので、`VAR` を書きません。案内にも選択肢と効果の札を書けます（読み直しでは当てない）。場所のファイルのバトルは、場面ごとの stitch（`intro`・`after_1` など）で書きます。1場面1ファイルの今の形は、そのまま動きます。特殊戦の主張・追及・証拠成功／失敗の例は見本の `stories/battles/smp_mihon_special_b_market.ink`（B）と `smp_mihon_special_c_library.ink`（C）にあります。
+Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受け取ります。`# speaker: narrator` / `heroine` / `player` / `enemy`、`# background: 登録済みID`、`# emotion: 登録済みID` を使い、本文はふつう日本語で書きます（英語の台詞や選択肢も書けます。ビルドは止めません）。デートの `* [選択肢]` と各分岐直後の札（`# option:` と `# profile:`）、`->` の合流例は見本の場所のファイル `stories/places/smp_mihon_clock_tower.ink` のデート `smp_mihon_date_tower_square` を参照（今の1場面1ファイルのデートは、各分岐直後に `# effect: 登録済みID`）。通常デートは3択を2回、各選択直後・最初の発話の前に対応する `# effect:` を1つ置きます。Inkで `romance_result` と `affection_delta`・`trust_delta`・`spark_delta` を宣言し、`romance_result` の positive と negative それぞれで異なる人物らしい反応を書きます。確率計算と乱数はInkに書きません。告白は確定的な別契約です（場所のファイルの告白は `# profile:` も結果の `# effect:` も書かず、始めたときにゲームが関係状態から決めた `confession_result` で返事を分けます。デートの knot の中の選択の回数が `choiceCount` です。例：インド編の `places/gt_delhi_hotel_hub_dates.ink`）。案内とバトルには恋愛effectを置きません。バトルの会話は1本の流れで書きます（[対決の会話を1本の流れで書く](#対決の会話を1本の流れで書く段階5)。`-> quiz(n) ->` でクイズを呼び、戻ると `quiz_correct`・`battle_score` で分岐する）。場所のファイル（`stories/places/`）では、変数はゲームが用意する `modules.ink` が宣言するので、`VAR` を書きません（1場面1ファイルのバトルも、1行目を `INCLUDE modules.ink` にして `VAR` を書かない）。案内にも選択肢と効果の札を書けます（読み直しでは当てない）。特殊戦の主張（`<バトル>_claim`）・追及（`<バトル>_press`）・証拠成功／失敗（`evidence_result` の分かれ道）の例は見本の `stories/battles/smp_mihon_special_b_market.ink`（B）と `smp_mihon_special_c_library.ink`（C）にあります。ミラノ編の今の対決だけは、シナリオ改稿まで場面の形のままです：カタログの `scenes` の場面名を `battle_scene` で受けて分かれ（場所のファイルなら場面ごとの stitch）、`answer_correct`・`battle_score` で分岐し、各場面を `-> END` で閉じます。新しい対決はこの形で書きません。
 
 会話中の無言リアクションは、通常はInkの `# reaction:` で指定します。既存の `content/journeys/milano/presentation/dialogue-reactions.json` は、公開済みの脚本を変えずに演出を付けた旧指定として維持します。外部指定では固定台詞の完全一致が必要で、変数を含む行には指定できません。脚本を更新した場合、参照先の消えた旧指定は検証時に警告されます。
 

@@ -144,12 +144,8 @@
                 "required": [
                   "roundIndex",
                   "caseClueIds",
-                  "claimScene",
-                  "successScene",
-                  "failureScene",
                   "kind",
-                  "correctClueIds",
-                  "pressScene"
+                  "correctClueIds"
                 ],
                 "additionalProperties": false
               },
@@ -199,9 +195,6 @@
                 "required": [
                   "roundIndex",
                   "caseClueIds",
-                  "claimScene",
-                  "successScene",
-                  "failureScene",
                   "kind",
                   "correctClueIds"
                 ],
@@ -248,8 +241,7 @@
           "enemyDescriptionJa",
           "storyId",
           "quizId",
-          "backgroundId",
-          "scenes"
+          "backgroundId"
         ],
         "additionalProperties": false
       }

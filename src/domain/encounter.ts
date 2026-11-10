@@ -558,8 +558,14 @@ function validateItemUses(state: GameState): void {
       if (use.optionId === undefined) return status === "used" && !!tagged.done.use?.includes(id);
       const option = sceneOption(tagged, use.optionId);
       const running = state.activeEncounter?.encounterId === tagged.id && !!state.activeEncounter.chosen?.some((item) => item.optionId === option?.id);
-      return !!option && (status === "gifted" ? option.give?.item : option.use) === id &&
-        (!placeSceneById(tagged.id) || tagged.kind === "date" || tagged.kind === "guide" || state.completedEncounterIds.includes(tagged.id) || state.seenEncounterIds.includes(tagged.id) || running);
+      // A battle's conversation choice (stage 5; a place file's battle knot or a one-scene battle file): applied by its run
+      // (still going), or on its first play (its result recorded). Only that, whatever file the battle is written in.
+      const battleId = tagged.kind === "battle" && tagged.main && "battle" in tagged.main ? tagged.main.battle : undefined;
+      const byBattle = !!battleId && (state.battleRecords.some((record) => record.battleId === battleId) ||
+        (state.activeBattle?.battleId === battleId && !!option && state.activeBattle.appliedOptionIds.includes(option.id)));
+      return !!option && (status === "gifted" ? option.give?.item : option.use) === id && (battleId ? byBattle :
+        !placeSceneById(tagged.id) || tagged.kind === "date" || tagged.kind === "guide" || state.completedEncounterIds.includes(tagged.id) ||
+          state.seenEncounterIds.includes(tagged.id) || running);
     }
     if (!use?.optionId) return false;
     const event = use && findEncounter(use.encounterId);
