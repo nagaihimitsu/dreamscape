@@ -236,7 +236,16 @@ describe("check 9 and items carried through the journey (the item design §2.5 7
     expect(kinds(carried(held))).not.toContain("earlier-item-start");
     const fromDate = carried(held, { sceneItems: [scene("old_photo", "old", ["memo"], { at: [{ date: "old_dt" }] })] });
     expect(progressionWarnings(fromDate).find((item) => item.kind === "earlier-item-start")?.message)
-      .toMatch(/^City town needs an item from an earlier city that only an optional date, inserted scene or encounter there gives: its finale fin .*only with memo; .*main path only/);
+      .toMatch(/^City town needs an item from an earlier city that only an optional date, inserted scene, guide or encounter there gives: its finale fin .*only with memo; .*main path only/);
+    // A guide's item: a start at town skips the guides (cityStart reads no guide), so it counts as outside the main path.
+    const base = town({ when: held });
+    const oldGuide = (sceneItems: Scene[]) => carried(held, {
+      sceneItems, episodes: [...base.episodes, { id: "ep_old", kind: "episode", cityId: "old", landmarkId: "lm_old", battleId: "bt_old", requiredEpisodeIds: [] }],
+      battles: [...base.battles, { id: "bt_old", landmarkId: "lm_old" }], landmarks: [...base.landmarks, { id: "lm_old", cityId: "old", guideStoryId: "tourism/old" }],
+    });
+    expect(progressionErrors(oldGuide([scene("old_guide", "old", ["memo"], { main: { guide: "lm_old" } })]))).toEqual([]);
+    expect(kinds(oldGuide([scene("old_guide", "old", ["memo"], { main: { guide: "lm_old" } })]))).toContain("earlier-item-start");
+    expect(kinds(oldGuide([scene("old_battle", "old", ["memo"], { main: { battle: "bt_old" } })]))).not.toContain("earlier-item-start");
     // The history of an earlier city's ordinary item that no main scene gives.
     expect(kinds(carried({ item: { id: "letter", is: "gifted" } }))).toContain("earlier-item-start");
     expect(kinds(carried({ any: [held, { battlesPlayed: { city: "town", atLeast: 2 } }] }, { sceneItems: [scene("old_photo", "old", ["memo"], { at: [{ date: "old_dt" }] })] })))
