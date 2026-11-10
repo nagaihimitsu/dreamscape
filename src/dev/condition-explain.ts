@@ -66,17 +66,21 @@ function line(node: ExplainedNode): string {
 }
 
 /**
- * The items of other cities whose parts keep the condition false now (outside `not`), e.g. a scene of Agra that needs
- * Delhi's memo held: Debug starts a city without the earlier cities' items, and 「場面から始める」 plays only the city's own
- * scenes (the item design §2.7).
+ * The items of other cities whose parts keep the condition false now (outside `not`), with the status the part asks for,
+ * e.g. a scene of Agra that needs Delhi's family photo held. Debug starts a later city after playing the earlier ones
+ * along their main path (arrival, battles, finale, epilogue: cityStart), so it holds what their main scenes give but may
+ * lack an item only an optional date, inserted scene or encounter gives, or a record of a choice that gave or used one;
+ * and 「場面から始める」 plays only the city's own scenes (the item design §2.7).
  */
-export function otherCityItemsMissing(state: Readonly<GameState>, condition: Condition): { itemId: string; cityId: string; cityNameJa: string }[] {
-  const missing = new Map<string, { itemId: string; cityId: string; cityNameJa: string }>();
+export function otherCityItemsMissing(state: Readonly<GameState>, condition: Condition): MissingItem[] {
+  const missing = new Map<string, MissingItem>();
   const walk = (node: Condition) => {
     if (meets(state, node)) return;
     if (isLeaf(node)) {
       const item = "item" in node ? encounters.items.find((entry) => entry.id === node.item.id) : undefined;
-      if (item && item.cityId !== state.currentCityId) missing.set(item.id, { itemId: item.id, cityId: item.cityId, cityNameJa: cityName(item.cityId) });
+      if (item && "item" in node && item.cityId !== state.currentCityId)
+        missing.set(`${item.id} ${node.item.is}`, { itemId: item.id, cityId: item.cityId, cityNameJa: cityName(item.cityId),
+          statusJa: ITEM_STATUS_LABELS[node.item.is] });
       return;
     }
     if ("all" in node) node.all.forEach(walk);
@@ -86,6 +90,9 @@ export function otherCityItemsMissing(state: Readonly<GameState>, condition: Con
   walk(condition);
   return [...missing.values()];
 }
+
+/** An item of another city a condition asks for, with the status in Japanese (e.g. 「を持っている」). */
+export type MissingItem = { itemId: string; cityId: string; cityNameJa: string; statusJa: string };
 
 /** What keeps the condition from being true now (empty when it is true). */
 export function unmetConditionLabels(state: Readonly<GameState>, condition: Condition): string[] {

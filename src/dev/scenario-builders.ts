@@ -472,7 +472,9 @@ export function startOccasionScene(state: GameState, landmarkId: string, from: s
       const givers = encounters.encounters.filter((item) => item.cityId === next.currentCityId && rule && JSON.stringify(rule).includes(`"${item.completionItemId}"`))
         .map((item) => item.id);
       throw new Error(`場面 ${from} はこの時点で始まりませんでした。${unmet.length ? `偽の部品：${unmet.join("、")}。` : ""}` +
-        `${earlier.map((item) => `${item.cityNameJa}の品物 ${item.itemId} が要ります（Debug は前の都市の品物を持たずに始まり、prep= は同じ都市の場面だけを流します）。`).join("")}` +
+        `${earlier.length ? `${earlier.map((item) => `${item.cityNameJa}の品物 ${item.itemId} ${item.statusJa}こと`).join("、")}が要ります` +
+          "（Debug は前の都市を本筋（到着・バトル・フィナーレ・エピローグ）に沿って遊んでから始まるので、デート・差し込み・道中交流でしかもらえない品物や、" +
+          "選択肢で渡した・使った記録はないことがあります。prep= は同じ都市の場面だけを流します）。" : ""}` +
         `${givers.length ? `品物をくれる場面：${givers.join("、")}（prep= で先に流せます）。` : ""}`);
     }
     next = playOccasionStep(next, ticket);
