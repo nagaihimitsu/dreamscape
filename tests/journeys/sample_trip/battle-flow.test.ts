@@ -293,6 +293,14 @@ describe("a battle's conversation choices (stage 5, decision 10)", () => {
     // A run records each applied choice once, among its choices (turns), and a replay records none before its result.
     const forged = /保存された選択の記録が一致しません/u;
     expect(() => restore({ ...gave, activeBattle: { ...gave.activeBattle!, appliedOptionIds: ["give_bookmark_market", "bread_first"] } })).toThrow(forged);
+    // Another battle's result is not this battle's: a first play after the tower's result still applies and loads, and a gift
+    // the market never gave is still refused.
+    const towerDone = leaveBattle(played, played.revision);
+    expect(() => restore(given(towerDone, MARKET, "give_bookmark_market"))).toThrow(refused);
+    let afterTower = openBattleScene(towerDone, MARKET);
+    while (battleDialogueStop(afterTower.activeBattle!) !== "choices") afterTower = act(afterTower, (current) => advanceBattle(current, current.revision));
+    const gaveAfterTower = act(afterTower, (current) => chooseBattle(current, give.index, current.revision));
+    expect(gaveAfterTower.activeBattle!.appliedOptionIds).toEqual(["give_bookmark_market"]);
     let replay = startBattle(leaveBattle(played, played.revision), TOWER);
     while (battleDialogueStop(replay.activeBattle!) !== "choices") replay = act(replay, (current) => advanceBattle(current, current.revision));
     replay = act(replay, (current) => chooseBattle(current, legend.index, current.revision));
