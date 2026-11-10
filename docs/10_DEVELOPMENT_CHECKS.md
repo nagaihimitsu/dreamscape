@@ -258,9 +258,10 @@
 | 項目 | 値 | 省略したとき |
 | --- | --- | --- |
 | `city` | 都市ID | 既定の旅行編の最初の都市（ミラノ） |
-| `scene` | `tourism`（観光・場所）、`battle`（バトル。通常戦・特殊戦B/C・都市フィナーレ）、`encounter`（人物との交流）、`date`（デート）、`epilogue`（都市のエピローグ）、`map`（制作中の都市の地図・交通） | 省略できない（`?debug` だけなら場面の確認） |
+| `scene` | `tourism`（観光・場所）、`battle`（バトル。通常戦・特殊戦B/C・都市フィナーレ）、`encounter`（人物との交流）、`date`（デート）、`epilogue`（都市のエピローグ）、`tour`（ツアー。都市の始めに予約した状態。`step` で見学の途中）、`map`（制作中の都市の地図・交通） | 省略できない（`?debug` だけなら場面の確認） |
 | `target` | 対象のID。場面の確認の「対象」の括弧内のID（エピローグは都市フィナーレのエピソードID） | その場面の一覧の最初 |
-| `progress` | `completed`（都市クリア後）、`initial`（旅の開始時） | `completed` |
+| `progress` | `completed`（都市クリア後）、`initial`（旅の開始時） | `completed`（`scene=tour` は `initial`。ツアーは都市クリアの前に予約するので、`completed` は断る） |
+| `step` | `scene=tour` だけ。ツアーの見学の行程のID（例：`visit`）。予約した翌朝からその行程の訪問が開くところまで本物の関数で進める | 予約しただけの状態 |
 | `ap` | 0〜12の整数 | 12 |
 | `affection`・`trust`・`spark` | -20〜20の整数（親しさ・信頼・恋愛の意識） | 0 |
 | `roll` | `positive`（成功寄り、抽選値0）、`negative`（失敗寄り、抽選値9999）。デートと交流の反応に使う | `positive` |
@@ -270,6 +271,7 @@
 - `data=fixture`（仮の場面）は、準備中の旅行編の都市に、実在する1都市を役割ごとに複製した試験データを入れる。元にする都市は `npm run dev` ではミラノ、`npm run dev:sample` では見本の街（データから自動で選ぶ。[docs/02](02_TECH_ARCHITECTURE.md) の「Debugの「仮の場面」」）。元の都市にない場面（例：ミラノ編がない構成での特殊戦B・C、道中交流）は作られず、場面の確認に注記され、場面の一覧では「（この都市にはありません）」と表示される。そのURLは「…には「人物との交流」の場面がありません。」のように表示する。
 - 人物との交流（`scene=encounter`）は、遊びと同じ時点で始める。観察の後の交流は、その観光地の観察を開いて（初めての訪問なら観光案内を飛ばす）始め、終わるとその観察の画面に戻る（同じ観察で出会える交流が続くこともある）。本筋の前・後の交流は、その観光地への出発・バトルの結果から始め、終わると次の画面（案内・観察・自由時間など）へ進む。
 - Debugの場面は、その都市までを、到着・バトル・フィナーレ（エピローグの後に次の都市へ進む旅行編はエピローグも。観光の案内は飛ばす）に沿って本物の関数で遊んだ状態から始まる（`cityStart`）。到着・バトルなどがくれる品物（例：インド編のデリーの到着でもらう「カムラの段ボールのメモ」）は持っているが、デート・差し込み・観光の案内・道中交流でしかもらえない品物は持たないことがある（Debugは場面の前に交流やデートを進めず、前の都市の案内も読まない）。そのため、どの選択肢にも品物が必要な道中交流（例：見本の街の「しおりを渡す」、ミラノの「弦を一本、余らせて」）は、対象の一覧で選べず「（品物「三時のしおり」が必要なため開けません）」のように理由を表示し、そのURLも同じ理由で開かない（`src/dev/debug-state.ts` の `debugTargets`。`debug-state.test.ts` が、一覧で選べる対象はすべて開き、選べない対象はゲームの規則でも始まらないことを確かめる）。「観光地の時点」（`scene=occasion`、場面から始める）の `prep=` は同じ都市の場面だけを流す。`from=` の場面が前の都市の、本筋の外でしかもらえない品物を要るときは、始まらなかった理由に「デリーの品物 gt_delhi_family_photo を持っていることが要ります」（デートの後の差し込みでもらう写真）のように出して止まり、`prep=` にほかの都市の場面を書いたときも、その都市の名前を出して止まる（`tests/journeys/sample_trip/occasion.test.ts`）。
+- ツアー専用の地点（インド編のファテープル・シークリー）の観光・バトル・交流・時点は、場面の確認で「ツアーの場面（scene=tour）から開けます」と灰色になり、URLでも同じ理由で断る。ツアー（`scene=tour`）は都市の始めにその都市のツアーを最初に予約できる販売（宿の窓口が先）で予約した状態を開き、`step=<見学の行程>` ではその翌朝、行程の見学の訪問が開いたところ（初めての訪問なら観光案内）を開く。
 - 誤った項目名・値、データにない都市・対象、その進行では開けない場面（例：旅の開始時のデート、品物が必要な交流）は、理由（`role="alert"`）と場面の確認へのリンク（「場面の確認へ」）を表示する。選んだ進行で交流の入場の条件（`when`）やデートの条件（`when`・`until`）が満たされないときは、その理由に満たしていない部品も並ぶ（例：「入場の条件を満たしていません：エピソード「無人の広場、一名追加」を終えた」。`src/dev/condition-explain.ts`。Debugだけの説明で、ゲームの画面は条件の理由を出さない）。
 - 場面の確認の下の「この場面のURL」欄に、選んでいる設定のURLが出る。「この場面のURLをコピー」で写せる。自動でコピーできない環境（スマートフォンからPCの開発サーバーを `http://<IPアドレス>` で開いた場合など）では、欄のURLが選択されるので長押しなどで写す。場面を開いている間はアドレス欄も同じURLになり、再読み込みするとその場面を最初から開き直す（Debugの進行は残らない）。「場面の選択へ戻る」でアドレス欄は `?debug` に戻る。
 - 開発用の読み取り口：開発サーバーでDebugの画面を開いている間だけ `window.__dreamscapeDebug` があり、`getState()`（Debugのゲームの最後に保存された状態）と `getScene()`（開いた場面の設定・URL・開始地点）を返す。どちらも複製を返し、Debugやゲームを変えられない。場面の確認では `null`。E2EがDebugの状態を確かめるために使う。本番ビルドには入らない（`DebugMode.tsx` が `import.meta.env.DEV` のときだけ付ける）。
@@ -297,6 +299,8 @@
 | 制作中の都市の地図・交通 | `/?debug&city=samarkand&scene=map` |
 | 制作中の都市の地図・交通（借りる乗り物） | `/?debug&city=luang_prabang&scene=map` |
 | 仮の場面（準備中の旅行編の都市） | `/?debug&data=fixture&city=tashkent&scene=battle&target=tashkent_special_b` |
+| アーグラのツアー（予約中） | `/?debug&city=agra&scene=tour&target=gt_agra_tour_fatehpur_sikri` |
+| アーグラのツアー（見学の途中） | `/?debug&city=agra&scene=tour&target=gt_agra_tour_fatehpur_sikri&step=visit` |
 | 見本の編の特殊戦B（`npm run dev:sample`） | `/?debug&city=mihon&scene=battle&target=smp_mihon_special_b_market` |
 | 見本の編の特殊戦C（`npm run dev:sample`） | `/?debug&city=mihon&scene=battle&target=smp_mihon_special_c_library` |
 | 見本の編の道中交流（`npm run dev:sample`） | `/?debug&city=mihon&scene=encounter&target=smp_mihon_bookmark_stall&progress=initial` |
