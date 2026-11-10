@@ -1052,7 +1052,11 @@ function validateFlowBattle(state: GameState, active: ActiveBattle, battle: Batt
   const fail = (message = "バトル会話の位置が一致しません。") => { throw new Error(message); };
   if (active.dialogueScene !== null) fail();
   if (new Set(active.appliedOptionIds).size !== active.appliedOptionIds.length ||
-      active.appliedOptionIds.some((id) => !sceneOption(battleScene(battle), id))) fail("保存された選択の記録が一致しません。");
+      active.appliedOptionIds.some((id) => !sceneOption(battleScene(battle), id)) ||
+      // Each applied choice is one of the run's choices, and a replay (the result recorded before it ends) applies none.
+      active.appliedOptionIds.length > active.turns ||
+      (active.appliedOptionIds.length && active.phase !== "result" && state.battleRecords.some((record) => record.battleId === battle.id)))
+    fail("保存された選択の記録が一致しません。");
   if (active.phase === "result") {
     if (active.storyState !== null || active.frame !== null) fail("不要な会話状態が保存されています。");
     validateFlowProof(active, battle);

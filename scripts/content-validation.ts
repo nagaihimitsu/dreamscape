@@ -1167,7 +1167,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       // knot they call, a quiz's or the reasoning's call included) has no one to choose it, and an error stops the battle's screen.
       for (const helper of battle.reasoning ? [`${knotName}_claim`, `${knotName}_press`] : [])
         if (Object.hasOwn(named, helper))
-          withContext(label, () => checkHelperKnot(stories[battleAddress.storyId], helper, storyConditionTexts[battleAddress.storyId] ?? []));
+          withContext(label, () => checkHelperKnot(stories[battleAddress.storyId], helper, storyConditionTexts[battleAddress.storyId] ?? [],
+            { memoryIds: Object.keys(presentation.memories), itemIds: encounterCatalog.items.map((item) => item.id) }));
       const scene = taggedScenes.find((item) => item.main && "battle" in item.main && item.main.battle === battle.id);
       battleScenarios += withContext(label, () => walkScene({
         compiled: stories[battleAddress.storyId], ...(battleAddress.path ? { start: battleAddress.path } : {}), label, context,

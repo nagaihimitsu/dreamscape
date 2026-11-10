@@ -252,6 +252,56 @@ describe("a battle's conversation choices (stage 5, decision 10)", () => {
     expect(restore(leaveBattle(done, done.revision)).itemUses.smp_mihon_three_bookmark.optionId).toBe("give_bookmark");
   });
 
+  it("refuse a save whose battle choice gave or used an item it did not (a place file's battle knot and a one-scene battle)", () => {
+    const bookmark = "smp_mihon_three_bookmark";
+    const holding = restore({ ...cityStart("mihon"), inventory: { [bookmark]: "held" },
+      completedEncounterIds: ["smp_mihon_bookmark_stall"], seenEncounterIds: ["smp_mihon_bookmark_stall"] });
+    const given = (state: GameState, encounterId: string, optionId: string): GameState =>
+      ({ ...state, inventory: { ...state.inventory, [bookmark]: "gifted" }, itemUses: { [bookmark]: { encounterId, optionId } } });
+    const refused = /品物を渡した・使った記録が一致しません/u;
+    // The tower battle (a place file's battle knot) with a choice that gives the bookmark.
+    stories[placeStory] = compileInk(readPlaceFile(placeStory, source(placeStory).replace("\n-> quiz(1) ->\n",
+      "\n* [「これ、三時のしおり」 # option: give_bookmark]\n    # give: smp_mihon_three_bookmark heroine\n" +
+      "* [「先に言い伝えを」 # option: legend_first]\n- \n-> quiz(1) ->\n")).source, "tower.ink", { [MODULES_FILE]: MODULES_INK });
+    const tower = scenes.find((item) => item.id === "smp_mihon_main_clock_tower")!;
+    (scenes as SceneEntry[])[scenes.indexOf(tower)] = { ...tower, options: [
+      { id: "give_bookmark", knot: tower.id, give: { item: bookmark, to: "heroine" } }, { id: "legend_first", knot: tower.id }] };
+    let running = openBattleScene(holding, TOWER);
+    while (battleDialogueStop(running.activeBattle!) !== "choices") running = act(running, (current) => advanceBattle(current, current.revision));
+    // Running, but the choice not applied in this run; no run and no result.
+    expect(() => restore(given(running, tower.id, "give_bookmark"))).toThrow(refused);
+    expect(() => restore(given(holding, tower.id, "give_bookmark"))).toThrow(refused);
+    // Played once (without giving): its first play might have given it.
+    const legend = running.activeBattle!.frame!.choices.find((item) => item.optionId === "legend_first")!;
+    const played = play(act(running, (current) => chooseBattle(current, legend.index, current.revision)), { answers: [true, true, true] }).state;
+    expect(restore(given(leaveBattle(played, played.revision), tower.id, "give_bookmark")).itemUses[bookmark].optionId).toBe("give_bookmark");
+    // The market battle (a one-scene battle file) with a choice that gives the bookmark: the same rule.
+    stories[fileStory] = compileInk(readMainFileHead(source(fileStory).replace("\n-> quiz(1) ->\n",
+      "\n* [「このしおり、どうぞ」 # option: give_bookmark_market]\n    # give: smp_mihon_three_bookmark heroine\n" +
+      "* [「先にパンの話を」 # option: bread_first]\n- \n-> quiz(1) ->\n")).source, "market.ink", { [MODULES_FILE]: MODULES_INK });
+    (scenes as SceneEntry[]).push({ id: MARKET, kind: "battle", title: "誰も時間を守らない？", cityId: "mihon", story: { storyId: fileStory }, main: { battle: MARKET },
+      at: [], order: 0, repeat: "once", people: [], options: [{ id: "give_bookmark_market", knot: MARKET, give: { item: bookmark, to: "heroine" } },
+        { id: "bread_first", knot: MARKET }], done: {}, conds: [], knots: [], fingerprint: fnvHash(stories[fileStory]), origin: "file" });
+    expect(() => restore(given(holding, MARKET, "give_bookmark_market"))).toThrow(refused);
+    let market = openBattleScene(holding, MARKET);
+    while (battleDialogueStop(market.activeBattle!) !== "choices") market = act(market, (current) => advanceBattle(current, current.revision));
+    expect(() => restore(given(market, MARKET, "give_bookmark_market"))).toThrow(refused);
+    const give = market.activeBattle!.frame!.choices.find((item) => item.optionId === "give_bookmark_market")!;
+    const gave = act(market, (current) => chooseBattle(current, give.index, current.revision));
+    expect(gave.itemUses[bookmark]).toEqual({ encounterId: MARKET, optionId: "give_bookmark_market" });
+    expect(gave.activeBattle!.appliedOptionIds).toEqual(["give_bookmark_market"]);
+    // A run records each applied choice once, among its choices (turns), and a replay records none before its result.
+    const forged = /保存された選択の記録が一致しません/u;
+    expect(() => restore({ ...gave, activeBattle: { ...gave.activeBattle!, appliedOptionIds: ["give_bookmark_market", "bread_first"] } })).toThrow(forged);
+    let replay = startBattle(leaveBattle(played, played.revision), TOWER);
+    while (battleDialogueStop(replay.activeBattle!) !== "choices") replay = act(replay, (current) => advanceBattle(current, current.revision));
+    replay = act(replay, (current) => chooseBattle(current, legend.index, current.revision));
+    expect(replay.activeBattle!.appliedOptionIds).toEqual([]);
+    expect(() => restore({ ...replay, activeBattle: { ...replay.activeBattle!, appliedOptionIds: ["legend_first"] } })).toThrow(forged);
+    // The first play keeps its record to its result (and the replay's result screen too).
+    expect(play(replay, { answers: [true, true, true] }).state.activeBattle!.phase).toBe("result");
+  });
+
   it("apply a choice's tags once in a run, when the flow comes back to it (a choice after the press)", () => {
     const written = source(fileStory).replace("=== smp_mihon_special_b_market_press ===\n",
       "=== smp_mihon_special_b_market_press ===\n+ [「本当に、一人も？」 # option: doubt]\n    # rel: spark +1\n    # profile: attentive\n- \n");
@@ -392,6 +442,31 @@ describe("the clue book's claim and press in the one flow (stage 5)", () => {
     stories[storyId] = compileInk(readMainFileHead(converted.source).source, "milan-b.ink", { [MODULES_FILE]: MODULES_INK });
     (battles as BattleDefinition[])[keptMilan.index] = converted.battle;
     expect(clueBook()).toEqual(sceneForm);
+  });
+
+  it("reads the claim with the player's memories, as the flow reads it", () => {
+    const converted = convertBattle({ battle: definition, source: named }, battleQuizzes[definition.quizId].questions.length);
+    const line = "「あの店の音を、まだ覚えているか」";
+    const remembering = converted.source.replace("INCLUDE modules.ink\n", "INCLUDE modules.ink\nEXTERNAL has_memory(memory_id)\n")
+      .replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, `$1{ has_memory("sound_memory_cafe_01"): ${line} }\n`);
+    stories[storyId] = compileInk(readMainFileHead(remembering).source, "milan-b.ink", { [MODULES_FILE]: MODULES_INK });
+    (battles as BattleDefinition[])[keptMilan.index] = converted.battle;
+    for (const memories of [[], ["sound_memory_cafe_01"]]) {
+      const opened = openBattleScene(cityStart("milano"), milanB);
+      let state: GameState = { ...opened, memories };
+      const lines: string[] = [];
+      for (let step = 0; state.activeBattle!.phase !== "reasoning"; step++) {
+        expect(step).toBeLessThan(80);
+        const active = state.activeBattle!;
+        if (active.phase === "dialogue") lines.push(active.frame!.text);
+        state = active.phase === "question" ? answerBattle(state, "A", state.revision) : advanceBattle(state, state.revision);
+      }
+      const { claimText } = getReasoningContext(state)!;
+      expect(claimText.split("\n").includes(line), `memories ${JSON.stringify(memories)}`).toBe(memories.length > 0);
+      // The clue book's claim is what the flow showed in its claim.
+      expect(lines.includes(line)).toBe(memories.length > 0);
+      expect(claimText.split("\n").every((text) => lines.includes(text))).toBe(true);
+    }
   });
 
   it("never stops the screen when a claim reaches a choice or errors (content:build stops such a knot)", () => {

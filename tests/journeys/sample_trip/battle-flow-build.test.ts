@@ -110,6 +110,10 @@ describe("a battle in the one-flow form (stage 5)", () => {
       "\n=== smp_claim_more ===\n# speaker: enemy\n「どう思う？」\n* [「そうかも」 # option: maybe]\n* [「本当に？」 # option: really]\n- ->->\n" }))).toThrow(/smp_mihon_special_b_market_claim reaches a choice \("「そうかも」"\)/u);
     expect(() => validateContent(sampleWith({ [MARKET]: swap("=== smp_mihon_special_b_market_press ===\n", "=== smp_mihon_special_b_market_press ===\n-> quiz(2) ->\n") })))
       .toThrow(/smp_mihon_special_b_market_press reaches a choice \("quiz"\)/u);
+    // A plain choice (no # option:) in the claim stops it the same way.
+    expect(() => validateContent(sampleWith({ [MARKET]: swap("=== smp_mihon_special_b_market_claim ===\n",
+      "=== smp_mihon_special_b_market_claim ===\n* [「えっ」]\n- \n") })))
+      .toThrow(/The helper knot smp_mihon_special_b_market_claim reaches a choice \("「えっ」"\), read on its own as the clue book reads it/u);
     expect(() => validateContent(sampleWith({ [MARKET]: swap("INCLUDE modules.ink\n", "VAR player_name = \"\"\nVAR heroine_name = \"\"\n") })))
       .toThrow(/quiz/u);
     expect(() => validateContent(sampleWith({}, {
@@ -119,5 +123,32 @@ describe("a battle in the one-flow form (stage 5)", () => {
     // A call outside a battle has nothing to answer it.
     expect(() => validateContent(sampleWith({ [TOWER]: swap("「見て、あの歯車。止まってるのに、油でぴかぴかだ」\n", "「見て、あの歯車。止まってるのに、油でぴかぴかだ」\n-> quiz(1) ->\n") })))
       .toThrow(/-> quiz\(n\) -> is a battle's call \(stage 5\): .* is not a battle in the one-flow form/u);
+  });
+
+  it("reads the helper knots alone with every condition, quiz result, score and memory, as the clue book may read them", () => {
+    const claimLine = "「時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！」\n";
+    const pressHead = "=== smp_mihon_special_b_market_press ===\n";
+    const more = () => "\n=== smp_market_more ===\n# speaker: enemy\n「どう思う？」\n* [「そうかも」 # option: maybe]\n* [「本当に？」 # option: really]\n- ->->\n";
+    // A choice reached only under a condition (here: the bookmark held), only after a right answer, or only with a score.
+    expect(() => validateContent(sampleWith({ [MARKET]: (text) => swap(pressHead,
+      `${pressHead}{ cond("item smp_mihon_three_bookmark held"): -> smp_market_more -> }\n`)(text) + more() })))
+      .toThrow(/The helper knot smp_mihon_special_b_market_press reaches a choice \("「そうかも」"\)/u);
+    expect(() => validateContent(sampleWith({ [MARKET]: (text) => swap(claimLine, `${claimLine}{ quiz_correct: -> smp_market_more -> }\n`)(text) + more() })))
+      .toThrow(/The helper knot smp_mihon_special_b_market_claim reaches a choice \("「そうかも」"\)/u);
+    expect(() => validateContent(sampleWith({ [MARKET]: (text) => swap(claimLine, `${claimLine}{ battle_score >= 1: -> smp_market_more -> }\n`)(text) + more() })))
+      .toThrow(/The helper knot smp_mihon_special_b_market_claim reaches a choice \("「そうかも」"\)/u);
+    // has_memory read as in the game: in the flow and in the claim it builds; a choice reached only with the memory stops.
+    const memory = { "romance/presentation.json": (text: string) => {
+      const presentation = JSON.parse(text) as { memories?: Record<string, unknown> };
+      presentation.memories = { ...presentation.memories, smp_mihon_test_memory: { titleJa: "検証の思い出", descriptionJa: "検証専用" } };
+      return JSON.stringify(presentation);
+    } };
+    const external = swap("INCLUDE modules.ink\n", "INCLUDE modules.ink\nEXTERNAL has_memory(memory_id)\n");
+    const remembered = '{ has_memory("smp_mihon_test_memory"): 「あのときの話ね」 }\n';
+    expect(() => validateContent(sampleWith({ ...memory, [MARKET]: (text) => swap(claimLine, `${claimLine}${remembered}`)(
+      swap("-> quiz(1) ->\n", `${remembered}-> quiz(1) ->\n`)(external(text))) }))).not.toThrow();
+    expect(() => validateContent(sampleWith({ ...memory, [MARKET]: (text) => swap(claimLine,
+      `${claimLine}{ has_memory("smp_mihon_test_memory"): -> smp_market_more -> }\n`)(external(text)) + more() })))
+      .toThrow(/The helper knot smp_mihon_special_b_market_claim reaches a choice \("「そうかも」"\)/u);
   });
 });
