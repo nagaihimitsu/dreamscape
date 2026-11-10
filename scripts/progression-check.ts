@@ -33,10 +33,21 @@ export type ProgressionContent = {
    */
   sceneItems?: readonly SceneItems[];
   dates: readonly { id: string; chapterId: string; kind: string; apCost: number; when?: Condition }[];
-  /** Each city's travel: the hotel, the map events' places and admissions, the routes' fares, the starting budget. */
+  /**
+   * Each city's travel: the hotel, the map events' places and admissions, the routes' fares, the starting budget, and the
+   * tour-only places (`access: "tour"`, tour stage 2a), whose events only a tour reaches.
+   */
   travel: readonly { cityId: string; hotelPlaceId: string; initialBudget: number;
     events: readonly { id: string; placeId: string; admissionCost?: number }[];
-    routes: readonly { fromPlaceId: string; toPlaceId: string; cost: number }[] }[];
+    routes: readonly { fromPlaceId: string; toPlaceId: string; cost: number }[];
+    tourOnlyPlaceIds?: readonly string[] }[];
+  /**
+   * The tours (stage 2a): their city, condition, offers (each offer's condition and price, admissions included) and the map
+   * events of their event steps, in step order. An event at a tour-only place shows only through a tour that holds it.
+   */
+  tours?: readonly { id: string; cityId: string; when?: Condition; offers: readonly { when?: Condition; price: number }[]; eventIds: readonly string[] }[];
+  /** What each map event's main parts pay when first finished (their `# on_done: money -X`), by event ID (the money warning, 3.3). */
+  mainPayments?: Readonly<Record<string, number>>;
   rewards: readonly { id?: string; episodeId?: string; battleId?: string; ap: number; trigger: string }[];
   /** The romance thresholds (romance/progression.json): the dates a stage and the confession need. */
   romance: { stages: readonly { stage: number; minCompletedDates: number }[]; confession: { minCompletedDates: number } };
@@ -165,6 +176,30 @@ function currentRule(content: ProgressionContent, cityId: string, kind: MainEven
   return parts.length ? { all: parts } : undefined;
 }
 
+/** A tour as the check reads it (ProgressionContent.tours): its event steps' map events, in step order. */
+export function tourProgression(tour: { id: string; cityId: string; when?: Condition; offers: readonly { when?: Condition; price: number }[];
+  steps: readonly ({ kind: "leg" } | { kind: "event"; eventId: string })[] }): NonNullable<ProgressionContent["tours"]>[number] {
+  return { id: tour.id, cityId: tour.cityId, ...(tour.when ? { when: tour.when } : {}),
+    offers: tour.offers.map((offer) => ({ price: offer.price, ...(offer.when ? { when: offer.when } : {}) })),
+    eventIds: tour.steps.flatMap((step) => (step.kind === "event" ? [step.eventId] : [])) };
+}
+
+/** Always true / never true, as conditions (judge reads an empty `all` as true and an empty `any` as false). */
+const ALWAYS: Condition = { all: [] };
+/** Whether a map event of the city is at a tour-only place. */
+function isTourEvent(content: ProgressionContent, cityId: string, eventId: string): boolean {
+  const travel = content.travel.find((item) => item.cityId === cityId);
+  const placeId = travel?.events.find((event) => event.id === eventId)?.placeId;
+  return !!placeId && !!travel?.tourOnlyPlaceIds?.includes(placeId);
+}
+/** The tours that can bring the party to a tour-only event: a tour holding it, its condition, one offer's, and its other steps' events shown. */
+function tourGate(content: ProgressionContent, cityId: string, eventId: string, conditions: ReadonlyMap<string, Condition | undefined>): Condition {
+  return { any: (content.tours ?? []).filter((tour) => tour.cityId === cityId && tour.eventIds.includes(eventId)).map((tour): Condition => ({ all: [
+    ...(tour.when ? [tour.when] : []), { any: tour.offers.map((offer) => offer.when ?? ALWAYS) },
+    ...tour.eventIds.filter((id) => id !== eventId).map((id) => conditions.get(id) ?? ALWAYS),
+  ] })) };
+}
+
 function cityModel(content: ProgressionContent, cityId: string): City {
   const guided = (landmarkId: string | null) => !!content.landmarks.find((item) => item.id === landmarkId)?.guideStoryId;
   const events: MainEvent[] = [
@@ -179,6 +214,11 @@ function cityModel(content: ProgressionContent, cityId: string): City {
         condition: battle.when ?? currentRule(content, cityId, "special", battle.requiredEpisodeIds) };
     }),
   ];
+  // Check 10 (tour stage 2a): an event at a tour-only place shows only through a tour holding it, while the tour's and one of its
+  // offers' conditions can hold and its other event steps can show.
+  const base = new Map(events.map((event) => [event.id, event.condition]));
+  for (const event of events)
+    if (isTourEvent(content, cityId, event.id)) event.condition = { all: [...(event.condition ? [event.condition] : []), tourGate(content, cityId, event.id, base)] };
   const encounters = content.encounters.filter((item) => item.cityId === cityId);
   const journey = journeyOf(content, cityId);
   // The journey's budget and every gain up to this city (decision: 3.3 check 9).
@@ -487,6 +527,34 @@ function tripCost(travel: ProgressionContent["travel"][number] | undefined, even
 const romanceNeed = (leaf: Leaf) => "datePlayed" in leaf || "couple" in leaf || ("romanceStage" in leaf && leaf.romanceStage.atLeast !== undefined) ||
   ("relationship" in leaf && leaf.relationship.atLeast !== undefined);
 
+/**
+ * What a main event costs at the least (3.3): the cheapest round trip with its admission (tripCost), or, at a tour-only place, the
+ * cheapest offer of a tour holding it (offers without a condition first; the price includes the admissions; counted once, at the
+ * tour's first event step), plus the `# on_done: money -X` its main parts pay when first finished (unified design 3.3).
+ */
+function eventCost(content: ProgressionContent, cityId: string): (eventId: string) => number {
+  const travel = content.travel.find((item) => item.cityId === cityId);
+  const tourPrice = (eventId: string) => {
+    const prices = (content.tours ?? []).filter((tour) => tour.cityId === cityId && tour.eventIds.includes(eventId)).map((tour) => {
+      if (tour.eventIds[0] !== eventId) return 0;
+      const free = tour.offers.filter((offer) => !offer.when);
+      return Math.min(...(free.length ? free : tour.offers).map((offer) => offer.price));
+    });
+    return prices.length ? Math.min(...prices) : 0;
+  };
+  return (eventId) => (isTourEvent(content, cityId, eventId) ? tourPrice(eventId) : tripCost(travel, eventId)) + (content.mainPayments?.[eventId] ?? 0);
+}
+
+/**
+ * The money a city's finale needs at the least (3.3): the main parts it requires (its condition's required leaves, followed through
+ * the events they name), each at its eventCost. The money warning and the journeys' budget tests read it.
+ */
+export function requiredCitySpend(content: ProgressionContent, cityId: string): { eventIds: string[]; money: number } {
+  const cost = eventCost(content, cityId);
+  const required = requiredEvents(content, cityModel(content, cityId), (event) => cost(event.id));
+  return { eventIds: required.map((event) => event.id), money: required.reduce((sum, event) => sum + cost(event.id), 0) };
+}
+
 /** The money each journey needs for the cities' required main parts after playing everything else first (3.3 「お金で詰むおそれ」). */
 function moneyWarnings(content: ProgressionContent): ProgressionWarning[] {
   return content.journeys.flatMap((journey): ProgressionWarning[] => {
@@ -495,7 +563,8 @@ function moneyWarnings(content: ProgressionContent): ProgressionWarning[] {
       if (!finaleCities(content).includes(cityId)) continue;
       const city = cityModel(content, cityId);
       const travel = content.travel.find((item) => item.cityId === cityId);
-      const cost = (event: MainEvent) => tripCost(travel, event.id);
+      const costOf = eventCost(content, cityId);
+      const cost = (event: MainEvent) => costOf(event.id);
       const required = requiredEvents(content, city, cost);
       const encounters = content.encounters.filter((item) => item.cityId === cityId);
       if (encounters.some((item) => item.repeatable && (item.completionMoney ?? 0) > 0)) return [];
@@ -506,9 +575,9 @@ function moneyWarnings(content: ProgressionContent): ProgressionWarning[] {
       const left = money + gains - optional - needed;
       if (left < 0)
         return [{ kind: "money-shortfall", message: `Money may run short in city ${cityId}: playing the dates and the other events first, each at its cheapest ` +
-          `(fares, admissions and the fare back; lodging not counted), leaves ${money + gains - optional}, and the main parts the finale needs ` +
-          `(${required.map((event) => event.id).join(", ")}) cost at least ${needed}: ${-left} short${gains ? "" : " (no scene of the city pays money)"} ` +
-          `(not stopped: the budget is set when balancing the finished scenario)` }];
+          `(fares, admissions, a tour's cheapest offer, the main parts' payments and the fare back; lodging not counted), leaves ${money + gains - optional}, ` +
+          `and the main parts the finale needs (${required.map((event) => event.id).join(", ")}) cost at least ${needed}: ${-left} short` +
+          `${gains ? "" : " (no scene of the city pays money)"} (not stopped: the budget is set when balancing the finished scenario)` }];
       money = left;
     }
     return [];
@@ -636,10 +705,10 @@ export function progressionWarnings(content: ProgressionContent, clueUses: reado
 export function moneyShortNow(content: ProgressionContent, cityId: string, now: ProgressionSnapshot): number | undefined {
   if (now.cities.has(cityId)) return undefined;
   const city = cityModel(content, cityId);
-  const travel = content.travel.find((item) => item.cityId === cityId);
   const encounters = content.encounters.filter((item) => item.cityId === cityId);
   if (encounters.some((item) => item.repeatable && (item.completionMoney ?? 0) > 0)) return undefined;
-  const cost = (event: MainEvent) => tripCost(travel, event.id);
+  const costOf = eventCost(content, cityId);
+  const cost = (event: MainEvent) => costOf(event.id);
   const needed = requiredEvents(content, city, cost).filter((event) => !now.battles.has(event.battleId)).reduce((sum, event) => sum + cost(event), 0);
   const gains = encounters.filter((item) => !now.encounters.has(item.id)).reduce((sum, item) => sum + (item.completionMoney ?? 0), 0);
   return now.money + gains < needed ? needed - now.money - gains : undefined;

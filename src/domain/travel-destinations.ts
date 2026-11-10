@@ -1,5 +1,5 @@
 import { getCityContent } from "../content";
-import type { TravelEvent, TravelPlace, TravelRoute } from "../content/travel-schemas";
+import { isTourOnlyPlace, type TravelEvent, type TravelPlace, type TravelRoute } from "../content/travel-schemas";
 import type { GameState } from "./game";
 import { DAY_END, NIGHT_START, groupDestinationEvents, selectNearbyDestinations, type DestinationPlace } from "./travel";
 import { getTravelEventAvailability, getTravelSleepOptions, isTravelEventVisible, isUnclearedMainTravelEvent, waitForTravel } from "./travel-game";
@@ -53,13 +53,14 @@ export function getTravelWaitOptions(state: GameState): TravelWaitOption[] {
   return options.map((option) => ({ ...option, available: waitForTravel(state, option.minutes, state.revision) !== state }));
 }
 
-/** Next visible event, opening time or evening boundary before the day ends. */
+/** Next visible event, opening time or evening boundary before the day ends (tour-only places and their events aside: only a tour goes there). */
 export function getNextTravelWaitTime(state: GameState): number | null {
   const { travel } = getCityContent(state.currentCityId);
-  const events = travel.events.filter((event) => isTravelEventVisible(state, event));
+  const places = travel.places.filter((place) => !isTourOnlyPlace(place));
+  const events = travel.events.filter((event) => places.some((place) => place.id === event.placeId) && isTravelEventVisible(state, event));
   const nextTimes = [NIGHT_START,
     ...events.flatMap((event) => event.startWindows?.map((window) => window.start) ?? []),
-    ...travel.places.flatMap((place) => place.openingWindows?.map((window) => window.start) ?? []),
+    ...places.flatMap((place) => place.openingWindows?.map((window) => window.start) ?? []),
   ].filter((minute) => minute > state.travel.minute && minute < DAY_END);
   return nextTimes.length ? Math.min(...nextTimes) : null;
 }
