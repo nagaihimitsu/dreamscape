@@ -42,6 +42,8 @@ const paths = {
   compass: `${circle(12, 12, 9)}M15.5 8.5l-2 5-5 2 2-5z`,
   plane: "M21 3L3 10.5l7 2.5 2.5 7.5zM10 13L21 3",
   info: `${circle(12, 12, 9)}M12 11v5.5M12 7.7v.1`,
+  heart: "M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z",
+  ticket: "M3.5 7.5h17v3a1.5 1.5 0 0 0 0 3v3h-17v-3a1.5 1.5 0 0 0 0-3zM14.5 7.5v9",
 } as const;
 
 export type IconName = keyof typeof paths;

@@ -402,35 +402,60 @@ export const ops = {
     await expect(note).toBeVisible();
     return note;
   },
-  /** A destination's button on the travel menu, opening the longer list when needed. */
+  /**
+   * A destination's photo card (B案「写真札で旅先を選ぶ」, docs/02): its button in the sightseeing row, else in the date
+   * sheet, which the band's 「デート」 opens. A press on it only selects the place (never travels).
+   */
   async destination(page: Page, placeId: string): Promise<Locator> {
-    const place = page.getByTestId(`travel-place-${placeId}`);
-    if (!(await place.isVisible())) await page.getByText("ほかの行き先を見る", { exact: true }).click();
-    return place.getByRole("button");
+    const card = page.getByTestId("travel-menu").getByTestId(`travel-place-${placeId}`);
+    // The card's own button comes first (in the list the chosen row also holds its introduction card).
+    if (await card.count()) return card.getByRole("button").first();
+    return (await ops.openDates(page)).getByTestId(`date-place-${placeId}`).getByRole("button").first();
   },
-  /** The first press on a destination's row (it selects the place and shows it on the map); returns the row. */
-  async selectDestination(page: Page, placeId: string): Promise<Locator> {
-    await (await ops.destination(page, placeId)).click();
-    const row = page.getByTestId(`travel-place-${placeId}`);
-    await expect(row).toHaveAttribute("data-selected", "true");
-    return row;
+  /** The band's 「デート」: the date sheet with the same photo cards and introduction card, once it takes presses. */
+  async openDates(page: Page): Promise<Locator> {
+    await page.getByTestId("free-time-dates-open").click();
+    const sheet = page.getByRole("dialog", { name: "デート", exact: true });
+    await expect(sheet).toBeVisible();
+    await expect(sheet).not.toHaveAttribute("data-settling");
+    return sheet;
   },
   /**
-   * Go to a destination the two-step way (UI redesign §3.5), opening the longer list when
-   * needed: the first press on its row selects it; a row with one way is pressed again once
-   * armed (`data-armed`); otherwise its inline choices are used: the event `eventId` (when the
-   * place has several) and the mode `mode` (walking unless named; when the event has several).
-   * Fails with a clear message when the requested choice is not offered. The page's clock must
-   * run (the arming waits on a timer): hold it only after the last press.
+   * Select a destination by its photo card (in the sightseeing row; for a date, or when the row's card lacks the event
+   * `eventId`, in the date sheet) and return its introduction card (`place-card`) showing the place.
+   */
+  async selectDestination(page: Page, placeId: string, eventId?: string): Promise<Locator> {
+    const menu = page.getByTestId("travel-menu");
+    const card = menu.getByTestId(`travel-place-${placeId}`);
+    if (await card.count()) {
+      await card.getByRole("button").first().click();
+      await expect(card).toHaveAttribute("data-selected", "true");
+      const intro = menu.getByTestId("place-card");
+      await expect(intro).toHaveAttribute("data-place-id", placeId);
+      if (!eventId || await intro.getByTestId(`place-event-${eventId}`).count()) return intro;
+    }
+    const sheet = await ops.openDates(page);
+    await sheet.getByTestId(`date-place-${placeId}`).getByRole("button").first().click();
+    const intro = sheet.getByTestId("place-card");
+    await expect(intro).toHaveAttribute("data-place-id", placeId);
+    return intro;
+  },
+  /** An introduction card's button that goes (「…で行く」, 「行く」 or 「ここで始める」); with several events, that of `eventId`. */
+  wayButton(card: Locator, eventId?: string): Locator {
+    return (eventId ? card.getByTestId(`place-event-${eventId}`) : card).locator('[data-testid^="travel-go-"]').first();
+  },
+  /**
+   * Go to a destination as B案 does: select its photo card, then in its introduction card (once armed, `data-armed`)
+   * the event `eventId` (when the place has several), the mode `mode` (walking unless named; a mode is pressed only
+   * when the event has several) and its 「行く」. Fails with a clear message when the requested choice is not offered.
+   * The page's clock must run (the arming waits on a timer): hold it only after the last press.
    */
   async goTo(page: Page, placeId: string, choice: TravelChoice = {}) {
-    const row = page.getByTestId(`travel-place-${placeId}`);
-    await (await ops.destination(page, placeId)).click();
-    await chooseInRow(row, placeId, choice);
+    await chooseInCard(await ops.selectDestination(page, placeId, choice.eventId), placeId, choice);
   },
   /**
    * The same from the expanded map: 「地図を大きく見る」, the place's marker by keyboard (Enter
-   * selects it), then the same steps in the dialog's 「選んだ行き先」 (whose row has its own testid).
+   * selects it), then the same steps in the dialog's 「選んだ行き先」 (its own introduction card).
    */
   async goToFromMap(page: Page, placeId: string, choice: TravelChoice = {}) {
     await page.getByRole("button", { name: "地図を大きく見る" }).click();
@@ -438,7 +463,7 @@ export const ops = {
     await expect(dialog).toBeVisible();
     await dialog.getByTestId(`map-marker-${placeId}`).focus();
     await page.keyboard.press("Enter");
-    await chooseInRow(dialog.getByTestId("map-selection").getByTestId(`map-selection-place-${placeId}`), placeId, choice);
+    await chooseInCard(dialog.getByTestId("map-selection").getByTestId("place-card"), placeId, choice);
   },
   /**
    * 休む the two-step way: 「休む」 selects the hotel and shows the ways home in the band; then
@@ -457,11 +482,12 @@ export const ops = {
     if (await routes.count() === 1 && await route.isEnabled()) await rest.click();
     else await route.click();
   },
-  /** Free time's 「ツアーを見る」 (tour stage 2a): the sheet of the city's tours. */
+  /** Free time's 「ツアー」 (tour stage 2a; B案: the band's icon): the sheet of the city's tours, once it takes presses. */
   async openTours(page: Page): Promise<Locator> {
     await page.getByTestId("travel-tours-open").click();
     const sheet = page.getByRole("dialog", { name: "ツアー", exact: true });
     await expect(sheet).toBeVisible();
+    await expect(sheet).not.toHaveAttribute("data-settling");
     return sheet;
   },
   /** Book a tour from the sheet through `offerId` and confirm it: the line then names tomorrow's tour. */
@@ -679,40 +705,33 @@ export const ops = {
 };
 
 /** A 3-choice pick: the option ID (A/B/C) to press for a question, encounter choice or quiz. */
-/** What ops.goTo chooses in a row's inline choices: the event (a place with several) and the mode (walking by default). */
+/** What ops.goTo chooses in an introduction card: the event (a place with several) and the mode (walking by default). */
 export type TravelChoice = { eventId?: string; mode?: string };
 
-/** The steps after a row (or the expanded map's slot row) was selected: see ops.goTo. */
-async function chooseInRow(row: Locator, placeId: string, { eventId, mode = "walk" }: TravelChoice) {
-  await expect(row).toHaveAttribute("data-selected", "true");
-  const name = row.getByRole("button").first();
-  const choices = row.getByTestId(`travel-choices-${placeId}`);
-  await expect(row).toHaveAttribute("data-armed", "true");
-  if (!(await choices.count())) {
-    await name.click();
-    return;
-  }
-  const events = choices.locator('[data-testid^="travel-event-"]');
-  let event = eventId;
-  if (await events.count()) {
-    const ids = await events.evaluateAll((items) => items.map((item) => item.getAttribute("data-testid")!.slice("travel-event-".length)));
-    if (!event || !ids.includes(event)) throw new Error(`${placeId} offers the events ${ids.join(", ")}: name one of them (eventId${event ? `, not ${event}` : ""})`);
-    const button = choices.getByTestId(`travel-event-${event}`);
-    // An event with one route goes at once; one with several opens its modes (and re-arms).
-    if (await button.getAttribute("aria-expanded") === null) {
-      await button.click();
-      return;
+/** The steps in a selected place's introduction card (on the page, in the date sheet or in the expanded map's slot): see ops.goTo. */
+async function chooseInCard(card: Locator, placeId: string, { eventId, mode = "walk" }: TravelChoice) {
+  await expect(card).toHaveAttribute("data-place-id", placeId);
+  await expect(card).toHaveAttribute("data-armed", "true");
+  const ids = await card.locator('[data-testid^="place-event-"]').evaluateAll((items) => items.map((item) => item.getAttribute("data-testid")!.slice("place-event-".length)));
+  if (ids.length > 1 && (!eventId || !ids.includes(eventId)))
+    throw new Error(`${placeId} offers the events ${ids.join(", ")}: name one of them (eventId${eventId ? `, not ${eventId}` : ""})`);
+  const event = ids.length > 1 ? eventId! : ids[0];
+  const block = card.getByTestId(`place-event-${event}`);
+  // Several modes: one row of modes (a press only chooses one), then the one 「行く」.
+  const modes = block.locator('[data-testid^="travel-mode-"]');
+  if (await modes.count()) {
+    const chip = block.getByTestId(`travel-mode-${event}-${mode}`);
+    if (!(await chip.count())) {
+      const offered = await modes.evaluateAll((items) => items.map((item) => item.getAttribute("data-testid")));
+      throw new Error(`${placeId} (${event}) is not reached by ${mode}; offered: ${offered.join(", ")}`);
     }
-    await button.click();
-    await expect(button).toHaveAttribute("aria-expanded", "true");
-    await expect(row).toHaveAttribute("data-armed", "true");
+    await chip.click();
+    await expect(chip).toHaveAttribute("aria-pressed", "true");
   }
-  const route = event ? choices.getByTestId(`travel-route-${event}-${mode}`) : choices.locator(`[data-testid^="travel-route-"][data-testid$="-${mode}"]`);
-  if (!(await route.count())) {
-    const offered = await choices.locator('[data-testid^="travel-route-"]').evaluateAll((items) => items.map((item) => item.getAttribute("data-testid")));
-    throw new Error(`${placeId}${event ? ` (${event})` : ""} is not reached by ${mode}; offered: ${offered.join(", ")}`);
-  }
-  await route.click();
+  const go = block.getByTestId(`travel-go-${event}`);
+  const offered = await go.getAttribute("data-mode");
+  if (offered !== mode) throw new Error(`${placeId} (${event}) is not reached by ${mode}; offered: ${offered}`);
+  await go.click();
 }
 
 export type Pick = (state: GameState) => string;

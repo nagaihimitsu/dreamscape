@@ -164,14 +164,14 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await expect(page.getByTestId("city-progress")).toContainText("観光 1 / 4");
 
   // A date costs AP when it starts and returns to the travel menu when it ends (docs/07 acceptance 3, 4).
-  // The first press on the destination selects it (two steps, UI step 1.6); a quick double tap on the
-  // selected row then starts it once, and the second tap, landing on the travel transition that opens
+  // Its photo card (in the date sheet, B案) only selects it; a quick double tap on its introduction card's
+  // way button then starts it once, and the second tap, landing on the travel transition that opens
   // under the finger, does not read the date's first line on unseen: the transition takes taps while
   // it shows (H22), and taps are held for a moment when a story scene starts (lines appear whole here,
   // as with 文字送り「一括表示」).
-  const novecentoRow = await ops.selectDestination(page, "p_novecento");
-  await expect(novecentoRow).toHaveAttribute("data-armed", "true");
-  const novecento = await ops.centerOf(await ops.destination(page, "p_novecento"));
+  const novecentoCard = await ops.selectDestination(page, "p_novecento");
+  await expect(novecentoCard).toHaveAttribute("data-armed", "true");
+  const novecento = await ops.centerOf(ops.wayButton(novecentoCard));
   const beforeDate = await readSave(page);
   await ops.holdClock(page);
   await ops.doubleTap(page, novecento);
@@ -310,28 +310,36 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await expect(page.getByLabel(`残り${finished.ap}AP`)).toBeVisible();
 });
 
-// The journey's own transport modes (manifest transportModes): the destination's inline
-// choices name them with the line, the ride is paid and timed by its route, and the
-// transition shows the mode's caption and art.
-test("a new Milan journey rides tram 16 to the Last Supper, named in the inline choices and shown on the way", { tag: tier.gate }, async ({ page }) => {
+// The journey's own transport modes (manifest transportModes): the destination's introduction
+// card names them in its row of modes, its 「行く」 says the chosen way's line, time and fare, the
+// ride is paid and timed by its route, and the transition shows the mode's caption and art.
+test("a new Milan journey rides tram 16 to the Last Supper, named in the introduction card and shown on the way", { tag: tier.gate }, async ({ page }) => {
   await page.clock.install();
   await ops.startJourney(page, "milano");
   const before = await readSave(page);
-  const row = await ops.selectDestination(page, "p_supper");
-  const choices = page.getByTestId("travel-choices-p_supper");
+  const card = await ops.selectDestination(page, "p_supper");
   await expect(page.getByRole("dialog")).toHaveCount(0);
-  const walk = choices.getByTestId("travel-route-milano_last_supper_episode-walk");
+  const walk = card.getByTestId("travel-mode-milano_last_supper_episode-walk");
+  const tram = card.getByTestId("travel-mode-milano_last_supper_episode-tram");
+  const go = card.getByTestId("travel-go-milano_last_supper_episode");
   await expect(walk).toBeEnabled();
-  await expect(walk).toContainText("19分");
-  const tram = choices.getByTestId("travel-route-milano_last_supper_episode-tram");
   await expect(tram).toBeEnabled();
-  await expect(tram).toContainText("路面電車");
-  await expect(tram).toContainText("16番");
-  await expect(tram).toContainText("18分 · €5");
-  await expect(row).toHaveAttribute("data-armed", "true");
+  await expect(tram).toHaveText("路面電車");
+  // The fastest way comes chosen (tram 16, 18 minutes, before walking's 19); choosing a mode never goes.
+  await expect(tram).toHaveAttribute("aria-pressed", "true");
+  await expect(go).toHaveAttribute("data-mode", "tram");
+  await walk.click();
+  await expect(go).toHaveAttribute("data-mode", "walk");
+  await expect(go).toContainText("19分");
+  await tram.click();
+  await expect(go).toHaveAttribute("data-mode", "tram");
+  await expect(go).toContainText("16番");
+  await expect(go).toContainText("18分 · €5");
+  expect((await readSave(page)).revision).toBe(before.revision);
+  await expect(card).toHaveAttribute("data-armed", "true");
   // Hold the page's clock so the short transition (0.45 s with reduced motion) stays while it is checked.
   await ops.holdClock(page);
-  await tram.click();
+  await go.click();
   const transition = page.getByTestId("travel-transition");
   await expect(transition).toHaveAttribute("data-mode", "tram");
   await expect(transition).toHaveAttribute("data-kind", "tram");
@@ -348,10 +356,10 @@ test("a new Milan journey rides tram 16 to the Last Supper, named in the inline 
 });
 
 // Every available journey (from the generated catalog, Golden Triangle with its auto-rickshaw
-// and metro included): at the start, the first listed place that is reached on foot and by one
+// and metro included): at the start, the first sightseeing card that is reached on foot and by one
 // of its vehicles (the city's travel data) and that the party can ride to now shows the modes
-// inline when chosen, with the vehicle named as its manifest declares it (nameJa), and the
-// transition shows its caption (movingJa), ID and art kind.
+// in its introduction card when chosen, with the vehicle named as its manifest declares it (nameJa),
+// and the transition shows its caption (movingJa), ID and art kind.
 test("in each available journey a new trip's first vehicle route is named and shown as its manifest declares", { tag: tier.gate }, async ({ page }) => {
   await page.clock.install();
   const journeys = journeyCatalog().journeys.filter((item) => item.status === "available" && item.transportModes.length);
@@ -374,31 +382,29 @@ test("in each available journey a new trip's first vehicle route is named and sh
     const targets = [...new Set(travel.events.map((event) => event.placeId))].filter((to) => to !== from &&
       travel.events.filter((event) => event.placeId === to).length === 1 &&
       routesTo(to).some((route) => route.mode === "walk") && routesTo(to).some((route) => modes.has(route.mode)));
-    const more = page.getByText("ほかの行き先を見る", { exact: true });
-    if (await more.isVisible()) await more.click();
-    let ride: { route: Route; button: Locator } | undefined;
+    let ride: { route: Route; card: Locator; chip: Locator } | undefined;
     for (const to of targets) {
-      const place = page.getByTestId(`travel-place-${to}`);
-      if (!(await place.count())) continue;
-      await place.getByRole("button").first().click();
-      const choices = page.getByTestId(`travel-choices-${to}`);
-      await expect(choices).toBeVisible();
+      if (!(await page.getByTestId("travel-menu").getByTestId(`travel-place-${to}`).count())) continue;
+      const card = await ops.selectDestination(page, to);
       await expect(page.getByRole("dialog")).toHaveCount(0);
       for (const route of routesTo(to).filter((item) => modes.has(item.mode))) {
-        const button = choices.locator(`[data-testid^="travel-route-"][data-testid$="-${route.mode}"]`);
-        await expect(button).toContainText(modes.get(route.mode)!.nameJa);
-        if (await button.isEnabled()) { ride = { route, button }; break; }
+        const chip = card.locator(`[data-testid^="travel-mode-"][data-testid$="-${route.mode}"]`);
+        await expect(chip).toHaveText(modes.get(route.mode)!.nameJa);
+        if (await chip.isEnabled()) { ride = { route, card, chip }; break; }
       }
       if (ride) break;
-      await choices.getByTestId("travel-choices-close").click();
     }
-    expect(ride, `${journey.id}: a listed place reached on foot and by a vehicle the party can take at the start`).toBeDefined();
-    const { route, button } = ride!;
+    expect(ride, `${journey.id}: a sightseeing card reached on foot and by a vehicle the party can take at the start`).toBeDefined();
+    const { route, card, chip } = ride!;
     const mode = modes.get(route.mode)!;
-    await expect(page.getByTestId(`travel-place-${route.toPlaceId}`)).toHaveAttribute("data-armed", "true");
+    // Choosing the mode only chooses it; the card's 「行く」 then takes it.
+    await chip.click();
+    const go = ops.wayButton(card);
+    await expect(go).toHaveAttribute("data-mode", route.mode);
+    await expect(card).toHaveAttribute("data-armed", "true");
     test.info().annotations.push({ type: "ride", description: `${journey.id}: ${route.toPlaceId} by ${mode.id} (${mode.nameJa})` });
     await ops.holdClock(page);
-    await button.click();
+    await go.click();
     const transition = page.getByTestId("travel-transition");
     await expect(transition).toHaveAttribute("data-mode", mode.id);
     await expect(transition).toHaveAttribute("data-kind", mode.kind);

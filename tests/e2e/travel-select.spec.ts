@@ -8,6 +8,11 @@ import { devModules, expect, generated, ops, playUntil, readSave, savedGame, tes
 // map's checks that no dialog is on the page after each step. The map's focus is instant
 // with reduced motion (the phone project's default).
 
+// These pin the previous free-time screen (MapListFreeTime in FreeTimeHub.tsx: the list rows and the map that stays
+// under the header), which B案「写真札で旅先を選ぶ」 replaced (docs/02 「自由時間の画面」). They are skipped while
+// FreeTimeHub shows B案; when it returns MapListFreeTime again, remove this line.
+test.skip(() => true, "pins the previous free-time screen (MapListFreeTime), not shown while FreeTimeHub shows B案");
+
 type Route = { fromPlaceId: string; toPlaceId: string; mode: string };
 type Travel = { events: { id: string; placeId: string }[]; routes: Route[] };
 
