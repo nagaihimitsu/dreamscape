@@ -21,26 +21,56 @@ export function TravelTours({ game, onBook, onCancel }: {
   onCancel: () => boolean;
 }) {
   const [open, setOpen] = useState(false);
-  const [confirm, setConfirm] = useState<TourOfferChoice | null>(null);
-  const [cancelling, setCancelling] = useState(false);
-  const cityId = game.currentCityId;
   const offers = getTourOffers(game);
   const booked = game.tour?.status === "booked" ? game.tour : null;
   const bookedTour = booked && getTour(booked.tourId);
   if (!offers.length && !bookedTour) return null;
+  return <div className="travel-tours" data-testid="travel-tours">
+    <TourBookedLine game={game} onCancel={onCancel} />
+    {offers.length > 0 && <button type="button" className="secondary travel-tour-open" data-testid="travel-tours-open" onClick={() => setOpen(true)}>ツアーを見る</button>}
+    {open && <TourBooking game={game} onBook={onBook} onClose={() => setOpen(false)} />}
+  </div>;
+}
+
+/** A booked tour's line 「明日の予定：…」 and its 「予約を取り消す」 with the cancel's dialog; nothing without a booking. */
+export function TourBookedLine({ game, onCancel }: { game: GameState; onCancel: () => boolean }) {
+  const [cancelling, setCancelling] = useState(false);
+  const booked = game.tour?.status === "booked" ? game.tour : null;
+  const bookedTour = booked && getTour(booked.tourId);
+  if (!booked || !bookedTour) return null;
+  return <>
+    <p className="travel-tour-booked" data-testid="travel-tour-booked">
+      明日の予定：{bookedTour.titleJa}（{bookedTour.offers.find((offer) => offer.id === booked.offerId)?.sellerJa ?? "予約先"}で予約）
+    </p>
+    <button type="button" className="secondary travel-tour-open" data-testid="travel-tour-cancel" onClick={() => setCancelling(true)}>予約を取り消す</button>
+    {cancelling && <Modal labelledBy="travel-tour-cancel-title" className="travel-choice-modal" onClose={() => setCancelling(false)}>
+      <ModalTitle id="travel-tour-cancel-title">予約を取り消す</ModalTitle>
+      <p>予約を取り消しますか？ 代金{formatMoneyForCity(game.currentCityId, booked.pricePaid)}は戻り、このツアーの予約はなくなります。</p>
+      <ConfirmActionButton className="primary" data-testid="travel-tour-cancel-confirm" onClick={() => { if (onCancel()) setCancelling(false); }}>取り消す</ConfirmActionButton>
+      <button type="button" className="secondary" onClick={() => setCancelling(false)}>やめる</button>
+    </Modal>}
+  </>;
+}
+
+/**
+ * The tours sheet 「ツアー」 (the offers here) and, from one of its offers, the booking's confirmation; `onClose` ends both
+ * (also after a booking). `settlePresses` when it opens under the finger that opened it (B案's band icon, Modal).
+ */
+export function TourBooking({ game, onBook, onClose, settlePresses = false }: {
+  game: GameState;
+  onBook: (tourId: string, offerId: string) => boolean;
+  onClose: () => void;
+  settlePresses?: boolean;
+}) {
+  const [confirm, setConfirm] = useState<TourOfferChoice | null>(null);
+  const cityId = game.currentCityId;
+  const offers = getTourOffers(game);
   const money = (amount: number) => formatMoneyForCity(cityId, amount);
   const forTwo = getJourneyForCity(cityId)?.farePartySize === 2 ? "（2人分）" : "";
   const tours = [...new Map(offers.map((choice) => [choice.tour.id, choice.tour])).values()];
-  return <div className="travel-tours" data-testid="travel-tours">
-    {booked && bookedTour && <>
-      <p className="travel-tour-booked" data-testid="travel-tour-booked">
-        明日の予定：{bookedTour.titleJa}（{bookedTour.offers.find((offer) => offer.id === booked.offerId)?.sellerJa ?? "予約先"}で予約）
-      </p>
-      <button type="button" className="secondary travel-tour-open" data-testid="travel-tour-cancel" onClick={() => setCancelling(true)}>予約を取り消す</button>
-    </>}
-    {offers.length > 0 && <button type="button" className="secondary travel-tour-open" data-testid="travel-tours-open" onClick={() => setOpen(true)}>ツアーを見る</button>}
-    {open && !confirm && <Modal labelledBy="travel-tours-title" className="travel-choice-modal travel-tours-modal" onClose={() => setOpen(false)}>
-      <ModalTitle id="travel-tours-title" onClose={() => setOpen(false)}>ツアー</ModalTitle>
+  return <>
+    {!confirm && <Modal labelledBy="travel-tours-title" className="travel-choice-modal travel-tours-modal" onClose={onClose} settlePresses={settlePresses}>
+      <ModalTitle id="travel-tours-title" onClose={onClose}>ツアー</ModalTitle>
       <p>明日の朝9:00に宿を出る日帰りのツアーです。予約すると代金を今払い、取り消すと戻ります。料金はゲーム内の目安です。</p>
       {tours.map((tour) => {
         const here = offers.filter((choice) => choice.tour.id === tour.id);
@@ -71,15 +101,9 @@ export function TravelTours({ game, onBook, onCancel }: {
       <ModalTitle id="travel-tour-confirm-title">{confirm.tour.titleJa}を予約</ModalTitle>
       <p>明日の朝、このツアーに参加します。代金{money(confirm.offer.price)}{forTwo}を支払いますか？</p>
       <ConfirmActionButton className="primary" data-testid="travel-tour-confirm" onClick={() => {
-        if (onBook(confirm.tour.id, confirm.offer.id)) { setConfirm(null); setOpen(false); }
+        if (onBook(confirm.tour.id, confirm.offer.id)) { setConfirm(null); onClose(); }
       }}>予約する</ConfirmActionButton>
       <button type="button" className="secondary" onClick={() => setConfirm(null)}>やめる</button>
     </Modal>}
-    {cancelling && booked && bookedTour && <Modal labelledBy="travel-tour-cancel-title" className="travel-choice-modal" onClose={() => setCancelling(false)}>
-      <ModalTitle id="travel-tour-cancel-title">予約を取り消す</ModalTitle>
-      <p>予約を取り消しますか？ 代金{money(booked.pricePaid)}は戻り、このツアーの予約はなくなります。</p>
-      <ConfirmActionButton className="primary" data-testid="travel-tour-cancel-confirm" onClick={() => { if (onCancel()) setCancelling(false); }}>取り消す</ConfirmActionButton>
-      <button type="button" className="secondary" onClick={() => setCancelling(false)}>やめる</button>
-    </Modal>}
-  </div>;
+  </>;
 }

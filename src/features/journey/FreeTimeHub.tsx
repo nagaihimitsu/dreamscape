@@ -1,40 +1,20 @@
-import { useCallback, useMemo, useState, type KeyboardEvent } from "react";
+import { useCallback, useMemo, type KeyboardEvent } from "react";
 import { getCityContent } from "../../content";
 import type { TravelRoute } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
-import { getNextCity } from "../../domain/city-travel";
-import { departureAfterTour } from "../../domain/tour";
 import { Icon } from "../../components/icons";
 import { CityProgress } from "./CityProgress";
 import { FreeTimeBackdrop } from "./FreeTimeBackdrop";
+import { FreeTimeCredits, FreeTimeExtras } from "./FreeTimeExtras";
 import { mapSticks, SIDE_BY_SIDE_QUERY } from "./free-time-layout";
-import { PendingRewards } from "./PendingRewards";
-import { freeTimePhotos, PhotoCredits } from "./PhotoCredits";
+import { PhotoCardFreeTime } from "./PhotoCardFreeTime";
+import { freeTimePhotos } from "./PhotoCredits";
 import { TravelActions } from "./TravelActions";
 import { TravelMenu } from "./TravelMenu";
 import { useTravelSelection } from "./useTravelSelection";
 import "./free-time-hub.css";
 
-/**
- * Free time (UI redesign §3.4): the city's picture behind the screen, the visible
- * heading drawn as the map's banner, the destinations (map and list), the city's
- * remaining actions, 「写真の出典」 and the bottom band with 待機 and 休む.
- */
-export function FreeTimeHub({
-  game,
-  onClaimRewards,
-  onStartEpisode,
-  onEpilogue,
-  onBattle,
-  onTravelEvent,
-  onRent,
-  onBookTour,
-  onCancelTour,
-  onTravelWait,
-  onTravelSleep,
-  nextCityName,
-  onDepart,
-}: {
+export type FreeTimeHubProps = {
   game: GameState;
   onClaimRewards: () => void;
   onStartEpisode: (id: string) => void;
@@ -48,14 +28,40 @@ export function FreeTimeHub({
   onTravelSleep: (mode: TravelRoute["mode"], viaPlaceId: string | null) => boolean;
   nextCityName?: string;
   onDepart: () => void;
-}) {
+};
+
+/**
+ * Free time. The screen is chosen here, on its one line (docs/02 「自由時間の画面」): B案「写真札で旅先を選ぶ」 (a new
+ * city starts its cards afresh). The previous map-and-list screen stays below as MapListFreeTime, type-checked by
+ * every build; to bring it back, return `<MapListFreeTime {...props} />` on that line instead.
+ */
+export function FreeTimeHub(props: FreeTimeHubProps) {
+  return <PhotoCardFreeTime key={props.game.currentCityId} {...props} />;
+}
+
+/**
+ * The previous free-time screen (UI redesign §3.4): the city's picture behind the screen, the visible
+ * heading drawn as the map's banner, the destinations (map and list), the city's
+ * remaining actions, 「写真の出典」 and the bottom band with 待機 and 休む.
+ */
+export function MapListFreeTime({
+  game,
+  onClaimRewards,
+  onStartEpisode,
+  onEpilogue,
+  onBattle,
+  onTravelEvent,
+  onRent,
+  onBookTour,
+  onCancelTour,
+  onTravelWait,
+  onTravelSleep,
+  nextCityName,
+  onDepart,
+}: FreeTimeHubProps) {
   const { city } = getCityContent(game.currentCityId);
-  const [creditsOpen, setCreditsOpen] = useState(false);
   const photos = useMemo(() => freeTimePhotos(game), [game]);
   const layout = useFreeTimeLayout();
-  // A booked tour holds the departure (tour stage 2a): the line says what happens once it is over.
-  const afterTour = departureAfterTour(game, getNextCity(game)?.city.nameJa);
-  const extras = game.pendingApRewards.length > 0 || !!nextCityName || !!afterTour;
   // One selection for the list, both maps and the band's 休む (§3.5).
   const selection = useTravelSelection(game, { onTravelEvent, onTravelSleep });
   // Esc (outside a dialog) closes an open 待機 menu first, then clears the selection; focus goes to its name.
@@ -87,16 +93,8 @@ export function FreeTimeHub({
 
       <TravelMenu key={game.currentCityId} game={game} api={selection} onRent={onRent} onBookTour={onBookTour} onCancelTour={onCancelTour} />
 
-      {extras && <div className="free-time-extras">
-        <PendingRewards game={game} onClaim={onClaimRewards} compact />
-        {nextCityName && <button type="button" className="secondary" onClick={onDepart}>{nextCityName}へ出発</button>}
-        {afterTour && <p className="free-time-tour-wait" data-testid="tour-departure-wait">
-          予約したツアーを終えるか取り消すと、{afterTour.cityNameJa}へ{afterTour.automatic ? "出発します" : "出発できます"}。</p>}
-      </div>}
-      {photos.length > 0 && <button type="button" className="free-time-credits-open" onClick={() => setCreditsOpen(true)}>
-        <Icon name="credit" />写真の出典
-      </button>}
-      {creditsOpen && <PhotoCredits photos={photos} onClose={() => setCreditsOpen(false)} />}
+      <FreeTimeExtras game={game} onClaimRewards={onClaimRewards} nextCityName={nextCityName} onDepart={onDepart} />
+      <FreeTimeCredits photos={photos} />
       {/* Hidden: its height is the visible height with the browser's bars shown (100svh). */}
       <div className="free-time-svh-probe" aria-hidden="true" />
       <TravelActions game={game} api={selection} onTravelWait={onTravelWait} />

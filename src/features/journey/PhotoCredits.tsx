@@ -9,7 +9,7 @@ import { Modal, ModalTitle } from "../../components/Modal";
 import type { GameState } from "../../domain/game";
 import { getTravelDestinations } from "../../domain/travel-destinations";
 
-type ShownPhoto = { key: string; labelJa: string; asset: TourismAsset; kind: "backdrop" | "card" };
+export type ShownPhoto = { key: string; labelJa: string; asset: TourismAsset; kind: "backdrop" | "card" };
 
 /** Every photo free time shows now: the city's backdrop and each destination row's photo. */
 export function freeTimePhotos(game: GameState): ShownPhoto[] {
