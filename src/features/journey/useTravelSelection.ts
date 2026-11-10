@@ -26,7 +26,10 @@ export const pressKindOf = (event: { detail: number }): PressKind => (event.deta
 export function useTravelSelection(game: GameState, handlers: {
   onTravelEvent: (eventId: string, mode: TravelMode) => void;
   onTravelSleep: (mode: TravelMode, viaPlaceId: string | null) => void;
-}) {
+}, options: {
+  /** The live regions' words for a selection (B案's photo cards: photo-cards.ts photoCardAnnouncement); today's two-step words by default. */
+  announce?: typeof announcement;
+} = {}) {
   const { travel } = getCityContent(game.currentCityId);
   const destinations = useMemo(() => getTravelDestinations(game), [game]);
   const choices = useMemo(() => new Map(destinations.places.map((place) => [place.id, destinationChoicesOf(game, place)])), [game, destinations]);
@@ -63,7 +66,7 @@ export function useTravelSelection(game: GameState, handlers: {
     return targetFor({ kind: "place", placeId });
   }
   const describe = (target: TargetChoices, openEventId: string | null) =>
-    announcement(target, target.kind === "place" ? nameOf(target.placeId) : "滞在先", openEventId);
+    (options.announce ?? announcement)(target, target.kind === "place" ? nameOf(target.placeId) : "滞在先", openEventId);
 
   function apply(result: PressResult, target: TargetChoices, job: Omit<ScrollJob, "scroll" | "target">) {
     const { effect } = result;
@@ -183,6 +186,19 @@ export function useTravelSelection(game: GameState, handlers: {
     isSelected: (target: SelectionTarget) => !!selection && (target.kind === "sleep" ? selection.target.kind === "sleep"
       : selection.target.kind === "place" && selection.target.placeId === target.placeId),
     pressName: (placeId: string, kind: PressKind, scope: PressScope = "page") => onTarget(targetFor({ kind: "place", placeId }), kind, "name", scope),
+    /**
+     * Selects a place and nothing else, as a marker's press does (B案's photo cards: the card in the row's centre is
+     * the selection; a card never travels). No scroll; `quiet` leaves the live regions as they are (a selection the
+     * screen makes by itself, not one the player made).
+     */
+    choose: (placeId: string, { quiet = false }: { quiet?: boolean } = {}) => {
+      const target = targetFor({ kind: "place", placeId });
+      if (!target) return;
+      const result = pressTarget(selectionRef.current, target, { ...press("pointer"), source: "marker" });
+      if (!result.selection || result.selection === selectionRef.current) return;
+      set(result.selection);
+      if (!quiet) say(describe(target, null));
+    },
     pressSleep: (kind: PressKind) => onTarget(targetFor({ kind: "sleep" }), kind, "name", "page"),
     pressMarker: (placeId: string, kind: PressKind, mapStuck: boolean, scope: PressScope = "page") => onTarget(markerTarget(placeId), kind, "marker", scope, mapStuck),
     pressEvent: (placeId: string, eventId: string, kind: PressKind, scope: PressScope = "page") => {

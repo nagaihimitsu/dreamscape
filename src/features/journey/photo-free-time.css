@@ -1,0 +1,321 @@
+/* B案「写真札で旅先を選ぶ」 (docs/02 「自由時間の画面」). Every text sits on its own opaque card over the background;
+   pressables keep the redesign's shape (a 1.5-px slate edge, 12-px corners), display-only pills have no edge, and no
+   card has a thick accent line on its left (AGENTS.md). */
+
+.free-time-hub.photo-free-time { max-width: 680px; }
+
+/* The background: a map-like pattern (faint streets, an avenue, a river and a park), not a real map; decoration only,
+   in the same fixed layer as the previous screen's photo (free-time-hub.css). */
+.photo-backdrop {
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100lvh;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 140px 90px at 82% 26%, rgba(86, 128, 80, 0.13), transparent 70%),
+    linear-gradient(158deg, transparent 0 57%, rgba(84, 132, 160, 0.17) 57% 60.5%, transparent 60.5%),
+    repeating-linear-gradient(34deg, transparent 0 168px, rgba(107, 90, 74, 0.09) 168px 171px),
+    repeating-linear-gradient(0deg, transparent 0 46px, rgba(107, 90, 74, 0.06) 46px 47px),
+    repeating-linear-gradient(90deg, transparent 0 46px, rgba(107, 90, 74, 0.06) 46px 47px),
+    var(--ds-parchment-2);
+}
+
+/* The heading (display only) and, beside it, 「地図」 (the expanded map). */
+.photo-heading { display: flex; align-items: stretch; gap: 8px; }
+.photo-heading .free-time-banner { flex: 1 1 auto; min-width: 0; }
+.photo-map-open {
+  display: inline-flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 52px;
+  min-height: 44px;
+  margin: 0;
+  padding: 4px 8px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.1;
+  cursor: pointer;
+}
+.photo-map-open .icon { width: 20px; height: 20px; color: var(--ds-slate-800); }
+
+.photo-menu { display: flex; flex-direction: column; gap: 8px; }
+.photo-menu-note {
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  box-shadow: var(--ds-pill-shadow);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* The cards' width follows the stage's width (container units), so about three show in a phone's row. */
+.photo-stage { position: relative; container-type: inline-size; }
+
+/* The row: a full-width horizontal scroller (the screen's only one) that snaps a card to its centre. The spacers
+   before the first card and after the last let either end reach the centre. */
+.photo-cards {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  /* Room inside the scroller for the focus ring and the chosen card's lift. */
+  padding: 8px 0 12px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  list-style: none;
+  touch-action: manipulation;
+}
+.photo-cards::before,
+.photo-cards::after {
+  content: "";
+  flex: 0 0 22%;
+  flex-basis: calc(50cqi - clamp(112px, 40cqi, 220px) / 2 - 10px);
+}
+.photo-cards > li {
+  display: flex;
+  flex: 0 0 40%;
+  flex-basis: clamp(112px, 40cqi, 220px);
+  min-width: 0;
+  scroll-snap-align: center;
+}
+/* Fingers scroll the row; a mouse keeps the scrollbar. */
+@media (pointer: coarse) {
+  .photo-cards { scrollbar-width: none; }
+  .photo-cards::-webkit-scrollbar { display: none; }
+}
+
+/* A photo card: pressable (its edge), a white mat around the photo, the name and one line under it. Chosen: a
+   thicker edge drawn inside (the size never changes), the darker parchment, a lift and the ◆ badge. */
+.photo-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 4px 4px 8px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: #fffdf8;
+  color: var(--ds-ink);
+  box-shadow: 0 2px 8px rgba(40, 30, 20, 0.18);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.photo-card[aria-current="true"] {
+  background: var(--ds-parchment-2);
+  box-shadow: inset 0 0 0 1.5px var(--ds-slate-800), 0 3px 9px rgba(40, 30, 20, 0.3);
+}
+.photo-card-photo {
+  position: relative;
+  display: block;
+  flex: none;
+  overflow: hidden;
+  aspect-ratio: 3 / 2;
+  border-radius: 8px;
+  background: var(--ds-parchment-2);
+}
+.photo-card-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.photo-card-plain {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 26px;
+}
+.photo-card-plain .icon { width: 32px; height: 32px; }
+/* No filter on photos (their pixels stay as credited): a cannot-go card only fades its photo. */
+.photo-card.is-unavailable .photo-card-photo > img,
+.photo-card.is-unavailable .photo-card-plain { opacity: 0.55; }
+.photo-card.is-unavailable .photo-card-name { color: var(--ds-ink-muted); }
+/* Status over the photo: display-only pills on a solid ground. */
+.photo-card-chip {
+  position: absolute;
+  max-width: calc(100% - 8px);
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--ds-chip-bg);
+  color: var(--ds-on-slate);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.photo-card-chip.is-top { top: 4px; right: 4px; }
+.photo-card-chip.is-bottom { bottom: 4px; left: 4px; }
+.photo-card-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 6px 4px 0; }
+.photo-card-name {
+  font-family: "Noto Serif JP", serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.photo-card-name .travel-selected-badge { margin-right: 4px; vertical-align: 1px; }
+.photo-card-summary { color: var(--ds-ink-muted); font-size: 12px; line-height: 1.4; overflow-wrap: anywhere; }
+
+/* The hidden reference card (row or list): a row card's size at the current text size. */
+.photo-card-probe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  width: clamp(112px, 40cqi, 220px);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* The list (short screens, large text, sideways): one card per line, the photo at the left; the chosen row's
+   introduction card opens under it. */
+.photo-cards.is-list { flex-direction: column; gap: 6px; padding: 0; overflow: visible; scroll-snap-type: none; }
+.photo-cards.is-list::before,
+.photo-cards.is-list::after { content: none; }
+.photo-cards.is-list > li { display: block; flex: none; }
+.photo-cards.is-list .photo-card { flex-direction: row; align-items: flex-start; gap: 10px; padding: 6px; }
+.photo-cards.is-list .photo-card-photo { flex: 0 0 96px; width: 96px; }
+.photo-cards.is-list .photo-card-text { flex: 1 1 auto; padding: 2px 0 0; }
+.photo-cards.is-list .place-card { margin-top: 6px; }
+
+/* The introduction card. */
+.place-card {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 16px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  box-shadow: var(--ds-card-shadow);
+  touch-action: manipulation;
+}
+.place-card .place-card-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-family: "Noto Serif JP", serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+}
+.place-card .place-card-name > span:last-child { min-width: 0; overflow-wrap: anywhere; }
+.place-card-event { display: grid; gap: 4px; }
+.place-card-event + .place-card-event { padding-top: 8px; border-top: 1px solid var(--ds-parchment-line); }
+.place-card-event-title { font-size: 14px; font-weight: 600; line-height: 1.45; overflow-wrap: anywhere; }
+.place-card-event-meta { color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }
+.place-card-hook { font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+.place-card-note { color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }
+.place-card .fine-print { margin: 0 2px; color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }
+
+/* The way: the modes in one row (pressing one only chooses it), then the one button that goes. */
+.place-card-ways { display: grid; gap: 6px; margin-top: 2px; }
+.place-card-modes { display: flex; gap: 6px; }
+.place-card-mode {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 44px;
+  margin: 0;
+  padding: 4px 6px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+.place-card-mode[aria-pressed="true"] { background: var(--ds-slate-800); color: var(--ds-on-slate); }
+.place-card-mode:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); cursor: default; }
+.place-card .place-card-go {
+  flex-wrap: wrap;
+  gap: 2px 10px;
+  min-height: 48px;
+  margin: 0;
+  padding: 8px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.place-card-go > span { min-width: 0; overflow-wrap: anywhere; }
+.place-card-go-cost { margin-left: auto; font-size: 13px; font-weight: 500; }
+
+/* The small map: display only (a swipe over it scrolls the page), its credit's link the one thing to press. Leaflet's
+   own layers (z-index 400–1000) stay inside it. */
+.place-card-map { display: grid; gap: 2px; }
+.place-inset { display: grid; gap: 2px; }
+.place-inset-map {
+  height: 120px;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 10px;
+  background: #e8ece8;
+  isolation: isolate;
+  pointer-events: none;
+}
+.place-inset-map .leaflet-control-attribution { pointer-events: auto; font-size: 10px; }
+.place-inset-map .travel-map-marker-label { --map-label-max: 150px; }
+.place-inset-map .travel-map-marker-label.is-below { top: calc(100% + 4px); bottom: auto; }
+.place-inset-error { font-size: 12px; line-height: 1.5; }
+.place-card-direction { color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }
+
+/* The bottom band: an icon over a small word, as many as lead somewhere now. */
+.travel-band.photo-band .travel-band-row { justify-content: center; gap: 6px; }
+.travel-band.photo-band .travel-band-row > :not(.sr-only) { flex: 1 1 0; min-width: 0; max-width: 104px; }
+.travel-band.photo-band .travel-wait summary,
+.travel-band.photo-band .travel-sleep-toggle,
+.travel-band.photo-band .photo-band-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 100%;
+  min-height: 52px;
+  margin: 0;
+  padding: 4px 2px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+}
+.travel-band.photo-band .travel-wait[open] summary,
+.travel-band.photo-band .travel-sleep-toggle.is-selected { background: var(--ds-parchment-2); }
+.travel-band.photo-band .travel-sleep-toggle.is-selected { border-width: 2px; }
+/* 休む's ways home grow upward from the band, at most to the header. */
+.travel-band.photo-band .travel-band-sleep { max-height: max(96px, calc(100svh - var(--hud-h, 96px) - var(--bottom-h, 60px) - 8px)); }
+
+/* The date sheet: the same cards in a dialog. */
+dialog.modal.photo-date-sheet {
+  --modal-pad-top: 16px;
+  --modal-pad-inline: 12px;
+  width: min(680px, calc(100% - 24px));
+  max-width: none;
+  max-height: calc(100dvh - 24px);
+}
+.photo-date-sheet .modal-title-bar { margin-bottom: 4px; }

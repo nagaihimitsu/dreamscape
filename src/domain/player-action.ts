@@ -41,7 +41,8 @@ export function applyPlayerAction(previous: GameState, change: (state: GameState
  * page turning) are not actions.
  */
 export type PlayerAction =
-  // Free time: TravelMenu (TravelRentals: 借りる; TravelTours: 予約する・予約を取り消す), FreeTimeHub, TravelActions (待機・休む), PendingRewards, CityProgress.
+  // Free time (FreeTimeHub; B案's PhotoCardFreeTime, the previous MapListFreeTime alike): PlaceCard's ways (TravelMenu's rows before;
+  // TravelRentals: 借りる; TravelTours: 予約する・予約を取り消す), FreeTimeBand or TravelActions (待機・休む), FreeTimeExtras (PendingRewards, 出発), CityProgress.
   | { kind: "travel"; eventId: string; mode: TravelMode }
   | { kind: "rent"; modeId: string }
   | { kind: "book_tour"; tourId: string; offerId: string }

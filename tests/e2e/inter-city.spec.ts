@@ -38,7 +38,8 @@ test("finishing a journey's first city reads its ending and moves the journey to
   }, { source });
   const menu = page.getByTestId("travel-menu");
   await expect(menu).toHaveAttribute("aria-label", `${to.nameJa}の行き先`);
-  await expect(page.getByTestId("travel-map-canvas")).toBeVisible();
+  // The next city's photo cards, the first one chosen with its small map.
+  await expect(menu.getByTestId("place-inset-map")).toBeVisible();
   await expect(page.getByTestId(`travel-place-${mainPlaces(to.id)[0]}`)).toHaveCount(1);
   for (const placeId of mainPlaces(from.id)) await expect(page.getByTestId(`travel-place-${placeId}`)).toHaveCount(0);
   expectNoActiveScene(arrived);

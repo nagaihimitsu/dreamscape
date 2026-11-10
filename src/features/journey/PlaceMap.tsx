@@ -20,8 +20,13 @@ type Place = TravelPlace;
 type MapView = { center: L.LatLng; zoom: number };
 type MarkerPress = (placeId: string, kind: PressKind) => void;
 
-const escapeHtml = (text: string) => text.replace(/[&<>"']/gu, (char) => `&#${char.charCodeAt(0)};`);
-const reducedMotion = () => !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+export const escapeHtml = (text: string) => text.replace(/[&<>"']/gu, (char) => `&#${char.charCodeAt(0)};`);
+export const reducedMotion = () => !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+/** The public OSM tiles every map uses, with their credit (shown on each map). */
+export const OSM_TILES = {
+  url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+};
 
 /** Both map sizes use the same tiles, markers and selection behavior. */
 function MapCanvas({ game, events, places, selectedId, onMarker, onFocusEnd, mapRef, initialView, expanded = false, onTilesFailed }: Props & {
@@ -57,10 +62,7 @@ function MapCanvas({ game, events, places, selectedId, onMarker, onFocusEnd, map
     if (zoomOut) zoomOut.title = "地図を縮小";
     // The public OSM service supplies interactive tiles on demand; do not prefetch.
     let errors = 0;
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
-    }).on("tileerror", () => {
+    L.tileLayer(OSM_TILES.url, { maxZoom: 19, attribution: OSM_TILES.attribution }).on("tileerror", () => {
       if (++errors < 2) return;
       setTilesFailed(true);
       onTilesFailed?.();
@@ -177,8 +179,61 @@ function MapLegend() {
 }
 
 /** The live region of the selection (cleared before each text, so a repeated text is read again). */
-function Announce({ message, testId }: { message: { text: string; key: number }; testId: string }) {
+export function Announce({ message, testId }: { message: { text: string; key: number }; testId: string }) {
   return <p className="sr-only" aria-live="polite" data-testid={testId}>{message.text && <span key={message.key}>{message.text}</span>}</p>;
+}
+
+/**
+ * The places a map marks (the hotel, the current place and each candidate event's), in the list's order when the
+ * destinations are given (current place, nearby, other, hotel), so Tab follows the list.
+ */
+export function mapPlaces(game: GameState, events: readonly TravelEvent[], destinations?: { nearby: readonly { id: string }[]; other: readonly { id: string }[] }): Place[] {
+  const { travel } = getCityContent(game.currentCityId);
+  const shown = travel.places.filter((place) =>
+    place.id === game.travel.hotelPlaceId || place.id === game.travel.currentPlaceId || events.some((event) => event.placeId === place.id));
+  if (!destinations) return shown;
+  const order = [game.travel.currentPlaceId, ...destinations.nearby.map((place) => place.id), ...destinations.other.map((place) => place.id), game.travel.hotelPlaceId];
+  const rank = (id: string) => { const index = order.indexOf(id); return index < 0 ? order.length : index; };
+  return [...shown].sort((a, b) => rank(a.id) - rank(b.id));
+}
+
+/**
+ * The expanded map (UI redesign §3.5): every marker, the legend, 「地点を名前で探す」 (U12: choosing a name selects, it
+ * never travels) and, in free time, the live region and the slot 「選んだ行き先」. Opened from the map block's 「大きく」
+ * (PlaceMap) and from B案's 「地図」 (PhotoCardFreeTime).
+ */
+export function PlaceMapDialog({ game, events, places, selectedId, onMarker, onFocusEnd, mapRef, initialView = null, onClose, selection }: Props & {
+  places: Place[];
+  selectedId: string | null;
+  onMarker: MarkerPress;
+  onFocusEnd?: (until: number) => void;
+  mapRef?: { current: L.Map | null };
+  initialView?: MapView | null;
+  onClose: () => void;
+  selection?: { message: { text: string; key: number }; slot: ReactNode };
+}) {
+  const { city } = getCityContent(game.currentCityId);
+  const ownMapRef = useRef<L.Map | null>(null);
+  return <Modal labelledBy="travel-map-expanded-title" className="travel-map-modal" onClose={onClose}>
+    <div className="travel-map-modal-heading"><h2 id="travel-map-expanded-title">{city.nameJa}の地図</h2><button type="button" className="secondary" onClick={onClose}>閉じる</button></div>
+    <div className="travel-map-modal-body">
+      <div className="travel-map-modal-map">
+        <MapCanvas game={game} events={events} places={places} selectedId={selectedId} onMarker={onMarker} onFocusEnd={onFocusEnd} mapRef={mapRef ?? ownMapRef} initialView={initialView} expanded />
+      </div>
+      <MapLegend />
+      <label className="travel-map-modal-place">地点を名前で探す <select data-testid="map-place-select" value={selectedId ?? ""}
+        onChange={(event) => { if (event.currentTarget.value) onMarker(event.currentTarget.value, "pointer"); }}>
+        <option value="">地点を選択</option>{places.map((place) => <option key={place.id} value={place.id}>{placeDisplayName(game, place)}</option>)}
+      </select></label>
+      {selection && <>
+        <Announce message={selection.message} testId="map-announce" />
+        <section className="travel-map-selection" data-testid="map-selection" aria-label="選んだ行き先">
+          <h3>選んだ行き先</h3>
+          {selection.slot}
+        </section>
+      </>}
+    </div>
+  </Modal>;
 }
 
 /**
@@ -192,7 +247,7 @@ export function PlaceMap({ game, events, selection, children }: Props & {
   selection?: { api: TravelSelectionApi; slot: ReactNode };
   children?: ReactNode;
 }) {
-  const { city, travel } = getCityContent(game.currentCityId);
+  const { travel } = getCityContent(game.currentCityId);
   const api = selection?.api;
   const [expanded, setExpanded] = useState(false);
   const [tilesFailed, setTilesFailed] = useState(false);
@@ -201,15 +256,10 @@ export function PlaceMap({ game, events, selection, children }: Props & {
   const expandedMapRef = useRef<L.Map | null>(null);
   const blockRef = useRef<HTMLDivElement>(null);
   const initialView = useRef<MapView | null>(null);
-  const places = useMemo(() => {
-    const shown = travel.places.filter((place) =>
-      place.id === game.travel.hotelPlaceId || place.id === game.travel.currentPlaceId || events.some((event) => event.placeId === place.id));
-    if (!api) return shown;
-    // Markers in the list's order (current place, nearby, other, hotel), so Tab follows the list.
-    const order = [game.travel.currentPlaceId, ...api.destinations.nearby.map((place) => place.id), ...api.destinations.other.map((place) => place.id), game.travel.hotelPlaceId];
-    const rank = (id: string) => { const index = order.indexOf(id); return index < 0 ? order.length : index; };
-    return [...shown].sort((a, b) => rank(a.id) - rank(b.id));
-  }, [travel.places, game.travel.hotelPlaceId, game.travel.currentPlaceId, events, api]);
+  // Markers in the list's order (current place, nearby, other, hotel), so Tab follows the list. mapPlaces reads only
+  // the city's places and these ids of the game.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const places = useMemo(() => mapPlaces(game, events, api?.destinations), [travel.places, game.travel.hotelPlaceId, game.travel.currentPlaceId, events, api]);
   const selectedId = api ? api.selectedMarkerId : localSelected;
 
   function openExpanded() {
@@ -256,26 +306,7 @@ export function PlaceMap({ game, events, selection, children }: Props & {
       {api && <Announce message={api.message} testId="travel-announce" />}
     </div>
     {children}
-    {expanded && <Modal labelledBy="travel-map-expanded-title" className="travel-map-modal" onClose={closeExpanded}>
-      <div className="travel-map-modal-heading"><h2 id="travel-map-expanded-title">{city.nameJa}の地図</h2><button type="button" className="secondary" onClick={closeExpanded}>閉じる</button></div>
-      <div className="travel-map-modal-body">
-        <div className="travel-map-modal-map">
-          <MapCanvas game={game} events={events} places={places} selectedId={selectedId} onMarker={press("dialog")} onFocusEnd={api?.focusEnd} mapRef={expandedMapRef} initialView={initialView.current} expanded />
-        </div>
-        <MapLegend />
-        {/* U12: choosing a name here is a first press (it selects and shows the place); it never travels. */}
-        <label className="travel-map-modal-place">地点を名前で探す <select data-testid="map-place-select" value={selectedId ?? ""}
-          onChange={(event) => { if (event.currentTarget.value) press("dialog")(event.currentTarget.value, "pointer"); }}>
-          <option value="">地点を選択</option>{places.map((place) => <option key={place.id} value={place.id}>{placeDisplayName(game, place)}</option>)}
-        </select></label>
-        {api && <>
-          <Announce message={api.message} testId="map-announce" />
-          <section className="travel-map-selection" data-testid="map-selection" aria-label="選んだ行き先">
-            <h3>選んだ行き先</h3>
-            {selection.slot}
-          </section>
-        </>}
-      </div>
-    </Modal>}
+    {expanded && <PlaceMapDialog game={game} events={events} places={places} selectedId={selectedId} onMarker={press("dialog")} onFocusEnd={api?.focusEnd}
+      mapRef={expandedMapRef} initialView={initialView.current} onClose={closeExpanded} selection={api && selection ? { message: api.message, slot: selection.slot } : undefined} />}
   </>;
 }

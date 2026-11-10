@@ -56,7 +56,7 @@ type SampleRoute = ReturnType<typeof sampleRoute>;
 
 /**
  * Go to a place like a player: by the rented mode when a route of it leads there
- * (the row's inline choices list walking and the rental), else walking.
+ * (the introduction card's modes list walking and the rental), else walking.
  */
 async function goToPlace(page: Page, route: SampleRoute, placeId: string) {
   const state = await readSave(page, JOURNEY);
@@ -104,8 +104,8 @@ test("the sample journey plays from a new journey through its city finale and ep
   expect(await ops.readTravelers(page)).toContain("ユウ");
   expect(await readSave(page, JOURNEY)).toMatchObject({ currentCityId: route.city.id, ap: 0 });
   await expect(page.getByLabel("残り0AP")).toBeVisible();
-  // The city's free-time backdrop (cities/<city>.json backdropAssetId): the reduced copy that content:build
-  // derives from the photo loads on the free-time page, where the screen shows it as its background.
+  // The city's free-time backdrop (cities/<city>.json backdropAssetId): content:build derives its reduced copy from
+  // the photo. B案's screen draws a map-like pattern instead; the previous screen (MapListFreeTime) shows this copy.
   const backdropId = generated<{ backdropAssetId?: string }>(`cities/${route.city.id}.json`).backdropAssetId;
   expect(backdropId, "the sample city's backdropAssetId").toBeDefined();
   const backdrop = await page.evaluate(async (src) => {
@@ -116,24 +116,17 @@ test("the sample journey plays from a new journey through its city finale and ep
   }, derivedImageFile(JOURNEY, backdropId!, "backdrop"));
   // The sample's photo is 240×160 px; a backdrop copy is never enlarged.
   expect(backdrop).toEqual({ width: 240, height: 160 });
-  // The free-time screen shows that copy as its background (UI step 1.5).
-  const shown = page.getByTestId("free-time-backdrop").locator("img");
-  await expect(shown).toHaveAttribute("src", new RegExp(`${derivedImageFile(JOURNEY, backdropId!, "backdrop").replaceAll(".", "\\.")}$`));
-  await expect.poll(() => shown.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth)).toBe(240);
 
   // 0. (Optional part) The rental bicycle. Its route is listed but closed until the
   // bicycle is rented at the hotel; renting asks once more, pays once and takes no time.
   const rental = route.rental;
   if (rental) {
     const { offer, mode } = rental;
-    await ops.selectDestination(page, route.episode.placeId);
-    const choices = page.getByTestId(`travel-choices-${route.episode.placeId}`);
-    await expect(choices.locator(`[data-testid^="travel-route-"][data-testid$="-${mode.id}"]`)).toBeDisabled();
-    await expect(choices).toContainText(`${mode.nameJa}は滞在先で借りると乗れます。`);
-    await expect(choices.locator('[data-testid^="travel-route-"][data-testid$="-walk"]')).toBeEnabled();
+    const card = await ops.selectDestination(page, route.episode.placeId);
+    await expect(card.locator(`[data-testid^="travel-mode-"][data-testid$="-${mode.id}"]`)).toBeDisabled();
+    await expect(card).toContainText(`${mode.nameJa}は滞在先で借りると乗れます。`);
+    await expect(card.locator('[data-testid^="travel-mode-"][data-testid$="-walk"]')).toBeEnabled();
     await expect(page.getByRole("dialog")).toHaveCount(0);
-    await choices.getByTestId("travel-choices-close").click();
-    await expect(choices).toHaveCount(0);
     const before = await readSave(page, JOURNEY);
     await page.getByTestId("travel-rentals").getByRole("button", { name: `${mode.nameJa}を借りる`, exact: true }).click();
     await expect(page.getByRole("dialog", { name: "乗り物を借りる" })).toBeVisible();
@@ -153,11 +146,14 @@ test("the sample journey plays from a new journey through its city finale and ep
   // stall comes first, before the visit's main part (its head tags: priority -1): the
   // bookmark is received; then the guide opens.
   if (rental) {
-    // The first press selects the place; once armed (a timer of the page's clock), the bicycle is chosen.
-    const row = await ops.selectDestination(page, route.episode.placeId);
-    await expect(row).toHaveAttribute("data-armed", "true");
+    // The card selects the place; the bicycle is chosen among its modes, and once armed (a timer of the page's clock)
+    // the card's 「行く」 goes.
+    const card = await ops.selectDestination(page, route.episode.placeId);
+    await card.getByTestId(new RegExp(`^travel-mode-.+-${rental.mode.id}$`, "u")).click();
+    await expect(ops.wayButton(card)).toHaveAttribute("data-mode", rental.mode.id);
+    await expect(card).toHaveAttribute("data-armed", "true");
     const hotel = (await readSave(page, JOURNEY)).travel.currentPlaceId;
-    await page.getByTestId(`travel-choices-${route.episode.placeId}`).getByTestId(new RegExp(`^travel-route-.+-${rental.mode.id}$`, "u")).click();
+    await ops.wayButton(card).click();
     // The first ride's scene (stage 4: the trip's moment) comes at the hotel, before the party moves. Its last line ends it
     // with the clock held: the move follows in that action, and its transition plays from the occasion's mark.
     await expect(page.getByTestId("encounter-screen")).toBeVisible();
