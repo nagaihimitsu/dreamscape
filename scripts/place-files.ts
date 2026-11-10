@@ -18,8 +18,11 @@ import { AFTER_PARTS, type AfterPart, type RelationshipDelta, type SceneAt, type
 
 export const PLACE_HEAD_TAGS = ["scene", "title", "at", "priority", "when", "until", "repeat", "person", "on_done", "then", "sources"] as const;
 export const CHOICE_EFFECT_TAGS = ["requires", "give", "use", "rel", "profile", "memory", "effect", "set", "money", "ap", "then", "later"] as const;
-/** Kinds a place file may hold (a hotel's place file may hold its city's arrival and epilogue knots; their moments' talks may be in any place file). */
-export const PLACE_KINDS: readonly SceneKind[] = ["talk", "encounter", "guide", "battle", "date", "arrival", "epilogue"];
+/**
+ * Kinds a place file may hold (a hotel's place file may hold its city's arrival and epilogue knots; their moments' talks may be in any place
+ * file; a tour's file, `places/<tourId>`, holds its legs' narrations, `tour_leg`).
+ */
+export const PLACE_KINDS: readonly SceneKind[] = ["talk", "encounter", "guide", "battle", "date", "arrival", "epilogue", "tour_leg"];
 /** The game's include line and the line after it (the file's top runs nothing). */
 export const PLACE_TOP = ["INCLUDE modules.ink", "-> DONE"] as const;
 
@@ -344,7 +347,7 @@ export function parseDone(values: readonly string[], apCap: number): SceneDone {
   return done;
 }
 
-/** The moments of 2.3 (stage 4 added all but the visits; tours come later, A3). */
+/** The moments of 2.3 (stage 4 added all but the visits; tour stages 2b and 3 add a tour's steps). */
 const AT_FORMS: { pattern: RegExp; read: (match: RegExpExecArray) => SceneAt }[] = [
   { pattern: /^visit\s+([a-z][a-z0-9_]*)$/u, read: (match) => ({ visit: match[1] }) },
   { pattern: /^place\s+([a-z][a-z0-9_]*)$/u, read: (match) => ({ place: match[1] }) },
@@ -355,6 +358,7 @@ const AT_FORMS: { pattern: RegExp; read: (match: RegExpExecArray) => SceneAt }[]
   { pattern: /^arrive\s+([a-z][a-z0-9_]*)$/u, read: (match) => ({ arrive: match[1] }) },
   { pattern: /^hotel(?:\s+([a-z][a-z0-9_]*))?$/u, read: (match) => ({ hotel: match[1] ?? "any" }) },
   { pattern: /^ticket\s+([a-z][a-z0-9_]*)$/u, read: (match) => ({ ticket: match[1] }) },
+  { pattern: /^tour\s+([a-z][a-z0-9_]*)\s+([a-z][a-z0-9_]*)$/u, read: (match) => ({ tour: match[1], step: match[2] }) },
   { pattern: /^trip\s+([a-z][a-z0-9_]*)((?:\s+(?:from|to)\s+[a-z][a-z0-9_]*)*)$/u, read: (match) => {
     const words = match[2].trim().split(/\s+/u).filter(Boolean);
     const at: SceneAt = { trip: match[1] };
@@ -373,17 +377,19 @@ export function parseAt(value: string): SceneAt {
     const match = form.pattern.exec(value.trim());
     if (match) return form.read(match);
   }
-  if (/^tour\s/u.test(value.trim())) throw new Error(`# at: ${value} is not available yet (tours come with stage 6)`);
   throw new Error(`# at: takes visit <landmark>, visit any, place <place>, date <date>, finale <city>, epilogue <city>, depart <city>, ` +
-    `arrive <city>, hotel [<place>], trip <mode> [from <place>] [to <place>] or ticket <place>: ${value}`);
+    `arrive <city>, hotel [<place>], trip <mode> [from <place>] [to <place>], ticket <place> or tour <tour> <step>: ${value}`);
 }
 
-/** The positions each moment has (2.3): which `after <part>`, and whether it has a positive side. A2: a position the moment lacks stops. */
+/**
+ * The positions each moment has (2.3): which `after <part>`, and whether it has a positive side. A2: a position the moment lacks stops.
+ * A tour step's `after leg` is a leg's only (the scene table knows the step's kind).
+ */
 export function positionProblem(at: SceneAt, priority: number | `after ${AfterPart}` | undefined): string | undefined {
   const kind = Object.keys(at)[0] as string;
   const afters: Record<string, readonly AfterPart[]> = {
     visit: ["guide", "observe", "battle"], place: ["guide", "observe", "battle", "date"], date: ["date"], finale: ["battle"], arrive: ["logo"],
-    epilogue: [], depart: [], hotel: [], trip: [], ticket: [],
+    epilogue: [], depart: [], hotel: [], trip: [], ticket: [], tour: ["leg"],
   };
   const name = Object.entries(at).map(([key, value]) => `${key} ${value}`).join(" ");
   if (typeof priority === "string") {

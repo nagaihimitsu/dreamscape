@@ -4,6 +4,7 @@ import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import { activeEpilogueStoryId } from "../../domain/epilogue";
 import { getNextCity } from "../../domain/city-travel";
+import { tourLegUnderway } from "../../domain/tour";
 import { getJourneyForCity } from "../../content/journeys";
 import type { GameState } from "../../domain/game";
 import { DialogueText } from "../../components/DialogueText";
@@ -43,14 +44,16 @@ export function EpilogueScreen({
 }) {
   const active = game.activeEpilogue!;
   const arrival = active.kind === "arrival";
+  // A tour leg's narration (tour stage 2b) is read here too: its leg names it, and its end goes on with the tour.
+  const leg = active.kind === "tour_leg" ? tourLegUnderway(game) : undefined;
   const showLogo = arrival && !active.logoComplete;
   const city = getCityContent(game.currentCityId).city;
   const nextCity = getJourneyForCity(game.currentCityId)?.cityTransition === "after_epilogue" ? getNextCity(game) : undefined;
   const windowVisibility = useDialogueWindow();
   const dialogueRef = useDialogueScrollReset<HTMLDivElement>(active.storyState);
   const frame = active.frame;
-  const episode = episodes.find((item) => item.id === active.episodeId)!;
-  const storyId = activeEpilogueStoryId(active) ?? episode.epilogueStoryId!;
+  const episode = episodes.find((item) => item.id === active.episodeId);
+  const storyId = activeEpilogueStoryId(active) ?? episode?.epilogueStoryId ?? "";
   const reaction = resolveDialogueReaction(dialogueReactions, storyId, frame, "heroine");
   const speaker =
     frame.speaker === "heroine"
@@ -58,8 +61,13 @@ export function EpilogueScreen({
       : frame.speaker === "player"
         ? game.playerName
         : frame.speaker === "enemy"
-          ? battles.find((battle) => battle.id === episode.battleId)?.enemyNameJa ?? "旅の風景"
+          ? battles.find((battle) => battle.id === episode?.battleId)?.enemyNameJa ?? "旅の風景"
           : "旅の風景";
+  const label = active.kind === "tour_leg"
+    ? { eyebrow: "ツアー", heading: leg?.labelJa ?? "ツアーの移動", region: "ツアーの移動の語り", next: "ツアーを続ける", testId: "tour-leg-screen" }
+    : arrival ? { eyebrow: "旅のはじまり", heading: `${city.nameJa}に到着`, region: "到着の会話", next: "街を見に行く", testId: "city-arrival-screen" }
+      : { eyebrow: "都市エピローグ", heading: episode?.clearTitleJa ?? "", region: "都市エピローグ",
+        next: nextCity ? `${nextCity.city.nameJa}へ進む` : "ふたりの自由時間へ", testId: "city-epilogue-screen" };
   const { ready, onReady, entries } = useDialogueLog(
     active.episodeId,
     game.revision,
@@ -83,7 +91,7 @@ export function EpilogueScreen({
       ?.scrollIntoView({ block: "start" });
   }, []);
   return (
-    <div id="city-epilogue-screen" data-testid={arrival ? "city-arrival-screen" : "city-epilogue-screen"}>
+    <div id="city-epilogue-screen" data-testid={label.testId}>
       {showLogo && <CityArrivalLogo nameJa={city.nameJa} reduceMotion={reduceMotion} onEnd={onLogoComplete ?? (() => undefined)} />}
       <div className="vn-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} {...sceneTap.props}>
         <div className="vn-background" data-testid="scene-picture">
@@ -92,8 +100,8 @@ export function EpilogueScreen({
         <div className="vn-character-layer">
           <CharacterPortrait
             characterId="heroine"
-            sceneId={episode.id}
-            cityId={episode.cityId}
+            sceneId={active.episodeId}
+            cityId={episode?.cityId ?? game.currentCityId}
             emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame)}
             active={frame.speaker === "heroine"}
           >
@@ -102,7 +110,7 @@ export function EpilogueScreen({
         </div>
         <section
           className="paper story-paper vn-dialogue"
-          aria-label={arrival ? "到着の会話" : "都市エピローグ"}
+          aria-label={label.region}
           inert={windowVisibility.hidden || showLogo}
           aria-hidden={windowVisibility.hidden || showLogo || undefined}
         >
@@ -112,9 +120,9 @@ export function EpilogueScreen({
             controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
           />
           <div ref={dialogueRef} className="vn-window-body">
-          <p className="eyebrow">{arrival ? "旅のはじまり" : "都市エピローグ"}</p>
+          <p className="eyebrow">{label.eyebrow}</p>
           {/* Takes a lost focus when the talk opens (scene-focus.ts); inert under an arrival's title card. */}
-          <h1 tabIndex={-1}>{arrival ? `${city.nameJa}に到着` : episode.clearTitleJa}</h1>
+          <h1 tabIndex={-1}>{label.heading}</h1>
           <DialogueText
             key={game.revision}
             ref={sceneTap.line}
@@ -130,7 +138,7 @@ export function EpilogueScreen({
             data-testid={arrival ? "arrival-advance" : "epilogue-advance"}
             onClick={advanceSafely}
           >
-            {arrival ? "街を見に行く" : nextCity ? `${nextCity.city.nameJa}へ進む` : "ふたりの自由時間へ"}{" "}
+            {label.next}{" "}
             <span aria-hidden="true">→</span>
           </button>}
           </div>

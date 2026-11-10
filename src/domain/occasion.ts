@@ -1,16 +1,16 @@
-import { battles, dates, episodes, getCityContent, landmarks } from "../content";
+import { battles, dates, episodes, getCityContent, getTour, landmarks } from "../content";
 import { landmarkParts } from "../content/tourism-schemas";
 import { secureRomanceRoll } from "../random/romance-source";
 import { startVisitBattle } from "./battle";
 import { battlePlayed } from "./conditions";
 import { beginMomentScene, momentSceneEligible, nextObservationScene, sceneSchedule, visitedLandmarkOfEvent } from "./encounter";
-import { beginArrival, beginCityEpilogue, canBeginArrival, canStartAuthoredEpilogue, epilogueOpening, startCityEpilogue } from "./epilogue";
+import { beginArrival, beginCityEpilogue, beginTourLegNarration, canBeginArrival, canStartAuthoredEpilogue, epilogueOpening, startCityEpilogue } from "./epilogue";
 import { canDepart, departToNextCity, leaveForNextCity, registerMomentOpeners } from "./city-travel";
 import { startDate } from "./game";
-import { eventCity, eventPlace, momentHasScenes, momentSchedule, tripMoment, type Moment, type MomentSchedule } from "./moments";
+import { eventCity, eventPlace, momentHasScenes, momentSchedule, narrationAt, tourMoment, tripMoment, type Moment, type MomentSchedule } from "./moments";
 import { DAY_START, getGameWeekday, planTravelEvent } from "./travel";
 import type { GameState } from "./game-state-schema";
-import type { Occasion, OccasionPart, OccasionThen, OccasionTrip } from "./occasion-state";
+import type { Occasion, OccasionPart, OccasionThen, OccasionTour, OccasionTrip } from "./occasion-state";
 import { mainPartPayments, mainScene, runningMainPayment, tourKeepBack, type Payment } from "./reservations";
 import { beginLandmarkGuide, beginLandmarkObservation } from "./tourism";
 import { cheapestOnTimeFare, compareRouteCost, findTravelHomeRoutes } from "./travel-routes";
@@ -37,6 +37,8 @@ import { registerOccasionHooks } from "./occasion-hooks";
  * before and after the night (the "sleep" part; the party is at the hotel at its arrival time first,
  * decision 44), the city's epilogue, its departure (then the next city's arrival) and an arrival
  * (its logo, `after logo`, its conversation).
+ * Tour stages 2b and 3 add a running tour's steps: a leg's own moment (its scenes before it, its narration, `after leg` — the
+ * in-car encounter —, its move, its scenes after it), and an event step's scenes around its visit.
  * Pure: the random source is passed in.
  */
 
@@ -60,6 +62,7 @@ function occasionOf(state: Readonly<GameState>, eventId: string): Occasion | und
 /**
  * A landmark's visit: its main group in its order (the guide on a first visit only; the battle when
  * a map event opened it; a special battle's revisit observes only when an `after observe` scene waits).
+ * A running tour's event step opens it with that step (tour stage 3: the step's scenes run around the visit).
  */
 function visitOccasion(state: Readonly<GameState>, landmarkId: string, eventId: string | null): Occasion | undefined {
   const landmark = landmarks.find((item) => item.id === landmarkId);
@@ -67,8 +70,21 @@ function visitOccasion(state: Readonly<GameState>, landmarkId: string, eventId: 
   const first = !state.visitedLandmarkIds.includes(landmarkId);
   const special = eventId !== null && !episodes.some((item) => item.id === eventId);
   const parts = eventId === null ? [] : landmarkParts(landmark).filter((part) => part !== "guide" || first);
-  return { kind: "visit", eventId, landmarkId, parts, ran: [], at: null, started: [],
+  const tour = eventId === null ? undefined : runningTourStep(state, eventId);
+  return { kind: "visit", eventId, landmarkId, parts, ran: [], at: null, started: [], ...(tour ? { tour } : {}),
     ...(special && battlePlayed(state, landmark.battleId) ? { observeIfWaiting: true as const } : {}) };
+}
+
+/**
+ * The running tour's step as an occasion names it (tour stages 2b, 3): its leg (no `eventId`), or the event step that opens the
+ * visit of `eventId`; undefined when the tour is not at such a step.
+ */
+function runningTourStep(state: Readonly<GameState>, eventId?: string): OccasionTour | undefined {
+  const record = state.tour;
+  const step = record?.status === "running" ? getTour(record.tourId)?.steps[record.step] : undefined;
+  if (!record || !step) return undefined;
+  const fits = eventId === undefined ? step.kind === "leg" : step.kind === "event" && step.eventId === eventId;
+  return fits ? { id: record.tourId, step: step.id } : undefined;
 }
 
 /** Record the visit (any order, 3.9 (b)): after the group was decided, so the guide's first-visit rule read the record before it. */
@@ -149,6 +165,7 @@ export function occasionMoment(occasion: Occasion): Moment | undefined {
     case "battle": return { kind: "finale", cityId: city, placeId: eventPlace(city, occasion.eventId) };
     case "hotel": return { kind: "hotel", cityId: city, placeId: getCityContent(city).travelSettings.hotelPlaceId };
     case "epilogue": case "depart": case "arrive": return { kind: occasion.kind, cityId: city };
+    case "tour": return occasion.tour ? tourMoment(occasion.tour) : undefined;
   }
 }
 
@@ -157,7 +174,9 @@ function ownSchedule(occasion: Occasion): MomentSchedule {
   if (occasion.kind === "visit") {
     if (!occasion.landmarkId) return { before: [], after: [], afterPart: {} };
     const visit = sceneSchedule(occasion.landmarkId);
-    return { before: visit.before, after: visit.after, afterPart: visit.afterPart };
+    // A tour's event step (tour stage 3): its own scenes run around the visit's (before its negative ones, after its positive ones).
+    const tour = occasion.tour ? momentSchedule(tourMoment(occasion.tour)) : { before: [], after: [] };
+    return { before: [...tour.before, ...visit.before], after: [...visit.after, ...tour.after], afterPart: visit.afterPart };
   }
   // A finale or a battle without a landmark: a special battle's (no city finale) has no moment of its own.
   if (occasion.kind === "battle" && !episodes.some((item) => item.id === occasion.eventId && item.kind === "city_finale")) return { before: [], after: [], afterPart: {} };
@@ -207,6 +226,12 @@ function startPart(state: GameState, part: OccasionPart, nextRoll: () => number)
   // (admission was paid on departing), the night, the departure (then the next city's arrival opens).
   else if (part === "move") return applyTrip(state);
   else if (part === "ticket") return state;
+  // Tour stages 2b, 3: a leg's narration (without one, its `after leg` scene follows at once) and its move.
+  else if (part === "leg") {
+    const narration = occasion.tour && narrationAt(tourMoment(occasion.tour));
+    return narration ? beginTourLegNarration(state, narration.id) : state;
+  }
+  else if (part === "leg_move") return moveTourLeg(state);
   else if (part === "sleep") return sleep(state);
   else if (part === "depart") return openArrival(leaveForNextCity({ ...state, occasion: null }));
   else if (part === "epilogue" && occasion.cityId) started = beginCityEpilogue(state, occasion.cityId);
@@ -275,6 +300,14 @@ function applyTrip(state: GameState): GameState {
     occasion: { ...occasion, ...(moved ? { moved: trip.modeId } : {}) } };
   // (A visit without its main part, a then: move's empty visit, is not recorded: the first real visit keeps its guide, 3.9 (b).)
   return recordVisit(next, occasion.kind === "visit" && occasion.eventId !== null ? occasion.landmarkId : null);
+}
+
+/** A tour leg's move (tour stage 2b): the party at the leg's place, its minutes passed; no fare and no ride, as a leg without scenes moves (tour.ts). */
+function moveTourLeg(state: GameState): GameState {
+  const tour = state.occasion!.tour;
+  const leg = tour && getTour(tour.id)?.steps.find((step) => step.id === tour.step);
+  if (leg?.kind !== "leg") return state;
+  return { ...state, travel: { ...state.travel, currentPlaceId: leg.toPlaceId, minute: state.travel.minute + leg.minutes } };
 }
 
 /** The night (the hotel's main part): the next day's morning (decision 44: night until waking). */
@@ -482,9 +515,12 @@ export function validateOccasionState(state: GameState): void {
       prefix.some((part, index) => occasion.parts[index] !== part) ||
       (occasion.trip && !getCityContent(state.currentCityId).travel.places.some((place) => place.id === occasion.trip!.to)) ||
       (occasion.trip && !occasion.ran.includes("move") && state.travel.currentPlaceId !== occasion.trip.from)) fail();
-  if (occasion.kind === "hotel" || occasion.kind === "epilogue" || occasion.kind === "depart" || occasion.kind === "arrive") {
+  // A tour step's occasion (tour stages 2b, 3): a leg's own, or the visit its event step opened; no other occasion names a tour.
+  const tour = occasion.kind === "tour" ? runningTourStep(state) : occasion.kind === "visit" && occasion.eventId !== null ? runningTourStep(state, occasion.eventId) : undefined;
+  if (occasion.tour?.id !== tour?.id || occasion.tour?.step !== tour?.step || (occasion.kind === "tour" && !tour)) fail();
+  if (occasion.kind === "hotel" || occasion.kind === "epilogue" || occasion.kind === "depart" || occasion.kind === "arrive" || occasion.kind === "tour") {
     // A stage-4 moment of its own: its city (the current one), its fixed main parts, no map event nor landmark.
-    const parts = { hotel: ["move", "sleep"], epilogue: ["epilogue"], depart: ["depart"], arrive: ["logo", "arrival"] }[occasion.kind];
+    const parts = { hotel: ["move", "sleep"], epilogue: ["epilogue"], depart: ["depart"], arrive: ["logo", "arrival"], tour: ["leg", "leg_move"] }[occasion.kind];
     if (occasion.cityId !== state.currentCityId || occasion.eventId !== null || occasion.landmarkId !== null || state.travel.activeEvent ||
         occasion.parts.join() !== parts.join() || occasion.ticket || (occasion.kind === "hotel") !== !!occasion.trip ||
         (occasion.kind === "hotel" && occasion.trip!.to !== state.travel.hotelPlaceId)) fail();
@@ -527,8 +563,8 @@ export function openOccasion(state: GameState, entry: OccasionEntry, expectedRev
 
 // ── Stage 4's moments that open by themselves (2.3): the epilogue, the departure, the arrival, the hotel ───────────
 
-/** A moment's occasion with no map event (the hotel's, the epilogue's, the departure's, an arrival's). */
-const momentOccasion = (kind: "hotel" | "epilogue" | "depart" | "arrive", cityId: string, parts: OccasionPart[], trip?: OccasionTrip): Occasion =>
+/** A moment's occasion with no map event (the hotel's, the epilogue's, the departure's, an arrival's, a tour leg's). */
+const momentOccasion = (kind: "hotel" | "epilogue" | "depart" | "arrive" | "tour", cityId: string, parts: OccasionPart[], trip?: OccasionTrip): Occasion =>
   ({ kind, cityId, eventId: null, landmarkId: null, parts, ran: [], at: null, started: [], ...(trip ? { trip } : {}) });
 
 /** Whether a main part's scene has a `# then:` (its head or a choice; an arrival's or an epilogue's runs only inside its moment). */
@@ -582,6 +618,18 @@ export function openHotel(state: GameState, trip: OccasionTrip, nextRoll: () => 
   const moving = trip.from !== trip.to;
   if (!momentHasScenes({ kind: "hotel", cityId, placeId: trip.to }) && !(moving && momentHasScenes(tripMoment(cityId, trip.modeId, trip.from, trip.to)))) return undefined;
   return advanceOccasion({ ...state, occasion: momentOccasion("hotel", cityId, ["move", "sleep"], trip) }, nextRoll);
+}
+
+/**
+ * A running tour's leg through its moment when scenes run there (tour stages 2b, 3): the scenes before it, its narration, the scene
+ * after the narration (the in-car encounter), the move, the scenes after it. The tour's post-step calls it with the record at the
+ * leg (tour.ts). Undefined when no scene runs there (the caller moves the party at once, as before).
+ */
+export function openTourLeg(state: GameState, tourId: string, legId: string, nextRoll: () => number = secureRomanceRoll): GameState | undefined {
+  const moment = tourMoment({ id: tourId, step: legId });
+  const cityId = getTour(tourId)?.cityId;
+  if (!cityId || state.occasion || (!momentHasScenes(moment) && !narrationAt(moment))) return undefined;
+  return advanceOccasion({ ...state, occasion: { ...momentOccasion("tour", cityId, ["leg", "leg_move"]), tour: { id: tourId, step: legId } } }, nextRoll);
 }
 
 registerMomentOpeners({ depart: (state) => openDeparture(state), epilogue: (state) => openEpilogue(state, false) });

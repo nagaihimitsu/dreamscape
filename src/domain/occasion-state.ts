@@ -11,9 +11,11 @@ import { stableContentId } from "./stable-id";
  * The main steps (本筋の組, 0) of the moments: a visit's guide, observation and battle; a date and its
  * 「交際開始」 screen; stage 4: the trip's move (place, time, rides) and the ticket counter's entry before
  * a map event's moment, the hotel's sleep, the city's epilogue, the departure (the items left behind,
- * then the next city), an arrival's logo and its conversation.
+ * then the next city), an arrival's logo and its conversation; tour stages 2b and 3: a tour leg's
+ * narration ("leg"; `after leg` follows it) and its move ("leg_move": the leg's place and minutes).
  */
-export const OCCASION_PARTS = ["guide", "observe", "battle", "date", "ending", "move", "ticket", "sleep", "epilogue", "depart", "logo", "arrival"] as const;
+export const OCCASION_PARTS = ["guide", "observe", "battle", "date", "ending", "move", "ticket", "sleep", "epilogue", "depart", "logo", "arrival",
+  "leg", "leg_move"] as const;
 export type OccasionPart = (typeof OCCASION_PARTS)[number];
 const part = z.enum(OCCASION_PARTS);
 
@@ -39,14 +41,23 @@ export const occasionTripSchema = z.object({
 }).strict();
 export type OccasionTrip = z.infer<typeof occasionTripSchema>;
 
-export const OCCASION_KINDS = ["visit", "battle", "date", "hotel", "epilogue", "depart", "arrive"] as const;
+export const OCCASION_KINDS = ["visit", "battle", "date", "hotel", "epilogue", "depart", "arrive", "tour"] as const;
 export type OccasionKind = (typeof OCCASION_KINDS)[number];
 
+/** The tour step an occasion runs (tour stages 2b, 3): its `# at: tour <tour> <step>` scenes run around it. */
+export const occasionTourSchema = z.object({ id: stableContentId, step: stableContentId }).strict();
+export type OccasionTour = z.infer<typeof occasionTourSchema>;
+
 export const occasionSchema = z.object({
-  /** A landmark's visit, a battle (a finale), a date (the map's); stage 4: a rest at the hotel, the city's epilogue, its departure, an arrival. */
+  /**
+   * A landmark's visit, a battle (a finale), a date (the map's); stage 4: a rest at the hotel, the city's epilogue, its departure, an
+   * arrival; tour stages 2b, 3: a running tour's leg (its scenes, its narration, its move).
+   */
   kind: z.enum(OCCASION_KINDS),
-  /** The city of a hotel's, an epilogue's, a departure's or an arrival's moment (stage 4). */
+  /** The city of a hotel's, an epilogue's, a departure's, an arrival's or a tour leg's moment (stage 4). */
   cityId: stableContentId.optional(),
+  /** A running tour's step (tour stages 2b, 3): a tour leg's own occasion, or the visit of the tour's event step. */
+  tour: occasionTourSchema.optional(),
   /** The trip before the moment (stage 4; the "move" part applies it). */
   trip: occasionTripSchema.optional(),
   /** The ticket counter's place (stage 4; the "ticket" part is the entry, admission paid on departing). */

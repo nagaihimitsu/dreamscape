@@ -121,7 +121,8 @@ export function journeyReadthrough(input: ReadthroughInput): string[] {
       for (const key of keys) if (!moments.get(key)?.includes(scene)) moments.set(key, [...(moments.get(key) ?? []), scene]);
     }
     const main: Record<string, string> = { date: "〔デート〕（告白なら「交際開始」の画面）", finale: "〔フィナーレのバトル〕", epilogue: "〔エピローグ〕", depart: "〔出発：品物を置いていく → 次の都市〕",
-      arrive: "〔ロゴ〕→〔到着の会話〕", hotel: "〔眠る〕", trip: "〔移動〕", ticket: "〔入場〕" };
+      arrive: "〔ロゴ〕→〔到着の会話〕", hotel: "〔眠る〕", trip: "〔移動〕", ticket: "〔入場〕",
+      tour: "〔ツアーの行程：区間は語り（tour_leg）→ after leg → 移動、見学は訪問〕" };
     for (const [key, own] of moments) {
       const rank = (scene: SceneEntry) => (typeof scene.priority === "number" ? scene.priority : 0);
       const order = [...own].sort((left, right) => rank(left) - rank(right) || (left.story.storyId < right.story.storyId ? -1 : left.story.storyId > right.story.storyId ? 1 : left.order - right.order));
@@ -130,6 +131,7 @@ export function journeyReadthrough(input: ReadthroughInput): string[] {
         `${scene.when ? `  when: ${JSON.stringify(scene.when)}` : ""}${scene.then ? `  then: ${JSON.stringify(scene.then)}` : ""}${scene.repeat === "always" ? "  repeat: always" : ""}`);
       for (const scene of order.filter((item) => typeof item.priority === "number" && item.priority < 0)) show(scene);
       out.push(`              0  ${main[key.split(" ")[0]] ?? ""}`);
+      for (const scene of order.filter((item) => item.priority === undefined)) show(scene);
       for (const scene of order.filter((item) => typeof item.priority === "string")) show(scene);
       for (const scene of order.filter((item) => typeof item.priority === "number" && item.priority > 0)) show(scene);
       out.push("");

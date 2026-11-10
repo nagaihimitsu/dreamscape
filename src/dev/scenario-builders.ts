@@ -371,9 +371,10 @@ function restAtHotel(state: GameState, options: PlayOptions = {}): GameState {
 }
 
 /**
- * Play a running tour's current event step (its visit) like a player: the guide (read or skipped by `options.guide`), the
- * observation's 「進む」, the scenes with their first choices, the battle to its result (`options.onResult` there) and 「ツアーを続ける」.
- * Stops when the tour has moved past the step (its next step's visit, or its end).
+ * Play a running tour's current step like a player: an event step's visit (the guide, read or skipped by `options.guide`, the
+ * observation's 「進む」, the scenes with their first choices, the battle to its result (`options.onResult` there) and 「ツアーを続ける」),
+ * or a leg's moment (its scenes with their first choices and its narration; tour stages 2b, 3). Stops when the tour has moved past
+ * the step (its next step's moment, or its end).
  */
 function playTourStep(initial: GameState, options: CityPlayOptions = {}): GameState {
   let state = initial;
@@ -404,7 +405,8 @@ export function playTour(initial: GameState, tourId: string, options: CityPlayOp
 
 /**
  * Debug's tour scene (scene=tour): the tour booked at the start of its city; with `stepId` (an event step's ID), its morning
- * played until that step's visit opens (the visits of earlier event steps played through).
+ * played until that step's visit opens (earlier steps played through: their visits, and a leg's scenes and narration with their
+ * first choices, tour stages 2b, 3).
  */
 export function tourScene(state: GameState, tourId: string, stepId?: string): GameState {
   const tour = getTour(tourId);
@@ -610,6 +612,8 @@ function playOccasionStep(state: GameState, ticket: number): GameState {
     return act(state, (current) => continueTourismEncounters(current, encounterCanFinish(current) ? finishEncounter(current, current.revision)
       : advanceEncounter(current, current.revision), () => ticket), "交流を進める");
   }
+  // A tour leg's narration (tour stage 2b): read to its end, then its leg's moment goes on.
+  if (state.activeEpilogue?.kind === "tour_leg") return act(state, epilogueStep, "ツアーの区間の語り");
   if (state.activeTourism?.phase === "guide") return guideSkip(state);
   if (state.activeTourism) return act(state, (current) => proceedFromTourism(current, current.revision, () => ticket), "観察の「進む」");
   if (state.activeBattle?.phase === "result") return act(state, (current) => leaveBattleToFreeTime(current, current.revision, () => ticket), "対決の結果を閉じる");

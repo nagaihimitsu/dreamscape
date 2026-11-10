@@ -12,7 +12,7 @@ import { battleRewardReceiptSchema, pendingApRewardSchema } from "./rewards";
 import { activeBattleSchema, battleRecordSchema } from "./battle";
 
 /** The only saved game format this build reads; older versions are not migrated. */
-export const GAME_STATE_VERSION = 19;
+export const GAME_STATE_VERSION = 20;
 
 const uniqueStrings = z
   .array(z.string().min(1))
@@ -160,7 +160,8 @@ export const gameStateSchema = z.object({
   // The moment record (stage 3b): the visit, finale or date running now, with its main group and position.
   occasion: occasionSchema.nullable(),
   // The tour system's records (tour stage 2a, save v18; src/domain/tour.ts): the tour booked or running (its offer and the price
-  // paid; running: the fingerprint of its steps and the event step it is at), and the tours finished in this journey.
+  // paid; running: the fingerprint of its steps and the step it is at: an event step, or from save v20 a leg whose moment runs), and
+  // the tours finished in this journey.
   tour: tourRecordSchema.nullable(),
   completedTourIds: z.array(stableContentId).refine((items) => new Set(items).size === items.length),
   currentCityId: stableContentId,

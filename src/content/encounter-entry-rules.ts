@@ -27,6 +27,8 @@ export const visitPrioritySchema = z.union([
   // After a date (before the 「交際開始」 screen) and after an arrival's logo (stage 4).
   z.literal("after date"),
   z.literal("after logo"),
+  // After a tour leg's narration, before the leg moves the party (the in-car encounter; tour stage 3).
+  z.literal("after leg"),
 ]);
 export type VisitPriority = z.infer<typeof visitPrioritySchema>;
 const ruleSchema = z.object({

@@ -16,7 +16,7 @@
 /** The parts of the game state that say which story scene is on screen. */
 export interface SceneState {
   activeEncounter: { runId: string } | null;
-  activeEpilogue: { episodeId: string; kind?: "arrival" } | null;
+  activeEpilogue: { episodeId: string; kind?: "arrival" | "tour_leg" } | null;
   activeTourism: { landmarkId: string; phase: "guide" | "exploring" } | null;
   activeBattle: { runId: string; phase: string } | null;
   activeDate: { runId: string } | null;
@@ -48,7 +48,7 @@ export function storySceneChanged(before: string | null, after: string | null): 
 export interface ScreenState extends SceneState {
   currentCityId: string;
   endingReached?: boolean;
-  activeEpilogue: { episodeId: string; kind?: "arrival"; logoComplete?: boolean } | null;
+  activeEpilogue: { episodeId: string; kind?: "arrival" | "tour_leg"; logoComplete?: boolean } | null;
 }
 
 /**

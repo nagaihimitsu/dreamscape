@@ -75,7 +75,7 @@ const spendOf = (scene: SceneEntry | undefined): Payment => ({ money: Math.max(0
 const unreadEpilogue = (state: Readonly<GameState>): SceneMain | undefined => {
   const occasion = state.occasion;
   const cityId = occasion ? (occasion.kind === "epilogue" ? occasion.cityId : undefined)
-    : state.activeEpilogue && state.activeEpilogue.kind !== "arrival" ? state.currentCityId : undefined;
+    : state.activeEpilogue && state.activeEpilogue.kind === undefined ? state.currentCityId : undefined;
   return cityId && !state.viewedEpilogueCityIds.includes(cityId) ? { epilogue: cityId } : undefined;
 };
 

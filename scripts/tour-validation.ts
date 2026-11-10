@@ -194,7 +194,8 @@ export function validateTours(content: TourCheckContent): ContentWarning[] {
 /**
  * The `# then:` cases a tour skips (A20, tour design §2.6): a hotel scene after the night (`# priority:` +N) with a then: in a city
  * that has a tour does not run its then: on a booked tour's morning; a then: at a tour event step's visit (its inserted scenes and
- * its guide's and battle's heads) never runs while the tour runs. Both only warn: the game refuses the then: and goes on.
+ * its guide's and battle's heads) or at a tour's step itself (`# at: tour <tour> <step>`, tour stages 2b, 3) never runs while the tour
+ * runs. Both only warn: the game refuses the then: and goes on.
  */
 export function tourSceneWarnings(content: Pick<TourCheckContent, "root" | "tours" | "cities" | "episodes" | "battles" | "scenes">): ContentWarning[] {
   const warnings: ContentWarning[] = [];
@@ -219,6 +220,9 @@ export function tourSceneWarnings(content: Pick<TourCheckContent, "root" | "tour
         warnings.push({ kind: "tour-note", message: `Then: during a tour: the scene ${scene.id} at the visit of ${step.eventId} has a then:, and that visit ` +
           `is step ${step.id} of the tour ${tour.id}; while a tour runs the then: is refused (the tour goes on; not stopped)` });
     }
+    for (const scene of content.scenes.filter((item) => hasThen(item) && item.at.some((moment) => "tour" in moment && moment.tour === tour.id)))
+      warnings.push({ kind: "tour-note", message: `Then: during a tour: the scene ${scene.id} at a step of the tour ${tour.id} has a then:; ` +
+        "while a tour runs the then: is refused (the tour goes on; not stopped)" });
   }
   return warnings;
 }

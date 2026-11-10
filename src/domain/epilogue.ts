@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { sceneConditionReader } from "./scene-conditions";
 import { episodes, getCityContent, getCityStoryBackground, progression, scenes } from "../content";
+import { knotAddress } from "../content/story-address";
 import {
   beginStory,
   continueStory,
@@ -15,12 +16,14 @@ import { applyChoiceEffects, applyDoneEffects, choiceDisplay, sceneOption, type 
 import { sceneOfAddress } from "./reservations";
 import { evaluateProgression } from "./date-rules";
 import { advanceRunningOccasion } from "./occasion-hooks";
+import { narrationAt, tourMoment } from "./moments";
 
 export const activeEpilogueSchema = z
   .object({
+    /** The city finale's episode (an epilogue's; an arrival's city), or a tour leg's narration scene (kind tour_leg). */
     episodeId: z.string().min(1),
-    // Arrivals share the saved, effect-free city conversation contract.
-    kind: z.literal("arrival").optional(),
+    // Arrivals and a tour leg's narration (tour stage 2b) share the saved, effect-free city conversation contract.
+    kind: z.enum(["arrival", "tour_leg"]).optional(),
     logoComplete: z.boolean().optional(),
     contentHash: z.string().min(1),
     storyState: z.string().min(1),
@@ -29,10 +32,14 @@ export const activeEpilogueSchema = z
     chosenCount: z.number().int().positive().optional(),
   })
   .strict();
+/** A tour leg's narration scene (`# scene: tour_leg`; tour stage 2b) by its ID. */
+const narrationScene = (sceneId: string) => scenes.find((scene) => scene.id === sceneId && scene.kind === "tour_leg" && scene.story.knot !== undefined);
+
 export function activeEpilogueStoryId(active: z.infer<typeof activeEpilogueSchema>): string | null {
   const episode = episodes.find((episode) => episode.id === active.episodeId);
-  const current = active.kind === "arrival" && episode
-    ? getCityContent(episode.cityId).city.arrivalStoryId : episode?.epilogueStoryId;
+  const narration = active.kind === "tour_leg" ? narrationScene(active.episodeId) : undefined;
+  const current = active.kind === "tour_leg" ? narration && knotAddress(narration.story.storyId, narration.story.knot!)
+    : active.kind === "arrival" && episode ? getCityContent(episode.cityId).city.arrivalStoryId : episode?.epilogueStoryId;
   try { if (current && storyFingerprint(current) === active.contentHash) return current; }
   catch { /* Missing or changed content must not be resumed. */ }
   return null;
@@ -54,8 +61,9 @@ function checkedStep(step: StoryStep) {
   return { storyState: step.storyState, frame: step.frame };
 }
 
-/** The scene of the open arrival or epilogue (its file's choices and head # on_done:), when it has tags. */
+/** The scene of the open arrival or epilogue (its file's choices and head # on_done:), when it has tags; a tour leg's narration has none. */
 function epilogueScene(active: z.infer<typeof activeEpilogueSchema>) {
+  if (active.kind === "tour_leg") return narrationScene(active.episodeId);
   const finale = episodes.find((episode) => episode.id === active.episodeId);
   return finale && sceneOfAddress(active.kind === "arrival" ? getCityContent(finale.cityId).city.arrivalStoryId : finale.epilogueStoryId);
 }
@@ -110,6 +118,22 @@ export function beginArrival(state: GameState, logoComplete = false): GameState 
   return { ...state, revision: state.revision + 1, activeEpilogue: {
     episodeId: finale.id, kind: "arrival", logoComplete, contentHash: storyFingerprint(storyId),
     ...checkedStep(beginStory(storyId, state.playerName, state.heroineName, variables(state), [], {},
+      getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state))),
+  } };
+}
+
+/**
+ * Begin a tour leg's narration (tour stage 2b; `# scene: tour_leg`): its leg's moment starts it (occasion.ts), and its end goes on
+ * with that moment (the in-car encounter, the leg's move). Read on this screen with no choices and no effects; cond("…") and every
+ * speaker are read as in an arrival.
+ */
+export function beginTourLegNarration(state: GameState, sceneId: string): GameState {
+  const scene = narrationScene(sceneId);
+  if (!scene || state.activeEpilogue) return state;
+  const address = knotAddress(scene.story.storyId, scene.story.knot!);
+  return { ...state, revision: state.revision + 1, activeEpilogue: {
+    episodeId: scene.id, kind: "tour_leg", contentHash: storyFingerprint(address),
+    ...checkedStep(beginStory(address, state.playerName, state.heroineName, variables(state), [], {},
       getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state))),
   } };
 }
@@ -214,6 +238,8 @@ export function advanceCityEpilogue(
   if (arrival && !active.logoComplete) return state;
   const finale = episodes.find((episode) => episode.id === active.episodeId)!;
   if (active.frame.choices.length) return state;
+  // A tour leg's narration (tour stage 2b): it records nothing and does nothing when done; its leg's moment goes on.
+  if (active.frame.ended && active.kind === "tour_leg") return advanceRunningOccasion({ ...state, revision: state.revision + 1, activeEpilogue: null });
   if (active.frame.ended) {
     const first = arrival || !state.viewedEpilogueCityIds.includes(finale.cityId);
     const closed: GameState = {
@@ -252,6 +278,7 @@ export function validateEpilogueState(state: GameState): void {
     throw new Error("都市エピローグの記録が一致しません。");
   const active = state.activeEpilogue;
   if (!active) return;
+  if (active.kind === "tour_leg") return validateTourLegNarration(state, active);
   const finale = episodes.find(
     (episode) =>
       episode.id === active.episodeId && episode.kind === "city_finale",
@@ -283,4 +310,19 @@ export function validateEpilogueState(state: GameState): void {
       variables: variables(state),
     },
   );
+}
+
+/**
+ * A tour leg's narration in progress (tour stage 2b): the narration of the leg whose moment runs now, started at its "leg" part
+ * and not yet moved, with no other scene open; its saved Ink as the content reads it (no choices).
+ */
+function validateTourLegNarration(state: GameState, active: z.infer<typeof activeEpilogueSchema>): void {
+  const occasion = state.occasion;
+  const tour = occasion?.kind === "tour" && occasion.at === "main:leg" && !occasion.ran.includes("leg_move") ? occasion.tour : undefined;
+  const storyId = activeEpilogueStoryId(active);
+  if (!storyId || !tour || narrationAt(tourMoment(tour))?.id !== active.episodeId ||
+      active.logoComplete !== undefined || active.chosenCount !== undefined || state.activeDate || state.activeTourism || state.activeBattle)
+    throw new Error("ツアーの区間の語りの途中データを確認できません。元のデータは保管されています。");
+  validateStorySnapshot(storyId, active.storyState, active.frame,
+    { playerName: state.playerName, heroineName: state.heroineName, choiceCount: 0, variables: variables(state) });
 }

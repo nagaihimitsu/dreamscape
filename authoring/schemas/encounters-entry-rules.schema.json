@@ -44,6 +44,10 @@
               {
                 "type": "string",
                 "const": "after logo"
+              },
+              {
+                "type": "string",
+                "const": "after leg"
               }
             ]
           },

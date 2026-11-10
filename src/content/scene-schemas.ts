@@ -17,9 +17,10 @@ import { STORY_FILE_PATTERN } from "./story-address";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/u);
 const signed = z.number().int().safe();
-export const SCENE_KINDS = ["talk", "encounter", "guide", "battle", "date", "arrival", "epilogue"] as const;
+/** `tour_leg`: a tour leg's narration (tour stage 2b), found by its `# at: tour <tour> <leg>` (no catalog points at it). */
+export const SCENE_KINDS = ["talk", "encounter", "guide", "battle", "date", "arrival", "epilogue", "tour_leg"] as const;
 export type SceneKind = (typeof SCENE_KINDS)[number];
-/** Kinds the game places at a moment (差し込み); the others are main parts a catalog points at. */
+/** Kinds the game places at a moment (差し込み); the others are main parts (a catalog points at them, or a tour leg's narration). */
 export const INSERTED_KINDS: readonly SceneKind[] = ["talk", "encounter"];
 
 /** Fixed relationship changes (`# rel: affection +1, trust -1`): whole numbers, any size (rev. 5). */
@@ -33,7 +34,8 @@ export type RelationshipDelta = z.infer<typeof relationshipDeltaSchema>;
  * Stage 4: `date <date>`, `finale <city>`, `epilogue <city>`, `depart <city>` (opens only when the city has a next
  * city), `arrive <city>` (the first city's is the opening), `hotel` (`any`: the scene's city's hotel) or `hotel <place>`,
  * `trip <mode>` (`walk` for walking; `from <place>`, `to <place>` narrow it) and `ticket <place>` (the ticket counter
- * of an admission there).
+ * of an admission there). Tour stages 2b and 3: `tour <tour> <step>`, a step of a tour (a leg: its narration, the scenes
+ * before it, `after leg` and after it; an event step: before and after its visit).
  */
 export const sceneAtSchema = z.union([
   z.object({ visit: id }).strict(),
@@ -46,10 +48,14 @@ export const sceneAtSchema = z.union([
   z.object({ hotel: id }).strict(),
   z.object({ trip: id, from: id.optional(), to: id.optional() }).strict(),
   z.object({ ticket: id }).strict(),
+  z.object({ tour: id, step: id }).strict(),
 ]);
 export type SceneAt = z.infer<typeof sceneAtSchema>;
-/** The main parts an inserted scene may follow (`# priority: after <part>`): a visit's guide, observation and battle, a finale's battle, a date, an arrival's logo. */
-export const AFTER_PARTS = ["guide", "observe", "battle", "date", "logo"] as const;
+/**
+ * The main parts an inserted scene may follow (`# priority: after <part>`): a visit's guide, observation and battle, a finale's battle,
+ * a date, an arrival's logo, a tour leg's narration (`after leg`: the in-car encounter, before the leg moves the party).
+ */
+export const AFTER_PARTS = ["guide", "observe", "battle", "date", "logo", "leg"] as const;
 export type AfterPart = (typeof AFTER_PARTS)[number];
 
 /** `# then: move <place> [by <mode>]` / `# then: epilogue`: where the game goes right after the scene ends (stage 3b). */
@@ -117,10 +123,11 @@ export const sceneEntrySchema = z.object({
   /** Where the scene starts: its story file and, in a place file, its knot. */
   story: z.object({ storyId: z.string().regex(STORY_FILE_PATTERN), knot: id.optional() }).strict(),
   main: sceneMainSchema.optional(),
-  /** `# at:` (2.3): the moments the scene runs at (several are allowed: it runs at any of them). */
+  /** `# at:` (2.3): the moments the scene runs at (several are allowed: it runs at any of them); a tour leg's narration: its leg. */
   at: z.array(sceneAtSchema),
   /** `# priority:` (an inserted scene): a whole number, or after one main part of its moment. */
-  priority: z.union([signed, z.literal("after guide"), z.literal("after observe"), z.literal("after battle"), z.literal("after date"), z.literal("after logo")]).optional(),
+  priority: z.union([signed, z.literal("after guide"), z.literal("after observe"), z.literal("after battle"), z.literal("after date"), z.literal("after logo"),
+    z.literal("after leg")]).optional(),
   /** The scene's place in its file (the same priority runs in written order, then by file name). */
   order: z.number().int().nonnegative(),
   repeat: z.enum(["once", "always"]),

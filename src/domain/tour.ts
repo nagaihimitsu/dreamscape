@@ -3,7 +3,7 @@ import { fnvHash } from "../content/fingerprint";
 import { getJourneyForCity } from "../content/journeys";
 import { meets } from "./conditions";
 import { hasActiveScene, type GameState } from "./game-state-schema";
-import { openEventOccasion } from "./occasion";
+import { openEventOccasion, openTourLeg } from "./occasion";
 import { mainPartPayments, usableAp, usableMoney, type Payment } from "./reservations";
 import { DAY_START, getGameWeekday } from "./travel";
 import { isCompletedTravelEvent, isTravelEventUnlocked, isTravelEventVisible } from "./travel-game";
@@ -16,8 +16,10 @@ import { getUsableRoutes } from "./transport";
  * scenes after waking, unified design 2.3): each leg moves the party and passes its time (no fare,
  * no ride counted), each event step opens its map event's visit without fare or admission, and the
  * action that ends the visit runs the next legs; after the last step the tour is finished. A cancel
- * refunds the price once; no departure happens while a tour is booked or running. Pure: the random
- * source is passed in.
+ * refunds the price once; no departure happens while a tour is booked or running. A leg with scenes
+ * (tour stages 2b, 3: `# at: tour <tour> <leg>`, its narration, the in-car encounter) runs through its
+ * own moment (occasion.ts openTourLeg), which moves the party after its narration and encounter; the
+ * action that ends that moment goes on to the next step. Pure: the random source is passed in.
  */
 
 /** A step of a tour with its times from 09:00 at the hotel, and the place the party is at when it ends. */
@@ -117,18 +119,32 @@ export function cancelTourBooking(state: GameState, expectedRevision: number): G
   return { ...state, revision: state.revision + 1, travelBudget: state.travelBudget + record.pricePaid, tour: null };
 }
 
-/** The scene label's tag while a tour runs (its visit's guide, battle and scenes): 「ツアー・見学」. */
-export const tourSceneBadge = (state: Pick<GameState, "tour">): string | undefined => (state.tour?.status === "running" ? "ツアー・見学" : undefined);
+/** The scene label's tag while a tour runs: 「ツアー・見学」 at its visit (guide, battle, scenes), 「ツアー」 at a leg's scenes (tour stage 3). */
+export const tourSceneBadge = (state: Pick<GameState, "tour" | "occasion">): string | undefined =>
+  (state.tour?.status !== "running" ? undefined : state.occasion?.kind === "tour" ? "ツアー" : "ツアー・見学");
 
-/** The tour the party is on now, if any (running: always inside an event step's visit). */
+/**
+ * The leg the party is riding (tour stages 2b, 3): its narration has begun and its move has not happened yet (the narration and the
+ * in-car encounter); its label names the screen there.
+ */
+export function tourLegUnderway(state: Pick<GameState, "occasion">): TourLeg | undefined {
+  const occasion = state.occasion;
+  if (occasion?.kind !== "tour" || !occasion.tour || !occasion.ran.includes("leg") || occasion.ran.includes("leg_move")) return undefined;
+  const tour = occasion.tour;
+  const step = getTour(tour.id)?.steps.find((item) => item.id === tour.step);
+  return step?.kind === "leg" ? step : undefined;
+}
+
+/** The tour the party is on now, if any (running: always inside a step's moment, an event step's visit or a leg's own). */
 export const runningTour = (state: Pick<GameState, "tour">): Tour | undefined =>
   state.tour?.status === "running" ? getTour(state.tour.tourId) : undefined;
 
 /**
  * The tour's post-step (unified design 4.1; applyPlayerAction runs it after an action that changed something): a booked tour starts
- * on the morning after its night once no scene is open (the party at the hotel at 09:00), and a running tour goes on once its event
- * step's visit has closed. It runs the legs, opens the next event step's visit (whose scenes before the main part may draw tickets),
- * or finishes the tour. Returns `state` itself when nothing applies (so a loaded save is never changed).
+ * on the morning after its night once no scene is open (the party at the hotel at 09:00), and a running tour goes on once its step's
+ * moment has closed (an event step's visit, a leg's own moment). It runs the legs (a leg with scenes through its moment, which stops
+ * at its first scene), opens the next event step's visit (whose scenes before the main part may draw tickets), or finishes the tour.
+ * Returns `state` itself when nothing applies (so a loaded save is never changed).
  */
 export function continueTour(state: GameState, nextRoll: () => number): GameState {
   const record = state.tour;
@@ -145,7 +161,7 @@ export function continueTour(state: GameState, nextRoll: () => number): GameStat
   return enterStep(state, tour, record.step + 1, nextRoll);
 }
 
-/** Run the tour from step `from`: its legs, then the next event step's visit, or the end. */
+/** Run the tour from step `from`: its legs, then the next event step's visit, or the end; a leg with scenes stops at its first one. */
 function enterStep(state: GameState, tour: Tour, from: number, nextRoll: () => number): GameState {
   const schedule = tourSchedule(tour);
   let current = state;
@@ -153,7 +169,11 @@ function enterStep(state: GameState, tour: Tour, from: number, nextRoll: () => n
     const record = current.tour!;
     if (record.status !== "running") throw new Error("ツアーの記録が一致しません。");
     if (item.step.kind === "leg") {
-      current = { ...current, tour: { ...record, step: item.index }, travel: { ...current.travel, currentPlaceId: item.placeId, minute: item.end } };
+      const at: GameState = { ...current, tour: { ...record, step: item.index } };
+      // A leg with scenes (tour stages 2b, 3) moves the party inside its moment; a moment whose scenes all passed goes on at once.
+      const opened = openTourLeg(at, tour.id, item.step.id, nextRoll);
+      if (opened && hasActiveScene(opened)) return opened;
+      current = opened ?? { ...at, travel: { ...at.travel, currentPlaceId: item.placeId, minute: item.end } };
       continue;
     }
     const step = item.step;
@@ -171,15 +191,22 @@ function enterStep(state: GameState, tour: Tour, from: number, nextRoll: () => n
   return { ...current, tour: null, completedTourIds: [...current.completedTourIds, tour.id], travel: { ...current.travel, returnReserve: fare } };
 }
 
-/** The legs a change passed through (the transition art after it): from the step after the previous one to the step now, or to the end. */
-export function tourLegsBetween(previous: Pick<GameState, "tour" | "completedTourIds">, next: Pick<GameState, "tour" | "completedTourIds">): TourLeg[] {
-  const before = previous.tour;
-  const tour = before && getTour(before.tourId);
-  if (!before || !tour) return [];
-  const from = before.status === "running" ? before.step + 1 : 0;
-  const to = next.tour?.tourId === before.tourId && next.tour.status === "running" ? next.tour.step
-    : next.tour === null && next.completedTourIds.includes(before.tourId) && !previous.completedTourIds.includes(before.tourId) ? tour.steps.length : from;
-  return tour.steps.slice(from, to).filter(isLeg);
+type TourProgress = Pick<GameState, "tour" | "completedTourIds" | "occasion">;
+/** How many of the tour's steps the party has gone through (a running leg once its moment has moved the party; all once finished). */
+function stepsGone(state: TourProgress, tour: Tour): number {
+  const record = state.tour;
+  if (!record || record.tourId !== tour.id) return state.completedTourIds.includes(tour.id) ? tour.steps.length : 0;
+  if (record.status === "booked") return 0;
+  const occasion = state.occasion;
+  const moved = occasion?.kind === "tour" && occasion.tour?.step === tour.steps[record.step]?.id && occasion.ran.includes("leg_move");
+  return record.step + (moved ? 1 : 0);
+}
+
+/** The legs a change passed through (the transition art after it): the steps gone through since the previous state. */
+export function tourLegsBetween(previous: TourProgress, next: TourProgress): TourLeg[] {
+  const tour = previous.tour && getTour(previous.tour.tourId);
+  if (!tour) return [];
+  return tour.steps.slice(stepsGone(previous, tour), stepsGone(next, tour)).filter(isLeg);
 }
 
 /**
@@ -194,9 +221,11 @@ export function departureAfterTour(state: GameState, nextCityNameJa: string | un
 /**
  * The tour records of a loaded save (tour design App. D, as corrected for stage 2a): finished tours of this
  * journey's cities up to the current one; a tour booked or running of the current city, not finished. Booked: on its day, or on the
- * next morning while the hotel's scenes after waking run (the night has run). Running: the next day, its fingerprint, at an event step
- * with its visit open at its place and time window, no fare home kept and no epilogue. A state the post-step would still advance (a
- * booked morning with no scene open, a running tour with its visit closed) is refused: the post-step never changes a loaded save.
+ * next morning while the hotel's scenes after waking run (the night has run). Running: the next day, its fingerprint, no fare home
+ * kept, and either at an event step with its visit open at its place and time window and no epilogue, or at a leg with its own moment
+ * open (tour stages 2b, 3), where the leg starts before its move and where it ends after it. A state the post-step would still advance
+ * (a booked morning with no scene open, a running tour with its step's moment closed) is refused: the post-step never changes a
+ * loaded save.
  */
 export function validateTourState(state: GameState): void {
   const fail = (): never => { throw new Error("ツアーの記録が一致しません。元のデータは保管されています。"); };
@@ -217,8 +246,19 @@ export function validateTourState(state: GameState): void {
     return;
   }
   if (record.contentHash !== tourFingerprint(tour)) throw new Error("ツアーの内容が更新されています。元のデータは保管されています。");
-  const item = tourSchedule(tour)[record.step];
+  const schedule = tourSchedule(tour);
+  const item = schedule[record.step];
   const travel = state.travel;
+  if (item?.step.kind === "leg") {
+    // A leg's own moment (its scenes, narration, in-car encounter): from where it starts until its move, then where it ends.
+    const occasion = state.occasion;
+    const moved = !!occasion?.ran.includes("leg_move");
+    const from = record.step > 0 ? schedule[record.step - 1].placeId : travel.hotelPlaceId;
+    if (travel.day !== record.bookedDay + 1 || occasion?.kind !== "tour" || occasion.tour?.step !== item.step.id ||
+        travel.currentPlaceId !== (moved ? item.placeId : from) || travel.minute !== (moved ? item.end : item.start) ||
+        travel.activeEvent || travel.returnReserve !== 0 || (state.activeEpilogue && state.activeEpilogue.kind !== "tour_leg")) fail();
+    return;
+  }
   if (travel.day !== record.bookedDay + 1 || !item || item.step.kind !== "event" || travel.currentPlaceId !== item.placeId ||
       state.occasion?.eventId !== item.step.eventId || state.occasion.trip || state.occasion.ticket ||
       travel.activeEvent?.eventId !== item.step.eventId || travel.activeEvent.placeId !== item.placeId || travel.activeEvent.endMinute !== item.end ||
