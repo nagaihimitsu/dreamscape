@@ -53,8 +53,10 @@ describe("Golden Triangle main story in place files (GT-3a)", () => {
     expect(itemUsableIn(state, "gt_agra_anwar_petha", "jaipur")).toBe(false);
     state = clearCity(state);
     expect(state.inventory).toMatchObject({ gt_jaipur_salim_miniature: "held", gt_jaipur_sushma_lime_pickle: "held" });
-    // The drafted prices: the attar (₹300) and the miniature with its print (₹900 + ₹300); and the deposit of Delhi's
-    // departure scene (GT-4, ₹500), which the builders' first choices pay.
-    expect(state.travelBudget).toBe(start - 300 - 1200 - 500);
+    // The drafted prices: the attar (₹300) and the miniature with its print (₹900 + ₹300); the deposit of Delhi's
+    // departure scene (GT-4, ₹500), which the builders' first choices pay; and Agra's Fatehpur Sikri tour, booked at the
+    // inn's front desk (₹3,200 for two, its admission included; tour stage 2a).
+    expect(state.completedTourIds).toEqual(["gt_agra_tour_fatehpur_sikri"]);
+    expect(state.travelBudget).toBe(start - 300 - 1200 - 500 - 3200);
   }, 120_000);
 });

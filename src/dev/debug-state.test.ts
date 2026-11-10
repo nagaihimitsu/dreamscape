@@ -133,6 +133,19 @@ describe("Debug launch URLs against the content", () => {
 });
 
 describe("Debug's tour scene (scene=tour; tour stage 2a)", () => {
+  it("opens Fatehpur Sikri's scenes in Agra only through its tour, with the tour reason and no item sentence", () => {
+    const targets = debugTargets("agra");
+    expect(targets.tour).toEqual([{ id: "gt_agra_tour_fatehpur_sikri", name: "ファテープル・シークリー日帰りツアー" }]);
+    for (const [scene, id] of [["tourism", "agra_fatehpur_sikri"], ["battle", "gt_agra_main_fatehpur_sikri_battle"], ["occasion", "agra_fatehpur_sikri"]] as const) {
+      const target = targets[scene].find((item) => item.id === id)!;
+      expect(target, `${scene} ${id}`).toMatchObject({ unavailable: "ツアーの場面（scene=tour）から開けます", unavailableKind: "tour" });
+      expect(() => resolveDebugLaunch({ dataMode: "real", cityId: "agra", scene, target: id }))
+        .toThrow(`「${id}」（${target.name}）は、ツアーの場面（scene=tour）から開けます。`);
+      expect(() => resolveDebugLaunch({ dataMode: "real", cityId: "agra", scene, target: id })).not.toThrow("品物");
+    }
+  });
+
+
   it("lists the city's tours, marks the tour-only place's scenes as opened from the tour, and opens the tour booked or at its step", () => {
     const cleanup = installTourTestCity();
     try {

@@ -27,7 +27,7 @@ import { transitLedgerSchema } from "./transit-ledger";
 import type { z } from "zod";
 import { headEntryRule, HEAD_TAGS, readEncounterHead, type EncounterHead } from "./encounter-head";
 import { checkConditions, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, mapConditionOwners, type ConditionContent, type ConditionOwner } from "./condition-validation";
-import { progressionErrors, progressionWarnings, sceneItemsOf, tourProgression, type ProgressionContent } from "./progression-check";
+import { mainPaymentsOf, progressionErrors, progressionWarnings, sceneItemsOf, tourProgression, type ProgressionContent } from "./progression-check";
 import { FULL_COND_WALK, parseSceneConditions, readSceneConditions } from "./scene-conditions";
 import type { Condition } from "../src/content/condition-schemas";
 import { validateBackgroundAssets, validateCharacters } from "./presentation-validation";
@@ -1355,13 +1355,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     publishedJourneyIds: new Set(journeyCatalog.journeys.filter((item) => item.status === "available" && item.id !== SAMPLE_JOURNEY_ID).map((item) => item.id)),
     scenes: generatedScenes.scenes });
   // What each main event's parts pay when first finished (their # on_done: money -X), for the money warning (unified design 3.3).
-  const spendOf = (main: Record<string, string>) => generatedScenes.scenes.filter((scene) => scene.main && JSON.stringify(scene.main) === JSON.stringify(main))
-    .reduce((sum, scene) => sum + Math.max(0, -(scene.done.money ?? 0)), 0);
-  const mainPayments: Record<string, number> = Object.fromEntries([
-    ...journey.episodes.map((episode) => [episode.id, episode.battleId, episode.landmarkId] as const),
-    ...journey.storyBattles.map((battle) => [battle.battleId, battle.battleId, battles.find((item) => item.id === battle.battleId)?.landmarkId ?? null] as const),
-  ].map(([eventId, battleId, landmarkId]) => [eventId, spendOf({ battle: battleId }) + (landmarkId ? spendOf({ guide: landmarkId }) : 0)])
-    .filter(([, money]) => (money as number) > 0));
+  const mainPayments = mainPaymentsOf(generatedScenes.scenes, { episodes: journey.episodes, storyBattles: journey.storyBattles, battles });
   // Check 9 (stage 2b): every city has a way to clear it; its warnings name probable dead ends (progression-check.ts).
   const progressionContent: ProgressionContent = {
     journeys: journeyCatalog.journeys, episodes: journey.episodes, storyBattles: journey.storyBattles, battles, landmarks: tourism.landmarks,

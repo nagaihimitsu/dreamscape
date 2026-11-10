@@ -184,6 +184,22 @@ export function tourProgression(tour: { id: string; cityId: string; when?: Condi
     eventIds: tour.steps.flatMap((step) => (step.kind === "event" ? [step.eventId] : [])) };
 }
 
+/**
+ * What each main event's parts pay when first finished (ProgressionContent.mainPayments): the `# on_done: money -X` of its battle's
+ * head and of its landmark's guide, from the scene list content:build makes (by event ID; events that pay nothing are left out).
+ */
+export function mainPaymentsOf(scenes: readonly { main?: Record<string, string>; done: { money?: number } }[],
+  events: { episodes: readonly { id: string; battleId: string; landmarkId: string | null }[]; storyBattles: readonly { battleId: string }[];
+    battles: readonly { id: string; landmarkId: string | null }[] }): Record<string, number> {
+  const spendOf = (main: Record<string, string>) => scenes.filter((scene) => scene.main && JSON.stringify(scene.main) === JSON.stringify(main))
+    .reduce((sum, scene) => sum + Math.max(0, -(scene.done.money ?? 0)), 0);
+  return Object.fromEntries([
+    ...events.episodes.map((episode) => [episode.id, episode.battleId, episode.landmarkId] as const),
+    ...events.storyBattles.map((battle) => [battle.battleId, battle.battleId, events.battles.find((item) => item.id === battle.battleId)?.landmarkId ?? null] as const),
+  ].map(([eventId, battleId, landmarkId]): [string, number] => [eventId, spendOf({ battle: battleId }) + (landmarkId ? spendOf({ guide: landmarkId }) : 0)])
+    .filter(([, money]) => money > 0));
+}
+
 /** Always true / never true, as conditions (judge reads an empty `all` as true and an empty `any` as false). */
 const ALWAYS: Condition = { all: [] };
 /** Whether a map event of the city is at a tour-only place. */

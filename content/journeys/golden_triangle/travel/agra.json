@@ -346,6 +346,7 @@
           "end": 1020
         }
       ],
+      "access": "tour",
       "sources": [
         {
           "publisher": "Mapcarta / OpenStreetMap",
@@ -1028,40 +1029,6 @@
     },
     {
       "fromPlaceId": "agra_taj_mahal",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "minutes": 95,
-      "cost": 900,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "タージ・マハルの駐車場と門のあいだの時間",
-          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "車は半径500m以内に入れないので、西門側の駐車場で降りて電気バスかゴルフカートで門へ向かう想定。駐車場と門のあいだを10分（仮定）としてオートの時間に足す。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_taj_mahal",
       "toPlaceId": "agra_akbar_tomb",
       "mode": "auto_rickshaw",
       "minutes": 55,
@@ -1656,32 +1623,6 @@
           "checkedAt": "2026-11-07",
           "claimType": "hypothesis",
           "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_agra_fort",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "minutes": 80,
-      "cost": 830,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
         }
       ]
     },
@@ -2288,32 +2229,6 @@
     },
     {
       "fromPlaceId": "agra_itimad_tomb",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "minutes": 85,
-      "cost": 900,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_itimad_tomb",
       "toPlaceId": "agra_akbar_tomb",
       "mode": "auto_rickshaw",
       "minutes": 40,
@@ -2883,32 +2798,6 @@
     },
     {
       "fromPlaceId": "agra_mehtab_bagh",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "minutes": 85,
-      "cost": 940,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_mehtab_bagh",
       "toPlaceId": "agra_akbar_tomb",
       "mode": "auto_rickshaw",
       "minutes": 40,
@@ -3277,118 +3166,6 @@
     },
     {
       "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_taj_mahal",
-      "mode": "auto_rickshaw",
-      "minutes": 95,
-      "cost": 900,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "タージ・マハルの駐車場と門のあいだの時間",
-          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "車は半径500m以内に入れないので、西門側の駐車場で降りて電気バスかゴルフカートで門へ向かう想定。駐車場と門のあいだを10分（仮定）としてオートの時間に足す。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_agra_fort",
-      "mode": "auto_rickshaw",
-      "minutes": 80,
-      "cost": 830,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_itimad_tomb",
-      "mode": "auto_rickshaw",
-      "minutes": 85,
-      "cost": 900,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_mehtab_bagh",
-      "mode": "auto_rickshaw",
-      "minutes": 85,
-      "cost": 940,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
       "toPlaceId": "agra_fatehpur_sikri",
       "mode": "walk",
       "minutes": 0,
@@ -3401,170 +3178,6 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "同一地点での移動を伴わないゲーム内操作。実際の施設内の距離や所要時間ではない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_akbar_tomb",
-      "mode": "auto_rickshaw",
-      "minutes": 80,
-      "cost": 820,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_ram_bagh",
-      "mode": "auto_rickshaw",
-      "minutes": 85,
-      "cost": 910,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_chini_rauza",
-      "mode": "auto_rickshaw",
-      "minutes": 85,
-      "cost": 930,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_mariam_tomb",
-      "mode": "auto_rickshaw",
-      "minutes": 80,
-      "cost": 820,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_guru_ka_taal",
-      "mode": "auto_rickshaw",
-      "minutes": 80,
-      "cost": 840,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_hotel_hub",
-      "mode": "auto_rickshaw",
-      "minutes": 95,
-      "cost": 880,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-09",
-          "claimType": "hypothesis",
-          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
-          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
-          "checkedAt": "2026-11-09",
-          "claimType": "hypothesis",
-          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす。India Today 2021-09-20 の報道（Mughal Library の転載）と Amar Ujala 2025-12-17 の報道が、タージ・ガンジを区域の中として扱うことによる解釈。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
         }
       ]
     },
@@ -3781,32 +3394,6 @@
           "checkedAt": "2026-11-07",
           "claimType": "hypothesis",
           "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_akbar_tomb",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "minutes": 85,
-      "cost": 880,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
         }
       ]
     },
@@ -4363,32 +3950,6 @@
     },
     {
       "fromPlaceId": "agra_ram_bagh",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "minutes": 85,
-      "cost": 920,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_ram_bagh",
       "toPlaceId": "agra_akbar_tomb",
       "mode": "auto_rickshaw",
       "minutes": 35,
@@ -4908,32 +4469,6 @@
     },
     {
       "fromPlaceId": "agra_chini_rauza",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "minutes": 85,
-      "cost": 930,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_chini_rauza",
       "toPlaceId": "agra_akbar_tomb",
       "mode": "auto_rickshaw",
       "minutes": 35,
@@ -5412,32 +4947,6 @@
           "checkedAt": "2026-11-07",
           "claimType": "hypothesis",
           "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_mariam_tomb",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "minutes": 80,
-      "cost": 850,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
         }
       ]
     },
@@ -5953,32 +5462,6 @@
           "checkedAt": "2026-11-07",
           "claimType": "hypothesis",
           "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_guru_ka_taal",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "minutes": 80,
-      "cost": 840,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
         }
       ]
     },
@@ -6602,40 +6085,6 @@
           "checkedAt": "2026-11-09",
           "claimType": "documented_fact",
           "claimJa": "タージ・ガンジの商工会が、タージ・マハルの500m圏の車両許可証を作る出張窓口を求めて県知事の事務所で抗議し、要望書を出したと報じる。会長は、500m圏に住む商人は新しい許可証のために地方運輸局（RTO）の事務所へ行かねばならず、細かな不備で何度も通わされると話し、窓口をタージ・ガンジ警察署かシルプグラムに置くよう求めた。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "アーグラの宿とオートの乗り降りの場所のあいだの時間",
-          "url": "https://tajmahal.gov.in/dos-and-donts.aspx",
-          "checkedAt": "2026-11-09",
-          "claimType": "hypothesis",
-          "claimJa": "宿の代表点（タージ・ガンジ）はタージ・マハルの500m圏の中とみなす。India Today 2021-09-20 の報道（Mughal Library の転載）と Amar Ujala 2025-12-17 の報道が、タージ・ガンジを区域の中として扱うことによる解釈。旅行者が拾うオートは住民の許可証の車ではないので宿の前まで入れないとし、乗り降りの場所まで歩く10分（仮定）をオートの時間に足す。区域の測り方の起点、柵の今の位置、2026年の電動リキシャの通行は資料で確かめられなかった。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "agra_hotel_hub",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "minutes": 95,
-      "cost": 880,
-      "estimation": "game_model",
-      "sources": [
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（アーグラの宿の点とほかの10地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-09",
-          "claimType": "hypothesis",
-          "claimJa": "宿の代表点（北緯27.16870、東経78.04130）とアーグラのほかの10地点のあいだの車の道路距離を2026-11-09に計算した値。門の位置やオートの通行規制は考えていない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",

@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "id": "gt_agra_tour_fatehpur_sikri",
+  "cityId": "agra",
+  "titleJa": "ファテープル・シークリー日帰りツアー",
+  "summaryJa": "運転手つきの車でファテープル・シークリーへ。入場券つき。見学は二人で回り、昼過ぎに宿へ戻ります。",
+  "steps": [
+    {
+      "id": "out",
+      "kind": "leg",
+      "labelJa": "車でファテープル・シークリーへ",
+      "toPlaceId": "agra_fatehpur_sikri",
+      "minutes": 60,
+      "vehicle": {
+        "kind": "car",
+        "movingJa": "ツアーの車で移動中"
+      },
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Rajputana Cabs",
+          "title": "Agra to Fatehpur Sikri Taxi",
+          "url": "https://rajputanacabs.in/agra-to-fatehpur-sikri-taxi/",
+          "checkedAt": "2026-11-10",
+          "claimType": "documented_fact",
+          "claimJa": "配車会社の案内では、アーグラからファテープル・シークリーまで道路で約36km、車で約1時間（同じページの見出しには38kmとある）。"
+        },
+        {
+          "publisher": "Triveni Cabs",
+          "title": "Same Day Fatehpur Sikri Tour from Agra",
+          "url": "https://www.trivenicabs.in/same-day-fatehpur-sikri-from-agra",
+          "checkedAt": "2026-11-10",
+          "claimType": "documented_fact",
+          "claimJa": "配車会社の案内では、片道約40km、車で45分〜1時間（ページの更新日は2026年9月14日）。"
+        },
+        {
+          "publisher": "Wikivoyage",
+          "title": "Fatehpur Sikri",
+          "url": "https://en.wikivoyage.org/wiki/Fatehpur_Sikri",
+          "checkedAt": "2026-11-10",
+          "claimType": "documented_fact",
+          "claimJa": "旅行案内（ウィキボヤージュ、版 oldid=5401955）では、アーグラから西へ車で約40km、約50分。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "ツアーの区間の時間（ゲーム用の推定）",
+          "url": "https://rajputanacabs.in/agra-to-fatehpur-sikri-taxi/",
+          "checkedAt": "2026-11-10",
+          "claimType": "hypothesis",
+          "claimJa": "片道60分はゲーム用の推定。上の資料の車の時間（約50分〜1時間）に、宿から車に乗る所まで歩く時間（タージ・マハルの周りは車が入れないため。市内のオートと同じ10分の仮定）を足すと60〜70分になるが、9:00〜14:00の行程にするため60分とした。渋滞・門の位置・宿の前まで車が入れるかは確かめていない。"
+        }
+      ]
+    },
+    {
+      "id": "visit",
+      "kind": "event",
+      "eventId": "gt_agra_main_fatehpur_sikri"
+    },
+    {
+      "id": "back",
+      "kind": "leg",
+      "labelJa": "車で宿へ",
+      "toPlaceId": "agra_hotel_hub",
+      "minutes": 60,
+      "vehicle": {
+        "kind": "car",
+        "movingJa": "ツアーの車で移動中"
+      },
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Rajputana Cabs",
+          "title": "Agra to Fatehpur Sikri Taxi",
+          "url": "https://rajputanacabs.in/agra-to-fatehpur-sikri-taxi/",
+          "checkedAt": "2026-11-10",
+          "claimType": "documented_fact",
+          "claimJa": "配車会社の案内では、アーグラからファテープル・シークリーまで道路で約36km、車で約1時間（同じページの見出しには38kmとある）。"
+        },
+        {
+          "publisher": "Triveni Cabs",
+          "title": "Same Day Fatehpur Sikri Tour from Agra",
+          "url": "https://www.trivenicabs.in/same-day-fatehpur-sikri-from-agra",
+          "checkedAt": "2026-11-10",
+          "claimType": "documented_fact",
+          "claimJa": "配車会社の案内では、片道約40km、車で45分〜1時間（ページの更新日は2026年9月14日）。"
+        },
+        {
+          "publisher": "Wikivoyage",
+          "title": "Fatehpur Sikri",
+          "url": "https://en.wikivoyage.org/wiki/Fatehpur_Sikri",
+          "checkedAt": "2026-11-10",
+          "claimType": "documented_fact",
+          "claimJa": "旅行案内（ウィキボヤージュ、版 oldid=5401955）では、アーグラから西へ車で約40km、約50分。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "ツアーの区間の時間（ゲーム用の推定）",
+          "url": "https://rajputanacabs.in/agra-to-fatehpur-sikri-taxi/",
+          "checkedAt": "2026-11-10",
+          "claimType": "hypothesis",
+          "claimJa": "片道60分はゲーム用の推定。上の資料の車の時間（約50分〜1時間）に、宿から車に乗る所まで歩く時間（タージ・マハルの周りは車が入れないため。市内のオートと同じ10分の仮定）を足すと60〜70分になるが、9:00〜14:00の行程にするため60分とした。渋滞・門の位置・宿の前まで車が入れるかは確かめていない。"
+        }
+      ]
+    }
+  ],
+  "offers": [
+    {
+      "id": "hotel_desk",
+      "channel": "desk",
+      "sellerJa": "宿のフロント",
+      "placeIds": [
+        "agra_hotel_hub"
+      ],
+      "price": 3200,
+      "sources": [
+        {
+          "publisher": "Triveni Cabs",
+          "title": "Same Day Fatehpur Sikri Tour from Agra",
+          "url": "https://www.trivenicabs.in/same-day-fatehpur-sikri-from-agra",
+          "checkedAt": "2026-11-10",
+          "claimType": "documented_fact",
+          "claimJa": "配車会社の案内では、アーグラ〜ファテープル・シークリー往復のセダン（4人まで）が₹1,800。通行料・駐車料・運転手の手当て込みとあるが、ページの下には通行料・駐車料は実費とも書かれている。入場料は含まない。"
+        },
+        {
+          "publisher": "Rajputana Cabs",
+          "title": "Agra to Fatehpur Sikri Taxi",
+          "url": "https://rajputanacabs.in/agra-to-fatehpur-sikri-taxi/",
+          "checkedAt": "2026-11-10",
+          "claimType": "documented_fact",
+          "claimJa": "別の配車会社の案内では、アーグラからの日帰りが₹2,000、セダンの1日料金が₹1,999（表では₹1,500）。何が含まれるかは書かれていない。"
+        },
+        {
+          "publisher": "Agra district administration (NIC)",
+          "title": "Fatehpur Sikri",
+          "url": "https://agra.nic.in/tourist-place/fatehpur-sikri/",
+          "checkedAt": "2026-11-10",
+          "claimType": "documented_fact",
+          "claimJa": "アーグラ県の案内では、入場料は外国人1人₹610、インド国民₹50（ページの更新日は2026-07-10）。2人分₹1,220はこの外国人料金の2人分。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "宿のフロントで頼む日帰りツアーの料金（ゲーム用の値）",
+          "url": "https://www.trivenicabs.in/same-day-fatehpur-sikri-from-agra",
+          "checkedAt": "2026-11-10",
+          "claimType": "hypothesis",
+          "claimJa": "2人分₹3,200は、車の往復（₹1,800〜2,000）と2人分の入場料（₹1,220）から作ったゲームの値。宿のフロントで頼むときの値段の資料は見つからなかった（2026-11-10に検索）。ガイドは含めない。"
+        }
+      ]
+    },
+    {
+      "id": "web",
+      "channel": "web",
+      "sellerJa": "ツアー予約サイト",
+      "price": 3500,
+      "sources": [
+        {
+          "publisher": "AAA TripCanvas",
+          "title": "Excursion to Fatehpur Sikri From Agra",
+          "url": "https://www.aaa.com/tripcanvas/thing-to-do/excursion-to-fatehpur-sikri-from-agra-22327P8",
+          "checkedAt": "2026-11-10",
+          "claimType": "documented_fact",
+          "claimJa": "予約サイトの転載ページでは、運転手つきの車だけの日帰り（Tour without Guide + Entrance）が$14.99から。1人分か1組分かは書かれていない。"
+        },
+        {
+          "publisher": "Agra district administration (NIC)",
+          "title": "Fatehpur Sikri",
+          "url": "https://agra.nic.in/tourist-place/fatehpur-sikri/",
+          "checkedAt": "2026-11-10",
+          "claimType": "documented_fact",
+          "claimJa": "アーグラ県の案内では、入場料は外国人1人₹610、インド国民₹50（ページの更新日は2026-07-10）。2人分₹1,220はこの外国人料金の2人分。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "予約サイトで買う日帰りツアーの料金（ゲーム用の値）",
+          "url": "https://www.aaa.com/tripcanvas/thing-to-do/excursion-to-fatehpur-sikri-from-agra-22327P8",
+          "checkedAt": "2026-11-10",
+          "claimType": "hypothesis",
+          "claimJa": "2人分₹3,500は、宿のフロントの値段より少し高くしたゲームの値。予約サイトの本ページ（GetYourGuide・Viator）は開けず、ガイドなしで入場料込みの2人分の値段は確かめられなかった（2026-11-10）。"
+        }
+      ]
+    }
+  ]
+}
