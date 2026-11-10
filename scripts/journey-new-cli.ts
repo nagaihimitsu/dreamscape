@@ -1,4 +1,5 @@
 import { CHECKLIST_FILE, createJourney, parseNewJourneyArgs } from "./journey-new";
+import { errorText } from "./cli-error";
 
 // npm run journey:new -- <journeyId> --name <日本語名> --city <cityId> --city-name <日本語名> [--prefix <p>] [--with-optional]
 try {
@@ -14,6 +15,6 @@ try {
   console.log(`  3. ${CHECKLIST_FILE} に沿って実在の観光地・出典・画像・文章に置き換える`);
   console.log(`  4. npm run journey:release -- --check --journey ${id}   （公開の確認。見本の内容が残っていると止まる）`);
 } catch (error) {
-  console.error(error instanceof Error ? error.message : error);
+  console.error(errorText(error));
   process.exitCode = 1;
 }

@@ -14,6 +14,7 @@
     "india:release": "npm run journey:release -- --journey golden_triangle",
     "city:bundle": "tsx scripts/city-bundle-cli.ts",
     "icons:build": "tsx scripts/generate-icons.ts",
+    "schemas:build": "tsx scripts/generate-json-schemas.ts",
     "images:optimize": "tsx scripts/optimize-images-cli.ts",
     "predev": "npm run content:build",
     "dev": "vite --host 0.0.0.0",

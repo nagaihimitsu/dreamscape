@@ -85,17 +85,17 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
   const actualFiles = new Set(inkFiles(path.join(base, selectedCityId ?? "")));
   const expectedFiles = new Set(expected.map((story) => story.draftFile));
   const duplicate = expected.filter((story) => actualFiles.has(story.draftFile) && story.publishedFile);
-  if (duplicate.length) throw new Error(`Scenario has both draft and published Ink: ${duplicate.map((story) => story.storyId).join(", ")}; keep one source`);
+  if (duplicate.length) throw new Error(`下書きと公開済みの両方に同じ Ink があります: ${duplicate.map((story) => story.storyId).join(", ")}。どちらか1つにします。`);
   const missing = expected.filter((story) => !actualFiles.has(story.draftFile) && !story.publishedFile).map((story) => story.draftFile);
   const extra = [...actualFiles].filter((file) => !expectedFiles.has(file));
   if (missing.length || extra.length)
-    throw new Error(`Scenario Ink file mismatch: missing [${missing.map((file) => path.relative(base, file)).join(", ")}]; extra [${extra.map((file) => path.relative(base, file)).join(", ")}]`);
+    throw new Error(`下書きの Ink ファイルが要るものと合いません。足りない: [${missing.map((file) => path.relative(base, file)).join(", ")}]、余分: [${extra.map((file) => path.relative(base, file)).join(", ")}]`);
   for (const city of requirements) {
     const own = journeyNarrativeSchema.parse(json(path.join(base, city.cityId, "narrative.json")));
     const subset = { main: Object.fromEntries(city.main.map((event) => [event.eventId, narrative.main[event.eventId]])),
       dates: Object.fromEntries(city.dates.map((event) => [event.eventId, narrative.dates[event.eventId]])),
       finales: { [city.cityId]: narrative.finales[city.cityId] } };
-    if (!isDeepStrictEqual(own, subset)) throw new Error(`Scenario metadata differs from the combined narrative: ${city.cityId}`);
+    if (!isDeepStrictEqual(own, subset)) throw new Error(`都市 ${city.cityId} の narrative.json が、まとめた脚本の情報と違います。`);
   }
   const stories: Record<string, string> = {};
   const inkSources: Record<string, string> = {};
@@ -169,7 +169,7 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
         for (const id of references) {
           const has = (seed: typeof date.validationContexts[number]) => (seed.memoryIds ?? (seed.memoryId ? [seed.memoryId] : [])).includes(id);
           if (!date.validationContexts.some(has) || !date.validationContexts.some((seed) => !has(seed)))
-            throw new Error(`Memory reference needs present and absent validation contexts: ${id}`);
+            throw new Error(`思い出 ${id} を読むデートには、その思い出がある場合とない場合の両方の検証の文脈（validationContexts）が要ります。`);
         }
         // The published runtime supplies all relationship stages and ending states.
         // Exercise them even when the generated minimum metadata has one seed.

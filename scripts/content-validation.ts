@@ -27,7 +27,7 @@ import { transitLedgerSchema } from "./transit-ledger";
 import type { z } from "zod";
 import { headEntryRule, HEAD_TAGS, readEncounterHead, type EncounterHead } from "./encounter-head";
 import { checkConditions, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, mapConditionOwners, type ConditionContent, type ConditionOwner } from "./condition-validation";
-import { progressionErrors, progressionWarnings, type ProgressionContent } from "./progression-check";
+import { progressionErrors, progressionWarnings, sceneItemsOf, type ProgressionContent } from "./progression-check";
 import { FULL_COND_WALK, parseSceneConditions, readSceneConditions } from "./scene-conditions";
 import type { Condition } from "../src/content/condition-schemas";
 import { validateBackgroundAssets, validateCharacters } from "./presentation-validation";
@@ -1368,6 +1368,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
         ...(scene.at.some(comesAgain) ? { anytime: true } : {}),
         ...(scene.when ? { when: scene.when } : {}) };
     }),
+    // The scenes' items (stage 3 tags): what they give, give away or use (the item design §2.5 7–9).
+    sceneItems: sceneItemsOf(generatedScenes.scenes),
     // The tags' AP (stage 3): once-only scenes' gains (their scene_tag rules) and the main parts' spends.
     sceneAp: generatedScenes.scenes.filter((scene) => scene.repeat === "once").map((scene) => ({ cityId: scene.cityId,
       gained: generatedScenes.rewards.filter((rule) => rule.sceneId === scene.id && !scene.options.some((option) => option.later && `${scene.id}__${option.id}` === rule.id))

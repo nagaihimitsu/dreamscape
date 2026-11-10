@@ -1,14 +1,15 @@
 import { namedJa } from "./journey-cli";
 import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
 import { buildContent } from "./content-pipeline";
+import { errorText } from "./cli-error";
 
 const args = process.argv.slice(2);
 const journeyFlag = args.indexOf("--journey");
 const journeyId = args[journeyFlag + 1];
-if (journeyFlag < 0 || !journeyId || journeyId.startsWith("--")) fail("--journey ID is required");
+if (journeyFlag < 0 || !journeyId || journeyId.startsWith("--")) fail("--journey で旅行編IDを指定してください。使い方: npm run journey:readiness -- --journey 旅行編ID [--json] [--require-ready]");
 args.splice(journeyFlag, 2);
 if (args.some((arg) => arg !== "--json" && arg !== "--require-ready")) {
-  fail("Usage: npx tsx scripts/inspect-journey-readiness.ts --journey ID [--json] [--require-ready]");
+  fail("使い方: npm run journey:readiness -- --journey 旅行編ID [--json] [--require-ready]");
 }
 const root = process.cwd();
 const input = attempt(() => loadJourneyReadiness(root, journeyId));
@@ -32,9 +33,9 @@ if (args.includes("--require-ready")) {
     // route and cross-catalog validation as a normal production build.
     try {
       await buildContent(root, false);
-      console.log("Journey release gate: full content validation passed.");
+      console.log("公開前の確認: 全体の内容の検証に合格しました。");
     } catch (error) {
-      console.error(error instanceof Error ? error.message : error);
+      console.error(errorText(error));
       process.exitCode = 1;
     }
   }
@@ -42,7 +43,7 @@ if (args.includes("--require-ready")) {
 
 /** Print a failure before any report output without its stack trace, and stop with exit code 1. */
 function fail(error: unknown): never {
-  console.error(error instanceof Error ? error.message : error);
+  console.error(errorText(error));
   process.exit(1);
 }
 

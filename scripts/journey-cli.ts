@@ -17,7 +17,7 @@ export interface JourneyScaffoldArgs {
   selectedCities?: string[];
 }
 
-const scaffoldUsage = "Usage: [--requirements] --journey ID [--city ID] | --fragments NARRATIVE.json --journey ID [--city ID]";
+const scaffoldUsage = "使い方: npm run journey:scaffold -- [--requirements] --journey 旅行編ID [--city 都市ID] | --fragments 脚本の情報.json --journey 旅行編ID [--city 都市ID]";
 
 /**
  * The options of journey:scaffold. The mode may follow other options (e.g.
@@ -40,13 +40,13 @@ export function parseJourneyScaffoldArgs(argv: readonly string[]): JourneyScaffo
   const seen = new Set<string>();
   for (let index = 0; index < args.length; index += 2) {
     const flag = args[index], value = args[index + 1];
-    if (!value || seen.has(flag)) throw new Error("Expected unique --journey ID and optional --city ID");
+    if (!value || seen.has(flag)) throw new Error(`--journey と --city は1回ずつ、値を付けて指定します。${scaffoldUsage}`);
     seen.add(flag);
     if (flag === "--journey") journeyId = value;
     else if (flag === "--city") selectedCities = [value];
-    else throw new Error(`Unknown option: ${flag}`);
+    else throw new Error(`知らない指定です: ${flag}。${scaffoldUsage}`);
   }
-  if (!journeyId) throw new Error("--journey ID is required");
+  if (!journeyId) throw new Error(`--journey で旅行編IDを指定してください。${scaffoldUsage}`);
   return { mode, narrativePath, journeyId, selectedCities };
 }
 

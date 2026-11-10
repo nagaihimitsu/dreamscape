@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Condition } from "../src/content/condition-schemas";
-import { canStillClearCity, moneyShortNow, progressionErrors, progressionWarnings, startSnapshot, type ProgressionContent, type ProgressionSnapshot } from "./progression-check";
+import { canStillClearCity, moneyShortNow, progressionErrors, progressionWarnings, sceneItemsOf, startSnapshot, type ProgressionContent, type ProgressionSnapshot } from "./progression-check";
 
 // The progression check (unified event design stage 2b, 3.3 check 9 and its warnings) on small
 // fictional content: one city, "town", with three landmark battles (a, b, c), a finale and one date.
@@ -161,5 +161,128 @@ describe("check 9: the author-started epilogue (then: epilogue; 3.9 (d))", () =>
     expect(progressionErrors(fragile)).toEqual([]);
     expect(kinds(fragile)).toContain("epilogue-unreachable");
     expect(kinds(town({}, { epilogueStarters: [{ sceneId: "fin_head", cityId: "town", battleId: "bt_fin" }] }))).not.toContain("epilogue-unreachable");
+  });
+});
+
+describe("check 9 and items carried through the journey (the item design §2.5 7–9)", () => {
+  // A two-city journey: "old" before "town"; the memo is old's item, carried through the journey ("carry": "journey").
+  type Scene = NonNullable<ProgressionContent["sceneItems"]>[number];
+  const scene = (sceneId: string, cityId: string, gives: string[], where: Pick<Scene, "main" | "at">, spends: string[] = []): Scene =>
+    ({ sceneId, cityId, gives, spends, ...where });
+  const arrival = scene("old_arrival", "old", ["memo"], { main: { arrival: "old" } });
+  const carried = (when: Condition, items: Partial<ProgressionContent> = {}) => town({ when }, {
+    journeys: [{ id: "trip", cities: [{ id: "old" }, { id: "town" }], initialBudget: 120, cityTransition: "after_epilogue" }],
+    items: [{ id: "key", cityId: "town" }, { id: "memo", cityId: "old", carry: "journey" }, { id: "letter", cityId: "old" }],
+    sceneItems: [arrival], ...items,
+  });
+  const held: Condition = { item: { id: "memo", is: "held" } };
+  const keyHeld: Condition = { item: { id: "key", is: "held" } };
+
+  it("7: counts an earlier city's carried item as held some day when a scene there can give it", () => {
+    expect(progressionErrors(carried(held))).toEqual([]);
+    // No scene of old gives it: never held.
+    expect(progressionErrors(carried(held, { sceneItems: [] }))[0]).toMatch(/^No way to clear city town: /);
+    // Given only by old's epilogue, which old (no finale) never reaches; by a battle of old that is never played.
+    expect(progressionErrors(carried(held, { sceneItems: [scene("old_epilogue", "old", ["memo"], { main: { epilogue: "old" } })] }))).toHaveLength(1);
+    expect(progressionErrors(carried(held, { sceneItems: [scene("bt_never", "old", ["memo"], { main: { battle: "bt_never" } })] }))).toHaveLength(1);
+  });
+
+  it("7: holds a scene's item back until its main part or its moment comes", () => {
+    const keyFrom = (where: Pick<Scene, "main" | "at">) => progressionErrors(town({ when: keyHeld }, { encounters: [], sceneItems: [scene("giver", "town", ["key"], where)] }));
+    expect(keyFrom({ main: { battle: "bt_b" } })).toEqual([]);
+    expect(keyFrom({ main: { epilogue: "town" } })).toHaveLength(1);
+    // An inserted scene: at a visit whose landmark the city reaches, at the hotel; at the city's own finale, epilogue or departure: never in time.
+    expect(keyFrom({ at: [{ visit: "lm_a" }] })).toEqual([]);
+    expect(keyFrom({ at: [{ visit: "lm_without_event" }] })).toHaveLength(1);
+    expect(keyFrom({ at: [{ hotel: "hotel" }] })).toEqual([]);
+    for (const moment of [{ finale: "town" }, { epilogue: "town" }, { depart: "town" }] as Record<string, string>[])
+      expect(keyFrom({ at: [moment] })[0], JSON.stringify(moment)).toMatch(/^No way to clear city town: /);
+    // A place's scene runs at its events: the finale's place waits for the finale; the date's place, for the date.
+    expect(keyFrom({ at: [{ place: "pf" }] })).toHaveLength(1);
+    expect(keyFrom({ at: [{ place: "pd" }] })).toEqual([]);
+    // Any of its moments gives it.
+    expect(keyFrom({ at: [{ finale: "town" }, { visit: "lm_a" }] })).toEqual([]);
+    // The inserted scene's encounter (same ID) does not give it at any time.
+    const insertedEncounter = town({ when: keyHeld }, { encounters: [{ id: "giver", cityId: "town", completionItemId: "key", options: [{}] }],
+      sceneItems: [scene("giver", "town", ["key"], { at: [{ finale: "town" }] })] });
+    expect(progressionErrors(insertedEncounter)).toHaveLength(1);
+  });
+
+  it("9 (dates): an item only a date gives needs the romance, and its date's AP", () => {
+    for (const where of [{ main: { date: "dt" } }, { at: [{ date: "dt" }] }] as Pick<Scene, "main" | "at">[]) {
+      const content = town({ when: keyHeld }, { encounters: [], sceneItems: [scene("dt_scene", "town", ["key"], where)] });
+      expect(progressionErrors(content), JSON.stringify(where)).toEqual([]);
+      expect(kinds(content), JSON.stringify(where)).toContain("romance-only-city");
+      // The city gives 1 AP (ep_a's reward); the date costs 2.
+      expect(progressionWarnings(content).find((warning) => warning.kind === "ap-shortfall")?.message).toMatch(/an item only the date dt gives/);
+    }
+    // A carried item an earlier city's date gives: the later city too.
+    expect(kinds(carried(held, { sceneItems: [scene("old_date", "old", ["memo"], { main: { date: "old_dt" } })] }))).toContain("romance-only-city");
+    expect(kinds(carried(held))).not.toContain("romance-only-city");
+  });
+
+  it("8: warns when an earlier city's choice can give a carried item away that the finale needs held, unless another way is left", () => {
+    expect(kinds(carried(held))).not.toContain("never-met-again");
+    const spent = carried(held, { sceneItems: [arrival, scene("old_hotel", "old", [], { at: [{ hotel: "old_hotel" }] }, ["memo"])] });
+    expect(progressionErrors(spent)).toEqual([]);
+    expect(progressionWarnings(spent).find((warning) => warning.kind === "never-met-again")?.message)
+      .toMatch(/^Finale condition may never be met again: city town's finale fin .*an item carried through the journey also by a choice in an earlier city/);
+    expect(kinds({ ...spent, episodes: spent.episodes.map((episode) => episode.id === "fin" ? { ...episode, when: { any: [held, { battlesPlayed: { city: "town", atLeast: 2 } }] } } : episode) }))
+      .not.toContain("never-met-again");
+  });
+
+  it("9: warns when a city's clear needs an earlier city's item that only an optional scene there gives, unless another way is left", () => {
+    // An arrival's or battle's item (here old's arrival): a start at town has played it.
+    expect(kinds(carried(held))).not.toContain("earlier-item-start");
+    const fromDate = carried(held, { sceneItems: [scene("old_photo", "old", ["memo"], { at: [{ date: "old_dt" }] })] });
+    expect(progressionWarnings(fromDate).find((item) => item.kind === "earlier-item-start")?.message)
+      .toMatch(/^City town needs an item from an earlier city that only an optional date, inserted scene, guide or encounter there gives: its finale fin .*only with memo; .*main path only/);
+    // A guide's item: a start at town skips the guides (cityStart reads no guide), so it counts as outside the main path.
+    const base = town({ when: held });
+    const oldGuide = (sceneItems: Scene[]) => carried(held, {
+      sceneItems, episodes: [...base.episodes, { id: "ep_old", kind: "episode", cityId: "old", landmarkId: "lm_old", battleId: "bt_old", requiredEpisodeIds: [] }],
+      battles: [...base.battles, { id: "bt_old", landmarkId: "lm_old" }], landmarks: [...base.landmarks, { id: "lm_old", cityId: "old", guideStoryId: "tourism/old" }],
+    });
+    expect(progressionErrors(oldGuide([scene("old_guide", "old", ["memo"], { main: { guide: "lm_old" } })]))).toEqual([]);
+    expect(kinds(oldGuide([scene("old_guide", "old", ["memo"], { main: { guide: "lm_old" } })]))).toContain("earlier-item-start");
+    expect(kinds(oldGuide([scene("old_battle", "old", ["memo"], { main: { battle: "bt_old" } })]))).not.toContain("earlier-item-start");
+    // An epilogue's item: a start at town reads old's epilogue only when the journey moves on after it (departFromClearedCity).
+    const oldEpilogue = (cityTransition: "manual" | "after_epilogue") => carried(held, {
+      journeys: [{ id: "trip", cities: [{ id: "old" }, { id: "town" }], initialBudget: 120, cityTransition }],
+      sceneItems: [scene("old_epilogue", "old", ["memo"], { main: { epilogue: "old" } })],
+      episodes: [...base.episodes, { id: "fin_old", kind: "city_finale", cityId: "old", landmarkId: null, battleId: "bt_fin_old", requiredEpisodeIds: [] }],
+      battles: [...base.battles, { id: "bt_fin_old", cityId: "old", landmarkId: null, scope: "city_finale" }],
+    });
+    for (const cityTransition of ["manual", "after_epilogue"] as const) expect(progressionErrors(oldEpilogue(cityTransition)), cityTransition).toEqual([]);
+    expect(kinds(oldEpilogue("after_epilogue"))).not.toContain("earlier-item-start");
+    expect(progressionWarnings(oldEpilogue("manual")).find((item) => item.kind === "earlier-item-start")?.message)
+      .toMatch(/guide, epilogue or encounter there gives: .*\(arrival, battles, finale; guides and epilogues skipped\)/);
+    // The history of an earlier city's ordinary item that no main scene gives.
+    expect(kinds(carried({ item: { id: "letter", is: "gifted" } }))).toContain("earlier-item-start");
+    expect(kinds(carried({ any: [held, { battlesPlayed: { city: "town", atLeast: 2 } }] }, { sceneItems: [scene("old_photo", "old", ["memo"], { at: [{ date: "old_dt" }] })] })))
+      .not.toContain("earlier-item-start");
+    expect(kinds(carried(keyHeld))).not.toContain("earlier-item-start");
+  });
+
+  it("reads a carried item from the walk's exact records: held is held; given or used here while it is still held", () => {
+    const now = (items: Record<string, string>): ProgressionSnapshot => ({ ...startSnapshot(), exact: true, items, cities: new Set(["old"]) });
+    expect(canStillClearCity(carried(held), "town", now({ memo: "held" }))).toBe(true);
+    expect(canStillClearCity(carried(held), "town", now({ memo: "gifted" }))).toBe(false);
+    expect(canStillClearCity(carried(held), "town", now({}))).toBe(false);
+    const giveHere = carried({ item: { id: "memo", is: "gifted" } }, { sceneItems: [arrival, scene("town_give", "town", [], { at: [{ hotel: "hotel" }] }, ["memo"])] });
+    expect(canStillClearCity(giveHere, "town", now({ memo: "held" }))).toBe(true);
+    expect(canStillClearCity(giveHere, "town", now({ memo: "used" }))).toBe(false);
+  });
+
+  it("reads the scene list content:build makes (sceneItemsOf): main parts and moments", () => {
+    const listed = sceneItemsOf([
+      { id: "a_arrival", cityId: "old", main: { arrival: "old" }, at: [], done: { items: ["memo"] }, options: [] },
+      { id: "talk", cityId: "old", at: [{ finale: "old" }], done: {}, options: [{ give: { item: "memo" } }, { use: "letter" }, {}] },
+      { id: "plain", cityId: "old", at: [{ hotel: "h" }], done: {}, options: [{}] },
+    ]);
+    expect(listed).toEqual([
+      { sceneId: "a_arrival", cityId: "old", gives: ["memo"], spends: [], main: { arrival: "old" } },
+      { sceneId: "talk", cityId: "old", gives: [], spends: ["memo", "letter"], at: [{ finale: "old" }] },
+    ]);
   });
 });

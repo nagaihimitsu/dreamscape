@@ -146,32 +146,69 @@ export function unsupportedTransitRoutes(travel: TravelCatalog, modes: readonly 
 export function exportTransitDecisions(ledger: TransitLedger) {
   return ledger.decisions.map(({ sourceRefs, ...entry }) => ({ ...entry, cityId: ledger.cityId,
     sources: sourceRefs.map((ref) => {
-      if (!Object.hasOwn(ledger.sourceRefs, ref)) throw new Error(`Missing transit source: ${ref}`);
+      if (!Object.hasOwn(ledger.sourceRefs, ref))
+        throw new Error(`交通判断台帳の判断の出典 ${ref} が、台帳の sourceRefs にありません（都市 ${ledger.cityId}）。`);
       return ledger.sourceRefs[ref];
     }) }));
 }
 
-/** A ledger with the edited decisions of a city bundle (sources de-duplicated into references); unchanged input returns `ledger` itself. */
+/**
+ * A ledger with the edited decisions of a city bundle; unchanged input returns `ledger` itself. A source
+ * already in the ledger keeps its key (e.g. `fare`, the research's own ID), and the keys keep their order;
+ * only a source that is new to the ledger gets a new key (`source_N`, after the others). A key that the edit
+ * leaves unused is removed; one that no decision used before the edit stays as it is. So one edited decision
+ * changes that decision only (with a new source: and one new key).
+ */
 export function replaceTransitDecisions(ledger: TransitLedger, raw: unknown[]): TransitLedger {
   if (isDeepStrictEqual(raw, exportTransitDecisions(ledger))) return ledger;
-  return transitLedgerFromDecisions(ledger.cityId, raw);
+  const usedBefore = new Set(ledger.decisions.flatMap((decision) => decision.sourceRefs));
+  // A decision whose sources did not change keeps its own refs (also when two keys hold the same source).
+  const exported = exportTransitDecisions(ledger);
+  const previousRefs = (entry: { fromPlaceId: string; toPlaceId: string; mode: string }, sources: unknown[]) => {
+    const index = ledger.decisions.findIndex((decision) =>
+      decision.fromPlaceId === entry.fromPlaceId && decision.toPlaceId === entry.toPlaceId && decision.mode === entry.mode);
+    return index >= 0 && isDeepStrictEqual(exported[index].sources, sources) ? ledger.decisions[index].sourceRefs : undefined;
+  };
+  const next = decisionsWithRefs(ledger.cityId, raw, { ...ledger.sourceRefs }, previousRefs);
+  const usedAfter = new Set(next.decisions.flatMap((decision) => decision.sourceRefs));
+  const sourceRefs = Object.fromEntries(Object.entries(next.sourceRefs).filter(([key]) => usedAfter.has(key) || !usedBefore.has(key)));
+  return { schemaVersion: 2, cityId: ledger.cityId, sourceRefs, decisions: next.decisions };
 }
 
 /** A new ledger from decisions with written-out sources (a new city of a city bundle). */
 export function transitLedgerFromDecisions(cityId: string, raw: unknown[]): TransitLedger {
-  const sourceRefs: TransitLedger["sourceRefs"] = {};
+  return { schemaVersion: 2, cityId, ...decisionsWithRefs(cityId, raw, {}) };
+}
+
+/**
+ * The decisions with their sources as references into `sourceRefs`: `previousRefs` (an unchanged decision's own refs)
+ * first, else the first key that holds an identical source, else a new key.
+ */
+function decisionsWithRefs(cityId: string, raw: unknown[], sourceRefs: TransitLedger["sourceRefs"],
+  previousRefs: (entry: { fromPlaceId: string; toPlaceId: string; mode: string }, sources: unknown[]) => string[] | undefined = () => undefined) {
   const keys = new Map<string, string>();
+  for (const [key, source] of Object.entries(sourceRefs)) {
+    const fingerprint = JSON.stringify(tourismSourceSchema.parse(source));
+    if (!keys.has(fingerprint)) keys.set(fingerprint, key);
+  }
+  let counter = 0;
+  const newKey = () => {
+    do counter++; while (Object.hasOwn(sourceRefs, `source_${counter}`));
+    return `source_${counter}`;
+  };
   const decisions = raw.map((value) => {
     const { cityId: owner, sources, ...entry } = editableDecisionSchema.parse(value);
-    if (owner !== cityId) throw new Error("Transit decision belongs to another city");
+    if (owner !== cityId) throw new Error(`交通の判断がほかの都市（${owner}）のものです。この都市（${cityId}）の判断だけを書きます`);
+    const kept = previousRefs(entry, sources);
+    if (kept) return { ...entry, sourceRefs: [...kept] };
     return { ...entry, sourceRefs: sources.map((source) => {
       const fingerprint = JSON.stringify(source);
       let key = keys.get(fingerprint);
-      if (!key) { key = `source_${keys.size + 1}`; keys.set(fingerprint, key); sourceRefs[key] = source; }
+      if (!key) { key = newKey(); keys.set(fingerprint, key); sourceRefs[key] = source; }
       return key;
     }) };
   });
-  return { schemaVersion: 2, cityId, sourceRefs, decisions };
+  return { sourceRefs, decisions };
 }
 
 /** One Japanese line per mode for the tools, e.g. `路面電車: 使う 8、使わない 174`. */

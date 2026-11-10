@@ -183,12 +183,12 @@ describe("journey release pipeline (the Golden Triangle as the example)", () => 
       const { narrativeFile, translationsFile } = authorCity(root, plan, "");
       const cityFile = path.join(root, layer, "cities/delhi.json");
       const before = readFileSync(cityFile, "utf8");
-      await expect(prepareJourneyRelease(root, "golden_triangle", true, "delhi", narrativeFile)).rejects.toThrow(/quiz translation is missing/i);
+      await expect(prepareJourneyRelease(root, "golden_triangle", true, "delhi", narrativeFile)).rejects.toThrow(/クイズの和訳がありません/u);
       expect(readFileSync(cityFile, "utf8")).toBe(before);
       const guidePath = path.join(root, layer, "stories", `${plan.main[0].guideStoryId}.ink`);
       const guide = readFileSync(guidePath, "utf8");
       rmSync(guidePath);
-      await expect(prepareJourneyRelease(root, "golden_triangle", true, "delhi", narrativeFile, translationsFile)).rejects.toThrow(/unfinished scenario/i);
+      await expect(prepareJourneyRelease(root, "golden_triangle", true, "delhi", narrativeFile, translationsFile)).rejects.toThrow("デリー（delhi）までに、脚本・クイズ・内容の参照がまだ揃っていません");
       expect(readFileSync(cityFile, "utf8")).toBe(before);
       writeFileSync(guidePath, guide);
       await prepareJourneyRelease(root, "golden_triangle", false, "delhi", narrativeFile, translationsFile);
@@ -209,8 +209,8 @@ describe("journey release pipeline (the Golden Triangle as the example)", () => 
       expect(readFileSync(journeyFile, "utf8")).toBe(after);
       // A wrong file path is refused although the published city would not read it.
       const missing = path.join(root, "missing-narrative.json");
-      await expect(prepareJourneyRelease(root, "golden_triangle", true, "delhi", missing)).rejects.toThrow(`Scenario metadata file not found: ${missing}`);
-      await expect(prepareJourneyRelease(root, "golden_triangle", true, "delhi", narrativeFile, missing)).rejects.toThrow(`Quiz translations file not found: ${missing}`);
+      await expect(prepareJourneyRelease(root, "golden_triangle", true, "delhi", missing)).rejects.toThrow(`脚本の情報（--narrative）のファイルがありません: ${missing}`);
+      await expect(prepareJourneyRelease(root, "golden_triangle", true, "delhi", narrativeFile, missing)).rejects.toThrow(`クイズの和訳（--translations）のファイルがありません: ${missing}`);
 
       // Add only the second city's own hypothetical content. The already
       // published first city must not be regenerated or duplicated.

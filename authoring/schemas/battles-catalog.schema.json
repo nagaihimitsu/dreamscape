@@ -1,0 +1,251 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dreamscape: 対決のカタログ（battles/catalog.json）",
+  "$comment": "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "battles": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "titleJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "descriptionJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "landmarkId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "scope": {
+            "type": "string",
+            "const": "city_finale"
+          },
+          "cityId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "enemyNameJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "enemyTitleJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "enemyDescriptionJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "storyId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(?:\\/[a-z][a-z0-9_]*)+(?:\\.[a-z][a-z0-9_]*){0,2}$"
+          },
+          "quizId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "backgroundId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "portrait": {
+            "type": "string",
+            "enum": [
+              "porter",
+              "fortune",
+              "archivist",
+              "conductor",
+              "abstract"
+            ]
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "A",
+              "B",
+              "C"
+            ]
+          },
+          "reasoning": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "roundIndex": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 2
+                  },
+                  "caseClueIds": {
+                    "minItems": 3,
+                    "maxItems": 5,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_]*$"
+                    }
+                  },
+                  "claimScene": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]*$"
+                  },
+                  "successScene": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]*$"
+                  },
+                  "failureScene": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]*$"
+                  },
+                  "kind": {
+                    "type": "string",
+                    "const": "contradiction"
+                  },
+                  "correctClueIds": {
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_]*$"
+                    }
+                  },
+                  "pressScene": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]*$"
+                  }
+                },
+                "required": [
+                  "roundIndex",
+                  "caseClueIds",
+                  "kind",
+                  "correctClueIds"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "roundIndex": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 2
+                  },
+                  "caseClueIds": {
+                    "minItems": 3,
+                    "maxItems": 5,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_]*$"
+                    }
+                  },
+                  "claimScene": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]*$"
+                  },
+                  "successScene": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]*$"
+                  },
+                  "failureScene": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]*$"
+                  },
+                  "kind": {
+                    "type": "string",
+                    "const": "connection"
+                  },
+                  "correctClueIds": {
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_]*$"
+                    }
+                  }
+                },
+                "required": [
+                  "roundIndex",
+                  "caseClueIds",
+                  "kind",
+                  "correctClueIds"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "scenes": {
+            "type": "object",
+            "properties": {
+              "intro": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "afterRounds": {
+                "minItems": 2,
+                "maxItems": 4,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                }
+              },
+              "outro": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              }
+            },
+            "required": [
+              "intro",
+              "afterRounds",
+              "outro"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "titleJa",
+          "descriptionJa",
+          "landmarkId",
+          "enemyNameJa",
+          "enemyTitleJa",
+          "enemyDescriptionJa",
+          "storyId",
+          "quizId",
+          "backgroundId"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

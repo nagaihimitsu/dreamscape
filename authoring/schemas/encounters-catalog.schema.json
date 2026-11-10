@@ -1,0 +1,441 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dreamscape: 道中交流と品物のカタログ（encounters/catalog.json）",
+  "$comment": "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "cityId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "nameJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "descriptionJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "carry": {
+            "type": "string",
+            "const": "journey"
+          },
+          "iconPath": {
+            "type": "string",
+            "pattern": "^assets\\/(?!.*(?:^|\\/)\\.\\.(?:\\/|$))[a-zA-Z0-9_./-]+\\.(?:png|webp|svg)$"
+          }
+        },
+        "required": [
+          "id",
+          "cityId",
+          "nameJa",
+          "descriptionJa"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "encounters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "cityId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "landmarkId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "titleJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "descriptionJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "storyId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(?:\\/[a-z][a-z0-9_]*)+(?:\\.[a-z][a-z0-9_]*){0,2}$"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "textEn": {
+                  "type": "string",
+                  "minLength": 1,
+                  "language": "en"
+                },
+                "translationJa": {
+                  "type": "string",
+                  "minLength": 1,
+                  "language": "ja"
+                },
+                "cost": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "requiresItemId": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "consumeItemId": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "giftItemId": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "responseProfileId": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "deferCompletion": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "repeatable": {
+            "type": "boolean"
+          },
+          "completionMoney": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "completionItemId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "alternativeApRewardId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "sources": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "publisher": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "url": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "checkedAt": {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                },
+                "claimType": {
+                  "type": "string",
+                  "enum": [
+                    "documented_fact",
+                    "interpretation",
+                    "legend"
+                  ]
+                },
+                "claimJa": {
+                  "type": "string",
+                  "minLength": 1,
+                  "language": "ja"
+                }
+              },
+              "required": [
+                "publisher",
+                "title",
+                "url",
+                "checkedAt",
+                "claimType",
+                "claimJa"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "quiz": {
+            "type": "object",
+            "properties": {
+              "question": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]*$"
+                  },
+                  "questionEn": {
+                    "type": "string",
+                    "minLength": 1,
+                    "language": "en"
+                  },
+                  "options": {
+                    "minItems": 3,
+                    "maxItems": 3,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "enum": [
+                            "A",
+                            "B",
+                            "C"
+                          ]
+                        },
+                        "textEn": {
+                          "type": "string",
+                          "minLength": 1,
+                          "language": "en"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "textEn"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "correctOptionId": {
+                    "type": "string",
+                    "enum": [
+                      "A",
+                      "B",
+                      "C"
+                    ]
+                  },
+                  "vocabularyJa": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "word": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "meaning": {
+                          "type": "string",
+                          "minLength": 1,
+                          "language": "ja"
+                        }
+                      },
+                      "required": [
+                        "word",
+                        "meaning"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "hintJa": {
+                    "type": "string",
+                    "minLength": 1,
+                    "language": "ja"
+                  },
+                  "correctExplanationJa": {
+                    "type": "string",
+                    "minLength": 1,
+                    "language": "ja"
+                  },
+                  "incorrectExplanationJa": {
+                    "type": "string",
+                    "minLength": 1,
+                    "language": "ja"
+                  },
+                  "sources": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "publisher": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "title": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "url": {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        "checkedAt": {
+                          "type": "string",
+                          "format": "date",
+                          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                        },
+                        "claimType": {
+                          "type": "string",
+                          "enum": [
+                            "documented_fact",
+                            "interpretation",
+                            "legend"
+                          ]
+                        },
+                        "claimJa": {
+                          "type": "string",
+                          "minLength": 1,
+                          "language": "ja"
+                        }
+                      },
+                      "required": [
+                        "publisher",
+                        "title",
+                        "url",
+                        "checkedAt",
+                        "claimType",
+                        "claimJa"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "difficulty": {
+                    "type": "string",
+                    "enum": [
+                      "easy",
+                      "medium",
+                      "hard"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "questionEn",
+                  "options",
+                  "correctOptionId",
+                  "vocabularyJa",
+                  "hintJa",
+                  "correctExplanationJa",
+                  "incorrectExplanationJa",
+                  "sources",
+                  "difficulty"
+                ],
+                "additionalProperties": false
+              },
+              "translations": {
+                "type": "object",
+                "properties": {
+                  "questionJa": {
+                    "type": "string",
+                    "minLength": 1,
+                    "language": "ja"
+                  },
+                  "options": {
+                    "type": "object",
+                    "properties": {
+                      "A": {
+                        "type": "string",
+                        "minLength": 1,
+                        "language": "ja"
+                      },
+                      "B": {
+                        "type": "string",
+                        "minLength": 1,
+                        "language": "ja"
+                      },
+                      "C": {
+                        "type": "string",
+                        "minLength": 1,
+                        "language": "ja"
+                      }
+                    },
+                    "required": [
+                      "A",
+                      "B",
+                      "C"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "questionJa",
+                  "options"
+                ],
+                "additionalProperties": false
+              },
+              "chancePercent": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "rewardItemId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "wonStoryId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*(?:\\/[a-z][a-z0-9_]*)+(?:\\.[a-z][a-z0-9_]*){0,2}$"
+              },
+              "lostStoryId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*(?:\\/[a-z][a-z0-9_]*)+(?:\\.[a-z][a-z0-9_]*){0,2}$"
+              },
+              "alreadyStoryId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*(?:\\/[a-z][a-z0-9_]*)+(?:\\.[a-z][a-z0-9_]*){0,2}$"
+              }
+            },
+            "required": [
+              "question",
+              "translations",
+              "chancePercent",
+              "rewardItemId",
+              "wonStoryId",
+              "lostStoryId",
+              "alreadyStoryId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "titleJa",
+          "storyId"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

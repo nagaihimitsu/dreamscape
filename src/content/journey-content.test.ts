@@ -269,6 +269,32 @@ describe("the main parts' shape and the progression check in the build (unified 
     expect(warnings).toContain("romance-only-city");
   });
 
+  // The scene items the build passes to the check (sceneItemsOf; the item design §2.5 7): Delhi's Jama Masjid battle scene gives the
+  // carried attar (# on_done: item), Delhi's epilogue scene the carried wedding invitation, Agra's finale battle scene the petha.
+  // Each call starts from the repository's file (changeCatalogEntry), so one call writes every finale it changes.
+  const changeGtFinales = (whens: Record<string, (required: string[]) => unknown>) =>
+    changeCatalogEntry(fixture, "progression/journey.json", "episodes", "gt_agra_finale", (_entry: Episode, fragment: { episodes: Episode[] }) => {
+      for (const episode of fragment.episodes) {
+        const when = whens[episode.cityId];
+        if (episode.kind === "city_finale" && when) Object.assign(episode, { when: when(episode.requiredEpisodeIds), requiredEpisodeIds: [] });
+      }
+    });
+  const allOf = (required: string[], ...more: unknown[]) => ({ all: [...required.map((id) => ({ episodeCompleted: id })), ...more] });
+
+  it("reads the items the scenes give: a carried item an earlier city's main battle gives is held some day (no stop, no Debug-start warning)", async () => {
+    await changeGtFinales({ agra: (required) => allOf(required, { item: { id: "gt_delhi_rain_attar", is: "held" } }) });
+    const warnings = (await buildContent(fixture, false)).warnings.map((warning) => warning.kind);
+    expect(warnings).not.toContain("earlier-item-start");
+  });
+
+  it("stops a finale that needs an item only its own battle, or an earlier city's epilogue that never comes, gives", async () => {
+    await changeGtFinales({ agra: (required) => allOf(required, { item: { id: "gt_agra_anwar_petha", is: "held" } }) });
+    await expect(buildContent(fixture, false)).rejects.toThrow(/No way to clear city agra: /);
+    await changeGtFinales({ agra: (required) => allOf(required, { item: { id: "gt_delhi_aman_wedding_invitation", is: "held" } }),
+      delhi: () => ({ battlesPlayed: { city: "delhi", atLeast: 99 } }) });
+    await expect(buildContent(fixture, false)).rejects.toThrow(/No way to clear city agra: /);
+  });
+
   it("builds a landmark without a guide (and without its guide reward), and stops an encounter met while observing at one without an observation", async () => {
     await changeCatalogEntry(fixture, "tourism/catalog.json", "landmarks", "last_supper", (landmark: { guideStoryId?: string }) => {
       delete landmark.guideStoryId;

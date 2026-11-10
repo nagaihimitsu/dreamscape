@@ -1,0 +1,310 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dreamscape: 観光地・手がかり・画像（tourism/catalog.json）",
+  "$comment": "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "assets": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^assets\\/tourism\\/[a-zA-Z0-9_/-]+\\.(?:webp|png|jpe?g)$"
+          },
+          "width": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "height": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "altJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "isPlaceholder": {
+            "type": "boolean"
+          },
+          "sourceUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "licenseName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "licenseUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "creditJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "modificationJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "checkedAt": {
+            "type": "string",
+            "format": "date",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+          }
+        },
+        "required": [
+          "id",
+          "path",
+          "width",
+          "height",
+          "altJa",
+          "isPlaceholder",
+          "sourceUrl",
+          "licenseName",
+          "licenseUrl",
+          "creditJa",
+          "modificationJa",
+          "checkedAt"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "landmarks": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "cityId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "nameJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "nameEn": {
+            "type": "string",
+            "minLength": 1
+          },
+          "descriptionJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "imageAssetId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "guideStoryId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(?:\\/[a-z][a-z0-9_]*)+(?:\\.[a-z][a-z0-9_]*){0,2}$"
+          },
+          "battleId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "observation": {
+            "type": "boolean"
+          },
+          "order": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "guide",
+                "observe",
+                "battle"
+              ]
+            }
+          },
+          "clueIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*$"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "cityId",
+          "nameJa",
+          "nameEn",
+          "descriptionJa",
+          "imageAssetId",
+          "battleId",
+          "clueIds"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "clues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "landmarkId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "hotspot",
+              "document"
+            ]
+          },
+          "titleJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "descriptionJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "factId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "relatedQuestionIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*$"
+            }
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "x": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "y": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "width": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 1
+                  },
+                  "height": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 1
+                  }
+                },
+                "required": [
+                  "x",
+                  "y",
+                  "width",
+                  "height"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sources": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "publisher": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "url": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "checkedAt": {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                },
+                "claimType": {
+                  "type": "string",
+                  "enum": [
+                    "documented_fact",
+                    "interpretation",
+                    "hypothesis",
+                    "legend"
+                  ]
+                },
+                "claimJa": {
+                  "type": "string",
+                  "minLength": 1,
+                  "language": "ja"
+                }
+              },
+              "required": [
+                "publisher",
+                "title",
+                "url",
+                "checkedAt",
+                "claimType",
+                "claimJa"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "landmarkId",
+          "kind",
+          "titleJa",
+          "descriptionJa",
+          "factId",
+          "relatedQuestionIds",
+          "region",
+          "sources"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -55,7 +55,7 @@ import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailabili
 import { getTransportModes, WALK_MODE_ID } from "../content/transport";
 import { minimumHomeFare } from "../domain/travel-routes";
 import { getUsableRoutes } from "../domain/transport";
-import { unmetConditionLabels } from "./condition-explain";
+import { otherCityItemsMissing, unmetConditionLabels } from "./condition-explain";
 
 /** The option chosen for a quiz question (its round index counts from 0). */
 export type AnswerPicker = (question: QuizQuestion, roundIndex: number) => string;
@@ -448,7 +448,12 @@ export function startEncounterScene(state: GameState, encounterId: string, ticke
  */
 export function startOccasionScene(state: GameState, landmarkId: string, from: string | undefined, prep: readonly string[], ticket: number): GameState {
   let current = state;
+  const cityNameJa = (cityId: string) => getCities().find((city) => city.id === cityId)?.nameJa ?? cityId;
   for (const id of prep) {
+    // prep= plays the city's own scenes (an earlier city's scene, and the items it gives, are not played here).
+    const owner = encounters.encounters.find((item) => item.id === id)?.cityId;
+    if (owner && owner !== current.currentCityId)
+      throw new Error(`prep= の ${id} は${cityNameJa(owner)}の場面です。prep= は同じ都市（${cityNameJa(current.currentCityId)}）の場面だけを流します。`);
     current = untilEncounter(startEncounterScene(current, id, ticket), id, ticket);
     current = playEncounterFirstChoice(current, ticket);
     for (let step = 0; isSceneOpen(current) && step < MAX_STEPS; step++) current = playOccasionStep(current, ticket);
@@ -466,8 +471,15 @@ export function startOccasionScene(state: GameState, landmarkId: string, from: s
     if (!isSceneOpen(next) || step > MAX_STEPS) {
       const rule = encounterEntryRule(from)?.when;
       const unmet = rule ? unmetConditionLabels(next, rule) : [];
-      const givers = encounters.encounters.filter((item) => rule && JSON.stringify(rule).includes(`"${item.completionItemId}"`)).map((item) => item.id);
-      throw new Error(`場面 ${from} はこの時点で始まりませんでした。${unmet.length ? `偽の部品：${unmet.join("、")}。` : ""}${givers.length ? `品物をくれる場面：${givers.join("、")}（prep= で先に流せます）。` : ""}`);
+      // An item of an earlier city: Debug starts without it, and prep= plays only this city's scenes (the item design §2.7).
+      const earlier = rule ? otherCityItemsMissing(next, rule) : [];
+      const givers = encounters.encounters.filter((item) => item.cityId === next.currentCityId && rule && JSON.stringify(rule).includes(`"${item.completionItemId}"`))
+        .map((item) => item.id);
+      throw new Error(`場面 ${from} はこの時点で始まりませんでした。${unmet.length ? `偽の部品：${unmet.join("、")}。` : ""}` +
+        `${earlier.length ? `${earlier.map((item) => `${item.cityNameJa}の品物 ${item.itemId} ${item.statusJa}こと`).join("、")}が要ります` +
+          "（Debug は前の都市を本筋（到着・バトル・フィナーレと、エピローグの後に次の都市へ進む旅行編ではエピローグ。観光の案内は飛ばす）に沿って遊んでから始まるので、デート・差し込み・観光の案内・道中交流でしかもらえない品物や、" +
+          "選択肢で渡した・使った記録はないことがあります。prep= は同じ都市の場面だけを流します）。" : ""}` +
+        `${givers.length ? `品物をくれる場面：${givers.join("、")}（prep= で先に流せます）。` : ""}`);
     }
     next = playOccasionStep(next, ticket);
   }

@@ -1,10 +1,11 @@
 import { spawnSync } from "node:child_process";
-import { cpSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
+import { errorText } from "./cli-error";
 import { journeyReleaseSummary, namedJa, parseJourneyScaffoldArgs } from "./journey-cli";
 
 const root = path.resolve(import.meta.dirname, "..");
@@ -15,6 +16,13 @@ describe("journey authoring commands", () => {
     expect(namedJa({ id: "delhi" })).toBe("delhi");
   });
 
+  it("print an error with each cause on its own line, leaving out a cause the message already quotes", () => {
+    const parse = new Error("Expected double-quoted property name in JSON at position 9 (line 2 column 3)");
+    expect(errorText(new Error("Cannot read JSON khiva.json", { cause: parse }))).toBe(`Cannot read JSON khiva.json\n${parse.message}`);
+    expect(errorText(new Error(`形が違います: ${parse.message}`, { cause: parse }))).toBe(`形が違います: ${parse.message}`);
+    expect(errorText("plain")).toBe("plain");
+  });
+
   it("journey:scaffold prints the requirements without a mode, and --fragments needs its narrative file", () => {
     const requirements = { mode: "requirements", narrativePath: undefined, journeyId: "kyoto", selectedCities: ["gion"] };
     expect(parseJourneyScaffoldArgs(["--journey", "kyoto", "--city", "gion"])).toEqual(requirements);
@@ -23,13 +31,13 @@ describe("journey authoring commands", () => {
     const fragments = { mode: "fragments", narrativePath: "narrative.json", journeyId: "kyoto", selectedCities: undefined };
     expect(parseJourneyScaffoldArgs(["--fragments", "narrative.json", "--journey", "kyoto"])).toEqual(fragments);
     expect(parseJourneyScaffoldArgs(["--journey", "kyoto", "--fragments", "narrative.json"])).toEqual(fragments);
-    const usage = "Usage: [--requirements] --journey ID [--city ID] | --fragments NARRATIVE.json --journey ID [--city ID]";
+    const usage = "使い方: npm run journey:scaffold -- [--requirements] --journey 旅行編ID [--city 都市ID] | --fragments 脚本の情報.json --journey 旅行編ID [--city 都市ID]";
     // The option after --fragments is not taken as the file.
     expect(() => parseJourneyScaffoldArgs(["--fragments", "--journey", "kyoto"])).toThrow(usage);
     expect(() => parseJourneyScaffoldArgs(["--journey", "kyoto", "--fragments"])).toThrow(usage);
-    expect(() => parseJourneyScaffoldArgs([])).toThrow("--journey ID is required");
-    expect(() => parseJourneyScaffoldArgs(["--journey", "kyoto", "--town", "gion"])).toThrow("Unknown option: --town");
-    expect(() => parseJourneyScaffoldArgs(["--journey", "kyoto", "--journey", "nara"])).toThrow("Expected unique --journey ID and optional --city ID");
+    expect(() => parseJourneyScaffoldArgs([])).toThrow(`--journey で旅行編IDを指定してください。${usage}`);
+    expect(() => parseJourneyScaffoldArgs(["--journey", "kyoto", "--town", "gion"])).toThrow(`知らない指定です: --town。${usage}`);
+    expect(() => parseJourneyScaffoldArgs(["--journey", "kyoto", "--journey", "nara"])).toThrow(`--journey と --city は1回ずつ、値を付けて指定します。${usage}`);
   });
 
   it("journey:release names the journey and the last city and lists the files", () => {
@@ -88,14 +96,19 @@ describe("journey authoring commands", () => {
 
   // The commands themselves, on errors that stop them before any content is read or built (each run takes well under a second).
   it.each([
-    ["inspect-journey-readiness.ts", [], "--journey ID is required"],
+    ["inspect-journey-readiness.ts", [], "--journey で旅行編IDを指定してください。使い方: npm run journey:readiness"],
     ["inspect-journey-readiness.ts", ["--journey", "no_such_journey"], "旅行編「no_such_journey」は登録されていません"],
-    ["inspect-journey-scaffold.ts", ["--fragments", "--journey", "no_such_journey"], "Usage: [--requirements] --journey ID"],
-    ["inspect-journey-scaffold.ts", ["--journey", "no_such_journey"], "Unknown authoring journey: no_such_journey"],
-    ["release-journey.ts", ["--journey", "no_such_journey"], "Usage: npx tsx scripts/release-journey.ts --check|--apply"],
-    ["release-journey.ts", ["--check", "--journey", "no_such_journey"], "Unknown authoring journey: no_such_journey"],
-    ["check-journey-scenario.ts", ["--journey", "no_such_journey"], "Usage: npm run journey:scenario"],
-    ["check-journey-scenario.ts", ["--journey", "no_such_journey", "--directory", "nowhere"], "Unknown authoring journey: no_such_journey"],
+    ["inspect-journey-scaffold.ts", ["--fragments", "--journey", "no_such_journey"], "使い方: npm run journey:scaffold -- [--requirements] --journey 旅行編ID"],
+    ["inspect-journey-scaffold.ts", ["--journey", "no_such_journey"], "旅行編「no_such_journey」は登録されていないか、制作ツールの設定（manifest.json の authoring）がありません。制作ツールを使える旅行編: "],
+    ["release-journey.ts", ["--journey", "no_such_journey"], "使い方: npm run journey:release -- --check|--apply"],
+    ["release-journey.ts", ["--check", "--journey", "no_such_journey"], "旅行編「no_such_journey」は登録されていないか、制作ツールの設定（manifest.json の authoring）がありません。"],
+    ["check-journey-scenario.ts", ["--journey", "no_such_journey"], "使い方: npm run journey:scenario"],
+    ["check-journey-scenario.ts", ["--journey", "no_such_journey", "--directory", "nowhere"], "旅行編「no_such_journey」は登録されていないか、制作ツールの設定（manifest.json の authoring）がありません。"],
+    ["inspect-journey-transit.ts", [], "使い方: npm run journey:transit -- --journey <旅行編ID> [--json]"],
+    ["inspect-journey-transit.ts", ["--journey", "no_such_journey"], "旅行編「no_such_journey」は登録されていません"],
+    ["city-bundle-cli.ts", ["check"], "使い方: npm run city:bundle -- export|new <都市ID> <編集ファイル> / check|apply <編集ファイル>"],
+    ["city-bundle-cli.ts", ["check", "no_such_working_copy.json"], "作業コピーがありません: no_such_working_copy.json"],
+    ["inspect-content.ts", [], "使い方: npm run content:inspect -- [--type 種類] ファイル名 または --all"],
   ])("%s %j prints only the message and exits with 1", (script, args, message) => {
     const result = run(script, args);
     expect(result.status).toBe(1);
@@ -104,5 +117,57 @@ describe("journey authoring commands", () => {
     // One message, no stack trace.
     expect(result.stderr.trim().split("\n")).toHaveLength(1);
     expect(result.stderr).not.toMatch(/^\s+at /mu);
+  });
+
+  // A content file the commands load is broken: they print the loader's message and the JSON error's line and column.
+  it("city:bundle export and journey:transit name where a content JSON file is broken", () => {
+    const fixture = mkdtempSync(path.join(tmpdir(), "dreamscape-broken-"));
+    try {
+      const content = path.join(root, "content");
+      cpSync(content, path.join(fixture, "content"), { recursive: true,
+        filter: (source) => !path.relative(content, source).split(path.sep).includes("public") });
+      mkdirSync(path.join(fixture, "public"));
+      const manifest = manifests.find((item) => item.cities.length > 1 && (item as { transportModes?: unknown[] }).transportModes?.length)!;
+      const cityFile = path.join(fixture, "content/journeys", manifest.id, "cities", `${manifest.cities[1].id}.json`);
+      writeFileSync(cityFile, readFileSync(cityFile, "utf8").replace(/\n/u, "\n  ,,\n"));
+      for (const [script, args] of [["city-bundle-cli.ts", ["export", manifest.cities[1].id, path.join(fixture, "out.json")]],
+        ["inspect-journey-transit.ts", ["--journey", manifest.id]]] as const) {
+        const result = run(script, [...args], fixture);
+        expect(result.status, script).toBe(1);
+        expect(result.stderr, script).toMatch(new RegExp(`^Cannot read JSON .*${manifest.cities[1].id}\\.json\n.*line 2 column`, "u"));
+        expect(result.stderr).not.toMatch(/^\s+at /mu);
+      }
+    } finally {
+      rmSync(fixture, { recursive: true, force: true });
+    }
+  });
+
+  // city:bundle check/apply take only the working copy that export and new write (version 2); an older or
+  // broken file stops with its message before any content is read. content:inspect adds what caused a failure.
+  it("city:bundle refuses an old or broken working copy, and content:inspect names the cause, without a stack trace", () => {
+    const folder = mkdtempSync(path.join(tmpdir(), "dreamscape-cli-"));
+    try {
+      const file = (name: string, text: string) => {
+        writeFileSync(path.join(folder, name), text);
+        return path.join(folder, name);
+      };
+      const cases: [string, string[], string][] = [
+        ["city-bundle-cli.ts", ["check", file("old.json", JSON.stringify({ schemaVersion: 1, cityId: "delhi" }))],
+          `古い形式の作業コピーです（schemaVersion: 1）: ${path.join(folder, "old.json")}。export し直してください。`],
+        ["city-bundle-cli.ts", ["apply", file("none.json", "{}")],
+          `作業コピーの形式が違います: ${path.join(folder, "none.json")}。export か new で作った作業コピー（schemaVersion: 2）を使います。`],
+        ["city-bundle-cli.ts", ["check", file("broken.json", "{")], `作業コピーを JSON として読めません: ${path.join(folder, "broken.json")}（`],
+        ["inspect-content.ts", ["--type", "city", file("city.json", "{}")], `検証失敗: ${path.join(folder, "city.json")}\n[`],
+      ];
+      for (const [script, args, message] of cases) {
+        const result = run(script, args);
+        expect(result.status, script).toBe(1);
+        expect(result.stdout).toBe("");
+        expect(result.stderr.startsWith(message), result.stderr).toBe(true);
+        expect(result.stderr).not.toMatch(/^\s+at /mu);
+      }
+    } finally {
+      rmSync(folder, { recursive: true, force: true });
+    }
   });
 });

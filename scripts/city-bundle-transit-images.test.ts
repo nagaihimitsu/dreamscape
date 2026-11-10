@@ -40,7 +40,7 @@ describe("city editing bundle: transit ledgers, images and observations", () => 
     // content:build accepts an inconclusive decision; applying a city with one is refused.
     const absent = (unknown.transitDecisions as typeof decisions).find((decision) => decision.status !== "available")!;
     absent.status = "inconclusive";
-    await expect(applyCityBundle(root, unknown, true)).rejects.toThrow(/undecided directions/);
+    await expect(applyCityBundle(root, unknown, true)).rejects.toThrow(/「特定できず」（inconclusive）の交通の判断が残っています: tashkent/);
     // Two decisions for one direction and mode are refused.
     const duplicate = exportCityBundle(root, cityId);
     duplicate.transitDecisions!.push(structuredClone(duplicate.transitDecisions![0]));
@@ -62,14 +62,14 @@ describe("city editing bundle: transit ledgers, images and observations", () => 
     const changedImage = exportCityBundle(root, cityId);
     const image = changedImage.assets.find((asset) => asset.path === imagePath)!;
     image.path = changedImage.assets.find((asset) => asset.id !== image.id)!.path;
-    await expect(applyCityBundle(root, changedImage, true)).rejects.toThrow(/Observation image changed/);
+    await expect(applyCityBundle(root, changedImage, true)).rejects.toThrow(/の画像が変わっています。先に観察資料を見直してください/);
     expect(fingerprint(root)).toBe(before);
 
     const absolute = resolvePublicFile(root, imagePath);
     writeFileSync(absolute, Buffer.concat([readFileSync(absolute), Buffer.from("test changed image")]));
     // Re-exporting after a binary edit must still require observation review.
     const changedBytes = exportCityBundle(root, cityId);
-    await expect(applyCityBundle(root, changedBytes, true)).rejects.toThrow(/Observation image hash changed/);
+    await expect(applyCityBundle(root, changedBytes, true)).rejects.toThrow(/の画像の中身が、観察資料に記録したもの（SHA-256）と違います/);
     expect(read(root, otherLedger)).toBe(otherBefore);
   }, 180_000);
 
@@ -78,23 +78,23 @@ describe("city editing bundle: transit ledgers, images and observations", () => 
     const before = fingerprint(root);
     const missing = exportCityBundle(root, "delhi");
     missing.assets.find((item) => item.id === "gt_img_delhi_red_fort")!.path = "assets/tourism/india/not-found.jpg";
-    await expect(applyCityBundle(root, missing, true)).rejects.toThrow("Observation image changed for delhi_red_fort; review observations first");
+    await expect(applyCityBundle(root, missing, true)).rejects.toThrow("観察資料のある delhi_red_fort の画像が変わっています。先に観察資料を見直してください。");
     expect(fingerprint(root)).toBe(before);
     const changedPhoto = exportCityBundle(root, "delhi");
     changedPhoto.assets.find((item) => item.id === "gt_img_delhi_red_fort")!.path =
       changedPhoto.assets.find((item) => item.id === "gt_img_delhi_qutb_minar")!.path;
-    await expect(applyCityBundle(root, changedPhoto, true)).rejects.toThrow("Observation image changed for delhi_red_fort; review observations first");
+    await expect(applyCityBundle(root, changedPhoto, true)).rejects.toThrow("観察資料のある delhi_red_fort の画像が変わっています。先に観察資料を見直してください。");
     expect(fingerprint(root)).toBe(before);
     // The release gate is tested with an actually unfinished journey. India
     // already has authored stories and must permit ordinary no-op edits.
     const prematureRelease = exportCityBundle(root, "tashkent");
     prematureRelease.city.productionStatus = "complete";
-    await expect(applyCityBundle(root, prematureRelease, true)).rejects.toThrow("City release status cannot be changed with a bundle");
+    await expect(applyCityBundle(root, prematureRelease, true)).rejects.toThrow("都市の公開状態（productionStatus）は city:bundle では変えられません");
     expect(fingerprint(root)).toBe(before);
     const shared = exportCityBundle(root, "delhi");
     const sharedAsset = shared.assets.find((item) => item.id === "gt_img_hotel_illustration")!;
     sharedAsset.altJa = "他都市の画像を変えてはならない";
-    await expect(applyCityBundle(root, shared, true)).rejects.toThrow("Cannot change another city's or shared image: gt_img_hotel_illustration");
+    await expect(applyCityBundle(root, shared, true)).rejects.toThrow("ほかの都市の画像や共有の画像は変えられません: gt_img_hotel_illustration");
     expect(fingerprint(root)).toBe(before);
   }, 180_000);
 
@@ -110,7 +110,7 @@ describe("city editing bundle: transit ledgers, images and observations", () => 
     const bundle = exportCityBundle(root, "delhi");
     bundle.backgrounds[sharedId].captionJa = "他都市の共有背景を変更してはならない";
     const before = fingerprint(root);
-    await expect(applyCityBundle(root, bundle, true)).rejects.toThrow(/Cannot change another city's or shared background/);
+    await expect(applyCityBundle(root, bundle, true)).rejects.toThrow(/ほかの都市の背景や共有の背景は変えられません/);
     expect(fingerprint(root)).toBe(before);
   }, 180_000);
 
@@ -142,8 +142,8 @@ describe("city editing bundle: transit ledgers, images and observations", () => 
     const indiaFiles = ["delhi", "agra", "jaipur"].flatMap((id) => cityFiles(root, id).slice(0, 2));
     const others = Object.fromEntries(indiaFiles.map((file) => [file, read(root, file)]));
     const bundle = exportCityBundle(root, "milano");
-    const landmark = bundle.landmarks!.find((item) => item.id === "last_supper")!;
-    const clue = bundle.clues!.find((item) => item.id === "last_supper_perspective")!;
+    const landmark = bundle.landmarks.find((item) => item.id === "last_supper")!;
+    const clue = bundle.clues.find((item) => item.id === "last_supper_perspective")!;
     const asset = bundle.assets.find((item) => item.id === landmark.imageAssetId)!;
     landmark.descriptionJa += " 試験用の追記。";
     clue.titleJa += " 試験";
@@ -166,41 +166,38 @@ describe("city editing bundle: transit ledgers, images and observations", () => 
       .toEqual(before.assets.filter((item: { id: string }) => item.id !== asset.id));
     for (const file of indiaFiles) expect(read(root, file), file).toBe(others[file]);
     const reloaded = exportCityBundle(root, "milano");
-    expect(reloaded.landmarks!.find((item) => item.id === landmark.id)).toEqual(landmark);
-    expect(reloaded.clues!.find((item) => item.id === clue.id)).toEqual(clue);
+    expect(reloaded.landmarks.find((item) => item.id === landmark.id)).toEqual(landmark);
+    expect(reloaded.clues.find((item) => item.id === clue.id)).toEqual(clue);
   }, 180_000);
 
-  it("preserves existing Milan observations when applying a legacy bundle", async () => {
+  it("refuses a working copy without its landmarks or clues and writes nothing", async () => {
+    // Earlier working copies had no tourism section; a copy without one is refused, not filled in from the catalogs.
     const root = fixture();
-    const bundle = exportCityBundle(root, "milano");
-    const legacy: Record<string, unknown> = { ...bundle };
-    delete legacy.landmarks;
-    delete legacy.clues;
-    const milanTourism = `${cityPaths(root, "milano").layer}/tourism/catalog.json`;
-    const before = read(root, milanTourism);
-    const preview = await applyCityBundle(root, legacy);
-    expect(preview.changedFiles).toEqual([]);
-    await applyCityBundle(root, legacy, true);
-    expect(read(root, milanTourism)).toBe(before);
-    const compactLegacy = compactCityBundle(legacy);
-    expect((await applyCityBundle(root, compactLegacy, true)).changedFiles).toEqual([]);
-    expect(read(root, milanTourism)).toBe(before);
+    const before = fingerprint(root);
+    for (const key of ["landmarks", "clues"] as const) {
+      for (const copy of [exportCityBundle(root, "milano"), exportEditableCityBundle(root, "milano")]) {
+        const partial: Record<string, unknown> = { ...copy };
+        delete partial[key];
+        await expect(applyCityBundle(root, partial, true)).rejects.toThrow(new RegExp(`"${key}"[\\s\\S]*expected array, received undefined`, "u"));
+        expect(fingerprint(root)).toBe(before);
+      }
+    }
   }, 180_000);
 
   it("rejects foreign landmarks, invalid observation ownership and duplicate IDs", async () => {
     const root = fixture();
     const before = fingerprint(root);
     const foreign = exportCityBundle(root, "milano");
-    foreign.landmarks![0].cityId = "agra";
-    await expect(applyCityBundle(root, foreign, true)).rejects.toThrow("City ownership mismatch: milano");
+    foreign.landmarks[0].cityId = "agra";
+    await expect(applyCityBundle(root, foreign, true)).rejects.toThrow("都市IDが合いません: 都市 milano の作業コピー");
     expect(fingerprint(root)).toBe(before);
     const wrongOwner = exportCityBundle(root, "milano");
-    wrongOwner.clues![0].landmarkId = "nonexistent_landmark";
-    await expect(applyCityBundle(root, wrongOwner, true)).rejects.toThrow("Clue belongs to another city: milano");
+    wrongOwner.clues[0].landmarkId = "nonexistent_landmark";
+    await expect(applyCityBundle(root, wrongOwner, true)).rejects.toThrow("この都市（milano）の観光地にない観察ポイントがあります");
     expect(fingerprint(root)).toBe(before);
     const duplicate = exportCityBundle(root, "milano");
-    duplicate.clues!.push(structuredClone(duplicate.clues![0]));
-    await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow("Duplicate clue ID");
+    duplicate.clues.push(structuredClone(duplicate.clues[0]));
+    await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow("観察ポイントの ID が重複しています");
     expect(fingerprint(root)).toBe(before);
   }, 180_000);
 });

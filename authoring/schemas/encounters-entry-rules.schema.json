@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dreamscape: 道中交流が起きる決まり（encounters/entry-rules.json）",
+  "$comment": "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 2
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "encounterId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "at": {},
+          "priority": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "string",
+                "const": "after observe"
+              },
+              {
+                "type": "string",
+                "const": "after guide"
+              },
+              {
+                "type": "string",
+                "const": "after battle"
+              },
+              {
+                "type": "string",
+                "const": "after date"
+              },
+              {
+                "type": "string",
+                "const": "after logo"
+              }
+            ]
+          },
+          "when": {},
+          "quizAfterLandmarkBattle": {
+            "type": "boolean",
+            "const": true
+          }
+        },
+        "required": [
+          "encounterId"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

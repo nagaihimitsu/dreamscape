@@ -30,13 +30,15 @@ npm run city:bundle -- apply artifacts/city-work/india-delhi.json
 
 書き出し先には `content/` と `public/` の外を指定してください。既存のファイルは上書きされないため、再度書き出すときは別のファイル名を指定します。
 
-現在の9都市のIDは `milano`、`delhi`、`agra`、`jaipur`、`tashkent`、`samarkand`、`bukhara`、`khiva`、`luang_prabang` です。例えばミラノは `npm run city:bundle -- export milano artifacts/city-work/italy-milano.json` のように書き出します。ミラノとインド3都市には登録済みの観光地と観察ポイントも含まれます。ウズベキスタン4都市は制作基盤の状態で、脚本やクイズの登録は別途必要です。
+都市IDは、各旅行編の `content/journeys/<旅行編ID>/manifest.json` の `cities` に書かれています。例えばミラノは `npm run city:bundle -- export milano artifacts/city-work/italy-milano.json` のように書き出します。登録済みの観光地と観察ポイントも作業コピーに含まれます。
 
 書き出してから `content/` や `public/` のいずれか、インド編の観察カードが変更された場合、他都市の変更や画像の追加も含め、古い作業コピーの反映は拒否されます。その場合は、画像・元データを準備したうえで、別名へ再度 `export` し、編集した項目を新しいコピーへ移してください。新しいコピーの `baseFingerprint` は移し替えず、そのまま残します。`baseFingerprint` は競合検出に使うため、手で変更しないでください。都市IDや公開状態もこの操作では変更できません。
 
 都市の到着会話を付ける場合は、都市定義の `arrivalStoryId` に登録済みInkのIDを指定します。ロゴに使う都市名も同じ都市定義から表示します。本文の作り方は [旅行編の制作手順](JOURNEY_AUTHORING.md#都市に到着したときの会話) を参照してください。
 
 ## 新しい都市を作る
+
+新しい旅行編とその最初の都市は `npm run journey:new` で作ります（[技術設計](../docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順)）。`city:bundle new` は、すでにある旅行編に2つ目からの都市を足すときに使います。
 
 先に対象旅行編の `content/journeys/<旅行編ID>/manifest.json` の `cities` に都市IDと都市名を登録し、都市の順番や通貨などの旅行編共通設定を決めます。都市IDは既存の都市と重ならないものを使います。使用する画像の本体を `content/journeys/<旅行編ID>/public/assets/` に用意した後、その都市の編集用JSONの雛形を作ります。
 
@@ -85,7 +87,7 @@ npm run city:bundle -- apply artifacts/city-work/sample-city.json
 
 `samePlaceRoute` を設定すると、その出典を使う徒歩０分・０円の経路を、`travel.places` の全地点に生成します。同じ場所の経路を個別に作成する場合や地点ごとに出典が異なる場合は、共通設定を使わず `routes` にそれぞれ登録します。共通設定で生成される経路と個別の経路が重複すると検証エラーになります。共通設定にも、必要に応じて `estimation` と `transferNote` を指定できます。
 
-`export` は、往復の内容が出典を含めて完全に一致する場合にだけ両方向指定へまとめます。同一地点の経路も、全地点で共通の内容にできる場合に限って共通設定へまとめます。その他の方向差や出典は個別に残ります。`check` と `apply` は展開後の重複・存在しない地点や出典の参照などを検証し、`apply` は検証後、従来の片道形式で正本へ反映します。以前の `schemaVersion: 1` の作業コピーも、競合がなければ引き続き検証・反映できます。
+`export` は、往復の内容が出典を含めて完全に一致する場合にだけ両方向指定へまとめます。同一地点の経路も、全地点で共通の内容にできる場合に限って共通設定へまとめます。その他の方向差や出典は個別に残ります。`check` と `apply` は展開後の重複・存在しない地点や出典の参照などを検証し、`apply` は検証後、従来の片道形式で正本へ反映します。古い形式（`schemaVersion: 1`）の作業コピーや、`landmarks`・`clues` のない作業コピーは、`check`・`apply` が断ります。新しく `export` し直してください。
 
 地図上の直線距離だけから現実の移動時間を生成しません。経路に書かれていない公共交通を、現実に存在しないものと決めつけないでください。乗り物の判断（使う・使わない・走っていない・特定できず）は `transitDecisions` で方向別・乗り物別に管理します。経路の追加や削除時は、判断と矛盾しないよう確認します。
 

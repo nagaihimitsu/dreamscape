@@ -38,7 +38,7 @@ const profiles = ["attentive", "playful", "honest", "bold", "provocative"] as co
 export function journeyRequirements(input: JourneyScaffoldInput, selectedCityIds = input.cities.map((city) => city.cityId)) {
   if (!selectedCityIds.length || new Set(selectedCityIds).size !== selectedCityIds.length ||
       selectedCityIds.some((id) => !input.cities.some((city) => city.cityId === id)))
-    throw new Error("Journey scaffold: invalid city selection");
+    throw new Error("journey:scaffold: --city の都市がこの旅行編にないか、都市の選び方が正しくありません。");
   return input.cities.filter((city) => selectedCityIds.includes(city.cityId)).map((travel) => ({ cityId: travel.cityId,
     // IDs come from the registered main-event namespace, excluding a later
     // finale or special battle even when it shares an attraction.
@@ -79,16 +79,16 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
   for (const plan of requirements) {
     const planned = input.plannedLandmarks[plan.cityId];
     if (!planned || plan.main.length !== planned.length || new Set(plan.main.map((entry) => entry.landmarkId)).size !== planned.length)
-      throw new Error(`Journey scaffold: main attractions mismatch ${plan.cityId}`);
+      throw new Error(`journey:scaffold: 都市 ${plan.cityId} の本筋の観光（地図の main の出来事）が、都市の landmarkIdsPlanned と合いません。`);
   }
   const expectedMain = requirements.flatMap((city) => city.main.map((item) => item.eventId));
   const expectedDates = requirements.flatMap((city) => city.dates.map((item) => item.eventId));
   const exactKeys = (actual: Record<string, unknown>, expected: string[], name: string) => {
     if (Object.keys(actual).length !== expected.length || expected.some((id) => !Object.hasOwn(actual, id)))
-      throw new Error(`Journey scaffold: ${name} must contain exactly the registered IDs`);
+      throw new Error(`journey:scaffold: 脚本の情報の ${name} には、登録した ID をちょうど全部書きます（足りないか余分な ID があります）。`);
   };
-  exactKeys(narrative.main, expectedMain, "main scenarios");
-  exactKeys(narrative.dates, expectedDates, "date scenarios");
+  exactKeys(narrative.main, expectedMain, "main");
+  exactKeys(narrative.dates, expectedDates, "dates");
   exactKeys(narrative.finales, requirements.map((item) => item.cityId), "finales");
   const addRewards = (episodeId: string, finale: boolean) => {
     const rules = finale ? [["battle_complete", 1, null], ["battle_score", 1, 3], ["city_clear", input.cityClearAp, null]] as const
@@ -103,10 +103,10 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
     for (const item of plan.main) {
       const event = travel.events.find((entry) => entry.id === item.eventId)!;
       const place = travel.places.find((entry) => entry.id === item.landmarkId);
-      if (!place) throw new Error(`Journey scaffold: missing place ${item.landmarkId}`);
+      if (!place) throw new Error(`journey:scaffold: 観光地の地点が travel にありません: ${item.landmarkId}`);
       const script = narrative.main[item.eventId];
       const ownClues = input.observations.filter((clue) => clue.landmarkId === place.id).map((clue) => tourismClueSchema.parse(clue));
-      if (!ownClues.length) throw new Error(`Journey scaffold: missing observations ${place.id}`);
+      if (!ownClues.length) throw new Error(`journey:scaffold: 観光地 ${place.id} の観察ポイントが観察資料にありません。`);
       clues.push(...ownClues);
       landmarks.push(landmarkSchema.parse({ id: place.id, cityId: plan.cityId, nameJa: place.nameJa, nameEn: place.nameEn,
         descriptionJa: script.descriptionJa, imageAssetId: input.imageAssetIds[place.id], guideStoryId: item.guideStoryId,
@@ -126,7 +126,7 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
       const place = travel.places.find((entry) => entry.id === event.placeId);
       const destination = input.destinations.find((entry) => entry.id === item.destinationId && entry.cityId === plan.cityId);
       if (!place || !destination || !place.destinationIds?.includes(destination.id) || destination.backgroundId !== place.backgroundId)
-        throw new Error(`Journey scaffold: missing date destination ${item.destinationId}`);
+        throw new Error(`journey:scaffold: デート先 ${item.destinationId} が、その地点の destinationIds にないか、背景が地点と違います。`);
       const script = narrative.dates[item.eventId];
       memories[item.memoryId] = { titleJa: script.memoryTitleJa, descriptionJa: script.memoryDescriptionJa };
       for (const round of ["first", "second"] as const) for (const profile of profiles) {
@@ -141,7 +141,7 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
     const script = narrative.finales[plan.cityId];
     const place = travel.places.find((entry) => entry.id === script.placeId);
     if (!place || !travel.events.some((entry) => entry.placeId === place.id))
-      throw new Error(`Journey scaffold: finale must use a registered attraction in ${plan.cityId}`);
+      throw new Error(`journey:scaffold: 都市 ${plan.cityId} のフィナーレの placeId には、地図の出来事がある地点を書きます。`);
     episodes.push(episodeSchema.parse({ id: plan.finale.eventId, kind: "city_finale", cityId: plan.cityId, landmarkId: null,
       battleId: plan.finale.battleId, requiredEpisodeIds: plan.main.map((item) => item.eventId),
       epilogueStoryId: plan.finale.epilogueStoryId, titleJa: script.titleJa, descriptionJa: script.descriptionJa,
@@ -152,7 +152,7 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
       backgroundId: place.backgroundId, portrait: "abstract" }));
     const destinationEvents = travel.events.filter((event) => event.placeId === place.id);
     const costs = new Set(destinationEvents.map((event) => event.admissionCost ?? 0));
-    if (costs.size !== 1) throw new Error(`Journey scaffold: inconsistent admission at ${place.id}`);
+    if (costs.size !== 1) throw new Error(`journey:scaffold: 地点 ${place.id} の出来事の入場料（admissionCost）がそろっていません。`);
     const admissionCost = [...costs][0];
     finaleEvents.push(travelEventSchema.parse({ id: plan.finale.eventId, cityId: plan.cityId, placeId: place.id,
       category: "main", titleJa: script.titleJa, activityMinutes: script.activityMinutes, apCost: 0,
@@ -167,7 +167,7 @@ export function loadJourneyScaffold(root: string, journeyId: string, sources = l
   const profile = getJourneyAuthoringProfile(root, journeyId);
   const json = (file: string): unknown => JSON.parse(readFileSync(path.resolve(root, file), "utf8"));
   const journey = journeyCatalogOf(sources).journeys.find((item) => item.id === journeyId);
-  if (!journey?.cityPlan) throw new Error("Journey scaffold: missing journey plan");
+  if (!journey?.cityPlan) throw new Error("journey:scaffold: 旅行編の manifest.json に都市の計画（cityPlan）がありません。");
   const cities = journey.cities.map(({ id }) => travelCatalogSchema.parse(requireCity(sources, id).travel));
   const cityData = cities.map((city) => citySchema.parse(requireCity(sources, city.cityId).data));
   const plannedLandmarks = Object.fromEntries(cityData.map((city) => [city.id, city.landmarkIdsPlanned]));
@@ -177,16 +177,16 @@ export function loadJourneyScaffold(root: string, journeyId: string, sources = l
   const observationsFile = z.object({ clues: z.array(tourismClueSchema), images: z.record(z.string(), z.object({ path: words, sha256: z.string().regex(/^[0-9a-f]{64}$/) })), provenance: z.record(z.string(), z.object({ needsFurtherResearch: z.boolean() }).loose()) }).loose()
     .parse(json(profile.observationFile));
   if (observationsFile.clues.some((clue) => !observationsFile.provenance[clue.id] || observationsFile.provenance[clue.id].needsFurtherResearch))
-    throw new Error("Journey scaffold: observations contain unresolved or missing provenance");
+    throw new Error("journey:scaffold: 観察資料に、出典の確認（provenance）がないか、まだ調べる必要がある（needsFurtherResearch）観察ポイントがあります。");
   for (const clue of observationsFile.clues) {
     // Cards are written before any question exists; links go into the released tourism catalog (docs/07 観察だけの手がかり).
     if (clue.relatedQuestionIds.length)
       throw new Error(`観察資料の観察ポイント「${clue.id}」に問題ID（relatedQuestionIds: ${clue.relatedQuestionIds.join(", ")}）が書かれています: ${profile.observationFile}。観察資料には問題IDを書かず、[] のままにします。都市を公開（journey:release -- --apply）した後、旅行編の tourism/catalog.json で、その観察ポイントを本当に使う問題にだけ問題IDを書いてください。`);
     const image = observationsFile.images[clue.landmarkId];
     if (!image || !image.path.startsWith(`${profile.imageDirectory}/`) || !/^[a-z0-9_]+\.(?:jpg|webp)$/.test(image.path.slice(profile.imageDirectory.length + 1)))
-      throw new Error(`Journey scaffold: missing observation image ${clue.landmarkId}`);
+      throw new Error(`journey:scaffold: 観光地 ${clue.landmarkId} の画像の記録（images）がないか、置き場所・名前が違います（authoring.imageDirectory の下の .jpg か .webp）。`);
     const hash = createHash("sha256").update(readFileSync(requireServedFile(sources.publicFiles, image.path))).digest("hex");
-    if (hash !== image.sha256) throw new Error(`Journey scaffold: observation image changed ${clue.landmarkId}`);
+    if (hash !== image.sha256) throw new Error(`journey:scaffold: 観光地 ${clue.landmarkId} の画像の中身が、観察資料に記録したもの（SHA-256）と違います。`);
   }
   const observations = observationsFile.clues;
   const destinations = parseCatalog(sources, dateDestinationsSchema, "romance/date_destinations.json").destinations;
@@ -198,7 +198,7 @@ export function loadJourneyScaffold(root: string, journeyId: string, sources = l
     const assetId = place && backgrounds[place.backgroundId]?.imageAssetId;
     const asset = assets.find((entry) => entry.id === assetId);
     if (!asset || asset.isPlaceholder || asset.path !== observationsFile.images[landmarkId]?.path)
-      throw new Error(`Journey scaffold: observation and background image differ ${landmarkId}`);
+      throw new Error(`journey:scaffold: 観光地 ${landmarkId} の背景の画像が、観察資料の画像と違うか、仮の画像のままです。`);
     imageAssetIds[landmarkId] = asset.id;
   }
   // Ensure hotel settings exist and are valid; this function never uses them as finale places.
