@@ -38,6 +38,8 @@ export type EncounterScreenView = {
   choices: EncounterChoiceView[];
   ended: boolean;
   finishLabel?: string;
+  /** The scene label's tag (a running tour's 「ツアー・見学」). */
+  badgeJa?: string;
   portraits?: Partial<Record<"heroine" | "enemy", { emotion: string; mark?: ReactionMark; active: boolean }>>;
   cityId: string;
   sceneId?: string;
@@ -96,7 +98,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
   return (
     <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} {...sceneTap.props}>
       <div className="vn-background" data-testid="scene-picture">{view.backgroundAsset ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundAsset.path}`} alt="" /> : <CanalScene backgroundId={view.background} />}</div>
-      <SceneLabelLine label={view.placeJa}>
+      <SceneLabelLine label={view.placeJa} badge={view.badgeJa}>
         {credited && <SceneCreditButton onClick={() => setCreditsOpen(true)} />}
       </SceneLabelLine>
       {!quiz && view.portraits && <div className="vn-character-layer encounter-character-layer" data-two-characters={!!view.portraits.heroine && !!view.portraits.enemy}>

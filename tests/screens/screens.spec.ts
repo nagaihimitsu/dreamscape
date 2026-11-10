@@ -4,7 +4,7 @@ import path from "node:path";
 import type { Shot } from "../../scripts/dev/screen-gallery";
 import { debugExampleUrls } from "../../scripts/dev/screen-gallery";
 import { debugQueryString } from "../../src/dev/debug-query";
-import { debugGame, expect, ops, playUntil, test, type Page } from "../e2e/helpers";
+import { debugGame, expect, ops, placeSave, playUntil, test, type Page } from "../e2e/helpers";
 
 // Screens for people checking by eye (`npm run screens`, docs/10「人が画面を確かめる」).
 // Not a gate and no image comparison: each test only brings a screen up the way a
@@ -30,6 +30,13 @@ const toBattle = async (page: Page) => {
   await ops.startJourney(page);
   await ops.goTo(page, "p_duomo");
   await ops.skipGuideToBattle(page);
+};
+/** The Golden Triangle journey at the start of Agra (its arrival read), free time at the inn: where its tour is sold (tour stage 2a). */
+const toAgra = async (page: Page) => {
+  await page.goto("/");
+  await placeSave(page, "golden_triangle", "cityStart", "agra", ["航", "澪"]);
+  await ops.chooseJourney(page, "golden_triangle");
+  await expect(page.getByTestId("travel-menu")).toBeVisible();
 };
 const flows: FlowScene[] = [
   { scene: "flow-title", titleJa: "タイトル画面", descriptionJa: "最初の画面", open: async (page) => {
@@ -130,6 +137,14 @@ const flows: FlowScene[] = [
     const picker = note.getByLabel("回答した問題を選ぶ");
     await picker.selectOption((await picker.locator("option").nth(1).getAttribute("value"))!);
   } },
+  { scene: "flow-tour-sheet", titleJa: "ツアーの一覧", descriptionJa: "インド編のアーグラに着いて「ツアーを見る」（宿のフロントとWeb予約の料金）", open: async (page) => {
+    await toAgra(page);
+    await ops.openTours(page);
+  } },
+  { scene: "flow-tour-booked", titleJa: "予約したツアー（明日の予定）", descriptionJa: "アーグラの宿のフロントでツアーを予約した後（「予約を取り消す」）", open: async (page) => {
+    await toAgra(page);
+    await ops.bookTour(page, "hotel_desk");
+  } },
 ];
 
 for (const flow of flows)
@@ -137,6 +152,22 @@ for (const flow of flows)
     await flow.open(page);
     await save(page, flow.scene, flow.titleJa, { kind: "flow", descriptionJa: flow.descriptionJa }, page.viewportSize()!.width);
   });
+
+// The tour's car (tour stage 2a): booked at Agra's inn, then 休む; the page's clock held during the night so the car's art stays.
+test("ツアーの車の移動（通常の操作）", async ({ page }) => {
+  await toAgra(page);
+  await ops.bookTour(page, "hotel_desk");
+  await ops.sleep(page);
+  await ops.holdClock(page);
+  await expect(page.getByTestId("travel-transition")).toHaveAttribute("data-kind", "car");
+  const width = page.viewportSize()!.width;
+  const file = `shots/${width}/flow-tour-car.png`;
+  mkdirSync(path.join(out, `shots/${width}`), { recursive: true });
+  const image = await page.screenshot({ path: path.join(out, file), fullPage: true, animations: "disabled", caret: "hide" });
+  const shot: Shot = { scene: "flow-tour-car", titleJa: "ツアーの車の移動", width, file, sha256: createHash("sha256").update(image).digest("hex"),
+    route: { kind: "flow", descriptionJa: "アーグラでツアーを予約して休み、翌朝の車の移動（時計を止めて撮る）" } };
+  writeFileSync(path.join(out, `shots/${width}/flow-tour-car.json`), JSON.stringify(shot, null, 2));
+});
 
 // Debug mode's relationship-change strip (always on in Debug): a date after its first reply.
 const changeUrl = debugQueryString({ dataMode: "real", cityId: "milano", scene: "date", target: "milano_brera_date_01",

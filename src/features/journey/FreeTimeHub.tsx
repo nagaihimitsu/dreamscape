@@ -2,6 +2,8 @@ import { useCallback, useMemo, useState, type KeyboardEvent } from "react";
 import { getCityContent } from "../../content";
 import type { TravelRoute } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
+import { getNextCity } from "../../domain/city-travel";
+import { departureAfterTour } from "../../domain/tour";
 import { Icon } from "../../components/icons";
 import { CityProgress } from "./CityProgress";
 import { FreeTimeBackdrop } from "./FreeTimeBackdrop";
@@ -26,6 +28,8 @@ export function FreeTimeHub({
   onBattle,
   onTravelEvent,
   onRent,
+  onBookTour,
+  onCancelTour,
   onTravelWait,
   onTravelSleep,
   nextCityName,
@@ -38,6 +42,8 @@ export function FreeTimeHub({
   onBattle: (id: string) => void;
   onTravelEvent: (id: string, mode: TravelRoute["mode"]) => void;
   onRent: (modeId: string) => boolean;
+  onBookTour: (tourId: string, offerId: string) => boolean;
+  onCancelTour: () => boolean;
   onTravelWait: (minutes: number) => boolean;
   onTravelSleep: (mode: TravelRoute["mode"], viaPlaceId: string | null) => boolean;
   nextCityName?: string;
@@ -47,7 +53,9 @@ export function FreeTimeHub({
   const [creditsOpen, setCreditsOpen] = useState(false);
   const photos = useMemo(() => freeTimePhotos(game), [game]);
   const layout = useFreeTimeLayout();
-  const extras = game.pendingApRewards.length > 0 || !!nextCityName;
+  // A booked tour holds the departure (tour stage 2a): the line says what happens once it is over.
+  const afterTour = departureAfterTour(game, getNextCity(game)?.city.nameJa);
+  const extras = game.pendingApRewards.length > 0 || !!nextCityName || !!afterTour;
   // One selection for the list, both maps and the band's 休む (§3.5).
   const selection = useTravelSelection(game, { onTravelEvent, onTravelSleep });
   // Esc (outside a dialog) closes an open 待機 menu first, then clears the selection; focus goes to its name.
@@ -77,11 +85,13 @@ export function FreeTimeHub({
       </h1>
       <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} showNext={false} />
 
-      <TravelMenu key={game.currentCityId} game={game} api={selection} onRent={onRent} />
+      <TravelMenu key={game.currentCityId} game={game} api={selection} onRent={onRent} onBookTour={onBookTour} onCancelTour={onCancelTour} />
 
       {extras && <div className="free-time-extras">
         <PendingRewards game={game} onClaim={onClaimRewards} compact />
         {nextCityName && <button type="button" className="secondary" onClick={onDepart}>{nextCityName}へ出発</button>}
+        {afterTour && <p className="free-time-tour-wait" data-testid="tour-departure-wait">
+          予約したツアーを終えるか取り消すと、{afterTour.cityNameJa}へ{afterTour.automatic ? "出発します" : "出発できます"}。</p>}
       </div>}
       {photos.length > 0 && <button type="button" className="free-time-credits-open" onClick={() => setCreditsOpen(true)}>
         <Icon name="credit" />写真の出典

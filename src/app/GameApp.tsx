@@ -11,6 +11,7 @@ import { defaultJourneyId, getJourney } from "../content/journeys";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
 import { waitForTravel } from "../domain/travel-game";
 import { rentTransport } from "../domain/transport";
+import { bookTour, cancelTourBooking, tourSceneBadge } from "../domain/tour";
 import { getTransportMode } from "../content/transport";
 import { getPlayerDeparture } from "../domain/city-travel";
 import { closeRomanceEnding, openOccasion } from "../domain/occasion";
@@ -143,6 +144,8 @@ export function GameApp({
   const playMoveRef = useRef<((previous: GameState, next: GameState) => void) | null>(null);
   const session = useGameSession(storage, displaySettings.value.autoSave, (previous, next) => {
     playMoveRef.current?.(previous, next);
+    // The action that ended a tour (tour stage 2a) says so in free time.
+    if (previous.tour && !next.tour && next.completedTourIds.length > previous.completedTourIds.length) session.setNotice("ツアーが終わりました。");
     if (!showChangesRef.current) return;
     const change = relationshipChange(previous, next);
     // Above the story scene on screen, or (decision 23) above the map or free time until the next action.
@@ -523,7 +526,10 @@ export function GameApp({
                   unavailableReason: shown.show === "grey" ? shown.reason : undefined, ...(shown.ap ? { apCost: shown.ap } : {}) }];
               }),
               ended: encounterCanFinish(game),
-              finishLabel: ({ observe: "観光に戻る", onward: "先へ進む" } as const)[encounterLeadsOnward(game) || "none" as never],
+              // On a running tour (stage 2a) the visit's last scene leads on to the tour's next step.
+              finishLabel: ({ observe: "観光に戻る", onward: "先へ進む" } as const)[encounterLeadsOnward(game) || "none" as never] ??
+                (game.tour?.status === "running" ? "ツアーを続ける" : undefined),
+              badgeJa: tourSceneBadge(game),
               quiz: (activeEncounter.phase === "quiz" || activeEncounter.phase === "feedback") && currentEncounter.quiz ? {
                 id: currentEncounter.quiz.question.id,
                 questionEn: currentEncounter.quiz.question.questionEn,
@@ -686,6 +692,8 @@ export function GameApp({
             onBattle={(id) => commit((state) => startBattle(state, id))}
             onTravelEvent={(id, mode) => travelToEvent(id, mode, game.revision)}
             onRent={(modeId) => commit((state) => rentTransport(state, modeId, game.revision))}
+            onBookTour={(tourId, offerId) => commit((state) => bookTour(state, tourId, offerId, game.revision))}
+            onCancelTour={() => commit((state) => cancelTourBooking(state, game.revision))}
             onTravelWait={(minutes) => commit((state) => waitForTravel(state, minutes, game.revision))}
             onTravelSleep={(mode, viaPlaceId) => returnToHotel(mode, viaPlaceId, game.revision)}
             nextCityName={departure?.city.nameJa}

@@ -117,6 +117,9 @@ export function cancelTourBooking(state: GameState, expectedRevision: number): G
   return { ...state, revision: state.revision + 1, travelBudget: state.travelBudget + record.pricePaid, tour: null };
 }
 
+/** The scene label's tag while a tour runs (its visit's guide, battle and scenes): 「ツアー・見学」. */
+export const tourSceneBadge = (state: Pick<GameState, "tour">): string | undefined => (state.tour?.status === "running" ? "ツアー・見学" : undefined);
+
 /** The tour the party is on now, if any (running: always inside an event step's visit). */
 export const runningTour = (state: Pick<GameState, "tour">): Tour | undefined =>
   state.tour?.status === "running" ? getTour(state.tour.tourId) : undefined;

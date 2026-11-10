@@ -41,6 +41,19 @@
   letter-spacing: 0;
   overflow-wrap: anywhere;
 }
+/* The pill's tag (a running tour's 「ツアー・見学」): a lighter chip inside it, before the heading. */
+.scene-label-badge {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 0 6px;
+  border-radius: 8px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.6;
+  vertical-align: 1px;
+}
 .scene-label-tools {
   flex: none;
   display: flex;

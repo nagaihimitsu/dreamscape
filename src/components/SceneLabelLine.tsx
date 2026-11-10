@@ -19,8 +19,10 @@ import "./scene-label.css";
  * The pill is the scene's heading that takes a lost focus when the scene opens
  * (`tabIndex={-1}`, scene-focus.ts; UI redesign §3.7 E).
  */
-export function SceneLabelLine({ label, labelProps, children }: {
+export function SceneLabelLine({ label, badge, labelProps, children }: {
   label: ReactNode;
+  /** A short tag in the pill before the heading: 「ツアー・見学」 while a tour runs (tour stage 2a). */
+  badge?: string;
   /** Kept names and test ids of the pill (the battle's place, the date's destination). */
   labelProps?: HTMLAttributes<HTMLHeadingElement> & { "data-testid"?: string };
   /** The scene's buttons, right-aligned: 出典 first, then 手がかり帳 at the edge. */
@@ -29,7 +31,7 @@ export function SceneLabelLine({ label, labelProps, children }: {
   const measured = useMeasuredHeight("--label-h");
   return (
     <div className="scene-label-line" data-testid="scene-label-line" data-no-advance ref={measured}>
-      <h1 className="scene-label" tabIndex={-1} {...labelProps}>{label}</h1>
+      <h1 className="scene-label" tabIndex={-1} {...labelProps}>{badge && <span className="scene-label-badge">{badge}</span>}{label}</h1>
       {children && <div className="scene-label-tools">{children}</div>}
     </div>
   );
