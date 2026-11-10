@@ -473,7 +473,7 @@ export function startOccasionScene(state: GameState, landmarkId: string, from: s
         .map((item) => item.id);
       throw new Error(`場面 ${from} はこの時点で始まりませんでした。${unmet.length ? `偽の部品：${unmet.join("、")}。` : ""}` +
         `${earlier.length ? `${earlier.map((item) => `${item.cityNameJa}の品物 ${item.itemId} ${item.statusJa}こと`).join("、")}が要ります` +
-          "（Debug は前の都市を本筋（到着・バトル・フィナーレ・エピローグ。観光の案内は飛ばす）に沿って遊んでから始まるので、デート・差し込み・観光の案内・道中交流でしかもらえない品物や、" +
+          "（Debug は前の都市を本筋（到着・バトル・フィナーレと、エピローグの後に次の都市へ進む旅行編ではエピローグ。観光の案内は飛ばす）に沿って遊んでから始まるので、デート・差し込み・観光の案内・道中交流でしかもらえない品物や、" +
           "選択肢で渡した・使った記録はないことがあります。prep= は同じ都市の場面だけを流します）。" : ""}` +
         `${givers.length ? `品物をくれる場面：${givers.join("、")}（prep= で先に流せます）。` : ""}`);
     }

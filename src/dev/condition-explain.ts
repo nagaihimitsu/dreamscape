@@ -68,8 +68,9 @@ function line(node: ExplainedNode): string {
 /**
  * The items of other cities whose parts keep the condition false now (outside `not`), with the status the part asks for,
  * e.g. a scene of Agra that needs Delhi's family photo held. Debug starts a later city after playing the earlier ones
- * along their main path (arrival, battles, finale, epilogue: cityStart), so it holds what their main scenes give but may
- * lack an item only an optional date, inserted scene or encounter gives, or a record of a choice that gave or used one;
+ * along their main path (arrival, battles, finale, and the epilogue when the journey moves on after it; guides skipped:
+ * cityStart), so it holds what those scenes give but may lack an item only an optional date, inserted scene, guide or
+ * encounter gives, or a record of a choice that gave or used one;
  * and 「場面から始める」 plays only the city's own scenes (the item design §2.7).
  */
 export function otherCityItemsMissing(state: Readonly<GameState>, condition: Condition): MissingItem[] {

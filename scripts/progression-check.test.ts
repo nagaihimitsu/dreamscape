@@ -232,7 +232,7 @@ describe("check 9 and items carried through the journey (the item design §2.5 7
   });
 
   it("9: warns when a city's clear needs an earlier city's item that only an optional scene there gives, unless another way is left", () => {
-    // A main scene's item (here old's arrival): a start at town has played it.
+    // An arrival's or battle's item (here old's arrival): a start at town has played it.
     expect(kinds(carried(held))).not.toContain("earlier-item-start");
     const fromDate = carried(held, { sceneItems: [scene("old_photo", "old", ["memo"], { at: [{ date: "old_dt" }] })] });
     expect(progressionWarnings(fromDate).find((item) => item.kind === "earlier-item-start")?.message)
@@ -246,6 +246,17 @@ describe("check 9 and items carried through the journey (the item design §2.5 7
     expect(progressionErrors(oldGuide([scene("old_guide", "old", ["memo"], { main: { guide: "lm_old" } })]))).toEqual([]);
     expect(kinds(oldGuide([scene("old_guide", "old", ["memo"], { main: { guide: "lm_old" } })]))).toContain("earlier-item-start");
     expect(kinds(oldGuide([scene("old_battle", "old", ["memo"], { main: { battle: "bt_old" } })]))).not.toContain("earlier-item-start");
+    // An epilogue's item: a start at town reads old's epilogue only when the journey moves on after it (departFromClearedCity).
+    const oldEpilogue = (cityTransition: "manual" | "after_epilogue") => carried(held, {
+      journeys: [{ id: "trip", cities: [{ id: "old" }, { id: "town" }], initialBudget: 120, cityTransition }],
+      sceneItems: [scene("old_epilogue", "old", ["memo"], { main: { epilogue: "old" } })],
+      episodes: [...base.episodes, { id: "fin_old", kind: "city_finale", cityId: "old", landmarkId: null, battleId: "bt_fin_old", requiredEpisodeIds: [] }],
+      battles: [...base.battles, { id: "bt_fin_old", cityId: "old", landmarkId: null, scope: "city_finale" }],
+    });
+    for (const cityTransition of ["manual", "after_epilogue"] as const) expect(progressionErrors(oldEpilogue(cityTransition)), cityTransition).toEqual([]);
+    expect(kinds(oldEpilogue("after_epilogue"))).not.toContain("earlier-item-start");
+    expect(progressionWarnings(oldEpilogue("manual")).find((item) => item.kind === "earlier-item-start")?.message)
+      .toMatch(/guide, epilogue or encounter there gives: .*\(arrival, battles, finale; guides and epilogues skipped\)/);
     // The history of an earlier city's ordinary item that no main scene gives.
     expect(kinds(carried({ item: { id: "letter", is: "gifted" } }))).toContain("earlier-item-start");
     expect(kinds(carried({ any: [held, { battlesPlayed: { city: "town", atLeast: 2 } }] }, { sceneItems: [scene("old_photo", "old", ["memo"], { at: [{ date: "old_dt" }] })] })))

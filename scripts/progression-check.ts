@@ -253,7 +253,8 @@ const sourceReached = (city: City, reach: Reach, itemId: string, mode: Mode = {}
   (!source.battleId || reach.battles.has(source.battleId)) && (!source.guideLandmarkId || reach.guides.has(source.guideLandmarkId)) &&
   (!source.landmarkId || reach.landmarks.has(source.landmarkId)) && (!source.afterFinale || reach.finale) && (!source.dateId || !mode.noRomance));
 
-/** Whether a main scene of the item's city gives it (a Debug or walk start at a later city has played those; the item design §2.5 9). */
+/** Whether a scene that a Debug or walk start at a later city plays gives it: an arrival, a battle, the epilogue only in an
+ * after_epilogue journey, never a guide (the item design §2.5 9). */
 const onMainPath = (content: ProgressionContent, cityId: string, itemId: string) =>
   (cityModel(content, cityId).itemSources.get(itemId) ?? []).some((source) => source.mainPath);
 
@@ -314,7 +315,7 @@ function rawLeaf(content: ProgressionContent, city: City, now: ProgressionSnapsh
     const status = now.items[id];
     const itemCity = content.items.find((item) => item.id === id)?.cityId;
     // Started here (a Debug or walk start), the earlier cities were played along their main path: an item only an optional
-    // date, inserted scene or encounter gives there has no records.
+    // date, inserted scene, guide or encounter (or, in a journey that does not move on after the epilogue, the epilogue) gives there has no records.
     if (mode.noEarlierItems && itemCity !== undefined && itemCity !== city.id && journeyOf(content, itemCity)?.id === city.journeyId &&
         orderOf(content, itemCity) < city.order && !onMainPath(content, itemCity, id)) return { canTrue: false, canFalse: true };
     const carried = carriedFromEarlier(content, city, id);
@@ -578,10 +579,12 @@ export function progressionWarnings(content: ProgressionContent, clueUses: reado
           return itemCity !== undefined && itemCity !== cityId && journeyOf(content, itemCity)?.id === city.journeyId && orderOf(content, itemCity) < city.order &&
             !onMainPath(content, itemCity, id);
         }))];
+      const readsEpilogue = journeyOf(content, cityId)?.cityTransition === "after_epilogue";
       warnings.push({ kind: "earlier-item-start", message: `City ${cityId} needs an item from an earlier city that only an optional date, inserted scene, ` +
-        `guide or encounter there gives: its finale ${finale.id} (or a main part it needs) shows on the map only with ${items.join(", ")}; a play started at ` +
-        `${cityId} (Debug, the exploration walk's start of a later city) has played the earlier cities along their main path only (arrival, battles, ` +
-        `finale, epilogue; guides skipped), so it may lack the item and then cannot clear ${cityId} (normal play starts at the first city; not stopped)` });
+        `guide${readsEpilogue ? "" : ", epilogue"} or encounter there gives: its finale ${finale.id} (or a main part it needs) shows on the map only with ` +
+        `${items.join(", ")}; a play started at ${cityId} (Debug, the exploration walk's start of a later city) has played the earlier cities along their ` +
+        `main path only (arrival, battles, finale${readsEpilogue ? ", epilogue" : ""}; guides${readsEpilogue ? "" : " and epilogues"} skipped), so it may lack ` +
+        `the item and then cannot clear ${cityId} (normal play starts at the first city; not stopped)` });
     }
     if (!reachCity(content, city, start, { noRomance: true }).finale)
       warnings.push({ kind: "romance-only-city", message: `City ${cityId} can be cleared only through the romance: without the romance values ` +
