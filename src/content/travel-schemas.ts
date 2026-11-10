@@ -22,8 +22,16 @@ export const travelPlaceSchema = z.object({
   openingWindows: z.array(timeWindowSchema).optional(),
   /** Game-calendar weekdays when the place is closed; Monday is 0. */
   closedWeekdays: z.array(z.number().int().min(0).max(6)).refine((days) => new Set(days).size === days.length, "Duplicate closed weekday").optional(),
+  /**
+   * `"tour"`: a tour-only place (tour design stage 2a). The party reaches it only on a tour of the
+   * city (tours/<tourId>.json), so it has no route but its same-place walk, and the map never lists it.
+   */
+  access: z.literal("tour").optional(),
   sources: z.array(tourismSourceSchema).min(1),
 }).strict();
+
+/** Whether the party reaches the place only on a tour (`access: "tour"`). */
+export const isTourOnlyPlace = (place: { access?: "tour" } | undefined): boolean => place?.access === "tour";
 
 export const travelRouteSchema = z.object({
   fromPlaceId: id,

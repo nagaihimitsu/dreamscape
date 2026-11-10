@@ -6,6 +6,7 @@ import type { GameState } from "./game-state-schema";
 import { resolveRomanceChoice } from "./romance-random";
 import { minimumHomeFare } from "./travel-routes";
 import { getTransportMode, WALK_MODE_ID } from "../content/transport";
+import { isTourOnlyPlace } from "../content/travel-schemas";
 import { getUsableRoutes } from "./transport";
 
 /** Cross-check the saved schedule, return fare and currently running scene. */
@@ -15,6 +16,10 @@ export function validateTravelState(state: GameState): void {
   // A trip whose move waits for its scenes (stage 4): the party is still where it leaves, already paid for where it goes.
   const pending = state.occasion?.trip && !state.occasion.ran.includes("move") ? state.occasion.trip : undefined;
   const placeId = pending?.to ?? travel.currentPlaceId;
+  // A running tour (tour stage 2a) has brought the party where no route goes: no fare home is kept until it ends (validateTourState).
+  const touring = state.tour?.status === "running";
+  if (!touring && [travel.currentPlaceId, pending?.to].some((id) => id !== undefined && isTourOnlyPlace(cityTravel.places.find((place) => place.id === id))))
+    throw new Error("ツアー専用の地点にいる記録が一致しません。");
   if (travel.hotelPlaceId !== travelSettings.hotelPlaceId || travel.returnReserve > state.travelBudget ||
       !cityTravel.places.some((place) => place.id === travel.currentPlaceId) ||
       (travel.activeEvent && (!cityTravel.events.some((event) => event.id === travel.activeEvent!.eventId && event.placeId === travel.activeEvent!.placeId) ||
@@ -31,8 +36,8 @@ export function validateTravelState(state: GameState): void {
     return !mode || modeId === WALK_MODE_ID || (!!mode.rental && !travel.rentedModeIds.includes(modeId));
   })) throw new Error("乗り物に乗った回数の記録が一致しません。");
   const returnMinute = travel.activeEvent?.endMinute ?? travel.minute;
-  const requiredFare = minimumHomeFare(getUsableRoutes(state), placeId, travel.hotelPlaceId, returnMinute);
-  if (requiredFare === undefined || travel.returnReserve < requiredFare)
+  const requiredFare = touring ? 0 : minimumHomeFare(getUsableRoutes(state), placeId, travel.hotelPlaceId, returnMinute);
+  if (requiredFare === undefined || travel.returnReserve < requiredFare || (touring && travel.returnReserve !== 0))
     throw new Error("帰路の交通費を確保できていません。");
   if (travel.activeEvent) {
     const id = travel.activeEvent.eventId;

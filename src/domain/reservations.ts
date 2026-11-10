@@ -1,4 +1,4 @@
-import { battles, dates, episodes, landmarks, scenes } from "../content";
+import { battles, dates, episodes, getTour, landmarks, scenes } from "../content";
 import type { SceneEntry, SceneMain } from "../content/scene-schemas";
 import type { GameState } from "./game-state-schema";
 import { keptByThen } from "./occasion-hooks";
@@ -80,10 +80,31 @@ const unreadEpilogue = (state: Readonly<GameState>): SceneMain | undefined => {
 };
 
 /**
+ * What a booked or running tour keeps back (tour stage 2a): the payments of its event steps still to come (a running tour's own
+ * visit is kept back by its occasion), from the booking until each step runs, so the morning's visit can always pay them.
+ */
+export function tourKeepBack(state: Readonly<GameState>): Payment {
+  const record = state.tour;
+  const tour = record && getTour(record.tourId);
+  if (!record || !tour) return NONE;
+  return tour.steps.slice(record.status === "running" ? record.step + 1 : 0).reduce((sum, step) => {
+    if (step.kind !== "event") return sum;
+    const payment = mainPartPayments(state, step.eventId);
+    return { money: sum.money + payment.money, ap: sum.ap + payment.ap };
+  }, NONE);
+}
+
+/**
  * What the running occasion keeps back for its main parts still to come (and a date's AP until it starts); the epilogue's moment
- * keeps back its epilogue's first payment (a then: epilogue's, kept from its choice until the epilogue is read; 2.3).
+ * keeps back its epilogue's first payment (a then: epilogue's, kept from its choice until the epilogue is read; 2.3). A booked or
+ * running tour's later event steps are kept back too (tourKeepBack).
  */
 export function reservedPayments(state: Readonly<GameState>): Payment {
+  const own = occasionPayments(state);
+  const tour = tourKeepBack(state);
+  return { money: own.money + tour.money, ap: own.ap + tour.ap };
+}
+function occasionPayments(state: Readonly<GameState>): Payment {
   const occasion = state.occasion;
   const epilogue = unreadEpilogue(state);
   if (epilogue) return spendOf(mainScene(epilogue));
@@ -116,11 +137,11 @@ export function runningMainPayment(state: Readonly<GameState>): Payment {
  */
 export function usableMoney(state: Readonly<GameState>): number {
   const keep = keptByThen(state);
-  return keep ? state.travelBudget - runningMainPayment(state).money - Math.max(state.travel.returnReserve, keep.money)
+  return keep ? state.travelBudget - runningMainPayment(state).money - Math.max(state.travel.returnReserve, keep.money) - tourKeepBack(state).money
     : state.travelBudget - state.travel.returnReserve - reservedPayments(state).money;
 }
 /** The AP that can be spent now: stored AP is not counted, the main parts' AP is kept back (A23), and a decided then:'s. */
 export function usableAp(state: Readonly<GameState>): number {
   const keep = keptByThen(state);
-  return keep ? state.ap - keep.ap - runningMainPayment(state).ap : state.ap - reservedPayments(state).ap;
+  return keep ? state.ap - keep.ap - runningMainPayment(state).ap - tourKeepBack(state).ap : state.ap - reservedPayments(state).ap;
 }

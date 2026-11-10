@@ -98,14 +98,6 @@
       "claimType": "hypothesis",
       "claimJa": "車は半径500m以内に入れないので、西門側の駐車場で降りて電気バスかゴルフカートで門へ向かう想定。駐車場と門のあいだを10分（仮定）としてオートの時間に足す。"
     },
-    "fatehpur_provisional_model": {
-      "publisher": "Dreamscape ゲーム編集",
-      "title": "ファテープル・シークリーへのオートリキシャ（仮のゲーム値）",
-      "url": "https://router.project-osrm.org/table/v1/driving/",
-      "checkedAt": "2026-11-07",
-      "claimType": "hypothesis",
-      "claimJa": "約38〜44kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式（₹60＋1kmあたり₹20、5分＋10kmまで時速20.8km・その先は時速40km）で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。"
-    },
     "agra_metro_model": {
       "publisher": "Dreamscape ゲーム編集",
       "title": "地下鉄の所要時間と運賃の推定（アーグラ）",
@@ -267,34 +259,6 @@
       "status": "not_applicable",
       "checkedAt": "2026-11-07",
       "reasonJa": "メヘターブ・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_taj_mahal",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。車はタージ・マハルの500m以内に入れないので、駐車場と門のあいだの10分を含む。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car",
-        "s9_taj_dos_donts",
-        "taj_transfer_model"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_taj_mahal",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "ファテープル・シークリーの近くに営業中の地下鉄の駅がない（アーグラから約40km先で、地下鉄が通っていない）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
         "s7_wikipedia_agra_metro",
@@ -577,32 +541,6 @@
     },
     {
       "fromPlaceId": "agra_agra_fort",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_agra_fort",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "ファテープル・シークリーの近くに営業中の地下鉄の駅がない（アーグラから約40km先で、地下鉄が通っていない）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_agra_fort",
       "toPlaceId": "agra_akbar_tomb",
       "mode": "auto_rickshaw",
       "status": "available",
@@ -871,32 +809,6 @@
     },
     {
       "fromPlaceId": "agra_itimad_tomb",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_itimad_tomb",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "イティマード・ウッダウラ廟の近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_itimad_tomb",
       "toPlaceId": "agra_akbar_tomb",
       "mode": "auto_rickshaw",
       "status": "available",
@@ -1164,32 +1076,6 @@
     },
     {
       "fromPlaceId": "agra_mehtab_bagh",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_mehtab_bagh",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "メヘターブ・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_mehtab_bagh",
       "toPlaceId": "agra_akbar_tomb",
       "mode": "auto_rickshaw",
       "status": "available",
@@ -1367,272 +1253,6 @@
       ]
     },
     {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_taj_mahal",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。車はタージ・マハルの500m以内に入れないので、駐車場と門のあいだの10分を含む。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car",
-        "s9_taj_dos_donts",
-        "taj_transfer_model"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_taj_mahal",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "ファテープル・シークリーの近くに営業中の地下鉄の駅がない（アーグラから約40km先で、地下鉄が通っていない）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_agra_fort",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_agra_fort",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "ファテープル・シークリーの近くに営業中の地下鉄の駅がない（アーグラから約40km先で、地下鉄が通っていない）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_itimad_tomb",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_itimad_tomb",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "ファテープル・シークリーの近くに営業中の地下鉄の駅がない（アーグラから約40km先で、地下鉄が通っていない）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_mehtab_bagh",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_mehtab_bagh",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "ファテープル・シークリーの近くに営業中の地下鉄の駅がない（アーグラから約40km先で、地下鉄が通っていない）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_akbar_tomb",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_akbar_tomb",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "ファテープル・シークリーの近くに営業中の地下鉄の駅がない（アーグラから約40km先で、地下鉄が通っていない）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_ram_bagh",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_ram_bagh",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "ファテープル・シークリーの近くに営業中の地下鉄の駅がない（アーグラから約40km先で、地下鉄が通っていない）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_chini_rauza",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_chini_rauza",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "ファテープル・シークリーの近くに営業中の地下鉄の駅がない（アーグラから約40km先で、地下鉄が通っていない）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_mariam_tomb",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_mariam_tomb",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "ファテープル・シークリーの近くに営業中の地下鉄の駅がない（アーグラから約40km先で、地下鉄が通っていない）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_guru_ka_taal",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_guru_ka_taal",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "ファテープル・シークリーの近くに営業中の地下鉄の駅がない（アーグラから約40km先で、地下鉄が通っていない）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_hotel_hub",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-09",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "osrm_car_inn",
-        "inn_transfer_model",
-        "up_transport_ngt_affidavit",
-        "india_today_tajganj_2021",
-        "amar_ujala_tajganj_passes"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_fatehpur_sikri",
-      "toPlaceId": "agra_hotel_hub",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-09",
-      "reasonJa": "ファテープル・シークリーの近くに営業中の地下鉄の駅がない（アーグラから約40km先で、地下鉄が通っていない）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
       "fromPlaceId": "agra_akbar_tomb",
       "toPlaceId": "agra_taj_mahal",
       "mode": "auto_rickshaw",
@@ -1739,32 +1359,6 @@
     {
       "fromPlaceId": "agra_akbar_tomb",
       "toPlaceId": "agra_mehtab_bagh",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "アクバル廟の近くに営業中の地下鉄の駅がない（近くの駅（シカンドラ方面）は工事中）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_akbar_tomb",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_akbar_tomb",
-      "toPlaceId": "agra_fatehpur_sikri",
       "mode": "metro",
       "status": "not_applicable",
       "checkedAt": "2026-11-07",
@@ -2045,32 +1639,6 @@
     },
     {
       "fromPlaceId": "agra_ram_bagh",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_ram_bagh",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "ラム・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_ram_bagh",
       "toPlaceId": "agra_akbar_tomb",
       "mode": "auto_rickshaw",
       "status": "available",
@@ -2335,32 +1903,6 @@
     },
     {
       "fromPlaceId": "agra_chini_rauza",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_chini_rauza",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "チーニー・カ・ラウザの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_chini_rauza",
       "toPlaceId": "agra_akbar_tomb",
       "mode": "auto_rickshaw",
       "status": "available",
@@ -2612,32 +2154,6 @@
     {
       "fromPlaceId": "agra_mariam_tomb",
       "toPlaceId": "agra_mehtab_bagh",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "マリアム・ウッザマーニー廟の近くに営業中の地下鉄の駅がない（近くの駅（シカンドラ方面）は工事中）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_mariam_tomb",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_mariam_tomb",
-      "toPlaceId": "agra_fatehpur_sikri",
       "mode": "metro",
       "status": "not_applicable",
       "checkedAt": "2026-11-07",
@@ -2905,32 +2421,6 @@
     {
       "fromPlaceId": "agra_guru_ka_taal",
       "toPlaceId": "agra_mehtab_bagh",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "グル・カ・タールの近くに営業中の地下鉄の駅がない（近くの駅（グル・カ・タール）は工事中）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_guru_ka_taal",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "s17_osrm_car"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_guru_ka_taal",
-      "toPlaceId": "agra_fatehpur_sikri",
       "mode": "metro",
       "status": "not_applicable",
       "checkedAt": "2026-11-07",
@@ -3212,36 +2702,6 @@
       "status": "not_applicable",
       "checkedAt": "2026-11-09",
       "reasonJa": "メヘターブ・バーグの近くに営業中の地下鉄の駅がない（ヤムナー川の北岸で、最寄りの営業中の駅まで3km以上）。",
-      "sourceRefs": [
-        "s6_upmrc_agra_metro",
-        "s7_wikipedia_agra_metro",
-        "s8_newsnation_agra_ext",
-        "s19_osm_stations"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_hotel_hub",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-09",
-      "reasonJa": "約40kmをオートで行く運賃・時間の資料は見つからなかった（2026-11-07に検索）。アーグラ市内と同じ式で出した仮のゲーム値で、資料の裏付けはない。あとでツアー機能に置き換える。宿はタージ・マハルの500m圏の中（タージ・ガンジ）とみなす。旅行者のオートは宿の前まで入れないので、乗り降りの場所まで歩く10分を含む（乗り降りの場所はゲームの仮定。区域の測り方と柵の位置は資料で確かめられなかった）。",
-      "sourceRefs": [
-        "fatehpur_provisional_model",
-        "osrm_car_inn",
-        "inn_transfer_model",
-        "up_transport_ngt_affidavit",
-        "india_today_tajganj_2021",
-        "amar_ujala_tajganj_passes"
-      ]
-    },
-    {
-      "fromPlaceId": "agra_hotel_hub",
-      "toPlaceId": "agra_fatehpur_sikri",
-      "mode": "metro",
-      "status": "not_applicable",
-      "checkedAt": "2026-11-09",
-      "reasonJa": "ファテープル・シークリーの近くに営業中の地下鉄の駅がない（アーグラから約40km先で、地下鉄が通っていない）。",
       "sourceRefs": [
         "s6_upmrc_agra_metro",
         "s7_wikipedia_agra_metro",

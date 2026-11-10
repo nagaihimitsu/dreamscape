@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { tourSceneBadge } from "../../domain/tour";
 import { dialogueExpressions, dialogueReactions, landmarks, learningTranslations, presentation, reasoningIntroductions, tourismAssets } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
@@ -398,6 +399,7 @@ export function BattleScreen({
           finale; 手がかり帳 joins it while the battle talks (the round bar holds its own). */}
       <SceneLabelLine
         label={landmark?.nameJa ?? battle.titleJa}
+        badge={tourSceneBadge(game)}
         labelProps={landmark ? { "data-testid": "battle-location", "aria-label": `現在の場所: ${landmark.nameJa}` } : undefined}
       >
         {backgroundAsset && <SceneCreditButton onClick={() => setCreditsOpen(true)} />}

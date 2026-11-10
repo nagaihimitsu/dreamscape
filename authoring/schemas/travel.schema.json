@@ -89,6 +89,10 @@
               "maximum": 6
             }
           },
+          "access": {
+            "type": "string",
+            "const": "tour"
+          },
           "sources": {
             "minItems": 1,
             "type": "array",

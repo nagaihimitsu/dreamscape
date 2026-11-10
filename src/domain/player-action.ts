@@ -14,6 +14,7 @@ import { canClaimPendingRewards, claimPendingRewards } from "./rewards";
 import { openTourism, advanceTourismGuide, chooseTourismGuide, discoverClue, getDiscoverableClueIds, guideChoiceDisplay, landmarkHasGuide, replayTourismGuide, skipTourismGuide } from "./tourism";
 import { getTravelDestinations, getTravelWaitOptions } from "./travel-destinations";
 import { getRentalOffers, rentTransport } from "./transport";
+import { bookTour, cancelTourBooking, continueTour, getTourOffers } from "./tour";
 import {
   beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, getTravelSleepOptions, sleepAtHotel, waitForTravel,
   type TravelMode,
@@ -25,11 +26,13 @@ import {
  * `previous` itself when the action changed nothing.
  */
 export function applyPlayerAction(previous: GameState, change: (state: GameState) => GameState, nextRoll: () => number = secureRomanceRoll): GameState {
-  // The action, its occasion run to its next stop (4.1), the trip's window, the city's automatic move, and the
-  // occasion that move opened (its negative scenes start in the same action).
+  // The action, its occasion run to its next stop (4.1), the trip's window, the tour's next steps (a booked tour's start on its
+  // morning, a running tour's legs after its visit; tour stage 2a), the city's automatic move, and the occasion that move opened
+  // (its negative scenes start in the same action). Nothing runs after an action that changed nothing (a load is never changed).
   const changed = finishTravelEventIfComplete(previous, advanceOccasion(change(previous), nextRoll));
   if (changed === previous) return previous;
-  return advanceOccasion(advanceCompletedJourneyCity(changed, changed.revision), nextRoll);
+  const toured = continueTour(changed, nextRoll);
+  return advanceOccasion(advanceCompletedJourneyCity(toured, toured.revision), nextRoll);
 }
 
 /**
@@ -38,9 +41,11 @@ export function applyPlayerAction(previous: GameState, change: (state: GameState
  * page turning) are not actions.
  */
 export type PlayerAction =
-  // Free time: TravelMenu (TravelRentals: 借りる), FreeTimeHub, TravelActions (待機・休む), PendingRewards, CityProgress.
+  // Free time: TravelMenu (TravelRentals: 借りる; TravelTours: 予約する・予約を取り消す), FreeTimeHub, TravelActions (待機・休む), PendingRewards, CityProgress.
   | { kind: "travel"; eventId: string; mode: TravelMode }
   | { kind: "rent"; modeId: string }
+  | { kind: "book_tour"; tourId: string; offerId: string }
+  | { kind: "cancel_tour" }
   | { kind: "wait"; minutes: number }
   | { kind: "rest"; mode: TravelMode; viaPlaceId: string | null }
   | { kind: "depart" }
@@ -165,6 +170,8 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
     ...(getPlayerDeparture(state) ? [{ kind: "depart" as const }] : []),
     ...getTravelWaitOptions(state).filter((option) => option.available).map((option) => ({ kind: "wait" as const, minutes: option.minutes })),
     ...getRentalOffers(state).filter((choice) => choice.available).map((choice) => ({ kind: "rent" as const, modeId: choice.offer.modeId })),
+    ...getTourOffers(state).filter((choice) => choice.available).map((choice) => ({ kind: "book_tour" as const, tourId: choice.tour.id, offerId: choice.offer.id })),
+    ...(state.tour?.status === "booked" ? [{ kind: "cancel_tour" as const }] : []),
     ...getTravelSleepOptions(state).filter((option) => option.plan.ok)
       .map(({ route }) => ({ kind: "rest" as const, mode: route.mode, viaPlaceId: route.viaPlaceId ?? null })),
   ];
@@ -178,6 +185,8 @@ export function playerActionChange(action: PlayerAction, nextRoll: () => number)
       case "travel": return beginTravelEvent(state, action.eventId, action.mode, revision, nextRoll);
       case "wait": return waitForTravel(state, action.minutes, revision);
       case "rent": return rentTransport(state, action.modeId, revision);
+      case "book_tour": return bookTour(state, action.tourId, action.offerId, revision);
+      case "cancel_tour": return cancelTourBooking(state, revision);
       case "rest": return sleepAtHotel(state, action.mode, revision, action.viaPlaceId, nextRoll);
       case "depart": return openOccasion(state, { kind: "depart" }, revision, nextRoll);
       case "read_epilogue": case "battle_epilogue": return openOccasion(state, { kind: "epilogue" }, revision, nextRoll);

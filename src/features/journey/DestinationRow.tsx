@@ -192,7 +192,7 @@ export function SleepChoice({ game, sleep, api, scope = "page", hintId }: {
   const cityId = game.currentCityId;
   return <div className="travel-sleep-choices" data-testid="travel-sleep-choices">
     <div className="travel-choices-head">
-      <p id={hintId}>滞在先へ戻り、翌日9:00に出発します。ゲーム内の宿泊費は{formatMoneyForCity(cityId, travelSettings.lodgingCost)}、APは使いません。予算の不足分は補助されます。{getJourneyForCity(cityId)?.farePartySize === 2 && "移動料金は2人分のゲーム内の目安です。"}{sleep.onlyWay ? (scope === "page" ? "もう一度『休む』を押すと休みます。" : "") : "帰り方を選んでください。"}</p>
+      <p id={hintId}>滞在先へ戻り、翌日9:00に出発します。{game.tour?.status === "booked" && "明日の朝、予約したツアーが始まります。"}ゲーム内の宿泊費は{formatMoneyForCity(cityId, travelSettings.lodgingCost)}、APは使いません。予算の不足分は補助されます。{getJourneyForCity(cityId)?.farePartySize === 2 && "移動料金は2人分のゲーム内の目安です。"}{sleep.onlyWay ? (scope === "page" ? "もう一度『休む』を押すと休みます。" : "") : "帰り方を選んでください。"}</p>
       <ClearButton api={api} />
     </div>
     <div className="travel-routes">{sleep.options.map(({ route, plan }) => {

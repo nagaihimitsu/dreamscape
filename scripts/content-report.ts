@@ -16,10 +16,11 @@ export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-pre
   | "transit-walk-missing" | "transit-route-unsourced" | "never-offered" | "date-condition-trip"
   | "later-never-again" | "same-priority" | "repeat-without-until" | "data-language" | "cond-walk-partial"
   | "never-met-again" | "romance-only-city" | "unfindable-clue" | "battle-after-epilogue" | "money-shortfall" | "ap-shortfall"
-  | "scene-tag" | "special-date-ap" | "epilogue-unreachable" | "then-loop" | "earlier-item-start";
+  | "scene-tag" | "special-date-ap" | "epilogue-unreachable" | "then-loop" | "earlier-item-start" | "tour-note";
 export type ContentWarning = { kind: ContentWarningKind; message: string };
 /** How content:build counts each kind of warning. */
 export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
+  "tour-note": "tour note(s) (schedule windows, offer places, sources, then: on a tour day)",
   "scene-tag": "scene tag note(s) (place files and choice tags)",
   "special-date-ap": "special date(s) that cost AP",
   "epilogue-unreachable": "city(ies) whose author-started epilogue may never start (then: epilogue out of reach in some or all plays)",
@@ -165,6 +166,7 @@ function definitions(sources: ContentSources): Definition[] {
     add(data.id, quiz.file, "id");
     list(data.questions).forEach((question, index) => add(question.id, quiz.file, `questions[${index}]`));
   }
+  for (const tour of sources.tourFiles) if (isObject(tour.data)) add(tour.data.id, tour.file, "id");
   for (const city of sources.cities) {
     if (isObject(city.data) && isObject(city.data.firstClearReward))
       add(city.data.firstClearReward.rewardSourceId, city.file, "firstClearReward.rewardSourceId");
@@ -340,6 +342,8 @@ export function journeyContents(sources: ContentSources): JourneyContents[] {
         if (observationOnly) counts.push(["observation-only clues", observationOnly]);
       }
     }
+    const tours = sources.tourFiles.filter((tour) => tour.layer === manifest.id).length;
+    if (tours) counts.push(["tours", tours]);
     return { id: manifest.id, ...(typeof manifest.data.nameJa === "string" ? { nameJa: manifest.data.nameJa } : {}), status: manifest.data.status, counts };
   });
 }

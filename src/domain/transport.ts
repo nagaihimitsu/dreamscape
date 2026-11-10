@@ -3,6 +3,7 @@ import { formatMoneyForCity } from "../content/currency";
 import { getTransportMode, type TransportMode } from "../content/transport";
 import type { RentalOffer, TravelRoute } from "../content/travel-schemas";
 import { hasActiveScene, type GameState } from "./game-state-schema";
+import { tourKeepBack } from "./reservations";
 import { DAY_END } from "./travel";
 
 // In-city transport rules on the game state (pure): which modes the party may
@@ -51,10 +52,12 @@ export function getRentalOffers(state: GameState): RentalChoice[] {
   return offers.flatMap((offer): RentalChoice[] => {
     const mode = getTransportMode(state.currentCityId, offer.modeId);
     if (!mode?.rental || !offer.placeIds.includes(state.travel.currentPlaceId) || state.travel.rentedModeIds.includes(offer.modeId)) return [];
+    // (What a booked tour keeps back for its event steps is not spent here either; tour stage 2a.)
+    const budget = state.travelBudget - tourKeepBack(state).money;
     const reason = hasActiveScene(state) ? "途中の場面を終えてから借りられます。"
       : state.travel.minute >= DAY_END ? "今日はもう借りられません。"
-      : state.travelBudget < offer.cost ? "旅行予算が足りません。"
-      : state.travelBudget - offer.cost < state.travel.returnReserve
+      : budget < offer.cost ? "旅行予算が足りません。"
+      : budget - offer.cost < state.travel.returnReserve
         ? `帰りの交通費（${formatMoneyForCity(state.currentCityId, state.travel.returnReserve)}）を確保しているため、今は借りられません。` : "";
     return [{ offer, mode, available: !reason, reason }];
   });

@@ -119,4 +119,17 @@ describe("Milan travel data references", () => {
     const mainEvents = travel.events.map((event) => event.id === "milano_brera_c01" ? { ...event, placeId: "p_scala" } : event);
     expect(() => validate({ ...travel, events: mainEvents })).toThrow(/Travel landmark place mismatch/);
   });
+  it("keeps a tour-only place out of the map's routes (tour stage 2a): only its same-place walk, and never the hotel", () => {
+    const [first, second] = travel.places;
+    const tourOnly = { ...travel, places: travel.places.map((place) => (place.id === second.id ? { ...place, access: "tour" as const } : place)) };
+    // Its routes to and from the other places are refused; without them every other pair is still checked.
+    expect(() => validate(tourOnly)).toThrow(`Route of a tour-only place: milano/${second.id}`);
+    const without = { ...tourOnly, routes: tourOnly.routes.filter((route) => (route.fromPlaceId !== second.id && route.toPlaceId !== second.id) ||
+      (route.fromPlaceId === route.toPlaceId && route.mode === "walk")) };
+    expect(() => validate(without)).not.toThrow();
+    expect(() => validate({ ...without, routes: without.routes.filter((route) => !(route.fromPlaceId === second.id && route.toPlaceId === second.id)) }))
+      .toThrow(`Missing same-place route: ${second.id}`);
+    const tourHotel = { ...travel, places: travel.places.map((place) => (place.id === first.id ? { ...place, access: "tour" as const } : place)) };
+    expect(() => validate(tourHotel, first.id)).toThrow("Tour-only hotel: milano");
+  });
 });

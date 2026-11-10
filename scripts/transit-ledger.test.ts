@@ -83,6 +83,17 @@ describe("per-city transit ledger", () => {
       .toThrow("Unresolved transit source");
   });
 
+  it("leaves a tour-only place out of the directions and refuses a decision naming it (tour stage 2a)", () => {
+    const { travel, ledger } = fixture();
+    const fort = { ...places[0], id: "test_fort", access: "tour" as const };
+    const withFort = { ...travel, places: [...travel.places, fort],
+      routes: [...travel.routes, { fromPlaceId: "test_fort", toPlaceId: "test_fort", mode: "walk", minutes: 0, cost: 0, sources: [model] }] };
+    expect(inspectCityTransit(withFort, ledger, modes, FILE)).toMatchObject({ directions: 2, decisions: 4, ready: true, missingWalks: [] });
+    const extra = { ...ledger.decisions[0], toPlaceId: "test_fort" };
+    expect(() => inspectCityTransit(withFort, { ...ledger, decisions: [...ledger.decisions, extra] }, modes, FILE))
+      .toThrow("Transit decision for a tour-only place: test_a → test_fort（tram）");
+  });
+
   it("asks for a documented fact behind every decision that is not available; the sample's stand-in counts", () => {
     const { travel, ledger } = fixture();
     const onlyModel = { ...ledger, decisions: ledger.decisions.map((decision) => ({ ...decision, sourceRefs: ["model"] })) };

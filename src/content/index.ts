@@ -11,6 +11,8 @@ import tourismData from "./generated/content/tourism/catalog.json";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "./travel-schemas";
 import generatedQuizzes from "./generated/quizzes.json";
+import generatedTours from "./generated/tours.json";
+import { tourCatalogSchema, type Tour } from "./tour-schemas";
 import progressionData from "./generated/content/romance/progression.json";
 import dateData from "./generated/content/romance/date_catalog.json";
 import destinationData from "./generated/content/romance/date_destinations.json";
@@ -112,6 +114,18 @@ export const battleQuizzes: Record<string, QuizDefinition> = Object.fromEntries(
     quizSchema.parse(quiz),
   ]),
 );
+/**
+ * Every journey's tours (`tours/<tourId>.json`; tour design stage 2a). Fixture tours of the unit tests
+ * are added here and removed again (src/dev/test-tours.ts), like the fixture cities.
+ */
+export const tours: Tour[] = tourCatalogSchema.parse(generatedTours);
+/** The tours of a city, in file order. */
+export function getCityTours(cityId: string): Tour[] {
+  return tours.filter((tour) => tour.cityId === cityId);
+}
+export function getTour(tourId: string): Tour | undefined {
+  return tours.find((tour) => tour.id === tourId);
+}
 export const progression = progressionSchema.parse(progressionData);
 export const dates = dateCatalogSchema.parse(dateData).dates;
 export const dateDestinations = dateDestinationsSchema.parse(destinationData).destinations;
@@ -147,6 +161,7 @@ export type {
   ObservationRegion,
 } from "./tourism-schemas";
 export type { DateDestination } from "./date-destinations";
+export type { Tour, TourStep, TourLeg, TourEventStep, TourOffer } from "./tour-schemas";
 export type {
   EpisodeDefinition,
   StoryBattle,

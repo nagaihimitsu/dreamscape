@@ -7,6 +7,7 @@ import {
 } from "../../content";
 import { getEpisodeAvailability, getNextEpisode, getNextStoryBattle, storyBattlesForCity } from "../../domain/chapter";
 import type { GameState } from "../../domain/game";
+import { isTourOnlyPlace } from "../../content/travel-schemas";
 import { battlePlayed } from "../../domain/conditions";
 import { canReadCityEpilogue } from "../../domain/epilogue";
 import type { CityProgressCounts } from "./city-progress-label";
@@ -98,6 +99,12 @@ export function cityProgressCounts(game: GameState): CityProgressCounts {
   };
 }
 
+/** Whether a map event is at a tour-only place (tour stage 2a): the records say a tour goes there. */
+function atTourOnlyPlace(cityId: string, eventId: string): boolean {
+  const { travel } = getCityContent(cityId);
+  return isTourOnlyPlace(travel.places.find((place) => place.id === travel.events.find((event) => event.id === eventId)?.placeId));
+}
+
 /** Journey records can be positioned independently of the progress summary. */
 export function CityRecords({ game }: { game: GameState }) {
   return (
@@ -127,9 +134,11 @@ export function CityRecords({ game }: { game: GameState }) {
                 <p className="fine-print">
                   {cleared
                     ? "クリア"
-                    : availability.available
-                      ? "訪問できる"
-                      : "この先"}
+                    : atTourOnlyPlace(game.currentCityId, episode.id)
+                      ? "ツアーで訪ねます"
+                      : availability.available
+                        ? "訪問できる"
+                        : "この先"}
                 </p>
                 <h3>{landmark?.nameJa ?? "都市フィナーレ"}</h3>
                 {landmark && (

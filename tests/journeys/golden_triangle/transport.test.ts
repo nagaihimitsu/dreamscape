@@ -45,7 +45,7 @@ describe("Golden Triangle in-city transport: walk, auto-rickshaw, metro", () => 
 
   it("is reported in the content:build summary with its three ledgers", () => {
     const summary = validateContent(selectJourneys(loadContentSources(process.cwd()), ["golden_triangle"])).transport;
-    expect(summary).toContain("Transport golden_triangle: modes walk, auto_rickshaw, metro; transit ledgers 3: available 354, not_suitable 134, not_applicable 172, inconclusive 0");
+    expect(summary).toContain("Transport golden_triangle: modes walk, auto_rickshaw, metro; transit ledgers 3: available 334, not_suitable 134, not_applicable 152, inconclusive 0");
   }, 120_000);
 
   it("keeps one ready ledger per city with a decision for every direction and mode (journey:transit)", () => {
@@ -54,19 +54,20 @@ describe("Golden Triangle in-city transport: walk, auto-rickshaw, metro", () => 
     expect(report).toMatchObject({ journeyId: "golden_triangle", modes: ["auto_rickshaw", "metro"] });
     const byCity = Object.fromEntries(report.cities.map((city) => [city.cityId, city]));
     expect(Object.keys(byCity)).toEqual(["delhi", "agra", "jaipur"]);
+    // Agra's ledger leaves out Fatehpur Sikri, which only its tour reaches (tour stage 2a): 10 places, 90 directions.
     for (const cityId of ["delhi", "agra", "jaipur"]) {
-      expect(byCity[cityId]).toMatchObject({ directions: 110, decisions: 220, ready: true, file: `content/journeys/golden_triangle/travel/${cityId}-transit.json` });
+      const [directions, decisions] = cityId === "agra" ? [90, 180] : [110, 220];
+      expect(byCity[cityId]).toMatchObject({ directions, decisions, ready: true, file: `content/journeys/golden_triangle/travel/${cityId}-transit.json` });
       expect(cityTransitPath(sources, cityId)).toBe(`content/journeys/golden_triangle/travel/${cityId}-transit.json`);
     }
     expect(byCity.delhi.counts).toEqual({ auto_rickshaw: statuses(108, 2), metro: statuses(44, 66) });
-    expect(byCity.agra.counts).toEqual({ auto_rickshaw: statuses(106, 4), metro: statuses(4, 2, 104) });
+    expect(byCity.agra.counts).toEqual({ auto_rickshaw: statuses(86, 4), metro: statuses(4, 2, 84) });
     expect(byCity.jaipur.counts).toEqual({ auto_rickshaw: statuses(92, 18), metro: statuses(0, 42, 68) });
-    // Warnings, not errors: directions without a walking route, and the provisional Fatehpur Sikri autos.
-    expect([byCity.delhi.missingWalks.length, byCity.agra.missingWalks.length, byCity.jaipur.missingWalks.length]).toEqual([68, 92, 68]);
+    // Warnings, not errors: directions without a walking route. Every vehicle route has its sources.
+    expect([byCity.delhi.missingWalks.length, byCity.agra.missingWalks.length, byCity.jaipur.missingWalks.length]).toEqual([68, 72, 68]);
     expect(byCity.delhi.unsupportedRoutes).toEqual([]);
     expect(byCity.jaipur.unsupportedRoutes).toEqual([]);
-    expect(byCity.agra.unsupportedRoutes).toHaveLength(20);
-    expect(byCity.agra.unsupportedRoutes.every((route) => route.includes("agra_fatehpur_sikri") && route.endsWith("（auto_rickshaw）"))).toBe(true);
+    expect(byCity.agra.unsupportedRoutes).toEqual([]);
   });
 
   it("counts a ride by auto-rickshaw from the Delhi hotel, keeps it through save and load, and starts Agra with no ride counted", () => {

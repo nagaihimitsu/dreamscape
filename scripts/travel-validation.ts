@@ -1,4 +1,4 @@
-import type { TravelCatalog } from "../src/content/travel-schemas";
+import { isTourOnlyPlace, type TravelCatalog } from "../src/content/travel-schemas";
 import type { JourneyConfig } from "../src/content/journey-schemas";
 import type { BattleDefinition, DateDefinition } from "../src/content/schemas";
 import { DAY_END, DAY_START } from "../src/domain/travel";
@@ -19,6 +19,10 @@ export function validateTravelContent(
   if (travel.cityId !== cityId) throw new Error(`Unknown travel city: ${travel.cityId}`);
   if (!travel.places.some((place) => place.id === settings.hotelPlaceId))
     throw new Error(`Unknown travel hotel: ${settings.hotelPlaceId}`);
+  if (isTourOnlyPlace(travel.places.find((place) => place.id === settings.hotelPlaceId)))
+    throw new Error(`宿の地点 ${settings.hotelPlaceId} はツアー専用の地点（"access": "tour"）にできません（Tour-only hotel: ${cityId}）`);
+  // A tour-only place (tour stage 2a) is reached only on a tour: the map's routes join the other places.
+  const normalPlaces = travel.places.filter((place) => !isTourOnlyPlace(place));
   if (settings.storyBackgroundId !== undefined && !backgrounds[settings.storyBackgroundId])
     throw new Error(`Unknown travel story background: ${cityId}/${settings.storyBackgroundId}`);
   const assignedLandmarks = new Set<string>();
@@ -38,8 +42,17 @@ export function validateTravelContent(
     // authored transport: never infer a walking route from its coordinates.
     if (!travel.routes.some((route) => route.fromPlaceId === place.id && route.toPlaceId === place.id && route.mode === "walk"))
       throw new Error(`Missing same-place route: ${place.id}`);
+    if (isTourOnlyPlace(place)) {
+      // Its only route is that same-place walk: any other would let the party reach it, or leave it, outside a tour.
+      const other = travel.routes.find((route) => (route.fromPlaceId === place.id || route.toPlaceId === place.id) &&
+        !(route.fromPlaceId === route.toPlaceId && route.mode === "walk"));
+      if (other)
+        throw new Error(`ツアー専用の地点 ${place.id} には、同じ地点の徒歩のほかに経路を書けません（ツアーで行きます）: ${other.fromPlaceId} → ${other.toPlaceId}（${other.mode}）` +
+          `（Route of a tour-only place: ${cityId}/${place.id}）`);
+      continue;
+    }
     // A rental mode is an extra way to go: without the rental every place is still reached (and the hotel).
-    for (const destination of travel.places) {
+    for (const destination of normalPlaces) {
       if (place.id === destination.id) continue;
       if (!travel.routes.some((route) => route.fromPlaceId === place.id && route.toPlaceId === destination.id && route.minutes < DAY_END - DAY_START &&
           !options.rentalModeIds?.includes(route.mode)))

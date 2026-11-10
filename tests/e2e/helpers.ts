@@ -457,6 +457,20 @@ export const ops = {
     if (await routes.count() === 1 && await route.isEnabled()) await rest.click();
     else await route.click();
   },
+  /** Free time's 「ツアーを見る」 (tour stage 2a): the sheet of the city's tours. */
+  async openTours(page: Page): Promise<Locator> {
+    await page.getByTestId("travel-tours-open").click();
+    const sheet = page.getByRole("dialog", { name: "ツアー", exact: true });
+    await expect(sheet).toBeVisible();
+    return sheet;
+  },
+  /** Book a tour from the sheet through `offerId` and confirm it: the line then names tomorrow's tour. */
+  async bookTour(page: Page, offerId: string) {
+    const sheet = await ops.openTours(page);
+    await sheet.getByTestId(`travel-tour-book-${offerId}`).click();
+    await page.getByTestId("travel-tour-confirm").click();
+    await expect(page.getByTestId("travel-tour-booked")).toBeVisible();
+  },
   /** Close a sightseeing guide and go on to the landmark's battle. */
   async skipGuideToBattle(page: Page) {
     await page.getByTestId("tourism-skip").click();

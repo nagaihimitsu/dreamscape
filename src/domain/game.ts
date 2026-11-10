@@ -46,6 +46,7 @@ import { applyChoiceEffects, applyDoneEffects, choiceDisplay, sceneOption, type 
 import { fileDateScene, mainScene, taggedDateScene } from "./reservations";
 import type { SceneOption } from "../content/scene-schemas";
 import { validateOccasionState } from "./occasion";
+import { validateTourState } from "./tour";
 import { advanceRunningOccasion } from "./occasion-hooks";
 
 export { GAME_STATE_VERSION, gameStateSchema } from "./game-state-schema";
@@ -507,6 +508,7 @@ export function validateGameState(input: unknown): GameState {
   validateJourneyState(state);
   validateRewardState(state);
   validateEpilogueState(state);
+  validateTourState(state);
   validateGameHistory(state);
   validateActiveDateState(state);
   validateStoryProgress(state);

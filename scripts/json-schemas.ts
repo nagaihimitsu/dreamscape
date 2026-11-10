@@ -13,6 +13,7 @@ import { learningCatalogSchema } from "../src/content/learning-schema";
 import { ownArtworkCatalogSchema } from "../src/content/own-artwork-schema";
 import { reasoningIntroCatalogSchema } from "../src/content/reasoning-intros";
 import { sceneDataCatalogSchema, storyStateCatalogSchema } from "../src/content/scene-schemas";
+import { tourSchema } from "../src/content/tour-schemas";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { wordMeaningsSchema } from "../src/content/word-meanings";
@@ -86,6 +87,7 @@ export const SCHEMA_TARGETS: readonly Target[] = [
   { file: "quiz", titleJa: "クイズ（quizzes/**/*.json）", schema: content.quizSchema, patterns: inJourneys("quizzes/**/*.json"),
     exclude: inJourneys("quizzes/**/*.example.json") },
   { file: "quiz-example", titleJa: "例のクイズ（quizzes/**/*.example.json）", schema: content.quizExampleSchema, patterns: inJourneys("quizzes/**/*.example.json") },
+  { file: "tour", titleJa: "ツアー（tours/<ツアーID>.json）", schema: tourSchema, patterns: inJourneys("tours/*.json") },
   ...Object.entries(CATALOG_SCHEMAS).map(([kind, { titleJa, schema }]) => ({
     file: kind.replace(".json", "").replace("/", "-"), titleJa: `${titleJa}（${kind}）`, schema,
     patterns: CORE_LAYER_KINDS.has(kind as MergedKind) ? inLayers(kind) : inJourneys(kind), fragment: catalogFields(kind as MergedKind) })),

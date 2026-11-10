@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { getCityContent } from "../../../src/content";
+import { getCityContent, getTour } from "../../../src/content";
+import { isTourOnlyPlace } from "../../../src/content/travel-schemas";
 import { getJourney } from "../../../src/content/journeys";
 import { inspectJourneyTransit } from "../../../scripts/journey-transit";
 import { transitLedgerSchema } from "../../../scripts/transit-ledger";
@@ -13,6 +14,15 @@ const budget = getJourney("golden_triangle")!.initialBudget!;
 const ledgerOf = (cityId: string) =>
   transitLedgerSchema.parse(JSON.parse(readFileSync(`content/journeys/golden_triangle/travel/${cityId}-transit.json`, "utf8")));
 const vehicle = (cityId: string) => getCityContent(cityId).travel.routes.filter((route) => route.mode !== "walk");
+/**
+ * A city's places the map reaches (Fatehpur Sikri is reached only on Agra's tour, tour stage 2a) and their map events: the
+ * route, ledger and scheduling checks below read these.
+ */
+const mapTravel = (cityId: string) => {
+  const { travel } = getCityContent(cityId);
+  const places = travel.places.filter((place) => !isTourOnlyPlace(place));
+  return { places, events: travel.events.filter((event) => places.some((place) => place.id === event.placeId)) };
+};
 
 describe("India city travel data", () => {
   it("records a game decision for every direction and mode in a ready ledger per city", () => {
@@ -20,7 +30,7 @@ describe("India city travel data", () => {
     // A decision to omit a game route does not establish whether a real
     // service exists; its sources must retain any factual uncertainty.
     expect(report.cities.map(({ cityId, decisions, ready }) => ({ cityId, decisions, ready })))
-      .toEqual(cities.map((cityId) => ({ cityId, decisions: 220, ready: true })));
+      .toEqual(cities.map((cityId) => ({ cityId, decisions: cityId === "agra" ? 180 : 220, ready: true })));
   });
 
   it("caps the 10 old-city ↔ Nahargarh Fort autos at the negotiated ₹250 the travel guide gives", () => {
@@ -36,23 +46,23 @@ describe("India city travel data", () => {
     }
   });
 
-  it("reaches Fatehpur Sikri by 20 provisional autos without a documented fact, to be replaced by the tour", () => {
+  it("reaches Fatehpur Sikri only on Agra's day tour (tour stage 2a): no route but its same-place walk, no ledger decision", () => {
     const fs = "agra_fatehpur_sikri";
-    const routes = vehicle("agra").filter((route) => route.fromPlaceId === fs || route.toPlaceId === fs);
-    expect(routes).toHaveLength(20);
-    expect(routes.every((route) => route.mode === "auto_rickshaw" && route.minutes >= 80 && route.minutes <= 95 && route.cost >= 820 && route.cost <= 940)).toBe(true);
-    // No documented fact covers a ~40 km auto ride (only hypotheses): exactly the routes content:build warns about.
-    expect(routes.every((route) => route.sources.every((source) => source.claimType === "hypothesis"))).toBe(true);
-    const report = inspectJourneyTransit(process.cwd(), "golden_triangle");
-    expect(report.cities.find((city) => city.cityId === "agra")!.unsupportedRoutes.sort())
-      .toEqual(routes.map((route) => `${route.fromPlaceId} → ${route.toPlaceId}（auto_rickshaw）`).sort());
-    const decisions = ledgerOf("agra").decisions.filter((decision) => decision.mode === "auto_rickshaw" && (decision.fromPlaceId === fs || decision.toPlaceId === fs));
-    expect(decisions).toHaveLength(20);
-    for (const decision of decisions) {
-      expect(decision.status).toBe("available");
-      expect(decision.reasonJa).toContain("仮のゲーム値");
-      expect(decision.reasonJa).toContain("ツアー機能");
-    }
+    const { travel, travelSettings } = getCityContent("agra");
+    expect(isTourOnlyPlace(travel.places.find((place) => place.id === fs))).toBe(true);
+    expect(travel.routes.filter((route) => route.fromPlaceId === fs || route.toPlaceId === fs))
+      .toEqual([expect.objectContaining({ fromPlaceId: fs, toPlaceId: fs, mode: "walk", minutes: 0, cost: 0 })]);
+    expect(ledgerOf("agra").decisions.filter((decision) => decision.fromPlaceId === fs || decision.toPlaceId === fs)).toEqual([]);
+    expect(Object.keys(ledgerOf("agra").sourceRefs)).not.toContain("fatehpur_provisional_model");
+    expect(inspectJourneyTransit(process.cwd(), "golden_triangle").cities.find((city) => city.cityId === "agra")!.unsupportedRoutes).toEqual([]);
+    // Its main episode is the event step of the tour, sold at the inn's front desk and on a booking website, both open from the start.
+    const tour = getTour("gt_agra_tour_fatehpur_sikri")!;
+    expect(tour.cityId).toBe("agra");
+    expect(tour.steps.map((step) => step.kind === "event" ? step.eventId : step.toPlaceId))
+      .toEqual([fs, "gt_agra_main_fatehpur_sikri", travelSettings.hotelPlaceId]);
+    expect(tour.offers.map(({ id, channel, placeIds, when }) => ({ id, channel, placeIds, when })))
+      .toEqual([{ id: "hotel_desk", channel: "desk", placeIds: [travelSettings.hotelPlaceId], when: undefined },
+        { id: "web", channel: "web", placeIds: undefined, when: undefined }]);
   });
 
   it("lodges the party in Taj Ganj near the Taj Mahal South Gate, a walk from the Taj Mahal and a ride from the fort", () => {
@@ -80,7 +90,7 @@ describe("India city travel data", () => {
     const home = findTravelHomeRoutes(travel.routes, place.id, travelSettings.hotelPlaceId);
     expect(Math.min(...home.map((route) => route.cost))).toBe(0);
     expect(home.find((route) => route.cost === 0)).toMatchObject({ mode: "walk", minutes: 13 });
-    for (const origin of travel.places.filter((item) => item.id !== place.id)) {
+    for (const origin of mapTravel("agra").places.filter((item) => item.id !== place.id)) {
       const outgoing = travel.routes.filter((route) => route.fromPlaceId === origin.id && route.toPlaceId === place.id);
       const feasible = outgoing.some((route) => home.some((returnRoute) => [0, 1, 2, 3, 4, 5, 6].some((weekday) =>
         planTravelEvent({ currentPlaceId: origin.id, hotelPlaceId: travelSettings.hotelPlaceId, day: 1, minute: DAY_START, weekday, ap: 12, travelBudget: 3_100 },
@@ -102,11 +112,12 @@ describe("India city travel data", () => {
     expect(vehicle(cityId).filter((route) => route.mode === "metro")).toHaveLength({ delhi: 44, agra: 4, jaipur: 0 }[cityId]);
   });
 
-  it.each(cities)("offers a budgeted route between every pair and a return in %s", (cityId) => {
+  it.each(cities)("offers a budgeted route between every pair of the map's places and a return in %s", (cityId) => {
     const { travel, travelSettings } = getCityContent(cityId);
     const hotel = travelSettings.hotelPlaceId;
     expect(travelSettings.lodgingCost).toBe(0);
-    for (const from of travel.places) for (const to of travel.places) {
+    const { places } = mapTravel(cityId);
+    for (const from of places) for (const to of places) {
       const routes = travel.routes.filter((item) => item.fromPlaceId === from.id && item.toPlaceId === to.id);
       expect(routes.length, `${cityId}: ${from.id} → ${to.id}`).toBeGreaterThan(0);
       const snapshot = { currentPlaceId: from.id, hotelPlaceId: hotel, day: 1, minute: DAY_START, ap: 12, travelBudget: budget };
@@ -126,11 +137,12 @@ describe("India city travel data", () => {
     }
   });
 
-  it.each(cities)("can schedule each proposed event from each location in %s", (cityId) => {
+  it.each(cities)("can schedule each map event from each place of the map in %s", (cityId) => {
     const { travel, travelSettings } = getCityContent(cityId);
+    const { places, events } = mapTravel(cityId);
     // This tests travel feasibility separately from story progress requirements.
     // Waiting is in 30-minute steps and the game week is independent of the real clock.
-    for (const origin of travel.places) for (const event of travel.events) {
+    for (const origin of places) for (const event of events) {
       const place = travel.places.find((item) => item.id === event.placeId)!;
       const outgoing = travel.routes.filter((item) => item.fromPlaceId === origin.id && item.toPlaceId === place.id);
       const home = findTravelHomeRoutes(travel.routes, place.id, travelSettings.hotelPlaceId);

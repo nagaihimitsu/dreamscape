@@ -11,7 +11,7 @@ import { eventCity, eventPlace, momentHasScenes, momentSchedule, tripMoment, typ
 import { DAY_START, getGameWeekday, planTravelEvent } from "./travel";
 import type { GameState } from "./game-state-schema";
 import type { Occasion, OccasionPart, OccasionThen, OccasionTrip } from "./occasion-state";
-import { mainPartPayments, mainScene, runningMainPayment, type Payment } from "./reservations";
+import { mainPartPayments, mainScene, runningMainPayment, tourKeepBack, type Payment } from "./reservations";
 import { beginLandmarkGuide, beginLandmarkObservation } from "./tourism";
 import { cheapestOnTimeFare, compareRouteCost, findTravelHomeRoutes } from "./travel-routes";
 import { getUsableRoutes } from "./transport";
@@ -384,9 +384,16 @@ export function thenKeepBack(state: Readonly<GameState>): Payment | undefined {
  * a choice's own tags are applied to `state` first); the main part running now adds its first payment (4.1 step 1).
  */
 export function planThen(state: Readonly<GameState>, then: SceneThen, sceneId: string, spend: Payment = { money: 0, ap: 0 }): ThenPlan {
+  // A running tour (tour stage 2a) goes on from its visit: no then: leaves it. A booked tour starts the morning after its night:
+  // a then: of the hotel's scenes after waking does not run, so the start is never skipped (A20).
+  const tour = state.tour;
+  if (tour?.status === "running") return { ok: false, reason: "epilogue" in then ? "ツアーの途中ではエピローグに進めません。" : "ツアーの途中では移動できません。" };
+  if (tour?.status === "booked" && state.travel.day === tour.bookedDay + 1) return { ok: "still" };
+  // What a booked tour keeps back for its event steps (tourKeepBack) is not spent by the then: either.
+  const kept = tourKeepBack(state);
   const running = runningMainPayment(state);
-  const paying = spend.money + running.money;
-  const payingAp = spend.ap + running.ap;
+  const paying = spend.money + running.money + kept.money;
+  const payingAp = spend.ap + running.ap + kept.ap;
   if ("epilogue" in then) {
     if (!canStartAuthoredEpilogue(state as GameState, state.currentCityId)) return { ok: "still" };
     const epilogue = mainScene({ epilogue: state.currentCityId });

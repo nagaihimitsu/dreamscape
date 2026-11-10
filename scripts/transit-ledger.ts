@@ -1,7 +1,7 @@
 import { isDeepStrictEqual } from "node:util";
 import { z } from "zod";
 import { tourismSourceSchema } from "../src/content/tourism-schemas";
-import type { TravelCatalog, TravelRoute } from "../src/content/travel-schemas";
+import { isTourOnlyPlace, type TravelCatalog, type TravelRoute } from "../src/content/travel-schemas";
 import { WALK_MODE_ID } from "../src/content/transport-schemas";
 import { japaneseText as japanese } from "../src/content/text-language";
 import { SAMPLE_SOURCE_URL } from "./sample-journey";
@@ -92,7 +92,9 @@ export function inspectCityTransit(travel: TravelCatalog, raw: unknown, modes: r
   if (ledger.cityId !== travel.cityId) throw fail(`台帳の都市 ${ledger.cityId} が経路の都市 ${travel.cityId} と違います`, "Transit city mismatch");
   const declared = new Set(modes);
   if (declared.has(WALK_MODE_ID)) throw new Error("Walking is not a transit ledger mode");
-  const places = new Set(travel.places.map((place) => place.id));
+  // A tour-only place (tour stage 2a) has no route but its same-place walk, so it has no direction to decide either.
+  const tourOnly = new Set(travel.places.filter((place) => isTourOnlyPlace(place)).map((place) => place.id));
+  const places = new Set(travel.places.filter((place) => !tourOnly.has(place.id)).map((place) => place.id));
   const routes = new Set(travel.routes.map((route) => pairKey(route.fromPlaceId, route.toPlaceId, route.mode)));
   const walks = new Set(travel.routes.filter((route) => route.mode === WALK_MODE_ID).map((route) => `${route.fromPlaceId} → ${route.toPlaceId}`));
   const decided = new Set<string>();
@@ -101,6 +103,8 @@ export function inspectCityTransit(travel: TravelCatalog, raw: unknown, modes: r
     const key = pairKey(decision.fromPlaceId, decision.toPlaceId, decision.mode);
     if (!declared.has(decision.mode))
       throw fail(`宣言されていない乗り物の判断があります: ${key}`, `Decision for an undeclared mode: ${key}`);
+    if (tourOnly.has(decision.fromPlaceId) || tourOnly.has(decision.toPlaceId))
+      throw fail(`ツアー専用の地点の判断は台帳に書きません: ${key}`, `Transit decision for a tour-only place: ${key}`);
     if (!places.has(decision.fromPlaceId) || !places.has(decision.toPlaceId) || decision.fromPlaceId === decision.toPlaceId || decided.has(key))
       throw fail(`判断の地点が不明・同じ地点・重複です: ${key}`, `Invalid or duplicate transit direction: ${key}`);
     if (decision.sourceRefs.some((ref) => !Object.hasOwn(ledger.sourceRefs, ref)))

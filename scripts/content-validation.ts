@@ -27,7 +27,7 @@ import { transitLedgerSchema } from "./transit-ledger";
 import type { z } from "zod";
 import { headEntryRule, HEAD_TAGS, readEncounterHead, type EncounterHead } from "./encounter-head";
 import { checkConditions, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, mapConditionOwners, type ConditionContent, type ConditionOwner } from "./condition-validation";
-import { progressionErrors, progressionWarnings, sceneItemsOf, type ProgressionContent } from "./progression-check";
+import { mainPaymentsOf, progressionErrors, progressionWarnings, sceneItemsOf, tourProgression, type ProgressionContent } from "./progression-check";
 import { FULL_COND_WALK, parseSceneConditions, readSceneConditions } from "./scene-conditions";
 import type { Condition } from "../src/content/condition-schemas";
 import { validateBackgroundAssets, validateCharacters } from "./presentation-validation";
@@ -64,8 +64,10 @@ import {
 import { landmarkOrderError, landmarkParts, tourismCatalogSchema, type VisitPart } from "../src/content/tourism-schemas";
 import type { SceneOption } from "../src/content/scene-schemas";
 import { validateTourism } from "./tourism-validation";
-import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
+import { isTourOnlyPlace, travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { validateTravelContent } from "./travel-validation";
+import { tourSchema } from "../src/content/tour-schemas";
+import { parseTourFiles, validateTours } from "./tour-validation";
 import { checkCityRentals, checkCityTransit, checkRouteModes, checkTransportModeCount, cityTransitWarnings, transportSummary } from "./transport-validation";
 import type { CityTransitReview } from "./transit-ledger";
 import { getAllRewardRules, journeySchema } from "../src/content/journey-schemas";
@@ -1127,6 +1129,9 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     }
   }
   unique(productionQuestionIds, "production quiz question ID");
+  // Tours (tour design stage 2a): their shape here; their rules against the cities below (validateTours).
+  const tourFiles = parseTourFiles(sources);
+  for (const { file, tour } of tourFiles) languageNotes.push(...dataLanguageWarnings(tourSchema, tour, displayPath(root, file)));
   let battleScenarios = 0;
   for (const battle of battles) {
     const quiz = quizzes[battle.quizId];
@@ -1335,14 +1340,30 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     ...Object.entries(storyStateCatalog.conditions).map(([name, condition]) => ({ label: `the named condition ${name}`, cityId: "", conditions: [{ field: name, condition }] }))];
   // The map conditions of episodes and special battles (stage 2b): read like the others, in their city.
   const mapOwners = mapConditionOwners(conditionContent, journey);
-  checkConditions(conditionContent, [...conditionOwners, ...sceneConditionOwners, ...mapOwners]);
+  // The tours' and their offers' conditions (tour stage 2a), read in the tour's city.
+  const tourOwners: ConditionOwner[] = tourFiles.map(({ tour }) => ({ label: `the tour ${tour.id}`, cityId: tour.cityId, conditions: [
+    ...(tour.when ? [{ field: "when", condition: tour.when }] : []),
+    ...tour.offers.flatMap((offer) => offer.when ? [{ field: `offers.${offer.id}.when`, condition: offer.when }] : [])] }))
+    .filter((owner) => owner.conditions.length);
+  checkConditions(conditionContent, [...conditionOwners, ...sceneConditionOwners, ...mapOwners, ...tourOwners]);
   const conditionNotes: ContentWarning[] = [...conditionWarnings(conditionContent, runtimeEntryRules, [...sceneConditionOwners, ...mapOwners]), ...sceneConditionNotes];
+  // The tours against their cities (tour stage 2a; tour-validation.ts): before the progression check, which reads them.
+  const tourNotes = validateTours({ root, tours: tourFiles,
+    cities: travels.map(({ city: current, travel, settings }) => ({ id: current.id, travel, hotelPlaceId: settings.hotelPlaceId,
+      journeyId: journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id))?.id,
+      prototype: current.productionStatus === "prototype" })),
+    episodes: journey.episodes, storyBattleIds: journey.storyBattles.map((battle) => battle.battleId), battles,
+    publishedJourneyIds: new Set(journeyCatalog.journeys.filter((item) => item.status === "available" && item.id !== SAMPLE_JOURNEY_ID).map((item) => item.id)),
+    scenes: generatedScenes.scenes });
+  // What each main event's parts pay when first finished (their # on_done: money -X), for the money warning (unified design 3.3).
+  const mainPayments = mainPaymentsOf(generatedScenes.scenes, { episodes: journey.episodes, storyBattles: journey.storyBattles, battles });
   // Check 9 (stage 2b): every city has a way to clear it; its warnings name probable dead ends (progression-check.ts).
   const progressionContent: ProgressionContent = {
     journeys: journeyCatalog.journeys, episodes: journey.episodes, storyBattles: journey.storyBattles, battles, landmarks: tourism.landmarks,
     encounters: runtimeEncounters, items: encounterCatalog.items, dates, rewards: getAllRewardRules(journey, generatedScenes.rewards), romance: progression,
     travel: travels.map(({ city: current, travel, settings }) => ({ cityId: current.id, hotelPlaceId: settings.hotelPlaceId, initialBudget: settings.initialBudget,
-      events: travel.events, routes: travel.routes })),
+      events: travel.events, routes: travel.routes, tourOnlyPlaceIds: travel.places.filter((place) => isTourOnlyPlace(place)).map((place) => place.id) })),
+    tours: tourFiles.map(({ tour }) => tourProgression(tour)), mainPayments,
     // The scenes whose then: epilogue starts their city's epilogue (3.9 (d)): at their visits, or a battle's head.
     epilogueStarters: generatedScenes.scenes.filter((scene) => (scene.then && "epilogue" in scene.then) ||
       scene.options.some((option) => option.then && "epilogue" in option.then)).map((scene) => {
@@ -1529,6 +1550,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     effects,
     battles,
     quizzes,
+    /** Every journey's tours (generated/tours.json; tour design stage 2a). */
+    tours: tourFiles.map((item) => item.tour),
     battleScenarios,
     reasoningBattles: battles.filter((battle) => battle.reasoning).length,
     tourism,
@@ -1556,7 +1579,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     /** The scene list and the tags' AP rules (generated/scenes.json). */
     scenes: generatedScenes,
     /** Probable mistakes that do not stop the build (content-report.ts). */
-    warnings: [...contentWarnings(sources), ...transitWarnings, ...conditionNotes, ...languageNotes, ...sceneNotes],
+    warnings: [...contentWarnings(sources), ...transitWarnings, ...conditionNotes, ...languageNotes, ...sceneNotes, ...tourNotes],
     /** What each journey folder provides, for the build report. */
     journeyContents: journeyContents(sources),
     /** Each journey's in-city transport (modes and transit ledger counts), for the build report. */

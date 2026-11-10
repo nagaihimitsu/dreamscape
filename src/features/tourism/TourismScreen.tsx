@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { tourSceneBadge } from "../../domain/tour";
 import {
   landmarks,
   tourismAssets,
@@ -163,7 +164,7 @@ export function TourismScreen({
       data-testid="tourism-screen"
       {...sceneTap.props}
     >
-      {active.phase === "guide" && <SceneLabelLine label={landmark.nameJa}>
+      {active.phase === "guide" && <SceneLabelLine label={landmark.nameJa} badge={tourSceneBadge(game)}>
         <SceneCreditButton onClick={() => setCreditsOpen(true)} />
         <SceneNotebookTab onClick={onNotebook} />
       </SceneLabelLine>}

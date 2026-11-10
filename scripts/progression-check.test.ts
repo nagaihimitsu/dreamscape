@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import type { Condition } from "../src/content/condition-schemas";
-import { canStillClearCity, moneyShortNow, progressionErrors, progressionWarnings, sceneItemsOf, startSnapshot, type ProgressionContent, type ProgressionSnapshot } from "./progression-check";
+import {
+  canStillClearCity, moneyShortNow, progressionErrors, progressionWarnings, requiredCitySpend, sceneItemsOf, startSnapshot, tourProgression,
+  type ProgressionContent, type ProgressionSnapshot,
+} from "./progression-check";
 
 // The progression check (unified event design stage 2b, 3.3 check 9 and its warnings) on small
 // fictional content: one city, "town", with three landmark battles (a, b, c), a finale and one date.
@@ -284,5 +287,51 @@ describe("check 9 and items carried through the journey (the item design §2.5 7
       { sceneId: "a_arrival", cityId: "old", gives: ["memo"], spends: [], main: { arrival: "old" } },
       { sceneId: "talk", cityId: "old", gives: [], spends: ["memo", "letter"], at: [{ finale: "old" }] },
     ]);
+  });
+});
+
+describe("check 10: an event at a tour-only place (tour stage 2a)", () => {
+  // ep_a's place "pa" is reached only on a tour; the finale needs ep_a.
+  const toured = (tours: NonNullable<ProgressionContent["tours"]>, extra: Partial<ProgressionContent> = {}) => {
+    const base = town({ requiredEpisodeIds: ["ep_a"] }, extra);
+    return { ...base, travel: base.travel.map((item) => ({ ...item, tourOnlyPlaceIds: ["pa"] })), tours };
+  };
+  const tour = (offers: { when?: Condition; price: number }[], when?: Condition) =>
+    ({ id: "tr_a", cityId: "town", ...(when ? { when } : {}), offers, eventIds: ["ep_a"] });
+
+  it("stops a city whose required tour-only event no tour reaches, and passes one a tour reaches", () => {
+    expect(progressionErrors(toured([]))[0]).toMatch(/^No way to clear city town: .*never shown on the map: ep_a/);
+    expect(progressionErrors(toured([tour([{ price: 50 }])]))).toEqual([]);
+    // Another city's tour does not count.
+    expect(progressionErrors(toured([{ ...tour([{ price: 50 }]), cityId: "elsewhere" }]))).toHaveLength(1);
+  });
+
+  it("reads the tour's and its offers' conditions: one offer that can come is enough", () => {
+    const never: Condition = { battlePlayed: "bt_none" };
+    expect(progressionErrors(toured([tour([{ price: 50, when: never }])]))).toHaveLength(1);
+    expect(progressionErrors(toured([tour([{ price: 50, when: never }, { price: 80, when: { battlePlayed: "bt_b" } }])]))).toEqual([]);
+    expect(progressionErrors(toured([tour([{ price: 50 }], never)]))).toHaveLength(1);
+    // A tour whose other event step can never show does not reach this one either.
+    const both = { ...tour([{ price: 50 }]), eventIds: ["ep_a", "bt_b"] };
+    expect(progressionErrors(toured([both]))).toEqual([]);
+    expect(progressionErrors(toured([both], { storyBattles: [{ battleId: "bt_b", requiredEpisodeIds: [], when: never }, { battleId: "bt_c", requiredEpisodeIds: [] }] })))
+      .toHaveLength(1);
+  });
+
+  it("counts a tour-only event at its tour's cheapest offer without a condition, and the main parts' payments", () => {
+    // ep_a by the map: 20 + 20 + 10 (fares and admission); the finale and the special battles have no fare or admission here.
+    expect(requiredCitySpend(town({ requiredEpisodeIds: ["ep_a"] }), "town")).toEqual({ eventIds: ["fin", "ep_a", "bt_b", "bt_c"], money: 50 });
+    expect(requiredCitySpend(toured([tour([{ price: 300 }, { price: 200, when: { battlePlayed: "bt_b" } }, { price: 250 }])]), "town").money).toBe(250);
+    expect(requiredCitySpend(toured([tour([{ price: 200, when: { battlePlayed: "bt_b" } }])]), "town").money).toBe(200);
+    expect(requiredCitySpend(toured([tour([{ price: 250 }])], { mainPayments: { ep_a: 30, fin: 5 } }), "town").money).toBe(285);
+    // The money warning reads the same: a budget of 120 does not cover a 250 tour.
+    expect(kinds(toured([tour([{ price: 250 }])]))).toContain("money-shortfall");
+    expect(kinds(toured([tour([{ price: 60 }])]))).not.toContain("money-shortfall");
+  });
+
+  it("reads a tour file's shape: its event steps' events in order", () => {
+    expect(tourProgression({ id: "tr", cityId: "town", offers: [{ price: 1, when: { battlePlayed: "bt_b" } }],
+      steps: [{ kind: "leg" }, { kind: "event", eventId: "ep_a" }, { kind: "leg" }, { kind: "event", eventId: "bt_c" }] }))
+      .toEqual({ id: "tr", cityId: "town", offers: [{ price: 1, when: { battlePlayed: "bt_b" } }], eventIds: ["ep_a", "bt_c"] });
   });
 });

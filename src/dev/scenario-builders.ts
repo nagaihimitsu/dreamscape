@@ -12,7 +12,9 @@
  * relationship.
  * Never imported by production code (scripts/dist-guard.ts checks the build).
  */
-import { balance, battles, dates, episodes, getCities, getCityContent, landmarks, type QuizQuestion } from "../content";
+import { balance, battles, dates, episodes, getCities, getCityContent, getCityTours, getTour, landmarks, type QuizQuestion, type Tour } from "../content";
+import { isTourOnlyPlace } from "../content/travel-schemas";
+import { bookTour as bookTourOffer, continueTour, getTourOffers } from "../domain/tour";
 import { encounters } from "../content/encounters";
 import { getJourneyForCity } from "../content/journeys";
 import { advanceBattle, answerBattle, battleChoiceDisplay, battleDialogueStop, chooseBattle, getActiveBattleContent, selectReasoningClue, startBattle, submitBattleEvidence } from "../domain/battle";
@@ -51,7 +53,7 @@ const epilogueStep = (current: GameState) => {
   const choice = firstEpilogueChoice(current);
   return choice ? chooseCityEpilogue(current, choice.index, current.revision) : advanceCityEpilogue(current, current.revision);
 };
-import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability } from "../domain/travel-game";
+import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, getTravelSleepOptions, sleepAtHotel } from "../domain/travel-game";
 import { getTransportModes, WALK_MODE_ID } from "../content/transport";
 import { minimumHomeFare } from "../domain/travel-routes";
 import { getUsableRoutes } from "../domain/transport";
@@ -88,11 +90,14 @@ export const rollTickets = { positive: 0, negative: 9999 } as const;
 
 const MAX_STEPS = 400;
 
-/** One player action: it must change the state; a finished map event is settled as GameApp settles it. */
+/**
+ * One player action: it must change the state; a finished map event is settled and a booked or running tour goes on (tour stage
+ * 2a) as GameApp's commit does (applyPlayerAction), with the reaction ticket 0.
+ */
 function act(state: GameState, change: (current: GameState) => GameState, what: string, options: PlayOptions = {}): GameState {
   const changed = change(state);
   if (changed === state) throw new Error(`${what}: この操作では状態が変わりませんでした。`);
-  const settled = finishTravelEventIfComplete(state, changed);
+  const settled = continueTour(finishTravelEventIfComplete(state, changed), () => rollTickets.positive);
   return options.after ? options.after(settled, state) : settled;
 }
 
@@ -173,6 +178,12 @@ export function playCityToFinaleResult(initial: GameState, options: CityPlayOpti
     const special = getNextStoryBattle(state);
     const episode = special ? null : getNextEpisode(state);
     if (!special && !episode) throw new Error(`${cityId} に次の対決がありません。`);
+    // A battle at a tour-only place is played on its tour, as in play (tour stage 2a): booked, the night, the visit, the way back.
+    const tour = tourOf(state, special?.battleId ?? episode!.id);
+    if (tour) {
+      state = playTour(state, tour.id, options);
+      continue;
+    }
     state = special
       ? playBattleToResult(act(state, (current) => startBattle(current, special.battleId), `特殊戦 ${special.battleId} を始める`, options), options)
       : playEpisodeToResult(state, episode!.id, options);
@@ -301,6 +312,11 @@ export function cityMidway(cityId: string, options: CityPlayOptions & { names?: 
     const special = getNextStoryBattle(state);
     const episode = special ? null : getNextEpisode(state);
     if (!episode && !special) throw new Error(`${cityId} の途中まで進められませんでした。`);
+    const tour = tourOf(state, special?.battleId ?? episode!.id);
+    if (tour) {
+      state = playTour(state, tour.id, options);
+      continue;
+    }
     const result = special
       ? playBattleToResult(act(state, (current) => startBattle(current, special.battleId), `特殊戦 ${special.battleId} を始める`, options), options)
       : playEpisodeToResult(state, episode!.id, options);
@@ -312,6 +328,99 @@ export function cityMidway(cityId: string, options: CityPlayOptions & { names?: 
 /** The city cleared and its finale result left: free time after the clear. */
 export function completedCity(cityId: string, options: CityPlayOptions & { names?: Names } = {}): GameState {
   return clearCity(cityStart(cityId, options.names), options);
+}
+
+/** The tour of the current city whose event step opens a map event at a tour-only place (tour stage 2a), if the event is one. */
+function tourOf(state: GameState, eventId: string): Tour | undefined {
+  const { travel } = getCityContent(state.currentCityId);
+  const event = travel.events.find((item) => item.id === eventId);
+  if (!event || !isTourOnlyPlace(travel.places.find((place) => place.id === event.placeId))) return undefined;
+  const tour = getCityTours(state.currentCityId).find((item) => item.steps.some((step) => step.kind === "event" && step.eventId === eventId));
+  if (!tour) throw new Error(`${eventId} はツアー専用の地点の出来事ですが、それを開くツアーがありません。`);
+  return tour;
+}
+
+/**
+ * Book a tour of the current city (tour stage 2a): through `offerId`, or the first offer that can be booked here (a desk's place
+ * first: the party is placed at the desk's place when it is elsewhere, as Debug places it; else the website).
+ */
+export function bookTour(state: GameState, tourId: string, offerId?: string): GameState {
+  const tour = getTour(tourId);
+  if (!tour || tour.cityId !== state.currentCityId) throw new Error(`ツアー「${tourId}」はこの都市のツアーではありません。`);
+  const choose = (current: GameState) => getTourOffers(current).find((choice) => choice.tour.id === tourId && choice.available && (!offerId || choice.offer.id === offerId));
+  let current = state;
+  let choice = choose(current);
+  const desk = tour.offers.find((offer) => (offerId ? offer.id === offerId : offer.channel === "desk") && offer.placeIds?.length);
+  if (desk && (!choice || (!offerId && choice.offer.channel !== "desk"))) {
+    const placed = atPlace(current, desk.placeIds![0]);
+    if (choose(placed)) { current = placed; choice = choose(placed); }
+  }
+  if (!choice) {
+    const reason = getTourOffers(state).find((item) => item.tour.id === tourId)?.reason;
+    throw new Error(`この進行状態ではツアー「${tour.titleJa}」を予約できません。${reason ?? "見学先をもう訪ねたか、まだ開いていないか、ほかのツアーを予約しています。旅の進行を「旅の開始時」にしてください。"}`);
+  }
+  const offer = choice.offer;
+  return validateGameState(act(current, (s) => bookTourOffer(s, tourId, offer.id, s.revision), `ツアー ${tourId} を予約する`));
+}
+
+/** Rest at the hotel by the first way home that can be taken (the night; a booked tour starts the next morning). */
+function restAtHotel(state: GameState, options: PlayOptions = {}): GameState {
+  const sleep = getTravelSleepOptions(state).find((option) => option.plan.ok);
+  if (!sleep) throw new Error("宿へ帰って休めません。");
+  return act(state, (current) => sleepAtHotel(current, sleep.route.mode, current.revision, sleep.route.viaPlaceId ?? null, () => rollTickets.positive), "休む", options);
+}
+
+/**
+ * Play a running tour's current event step (its visit) like a player: the guide (read or skipped by `options.guide`), the
+ * observation's 「進む」, the scenes with their first choices, the battle to its result (`options.onResult` there) and 「ツアーを続ける」.
+ * Stops when the tour has moved past the step (its next step's visit, or its end).
+ */
+function playTourStep(initial: GameState, options: CityPlayOptions = {}): GameState {
+  let state = initial;
+  const step = state.tour?.status === "running" ? state.tour.step : -1;
+  for (let count = 0; state.tour?.status === "running" && state.tour.step === step; count++) {
+    if (count > MAX_STEPS) throw new Error("ツアーの見学を終えられませんでした。");
+    if (state.activeBattle?.phase === "result") {
+      options.onResult?.(state);
+      state = act(state, (current) => leaveBattleToFreeTime(current, current.revision, () => rollTickets.positive), "ツアーを続ける", options);
+    } else if (state.activeBattle) state = playBattleToResult(state, options);
+    else if (state.activeTourism?.phase === "guide") state = options.guide === "read" ? readGuide(state, options) : act(state, guideSkip, "観光案内を飛ばす", options);
+    else state = playOccasionStep(state, rollTickets.positive);
+  }
+  return state;
+}
+
+/** Play a tour of the current city through (tour stage 2a): booked if it is not, the night, every event step's visit, the way back. */
+export function playTour(initial: GameState, tourId: string, options: CityPlayOptions = {}): GameState {
+  let state = initial.tour?.tourId === tourId ? initial : bookTour(initial, tourId);
+  if (state.tour?.status === "booked") state = settleScenes(restAtHotel(state, options), 0);
+  for (let count = 0; state.tour?.status === "running"; count++) {
+    if (count > 20) throw new Error(`ツアー ${tourId} を終えられませんでした。`);
+    state = playTourStep(state, options);
+  }
+  if (!state.completedTourIds.includes(tourId)) throw new Error(`ツアー ${tourId} を最後まで終えられませんでした。`);
+  return validateGameState(state);
+}
+
+/**
+ * Debug's tour scene (scene=tour): the tour booked at the start of its city; with `stepId` (an event step's ID), its morning
+ * played until that step's visit opens (the visits of earlier event steps played through).
+ */
+export function tourScene(state: GameState, tourId: string, stepId?: string): GameState {
+  const tour = getTour(tourId);
+  if (!tour) throw new Error(`ツアー「${tourId}」はありません。`);
+  const step = stepId === undefined ? undefined : tour.steps.findIndex((item) => item.id === stepId);
+  if (step !== undefined && (step < 0 || tour.steps[step].kind !== "event"))
+    throw new Error(`「${stepId}」は${tour.titleJa}の見学の行程ではありません（行程：${tour.steps.filter((item) => item.kind === "event").map((item) => item.id).join("、")}）。`);
+  let current = bookTour(state, tourId);
+  if (step === undefined) return current;
+  current = settleScenes(restAtHotel(current), 0);
+  for (let count = 0; current.tour?.status === "running" && current.tour.step < step; count++) {
+    if (count > 20) throw new Error(`ツアー ${tourId} の行程 ${stepId} まで進められませんでした。`);
+    current = playTourStep(current);
+  }
+  if (current.tour?.status !== "running" || current.tour.step !== step) throw new Error(`ツアー ${tourId} の行程 ${stepId} まで進められませんでした。`);
+  return validateGameState(current);
 }
 
 /** Debug's AP value: the whole balance (pending credits would otherwise be paid when a date starts), within the cap. */
@@ -327,7 +436,9 @@ export function withRelationship(state: GameState, values: Pick<GameState, "affe
 /** Put the player at a place of the current city (Debug's placement), keeping a payable way back to the hotel. */
 function atPlace(state: GameState, placeId: string): GameState {
   const { travel } = getCityContent(state.currentCityId);
-  if (!travel.places.some((place) => place.id === placeId)) throw new Error("この街に場面の地点が見つかりません。");
+  const place = travel.places.find((item) => item.id === placeId);
+  if (!place) throw new Error("この街に場面の地点が見つかりません。");
+  if (isTourOnlyPlace(place)) throw new Error("ツアー専用の地点です。ツアーの場面（scene=tour）から開けます。");
   const returnReserve = minimumHomeFare(getUsableRoutes(state), placeId, state.travel.hotelPlaceId, state.travel.minute);
   if (returnReserve === undefined || returnReserve > state.travelBudget)
     throw new Error("この地点から滞在先への帰路を確認できません。");

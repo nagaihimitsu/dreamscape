@@ -1,4 +1,4 @@
-import { mainPartPayments } from "./reservations";
+import { mainPartPayments, tourKeepBack } from "./reservations";
 import { battles, dates, episodes, getCityContent } from "../content";
 import { getBattleAvailability, startBattle } from "./battle";
 import { getEpisodeAvailability, isEpisodeUnlocked, isStoryBattleUnlocked } from "./chapter";
@@ -17,8 +17,13 @@ export type TravelMode = TravelRoute["mode"];
 type Plan = Extract<ReturnType<typeof planTravelEvent>, { ok: true }> & { returnReserve: number };
 export type TravelAvailability = { available: boolean; reason: string; plan?: Plan };
 
+/**
+ * The travel plan's view of the state: what a booked tour keeps back for its event steps (tour stage 2a; tourKeepBack) is not spent
+ * on fares, admissions, the night or a date's AP, so the plans' remaining budget leaves it out (the callers add it back).
+ */
 function snapshot(state: GameState) {
-  return { ...state.travel, weekday: getGameWeekday(state.travel.calendar), ap: state.ap, travelBudget: state.travelBudget };
+  const kept = tourKeepBack(state);
+  return { ...state.travel, weekday: getGameWeekday(state.travel.calendar), ap: state.ap - kept.ap, travelBudget: state.travelBudget - kept.money };
 }
 function route(state: GameState, from: string, to: string, mode: TravelMode) {
   return getCityContent(state.currentCityId).travel.routes.find((item) => item.fromPlaceId === from && item.toPlaceId === to && item.mode === mode);
@@ -124,7 +129,7 @@ export function getTravelEventAvailability(state: GameState, eventId: string, mo
   // The main parts' payments (their # on_done: money -X, ap -N; stage 3a) are checked now and kept back during the trip.
   const payments = mainPartPayments(state, eventId);
   const dateAp = dates.find((item) => item.id === eventId)?.apCost ?? 0;
-  if (payments.ap && state.ap - dateAp < payments.ap) return { available: false, reason: reasonJa.ap };
+  if (payments.ap && state.ap - tourKeepBack(state).ap - dateAp < payments.ap) return { available: false, reason: reasonJa.ap };
   for (const returnRoute of returns) {
     const plan = planTravelEvent(snapshot(state), event, outbound, returnRoute, place);
     if (plan.ok && plan.remainingBudget - returnRoute.cost < payments.money) { reason = reasonJa.budget; continue; }
@@ -148,7 +153,7 @@ export function beginTravelEvent(state: GameState, eventId: string, mode: Travel
   // The trip's and the ticket counter's scenes (stage 4) run first when any runs there: the trip's at the place it
   // leaves, so the party moves after them (the occasion's "move" part); fare and admission are paid now either way.
   const prefix = replayBattleId ? {} : eventPrefix(state, eventId, { from: state.travel.currentPlaceId, to: event.placeId, modeId: mode, arrivalMinute: availability.plan.arrivalMinute });
-  const moved = { ...state, travelBudget: availability.plan.remainingBudget,
+  const moved = { ...state, travelBudget: availability.plan.remainingBudget + tourKeepBack(state).money,
     travel: { ...state.travel, returnReserve: availability.plan.returnReserve, returnDeadline: DAY_END,
       ...(prefix.trip ? {} : { currentPlaceId: event.placeId, minute: availability.plan.arrivalMinute, rideCounts: rides }) } };
   const episode = episodes.find((item) => item.id === eventId);
@@ -196,7 +201,7 @@ export function waitForTravel(state: GameState, minutes: number, expectedRevisio
   if (state.revision !== expectedRevision || hasActiveScene(state) ||
       !Number.isSafeInteger(minutes) || minutes <= 0 || state.travel.minute + minutes > DAY_END) return state;
   const home = getTravelHomeRoutes(state, state.travel.currentPlaceId)
-    .filter((item) => item.cost <= state.travelBudget && state.travel.minute + minutes + item.minutes <= DAY_END)
+    .filter((item) => item.cost <= state.travelBudget - tourKeepBack(state).money && state.travel.minute + minutes + item.minutes <= DAY_END)
     .sort(compareRouteCost)[0];
   if (!home) return state;
   return { ...state, revision: state.revision + 1, travel: { ...state.travel, minute: state.travel.minute + minutes, returnReserve: home.cost, returnDeadline: DAY_END } };
@@ -212,10 +217,11 @@ export function sleepAtHotel(state: GameState, mode: TravelMode, expectedRevisio
   if (!plan || !plan.ok) return state;
   if (state.travel.calendar && !Number.isSafeInteger(state.travel.calendar.journeyDay + 1)) return state;
   // The hotel's moment (stage 4) when scenes run there or on the way: paid now, the night comes after its scenes.
-  const paid: GameState = { ...state, revision: state.revision + 1, travelBudget: plan.remainingBudget, travel: { ...state.travel, returnReserve: 0, returnDeadline: DAY_END } };
+  const budget = plan.remainingBudget + tourKeepBack(state).money;
+  const paid: GameState = { ...state, revision: state.revision + 1, travelBudget: budget, travel: { ...state.travel, returnReserve: 0, returnDeadline: DAY_END } };
   const hotel = openHotel(paid, { from: state.travel.currentPlaceId, to: state.travel.hotelPlaceId, modeId: mode, arrivalMinute: plan.arrivalMinute }, nextRoll);
   if (hotel) return hotel;
-  return { ...state, revision: state.revision + 1, travelBudget: plan.remainingBudget,
+  return { ...state, revision: state.revision + 1, travelBudget: budget,
     travel: { ...state.travel, currentPlaceId: state.travel.hotelPlaceId, day: plan.nextDay, minute: plan.nextMinute, returnReserve: 0, returnDeadline: DAY_END,
       ...(state.travel.calendar ? { calendar: { ...state.travel.calendar, journeyDay: state.travel.calendar.journeyDay + 1 } } : {}) } };
 }

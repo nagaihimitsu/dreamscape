@@ -12,7 +12,7 @@ import { battleRewardReceiptSchema, pendingApRewardSchema } from "./rewards";
 import { activeBattleSchema, battleRecordSchema } from "./battle";
 
 /** The only saved game format this build reads; older versions are not migrated. */
-export const GAME_STATE_VERSION = 17;
+export const GAME_STATE_VERSION = 18;
 
 const uniqueStrings = z
   .array(z.string().min(1))
@@ -97,6 +97,17 @@ const travelStateSchema = z.object({
     context.addIssue({ code: "custom", message: "Travel day and journey calendar disagree", path: ["calendar"] });
 });
 
+const tourBase = {
+  tourId: stableContentId,
+  offerId: stableContentId,
+  pricePaid: z.number().int().nonnegative().safe(),
+  bookedDay: z.number().int().positive().safe(),
+};
+const tourRecordSchema = z.discriminatedUnion("status", [
+  z.object({ status: z.literal("booked"), ...tourBase }).strict(),
+  z.object({ status: z.literal("running"), ...tourBase, contentHash: z.string().min(1), step: z.number().int().nonnegative().safe() }).strict(),
+]);
+
 export const gameStateSchema = z.object({
   schemaVersion: z.literal(GAME_STATE_VERSION),
   revision: z.number().int().nonnegative(),
@@ -148,10 +159,10 @@ export const gameStateSchema = z.object({
   activeEncounter: activeEncounterSchema.nullable(),
   // The moment record (stage 3b): the visit, finale or date running now, with its main group and position.
   occasion: occasionSchema.nullable(),
-  // The tour system's records (tour design §5.3): the tour booked or running, and the tours finished in this journey.
-  // No tour exists yet, so only the empty values load; stage 2a widens both without a new save version.
-  tour: z.null(),
-  completedTourIds: z.array(stableContentId).max(0),
+  // The tour system's records (tour stage 2a, save v18; src/domain/tour.ts): the tour booked or running (its offer and the price
+  // paid; running: the fingerprint of its steps and the event step it is at), and the tours finished in this journey.
+  tour: tourRecordSchema.nullable(),
+  completedTourIds: z.array(stableContentId).refine((items) => new Set(items).size === items.length),
   currentCityId: stableContentId,
   travel: travelStateSchema,
 }).strict();
