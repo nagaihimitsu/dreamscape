@@ -29,6 +29,11 @@ export function sceneConditionReader(state: Readonly<GameState>): ConditionReade
 export function activeSceneStoryId(state: Readonly<GameState>): string | null {
   if (state.activeEncounter) return state.activeEncounter.storyId;
   const epilogue = state.activeEpilogue;
+  if (epilogue?.kind === "tour_leg") {
+    // A tour leg's narration (tour stage 2b): its scene's knot.
+    const scene = scenes.find((item) => item.id === epilogue.episodeId);
+    return scene?.story.knot ? `${scene.story.storyId}.${scene.story.knot}` : null;
+  }
   if (epilogue) {
     const episode = episodes.find((item) => item.id === epilogue.episodeId);
     return (epilogue.kind === "arrival" ? episode && getCityContent(episode.cityId).city.arrivalStoryId : episode?.epilogueStoryId) ?? null;

@@ -7,7 +7,7 @@ import { WALK_MODE_ID } from "../content/transport";
  * The moments of the unified event design that are not a landmark's visit (stage 4, 2.3): the
  * place a date or a finale opens at, the city's epilogue, its departure and an arrival, the
  * hotel's night, a trip by a mode (at the place it leaves) and the ticket counter of an
- * admission. Which inserted scenes run at a moment and in what order (2.4, 2.5): the negative
+ * admission; a step of a running tour (tour stages 2b, 3). Which inserted scenes run at a moment and in what order (2.4, 2.5): the negative
  * priorities before the main part, `after <part>` right after it, the positive ones after the
  * main group; the same priority in written order within a place file, then by file name. Pure:
  * reads the scene list content:build wrote. (A landmark's visit keeps encounter.ts's schedule,
@@ -21,7 +21,8 @@ export type Moment =
   | { kind: "arrive"; cityId: string }
   | { kind: "hotel"; cityId: string; placeId: string }
   | { kind: "trip"; cityId: string; modeId: string; from: string; to: string }
-  | { kind: "ticket"; cityId: string; placeId: string };
+  | { kind: "ticket"; cityId: string; placeId: string }
+  | { kind: "tour"; tourId: string; stepId: string };
 
 /** Whether one `# at:` of a scene (of `sceneCityId`) names the moment. */
 export function atMatches(at: SceneAt, moment: Moment, sceneCityId: string): boolean {
@@ -35,6 +36,7 @@ export function atMatches(at: SceneAt, moment: Moment, sceneCityId: string): boo
     case "trip": return "trip" in at && sceneCityId === moment.cityId && at.trip === moment.modeId &&
       (!at.from || at.from === moment.from) && (!at.to || at.to === moment.to);
     case "ticket": return "ticket" in at && at.ticket === moment.placeId;
+    case "tour": return "tour" in at && at.tour === moment.tourId && at.step === moment.stepId;
   }
 }
 
@@ -44,6 +46,9 @@ export function scenesAt(moment: Moment): SceneEntry[] {
 }
 /** Whether any scene runs at the moment (the game opens a stage-4 occasion only then; else everything goes on as before). */
 export const momentHasScenes = (moment: Moment) => scenesAt(moment).length > 0;
+/** A tour leg's narration (`# scene: tour_leg`; tour stage 2b), if its leg has one (content:build allows one per leg). */
+export const narrationAt = (moment: Extract<Moment, { kind: "tour" }>): SceneEntry | undefined =>
+  scenes.find((scene) => scene.origin === "place" && scene.kind === "tour_leg" && scene.at.some((at) => atMatches(at, moment, scene.cityId)));
 
 const byFile = (left: SceneEntry, right: SceneEntry) => {
   const [a, b] = [storyFileOf(left.story.storyId), storyFileOf(right.story.storyId)];
@@ -73,6 +78,9 @@ export function eventCity(eventId: string | null): string | undefined {
   if (eventId === null) return undefined;
   return dates.find((date) => date.id === eventId)?.chapterId ?? episodes.find((episode) => episode.id === eventId && episode.kind === "city_finale")?.cityId;
 }
+
+/** A running tour's step as a moment (tour stages 2b, 3; the occasion's `tour`). */
+export const tourMoment = (tour: { id: string; step: string }): Extract<Moment, { kind: "tour" }> => ({ kind: "tour", tourId: tour.id, stepId: tour.step });
 
 /** The trip moment of a move (walking is `walk`). */
 export const tripMoment = (cityId: string, modeId: string, from: string, to: string): Moment =>

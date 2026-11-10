@@ -132,9 +132,11 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
       gt_jaipur_finale_after_reel: ["talk", [{ finale: "jaipur" }], 2, "none"],
     });
     // The scenes that state a fact of the place list their sources (B4): https pages, with the date they were checked.
+    // (The Fatehpur Sikri tour's scenes, places/gt_agra_tour_fatehpur_sikri, list theirs in the same file.)
     const catalog = JSON.parse(readFileSync(`${GT}/scenes/catalog.json`, "utf8")) as { scenes: { id: string; sources: { url: string; checkedAt: string; claimType: string }[] }[] };
-    expect(catalog.scenes.map((scene) => scene.id).sort()).toEqual(own.filter((scene) => scene.sources !== "none").map((scene) => scene.id).sort());
-    for (const source of catalog.scenes.flatMap((scene) => scene.sources)) {
+    const listed = catalog.scenes.filter((scene) => !scene.id.startsWith("gt_agra_tour_"));
+    expect(listed.map((scene) => scene.id).sort()).toEqual(own.filter((scene) => scene.sources !== "none").map((scene) => scene.id).sort());
+    for (const source of listed.flatMap((scene) => scene.sources)) {
       expect(source.url).toMatch(/^https:\/\//u);
       expect(source.checkedAt).toMatch(/^2026-11-0[89]$/u);
     }

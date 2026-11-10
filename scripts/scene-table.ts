@@ -40,6 +40,8 @@ export type PlaceTableInput = {
   dateCity?: (dateId: string) => string | undefined;
   /** Whether a city exists (`# at: finale|epilogue|depart|arrive <city>`). */
   cityExists?: (cityId: string) => boolean;
+  /** A tour's step (`# at: tour <tour> <step>`; tour stages 2b, 3): its tour's city and whether it is a leg or an event step. */
+  tourStep?: (tourId: string, stepId: string) => { cityId: string; kind: "leg" | "event" } | undefined;
   /** The file's position among all place files (scenes of one priority: written order, then file name). */
   onWarning?: (message: string) => void;
 };
@@ -64,8 +66,23 @@ export function placeScenes(input: PlaceTableInput): { entry: SceneEntry; head: 
       options.push(option);
     }
     const inserted = INSERTED_KINDS.includes(head.kind);
+    // A tour leg's narration (tour stage 2b): no catalog points at it; its # at: names its leg.
+    const narration = head.kind === "tour_leg";
     const main = input.mains.find((item) => item.address === address);
-    if (inserted) {
+    // `after leg` follows a leg's narration (tour stage 3): a tour's event step has none.
+    for (const moment of head.at) if ("tour" in moment && head.priority === "after leg" && input.tourStep?.(moment.tour, moment.step)?.kind !== "leg")
+      throw new Error(`# priority: after leg needs a leg of the tour: ${label} is at # at: ${momentText(moment)}, which is not a leg (A2)`);
+    if (narration) {
+      const first = head.at[0];
+      const leg = head.at.length === 1 && first && "tour" in first ? first : undefined;
+      if (!leg || input.tourStep?.(leg.tour, leg.step)?.kind !== "leg")
+        throw new Error(`A tour leg's narration names its leg once: # at: tour <tour> <leg> (${label}${head.at.length ? `; # at: ${head.at.map(momentText).join(", ")}` : ""})`);
+      for (const key of ["priority", "repeat", "when", "until", "on_done", "then", "person"] as const) if (knot.head.some((tag) => tag.key === key))
+        throw new Error(`A tour leg's narration takes no # ${key}: (${label}): it is read as its leg starts, with nothing to choose and nothing it does`);
+      if (reached.some((item) => item.choices.length))
+        throw new Error(`A tour leg's narration has no choices (${label}): write the in-car conversation as the leg's encounter (# scene: encounter, # priority: after leg)`);
+      if (main) throw new Error(`The narration ${label} is also the main part ${JSON.stringify(main.main)} of a catalog`);
+    } else if (inserted) {
       if (!head.at.length) throw new Error(`The scene ${label} needs # at: (visit <landmark>, visit any or place <place>; an inserted ${head.kind})`);
       if (head.priority === undefined) throw new Error(`The scene ${label} needs # priority: (-1, after guide, after observe, after battle or +1)`);
       if (main) throw new Error(`The ${head.kind} ${label} is also the main part ${JSON.stringify(main.main)} of a catalog; a catalog points at a guide, battle or date knot`);
@@ -79,7 +96,7 @@ export function placeScenes(input: PlaceTableInput): { entry: SceneEntry; head: 
         throw new Error(`Only a battle's knot takes # when: and only a date's # until: as its map condition (${label})`);
     }
     // An inserted scene's city: its moments' (visit any, bare hotel and a trip without places: the city of the file's other scenes, settled below).
-    const cities = inserted ? [...new Set(head.at.map((moment) => momentCity(input, moment, label)).filter((city): city is string => !!city))] : [main!.cityId];
+    const cities = inserted || narration ? [...new Set(head.at.map((moment) => momentCity(input, moment, label)).filter((city): city is string => !!city))] : [main!.cityId];
     if (cities.length > 1) throw new Error(`The moments of ${label} are in different cities (${cities.join(", ")}); one scene belongs to one city`);
     const cityId = cities[0] ?? "";
     // The helper knots, then the calls of modules.ink (a battle's -> quiz(n) -> and -> reasoning ->, stage 5).
@@ -89,7 +106,7 @@ export function placeScenes(input: PlaceTableInput): { entry: SceneEntry; head: 
     result.push({ head, entry: {
       id: knot.name, kind: head.kind, ...(head.title ? { title: head.title } : main ? { title: main.title } : {}), cityId,
       story: { storyId: file.storyId, knot: knot.name }, ...(main ? { main: main.main } : {}),
-      at: inserted ? head.at : [],
+      at: inserted || narration ? head.at : [],
       ...(inserted ? { priority: head.priority } : {}), order,
       repeat: head.repeat ?? "once", people: head.people, ...(head.when && inserted ? { when: head.when } : {}),
       options, done: head.done, ...(head.then ? { then: head.then } : {}), ...(head.sources ? { sources: head.sources } : {}),
@@ -124,6 +141,7 @@ function momentCity(input: PlaceTableInput, moment: SceneAt, label: string): str
     if (new Set(cities).size > 1) throw new Error(`# at: trip from and to are places of different cities (${label})`);
     return cities[0] ?? null;
   }
+  if ("tour" in moment) return known(input.tourStep?.(moment.tour, moment.step)?.cityId, "tour or tour step");
   const city = "finale" in moment ? moment.finale : "epilogue" in moment ? moment.epilogue : "depart" in moment ? moment.depart : moment.arrive;
   return known(input.cityExists?.(city) ? city : undefined, "city");
 }
@@ -537,7 +555,7 @@ export function momentWarnings(scenes: readonly SceneEntry[], places: MomentPlac
     .map((scene): MomentWarning => ({ kind: "repeat-without-until", message: `Repeated scene without until: ${scene.id} (# repeat: always) has no # until:, ` +
       `so it runs every time ${stageFour(scene).map(momentText).join(", ")} comes` }));
   const afterFinale = (scene: SceneEntry) => (typeof scene.priority === "number" ? scene.priority > 0 : scene.priority === "after battle");
-  const once = (scene: SceneEntry, moment: SceneAt) => "epilogue" in moment || "arrive" in moment || "depart" in moment ||
+  const once = (scene: SceneEntry, moment: SceneAt) => "epilogue" in moment || "arrive" in moment || "depart" in moment || "tour" in moment ||
     (("finale" in moment || ("place" in moment && !places.landmarksAt(moment.place).length && !places.datesAt(moment.place).length && !!places.finaleAt(moment.place))) &&
       afterFinale(scene));
   const later = inserted.flatMap((scene): MomentWarning[] => {
@@ -548,6 +566,40 @@ export function momentWarnings(scenes: readonly SceneEntry[], places: MomentPlac
       : [];
   });
   return [...later, ...same, ...repeated];
+}
+
+/**
+ * The rules of a tour's steps across the place files (tour stages 2b, 3; `# at: tour <tour> <step>`): a leg has at most one narration
+ * (`# scene: tour_leg`) and at most one scene after it (`# priority: after leg`: the in-car encounter, before the leg moves the
+ * party). That scene runs once on the one day of the tour, whose price covers it: it neither spends nor gives money, gives no AP,
+ * offers no 「また今度」 and does not repeat. Returns the errors (content:build stops on them).
+ */
+export function tourMomentErrors(scenes: readonly SceneEntry[]): string[] {
+  const errors: string[] = [];
+  const legs = new Map<string, { narrations: string[]; inCar: string[] }>();
+  for (const scene of scenes) for (const moment of scene.at) {
+    if (!("tour" in moment)) continue;
+    const key = momentText(moment);
+    const leg = legs.get(key) ?? { narrations: [], inCar: [] };
+    legs.set(key, leg);
+    if (scene.kind === "tour_leg") leg.narrations.push(scene.id);
+    if (scene.priority !== "after leg") continue;
+    leg.inCar.push(scene.id);
+    const spends = [...scene.options.filter((option) => option.money !== undefined).map((option) => `the choice ${option.id}'s # money:`),
+      ...(scene.done.money !== undefined ? ["# on_done: money"] : []),
+      ...scene.options.filter((option) => (option.ap ?? 0) > 0).map((option) => `the choice ${option.id}'s # ap: +${option.ap}`),
+      ...((scene.done.ap ?? 0) > 0 ? [`# on_done: ap +${scene.done.ap}`] : []),
+      ...scene.options.filter((option) => option.later).map((option) => `the choice ${option.id}'s # later (「また今度」)`),
+      ...(scene.repeat === "always" ? ["# repeat: always"] : [])];
+    if (spends.length)
+      errors.push(`The in-car encounter ${scene.id} (# at: ${key}, # priority: after leg) takes no ${spends.join(", ")}: it runs once on the tour's day, ` +
+        "whose price covers it (no money, no AP reward, no 「また今度」, no repetition)");
+  }
+  for (const [key, leg] of legs) {
+    if (leg.narrations.length > 1) errors.push(`A tour leg has one narration: ${leg.narrations.join(", ")} are all # scene: tour_leg at # at: ${key}`);
+    if (leg.inCar.length > 1) errors.push(`A tour leg has at most one in-car encounter: ${leg.inCar.join(", ")} are all # priority: after leg at # at: ${key}`);
+  }
+  return errors;
 }
 
 /** The leaves a condition reads (for the stage-3a parts' references). */

@@ -78,6 +78,114 @@
       ]
     },
     {
+      "id": "gt_agra_tour_morning",
+      "sources": [
+        {
+          "publisher": "Wikipedia",
+          "title": "Tomb of Mariam-uz-Zamani",
+          "url": "https://en.wikipedia.org/wiki/Tomb_of_Mariam-uz-Zamani",
+          "checkedAt": "2026-11-08",
+          "claimType": "interpretation",
+          "claimJa": "「ジョーダー・バーイー」という呼び名は、後の時代に広まったものと考えられている。"
+        }
+      ]
+    },
+    {
+      "id": "gt_agra_tour_out_leg",
+      "sources": [
+        {
+          "publisher": "Wikipedia",
+          "title": "Horn OK Please",
+          "url": "https://en.wikipedia.org/wiki/Horn_OK_Please",
+          "checkedAt": "2026-11-10",
+          "claimType": "documented_fact",
+          "claimJa": "「HORN OK PLEASE」は、インドのトラック・バス・タクシーなどの商用車によく描かれている言葉。"
+        },
+        {
+          "publisher": "Atlas Obscura",
+          "title": "The origins of 'Horn OK Please', India's most ubiquitous phrase",
+          "url": "https://atlasobscura.com/articles/the-origins-of-horn-ok-please-indias-most-ubiquitous-phrase",
+          "checkedAt": "2026-11-10",
+          "claimType": "interpretation",
+          "claimJa": "「OK」の由来には、追い越すときの合図、戦時中の灯油の注意書き、洗剤の広告など、いくつもの説があり、どれが本当かは決まっていない。"
+        },
+        {
+          "publisher": "USC Digital Folklore Archives",
+          "title": "The Lemon-Chilli Bad Luck Repellent",
+          "url": "https://folklore.usc.edu/?p=60216",
+          "checkedAt": "2026-11-10",
+          "claimType": "legend",
+          "claimJa": "レモンと青唐辛子を交互に糸に通したお守りは、トラックの下や車のバックミラー、家の入口に下げられ、悪い目（ナザル）よけとされる（2021年の聞き取りの記録）。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Fatehpur Sikri",
+          "url": "https://en.wikipedia.org/wiki/Fatehpur_Sikri",
+          "checkedAt": "2026-11-10",
+          "claimType": "documented_fact",
+          "claimJa": "ファテープル・シークリーはアーグラ県の町で、2011年の国勢調査の人口は32,905人。"
+        }
+      ]
+    },
+    {
+      "id": "gt_agra_tour_arrive",
+      "sources": [
+        {
+          "publisher": "Gulf News（IANS）",
+          "title": "Unlicensed guide accompanies US envoy to Fatehpur Sikri in India",
+          "url": "https://gulfnews.com/world/asia/india/unlicensed-guide-accompanies-us-envoy-to-fatehpur-sikri-in-india-1.1708226957646",
+          "checkedAt": "2026-11-10",
+          "claimType": "documented_fact",
+          "claimJa": "無許可のガイド（地元で「ラプカ」と呼ばれる）が、アーグラの名所の駐車場やファテープル・シークリーに多く集まっていると報じられた（2024年2月）。"
+        },
+        {
+          "publisher": "The Free Press Journal",
+          "title": "Mumbai tourist exposes fraudulent tour guides at Fatehpur Sikri in Agra（見出しの一部）",
+          "url": "https://www.freepressjournal.in/amp/viral/forced-me-to-offer-5100-chadar-mumbai-tourist-exposes-fraudulent-tour-guides-at-fatehpur-sikri-in-agra-police-takes-switch-action",
+          "checkedAt": "2026-11-10",
+          "claimType": "documented_fact",
+          "claimJa": "2025年12月、ファテープル・シークリーで、ガイドを名乗る二人が入場料を偽って観光客から多く取ったとして、警察に逮捕されたと報じられた（観光客の側の話）。"
+        }
+      ]
+    },
+    {
+      "id": "gt_agra_tour_back_leg",
+      "sources": [
+        {
+          "publisher": "Wikipedia",
+          "title": "Fatehpur Sikri",
+          "url": "https://en.wikipedia.org/wiki/Fatehpur_Sikri",
+          "checkedAt": "2026-11-10",
+          "claimType": "documented_fact",
+          "claimJa": "アクバルは1585年、パンジャーブへの遠征に出るときにファテープル・シークリーを離れた。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Fatehpur Sikri",
+          "url": "https://en.wikipedia.org/wiki/Fatehpur_Sikri",
+          "checkedAt": "2026-11-10",
+          "claimType": "documented_fact",
+          "claimJa": "アクバルには1569年まで跡継ぎがなく、聖者のシャイフ・サリームが誕生を予言した。皇子（のちのジャハーンギール）はシークリーの村で生まれた。"
+        },
+        {
+          "publisher": "Lonely Planet",
+          "title": "Jama Masjid（Fatehpur Sikri）",
+          "url": "https://www.nonprod.lonelyplanet.com/points-of-interest/jama-masjid/1294054",
+          "checkedAt": "2026-11-10",
+          "claimType": "legend",
+          "claimJa": "サリーム・チシュティの墓には、子どもを望む女性が、格子（ジャーリー）に糸を結びに来る。"
+        },
+        {
+          "publisher": "youngintach.org（発行者の記載なし）",
+          "title": "Saints of India（Sheikh Salim Chisti）",
+          "url": "https://youngintach.org/files/saints11.pdf",
+          "checkedAt": "2026-11-10",
+          "claimType": "legend",
+          "claimJa": "伝説では、この聖者の墓で祈った人の願いがかなうとされ、廟の大理石の窓に糸を結ぶ習わしがよく知られている。"
+        }
+      ]
+    },
+    {
       "id": "gt_jaipur_hotel_mehndi_night",
       "sources": [
         {

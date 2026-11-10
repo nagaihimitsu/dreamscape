@@ -11,7 +11,7 @@ import { defaultJourneyId, getJourney } from "../content/journeys";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
 import { waitForTravel } from "../domain/travel-game";
 import { rentTransport } from "../domain/transport";
-import { bookTour, cancelTourBooking, tourSceneBadge } from "../domain/tour";
+import { bookTour, cancelTourBooking, runningTour, tourLegUnderway, tourSceneBadge } from "../domain/tour";
 import { getTransportMode } from "../content/transport";
 import { getPlayerDeparture } from "../domain/city-travel";
 import { closeRomanceEnding, openOccasion } from "../domain/occasion";
@@ -368,7 +368,8 @@ export function GameApp({
       {game && (
         <div className="journey-stage" aria-label="旅の進行">
           <span>
-            {game.activeEpilogue?.kind === "arrival" ? `${currentCity!.city.nameJa}に到着` : reasoningRule
+            {game.activeEpilogue?.kind === "arrival" ? `${currentCity!.city.nameJa}に到着`
+              : game.activeEpilogue?.kind === "tour_leg" ? runningTour(game)?.titleJa ?? "ツアー" : reasoningRule
               ? `${landmarks.find((item) => item.id === currentLandmarkId)?.nameJa} · 特別対決`
               : idle && nextStoryBattle
                 ? nextStoryBattle.titleJa
@@ -381,7 +382,7 @@ export function GameApp({
           </span>
           <span>
             {game.activeEpilogue
-              ? game.activeEpilogue.kind === "arrival" ? "旅のはじまり" : "都市エピローグ"
+              ? game.activeEpilogue.kind === "arrival" ? "旅のはじまり" : game.activeEpilogue.kind === "tour_leg" ? "ツアーの移動" : "都市エピローグ"
               : game.activeTourism
                 ? game.activeTourism.phase === "guide"
                   ? "観光案内"
@@ -508,8 +509,9 @@ export function GameApp({
                 };
               })(),
               // A scene at no landmark (a date's, the hotel's, a trip's…; stage 4): its background photo's name, else the
-              // place the party is at.
-              placeJa: encounterLandmark?.nameJa ?? encounterBackdrop?.nameJa ?? getCityContent(currentEncounter.cityId).travel.places.find((place) => place.id === game.travel.currentPlaceId)?.nameJa ??
+              // place the party is at; in a tour's car (its leg's narration begun, the move not yet: tour stage 3), the leg.
+              placeJa: encounterLandmark?.nameJa ?? encounterBackdrop?.nameJa ?? tourLegUnderway(game)?.labelJa ??
+                getCityContent(currentEncounter.cityId).travel.places.find((place) => place.id === game.travel.currentPlaceId)?.nameJa ??
                 getCityContent(currentEncounter.cityId).city.nameJa,
               background: activeEncounter.frame.background,
               backgroundAsset: encounterImage,
@@ -526,9 +528,10 @@ export function GameApp({
                   unavailableReason: shown.show === "grey" ? shown.reason : undefined, ...(shown.ap ? { apCost: shown.ap } : {}) }];
               }),
               ended: encounterCanFinish(game),
-              // On a running tour (stage 2a) the visit's last scene leads on to the tour's next step.
-              // On a booked tour's morning (the hotel's scenes after waking) the last scene leads to the tour's start.
-              finishLabel: ({ observe: "観光に戻る", onward: "先へ進む" } as const)[encounterLeadsOnward(game) || "none" as never] ??
+              // On a running tour (stage 2a) the visit's last scene leads on to the tour's next step; a leg's scenes (stage 3) lead on with
+              // the tour. On a booked tour's morning (the hotel's scenes after waking) the last scene leads to the tour's start.
+              finishLabel: (game.occasion?.kind === "tour" ? "ツアーを続ける" : undefined) ??
+                ({ observe: "観光に戻る", onward: "先へ進む" } as const)[encounterLeadsOnward(game) || "none" as never] ??
                 (game.tour?.status === "running" ? "ツアーを続ける"
                   : game.tour?.status === "booked" && game.occasion?.kind === "hotel" && game.occasion.ran.includes("sleep") ? "ツアーに出発する" : undefined),
               badgeJa: tourSceneBadge(game),
@@ -551,7 +554,7 @@ export function GameApp({
           />
         ) : game.activeEpilogue ? (
           <EpilogueScreen
-            key={`${game.currentCityId}:${game.activeEpilogue.kind ?? "ending"}`}
+            key={`${game.currentCityId}:${game.activeEpilogue.kind ?? "ending"}:${game.activeEpilogue.episodeId}`}
             autoAdvanceEnabled={displaySettings.value.autoAdvance}
             game={game}
             speed={speed}

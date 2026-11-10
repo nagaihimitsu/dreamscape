@@ -156,7 +156,8 @@ export function debugSceneLocation(settings: DebugSettings, state: GameState): s
     const tour = getTour(settings.id);
     const record = state.tour;
     const step = record?.status === "running" ? tour?.steps[record.step] : undefined;
-    const label = step?.kind === "event" ? step.labelJa ?? getCityContent(state.currentCityId).travel.events.find((event) => event.id === step.eventId)?.titleJa : undefined;
+    const label = step?.kind === "event" ? step.labelJa ?? getCityContent(state.currentCityId).travel.events.find((event) => event.id === step.eventId)?.titleJa
+      : step?.labelJa;
     return `ツアー：${tour?.titleJa ?? settings.id}（${label ?? (record?.status === "booked" ? "予約中" : "行程")}）`;
   }
   const landmarkId = settings.scene === "tourism" ? settings.id

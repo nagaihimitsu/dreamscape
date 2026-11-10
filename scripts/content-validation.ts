@@ -71,7 +71,7 @@ import { isPlaceStory, splitStoryAddress, storyFileOf } from "../src/content/sto
 import { includesModules, readFileChoices, readMainFileHead, readPlaceFile, choiceOption, parseDone, parseThen, type PlaceFile } from "./place-files";
 import { MODULES_FILE, MODULES_INK } from "./modules-ink";
 import { walkScene } from "./scene-walk";
-import { catalogScenes, checkRuleIds, checkSceneReferences, insertedSceneEncounter, mainFileSceneId, mergeCatalogChoiceTags, placeScenes, sceneConditionsOf, sceneTagRules, thenLoopErrors, thenLoopWarnings, momentText, momentWarnings, type MainAddresses, type ThenLoopContext } from "./scene-table";
+import { catalogScenes, checkRuleIds, checkSceneReferences, insertedSceneEncounter, mainFileSceneId, mergeCatalogChoiceTags, placeScenes, sceneConditionsOf, sceneTagRules, thenLoopErrors, thenLoopWarnings, momentText, momentWarnings, tourMomentErrors, type MainAddresses, type ThenLoopContext } from "./scene-table";
 import { sceneDataCatalogSchema, storyStateCatalogSchema, type SceneEntry, type SceneMain } from "../src/content/scene-schemas";
 import { fnvHash } from "../src/content/fingerprint";
 import { parseConditionText, combineWhenUntil } from "../src/content/condition-text";
@@ -598,6 +598,15 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       expressionValidator.observe(storyId, text, speaker, explicitEmotion);
       reactionValidator.observe(storyId, text, speaker);
     };
+  // Tours (tour design stage 2a): their shape here (the scene table reads their steps: `# at: tour <tour> <step>`); their rules
+  // against the cities below (validateTours).
+  const tourFiles = parseTourFiles(sources);
+  for (const { file, tour } of tourFiles) languageNotes.push(...dataLanguageWarnings(tourSchema, tour, displayPath(root, file)));
+  const tourStep = (tourId: string, stepId: string) => {
+    const tour = tourFiles.find((item) => item.tour.id === tourId)?.tour;
+    const step = tour?.steps.find((item) => item.id === stepId);
+    return tour && step ? { cityId: tour.cityId, kind: step.kind } : undefined;
+  };
   // ── The scene table (the unified event design, stage 3a; scene-table.ts): the place files' scenes, the
   // one-scene main files' heads and choices, and today's encounter catalogs read as the same table.
   const sceneNotes: ContentWarning[] = [];
@@ -625,11 +634,14 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     const read = withContext(storyLabel(file.storyId), () => placeScenes({
       file, compiled: stories[file.storyId], apCap: balance.apCap, mains, landmarkCity, placeCity,
       dateCity: (dateId) => dates.find((date) => date.id === dateId)?.chapterId, cityExists: (cityId) => cities.some((city) => city.id === cityId),
-      onWarning: sceneWarn,
+      tourStep, onWarning: sceneWarn,
     }));
     if (!read.length) throw new Error(`A place file without scenes: ${storyLabel(file.storyId)} (give a knot the head tag # scene:)`);
     placeEntries.push(...read.map((item) => item.entry));
   }
+  // A tour's steps across the files (tour stages 2b, 3): one narration and one in-car encounter per leg, and what that encounter takes.
+  const tourProblems = tourMomentErrors(placeEntries);
+  if (tourProblems.length) throw new Error(tourProblems.join("\n"));
   const fileEntries: SceneEntry[] = [];
   /** A one-scene guide, arrival or epilogue with choices: walked as a scene (its choices may have tags from stage 3a). */
   const fileChoiceStories = new Set<string>();
@@ -695,8 +707,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       throw new Error(`A main part takes no # later (「また今度」; its end is the game's record, A13): ${label}`);
     if (scene.origin === "place" && scene.options.some((option) => option.effect))
       throw new Error(`A place file's date writes its choices with # profile: (and # memory:, # rel:) instead of # effect: (A14): ${label}`);
-    // B4: a production journey's conversation or encounter says where its facts come from, or that it states none.
-    if ((scene.kind === "talk" || scene.kind === "encounter") && scene.origin === "place" && journeyOfCityId(scene.cityId) !== SAMPLE_JOURNEY_ID &&
+    // B4: a production journey's conversation, encounter or tour leg's narration says where its facts come from, or that it states none.
+    if ((scene.kind === "talk" || scene.kind === "encounter" || scene.kind === "tour_leg") && scene.origin === "place" && journeyOfCityId(scene.cityId) !== SAMPLE_JOURNEY_ID &&
         scene.sources !== "none" && !sceneData.scenes.some((item) => item.id === scene.id))
       throw new Error(`A scene of a journey needs its sources: ${label} has neither # sources: none nor sources in scenes/catalog.json (B4)`);
     if (sceneData.scenes.some((item) => item.id === scene.id) && scene.sources === "none")
@@ -1117,9 +1129,6 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     }
   }
   unique(productionQuestionIds, "production quiz question ID");
-  // Tours (tour design stage 2a): their shape here; their rules against the cities below (validateTours).
-  const tourFiles = parseTourFiles(sources);
-  for (const { file, tour } of tourFiles) languageNotes.push(...dataLanguageWarnings(tourSchema, tour, displayPath(root, file)));
   let battleScenarios = 0;
   for (const battle of battles) {
     const quiz = quizzes[battle.quizId];
