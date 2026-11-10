@@ -7,7 +7,8 @@
 /* Tours (tour stage 2a): the same place-action line as the rentals; the sheet's cards. */
 .travel-tours { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 4px 0; }
 .travel-tour-booked { margin: 0; font-size: 13px; line-height: 1.45; }
-.travel-tour-open { width: auto; min-height: 44px; margin: 0; padding: 7px 12px; font-size: 13px; }
+/* (Scoped: the shared .secondary is loaded later and would widen the line's buttons.) */
+.travel-tours .travel-tour-open { width: auto; min-height: 44px; margin: 0; padding: 7px 12px; font-size: 13px; }
 .travel-tour-card { margin: 12px 0 0; padding: 10px 12px 8px; border: 1px solid var(--ds-parchment-line); border-radius: 12px; }
 .travel-tour-card h3 { margin: 0; font-size: 15px; line-height: 1.4; }
 .travel-choice-modal .travel-tour-when { display: inline-block; margin: 6px 0 0; padding: 2px 10px; border-radius: 999px;
@@ -58,7 +59,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 .free-time-hub .travel-rented { color: var(--ds-ink-muted); }
 .free-time-hub .travel-tours {
   margin: 0;
-  padding: 0 12px;
+  padding: 6px 12px;
   border-radius: 12px;
   background: var(--ds-parchment);
   box-shadow: var(--ds-pill-shadow);
