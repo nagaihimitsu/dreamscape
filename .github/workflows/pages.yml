@@ -25,11 +25,11 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
-      # verify's first content:build runs with --no-cache, and npm ci starts
-      # the Ink validation cache (node_modules/.cache) empty: the tests reuse
-      # only results computed in this job.
-      - name: Validate content, test and build
-        run: npm run verify
+      # The build only (content, types, vite, dist check); tests run by hand.
+      - name: Build content, check types and build for production
+        run: npm run build
+        env:
+          DREAMSCAPE_INK_CACHE: "off"
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:

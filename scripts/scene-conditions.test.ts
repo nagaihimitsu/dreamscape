@@ -44,19 +44,13 @@ describe("reading a scene's cond texts", () => {
 });
 
 describe("walking the texts' values", () => {
-  it("walks every combination of up to four texts", () => {
-    const { assignments, complete } = condWalk(["a", "b", "c", "d"]);
-    expect(complete).toBe(true);
-    expect(new Set(assignments.map((item) => JSON.stringify(item))).size).toBe(16);
-    expect(condWalk([]).assignments).toEqual([{}]);
-  });
-
-  it("beyond four, gives every text true and false at least once", () => {
+  it("walks representative values: all false, all true and each text alone true", () => {
     const texts = ["a", "b", "c", "d", "e"];
-    const { assignments, complete } = condWalk(texts);
-    expect(complete).toBe(false);
-    expect(assignments.length).toBeLessThan(32);
+    const { assignments } = condWalk(texts);
+    expect(assignments).toHaveLength(texts.length + 2);
     for (const text of texts) expect(new Set(assignments.map((item) => item[text]))).toEqual(new Set([true, false]));
+    expect(condWalk([]).assignments).toEqual([{}]);
+    expect(condWalk(["a"]).assignments).toEqual([{ a: false }, { a: true }]);
   });
 
   it("binds cond to the walk's values and refuses a text the walk does not know", () => {

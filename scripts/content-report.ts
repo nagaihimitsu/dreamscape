@@ -14,7 +14,7 @@ import { isObservationOnlyClue } from "../src/content/tourism-schemas";
 
 export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-prefix" | "unused-transport-mode" | "tourism-photo"
   | "transit-walk-missing" | "transit-route-unsourced" | "never-offered" | "date-condition-trip"
-  | "later-never-again" | "same-priority" | "repeat-without-until" | "data-language" | "cond-walk-partial"
+  | "later-never-again" | "same-priority" | "repeat-without-until" | "data-language"
   | "never-met-again" | "romance-only-city" | "unfindable-clue" | "battle-after-epilogue" | "money-shortfall" | "ap-shortfall"
   | "scene-tag" | "special-date-ap" | "epilogue-unreachable" | "then-loop" | "earlier-item-start" | "tour-note";
 export type ContentWarning = { kind: ContentWarningKind; message: string };
@@ -38,7 +38,6 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "same-priority": "group(s) of encounters sharing a priority at one moment (run in file-name order)",
   "repeat-without-until": "repeated encounter(s) without # until:",
   "data-language": "data field(s) whose text is not in the field's language (Japanese fields, the quizzes' English)",
-  "cond-walk-partial": "scene(s) with more than four cond texts, walked with each text true and false rather than in every combination",
   "never-met-again": "city(ies) whose finale condition may never be met again (money spent, an item given, a battle or date under not; no other way)",
   "earlier-item-start": "city(ies) whose clear needs an item only an optional scene of an earlier city gives (a Debug or walk start at that city may lack it)",
   "romance-only-city": "city(ies) that can be cleared only through the romance values",

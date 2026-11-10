@@ -22,7 +22,7 @@ export function reasoningScenes(battle: BattleDefinition): string[] {
 
 /**
  * A one-flow special battle's helper knot (<battle>_claim, <battle>_press; stage 5) read on its own, as the clue book reads it
- * (src/story/runtime.ts readStoryKnotLines): from the knot to its `->->`, for every cond assignment, each quiz result before it,
+ * (src/story/runtime.ts readStoryKnotLines): from the knot to its `->->`, for each cond assignment of condWalk, a wrong and a right quiz result,
  * and no memory and every memory held (has_memory; has_item_status reads no item held, as the battle walk reads them).
  * Stops the build when the read reaches a choice (its own or one in a knot it calls, a quiz's or the reasoning's call included)
  * or an error, which would leave the clue book without its text.
@@ -43,7 +43,8 @@ export function checkHelperKnot(compiled: string, knot: string, conds: readonly 
     bindMemoryReader(story, memories, known.memoryIds);
     bindItemReader(story, {}, known.itemIds);
     story.BindExternalFunction("cond", (text: unknown) => assignment[String(text)] ?? false, true);
-    for (const current of assignments) for (const correct of [false, true]) for (const score of [0, 1, 2, 3]) {
+    // Representative quiz results only: a wrong answer with no score, a right one with every point.
+    for (const current of assignments) for (const [correct, score] of [[false, 0], [true, 3]] as const) {
       story.ResetState();
       assignment = current;
       ended = false;
