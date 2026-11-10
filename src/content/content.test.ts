@@ -11,7 +11,6 @@ import { listFiles } from "../../scripts/content-sources";
 import { effects, presentation } from "./index";
 import dateData from "./generated/content/romance/date_catalog.json";
 import { normalizeEncounterCatalog } from "./encounter-schemas";
-import { reasoningIntroCatalogSchema } from "./reasoning-intros";
 import { battleCatalogSchema, citySchema, dateCatalogSchema } from "./schemas";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import { parseStoryTags } from "./tags";
@@ -271,7 +270,6 @@ describe("content build acceptance", () => {
         "learning/milano_english",
         ...dates.map((date) => date.storyId),
         ...battleCatalogSchema.parse(await mirror("battles/catalog.json")).battles.map((battle) => battle.storyId),
-        ...reasoningIntroCatalogSchema.parse(await mirror("presentation/reasoning-intros.json")).entries.map((entry) => entry.storyId),
         ...encounterCatalog.encounters.flatMap((event) => [
           event.storyId,
           ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : []),

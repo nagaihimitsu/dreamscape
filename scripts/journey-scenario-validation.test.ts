@@ -54,7 +54,7 @@ function fixture() {
     finales: { delhi: { ...scene, placeId: plan.main[0].landmarkId, activityMinutes: 60 } } };
   write("narrative.json", JSON.stringify(narrative));
   write("delhi/narrative.json", JSON.stringify(narrative));
-  // A battle in the one-flow form (stage 5; the scaffold writes no scenes): -> quiz(1) -> … -> quiz(n) -> between its lines.
+  // A battle (stage 5): -> quiz(1) -> … -> quiz(n) -> between its lines.
   const battle = (count: number) => `INCLUDE modules.ink\n${Array.from({ length: count + 1 }, (_, index) =>
     `# speaker: heroine\n「検証の場面です」\n${index < count ? `-> quiz(${index + 1}) ->` : "-> END"}`).join("\n")}\n`;
   for (const main of plan.main) {
@@ -93,8 +93,8 @@ describe("draft journey scenario contracts", () => {
   }, 120_000);
 
   it("checks India's real drafts: a knot of a published place file counts as published, and a draft beside it is refused", async () => {
-    // Delhi's guides, dates and epilogue are knots of place files (content:build walks them); its battles are one-scene files
-    // in the one-flow form (stage 5), walked here as content:build walks them.
+    // Delhi's guides, dates and epilogue are knots of place files (content:build walks them); its battles are one-scene files,
+    // walked here as content:build walks them.
     expect(await validateJourneyScenario(process.cwd(), "golden_triangle", indiaDrafts, "delhi")).toEqual({
       journeyId: "golden_triangle", cities: ["delhi"], stories: 16, placeKnots: 11, guides: 4,
       battleScenarios: 44, dateRoutes: 0, epilogueScenarios: 0, warnings: [], readyForPublication: false,
@@ -139,7 +139,7 @@ describe("draft journey scenario contracts", () => {
     } finally { rmSync(root, { recursive: true, force: true }); }
   });
 
-  it("rejects a battle that calls its quizzes out of order or is in the scene form, foreign backgrounds and effects from another date", async () => {
+  it("rejects a battle that calls its quizzes out of order or does not include modules.ink, foreign backgrounds and effects from another date", async () => {
     const { root, directory, plan } = fixture();
     const check = () => validateJourneyScenario(root, "golden_triangle", directory, "delhi");
     try {
@@ -147,8 +147,8 @@ describe("draft journey scenario contracts", () => {
       const original = readFileSync(file, "utf8");
       writeFileSync(file, original.replace("-> quiz(2) ->\n", ""));
       await expect(check()).rejects.toThrow(/calls quiz\(3\) where quiz\(2\) comes next/);
-      // A battle's script in the scene form (VAR battle_scene …) is refused: the scaffold's battles have no scenes.
-      writeFileSync(file, `${names}VAR battle_scene = "intro"\n「検証の場面です」\n-> END\n`);
+      // A battle's script with its own VAR lines in place of INCLUDE modules.ink is refused.
+      writeFileSync(file, `${names}「検証の場面です」\n-> END\n`);
       await expect(check()).rejects.toThrow(/start .* with INCLUDE modules\.ink/);
       writeFileSync(file, original);
       const guide = path.join(directory, "delhi/stories", `${plan.main[0].guideStoryId}.ink`);

@@ -289,40 +289,6 @@ export function validateStory(
   return routes;
 }
 
-/** Validate the short presentation-only scene that introduces a special battle. */
-export function validateReasoningIntroduction(compiled: string, context: TagContext, observe?: DialogueObserver): void {
-  if (compiledConditionTexts(compiled).length)
-    throw new Error(`cond("…") is not available in a special battle's rebuttal story (presentation/reasoning-intros.json, the scene form): ` +
-      `in the one-flow form (stage 5) the rebuttal is lines of the battle's flow, which may read cond`);
-  const story = new Story(compiled);
-  story.onError = (message) => { throw new Error(message); };
-  for (const name of ["player_name", "heroine_name"]) {
-    if (!story.variablesState.GlobalVariableExistsWithName(name))
-      throw new Error(`Missing required introduction variable: ${name}`);
-    story.variablesState.$(name, "検証名");
-  }
-  let speaker: string = "narrator";
-  let explicitEmotion = false;
-  let lines = 0;
-  let frames = 0;
-  while (story.canContinue) {
-    checkLinesWithoutChoice(++lines);
-    const text = story.Continue()?.trim() ?? "";
-    const tags = parseStoryTags(story.currentTags ?? [], context);
-    if (tags.speaker) speaker = tags.speaker;
-    if (tags.emotion !== undefined) explicitEmotion = true;
-    if (tags.effects.length) throw new Error("Reasoning introduction cannot apply effects");
-    if (text) {
-      observe?.(text, speaker, explicitEmotion);
-      explicitEmotion = false;
-      if (speaker !== "heroine") throw new Error("Reasoning introduction must be spoken by the heroine");
-      frames++;
-    }
-  }
-  if (!frames || story.currentChoices.length)
-    throw new Error("Reasoning introduction must have dialogue and no choices");
-}
-
 /** Check one learning topic without changing the shared story or game state. */
 export function validateLearningTopic(compiled: string, context: TagContext, topicId: string): void {
   if (compiledConditionTexts(compiled).length)

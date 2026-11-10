@@ -4,8 +4,7 @@ import { z } from "zod";
  * A story's address (the unified event design, stage 3a, 3.1): a story file's ID
  * (`dates/milano_date_cafe`, the file's place under stories/), and for a scene of a place file
  * also its knot after a dot (`places/smp_mihon_clock_tower.smp_mihon_clock_bookmark_stall`).
- * The game starts a knot by name (beginStory); a battle in the stitch form also names its
- * scene's stitch (`…​.smp_mihon_main_clock_tower.intro`). Light module (zod only).
+ * The game starts that Ink path (a knot, or a knot's stitch) by name (beginStory). Light module (zod only).
  */
 export const STORY_FILE_PATTERN = /^[a-z][a-z0-9_]*(?:\/[a-z][a-z0-9_]*)+$/u;
 export const STORY_ADDRESS_PATTERN = /^[a-z][a-z0-9_]*(?:\/[a-z][a-z0-9_]*)+(?:\.[a-z][a-z0-9_]*){0,2}$/u;

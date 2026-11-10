@@ -137,13 +137,6 @@
     },
     {
       "fileMatch": [
-        "/content/journeys/*/presentation/reasoning-intros.json",
-        "/authoring/templates/*/presentation/reasoning-intros.json"
-      ],
-      "url": "./authoring/schemas/presentation-reasoning-intros.schema.json"
-    },
-    {
-      "fileMatch": [
         "/content/journeys/*/progression/journey.json",
         "/authoring/templates/*/progression/journey.json"
       ],

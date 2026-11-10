@@ -1,18 +1,16 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { tourSceneBadge } from "../../domain/tour";
-import { dialogueExpressions, dialogueReactions, landmarks, learningTranslations, presentation, reasoningIntroductions, tourismAssets } from "../../content";
+import { dialogueExpressions, dialogueReactions, landmarks, learningTranslations, presentation, tourismAssets } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
-import { battleChrome, getActiveBattleContent, getBattleOutcome, isFlowBattle } from "../../domain/battle";
+import { battleChrome, getActiveBattleContent, getBattleOutcome } from "../../domain/battle";
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
-import { beginStory, continueStory, type StoryStep } from "../../story/runtime";
 import { DialogueText } from "../../components/DialogueText";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { useSceneTap } from "../../components/useSceneTap";
-import { holdTaps } from "../../components/tap-hold";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { CanalScene } from "../../components/CanalScene";
 import { BackgroundCredits } from "../../components/BackgroundCredits";
@@ -108,7 +106,7 @@ interface Props {
   reduceMotion: boolean;
   onSpeed: (speed: number) => void;
   onAdvance: () => void;
-  /** The shown choices of a battle's conversation (the one-flow form, stage 5), and choosing one. */
+  /** The shown choices of a battle's conversation, and choosing one. */
   choices?: SceneChoiceView[];
   onChoose?: (index: number) => void;
   onAnswer: (id: string) => boolean;
@@ -161,51 +159,24 @@ export function BattleScreen({
   const perfectAnswer = active.phase === "feedback" && !!answer?.correct &&
     active.answers.length === quiz.questions.length && active.score === quiz.questions.length;
   const record = game.battleRecords.find((item) => item.battleId === battle.id);
-  // The claim transition is already saved before these presentation-only
-  // frames appear. Mounting directly in reasoning (reload or old save) never
-  // replays them, and a different run cannot inherit the prior transition.
-  const flow = isFlowBattle(battle);
-  const previousBattle = useRef({
-    runId: active.runId, phase: active.phase, scene: active.dialogueScene,
-    ended: active.frame?.ended ?? false, proof: !!active.reasoning,
-  });
-  const [rebuttal, setRebuttal] = useState<{ storyId: string; step: StoryStep; index: number } | null>(null);
+  // The rebuttal is lines of the battle's flow (saved, decision 1). The cut-in plays as the flow first reaches its
+  // stop point in this mounted screen: mounting directly in reasoning (a reload) never replays it, and a different
+  // run cannot inherit the prior transition.
+  const previousBattle = useRef({ runId: active.runId, phase: active.phase, proof: !!active.reasoning });
   const [cutIn, setCutIn] = useState<"contradiction" | "connection" | null>(null);
   useLayoutEffect(() => {
     const previous = previousBattle.current;
-    previousBattle.current = {
-      runId: active.runId, phase: active.phase, scene: active.dialogueScene,
-      ended: active.frame?.ended ?? false, proof: !!active.reasoning,
-    };
-    if (previous.runId !== active.runId || active.phase !== "reasoning") {
-      setRebuttal(null);
-      setCutIn(null);
-    }
+    previousBattle.current = { runId: active.runId, phase: active.phase, proof: !!active.reasoning };
+    if (previous.runId !== active.runId || active.phase !== "reasoning") setCutIn(null);
     const config = battle.reasoning;
-    // The one-flow form (stage 5): its rebuttal is lines of its flow (saved, decision 1); the cut-in plays as the flow first
-    // reaches its stop point in this mounted screen (a reload there never replays it).
-    if (flow) {
-      if (config && previous.runId === active.runId && previous.phase === "dialogue" && !previous.proof && active.phase === "reasoning" && active.reasoning)
-        setCutIn(config.kind);
-      return;
-    }
-    if (!config || previous.runId !== active.runId || previous.phase !== "dialogue" ||
-        previous.scene !== config.claimScene || !previous.ended || active.phase !== "reasoning") return;
-    const storyId = reasoningIntroductions[battle.id];
-    if (!storyId) {
-      // New special battles can still use the common transition before an
-      // optional presentation-only rebuttal has been authored.
+    if (config && previous.runId === active.runId && previous.phase === "dialogue" && !previous.proof && active.phase === "reasoning" && active.reasoning)
       setCutIn(config.kind);
-      return;
-    }
-    const step = beginStory(storyId, game.playerName, game.heroineName);
-    setRebuttal({ storyId, step, index: 0 });
-  }, [active.runId, active.phase, active.dialogueScene, active.frame?.ended, active.reasoning, battle, flow, game.playerName, game.heroineName]);
+  }, [active.runId, active.phase, active.reasoning, battle]);
   const [creditsOpen, setCreditsOpen] = useState(false);
   const windowVisibility = useDialogueWindow();
   const readingArea = useRef<HTMLElement>(null);
   const roundBar = useRef<HTMLDivElement>(null);
-  const displayedStoryState = rebuttal?.step.storyState ?? (active.phase === "dialogue" ? active.storyState : null);
+  const displayedStoryState = active.phase === "dialogue" ? active.storyState : null;
   // Start each new scene at the top of its own reading area, without moving
   // the page or disturbing a question when a notebook or translation opens.
   useLayoutEffect(() => {
@@ -282,11 +253,10 @@ export function BattleScreen({
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [active.phase, active.roundIndex, animatedAnswer, answerKey, reduceMotion]);
-  const frame = rebuttal?.step.frame ?? active.frame;
-  const isDialogue = active.phase === "dialogue" || !!rebuttal;
-  // What the line's screen shows (one rule for both forms: a flow battle looks as the scene form did, stage 5): the next
-  // button at the end of a part, the conversation's choices, and what a rebuttal line hides.
-  const chrome = battleChrome(active, battle, rebuttal?.step.frame);
+  const frame = active.frame;
+  const isDialogue = active.phase === "dialogue";
+  // What the line's screen shows: the next button at the end of a part, the conversation's choices, and what a rebuttal line hides.
+  const chrome = battleChrome(active, battle);
   const choosing = chrome.choosing;
   const partEnd = !!chrome.advance;
   const backgroundId = frame?.background ?? battle.backgroundId;
@@ -297,7 +267,7 @@ export function BattleScreen({
   const backgroundAsset = landmarkAsset ?? tourismAssets.find(
     (asset) => asset.id === presentation.backgrounds[backgroundId]?.imageAssetId,
   );
-  const storyId = rebuttal?.storyId ?? battle.storyId;
+  const storyId = battle.storyId;
   // Reactions belong to their target, independently of the current speaker.
   // Unannotated frames retain the existing Ink and expression behavior.
   const heroineReaction = isDialogue && frame
@@ -319,24 +289,12 @@ export function BattleScreen({
         : "旅の風景";
   const { ready, onReady, entries } = useDialogueLog(
     `${battle.id}:${record?.attempts ?? 0}`,
-    rebuttal ? -rebuttal.index - 1 : game.revision,
+    game.revision,
     speaker,
     frame?.text ?? "",
   );
   const advanceSafely = () => {
     if (cutIn || (isDialogue && !ready) || windowVisibility.hidden || dialogueObstructed() || choosing) return;
-    if (rebuttal) {
-      if (rebuttal.step.frame.ended) {
-        // A presentation-only scene end: the cut-in's skip must not take the double tap's second tap.
-        holdTaps();
-        setRebuttal(null);
-        setCutIn(battle.reasoning!.kind);
-      } else {
-        const step = continueStory(rebuttal.storyId, rebuttal.step.storyState, rebuttal.step.frame);
-        setRebuttal({ ...rebuttal, step, index: rebuttal.index + 1 });
-      }
-      return;
-    }
     onAdvance();
   };
   const { show } = windowVisibility;
@@ -570,7 +528,7 @@ export function BattleScreen({
         ) : isDialogue && frame ? (
           <>
             <DialogueText
-              key={rebuttal ? `rebuttal-${rebuttal.index}` : game.revision}
+              key={game.revision}
               ref={sceneTap.line}
               text={frame.text}
               speed={auto.fast ? 0 : speed}

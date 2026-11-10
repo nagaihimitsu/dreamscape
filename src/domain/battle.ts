@@ -30,7 +30,6 @@ import {
   storyFrameSchema,
   storyVariables,
   validateStorySnapshot,
-  type StoryFrame,
   type StoryStep,
 } from "../story/runtime";
 import { storyFileOf } from "../content/story-address";
@@ -75,23 +74,19 @@ export const activeBattleSchema = z
     score: z.number().int().min(0).max(5),
     hintOpen: z.boolean(),
     hintUsed: z.boolean(),
-    dialogueScene: z.string().nullable(),
     storyState: z.string().nullable(),
     frame: storyFrameSchema.nullable(),
     reasoning: reasoningStateSchema.nullable(),
     /**
-     * The one-flow form (stage 5): how many choices Ink has taken in this run (each quiz's return, each press or
-     * evidence, each choice of the conversation; its saved story is checked against it). Always 0 in the scene form.
+     * How many choices Ink has taken in this run (each quiz's return, each press or evidence, each choice of the
+     * conversation; its saved story is checked against it).
      */
     turns: z.number().int().nonnegative(),
     /** The conversation's choices whose tags this run applied (decision 10: once per battle, and only on its first play). */
     appliedOptionIds: z.array(z.string().regex(/^[a-z][a-z0-9_]*$/u)),
-    /**
-     * A special battle's flow before its first stop point (stage 5): the line is its claim (from the helper knot) or its
-     * rebuttal (after the claim). They show as the scene form's claim scene and presentation-only rebuttal did.
-     */
+    /** A special battle's line before its first stop point: its claim (from the helper knot) or its rebuttal (after the claim). */
     linePart: z.enum(["claim", "rebuttal"]).optional(),
-    /** The line ends what was a scene in the scene form (the scene before the claim, the claim before its rebuttal): 「次へ進む」 there. */
+    /** The line ends a part before the first stop (the lines before the claim, the claim before its rebuttal): 「次へ進む」 there. */
     sceneEnd: z.literal(true).optional(),
   })
   .strict();
@@ -191,61 +186,19 @@ function battleAvailability(state: GameState, battleId: string, mapChecked: bool
     return { available: false, reason: "先に、旅の途中の対決へ進みましょう。" };
   return { available: true, reason: "" };
 }
-/** A battle of a place file (the stitch form, stages 3–4): its knot's scene stitches start by name, without battle_scene. */
-const stitchForm = (battle: BattleDefinition) => splitStoryAddress(battle.storyId).path !== undefined;
-/**
- * A battle in the one-flow form (stage 5): its catalog entry has no `scenes`; its Ink runs from its start (the place
- * file's knot or the file's top) and calls `-> quiz(n) ->` and `-> reasoning ->` (modules.ink), which the game answers.
- */
-export const isFlowBattle = (battle: Pick<BattleDefinition, "scenes">) => !battle.scenes;
-type SceneForm = BattleDefinition & { scenes: NonNullable<BattleDefinition["scenes"]> };
-/** The scene form's scenes (a flow battle has none). */
-const scenesOf = (battle: BattleDefinition) => (battle as SceneForm).scenes;
-function sceneVariables(active: ActiveBattle, battle?: BattleDefinition) {
-  return {
-    ...(battle && stitchForm(battle) ? {} : { battle_scene: active.dialogueScene! }),
-    answer_correct: active.answers.at(-1)?.correct ?? false,
-    battle_score: active.score,
-  };
-}
 function playerAddress(state: GameState): string {
   const suffix = progression.stages.find(
     (item) => item.stage === state.romanceStage,
   )!.playerSuffix;
   return `${state.playerName}${suffix}`;
 }
-function withDialogue(
-  state: GameState,
-  active: ActiveBattle,
-  scene: string,
-): ActiveBattle {
-  const { battle } = getActiveBattleContent(active);
-  const next = {
-    ...active,
-    phase: "dialogue" as const,
-    dialogueScene: scene,
-    hintOpen: false,
-  };
-  const result = beginStory(
-    stitchForm(battle) ? `${battle.storyId}.${scene}` : battle.storyId,
-    state.playerName,
-    state.heroineName,
-    { ...sceneVariables(next, battle), player_address: playerAddress(state) },
-    [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), sceneConditionReader(state),
-  );
-  return fromStory(next, result);
-}
-function fromStory(active: ActiveBattle, result: StoryStep): ActiveBattle {
-  if (result.effects.length || result.frame.choices.length)
-    throw new Error("バトル会話に採点や恋愛効果を含められません。");
-  return { ...active, storyState: result.storyState, frame: result.frame };
-}
 
-// ── The one-flow form (stage 5) ─────────────────────────────────────────────────────────────────
+// ── The battle's flow: its Ink runs from its start (the place file's knot or the file's top) and calls
+// `-> quiz(n) ->` and `-> reasoning ->` (modules.ink), which the game answers ───────────────────────────
 
 /** The answers Ink has been told (an answer on its right-or-wrong screen is passed as the player leaves it). */
 const passedAnswers = (active: ActiveBattle) => (active.phase === "feedback" ? active.answers.slice(0, -1) : active.answers);
-/** The variables a flow battle's Ink holds: the last quiz it returned from and the score so far (4.4). */
+/** The variables a battle's Ink holds: the last quiz it returned from and the score so far (4.4). */
 function flowVariables(active: Pick<ActiveBattle, "answers" | "phase">) {
   const passed = passedAnswers(active as ActiveBattle);
   const correct = passed.at(-1)?.correct ?? false;
@@ -256,26 +209,26 @@ const flowKnotName = (battle: BattleDefinition) => splitStoryAddress(battle.stor
 export const flowClaimKnot = (battle: BattleDefinition) => `${flowKnotName(battle)}_claim`;
 export const flowPressKnot = (battle: BattleDefinition) => `${flowKnotName(battle)}_press`;
 const flowHelperAddress = (battle: BattleDefinition, knot: string) => `${storyFileOf(battle.storyId)}.${knot}`;
-/** The dialogue's round: the last answered question, or the reasoning's from its claim on (as the scene form's claim scene). */
+/** The dialogue's round: the last answered question, or the reasoning's from its claim on. */
 function flowDialogueRound(active: ActiveBattle, battle: BattleDefinition): number {
   const config = battle.reasoning;
   if (config && (active.reasoning || active.linePart) && active.answers.length === config.roundIndex) return config.roundIndex;
   return Math.max(0, active.answers.length - 1);
 }
-/** A flow battle's lines without the marks of its first stop's lead-in (a call, the result). */
+/** A battle's lines without the marks of its first stop's lead-in (a call, the result). */
 function withoutLinePart(active: ActiveBattle): ActiveBattle {
   const { linePart: _part, sceneEnd: _end, ...rest } = active;
   return rest;
 }
-/** The claim knot to tell the claim's lines by: a special flow battle's lines before its first stop, after quiz(roundIndex). */
+/** The claim knot to tell the claim's lines by: a special battle's lines before its first stop, after quiz(roundIndex). */
 function claimToTrack(active: Pick<ActiveBattle, "reasoning" | "answers">, battle: BattleDefinition): string | undefined {
   const config = battle.reasoning;
-  return config && isFlowBattle(battle) && !active.reasoning && active.answers.length === config.roundIndex ? flowClaimKnot(battle) : undefined;
+  return config && !active.reasoning && active.answers.length === config.roundIndex ? flowClaimKnot(battle) : undefined;
 }
 /**
- * Whether a line before the first stop ends what was a scene in the scene form: the line before the claim, and the
- * claim's last line before its rebuttal. The next line (read on a copy) says it. A line before a call or the end ends
- * its part anyway (battleDialogueStop).
+ * Whether a line before the first stop ends a part: the line before the claim, and the claim's last line before its
+ * rebuttal. The next line (read on a copy) says it. A line before a call or the end ends its part anyway
+ * (battleDialogueStop).
  */
 function flowSceneEnds(state: GameState, active: ActiveBattle, battle: BattleDefinition, knot: string): boolean {
   if (active.phase !== "dialogue" || !active.frame || !active.storyState || active.frame.choices.length || active.frame.ended) return false;
@@ -288,10 +241,10 @@ function flowSceneEnds(state: GameState, active: ActiveBattle, battle: BattleDef
 function settleFlow(state: GameState, active: ActiveBattle, step: StoryStep): GameState {
   const { battle } = getActiveBattleContent(active);
   if (step.effects.length) throw new Error("バトル会話に # effect: は書けません。");
-  const moved: ActiveBattle = withoutLinePart({ ...active, storyState: step.storyState, frame: step.frame, dialogueScene: null, hintOpen: false });
+  const moved: ActiveBattle = withoutLinePart({ ...active, storyState: step.storyState, frame: step.frame, hintOpen: false });
   if (step.lineRead || frameCall(step.frame) === undefined && !step.frame.ended) {
     const knot = claimToTrack(moved, battle);
-    // Before the first stop: the claim's lines (from its knot), then the rebuttal's (after it), as the scene form showed them.
+    // Before the first stop: the claim's lines (from its knot), then the rebuttal's (after it).
     const part = knot === undefined ? undefined : !step.lineRead ? active.linePart : step.inKnot ? "claim" : active.linePart ? "rebuttal" : undefined;
     const line: ActiveBattle = { ...moved, phase: "dialogue", ...(part ? { linePart: part } : {}) };
     const sceneEnd = knot !== undefined && flowSceneEnds(state, line, battle, knot);
@@ -305,7 +258,7 @@ function enterFlowCall(state: GameState, active: ActiveBattle): GameState {
   const { battle, quiz } = getActiveBattleContent(active);
   const at = storyCallAt(battle.storyId, active.storyState!);
   if (!at) throw new Error("バトルの呼び口が見つかりません。");
-  const rest = { ...withoutLinePart(active), frame: null, dialogueScene: null, hintOpen: false, hintUsed: false };
+  const rest = { ...withoutLinePart(active), frame: null, hintOpen: false, hintUsed: false };
   if (at.call === "quiz") {
     // content:build checks that every path calls quiz 1..n once, in order (A16).
     if (at.arg !== active.answers.length + 1 || at.arg > quiz.questions.length)
@@ -320,7 +273,7 @@ function enterFlowCall(state: GameState, active: ActiveBattle): GameState {
   return { ...state, activeBattle: { ...rest, phase: "reasoning", roundIndex: config.roundIndex, reasoning } };
 }
 
-/** Pass the call's answer to Ink and go on from it: a fresh frame, as the scene form started each scene. */
+/** Pass the call's answer to Ink and go on from it, in a fresh frame. */
 function returnFromFlowCall(state: GameState, active: ActiveBattle, variables: Record<string, string | number | boolean>): GameState {
   const { battle } = getActiveBattleContent(active);
   // Every answer so far, the one on its right-or-wrong screen included, is passed now.
@@ -379,7 +332,7 @@ export function chooseBattle(state: GameState, index: number, expectedRevision: 
   return apply && (option!.rel || option!.profile) ? evaluateProgression(moved) : moved;
 }
 
-/** Record the result (any score) and show the result screen: the same for both forms. */
+/** Record the result (any score) and show the result screen. */
 function finishBattle(state: GameState, active: ActiveBattle): GameState {
   const previous = state.battleRecords.find(
     (record) => record.battleId === active.battleId,
@@ -403,7 +356,6 @@ function finishBattle(state: GameState, active: ActiveBattle): GameState {
     activeBattle: {
       ...withoutLinePart(active),
       phase: "result",
-      dialogueScene: null,
       storyState: null,
       frame: null,
       hintOpen: false,
@@ -463,33 +415,16 @@ function startBattleInternal(state: GameState, battleId: string, mapChecked: boo
     score: 0,
     hintOpen: false,
     hintUsed: false,
-    dialogueScene: null,
     storyState: null,
     frame: null,
     reasoning: null,
     turns: 0,
     appliedOptionIds: [],
   };
-  const started = { ...state, revision: state.revision + 1, battleRewardReceipt: null };
-  if (isFlowBattle(battle)) return startFlowBattle(started, active, battle);
-  return { ...started, activeBattle: withDialogue(state, active, scenesOf(battle).intro) };
+  return startFlowBattle({ ...state, revision: state.revision + 1, battleRewardReceipt: null }, active, battle);
 }
 function sameClues(left: string[], right: string[]): boolean {
   return left.length === right.length && left.every((id) => right.includes(id));
-}
-function specialScene(battle: BattleDefinition, scene: string | null): boolean {
-  const config = battle.reasoning;
-  return (
-    !!config &&
-    !isFlowBattle(battle) &&
-    scene !== null &&
-    [
-      config.claimScene,
-      config.successScene,
-      config.failureScene,
-      config.kind === "contradiction" ? config.pressScene : null,
-    ].includes(scene)
-  );
 }
 
 /** Current case statement is always readable, including while the notebook is open. */
@@ -502,56 +437,28 @@ export function getReasoningContext(
   if (!active || !battle || !config) return null;
   // A later quiz answer must not rewrite the statement that introduced this proof.
   const priorAnswers = active.answers.slice(0, config.roundIndex);
-  const context = {
-    ...active,
-    answers: priorAnswers,
-    score: priorAnswers.filter((answer) => answer.correct).length,
-  };
-  if (isFlowBattle(battle)) {
-    // The flow's helper knots, read on their own with the variables as the flow had them at its stop point (stage 5).
-    // As the flow reads them: the names, memories and items too (the scene form read them through beginStory).
-    const variables = { ...flowVariables({ answers: priorAnswers, phase: "dialogue" }), player_name: state.playerName,
-      heroine_name: state.heroineName, player_address: playerAddress(state) };
-    const read = (knot: string, enemyOnly: boolean) => {
-      const lines: string[] = [];
-      let found: { text: string; speaker: string }[] = [];
-      // The clue book never stops the screen: content:build stops a helper that errors or reaches a choice.
-      try { found = readStoryKnotLines(flowHelperAddress(battle, knot), variables, sceneConditionReader(state), state.memories, state.inventory); }
-      catch { found = []; }
-      for (const line of found)
-        if ((!enemyOnly || line.speaker === "enemy") && line.text !== lines.at(-1)) lines.push(line.text);
-      return lines.join("\n");
-    };
-    const hasPress = config.kind === "contradiction" && storyHasKnot(battle, flowPressKnot(battle));
-    return {
-      claimText: read(flowClaimKnot(battle), true),
-      pressedText: active.reasoning?.pressed && hasPress ? read(flowPressKnot(battle), false) : null,
-    };
-  }
-  const readScene = (scene: string, enemyOnly = false): string => {
-    let current = withDialogue(state, context, scene);
+  // The flow's helper knots, read on their own with the variables as the flow had them at its stop point,
+  // and with the names, memories and items as the flow reads them.
+  const variables = { ...flowVariables({ answers: priorAnswers, phase: "dialogue" }), player_name: state.playerName,
+    heroine_name: state.heroineName, player_address: playerAddress(state) };
+  const read = (knot: string, enemyOnly: boolean) => {
     const lines: string[] = [];
-    for (let count = 0; count < 200; count++) {
-      if ((!enemyOnly || current.frame!.speaker === "enemy") && current.frame!.text && current.frame!.text !== lines.at(-1))
-        lines.push(current.frame!.text);
-      if (current.frame!.ended) return lines.join("\n");
-      current = fromStory(
-        current,
-        continueStory(battle.storyId, current.storyState!, current.frame!, [], {}, {}, sceneConditionReader(state)),
-      );
-    }
-    throw new Error("推理の主張が長すぎます。");
+    let found: { text: string; speaker: string }[] = [];
+    // The clue book never stops the screen: content:build stops a helper that errors or reaches a choice.
+    try { found = readStoryKnotLines(flowHelperAddress(battle, knot), variables, sceneConditionReader(state), state.memories, state.inventory); }
+    catch { found = []; }
+    for (const line of found)
+      if ((!enemyOnly || line.speaker === "enemy") && line.text !== lines.at(-1)) lines.push(line.text);
+    return lines.join("\n");
   };
+  const hasPress = config.kind === "contradiction" && storyHasKnot(battle, flowPressKnot(battle));
   return {
-    claimText: readScene(config.claimScene!, true),
-    pressedText:
-      active.reasoning?.pressed && config.kind === "contradiction"
-        ? readScene(config.pressScene!)
-        : null,
+    claimText: read(flowClaimKnot(battle), true),
+    pressedText: active.reasoning?.pressed && hasPress ? read(flowPressKnot(battle), false) : null,
   };
 }
 
-/** Whether the battle's story file has a knot (a flow battle's optional press helper). */
+/** Whether the battle's story file has a knot (a special battle's optional press helper). */
 function storyHasKnot(battle: BattleDefinition, knot: string): boolean {
   const compiled = stories[storyFileOf(battle.storyId)];
   if (!compiled) return false;
@@ -607,13 +514,7 @@ export function pressBattleClaim(
   )
     return state;
   const pressed = { ...active, reasoning: { ...active.reasoning, pressed: true } };
-  if (isFlowBattle(battle!))
-    return returnFromFlowCall({ ...state, revision: state.revision + 1 }, pressed, { reasoning_action: "press", evidence_result: "" });
-  return {
-    ...state,
-    revision: state.revision + 1,
-    activeBattle: withDialogue(state, pressed, config.pressScene!),
-  };
+  return returnFromFlowCall({ ...state, revision: state.revision + 1 }, pressed, { reasoning_action: "press", evidence_result: "" });
 }
 
 /** How many clues a special battle's evidence takes (B: 1, C: 2), as the panel and the clue book show it. */
@@ -683,15 +584,9 @@ export function submitBattleEvidence(
       status: accepted ? "accepted" : "incorrect",
     },
   };
-  // The evidence does not change the score (both forms; decision 35).
-  if (isFlowBattle(battle!))
-    return returnFromFlowCall({ ...state, revision: state.revision + 1 }, submitted,
-      { reasoning_action: "evidence", evidence_result: accepted ? "success" : "failure" });
-  return {
-    ...state,
-    revision: state.revision + 1,
-    activeBattle: withDialogue(state, submitted, accepted ? config.successScene! : config.failureScene!),
-  };
+  // The evidence does not change the score (decision 35).
+  return returnFromFlowCall({ ...state, revision: state.revision + 1 }, submitted,
+    { reasoning_action: "evidence", evidence_result: accepted ? "success" : "failure" });
 }
 
 export function answerBattle(
@@ -759,34 +654,31 @@ export function battleDialogueStop(active: ActiveBattle): "line" | "quiz" | "rea
   return frame.ended ? "end" : "line";
 }
 
-/** What the battle screen shows around its line (BattleScreen): one rule for both forms, so the one flow looks as the scene form did. */
+/** What the battle screen shows around its line (BattleScreen). */
 export type BattleChrome = {
-  /** A rebuttal line: the scene form's presentation-only rebuttal story, or a flow battle's rebuttal lines (stage 5). */
+  /** A line of a special battle's rebuttal (after its claim, before its first stop point). */
   rebuttal: boolean;
   /** The line waits for one of the conversation's choices (no next tap). */
   choosing: boolean;
-  /** The 「次へ進む」 (or 「問題へ進む」, 「結果を見る」) button under the line: the end of a part (a scene of the scene form). */
+  /** The 「次へ進む」 (or 「問題へ進む」, 「結果を見る」) button under the line: the end of a part (before a call, the result, or a part's end before the first stop). */
   advance: { label: string; testId: "battle-advance" | "reasoning-rebuttal-advance" } | null;
   /** 手がかり帳 beside the scene's label, and 「回答した問題を振り返る」. */
   notebookTab: boolean;
   reviewAnswers: boolean;
 };
-/** The chrome of the battle screen now; `rebuttalFrame`: the scene form's presentation-only rebuttal line on screen, if any. */
-export function battleChrome(active: ActiveBattle, battle: BattleDefinition, rebuttalFrame?: StoryFrame | null): BattleChrome {
-  const flow = isFlowBattle(battle);
-  const dialogue = active.phase === "dialogue" || !!rebuttalFrame;
-  const stop = !rebuttalFrame && active.phase === "dialogue" ? battleDialogueStop(active) : null;
-  const rebuttal = !!rebuttalFrame || (flow && active.phase === "dialogue" && active.linePart === "rebuttal");
-  const partEnd = rebuttalFrame ? rebuttalFrame.ended
-    : flow ? stop === "quiz" || stop === "reasoning" || stop === "end" || !!active.sceneEnd : !!active.frame?.ended;
-  const label = (flow ? stop === "end" : !rebuttalFrame && active.dialogueScene === battle.scenes?.outro) ? "結果を見る"
-    : battle.reasoning ? "次へ進む" : "問題へ進む";
+/** The chrome of the battle screen now. */
+export function battleChrome(active: ActiveBattle, battle: BattleDefinition): BattleChrome {
+  const dialogue = active.phase === "dialogue";
+  const stop = dialogue ? battleDialogueStop(active) : null;
+  const rebuttal = dialogue && active.linePart === "rebuttal";
+  const partEnd = stop === "quiz" || stop === "reasoning" || stop === "end" || !!active.sceneEnd;
+  const label = stop === "end" ? "結果を見る" : battle.reasoning ? "次へ進む" : "問題へ進む";
   return {
     rebuttal,
     choosing: stop === "choices",
     advance: dialogue && partEnd ? { label, testId: rebuttal ? "reasoning-rebuttal-advance" : "battle-advance" } : null,
     notebookTab: dialogue && !rebuttal,
-    // The scene form's rebuttal played while the battle was already at its stop point, where this button is not shown.
+    // The rebuttal leads straight into the proof's screen, which has its own.
     reviewAnswers: active.phase !== "result" && active.phase !== "reasoning" && !rebuttal && active.answers.length > 0,
   };
 }
@@ -798,102 +690,18 @@ export function advanceBattle(
   const active = state.activeBattle;
   if (state.activeTourism || state.revision !== expectedRevision || !active)
     return state;
-  const { battle, quiz } = getActiveBattleContent(active);
-  if (isFlowBattle(battle)) {
-    // The answer goes to Ink once, as the player leaves its right-or-wrong screen (4.6).
-    if (active.phase === "feedback") return returnFromFlowCall({ ...state, revision: state.revision + 1 }, active, {});
-    if (active.phase !== "dialogue" || !active.frame || !active.storyState) return state;
-    const stop = battleDialogueStop(active);
-    if (stop === "choices") return state;
-    const next = { ...state, revision: state.revision + 1 };
-    if (stop === "quiz" || stop === "reasoning") return enterFlowCall(next, active);
-    if (stop === "end") return finishBattle(next, active);
-    const step = continueStory(battle.storyId, active.storyState, active.frame, state.memories, {}, state.inventory, sceneConditionReader(state),
-      claimToTrack(active, battle));
-    return settleFlow(next, active, step);
-  }
-  const scenes = scenesOf(battle);
-  if (active.phase === "feedback") {
-    const scene =
-      active.roundIndex === quiz.questions.length - 1
-        ? scenes.outro
-        : scenes.afterRounds[active.roundIndex];
-    return {
-      ...state,
-      revision: state.revision + 1,
-      activeBattle: withDialogue(state, active, scene),
-    };
-  }
-  if (active.phase !== "dialogue" || !active.frame || !active.storyState)
-    return state;
-  if (!active.frame.ended) {
-    const step = continueStory(battle.storyId, active.storyState, active.frame, [], {}, {}, sceneConditionReader(state));
-    return {
-      ...state,
-      revision: state.revision + 1,
-      activeBattle: fromStory(active, step),
-    };
-  }
-  if (specialScene(battle, active.dialogueScene)) {
-    return {
-      ...state,
-      revision: state.revision + 1,
-      activeBattle: {
-        ...active,
-        phase:
-          active.reasoning!.status === "accepted" ? "question" : "reasoning",
-        dialogueScene: null,
-        storyState: null,
-        frame: null,
-        hintOpen: false,
-        hintUsed: false,
-      },
-    };
-  }
-  if (active.dialogueScene === scenes.outro)
-    return finishBattle({ ...state, revision: state.revision + 1 }, active);
-  const config = battle.reasoning;
-  if (
-    config &&
-    config.roundIndex === active.answers.length &&
-    !active.reasoning
-  ) {
-    return {
-      ...state,
-      revision: state.revision + 1,
-      activeBattle: withDialogue(
-        state,
-        {
-          ...active,
-          roundIndex: config.roundIndex,
-          hintOpen: false,
-          hintUsed: false,
-          reasoning: {
-            statementId: config.claimScene!,
-            selectedClueIds: [],
-            submittedClueIds: [],
-            pressed: false,
-            status: "selecting",
-          },
-        },
-        config.claimScene!,
-      ),
-    };
-  }
-  return {
-    ...state,
-    revision: state.revision + 1,
-    activeBattle: {
-      ...active,
-      phase: "question",
-      roundIndex: active.answers.length,
-      dialogueScene: null,
-      storyState: null,
-      frame: null,
-      hintOpen: false,
-      hintUsed: false,
-    },
-  };
+  const { battle } = getActiveBattleContent(active);
+  // The answer goes to Ink once, as the player leaves its right-or-wrong screen (4.6).
+  if (active.phase === "feedback") return returnFromFlowCall({ ...state, revision: state.revision + 1 }, active, {});
+  if (active.phase !== "dialogue" || !active.frame || !active.storyState) return state;
+  const stop = battleDialogueStop(active);
+  if (stop === "choices") return state;
+  const next = { ...state, revision: state.revision + 1 };
+  if (stop === "quiz" || stop === "reasoning") return enterFlowCall(next, active);
+  if (stop === "end") return finishBattle(next, active);
+  const step = continueStory(battle.storyId, active.storyState, active.frame, state.memories, {}, state.inventory, sceneConditionReader(state),
+    claimToTrack(active, battle));
+  return settleFlow(next, active, step);
 }
 export function leaveBattle(
   state: GameState,
@@ -994,63 +802,15 @@ export function validateBattleState(state: GameState): void {
     )
       throw new Error("最終結果が一致しません。");
   }
-  if (isFlowBattle(battle)) {
-    validateFlowBattle(state, active, battle);
-    return;
-  }
-  if (active.turns !== 0 || active.appliedOptionIds.length)
-    throw new Error("バトル会話の位置が一致しません。");
-  const scenes = scenesOf(battle);
-  const isSpecialScene = specialScene(battle, active.dialogueScene);
-  validateReasoningState(active, battle);
-  if (
-    active.answers.length &&
-    active.phase !== "question" &&
-    active.phase !== "reasoning" &&
-    !isSpecialScene &&
-    active.answers.at(-1)!.hintUsed !== active.hintUsed
-  )
-    throw new Error("回答時のヒント記録が一致しません。");
-  if (active.phase === "dialogue") {
-    const expectedScene = isSpecialScene
-      ? active.dialogueScene
-      : active.answers.length === 0
-        ? scenes.intro
-        : active.answers.length === quiz.questions.length
-          ? scenes.outro
-          : scenes.afterRounds[active.answers.length - 1];
-    const expectedRound = isSpecialScene
-      ? battle.reasoning!.roundIndex
-      : Math.max(0, active.answers.length - 1);
-    if (
-      active.dialogueScene !== expectedScene ||
-      active.roundIndex !== expectedRound ||
-      !active.storyState ||
-      !active.frame ||
-      active.frame.choices.length
-    )
-      throw new Error("バトル会話の位置が一致しません。");
-    validateStorySnapshot(battle.storyId, active.storyState, active.frame, {
-      playerName: state.playerName,
-      heroineName: state.heroineName,
-      choiceCount: 0,
-      variables: sceneVariables(active, battle),
-    });
-  } else if (
-    active.storyState !== null ||
-    active.frame !== null ||
-    active.dialogueScene !== null
-  )
-    throw new Error("不要な会話状態が保存されています。");
+  validateBattleRun(state, active, battle);
 }
 
 /**
- * A flow battle's saved run (stage 5): its story stops where its phase says (a line, a quiz call with the round's number,
- * the reasoning's stop) after as many choices as it records, with the variables of the answers already passed to Ink.
+ * A battle's saved run: its story stops where its phase says (a line, a quiz call with the round's number, the
+ * reasoning's stop) after as many choices as it records, with the variables of the answers already passed to Ink.
  */
-function validateFlowBattle(state: GameState, active: ActiveBattle, battle: BattleDefinition): void {
+function validateBattleRun(state: GameState, active: ActiveBattle, battle: BattleDefinition): void {
   const fail = (message = "バトル会話の位置が一致しません。") => { throw new Error(message); };
-  if (active.dialogueScene !== null) fail();
   if (new Set(active.appliedOptionIds).size !== active.appliedOptionIds.length ||
       active.appliedOptionIds.some((id) => !sceneOption(battleScene(battle), id)) ||
       // Each applied choice is one of the run's choices, and a replay (the result recorded before it ends) applies none.
@@ -1059,7 +819,7 @@ function validateFlowBattle(state: GameState, active: ActiveBattle, battle: Batt
     fail("保存された選択の記録が一致しません。");
   if (active.phase === "result") {
     if (active.storyState !== null || active.frame !== null) fail("不要な会話状態が保存されています。");
-    validateFlowProof(active, battle);
+    validateProof(active, battle);
     return;
   }
   if (!active.storyState) fail();
@@ -1089,11 +849,11 @@ function validateFlowBattle(state: GameState, active: ActiveBattle, battle: Batt
       if (at!.call !== "reasoning" || !battle.reasoning || active.roundIndex !== battle.reasoning.roundIndex) fail();
     } else if (at!.call !== "quiz" || at!.arg !== active.roundIndex + 1) fail();
   }
-  validateFlowProof(active, battle);
+  validateProof(active, battle);
 }
 
-/** A flow battle's proof (stage 5): made at its first stop, after the quizzes before it; the same clue rules as the scene form. */
-function validateFlowProof(active: ActiveBattle, battle: BattleDefinition): void {
+/** A special battle's proof: made at its first stop, after the quizzes before it. Forged proof flags and unrelated evidence are refused. */
+function validateProof(active: ActiveBattle, battle: BattleDefinition): void {
   const config = battle.reasoning;
   const proof = active.reasoning;
   const fail = () => { throw new Error("保存された推理の進行が一致しません。"); };
@@ -1115,98 +875,4 @@ function validateFlowProof(active: ActiveBattle, battle: BattleDefinition): void
   } else if (proof.submittedClueIds.length !== config.correctClueIds.length || !sameClues(proof.selectedClueIds, proof.submittedClueIds) ||
       (proof.status === "accepted") !== sameClues(proof.submittedClueIds, config.correctClueIds)) fail();
   if (active.phase === "reasoning" && (proof.status === "accepted" || active.hintUsed)) fail();
-}
-
-/** Do not accept forged proof flags, unrelated evidence, or a skipped proof stage. */
-function validateReasoningState(
-  active: ActiveBattle,
-  battle: BattleDefinition,
-): void {
-  const config = battle.reasoning;
-  const proof = active.reasoning;
-  const special = specialScene(battle, active.dialogueScene);
-  const fail = () => {
-    throw new Error("保存された推理の進行が一致しません。");
-  };
-  if (!config) {
-    if (proof || active.phase === "reasoning") fail();
-    return;
-  }
-  if (!proof) {
-    if (
-      special ||
-      active.phase === "reasoning" ||
-      (active.roundIndex >= config.roundIndex && active.phase !== "dialogue") ||
-      active.answers.length > config.roundIndex
-    )
-      fail();
-    return;
-  }
-  if (
-    proof.statementId !== config.claimScene ||
-    active.roundIndex < config.roundIndex ||
-    (active.answers.length === config.roundIndex &&
-      active.phase === "dialogue" &&
-      !special)
-  )
-    fail();
-  for (const ids of [proof.selectedClueIds, proof.submittedClueIds]) {
-    if (
-      new Set(ids).size !== ids.length ||
-      ids.length > config.correctClueIds.length ||
-      ids.some((id) => !config.caseClueIds.includes(id))
-    )
-      fail();
-  }
-  if (config.kind === "connection" && proof.pressed) fail();
-  if (proof.status === "selecting") {
-    if (proof.submittedClueIds.length) fail();
-  } else {
-    if (
-      proof.submittedClueIds.length !== config.correctClueIds.length ||
-      !sameClues(proof.selectedClueIds, proof.submittedClueIds) ||
-      (proof.status === "accepted") !==
-        sameClues(proof.submittedClueIds, config.correctClueIds)
-    )
-      fail();
-  }
-  if (
-    active.phase === "reasoning" &&
-    (proof.status === "accepted" || active.roundIndex !== config.roundIndex)
-  )
-    fail();
-  if (special) {
-    if (
-      active.phase !== "dialogue" ||
-      active.roundIndex !== config.roundIndex ||
-      active.answers.length !== config.roundIndex ||
-      active.hintUsed
-    )
-      fail();
-    if (
-      active.dialogueScene === config.claimScene &&
-      (proof.pressed ||
-        proof.status !== "selecting" ||
-        proof.selectedClueIds.length)
-    )
-      fail();
-    if (
-      config.kind === "contradiction" &&
-      active.dialogueScene === config.pressScene &&
-      (!proof.pressed || proof.status === "accepted")
-    )
-      fail();
-    if (
-      active.dialogueScene === config.successScene &&
-      proof.status !== "accepted"
-    )
-      fail();
-    if (
-      active.dialogueScene === config.failureScene &&
-      proof.status !== "incorrect"
-    )
-      fail();
-  } else if (active.phase !== "reasoning" && proof.status !== "accepted")
-    fail();
-  if (active.phase === "reasoning" && active.hintUsed) fail();
 }

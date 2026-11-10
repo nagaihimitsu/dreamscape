@@ -69,8 +69,6 @@ describe("journey authoring with four cities", () => {
     expect(requirements.every((city) => city.main.length === 4 && city.dates.length === 6)).toBe(true);
     const fragments = buildJourneyFragments(input, testNarrative(requirements));
     expect(fragments.episodes).toHaveLength(20);
-    // The battles are in the one-flow form (stage 5): their Ink calls the quizzes, the catalog names no scenes.
-    expect(fragments.battles.filter((battle) => battle.scenes)).toEqual([]);
     expect(fragments.dates).toHaveLength(24);
     expect(fragments.landmarks.every((landmark) => landmark.imageAssetId === input.imageAssetIds[landmark.id])).toBe(true);
     for (const city of requirements) {

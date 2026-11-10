@@ -678,7 +678,7 @@ export const ops = {
     await page.getByRole("button", { name: "場面の選択へ戻る" }).click();
     await expect(page.getByTestId("debug-panel")).toBeVisible();
   },
-  /** Special battle B/C: after the claim, the optional rebuttal lines and the cut-in (presentation only, never saved). */
+  /** Special battle B/C: after the claim, the rebuttal lines if any and the cut-in (presentation only). */
   async passReasoningIntro(page: Page) {
     const notebook = page.getByTestId("reasoning-notebook");
     const line = page.getByTestId("dialogue-text");
@@ -751,7 +751,7 @@ async function act(page: Page, state: GameState, pick: Pick) {
   // A guide's, an arrival's or an epilogue's Japanese choices (stage 3a): the first shown one.
   if (state.activeTourism?.phase === "guide" && state.activeTourism.frame?.choices.length) return page.getByTestId("guide-choice").first().click();
   if (state.activeEpilogue?.frame.choices.length) return page.getByTestId("epilogue-choice").first().click();
-  // A battle's conversation choices (the one-flow form, stage 5; its quiz and reasoning calls are not shown as choices).
+  // A battle's conversation choices (stage 5; its quiz and reasoning calls are not shown as choices).
   if (state.activeBattle?.phase === "dialogue" && state.activeBattle.frame?.choices.some((choice) => !choice.call))
     return page.getByTestId("battle-choice").first().click();
   if (encounter && !(await page.locator(nextButtons).filter({ visible: true }).count())) {

@@ -9,7 +9,6 @@ import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import type { TagContext } from "../src/content/tags";
 import { RELATIONSHIP_TONES } from "../src/domain/romance-tone";
 import { validateMemoryReferences } from "../src/story/memory";
-import { validateBattleStory } from "./battle-validation";
 import { displayPath, journeyLayer, loadContentSources, parseCatalog, storyFile, type ContentSources } from "./content-sources";
 import { withContext } from "./content-validation-utils";
 import { validateEpilogue } from "./epilogue-validation";
@@ -115,7 +114,7 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
         warnings.push(`${displayPath(root, file)}: the protagonist speaks outside the date choices (# speaker: player); usually the protagonist speaks through the choices (not stopped)`);
       validateMemoryReferences(source, Object.keys(fragments.memories));
       // A scene's cond("…") (stage 2a): declared, literal and written as a condition; content:build checks what it names.
-      // A battle in the one-flow form (stage 5) includes the game's modules.ink (its quiz and reasoning calls).
+      // A battle includes the game's modules.ink (its quiz and reasoning calls).
       const modules = includesModules(source);
       parseSceneConditions(readSceneConditions(source, modules));
       stories[storyId] = modules ? compileInk(source, file, { [MODULES_FILE]: MODULES_INK }) : compileInk(source, file);
@@ -140,14 +139,13 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
     city.cityId, input.plannedLandmarks[city.cityId], fragments.battles, {}, stories, context, () => observe,
     (storyId) => storyFiles[storyId] ? displayPath(root, storyFiles[storyId]) : `${storyId}.ink`, (guideStoryId) => placeKnots.has(guideStoryId));
     for (const battle of fragments.battles.filter((battle) => battle.cityId === city.cityId || ownLandmarks.some((landmark) => landmark.battleId === battle.id)))
-      // A place file's knot: content:build walks it. A battle is written in the one-flow form (stage 5; the scaffold
-      // writes no scenes): walked as content:build walks it, every quiz right and wrong (A16).
+      // A place file's knot: content:build walks it. A battle's one flow is walked as content:build walks it, every quiz
+      // right and wrong (A16).
       if (placeKnots.has(battle.storyId)) continue;
-      else if (battle.scenes) battleScenarios += withContext(battle.storyId, () => validateBattleStory(stories[battle.storyId], battle, context, observe));
       else battleScenarios += withContext(storyFiles[battle.storyId] ?? battle.storyId, () => {
         const source = inkSources[battle.storyId];
         if (!includesModules(source))
-          throw new Error(`A battle's script is in the one-flow form (stage 5): start ${battle.storyId} with INCLUDE modules.ink in place of its VAR lines, ` +
+          throw new Error(`A battle's script calls the game's quizzes (stage 5): start ${battle.storyId} with INCLUDE modules.ink in place of its VAR lines, ` +
             `and call the quiz with -> quiz(1) -> … (authoring/CONTENT_GUIDE.md「対決の会話を1本の流れで書く」)`);
         const options = readFileChoices(battle.storyId, source).flatMap((choice) => choiceOption(choice, apCap) ?? []);
         return walkScene({ compiled: stories[battle.storyId], label: battle.storyId, context, conds: readSceneConditions(source, true), options,

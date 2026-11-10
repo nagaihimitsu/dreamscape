@@ -11,7 +11,6 @@ import { journeySchema } from "../src/content/journey-schemas";
 import { learningDetailsSchema } from "../src/content/learning-details";
 import { learningCatalogSchema } from "../src/content/learning-schema";
 import { ownArtworkCatalogSchema } from "../src/content/own-artwork-schema";
-import { reasoningIntroCatalogSchema } from "../src/content/reasoning-intros";
 import { sceneDataCatalogSchema, storyStateCatalogSchema } from "../src/content/scene-schemas";
 import { tourSchema } from "../src/content/tour-schemas";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
@@ -62,7 +61,6 @@ export const CATALOG_SCHEMAS: Record<MergedKind, { titleJa: string; schema: z.Zo
   "presentation/dialogue-expressions.json": { titleJa: "台詞の表情", schema: dialogueExpressionCatalogSchema },
   "presentation/dialogue-reactions.json": { titleJa: "台詞の反応", schema: dialogueReactionCatalogSchema },
   "presentation/own-artwork.json": { titleJa: "Dreamscape のために作った絵", schema: ownArtworkCatalogSchema },
-  "presentation/reasoning-intros.json": { titleJa: "特殊戦の導入", schema: reasoningIntroCatalogSchema },
   "progression/journey.json": { titleJa: "本筋の回・特殊戦・報酬", schema: journeySchema },
   "progression/story.json": { titleJa: "物語の状態（フラグ・人物・名前つきの条件）", schema: storyStateCatalogSchema },
   "romance/balance.json": { titleJa: "恋愛の釣り合い", schema: content.balanceSchema },

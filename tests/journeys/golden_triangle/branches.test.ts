@@ -119,8 +119,7 @@ describe("Golden Triangle authored branching contracts", () => {
 
   for (const battle of indiaBattles) {
     it(`${battle.id}: every combination of correct and incorrect answers leaves the one flow playable to its end`, () => {
-      // The battles are in the one-flow form (stage 5): -> quiz(n) -> calls the quiz, which comes back with quiz_correct and battle_score.
-      expect(battle.scenes).toBeUndefined();
+      // -> quiz(n) -> calls the quiz, which comes back with quiz_correct and battle_score (stage 5).
       const quiz = battleQuizzes[battle.quizId];
       const total = quiz.questions.length;
       for (let mask = 0; mask < 1 << total; mask++) {

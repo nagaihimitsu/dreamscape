@@ -78,9 +78,6 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
   },
   "presentation/dialogue-expressions.json": { entries: (entry) => fields(entry, "story", ["storyId"]) },
   "presentation/dialogue-reactions.json": { entries: (entry) => fields(entry, "story", ["storyId"]) },
-  "presentation/reasoning-intros.json": {
-    entries: (entry) => [...fields(entry, "battle", ["battleId"]), ...fields(entry, "story", ["storyId"])],
-  },
   "progression/journey.json": {
     episodes: (entry) => [
       ...fields(entry, "city", ["cityId"]), ...fields(entry, "landmark", ["landmarkId"]), ...fields(entry, "battle", ["battleId"]),

@@ -145,9 +145,7 @@ describe("small proof steps inside three-round battles", () => {
       state = submitBattleEvidence(state, state.revision);
       expect(submitBattleEvidence(state, before.revision)).toBe(state);
       expect(state.activeBattle?.reasoning?.status).toBe("incorrect");
-      expect(state.activeBattle?.dialogueScene).toBe(
-        battle.reasoning!.failureScene,
-      );
+      expect(state.activeBattle?.phase).toBe("dialogue");
       state = readScene(state);
       expect(state.activeBattle?.phase).toBe("reasoning");
       expect(state.activeBattle?.score).toBe(score);

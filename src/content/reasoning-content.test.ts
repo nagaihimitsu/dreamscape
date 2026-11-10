@@ -2,15 +2,11 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { Story } from "inkjs";
 import { buildContent } from "../../scripts/content-pipeline";
-import { compileInk } from "../../scripts/ink-validation";
 import { changeCatalogEntry, prepareContentFixture } from "./test-fixtures";
-import {
-  validateBattleEvidence,
-  validateBattleStory,
-} from "../../scripts/battle-validation";
+import { validateBattleEvidence } from "../../scripts/battle-validation";
 import { tourismCatalogSchema } from "./tourism-schemas";
+import { storyFileOf } from "./story-address";
 import {
   battleCatalogSchema,
   battleSchema,
@@ -175,7 +171,7 @@ describe("special battle content contract", () => {
     ).toThrow("must be unique");
   });
 
-  it("limits the gimmick to an existing quiz round and keeps pursuit specific to B", () => {
+  it("limits the gimmick to an existing quiz round", () => {
     const b = special("B");
     expect(() =>
       battleSchema.parse({
@@ -183,23 +179,6 @@ describe("special battle content contract", () => {
         reasoning: { ...b.reasoning, roundIndex: 3 },
       }),
     ).toThrow(/"roundIndex"[\s\S]*Too big: expected number to be <=2/);
-    expect(() =>
-      battleSchema.parse({
-        ...b,
-        reasoning: { ...b.reasoning, pressScene: undefined },
-      }),
-    // A scene-form B names all its scenes; the one-flow form (no scenes) names none (stage 5).
-    ).toThrow(/A battle's reasoning names its scenes \(claimScene, pressScene, successScene, failureScene\) only in the scene form/);
-    expect(() => battleSchema.parse({ ...b, scenes: undefined })).toThrow(/names its scenes .* only in the scene form/);
-    const { claimScene: _claim, pressScene: _press, successScene: _success, failureScene: _failure, ...flowReasoning } = b.reasoning as Record<string, unknown>;
-    expect(() => battleSchema.parse({ ...b, scenes: undefined, reasoning: flowReasoning })).not.toThrow();
-    const c = special("C");
-    expect(() =>
-      battleSchema.parse({
-        ...c,
-        reasoning: { ...c.reasoning, pressScene: "press" },
-      }),
-    ).toThrow(/Unrecognized key: .*pressScene/);
   });
 
   it("rejects missing case evidence and evidence from a different landmark", async () => {
@@ -219,64 +198,6 @@ describe("special battle content contract", () => {
     );
   });
 
-  it("rejects colliding special scenes and nonexistent special Ink routes", async () => {
-    await changeBattle("B", (battle) => {
-      battle.reasoning!.failureScene = battle.scenes!.outro;
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Duplicate battle scene",
-    );
-    await changeBattle("B", (battle) => {
-      battle.reasoning!.failureScene = "missing_scene";
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Empty battle scene",
-    );
-  });
-
-  it.each([
-    // English lines are accepted (decision 28); an endless loop is not (decision 38).
-    ["Only English.\n-> END", null],
-    ["- (again)\n輪の中の一行。\n-> again", "Story reads more than 1000 lines without a choice or an end"],
-    [
-      "# effect: forbidden\n不正な報酬。\n-> END",
-      "Battle story cannot apply effects",
-    ],
-    [
-      "* [余分な選択]\n    進む。\n    -> END",
-      "A battle in the scene form (scenes in battles/catalog.json) cannot contain choices",
-    ],
-  ])(
-    "validates failure branches as rigorously as the main battle: %s",
-    (invalid, message) => {
-      const battle = special("B");
-      const compiled = compileInk(
-        [
-          'VAR player_name = "名前"',
-          'VAR heroine_name = "名前"',
-          'VAR battle_scene = "intro"',
-          "VAR answer_correct = false",
-          "VAR battle_score = 0",
-          `{ battle_scene == "${battle.reasoning!.failureScene}" && answer_correct:`,
-          "-> invalid_branch",
-          "}",
-          "検証用の日本語。",
-          "-> END",
-          "=== invalid_branch ===",
-          invalid,
-        ].join("\n"),
-      );
-      const validate = () =>
-        validateBattleStory(compiled, battle, {
-          effectIds: ["forbidden"],
-          backgroundIds: [],
-          emotionIds: [],
-        });
-      if (message === null) expect(validate()).toBeGreaterThan(0);
-      else expect(validate).toThrow(message);
-    },
-  );
-
   it("keeps C's combined conclusion an interpretation, with a separately scored English choice", async () => {
     const result = await buildContent(fixture, false);
     const battle = result.battles.find((item) => item.format === "C")!;
@@ -287,11 +208,7 @@ describe("special battle content contract", () => {
         (source) => source.claimType === "interpretation",
       ),
     ).toBe(true);
-    const story = new Story(result.stories[battle.storyId]);
-    story.variablesState.$("battle_scene", battle.reasoning!.successScene!);
-    const lines: string[] = [];
-    while (story.canContinue) lines.push(story.Continue() ?? "");
-    expect(story.currentChoices).toHaveLength(0);
-    expect(lines.join("\n")).not.toMatch(/[A-C]が正解|正解は[A-C]/);
+    // No line of the battle's flow gives the English choice away.
+    expect(result.stories[storyFileOf(battle.storyId)]).not.toMatch(/[A-C]が正解|正解は[A-C]/);
   });
 });

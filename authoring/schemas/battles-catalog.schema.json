@@ -111,18 +111,6 @@
                       "pattern": "^[a-z][a-z0-9_]*$"
                     }
                   },
-                  "claimScene": {
-                    "type": "string",
-                    "pattern": "^[a-z][a-z0-9_]*$"
-                  },
-                  "successScene": {
-                    "type": "string",
-                    "pattern": "^[a-z][a-z0-9_]*$"
-                  },
-                  "failureScene": {
-                    "type": "string",
-                    "pattern": "^[a-z][a-z0-9_]*$"
-                  },
                   "kind": {
                     "type": "string",
                     "const": "contradiction"
@@ -135,10 +123,6 @@
                       "type": "string",
                       "pattern": "^[a-z][a-z0-9_]*$"
                     }
-                  },
-                  "pressScene": {
-                    "type": "string",
-                    "pattern": "^[a-z][a-z0-9_]*$"
                   }
                 },
                 "required": [
@@ -166,18 +150,6 @@
                       "pattern": "^[a-z][a-z0-9_]*$"
                     }
                   },
-                  "claimScene": {
-                    "type": "string",
-                    "pattern": "^[a-z][a-z0-9_]*$"
-                  },
-                  "successScene": {
-                    "type": "string",
-                    "pattern": "^[a-z][a-z0-9_]*$"
-                  },
-                  "failureScene": {
-                    "type": "string",
-                    "pattern": "^[a-z][a-z0-9_]*$"
-                  },
                   "kind": {
                     "type": "string",
                     "const": "connection"
@@ -201,34 +173,6 @@
                 "additionalProperties": false
               }
             ]
-          },
-          "scenes": {
-            "type": "object",
-            "properties": {
-              "intro": {
-                "type": "string",
-                "pattern": "^[a-z][a-z0-9_]*$"
-              },
-              "afterRounds": {
-                "minItems": 2,
-                "maxItems": 4,
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "pattern": "^[a-z][a-z0-9_]*$"
-                }
-              },
-              "outro": {
-                "type": "string",
-                "pattern": "^[a-z][a-z0-9_]*$"
-              }
-            },
-            "required": [
-              "intro",
-              "afterRounds",
-              "outro"
-            ],
-            "additionalProperties": false
           }
         },
         "required": [

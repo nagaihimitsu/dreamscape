@@ -43,19 +43,25 @@ async function changeInk(before: string, after: string) {
   await writeFile(file, source.replace(before, after));
 }
 
-function dialogue(
-  compiled: string,
-  scene: string,
-  correct: boolean,
-  score: number,
-) {
+/**
+ * The battle's lines between its calls, each quiz answered as `answers` says (as the game returns from `-> quiz(n) ->`):
+ * the lines before quiz(1), after quiz(1), …, after the last quiz.
+ */
+function dialogueParts(compiled: string, answers: boolean[]): string[] {
   const story = new Story(compiled);
-  story.variablesState.$("battle_scene", scene);
-  story.variablesState.$("answer_correct", correct);
-  story.variablesState.$("battle_score", score);
-  const lines: string[] = [];
-  while (story.canContinue) lines.push(story.Continue() ?? "");
-  return lines.join("\n");
+  story.allowExternalFunctionFallbacks = true;
+  const parts: string[] = [];
+  for (let answered = 0; ; answered++) {
+    const lines: string[] = [];
+    while (story.canContinue) lines.push(story.Continue() ?? "");
+    parts.push(lines.join("\n"));
+    if (!story.currentChoices.length) return parts;
+    const correct = answers[answered];
+    story.variablesState.$("quiz_correct", correct);
+    story.variablesState.$("answer_correct", correct);
+    story.variablesState.$("battle_score", answers.slice(0, answered + 1).filter(Boolean).length);
+    story.ChooseChoiceIndex(0);
+  }
 }
 
 describe("battle content contract", () => {
@@ -86,29 +92,20 @@ describe("battle content contract", () => {
 
   it("uses distinct correct/wrong reactions and completes the ending without UI prose", async () => {
     const result = await buildContent(fixture, false);
-    const battle = result.battles[0];
-    const compiled = result.stories[battle.storyId];
-    for (const [index, scene] of battle.scenes!.afterRounds.entries()) {
-      expect(dialogue(compiled, scene, true, index + 1)).not.toBe(
-        dialogue(compiled, scene, false, 0),
-      );
-    }
-    const endings = [0, 2, 3].map((score) =>
-      dialogue(compiled, battle.scenes!.outro, score > 0, score),
-    );
-    // The revised scene responds to the last answer, while the score still
+    const compiled = result.stories[result.battles.find((item) => item.id === battleId)!.storyId];
+    const right = dialogueParts(compiled, [true, true, true]);
+    const wrong = dialogueParts(compiled, [false, false, false]);
+    expect(right).toHaveLength(4);
+    for (const index of [1, 2]) expect(right[index]).not.toBe(wrong[index]);
+    // The ending responds to the last answer, while the score still
     // remains available for the battle result and reward calculations.
+    const endings = [wrong, dialogueParts(compiled, [false, true, true]), right].map((parts) => parts[3]);
     expect(endings[0]).not.toBe(endings[1]);
     expect(endings[1]).toBe(endings[2]);
-    // The discovery for a later round must not be explained by the preceding scene.
-    const intro = dialogue(compiled, battle.scenes!.intro, false, 0);
-    expect(intro).not.toMatch(/三角形|こめかみ|乾いた/);
-    expect(
-      dialogue(compiled, battle.scenes!.afterRounds[0], true, 1),
-    ).not.toMatch(/こめかみ|乾いた/);
-    expect(
-      dialogue(compiled, battle.scenes!.afterRounds[1], true, 2),
-    ).not.toMatch(/乾いた|漆喰/);
+    // The discovery for a later round must not be explained by the lines before it.
+    expect(wrong[0]).not.toMatch(/三角形|こめかみ|乾いた/);
+    expect(right[1]).not.toMatch(/こめかみ|乾いた/);
+    expect(right[2]).not.toMatch(/乾いた|漆喰/);
   });
 
   it("rejects a missing production quiz reference", async () => {
@@ -211,39 +208,13 @@ describe("battle content contract", () => {
     );
   });
 
-  it("validates configured scenes rather than assuming an Ink route shape", async () => {
-    await changeBattle((battle) => {
-      battle.scenes!.afterRounds[1] = "absent_scene";
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Empty battle scene",
-    );
-  });
-
-  it("requires the battle variables used for saved dialogue", async () => {
-    await changeInk('VAR player_name = ""', "// removed variable");
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Missing required battle Ink variable: player_name",
-    );
-  });
-
   it("rejects reward effects even in a wrong-answer branch", async () => {
     await changeInk(
       "「ランプを探してた。",
       "# effect: common_date_first_playful\n「ランプを探してた。",
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Battle story cannot apply effects",
-    );
-  });
-
-  it("rejects Ink choice menus in battle dialogue", async () => {
-    await changeInk(
-      "「お水、いりますか？」",
-      "* [選ぶ]\n    続き",
-    );
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "A battle in the scene form (scenes in battles/catalog.json) cannot contain choices",
+      "A battle's lines take no # effect:",
     );
   });
 

@@ -254,15 +254,11 @@ const uniqueEvidenceIds = z
     (ids) => new Set(ids).size === ids.length,
     "Evidence IDs must be unique",
   );
-// The scene names belong to the scene form (stages 3–4: each is a knot or stitch the game starts by name). A battle in the
-// one-flow form (stage 5, no `scenes`) writes them in its flow: the claim in the helper knot <battle>_claim, the rest after
-// `-> reasoning ->` by reasoning_action and evidence_result.
+// The battle's Ink writes the proof's lines: the claim in the helper knot <battle>_claim (the press in <battle>_press), the
+// rest after `-> reasoning ->` by reasoning_action and evidence_result.
 const reasoningFields = {
   roundIndex: z.number().int().min(0).max(2),
   caseClueIds: uniqueEvidenceIds.min(3).max(5),
-  claimScene: id.optional(),
-  successScene: id.optional(),
-  failureScene: id.optional(),
 };
 
 /** One exceptional round; the conclusion is still an ordinary English three-choice quiz. */
@@ -273,7 +269,6 @@ export const battleReasoningSchema = z
         ...reasoningFields,
         kind: z.literal("contradiction"),
         correctClueIds: uniqueEvidenceIds.length(1),
-        pressScene: id.optional(),
       })
       .strict(),
     z
@@ -313,27 +308,8 @@ export const battleSchema = z
     // definition (and content fingerprint) stays exactly as authored.
     format: z.enum(["A", "B", "C"]).optional(),
     reasoning: battleReasoningSchema.optional(),
-    /**
-     * The scene form (stages 3–4): the scenes the game starts one by one. Without it the battle is in the one-flow
-     * form (stage 5): its Ink runs from its start and calls `-> quiz(n) ->` and `-> reasoning ->` (modules.ink).
-     */
-    scenes: z
-      .object({
-        intro: id,
-        afterRounds: z.array(id).min(2).max(4),
-        outro: id,
-      })
-      .strict()
-      .optional(),
   })
   .strict()
-  .refine((battle) => {
-    const reasoning = battle.reasoning;
-    if (!reasoning) return true;
-    const names = [reasoning.claimScene, reasoning.successScene, reasoning.failureScene,
-      ...(reasoning.kind === "contradiction" ? [reasoning.pressScene] : [])];
-    return battle.scenes ? names.every((name) => name !== undefined) : names.every((name) => name === undefined);
-  }, "A battle's reasoning names its scenes (claimScene, pressScene, successScene, failureScene) only in the scene form (with scenes); the one-flow form writes them in its Ink")
   .refine((battle) => {
     if ((battle.format ?? "A") === "A") return battle.reasoning === undefined;
     return (
@@ -344,14 +320,9 @@ export const battleSchema = z
   .refine(
     (battle) =>
       battle.scope === "city_finale"
-        ? battle.landmarkId === null &&
-          !!battle.cityId &&
-          (!battle.scenes || battle.scenes.afterRounds.length === 4) &&
-          !battle.reasoning
-        : battle.landmarkId !== null &&
-          battle.cityId === undefined &&
-          (!battle.scenes || battle.scenes.afterRounds.length === 2),
-    "Only a city finale has no landmark and four intermediate scenes",
+        ? battle.landmarkId === null && !!battle.cityId && !battle.reasoning
+        : battle.landmarkId !== null && battle.cityId === undefined,
+    "Only a city finale has no landmark; it names its city and has no reasoning",
   );
 
 export const battleCatalogSchema = z

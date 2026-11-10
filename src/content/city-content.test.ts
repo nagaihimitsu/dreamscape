@@ -70,7 +70,6 @@ describe("Milan city content", () => {
         (item) => item.id === episode.battleId,
       )!;
       expect(battle.reasoning).toBeUndefined();
-      expect(battle.scenes!.afterRounds).toHaveLength(2);
       const questions = result.quizzes[battle.quizId].questions;
       expect(questions).toHaveLength(3);
       // The rewritten quiz set chooses difficulty per question instead of
@@ -85,7 +84,6 @@ describe("Milan city content", () => {
     expect(finale.landmarkId).toBeNull();
     expect(finale.cityId).toBe("milano");
     expect(result.quizzes[finale.quizId].questions).toHaveLength(5);
-    expect(finale.scenes!.afterRounds).toHaveLength(4);
     expect(
       result.tourism.landmarks.some(
         (landmark) => landmark.battleId === finale.id,
@@ -94,7 +92,7 @@ describe("Milan city content", () => {
     expect(result.battleScenarios).toBeGreaterThan(129);
   });
 
-  it("allows five questions and four intermediate scenes only for a city finale", async () => {
+  it("allows five questions and no landmark only for a city finale", async () => {
     const result = await buildContent(fixture, false);
     const boss = result.battles.find(
       (battle) => battle.cityId === cityData.id && battle.scope === "city_finale",
@@ -106,23 +104,11 @@ describe("Milan city content", () => {
     ).toThrow("A normal quiz needs three questions; a city finale needs five");
     expect(() =>
       battleSchema.parse({ ...boss, landmarkId: "last_supper" }),
-    ).toThrow("Only a city finale has no landmark and four intermediate scenes");
+    ).toThrow("Only a city finale has no landmark; it names its city and has no reasoning");
+    const ordinary = result.battles.find((battle) => battle.landmarkId !== null)!;
     expect(() =>
-      battleSchema.parse({
-        ...boss,
-        scenes: {
-          ...boss.scenes!,
-          afterRounds: boss.scenes!.afterRounds.slice(0, 2),
-        },
-      }),
-    ).toThrow("Only a city finale has no landmark and four intermediate scenes");
-    const ordinary = result.battles[0];
-    expect(() =>
-      battleSchema.parse({
-        ...ordinary,
-        scenes: { ...ordinary.scenes!, afterRounds: boss.scenes!.afterRounds },
-      }),
-    ).toThrow("Only a city finale has no landmark and four intermediate scenes");
+      battleSchema.parse({ ...ordinary, landmarkId: null }),
+    ).toThrow("Only a city finale has no landmark; it names its city and has no reasoning");
   });
 
   it("rejects a finale quiz from another city", async () => {
