@@ -364,6 +364,12 @@ export function checkContentOwnership(sources: ContentSources): void {
   for (const quiz of quizzes)
     if (isObject(quiz.data)) checkReferences(quiz.file, "", [...fields(quiz.data, "landmark", ["landmarkId"]), ...fields(quiz.data, "city", ["cityId"])]);
   for (const story of sources.storyFiles) checkReferences(story.file, "", inkTagReferences(story.source));
+  // Tours (tour design stage 2a): a city of their own journey, its map events, and what their conditions name.
+  for (const tour of sources.tourFiles)
+    if (isObject(tour.data))
+      checkReferences(tour.file, "", [...fields(tour.data, "city", ["cityId"]),
+        ...list(tour.data.steps).map((step) => ref(EVENT, "steps[].eventId", step.eventId)), ...conditionReferences(tour.data.when, "when"),
+        ...list(tour.data.offers).flatMap((offer) => conditionReferences(offer.when, "offers[].when"))]);
 
   if (errors.length) throw new Error([...new Set(errors)].join("\n"));
 }

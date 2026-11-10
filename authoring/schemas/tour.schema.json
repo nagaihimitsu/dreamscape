@@ -1,0 +1,292 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dreamscape: ツアー（tours/<ツアーID>.json）",
+  "$comment": "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "cityId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "titleJa": {
+      "type": "string",
+      "minLength": 1,
+      "language": "ja"
+    },
+    "summaryJa": {
+      "type": "string",
+      "minLength": 1,
+      "language": "ja"
+    },
+    "when": {},
+    "steps": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "kind": {
+                "type": "string",
+                "const": "leg"
+              },
+              "labelJa": {
+                "type": "string",
+                "minLength": 1,
+                "language": "ja"
+              },
+              "toPlaceId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "minutes": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "vehicle": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "walk",
+                      "rail",
+                      "tram",
+                      "bus",
+                      "car",
+                      "three_wheeler",
+                      "bicycle"
+                    ]
+                  },
+                  "movingJa": {
+                    "type": "string",
+                    "minLength": 1,
+                    "language": "ja"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "movingJa"
+                ],
+                "additionalProperties": false
+              },
+              "estimation": {
+                "type": "string",
+                "const": "game_model"
+              },
+              "sources": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "publisher": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "title": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "checkedAt": {
+                      "type": "string",
+                      "format": "date",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                    },
+                    "claimType": {
+                      "type": "string",
+                      "enum": [
+                        "documented_fact",
+                        "interpretation",
+                        "hypothesis",
+                        "legend"
+                      ]
+                    },
+                    "claimJa": {
+                      "type": "string",
+                      "minLength": 1,
+                      "language": "ja"
+                    }
+                  },
+                  "required": [
+                    "publisher",
+                    "title",
+                    "url",
+                    "checkedAt",
+                    "claimType",
+                    "claimJa"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "labelJa",
+              "toPlaceId",
+              "minutes",
+              "vehicle",
+              "estimation",
+              "sources"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "kind": {
+                "type": "string",
+                "const": "event"
+              },
+              "eventId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "labelJa": {
+                "type": "string",
+                "minLength": 1,
+                "language": "ja"
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "eventId"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "offers": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "channel": {
+            "type": "string",
+            "enum": [
+              "web",
+              "desk",
+              "introduced"
+            ]
+          },
+          "sellerJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "placeIds": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*$"
+            }
+          },
+          "price": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "when": {},
+          "sources": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "publisher": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "url": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "checkedAt": {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                },
+                "claimType": {
+                  "type": "string",
+                  "enum": [
+                    "documented_fact",
+                    "interpretation",
+                    "hypothesis",
+                    "legend"
+                  ]
+                },
+                "claimJa": {
+                  "type": "string",
+                  "minLength": 1,
+                  "language": "ja"
+                }
+              },
+              "required": [
+                "publisher",
+                "title",
+                "url",
+                "checkedAt",
+                "claimType",
+                "claimJa"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "channel",
+          "sellerJa",
+          "price",
+          "sources"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "cityId",
+    "titleJa",
+    "summaryJa",
+    "steps",
+    "offers"
+  ]
+}

@@ -57,6 +57,13 @@
     },
     {
       "fileMatch": [
+        "/content/journeys/*/tours/*.json",
+        "/authoring/templates/*/tours/*.json"
+      ],
+      "url": "./authoring/schemas/tour.schema.json"
+    },
+    {
+      "fileMatch": [
         "/content/journeys/*/battles/catalog.json",
         "/authoring/templates/*/battles/catalog.json"
       ],

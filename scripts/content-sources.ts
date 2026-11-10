@@ -47,6 +47,8 @@ export type CitySource = {
 export type StorySource = { id: string; file: string; layer: string; source: string };
 /** A quiz file and its parsed (unvalidated) JSON. */
 export type QuizSource = { file: string; layer: string; example: boolean; data: unknown };
+/** A tour file (`tours/<id>.json` of a journey folder; tour design stage 2a), its file name's ID and its parsed (unvalidated) JSON. */
+export type TourSource = { file: string; layer: string; id: string; data: unknown };
 
 /**
  * The content files of a repository as read from disk: every file below
@@ -95,6 +97,7 @@ export type ContentSources = {
   cities: CitySource[];
   storyFiles: StorySource[];
   quizFiles: QuizSource[];
+  tourFiles: TourSource[];
   /** Static file roots served by the game: root `public/`, then each journey's `public/` that has files. */
   publicRoots: string[];
   /** Every served file: URL path (posix, e.g. `assets/items/item.svg`) → its file, in root order. */
@@ -343,6 +346,7 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
   const stories: StorySource[] = [];
   const storyFileById = new Map<string, string>();
   const quizzes: (LayerFile & { example: boolean })[] = [];
+  const tours: (LayerFile & { id: string })[] = [];
   for (const item of files) {
     const type = classifyContentFile(item.relative, item.layer.type);
     if (type.type === "unknown") {
@@ -354,6 +358,7 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
     else if (type.type === "city") cityFiles.push({ ...item, id: type.id });
     else if (type.type === "travel") travelFiles.push({ ...item, cityId: type.cityId });
     else if (type.type === "quiz") quizzes.push({ ...item, example: type.example });
+    else if (type.type === "tour") tours.push({ ...item, id: type.id });
     else if (type.type === "story") {
       const previous = storyFileById.get(type.id);
       if (previous) throw new Error(`Duplicate story ID ${type.id}: ${previous} and ${item.file}`);
@@ -396,6 +401,7 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
   // JSON of quizzes, then of every city with its travel settings and travel files.
   const quizFiles = quizzes.map((item): QuizSource =>
     ({ file: item.file, layer: item.layer.id, example: item.example, data: parseJson(item.file, bytesOf(item)) }));
+  const tourFiles = tours.map((item): TourSource => ({ file: item.file, layer: item.layer.id, id: item.id, data: parseJson(item.file, bytesOf(item)) }));
   /** A travel file every city file needs next to it; missing, the error says which file to add and what it holds. */
   const readTravel = (city: LayerFile & { id: string }, file: string, settings: boolean): Buffer => {
     const bytes = tree.files.get(toPosix(path.relative(root, file)));
@@ -443,7 +449,7 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
   }
 
   return {
-    root, layers, manifests, catalogs, cities, storyFiles: stories, quizFiles,
+    root, layers, manifests, catalogs, cities, storyFiles: stories, quizFiles, tourFiles,
     publicRoots: publicDirectories.filter((directory) => servedRoots.has(directory)), publicFiles, tree,
   };
 }

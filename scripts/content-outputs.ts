@@ -24,7 +24,8 @@ export const IMAGE_JOURNEYS_FILE = `${GENERATED_DIRECTORY}/image-journeys.json`;
 export function writeContentOutputs(
   root: string,
   sources: ContentSources,
-  validated: { stories: Record<string, string>; quizzes: Record<string, unknown>; catalogOverrides?: Partial<Record<CatalogKind, unknown>>;
+  validated: { stories: Record<string, string>; quizzes: Record<string, unknown>; tours?: readonly unknown[];
+    catalogOverrides?: Partial<Record<CatalogKind, unknown>>;
     sceneConditions?: { conditions: Record<string, unknown>; stories: Record<string, string[]> };
     scenes?: { scenes: unknown[]; rewards: unknown[] } },
   derivedFiles: ReadonlyMap<string, string> = new Map(),
@@ -35,6 +36,8 @@ export function writeContentOutputs(
   const buildInfo = { extraJourneyFolders: sources.tree.extraJourneyFolders ?? {} };
   writeFileSync(path.join(root, BUILD_INFO_FILE), `${JSON.stringify(buildInfo, null, 2)}\n`);
   writeFileSync(path.join(directory, "quizzes.json"), `${JSON.stringify(validated.quizzes, null, 2)}\n`);
+  // Every journey's tours (src/content/index.ts imports the file, so it is written even with no tour: `[]`).
+  writeFileSync(path.join(directory, "tours.json"), `${JSON.stringify(validated.tours ?? [], null, 2)}\n`);
   writeFileSync(path.join(directory, "stories.json"), `${JSON.stringify(validated.stories, null, 2)}\n`);
   // The scenes' cond("…") texts and their conditions (scripts/scene-conditions.ts; read by src/domain/scene-conditions.ts).
   writeFileSync(path.join(directory, "scene-conditions.json"),

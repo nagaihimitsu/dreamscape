@@ -66,6 +66,8 @@ import type { SceneOption } from "../src/content/scene-schemas";
 import { validateTourism } from "./tourism-validation";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { validateTravelContent } from "./travel-validation";
+import { tourSchema } from "../src/content/tour-schemas";
+import { parseTourFiles } from "./tour-validation";
 import { checkCityRentals, checkCityTransit, checkRouteModes, checkTransportModeCount, cityTransitWarnings, transportSummary } from "./transport-validation";
 import type { CityTransitReview } from "./transit-ledger";
 import { getAllRewardRules, journeySchema } from "../src/content/journey-schemas";
@@ -1127,6 +1129,9 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     }
   }
   unique(productionQuestionIds, "production quiz question ID");
+  // Tours (tour design stage 2a): their shape here; their rules against the cities below (validateTours).
+  const tourFiles = parseTourFiles(sources);
+  for (const { file, tour } of tourFiles) languageNotes.push(...dataLanguageWarnings(tourSchema, tour, displayPath(root, file)));
   let battleScenarios = 0;
   for (const battle of battles) {
     const quiz = quizzes[battle.quizId];
@@ -1529,6 +1534,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     effects,
     battles,
     quizzes,
+    /** Every journey's tours (generated/tours.json; tour design stage 2a). */
+    tours: tourFiles.map((item) => item.tour),
     battleScenarios,
     reasoningBattles: battles.filter((battle) => battle.reasoning).length,
     tourism,

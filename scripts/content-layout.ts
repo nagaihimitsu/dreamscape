@@ -199,6 +199,8 @@ export type ContentFileType =
   | { type: "travel"; cityId: string; part: "routes" | "settings" | "transit" }
   | { type: "story"; id: string }
   | { type: "quiz"; example: boolean }
+  /** `tours/<tourId>.json` (a journey layer only; tour design stage 2a). */
+  | { type: "tour"; id: string }
   | { type: "public" }
   | { type: "other" }
   | { type: "unknown" };
@@ -227,6 +229,9 @@ export function classifyContentFile(relative: string, layer: LayerType): Content
   const story = storyIdFromPath(relative);
   if (story !== undefined) return { type: "story", id: story };
   if (/^quizzes\/.+\.json$/u.test(relative)) return { type: "quiz", example: relative.endsWith(".example.json") };
+  // A tour belongs to a journey's city (the core layer describes no city).
+  const tour = /^tours\/([^/]+)\.json$/u.exec(relative);
+  if (tour && layer === "journey") return { type: "tour", id: tour[1] };
   return { type: "unknown" };
 }
 

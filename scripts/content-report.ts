@@ -165,6 +165,7 @@ function definitions(sources: ContentSources): Definition[] {
     add(data.id, quiz.file, "id");
     list(data.questions).forEach((question, index) => add(question.id, quiz.file, `questions[${index}]`));
   }
+  for (const tour of sources.tourFiles) if (isObject(tour.data)) add(tour.data.id, tour.file, "id");
   for (const city of sources.cities) {
     if (isObject(city.data) && isObject(city.data.firstClearReward))
       add(city.data.firstClearReward.rewardSourceId, city.file, "firstClearReward.rewardSourceId");
@@ -340,6 +341,8 @@ export function journeyContents(sources: ContentSources): JourneyContents[] {
         if (observationOnly) counts.push(["observation-only clues", observationOnly]);
       }
     }
+    const tours = sources.tourFiles.filter((tour) => tour.layer === manifest.id).length;
+    if (tours) counts.push(["tours", tours]);
     return { id: manifest.id, ...(typeof manifest.data.nameJa === "string" ? { nameJa: manifest.data.nameJa } : {}), status: manifest.data.status, counts };
   });
 }
