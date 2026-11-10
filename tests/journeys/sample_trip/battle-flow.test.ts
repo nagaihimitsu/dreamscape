@@ -394,13 +394,17 @@ describe("the clue book's claim and press in the one flow (stage 5)", () => {
     expect(clueBook()).toEqual(sceneForm);
   });
 
-  it("never stops the screen when a claim reaches a choice (content:build stops such a knot)", () => {
+  it("never stops the screen when a claim reaches a choice or errors (content:build stops such a knot)", () => {
     const converted = convertBattle({ battle: definition, source: named }, battleQuizzes[definition.quizId].questions.length);
     const withChoice = converted.source.replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, "$1「まず聞こう」\n* [「はい」]\n- \n");
     stories[storyId] = compileInk(readMainFileHead(withChoice).source, "milan-b.ink", { [MODULES_FILE]: MODULES_INK });
     (battles as BattleDefinition[])[keptMilan.index] = converted.battle;
     const state = openBattleScene(cityStart("milano"), milanB);
     expect(getReasoningContext(state)).toEqual({ claimText: "「まず聞こう」", pressedText: null });
+    // A claim that stops with an error (here a condition not in the scene conditions): the clue book shows no claim.
+    const withError = converted.source.replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, "$1{cond(\"dreamscape_unknown\"): 「x」}\n");
+    stories[storyId] = compileInk(readMainFileHead(withError).source, "milan-b.ink", { [MODULES_FILE]: MODULES_INK });
+    expect(getReasoningContext(openBattleScene(cityStart("milano"), milanB))).toEqual({ claimText: "", pressedText: null });
   });
 });
 
