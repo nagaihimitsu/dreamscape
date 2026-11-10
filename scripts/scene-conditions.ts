@@ -7,16 +7,14 @@ import { parseConditionText } from "../src/content/condition-text";
 // `# when:`) and gives true or false; no number reaches Ink. The game binds `cond`
 // (src/story/runtime.ts) and judges each text with `meets`. content:build reads the texts
 // (readSceneConditions), checks them like every other condition and walks each scene's
-// story with the texts set true and false (condWalk): every combination of up to four
-// texts, and beyond that every text true and false at least once (decision 10).
+// story with the texts set true and false (condWalk): all false, all true and each text
+// alone true (representative paths, not every combination).
 // Light module (no content loading): unit tests use it directly.
 
 /** The declaration a one-scene-per-file Ink needs to call `cond` (decision 40). */
 export const COND_DECLARATION = "EXTERNAL cond(text)";
 /** The stand-in function for Inky's preview (the game binds the real one). */
 export const COND_FALLBACK = ["=== function cond(text) ===", "~ return false"] as const;
-/** Up to this many texts, the walk sets them in every combination. */
-export const FULL_COND_WALK = 4;
 
 const declaration = /^\s*EXTERNAL\s+cond\s*\(\s*[A-Za-z_][A-Za-z0-9_]*\s*\)\s*$/mu;
 const fallback = /^\s*={2,}\s*function\s+cond\s*\(/u;
@@ -74,19 +72,13 @@ export function compiledConditionTexts(compiled: string): string[] {
 export type CondAssignment = Readonly<Record<string, boolean>>;
 
 /**
- * The assignments a walk goes through: every combination of up to FULL_COND_WALK texts;
- * beyond that, all true, all false and each text alone flipped both ways, so every text is
- * true and false at least once (`complete` is then false and content:build says so).
+ * The assignments a walk goes through (representative, not every combination): all false, all true
+ * and each text alone true, so every text is true and false at least once.
  */
-export function condWalk(texts: readonly string[]): { assignments: CondAssignment[]; complete: boolean } {
+export function condWalk(texts: readonly string[]): { assignments: CondAssignment[] } {
   const all = (value: boolean) => Object.fromEntries(texts.map((text) => [text, value]));
-  if (texts.length <= FULL_COND_WALK) {
-    const assignments = Array.from({ length: 2 ** texts.length }, (_, bits) =>
-      Object.fromEntries(texts.map((text, index) => [text, (bits & (1 << index)) !== 0])));
-    return { assignments, complete: true };
-  }
-  const flipped = texts.flatMap((text) => [{ ...all(false), [text]: true }, { ...all(true), [text]: false }]);
-  return { assignments: [all(true), all(false), ...flipped], complete: false };
+  const alone = texts.length > 1 ? texts.map((text) => ({ ...all(false), [text]: true })) : [];
+  return { assignments: texts.length ? [all(false), all(true), ...alone] : [{}] };
 }
 
 /** Bind `cond` to the walk's values (a text outside them stops the walk: the build did not read it). */

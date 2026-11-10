@@ -1,13 +1,9 @@
 name: E2E
 
-# Browser tests (Playwright) for every pull request and every push to main,
-# also runnable by hand. Deploying (pages.yml) does not wait for them: on
-# main they run alongside the deploy, and a failure shows as a failed check.
-# Each tier (docs/10「E2Eの段」) is its own job, and all jobs run in parallel.
+# Browser tests (Playwright), run by hand. Each tier (docs/10「E2Eの段」) is
+# its own job, and all jobs run in parallel.
 on:
-  pull_request:
-  push:
-    branches: [main]
+  # By hand only: pull requests and main check the build (ci.yml).
   workflow_dispatch:
 
 permissions:

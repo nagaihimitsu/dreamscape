@@ -13,7 +13,7 @@ import type { DialogueObserver } from "./dialogue-expression-validation";
 // The full-branch walk of one scene (the unified event design, stage 3a, 3.3 check 6), for the
 // scenes with choices and tags: a place file's knot, or a one-scene guide, arrival or epilogue.
 // It starts at the scene's knot (or the file's top), sets the scene's cond("…") texts true and
-// false (every combination of up to four, else each text both ways), takes every choice with both
+// false (all false, all true, each alone true: condWalk), takes every choice with both
 // reaction results when a choice has a profile, and stops the build when:
 // - a path stops without an end (no choice, no end) or reads 1,000 lines without a choice (A27);
 // - a path meets two `then:` (the head's counts; A8);

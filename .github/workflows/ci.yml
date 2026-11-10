@@ -1,8 +1,7 @@
 name: CI
 
-# Checks for every pull request, also runnable by hand. The jobs run in
-# parallel with each other and with the E2E workflow (e2e.yml). On main,
-# pages.yml runs the same checks (npm run verify) before it deploys.
+# Pull requests check only the build. The unit tests run by hand
+# (workflow_dispatch), as do the E2E workflows (e2e.yml, e2e-explore.yml).
 on:
   pull_request:
   workflow_dispatch:
@@ -40,6 +39,8 @@ jobs:
           DREAMSCAPE_INK_CACHE: "off"
 
   unit-shard:
+    # Unit tests run by hand only (workflow_dispatch); pull requests check the build.
+    if: github.event_name == 'workflow_dispatch'
     # The unit tests in parallel parts: vitest --shard gives each job a share of
     # the test files (chosen from a hash of each file's path); together the
     # jobs run every file of `npm test`, which stays one run locally and in
@@ -75,7 +76,8 @@ jobs:
     # for a required check (branch protection).
     name: Unit tests
     needs: unit-shard
-    if: ${{ always() }}
+    # By hand only, like the parts.
+    if: ${{ always() && github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

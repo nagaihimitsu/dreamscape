@@ -6,8 +6,8 @@ import { describe, expect, it } from "vitest";
 // noticing: a test without a tier runs in no CI job, the real-flow specs must not take
 // shortcuts, tests that also run against the production build cannot use the
 // development server's modules, and the sample journey's playthrough runs only on its
-// own server, the one built with the sample. The weekly exploration specs (tests/e2e/explore/,
-// @explore) never join a gating tier, and their workflow never runs on every pull request.
+// own server, the one built with the sample. The exploration specs (tests/e2e/explore/,
+// @explore) never join a gating tier, and their workflow runs by hand only.
 const folder = path.join(import.meta.dirname, "../tests/e2e");
 const specs = readdirSync(folder, { recursive: true }).map(String).map((name) => name.split(path.sep).join("/"))
   .filter((name) => name.endsWith(".spec.ts")).sort();
@@ -46,16 +46,10 @@ describe("E2E specs", () => {
     }
   });
 
-  it("run the weekly exploration and WebKit smoke on a schedule and by hand, on a pull request only when their own files change", () => {
+  it("run the exploration and WebKit smoke by hand only", () => {
     const workflow = readFileSync(path.join(import.meta.dirname, "../.github/workflows/e2e-explore.yml"), "utf8");
-    expect(workflow).toMatch(/^ {2}schedule:\n(?: {4}#.*\n)* {4}- cron: /mu);
     expect(workflow).toMatch(/^ {2}workflow_dispatch:/mu);
-    const paths = workflow.match(/^ {2}pull_request:\n {4}paths:\n((?: {6}- .*\n)+)/mu);
-    expect(paths, "pull_request runs only for the exploration's own files").not.toBeNull();
-    expect(paths![1].split("\n").filter(Boolean).map((line) => line.trim().slice(2)).sort()).toEqual([
-      ".github/workflows/e2e-explore.yml", "playwright.explore.config.ts", "playwright.webkit.config.ts", "scripts/dev/screen-gallery.ts",
-      "src/dev/debug-query.ts", "tests/e2e/explore/**", "tests/e2e/helpers.ts", "tests/explore/**",
-    ]);
+    expect(workflow).not.toMatch(/^ {2}(?:schedule|pull_request|push):/mu);
     expect(workflow).toMatch(/run: npm run test:e2e:explore\n/u);
     expect(workflow).toMatch(/run: npm run test:e2e:webkit\n/u);
     expect(workflow).toMatch(/run: npx playwright install --with-deps webkit\n/u);
@@ -102,7 +96,7 @@ describe("E2E specs", () => {
     const workflow = readFileSync(path.join(import.meta.dirname, "../.github/workflows/e2e.yml"), "utf8");
     const jobs = Object.fromEntries([...workflow.matchAll(/^\s*- tier: (\w+)\n((?:\s+(?!- )\w+: .*\n)*)/gmu)]
       .map((match) => [match[1], match[2]]));
-    // smoke (WebKit) and explore run weekly in e2e-explore.yml, never as a gate.
+    // smoke (WebKit) and explore run by hand in e2e-explore.yml, never as a gate.
     expect(Object.keys(jobs)).toEqual(["gate", "debug", "prod", "sample"]);
     expect(jobs.sample).toMatch(/prepare: npm run journey:new -- \w+ --name \S+ --city \w+ --city-name \S+\n/u);
     expect(jobs.sample).toMatch(/command: npx playwright test -c playwright\.sample\.config\.ts\n/u);

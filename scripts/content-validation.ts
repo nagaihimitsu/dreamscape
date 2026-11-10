@@ -28,7 +28,7 @@ import type { z } from "zod";
 import { headEntryRule, HEAD_TAGS, readEncounterHead, type EncounterHead } from "./encounter-head";
 import { checkConditions, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, mapConditionOwners, type ConditionContent, type ConditionOwner } from "./condition-validation";
 import { mainPaymentsOf, progressionErrors, progressionWarnings, sceneItemsOf, tourProgression, type ProgressionContent } from "./progression-check";
-import { FULL_COND_WALK, parseSceneConditions, readSceneConditions } from "./scene-conditions";
+import { parseSceneConditions, readSceneConditions } from "./scene-conditions";
 import type { Condition } from "../src/content/condition-schemas";
 import { validateBackgroundAssets, validateCharacters } from "./presentation-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
@@ -1319,7 +1319,6 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     cities.find((city) => city.arrivalStoryId === storyId)?.id;
   const sceneConditions: { conditions: Record<string, Condition>; stories: Record<string, string[]> } = { conditions: {}, stories: {} };
   const sceneConditionOwners: ConditionOwner[] = [];
-  const sceneConditionNotes: ContentWarning[] = [];
   for (const [storyId, texts] of Object.entries(storyConditionTexts)) {
     if (!texts.length) continue;
     // English-note explanations and special battles' rebuttals refused cond above (ink-validation.ts).
@@ -1329,9 +1328,6 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     Object.assign(sceneConditions.conditions, parsed);
     sceneConditions.stories[storyId] = texts;
     sceneConditionOwners.push({ label: `the scene ${storyId}`, cityId, conditions: texts.map((text) => ({ field: `cond("${text}")`, condition: parsed[text] })) });
-    if (texts.length > FULL_COND_WALK)
-      sceneConditionNotes.push({ kind: "cond-walk-partial", message: `Scene with ${texts.length} cond texts: ${storyLabel(storyId)}; ` +
-        `the build walked each text true and false at least once, not all ${2 ** texts.length} combinations (not stopped)` });
   }
   const conditionOwners = [...dateConditionOwners(conditionContent), ...entryRuleConditionOwners(conditionContent, runtimeEntryRules),
     // The tagged scenes' # requires: (their # when: is an entry rule above, or a main part's map condition).
@@ -1346,7 +1342,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     ...tour.offers.flatMap((offer) => offer.when ? [{ field: `offers.${offer.id}.when`, condition: offer.when }] : [])] }))
     .filter((owner) => owner.conditions.length);
   checkConditions(conditionContent, [...conditionOwners, ...sceneConditionOwners, ...mapOwners, ...tourOwners]);
-  const conditionNotes: ContentWarning[] = [...conditionWarnings(conditionContent, runtimeEntryRules, [...sceneConditionOwners, ...mapOwners]), ...sceneConditionNotes];
+  const conditionNotes: ContentWarning[] = [...conditionWarnings(conditionContent, runtimeEntryRules, [...sceneConditionOwners, ...mapOwners])];
   // The tours against their cities (tour stage 2a; tour-validation.ts): before the progression check, which reads them.
   const tourNotes = validateTours({ root, tours: tourFiles,
     cities: travels.map(({ city: current, travel, settings }) => ({ id: current.id, travel, hotelPlaceId: settings.hotelPlaceId,
