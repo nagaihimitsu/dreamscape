@@ -95,8 +95,8 @@ function runtime(address: string, saved?: string, memoryIds: readonly string[] =
   return story;
 }
 
-const readFrame = (story: Story, previous?: StoryFrame, choiceTags: readonly string[] = [], initialBackground = DEFAULT_BACKGROUND_ID): StoryStep =>
-  readStoryFrame(story, tagContext, previous, choiceTags, initialBackground);
+const readFrame = (story: Story, previous?: StoryFrame, choiceTags: readonly string[] = [], initialBackground = DEFAULT_BACKGROUND_ID,
+  originKnot?: string): StoryStep => readStoryFrame(story, tagContext, previous, choiceTags, initialBackground, originKnot);
 const storyChoices = (story: Story) => storyChoicesOf(story, tagContext);
 
 export function beginStory(
@@ -108,6 +108,8 @@ export function beginStory(
   inventory: Readonly<Record<string, ItemStatus>> = {},
   initialBackground = DEFAULT_BACKGROUND_ID,
   conditions?: StoryConditionReader,
+  /** Say whether the first line came from inside this knot (a flow battle's claim). */
+  originKnot?: string,
 ): StoryStep {
   const story = runtime(storyId, undefined, memoryIds, inventory, conditions);
   story.variablesState.$("player_name", playerName);
@@ -120,7 +122,7 @@ export function beginStory(
   // A place file's scene starts at its knot (a battle in the stitch form: at its scene's stitch); its file's top runs nothing.
   const path = splitStoryAddress(storyId).path;
   if (path !== undefined) story.ChoosePathString(path);
-  return readFrame(story, undefined, [], initialBackground);
+  return readFrame(story, undefined, [], initialBackground, originKnot);
 }
 
 export function continueStory(
@@ -131,11 +133,21 @@ export function continueStory(
   optionalVariables: Record<string, string | number | boolean> = {},
   inventory: Readonly<Record<string, ItemStatus>> = {},
   conditions?: StoryConditionReader,
+  originKnot?: string,
 ): StoryStep {
   const story = runtime(storyId, saved, memoryIds, inventory, conditions);
   setOptionalVariables(story, optionalVariables);
   if (!story.canContinue) throw new Error("会話を進められません。");
-  return readFrame(story, previous);
+  return readFrame(story, previous, [], undefined, originKnot);
+}
+
+/** The next line a saved story reads, without changing it: whether there is one before a choice or the end, and whether it comes from `knot`. */
+export function peekStoryLine(storyId: string, saved: string, memoryIds: readonly string[], inventory: Readonly<Record<string, ItemStatus>>,
+  conditions: StoryConditionReader | undefined, knot: string): { line: boolean; inKnot: boolean } {
+  const story = runtime(storyId, saved, memoryIds, inventory, conditions);
+  if (!story.canContinue) return { line: false, inKnot: false };
+  const step = readFrame(story, undefined, [], undefined, knot);
+  return { line: step.lineRead, inKnot: step.lineRead && !!step.inKnot };
 }
 
 // Optional presentation context was not present in earlier published Ink.
@@ -160,6 +172,7 @@ export function selectStoryChoice(
   conditions?: StoryConditionReader,
   /** The background of a fresh frame (no `previous`). */
   initialBackground = DEFAULT_BACKGROUND_ID,
+  originKnot?: string,
 ): StoryStep {
   const story = runtime(storyId, saved, memoryIds, inventory, conditions);
   for (const [name, value] of Object.entries(variables)) {
@@ -172,7 +185,7 @@ export function selectStoryChoice(
   if (!choice) throw new Error("選択肢が見つかりません。");
   const tags = choice.tags ?? [];
   story.ChooseChoiceIndex(index);
-  return readFrame(story, previous, tags, initialBackground);
+  return readFrame(story, previous, tags, initialBackground, originKnot);
 }
 
 /**

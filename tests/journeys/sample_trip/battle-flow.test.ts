@@ -4,11 +4,11 @@
 // conversation's choices apply their tags once per battle (decision 10): on its first play, once in a run.
 import { readFileSync } from "node:fs";
 import { afterEach, describe, expect, it } from "vitest";
-import { scenes, stories } from "../../../src/content";
+import { battles, scenes, stories } from "../../../src/content";
 import { fnvHash } from "../../../src/content/fingerprint";
 import type { SceneEntry } from "../../../src/content/scene-schemas";
 import {
-  advanceBattle, answerBattle, battleDialogueStop, chooseBattle, getActiveBattleContent, getReasoningContext, leaveBattle, pressBattleClaim,
+  advanceBattle, answerBattle, battleChrome, battleDialogueStop, chooseBattle, getActiveBattleContent, getReasoningContext, leaveBattle, pressBattleClaim,
   selectReasoningClue, startBattle, submitBattleEvidence, toggleBattleHint,
 } from "../../../src/domain/battle";
 import { validateGameState, type GameState } from "../../../src/domain/game";
@@ -254,3 +254,73 @@ describe("a battle's conversation choices (stage 5, decision 10)", () => {
     expect(state.activeBattle!.turns).toBeGreaterThan(4);
   });
 });
+
+// The one flow looks as the scene form did (「見た目は同じ」): the 「次へ進む」 at the end of the scene before the claim, the
+// upcoming question in the clue book while the claim plays, and a rebuttal that hides what the scene form's rebuttal hid.
+describe("a flow battle's claim and rebuttal look as the scene form's did (stage 5)", () => {
+  type Seen = { text: string; part?: string; sceneEnd?: true; round: number; chrome: ReturnType<typeof battleChrome> };
+  /** Play to the first stop point (right answers), saving and loading at every step; every line with its marks. */
+  function toStop(battleId: string): { state: GameState; seen: Seen[] } {
+    let state = start(battleId);
+    const seen: Seen[] = [];
+    for (let step = 0; state.activeBattle!.phase !== "reasoning"; step++) {
+      expect(step).toBeLessThan(80);
+      const active = state.activeBattle!;
+      const { battle, quiz } = getActiveBattleContent(active);
+      if (active.phase === "dialogue") {
+        seen.push({ text: active.frame!.text, ...(active.linePart ? { part: active.linePart } : {}), ...(active.sceneEnd ? { sceneEnd: true as const } : {}),
+          round: active.roundIndex, chrome: battleChrome(active, battle) });
+        // A scene's end is where the next line says it is: a save that moves it is refused.
+        const { sceneEnd: _end, ...unmarked } = active;
+        if (active.sceneEnd) expect(() => restore({ ...state, activeBattle: unmarked })).toThrow(/バトル会話の位置が一致しません/u);
+        else if (!battleDialogueStop(active).match(/quiz|reasoning|end/u))
+          expect(() => restore({ ...state, activeBattle: { ...active, sceneEnd: true } })).toThrow(/バトル会話の位置が一致しません/u);
+        state = act(state, (current) => advanceBattle(current, current.revision));
+      } else if (active.phase === "question") state = act(state, (current) => answerBattle(current, quiz.questions[active.roundIndex].correctOptionId, current.revision));
+      else state = act(state, (current) => advanceBattle(current, current.revision));
+    }
+    return { state, seen };
+  }
+  const advance = (label: string, testId = "battle-advance") => ({ label, testId });
+
+  it("ends the scene before the claim with 「次へ進む」, and shows the upcoming question while the claim plays (B and C)", () => {
+    for (const [battleId, round, claimLine] of [[MARKET, 1, "「時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！」"],
+      [LIBRARY, 2, undefined]] as const) {
+      const { seen } = toStop(battleId);
+      const claim = seen.filter((line) => line.part === "claim");
+      expect(claim.length, battleId).toBeGreaterThan(0);
+      if (claimLine) expect(claim.map((line) => line.text)).toEqual([claimLine]);
+      const before = seen[seen.indexOf(claim[0]) - 1];
+      // The last line before the claim ends its scene (the scene form's after_N): 「次へ進む」, and the auto-advance stops there.
+      expect(before).toMatchObject({ sceneEnd: true, round: round - 1, chrome: { advance: advance("次へ進む"), notebookTab: true, reviewAnswers: true } });
+      expect(seen.filter((line) => line.sceneEnd)).toEqual([before]);
+      // The claim's lines: the reasoning's round (the clue book's question is the one the proof leads to), its last line ends the part.
+      for (const line of claim) expect(line).toMatchObject({ round, chrome: { rebuttal: false, notebookTab: true, reviewAnswers: true } });
+      expect(claim.at(-1)!.chrome.advance).toEqual(advance("次へ進む"));
+      // The sample has no rebuttal.
+      expect(seen.some((line) => line.part === "rebuttal")).toBe(false);
+    }
+  });
+
+  it("plays a rebuttal after the claim as the scene form's rebuttal story showed it (its chrome), saved line by line", () => {
+    const written = source(fileStory).replace("-> smp_mihon_special_b_market_claim ->\n",
+      "-> smp_mihon_special_b_market_claim ->\n# background: smp_bg_mihon_market\n# speaker: heroine\n「待って。一人残らず、ですか」\n「確かめてみましょう」\n");
+    stories[fileStory] = compileInk(readMainFileHead(written).source, "market.ink", { [MODULES_FILE]: MODULES_INK });
+    const { seen } = toStop(MARKET);
+    const claim = seen.filter((line) => line.part === "claim");
+    const rebuttal = seen.filter((line) => line.part === "rebuttal");
+    expect(rebuttal.map((line) => line.text)).toEqual(["「待って。一人残らず、ですか」", "「確かめてみましょう」"]);
+    // The claim ends its scene before the rebuttal (the scene form's claim scene ended there).
+    expect(claim.at(-1)).toMatchObject({ sceneEnd: true, chrome: { advance: advance("次へ進む"), notebookTab: true } });
+    // The scene form's rebuttal: a line of the presentation-only story, the battle already at its stop point.
+    const sceneForm = battles.find((battle) => battle.reasoning?.kind === "contradiction" && battle.scenes)!;
+    const atStop = { ...start(MARKET).activeBattle!, battleId: sceneForm.id, phase: "reasoning" as const, frame: null, storyState: null,
+      answers: [{ questionId: "q", optionId: "A", correct: true, hintUsed: false }] };
+    const old = (ended: boolean) => battleChrome(atStop, sceneForm, { text: "「待って」", speaker: "heroine", background: "x", emotion: "neutral", choices: [], ended });
+    expect(rebuttal[0]).toMatchObject({ round: 1, chrome: old(false) });
+    expect(rebuttal[1]).toMatchObject({ round: 1, chrome: old(true) });
+    expect(old(false)).toEqual({ rebuttal: true, choosing: false, advance: null, notebookTab: false, reviewAnswers: false });
+    expect(old(true).advance).toEqual(advance("次へ進む", "reasoning-rebuttal-advance"));
+  });
+});
+

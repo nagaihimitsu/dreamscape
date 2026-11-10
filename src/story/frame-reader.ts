@@ -25,6 +25,34 @@ export interface StoryStep {
   effects: string[];
   /** Whether a new line was read (else the frame keeps the previous text: the story stopped at a choice, a call or its end first). */
   lineRead: boolean;
+  /** Read with an origin knot: whether the line's text came from inside that knot (a special battle's claim, stage 5). */
+  inKnot?: boolean;
+}
+
+/**
+ * Run `read` and say whether the first text it outputs comes from inside `knot` (on the call stack as Ink outputs it).
+ * The saved state after a line cannot tell: when a choice follows the line, Ink has already read on past the knot's end.
+ * A flow battle's claim (its helper knot) is told from the lines around it this way (the scene form's claim scene, stage 5).
+ */
+function withLineOrigin<T>(story: Story, knot: string | undefined, read: () => T): { result: T; inKnot?: boolean } {
+  if (!knot) return { result: read() };
+  type Host = { Step: () => void; state: { inExpressionEvaluation: boolean; currentPointer: { Resolve(): unknown };
+    callStack: { elements: { currentPointer: { path: { toString(): string } | null } }[] } } };
+  const host = story as unknown as Host;
+  const step = host.Step;
+  let inKnot: boolean | undefined;
+  host.Step = function () {
+    if (inKnot === undefined && !host.state.inExpressionEvaluation) {
+      const content = host.state.currentPointer.Resolve() as { value?: unknown } | null;
+      if (content && typeof content.value === "string" && "isNewline" in content && content.value.trim())
+        inKnot = host.state.callStack.elements.some((element) => {
+          const path = element.currentPointer.path?.toString();
+          return path === knot || !!path?.startsWith(`${knot}.`);
+        });
+    }
+    step.call(host);
+  };
+  try { return { result: read(), inKnot }; } finally { host.Step = step; }
 }
 
 /** The battle call the frame stops at (its only choice), if any (stage 5). */
@@ -60,6 +88,8 @@ export function readStoryFrame(
   previous?: StoryFrame,
   choiceTags: readonly string[] = [],
   initialBackground = DEFAULT_BACKGROUND_ID,
+  /** Say whether the line came from inside this knot (StoryStep.inKnot). */
+  originKnot?: string,
 ): StoryStep {
   const frame: StoryFrame = {
     text: previous?.text ?? "",
@@ -74,14 +104,17 @@ export function readStoryFrame(
   // Ink may emit metadata-only lines. Read those without adding an empty UI step.
   let iterations = 0;
   let lineRead = false;
+  let inKnot: boolean | undefined;
   while (story.canContinue) {
     if (++iterations > 200)
       throw new Error("シナリオの進行を確認してください。");
-    const text = story.Continue()?.trim() ?? "";
+    const read = withLineOrigin(story, originKnot, () => story.Continue()?.trim() ?? "");
+    const text = read.result;
     readTags(story.currentTags ?? [], frame, events, context);
     if (text) {
       frame.text = text;
       lineRead = true;
+      inKnot = read.inKnot;
       break;
     }
   }
@@ -89,7 +122,7 @@ export function readStoryFrame(
   if (frame.choices.some((choice) => choice.call) && frame.choices.length !== 1)
     throw new Error("バトルの呼び口は、ほかの選択肢と一緒に出せません。");
   frame.ended = !story.canContinue && frame.choices.length === 0;
-  return { storyState: story.state.ToJson(), frame, effects: events, lineRead };
+  return { storyState: story.state.ToJson(), frame, effects: events, lineRead, ...(originKnot ? { inKnot: inKnot ?? false } : {}) };
 }
 
 /** Choice tags are presentation/identity metadata. Old choices keep their original shape. */

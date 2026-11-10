@@ -3,7 +3,7 @@ import { dialogueExpressions, dialogueReactions, landmarks, learningTranslations
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
-import { battleDialogueStop, getActiveBattleContent, getBattleOutcome, isFlowBattle } from "../../domain/battle";
+import { battleChrome, getActiveBattleContent, getBattleOutcome, isFlowBattle } from "../../domain/battle";
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
 import { beginStory, continueStory, type StoryStep } from "../../story/runtime";
 import { DialogueText } from "../../components/DialogueText";
@@ -283,11 +283,11 @@ export function BattleScreen({
   }, [active.phase, active.roundIndex, animatedAnswer, answerKey, reduceMotion]);
   const frame = rebuttal?.step.frame ?? active.frame;
   const isDialogue = active.phase === "dialogue" || !!rebuttal;
-  // What the dialogue's next tap does: a flow battle's frame may stop at a call (the quiz's or the reasoning's screen next),
-  // at its end, or at its conversation's choices; the scene form stops at each scene's end.
-  const stop = !rebuttal && active.phase === "dialogue" ? battleDialogueStop(active) : null;
-  const choosing = stop === "choices";
-  const partEnd = rebuttal ? rebuttal.step.frame.ended : flow ? stop === "quiz" || stop === "reasoning" || stop === "end" : !!frame?.ended;
+  // What the line's screen shows (one rule for both forms: a flow battle looks as the scene form did, stage 5): the next
+  // button at the end of a part, the conversation's choices, and what a rebuttal line hides.
+  const chrome = battleChrome(active, battle, rebuttal?.step.frame);
+  const choosing = chrome.choosing;
+  const partEnd = !!chrome.advance;
   const backgroundId = frame?.background ?? battle.backgroundId;
   const landmark = landmarks.find((item) => item.id === battle.landmarkId);
   // Keep the same registered location photograph across dialogue, questions
@@ -401,7 +401,7 @@ export function BattleScreen({
         labelProps={landmark ? { "data-testid": "battle-location", "aria-label": `現在の場所: ${landmark.nameJa}` } : undefined}
       >
         {backgroundAsset && <SceneCreditButton onClick={() => setCreditsOpen(true)} />}
-        {isDialogue && !rebuttal && onNotebook && <SceneNotebookTab onClick={onNotebook} />}
+        {chrome.notebookTab && onNotebook && <SceneNotebookTab onClick={onNotebook} />}
       </SceneLabelLine>
       <div
         className={`battle-stage ${isDialogue ? "" : "battle-stage-compact"} ${battle.scope === "city_finale" ? "finale-stage" : ""}`}
@@ -462,7 +462,7 @@ export function BattleScreen({
         className={`paper battle-paper${isDialogue ? " battle-dialogue" : ""}`}
         id="battle-content"
         aria-label="クイズバトル"
-        data-testid={rebuttal ? "reasoning-rebuttal" : undefined}
+        data-testid={chrome.rebuttal ? "reasoning-rebuttal" : undefined}
       >
         {!isDialogue && <div className="battle-roundbar" data-testid="battle-roundbar" ref={roundBar}>
           <span>
@@ -485,7 +485,7 @@ export function BattleScreen({
             </button>
           )}
         </div>}
-        {!isResult && active.phase !== "reasoning" && active.answers.length > 0 && (
+        {chrome.reviewAnswers && (
           <button className="text-button" onClick={() => onEnglish()}>
             回答した問題を振り返る
           </button>
@@ -576,17 +576,13 @@ export function BattleScreen({
               onAdvance={advanceSafely}
             />
             {choosing && onChoose && <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="battle-choice" />}
-            {partEnd && <button
+            {chrome.advance && <button
               className="next"
-              data-testid={rebuttal ? "reasoning-rebuttal-advance" : "battle-advance"}
+              data-testid={chrome.advance.testId}
               disabled={!ready}
               onClick={advanceSafely}
             >
-              {(flow ? stop === "end" : active.dialogueScene === battle.scenes?.outro)
-                  ? "結果を見る"
-                  : isSpecial
-                    ? "次へ進む"
-                    : "問題へ進む"}{" "}
+              {chrome.advance.label}{" "}
               <span aria-hidden="true">→</span>
             </button>}
           </>
