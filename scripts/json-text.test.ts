@@ -32,6 +32,23 @@ describe("JSON files the tools write keep their text and key order", () => {
     expect(keys(withKeyOrderOf(previous, [{ b: 2, id: "two", a: 2 }, { a: 1, b: 1, id: "one" }, { b: 3, a: 3, id: "three" }])))
       .toEqual(["id,a,b", "id,b,a", "id,a,b"]);
     expect(keys(withKeyOrderOf(previous, [{ a: 9, id: "nine", b: 9 }, { b: 8, a: 8 }]))).toEqual(["id,b,a", "a,b"]);
+    // Without ids (routes, transit decisions): an unchanged entry keeps its own order wherever it moves, a changed one
+    // takes the order of the entry with the same direction and mode.
+    const routes = { routes: [
+      { fromPlaceId: "a", toPlaceId: "b", mode: "walk", cost: 0, sources: [], estimation: "game_model" },
+      { fromPlaceId: "b", toPlaceId: "a", mode: "walk", cost: 0, estimation: "game_model", sources: [] },
+      { fromPlaceId: "a", toPlaceId: "c", mode: "taxi", cost: 5, sources: [], estimation: "game_model" },
+    ] };
+    const before = jsonText(routes);
+    // The parse returns the schema's order (sources before estimation) for every route.
+    const parsed = (route: Record<string, unknown>) => ({ fromPlaceId: route.fromPlaceId, toPlaceId: route.toPlaceId, mode: route.mode,
+      cost: route.cost, sources: route.sources, estimation: route.estimation });
+    const deleted = jsonTextKeeping(before, { routes: routes.routes.slice(1).map(parsed) });
+    expect(deleted).toBe(jsonText({ routes: routes.routes.slice(1) }));
+    const edited = jsonTextKeeping(before, { routes: [routes.routes[1], { ...routes.routes[2], cost: 6 }].map(parsed) });
+    expect(edited).toBe(jsonText({ routes: [routes.routes[1], { ...routes.routes[2], cost: 6 }] }));
+    // Entries with neither an id nor a direction: an unchanged one keeps its order after the first is deleted.
+    expect(keys(withKeyOrderOf([{ x: 1, b: 1, a: 1 }, { x: 2, a: 2, b: 2 }], [{ x: 2, b: 2, a: 2 }]))).toEqual(["x,a,b"]);
     // Values that are not objects stay as they are.
     expect(withKeyOrderOf({ a: [1, 2] }, { a: "text" })).toEqual({ a: "text" });
   });
