@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { cityProgressParts } from "./city-progress-label";
 
-describe("city progress pill", () => {
+describe("city progress summary", () => {
   const counts = { completedStops: 1, stops: 3, completedSpecialBattles: 0, specialBattles: 2, cityCompleted: false };
 
   it("counts tourism stops and the city's special battles", () => {

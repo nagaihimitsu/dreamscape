@@ -6,47 +6,47 @@ import { itemUsableIn } from "../domain/item-cities";
 import type { TravelPlace } from "../content/travel-schemas";
 import { DismissLayer } from "../components/DismissLayer";
 import { HeldItems } from "../components/HeldItems";
-import { Icon, type IconName } from "../components/icons";
+import { HUD_SCREEN_TOOL_ID } from "../components/HudScreenTool";
+import { Icon } from "../components/icons";
 import { holdTaps } from "../components/tap-hold";
 import type { GameState } from "../domain/game";
 import { getGameWeekday, getTimePeriod } from "../domain/travel";
-import { cityProgressCounts } from "../features/journey/CityProgress";
-import { cityProgressParts, type CityProgressPart } from "../features/journey/city-progress-label";
 import { placeDisplayName } from "../features/journey/travel-labels";
 import { formatTravelTime } from "../features/journey/travel-time";
 import { moneyLength, placeNameIsCut, weekdayLabel } from "./journey-hud-text";
 import { useMeasuredHeight } from "../components/useMeasuredHeight";
 import "./journey-hud.css";
 
-const progressIcons: Record<CityProgressPart["kind"], IconName> = { tourism: "camera", battles: "swords", cleared: "stamp" };
-
 /**
  * The header's popovers open one at a time, all hanging from its bottom edge:
  * ⚙設定's panel and the held items' detail close each other (a press outside
- * either closes it), and opening one of them also closes free time's open 待機
- * menu in the bottom band (a `<details>`, which closes only when its own summary
- * is pressed).
+ * either closes it), and opening one of them also closes the previous free-time
+ * screen's open 待機 menu in its bottom band (MapListFreeTime; a `<details>`,
+ * which closes only when its own summary is pressed).
  */
 function closeWaitMenu() {
   for (const details of document.querySelectorAll<HTMLDetailsElement>('[data-testid="travel-actions"] details[open]')) details.open = false;
 }
 
-/**
- * The header of every game screen (UI redesign §3.1): row 1 shows where and when
- * the couple are and what they have (display only), row 2 holds what can be
- * pressed: the city's progress (opens 旅の記録), the held items, 英語ノート and ⚙設定 with
- * セーブ・ロード・ゲームの設定. Its height is measured as `--hud-h` for the
- * reserves of the scenes it lies over.
- */
-export function JourneyHud({ game, place, onRecords, onEnglish, onSave, onLoad, onSettings }: {
-  game: GameState;
-  place: TravelPlace | undefined;
-  onRecords: () => void;
-  onEnglish: () => void;
+/** What ⚙設定's panel opens; 写真の出典 only while a screen shows photos (free time). */
+type MenuActions = {
   onSave: () => void;
   onLoad: () => void;
+  onRecords: () => void;
+  onEnglish: () => void;
+  onPhotoCredits?: () => void;
   onSettings: () => void;
-}) {
+};
+
+/**
+ * The header of every game screen (UI redesign §3.1): row 1 shows where and when
+ * the couple are and what they have (display only; the budget above the AP at
+ * the right end), row 2 holds what can be pressed: the held items, the screen's
+ * own tool (free time's 「地図」, HudScreenTool) and ⚙設定 with セーブ・ロード・
+ * 旅の記録・英語ノート・(free time) 写真の出典・ゲームの設定. Its height is measured
+ * as `--hud-h` for the reserves of the scenes it lies over.
+ */
+export function JourneyHud({ game, place, ...actions }: { game: GameState; place: TravelPlace | undefined } & MenuActions) {
   const measured = useMeasuredHeight("--hud-h");
   const wrapsWhenCut = useWholePlaceName();
   const header = useCallback((element: HTMLElement | null) => {
@@ -59,7 +59,6 @@ export function JourneyHud({ game, place, onRecords, onEnglish, onSave, onLoad, 
   }, [measured, wrapsWhenCut]);
   const weekday = getGameWeekday(game.travel.calendar);
   const money = formatMoneyForCity(game.currentCityId, game.travelBudget);
-  const parts = cityProgressParts(cityProgressCounts(game));
   // This city's items, and those carried through the journey from an earlier city (the item design §2.6).
   const items = encounters.items
     .filter((item) => itemUsableIn(game, item.id, game.currentCityId) && game.inventory[item.id] === "held")
@@ -81,24 +80,10 @@ export function JourneyHud({ game, place, onRecords, onEnglish, onSave, onLoad, 
         </p>
       </div>
       <div className="hud-actions">
-        <button
-          type="button"
-          className="hud-progress"
-          data-testid="city-progress"
-          aria-label={`旅の記録：${parts.map((part) => part.text).join("、")}`}
-          onClick={onRecords}
-        >
-          <span className="hud-progress-parts" data-testid={parts[0].kind === "cleared" ? "city-complete" : undefined}>
-            {parts.map((part) => <span key={part.kind} className="hud-progress-part"><Icon name={progressIcons[part.kind]} />{part.text}</span>)}
-          </span>
-          <Icon name="chevron-right" className="hud-chevron" />
-        </button>
         <HeldItems items={items} onOpen={closeWaitMenu} />
         <nav className="hud-tools" aria-label="旅の操作">
-          <button type="button" className="hud-tool" aria-label="英語ノートを開く" onClick={onEnglish}>
-            <Icon name="book" /><span className="hud-tool-word">英語ノート</span>
-          </button>
-          <HudMenu onSave={onSave} onLoad={onLoad} onSettings={onSettings} />
+          <span id={HUD_SCREEN_TOOL_ID} className="hud-screen-tool" />
+          <HudMenu {...actions} />
         </nav>
       </div>
     </div>
@@ -165,10 +150,11 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
 }
 
 /**
- * ⚙設定 (U2, U24): a disclosure button with its small panel of セーブ, ロード
- * and ゲームの設定 (U28) right under the header (APG Disclosure, not an ARIA menu:
- * three ordinary buttons, and Tab works as everywhere else). Opening moves the
- * focus to セーブ (ArrowUp/ArrowDown also move between the three); Esc closes and
+ * ⚙設定 (U2, U24): a disclosure button with its small panel of セーブ, ロード,
+ * 旅の記録, 英語ノート, 写真の出典 (while the screen shows photos) and ゲームの設定
+ * (U28) right under the header (APG Disclosure, not an ARIA menu: ordinary
+ * buttons, and Tab works as everywhere else). Opening moves the focus to セーブ
+ * (ArrowUp/ArrowDown also move between the items); Esc closes and
  * returns it to ⚙設定; leaving the group with the focus or a press elsewhere
  * closes it. A tap on the page outside the header only closes it (DismissLayer).
  * Choosing an item closes the panel and puts the focus on ⚙設定 before the action
@@ -177,9 +163,10 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
  * that take no press for a moment (or a load holds taps), and セーブ, which opens
  * none, holds the page's taps for that moment itself (holdTaps), so the second
  * tap of a double tap presses nothing that lay under it (in a sightseeing guide,
- * 手がかり帳).
+ * 手がかり帳). 旅の記録, 英語ノート and 写真の出典 open their dialogs at once, as
+ * their own buttons did (the second tap lands inside the dialog).
  */
-function HudMenu({ onSave, onLoad, onSettings }: { onSave: () => void; onLoad: () => void; onSettings: () => void }) {
+function HudMenu({ onSave, onLoad, onRecords, onEnglish, onPhotoCredits, onSettings }: MenuActions) {
   const [open, setOpen] = useState(false);
   const group = useRef<HTMLDivElement>(null);
   const gear = useRef<HTMLButtonElement>(null);
@@ -257,6 +244,9 @@ function HudMenu({ onSave, onLoad, onSettings }: { onSave: () => void; onLoad: (
       <div id="hud-menu-panel" className="hud-menu-panel" data-testid="hud-menu-panel" ref={panel} hidden={!open} onKeyDown={moveWithArrows}>
         <button type="button" onClick={choose(onSave, true)}><Icon name="save" />セーブ</button>
         <button type="button" onClick={choose(onLoad)}><Icon name="load" />ロード</button>
+        <button type="button" onClick={choose(onRecords)}><Icon name="stamp" />旅の記録</button>
+        <button type="button" onClick={choose(onEnglish)}><Icon name="book" />英語ノート</button>
+        {onPhotoCredits && <button type="button" onClick={choose(onPhotoCredits)}><Icon name="credit" />写真の出典</button>}
         <button type="button" onClick={choose(onSettings)}><Icon name="sliders" />ゲームの設定</button>
       </div>
       {open && <DismissLayer owner={group.current} onClose={(focusWasInside) => {

@@ -10,7 +10,7 @@ import type { GameState } from "../../domain/game";
 import { isTourOnlyPlace } from "../../content/travel-schemas";
 import { battlePlayed } from "../../domain/conditions";
 import { canReadCityEpilogue } from "../../domain/epilogue";
-import type { CityProgressCounts } from "./city-progress-label";
+import { cityProgressParts, type CityProgressCounts } from "./city-progress-label";
 import "./city.css";
 
 export function CityProgress({
@@ -85,8 +85,8 @@ export function CityProgress({
   );
 }
 
-/** The current city's cleared stops and special battles (the header's progress shows them). */
-export function cityProgressCounts(game: GameState): CityProgressCounts {
+/** The current city's cleared stops and special battles (旅の記録 sums them up). */
+function cityProgressCounts(game: GameState): CityProgressCounts {
   const { city } = getCityContent(game.currentCityId);
   const stops = episodes.filter((episode) => episode.cityId === city.id && episode.kind !== "city_finale");
   const storyBattles = storyBattlesForCity(city.id);
@@ -105,10 +105,11 @@ function atTourOnlyPlace(cityId: string, eventId: string): boolean {
   return isTourOnlyPlace(travel.places.find((place) => place.id === travel.events.find((event) => event.id === eventId)?.placeId));
 }
 
-/** Journey records can be positioned independently of the progress summary. */
+/** 旅の記録: the city's progress in one line (「観光 1 / 4 · 対決 0 / 2」, or 「都市クリア」), then each stop. */
 export function CityRecords({ game }: { game: GameState }) {
   return (
     <div className="city-records">
+      <p className="records-progress" data-testid="city-progress">{cityProgressParts(cityProgressCounts(game)).map((part) => part.text).join(" · ")}</p>
       <ol>
         {episodes.filter((episode) => episode.cityId === game.currentCityId).map((episode, index) => {
           const cleared = game.completedEpisodeIds.includes(episode.id);

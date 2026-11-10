@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import {
   balance,
   dates,
@@ -43,6 +43,7 @@ import { useLearning } from "../features/learning/useLearning";
 import { EnglishReview } from "../features/learning/EnglishReview";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import { CityRecords } from "../features/journey/CityProgress";
+import { photoCardPhotos, PhotoCredits } from "../features/journey/PhotoCredits";
 import { TitleNameFields } from "../features/journey/TitleNameFields";
 import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
@@ -205,6 +206,7 @@ export function GameApp({
     } else if (step === "leave") onSwitchJourney(id);
   }
   const [recordsOpen, setRecordsOpen] = useState(false);
+  const [photoCreditsOpen, setPhotoCreditsOpen] = useState(false);
   const [sceneEpoch, setSceneEpoch] = useState(0);
   const [notebook, setNotebook] = useState(false);
   const speed = displaySettings.value.dialogueSpeed;
@@ -267,6 +269,9 @@ export function GameApp({
     !game.activeBattle &&
     !game.activeTourism &&
     !game.activeEpilogue;
+  // Free time on show: ⚙設定 then offers 「写真の出典」 of its photo cards.
+  const freeTimeShown = !!idle && !showRomanceEnding;
+  const creditPhotos = useMemo(() => (game && freeTimeShown ? photoCardPhotos(game) : []), [game, freeTimeShown]);
   const nextEpisode = game ? getNextEpisode(game) : null;
   const nextStoryBattle = game ? getNextStoryBattle(game) : null;
   const frame = active?.frame;
@@ -342,7 +347,7 @@ export function GameApp({
 
   return (
     <div
-      className={`app-shell${displaySettings.value.reduceMotion ? " reduce-motion" : ""}${conversationActive ? " conversation-active" : ""}${mobilePlayActive ? " mobile-play-active" : ""}${mobileObservationActive ? " mobile-observation-active" : ""}${idle && freeTimeAvailable && !showRomanceEnding ? " free-time-active" : ""}`}
+      className={`app-shell${displaySettings.value.reduceMotion ? " reduce-motion" : ""}${conversationActive ? " conversation-active" : ""}${mobilePlayActive ? " mobile-play-active" : ""}${mobileObservationActive ? " mobile-observation-active" : ""}${freeTimeShown ? " free-time-active" : ""}`}
     >
       <header className="masthead">
         <a href="#main" className="brand">
@@ -355,6 +360,7 @@ export function GameApp({
         place={currentTravelPlace}
         onRecords={() => setRecordsOpen(true)}
         onEnglish={() => openEnglish()}
+        onPhotoCredits={creditPhotos.length ? () => setPhotoCreditsOpen(true) : undefined}
         onSave={save}
         onLoad={reload}
         onSettings={() => {
@@ -726,6 +732,7 @@ export function GameApp({
         </p>
         <CityRecords game={game} />
       </Modal>}
+      {photoCreditsOpen && creditPhotos.length > 0 && <PhotoCredits photos={creditPhotos} onClose={() => setPhotoCreditsOpen(false)} />}
       {notebook && game && (canObserve || cityNotebook) && (
         <ClueNotebook
           landmarkId={currentLandmarkId ?? undefined}

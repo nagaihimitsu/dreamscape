@@ -187,18 +187,24 @@ export function useTravelSelection(game: GameState, handlers: {
       : selection.target.kind === "place" && selection.target.placeId === target.placeId),
     pressName: (placeId: string, kind: PressKind, scope: PressScope = "page") => onTarget(targetFor({ kind: "place", placeId }), kind, "name", scope),
     /**
-     * Selects a place and nothing else, as a marker's press does (B案's photo cards: the card in the row's centre is
-     * the selection; a card never travels). No scroll; `quiet` leaves the live regions as they are (a selection the
-     * screen makes by itself, not one the player made).
+     * Selects a place or the hotel's 休む and nothing else, as a marker's press does, or nothing (`null`) (B案's photo
+     * cards: the card in the row's centre is the selection; a card never travels). No scroll; `quiet` leaves the live
+     * regions as they are (a selection the screen makes by itself, not one the player made).
      */
-    choose: (placeId: string, { quiet = false }: { quiet?: boolean } = {}) => {
-      const target = targetFor({ kind: "place", placeId });
+    choose: (next: SelectionTarget | null, { quiet = false }: { quiet?: boolean } = {}) => {
+      if (!next) {
+        if (selectionRef.current) set(null);
+        return;
+      }
+      const target = targetFor(next);
       if (!target) return;
       const result = pressTarget(selectionRef.current, target, { ...press("pointer"), source: "marker" });
       if (!result.selection || result.selection === selectionRef.current) return;
       set(result.selection);
       if (!quiet) say(describe(target, null));
     },
+    /** Says `text` in the live regions (a choice the screen describes itself: B案's tour card). */
+    announce: say,
     pressSleep: (kind: PressKind) => onTarget(targetFor({ kind: "sleep" }), kind, "name", "page"),
     pressMarker: (placeId: string, kind: PressKind, mapStuck: boolean, scope: PressScope = "page") => onTarget(markerTarget(placeId), kind, "marker", scope, mapStuck),
     pressEvent: (placeId: string, eventId: string, kind: PressKind, scope: PressScope = "page") => {

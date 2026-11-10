@@ -6,7 +6,7 @@ export type CityProgressCounts = {
   cityCompleted: boolean;
 };
 
-/** One count of the progress summary; `kind` picks its icon in the header. */
+/** One count of the progress summary (旅の記録). */
 export type CityProgressPart = { kind: "tourism" | "battles" | "cleared"; text: string };
 
 /**

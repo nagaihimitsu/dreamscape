@@ -22,9 +22,9 @@
 .journey-hud p { margin: 0; }
 .journey-hud .icon { flex: none; color: var(--ds-gold); }
 
-/* Row 1: where and when, the budget and AP. Nothing here is pressed. When the
-   plate and the money do not fit side by side, the money goes below the plate:
-   the row wraps (the header's height is measured). */
+/* Row 1: where and when, then the budget above the AP at the right end. Nothing
+   here is pressed. When the plate and the money do not fit side by side, the
+   money goes below the plate: the row wraps (the header's height is measured). */
 .hud-status { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; min-height: 40px; }
 .hud-plate,
 .hud-wallet {
@@ -114,12 +114,14 @@
 .hud-wallet .ap small { font-family: "Noto Sans JP", sans-serif; font-size: 10px; letter-spacing: 0.1em; }
 .hud-wallet .icon { width: 12px; height: 12px; margin-right: 3px; vertical-align: -1px; }
 
-/* Row 2: what is pressed. Words stay at every width; icons go first. */
+/* Row 2: what is pressed. Words stay at every width. */
 .hud-actions { display: flex; flex-wrap: wrap; align-items: stretch; gap: 4px; }
 .hud-actions > * { flex: none; }
-/* At the row's right end, also when a crowded row wraps (a held item, below 380 px). */
+/* At the row's right end, also when a crowded row wraps (held items). The screen's
+   own tool (free time's 「地図」) comes before ⚙設定; on other screens its place is
+   empty and takes no room. */
 .hud-tools { display: flex; gap: 4px; margin-left: auto; }
-.hud-progress,
+.hud-screen-tool { display: contents; }
 .hud-tool,
 .journey-hud .held-item-button {
   min-height: 44px;
@@ -132,33 +134,6 @@
   text-decoration: none;
   cursor: pointer;
 }
-.hud-progress {
-  /* Grows into the row's free width; below its one-line width the two counts
-     go on two lines (each count stays whole), so no width needs a breakpoint. */
-  flex: 1 1 0;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 8px 3px 10px;
-  font-size: 12px;
-  font-weight: 600;
-  text-align: left;
-}
-.hud-progress-parts {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 14px;
-  row-gap: 2px;
-  overflow: hidden;
-}
-/* The dot between the counts sits in the gap before each count; at the start of
-   a line it falls outside the box and is clipped, so a wrapped count starts clean. */
-.hud-progress-part { margin-left: -14px; white-space: nowrap; }
-.hud-progress-part::before { content: "·"; display: inline-block; width: 14px; text-align: center; }
-.hud-progress-part .icon { display: none; }
-.hud-chevron { width: 12px; height: 12px; }
 .hud-tool,
 .journey-hud .held-item-button {
   display: inline-flex;
@@ -174,7 +149,8 @@
 .journey-hud .held-item-button[aria-expanded="true"],
 .hud-tool[aria-expanded="true"] { background: var(--ds-slate-900); border-color: var(--ds-gold); }
 
-/* ⚙設定's panel: under the header, its right edge on the button's. */
+/* ⚙設定's panel: under the header, its right edge on the button's; on a short
+   screen (or with large text) its items scroll inside it. */
 .hud-menu-panel {
   position: absolute;
   z-index: 1;
@@ -183,6 +159,9 @@
   display: grid;
   gap: 4px;
   width: 168px;
+  max-height: calc(100dvh - var(--hud-h, 96px) - 8px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 8px;
   border: 1px solid var(--ds-parchment-line);
   border-radius: 16px;
@@ -229,13 +208,10 @@
 }
 
 @media (min-width: 380px) {
-  .hud-wallet { flex-direction: row; align-items: center; gap: 10px; }
-  .hud-wallet .travel-budget,
-  .hud-wallet .ap { font-size: 17px; }
+  .hud-wallet .travel-budget { font-size: 17px; }
   .hud-wallet .travel-budget[data-length="long"] { font-size: 15px; }
   .hud-wallet .travel-budget[data-length="longer"] { font-size: 14px; }
-  .hud-wallet .ap small { font-size: 11px; }
-  .hud-progress-part .icon { display: inline-block; width: 16px; height: 16px; margin-right: 3px; vertical-align: -3px; }
+  .hud-wallet .ap { font-size: 14px; }
 }
 @media (max-width: 359px) {
   .hud-place { font-size: 13px; }
@@ -253,7 +229,6 @@
   .hud-plate { flex: 0 1 auto; }
   .hud-status > .hud-wallet { margin-left: 0; }
   .hud-actions { flex: 0 1 auto; justify-content: flex-end; }
-  .hud-progress { flex: 0 1 auto; }
   /* A place name the row cannot hold whole (data-place-wraps): the status asks
      for the whole name beside the money, so the buttons go to a row of their
      own; with still too little room the money goes below the name, and a name

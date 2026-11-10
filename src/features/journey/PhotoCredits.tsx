@@ -23,6 +23,11 @@ export function freeTimePhotos(game: GameState): ShownPhoto[] {
   return [...(backdrop ? [{ key: "backdrop", labelJa: `背景（${city.nameJa}）`, asset: backdrop, kind: "backdrop" as const }] : []), ...rows];
 }
 
+/** The photos of B案's photo cards (its screen does not draw the backdrop): ⚙設定's 「写真の出典」 in free time lists them. */
+export function photoCardPhotos(game: GameState): ShownPhoto[] {
+  return freeTimePhotos(game).filter((photo) => photo.kind === "card");
+}
+
 /** 「写真の出典」 (UI redesign §3.4 item 6): the credit and licence of each photo on the free-time screen. */
 export function PhotoCredits({ photos, onClose }: { photos: ShownPhoto[]; onClose: () => void }) {
   return <Modal labelledBy="photo-credits-title" className="photo-credits-modal" onClose={onClose}>
