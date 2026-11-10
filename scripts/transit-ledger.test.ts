@@ -157,6 +157,24 @@ describe("per-city transit ledger", () => {
     expect(withNew.decisions.filter((decision) => decision.mode === "taxi").map((decision) => decision.sourceRefs)).toEqual([["model"], ["model"]]);
   });
 
+  it("keeps each unchanged decision's refs when two keys hold the same source; a changed one takes the first key", () => {
+    const { ledger } = fixture();
+    // "copy" holds the same source as "fact" (a hand-written or imported ledger); the second tram decision uses it.
+    const twin: TransitLedger = { ...ledger, sourceRefs: { ...ledger.sourceRefs, copy: { ...ledger.sourceRefs.fact } },
+      decisions: ledger.decisions.map((decision, index) => (index === 3 ? { ...decision, sourceRefs: ["copy"] } : decision)) };
+    const edited = exportTransitDecisions(twin);
+    edited[0].reasonJa += "（編集）";
+    const replaced = replaceTransitDecisions(twin, edited);
+    expect(Object.keys(replaced.sourceRefs)).toEqual(["fact", "model", "copy"]);
+    expect(replaced.decisions).toEqual(twin.decisions.map((decision, index) => (index === 0 ? { ...decision, reasonJa: edited[0].reasonJa } : decision)));
+    // A decision whose sources change to that source takes the first key that holds it.
+    const resourced = exportTransitDecisions(twin);
+    resourced[1].sources = [fact];
+    expect(replaceTransitDecisions(twin, resourced).decisions[1].sourceRefs).toEqual(["fact"]);
+    expect(() => exportTransitDecisions({ ...twin, decisions: [{ ...twin.decisions[0], sourceRefs: ["nowhere"] }] }))
+      .toThrow("交通判断台帳の判断の出典 nowhere が、台帳の sourceRefs にありません（都市 test_city）。");
+  });
+
   it("formats the counts per mode in Japanese", () => {
     expect(formatTransitCounts(counts({ available: 2 }, { not_applicable: 1, inconclusive: 1 }), (mode) => ({ tram: "路面電車", taxi: "タクシー" })[mode]!))
       .toEqual(["路面電車: 走っていない 1、特定できず 1", "タクシー: 使う 2"]);
