@@ -1,10 +1,11 @@
 import { spawnSync } from "node:child_process";
-import { cpSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
+import { errorText } from "./cli-error";
 import { journeyReleaseSummary, namedJa, parseJourneyScaffoldArgs } from "./journey-cli";
 
 const root = path.resolve(import.meta.dirname, "..");
@@ -13,6 +14,13 @@ describe("journey authoring commands", () => {
   it("name journeys and cities in Japanese with their IDs", () => {
     expect(namedJa({ id: "golden_triangle", nameJa: "インド・ゴールデントライアングル編" })).toBe("インド・ゴールデントライアングル編（golden_triangle）");
     expect(namedJa({ id: "delhi" })).toBe("delhi");
+  });
+
+  it("print an error with each cause on its own line, leaving out a cause the message already quotes", () => {
+    const parse = new Error("Expected double-quoted property name in JSON at position 9 (line 2 column 3)");
+    expect(errorText(new Error("Cannot read JSON khiva.json", { cause: parse }))).toBe(`Cannot read JSON khiva.json\n${parse.message}`);
+    expect(errorText(new Error(`形が違います: ${parse.message}`, { cause: parse }))).toBe(`形が違います: ${parse.message}`);
+    expect(errorText("plain")).toBe("plain");
   });
 
   it("journey:scaffold prints the requirements without a mode, and --fragments needs its narrative file", () => {
@@ -109,6 +117,29 @@ describe("journey authoring commands", () => {
     // One message, no stack trace.
     expect(result.stderr.trim().split("\n")).toHaveLength(1);
     expect(result.stderr).not.toMatch(/^\s+at /mu);
+  });
+
+  // A content file the commands load is broken: they print the loader's message and the JSON error's line and column.
+  it("city:bundle export and journey:transit name where a content JSON file is broken", () => {
+    const fixture = mkdtempSync(path.join(tmpdir(), "dreamscape-broken-"));
+    try {
+      const content = path.join(root, "content");
+      cpSync(content, path.join(fixture, "content"), { recursive: true,
+        filter: (source) => !path.relative(content, source).split(path.sep).includes("public") });
+      mkdirSync(path.join(fixture, "public"));
+      const manifest = manifests.find((item) => item.cities.length > 1 && (item as { transportModes?: unknown[] }).transportModes?.length)!;
+      const cityFile = path.join(fixture, "content/journeys", manifest.id, "cities", `${manifest.cities[1].id}.json`);
+      writeFileSync(cityFile, readFileSync(cityFile, "utf8").replace(/\n/u, "\n  ,,\n"));
+      for (const [script, args] of [["city-bundle-cli.ts", ["export", manifest.cities[1].id, path.join(fixture, "out.json")]],
+        ["inspect-journey-transit.ts", ["--journey", manifest.id]]] as const) {
+        const result = run(script, [...args], fixture);
+        expect(result.status, script).toBe(1);
+        expect(result.stderr, script).toMatch(new RegExp(`^Cannot read JSON .*${manifest.cities[1].id}\\.json\n.*line 2 column`, "u"));
+        expect(result.stderr).not.toMatch(/^\s+at /mu);
+      }
+    } finally {
+      rmSync(fixture, { recursive: true, force: true });
+    }
   });
 
   // city:bundle check/apply take only the working copy that export and new write (version 2); an older or

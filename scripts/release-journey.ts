@@ -1,5 +1,6 @@
 import { journeyReleaseSummary } from "./journey-cli";
 import { prepareJourneyRelease } from "./promote-journey";
+import { errorText } from "./cli-error";
 
 try {
   const args = process.argv.slice(2);
@@ -30,7 +31,7 @@ try {
   const result = await prepareJourneyRelease(process.cwd(), journeyId, apply, through, narrative, translations);
   for (const line of journeyReleaseSummary(result, apply)) console.log(line);
 } catch (error) {
-  // The message only: a stack trace would bury it.
-  console.error(error instanceof Error ? error.message : error);
+  // The message and what caused it, without a stack trace that would bury them.
+  console.error(errorText(error));
   process.exitCode = 1;
 }

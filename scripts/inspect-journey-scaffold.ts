@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { parseJourneyScaffoldArgs } from "./journey-cli";
 import { buildJourneyFragments, journeyRequirements, loadJourneyScaffold } from "./journey-scaffold";
+import { errorText } from "./cli-error";
 
 // Read-only authoring helper. Content publication is performed by the release gate.
 // Options: parseJourneyScaffoldArgs (without a mode it prints the requirements).
@@ -22,7 +23,7 @@ try {
     console.log(JSON.stringify({ requirements, narrativeTemplate }, null, 2));
   }
 } catch (error) {
-  // The message only: a stack trace would bury it.
-  console.error(error instanceof Error ? error.message : error);
+  // The message and what caused it, without a stack trace that would bury them.
+  console.error(errorText(error));
   process.exitCode = 1;
 }

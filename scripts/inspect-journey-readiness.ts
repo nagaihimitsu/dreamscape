@@ -1,6 +1,7 @@
 import { namedJa } from "./journey-cli";
 import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
 import { buildContent } from "./content-pipeline";
+import { errorText } from "./cli-error";
 
 const args = process.argv.slice(2);
 const journeyFlag = args.indexOf("--journey");
@@ -34,7 +35,7 @@ if (args.includes("--require-ready")) {
       await buildContent(root, false);
       console.log("公開前の確認: 全体の内容の検証に合格しました。");
     } catch (error) {
-      console.error(error instanceof Error ? error.message : error);
+      console.error(errorText(error));
       process.exitCode = 1;
     }
   }
@@ -42,7 +43,7 @@ if (args.includes("--require-ready")) {
 
 /** Print a failure before any report output without its stack trace, and stop with exit code 1. */
 function fail(error: unknown): never {
-  console.error(error instanceof Error ? error.message : error);
+  console.error(errorText(error));
   process.exit(1);
 }
 

@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { applyCityBundle, compactCityBundle, exportEditableCityBundle, newCityBundle } from "./city-bundle";
 import { parseWorkingCopy } from "./city-bundle-schema";
+import { errorText } from "./cli-error";
 
 try {
   const [command, ...args] = process.argv.slice(2);
@@ -36,7 +37,7 @@ try {
     for (const file of result.changedFiles) console.log(`  ${file}`);
   } else throw new Error(usage);
 } catch (error) {
-  // The message only: a stack trace would bury it.
-  console.error(error instanceof Error ? error.message : error);
+  // The message and what caused it, without a stack trace that would bury them.
+  console.error(errorText(error));
   process.exitCode = 1;
 }

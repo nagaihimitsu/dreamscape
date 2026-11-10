@@ -34,6 +34,7 @@ import { compileInk } from "./ink-validation";
 import { validateQuizEntries } from "./quiz-validation";
 import { classifyContentFile, toPosix, type MergedKind } from "./content-layout";
 import { loadContentSources, parseCatalog } from "./content-sources";
+import { errorText } from "./cli-error";
 
 const schemas = {
   quiz: quizSchema,
@@ -156,9 +157,8 @@ if (
   path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
 ) {
   run(process.argv.slice(2)).catch((error: unknown) => {
-    // The message (and what caused it) only: a stack trace would bury it.
-    const message = (value: unknown) => (value instanceof Error ? value.message : String(value));
-    console.error(error instanceof Error && error.cause !== undefined ? `${error.message}\n${message(error.cause)}` : message(error));
+    // The message and what caused it, without a stack trace that would bury them.
+    console.error(errorText(error));
     process.exitCode = 1;
   });
 }

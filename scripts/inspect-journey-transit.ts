@@ -3,6 +3,7 @@ import { journeyCatalogOf, loadContentSources } from "./content-sources";
 import { namedJa } from "./journey-cli";
 import { inspectJourneyTransit } from "./journey-transit";
 import { formatTransitCounts } from "./transit-ledger";
+import { errorText } from "./cli-error";
 
 // npm run journey:transit -- --journey <journeyId> [--json]: every city's transit ledger against its routes.
 // Also lists the directions without a walking route and the routes of declared modes that lack their
@@ -33,7 +34,7 @@ try {
   }
   if (report.cities.some((city) => !city.ready)) process.exitCode = 1;
 } catch (error) {
-  // The message only: a stack trace would bury it.
-  console.error(error instanceof Error ? error.message : error);
+  // The message and what caused it, without a stack trace that would bury them.
+  console.error(errorText(error));
   process.exitCode = 1;
 }
