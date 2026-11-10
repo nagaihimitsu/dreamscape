@@ -3,7 +3,7 @@ import { parseSceneConditions, readSceneConditions } from "./scene-conditions";
 import path from "node:path";
 import { isDeepStrictEqual } from "node:util";
 import { journeySchema } from "../src/content/journey-schemas";
-import { battleCatalogSchema, dateCatalogSchema, presentationSchema } from "../src/content/schemas";
+import { balanceSchema, battleCatalogSchema, dateCatalogSchema, presentationSchema } from "../src/content/schemas";
 import { isPlaceStory, storyFileOf } from "../src/content/story-address";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import type { TagContext } from "../src/content/tags";
@@ -14,7 +14,8 @@ import { displayPath, journeyLayer, loadContentSources, parseCatalog, storyFile,
 import { withContext } from "./content-validation-utils";
 import { validateEpilogue } from "./epilogue-validation";
 import { compileInk, validateNoInkRandom, validateRelationshipToneSource } from "./ink-validation";
-import { includesModules, readMainFileHead } from "./place-files";
+import { choiceOption, includesModules, readFileChoices, readMainFileHead } from "./place-files";
+import { walkScene } from "./scene-walk";
 import { MODULES_FILE, MODULES_INK } from "./modules-ink";
 import { buildJourneyFragments, journeyNarrativeSchema, journeyRequirements, loadJourneyScaffold } from "./journey-scaffold";
 import { validateTourism } from "./tourism-validation";
@@ -64,6 +65,7 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
   const narrative = journeyNarrativeSchema.parse(json(path.join(base, selectedCityId ?? "", "narrative.json")));
   const fragments = buildJourneyFragments(input, narrative, requirements.map((city) => city.cityId));
   const presentation = parseCatalog(sources, presentationSchema, "romance/presentation.json");
+  const { apCap } = parseCatalog(sources, balanceSchema, "romance/balance.json");
   // Any background of the journey's own romance/presentation.json (dates and scenes away from the
   // map's places), besides the backgrounds of the city's places.
   const journeyDirectory = journeyLayer(sources, journeyId).directory + path.sep;
@@ -138,9 +140,21 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
     city.cityId, input.plannedLandmarks[city.cityId], fragments.battles, {}, stories, context, () => observe,
     (storyId) => storyFiles[storyId] ? displayPath(root, storyFiles[storyId]) : `${storyId}.ink`, (guideStoryId) => placeKnots.has(guideStoryId));
     for (const battle of fragments.battles.filter((battle) => battle.cityId === city.cityId || ownLandmarks.some((landmark) => landmark.battleId === battle.id)))
-      // A place file's knot and a published battle in the one-flow form (stage 5): content:build walks them.
-      if (!placeKnots.has(battle.storyId) && !includesModules(inkSources[battle.storyId] ?? ""))
-        battleScenarios += withContext(battle.storyId, () => validateBattleStory(stories[battle.storyId], battle, context, observe));
+      // A place file's knot: content:build walks it. A battle is written in the one-flow form (stage 5; the scaffold
+      // writes no scenes): walked as content:build walks it, every quiz right and wrong (A16).
+      if (placeKnots.has(battle.storyId)) continue;
+      else if (battle.scenes) battleScenarios += withContext(battle.storyId, () => validateBattleStory(stories[battle.storyId], battle, context, observe));
+      else battleScenarios += withContext(storyFiles[battle.storyId] ?? battle.storyId, () => {
+        const source = inkSources[battle.storyId];
+        if (!includesModules(source))
+          throw new Error(`A battle's script is in the one-flow form (stage 5): start ${battle.storyId} with INCLUDE modules.ink in place of its VAR lines, ` +
+            `and call the quiz with -> quiz(1) -> … (authoring/CONTENT_GUIDE.md「対決の会話を1本の流れで書く」)`);
+        const options = readFileChoices(battle.storyId, source).flatMap((choice) => choiceOption(choice, apCap) ?? []);
+        return walkScene({ compiled: stories[battle.storyId], label: battle.storyId, context, conds: readSceneConditions(source, true), options,
+          itemIds: [], memoryIds: Object.keys(fragments.memories), observe,
+          variables: { call_arg: 0, quiz_correct: false, answer_correct: false, battle_score: 0, reasoning_action: "", evidence_result: "" },
+          battle: { quizzes: battle.scope === "city_finale" ? 5 : 3 } });
+      });
     if (!placeKnots.has(city.finale.epilogueStoryId))
       epilogueScenarios += withContext(city.finale.epilogueStoryId, () => validateEpilogue(stories[city.finale.epilogueStoryId], context, observe));
     for (const date of fragments.dates.filter((date) => date.chapterId === city.cityId && !placeKnots.has(date.storyId))) {

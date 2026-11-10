@@ -105,6 +105,10 @@ describe("journey:new copy of the sample", () => {
     expect([...minimal.keys()]).toContain("stories/battles/ky_kyoto_finale.ink");
     expect([...minimal.keys()]).toContain("public/assets/tourism/kyoto_trip/kyoto_clock_tower.png");
     expect([...full.keys()]).toContain("quizzes/ky_kyoto_special_b_market_quiz.json");
+    // A new journey's battles are in the one-flow form (stage 5), as the sample's: no scenes, the Ink includes modules.ink.
+    for (const battle of JSON.parse(full.get("battles/catalog.json")!.toString("utf8")).battles) expect(battle.scenes, battle.id).toBeUndefined();
+    expect(full.get("stories/battles/ky_kyoto_finale.ink")!.toString("utf8")).toMatch(/^INCLUDE modules\.ink$/mu);
+    expect(full.get("stories/battles/ky_kyoto_special_b_market.ink")!.toString("utf8")).toContain("=== ky_kyoto_special_b_market_claim ===");
     // No name of the sample is left as an ID, a part of one or a path (English names such as "Mihon Inn" are text to rewrite).
     const left = /(?<![A-Za-z0-9])(sample_trip|smp|mihon)(?![A-Za-z0-9])/u;
     for (const [file, bytes] of full) {

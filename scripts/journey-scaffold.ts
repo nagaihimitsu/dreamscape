@@ -117,7 +117,8 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
       battles.push(battleSchema.parse({ id: item.battleId, titleJa: script.titleJa, descriptionJa: script.descriptionJa,
         landmarkId: place.id, enemyNameJa: script.enemyNameJa, enemyTitleJa: script.enemyTitleJa,
         enemyDescriptionJa: script.enemyDescriptionJa, storyId: item.battleStoryId, quizId: item.quizId,
-        backgroundId: place.backgroundId, portrait: "abstract", scenes: { intro: "intro", afterRounds: ["after_1", "after_2"], outro: "outro" } }));
+        // The one-flow form (stage 5): the battle's Ink calls -> quiz(1) -> … -> quiz(3) -> itself (no scenes).
+        backgroundId: place.backgroundId, portrait: "abstract" }));
       addRewards(event.id, false);
     }
     for (const item of plan.dates) {
@@ -148,7 +149,7 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
     battles.push(battleSchema.parse({ id: plan.finale.battleId, scope: "city_finale", cityId: plan.cityId, landmarkId: null,
       titleJa: script.titleJa, descriptionJa: script.descriptionJa, enemyNameJa: script.enemyNameJa, enemyTitleJa: script.enemyTitleJa,
       enemyDescriptionJa: script.enemyDescriptionJa, storyId: plan.finale.battleStoryId, quizId: plan.finale.quizId,
-      backgroundId: place.backgroundId, portrait: "abstract", scenes: { intro: "intro", afterRounds: ["after_1", "after_2", "after_3", "after_4"], outro: "outro" } }));
+      backgroundId: place.backgroundId, portrait: "abstract" }));
     const destinationEvents = travel.events.filter((event) => event.placeId === place.id);
     const costs = new Set(destinationEvents.map((event) => event.admissionCost ?? 0));
     if (costs.size !== 1) throw new Error(`Journey scaffold: inconsistent admission at ${place.id}`);
