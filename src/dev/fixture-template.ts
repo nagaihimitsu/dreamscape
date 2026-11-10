@@ -17,7 +17,7 @@ import type {
 } from "../content";
 import type { EncounterCatalog, EncounterDefinition } from "../content/encounter-schemas";
 import type { Journey } from "../content/journey-catalog";
-import type { TravelEvent, TravelPlace, TravelRoute } from "../content/travel-schemas";
+import { isTourOnlyPlace, type TravelEvent, type TravelPlace, type TravelRoute } from "../content/travel-schemas";
 
 /** The development and test journey (scripts/content-layout.ts SAMPLE_JOURNEY_ID). */
 export const sampleJourneyId = "sample_trip";
@@ -102,7 +102,8 @@ function templateOf(content: DebugTemplateContent, journey: Journey, cityId: str
     const landmark = battle && landmarkOf(battle);
     const event = landmark && episode.landmarkId === landmark.id ? travel.events.find((item) => item.id === episode.id) : undefined;
     const place = event && travel.places.find((item) => item.id === event.placeId);
-    return battle && landmark && event && place ? [{ episode, battle, landmark, place, event }] : [];
+    // A tour-only place (tour stage 2a) is reached only on a tour: the copies need a place the map reaches.
+    return battle && landmark && event && place && !isTourOnlyPlace(place) ? [{ episode, battle, landmark, place, event }] : [];
   })[0];
   const finale = content.episodes.flatMap((episode) => {
     const battle = episode.kind === "city_finale" && episode.cityId === cityId && episode.epilogueStoryId ? battleOf(episode.battleId) : undefined;

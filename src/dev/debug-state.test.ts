@@ -6,7 +6,8 @@ import { advanceDate, chooseDate, validateGameState } from "../domain/game";
 import { debugExampleUrls, debugSessionExampleUrls } from "../../scripts/dev/screen-gallery";
 import { installPreparingJourneyTestCities } from "./test-cities";
 import { parseDebugQuery, type DebugQuery } from "./debug-query";
-import { createDebugState, debugTargets, defaultDebugSettings, firstDebugTarget, resolveDebugLaunch, type DebugSettings, type DebugTarget } from "./debug-state";
+import { createDebugState, debugSceneLocation, debugTargets, defaultDebugSettings, firstDebugTarget, resolveDebugLaunch, type DebugSettings, type DebugTarget } from "./debug-state";
+import { installTourTestCity, testTour } from "./test-tours";
 
 const base: DebugSettings = { scene: "tourism", id: "duomo_milano", progress: "completed", ap: 9, affection: 3, trust: 2, spark: 1, roll: "positive" };
 
@@ -97,6 +98,8 @@ describe("Debug launch URLs against the content", () => {
     const unavailable: string[] = [];
     for (const cityId of ["milano", "mihon"]) {
       for (const [scene, targets] of Object.entries(debugTargets(cityId)) as Array<[DebugSettings["scene"], DebugTarget[]]>) {
+        // Neither city has a tour (the tour scenes are opened below, on a fixture tour).
+        if (scene === "tour") { expect(targets, cityId).toEqual([]); continue; }
         expect(firstDebugTarget(targets), `${cityId} ${scene}`).not.toBe("");
         for (const target of targets) {
           // An encounter before or after a landmark's main part starts on the departure to it: from the journey's start.
@@ -126,6 +129,43 @@ describe("Debug launch URLs against the content", () => {
     ]);
     expect(() => createDebugState({ ...base, cityId: "mihon", scene: "encounter", id: "smp_mihon_bookmark_stall" }))
       .toThrow("旅の進行を「旅の開始時」にしてください。");
+  });
+});
+
+describe("Debug's tour scene (scene=tour; tour stage 2a)", () => {
+  it("lists the city's tours, marks the tour-only place's scenes as opened from the tour, and opens the tour booked or at its step", () => {
+    const cleanup = installTourTestCity();
+    try {
+      const targets = debugTargets(testTour.cityId);
+      expect(targets.tour).toEqual([{ id: testTour.tourId, name: "見本の街の日帰りツアー" }]);
+      const tourOnly = { unavailable: "ツアーの場面（scene=tour）から開けます", unavailableKind: "tour" };
+      expect(targets.tourism.find((item) => item.id === "mihon_library")).toMatchObject(tourOnly);
+      expect(targets.battle.find((item) => item.id === testTour.eventId)).toMatchObject(tourOnly);
+      expect(targets.occasion.find((item) => item.id === "mihon_library")).toMatchObject(tourOnly);
+      expect(targets.tourism.find((item) => item.id === "mihon_clock_tower")?.unavailable).toBeUndefined();
+      // The URL's refusal names the tour scene, without the item sentence.
+      expect(() => resolveDebugLaunch({ dataMode: "real", cityId: testTour.cityId, scene: "battle", target: testTour.eventId }))
+        .toThrow(/^「smp_mihon_special_c_library」（.+）は、ツアーの場面（scene=tour）から開けます。$/u);
+      // Booked at the city's start (the default progress of a tour), or at its visit with step=.
+      const launch = resolveDebugLaunch({ dataMode: "real", cityId: testTour.cityId, scene: "tour", target: testTour.tourId });
+      expect(launch).toMatchObject({ kind: "scene", settings: { scene: "tour", id: testTour.tourId, progress: "initial" } });
+      const booked = createDebugState((launch as Extract<typeof launch, { kind: "scene" }>).settings);
+      expect(validateGameState(booked)).toEqual(booked);
+      expect(booked.tour).toMatchObject({ status: "booked", tourId: testTour.tourId, offerId: testTour.desk.id });
+      expect(debugSceneLocation((launch as Extract<typeof launch, { kind: "scene" }>).settings, booked)).toBe("ツアー：見本の街の日帰りツアー（予約中）");
+      const visit = createDebugState({ ...base, cityId: testTour.cityId, scene: "tour", id: testTour.tourId, progress: "initial", step: "visit" });
+      expect(validateGameState(visit)).toEqual(visit);
+      expect(visit.tour).toMatchObject({ status: "running", step: 1 });
+      expect(visit.travel.currentPlaceId).toBe(testTour.placeId);
+      expect(debugSceneLocation({ ...base, scene: "tour", id: testTour.tourId }, visit)).toMatch(/^ツアー：見本の街の日帰りツアー（.+）$/u);
+      expect(() => createDebugState({ ...base, cityId: testTour.cityId, scene: "tour", id: testTour.tourId, progress: "initial", step: "out" }))
+        .toThrow("「out」は見本の街の日帰りツアーの見学の行程ではありません（行程：visit）。");
+      expect(() => createDebugState({ ...base, cityId: testTour.cityId, scene: "tour", id: testTour.tourId, progress: "completed" }))
+        .toThrow("ツアーは都市クリアの前に予約します。旅の進行を「旅の開始時」にしてください。");
+      expect(parseDebugQuery("?debug&city=mihon&scene=tour&target=smp_mihon_tour_test&step=visit"))
+        .toEqual({ kind: "launch", query: { dataMode: "real", cityId: "mihon", scene: "tour", target: "smp_mihon_tour_test", step: "visit" } });
+      expect(parseDebugQuery("?debug&scene=battle&step=visit")).toEqual({ kind: "error", message: "step は scene=tour（ツアー）で使います。" });
+    } finally { cleanup(); }
   });
 });
 

@@ -14,8 +14,9 @@ import {
 import {
   cityFinaleResult, cityMidway, cityStart, completedCity, correctAnswer, finishEpisode, firstCorrect, newJourney,
   openBattleScene, openEpilogueScene, openTourismScene, playBattleToResult, playEpisodeToResult, readEpilogue,
-  readGuide, rollTickets, startDateScene, startEncounterScene, withAp, wrongAnswer,
+  readGuide, rollTickets, startDateScene, startEncounterScene, withAp, wrongAnswer, bookTour, playTour, tourScene,
 } from "./scenario-builders";
+import { installTourTestCity, testTour } from "./test-tours";
 
 const noScene = { activeTourism: null, activeBattle: null, activeDate: null, activeEncounter: null, activeEpilogue: null };
 
@@ -218,5 +219,32 @@ describe("scenario builders", () => {
     }
     expect(() => startDateScene(withAp(cleared, 0), "smp_mihon_date_tower_square", 0)).toThrow("デートを始められません");
     expect(() => openEpilogueScene(cityStart("mihon"))).toThrow("エピローグは都市クリア後に開けます");
+  });
+
+  it("plays a battle at a tour-only place on its tour (booked, the night, the visit, the way back), so a cleared city has done its tour", () => {
+    const cleanup = installTourTestCity();
+    try {
+      const cleared = completedCity(testTour.cityId);
+      expect(cleared.completedCityIds).toContain(testTour.cityId);
+      expect(cleared.completedTourIds).toEqual([testTour.tourId]);
+      expect(cleared.tour).toBeNull();
+      // A tour-only place is not a placement: its scenes open on the tour.
+      expect(() => openTourismScene(cityStart(testTour.cityId), testTour.placeId))
+        .toThrow("ツアー専用の地点です。ツアーの場面（scene=tour）から開けます。");
+      // bookTour books at the hotel desk; playTour plays it through from a booking or from free time.
+      const start = cityStart(testTour.cityId);
+      const booked = bookTour(start, testTour.tourId);
+      expect(booked.tour).toMatchObject({ status: "booked", offerId: testTour.desk.id });
+      expect(bookTour(start, testTour.tourId, testTour.web.id).tour).toMatchObject({ offerId: testTour.web.id });
+      expect(playTour(booked, testTour.tourId).completedTourIds).toEqual([testTour.tourId]);
+      const results: string[] = [];
+      const played = playTour(start, testTour.tourId, { onResult: (state) => results.push(state.activeBattle!.battleId) });
+      expect(results).toEqual([testTour.eventId]);
+      expect(played.travel.currentPlaceId).toBe(testTour.hotelPlaceId);
+      expect(() => bookTour(played, testTour.tourId)).toThrow("この進行状態ではツアー「見本の街の日帰りツアー」を予約できません。");
+      // Debug's tour scene: booked, or at its visit.
+      expect(tourScene(start, testTour.tourId).tour?.status).toBe("booked");
+      expect(tourScene(start, testTour.tourId, "visit").occasion?.eventId).toBe(testTour.eventId);
+    } finally { cleanup(); }
   });
 });

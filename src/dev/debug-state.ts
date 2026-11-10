@@ -1,5 +1,6 @@
 import { encounterVisitSlot } from "../domain/encounter";
-import { battles, dateDestinations, dates, episodes, getCities, getCityContent, landmarks, type CityContent } from "../content";
+import { battles, dateDestinations, dates, episodes, getCities, getCityContent, getCityTours, getTour, landmarks, type CityContent } from "../content";
+import { isTourOnlyPlace } from "../content/travel-schemas";
 import { encounters } from "../content/encounters";
 import { battleCityId } from "../domain/chapter";
 import { validateGameState, type GameState } from "../domain/game";
@@ -7,7 +8,7 @@ import { defaultJourneyId, getJourney } from "../content/journeys";
 import { debugSceneLabels, debugValueRanges, type DebugQuery, type DebugScene, type DebugSettings } from "./debug-query";
 import {
   cityStart, completedCity, openBattleScene, openEpilogueScene, openTourismScene, rollTickets,
-  startDateScene, startEncounterScene, startOccasionScene, withAp, withRelationship,
+  startDateScene, startEncounterScene, startOccasionScene, tourScene, withAp, withRelationship,
 } from "./scenario-builders";
 
 export type { DebugScene, DebugSettings } from "./debug-query";
@@ -15,8 +16,14 @@ export type { DebugScene, DebugSettings } from "./debug-query";
 /** Debug opens the first city of the default journey unless another city is chosen. */
 export const defaultDebugCityId = getJourney(defaultJourneyId)!.cities[0].id;
 
-/** A scene target; `unavailable` says why Debug can never open it (the screen shows it disabled, a URL is refused). */
-export type DebugTarget = { id: string; name: string; unavailable?: string };
+/**
+ * A scene target; `unavailable` says why Debug can never open it (the screen shows it disabled, a URL is refused), and
+ * `unavailableKind` what kind of reason it is: an item Debug's states lack, or a tour-only place (scene=tour opens it).
+ */
+export type DebugTarget = { id: string; name: string; unavailable?: string; unavailableKind?: "item" | "tour" };
+
+/** Debug opens a tour-only place's scenes (tour stage 2a) only through its tour. */
+const TOUR_ONLY = { unavailable: "ツアーの場面（scene=tour）から開けます", unavailableKind: "tour" as const };
 
 type Encounter = (typeof encounters.encounters)[number];
 
@@ -33,7 +40,7 @@ function encounterTarget(item: Encounter): DebugTarget {
   const needed = choices.length && choices.every((option) => option.requiresItemId)
     ? [...new Set(choices.map((option) => option.requiresItemId!))] : [];
   const names = needed.map((id) => `「${encounters.items.find((entry) => entry.id === id)?.nameJa ?? id}」`).join("・");
-  return { id: item.id, name: item.titleJa, ...(needed.length ? { unavailable: `品物${names}が必要なため開けません` } : {}) };
+  return { id: item.id, name: item.titleJa, ...(needed.length ? { unavailable: `品物${names}が必要なため開けません`, unavailableKind: "item" as const } : {}) };
 }
 
 /** The first target Debug can open, as the scene picker (場面の確認) preselects it. */
@@ -44,15 +51,24 @@ export function firstDebugTarget(targets: readonly DebugTarget[]): string {
 /** What each scene of the scene picker (場面の確認) lists for a city. */
 export function debugTargets(cityId: string): Record<DebugScene, DebugTarget[]> {
   const { city, travel } = getCityContent(cityId);
+  // A tour-only place's landmarks and map events (tour stage 2a): their scenes open only through the tour.
+  const tourOnly = new Set(travel.places.filter((place) => isTourOnlyPlace(place)).flatMap((place) => [place.id, ...(place.landmarkIds ?? [])]));
+  const atTourOnly = (landmarkId: string | null | undefined, eventId?: string) => (!!landmarkId && tourOnly.has(landmarkId)) ||
+    (eventId !== undefined && tourOnly.has(travel.events.find((event) => event.id === eventId)?.placeId ?? ""));
+  const mark = (target: DebugTarget, tour: boolean): DebugTarget => (tour ? { ...target, ...TOUR_ONLY } : target);
   return {
-    tourism: landmarks.filter((item) => item.cityId === cityId).map((item) => ({ id: item.id, name: item.nameJa })),
-    battle: battles.filter((item) => battleCityId(item.id) === cityId).map((item) => ({ id: item.id, name: item.titleJa })),
+    tourism: landmarks.filter((item) => item.cityId === cityId).map((item) => mark({ id: item.id, name: item.nameJa }, atTourOnly(item.id))),
+    battle: battles.filter((item) => battleCityId(item.id) === cityId).map((item) => mark({ id: item.id, name: item.titleJa },
+      atTourOnly(item.landmarkId, episodes.find((episode) => episode.battleId === item.id)?.id ?? item.id))),
     // A landmark's visit's scenes (a scene of another moment, stage 4, runs when its moment opens in play: the date, the hotel…).
-    encounter: encounters.encounters.filter((item) => item.cityId === cityId && item.landmarkId).map(encounterTarget),
-    date: dates.filter((item) => item.kind === "normal" && travel.events.some((event) => event.id === item.id)).map((item) => ({ id: item.id, name: item.titleJa })),
+    encounter: encounters.encounters.filter((item) => item.cityId === cityId && item.landmarkId)
+      .map((item) => (atTourOnly(item.landmarkId) ? { id: item.id, name: item.titleJa, ...TOUR_ONLY } : encounterTarget(item))),
+    date: dates.filter((item) => item.kind === "normal" && travel.events.some((event) => event.id === item.id))
+      .map((item) => mark({ id: item.id, name: item.titleJa }, atTourOnly(undefined, item.id))),
     epilogue: episodes.filter((item) => item.cityId === cityId && item.kind === "city_finale" && item.epilogueStoryId)
       .map((item) => ({ id: item.id, name: `${city.nameJa}のエピローグ` })),
-    occasion: landmarks.filter((item) => item.cityId === cityId).map((item) => ({ id: item.id, name: `${item.nameJa}の時点` })),
+    occasion: landmarks.filter((item) => item.cityId === cityId).map((item) => mark({ id: item.id, name: `${item.nameJa}の時点` }, atTourOnly(item.id))),
+    tour: getCityTours(cityId).map((item) => ({ id: item.id, name: item.titleJa })),
   };
 }
 
@@ -83,12 +99,14 @@ export function resolveDebugLaunch(query: DebugQuery): DebugLaunch {
   const target = targets.find((item) => item.id === id);
   if (!target) throw new Error(`「${id}」は${city.nameJa}の「${label}」にありません。`);
   if (target.unavailable)
-    throw new Error(`「${id}」（${target.name}）は、${target.unavailable}。Debugの場面は品物を持たない状態から始まります。`);
+    throw new Error(`「${id}」（${target.name}）は、${target.unavailable}。${target.unavailableKind === "item" ? "Debugの場面は品物を持たない状態から始まります。" : ""}`);
   const defaults = defaultDebugSettings(cityId);
+  // A tour is booked before the city is cleared (a cleared city has played its tour): it starts at the city's start.
+  const progress = query.progress ?? (query.scene === "tour" ? "initial" : defaults.progress);
   return { kind: "scene", settings: { ...defaults, scene: query.scene, id,
-    progress: query.progress ?? defaults.progress, ap: query.ap ?? defaults.ap, affection: query.affection ?? defaults.affection,
+    progress, ap: query.ap ?? defaults.ap, affection: query.affection ?? defaults.affection,
     trust: query.trust ?? defaults.trust, spark: query.spark ?? defaults.spark, roll: query.roll ?? defaults.roll,
-    ...(query.from ? { from: query.from } : {}), ...(query.prep ? { prep: query.prep } : {}) } };
+    ...(query.from ? { from: query.from } : {}), ...(query.prep ? { prep: query.prep } : {}), ...(query.step ? { step: query.step } : {}) } };
 }
 
 // Keyed by the city's content object: installing 仮の場面 again (possibly from another
@@ -108,6 +126,8 @@ export function createDebugState(settings: DebugSettings): GameState {
   const cityId = settings.cityId ?? defaultDebugCityId;
   if (settings.scene === "epilogue" && settings.progress === "initial")
     throw new Error("エピローグは都市クリア後に開けます。旅の進行を「都市クリア後」にしてください。");
+  if (settings.scene === "tour" && settings.progress === "completed")
+    throw new Error("ツアーは都市クリアの前に予約します。旅の進行を「旅の開始時」にしてください。");
   const base = settings.progress === "initial" ? cityStart(cityId) : completedJourney(cityId);
   const state = withRelationship(withAp(base, settings.ap), settings);
   const ticket = rollTickets[settings.roll];
@@ -117,6 +137,11 @@ export function createDebugState(settings: DebugSettings): GameState {
     case "encounter": return startEncounterScene(state, settings.id, ticket);
     case "date": return startDateScene(state, settings.id, ticket);
     case "occasion": return startOccasionScene(state, settings.id, settings.from, settings.prep ?? [], ticket);
+    case "tour": {
+      if (!getCityTours(cityId).some((item) => item.id === settings.id))
+        throw new Error(`「${settings.id}」は${getCityContent(cityId).city.nameJa}のツアーではありません。`);
+      return tourScene(state, settings.id, settings.step);
+    }
     case "epilogue": {
       if (!episodes.some((item) => item.id === settings.id && item.cityId === cityId && item.kind === "city_finale"))
         throw new Error(`「${settings.id}」は${getCityContent(cityId).city.nameJa}のフィナーレではありません。`);
@@ -125,8 +150,15 @@ export function createDebugState(settings: DebugSettings): GameState {
   }
 }
 
-/** Where the scene starts, for the Debug bar: the landmark, the date's destination or the city. */
+/** Where the scene starts, for the Debug bar: the landmark, the date's destination or the city; a tour with its step (「予約中」 before it starts). */
 export function debugSceneLocation(settings: DebugSettings, state: GameState): string {
+  if (settings.scene === "tour") {
+    const tour = getTour(settings.id);
+    const record = state.tour;
+    const step = record?.status === "running" ? tour?.steps[record.step] : undefined;
+    const label = step?.kind === "event" ? step.labelJa ?? getCityContent(state.currentCityId).travel.events.find((event) => event.id === step.eventId)?.titleJa : undefined;
+    return `ツアー：${tour?.titleJa ?? settings.id}（${label ?? (record?.status === "booked" ? "予約中" : "行程")}）`;
+  }
   const landmarkId = settings.scene === "tourism" ? settings.id
     : settings.scene === "battle" ? battles.find((item) => item.id === settings.id)?.landmarkId
       : settings.scene === "encounter" ? encounters.encounters.find((item) => item.id === settings.id)?.landmarkId

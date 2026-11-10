@@ -68,7 +68,9 @@ export default function DebugMode() {
   }) : undefined, []);
 
   function update(next: DebugSettings) {
-    setSettings(next);
+    // A tour's step (scene=tour; only a launch URL sets it) belongs to that tour: another scene or tour drops it.
+    const { step: _step, ...rest } = next;
+    setSettings(next.step && (next.scene !== "tour" || next.id !== settings.id || next.cityId !== settings.cityId) ? rest : next);
     setCopyMessage("");
   }
   /** Open `next` (a prototype city's map, else its scene in fresh memory storage); throws a message. */
@@ -187,7 +189,8 @@ export default function DebugMode() {
         <label>場面
           <select data-testid="debug-scene" value={settings.scene} onChange={(event) => {
             const scene = event.target.value as DebugScene;
-            update({ ...settings, scene, id: firstDebugTarget(options[scene]) });
+            // A tour is booked before the city is cleared: its scene starts at the city's start.
+            update({ ...settings, scene, id: firstDebugTarget(options[scene]), ...(scene === "tour" ? { progress: "initial" as const } : {}) });
           }}>
             {debugScenes.map((scene) => <option key={scene} value={scene} disabled={!firstDebugTarget(options[scene])}>
               {debugSceneLabels[scene]}{!options[scene].length ? "（この都市にはありません）" : firstDebugTarget(options[scene]) ? "" : "（開ける場面がありません）"}</option>)}
