@@ -150,5 +150,9 @@ describe("a battle in the one-flow form (stage 5)", () => {
     expect(() => validateContent(sampleWith({ ...memory, [MARKET]: (text) => swap(claimLine,
       `${claimLine}{ has_memory("smp_mihon_test_memory"): -> smp_market_more -> }\n`)(external(text)) + more() })))
       .toThrow(/The helper knot smp_mihon_special_b_market_claim reaches a choice \("「そうかも」"\)/u);
+    // ...and one reached only without it.
+    expect(() => validateContent(sampleWith({ ...memory, [MARKET]: (text) => swap(claimLine,
+      `${claimLine}{ not has_memory("smp_mihon_test_memory"): -> smp_market_more -> }\n`)(external(text)) + more() })))
+      .toThrow(/The helper knot smp_mihon_special_b_market_claim reaches a choice \("「そうかも」"\)/u);
   });
 });
