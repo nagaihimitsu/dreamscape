@@ -11,15 +11,7 @@
       "enemyDescriptionJa": "今日だけ兄の付き人を買って出た。兄妹の合図を、世間の常識のように使う。",
       "storyId": "battles/milano_main_last_supper",
       "quizId": "milano_main_last_supper_quiz",
-      "backgroundId": "milano_refectory",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      }
+      "backgroundId": "milano_refectory"
     },
     {
       "id": "milano_last_supper_b01",
@@ -33,14 +25,6 @@
       "format": "B",
       "landmarkId": "last_supper",
       "backgroundId": "milano_refectory",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      },
       "reasoning": {
         "kind": "contradiction",
         "roundIndex": 1,
@@ -51,11 +35,7 @@
         ],
         "correctClueIds": [
           "last_supper_doorway"
-        ],
-        "claimScene": "claim",
-        "pressScene": "press",
-        "successScene": "evidence_success",
-        "failureScene": "evidence_failure"
+        ]
       }
     },
     {
@@ -70,14 +50,6 @@
       "format": "C",
       "landmarkId": "last_supper",
       "backgroundId": "milano_refectory",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      },
       "reasoning": {
         "kind": "connection",
         "roundIndex": 2,
@@ -90,10 +62,7 @@
         "correctClueIds": [
           "last_supper_apostle_groups",
           "last_supper_perspective"
-        ],
-        "claimScene": "claim",
-        "successScene": "evidence_success",
-        "failureScene": "evidence_failure"
+        ]
       }
     },
     {
@@ -106,15 +75,7 @@
       "enemyDescriptionJa": "広場の音を録って売りたい。失敗した音まで消す癖がある。",
       "storyId": "battles/milano_main_duomo",
       "quizId": "milano_main_duomo_quiz",
-      "backgroundId": "milano_duomo",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      }
+      "backgroundId": "milano_duomo"
     },
     {
       "id": "milano_galleria_01",
@@ -126,15 +87,7 @@
       "enemyDescriptionJa": "ガッレリアを背景に商品の撮影をする。通行人の都合より、次の注文を優先する。",
       "storyId": "battles/milano_main_galleria",
       "quizId": "milano_main_galleria_quiz",
-      "backgroundId": "milano_galleria",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      }
+      "backgroundId": "milano_galleria"
     },
     {
       "id": "milano_castello_01",
@@ -146,15 +99,7 @@
       "enemyDescriptionJa": "娘の作る粘土の自分が妙に気に入った。娘は飽きて次の顔を作りたい。",
       "storyId": "battles/milano_main_castello",
       "quizId": "milano_main_castello_quiz",
-      "backgroundId": "milano_castello",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      }
+      "backgroundId": "milano_castello"
     },
     {
       "id": "milano_city_boss_01",
@@ -168,17 +113,7 @@
       "enemyDescriptionJa": "自分の移動放送の最後の一枠を編集している。沈黙が放送事故に聞こえるのが怖い。",
       "storyId": "battles/milano_finale",
       "quizId": "milano_finale_quiz",
-      "backgroundId": "milano_darsena_finale",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2",
-          "after_3",
-          "after_4"
-        ],
-        "outro": "outro"
-      }
+      "backgroundId": "milano_darsena_finale"
     },
     {
       "id": "milano_la_scala_b01",
@@ -192,14 +127,6 @@
       "format": "B",
       "landmarkId": "la_scala_case",
       "backgroundId": "milano_la_scala_date",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      },
       "reasoning": {
         "kind": "contradiction",
         "roundIndex": 1,
@@ -210,11 +137,7 @@
         ],
         "correctClueIds": [
           "scala_mobile"
-        ],
-        "claimScene": "claim",
-        "pressScene": "press",
-        "successScene": "evidence_success",
-        "failureScene": "evidence_failure"
+        ]
       }
     },
     {
@@ -229,14 +152,6 @@
       "format": "C",
       "landmarkId": "brera_case",
       "backgroundId": "milano_brera_date",
-      "scenes": {
-        "intro": "intro",
-        "afterRounds": [
-          "after_1",
-          "after_2"
-        ],
-        "outro": "outro"
-      },
       "reasoning": {
         "kind": "connection",
         "roundIndex": 2,
@@ -249,10 +164,7 @@
         "correctClueIds": [
           "brera_colours",
           "brera_show"
-        ],
-        "claimScene": "claim",
-        "successScene": "evidence_success",
-        "failureScene": "evidence_failure"
+        ]
       }
     }
   ]

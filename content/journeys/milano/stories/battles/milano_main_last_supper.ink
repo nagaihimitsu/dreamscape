@@ -1,17 +1,4 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> s_intro }
-{ battle_scene == "after_1": -> s_after_1 }
-{ battle_scene == "after_2": -> s_after_2 }
-{ battle_scene == "outro": -> s_outro }
--> END
-
-=== s_intro ===
+INCLUDE modules.ink
 # background: milano_refectory
 # speaker: heroine
 「お水、いりますか？」
@@ -27,11 +14,9 @@ VAR battle_score = 0
 # speaker: enemy
 # reaction: heroine,shy
 「それ、私に「あと五分」の手。子どもの頃、風呂から出ないときも同じ手だった。」
--> END
-
-=== s_after_1 ===
+-> quiz(1) ->
 # background: milano_refectory
-{ answer_correct:
+{ quiz_correct:
 # speaker: heroine
 「描いた光が、こちらの壁まで届いたみたい。」
 - else:
@@ -46,11 +31,9 @@ VAR battle_score = 0
 「見てほしいのは、そっちじゃないのかも。」
 # speaker: narrator
 彼女は助け舟を出しかけて、絵の中の人の手を見た。
--> END
-
-=== s_after_2 ===
+-> quiz(2) ->
 # background: milano_refectory
-{ answer_correct:
+{ quiz_correct:
 # speaker: heroine
 「顔が向く先と腕が指す先、両方いるんだ。」
 - else:
@@ -63,11 +46,9 @@ VAR battle_score = 0
 「うちの五分はたいてい七分。それは絵を見ても分かんないよ。」
 # speaker: narrator
 兄の肩が一度だけ上がった。声を出さずに笑って、時計を妹に返した。
--> END
-
-=== s_outro ===
+-> quiz(3) ->
 # background: milano_refectory
-{ answer_correct:
+{ quiz_correct:
 # speaker: heroine
 「描きながら変えられる時間を選んだんですね。」
 - else:

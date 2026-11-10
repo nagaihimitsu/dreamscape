@@ -1,22 +1,6 @@
 // Phase 6 / C型。観察できる配置と、その働きの解釈を区別する。
 // 正しい証拠二枚を選んでも、結論は英語3択でプレイヤーが答える。
-VAR player_name = "ユウ"
-VAR heroine_name = "ミオ"
-VAR player_address = "ユウさん"
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> introduction }
-{ battle_scene == "after_1": -> after_first }
-{ battle_scene == "after_2": -> after_second }
-{ battle_scene == "claim": -> claim }
-{ battle_scene == "evidence_failure": -> evidence_failure }
-{ battle_scene == "evidence_success": -> evidence_success }
-{ battle_scene == "outro": -> conclusion }
--> END
-
-=== introduction ===
+INCLUDE modules.ink
 # background: milano_refectory
 # speaker: narrator
 男が一枚のメモを二枚に切った。片方には名前、もう片方には名字が書いてある。
@@ -30,11 +14,9 @@ VAR battle_score = 0
 彼の手帳には、ページより多くの仕切りが挟まっていた。
 # speaker: enemy
 「この絵も一つずつ見る。まず人物だ。線や壁の都合を持ち込まず、並び方だけ確かめたまえ」
--> END
-
-=== after_first ===
+-> quiz(1) ->
 # background: milano_refectory
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「三人ずつ四組。よし、四つの封筒に分けられる」
     # speaker: heroine
@@ -51,11 +33,9 @@ VAR battle_score = 0
 }
 # speaker: enemy
 「今度は部屋だ。人物とは別のページを使いたまえ」
--> END
-
-=== after_second ===
+-> quiz(2) ->
 # background: milano_refectory
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「絵の部屋が、実際の食堂の続きに見える……壁が仕切りの仕事をしていない！」
     # speaker: heroine
@@ -71,33 +51,34 @@ VAR battle_score = 0
 「部屋と部屋なら、例外として認めよう。だが、人物の並びと、天井の線は別々だ」
 # speaker: narrator
 エットレは二枚のメモの間に、最後の仕切りを立てた。
--> END
-
-=== claim ===
+-> milano_special_c_last_supper_claim ->
+// 証拠連結の導入。証拠や結論を先に明かさない。
 # background: milano_refectory
-# speaker: enemy
-「人の並びと、部屋の奥行きは無関係だ。二つの資料で、この絵の見え方について何か言えるかね？」
--> END
-
-=== evidence_failure ===
-# background: milano_refectory
-# speaker: enemy
-「二枚あるだけなら、私の名前と名字でもよいだろう。絵の中で、何がつながる？」
 # speaker: heroine
-「人物がどうまとまるか。線がどこへ向かうか。その二つを比べられる資料が、まだ揃っていないみたい」
--> END
-
-=== evidence_success ===
+# emotion: surprised
+「えっ、並びと奥行きは無関係？　本当にそうかな」
+# emotion: serious
+「別々に見るだけでは、見落とすことがあるかもしれません」
+# emotion: smile
+「二つの資料を、並べて確かめてみましょう！」
+- (stop)
+-> reasoning ->
+{ evidence_result == "failure":
+    # background: milano_refectory
+    # speaker: enemy
+    「二枚あるだけなら、私の名前と名字でもよいだろう。絵の中で、何がつながる？」
+    # speaker: heroine
+    「人物がどうまとまるか。線がどこへ向かうか。その二つを比べられる資料が、まだ揃っていないみたい」
+    -> stop
+}
 # background: milano_refectory
 # speaker: narrator
 エットレは二枚の資料を並べ、仕切りを少しずらした。絵を見上げてから、また資料に目を戻す。
 # speaker: enemy
 「……この二枚なら、比較はできる。だが、机の上で隣り合っただけでは結論にならん。何が読み取れる？」
--> END
-
-=== conclusion ===
+-> quiz(3) ->
 # background: milano_refectory
-{ answer_correct:
+{ quiz_correct:
     # speaker: enemy
     「人物のまとまりと、頭部へ集まる線。違う仕組みで、中央への注意を強めると読める……」
     「無関係として片付けたのは早かった。だが、作者の頭の中を読んだことにはならんぞ」
@@ -148,3 +129,9 @@ VAR battle_score = 0
     「私たちも、答えを急いだかも。二つとも読んで、どこまで言えるか考えたいね」
 }
 -> END
+
+=== milano_special_c_last_supper_claim ===
+# background: milano_refectory
+# speaker: enemy
+「人の並びと、部屋の奥行きは無関係だ。二つの資料で、この絵の見え方について何か言えるかね？」
+->->

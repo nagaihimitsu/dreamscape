@@ -1,21 +1,4 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR battle_scene = "intro"
-VAR answer_correct = false
-VAR battle_score = 0
-
-{ battle_scene == "intro": -> s_intro }
-{ battle_scene == "after_1": -> s_after_1 }
-{ battle_scene == "after_2": -> s_after_2 }
-{ battle_scene == "outro": -> s_outro }
-{ battle_scene == "claim": -> s_claim }
-{ battle_scene == "press": -> s_press }
-{ battle_scene == "evidence_failure": -> s_evidence_failure }
-{ battle_scene == "evidence_success": -> s_evidence_success }
--> END
-
-=== s_intro ===
+INCLUDE modules.ink
 # background: milano_la_scala_date
 # speaker: enemy
 「祖母の椅子を片づけに来た。家族の話じゃ「スカラ座の平土間にあった」。買い手は鼻で笑った。」
@@ -26,11 +9,9 @@ VAR battle_score = 0
 # speaker: enemy
 # reaction: heroine,worried
 「高くなる。……そしたら、捨てない口実ができる。持って帰るのに、口実ひとつ要る家なの。」
--> END
-
-=== s_after_1 ===
+-> quiz(1) ->
 # background: milano_la_scala_date
-{ answer_correct:
+{ quiz_correct:
 # speaker: enemy
 「客席の壁紙にまで持ち主の好みがあったのね。」
 - else:
@@ -43,11 +24,28 @@ VAR battle_score = 0
 「祖母はここにあったと言う。買い手は、そんなことは絶対にないと言う。どっちかが嘘をついたのかな。」
 # speaker: player
 「「絶対」のほうから調べてみよう。」
--> END
-
-=== s_after_2 ===
+-> milano_special_b_la_scala_claim ->
 # background: milano_la_scala_date
-{ answer_correct:
+# speaker: heroine
+「触って分かるのはこの椅子のことだけ。他の椅子も全部そうかは、記録を開きましょう。」
+- (stop)
+-> reasoning ->
+{ reasoning_action == "press":
+    -> milano_special_b_la_scala_press ->
+    -> stop
+}
+{ evidence_result == "failure":
+    # background: milano_la_scala_date
+    # speaker: enemy
+    「面白い。でも私が知りたいのは、平土間の床から椅子を動かせたかどうか。別の場所の話じゃ、買い手には通じない。」
+    -> stop
+}
+# background: milano_la_scala_date
+# speaker: heroine
+「平土間では椅子を借りて座った、しかも動かせた。買い手の理由は崩れます。ただ、この一脚がそこから来た証明はまだありません。」
+-> quiz(2) ->
+# background: milano_la_scala_date
+{ quiz_correct:
 # speaker: enemy
 「違う時代の座り方が一つ見えた。」
 - else:
@@ -61,11 +59,9 @@ VAR battle_score = 0
 「私、そこの証人にはなれません。」
 # speaker: narrator
 アダの手から布が落ちた。彼女は拾って、椅子の上に置いた。
--> END
-
-=== s_outro ===
+-> quiz(3) ->
 # background: milano_la_scala_date
-{ answer_correct:
+{ quiz_correct:
 # speaker: enemy
 「席を持ち寄ってでも、演奏を聴きたかったのね。」
 - else:
@@ -86,26 +82,14 @@ VAR battle_score = 0
 「取る。家で文句が出たら、今度は私が座ってるところをどかしてもらう。」
 -> END
 
-=== s_claim ===
+=== milano_special_b_la_scala_claim ===
 # background: milano_la_scala_date
 # speaker: enemy
 「買い手の言い分はこう。「スカラ座の平土間の席は昔から全部固定。家に持って帰れた椅子なんてあるはずない」」
--> END
+->->
 
-=== s_press ===
+=== milano_special_b_la_scala_press ===
 # background: milano_la_scala_date
 # speaker: heroine
 「この椅子の来歴じゃなくて、「昔から全部」の部分ですね。どの客席のどんな記録なら確かめられるかな。」
--> END
-
-=== s_evidence_failure ===
-# background: milano_la_scala_date
-# speaker: enemy
-「面白い。でも私が知りたいのは、平土間の床から椅子を動かせたかどうか。別の場所の話じゃ、買い手には通じない。」
--> END
-
-=== s_evidence_success ===
-# background: milano_la_scala_date
-# speaker: heroine
-「平土間では椅子を借りて座った、しかも動かせた。買い手の理由は崩れます。ただ、この一脚がそこから来た証明はまだありません。」
--> END
+->->
