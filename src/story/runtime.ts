@@ -196,8 +196,10 @@ export function readStoryKnotLines(
   address: string,
   variables: Record<string, string | number | boolean>,
   conditions?: StoryConditionReader,
+  memoryIds: readonly string[] = [],
+  inventory: Readonly<Record<string, ItemStatus>> = {},
 ): { text: string; speaker: Speaker }[] {
-  const story = runtime(address, undefined, [], {}, conditions);
+  const story = runtime(address, undefined, memoryIds, inventory, conditions);
   for (const [name, value] of Object.entries(variables))
     if (story.variablesState.GlobalVariableExistsWithName(name)) story.variablesState.$(name, value);
   let ended = false;
@@ -217,7 +219,7 @@ export function readStoryKnotLines(
     if (parsed.speaker) speaker = parsed.speaker;
     if (text && !ended) lines.push({ text, speaker });
   }
-  if (story.currentChoices.length) throw new Error("主張の knot には選択肢を書けません。");
+  // A choice it reaches (content:build stops such a knot) ends the read: what the screen shows never breaks it.
   return lines;
 }
 

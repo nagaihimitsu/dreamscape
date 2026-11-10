@@ -56,6 +56,7 @@ import {
 } from "../src/content/schemas";
 import type { TagContext } from "../src/content/tags";
 import {
+  checkHelperKnot,
   reasoningScenes,
   validateBattleEvidence,
   validateBattleStory,
@@ -878,6 +879,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   // Guides with choices (one-scene files) are walked as scenes even without tags.
   for (const storyId of fileChoiceStories) {
     const main = mains.find((item) => item.address === storyId)!;
+    // A battle in the one-flow form (its choices, plain or tagged): the battle walk below walks it with its calls answered.
+    if (main.kind === "battle") continue;
     if (taggedScenes.some((scene) => scene.story.storyId === storyId && !scene.story.knot)) continue;
     if (main.kind === "guide") walkedGuides.add(storyId);
     const contexts = main.kind === "guide" ? [{ romance_stage: 1, ending_reached: false }]
@@ -1160,10 +1163,11 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       if (battle.reasoning && !Object.hasOwn(named, `${knotName}_claim`))
         throw new Error(`The claim of the special battle ${battle.id} is the helper knot ${knotName}_claim (=== ${knotName}_claim === … ->->), ` +
           `which the flow calls before -> reasoning -> and the clue book reads on its own: ${label} has none`);
-      // The clue book reads the claim (and the press) on their own: a choice there would have no one to choose it.
+      // The clue book reads the claim (and the press) on their own, as the game does: a choice they reach (their own, or one in a
+      // knot they call, a quiz's or the reasoning's call included) has no one to choose it, and an error stops the battle's screen.
       for (const helper of battle.reasoning ? [`${knotName}_claim`, `${knotName}_press`] : [])
-        if (Object.hasOwn(named, helper) && JSON.stringify(named[helper]).includes('"*":'))
-          throw new Error(`The helper knot ${helper} of ${label} has a choice: the clue book reads it on its own, so write its choices in the flow`);
+        if (Object.hasOwn(named, helper))
+          withContext(label, () => checkHelperKnot(stories[battleAddress.storyId], helper, storyConditionTexts[battleAddress.storyId] ?? []));
       const scene = taggedScenes.find((item) => item.main && "battle" in item.main && item.main.battle === battle.id);
       battleScenarios += withContext(label, () => walkScene({
         compiled: stories[battleAddress.storyId], ...(battleAddress.path ? { start: battleAddress.path } : {}), label, context,

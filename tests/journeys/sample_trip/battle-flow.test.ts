@@ -4,7 +4,7 @@
 // conversation's choices apply their tags once per battle (decision 10): on its first play, once in a run.
 import { readFileSync } from "node:fs";
 import { afterEach, describe, expect, it } from "vitest";
-import { battles, scenes, stories } from "../../../src/content";
+import { battleQuizzes, battles, scenes, stories } from "../../../src/content";
 import { fnvHash } from "../../../src/content/fingerprint";
 import type { SceneEntry } from "../../../src/content/scene-schemas";
 import {
@@ -17,6 +17,8 @@ import { SAMPLE_JOURNEY_DIRECTORY } from "../../../scripts/content-layout";
 import { compileInk } from "../../../scripts/ink-validation";
 import { MODULES_FILE, MODULES_INK } from "../../../scripts/modules-ink";
 import { readMainFileHead, readPlaceFile } from "../../../scripts/place-files";
+import { convertBattle } from "../../../scripts/battle-flow";
+import type { BattleDefinition } from "../../../src/content/schemas";
 
 const TOWER = "smp_mihon_main_clock_tower_battle";
 const MARKET = "smp_mihon_special_b_market";
@@ -174,6 +176,15 @@ describe("a battle as one flow (stage 5): the sample's battles", () => {
     const wrong = first.options.find((option) => option.id !== first.correctOptionId)!.id;
     expect(() => restore({ ...after, activeBattle: { ...after.activeBattle!, score: 0,
       answers: [{ ...after.activeBattle!.answers[0], optionId: wrong, correct: false }] } })).toThrow(/保存された会話の条件が一致しません/u);
+    // The answers and the quizzes Ink has called go together: a wrong answer added before any quiz, or one taken away at the next
+    // quiz's call, is refused (the variables alone match a wrong answer's defaults).
+    const opening = start(TOWER);
+    const forged = { questionId: first.id, optionId: wrong, correct: false, hintUsed: false };
+    expect(() => restore({ ...opening, activeBattle: { ...opening.activeBattle!, answers: [forged] } })).toThrow(/保存された回答と会話の位置が一致しません/u);
+    let atCall = act(state, (current) => answerBattle(current, wrong, current.revision));
+    atCall = act(atCall, (current) => advanceBattle(current, current.revision));
+    while (battleDialogueStop(atCall.activeBattle!) !== "quiz") atCall = act(atCall, (current) => advanceBattle(current, current.revision));
+    expect(() => restore({ ...atCall, activeBattle: { ...atCall.activeBattle!, answers: [], roundIndex: 0 } })).toThrow(/保存された回答と会話の位置が一致しません/u);
   });
 });
 
@@ -218,6 +229,27 @@ describe("a battle's conversation choices (stage 5, decision 10)", () => {
     const replayed = act(again, (current) => chooseBattle(current, choice.index, current.revision));
     expect(replayed.trust).toBe(again.trust);
     expect(replayed.activeBattle!.appliedOptionIds).toEqual([]);
+  });
+
+  it("give an item from a battle's choice, and the save records it and loads (a place file's battle knot)", () => {
+    const written = source(placeStory).replace("\n-> quiz(1) ->\n",
+      "\n* [「これ、三時のしおり」 # option: give_bookmark]\n    # give: smp_mihon_three_bookmark heroine\n    # speaker: enemy\n    「妹のしおりだ」\n" +
+      "* [「先に言い伝えを」 # option: legend_first]\n- \n-> quiz(1) ->\n");
+    stories[placeStory] = compileInk(readPlaceFile(placeStory, written).source, "tower.ink", { [MODULES_FILE]: MODULES_INK });
+    const scene = scenes.find((item) => item.id === "smp_mihon_main_clock_tower")!;
+    (scenes as SceneEntry[])[scenes.indexOf(scene)] = { ...scene, options: [
+      { id: "give_bookmark", knot: scene.id, give: { item: "smp_mihon_three_bookmark", to: "heroine" } }, { id: "legend_first", knot: scene.id }] };
+    const holding = restore({ ...cityStart("mihon"), inventory: { smp_mihon_three_bookmark: "held" },
+      completedEncounterIds: ["smp_mihon_bookmark_stall"], seenEncounterIds: ["smp_mihon_bookmark_stall"] });
+    let state = openBattleScene(holding, TOWER);
+    while (battleDialogueStop(state.activeBattle!) !== "choices") state = act(state, (current) => advanceBattle(current, current.revision));
+    const give = state.activeBattle!.frame!.choices.find((item) => item.optionId === "give_bookmark")!;
+    const given = act(state, (current) => chooseBattle(current, give.index, current.revision));
+    expect(given.inventory.smp_mihon_three_bookmark).toBe("gifted");
+    expect(given.itemUses.smp_mihon_three_bookmark).toEqual({ encounterId: "smp_mihon_main_clock_tower", optionId: "give_bookmark" });
+    // Saved and loaded during the battle (act) and after its result and leaving it.
+    const done = play(given, { answers: [true, true, true] }).state;
+    expect(restore(leaveBattle(done, done.revision)).itemUses.smp_mihon_three_bookmark.optionId).toBe("give_bookmark");
   });
 
   it("apply a choice's tags once in a run, when the flow comes back to it (a choice after the press)", () => {
@@ -321,6 +353,54 @@ describe("a flow battle's claim and rebuttal look as the scene form's did (stage
     expect(rebuttal[1]).toMatchObject({ round: 1, chrome: old(true) });
     expect(old(false)).toEqual({ rebuttal: true, choosing: false, advance: null, notebookTab: false, reviewAnswers: false });
     expect(old(true).advance).toEqual(advance("次へ進む", "reasoning-rebuttal-advance"));
+  });
+});
+
+// The clue book's claim and press (stage 5): read with the names, memories and items, as the scene form's claim scene was, and
+// never stopping the screen. Milan's special battle B in the scene form, and the same battle converted, with names in its claim and press.
+describe("the clue book's claim and press in the one flow (stage 5)", () => {
+  const milanB = "milano_last_supper_b01";
+  const definition = battles.find((battle) => battle.id === milanB)!;
+  const storyId = definition.storyId;
+  const keptMilan = { story: stories[storyId], index: battles.indexOf(definition) };
+  afterEach(() => {
+    stories[storyId] = keptMilan.story;
+    (battles as BattleDefinition[])[keptMilan.index] = definition;
+  });
+  const named = readFileSync(`content/journeys/milano/stories/${storyId}.ink`, "utf8")
+    .replace(/(=== \w*claim\w* ===\n(?:#[^\n]*\n)*)/u, "$1「{player_name}さん、{heroine_name}さん、聞きなさい」\n");
+  /** Play Milan's B to its stop point, press, and read the clue book's claim and press. */
+  function clueBook(): { claimText: string; pressedText: string | null } {
+    let state = openBattleScene(cityStart("milano", ["たいち", "あゆみ"]), milanB);
+    for (let step = 0; state.activeBattle!.phase !== "reasoning"; step++) {
+      expect(step).toBeLessThan(80);
+      const active = state.activeBattle!;
+      state = active.phase === "question" ? act(state, (current) => answerBattle(current, "A", current.revision)) : act(state, (current) => advanceBattle(current, current.revision));
+    }
+    return getReasoningContext(act(state, (current) => pressBattleClaim(current, current.revision)))!;
+  }
+
+  it("shows the same claim and press, the names included, as the scene form did", () => {
+    expect(named).toContain("{player_name}さん、{heroine_name}さん");
+    const press = named.match(/=== (\w*press\w*) ===/u)![1];
+    const withPressName = named.replace(new RegExp(`(=== ${press} ===\\n(?:#[^\\n]*\\n)*)`, "u"), "$1「{heroine_name}さんも、そう思うだろう」\n");
+    stories[storyId] = compileInk(withPressName, "milan-b.ink");
+    const sceneForm = clueBook();
+    expect(sceneForm.claimText).toContain("「たいちさん、あゆみさん、聞きなさい」");
+    expect(sceneForm.pressedText).toContain("「あゆみさんも、そう思うだろう」");
+    const converted = convertBattle({ battle: definition, source: withPressName }, battleQuizzes[definition.quizId].questions.length);
+    stories[storyId] = compileInk(readMainFileHead(converted.source).source, "milan-b.ink", { [MODULES_FILE]: MODULES_INK });
+    (battles as BattleDefinition[])[keptMilan.index] = converted.battle;
+    expect(clueBook()).toEqual(sceneForm);
+  });
+
+  it("never stops the screen when a claim reaches a choice (content:build stops such a knot)", () => {
+    const converted = convertBattle({ battle: definition, source: named }, battleQuizzes[definition.quizId].questions.length);
+    const withChoice = converted.source.replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, "$1「まず聞こう」\n* [「はい」]\n- \n");
+    stories[storyId] = compileInk(readMainFileHead(withChoice).source, "milan-b.ink", { [MODULES_FILE]: MODULES_INK });
+    (battles as BattleDefinition[])[keptMilan.index] = converted.battle;
+    const state = openBattleScene(cityStart("milano"), milanB);
+    expect(getReasoningContext(state)).toEqual({ claimText: "「まず聞こう」", pressedText: null });
   });
 });
 

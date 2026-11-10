@@ -2,7 +2,7 @@ import { Story } from "inkjs";
 import type { BattleDefinition } from "../src/content/schemas";
 import type { TourismClue } from "../src/content/tourism-schemas";
 import { checkLinesWithoutChoice } from "./ink-validation";
-import { forEachCondAssignment } from "./scene-conditions";
+import { condWalk, forEachCondAssignment } from "./scene-conditions";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
 import type { DialogueObserver } from "./dialogue-expression-validation";
 
@@ -16,6 +16,35 @@ export function reasoningScenes(battle: BattleDefinition): string[] {
     reasoning.successScene!,
     reasoning.failureScene!,
   ];
+}
+
+/**
+ * A one-flow special battle's helper knot (<battle>_claim, <battle>_press; stage 5) read on its own, as the clue book reads it
+ * (src/story/runtime.ts readStoryKnotLines): from the knot to its `->->`, for every cond assignment and each quiz result before it.
+ * Stops the build when the read reaches a choice (its own or one in a knot it calls, a quiz's or the reasoning's call included)
+ * or an error, which would leave the clue book without its text.
+ */
+export function checkHelperKnot(compiled: string, knot: string, conds: readonly string[]): void {
+  for (const assignment of condWalk(conds).assignments) for (const correct of [false, true]) for (const score of [0, 1, 2, 3]) {
+    const story = new Story(compiled);
+    let ended = false;
+    story.onError = (message) => {
+      if (!/tunnel onwards/u.test(message)) throw new Error(`The helper knot ${knot}, read on its own as the clue book reads it, stops with an error: ${message}`);
+      ended = true;
+    };
+    story.BindExternalFunction("cond", (text: unknown) => assignment[String(text)] ?? false, true);
+    for (const [name, value] of Object.entries({ player_name: "検証主人公", heroine_name: "検証ヒロイン", player_address: "検証主人公さん",
+      quiz_correct: correct, answer_correct: correct, battle_score: score }))
+      if (story.variablesState.GlobalVariableExistsWithName(name)) story.variablesState.$(name, value);
+    story.ChoosePathString(knot);
+    for (let lines = 0; story.canContinue && !ended; lines++) {
+      checkLinesWithoutChoice(lines);
+      story.Continue();
+    }
+    if (story.currentChoices.length)
+      throw new Error(`The helper knot ${knot} reaches a choice ("${story.currentChoices[0].text.trim()}"), read on its own as the clue book reads it: ` +
+        `write the choices in the battle's flow, not in its claim or press (nor in a knot they call)`);
+  }
 }
 
 /** A single explicit answer set prevents order-dependent or ambiguous proof recipes. */

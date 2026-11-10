@@ -509,10 +509,16 @@ export function getReasoningContext(
   };
   if (isFlowBattle(battle)) {
     // The flow's helper knots, read on their own with the variables as the flow had them at its stop point (stage 5).
-    const variables = { ...flowVariables({ answers: priorAnswers, phase: "dialogue" }), player_address: playerAddress(state) };
+    // As the flow reads them: the names, memories and items too (the scene form read them through beginStory).
+    const variables = { ...flowVariables({ answers: priorAnswers, phase: "dialogue" }), player_name: state.playerName,
+      heroine_name: state.heroineName, player_address: playerAddress(state) };
     const read = (knot: string, enemyOnly: boolean) => {
       const lines: string[] = [];
-      for (const line of readStoryKnotLines(flowHelperAddress(battle, knot), variables, sceneConditionReader(state)))
+      let found: { text: string; speaker: string }[] = [];
+      // The clue book never stops the screen: content:build stops a helper that errors or reaches a choice.
+      try { found = readStoryKnotLines(flowHelperAddress(battle, knot), variables, sceneConditionReader(state), state.memories, state.inventory); }
+      catch { found = []; }
+      for (const line of found)
         if ((!enemyOnly || line.speaker === "enemy") && line.text !== lines.at(-1)) lines.push(line.text);
       return lines.join("\n");
     };
@@ -1056,9 +1062,12 @@ function validateFlowBattle(state: GameState, active: ActiveBattle, battle: Batt
   // Ink starts at turn -1, and once more for the knot a place file's scene starts at.
   const started = splitStoryAddress(battle.storyId).path !== undefined ? 1 : 0;
   const variables = flowVariables(active);
-  const saved = storyVariables(battle.storyId, active.storyState!, Object.keys(variables));
+  const saved = storyVariables(battle.storyId, active.storyState!, [...Object.keys(variables), "call_arg"]);
   for (const [name, value] of Object.entries(variables))
     if (saved[name] !== undefined && saved[name] !== value) fail("保存された会話の条件が一致しません。");
+  // The quizzes Ink has called: as many as the answers in the dialogue (one more when the line stops at the next quiz's call).
+  if (active.phase === "dialogue" && saved.call_arg !== active.answers.length + (frameCall(active.frame) === "quiz" ? 1 : 0))
+    fail("保存された回答と会話の位置が一致しません。");
   // The claim and rebuttal marks only before the first stop, and a scene's end where the next line says it is one.
   const knot = claimToTrack(active, battle);
   if ((active.linePart || active.sceneEnd) && (active.phase !== "dialogue" || knot === undefined)) fail();

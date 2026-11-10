@@ -87,6 +87,8 @@ describe("a battle in the one-flow form (stage 5)", () => {
     const result = validateContent(withChoice);
     expect(result.scenes.scenes.find((scene) => scene.id === "smp_mihon_main_clock_tower")!.options).toEqual([
       { id: "ask_why", knot: "smp_mihon_main_clock_tower", rel: { trust: 1 } }, { id: "legend_first", knot: "smp_mihon_main_clock_tower" }]);
+    // A choice without # option: (no effects) in a one-scene battle: walked with the battle's calls answered.
+    expect(() => validateContent(sampleWith({ [MARKET]: swap("-> quiz(1) ->\n", "* [「へえ」]\n    「へえ」\n* [「なるほど」]\n    「なるほど」\n- \n-> quiz(1) ->\n") }))).not.toThrow();
     // A one-scene battle's choices too.
     const inFile = validateContent(sampleWith({ [MARKET]: swap("-> quiz(1) ->\n", "+ [「パンの話を」 # option: bread]\n    # rel: affection +1\n- \n-> quiz(1) ->\n") }));
     expect(inFile.scenes.scenes.find((scene) => scene.id === "smp_mihon_special_b_market")!.options).toEqual([{ id: "bread", knot: "smp_mihon_special_b_market", rel: { affection: 1 } }]);
@@ -101,7 +103,13 @@ describe("a battle in the one-flow form (stage 5)", () => {
       .toThrow(/The claim of the special battle smp_mihon_special_b_market is the helper knot smp_mihon_special_b_market_claim/u);
     expect(() => validateContent(sampleWith({ [MARKET]: swap("=== smp_mihon_special_b_market_claim ===\n",
       "=== smp_mihon_special_b_market_claim ===\n* [「えっ」 # option: huh]\n- \n") })))
-      .toThrow(/The helper knot smp_mihon_special_b_market_claim of .* has a choice: the clue book reads it on its own/u);
+      .toThrow(/The helper knot smp_mihon_special_b_market_claim reaches a choice \("「えっ」"\), read on its own as the clue book reads it/u);
+    // A choice it reaches through a knot it calls, or a call of the game's (the stop point moved into the claim), stops it too.
+    expect(() => validateContent(sampleWith({ [MARKET]: (text) => swap("「時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！」\n",
+      "「時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！」\n-> smp_claim_more ->\n")(text) +
+      "\n=== smp_claim_more ===\n# speaker: enemy\n「どう思う？」\n* [「そうかも」 # option: maybe]\n* [「本当に？」 # option: really]\n- ->->\n" }))).toThrow(/smp_mihon_special_b_market_claim reaches a choice \("「そうかも」"\)/u);
+    expect(() => validateContent(sampleWith({ [MARKET]: swap("=== smp_mihon_special_b_market_press ===\n", "=== smp_mihon_special_b_market_press ===\n-> quiz(2) ->\n") })))
+      .toThrow(/smp_mihon_special_b_market_press reaches a choice \("quiz"\)/u);
     expect(() => validateContent(sampleWith({ [MARKET]: swap("INCLUDE modules.ink\n", "VAR player_name = \"\"\nVAR heroine_name = \"\"\n") })))
       .toThrow(/quiz/u);
     expect(() => validateContent(sampleWith({}, {
