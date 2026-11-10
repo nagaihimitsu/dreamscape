@@ -117,7 +117,7 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
       battles.push(battleSchema.parse({ id: item.battleId, titleJa: script.titleJa, descriptionJa: script.descriptionJa,
         landmarkId: place.id, enemyNameJa: script.enemyNameJa, enemyTitleJa: script.enemyTitleJa,
         enemyDescriptionJa: script.enemyDescriptionJa, storyId: item.battleStoryId, quizId: item.quizId,
-        // The one-flow form (stage 5): the battle's Ink calls -> quiz(1) -> … -> quiz(3) -> itself (no scenes).
+        // The battle's Ink calls -> quiz(1) -> … -> quiz(3) -> itself (stage 5).
         backgroundId: place.backgroundId, portrait: "abstract" }));
       addRewards(event.id, false);
     }

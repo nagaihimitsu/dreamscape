@@ -1,10 +1,10 @@
-// The sample journey's battles in the one-flow form (the unified event design, stage 5; fictional content): the game
+// The sample journey's battles, each one flow (the unified event design, stage 5; fictional content): the game
 // answers -> quiz(n) -> and -> reasoning -> with its existing screens, every step saves and resumes (restored from JSON and
 // checked with validateGameState) without scoring, recording, rewarding or applying a choice's tags twice, and the
 // conversation's choices apply their tags once per battle (decision 10): on its first play, once in a run.
 import { readFileSync } from "node:fs";
 import { afterEach, describe, expect, it } from "vitest";
-import { battleQuizzes, battles, scenes, stories } from "../../../src/content";
+import { battles, scenes, stories } from "../../../src/content";
 import { fnvHash } from "../../../src/content/fingerprint";
 import type { SceneEntry } from "../../../src/content/scene-schemas";
 import {
@@ -17,8 +17,6 @@ import { SAMPLE_JOURNEY_DIRECTORY } from "../../../scripts/content-layout";
 import { compileInk } from "../../../scripts/ink-validation";
 import { MODULES_FILE, MODULES_INK } from "../../../scripts/modules-ink";
 import { readMainFileHead, readPlaceFile } from "../../../scripts/place-files";
-import { convertBattle } from "../../../scripts/battle-flow";
-import type { BattleDefinition } from "../../../src/content/schemas";
 
 const TOWER = "smp_mihon_main_clock_tower_battle";
 const MARKET = "smp_mihon_special_b_market";
@@ -81,11 +79,10 @@ function start(battleId: string): GameState {
 }
 
 describe("a battle as one flow (stage 5): the sample's battles", () => {
-  it("are in the one-flow form and play to their result through the quiz and reasoning screens", () => {
+  it("play to their result through the quiz and reasoning screens", () => {
     for (const battleId of [TOWER, MARKET, LIBRARY, FINALE]) {
       const first = start(battleId);
-      const { battle, quiz } = getActiveBattleContent(first.activeBattle!);
-      expect(battle.scenes, battleId).toBeUndefined();
+      const { quiz } = getActiveBattleContent(first.activeBattle!);
       const { state, lines } = play(first, { answers: quiz.questions.map((_, index) => index % 2 === 0) });
       expect(state.activeBattle).toMatchObject({ phase: "result", score: Math.ceil(quiz.questions.length / 2), storyState: null, frame: null });
       expect(state.battleRecords).toContainEqual(expect.objectContaining({ battleId, attempts: 1, firstScore: Math.ceil(quiz.questions.length / 2) }));
@@ -345,9 +342,9 @@ describe("a battle's conversation choices (stage 5, decision 10)", () => {
   });
 });
 
-// The one flow looks as the scene form did (「見た目は同じ」): the 「次へ進む」 at the end of the scene before the claim, the
-// upcoming question in the clue book while the claim plays, and a rebuttal that hides what the scene form's rebuttal hid.
-describe("a flow battle's claim and rebuttal look as the scene form's did (stage 5)", () => {
+// What the battle screen shows around the claim: the 「次へ進む」 at the end of the part before the claim, the upcoming
+// question in the clue book while the claim plays, and a rebuttal that hides the clue book and the answers' review.
+describe("a special battle's claim and rebuttal on the battle screen (stage 5)", () => {
   type Seen = { text: string; part?: string; sceneEnd?: true; round: number; chrome: ReturnType<typeof battleChrome> };
   /** Play to the first stop point (right answers), saving and loading at every step; every line with its marks. */
   function toStop(battleId: string): { state: GameState; seen: Seen[] } {
@@ -373,7 +370,7 @@ describe("a flow battle's claim and rebuttal look as the scene form's did (stage
   }
   const advance = (label: string, testId = "battle-advance") => ({ label, testId });
 
-  it("ends the scene before the claim with 「次へ進む」, and shows the upcoming question while the claim plays (B and C)", () => {
+  it("ends the part before the claim with 「次へ進む」, and shows the upcoming question while the claim plays (B and C)", () => {
     for (const [battleId, round, claimLine] of [[MARKET, 1, "「時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！」"],
       [LIBRARY, 2, undefined]] as const) {
       const { seen } = toStop(battleId);
@@ -381,7 +378,7 @@ describe("a flow battle's claim and rebuttal look as the scene form's did (stage
       expect(claim.length, battleId).toBeGreaterThan(0);
       if (claimLine) expect(claim.map((line) => line.text)).toEqual([claimLine]);
       const before = seen[seen.indexOf(claim[0]) - 1];
-      // The last line before the claim ends its scene (the scene form's after_N): 「次へ進む」, and the auto-advance stops there.
+      // The last line before the claim ends its part: 「次へ進む」, and the auto-advance stops there.
       expect(before).toMatchObject({ sceneEnd: true, round: round - 1, chrome: { advance: advance("次へ進む"), notebookTab: true, reviewAnswers: true } });
       expect(seen.filter((line) => line.sceneEnd)).toEqual([before]);
       // The claim's lines: the reasoning's round (the clue book's question is the one the proof leads to), its last line ends the part.
@@ -392,7 +389,7 @@ describe("a flow battle's claim and rebuttal look as the scene form's did (stage
     }
   });
 
-  it("plays a rebuttal after the claim as the scene form's rebuttal story showed it (its chrome), saved line by line", () => {
+  it("plays a rebuttal after the claim, saved line by line, without the clue book or the answers' review", () => {
     const written = source(fileStory).replace("-> smp_mihon_special_b_market_claim ->\n",
       "-> smp_mihon_special_b_market_claim ->\n# background: smp_bg_mihon_market\n# speaker: heroine\n「待って。一人残らず、ですか」\n「確かめてみましょう」\n");
     stories[fileStory] = compileInk(readMainFileHead(written).source, "market.ink", { [MODULES_FILE]: MODULES_INK });
@@ -400,33 +397,27 @@ describe("a flow battle's claim and rebuttal look as the scene form's did (stage
     const claim = seen.filter((line) => line.part === "claim");
     const rebuttal = seen.filter((line) => line.part === "rebuttal");
     expect(rebuttal.map((line) => line.text)).toEqual(["「待って。一人残らず、ですか」", "「確かめてみましょう」"]);
-    // The claim ends its scene before the rebuttal (the scene form's claim scene ended there).
+    // The claim ends its part before the rebuttal.
     expect(claim.at(-1)).toMatchObject({ sceneEnd: true, chrome: { advance: advance("次へ進む"), notebookTab: true } });
-    // The scene form's rebuttal: a line of the presentation-only story, the battle already at its stop point.
-    const sceneForm = battles.find((battle) => battle.reasoning?.kind === "contradiction" && battle.scenes)!;
-    const atStop = { ...start(MARKET).activeBattle!, battleId: sceneForm.id, phase: "reasoning" as const, frame: null, storyState: null,
-      answers: [{ questionId: "q", optionId: "A", correct: true, hintUsed: false }] };
-    const old = (ended: boolean) => battleChrome(atStop, sceneForm, { text: "「待って」", speaker: "heroine", background: "x", emotion: "neutral", choices: [], ended });
-    expect(rebuttal[0]).toMatchObject({ round: 1, chrome: old(false) });
-    expect(rebuttal[1]).toMatchObject({ round: 1, chrome: old(true) });
-    expect(old(false)).toEqual({ rebuttal: true, choosing: false, advance: null, notebookTab: false, reviewAnswers: false });
-    expect(old(true).advance).toEqual(advance("次へ進む", "reasoning-rebuttal-advance"));
+    // The rebuttal's last line, before the stop point, ends it.
+    const chrome = { rebuttal: true, choosing: false, notebookTab: false, reviewAnswers: false };
+    expect(rebuttal[0]).toEqual({ text: rebuttal[0].text, part: "rebuttal", round: 1, chrome: { ...chrome, advance: null } });
+    expect(rebuttal[1]).toEqual({ text: rebuttal[1].text, part: "rebuttal", round: 1, chrome: { ...chrome, advance: advance("次へ進む", "reasoning-rebuttal-advance") } });
   });
 });
 
-// The clue book's claim and press (stage 5): read with the names, memories and items, as the scene form's claim scene was, and
-// never stopping the screen. Milan's special battle B in the scene form, and the same battle converted, with names in its claim and press.
-describe("the clue book's claim and press in the one flow (stage 5)", () => {
+// The clue book's claim and press (stage 5): read with the names, memories and items, as the flow reads them, and never
+// stopping the screen. Milan's special battle B, with names in its claim and press.
+describe("the clue book's claim and press (stage 5)", () => {
   const milanB = "milano_last_supper_b01";
-  const definition = battles.find((battle) => battle.id === milanB)!;
-  const storyId = definition.storyId;
-  const keptMilan = { story: stories[storyId], index: battles.indexOf(definition) };
+  const storyId = battles.find((battle) => battle.id === milanB)!.storyId;
+  const keptMilan = stories[storyId];
   afterEach(() => {
-    stories[storyId] = keptMilan.story;
-    (battles as BattleDefinition[])[keptMilan.index] = definition;
+    stories[storyId] = keptMilan;
   });
   const named = readFileSync(`content/journeys/milano/stories/${storyId}.ink`, "utf8")
-    .replace(/(=== \w*claim\w* ===\n(?:#[^\n]*\n)*)/u, "$1「{player_name}さん、{heroine_name}さん、聞きなさい」\n");
+    .replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, "$1「{player_name}さん、{heroine_name}さん、聞きなさい」\n");
+  const compile = (source: string) => compileInk(readMainFileHead(source).source, "milan-b.ink", { [MODULES_FILE]: MODULES_INK });
   /** Play Milan's B to its stop point, press, and read the clue book's claim and press. */
   function clueBook(): { claimText: string; pressedText: string | null } {
     let state = openBattleScene(cityStart("milano", ["たいち", "あゆみ"]), milanB);
@@ -438,27 +429,20 @@ describe("the clue book's claim and press in the one flow (stage 5)", () => {
     return getReasoningContext(act(state, (current) => pressBattleClaim(current, current.revision)))!;
   }
 
-  it("shows the same claim and press, the names included, as the scene form did", () => {
+  it("shows the claim and press with the names", () => {
     expect(named).toContain("{player_name}さん、{heroine_name}さん");
-    const press = named.match(/=== (\w*press\w*) ===/u)![1];
-    const withPressName = named.replace(new RegExp(`(=== ${press} ===\\n(?:#[^\\n]*\\n)*)`, "u"), "$1「{heroine_name}さんも、そう思うだろう」\n");
-    stories[storyId] = compileInk(withPressName, "milan-b.ink");
-    const sceneForm = clueBook();
-    expect(sceneForm.claimText).toContain("「たいちさん、あゆみさん、聞きなさい」");
-    expect(sceneForm.pressedText).toContain("「あゆみさんも、そう思うだろう」");
-    const converted = convertBattle({ battle: definition, source: withPressName }, battleQuizzes[definition.quizId].questions.length);
-    stories[storyId] = compileInk(readMainFileHead(converted.source).source, "milan-b.ink", { [MODULES_FILE]: MODULES_INK });
-    (battles as BattleDefinition[])[keptMilan.index] = converted.battle;
-    expect(clueBook()).toEqual(sceneForm);
+    const withPressName = named.replace(/(=== \w*_press ===\n(?:#[^\n]*\n)*)/u, "$1「{heroine_name}さんも、そう思うだろう」\n");
+    stories[storyId] = compile(withPressName);
+    const { claimText, pressedText } = clueBook();
+    expect(claimText).toContain("「たいちさん、あゆみさん、聞きなさい」");
+    expect(pressedText).toContain("「あゆみさんも、そう思うだろう」");
   });
 
   it("reads the claim with the player's memories, as the flow reads it", () => {
-    const converted = convertBattle({ battle: definition, source: named }, battleQuizzes[definition.quizId].questions.length);
     const line = "「あの店の音を、まだ覚えているか」";
-    const remembering = converted.source.replace("INCLUDE modules.ink\n", "INCLUDE modules.ink\nEXTERNAL has_memory(memory_id)\n")
+    const remembering = named.replace("INCLUDE modules.ink\n", "INCLUDE modules.ink\nEXTERNAL has_memory(memory_id)\n")
       .replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, `$1{ has_memory("sound_memory_cafe_01"): ${line} }\n`);
-    stories[storyId] = compileInk(readMainFileHead(remembering).source, "milan-b.ink", { [MODULES_FILE]: MODULES_INK });
-    (battles as BattleDefinition[])[keptMilan.index] = converted.battle;
+    stories[storyId] = compile(remembering);
     for (const memories of [[], ["sound_memory_cafe_01"]]) {
       const opened = openBattleScene(cityStart("milano"), milanB);
       let state: GameState = { ...opened, memories };
@@ -478,16 +462,11 @@ describe("the clue book's claim and press in the one flow (stage 5)", () => {
   });
 
   it("never stops the screen when a claim reaches a choice or errors (content:build stops such a knot)", () => {
-    const converted = convertBattle({ battle: definition, source: named }, battleQuizzes[definition.quizId].questions.length);
-    const withChoice = converted.source.replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, "$1「まず聞こう」\n* [「はい」]\n- \n");
-    stories[storyId] = compileInk(readMainFileHead(withChoice).source, "milan-b.ink", { [MODULES_FILE]: MODULES_INK });
-    (battles as BattleDefinition[])[keptMilan.index] = converted.battle;
+    stories[storyId] = compile(named.replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, "$1「まず聞こう」\n* [「はい」]\n- \n"));
     const state = openBattleScene(cityStart("milano"), milanB);
     expect(getReasoningContext(state)).toEqual({ claimText: "「まず聞こう」", pressedText: null });
     // A claim that stops with an error (here a condition not in the scene conditions): the clue book shows no claim.
-    const withError = converted.source.replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, "$1{cond(\"dreamscape_unknown\"): 「x」}\n");
-    stories[storyId] = compileInk(readMainFileHead(withError).source, "milan-b.ink", { [MODULES_FILE]: MODULES_INK });
+    stories[storyId] = compile(named.replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, "$1{cond(\"dreamscape_unknown\"): 「x」}\n"));
     expect(getReasoningContext(openBattleScene(cityStart("milano"), milanB))).toEqual({ claimText: "", pressedText: null });
   });
 });
-

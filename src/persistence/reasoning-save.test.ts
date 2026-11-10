@@ -51,9 +51,10 @@ describe("reasoning save protection", () => {
     change(initial, (s) => {
       s.activeBattle!.reasoning!.status = "accepted";
     });
+    // The saved story stops at the reasoning's call, not at a quiz's.
     change(initial, (s) => {
       s.activeBattle!.phase = "question";
-    });
+    }, "バトル会話の位置が一致しません。");
     change(selected, (s) => {
       s.activeBattle!.reasoning!.selectedClueIds = [
         battle().reasoning!.correctClueIds[0],

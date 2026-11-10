@@ -64,7 +64,7 @@ export function storyFingerprint(address: string): string {
 /**
  * A scene's `cond("…")`: whether the condition written as text holds now (src/domain/scene-conditions.ts
  * judges it; Ink gets true or false only). A scene that calls cond without a reader stops: content:build
- * refuses cond in the stories that are not scenes (English-note explanations, special battles' rebuttals).
+ * refuses cond in the stories that are not scenes (English-note explanations).
  */
 export type StoryConditionReader = (text: string) => boolean;
 const noConditions: StoryConditionReader = (text) => { throw new Error(`この会話では条件を読めません: ${text}`); };
@@ -119,7 +119,7 @@ export function beginStory(
     if (story.variablesState.GlobalVariableExistsWithName(name))
       story.variablesState.$(name, value);
   }
-  // A place file's scene starts at its knot (a battle in the stitch form: at its scene's stitch); its file's top runs nothing.
+  // A place file's scene starts at its knot; its file's top runs nothing.
   const path = splitStoryAddress(storyId).path;
   if (path !== undefined) story.ChoosePathString(path);
   return readFrame(story, undefined, [], initialBackground, originKnot);

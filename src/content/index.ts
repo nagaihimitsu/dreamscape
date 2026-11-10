@@ -24,8 +24,6 @@ import presentationData from "./generated/content/romance/presentation.json";
 import dialogueExpressionData from "./generated/content/presentation/dialogue-expressions.json";
 import dialogueReactionData from "./generated/content/presentation/dialogue-reactions.json";
 import { dialogueReactionCatalogSchema } from "./dialogue-reactions";
-import reasoningIntroData from "./generated/content/presentation/reasoning-intros.json";
-import { reasoningIntroCatalogSchema } from "./reasoning-intros";
 import { dialogueExpressionCatalogSchema } from "./dialogue-expressions";
 import generatedStories from "./generated/stories.json";
 import sceneConditionData from "./generated/scene-conditions.json";
@@ -135,9 +133,6 @@ export const balance = balanceSchema.parse(balanceData);
 export const presentation = presentationSchema.parse(presentationData);
 export const dialogueReactions = dialogueReactionCatalogSchema.parse(dialogueReactionData);
 export const dialogueExpressions = dialogueExpressionCatalogSchema.parse(dialogueExpressionData);
-export const reasoningIntroductions: Record<string, string> = Object.fromEntries(
-  reasoningIntroCatalogSchema.parse(reasoningIntroData).entries.map(({ battleId, storyId }) => [battleId, storyId]),
-);
 export const stories: Record<string, string> = generatedStories;
 /** The scenes' `cond("…")` texts (per story) and the condition each text stands for (content:build, scripts/scene-conditions.ts). */
 export const sceneConditions = sceneConditionsSchema.parse(sceneConditionData);

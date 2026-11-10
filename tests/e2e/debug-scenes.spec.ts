@@ -183,20 +183,20 @@ test("a Debug launch URL that does not fit the content says why and links back t
   await ops.debugShown(page.getByTestId("debug-panel"));
 });
 
-type TapScene = "encounter" | "epilogue" | "battle" | "rebuttal" | "tourism";
+type TapScene = "encounter" | "epilogue" | "battle" | "special" | "tourism";
 type TapTarget = { cityId: string; scene: DebugSettings["scene"]; id: string };
 
 /** One scene of each kind in Debug's default city, from the dev server's content (no fixed IDs). */
 function tapTargets(page: Page): Promise<Partial<Record<TapScene, TapTarget>>> {
   return page.evaluate(async (modules) => {
-    const { battles, reasoningIntroductions } = await import(/* @vite-ignore */ modules.content);
+    const { battles } = await import(/* @vite-ignore */ modules.content);
     const { debugTargets, defaultDebugCityId } = await import(/* @vite-ignore */ modules.debugState);
     const cityId: string = defaultDebugCityId;
     const listed: Record<string, { id: string; unavailable?: string }[]> = debugTargets(cityId);
     const special = (id: string) => !!battles.find((battle: { id: string; reasoning?: unknown }) => battle.id === id)?.reasoning;
     const choices: [TapScene, DebugSettings["scene"], (id: string) => boolean][] = [
       ["encounter", "encounter", () => true], ["epilogue", "epilogue", () => true],
-      ["battle", "battle", (id) => !special(id)], ["rebuttal", "battle", (id) => !!reasoningIntroductions[id]],
+      ["battle", "battle", (id) => !special(id)], ["special", "battle", (id) => special(id)],
       ["tourism", "tourism", () => true],
     ];
     const found: Partial<Record<TapScene, TapTarget>> = {};
@@ -208,21 +208,21 @@ function tapTargets(page: Page): Promise<Partial<Record<TapScene, TapTarget>>> {
   }, devModules);
 }
 
-/** The scene shows a line to read on (no choice, quiz or last line); the rebuttal is presentation only, not saved. */
+/** The scene shows a line to read on (no choice, quiz or last line); a special battle's line stops at its proof's call. */
 const reading: Record<TapScene, (state: GameState) => boolean> = {
   encounter: (state) => !!state.activeEncounter && !state.activeEncounter.frame.choices.length && !state.activeEncounter.frame.ended &&
     state.activeEncounter.phase !== "quiz" && state.activeEncounter.phase !== "feedback",
   epilogue: (state) => !!state.activeEpilogue && !state.activeEpilogue.frame.ended,
   battle: (state) => state.activeBattle?.phase === "dialogue" && !state.activeBattle.frame?.ended,
-  rebuttal: (state) => state.activeBattle?.phase === "reasoning",
+  special: (state) => state.activeBattle?.phase === "dialogue" && !!state.activeBattle.frame?.choices.some((choice) => choice.call === "reasoning"),
   tourism: (state) => state.activeTourism?.phase === "guide" && !state.activeTourism.frame?.ended,
 };
 
 // User idea (2026-11-07, docs/02 「UX/スマホ」): in every story scene a tap anywhere but on a control
 // reads on, one step per tap. The tourism guide and the date are played in play.spec.ts; these are
-// the other scene kinds (encounter, epilogue — the arrival uses the same screen —, battle dialogue,
-// and a special battle's presentation-only rebuttal).
-for (const kind of ["encounter", "epilogue", "battle", "rebuttal"] as const) {
+// the other scene kinds (encounter, epilogue — the arrival uses the same screen —, and battle dialogue,
+// a special battle's claim and rebuttal included).
+for (const kind of ["encounter", "epilogue", "battle"] as const) {
   test(`${kind}: a tap on the picture reads one step on, a click between the window's tools or a double tap on the log's 「閉じる」 does not`, { tag: tier.debug }, async ({ page }) => {
     const target = (await tapTargets(page))[kind];
     expect(target, `a ${kind} that Debug opens in its default city`).toBeDefined();
@@ -254,26 +254,20 @@ for (const kind of ["encounter", "epilogue", "battle", "rebuttal"] as const) {
     // A tap on the picture (the battle's stage) goes one line on, like a tap on the line.
     await ops.tapAt(page, await ops.sceneBackgroundPoint(page));
     await expect(line).not.toHaveText(text!);
-    expect((await debugGame(page))!.revision).toBe(kind === "rebuttal" ? before.revision : before.revision + 1);
+    expect((await debugGame(page))!.revision).toBe(before.revision + 1);
   });
 }
 
-// A presentation-only scene end (the special battle's rebuttal) holds taps like a saved one: the
-// tap on its last line brings the cut-in, whose 「スキップ」 must not take the double tap's second tap.
-test("rebuttal: the tap that ends it does not also skip the cut-in under the finger", { tag: tier.debug }, async ({ page }) => {
-  const target = (await tapTargets(page)).rebuttal;
-  expect(target, "a special battle with a rebuttal that Debug opens in its default city").toBeDefined();
+// The special battle's talk before its proof ends like any story scene and holds taps: the tap on
+// its last line brings the cut-in, whose 「スキップ」 must not take the double tap's second tap.
+test("special battle: the tap that ends the talk before the proof does not also skip the cut-in under the finger", { tag: tier.debug }, async ({ page }) => {
+  const target = (await tapTargets(page)).special;
+  expect(target, "a special battle that Debug opens in its default city").toBeDefined();
   await page.clock.install();
   await ops.openDebugScene(page, settings(target!));
-  await playUntil(page, reading.rebuttal, { source: debugGame });
-  const line = page.getByTestId("dialogue-text");
-  const last = page.getByTestId("reasoning-rebuttal-advance");
-  for (let step = 0; step < 50 && !(await last.isVisible()); step++) {
-    const text = await line.textContent();
-    await ops.tapAt(page, await ops.sceneBackgroundPoint(page));
-    await expect(line).not.toHaveText(text!);
-  }
-  await expect(last).toBeVisible();
+  await playUntil(page, reading.special, { source: debugGame });
+  await expect(page.getByTestId("battle-advance").or(page.getByTestId("reasoning-rebuttal-advance"))).toBeVisible();
+  await expect(page.getByTestId("dialogue-text")).toHaveAttribute("data-ready", "true");
   const end = await ops.sceneBackgroundPoint(page);
   await ops.holdClock(page);
   await ops.doubleTap(page, end);

@@ -20,7 +20,7 @@ VAR relationship_tone_before = "reserved"
 VAR relationship_tone_after = "reserved"
 VAR answer_correct = false
 VAR battle_score = 0
-// A battle in the one-flow form (stage 5): the game sets these as it returns from a call below.
+// A battle (stage 5): the game sets these as it returns from a call below.
 VAR call_arg = 0
 VAR quiz_correct = false
 VAR reasoning_action = ""

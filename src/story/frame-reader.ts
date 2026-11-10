@@ -3,8 +3,7 @@ import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import type { DialogueReaction, ReactionTarget } from "../content/dialogue-reactions";
 import { parseStoryTags, type StoryCall, type TagContext } from "../content/tags";
 
-// How a story's next line becomes the frame on screen (runtime.ts), in a light module (no content loading): content:build's
-// tools read stories with the same rules (the battle converter's check that every line stays the same, battle-flow.ts).
+// How a story's next line becomes the frame on screen (runtime.ts), in a light module (no content loading).
 
 export type Speaker = "narrator" | "heroine" | "player" | "enemy";
 export interface StoryFrame {
@@ -32,7 +31,7 @@ export interface StoryStep {
 /**
  * Run `read` and say whether the first text it outputs comes from inside `knot` (on the call stack as Ink outputs it).
  * The saved state after a line cannot tell: when a choice follows the line, Ink has already read on past the knot's end.
- * A flow battle's claim (its helper knot) is told from the lines around it this way (the scene form's claim scene, stage 5).
+ * A special battle's claim (its helper knot) is told from the lines around it this way.
  */
 function withLineOrigin<T>(story: Story, knot: string | undefined, read: () => T): { result: T; inKnot?: boolean } {
   if (!knot) return { result: read() };

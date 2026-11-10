@@ -22,7 +22,7 @@ describe("catalog merge", () => {
   it("gives a journey kind that no layer provides an empty value, and none to a core-layer kind", () => {
     // So any journey folder can be removed: e.g. only Milan has encounters or English-note details.
     expect(JSON.stringify(absentCatalog("encounters/catalog.json"))).toBe(JSON.stringify({ schemaVersion: 1, items: [], encounters: [] }));
-    expect(absentCatalog("presentation/reasoning-intros.json")).toEqual({ schemaVersion: 1, entries: [] });
+    expect(absentCatalog("presentation/dialogue-reactions.json")).toEqual({ schemaVersion: 1, entries: [] });
     expect(JSON.stringify(absentCatalog("learning/details.json"))).toBe(JSON.stringify({ schemaVersion: 1, questions: {} }));
     // A new object each time, never one a caller could have changed.
     expect(absentCatalog("learning/details.json")).not.toBe(absentCatalog("learning/details.json"));

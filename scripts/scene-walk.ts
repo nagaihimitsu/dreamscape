@@ -26,7 +26,7 @@ import type { DialogueObserver } from "./dialogue-expression-validation";
 // and `item X gifted` true; after `# set: F`, `flag F` true.
 // Warning (not stopped): a choice point with only 「また今度」 and choices needing items not guaranteed there.
 //
-// A battle in the one-flow form (stage 5, `battle`): the walk answers its calls as the game does (modules.ink): each
+// A battle (stage 5, `battle`): the walk answers its calls as the game does (modules.ink): each
 // `-> quiz(n) ->` right and wrong, each `-> reasoning ->` with every action (B: press, evidence success and failure; C:
 // success and failure), and stops the build when a path calls quiz out of order or not 1..n once each (A16), meets the
 // reasoning stop elsewhere than after quiz(roundIndex) (battles/catalog.json), ends without it, or when a state is reached
@@ -55,7 +55,7 @@ export type SceneWalkInput = {
   observe?: DialogueObserver;
   /** Romance choice points: the knot whose choice points are counted (a date's own knot) and how many each path must meet (A14). */
   romanceChoices?: { knot: string; count: number };
-  /** A battle in the one-flow form (stage 5): how many quizzes it calls and, for a special battle, its reasoning. */
+  /** A battle (stage 5): how many quizzes it calls and, for a special battle, its reasoning. */
   battle?: { quizzes: number; reasoning?: { kind: "contradiction" | "connection"; roundIndex: number } };
   onWarning?: (message: string) => void;
 };
@@ -143,7 +143,7 @@ export function walkScene(input: SceneWalkInput): number {
         return;
       }
       const call = calls[0];
-      if (call && !battle) throw new Error(`-> ${call === "quiz" ? "quiz(n)" : "reasoning"} -> is a battle's call (stage 5): ${input.label} is not a battle in the one-flow form`);
+      if (call && !battle) throw new Error(`-> ${call === "quiz" ? "quiz(n)" : "reasoning"} -> is a battle's call (stage 5): ${input.label} is not a battle`);
       const key = battle
         ? `${stopKey(choices)}|${JSON.stringify(path.overrides)}|${path.thens}|${path.quizzes}|${path.score}|${path.reasoned}|` +
           `${["reasoning_action", "evidence_result", "romance_result"].map((name) => String(story.variablesState.$(name))).join(",")}`
@@ -162,7 +162,7 @@ export function walkScene(input: SceneWalkInput): number {
           branch.state.LoadJson(checkpoint);
           for (const [name, value] of Object.entries(variables)) branch.variablesState.$(name, value);
           branch.ChooseChoiceIndex(0);
-          // The game starts a fresh frame after a call, as the scene form started each scene.
+          // The game starts a fresh frame after a call.
           visit({ ...path, ...next, saved: branch.state.ToJson(), speaker: "narrator" }, [], key);
         };
         if (call === "quiz") {

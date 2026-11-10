@@ -170,7 +170,7 @@ export function readPlaceFile(storyId: string, raw: string): PlaceFile {
 /** The knots of the game's modules.ink a scene may call (a battle's calls, stage 5): `-> quiz(n) ->`, `-> reasoning ->`. */
 export const MODULE_KNOTS = ["quiz", "reasoning"] as const;
 
-/** Whether a story file includes the game's modules.ink (a place file, or a one-scene battle in the one-flow form; stage 5). */
+/** Whether a story file includes the game's modules.ink (a place file, or a one-scene battle; stage 5). */
 export const includesModules = (source: string) => /^\s*INCLUDE\s+modules\.ink\s*$/mu.test(withoutComments(source));
 
 /**

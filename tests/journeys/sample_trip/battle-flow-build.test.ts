@@ -4,7 +4,7 @@ import { SAMPLE_JOURNEY_DIRECTORY, SAMPLE_JOURNEY_ID } from "../../../scripts/co
 import { contentSourcesFromTree, loadContentSources, selectJourneys, type ContentSources } from "../../../scripts/content-sources";
 import { validateContent } from "../../../scripts/content-validation";
 
-// content:build's checks of a battle in the one-flow form (the unified event design, stage 5, 3.3), on the sample journey's
+// content:build's checks of a battle's one flow (the unified event design, stage 5, 3.3), on the sample journey's
 // battles (fictional) changed in memory: every path calls quiz 1..n once in order (A16), a special battle stops at
 // -> reasoning -> after quiz(roundIndex) on every path and never only comes back there, the conversation may have choices
 // (A15 lifted), and the flow's helper knots and modules.ink are where the game reads them.
@@ -20,7 +20,7 @@ beforeAll(() => {
   sample = selectJourneys(loadContentSources(repository, { extraJourneyDirectories: [SAMPLE_JOURNEY_DIRECTORY] }), [SAMPLE_JOURNEY_ID]);
 });
 
-function sampleWith(changes: Record<string, (text: string) => string>, added: Record<string, string> = {}): ContentSources {
+function sampleWith(changes: Record<string, (text: string) => string>): ContentSources {
   const files = new Map(sample.tree.files);
   for (const [file, change] of Object.entries(changes)) {
     const before = files.get(`${prefix}${file}`)!.toString("utf8");
@@ -28,7 +28,6 @@ function sampleWith(changes: Record<string, (text: string) => string>, added: Re
     expect(after, `${file} unchanged`).not.toBe(before);
     files.set(`${prefix}${file}`, Buffer.from(after));
   }
-  for (const [file, text] of Object.entries(added)) files.set(`${prefix}${file}`, Buffer.from(text));
   return contentSourcesFromTree({ ...sample.tree, files });
 }
 /** The text with one exact part replaced (the part must be there once). */
@@ -42,7 +41,7 @@ const battleEntry = (id: string, change: (battle: Record<string, unknown>) => vo
   return JSON.stringify(catalog);
 };
 
-describe("a battle in the one-flow form (stage 5)", () => {
+describe("a battle's one flow (stage 5)", () => {
   it("builds the sample's four battles and walks every quiz answer and reasoning action", () => {
     const result = validateContent(sample);
     expect(result.battleScenarios).toBeGreaterThan(40);
@@ -80,7 +79,7 @@ describe("a battle in the one-flow form (stage 5)", () => {
     expect(() => validateContent(goesOn)).not.toThrow();
   });
 
-  it("lets the conversation have choices and their tags (A15 lifted), walked with the quizzes; a scene-form battle keeps none", () => {
+  it("lets the conversation have choices and their tags (A15 lifted), walked with the quizzes", () => {
     const withChoice = sampleWith({ [TOWER]: (text) => text.replace("\n-> quiz(1) ->\n",
       "\n* [「どうして直したいの？」 # option: ask_why]\n    # rel: trust +1\n    # speaker: enemy\n    「止まったままだと、番人の仕事がない気がして」\n" +
       "* [「先に言い伝えを」 # option: legend_first]\n- \n-> quiz(1) ->\n") });
@@ -116,13 +115,9 @@ describe("a battle in the one-flow form (stage 5)", () => {
       .toThrow(/The helper knot smp_mihon_special_b_market_claim reaches a choice \("「えっ」"\), read on its own as the clue book reads it/u);
     expect(() => validateContent(sampleWith({ [MARKET]: swap("INCLUDE modules.ink\n", "VAR player_name = \"\"\nVAR heroine_name = \"\"\n") })))
       .toThrow(/quiz/u);
-    expect(() => validateContent(sampleWith({}, {
-      "presentation/reasoning-intros.json": JSON.stringify({ schemaVersion: 1, entries: [{ battleId: "smp_mihon_special_b_market", storyId: "battles/smp_mihon_market_rebuttal" }] }),
-      "stories/battles/smp_mihon_market_rebuttal.ink": "VAR player_name = \"\"\nVAR heroine_name = \"\"\n# background: smp_bg_mihon_market\n# speaker: heroine\n「待って」\n-> END\n",
-    }))).toThrow(/is in the one-flow form: its rebuttal is written in its flow/u);
     // A call outside a battle has nothing to answer it.
     expect(() => validateContent(sampleWith({ [TOWER]: swap("「見て、あの歯車。止まってるのに、油でぴかぴかだ」\n", "「見て、あの歯車。止まってるのに、油でぴかぴかだ」\n-> quiz(1) ->\n") })))
-      .toThrow(/-> quiz\(n\) -> is a battle's call \(stage 5\): .* is not a battle in the one-flow form/u);
+      .toThrow(/-> quiz\(n\) -> is a battle's call \(stage 5\): .* is not a battle/u);
   });
 
   it("reads the helper knots alone with every condition, quiz result, score and memory, as the clue book may read them", () => {

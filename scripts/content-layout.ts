@@ -80,7 +80,6 @@ export const CATALOG_RULES = [
   { kind: "presentation/dialogue-expressions.json", fields: entries },
   { kind: "presentation/dialogue-reactions.json", fields: entries },
   { kind: "presentation/own-artwork.json", fields: { schemaVersion: same, artworks: concat } },
-  { kind: "presentation/reasoning-intros.json", fields: entries },
   { kind: "progression/journey.json", fields: { schemaVersion: same, episodes: concat, storyBattles: concat, rewards: concat } },
   // The story state an author declares (flags, people, named conditions; the unified event design, stage 3a).
   { kind: "progression/story.json", fields: { schemaVersion: same, flags: concat, people: concat, conditions: record } },
