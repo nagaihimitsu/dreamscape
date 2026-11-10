@@ -37,9 +37,13 @@ import { sceneOfAddress, taggedDateScene } from "../../src/domain/reservations";
 import type { SceneEntry } from "../../src/content/scene-schemas";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { afterAll, describe, expect, it } from "vitest";
-import { allRewardRules, balance, battles, cityContents, dates, episodes, getCityContent, journeyConfig, landmarks, progression, scenes } from "../../src/content";
+import { allRewardRules, balance, battles, cityContents, dates, episodes, getCityContent, getTour, journeyConfig, landmarks, progression, scenes, tours } from "../../src/content";
+import { isTourOnlyPlace } from "../../src/content/travel-schemas";
+import { bookTour, cancelTourBooking } from "../../src/domain/tour";
 import { spendableMoney } from "../../src/domain/conditions";
-import { apShortNow, canStillClearCity, moneyShortNow, sceneItemsOf, type ProgressionContent, type ProgressionSnapshot } from "../../scripts/progression-check";
+import {
+  apShortNow, canStillClearCity, mainPaymentsOf, moneyShortNow, sceneItemsOf, tourProgression, type ProgressionContent, type ProgressionSnapshot,
+} from "../../scripts/progression-check";
 import { encounters } from "../../src/content/encounters";
 import { journeys } from "../../src/content/journeys";
 import { cityStart } from "../../src/dev/scenario-builders";
@@ -125,8 +129,18 @@ function weight(state: GameState, action: PlayerAction): number {
     case "guide_next": case "observation_next": case "read_epilogue": case "battle_epilogue": case "depart": return 3;
     case "wait": return 0.5;
     case "rest": return 0.3;
+    // A tour (stage 2a): booked readily when it holds a main part the city's finale needs, rarely cancelled.
+    case "book_tour": return tourIsRequired(action.tourId) ? 3 : 1;
+    case "cancel_tour": return 0.1;
     default: return 1;
   }
+}
+/** Whether a tour opens a main part its city's finale needs (its requiredEpisodeIds, or a special battle every finale waits for). */
+function tourIsRequired(tourId: string): boolean {
+  const tour = getTour(tourId);
+  const finale = episodes.find((episode) => episode.cityId === tour?.cityId && episode.kind === "city_finale");
+  return !!tour && !!finale && tour.steps.some((step) => step.kind === "event" &&
+    (finale.requiredEpisodeIds.includes(step.eventId) || journeyConfig.storyBattles.some((battle) => battle.battleId === step.eventId)));
 }
 function pick(state: GameState, actions: PlayerAction[], next: () => number): PlayerAction {
   const weights = actions.map((action) => weight(state, action));
@@ -145,8 +159,11 @@ const progressionContent: ProgressionContent = {
   // Registered cities only (a journey may list cities not built yet).
   travel: playable.flatMap((journey) => journey.cities).filter((city) => city.id in cityContents).map((city) => {
     const { travel, travelSettings } = getCityContent(city.id);
-    return { cityId: city.id, hotelPlaceId: travelSettings.hotelPlaceId, initialBudget: travelSettings.initialBudget, events: travel.events, routes: travel.routes };
+    return { cityId: city.id, hotelPlaceId: travelSettings.hotelPlaceId, initialBudget: travelSettings.initialBudget, events: travel.events, routes: travel.routes,
+      tourOnlyPlaceIds: travel.places.filter((place) => isTourOnlyPlace(place)).map((place) => place.id) };
   }),
+  tours: tours.map(tourProgression),
+  mainPayments: mainPaymentsOf(scenes, { episodes, storyBattles: journeyConfig.storyBattles, battles }),
 };
 /** The records of a game state, as the progression check reads them. */
 const snapshotOf = (state: GameState): ProgressionSnapshot => ({
@@ -210,12 +227,12 @@ function tagAp(previous: GameState, next: GameState, action: PlayerAction): numb
 const describeAction = (action: PlayerAction) => JSON.stringify(action);
 
 /** What the walks reached, per journey (printed at the end, never asserted). */
-type Reached = Record<"cities" | "episodes" | "battles" | "dates" | "encounters" | "rentals" | "rides" | "cleared" | "epilogues", Set<string>> & { ends: number; steps: number };
+type Reached = Record<"cities" | "episodes" | "battles" | "dates" | "encounters" | "rentals" | "rides" | "tours" | "cleared" | "epilogues", Set<string>> & { ends: number; steps: number };
 const reached = new Map<string, Reached>();
 function reachedFor(journeyId: string): Reached {
   if (!reached.has(journeyId)) reached.set(journeyId, {
     cities: new Set(), episodes: new Set(), battles: new Set(), dates: new Set(), encounters: new Set(), rentals: new Set(), rides: new Set(),
-    cleared: new Set(), epilogues: new Set(), ends: 0, steps: 0,
+    tours: new Set(), cleared: new Set(), epilogues: new Set(), ends: 0, steps: 0,
   });
   return reached.get(journeyId)!;
 }
@@ -236,6 +253,7 @@ function record(start: Start, previous: GameState, state: GameState) {
   if (previous.currentCityId === state.currentCityId)
     for (const [modeId, count] of Object.entries(state.travel.rideCounts))
       if (count > (previous.travel.rideCounts[modeId] ?? 0)) seen.rides.add(`${state.currentCityId}/${modeId}`);
+  added(previous.completedTourIds, state.completedTourIds).forEach((id) => seen.tours.add(id));
   added(previous.completedCityIds, state.completedCityIds).forEach((id) => seen.cleared.add(id));
   added(previous.viewedEpilogueCityIds, state.viewedEpilogueCityIds).forEach((id) => seen.epilogues.add(id));
   if (isJourneyComplete(state) && !isJourneyComplete(previous)) seen.ends++;
@@ -299,6 +317,20 @@ function walk(seed: number, total: number) {
     // Stage 3b (4.8): what may never happen with the moment record.
     if (screenFor(changed) === "free_time" && changed.occasion) fail(step, "an occasion did not end: free time with the moment record still open");
     if (usableMoney(changed) < 0) fail(step, `the usable money is below 0: ${usableMoney(changed)}`);
+    // A tour (stage 2a) is paid once on booking and refunded exactly that once on cancelling; neither repeats in the same revision.
+    if (action.kind === "book_tour") {
+      const price = getTour(action.tourId)?.offers.find((offer) => offer.id === action.offerId)?.price;
+      if (changed.tour?.tourId !== action.tourId || changed.tour.pricePaid !== price || previous.travelBudget - changed.travelBudget !== price)
+        fail(step, `booking the tour did not pay its price once: ${previous.travelBudget} → ${changed.travelBudget}, price ${price}`);
+      if (bookTour(changed, action.tourId, action.offerId, previous.revision) !== changed) fail(step, "the booking was taken again in the same revision");
+    }
+    if (action.kind === "cancel_tour") {
+      const paid = previous.tour?.pricePaid ?? NaN;
+      if (changed.tour !== null || (changed.currentCityId === previous.currentCityId && changed.travelBudget - previous.travelBudget !== paid))
+        fail(step, `the cancel did not refund the price paid exactly once: ${previous.travelBudget} → ${changed.travelBudget}, paid ${paid}`);
+      if (cancelTourBooking(changed, previous.revision) !== changed || cancelTourBooking(previous, previous.revision - 1) !== previous)
+        fail(step, "the cancel was taken again in the same revision");
+    }
     if (usableAp(changed) < 0) fail(step, `the usable AP is below 0: ${usableAp(changed)}`);
     const met = changed.activeEncounter;
     if (met && met.runId !== previous.activeEncounter?.runId && previous.completedEncounterIds.includes(met.encounterId) &&
@@ -371,7 +403,8 @@ function summary(): string {
       count("place encounters met", cityEncounters.map((event) => event.id), seen.encounters),
       count("rentals made", cityIds.flatMap((cityId) => (getCityContent(cityId).travelSettings.rentals ?? []).map((offer) => `${cityId}/${offer.modeId}`)), seen.rentals),
       count("vehicles ridden", cityIds.flatMap((cityId) => [...new Set(getCityContent(cityId).travel.routes
-        .filter((route) => route.mode !== "walk").map((route) => `${cityId}/${route.mode}`))]), seen.rides));
+        .filter((route) => route.mode !== "walk").map((route) => `${cityId}/${route.mode}`))]), seen.rides),
+      count("tours finished", tours.filter((tour) => cityIds.includes(tour.cityId)).map((tour) => tour.id), seen.tours));
   }
   for (const [kind, label] of [["money", "money too short for the main parts a finale still needs"], ["ap", "AP too short for the dates a finale still needs"]] as const)
     lines.push(`${label} (not failed): ${shortOf[kind].size ? [...shortOf[kind]].map(([cityId, seen]) => `${cityId} (seeds ${[...seen].join(", ")})`).join("; ") : "none"}`);
