@@ -113,7 +113,9 @@ INCLUDE modules.ink
     わたしも、あなたも、今日は間違えた。間違えた人が多い日の方が、たくさん学べるんです
 }
 # speaker: narrator
-帰りぎわ、ディヴィヤは老人の隣に座り直した。影の読み方を、最初から教えてほしいと頼んでいる。
+帰りぎわ、ディヴィヤは老人の隣に座り直した。
+# speaker: enemy
+影の読み方を、最初から教えてもらえますか
 # speaker: heroine
 # reaction: heroine,smile,music
 天文学者と占星術師が、同じ影を見てる。……なんだか、いい眺め

@@ -152,7 +152,11 @@ INCLUDE modules.ink
         いい考えね。わたしは、隠れるのは四十年で十分
     }
     # speaker: narrator
-    スレーシュは携帯を取り出し、さっきの集合写真を開いたまま、しばらく固まっていた。送ったかどうかは、分からない。結果は、笑う会の連絡で知らせる、とだけ言って帰っていった。
+    スレーシュは携帯を取り出し、さっきの集合写真を開いたまま、しばらく固まっていた。送ったかどうかは、分からない。
+    # speaker: gt_suresh
+    結果は、笑う会の連絡で知らせる
+    # speaker: narrator
+    それだけ言って、帰っていった。
 * [「ミーナさんは、どう思いますか」と聞く # option: ask_meena]
     # profile: honest
     # set: gt_delhi_suresh_kept_secret
@@ -165,7 +169,11 @@ INCLUDE modules.ink
         # speaker: gt_meena
         この人が決めることよ。でも、決めるまでは、一緒に笑っててあげる
         # speaker: narrator
-        スレーシュは返事のかわりに、小さく一回だけ、ハ、と笑った。たぶん、本物の方だった。
+        スレーシュは返事のかわりに、小さく一回だけ笑った。
+        # speaker: gt_suresh
+        ……ハ
+        # speaker: narrator
+        たぶん、本物の方だった。
     }
 - -> two_of_us
 
@@ -222,8 +230,11 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,teasing_big,music
         似てる！　ふふっ、もう、笑っちゃって言えない
+        # speaker: heroine
+        # reaction: heroine,happy,music
+        ディヤーン、デーン！
         # speaker: narrator
-        笑いながら言った「ディヤーン、デーン」は、今日いちばん大きな声だった。
+        笑いながらの声は、今日いちばん大きかった。
     }
 -
 # speaker: gt_dubey
@@ -236,7 +247,11 @@ INCLUDE modules.ink
 # speaker: heroine
 ねえ、さっきの、もう一回やってみる。理由のない笑い
 # speaker: narrator
-彼女は真顔で「ハ、ハ、ハ」と言い、三回目で自分で吹き出した。
+彼女は真顔で言った。
+# speaker: heroine
+ハ、ハ、ハ
+# speaker: narrator
+三回目で、自分で吹き出した。
 # speaker: heroine
 # reaction: heroine,happy,music
 だめだ、一人だと、ただの変な人だね。理由のない笑いって、誰かと一緒じゃないと、できないのかも

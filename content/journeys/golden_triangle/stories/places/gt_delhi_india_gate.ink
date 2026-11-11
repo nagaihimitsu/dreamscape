@@ -16,7 +16,10 @@ INCLUDE modules.ink
 # reaction: heroine,surprised,question
 記念碑の前って、もっと静かな場所だと思ってた。みんな、ピクニックしてる
 # speaker: narrator
-敷物の一つから、十六くらいの男の子が走ってきた。携帯を差し出して、英語で一言。写真、お願いします。
+敷物の一つから、十六くらいの男の子が走ってきた。携帯を差し出して、英語で一言。
+# speaker: gt_delhi_india_gate_boy
+Photo, please!
+# speaker: narrator
 振り返ると、敷物の上に十二人いた。腰の曲がった祖母から、よちよち歩きの子まで。ハリヤーナーの村から、年に一度のデリー見物に来たのだという。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
@@ -152,12 +155,16 @@ INCLUDE modules.ink
 # emotion: smile
 おばあさんの方が、一枚上手だった
 # speaker: narrator
-モヌは携帯を見つめたまま、来年はもっと望遠のきく携帯にする、と小さく言った。
+モヌは携帯を見つめたまま、小さく言った。
+# speaker: gt_monu
+来年は、もっと望遠のきく携帯にする
 -> family_talk
 
 = not_searching
+# speaker: heroine
+モヌくん、おばあさんに聞いてもらえる？　名前を、探したいですかって
 # speaker: narrator
-彼女はモヌに頼んで、祖母に聞いてもらった。名前を探したいですか、と。祖母は少し考え、首を横に振った。それから、門ではなく、芝生の方を指さした。
+モヌが通訳すると、祖母は少し考え、首を横に振った。それから、門ではなく、芝生の方を指さした。
 # speaker: gt_monu
 名前は、去年まででいいって。今年は、ひ孫がここで走ってるのを見に来たんだって。……初耳なんだけど
 # speaker: narrator

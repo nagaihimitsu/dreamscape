@@ -226,7 +226,10 @@ INCLUDE modules.ink
 # on_done: use gt_jaipur_wedding_envelope
 # background: gt_bg_jaipur_hawa_mahal
 # speaker: narrator
-踊りの輪がひと息ついたころ、彼女は鞄から封筒を取り出して、カムラに差し出した。アマンさんに、と言って。
+踊りの輪がひと息ついたころ、彼女は鞄から封筒を取り出して、カムラに差し出した。
+# speaker: heroine
+アマンさんに
+# speaker: narrator
 カムラは封筒を光にかざし、中の一ルピー玉を、指で確かめた。
 { cond("flag gt_jaipur_envelope_letter"):
     # speaker: enemy

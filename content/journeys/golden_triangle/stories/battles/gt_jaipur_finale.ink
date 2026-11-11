@@ -41,7 +41,9 @@ INCLUDE modules.ink
 # emotion: serious
 ……やります。わたしが、答えます
 # speaker: narrator
-いとこたちの先頭、プージャーという娘がにやりと笑った。最初の問題。この町は、なぜピンク色なのか。
+いとこたちの先頭、プージャーという娘がにやりと笑った。
+# speaker: gt_pooja
+一問目。この町は、どうしてピンク色なのか。わかる？
 -> quiz(1) ->
 # background: gt_bg_jaipur_hawa_mahal
 { quiz_correct:
@@ -110,7 +112,9 @@ INCLUDE modules.ink
 # speaker: narrator
 そのとき、屋敷の二階の格子窓が、かたりと鳴った。窓の奥に、白い髪の老婦人の影がある。
 # speaker: narrator
-花嫁の祖母だった。足が悪く、行列は窓から見ることになっている、とプージャーが小声で言う。
+花嫁の祖母だった。プージャーが小声で言う。
+# speaker: gt_pooja
+おばあちゃん、足が悪いの。行列は、窓から見ることになってる
 # speaker: narrator
 窓の老婦人が、プージャーに何か伝えた。プージャーがうなずき、声を張る。
 # speaker: gt_pooja
@@ -137,7 +141,9 @@ INCLUDE modules.ink
 # speaker: narrator
 二人の祖母が、窓の内と外で見つめ合う。通りの喧騒が、一瞬遠のいた。
 # speaker: narrator
-窓の奥の声が、最後の問題を告げた。この窓は、向かいの宮殿の窓と同じ作り。こんな細かな格子は、何のためにあったのか。
+窓の奥の声が、最後の問題を告げた。
+# speaker: gt_jaipur_bride_grandmother
+この窓はね、向かいの宮殿の窓と同じ作り。こんな細かな格子は、何のためにあったと思う？
 -> quiz(5) ->
 # background: gt_bg_jaipur_hawa_mahal
 { quiz_correct:

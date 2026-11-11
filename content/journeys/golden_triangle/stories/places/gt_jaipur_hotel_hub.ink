@@ -13,7 +13,13 @@ INCLUDE modules.ink
 # reaction: heroine,happy,sparkle
 本当に、町じゅうがピンク……。写真より、ちょっと赤っぽいね。夕方の空みたいな色
 # speaker: narrator
-荷物を置くなり、{heroine_name}は携帯を開いた。アマンからの連絡だ。花婿の行列は旅の最後の夜、旧市街のハワー・マハルの近くを通る。文面の最後に、一行。祖母が、あなたに踊らせると言っています。逃げ道はありません。
+荷物を置くなり、{heroine_name}は携帯を開いた。アマンからの連絡だ。
+# speaker: gt_aman
+# phone: received
+花婿の行列は、旅の最後の夜、旧市街のハワー・マハルの近くを通ります
+# speaker: gt_aman
+# phone: received
+祖母が、あなたに踊らせると言っています。逃げ道はありません
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 お、踊らせる……！？　行くとは言ったけど、踊るとは言ってない……！

@@ -34,7 +34,9 @@ INCLUDE modules.ink
     # memory: gt_delhi_date_bangla_sahib_memory
     { romance_result == "negative":
         # speaker: narrator
-        全力で伸ばした生地は、なぜか四角くなった。ハルバンスが、荷台だな、とつぶやく。
+        全力で伸ばした生地は、なぜか四角くなった。
+        # speaker: gt_harbans
+        ……荷台だな
         # speaker: heroine
         # emotion: exasperated
         ……わたしのより、まとまってる。ちょっと悔しい

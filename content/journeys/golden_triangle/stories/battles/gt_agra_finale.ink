@@ -46,7 +46,9 @@ INCLUDE modules.ink
 # speaker: enemy
 本当のことは、人を泣かせない。泣かない客は、タージを忘れる。わしは四十年、それを見てきた
 # speaker: narrator
-アンワルは杖を上げた。日が傾いたら、対岸の庭へ移動する。この旅の最後の、とっておきの話をそこでするのだという。
+アンワルは杖を上げた。
+# speaker: enemy
+日が傾いたら、対岸の庭へ参りましょう。この旅の最後の、とっておきの話は、そこでいたします
 # background: gt_bg_agra_mehtab_bagh
 # speaker: narrator
 川を渡ったメヘターブ・バーグの岸辺。夕日に染まるタージが、川向こうに正面から見えた。

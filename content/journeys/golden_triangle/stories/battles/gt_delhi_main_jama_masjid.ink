@@ -10,7 +10,9 @@ INCLUDE modules.ink
 # speaker: enemy
 アタル。花や木を、油に閉じこめたものだ。手首を
 # speaker: narrator
-白い髭の老人が、ガラス棒を瓶に浸し、{heroine_name}の手首にひと筋つけた。ハミード、と名乗る。この路地で六十年、香油を売っているという。
+白い髭の老人が、ガラス棒を瓶に浸し、{heroine_name}の手首にひと筋つけた。
+# speaker: enemy
+ハミードだ。この路地で六十年、香油を売っている
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 わ……。薔薇なのに、甘すぎない。ずっと嗅いでいられる
@@ -21,7 +23,9 @@ INCLUDE modules.ink
 # speaker: enemy
 隣のゾヘブだ。気にするな。……いや、気にしてもらうことになるか
 # speaker: narrator
-ハミードの説明は短かった。ゾヘブが店を買い取りたいと言ってきた。ハミードは断った。そこでゾヘブが賭けを持ちかけた。
+ハミードの説明は短かった。
+# speaker: enemy
+こいつが、この店を売れと言ってきた。断った。そうしたら、賭けを持ちかけてきた
 # speaker: gt_zoheb
 一時間以内に、外国の観光客がアタルを買えば、俺は一年手を引く。買わなきゃ、爺さんは店を売る。観光客が買うのは携帯のケースだけさ
 # speaker: heroine
@@ -70,7 +74,9 @@ INCLUDE modules.ink
 # speaker: gt_zoheb
 出た、昔話
 # speaker: narrator
-ハミードは顎で、路地の先の階段を指した。千八百五十七年の後、あのモスクに何が起きたか。
+ハミードは顎で、路地の先の階段を指した。
+# speaker: enemy
+千八百五十七年の後、あのモスクに何が起きたか。知ってるか
 -> quiz(2) ->
 # background: gt_bg_delhi_jama_masjid
 { quiz_correct:
@@ -101,7 +107,9 @@ INCLUDE modules.ink
 # speaker: narrator
 ゾヘブは答えなかった。答えを知らない顔だった。
 # speaker: narrator
-店の奥で、ハミードが古い帳面をめくっている。断食月の夕方には、通り中がモスクからの合図を待っていた。親父はその直前に、礼拝へ向かう男たちにアタルを売った。そんな話を、独り言のように続けていた。
+店の奥で、ハミードが古い帳面をめくっている。独り言のように、話を続けていた。
+# speaker: enemy
+断食月の夕方にはな、通り中がモスクからの合図を待っていた。親父はその直前に、礼拝へ向かう男たちにアタルを売った
 -> quiz(3) ->
 # background: gt_bg_delhi_jama_masjid
 { quiz_correct:
@@ -125,7 +133,9 @@ INCLUDE modules.ink
 # speaker: heroine
 お店のことは、賭けじゃなくて、息子さんと話して決めてほしいんです。ゾヘブさんを通さずに、直接
 # speaker: narrator
-老人の目が、隣の若者に向いた。ゾヘブは逃げなかった。小さくうなずいて、全部を認めた。
+老人の目が、隣の若者に向いた。ゾヘブは逃げなかった。
+# speaker: gt_zoheb
+……全部、アサドさんに頼まれたことだよ。爺さん
 # speaker: enemy
 # reaction: enemy,anger
 ……アサドめ。言いたいことがあるなら、自分の口で電話をよこせばいい。隣の若造を使うな
@@ -143,7 +153,9 @@ INCLUDE modules.ink
     話はまた覚えればいい。香りの方は、もう覚えたろう
 }
 # speaker: narrator
-代金を出すと、ハミードは一ルピーもまけなかった。値引きは同情だから、だそうだ。
+代金を出すと、ハミードは一ルピーもまけなかった。
+# speaker: enemy
+値引きは、同情だからな
 # speaker: narrator
 店を出るとき、背中で電話のボタンを押す音がした。ゆっくり、一つずつ。ゾヘブは自分の店に戻り、充電器の列を、意味もなく並べ直していた。
 # speaker: heroine
