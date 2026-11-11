@@ -1,6 +1,6 @@
 import type { ChoiceDisplay } from "../../domain/scene-effects";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { getCityContent, dateDestinations, dialogueExpressions, dialogueReactions, presentation, storyState } from "../../content";
+import { getCityContent, dateDestinations, dialogueExpressions, dialogueReactions, storyState } from "../../content";
 import type { DateDefinition } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
@@ -206,14 +206,7 @@ export function RomanceScene({
         <DialogueWindowHead
           narration={narration}
           cutIn={nameCut}
-          speaker={showsSpeakerPlate(frame) && <>
-            {speaker}
-            {frame.speaker === "heroine" && frame.emotion !== "neutral" && (
-              <span className="emotion">
-                {presentation.emotions[frame.emotion]}
-              </span>
-            )}
-          </>}
+          speaker={showsSpeakerPlate(frame) && speaker}
           controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
         />
         <div ref={dialogueRef} className="vn-window-body">

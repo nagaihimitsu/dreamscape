@@ -397,11 +397,6 @@ footer span {
 .speaker-dot.shy {
   background: #b4867c;
 }
-.emotion {
-  font-size: 10px;
-  color: var(--muted);
-  margin-left: 5px;
-}
 .dialogue-text {
   font-family: "Noto Serif JP", serif;
   font-size: 19px;
