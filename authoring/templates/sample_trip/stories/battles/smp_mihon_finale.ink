@@ -79,4 +79,6 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 ハンナが図面を丸めると、塔の上でトーマが小さく手を振った。
+# speaker: smp_mihon_toma
+「鐘の音、上まで届きましたよ。また鳴らしに来てください」
 -> END

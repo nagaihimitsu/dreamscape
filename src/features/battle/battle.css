@@ -992,7 +992,7 @@
   .battle-reveal :is(.battle-reveal-zoom, .battle-reveal-region) { animation: none; }
 }
 
-/* A normal battle's opening (data-enemy-intro, BattleScreen): the opponent's heading, hidden
+/* A normal battle's opening (data-enemy-intro, BattleScreen; also a titled person's first line): the opponent's heading, hidden
    during the talk, shows for a moment as a name plate (role, name and, when written, a quote) on
    the slate of the dialogue window, centred just above the line the characters keep clear of
    the window (their bodies, not their faces). It is laid over the scene (no reflow), takes no

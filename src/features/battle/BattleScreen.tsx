@@ -342,9 +342,21 @@ export function BattleScreen({
   const [introOver, setIntroOver] = useState(false);
   // (An episode's title card over the opening holds it: the plate comes once the card has gone.)
   const enemyIntro = !introHeld && !introOver && introStoryState !== null && isDialogue && active.storyState === introStoryState;
+  // A person of progression/story.json with a `titleJa` comes in on the same plate (their role and name) on
+  // their first own line in this screen (not on a phone or a letter), once per person, after the opponent's plate.
+  const titledSpeaker = isDialogue && frame?.speaker === "person" && !frame.phone && !frame.letter
+    ? storyState.people.find((item) => item.id === frame.speakerPersonId && item.titleJa) : undefined;
+  const [platedPeople, setPlatedPeople] = useState<readonly string[]>([]);
+  const [personPlate, setPersonPlate] = useState<{ id: string; titleJa: string; nameJa: string; storyState: string }>();
+  if (titledSpeaker?.titleJa && !introHeld && !enemyIntro && !platedPeople.includes(titledSpeaker.id)) {
+    setPlatedPeople([...platedPeople, titledSpeaker.id]);
+    setPersonPlate({ id: titledSpeaker.id, titleJa: titledSpeaker.titleJa, nameJa: titledSpeaker.nameJa, storyState: active.storyState });
+  }
+  const personIntro = personPlate && isDialogue && active.storyState === personPlate.storyState ? personPlate : undefined;
+  const nameplateKey = enemyIntro ? "enemy" : personIntro ? `person:${personIntro.id}` : null;
   useEffect(() => {
-    if (!enemyIntro) return;
-    const end = () => setIntroOver(true);
+    if (!nameplateKey) return;
+    const end = () => (nameplateKey === "enemy" ? setIntroOver(true) : setPersonPlate(undefined));
     const onVisibility = () => { if (document.hidden) end(); };
     const timer = window.setTimeout(end, ENEMY_INTRO_MS);
     document.addEventListener("pointerdown", end, true);
@@ -356,7 +368,7 @@ export function BattleScreen({
       document.removeEventListener("keydown", end, true);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [enemyIntro]);
+  }, [nameplateKey]);
   const isResult = active.phase === "result";
   /** The answer whose explanation shows (its verdict heads the reading area). */
   const verdict = active.phase === "feedback" ? answer : undefined;
@@ -389,7 +401,7 @@ export function BattleScreen({
       // An ordinary quiz's wrong answer, saved in this screen, plays no stamp: its card gives a small shake (battle.css).
       data-answer-missed={active.phase === "feedback" && !!answer && !answer.correct && !isSpecial && animatedAnswer === answerKey || undefined}
       data-reduce-motion={reduceMotion || undefined}
-      data-enemy-intro={enemyIntro || undefined}
+      data-enemy-intro={enemyIntro || !!personIntro || undefined}
       data-dialogue-hidden={isDialogue && windowVisibility.hidden || undefined}
       data-quiet={staging?.quiet}
       {...sceneTap.props}
@@ -427,13 +439,18 @@ export function BattleScreen({
         data-testid={isDialogue ? "scene-picture" : undefined}
       >
         {/* The opponent's heading above the quiz card; at a normal battle's opening, its name plate
-            (data-enemy-intro; the quote shows only there). */}
+            (data-enemy-intro; the quote shows only there), or a titled person's on their first line. */}
         <div className="battle-enemy-info">
-          <p className="eyebrow">{battle.titleJa}</p>
-          <p className="enemy-title">{battle.enemyTitleJa}</p>
-          <h2>{battle.enemyNameJa}</h2>
-          <p className="enemy-detail">{battle.enemyDescriptionJa}</p>
-          {battle.enemyQuoteJa && <p className="enemy-quote">{battle.enemyQuoteJa}</p>}
+          {personIntro ? <>
+            <p className="enemy-title">{personIntro.titleJa}</p>
+            <h2>{personIntro.nameJa}</h2>
+          </> : <>
+            <p className="eyebrow">{battle.titleJa}</p>
+            <p className="enemy-title">{battle.enemyTitleJa}</p>
+            <h2>{battle.enemyNameJa}</h2>
+            <p className="enemy-detail">{battle.enemyDescriptionJa}</p>
+            {battle.enemyQuoteJa && <p className="enemy-quote">{battle.enemyQuoteJa}</p>}
+          </>}
         </div>
         <div className="battle-characters">
           {isDialogue && (
