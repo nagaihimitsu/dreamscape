@@ -106,7 +106,7 @@ test("the sample journey plays from a new journey through its city finale and ep
   expect(await readSave(page, JOURNEY)).toMatchObject({ currentCityId: route.city.id, ap: 0 });
   await expect(page.getByLabel("残り0AP")).toBeVisible();
   // The city's free-time backdrop (cities/<city>.json backdropAssetId): content:build derives its reduced copy from
-  // the photo. B案's screen draws a map-like pattern instead; the previous screen (MapListFreeTime) shows this copy.
+  // the photo, and the free-time screen draws this copy behind its cards (FreeTimeBackdrop).
   const backdropId = generated<{ backdropAssetId?: string }>(`cities/${route.city.id}.json`).backdropAssetId;
   expect(backdropId, "the sample city's backdropAssetId").toBeDefined();
   const backdrop = await page.evaluate(async (src) => {

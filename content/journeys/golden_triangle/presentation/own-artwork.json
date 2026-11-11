@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "artworks": [
+    {
+      "noteJa": "Dreamscape のために作者が描いた、デリーの移動画面の背景（自作の絵）",
+      "paths": [
+        "assets/backdrops/delhi-free-time.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、アーグラの移動画面の背景（自作の絵）",
+      "paths": [
+        "assets/backdrops/agra-free-time.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、ジャイプールの移動画面の背景（自作の絵）",
+      "paths": [
+        "assets/backdrops/jaipur-free-time.webp"
+      ]
+    }
+  ]
+}

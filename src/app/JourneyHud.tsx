@@ -30,7 +30,7 @@ function closeWaitMenu() {
 }
 
 /**
- * What ⚙設定's panel opens; 写真の出典 only while free time shows photo cards, 画像の出典 only while a
+ * What ⚙設定's panel opens; 写真の出典 only while free time shows photos (cards, a backdrop photo), 画像の出典 only while a
  * story scene shows a registered photo (its credits: the scene shows no 出典 of its own).
  */
 type MenuActions = {
@@ -136,7 +136,7 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
 
 /**
  * ⚙設定 (U2, U24): a disclosure button with its small panel of セーブ, ロード,
- * 旅の記録, 英語ノート, 写真の出典 (free time's photo cards) or 画像の出典 (a story
+ * 旅の記録, 英語ノート, 写真の出典 (free time's photos) or 画像の出典 (a story
  * scene's photo) and ゲームの設定 (U28) right under the header (APG Disclosure,
  * not an ARIA menu: ordinary buttons, and Tab works as everywhere else). Opening
  * moves the focus to セーブ (ArrowUp/ArrowDown also move between the items); Esc closes and

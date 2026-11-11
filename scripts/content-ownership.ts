@@ -152,10 +152,10 @@ const IMAGE_FIELDS: Partial<Record<MergedKind, Record<string, (entry: Entry) => 
 
 /**
  * Every served image the loaded content names, with the layer file that
- * names it: catalog image fields and each manifest's title art. Values that
- * are not strings are left to the schemas.
+ * names it: catalog image fields, each manifest's title art and each city's
+ * own-artwork backdrop. Values that are not strings are left to the schemas.
  */
-export function imageReferences(sources: Pick<ContentSources, "catalogs" | "manifests">): ImageReference[] {
+export function imageReferences(sources: Pick<ContentSources, "catalogs" | "manifests" | "cities">): ImageReference[] {
   const images: ImageReference[] = [];
   const add = (file: string, label: string, pairs: [string, unknown][]) => {
     for (const [field, value] of pairs) if (typeof value === "string") images.push({ file, label, field, path: value });
@@ -178,6 +178,8 @@ export function imageReferences(sources: Pick<ContentSources, "catalogs" | "mani
   }
   for (const manifest of sources.manifests)
     if (isObject(manifest.data.titleArt)) add(manifest.file, "", [["titleArt.imagePath", manifest.data.titleArt.imagePath]]);
+  for (const city of sources.cities)
+    if (isObject(city.data)) add(city.file, "", [["backdropImagePath", city.data.backdropImagePath]]);
   return images;
 }
 
@@ -194,8 +196,9 @@ export function imageReferences(sources: Pick<ContentSources, "catalogs" | "mani
  *   defined in the same layer or in the core layer; the core layer may refer
  *   only to core content.
  * - Images (tourism images, backgrounds, item icons, character images, a
- *   manifest's title art) are served from the journey's own public/ folder or
- *   the root public/; the core layer uses only the root public/.
+ *   manifest's title art, a city's own-artwork backdrop) are served from the
+ *   journey's own public/ folder or the root public/; the core layer uses only
+ *   the root public/.
  * Throws one error listing every violation with the files involved. Works on
  * the loaded sources only (no file is read).
  */

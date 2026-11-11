@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { getCityContent } from "../../content";
+import { getCityBackdropPath } from "../../content/city-backdrop";
 import { HudScreenTool } from "../../components/HudScreenTool";
 import { Icon } from "../../components/icons";
 import { getTourOffers } from "../../domain/tour";
 import { CityProgress } from "./CityProgress";
 import type { FreeTimeHubProps } from "./FreeTimeHub";
+import { FreeTimeBackdrop } from "./FreeTimeBackdrop";
 import { FreeTimeExtras } from "./FreeTimeExtras";
 import { SIDE_BY_SIDE_QUERY } from "./free-time-layout";
 import { PhotoCardPicker, type CardSwipe } from "./PhotoCardPicker";
@@ -26,13 +28,15 @@ import "./photo-free-time.css";
  * card is chosen first; the chosen card is the selection, and its card under the row has the waits, the event and the
  * way to choose and a small map, the booking, or the ways home; a swipe up on the chosen place's card departs with that
  * event and way), the rentals and the city's remaining actions. 「地図」 (today's expanded map and 「地点を名前で探す」)
- * sits in the header's second row while this screen shows (HudScreenTool). The background is a map-like pattern, not a map. Every
- * rule is today's: the shared selection (useTravelSelection) travels and rests through the same handlers.
+ * sits in the header's second row while this screen shows (HudScreenTool). The background is the city's backdrop when it has one
+ * (FreeTimeBackdrop: its own artwork or its photo, dimmed), else a map-like pattern, not a map. Every rule is today's: the
+ * shared selection (useTravelSelection) travels and rests through the same handlers.
  */
 export function PhotoCardFreeTime({
   game, onClaimRewards, onStartEpisode, onEpilogue, onBattle, onTravelEvent, onRent, onBookTour, onCancelTour, onTravelWait, onTravelSleep, nextCityName, onDepart,
 }: FreeTimeHubProps) {
   const { city } = getCityContent(game.currentCityId);
+  const backdrop = getCityBackdropPath(game.currentCityId) !== null;
   const api = useTravelSelection(game, { onTravelEvent, onTravelSleep }, { announce: photoCardAnnouncement });
   const { layout, arrangement } = useFreeTimeArrangement();
   const [mapOpen, setMapOpen] = useState(false);
@@ -99,8 +103,8 @@ export function PhotoCardFreeTime({
     : target?.kind === "place" ? <p>{current.nameJa}（現在地）には、ここで始められる予定はありません。</p>
     : <p>地図の印か「地点を名前で探す」で選ぶと、ここに行き先が出ます。</p>;
 
-  return <section className="free-time-hub photo-free-time" data-testid="free-time-hub" ref={layout}>
-    <div className="photo-backdrop" aria-hidden="true" />
+  return <section className={`free-time-hub photo-free-time${backdrop ? " has-backdrop" : ""}`} data-testid="free-time-hub" ref={layout}>
+    {backdrop ? <FreeTimeBackdrop cityId={game.currentCityId} /> : <div className="photo-backdrop" aria-hidden="true" />}
     {/* The screen's name for readers and for the focus after a screen change (the row shows the rest). */}
     <h1 className="sr-only" tabIndex={-1}>{city.nameJa}の行き先</h1>
     <HudScreenTool>

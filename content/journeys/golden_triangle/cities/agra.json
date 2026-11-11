@@ -16,5 +16,6 @@
     "agra_itimad_tomb"
   ],
   "productionStatus": "complete",
-  "arrivalStoryId": "places/gt_agra_hotel_hub.gt_agra_arrival"
+  "arrivalStoryId": "places/gt_agra_hotel_hub.gt_agra_arrival",
+  "backdropImagePath": "assets/backdrops/agra-free-time.webp"
 }

@@ -15,7 +15,7 @@ import { displayPath, journeyFolderPath, parseCatalog as parseSourceCatalog, par
 import { DEFAULT_BACKGROUND_ID } from "../src/content/default-background";
 import { authoringProfileOf } from "./journey-authoring";
 import { checkContentOwnership } from "./content-ownership";
-import { checkImageRights } from "./image-rights";
+import { checkImageRights, OWN_ARTWORK_KIND, ownArtworkByLayer, servingLayer } from "./image-rights";
 import { contentWarnings, journeyContents, unusedWordMeanings, type ContentWarning } from "./content-report";
 import { characterCatalogSchema } from "../src/content/character-assets";
 import { encounterCatalogInputSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
@@ -490,6 +490,29 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     if (item.backdropAssetId && !tourism.assets.some((asset) => asset.id === item.backdropAssetId))
       throw new Error(`Unknown city backdrop asset: ${displayPath(root, sources.cities[index].file)} backdropAssetId ` +
         `"${item.backdropAssetId}" is not an asset of tourism/catalog.json; use the ID of a registered tourism photo or remove the field`);
+  });
+  // Or the backdrop is artwork made for Dreamscape (backdropImagePath): an image the city's own journey serves from its
+  // public/ folder and lists in its presentation/own-artwork.json (never credited, so never a tourism photo). One backdrop a city.
+  const ownArtwork = ownArtworkByLayer(sources).byLayer;
+  cities.forEach((item, index) => {
+    const imagePath = item.backdropImagePath;
+    if (imagePath === undefined) return;
+    const source = sources.cities[index];
+    const cityFile = displayPath(root, source.file);
+    const layer = sources.layers.find((entry) => entry.id === source.layer)!;
+    const where = `${cityFile} backdropImagePath "${imagePath}"`;
+    if (item.backdropAssetId !== undefined)
+      throw new Error(`都市の背景が2つあります：${cityFile} に backdropAssetId と backdropImagePath の両方があります。どちらか一方にしてください` +
+        `（City backdrop named twice: ${cityFile} sets both backdropAssetId and backdropImagePath）`);
+    const served = servedFile(publicFiles, imagePath);
+    const publicFolder = displayPath(root, path.join(layer.directory, "public"));
+    if (!served || servingLayer(sources, served) !== layer)
+      throw new Error(`都市の背景の絵がありません：${where} は ${publicFolder}/ にありません。同じ旅行編の public/ に置いてください` +
+        `（Missing city backdrop image: ${imagePath} is not served by ${publicFolder}/）`);
+    if (!ownArtwork.get(layer.id)?.has(path.posix.normalize(imagePath)))
+      throw new Error(`都市の背景の絵が自作の絵の一覧にありません：${where} を ${displayPath(root, path.join(layer.directory, OWN_ARTWORK_KIND))} に登録してください。` +
+        `出典のある写真なら、tourism/catalog.json に登録して backdropAssetId で指定します` +
+        `（City backdrop image is not listed as own artwork of its journey: ${imagePath}）`);
   });
   // A travel place's own card photo (photoAssetId) names a tourism asset in the same way.
   for (const { travel, travelFile } of travels)
