@@ -30,7 +30,7 @@ const localWords = (journeyId: string) => key(journeyId, LOCAL_WORDS_KEY);
 /** A save this version loads (Milan), a v13-shaped save, a newer one, damaged bytes. */
 const current = JSON.stringify(createGame("旅人", "小春"));
 const v13 = JSON.stringify({ ...createGame(), schemaVersion: 13, completedChapters: [] });
-const newer = JSON.stringify({ schemaVersion: 23, revision: 1 });
+const newer = JSON.stringify({ schemaVersion: 24, revision: 1 });
 const damaged = "{damaged-save";
 const notebook = JSON.stringify({ schemaVersion: 1, revision: 0, alwaysTranslate: false, revealed: {}, marks: {}, records: {}, openQuestion: null, openTopic: null });
 const draft = JSON.stringify({ kind: "journey_preparation", schemaVersion: 1, journeyId: "trip_b" });
@@ -124,7 +124,7 @@ describe("which old saved data can be removed", () => {
       { key: "dreamscape.journey.milano.save.v1.backup.1762500000000", noteJa: "退避したデータ（読み込めないデータ）", backedUpAt: 1762500000000 },
       { key: "dreamscape.journey.milano.save.v1.backup.1762500000000.1", noteJa: "退避したデータ（バージョン13の旧版のセーブ）", backedUpAt: 1762500000000 },
     ]);
-    expect(items[1].keys[0].noteJa).toBe("退避したデータ（新しい版（バージョン23）のセーブ）");
+    expect(items[1].keys[0].noteJa).toBe("退避したデータ（新しい版（バージョン24）のセーブ）");
     expect(items[0].impactJa).toBe("読み込めなかったセーブを、新しく始める前に退避したものです。ゲームはバックアップを読み込みません。消去すると元のデータは取り出せなくなります。今のセーブと英語ノートは消えません。");
     // Only backups that load in this version: nothing to list.
     expect(list({ ...kept, [backup("milano", "1")]: current })).toEqual([]);

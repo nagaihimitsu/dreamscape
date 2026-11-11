@@ -3,7 +3,7 @@
 // offers the same. The rest is sleepAtHotel (the same action as 「休む」), and the same night never rests twice.
 import { afterEach, describe, expect, it } from "vitest";
 import { getCityContent } from "../content";
-import { completedCity, newJourney } from "../dev/scenario-builders";
+import { cityStart, completedCity, finishEpisode, newJourney } from "../dev/scenario-builders";
 import { installTourTestCity, testTour } from "../dev/test-tours";
 import { leaveForNextCity } from "./city-travel";
 import { dayEndRest, getDayEnd, nightLineJa, todayRoute } from "./day-end";
@@ -160,5 +160,32 @@ describe("today's route and the night's line", () => {
     expect([1, 2, 3, 4, 7].map((day) => nightLineJa(lines, day))).toEqual(["一つ目", "二つ目", "三つ目", "一つ目", "一つ目"]);
     expect(nightLineJa(undefined, 1)).toBeNull();
     expect(nightLineJa([], 3)).toBeNull();
+  });
+});
+
+// Today's headlines (save v23; 2026-11-11 user decision): the night lists the clear titles of the episodes completed today.
+describe("today's headlines", () => {
+  it("are written as episodes complete, in order, and emptied by the night", () => {
+    let state = cityStart("milano");
+    expect(state.travel.todayEpisodeIds).toEqual([]);
+    state = finishEpisode(state, "milano_duomo_episode");
+    state = finishEpisode(state, "milano_galleria_episode");
+    // completedEpisodeIds grows at its end: the order the episodes were completed in.
+    expect(state.completedEpisodeIds).toEqual(["milano_duomo_episode", "milano_galleria_episode"]);
+    expect(state.travel.todayEpisodeIds).toEqual(["milano_duomo_episode", "milano_galleria_episode"]);
+    const late = { ...state, travel: { ...state.travel, minute: DAY_END } };
+    const way = dayEndRest(late)!;
+    const morning = sleepAtHotel(late, way.mode, late.revision, way.viaPlaceId ?? null);
+    expect(morning.travel).toMatchObject({ day: state.travel.day + 1, todayEpisodeIds: [] });
+    expect(morning.completedEpisodeIds).toEqual(state.completedEpisodeIds);
+  });
+
+  it("start empty in the next city", () => {
+    const cleared = completedCity("delhi");
+    const headlines = cleared.completedEpisodeIds.slice(-1);
+    const arrived = leaveForNextCity({ ...cleared, travel: { ...cleared.travel, todayEpisodeIds: headlines } });
+    expect(arrived.currentCityId).toBe("agra");
+    expect(arrived.travel.todayEpisodeIds).toEqual([]);
+    expect(arrived.completedEpisodeIds).toEqual(cleared.completedEpisodeIds);
   });
 });

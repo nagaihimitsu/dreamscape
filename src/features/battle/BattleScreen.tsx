@@ -118,6 +118,8 @@ interface Props {
   reduceMotion: boolean;
   /** 「英語を読み上げるボタンを出す」 is on and this browser can read aloud: a speaker button by each English text (ReadAloud.tsx). */
   readAloud?: boolean;
+  /** An episode's title card waits or shows over the opening (GameApp's useJourneyMoments): the name plate comes after it. */
+  introHeld?: boolean;
   onSpeed: (speed: number) => void;
   onAdvance: () => void;
   /** The shown choices of a battle's conversation, and choosing one. */
@@ -146,6 +148,7 @@ export function BattleScreen({
   speed,
   reduceMotion,
   readAloud = false,
+  introHeld = false,
   autoAdvanceEnabled = false,
   readSkip,
   onAdvance,
@@ -334,7 +337,8 @@ export function BattleScreen({
   const [introStoryState] = useState(() =>
     !battle.reasoning && active.phase === "dialogue" && active.answers.length === 0 && active.turns === 0 ? active.storyState : null);
   const [introOver, setIntroOver] = useState(false);
-  const enemyIntro = !introOver && introStoryState !== null && isDialogue && active.storyState === introStoryState;
+  // (An episode's title card over the opening holds it: the plate comes once the card has gone.)
+  const enemyIntro = !introHeld && !introOver && introStoryState !== null && isDialogue && active.storyState === introStoryState;
   useEffect(() => {
     if (!enemyIntro) return;
     const end = () => setIntroOver(true);

@@ -38,6 +38,10 @@ export function validateTravelState(state: GameState): void {
   // Today's route (moveToPlace): places of this city (a tour's included), never the same place twice in a row.
   if (travel.todayPlaceIds.some((id, index) => !cityTravel.places.some((place) => place.id === id) || travel.todayPlaceIds[index - 1] === id))
     throw new Error("今日の行き先の記録が一致しません。");
+  // Today's headlines (recordEpisodes): completed episodes of this city (each once: the schema refuses a repeat).
+  if (travel.todayEpisodeIds.some((id) => !state.completedEpisodeIds.includes(id) ||
+      !episodes.some((episode) => episode.id === id && episode.cityId === state.currentCityId)))
+    throw new Error("今日の見出しの記録が一致しません。");
   const returnMinute = travel.activeEvent?.endMinute ?? travel.minute;
   const requiredFare = touring ? 0 : minimumHomeFare(getUsableRoutes(state), placeId, travel.hotelPlaceId, returnMinute);
   if (requiredFare === undefined || travel.returnReserve < requiredFare || (touring && travel.returnReserve !== 0))

@@ -310,10 +310,10 @@ function moveTourLeg(state: GameState): GameState {
   return { ...state, travel: { ...state.travel, ...moveToPlace(state.travel, leg.toPlaceId), minute: state.travel.minute + leg.minutes } };
 }
 
-/** The night (the hotel's main part): the next day's morning (decision 44: night until waking), its route still empty. */
+/** The night (the hotel's main part): the next day's morning (decision 44: night until waking), its route and headlines still empty. */
 function sleep(state: GameState): GameState {
   const calendar = state.travel.calendar;
-  return { ...state, travel: { ...state.travel, day: state.travel.day + 1, minute: DAY_START, todayPlaceIds: [],
+  return { ...state, travel: { ...state.travel, day: state.travel.day + 1, minute: DAY_START, todayPlaceIds: [], todayEpisodeIds: [],
     ...(calendar ? { calendar: { ...calendar, journeyDay: calendar.journeyDay + 1 } } : {}) } };
 }
 

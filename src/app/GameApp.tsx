@@ -18,7 +18,7 @@ import { getDayEnd } from "../domain/day-end";
 import { rentTransport } from "../domain/transport";
 import { bookTour, cancelTourBooking, runningTour, tourLegUnderway, tourSceneBadge } from "../domain/tour";
 import { getTransportMode } from "../content/transport";
-import { getPlayerDeparture } from "../domain/city-travel";
+import { getPlayerDeparture, isJourneyComplete } from "../domain/city-travel";
 import { closeRomanceEnding, openOccasion } from "../domain/occasion";
 import { resultExitLabel, screenFor } from "../domain/screen";
 import {
@@ -60,6 +60,7 @@ import { AlbumDialog } from "../features/journey/AlbumDialog";
 import { TitleNameFields } from "../features/journey/TitleNameFields";
 import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
+import { useJourneyMoments } from "./useJourneyMoments";
 import { JourneyHud } from "./JourneyHud";
 import { hudView, lineOnScreen } from "./hud-view";
 import { albumImageAsset } from "../content/photo-choice";
@@ -167,8 +168,11 @@ export function GameApp({
   useEffect(() => { if (!showChanges) setShownChange(null); }, [showChanges]);
   // The travel art of a then: move (set once useTravelEffects is ready below).
   const playMoveRef = useRef<((previous: GameState, next: GameState) => void) | null>(null);
+  // The journey's moments a saved change starts (useJourneyMoments, set once it is ready below).
+  const momentsRef = useRef<((previous: GameState, next: GameState) => void) | null>(null);
   const session = useGameSession(storage, displaySettings.value.autoSave, (previous, next) => {
     playMoveRef.current?.(previous, next);
+    momentsRef.current?.(previous, next);
     // The action that ended a tour (tour stage 2a) says so in free time.
     if (previous.tour && !next.tour && next.completedTourIds.length > previous.completedTourIds.length) session.setNotice("ツアーが終わりました。");
     if (!showChangesRef.current) return;
@@ -278,6 +282,7 @@ export function GameApp({
   function begin(event: FormEvent) {
     event.preventDefault();
     freeTimeReturn.current = null;
+    moments.restart(false);
     session.begin(nameOrDefault(player, balance.defaultPlayerName), nameOrDefault(heroine, balance.defaultHeroineName), journeyId);
   }
   function requestDelete() {
@@ -297,6 +302,8 @@ export function GameApp({
     // Debug's return point belonged to the play before the load, and so did a night screen seen tonight.
     freeTimeReturn.current = null;
     nightShown.current = null;
+    // The moments waiting belonged to the play before; the loaded game shows its recap.
+    moments.restart(true);
     // A load can bring back the same date run (the same scene key): its earlier change is not shown again.
     setShownChange(null);
     // A load replaces the screen under the finger like a scene start, also when the same scene
@@ -314,6 +321,7 @@ export function GameApp({
     // A second press, or a scene that ended by itself meanwhile (auto-advance), finds free time: nothing to undo.
     if (!point || !current || !canReturnToFreeTime(point, current, journeyId, debugOn)) return;
     if (!session.replace(freeTimeReturnState(point, current))) return;
+    moments.restart(false);
     // As after a load: the undone scene's relationship change goes, the clue book closes, and the
     // free-time screen that appears under the finger takes no tap for a moment.
     setShownChange(null);
@@ -356,6 +364,10 @@ export function GameApp({
   // free time opens at the top of the page, not at the scroll position of the screen before it
   // (the title, scrolled to 「旅をはじめる」 on a short phone).
   const screen = nightScreen && game ? `night:${game.currentCityId}` : screenOnShow(game, { sceneEpoch, showRomanceEnding });
+  // The title card, the recap, the packing and the credit roll (2026-11-11). A game opened on its save (not Debug) is resumed.
+  const moments = useJourneyMoments({ game, screen, resumed: !isDebug && loaded.status === "loaded",
+    reduceMotion: displaySettings.value.reduceMotion, effectPlaying: travelEffectPlaying });
+  momentsRef.current = moments.committed;
   const shownScreen = useRef(screen);
   useEffect(() => {
     if (shownScreen.current === screen) return;
@@ -526,6 +538,7 @@ export function GameApp({
             </button>
           </div>
         )}
+        {moments.recapCard}
         {/* Only where a line can teach a word: a story scene of a build with words of the country. */}
         {conversationActive && localWords.length > 0 && <LocalWordNotice notice={learnedWords.notice} />}
         {!game ? (
@@ -590,7 +603,7 @@ export function GameApp({
               <button type="button" className="text-button credits-entry" onClick={() => setCreditsOpen(true)}>出典・権利の一覧</button>
             </section>
           </>
-        ) : activeEncounter && currentEncounter ? (
+        ) : moments.packingScene ? moments.packingScene : activeEncounter && currentEncounter ? (
           <EncounterScreen
             autoAdvanceEnabled={displaySettings.value.autoAdvance}
             readSkip={readLines}
@@ -719,6 +732,7 @@ export function GameApp({
             key={`${game.activeBattle.runId}-${sceneEpoch}`}
             reduceMotion={displaySettings.value.reduceMotion}
             readAloud={readAloud}
+            introHeld={moments.titleHolding}
             learning={learning}
             onEnglish={openEnglish}
             game={game}
@@ -861,6 +875,8 @@ export function GameApp({
         </p>
         <CityRecords game={game} />
         <MetPeople game={game} />
+        {isJourneyComplete(game) && <button type="button" className="secondary" onClick={() => { setRecordsOpen(false); moments.openEndRoll(); }}>
+          エンドロールを見る</button>}
       </Modal>}
       {albumOpen && game && <AlbumDialog album={game.album} currentCityId={game.currentCityId} onClose={() => setAlbumOpen(false)} />}
       {photoCreditsOpen && creditPhotos.length > 0 && <PhotoCredits photos={creditPhotos} onClose={() => setPhotoCreditsOpen(false)} />}
@@ -1096,6 +1112,7 @@ export function GameApp({
       {oldDataOpen && oldDataStorage && <OldDataCleanup storage={oldDataStorage}
         context={oldDataContext(journeyId)} onClose={() => setOldDataOpen(false)} />}
       {travelEffects}
+      {moments.overlays}
     </div>
   );
 }

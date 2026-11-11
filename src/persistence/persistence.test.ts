@@ -1,7 +1,7 @@
 import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it, vi } from "vitest";
 import { advanceDate, chooseDate, createGame, startDate, validateGameState, type GameState } from "../domain";
-import { cityStart, completedCity } from "../dev/scenario-builders";
+import { cityStart, completedCity, finishEpisode } from "../dev/scenario-builders";
 import { advanceEncounter, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter } from "../domain/encounter";
 import { beginTravelEvent, finishTravelEventIfComplete } from "../domain/travel-game";
 import { meetEncounter } from "../../tests/fixtures/encounter-moment";
@@ -220,21 +220,21 @@ describe("local save persistence", () => {
   });
 });
 
-describe("save format v22 (docs/07: one format per version, no migration)", () => {
+describe("save format v23 (docs/07: one format per version, no migration)", () => {
   // A save as v13 wrote it: the same shape plus the completedChapters record v14 removed.
   const v13Save = () => JSON.stringify({ ...createGame(), schemaVersion: 13, completedChapters: ["milano"] });
 
   it("is the version every new game is written in", () => {
-    expect(SUPPORTED_SAVE_VERSION).toBe(22);
-    expect(createGame().schemaVersion).toBe(22);
+    expect(SUPPORTED_SAVE_VERSION).toBe(23);
+    expect(createGame().schemaVersion).toBe(23);
   });
 
-  it("round-trips a v22 save with a date in progress", () => {
+  it("round-trips a v23 save with a date in progress", () => {
     const storage = new MemoryStorage();
     const state = startDate(seedCurrentFreeTime(createGame("旅人", "小春")), "milano_cafe_01");
     expect(state.activeDate).not.toBeNull();
     expect(saveGame(storage, state)).toEqual({ ok: true });
-    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 22 });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 23 });
     expect(loadGame(storage)).toEqual({ status: "loaded", state });
   });
 
@@ -247,7 +247,7 @@ describe("save format v22 (docs/07: one format per version, no migration)", () =
     expect(moved.travel.todayPlaceIds).toEqual([moved.travel.currentPlaceId]);
     const storage = new MemoryStorage();
     expect(saveGame(storage, moved)).toEqual({ ok: true });
-    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 22, travel: { todayPlaceIds: moved.travel.todayPlaceIds } });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 23, travel: { todayPlaceIds: moved.travel.todayPlaceIds } });
     expect(loadGame(storage)).toEqual({ status: "loaded", state: moved });
     // A place of another city, or the same place twice in a row: refused.
     const route = (todayPlaceIds: string[]) => ({ ...fresh, travel: { ...fresh.travel, todayPlaceIds } });
@@ -261,6 +261,34 @@ describe("save format v22 (docs/07: one format per version, no migration)", () =
     const slot = new MemoryStorage();
     slot.setItem(SAVE_KEY, raw);
     expect(loadGame(slot)).toMatchObject({ status: "invalid", kind: "corrupt", raw });
+    expect(slot.getItem(SAVE_KEY)).toBe(raw);
+  });
+
+  it("writes today's headlines of v23 (the night's recap): empty in a new game, the episodes completed today, and required", () => {
+    const fresh = createGame();
+    expect(fresh.travel.todayEpisodeIds).toEqual([]);
+    // The Duomo's episode played to its end: today's headlines have it, and resume with it.
+    const done = finishEpisode(cityStart("milano"), "milano_duomo_episode");
+    expect(done.travel.todayEpisodeIds).toEqual(["milano_duomo_episode"]);
+    const storage = new MemoryStorage();
+    expect(saveGame(storage, done)).toEqual({ ok: true });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 23, travel: { todayEpisodeIds: ["milano_duomo_episode"] } });
+    expect(loadGame(storage)).toEqual({ status: "loaded", state: done });
+    // An episode not completed, an episode of another city (Delhi's, completed, in Agra), or the same episode twice: refused.
+    const headlines = (state: GameState, todayEpisodeIds: string[]) => ({ ...state, travel: { ...state.travel, todayEpisodeIds } });
+    expect(() => validateGameState(headlines(done, ["milano_galleria_episode"]))).toThrow("今日の見出しの記録が一致しません。");
+    const agra = cityStart("agra");
+    const delhiEpisode = agra.completedEpisodeIds[0];
+    expect(delhiEpisode).toBeDefined();
+    expect(() => validateGameState(headlines(agra, [delhiEpisode]))).toThrow("今日の見出しの記録が一致しません。");
+    expect(() => validateGameState(headlines(done, ["milano_duomo_episode", "milano_duomo_episode"]))).toThrow();
+    // A save of this version without the field: not an old version, unreadable, kept as it is.
+    const { todayEpisodeIds: _headlines, ...olderTravel } = fresh.travel;
+    const raw = JSON.stringify({ ...fresh, travel: olderTravel });
+    const slot = new MemoryStorage();
+    slot.setItem(SAVE_KEY, raw);
+    expect(loadGame(slot)).toMatchObject({ status: "invalid", kind: "corrupt", raw });
+    expect(saveGame(slot, createGame()).ok).toBe(false);
     expect(slot.getItem(SAVE_KEY)).toBe(raw);
   });
 
@@ -287,7 +315,7 @@ describe("save format v22 (docs/07: one format per version, no migration)", () =
     state = { ...state, travel: { ...state.travel, rideCounts: { tram: 2 } } };
     const storage = new MemoryStorage();
     expect(saveGame(storage, state)).toEqual({ ok: true });
-    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 22, seenEncounterIds: state.seenEncounterIds,
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 23, seenEncounterIds: state.seenEncounterIds,
       itemUses: state.itemUses, travel: { rideCounts: { tram: 2 } } });
     expect(loadGame(storage)).toEqual({ status: "loaded", state });
     // The shape development builds of v14 wrote before these records, with this version's number: not an old version, unreadable, kept as it is.
@@ -369,7 +397,7 @@ describe("save format v22 (docs/07: one format per version, no migration)", () =
     expect(fresh.completedTourIds).toEqual([]);
     const storage = new MemoryStorage();
     expect(saveGame(storage, fresh)).toEqual({ ok: true });
-    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 22, tour: null, completedTourIds: [] });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 23, tour: null, completedTourIds: [] });
     expect(loadGame(storage)).toEqual({ status: "loaded", state: fresh });
     // A record of the wrong shape, or of a tour no content has, is refused.
     expect(() => validateGameState({ ...fresh, tour: { status: "planned", tourId: "milano_tour_none", offerId: "web", pricePaid: 0, bookedDay: 1 } }))
@@ -396,7 +424,7 @@ describe("save format v22 (docs/07: one format per version, no migration)", () =
       placeId: "mihon_clock_tower", storyId: "places/smp_mihon_clock_tower.smp_mihon_date_tower_square" }] };
     const storage = new MemoryStorage();
     expect(saveGame(storage, state)).toEqual({ ok: true });
-    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 22, album: state.album });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 23, album: state.album });
     expect(loadGame(storage)).toEqual({ status: "loaded", state });
     // A photo this build cannot show (its image gone from the content): unreadable, kept as it is, never overwritten.
     const lost = JSON.stringify({ ...state, album: [{ ...photo, imageId: "smp_img_mihon_gone" }] });
@@ -431,16 +459,17 @@ describe("save format v22 (docs/07: one format per version, no migration)", () =
     expect(backups.map(([, value]) => value)).toEqual([raw]);
   });
 
-  it("reports a v14 to v21 save of any journey as an identified old version and keeps it byte-identical", () => {
+  it("reports a v14 to v22 save of any journey as an identified old version and keeps it byte-identical", () => {
     // v15 switched the Golden Triangle's in-city transport (modes, routes, the Agra inn); v16 is the unified events' stage 3
     // (place files, tag effects, the dates' Ink turn); v17 is stage 5 (a battle as one flow: its Ink turns and the choices it
     // applied); v18 is the tour (its records filled, Fatehpur Sikri reached only on a tour); v19 is one battle form only (the
     // battle in progress has no scene name); v20 is a tour's leg moments (a running tour at a leg, its narration and the
     // occasion's tour step); v21 is today's route (the night screen's map); v22 is the album (the photos the lines' # photo:
-    // took): a v14 to v21 save of every journey is old now (not migrated).
+    // took); v23 is today's headlines (the episodes completed today): a v14 to v22 save of every journey is old now (not migrated).
     for (const [journeyId, version] of [["milano", 14], ["golden_triangle", 14], ["milano", 15], ["golden_triangle", 15],
       ["milano", 16], ["golden_triangle", 16], ["milano", 17], ["golden_triangle", 17], ["milano", 18], ["golden_triangle", 18],
-      ["milano", 19], ["golden_triangle", 19], ["milano", 20], ["golden_triangle", 20], ["milano", 21], ["golden_triangle", 21]] as const) {
+      ["milano", 19], ["golden_triangle", 19], ["milano", 20], ["golden_triangle", 20], ["milano", 21], ["golden_triangle", 21],
+      ["milano", 22], ["golden_triangle", 22]] as const) {
       const storage = new MemoryStorage();
       const raw = JSON.stringify({ ...createGame(undefined, undefined, { journeyId }), schemaVersion: version });
       storage.setItem(SAVE_KEY, raw);
@@ -453,9 +482,9 @@ describe("save format v22 (docs/07: one format per version, no migration)", () =
     }
   });
 
-  it("leaves an unknown newer version (v23) unchanged", () => {
+  it("leaves an unknown newer version (v24) unchanged", () => {
     const storage = new MemoryStorage();
-    const raw = JSON.stringify({ ...createGame(), schemaVersion: 23 });
+    const raw = JSON.stringify({ ...createGame(), schemaVersion: 24 });
     storage.setItem(SAVE_KEY, raw);
     expect(loadGame(storage)).toMatchObject({ status: "invalid", kind: "newer", raw });
     expect(saveGame(storage, createGame()).ok).toBe(false);

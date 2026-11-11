@@ -13,7 +13,7 @@ import { activeBattleSchema, battleRecordSchema } from "./battle";
 import { albumSchema } from "./album-state";
 
 /** The only saved game format this build reads; older versions are not migrated. */
-export const GAME_STATE_VERSION = 22;
+export const GAME_STATE_VERSION = 23;
 
 const uniqueStrings = z
   .array(z.string().min(1))
@@ -96,6 +96,9 @@ const travelStateSchema = z.object({
   // Today's route (save v21; the night screen's map): the places the party moved to today, in order, written by the
   // moves (travel.ts moveToPlace); the day starts at the hotel. Emptied by the night and on departure.
   todayPlaceIds: z.array(stableContentId).max(TODAY_PLACES_MAX),
+  // Today's headlines (save v23; the night's recap): the episodes completed today, in the order they were completed, written
+  // where episodes are recorded (chapter.ts recordEpisodes). Emptied where todayPlaceIds is: by the night and on departure.
+  todayEpisodeIds: z.array(stableContentId).refine((items) => new Set(items).size === items.length),
 }).strict().superRefine((travel, context) => {
   if (travel.calendar && travel.calendar.journeyDay - travel.calendar.cityStartJourneyDay + 1 !== travel.day)
     context.addIssue({ code: "custom", message: "Travel day and journey calendar disagree", path: ["calendar"] });

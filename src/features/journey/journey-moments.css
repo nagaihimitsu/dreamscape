@@ -1,0 +1,246 @@
+/* The journey's moments (JourneyMoments.tsx, 2026-11-11): the title card, the recap of a resumed game, the packing and the
+   credit roll. Every animation stops under the game's 「演出を短縮する」 (.is-reduced / .is-still, read once by each moment)
+   and under prefers-reduced-motion. No card has a side accent line; parts are told apart by headings and grounds. */
+
+/* ── 話の始まりの題名の札 ── over the whole screen; the place's photo, darkened at its foot, the title large over it. */
+.episode-title-card {
+  position: fixed;
+  z-index: 1950;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  overflow: hidden;
+  background: #111a2f;
+  /* Takes every tap while it shows (a tap ends it); a swipe does not scroll the page under it. */
+  pointer-events: auto;
+  touch-action: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  animation: episode-title-card 2.4s ease both;
+}
+.episode-title-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The photo stays recognisable; the title's ground is the dark below (about 12:1 for --ds-on-slate). */
+  filter: brightness(0.5);
+}
+.episode-title-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(17, 26, 47, 0.65), rgba(17, 26, 47, 0.2) 70%);
+}
+.episode-title-text {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  max-width: min(560px, 100%);
+  color: var(--ds-on-slate);
+  text-align: center;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+  animation: episode-title-text 2.4s ease both;
+}
+.episode-title-place { font-size: 13px; font-weight: 600; letter-spacing: 0.16em; overflow-wrap: anywhere; }
+.episode-title-rule { width: 56px; height: 1px; background: var(--ds-gold); }
+.episode-title-name {
+  font-family: "Noto Serif JP", serif;
+  font-size: clamp(26px, 8.2vw, 44px);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+@keyframes episode-title-card { 0% { opacity: 0; } 12%, 84% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes episode-title-text {
+  0%, 10% { opacity: 0; transform: translateY(12px); }
+  34%, 100% { opacity: 1; transform: none; }
+}
+.episode-title-card.is-reduced, .episode-title-card.is-reduced .episode-title-text { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .episode-title-card, .episode-title-text { animation: none; }
+}
+
+/* ── 前回までのあらすじ ── a parchment card at the top of free time or the night screen, in the page's flow as the notices are. */
+.resume-recap {
+  width: calc(100% - 16px);
+  max-width: 680px;
+  margin: 8px auto;
+  padding: 10px 12px 12px;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 14px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  box-shadow: var(--ds-card-shadow);
+  animation: resume-recap-in var(--motion-fast) var(--ease-out);
+}
+@keyframes resume-recap-in { from { opacity: 0; transform: translateY(-6px); } }
+.reduce-motion .resume-recap { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .resume-recap { animation: none; }
+}
+.resume-recap-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.resume-recap-head > div { min-width: 0; }
+.resume-recap-title { margin: 0; font-size: 16px; line-height: 1.5; overflow-wrap: anywhere; }
+.resume-recap-when { margin: 0; color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }
+.resume-recap-close {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+.resume-recap-close:hover { background: var(--ds-parchment-2); }
+.resume-recap-close .icon { width: 16px; height: 16px; }
+.resume-recap-body { display: flex; gap: 12px; align-items: flex-start; margin-top: 8px; }
+.resume-recap-photo { flex: 0 0 min(38%, 160px); margin: 0; }
+.resume-recap-photo img { display: block; width: 100%; height: auto; max-height: 120px; object-fit: cover; border-radius: 8px; background: #26342e; }
+.resume-recap-photo figcaption { margin-top: 4px; font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; }
+.resume-recap-credit { color: var(--ds-ink-muted); }
+.resume-recap-credit a { display: inline-block; min-height: 24px; }
+.resume-recap-chapter { min-width: 0; }
+.resume-recap-city { margin: 0; color: var(--ds-ink-muted); font-size: 12px; }
+.resume-recap-chapter h3 { margin: 0; font-family: "Noto Serif JP", serif; font-size: 17px; line-height: 1.5; overflow-wrap: anywhere; }
+.resume-recap-chapter p:last-child { margin: 4px 0 0; font-size: 13px; line-height: 1.7; overflow-wrap: anywhere; }
+/* A narrow phone: the photo above the record, so the record keeps the card's width. */
+@media (max-width: 359px) {
+  .resume-recap-body { flex-direction: column; }
+  .resume-recap-photo { flex: none; width: 100%; }
+}
+/* Above the night screen (a fixed layer under the header), as a notice is. */
+.night-active > main > .resume-recap { position: relative; z-index: 16; }
+
+/* ── 荷造りの場面 ── over the whole screen in the parchment of the arrival's title card; the suitcase (drawn: a rounded case
+   with a handle) holds what goes along, what stays is set apart under it, dimmed. */
+.packing-scene {
+  position: fixed;
+  z-index: 1950;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: calc(24px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom));
+  /* A long list scrolls inside (a short phone held sideways); the page under it does not. A tap ends it. */
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #f4f1e6f5;
+  color: var(--ds-ink);
+  pointer-events: auto;
+  touch-action: pan-y;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  animation: packing-scene 4.2s ease both;
+}
+/* Centred in the screen; from its top when it does not fit (auto margins). */
+.packing-content { display: grid; justify-items: center; gap: 12px; width: min(360px, 100%); margin: auto; text-align: center; }
+.packing-eyebrow { color: var(--ds-ink-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.2em; }
+.packing-title { font-family: "Noto Serif JP", serif; font-size: clamp(22px, 6.4vw, 30px); font-weight: 500; letter-spacing: 0.08em; overflow-wrap: anywhere; }
+.packing-label { margin: 0 0 6px; color: var(--ds-ink-muted); font-size: 12px; font-weight: 600; overflow-wrap: anywhere; }
+.packing-case {
+  position: relative;
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px 14px 12px;
+  border: 2px solid var(--ds-slate-800);
+  border-radius: 18px;
+  background: #e9dcc1;
+  box-shadow: inset 0 -6px 0 rgba(43, 49, 64, 0.12), var(--ds-card-shadow);
+}
+.packing-case-handle {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  width: 64px;
+  height: 18px;
+  margin-left: -32px;
+  border: 2px solid var(--ds-slate-800);
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+}
+.packing-left { width: 100%; padding: 10px 14px; border-radius: 14px; background: rgba(255, 255, 255, 0.55); }
+.packing-left .packing-items { opacity: 0.75; }
+.packing-items { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 14px; margin: 0; padding: 0; list-style: none; }
+.packing-items li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  animation: packing-item 0.4s var(--ease-out) both;
+  animation-delay: calc(0.5s + var(--packing-index, 0) * 0.18s);
+}
+.packing-items img { flex: none; width: 32px; height: 32px; }
+.packing-next { margin-top: 6px; font-family: "Noto Serif JP", serif; font-size: 16px; letter-spacing: 0.08em; }
+@keyframes packing-scene { 0% { opacity: 0; } 8%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes packing-item { from { opacity: 0; transform: translateY(-10px); } }
+.packing-scene.is-reduced, .packing-scene.is-reduced .packing-items li { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .packing-scene, .packing-items li { animation: none; }
+}
+
+/* ── 旅の終わりのエンドロール ── a dialog over the whole screen at night's colour; the roll scrolls in its own area, the bar
+   with 「止める・続ける」 and 「閉じる」 stays at the foot within thumb reach. */
+dialog.modal.end-roll {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: hidden;
+  background: #111a2f;
+  color: var(--ds-on-slate);
+}
+dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
+.end-roll-scroller { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; cursor: pointer; }
+.end-roll.is-still .end-roll-scroller { cursor: auto; }
+.end-roll-scroller:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: -3px; }
+/* Rolling: the first lines start a third of the way down, the last names end mid-screen. */
+.end-roll-content { width: min(520px, 100%); margin: 0 auto; padding: 35dvh 20px 45dvh; text-align: center; }
+.end-roll.is-still .end-roll-content { padding: calc(24px + env(safe-area-inset-top)) 20px 24px; }
+.end-roll-eyebrow { color: var(--ds-on-slate-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.2em; }
+.end-roll .end-roll-title { margin: 8px 0 12px; font-size: clamp(24px, 7vw, 34px); line-height: 1.5; overflow-wrap: anywhere; }
+.end-roll-names { font-family: "Noto Serif JP", serif; font-size: 20px; letter-spacing: 0.08em; overflow-wrap: anywhere; }
+.end-roll-names span { color: var(--ds-on-slate-muted); font-size: 14px; }
+.end-roll-city { margin-top: 64px; }
+.end-roll.is-still .end-roll-city { margin-top: 40px; }
+.end-roll-city h3 { margin: 0 0 16px; font-family: "Noto Serif JP", serif; font-size: 22px; letter-spacing: 0.1em; overflow-wrap: anywhere; }
+.end-roll-label { margin: 18px 0 6px; color: var(--ds-on-slate-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.16em; }
+.end-roll-list { margin: 0; padding: 0; list-style: none; }
+.end-roll-list li { font-size: 16px; line-height: 1.9; overflow-wrap: anywhere; }
+.end-roll-photos { display: grid; gap: 18px; margin: 0; padding: 0; list-style: none; }
+.end-roll-photos figure { margin: 0; }
+.end-roll-photos img { display: block; width: 100%; height: auto; max-height: 46dvh; object-fit: cover; border-radius: 10px; background: #26342e; }
+.end-roll-photos figcaption { margin-top: 6px; font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+.end-roll-credit { color: var(--ds-on-slate-muted); font-size: 11px; }
+.end-roll-credit a { display: inline-block; min-height: 24px; color: var(--ds-on-slate); }
+.end-roll-last { margin-top: 72px; }
+.end-roll-bar {
+  flex: none;
+  display: flex;
+  gap: 10px;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  background: #0b1222;
+  border-top: 1px solid var(--ds-gold-hairline);
+}
+.end-roll-bar button { flex: 1 1 0; min-height: 48px; margin: 0; justify-content: center; text-align: center; }

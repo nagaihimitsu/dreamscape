@@ -593,7 +593,7 @@ test("from another journey, the cleanup lists that journey's own old data, and a
   // are never listed and are compared apart: the save must stay, everything else exactly as expected.
   const besidesGame = async () => {
     const { [saveKey("golden_triangle")]: game, [readLinesKey("golden_triangle")]: _read, ...rest } = await allStorage(page);
-    expect(game).toContain('"schemaVersion":22');
+    expect(game).toContain('"schemaVersion":23');
     return rest;
   };
   const before = await besidesGame();

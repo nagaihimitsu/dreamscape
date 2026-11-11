@@ -239,6 +239,30 @@
 }
 .today-route-mark.is-last { box-shadow: 0 0 0 2px #fff, 0 0 0 5px var(--ds-here), 0 2px 6px rgba(0, 0, 0, 0.35); }
 .night-recap .heroine-note { margin: 0; text-align: left; }
+/* Today's headlines (TodayHeadlines, save v23): the clear titles of the day's episodes above the route, in the serif of the
+   night's line, told apart by their heading (no side accent); hairlines of the moon's gold between them. */
+.today-headlines { width: 100%; }
+.today-headlines-title {
+  margin: 0 0 4px;
+  color: var(--ds-on-slate-muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.6;
+  text-align: center;
+}
+.today-headlines ol { margin: 0; padding: 0; list-style: none; }
+.today-headlines li {
+  padding: 4px 0;
+  color: var(--ds-on-slate);
+  font-family: "Noto Serif JP", serif;
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.today-headlines li + li { border-top: 1px solid var(--ds-gold-hairline); }
 /* A short landscape phone: the card (which cannot scroll) leaves its moon out to keep the route and line whole. */
 @media (max-height: 480px) {
   .night-rest.has-recap .night-rest-sky { display: none; }
