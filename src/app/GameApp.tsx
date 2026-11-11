@@ -570,9 +570,10 @@ export function GameApp({
                   ...(showEnemy ? { enemy: { emotion: enemy?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral"), mark: enemy?.mark, active: frame.speaker === "enemy" } } : {}),
                 };
               })(),
-              // A scene at no landmark (a date's, the hotel's, a trip's…; stage 4): its background photo's name, else the
-              // place the party is at; in a tour's car (its leg's narration begun, the move not yet: tour stage 3), the leg.
-              placeJa: encounterLandmark?.nameJa ?? encounterBackdrop?.nameJa ?? tourLegUnderway(game)?.labelJa ??
+              // A scene at no landmark (a date's, the hotel's, a trip's…; stage 4): in a tour's car (its leg's narration
+              // begun, the move not yet: tour stage 3) the leg, even over a road photo; else its background photo's name,
+              // else the place the party is at.
+              placeJa: encounterLandmark?.nameJa ?? tourLegUnderway(game)?.labelJa ?? encounterBackdrop?.nameJa ??
                 getCityContent(currentEncounter.cityId).travel.places.find((place) => place.id === game.travel.currentPlaceId)?.nameJa ??
                 getCityContent(currentEncounter.cityId).city.nameJa,
               background: activeEncounter.frame.background,
