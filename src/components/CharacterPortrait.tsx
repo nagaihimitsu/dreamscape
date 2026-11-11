@@ -69,6 +69,32 @@ export function CharacterPortrait({
   );
 }
 
+/**
+ * The character's face in a small round frame, beside a few words of hers by the quiz card (her
+ * whispered hint, her line on a right answer): the picture of her portrait in the scene's outfit,
+ * cropped to the head (character-portrait.css). Decorative: her name is written beside it.
+ */
+export function CharacterFace({ characterId, emotion, sceneId, cityId }: {
+  characterId: string;
+  emotion?: string;
+  sceneId?: string;
+  cityId?: string;
+}) {
+  const character = characters.find((item) => item.id === characterId);
+  const selection = useMemo(
+    () => character ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId }) : {},
+    [character, sceneId, cityId],
+  );
+  if (!character) return null;
+  const image = characterImage(character, { ...selection, emotion });
+  const neutral = characterImage(character, { ...selection, emotion: "neutral" });
+  return (
+    <span className="character-face" aria-hidden="true">
+      <CharacterImage key={image ?? "placeholder"} path={image} neutralPath={neutral} color={character.placeholderColor} />
+    </span>
+  );
+}
+
 function CharacterImage({ path, neutralPath, color, fallback, onImageError }: {
   path: string | null;
   neutralPath: string | null;

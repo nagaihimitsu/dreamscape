@@ -380,6 +380,17 @@ export const quizQuestionSchema = z
   })
   .strict();
 
+/**
+ * A battle's question: the heroine's optional lines by its quiz card (an encounter's quiz has no hint button
+ * and no explanation card, so its question has neither).
+ */
+export const battleQuestionSchema = quizQuestionSchema.extend({
+  /** The hint in her own words, shown in place of hintJa as her whisper. */
+  hintHeroineJa: japaneseText.optional(),
+  /** Her short line beside the explanation of a right answer. */
+  heroineCorrectJa: japaneseText.optional(),
+});
+
 export const quizSchema = z
   .object({
     schemaVersion: version,
@@ -388,7 +399,7 @@ export const quizSchema = z
     scope: z.literal("city_finale").optional(),
     cityId: id.optional(),
     englishLevel: z.enum(["A2", "B1", "B2"]),
-    questions: z.array(quizQuestionSchema).min(3).max(5),
+    questions: z.array(battleQuestionSchema).min(3).max(5),
   })
   .strict()
   .refine(

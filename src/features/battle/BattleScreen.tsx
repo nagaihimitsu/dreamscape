@@ -23,6 +23,7 @@ import { BattleRewards } from "../journey/BattleRewards";
 import { ReasoningPanel } from "./ReasoningPanel";
 import { ReasoningCutIn } from "./ReasoningCutIn";
 import { OutcomeHeading } from "./OutcomeHeading";
+import { HeroineNote } from "./HeroineNote";
 import { DOUBLE_TAP_WINDOW_MS, isSecondTap } from "../../components/double-tap";
 import {
   Translation,
@@ -263,6 +264,8 @@ export function BattleScreen({
   // Keep the same registered location photograph across dialogue, questions
   // and results. A city-wide finale has no landmark and keeps its own scene.
   const landmarkAsset = tourismAssets.find((asset) => asset.id === landmark?.imageAssetId);
+  // The city whose outfit the heroine wears here (her portrait and her face by the quiz card).
+  const heroineCityId = battle.cityId ?? landmark?.cityId;
   const storyId = battle.storyId;
   // Reactions belong to their target, independently of the current speaker.
   // Unannotated frames retain the existing Ink and expression behavior.
@@ -374,7 +377,7 @@ export function BattleScreen({
               <CharacterPortrait
                 characterId="heroine"
                 sceneId={battle.id}
-                cityId={battle.cityId ?? landmarks.find((item) => item.id === battle.landmarkId)?.cityId}
+                cityId={heroineCityId}
                 emotion={heroineEmotion}
                 focus={portraitFocus(frame?.speaker, "heroine")}
               >
@@ -649,6 +652,17 @@ export function BattleScreen({
                     ? question.correctExplanationJa
                     : question.incorrectExplanationJa}
                 </p>
+                {/* Her short line on a right answer, only where the question has one (heroineCorrectJa). */}
+                {answer.correct && question.heroineCorrectJa && (
+                  <HeroineNote
+                    label={game.heroineName}
+                    text={question.heroineCorrectJa}
+                    emotion="happy"
+                    sceneId={battle.id}
+                    cityId={heroineCityId}
+                    testId="heroine-correct"
+                  />
+                )}
                 <button
                   className="secondary"
                   onClick={() => onEnglish(question.id)}
@@ -697,10 +711,18 @@ export function BattleScreen({
                 {active.hintOpen ? "ヒントを閉じる" : "ヒントを見る"}
               </button>
             )}
+            {/* The hint as the heroine's whisper: her words when the question has them (hintHeroineJa),
+                else its hint (hintJa, plain narration: shown as her note, not quoted as her words). */}
             {active.hintOpen && (
-              <p id="question-hint" className="hint-text">
-                {question.hintJa}
-              </p>
+              <HeroineNote
+                id="question-hint"
+                className="hint-whisper"
+                label={`${game.heroineName}の耳打ち`}
+                text={question.hintHeroineJa ?? question.hintJa}
+                emotion="smile"
+                sceneId={battle.id}
+                cityId={heroineCityId}
+              />
             )}
 
           </div>

@@ -1214,14 +1214,6 @@ dialog.modal[open] {
   text-decoration: underline;
   text-underline-offset: 4px;
 }
-.hint-text {
-  font-size: 13px;
-  line-height: 1.9;
-  padding: 15px 18px;
-  background: var(--ds-parchment-2);
-  border-radius: 12px;
-  margin: 8px 0 18px;
-}
 /* The explanation: a parchment panel inside the paper; the verdict pill above says right or wrong. */
 .quiz-feedback {
   margin-top: 23px;

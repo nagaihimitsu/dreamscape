@@ -852,3 +852,53 @@
 .battle-screen .quiz-sources summary {
   color: var(--ds-ink);
 }
+
+/* The heroine's few words by the quiz card (HeroineNote): her face and a speech bubble whose
+   tail points at it, headed by her name. Her whispered hint comes in like a panel; her line on a
+   right answer comes with the explanation it sits in. Nothing here is pressable. */
+.heroine-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 8px 0 18px;
+}
+.quiz-feedback .heroine-note { margin: 10px 0 4px; }
+.heroine-note-bubble {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 6px 14px 9px;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 14px;
+  background: var(--ds-parchment-2);
+  color: var(--ds-ink);
+  font-size: 13px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.heroine-note-bubble::before {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: -6px;
+  width: 10px;
+  height: 10px;
+  border: solid var(--ds-parchment-line);
+  border-width: 0 0 1px 1px;
+  background: inherit;
+  transform: rotate(45deg);
+}
+.heroine-note-name {
+  display: block;
+  color: var(--ds-ink-muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+.hint-whisper { animation: heroine-note-in var(--motion-fast) var(--ease-out); }
+@keyframes heroine-note-in {
+  from { opacity: 0; transform: translateY(4px); }
+}
+.battle-screen[data-reduce-motion="true"] .hint-whisper { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .battle-screen .hint-whisper { animation: none; }
+}
