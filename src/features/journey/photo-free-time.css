@@ -277,9 +277,15 @@
 .reduce-motion .photo-card-cue::after { top: 1px; }
 .reduce-motion .photo-cards:not(.is-list) .photo-card[data-cue] { animation: none; }
 
-/* The chosen place's card takes a swipe up (it departs) while a sideways swipe still scrolls the row. */
-.photo-cards:not(.is-list) .photo-card.is-swipeable[aria-current="true"] { touch-action: pan-x; }
-/* The card a swipe lifts, floating over the screen (and the header) while the finger holds it (PhotoCardPicker). */
+/* The row's drags (useCardGestures, user decision 2026-11-11). On the row a sideways drag stays the row's own scroll
+   and a drag up lifts the chosen card, so the row leaves the browser its sideways panning only. Elsewhere on the screen
+   (the app shell carries data-card-swipe while the row shows and the page is not zoomed in) a sideways drag moves the
+   row and the page keeps its own vertical scroll. Both keep pinch zoom (the plain pan value where pinch-zoom is
+   unknown). No text is selected while a drag runs. */
+.photo-cards:not(.is-list) { touch-action: pan-x; touch-action: pan-x pinch-zoom; }
+.app-shell[data-card-swipe] { touch-action: pan-y; touch-action: pan-y pinch-zoom; }
+.app-shell[data-card-dragging] { -webkit-user-select: none; user-select: none; }
+/* The card a swipe lifts, floating over the screen (and the header) while the finger holds it (useCardGestures). */
 .photo-card.photo-card-ghost {
   position: fixed;
   z-index: 25;

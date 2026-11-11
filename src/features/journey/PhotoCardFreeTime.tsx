@@ -10,7 +10,7 @@ import { FreeTimeBackdrop } from "./FreeTimeBackdrop";
 import { FreeTimeExtras } from "./FreeTimeExtras";
 import { SIDE_BY_SIDE_QUERY } from "./free-time-layout";
 import { timeOfDayTint } from "./time-of-day";
-import { PhotoCardPicker, type CardSwipe } from "./PhotoCardPicker";
+import { PhotoCardPicker } from "./PhotoCardPicker";
 import { PlaceCard, StayCard, TourCard, WaitCard } from "./PlaceCard";
 import { Announce, mapPlaces, PlaceMapDialog } from "./PlaceMap";
 import {
@@ -19,6 +19,7 @@ import {
 } from "./photo-cards";
 import { armedAt, type PressKind } from "./travel-selection";
 import { TravelRentals } from "./TravelRentals";
+import type { CardSwipe } from "./useCardGestures";
 import { useTravelSelection, type PressScope } from "./useTravelSelection";
 import "./free-time-hub.css";
 import "./photo-free-time.css";
@@ -27,8 +28,9 @@ import "./photo-free-time.css";
  * Free time as B案「写真札で旅先を選ぶ」 (docs/02 「自由時間の画面」): the epilogue's button, one row of photo cards (「待機」,
  * the places, sightseeing and dates alike, then the tour when the city has one, then 「ホテルに戻る」; the first place's
  * card is chosen first; the chosen card is the selection, and its card under the row has the waits, the event and the
- * way to choose and a small map, the booking, or the ways home; a swipe up on the chosen place's card departs with that
- * event and way), the rentals and the city's remaining actions. 「地図」 (today's expanded map and 「地点を名前で探す」)
+ * way to choose and a small map, the booking, or the ways home; a swipe up departs with that event and way, only the
+ * chosen place's card flying; in the row a sideways drag or a swipe up may start anywhere on the screen:
+ * useCardGestures), the rentals and the city's remaining actions. 「地図」 (today's expanded map and 「地点を名前で探す」)
  * sits in the header's second row while this screen shows (HudScreenTool). The background is the city's backdrop when it has one
  * (FreeTimeBackdrop: its own artwork or its photo, dimmed), else a map-like pattern, not a map, under the colour of the
  * game clock's time of day (timeOfDayTint). Every rule is today's: the

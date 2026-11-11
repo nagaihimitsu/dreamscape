@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import type { TravelRoute } from "../../content/travel-schemas";
 import type { DestinationChoices, EventChoice, RouteChoice, TravelDestinationEvent, TravelDestinationPlace } from "../../domain/travel-destinations";
 import {
-  blockedWays, cardKinds, cardOfTarget, cardScales, cardTarget, chooseArrangement, chooseWay, defaultCardIndex, departureOf, eventKindJa, flickSpeed,
-  nearestIndex, NO_PLAN, photoCardEntries, photoCardLabel, refusalJa, rowCards, STAY_CARD_ID, stepIndex, swipeDeparts, syncRow, TOUR_CARD_ID,
-  WAIT_CARD_ID,
+  blockedWays, cardKinds, cardOfTarget, cardScales, cardTarget, chooseArrangement, chooseWay, defaultCardIndex, departureOf, dragDirection,
+  eventKindJa, flickSpeed, glideIndex, halfShown, liftsCard, liftTurnedSideways, nearestIndex, NO_PLAN, pageAtEnd, photoCardEntries,
+  photoCardLabel, refusalJa, rowCards, STAY_CARD_ID, stepIndex, swipeArea, swipeDeparts, syncRow, TOUR_CARD_ID, WAIT_CARD_ID,
 } from "./photo-cards";
 
 const way = (mode: string, minutes: number, cost: number, reason?: string): RouteChoice =>
@@ -160,14 +160,74 @@ describe("reading and moving through the cards", () => {
   });
 
   it("departs on a swipe up past a third of the card, or on a quick flick up, never down", () => {
-    const speed = flickSpeed([{ t: 0, y: 300 }, { t: 50, y: 280 }, { t: 100, y: 240 }]);
+    const speed = flickSpeed([{ t: 0, x: 0, y: 300 }, { t: 50, x: 0, y: 280 }, { t: 100, x: 0, y: 240 }], "y");
     expect(speed).toBeCloseTo(-0.8);
-    expect(flickSpeed([{ t: 0, y: 300 }])).toBe(0);
+    expect(flickSpeed([{ t: 0, x: 0, y: 300 }], "y")).toBe(0);
     expect(swipeDeparts({ lift: -100, height: 300, speed: 0 })).toBe(true);
     expect(swipeDeparts({ lift: -90, height: 300, speed: 0 })).toBe(false);
     expect(swipeDeparts({ lift: -40, height: 300, speed })).toBe(true);
     expect(swipeDeparts({ lift: -10, height: 300, speed: -2 })).toBe(false);
     expect(swipeDeparts({ lift: 0, height: 300, speed: -2 })).toBe(false);
+  });
+});
+
+describe("drags anywhere on the screen (the row arrangement)", () => {
+  it("takes the way of a drag from its first movement past the slop, a tie sideways", () => {
+    expect(dragDirection(6, -6)).toBeNull();
+    expect(dragDirection(-12, 4)).toBe("sideways");
+    expect(dragDirection(10, -10)).toBe("sideways");
+    expect(dragDirection(3, -14)).toBe("up");
+    expect(dragDirection(-3, 14)).toBe("down");
+  });
+
+  it("brings a lifted card back once its drag turns sideways", () => {
+    expect(liftTurnedSideways(20, -10)).toBe(false);
+    expect(liftTurnedSideways(-40, -20)).toBe(true);
+    expect(liftTurnedSideways(40, -60)).toBe(false);
+  });
+
+  it("starts on the row, else elsewhere on the screen, never where it is excluded, and off the row not while zoomed in", () => {
+    expect(swipeArea({ onRow: true, excluded: false, zoomed: false })).toBe("row");
+    expect(swipeArea({ onRow: false, excluded: false, zoomed: false })).toBe("screen");
+    expect(swipeArea({ onRow: false, excluded: true, zoomed: false })).toBeNull();
+    expect(swipeArea({ onRow: true, excluded: true, zoomed: false })).toBeNull();
+    expect(swipeArea({ onRow: true, excluded: false, zoomed: true })).toBe("row");
+    expect(swipeArea({ onRow: false, excluded: false, zoomed: true })).toBeNull();
+  });
+
+  it("lifts the card from the row always, from elsewhere once the page has nothing below and the card shows", () => {
+    expect(liftsCard({ area: "row", atEnd: false, cardShown: false })).toBe(true);
+    expect(liftsCard({ area: "screen", atEnd: false, cardShown: true })).toBe(false);
+    expect(liftsCard({ area: "screen", atEnd: true, cardShown: false })).toBe(false);
+    expect(liftsCard({ area: "screen", atEnd: true, cardShown: true })).toBe(true);
+  });
+
+  it("knows a page scrolled to its end or fitting the screen", () => {
+    expect(pageAtEnd({ top: 0, viewport: 700, height: 650 })).toBe(true);
+    expect(pageAtEnd({ top: 199, viewport: 700, height: 900 })).toBe(true);
+    expect(pageAtEnd({ top: 120, viewport: 700, height: 900 })).toBe(false);
+  });
+
+  it("sees a card while at least half of it is on the screen", () => {
+    expect(halfShown({ top: 100, bottom: 300, viewport: 700 })).toBe(true);
+    expect(halfShown({ top: -90, bottom: 110, viewport: 700 })).toBe(true);
+    expect(halfShown({ top: -120, bottom: 80, viewport: 700 })).toBe(false);
+    expect(halfShown({ top: 620, bottom: 820, viewport: 700 })).toBe(false);
+  });
+
+  it("glides a let-go row to the card nearest its landing, a flick on to at least the next card its way", () => {
+    const centres = [0, 140, 280, 420];
+    // Let go slowly: the nearest card (the row stays, or comes back).
+    expect(glideIndex(centres, 150, 0)).toBe(1);
+    expect(glideIndex(centres, 200, 0.2)).toBe(2);
+    // A flick goes on, at least to the next card, further when fast.
+    expect(glideIndex(centres, 140, 0.5)).toBe(2);
+    expect(glideIndex(centres, 140, 1.5)).toBe(3);
+    expect(glideIndex(centres, 200, -0.6)).toBe(1);
+    // Past either end it stays on the end card.
+    expect(glideIndex(centres, 420, 2)).toBe(3);
+    expect(glideIndex(centres, 0, -2)).toBe(0);
+    expect(glideIndex([], 0, 1)).toBeNull();
   });
 });
 
