@@ -50,6 +50,7 @@ import { EnglishReview } from "../features/learning/EnglishReview";
 import { useLocalWords } from "../features/learning/useLocalWords";
 import { LocalWordNotice } from "../features/learning/LocalWordNotice";
 import { lineWordsOnScreen } from "../features/learning/local-words";
+import { readAloudSupported } from "../features/learning/read-aloud";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { CityRecords } from "../features/journey/CityProgress";
@@ -149,6 +150,9 @@ export function GameApp({
   // The lines this device has read in this journey (read-skip.ts): 高速送り stops at one not read before. In this storage,
   // so a Debug session keeps its own record in its isolated memory and never reads or writes the normal one.
   const readLines = useReadLines(storage, displaySettings.value.skipUnread);
+  // 「英語を読み上げるボタンを出す」 (ReadAloud.tsx): the setting and the buttons only where the browser can read aloud.
+  const [readAloudAvailable] = useState(() => readAloudSupported(typeof window === "undefined" ? undefined : window));
+  const readAloud = readAloudAvailable && displaySettings.value.readAloud;
   // This device's Debug-mode switch (journeyStorage passes its key through unscoped).
   const debugMode = useDebugMode(storage);
   // While Debug mode is on (always in a Debug session), a choice's relationship changes show above
@@ -704,6 +708,7 @@ export function GameApp({
             readSkip={readLines}
             key={`${game.activeBattle.runId}-${sceneEpoch}`}
             reduceMotion={displaySettings.value.reduceMotion}
+            readAloud={readAloud}
             learning={learning}
             onEnglish={openEnglish}
             game={game}
@@ -898,6 +903,7 @@ export function GameApp({
           game={game}
           learning={learning}
           learnedWords={learnedWords.learned}
+          readAloud={readAloud}
           onClose={() => {
             learning.update((s) => ({
               ...s,
@@ -1005,6 +1011,11 @@ export function GameApp({
             />{" "}
             演出を短縮する
           </label>
+          {readAloudAvailable && <label className="translation-setting">
+            <input type="checkbox" checked={displaySettings.value.readAloud} disabled={!!displaySettings.error}
+              onChange={(event) => displaySettings.update({ readAloud: event.target.checked })} /> 英語を読み上げるボタンを出す
+          </label>}
+          {readAloud && <p className="fine-print">クイズと英語ノートの英文の横に出ます。英語の声がない端末では、読まないか、ほかの言葉の声で読みます。</p>}
           {displaySettings.error && (
             <p role="status">{displaySettings.error}</p>
           )}

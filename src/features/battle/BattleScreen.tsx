@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { tourSceneBadge } from "../../domain/tour";
 import { dialogueExpressions, dialogueReactions, landmarks, learningTranslations, presentation, tourismAssets } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
@@ -33,6 +33,9 @@ import {
   revealTranslation,
 } from "../learning/Translations";
 import { InteractiveEnglish } from "../learning/InteractiveEnglish";
+import { ReadAloudButton, useReadAloud } from "../learning/ReadAloud";
+import { metQuestions } from "../learning/EnglishReview";
+import { metWordKeys } from "../learning/met-words";
 import type { Learning } from "../learning/useLearning";
 import "./battle.css";
 
@@ -111,6 +114,8 @@ interface Props {
   /** This device's read lines: 高速送り stops at a line not read before (read-skip.ts). */
   readSkip?: ReadSkip;
   reduceMotion: boolean;
+  /** 「英語を読み上げるボタンを出す」 is on and this browser can read aloud: a speaker button by each English text (ReadAloud.tsx). */
+  readAloud?: boolean;
   onSpeed: (speed: number) => void;
   onAdvance: () => void;
   /** The shown choices of a battle's conversation, and choosing one. */
@@ -138,6 +143,7 @@ export function BattleScreen({
   game,
   speed,
   reduceMotion,
+  readAloud = false,
   autoAdvanceEnabled = false,
   readSkip,
   onAdvance,
@@ -346,6 +352,15 @@ export function BattleScreen({
   const isSpecial = !!battle.reasoning;
   const showReasoning =
     !!battle.reasoning && battle.reasoning.roundIndex === active.roundIndex;
+  // The quiz card (a question and its explanation): its speaker buttons stop reading when it goes or the next question comes.
+  const quizCard = active.phase === "question" || active.phase === "feedback";
+  const reader = useReadAloud(readAloud, quizCard ? `${active.roundIndex}:${question?.id}` : "");
+  // 前に出た単語 (met-words.ts): the words of the word book's other questions (this save's battles, this run's earlier
+  // rounds), marked where the question and its options use them again. Read again when an answer or a record changes.
+  const metWords = useMemo(
+    () => metWordKeys(metQuestions(game, learning).map((entry) => entry.question), question?.id),
+    [game.battleRecords, active.battleId, active.contentHash, active.answers, learning.data.records, question?.id],
+  );
 
   return (
     <div
@@ -592,6 +607,7 @@ export function BattleScreen({
                 key={question.id}
                 text={question.questionEn}
                 vocabulary={question.vocabularyJa}
+                metWords={metWords}
                 label="問題文"
                 onDoubleTap={() =>
                   revealTranslation(learning, question.id, "question")
@@ -599,7 +615,9 @@ export function BattleScreen({
               />
             </h2>
             <div className="question-translation-tools">
-              <Translation learning={learning} id={question.id} part="question" />
+              <Translation learning={learning} id={question.id} part="question">
+                <ReadAloudButton reader={reader} part="question" text={question.questionEn} />
+              </Translation>
               <TranslationAll learning={learning} id={question.id} />
             </div>
             <div className="quiz-choices" aria-label="英語の3択">
@@ -637,9 +655,12 @@ export function BattleScreen({
                         {option.id}
                       </button>
                       <div className="option-body">
+                        {/* At the right of the option's text, before its 「訳を見る」 and away from its answer button. */}
+                        <ReadAloudButton reader={reader} part={option.id} text={option.textEn} />
                         <InteractiveEnglish
                           text={option.textEn}
                           vocabulary={question.vocabularyJa}
+                          metWords={metWords}
                           label={`選択肢${option.id}`}
                           onDoubleTap={() =>
                             revealTranslation(learning, question.id, option.id)

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { wordMeanings } from "../../content";
 import { normalizeWord, wordPattern } from "../../content/word-meanings";
+import { markMetWords, MET_WORD_HINT } from "./met-words";
 
 type Vocabulary = { word: string; meaning: string };
 type Token = { text: string; meaning?: string; contextual?: boolean };
@@ -48,13 +49,16 @@ export function InteractiveEnglish({
   vocabulary,
   onDoubleTap,
   label,
+  metWords,
 }: {
   text: string;
   vocabulary: Vocabulary[];
   onDoubleTap: () => void;
   label: string;
+  /** The words met before (met-words.ts, a battle's question and options): theirs are marked. */
+  metWords?: ReadonlySet<string>;
 }) {
-  const [word, setWord] = useState<Token | null>(null);
+  const [word, setWord] = useState<(Token & { met: boolean }) | null>(null);
   // A second selection of the same word opens the sentence translation even
   // after the player has spent time reading its meaning. Native click detail
   // is not a reliable way to distinguish keyboard from touch on all browsers.
@@ -78,7 +82,7 @@ export function InteractiveEnglish({
       document.removeEventListener("focusin", resetOutside, true);
     };
   }, []);
-  function tap(token: Token, index: number) {
+  function tap(token: Token & { met: boolean }, index: number) {
     if (lastWordIndex.current === index) {
       lastWordIndex.current = null;
       setWord(null);
@@ -91,17 +95,22 @@ export function InteractiveEnglish({
   return (
     <span ref={containerRef} className="interactive-english" lang="en" aria-label={label}>
       <span>
-        {englishTokens(text, vocabulary).map((token, index) =>
+        {markMetWords(englishTokens(text, vocabulary), metWords).map((token, index) =>
           token.meaning ? (
             <button
               type="button"
               key={`${index}-${token.text}`}
-              className="english-word"
-              aria-label={`${token.text}の意味`}
+              className={token.met ? "english-word met-word" : "english-word"}
+              aria-label={`${token.text}の意味${token.met ? MET_WORD_HINT : ""}`}
               onClick={() => tap(token, index)}
             >
               {token.text}
             </button>
+          ) : token.met ? (
+            <span key={`${index}-${token.text}`} className="met-word">
+              {token.text}
+              <span className="sr-only" lang="ja">{MET_WORD_HINT}</span>
+            </span>
           ) : (
             token.text
           ),
@@ -110,7 +119,8 @@ export function InteractiveEnglish({
       {word && (
         <span className="word-meaning" role="status" lang="ja">
           <strong lang="en">{word.text}</strong>：{word.meaning}
-          {!word.contextual && <small>（一般的な意味）</small>}{" "}
+          {!word.contextual && <small>（一般的な意味）</small>}
+          {word.met && <small>{MET_WORD_HINT}</small>}{" "}
           <button
             type="button"
             className="word-close"
