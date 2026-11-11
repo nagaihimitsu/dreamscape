@@ -43,6 +43,7 @@ INCLUDE modules.ink
 # speaker: narrator
 いとこたちの先頭の娘が、にやりと笑った。
 # speaker: gt_pooja
+# cutin: name
 わたしはプージャー。花嫁のいとこよ。一問目。この町は、どうしてピンク色なのか。わかる？
 -> quiz(1) ->
 # background: gt_bg_jaipur_hawa_mahal

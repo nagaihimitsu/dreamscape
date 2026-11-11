@@ -12,6 +12,7 @@ INCLUDE modules.ink
 # speaker: narrator
 寝台の上に、薔薇の花びらで大きなハート。その真ん中で、タオルで折った白鳥が二羽、くちばしを寄せ合っている。
 # speaker: gt_samir
+# cutin: name
 ハネムーン・スペシャルです！
 # speaker: narrator
 サミールは胸を張った。

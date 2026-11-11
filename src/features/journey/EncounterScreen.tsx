@@ -15,6 +15,8 @@ import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { portraitFocus, type PortraitFocus } from "../../components/speaker-focus";
 import { useStaysOnStage } from "../../components/useStaysOnStage";
 import { useSpeakingPerson } from "../../components/useSpeakingPerson";
+import { useNameCutIn } from "../../components/NameCutIn";
+import type { NameCutIn } from "../../components/speaker-plate";
 import { ComicEffect } from "../../components/ComicEffect";
 import type { ReactionMark } from "../../content/dialogue-reactions";
 import type { LineDelivery } from "../../content/tags";
@@ -56,6 +58,8 @@ export type EncounterScreenView = {
   person?: { characterId: string; focus?: PortraitFocus };
   /** The portrait of a person who says the line in their own name (speakingPerson): on the other side from that line. */
   speakingPerson?: string;
+  /** The line's name plate (`# cutin: name`, nameCutIn): shown for a moment (useNameCutIn). */
+  cutIn?: NameCutIn;
   cityId: string;
   sceneId?: string;
   quiz?: {
@@ -107,6 +111,8 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
     else onAdvance();
   }
   const quiz = view.quiz;
+  // The line's name plate for a moment (`# cutin: name`; none over a quiz, which shows no line).
+  const nameCut = useNameCutIn(quiz ? undefined : view.cutIn, String(view.revision));
   const personOn = useStaysOnStage(!!view.person && !!view.portraits?.enemy);
   // A person who speaks in their own name stands there from their line until the scene's own opposite speaks or reacts.
   const speakingOn = useSpeakingPerson(view.speakingPerson, !!view.portraits?.enemy || view.staging?.speaker === "enemy");
@@ -141,6 +147,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
       </div>}
       <section className="vn-dialogue paper story-paper encounter-dialogue" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} aria-label="寄り道の会話" data-has-choices={!!quiz || view.choices.length > 0} inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
         <DialogueWindowHead
+          cutIn={nameCut}
           speaker={showsSpeakerPlate(staging) && view.speaker}
           narration={view.narration}
           controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}

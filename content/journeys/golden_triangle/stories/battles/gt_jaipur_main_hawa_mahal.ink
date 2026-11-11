@@ -2,16 +2,17 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_hawa_mahal
 # speaker: narrator
 ハワー・マハルの正面は、通りに向かって無数の小窓を広げていた。{heroine_name}が見上げて立ち止まると、足もとから声が飛んだ。
-# speaker: enemy
+# speaker: gt_jaipur_hawa_woman
 そこ、うちの大根に影が落ちてるよ
 # speaker: narrator
 歩道の端に布を敷き、野菜を並べている女性がいた。大根、人参、オクラ、小ぶりのトマト。古い日傘を、竿にくくりつけている。
 # speaker: heroine
 # reaction: heroine,surprised,sweat
 す、すみません！　……写真を撮ろうとしてて
-# speaker: enemy
+# speaker: gt_jaipur_hawa_woman
 撮るなら、大根も一緒に入れなさい。四十年、あの窓の下にいるのは、こっちなんだから
 # speaker: enemy
+# cutin: name
 ガウラよ。この歩道で野菜を売って四十年。朝四時に卸の市場で仕入れて、昼過ぎまでここに座ってる。膝が痛いのは、三十年前から
 # speaker: heroine
 四十年……じゃあ、中にも何度も？

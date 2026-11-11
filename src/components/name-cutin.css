@@ -1,0 +1,47 @@
+/* A name plate (NameCutInPlate, `# cutin: name`): on the slate of the dialogue window, centred just above its head,
+   over the scene (the characters' bodies, not their faces). It is laid over the scene (no reflow), takes no taps and
+   goes at once; it comes in with a short rise, none under reduced motion. */
+.name-cutin {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  translate: -50% 0;
+  width: min(calc(100% - 32px), 380px);
+  padding: 8px 18px 10px;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 14px;
+  background: var(--ds-window-bg);
+  color: var(--ds-on-slate);
+  box-shadow: var(--ds-window-shadow);
+  text-align: center;
+  pointer-events: none;
+  animation: name-cutin-in var(--motion-medium) var(--ease-out);
+}
+.name-cutin p { margin: 0; overflow-wrap: anywhere; }
+.name-cutin .name-cutin-title {
+  color: var(--ds-on-slate-muted);
+  font-size: 12px;
+  line-height: 1.6;
+  letter-spacing: 0.06em;
+}
+/* The name in the headings' type, as the battle opponent's heading shows it. */
+.name-cutin .name-cutin-name {
+  color: var(--ds-on-slate);
+  font-family: "Noto Serif JP", serif;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.045em;
+  line-height: 1.5;
+}
+.name-cutin .name-cutin-quote {
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+@keyframes name-cutin-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+:is(.reduce-motion, [data-reduce-motion="true"]) .name-cutin { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .name-cutin { animation: none; }
+}

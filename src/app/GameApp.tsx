@@ -131,7 +131,7 @@ import { RelationshipChangeNote } from "../components/RelationshipChangeNote";
 import { sceneConditionTruths } from "../domain/scene-conditions";
 import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
 import { portraitFocus } from "../components/speaker-focus";
-import { speakerPlate } from "../components/speaker-plate";
+import { nameCutIn, speakerPlate } from "../components/speaker-plate";
 
 /** Where a Debug relationship change shows (decision 23): the story scene on screen, else the map or free time until the next action. */
 function changeScreenKey(state: GameState): string {
@@ -646,6 +646,9 @@ export function GameApp({
               narration: encounterPlate!.narration,
               person: encounterPerson && { characterId: encounterPerson.characterId, focus: portraitFocus(activeEncounter.frame.speaker, "enemy") },
               speakingPerson: speakingPerson(storyState.people, activeEncounter.frame),
+              cutIn: nameCutIn(activeEncounter.frame,
+                encounterPerson && { nameJa: encounterPerson.nameJa, ...(encounterPerson.titleJa ? { titleJa: encounterPerson.titleJa } : {}) },
+                storyState.people),
               text: activeEncounter.frame.text,
               delivery: activeEncounter.frame.delivery,
               staging: activeEncounter.frame,

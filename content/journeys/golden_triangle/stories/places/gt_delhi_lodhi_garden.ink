@@ -21,9 +21,10 @@ INCLUDE modules.ink
 え、なに？　何がおかしかったの？　誰も、何も言ってないよね？
 # speaker: narrator
 輪の中心にいた白い口ひげの老人が、二人に気づいて手招きした。張りのある、よく通る声だった。
-# speaker: gt_dubey
+# speaker: gt_delhi_lodhi_old_man
 乗客の皆さま、ご注意ください。まもなく、新しい笑いが到着いたします
 # speaker: gt_dubey
+# cutin: name
 ドゥベイと申します。鉄道の駅で、三十年、列車の案内放送をしておりました。ここは、笑うために集まる会。理由がなくても笑う。作り笑いを続けているうちに、本当の笑いに変わっていくんです
 # speaker: narrator
 会の人たちは、そう信じている。
@@ -108,6 +109,7 @@ INCLUDE modules.ink
 # speaker: gt_suresh
 ミーナだ。大学の同級生。……週に二回、ここで笑っている。健康のためだ。あくまで健康の
 # speaker: gt_meena
+# cutin: name
 この人、四十年前の教室では一度も笑わなかったのよ。あなたたち、すごいものを見たわね
 # speaker: gt_suresh
 家族に知れたら、夕飯の前に親戚中に知れる。この年で何をしている、と笑われる

@@ -121,12 +121,14 @@
       "id": "gt_kamla",
       "cityId": "delhi",
       "nameJa": "カムラ",
+      "titleJa": "宿の隣の家を引き払う人",
       "characterId": "gt_kamla"
     },
     {
       "id": "gt_harbans",
       "cityId": "delhi",
       "nameJa": "ハルバンス",
+      "titleJa": "ローティーを丸める元トラック運転手",
       "characterId": "gt_harbans"
     },
     {
@@ -144,12 +146,20 @@
     {
       "id": "gt_mehr",
       "cityId": "delhi",
-      "nameJa": "メヘル"
+      "nameJa": "メヘル",
+      "titleJa": "叔父さんに見つかりたくない大学生"
     },
     {
       "id": "gt_kabir",
       "cityId": "delhi",
-      "nameJa": "カビール"
+      "nameJa": "カビール",
+      "titleJa": "メヘルの同級生"
+    },
+    {
+      "id": "gt_delhi_humayun_man",
+      "cityId": "delhi",
+      "nameJa": "男",
+      "characterId": "gt_suresh"
     },
     {
       "id": "gt_delhi_humayun_girl",
@@ -165,6 +175,7 @@
       "id": "gt_zoheb",
       "cityId": "delhi",
       "nameJa": "ゾヘブ",
+      "titleJa": "隣の店で携帯ケースを売る若者",
       "characterId": "gt_zoheb"
     },
     {
@@ -174,19 +185,34 @@
       "characterId": "gt_zoheb"
     },
     {
+      "id": "gt_delhi_jama_old_man",
+      "cityId": "delhi",
+      "nameJa": "老人",
+      "characterId": "gt_hamid"
+    },
+    {
+      "id": "gt_delhi_qutb_man",
+      "cityId": "delhi",
+      "nameJa": "男",
+      "characterId": "gt_ramkishan"
+    },
+    {
       "id": "gt_anjali",
       "cityId": "delhi",
-      "nameJa": "アンジャリ"
+      "nameJa": "アンジャリ",
+      "titleJa": "遠足の学級委員"
     },
     {
       "id": "gt_sonu",
       "cityId": "delhi",
-      "nameJa": "ソーヌー"
+      "nameJa": "ソーヌー",
+      "titleJa": "敬礼が本格的な生徒"
     },
     {
       "id": "gt_faiz",
       "cityId": "delhi",
-      "nameJa": "ファイズ"
+      "nameJa": "ファイズ",
+      "titleJa": "ノートを閉じたままの生徒"
     },
     {
       "id": "gt_delhi_red_fort_children",
@@ -217,6 +243,7 @@
       "id": "gt_roohi",
       "cityId": "delhi",
       "nameJa": "ルーヒー",
+      "titleJa": "宿の娘",
       "characterId": "gt_roohi"
     },
     {
@@ -233,31 +260,48 @@
       "id": "gt_kunal",
       "cityId": "delhi",
       "nameJa": "クナール",
+      "titleJa": "怖い動画を撮る大学生",
       "characterId": "gt_kunal"
     },
     {
       "id": "gt_jasmeet",
       "cityId": "delhi",
       "nameJa": "ジャスミート",
+      "titleJa": "クナールの撮影仲間",
       "characterId": "gt_jasmeet"
+    },
+    {
+      "id": "gt_delhi_agrasen_young_man",
+      "cityId": "delhi",
+      "nameJa": "青年",
+      "characterId": "gt_kunal"
     },
     {
       "id": "gt_monu",
       "cityId": "delhi",
       "nameJa": "モヌ",
+      "titleJa": "村から来た男の子",
       "characterId": "gt_monu"
     },
     {
       "id": "gt_dubey",
       "cityId": "delhi",
       "nameJa": "ドゥベイ",
+      "titleJa": "元・駅の案内放送係",
       "characterId": "gt_dubey"
     },
     {
       "id": "gt_meena",
       "cityId": "delhi",
       "nameJa": "ミーナ",
+      "titleJa": "スレーシュの大学の同級生",
       "characterId": "gt_meena"
+    },
+    {
+      "id": "gt_delhi_lodhi_old_man",
+      "cityId": "delhi",
+      "nameJa": "老人",
+      "characterId": "gt_dubey"
     },
     {
       "id": "gt_delhi_scam_young_man",
@@ -318,12 +362,29 @@
     {
       "id": "gt_tanvi",
       "cityId": "agra",
-      "nameJa": "タンヴィ"
+      "nameJa": "タンヴィ",
+      "titleJa": "ニキルの恋人"
+    },
+    {
+      "id": "gt_agra_taj_young_man",
+      "cityId": "agra",
+      "nameJa": "青年"
+    },
+    {
+      "id": "gt_nikhil",
+      "cityId": "agra",
+      "nameJa": "ニキル"
     },
     {
       "id": "gt_riya",
       "cityId": "agra",
-      "nameJa": "リヤ"
+      "nameJa": "リヤ",
+      "titleJa": "ツアーの添乗員"
+    },
+    {
+      "id": "gt_agra_fort_old_man",
+      "cityId": "agra",
+      "nameJa": "老人"
     },
     {
       "id": "gt_agra_finale_student",
@@ -333,17 +394,13 @@
     {
       "id": "gt_jagdeep",
       "cityId": "agra",
-      "nameJa": "ジャグディープ"
+      "nameJa": "ジャグディープ",
+      "titleJa": "結婚前の二人を撮る写真家"
     },
     {
       "id": "gt_agra_chini_man",
       "cityId": "agra",
       "nameJa": "男"
-    },
-    {
-      "id": "gt_agra_chini_young_man",
-      "cityId": "agra",
-      "nameJa": "青年"
     },
     {
       "id": "gt_agra_chini_bride",
@@ -353,17 +410,29 @@
     {
       "id": "gt_gurmeet",
       "cityId": "agra",
-      "nameJa": "グルミート"
+      "nameJa": "グルミート",
+      "titleJa": "ハルバンスの息子"
     },
     {
       "id": "gt_samir",
       "cityId": "agra",
-      "nameJa": "サミール"
+      "nameJa": "サミール",
+      "titleJa": "宿の若い支配人"
     },
     {
       "id": "gt_vimla",
       "cityId": "agra",
       "nameJa": "ヴィムラー"
+    },
+    {
+      "id": "gt_agra_itimad_woman",
+      "cityId": "agra",
+      "nameJa": "女性"
+    },
+    {
+      "id": "gt_agra_fatehpur_man",
+      "cityId": "agra",
+      "nameJa": "男"
     },
     {
       "id": "gt_agra_mariam_father",
@@ -378,7 +447,8 @@
     {
       "id": "gt_sonia",
       "cityId": "agra",
-      "nameJa": "ソニア"
+      "nameJa": "ソニア",
+      "titleJa": "空き地のキャプテン"
     },
     {
       "id": "gt_agra_mehtab_girl",
@@ -393,7 +463,8 @@
     {
       "id": "gt_vinod",
       "cityId": "agra",
-      "nameJa": "ヴィノード"
+      "nameJa": "ヴィノード",
+      "titleJa": "ツアーの運転手"
     },
     {
       "id": "gt_agra_akbar_guard",
@@ -408,7 +479,8 @@
     {
       "id": "gt_pooja",
       "cityId": "jaipur",
-      "nameJa": "プージャー"
+      "nameJa": "プージャー",
+      "titleJa": "花嫁のいとこ"
     },
     {
       "id": "gt_jaipur_bride_cousin",
@@ -426,9 +498,20 @@
       "nameJa": "店主"
     },
     {
+      "id": "gt_jaipur_hawa_woman",
+      "cityId": "jaipur",
+      "nameJa": "女性"
+    },
+    {
       "id": "gt_vishal",
       "cityId": "jaipur",
-      "nameJa": "ヴィシャール"
+      "nameJa": "ヴィシャール",
+      "titleJa": "来週ドイツへ発つ息子"
+    },
+    {
+      "id": "gt_jaipur_city_palace_woman",
+      "cityId": "jaipur",
+      "nameJa": "女性"
     },
     {
       "id": "gt_jaipur_city_palace_young_man",
@@ -438,7 +521,13 @@
     {
       "id": "gt_shastri",
       "cityId": "jaipur",
-      "nameJa": "シャーストリー"
+      "nameJa": "シャーストリー",
+      "titleJa": "町の占星術師"
+    },
+    {
+      "id": "gt_jaipur_jantar_woman",
+      "cityId": "jaipur",
+      "nameJa": "女性"
     },
     {
       "id": "gt_jaipur_hotel_front",
@@ -448,7 +537,8 @@
     {
       "id": "gt_raju",
       "cityId": "jaipur",
-      "nameJa": "ラージュー"
+      "nameJa": "ラージュー",
+      "titleJa": "地図を描く男の子"
     },
     {
       "id": "gt_jaipur_jaigarh_boy",
@@ -463,7 +553,8 @@
     {
       "id": "gt_farhana",
       "cityId": "jaipur",
-      "nameJa": "ファルハーナ"
+      "nameJa": "ファルハーナ",
+      "titleJa": "遊歩道のメヘンディ描き"
     },
     {
       "id": "gt_jaipur_jal_mahal_woman",
@@ -473,12 +564,14 @@
     {
       "id": "gt_nasreen",
       "cityId": "jaipur",
-      "nameJa": "ナスリーン"
+      "nameJa": "ナスリーン",
+      "titleJa": "腕輪の店のおかみ"
     },
     {
       "id": "gt_kavya",
       "cityId": "jaipur",
-      "nameJa": "カヴィヤ"
+      "nameJa": "カヴィヤ",
+      "titleJa": "地下へ下りられない女の子"
     }
   ]
 }

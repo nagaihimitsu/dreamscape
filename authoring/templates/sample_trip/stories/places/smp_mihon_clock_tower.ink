@@ -105,14 +105,17 @@ INCLUDE modules.ink
 // -> quiz(1) -> 〜 -> quiz(3) -> でクイズの画面を出す。戻ると quiz_correct（その問いの正誤）と battle_score（そこまでの正解数）が入る。
 // 呼び口の後の最初の行は、場面の始まりと同じく話し手と背景を書き直す。-> END の後に結果の画面。
 // 行の札 # pause: 600 は、その行の字が出る前に0.6秒の間を置く（タップで飛ばせる。下のヒロインの問いかけの前）。
+// 名乗る前の行は呼び名の人物（progression/story.json の smp_mihon_clock_keeper「青年」）で話し、名乗った後の最初の行に # cutin: name を書く
+// （相手の名札：battles/catalog.json の enemyTitleJa と enemyNameJa）。
 === smp_mihon_main_clock_tower ===
 # scene: battle
 # background: smp_bg_mihon_clock_tower
-# speaker: enemy
+# speaker: smp_mihon_clock_keeper
 「旅の人？　三時ですよ。……そう言うと、みんな自分の時計を見て笑うんです」
 # speaker: narrator
 青年はトーマと名乗った。塔の時計番で、毎朝、動かない歯車に油を差しているという。
 # speaker: enemy
+# cutin: name
 「今年こそ直します。止まった時計の番人なんて、仕事をしていないのと同じですから」
 # speaker: heroine
 # pause: 600
@@ -433,7 +436,9 @@ Come back at three. Any three will do.
 # background: smp_bg_mihon_hotel
 # speaker: narrator
 宿の前に出ると、リリが駆けてきた。手に、色を塗っていないしおりを一枚持っている。
+// 人物の名札：progression/story.json の titleJa（役どころ）と nameJa。話し手の名前がこの行で初めて札に出る。
 # speaker: smp_mihon_lili
+# cutin: name
 「これ、針を描いてないの。次に来るときの時間を、自分で描いてね」
 // 行の札 # letter: note は、その行を紙のメモに書いて見せる（話し手の札は出ない）。同じ種類の行を続けると1枚に積み重なる。
 # speaker: narrator

@@ -14,7 +14,8 @@ import { lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { portraitFocus } from "../../components/speaker-focus";
-import { speakerPlate } from "../../components/speaker-plate";
+import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
+import { useNameCutIn } from "../../components/NameCutIn";
 import { useStaysOnStage } from "../../components/useStaysOnStage";
 import { useSpeakingPerson } from "../../components/useSpeakingPerson";
 import "./encounter.css";
@@ -75,9 +76,15 @@ export function EpilogueScreen({
   const speaking = speakingPerson(storyState.people, frame);
   const speakingOn = useSpeakingPerson(speaking, frame.speaker === "enemy" || !!personReaction);
   const opposite = speakingOn ?? (person && personOn ? person.characterId : undefined);
-  const enemyName = person?.nameJa ?? battles.find((battle) => battle.id === episode?.battleId)?.enemyNameJa;
+  const finaleOpponent = battles.find((battle) => battle.id === episode?.battleId);
+  const enemyName = person?.nameJa ?? finaleOpponent?.enemyNameJa;
   const { name: speaker, narration } = speakerPlate(frame, { heroine: game.heroineName, player: game.playerName, enemy: enemyName },
     storyState.people);
+  // A line's `# cutin: name` shows its speaker's name plate for a moment (NameCutIn): for `# speaker: enemy`, the scene's
+  // person, else the city finale's opponent (as its plate names them). The city's title card over an arrival holds it.
+  const enemyCut = person ? { nameJa: person.nameJa, ...(person.titleJa ? { titleJa: person.titleJa } : {}) }
+    : finaleOpponent && { nameJa: finaleOpponent.enemyNameJa, titleJa: finaleOpponent.enemyTitleJa };
+  const nameCut = useNameCutIn(nameCutIn(frame, enemyCut, storyState.people), active.storyState, showLogo);
   const label = active.kind === "tour_leg"
     ? { eyebrow: "ツアー", heading: leg?.labelJa ?? "ツアーの移動", region: "ツアーの移動の語り", next: "ツアーを続ける", testId: "tour-leg-screen" }
     : arrival ? { eyebrow: "旅のはじまり", heading: `${city.nameJa}に到着`, region: "到着の会話", next: "街を見に行く", testId: "city-arrival-screen" }
@@ -149,16 +156,17 @@ export function EpilogueScreen({
           aria-hidden={windowVisibility.hidden || showLogo || undefined}
         >
           <DialogueWindowHead
+            cutIn={nameCut}
             speaker={showsSpeakerPlate(frame) && speaker}
             narration={narration}
             controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
           />
           <div ref={dialogueRef} className="vn-window-body">
-          {/* An arrival shows its city's title card and the scene label instead: its heading stays for screen
-              readers and for the focus only (2026-11-11 user decision). */}
-          <p className={arrival ? "eyebrow sr-only" : "eyebrow"}>{label.eyebrow}</p>
+          {/* The scene label names the scene (an arrival's city also has its title card): the heading stays for
+              screen readers and for the focus only, in an arrival, an epilogue and a tour leg (2026-11-11 user decision). */}
+          <p className="eyebrow sr-only">{label.eyebrow}</p>
           {/* Takes a lost focus when the talk opens (scene-focus.ts); inert under an arrival's title card. */}
-          <h1 className={arrival ? "sr-only" : undefined} tabIndex={-1}>{label.heading}</h1>
+          <h1 className="sr-only" tabIndex={-1}>{label.heading}</h1>
           <LineStage frame={frame} names={{ heroine: game.heroineName, player: game.playerName, enemy: enemyName }} compact={frame.choices.length > 0}>
             <DialogueText
               key={game.revision}

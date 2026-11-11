@@ -18,13 +18,15 @@ INCLUDE modules.ink
 すごい……。上のビルの音が、ここから急に聞こえなくなる。町の真ん中に、穴が空いてるみたい
 # speaker: narrator
 階段の途中で、大学生くらいの二人が言い争っていた。携帯を構えた青年と、白いドゥパッターを頭からかぶった女の子。
-# speaker: gt_kunal
+# speaker: gt_delhi_agrasen_young_man
 ジャスミート、今のは悲鳴じゃない。あくびだ
 # speaker: gt_jasmeet
+# cutin: name
 本当に怖くないのに、本物の声なんか出ないってば
 # speaker: narrator
 青年が、二人に気づいた。正確には、彼女に。
 # speaker: gt_kunal
+# cutin: name
 クナールです。こっちはジャスミート。怖い動画を撮って、ネットに載せてるんです。お願いがあります。一人で底まで下りていく外国の旅行者、の役。最後に悲鳴を一つ。三十秒で終わります
 # speaker: heroine
 # reaction: heroine,exasperated,sweat

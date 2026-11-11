@@ -38,6 +38,7 @@ INCLUDE modules.ink
     # speaker: narrator
     宿の帳場の机で、制服の女の子が鉛筆をかじっていた。
     # speaker: enemy
+    # cutin: name
     あ、お客さん。わたし、ルーヒー。この宿の娘で、十三歳。英語の作文の宿題なの。題は、デリーでいちばん好きな場所
 }
 # speaker: enemy
@@ -225,6 +226,7 @@ INCLUDE modules.ink
     クミンの水。わたしが作った。……宿題を手伝ってくれたお礼、半分ね
 - else:
     # speaker: enemy
+    # cutin: name
     わたし、ルーヒー。十三歳。これは、クミンを煮出した水
     # speaker: enemy
     わたし、ゴルガッパなら百個食べても平気。デリーの子だから

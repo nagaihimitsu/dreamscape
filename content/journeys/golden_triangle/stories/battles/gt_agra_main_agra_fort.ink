@@ -4,22 +4,24 @@ INCLUDE modules.ink
 川に面した八角形の塔。白い大理石の欄干の向こうに、遠くタージ・マハルが霞んで見える。
 # speaker: narrator
 旗を掲げた添乗員の後ろで、ツアーの一行が出口へ流れていく。ただ一人、鳥打ち帽の老人だけが、床にあぐらをかいて動かなかった。
-# speaker: enemy
+# speaker: gt_agra_fort_old_man
 断る
 # speaker: narrator
 添乗員の若い女性が、携帯を二台握ったまま頭を下げる。胸の名札にはリヤとある。
 # speaker: gt_riya
+# cutin: name
 大佐、バスが出ます。ジャイプールまで五時間なんです
-# speaker: enemy
+# speaker: gt_agra_fort_old_man
 シャー・ジャハーンは、この塔に八年座っていた。わしは八十分でいい。これは座り込みだ。平和的な抗議である
 # speaker: narrator
 老人の視線が、近くにいた{heroine_name}たちを捉えた。背筋がさらに伸びる。
-# speaker: enemy
+# speaker: gt_agra_fort_old_man
 ちょうどいい。君たちを国際監視団に任命する。この抗議が平和的であることを見届けたまえ
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 こ、国際……？　わたしたち、ただの観光客です
 # speaker: enemy
+# cutin: name
 ドゥッガル。退役した陸軍大佐だ。観光客でも、目は二つある。十分だ
 # speaker: narrator
 リヤが、すがるような目でこちらを見た。{heroine_name}は、おそるおそる大佐の隣にしゃがむ。

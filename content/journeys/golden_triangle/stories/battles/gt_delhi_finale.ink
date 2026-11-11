@@ -12,6 +12,7 @@ INCLUDE modules.ink
 # speaker: narrator
 宿の主人が、こちらを指さした。青年が電話を切り、まっすぐ歩いてくる。
 # speaker: enemy
+# cutin: name
 アマンです。カムラの孫です。この前、路地で祖母と話していたのは、あなたたちですね
 # speaker: heroine
 # reaction: heroine,surprised,question

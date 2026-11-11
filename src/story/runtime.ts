@@ -3,7 +3,7 @@ import { z } from "zod";
 import { presentation, scenes, stories, tagContext } from "../content";
 import { splitStoryAddress, storyFileOf } from "../content/story-address";
 import { fnvHash } from "../content/fingerprint";
-import { LETTER_KINDS, LINE_PAUSE_MS, parseStoryTags, PHONE_SIDES, QUIET_SPANS, STAND_POSITIONS, STORY_CALLS, type StoryCall } from "../content/tags";
+import { CUTIN_KINDS, LETTER_KINDS, LINE_PAUSE_MS, parseStoryTags, PHONE_SIDES, QUIET_SPANS, STAND_POSITIONS, STORY_CALLS, type StoryCall } from "../content/tags";
 import { readStoryFrame, STACK_MAX, storyChoicesOf, type Speaker, type StoryStep } from "./frame-reader";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import { bindMemoryReader } from "./memory";
@@ -49,6 +49,7 @@ export const storyFrameSchema = z
     }).strict().optional(),
     quiet: z.enum(QUIET_SPANS).optional(),
     stand: z.enum(STAND_POSITIONS).optional(),
+    cutin: z.enum(CUTIN_KINDS).optional(),
     choices: z
       .array(
         z

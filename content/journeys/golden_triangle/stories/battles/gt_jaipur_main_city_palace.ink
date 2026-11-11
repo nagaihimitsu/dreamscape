@@ -4,17 +4,19 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_city_palace
 # speaker: narrator
 宮殿の中庭の一角に、人の背丈ほどもある銀の壺が二つ、並んで光っていた。{heroine_name}がその大きさに口を開けていると、すぐ隣で言い争う声が始まった。
-# speaker: enemy
+# speaker: gt_jaipur_city_palace_woman
 五キロ！　五キロのどこが多いの！
 # speaker: narrator
 サリー姿の女性と、二十代半ばの青年。青年の手には、荷物の重さを測る小さな秤。女性の手提げからは、ガラス瓶がのぞいている。
 # speaker: gt_jaipur_city_palace_young_man
 母さん、預け荷物は二十三キロまでなんだ。漬物だけで五キロは無理だって
 # speaker: gt_vishal
+# cutin: name
 すみません、騒がしくて。ヴィシャールです。来週、仕事でドイツに発つんです。母のスシュマは、ぼくのために漬けたライムとマンゴーの漬物を、全部持たせるつもりで
 # speaker: gt_vishal
 最後の週末だから、家族で宮殿を見に来たんですけど
 # speaker: enemy
+# cutin: name
 ちょっと、そこの旅行者さん。あなた、外国から来たのよね
 # speaker: heroine
 # reaction: heroine,surprised,question

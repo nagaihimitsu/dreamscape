@@ -5,11 +5,13 @@
 // - quiz_correct と battle_score のどの組合せでも日本語の台詞が出るようにする。
 // - 勝ち負けで相手を改心させて終える定型にせず、相手にも筋の通った願いを持たせる。
 // - 見本の人物と言い伝えは架空。
+// - 行の札 # cutin: name は、その行の話し手の名札（役どころと名前）を少しのあいだ場面の上に出す。名前が初めて出る行に書く。
 INCLUDE modules.ink
 # background: smp_bg_mihon_clock_tower
 # speaker: narrator
 夕方の広場で、町長のハンナが図面を広げていた。新しい歯車の絵に、赤い丸がついている。
 # speaker: enemy
+# cutin: name
 「来月、時計を動かします。旅の人に『時間にいいかげんな街』と言われるのは、もう嫌なの」
 # speaker: heroine
 「動かしたら、三時の約束はどうなるんですか」
@@ -79,4 +81,6 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 ハンナが図面を丸めると、塔の上でトーマが小さく手を振った。
+# speaker: smp_mihon_toma
+「鐘の音、上まで届きましたよ。また鳴らしに来てください」
 -> END

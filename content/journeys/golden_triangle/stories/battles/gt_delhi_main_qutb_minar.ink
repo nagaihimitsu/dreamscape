@@ -9,12 +9,13 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
 だ、だめです！
-# speaker: enemy
+# speaker: gt_delhi_qutb_man
 # reaction: enemy,sweat
 放してください。三十秒で済みます。背中をつけて、腕を回すだけです
 # speaker: narrator
 男は柵の上で片足立ちのまま、名乗った。
 # speaker: enemy
+# cutin: name
 ラームキシャンです。ウッタル・プラデーシュ州の町から、夜行バスで来ました
 # speaker: enemy
 祖父は結婚の前に、この柱を抱きました。父は就職の面接の前に。来月、娘が高校の卒業試験を受けるんです

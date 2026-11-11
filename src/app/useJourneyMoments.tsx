@@ -73,7 +73,7 @@ export function useJourneyMoments({ game, screen, resumed, reduceMotion, effectP
     committed,
     restart,
     openEndRoll: () => setEndRoll(true),
-    /** The title card waits or shows: a battle's opening name plate waits for it (BattleScreen's introHeld). */
+    /** The title card waits or shows: a battle's name plate (`# cutin: name`) waits for it (BattleScreen's introHeld). */
     titleHolding: !!titleCard,
     /** The packing, shown in place of the screen (null when none). */
     packingScene: packing && <PackingScene packing={packing} reduceMotion={reduceMotion} onEnd={() => setPacking(null)} />,

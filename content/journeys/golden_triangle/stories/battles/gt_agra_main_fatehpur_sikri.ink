@@ -4,12 +4,13 @@ INCLUDE modules.ink
 巨大な門へ続く急な石段の途中で、{heroine_name}は息を整えていた。見上げるアーチの内側に、流れるような文字が刻まれている。
 # speaker: narrator
 同じ段に、男が一人座っていた。五十過ぎ。ヘルメットの跡がついた髪。携帯の翻訳アプリを碑文に向けたまま、笑っているのか泣いているのか分からない声を出している。
-# speaker: enemy
+# speaker: gt_agra_fatehpur_man
 家を、建てるな……だと
 # speaker: heroine
 # reaction: heroine,surprised,question
 だ、大丈夫ですか？
 # speaker: enemy
+# cutin: name
 大丈夫に見えますか。ムケーシュ、建設業です。人の家を三十年建ててきて、三年前から、自分の家を建てている
 # speaker: narrator
 アーグラの郊外。二階建て。貯金と借金で四百万ルピー。今日の午後四時に、屋根のコンクリートを流すミキサー車が来るという。

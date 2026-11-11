@@ -11,6 +11,7 @@ INCLUDE modules.ink
 えっ、えっ、わたし？　待って、四十人？
 # speaker: enemy
 # reaction: enemy,sigh
+# cutin: name
 三十八人です。二人はトイレ。……すみません、引率のニディです
 # speaker: narrator
 ショールを肩に掛け直した女性が、笛を首から下げたまま頭を下げる。下げ方が速い。謝り慣れている。
@@ -32,6 +33,7 @@ INCLUDE modules.ink
 # speaker: narrator
 一瞬で列ができた。歌はよほど嫌らしい。先頭は三つ編みの女の子。ノートの文字は几帳面で、質問には番号まで振ってある。
 # speaker: gt_anjali
+# cutin: name
 学級委員のアンジャリです。質問は、番号順にします
 # speaker: narrator
 列の最後に、一人だけノートを閉じたままの少年がいる。前の子の背中ばかり見ていた。
@@ -73,11 +75,13 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_red_fort
 { quiz_correct:
     # speaker: gt_sonu
+    # cutin: name
     正解！
     # speaker: narrator
     ソーヌーはそう叫んで、城壁に向かって演説の真似を始めた。手振りが大きすぎて、土産物屋の棚の鈴が一斉に鳴った。
 - else:
     # speaker: gt_sonu
+    # cutin: name
     ブブー
     # speaker: narrator
     ソーヌーはそう言って、城壁の上で国旗を掲げる首相の真似を始めた。手振りが大きすぎて、土産物屋の棚の鈴が一斉に鳴った。
@@ -104,6 +108,7 @@ INCLUDE modules.ink
 # speaker: narrator
 三十秒。ファイズはノートを開き、一行書いて、こちらへ向けた。それから、かすれた声で読み上げた。
 # speaker: gt_faiz
+# cutin: name
 この楽園に住んでいた人は、ここで、どうなったの
 # speaker: narrator
 騒いでいた子どもたちが、一人ずつ黙っていった。

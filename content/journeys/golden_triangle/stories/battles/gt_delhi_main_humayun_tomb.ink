@@ -10,8 +10,10 @@ INCLUDE modules.ink
 # reaction: heroine,surprised,interrobang
 と、友達？　今から？
 # speaker: gt_mehr
+# cutin: name
 わたし、メヘル。こっちはカビール。大学の同級生なの。今、西門から、わたしの叔父さんが入ってきたの
 # speaker: gt_kabir
+# cutin: name
 ……カビールです
 # speaker: gt_mehr
 二人きりでいるところを見られたら、夕飯の前にお母さんに知れる。お母さんに知れたら、親戚中に知れる！
@@ -22,15 +24,16 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: worried
 え、でも、わたし、嘘は……
-# speaker: enemy
+# speaker: gt_delhi_humayun_man
 メヘル！
 # speaker: narrator
 返事より先に、太い声が飛んできた。口ひげ、腹の上で張ったクルタ、手にはなぜか新聞。大股で近づいてくる。
-# speaker: enemy
+# speaker: gt_delhi_humayun_man
 こんな所で何をしている。……そっちの若いのは誰だ
 # speaker: narrator
 メヘルが、外国の友達とガイド役の同級生だと説明する。{heroine_name}は否定しなかった。否定しそびれた、の方が近い。
 # speaker: enemy
+# cutin: name
 スレーシュだ。この子の叔父。所得税の調査官を三十五年やった。話の合わない申告は、匂いで分かる
 # speaker: narrator
 スレーシュはこちらに鼻を向け、本当に匂いをかぐ仕草をした。それから新聞を丸め、指揮棒のように振る。

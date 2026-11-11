@@ -1,6 +1,7 @@
 INCLUDE modules.ink
 # background: milano_galleria
 # speaker: enemy
+# cutin: name
 # reaction: heroine,serious
 「そのまま、そのまま。今度は初めて会った感じで、こっちに笑って。」
 # speaker: heroine
