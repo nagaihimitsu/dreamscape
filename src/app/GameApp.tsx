@@ -9,7 +9,7 @@ import {
 } from "../content";
 import { defaultJourneyId, getJourney } from "../content/journeys";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
-import { waitForTravel } from "../domain/travel-game";
+import { dayEndRest, waitForTravel } from "../domain/travel-game";
 import { rentTransport } from "../domain/transport";
 import { bookTour, cancelTourBooking, runningTour, tourLegUnderway, tourSceneBadge } from "../domain/tour";
 import { getTransportMode } from "../content/transport";
@@ -165,10 +165,21 @@ export function GameApp({
   }, [storyScene]);
   const titleActions = titleSaveActions(loaded);
   const learning = useLearning(game, storage, !isDebug);
-  const { travelToEvent, returnToHotel, playMove, effects: travelEffects } = useTravelEffects({
+  const { travelToEvent, returnToHotel, restAtDayEnd, playMove, playing: travelEffectPlaying, effects: travelEffects } = useTravelEffects({
     getCurrent, commit, nextRomanceRoll, reduceMotion: displaySettings.value.reduceMotion,
   });
   playMoveRef.current = playMove;
+  // The day's end (docs/02 「休む」): free time at 21:00 or later is not left for 「休む」 to be pressed. When control comes back to
+  // it (after a move, a wait, a scene, a date or a tour, a load, the page's start) the game rests by itself through the same
+  // action as 「休む」 (dayEndRest: its cheapest way home), and its night card plays. Before paint, so that late free time is not
+  // shown first; after a ride's or a night's art that is still playing (they cover only part of the screen). Once a night:
+  // the rest makes it the next morning, a second call for the same state (StrictMode, a re-render) finds the effect queue
+  // busy or the revision moved on (sleepAtHotel), and a refused rest (a failed save) is not tried again for the same state.
+  useLayoutEffect(() => {
+    if (!game || travelEffectPlaying) return;
+    const way = dayEndRest(game);
+    if (way) restAtDayEnd(way, game.revision);
+  }, [game, travelEffectPlaying]);
   const [englishOpen, setEnglishOpen] = useState(
     () => !!learning.data.openQuestion,
   );

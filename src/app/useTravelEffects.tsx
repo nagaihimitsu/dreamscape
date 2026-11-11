@@ -6,6 +6,8 @@ import { tourLegsBetween } from "../domain/tour";
 import { beginTravelEvent, sleepAtHotel, type TravelMode } from "../domain/travel-game";
 import { TravelTransition } from "../features/journey/TravelTransition";
 import { TimePassage } from "../features/journey/TimePassage";
+import { NightRest } from "../features/journey/NightRest";
+import type { HomeRoute } from "../domain/travel-routes";
 import type { GameChange } from "./useGameSession";
 
 /** The declared labels and art of a route's mode; content:build refuses undeclared modes, so the fallback never shows in built content. */
@@ -15,9 +17,13 @@ function presentation(cityId: string, mode: TravelMode): TransportMode {
 /** A tour's leg drawn like a ride (tour stage 2a): its own caption and art kind, not one of the journey's modes. */
 const legArt = (leg: TourLeg): TransportMode => ({ id: leg.id, nameJa: leg.labelJa, movingJa: leg.vehicle.movingJa, kind: leg.vehicle.kind });
 
-/** One decorative effect after a saved change: a ride (its art) or the night (「次の日」). */
-type Effect = { kind: "move"; mode: TransportMode } | { kind: "night" };
+/**
+ * One decorative effect after a saved change: a ride (its art), the night (「次の日」), or the day's end (the night card of
+ * the rest the game took by itself at 21:00).
+ */
+type Effect = { kind: "move"; mode: TransportMode } | { kind: "night" } | { kind: "day_end" };
 const night: Effect = { kind: "night" };
+const dayEnd: Effect = { kind: "day_end" };
 
 /** Plays decorative effects only after a successful, already-saved movement, one after another. */
 export function useTravelEffects({ getCurrent, commit, nextRomanceRoll, reduceMotion }: {
@@ -51,7 +57,8 @@ export function useTravelEffects({ getCurrent, commit, nextRomanceRoll, reduceMo
         before.travel.currentPlaceId !== after.travel.currentPlaceId) play([move(after.currentCityId, mode)]);
     return succeeded;
   }
-  function returnToHotel(mode: TravelMode, viaPlaceId: string | null, revision: number) {
+  /** 「休む」 by the way home the player chose, or (`byItself`) the rest the game takes at the day's end (restAtDayEnd). */
+  function restAtHotel(mode: TravelMode, viaPlaceId: string | null, revision: number, byItself: boolean) {
     if (pending.current) return false;
     const before = getCurrent();
     const succeeded = ownCommit((state) => sleepAtHotel(state, mode, revision, viaPlaceId, nextRomanceRoll));
@@ -61,11 +68,27 @@ export function useTravelEffects({ getCurrent, commit, nextRomanceRoll, reduceMo
       // A booked tour that started in the same action (tour stage 2a) has taken the party on from the hotel: the ride home, the
       // night, then the tour's legs.
       const tour = legs(before, after);
+      // The day's end: its night card first (the ride home is part of it), over whatever the rest led to; a night still to
+      // come after the hotel's scenes plays its 「次の日」 later from the marks, as after 「休む」.
+      if (byItself) {
+        play([dayEnd, ...tour]);
+        return succeeded;
+      }
       const moved = tour.length ? before.travel.currentPlaceId !== before.travel.hotelPlaceId : before.travel.currentPlaceId !== after.travel.currentPlaceId;
       const slept = after.travel.day !== before.travel.day;
       play([...(moved ? [move(before.currentCityId, mode)] : []), ...(slept ? [night] : []), ...tour]);
     }
     return succeeded;
+  }
+  function returnToHotel(mode: TravelMode, viaPlaceId: string | null, revision: number) {
+    return restAtHotel(mode, viaPlaceId, revision, false);
+  }
+  /**
+   * The day's end (GameApp, dayEndRest): the same rest as 「休む」 by `way`, then the night card 「夜も更けたので、ホテルで休みました。」.
+   * Refused while an effect plays (GameApp asks again once it has ended) and for a revision that has moved on.
+   */
+  function restAtDayEnd(way: HomeRoute, revision: number) {
+    return restAtHotel(way.mode, way.viaPlaceId ?? null, revision, true);
   }
   /**
    * A move or a night inside a scene's action (4.7): a `# then: move` (stage 3b), a trip whose move waited for its
@@ -98,6 +121,9 @@ export function useTravelEffects({ getCurrent, commit, nextRomanceRoll, reduceMo
   const effects = <>
     {current?.kind === "move" && <TravelTransition key={`${queue.length}:${current.mode.id}`} mode={current.mode} reduceMotion={reduceMotion} onEnd={done} />}
     {current?.kind === "night" && <TimePassage key={`${queue.length}:night`} reduceMotion={reduceMotion} onEnd={done} />}
+    {current?.kind === "day_end" && <NightRest key={`${queue.length}:day_end`} reduceMotion={reduceMotion} onEnd={done} />}
   </>;
-  return { travelToEvent, returnToHotel, playMove, effects };
+  /** An effect is on screen (the day's end waits for it to end). */
+  const playing = queue.length > 0;
+  return { travelToEvent, returnToHotel, restAtDayEnd, playMove, playing, effects };
 }

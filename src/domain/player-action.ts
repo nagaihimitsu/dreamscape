@@ -90,7 +90,9 @@ export type PlayerAction =
  * What the player can do now: every enabled control of the screen this state shows, built from
  * the same availability rules the screens use (GameApp picks the screen by the same order:
  * encounter, epilogue, sightseeing, battle, date, free time). Used by the exploration tests;
- * when a screen gains or changes a control, change this list with it.
+ * when a screen gains or changes a control, change this list with it. Free time at the day's end
+ * (21:00 or later) still lists its controls, although GameApp rests there by itself (dayEndRest)
+ * before the screen shows: the walks try more than the screen offers.
  */
 export function listPlayerActions(state: GameState): PlayerAction[] {
   const screen = screenFor(state);
