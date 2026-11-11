@@ -1,8 +1,8 @@
 // B案「写真札で旅先を選ぶ」 (docs/02 「自由時間の画面」), its rules as pure functions: the row of cards (「待機」, each place
 // with all its events, then the tour and 「ホテルに戻る」) and the card chosen first, the selection each card stands for,
 // the event and way a swipe up takes, the fill and the tag that say what a place holds, how a card is read out, how the
-// arrow keys and a flick move the choice, how big each card of the row is, when a swipe up departs, and when the cards
-// stand in a vertical list. The game's rules stay where they are: these only arrange what getTravelDestinations and
+// arrow keys and a flick move the choice, how big each card of the row is, where a drag of the screen starts and which
+// way it goes, when a swipe up departs, and when the cards stand in a vertical list. The game's rules stay where they are: these only arrange what getTravelDestinations and
 // destinationChoicesOf say.
 import type { DestinationChoices, EventChoice, RouteChoice, TravelDestinationEvent, TravelDestinationPlace } from "../../domain/travel-destinations";
 import type { TravelMode } from "../../domain/travel-game";
@@ -202,6 +202,59 @@ export function cardScales(centres: readonly number[], centre: number, step: num
   });
 }
 
+/** How far a finger moves before a press counts as a drag (px): a press that moves less is a tap on what it started on. */
+export const DRAG_SLOP_PX = 10;
+/** A lifted card's drag this far sideways, and more sideways than up, is no swipe up any more: the card comes back. */
+export const SIDEWAYS_PX = 32;
+
+/** The way a drag goes, decided by its first movement past DRAG_SLOP_PX. */
+export type DragDirection = "sideways" | "up" | "down";
+
+/** The way a drag of `dx`, `dy` px goes (`dy` positive downwards; as far across as up or down is sideways), null within the slop. */
+export function dragDirection(dx: number, dy: number): DragDirection | null {
+  if (Math.hypot(dx, dy) < DRAG_SLOP_PX) return null;
+  if (Math.abs(dx) >= Math.abs(dy)) return "sideways";
+  return dy < 0 ? "up" : "down";
+}
+
+/** Whether a lifted card's drag (`dx`, `dy` from its start) has turned sideways: it comes back. */
+export function liftTurnedSideways(dx: number, dy: number): boolean {
+  return Math.abs(dx) >= SIDEWAYS_PX && Math.abs(dx) > -dy;
+}
+
+/** Where a drag of the free-time screen starts (the row arrangement): on the row of cards, or elsewhere on the screen. */
+export type SwipeArea = "row" | "screen";
+
+/**
+ * The area a press starts a drag in: the row, else the rest of the screen, or none (null) where `excluded` (the header
+ * and its menus, a dialog, a text field) and, while the page is pinch-zoomed in, off the row (the page pans there).
+ */
+export function swipeArea({ onRow, excluded, zoomed }: { onRow: boolean; excluded: boolean; zoomed: boolean }): SwipeArea | null {
+  if (excluded) return null;
+  if (onRow) return "row";
+  return zoomed ? null : "screen";
+}
+
+/**
+ * Whether a drag up lifts the chosen card: from the row, always; from elsewhere on the screen only once the page has
+ * nothing left below (`atEnd`: until then a drag up scrolls the page, so reading never loses its scroll) and at least
+ * half the card is on the screen (`cardShown`: the card that flies is seen).
+ */
+export function liftsCard({ area, atEnd, cardShown }: { area: SwipeArea; atEnd: boolean; cardShown: boolean }): boolean {
+  return area === "row" || (atEnd && cardShown);
+}
+
+/** Whether the page is scrolled to its end or fits the screen (px: its scroll position, the visible height, its whole height). */
+export function pageAtEnd({ top, viewport, height }: { top: number; viewport: number; height: number }): boolean {
+  return top + viewport >= height - 2;
+}
+
+/** Whether at least half of a card (its `top` and `bottom` on the screen, px) is within a screen `viewport` px tall. */
+export function halfShown({ top, bottom, viewport }: { top: number; bottom: number; viewport: number }): boolean {
+  const height = bottom - top;
+  return height > 0 && Math.min(bottom, viewport) - Math.max(top, 0) >= height / 2;
+}
+
 /** A released swipe up departs once the card went up this share of its height … */
 export const SWIPE_DEPART_SHARE = 1 / 3;
 /** … or on a flick up: at least this fast (px per ms) over its last moment (FLICK_WINDOW_MS), and this far. */
@@ -209,15 +262,40 @@ export const FLICK_SPEED = 0.5;
 export const FLICK_MIN_PX = 24;
 export const FLICK_WINDOW_MS = 80;
 
-/** A pointer's height on the screen at a moment (ms). */
-export type SwipeSample = { t: number; y: number };
+/** A pointer's place on the screen (px) at a moment (ms). */
+export type SwipeSample = { t: number; x: number; y: number };
 
-/** The speed (px per ms, negative upwards) over the last FLICK_WINDOW_MS of the samples (the last is the release); 0 for one. */
-export function flickSpeed(samples: readonly SwipeSample[]): number {
+/**
+ * The speed along `axis` (px per ms, negative upwards or leftwards) over the last FLICK_WINDOW_MS of the samples (the
+ * last is the release); 0 for one.
+ */
+export function flickSpeed(samples: readonly SwipeSample[], axis: "x" | "y"): number {
   const last = samples[samples.length - 1];
   if (!last) return 0;
   const first = samples.find((sample) => last.t - sample.t <= FLICK_WINDOW_MS) ?? last;
-  return last.t > first.t ? (last.y - first.y) / (last.t - first.t) : 0;
+  return last.t > first.t ? (last[axis] - first[axis]) / (last.t - first.t) : 0;
+}
+
+/** How far a sideways drag of the screen glides on once let go: its release speed for this long (ms). */
+export const GLIDE_MS = 200;
+
+/**
+ * The card a sideways drag of the screen leaves in the row's centre (`centres` and `centre` as nearestIndex; `speed` the
+ * row's scroll speed at the release, px per ms, positive towards the row's end): the one nearest where the row glides
+ * to (GLIDE_MS on). A flick (FLICK_SPEED or faster) goes on at least to the next card its way, as the row's own snap
+ * does after a flick; at either end of the row it stays on the end card.
+ */
+export function glideIndex(centres: readonly number[], centre: number, speed: number): number | null {
+  const landing = centre + speed * GLIDE_MS;
+  if (Math.abs(speed) >= FLICK_SPEED) {
+    let best: number | null = null;
+    for (let index = 0; index < centres.length; index++) {
+      const ahead = (centres[index] - centre) * Math.sign(speed) > 1;
+      if (ahead && (best === null || Math.abs(centres[index] - landing) < Math.abs(centres[best] - landing))) best = index;
+    }
+    if (best !== null) return best;
+  }
+  return nearestIndex(centres, landing);
 }
 
 /** Whether a released swipe departs: `lift` (px, negative upwards) of a card `height` px tall, at `speed` (flickSpeed). */
