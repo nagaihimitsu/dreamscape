@@ -5,7 +5,7 @@ import { citySchema, battleCatalogSchema, dateCatalogSchema, presentationSchema,
 import { dateDestinationsSchema } from "../src/content/date-destinations";
 import { journeySchema } from "../src/content/journey-schemas";
 import type { Journey } from "../src/content/journey-catalog";
-import { tourismCatalogSchema } from "../src/content/tourism-schemas";
+import { hasObservation, tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { learningCatalogSchema, questionSource } from "../src/content/learning-schema";
 import { existsSync, readFileSync } from "node:fs";
@@ -158,7 +158,8 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
           if (landmark.guideStoryId && !input.storyExists(landmark.guideStoryId)) problem(eventIssues, "guide_story_missing", `観光案内の脚本が未登録: ${landmark.guideStoryId}`);
           const asset = input.tourism.assets.find((item) => item.id === landmark.imageAssetId);
           if (!asset || asset.isPlaceholder || !input.assetExists(asset.path)) problem(eventIssues, "observation_image_missing", `観察用画像が未完成: ${event.placeId}`);
-          if (!landmark.clueIds.length) problem(eventIssues, "observations_missing", `観察ポイント・資料が未登録: ${event.placeId}`);
+          // A landmark without an observation (observation: false, the author's choice per place) needs no clues.
+          if (hasObservation(landmark) && !landmark.clueIds.length) problem(eventIssues, "observations_missing", `観察ポイント・資料が未登録: ${event.placeId}`);
           for (const clueId of landmark.clueIds) if (!input.tourism.clues.some((clue) => clue.id === clueId && clue.landmarkId === landmark.id))
             problem(eventIssues, "observation_mismatch", `観察ポイントの参照が不一致: ${clueId}`);
         }

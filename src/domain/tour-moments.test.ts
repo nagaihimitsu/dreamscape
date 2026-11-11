@@ -23,11 +23,11 @@ describe("a tour step's moment (tour stages 2b, 3)", () => {
 
   it("runs an event step's scenes around its visit's main group", () => {
     const visit: Occasion = { kind: "visit", tour: { id: tourId, step: "visit" }, eventId: "gt_agra_main_fatehpur_sikri", landmarkId: "agra_fatehpur_sikri",
-      parts: ["guide", "observe", "battle"], ran: [], at: null, started: [] };
-    expect(occasionSteps(visit)).toEqual([{ part: "guide" }, { part: "observe" }, { part: "battle" }, { scene: "gt_agra_tour_mathri" }]);
+      parts: ["guide", "battle"], ran: [], at: null, started: [] };
+    expect(occasionSteps(visit)).toEqual([{ part: "guide" }, { part: "battle" }, { scene: "gt_agra_tour_mathri" }]);
     // The same visit outside a tour has none of them.
     const { tour: _tour, ...alone } = visit;
-    expect(occasionSteps(alone)).toEqual([{ part: "guide" }, { part: "observe" }, { part: "battle" }]);
+    expect(occasionSteps(alone)).toEqual([{ part: "guide" }, { part: "battle" }]);
   });
 
   it("draws a leg once its moment has moved the party, names it while riding, and tags the leg's scenes 「ツアー」", () => {

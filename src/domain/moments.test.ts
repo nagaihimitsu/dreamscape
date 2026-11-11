@@ -261,7 +261,8 @@ describe("a then: move to a main part that cannot open now (4.2, 2.3; the Golden
     const morning = playUntil(restore(applyPlayerAction(free, (state) => sleepAtHotel(state, "walk", state.revision, undefined, () => 0), () => 0)),
       (state) => state.travel.day === 2 && !state.occasion);
     const visit = restore(applyPlayerAction(morning, (state) => beginTravelEvent(state, "gt_delhi_main_jama_masjid", "walk", state.revision, () => 0), () => 0));
-    expect(visit.occasion?.parts).toEqual(["guide", "observe", "battle"]);
+    // The Golden Triangle's visits have no observation (2026-11-11, the user's decision).
+    expect(visit.occasion?.parts).toEqual(["guide", "battle"]);
     expect(visit.activeTourism?.phase).toBe("guide");
   });
 });
