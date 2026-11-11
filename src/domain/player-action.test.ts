@@ -17,7 +17,7 @@ import { applyPlayerAction, listPlayerActions, playerActionChange, type PlayerAc
 import { canClaimPendingRewards } from "./rewards";
 import { getTravelWaitOptions } from "./travel-destinations";
 import { installTourTestCity, testTour } from "../dev/test-tours";
-import { DAY_END } from "./travel";
+import { DAY_END, NIGHT_START } from "./travel";
 
 const roll = () => 0;
 const kinds = (actions: PlayerAction[]) => actions.map((action) => action.kind);
@@ -170,11 +170,12 @@ describe("the actions a player can take now", () => {
     } finally { cleanup(); }
   });
 
-  it("waiting offers 30 minutes and the next opening, each only while it still ends before the day does", () => {
+  it("waiting offers 30 minutes and the night's start, each only while it still ends before the day does", () => {
     const morning = newJourney(defaultJourneyId);
-    const [thirty, ...rest] = getTravelWaitOptions(morning);
-    expect(thirty).toEqual({ minutes: 30, until: null, available: true });
-    for (const option of rest) expect(option.minutes).toBe(option.until! - morning.travel.minute);
+    expect(getTravelWaitOptions(morning)).toEqual([
+      { minutes: 30, until: null, available: true },
+      { minutes: NIGHT_START - morning.travel.minute, until: NIGHT_START, available: true },
+    ]);
     const late = { ...morning, travel: { ...morning.travel, minute: DAY_END - 20 } };
     expect(getTravelWaitOptions(late)[0]).toEqual({ minutes: 30, until: null, available: false });
   });

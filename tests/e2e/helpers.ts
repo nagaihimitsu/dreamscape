@@ -461,8 +461,8 @@ export const ops = {
     await chooseInCard(dialog.getByTestId("map-selection").getByTestId("place-card"), placeId, choice);
   },
   /**
-   * 「ホテルに戻る」, the last card of free time's row: returns its card (休む's ways home) once its ways home take presses
-   * (armed). 待機's 「…待つ」 are on 「待機」, the first card.
+   * 「ホテルに戻る」, the last card of free time's row: returns its card (休む's ways home, one always chosen, and its 「休む」)
+   * once 「休む」 takes presses (armed). 待機's waits are on 「待機」, the first card, chosen the same way (then its 「待つ」).
    */
   async stay(page: Page): Promise<Locator> {
     const menu = page.getByTestId("travel-menu");
@@ -471,11 +471,18 @@ export const ops = {
     await expect(card).toHaveAttribute("data-armed", "true");
     return card;
   },
-  /** 休む: 「ホテルに戻る」, then its way home `mode` (via `viaPlaceId`; at the hotel 「ここで休む」, walking). */
+  /**
+   * 休む: 「ホテルに戻る」, its way home `mode` chosen (via `viaPlaceId`; at the hotel 「ホテルに戻って休む」, walking), then
+   * its 「休む」 (ops.pressGo: in the row it is for screen readers and keys only, pressed by Enter; a finger swipes the
+   * photo card up instead).
+   */
   async sleep(page: Page, { mode = "walk", viaPlaceId }: { mode?: string; viaPlaceId?: string } = {}) {
-    const route = (await ops.stay(page)).getByTestId(`travel-sleep-route-${mode}${viaPlaceId ? `-${viaPlaceId}` : ""}`);
-    expect(await route.count(), `a way home by ${mode}${viaPlaceId ? ` via ${viaPlaceId}` : ""}`).toBe(1);
-    await route.click();
+    const card = await ops.stay(page);
+    const way = card.getByTestId(`travel-sleep-route-${mode}${viaPlaceId ? `-${viaPlaceId}` : ""}`);
+    expect(await way.count(), `a way home by ${mode}${viaPlaceId ? ` via ${viaPlaceId}` : ""}`).toBe(1);
+    await way.click();
+    await expect(way).toHaveAttribute("aria-pressed", "true");
+    await ops.pressGo(card.getByTestId("travel-sleep-go"));
   },
   /** The tour's card in free time's row (tour stage 2a; B案): a booked tour's line with its cancel, and 「ツアーを見る」. */
   async tourCard(page: Page): Promise<Locator> {

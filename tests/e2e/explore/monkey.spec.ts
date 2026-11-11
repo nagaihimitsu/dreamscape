@@ -6,7 +6,7 @@ import { bothStorages, devModules, expect, journeyCatalog, ops, placeSave, saveK
 // Weekly monkey (docs/10「探索テスト」; research E2E-8). Not a gate: it runs only with
 // playwright.explore.config.ts (`npm run test:e2e:explore`, weekly and manual CI).
 // From each start point it presses a seeded random visible, enabled control of the game
-// (#main, the 待機・休む controls, or the open dialog) — never deletion, journey switching,
+// (#main, free time's 待機・休む included, or the open dialog) — never deletion, journey switching,
 // links or leaving Debug — and checks after every press:
 // - the shared error guard of helpers.ts (console errors, uncaught exceptions, missing files);
 // - the game state (the journey's save, or Debug's read-only hook) passes validateGameState
@@ -78,7 +78,7 @@ function choose(page: Page, roll: number) {
   return page.evaluate(({ roll, excludedLabels }) => {
     document.querySelectorAll("[data-monkey-target]").forEach((element) => element.removeAttribute("data-monkey-target"));
     const dialogs = [...document.querySelectorAll("dialog[open]")];
-    // Free time's 待機・休む band is inside #main (UI redesign step 1.5); the header (⚙設定) stays out.
+    // Free time (its cards, 待機 and 休む included) is inside #main; the header (⚙設定) stays out.
     const roots = dialogs.length ? [dialogs[dialogs.length - 1]] : [document.getElementById("main")];
     const label = (element: Element) => (element.getAttribute("aria-label") ?? element.textContent ?? "").trim().replace(/\s+/gu, " ").slice(0, 60);
     const shown = (element: Element) => {
@@ -98,15 +98,18 @@ function choose(page: Page, roll: number) {
       const labels = element instanceof HTMLInputElement ? [...(element.labels ?? [])] : [];
       return !!hit && (element.contains(hit) || labels.some((item) => item.contains(hit)));
     };
+    // Free time's row of photo cards keeps 「行く」, 「待つ」 and 「休む」 for screen readers and keys only (hidden until
+    // focused; a finger swipes the card up): the monkey presses them by Enter.
+    const keysOnly = (element: Element) => element.classList.contains("is-quiet");
     const candidates = roots.flatMap((root) => root ? [...root.querySelectorAll('button, select, summary, [role="button"], input[type="checkbox"]')] : [])
       .filter((element) => shown(element) && !(element as HTMLButtonElement).disabled && !element.closest("[inert], [aria-hidden='true']") &&
-        !element.closest(".journey-selection") && !excludedLabels.some((text) => label(element).includes(text)) && uncovered(element));
+        !element.closest(".journey-selection") && !excludedLabels.some((text) => label(element).includes(text)) && (keysOnly(element) || uncovered(element)));
     if (!candidates.length) return null;
     const index = Math.floor(roll * candidates.length);
     const element = candidates[index];
     element.setAttribute("data-monkey-target", "");
     const options = element instanceof HTMLSelectElement ? [...element.options].filter((option) => !option.disabled).map((option) => option.value) : [];
-    return { tag: element.tagName.toLowerCase(), label: label(element), options, index, count: candidates.length };
+    return { tag: element.tagName.toLowerCase(), label: label(element), options, index, count: candidates.length, keys: keysOnly(element) };
   }, { roll, excludedLabels });
 }
 
@@ -262,6 +265,7 @@ startPoints.forEach((start, index) => {
         const control = page.locator("[data-monkey-target]");
         try {
           if (chosen.tag === "select") await control.selectOption(pickFrom(chosen.options, next), { timeout: 2_000 });
+          else if (chosen.keys) await control.press("Enter", { timeout: 2_000 });
           else await control.click({ timeout: 2_000 });
         } catch (error) {
           log(/intercepts pointer events/u.test((error as Error).message)

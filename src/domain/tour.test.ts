@@ -14,7 +14,6 @@ import { resultExitLabel } from "./screen";
 import { bookTour, cancelTourBooking, continueTour, getTourOffers, tourFingerprint, tourLegsBetween, tourSchedule } from "./tour";
 import { getTravelEventAvailability } from "./travel-game";
 import { getRentalOffers } from "./transport";
-import { getNextTravelWaitTime } from "./travel-destinations";
 
 // Tours (tour design stage 2a) on the sample city with its library made tour-only (src/dev/test-tours.ts): booking and
 // cancelling, the next morning's start (at once, or after the hotel's scenes after waking), the legs, the visit without
@@ -238,10 +237,9 @@ describe("the tour day (tour stage 2a)", () => {
       expect(continueTour(state, roll)).toBe(state);
   });
 
-  it("leaves the tour-only place out of the wait times and the map", () => {
+  it("leaves the tour-only place out of the map", () => {
     install();
     const state = start();
-    expect(getNextTravelWaitTime(state)).toBe(18 * 60);
     expect(listPlayerActions(state).some((action) => action.kind === "travel" && action.eventId === testTour.eventId)).toBe(false);
   });
 });

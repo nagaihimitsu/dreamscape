@@ -6,7 +6,8 @@ import { Icon } from "../../components/icons";
 import { battlePlayed } from "../../domain/conditions";
 import type { GameState } from "../../domain/game";
 import {
-  cardKinds, cardScales, nearestIndex, photoCardLabel, stepIndex, type CardArrangement, type CardKinds, type PhotoCardEntry, type RowCard,
+  cardKinds, cardScales, nearestIndex, photoCardLabel, stepIndex, takesSwipe, type CardArrangement, type CardKinds, type PhotoCardEntry,
+  type RowCard,
 } from "./photo-cards";
 import { placeDisplayName } from "./travel-labels";
 import { centreOf, INSTANT, reducedMotion, rowItems, useCardGestures, type CardSwipe } from "./useCardGestures";
@@ -29,7 +30,8 @@ function placeVisited(game: GameState, placeId: string): boolean {
  * the row too), a press on a side card brings it to the centre and chooses it, 「m / n」 under the row says where it is
  * (counting every card), and the chosen card's card (`card`) follows the row. The chosen place's card departs on a swipe
  * up (`swipe`; useCardGestures: from the row, or from anywhere on the screen once the page has nothing left below) or
- * Enter, never on a press. As a list (short screens, large text, sideways): a press chooses its row, the card opens
+ * Enter, never on a press; 「待機」's waits and 「ホテルに戻る」's rests the same way (photo-cards.ts takesSwipe). As a list
+ * (short screens, large text, sideways): a press chooses its row, the card opens
  * under it (with its 「行く」), and the pressed row stays where it was. The chosen card is the list's one Tab stop; ←→ (in
  * the list also ↑↓), Home and End move the choice.
  */
@@ -44,7 +46,7 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
   recommendedId?: string | null;
   /** The chosen card's card (a place's introduction, 「ホテルに戻る」's or the tour's). */
   card: ReactNode;
-  /** The chosen card's swipe up (a place's), or null. */
+  /** The chosen card's swipe up (a place's, 「待機」's or 「ホテルに戻る」's), or null. */
   swipe: CardSwipe | null;
 }) {
   const list = useRef<HTMLUListElement>(null);
@@ -159,7 +161,7 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
             // A drag that started on it clicks nothing (useCardGestures takes that click away).
             onClick={() => choose(rowCard.id)}
             onKeyDown={(key) => {
-              // Enter on the chosen place's card departs as its swipe up does (a held key's repeats do nothing).
+              // Enter on the chosen card departs, waits or rests as its swipe up does (a held key's repeats do nothing).
               if (key.key === "Enter" && gestures.takesEnter(rowCard.id)) {
                 key.preventDefault();
                 if (!key.repeat) gestures.enter();
@@ -196,8 +198,8 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
 
 /**
  * What a card shows: its name, its photo or plain tile, its marks over the photo (top and bottom), its fill (what the
- * place holds), whether a swipe up takes it (a place's: departing, or at the current place starting there; shown by
- * the swipe cue's motion, no words) and its testid.
+ * place holds), whether a swipe up takes it (takesSwipe: a place's departing, or at the current place starting there;
+ * 「待機」's waiting; 「ホテルに戻る」's resting; shown by the swipe cue's motion, no words) and its testid.
  */
 function cardFace(game: GameState, card: RowCard, recommendedId: string | null | undefined): {
   testId: string;
@@ -210,20 +212,21 @@ function cardFace(game: GameState, card: RowCard, recommendedId: string | null |
   swipeable: boolean;
 } {
   const kinds = cardKinds(card);
+  const swipeable = takesSwipe(card);
   if (card.kind === "wait")
-    return { testId: "travel-wait", name: "待機", available: true, top: null, bottom: null, kinds, swipeable: false,
+    return { testId: "travel-wait", name: "待機", available: true, top: null, bottom: null, kinds, swipeable,
       photo: <PlainTile><Icon name="hourglass" /></PlainTile> };
   if (card.kind === "stay") {
     const hotel = getCityContent(game.currentCityId).travel.places.find((place) => place.id === game.travel.hotelPlaceId);
     // The inn's own photo (a travel place's photoAssetId) when it has one, else the bed on its background colour.
     const hotelPhoto = getPlacePhoto(game.currentCityId, game.travel.hotelPlaceId);
-    return { testId: "travel-stay", name: "ホテルに戻る", available: true, top: null, bottom: null, kinds, swipeable: false,
+    return { testId: "travel-stay", name: "ホテルに戻る", available: true, top: null, bottom: null, kinds, swipeable,
       photo: hotelPhoto
         ? <img src={`${import.meta.env.BASE_URL}${derivedImagePath(hotelPhoto, "card")}`} alt="" width={240} height={160} loading="lazy" decoding="async" draggable={false} />
         : <PlainTile color={hotel && presentation.backgrounds[hotel.backgroundId]?.color}><Icon name="bed" /></PlainTile> };
   }
   if (card.kind === "tour")
-    return { testId: "travel-tour", name: "ツアー", available: true, top: game.tour?.status === "booked" ? "予約済み" : null, bottom: null, kinds, swipeable: false,
+    return { testId: "travel-tour", name: "ツアー", available: true, top: game.tour?.status === "booked" ? "予約済み" : null, bottom: null, kinds, swipeable,
       photo: <PlainTile><Icon name="ticket" /></PlainTile> };
   const { entry } = card;
   const placeId = entry.place.id;
@@ -236,7 +239,7 @@ function cardFace(game: GameState, card: RowCard, recommendedId: string | null |
     bottom: placeVisited(game, placeId) ? "訪問済み" : null,
     photo: <PlacePhoto game={game} entry={entry} />,
     kinds,
-    swipeable: true,
+    swipeable,
   };
 }
 

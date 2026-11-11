@@ -4,6 +4,7 @@ import { getCityBackdropPath } from "../../content/city-backdrop";
 import { HudScreenTool } from "../../components/HudScreenTool";
 import { Icon } from "../../components/icons";
 import { getTourOffers } from "../../domain/tour";
+import { getTravelWaitOptions } from "../../domain/travel-destinations";
 import { CityProgress } from "./CityProgress";
 import type { FreeTimeHubProps } from "./FreeTimeHub";
 import { FreeTimeBackdrop } from "./FreeTimeBackdrop";
@@ -11,11 +12,12 @@ import { FreeTimeExtras } from "./FreeTimeExtras";
 import { SIDE_BY_SIDE_QUERY } from "./free-time-layout";
 import { timeOfDayTint } from "./time-of-day";
 import { PhotoCardPicker } from "./PhotoCardPicker";
-import { PlaceCard, StayCard, TourCard, WaitCard } from "./PlaceCard";
+import { PlaceCard, sleepWayJa, StayCard, TourCard, WaitCard } from "./PlaceCard";
 import { Announce, mapPlaces, PlaceMapDialog } from "./PlaceMap";
 import {
-  cardOfTarget, cardTarget, chooseArrangement, defaultCardIndex, departureOf, NO_PLAN, photoCardAnnouncement, photoCardEntries, refusalJa,
-  rowCards, syncRow, TOUR_CHOSEN_JA, WAIT_CHOSEN_JA, type CardArrangement, type DeparturePlan, type PhotoCardEntry, type RowCard,
+  cardOfTarget, cardTarget, chooseArrangement, chooseSleepWay, chooseWait, defaultCardIndex, departureOf, NO_PLAN, photoCardAnnouncement,
+  photoCardEntries, refusalJa, rowCards, sleepRefusalJa, syncRow, takesSwipe, TOUR_CHOSEN_JA, WAIT_REFUSAL_JA, waitChosenJa, waitLabelJa,
+  type CardArrangement, type DeparturePlan, type PhotoCardEntry, type RowCard,
 } from "./photo-cards";
 import { armedAt, type PressKind } from "./travel-selection";
 import { TravelRentals } from "./TravelRentals";
@@ -28,10 +30,10 @@ import "./photo-free-time.css";
  * Free time as B案「写真札で旅先を選ぶ」 (docs/02 「自由時間の画面」): the epilogue's button, one row of photo cards (「待機」,
  * the places, sightseeing and dates alike, then the tour when the city has one, then 「ホテルに戻る」; the first place's
  * card is chosen first; the chosen card is the selection, and its card under the row has the waits, the event and the
- * way to choose and a small map, the booking, or the ways home; a swipe up departs with that event and way, only the
- * chosen place's card flying; in the row a sideways drag or a swipe up may start anywhere on the screen:
- * useCardGestures), the rentals and the city's remaining actions. 「地図」 (today's expanded map and 「地点を名前で探す」)
- * sits in the header's second row while this screen shows (HudScreenTool). The background is the city's backdrop when it has one
+ * way to choose and a small map, the booking, or the ways home; a swipe up departs with that event and way, waits the
+ * chosen wait or rests by the chosen way home, only the chosen card flying; in the row a sideways drag or a swipe up may
+ * start anywhere on the screen: useCardGestures), the rentals and the city's remaining actions. 「地図」 (today's
+ * expanded map and 「地点を名前で探す」) sits in the header's second row while this screen shows (HudScreenTool). The background is the city's backdrop when it has one
  * (FreeTimeBackdrop: its own artwork or its photo, dimmed), else a map-like pattern, not a map, under the colour of the
  * game clock's time of day (timeOfDayTint). Every rule is today's: the
  * shared selection (useTravelSelection) travels and rests through the same handlers.
@@ -41,7 +43,18 @@ export function PhotoCardFreeTime({
 }: FreeTimeHubProps) {
   const { city } = getCityContent(game.currentCityId);
   const backdrop = getCityBackdropPath(game.currentCityId) !== null;
-  const api = useTravelSelection(game, { onTravelEvent, onTravelSleep }, { announce: photoCardAnnouncement });
+  // 「待機」's wait and 「ホテルに戻る」's way home picked on their cards (a swipe up, 「待つ」 and 「休む」 take them; null: the
+  // first that can, 「30分待つ」 and the fastest way home), picked afresh each time their card becomes the chosen one.
+  const [waitPick, setWaitPick] = useState<string | null>(null);
+  const [sleepPick, setSleepPick] = useState<string | null>(null);
+  const [pickedOn, setPickedOn] = useState<string | null>(null);
+  const api = useTravelSelection(game, { onTravelEvent, onTravelSleep }, {
+    // 「ホテルに戻る」 says the way home its swipe up takes.
+    announce: (target, name, openEventId) => {
+      const way = target.kind === "sleep" ? chooseSleepWay(target.choices.options, sleepPick) : null;
+      return photoCardAnnouncement(target, name, openEventId, way && sleepWayJa(game, way.route));
+    },
+  });
   const { layout, arrangement } = useFreeTimeArrangement();
   const [mapOpen, setMapOpen] = useState(false);
   const [pick, setPick] = useState<string | null>(null);
@@ -56,6 +69,15 @@ export function PhotoCardFreeTime({
   const cards = useMemo(() => rowCards(photoCardEntries(places, api.choices), { tour }), [places, api.choices, tour]);
   // The card remembered while it is still in the row, else the first place's (photo-cards.ts defaultCardIndex).
   const chosen = cards.find((card) => card.id === pick) ?? cards[defaultCardIndex(cards)];
+  // Another card chosen: 「待機」 and 「ホテルに戻る」 start again from their first choice (adjusted while rendering).
+  if (pickedOn !== chosen.id) {
+    setPickedOn(chosen.id);
+    setWaitPick(null);
+    setSleepPick(null);
+  }
+  const waitOptions = useMemo(() => getTravelWaitOptions(game), [game]);
+  const wait = chooseWait(waitOptions, waitPick);
+  const sleepWay = chooseSleepWay(api.sleep.options, sleepPick);
   const mapMarks = useMemo(() => mapPlaces(game, candidates, api.destinations), [game, candidates, api.destinations]);
   const target = api.selection?.target ?? null;
 
@@ -80,26 +102,48 @@ export function PhotoCardFreeTime({
     setPick(cardId);
     api.choose(cardTarget(card));
     if (card.kind === "tour") api.announce(TOUR_CHOSEN_JA);
-    if (card.kind === "wait") api.announce(WAIT_CHOSEN_JA);
+    if (card.kind === "wait") {
+      // The wait its swipe up takes (newly chosen: the first, 「30分待つ」).
+      const shown = chooseWait(waitOptions, cardId === chosen.id ? waitPick : null);
+      api.announce(waitChosenJa(shown && waitLabelJa(shown)));
+    }
   }
 
   if (!current) return <p role="alert">現在地を確認できません。保存状態を確認してください。</p>;
   /** The card under the row (on the page: a visible name only in the row, where no chosen row above names it). */
   const cardOf = (card: RowCard, scope: PressScope = "page") => {
     const heading = scope === "dialog" || arrangement === "row";
-    if (card.kind === "wait") return <WaitCard game={game} onTravelWait={onTravelWait} heading={heading} />;
-    if (card.kind === "stay") return <StayCard game={game} api={api} scope={scope} heading={heading} />;
+    // In the row a swipe up on the photo card goes, waits or rests: the card's own button is for readers and keys only.
+    const quietGo = scope === "page" && arrangement === "row";
+    if (card.kind === "wait")
+      return <WaitCard game={game} options={waitOptions} wait={wait} onPick={setWaitPick} onWait={(chosenWait) => onTravelWait(chosenWait.minutes)}
+        heading={heading} quietGo={quietGo} />;
+    if (card.kind === "stay") return <StayCard game={game} api={api} picked={sleepPick} onPick={setSleepPick} scope={scope} heading={heading} quietGo={quietGo} />;
     if (card.kind === "tour") return <TourCard game={game} onBook={onBookTour} onCancel={onCancelTour} heading={heading} />;
     return <PlaceCard game={game} entry={card.entry} api={api} scope={scope} map={scope === "page"} heading={heading}
-      plan={planOf(card.id)} onPlan={(change) => changePlan(card.id, change)} quietGo={scope === "page" && arrangement === "row"} />;
+      plan={planOf(card.id)} onPlan={(change) => changePlan(card.id, change)} quietGo={quietGo} />;
   };
+  const readyAt = api.selection ? armedAt(api.selection) : 0;
   /** A place card's swipe up: its chosen event by its chosen way, while the place is the selection (else why not). */
   const swipeOf = (entry: PhotoCardEntry): CardSwipe => {
     const placeId = entry.place.id;
     const { event, way } = departureOf(entry, planOf(placeId));
     const go = way && api.isSelected({ kind: "place", placeId })
       ? (kind: PressKind) => api.pressRoute(placeId, event.event.id, way.route.mode, kind, "page") : null;
-    return { go, readyAt: api.selection ? armedAt(api.selection) : 0, refuse: () => api.announce(refusalJa(event)) };
+    return { go, readyAt, refuse: () => api.announce(refusalJa(event)) };
+  };
+  /**
+   * The chosen card's swipe up (photo-cards.ts takesSwipe): a place's (swipeOf); 「待機」's waits the chosen wait (this
+   * screen stays: its card comes back); 「ホテルに戻る」's rests by the chosen way home while it is the selection; or none.
+   */
+  const swipeFor = (card: RowCard): CardSwipe | null => {
+    if (!takesSwipe(card)) return null;
+    if (card.kind === "place") return swipeOf(card.entry);
+    if (card.kind === "wait")
+      return { go: wait ? () => onTravelWait(wait.minutes) : null, readyAt: 0, stays: true, refuse: () => api.announce(WAIT_REFUSAL_JA) };
+    const go = sleepWay && api.isSelected({ kind: "sleep" })
+      ? (kind: PressKind) => api.pressSleepRoute(sleepWay.route.mode, sleepWay.route.viaPlaceId ?? null, kind, "page") : null;
+    return { go, readyAt, refuse: () => api.announce(sleepRefusalJa(api.sleep.options)) };
   };
   // The expanded map's 「選んだ行き先」: the selected card's card, or a line for the current place or for no selection.
   const selectedCard = cardOfTarget(cards, target);
@@ -126,7 +170,7 @@ export function PhotoCardFreeTime({
       <div className="photo-stage">
         <CardProbe />
         <PhotoCardPicker game={game} cards={cards} chosenId={chosen.id} onChoose={chooseCard} arrangement={arrangement}
-          recommendedId={recommendedMainId} card={cardOf(chosen)} swipe={chosen.kind === "place" ? swipeOf(chosen.entry) : null} />
+          recommendedId={recommendedMainId} card={cardOf(chosen)} swipe={swipeFor(chosen)} />
       </div>
       <TravelRentals game={game} onRent={onRent} />
       <Announce message={api.message} testId="travel-announce" />

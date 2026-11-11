@@ -5,14 +5,19 @@ import {
 } from "./photo-cards";
 import type { PressKind } from "./travel-selection";
 
-/** What a swipe up does (in the row; null: the chosen card does not take it: 「待機」, the tour, 「ホテルに戻る」). */
+/** What a swipe up does (in the row; null: the chosen card does not take it: the tour, photo-cards.ts takesSwipe). */
 export type CardSwipe = {
-  /** Departs with the chosen event and way (the shared selection's pressRoute), or null when that cannot be done now. */
+  /**
+   * Departs with the chosen event and way (the shared selection's pressRoute), waits the chosen wait (「待機」) or rests
+   * by the chosen way home (pressSleepRoute), or null when that cannot be done now.
+   */
   go: ((kind: PressKind) => void) | null;
   /** When a press of the selection counts (its arming time, performance.now() ms): a departure waits for it. */
   readyAt: number;
   /** Says why it cannot depart (the live regions). */
   refuse: () => void;
+  /** This screen stays after `go` (a wait): the card comes back at once. */
+  stays?: boolean;
 };
 
 export const INSTANT = "instant" as ScrollBehavior;
@@ -80,8 +85,9 @@ type Gesture = {
  *
  * The swipe up: the card follows the finger upwards only; released past a third of its height or on a flick up
  * (photo-cards.ts swipeDeparts) it flies off the top of the screen, then `go` runs, once, when the selection's press
- * counts; otherwise it springs back. A drag that turns sideways, a second finger and pointercancel bring the card
- * back. While the card cannot depart it follows less, comes back, and `refuse` says why while the reason under the row
+ * counts (a place departs, 「ホテルに戻る」 rests, 「待機」 waits and its card is back in the row at once); otherwise it
+ * springs back. A drag that turns sideways, a second finger and pointercancel bring the card back. While the card
+ * cannot depart (wait, rest) it follows less, comes back, and `refuse` says why while the reason under the row
  * comes into view. The card never leaves its slot: a copy of it floats over the screen (`.photo-card-ghost`), so
  * neither the row's box nor the header cuts it, and nothing else moves. From a confirmed departure until this screen
  * goes (or, the move not done, the card comes back) no drag starts. Reduced motion: the card still follows the finger,
@@ -217,8 +223,11 @@ export function useCardGestures({ row, chosen, swipe, list, driving, settle }: {
     list.current?.parentElement?.querySelector<HTMLElement>(".place-card-reason")
       ?.scrollIntoView({ block: "nearest", behavior: reducedMotion() ? INSTANT : "smooth" });
   };
-  /** The confirmed departure: the copy flies off, then `go` runs once the press counts, for the card still chosen. */
-  const flyOff = (g: Gesture, ghost: HTMLElement, go: (kind: PressKind) => void, readyAt: number) => {
+  /**
+   * The confirmed departure: the copy flies off, then `go` runs once the press counts, for the card still chosen. After a
+   * wait (`stays`) the card comes back at once; else, still here a moment later, the move did not happen and it comes back.
+   */
+  const flyOff = (g: Gesture, ghost: HTMLElement, go: (kind: PressKind) => void, readyAt: number, stays: boolean) => {
     departing.current = true;
     const back = () => {
       drop(ghost);
@@ -228,8 +237,7 @@ export function useCardGestures({ row, chosen, swipe, list, driving, settle }: {
       if (chosen.current !== g.cardId) return back();
       later(() => {
         if (chosen.current === g.cardId) go("pointer");
-        // Still here a moment later: the move did not happen; the card comes back.
-        later(back, RESTORE_MS);
+        later(back, stays ? 0 : RESTORE_MS);
       }, Math.max(0, readyAt - performance.now()));
     };
     if (reducedMotion()) {
@@ -357,7 +365,7 @@ export function useCardGestures({ row, chosen, swipe, list, driving, settle }: {
     const ghost = g.ghost!;
     const departs = swipeDeparts({ lift: Math.min(0, event.clientY - g.y), height: g.height, speed: flickSpeed(g.samples, "y") });
     const current = swipe.current;
-    if (departs && current?.go && chosen.current === g.cardId) return flyOff(g, ghost, current.go, current.readyAt);
+    if (departs && current?.go && chosen.current === g.cardId) return flyOff(g, ghost, current.go, current.readyAt, !!current.stays);
     springBack(ghost);
     if (departs && current) refuse(current);
   }

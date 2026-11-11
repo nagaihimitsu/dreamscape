@@ -52,8 +52,8 @@ function nextFromMap(s: GameState): GameState {
     const mode = event?.routes.find((item) => getTravelEventAvailability(s, id, item.mode).available)?.mode;
     if (mode) return act(s, (current) => beginTravelEvent(current, id, mode, current.revision, roll));
   }
-  // TravelActions' 「次の時刻まで待つ」 (the wait to the next opening), when the screen offers it.
-  const wait = getTravelWaitOptions(s).find((option) => option.until !== null && option.available);
+  // The 待機 card's 「30分待つ」 (step by step, so no opening is waited past), while it can be waited.
+  const wait = getTravelWaitOptions(s).find((option) => option.until === null && option.available);
   if (wait) return act(s, (current) => waitForTravel(current, wait.minutes, current.revision));
   const night = getTravelSleepOptions(s).find((option) => option.plan.ok);
   expect(night, "no way to start an event, wait or rest").toBeDefined();

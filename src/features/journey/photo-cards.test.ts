@@ -1,10 +1,14 @@
 import { describe, expect, it } from "vitest";
 import type { TravelRoute } from "../../content/travel-schemas";
-import type { DestinationChoices, EventChoice, RouteChoice, TravelDestinationEvent, TravelDestinationPlace } from "../../domain/travel-destinations";
+import type {
+  DestinationChoices, EventChoice, RouteChoice, SleepOption, TravelDestinationEvent, TravelDestinationPlace, TravelWaitOption,
+} from "../../domain/travel-destinations";
 import {
-  blockedWays, cardKinds, cardOfTarget, cardScales, cardTarget, chooseArrangement, chooseWay, defaultCardIndex, departureOf, dragDirection,
-  eventKindJa, flickSpeed, glideIndex, halfShown, liftsCard, liftTurnedSideways, nearestIndex, NO_PLAN, pageAtEnd, photoCardEntries,
-  photoCardLabel, refusalJa, rowCards, STAY_CARD_ID, stepIndex, swipeArea, swipeDeparts, syncRow, TOUR_CARD_ID, WAIT_CARD_ID,
+  blockedSleepWays, blockedWays, cardKinds, cardOfTarget, cardScales, cardTarget, chooseArrangement, chooseSleepWay, chooseWait, chooseWay,
+  defaultCardIndex, departureOf, dragDirection, eventKindJa, flickSpeed, glideIndex, halfShown, liftsCard, liftTurnedSideways, nearestIndex,
+  NO_PLAN, pageAtEnd, photoCardAnnouncement, photoCardEntries, photoCardLabel, refusalJa, rowCards, sleepRefusalJa, sleepWayKey,
+  sleepWayLabelJa, STAY_CARD_ID, stepIndex, swipeArea, swipeDeparts, syncRow, takesSwipe, TOUR_CARD_ID, WAIT_BLOCKED_JA, WAIT_CARD_ID,
+  WAIT_REFUSAL_JA, waitChosenJa, waitKey, waitLabelJa, type PhotoCardEntry,
 } from "./photo-cards";
 
 const way = (mode: string, minutes: number, cost: number, reason?: string): RouteChoice =>
@@ -119,6 +123,80 @@ describe("the row of cards", () => {
     const closed = departureOf(a, NO_PLAN);
     expect([closed.event.event.id, closed.way]).toEqual(["a_main", null]);
     expect(refusalJa(closed.event)).toBe("出発できません。閉まっています。");
+  });
+});
+
+describe("「待機」 and 「ホテルに戻る」 go by a swipe up too (user decision 2026-11-11)", () => {
+  it("takes a swipe up on a place's card, 「待機」 and 「ホテルに戻る」, never on the tour's", () => {
+    const entry = { place: { id: "p" }, events: [], available: true } as unknown as PhotoCardEntry;
+    expect(rowCards([entry], { tour: true }).map((card) => [card.kind, takesSwipe(card)]))
+      .toEqual([["wait", true], ["place", true], ["tour", false], ["stay", true]]);
+  });
+
+  const minutes: TravelWaitOption = { minutes: 30, until: null, available: true };
+  const night: TravelWaitOption = { minutes: 120, until: 18 * 60, available: true };
+
+  it("waits 「30分待つ」 first, the picked wait while it can be waited, never one that cannot", () => {
+    expect(chooseWait([minutes, night], null)).toBe(minutes);
+    expect(chooseWait([minutes, night], waitKey(night))).toBe(night);
+    // A pick gone (the next time changed after a wait) or one that cannot be waited: the first that can.
+    expect(chooseWait([minutes, { ...night, until: 19 * 60 }], waitKey(night))).toBe(minutes);
+    const late = { ...minutes, available: false };
+    expect(chooseWait([late, night], waitKey(late))).toBe(night);
+    expect(chooseWait([late], null)).toBeNull();
+  });
+
+  it("names the waits: the minutes, the night with its time, else the time", () => {
+    expect(waitLabelJa(minutes)).toBe("30分待つ");
+    expect(waitLabelJa(night)).toBe("夜(18:00)まで待つ");
+    expect(waitLabelJa({ minutes: 45, until: 15 * 60 + 30 })).toBe("15:30まで待つ");
+    expect(WAIT_BLOCKED_JA).toBe("21:00までにホテルへ帰れなくなる待ち方は選べません。");
+    expect(WAIT_REFUSAL_JA).toBe("待てません。21:00までにホテルへ帰れなくなります。");
+  });
+
+  const ok = { ok: true, arrivalMinute: 900, nextDay: 2, nextMinute: 540, remainingBudget: 100, remainingAp: 3, usedAssistance: false } as const;
+  const home = (mode: string, plan: SleepOption["plan"], viaPlaceId?: string): SleepOption =>
+    ({ route: { fromPlaceId: "x", toPlaceId: "h", mode, minutes: 10, cost: 40, ...(viaPlaceId ? { viaPlaceId } : {}) }, plan }) as SleepOption;
+  const auto = home("auto_rickshaw", ok);
+  const metro = home("metro", ok, "station");
+  const walk = home("walk", ok);
+
+  it("rests by the first way home that can be taken (the fastest) first, the picked one while it can be taken", () => {
+    expect(chooseSleepWay([auto, metro, walk], null)).toBe(auto);
+    expect(chooseSleepWay([auto, metro, walk], sleepWayKey(metro.route))).toBe(metro);
+    // A via route is its own way: the same mode direct is another.
+    expect(sleepWayKey(metro.route)).not.toBe(sleepWayKey(home("metro", ok).route));
+    const poor = home("auto_rickshaw", { ok: false, reason: "budget" });
+    expect(chooseSleepWay([poor, walk], sleepWayKey(poor.route))).toBe(walk);
+    expect(chooseSleepWay([poor], null)).toBeNull();
+    expect(chooseSleepWay([], null)).toBeNull();
+  });
+
+  it("names a way home: 「ホテルに戻って休む」 at the hotel, else by its mode and where it changes to walking", () => {
+    expect(sleepWayLabelJa({ atHotel: true, mode: "徒歩" })).toBe("ホテルに戻って休む");
+    expect(sleepWayLabelJa({ atHotel: false, mode: "徒歩" })).toBe("徒歩で帰る");
+    expect(sleepWayLabelJa({ atHotel: false, mode: "メトロ", via: "中央駅" })).toBe("メトロで帰る・中央駅から徒歩");
+  });
+
+  it("says each reason a way home cannot be taken once, with its ways, and why a rest cannot be made", () => {
+    const poor = home("auto_rickshaw", { ok: false, reason: "budget" });
+    const poorer = home("taxi", { ok: false, reason: "budget" });
+    const late = home("metro", { ok: false, reason: "time" });
+    expect(blockedSleepWays([walk, poor, late, poorer])).toEqual([
+      { options: [poor, poorer], reason: "この移動手段の予算が足りません。" }, { options: [late], reason: "この経路では帰れません。" },
+    ]);
+    expect(blockedSleepWays([walk])).toEqual([]);
+    expect(sleepRefusalJa([poor, late])).toBe("休めません。この移動手段の予算が足りません。この経路では帰れません。");
+    expect(sleepRefusalJa([])).toBe("休めません。ホテルへの経路は確認されていません。");
+  });
+
+  it("says, once chosen, what its swipe up takes", () => {
+    expect(waitChosenJa("30分待つ")).toBe("「待機」を選びました。待ち方を出しています（「30分待つ」を選んでいます）。");
+    expect(waitChosenJa(null)).toBe("「待機」を選びました。今は待てません。");
+    const sleep = { kind: "sleep" as const, choices: { options: [walk], onlyWay: walk.route } };
+    expect(photoCardAnnouncement(sleep, "滞在先", null, "ホテルに戻って休む"))
+      .toBe("「ホテルに戻る」を選びました。帰り方を出しています（「ホテルに戻って休む」を選んでいます）。");
+    expect(photoCardAnnouncement(sleep, "滞在先")).toBe("「ホテルに戻る」を選びました。今は休めません。");
   });
 });
 
