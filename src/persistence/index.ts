@@ -7,6 +7,11 @@ export const SAVE_KEY = "dreamscape.save.v1";
 export const LEARNING_KEY = "dreamscape.learning.v1";
 /** The lines this device has read (read-skip, src/components/read-skip.ts): a per-device record apart from the save and notes. */
 export const READ_LINES_KEY = "dreamscape.read-lines.v1";
+/**
+ * The words of the country this device has learned (`# local_word:`, src/features/learning/local-words.ts): a per-device
+ * record apart from the save, shown in the English notes and removed with them by 「保存データの消去」.
+ */
+export const LOCAL_WORDS_KEY = "dreamscape.local-words.v1";
 /** The current format is validated, not automatically migrated from older versions. */
 export const SUPPORTED_SAVE_VERSION = GAME_STATE_VERSION;
 
@@ -196,7 +201,10 @@ export function backupAndCreate(
   }
 }
 
-/** Delete only the two active Dreamscape slots after checking the confirmed snapshot. */
+/**
+ * Delete only the two active Dreamscape slots after checking the confirmed snapshot, then the words learned that the
+ * English notes show (LOCAL_WORDS_KEY; only the tab that holds the journey writes them, journey-lock.ts).
+ */
 export function deleteSaveData(
   storage: StorageLike & { removeItem(key: string): void },
   expected: { game: string | null; learning: string | null },
@@ -221,6 +229,7 @@ export function deleteSaveData(
         storage.setItem(LEARNING_KEY, expected.learning);
       throw new Error("Could not remove game save");
     }
+    storage.removeItem(LOCAL_WORDS_KEY);
     return { ok: true };
   } catch {
     return {

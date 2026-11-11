@@ -13,6 +13,7 @@ import {
   deleteSaveData,
   LEARNING_KEY,
   loadGame,
+  LOCAL_WORDS_KEY,
   parseGameState,
   sameGameState,
   SAVE_KEY,
@@ -555,6 +556,16 @@ describe("explicit save deletion", () => {
     expect(storage.getItem(LEARNING_KEY)).toBeNull();
     expect(storage.getItem(`${SAVE_KEY}.backup.123`)).toBe("backup");
     expect(storage.getItem("unrelated")).toBe("keep");
+  });
+  it("removes the words of the country learned with the notes that show them, only once the snapshot is confirmed", () => {
+    const storage = new MemoryStorage();
+    storage.setItem(SAVE_KEY, "game");
+    storage.setItem(LEARNING_KEY, "notes");
+    storage.setItem(LOCAL_WORDS_KEY, "words");
+    expect(deleteSaveData(storage, { game: "changed", learning: "notes" }).ok).toBe(false);
+    expect(storage.getItem(LOCAL_WORDS_KEY)).toBe("words");
+    expect(deleteSaveData(storage, { game: "game", learning: "notes" })).toEqual({ ok: true });
+    expect(storage.getItem(LOCAL_WORDS_KEY)).toBeNull();
   });
   it.each([SAVE_KEY, LEARNING_KEY])("refuses a changed snapshot: %s", (key) => {
     const storage = new MemoryStorage();

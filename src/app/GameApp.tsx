@@ -4,6 +4,7 @@ import {
   dates,
   presentation,
   landmarks,
+  localWords,
   tourismAssets,
   getCityContent,
 } from "../content";
@@ -43,6 +44,9 @@ import { TourismScreen } from "../features/tourism/TourismScreen";
 import { ClueNotebook } from "../features/tourism/ClueNotebook";
 import { useLearning } from "../features/learning/useLearning";
 import { EnglishReview } from "../features/learning/EnglishReview";
+import { useLocalWords } from "../features/learning/useLocalWords";
+import { LocalWordNotice } from "../features/learning/LocalWordNotice";
+import { lineWordsOnScreen } from "../features/learning/local-words";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { CityRecords } from "../features/journey/CityProgress";
@@ -182,6 +186,9 @@ export function GameApp({
   }, [storyScene]);
   const titleActions = titleSaveActions(loaded);
   const learning = useLearning(game, storage, !isDebug);
+  // The words of the country this device has learned in this journey (local-words.ts): the line on screen teaches its
+  // # local_word: words. In this storage, so a Debug session keeps its own record in its isolated memory.
+  const learnedWords = useLocalWords(storage, lineWordsOnScreen(game));
   const { travelToEvent, returnToHotel, restAtDayEnd, playMove, playing: travelEffectPlaying, nightLeaving, effects: travelEffects } = useTravelEffects({
     getCurrent, commit, nextRomanceRoll, reduceMotion: displaySettings.value.reduceMotion,
   });
@@ -502,6 +509,8 @@ export function GameApp({
             </button>
           </div>
         )}
+        {/* Only where a line can teach a word: a story scene of a build with words of the country. */}
+        {conversationActive && localWords.length > 0 && <LocalWordNotice notice={learnedWords.notice} />}
         {!game ? (
           <>
             <div className="intro-art" data-testid="title-art">
@@ -881,6 +890,7 @@ export function GameApp({
         <EnglishReview
           game={game}
           learning={learning}
+          learnedWords={learnedWords.learned}
           onClose={() => {
             learning.update((s) => ({
               ...s,
