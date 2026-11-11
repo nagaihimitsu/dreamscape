@@ -479,8 +479,12 @@ function cardFace(game: GameState, card: RowCard, recommendedId: string | null |
       photo: <PlainTile><Icon name="hourglass" /></PlainTile> };
   if (card.kind === "stay") {
     const hotel = getCityContent(game.currentCityId).travel.places.find((place) => place.id === game.travel.hotelPlaceId);
+    // The inn's own photo (a travel place's photoAssetId) when it has one, else the bed on its background colour.
+    const hotelPhoto = getPlacePhoto(game.currentCityId, game.travel.hotelPlaceId);
     return { testId: "travel-stay", name: "ホテルに戻る", available: true, top: null, bottom: null, kinds, hint: null,
-      photo: <PlainTile color={hotel && presentation.backgrounds[hotel.backgroundId]?.color}><Icon name="bed" /></PlainTile> };
+      photo: hotelPhoto
+        ? <img src={`${import.meta.env.BASE_URL}${derivedImagePath(hotelPhoto, "card")}`} alt="" width={240} height={160} loading="lazy" decoding="async" draggable={false} />
+        : <PlainTile color={hotel && presentation.backgrounds[hotel.backgroundId]?.color}><Icon name="bed" /></PlainTile> };
   }
   if (card.kind === "tour")
     return { testId: "travel-tour", name: "ツアー", available: true, top: game.tour?.status === "booked" ? "予約済み" : null, bottom: null, kinds, hint: null,
