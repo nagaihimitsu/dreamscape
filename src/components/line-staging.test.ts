@@ -37,4 +37,19 @@ describe("the line staging", () => {
     expect(current).toEqual({ key: "4", side: "received", name: "ミオ" });
     expect(phoneBubbles({ side: "sent" }, "player", names)).toEqual({ earlier: [], current: { key: "0", side: "sent", sender: "ユウ" } });
   });
+
+  it("names a person's messages (# speaker: <person ID>) by the person, a new sender starting a new run", () => {
+    const names = { heroine: "ミオ", player: "ユウ", people: { gt_suresh: "スレーシュ", gt_delhi_hotel_owner: "宿の主人" } };
+    const { earlier, current } = phoneBubbles({ side: "received", earlier: [
+      { side: "received", speaker: "person", personId: "gt_delhi_hotel_owner", text: "作文、読み上げたそうです。" },
+      { side: "received", speaker: "person", personId: "gt_suresh", text: "自主申告をした。" },
+    ] }, "person", names, "gt_suresh");
+    expect(earlier).toEqual([
+      { key: "0", side: "received", name: "宿の主人", text: "作文、読み上げたそうです。" },
+      { key: "1", side: "received", name: "スレーシュ", text: "自主申告をした。" },
+    ]);
+    expect(current).toEqual({ key: "2", side: "received", sender: "スレーシュ" });
+    // A person no one declared shows no name.
+    expect(phoneBubbles({ side: "received" }, "person", names, "gt_nobody").current).toEqual({ key: "0", side: "received" });
+  });
 });

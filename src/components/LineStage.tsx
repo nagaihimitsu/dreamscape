@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, type ReactNode } from "react";
-import { presentation, tourismAssets } from "../content";
+import { presentation, storyState, tourismAssets } from "../content";
 import { albumImageAsset } from "../content/photo-choice";
 import type { LetterLine, PhoneLine, Speaker, StoryFrame } from "../story/frame-reader";
 import { LETTER_LABELS, phoneBubbles, type PhoneBubble, type PhoneNames } from "./line-staging";
@@ -26,12 +26,13 @@ export function RecallLayer({ imageId }: { imageId?: string }) {
  * before; any other line as it is. `compact`: choices follow, so the phone keeps less room.
  */
 export function LineStage({ frame, names, compact = false, children }: {
-  frame: Pick<StoryFrame, "phone" | "letter" | "speaker">;
+  frame: Pick<StoryFrame, "phone" | "letter" | "speaker" | "speakerPersonId">;
   names: PhoneNames;
   compact?: boolean;
   children: ReactNode;
 }) {
-  if (frame.phone) return <PhoneScreen phone={frame.phone} speaker={frame.speaker} names={names} compact={compact}>{children}</PhoneScreen>;
+  if (frame.phone) return <PhoneScreen phone={frame.phone} speaker={frame.speaker} personId={frame.speakerPersonId}
+    names={{ people: PERSON_NAMES, ...names }} compact={compact}>{children}</PhoneScreen>;
   if (frame.letter) return <LetterSheet letter={frame.letter}>{children}</LetterSheet>;
   return <>{children}</>;
 }
@@ -45,10 +46,13 @@ function useScrolledToEnd<T extends HTMLElement>(line: unknown) {
   return box;
 }
 
-function PhoneScreen({ phone, speaker, names, compact, children }: {
-  phone: PhoneLine; speaker: Speaker; names: PhoneNames; compact: boolean; children: ReactNode;
+/** The names of progression/story.json people by ID: a person's messages (`# speaker: <person ID>`) show their name. */
+const PERSON_NAMES: Readonly<Record<string, string>> = Object.fromEntries(storyState.people.map((person) => [person.id, person.nameJa]));
+
+function PhoneScreen({ phone, speaker, personId, names, compact, children }: {
+  phone: PhoneLine; speaker: Speaker; personId: string | undefined; names: PhoneNames; compact: boolean; children: ReactNode;
 }) {
-  const { earlier, current } = phoneBubbles(phone, speaker, names);
+  const { earlier, current } = phoneBubbles(phone, speaker, names, personId);
   const thread = useScrolledToEnd<HTMLDivElement>(phone);
   return <div className="phone-screen" role="group" aria-label="スマホのメッセージ" data-compact={compact || undefined}>
     <div className="phone-thread" ref={thread}>

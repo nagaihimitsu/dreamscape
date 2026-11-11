@@ -14,6 +14,8 @@ export type Speaker = "narrator" | "heroine" | "player" | "enemy" | "person";
 export interface PhoneMessage {
   side: PhoneSide;
   speaker: Speaker;
+  /** With speaker "person": who wrote it (the person's ID). */
+  personId?: string;
   text: string;
 }
 /** A line's `# phone:`: its side, below the earlier messages of the same run (oldest first). */
@@ -152,7 +154,7 @@ export type FrameStaging = Pick<StoryFrame, "recall" | "phone" | "letter" | "qui
  * - when no new line was read (the story stopped at a choice or its end first), the line on screen is the previous
  *   one: it keeps that line's recall, phone, letter and quiet.
  */
-export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<StoryFrame, "speaker" | "text">) | undefined,
+export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<StoryFrame, "speaker" | "speakerPersonId" | "text">) | undefined,
   lineRead: boolean): FrameStaging {
   const stand = tagged.stand ?? previous?.stand;
   const shown = (staging: FrameStaging): FrameStaging => Object.fromEntries(Object.entries({ ...staging, stand })
@@ -160,7 +162,8 @@ export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<
   if (!lineRead && previous) return shown({ recall: previous.recall, phone: previous.phone, letter: previous.letter, quiet: previous.quiet });
   const before = previous?.text ? previous : undefined;
   const phoneEarlier = tagged.phone && before?.phone
-    ? [...(before.phone.earlier ?? []), { side: before.phone.side, speaker: before.speaker, text: before.text }].slice(-STACK_MAX) : [];
+    ? [...(before.phone.earlier ?? []), { side: before.phone.side, speaker: before.speaker,
+      ...(before.speakerPersonId ? { personId: before.speakerPersonId } : {}), text: before.text }].slice(-STACK_MAX) : [];
   const letterEarlier = tagged.letter && before?.letter?.kind === tagged.letter.kind
     ? [...(before.letter.earlier ?? []), before.text].slice(-STACK_MAX) : [];
   return shown({
