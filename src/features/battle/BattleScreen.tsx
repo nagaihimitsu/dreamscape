@@ -36,6 +36,8 @@ import "./battle.css";
 
 /** Room left between the round bar and the first line of a feedback below it. */
 const FEEDBACK_GAP_PX = 8;
+/** How long a normal battle's opening name plate stays (a tap, a key or the next line ends it sooner). */
+const ENEMY_INTRO_MS = 2400;
 
 /**
  * How far below the top of the screen the sticky boxes held there reach once
@@ -308,6 +310,29 @@ export function BattleScreen({
     defaultEnabled: autoAdvanceEnabled,
   });
   const sceneTap = useSceneTap({ active: isDialogue, lineShown: ready, choicesShown: choosing, windowHidden: windowVisibility.hidden });
+  // A normal battle's opponent comes in on a name plate (special battles have their cut-in): when this
+  // screen opens on the talk before the battle's first question (a new run, or a load there), its line
+  // shows the battle's heading (.battle-enemy-info: role, name, the quote when written) over the scene for
+  // a moment. It takes no input: a tap or a key does what it always does and ends it, as does the next line.
+  const [introStoryState] = useState(() =>
+    !battle.reasoning && active.phase === "dialogue" && active.answers.length === 0 && active.turns === 0 ? active.storyState : null);
+  const [introOver, setIntroOver] = useState(false);
+  const enemyIntro = !introOver && introStoryState !== null && isDialogue && active.storyState === introStoryState;
+  useEffect(() => {
+    if (!enemyIntro) return;
+    const end = () => setIntroOver(true);
+    const onVisibility = () => { if (document.hidden) end(); };
+    const timer = window.setTimeout(end, ENEMY_INTRO_MS);
+    document.addEventListener("pointerdown", end, true);
+    document.addEventListener("keydown", end, true);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      window.clearTimeout(timer);
+      document.removeEventListener("pointerdown", end, true);
+      document.removeEventListener("keydown", end, true);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [enemyIntro]);
   const isResult = active.phase === "result";
   /** The answer whose explanation shows (its verdict heads the reading area). */
   const verdict = active.phase === "feedback" ? answer : undefined;
@@ -331,6 +356,7 @@ export function BattleScreen({
       // An ordinary quiz's wrong answer, saved in this screen, plays no stamp: its card gives a small shake (battle.css).
       data-answer-missed={active.phase === "feedback" && !!answer && !answer.correct && !isSpecial && animatedAnswer === answerKey || undefined}
       data-reduce-motion={reduceMotion || undefined}
+      data-enemy-intro={enemyIntro || undefined}
       data-dialogue-hidden={isDialogue && windowVisibility.hidden || undefined}
       {...sceneTap.props}
     >
@@ -365,11 +391,14 @@ export function BattleScreen({
         className={`battle-stage ${isDialogue ? "" : "battle-stage-compact"} ${battle.scope === "city_finale" ? "finale-stage" : ""}`}
         data-testid={isDialogue ? "scene-picture" : undefined}
       >
+        {/* The opponent's heading above the quiz card; at a normal battle's opening, its name plate
+            (data-enemy-intro; the quote shows only there). */}
         <div className="battle-enemy-info">
           <p className="eyebrow">{battle.titleJa}</p>
           <p className="enemy-title">{battle.enemyTitleJa}</p>
           <h2>{battle.enemyNameJa}</h2>
           <p className="enemy-detail">{battle.enemyDescriptionJa}</p>
+          {battle.enemyQuoteJa && <p className="enemy-quote">{battle.enemyQuoteJa}</p>}
         </div>
         <div className="battle-characters">
           {isDialogue && (

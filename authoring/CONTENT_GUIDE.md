@@ -154,7 +154,7 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 
 ### 敵・バトルの項目
 
-`battle_*.json` の `id`、`titleJa`、`descriptionJa`、`enemyNameJa`、`enemyTitleJa`、`enemyDescriptionJa` は対決と人物の識別・表示。`landmarkId`、`storyId`、`quizId`、`backgroundId` は観光地・Ink・問題セット・登録済み背景への参照です。対決の会話は1本の流れ（下）で書きます。`format` はAでは省略可能、B/Cは明示。任意の `portrait` は既存で定義済みの表示種別に限られます。新規の立ち絵種類には実装作業が別途必要です。
+`battle_*.json` の `id`、`titleJa`、`descriptionJa`、`enemyNameJa`、`enemyTitleJa`、`enemyDescriptionJa` は対決と人物の識別・表示。通常戦（特殊戦B・Cでない対決。都市フィナーレも）の始まりには、最初の行と一緒に、相手の名札（`enemyTitleJa` の役どころと `enemyNameJa` の名前）が少しのあいだ出ます（タップや次の行で消え、操作は止めません）。任意の `enemyQuoteJa` を書くと、名札に相手の一言が1行添えられます（書いたとおりに出るので、台詞ならかぎかっこも書きます。例は見本の編の `battles/catalog.json`）。`landmarkId`、`storyId`、`quizId`、`backgroundId` は観光地・Ink・問題セット・登録済み背景への参照です。対決の会話は1本の流れ（下）で書きます。`format` はAでは省略可能、B/Cは明示。任意の `portrait` は既存で定義済みの表示種別に限られます。新規の立ち絵種類には実装作業が別途必要です。
 
 B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）、0から数える `roundIndex`（何問目の前で資料を選ぶか）、候補 `caseClueIds`、正解 `correctClueIds` を記入します。正解証拠はBが1つ、Cは異なる2つを順不同で組み合わせます。証拠は未発見でもケース資料として開けるよう候補に含めます。英語3択の正解はクイズ側で別に指定します。主張・追及・資料の後の台詞は、対決のInkに書きます（下）。
 

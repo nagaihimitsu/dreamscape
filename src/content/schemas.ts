@@ -307,6 +307,8 @@ export const battleSchema = z
     enemyNameJa: japaneseText,
     enemyTitleJa: japaneseText,
     enemyDescriptionJa: japaneseText,
+    /** A one-line quote of the opponent's on the name plate a normal battle opens with (shown as written). */
+    enemyQuoteJa: japaneseText.optional(),
     storyId: storyAddressSchema,
     quizId: id,
     backgroundId: id,
