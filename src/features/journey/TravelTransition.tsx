@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { TransportMode } from "../../content/transport";
-import { railKinds, TransportIllustration } from "./transport-art";
+import { PassingScenery, railKinds, sceneryPace, TransportIllustration } from "./transport-art";
 import "./travel-transition.css";
 
 /**
  * Small, decorative transition; movement and saving are handled by the caller.
  * The caption and the art come from the mode's declaration (manifest transportModes).
+ * Generic scenery passes behind the art at the pace of the mode's kind (user decision
+ * 2026-11-11); it stands still under reduced motion. The transition's length is unchanged.
  */
 export function TravelTransition({ mode, reduceMotion = false, onEnd }: {
   mode: TransportMode;
@@ -35,10 +37,11 @@ export function TravelTransition({ mode, reduceMotion = false, onEnd }: {
 
   return createPortal(<div className={`travel-transition${reduced ? " is-reduced" : ""}`}
     data-testid="travel-transition" data-mode={mode.id} data-kind={mode.kind} aria-hidden="true">
-    <div className="travel-transition-scene">
+    <div className="travel-transition-scene" data-pace={sceneryPace(mode.kind)}>
       <span className="travel-transition-label">{mode.movingJa}</span>
       <span className="travel-transition-hill travel-transition-hill-back" />
       <span className="travel-transition-hill travel-transition-hill-front" />
+      <PassingScenery />
       {onRails && <span className="travel-transition-wire" />}
       <div className={`travel-transition-vehicle is-${mode.kind}`}>
         <TransportIllustration kind={mode.kind} />

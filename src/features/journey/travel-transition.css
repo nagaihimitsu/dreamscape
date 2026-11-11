@@ -49,6 +49,23 @@
 .travel-transition-hill-back { right: -42px; background: #b2c9b0; }
 .travel-transition-hill-front { left: -56px; bottom: 15px; background: #a2bfa9; }
 .travel-transition-wire { position: absolute; left: 0; right: 0; bottom: 77px; border-top: 1px solid #57796b88; }
+/* The passing scenery (PassingScenery: a skyline, trees and poles, far to near, over the hills that stay still far
+   away): each layer moves left by one tile (120 px) per loop, the farther the slower, at the pace of the mode's kind
+   (data-pace, sceneryPace; --scenery-pace is the near layer's loop). Transform only, under the vehicle and the caption;
+   it stands still under reduced motion. */
+.travel-transition-scene { --scenery-pace: 1.4s; }
+.travel-transition-scene[data-pace="slow"] { --scenery-pace: 3.6s; }
+.travel-transition-scene[data-pace="fast"] { --scenery-pace: 0.75s; }
+.travel-scenery {
+  position: absolute;
+  left: 0;
+  bottom: 20px;
+  display: block;
+  animation: travel-scenery-pass var(--scenery-pace) linear infinite;
+}
+.travel-scenery.is-far { fill: #98b0ab; animation-duration: calc(5 * var(--scenery-pace)); }
+.travel-scenery.is-mid { fill: #7f9f88; animation-duration: calc(2.2 * var(--scenery-pace)); }
+.travel-scenery.is-near { fill: #56705f; }
 .travel-transition-ground {
   position: absolute;
   inset: auto 0 0;
@@ -76,9 +93,11 @@
 @keyframes travel-transition-crossing { 0% { transform: translateX(-105px); } 50% { transform: translateX(0); } 100% { transform: translateX(105px); } }
 @keyframes travel-transition-step { from { transform: rotate(-19deg); } to { transform: rotate(19deg); } }
 @keyframes travel-transition-still { from, to { opacity: 1; } }
+@keyframes travel-scenery-pass { to { transform: translateX(-120px); } }
 @media (prefers-reduced-motion: reduce) {
   .travel-transition { animation: travel-transition-still .45s steps(1, end); }
-  .travel-transition-vehicle, .travel-transition-leg, .travel-transition-arm { animation: none; }
+  .travel-transition-vehicle, .travel-transition-leg, .travel-transition-arm, .travel-scenery { animation: none; }
 }
 .travel-transition.is-reduced { animation: travel-transition-still .45s steps(1, end); }
-.travel-transition.is-reduced .travel-transition-vehicle, .travel-transition.is-reduced .travel-transition-leg, .travel-transition.is-reduced .travel-transition-arm { animation: none; }
+.travel-transition.is-reduced .travel-transition-vehicle, .travel-transition.is-reduced .travel-transition-leg, .travel-transition.is-reduced .travel-transition-arm,
+.travel-transition.is-reduced .travel-scenery { animation: none; }
