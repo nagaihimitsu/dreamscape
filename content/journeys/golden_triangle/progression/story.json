@@ -122,6 +122,316 @@
       "cityId": "delhi",
       "nameJa": "カムラ",
       "characterId": "gt_kamla"
+    },
+    {
+      "id": "gt_harbans",
+      "cityId": "delhi",
+      "nameJa": "ハルバンス"
+    },
+    {
+      "id": "gt_delhi_bangla_old_man",
+      "cityId": "delhi",
+      "nameJa": "老人"
+    },
+    {
+      "id": "gt_suresh",
+      "cityId": "delhi",
+      "nameJa": "スレーシュ"
+    },
+    {
+      "id": "gt_mehr",
+      "cityId": "delhi",
+      "nameJa": "メヘル"
+    },
+    {
+      "id": "gt_kabir",
+      "cityId": "delhi",
+      "nameJa": "カビール"
+    },
+    {
+      "id": "gt_delhi_humayun_girl",
+      "cityId": "delhi",
+      "nameJa": "女の子"
+    },
+    {
+      "id": "gt_delhi_humayun_woman",
+      "cityId": "delhi",
+      "nameJa": "女性"
+    },
+    {
+      "id": "gt_zoheb",
+      "cityId": "delhi",
+      "nameJa": "ゾヘブ"
+    },
+    {
+      "id": "gt_delhi_jama_young_man",
+      "cityId": "delhi",
+      "nameJa": "若い男"
+    },
+    {
+      "id": "gt_anjali",
+      "cityId": "delhi",
+      "nameJa": "アンジャリ"
+    },
+    {
+      "id": "gt_sonu",
+      "cityId": "delhi",
+      "nameJa": "ソーヌー"
+    },
+    {
+      "id": "gt_faiz",
+      "cityId": "delhi",
+      "nameJa": "ファイズ"
+    },
+    {
+      "id": "gt_delhi_red_fort_children",
+      "cityId": "delhi",
+      "nameJa": "子どもたち"
+    },
+    {
+      "id": "gt_delhi_red_fort_classmate",
+      "cityId": "delhi",
+      "nameJa": "隣の子"
+    },
+    {
+      "id": "gt_delhi_hotel_daughter",
+      "cityId": "delhi",
+      "nameJa": "宿の娘"
+    },
+    {
+      "id": "gt_delhi_sweet_shopkeeper",
+      "cityId": "delhi",
+      "nameJa": "店主"
+    },
+    {
+      "id": "gt_delhi_spice_trader",
+      "cityId": "delhi",
+      "nameJa": "問屋"
+    },
+    {
+      "id": "gt_roohi",
+      "cityId": "delhi",
+      "nameJa": "ルーヒー"
+    },
+    {
+      "id": "gt_delhi_hotel_okami",
+      "cityId": "delhi",
+      "nameJa": "おかみ"
+    },
+    {
+      "id": "gt_delhi_hotel_owner",
+      "cityId": "delhi",
+      "nameJa": "宿の主人"
+    },
+    {
+      "id": "gt_kunal",
+      "cityId": "delhi",
+      "nameJa": "クナール"
+    },
+    {
+      "id": "gt_jasmeet",
+      "cityId": "delhi",
+      "nameJa": "ジャスミート"
+    },
+    {
+      "id": "gt_monu",
+      "cityId": "delhi",
+      "nameJa": "モヌ"
+    },
+    {
+      "id": "gt_dubey",
+      "cityId": "delhi",
+      "nameJa": "ドゥベイ"
+    },
+    {
+      "id": "gt_meena",
+      "cityId": "delhi",
+      "nameJa": "ミーナ"
+    },
+    {
+      "id": "gt_delhi_scam_young_man",
+      "cityId": "delhi",
+      "nameJa": "青年"
+    },
+    {
+      "id": "gt_delhi_scam_vest_man",
+      "cityId": "delhi",
+      "nameJa": "ベストの男"
+    },
+    {
+      "id": "gt_delhi_scam_suit_man",
+      "cityId": "delhi",
+      "nameJa": "背広の男"
+    },
+    {
+      "id": "gt_delhi_porter",
+      "cityId": "delhi",
+      "nameJa": "荷運びの男"
+    },
+    {
+      "id": "gt_delhi_ticket_checker",
+      "cityId": "delhi",
+      "nameJa": "検札係"
+    },
+    {
+      "id": "gt_tanvi",
+      "cityId": "agra",
+      "nameJa": "タンヴィ"
+    },
+    {
+      "id": "gt_riya",
+      "cityId": "agra",
+      "nameJa": "リヤ"
+    },
+    {
+      "id": "gt_agra_finale_student",
+      "cityId": "agra",
+      "nameJa": "青年"
+    },
+    {
+      "id": "gt_jagdeep",
+      "cityId": "agra",
+      "nameJa": "ジャグディープ"
+    },
+    {
+      "id": "gt_agra_chini_man",
+      "cityId": "agra",
+      "nameJa": "男"
+    },
+    {
+      "id": "gt_agra_chini_young_man",
+      "cityId": "agra",
+      "nameJa": "青年"
+    },
+    {
+      "id": "gt_agra_chini_bride",
+      "cityId": "agra",
+      "nameJa": "花嫁になる人"
+    },
+    {
+      "id": "gt_gurmeet",
+      "cityId": "agra",
+      "nameJa": "グルミート"
+    },
+    {
+      "id": "gt_samir",
+      "cityId": "agra",
+      "nameJa": "サミール"
+    },
+    {
+      "id": "gt_vimla",
+      "cityId": "agra",
+      "nameJa": "ヴィムラー"
+    },
+    {
+      "id": "gt_agra_mariam_father",
+      "cityId": "agra",
+      "nameJa": "父親"
+    },
+    {
+      "id": "gt_agra_mariam_daughter",
+      "cityId": "agra",
+      "nameJa": "娘"
+    },
+    {
+      "id": "gt_sonia",
+      "cityId": "agra",
+      "nameJa": "ソニア"
+    },
+    {
+      "id": "gt_agra_mehtab_girl",
+      "cityId": "agra",
+      "nameJa": "女の子"
+    },
+    {
+      "id": "gt_agra_ram_bagh_tea_master",
+      "cityId": "agra",
+      "nameJa": "茶屋の主人"
+    },
+    {
+      "id": "gt_vinod",
+      "cityId": "agra",
+      "nameJa": "ヴィノード"
+    },
+    {
+      "id": "gt_agra_akbar_guard",
+      "cityId": "agra",
+      "nameJa": "番人"
+    },
+    {
+      "id": "gt_pooja",
+      "cityId": "jaipur",
+      "nameJa": "プージャー"
+    },
+    {
+      "id": "gt_jaipur_bride_cousin",
+      "cityId": "jaipur",
+      "nameJa": "花嫁のいとこ"
+    },
+    {
+      "id": "gt_jaipur_bride_grandmother",
+      "cityId": "jaipur",
+      "nameJa": "花嫁の祖母"
+    },
+    {
+      "id": "gt_jaipur_amber_shopkeeper",
+      "cityId": "jaipur",
+      "nameJa": "店主"
+    },
+    {
+      "id": "gt_vishal",
+      "cityId": "jaipur",
+      "nameJa": "ヴィシャール"
+    },
+    {
+      "id": "gt_jaipur_city_palace_young_man",
+      "cityId": "jaipur",
+      "nameJa": "青年"
+    },
+    {
+      "id": "gt_shastri",
+      "cityId": "jaipur",
+      "nameJa": "シャーストリー"
+    },
+    {
+      "id": "gt_jaipur_hotel_front",
+      "cityId": "jaipur",
+      "nameJa": "フロントの女性"
+    },
+    {
+      "id": "gt_raju",
+      "cityId": "jaipur",
+      "nameJa": "ラージュー"
+    },
+    {
+      "id": "gt_jaipur_jaigarh_boy",
+      "cityId": "jaipur",
+      "nameJa": "男の子"
+    },
+    {
+      "id": "gt_jaipur_jaigarh_old_man",
+      "cityId": "jaipur",
+      "nameJa": "老人"
+    },
+    {
+      "id": "gt_farhana",
+      "cityId": "jaipur",
+      "nameJa": "ファルハーナ"
+    },
+    {
+      "id": "gt_jaipur_jal_mahal_woman",
+      "cityId": "jaipur",
+      "nameJa": "女性"
+    },
+    {
+      "id": "gt_nasreen",
+      "cityId": "jaipur",
+      "nameJa": "ナスリーン"
+    },
+    {
+      "id": "gt_kavya",
+      "cityId": "jaipur",
+      "nameJa": "カヴィヤ"
     }
   ]
 }

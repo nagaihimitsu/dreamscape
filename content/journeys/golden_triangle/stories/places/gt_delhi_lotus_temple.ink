@@ -15,10 +15,10 @@ INCLUDE modules.ink
 入口の手前で、ボランティアの若者が、並んだ人たちに静かに説明していた。どの宗教の人でも入れる。決まった儀式も、説教も、楽器の演奏もない。いちばん大事な決まりは一つ。話さないこと。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
-「しゃべっちゃだめなんだ。わたし、ちょっと苦手かも。思ったこと、すぐ言いたくなるから」
+しゃべっちゃだめなんだ。わたし、ちょっと苦手かも。思ったこと、すぐ言いたくなるから
 # speaker: heroine
 # emotion: teasing
-「先に言っておくね。中で笑わせてきたら、怒るから」
+先に言っておくね。中で笑わせてきたら、怒るから
 # speaker: narrator
 靴を預け、素足で白い階段を上る。扉をくぐったとたん、音が消えた。
 天井は高く、花びらの重なりの隙間から、白い光が落ちてくる。木の長椅子に、たくさんの人が黙って座っていた。目を閉じる人。手を合わせる人。ただ天井を見上げている人。
@@ -75,43 +75,43 @@ INCLUDE modules.ink
 靴を受け取り、建物を囲む池のそばまで来て、ようやく彼女は大きく息を吐いた。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
-「はあっ。しゃべれる！　すごかった。何もないのに、ずっと見ていられた」
+はあっ。しゃべれる！　すごかった。何もないのに、ずっと見ていられた
 # speaker: heroine
-「でもね、静かにしてたら、頭の中がすごくうるさかったの。考えないようにするほど、考えちゃう。あれは、修行だね」
+でもね、静かにしてたら、頭の中がすごくうるさかったの。考えないようにするほど、考えちゃう。あれは、修行だね
 { cond("flag gt_delhi_lotus_made_her_laugh"):
     # speaker: heroine
     # emotion: exasperated
-    「それと。笑わせないでって、言ったよね？　あの『じぶんも』、一生忘れないから」
+    それと。笑わせないでって、言ったよね？　あの『じぶんも』、一生忘れないから
 }
 # speaker: heroine
 # emotion: teasing
-「……で。最後の、読めた？」
+……で。最後の、読めた？
 * [「『まだいたい』」 # option: read_mada]
     # profile: honest
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,shy_deep,sweat
-        「こ、声に出して読まないでよ。……忘れて。今のは、なし」
+        こ、声に出して読まないでよ。……忘れて。今のは、なし
     - else:
         # speaker: heroine
         # reaction: heroine,shy_deep,blush
-        「読めちゃったか。点々、気づいたんだ」
+        読めちゃったか。点々、気づいたんだ
         # speaker: heroine
-        「ここに、って意味。……たぶん。今は、そういうことにしておいて」
+        ここに、って意味。……たぶん。今は、そういうことにしておいて
     }
 * [「『またいたい』……？」 # option: read_mata]
     # profile: playful
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
-        「そっか。点々、届かなかったか。……ちゃんと書いたんだけどな」
+        そっか。点々、届かなかったか。……ちゃんと書いたんだけどな
     - else:
         # speaker: heroine
         # reaction: heroine,teasing_big,music
-        「ふふっ。点々、背中だと消えちゃうんだね」
+        ふふっ。点々、背中だと消えちゃうんだね
         # speaker: heroine
         # emotion: smile
-        「でも、それも合ってるかも。また来たいもん。正解は、教えない」
+        でも、それも合ってるかも。また来たいもん。正解は、教えない
     }
 * [「読めなかった」 # option: couldnt_read]
     # profile: attentive
@@ -119,22 +119,22 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
-        「……そっか。ゆっくり書いたのにな」
+        ……そっか。ゆっくり書いたのにな
         # speaker: heroine
-        「ううん、いい。いつか、ちゃんと声で言うね。背中じゃなくて」
+        ううん、いい。いつか、ちゃんと声で言うね。背中じゃなくて
     - else:
         # speaker: heroine
         # emotion: smile
-        「そっか。……じゃあ、いい。読めなかったなら、その方がいいのかも」
+        そっか。……じゃあ、いい。読めなかったなら、その方がいいのかも
         # speaker: heroine
-        「声に出すと、なんだか本当になっちゃいそうだったから、背中に書いたの。いつか、ちゃんと声で言うね。背中じゃなくて」
+        声に出すと、なんだか本当になっちゃいそうだったから、背中に書いたの。いつか、ちゃんと声で言うね。背中じゃなくて
     }
 -
 # speaker: narrator
 池の水面に、白い花びらがもう一つ映っていた。彼女はしばらくそれを眺めてから、靴のかかとを直した。
 # speaker: heroine
-「ここ、何を祈ってもいいし、何も祈らなくてもいいんだって。わたし、祈るかわりに、字を書いちゃった」
+ここ、何を祈ってもいいし、何も祈らなくてもいいんだって。わたし、祈るかわりに、字を書いちゃった
 # speaker: heroine
 # reaction: heroine,teasing,music
-「怒られなかったから、セーフ。ね？」
+怒られなかったから、セーフ。ね？
 -> END

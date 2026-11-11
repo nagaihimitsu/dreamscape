@@ -83,14 +83,14 @@ describe("Golden Triangle rooftop dates (GT-3b)", () => {
     const started = startDate(evening, "gt_delhi_date_confession");
     expect(started.activeDate).toMatchObject({ pendingOutcome: "accepted", resolutionMode: "fixed", randomPlan: [] });
     const { state, lines } = playDate(evening, "gt_delhi_date_confession");
-    expect(lines).toContain("「……うん。わたしも、好き」");
+    expect(lines).toContain("……うん。わたしも、好き");
     expect(state).toMatchObject({ confessionStatus: "accepted", endingReached: true });
     expect(getDateAvailability(state, "gt_delhi_date_confession").available).toBe(false);
   }, 60_000);
 
   it("after a deferral, offers the reassurance once per journey; a rejection waits for another date", () => {
     const deferred = playDate(delhiEvening({ affection: 4, trust: 2, spark: 0 }), "gt_delhi_date_confession");
-    expect(deferred.lines).toContain("「うれしい。本当に、うれしい」");
+    expect(deferred.lines).toContain("うれしい。本当に、うれしい");
     expect(deferred.state.confessionStatus).toBe("deferred");
     const reassured = playDate(deferred.state, "gt_delhi_date_reassurance").state;
     expect(reassured.playedDateIds).toContain("gt_delhi_date_reassurance");
@@ -100,7 +100,7 @@ describe("Golden Triangle rooftop dates (GT-3b)", () => {
     expect(getDateAvailability(reassured, "gt_delhi_date_confession").available).toBe(true);
 
     const rejected = playDate(delhiEvening({ affection: 0, trust: 0, spark: 0 }), "gt_delhi_date_confession");
-    expect(rejected.lines).toContain("「ありがとう。言ってくれて、うれしかった。それは、本当」");
+    expect(rejected.lines).toContain("ありがとう。言ってくれて、うれしかった。それは、本当");
     expect(rejected.state.confessionStatus).toBe("rejected");
     expect(getDateAvailability(rejected.state, "gt_delhi_date_confession").available).toBe(false);
     const another = atNight(playDate(rejected.state, normalDates("delhi")[3]).state);
