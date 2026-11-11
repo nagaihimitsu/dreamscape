@@ -13,12 +13,13 @@ import { REACTION_MARKS } from "../content/dialogue-reactions";
 
 export type { Speaker, StoryFrame } from "./frame-reader";
 import type { StoryFrame } from "./frame-reader";
-const speakerSchema = z.enum(["narrator", "heroine", "player", "enemy"]);
+const speakerSchema = z.enum(["narrator", "heroine", "player", "enemy", "person"]);
 const imageIdSchema = z.string().regex(/^[a-z][a-z0-9_]*$/u);
 export const storyFrameSchema = z
   .object({
     text: z.string(),
     speaker: speakerSchema,
+    speakerPersonId: z.string().regex(/^[a-z][a-z0-9_]*$/u).optional(),
     background: z.string(),
     emotion: z.string(),
     emotionExplicit: z.literal(true).optional(),
@@ -280,7 +281,10 @@ export function validateStorySnapshot(
     !tagContext.backgroundIds.includes(frame.background) ||
     !tagContext.emotionIds.includes(frame.emotion) ||
     (frame.photo && !tagContext.photoIds.includes(frame.photo.imageId)) ||
-    (frame.recall && !tagContext.photoIds.includes(frame.recall))
+    (frame.recall && !tagContext.photoIds.includes(frame.recall)) ||
+    // A person's line names a declared person (and only a person's line names one).
+    (frame.speaker === "person") !== (frame.speakerPersonId !== undefined) ||
+    (frame.speakerPersonId !== undefined && !tagContext.personIds.includes(frame.speakerPersonId))
   )
     throw new Error("保存された場面の情報が一致しません。");
   if (

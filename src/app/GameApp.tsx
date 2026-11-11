@@ -131,6 +131,7 @@ import { RelationshipChangeNote } from "../components/RelationshipChangeNote";
 import { sceneConditionTruths } from "../domain/scene-conditions";
 import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
 import { portraitFocus } from "../components/speaker-focus";
+import { speakerPlate } from "../components/speaker-plate";
 
 /** Where a Debug relationship change shows (decision 23): the story scene on screen, else the map or free time until the next action. */
 function changeScreenKey(state: GameState): string {
@@ -384,6 +385,8 @@ export function GameApp({
   const currentEncounter = activeEncounter ? getActiveEncounterDefinition(activeEncounter) : undefined;
   // The scene's person with a portrait (# person:): stands opposite the heroine and names the enemy lines.
   const encounterPerson = currentEncounter ? scenePerson(storyState.people, scenes.find((scene) => scene.id === currentEncounter.id)?.people) : undefined;
+  const encounterPlate = game && activeEncounter ? speakerPlate(activeEncounter.frame,
+    { heroine: game.heroineName, player: game.playerName, enemy: encounterPerson?.nameJa }, storyState.people) : undefined;
   const encounterLandmark = landmarks.find((landmark) => landmark.id === currentEncounter?.landmarkId);
   // The place the party is at, as the screens name it (the hotel is 「滞在先のホテル」, never its data name).
   const encounterHere = currentEncounter && getCityContent(currentEncounter.cityId).travel.places.find((place) => place.id === game?.travel.currentPlaceId);
@@ -639,9 +642,8 @@ export function GameApp({
                 getCityContent(currentEncounter.cityId).city.nameJa,
               background: activeEncounter.frame.background,
               backgroundAsset: encounterImage,
-              speaker: activeEncounter.frame.speaker === "heroine" ? game.heroineName : activeEncounter.frame.speaker === "player" ? game.playerName
-                : activeEncounter.frame.speaker === "enemy" && encounterPerson ? encounterPerson.nameJa : "旅の風景",
-              narration: activeEncounter.frame.speaker !== "heroine" && activeEncounter.frame.speaker !== "player" && !(activeEncounter.frame.speaker === "enemy" && encounterPerson),
+              speaker: encounterPlate!.name,
+              narration: encounterPlate!.narration,
               person: encounterPerson && { characterId: encounterPerson.characterId, focus: portraitFocus(activeEncounter.frame.speaker, "enemy") },
               text: activeEncounter.frame.text,
               delivery: activeEncounter.frame.delivery,

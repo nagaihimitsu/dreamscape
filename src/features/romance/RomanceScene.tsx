@@ -1,6 +1,6 @@
 import type { ChoiceDisplay } from "../../domain/scene-effects";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { getCityContent, dateDestinations, dialogueExpressions, dialogueReactions, presentation } from "../../content";
+import { getCityContent, dateDestinations, dialogueExpressions, dialogueReactions, presentation, storyState } from "../../content";
 import type { DateDefinition } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
@@ -8,6 +8,7 @@ import type { GameState } from "../../domain/game";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { portraitFocus } from "../../components/speaker-focus";
+import { speakerPlate } from "../../components/speaker-plate";
 import { ComicEffect } from "../../components/ComicEffect";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, RecallLayer } from "../../components/LineStage";
@@ -60,12 +61,7 @@ export function RomanceScene({
     : undefined;
   const reaction = resolveDialogueReaction(dialogueReactions, storyId, frame, "heroine");
   const emotion = reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame);
-  const speaker =
-    frame.speaker === "heroine"
-      ? game.heroineName
-      : frame.speaker === "player"
-        ? game.playerName
-        : "旅の風景";
+  const { name: speaker, narration } = speakerPlate(frame, { heroine: game.heroineName, player: game.playerName }, storyState.people);
   const { ready, onReady, entries } = useDialogueLog(
     active.dateId,
     game.revision,
@@ -191,7 +187,7 @@ export function RomanceScene({
           </div>
         )}
         <DialogueWindowHead
-          narration={frame.speaker !== "heroine" && frame.speaker !== "player"}
+          narration={narration}
           speaker={showsSpeakerPlate(frame) && <>
             {speaker}
             {frame.speaker === "heroine" && frame.emotion !== "neutral" && (

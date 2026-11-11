@@ -70,6 +70,7 @@ import { validateJourney } from "./journey-validation";
 import { validateEpilogue } from "./epilogue-validation";
 import { isPlaceStory, splitStoryAddress, storyFileOf } from "../src/content/story-address";
 import { includesModules, readFileChoices, readMainFileHead, readPlaceFile, choiceOption, parseDone, parseThen, type PlaceFile } from "./place-files";
+import { checkSpeakerPeople } from "./speaker-people";
 import { MODULES_FILE, MODULES_INK } from "./modules-ink";
 import { walkScene } from "./scene-walk";
 import { catalogScenes, checkRuleIds, checkSceneReferences, insertedSceneEncounter, mainFileSceneId, mergeCatalogChoiceTags, placeScenes, sceneConditionsOf, sceneTagRules, thenLoopErrors, thenLoopWarnings, momentText, momentWarnings, tourMomentErrors, type MainAddresses, type ThenLoopContext } from "./scene-table";
@@ -543,6 +544,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     // A line's # photo: (the album): a tourism photo, or a background that shows one.
     photoIds: albumImageIds({ assets: tourism.assets, backgrounds: presentation.backgrounds }),
     localWordIds: localWords.map((word) => word.id),
+    personIds: storyStateCatalog.people.map((person) => person.id),
   };
   for (const effect of effects) {
     if (effect.responseProfileId && !responseProfiles.some((profile) => profile.id === effect.responseProfileId))
@@ -589,7 +591,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   }
   // The one-scene files of main parts: their head # on_done: / # then: (read and blanked) and their choices.
   const mainFileHeads = new Map<string, { onDone: string[]; then?: string }>();
+  // A line's # speaker: <person ID> names a person of progression/story.json people (2026-11-11).
+  const declaredPeople = new Set(storyStateCatalog.people.map((person) => person.id));
   for (const { id, file, source: authored } of sources.storyFiles) {
+    withContext(file, () => checkSpeakerPeople(authored, declaredPeople));
     const place = placeFiles.get(id);
     const main = !place && mains.some((item) => item.address === id);
     const mainHead = main ? withContext(file, () => readMainFileHead(authored)) : undefined;
