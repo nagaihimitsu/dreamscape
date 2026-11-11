@@ -110,6 +110,7 @@ import { focusSceneHeading } from "../components/scene-focus";
 import { holdTaps } from "../components/tap-hold";
 import { useDebugMode } from "./debug-mode";
 import { DebugModeSetting } from "./DebugModeSetting";
+import { canReturnToFreeTime, freeTimeReturnState, nextFreeTimeReturn, type FreeTimeReturn } from "./free-time-return";
 import { relationshipChange, type RelationshipChange } from "../domain/relationship-change";
 import { RelationshipChangeNote } from "../components/RelationshipChangeNote";
 import { sceneConditionTruths } from "../domain/scene-conditions";
@@ -155,6 +156,14 @@ export function GameApp({
     if (change) setShownChange({ scene: changeScreenKey(next), change });
   });
   const { game, loaded, invalid, notice, setNotice, commit, getCurrent, save } = session;
+  // Debug's 「移動画面に戻る（Debug）」 (free-time-return.ts): the last free-time state, in this tab's memory
+  // only. Updated after each render, so the first render of another screen reads the free time before it.
+  const debugOn = isDebug || debugMode.on;
+  const freeTimeReturn = useRef<FreeTimeReturn | null>(null);
+  useEffect(() => {
+    freeTimeReturn.current = nextFreeTimeReturn(freeTimeReturn.current, game, journeyId, debugOn);
+  }, [game, journeyId, debugOn]);
+  const [confirmReturn, setConfirmReturn] = useState(false);
   // The second tap of a double tap that starts or ends a story scene must not press the next
   // screen or read the new scene on (story-scene-change.ts).
   const storyScene = storySceneOnScreen(game);
@@ -221,6 +230,7 @@ export function GameApp({
 
   function begin(event: FormEvent) {
     event.preventDefault();
+    freeTimeReturn.current = null;
     session.begin(nameOrDefault(player, balance.defaultPlayerName), nameOrDefault(heroine, balance.defaultHeroineName), journeyId);
   }
   function requestDelete() {
@@ -237,6 +247,8 @@ export function GameApp({
   }
   function loadSavedGame() {
     if (!session.restore()) return;
+    // Debug's return point belonged to the play before the load.
+    freeTimeReturn.current = null;
     // A load can bring back the same date run (the same scene key): its earlier change is not shown again.
     setShownChange(null);
     // A load replaces the screen under the finger like a scene start, also when the same scene
@@ -245,6 +257,20 @@ export function GameApp({
     holdTaps();
     setSceneEpoch((epoch) => epoch + 1);
     setNotebook(false);
+  }
+  /** 「戻る」 of Debug's 「移動画面に戻りますか？」: the remembered free-time state replaces the game (saved as an action is). */
+  function returnToFreeTime() {
+    setConfirmReturn(false);
+    const point = freeTimeReturn.current;
+    const current = getCurrent();
+    // A second press, or a scene that ended by itself meanwhile (auto-advance), finds free time: nothing to undo.
+    if (!point || !current || !canReturnToFreeTime(point, current, journeyId, debugOn)) return;
+    if (!session.replace(freeTimeReturnState(point, current))) return;
+    // As after a load: the undone scene's relationship change goes, the clue book closes, and the
+    // free-time screen that appears under the finger takes no tap for a moment.
+    setShownChange(null);
+    setNotebook(false);
+    holdTaps();
   }
   function setAutoSave(enabled: boolean) {
     if (enabled && !session.persistCurrent()) return;
@@ -387,6 +413,7 @@ export function GameApp({
           debugMode.refresh();
           setSettings(true);
         }}
+        onReturnToFreeTime={canReturnToFreeTime(freeTimeReturn.current, game, journeyId, debugOn) ? () => setConfirmReturn(true) : undefined}
       />}
       {game && (
         <div className="journey-stage" aria-label="旅の進行">
@@ -814,6 +841,15 @@ export function GameApp({
           <p>まだ保存していない進行は失われます。</p>
           <button className="secondary" autoFocus onClick={() => setConfirmLoad(false)}>戻る</button>
           <button className="primary" onClick={() => { setConfirmLoad(false); loadSavedGame(); }}>ロードする</button>
+        </Modal>
+      )}
+      {/* Opened from ⚙設定's panel, as ロード's confirmation: it takes no press for a moment (settlePresses). */}
+      {confirmReturn && game && (
+        <Modal labelledBy="free-time-return-title" onClose={() => setConfirmReturn(false)} settlePresses>
+          <ModalTitle id="free-time-return-title" eyebrow="Debug">移動画面に戻りますか？</ModalTitle>
+          <p>この出来事で変わったことは、すべて元に戻ります。</p>
+          <button type="button" className="secondary" autoFocus onClick={() => setConfirmReturn(false)}>やめる</button>
+          <button type="button" className="primary" onClick={returnToFreeTime}>戻る</button>
         </Modal>
       )}
       {deleteSnapshot && (
