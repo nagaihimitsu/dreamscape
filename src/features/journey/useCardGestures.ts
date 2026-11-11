@@ -16,6 +16,8 @@ export type CardSwipe = {
   readyAt: number;
   /** Says why it cannot depart (the live regions). */
   refuse: () => void;
+  /** The same reason in a few words, floated up over the card (「APが足りません」; photo-cards.ts refusalNoteJa). */
+  note: string;
   /** This screen stays after `go` (a wait): the card comes back at once. */
   stays?: boolean;
 };
@@ -32,6 +34,10 @@ const SPRING_MS = 180;
 const FLY_MS = 240;
 /** A departure that left this screen on show (the move did not happen): the card comes back after this long. */
 const RESTORE_MS = 1200;
+/** How long a refusal's words float over the card (photo-free-time.css .photo-card-refusal runs as long). */
+const NOTE_MS = 1700;
+/** The refusal's words stay this far (px) inside the top and bottom of the screen. */
+const NOTE_EDGE = 72;
 /** Where no drag starts: the header (its menus and panels), the site's header lines on wide screens, dialogs, menus, text fields. */
 const NO_DRAG = ".journey-hud, .masthead, .journey-stage, .app-shell > footer, dialog, [role='dialog'], [role='menu'], input, textarea, select, [contenteditable]";
 /** The app shell's mark while drags start anywhere on it (photo-free-time.css gives it its touch-action). */
@@ -88,8 +94,9 @@ type Gesture = {
  * counts (a place departs, 「ホテルに戻る」 rests, 「待機」 waits and its card is back in the row at once); otherwise it
  * springs back. A drag that turns sideways, a second finger and pointercancel bring the card back. While the card
  * cannot depart (wait, rest) it follows less, comes back, and `refuse` says why while the reason under the row
- * comes into view. The card never leaves its slot: a copy of it floats over the screen (`.photo-card-ghost`), so
- * neither the row's box nor the header cuts it, and nothing else moves. From a confirmed departure until this screen
+ * comes into view and the reason in a few words (`note`, 「APが足りません」) floats up over the card and fades (user
+ * decision 2026-11-11; with reduced motion it shows still, then fades). The card never leaves its slot: a copy of it
+ * floats over the screen (`.photo-card-ghost`), so neither the row's box nor the header cuts it, and nothing else moves. From a confirmed departure until this screen
  * goes (or, the move not done, the card comes back) no drag starts. Reduced motion: the card still follows the finger,
  * without the fly-off and the spring. Enter on the chosen card does the same as a swipe up (no animation).
  */
@@ -114,11 +121,15 @@ export function useCardGestures({ row, chosen, swipe, list, driving, settle }: {
   const timers = useRef(new Set<number>());
   /** Each floating copy with its card (hidden meanwhile). */
   const floating = useRef(new Map<HTMLElement, HTMLElement>());
+  /** The refusal's words floating over the card (null when none shows). */
+  const note = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const pending = timers.current;
     const shown = floating.current;
     return () => {
+      note.current?.remove();
+      note.current = null;
       gesture.current?.detach();
       gesture.current = null;
       window.clearTimeout(forgetting.current);
@@ -217,9 +228,34 @@ export function useCardGestures({ row, chosen, swipe, list, driving, settle }: {
     if (reducedMotion()) drop(ghost);
     else animate(ghost, SPRING_MS, "translateY(0px)", () => drop(ghost));
   };
-  /** Why it cannot depart: said, and the reason under the row brought into view. */
+  /**
+   * The reason in a few words floats up over the chosen card and fades (a refusal shown again replaces it). It is not
+   * read out: `refuse` already says it in the live region.
+   */
+  const float = (text: string) => {
+    note.current?.remove();
+    note.current = null;
+    if (!text) return;
+    const card = list.current?.querySelector<HTMLElement>(`:scope > li[data-card-id="${CSS.escape(chosen.current)}"] > .photo-card`);
+    const box = card?.getBoundingClientRect();
+    const element = document.createElement("div");
+    element.className = reducedMotion() ? "photo-card-refusal is-still" : "photo-card-refusal";
+    element.setAttribute("aria-hidden", "true");
+    element.textContent = text;
+    const top = box ? box.top + box.height * 0.35 : window.innerHeight / 2;
+    element.style.left = `${box ? box.left + box.width / 2 : window.innerWidth / 2}px`;
+    element.style.top = `${Math.min(Math.max(top, NOTE_EDGE), window.innerHeight - NOTE_EDGE)}px`;
+    document.body.append(element);
+    note.current = element;
+    later(() => {
+      element.remove();
+      if (note.current === element) note.current = null;
+    }, NOTE_MS);
+  };
+  /** Why it cannot depart: said, floated over the card, and the reason under the row brought into view. */
   const refuse = (current: CardSwipe) => {
     current.refuse();
+    float(current.note);
     list.current?.parentElement?.querySelector<HTMLElement>(".place-card-reason")
       ?.scrollIntoView({ block: "nearest", behavior: reducedMotion() ? INSTANT : "smooth" });
   };
