@@ -27,8 +27,8 @@ export function nightButtons(game: GameState, actions: readonly NightAction[], n
 /**
  * The night screen (docs/02 「一日の終わり」): free time at 21:00 or later while night actions are open (GameApp, getDayEnd). The
  * whole screen under the header is the night of the day's end card (the night colour, the crescent moon and the stars) with
- * 「夜も更けました。」, today's route and the heroine's line of the night when there are any (NightRecap; 2026-11-11), and a button
- * for each night action open now, then 「ホテルで休む」. Each opens what its control in free time
+ * 「夜も更けました。」, a button for each night action open now, then 「ホテルで休む」, and under them today's route and the
+ * heroine's line of the night when there are any (NightRecap; 2026-11-11). Each button opens what its control in free time
  * opens (the tours' sheet and the cancel's dialog here, the epilogue, the departure's dialog, the stored AP); the free-time
  * screen (its photo cards included) is not there meanwhile. The screen is the game's state, not a saved mark: when a flow comes
  * back at 21:00 or later it shows again with what is left. Taps are held as it appears and when its buttons change (the second
@@ -101,11 +101,12 @@ function NightLayout({ rootRef, line, recap, buttons, reduced, announced, leavin
     <div className={`night-screen-content${hasNightRecap(recap) ? " has-recap" : ""}`}>
       <NightSky />
       <h1 className="night-screen-line" tabIndex={-1}>{line}</h1>
-      {hasNightRecap(recap) && <NightRecapView recap={recap} />}
       <div className="night-screen-actions">
         {buttons.map((button) => <button key={button.kind} type="button" data-testid={`night-action-${button.kind}`}
           className={button.kind === "rest" ? "night-screen-rest" : "secondary"} onClick={() => onPress?.(button.kind)}>{button.label}</button>)}
       </div>
+      {/* Under the buttons, so the night's actions stay in view on a short phone (the screen scrolls to the rest). */}
+      {hasNightRecap(recap) && <NightRecapView recap={recap} />}
     </div>
     <p className="sr-only" role="status">{announced ? line : ""}</p>
     {children}

@@ -39,7 +39,8 @@ export function TodayRouteMap({ route }: { route: readonly RouteStop[] }) {
     const points = stops.map((stop) => L.latLng(stop.place.latitude, stop.place.longitude));
     L.polyline(points, { className: "today-route-line", color: "#2b3140", weight: 3, opacity: 0.9, dashArray: "1 8", lineCap: "round", interactive: false }).addTo(map);
     for (const mark of routeMarks(stops)) {
-      const size = mark.label.length > 2 ? 40 : 28;
+      // A pill as wide as its numbers (「1・4」), centred on the place.
+      const size = Math.max(28, 12 + mark.label.length * 8);
       L.marker([mark.place.latitude, mark.place.longitude], {
         icon: L.divIcon({ className: "today-route-mark-wrap", iconSize: [size, 28], iconAnchor: [size / 2, 14],
           html: `<span class="today-route-mark${mark.last ? " is-last" : ""}" aria-hidden="true">${escapeHtml(mark.label)}</span>` }),

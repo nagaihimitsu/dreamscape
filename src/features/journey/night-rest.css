@@ -169,13 +169,15 @@
 }
 @keyframes night-fade-out { from { opacity: 1; } to { opacity: 0; } }
 
-/* Under the night's line (NightRecap, 2026-11-11): today's route on a small map, its stops in words, and the heroine's line.
-   The moon gives them room; the card that shows them stays longer (NightRest), its timeline stretched alike. */
+/* The night's recap (NightRecap, 2026-11-11): today's route on a small map, its stops in words, and the heroine's line, under
+   the night screen's buttons or the card's line. The moon gives them room; the card that shows them stays longer (NightRest),
+   its timeline stretched alike. */
 .night-screen-content.has-recap .night-rest-sky,
 .night-rest.has-recap .night-rest-sky { width: min(120px, 34vw); }
 .night-rest.has-recap, .night-rest.has-recap .night-rest-content { animation-duration: 4.8s; }
 .night-rest.has-recap .night-rest-content { width: 100%; max-width: 360px; }
 .night-recap { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 12px; }
+.night-screen-actions + .night-recap { margin-top: 22px; }
 .today-route { margin: 0; }
 /* --ds-on-slate-muted on the night colour: about 13:1. */
 .today-route-title { margin: 0 0 4px; color: var(--ds-on-slate-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-align: center; }
@@ -224,9 +226,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 28px;
-  min-width: 28px;
-  padding: 0 6px;
+  width: 100%;
+  height: 100%;
   border-radius: 14px;
   background: var(--ds-slate-900);
   color: var(--ds-marker-selected);
