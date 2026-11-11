@@ -305,6 +305,8 @@ export function BattleScreen({
   });
   const sceneTap = useSceneTap({ active: isDialogue, lineShown: ready, choicesShown: choosing, windowHidden: windowVisibility.hidden });
   const isResult = active.phase === "result";
+  /** The answer whose explanation shows (its verdict heads the reading area). */
+  const verdict = active.phase === "feedback" ? answer : undefined;
   const isSpecial = !!battle.reasoning;
   const showReasoning =
     !!battle.reasoning && battle.reasoning.roundIndex === active.roundIndex;
@@ -349,7 +351,8 @@ export function BattleScreen({
         <CanalScene backgroundId={backgroundId} imageAssetId={landmarkAsset?.id} />
       </div>
       {/* The battle's heading in every phase (S5): its landmark, or the battle's title for a city
-          finale; 手がかり帳 is in the header while the battle talks (the round bar holds its own). */}
+          finale; 手がかり帳 is in the header, shown at a choice: the talk's choices, a question, the
+          reasoning stop (whose panel also has its own 「手がかり帳を開く」). */}
       <SceneHeading label={landmark?.nameJa ?? battle.titleJa} badge={tourSceneBadge(game)} />
       {chrome.notebookTab && onNotebook && <SceneNotebookTool onClick={onNotebook} />}
       <div
@@ -413,32 +416,20 @@ export function BattleScreen({
         aria-label="クイズバトル"
         data-testid={chrome.rebuttal ? "reasoning-rebuttal" : undefined}
       >
-        {!isDialogue && <div className="battle-roundbar" data-testid="battle-roundbar" ref={roundBar}>
-          <span>
-            {isResult
-              ? "決着"
-              : `第${active.roundIndex + 1}問 / 全${quiz.questions.length}問`}
-          </span>
-          {active.phase === "feedback" && answer ? (
+        {/* The round bar, held at the top of the reading area: the verdict over an answer's
+            explanation, 「決着」 over the result. A question has none (user decision 2026-11-11: no
+            question count, English level, own 手がかり帳 or answers' review on the quiz card). */}
+        {(verdict || isResult) && <div className="battle-roundbar" data-testid="battle-roundbar" ref={roundBar}>
+          {verdict ? (
             <span
-              className={`answer-verdict ${answer.correct ? "answer-verdict-correct" : "answer-verdict-incorrect"}`}
+              className={`answer-verdict ${verdict.correct ? "answer-verdict-correct" : "answer-verdict-incorrect"}`}
               data-testid="answer-verdict"
               aria-hidden="true"
             >
-              <b>{answer.correct ? "○" : "×"}</b> {answer.correct ? "正解" : "不正解"}
+              <b>{verdict.correct ? "○" : "×"}</b> {verdict.correct ? "正解" : "不正解"}
             </span>
-          ) : <span>英語 {quiz.englishLevel}</span>}
-          {onNotebook && active.phase !== "reasoning" && (
-            <button className="notebook-button" onClick={onNotebook}>
-              手がかり帳
-            </button>
-          )}
+          ) : <span>決着</span>}
         </div>}
-        {chrome.reviewAnswers && (
-          <button className="text-button" onClick={() => onEnglish()}>
-            回答した問題を振り返る
-          </button>
-        )}
         {isResult ? (
           <div className="battle-result" data-testid="battle-result">
             <p className="eyebrow">今回の結果</p>
@@ -536,21 +527,16 @@ export function BattleScreen({
             </button>}
           </>
         ) : active.phase === "reasoning" ? (
-          <>
-            <ReasoningPanel
-              game={game}
-              onPress={onPress}
-              onSubmit={onSubmitEvidence}
-              onNotebook={onNotebook}
-            />
-            {active.answers.length > 0 && (
-              <button className="text-button" onClick={() => onEnglish()}>
-                回答した問題を振り返る
-              </button>
-            )}
-          </>
+          <ReasoningPanel
+            game={game}
+            onPress={onPress}
+            onSubmit={onSubmitEvidence}
+            onNotebook={onNotebook}
+          />
         ) : (
           <div className="question-area" data-testid="battle-question">
+            {/* The battle's progress, for screen readers only (the card shows no question count). */}
+            <p className="sr-only">第{active.roundIndex + 1}問 / 全{quiz.questions.length}問</p>
             {showReasoning && (
               <ReasoningPanel
                 game={game}
@@ -558,9 +544,6 @@ export function BattleScreen({
                 onSubmit={onSubmitEvidence}
               />
             )}
-            <p className="english-instructions">
-              単語を押すと意味、同じ単語をもう一度押すと文の訳。回答はA・B・Cを押します。
-            </p>
             <h2 className="question-en">
               <InteractiveEnglish
                 key={question.id}

@@ -17,7 +17,7 @@ export interface HudState {
  *   leg's narration, a sightseeing guide, a battle, a date) while nothing waits for the player's
  *   choice. The header shows only the place and time and ⚙設定.
  * - "all": every part, also the budget and AP, the held items and the screen's own tool (free time's
- *   地図; a guide's or a battle talk's 手がかり帳). Such a scene while it waits for a choice (one of
+ *   地図; a guide's or a battle's 手がかり帳). Such a scene while it waits for a choice (one of
  *   the story's, a quiz's answer, the evidence of a battle's reasoning), and every other screen (free
  *   time, the observation, 交際開始).
  * The parts that "talk" leaves out keep their room (journey-hud.css), so nothing under the header

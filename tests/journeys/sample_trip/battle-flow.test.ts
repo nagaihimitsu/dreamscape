@@ -343,7 +343,8 @@ describe("a battle's conversation choices (stage 5, decision 10)", () => {
 });
 
 // What the battle screen shows around the claim: the 「次へ進む」 at the end of the part before the claim, the upcoming
-// question in the clue book while the claim plays, and a rebuttal that hides the clue book and the answers' review.
+// question in the clue book while the claim plays, the clue book in the header at the stop point, and a rebuttal that
+// hides the clue book.
 describe("a special battle's claim and rebuttal on the battle screen (stage 5)", () => {
   type Seen = { text: string; part?: string; sceneEnd?: true; round: number; chrome: ReturnType<typeof battleChrome> };
   /** Play to the first stop point (right answers), saving and loading at every step; every line with its marks. */
@@ -373,23 +374,26 @@ describe("a special battle's claim and rebuttal on the battle screen (stage 5)",
   it("ends the part before the claim with 「次へ進む」, and shows the upcoming question while the claim plays (B and C)", () => {
     for (const [battleId, round, claimLine] of [[MARKET, 1, "「時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！」"],
       [LIBRARY, 2, undefined]] as const) {
-      const { seen } = toStop(battleId);
+      const { state, seen } = toStop(battleId);
       const claim = seen.filter((line) => line.part === "claim");
       expect(claim.length, battleId).toBeGreaterThan(0);
       if (claimLine) expect(claim.map((line) => line.text)).toEqual([claimLine]);
       const before = seen[seen.indexOf(claim[0]) - 1];
       // The last line before the claim ends its part: 「次へ進む」, and the auto-advance stops there.
-      expect(before).toMatchObject({ sceneEnd: true, round: round - 1, chrome: { advance: advance("次へ進む"), notebookTab: true, reviewAnswers: true } });
+      expect(before).toMatchObject({ sceneEnd: true, round: round - 1, chrome: { advance: advance("次へ進む"), notebookTab: true } });
       expect(seen.filter((line) => line.sceneEnd)).toEqual([before]);
       // The claim's lines: the reasoning's round (the clue book's question is the one the proof leads to), its last line ends the part.
-      for (const line of claim) expect(line).toMatchObject({ round, chrome: { rebuttal: false, notebookTab: true, reviewAnswers: true } });
+      for (const line of claim) expect(line).toMatchObject({ round, chrome: { rebuttal: false, notebookTab: true } });
       expect(claim.at(-1)!.chrome.advance).toEqual(advance("次へ進む"));
       // The sample has no rebuttal.
       expect(seen.some((line) => line.part === "rebuttal")).toBe(false);
+      // At the stop point the clue book is in the header (as at every question: the quiz card has none of its own).
+      const stop = state.activeBattle!;
+      expect(battleChrome(stop, getActiveBattleContent(stop).battle).notebookTab, battleId).toBe(true);
     }
   });
 
-  it("plays a rebuttal after the claim, saved line by line, without the clue book or the answers' review", () => {
+  it("plays a rebuttal after the claim, saved line by line, without the clue book", () => {
     const written = source(fileStory).replace("-> smp_mihon_special_b_market_claim ->\n",
       "-> smp_mihon_special_b_market_claim ->\n# background: smp_bg_mihon_market\n# speaker: heroine\n「待って。一人残らず、ですか」\n「確かめてみましょう」\n");
     stories[fileStory] = compileInk(readMainFileHead(written).source, "market.ink", { [MODULES_FILE]: MODULES_INK });
@@ -400,7 +404,7 @@ describe("a special battle's claim and rebuttal on the battle screen (stage 5)",
     // The claim ends its part before the rebuttal.
     expect(claim.at(-1)).toMatchObject({ sceneEnd: true, chrome: { advance: advance("次へ進む"), notebookTab: true } });
     // The rebuttal's last line, before the stop point, ends it.
-    const chrome = { rebuttal: true, choosing: false, notebookTab: false, reviewAnswers: false };
+    const chrome = { rebuttal: true, choosing: false, notebookTab: false };
     expect(rebuttal[0]).toEqual({ text: rebuttal[0].text, part: "rebuttal", round: 1, chrome: { ...chrome, advance: null } });
     expect(rebuttal[1]).toEqual({ text: rebuttal[1].text, part: "rebuttal", round: 1, chrome: { ...chrome, advance: advance("次へ進む", "reasoning-rebuttal-advance") } });
   });

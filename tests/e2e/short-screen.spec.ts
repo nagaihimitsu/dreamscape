@@ -1,7 +1,7 @@
 import { devModules, expect, ops, playUntil, savedGame, test, tier } from "./helpers";
 
 // Below 500 px of portrait height the page scrolls instead of the battle's reading area
-// (battle.css), and the battle holds its round bar (問題番号・正誤・手がかり帳) at the top of
+// (battle.css), and the battle holds its round bar (an answer's verdict) at the top of
 // the screen. In normal play the journey bar above the battle then scrolls away with the
 // page (styles.css); were it held at the top too, it would cover the round bar and the start
 // of a long explanation (UI_REVIEW_CHECKLIST: 「スクロールして重なった部品の下に隠れない」).
@@ -40,7 +40,7 @@ function feedbackStart() {
   };
 }
 
-test("battle on a 320×480 screen: after a wrong answer the round bar, 手がかり帳 and the explanation's first line are not under the journey bar", { tag: tier.debug }, async ({ page }) => {
+test("battle on a 320×480 screen: after a wrong answer the round bar and the explanation's first line are not under the journey bar", { tag: tier.debug }, async ({ page }) => {
   await page.goto("/");
   const placed = await page.evaluate(async ({ modules }) => {
     const { battles, battleQuizzes } = await import(/* @vite-ignore */ modules.content);
@@ -78,31 +78,6 @@ test("battle on a 320×480 screen: after a wrong answer the round bar, 手がか
   expect(start.barShown, "the round bar shows at the top of the screen, not the journey bar over it").toBe(true);
   expect(start.shown, "the first line of the explanation shows, not the journey bar or the round bar over it").toBe(true);
   expect(start.below, "the first line starts just below the round bar").toBeLessThanOrEqual(12);
-
-  // 手がかり帳 in the round bar, with the focus ring that keyboard focus draws around it.
-  const notebook = page.getByTestId("battle-roundbar").getByRole("button", { name: "手がかり帳" });
-  await expect(notebook).toBeVisible();
-  await page.keyboard.press("Shift");
-  const ring = await notebook.evaluate((button) => {
-    const scrolled = scrollY;
-    button.focus({ preventScroll: true });
-    const style = getComputedStyle(button);
-    const out = parseFloat(style.outlineWidth) + parseFloat(style.outlineOffset);
-    const box = button.getBoundingClientRect();
-    const x = box.left + box.width / 2, y = box.top + box.height / 2;
-    const battle = button.closest('[aria-label="クイズバトル"]')!;
-    const points: [number, number][] = [[x, y], [x, box.top - out + 1], [x, box.bottom + out - 1], [box.left - out + 1, y], [box.right + out - 1, y]];
-    return {
-      drawn: button.matches(":focus-visible") && out > 0, kept: scrollY === scrolled,
-      clear: points.every(([px, py]) => {
-        const hit = py >= 0 && py < innerHeight ? document.elementFromPoint(px, py) : null;
-        return !!hit && battle.contains(hit);
-      }),
-    };
-  });
-  expect(ring.drawn, "keyboard focus draws a ring around 手がかり帳").toBe(true);
-  expect(ring.kept, "focusing 手がかり帳 does not scroll").toBe(true);
-  expect(ring.clear, "手がかり帳 and its focus ring show on the screen, with nothing over them").toBe(true);
 
   // Scrolled back to the top of the page, the header's controls show again, and ⚙設定 →
   // ゲームの設定 opens.
