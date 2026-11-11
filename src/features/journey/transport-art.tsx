@@ -86,3 +86,43 @@ export function TransportIllustration({ kind }: { kind: TransportArtKind }) {
 
 /** Kinds that ride on rails: the transition draws rails on the ground and an overhead wire. */
 export const railKinds: ReadonlySet<TransportArtKind> = new Set(["rail", "tram"]);
+
+/**
+ * How fast the scenery passes by the window (TravelTransition): walking slowly; a bicycle, a three-wheeler, a tram or a
+ * bus at a medium pace; a car or a train fast.
+ */
+export type SceneryPace = "slow" | "medium" | "fast";
+const sceneryPaces: Record<TransportArtKind, SceneryPace> = {
+  walk: "slow", bicycle: "medium", three_wheeler: "medium", tram: "medium", bus: "medium", car: "fast", rail: "fast",
+};
+
+/** The pace of a mode's kind (its declared `kind`, or walk); a kind not in the table passes at the medium pace. */
+export function sceneryPace(kind: string): SceneryPace {
+  return Object.hasOwn(sceneryPaces, kind) ? sceneryPaces[kind as TransportArtKind] : "medium";
+}
+
+/** The width of one tile of the scenery: each layer repeats it, and its loop moves it by one tile. */
+const TILE = 120;
+/**
+ * The passing scenery's layers, far to near: a skyline, trees and poles (whose crossbar meets the rail kinds' wire).
+ * Each tile is a silhouette drawn from the bottom-left corner of its layer with relative commands, so it repeats by
+ * moving its start; three tiles cover the scene (at most 230 px wide) and the one-tile step of the loop.
+ */
+const sceneryLayers = [
+  { name: "far", height: 40, tile: "v-14h10v-8h12v10h6v-22h8v20h10v14h14v-12h14v-6h12v8h10v-14h10v24h14z" },
+  { name: "mid", height: 30, tile: "h16v-9a9 9 0 1 1 4 0v9h30v-6a7 7 0 1 1 3 0v6h10v-5a6 6 0 1 1 3 0v5h24v-10a8 8 0 1 1 4 0v10h26z" },
+  { name: "near", height: 62, tile: "h59v-54h-7v-3h17v3h-7v54h58z" },
+] as const;
+
+/**
+ * Generic scenery passing behind the vehicle in three layers (travel-transition.css moves each sideways, the farther
+ * the slower). One small SVG and one path a layer; decorative only.
+ */
+export function PassingScenery() {
+  return <>
+    {sceneryLayers.map((layer) => <svg key={layer.name} className={`travel-scenery is-${layer.name}`} width={TILE * 3}
+      height={layer.height} viewBox={`0 0 ${TILE * 3} ${layer.height}`} aria-hidden="true" focusable="false">
+      <path d={[0, 1, 2].map((index) => `M${index * TILE} ${layer.height}${layer.tile}`).join("")} />
+    </svg>)}
+  </>;
+}

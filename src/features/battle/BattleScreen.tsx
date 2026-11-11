@@ -24,6 +24,7 @@ import { ReasoningPanel } from "./ReasoningPanel";
 import { ReasoningCutIn } from "./ReasoningCutIn";
 import { OutcomeHeading } from "./OutcomeHeading";
 import { HeroineNote } from "./HeroineNote";
+import { LandmarkReveal } from "./LandmarkReveal";
 import { DOUBLE_TAP_WINDOW_MS, isSecondTap } from "../../components/double-tap";
 import {
   Translation,
@@ -690,6 +691,15 @@ export function BattleScreen({
                     sceneId={battle.id}
                     cityId={heroineCityId}
                     testId="heroine-correct"
+                  />
+                )}
+                {/* The reveal on the landmark photo, only where the question has a region (revealRegion). */}
+                {question.revealRegion && landmarkAsset && (
+                  <LandmarkReveal
+                    key={question.id}
+                    asset={landmarkAsset}
+                    region={question.revealRegion}
+                    captionJa={question.revealCaptionJa}
                   />
                 )}
                 <button

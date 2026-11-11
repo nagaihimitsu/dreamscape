@@ -903,6 +903,77 @@
   .battle-screen .hint-whisper { animation: none; }
 }
 
+/* The reveal under an answer's explanation (LandmarkReveal, a question's revealRegion): the battle's landmark photo in
+   a small frame at the photo's own proportions, centred and never taller than --reveal-max-h (less on short screens,
+   so the feedback's buttons stay about as near as before), then the caption and the credit line. The photo zooms
+   slowly toward the region about --reveal-origin (transform only, after the answer's own beat) and the region's
+   outline fades in; its lines are divided by the zoom, so they end at their own width. Under reduced motion the photo
+   stays whole and the outline shows at once. Display only: an edge all round, no accent line. */
+.battle-reveal {
+  --reveal-max-h: min(180px, 28vh);
+  margin: 10px 0 8px;
+}
+.battle-reveal-frame {
+  --reveal-scale: var(--reveal-zoom);
+  position: relative;
+  overflow: hidden;
+  width: min(100%, calc(var(--reveal-max-h) * var(--reveal-width) / var(--reveal-height)));
+  aspect-ratio: var(--reveal-width) / var(--reveal-height);
+  margin: 0 auto;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+}
+.battle-reveal-zoom {
+  position: absolute;
+  inset: 0;
+  transform-origin: var(--reveal-origin);
+  animation: battle-reveal-zoom 2.4s var(--ease-out) 0.5s both;
+}
+.battle-reveal-zoom img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.battle-reveal-region {
+  position: absolute;
+  border: calc(2px / var(--reveal-scale)) solid #fff3b0;
+  border-radius: calc(4px / var(--reveal-scale));
+  box-shadow: 0 0 0 calc(1px / var(--reveal-scale)) rgba(20, 24, 32, 0.65),
+    inset 0 0 0 calc(1px / var(--reveal-scale)) rgba(20, 24, 32, 0.65);
+  animation: battle-reveal-outline var(--motion-medium) ease-out 1.6s both;
+}
+@keyframes battle-reveal-zoom { to { transform: scale(var(--reveal-scale)); } }
+@keyframes battle-reveal-outline { from { opacity: 0; } }
+.battle-reveal figcaption {
+  margin: 6px 0 0;
+  color: var(--ds-ink);
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.battle-reveal-credit {
+  margin: 2px 0 0;
+  color: var(--ds-ink-muted);
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.battle-reveal-credit a { color: var(--ds-ink); }
+/* Short phones (320×568) and low landscape screens. */
+@media (max-height: 599px) {
+  .battle-reveal { --reveal-max-h: 120px; }
+}
+:is(.reduce-motion, .battle-screen[data-reduce-motion="true"]) .battle-reveal-frame { --reveal-scale: 1; }
+:is(.reduce-motion, .battle-screen[data-reduce-motion="true"]) :is(.battle-reveal-zoom, .battle-reveal-region) { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .battle-reveal .battle-reveal-frame { --reveal-scale: 1; }
+  .battle-reveal :is(.battle-reveal-zoom, .battle-reveal-region) { animation: none; }
+}
+
 /* A normal battle's opening (data-enemy-intro, BattleScreen): the opponent's heading, hidden
    during the talk, shows for a moment as a name plate (role, name and, when written, a quote) on
    the slate of the dialogue window, centred just above the line the characters keep clear of

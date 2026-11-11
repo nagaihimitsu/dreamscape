@@ -32,6 +32,13 @@
       "hintHeroineJa": "ねえ、塔の針を見て。三時のまま、今も動いてないよ。",
       "correctExplanationJa": "街の人は時計を直さず、三時のまま残した。",
       "incorrectExplanationJa": "街の人は時計を直さず、三時のまま残した。新しい塔は建てていない。",
+      "revealRegion": {
+        "x": 0.41,
+        "y": 0.23,
+        "width": 0.18,
+        "height": 0.26
+      },
+      "revealCaptionJa": "見本の時計塔の針は、今も三時を指したまま（架空の見本）。",
       "sources": [
         {
           "publisher": "Dreamscape 見本の旅（架空）",

@@ -12,7 +12,12 @@ const uniqueIds = z
     "Duplicate tourism reference",
   );
 
-export const observationRegionSchema = z
+/**
+ * A part of an image: its top-left corner (`x`, `y`) and its size (`width`, `height`) as fractions (0–1) of the
+ * image's width and height, inside the image (`outside` is the message when it is not). An observation hotspot's
+ * region and a battle question's reveal (revealRegion) use it.
+ */
+export const imageRegionSchema = (outside: string) => z
   .object({
     x: z.number().min(0).max(1),
     y: z.number().min(0).max(1),
@@ -22,8 +27,10 @@ export const observationRegionSchema = z
   .strict()
   .refine(
     (region) => region.x + region.width <= 1 && region.y + region.height <= 1,
-    "Observation region exceeds image bounds",
+    outside,
   );
+
+export const observationRegionSchema = imageRegionSchema("Observation region exceeds image bounds");
 
 export const tourismSourceSchema = z
   .object({

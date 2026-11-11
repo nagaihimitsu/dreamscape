@@ -25,9 +25,27 @@
 
 /* A city's backdrop (FreeTimeBackdrop: its own artwork or its photo, fixed, cropped to fill the screen) is dimmed a little
    more here than on the previous screen, so the cards and the transparent header's own pills stand out from a busy
-   picture. Over it the count under the row gets a pill of its own (over the pattern it reads as it is). */
+   picture. */
 .photo-free-time .free-time-backdrop:not(.is-plain)::after { background: rgba(20, 24, 32, 0.3); }
-.photo-free-time.has-backdrop .photo-cards-count {
+/* The colour of the time of day (time-of-day.ts timeOfDayTint, user decision 2026-11-11) over the backdrop or the
+   pattern: one more fixed layer, after them in the same place, under every card. Every text over it sits on its own
+   ground, the count under the row included (its pill). When the clock moves while the screen shows (a wait), the colour
+   eases over; at once under reduced motion. */
+.free-time-tint {
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100lvh;
+  pointer-events: none;
+  transition: background-color calc(2 * var(--motion-scene)) ease;
+}
+.reduce-motion .free-time-tint { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .free-time-tint { transition: none; }
+}
+.photo-free-time .photo-cards-count {
   width: fit-content;
   margin-inline: auto;
   padding: 0 8px;

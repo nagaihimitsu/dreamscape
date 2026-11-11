@@ -16,3 +16,16 @@ export function ImageCredit({ asset, sourceLabelJa = "画像の出典" }: { asse
     </p>
   </>;
 }
+
+/**
+ * A photo's credit on one line under a photo shown in the reading area (the clue book's photo, a battle answer's
+ * reveal): 仮画像 for a placeholder, the credit, and links to its source and licence.
+ */
+export function ImageCreditLine({ asset, className }: { asset: TourismAsset; className: string }) {
+  return <div className={className}>
+    {asset.isPlaceholder && <strong>仮画像 · </strong>}
+    {asset.creditJa}{" "}
+    <a href={asset.sourceUrl} target="_blank" rel="noreferrer">画像の出典</a>{" · "}
+    <a href={asset.licenseUrl} target="_blank" rel="noreferrer">利用条件</a>
+  </div>;
+}
