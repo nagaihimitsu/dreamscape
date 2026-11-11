@@ -178,7 +178,8 @@ export function GameApp({
   useLayoutEffect(() => {
     if (!game || travelEffectPlaying) return;
     const way = dayEndRest(game);
-    if (way) restAtDayEnd(way, game.revision);
+    // A notice not read yet (「保存した場面から再開しました。」 after a load, 「ツアーが終わりました。」) stays: the commit clears it.
+    if (way && restAtDayEnd(way, game.revision) && notice) setNotice(notice);
   }, [game, travelEffectPlaying]);
   const [englishOpen, setEnglishOpen] = useState(
     () => !!learning.data.openQuestion,
