@@ -41,7 +41,7 @@ export const storyFrameSchema = z
     recall: imageIdSchema.optional(),
     phone: z.object({
       side: z.enum(PHONE_SIDES),
-      earlier: z.array(z.object({ side: z.enum(PHONE_SIDES), speaker: speakerSchema, text: z.string().min(1) }).strict()).min(1).max(STACK_MAX).optional(),
+      earlier: z.array(z.object({ side: z.enum(PHONE_SIDES), speaker: speakerSchema, personId: imageIdSchema.optional(), text: z.string().min(1) }).strict()).min(1).max(STACK_MAX).optional(),
     }).strict().optional(),
     letter: z.object({
       kind: z.enum(LETTER_KINDS),

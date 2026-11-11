@@ -42,7 +42,7 @@ export type EncounterScreenView = {
   /** The line's `# pause:`, `# shake:` and `# size:`. */
   delivery?: LineDelivery;
   /** The line's scene tags (`# recall:`, `# phone:`, `# letter:`, `# quiet:`, `# stand:`) and who speaks it. */
-  staging?: FrameStaging & { speaker: Speaker };
+  staging?: FrameStaging & { speaker: Speaker; speakerPersonId?: string };
   /** The names a phone's messages show (LineStage). */
   phoneNames?: PhoneNames;
   choices: EncounterChoiceView[];

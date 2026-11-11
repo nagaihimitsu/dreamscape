@@ -14,6 +14,8 @@ export type Speaker = "narrator" | "heroine" | "player" | "enemy" | "person";
 export interface PhoneMessage {
   side: PhoneSide;
   speaker: Speaker;
+  /** With speaker "person": who wrote it (the person's ID). */
+  personId?: string;
   text: string;
 }
 /** A line's `# phone:`: its side, below the earlier messages of the same run (oldest first). */
@@ -160,7 +162,8 @@ export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<
   if (!lineRead && previous) return shown({ recall: previous.recall, phone: previous.phone, letter: previous.letter, quiet: previous.quiet });
   const before = previous?.text ? previous : undefined;
   const phoneEarlier = tagged.phone && before?.phone
-    ? [...(before.phone.earlier ?? []), { side: before.phone.side, speaker: before.speaker, text: before.text }].slice(-STACK_MAX) : [];
+    ? [...(before.phone.earlier ?? []), { side: before.phone.side, speaker: before.speaker,
+      ...(before.speakerPersonId ? { personId: before.speakerPersonId } : {}), text: before.text }].slice(-STACK_MAX) : [];
   const letterEarlier = tagged.letter && before?.letter?.kind === tagged.letter.kind
     ? [...(before.letter.earlier ?? []), before.text].slice(-STACK_MAX) : [];
   return shown({

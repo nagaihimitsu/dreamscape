@@ -427,12 +427,14 @@ No, thank you.
 駅まで送ってくれた宿の主人から、携帯に伝言が届いた。娘から頼まれたのだという。
 { cond("flag gt_delhi_roohi_metro_essay"):
     # speaker: gt_delhi_hotel_owner
+    # phone: received
     作文、先生がクラスで読み上げたそうです。点は、まあまあ。でも本人は大喜びで。女性車両の子たちが、拍手してくれたとか
     # speaker: heroine
     # reaction: heroine,happy,sparkle
     よかった！　まあまあの点で、大喜び。それ、いちばんいい成績だと思います
 - else:
     # speaker: gt_delhi_hotel_owner
+    # phone: received
     インド門の作文、満点だったそうです。……それと、家で、もう一つ書いていました。女性車両のを。誰にも見せないそうです。親にも
     # speaker: heroine
     # emotion: smile
@@ -451,8 +453,10 @@ No, thank you.
     # speaker: narrator
     携帯が震えた。ローディー・ガーデンの笑う会の連絡に、長い伝言が一つ流れてきた。差出人は、新聞で顔を隠していた、あの人だ。
     # speaker: gt_suresh
+    # phone: received
     自主申告をした。夕食の席で。誰も笑わなかった。最初に拍手をしたのは、メヘルだった
     # speaker: gt_suresh
+    # phone: received
     それから、メヘルにも申告があるそうだ。今夜、カビールという青年が夕食に来る。……わしは、何も知らなかったことにしておく
     # speaker: heroine
     # reaction: heroine,happy,heart
@@ -461,6 +465,7 @@ No, thank you.
     # speaker: narrator
     笑う会の連絡に、写真が一枚流れてきた。ローディー・ガーデンの集合写真。端の一人の顔にだけ、大きな薔薇の絵が貼ってある。その人から、一行だけ添えられていた。
     # speaker: gt_suresh
+    # phone: received
     この写真には、誰も写っていない
     # speaker: heroine
     # reaction: heroine,teasing_big,music

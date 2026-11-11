@@ -219,6 +219,7 @@ INCLUDE modules.ink
 // 【4】フィナーレの後（+1）：踊りの輪がひと息ついたころ、カムラに祝儀袋を渡す
 === gt_jaipur_finale_after_envelope ===
 # scene: talk
+# person: gt_kamla
 # at: finale jaipur
 # priority: +1
 # when: item gt_jaipur_wedding_envelope held
@@ -228,17 +229,17 @@ INCLUDE modules.ink
 踊りの輪がひと息ついたころ、彼女は鞄から封筒を取り出して、カムラに差し出した。アマンさんに、と言って。
 カムラは封筒を光にかざし、中の一ルピー玉を、指で確かめた。
 { cond("flag gt_jaipur_envelope_letter"):
-    # speaker: gt_kamla
+    # speaker: enemy
     手紙も入ってるね。……毎日言葉にしなさい、か。わたしの言ったことじゃないか
-    # speaker: gt_kamla
+    # speaker: enemy
     いいわ。アマンには、わたしが読み上げてやる。花嫁の前でね
 - else:
-    # speaker: gt_kamla
+    # speaker: enemy
     ……ふん。割り切れないね。よろしい
 }
 # speaker: heroine
 アマンさんに、おめでとうございますって、伝えてください
-# speaker: gt_kamla
+# speaker: enemy
 自分で言いなさい。花婿は、逃げやしないよ
 # speaker: narrator
 カムラは封筒をサリーの胸元にしまい、踊りの輪の方へ戻っていった。足どりが、デリーで見たときより、ずっと軽かった。
