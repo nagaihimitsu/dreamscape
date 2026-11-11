@@ -209,7 +209,7 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
     const hired = travel(start, "gt_delhi_date_india_gate", noScene, ["hire_photographer"]);
     expect(hired.chosen).toContain("hire_photographer");
     expect(ids(hired)).toEqual(["gt_delhi_date_india_gate_print"]);
-    expect(shown(hired, "「十四人。旅のアルバムに、知らない親戚が増えちゃった」")).toBe(true);
+    expect(shown(hired, "十四人。旅のアルバムに、知らない親戚が増えちゃった")).toBe(true);
     expect(hired.state.inventory.gt_delhi_family_photo).toBe("held");
     expect(hired.state.completedEncounterIds).toContain("gt_delhi_date_india_gate_print");
 
@@ -233,10 +233,10 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
     expect(agra.chosen).toEqual(expect.arrayContaining(["open_the_app", "pay_deposit", "well_spotted"]));
     expect(agra.state.travelBudget).toBe(before - 500);
     expect(agra.state.storyProgress.flags).toEqual(expect.arrayContaining(["gt_delhi_scam_checked", "gt_delhi_scam_paid"]));
-    expect(shown(agra, "「それに、さっきのアプリ、『定刻』って出てた。古いのは、たぶん、こっちの話の方」")).toBe(true);
+    expect(shown(agra, "それに、さっきのアプリ、『定刻』って出てた。古いのは、たぶん、こっちの話の方")).toBe(true);
     expect(shown(agra, "手付金は、高い授業料だったね。")).toBe(true);
-    expect(shown(agra, "「よかった！　まあまあの点で、大喜び。それ、いちばんいい成績だと思います」")).toBe(true);
-    expect(shown(agra, "「旦那さまじゃないです！　鳩の役の人です！」")).toBe(true);
+    expect(shown(agra, "よかった！　まあまあの点で、大喜び。それ、いちばんいい成績だと思います")).toBe(true);
+    expect(shown(agra, "旦那さまじゃないです！　鳩の役の人です！")).toBe(true);
     // The departure's scenes ran in Delhi, before its items were left behind; the arrival's after the conversation.
     expect(agra.scenes.map((scene) => scene.city)).toEqual(["delhi", "delhi", "agra"]);
 
@@ -247,8 +247,8 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
     expect(left.state.travelBudget).toBe(plain.travelBudget);
     expect(left.state.storyProgress.flags).toContain("gt_delhi_scam_doubted");
     expect(left.state.storyProgress.flags).not.toContain("gt_delhi_scam_paid");
-    expect(shown(left, "「掲示板を見ようって言われたとき、すごく急がせたよね。見られたら、困るみたいに」")).toBe(true);
-    expect(shown(left, "「……一時間、遅かった」")).toBe(false);
+    expect(shown(left, "掲示板を見ようって言われたとき、すごく急がせたよね。見られたら、困るみたいに")).toBe(true);
+    expect(shown(left, "……一時間、遅かった")).toBe(false);
   }, 180_000);
 
   describe("Jaipur", () => {
@@ -261,7 +261,7 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
       const first = rest(jalMahal.state, 20 * 60, ["tomorrow_then", "did_hear"]);
       expect(ids(first)).toEqual(["gt_jaipur_hotel_mehndi_night", "gt_jaipur_hotel_mehndi_morning"]);
       expect(first.scenes.map((scene) => scene.day)).toEqual([jalMahal.state.travel.day, jalMahal.state.travel.day + 1]);
-      expect(shown(first, "「逃げたね。いいよ。明日の方が、濃くて見つけやすいかも」")).toBe(true);
+      expect(shown(first, "逃げたね。いいよ。明日の方が、濃くて見つけやすいかも")).toBe(true);
       expect(shown(first, "あら。ここ、名前が書いてある。ヒンディー語で。")).toBe(true);
       // 「また今度」 (# later): seen, not done, so the night comes back; the morning is done.
       expect(first.state.seenEncounterIds).toContain("gt_jaipur_hotel_mehndi_night");

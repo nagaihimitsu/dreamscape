@@ -8,7 +8,8 @@ import {
 
 // How a story's next line becomes the frame on screen (runtime.ts), in a light module (no content loading).
 
-export type Speaker = "narrator" | "heroine" | "player" | "enemy";
+/** "person": a person of progression/story.json people says the line (`# speaker: <person ID>`; 2026-11-11). */
+export type Speaker = "narrator" | "heroine" | "player" | "enemy" | "person";
 /** A message a phone's screen shows above the line on screen (an earlier line of the same run of `# phone:` lines). */
 export interface PhoneMessage {
   side: PhoneSide;
@@ -30,6 +31,8 @@ export const STACK_MAX = 40;
 export interface StoryFrame {
   text: string;
   speaker: Speaker;
+  /** With speaker "person": who says the line (the person's ID). */
+  speakerPersonId?: string;
   background: string;
   emotion: string;
   /** Optional because frames saved before inline presentation have no flag. */
@@ -102,7 +105,11 @@ function readTags(
   context: TagContext,
 ) {
   const parsed = parseStoryTags(tags, context);
-  if (parsed.speaker) frame.speaker = parsed.speaker;
+  if (parsed.speaker) {
+    frame.speaker = parsed.speaker;
+    if (parsed.speakerPersonId) frame.speakerPersonId = parsed.speakerPersonId;
+    else delete frame.speakerPersonId;
+  }
   if (parsed.background) frame.background = parsed.background;
   if (parsed.emotion) {
     frame.emotion = parsed.emotion;
@@ -177,6 +184,7 @@ export function readStoryFrame(
   const frame: StoryFrame = {
     text: previous?.text ?? "",
     speaker: previous?.speaker ?? "narrator",
+    ...(previous?.speakerPersonId ? { speakerPersonId: previous.speakerPersonId } : {}),
     background: previous?.background ?? initialBackground,
     emotion: "neutral",
     choices: [],

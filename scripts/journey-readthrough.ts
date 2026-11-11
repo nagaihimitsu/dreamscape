@@ -64,7 +64,9 @@ export function scenePaths(scene: SceneEntry, compiled: string, context: TagCont
       let speaker = "narrator";
       for (let guard = 0; story.canContinue && guard < 1000; guard++) {
         const text = story.Continue()?.trim() ?? "";
-        speaker = parseStoryTags(story.currentTags ?? [], context).speaker ?? speaker;
+        const tags = parseStoryTags(story.currentTags ?? [], context);
+        // A person's line (# speaker: <person ID>) reads as that person's ID.
+        speaker = tags.speakerPersonId ?? tags.speaker ?? speaker;
         if (text) read.push(`${speaker === "narrator" ? "" : `${speaker}: `}${text}`);
       }
       if (!story.currentChoices.length || depth > 20) { paths.push(read); return; }

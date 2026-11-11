@@ -13,27 +13,30 @@ INCLUDE modules.ink
 # speaker: narrator
 ローディー・ガーデンの芝生には、五百年以上前の墓が、まるで大きな置物のように点々と座っている。散歩の人、走る人、ベンチで新聞を読む人。墓の方が先にあって、公園は1930年代、そのまわりに後から作られたのだという。
 # speaker: heroine
-「お墓の間を、みんなジョギングしてる。日本だと、ちょっと考えられないね」
+お墓の間を、みんなジョギングしてる。日本だと、ちょっと考えられないね
 # speaker: narrator
 そのとき、芝生の真ん中で、二十人ほどの輪が、いっせいに笑い出した。手を叩き、空を仰ぎ、腹を抱えて。冗談を言った人は、どこにもいない。
 # speaker: heroine
 # reaction: heroine,surprised_big,question
-「え、なに？　何がおかしかったの？　誰も、何も言ってないよね？」
+え、なに？　何がおかしかったの？　誰も、何も言ってないよね？
 # speaker: narrator
 輪の中心にいた白い口ひげの老人が、二人に気づいて手招きした。張りのある、よく通る声だった。
-ドゥベイ「乗客の皆さま、ご注意ください。まもなく、新しい笑いが到着いたします」
+# speaker: gt_dubey
+乗客の皆さま、ご注意ください。まもなく、新しい笑いが到着いたします
+# speaker: narrator
 ドゥベイと名乗った。鉄道の駅で、三十年、列車の案内放送をしていたという。ここは、笑うために集まる会。理由がなくても笑う。作り笑いを続けているうちに、本当の笑いに変わっていく。会の人たちは、そう信じている。
-ドゥベイ「ホー、ホー、ハ、ハ、ハ。手を叩いて。はい、次は電話の笑い。誰かから電話が来たつもりで、受話器に向かって笑うんです」
+# speaker: gt_dubey
+ホー、ホー、ハ、ハ、ハ。手を叩いて。はい、次は電話の笑い。誰かから電話が来たつもりで、受話器に向かって笑うんです
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
-「理由がないのに笑うの、難しい……。顔が、ひきつってるのが自分で分かる」
+理由がないのに笑うの、難しい……。顔が、ひきつってるのが自分で分かる
 * [見えない電話を耳に当て、全力で笑う # option: phone_laugh]
     # profile: playful
     # memory: gt_delhi_date_lodhi_garden_memory
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
-        「ちょ、ちょっと、声が大きい。みんな、こっち見てる……」
+        ちょ、ちょっと、声が大きい。みんな、こっち見てる……
         # speaker: narrator
         それでも、隣の老人がつられて笑い出し、輪の笑い声が一段大きくなった。彼女は、少し遅れて、小さく笑った。
     - else:
@@ -41,7 +44,7 @@ INCLUDE modules.ink
         架空の相手は、よほど面白いことを言ったらしい。こちらが膝を叩いて笑い転げると、彼女が先に吹き出した。
         # speaker: heroine
         # reaction: heroine,teasing_big,music
-        「誰と話してるの、それ。だめ、止まらない。作り笑いじゃなくなっちゃった」
+        誰と話してるの、それ。だめ、止まらない。作り笑いじゃなくなっちゃった
     }
 * [輪の外で、見ているだけにする # option: watch_only]
     # profile: honest
@@ -49,13 +52,13 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
-        「見てるだけ？　……一人でやるの、恥ずかしいって分かってるのに」
+        見てるだけ？　……一人でやるの、恥ずかしいって分かってるのに
         # speaker: narrator
         彼女は少しだけ肩を落とし、一人で輪に入った。こちらが後から加わると、何も言わずに隣を空けた。
     - else:
         # speaker: heroine
         # emotion: teasing
-        「あっ、見てるだけ？　ずるい。わたしだけ変な顔させる気？」
+        あっ、見てるだけ？　ずるい。わたしだけ変な顔させる気？
         # speaker: narrator
         腕をつかまれ、輪の中へ引っぱり込まれた。隣の老人が、こちらの肩を叩いて、頼まれてもいないのに笑い出す。結局、二人とも笑っていた。
     }
@@ -65,13 +68,13 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,surprised,sweat
-        「あ、手は……ううん、大丈夫。並んでやろう」
+        あ、手は……ううん、大丈夫。並んでやろう
         # speaker: narrator
         差し出した手は、見えない電話を持つ手になった。並んで笑ううち、彼女の声も、だんだん本物になっていった。
     - else:
         # speaker: heroine
         # reaction: heroine,shy,blush
-        「……うん。一人だと恥ずかしいけど、二人なら、恥ずかしさも半分だね」
+        ……うん。一人だと恥ずかしいけど、二人なら、恥ずかしさも半分だね
         # speaker: narrator
         手をつないだまま、二人で見えない電話を耳に当てた。相手のいない電話に笑ううち、彼女の笑い声が、だんだん本物になっていった。
     }
@@ -88,56 +91,65 @@ INCLUDE modules.ink
 目が合った。老人の笑いが、途中で止まった。フマユーン廟で、姪とその同級生を問い詰めていた、あの元調査官だった。
 # speaker: heroine
 # reaction: heroine,surprised,interrobang
-「スレーシュさん！」
+スレーシュさん！
+# speaker: gt_dubey
+はい、次はあいさつの笑い。全員と握手して、言葉のかわりに笑いましょう
 # speaker: narrator
-ドゥベイ「はい、次はあいさつの笑い。全員と握手して、言葉のかわりに笑いましょう」
 逃げ場はなかった。スレーシュは彼女の手を握り、律儀に笑いながら、早口でささやいた。
-スレーシュ「ハ、ハ、ハ。……今日も、誰も、誰にも会わなかった。ハ、ハ」
+# speaker: gt_suresh
+ハ、ハ、ハ。……今日も、誰も、誰にも会わなかった。ハ、ハ
 # speaker: heroine
-「ハ、ハ……はい。ハ」
+ハ、ハ……はい。ハ
 # speaker: narrator
 会の最後に、ドゥベイが集合写真を撮った。新入りにも送るからと、二人の番号を聞いていく。スレーシュは写真の端で、新聞で顔を隠していた。
 それから、観念したように、女性を連れてやってきた。
-スレーシュ「ミーナだ。大学の同級生。……週に二回、ここで笑っている。健康のためだ。あくまで健康の」
-ミーナ「この人、四十年前の教室では一度も笑わなかったのよ。あなたたち、すごいものを見たわね」
-スレーシュ「家族に知れたら、夕飯の前に親戚中に知れる。この年で何をしている、と笑われる」
+# speaker: gt_suresh
+ミーナだ。大学の同級生。……週に二回、ここで笑っている。健康のためだ。あくまで健康の
+# speaker: gt_meena
+この人、四十年前の教室では一度も笑わなかったのよ。あなたたち、すごいものを見たわね
+# speaker: gt_suresh
+家族に知れたら、夕飯の前に親戚中に知れる。この年で何をしている、と笑われる
+# speaker: narrator
 彼女が、ほんの一瞬、目を見開いた。廟の庭で、姪のメヘルも、ほとんど同じことを言っていた。
 # speaker: heroine
 # emotion: serious
-「メヘルさんなら、笑わないと思います」
-# speaker: narrator
-スレーシュ「どうして、そう言い切れる」
+メヘルさんなら、笑わないと思います
+# speaker: gt_suresh
+どうして、そう言い切れる
 # speaker: heroine
-「理由は、言えません。わたしが言っていいことじゃないので。……でも、たぶん、笑いません」
+理由は、言えません。わたしが言っていいことじゃないので。……でも、たぶん、笑いません
 # speaker: narrator
 スレーシュは長いこと彼女の顔を見ていた。三十五年、話の合わない申告を見抜いてきた目だった。
 * [「自分たちは、今日も誰にも会っていません」 # option: keep_secret]
     # profile: attentive
     # set: gt_delhi_suresh_kept_secret
     { romance_result == "negative":
-        # speaker: narrator
-        スレーシュ「よろしい。申告に誤りなし」
+        # speaker: gt_suresh
+        よろしい。申告に誤りなし
         # speaker: heroine
         # emotion: worried
-        「……それで、いいのかな」
+        ……それで、いいのかな
         # speaker: narrator
         彼女の小さな声は、東の門へ歩いていく二人には届かなかった。
     - else:
+        # speaker: gt_suresh
+        よろしい。申告に誤りなし
         # speaker: narrator
-        スレーシュ「よろしい。申告に誤りなし」
         スレーシュは胸の薔薇を指で直し、ミーナと並んで東の門へ歩いていった。笑う会の後なのに、背中が少し誇らしげだった。
     }
 * [「笑う会の写真、メヘルさんに送ってみたら」 # option: suggest_tell]
     # profile: bold
     # set: gt_delhi_suresh_encouraged
     { romance_result == "negative":
-        # speaker: narrator
-        スレーシュ「君に申告の指導を受ける覚えはない」
-        ミーナ「まあまあ。……いい考えだと、わたしは思うけれど」
+        # speaker: gt_suresh
+        君に申告の指導を受ける覚えはない
+        # speaker: gt_meena
+        まあまあ。……いい考えだと、わたしは思うけれど
     - else:
-        # speaker: narrator
-        スレーシュ「わしが？　自分から？　……それは、自主申告というやつだな」
-        ミーナ「いい考えね。わたしは、隠れるのは四十年で十分」
+        # speaker: gt_suresh
+        わしが？　自分から？　……それは、自主申告というやつだな
+        # speaker: gt_meena
+        いい考えね。わたしは、隠れるのは四十年で十分
     }
     # speaker: narrator
     スレーシュは携帯を取り出し、さっきの集合写真を開いたまま、しばらく固まっていた。送ったかどうかは、分からない。結果は、笑う会の連絡で知らせる、とだけ言って帰っていった。
@@ -145,12 +157,14 @@ INCLUDE modules.ink
     # profile: honest
     # set: gt_delhi_suresh_kept_secret
     { romance_result == "negative":
+        # speaker: gt_meena
+        わたしに決めさせないで。それは、この人の申告だもの
         # speaker: narrator
-        ミーナ「わたしに決めさせないで。それは、この人の申告だもの」
         スレーシュは返事のかわりに、咳払いを一つした。
     - else:
+        # speaker: gt_meena
+        この人が決めることよ。でも、決めるまでは、一緒に笑っててあげる
         # speaker: narrator
-        ミーナ「この人が決めることよ。でも、決めるまでは、一緒に笑っててあげる」
         スレーシュは返事のかわりに、小さく一回だけ、ハ、と笑った。たぶん、本物の方だった。
     }
 - -> two_of_us
@@ -160,14 +174,15 @@ INCLUDE modules.ink
 輪の向こう側で、誰よりも大きな声で笑っている老人がいた。胸ポケットに、赤い薔薇。隣には、淡い色のサリーの女性。会が終わると、二人は人目を避けるように、別々の門から出ていった。
 # speaker: heroine
 # reaction: heroine,teasing,heart
-「見た？　あのおじいさん、胸に薔薇さしてた。デートかな。別々に帰るところまで、本気だね」
+見た？　あのおじいさん、胸に薔薇さしてた。デートかな。別々に帰るところまで、本気だね
 # speaker: narrator
 ドゥベイが、二人の前に立った。会の最後に、新入りには、いつも一つ頼むことがあるという。
-ドゥベイ「わたしの決まり文句を、大きな声で。『乗客の皆さま、ご注意ください』。ヒンディー語でね。ヤートリーガン、クリプヤー、ディヤーン、デーン」
+# speaker: gt_dubey
+わたしの決まり文句を、大きな声で。『乗客の皆さま、ご注意ください』。ヒンディー語でね。ヤートリーガン、クリプヤー、ディヤーン、デーン
 # speaker: heroine
-「や、ヤートリーガン、クリプヤー、ディヤーン、デーン」
-# speaker: narrator
-ドゥベイ「小さい。駅は広いんです。一番奥のホームまで届かせて」
+や、ヤートリーガン、クリプヤー、ディヤーン、デーン
+# speaker: gt_dubey
+小さい。駅は広いんです。一番奥のホームまで届かせて
 * [「一緒に言おう」と声を合わせる # option: shout_together]
     # profile: playful
     { romance_result == "negative":
@@ -175,7 +190,7 @@ INCLUDE modules.ink
         二人の声は、芝生の向こうの墓まで届いた。ただ、届いたのはほとんどこちらの声だった。
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
-        「……今の、九割くらい、そっちの声だったよ」
+        ……今の、九割くらい、そっちの声だったよ
     - else:
         # speaker: narrator
         二人の声が、芝生の向こうの墓まで届いた。散歩の人が振り返り、ジョギングの若者が、走りながら笑った。
@@ -185,7 +200,7 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
-        「……そう言われると、余計に出ないかも」
+        ……そう言われると、余計に出ないかも
         # speaker: narrator
         それでも彼女は息を吸い、さっきより、ほんの少しだけ大きな声で言い切った。
     - else:
@@ -193,7 +208,7 @@ INCLUDE modules.ink
         彼女は一度だけこちらを見て、息を吸った。
         # speaker: heroine
         # reaction: heroine,surprised_big,exclamation
-        「ヤートリーガン、クリプヤー、ディヤーン、デーン！」
+        ヤートリーガン、クリプヤー、ディヤーン、デーン！
         # speaker: narrator
         思ったより大きな声が出て、本人がいちばん驚いていた。
     }
@@ -202,30 +217,30 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,exasperated,anger
-        「からかわないで。本当に恥ずかしいんだから」
+        からかわないで。本当に恥ずかしいんだから
     - else:
         # speaker: heroine
         # reaction: heroine,teasing_big,music
-        「似てる！　ふふっ、もう、笑っちゃって言えない」
+        似てる！　ふふっ、もう、笑っちゃって言えない
         # speaker: narrator
         笑いながら言った「ディヤーン、デーン」は、今日いちばん大きな声だった。
     }
 -
-# speaker: narrator
-ドゥベイ「合格。退職してから、毎日、誰にも話しかけることがなくなりましてね。それで、この会を始めたんです。声には、行き先が要る」
+# speaker: gt_dubey
+合格。退職してから、毎日、誰にも話しかけることがなくなりましてね。それで、この会を始めたんです。声には、行き先が要る
 -> two_of_us
 
 = two_of_us
 # speaker: narrator
 人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
 # speaker: heroine
-「ねえ、さっきの、もう一回やってみる。理由のない笑い」
+ねえ、さっきの、もう一回やってみる。理由のない笑い
 # speaker: narrator
 彼女は真顔で「ハ、ハ、ハ」と言い、三回目で自分で吹き出した。
 # speaker: heroine
 # reaction: heroine,happy,music
-「だめだ、一人だと、ただの変な人だね。理由のない笑いって、誰かと一緒じゃないと、できないのかも」
+だめだ、一人だと、ただの変な人だね。理由のない笑いって、誰かと一緒じゃないと、できないのかも
 # speaker: heroine
 # emotion: smile
-「理由がなくても笑っていいって言われると、ちょっと楽になるね。わたし、いつも、笑っていい理由を探してから笑ってた気がする」
+理由がなくても笑っていいって言われると、ちょっと楽になるね。わたし、いつも、笑っていい理由を探してから笑ってた気がする
 -> END

@@ -148,6 +148,8 @@ export const tagContext = {
   /** The images a line's `# photo:` names for the album (every tourism photo, and each background that shows one). */
   photoIds: albumImageIds({ assets: tourismAssets, backgrounds: presentation.backgrounds }),
   localWordIds: localWords.map((word) => word.id),
+  /** The people a line's `# speaker: <person ID>` may name (progression/story.json people of every journey). */
+  personIds: storyState.people.map((person) => person.id),
 };
 export type {
   BattleDefinition,

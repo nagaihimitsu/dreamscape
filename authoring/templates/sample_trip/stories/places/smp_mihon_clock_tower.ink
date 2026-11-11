@@ -433,8 +433,8 @@ Come back at three. Any three will do.
 # background: smp_bg_mihon_hotel
 # speaker: narrator
 宿の前に出ると、リリが駆けてきた。手に、色を塗っていないしおりを一枚持っている。
-# speaker: narrator
-リリ「これ、針を描いてないの。次に来るときの時間を、自分で描いてね」
+# speaker: smp_mihon_lili
+「これ、針を描いてないの。次に来るときの時間を、自分で描いてね」
 // 行の札 # letter: note は、その行を紙のメモに書いて見せる（話し手の札は出ない）。同じ種類の行を続けると1枚に積み重なる。
 # speaker: narrator
 しおりの裏に、鉛筆の字が三行ならんでいた。

@@ -40,7 +40,7 @@ export type DialogueReaction = Pick<DialogueReactionCatalog["entries"][number], 
 export function resolveDialogueReaction(
   catalog: DialogueReactionCatalog,
   storyId: string,
-  frame: { text: string; speaker: "narrator" | "heroine" | "player" | "enemy"; emotionExplicit?: boolean; reactions?: Partial<Record<ReactionTarget, DialogueReaction>> },
+  frame: { text: string; speaker: "narrator" | "heroine" | "player" | "enemy" | "person"; emotionExplicit?: boolean; reactions?: Partial<Record<ReactionTarget, DialogueReaction>> },
   targetCharacterId: ReactionTarget,
 ): DialogueReaction | undefined {
   const found = catalog.entries.find((entry) => entry.storyId === storyFileOf(storyId) && entry.speaker === frame.speaker && entry.text === frame.text && entry.targetCharacterId === targetCharacterId);

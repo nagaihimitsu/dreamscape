@@ -6,6 +6,7 @@ import {
   tourismClues,
   dialogueExpressions,
   dialogueReactions,
+  storyState,
 } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
@@ -17,6 +18,7 @@ import { lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { portraitFocus } from "../../components/speaker-focus";
+import { speakerPlate } from "../../components/speaker-plate";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
@@ -98,12 +100,8 @@ export function TourismScreen({
   const reaction = frame && active.phase === "guide"
     ? resolveDialogueReaction(dialogueReactions, guideStoryId, frame, "heroine")
     : undefined;
-  const speaker =
-    frame?.speaker === "heroine"
-      ? game.heroineName
-      : frame?.speaker === "player"
-        ? game.playerName
-        : "旅の風景";
+  const plate = speakerPlate(frame ?? { speaker: "narrator" }, { heroine: game.heroineName, player: game.playerName }, storyState.people);
+  const speaker = plate.name;
   const { ready, onReady, entries } = useDialogueLog(
     `${active.landmarkId}:${active.phase}`,
     game.revision,
@@ -208,7 +206,7 @@ export function TourismScreen({
           >
             <DialogueWindowHead
               speaker={showsSpeakerPlate(frame) && speaker}
-              narration={frame.speaker !== "heroine" && frame.speaker !== "player"}
+              narration={plate.narration}
               controls={<DialogueControls close={<button type="button" className="text-button" data-testid="tourism-skip" aria-label="観光案内を閉じる" onClick={onSkip}><Icon name="close" />閉じる</button>} entries={entries} auto={autoAdvance} />}
             />
             <div ref={dialogueRef} className="vn-window-body">

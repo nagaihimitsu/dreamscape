@@ -9,6 +9,9 @@ describe("the portraits while a line is read", () => {
     expect(portraitFocus("enemy", "heroine")).toBe("listening");
     expect(portraitFocus("player", "heroine")).toBe("listening");
     expect(portraitFocus("player", "enemy")).toBe("listening");
+    // A named person's line (# speaker: <person ID>): both shown portraits listen.
+    expect(portraitFocus("person", "heroine")).toBe("listening");
+    expect(portraitFocus("person", "enemy")).toBe("listening");
     expect(portraitFocus("narrator", "heroine")).toBeUndefined();
     expect(portraitFocus("narrator", "enemy")).toBeUndefined();
     expect(portraitFocus(undefined, "enemy")).toBeUndefined();

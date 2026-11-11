@@ -13,24 +13,25 @@ INCLUDE modules.ink
 # background: gt_bg_agra_hotel_hub
 # speaker: narrator
 帳場の前を通りかかると、サミールが携帯の画面と彼女の顔を、三回見比べた。
-サミール「失礼ですが……デリーの階段井戸の動画の方ですよね？　最後の、『きゃー？』の」
+# speaker: gt_samir
+失礼ですが……デリーの階段井戸の動画の方ですよね？　最後の、『きゃー？』の
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
-「な、なんで知ってるんですか！」
-# speaker: narrator
-サミール「アーグラの宿の者は、みんな見ています。うちの白鳥の動画より、再生が多いんです。少し悔しいくらい」
+な、なんで知ってるんですか！
+# speaker: gt_samir
+アーグラの宿の者は、みんな見ています。うちの白鳥の動画より、再生が多いんです。少し悔しいくらい
 { cond("flag gt_delhi_baoli_player_pigeon"):
-    # speaker: narrator
-    サミール「布を広げて飛び出す、鳩の役の方も。……あれは、旦那さまですよね？」
+    # speaker: gt_samir
+    布を広げて飛び出す、鳩の役の方も。……あれは、旦那さまですよね？
     # speaker: heroine
     # reaction: heroine,exasperated,sweat
-    「旦那さまじゃないです！　鳩の役の人です！」
+    旦那さまじゃないです！　鳩の役の人です！
 - else:
-    # speaker: narrator
-    サミール「新婚旅行の思い出が、もう動画になっているなんて。お幸せに」
+    # speaker: gt_samir
+    新婚旅行の思い出が、もう動画になっているなんて。お幸せに
     # speaker: heroine
     # reaction: heroine,exasperated,sweat
-    「新婚じゃないです……！　有名なのは、鳩と、質問みたいな悲鳴だけです」
+    新婚じゃないです……！　有名なのは、鳩と、質問みたいな悲鳴だけです
 }
 # speaker: narrator
 サミールは満足そうにうなずき、何かを書き留めた。たぶん、また誤解が一つ増えた。

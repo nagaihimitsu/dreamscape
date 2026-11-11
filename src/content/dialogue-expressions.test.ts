@@ -26,6 +26,7 @@ describe("dialogue expression annotations", () => {
     expect(resolveDialogueExpression(catalog, entry.storyId, { ...frame, emotion: "shy" })).toBe("shy");
     expect(resolveDialogueExpression(catalog, entry.storyId, { ...frame, speaker: "enemy", emotion: "shy" })).toBe("neutral");
     expect(resolveDialogueExpression(catalog, entry.storyId, { ...frame, speaker: "player", emotion: "shy" })).toBe("neutral");
+    expect(resolveDialogueExpression(catalog, entry.storyId, { ...frame, speaker: "person", emotion: "shy" })).toBe("neutral");
   });
 
   it("rejects duplicate annotations for the same line", () => {

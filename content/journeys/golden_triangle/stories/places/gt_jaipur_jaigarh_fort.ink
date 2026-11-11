@@ -15,15 +15,19 @@ INCLUDE modules.ink
 # speaker: narrator
 ジャイガル砦は、アンベール城の真上の尾根にあった。アンベールを守るために築かれた砦で、城壁は山の稜線に沿って、どこまでも続いている。
 門をくぐってすぐ、十歳くらいの男の子が、二人の前に立ちはだかった。手には、ノートを破った紙。鉛筆で描いた地図に、赤いペンで、大きなバツ印がついている。
-男の子「宝の地図、買わない？　この砦には、王さまの宝が隠されてる。本当だよ。昔、国が、何か月も掘って探したんだから」
+# speaker: gt_jaipur_jaigarh_boy
+宝の地図、買わない？　この砦には、王さまの宝が隠されてる。本当だよ。昔、国が、何か月も掘って探したんだから
+# speaker: narrator
 ラージューと名乗った。地図は、全部自分で描いたという。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
-「宝の地図！　ねえ、これ、すごく欲しいかも。子どものとき、こういうの、自分で描いてた」
+宝の地図！　ねえ、これ、すごく欲しいかも。子どものとき、こういうの、自分で描いてた
 -> gt_jaipur_jaigarh_fort_map ->
 # speaker: narrator
 最初の印は、巨大な大砲だった。屋根の下に、車輪のついた砲身が横たわっている。ジャイヴァーナ。1720年にこの砦で造られ、当時、車輪のついた大砲としては世界最大だったという。
-ラージュー「宝を守る大砲。一回撃ったら、玉が三十五キロ先まで飛んだんだ。落ちたところが、池になった」
+# speaker: gt_raju
+宝を守る大砲。一回撃ったら、玉が三十五キロ先まで飛んだんだ。落ちたところが、池になった
+# speaker: narrator
 試し撃ちは一度きりで、火薬は百キロ使ったと伝えられている。三十五キロ飛んだという話も残っているが、どこまでが本当かは分からない。
 * [ラージューの話を、最後まで聞く # option: hear_him_out]
     # profile: attentive
@@ -36,106 +40,114 @@ INCLUDE modules.ink
         ラージューは、聞いてくれる客がうれしいらしい。池の大きさを、両腕をいっぱいに広げて見せた。
         # speaker: heroine
         # emotion: teasing
-        「どこまで本当で、どこから宝の地図なのか、分からなくなってきた。でも、それが楽しいね」
+        どこまで本当で、どこから宝の地図なのか、分からなくなってきた。でも、それが楽しいね
     }
 * [「三十五キロは、本当かな」と首をかしげる # option: doubt_the_story]
     # profile: honest
     # memory: gt_jaipur_date_jaigarh_fort_memory
     { romance_result == "negative":
+        # speaker: gt_raju
+        ……本当だもん
         # speaker: narrator
-        ラージュー「……本当だもん」
         ラージューが口をとがらせると、彼女がこちらの袖を引いた。
         # speaker: heroine
-        「宝探しの最中に、それは言わない約束」
+        宝探しの最中に、それは言わない約束
     - else:
-        # speaker: narrator
-        ラージュー「池になったのは、ちょっと盛った。でも、大砲は本物」
+        # speaker: gt_raju
+        池になったのは、ちょっと盛った。でも、大砲は本物
         # speaker: heroine
         # reaction: heroine,teasing,music
-        「正直な案内人。盛ったところも、ちゃんと自分で言うんだね」
+        正直な案内人。盛ったところも、ちゃんと自分で言うんだね
     }
 * [「落ちたところの池、見に行こう」と話に乗る # option: play_along]
     # profile: playful
     # memory: gt_jaipur_date_jaigarh_fort_memory
     { romance_result == "negative":
-        # speaker: narrator
-        ラージュー「え、それは……今日は遠いから、無理」
+        # speaker: gt_raju
+        え、それは……今日は遠いから、無理
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
-        「案内人を困らせないの」
+        案内人を困らせないの
     - else:
-        # speaker: narrator
-        ラージュー「それは、次の地図。別料金」
+        # speaker: gt_raju
+        それは、次の地図。別料金
         # speaker: heroine
         # reaction: heroine,teasing_big,music
-        「ふふっ、商売上手！　続きは次の地図、だって」
+        ふふっ、商売上手！　続きは次の地図、だって
     }
 -
 # speaker: narrator
 二つ目の印は、石の蓋のついた、地下の貯水槽だった。砦には大きな貯水槽が三つあり、いちばん大きなものは、六百万ガロンもの水をためられるという。
-ラージュー「宝は、この水の底。……って、みんな言ってた。だから、昔、国が本当に掘ったんだ」
+# speaker: gt_raju
+宝は、この水の底。……って、みんな言ってた。だから、昔、国が本当に掘ったんだ
+# speaker: narrator
 1976年、この砦では、実際に大がかりな宝探しが行われた。宝が見つかったという記録はない。
 { cond("flag gt_jaipur_raju_guided"):
-    # speaker: narrator
-    ラージュー「三つ目の印は、アンベールへ抜ける秘密の通路。でも、今日は時間がないから、飛ばす。……最後の印が、いちばん大事だから」
+    # speaker: gt_raju
+    三つ目の印は、アンベールへ抜ける秘密の通路。でも、今日は時間がないから、飛ばす。……最後の印が、いちばん大事だから
 - else:
     # speaker: narrator
     地図の三つ目の印は、アンベールへ下りる通路を指していた。砦とアンベール城は、地下の通路でつながっているという。今日は、入口をのぞくだけにした。
 }
 # speaker: narrator
 最後のバツ印は、門のすぐ外だった。古い木の台の上に、湯気の立つ鍋。小さな茶屋で、白いひげの老人が、チャイを煮ていた。
-ラージュー「宝は、ここ。うちのナーナーのチャイ。……ジャイプールでいちばんうまいんだ。本当だよ」
+# speaker: gt_raju
+宝は、ここ。うちのナーナーのチャイ。……ジャイプールでいちばんうまいんだ。本当だよ
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
-「やられた！　ふふっ、最後の印、お茶屋さんだった！」
+やられた！　ふふっ、最後の印、お茶屋さんだった！
 # speaker: narrator
 老人は孫の頭を軽く叩き、素焼きのカップを二つ並べた。ラージューの祖父は、子どものころ、あの宝探しの兵隊たちに水を運んでいたのだという。本人の話では。
-老人「何か月も掘って、出てきたのは、コウモリと、古い靴が片方だけ。……でも、あの年だけは、この砦が、国でいちばん有名だった」
+# speaker: gt_jaipur_jaigarh_old_man
+何か月も掘って、出てきたのは、コウモリと、古い靴が片方だけ。……でも、あの年だけは、この砦が、国でいちばん有名だった
 * [「本当に、宝の味がする」 # option: treasure_taste]
     # profile: playful
     { romance_result == "negative":
+        # speaker: gt_jaipur_jaigarh_old_man
+        宝の味は、もっと甘い。砂糖が足りなかったか
         # speaker: narrator
-        老人「宝の味は、もっと甘い。砂糖が足りなかったか」
         老人が本気で砂糖を足そうとしたので、彼女があわてて止めた。
     - else:
         # speaker: heroine
         # emotion: smile
-        「甘い。濃い。ほんとだ。宝物の味がする」
+        甘い。濃い。ほんとだ。宝物の味がする
     }
 * [ラージューの分も頼む # option: chai_for_raju]
     # profile: attentive
     # money: -10
     { romance_result == "negative":
+        # speaker: gt_raju
+        仕事中は飲まない。……でも、もらう
         # speaker: narrator
-        ラージュー「仕事中は飲まない。……でも、もらう」
         ラージューは三秒で飲み干し、次の客を探しに門の方へ走っていった。
     - else:
-        # speaker: narrator
-        ラージュー「やった。……案内料に、チャイもつけてくれる客は、初めて」
+        # speaker: gt_raju
+        やった。……案内料に、チャイもつけてくれる客は、初めて
     }
 * [「その頃の話、もっと聞かせてください」と頼む # option: more_stories]
     # profile: honest
     { romance_result == "negative":
+        # speaker: gt_jaipur_jaigarh_old_man
+        話は、チャイ一杯につき一つだ
         # speaker: narrator
-        老人「話は、チャイ一杯につき一つだ」
         老人はそれきり、鍋をかき混ぜる手を止めなかった。
     - else:
-        # speaker: narrator
-        老人「話を聞きたがる人は、宝を見つける人だ。……わしの昔の話は、いつも、そういう人にしかしない」
+        # speaker: gt_jaipur_jaigarh_old_man
+        話を聞きたがる人は、宝を見つける人だ。……わしの昔の話は、いつも、そういう人にしかしない
         # speaker: heroine
         # reaction: heroine,teasing,music
-        「宝を見つける人、だって。じゃあ、今日のわたしたち、ちょっとは見込みあるね」
+        宝を見つける人、だって。じゃあ、今日のわたしたち、ちょっとは見込みあるね
     }
 -
 # speaker: narrator
 チャイのカップを手に、城壁のふちに立つ。下には、アンベール城と、その前の湖が、模型のように小さく見えた。
 { cond("episode gt_jaipur_main_amber_fort"):
     # speaker: heroine
-    「あ、あの門。サリームさんが描いてた門だ。上から見ると、絵より、ずっと小さい」
+    あ、あの門。サリームさんが描いてた門だ。上から見ると、絵より、ずっと小さい
 }
 # speaker: heroine
 # emotion: smile
-「宝物って、見つからない方が、ずっと探していられるね。五十年たっても、男の子が地図を描いて売ってるくらいに」
+宝物って、見つからない方が、ずっと探していられるね。五十年たっても、男の子が地図を描いて売ってるくらいに
 -> END
 
 // 【3】手伝いの knot：宝の地図を買うか（噛み合いでない選択。断ると、ラージューが地図なしで案内してくれる）
@@ -143,20 +155,22 @@ INCLUDE modules.ink
 * [言い値で買う # option: buy_map]
     # money: -50
     # rel: affection +1
-    # speaker: narrator
-    ラージュー「まいど。……宝が見つかっても、山分けはしないよ」
+    # speaker: gt_raju
+    まいど。……宝が見つかっても、山分けはしないよ
 * [「もう少し安くならない？」と値切る # option: haggle_map]
     # money: -30
     # rel: spark +1
+    # speaker: gt_raju
+    宝の値段を値切る人には、宝は見つからないよ。……でも、いいよ。安い方の地図ね
     # speaker: narrator
-    ラージュー「宝の値段を値切る人には、宝は見つからないよ。……でも、いいよ。安い方の地図ね」
     ラージューはポケットから、別の紙を出した。さっきのより、バツ印が少し小さい。
     # speaker: heroine
     # reaction: heroine,teasing_big,music
-    「ふふっ、値段で地図が変わった！」
+    ふふっ、値段で地図が変わった！
 * [「地図は、今日はいいかな」と断る # option: decline_map]
     # set: gt_jaipur_raju_guided
+    # speaker: gt_raju
+    ……じゃあ、見習い期間ってことで、ついてきていいよ。地図は見せないけど
     # speaker: narrator
-    ラージュー「……じゃあ、見習い期間ってことで、ついてきていいよ。地図は見せないけど」
     ラージューは地図を胸に抱えたまま、先に立って歩き出した。地図の印を、順に回ることになった。
 - ->->

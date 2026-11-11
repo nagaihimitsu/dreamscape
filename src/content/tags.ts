@@ -8,10 +8,17 @@ export interface TagContext {
   photoIds?: readonly string[];
   /** The word IDs of learning/local-words.json, for `# local_word:`; absent: a tool that only reads the lines (not checked). */
   localWordIds?: readonly string[];
+  /** The people of progression/story.json, for `# speaker: <person ID>`; absent: a tool that only reads the lines (not checked). */
+  personIds?: readonly string[];
 }
 
+/** The speakers every line may name; any other `# speaker:` names a person of progression/story.json people (2026-11-11). */
+export const RESERVED_SPEAKERS = ["narrator", "heroine", "player", "enemy"] as const;
+
 export interface StoryTags {
-  speaker?: "narrator" | "heroine" | "player" | "enemy";
+  /** "person": `# speaker: <person ID>`, the person in speakerPersonId. */
+  speaker?: (typeof RESERVED_SPEAKERS)[number] | "person";
+  speakerPersonId?: string;
   background?: string;
   emotion?: string;
   reactions?: Partial<Record<ReactionTarget, DialogueReaction>>;
@@ -141,10 +148,15 @@ export function parseStoryTags(
         throw new Error(`Duplicate effect tag: ${value}`);
       result.effects.push(value);
     } else if (key === "speaker") {
-      if (!["narrator", "heroine", "player", "enemy"].includes(value))
-        throw new Error(`Unknown speaker: ${value}`);
+      const reserved = (RESERVED_SPEAKERS as readonly string[]).includes(value);
+      if (!reserved && (!/^[a-z][a-z0-9_]*$/u.test(value) || (context.personIds && !context.personIds.includes(value))))
+        throw new Error(`Unknown speaker: ${value} (narrator, heroine, player, enemy, or a person of progression/story.json people)`);
       if (result.speaker) throw new Error("Duplicate speaker tag");
-      result.speaker = value as StoryTags["speaker"];
+      if (reserved) result.speaker = value as (typeof RESERVED_SPEAKERS)[number];
+      else {
+        result.speaker = "person";
+        result.speakerPersonId = value;
+      }
     } else if (key === "background") {
       if (!context.backgroundIds.includes(value))
         throw new Error(`Unknown background: ${value}`);

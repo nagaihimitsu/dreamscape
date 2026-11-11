@@ -14,6 +14,7 @@ import { lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { portraitFocus } from "../../components/speaker-focus";
+import { speakerPlate } from "../../components/speaker-plate";
 import { useStaysOnStage } from "../../components/useStaysOnStage";
 import "./encounter.css";
 import { ComicEffect } from "../../components/ComicEffect";
@@ -70,14 +71,8 @@ export function EpilogueScreen({
   const personReaction = person ? resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy") : undefined;
   const personOn = useStaysOnStage(!!person && (frame.speaker === "enemy" || !!personReaction));
   const enemyName = person?.nameJa ?? battles.find((battle) => battle.id === episode?.battleId)?.enemyNameJa;
-  const speaker =
-    frame.speaker === "heroine"
-      ? game.heroineName
-      : frame.speaker === "player"
-        ? game.playerName
-        : frame.speaker === "enemy"
-          ? enemyName ?? "旅の風景"
-          : "旅の風景";
+  const { name: speaker, narration } = speakerPlate(frame, { heroine: game.heroineName, player: game.playerName, enemy: enemyName },
+    storyState.people);
   const label = active.kind === "tour_leg"
     ? { eyebrow: "ツアー", heading: leg?.labelJa ?? "ツアーの移動", region: "ツアーの移動の語り", next: "ツアーを続ける", testId: "tour-leg-screen" }
     : arrival ? { eyebrow: "旅のはじまり", heading: `${city.nameJa}に到着`, region: "到着の会話", next: "街を見に行く", testId: "city-arrival-screen" }
@@ -149,7 +144,7 @@ export function EpilogueScreen({
         >
           <DialogueWindowHead
             speaker={showsSpeakerPlate(frame) && speaker}
-            narration={frame.speaker !== "heroine" && frame.speaker !== "player" && frame.speaker !== "enemy"}
+            narration={narration}
             controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
           />
           <div ref={dialogueRef} className="vn-window-body">

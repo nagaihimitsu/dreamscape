@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { tourSceneBadge } from "../../domain/tour";
-import { dialogueExpressions, dialogueReactions, landmarks, learningTranslations, presentation, tourismAssets } from "../../content";
+import { dialogueExpressions, dialogueReactions, landmarks, learningTranslations, presentation, storyState, tourismAssets } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
@@ -19,6 +19,7 @@ import { CanalScene } from "../../components/CanalScene";
 import { SceneHeading, SceneNotebookTool } from "../../components/SceneHeading";
 import { CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
 import { portraitFocus } from "../../components/speaker-focus";
+import { speakerPlate } from "../../components/speaker-plate";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { EnemyPortrait } from "./EnemyPortrait";
@@ -299,13 +300,9 @@ export function BattleScreen({
     ? resolveDialogueExpression(dialogueExpressions, storyId, frame)
     : "neutral");
   const enemyEmotion = enemyReaction?.expression ?? (frame?.speaker === "enemy" ? frame.emotion : "neutral");
-  const speaker = frame?.speaker === "enemy"
-    ? battle.enemyNameJa
-    : frame?.speaker === "heroine"
-      ? game.heroineName
-      : frame?.speaker === "player"
-        ? game.playerName
-        : "旅の風景";
+  const plate = speakerPlate(frame ?? { speaker: "narrator" }, { heroine: game.heroineName, player: game.playerName, enemy: battle.enemyNameJa },
+    storyState.people);
+  const speaker = plate.name;
   const { ready, onReady, entries } = useDialogueLog(
     `${battle.id}:${record?.attempts ?? 0}`,
     game.revision,
@@ -468,7 +465,7 @@ export function BattleScreen({
       <div className="battle-paper-shell" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} aria-hidden={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined} inert={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined}>
       {isDialogue && <DialogueWindowHead
         plateClassName="battle-nameplate"
-        narration={!!frame && frame.speaker !== "enemy" && frame.speaker !== "heroine" && frame.speaker !== "player"}
+        narration={!!frame && plate.narration}
         speaker={frame && showsSpeakerPlate(frame) && <>
           {speaker}
           {frame.emotion !== "neutral" && (
