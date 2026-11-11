@@ -12,8 +12,9 @@ import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "..
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { useSceneTap } from "../../components/useSceneTap";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
-import type { PortraitFocus } from "../../components/speaker-focus";
+import { portraitFocus, type PortraitFocus } from "../../components/speaker-focus";
 import { useStaysOnStage } from "../../components/useStaysOnStage";
+import { useSpeakingPerson } from "../../components/useSpeakingPerson";
 import { ComicEffect } from "../../components/ComicEffect";
 import type { ReactionMark } from "../../content/dialogue-reactions";
 import type { LineDelivery } from "../../content/tags";
@@ -53,6 +54,8 @@ export type EncounterScreenView = {
   portraits?: Partial<Record<"heroine" | "enemy", { emotion: string; mark?: ReactionMark; focus?: PortraitFocus }>>;
   /** The scene's person with a portrait (# person:): on the other side from their first line to the scene's end. */
   person?: { characterId: string; focus?: PortraitFocus };
+  /** The portrait of a person who says the line in their own name (speakingPerson): on the other side from that line. */
+  speakingPerson?: string;
   cityId: string;
   sceneId?: string;
   quiz?: {
@@ -105,8 +108,13 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
   }
   const quiz = view.quiz;
   const personOn = useStaysOnStage(!!view.person && !!view.portraits?.enemy);
+  // A person who speaks in their own name stands there from their line until the scene's own opposite speaks or reacts.
+  const speakingOn = useSpeakingPerson(view.speakingPerson, !!view.portraits?.enemy || view.staging?.speaker === "enemy");
+  const opposite = speakingOn ?? view.person?.characterId;
   // Once on stage, the person stays (listening, or as they are under narration) at the lines of the others.
-  const portraits: EncounterScreenView["portraits"] = view.person && personOn && !view.portraits?.enemy
+  const portraits: EncounterScreenView["portraits"] = speakingOn
+    ? { ...view.portraits, enemy: { emotion: "neutral", focus: view.speakingPerson === speakingOn ? "speaking" : portraitFocus(view.staging?.speaker, "enemy") } }
+    : view.person && personOn && !view.portraits?.enemy
     ? { ...view.portraits, enemy: { emotion: "neutral", focus: view.person.focus } }
     : view.portraits;
   // The quiz (its question, its feedback) shows no line: the line's staging waits for the next one.
@@ -124,7 +132,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
         {(["heroine", "enemy"] as const).map((id) => {
           const portrait = portraits?.[id];
           return portrait && <div className={`encounter-character-slot encounter-character-${id}`} key={id}>
-            <CharacterPortrait characterId={id === "enemy" && view.person ? view.person.characterId : id} cityId={view.cityId} sceneId={view.sceneId} emotion={portrait.emotion} focus={portrait.focus}
+            <CharacterPortrait key={id === "enemy" ? opposite : id} characterId={id === "enemy" && opposite ? opposite : id} cityId={view.cityId} sceneId={view.sceneId} emotion={portrait.emotion} focus={portrait.focus}
               stand={id === "heroine" ? view.staging?.stand : undefined}>
               {portrait.mark && <ComicEffect effect={portrait.mark} reduceMotion={reduceMotion} cueKey={String(view.revision)} />}
             </CharacterPortrait>

@@ -46,8 +46,57 @@
     {
       "id": "gt_roohi",
       "imagePath": "assets/characters/gt_roohi/neutral.webp",
-      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 56, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
       "placeholderColor": "#2f3f6f",
+      "variants": []
+    },
+    {
+      "id": "gt_harbans",
+      "imagePath": "assets/characters/gt_harbans/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#2f3b63",
+      "variants": []
+    },
+    {
+      "id": "gt_monu",
+      "imagePath": "assets/characters/gt_monu/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#b8332e",
+      "variants": []
+    },
+    {
+      "id": "gt_zoheb",
+      "imagePath": "assets/characters/gt_zoheb/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#6b6e72",
+      "variants": []
+    },
+    {
+      "id": "gt_dubey",
+      "imagePath": "assets/characters/gt_dubey/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#cfc8b8",
+      "variants": []
+    },
+    {
+      "id": "gt_meena",
+      "imagePath": "assets/characters/gt_meena/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#a9c4dc",
+      "variants": []
+    },
+    {
+      "id": "gt_kunal",
+      "imagePath": "assets/characters/gt_kunal/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#2b2b2b",
+      "variants": []
+    },
+    {
+      "id": "gt_jasmeet",
+      "imagePath": "assets/characters/gt_jasmeet/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#e8dca8",
       "variants": []
     }
   ],

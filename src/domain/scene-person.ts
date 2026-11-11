@@ -15,3 +15,15 @@ export function scenePerson(people: StoryStateCatalog["people"], scenePeople: re
   }
   return undefined;
 }
+
+/**
+ * The portrait of the person who says the line in their own name (`# speaker: <person ID>`), when
+ * that person has one (`characterId`; 2026-11-11 user decision): from that line they stand opposite
+ * the heroine in any scene (useSpeakingPerson). A phone's message or a sheet's line is read, not
+ * said there: no one comes in for it.
+ */
+export function speakingPerson(people: StoryStateCatalog["people"],
+  frame: { speaker: string; speakerPersonId?: string; phone?: unknown; letter?: unknown }): string | undefined {
+  if (frame.speaker !== "person" || frame.phone || frame.letter) return undefined;
+  return people.find((item) => item.id === frame.speakerPersonId)?.characterId;
+}

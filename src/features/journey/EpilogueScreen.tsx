@@ -3,7 +3,7 @@ import { battles, dialogueExpressions, dialogueReactions, episodes, getCityConte
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import { activeEpilogueStoryId, epilogueScene } from "../../domain/epilogue";
-import { scenePerson } from "../../domain/scene-person";
+import { scenePerson, speakingPerson } from "../../domain/scene-person";
 import { getNextCity } from "../../domain/city-travel";
 import { tourLegUnderway } from "../../domain/tour";
 import { getJourneyForCity } from "../../content/journeys";
@@ -16,6 +16,7 @@ import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { portraitFocus } from "../../components/speaker-focus";
 import { speakerPlate } from "../../components/speaker-plate";
 import { useStaysOnStage } from "../../components/useStaysOnStage";
+import { useSpeakingPerson } from "../../components/useSpeakingPerson";
 import "./encounter.css";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
@@ -70,6 +71,10 @@ export function EpilogueScreen({
   const person = scenePerson(storyState.people, epilogueScene(active)?.people);
   const personReaction = person ? resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy") : undefined;
   const personOn = useStaysOnStage(!!person && (frame.speaker === "enemy" || !!personReaction));
+  // A person with a portrait who speaks in their own name stands there from that line until the scene's own person speaks or reacts.
+  const speaking = speakingPerson(storyState.people, frame);
+  const speakingOn = useSpeakingPerson(speaking, frame.speaker === "enemy" || !!personReaction);
+  const opposite = speakingOn ?? (person && personOn ? person.characterId : undefined);
   const enemyName = person?.nameJa ?? battles.find((battle) => battle.id === episode?.battleId)?.enemyNameJa;
   const { name: speaker, narration } = speakerPlate(frame, { heroine: game.heroineName, player: game.playerName, enemy: enemyName },
     storyState.people);
@@ -112,8 +117,8 @@ export function EpilogueScreen({
         <RecallLayer imageId={frame.recall} />
         {/* With the scene's person on stage the two stand side by side (the encounter's slots); her
             portrait keeps its place in the tree, so it is not drawn again when they come in. */}
-        <div className={`vn-character-layer${person && personOn ? " encounter-character-layer" : ""}`} data-two-characters={person && personOn ? true : undefined}>
-          <div className={person && personOn ? "encounter-character-slot encounter-character-heroine" : undefined}>
+        <div className={`vn-character-layer${opposite ? " encounter-character-layer" : ""}`} data-two-characters={opposite ? true : undefined}>
+          <div className={opposite ? "encounter-character-slot encounter-character-heroine" : undefined}>
             <CharacterPortrait
               characterId="heroine"
               sceneId={active.episodeId}
@@ -125,11 +130,12 @@ export function EpilogueScreen({
               {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
             </CharacterPortrait>
           </div>
-          {person && personOn && <div className="encounter-character-slot encounter-character-enemy">
+          {opposite && <div className="encounter-character-slot encounter-character-enemy">
             <CharacterPortrait
-              characterId={person.characterId}
-              emotion={personReaction?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral")}
-              focus={portraitFocus(frame.speaker, "enemy")}
+              key={opposite}
+              characterId={opposite}
+              emotion={speakingOn ? "neutral" : personReaction?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral")}
+              focus={speakingOn && speaking === speakingOn ? "speaking" : portraitFocus(frame.speaker, "enemy")}
             >
               {personReaction?.mark && <ComicEffect effect={personReaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
             </CharacterPortrait>
