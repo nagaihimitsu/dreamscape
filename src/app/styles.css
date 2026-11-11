@@ -200,6 +200,17 @@ h3 {
 .canal-scene.compact {
   height: 245px;
 }
+/* A scene's next picture (CanalScene's SceneArtwork): unseen over the last one until it has
+   loaded, then fading in over it in --motion-scene (its timer, ARTWORK_FADE_MS, matches). */
+.scene-artwork[data-entering]:not([data-loaded]) { opacity: 0; }
+.scene-artwork[data-entering][data-loaded] { animation: scene-artwork-in var(--motion-scene) var(--ease-out); }
+@keyframes scene-artwork-in {
+  from { opacity: 0; }
+}
+.reduce-motion .scene-artwork[data-entering][data-loaded] { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .scene-artwork[data-entering][data-loaded] { animation: none; }
+}
 /* The art's caption: a display-only pill over the picture (§2.3, §2.4). */
 .scene-stamp {
   position: absolute;
@@ -457,6 +468,22 @@ footer span {
   border-top: 1px solid var(--line);
   padding-top: 20px;
   margin-top: 8px;
+}
+/* A scene's choices (and an encounter's English replies) come in one after another as they
+   appear with their line: a fade only, nothing moves, since a choice may take a press as it
+   shows. The last starts within 120 ms and all are whole within 280 ms. */
+:is(.choices, .encounter-choices) > * {
+  animation: choice-in var(--motion-fast) var(--ease-out) backwards;
+}
+:is(.choices, .encounter-choices) > :nth-child(2) { animation-delay: var(--motion-stagger); }
+:is(.choices, .encounter-choices) > :nth-child(3) { animation-delay: calc(2 * var(--motion-stagger)); }
+:is(.choices, .encounter-choices) > :nth-child(n + 4) { animation-delay: calc(3 * var(--motion-stagger)); }
+@keyframes choice-in {
+  from { opacity: 0; }
+}
+.reduce-motion :is(.choices, .encounter-choices) > * { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  :is(.choices, .encounter-choices) > * { animation: none; }
 }
 .choice {
   display: flex;
