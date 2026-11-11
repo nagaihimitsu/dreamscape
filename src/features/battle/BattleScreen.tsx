@@ -6,7 +6,7 @@ import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
 import { battleChrome, getActiveBattleContent, getBattleOutcome } from "../../domain/battle";
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
-import { DialogueText } from "../../components/DialogueText";
+import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
@@ -15,6 +15,7 @@ import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { CanalScene } from "../../components/CanalScene";
 import { SceneHeading, SceneNotebookTool } from "../../components/SceneHeading";
 import { CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
+import { portraitFocus } from "../../components/speaker-focus";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { EnemyPortrait } from "./EnemyPortrait";
@@ -22,6 +23,7 @@ import { BattleRewards } from "../journey/BattleRewards";
 import { ReasoningPanel } from "./ReasoningPanel";
 import { ReasoningCutIn } from "./ReasoningCutIn";
 import { OutcomeHeading } from "./OutcomeHeading";
+import { HeroineNote } from "./HeroineNote";
 import { DOUBLE_TAP_WINDOW_MS, isSecondTap } from "../../components/double-tap";
 import {
   Translation,
@@ -34,6 +36,8 @@ import "./battle.css";
 
 /** Room left between the round bar and the first line of a feedback below it. */
 const FEEDBACK_GAP_PX = 8;
+/** How long a normal battle's opening name plate stays (a tap, a key or the next line ends it sooner). */
+const ENEMY_INTRO_MS = 2400;
 
 /**
  * How far below the top of the screen the sticky boxes held there reach once
@@ -262,6 +266,8 @@ export function BattleScreen({
   // Keep the same registered location photograph across dialogue, questions
   // and results. A city-wide finale has no landmark and keeps its own scene.
   const landmarkAsset = tourismAssets.find((asset) => asset.id === landmark?.imageAssetId);
+  // The city whose outfit the heroine wears here (her portrait and her face by the quiz card).
+  const heroineCityId = battle.cityId ?? landmark?.cityId;
   const storyId = battle.storyId;
   // Reactions belong to their target, independently of the current speaker.
   // Unannotated frames retain the existing Ink and expression behavior.
@@ -304,6 +310,29 @@ export function BattleScreen({
     defaultEnabled: autoAdvanceEnabled,
   });
   const sceneTap = useSceneTap({ active: isDialogue, lineShown: ready, choicesShown: choosing, windowHidden: windowVisibility.hidden });
+  // A normal battle's opponent comes in on a name plate (special battles have their cut-in): when this
+  // screen opens on the talk before the battle's first question (a new run, or a load there), its line
+  // shows the battle's heading (.battle-enemy-info: role, name, the quote when written) over the scene for
+  // a moment. It takes no input: a tap or a key does what it always does and ends it, as does the next line.
+  const [introStoryState] = useState(() =>
+    !battle.reasoning && active.phase === "dialogue" && active.answers.length === 0 && active.turns === 0 ? active.storyState : null);
+  const [introOver, setIntroOver] = useState(false);
+  const enemyIntro = !introOver && introStoryState !== null && isDialogue && active.storyState === introStoryState;
+  useEffect(() => {
+    if (!enemyIntro) return;
+    const end = () => setIntroOver(true);
+    const onVisibility = () => { if (document.hidden) end(); };
+    const timer = window.setTimeout(end, ENEMY_INTRO_MS);
+    document.addEventListener("pointerdown", end, true);
+    document.addEventListener("keydown", end, true);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      window.clearTimeout(timer);
+      document.removeEventListener("pointerdown", end, true);
+      document.removeEventListener("keydown", end, true);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [enemyIntro]);
   const isResult = active.phase === "result";
   /** The answer whose explanation shows (its verdict heads the reading area). */
   const verdict = active.phase === "feedback" ? answer : undefined;
@@ -327,6 +356,7 @@ export function BattleScreen({
       // An ordinary quiz's wrong answer, saved in this screen, plays no stamp: its card gives a small shake (battle.css).
       data-answer-missed={active.phase === "feedback" && !!answer && !answer.correct && !isSpecial && animatedAnswer === answerKey || undefined}
       data-reduce-motion={reduceMotion || undefined}
+      data-enemy-intro={enemyIntro || undefined}
       data-dialogue-hidden={isDialogue && windowVisibility.hidden || undefined}
       {...sceneTap.props}
     >
@@ -361,11 +391,14 @@ export function BattleScreen({
         className={`battle-stage ${isDialogue ? "" : "battle-stage-compact"} ${battle.scope === "city_finale" ? "finale-stage" : ""}`}
         data-testid={isDialogue ? "scene-picture" : undefined}
       >
+        {/* The opponent's heading above the quiz card; at a normal battle's opening, its name plate
+            (data-enemy-intro; the quote shows only there). */}
         <div className="battle-enemy-info">
           <p className="eyebrow">{battle.titleJa}</p>
           <p className="enemy-title">{battle.enemyTitleJa}</p>
           <h2>{battle.enemyNameJa}</h2>
           <p className="enemy-detail">{battle.enemyDescriptionJa}</p>
+          {battle.enemyQuoteJa && <p className="enemy-quote">{battle.enemyQuoteJa}</p>}
         </div>
         <div className="battle-characters">
           {isDialogue && (
@@ -373,9 +406,9 @@ export function BattleScreen({
               <CharacterPortrait
                 characterId="heroine"
                 sceneId={battle.id}
-                cityId={battle.cityId ?? landmarks.find((item) => item.id === battle.landmarkId)?.cityId}
+                cityId={heroineCityId}
                 emotion={heroineEmotion}
-                active={frame?.speaker === "heroine"}
+                focus={portraitFocus(frame?.speaker, "heroine")}
               >
                 {heroineReaction?.mark && <ComicEffect effect={heroineReaction.mark} reduceMotion={reduceMotion} cueKey={displayedStoryState ?? ""} />}
               </CharacterPortrait>
@@ -385,7 +418,7 @@ export function BattleScreen({
             <CharacterPortrait
               characterId={characterForBattle(battle.id)}
               emotion={enemyEmotion}
-              active={frame?.speaker === "enemy"}
+              focus={portraitFocus(frame?.speaker, "enemy")}
               fallback={battle.portrait === "abstract" ? undefined :
                 <EnemyPortrait
                   emotion={enemyEmotion}
@@ -399,7 +432,7 @@ export function BattleScreen({
           </div>
         </div>
       </div>
-      <div className="battle-paper-shell" aria-hidden={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined} inert={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined}>
+      <div className="battle-paper-shell" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} aria-hidden={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined} inert={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined}>
       {isDialogue && <DialogueWindowHead
         plateClassName="battle-nameplate"
         narration={!!frame && frame.speaker !== "enemy" && frame.speaker !== "heroine" && frame.speaker !== "player"}
@@ -513,6 +546,7 @@ export function BattleScreen({
               key={game.revision}
               ref={sceneTap.line}
               text={frame.text}
+              delivery={frame.delivery}
               speed={auto.fast ? 0 : speed}
               onReady={onReady}
               onAdvance={advanceSafely}
@@ -647,6 +681,17 @@ export function BattleScreen({
                     ? question.correctExplanationJa
                     : question.incorrectExplanationJa}
                 </p>
+                {/* Her short line on a right answer, only where the question has one (heroineCorrectJa). */}
+                {answer.correct && question.heroineCorrectJa && (
+                  <HeroineNote
+                    label={game.heroineName}
+                    text={question.heroineCorrectJa}
+                    emotion="happy"
+                    sceneId={battle.id}
+                    cityId={heroineCityId}
+                    testId="heroine-correct"
+                  />
+                )}
                 <button
                   className="secondary"
                   onClick={() => onEnglish(question.id)}
@@ -695,10 +740,18 @@ export function BattleScreen({
                 {active.hintOpen ? "ヒントを閉じる" : "ヒントを見る"}
               </button>
             )}
+            {/* The hint as the heroine's whisper: her words when the question has them (hintHeroineJa),
+                else its hint (hintJa, plain narration: shown as her note, not quoted as her words). */}
             {active.hintOpen && (
-              <p id="question-hint" className="hint-text">
-                {question.hintJa}
-              </p>
+              <HeroineNote
+                id="question-hint"
+                className="hint-whisper"
+                label={`${game.heroineName}の耳打ち`}
+                text={question.hintHeroineJa ?? question.hintJa}
+                emotion="smile"
+                sceneId={battle.id}
+                cityId={heroineCityId}
+              />
             )}
 
           </div>

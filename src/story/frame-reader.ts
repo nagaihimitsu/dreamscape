@@ -1,7 +1,7 @@
 import type { Story } from "inkjs";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import type { DialogueReaction, ReactionTarget } from "../content/dialogue-reactions";
-import { parseStoryTags, type StoryCall, type TagContext } from "../content/tags";
+import { parseStoryTags, type LineDelivery, type StoryCall, type TagContext } from "../content/tags";
 
 // How a story's next line becomes the frame on screen (runtime.ts), in a light module (no content loading).
 
@@ -14,6 +14,8 @@ export interface StoryFrame {
   /** Optional because frames saved before inline presentation have no flag. */
   emotionExplicit?: true;
   reactions?: Partial<Record<ReactionTarget, DialogueReaction>>;
+  /** The line's `# pause:`, `# shake:` and `# size:` (how its text is shown; only the line it is written on). */
+  delivery?: LineDelivery;
   /** A battle's call (`# call:`, stage 5) is a choice the game takes itself: its screen shows no choice. */
   choices: { index: number; text: string; optionId?: string; translationJa?: string; call?: StoryCall }[];
   ended: boolean;
@@ -77,6 +79,7 @@ function readTags(
     }
     frame.reactions = { ...frame.reactions, ...parsed.reactions };
   }
+  if (parsed.delivery) frame.delivery = { ...frame.delivery, ...parsed.delivery };
   events.push(...parsed.effects);
 }
 

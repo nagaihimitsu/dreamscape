@@ -11,9 +11,10 @@ import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import { activeGuideStoryId, observationHotspots } from "../../domain/tourism";
 import type { GameState } from "../../domain/game";
-import { DialogueText } from "../../components/DialogueText";
+import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
+import { portraitFocus } from "../../components/speaker-focus";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
@@ -183,13 +184,14 @@ export function TourismScreen({
               sceneId={landmark.id}
               cityId={landmark.cityId}
               emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, guideStoryId, frame)}
-              active={frame.speaker === "heroine"}
+              focus={portraitFocus(frame.speaker, "heroine")}
             >
               {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState ?? undefined} />}
             </CharacterPortrait>
           </div>
           <div
             className="tourism-guide paper vn-dialogue"
+            {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }}
             data-testid="tourism-guide"
             inert={windowVisibility.hidden}
             aria-hidden={windowVisibility.hidden || undefined}
@@ -204,6 +206,7 @@ export function TourismScreen({
               key={game.revision}
               ref={sceneTap.line}
               text={frame.text}
+              delivery={frame.delivery}
               speed={autoAdvance.fast ? 0 : speed}
               onReady={onReady}
               onAdvance={advanceSafely}

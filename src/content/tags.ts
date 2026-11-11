@@ -15,7 +15,41 @@ export interface StoryTags {
   translationJa?: string;
   /** `# call: quiz` / `# call: reasoning`: the one choice of modules.ink's battle calls (stage 5). */
   call?: StoryCall;
+  /** `# pause:`, `# shake:` and `# size:`: how the line is shown (presentation only). */
+  delivery?: LineDelivery;
   effects: string[];
+}
+
+/**
+ * How one line is shown, from its tags (presentation only; never the story or the game state):
+ * `# pause: 600` waits that many milliseconds before its text starts (a tap shows it at once),
+ * `# shake: window` shakes the dialogue window once, `# size: large` shows its text larger.
+ */
+export interface LineDelivery {
+  pauseMs?: number;
+  shake?: true;
+  large?: true;
+}
+/** The pause a line may take before its text starts (milliseconds). */
+export const LINE_PAUSE_MS = { min: 100, max: 3000 } as const;
+
+/** Read a line's `# pause:`, `# shake:` or `# size:` into its delivery; throws for a malformed or repeated one. */
+function readDelivery(key: "pause" | "shake" | "size", value: string, delivery: LineDelivery): LineDelivery {
+  if (key === "pause") {
+    const ms = /^\d+$/u.test(value) ? Number(value) : NaN;
+    if (!(ms >= LINE_PAUSE_MS.min && ms <= LINE_PAUSE_MS.max))
+      throw new Error(`Invalid pause tag: ${value} (milliseconds, ${LINE_PAUSE_MS.min} to ${LINE_PAUSE_MS.max})`);
+    if (delivery.pauseMs !== undefined) throw new Error("Duplicate pause tag");
+    return { ...delivery, pauseMs: ms };
+  }
+  if (key === "shake") {
+    if (value !== "window") throw new Error(`Invalid shake tag: ${value} (write # shake: window)`);
+    if (delivery.shake) throw new Error("Duplicate shake tag");
+    return { ...delivery, shake: true };
+  }
+  if (value !== "large") throw new Error(`Invalid size tag: ${value} (write # size: large)`);
+  if (delivery.large) throw new Error("Duplicate size tag");
+  return { ...delivery, large: true };
 }
 
 /** What a battle's call choice asks the game for (modules.ink: `-> quiz(n) ->`, `-> reasoning ->`; stage 5). */
@@ -96,6 +130,8 @@ export function parseStoryTags(
     } else if (key === "translation") {
       if (result.translationJa) throw new Error("Duplicate translation tag");
       result.translationJa = value;
+    } else if (key === "pause" || key === "shake" || key === "size") {
+      result.delivery = readDelivery(key, value, result.delivery ?? {});
     } else {
       throw new Error(`Unknown story tag: ${key}`);
     }

@@ -852,3 +852,110 @@
 .battle-screen .quiz-sources summary {
   color: var(--ds-ink);
 }
+
+/* The heroine's few words by the quiz card (HeroineNote): her face and a speech bubble whose
+   tail points at it, headed by her name. Her whispered hint comes in like a panel; her line on a
+   right answer comes with the explanation it sits in. Nothing here is pressable. */
+.heroine-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 8px 0 18px;
+}
+.quiz-feedback .heroine-note { margin: 10px 0 4px; }
+.heroine-note-bubble {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 6px 14px 9px;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 14px;
+  background: var(--ds-parchment-2);
+  color: var(--ds-ink);
+  font-size: 13px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.heroine-note-bubble::before {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: -6px;
+  width: 10px;
+  height: 10px;
+  border: solid var(--ds-parchment-line);
+  border-width: 0 0 1px 1px;
+  background: inherit;
+  transform: rotate(45deg);
+}
+.heroine-note-name {
+  display: block;
+  color: var(--ds-ink-muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+.hint-whisper { animation: heroine-note-in var(--motion-fast) var(--ease-out); }
+@keyframes heroine-note-in {
+  from { opacity: 0; transform: translateY(4px); }
+}
+.battle-screen[data-reduce-motion="true"] .hint-whisper { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .battle-screen .hint-whisper { animation: none; }
+}
+
+/* A normal battle's opening (data-enemy-intro, BattleScreen): the opponent's heading, hidden
+   during the talk, shows for a moment as a name plate (role, name and, when written, a quote) on
+   the slate of the dialogue window, centred just above the line the characters keep clear of
+   the window (their bodies, not their faces). It is laid over the scene (no reflow), takes no
+   taps and goes at once; it comes in with a short rise, none under reduced motion. Its stacking
+   is the heading's own (z-index 2): over the characters, under the window that follows it. */
+.battle-enemy-info .enemy-quote { display: none; }
+.battle-screen[data-phase="dialogue"][data-enemy-intro] .battle-enemy-info {
+  display: block;
+  position: absolute;
+  bottom: calc(clamp(65px, 22%, 140px) + 12px);
+  left: 50%;
+  translate: -50% 0;
+  width: min(calc(100% - 32px), 380px);
+  padding: 8px 18px 10px;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 14px;
+  background: var(--ds-window-bg);
+  color: var(--ds-on-slate);
+  box-shadow: var(--ds-window-shadow);
+  text-align: center;
+  pointer-events: none;
+  animation: enemy-intro-in var(--motion-medium) var(--ease-out);
+}
+.battle-screen[data-enemy-intro] .battle-enemy-info .enemy-title {
+  display: block;
+  margin: 0;
+  color: var(--ds-on-slate-muted);
+  font-size: 12px;
+  line-height: 1.6;
+  letter-spacing: 0.06em;
+}
+.battle-screen[data-enemy-intro] .battle-enemy-info h2 {
+  margin: 0;
+  color: var(--ds-on-slate);
+  font-size: 22px;
+  line-height: 1.5;
+}
+.battle-screen[data-enemy-intro] .battle-enemy-info .enemy-quote {
+  display: block;
+  margin: 4px 0 0;
+  color: var(--ds-on-slate);
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+@keyframes enemy-intro-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
+  .battle-screen[data-phase="dialogue"][data-enemy-intro] .battle-enemy-info { bottom: calc(34% + 12px); }
+}
+.battle-screen[data-reduce-motion="true"][data-enemy-intro] .battle-enemy-info { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .battle-screen[data-phase="dialogue"][data-enemy-intro] .battle-enemy-info { animation: none; }
+}

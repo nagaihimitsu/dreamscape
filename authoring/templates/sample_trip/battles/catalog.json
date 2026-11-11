@@ -9,6 +9,7 @@
       "enemyNameJa": "トーマ",
       "enemyTitleJa": "時計を直したい時計番",
       "enemyDescriptionJa": "祖母から塔の番を継いだ青年。動かない歯車に毎朝油を差し、止まった時計の番人では仕事にならないと思っている。",
+      "enemyQuoteJa": "「動かない歯車にも、毎朝、油は差します」",
       "storyId": "places/smp_mihon_clock_tower.smp_mihon_main_clock_tower",
       "quizId": "smp_mihon_main_clock_tower_quiz",
       "backgroundId": "smp_bg_mihon_clock_tower",

@@ -29,6 +29,7 @@
         }
       ],
       "hintJa": "塔の針は今も止まったまま。",
+      "hintHeroineJa": "ねえ、塔の針を見て。三時のまま、今も動いてないよ。",
       "correctExplanationJa": "街の人は時計を直さず、三時のまま残した。",
       "incorrectExplanationJa": "街の人は時計を直さず、三時のまま残した。新しい塔は建てていない。",
       "sources": [
@@ -69,6 +70,7 @@
       ],
       "hintJa": "止まった時計は、いつ見ても三時を指している。",
       "correctExplanationJa": "いつ見ても三時なので、「来られるときに来て」という誘いの言葉になった。",
+      "heroineCorrectJa": "止まった時計のおかげで、約束がやさしくなったんだね。",
       "incorrectExplanationJa": "時計がいつも三時なので、時刻の約束ではなく「来られるときに来て」という意味になった。",
       "sources": [
         {

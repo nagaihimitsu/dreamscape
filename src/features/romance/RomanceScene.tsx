@@ -7,8 +7,9 @@ import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
+import { portraitFocus } from "../../components/speaker-focus";
 import { ComicEffect } from "../../components/ComicEffect";
-import { DialogueText } from "../../components/DialogueText";
+import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
@@ -157,13 +158,14 @@ export function RomanceScene({
           sceneId={active.dateId}
           cityId={game.currentCityId}
           emotion={emotion}
-          active={frame.speaker === "heroine"}
+          focus={portraitFocus(frame.speaker, "heroine")}
         >
           {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
         </CharacterPortrait>
       </div>
       <section
         className="vn-dialogue paper story-paper"
+        {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }}
         aria-label="デートの会話"
         data-has-choices={frame.choices.length > 0}
         inert={windowVisibility.hidden}
@@ -195,6 +197,7 @@ export function RomanceScene({
               key={game.revision}
               ref={sceneTap.line}
               text={frame.text}
+              delivery={frame.delivery}
               speed={autoAdvance.fast ? 0 : speed}
               onReady={onReady}
               onAdvance={advance}

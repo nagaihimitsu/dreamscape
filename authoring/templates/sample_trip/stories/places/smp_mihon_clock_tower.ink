@@ -100,6 +100,7 @@ INCLUDE modules.ink
 // ───── 0：バトル（本筋。battles/catalog.json の storyId がこの住所を指す）。1本の流れ（段階5）：頭の札の後に台詞を書き、
 // -> quiz(1) -> 〜 -> quiz(3) -> でクイズの画面を出す。戻ると quiz_correct（その問いの正誤）と battle_score（そこまでの正解数）が入る。
 // 呼び口の後の最初の行は、場面の始まりと同じく話し手と背景を書き直す。-> END の後に結果の画面。
+// 行の札 # pause: 600 は、その行の字が出る前に0.6秒の間を置く（タップで飛ばせる。下のヒロインの問いかけの前）。
 === smp_mihon_main_clock_tower ===
 # scene: battle
 # background: smp_bg_mihon_clock_tower
@@ -110,6 +111,7 @@ INCLUDE modules.ink
 # speaker: enemy
 「今年こそ直します。止まった時計の番人なんて、仕事をしていないのと同じですから」
 # speaker: heroine
+# pause: 600
 「直す前に、止まった理由を聞いてもいいですか」
 # speaker: enemy
 「古いから止まった。それだけ……のはずです。じゃあ、街の言い伝えで確かめましょうか」
@@ -194,6 +196,7 @@ INCLUDE modules.ink
 
 // ───── +2：この場所の後日談（会話）。鐘の銘は英語のまま見せ、訳はヒロインの台詞で言う。
 // 「鐘楼に上がらせてもらう」は AP を使い、ときめき（spark）が上がる。もう1つの選択肢は何も要らない（AP が0でも選べる）。
+// 行の札の例：鐘が鳴る行の # shake: window（会話の窓が1回揺れる）と、鐘の銘の行の # size: large（その行の字が大きく出る）。
 === smp_mihon_clock_bell ===
 # scene: talk
 # at: visit mihon_clock_tower
@@ -201,6 +204,7 @@ INCLUDE modules.ink
 # person: smp_mihon_toma
 # sources: none
 # speaker: narrator
+# shake: window
 帰りぎわ、塔の鐘がひとつ鳴った。トーマが綱から手を離し、こちらに笑ってみせる。
 { cond("condition smp_mihon_lili_heard"):
     # speaker: heroine
@@ -209,6 +213,7 @@ INCLUDE modules.ink
 # speaker: narrator
 鐘の縁に、外国の文字が彫ってある。昔、この街に残った旅の人が刻んだものだという。
 # speaker: narrator
+# size: large
 Come back at three. Any three will do.
 # speaker: heroine
 「『三時に戻っておいで。どの三時でもいいから』……だって。この街の『三時に会おう』って、ここから来たのかな」

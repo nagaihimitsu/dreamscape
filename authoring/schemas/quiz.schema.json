@@ -183,6 +183,16 @@
               "medium",
               "hard"
             ]
+          },
+          "hintHeroineJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "heroineCorrectJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
           }
         },
         "required": [

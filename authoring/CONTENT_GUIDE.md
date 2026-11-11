@@ -18,6 +18,22 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 
 `# reaction: heroine,sigh` のように漫符だけ、`# reaction: heroine,smile` のように表情だけも指定できます。対象は現在の表示に対応する `heroine` または `enemy` です。両者に指定する場合は別々のタグにします。明示したInkの表情・リアクションが旧外部指定より優先されます。人物が画面に表示されない場面では、その人物の漫符は表示されません。
 
+行の見せ方も、その行の札で決められます（どれも任意で、書いた行だけに効きます。書かなければ今までどおり）。どの会話の場面（観光案内・バトル・デート・道中交流と会話・到着とエピローグ）でも使えます。例は見本の編の `stories/places/smp_mihon_clock_tower.ink`（バトルの `# pause:`、鐘の会話の `# shake:` と `# size:`）。
+
+```ink
+# speaker: heroine
+# pause: 600
+「……え？」
+# shake: window
+# size: large
+「そんなの、聞いてない！」
+```
+
+- `# pause: 600`：その行の字が出る前に、書いたミリ秒だけ間を置きます（100〜3000。0.6秒なら `600`）。間の途中でタップすると、すぐに行が全部出ます。文字送りの「一括表示」と「高速送り」では間を置きません。自動送りは、間の後に行を読み終えてから進みます。
+- `# shake: window`：その行の字が出始めるときに、会話の窓が1回だけ小さく横に揺れます。動きを減らす設定（端末の設定と「演出を短縮する」）では揺れません。
+- `# size: large`：その行の字を大きく出します。
+- 範囲の外の数や小数（`0.6`・`600ms`）、`window`・`large` 以外の値、1つの行に同じ札を2つ書いたときは、`content:build` が止めます。
+
 ## 簡単な道中交流を追加する
 
 `content/journeys/milano/stories/encounters/milano_duomo_new_event.ink` を作り（名前は [IDの付け方](../docs/02_TECH_ARCHITECTURE.md#idの付け方) の `encounters/<頭>_<交流>`）、名前用変数、会話、英語の選択（ふつうは3択。選択肢の数は自由）と分岐を書きます。英文はInkを正とします。訳を付ける場合は **選択肢の角括弧の中** にタグを置きます。
@@ -129,9 +145,16 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 
 クイズの `id` は問題セット、`landmarkId` は観光地、`englishLevel` は `A2` / `B1` / `B2`。通常戦の `questions` は3問です。各問の `id`、英語の `questionEn`、`options` の `id` と `textEn`、`correctOptionId` を指定します。選択肢は3つ、正解IDはそのうち一つ。`vocabularyJa` の `word` / `meaning` は英単語と日本語補足、`hintJa`、`correctExplanationJa`、`incorrectExplanationJa` は日本語、`sources` は各問の根拠、`difficulty` は `easy` / `medium` / `hard`。問題と選択肢だけを英語にします。解答前の会話で正解を明かさないようにします。都市フィナーレは `scope: "city_finale"`、`cityId`、`landmarkId: null`、5問です。
 
+ヒントは、ヒロインの小さな顔と「（ヒロインの名前）の耳打ち」という吹き出しで出ます。`hintJa` は地の文のままでかまいません（彼女の言葉としてかぎかっこで囲んだりはしません）。問いごとに、次の2つを任意で書けます（書かなければ今までどおり）。例は見本の編の `quizzes/smp_mihon_main_clock_tower_quiz.json`。
+
+- `hintHeroineJa`：ヒントを彼女の言葉で書いたもの。書くと、`hintJa` の代わりにこれが吹き出しに出ます（`hintJa` も必須のまま書きます）。
+- `heroineCorrectJa`：正解したとき、解説のすぐ下に、彼女の顔と名前つきの吹き出しで出る短い一言（不正解では出ません）。得点や関係の値は出しません。答えた後の会話（`-> quiz(n) ->` の後の行）とは別で、そちらは「敵の反応を見る」の後に流れます。
+
+どちらも彼女の台詞なので、[キャラクターバイブル](../docs/09_HEROINE_CHARACTER_BIBLE.md)に照らして1〜2文で書きます。吹き出しで彼女の言葉と分かるので、かぎかっこは要りません（書いたとおりに出ます）。名前はベタ書きしません。ヒントで正解そのものを言わないようにします。
+
 ### 敵・バトルの項目
 
-`battle_*.json` の `id`、`titleJa`、`descriptionJa`、`enemyNameJa`、`enemyTitleJa`、`enemyDescriptionJa` は対決と人物の識別・表示。`landmarkId`、`storyId`、`quizId`、`backgroundId` は観光地・Ink・問題セット・登録済み背景への参照です。対決の会話は1本の流れ（下）で書きます。`format` はAでは省略可能、B/Cは明示。任意の `portrait` は既存で定義済みの表示種別に限られます。新規の立ち絵種類には実装作業が別途必要です。
+`battle_*.json` の `id`、`titleJa`、`descriptionJa`、`enemyNameJa`、`enemyTitleJa`、`enemyDescriptionJa` は対決と人物の識別・表示。通常戦（特殊戦B・Cでない対決。都市フィナーレも）の始まりには、最初の行と一緒に、相手の名札（`enemyTitleJa` の役どころと `enemyNameJa` の名前）が少しのあいだ出ます（タップや次の行で消え、操作は止めません）。任意の `enemyQuoteJa` を書くと、名札に相手の一言が1行添えられます（書いたとおりに出るので、台詞ならかぎかっこも書きます。例は見本の編の `battles/catalog.json`）。`landmarkId`、`storyId`、`quizId`、`backgroundId` は観光地・Ink・問題セット・登録済み背景への参照です。対決の会話は1本の流れ（下）で書きます。`format` はAでは省略可能、B/Cは明示。任意の `portrait` は既存で定義済みの表示種別に限られます。新規の立ち絵種類には実装作業が別途必要です。
 
 B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）、0から数える `roundIndex`（何問目の前で資料を選ぶか）、候補 `caseClueIds`、正解 `correctClueIds` を記入します。正解証拠はBが1つ、Cは異なる2つを順不同で組み合わせます。証拠は未発見でもケース資料として開けるよう候補に含めます。英語3択の正解はクイズ側で別に指定します。主張・追及・資料の後の台詞は、対決のInkに書きます（下）。
 
