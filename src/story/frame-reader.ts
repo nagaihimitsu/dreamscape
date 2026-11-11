@@ -1,11 +1,32 @@
 import type { Story } from "inkjs";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import type { DialogueReaction, ReactionTarget } from "../content/dialogue-reactions";
-import { parseStoryTags, type LineDelivery, type StoryCall, type StoryPhoto, type TagContext } from "../content/tags";
+import {
+  parseStoryTags, type LetterKind, type LineDelivery, type PhoneSide, type QuietSpan, type StandPosition, type StoryCall, type StoryPhoto,
+  type TagContext,
+} from "../content/tags";
 
 // How a story's next line becomes the frame on screen (runtime.ts), in a light module (no content loading).
 
 export type Speaker = "narrator" | "heroine" | "player" | "enemy";
+/** A message a phone's screen shows above the line on screen (an earlier line of the same run of `# phone:` lines). */
+export interface PhoneMessage {
+  side: PhoneSide;
+  speaker: Speaker;
+  text: string;
+}
+/** A line's `# phone:`: its side, below the earlier messages of the same run (oldest first). */
+export interface PhoneLine {
+  side: PhoneSide;
+  earlier?: PhoneMessage[];
+}
+/** A line's `# letter:`: its paper, below the earlier lines written on the same sheet (oldest first). */
+export interface LetterLine {
+  kind: LetterKind;
+  earlier?: string[];
+}
+/** The earlier messages or lines a phone's screen or a sheet keeps at most (the oldest go first; it bounds the saved frame). */
+export const STACK_MAX = 40;
 export interface StoryFrame {
   text: string;
   speaker: Speaker;
@@ -20,6 +41,16 @@ export interface StoryFrame {
   photo?: StoryPhoto;
   /** The line's `# local_word:` words (only the line it is written on): GameApp learns them as the line is shown. */
   localWordIds?: string[];
+  /** The line's `# recall:` (only the line it is written on): the photo shown faintly behind it. */
+  recall?: string;
+  /** The line's `# phone:`: a message on a phone's screen, after the earlier ones of an unbroken run of phone lines. */
+  phone?: PhoneLine;
+  /** The line's `# letter:`: written on a sheet, after the earlier lines of the same kind right before it. */
+  letter?: LetterLine;
+  /** `# quiet:`: "line" for that line, "scene" from its line to the scene's end. */
+  quiet?: QuietSpan;
+  /** `# stand:`: where the heroine stands, from its line on until another `# stand:` or the scene's end. */
+  stand?: StandPosition;
   /** A battle's call (`# call:`, stage 5) is a choice the game takes itself: its screen shows no choice. */
   choices: { index: number; text: string; optionId?: string; translationJa?: string; call?: StoryCall }[];
   ended: boolean;
@@ -85,8 +116,52 @@ function readTags(
   }
   if (parsed.delivery) frame.delivery = { ...frame.delivery, ...parsed.delivery };
   if (parsed.photo) frame.photo = parsed.photo;
+  if (parsed.recall) frame.recall = parsed.recall;
+  // A line is a phone message or a letter (parseStoryTags refuses both on one line; the last read wins here).
+  if (parsed.phone) {
+    frame.phone = { side: parsed.phone };
+    delete frame.letter;
+  }
+  if (parsed.letter) {
+    frame.letter = { kind: parsed.letter };
+    delete frame.phone;
+  }
+  if (parsed.quiet) frame.quiet = parsed.quiet;
+  if (parsed.stand) frame.stand = parsed.stand;
   if (parsed.localWordIds) frame.localWordIds = [...new Set([...(frame.localWordIds ?? []), ...parsed.localWordIds])];
   events.push(...parsed.effects);
+}
+
+/** What the scene tags put on a frame. */
+export type FrameStaging = Pick<StoryFrame, "recall" | "phone" | "letter" | "quiet" | "stand">;
+
+/**
+ * The staging of a frame from its own scene tags (`tagged`: what its tags read, a phone or a letter without earlier
+ * lines) and the frame before it in the same scene (none at a scene's start, nor after a battle's call):
+ * - `# stand:` lasts until the next one, `# quiet: scene` to the scene's end (`# quiet: line` then adds nothing);
+ * - a phone message comes after the messages of the frame before it when that was one too (an unbroken run of phone
+ *   lines: a line without `# phone:` ends it), a letter's line after the lines of the frame before it when that was
+ *   written on the same kind of paper; the oldest go first beyond STACK_MAX;
+ * - when no new line was read (the story stopped at a choice or its end first), the line on screen is the previous
+ *   one: it keeps that line's recall, phone, letter and quiet.
+ */
+export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<StoryFrame, "speaker" | "text">) | undefined,
+  lineRead: boolean): FrameStaging {
+  const stand = tagged.stand ?? previous?.stand;
+  const shown = (staging: FrameStaging): FrameStaging => Object.fromEntries(Object.entries({ ...staging, stand })
+    .filter(([, value]) => value !== undefined)) as FrameStaging;
+  if (!lineRead && previous) return shown({ recall: previous.recall, phone: previous.phone, letter: previous.letter, quiet: previous.quiet });
+  const before = previous?.text ? previous : undefined;
+  const phoneEarlier = tagged.phone && before?.phone
+    ? [...(before.phone.earlier ?? []), { side: before.phone.side, speaker: before.speaker, text: before.text }].slice(-STACK_MAX) : [];
+  const letterEarlier = tagged.letter && before?.letter?.kind === tagged.letter.kind
+    ? [...(before.letter.earlier ?? []), before.text].slice(-STACK_MAX) : [];
+  return shown({
+    recall: tagged.recall,
+    phone: tagged.phone && { side: tagged.phone.side, ...(phoneEarlier.length ? { earlier: phoneEarlier } : {}) },
+    letter: tagged.letter && { kind: tagged.letter.kind, ...(letterEarlier.length ? { earlier: letterEarlier } : {}) },
+    quiet: previous?.quiet === "scene" ? "scene" : tagged.quiet,
+  });
 }
 
 /** Read the story to its next line (the frame keeps the previous frame's text, speaker and background). */
@@ -126,6 +201,9 @@ export function readStoryFrame(
       break;
     }
   }
+  const staging = stageFrame(frame, previous, lineRead);
+  for (const key of ["recall", "phone", "letter", "quiet", "stand"] as const) delete frame[key];
+  Object.assign(frame, staging);
   frame.choices = storyChoicesOf(story, context);
   if (frame.choices.some((choice) => choice.call) && frame.choices.length !== 1)
     throw new Error("バトルの呼び口は、ほかの選択肢と一緒に出せません。");

@@ -267,11 +267,14 @@ Come back at three. Any three will do.
 // ───── デート（本筋。romance/date_catalog.json の storyId がこの住所を指す）。地図に出る条件は頭の # when:。
 // デートの3択（噛み合いの選択）は、このデートの knot の中（stitch を含む）に置き、# option: と # profile: で書く。
 // 手伝いの knot（頭の札なし）の中の選択は「場面の中の選択」：乱数を使わず、札の効果だけが当たる。
+// 行の札 # stand: は、ヒロインの立ち位置（apart 少し離れて・near いつもの位置・close すぐそば）。次の # stand: まで続く。
+// ここでは、ベンチの端に座る最初の行が apart、お茶の後の誘いが close、立ち上がる行が near。
 === smp_mihon_date_tower_square ===
 # scene: date
 # when: episodes mihon >= 1
 # background: smp_bg_mihon_clock_tower
 # speaker: narrator
+# stand: apart
 時計塔の広場では、ベンチがどれも塔の方を向いている。{heroine_name}は一つを選んで、端に座った。
 { relationship_tone == "reserved" || relationship_tone == "strained":
     # speaker: heroine
@@ -320,6 +323,7 @@ Come back at three. Any three will do.
 # speaker: narrator
 広場の店からお茶が運ばれてきた。この街では、いつ頼んでも「三時のお茶」と呼ぶらしい。
 # speaker: heroine
+# stand: close
 「ねえ、わたしたちも『三時に会おう』って使ってみない？　来られるときに来て、って意味で」
 * [「じゃあ、次の三時もここで」 # option: second_next]
     # profile: bold
@@ -358,6 +362,7 @@ Come back at three. Any three will do.
 // 写真の札：この行を読むと、時計塔の画像がアルバムに1枚入る（同じ画像は一度だけ）。説明の札 # photo_caption: は同じ行に書く。
 # speaker: narrator
 # photo: smp_img_mihon_clock_tower # photo_caption: 三時までの席。お茶のあとも、針は三時のまま
+# stand: near
 お茶を飲み終えても、針は三時のままだった。{heroine_name}は立ち上がり、文字盤を見上げる。
 { relationship_tone_after == "warm" || relationship_tone_after == "romantic_tension":
     # speaker: heroine
@@ -430,6 +435,15 @@ Come back at three. Any three will do.
 宿の前に出ると、リリが駆けてきた。手に、色を塗っていないしおりを一枚持っている。
 # speaker: narrator
 リリ「これ、針を描いてないの。次に来るときの時間を、自分で描いてね」
+// 行の札 # letter: note は、その行を紙のメモに書いて見せる（話し手の札は出ない）。同じ種類の行を続けると1枚に積み重なる。
+# speaker: narrator
+しおりの裏に、鉛筆の字が三行ならんでいた。
+# letter: note
+つぎに　くるときは
+# letter: note
+はりを　じぶんで　かいてね
+# letter: note
+リリより
 # speaker: heroine
 # emotion: smile
 「何時にしようかな。……三時じゃなかったら、怒られちゃう？」
@@ -462,6 +476,7 @@ Come back at three. Any three will do.
 
 // ───── 宿の時点の -1（段階4）：眠る前（「休む」は昼でも選べる）。鐘を聞いた後の、最初の宿で（一度だけ）。
 // 夜だけにしたいときは # when: time night（21時に休むときも夜。時刻は宿に着いた時刻で読む）。
+// 行の札 # quiet: scene を頭に書くと、場面の最初の行から終わりまで静かな場面になる（上の帯が隠れ、字が少しゆっくり、背景が落ち着く）。
 === smp_mihon_hotel_bell_night ===
 # scene: talk
 # at: hotel mihon_hotel
@@ -469,11 +484,14 @@ Come back at three. Any three will do.
 # when: done smp_mihon_clock_bell
 # sources: none
 # background: smp_bg_mihon_hotel
+# quiet: scene
 # speaker: heroine
 「窓を開けると、まだ鐘の音が残ってる気がする。……今日、来てよかった」
 -> END
 
 // ───── 宿の時点の +1（段階4）：起きた後。予約したツアーが始まる前。
+// 行の札 # phone: は、スマホのメッセージ（received は左に話し手の名前つき、sent は右で主人公）。続けて書いた行は同じ画面に積み重なり、
+// # phone: のない行で終わる。
 === smp_mihon_hotel_morning ===
 # scene: talk
 # at: hotel mihon_hotel
@@ -481,6 +499,14 @@ Come back at three. Any three will do.
 # when: not visited mihon_clock_tower
 # sources: none
 # background: smp_bg_mihon_hotel
+# speaker: heroine
+# phone: received
+起きてる？　窓の外、見て。
+# speaker: player
+# phone: sent
+起きてるよ。今、カーテンを開ける。
+# speaker: narrator
+すぐに、廊下で扉の開く音がした。
 # speaker: heroine
 「おはよう。窓から時計塔が見えるよ。……今日も三時。行ってみない？」
 -> END

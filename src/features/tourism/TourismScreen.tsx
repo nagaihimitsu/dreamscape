@@ -12,6 +12,8 @@ import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import { activeGuideStoryId, observationHotspots } from "../../domain/tourism";
 import type { GameState } from "../../domain/game";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
+import { LineStage, RecallLayer } from "../../components/LineStage";
+import { lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { portraitFocus } from "../../components/speaker-focus";
@@ -179,10 +181,11 @@ export function TourismScreen({
         </p>
       )}
       {active.phase === "guide" && frame ? (
-        <div className="vn-scene tourism-guide-scene" data-dialogue-hidden={windowVisibility.hidden || undefined}>
+        <div className="vn-scene tourism-guide-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-quiet={frame.quiet}>
           <div className="vn-background" data-testid="scene-picture">
             <CanalScene backgroundId={frame.background} imageAssetId={landmark.imageAssetId} />
           </div>
+          <RecallLayer imageId={frame.recall} />
           <span className="sr-only">{asset.altJa}</span>
           <div className="vn-character-layer">
             <CharacterPortrait
@@ -191,6 +194,7 @@ export function TourismScreen({
               cityId={landmark.cityId}
               emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, guideStoryId, frame)}
               focus={portraitFocus(frame.speaker, "heroine")}
+              stand={frame.stand}
             >
               {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState ?? undefined} />}
             </CharacterPortrait>
@@ -203,20 +207,22 @@ export function TourismScreen({
             aria-hidden={windowVisibility.hidden || undefined}
           >
             <DialogueWindowHead
-              speaker={speaker}
+              speaker={showsSpeakerPlate(frame) && speaker}
               narration={frame.speaker !== "heroine" && frame.speaker !== "player"}
               controls={<DialogueControls close={<button type="button" className="text-button" data-testid="tourism-skip" aria-label="観光案内を閉じる" onClick={onSkip}><Icon name="close" />閉じる</button>} entries={entries} auto={autoAdvance} />}
             />
             <div ref={dialogueRef} className="vn-window-body">
-            <DialogueText
-              key={game.revision}
-              ref={sceneTap.line}
-              text={frame.text}
-              delivery={frame.delivery}
-              speed={autoAdvance.fast ? 0 : speed}
-              onReady={onReady}
-              onAdvance={advanceSafely}
-            />
+            <LineStage frame={frame} names={{ heroine: game.heroineName, player: game.playerName }} compact={frame.choices.length > 0}>
+              <DialogueText
+                key={game.revision}
+                ref={sceneTap.line}
+                text={frame.text}
+                delivery={frame.delivery}
+                speed={autoAdvance.fast ? 0 : lineSpeed(speed, frame)}
+                onReady={onReady}
+                onAdvance={advanceSafely}
+              />
+            </LineStage>
             {frame.choices.length > 0 && onChooseGuide && <SceneChoices choices={guideChoices} disabled={!ready} onChoose={onChooseGuide} testId="guide-choice" />}
             {frame.ended && <button
               className="next"

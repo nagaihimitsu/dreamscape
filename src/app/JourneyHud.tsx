@@ -6,6 +6,7 @@ import { itemUsableIn } from "../domain/item-cities";
 import { itemLines } from "../domain/item-lines";
 import type { TravelPlace } from "../content/travel-schemas";
 import { DismissLayer } from "../components/DismissLayer";
+import { DIALOGUE_LINE_ATTRIBUTE } from "../components/scene-tap";
 import { HeldItems } from "../components/HeldItems";
 import { HUD_SCREEN_TOOL_ID } from "../components/HudScreenTool";
 import { Icon } from "../components/icons";
@@ -70,6 +71,12 @@ export function JourneyHud({ game, place, view, ...actions }: { game: GameState;
     .map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa, lines: itemLines(game, item.linesJa), iconPath: item.iconPath,
       ...(item.cityId !== game.currentCityId ? { origin: `${getCities().find((city) => city.id === item.cityId)?.nameJa ?? item.cityId}から持ってきた` } : {}) }));
   const shown = view === "all";
+  // A quiet line hides the header (journey-hud.css): a focus left on one of its buttons goes to the line, which reads on.
+  useEffect(() => {
+    const focused = document.activeElement;
+    if (view === "quiet" && focused instanceof HTMLElement && focused.closest(".journey-hud"))
+      document.querySelector<HTMLElement>(`[${DIALOGUE_LINE_ATTRIBUTE}]`)?.focus({ preventScroll: true });
+  }, [view]);
   const budgetCue = useSeenChange(game.travelBudget, shown, numberChange);
   const apCue = useSeenChange(game.ap, shown, numberChange);
   const itemsCue = useSeenChange(items.map((item) => item.id).join("\n"), shown, itemsChange);

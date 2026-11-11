@@ -9,6 +9,8 @@ import { tourLegUnderway } from "../../domain/tour";
 import { getJourneyForCity } from "../../content/journeys";
 import type { GameState } from "../../domain/game";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
+import { LineStage, RecallLayer } from "../../components/LineStage";
+import { lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { portraitFocus } from "../../components/speaker-focus";
@@ -67,13 +69,14 @@ export function EpilogueScreen({
   const person = scenePerson(storyState.people, epilogueScene(active)?.people);
   const personReaction = person ? resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy") : undefined;
   const personOn = useStaysOnStage(!!person && (frame.speaker === "enemy" || !!personReaction));
+  const enemyName = person?.nameJa ?? battles.find((battle) => battle.id === episode?.battleId)?.enemyNameJa;
   const speaker =
     frame.speaker === "heroine"
       ? game.heroineName
       : frame.speaker === "player"
         ? game.playerName
         : frame.speaker === "enemy"
-          ? person?.nameJa ?? battles.find((battle) => battle.id === episode?.battleId)?.enemyNameJa ?? "旅の風景"
+          ? enemyName ?? "旅の風景"
           : "旅の風景";
   const label = active.kind === "tour_leg"
     ? { eyebrow: "ツアー", heading: leg?.labelJa ?? "ツアーの移動", region: "ツアーの移動の語り", next: "ツアーを続ける", testId: "tour-leg-screen" }
@@ -107,10 +110,11 @@ export function EpilogueScreen({
   return (
     <div id="city-epilogue-screen" data-testid={label.testId}>
       {showLogo && <CityArrivalLogo nameJa={city.nameJa} reduceMotion={reduceMotion} onEnd={onLogoComplete ?? (() => undefined)} />}
-      <div className="vn-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} {...sceneTap.props}>
+      <div className="vn-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-quiet={frame.quiet} {...sceneTap.props}>
         <div className="vn-background" data-testid="scene-picture">
           <CanalScene backgroundId={frame.background} />
         </div>
+        <RecallLayer imageId={frame.recall} />
         {/* With the scene's person on stage the two stand side by side (the encounter's slots); her
             portrait keeps its place in the tree, so it is not drawn again when they come in. */}
         <div className={`vn-character-layer${person && personOn ? " encounter-character-layer" : ""}`} data-two-characters={person && personOn ? true : undefined}>
@@ -121,6 +125,7 @@ export function EpilogueScreen({
               cityId={episode?.cityId ?? game.currentCityId}
               emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame)}
               focus={portraitFocus(frame.speaker, "heroine")}
+              stand={frame.stand}
             >
               {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
             </CharacterPortrait>
@@ -143,7 +148,7 @@ export function EpilogueScreen({
           aria-hidden={windowVisibility.hidden || showLogo || undefined}
         >
           <DialogueWindowHead
-            speaker={speaker}
+            speaker={showsSpeakerPlate(frame) && speaker}
             narration={frame.speaker !== "heroine" && frame.speaker !== "player" && frame.speaker !== "enemy"}
             controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
           />
@@ -151,15 +156,17 @@ export function EpilogueScreen({
           <p className="eyebrow">{label.eyebrow}</p>
           {/* Takes a lost focus when the talk opens (scene-focus.ts); inert under an arrival's title card. */}
           <h1 tabIndex={-1}>{label.heading}</h1>
-          <DialogueText
-            key={game.revision}
-            ref={sceneTap.line}
-            text={frame.text}
-            delivery={frame.delivery}
-            speed={autoAdvance.fast ? 0 : speed}
-            onReady={onReady}
-            onAdvance={advanceSafely}
-          />
+          <LineStage frame={frame} names={{ heroine: game.heroineName, player: game.playerName, enemy: enemyName }} compact={frame.choices.length > 0}>
+            <DialogueText
+              key={game.revision}
+              ref={sceneTap.line}
+              text={frame.text}
+              delivery={frame.delivery}
+              speed={autoAdvance.fast ? 0 : lineSpeed(speed, frame)}
+              onReady={onReady}
+              onAdvance={advanceSafely}
+            />
+          </LineStage>
           {frame.choices.length > 0 && onChoose && <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="epilogue-choice" />}
           {frame.ended && <button
             className="next"

@@ -8,6 +8,7 @@ import {
   characterPlacement,
   resolveCharacterCostume,
 } from "../content/character-assets";
+import type { StandPosition } from "../content/tags";
 import type { PortraitFocus } from "./speaker-focus";
 import "./character-portrait.css";
 
@@ -19,10 +20,10 @@ export function characterForBattle(battleId: string): string {
   return battleCharacterId(catalog.battleCharacters, battleId);
 }
 
-/** A decorative layer. Position and image are independent of the Ink story. */
+/** A decorative layer. Position and image are independent of the Ink story, but for a scene's `# stand:` (written by its writer). */
 export function CharacterPortrait({
   characterId, emotion, costume, pose, sceneId, cityId, countryId, regionId,
-  focus, fallback, onImageError, children,
+  focus, stand, fallback, onImageError, children,
 }: {
   characterId: string;
   emotion?: string;
@@ -34,6 +35,8 @@ export function CharacterPortrait({
   regionId?: string;
   /** Speaking (slightly forward) or listening (slightly dimmed) while a line is read; none for narration (portraitFocus). */
   focus?: PortraitFocus;
+  /** Where the scene's `# stand:` puts her (line-stage.css); none: her placement as it is. */
+  stand?: StandPosition;
   fallback?: ReactNode;
   onImageError?: (path: string) => void;
   children?: ReactNode;
@@ -52,7 +55,7 @@ export function CharacterPortrait({
   const image = characterImage(character, { ...selection, emotion });
   const neutral = characterImage(character, { ...selection, emotion: "neutral" });
   return (
-    <div className={`vn-character${focus ? ` is-${focus}` : ""}`} aria-hidden="true" style={{
+    <div className={`vn-character${focus ? ` is-${focus}` : ""}`} data-stand={stand} aria-hidden="true" style={{
       left: `${placement.x}%`, bottom: `${placement.bottom}%`, width: `${placement.width}%`, height: `${placement.height}%`,
       transform: `translateX(-50%) scale(${placement.scale})`, transformOrigin: `${placement.originX}% ${placement.originY}%`,
     }}>

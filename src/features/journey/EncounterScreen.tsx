@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { CanalScene } from "../../components/CanalScene";
 import { SceneHeading } from "../../components/SceneHeading";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
+import { LineStage, RecallLayer } from "../../components/LineStage";
+import { lineSpeed, showsSpeakerPlate, type PhoneNames } from "../../components/line-staging";
 import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
@@ -15,6 +17,7 @@ import { useStaysOnStage } from "../../components/useStaysOnStage";
 import { ComicEffect } from "../../components/ComicEffect";
 import type { ReactionMark } from "../../content/dialogue-reactions";
 import type { LineDelivery } from "../../content/tags";
+import type { FrameStaging, Speaker } from "../../story/frame-reader";
 import type { TourismAsset } from "../../content/tourism-schemas";
 import { formatMoneyForCity } from "../../content/currency";
 import { InteractiveEnglish } from "../learning/InteractiveEnglish";
@@ -38,6 +41,10 @@ export type EncounterScreenView = {
   text: string;
   /** The line's `# pause:`, `# shake:` and `# size:`. */
   delivery?: LineDelivery;
+  /** The line's scene tags (`# recall:`, `# phone:`, `# letter:`, `# quiet:`, `# stand:`) and who speaks it. */
+  staging?: FrameStaging & { speaker: Speaker };
+  /** The names a phone's messages show (LineStage). */
+  phoneNames?: PhoneNames;
   choices: EncounterChoiceView[];
   ended: boolean;
   finishLabel?: string;
@@ -102,19 +109,23 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
   const portraits: EncounterScreenView["portraits"] = view.person && personOn && !view.portraits?.enemy
     ? { ...view.portraits, enemy: { emotion: "neutral", focus: view.person.focus } }
     : view.portraits;
+  // The quiz (its question, its feedback) shows no line: the line's staging waits for the next one.
+  const staging = quiz ? undefined : view.staging;
   const autoAdvance = useAutoAdvance({ ready, canAdvance: !view.ended && !quiz && view.choices.length === 0 && !windowVisibility.hidden,
     text: view.text, onAdvance: advance, defaultEnabled: autoAdvanceEnabled,
     readSkip, lineId: !quiz && view.text ? readLineId(view.sceneId ?? view.id, view.text) : null });
   const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: !!quiz || view.choices.length > 0, windowHidden: windowVisibility.hidden });
   return (
-    <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} {...sceneTap.props}>
+    <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} data-quiet={staging?.quiet} {...sceneTap.props}>
       <div className="vn-background" data-testid="scene-picture">{view.backgroundAsset ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundAsset.path}`} alt="" /> : <CanalScene backgroundId={view.background} />}</div>
+      <RecallLayer imageId={staging?.recall} />
       <SceneHeading label={view.placeJa} badge={view.badgeJa} />
       {!quiz && portraits && <div className="vn-character-layer encounter-character-layer" data-two-characters={!!portraits.heroine && !!portraits.enemy}>
         {(["heroine", "enemy"] as const).map((id) => {
           const portrait = portraits?.[id];
           return portrait && <div className={`encounter-character-slot encounter-character-${id}`} key={id}>
-            <CharacterPortrait characterId={id === "enemy" && view.person ? view.person.characterId : id} cityId={view.cityId} sceneId={view.sceneId} emotion={portrait.emotion} focus={portrait.focus}>
+            <CharacterPortrait characterId={id === "enemy" && view.person ? view.person.characterId : id} cityId={view.cityId} sceneId={view.sceneId} emotion={portrait.emotion} focus={portrait.focus}
+              stand={id === "heroine" ? view.staging?.stand : undefined}>
               {portrait.mark && <ComicEffect effect={portrait.mark} reduceMotion={reduceMotion} cueKey={String(view.revision)} />}
             </CharacterPortrait>
           </div>;
@@ -122,7 +133,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
       </div>}
       <section className="vn-dialogue paper story-paper encounter-dialogue" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} aria-label="寄り道の会話" data-has-choices={!!quiz || view.choices.length > 0} inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
         <DialogueWindowHead
-          speaker={view.speaker}
+          speaker={showsSpeakerPlate(staging) && view.speaker}
           narration={view.narration}
           controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
         />
@@ -142,7 +153,10 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
           </>
         ) : (
           <>
-            <DialogueText key={view.revision} ref={sceneTap.line} text={view.text} delivery={view.delivery} speed={autoAdvance.fast ? 0 : speed} onReady={onReady} onAdvance={advance} />
+            <LineStage frame={staging ?? { speaker: "narrator" }} names={view.phoneNames ?? {}} compact={view.choices.length > 0}>
+              <DialogueText key={view.revision} ref={sceneTap.line} text={view.text} delivery={view.delivery} speed={autoAdvance.fast ? 0 : lineSpeed(speed, staging)}
+                onReady={onReady} onAdvance={advance} />
+            </LineStage>
             {view.choices.length ? (
               <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={view.id} choices={view.choices} learning={learning} onChoose={(index) => select(index, onChoose)} disabled={!ready || !choiceReady} />
             ) : view.ended ? (

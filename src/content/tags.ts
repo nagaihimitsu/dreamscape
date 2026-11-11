@@ -25,7 +25,48 @@ export interface StoryTags {
   delivery?: LineDelivery;
   /** `# photo:` with its `# photo_caption:`: the photo the line puts in the album (2026-11-11). */
   photo?: StoryPhoto;
+  /** `# recall: <imageId>`: a photo shown faintly behind the line (scene tags, 2026-11-11; not the album). */
+  recall?: string;
+  /** `# phone: received` / `# phone: sent`: the line as a message on a phone's screen. */
+  phone?: PhoneSide;
+  /** `# letter: <kind>`: the line written on a sheet of paper. */
+  letter?: LetterKind;
+  /** `# quiet: scene` / `# quiet: line`: a quiet scene from this line on, or this line only. */
+  quiet?: QuietSpan;
+  /** `# stand: <position>`: where the heroine stands from this line on (the writer's staging only). */
+  stand?: StandPosition;
   effects: string[];
+}
+
+/**
+ * The scene tags (2026-11-11 user decision), presentation only, each a small closed set but `# recall:`:
+ * a message on a phone's screen (received on the left with the speaker's name, sent on the right),
+ * a sheet of paper (a letter, a note, a card), a quiet scene or line, and where the heroine stands.
+ */
+export const PHONE_SIDES = ["received", "sent"] as const;
+export type PhoneSide = (typeof PHONE_SIDES)[number];
+export const LETTER_KINDS = ["letter", "note", "card"] as const;
+export type LetterKind = (typeof LETTER_KINDS)[number];
+export const QUIET_SPANS = ["scene", "line"] as const;
+export type QuietSpan = (typeof QUIET_SPANS)[number];
+/** `near` is where she stands without the tag (today's place); `apart` a little away, `close` right beside. */
+export const STAND_POSITIONS = ["apart", "near", "close"] as const;
+export type StandPosition = (typeof STAND_POSITIONS)[number];
+
+type SceneTagKey = "phone" | "letter" | "quiet" | "stand";
+const SCENE_TAG_VALUES: Record<SceneTagKey, readonly string[]> = {
+  phone: PHONE_SIDES, letter: LETTER_KINDS, quiet: QUIET_SPANS, stand: STAND_POSITIONS,
+};
+const isSceneTagKey = (key: string): key is SceneTagKey => Object.hasOwn(SCENE_TAG_VALUES, key);
+
+/** Read a line's `# phone:`, `# letter:`, `# quiet:` or `# stand:`; throws for another value or a repeated tag. */
+function readSceneTag(key: SceneTagKey, value: string, result: StoryTags): void {
+  const values = SCENE_TAG_VALUES[key];
+  if (!values.includes(value))
+    throw new Error(`Invalid ${key} tag: ${value} (write ${values.map((item) => `# ${key}: ${item}`).join(", ")})`);
+  if (result[key] !== undefined) throw new Error(`Duplicate ${key} tag`);
+  // The value is one of the key's own (checked above).
+  Object.assign(result, { [key]: value });
 }
 
 /**
@@ -164,6 +205,13 @@ export function parseStoryTags(
     } else if (key === "photo_caption") {
       if (caption !== undefined) throw new Error("Duplicate photo caption tag");
       caption = value;
+    } else if (key === "recall") {
+      if (!context.photoIds?.includes(value))
+        throw new Error(`Unknown recall image: ${value} (name an image # photo: accepts: a tourism photo of tourism/catalog.json, or a background with an imageAssetId)`);
+      if (result.recall) throw new Error("Duplicate recall tag");
+      result.recall = value;
+    } else if (isSceneTagKey(key)) {
+      readSceneTag(key, value, result);
     } else {
       throw new Error(`Unknown story tag: ${key}`);
     }
@@ -172,5 +220,7 @@ export function parseStoryTags(
     if (!result.photo) throw new Error(`Photo caption without a photo: write # photo_caption: on the line of its # photo: (${caption})`);
     result.photo = { ...result.photo, caption };
   }
+  if (result.phone && result.letter)
+    throw new Error(`A line is a phone message or a letter, not both: # phone: ${result.phone} and # letter: ${result.letter}`);
   return result;
 }

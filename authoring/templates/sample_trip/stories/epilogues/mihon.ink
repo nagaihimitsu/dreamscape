@@ -4,6 +4,8 @@
 // - romance_stage（1〜4）と ending_reached で少しだけ分岐してよい。全組合せで台詞が出るようにする。
 // - # speaker: enemy はフィナーレの対戦相手の名前で表示される。ほかの人物の言葉は地の文に入れる。
 // - 見本の街と人物は架空。
+// - 行の札の例：「思い出しそう」の行の # recall:（その行だけ、時計塔の写真が背景にうっすら出る。アルバムには入らない）と
+//   # quiet: line（その行だけ静かに：上の帯が隠れ、字が少しゆっくり、背景が落ち着く）。
 VAR player_name = ""
 VAR heroine_name = ""
 VAR player_address = ""
@@ -14,6 +16,8 @@ VAR ending_reached = false
 # speaker: narrator
 出発の朝、宿の窓から時計塔が見えた。針は、やっぱり三時を指している。
 # speaker: heroine
+# recall: smp_img_mihon_clock_tower
+# quiet: line
 「短い滞在だったね。でも、あの針を見るたびに思い出しそう」
 # speaker: narrator
 塔の下で、ハンナが街の人たちに囲まれていた。止まった三時をどうするか、みんなで話しているらしい。

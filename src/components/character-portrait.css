@@ -49,10 +49,34 @@
 }
 .character-face img { width: 340%; left: -120%; top: -11%; }
 .character-face svg { width: 200%; left: -50%; top: -58%; }
-/* Under reduced motion no one moves forward; the listeners' dimming stays. */
+/* A scene's `# stand:` (2026-11-11 user decision; the writer's staging, never set by the relationship): where the
+   heroine stands, until the scene's next `# stand:` or its end. `near` is her place without the tag; `apart` a little
+   away (smaller, to one side), `close` right beside (larger). Its own `translate` and `scale` add to the placement's
+   transform about the same origin and move nothing else; a change of place eases over --motion-scene (and so does her
+   coming forward as she speaks, while a scene places her). */
+.vn-character[data-stand] {
+  translate: var(--stand-x) var(--stand-y);
+  scale: var(--stand-scale);
+  transition: opacity 180ms ease, scale var(--motion-scene) var(--ease-out), translate var(--motion-scene) var(--ease-out);
+}
+.vn-character[data-stand="near"] { --stand-x: 0%; --stand-y: 0%; --stand-scale: 1; }
+.vn-character[data-stand="apart"] { --stand-x: 14%; --stand-y: 4%; --stand-scale: 0.88; }
+.vn-character[data-stand="close"] { --stand-x: 0%; --stand-y: 2%; --stand-scale: 1.1; }
+/* Beside the opponent (a battle, an encounter with two portraits) she steps away from the middle, to the left. */
+.battle-heroine .vn-character[data-stand="apart"],
+.encounter-character-layer[data-two-characters="true"] .encounter-character-heroine .vn-character[data-stand="apart"] {
+  --stand-x: -8%;
+}
+.vn-character[data-stand].is-speaking { scale: calc(var(--stand-scale) * 1.04); }
+/* Under reduced motion no one moves forward; the listeners' dimming stays. A `# stand:` place comes at once. */
 .reduce-motion .vn-character { animation: none; transition: none; }
 .reduce-motion .vn-character.is-speaking { scale: none; }
+.reduce-motion .vn-character[data-stand],
+.battle-screen[data-reduce-motion="true"] .vn-character[data-stand] { transition: none; }
+.reduce-motion .vn-character[data-stand].is-speaking { scale: var(--stand-scale); }
 @media (prefers-reduced-motion: reduce) {
   .vn-character { transition: none; animation: none; }
   .vn-character.is-speaking { scale: none; }
+  .vn-character[data-stand] { transition: none; }
+  .vn-character[data-stand].is-speaking { scale: var(--stand-scale); }
 }

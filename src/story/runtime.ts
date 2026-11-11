@@ -3,8 +3,8 @@ import { z } from "zod";
 import { presentation, scenes, stories, tagContext } from "../content";
 import { splitStoryAddress, storyFileOf } from "../content/story-address";
 import { fnvHash } from "../content/fingerprint";
-import { LINE_PAUSE_MS, parseStoryTags, STORY_CALLS, type StoryCall } from "../content/tags";
-import { readStoryFrame, storyChoicesOf, type Speaker, type StoryStep } from "./frame-reader";
+import { LETTER_KINDS, LINE_PAUSE_MS, parseStoryTags, PHONE_SIDES, QUIET_SPANS, STAND_POSITIONS, STORY_CALLS, type StoryCall } from "../content/tags";
+import { readStoryFrame, STACK_MAX, storyChoicesOf, type Speaker, type StoryStep } from "./frame-reader";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import { bindMemoryReader } from "./memory";
 import { bindItemReader, type ItemStatus } from "./items";
@@ -13,10 +13,12 @@ import { REACTION_MARKS } from "../content/dialogue-reactions";
 
 export type { Speaker, StoryFrame } from "./frame-reader";
 import type { StoryFrame } from "./frame-reader";
+const speakerSchema = z.enum(["narrator", "heroine", "player", "enemy"]);
+const imageIdSchema = z.string().regex(/^[a-z][a-z0-9_]*$/u);
 export const storyFrameSchema = z
   .object({
     text: z.string(),
-    speaker: z.enum(["narrator", "heroine", "player", "enemy"]),
+    speaker: speakerSchema,
     background: z.string(),
     emotion: z.string(),
     emotionExplicit: z.literal(true).optional(),
@@ -30,10 +32,22 @@ export const storyFrameSchema = z
       large: z.literal(true).optional(),
     }).strict().optional(),
     photo: z.object({
-      imageId: z.string().regex(/^[a-z][a-z0-9_]*$/u),
+      imageId: imageIdSchema,
       caption: z.string().min(1).optional(),
     }).strict().optional(),
     localWordIds: z.array(z.string().regex(/^[a-z][a-z0-9_]*$/u)).min(1).optional(),
+    // The scene tags (frame-reader.ts stageFrame): presentation only.
+    recall: imageIdSchema.optional(),
+    phone: z.object({
+      side: z.enum(PHONE_SIDES),
+      earlier: z.array(z.object({ side: z.enum(PHONE_SIDES), speaker: speakerSchema, text: z.string().min(1) }).strict()).min(1).max(STACK_MAX).optional(),
+    }).strict().optional(),
+    letter: z.object({
+      kind: z.enum(LETTER_KINDS),
+      earlier: z.array(z.string().min(1)).min(1).max(STACK_MAX).optional(),
+    }).strict().optional(),
+    quiet: z.enum(QUIET_SPANS).optional(),
+    stand: z.enum(STAND_POSITIONS).optional(),
     choices: z
       .array(
         z
@@ -265,7 +279,8 @@ export function validateStorySnapshot(
   if (
     !tagContext.backgroundIds.includes(frame.background) ||
     !tagContext.emotionIds.includes(frame.emotion) ||
-    (frame.photo && !tagContext.photoIds.includes(frame.photo.imageId))
+    (frame.photo && !tagContext.photoIds.includes(frame.photo.imageId)) ||
+    (frame.recall && !tagContext.photoIds.includes(frame.recall))
   )
     throw new Error("保存された場面の情報が一致しません。");
   if (

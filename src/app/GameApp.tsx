@@ -61,7 +61,8 @@ import { TitleNameFields } from "../features/journey/TitleNameFields";
 import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
 import { JourneyHud } from "./JourneyHud";
-import { hudView } from "./hud-view";
+import { hudView, lineOnScreen } from "./hud-view";
+import { albumImageAsset } from "../content/photo-choice";
 import { BackgroundCredits } from "../components/BackgroundCredits";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
 import { placeDisplayName, sceneBackdropPhoto } from "../features/journey/travel-labels";
@@ -411,6 +412,9 @@ export function GameApp({
     : game.activeBattle && currentBattle
       ? landmarkPhoto(currentBattle.landmarkId) ?? backdropPhoto(game.activeBattle.frame?.background ?? currentBattle.backgroundId)
     : active ? backdropPhoto(active.frame.background) : undefined;
+  // The photo the line on screen recalls (# recall:): 「画像の出典」 shows its credit too while the line shows.
+  const recallId = game ? lineOnScreen(game)?.recall : undefined;
+  const recallPhoto = (recallId && albumImageAsset({ assets: tourismAssets, backgrounds: presentation.backgrounds }, recallId)) || undefined;
   const nameForm = (
     <>
       <label>
@@ -456,7 +460,7 @@ export function GameApp({
         onAlbum={() => setAlbumOpen(true)}
         onEnglish={() => openEnglish()}
         onPhotoCredits={creditPhotos.length ? () => setPhotoCreditsOpen(true) : undefined}
-        onSceneCredits={scenePhoto ? () => setScenePhotoOpen(true) : undefined}
+        onSceneCredits={scenePhoto || recallPhoto ? () => setScenePhotoOpen(true) : undefined}
         onSave={save}
         onLoad={reload}
         onSettings={() => {
@@ -628,6 +632,8 @@ export function GameApp({
               person: encounterPerson && { characterId: encounterPerson.characterId, focus: portraitFocus(activeEncounter.frame.speaker, "enemy") },
               text: activeEncounter.frame.text,
               delivery: activeEncounter.frame.delivery,
+              staging: activeEncounter.frame,
+              phoneNames: { heroine: game.heroineName, player: game.playerName, enemy: encounterPerson?.nameJa },
               // Hidden choices (decision 43) are left out; the letters follow the shown ones.
               choices: activeEncounter.frame.choices.flatMap((choice) => {
                 const option = encounterChoiceOption(currentEncounter, choice);
@@ -858,7 +864,7 @@ export function GameApp({
       </Modal>}
       {albumOpen && game && <AlbumDialog album={game.album} currentCityId={game.currentCityId} onClose={() => setAlbumOpen(false)} />}
       {photoCreditsOpen && creditPhotos.length > 0 && <PhotoCredits photos={creditPhotos} onClose={() => setPhotoCreditsOpen(false)} />}
-      {scenePhotoOpen && scenePhoto && <BackgroundCredits asset={scenePhoto} onClose={() => setScenePhotoOpen(false)} />}
+      {scenePhotoOpen && (scenePhoto || recallPhoto) && <BackgroundCredits asset={scenePhoto} recalled={recallPhoto} onClose={() => setScenePhotoOpen(false)} />}
       {notebook && game && (canObserve || cityNotebook) && (
         <ClueNotebook
           landmarkId={currentLandmarkId ?? undefined}
