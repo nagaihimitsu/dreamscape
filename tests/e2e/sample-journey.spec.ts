@@ -125,7 +125,7 @@ test("the sample journey plays from a new journey through its city finale and ep
     const { offer, mode } = rental;
     const card = await ops.selectDestination(page, route.episode.placeId);
     await expect(card.locator(`[data-testid^="travel-mode-"][data-testid$="-${mode.id}"]`)).toBeDisabled();
-    await expect(card).toContainText(`${mode.nameJa}は滞在先で借りると乗れます。`);
+    await expect(card).toContainText(`${mode.nameJa}は滞在先のホテルで借りると乗れます。`);
     await expect(card.locator('[data-testid^="travel-mode-"][data-testid$="-walk"]')).toBeEnabled();
     await expect(page.getByRole("dialog")).toHaveCount(0);
     const before = await readSave(page, JOURNEY);

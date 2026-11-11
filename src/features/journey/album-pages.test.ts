@@ -27,13 +27,13 @@ describe("the album's pages", () => {
     expect(pages.map((page) => [page.cityId, page.cityJa])).toEqual([["north", "北の街"], ["south", "南の街"]]);
     expect(pages[0].photos).toEqual([
       { imageId: "tower_bg", asset: asset("tower"), whenJa: "1日目 10:00", placeJa: "北の塔" },
-      { imageId: "room", asset: asset("room"), whenJa: "1日目 09:05", placeJa: "滞在先" },
+      { imageId: "room", asset: asset("room"), whenJa: "1日目 09:05", placeJa: "滞在先のホテル" },
     ]);
     expect(pages[1].photos).toEqual([{ imageId: "port", asset: asset("port"), caption: "港の夕方", whenJa: "2日目 21:05", placeJa: "南の港" }]);
   });
 
   it("name the hotel as the header does and leave out a photo whose picture or city the content lacks", () => {
-    expect(albumPages([photo("inn", "middle", "middle_inn")], content)[0].photos[0].placeJa).toBe("滞在先（架空）");
+    expect(albumPages([photo("inn", "middle", "middle_inn")], content)[0].photos[0].placeJa).toBe("滞在先のホテル");
     expect(albumPages([photo("missing_photo", "north", "north_tower"), photo("lost", "elsewhere", "x")], content)).toEqual([]);
     expect(albumPages([], content)).toEqual([]);
   });
