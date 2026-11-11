@@ -15,5 +15,6 @@
     "jaipur_city_palace"
   ],
   "productionStatus": "complete",
-  "arrivalStoryId": "places/gt_jaipur_hotel_hub.gt_jaipur_arrival"
+  "arrivalStoryId": "places/gt_jaipur_hotel_hub.gt_jaipur_arrival",
+  "backdropImagePath": "assets/backdrops/jaipur-free-time.webp"
 }

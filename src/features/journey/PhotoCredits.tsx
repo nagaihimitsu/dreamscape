@@ -11,7 +11,11 @@ import { getTravelDestinations } from "../../domain/travel-destinations";
 
 export type ShownPhoto = { key: string; labelJa: string; asset: TourismAsset; kind: "backdrop" | "card" };
 
-/** Every photo free time shows now: the city's backdrop and each destination row's photo. */
+/**
+ * Every photo free time shows now (⚙設定's 「写真の出典」 lists them): the city's backdrop photo and each place's photo.
+ * A city's own-artwork backdrop (backdropImagePath) is not a photo and has no credit: getCityBackdrop never returns it,
+ * like the credits list leaves out every artwork made for Dreamscape (OWN_ARTWORK_NOTE_JA).
+ */
 export function freeTimePhotos(game: GameState): ShownPhoto[] {
   const { city } = getCityContent(game.currentCityId);
   const backdrop = getCityBackdrop(game.currentCityId);
@@ -21,11 +25,6 @@ export function freeTimePhotos(game: GameState): ShownPhoto[] {
     return asset ? [{ key: `row-${place.id}`, labelJa: place.events[0].place.nameJa, asset, kind: "card" }] : [];
   });
   return [...(backdrop ? [{ key: "backdrop", labelJa: `背景（${city.nameJa}）`, asset: backdrop, kind: "backdrop" as const }] : []), ...rows];
-}
-
-/** The photos of B案's photo cards (its screen does not draw the backdrop): ⚙設定's 「写真の出典」 in free time lists them. */
-export function photoCardPhotos(game: GameState): ShownPhoto[] {
-  return freeTimePhotos(game).filter((photo) => photo.kind === "card");
 }
 
 /** 「写真の出典」 (UI redesign §3.4 item 6): the credit and licence of each photo on the free-time screen. */

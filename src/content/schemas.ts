@@ -130,6 +130,15 @@ export const citySchema = z
      * (src/content/city-backdrop.ts).
      */
     backdropAssetId: id.optional(),
+    /**
+     * Or the free-time backdrop as artwork made for Dreamscape: the served path
+     * of an image in the same journey's public/ folder that its
+     * presentation/own-artwork.json lists (content:build checks both, and that a
+     * city names backdropAssetId or backdropImagePath, not both). Shown as it is.
+     */
+    backdropImagePath: z.string()
+      .regex(/^assets\/(?:[a-zA-Z0-9_-][a-zA-Z0-9_.-]*\/)*[a-zA-Z0-9_-][a-zA-Z0-9_.-]*\.(?:webp|png|jpe?g)$/)
+      .optional(),
   })
   .strict();
 export const balanceSchema = z

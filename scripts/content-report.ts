@@ -98,7 +98,7 @@ export function unknownJourneyFiles(sources: ContentSources): ContentWarning[] {
 
 /**
  * Served images that neither content (tourism images, backgrounds, item
- * icons, character images, title art) nor the game's code (CODE_IMAGE_FILES)
+ * icons, character images, title art, city backdrops) nor the game's code (CODE_IMAGE_FILES)
  * refers to: every file of a journey's public/ folder and of the root
  * public/assets/. The rest of the root public/ (browser icons, the web app
  * manifest) is linked from index.html and checked by app-icons.test.ts.

@@ -4,8 +4,8 @@
 
 .free-time-hub.photo-free-time { max-width: 680px; }
 
-/* The background: a map-like pattern (faint streets, an avenue, a river and a park), not a real map; decoration only,
-   in the same fixed layer as the previous screen's photo (free-time-hub.css). */
+/* The background of a city without a backdrop: a map-like pattern (faint streets, an avenue, a river and a park), not a
+   real map; decoration only, in the same fixed layer as the backdrop (free-time-hub.css). */
 .photo-backdrop {
   position: fixed;
   z-index: -1;
@@ -21,6 +21,19 @@
     repeating-linear-gradient(0deg, transparent 0 46px, rgba(107, 90, 74, 0.06) 46px 47px),
     repeating-linear-gradient(90deg, transparent 0 46px, rgba(107, 90, 74, 0.06) 46px 47px),
     var(--ds-parchment-2);
+}
+
+/* A city's backdrop (FreeTimeBackdrop: its own artwork or its photo, fixed, cropped to fill the screen) is dimmed a little
+   more here than on the previous screen, so the cards and the transparent header's own pills stand out from a busy
+   picture. Over it the count under the row gets a pill of its own (over the pattern it reads as it is). */
+.photo-free-time .free-time-backdrop:not(.is-plain)::after { background: rgba(20, 24, 32, 0.3); }
+.photo-free-time.has-backdrop .photo-cards-count {
+  width: fit-content;
+  margin-inline: auto;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--ds-parchment);
+  box-shadow: var(--ds-pill-shadow);
 }
 
 .photo-menu { display: flex; flex-direction: column; gap: 8px; }

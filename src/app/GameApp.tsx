@@ -45,7 +45,7 @@ import { EnglishReview } from "../features/learning/EnglishReview";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { CityRecords } from "../features/journey/CityProgress";
-import { photoCardPhotos, PhotoCredits } from "../features/journey/PhotoCredits";
+import { freeTimePhotos, PhotoCredits } from "../features/journey/PhotoCredits";
 import { TitleNameFields } from "../features/journey/TitleNameFields";
 import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
@@ -323,9 +323,9 @@ export function GameApp({
     !game.activeBattle &&
     !game.activeTourism &&
     !game.activeEpilogue;
-  // Free time on show: ⚙設定 then offers 「写真の出典」 of its photo cards.
+  // Free time on show: ⚙設定 then offers 「写真の出典」 of its photos (the cards' and a backdrop photo's).
   const freeTimeShown = !!idle && !showRomanceEnding && !nightScreen;
-  const creditPhotos = useMemo(() => (game && freeTimeShown ? photoCardPhotos(game) : []), [game, freeTimeShown]);
+  const creditPhotos = useMemo(() => (game && freeTimeShown ? freeTimePhotos(game) : []), [game, freeTimeShown]);
   const nextEpisode = game ? getNextEpisode(game) : null;
   const nextStoryBattle = game ? getNextStoryBattle(game) : null;
   const frame = active?.frame;
