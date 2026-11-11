@@ -295,6 +295,8 @@ export type JourneyContents = { id: string; nameJa?: string; status: unknown; co
 function entryLabel(kind: MergedKind, key: string): string {
   // Groups of files, not files: "artworks 1" would read as one image.
   if (kind === "presentation/own-artwork.json") return "own artwork groups";
+  // Not "words", the word meanings' label.
+  if (kind === "learning/local-words.json") return "local words";
   const name = key === "questions" || key === "entries" ? path.posix.basename(kind, ".json").replaceAll("-", " ") : key;
   return name.replaceAll(".", " ").replace(/([a-z])([A-Z])/gu, "$1 $2").toLowerCase();
 }
