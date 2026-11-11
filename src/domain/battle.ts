@@ -662,7 +662,7 @@ export type BattleChrome = {
   choosing: boolean;
   /** The 「次へ進む」 (or 「問題へ進む」, 「結果を見る」) button under the line: the end of a part (before a call, the result, or a part's end before the first stop). */
   advance: { label: string; testId: "battle-advance" | "reasoning-rebuttal-advance" } | null;
-  /** 手がかり帳 beside the scene's label, and 「回答した問題を振り返る」. */
+  /** 手がかり帳 in the header (shown at a choice: hud-view.ts), and 「回答した問題を振り返る」. */
   notebookTab: boolean;
   reviewAnswers: boolean;
 };

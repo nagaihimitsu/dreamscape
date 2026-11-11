@@ -126,7 +126,7 @@ const flows: FlowScene[] = [
     await playUntil(page, (state) => state.activeBattle?.phase === "result");
     await ops.toFreeTime(page);
     await ops.goTo(page, "p_novecento");
-    await expect(page.getByTestId("date-destination")).toBeVisible();
+    await expect(page.getByTestId("romance-scene")).toBeVisible();
     await ops.settled(page);
   } },
   { scene: "flow-english-note", titleJa: "英語ノート", descriptionJa: "ドゥオモの対決の後、最初の問題を選ぶ", open: async (page) => {

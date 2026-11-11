@@ -32,7 +32,7 @@
 .vn-background .canal-scene { width: 100%; height: 100%; }
 .vn-background .scene-stamp { display: none; }
 /* The visited place's reference photo (D17): a note and its external link,
-   top-left under the scene label line, in the margin beside the portrait. */
+   top-left under the header, in the margin beside the portrait. */
 .date-reference {
   position: absolute;
   z-index: 1;
@@ -85,9 +85,8 @@
 /* The window (D1): a box whose painted part starts --vn-head-overhang below its
    top, where its head straddles the edge (DialogueWindowHead), and whose body
    scrolls under the head when the text is long. The window may grow up to 8 px
-   below what lies over the scene's top (the header and the scene label line,
-   --scene-top): long or enlarged text stays readable, the head never goes under
-   them (UI redesign §3.1). */
+   below what lies over the scene's top (the header, --scene-top): long or
+   enlarged text stays readable, the head never goes under it (UI redesign §3.1). */
 .vn-scene .vn-dialogue {
   position: relative;
   z-index: 2;

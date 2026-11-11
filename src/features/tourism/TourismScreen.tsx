@@ -23,8 +23,7 @@ import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoice
 import { Icon } from "../../components/icons";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
-import { BackgroundCredits } from "../../components/BackgroundCredits";
-import { SceneCreditButton, SceneLabelLine, SceneNotebookTab } from "../../components/SceneLabelLine";
+import { SceneHeading, SceneNotebookTool } from "../../components/SceneHeading";
 import { useSceneTap } from "../../components/useSceneTap";
 import { ObservationViewer } from "./ObservationViewer";
 import { ClueDetails } from "./ClueDetails";
@@ -81,7 +80,6 @@ export function TourismScreen({
     }));
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
-  const [creditsOpen, setCreditsOpen] = useState(false);
   const [compactObservation, setCompactObservation] = useState(
     () => window.matchMedia(COMPACT_OBSERVATION).matches,
   );
@@ -164,10 +162,10 @@ export function TourismScreen({
       data-testid="tourism-screen"
       {...sceneTap.props}
     >
-      {active.phase === "guide" && <SceneLabelLine label={landmark.nameJa} badge={tourSceneBadge(game)}>
-        <SceneCreditButton onClick={() => setCreditsOpen(true)} />
-        <SceneNotebookTab onClick={onNotebook} />
-      </SceneLabelLine>}
+      {active.phase === "guide" && <>
+        <SceneHeading label={landmark.nameJa} badge={tourSceneBadge(game)} />
+        <SceneNotebookTool onClick={onNotebook} />
+      </>}
       {asset.isPlaceholder && (
         <p className="image-placeholder-note">
           仮画像です。実物の細部を再現した資料ではありません。
@@ -260,7 +258,6 @@ export function TourismScreen({
           </details>
         </div>
       )}
-      {active.phase === "guide" && creditsOpen && <BackgroundCredits asset={asset} onClose={() => setCreditsOpen(false)} />}
     </section>
   );
 }

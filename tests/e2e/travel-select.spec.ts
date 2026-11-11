@@ -195,10 +195,10 @@ test("a marker by keyboard selects the row and moves focus to it; Enter then goe
   await expect(row).toHaveAttribute("data-armed", "true");
   await page.keyboard.press("Enter");
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
-  // UI redesign §3.7 E: the new scene's visible heading takes the focus the row's name had,
-  // with the two-tone ring after a key.
-  await expect(ops.sceneLabel(page)).toBeFocused();
-  await expect(ops.sceneLabel(page)).toHaveCSS("outline-style", "solid");
+  // UI redesign §3.7 E: the new scene's heading (read, not shown, as free time's: user decision
+  // 2026-11-11) takes the focus the row's name had, with the two-tone ring's style after a key.
+  await expect(ops.sceneHeading(page)).toBeFocused();
+  await expect(ops.sceneHeading(page)).toHaveCSS("outline-style", "solid");
 });
 
 test.describe("at 320×568", () => {

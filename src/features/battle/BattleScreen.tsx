@@ -13,8 +13,7 @@ import { DialogueControls, DialogueWindowHead } from "../../components/DialogueC
 import { useSceneTap } from "../../components/useSceneTap";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { CanalScene } from "../../components/CanalScene";
-import { BackgroundCredits } from "../../components/BackgroundCredits";
-import { SceneCreditButton, SceneLabelLine, SceneNotebookTab } from "../../components/SceneLabelLine";
+import { SceneHeading, SceneNotebookTool } from "../../components/SceneHeading";
 import { CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
@@ -172,7 +171,6 @@ export function BattleScreen({
     if (config && previous.runId === active.runId && previous.phase === "dialogue" && !previous.proof && active.phase === "reasoning" && active.reasoning)
       setCutIn(config.kind);
   }, [active.runId, active.phase, active.reasoning, battle]);
-  const [creditsOpen, setCreditsOpen] = useState(false);
   const windowVisibility = useDialogueWindow();
   const readingArea = useRef<HTMLElement>(null);
   const roundBar = useRef<HTMLDivElement>(null);
@@ -264,9 +262,6 @@ export function BattleScreen({
   // Keep the same registered location photograph across dialogue, questions
   // and results. A city-wide finale has no landmark and keeps its own scene.
   const landmarkAsset = tourismAssets.find((asset) => asset.id === landmark?.imageAssetId);
-  const backgroundAsset = landmarkAsset ?? tourismAssets.find(
-    (asset) => asset.id === presentation.backgrounds[backgroundId]?.imageAssetId,
-  );
   const storyId = battle.storyId;
   // Reactions belong to their target, independently of the current speaker.
   // Unannotated frames retain the existing Ink and expression behavior.
@@ -303,7 +298,7 @@ export function BattleScreen({
   }, [isDialogue, show]);
   const auto = useAutoAdvance({
     ready,
-    canAdvance: isDialogue && !creditsOpen && !windowVisibility.hidden && !!frame && !partEnd && !choosing,
+    canAdvance: isDialogue && !windowVisibility.hidden && !!frame && !partEnd && !choosing,
     text: frame?.text ?? "",
     onAdvance: advanceSafely,
     defaultEnabled: autoAdvanceEnabled,
@@ -354,15 +349,9 @@ export function BattleScreen({
         <CanalScene backgroundId={backgroundId} imageAssetId={landmarkAsset?.id} />
       </div>
       {/* The battle's heading in every phase (S5): its landmark, or the battle's title for a city
-          finale; 手がかり帳 joins it while the battle talks (the round bar holds its own). */}
-      <SceneLabelLine
-        label={landmark?.nameJa ?? battle.titleJa}
-        badge={tourSceneBadge(game)}
-        labelProps={landmark ? { "data-testid": "battle-location", "aria-label": `現在の場所: ${landmark.nameJa}` } : undefined}
-      >
-        {backgroundAsset && <SceneCreditButton onClick={() => setCreditsOpen(true)} />}
-        {chrome.notebookTab && onNotebook && <SceneNotebookTab onClick={onNotebook} />}
-      </SceneLabelLine>
+          finale; 手がかり帳 is in the header while the battle talks (the round bar holds its own). */}
+      <SceneHeading label={landmark?.nameJa ?? battle.titleJa} badge={tourSceneBadge(game)} />
+      {chrome.notebookTab && onNotebook && <SceneNotebookTool onClick={onNotebook} />}
       <div
         className={`battle-stage ${isDialogue ? "" : "battle-stage-compact"} ${battle.scope === "city_finale" ? "finale-stage" : ""}`}
         data-testid={isDialogue ? "scene-picture" : undefined}
@@ -731,9 +720,6 @@ export function BattleScreen({
         )}
       </section>
       </div>
-      {creditsOpen && backgroundAsset && (
-        <BackgroundCredits asset={backgroundAsset} onClose={() => setCreditsOpen(false)} />
-      )}
       {isDialogue && <DialogueWindowRestore state={windowVisibility} />}
       {cutIn && <ReasoningCutIn kind={cutIn} reduceMotion={reduceMotion} onComplete={() => {
         setCutIn(null);

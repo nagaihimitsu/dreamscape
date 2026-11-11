@@ -25,7 +25,9 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await ops.goTo(page, "p_duomo");
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
+  // Over the guide the header shows the place and time and ⚙設定; the budget and AP wait for a choice (user decision 2026-11-11).
   await expect(page.getByText("現在地：ドゥオモ広場")).toBeVisible();
+  await expect(page.getByLabel("残り0AP")).toBeHidden();
   await expect(page.getByTestId("travel-transition")).toHaveCount(0);
   const line = page.getByTestId("dialogue-text");
   await expect(line).toHaveAttribute("data-ready", "true");
@@ -118,14 +120,14 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
 
   // The guide leads into the quiz battle; every answer and line is saved before the next.
   await page.getByRole("button", { name: "進む", exact: true }).click();
-  // The battle's place is a pill of the scene label line (UI redesign §3.2), a near miss like the
-  // header above it: a tap on it does not read the battle's talk on (before step 1.3 the place was a
-  // chip in the scene that did). The battle's first line is written whole here (reduced motion).
+  // The place shows in the header over the battle (the scene has no label of its own since 2026-11-11), a
+  // near miss outside the scene: a tap on it does not read the battle's talk on. The battle's first line is
+  // written whole here (reduced motion).
   const talking = await playUntil(page, (state) => state.activeBattle?.phase === "dialogue");
   const battleLine = await line.textContent();
-  await ops.tapAt(page, await ops.centerOf(page.getByTestId("battle-location")));
+  await ops.tapAt(page, await ops.centerOf(page.getByTestId("journey-context")));
   await expect(line).toHaveText(battleLine!);
-  expect((await readSave(page)).revision, "a tap on the battle's place pill does not read on").toBe(talking.revision);
+  expect((await readSave(page)).revision, "a tap on the header's place does not read on").toBe(talking.revision);
   // A quick double tap on an answer (誤タップ防止, user decision: the second tap is
   // ignored) records one answer and stays on that question's feedback. After the
   // first tap the verdict and feedback appear and the screen shifts, so the second
@@ -205,17 +207,12 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   expect(opened.revision).toBe(started.revision);
   expect(opened.activeDate?.runId).toBe(started.activeDate!.runId);
   // The note beside the visited place's reference photo is not the picture: a tap on it does nothing.
-  // Neither does a tap on the date's destination, a pill of the scene label line now (UI redesign §3.2;
-  // before step 1.3 it was a chip in the dialogue window that read on).
   const dateLine = await line.textContent();
   await ops.tapAt(page, await ops.centerOf(page.getByTestId("destination-reference-note")));
   await expect(line).toHaveText(dateLine!);
   expect((await readSave(page)).revision).toBe(opened.revision);
-  await expect(page.getByTestId("date-destination")).toBeVisible();
-  await expect(ops.sceneLabel(page)).toHaveText(/／/u);
-  await ops.tapAt(page, await ops.centerOf(page.getByTestId("date-destination")));
-  await expect(line).toHaveText(dateLine!);
-  expect((await readSave(page)).revision, "a tap on the date's destination pill does not read on").toBe(opened.revision);
+  // The date's heading names its destination (for screen readers; the header shows the place).
+  await expect(ops.sceneHeading(page)).toHaveText(/／/u);
   // A notice above the scene (here after 「セーブ」) pushes the date down; its 「閉じる」 lets the date
   // move back up under the finger. A press on any control of the page, also outside the scene,
   // settles the scene for a moment: a quick tap on the picture right after does not read on
