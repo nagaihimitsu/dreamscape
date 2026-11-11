@@ -6,6 +6,7 @@
       "cityId": "jaipur",
       "nameJa": "アンベール城",
       "nameEn": "Amber Fort and Palace",
+      "descriptionJa": "アンベール城は、ジャイプール中心部から約11km、町を見下ろす険しい丘の上に建つ城塞宮殿。かつてアンベールの王たちが暮らした城で、淡い黄色と桃色の砂岩で築かれている。城内はそれぞれに中庭を持つ四つの区画に分かれ、一般謁見の間ディーワーネ・アームなどが並ぶ世界遺産。",
       "latitude": 26.9859,
       "longitude": 75.8507,
       "backgroundId": "gt_bg_jaipur_amber_fort",
@@ -79,6 +80,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額2000ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Amber Fort",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/amber-fort",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ジャイプールの町を見下ろす険しい丘の上に建ち、中心部から11km。かつてアンベールの王たちの住まいで、淡い黄色と桃色の砂岩で築かれた。ユネスコ世界遺産。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Amber Fort",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/amber-fort",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "城は四つの主要な区画に分かれ、それぞれに中庭がある。一般の人々のための広間ディーワーネ・アームがある。"
         }
       ],
       "landmarkIds": [
@@ -90,6 +107,7 @@
       "cityId": "jaipur",
       "nameJa": "ハワー・マハル",
       "nameEn": "Hawa Mahal",
+      "descriptionJa": "ハワー・マハルは、ジャイプールの中心部に立つ「風の宮殿」。1799年にマハーラージャ・サワーイー・プラタープ・シングが建て、ラール・チャンド・ウスタードが設計した。地元産の桃色砂岩でできた5層の建物で、華やかな桃色の正面に格子窓が並ぶ。",
       "latitude": 26.92413,
       "longitude": 75.82639,
       "backgroundId": "gt_bg_jaipur_hawa_mahal",
@@ -155,6 +173,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額1200ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Hawa Mahal",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ハワー・マハル（風の宮殿）は1799年、マハーラージャ・サワーイー・ジャイ・シングの孫マハーラージャ・サワーイー・プラタープ・シングが建て、ラール・チャンド・ウスタードが設計した。地元の桃色砂岩で造られた5層の建物で、ジャイプールの中心にある。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Hawa Mahal",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "美しい桃色の正面と格子窓を持つ。"
         }
       ],
       "landmarkIds": [
@@ -166,6 +200,7 @@
       "cityId": "jaipur",
       "nameJa": "シティ・パレス",
       "nameEn": "City Palace Jaipur",
+      "descriptionJa": "シティ・パレスは、アンベールとジャイプールを治めたカチュワーハ家の王宮。18世紀半ばに建てられ、20世紀半ばまで増築が続いた。ムガル時代のヒンドゥーの王の宮廷が一つの史跡として残る数少ない例で、1959年開館の博物館では、王家が何世紀もかけて集めた品々を公開している。",
       "latitude": 26.92624,
       "longitude": 75.82381,
       "backgroundId": "gt_bg_jaipur_city_palace",
@@ -247,6 +282,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額2000ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "The City Palace Museum, Jaipur (Maharaja Sawai Man Singh II Museum Trust)",
+          "title": "The City Palace Museum, Jaipur",
+          "url": "https://citypalace.org/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "18世紀半ばに建てられ、20世紀半ばまで増築が続いた。ムガル時代のヒンドゥーの王侯の宮廷建造群が一つの史跡としてそのまま残った数少ない例。"
+        },
+        {
+          "publisher": "The City Palace Museum, Jaipur (Maharaja Sawai Man Singh II Museum Trust)",
+          "title": "The City Palace Museum, Jaipur",
+          "url": "https://citypalace.org/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "1959年に設立されたシティ・パレス博物館はインド有数の宮殿博物館で、収蔵品はアンベールとジャイプールのカチュワーハ家の歴代君主が何世紀にもわたり集め、注文したもの。"
         }
       ],
       "landmarkIds": [
@@ -258,6 +309,7 @@
       "cityId": "jaipur",
       "nameJa": "ジャンタル・マンタル",
       "nameEn": "Jantar Mantar Jaipur",
+      "descriptionJa": "ジャンタル・マンタルは、ジャイプールにある石造りの天文台。マハーラージャ・サワーイー・ジャイ・シング2世が1728〜1734年に造らせ、時間や天体・惑星の動きを測るための巨大な観測器具が屋外に並ぶ。世界一高い日時計とされるサムラート・ヤントラがひときわ目を引く世界遺産。",
       "latitude": 26.92473,
       "longitude": 75.82451,
       "backgroundId": "gt_bg_jaipur_jantar_mantar",
@@ -323,6 +375,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額1200ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Jantar Mantar",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/jantar-mantar",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "マハーラージャ・サワーイー・ジャイ・シング2世が1728〜1734年に造った。器具は時間・天体・惑星の動きの謎を解く幾何学的な装置で、サムラート・ヤントラ、ジャイ・プラカーシュ・ヤントラ、ナリヴァラヤ・ヤントラなどがある。ユネスコ世界遺産。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Jantar Mantar",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/jantar-mantar",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "サムラート・ヤントラは世界一高い日時計と紹介されている。"
         }
       ],
       "landmarkIds": [
@@ -334,6 +402,7 @@
       "cityId": "jaipur",
       "nameJa": "ジャル・マハル",
       "nameEn": "Jal Mahal",
+      "descriptionJa": "ジャル・マハルは、ジャイプールのマン・サーガル湖の中央に浮かぶ赤砂岩の宮殿。17世紀末に礎が築かれたとされ、18世紀に王たちの手で改修・拡張された。湖に面した道沿いの遊歩道から、水の上に浮かぶような宮殿の姿を眺める景観で知られる。",
       "latitude": 26.95367,
       "longitude": 75.84233,
       "backgroundId": "gt_bg_jaipur_jal_mahal",
@@ -383,6 +452,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額0ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Jal Mahal",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/jal-mahal",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "マン・サーガル湖の静かな水面から立ち上がる赤砂岩の宮殿。1699年に礎が築かれ、のちにジャイ・シング2世が宮殿と湖を改修した。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Jal Mahal",
+          "url": "https://en.wikipedia.org/wiki/Jal_Mahal",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ジャイプールのマン・サーガル湖の中央にある宮殿で、18世紀半ばにマハーラージャ・マドー・シング1世が改修・拡張した。道沿いの遊歩道は西を向いている（改修者は資料で異なるため、本文は「18世紀に王たちの手で」とした）。"
         }
       ],
       "destinationIds": [
@@ -394,6 +479,7 @@
       "cityId": "jaipur",
       "nameJa": "ナハルガル城",
       "nameEn": "Nahargarh Fort",
+      "descriptionJa": "ナハルガル城は、ジャイプールの町を見下ろすアラヴァリ丘陵の尾根に建つ城。1734年にマハーラージャ・サワーイー・ジャイ・シング2世が完成させ、王家の夏の離宮として、またアンベール城やジャイガル城とともに町を守る砦として使われた。城壁からはジャイプールの街並みを一望できる。",
       "latitude": 26.94009,
       "longitude": 75.81691,
       "backgroundId": "gt_bg_jaipur_nahargarh_fort",
@@ -443,6 +529,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額1200ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Nahargarh Fort",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/nahargarh-fort",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "1734年にマハーラージャ・サワーイー・ジャイ・シング2世が完成させた。アラヴァリ丘陵の尾根にあり、王家の夏の離宮として構想され、アンベール城・ジャイガル城とともにジャイプールの強固な守りとなった。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Nahargarh Fort",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/nahargarh-fort",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "城壁からはジャイプールの街並みの素晴らしい眺めが広がる。"
         }
       ],
       "destinationIds": [
@@ -454,6 +556,7 @@
       "cityId": "jaipur",
       "nameJa": "アルバート・ホール博物館",
       "nameEn": "Albert Hall Museum",
+      "descriptionJa": "アルバート・ホール博物館は、ジャイプールのラームニワース庭園に建つ博物館で、政府中央博物館とも呼ばれる。サミュエル・スウィントン・ジェイコブの設計で、インドとイスラームの建築にラージプートの趣を融合させた建物は、1887年に一般公開された。館内にはインド内外の美術工芸品が並ぶ。",
       "latitude": 26.91171,
       "longitude": 75.8195,
       "backgroundId": "gt_bg_jaipur_albert_hall",
@@ -503,6 +606,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額1200ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Albert Hall Museum",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/albert-hall-museum",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "アルバート・ホール博物館（政府中央博物館）はジャイプールのラームニワース庭園にある。サミュエル・スウィントン・ジェイコブが設計し、インドとイスラームの建築様式にラージプートの影響を融合させた。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Albert Hall Museum",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/albert-hall-museum",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "マハーラージャ・サワーイー・マドー・シング2世が1887年に一般公開した。何世紀にもわたるインド内外の工芸品の収蔵品を持つ。"
         }
       ],
       "destinationIds": [
@@ -514,6 +633,7 @@
       "cityId": "jaipur",
       "nameJa": "ジャイガル城",
       "nameEn": "Jaigarh Fort",
+      "descriptionJa": "ジャイガル城は、アンベール城の約400m上、「鷲の丘」チール・カ・ティーラーに建つ城。1726年にマハーラージャ・サワーイー・ジャイ・シング2世が築かせ、その名を冠している。眼下のアンベール城と宮殿群を守る砦で、3km以上続く砂岩の城壁から周囲の丘陵を見渡せる。",
       "latitude": 26.98469,
       "longitude": 75.8454,
       "backgroundId": "gt_bg_jaipur_jaigarh_fort",
@@ -587,6 +707,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額1000ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Jaigarh Fort",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/jaigarh-fort",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "1726年にラージプートの君主ジャイ・シング2世が築かせ、その名を受け継ぐ。「鷲の丘」と呼ばれるチール・カ・ティーラーの上、アンベールより400m高い所にあり、ジャイプールから約15km。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Jaigarh Fort",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/jaigarh-fort",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "アンベール城と宮殿群を守る最前線の砦として築かれた。砂岩の城壁は3km以上続き、周囲の景観と丘陵を見渡せる。"
         }
       ],
       "destinationIds": [
@@ -598,6 +734,7 @@
       "cityId": "jaipur",
       "nameJa": "ジョーハリー・バザール",
       "nameEn": "Johari Bazaar",
+      "descriptionJa": "ジョーハリー・バザールは、ハワー・マハルの近くにある、ジャイプールで最も古い市場の一つ。18世紀の町の建設とともに生まれ、宝飾品好きの楽園と呼ばれるほど宝石や金銀の店が並ぶ。クンダンやミーナーカーリーの装身具のほか、レヘリヤやバンデージの染め布、サリーも見つかる。",
       "latitude": 26.91934,
       "longitude": 75.82592,
       "backgroundId": "gt_bg_jaipur_johari_bazaar",
@@ -655,6 +792,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額0ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Jaipur Municipal Corporation",
+          "title": "Main Market",
+          "url": "https://jaipurmc.org/Presentation/Aboutjaipur/MainMarket.aspx",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ジョーハリー・バザールは宝飾品好きの楽園で、宝石・ジュエリー・工芸品・家具・美術品を扱い、ジャイプールの精巧なジュエリーの本拠である。"
+        },
+        {
+          "publisher": "Outlook Traveller",
+          "title": "Guide To Johari Bazaar, Jaipur: What To Buy, When To Visit And Insider Tips",
+          "url": "https://www.outlooktraveller.com/experiences/shopping/guide-to-johari-bazaar-jaipur-what-to-buy-when-to-visit-and-insider-tips",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ハワー・マハル近くにあるジャイプール最古の市場の一つで、町の建設とともに18世紀ごろに生まれた。金・銀・宝石、クンダンやミーナーカーリーのジュエリー、レヘリヤやバンデージの染め布、サリーやドゥパッターを扱う。"
         }
       ],
       "destinationIds": [
@@ -666,6 +819,7 @@
       "cityId": "jaipur",
       "nameJa": "パンナ・ミーナー・クンド",
       "nameEn": "Panna Meena ka Kund",
+      "descriptionJa": "パンナ・ミーナー・クンドは、ジャイプールとアンベールを結ぶ道の近くにある階段井戸。雨季の水をためるために造られ、16世紀のものと紹介されるが、確かな記録はほとんど残っていない。三方の壁を交差する階段が幾何学模様のように埋め、残る一方には多層のバルコニーが設けられている。",
       "latitude": 26.99121,
       "longitude": 75.85123,
       "backgroundId": "gt_bg_jaipur_panna_meena_kund",
@@ -731,6 +885,30 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額0ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Rajasthan Tour Planner",
+          "title": "Panna Meena ka Kund",
+          "url": "https://www.rajasthantourplanner.com/Jaipur-Tour-Planner/Jaipur-Attractions/panna-meena-ka-kund.html",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ジャイプール〜アンベール道路の近くにある。雨季の水をためるために造られ、近くの住民の水源でもあった。三方に交差する階段と壁のくぼみがあり、残る一方は多層のバルコニーになっている。"
+        },
+        {
+          "publisher": "Rajasthan Tour Planner",
+          "title": "Panna Meena ka Kund",
+          "url": "https://www.rajasthantourplanner.com/Jaipur-Tour-Planner/Jaipur-Attractions/panna-meena-ka-kund.html",
+          "checkedAt": "2026-11-11",
+          "claimType": "interpretation",
+          "claimJa": "16世紀に造られたと紹介される一方、確かな歴史や記録はなく、分かっていることはごく少ないと同じページが述べる。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Panna Meena ka Kund",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/panna-meena-ka-kund",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "何世紀も前からある階段井戸で、近隣の主な水源だった。"
         }
       ],
       "destinationIds": [

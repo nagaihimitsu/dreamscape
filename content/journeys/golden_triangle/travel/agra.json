@@ -6,6 +6,7 @@
       "cityId": "agra",
       "nameJa": "タージ・マハル",
       "nameEn": "Taj Mahal",
+      "descriptionJa": "タージ・マハルは、アーグラのヤムナー川右岸に建つ白大理石の墓廟。ムガル皇帝シャー・ジャハーンが妃ムムターズ・マハルをしのんで建て、17年をかけて1648年に完成した。ラージャスターン州マクラーナ産の大理石で覆われたムガル建築の最高峰で、1983年に世界遺産に登録された。",
       "latitude": 27.17501,
       "longitude": 78.04209,
       "backgroundId": "gt_bg_agra_taj_mahal",
@@ -95,6 +96,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額2200ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Archaeological Survey of India, Agra Circle",
+          "title": "Taj Mahal",
+          "url": "https://asiagracircle.in/tajmahal.html",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ムガル建築の頂点であるタージ・マハルは、皇帝シャー・ジャハーン（在位1628〜58年）が妃アルジュマンド・バーノー・ベーグム（称号ムムターズ・マハル）をしのんで建てた。建造群の完成には17年かかり、1648年に完成した。"
+        },
+        {
+          "publisher": "Archaeological Survey of India, Agra Circle",
+          "title": "Taj Mahal",
+          "url": "https://asiagracircle.in/tajmahal.html",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "墓廟はヤムナー川の右岸にあり、外装の白大理石はラージャスターンのマクラーナから運ばれた。ASIアーグラ管区は世界遺産としてTaj Mahal (1983) を挙げる。"
         }
       ],
       "closedWeekdays": [
@@ -109,6 +126,7 @@
       "cityId": "agra",
       "nameJa": "アーグラ城",
       "nameEn": "Agra Fort",
+      "descriptionJa": "アーグラ城は、ムガル皇帝たちが居城とした城壁都市。1565年からアクバルが赤砂岩で築き直し、のちにシャー・ジャハーンが白大理石で彩りを加えた。全長2.5kmの城壁の内側に、ジャハーンギール宮殿やハース・マハル、謁見の間などが並ぶ世界遺産。",
       "latitude": 27.17602,
       "longitude": 78.02192,
       "backgroundId": "gt_bg_agra_agra_fort",
@@ -182,6 +200,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額1300ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Agra Fort",
+          "url": "https://agra.nic.in/tourist-place/agra-fort/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ムガルの城壁に囲まれた皇帝の都市で、1565年から皇帝アクバルが赤砂岩で再建し、のちにシャー・ジャハーンが白大理石で装飾した。ユネスコ世界遺産。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Agra Fort",
+          "url": "https://agra.nic.in/tourist-place/agra-fort/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "全長2.5kmの城壁の内側に、ジャハーンギール宮殿、ハース・マハル、ディーワーネ・アーム、ディーワーネ・ハースなどがある。"
         }
       ],
       "landmarkIds": [
@@ -193,6 +227,7 @@
       "cityId": "agra",
       "nameJa": "イティマード・ウッダウラ廟",
       "nameEn": "Itimad-ud-Daulah’s Tomb",
+      "descriptionJa": "イティマード・ウッダウラ廟は、アーグラ城からヤムナー川を渡った対岸、約4kmの所にある川辺の墓廟。白大理石の壁面を宝石のような色石の象嵌が彩り、繊細な透かし彫りの格子窓（ジャーリー）がはめ込まれている。通称「ベビー・タージ」としても知られる。",
       "latitude": 27.19281,
       "longitude": 78.03143,
       "backgroundId": "gt_bg_agra_itimad_tomb",
@@ -250,6 +285,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額620ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Tomb of Itimad-ud-Daulah (Baby Taj)",
+          "url": "https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "アーグラ城からヤムナー川を渡った左岸、約4kmにある川辺の墓廟。繊細なジャーリー（透かし彫りの格子）と宝石のような象嵌を持つ。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Tomb of Itimad-ud-Daulah (Baby Taj)",
+          "url": "https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "地区政府は「ベビー・タージ」の通称をタージ・マハルの先駆けとして紹介している（本文では通称だけを記した）。"
         }
       ],
       "landmarkIds": [
@@ -261,6 +312,7 @@
       "cityId": "agra",
       "nameJa": "メヘターブ・バーグ",
       "nameEn": "Mehtab Bagh",
+      "descriptionJa": "メヘターブ・バーグは、ヤムナー川の左岸、タージ・マハルの真向かいにある庭園。名は「月光の庭」を意味し、もとは皇帝バーブルが造営し、のちにシャー・ジャハーンが配置を整えたとされる。果樹と小道のある四分割庭園が復元され、川越しにタージを眺め、写真に収める名所となっている。",
       "latitude": 27.17967,
       "longitude": 78.04204,
       "backgroundId": "gt_bg_agra_mehtab_bagh",
@@ -326,6 +378,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額600ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Mehtab Bagh",
+          "url": "https://agra.nic.in/tourist-place/mehtab-bagh/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "「月光の庭」。川の左岸でタージ・マハルの真向かいにあり、もとは皇帝バーブルが造営し、のちにシャー・ジャハーンが配置を整えた。果樹と小道のある四分割庭園（チャールバーグ）が復元されている。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Mehtab Bagh",
+          "url": "https://agra.nic.in/tourist-place/mehtab-bagh/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "とくに夕暮れ時、タージを眺め写真を撮るのに最適な場所と案内されている。"
         }
       ],
       "destinationIds": [
@@ -337,6 +405,7 @@
       "cityId": "agra",
       "nameJa": "ファテープル・シークリー",
       "nameEn": "Fatehpur Sikri",
+      "descriptionJa": "ファテープル・シークリーは、アーグラの西約40kmにある、ムガル皇帝アクバルが16世紀後半に築いた都の跡。宮殿やモスクが赤砂岩の町としてほぼ完全な姿で残り、世界でも屈指の高さを誇る54mの門ブランド・ダルワーザがそびえる。ジャーマー・マスジドやパンチ・マハルなどが並ぶ世界遺産。",
       "latitude": 27.09602,
       "longitude": 77.66473,
       "backgroundId": "gt_bg_agra_fatehpur_sikri",
@@ -395,6 +464,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額1220ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Fatehpur Sikri",
+          "url": "https://agra.nic.in/tourist-place/fatehpur-sikri/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "皇帝アクバルが1571年に建設したムガルの都で、きわめて完全な姿の赤砂岩の町として残る。アーグラ市の西36〜40km。ユネスコ世界遺産。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Fatehpur Sikri",
+          "url": "https://agra.nic.in/tourist-place/fatehpur-sikri/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "建造物には世界有数の高さの門である54mのブランド・ダルワーザ、ジャーマー・マスジド、パンチ・マハル、ディーワーネ・ハースなどがある（建設年はクイズの1569年と資料で異なるため、本文は「16世紀後半」とした）。"
         }
       ],
       "landmarkIds": [
@@ -406,6 +491,7 @@
       "cityId": "agra",
       "nameJa": "アクバル廟",
       "nameEn": "Akbar’s Tomb, Sikandra",
+      "descriptionJa": "アクバル廟は、アーグラ郊外シカンドラにあるムガル皇帝アクバルの墓廟。アクバル自身が建設を始め、1613年に息子ジャハーンギールが完成させた。約119エーカーの広大な四分割庭園の中に、砂岩と大理石でできた5層の廟と、装飾豊かな大門がそびえる。",
       "latitude": 27.22042,
       "longitude": 77.9504,
       "backgroundId": "gt_bg_agra_akbar_tomb",
@@ -455,6 +541,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額620ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Akbar's Tomb, Sikandra",
+          "url": "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "アクバル自身が建設を始め、1613年に息子ジャハーンギールが完成させた。アーグラ〜マトゥラー道路沿いのシカンドラにある119エーカーのチャールバーグに建つ。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Akbar's Tomb, Sikandra",
+          "url": "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "5層の砂岩と大理石のピラミッド状の廟と、装飾豊かな大門（ページ上の表記はBuland Darwaza）を持つ。"
         }
       ],
       "destinationIds": [
@@ -466,6 +568,7 @@
       "cityId": "agra",
       "nameJa": "ラム・バーグ",
       "nameEn": "Ram Bagh",
+      "descriptionJa": "ラム・バーグは、アーグラのヤムナー川左岸にある庭園で、1528年ごろに皇帝バーブルが造営した。インドに現存する最古のムガル庭園とされ、段になった通路や水路、川を望むあずまやが残る。のちにタージ・マハルの庭へと受け継がれる、四分割庭園の伝統の原型といわれる。",
       "latitude": 27.205306,
       "longitude": 78.038639,
       "backgroundId": "gt_bg_agra_ram_bagh",
@@ -515,6 +618,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額600ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Ram Bagh (Bagh-i-Gul Afshan)",
+          "url": "https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "1528年ごろに皇帝バーブルが造営し、インドに現存する最古のムガル庭園とされる。ヤムナー川左岸、イティマード・ウッダウラ廟の北東約3km。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Ram Bagh (Bagh-i-Gul Afshan)",
+          "url": "https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/",
+          "checkedAt": "2026-11-11",
+          "claimType": "interpretation",
+          "claimJa": "段になった通路、水路、ヤムナー川を望むあずまやがあり、タージ・マハルの庭園で頂点に達するチャールバーグの伝統の原型とみなされている。"
         }
       ],
       "destinationIds": [
@@ -526,6 +645,7 @@
       "cityId": "agra",
       "nameJa": "チーニー・カ・ラウザ",
       "nameEn": "Chini ka Rauza",
+      "descriptionJa": "チーニー・カ・ラウザは、アーグラのヤムナー川左岸にある墓廟。シャー・ジャハーンの宰相を務めた学者・詩人アフザル・ハーンが眠り、1635年ごろに建てられた。全面をペルシア風の彩釉タイル（カーシー／チーニー）で飾った、アーグラでただ一つの建造物とされる。",
       "latitude": 27.20086,
       "longitude": 78.03439,
       "backgroundId": "gt_bg_agra_chini_rauza",
@@ -575,6 +695,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額0ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Chini ka Rauza",
+          "url": "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "シャー・ジャハーンの宰相で学者・詩人のアッラーマ・アフザル・ハーン（ムッラー・シュクルッラー・シーラーズィー）の墓で、1635年ごろの建造。ヤムナー川左岸にある。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Chini ka Rauza",
+          "url": "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "全面をペルシア式の彩釉タイル（カーシー／チーニー）で覆った、アーグラで唯一の建造物。"
         }
       ],
       "destinationIds": [
@@ -586,6 +722,7 @@
       "cityId": "agra",
       "nameJa": "マリアム・ウッザマーニー廟",
       "nameEn": "Tomb of Mariam-uz-Zamani",
+      "descriptionJa": "マリアム・ウッザマーニー廟は、アーグラ郊外シカンドラ、アクバル廟から約1kmの所にある墓廟。皇帝アクバルの妃でジャハーンギールの母が眠り、ロディ朝時代のバーラダリー（あずまや建築）を改装して造られた。彫刻を施した砂岩の外観を、塀に囲まれた静かな庭が取り巻く。",
       "latitude": 27.2153,
       "longitude": 77.94272,
       "backgroundId": "gt_bg_agra_mariam_tomb",
@@ -635,6 +772,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額600ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Tomb of Mariam-uz-Zamani",
+          "url": "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "アクバルの皇妃でジャハーンギールの母の墓廟。国道19号沿いのシカンドラ、アクバル廟からアーグラ市街方向へ約1km。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Tomb of Mariam-uz-Zamani",
+          "url": "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ロディ朝時代のバーラダリーを改装した建物で、彫刻のある砂岩の外観と、塀に囲まれた静かな庭を持つ。"
         }
       ],
       "destinationIds": [
@@ -646,6 +799,7 @@
       "cityId": "agra",
       "nameJa": "グル・カ・タール",
       "nameEn": "Guru ka Taal Gurdwara",
+      "descriptionJa": "グル・カ・タールは、アーグラ郊外シカンドラのデリーへ向かう幹線道路沿いにあるシク教の礼拝所。17世紀の貯水池のそばに建ち、彫刻を施した砂岩の塔が今も残る。シク教第9代グルのテーグ・バハードゥルが、1665年にこの地でアウラングゼーブの前に自ら捕らえられに出たと伝えられる。",
       "latitude": 27.21162,
       "longitude": 77.96763,
       "backgroundId": "gt_bg_agra_guru_ka_taal",
@@ -695,6 +849,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額0ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Guru ka Taal Gurudwara",
+          "url": "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "シカンドラの国道19号沿い、アーグラ〜デリー幹線道路に隣接するシク教の聖地。17世紀の貯水池のそばに建ち、彫刻のある砂岩の塔が今も立つ。ランガル（共同食堂）が毎日無料で出される。"
+        },
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Guru ka Taal Gurudwara",
+          "url": "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+          "checkedAt": "2026-11-11",
+          "claimType": "legend",
+          "claimJa": "第9代グル、テーグ・バハードゥルが1665年にアウラングゼーブの前に自ら捕らえられに出た場所とされる（地区政府ページは史実として記すが、シク教の伝承として「伝えられる」と書いた）。"
         }
       ],
       "destinationIds": [
