@@ -32,6 +32,13 @@ describe("travel data contract", () => {
     expect(parsed.routes.find((route) => route.fromPlaceId === "museum" && route.toPlaceId === "hotel")).toBeUndefined();
   });
 
+  it("takes an optional description of a place, a non-empty Japanese text", () => {
+    const described = catalog();
+    expect(travelCatalogSchema.parse({ ...described, places: [described.places[0], { ...described.places[1], descriptionJa: "町の小さな美術館。" }] })
+      .places.map((place) => place.descriptionJa)).toEqual([undefined, "町の小さな美術館。"]);
+    expect(travelCatalogSchema.safeParse({ ...described, places: [{ ...described.places[0], descriptionJa: "" }, described.places[1]] }).success).toBe(false);
+  });
+
   it("allows separate events at a shared place and directed routes", () => {
     const data = catalog();
     data.routes.push({ fromPlaceId: "museum", toPlaceId: "hotel", mode: "walk", minutes: 17, cost: 0, sources: [source] });

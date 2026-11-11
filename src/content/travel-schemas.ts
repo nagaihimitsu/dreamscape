@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { japaneseText } from "./text-language";
 import { tourismSourceSchema } from "./tourism-schemas";
 
 // Shared input contract for each registered city's travel data.
@@ -13,6 +14,11 @@ export const travelPlaceSchema = z.object({
   cityId: id,
   nameJa: text,
   nameEn: text,
+  /**
+   * The place's general tourist description, shown in free time's card of the selected place. Checkable facts,
+   * no story: never an event's teaser. Optional: a place without one shows no description.
+   */
+  descriptionJa: japaneseText.optional(),
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
   backgroundId: id,

@@ -34,7 +34,8 @@
   line-height: 1.5;
 }
 
-/* The cards' width follows the stage's width (container units), so about three show in a phone's row. */
+/* The cards' width follows the stage's width (container units): in a phone's row the chosen card shows whole and
+   about half of each card beside it (on a 390-px phone 165 px wide, with 86 px of each neighbour). */
 .photo-stage { position: relative; container-type: inline-size; }
 
 /* The row: a full-width horizontal scroller (the screen's only one) that snaps a card to its centre. The spacers
@@ -55,13 +56,13 @@
 .photo-cards::before,
 .photo-cards::after {
   content: "";
-  flex: 0 0 22%;
-  flex-basis: calc(50cqi - clamp(112px, 40cqi, 220px) / 2 - 10px);
+  flex: 0 0 19%;
+  flex-basis: calc(50cqi - clamp(128px, 46cqi, 250px) / 2 - 10px);
 }
 .photo-cards > li {
   display: flex;
-  flex: 0 0 40%;
-  flex-basis: clamp(112px, 40cqi, 220px);
+  flex: 0 0 46%;
+  flex-basis: clamp(128px, 46cqi, 250px);
   min-width: 0;
   scroll-snap-align: center;
 }
@@ -139,7 +140,7 @@
 .photo-card-text { display: flex; flex-direction: column; min-width: 0; padding: 6px 4px 0; }
 .photo-card-name {
   font-family: "Noto Serif JP", serif;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   line-height: 1.3;
   overflow-wrap: anywhere;
@@ -151,8 +152,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 40%;
-  width: clamp(112px, 40cqi, 220px);
+  width: 46%;
+  width: clamp(128px, 46cqi, 250px);
   visibility: hidden;
   pointer-events: none;
 }
@@ -164,7 +165,7 @@
 .photo-cards.is-list::after { content: none; }
 .photo-cards.is-list > li { display: block; flex: none; }
 .photo-cards.is-list .photo-card { flex-direction: row; align-items: flex-start; gap: 10px; padding: 6px; }
-.photo-cards.is-list .photo-card-photo { flex: 0 0 96px; width: 96px; }
+.photo-cards.is-list .photo-card-photo { flex: 0 0 112px; width: 112px; }
 .photo-cards.is-list .photo-card-text { flex: 1 1 auto; padding: 2px 0 0; }
 .photo-cards.is-list .place-card { margin-top: 6px; }
 
@@ -197,6 +198,22 @@
 .place-card-event + .place-card-event { padding-top: 8px; border-top: 1px solid var(--ds-parchment-line); }
 .place-card-event-title { margin: 0; font-size: 14px; font-weight: 600; line-height: 1.45; overflow-wrap: anywhere; }
 .place-card-event-meta { color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }
+/* What an event is, before its title or its time: a display-only pill whose word says it (「ストーリー」, 「デート」);
+   the date's colour only helps. */
+.place-card-tag {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--ds-slate-800);
+  color: var(--ds-on-slate);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 18px;
+  white-space: nowrap;
+  vertical-align: 1px;
+}
+.place-card-tag.is-date { background: var(--ds-marker); }
 .place-card-hook { font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
 .place-card-note { color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }
 .place-card .fine-print { margin: 0 2px; color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }

@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import type { TravelRoute } from "../../content/travel-schemas";
 import type { DestinationChoices, EventChoice, RouteChoice, TravelDestinationEvent, TravelDestinationPlace } from "../../domain/travel-destinations";
 import {
-  blockedWays, cardOfTarget, cardTarget, chooseArrangement, chooseWay, nearestIndex, photoCardEntries, photoCardLabel, rowCards, STAY_CARD_ID,
-  stepIndex, syncRow, TOUR_CARD_ID,
+  blockedWays, cardOfTarget, cardTarget, chooseArrangement, chooseWay, eventKindJa, nearestIndex, photoCardEntries, photoCardLabel, rowCards,
+  STAY_CARD_ID, stepIndex, syncRow, TOUR_CARD_ID,
 } from "./photo-cards";
 
 const way = (mode: string, minutes: number, cost: number, reason?: string): RouteChoice =>
@@ -98,6 +98,11 @@ describe("the row of cards", () => {
 });
 
 describe("reading and moving through the cards", () => {
+  it("tags each event in the selected place's card as the story or a date, in words", () => {
+    expect(eventKindJa("main")).toBe("ストーリー");
+    expect(eventKindJa("date")).toBe("デート");
+  });
+
   it("reads a card's position, name and marks", () => {
     expect(photoCardLabel({ position: 2, count: 13, name: "ガッレリア" })).toBe("13件中2件目、ガッレリア");
     expect(photoCardLabel({ position: 1, count: 3, name: "最後の晩餐", marks: ["おすすめ", "今は行けない"] }))

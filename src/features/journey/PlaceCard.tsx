@@ -8,8 +8,7 @@ import { getTravelWaitOptions, type EventChoice, type RouteChoice } from "../../
 import { getTravelEventDefinition, type TravelMode } from "../../domain/travel-game";
 import { compareRouteTime } from "../../domain/travel-routes";
 import { withNames } from "../romance/names";
-import { getTravelEventDescription } from "./DestinationRow";
-import { blockedWays, chooseWay, type PhotoCardEntry } from "./photo-cards";
+import { blockedWays, chooseWay, eventKindJa, type PhotoCardEntry } from "./photo-cards";
 import { PlaceInsetMap } from "./PlaceInsetMap";
 import { placeDisplayName } from "./travel-labels";
 import { formatTravelTime } from "./travel-time";
@@ -29,11 +28,12 @@ function CardName({ id, name, heading }: { id: string; name: string; heading: bo
 }
 
 /**
- * The selected place's introduction card (B案): its name, then for each of its events the AP (when it takes some),
- * time and admission, the author's one line (only text the content already has) and the way to go (with several
- * events, each under its title); the return reserve, and the small map of the current place and this one. Only the
- * way buttons travel, through the shared selection's pressRoute (its arming waits out a double tap), and only while
- * this place is the selection.
+ * The selected place's introduction card (B案): its name, the place's own description (`descriptionJa` of the travel
+ * place: general tourist information, never an event's teaser; none, no line), then for each of its events its tag
+ * (「ストーリー」 or 「デート」), the AP (when it takes some), time and admission and the way to go (with several events,
+ * each tag beside its title); the return reserve, and the small map of the current place and this one. Only the way
+ * buttons travel, through the shared selection's pressRoute (its arming waits out a double tap), and only while this
+ * place is the selection.
  */
 export function PlaceCard({ game, entry, api, scope = "page", map = true, heading = true }: {
   game: GameState;
@@ -57,6 +57,7 @@ export function PlaceCard({ game, entry, api, scope = "page", map = true, headin
   return <section className={`place-card${entry.available ? "" : " is-unavailable"}`} data-testid="place-card" data-place-id={place.id}
     data-armed={selected && api.armed ? "true" : undefined} aria-labelledby={`${id}-name`}>
     <CardName id={`${id}-name`} name={name} heading={heading} />
+    {place.descriptionJa && <p className="place-card-hook">{place.descriptionJa}</p>}
     {entry.events.map((choice) => <PlaceEvent key={choice.event.id} game={game} placeId={place.id} choice={choice} titled={entry.events.length > 1}
       isCurrent={isCurrent} selected={selected} api={api} scope={scope} />)}
     {reserve > 0 && <p className="place-card-note">帰路用に{formatMoneyForCity(cityId, reserve)}を確保（所持金に含む）</p>}
@@ -67,7 +68,10 @@ export function PlaceCard({ game, entry, api, scope = "page", map = true, headin
   </section>;
 }
 
-/** One event at the place: its title (only beside another event), AP, time and admission, its one line and its way. */
+/**
+ * One event at the place: its tag (before its title when the place has several events, else at the start of its AP,
+ * time and admission line), and its way.
+ */
 function PlaceEvent({ game, placeId, choice, titled, isCurrent, selected, api, scope }: {
   game: GameState;
   placeId: string;
@@ -80,16 +84,15 @@ function PlaceEvent({ game, placeId, choice, titled, isCurrent, selected, api, s
 }) {
   const { event } = choice;
   const definition = getTravelEventDefinition(game, event.id) ?? event;
-  const description = getTravelEventDescription(event.id);
+  const tag = <span className={`place-card-tag${event.category === "date" ? " is-date" : ""}`}>{eventKindJa(event.category)}</span>;
   const meta = [
     definition.apCost ? `AP ${definition.apCost}` : null,
     `${definition.activityMinutes}分`,
     definition.admissionCost ? `入場料 ${formatMoneyForCity(game.currentCityId, definition.admissionCost)}` : null,
   ].filter((part) => part !== null).join(" · ");
   return <div className="place-card-event" data-testid={`place-event-${event.id}`}>
-    {titled && <p className="place-card-event-title">{event.category === "main" ? "◇ 観光" : "♡ デート"} · {withNames(event.titleJa, game)}</p>}
-    <p className="place-card-event-meta">{meta}</p>
-    {description && <p className="place-card-hook">{withNames(description, game)}</p>}
+    {titled && <p className="place-card-event-title">{tag}{withNames(event.titleJa, game)}</p>}
+    <p className="place-card-event-meta">{!titled && tag}{meta}</p>
     <WayPicker cityId={game.currentCityId} placeId={placeId} eventId={event.id} routes={choice.routes} isCurrent={isCurrent} selected={selected} api={api} scope={scope} />
   </div>;
 }
