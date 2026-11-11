@@ -117,6 +117,7 @@ import { relationshipChange, type RelationshipChange } from "../domain/relations
 import { RelationshipChangeNote } from "../components/RelationshipChangeNote";
 import { sceneConditionTruths } from "../domain/scene-conditions";
 import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
+import { portraitFocus } from "../components/speaker-focus";
 
 /** Where a Debug relationship change shows (decision 23): the story scene on screen, else the map or free time until the next action. */
 function changeScreenKey(state: GameState): string {
@@ -579,8 +580,8 @@ export function GameApp({
                 const showEnemy = enemy || (hasEmotion && frame.speaker === "enemy");
                 if (!showHeroine && !showEnemy) return undefined;
                 return {
-                  ...(showHeroine ? { heroine: { emotion: heroine?.expression ?? (heroineSpeaking ? frame.emotion : "neutral"), mark: heroine?.mark, active: frame.speaker === "heroine" } } : {}),
-                  ...(showEnemy ? { enemy: { emotion: enemy?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral"), mark: enemy?.mark, active: frame.speaker === "enemy" } } : {}),
+                  ...(showHeroine ? { heroine: { emotion: heroine?.expression ?? (heroineSpeaking ? frame.emotion : "neutral"), mark: heroine?.mark, focus: portraitFocus(frame.speaker, "heroine") } } : {}),
+                  ...(showEnemy ? { enemy: { emotion: enemy?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral"), mark: enemy?.mark, focus: portraitFocus(frame.speaker, "enemy") } } : {}),
                 };
               })(),
               // A scene at no landmark (a date's, the hotel's, a trip's…; stage 4): in a tour's car (its leg's narration

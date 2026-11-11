@@ -5,8 +5,7 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  opacity: .86;
-  transition: opacity 180ms ease;
+  transition: opacity 180ms ease, scale var(--motion-fast) var(--ease-out);
   /* A character who comes into the scene fades in (a change of expression does not: the
      portrait stays, only its picture changes). */
   animation: vn-character-in var(--motion-medium) var(--ease-out);
@@ -14,7 +13,12 @@
 @keyframes vn-character-in {
   from { opacity: 0; }
 }
-.vn-character.is-speaking { opacity: 1; }
+/* While a line is read (speaker-focus.ts): its speaker comes slightly forward, the others
+   listen, slightly dimmed; narration leaves everyone as they are. `scale` is its own
+   property: it adds to the placement's transform (inline) about the same origin, and moves
+   nothing else on the screen. */
+.vn-character.is-speaking { scale: 1.04; }
+.vn-character.is-listening { opacity: .86; }
 .vn-character img, .vn-character svg {
   display: block;
   width: 100%;
@@ -22,7 +26,10 @@
   object-fit: contain;
   object-position: center bottom;
 }
-.reduce-motion .vn-character { animation: none; }
+/* Under reduced motion no one moves forward; the listeners' dimming stays. */
+.reduce-motion .vn-character { animation: none; transition: none; }
+.reduce-motion .vn-character.is-speaking { scale: none; }
 @media (prefers-reduced-motion: reduce) {
   .vn-character { transition: none; animation: none; }
+  .vn-character.is-speaking { scale: none; }
 }

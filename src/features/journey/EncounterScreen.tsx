@@ -9,6 +9,7 @@ import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "..
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { useSceneTap } from "../../components/useSceneTap";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
+import type { PortraitFocus } from "../../components/speaker-focus";
 import { ComicEffect } from "../../components/ComicEffect";
 import type { ReactionMark } from "../../content/dialogue-reactions";
 import type { LineDelivery } from "../../content/tags";
@@ -40,7 +41,7 @@ export type EncounterScreenView = {
   finishLabel?: string;
   /** The heading's tag (a running tour's 「ツアー・見学」). */
   badgeJa?: string;
-  portraits?: Partial<Record<"heroine" | "enemy", { emotion: string; mark?: ReactionMark; active: boolean }>>;
+  portraits?: Partial<Record<"heroine" | "enemy", { emotion: string; mark?: ReactionMark; focus?: PortraitFocus }>>;
   cityId: string;
   sceneId?: string;
   quiz?: {
@@ -101,7 +102,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
         {(["heroine", "enemy"] as const).map((id) => {
           const portrait = view.portraits?.[id];
           return portrait && <div className={`encounter-character-slot encounter-character-${id}`} key={id}>
-            <CharacterPortrait characterId={id} cityId={view.cityId} sceneId={view.sceneId} emotion={portrait.emotion} active={portrait.active}>
+            <CharacterPortrait characterId={id} cityId={view.cityId} sceneId={view.sceneId} emotion={portrait.emotion} focus={portrait.focus}>
               {portrait.mark && <ComicEffect effect={portrait.mark} reduceMotion={reduceMotion} cueKey={String(view.revision)} />}
             </CharacterPortrait>
           </div>;

@@ -7,6 +7,7 @@ import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
+import { portraitFocus } from "../../components/speaker-focus";
 import { ComicEffect } from "../../components/ComicEffect";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { useDialogueLog } from "../../components/DialogueLog";
@@ -157,7 +158,7 @@ export function RomanceScene({
           sceneId={active.dateId}
           cityId={game.currentCityId}
           emotion={emotion}
-          active={frame.speaker === "heroine"}
+          focus={portraitFocus(frame.speaker, "heroine")}
         >
           {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
         </CharacterPortrait>

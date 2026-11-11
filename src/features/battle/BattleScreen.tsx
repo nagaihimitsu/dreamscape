@@ -15,6 +15,7 @@ import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { CanalScene } from "../../components/CanalScene";
 import { SceneHeading, SceneNotebookTool } from "../../components/SceneHeading";
 import { CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
+import { portraitFocus } from "../../components/speaker-focus";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { EnemyPortrait } from "./EnemyPortrait";
@@ -375,7 +376,7 @@ export function BattleScreen({
                 sceneId={battle.id}
                 cityId={battle.cityId ?? landmarks.find((item) => item.id === battle.landmarkId)?.cityId}
                 emotion={heroineEmotion}
-                active={frame?.speaker === "heroine"}
+                focus={portraitFocus(frame?.speaker, "heroine")}
               >
                 {heroineReaction?.mark && <ComicEffect effect={heroineReaction.mark} reduceMotion={reduceMotion} cueKey={displayedStoryState ?? ""} />}
               </CharacterPortrait>
@@ -385,7 +386,7 @@ export function BattleScreen({
             <CharacterPortrait
               characterId={characterForBattle(battle.id)}
               emotion={enemyEmotion}
-              active={frame?.speaker === "enemy"}
+              focus={portraitFocus(frame?.speaker, "enemy")}
               fallback={battle.portrait === "abstract" ? undefined :
                 <EnemyPortrait
                   emotion={enemyEmotion}

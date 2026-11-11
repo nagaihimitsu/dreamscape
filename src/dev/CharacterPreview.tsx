@@ -135,7 +135,7 @@ export default function CharacterPreview() {
         <div className="preview-guides" aria-hidden="true" />
         <div className="vn-character-layer">
           <CharacterPortrait key={`${costumeId}/${poseId}/${emotion}`} characterId="heroine" costume={costumeId || undefined} pose={poseId || undefined}
-            emotion={emotion} active onImageError={setFailedPath} />
+            emotion={emotion} onImageError={setFailedPath} />
         </div>
         {showDialogue && (
           <div className="vn-dialogue preview-dialogue">

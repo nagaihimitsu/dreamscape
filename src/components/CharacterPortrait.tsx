@@ -8,6 +8,7 @@ import {
   characterPlacement,
   resolveCharacterCostume,
 } from "../content/character-assets";
+import type { PortraitFocus } from "./speaker-focus";
 import "./character-portrait.css";
 
 const catalog = characterCatalogSchema.parse(characterData);
@@ -21,7 +22,7 @@ export function characterForBattle(battleId: string): string {
 /** A decorative layer. Position and image are independent of the Ink story. */
 export function CharacterPortrait({
   characterId, emotion, costume, pose, sceneId, cityId, countryId, regionId,
-  active = false, fallback, onImageError, children,
+  focus, fallback, onImageError, children,
 }: {
   characterId: string;
   emotion?: string;
@@ -31,7 +32,8 @@ export function CharacterPortrait({
   cityId?: string;
   countryId?: string;
   regionId?: string;
-  active?: boolean;
+  /** Speaking (slightly forward) or listening (slightly dimmed) while a line is read; none for narration (portraitFocus). */
+  focus?: PortraitFocus;
   fallback?: ReactNode;
   onImageError?: (path: string) => void;
   children?: ReactNode;
@@ -50,7 +52,7 @@ export function CharacterPortrait({
   const image = characterImage(character, { ...selection, emotion });
   const neutral = characterImage(character, { ...selection, emotion: "neutral" });
   return (
-    <div className={`vn-character${active ? " is-speaking" : ""}`} aria-hidden="true" style={{
+    <div className={`vn-character${focus ? ` is-${focus}` : ""}`} aria-hidden="true" style={{
       left: `${placement.x}%`, bottom: `${placement.bottom}%`, width: `${placement.width}%`, height: `${placement.height}%`,
       transform: `translateX(-50%) scale(${placement.scale})`, transformOrigin: `${placement.originX}% ${placement.originY}%`,
     }}>
