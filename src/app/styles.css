@@ -42,6 +42,15 @@
   --ds-pill-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
   --ds-card-shadow: 0 2px 10px rgba(40, 30, 20, 0.18);
   --ds-window-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  /* Motion of the UI's feedback: short, transform and opacity only, and never holding
+     input back. Each animation that uses these stops, in its own stylesheet, under
+     prefers-reduced-motion and under the game's 「演出を短縮する」 (.reduce-motion on the
+     app shell). Only entrances are animated: what closes or leaves goes at once. */
+  --motion-fast: 160ms; /* a panel or a dialog opening, a notice */
+  --motion-medium: 260ms; /* a value or a mark that changed, a result appearing */
+  --motion-scene: 450ms; /* a scene's picture giving way to the next */
+  --motion-stagger: 40ms; /* between the items of a list appearing */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 * {
   box-sizing: border-box;
@@ -492,6 +501,18 @@ footer span {
   display: block;
   margin-left: auto;
 }
+/* A notice of the session (「現在の場面を保存しました。」, a learning record's error…) slides
+   down into its place as it appears; it goes at once when closed. */
+.app-shell > main > .notice {
+  animation: notice-in var(--motion-fast) var(--ease-out);
+}
+@keyframes notice-in {
+  from { opacity: 0; transform: translateY(-6px); }
+}
+.app-shell.reduce-motion > main > .notice { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .app-shell > main > .notice { animation: none; }
+}
 @media (max-width: 600px) {
   .app-shell > main > .notice {
     display: flex;
@@ -899,6 +920,20 @@ dialog.modal {
 dialog.modal::backdrop {
   background: rgba(20, 24, 32, 0.72);
   backdrop-filter: blur(4px);
+}
+/* A dialog rises into place as it opens (only its frame: the blurred backdrop comes at
+   once). It closes at once, so a quick second tap lands on what it leaves behind, as
+   before. The rise is a few pixels and never a scale: a point read from it at once
+   still falls on its buttons, and the expanded map's Leaflet keeps its scale. */
+dialog.modal[open] {
+  animation: modal-in var(--motion-fast) var(--ease-out);
+}
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+.reduce-motion dialog.modal[open] { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  dialog.modal[open] { animation: none; }
 }
 
 /* In free time, the next stop and the available dates are the primary
