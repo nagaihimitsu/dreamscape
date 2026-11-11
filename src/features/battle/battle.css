@@ -823,6 +823,13 @@
   right: auto;
   left: 25%;
 }
+/* An opponent drawn on the heroine's 2:3 canvas (a journey's characters.json portrait, placed like hers):
+   the mark sits by the head as hers does, on the inner side so it stays on the screen. */
+.battle-enemy .vn-character:has(> img) .comic-effect {
+  top: max(3%, calc(100% - 150cqw));
+  left: auto;
+  right: calc(50% + min(4vw, 5dvh, 15px));
+}
 @media (orientation: landscape) and (max-height: 420px) {
   /* On a short landscape display the dialogue sits higher; lift each portrait
      enough to keep its face above the reading window. */
@@ -830,6 +837,10 @@
   .battle-screen[data-phase="dialogue"] .battle-enemy {
     transform: translateY(-7dvh) scale(.76);
     transform-origin: center top;
+  }
+  /* A drawn opponent stands as large as the heroine, beside her. */
+  .battle-screen[data-phase="dialogue"] .battle-enemy:has(.vn-character > img) {
+    transform: translateY(-22dvh);
   }
   .battle-heroine .vn-character .comic-effect {
     top: 0;
