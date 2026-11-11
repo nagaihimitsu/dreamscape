@@ -154,7 +154,7 @@ export type FrameStaging = Pick<StoryFrame, "recall" | "phone" | "letter" | "qui
  * - when no new line was read (the story stopped at a choice or its end first), the line on screen is the previous
  *   one: it keeps that line's recall, phone, letter and quiet.
  */
-export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<StoryFrame, "speaker" | "text">) | undefined,
+export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<StoryFrame, "speaker" | "speakerPersonId" | "text">) | undefined,
   lineRead: boolean): FrameStaging {
   const stand = tagged.stand ?? previous?.stand;
   const shown = (staging: FrameStaging): FrameStaging => Object.fromEntries(Object.entries({ ...staging, stand })
