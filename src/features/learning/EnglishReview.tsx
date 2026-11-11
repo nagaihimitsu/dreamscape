@@ -186,9 +186,7 @@ export function EnglishReview({
               className="review-question"
               data-testid="review-question"
             >
-              <p className="english-instructions">
-                単語を押すと意味、同じ単語をもう一度押すと文の訳。
-              </p>
+              {/* No 「単語を押すと意味…」 line (2026-11-11, the user's decision): the words' dotted underline shows they can be pressed. */}
               <h3>
                 <InteractiveEnglish
                   text={question.questionEn}
