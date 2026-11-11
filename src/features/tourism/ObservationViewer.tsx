@@ -340,7 +340,9 @@ export function ObservationViewer({
         </button>
         <button type="button" className="primary observation-proceed" data-testid="observation-proceed" onClick={onProceed}>進む</button>
       </div>
-      <p id="observation-help" className="observation-help">
+      {/* For screen readers only (2026-11-11, the user's decision): on screen the numbered marks not yet found
+          call for a tap with a ring that spreads as the observation opens (observation.css). */}
+      <p id="observation-help" className="sr-only">
         番号をタップ。2本指で拡大、ドラッグで移動。キーボードでは矢印キーで移動できます。
       </p>
     </div>

@@ -340,17 +340,8 @@
   }
   .mobile-observation-active .observation-controls { flex: 1 1 0; }
   .mobile-observation-active .observation-options { flex: none; }
-  .mobile-observation-active .observation-help {
-    display: block;
-    flex: 0 0 100%;
-    font-size: 11px;
-    line-height: 1.35;
-  }
   /* The image and the explanation have separate space: neither covers the
      selected point, and the picture stays draggable while the clue is open. */
-  .mobile-observation-active .tourism-observation:has(.observation-detail) .observation-help {
-    display: none;
-  }
   .mobile-observation-active .observation-detail {
     flex: 0 1 auto;
     min-height: 0;
@@ -491,6 +482,5 @@
   .mobile-observation-active .observation-viewport {
     height: clamp(250px, 43dvh, 440px);
   }
-  .mobile-observation-active .observation-help { display: none; }
   .mobile-observation-active .observation-detail { flex: none; }
 }

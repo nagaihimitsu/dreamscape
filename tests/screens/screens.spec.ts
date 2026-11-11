@@ -104,7 +104,7 @@ const flows: FlowScene[] = [
     await expect(page.getByTestId("dialogue-text")).toBeVisible();
     await ops.settled(page);
   } },
-  { scene: "flow-dialogue-hidden", titleJa: "会話の窓を隠した状態", descriptionJa: "対決の会話で「隠す」（タップして会話を表示）", open: async (page) => {
+  { scene: "flow-dialogue-hidden", titleJa: "会話の窓を隠した状態", descriptionJa: "対決の会話で「隠す」（下の目の印で会話を表示）", open: async (page) => {
     await toBattle(page);
     await ops.settled(page);
     await ops.hideDialogueWindow(page);

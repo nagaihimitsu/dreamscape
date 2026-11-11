@@ -458,12 +458,6 @@ footer span {
   color: var(--gold);
   margin-bottom: 12px;
 }
-.choice-hint span {
-  font-size: 10px;
-  display: block;
-  color: var(--muted);
-  margin-top: 3px;
-}
 .choices {
   border-top: 1px solid var(--line);
   padding-top: 20px;
