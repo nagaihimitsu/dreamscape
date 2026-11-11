@@ -45,11 +45,11 @@
   /* Motion of the UI's feedback: short, transform and opacity only, and never holding
      input back. Each animation that uses these stops, in its own stylesheet, under
      prefers-reduced-motion and under the game's 「演出を短縮する」 (.reduce-motion on the
-     app shell). Only entrances are animated: what closes or leaves goes at once. */
-  --motion-fast: 160ms; /* a panel or a dialog opening, a notice */
-  --motion-medium: 260ms; /* a value or a mark that changed, a result appearing */
+     app shell). What closes or leaves is never animated: it goes at once. */
+  --motion-fast: 160ms; /* a panel, a dialog, a notice or a choice coming in */
+  --motion-medium: 260ms; /* a value or a mark that changed, a character or a result coming in */
   --motion-scene: 450ms; /* a scene's picture giving way to the next */
-  --motion-stagger: 40ms; /* between the items of a list appearing */
+  --motion-stagger: 40ms; /* between the items of a list coming in */
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 * {
