@@ -662,9 +662,12 @@ export type BattleChrome = {
   choosing: boolean;
   /** The 「次へ進む」 (or 「問題へ進む」, 「結果を見る」) button under the line: the end of a part (before a call, the result, or a part's end before the first stop). */
   advance: { label: string; testId: "battle-advance" | "reasoning-rebuttal-advance" } | null;
-  /** 手がかり帳 in the header (shown at a choice: hud-view.ts), and 「回答した問題を振り返る」. */
+  /**
+   * 手がかり帳 in the header, the battle's only one (user decision 2026-11-11): the header shows it at a choice
+   * (hud-view.ts: the talk's choices, a question, the reasoning stop) and keeps its room otherwise. Never during a
+   * rebuttal, which leads straight into the proof.
+   */
   notebookTab: boolean;
-  reviewAnswers: boolean;
 };
 /** The chrome of the battle screen now. */
 export function battleChrome(active: ActiveBattle, battle: BattleDefinition): BattleChrome {
@@ -677,9 +680,7 @@ export function battleChrome(active: ActiveBattle, battle: BattleDefinition): Ba
     rebuttal,
     choosing: stop === "choices",
     advance: dialogue && partEnd ? { label, testId: rebuttal ? "reasoning-rebuttal-advance" : "battle-advance" } : null,
-    notebookTab: dialogue && !rebuttal,
-    // The rebuttal leads straight into the proof's screen, which has its own.
-    reviewAnswers: active.phase !== "result" && active.phase !== "reasoning" && !rebuttal && active.answers.length > 0,
+    notebookTab: !rebuttal,
   };
 }
 

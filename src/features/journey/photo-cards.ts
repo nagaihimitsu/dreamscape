@@ -1,8 +1,9 @@
 // B案「写真札で旅先を選ぶ」 (docs/02 「自由時間の画面」), its rules as pure functions: the row of cards (each place with
 // all its events, then the tour and 「ホテルに戻る」), the selection each card stands for, the way a card's button takes,
-// how a card is read out, how the arrow keys and a flick move the choice, and when the cards stand in a vertical list.
-// The game's rules stay where they are: these only arrange what getTravelDestinations and destinationChoicesOf say.
-import type { DestinationChoices, EventChoice, RouteChoice, TravelDestinationPlace } from "../../domain/travel-destinations";
+// the tag that says what an event is, how a card is read out, how the arrow keys and a flick move the choice, and when
+// the cards stand in a vertical list. The game's rules stay where they are: these only arrange what
+// getTravelDestinations and destinationChoicesOf say.
+import type { DestinationChoices, EventChoice, RouteChoice, TravelDestinationEvent, TravelDestinationPlace } from "../../domain/travel-destinations";
 import type { TravelMode } from "../../domain/travel-game";
 import { compareRouteTime } from "../../domain/travel-routes";
 import { announcement, sameTarget, type SelectionTarget, type TargetChoices } from "./travel-selection";
@@ -90,6 +91,11 @@ export function blockedWays(routes: readonly RouteChoice[]): { modes: TravelMode
   const lines = new Map<string, TravelMode[]>();
   for (const choice of routes) if (!choice.available) lines.set(choice.reason ?? "", [...(lines.get(choice.reason ?? "") ?? []), choice.route.mode]);
   return [...lines].map(([reason, modes]) => ({ modes, reason }));
+}
+
+/** The tag of an event in the selected place's card, in words: 「ストーリー」 (sightseeing, the main story) or 「デート」. */
+export function eventKindJa(category: TravelDestinationEvent["category"]): string {
+  return category === "date" ? "デート" : "ストーリー";
 }
 
 /** What a screen reader reads for a card: 「13件中2件目、ガッレリア」, then its marks (おすすめ, 訪問済み, 今は行けない …). */

@@ -1372,6 +1372,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   for (const { city: current, travel, travelFile, settingsFile, transit, transitFile, settings } of travels) {
     const episodes = journey.episodes.filter((episode) => episode.cityId === current.id);
     const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id));
+    // The travel file's Japanese fields (a place's description, the sources' claims) without Japanese.
+    languageNotes.push(...dataLanguageWarnings(travelCatalogSchema, travel, travelFile));
     // checkContentOwnership keeps every city file in the folder of the journey that lists it.
     if (owner) {
       const transport = { journey: owner, manifestFile: manifestFiles.get(owner.id) };

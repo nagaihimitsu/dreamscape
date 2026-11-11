@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { currencyForCity, formatMoneyForCity } from "../content/currency";
 import { encounters } from "../content/encounters";
 import { getCities } from "../content";
@@ -13,7 +13,7 @@ import type { GameState } from "../domain/game";
 import { getGameWeekday, getTimePeriod } from "../domain/travel";
 import { placeDisplayName } from "../features/journey/travel-labels";
 import { formatTravelTime } from "../features/journey/travel-time";
-import { moneyLength, placeNameIsCut, weekdayLabel } from "./journey-hud-text";
+import { moneyLength, weekdayLabel } from "./journey-hud-text";
 import type { HudView } from "./hud-view";
 import { useMeasuredHeight } from "../components/useMeasuredHeight";
 import "./journey-hud.css";
@@ -46,25 +46,17 @@ type MenuActions = {
 /**
  * The header of every game screen (UI redesign §3.1): row 1 shows where and when
  * the couple are and what they have (display only; the budget above the AP at
- * the right end), row 2 holds what can be pressed: the held items, the screen's
- * own tool (free time's 「地図」, a guide's or a battle talk's 「手がかり帳」;
- * HudScreenTool) and ⚙設定 with セーブ・ロード・旅の記録・英語ノート・(free time)
- * 写真の出典・(a story scene) 画像の出典・ゲームの設定. Over a story scene that waits
- * for no choice (`view` "talk", hud-view.ts) the budget and AP, the held items and
- * the screen's tool keep their room but are not shown (journey-hud.css). Its
- * height is measured as `--hud-h` for the reserves of the scenes it lies over.
+ * the right end; the place name is never cut: it wraps), row 2 holds what can be
+ * pressed, side by side at its right end (user decision 2026-11-11): the held
+ * items, the screen's own tool (free time's 「地図」, a guide's or a battle's
+ * 「手がかり帳」; HudScreenTool) and ⚙設定 with セーブ・ロード・旅の記録・英語ノート・
+ * (free time) 写真の出典・(a story scene) 画像の出典・ゲームの設定. Over a story scene
+ * that waits for no choice (`view` "talk", hud-view.ts) the budget and AP, the held
+ * items and the screen's tool keep their room but are not shown (journey-hud.css).
+ * Its height is measured as `--hud-h` for the reserves of the scenes it lies over.
  */
 export function JourneyHud({ game, place, view, ...actions }: { game: GameState; place: TravelPlace | undefined; view: HudView } & MenuActions) {
   const measured = useMeasuredHeight("--hud-h");
-  const wrapsWhenCut = useWholePlaceName();
-  const header = useCallback((element: HTMLElement | null) => {
-    const unmeasure = measured(element);
-    const unwatch = wrapsWhenCut(element);
-    return () => {
-      unmeasure?.();
-      unwatch?.();
-    };
-  }, [measured, wrapsWhenCut]);
   const weekday = getGameWeekday(game.travel.calendar);
   const money = formatMoneyForCity(game.currentCityId, game.travelBudget);
   // This city's items, and those carried through the journey from an earlier city (the item design §2.6).
@@ -73,7 +65,7 @@ export function JourneyHud({ game, place, view, ...actions }: { game: GameState;
     .map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa, iconPath: item.iconPath,
       ...(item.cityId !== game.currentCityId ? { origin: `${getCities().find((city) => city.id === item.cityId)?.nameJa ?? item.cityId}から持ってきた` } : {}) }));
   return (
-    <div className="journey-hud" data-testid="journey-bar" data-view={view} ref={header} onMouseDown={keepFocusOffControls}>
+    <div className="journey-hud" data-testid="journey-bar" data-view={view} ref={measured} onMouseDown={keepFocusOffControls}>
       <div className="hud-status">
         <p className="hud-plate" data-testid="journey-context">
           <span className="hud-place"><Icon name="pin" /><span className="sr-only">現在地：</span>{placeDisplayName(game, place)}</span>
@@ -96,56 +88,6 @@ export function JourneyHud({ game, place, view, ...actions }: { game: GameState;
       </div>
     </div>
   );
-}
-
-/** Marks the header whose place name does not fit on one line (journey-hud.css). */
-const WHOLE_PLACE_ATTRIBUTE = "data-place-wraps";
-
-/**
- * The place name in the header is never cut (user decision 2026-11-09). It is
- * laid out on one line, and a name that line cannot hold, whatever the reason (a
- * long name, a long amount beside it, enlarged text, a narrow or a landscape
- * screen), gets WHOLE_PLACE_ATTRIBUTE on the header, whose CSS gives the name the
- * room it needs instead of cutting it: the money goes below it, the buttons of a
- * one-row header go to a row of their own, and a name wider than the whole row
- * wraps. The check lays the header out without the attribute and asks whether the
- * one-line clamp hides a line of the name (placeNameIsCut: glyphs reaching a pixel
- * past the line do not count), so a header whose name fits is laid out exactly as
- * before. It runs when the header is mounted (before it is painted), and again
- * when the header or the name changes size (the screen, the text size), when the
- * name or the amount changes, and when the web fonts arrive; those later checks
- * wait for the next frame, outside the observers' own callbacks.
- */
-function useWholePlaceName() {
-  return useCallback((header: HTMLElement | null) => {
-    const place = header?.querySelector<HTMLElement>(".hud-place");
-    if (!header || !place) return;
-    const check = () => {
-      header.removeAttribute(WHOLE_PLACE_ATTRIBUTE);
-      const lineHeight = parseFloat(getComputedStyle(place).lineHeight);
-      if (placeNameIsCut({ scrollHeight: place.scrollHeight, clientHeight: place.clientHeight, lineHeight })) {
-        header.setAttribute(WHOLE_PLACE_ATTRIBUTE, "");
-      }
-    };
-    let frame = 0;
-    const later = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(check);
-    };
-    check();
-    const resized = new ResizeObserver(later);
-    resized.observe(header);
-    resized.observe(place);
-    const changed = new MutationObserver(later);
-    changed.observe(header.querySelector(".hud-status") ?? header, { subtree: true, childList: true, characterData: true });
-    document.fonts?.addEventListener("loadingdone", later);
-    return () => {
-      cancelAnimationFrame(frame);
-      resized.disconnect();
-      changed.disconnect();
-      document.fonts?.removeEventListener("loadingdone", later);
-    };
-  }, []);
 }
 
 /**

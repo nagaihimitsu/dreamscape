@@ -15,7 +15,7 @@ export function SceneHeading({ label, badge }: { label: string; badge?: string }
 }
 
 /**
- * 手がかり帳 (S1, S6) of a sightseeing guide and of a battle's talk: the screen's
+ * 手がかり帳 (S1, S6) of a sightseeing guide and of a battle: the screen's
  * own tool in the header, before ⚙設定 (HudScreenTool). The header shows it only
  * while the scene waits for a choice (hud-view.ts).
  */
