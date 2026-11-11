@@ -324,6 +324,8 @@ export function BattleScreen({
       data-phase={isDialogue ? "dialogue" : active.phase}
       data-answer-settling={answerSettling || undefined}
       data-effect-active={active.phase === "feedback" && effectAnswer === answerKey || undefined}
+      // An ordinary quiz's wrong answer, saved in this screen, plays no stamp: its card gives a small shake (battle.css).
+      data-answer-missed={active.phase === "feedback" && !!answer && !answer.correct && !isSpecial && animatedAnswer === answerKey || undefined}
       data-reduce-motion={reduceMotion || undefined}
       data-dialogue-hidden={isDialogue && windowVisibility.hidden || undefined}
       {...sceneTap.props}
