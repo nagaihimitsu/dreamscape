@@ -256,6 +256,12 @@ test("the sample journey plays from a new journey through its city finale and ep
   // 6. The epilogue, then the end of the journey: its only city is cleared and its
   // ending read, there is no next city to leave for, and the travellers stay in free time.
   const ended = await playUntil(page, (state) => state.viewedEpilogueCityIds.includes(route.city.id) && !state.activeEpilogue && !state.occasion, { source, pick });
+  // The journey's end opens its credit roll (the city and its clear titles, the names); 「閉じる」 leaves it.
+  const roll = page.getByTestId("end-roll");
+  await expect(roll).toContainText(route.city.nameJa);
+  await expect(roll).toContainText(ended.playerName);
+  await page.getByTestId("end-roll-close").click();
+  await expect(roll).toHaveCount(0);
   await expect(menu).toBeVisible();
   expectNoActiveScene(ended);
   expect(ended).toMatchObject({ currentCityId: route.city.id, completedCityIds: [route.city.id], ap: finale.ap });

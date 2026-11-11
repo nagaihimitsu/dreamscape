@@ -1,24 +1,10 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { cityContents, presentation, tourismAssets } from "../../content";
-import { getJourneyForCity } from "../../content/journeys";
-import { albumImageAsset } from "../../content/photo-choice";
 import { ImageCredit } from "../../components/ImageCredit";
 import { Modal, ModalTitle } from "../../components/Modal";
 import type { AlbumPhoto } from "../../domain/album-state";
-import { albumPages, albumSwipeStep, initialAlbumPage, type AlbumContent, type AlbumPhotoView } from "./album-pages";
+import { albumPages, albumSwipeStep, initialAlbumPage, type AlbumPhotoView } from "./album-pages";
+import { journeyAlbumContent } from "./journey-moments";
 import "./album.css";
-
-/** The journey's cities in order and the credited photos, from the generated content. */
-function journeyAlbumContent(currentCityId: string): AlbumContent {
-  const cityIds = getJourneyForCity(currentCityId)?.cities.map((city) => city.id) ?? [currentCityId];
-  return {
-    cities: cityIds.flatMap((id) => {
-      const content = cityContents[id];
-      return content ? [{ id, nameJa: content.city.nameJa, hotelPlaceId: content.travelSettings.hotelPlaceId, places: content.travel.places }] : [];
-    }),
-    assetOf: (imageId) => albumImageAsset({ assets: tourismAssets, backgrounds: presentation.backgrounds }, imageId),
-  };
-}
 
 const CREDIT_SUMMARY_JA = "画像の説明・出典と利用条件";
 const imageSource = (photo: AlbumPhotoView) => `${import.meta.env.BASE_URL}${photo.asset.path}`;
