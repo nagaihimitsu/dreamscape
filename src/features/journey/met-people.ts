@@ -1,5 +1,6 @@
 import { cityContents, scenes, storyState } from "../../content";
 import { getJourneyForCity } from "../../content/journeys";
+import { INSERTED_KINDS } from "../../content/scene-schemas";
 import type { GameState } from "../../domain/game";
 import { withNames } from "../romance/names";
 
@@ -13,10 +14,15 @@ function journeyCityIds(game: Readonly<GameState>): string[] {
   return getJourneyForCity(game.currentCityId)?.cities.map((city) => city.id) ?? [game.currentCityId];
 }
 
-/** Whether the current journey declares anyone to meet (progression/story.json `people` of its cities). */
+/**
+ * Whether the current journey has anyone to meet: a person of its cities (progression/story.json `people`)
+ * named in a talk's or an encounter's `# person:`, the scenes whose seeing the `met` rule reads. A person
+ * named only in an arrival or epilogue (for their portrait) is never listed, so they do not open the section.
+ */
 export function declaresPeople(game: Readonly<GameState>): boolean {
   const cityIds = journeyCityIds(game);
-  return storyState.people.some((person) => cityIds.includes(person.cityId));
+  return storyState.people.some((person) => cityIds.includes(person.cityId) &&
+    scenes.some((scene) => INSERTED_KINDS.includes(scene.kind) && scene.people.includes(person.id)));
 }
 
 /**
