@@ -15,7 +15,7 @@ import { conditionLeaves, conditionSchema, leafKind, leafReference } from "../sr
 
 type Namespace =
   | "city" | "landmark" | "asset" | "clue" | "battle" | "episode" | "reward" | "date" | "destination" | "effect"
-  | "background" | "memory" | "story" | "quiz" | "question" | "encounter" | "item";
+  | "background" | "memory" | "story" | "quiz" | "question" | "encounter" | "item" | "localWord";
 /** A reference: what it points to, through which field, and the referenced ID(s). */
 type Reference = { namespace: Namespace | readonly Namespace[]; field: string; ids: unknown };
 type Definition = { layer: string; file: string; cityId?: string };
@@ -71,6 +71,7 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
     entries: (entry) => [...fields(entry, "encounter", ["encounterId"]), ...conditionReferences(entry.when, "when")],
   },
   "learning/details.json": { questions: (entry, key) => [ref("question", "question ID", key), ...fields(entry, "story", ["storyId"])] },
+  "learning/local-words.json": { words: (entry) => fields(entry, "city", ["cityId"]) },
   "learning/translations.json": { questions: (_, key) => [ref("question", "question ID", key)] },
   "presentation/characters.json": {
     battleCharacters: (_, key) => [ref("battle", "battle ID", key)],
@@ -124,12 +125,14 @@ const DEFINITIONS: [MergedKind, string, Namespace][] = [
   ["romance/effect_catalog.json", "effects", "effect"],
   ["encounters/catalog.json", "encounters", "encounter"],
   ["encounters/catalog.json", "items", "item"],
+  ["learning/local-words.json", "words", "localWord"],
 ];
 
-/** `# background: id` and `# effect: id` tags of an Ink source. */
+/** `# background: id`, `# effect: id` and `# local_word: id` tags of an Ink source. */
 function inkTagReferences(source: string): Reference[] {
-  return [...source.matchAll(/#\s*(background|effect)\s*:\s*([A-Za-z0-9_]+)/gu)]
-    .map(([, tag, id]) => ref(tag === "background" ? "background" : "effect", `#${tag}`, id));
+  const namespaces: Record<string, Namespace> = { background: "background", effect: "effect", local_word: "localWord" };
+  return [...source.matchAll(/#\s*(background|effect|local_word)\s*:\s*([A-Za-z0-9_]+)/gu)]
+    .map(([, tag, id]) => ref(namespaces[tag], `#${tag}`, id));
 }
 
 /** A served image (a path below public/, e.g. `assets/tourism/x.webp`) that a content file refers to. */

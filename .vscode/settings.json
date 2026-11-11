@@ -92,6 +92,13 @@
     },
     {
       "fileMatch": [
+        "/content/journeys/*/learning/local-words.json",
+        "/authoring/templates/*/learning/local-words.json"
+      ],
+      "url": "./authoring/schemas/learning-local-words.schema.json"
+    },
+    {
+      "fileMatch": [
         "/content/journeys/*/learning/translations.json",
         "/authoring/templates/*/learning/translations.json"
       ],

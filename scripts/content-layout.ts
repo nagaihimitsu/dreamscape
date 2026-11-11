@@ -65,6 +65,8 @@ export const CATALOG_RULES = [
   { kind: "encounters/catalog.json", fields: { schemaVersion: same, items: concat, encounters: concat } },
   { kind: "encounters/entry-rules.json", fields: entries, schemaVersion: 2 },
   { kind: "learning/details.json", fields: { schemaVersion: same, questions: record } },
+  // The words of the countries visited (optional; src/content/local-words.ts).
+  { kind: "learning/local-words.json", fields: { schemaVersion: same, words: concat } },
   { kind: "learning/translations.json", fields: { schemaVersion: same, questions: record } },
   { kind: "learning/word-meanings.json", fields: { schemaVersion: same, words: { mode: "record", equalDuplicates: true } } },
   {

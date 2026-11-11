@@ -11,6 +11,8 @@ import type { Learning } from "./useLearning";
 import { InteractiveEnglish } from "./InteractiveEnglish";
 import { toggleTranslation, type Part } from "./Translations";
 import { WordBook } from "./WordBook";
+import { LocalWords } from "./LocalWords";
+import { localWordGroups } from "./local-words";
 import "./learning.css";
 
 export function answeredQuestions(game: GameState, learning: Learning) {
@@ -39,16 +41,22 @@ export function answeredQuestions(game: GameState, learning: Learning) {
 export function EnglishReview({
   game,
   learning,
+  learnedWords = [],
   onClose,
 }: {
   game: GameState;
   learning: Learning;
+  /** The words of the country learned on this device in this journey (useLocalWords), in the order learned. */
+  learnedWords?: readonly string[];
   onClose: () => void;
 }) {
   const [markedOnly, setMarkedOnly] = useState(false);
-  // 「問題」 (the answered questions) or 「単語帳」 (their words by place; 2026-11-11 user decision). In this view only.
-  const [view, setView] = useState<"questions" | "words">("questions");
+  // 「問題」 (the answered questions), 「単語帳」 (their words by place) or 「その国の言葉」 (the words of the country
+  // learned, by city; 2026-11-11 user decisions). In this view only; a view with nothing to show has no button.
+  const [view, setView] = useState<"questions" | "words" | "local">("questions");
   const allEntries = answeredQuestions(game, learning);
+  const localGroups = localWordGroups(learnedWords);
+  const shown = view === "words" && allEntries.length > 0 ? "words" : view === "local" && localGroups.length > 0 ? "local" : "questions";
   const entries = markedOnly
     ? allEntries.filter((item) => learning.isMarked(item.question.id))
     : allEntries;
@@ -101,13 +109,14 @@ export function EnglishReview({
       className="english-review"
     >
       <ModalTitle id="english-review-title" className="english-review-header" onClose={onClose}>英語ノート</ModalTitle>
-      {allEntries.length > 0 && (
+      {(allEntries.length > 0 || localGroups.length > 0) && (
         <div className="review-views" role="group" aria-label="ノートの見方">
-          <button type="button" className="secondary" aria-pressed={view === "questions"} onClick={() => setView("questions")}>問題</button>
-          <button type="button" className="secondary" aria-pressed={view === "words"} onClick={() => setView("words")}>単語帳</button>
+          <button type="button" className="secondary" aria-pressed={shown === "questions"} onClick={() => setView("questions")}>問題</button>
+          {allEntries.length > 0 && <button type="button" className="secondary" aria-pressed={shown === "words"} onClick={() => setView("words")}>単語帳</button>}
+          {localGroups.length > 0 && <button type="button" className="secondary" aria-pressed={shown === "local"} onClick={() => setView("local")}>その国の言葉</button>}
         </div>
       )}
-      {view === "words" && allEntries.length > 0 ? <WordBook answered={allEntries} /> : <>
+      {shown === "words" ? <WordBook answered={allEntries} /> : shown === "local" ? <LocalWords groups={localGroups} /> : <>
       {!selected && <p>回答済みの問題を振り返れます。復習しても得点やAPは変わりません。</p>}
       {!allEntries.length && <p>まだ回答済みの問題はありません。</p>}
       {!game.activeBattle &&

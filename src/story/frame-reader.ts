@@ -18,6 +18,8 @@ export interface StoryFrame {
   delivery?: LineDelivery;
   /** The line's `# photo:` (and `# photo_caption:`): the photo it puts in the album when shown (only the line it is written on). */
   photo?: StoryPhoto;
+  /** The line's `# local_word:` words (only the line it is written on): GameApp learns them as the line is shown. */
+  localWordIds?: string[];
   /** A battle's call (`# call:`, stage 5) is a choice the game takes itself: its screen shows no choice. */
   choices: { index: number; text: string; optionId?: string; translationJa?: string; call?: StoryCall }[];
   ended: boolean;
@@ -83,6 +85,7 @@ function readTags(
   }
   if (parsed.delivery) frame.delivery = { ...frame.delivery, ...parsed.delivery };
   if (parsed.photo) frame.photo = parsed.photo;
+  if (parsed.localWordIds) frame.localWordIds = [...new Set([...(frame.localWordIds ?? []), ...parsed.localWordIds])];
   events.push(...parsed.effects);
 }
 

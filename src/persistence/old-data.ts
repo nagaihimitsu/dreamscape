@@ -1,5 +1,5 @@
 import { journeys } from "../content/journeys";
-import { LEARNING_KEY, READ_LINES_KEY, SAVE_KEY, isSaveBackupKey, loadGame, saveBackupTime } from "./index";
+import { LEARNING_KEY, LOCAL_WORDS_KEY, READ_LINES_KEY, SAVE_KEY, isSaveBackupKey, loadGame, saveBackupTime } from "./index";
 import { journeyPhysicalKey, parseJourneyPhysicalKey } from "./journey-storage";
 import { runWithSlotLocks, slotLockName, type LockedRun, type LockManagerLike } from "./journey-lock";
 
@@ -14,11 +14,11 @@ import { runWithSlotLocks, slotLockName, type LockedRun, type LockManagerLike } 
  *   of every journey including this one;
  * - the keys Milan used before journeys had their own slots (`dreamscape.save.v1` with its backups,
  *   `dreamscape.learning.v1`);
- * - the keys of a journey this version does not have (its save with backups, its notes and its read
- *   lines (READ_LINES_KEY) each apart).
+ * - the keys of a journey this version does not have (its save with backups, its notes, its read
+ *   lines (READ_LINES_KEY) and its words learned (LOCAL_WORDS_KEY) each apart).
  * Never listed: this journey's own save slot (its title and 「保存データの消去」 handle it), any game
  * save that loads in this version (also as a backup), another journey's save that is not an old
- * version (damaged, newer, preparation draft), the English notes and the read lines of a journey this version has,
+ * version (damaged, newer, preparation draft), the English notes, the read lines and the words learned of a journey this version has,
  * the display settings, the remembered journey (`dreamscape.last-journey.v1`) and the Debug-mode switch
  * (`dreamscape.debug-mode.v1`, src/app/debug-mode.ts; all three per-device preferences), every key outside
  * the patterns above (other sites on the same origin included). Debug's play keeps its data in memory
@@ -53,7 +53,7 @@ export type OldDataKey = {
 };
 export type OldDataItem = {
   /**
-   * What the item is: `old_version:<id>`, `backup:<id>`, `old_milano:save|learning`, `removed:<id>:save|learning|read_lines`.
+   * What the item is: `old_version:<id>`, `backup:<id>`, `old_milano:save|learning`, `removed:<id>:save|learning|read_lines|local_words`.
    * Stable for the same journey and kind; the keys under it may change between two readings.
    */
   id: string;
@@ -142,7 +142,7 @@ function unusedSaves(entries: ReadonlyMap<string, string>, keys: readonly string
 /** What the player may remove now, in this order: the journeys of this version, Milan's old keys, removed journeys. */
 export function listOldData(entries: ReadonlyMap<string, string>, context: OldDataContext): OldDataItem[] {
   const known = new Map(context.journeys.map((journey) => [journey.id, journey]));
-  const byJourney = new Map<string, { save?: string; backups: string[]; learning?: string; readLines?: string }>();
+  const byJourney = new Map<string, { save?: string; backups: string[]; learning?: string; readLines?: string; localWords?: string }>();
   for (const key of entries.keys()) {
     const parsed = parseJourneyPhysicalKey(key);
     if (!parsed) continue;
@@ -150,6 +150,7 @@ export function listOldData(entries: ReadonlyMap<string, string>, context: OldDa
     if (parsed.key === SAVE_KEY) slot.save = key;
     else if (parsed.key === LEARNING_KEY) slot.learning = key;
     else if (parsed.key === READ_LINES_KEY) slot.readLines = key;
+    else if (parsed.key === LOCAL_WORDS_KEY) slot.localWords = key;
     else if (isSaveBackupKey(parsed.key)) slot.backups.push(key);
     else continue;
     byJourney.set(parsed.journeyId, slot);
@@ -219,6 +220,12 @@ export function listOldData(entries: ReadonlyMap<string, string>, context: OldDa
       titleJa: `この版にない${name}の既読の記録`,
       impactJa: "この版のゲームにない旅行編で読んだ台詞の記録です（高速送りが止まる所を決めます）。今のゲームは読み込みません。消去すると戻せません。",
       keys: [entry(slot.readLines, entries.get(slot.readLines)!, "既読の記録")],
+    });
+    if (slot.localWords !== undefined) items.push({
+      id: `removed:${journeyId}:local_words`, lock,
+      titleJa: `この版にない${name}の覚えたその国の言葉`,
+      impactJa: "この版のゲームにない旅行編で覚えた、その国の言葉の記録です。今のゲームは読み込みません。消去すると戻せません。",
+      keys: [entry(slot.localWords, entries.get(slot.localWords)!, "覚えたその国の言葉")],
     });
   }
   return items;

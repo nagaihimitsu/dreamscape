@@ -33,6 +33,7 @@ export const storyFrameSchema = z
       imageId: z.string().regex(/^[a-z][a-z0-9_]*$/u),
       caption: z.string().min(1).optional(),
     }).strict().optional(),
+    localWordIds: z.array(z.string().regex(/^[a-z][a-z0-9_]*$/u)).min(1).optional(),
     choices: z
       .array(
         z

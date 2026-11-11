@@ -1,0 +1,58 @@
+/* The words of the country (2026-11-11 user decision). */
+
+/* A word in its own script (Devanagari, Thai, Cyrillic…): the system's fonts fill in the glyphs the game's
+   Japanese font lacks; no letter spacing and no Japanese width feature, which break scripts whose letters
+   join; a line height with room for marks above and below the letters. */
+.local-word-script,
+.local-word-notice {
+  font-family: "Noto Sans JP", "Noto Sans", system-ui, sans-serif;
+  letter-spacing: normal;
+  font-feature-settings: normal;
+}
+
+/* 「ことばを覚えた：…」 (LocalWordNotice): a parchment pill right under the header, over the scene, for a few
+   seconds. The region takes no taps (a tap there reaches the scene below) and has no size of its own. */
+.local-word-notice-region {
+  position: fixed;
+  z-index: 14;
+  top: var(--scene-top, env(safe-area-inset-top));
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding: 6px 16px 0;
+  pointer-events: none;
+}
+.local-word-notice {
+  max-width: 100%;
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  box-shadow: var(--ds-pill-shadow);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  animation: local-word-notice-in var(--motion-fast) var(--ease-out);
+}
+@keyframes local-word-notice-in {
+  from { opacity: 0; transform: translateY(-6px); }
+}
+.app-shell.reduce-motion .local-word-notice { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .local-word-notice { animation: none; }
+}
+
+/* 「その国の言葉」 (LocalWords): the cities in the order their first word was learned, a row for each word. */
+.local-words { padding-bottom: 12px; }
+.local-words h3 { margin: 14px 0 2px; font-size: 15px; line-height: 1.5; overflow-wrap: anywhere; }
+.local-words-list { margin: 0; padding: 0; list-style: none; }
+.local-word { padding: 8px 0 0; border-top: 1px solid var(--ds-parchment-line); }
+.local-word > p { margin: 0; overflow-wrap: anywhere; }
+.local-word-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; }
+.local-word-script { font-size: 28px; font-weight: 500; line-height: 1.6; }
+.local-word-reading { font-size: 14px; line-height: 1.6; color: var(--ds-ink-muted); }
+.local-word-meaning { font-size: 15px; line-height: 1.6; }
+.local-word .local-word-note { margin-top: 4px; font-size: 13px; line-height: 1.6; color: var(--ds-ink-muted); }
+.local-word .local-word-sources { margin-top: 2px; }

@@ -93,6 +93,13 @@
 - ファイル：`travel/mihon-transit.json`
 - 項目のID：`rental_bicycle`、`smp_mihon_first_bicycle`（場所のファイルからは、その knot と、その ID を書いた行を消す）
 
+### その国の言葉
+
+訪ねた国の言葉を、台詞の行の札で覚える例です（2026-11-11）。時計塔の観光案内で扉の文字の行が出ると、架空の言葉「Trisól（トリソル）」を覚え、画面の上に「ことばを覚えた」と短く出て、英語ノートの「その国の言葉」に並びます。語の一覧は `learning/local-words.json`（出典つき）、覚える行は場所のファイルの札 # local_word: です。
+
+- ファイル：`learning/local-words.json`
+- 項目のID：`smp_mihon_word_trisol`（場所のファイルからは、その ID を書いた行（札とその説明のコメント）を消す）
+
 任意の英文だけが使う語は `learning/word-meanings.json` に残ります。使われない語はエラーではなく、`npm run content:build -- --verbose` で一覧できます。
 
 ## 遊び方の流れとAP

@@ -54,6 +54,7 @@ INCLUDE modules.ink
     -> END
 
 // ───── 0：案内（本筋。tourism/catalog.json の guideStoryId がこの住所を指す）。# effect は置かない。
+// 行の札 # local_word: smp_mihon_word_trisol は、その行が出たときにその国の言葉を1つ覚える（下の扉の文字の行。learning/local-words.json の語で、英語ノートの「その国の言葉」に並ぶ）。
 === smp_mihon_clock_tower_guide ===
 # scene: guide
 # background: smp_bg_mihon_clock_tower
@@ -66,6 +67,9 @@ INCLUDE modules.ink
 {heroine_name}は自分の時計と文字盤を見比べた。塔の針は、少しも動かない。
 # speaker: heroine
 「止まってるんだ。でも塔の下はきれいに掃いてある。放っておかれてる感じじゃないね」
+# speaker: narrator
+# local_word: smp_mihon_word_trisol
+扉の上の石に「Trisól（トリソル）」と彫ってある。見本の街の古い言葉で「三時に会おう」という意味だと、案内板にあった。
 # speaker: narrator
 塔の扉の前で、作業着の青年が油差しを手に、文字盤を見上げている。
 # speaker: heroine

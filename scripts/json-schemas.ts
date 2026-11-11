@@ -10,6 +10,7 @@ import { journeyCatalogSchema } from "../src/content/journey-catalog";
 import { journeySchema } from "../src/content/journey-schemas";
 import { learningDetailsSchema } from "../src/content/learning-details";
 import { learningCatalogSchema } from "../src/content/learning-schema";
+import { localWordsCatalogSchema } from "../src/content/local-words";
 import { ownArtworkCatalogSchema } from "../src/content/own-artwork-schema";
 import { sceneDataCatalogSchema, storyStateCatalogSchema } from "../src/content/scene-schemas";
 import { tourSchema } from "../src/content/tour-schemas";
@@ -55,6 +56,7 @@ export const CATALOG_SCHEMAS: Record<MergedKind, { titleJa: string; schema: z.Zo
   "encounters/catalog.json": { titleJa: "道中交流と品物のカタログ", schema: encounterCatalogInputSchema },
   "encounters/entry-rules.json": { titleJa: "道中交流が起きる決まり", schema: encounterEntryRulesSchema },
   "learning/details.json": { titleJa: "クイズの解説", schema: learningDetailsSchema },
+  "learning/local-words.json": { titleJa: "その国の言葉", schema: localWordsCatalogSchema },
   "learning/translations.json": { titleJa: "クイズの和訳", schema: learningCatalogSchema },
   "learning/word-meanings.json": { titleJa: "語彙の意味", schema: wordMeaningsSchema },
   "presentation/characters.json": { titleJa: "登場人物と衣装", schema: characterCatalogSchema },

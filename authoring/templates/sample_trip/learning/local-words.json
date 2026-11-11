@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "words": [
+    {
+      "id": "smp_mihon_word_trisol",
+      "cityId": "mihon",
+      "word": "Trisól",
+      "reading": "トリソル",
+      "meaningJa": "三時に会おう（見本の街の古いあいさつ）",
+      "noteJa": "見本用の架空の言葉です。止まった時計塔の針から生まれた待ち合わせの言葉で、別れぎわにも言う、という設定です。",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-11",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の言い伝え：見本の街では、待ち合わせのあいさつに「トリソル（三時に会おう）」と言う。"
+        }
+      ]
+    }
+  ]
+}

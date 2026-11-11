@@ -151,6 +151,23 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 
 詳細が必要な問題だけ、その問題がある旅行編の `content/journeys/<旅行編ID>/learning/details.json` に問題IDで登録し、学習会話の `storyId`、原文中の `segments` と `topics`、疑問見出し、説明、実用例文・訳、確認済みの文法資料URLと確認日を追加します。対訳と同じく問題IDごとに統合されるため、どの旅行編も自分の問題の詳細を持てます（どの旅行編にもなければ詳細なしとして扱います）。`storyId` は問題ごとに必須で、同じ旅行編の学習会話を指します。学習会話は話題ID（`topic`）ごとに分岐し、話者はヒロイン、2〜4行、選択肢やeffectは使いません。話題IDは全旅行編で重ならないようにし、新しい旅行編では `authoring.eventPrefix` の接頭辞を付けます（例：`gt_which_subject`）。現在はミラノ編の『最後の晩餐』の通常戦3問が対象で、会話は `content/journeys/milano/stories/learning/milano_english.ink` です。意味の自然さ、資料の該当箇所と訳は編集者が確認します。
 
+### その国の言葉（任意）
+
+訪ねた国の言葉（あいさつ・料理の名前など）を、台詞の行の札で覚えられます（2026-11-11のユーザー判断）。語はその旅行編の `content/journeys/<旅行編ID>/learning/local-words.json` に書きます。このファイルも札もなければ、何も変わりません。例は見本の編の `learning/local-words.json` と、時計塔の観光案内（`stories/places/smp_mihon_clock_tower.ink` の扉の文字の行）です。
+
+- `schemaVersion` は `1`、`words` に語を並べます。1語ごとに `id`（全旅行編で重ならないID。接頭辞を付けます。例：`smp_mihon_word_trisol`）、`cityId`（任意。英語ノートでその語を並べる都市。同じ旅行編の都市にします。書かなければ「この旅の言葉」にまとめます）、`word`（その国の文字で書いた語。例：नमस्ते）、`reading`（カタカナの読み。例：ナマステ）、`meaningJa`（意味）、`noteJa`（任意の補足）、`sources`（1件以上。観光データの `sources` と同じ書き方）。実在の言葉は、辞書や公的資料で確かめた出典を書きます。
+- 覚えさせたい行に `# local_word: <語のID>` を書きます。どの会話の場面（観光案内・バトルの会話・デート・道中交流と会話・到着とエピローグ）でも使えます。
+
+```ink
+# speaker: narrator
+# local_word: smp_mihon_word_trisol
+扉の上の石に「Trisól（トリソル）」と彫ってある。
+```
+
+- その行が出たとき、その語を覚えます。画面の上に「ことばを覚えた：Trisól（トリソル）」と少しのあいだ出て（読み上げにも伝わり、操作は止めません）、英語ノートの「その国の言葉」に都市ごと・覚えた順に並びます。もう覚えた語では何も起きません。点数や習熟度はありません。
+- 覚えた語はこの端末に旅行編ごとに残り、ゲームのセーブには入りません（「保存データの消去」では英語ノートと一緒に消えます）。Debugでの遊びは、通常の記録を読み書きしません。
+- 1つの行に札を2つ書けば2語を覚えます。一覧にないID、形の正しくない札（`# local_word:` だけ、大文字や空白のあるID）、1つの行に同じ語の札を2つ、IDの重複、ない `cityId`、出典のない語は、`content:build` が止めます。
+
 ### クイズの項目
 
 クイズの `id` は問題セット、`landmarkId` は観光地、`englishLevel` は `A2` / `B1` / `B2`。通常戦の `questions` は3問です。各問の `id`、英語の `questionEn`、`options` の `id` と `textEn`、`correctOptionId` を指定します。選択肢は3つ、正解IDはそのうち一つ。`vocabularyJa` の `word` / `meaning` は英単語と日本語補足（答えた後、英語ノートの「単語帳」に、その語を含む問題文か選択肢の英文と場所の写真つきの札で出ます）、`hintJa`、`correctExplanationJa`、`incorrectExplanationJa` は日本語、`sources` は各問の根拠、`difficulty` は `easy` / `medium` / `hard`。問題と選択肢だけを英語にします。解答前の会話で正解を明かさないようにします。都市フィナーレは `scope: "city_finale"`、`cityId`、`landmarkId: null`、5問です。

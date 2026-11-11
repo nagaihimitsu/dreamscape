@@ -13,6 +13,7 @@ import { journeyCatalogSchema } from "../src/content/journey-catalog";
 import { journeySchema } from "../src/content/journey-schemas";
 import { learningDetailsSchema } from "../src/content/learning-details";
 import { learningCatalogSchema } from "../src/content/learning-schema";
+import { localWordsCatalogSchema } from "../src/content/local-words";
 import { ownArtworkCatalogSchema } from "../src/content/own-artwork-schema";
 import {
   balanceSchema, battleCatalogSchema, citySchema, dateCatalogSchema, effectCatalogSchema,
@@ -55,6 +56,7 @@ const runtimeSchemas = {
   "encounters/entry-rules.json": encounterEntryRulesSchema,
   "journeys/catalog.json": journeyCatalogSchema,
   "learning/details.json": learningDetailsSchema,
+  "learning/local-words.json": localWordsCatalogSchema,
   "learning/translations.json": learningCatalogSchema,
   "learning/word-meanings.json": wordMeaningsSchema,
   "presentation/characters.json": characterCatalogSchema,

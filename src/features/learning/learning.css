@@ -225,9 +225,10 @@
   margin: 0;
 }
 
-/* The note's two views, 「問題」 and 「単語帳」 (2026-11-11): the one shown is filled slate (and aria-pressed). */
-.english-review .review-views { display: flex; gap: 8px; margin-top: 4px; }
-.english-review .review-views .secondary { flex: 1 1 0; width: auto; min-height: 44px; margin: 0; padding: 6px 12px; font-size: 14px; }
+/* The note's views, 「問題」, 「単語帳」 and 「その国の言葉」 (2026-11-11): the one shown is filled slate (and aria-pressed).
+   Three fit one row at 320 px; with larger text a button moves to the next row instead of leaving the dialog. */
+.english-review .review-views { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.english-review .review-views .secondary { flex: 1 1 auto; width: auto; min-height: 44px; margin: 0; padding: 6px 10px; font-size: 14px; }
 .english-review .review-views .secondary[aria-pressed="true"] { background: var(--ds-slate-800); color: var(--ds-on-slate); }
 
 /* 「単語帳」 (WordBook): the places in the order met, each with its words' cards, two to a row on a phone. */
