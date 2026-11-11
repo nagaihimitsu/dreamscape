@@ -19,6 +19,7 @@ import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
+import { readLineId, type ReadSkip } from "../../components/read-skip";
 import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
 import { Icon } from "../../components/icons";
@@ -44,6 +45,8 @@ interface Props {
   onBattle: () => void;
   onReplayGuide: () => void;
   autoAdvanceEnabled?: boolean;
+  /** This device's read lines: 高速送り stops at a line not read before (read-skip.ts). */
+  readSkip?: ReadSkip;
   /** The guide's shown choices (stage 3a; hidden ones are left out by the caller) and choosing one. */
   guideChoices?: SceneChoiceView[];
   onChooseGuide?: (index: number) => void;
@@ -54,6 +57,7 @@ export function TourismScreen({
   speed,
   reduceMotion,
   autoAdvanceEnabled = false,
+  readSkip,
   onAdvance,
   onSkip,
   onDiscover,
@@ -113,6 +117,8 @@ export function TourismScreen({
     text: frame?.text ?? "",
     onAdvance: advanceSafely,
     defaultEnabled: autoAdvanceEnabled,
+    readSkip,
+    lineId: active.phase === "guide" && frame?.text ? readLineId(guideStoryId || active.landmarkId, frame.text) : null,
   });
   const sceneTap = useSceneTap({ active: active.phase === "guide" && !!frame, lineShown: ready, choicesShown: !!frame?.choices.length, windowHidden: windowVisibility.hidden });
   useEffect(() => {

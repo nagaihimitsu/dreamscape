@@ -5,6 +5,7 @@ import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/Dialog
 import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
+import { readLineId, type ReadSkip } from "../../components/read-skip";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { useSceneTap } from "../../components/useSceneTap";
@@ -54,13 +55,15 @@ export type EncounterScreenView = {
 };
 
 /** The view contains no game rules: all changes are committed by the caller. */
-export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvanceEnabled = false, onAdvance, onChoose, onAnswer, onFinish }: {
+export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvanceEnabled = false, readSkip, onAdvance, onChoose, onAnswer, onFinish }: {
   view: EncounterScreenView;
   learning: Learning;
   speed: number;
   reduceMotion: boolean;
   onSpeed: (value: number) => void;
   autoAdvanceEnabled?: boolean;
+  /** This device's read lines: 高速送り stops at a line not read before (read-skip.ts). */
+  readSkip?: ReadSkip;
   onAdvance: () => void;
   onChoose: (index: number) => boolean;
   onAnswer: (index: number) => boolean;
@@ -92,7 +95,8 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
   }
   const quiz = view.quiz;
   const autoAdvance = useAutoAdvance({ ready, canAdvance: !view.ended && !quiz && view.choices.length === 0 && !windowVisibility.hidden,
-    text: view.text, onAdvance: advance, defaultEnabled: autoAdvanceEnabled });
+    text: view.text, onAdvance: advance, defaultEnabled: autoAdvanceEnabled,
+    readSkip, lineId: !quiz && view.text ? readLineId(view.sceneId ?? view.id, view.text) : null });
   const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: !!quiz || view.choices.length > 0, windowHidden: windowVisibility.hidden });
   return (
     <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} {...sceneTap.props}>

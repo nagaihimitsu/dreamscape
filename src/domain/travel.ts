@@ -42,6 +42,20 @@ export const DAY_START = 9 * 60;
 export const NIGHT_START = 18 * 60;
 export const DAY_END = 21 * 60;
 
+/** The most places today's route keeps (the travel state's `todayPlaceIds`); beyond it the earliest are dropped. */
+export const TODAY_PLACES_MAX = 48;
+
+/**
+ * A move of the party to `placeId` (every game function that moves it writes through this): the travel state's place
+ * and today's route (the night screen's map), the places moved to today in order. A place is added when the party
+ * leaves another place for it and it is not already the last one; the day starts at the hotel, with none.
+ */
+export function moveToPlace(travel: { currentPlaceId: string; todayPlaceIds: string[] }, placeId: string): { currentPlaceId: string; todayPlaceIds: string[] } {
+  const today = travel.todayPlaceIds;
+  const added = placeId !== travel.currentPlaceId && today[today.length - 1] !== placeId;
+  return { currentPlaceId: placeId, todayPlaceIds: added ? [...today, placeId].slice(-TODAY_PLACES_MAX) : today };
+}
+
 /** Weekday comes from the saved in-game calendar, never the device clock. */
 export function getGameWeekday(calendar: { journeyDay: number; startWeekday: number } | undefined): number | undefined {
   if (!calendar || !Number.isSafeInteger(calendar.journeyDay) || calendar.journeyDay < 1 ||

@@ -224,3 +224,81 @@
   grid-column: 2;
   margin: 0;
 }
+
+/* The note's two views, 「問題」 and 「単語帳」 (2026-11-11): the one shown is filled slate (and aria-pressed). */
+.english-review .review-views { display: flex; gap: 8px; margin-top: 4px; }
+.english-review .review-views .secondary { flex: 1 1 0; width: auto; min-height: 44px; margin: 0; padding: 6px 12px; font-size: 14px; }
+.english-review .review-views .secondary[aria-pressed="true"] { background: var(--ds-slate-800); color: var(--ds-on-slate); }
+
+/* 「単語帳」 (WordBook): the places in the order met, each with its words' cards, two to a row on a phone. */
+.word-book { padding-bottom: 12px; }
+.word-book-place h3 { margin: 14px 0 6px; font-size: 15px; line-height: 1.5; overflow-wrap: anywhere; }
+.word-book-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.word-book-cards > li { display: flex; }
+/* A card is a button that turns over: both faces share one cell (the taller sets the card's height). */
+.word-card {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ds-ink);
+  font: inherit;
+  text-align: left;
+  perspective: 800px;
+}
+.word-card-inner {
+  display: grid;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform var(--motion-medium) var(--ease-out);
+}
+.word-card[data-turned] .word-card-inner { transform: rotateY(180deg); }
+.word-card-face {
+  position: relative;
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  box-shadow: var(--ds-card-shadow);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.word-card-face.is-back { justify-content: flex-start; padding: 8px 10px 22px; background: var(--ds-parchment-2); transform: rotateY(180deg); }
+.word-card-photo { display: block; aspect-ratio: 3 / 2; background: var(--ds-slate-800); }
+.word-card-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* No photo: the free-time cards' plain tile (the place's background colour, else slate) with the sightseeing mark. */
+.word-card-plain { display: grid; place-items: center; width: 100%; height: 100%; background: var(--ds-slate-800); color: rgba(255, 255, 255, 0.92); font-size: 22px; }
+.word-card-place { color: var(--ds-ink-muted); font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; }
+.word-card-face.is-front .word-card-place { padding: 4px 10px 0; }
+.word-card-word { padding: 0 10px 22px; font-size: 17px; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
+.word-card-meaning { font-size: 14px; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
+.word-card-sentence { color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+/* That the card turns: a small mark in its corner (decorative). */
+.word-card-turn { position: absolute; right: 8px; bottom: 4px; color: var(--ds-ink-muted); font-size: 12px; line-height: 1.4; }
+.word-card:focus-visible { outline: none; box-shadow: none; }
+.word-card:focus-visible .word-card-face { outline: 3px solid var(--ds-focus); outline-offset: 1px; box-shadow: 0 0 0 5px var(--ds-slate-900); }
+/* No turning motion with reduced motion: the other face shows at once. */
+.reduce-motion .word-card-inner { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .word-card-inner { transition: none; }
+}
+.word-book-credits { margin-top: 16px; padding-top: 6px; border-top: 1px solid var(--line); }
+.word-book-credits summary { min-height: 44px; padding: 10px 0; cursor: pointer; }
+.word-book-credits ul { margin: 0; padding: 0; list-style: none; }
+.word-book-credits li { padding: 6px 0; border-top: 1px solid var(--line); font-size: 13px; line-height: 1.5; }
+.word-book-credits h4 { margin: 0 0 2px; font-size: 14px; }
+.word-book-credits p { margin: 2px 0; overflow-wrap: anywhere; }

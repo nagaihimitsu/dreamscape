@@ -33,6 +33,7 @@ import { oldDataContext, type KeyedStorage } from "../persistence/old-data";
 import { CanalScene } from "../components/CanalScene";
 import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
+import { useReadLines } from "../components/useReadLines";
 import { RomanceScene } from "../features/romance/RomanceScene";
 import { Modal, ModalTitle } from "../components/Modal";
 import { ConfirmActionButton } from "../components/ConfirmActionButton";
@@ -137,6 +138,9 @@ export function GameApp({
   // Only Debug (src/dev/DebugMode.tsx) passes `debug`, on the dev server and, with Debug mode on, in production.
   const isDebug = debug;
   const displaySettings = usePresentationSettings(storage);
+  // The lines this device has read in this journey (read-skip.ts): 高速送り stops at one not read before. In this storage,
+  // so a Debug session keeps its own record in its isolated memory and never reads or writes the normal one.
+  const readLines = useReadLines(storage, displaySettings.value.skipUnread);
   // This device's Debug-mode switch (journeyStorage passes its key through unscoped).
   const debugMode = useDebugMode(storage);
   // While Debug mode is on (always in a Debug session), a choice's relationship changes show above
@@ -560,6 +564,7 @@ export function GameApp({
         ) : activeEncounter && currentEncounter ? (
           <EncounterScreen
             autoAdvanceEnabled={displaySettings.value.autoAdvance}
+            readSkip={readLines}
             key={`${activeEncounter.runId}-${sceneEpoch}`}
             learning={learning}
             speed={speed}
@@ -633,6 +638,7 @@ export function GameApp({
           <EpilogueScreen
             key={`${game.currentCityId}:${game.activeEpilogue.kind ?? "ending"}:${game.activeEpilogue.episodeId}`}
             autoAdvanceEnabled={displaySettings.value.autoAdvance}
+            readSkip={readLines}
             game={game}
             speed={speed}
             reduceMotion={displaySettings.value.reduceMotion}
@@ -647,6 +653,7 @@ export function GameApp({
         ) : game.activeTourism ? (
           <TourismScreen
             autoAdvanceEnabled={displaySettings.value.autoAdvance}
+            readSkip={readLines}
             key={game.activeTourism.landmarkId}
             game={game}
             speed={speed}
@@ -675,6 +682,7 @@ export function GameApp({
         ) : game.activeBattle ? (
           <BattleScreen
             autoAdvanceEnabled={displaySettings.value.autoAdvance}
+            readSkip={readLines}
             key={`${game.activeBattle.runId}-${sceneEpoch}`}
             reduceMotion={displaySettings.value.reduceMotion}
             learning={learning}
@@ -724,6 +732,7 @@ export function GameApp({
         ) : active && frame ? (
           <RomanceScene
             autoAdvanceEnabled={displaySettings.value.autoAdvance}
+            readSkip={readLines}
             key={`${active.dateId}-${sceneEpoch}`}
             game={game}
             date={currentDate}
@@ -959,6 +968,11 @@ export function GameApp({
             <input type="checkbox" checked={displaySettings.value.autoAdvance} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ autoAdvance: event.target.checked })} /> 自動送りする
           </label>
+          <label className="translation-setting">
+            <input type="checkbox" checked={displaySettings.value.skipUnread} disabled={!!displaySettings.error}
+              onChange={(event) => displaySettings.update({ skipUnread: event.target.checked })} /> 未読の台詞も高速送りする
+          </label>
+          {!displaySettings.value.skipUnread && <p className="fine-print">オフの間、高速送りはまだ読んでいない台詞で止まります。</p>}
           <label className="translation-setting">
             <input
               type="checkbox"

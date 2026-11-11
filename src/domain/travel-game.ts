@@ -4,7 +4,7 @@ import { getBattleAvailability, startBattle } from "./battle";
 import { getEpisodeAvailability, isEpisodeUnlocked, isStoryBattleUnlocked } from "./chapter";
 import { getDateAvailability, isDateUnlockedForTravel, isEventVisible, type GameState } from "./game";
 import { eventPrefix, openEventOccasion, openHotel } from "./occasion";
-import { canReturnByDayEnd, DAY_END, getGameWeekday, planOvernight, planTravelEvent } from "./travel";
+import { canReturnByDayEnd, DAY_END, getGameWeekday, moveToPlace, planOvernight, planTravelEvent } from "./travel";
 import { compareRouteCost, findTravelHomeRoutes, type HomeRoute } from "./travel-routes";
 import type { TravelEvent, TravelRoute } from "../content/travel-schemas";
 import { getTransportMode, WALK_MODE_ID } from "../content/transport";
@@ -155,7 +155,7 @@ export function beginTravelEvent(state: GameState, eventId: string, mode: Travel
   const prefix = replayBattleId ? {} : eventPrefix(state, eventId, { from: state.travel.currentPlaceId, to: event.placeId, modeId: mode, arrivalMinute: availability.plan.arrivalMinute });
   const moved = { ...state, travelBudget: availability.plan.remainingBudget + tourKeepBack(state).money,
     travel: { ...state.travel, returnReserve: availability.plan.returnReserve, returnDeadline: DAY_END,
-      ...(prefix.trip ? {} : { currentPlaceId: event.placeId, minute: availability.plan.arrivalMinute, rideCounts: rides }) } };
+      ...(prefix.trip ? {} : { ...moveToPlace(state.travel, event.placeId), minute: availability.plan.arrivalMinute, rideCounts: rides }) } };
   const episode = episodes.find((item) => item.id === eventId);
   if (replayBattleId && (!episode || episode.battleId !== replayBattleId || !battlePlayed(state, replayBattleId))) return state;
   const reserved = { ...moved, travel: { ...moved.travel,
@@ -222,6 +222,7 @@ export function sleepAtHotel(state: GameState, mode: TravelMode, expectedRevisio
   const hotel = openHotel(paid, { from: state.travel.currentPlaceId, to: state.travel.hotelPlaceId, modeId: mode, arrivalMinute: plan.arrivalMinute }, nextRoll);
   if (hotel) return hotel;
   return { ...state, revision: state.revision + 1, travelBudget: budget,
-    travel: { ...state.travel, currentPlaceId: state.travel.hotelPlaceId, day: plan.nextDay, minute: plan.nextMinute, returnReserve: 0, returnDeadline: DAY_END,
+    // The next day starts at the hotel with an empty route.
+    travel: { ...state.travel, currentPlaceId: state.travel.hotelPlaceId, todayPlaceIds: [], day: plan.nextDay, minute: plan.nextMinute, returnReserve: 0, returnDeadline: DAY_END,
       ...(state.travel.calendar ? { calendar: { ...state.travel.calendar, journeyDay: state.travel.calendar.journeyDay + 1 } } : {}) } };
 }

@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createGame } from "../domain";
 import { cityContents, getCityContent } from "../content";
 import { getJourney } from "../content/journeys";
-import { backupAndCreate, deleteSaveData, isSaveBackupKey, LEARNING_KEY, loadGame, SAVE_KEY, saveBackupTime, saveGame } from "./index";
+import { backupAndCreate, deleteSaveData, isSaveBackupKey, LEARNING_KEY, loadGame, READ_LINES_KEY, SAVE_KEY, saveBackupTime, saveGame } from "./index";
 import { journeyPhysicalKey, journeyStorage, parseJourneyPhysicalKey, storagePhysicalKey } from "./journey-storage";
 import { DEBUG_MODE_KEY } from "../app/debug-mode";
 import { journeyDraftStartParameters, loadJourneyDraft, promoteJourneyDraft, saveJourneyDraft } from "./journey-preparation";
@@ -150,11 +150,13 @@ describe("independent journey saves", () => {
 
   // 「古い保存データの整理」 (old-data.ts) finds the slots by reading these keys back.
   it("reads a journey slot's browser key back to its journey and logical key, and no other key", () => {
-    for (const key of [SAVE_KEY, LEARNING_KEY, `${SAVE_KEY}.backup.1762500000000`, `${SAVE_KEY}.backup.1762500000000.2`])
+    for (const key of [SAVE_KEY, LEARNING_KEY, READ_LINES_KEY, `${SAVE_KEY}.backup.1762500000000`, `${SAVE_KEY}.backup.1762500000000.2`])
       expect(parseJourneyPhysicalKey(journeyPhysicalKey("golden_triangle", key))).toEqual({ journeyId: "golden_triangle", key });
-    for (const physical of [SAVE_KEY, LEARNING_KEY, "dreamscape.presentation.v1", "dreamscape.journey.Milano.save.v1",
+    expect(journeyPhysicalKey("milano", READ_LINES_KEY)).toBe("dreamscape.journey.milano.read-lines.v1");
+    for (const physical of [SAVE_KEY, LEARNING_KEY, READ_LINES_KEY, "dreamscape.presentation.v1", "dreamscape.journey.Milano.save.v1",
       "dreamscape.journey..save.v1", "dreamscape.journey.milano.save.v2", "dreamscape.journey.milano.save.v1.extra",
-      "dreamscape.journey.milano.learning.v1.backup.1", "dreamscape.journey.milano.unknown", "x.dreamscape.journey.milano.save.v1"])
+      "dreamscape.journey.milano.learning.v1.backup.1", "dreamscape.journey.milano.read-lines.v2", "dreamscape.journey.milano.unknown",
+      "x.dreamscape.journey.milano.save.v1"])
       expect(parseJourneyPhysicalKey(physical), physical).toBeNull();
   });
 

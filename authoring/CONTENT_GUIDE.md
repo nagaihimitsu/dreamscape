@@ -143,7 +143,7 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 
 ### クイズの項目
 
-クイズの `id` は問題セット、`landmarkId` は観光地、`englishLevel` は `A2` / `B1` / `B2`。通常戦の `questions` は3問です。各問の `id`、英語の `questionEn`、`options` の `id` と `textEn`、`correctOptionId` を指定します。選択肢は3つ、正解IDはそのうち一つ。`vocabularyJa` の `word` / `meaning` は英単語と日本語補足、`hintJa`、`correctExplanationJa`、`incorrectExplanationJa` は日本語、`sources` は各問の根拠、`difficulty` は `easy` / `medium` / `hard`。問題と選択肢だけを英語にします。解答前の会話で正解を明かさないようにします。都市フィナーレは `scope: "city_finale"`、`cityId`、`landmarkId: null`、5問です。
+クイズの `id` は問題セット、`landmarkId` は観光地、`englishLevel` は `A2` / `B1` / `B2`。通常戦の `questions` は3問です。各問の `id`、英語の `questionEn`、`options` の `id` と `textEn`、`correctOptionId` を指定します。選択肢は3つ、正解IDはそのうち一つ。`vocabularyJa` の `word` / `meaning` は英単語と日本語補足（答えた後、英語ノートの「単語帳」に、その語を含む問題文か選択肢の英文と場所の写真つきの札で出ます）、`hintJa`、`correctExplanationJa`、`incorrectExplanationJa` は日本語、`sources` は各問の根拠、`difficulty` は `easy` / `medium` / `hard`。問題と選択肢だけを英語にします。解答前の会話で正解を明かさないようにします。都市フィナーレは `scope: "city_finale"`、`cityId`、`landmarkId: null`、5問です。
 
 ヒントは、ヒロインの小さな顔と「（ヒロインの名前）の耳打ち」という吹き出しで出ます。`hintJa` は地の文のままでかまいません（彼女の言葉としてかぎかっこで囲んだりはしません）。問いごとに、次の2つを任意で書けます（書かなければ今までどおり）。例は見本の編の `quizzes/smp_mihon_main_clock_tower_quiz.json`。
 
@@ -403,6 +403,14 @@ EXTERNAL cond(text)
   - 自由散策（ツアーの段階2b の残り）はまだありません。
 - `# then:` は、予約したツアーの朝の宿の場面（`# at: hotel` の起きた後、`# priority:` +N）では動かず、ツアーの見学の間（その訪問の場面・案内・対決の頭）と行程の場面（`# at: tour …`）では断られます（ツアーが続きます）。`content:build` はこれらを注意に出します。
 - 時間枠の外に着く行程、21:00を過ぎる帰り、行けない窓口、出典の組み合わせは注意に出ます（生成は止めません）。値段は最後のバランス調整で旅の予算と合わせて決め直します（`tests/journeys/golden_triangle/budget.test.ts` が、旅の予算で都市の本筋に必要な額をまかなえるかを確かめます）。
+
+### 夜の一言（任意）
+
+夜の画面と一日の終わりの札には、その日に移った地点を点線でつないだ小さな地図（ゲームが出します）の下に、彼女の短い一言を出せます（2026-11-11）。`travel/<都市ID>.json` の最上位に `nightLinesJa`（日本語の文の配列）として書きます。その都市の1日目に1つ目、2日目に2つ目…と順に出し、最後の次は1つ目に戻ります。書かなければ一言は出ません。名前は `{player_name}`・`{heroine_name}` と書くと設定した名前になります（名前をそのまま書かない）。引用符（「」）は書いたとおりに出ます。関係の段階にかかわらず出るので、どの段階でも自然な一言にし、書く前に [キャラクターバイブル](../docs/09_HEROINE_CHARACTER_BIBLE.md) を読みます。例は見本の編の `travel/mihon.json`（架空）。
+
+```json
+"nightLinesJa": ["今日はたくさん歩いたね。足はくたくたなのに、まだ眠くないや"]
+```
 
 ## 確認と公開前レビュー
 

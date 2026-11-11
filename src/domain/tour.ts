@@ -5,7 +5,7 @@ import { meets } from "./conditions";
 import { hasActiveScene, type GameState } from "./game-state-schema";
 import { openEventOccasion, openTourLeg } from "./occasion";
 import { mainPartPayments, usableAp, usableMoney, type Payment } from "./reservations";
-import { DAY_START, getGameWeekday } from "./travel";
+import { DAY_START, getGameWeekday, moveToPlace } from "./travel";
 import { isCompletedTravelEvent, isTravelEventUnlocked, isTravelEventVisible } from "./travel-game";
 import { minimumHomeFare } from "./travel-routes";
 import { getUsableRoutes } from "./transport";
@@ -173,7 +173,7 @@ function enterStep(state: GameState, tour: Tour, from: number, nextRoll: () => n
       // A leg with scenes (tour stages 2b, 3) moves the party inside its moment; a moment whose scenes all passed goes on at once.
       const opened = openTourLeg(at, tour.id, item.step.id, nextRoll);
       if (opened && hasActiveScene(opened)) return opened;
-      current = opened ?? { ...at, travel: { ...at.travel, currentPlaceId: item.placeId, minute: item.end } };
+      current = opened ?? { ...at, travel: { ...at.travel, ...moveToPlace(at.travel, item.placeId), minute: item.end } };
       continue;
     }
     const step = item.step;

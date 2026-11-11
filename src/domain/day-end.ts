@@ -48,3 +48,22 @@ export function getDayEnd(state: GameState): DayEnd | null {
   const order: NightAction[] = ["read_epilogue", "depart", "book_tour", "cancel_tour", "claim_ap"];
   return { way, actions: order.filter((action) => open[action]) };
 }
+
+/**
+ * Today's route on the night's map (2026-11-11 user decision): the hotel the day started at, then the places the party
+ * moved to today in order (the travel state's `todayPlaceIds`), a place twice in a row once. None (no map) when the
+ * party has not left the hotel.
+ */
+export function todayRoute(state: Pick<GameState, "travel">): string[] {
+  const route = [state.travel.hotelPlaceId, ...state.travel.todayPlaceIds].filter((id, index, ids) => id !== ids[index - 1]);
+  return route.length > 1 ? route : [];
+}
+
+/**
+ * The heroine's line under the night's map: one of the city's optional `nightLinesJa` (travel/<city>.json), chosen by
+ * the day (day 1 the first line, then each in turn, round again after the last). Null when the city has none.
+ */
+export function nightLineJa(lines: readonly string[] | undefined, day: number): string | null {
+  if (!lines?.length) return null;
+  return lines[(((day - 1) % lines.length) + lines.length) % lines.length];
+}
