@@ -80,10 +80,8 @@ export function BattleRewards({
             {episode.kind === "city_finale" ? "都市クリア" : "旅の一区切り"}
           </p>
           <h2>{episode.clearTitleJa}</h2>
-          <details>
-            <summary>旅の記録を読む</summary>
-            <p>{episode.clearDescriptionJa}</p>
-          </details>
+          {/* Shown open, not folded under 「旅の記録を読む」 (user decision 2026-11-11). */}
+          <p>{episode.clearDescriptionJa}</p>
         </section>
       )}
     </>

@@ -474,18 +474,17 @@ export function BattleScreen({
         data-testid={chrome.rebuttal ? "reasoning-rebuttal" : undefined}
       >
         {/* The round bar, held at the top of the reading area: the verdict over an answer's
-            explanation, 「決着」 over the result. A question has none (user decision 2026-11-11: no
-            question count, English level, own 手がかり帳 or answers' review on the quiz card). */}
-        {(verdict || isResult) && <div className="battle-roundbar" data-testid="battle-roundbar" ref={roundBar}>
-          {verdict ? (
-            <span
-              className={`answer-verdict ${verdict.correct ? "answer-verdict-correct" : "answer-verdict-incorrect"}`}
-              data-testid="answer-verdict"
-              aria-hidden="true"
-            >
-              <b>{verdict.correct ? "○" : "×"}</b> {verdict.correct ? "正解" : "不正解"}
-            </span>
-          ) : <span>決着</span>}
+            explanation. A question has none (user decision 2026-11-11: no question count, English
+            level, own 手がかり帳 or answers' review on the quiz card), nor does the result (user
+            decision 2026-11-11: no 「決着」 over it). */}
+        {verdict && <div className="battle-roundbar" data-testid="battle-roundbar" ref={roundBar}>
+          <span
+            className={`answer-verdict ${verdict.correct ? "answer-verdict-correct" : "answer-verdict-incorrect"}`}
+            data-testid="answer-verdict"
+            aria-hidden="true"
+          >
+            <b>{verdict.correct ? "○" : "×"}</b> {verdict.correct ? "正解" : "不正解"}
+          </span>
         </div>}
         {isResult ? (
           <div className="battle-result" data-testid="battle-result">
