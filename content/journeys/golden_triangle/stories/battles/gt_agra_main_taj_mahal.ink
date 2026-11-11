@@ -9,8 +9,8 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,interrobang
 か、確保？
-# speaker: narrator
-ニキル、ラクナウの銀行員。恋人のタンヴィは、今トイレの列に並んでいる。戻ってきたら、あのベンチで指輪を出す。三か月前から決めていたという。
+# speaker: enemy
+ニキルです。ラクナウで銀行員をしています。恋人のタンヴィが、今トイレの列に並んでいて。戻ってきたら、あのベンチで指輪を出すんです。三か月前から決めてたんです
 # speaker: enemy
 写真を撮るはずだった友達が来られなくなって。列に並び直したら、彼女が戻ってきてしまう。お二人がベンチに座って、ゆっくり写真を撮っててくれれば
 # speaker: heroine

@@ -20,8 +20,8 @@ INCLUDE modules.ink
 アーチの下で、口ひげの男が、銀色の反射板を抱えて電話に怒鳴っていた。電話を切ると、二人を上から下まで眺め、ぱっと顔を明るくした。
 # speaker: gt_agra_chini_man
 お願いがある。カップルが橋の渋滞で遅れてる。光を決めたいのに、立つ人がいない。……二人とも、身長がちょうどいい。代役をやってくれないか
-# speaker: narrator
-ジャグディープ。アーグラで、結婚前の二人の写真を撮る仕事をしているという。
+# speaker: gt_jagdeep
+ジャグディープだ。アーグラで、結婚前の二人の写真を撮ってる
 # speaker: heroine
 # reaction: heroine,surprised,question
 代役……カップルの？
