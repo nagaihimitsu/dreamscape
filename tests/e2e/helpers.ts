@@ -243,7 +243,7 @@ export const ops = {
     await page.getByLabel("ヒロインの名前").fill(names[1]);
   },
   /**
-   * The header's ⚙設定: a button whose small panel holds セーブ, ロード, 旅の記録, 英語ノート, 写真の出典 (free time)
+   * The header's ⚙設定: a button whose small panel holds セーブ, ロード, 旅の記録, アルバム, 英語ノート, 写真の出典 (free time)
    * or 画像の出典 (a story scene's photo) and ゲームの設定 (openMenu).
    */
   settingsButton(page: Page): Locator {
@@ -258,7 +258,7 @@ export const ops = {
     return panel;
   },
   /** One of ⚙設定's items, pressed from its panel (inside the header's 「旅の操作」). */
-  async menuItem(page: Page, name: "セーブ" | "ロード" | "旅の記録" | "英語ノート" | "写真の出典" | "画像の出典" | "ゲームの設定") {
+  async menuItem(page: Page, name: "セーブ" | "ロード" | "旅の記録" | "アルバム" | "英語ノート" | "写真の出典" | "画像の出典" | "ゲームの設定") {
     await ops.openMenu(page);
     await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name, exact: true }).click();
   },

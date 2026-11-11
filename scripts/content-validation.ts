@@ -53,6 +53,7 @@ import {
   type DateDefinition,
 } from "../src/content/schemas";
 import type { TagContext } from "../src/content/tags";
+import { albumImageIds } from "../src/content/photo-choice";
 import { checkHelperKnot, revealRegionProblem, validateBattleEvidence } from "./battle-validation";
 import { landmarkOrderError, landmarkParts, tourismCatalogSchema, type VisitPart } from "../src/content/tourism-schemas";
 import type { SceneOption } from "../src/content/scene-schemas";
@@ -532,6 +533,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     effectIds: effects.map((effect) => effect.id),
     backgroundIds: Object.keys(presentation.backgrounds),
     emotionIds: Object.keys(presentation.emotions),
+    // A line's # photo: (the album): a tourism photo, or a background that shows one.
+    photoIds: albumImageIds({ assets: tourism.assets, backgrounds: presentation.backgrounds }),
   };
   for (const effect of effects) {
     if (effect.responseProfileId && !responseProfiles.some((profile) => profile.id === effect.responseProfileId))

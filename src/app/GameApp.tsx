@@ -47,6 +47,7 @@ import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { CityRecords } from "../features/journey/CityProgress";
 import { freeTimePhotos, PhotoCredits } from "../features/journey/PhotoCredits";
+import { AlbumDialog } from "../features/journey/AlbumDialog";
 import { TitleNameFields } from "../features/journey/TitleNameFields";
 import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
@@ -246,6 +247,7 @@ export function GameApp({
     } else if (step === "leave") onSwitchJourney(id);
   }
   const [recordsOpen, setRecordsOpen] = useState(false);
+  const [albumOpen, setAlbumOpen] = useState(false);
   const [photoCreditsOpen, setPhotoCreditsOpen] = useState(false);
   const [scenePhotoOpen, setScenePhotoOpen] = useState(false);
   const [sceneEpoch, setSceneEpoch] = useState(0);
@@ -431,6 +433,7 @@ export function GameApp({
         place={currentTravelPlace}
         view={hudView(game)}
         onRecords={() => setRecordsOpen(true)}
+        onAlbum={() => setAlbumOpen(true)}
         onEnglish={() => openEnglish()}
         onPhotoCredits={creditPhotos.length ? () => setPhotoCreditsOpen(true) : undefined}
         onSceneCredits={scenePhoto ? () => setScenePhotoOpen(true) : undefined}
@@ -827,6 +830,7 @@ export function GameApp({
         </p>
         <CityRecords game={game} />
       </Modal>}
+      {albumOpen && game && <AlbumDialog album={game.album} currentCityId={game.currentCityId} onClose={() => setAlbumOpen(false)} />}
       {photoCreditsOpen && creditPhotos.length > 0 && <PhotoCredits photos={creditPhotos} onClose={() => setPhotoCreditsOpen(false)} />}
       {scenePhotoOpen && scenePhoto && <BackgroundCredits asset={scenePhoto} onClose={() => setScenePhotoOpen(false)} />}
       {notebook && game && (canObserve || cityNotebook) && (

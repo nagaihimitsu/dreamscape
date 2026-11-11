@@ -3,8 +3,8 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { getCityBackdrop } from "./city-backdrop";
 import { derivedImagePath } from "./derived-images";
-import { cityContents, getCities, getCityContent } from "./index";
-import { choosePlacePhoto } from "./photo-choice";
+import { cityContents, getCities, getCityContent, presentation, tourismAssets } from "./index";
+import { albumImageAsset, albumImageIds, choosePlacePhoto } from "./photo-choice";
 import { getPlacePhoto } from "./place-photo";
 import type { TourismAsset } from "./tourism-schemas";
 
@@ -44,6 +44,28 @@ describe("place photos", () => {
   it("give the India journey's inns the rooftop night view (their photoAssetId)", () => {
     for (const [cityId, hotelId] of [["delhi", "delhi_hotel_hub"], ["agra", "agra_hotel_hub"], ["jaipur", "jaipur_hotel_hub"]])
       expect(getPlacePhoto(cityId, hotelId)?.id, cityId).toBe("gt_img_hotel_rooftop_night");
+  });
+});
+
+describe("album images", () => {
+  it("are every tourism photo by its ID and each background that shows one by the background's ID, placeholders included", () => {
+    const content = {
+      assets: [asset("tower"), asset("tower_draft", true)],
+      backgrounds: { square_bg: { imageAssetId: "tower" }, draft_bg: { imageAssetId: "tower_draft" }, plain_bg: {}, lost_bg: { imageAssetId: "gone" } },
+    };
+    expect(albumImageIds(content)).toEqual(["tower", "tower_draft", "square_bg", "draft_bg"]);
+    expect(albumImageAsset(content, "tower")?.id).toBe("tower");
+    expect(albumImageAsset(content, "square_bg")?.id).toBe("tower");
+    expect(albumImageAsset(content, "draft_bg")?.isPlaceholder).toBe(true);
+    for (const id of ["plain_bg", "lost_bg", "gone", "constructor"]) expect(albumImageAsset(content, id), id).toBeNull();
+  });
+
+  it("name the generated content's photos and the backgrounds with a photo, never one without", () => {
+    const ids = albumImageIds({ assets: tourismAssets, backgrounds: presentation.backgrounds });
+    expect(ids).toContain("duomo_milano_photo");
+    expect(ids).toContain("milano_rain_pause");
+    expect(ids).not.toContain("milano_cafe");
+    expect(albumImageAsset({ assets: tourismAssets, backgrounds: presentation.backgrounds }, "milano_rain_pause")?.id).toBe("galleria_milano_photo");
   });
 });
 

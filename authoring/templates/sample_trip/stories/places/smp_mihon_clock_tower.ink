@@ -351,7 +351,9 @@ Come back at three. Any three will do.
     }
     -> ending
 = ending
+// 写真の札：この行を読むと、時計塔の画像がアルバムに1枚入る（同じ画像は一度だけ）。説明の札 # photo_caption: は同じ行に書く。
 # speaker: narrator
+# photo: smp_img_mihon_clock_tower # photo_caption: 三時までの席。お茶のあとも、針は三時のまま
 お茶を飲み終えても、針は三時のままだった。{heroine_name}は立ち上がり、文字盤を見上げる。
 { relationship_tone_after == "warm" || relationship_tone_after == "romantic_tension":
     # speaker: heroine

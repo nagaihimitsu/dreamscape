@@ -234,6 +234,7 @@ describe("Ink validation cache", () => {
       { context: { effectIds: [...effectIds, "effect_extra"], backgroundIds: [], emotionIds: [] } },
       { context: { effectIds, backgroundIds: ["street"], emotionIds: [] } },
       { context: { effectIds, backgroundIds: [], emotionIds: ["smile"] } },
+      { context: { effectIds, backgroundIds: [], emotionIds: [], photoIds: ["photo_x"] } },
       { contract: { choiceCount: 1, effectCount: 1, kind: "normal" } },
       { variables: { player_address: "検証主人公くん" } },
       { effects: effectIds.map((id) => ({ id, affectionDelta: 1, responseProfileId: "attentive" })) },

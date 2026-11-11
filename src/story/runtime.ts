@@ -29,6 +29,10 @@ export const storyFrameSchema = z
       shake: z.literal(true).optional(),
       large: z.literal(true).optional(),
     }).strict().optional(),
+    photo: z.object({
+      imageId: z.string().regex(/^[a-z][a-z0-9_]*$/u),
+      caption: z.string().min(1).optional(),
+    }).strict().optional(),
     choices: z
       .array(
         z
@@ -259,7 +263,8 @@ export function validateStorySnapshot(
   const story = runtime(storyId, saved, memoryIds, inventory);
   if (
     !tagContext.backgroundIds.includes(frame.background) ||
-    !tagContext.emotionIds.includes(frame.emotion)
+    !tagContext.emotionIds.includes(frame.emotion) ||
+    (frame.photo && !tagContext.photoIds.includes(frame.photo.imageId))
   )
     throw new Error("保存された場面の情報が一致しません。");
   if (

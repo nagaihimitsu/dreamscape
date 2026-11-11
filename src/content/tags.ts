@@ -4,6 +4,8 @@ export interface TagContext {
   effectIds: string[];
   backgroundIds: string[];
   emotionIds: string[];
+  /** The images a line's `# photo:` may name (photo-choice.ts albumImageIds); absent: none. */
+  photoIds?: readonly string[];
 }
 
 export interface StoryTags {
@@ -17,7 +19,18 @@ export interface StoryTags {
   call?: StoryCall;
   /** `# pause:`, `# shake:` and `# size:`: how the line is shown (presentation only). */
   delivery?: LineDelivery;
+  /** `# photo:` with its `# photo_caption:`: the photo the line puts in the album (2026-11-11). */
+  photo?: StoryPhoto;
   effects: string[];
+}
+
+/**
+ * The photo a line takes into the album when it is read (src/domain/album.ts): `# photo: <imageId>`, an image the
+ * game knows and credits, with an optional `# photo_caption: <text>` among the same line's tags.
+ */
+export interface StoryPhoto {
+  imageId: string;
+  caption?: string;
 }
 
 /**
@@ -69,6 +82,7 @@ export function parseStoryTags(
   context: TagContext,
 ): StoryTags {
   const result: StoryTags = { effects: [] };
+  let caption: string | undefined;
   for (const tag of tags) {
     if (tag.trim() === "later") continue;
     const separator = tag.indexOf(":");
@@ -132,9 +146,21 @@ export function parseStoryTags(
       result.translationJa = value;
     } else if (key === "pause" || key === "shake" || key === "size") {
       result.delivery = readDelivery(key, value, result.delivery ?? {});
+    } else if (key === "photo") {
+      if (!context.photoIds?.includes(value))
+        throw new Error(`Unknown photo image: ${value} (name a tourism photo of tourism/catalog.json, or a background with an imageAssetId)`);
+      if (result.photo) throw new Error("Duplicate photo tag");
+      result.photo = { imageId: value };
+    } else if (key === "photo_caption") {
+      if (caption !== undefined) throw new Error("Duplicate photo caption tag");
+      caption = value;
     } else {
       throw new Error(`Unknown story tag: ${key}`);
     }
+  }
+  if (caption !== undefined) {
+    if (!result.photo) throw new Error(`Photo caption without a photo: write # photo_caption: on the line of its # photo: (${caption})`);
+    result.photo = { ...result.photo, caption };
   }
   return result;
 }

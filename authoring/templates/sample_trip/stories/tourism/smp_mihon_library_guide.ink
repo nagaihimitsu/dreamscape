@@ -7,6 +7,7 @@ VAR player_address = ""
 
 # background: smp_bg_mihon_library
 # speaker: narrator
+# photo: smp_img_mihon_library
 図書室の棚には、街の日誌が年ごとに並んでいる。いちばん古い背表紙は、手ずれで丸くなっていた。
 # speaker: heroine
 「時計が止まった年の日誌も、ここにあるのかな」

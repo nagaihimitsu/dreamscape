@@ -299,7 +299,8 @@ export function validateLearningTopic(compiled: string, context: TagContext, top
   while (story.canContinue) {
     const line = story.Continue()?.trim() ?? "";
     const tags = parseStoryTags(story.currentTags ?? [], context);
-    if (tags.effects.length || (tags.speaker && tags.speaker !== "heroine"))
+    // An English-note explanation is no scene: a # photo: there would never reach the album.
+    if (tags.effects.length || (tags.speaker && tags.speaker !== "heroine") || tags.photo)
       throw new Error(`Invalid learning story tags: ${topicId}`);
     if (line) lines++;
     if (lines > 4) throw new Error(`Learning story too long: ${topicId}`);

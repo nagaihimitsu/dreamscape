@@ -105,7 +105,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await page.clock.install();
   await ops.startJourney(page);
 
-  // セーブ・ロード・旅の記録・英語ノート・写真の出典 (in free time)・ゲームの設定 live in the header's ⚙設定
+  // セーブ・ロード・旅の記録・アルバム・英語ノート・写真の出典 (in free time)・ゲームの設定 live in the header's ⚙設定
   // (UI redesign §3.1, U2/U24/U28), a disclosure: by keyboard it opens on セーブ, the arrows move
   // between its items, Esc closes it back on ⚙設定, and leaving it with Tab closes it.
   const gear = ops.settingsButton(page);
@@ -113,7 +113,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   const item = (name: string) => panel.getByRole("button", { name, exact: true });
   await gear.focus();
   await page.keyboard.press("Enter");
-  await expect(panel.getByRole("button")).toHaveText(["セーブ", "ロード", "旅の記録", "英語ノート", "写真の出典", "ゲームの設定"]);
+  await expect(panel.getByRole("button")).toHaveText(["セーブ", "ロード", "旅の記録", "アルバム", "英語ノート", "写真の出典", "ゲームの設定"]);
   await expect(item("セーブ")).toBeFocused();
   await page.keyboard.press("ArrowDown");
   await expect(item("ロード")).toBeFocused();
@@ -122,7 +122,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await expect(gear).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(item("セーブ")).toBeFocused();
-  for (let step = 0; step < 6; step++) await page.keyboard.press("Tab");
+  for (let step = 0; step < 7; step++) await page.keyboard.press("Tab");
   await expect(panel).toBeHidden();
   // ゲームの設定 opens the settings dialog, which gives the focus back to ⚙設定 when it closes.
   await gear.focus();
@@ -592,7 +592,7 @@ test("from another journey, the cleanup lists that journey's own old data, and a
   // are never listed and are compared apart: the save must stay, everything else exactly as expected.
   const besidesGame = async () => {
     const { [saveKey("golden_triangle")]: game, [readLinesKey("golden_triangle")]: _read, ...rest } = await allStorage(page);
-    expect(game).toContain('"schemaVersion":21');
+    expect(game).toContain('"schemaVersion":22');
     return rest;
   };
   const before = await besidesGame();
