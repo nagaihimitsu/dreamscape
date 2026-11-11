@@ -53,7 +53,7 @@ export function CityProgress({
       {showNext && !nextBattle && next && (
         <div className="next-destination">
           <p className="eyebrow">
-            {next.kind === "city_finale" ? "旅を結ぶ最後の対決" : "次の目的地"}
+            {next.kind === "city_finale" ? "旅を結ぶ最後のクイズ" : "次の目的地"}
           </p>
           <h3>{next.titleJa}</h3>
           <p>{next.descriptionJa}</p>
@@ -105,7 +105,7 @@ function atTourOnlyPlace(cityId: string, eventId: string): boolean {
   return isTourOnlyPlace(travel.places.find((place) => place.id === travel.events.find((event) => event.id === eventId)?.placeId));
 }
 
-/** 旅の記録: the city's progress in one line (「観光 1 / 4 · 対決 0 / 2」, or 「都市クリア」), then each stop. */
+/** 旅の記録: the city's progress in one line (「観光 1 / 4 · クイズ 0 / 2」, or 「都市クリア」), then each stop. */
 export function CityRecords({ game }: { game: GameState }) {
   return (
     <div className="city-records">
@@ -159,7 +159,7 @@ export function CityRecords({ game }: { game: GameState }) {
                     {battleQuizzes[battle.quizId].questions.length}問
                   </p>
                 ) : (
-                  <p>バトル未完了</p>
+                  <p>クイズ未完了</p>
                 )}
               </div>
             </li>

@@ -376,7 +376,7 @@ export const ops = {
     await expect(dialog).not.toHaveAttribute("data-settling");
     return { dialog, loadButton: dialog.getByRole("button", { name: "ロードする", exact: true }) };
   },
-  /** ⚙設定 → 「旅の記録」 (its first line, `city-progress`, is the city's progress: 観光・対決 / 都市クリア); returns that dialog. */
+  /** ⚙設定 → 「旅の記録」 (its first line, `city-progress`, is the city's progress: 観光・クイズ / 都市クリア); returns that dialog. */
   async openRecords(page: Page): Promise<Locator> {
     await ops.menuItem(page, "旅の記録");
     const records = page.getByRole("dialog", { name: "旅の記録" });

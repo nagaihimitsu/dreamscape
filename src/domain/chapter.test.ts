@@ -288,8 +288,8 @@ describe("the locked city finale", () => {
   it("mentions mid-journey battles only in cities that have special battles", () => {
     // Milan has special battles; Delhi (Golden Triangle) has none.
     expect(getEpisodeAvailability(createGame(), "milano_finale"))
-      .toEqual({ available: false, reason: "観光地と旅の途中の対決を巡ると、この対決へ進めます。" });
+      .toEqual({ available: false, reason: "観光地と旅の途中のクイズを巡ると、このクイズへ進めます。" });
     expect(getEpisodeAvailability(createGame("旅人", "同行者", { journeyId: "golden_triangle" }), "gt_delhi_finale"))
-      .toEqual({ available: false, reason: "観光地を巡ると、この対決へ進めます。" });
+      .toEqual({ available: false, reason: "観光地を巡ると、このクイズへ進めます。" });
   });
 });

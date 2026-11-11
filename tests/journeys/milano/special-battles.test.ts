@@ -63,7 +63,7 @@ describe("Milan's special battles among the sightseeing stops", () => {
     const selected = state.activeBattle!.reasoning!.selectedClueIds;
     const restored = roundTrip(state);
     expect(restored.activeBattle!.reasoning!.selectedClueIds).toEqual(selected);
-    expect(() => roundTrip({ ...restored, activeBattle: { ...restored.activeBattle!, contentHash: "changed-content" } })).toThrow("バトルが更新されています。以前の途中データは保管されています。");
+    expect(() => roundTrip({ ...restored, activeBattle: { ...restored.activeBattle!, contentHash: "changed-content" } })).toThrow("クイズが更新されています。以前の途中データは保管されています。");
     const completed = finish(restored);
     const suffix = kind === "contradiction" ? "scala" : "brera";
     const rewardIds = [

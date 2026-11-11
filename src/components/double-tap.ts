@@ -2,7 +2,7 @@
  * The second tap of a quick double tap is ignored (user decision for answers;
  * AGENTS.md 選択肢の誤タップ防止). The first tap changes the screen under the
  * finger, so the second can land on something else: after an answer another
- * control of the battle (「訳を見る」, 「英文を確認する」 or even 「敵の反応を見る」,
+ * control of the battle (「訳を見る」, 「英文を確認する」 or even 「相手の反応を見る」,
  * which would skip the feedback); after a press on any control of the page
  * while a story scene is shown (a reply, a tool, the header's buttons, a modal's
  * 「閉じる」) or a tap that closes something over it, the scene's next line; after

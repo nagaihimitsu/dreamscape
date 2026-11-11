@@ -84,7 +84,7 @@ export function ClueNotebook({
         >
           {reasoning.claimText && (
             <>
-              <p className="case-context-label">敵の主張</p>
+              <p className="case-context-label">相手の主張</p>
               <blockquote>{reasoning.claimText}</blockquote>
             </>
           )}

@@ -131,7 +131,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   // A quick double tap on an answer (誤タップ防止, user decision: the second tap is
   // ignored) records one answer and stays on that question's feedback. After the
   // first tap the verdict and feedback appear and the screen shifts, so the second
-  // tap can land on another control (on this phone and question 「敵の反応を見る」,
+  // tap can land on another control (on this phone and question 「相手の反応を見る」,
   // which would skip the feedback; elsewhere 「英文を確認する」 or 「訳を見る」): it must
   // not act. The page's clock is held, so the two taps count as one double tap
   // however slow the machine.
@@ -155,7 +155,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   const result = await playUntil(page, (state) => state.activeBattle?.phase === "result");
   await expect(page.getByTestId("battle-result")).toBeVisible();
   // The result heading shows English but is named in Japanese (OutcomeHeading; its unit test pins each word).
-  await expect(page.getByTestId("battle-result").getByRole("heading", { level: 2, name: /^(完全勝利|勝利|敗北)$/u })).toBeVisible();
+  await expect(page.getByTestId("battle-result").getByRole("heading", { level: 2, name: /^(全問正解|クリア|ナイストライ)$/u })).toBeVisible();
   await expect(page.getByTestId("battle-rewards")).toBeVisible();
   expect(result.activeBattle!.answers.length).toBeGreaterThan(0);
   expect(result.completedEpisodeIds).toEqual(["milano_duomo_episode"]);

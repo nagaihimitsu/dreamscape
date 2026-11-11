@@ -198,7 +198,7 @@ describe("Ink choices and reload boundaries", () => {
     ).toThrow(zodIssues({ code: "unrecognized_keys", path: [], keys: ["completedChapters"] }));
     expect(() =>
       validateGameState({ ...state, completedEpisodeIds: [] }),
-    ).toThrow("完了したバトルと観光エピソードの記録が一致しません。");
+    ).toThrow("完了したクイズと観光エピソードの記録が一致しません。");
     expect(() => validateGameState({ ...state, ap: -1 })).toThrow(zodIssues({ code: "too_small", path: ["ap"] }));
   });
 });

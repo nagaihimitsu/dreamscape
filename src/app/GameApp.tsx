@@ -492,7 +492,7 @@ export function GameApp({
           <span>
             {game.activeEpilogue?.kind === "arrival" ? `${currentCity!.city.nameJa}に到着`
               : game.activeEpilogue?.kind === "tour_leg" ? runningTour(game)?.titleJa ?? "ツアー" : reasoningRule
-              ? `${landmarks.find((item) => item.id === currentLandmarkId)?.nameJa} · 特別対決`
+              ? `${landmarks.find((item) => item.id === currentLandmarkId)?.nameJa} · 推理クイズ`
               : idle && nextStoryBattle
                 ? nextStoryBattle.titleJa
               : game.completedCityIds.includes(game.currentCityId) &&
@@ -512,11 +512,11 @@ export function GameApp({
                 : game.activeBattle
                   ? game.activeBattle.phase === "result"
                     ? reasoningRule
-                      ? "対決の結果"
+                      ? "推理の結果"
                       : "旅の一区切り"
                     : reasoningRule
                       ? "証拠で考える"
-                      : "クイズバトル"
+                      : "クイズ"
                   : freeTimeAvailable
                     ? "ふたりの自由時間"
                     : "出発前"}
@@ -971,7 +971,7 @@ export function GameApp({
         >
           <ModalTitle id="delete-title">{isDebug ? "Debug用の一時データを消去しますか？" : "保存データを消去しますか？"}</ModalTitle>
           {isDebug ? <p>Debug用の進行と英語ノートを消去して、Debugで開いた場面を最初から開き直します。通常のセーブ・英語ノート・表示設定は消去しません。</p> : <><p>
-            このブラウザに保存された名前、旅の進行、AP、恋愛・バトルの記録、アルバム、英語ノート（単語帳・その国の言葉）と対訳設定、既読の記録を消去します。元には戻せません。
+            このブラウザに保存された名前、旅の進行、AP、恋愛・クイズの記録、アルバム、英語ノート（単語帳・その国の言葉）と対訳設定、既読の記録を消去します。元には戻せません。
           </p>
           <p className="fine-print">
             文字の速さなどの表示設定、以前に退避したバックアップ、ほかのサイトのデータは消去しません。ほかの端末やブラウザにも影響しません。
@@ -1074,7 +1074,7 @@ export function GameApp({
           game.activeBattle ||
           game.activeTourism ||
           game.activeEpilogue ? (
-            <p>進行中の会話やバトル・観光を閉じると、名前を変更できます。</p>
+            <p>進行中の会話やクイズ・観光を閉じると、名前を変更できます。</p>
           ) : (
             <form
               className="name-form"

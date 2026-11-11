@@ -7,7 +7,7 @@ describe("city progress summary", () => {
   it("counts tourism stops and the city's special battles", () => {
     expect(cityProgressParts(counts)).toEqual([
       { kind: "tourism", text: "観光 1 / 3" },
-      { kind: "battles", text: "対決 0 / 2" },
+      { kind: "battles", text: "クイズ 0 / 2" },
     ]);
   });
 

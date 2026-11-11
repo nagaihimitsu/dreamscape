@@ -96,7 +96,7 @@ export function getTourismAvailability(
     battles.find((item) => item.id === state.activeBattle!.battleId)
       ?.landmarkId !== landmarkId
   )
-    return { available: false, reason: "今のバトルと同じ観光地へ戻れます。" };
+    return { available: false, reason: "今のクイズと同じ観光地へ戻れます。" };
   const episode = mapChecked ? undefined : episodes.find((item) => item.landmarkId === landmarkId);
   if (
     episode &&
@@ -111,7 +111,7 @@ export function getTourismAvailability(
   if (
     episode && !state.activeTourism && !state.activeBattle &&
     isEpisodeBlockedByStoryBattle(state, episode)
-  ) return { available: false, reason: "先に、旅の途中の対決へ進みましょう。" };
+  ) return { available: false, reason: "先に、旅の途中のクイズへ進みましょう。" };
   return { available: true, reason: "" };
 }
 
@@ -467,7 +467,7 @@ export function validateTourismState(state: GameState): void {
     battles.find((item) => item.id === state.activeBattle!.battleId)
       ?.landmarkId !== active.landmarkId
   )
-    throw new Error("観光地と途中のバトルが一致しません。");
+    throw new Error("観光地と途中のクイズが一致しません。");
   if (active.phase === "guide") {
     const storyId = activeGuideStoryId(active);
     if (
