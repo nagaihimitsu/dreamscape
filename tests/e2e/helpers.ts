@@ -617,10 +617,10 @@ export const ops = {
    * right after a story scene starts or ends, a load, a journey switch or 再試行 no tap reaches the page
    * (`data-tap-hold` on the root). Each lasts DOUBLE_TAP_WINDOW_MS. A scene that a move
    * has just started takes no reading tap on the travel transition's card, so this also
-   * waits for the transition to go.
+   * waits for the transition to go, and for the day's end card (night-rest: a tap on it ends it).
    */
   async settled(page: Page) {
-    await expect(page.locator("[data-answer-settling], [data-tap-settling], html[data-tap-hold], [data-testid=travel-transition]")).toHaveCount(0);
+    await expect(page.locator("[data-answer-settling], [data-tap-settling], html[data-tap-hold], [data-testid=travel-transition], [data-testid=night-rest]")).toHaveCount(0);
   },
   /** A story scene's 「ログ」: opens the dialogue log. */
   async openDialogueLog(page: Page): Promise<Locator> {
