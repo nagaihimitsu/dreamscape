@@ -36,6 +36,30 @@
       "paths": [
         "assets/characters/gt_kamla/neutral.webp"
       ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、ラームキシャンの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_ramkishan/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、スレーシュの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_suresh/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、ハミードの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_hamid/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、ルーヒーの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_roohi/neutral.webp"
+      ]
     }
   ]
 }

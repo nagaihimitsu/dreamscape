@@ -21,11 +21,42 @@
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
       "placeholderColor": "#a8456f",
       "variants": []
+    },
+    {
+      "id": "gt_ramkishan",
+      "imagePath": "assets/characters/gt_ramkishan/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#5f7f9e",
+      "variants": []
+    },
+    {
+      "id": "gt_suresh",
+      "imagePath": "assets/characters/gt_suresh/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#b8b0a2",
+      "variants": []
+    },
+    {
+      "id": "gt_hamid",
+      "imagePath": "assets/characters/gt_hamid/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#6b5a46",
+      "variants": []
+    },
+    {
+      "id": "gt_roohi",
+      "imagePath": "assets/characters/gt_roohi/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 56, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#2f3f6f",
+      "variants": []
     }
   ],
   "battleCharacters": {
     "gt_delhi_main_red_fort_battle": "gt_nidhi",
     "gt_delhi_finale_battle": "gt_aman",
-    "gt_jaipur_finale_battle": "gt_kamla"
+    "gt_jaipur_finale_battle": "gt_kamla",
+    "gt_delhi_main_qutb_minar_battle": "gt_ramkishan",
+    "gt_delhi_main_humayun_tomb_battle": "gt_suresh",
+    "gt_delhi_main_jama_masjid_battle": "gt_hamid"
   }
 }

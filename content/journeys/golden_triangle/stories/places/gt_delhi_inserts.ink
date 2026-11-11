@@ -23,6 +23,7 @@ INCLUDE modules.ink
 // 【4】宿・眠る前：宿の娘ルーヒーの作文（腹を壊した夜の場面より先に流すため -2）
 === gt_delhi_hotel_homework ===
 # scene: talk
+# person: gt_roohi
 # at: hotel delhi_hotel_hub
 # priority: -2
 # when: episodes delhi >= 1
@@ -35,27 +36,27 @@ INCLUDE modules.ink
     # speaker: narrator
     宿の帳場の机で、制服の女の子が鉛筆をかじっていた。宿の主人の娘、ルーヒー。十三歳。英語の作文の宿題だという。題は「デリーでいちばん好きな場所」。
 }
-# speaker: gt_roohi
+# speaker: enemy
 先生は、インド門とか、赤い城とかって書いてほしいの。でも、わたしの好きな場所は、地下鉄の女性車両
 # speaker: heroine
 # reaction: heroine,surprised,question
 女性車両？　地下鉄の？
-# speaker: gt_roohi
+# speaker: enemy
 先頭の車両。女の人しか乗れないの。学校の行き帰りに、おばさんと乗るんだ。みんなしゃべって、笑って、お菓子を分けてくれる人もいて、床に座って宿題する子もいて
-# speaker: gt_roohi
+# speaker: enemy
 隣のカムラおばあちゃんも常連なんだよ。運転手と喧嘩しなくていいからって。……もうすぐ、引っ越しちゃうけど
 * [「それを書けばいい」 # option: write_the_metro]
     # rel: trust +1
     # set: gt_delhi_roohi_metro_essay
-    # speaker: gt_roohi
+    # speaker: enemy
     でも、点が低かったら？
     # speaker: heroine
     # emotion: smile
     低くても、ルーヒーさんの好きな場所は変わらないよ。先生が知らない場所を教えてあげるの、ちょっと気持ちよくない？
-    # speaker: gt_roohi
+    # speaker: enemy
     ……気持ちいいかも
 * [「インド門の方が、点はもらえるかも」 # option: write_the_monument]
-    # speaker: gt_roohi
+    # speaker: enemy
     やっぱり？　……うん、そうする。そっちの方が、ママも怒らないし
     # speaker: narrator
     ルーヒーは消しゴムで「女性車両」を消しはじめた。彼女が、その手元を少し寂しそうに見ていた。
@@ -64,9 +65,9 @@ INCLUDE modules.ink
 * [「どうして、そこが好きなの？」 # option: ask_why_metro]
     # rel: affection +1
     # set: gt_delhi_roohi_metro_essay
-    # speaker: gt_roohi
+    # speaker: enemy
     家だと、わたし、いちばん下だから。お兄ちゃんにも、ママにも、お客さんにも、ルーヒー、あれ持ってきて、って言われる
-    # speaker: gt_roohi
+    # speaker: enemy
     女性車両だと、わたしも、ただの乗客の一人。……それが好き。変？
     # speaker: heroine
     # reaction: heroine,surprised,sparkle
@@ -78,7 +79,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,teasing,music
 先生、すごく困った顔してた。でも、あの作文が、今でもいちばん好き
-# speaker: gt_roohi
+# speaker: enemy
 コインランドリー……。日本の子って、変
 # speaker: heroine
 うん。お互いさまだね
@@ -185,6 +186,7 @@ INCLUDE modules.ink
 // 【4】宿・起きた後：宿の家族が来る
 === gt_delhi_hotel_sick_morning ===
 # scene: talk
+# person: gt_roohi
 # at: hotel delhi_hotel_hub
 # priority: +1
 # when: flag gt_delhi_golgappa_sick
@@ -207,17 +209,17 @@ INCLUDE modules.ink
 # speaker: gt_delhi_hotel_okami
 キチュリー。米と豆を、やわらかく煮たの。うちでは、お腹を壊したら、これ。……外国の人は、みんなゴルガッパでやられるの。チャンドニー・チョークでしょ。分かるのよ、顔で
 { cond("seen gt_delhi_hotel_homework"):
-    # speaker: gt_roohi
+    # speaker: enemy
     クミンの水。わたしが作った。……宿題を手伝ってくれたお礼、半分ね
 - else:
     # speaker: narrator
     娘はルーヒーと名乗った。十三歳。コップの中身は、クミンを煮出した水だという。
-    # speaker: gt_roohi
+    # speaker: enemy
     わたし、ゴルガッパなら百個食べても平気。デリーの子だから
 }
 # speaker: gt_delhi_hotel_okami
 百個は嘘。この子は四十個で、一晩泣いたの。それと、あんたは学校。もう七時半よ
-# speaker: gt_roohi
+# speaker: enemy
 病人の看病は、学校より大事って、先生も言ってた
 # speaker: gt_delhi_hotel_okami
 言ってない
@@ -239,7 +241,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 ルーヒーは母親に背中を押されて、ようやく玄関へ向かった。振り返って、ひとこと。
-# speaker: gt_roohi
+# speaker: enemy
 次は、バスって言うんだよ。最初の一個の前に
 -> END
 

@@ -136,7 +136,8 @@
     {
       "id": "gt_suresh",
       "cityId": "delhi",
-      "nameJa": "スレーシュ"
+      "nameJa": "スレーシュ",
+      "characterId": "gt_suresh"
     },
     {
       "id": "gt_mehr",
@@ -211,7 +212,8 @@
     {
       "id": "gt_roohi",
       "cityId": "delhi",
-      "nameJa": "ルーヒー"
+      "nameJa": "ルーヒー",
+      "characterId": "gt_roohi"
     },
     {
       "id": "gt_delhi_hotel_okami",
