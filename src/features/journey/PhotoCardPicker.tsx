@@ -183,7 +183,7 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
               {face.bottom && <span className="photo-card-chip is-bottom" aria-hidden="true">{face.bottom}</span>}
             </span>
             <span className="photo-card-text" aria-hidden="true">
-              <span className="photo-card-name">{isChosen && <span className="travel-selected-badge">◆</span>}{face.name}</span>
+              <span className="photo-card-name">{face.name}</span>
               {face.swipeable && <span className="photo-card-cue" />}
             </span>
           </button>

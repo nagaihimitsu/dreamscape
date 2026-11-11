@@ -223,7 +223,6 @@
   line-height: 1.3;
   overflow-wrap: anywhere;
 }
-.photo-card-name .travel-selected-badge { margin-right: 4px; vertical-align: 1px; }
 /* The swipe's cue, without words (2026-11-11, the user's decision): two up chevrons under the name that rise and fade
    in turn, over and over, on the chosen card while that one can depart (data-cue); the card itself lifts a little
    once when it has rested in the middle. Every place card keeps the cue's room (the row's height never changes with

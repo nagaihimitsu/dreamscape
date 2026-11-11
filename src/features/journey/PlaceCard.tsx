@@ -27,11 +27,12 @@ function ignoreRepeat(event: KeyboardEvent) {
   if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
 }
 
-/** The name of a card under the row (visible, or for readers only where the chosen row right above names it). */
+/**
+ * The name of a card under the row (visible, or for readers only where the chosen row right above names it). No
+ * selected mark before it (user decision 2026-11-11): the chosen card and the map already show the choice.
+ */
 function CardName({ id, name, heading }: { id: string; name: string; heading: boolean }) {
-  return <h2 id={id} className={heading ? "place-card-name" : "sr-only"}>
-    <span className="travel-selected-badge" aria-hidden="true">◆</span><span>{name}</span>
-  </h2>;
+  return <h2 id={id} className={heading ? "place-card-name" : "sr-only"}><span>{name}</span></h2>;
 }
 
 /**
