@@ -56,7 +56,8 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
     ],
   },
   "encounters/catalog.json": {
-    items: (entry) => fields(entry, "city", ["cityId"]),
+    items: (entry) => [...fields(entry, "city", ["cityId"]),
+      ...list(entry.linesJa).flatMap((line) => conditionReferences(line.when, "linesJa[].when"))],
     encounters: (entry) => [
       ...fields(entry, "city", ["cityId"]), ...fields(entry, "landmark", ["landmarkId"]), ...fields(entry, "story", ["storyId"]),
       ...fields(entry, "item", ["completionItemId"]), ...fields(entry, "reward", ["alternativeApRewardId"]),
