@@ -37,7 +37,6 @@
   --ds-disabled-ink: #5c544a;
   --ds-field-edge: #8f7c66; /* text fields and selects: 3.6:1 on --ds-parchment */
   --ds-gold-hairline: rgba(201, 163, 95, 0.7); /* --ds-gold at 70 %: the edge of pressables on slate */
-  --ds-on-slate-pill: rgba(255, 255, 255, 0.08); /* status pills on the header's own slate band (free time) */
   --ds-photo-shade: rgba(20, 24, 32, 0.55); /* top of the gradient behind the header over a photo (§2.4) */
   /* Shadows of the shapes (§2.3). */
   --ds-pill-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
@@ -756,8 +755,6 @@ input[type="checkbox"] { accent-color: var(--ds-slate-800); }
     top: 0;
     left: 0;
     right: 0;
-    background: none;
-    --hud-pill-bg: var(--ds-chip-bg);
   }
   /* Calm edges for the header over a photo (not for legibility: every label has its own backing). */
   .mobile-play-active > .journey-hud::before {

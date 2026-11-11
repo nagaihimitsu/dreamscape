@@ -41,6 +41,8 @@ type MenuActions = {
   onPhotoCredits?: () => void;
   onSceneCredits?: () => void;
   onSettings: () => void;
+  /** 移動画面に戻る（Debug）: only while Debug mode offers it (src/app/free-time-return.ts). */
+  onReturnToFreeTime?: () => void;
 };
 
 /**
@@ -116,7 +118,7 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
  * picture, where a tap reads on). 旅の記録, 英語ノート and the credits open their
  * dialogs at once, as their own buttons did (the second tap lands inside the dialog).
  */
-function HudMenu({ onSave, onLoad, onRecords, onEnglish, onPhotoCredits, onSceneCredits, onSettings }: MenuActions) {
+function HudMenu({ onSave, onLoad, onRecords, onEnglish, onPhotoCredits, onSceneCredits, onSettings, onReturnToFreeTime }: MenuActions) {
   const [open, setOpen] = useState(false);
   const group = useRef<HTMLDivElement>(null);
   const gear = useRef<HTMLButtonElement>(null);
@@ -199,6 +201,8 @@ function HudMenu({ onSave, onLoad, onRecords, onEnglish, onPhotoCredits, onScene
         {onPhotoCredits && <button type="button" onClick={choose(onPhotoCredits)}><Icon name="credit" />写真の出典</button>}
         {onSceneCredits && <button type="button" onClick={choose(onSceneCredits)}><Icon name="credit" />画像の出典</button>}
         <button type="button" onClick={choose(onSettings)}><Icon name="sliders" />ゲームの設定</button>
+        {/* Last, apart from the items of normal play; it opens a confirmation that settles presses. */}
+        {onReturnToFreeTime && <button type="button" onClick={choose(onReturnToFreeTime)}><Icon name="map" />移動画面に戻る（Debug）</button>}
       </div>
       {open && <DismissLayer owner={group.current} onClose={(focusWasInside) => {
         setOpen(false);

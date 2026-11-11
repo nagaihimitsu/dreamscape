@@ -1,6 +1,7 @@
 /* Free time (UI redesign §3.4): the city's picture behind the screen, and every
-   text on its own opaque card (§2.4). The picture shows under the
-   semi-transparent header, in the side gutters and between the cards. */
+   text on its own opaque card (§2.4). The picture shows around the header's
+   pills (its band is transparent: journey-hud.css), in the side gutters and
+   between the cards. */
 .app-shell.free-time-active { background: transparent; }
 /* Wide screens keep the site's header lines; they sit on their own paper. */
 .free-time-active > .masthead,
@@ -206,7 +207,3 @@ dialog.modal.photo-credits-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   }
 }
 
-/* In free time the list scrolls under the header (and under the stuck map's
-   top edge); the translucent chip background let that text show through.
-   Free time gets the opaque base so the header stays readable at any text size. */
-.app-shell.free-time-active .journey-hud { background: var(--ds-slate-900); }

@@ -1,8 +1,12 @@
 /* The header of every game screen (UI redesign §3.1): row 1 shows (status pills,
    no edge), row 2 is pressed (rectangles with a gold hairline). Shape tells the
-   role, never the colour alone (§2.3). Its height is measured into --hud-h. */
+   role, never the colour alone (§2.3). Its height is measured into --hud-h.
+   The band itself is transparent (user decision 2026-11-11): the screen shows
+   through around its parts, and each pill and button keeps its own slate ground
+   (the pills' 84 % slate keeps their text at 8:1 or more over white), so they
+   read over a photo, the parchment or text scrolling under the header alike. */
 .journey-hud {
-  --hud-pill-bg: var(--ds-on-slate-pill);
+  --hud-pill-bg: var(--ds-chip-bg);
   /* Its width is the screen's (never its content's), so it can be the query
      container for enlarged text (row 1, below). */
   container: journey-hud / inline-size;
@@ -14,7 +18,7 @@
   gap: 4px;
   padding: calc(4px + env(safe-area-inset-top)) 8px 4px;
   color: var(--ds-on-slate);
-  background: var(--ds-chip-bg);
+  background: none;
   font-family: "Noto Sans JP", sans-serif;
   font-size: 12px;
   line-height: 1.2;
