@@ -49,6 +49,10 @@
             "type": "string",
             "pattern": "^[a-z][a-z0-9_]*$"
           },
+          "photoAssetId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
           "landmarkIds": {
             "type": "array",
             "items": {

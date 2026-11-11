@@ -58,6 +58,10 @@
       "kind": "rail"
     }
   ],
+  "titleArt": {
+    "imagePath": "assets/tourism/india/agra_taj_mahal.webp",
+    "captionJa": "アーグラ ／ タージ・マハル"
+  },
   "authoring": {
     "eventPrefix": "gt",
     "observationFile": "authoring/journeys/golden_triangle/drafts/observation-cards.json",

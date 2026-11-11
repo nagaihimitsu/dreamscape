@@ -58,7 +58,7 @@ INCLUDE modules.ink
 === gt_agra_tour_out_leg ===
 # scene: tour_leg
 # at: tour gt_agra_tour_fatehpur_sikri out
-# background: default_scene
+# background: gt_bg_agra_fatehabad_road
 # speaker: narrator
 アーグラの町を抜けるまでが、いちばん長かった。オートリキシャ、自転車、制服の子どもたちを荷台に乗せた三輪。交差点の真ん中では、牛が一頭、信号のかわりに立ち止まっている。
 ヴィノードは、クラクションを鳴らさなかった。牛の後ろで、ただ待っている。
@@ -66,6 +66,7 @@ INCLUDE modules.ink
 「鳴らさないんですね」
 # speaker: narrator
 ヴィノード「牛は、鳴らしても急ぎません。急ぐのは、こっちの心臓だけ」
+# background: gt_bg_agra_tour_road
 やがて道は西へまっすぐ伸び、建物の間に畑がのぞきはじめた。前を走るトラックの荷台の後ろに、色とりどりの文字が描いてある。HORN OK PLEASE。
 # speaker: heroine
 # reaction: heroine,surprised,question
@@ -92,7 +93,7 @@ INCLUDE modules.ink
 # at: tour gt_agra_tour_fatehpur_sikri out
 # priority: after leg
 # sources: none
-# background: default_scene
+# background: gt_bg_agra_tour_road
 # speaker: narrator
 しばらく黙って走ってから、ヴィノードがバックミラー越しにこちらを見た。
 ヴィノード「一つ、聞いてもいいですか。母は、わたしが乗せたお客さんの話を、必ず聞きたがります。どこから来て、何を見て、どういう二人か」
@@ -155,7 +156,7 @@ INCLUDE modules.ink
 # scene: talk
 # at: tour gt_agra_tour_fatehpur_sikri out
 # priority: +1
-# background: default_scene
+# background: gt_bg_agra_fatehpur_sikri_bazaar
 # speaker: narrator
 ヴィノードは、大きな木の陰に車を停めた。エンジンを切ると、外の音が急に近くなった。呼び込みの声、バイクの音、どこかで鳴る鈴。
 ヴィノードは名前の紙を裏返し、電話番号を書いて、こちらに渡した。娘さんのきれいな字の裏に、道に迷った牛の字が並んだ。
@@ -221,7 +222,7 @@ INCLUDE modules.ink
 === gt_agra_tour_back_leg ===
 # scene: tour_leg
 # at: tour gt_agra_tour_fatehpur_sikri back
-# background: default_scene
+# background: gt_bg_agra_fatehpur_sikri_distant
 # speaker: narrator
 帰りの車の中は、行きより静かだった。日差しが真上から照りつけ、エアコンの風が、やっと追いついてくる。
 # speaker: player
@@ -264,7 +265,7 @@ INCLUDE modules.ink
 # at: tour gt_agra_tour_fatehpur_sikri back
 # priority: after leg
 # sources: none
-# background: default_scene
+# background: gt_bg_agra_tour_road
 # speaker: narrator
 寝息のような音が聞こえはじめたころ、ヴィノードが声を落とした。
 ヴィノード「眠りましたか。……一つ、いいですか。お客さんは、たいてい皇帝のことを聞きます。何年住んだか、妃は何人いたか」
@@ -302,7 +303,7 @@ INCLUDE modules.ink
 # at: tour gt_agra_tour_fatehpur_sikri back
 # priority: +1
 # sources: none
-# background: default_scene
+# background: gt_bg_agra_fatehabad_road
 # speaker: narrator
 大通りで車を降りると、ヴィノードが運転席の窓を下ろした。
 ヴィノード「次にシークリーへ来るときは、母の家に寄ってください。食べきれないほど、食べさせられますが」

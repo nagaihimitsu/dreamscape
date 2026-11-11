@@ -490,6 +490,62 @@
       "creditJa": "写真：Emir Nayef／Wikimedia Commons／CC BY-SA 4.0",
       "modificationJa": "Wikimedia Commons配信の1920×1440px縮小版を使用。元画像は4080×3060px。下端の撮影機種名の表示（透かし）を含む帯を切り取り、1920×1320pxにしました。描き足しやAI生成は行っていません。表示時は画面比率により端が切れる場合があります。この切り取った版もCC BY-SA 4.0で提供します。さらに縦横比を保って1600×1100pxに縮小し、WebP形式（品質80）に変換。変換版もCC BY-SA 4.0で提供。",
       "checkedAt": "2026-11-08"
+    },
+    {
+      "id": "gt_img_agra_fatehabad_road",
+      "path": "assets/tourism/india/agra_fatehabad_road.webp",
+      "width": 1600,
+      "height": 1064,
+      "altJa": "アーグラのファテハバード・ロード（ファイル名による。ツーリスト・コンプレックス地区）。広い車道を走るバイクと、道沿いの店や看板、停まっている車が見える。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tourist_Complex_Area_-_Fatehabad_Road_-_Agra_2014-05-14_4228.JPG",
+      "licenseName": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "creditJa": "写真：Biswarup Ganguly／Wikimedia Commons／CC BY 3.0",
+      "modificationJa": "Wikimedia Commons配信の1920×1277px縮小版を使用（作者はGFDL 1.2以降とCC BY 3.0のどちらかを選べるとしており、CC BY 3.0を選択）。元画像は6016×4000px。縦横比を維持し、描き足しやAI生成は行っていません。表示時は画面比率により端が切れる場合があります。さらに縦横比を保って1600×1064pxに縮小し、WebP形式（品質80）に変換。",
+      "checkedAt": "2026-11-11"
+    },
+    {
+      "id": "gt_img_agra_kiraoli_buffaloes",
+      "path": "assets/tourism/india/agra_kiraoli_buffaloes.webp",
+      "width": 1600,
+      "height": 1067,
+      "altJa": "アーグラとファテープル・シークリーの間の町キラオリ付近（ファイル名と分類による）の池。水につかる水牛の群れと、岸の草地、奥の塀と木立が見える。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:NH_11-Kiraoli-Water_buffalos-20131018.jpg",
+      "licenseName": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "creditJa": "写真：Daniel VILLAFRUELA／Wikimedia Commons／CC BY-SA 3.0",
+      "modificationJa": "Wikimedia Commons配信の1920×1280px縮小版を使用。元画像は5472×3648px。縦横比を維持し、描き足しやAI生成は行っていません。表示時は画面比率により端が切れる場合があります。この縮小版もCC BY-SA 3.0で提供します。さらに縦横比を保って1600×1067pxに縮小し、WebP形式（品質80）に変換。変換版もCC BY-SA 3.0で提供。",
+      "checkedAt": "2026-11-11"
+    },
+    {
+      "id": "gt_img_agra_fatehpur_sikri_bazaar",
+      "path": "assets/tourism/india/agra_fatehpur_sikri_bazaar.webp",
+      "width": 1600,
+      "height": 1200,
+      "altJa": "ファテープル・シークリーの町のバザールの通り。シャッターや日よけの並ぶ店先、屋台、バイク、牛と、行き交う人が見える。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Street_Scene_in_Bazaar_-_Fatehpur_Sikri_-_Uttar_Pradesh_-_India_(12635391124).jpg",
+      "licenseName": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+      "creditJa": "写真：Adam Jones from Kelowna, BC, Canada／Wikimedia Commons（Flickrから転載）／CC BY-SA 2.0",
+      "modificationJa": "Wikimedia Commons配信の1920×1440px縮小版を使用。元画像は3648×2736px。縦横比を維持し、描き足しやAI生成は行っていません。表示時は画面比率により端が切れる場合があります。この縮小版もCC BY-SA 2.0で提供します。さらに縦横比を保って1600×1200pxに縮小し、WebP形式（品質80）に変換。変換版もCC BY-SA 2.0で提供。",
+      "checkedAt": "2026-11-11"
+    },
+    {
+      "id": "gt_img_agra_fatehpur_sikri_distant",
+      "path": "assets/tourism/india/agra_fatehpur_sikri_distant.webp",
+      "width": 1600,
+      "height": 1200,
+      "altJa": "アーグラ・ジャイプール道路から見たファテープル・シークリー（撮影者の説明による）。畑の向こうの尾根の上に、赤い城壁と門、ドームが見える。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fatehpur_Sikri_Distant_Shot.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Ramesh lalwani／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons配信の1920×1440px縮小版を使用。元画像は3072×2304px。縦横比を維持し、描き足しやAI生成は行っていません。表示時は画面比率により端が切れる場合があります。この縮小版もCC BY-SA 4.0で提供します。さらに縦横比を保って1600×1200pxに縮小し、WebP形式（品質80）に変換。変換版もCC BY-SA 4.0で提供。",
+      "checkedAt": "2026-11-11"
     }
   ],
   "landmarks": [

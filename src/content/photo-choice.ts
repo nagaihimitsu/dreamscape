@@ -21,16 +21,18 @@ function usableAsset(assets: readonly TourismAsset[], assetId: string | undefine
 }
 
 /**
- * The photo of a place's row: the first landmark's image, else the image of
- * the place's background, else null (a plain tile). The hotel (`hotelPlaceId`)
- * is always null: its background borrows a real place's photo.
+ * The photo of a place's row: the place's own `photoAssetId`, else the first
+ * landmark's image, else the image of the place's background, else null (a
+ * plain tile). The hotel (`hotelPlaceId`) shows only its own `photoAssetId`
+ * (else null): its background often borrows another place's photo.
  */
 export function choosePlacePhoto(
   content: PhotoContent,
-  place: Pick<TravelPlace, "id" | "landmarkIds" | "backgroundId">,
+  place: Pick<TravelPlace, "id" | "landmarkIds" | "backgroundId" | "photoAssetId">,
   hotelPlaceId: string,
 ): TourismAsset | null {
-  if (place.id === hotelPlaceId) return null;
+  const own = usableAsset(content.assets, place.photoAssetId);
+  if (own || place.id === hotelPlaceId) return own;
   const landmarkId = place.landmarkIds?.[0];
   const landmarkAsset = landmarkId === undefined ? undefined : content.landmarks.find((item) => item.id === landmarkId)?.imageAssetId;
   return usableAsset(content.assets, landmarkAsset) ?? usableAsset(content.assets, content.backgrounds[place.backgroundId]?.imageAssetId);
