@@ -1,16 +1,23 @@
-// The rest the game takes by itself at the day's end (21:00; docs/02 「休む」): dayEndRest picks the way home 「休む」 would take,
-// GameApp rests by it through sleepAtHotel (the same action as 「休む」), and the same night never rests twice.
-import { describe, expect, it } from "vitest";
+// The day's end (21:00; docs/02 「一日の終わり」): dayEndRest picks the way home 「休む」 would take, getDayEnd the night actions
+// open (with none the game rests by itself; with some the night screen shows them and 「ホテルで休む」), and listPlayerActions
+// offers the same. The rest is sleepAtHotel (the same action as 「休む」), and the same night never rests twice.
+import { afterEach, describe, expect, it } from "vitest";
 import { getCityContent } from "../content";
+import { newJourney } from "../dev/scenario-builders";
+import { installTourTestCity, testTour } from "../dev/test-tours";
+import { dayEndRest, getDayEnd } from "./day-end";
 import { createGame, type GameState } from "./game";
+import { listPlayerActions } from "./player-action";
+import { bookTour } from "./tour";
 import { DAY_END, DAY_START } from "./travel";
-import { dayEndRest, getTravelSleepOptions, sleepAtHotel } from "./travel-game";
+import { getTravelSleepOptions, sleepAtHotel } from "./travel-game";
 
 /** A new Milan game (free time at the hotel, 9:00 of day 1) with the party moved to a place and a time in memory. */
 function at(placeId: string, minute: number): GameState {
   const game = createGame(undefined, undefined, { journeyId: "milano" });
   return { ...game, travel: { ...game.travel, currentPlaceId: placeId, minute } };
 }
+const kinds = (state: GameState) => listPlayerActions(state).map((action) => action.kind);
 
 describe("the rest at the day's end", () => {
   const { hotelPlaceId: hotel, lodgingCost } = getCityContent("milano").travelSettings;
@@ -18,6 +25,7 @@ describe("the rest at the day's end", () => {
   it("is not taken before 21:00", () => {
     expect(dayEndRest(at(hotel, DAY_START))).toBeNull();
     expect(dayEndRest(at(hotel, DAY_END - 1))).toBeNull();
+    expect(getDayEnd(at(hotel, DAY_END - 1))).toBeNull();
   });
 
   it("at 21:00 rests as 「休む」 does (the next day's 9:00 at the hotel, the lodging paid), and never twice for the same night", () => {
@@ -42,6 +50,8 @@ describe("the rest at the day's end", () => {
     expect(way!.cost).toBe(cheapest);
     expect(way!.minutes).toBe(Math.min(...offered.filter((route) => route.cost === cheapest).map((route) => route.minutes)));
     expect(offered.some((route) => route.cost > cheapest && route.minutes < way!.minutes), "a quicker paid way home is offered too").toBe(true);
+    // The player's actions there are that one rest only (no other way home, no travel, waiting or renting).
+    expect(listPlayerActions(late)).toEqual([{ kind: "rest", mode: way!.mode, viaPlaceId: way!.viaPlaceId ?? null }]);
     const morning = sleepAtHotel(late, way!.mode, late.revision, way!.viaPlaceId ?? null);
     expect(morning.travel).toMatchObject({ currentPlaceId: hotel, day: 2, minute: DAY_START });
   });
@@ -56,5 +66,41 @@ describe("the rest at the day's end", () => {
     const latest = at(hotel, 24 * 60 + DAY_START);
     expect(getTravelSleepOptions(latest).some((option) => option.plan.ok)).toBe(false);
     expect(dayEndRest(latest)).toBeNull();
+    expect(getDayEnd(latest)).toBeNull();
+  });
+});
+
+describe("the night actions at the day's end", () => {
+  let cleanup = () => {};
+  afterEach(() => { cleanup(); cleanup = () => {}; });
+  const { hotelPlaceId: hotel } = getCityContent("milano").travelSettings;
+
+  it("are none on an ordinary night: the game rests by itself, and the player's only action is that rest", () => {
+    const late = at(hotel, DAY_END);
+    expect(getDayEnd(late)?.actions).toEqual([]);
+    expect(kinds(late)).toEqual(["rest"]);
+  });
+
+  it("offer the stored AP, then the rest", () => {
+    const late = { ...at(hotel, DAY_END), pendingApRewards: [{ rewardId: "test_reward", earnedAp: 2, remainingAp: 2 }] };
+    expect(getDayEnd(late)?.actions).toEqual(["claim_ap"]);
+    expect(kinds(late)).toEqual(["claim_ap", "rest"]);
+  });
+
+  it("offer a tour's booking, and once it is booked its cancel (no departure while it is booked)", () => {
+    cleanup = installTourTestCity();
+    const start = newJourney(testTour.journeyId);
+    const night = { ...start, travel: { ...start.travel, currentPlaceId: testTour.hotelPlaceId, minute: DAY_END } };
+    const open = getDayEnd(night);
+    expect(open?.actions).toContain("book_tour");
+    expect(kinds(night).filter((kind) => kind === "book_tour").length).toBeGreaterThan(0);
+    expect(kinds(night).at(-1)).toBe("rest");
+    const booked = bookTour(night, testTour.tourId, testTour.desk.id, night.revision);
+    expect(booked.tour?.status).toBe("booked");
+    const after = getDayEnd(booked);
+    expect(after?.actions).toContain("cancel_tour");
+    expect(after?.actions).not.toContain("book_tour");
+    expect(after?.actions).not.toContain("depart");
+    expect(kinds(booked).filter((kind) => kind === "rest")).toHaveLength(1);
   });
 });

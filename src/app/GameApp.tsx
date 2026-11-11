@@ -9,7 +9,8 @@ import {
 } from "../content";
 import { defaultJourneyId, getJourney } from "../content/journeys";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
-import { dayEndRest, waitForTravel } from "../domain/travel-game";
+import { waitForTravel } from "../domain/travel-game";
+import { getDayEnd } from "../domain/day-end";
 import { rentTransport } from "../domain/transport";
 import { bookTour, cancelTourBooking, runningTour, tourLegUnderway, tourSceneBadge } from "../domain/tour";
 import { getTransportMode } from "../content/transport";
@@ -42,6 +43,7 @@ import { ClueNotebook } from "../features/tourism/ClueNotebook";
 import { useLearning } from "../features/learning/useLearning";
 import { EnglishReview } from "../features/learning/EnglishReview";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
+import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { CityRecords } from "../features/journey/CityProgress";
 import { photoCardPhotos, PhotoCredits } from "../features/journey/PhotoCredits";
 import { TitleNameFields } from "../features/journey/TitleNameFields";
@@ -174,21 +176,31 @@ export function GameApp({
   }, [storyScene]);
   const titleActions = titleSaveActions(loaded);
   const learning = useLearning(game, storage, !isDebug);
-  const { travelToEvent, returnToHotel, restAtDayEnd, playMove, playing: travelEffectPlaying, effects: travelEffects } = useTravelEffects({
+  const { travelToEvent, returnToHotel, restAtDayEnd, playMove, playing: travelEffectPlaying, nightLeaving, effects: travelEffects } = useTravelEffects({
     getCurrent, commit, nextRomanceRoll, reduceMotion: displaySettings.value.reduceMotion,
   });
   playMoveRef.current = playMove;
-  // The day's end (docs/02 「休む」): free time at 21:00 or later is not left for 「休む」 to be pressed. When control comes back to
-  // it (after a move, a wait, a scene, a date or a tour, a load, the page's start) the game rests by itself through the same
-  // action as 「休む」 (dayEndRest: its cheapest way home), and its night card plays. Before paint, so that late free time is not
-  // shown first; after a ride's or a night's art that is still playing (they cover only part of the screen). Once a night:
-  // the rest makes it the next morning, a second call for the same state (StrictMode, a re-render) finds the effect queue
-  // busy or the revision moved on (sleepAtHotel), and a refused rest (a failed save) is not tried again for the same state.
+  // The day's end (docs/02 「一日の終わり」): free time at 21:00 or later is not shown. When control comes back to it (after a move,
+  // a wait, a scene, a date or a tour, a load, the page's start), getDayEnd says what comes instead: with night actions open, the
+  // night screen (below); with none, the game rests by itself through the same action as 「休む」 (its cheapest way home) with
+  // its one night visual. Once the night screen has shown tonight (this tab's memory), it stays for its 「ホテルで休む」 when its
+  // last action is done, so a night never has two night visuals.
+  const dayEnd = game ? getDayEnd(game) : null;
+  const nightShown = useRef<{ cityId: string; day: number } | null>(null);
+  const seen = nightShown.current;
+  const nightSeen = !!game && !!seen && seen.cityId === game.currentCityId && seen.day === game.travel.day;
+  const nightScreen = !!dayEnd && (dayEnd.actions.length > 0 || nightSeen);
+  useEffect(() => {
+    if (game && nightScreen) nightShown.current = { cityId: game.currentCityId, day: game.travel.day };
+  }, [game, nightScreen]);
+  // The game's own rest: before paint, so that late free time is not shown first; after a ride's or a night's art that is still
+  // playing (they cover only part of the screen). Once a night: the rest makes it the next morning (or the hotel's scenes), a
+  // second call for the same state (StrictMode, a re-render) finds the effect queue busy or the revision moved on
+  // (sleepAtHotel), and a refused rest (a failed save) is not tried again for the same state.
   useLayoutEffect(() => {
-    if (!game || travelEffectPlaying) return;
-    const way = dayEndRest(game);
+    if (!game || travelEffectPlaying || !dayEnd || nightScreen) return;
     // A notice not read yet (「保存した場面から再開しました。」 after a load, 「ツアーが終わりました。」) stays: the commit clears it.
-    if (way && restAtDayEnd(way, game.revision) && notice) setNotice(notice);
+    if (restAtDayEnd(dayEnd.way, game.revision, { by: "game" }) && notice) setNotice(notice);
   }, [game, travelEffectPlaying]);
   const [englishOpen, setEnglishOpen] = useState(
     () => !!learning.data.openQuestion,
@@ -259,8 +271,9 @@ export function GameApp({
   }
   function loadSavedGame() {
     if (!session.restore()) return;
-    // Debug's return point belonged to the play before the load.
+    // Debug's return point belonged to the play before the load, and so did a night screen seen tonight.
     freeTimeReturn.current = null;
+    nightShown.current = null;
     // A load can bring back the same date run (the same scene key): its earlier change is not shown again.
     setShownChange(null);
     // A load replaces the screen under the finger like a scene start, also when the same scene
@@ -311,7 +324,7 @@ export function GameApp({
     !game.activeTourism &&
     !game.activeEpilogue;
   // Free time on show: ⚙設定 then offers 「写真の出典」 of its photo cards.
-  const freeTimeShown = !!idle && !showRomanceEnding;
+  const freeTimeShown = !!idle && !showRomanceEnding && !nightScreen;
   const creditPhotos = useMemo(() => (game && freeTimeShown ? photoCardPhotos(game) : []), [game, freeTimeShown]);
   const nextEpisode = game ? getNextEpisode(game) : null;
   const nextStoryBattle = game ? getNextStoryBattle(game) : null;
@@ -319,12 +332,12 @@ export function GameApp({
   // A new screen takes a lost focus on its visible heading (scene-focus.ts, UI redesign §3.7 E);
   // free time opens at the top of the page, not at the scroll position of the screen before it
   // (the title, scrolled to 「旅をはじめる」 on a short phone).
-  const screen = screenOnShow(game, { sceneEpoch, showRomanceEnding });
+  const screen = nightScreen && game ? `night:${game.currentCityId}` : screenOnShow(game, { sceneEpoch, showRomanceEnding });
   const shownScreen = useRef(screen);
   useEffect(() => {
     if (shownScreen.current === screen) return;
     shownScreen.current = screen;
-    if (screen.startsWith("free:")) window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    if (screen.startsWith("free:") || screen.startsWith("night:")) window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     focusSceneHeading(main.current);
   }, [screen]);
   useEffect(() => {
@@ -400,7 +413,7 @@ export function GameApp({
 
   return (
     <div
-      className={`app-shell${displaySettings.value.reduceMotion ? " reduce-motion" : ""}${conversationActive ? " conversation-active" : ""}${mobilePlayActive ? " mobile-play-active" : ""}${mobileObservationActive ? " mobile-observation-active" : ""}${freeTimeShown ? " free-time-active" : ""}`}
+      className={`app-shell${displaySettings.value.reduceMotion ? " reduce-motion" : ""}${conversationActive ? " conversation-active" : ""}${mobilePlayActive ? " mobile-play-active" : ""}${mobileObservationActive ? " mobile-observation-active" : ""}${freeTimeShown ? " free-time-active" : ""}${nightScreen || nightLeaving ? " night-active" : ""}`}
     >
       <header className="masthead">
         <a href="#main" className="brand">
@@ -750,6 +763,21 @@ export function GameApp({
               </button>
             </section>
           </>
+        ) : nightScreen && dayEnd ? (
+          <NightScreen
+            key={`${game.currentCityId}:${game.travel.day}`}
+            game={game}
+            buttons={nightButtons(game, dayEnd.actions, departure?.city.nameJa)}
+            reduceMotion={displaySettings.value.reduceMotion}
+            onAction={(kind) => {
+              if (kind === "read_epilogue") commit((state) => openOccasion(state, { kind: "epilogue" }, game.revision, nextRomanceRoll));
+              else if (kind === "depart") setConfirmDeparture(true);
+              else if (kind === "claim_ap") commit((state) => claimPendingRewards(state, game.revision));
+              else restAtDayEnd(dayEnd.way, game.revision, { by: "night_screen", buttons: nightButtons(game, dayEnd.actions, departure?.city.nameJa) });
+            }}
+            onBookTour={(tourId, offerId) => commit((state) => bookTour(state, tourId, offerId, game.revision))}
+            onCancelTour={() => commit((state) => cancelTourBooking(state, game.revision))}
+          />
         ) : (
           <FreeTimeHub
             game={game}

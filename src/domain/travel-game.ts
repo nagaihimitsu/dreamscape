@@ -225,16 +225,3 @@ export function sleepAtHotel(state: GameState, mode: TravelMode, expectedRevisio
     travel: { ...state.travel, currentPlaceId: state.travel.hotelPlaceId, day: plan.nextDay, minute: plan.nextMinute, returnReserve: 0, returnDeadline: DAY_END,
       ...(state.travel.calendar ? { calendar: { ...state.travel.calendar, journeyDay: state.travel.calendar.journeyDay + 1 } } : {}) } };
 }
-
-/**
- * The rest the game takes by itself at the day's end (docs/02 「休む」): in free time at DAY_END (21:00) or later, with no scene,
- * moment or trip open, the way home that 「休む」 would take: the cheapest of the ways it offers now (then the quickest; the
- * list's order on a tie). GameApp rests by it through the same action as 「休む」 (sleepAtHotel). Null before 21:00, while
- * something is open, or when 「休む」 offers no way it can take (no way home, its fare, an arrival past the next morning): free
- * time then shows as before. Once the rest is made it is the next morning (or the hotel's scenes), so a night never rests twice.
- */
-export function dayEndRest(state: GameState): HomeRoute | null {
-  if (state.travel.minute < DAY_END || hasActiveScene(state)) return null;
-  const ways = getTravelSleepOptions(state).flatMap((option) => (option.plan.ok ? [option.route] : []));
-  return ways.sort(compareRouteCost)[0] ?? null;
-}
