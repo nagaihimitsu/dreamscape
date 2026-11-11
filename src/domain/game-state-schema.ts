@@ -10,9 +10,10 @@ import { activeEpilogueSchema } from "./epilogue";
 import { activeTourismSchema } from "./tourism";
 import { battleRewardReceiptSchema, pendingApRewardSchema } from "./rewards";
 import { activeBattleSchema, battleRecordSchema } from "./battle";
+import { albumSchema } from "./album-state";
 
 /** The only saved game format this build reads; older versions are not migrated. */
-export const GAME_STATE_VERSION = 21;
+export const GAME_STATE_VERSION = 22;
 
 const uniqueStrings = z
   .array(z.string().min(1))
@@ -122,6 +123,8 @@ export const gameStateSchema = z.object({
   claimedRewardIds: uniqueStrings,
   playedDateIds: uniqueStrings,
   memories: uniqueStrings,
+  // The album (save v22; src/domain/album.ts): the photos the lines' # photo: took, each image once, in the order taken.
+  album: albumSchema,
   activeDate: activeDateSchema.nullable(),
   unlockedEventIds: uniqueStrings,
   confessionStatus: z.enum(["none", "deferred", "rejected", "accepted"]),
