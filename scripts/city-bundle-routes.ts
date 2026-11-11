@@ -1,7 +1,7 @@
 import { isDeepStrictEqual } from "node:util";
 import { z } from "zod";
 import { tourismSourceSchema } from "../src/content/tourism-schemas";
-import { travelEventSchema, travelPlaceSchema, travelRouteSchema, type TravelRoute } from "../src/content/travel-schemas";
+import { nightLinesSchema, travelEventSchema, travelPlaceSchema, travelRouteSchema, type TravelRoute } from "../src/content/travel-schemas";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const sourceId = id.refine((value) => !["constructor", "prototype", "__proto__"].includes(value), "Reserved source ID");
@@ -22,6 +22,8 @@ export const compactTravelSchema = z.object({
   routeSources: z.record(sourceId, z.array(tourismSourceSchema).min(1)),
   samePlaceRoute: z.object(sharedRoute).strict().optional(),
   routes: z.array(compactRouteSchema),
+  // The city's night lines pass through unchanged.
+  nightLinesJa: nightLinesSchema.optional(),
 }).strict();
 export type CompactTravel = z.infer<typeof compactTravelSchema>;
 type RouteSource = TravelRoute["sources"];

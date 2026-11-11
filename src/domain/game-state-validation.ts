@@ -35,6 +35,9 @@ export function validateTravelState(state: GameState): void {
     const mode = getTransportMode(state.currentCityId, modeId);
     return !mode || modeId === WALK_MODE_ID || (!!mode.rental && !travel.rentedModeIds.includes(modeId));
   })) throw new Error("乗り物に乗った回数の記録が一致しません。");
+  // Today's route (moveToPlace): places of this city (a tour's included), never the same place twice in a row.
+  if (travel.todayPlaceIds.some((id, index) => !cityTravel.places.some((place) => place.id === id) || travel.todayPlaceIds[index - 1] === id))
+    throw new Error("今日の行き先の記録が一致しません。");
   const returnMinute = travel.activeEvent?.endMinute ?? travel.minute;
   const requiredFare = touring ? 0 : minimumHomeFare(getUsableRoutes(state), placeId, travel.hotelPlaceId, returnMinute);
   if (requiredFare === undefined || travel.returnReserve < requiredFare || (touring && travel.returnReserve !== 0))

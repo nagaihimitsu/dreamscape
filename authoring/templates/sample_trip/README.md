@@ -27,7 +27,7 @@
 | --- | --- | --- |
 | `manifest.json` | 旅行編の登録。ID・並び順・状態・都市・通貨・開始資金・`cityPlan`・`authoring.eventPrefix` | `Missing journey manifest` |
 | `cities/mihon.json` | 都市。制作の状態 `productionStatus`（見本は `"complete"`）、予定の観光地、初回クリア報酬 | `都市ファイル …/sample_trip/cities/mihon.json がありません` |
-| `travel/mihon.json` | 地点（宿・時計塔）、全地点間の経路、地図のイベント | `移動データ …/sample_trip/travel/mihon.json がありません` |
+| `travel/mihon.json` | 地点（宿・時計塔）、全地点間の経路、地図のイベント、夜の画面の彼女の一言（任意の項目） | `移動データ …/sample_trip/travel/mihon.json がありません` |
 | `travel/mihon-settings.json` | 宿の地点・宿泊費・再挑戦の間隔 | `移動の設定 …/sample_trip/travel/mihon-settings.json がありません` |
 | `romance/presentation.json` | 背景（宿は画像なしの `neutral`、時計塔は画像つき） | `Unknown date destination background` |
 | `romance/date_destinations.json` | デートの行き先（時計塔の広場）と小話 | `Unknown date destination` |

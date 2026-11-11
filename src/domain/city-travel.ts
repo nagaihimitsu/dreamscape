@@ -62,8 +62,8 @@ export function leaveForNextCity(state: GameState): GameState {
     currentCityId: next.city.id,
     inventory,
     travel: { currentPlaceId: hotel, hotelPlaceId: hotel, day: 1, minute: 9 * 60,
-      // Rentals, ride counts and the stay's flags end here: they belong to the city where they were made.
-      returnReserve: 0, returnDeadline: DAY_END, activeEvent: null, rentedModeIds: [], rideCounts: {}, temporaryFlags: [],
+      // Rentals, ride counts, the stay's flags and today's route end here: they belong to the city where they were made.
+      returnReserve: 0, returnDeadline: DAY_END, activeEvent: null, rentedModeIds: [], rideCounts: {}, temporaryFlags: [], todayPlaceIds: [],
       ...(state.travel.calendar ? { calendar: { ...state.travel.calendar, cityStartJourneyDay: state.travel.calendar.journeyDay } } : {}) },
   };
   return arrived;

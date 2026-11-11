@@ -3,14 +3,15 @@
 // offers the same. The rest is sleepAtHotel (the same action as 「休む」), and the same night never rests twice.
 import { afterEach, describe, expect, it } from "vitest";
 import { getCityContent } from "../content";
-import { newJourney } from "../dev/scenario-builders";
+import { completedCity, newJourney } from "../dev/scenario-builders";
 import { installTourTestCity, testTour } from "../dev/test-tours";
-import { dayEndRest, getDayEnd } from "./day-end";
+import { leaveForNextCity } from "./city-travel";
+import { dayEndRest, getDayEnd, nightLineJa, todayRoute } from "./day-end";
 import { createGame, type GameState } from "./game";
 import { listPlayerActions } from "./player-action";
 import { bookTour } from "./tour";
-import { DAY_END, DAY_START } from "./travel";
-import { getTravelSleepOptions, sleepAtHotel } from "./travel-game";
+import { DAY_END, DAY_START, moveToPlace, TODAY_PLACES_MAX } from "./travel";
+import { beginTravelEvent, getTravelSleepOptions, sleepAtHotel } from "./travel-game";
 
 /** A new Milan game (free time at the hotel, 9:00 of day 1) with the party moved to a place and a time in memory. */
 function at(placeId: string, minute: number): GameState {
@@ -102,5 +103,62 @@ describe("the night actions at the day's end", () => {
     expect(after?.actions).not.toContain("book_tour");
     expect(after?.actions).not.toContain("depart");
     expect(kinds(booked).filter((kind) => kind === "rest")).toHaveLength(1);
+  });
+});
+
+// Today's route (save v21; 2026-11-11 user decision): the night's map shows the places the party went today in order,
+// joined by a dotted line, and the heroine's line of the night from the city's optional nightLinesJa.
+describe("today's route and the night's line", () => {
+  const { hotelPlaceId: hotel } = getCityContent("milano").travelSettings;
+  const today = (state: GameState, todayPlaceIds: string[]): GameState => ({ ...state, travel: { ...state.travel, todayPlaceIds } });
+
+  it("records a move to another place, once, and keeps the latest places within its size", () => {
+    const start = { currentPlaceId: hotel, todayPlaceIds: [] };
+    expect(moveToPlace(start, "p_duomo")).toEqual({ currentPlaceId: "p_duomo", todayPlaceIds: ["p_duomo"] });
+    // Staying where the party is (an event at its place) is no move.
+    expect(moveToPlace(start, hotel)).toEqual({ currentPlaceId: hotel, todayPlaceIds: [] });
+    expect(moveToPlace({ currentPlaceId: "p_duomo", todayPlaceIds: ["p_duomo"] }, "p_galleria").todayPlaceIds).toEqual(["p_duomo", "p_galleria"]);
+    // Back to a place met earlier is a stop again; never the same place twice in a row (the party placed elsewhere by Debug).
+    expect(moveToPlace({ currentPlaceId: "p_galleria", todayPlaceIds: ["p_duomo", "p_galleria"] }, "p_duomo").todayPlaceIds)
+      .toEqual(["p_duomo", "p_galleria", "p_duomo"]);
+    expect(moveToPlace({ currentPlaceId: "p_scala", todayPlaceIds: ["p_duomo"] }, "p_duomo").todayPlaceIds).toEqual(["p_duomo"]);
+    const full = Array.from({ length: TODAY_PLACES_MAX }, (_, index) => (index % 2 ? "p_duomo" : "p_galleria"));
+    const next = moveToPlace({ currentPlaceId: "p_duomo", todayPlaceIds: full }, "p_scala").todayPlaceIds;
+    expect(next).toHaveLength(TODAY_PLACES_MAX);
+    expect(next.at(-1)).toBe("p_scala");
+    expect(next[0]).toBe(full[1]);
+  });
+
+  it("is written by the map's departures and emptied by the night", () => {
+    const game = createGame(undefined, undefined, { journeyId: "milano" });
+    const there = beginTravelEvent(game, "milano_duomo_episode", "walk", game.revision);
+    expect(there.travel.todayPlaceIds).toEqual([there.travel.currentPlaceId]);
+    const late = today(at("p_supper", DAY_END), ["p_duomo", "p_supper"]);
+    const way = dayEndRest(late)!;
+    const morning = sleepAtHotel(late, way.mode, late.revision, way.viaPlaceId ?? null);
+    expect(morning.travel).toMatchObject({ day: 2, currentPlaceId: hotel, todayPlaceIds: [] });
+  });
+
+  it("starts empty in the next city", () => {
+    const cleared = completedCity("delhi");
+    const place = getCityContent("delhi").travel.places.find((item) => item.id !== cleared.travel.hotelPlaceId)!;
+    const arrived = leaveForNextCity(today(cleared, [place.id]));
+    expect(arrived.currentCityId).toBe("agra");
+    expect(arrived.travel.todayPlaceIds).toEqual([]);
+  });
+
+  it("starts at the hotel, then the places in order, a place twice in a row once; none when the party stayed in", () => {
+    const game = createGame(undefined, undefined, { journeyId: "milano" });
+    expect(todayRoute(game)).toEqual([]);
+    expect(todayRoute(today(game, ["p_duomo", "p_galleria"]))).toEqual([hotel, "p_duomo", "p_galleria"]);
+    expect(todayRoute(today(game, ["p_duomo", hotel]))).toEqual([hotel, "p_duomo", hotel]);
+    expect(todayRoute(today(game, [hotel]))).toEqual([]);
+  });
+
+  it("shows the city's night lines by the day, in turn, and none without them", () => {
+    const lines = ["一つ目", "二つ目", "三つ目"];
+    expect([1, 2, 3, 4, 7].map((day) => nightLineJa(lines, day))).toEqual(["一つ目", "二つ目", "三つ目", "一つ目", "一つ目"]);
+    expect(nightLineJa(undefined, 1)).toBeNull();
+    expect(nightLineJa([], 3)).toBeNull();
   });
 });

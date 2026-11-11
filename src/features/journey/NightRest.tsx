@@ -2,11 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { holdTaps } from "../../components/tap-hold";
 import { DAY_END_REST_JA } from "./night-rest-text";
+import { hasNightRecap, routeSentenceJa, type NightRecap } from "./night-recap";
+import { NightRecapView } from "./NightRecap";
 import "./night-rest.css";
 
 /** How long the card shows (ms): the night falls, the line, the fade to what lies under it. Reduced motion: the line, still. */
 const NIGHT_REST_MS = 2800;
 const NIGHT_REST_REDUCED_MS = 2000;
+/** The same with today's route or the heroine's line under the line (night-rest.css .has-recap keeps its timeline in step). */
+const NIGHT_REST_RECAP_MS = 4800;
+const NIGHT_REST_RECAP_REDUCED_MS = 3600;
 /** The plain fade to the morning after the hotel's scenes of a night screen's rest (ms; none with reduced motion). */
 const NIGHT_FADE_MS = 700;
 /** The live region is in the page a moment before its line, so a screen reader hears the line as an announcement. */
@@ -87,23 +92,29 @@ export function useNightCard({ reduceMotion, ms, reducedMs, onEnd }: { reduceMot
  * The day's end card (21:00; GameApp, getDayEnd with no night action): the game has already rested at the hotel by itself, as
  * 「休む」 does, and saved. It covers what the night led to (the next morning, or the hotel's scenes after waking) until it ends:
  * the screen turns to the night colour, a crescent moon and a few stars come out with 「夜も更けたので、ホテルで休みました。」,
- * then the card fades. It plays once a night: when the rest sleeps at once, or after the hotel's scenes before the night
- * (useTravelEffects). A tap (once the double-tap moment of holdTaps has passed) or Enter, Space or Esc ends it at once, and it
- * always ends by itself. With reduced motion nothing moves: the line shows plainly until a tap or 2 s. Screen readers hear the
- * line from a live region; the focus stays where it is. It never changes the game.
+ * then the card fades. Under the line: the night's today's route and the heroine's line when there are any (`recap`, the night
+ * before the rest; NightRecap, 2026-11-11), and the card then stays longer (4.8 s; reduced motion 3.6 s). It plays once a night:
+ * when the rest sleeps at once, or after the hotel's scenes before the night (useTravelEffects). A tap (once the double-tap
+ * moment of holdTaps has passed) or Enter, Space or Esc ends it at once, and it always ends by itself. With reduced motion
+ * nothing moves: the line shows plainly until a tap or 2 s. Screen readers hear the line (and the route and her line) from a
+ * live region; the focus stays where it is. It never changes the game.
  */
-export function NightRest({ reduceMotion, onEnd }: { reduceMotion: boolean; onEnd: () => void }) {
-  const { reduced, announced, end } = useNightCard({ reduceMotion, ms: NIGHT_REST_MS, reducedMs: NIGHT_REST_REDUCED_MS, onEnd });
+export function NightRest({ recap, reduceMotion, onEnd }: { recap?: NightRecap; reduceMotion: boolean; onEnd: () => void }) {
+  const shown = hasNightRecap(recap) ? recap : undefined;
+  const { reduced, announced, end } = useNightCard({ reduceMotion, ms: shown ? NIGHT_REST_RECAP_MS : NIGHT_REST_MS,
+    reducedMs: shown ? NIGHT_REST_RECAP_REDUCED_MS : NIGHT_REST_REDUCED_MS, onEnd });
+  const heard = shown ? [DAY_END_REST_JA, routeSentenceJa(shown.route), shown.line === null ? "" : `${shown.heroineName}：${shown.line}`].join("") : DAY_END_REST_JA;
   // `data-obstructs-dialogue`: a scene under the card (the hotel's after waking, a tour's morning) waits for it as for an open
   // dialog (dialogueObstructed: no typing, auto-advance or reading on), and the tap that ends it does not read on either.
-  return createPortal(<div className={`night-rest${reduced ? " is-reduced" : ""}`} data-testid="night-rest" data-obstructs-dialogue=""
+  return createPortal(<div className={`night-rest${reduced ? " is-reduced" : ""}${shown ? " has-recap" : ""}`} data-testid="night-rest" data-obstructs-dialogue=""
     onClick={end}>
     <div className="night-rest-content">
       <NightSky />
       {/* Seen here; read from the live region below (not twice). */}
       <p className="night-rest-text" aria-hidden="true">{DAY_END_REST_JA}</p>
+      {shown && <div aria-hidden="true"><NightRecapView recap={shown} /></div>}
     </div>
-    <p className="sr-only" role="status">{announced ? DAY_END_REST_JA : ""}</p>
+    <p className="sr-only" role="status">{announced ? heard : ""}</p>
   </div>, document.body);
 }
 

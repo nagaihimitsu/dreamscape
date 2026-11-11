@@ -3,7 +3,7 @@ import { occasionSchema } from "./occasion-state";
 import { balance } from "../content";
 import { responseProfileSchema } from "../content/schemas";
 import { storyFrameSchema } from "../story/runtime";
-import { DAY_END } from "./travel";
+import { DAY_END, TODAY_PLACES_MAX } from "./travel";
 import { activeEncounterSchema } from "./encounter-state";
 import { stableContentId } from "./stable-id";
 import { activeEpilogueSchema } from "./epilogue";
@@ -12,7 +12,7 @@ import { battleRewardReceiptSchema, pendingApRewardSchema } from "./rewards";
 import { activeBattleSchema, battleRecordSchema } from "./battle";
 
 /** The only saved game format this build reads; older versions are not migrated. */
-export const GAME_STATE_VERSION = 20;
+export const GAME_STATE_VERSION = 21;
 
 const uniqueStrings = z
   .array(z.string().min(1))
@@ -92,6 +92,9 @@ const travelStateSchema = z.object({
   // Story flags that last the day or the stay in this city (common condition system, stage 3: declared in
   // progression/story.json, set by encounter effects, cleared by sleeping and departing). None is declared yet.
   temporaryFlags: uniqueStrings,
+  // Today's route (save v21; the night screen's map): the places the party moved to today, in order, written by the
+  // moves (travel.ts moveToPlace); the day starts at the hotel. Emptied by the night and on departure.
+  todayPlaceIds: z.array(stableContentId).max(TODAY_PLACES_MAX),
 }).strict().superRefine((travel, context) => {
   if (travel.calendar && travel.calendar.journeyDay - travel.calendar.cityStartJourneyDay + 1 !== travel.day)
     context.addIssue({ code: "custom", message: "Travel day and journey calendar disagree", path: ["calendar"] });

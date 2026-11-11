@@ -8,7 +8,7 @@ import { beginArrival, beginCityEpilogue, beginTourLegNarration, canBeginArrival
 import { canDepart, departToNextCity, leaveForNextCity, registerMomentOpeners } from "./city-travel";
 import { startDate } from "./game";
 import { eventCity, eventPlace, momentHasScenes, momentSchedule, narrationAt, tourMoment, tripMoment, type Moment, type MomentSchedule } from "./moments";
-import { DAY_START, getGameWeekday, planTravelEvent } from "./travel";
+import { DAY_START, getGameWeekday, moveToPlace, planTravelEvent } from "./travel";
 import type { GameState } from "./game-state-schema";
 import type { Occasion, OccasionPart, OccasionThen, OccasionTour, OccasionTrip } from "./occasion-state";
 import { mainPartPayments, mainScene, runningMainPayment, tourKeepBack, type Payment } from "./reservations";
@@ -295,7 +295,7 @@ function applyTrip(state: GameState): GameState {
   if (!trip) return state;
   const moved = trip.to !== trip.from;
   const ride = moved && trip.modeId !== WALK_MODE_ID && occasion.kind !== "hotel";
-  const next: GameState = { ...state, travel: { ...state.travel, currentPlaceId: trip.to, minute: trip.arrivalMinute,
+  const next: GameState = { ...state, travel: { ...state.travel, ...moveToPlace(state.travel, trip.to), minute: trip.arrivalMinute,
     rideCounts: ride ? { ...state.travel.rideCounts, [trip.modeId]: (state.travel.rideCounts[trip.modeId] ?? 0) + 1 } : state.travel.rideCounts },
     occasion: { ...occasion, ...(moved ? { moved: trip.modeId } : {}) } };
   // (A visit without its main part, a then: move's empty visit, is not recorded: the first real visit keeps its guide, 3.9 (b).)
@@ -307,13 +307,13 @@ function moveTourLeg(state: GameState): GameState {
   const tour = state.occasion!.tour;
   const leg = tour && getTour(tour.id)?.steps.find((step) => step.id === tour.step);
   if (leg?.kind !== "leg") return state;
-  return { ...state, travel: { ...state.travel, currentPlaceId: leg.toPlaceId, minute: state.travel.minute + leg.minutes } };
+  return { ...state, travel: { ...state.travel, ...moveToPlace(state.travel, leg.toPlaceId), minute: state.travel.minute + leg.minutes } };
 }
 
-/** The night (the hotel's main part): the next day's morning (decision 44: night until waking). */
+/** The night (the hotel's main part): the next day's morning (decision 44: night until waking), its route still empty. */
 function sleep(state: GameState): GameState {
   const calendar = state.travel.calendar;
-  return { ...state, travel: { ...state.travel, day: state.travel.day + 1, minute: DAY_START,
+  return { ...state, travel: { ...state.travel, day: state.travel.day + 1, minute: DAY_START, todayPlaceIds: [],
     ...(calendar ? { calendar: { ...calendar, journeyDay: calendar.journeyDay + 1 } } : {}) } };
 }
 
@@ -490,7 +490,7 @@ function runThen(state: GameState, nextRoll: () => number): GameState {
     activeEvent: event ? { eventId: event.id, placeId: event.placeId, endMinute: arrival + event.activityMinutes } : null } };
   const rides = then.modeId !== WALK_MODE_ID && then.move !== closed.travel.currentPlaceId
     ? { ...closed.travel.rideCounts, [then.modeId]: (closed.travel.rideCounts[then.modeId] ?? 0) + 1 } : closed.travel.rideCounts;
-  const moved: GameState = prefix.trip ? paid : { ...paid, travel: { ...paid.travel, currentPlaceId: then.move, minute: arrival, rideCounts: rides } };
+  const moved: GameState = prefix.trip ? paid : { ...paid, travel: { ...paid.travel, ...moveToPlace(paid.travel, then.move), minute: arrival, rideCounts: rides } };
   // A place with no landmark (a date's or a finale's only): free time there (decision 20), after the trip's scenes when any runs.
   const occasion: Occasion | undefined = landmarkId ? visitOccasion(moved, landmarkId, event?.id ?? null)
     : prefix.trip ? { kind: "visit", cityId, eventId: null, landmarkId: null, parts: [], ran: [], at: null, started: [] } : undefined;

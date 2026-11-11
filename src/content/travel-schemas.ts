@@ -87,11 +87,19 @@ export const travelEventSchema = z.object({
   endWindows: z.array(timeWindowSchema).optional(),
 }).strict();
 
+/**
+ * A city's optional short lines of the heroine's for the night screen (2026-11-11): one shows under today's route,
+ * chosen by the day (day 1 the first, then in turn). `{player_name}` and `{heroine_name}` take the names set.
+ * Without them, no line.
+ */
+export const nightLinesSchema = z.array(japaneseText);
+
 export const travelCatalogSchema = z.object({
   cityId: id,
   places: z.array(travelPlaceSchema).min(1),
   routes: z.array(travelRouteSchema),
   events: z.array(travelEventSchema),
+  nightLinesJa: nightLinesSchema.optional(),
 }).strict().superRefine((catalog, ctx) => {
   const places = new Set<string>();
   for (const [index, place] of catalog.places.entries()) {
