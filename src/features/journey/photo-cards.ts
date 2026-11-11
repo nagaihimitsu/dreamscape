@@ -142,7 +142,7 @@ export function chooseWait<T extends TravelWaitOption>(options: readonly T[], pi
   return open.find((option) => waitKey(option) === picked) ?? open[0] ?? null;
 }
 
-/** A wait in words: 「30分待つ」, 「夜(18:00)まで待つ」 until the night starts (NIGHT_START), else 「15:00まで待つ」. */
+/** A wait in words: 「30分待つ」, 「夜(18:00)まで待つ」 until the night starts (NIGHT_START; the only two getTravelWaitOptions offers), else 「15:00まで待つ」. */
 export function waitLabelJa(option: Pick<TravelWaitOption, "minutes" | "until">): string {
   if (option.until === null) return `${option.minutes}分待つ`;
   return `${option.until === NIGHT_START ? `夜(${formatTravelTime(NIGHT_START)})` : formatTravelTime(option.until)}まで待つ`;

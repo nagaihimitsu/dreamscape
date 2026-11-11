@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createGame } from "./game";
 import { beginTravelEvent, getTravelEventAvailability, isCompletedTravelEvent, isTravelEventUnlocked, isUnclearedMainTravelEvent, getTravelSleepOptions, sleepAtHotel } from "./travel-game";
-import { getNextTravelWaitTime, getTravelDestinations } from "./travel-destinations";
+import { getTravelDestinations, getTravelWaitOptions } from "./travel-destinations";
 import { groupDestinationEvents, selectNearbyDestinations } from "./travel";
 
 describe("main travel event completion", () => {
@@ -63,10 +63,14 @@ describe("travel menu planning", () => {
     expect(state).toEqual(before);
   });
 
-  it("offers the evening wait shortcut but no shortcut past closing time", () => {
+  it("offers 30 minutes and the night's start, never the next opening time", () => {
     const initial = createGame();
-    expect(getNextTravelWaitTime({ ...initial, travel: { ...initial.travel, minute: 18 * 60 - 1 } })).toBe(18 * 60);
-    expect(getNextTravelWaitTime({ ...initial, travel: { ...initial.travel, minute: 21 * 60 } })).toBeNull();
+    const at = (minute: number) => getTravelWaitOptions({ ...initial, travel: { ...initial.travel, minute } }).map(({ minutes, until }) => ({ minutes, until }));
+    expect(at(9 * 60)).toEqual([{ minutes: 30, until: null }, { minutes: 9 * 60, until: 18 * 60 }]);
+    expect(at(18 * 60 - 1)).toEqual([{ minutes: 30, until: null }, { minutes: 1, until: 18 * 60 }]);
+    // The same 30 minutes twice is offered once; at night there is only 「30分待つ」.
+    expect(at(18 * 60 - 30)).toEqual([{ minutes: 30, until: null }]);
+    expect(at(18 * 60)).toEqual([{ minutes: 30, until: null }]);
   });
 
   it("uses the displayed overnight plan when returning too late for ordinary travel", () => {

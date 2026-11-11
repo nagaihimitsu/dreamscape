@@ -1,7 +1,7 @@
 import { getCityContent } from "../content";
-import { isTourOnlyPlace, type TravelEvent, type TravelPlace, type TravelRoute } from "../content/travel-schemas";
+import type { TravelEvent, TravelPlace, TravelRoute } from "../content/travel-schemas";
 import type { GameState } from "./game";
-import { DAY_END, NIGHT_START, groupDestinationEvents, selectNearbyDestinations, type DestinationPlace } from "./travel";
+import { NIGHT_START, groupDestinationEvents, selectNearbyDestinations, type DestinationPlace } from "./travel";
 import { getTravelEventAvailability, getTravelSleepOptions, isTravelEventVisible, isUnclearedMainTravelEvent, waitForTravel } from "./travel-game";
 import { isTransportModeUsable } from "./transport";
 
@@ -46,23 +46,15 @@ export function getTravelDestinations(state: GameState) {
 
 export type TravelWaitOption = { minutes: number; until: number | null; available: boolean };
 
-/** The 待機 menu (TravelActions): 30 minutes, then until the next time something opens, each enabled only if waiting is possible. */
+/**
+ * The 待機 menu: 「30分待つ」 and, while it is still day, 「夜(18:00)まで待つ」 (until NIGHT_START; user decision 2026-11-11:
+ * no wait to the next opening time). The night wait is left out where it would be the same 30 minutes. Each is enabled
+ * only if waiting is possible (the party can still get back to the hotel before the day ends).
+ */
 export function getTravelWaitOptions(state: GameState): TravelWaitOption[] {
-  const next = getNextTravelWaitTime(state);
-  const options = [{ minutes: 30, until: null }, ...(next === null ? [] : [{ minutes: next - state.travel.minute, until: next }])];
+  const toNight = NIGHT_START - state.travel.minute;
+  const options = [{ minutes: 30, until: null }, ...(toNight > 0 && toNight !== 30 ? [{ minutes: toNight, until: NIGHT_START }] : [])];
   return options.map((option) => ({ ...option, available: waitForTravel(state, option.minutes, state.revision) !== state }));
-}
-
-/** Next visible event, opening time or evening boundary before the day ends (tour-only places and their events aside: only a tour goes there). */
-export function getNextTravelWaitTime(state: GameState): number | null {
-  const { travel } = getCityContent(state.currentCityId);
-  const places = travel.places.filter((place) => !isTourOnlyPlace(place));
-  const events = travel.events.filter((event) => places.some((place) => place.id === event.placeId) && isTravelEventVisible(state, event));
-  const nextTimes = [NIGHT_START,
-    ...events.flatMap((event) => event.startWindows?.map((window) => window.start) ?? []),
-    ...places.flatMap((place) => place.openingWindows?.map((window) => window.start) ?? []),
-  ].filter((minute) => minute > state.travel.minute && minute < DAY_END);
-  return nextTimes.length ? Math.min(...nextTimes) : null;
 }
 
 /** One route of an event, as the destination's choices offer it (data order). */
