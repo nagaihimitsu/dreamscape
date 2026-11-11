@@ -136,14 +136,14 @@ export function PhotoCardFreeTime({
   </section>;
 }
 
-/** A hidden middle card with a two-line name and its swipe hint: its height (larger text included) chooses row or list. */
+/** A hidden middle card with a two-line name and its swipe cue: its height (larger text included) chooses row or list. */
 function CardProbe() {
   return <div className="photo-card-probe" aria-hidden="true">
     <span className="photo-card is-story">
       <span className="photo-card-photo" />
       <span className="photo-card-text">
         <span className="photo-card-name">行き先の<br />名前</span>
-        <span className="photo-card-hint" data-shown="true">︿ 上にスワイプして出発</span>
+        <span className="photo-card-cue" />
       </span>
     </span>
   </div>;

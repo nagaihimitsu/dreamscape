@@ -167,10 +167,10 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
         const face = cardFace(game, rowCard, recommendedId);
         const isChosen = rowCard.id === chosenId;
         const marks = [face.top, face.bottom, face.available ? null : "今は行けない"].filter((mark): mark is string => !!mark);
-        const classes = ["photo-card", face.kinds === "none" ? null : `is-${face.kinds}`, face.available ? null : "is-unavailable", face.hint ? "is-swipeable" : null];
+        const classes = ["photo-card", face.kinds === "none" ? null : `is-${face.kinds}`, face.available ? null : "is-unavailable", face.swipeable ? "is-swipeable" : null];
         return <li key={rowCard.id} data-card-id={rowCard.id} data-testid={face.testId} data-selected={isChosen ? "true" : undefined}>
           <button type="button" className={classes.filter((name) => name).join(" ")} tabIndex={rowCard.id === tabStop ? 0 : -1}
-            aria-current={isChosen ? "true" : undefined}
+            aria-current={isChosen ? "true" : undefined} data-cue={row && isChosen && swipe?.go ? "true" : undefined}
             aria-label={photoCardLabel({ position: index + 1, count: cards.length, name: face.name, marks })}
             onPointerDown={(down) => swipeUp.press(down, rowCard.id)}
             onClick={() => {
@@ -203,7 +203,7 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
             </span>
             <span className="photo-card-text" aria-hidden="true">
               <span className="photo-card-name">{isChosen && <span className="travel-selected-badge">◆</span>}{face.name}</span>
-              {face.hint && <span className="photo-card-hint" data-shown={row && isChosen && swipe?.go ? "true" : undefined}>{face.hint}</span>}
+              {face.swipeable && <span className="photo-card-cue" />}
             </span>
           </button>
           {!row && isChosen && card}
@@ -461,7 +461,8 @@ function useSwipeUp({ row, chosen, swipe, stage }: {
 
 /**
  * What a card shows: its name, its photo or plain tile, its marks over the photo (top and bottom), its fill (what the
- * place holds), its swipe hint (a place's: departing, or at the current place starting there) and its testid.
+ * place holds), whether a swipe up takes it (a place's: departing, or at the current place starting there; shown by
+ * the swipe cue's motion, no words) and its testid.
  */
 function cardFace(game: GameState, card: RowCard, recommendedId: string | null | undefined): {
   testId: string;
@@ -471,23 +472,23 @@ function cardFace(game: GameState, card: RowCard, recommendedId: string | null |
   bottom: string | null;
   photo: ReactNode;
   kinds: CardKinds;
-  hint: string | null;
+  swipeable: boolean;
 } {
   const kinds = cardKinds(card);
   if (card.kind === "wait")
-    return { testId: "travel-wait", name: "待機", available: true, top: null, bottom: null, kinds, hint: null,
+    return { testId: "travel-wait", name: "待機", available: true, top: null, bottom: null, kinds, swipeable: false,
       photo: <PlainTile><Icon name="hourglass" /></PlainTile> };
   if (card.kind === "stay") {
     const hotel = getCityContent(game.currentCityId).travel.places.find((place) => place.id === game.travel.hotelPlaceId);
     // The inn's own photo (a travel place's photoAssetId) when it has one, else the bed on its background colour.
     const hotelPhoto = getPlacePhoto(game.currentCityId, game.travel.hotelPlaceId);
-    return { testId: "travel-stay", name: "ホテルに戻る", available: true, top: null, bottom: null, kinds, hint: null,
+    return { testId: "travel-stay", name: "ホテルに戻る", available: true, top: null, bottom: null, kinds, swipeable: false,
       photo: hotelPhoto
         ? <img src={`${import.meta.env.BASE_URL}${derivedImagePath(hotelPhoto, "card")}`} alt="" width={240} height={160} loading="lazy" decoding="async" draggable={false} />
         : <PlainTile color={hotel && presentation.backgrounds[hotel.backgroundId]?.color}><Icon name="bed" /></PlainTile> };
   }
   if (card.kind === "tour")
-    return { testId: "travel-tour", name: "ツアー", available: true, top: game.tour?.status === "booked" ? "予約済み" : null, bottom: null, kinds, hint: null,
+    return { testId: "travel-tour", name: "ツアー", available: true, top: game.tour?.status === "booked" ? "予約済み" : null, bottom: null, kinds, swipeable: false,
       photo: <PlainTile><Icon name="ticket" /></PlainTile> };
   const { entry } = card;
   const placeId = entry.place.id;
@@ -500,7 +501,7 @@ function cardFace(game: GameState, card: RowCard, recommendedId: string | null |
     bottom: placeVisited(game, placeId) ? "訪問済み" : null,
     photo: <PlacePhoto game={game} entry={entry} />,
     kinds,
-    hint: here ? "︿ 上にスワイプで始める" : "︿ 上にスワイプして出発",
+    swipeable: true,
   };
 }
 
