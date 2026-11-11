@@ -1,7 +1,9 @@
 INCLUDE modules.ink
 # background: gt_bg_delhi_red_fort
 # speaker: narrator
-赤い城、暗くなってから。カムラの一覧の一行目が気になって、二人はもう一度、レッド・フォートの城門の前に来ていた。そこへ、宿の主人から電話が入った。隣のカムラさんの孫が、あなたたちを探している、と。
+赤い城、暗くなってから。カムラの一覧の一行目が気になって、二人はもう一度、レッド・フォートの城門の前に来ていた。そこへ、宿の主人から電話が入った。
+# speaker: gt_delhi_hotel_owner
+隣のカムラさんのお孫さんが、お二人を探しています
 # background: gt_bg_delhi_hotel_hub
 # speaker: narrator
 急いで宿に戻ると、路地が騒がしかった。半分だけ荷を積んだトラック。集まった近所の人たち。段ボールには、どれも「JAIPUR」と書いてある。
@@ -56,7 +58,8 @@ INCLUDE modules.ink
 # speaker: narrator
 五行目。カムラの字は、そこだけ大きかった。
 # speaker: narrator
-「月が水に落ちた所で、最後の買い物」
+# letter: note
+月が水に落ちた所で、最後の買い物
 # speaker: enemy
 旧市街に川なんてない。池もない。……祖母は、また昔の話を
 # speaker: heroine
@@ -72,7 +75,11 @@ INCLUDE modules.ink
     ……チャンドニー・チョーク。月光の広場か。池なんて、とっくにないのに
 }
 # speaker: narrator
-アマンが止めたオートリキシャの運転手は、メーターが壊れていると言った。アマンは即座に聞き返した。
+アマンがオートリキシャを止めた。
+# speaker: gt_delhi_auto_driver
+メーターは壊れてるよ
+# speaker: narrator
+アマンは即座に聞き返した。
 # speaker: enemy
 いつ壊れた。今朝か？　さっきか？
 # speaker: narrator
@@ -97,7 +104,9 @@ INCLUDE modules.ink
 # speaker: narrator
 西へ歩くにつれて、空気が辛くなった。唐辛子の袋の山。三人そろって、くしゃみが止まらない。
 # speaker: narrator
-年配の問屋が、目を細めて覚えていた。ガラムマサラを一年分。ジャイプールのは甘すぎる、と言っていたそうだ。
+年配の問屋が、目を細めて覚えていた。
+# speaker: gt_delhi_spice_trader
+来たよ。ガラムマサラを一年分。ジャイプールのは甘すぎるんだそうだ
 # speaker: gt_delhi_spice_trader
 それと、城の灯りは何時から始まるか聞かれた。三十分前に出ていったよ
 # speaker: narrator
@@ -117,7 +126,10 @@ INCLUDE modules.ink
 # speaker: enemy
 でも、城はもう閉まってる。日が暮れたら入れない
 # speaker: narrator
-{heroine_name}は一覧を開いた。一行目。赤い城、と書いた横の注釈は、最初の日からずっと気になっていた。「暗くなってから」
+{heroine_name}は一覧を開いた。一行目。赤い城、と書いた横の注釈は、最初の日からずっと気になっていた。
+# speaker: narrator
+# letter: note
+赤い城――暗くなってから
 -> quiz(4) ->
 # background: gt_bg_delhi_red_fort
 { quiz_correct:
@@ -146,7 +158,9 @@ INCLUDE modules.ink
     一九六五年に始まってます。アジアで最初のころの、光と音のショー。カムラさんの記憶は、混ざってなんかいません
 - else:
     # speaker: narrator
-    案内の係員が、小声で教えてくれた。最初のショーは一九六五年。アジアで一番早いころのものだった、と。
+    案内の係員が、小声で教えてくれた。
+    # speaker: gt_delhi_red_fort_guide
+    最初のショーは一九六五年です。アジアで一番早いころのものですよ
 }
 # speaker: enemy
 ……六十年前。祖母は、十九だ

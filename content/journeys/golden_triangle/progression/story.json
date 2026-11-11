@@ -285,6 +285,37 @@
       "nameJa": "検札係"
     },
     {
+      "id": "gt_delhi_india_gate_boy",
+      "cityId": "delhi",
+      "nameJa": "男の子",
+      "characterId": "gt_monu"
+    },
+    {
+      "id": "gt_delhi_chandni_vendor",
+      "cityId": "delhi",
+      "nameJa": "屋台の男"
+    },
+    {
+      "id": "gt_delhi_chandni_customer",
+      "cityId": "delhi",
+      "nameJa": "隣の客"
+    },
+    {
+      "id": "gt_delhi_auto_driver",
+      "cityId": "delhi",
+      "nameJa": "運転手"
+    },
+    {
+      "id": "gt_delhi_scam_phone_voice",
+      "cityId": "delhi",
+      "nameJa": "電話の声"
+    },
+    {
+      "id": "gt_delhi_red_fort_guide",
+      "cityId": "delhi",
+      "nameJa": "案内の係員"
+    },
+    {
       "id": "gt_tanvi",
       "cityId": "agra",
       "nameJa": "タンヴィ"
@@ -368,6 +399,11 @@
       "id": "gt_agra_akbar_guard",
       "cityId": "agra",
       "nameJa": "番人"
+    },
+    {
+      "id": "gt_agra_fort_tourist",
+      "cityId": "agra",
+      "nameJa": "ツアーの客"
     },
     {
       "id": "gt_pooja",

@@ -147,8 +147,16 @@ INCLUDE modules.ink
 # sources: none
 # background: gt_bg_delhi_hotel_hub
 # speaker: narrator
-夜中の二時。携帯が一度だけ震えた。彼女からだった。起きてる？
-返事を打つ前に、二通目が来た。やっぱりいい。寝て。
+夜中の二時。携帯が一度だけ震えた。彼女からだった。
+# speaker: heroine
+# phone: received
+起きてる？
+# speaker: narrator
+返事を打つ前に、二通目が来た。
+# speaker: heroine
+# phone: received
+やっぱりいい。寝て
+# speaker: narrator
 廊下に出ると、彼女が長椅子で膝を抱えていた。顔が白い。
 # speaker: heroine
 # emotion: worried
@@ -297,11 +305,17 @@ Agra? Your train is cancelled today.
 # background: gt_bg_delhi_paharganj
 # speaker: narrator
 道を渡り、大通りから一本入った路地の、狭い階段を上がる。扉には、大きな英語の看板。政府公認・観光案内所。中にはインドの旗が飾られ、額に入った「証明書」が壁に並び、天井の扇風機がゆっくり回っていた。
-背広の男が、にこやかに立ち上がった。座ってください、まずはチャイを。
+背広の男が、にこやかに立ち上がった。
+# speaker: gt_delhi_scam_suit_man
+座ってください。まずはチャイを
 # speaker: gt_delhi_scam_suit_man
 切符を拝見。……ああ、本当だ。運休ですね。しかも、婚礼の季節で、アーグラ行きは三日先まで満席です
 # speaker: narrator
-男はこちらに背を向けた画面を見ながら、首を振った。それから電話をかけ、受話器をこちらに向けた。駅長です、と言って。電話の向こうの声が、運休です、と繰り返した。
+男はこちらに背を向けた画面を見ながら、首を振った。それから電話をかけ、受話器をこちらに向けた。
+# speaker: gt_delhi_scam_suit_man
+駅長です
+# speaker: gt_delhi_scam_phone_voice
+運休です。運休です
 # speaker: gt_delhi_scam_suit_man
 ご安心を。車と運転手をご用意できます。アーグラとジャイプール、ホテル込み。特別価格です。手付金だけ先にいただければ、今すぐ車を押さえます
 # speaker: narrator
@@ -315,7 +329,11 @@ Agra? Your train is cancelled today.
     # money: -500
     # set: gt_delhi_scam_paid
     # speaker: narrator
-    男は札を数え、満足そうに引き出しにしまった。契約書を用意します、と立ち上がる。その間、彼女はノートをめくっていた。
+    男は札を数え、満足そうに引き出しにしまった。
+    # speaker: gt_delhi_scam_suit_man
+    契約書を用意します
+    # speaker: narrator
+    男が立ち上がる。その間、彼女はノートをめくっていた。
 * [「その電話の相手と、直接話させてください」 # option: ask_the_caller]
     # rel: trust +1
     # speaker: gt_delhi_scam_suit_man
@@ -357,7 +375,11 @@ No, thank you.
 それなら、自分で確かめて、乗り遅れます
 { cond("flag gt_delhi_scam_paid"):
     # speaker: narrator
-    手付金を返してほしいと言うと、男の笑顔が消えた。返金はできない。契約の決まりだ。机の向こうで、引き出しはもう鍵がかかっていた。
+    手付金を返してほしいと言うと、男の笑顔が消えた。
+    # speaker: gt_delhi_scam_suit_man
+    返金はできません。契約の決まりです
+    # speaker: narrator
+    机の向こうで、引き出しはもう鍵がかかっていた。
     # speaker: heroine
     # emotion: serious
     ……行こう。取り返すより、電車。ここで揉めて、もっと何かなくすのは嫌
@@ -443,7 +465,10 @@ No, thank you.
     そっか。書いたんだ。ふふ、よかった
 }
 # speaker: narrator
-伝言には、追伸がついていた。駅前で「運休だ」と言われても、信じないように。毎年、うちのお客さんの誰かが引っかかるので。
+伝言には、追伸がついていた。
+# speaker: gt_delhi_hotel_owner
+# phone: received
+追伸。駅前で、運休だと言われても、信じないように。毎年、うちのお客さんの誰かが引っかかるので
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 ……一時間、遅かった

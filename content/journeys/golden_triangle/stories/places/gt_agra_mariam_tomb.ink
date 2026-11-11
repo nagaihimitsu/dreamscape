@@ -19,7 +19,11 @@ INCLUDE modules.ink
 # speaker: gt_agra_mariam_daughter
 パパ、違う。ジョーダー・バーイーって名前、当時の記録には出てこないんだって。ほら、ここに書いてある
 # speaker: narrator
-十五、六の娘が携帯を突きつける。父親は画面を見ず、映画の方が正しい、と言い張った。母親は笑って、揚げ菓子を配っている。
+十五、六の娘が携帯を突きつける。父親は画面を見ようともしない。
+# speaker: gt_agra_mariam_father
+映画の方が正しいんだ
+# speaker: narrator
+母親は笑って、揚げ菓子を配っている。
 # speaker: heroine
 # reaction: heroine,surprised,question
 名前が、違うの？　お墓の人の？

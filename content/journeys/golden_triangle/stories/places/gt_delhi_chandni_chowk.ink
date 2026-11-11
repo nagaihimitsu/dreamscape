@@ -36,7 +36,11 @@ INCLUDE modules.ink
 # speaker: narrator
 感想を言い終わる前に、二つ目が来た。飲み込む前に、三つ目。屋台の男は客の顔を見ていない。手だけが、正確に、休まずに動いている。
 四つ目。五つ目。彼女は涙目のまま、律儀に笑ってうなずいている。口がいっぱいで、何も言えない。
-隣の男の客が、短く何か言った。屋台の男の手が、その客の器だけを飛ばした。――バス。
+隣の男の客が、短く何か言った。
+# speaker: gt_delhi_chandni_customer
+バス
+# speaker: narrator
+屋台の男の手が、その客の器だけを飛ばした。
 * [「バス！」と、彼女の代わりに言う # option: say_bas_for_her]
     # profile: bold
     # memory: gt_delhi_date_chandni_chowk_memory
@@ -101,7 +105,11 @@ INCLUDE modules.ink
     引き分け！　今の、わたしの方が一瞬早かったけどね
 -
 # speaker: narrator
-屋台の男が、指を一本立てた。最後の一つ。おまけだ、と言う。緑の水が、今日いちばんたっぷり入っている。
+屋台の男が、指を一本立てた。
+# speaker: gt_delhi_chandni_vendor
+最後の一つ。おまけだ
+# speaker: narrator
+緑の水が、今日いちばんたっぷり入っている。
 # speaker: heroine
 # emotion: worried
 ……食べたい。食べたいけど、もう入らないかも。でも、せっかくくれたのに
@@ -143,14 +151,18 @@ INCLUDE modules.ink
     # profile: playful
     # set: gt_delhi_said_bas
     { romance_result == "negative":
+        # speaker: heroine
+        バス！
         # speaker: narrator
-        声はそろわなかった。彼女の「バス」が半拍早く、こちらの「バス」が後から追いかけた。
+        声はそろわなかった。彼女が半拍早く、こちらの声が後から追いかけた。
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
         ……ずれた。わたし、ちょっと早かったね
     - else:
+        # speaker: heroine
+        バス！
         # speaker: narrator
-        声がそろった。バス。
+        こちらの声と、ぴったりそろった。
     }
     # speaker: narrator
     屋台の男は肩をすくめ、水をくぐらせない、乾いた一つを代わりにくれた。塩と香辛料だけがまぶしてある。

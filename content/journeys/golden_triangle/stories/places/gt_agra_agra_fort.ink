@@ -28,7 +28,9 @@ INCLUDE modules.ink
 # reaction: heroine,surprised,sparkle
 あれ、タージ・マハルだ。こんなに遠くから、ちゃんと見えるんだね
 # speaker: narrator
-川に面した八角形の塔の欄干から、ツアーの人々が順番にタージを眺めている。誰かが言った。ここは、ある皇帝が最後の年月を過ごした場所だ、と。
+川に面した八角形の塔の欄干から、ツアーの人々が順番にタージを眺めている。誰かが言った。
+# speaker: gt_agra_fort_tourist
+ここは、ある皇帝が、最後の年月を過ごした場所なんだって
 # speaker: heroine
 # emotion: neutral
 最後の年月を、遠くのタージを見ながら……。どんな気持ちだったんだろう
