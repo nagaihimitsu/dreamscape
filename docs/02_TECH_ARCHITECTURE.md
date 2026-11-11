@@ -7,7 +7,7 @@
 - `.json`（都市/観光地/クイズ/デート定義/数値バランス）。スキーマ検証（Zodなど）は必要な範囲だけ導入。
 - 状態は小規模ならReact Context + useReducer等。用途が拡大してから状態管理ライブラリの導入を検討する。
 - `localStorage` と `schemaVersion`。現在のゲームで作成した有効なデータの、同一バージョン内の保存・再開を維持する。将来の汎用移行基盤やJSONエクスポート/インポートは今回の必須要件ではない。
-- 画像 WebP/PNG。最初はプレースホルダーで十分。写真・名画の細部を問う本番問題は、画像使用権と正確性を確認したものを使う。配信する観光写真は WebP（品質80。観察で拡大する写真は元の大きさ、ほかは幅1600px・高さ1800pxの枠）、ヒロインの立ち絵は可逆の WebP（元のPNGは配信しない `authoring/characters/` に置く）。写真の変換は `npm run images:optimize`（[CONTENT_GUIDE](../authoring/CONTENT_GUIDE.md)）。画像は旅行編ごとに分けて読み込まない（配信物の合計は約41MB、2026-11-08。分けるかどうかは、必要になったときに測り直して決める）。
+- 画像 WebP/PNG。最初はプレースホルダーで十分。写真・名画の細部を問う本番問題は、画像使用権と正確性を確認したものを使う。配信する観光写真は WebP（品質80。観察で拡大する写真は元の大きさ、ほかは幅1600px・高さ1800pxの枠）、ヒロインと旅行編の人物の立ち絵は可逆の WebP（元のPNGは配信しない `authoring/characters/`、旅行編の人物は `authoring/journeys/<旅行編ID>/characters/` に置く）。写真の変換は `npm run images:optimize`（[CONTENT_GUIDE](../authoring/CONTENT_GUIDE.md)）。画像は旅行編ごとに分けて読み込まない（配信物の合計は約41MB、2026-11-08。分けるかどうかは、必要になったときに測り直して決める）。
 
 ## 編集元と生成物の分離
 編集元 `content/journeys/<journeyId>/stories/**/*.ink` → ビルド時にコンパイル → 配信対象となる `.json` → `inkjs` 実行 → Reactで台詞と選択肢を描画 → TypeScriptのルール層にイベント通知。

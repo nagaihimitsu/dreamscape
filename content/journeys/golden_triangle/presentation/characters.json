@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "characters": [
+    {
+      "id": "gt_nidhi",
+      "imagePath": "assets/characters/gt_nidhi/neutral.webp",
+      "placement": { "x": 68, "bottom": 0, "width": 62, "height": 82, "scale": 1, "originX": 50, "originY": 100 },
+      "placeholderColor": "#4f6f9a",
+      "variants": []
+    },
+    {
+      "id": "gt_aman",
+      "imagePath": "assets/characters/gt_aman/neutral.webp",
+      "placement": { "x": 68, "bottom": 0, "width": 62, "height": 82, "scale": 1, "originX": 50, "originY": 100 },
+      "placeholderColor": "#9a3f3a",
+      "variants": []
+    },
+    {
+      "id": "gt_kamla",
+      "imagePath": "assets/characters/gt_kamla/neutral.webp",
+      "placement": { "x": 68, "bottom": 0, "width": 62, "height": 82, "scale": 1, "originX": 50, "originY": 100 },
+      "placeholderColor": "#a8456f",
+      "variants": []
+    }
+  ],
+  "battleCharacters": {
+    "gt_delhi_main_red_fort_battle": "gt_nidhi",
+    "gt_delhi_finale_battle": "gt_aman",
+    "gt_jaipur_finale_battle": "gt_kamla"
+  }
+}

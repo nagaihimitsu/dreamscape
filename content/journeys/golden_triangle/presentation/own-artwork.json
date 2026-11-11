@@ -18,6 +18,24 @@
       "paths": [
         "assets/backdrops/jaipur-free-time.webp"
       ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、ニディ先生の立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_nidhi/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、アマンの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_aman/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、カムラの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_kamla/neutral.webp"
+      ]
     }
   ]
 }
