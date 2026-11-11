@@ -48,6 +48,8 @@ import { TitleNameFields } from "../features/journey/TitleNameFields";
 import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
 import { JourneyHud } from "./JourneyHud";
+import { hudView } from "./hud-view";
+import { BackgroundCredits } from "../components/BackgroundCredits";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
 import { sceneBackdropPhoto } from "../features/journey/travel-labels";
 import { advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, encounterChoiceDisplay, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterCanFinish, proceedFromTourism, continueTourismEncounters, encounterLeadsOnward, leaveBattleToFreeTime } from "../domain/encounter";
@@ -207,6 +209,7 @@ export function GameApp({
   }
   const [recordsOpen, setRecordsOpen] = useState(false);
   const [photoCreditsOpen, setPhotoCreditsOpen] = useState(false);
+  const [scenePhotoOpen, setScenePhotoOpen] = useState(false);
   const [sceneEpoch, setSceneEpoch] = useState(0);
   const [notebook, setNotebook] = useState(false);
   const speed = displaySettings.value.dialogueSpeed;
@@ -318,6 +321,18 @@ export function GameApp({
   const departure = game ? getPlayerDeparture(game) : undefined;
   const resultExits = game ? getBattleResultExits(game) : { epilogue: false, leave: false };
   const observationLandmarkId = game ? getBattleObservationLandmarkId(game) : null;
+  // The registered photo behind the story scene on screen (in the order of the screens below), whose credits
+  // ⚙設定's 「画像の出典」 opens: a scene shows no 出典 of its own (user decision 2026-11-11).
+  const photoOf = (id: string | undefined) => (id ? tourismAssets.find((asset) => asset.id === id) : undefined);
+  const landmarkPhoto = (id: string | null | undefined) => photoOf(landmarks.find((landmark) => landmark.id === id)?.imageAssetId);
+  const backdropPhoto = (backgroundId: string) => photoOf(presentation.backgrounds[backgroundId]?.imageAssetId);
+  const scenePhoto = !game ? undefined
+    : activeEncounter && currentEncounter ? encounterImage ?? encounterBackdrop?.asset
+    : game.activeEpilogue ? undefined
+    : game.activeTourism ? (game.activeTourism.phase === "guide" ? landmarkPhoto(game.activeTourism.landmarkId) : undefined)
+    : game.activeBattle && currentBattle
+      ? landmarkPhoto(currentBattle.landmarkId) ?? backdropPhoto(game.activeBattle.frame?.background ?? currentBattle.backgroundId)
+    : active ? backdropPhoto(active.frame.background) : undefined;
   const nameForm = (
     <>
       <label>
@@ -358,9 +373,11 @@ export function GameApp({
       {game && <JourneyHud
         game={game}
         place={currentTravelPlace}
+        view={hudView(game)}
         onRecords={() => setRecordsOpen(true)}
         onEnglish={() => openEnglish()}
         onPhotoCredits={creditPhotos.length ? () => setPhotoCreditsOpen(true) : undefined}
+        onSceneCredits={scenePhoto ? () => setScenePhotoOpen(true) : undefined}
         onSave={save}
         onLoad={reload}
         onSettings={() => {
@@ -521,7 +538,6 @@ export function GameApp({
                 getCityContent(currentEncounter.cityId).city.nameJa,
               background: activeEncounter.frame.background,
               backgroundAsset: encounterImage,
-              backgroundCredit: encounterBackdrop?.asset,
               speaker: activeEncounter.frame.speaker === "heroine" ? game.heroineName : activeEncounter.frame.speaker === "player" ? game.playerName : "旅の風景",
               narration: activeEncounter.frame.speaker !== "heroine" && activeEncounter.frame.speaker !== "player",
               text: activeEncounter.frame.text,
@@ -733,6 +749,7 @@ export function GameApp({
         <CityRecords game={game} />
       </Modal>}
       {photoCreditsOpen && creditPhotos.length > 0 && <PhotoCredits photos={creditPhotos} onClose={() => setPhotoCreditsOpen(false)} />}
+      {scenePhotoOpen && scenePhoto && <BackgroundCredits asset={scenePhoto} onClose={() => setScenePhotoOpen(false)} />}
       {notebook && game && (canObserve || cityNotebook) && (
         <ClueNotebook
           landmarkId={currentLandmarkId ?? undefined}

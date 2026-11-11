@@ -240,7 +240,10 @@ export const ops = {
     await page.getByLabel("主人公の名前").fill(names[0]);
     await page.getByLabel("ヒロインの名前").fill(names[1]);
   },
-  /** The header's ⚙設定: a button whose small panel holds セーブ, ロード, 旅の記録, 英語ノート, 写真の出典 (free time) and ゲームの設定 (openMenu). */
+  /**
+   * The header's ⚙設定: a button whose small panel holds セーブ, ロード, 旅の記録, 英語ノート, 写真の出典 (free time)
+   * or 画像の出典 (a story scene's photo) and ゲームの設定 (openMenu).
+   */
   settingsButton(page: Page): Locator {
     return page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "設定", exact: true });
   },
@@ -253,7 +256,7 @@ export const ops = {
     return panel;
   },
   /** One of ⚙設定's items, pressed from its panel (inside the header's 「旅の操作」). */
-  async menuItem(page: Page, name: "セーブ" | "ロード" | "旅の記録" | "英語ノート" | "写真の出典" | "ゲームの設定") {
+  async menuItem(page: Page, name: "セーブ" | "ロード" | "旅の記録" | "英語ノート" | "写真の出典" | "画像の出典" | "ゲームの設定") {
     await ops.openMenu(page);
     await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name, exact: true }).click();
   },
@@ -508,9 +511,8 @@ export const ops = {
     await ops.settled(page);
     const picture = (await page.getByTestId("scene-picture").filter({ visible: true }).boundingBox())!;
     const line = (await page.getByTestId("dialogue-text").boundingBox())!;
-    // The picture runs on behind the header and the scene label line that lie over its top:
-    // what shows of it starts below them.
-    const covered = await page.evaluate(() => Math.max(0, ...[...document.querySelectorAll('[data-testid="journey-bar"], [data-testid="scene-label-line"]')]
+    // The picture runs on behind the header that lies over its top: what shows of it starts below it.
+    const covered = await page.evaluate(() => Math.max(0, ...[...document.querySelectorAll('[data-testid="journey-bar"]')]
       .map((element) => element.getBoundingClientRect()).filter((box) => box.height > 0).map((box) => box.bottom)));
     const top = Math.max(picture.y, covered);
     // A quarter of the way down from the picture's shown top to the line: well above the window's name plate and tools.
@@ -527,20 +529,12 @@ export const ops = {
     return await showsAt(page, point, '[data-testid="dialogue-text"]') || await showsAt(page, point, '[data-testid="scene-picture"]');
   },
   /**
-   * The scene label line under the header (UI redesign §3.2) of a sightseeing guide, a battle, a date
-   * or an encounter: the scene's heading as a pill, and its 出典・手がかり帳. A `data-no-advance` area:
-   * a tap on it never reads the story on.
+   * The heading of a sightseeing guide, a battle, a date or an encounter (level 1: the landmark, the battle's
+   * title for a city finale, the date's destination, the encounter's place, after a running tour's tag), for
+   * screen readers only: over a conversation the header shows where the couple are (user decision 2026-11-11).
    */
-  sceneLabelLine(page: Page): Locator {
-    return page.getByTestId("scene-label-line");
-  },
-  /** The scene's heading pill on the label line (level 1: the landmark, the date's destination, the encounter's place). */
-  sceneLabel(page: Page): Locator {
-    return ops.sceneLabelLine(page).getByRole("heading", { level: 1 });
-  },
-  /** The label line's 「出典」 (named 「画像の出典」): the credits of the scene's photo. */
-  sceneCredit(page: Page): Locator {
-    return ops.sceneLabelLine(page).getByRole("button", { name: "画像の出典", exact: true });
+  sceneHeading(page: Page): Locator {
+    return page.getByTestId("scene-heading");
   },
   /**
    * A point in a gap of the dialogue window's tool row (「隠す」or the guide's 「閉じる」, 「ログ」,
@@ -606,18 +600,6 @@ export const ops = {
   async doubleTap(page: Page, point: { x: number; y: number }) {
     await page.touchscreen.tap(point.x, point.y);
     await page.touchscreen.tap(point.x, point.y);
-  },
-  /**
-   * A finger's short sideways drag from a point (Chromium's touch input): the browser takes it
-   * for a pan and cancels the pointer (pointerdown, then pointercancel), so no click follows.
-   */
-  async pan(page: Page, point: { x: number; y: number }) {
-    const cdp = await page.context().newCDPSession(page);
-    await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: point.x - 60, y: point.y }] });
-    for (let step = 1; step <= 6; step++)
-      await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: point.x - 60 + step * 20, y: point.y }] });
-    await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
-    await cdp.detach();
   },
   /**
    * The game takes taps again: right after an answer the battle ignores the second tap of

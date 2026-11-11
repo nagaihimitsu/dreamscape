@@ -47,7 +47,7 @@ test("books Agra's day tour at the inn, rests, rides, visits Fatehpur Sikri and 
   // The night's overlay takes every tap while it shows: the morning is played after it.
   await expect(page.getByTestId("time-passage")).toHaveCount(0, { timeout: 10_000 });
   await expect.poll(async () => (await readSave(page, journeyId)).activeEncounter?.encounterId).toBe("gt_agra_tour_morning");
-  await expect(ops.sceneLabel(page)).toContainText("ツアー");
+  await expect(ops.sceneHeading(page)).toContainText("ツアー");
   const morning = await readSave(page, journeyId);
   expect(morning.tour).toMatchObject({ status: "running", step: 0 });
   expect(morning.travel).toMatchObject({ currentPlaceId: "agra_hotel_hub", minute: 540, day: booked.travel.day + 1 });
@@ -55,7 +55,7 @@ test("books Agra's day tour at the inn, rests, rides, visits Fatehpur Sikri and 
   await expect(page.getByTestId("tour-leg-screen")).toBeVisible();
   await playUntil(page, (state) => state.activeTourism?.phase === "guide", { source });
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
-  await expect(ops.sceneLabel(page)).toContainText("ツアー・見学");
+  await expect(ops.sceneHeading(page)).toContainText("ツアー・見学");
   const guide = await readSave(page, journeyId);
   expect(guide.tour).toMatchObject({ status: "running", step: 1 });
   expect(guide.travel).toMatchObject({ currentPlaceId: "agra_fatehpur_sikri", minute: 600, day: booked.travel.day + 1 });

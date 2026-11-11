@@ -3,8 +3,6 @@
   max-width: 760px;
   margin: auto;
 }
-/* The guide's scene label line (SceneLabelLine) is placed from its top. */
-.tourism-screen.guide-active { position: relative; }
 /* 手がかり帳 on the page: a secondary pressable (§2.3). */
 .notebook-button {
   color: var(--ds-ink);

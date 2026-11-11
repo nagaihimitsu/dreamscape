@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { CanalScene } from "../../components/CanalScene";
-import { BackgroundCredits } from "../../components/BackgroundCredits";
-import { SceneCreditButton, SceneLabelLine } from "../../components/SceneLabelLine";
+import { SceneHeading } from "../../components/SceneHeading";
 import { DialogueText } from "../../components/DialogueText";
 import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { useDialogueLog } from "../../components/DialogueLog";
@@ -27,10 +26,8 @@ export type EncounterScreenView = {
   /** The scene's heading: the name of the place where it happens (unified event design, decision 1). */
   placeJa: string;
   background: string;
-  /** The place's registered photo, shown as the background with its credits. */
+  /** The place's registered photo, shown as the background (⚙設定's 画像の出典 opens its credits). */
   backgroundAsset?: TourismAsset;
-  /** A scene at no landmark: the registered photo of its `# background:` (drawn by the backdrop), credited by 出典. */
-  backgroundCredit?: TourismAsset;
   speaker: string;
   /** The line is the narration (「旅の風景」), no one's words. */
   narration: boolean;
@@ -38,7 +35,7 @@ export type EncounterScreenView = {
   choices: EncounterChoiceView[];
   ended: boolean;
   finishLabel?: string;
-  /** The scene label's tag (a running tour's 「ツアー・見学」). */
+  /** The heading's tag (a running tour's 「ツアー・見学」). */
   badgeJa?: string;
   portraits?: Partial<Record<"heroine" | "enemy", { emotion: string; mark?: ReactionMark; active: boolean }>>;
   cityId: string;
@@ -67,8 +64,6 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
 }) {
   const { ready, onReady, entries } = useDialogueLog(view.id, view.revision, view.speaker, view.quiz ? "" : view.text);
   const windowVisibility = useDialogueWindow();
-  const [creditsOpen, setCreditsOpen] = useState(false);
-  const credited = view.backgroundAsset ?? view.backgroundCredit;
   const [choiceReady, setChoiceReady] = useState(false);
   const lock = useRef(false);
   useEffect(() => {
@@ -98,9 +93,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
   return (
     <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} {...sceneTap.props}>
       <div className="vn-background" data-testid="scene-picture">{view.backgroundAsset ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundAsset.path}`} alt="" /> : <CanalScene backgroundId={view.background} />}</div>
-      <SceneLabelLine label={view.placeJa} badge={view.badgeJa}>
-        {credited && <SceneCreditButton onClick={() => setCreditsOpen(true)} />}
-      </SceneLabelLine>
+      <SceneHeading label={view.placeJa} badge={view.badgeJa} />
       {!quiz && view.portraits && <div className="vn-character-layer encounter-character-layer" data-two-characters={!!view.portraits.heroine && !!view.portraits.enemy}>
         {(["heroine", "enemy"] as const).map((id) => {
           const portrait = view.portraits?.[id];
@@ -143,7 +136,6 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
         )}
         </div>
       </section>
-      {creditsOpen && credited && <BackgroundCredits asset={credited} onClose={() => setCreditsOpen(false)} />}
       <DialogueWindowRestore state={windowVisibility} />
     </div>
   );

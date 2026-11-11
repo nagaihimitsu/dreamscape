@@ -1,6 +1,6 @@
 import type { ChoiceDisplay } from "../../domain/scene-effects";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { getCityContent, dateDestinations, dialogueExpressions, dialogueReactions, presentation, tourismAssets } from "../../content";
+import { getCityContent, dateDestinations, dialogueExpressions, dialogueReactions, presentation } from "../../content";
 import type { DateDefinition } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
@@ -17,8 +17,7 @@ import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useSceneTap } from "../../components/useSceneTap";
 import { resolveRomancePresentation } from "./romance-presentation";
-import { BackgroundCredits } from "../../components/BackgroundCredits";
-import { SceneCreditButton, SceneLabelLine } from "../../components/SceneLabelLine";
+import { SceneHeading } from "../../components/SceneHeading";
 import "./romance-scene.css";
 
 export function RomanceScene({
@@ -46,10 +45,6 @@ export function RomanceScene({
 }) {
   const active = game.activeDate!;
   const frame = active.frame;
-  const backgroundImageAssetId = presentation.backgrounds[frame.background]?.imageAssetId;
-  const backgroundAsset = backgroundImageAssetId
-    ? tourismAssets.find((asset) => asset.id === backgroundImageAssetId)
-    : undefined;
   // A restored save may still be reading the original Ink. Its annotations
   // and location belong to that script, not necessarily the replacement.
   const { storyId, destinationId } = resolveRomancePresentation(date, active);
@@ -70,7 +65,6 @@ export function RomanceScene({
     speaker,
     frame.text,
   );
-  const [creditsOpen, setCreditsOpen] = useState(false);
   const windowVisibility = useDialogueWindow();
   const dialogueRef = useDialogueScrollReset<HTMLDivElement>(active.storyState);
   const pendingChoice = useRef<{
@@ -148,12 +142,7 @@ export function RomanceScene({
         <CanalScene backgroundId={frame.background} />
       </div>
       {/* The date's heading (D4): its destination, or 「デート」 when it has none. */}
-      <SceneLabelLine
-        label={destination ? `${getCityContent(destination.cityId).city.nameJa} ／ ${destination.nameJa}` : "デート"}
-        labelProps={destination ? { "data-testid": "date-destination" } : undefined}
-      >
-        {backgroundAsset && <SceneCreditButton onClick={() => setCreditsOpen(true)} />}
-      </SceneLabelLine>
+      <SceneHeading label={destination ? `${getCityContent(destination.cityId).city.nameJa} ／ ${destination.nameJa}` : "デート"} />
       {destination?.referenceImage && (
         <aside className="date-reference" aria-label="訪問先の写真" data-no-advance>
           <span data-testid="destination-reference-note">{destination.referenceImage.backgroundNoteJa}</span>
@@ -254,9 +243,6 @@ export function RomanceScene({
             ) : null}
         </div>
       </section>
-      {creditsOpen && backgroundAsset && (
-        <BackgroundCredits asset={backgroundAsset} onClose={() => setCreditsOpen(false)} />
-      )}
       <DialogueWindowRestore state={windowVisibility} />
     </div>
   );

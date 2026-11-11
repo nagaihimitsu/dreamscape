@@ -8,13 +8,9 @@ function node(tagName: string, parentElement: TapNode | null = null, attributes:
 
 const reading: SceneTapState = { lineShown: true, choicesShown: false, windowHidden: false, obstructed: false, settling: false };
 
-// One scene as the story screens build it: background, portrait, the scene label line under the header (UI
-// redesign §3.2: the scene's heading pill and its 出典・手がかり帳), dialogue window with its head (the
+// One scene as the story screens build it: background, portrait, dialogue window with its head (the
 // speaker's plate and the tool row) and the line. Its page: the header above, and main, whose own margin
 // beside a narrow scene is part of the screen.
-// Recorded change (UI step 1.3, docs/02 「UX/スマホ」): the battle's place and the date's destination used to
-// be chips inside the scene that read on when tapped, and the sightseeing guide's heading read on too; as
-// pills of the label line, which is a `data-no-advance` area like the tool row, none of them reads on now.
 const page = node("DIV");
 const header = node("DIV", page);
 const main = node("MAIN", page, { [PAGE_MARGIN_ATTRIBUTE]: "" });
@@ -22,9 +18,6 @@ const scene = node("DIV", main);
 const background = node("DIV", scene);
 const picture = node("img", background);
 const portrait = node("path", node("svg", node("DIV", scene), { role: "presentation" }));
-const labelLine = node("DIV", scene, { "data-no-advance": "" });
-const labelPill = node("H1", labelLine, { "data-testid": "battle-location" });
-const datePill = node("H1", labelLine, { "data-testid": "date-destination" });
 const dialogueWindow = node("SECTION", scene);
 const windowHead = node("DIV", dialogueWindow);
 const speaker = node("DIV", windowHead);
@@ -36,12 +29,6 @@ describe("tap anywhere in a story scene", () => {
   it("reads on from the background, the portrait, the window's empty space and its name plate", () => {
     for (const target of [scene, background, picture, portrait, dialogueWindow, speaker])
       expect(shouldAdvanceOnTap(target, scene, reading)).toBe(true);
-  });
-
-  it("never reads on from the scene label line: its heading pill (a battle's place, a date's destination) or its gaps", () => {
-    for (const target of [labelLine, labelPill, datePill])
-      expect(shouldAdvanceOnTap(target, scene, reading)).toBe(false);
-    expect(pressesControl(labelPill, scene), "a near miss, not a press").toBe(false);
   });
 
   it("reads on from the window's head beside its controls (the plate's row is part of the window)", () => {

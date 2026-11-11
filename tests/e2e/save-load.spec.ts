@@ -180,24 +180,26 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   expect(await readSave(page)).toEqual(initial);
   // A quick double tap on ⚙設定 → 「セーブ」 over the guide (AGENTS.md 選択肢の誤タップ防止): the panel
-  // leaves from under the finger, and on a phone a control of the guide lies under セーブ's point
-  // (手がかり帳 at 320–390 px). The scene is saved, and the second tap presses nothing: no tap reaches
-  // the page for a moment after セーブ, as after a scene change. The page's clock is held, so the
-  // second tap comes within that moment however slow the machine.
+  // leaves from under the finger, and on a phone the guide's picture lies under セーブ's point, where a
+  // tap reads the line on. The scene is saved, and the second tap reads nothing on: no tap reaches the
+  // page for a moment after セーブ, as after a scene change. The page's clock is held, so the second tap
+  // comes within that moment however slow the machine.
+  const guideLine = await page.getByTestId("dialogue-text").textContent();
   const savePoint = await ops.centerOf((await ops.openMenu(page)).getByRole("button", { name: "セーブ", exact: true }));
   await ops.holdClock(page);
   await page.touchscreen.tap(savePoint.x, savePoint.y);
   await expect(panel).toBeHidden();
-  expect(await page.evaluate(({ x, y }) => [...document.querySelectorAll("#tourism-screen button")].some((control) => {
-    const box = control.getBoundingClientRect();
+  expect(await page.evaluate(({ x, y }) => {
+    const box = document.querySelector('#tourism-screen [data-testid="scene-picture"]')!.getBoundingClientRect();
     return x >= box.left && x <= box.right && y >= box.top && y <= box.bottom;
-  }), savePoint), "the second tap's point is one of the guide's controls").toBe(true);
+  }, savePoint), "the second tap's point is on the guide's picture").toBe(true);
   await page.touchscreen.tap(savePoint.x, savePoint.y);
   await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
   await page.clock.resume();
   await ops.settled(page);
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
+  await expect(page.getByTestId("dialogue-text")).toHaveText(guideLine!);
   const manual = await readSave(page);
   expect(manual.travel.currentPlaceId).toBe("p_duomo");
   expect(manual.activeTourism?.landmarkId).toBe("duomo_milano");

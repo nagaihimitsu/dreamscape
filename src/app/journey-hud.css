@@ -118,8 +118,8 @@
 .hud-actions { display: flex; flex-wrap: wrap; align-items: stretch; gap: 4px; }
 .hud-actions > * { flex: none; }
 /* At the row's right end, also when a crowded row wraps (held items). The screen's
-   own tool (free time's 「地図」) comes before ⚙設定; on other screens its place is
-   empty and takes no room. */
+   own tool (free time's 「地図」, a guide's or a battle talk's 「手がかり帳」) comes
+   before ⚙設定; on other screens its place is empty and takes no room. */
 .hud-tools { display: flex; gap: 4px; margin-left: auto; }
 .hud-screen-tool { display: contents; }
 .hud-tool,
@@ -148,6 +148,13 @@
 .hud-tool-word { font-size: 11px; font-weight: 600; line-height: 1; white-space: nowrap; }
 .journey-hud .held-item-button[aria-expanded="true"],
 .hud-tool[aria-expanded="true"] { background: var(--ds-slate-900); border-color: var(--ds-gold); }
+
+/* Over a story scene that waits for no choice (hud-view.ts, user decision
+   2026-11-11) the header shows only the place and time and ⚙設定. The budget
+   and AP, the held items and the screen's tool (手がかり帳) keep their room,
+   so neither the header nor the scene under it moves when they show at a
+   choice; hidden, they are neither seen, pressed, focused nor read. */
+.journey-hud[data-view="talk"] :is(.hud-wallet, .held-items, .hud-screen-tool > *) { visibility: hidden; }
 
 /* ⚙設定's panel: under the header, its right edge on the button's; on a short
    screen (or with large text) its items scroll inside it. */
