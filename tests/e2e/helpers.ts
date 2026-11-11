@@ -86,6 +86,8 @@ async function attachStorage(pages: Page[], testInfo: TestInfo) {
 
 export const saveKey = (journeyId = "milano") => `dreamscape.journey.${journeyId}.save.v1`;
 export const learningKey = (journeyId = "milano") => `dreamscape.journey.${journeyId}.learning.v1`;
+/** The lines this device has read in a journey (read-skip; written as lines are shown in full). */
+export const readLinesKey = (journeyId = "milano") => `dreamscape.journey.${journeyId}.read-lines.v1`;
 export const presentationKey = "dreamscape.presentation.v1";
 
 /** Where a test reads the game state from: a journey's normal save, or Debug's game (read-only hook). */

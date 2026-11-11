@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "./icons";
 import { dialogueObstructed } from "./dialogueObstructed";
+import { stopsFastForward, type ReadSkip } from "./read-skip";
 
 /** Optional presentation state. It is never written to the game save. */
 export function useAutoAdvance({
@@ -9,15 +10,35 @@ export function useAutoAdvance({
   text,
   onAdvance,
   defaultEnabled = false,
+  readSkip,
+  lineId = null,
 }: {
   ready: boolean;
   canAdvance: boolean;
   text: string;
   onAdvance: () => void;
   defaultEnabled?: boolean;
+  /** This device's read lines (read-skip.ts, GameApp); without it fast-forward never stops at a line. */
+  readSkip?: ReadSkip;
+  /** The line on screen (readLineId of its story and text), null when it has none (no text, a quiz). */
+  lineId?: string | null;
 }) {
   const [fast, setFast] = useState(false);
   const [blocked, setBlocked] = useState(dialogueObstructed);
+  // Read-skip: arriving at a line not read before stops fast-forward (unless the reader skips unread lines too). Decided
+  // while rendering the new line (React's adjustment of state during render), so it is drawn at the reader's speed.
+  const [shownLine, setShownLine] = useState(lineId);
+  const [stoppedAt, setStoppedAt] = useState<string | null>(null);
+  if (shownLine !== lineId) {
+    setShownLine(lineId);
+    const stop = stopsFastForward({ fast, readBefore: lineId && readSkip ? readSkip.isRead(lineId) : null, skipUnread: readSkip?.skipUnread ?? false });
+    if (stop) setFast(false);
+    setStoppedAt(stop ? lineId : null);
+  }
+  // A line shown in full has been read.
+  useEffect(() => {
+    if (ready && lineId) readSkip?.markRead(lineId);
+  }, [ready, lineId, readSkip]);
   const advanceRef = useRef(onAdvance);
   const canAdvanceRef = useRef(canAdvance);
   advanceRef.current = onAdvance;
@@ -66,6 +87,8 @@ export function useAutoAdvance({
   return {
     active: fast,
     fast,
+    /** Fast-forward has just stopped at this line, which was not read before (said to screen readers). */
+    stoppedAtUnread: stoppedAt !== null && stoppedAt === lineId,
     canStart: canAdvance && !blocked,
     toggle: () => {
       if (dialogueObstructed()) return;
@@ -80,14 +103,18 @@ export function AutoAdvanceButton({
   state: ReturnType<typeof useAutoAdvance>;
 }) {
   return (
-    <button
-      type="button"
-      className="text-button"
-      aria-pressed={state.active}
-      disabled={!state.canStart}
-      onClick={state.toggle}
-    >
-      <Icon name="fast" />{state.active ? "高速送り中" : "高速送り"}
-    </button>
+    <>
+      <button
+        type="button"
+        className="text-button"
+        aria-pressed={state.active}
+        disabled={!state.canStart}
+        onClick={state.toggle}
+      >
+        <Icon name="fast" />{state.active ? "高速送り中" : "高速送り"}
+      </button>
+      {/* Seen as the button's release; heard from here (read-skip). Out of the row's flow (sr-only). */}
+      <span className="sr-only" role="status">{state.stoppedAtUnread ? "まだ読んでいない台詞で、高速送りを止めました。" : ""}</span>
+    </>
   );
 }

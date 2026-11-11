@@ -5,6 +5,8 @@ import { getJourneyForCity } from "../content/journeys";
  * isolated Debug/test storage uses them as they are. schemaVersion controls compatibility. */
 export const SAVE_KEY = "dreamscape.save.v1";
 export const LEARNING_KEY = "dreamscape.learning.v1";
+/** The lines this device has read (read-skip, src/components/read-skip.ts): a per-device record apart from the save and notes. */
+export const READ_LINES_KEY = "dreamscape.read-lines.v1";
 /** The current format is validated, not automatically migrated from older versions. */
 export const SUPPORTED_SAVE_VERSION = GAME_STATE_VERSION;
 

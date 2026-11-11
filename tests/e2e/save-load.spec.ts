@@ -2,7 +2,7 @@ import { DOUBLE_TAP_WINDOW_MS } from "../../src/components/double-tap";
 import { CONFIRM_SETTLE_MS } from "../../src/components/ConfirmActionButton";
 import { LAST_JOURNEY_KEY } from "../../src/app/last-journey";
 import { DEBUG_MODE_KEY } from "../../src/app/debug-mode";
-import { allStorage, expect, generated, journeyCatalog, learningKey, ops, placeGuideSave, playUntil, presentationKey, readSave, saveKey, test, tier } from "./helpers";
+import { allStorage, expect, generated, journeyCatalog, learningKey, ops, placeGuideSave, playUntil, presentationKey, readLinesKey, readSave, saveKey, test, tier } from "./helpers";
 
 // Lane 1 (docs/10): saving and resuming are only ever checked through the real flow.
 
@@ -588,10 +588,10 @@ test("from another journey, the cleanup lists that journey's own old data, and a
   const backup = `${saveKey("golden_triangle")}.backup.1762500000000`;
   const old = { [backup]: "{damaged-save", [saveKey()]: JSON.stringify({ schemaVersion: 13, revision: 3, completedChapters: [] }) };
   await page.evaluate((items) => { for (const [key, value] of Object.entries(items)) localStorage.setItem(key, value); }, old);
-  // The game keeps writing its own save (the arrival's opening finishes on a timer); it is never
-  // listed and is compared apart: it must stay, everything else exactly as expected.
+  // The game keeps writing its own save and the lines read (the arrival's opening finishes on a timer); they
+  // are never listed and are compared apart: the save must stay, everything else exactly as expected.
   const besidesGame = async () => {
-    const { [saveKey("golden_triangle")]: game, ...rest } = await allStorage(page);
+    const { [saveKey("golden_triangle")]: game, [readLinesKey("golden_triangle")]: _read, ...rest } = await allStorage(page);
     expect(game).toContain('"schemaVersion":20');
     return rest;
   };

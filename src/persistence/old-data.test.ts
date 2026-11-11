@@ -2,12 +2,12 @@
 // 明示確認と別タブ競合の保護を維持する」): what may be removed is decided here, not on the screen.
 // Only identified old versions, backups, Milan's keys from before journey slots and the keys of
 // journeys this version does not have are listed; the saves this version loads, this journey's own
-// slot, the notes of existing journeys, the display settings, the remembered journey and other
-// sites' keys never are.
+// slot, the notes and read lines of existing journeys, the display settings, the remembered journey
+// and other sites' keys never are.
 import { describe, expect, it } from "vitest";
 import { journeys } from "../content/journeys";
 import { createGame } from "../domain";
-import { LEARNING_KEY, SAVE_KEY } from "./index";
+import { LEARNING_KEY, READ_LINES_KEY, SAVE_KEY } from "./index";
 import type { LockManagerLike } from "./journey-lock";
 import { journeyStorage } from "./journey-storage";
 import {
@@ -24,14 +24,16 @@ const key = (journeyId: string, logical: string) => journeyStorage(memory(), jou
 const save = (journeyId: string) => key(journeyId, SAVE_KEY);
 const backup = (journeyId: string, stamp: string) => key(journeyId, `${SAVE_KEY}.backup.${stamp}`);
 const notes = (journeyId: string) => key(journeyId, LEARNING_KEY);
+const readLines = (journeyId: string) => key(journeyId, READ_LINES_KEY);
 
 /** A save this version loads (Milan), a v13-shaped save, a newer one, damaged bytes. */
 const current = JSON.stringify(createGame("旅人", "小春"));
 const v13 = JSON.stringify({ ...createGame(), schemaVersion: 13, completedChapters: [] });
-const newer = JSON.stringify({ schemaVersion: 21, revision: 1 });
+const newer = JSON.stringify({ schemaVersion: 22, revision: 1 });
 const damaged = "{damaged-save";
 const notebook = JSON.stringify({ schemaVersion: 1, revision: 0, alwaysTranslate: false, revealed: {}, marks: {}, records: {}, openQuestion: null, openTopic: null });
 const draft = JSON.stringify({ kind: "journey_preparation", schemaVersion: 1, journeyId: "trip_b" });
+const readRecord = JSON.stringify({ schemaVersion: 1, ids: ["1a2b3c4d"] });
 
 function memory(initial: Record<string, string> = {}) {
   const data = new Map(Object.entries(initial));
@@ -52,6 +54,9 @@ const kept = {
   [save("milano")]: current,
   [notes("milano")]: notebook,
   [notes("trip_b")]: notebook,
+  // The lines read on this device (read-skip): kept for every journey of this version, the open one included.
+  [readLines("milano")]: readRecord,
+  [readLines("trip_c")]: readRecord,
   "dreamscape.presentation.v1": JSON.stringify({ schemaVersion: 1, confirmChoices: true, reduceMotion: false }),
   // The journey the title opens (src/app/last-journey.ts): a per-device preference like the settings.
   "dreamscape.last-journey.v1": "milano",
@@ -71,7 +76,7 @@ const kept = {
 };
 
 describe("which old saved data can be removed", () => {
-  it("lists nothing for the data in use, the settings, the remembered journey, the Debug-mode switch, the English notes and other sites' keys", () => {
+  it("lists nothing for the data in use, the settings, the remembered journey, the Debug-mode switch, the English notes, the read lines and other sites' keys", () => {
     expect(list(kept)).toEqual([]);
     // Another journey's save that is not an old version stays: damaged, newer, of another journey
     // (a Milan save in its slot), a preparation draft — its own title handles those.
@@ -114,7 +119,7 @@ describe("which old saved data can be removed", () => {
       { key: "dreamscape.journey.milano.save.v1.backup.1762500000000", noteJa: "退避したデータ（読み込めないデータ）", backedUpAt: 1762500000000 },
       { key: "dreamscape.journey.milano.save.v1.backup.1762500000000.1", noteJa: "退避したデータ（バージョン13の旧版のセーブ）", backedUpAt: 1762500000000 },
     ]);
-    expect(items[1].keys[0].noteJa).toBe("退避したデータ（新しい版（バージョン21）のセーブ）");
+    expect(items[1].keys[0].noteJa).toBe("退避したデータ（新しい版（バージョン22）のセーブ）");
     expect(items[0].impactJa).toBe("読み込めなかったセーブを、新しく始める前に退避したものです。ゲームはバックアップを読み込みません。消去すると元のデータは取り出せなくなります。今のセーブと英語ノートは消えません。");
     // Only backups that load in this version: nothing to list.
     expect(list({ ...kept, [backup("milano", "1")]: current })).toEqual([]);
@@ -149,13 +154,15 @@ describe("which old saved data can be removed", () => {
 
   it("lists every key of a journey this version does not have, its notes apart, under that journey's lock", () => {
     // A save of the journey in a version that has it (this version cannot tell it from damaged bytes).
-    const removed = { [save("zeta")]: current.replace('"milano"', '"zeta_city"'), [backup("zeta", "5")]: v13, [backup("zeta", "6")]: damaged, [notes("zeta")]: notebook, [notes("alpha")]: notebook };
+    const removed = { [save("zeta")]: current.replace('"milano"', '"zeta_city"'), [backup("zeta", "5")]: v13, [backup("zeta", "6")]: damaged, [notes("zeta")]: notebook, [notes("alpha")]: notebook,
+      [readLines("zeta")]: readRecord };
     const items = list({ ...kept, ...removed });
     const zetaLock = { name: "dreamscape:dreamscape.journey.zeta.save.v1", ownerJa: "旅行編「zeta」" };
     expect(items.map(({ id, titleJa, lock }) => ({ id, titleJa, lock }))).toEqual([
       { id: "removed:alpha:learning", titleJa: "この版にない旅行編「alpha」の英語ノート", lock: { name: "dreamscape:dreamscape.journey.alpha.save.v1", ownerJa: "旅行編「alpha」" } },
       { id: "removed:zeta:save", titleJa: "この版にない旅行編「zeta」のセーブ", lock: zetaLock },
       { id: "removed:zeta:learning", titleJa: "この版にない旅行編「zeta」の英語ノート", lock: zetaLock },
+      { id: "removed:zeta:read_lines", titleJa: "この版にない旅行編「zeta」の既読の記録", lock: zetaLock },
     ]);
     expect(items[1].keys.map((entry) => [entry.key, entry.noteJa])).toEqual([
       ["dreamscape.journey.zeta.save.v1", "この版では読み込めないセーブ"],
@@ -164,6 +171,8 @@ describe("which old saved data can be removed", () => {
     ]);
     expect(items[1].impactJa).toBe("この版のゲームにない旅行編のため、読み込みません。その旅行編がある版で開くと使われることがあります。消去すると戻せません。");
     expect(items[2].impactJa).toBe("この版のゲームにない旅行編の英語ノートです。今のゲームは読み込みません。消去すると、その記録と復習の印は戻せません。");
+    expect(items[3].keys).toEqual([{ key: "dreamscape.journey.zeta.read-lines.v1", noteJa: "既読の記録",
+      chars: "dreamscape.journey.zeta.read-lines.v1".length + readRecord.length, backedUpAt: null }]);
     // A save that loads in this version is kept even under an unknown journey's key.
     expect(list({ [save("zeta")]: current })).toEqual([]);
   });

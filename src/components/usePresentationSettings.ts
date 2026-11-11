@@ -11,6 +11,8 @@ interface Preferences {
   autoSave: boolean;
   dialogueSpeed: number;
   autoAdvance: boolean;
+  /** 「未読の台詞も高速送りする」 (read-skip): off, fast-forward stops at a line not read before. */
+  skipUnread: boolean;
 }
 const defaults: Preferences = {
   schemaVersion: 1,
@@ -19,6 +21,7 @@ const defaults: Preferences = {
   autoSave: true,
   dialogueSpeed: 25,
   autoAdvance: false,
+  skipUnread: false,
 };
 
 function read(raw: string | null): Preferences | null {
@@ -33,8 +36,9 @@ function read(raw: string | null): Preferences | null {
       typeof item.reduceMotion !== "boolean" ||
       (item.autoSave !== undefined && typeof item.autoSave !== "boolean") ||
       (item.autoAdvance !== undefined && typeof item.autoAdvance !== "boolean") ||
+      (item.skipUnread !== undefined && typeof item.skipUnread !== "boolean") ||
       (item.dialogueSpeed !== undefined && ![0, 25, 45].includes(item.dialogueSpeed as number)) ||
-      Object.keys(item).some((name) => !["schemaVersion", "confirmChoices", "reduceMotion", "autoSave", "dialogueSpeed", "autoAdvance"].includes(name))
+      Object.keys(item).some((name) => !["schemaVersion", "confirmChoices", "reduceMotion", "autoSave", "dialogueSpeed", "autoAdvance", "skipUnread"].includes(name))
     )
       return null;
     return {
@@ -44,6 +48,7 @@ function read(raw: string | null): Preferences | null {
       autoSave: item.autoSave === undefined ? true : item.autoSave as boolean,
       dialogueSpeed: item.dialogueSpeed === undefined ? 25 : item.dialogueSpeed as number,
       autoAdvance: item.autoAdvance === undefined ? false : item.autoAdvance as boolean,
+      skipUnread: item.skipUnread === undefined ? false : item.skipUnread as boolean,
     };
   } catch {
     return null;
@@ -74,7 +79,7 @@ export function usePresentationSettings(storage: StorageLike = window.localStora
         : "表示設定を読み込めません。元のデータは保持しています。"),
   );
   function update(
-    change: Partial<Pick<Preferences, "confirmChoices" | "reduceMotion" | "autoSave" | "dialogueSpeed" | "autoAdvance">>,
+    change: Partial<Pick<Preferences, "confirmChoices" | "reduceMotion" | "autoSave" | "dialogueSpeed" | "autoAdvance" | "skipUnread">>,
   ): boolean {
     if (error) return false;
     try {

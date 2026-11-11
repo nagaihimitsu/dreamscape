@@ -13,6 +13,7 @@ import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/Dialog
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
+import { readLineId, type ReadSkip } from "../../components/read-skip";
 import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
@@ -26,6 +27,7 @@ export function RomanceScene({
   date,
   speed,
   autoAdvanceEnabled = false,
+  readSkip,
   reduceMotion,
   onSelect,
   choiceDisplay,
@@ -37,6 +39,8 @@ export function RomanceScene({
   speed: number;
   onSpeed: (speed: number) => void;
   autoAdvanceEnabled?: boolean;
+  /** This device's read lines: 高速送り stops at a line not read before (read-skip.ts). */
+  readSkip?: ReadSkip;
   reduceMotion: boolean;
   onSelect: (index: number, revision: number) => boolean;
   /** How each choice shows (decision 43: a date written with tags hides or greys some); all open when left out. */
@@ -135,6 +139,8 @@ export function RomanceScene({
     text: frame.text,
     onAdvance: advance,
     defaultEnabled: autoAdvanceEnabled,
+    readSkip,
+    lineId: frame.text ? readLineId(active.dateId, frame.text) : null,
   });
   const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: frame.choices.length > 0, windowHidden: windowVisibility.hidden });
   return (

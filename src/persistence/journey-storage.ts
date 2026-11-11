@@ -1,4 +1,4 @@
-import { LEARNING_KEY, SAVE_KEY, type StorageLike } from "./index";
+import { LEARNING_KEY, READ_LINES_KEY, SAVE_KEY, type StorageLike } from "./index";
 
 export interface ScopedStorage extends StorageLike {
   removeItem(key: string): void;
@@ -13,22 +13,23 @@ export function journeyPhysicalKey(journeyId: string, key: string): string {
   if (key === SAVE_KEY || key.startsWith(`${SAVE_KEY}.backup.`))
     return `${prefix}.save.v1${key.slice(SAVE_KEY.length)}`;
   if (key === LEARNING_KEY) return `${prefix}.learning.v1`;
+  if (key === READ_LINES_KEY) return `${prefix}.read-lines.v1`;
   return key;
 }
 
 /**
  * The journey and logical key behind a journey slot's browser key, the inverse of journeyPhysicalKey
  * (`dreamscape.journey.<id>.save.v1[.backup.…]` → SAVE_KEY[.backup.…], `….learning.v1` →
- * LEARNING_KEY); null for every other key.
+ * LEARNING_KEY, `….read-lines.v1` → READ_LINES_KEY); null for every other key.
  */
 export function parseJourneyPhysicalKey(physical: string): { journeyId: string; key: string } | null {
-  const match = /^dreamscape\.journey\.([^.]+)\.(?:(save\.v1)(\..+)?|learning\.v1)$/.exec(physical);
+  const match = /^dreamscape\.journey\.([^.]+)\.(?:(save\.v1)(\..+)?|(learning\.v1)|read-lines\.v1)$/.exec(physical);
   if (!match || !JOURNEY_ID.test(match[1])) return null;
-  const key = match[2] ? `${SAVE_KEY}${match[3] ?? ""}` : LEARNING_KEY;
+  const key = match[2] ? `${SAVE_KEY}${match[3] ?? ""}` : match[4] ? LEARNING_KEY : READ_LINES_KEY;
   return journeyPhysicalKey(match[1], key) === physical ? { journeyId: match[1], key } : null;
 }
 
-/** Every journey keeps its game save, backups and English notes in separate slots. */
+/** Every journey keeps its game save, backups, English notes and read lines in separate slots. */
 export function journeyStorage(
   base: StorageLike & { removeItem(key: string): void },
   journeyId: string,

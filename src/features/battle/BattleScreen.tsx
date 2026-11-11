@@ -9,6 +9,7 @@ import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoice
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
+import { readLineId, type ReadSkip } from "../../components/read-skip";
 import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { useSceneTap } from "../../components/useSceneTap";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
@@ -107,6 +108,8 @@ interface Props {
   game: GameState;
   speed: number;
   autoAdvanceEnabled?: boolean;
+  /** This device's read lines: 高速送り stops at a line not read before (read-skip.ts). */
+  readSkip?: ReadSkip;
   reduceMotion: boolean;
   onSpeed: (speed: number) => void;
   onAdvance: () => void;
@@ -136,6 +139,7 @@ export function BattleScreen({
   speed,
   reduceMotion,
   autoAdvanceEnabled = false,
+  readSkip,
   onAdvance,
   choices = [],
   onChoose,
@@ -309,6 +313,8 @@ export function BattleScreen({
     text: frame?.text ?? "",
     onAdvance: advanceSafely,
     defaultEnabled: autoAdvanceEnabled,
+    readSkip,
+    lineId: isDialogue && frame?.text ? readLineId(battle.id, frame.text) : null,
   });
   const sceneTap = useSceneTap({ active: isDialogue, lineShown: ready, choicesShown: choosing, windowHidden: windowVisibility.hidden });
   // A normal battle's opponent comes in on a name plate (special battles have their cut-in): when this

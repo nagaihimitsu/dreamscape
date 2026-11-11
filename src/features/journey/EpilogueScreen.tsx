@@ -15,6 +15,7 @@ import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
+import { readLineId, type ReadSkip } from "../../components/read-skip";
 import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
@@ -27,6 +28,7 @@ export function EpilogueScreen({
   speed,
   reduceMotion,
   autoAdvanceEnabled = false,
+  readSkip,
   onAdvance,
   onLogoComplete,
   choices = [],
@@ -37,6 +39,8 @@ export function EpilogueScreen({
   reduceMotion: boolean;
   onSpeed: (value: number) => void;
   autoAdvanceEnabled?: boolean;
+  /** This device's read lines: 高速送り stops at a line not read before (read-skip.ts). */
+  readSkip?: ReadSkip;
   onAdvance: () => void;
   onLogoComplete?: () => void;
   /** The shown choices of the open choice point (stage 3a; hidden ones are left out by the caller). */
@@ -84,6 +88,8 @@ export function EpilogueScreen({
     text: frame.text,
     onAdvance: advanceSafely,
     defaultEnabled: autoAdvanceEnabled,
+    readSkip,
+    lineId: frame.text ? readLineId(storyId || active.episodeId, frame.text) : null,
   });
   const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: frame.choices.length > 0, windowHidden: windowVisibility.hidden });
   useEffect(() => {
