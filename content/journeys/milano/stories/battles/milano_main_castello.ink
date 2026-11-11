@@ -1,6 +1,7 @@
 INCLUDE modules.ink
 # background: milano_castello
 # speaker: enemy
+# cutin: name
 # reaction: heroine,smile
 「鼻だけ戻せないかな、鼻だけ。今の、俺の親父にそっくりだった。」
 # speaker: narrator

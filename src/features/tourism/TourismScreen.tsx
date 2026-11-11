@@ -18,7 +18,8 @@ import { lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { portraitFocus } from "../../components/speaker-focus";
-import { speakerPlate } from "../../components/speaker-plate";
+import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
+import { useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
@@ -102,6 +103,8 @@ export function TourismScreen({
     : undefined;
   const plate = speakerPlate(frame ?? { speaker: "narrator" }, { heroine: game.heroineName, player: game.playerName }, storyState.people);
   const speaker = plate.name;
+  // A line's `# cutin: name` shows its speaker's name plate for a moment (NameCutIn; a person's: a guide has no one opposite).
+  const nameCut = useNameCutIn(frame ? nameCutIn(frame, undefined, storyState.people) : undefined, active.storyState ?? "");
   const { ready, onReady, entries } = useDialogueLog(
     `${active.landmarkId}:${active.phase}`,
     game.revision,
@@ -207,6 +210,7 @@ export function TourismScreen({
             <DialogueWindowHead
               speaker={showsSpeakerPlate(frame) && speaker}
               narration={plate.narration}
+              cutIn={nameCut}
               controls={<DialogueControls close={<button type="button" className="text-button" data-testid="tourism-skip" aria-label="観光案内を閉じる" onClick={onSkip}><Icon name="close" />閉じる</button>} entries={entries} auto={autoAdvance} />}
             />
             <div ref={dialogueRef} className="vn-window-body">

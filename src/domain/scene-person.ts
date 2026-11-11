@@ -1,7 +1,7 @@
 import type { StoryStateCatalog } from "../content/scene-schemas";
 
 /** The person who stands opposite the heroine in a scene: their portrait and their name for `# speaker: enemy`. */
-export type ScenePerson = { characterId: string; nameJa: string };
+export type ScenePerson = { characterId: string; nameJa: string; titleJa?: string };
 
 /**
  * The first of a scene's `# person:` that has a portrait (`characterId` in progression/story.json
@@ -11,7 +11,7 @@ export type ScenePerson = { characterId: string; nameJa: string };
 export function scenePerson(people: StoryStateCatalog["people"], scenePeople: readonly string[] | undefined): ScenePerson | undefined {
   for (const id of scenePeople ?? []) {
     const person = people.find((item) => item.id === id);
-    if (person?.characterId) return { characterId: person.characterId, nameJa: person.nameJa };
+    if (person?.characterId) return { characterId: person.characterId, nameJa: person.nameJa, ...(person.titleJa ? { titleJa: person.titleJa } : {}) };
   }
   return undefined;
 }

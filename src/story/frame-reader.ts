@@ -2,8 +2,8 @@ import type { Story } from "inkjs";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import type { DialogueReaction, ReactionTarget } from "../content/dialogue-reactions";
 import {
-  parseStoryTags, type LetterKind, type LineDelivery, type PhoneSide, type QuietSpan, type StandPosition, type StoryCall, type StoryPhoto,
-  type TagContext,
+  parseStoryTags, type CutInKind, type LetterKind, type LineDelivery, type PhoneSide, type QuietSpan, type StandPosition, type StoryCall,
+  type StoryPhoto, type TagContext,
 } from "../content/tags";
 
 // How a story's next line becomes the frame on screen (runtime.ts), in a light module (no content loading).
@@ -56,6 +56,8 @@ export interface StoryFrame {
   quiet?: QuietSpan;
   /** `# stand:`: where the heroine stands, from its line on until another `# stand:` or the scene's end. */
   stand?: StandPosition;
+  /** The line's `# cutin:` (only the line it is written on): its speaker's name plate over the scene for a moment. */
+  cutin?: CutInKind;
   /** A battle's call (`# call:`, stage 5) is a choice the game takes itself: its screen shows no choice. */
   choices: { index: number; text: string; optionId?: string; translationJa?: string; call?: StoryCall }[];
   ended: boolean;
@@ -137,6 +139,7 @@ function readTags(
   }
   if (parsed.quiet) frame.quiet = parsed.quiet;
   if (parsed.stand) frame.stand = parsed.stand;
+  if (parsed.cutin) frame.cutin = parsed.cutin;
   if (parsed.localWordIds) frame.localWordIds = [...new Set([...(frame.localWordIds ?? []), ...parsed.localWordIds])];
   events.push(...parsed.effects);
 }

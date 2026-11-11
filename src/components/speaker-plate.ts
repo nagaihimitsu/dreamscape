@@ -23,3 +23,22 @@ export function speakerPlate(
           : undefined;
   return name === undefined ? { name: NARRATION_PLATE, narration: true } : { name, narration: false };
 }
+
+/** A name plate's text (NameCutInPlate): the role over the name, and a battle opponent's quote when written. */
+export type NameCutIn = { titleJa?: string; nameJa: string; quoteJa?: string };
+
+/**
+ * The name plate a line's `# cutin: name` shows (2026-11-11 user decision): a person's (`# speaker: <person ID>`) `titleJa`
+ * and `nameJa` (progression/story.json people), or for `# speaker: enemy` the one opposite on this screen (`enemy`: a
+ * battle's opponent, a scene's `# person:`), when there is one. None for a line without the tag.
+ */
+export function nameCutIn(
+  frame: Pick<StoryFrame, "speaker" | "speakerPersonId" | "cutin">,
+  enemy: NameCutIn | undefined,
+  people: StoryStateCatalog["people"],
+): NameCutIn | undefined {
+  if (frame.cutin !== "name") return undefined;
+  if (frame.speaker === "enemy") return enemy;
+  const person = frame.speaker === "person" ? people.find((item) => item.id === frame.speakerPersonId) : undefined;
+  return person && { nameJa: person.nameJa, ...(person.titleJa ? { titleJa: person.titleJa } : {}) };
+}

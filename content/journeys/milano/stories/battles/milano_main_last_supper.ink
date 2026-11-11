@@ -5,6 +5,7 @@ INCLUDE modules.ink
 # speaker: narrator
 男は片手を上げた。彼女がもう一歩寄ると、連れの女性が二人の間に入った。
 # speaker: enemy
+# cutin: name
 # reaction: heroine,surprised
 「兄には声を休める約束があるの。夕方、小さな舞台が一本。聞き返されると、この人は絶対しゃべっちゃう。」
 # speaker: narrator

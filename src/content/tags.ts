@@ -42,6 +42,8 @@ export interface StoryTags {
   quiet?: QuietSpan;
   /** `# stand: <position>`: where the heroine stands from this line on (the writer's staging only). */
   stand?: StandPosition;
+  /** `# cutin: name`: the speaker's name plate over the scene for a moment (the line it is written on only). */
+  cutin?: CutInKind;
   effects: string[];
 }
 
@@ -59,14 +61,20 @@ export type QuietSpan = (typeof QUIET_SPANS)[number];
 /** `near` is where she stands without the tag (today's place); `apart` a little away, `close` right beside. */
 export const STAND_POSITIONS = ["apart", "near", "close"] as const;
 export type StandPosition = (typeof STAND_POSITIONS)[number];
+/**
+ * `# cutin: name` (2026-11-11 user decision): where a name comes out, the speaker's name plate (their role and name) shows
+ * over the scene for a moment. The line's own `# speaker:` says whose: `enemy` (the one opposite on that screen) or a person.
+ */
+export const CUTIN_KINDS = ["name"] as const;
+export type CutInKind = (typeof CUTIN_KINDS)[number];
 
-type SceneTagKey = "phone" | "letter" | "quiet" | "stand";
+type SceneTagKey = "phone" | "letter" | "quiet" | "stand" | "cutin";
 const SCENE_TAG_VALUES: Record<SceneTagKey, readonly string[]> = {
-  phone: PHONE_SIDES, letter: LETTER_KINDS, quiet: QUIET_SPANS, stand: STAND_POSITIONS,
+  phone: PHONE_SIDES, letter: LETTER_KINDS, quiet: QUIET_SPANS, stand: STAND_POSITIONS, cutin: CUTIN_KINDS,
 };
 const isSceneTagKey = (key: string): key is SceneTagKey => Object.hasOwn(SCENE_TAG_VALUES, key);
 
-/** Read a line's `# phone:`, `# letter:`, `# quiet:` or `# stand:`; throws for another value or a repeated tag. */
+/** Read a line's `# phone:`, `# letter:`, `# quiet:`, `# stand:` or `# cutin:`; throws for another value or a repeated tag. */
 function readSceneTag(key: SceneTagKey, value: string, result: StoryTags): void {
   const values = SCENE_TAG_VALUES[key];
   if (!values.includes(value))
@@ -234,5 +242,9 @@ export function parseStoryTags(
   }
   if (result.phone && result.letter)
     throw new Error(`A line is a phone message or a letter, not both: # phone: ${result.phone} and # letter: ${result.letter}`);
+  if (result.cutin && (result.speaker !== "enemy" && result.speaker !== "person"))
+    throw new Error("# cutin: name shows the speaker's name: write # speaker: enemy or # speaker: <person ID> on the same line");
+  if (result.cutin && (result.phone || result.letter))
+    throw new Error("# cutin: name is for a line said in the scene, not a phone message or a letter");
   return result;
 }

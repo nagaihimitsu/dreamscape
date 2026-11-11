@@ -3,6 +3,7 @@ INCLUDE modules.ink
 # speaker: narrator
 ダルセナの岸に折り畳み椅子と小さな送信機がある。椅子に座ったリヴィオは、膝にパン屑を落としたまま片手を挙げた。
 # speaker: enemy
+# cutin: name
 # reaction: heroine,surprised
 「一枠だけ空いた。十秒。ミラノを知らない人に何を聴かせる？」
 # speaker: heroine

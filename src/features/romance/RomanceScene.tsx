@@ -8,7 +8,8 @@ import type { GameState } from "../../domain/game";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { portraitFocus } from "../../components/speaker-focus";
-import { speakerPlate } from "../../components/speaker-plate";
+import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
+import { useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, RecallLayer } from "../../components/LineStage";
@@ -69,6 +70,8 @@ export function RomanceScene({
   const speaking = speakingPerson(storyState.people, frame);
   const personId = useSpeakingPerson(speaking, frame.speaker === "enemy" || !!resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy"));
   const { name: speaker, narration } = speakerPlate(frame, { heroine: game.heroineName, player: game.playerName }, storyState.people);
+  // A line's `# cutin: name` shows its speaker's name plate for a moment (NameCutIn; a person's: a date has no one opposite).
+  const nameCut = useNameCutIn(nameCutIn(frame, undefined, storyState.people), active.storyState);
   const { ready, onReady, entries } = useDialogueLog(
     active.dateId,
     game.revision,
@@ -202,6 +205,7 @@ export function RomanceScene({
         )}
         <DialogueWindowHead
           narration={narration}
+          cutIn={nameCut}
           speaker={showsSpeakerPlate(frame) && <>
             {speaker}
             {frame.speaker === "heroine" && frame.emotion !== "neutral" && (

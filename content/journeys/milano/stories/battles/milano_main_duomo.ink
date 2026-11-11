@@ -3,6 +3,7 @@ INCLUDE modules.ink
 # speaker: narrator
 布の下から棒つきのマイクだけが出ている。先端が彼女の袖を追った。
 # speaker: enemy
+# cutin: name
 # reaction: heroine,surprised,question
 「悪いが、あと十秒だけここを無人にしてくれ。」
 # speaker: heroine
