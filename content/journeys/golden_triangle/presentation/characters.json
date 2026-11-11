@@ -278,7 +278,7 @@
       "id": "gt_mukesh",
       "imagePath": "assets/characters/gt_mukesh/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
-      "placeholderColor": "#927b72",
+      "placeholderColor": "#8a6f66",
       "variants": []
     },
     {
@@ -376,7 +376,7 @@
       "id": "gt_jaipur_amber_shopkeeper",
       "imagePath": "assets/characters/gt_jaipur_amber_shopkeeper/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
-      "placeholderColor": "#4e403b",
+      "placeholderColor": "#6a4242",
       "variants": []
     },
     {
