@@ -202,8 +202,10 @@ export function backupAndCreate(
 }
 
 /**
- * Delete only the two active Dreamscape slots after checking the confirmed snapshot, then the words learned that the
- * English notes show (LOCAL_WORDS_KEY; only the tab that holds the journey writes them, journey-lock.ts).
+ * Delete only the two active Dreamscape slots after checking the confirmed snapshot, then this journey's other play
+ * records on the device: the words learned that the English notes show (LOCAL_WORDS_KEY) and the lines read
+ * (READ_LINES_KEY; 2026-11-11 user decision: 「保存データの消去」 erases everything of the play). Only the tab that holds
+ * the journey writes them (journey-lock.ts), and the game reloads right after. Presentation settings stay.
  */
 export function deleteSaveData(
   storage: StorageLike & { removeItem(key: string): void },
@@ -230,6 +232,7 @@ export function deleteSaveData(
       throw new Error("Could not remove game save");
     }
     storage.removeItem(LOCAL_WORDS_KEY);
+    storage.removeItem(READ_LINES_KEY);
     return { ok: true };
   } catch {
     return {

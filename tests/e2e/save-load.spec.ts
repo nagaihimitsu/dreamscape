@@ -485,7 +485,7 @@ test("a save from a newer version is reported as such, and deleting it removes o
   await page.clock.resume();
   await expect(remove).toBeEnabled();
   expect(await allStorage(page)).toEqual(seeded);
-  await expect(confirm).toContainText("以前に退避したバックアップと、ほかのサイトのデータは消去しません。");
+  await expect(confirm).toContainText("文字の速さなどの表示設定、以前に退避したバックアップ、ほかのサイトのデータは消去しません。");
   await remove.click();
   await expect(ops.startButton(page)).toBeVisible();
   await expect(ops.startButton(page)).toHaveAccessibleName(ops.startLabel);
@@ -493,6 +493,7 @@ test("a save from a newer version is reported as such, and deleting it removes o
   const storage = await allStorage(page);
   expect(storage).not.toHaveProperty([saveKey()]);
   expect(storage).not.toHaveProperty([learningKey()]);
+  expect(storage).not.toHaveProperty([readLinesKey()]);
   expect(storage).toMatchObject(others);
 });
 
