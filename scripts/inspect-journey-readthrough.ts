@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { generatedScenesSchema } from "../src/content/scene-schemas";
+import { albumImageIds } from "../src/content/photo-choice";
 import { journeyReadthrough } from "./journey-readthrough";
 
 // npm run journey:readthrough -- --journey <journeyId> [--max-paths N]: the order table of every landmark
@@ -17,7 +18,7 @@ const generated = path.join(process.cwd(), "src/content/generated");
 const read = (file: string) => JSON.parse(readFileSync(path.join(generated, file), "utf8"));
 const journey = (read("content/journeys/catalog.json") as { journeys: { id: string; cities: { id: string }[] }[] }).journeys.find((item) => item.id === journeyId);
 if (!journey) throw new Error(`Unknown journey in the last content:build: ${journeyId}`);
-const presentation = read("content/romance/presentation.json") as { backgrounds: Record<string, unknown>; emotions: Record<string, unknown> };
+const presentation = read("content/romance/presentation.json") as { backgrounds: Record<string, { imageAssetId?: string }>; emotions: Record<string, unknown> };
 // The map events by place: the landmark a visit opens (an episode's or a special battle's), a date, a city's finale.
 const progressionJson = read("content/progression/journey.json") as { episodes: { id: string; kind: string; cityId: string; landmarkId: string | null }[] };
 const battleJson = read("content/battles/catalog.json") as { battles: { id: string; landmarkId?: string | null }[] };
@@ -28,14 +29,18 @@ const events = journey.cities.flatMap((city) => (read(`content/travel/${city.id}
   return { placeId: event.placeId, ...(landmarkId ? { landmarkId } : {}), ...(dateJson.dates.some((item) => item.id === event.id) ? { dateId: event.id } : {}),
     ...(episode?.kind === "city_finale" ? { finaleCityId: episode.cityId } : {}) };
 }));
+const tourism = read("content/tourism/catalog.json") as {
+  assets: { id: string }[]; landmarks: { id: string; cityId: string; nameJa: string; guideStoryId?: string; battleId: string }[];
+};
 const lines = journeyReadthrough({
   scenes: generatedScenesSchema.parse(read("scenes.json")).scenes,
   stories: read("stories.json"),
-  landmarks: (read("content/tourism/catalog.json") as { landmarks: { id: string; cityId: string; nameJa: string; guideStoryId?: string; battleId: string }[] }).landmarks,
+  landmarks: tourism.landmarks,
   cityIds: journey.cities.map((city) => city.id),
   events,
   context: { effectIds: (read("content/romance/effect_catalog.json") as { effects: { id: string }[] }).effects.map((effect) => effect.id),
-    backgroundIds: Object.keys(presentation.backgrounds), emotionIds: Object.keys(presentation.emotions) },
+    backgroundIds: Object.keys(presentation.backgrounds), emotionIds: Object.keys(presentation.emotions),
+    photoIds: albumImageIds({ assets: tourism.assets, backgrounds: presentation.backgrounds }) },
   maxPaths,
 });
 console.log(lines.join("\n"));

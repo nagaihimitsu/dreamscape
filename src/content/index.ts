@@ -30,6 +30,7 @@ import sceneConditionData from "./generated/scene-conditions.json";
 import sceneData from "./generated/scenes.json";
 import storyStateData from "./generated/content/progression/story.json";
 import { generatedScenesSchema, storyStateCatalogSchema, type SceneEntry } from "./scene-schemas";
+import { albumImageIds } from "./photo-choice";
 import { sceneConditionsSchema } from "./condition-schemas";
 import {
   battleCatalogSchema,
@@ -140,6 +141,8 @@ export const tagContext = {
   effectIds: effects.map((effect) => effect.id),
   backgroundIds: Object.keys(presentation.backgrounds),
   emotionIds: Object.keys(presentation.emotions),
+  /** The images a line's `# photo:` names for the album (every tourism photo, and each background that shows one). */
+  photoIds: albumImageIds({ assets: tourismAssets, backgrounds: presentation.backgrounds }),
 };
 export type {
   BattleDefinition,
