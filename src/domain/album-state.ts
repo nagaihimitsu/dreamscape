@@ -3,7 +3,7 @@ import { storyAddressSchema } from "../content/story-address";
 import { stableContentId } from "./stable-id";
 
 /**
- * One photo of the album (2026-11-11, save v21; src/domain/album.ts): the image a line's `# photo:` named, its
+ * One photo of the album (2026-11-11, save v22; src/domain/album.ts): the image a line's `# photo:` named, its
  * `# photo_caption:`, and where and when the line was first read in this journey (the city, the city's day and
  * minute of the game clock, the place the party was at, the story the line is in).
  */
