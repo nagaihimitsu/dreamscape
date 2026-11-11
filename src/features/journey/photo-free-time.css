@@ -206,19 +206,58 @@
   overflow-wrap: anywhere;
 }
 .photo-card-name .travel-selected-badge { margin-right: 4px; vertical-align: 1px; }
-/* The swipe's hint: a quiet line, not a button. Every place card keeps its room (the row's height never changes with
-   the choice); it shows on the chosen card while that one can depart. 9.6:1 on the slate, 4.6:1 on the rose. */
-.photo-card-hint {
+/* The swipe's cue, without words (2026-11-11, the user's decision): two up chevrons under the name that rise and fade
+   in turn, over and over, on the chosen card while that one can depart (data-cue); the card itself lifts a little
+   once when it has rested in the middle. Every place card keeps the cue's room (the row's height never changes with
+   the choice). Under reduced motion the chevrons stand still and the card does not lift. Not a button. */
+.photo-card-cue {
+  position: relative;
+  display: block;
+  height: 16px;
   margin-top: 4px;
-  color: var(--ds-on-slate-muted);
-  font-size: 11px;
-  font-weight: 500;
-  line-height: 1.4;
-  overflow-wrap: anywhere;
   visibility: hidden;
 }
-.photo-card-hint[data-shown] { visibility: visible; }
-.photo-cards.is-list .photo-card-hint { display: none; }
+.photo-card-cue::before,
+.photo-card-cue::after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin-left: -4px;
+  border-top: 2px solid currentColor;
+  border-left: 2px solid currentColor;
+  transform: rotate(45deg);
+  opacity: 0;
+  animation: photo-card-cue-rise 1.6s ease-out infinite;
+}
+.photo-card-cue::after { animation-delay: 0.3s; }
+.photo-card[data-cue] .photo-card-cue { visibility: visible; }
+@keyframes photo-card-cue-rise {
+  0% { opacity: 0; translate: 0 5px; }
+  35% { opacity: 0.9; }
+  75%, 100% { opacity: 0; translate: 0 -7px; }
+}
+.photo-cards:not(.is-list) .photo-card[data-cue]:not(.photo-card-ghost) {
+  animation: photo-card-lift 900ms var(--ease-out) 600ms both;
+}
+@keyframes photo-card-lift {
+  0%, 100% { translate: 0 0; }
+  30% { translate: 0 -6px; }
+  55% { translate: 0 0; }
+  72% { translate: 0 -2px; }
+}
+.photo-cards.is-list .photo-card-cue { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .photo-card-cue::before, .photo-card-cue::after { opacity: 0.9; animation: none; }
+  .photo-card-cue::after { top: 1px; }
+  .photo-cards:not(.is-list) .photo-card[data-cue] { animation: none; }
+}
+.reduce-motion .photo-card-cue::before,
+.reduce-motion .photo-card-cue::after { opacity: 0.9; animation: none; }
+.reduce-motion .photo-card-cue::after { top: 1px; }
+.reduce-motion .photo-cards:not(.is-list) .photo-card[data-cue] { animation: none; }
 
 /* The chosen place's card takes a swipe up (it departs) while a sideways swipe still scrolls the row. */
 .photo-cards:not(.is-list) .photo-card.is-swipeable[aria-current="true"] { touch-action: pan-x; }
