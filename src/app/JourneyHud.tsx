@@ -37,6 +37,8 @@ type MenuActions = {
   onSave: () => void;
   onLoad: () => void;
   onRecords: () => void;
+  /** 「アルバム」: the photos the journey's lines took (AlbumDialog). */
+  onAlbum: () => void;
   onEnglish: () => void;
   onPhotoCredits?: () => void;
   onSceneCredits?: () => void;
@@ -51,7 +53,7 @@ type MenuActions = {
  * the right end; the place name is never cut: it wraps), row 2 holds what can be
  * pressed, side by side at its right end (user decision 2026-11-11): the held
  * items, the screen's own tool (free time's 「地図」, a guide's or a battle's
- * 「手がかり帳」; HudScreenTool) and ⚙設定 with セーブ・ロード・旅の記録・英語ノート・
+ * 「手がかり帳」; HudScreenTool) and ⚙設定 with セーブ・ロード・旅の記録・アルバム・英語ノート・
  * (free time) 写真の出典・(a story scene) 画像の出典・ゲームの設定. Over a story scene
  * that waits for no choice (`view` "talk", hud-view.ts) the budget and AP, the held
  * items and the screen's tool keep their room but are not shown (journey-hud.css).
@@ -136,7 +138,7 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
 
 /**
  * ⚙設定 (U2, U24): a disclosure button with its small panel of セーブ, ロード,
- * 旅の記録, 英語ノート, 写真の出典 (free time's photos) or 画像の出典 (a story
+ * 旅の記録, アルバム, 英語ノート, 写真の出典 (free time's photos) or 画像の出典 (a story
  * scene's photo) and ゲームの設定 (U28) right under the header (APG Disclosure,
  * not an ARIA menu: ordinary buttons, and Tab works as everywhere else). Opening
  * moves the focus to セーブ (ArrowUp/ArrowDown also move between the items); Esc closes and
@@ -149,9 +151,10 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
  * none, holds the page's taps for that moment itself (holdTaps), so the second
  * tap of a double tap presses nothing that lay under it (over a story scene, its
  * picture, where a tap reads on). 旅の記録, 英語ノート and the credits open their
- * dialogs at once, as their own buttons did (the second tap lands inside the dialog).
+ * dialogs at once, as their own buttons did (the second tap lands inside the dialog);
+ * アルバム's dialog takes no press for that moment, as its photos open larger on a tap.
  */
-function HudMenu({ onSave, onLoad, onRecords, onEnglish, onPhotoCredits, onSceneCredits, onSettings, onReturnToFreeTime }: MenuActions) {
+function HudMenu({ onSave, onLoad, onRecords, onAlbum, onEnglish, onPhotoCredits, onSceneCredits, onSettings, onReturnToFreeTime }: MenuActions) {
   const [open, setOpen] = useState(false);
   const group = useRef<HTMLDivElement>(null);
   const gear = useRef<HTMLButtonElement>(null);
@@ -230,6 +233,7 @@ function HudMenu({ onSave, onLoad, onRecords, onEnglish, onPhotoCredits, onScene
         <button type="button" onClick={choose(onSave, true)}><Icon name="save" />セーブ</button>
         <button type="button" onClick={choose(onLoad)}><Icon name="load" />ロード</button>
         <button type="button" onClick={choose(onRecords)}><Icon name="stamp" />旅の記録</button>
+        <button type="button" onClick={choose(onAlbum)}><Icon name="camera" />アルバム</button>
         <button type="button" onClick={choose(onEnglish)}><Icon name="book" />英語ノート</button>
         {onPhotoCredits && <button type="button" onClick={choose(onPhotoCredits)}><Icon name="credit" />写真の出典</button>}
         {onSceneCredits && <button type="button" onClick={choose(onSceneCredits)}><Icon name="credit" />画像の出典</button>}

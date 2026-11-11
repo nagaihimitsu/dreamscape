@@ -1,0 +1,117 @@
+/* 「アルバム」 (AlbumDialog): the shared frame, a page per city told apart by its heading, photos separated by
+   hairlines (no side accents), the pager kept at the dialog's foot while the page scrolls. Every pressable is 44 px. */
+dialog.modal.album-modal {
+  --modal-pad-top: 16px;
+  --modal-pad-inline: 16px;
+  width: min(560px, calc(100% - 24px));
+  max-width: 560px;
+  max-height: calc(100dvh - 24px);
+}
+.album-modal .modal-title-bar { margin-bottom: 8px; }
+.album-empty { margin: 4px 0 8px; font-size: 14px; line-height: 1.7; }
+/* Sideways moves of a finger turn the page (albumSwipeStep); upright ones still scroll the dialog, and pinch still zooms. */
+.album-page { touch-action: pan-y pinch-zoom; }
+.album-page h3 {
+  margin: 0 0 8px;
+  font-family: "Noto Serif JP", serif;
+  font-size: 18px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.album-photos { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+.album-photos li + li { padding-top: 14px; border-top: 1px solid var(--ds-parchment-line); }
+.album-photos figure { margin: 0; }
+.album-photo {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #26342e;
+}
+/* The list shows each photo filling its frame (the larger view shows it whole); short screens keep it low. */
+.album-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(46dvh, 320px);
+  object-fit: cover;
+}
+.album-photos figcaption { margin-top: 6px; }
+.album-caption { font-size: 15px; line-height: 1.6; overflow-wrap: anywhere; }
+.album-meta { font-size: 12px; line-height: 1.6; color: var(--ds-ink-muted); overflow-wrap: anywhere; }
+.album-credit summary,
+.album-photo-viewer summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding: 11px 0;
+  font-size: 13px;
+  line-height: 22px;
+}
+.album-credit p,
+.album-photo-viewer details p { margin: 2px 0; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+.album-pager {
+  position: sticky;
+  bottom: calc(-1 * var(--modal-pad-top, 0px));
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 12px calc(-1 * var(--modal-pad-inline, 0px)) calc(-1 * var(--modal-pad-top, 0px));
+  padding: 8px var(--modal-pad-inline, 16px);
+  background: var(--ds-parchment);
+  border-top: 1px solid var(--ds-parchment-line);
+}
+.album-page-button {
+  flex: none;
+  min-width: 88px;
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font-size: 14px;
+}
+.album-page-button:hover:enabled { background: var(--ds-parchment-2); }
+.album-page-button:disabled {
+  opacity: 1;
+  border-color: transparent;
+  background: var(--ds-disabled-bg);
+  color: var(--ds-disabled-ink);
+}
+.album-page-count { flex: 1 1 auto; min-width: 3em; font-size: 13px; color: var(--ds-ink-muted); text-align: center; }
+/* A turned page comes in from the side it was turned towards; the page it leaves goes at once. */
+.album-page[data-turn="next"] { animation: album-turn-next var(--motion-medium) var(--ease-out); }
+.album-page[data-turn="back"] { animation: album-turn-back var(--motion-medium) var(--ease-out); }
+@keyframes album-turn-next { from { opacity: 0; transform: translateX(24px); } }
+@keyframes album-turn-back { from { opacity: 0; transform: translateX(-24px); } }
+.reduce-motion .album-page[data-turn] { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .album-page[data-turn] { animation: none; }
+}
+
+/* The photo opened larger: the whole picture, its time and place, its credit, 「閉じる」 at the foot (as 背景画像). */
+dialog.modal.album-photo-viewer {
+  --modal-pad-top: 16px;
+  --modal-pad-inline: 16px;
+  width: min(92vw, 760px);
+  max-width: 760px;
+}
+.album-photo-viewer .modal-title-bar { margin-bottom: 8px; }
+.album-photo-viewer > img {
+  display: block;
+  width: 100%;
+  height: min(60dvh, 520px);
+  object-fit: contain;
+  background: #26342e;
+}
+.album-photo-viewer > .album-meta { margin-top: 6px; }
+.album-photo-viewer details { margin: 4px 0 8px; }
+.album-photo-viewer > .secondary { min-height: 44px; }
+@media (orientation: landscape) and (max-height: 500px) {
+  .album-photo-viewer > img { height: 52dvh; }
+}
