@@ -34,6 +34,16 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 - `# size: large`：その行の字を大きく出します。
 - 範囲の外の数や小数（`0.6`・`600ms`）、`window`・`large` 以外の値、1つの行に同じ札を2つ書いたときは、`content:build` が止めます。
 
+写真の札（任意、2026-11-11）：行に `# photo: <画像のID>` を書くと、通常の遊びでその行が画面に出たときに、その写真が1枚アルバム（⚙設定の「アルバム」）に入ります。画像のIDは、`tourism/catalog.json` の画像（`assets` の `id`）か、写真のある背景（`romance/presentation.json` の `imageAssetId` を持つ背景のID）です。アルバムには、その写真の出典、都市、「n日目 hh:mm」、場所の名前が出ます。写真の下に出す短い説明は、同じ行に `# photo_caption: <説明>` と書きます（任意。`#` は書けません）。同じ画像は一度だけ入り、読み直し・観光案内の読み直し・セーブからの再開では増えません。どの会話の場面でも書けます（英語ノートの解説には書けません）。例は見本の編のデート（`stories/places/smp_mihon_clock_tower.ink` の `= ending`、説明つき）と、朝市・図書室の観光案内の最初の行。
+
+```ink
+# speaker: narrator
+# photo: smp_img_mihon_clock_tower # photo_caption: 三時までの席。お茶のあとも、針は三時のまま
+お茶を飲み終えても、針は三時のままだった。
+```
+
+- 知らない画像のID、`# photo:` と一緒に読まれない `# photo_caption:`、1つの行に2つの `# photo:` や説明は、`content:build` が止めます。札を書かなければ、何も記録されません。
+
 ## 簡単な道中交流を追加する
 
 `content/journeys/milano/stories/encounters/milano_duomo_new_event.ink` を作り（名前は [IDの付け方](../docs/02_TECH_ARCHITECTURE.md#idの付け方) の `encounters/<頭>_<交流>`）、名前用変数、会話、英語の選択（ふつうは3択。選択肢の数は自由）と分岐を書きます。英文はInkを正とします。訳を付ける場合は **選択肢の角括弧の中** にタグを置きます。
