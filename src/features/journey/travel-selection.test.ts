@@ -142,7 +142,7 @@ describe("the two-step selection", () => {
     expect(announcement(destination("p_here", [event("here", [["walk", true]])], true), "ここ")).toContain("もう一度押すと、ここで始めます。");
     expect(announcement(modes, "最後の晩餐")).toBe("最後の晩餐を選びました。移動手段を選んでください（2件）。");
     expect(announcement(events, "ナヴィリオ")).toBe("ナヴィリオを選びました。ここでできることから選んでください（3件）。");
-    expect(announcement(sleep([["walk", true]]), "")).toBe("滞在先を選びました。もう一度『休む』を押すと休みます。");
+    expect(announcement(sleep([["walk", true]]), "")).toBe("滞在先のホテルを選びました。もう一度『休む』を押すと休みます。");
     expect(announcement({ kind: "place", placeId: "p_here", choices: null }, "ここ")).toBe("ここ（現在地）を選びました。ここで始められる予定はありません。");
   });
 });

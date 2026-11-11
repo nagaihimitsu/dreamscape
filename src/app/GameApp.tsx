@@ -64,7 +64,7 @@ import { JourneyHud } from "./JourneyHud";
 import { hudView } from "./hud-view";
 import { BackgroundCredits } from "../components/BackgroundCredits";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
-import { sceneBackdropPhoto } from "../features/journey/travel-labels";
+import { placeDisplayName, sceneBackdropPhoto } from "../features/journey/travel-labels";
 import { advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, encounterChoiceDisplay, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterCanFinish, proceedFromTourism, continueTourismEncounters, encounterLeadsOnward, leaveBattleToFreeTime } from "../domain/encounter";
 import { chooseCityEpilogue, epilogueChoiceDisplay } from "../domain/epilogue";
 import { dateChoiceDisplay, type GameState } from "../domain/game";
@@ -372,6 +372,9 @@ export function GameApp({
   // The scene's person with a portrait (# person:): stands opposite the heroine and names the enemy lines.
   const encounterPerson = currentEncounter ? scenePerson(storyState.people, scenes.find((scene) => scene.id === currentEncounter.id)?.people) : undefined;
   const encounterLandmark = landmarks.find((landmark) => landmark.id === currentEncounter?.landmarkId);
+  // The place the party is at, as the screens name it (the hotel is 「滞在先のホテル」, never its data name).
+  const encounterHere = currentEncounter && getCityContent(currentEncounter.cityId).travel.places.find((place) => place.id === game?.travel.currentPlaceId);
+  const encounterHereJa = game && encounterHere ? placeDisplayName(game, encounterHere) : undefined;
   const encounterImage = tourismAssets.find((asset) => asset.id === encounterLandmark?.imageAssetId);
   const encounterBackdrop = activeEncounter && !encounterLandmark
     ? sceneBackdropPhoto(activeEncounter.frame.background, presentation.backgrounds, tourismAssets) : undefined;
@@ -615,7 +618,7 @@ export function GameApp({
               // begun, the move not yet: tour stage 3) the leg, even over a road photo; else its background photo's name,
               // else the place the party is at.
               placeJa: encounterLandmark?.nameJa ?? tourLegUnderway(game)?.labelJa ?? encounterBackdrop?.nameJa ??
-                getCityContent(currentEncounter.cityId).travel.places.find((place) => place.id === game.travel.currentPlaceId)?.nameJa ??
+                encounterHereJa ??
                 getCityContent(currentEncounter.cityId).city.nameJa,
               background: activeEncounter.frame.background,
               backgroundAsset: encounterImage,

@@ -66,7 +66,7 @@ export function useTravelSelection(game: GameState, handlers: {
     return targetFor({ kind: "place", placeId });
   }
   const describe = (target: TargetChoices, openEventId: string | null) =>
-    (options.announce ?? announcement)(target, target.kind === "place" ? nameOf(target.placeId) : "滞在先", openEventId);
+    (options.announce ?? announcement)(target, target.kind === "place" ? nameOf(target.placeId) : "滞在先のホテル", openEventId);
 
   function apply(result: PressResult, target: TargetChoices, job: Omit<ScrollJob, "scroll" | "target">) {
     const { effect } = result;

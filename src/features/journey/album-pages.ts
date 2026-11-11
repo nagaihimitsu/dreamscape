@@ -17,7 +17,7 @@ export type AlbumPage = { cityId: string; cityJa: string; photos: AlbumPhotoView
 /**
  * One page per city in the journey's order, each with its photos in the order they were taken; a city without a
  * photo has no page. The day is the city's day as the header shows it, the place is named as the header names it
- * (the hotel is 「滞在先」). A photo whose city or picture the content lacks is left out (a loaded save has none).
+ * (the hotel is 「滞在先のホテル」). A photo whose city or picture the content lacks is left out (a loaded save has none).
  */
 export function albumPages(album: readonly AlbumPhoto[], content: AlbumContent): AlbumPage[] {
   return content.cities.flatMap((city): AlbumPage[] => {

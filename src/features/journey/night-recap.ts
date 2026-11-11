@@ -5,7 +5,7 @@ import type { GameState } from "../../domain/game";
 import { withNames } from "../romance/names";
 import { placeDisplayName } from "./travel-labels";
 
-/** A stop of today's route: its place and its name as the screens write it (the hotel is 「滞在先」). */
+/** A stop of today's route: its place and its name as the screens write it (the hotel is 「滞在先のホテル」). */
 export type RouteStop = { place: TravelPlace; nameJa: string };
 
 /**
@@ -42,7 +42,7 @@ export function routeMarks(route: readonly RouteStop[]): { place: TravelPlace; l
   return [...marks.values()].map(({ place, numbers }) => ({ place, label: numbers.join("・"), last: place.id === lastId }));
 }
 
-/** Today's route said in words (the card's live region): 「今日の道のり：滞在先、時計塔、朝市。」 */
+/** Today's route said in words (the card's live region): 「今日の道のり：滞在先のホテル、時計塔、朝市。」 */
 export function routeSentenceJa(route: readonly RouteStop[]): string {
   return route.length > 1 ? `今日の道のり：${route.map((stop) => stop.nameJa).join("、")}。` : "";
 }

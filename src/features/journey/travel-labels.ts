@@ -2,9 +2,9 @@ import type { TravelPlace } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
 
 /**
- * How the screens name a travel place. The hotel is the couple's own 「滞在先」
- * rather than its data name, and keeps 「（架空）」 when that name marks it as
- * fictional; a place that cannot be found is 「不明」.
+ * How the screens name a travel place. The hotel is the couple's own 「滞在先のホテル」 rather than its data name (a
+ * data name's 「架空」 mark is not shown: it spoils the trip, 2026-11-11 user decision); a place that cannot be found
+ * is 「不明」.
  */
 export function placeDisplayName(
   game: { travel: Pick<GameState["travel"], "hotelPlaceId"> },
@@ -12,7 +12,7 @@ export function placeDisplayName(
 ): string {
   if (!place) return "不明";
   if (place.id !== game.travel.hotelPlaceId) return place.nameJa;
-  return `滞在先${place.nameJa.includes("架空") ? "（架空）" : ""}`;
+  return "滞在先のホテル";
 }
 
 /**

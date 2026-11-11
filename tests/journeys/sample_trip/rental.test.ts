@@ -55,8 +55,8 @@ describe("rental transport (sample journey)", () => {
     expect(isTransportModeUsable(state, BIKE)).toBe(false);
     expect(isTransportModeUsable(state, "no_such_mode")).toBe(false);
     expect(getUsableRoutes(state).some((route) => route.mode === BIKE)).toBe(false);
-    expect(rentalReason("mihon", BIKE)).toBe("貸し自転車は滞在先で借りると乗れます。");
-    expect(getTravelEventAvailability(state, EPISODE, BIKE)).toEqual({ available: false, reason: "貸し自転車は滞在先で借りると乗れます。" });
+    expect(rentalReason("mihon", BIKE)).toBe("貸し自転車は滞在先のホテルで借りると乗れます。");
+    expect(getTravelEventAvailability(state, EPISODE, BIKE)).toEqual({ available: false, reason: "貸し自転車は滞在先のホテルで借りると乗れます。" });
     expect(beginTravelEvent(state, EPISODE, BIKE, state.revision)).toBe(state);
     const tower = { ...state, travel: { ...state.travel, currentPlaceId: TOWER } };
     expect(getTravelHomeRoutes(tower, TOWER).map((route) => route.mode)).toEqual(["walk"]);

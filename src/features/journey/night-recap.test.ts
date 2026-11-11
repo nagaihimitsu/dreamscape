@@ -11,19 +11,19 @@ const at = (state: GameState, day: number, todayPlaceIds: string[]): GameState =
   ({ ...state, travel: { ...state.travel, day, todayPlaceIds } });
 
 describe("what the night shows under its line", () => {
-  it("names today's stops as the screens do (the hotel is 「滞在先」) and the night line of the day", () => {
+  it("names today's stops as the screens do (the hotel is 「滞在先のホテル」) and the night line of the day", () => {
     const start = cityStart(SAMPLE, ["航", "澪"]);
     const { travel } = getCityContent(SAMPLE);
     const lines = travel.nightLinesJa!;
     expect(lines.length).toBeGreaterThan(1);
     const recap = nightRecap(at(start, 1, ["mihon_clock_tower", "mihon_market"]));
     expect(recap.route.map((stop) => [stop.place.id, stop.nameJa])).toEqual([
-      ["mihon_hotel", "滞在先"], ["mihon_clock_tower", "見本の時計塔"], ["mihon_market", "見本の朝市"],
+      ["mihon_hotel", "滞在先のホテル"], ["mihon_clock_tower", "見本の時計塔"], ["mihon_market", "見本の朝市"],
     ]);
     expect(recap).toMatchObject({ line: lines[0], heroineName: "澪", cityId: SAMPLE });
     expect(nightRecap(at(start, 2, [])).line).toBe(lines[1]);
     expect(nightRecap(at(start, lines.length + 1, [])).line).toBe(lines[0]);
-    expect(routeSentenceJa(recap.route)).toBe("今日の道のり：滞在先、見本の時計塔、見本の朝市。");
+    expect(routeSentenceJa(recap.route)).toBe("今日の道のり：滞在先のホテル、見本の時計塔、見本の朝市。");
   });
 
   it("shows no map when the party stayed at the hotel, and no line in a city without night lines", () => {

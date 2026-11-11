@@ -190,7 +190,7 @@ export function stripText(choices: DestinationChoices): string {
 /** What the live region says for the selected target (`name` = the place's display name). */
 export function announcement(target: TargetChoices, name: string, openEventId: string | null = null): string {
   if (target.kind === "sleep")
-    return target.choices.onlyWay ? "滞在先を選びました。もう一度『休む』を押すと休みます。" : "滞在先を選びました。帰り方を選んでください。";
+    return target.choices.onlyWay ? "滞在先のホテルを選びました。もう一度『休む』を押すと休みます。" : "滞在先のホテルを選びました。帰り方を選んでください。";
   const choices = target.choices;
   if (!choices) return `${name}（現在地）を選びました。ここで始められる予定はありません。`;
   if (!choices.available) return `${name}を選びました。今は行けません。${choices.reason ?? ""}`;

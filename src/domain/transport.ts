@@ -30,12 +30,12 @@ function getRentalOffer(cityId: string, modeId: string): RentalOffer | undefined
   return getCityContent(cityId).travelSettings.rentals?.find((offer) => offer.modeId === modeId);
 }
 
-/** Why a route of a not-yet-rented rental mode cannot be ridden: 「貸し自転車は滞在先で借りると乗れます。」 */
+/** Why a route of a not-yet-rented rental mode cannot be ridden: 「貸し自転車は滞在先のホテルで借りると乗れます。」 */
 export function rentalReason(cityId: string, modeId: string): string {
   const mode = getTransportMode(cityId, modeId);
   const offer = getRentalOffer(cityId, modeId);
   const { travel, travelSettings } = getCityContent(cityId);
-  const places = (offer?.placeIds ?? []).map((placeId) => placeId === travelSettings.hotelPlaceId ? "滞在先"
+  const places = (offer?.placeIds ?? []).map((placeId) => placeId === travelSettings.hotelPlaceId ? "滞在先のホテル"
     : travel.places.find((place) => place.id === placeId)?.nameJa ?? placeId);
   return `${mode?.nameJa ?? modeId}は${places.length ? places.join("・") : "この街"}で借りると乗れます。`;
 }
