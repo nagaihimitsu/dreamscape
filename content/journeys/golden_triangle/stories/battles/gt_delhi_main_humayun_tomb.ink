@@ -9,10 +9,14 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,interrobang
 と、友達？　今から？
+# speaker: gt_mehr
+わたし、メヘル。こっちはカビール。大学の同級生なの。今、西門から、わたしの叔父さんが入ってきたの
+# speaker: gt_kabir
+……カビールです
+# speaker: gt_mehr
+二人きりでいるところを見られたら、夕飯の前にお母さんに知れる。お母さんに知れたら、親戚中に知れる！
 # speaker: narrator
-女の子はメヘル、青年はカビールと名乗った。大学の同級生。西門から、メヘルの叔父が入ってきたのだという。
-# speaker: narrator
-二人きりでいるところを見られたら、夕飯の前に母親に知れる。そして母親に知れたら、親戚中に知れる。メヘルは早口でそう説明した。
+早口だった。
 # speaker: gt_mehr
 カビールは歴史学科だから、外国のお友達を案内してるってことにする。あなたたちは、わたしの文通相手。お願い！
 # speaker: heroine

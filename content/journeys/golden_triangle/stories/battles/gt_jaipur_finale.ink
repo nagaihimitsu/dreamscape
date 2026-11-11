@@ -41,9 +41,9 @@ INCLUDE modules.ink
 # emotion: serious
 ……やります。わたしが、答えます
 # speaker: narrator
-いとこたちの先頭、プージャーという娘がにやりと笑った。
+いとこたちの先頭の娘が、にやりと笑った。
 # speaker: gt_pooja
-一問目。この町は、どうしてピンク色なのか。わかる？
+わたしはプージャー。花嫁のいとこよ。一問目。この町は、どうしてピンク色なのか。わかる？
 -> quiz(1) ->
 # background: gt_bg_jaipur_hawa_mahal
 { quiz_correct:

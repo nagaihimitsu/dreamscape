@@ -17,8 +17,8 @@ INCLUDE modules.ink
 門をくぐってすぐ、十歳くらいの男の子が、二人の前に立ちはだかった。手には、ノートを破った紙。鉛筆で描いた地図に、赤いペンで、大きなバツ印がついている。
 # speaker: gt_jaipur_jaigarh_boy
 宝の地図、買わない？　この砦には、王さまの宝が隠されてる。本当だよ。昔、国が、何か月も掘って探したんだから
-# speaker: narrator
-ラージューと名乗った。地図は、全部自分で描いたという。
+# speaker: gt_raju
+ぼく、ラージュー。この地図、全部ぼくが描いたんだ
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 宝の地図！　ねえ、これ、すごく欲しいかも。子どものとき、こういうの、自分で描いてた
@@ -97,7 +97,11 @@ INCLUDE modules.ink
 # reaction: heroine,surprised_big,exclamation
 やられた！　ふふっ、最後の印、お茶屋さんだった！
 # speaker: narrator
-老人は孫の頭を軽く叩き、素焼きのカップを二つ並べた。ラージューの祖父は、子どものころ、あの宝探しの兵隊たちに水を運んでいたのだという。本人の話では。
+老人は孫の頭を軽く叩き、素焼きのカップを二つ並べた。
+# speaker: gt_jaipur_jaigarh_old_man
+わしは子どものころ、あの宝探しの兵隊たちに、水を運んでおった
+# speaker: narrator
+本人の話では、だが。
 # speaker: gt_jaipur_jaigarh_old_man
 何か月も掘って、出てきたのは、コウモリと、古い靴が片方だけ。……でも、あの年だけは、この砦が、国でいちばん有名だった
 * [「本当に、宝の味がする」 # option: treasure_taste]
