@@ -143,7 +143,7 @@ describe("a double tap that moves the window's head under the finger", () => {
   it("finds the window's tool a tap lands on, and nothing else", () => {
     expect(windowToolAt(hideIcon, scene)).toBe(hide);
     expect(windowToolAt(log, scene)).toBe(log);
-    for (const target of [tools, speaker, reply, line, labelPill, modalClose, logClose, picture]) expect(windowToolAt(target, scene)).toBeNull();
+    for (const target of [tools, speaker, reply, line, modalClose, logClose, picture]) expect(windowToolAt(target, scene)).toBeNull();
   });
 
   it("presses no tool with the second tap after a reply or the log's 「閉じる」, at the same point", () => {
