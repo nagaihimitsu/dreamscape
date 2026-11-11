@@ -6,6 +6,8 @@ export interface TagContext {
   emotionIds: string[];
   /** The images a line's `# photo:` may name (photo-choice.ts albumImageIds); absent: none. */
   photoIds?: readonly string[];
+  /** The word IDs of learning/local-words.json, for `# local_word:`; absent: a tool that only reads the lines (not checked). */
+  localWordIds?: readonly string[];
 }
 
 export interface StoryTags {
@@ -15,6 +17,8 @@ export interface StoryTags {
   reactions?: Partial<Record<ReactionTarget, DialogueReaction>>;
   optionId?: string;
   translationJa?: string;
+  /** `# local_word: <id>`: the words of the country the line teaches (learned when it is shown in normal play). */
+  localWordIds?: string[];
   /** `# call: quiz` / `# call: reasoning`: the one choice of modules.ink's battle calls (stage 5). */
   call?: StoryCall;
   /** `# pause:`, `# shake:` and `# size:`: how the line is shown (presentation only). */
@@ -144,6 +148,12 @@ export function parseStoryTags(
     } else if (key === "translation") {
       if (result.translationJa) throw new Error("Duplicate translation tag");
       result.translationJa = value;
+    } else if (key === "local_word") {
+      if (!/^[a-z][a-z0-9_]*$/u.test(value)) throw new Error(`Invalid local_word tag: ${value} (write # local_word: <word ID>)`);
+      if (context.localWordIds && !context.localWordIds.includes(value))
+        throw new Error(`Unknown local word: ${value} (not in learning/local-words.json)`);
+      if (result.localWordIds?.includes(value)) throw new Error(`Duplicate local_word tag: ${value}`);
+      result.localWordIds = [...(result.localWordIds ?? []), value];
     } else if (key === "pause" || key === "shake" || key === "size") {
       result.delivery = readDelivery(key, value, result.delivery ?? {});
     } else if (key === "photo") {

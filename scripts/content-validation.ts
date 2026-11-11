@@ -91,6 +91,7 @@ import {
   learningCatalogSchema,
   validateLearning,
 } from "../src/content/learning-schema";
+import { localWordsCatalogSchema } from "../src/content/local-words";
 
 // Validation of the loaded content (validateContent): pure checks of the
 // sources that content-sources.ts read, with the Ink compiled here. Nothing
@@ -529,12 +530,19 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   }
   if (cities.some((item) => item.firstClearReward.ap > balance.apCap))
     throw new Error("First clear reward exceeds AP cap");
+  // The words of the countries visited (optional; 2026-11-11 user decision): a line's # local_word: names one of them.
+  const localWords = parseCatalog(localWordsCatalogSchema, "learning/local-words.json").words;
+  unique(localWords.map((word) => word.id), "local word ID");
+  for (const word of localWords)
+    if (word.cityId !== undefined && !cities.some((item) => item.id === word.cityId))
+      throw new Error(`Unknown local word city: ${word.id}/${word.cityId}`);
   const context: TagContext = {
     effectIds: effects.map((effect) => effect.id),
     backgroundIds: Object.keys(presentation.backgrounds),
     emotionIds: Object.keys(presentation.emotions),
     // A line's # photo: (the album): a tourism photo, or a background that shows one.
     photoIds: albumImageIds({ assets: tourism.assets, backgrounds: presentation.backgrounds }),
+    localWordIds: localWords.map((word) => word.id),
   };
   for (const effect of effects) {
     if (effect.responseProfileId && !responseProfiles.some((profile) => profile.id === effect.responseProfileId))

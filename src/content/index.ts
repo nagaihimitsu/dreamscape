@@ -4,6 +4,8 @@ import detailsData from "./generated/content/learning/details.json";
 import { learningDetailsSchema } from "./learning-details";
 import learningData from "./generated/content/learning/translations.json";
 import { learningCatalogSchema } from "./learning-schema";
+import localWordData from "./generated/content/learning/local-words.json";
+import { localWordsCatalogSchema, type LocalWord } from "./local-words";
 import battleData from "./generated/content/battles/catalog.json";
 import journeyData from "./generated/content/progression/journey.json";
 import { getAllRewardRules, journeySchema } from "./journey-schemas";
@@ -49,6 +51,8 @@ export const wordMeanings = wordMeaningsSchema.parse(wordData).words;
 export const learningDetails = learningDetailsSchema.parse(detailsData);
 export const learningTranslations =
   learningCatalogSchema.parse(learningData).questions;
+/** The words of the countries visited, of every journey (learning/local-words.json; `# local_word:` teaches one). */
+export const localWords: readonly LocalWord[] = localWordsCatalogSchema.parse(localWordData).words;
 export const battles = battleCatalogSchema.parse(battleData).battles;
 export const journeyConfig = journeySchema.parse(journeyData);
 export const episodes = journeyConfig.episodes;
@@ -143,6 +147,7 @@ export const tagContext = {
   emotionIds: Object.keys(presentation.emotions),
   /** The images a line's `# photo:` names for the album (every tourism photo, and each background that shows one). */
   photoIds: albumImageIds({ assets: tourismAssets, backgrounds: presentation.backgrounds }),
+  localWordIds: localWords.map((word) => word.id),
 };
 export type {
   BattleDefinition,
@@ -159,6 +164,7 @@ export type {
   ObservationRegion,
 } from "./tourism-schemas";
 export type { DateDestination } from "./date-destinations";
+export type { LocalWord } from "./local-words";
 export type { Tour, TourStep, TourLeg, TourEventStep, TourOffer } from "./tour-schemas";
 export type {
   EpisodeDefinition,
