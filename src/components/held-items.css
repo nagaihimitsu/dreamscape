@@ -93,3 +93,14 @@
   outline-offset: 0;
 }
 .held-item-detail .held-item-origin { font-size: 0.9em; }
+/* What is written on the item (a note's lines), on a slip of paper under the description. */
+.held-item-lines {
+  margin: 8px 0 0;
+  padding: 8px 10px 8px 2.1em;
+  border: 1px dashed var(--ds-parchment-line);
+  border-radius: 8px;
+  background: var(--ds-parchment-2);
+}
+.held-item-lines li { overflow-wrap: anywhere; }
+.held-item-lines li + li { margin-top: 4px; }
+.held-item-lines li::marker { font-family: Georgia, serif; font-size: 0.85em; }

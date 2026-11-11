@@ -6,9 +6,13 @@ import "./held-items.css";
 
 /** `iconPath`: the item's own icon from its catalog entry; a generic icon otherwise. */
 /** `origin`: for an item carried from an earlier city, where it came from (「デリーから持ってきた」; the item design §2.6). */
-export type HeldItem = { id: string; name: string; description: string; iconPath?: string; origin?: string };
+/** `lines`: what is written on the item (a note's lines, the catalog's `linesJa`), shown in order under the description. */
+export type HeldItem = { id: string; name: string; description: string; lines?: string[]; iconPath?: string; origin?: string };
 
 const iconSource = (item: HeldItem) => `${import.meta.env.BASE_URL}${item.iconPath ?? DEFAULT_ITEM_ICON}`;
+const ItemLines = ({ item }: { item: HeldItem }) => item.lines
+  ? <ol className="held-item-lines" aria-label={`${item.name}に書かれていること`}>{item.lines.map((line, index) => <li key={index}>{line}</li>)}</ol>
+  : null;
 
 /**
  * The items held in this city, in the header (UI redesign U20): one item is its
@@ -113,10 +117,10 @@ export function HeldItems({ items, gained, onOpen }: { items: HeldItem[]; gained
             }}>×</button>
           </div>
           {single
-            ? <><p>{single.description}</p>{single.origin && <p className="held-item-origin">{single.origin}</p>}</>
+            ? <><p>{single.description}</p><ItemLines item={single} />{single.origin && <p className="held-item-origin">{single.origin}</p>}</>
             : <ul className="held-item-list">{items.map((item) => <li key={item.id}>
               <img src={iconSource(item)} alt="" />
-              <div><strong>{item.name}</strong><p>{item.description}</p>{item.origin && <p className="held-item-origin">{item.origin}</p>}</div>
+              <div><strong>{item.name}</strong><p>{item.description}</p><ItemLines item={item} />{item.origin && <p className="held-item-origin">{item.origin}</p>}</div>
             </li>)}</ul>}
         </div>
       </>}

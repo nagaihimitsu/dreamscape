@@ -57,6 +57,8 @@ export const encounterCatalogSchema = z.object({
      * Not changed after publishing (a save holding it may then be refused).
      */
     carry: z.literal("journey").optional(),
+    /** What is written on the item (a note's lines), shown in order under its description when the item is opened. */
+    linesJa: z.array(japaneseText).min(1).optional(),
     /** Icon among the held items (a served file such as assets/items/x.svg); a generic icon otherwise. */
     iconPath: z.string().regex(/^assets\/(?!.*(?:^|\/)\.\.(?:\/|$))[a-zA-Z0-9_./-]+\.(?:png|webp|svg)$/).optional(),
   }).strict()),
