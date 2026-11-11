@@ -21,21 +21,3 @@ export function moneyLength(text: string): "regular" | "long" | "longer" {
   const length = Array.from(text).length;
   return length >= 12 ? "longer" : length >= 9 ? "long" : "regular";
 }
-
-/**
- * Whether the header's one-line place name hides part of the name
- * (JourneyHud's useWholePlaceName, with the line's measured heights): the
- * clamped line is one line high, and a name that goes on to a second line makes
- * its content at least a line higher. Glyphs that reach a pixel or two past
- * their line (Noto Serif JP at some text sizes) are not a second line, so an
- * overflow of less than half a line does not count. Without a usable line
- * height the line's own height stands for it.
- */
-export function placeNameIsCut({ scrollHeight, clientHeight, lineHeight }: {
-  scrollHeight: number;
-  clientHeight: number;
-  lineHeight: number;
-}): boolean {
-  const line = Number.isFinite(lineHeight) && lineHeight > 0 ? lineHeight : clientHeight;
-  return scrollHeight - clientHeight > line / 2;
-}
