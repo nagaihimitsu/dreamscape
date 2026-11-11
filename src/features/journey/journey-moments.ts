@@ -1,6 +1,5 @@
-import { battles, cityContents, encounters, episodes, landmarks, presentation, storyState, tourismAssets, type EpisodeDefinition } from "../../content";
+import { battles, cityContents, encounters, episodes, getAlbumImage, landmarks, presentation, storyState, tourismAssets, type EpisodeDefinition } from "../../content";
 import { getJourneyForCity } from "../../content/journeys";
-import { albumImageAsset } from "../../content/photo-choice";
 import type { TourismAsset } from "../../content/tourism-schemas";
 import type { AlbumPhoto } from "../../domain/album-state";
 import { isJourneyComplete } from "../../domain/city-travel";
@@ -15,7 +14,7 @@ import { formatTravelTime } from "./travel-time";
 // at the end of a journey. Each reads the game (and the generated content) only; none writes anything or shows a
 // relationship value.
 
-/** The journey's cities in order and the credited photos, from the generated content (the album and the credit roll). */
+/** The journey's cities in order and the album images' served paths, from the generated content (the album, the recap and the credit roll). */
 export function journeyAlbumContent(currentCityId: string): AlbumContent {
   const cityIds = getJourneyForCity(currentCityId)?.cities.map((city) => city.id) ?? [currentCityId];
   return {
@@ -23,7 +22,7 @@ export function journeyAlbumContent(currentCityId: string): AlbumContent {
       const content = cityContents[id];
       return content ? [{ id, nameJa: content.city.nameJa, hotelPlaceId: content.travelSettings.hotelPlaceId, places: content.travel.places }] : [];
     }),
-    assetOf: (imageId) => albumImageAsset({ assets: tourismAssets, backgrounds: presentation.backgrounds }, imageId),
+    imagePathOf: (imageId) => getAlbumImage(imageId)?.path ?? null,
   };
 }
 
@@ -85,8 +84,8 @@ function photoViews(album: readonly AlbumPhoto[], currentCityId: string): Moment
 
 /**
  * The recap of a resumed game: where and when the party is, the last episode completed (its clear title and record,
- * the names filled in; the city it was in when that is not the city now) and the latest photo of the album with its
- * credit. Null before any episode is completed: there is nothing to recap yet (the header shows the place and time).
+ * the names filled in; the city it was in when that is not the city now) and the latest photo of the album (the author's
+ * illustration, no credit). Null before any episode is completed: there is nothing to recap yet (the header shows the place and time).
  */
 export type ResumeRecap = {
   cityJa: string;

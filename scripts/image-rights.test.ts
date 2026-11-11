@@ -94,6 +94,19 @@ describe("image rights", () => {
       "1か所にまとめてください（Duplicate own artwork path: assets/effects/heart.svg）。");
   });
 
+  it("asks nothing for a journey's album images (public/assets/album/), and refuses a credit for one", () => {
+    // Dreamscape's own artwork by their folder (2026-11-11): no tourism entry, no own-artwork line.
+    const withAlbum = { ...files(), [`${trip}/public/assets/album/a_tower.webp`]: null, [`${trip}/public/assets/album/01_square.png`]: null };
+    expect(check(withAlbum)).not.toThrow();
+    // The root public/ has no album: an image there is listed as own artwork as any other.
+    expect(check({ ...files(), "public/assets/album/shared.webp": null })).toThrow("出典のない画像：public/assets/album/shared.webp。");
+    // An album image never shows a credit, so the tourism catalog may not register one.
+    expect(check(withAlbum, [...tourism, asset("assets/album/a_tower.webp")])).toThrow(
+      `アルバムの絵に出典は付けません：${trip}/public/assets/album/a_tower.webp が tourism/catalog.json の assets に載っています。` +
+      "アルバムには Dreamscape のために作った絵だけを置き、出典のある写真は assets/album/ の外に置いてください" +
+      "（Album image registered as a credited tourism image: assets/album/a_tower.webp）。");
+  });
+
   it("requires a list of the core layer's own artwork", () => {
     const tree = files();
     delete tree[`content/${OWN_ARTWORK_KIND}`];

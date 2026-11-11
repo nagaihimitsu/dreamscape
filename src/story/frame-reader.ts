@@ -46,7 +46,7 @@ export interface StoryFrame {
   photo?: StoryPhoto;
   /** The line's `# local_word:` words (only the line it is written on): GameApp learns them as the line is shown. */
   localWordIds?: string[];
-  /** The line's `# recall:` (only the line it is written on): the photo shown faintly behind it. */
+  /** The line's `# recall:` (only the line it is written on): the album image shown faintly behind it. */
   recall?: string;
   /** The line's `# phone:`: a message on a phone's screen, after the earlier ones of an unbroken run of phone lines. */
   phone?: PhoneLine;

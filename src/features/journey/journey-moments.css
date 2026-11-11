@@ -109,10 +109,9 @@
 .resume-recap-close .icon { width: 16px; height: 16px; }
 .resume-recap-body { display: flex; gap: 12px; align-items: flex-start; margin-top: 8px; }
 .resume-recap-photo { flex: 0 0 min(38%, 160px); margin: 0; }
-.resume-recap-photo img { display: block; width: 100%; height: auto; max-height: 120px; object-fit: cover; border-radius: 8px; background: #26342e; }
+/* The album's illustration in the same 3:2 frame as the album (a picture of another shape keeps its middle). */
+.resume-recap-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 8px; background: #26342e; }
 .resume-recap-photo figcaption { margin-top: 4px; font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; }
-.resume-recap-credit { color: var(--ds-ink-muted); }
-.resume-recap-credit a { display: inline-block; min-height: 24px; }
 .resume-recap-chapter { min-width: 0; }
 .resume-recap-city { margin: 0; color: var(--ds-ink-muted); font-size: 12px; }
 .resume-recap-chapter h3 { margin: 0; font-family: "Noto Serif JP", serif; font-size: 17px; line-height: 1.5; overflow-wrap: anywhere; }
@@ -230,10 +229,9 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
 .end-roll-list li { font-size: 16px; line-height: 1.9; overflow-wrap: anywhere; }
 .end-roll-photos { display: grid; gap: 18px; margin: 0; padding: 0; list-style: none; }
 .end-roll-photos figure { margin: 0; }
-.end-roll-photos img { display: block; width: 100%; height: auto; max-height: 46dvh; object-fit: cover; border-radius: 10px; background: #26342e; }
+/* The album's illustrations in the album's 3:2 frame. */
+.end-roll-photos img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 10px; background: #26342e; }
 .end-roll-photos figcaption { margin-top: 6px; font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
-.end-roll-credit { color: var(--ds-on-slate-muted); font-size: 11px; }
-.end-roll-credit a { display: inline-block; min-height: 24px; color: var(--ds-on-slate); }
 .end-roll-last { margin-top: 72px; }
 .end-roll-bar {
   flex: none;

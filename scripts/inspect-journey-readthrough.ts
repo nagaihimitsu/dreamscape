@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { generatedScenesSchema } from "../src/content/scene-schemas";
-import { albumImageIds } from "../src/content/photo-choice";
+import { albumImageListSchema } from "../src/content/album-images";
 import { journeyReadthrough } from "./journey-readthrough";
 
 // npm run journey:readthrough -- --journey <journeyId> [--max-paths N]: the order table of every landmark
@@ -30,7 +30,7 @@ const events = journey.cities.flatMap((city) => (read(`content/travel/${city.id}
     ...(episode?.kind === "city_finale" ? { finaleCityId: episode.cityId } : {}) };
 }));
 const tourism = read("content/tourism/catalog.json") as {
-  assets: { id: string }[]; landmarks: { id: string; cityId: string; nameJa: string; guideStoryId?: string; battleId: string }[];
+  landmarks: { id: string; cityId: string; nameJa: string; guideStoryId?: string; battleId: string }[];
 };
 const lines = journeyReadthrough({
   scenes: generatedScenesSchema.parse(read("scenes.json")).scenes,
@@ -40,7 +40,8 @@ const lines = journeyReadthrough({
   events,
   context: { effectIds: (read("content/romance/effect_catalog.json") as { effects: { id: string }[] }).effects.map((effect) => effect.id),
     backgroundIds: Object.keys(presentation.backgrounds), emotionIds: Object.keys(presentation.emotions),
-    photoIds: albumImageIds({ assets: tourism.assets, backgrounds: presentation.backgrounds }) },
+    // The album images of this journey (its public/assets/album/; generated/album-images.json).
+    photoIds: albumImageListSchema.parse(read("album-images.json")).filter((image) => image.journeyId === journeyId).map((image) => image.id) },
   maxPaths,
 });
 console.log(lines.join("\n"));

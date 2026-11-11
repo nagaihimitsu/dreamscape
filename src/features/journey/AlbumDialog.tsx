@@ -1,20 +1,18 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { ImageCredit } from "../../components/ImageCredit";
 import { Modal, ModalTitle } from "../../components/Modal";
 import type { AlbumPhoto } from "../../domain/album-state";
 import { albumPages, albumSwipeStep, initialAlbumPage, type AlbumPhotoView } from "./album-pages";
 import { journeyAlbumContent } from "./journey-moments";
 import "./album.css";
 
-const CREDIT_SUMMARY_JA = "画像の説明・出典と利用条件";
-const imageSource = (photo: AlbumPhotoView) => `${import.meta.env.BASE_URL}${photo.asset.path}`;
+const imageSource = (photo: AlbumPhotoView) => `${import.meta.env.BASE_URL}${photo.path}`;
 
 /**
  * 「アルバム」 (⚙設定, 2026-11-11 user decision): the photos the lines' `# photo:` took, one page per city in the
- * journey's order (album-pages.ts), each with its caption, 「n日目 hh:mm」, its place and its credit (ImageCredit, as
- * the scenes' 背景画像 shows it). 「前の街」「次の街」, a sideways swipe on the page and the arrow keys turn the pages;
- * a photo opens larger in its own dialog. Opened from ⚙設定's panel, it takes no press for a moment (settlePresses).
- * It shows no relationship value.
+ * journey's order (album-pages.ts), each the author's illustration in a 3:2 frame (album.css) with its caption,
+ * 「n日目 hh:mm」 and its place; no credit (the album shows only Dreamscape's own artwork). 「前の街」「次の街」, a
+ * sideways swipe on the page and the arrow keys turn the pages; a photo opens larger, whole, in its own dialog. Opened
+ * from ⚙設定's panel, it takes no press for a moment (settlePresses). It shows no relationship value.
  */
 export function AlbumDialog({ album, currentCityId, onClose }: { album: readonly AlbumPhoto[]; currentCityId: string; onClose: () => void }) {
   const pages = useMemo(() => albumPages(album, journeyAlbumContent(currentCityId)), [album, currentCityId]);
@@ -99,15 +97,11 @@ export function AlbumDialog({ album, currentCityId, onClose }: { album: readonly
               <figure>
                 <button type="button" className="album-photo" aria-label={`${photo.caption ?? photo.placeJa}の写真を大きく見る`}
                   onClick={() => setEnlarged(photo)}>
-                  <img src={imageSource(photo)} alt="" width={photo.asset.width} height={photo.asset.height} loading="lazy" decoding="async" />
+                  <img src={imageSource(photo)} alt={photo.altJa} loading="lazy" decoding="async" />
                 </button>
                 <figcaption>
                   {photo.caption !== undefined && <p className="album-caption">{photo.caption}</p>}
-                  <p className="album-meta">{photo.whenJa} · {photo.placeJa}{photo.asset.isPlaceholder ? " · 仮画像" : ""}</p>
-                  <details className="album-credit">
-                    <summary>{CREDIT_SUMMARY_JA}</summary>
-                    <ImageCredit asset={photo.asset} />
-                  </details>
+                  <p className="album-meta">{photo.whenJa} · {photo.placeJa}</p>
                 </figcaption>
               </figure>
             </li>)}
@@ -124,12 +118,8 @@ export function AlbumDialog({ album, currentCityId, onClose }: { album: readonly
     </Modal>
     {enlarged && <Modal labelledBy="album-photo-title" className="album-photo-viewer" onClose={() => setEnlarged(null)}>
       <ModalTitle id="album-photo-title">{enlarged.caption ?? enlarged.placeJa}</ModalTitle>
-      <img src={imageSource(enlarged)} alt={enlarged.asset.altJa} data-testid="album-photo-large" />
-      <p className="album-meta">{enlarged.whenJa} · {enlarged.placeJa}{enlarged.asset.isPlaceholder ? " · 仮画像" : ""}</p>
-      <details>
-        <summary>{CREDIT_SUMMARY_JA}</summary>
-        <ImageCredit asset={enlarged.asset} />
-      </details>
+      <img src={imageSource(enlarged)} alt={enlarged.altJa} data-testid="album-photo-large" />
+      <p className="album-meta">{enlarged.whenJa} · {enlarged.placeJa}</p>
       <button type="button" className="secondary" onClick={() => setEnlarged(null)}>閉じる</button>
     </Modal>}
   </>;

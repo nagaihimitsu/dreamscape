@@ -1,4 +1,3 @@
-import type { TourismAsset } from "../../content/tourism-schemas";
 import type { AlbumPhoto } from "../../domain/album-state";
 import { placeDisplayName } from "./travel-labels";
 import { formatTravelTime } from "./travel-time";
@@ -8,11 +7,19 @@ import { formatTravelTime } from "./travel-time";
 
 /** A city of the journey as the album names it and its places. */
 export type AlbumCity = { id: string; nameJa: string; hotelPlaceId: string; places: readonly { id: string; nameJa: string }[] };
-/** What the pages are made from: the journey's cities in order, and the credited photo an image ID shows (albumImageAsset). */
-export type AlbumContent = { cities: readonly AlbumCity[]; assetOf: (imageId: string) => TourismAsset | null };
-/** A photo as its page shows it: the picture and its credit, the caption, 「n日目 hh:mm」 and the place's name. */
-export type AlbumPhotoView = { imageId: string; asset: TourismAsset; caption?: string; whenJa: string; placeJa: string };
+/**
+ * What the pages are made from: the journey's cities in order, and the served path of the album image an ID names
+ * (the author's illustration at public/assets/album/; src/content/album-images.ts), or null when the build has none.
+ */
+export type AlbumContent = { cities: readonly AlbumCity[]; imagePathOf: (imageId: string) => string | null };
+/**
+ * A photo as its page shows it: the illustration's served path and its alternative text (the caption, else
+ * 「思い出の絵」), the caption, 「n日目 hh:mm」 and the place's name. No credit: the album shows only Dreamscape's own art.
+ */
+export type AlbumPhotoView = { imageId: string; path: string; altJa: string; caption?: string; whenJa: string; placeJa: string };
 export type AlbumPage = { cityId: string; cityJa: string; photos: AlbumPhotoView[] };
+/** The alternative text of an album illustration without a caption. */
+export const ALBUM_IMAGE_ALT_JA = "思い出の絵";
 
 /**
  * One page per city in the journey's order, each with its photos in the order they were taken; a city without a
@@ -22,11 +29,12 @@ export type AlbumPage = { cityId: string; cityJa: string; photos: AlbumPhotoView
 export function albumPages(album: readonly AlbumPhoto[], content: AlbumContent): AlbumPage[] {
   return content.cities.flatMap((city): AlbumPage[] => {
     const photos = album.filter((photo) => photo.cityId === city.id).flatMap((photo): AlbumPhotoView[] => {
-      const asset = content.assetOf(photo.imageId);
-      if (!asset) return [];
+      const imagePath = content.imagePathOf(photo.imageId);
+      if (imagePath === null) return [];
       return [{
         imageId: photo.imageId,
-        asset,
+        path: imagePath,
+        altJa: photo.caption ?? ALBUM_IMAGE_ALT_JA,
         ...(photo.caption === undefined ? {} : { caption: photo.caption }),
         whenJa: `${photo.day}日目 ${formatTravelTime(photo.minute)}`,
         placeJa: placeDisplayName({ travel: { hotelPlaceId: city.hotelPlaceId } }, city.places.find((place) => place.id === photo.placeId)),

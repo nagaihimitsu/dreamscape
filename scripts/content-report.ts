@@ -1,6 +1,8 @@
 import path from "node:path";
 import { CATALOG_RULES, classifyContentFile, type FieldTable, type MergedKind } from "./content-layout";
 import { localIssuePath } from "./catalog-merge";
+import { albumTagsOf } from "./album-images";
+import { albumImageIdOf } from "../src/content/album-images";
 import { imageReferences } from "./content-ownership";
 import { CODE_IMAGE_FILES } from "../src/content/code-images";
 import { displayPath, journeyFileOf, type ContentSources } from "./content-sources";
@@ -98,17 +100,20 @@ export function unknownJourneyFiles(sources: ContentSources): ContentWarning[] {
 
 /**
  * Served images that neither content (tourism images, backgrounds, item
- * icons, character images, title art, city backdrops) nor the game's code (CODE_IMAGE_FILES)
+ * icons, character images, title art, city backdrops, the album images a
+ * line's `# photo:` or `# recall:` names) nor the game's code (CODE_IMAGE_FILES)
  * refers to: every file of a journey's public/ folder and of the root
  * public/assets/. The rest of the root public/ (browser icons, the web app
  * manifest) is linked from index.html and checked by app-icons.test.ts.
  */
 export function unusedPublicFiles(sources: ContentSources): ContentWarning[] {
   const used = new Set([...imageReferences(sources).map((image) => path.posix.normalize(image.path)), ...CODE_IMAGE_FILES]);
+  const namedAlbumIds = new Set(sources.storyFiles.flatMap((story) => albumTagsOf(story.source).map((tag) => tag.id)));
+  const named = (assetPath: string) => namedAlbumIds.has(albumImageIdOf(assetPath) ?? "");
   const checked = [path.join(sources.root, "public", "assets"), ...sources.layers.filter((layer) => layer.type === "journey")
     .map((layer) => path.join(layer.directory, "public"))].map((directory) => directory + path.sep);
   return [...sources.publicFiles].flatMap(([assetPath, file]): ContentWarning[] =>
-    used.has(assetPath) || !checked.some((directory) => file.startsWith(directory)) ? []
+    used.has(assetPath) || named(assetPath) || !checked.some((directory) => file.startsWith(directory)) ? []
       : [{ kind: "unused-public-file", message: `Unused public file: ${displayPath(sources.root, file)} (neither content nor the game's code ` +
         `refers to ${assetPath}; it would be published without being used)` }]);
 }

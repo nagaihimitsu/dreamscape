@@ -40,21 +40,28 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 - `# size: large`：その行の字を大きく出します。
 - 範囲の外の数や小数（`0.6`・`600ms`）、`window`・`large` 以外の値、1つの行に同じ札を2つ書いたときは、`content:build` が止めます。
 
-写真の札（任意、2026-11-11）：行に `# photo: <画像のID>` を書くと、通常の遊びでその行が画面に出たときに、その写真が1枚アルバム（⚙設定の「アルバム」）に入ります。画像のIDは、`tourism/catalog.json` の画像（`assets` の `id`）か、写真のある背景（`romance/presentation.json` の `imageAssetId` を持つ背景のID）です。アルバムには、その写真の出典、都市、「n日目 hh:mm」、場所の名前が出ます。写真の下に出す短い説明は、同じ行に `# photo_caption: <説明>` と書きます（任意。`#` は書けません）。同じ画像は一度だけ入り、読み直し・観光案内の読み直し・セーブからの再開では増えません。どの会話の場面でも書けます（英語ノートの解説には書けません）。例は見本の編のデート（`stories/places/smp_mihon_clock_tower.ink` の `= ending`、説明つき）と、朝市・図書室の観光案内の最初の行。
+写真の札（任意、2026-11-11）：行に `# photo: <絵のID>` を書くと、通常の遊びでその行が画面に出たときに、その絵が1枚アルバム（⚙設定の「アルバム」）に入ります。アルバムに入るのは、作者が Dreamscape のために描いた絵だけです。
+
+- 置き場所：`content/journeys/<旅行編ID>/public/assets/album/<ID>.webp` に置きます（拡張子は `webp`・`png`・`jpg`・`jpeg` のどれか。WebP がおすすめです）。
+- ID はファイル名から拡張子を除いたものです（英小文字・数字・`_` だけ。例 `smp_album_clock_tower.webp` の ID は `smp_album_clock_tower`）。同じ ID の絵は、すべての旅行編で1つだけにします。
+- 登録はいりません。`tourism/catalog.json` にも `presentation/own-artwork.json` にも書かず、出典も書きません。アルバムにも「出典・権利の一覧」にも出典は出ません。
+- 絵は横長の 3:2 で作ります（例 1536×1024 か 1600×1067）。アルバムでは 3:2 の枠に合わせて表示し、違う比率の絵は真ん中を残して切り取ります。押すと全体が見えます。大事なもの（顔など）は真ん中に寄せます。字や名前は絵に入れません。
+
+アルバムには、その絵と、都市、「n日目 hh:mm」、場所の名前が出ます。絵の下に出す短い説明は、同じ行に `# photo_caption: <説明>` と書きます（任意。`#` は書けません。説明は絵の代わりの文にもなり、ないときは「思い出の絵」です）。同じ絵は一度だけ入り、読み直し・観光案内の読み直し・セーブからの再開では増えません。どの会話の場面でも書けます（英語ノートの解説には書けません）。例は見本の編のデート（`stories/places/smp_mihon_clock_tower.ink` の `= ending`、説明つき）と、朝市・図書室の観光案内の最初の行（絵は見本の `public/assets/album/`）。
 
 ```ink
 # speaker: narrator
-# photo: smp_img_mihon_clock_tower # photo_caption: 三時までの席。お茶のあとも、針は三時のまま
+# photo: smp_album_clock_tower # photo_caption: 三時までの席。お茶のあとも、針は三時のまま
 お茶を飲み終えても、針は三時のままだった。
 ```
 
-- 知らない画像のID、`# photo:` と一緒に読まれない `# photo_caption:`、1つの行に2つの `# photo:` や説明は、`content:build` が止めます。札を書かなければ、何も記録されません。
+- 次のときは `content:build` が止めます：その旅行編の `public/assets/album/` にない ID（ほかの旅行編の絵も書けません）、ID にならないファイル名（大文字・`-`・ほかの拡張子・下のフォルダ）、同じ ID の絵が2つ（`x.webp` と `x.png`、2つの旅行編）、`# photo:` と一緒に読まれない `# photo_caption:`、1つの行に2つの `# photo:` や説明。札を書かなければ、何も記録されません。どの札も書いていない絵は、`content:build` の注意（使われていないファイル）に出ます。
 
 ### 場面の演出の札（任意、2026-11-11）
 
 場面を演出する6つの行の札です。どれも任意で、書かなければ今までどおりに見えます。どの会話の場面（観光案内・バトルの会話・デート・道中交流と会話・到着とエピローグ）でも使えます。見せ方だけの札で、物語・関係値・保存の進み方は変わりません。タップで読み進める・既読スキップ・自動送り・ログ・「隠す」は、どの札の行でも今までどおりです。主人公とヒロインの名前は、行の中では `{player_name}`・`{heroine_name}` のまま書きます。
 
-- **思い出の呼び戻し `# recall: <画像のID>`**：その行のあいだだけ、その写真を場面の背景にうっすら重ねます（人物と会話の窓の下で、顔と字にはかかりません）。画像のIDは `# photo:` と同じもの（`tourism/catalog.json` の画像か、写真のある背景のID）です。アルバムには入りません。写真の出典は、その行のあいだ ⚙設定の「画像の出典」に場面の写真と一緒に出ます。
+- **思い出の呼び戻し `# recall: <絵のID>`**：その行のあいだだけ、その絵を場面の背景にうっすら重ねます（人物と会話の窓の下で、顔と字にはかかりません）。絵の ID は `# photo:` と同じく、その旅行編の `public/assets/album/` に置いた絵のファイル名です。アルバムには入りません。出典はないので、⚙設定の「画像の出典」には出ません。
 - **スマホのメッセージ `# phone: received` / `# phone: sent`**：その行を、スマホの画面の吹き出しで見せます。`received` は左で、`# speaker:` の人の名前が上に出ます（ヒロインと主人公。`# speaker: <人物ID>` ならその人の名前。バトルとエピローグでは `enemy` の相手の名前も。地の文の `narrator` と、道中交流・会話の `enemy` は名前なし。同じ人の続くメッセージでは名前を繰り返しません）。`sent` は右で、主人公が送ったメッセージです。`# phone:` の行を続けて書くと同じ画面に積み重なり（新しいものが下。画面の中でスクロールできます）、`# phone:` のない行で終わります。あいだに選択肢があっても続きます。話し手の札（窓の左上の名前）は出ません。
 - **手紙・メモ `# letter: letter` / `note` / `card`**：その行を紙に書いて見せます（`letter` は便箋、`note` は罫線のメモ、`card` は中央揃えのカード）。字は大きめの明朝で、話し手の札は出ません。同じ種類の `# letter:` の行を続けると1枚の紙に1行ずつ積み重なるので、5行のメモは5つの行にそれぞれ `# letter: note` を書きます（長い紙は紙の中でスクロールします）。種類が変わるか、`# letter:` のない行で次の紙になります。
 - **静かな場面 `# quiet: scene` / `# quiet: line`**：上の帯（場所・時刻と⚙設定）と、デートの訪問先の写真の案内を隠し、字を少しゆっくり出し、背景を少し暗く落ち着かせます。`scene` はその行から場面の終わりまで、`line` はその行だけです。場面の頭（knot の行のすぐ下や、1場面1ファイルの最初の行の前）に `# quiet: scene` を1行で書くと、場面全体が静かになります。選択肢が出ている間は、上の帯はいつもどおり出ます（お金や AP を見て選べるように）。会話の窓・その操作・「会話を表示」・キーボードは隠れません。
@@ -74,13 +81,13 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 # letter: note
 リリより
 # speaker: heroine
-# recall: smp_img_mihon_clock_tower
+# recall: smp_album_clock_tower
 # quiet: line
 # stand: close
 「短い滞在だったね。でも、あの針を見るたびに思い出しそう」
 ```
 
-- 決まった値のほか（`# phone: left`、`# stand: far` など）、空の札、1つの行に同じ札を2つ、知らない画像の `# recall:`、1つの行に `# phone:` と `# letter:` の両方を書いたときは、`content:build` が止めます。
+- 決まった値のほか（`# phone: left`、`# stand: far` など）、空の札、1つの行に同じ札を2つ、アルバムの絵にない ID の `# recall:`、1つの行に `# phone:` と `# letter:` の両方を書いたときは、`content:build` が止めます。
 - バトルでクイズ（`-> quiz(n) ->`）から戻った後の最初の行は、場面の始まりと同じです（話し手と背景を書き直すのと同じく、`# quiet: scene` と `# stand:` も、続けたいときはもう一度書きます）。
 - 例は見本の編：時計塔のバトルとフィナーレの相手、リリの見送りの `# cutin: name`、デートの `# stand:`（`stories/places/smp_mihon_clock_tower.ink`）、エピローグの `# recall:` と `# quiet: line`（`stories/epilogues/mihon.ink`）、宿の夜の会話の頭の `# quiet: scene`、宿の朝の `# phone:`、リリの見送りの `# letter: note`（どれも場所のファイル）。
 
@@ -276,7 +283,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 観光・発見・バトルを持つメイン観光地と、デート中に訪れる行き先は別のデータです。デート先のために敵・クイズ・観光エピソードを作る必要はありません。将来、メイン観光地と同じ場所をデートで再訪する場合も、同じ場所を指すデート先を登録できます。
 
 1. `content/journeys/<旅行編ID>/romance/date_destinations.json` の `destinations` に、安定した `id`、`cityId`、日本語・英語の名称、短い `descriptionJa`、`backgroundId`、`facts` を登録します。事実ごとに `publisher`・`title`・`url`・`checkedAt`・`claimType`・`claimJa` を記録し、実際に資料の該当箇所を確認してください。事実・解釈・仮説・伝説は既存の観光資料と同じ区分を使います。
-2. 権利を確認した写真を `content/journeys/<旅行編ID>/public/assets/tourism/` に置き、`content/journeys/<旅行編ID>/tourism/catalog.json` の `assets` に実寸・作者・出典URL・ライセンス・加工内容を登録します。同じ旅行編の `romance/presentation.json` の背景から `imageAssetId` で参照し、必要なら `imagePosition` の x / y を0〜100で指定します。写真家の権利だけでなく被写体の権利も確認してください。近隣の風景を使う場合は実際の場所を代替テキスト・クレジットに明記します。確認できる画像がない場合は `fallback: "neutral"` を使います。出典は会話中の操作メニューから確認できます。出典のある写真ではなく Dreamscape のために作った絵（品物のアイコン、タイトルの絵など）は `tourism/catalog.json` に登録せず、その旅行編の `presentation/own-artwork.json` に配信時のパスを1行ずつ書きます（共通の `public/` に置く絵は `content/presentation/own-artwork.json`）。配信するどの画像も、どちらか一方に登録されていないと `npm run content:build` が「出典のない画像」で止まります（[技術設計](../docs/02_TECH_ARCHITECTURE.md#画像の出典と自作の絵)）。
+2. 権利を確認した写真を `content/journeys/<旅行編ID>/public/assets/tourism/` に置き、`content/journeys/<旅行編ID>/tourism/catalog.json` の `assets` に実寸・作者・出典URL・ライセンス・加工内容を登録します。同じ旅行編の `romance/presentation.json` の背景から `imageAssetId` で参照し、必要なら `imagePosition` の x / y を0〜100で指定します。写真家の権利だけでなく被写体の権利も確認してください。近隣の風景を使う場合は実際の場所を代替テキスト・クレジットに明記します。確認できる画像がない場合は `fallback: "neutral"` を使います。出典は会話中の操作メニューから確認できます。出典のある写真ではなく Dreamscape のために作った絵（品物のアイコン、タイトルの絵など）は `tourism/catalog.json` に登録せず、その旅行編の `presentation/own-artwork.json` に配信時のパスを1行ずつ書きます（共通の `public/` に置く絵は `content/presentation/own-artwork.json`）。配信するどの画像も、どちらか一方に登録されていないと `npm run content:build` が「出典のない画像」で止まります（アルバムの絵 `public/assets/album/` だけは登録しません。上の「写真の札」。[技術設計](../docs/02_TECH_ARCHITECTURE.md#画像の出典と自作の絵)）。
    背景に訪問対象が写っていないときは、行き先に任意の `referenceImage`（HTTPSの `url`、リンク名 `labelJa`、背景についての `backgroundNoteJa`）を追加し、実物を確認できる公式資料へ案内できます。外部リンクは写真のゲーム内への転載許諾を意味しません。
 3. `content/journeys/<旅行編ID>/romance/date_catalog.json` の通常デートに `destinationId` と開く条件 `when` を指定します。デートの `chapterId`、行き先の `cityId`、双方の背景IDを一致させます。訪問後に開放する通常デートでは、`when` にそのエピソードだけを書けます（例：`"when": { "episodeCompleted": "milano_galleria_episode" }`）。交際後も同じ短編を遊べる場合は `allowAfterEnding` を指定します。
 4. Inkには、その場所で見られるものや出典を確認した小話を、ヒロインの関心や会話に自然につなげて書きます。選択にかかわらず観光を楽しめるようにします。選択をデートの定義の `choiceCount` の回数（ふつう2回）書き（選択肢はふつう3つ。数は自由）、選択肢には共通または固有の `effect` を指定します。固有の思い出を残す場合は対応する `memory` も登録します。必要な表情は `# emotion:`、無言の反応は `# reaction:` で指定します。既存の恋愛進行に新イベントを必須条件として追加するかは、別途慎重に検討してください。

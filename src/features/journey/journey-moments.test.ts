@@ -19,10 +19,10 @@ const roll = () => 0;
 const CLOCK_TOWER = "smp_mihon_main_clock_tower";
 const DUOMO = "milano_duomo_episode";
 const episode = (id: string) => episodes.find((item) => item.id === id)!;
-/** Two photos of the sample's album (album.test.ts holds what an album may name). */
+/** Two photos of the sample's album, its illustrations (album.test.ts holds what an album may name). */
 const photos: AlbumPhoto[] = [
-  { imageId: "smp_bg_mihon_market", cityId: "mihon", day: 1, minute: 600, placeId: "mihon_market", storyId: "tourism/smp_mihon_market_guide" },
-  { imageId: "smp_img_mihon_clock_tower", caption: "三時のまま", cityId: "mihon", day: 1, minute: 660, placeId: "mihon_clock_tower",
+  { imageId: "smp_album_market", cityId: "mihon", day: 1, minute: 600, placeId: "mihon_market", storyId: "tourism/smp_mihon_market_guide" },
+  { imageId: "smp_album_clock_tower", caption: "三時のまま", cityId: "mihon", day: 1, minute: 660, placeId: "mihon_clock_tower",
     storyId: "places/smp_mihon_clock_tower.smp_mihon_date_tower_square" },
 ];
 
@@ -90,7 +90,7 @@ describe("the recap of a resumed game", () => {
     expect(resumeRecap(cityStart("mihon"))).toBeNull();
   });
 
-  it("tells where and when, the last episode completed and the album's latest photo with its credit", () => {
+  it("tells where and when, the last episode completed and the album's latest photo, the author's illustration with no credit", () => {
     const done = finishEpisode(cityStart("mihon", ["航", "澪"]), CLOCK_TOWER);
     const tower = episode(CLOCK_TOWER);
     const recap = resumeRecap(done)!;
@@ -101,8 +101,10 @@ describe("the recap of a resumed game", () => {
     expect(recap.chapter.cityJa).toBeUndefined();
     expect(resumeRecap({ ...done, album: [] })?.photo).toBeUndefined();
     const withPhotos = resumeRecap({ ...done, album: photos })!;
-    expect(withPhotos.photo).toMatchObject({ imageId: "smp_img_mihon_clock_tower", caption: "三時のまま", cityId: "mihon", cityJa: "見本の街" });
-    expect(withPhotos.photo?.asset.creditJa).toBeTruthy();
+    expect(withPhotos.photo).toEqual({ imageId: "smp_album_clock_tower", path: "assets/album/smp_album_clock_tower.webp", altJa: "三時のまま",
+      caption: "三時のまま", whenJa: "1日目 11:00", placeJa: expect.any(String), cityId: "mihon", cityJa: "見本の街" });
+    // Without a caption, its alternative text is 「思い出の絵」.
+    expect(resumeRecap({ ...done, album: [photos[0]] })?.photo).toMatchObject({ path: "assets/album/smp_album_market.webp", altJa: "思い出の絵" });
     // The names are filled in.
     const written = tower.clearDescriptionJa;
     tower.clearDescriptionJa = "{heroine_name}は三時の針を見上げた。";

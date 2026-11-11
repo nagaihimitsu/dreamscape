@@ -4,7 +4,7 @@ export interface TagContext {
   effectIds: string[];
   backgroundIds: string[];
   emotionIds: string[];
-  /** The images a line's `# photo:` may name (photo-choice.ts albumImageIds); absent: none. */
+  /** The album images a line's `# photo:` and `# recall:` may name (album-images.ts); absent: none. */
   photoIds?: readonly string[];
   /** The word IDs of learning/local-words.json, for `# local_word:`; absent: a tool that only reads the lines (not checked). */
   localWordIds?: readonly string[];
@@ -32,7 +32,7 @@ export interface StoryTags {
   delivery?: LineDelivery;
   /** `# photo:` with its `# photo_caption:`: the photo the line puts in the album (2026-11-11). */
   photo?: StoryPhoto;
-  /** `# recall: <imageId>`: a photo shown faintly behind the line (scene tags, 2026-11-11; not the album). */
+  /** `# recall: <imageId>`: an album image shown faintly behind the line (scene tags, 2026-11-11; not put in the album). */
   recall?: string;
   /** `# phone: received` / `# phone: sent`: the line as a message on a phone's screen. */
   phone?: PhoneSide;
@@ -85,8 +85,9 @@ function readSceneTag(key: SceneTagKey, value: string, result: StoryTags): void 
 }
 
 /**
- * The photo a line takes into the album when it is read (src/domain/album.ts): `# photo: <imageId>`, an image the
- * game knows and credits, with an optional `# photo_caption: <text>` among the same line's tags.
+ * The photo a line takes into the album when it is read (src/domain/album.ts): `# photo: <imageId>`, an album image
+ * (the author's illustration at a journey's public/assets/album/<imageId>.<ext>, album-images.ts; never credited),
+ * with an optional `# photo_caption: <text>` among the same line's tags.
  */
 export interface StoryPhoto {
   imageId: string;
@@ -219,7 +220,7 @@ export function parseStoryTags(
       result.delivery = readDelivery(key, value, result.delivery ?? {});
     } else if (key === "photo") {
       if (!context.photoIds?.includes(value))
-        throw new Error(`Unknown photo image: ${value} (name a tourism photo of tourism/catalog.json, or a background with an imageAssetId)`);
+        throw new Error(`Unknown photo image: ${value} (name an album image: the file name of public/assets/album/<ID>.webp, .png, .jpg or .jpeg of the story's journey)`);
       if (result.photo) throw new Error("Duplicate photo tag");
       result.photo = { imageId: value };
     } else if (key === "photo_caption") {
@@ -227,7 +228,7 @@ export function parseStoryTags(
       caption = value;
     } else if (key === "recall") {
       if (!context.photoIds?.includes(value))
-        throw new Error(`Unknown recall image: ${value} (name an image # photo: accepts: a tourism photo of tourism/catalog.json, or a background with an imageAssetId)`);
+        throw new Error(`Unknown recall image: ${value} (name an album image, as # photo: does: the file name of public/assets/album/<ID>.webp, .png, .jpg or .jpeg)`);
       if (result.recall) throw new Error("Duplicate recall tag");
       result.recall = value;
     } else if (isSceneTagKey(key)) {

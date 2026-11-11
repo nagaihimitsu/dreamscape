@@ -1,6 +1,5 @@
 import { useLayoutEffect, useRef, type ReactNode } from "react";
-import { presentation, storyState, tourismAssets } from "../content";
-import { albumImageAsset } from "../content/photo-choice";
+import { getAlbumImage, storyState } from "../content";
 import type { LetterLine, PhoneLine, Speaker, StoryFrame } from "../story/frame-reader";
 import { LETTER_LABELS, phoneBubbles, type PhoneBubble, type PhoneNames } from "./line-staging";
 import "./line-stage.css";
@@ -9,14 +8,15 @@ import "./line-stage.css";
 // only: the line is still its DialogueText (tap, keyboard, 高速送り, auto-advance, the log and 隠す work as on any line).
 
 /**
- * A line's `# recall:`: the photo, faint, over the scene's picture and under the portraits and the window (it covers no
- * face and no text). Its credit is in ⚙設定's 「画像の出典」 while the line shows, as the scene's own photo's (GameApp).
+ * A line's `# recall:`: the album image of that ID (the author's illustration; src/content/album-images.ts), faint, over
+ * the scene's picture and under the portraits and the window (it covers no face and no text). It has no credit, so it
+ * adds nothing to ⚙設定's 「画像の出典」.
  */
 export function RecallLayer({ imageId }: { imageId?: string }) {
-  const asset = imageId ? albumImageAsset({ assets: tourismAssets, backgrounds: presentation.backgrounds }, imageId) : null;
-  if (!asset) return null;
+  const image = imageId ? getAlbumImage(imageId) : undefined;
+  if (!image) return null;
   return <div className="recall-layer" key={imageId} aria-hidden="true">
-    <img src={`${import.meta.env.BASE_URL}${asset.path}`} alt="" decoding="async" />
+    <img src={`${import.meta.env.BASE_URL}${image.path}`} alt="" decoding="async" />
   </div>;
 }
 

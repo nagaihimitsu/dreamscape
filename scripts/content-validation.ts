@@ -53,7 +53,7 @@ import {
   type DateDefinition,
 } from "../src/content/schemas";
 import type { TagContext } from "../src/content/tags";
-import { albumImageIds } from "../src/content/photo-choice";
+import { albumFolderPath, albumImagesOf, checkAlbumTags } from "./album-images";
 import { checkHelperKnot, revealRegionProblem, validateBattleEvidence } from "./battle-validation";
 import { landmarkOrderError, landmarkParts, tourismCatalogSchema, type VisitPart } from "../src/content/tourism-schemas";
 import type { SceneOption } from "../src/content/scene-schemas";
@@ -537,12 +537,14 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   for (const word of localWords)
     if (word.cityId !== undefined && !cities.some((item) => item.id === word.cityId))
       throw new Error(`Unknown local word city: ${word.id}/${word.cityId}`);
+  // The album's illustrations (2026-11-11): the files of each journey's public/assets/album/, the ID their file name.
+  const albumImages = albumImagesOf(sources);
   const context: TagContext = {
     effectIds: effects.map((effect) => effect.id),
     backgroundIds: Object.keys(presentation.backgrounds),
     emotionIds: Object.keys(presentation.emotions),
-    // A line's # photo: (the album): a tourism photo, or a background that shows one.
-    photoIds: albumImageIds({ assets: tourism.assets, backgrounds: presentation.backgrounds }),
+    // A line's # photo: and # recall: name an album image (of the story's own journey: checkAlbumTags below).
+    photoIds: albumImages.map((image) => image.id),
     localWordIds: localWords.map((word) => word.id),
     personIds: storyStateCatalog.people.map((person) => person.id),
   };
@@ -593,8 +595,11 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const mainFileHeads = new Map<string, { onDone: string[]; then?: string }>();
   // A line's # speaker: <person ID> names a person of progression/story.json people (2026-11-11).
   const declaredPeople = new Set(storyStateCatalog.people.map((person) => person.id));
-  for (const { id, file, source: authored } of sources.storyFiles) {
+  for (const { id, file, layer: storyLayer, source: authored } of sources.storyFiles) {
     withContext(file, () => checkSpeakerPeople(authored, declaredPeople));
+    // A line's # photo: and # recall: name an album image of the story's own journey (2026-11-11).
+    const journeyLayerOfStory = sources.layers.find((item) => item.id === storyLayer)!;
+    withContext(file, () => checkAlbumTags(authored, storyLayer, albumImages, albumFolderPath(sources, journeyLayerOfStory)));
     const place = placeFiles.get(id);
     const main = !place && mains.some((item) => item.address === id);
     const mainHead = main ? withContext(file, () => readMainFileHead(authored)) : undefined;
@@ -1573,6 +1578,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     tourismGuides,
     epilogueScenarios,
     journey,
+    /** The album's illustrations of every journey (generated/album-images.json; src/content/album-images.ts). */
+    albumImages,
     /** Images whose files checkContentImages decodes. */
     images: { characters: characterImages, tourismAssets: tourism.assets },
     /** What chooses the free-time photos (src/content/photo-choice.ts), for their derived copies (scripts/derived-images.ts). */

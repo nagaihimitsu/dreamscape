@@ -16,10 +16,10 @@
 見本の街・人物・言い伝え・出典・画像はすべて架空です。開発・テスト専用の見本に限り、AGENTS.md の「実在する著名な観光地を主舞台にする」「出典を捏造しない」の例外として認められています。どこを見ても架空と分かるように、次のとおりにしています。
 
 - 出典はすべて `https://example.com/dreamscape-sample`、発行者は「Dreamscape 見本の旅（架空）」、`claimJa` は「見本用の架空の…」で始まります。クイズの出典の区分は `legend`、地点・徒歩時間は `hypothesis` です。
-- 画像は図形だけで描いた自作のPNG（240×160、CC0）です。地点の座標は海上の 0,0 付近です。
+- 画像は図形だけで描いた自作のPNG（240×160、CC0）です。アルバムの絵（`public/assets/album/`）は、同じ絵を1200×800のWebPに広げたものです（アルバムの絵は作者が描いた絵なので、登録も出典もありません）。地点の座標は海上の 0,0 付近です。
 - 本番の旅行編にこの文章・出典・画像を残さないでください。複製して使うときは、実在の観光地、確認した出典、権利を確認した画像に置き換えます。
 
-## 必須の18ファイル
+## 必須の19ファイル
 
 どれか1つを外すと `content:build` が止まります（`tests/journeys/sample_trip/sample-journey.test.ts` が、任意の部分を外した最小の構成から1つずつ外して確かめます）。エラーの「…」は省いた部分で、パソコンごとに違う絶対パスを含みます。
 
@@ -43,6 +43,7 @@
 | `stories/battles/smp_mihon_finale.ink` | 都市フィナーレの会話（1本の流れ。1行目は `INCLUDE modules.ink`） | `Unknown battle storyId: battles/smp_mihon_finale` |
 | `stories/epilogues/mihon.ink` | 都市エピローグ | `Unknown epilogue story: epilogues/mihon` |
 | `public/assets/tourism/sample_trip/mihon_clock_tower.png` | 時計塔の自作画像（観察・背景） | `Missing public file: assets/tourism/sample_trip/mihon_clock_tower.png (searched public/ and authoring/templates/sample_trip/public/)` |
+| `public/assets/album/smp_album_clock_tower.webp` | 時計塔のアルバムの絵（デートの最後の行の写真の札 `# photo:` と、エピローグの `# recall:`。ファイル名がID） | `アルバムの絵がありません：…smp_album_clock_tower` |
 
 各Inkの冒頭の `//` コメントに、その種類の脚本の規則を書いています。場所のファイル（`stories/places/`）は、1つの場所の場面を knot ごとに1本にまとめる形です（knot の頭の札で種類・時点・順番を決め、カタログは「ストーリーID.knot」の住所で本筋を指す）。ほかの観光地（朝市・図書室）とフィナーレ・エピローグは、今の1場面1ファイルの形のまま書いています。
 
@@ -56,14 +57,14 @@
 
 朝市でパン屋のサラの「誰も時間を守らない」という断言に、資料を1枚突きつけます（全3問のうち第2問）。朝市の地点には、写真札を選んだときの彼女のひと言（`heroineLinesJa`）も書いています。
 
-- ファイル：`quizzes/smp_mihon_special_b_market_quiz.json`、`stories/battles/smp_mihon_special_b_market.ink`、`stories/tourism/smp_mihon_market_guide.ink`、`public/assets/tourism/sample_trip/mihon_market.png`
+- ファイル：`quizzes/smp_mihon_special_b_market_quiz.json`、`stories/battles/smp_mihon_special_b_market.ink`、`stories/tourism/smp_mihon_market_guide.ink`、`public/assets/tourism/sample_trip/mihon_market.png`、`public/assets/album/smp_album_market.webp`
 - 項目のID：`smp_mihon_special_b_market`、`mihon_market`、`smp_bg_mihon_market`、`smp_img_mihon_market`、`smp_obs_mihon_market_rain`、`smp_obs_mihon_market_timer`、`smp_obs_mihon_market_rows`、`smp_mihon_market_b_q1`、`smp_mihon_market_b_q2`、`smp_mihon_market_b_q3`
 
 ### 特殊戦C（証拠連結）
 
 図書室で、司書のイオに資料を2枚組み合わせて示します（全3問のうち第3問）。
 
-- ファイル：`quizzes/smp_mihon_special_c_library_quiz.json`、`stories/battles/smp_mihon_special_c_library.ink`、`stories/tourism/smp_mihon_library_guide.ink`、`public/assets/tourism/sample_trip/mihon_library.png`
+- ファイル：`quizzes/smp_mihon_special_c_library_quiz.json`、`stories/battles/smp_mihon_special_c_library.ink`、`stories/tourism/smp_mihon_library_guide.ink`、`public/assets/tourism/sample_trip/mihon_library.png`、`public/assets/album/smp_album_library.webp`
 - 項目のID：`smp_mihon_special_c_library`、`mihon_library`、`smp_bg_mihon_library`、`smp_img_mihon_library`、`smp_obs_mihon_library_diary`、`smp_obs_mihon_library_letters`、`smp_obs_mihon_library_weather`、`smp_obs_mihon_library_hours`、`smp_mihon_library_c_q1`、`smp_mihon_library_c_q2`、`smp_mihon_library_c_q3`
 
 ### 道中交流・会話と品物（場所のファイルの差し込み）
