@@ -150,7 +150,9 @@ export function waitLabelJa(option: Pick<TravelWaitOption, "minutes" | "until">)
 
 /** Why a wait cannot be chosen (the line under 「待機」's waits), and the live regions' words when none can be waited. */
 export const WAIT_BLOCKED_JA = `${formatTravelTime(DAY_END)}までにホテルへ帰れなくなる待ち方は選べません。`;
-export const WAIT_REFUSAL_JA = `待てません。${formatTravelTime(DAY_END)}までにホテルへ帰れなくなります。`;
+/** Why no wait can be waited (the words floating over the card: refusalNoteJa). */
+export const WAIT_REFUSAL_REASON_JA = `${formatTravelTime(DAY_END)}までにホテルへ帰れなくなります。`;
+export const WAIT_REFUSAL_JA = `待てません。${WAIT_REFUSAL_REASON_JA}`;
 
 /** A way home of 「ホテルに戻る」's card, as a key: its mode and the place where it changes to walking (none: direct). */
 export function sleepWayKey(route: { mode: string; viaPlaceId?: string }): string {
@@ -191,16 +193,34 @@ export function blockedSleepWays<T extends Pick<SleepOption, "route" | "plan">>(
   return [...lines].map(([reason, held]) => ({ options: held, reason }));
 }
 
-/** The live regions' words when a swipe up on 「ホテルに戻る」 cannot rest: the reasons, each once (none: no way home). */
-export function sleepRefusalJa(options: readonly Pick<SleepOption, "route" | "plan">[]): string {
+/** Why a swipe up on 「ホテルに戻る」 cannot rest: the reasons, each once (none: no way home). */
+export function sleepRefusalReasonsJa(options: readonly Pick<SleepOption, "route" | "plan">[]): string {
   const reasons = blockedSleepWays(options).map((line) => line.reason);
-  return `休めません。${reasons.length ? reasons.join("") : "ホテルへの経路は確認されていません。"}`;
+  return reasons.length ? reasons.join("") : "ホテルへの経路は確認されていません。";
 }
 
-/** The live regions' words when a swipe up cannot depart: the chosen event's reasons, each once. */
-export function refusalJa(event: EventChoice): string {
+/** The live regions' words when a swipe up on 「ホテルに戻る」 cannot rest. */
+export function sleepRefusalJa(options: readonly Pick<SleepOption, "route" | "plan">[]): string {
+  return `休めません。${sleepRefusalReasonsJa(options)}`;
+}
+
+/** Why a swipe up cannot depart: the chosen event's reasons, each once. */
+export function refusalReasonsJa(event: EventChoice): string {
   const reasons = blockedWays(event.routes).map((line) => line.reason).filter((reason) => reason);
-  return `出発できません。${(reasons.length ? reasons : [event.reason ?? "今は行けません。"]).join("")}`;
+  return (reasons.length ? reasons : [event.reason ?? "今は行けません。"]).join("");
+}
+
+/** The live regions' words when a swipe up cannot depart. */
+export function refusalJa(event: EventChoice): string {
+  return `出発できません。${refusalReasonsJa(event)}`;
+}
+
+/**
+ * The words that float up over the card when a swipe up cannot go (user decision 2026-11-11): its reasons without
+ * the last 「。」 (「APが足りません」).
+ */
+export function refusalNoteJa(reasons: string): string {
+  return reasons.replace(/。$/, "");
 }
 
 /** The ways that cannot be taken, one line per reason with the modes it holds back (data order). */

@@ -6,9 +6,9 @@ import type {
 import {
   blockedSleepWays, blockedWays, cardKinds, cardOfTarget, cardScales, cardTarget, chooseArrangement, chooseSleepWay, chooseWait, chooseWay,
   defaultCardIndex, departureOf, dragDirection, eventKindJa, flickSpeed, glideIndex, halfShown, liftsCard, liftTurnedSideways, nearestIndex,
-  NO_PLAN, pageAtEnd, photoCardAnnouncement, photoCardEntries, photoCardLabel, refusalJa, rowCards, sleepRefusalJa, sleepWayKey,
-  sleepWayLabelJa, STAY_CARD_ID, stepIndex, swipeArea, swipeDeparts, syncRow, takesSwipe, TOUR_CARD_ID, WAIT_BLOCKED_JA, WAIT_CARD_ID,
-  WAIT_REFUSAL_JA, waitChosenJa, waitKey, waitLabelJa, type PhotoCardEntry,
+  NO_PLAN, pageAtEnd, photoCardAnnouncement, photoCardEntries, photoCardLabel, refusalJa, refusalNoteJa, refusalReasonsJa, rowCards,
+  sleepRefusalJa, sleepRefusalReasonsJa, sleepWayKey, sleepWayLabelJa, STAY_CARD_ID, stepIndex, swipeArea, swipeDeparts, syncRow, takesSwipe,
+  TOUR_CARD_ID, WAIT_BLOCKED_JA, WAIT_CARD_ID, WAIT_REFUSAL_JA, WAIT_REFUSAL_REASON_JA, waitChosenJa, waitKey, waitLabelJa, type PhotoCardEntry,
 } from "./photo-cards";
 
 const way = (mode: string, minutes: number, cost: number, reason?: string): RouteChoice =>
@@ -123,6 +123,17 @@ describe("the row of cards", () => {
     const closed = departureOf(a, NO_PLAN);
     expect([closed.event.event.id, closed.way]).toEqual(["a_main", null]);
     expect(refusalJa(closed.event)).toBe("出発できません。閉まっています。");
+    expect(refusalNoteJa(refusalReasonsJa(closed.event))).toBe("閉まっています");
+  });
+
+  it("floats the reasons without the last 「。」 over the card (user decision 2026-11-11)", () => {
+    const short: EventChoice = { event: { id: "date" } as TravelDestinationEvent, available: false, reason: "APが足りません。",
+      routes: [way("walk", 20, 0, "APが足りません。"), way("auto_rickshaw", 15, 40, "APが足りません。")] };
+    expect(refusalReasonsJa(short)).toBe("APが足りません。");
+    expect(refusalJa(short)).toBe("出発できません。APが足りません。");
+    expect(refusalNoteJa(refusalReasonsJa(short))).toBe("APが足りません");
+    expect(refusalNoteJa("予算が足りません。閉まっています。")).toBe("予算が足りません。閉まっています");
+    expect(refusalNoteJa(WAIT_REFUSAL_REASON_JA)).toBe("21:00までにホテルへ帰れなくなります");
   });
 });
 
@@ -188,6 +199,7 @@ describe("「待機」 and 「ホテルに戻る」 go by a swipe up too (user d
     expect(blockedSleepWays([walk])).toEqual([]);
     expect(sleepRefusalJa([poor, late])).toBe("休めません。この移動手段の予算が足りません。この経路では帰れません。");
     expect(sleepRefusalJa([])).toBe("休めません。ホテルへの経路は確認されていません。");
+    expect(sleepRefusalReasonsJa([poor])).toBe("この移動手段の予算が足りません。");
   });
 
   it("says, once chosen, what its swipe up takes", () => {

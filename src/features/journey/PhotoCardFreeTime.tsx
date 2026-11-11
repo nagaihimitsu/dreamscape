@@ -16,7 +16,8 @@ import { PlaceCard, sleepWayJa, StayCard, TourCard, WaitCard } from "./PlaceCard
 import { Announce, mapPlaces, PlaceMapDialog } from "./PlaceMap";
 import {
   cardOfTarget, cardTarget, chooseArrangement, chooseSleepWay, chooseWait, defaultCardIndex, departureOf, NO_PLAN, photoCardAnnouncement,
-  photoCardEntries, refusalJa, rowCards, sleepRefusalJa, syncRow, takesSwipe, TOUR_CHOSEN_JA, WAIT_REFUSAL_JA, waitChosenJa, waitLabelJa,
+  photoCardEntries, refusalJa, refusalNoteJa, refusalReasonsJa, rowCards, sleepRefusalJa, sleepRefusalReasonsJa, syncRow, takesSwipe,
+  TOUR_CHOSEN_JA, WAIT_REFUSAL_JA, WAIT_REFUSAL_REASON_JA, waitChosenJa, waitLabelJa,
   type CardArrangement, type DeparturePlan, type PhotoCardEntry, type RowCard,
 } from "./photo-cards";
 import { armedAt, type PressKind } from "./travel-selection";
@@ -130,7 +131,7 @@ export function PhotoCardFreeTime({
     const { event, way } = departureOf(entry, planOf(placeId));
     const go = way && api.isSelected({ kind: "place", placeId })
       ? (kind: PressKind) => api.pressRoute(placeId, event.event.id, way.route.mode, kind, "page") : null;
-    return { go, readyAt, refuse: () => api.announce(refusalJa(event)) };
+    return { go, readyAt, refuse: () => api.announce(refusalJa(event)), note: refusalNoteJa(refusalReasonsJa(event)) };
   };
   /**
    * The chosen card's swipe up (photo-cards.ts takesSwipe): a place's (swipeOf); 「待機」's waits the chosen wait (this
@@ -140,10 +141,11 @@ export function PhotoCardFreeTime({
     if (!takesSwipe(card)) return null;
     if (card.kind === "place") return swipeOf(card.entry);
     if (card.kind === "wait")
-      return { go: wait ? () => onTravelWait(wait.minutes) : null, readyAt: 0, stays: true, refuse: () => api.announce(WAIT_REFUSAL_JA) };
+      return { go: wait ? () => onTravelWait(wait.minutes) : null, readyAt: 0, stays: true, refuse: () => api.announce(WAIT_REFUSAL_JA),
+        note: refusalNoteJa(WAIT_REFUSAL_REASON_JA) };
     const go = sleepWay && api.isSelected({ kind: "sleep" })
       ? (kind: PressKind) => api.pressSleepRoute(sleepWay.route.mode, sleepWay.route.viaPlaceId ?? null, kind, "page") : null;
-    return { go, readyAt, refuse: () => api.announce(sleepRefusalJa(api.sleep.options)) };
+    return { go, readyAt, refuse: () => api.announce(sleepRefusalJa(api.sleep.options)), note: refusalNoteJa(sleepRefusalReasonsJa(api.sleep.options)) };
   };
   // The expanded map's 「選んだ行き先」: the selected card's card, or a line for the current place or for no selection.
   const selectedCard = cardOfTarget(cards, target);

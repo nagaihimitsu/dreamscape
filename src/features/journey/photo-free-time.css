@@ -294,6 +294,44 @@
   will-change: transform;
 }
 
+/*
+ * Why a swipe up cannot go, in a few words (「APが足りません」): it floats up over the card and fades (useCardGestures,
+ * user decision 2026-11-11). On the body like the flying copy, above it; not read out (the live region says it).
+ * `.is-still`: reduced motion, it shows without moving and then fades. NOTE_MS in useCardGestures is its length.
+ */
+.photo-card-refusal {
+  position: fixed;
+  z-index: 26;
+  translate: -50% -50%;
+  width: max-content;
+  max-width: min(calc(100vw - 32px), 320px);
+  padding: 8px 18px;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 14px;
+  background: var(--ds-window-bg);
+  color: var(--ds-on-slate);
+  box-shadow: var(--ds-window-shadow);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+  text-align: center;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+  animation: photo-card-refusal 1700ms var(--ease-out) both;
+}
+.photo-card-refusal.is-still { animation-name: photo-card-refusal-still; }
+@keyframes photo-card-refusal {
+  0% { opacity: 0; transform: translateY(12px) scale(0.96); }
+  16% { opacity: 1; transform: translateY(0) scale(1); }
+  72% { opacity: 1; transform: translateY(-6px) scale(1); }
+  100% { opacity: 0; transform: translateY(-18px) scale(1); }
+}
+@keyframes photo-card-refusal-still {
+  0%, 80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 /* The hidden reference card (row or list): a row card's size at the current text size. */
 .photo-card-probe {
   position: absolute;
