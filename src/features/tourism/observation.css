@@ -74,6 +74,18 @@
     0 0 0 3px var(--ds-marker-selected),
     0 1px 8px #0009;
 }
+/* A clue found in this observation: its mark pops once as it turns to ✓ (the button, its
+   48-px target, stays where it is). */
+.observation-hotspot.is-new > span {
+  animation: hotspot-found var(--motion-medium) var(--ease-out);
+}
+@keyframes hotspot-found {
+  40% { transform: scale(1.35); }
+}
+.reduce-motion .observation-hotspot.is-new > span { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .observation-hotspot.is-new > span { animation: none; }
+}
 .observation-controls {
   display: flex;
   align-items: center;

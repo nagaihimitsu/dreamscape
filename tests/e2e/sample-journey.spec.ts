@@ -148,13 +148,13 @@ test("the sample journey plays from a new journey through its city finale and ep
   // bookmark is received; then the guide opens.
   if (rental) {
     // The card selects the place; the bicycle is chosen among its modes, and once armed (a timer of the page's clock)
-    // the card's 「行く」 goes.
+    // the card's 「行く」 goes (in the row, by Enter: a finger swipes the photo card up).
     const card = await ops.selectDestination(page, route.episode.placeId);
     await card.getByTestId(new RegExp(`^travel-mode-.+-${rental.mode.id}$`, "u")).click();
     await expect(ops.wayButton(card)).toHaveAttribute("data-mode", rental.mode.id);
     await expect(card).toHaveAttribute("data-armed", "true");
     const hotel = (await readSave(page, JOURNEY)).travel.currentPlaceId;
-    await ops.wayButton(card).click();
+    await ops.pressGo(ops.wayButton(card));
     // The first ride's scene (stage 4: the trip's moment) comes at the hotel, before the party moves. Its last line ends it
     // with the clock held: the move follows in that action, and its transition plays from the occasion's mark.
     await expect(page.getByTestId("encounter-screen")).toBeVisible();

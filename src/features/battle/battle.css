@@ -230,6 +230,24 @@
   padding: 8px 0;
 }
 .result-pending .pending-rewards { margin: 0; }
+/* The result comes in: the outcome and the score rise into place, then the AP earned pops
+   (nothing pressable moves; its buttons show at once). */
+.battle-result-heading { animation: battle-result-in var(--motion-medium) var(--ease-out); }
+.battle-result .reward-total strong {
+  transform-origin: 100% 50%;
+  animation: battle-reward-pop var(--motion-medium) var(--ease-out) 140ms backwards;
+}
+@keyframes battle-result-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+@keyframes battle-reward-pop {
+  from { opacity: 0; transform: scale(0.7); }
+  60% { opacity: 1; transform: scale(1.08); }
+}
+.battle-screen[data-reduce-motion="true"] :is(.battle-result-heading, .reward-total strong) { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .battle-screen :is(.battle-result-heading, .reward-total strong) { animation: none; }
+}
 
 @media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
   .battle-screen[data-phase="result"] .battle-stage { display: none; }
@@ -588,9 +606,19 @@
   from { opacity: 0; transform: translateY(5px); }
   to { opacity: 1; transform: translateY(0); }
 }
+/* An ordinary quiz's wrong answer (no stamp plays): the chosen card gives one small shake,
+   with every answer already locked. */
+.battle-screen[data-answer-missed="true"] .selected-panel {
+  animation: answer-missed var(--motion-medium) ease-in-out;
+}
+@keyframes answer-missed {
+  25% { transform: translateX(-4px); }
+  65% { transform: translateX(3px); }
+}
 .battle-screen.answer-animating[data-reduce-motion="true"] .selected-panel,
 .battle-screen.answer-animating[data-reduce-motion="true"] .other-panel,
-.battle-screen.answer-animating[data-reduce-motion="true"] .quiz-feedback {
+.battle-screen.answer-animating[data-reduce-motion="true"] .quiz-feedback,
+.battle-screen[data-answer-missed="true"][data-reduce-motion="true"] .selected-panel {
   animation: none;
 }
 .battle-screen[data-reduce-motion="true"] .vn-character {

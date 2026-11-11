@@ -34,12 +34,8 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
     gameRef.current = next;
     setGame(next);
   }
-  function commit(change: GameChange) {
-    const previous = gameRef.current;
-    if (!previous) return false;
-    // The action and any automatic city departure form one saved snapshot.
-    const next = applyPlayerAction(previous, change);
-    if (next === previous) return false;
+  /** Save `next` first when saving is automatic (a refusal keeps the game and says why), then show it. */
+  function adoptSaved(next: GameState) {
     if (autoSave) {
       const saved = saveGame(storage, next, savedGameRef.current);
       if (!saved.ok) { setNotice(saved.message); return false; }
@@ -47,8 +43,26 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
     }
     adopt(next);
     setNotice("");
+    return true;
+  }
+  function commit(change: GameChange) {
+    const previous = gameRef.current;
+    if (!previous) return false;
+    // The action and any automatic city departure form one saved snapshot.
+    const next = applyPlayerAction(previous, change);
+    if (next === previous) return false;
+    if (!adoptSaved(next)) return false;
     onCommitted?.(previous, next);
     return true;
+  }
+  /**
+   * Put `next` in place of the game as it is (Debug's 「移動画面に戻る」, src/app/free-time-return.ts):
+   * saved as a commit is, but no player action runs on it and the commit listener is not called
+   * (no relationship change, no travel art).
+   */
+  function replace(next: GameState) {
+    if (!gameRef.current) return false;
+    return adoptSaved(next);
   }
   useEffect(() => {
     const warnIfUnsaved = (event: BeforeUnloadEvent) => {
@@ -121,5 +135,5 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
     return true;
   }
   return { game, loaded, invalid, notice, setNotice, getCurrent, hasUnsavedProgress,
-    commit, begin, persistCurrent, save, restore, prepareDelete, deleteConfirmed };
+    commit, replace, begin, persistCurrent, save, restore, prepareDelete, deleteConfirmed };
 }

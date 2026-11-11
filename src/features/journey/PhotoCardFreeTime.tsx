@@ -7,24 +7,26 @@ import { CityProgress } from "./CityProgress";
 import type { FreeTimeHubProps } from "./FreeTimeHub";
 import { FreeTimeExtras } from "./FreeTimeExtras";
 import { SIDE_BY_SIDE_QUERY } from "./free-time-layout";
-import { PhotoCardPicker } from "./PhotoCardPicker";
-import { PlaceCard, StayCard, TourCard } from "./PlaceCard";
+import { PhotoCardPicker, type CardSwipe } from "./PhotoCardPicker";
+import { PlaceCard, StayCard, TourCard, WaitCard } from "./PlaceCard";
 import { Announce, mapPlaces, PlaceMapDialog } from "./PlaceMap";
 import {
-  cardOfTarget, cardTarget, chooseArrangement, photoCardAnnouncement, photoCardEntries, rowCards, syncRow, TOUR_CHOSEN_JA,
-  type CardArrangement, type RowCard,
+  cardOfTarget, cardTarget, chooseArrangement, defaultCardIndex, departureOf, NO_PLAN, photoCardAnnouncement, photoCardEntries, refusalJa,
+  rowCards, syncRow, TOUR_CHOSEN_JA, WAIT_CHOSEN_JA, type CardArrangement, type DeparturePlan, type PhotoCardEntry, type RowCard,
 } from "./photo-cards";
+import { armedAt, type PressKind } from "./travel-selection";
 import { TravelRentals } from "./TravelRentals";
 import { useTravelSelection, type PressScope } from "./useTravelSelection";
 import "./free-time-hub.css";
 import "./photo-free-time.css";
 
 /**
- * Free time as B案「写真札で旅先を選ぶ」 (docs/02 「自由時間の画面」): the epilogue's button, one row of photo cards (the
- * places, sightseeing and dates alike, then the tour when the city has one, then 「ホテルに戻る」; the chosen card is the
- * selection, and its card under the row has the way buttons and a small map, the booking, or the ways home and 待機),
- * the rentals and the city's remaining actions. 「地図」 (today's expanded map and 「地点を名前で探す」) sits in the
- * header's second row while this screen shows (HudScreenTool). The background is a map-like pattern, not a map. Every
+ * Free time as B案「写真札で旅先を選ぶ」 (docs/02 「自由時間の画面」): the epilogue's button, one row of photo cards (「待機」,
+ * the places, sightseeing and dates alike, then the tour when the city has one, then 「ホテルに戻る」; the first place's
+ * card is chosen first; the chosen card is the selection, and its card under the row has the waits, the event and the
+ * way to choose and a small map, the booking, or the ways home; a swipe up on the chosen place's card departs with that
+ * event and way), the rentals and the city's remaining actions. 「地図」 (today's expanded map and 「地点を名前で探す」)
+ * sits in the header's second row while this screen shows (HudScreenTool). The background is a map-like pattern, not a map. Every
  * rule is today's: the shared selection (useTravelSelection) travels and rests through the same handlers.
  */
 export function PhotoCardFreeTime({
@@ -35,12 +37,17 @@ export function PhotoCardFreeTime({
   const { layout, arrangement } = useFreeTimeArrangement();
   const [mapOpen, setMapOpen] = useState(false);
   const [pick, setPick] = useState<string | null>(null);
+  // Each place's chosen event and way (its card's choices; a swipe up and 「行く」 take them).
+  const [plans, setPlans] = useState<ReadonlyMap<string, DeparturePlan>>(() => new Map());
+  const planOf = (placeId: string) => plans.get(placeId) ?? NO_PLAN;
+  const changePlan = (placeId: string, change: Partial<DeparturePlan>) =>
+    setPlans((previous) => new Map(previous).set(placeId, { ...(previous.get(placeId) ?? NO_PLAN), ...change }));
   const { current, nearby, other, candidates, recommendedMainId } = api.destinations;
   const places = useMemo(() => [...nearby, ...other], [nearby, other]);
   const tour = getTourOffers(game).length > 0 || game.tour?.status === "booked";
   const cards = useMemo(() => rowCards(photoCardEntries(places, api.choices), { tour }), [places, api.choices, tour]);
-  // The card remembered while it is still in the row, else the first.
-  const chosen = cards.find((card) => card.id === pick) ?? cards[0];
+  // The card remembered while it is still in the row, else the first place's (photo-cards.ts defaultCardIndex).
+  const chosen = cards.find((card) => card.id === pick) ?? cards[defaultCardIndex(cards)];
   const mapMarks = useMemo(() => mapPlaces(game, candidates, api.destinations), [game, candidates, api.destinations]);
   const target = api.selection?.target ?? null;
 
@@ -65,15 +72,26 @@ export function PhotoCardFreeTime({
     setPick(cardId);
     api.choose(cardTarget(card));
     if (card.kind === "tour") api.announce(TOUR_CHOSEN_JA);
+    if (card.kind === "wait") api.announce(WAIT_CHOSEN_JA);
   }
 
   if (!current) return <p role="alert">現在地を確認できません。保存状態を確認してください。</p>;
   /** The card under the row (on the page: a visible name only in the row, where no chosen row above names it). */
   const cardOf = (card: RowCard, scope: PressScope = "page") => {
     const heading = scope === "dialog" || arrangement === "row";
-    if (card.kind === "stay") return <StayCard game={game} api={api} onTravelWait={onTravelWait} scope={scope} heading={heading} />;
+    if (card.kind === "wait") return <WaitCard game={game} onTravelWait={onTravelWait} heading={heading} />;
+    if (card.kind === "stay") return <StayCard game={game} api={api} scope={scope} heading={heading} />;
     if (card.kind === "tour") return <TourCard game={game} onBook={onBookTour} onCancel={onCancelTour} heading={heading} />;
-    return <PlaceCard game={game} entry={card.entry} api={api} scope={scope} map={scope === "page"} heading={heading} />;
+    return <PlaceCard game={game} entry={card.entry} api={api} scope={scope} map={scope === "page"} heading={heading}
+      plan={planOf(card.id)} onPlan={(change) => changePlan(card.id, change)} quietGo={scope === "page" && arrangement === "row"} />;
+  };
+  /** A place card's swipe up: its chosen event by its chosen way, while the place is the selection (else why not). */
+  const swipeOf = (entry: PhotoCardEntry): CardSwipe => {
+    const placeId = entry.place.id;
+    const { event, way } = departureOf(entry, planOf(placeId));
+    const go = way && api.isSelected({ kind: "place", placeId })
+      ? (kind: PressKind) => api.pressRoute(placeId, event.event.id, way.route.mode, kind, "page") : null;
+    return { go, readyAt: api.selection ? armedAt(api.selection) : 0, refuse: () => api.announce(refusalJa(event)) };
   };
   // The expanded map's 「選んだ行き先」: the selected card's card, or a line for the current place or for no selection.
   const selectedCard = cardOfTarget(cards, target);
@@ -94,11 +112,11 @@ export function PhotoCardFreeTime({
 
     <section className="photo-menu" aria-label={`${city.nameJa}の行き先`} data-testid="travel-menu">
       {!cards.some((card) => card.kind === "place" && card.entry.available) &&
-        <p className="photo-menu-note">今すぐ行ける場所はありません。「ホテルに戻る」で休むか、時間を待てます。</p>}
+        <p className="photo-menu-note">今すぐ行ける場所はありません。「ホテルに戻る」で休むか、「待機」で時間を待てます。</p>}
       <div className="photo-stage">
         <CardProbe />
         <PhotoCardPicker game={game} cards={cards} chosenId={chosen.id} onChoose={chooseCard} arrangement={arrangement}
-          recommendedId={recommendedMainId} card={cardOf(chosen)} />
+          recommendedId={recommendedMainId} card={cardOf(chosen)} swipe={chosen.kind === "place" ? swipeOf(chosen.entry) : null} />
       </div>
       <TravelRentals game={game} onRent={onRent} />
       <Announce message={api.message} testId="travel-announce" />
@@ -114,13 +132,14 @@ export function PhotoCardFreeTime({
   </section>;
 }
 
-/** A hidden card with a two-line name: its height (larger text included) chooses row or list. */
+/** A hidden middle card with a two-line name and its swipe hint: its height (larger text included) chooses row or list. */
 function CardProbe() {
   return <div className="photo-card-probe" aria-hidden="true">
-    <span className="photo-card">
+    <span className="photo-card is-story">
       <span className="photo-card-photo" />
       <span className="photo-card-text">
         <span className="photo-card-name">行き先の<br />名前</span>
+        <span className="photo-card-hint" data-shown="true">︿ 上にスワイプして出発</span>
       </span>
     </span>
   </div>;

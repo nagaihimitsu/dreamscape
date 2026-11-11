@@ -37,12 +37,20 @@
   --ds-disabled-ink: #5c544a;
   --ds-field-edge: #8f7c66; /* text fields and selects: 3.6:1 on --ds-parchment */
   --ds-gold-hairline: rgba(201, 163, 95, 0.7); /* --ds-gold at 70 %: the edge of pressables on slate */
-  --ds-on-slate-pill: rgba(255, 255, 255, 0.08); /* status pills on the header's own slate band (free time) */
   --ds-photo-shade: rgba(20, 24, 32, 0.55); /* top of the gradient behind the header over a photo (§2.4) */
   /* Shadows of the shapes (§2.3). */
   --ds-pill-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
   --ds-card-shadow: 0 2px 10px rgba(40, 30, 20, 0.18);
   --ds-window-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  /* Motion of the UI's feedback: short, transform and opacity only, and never holding
+     input back. Each animation that uses these stops, in its own stylesheet, under
+     prefers-reduced-motion and under the game's 「演出を短縮する」 (.reduce-motion on the
+     app shell). What closes or leaves is never animated: it goes at once. */
+  --motion-fast: 160ms; /* a panel, a dialog, a notice or a choice coming in */
+  --motion-medium: 260ms; /* a value or a mark that changed, a character or a result coming in */
+  --motion-scene: 450ms; /* a scene's picture giving way to the next */
+  --motion-stagger: 40ms; /* between the items of a list coming in */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 * {
   box-sizing: border-box;
@@ -191,6 +199,17 @@ h3 {
 }
 .canal-scene.compact {
   height: 245px;
+}
+/* A scene's next picture (CanalScene's SceneArtwork): unseen over the last one until it has
+   loaded, then fading in over it in --motion-scene (its timer, ARTWORK_FADE_MS, matches). */
+.scene-artwork[data-entering]:not([data-loaded]) { opacity: 0; }
+.scene-artwork[data-entering][data-loaded] { animation: scene-artwork-in var(--motion-scene) var(--ease-out); }
+@keyframes scene-artwork-in {
+  from { opacity: 0; }
+}
+.reduce-motion .scene-artwork[data-entering][data-loaded] { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .scene-artwork[data-entering][data-loaded] { animation: none; }
 }
 /* The art's caption: a display-only pill over the picture (§2.3, §2.4). */
 .scene-stamp {
@@ -450,6 +469,22 @@ footer span {
   padding-top: 20px;
   margin-top: 8px;
 }
+/* A scene's choices (and an encounter's English replies) come in one after another as they
+   appear with their line: a fade only, nothing moves, since a choice may take a press as it
+   shows. The last starts within 120 ms and all are whole within 280 ms. */
+:is(.choices, .encounter-choices) > * {
+  animation: choice-in var(--motion-fast) var(--ease-out) backwards;
+}
+:is(.choices, .encounter-choices) > :nth-child(2) { animation-delay: var(--motion-stagger); }
+:is(.choices, .encounter-choices) > :nth-child(3) { animation-delay: calc(2 * var(--motion-stagger)); }
+:is(.choices, .encounter-choices) > :nth-child(n + 4) { animation-delay: calc(3 * var(--motion-stagger)); }
+@keyframes choice-in {
+  from { opacity: 0; }
+}
+.reduce-motion :is(.choices, .encounter-choices) > * { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  :is(.choices, .encounter-choices) > * { animation: none; }
+}
 .choice {
   display: flex;
   align-items: center;
@@ -492,6 +527,18 @@ footer span {
 .notice .text-button {
   display: block;
   margin-left: auto;
+}
+/* A notice of the session (「現在の場面を保存しました。」, a learning record's error…) slides
+   down into its place as it appears; it goes at once when closed. */
+.app-shell > main > .notice {
+  animation: notice-in var(--motion-fast) var(--ease-out);
+}
+@keyframes notice-in {
+  from { opacity: 0; transform: translateY(-6px); }
+}
+.app-shell.reduce-motion > main > .notice { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .app-shell > main > .notice { animation: none; }
 }
 @media (max-width: 600px) {
   .app-shell > main > .notice {
@@ -756,8 +803,6 @@ input[type="checkbox"] { accent-color: var(--ds-slate-800); }
     top: 0;
     left: 0;
     right: 0;
-    background: none;
-    --hud-pill-bg: var(--ds-chip-bg);
   }
   /* Calm edges for the header over a photo (not for legibility: every label has its own backing). */
   .mobile-play-active > .journey-hud::before {
@@ -902,6 +947,20 @@ dialog.modal {
 dialog.modal::backdrop {
   background: rgba(20, 24, 32, 0.72);
   backdrop-filter: blur(4px);
+}
+/* A dialog rises into place as it opens (only its frame: the blurred backdrop comes at
+   once). It closes at once, so a quick second tap lands on what it leaves behind, as
+   before. The rise is a few pixels and never a scale: a point read from it at once
+   still falls on its buttons, and the expanded map's Leaflet keeps its scale. */
+dialog.modal[open] {
+  animation: modal-in var(--motion-fast) var(--ease-out);
+}
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+.reduce-motion dialog.modal[open] { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  dialog.modal[open] { animation: none; }
 }
 
 /* In free time, the next stop and the available dates are the primary

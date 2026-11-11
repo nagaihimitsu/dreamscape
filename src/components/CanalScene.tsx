@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { presentation, tourismAssets } from "../content";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import type { TitleArt } from "../content/journey-catalog";
@@ -111,7 +111,7 @@ export function CanalScene({
         <path fill="#ede2c8" d="m563 410 30-13 28 13-29 14z" />
       </svg>
       )}
-      {image && <BackgroundArtwork key={image} path={image} position={artwork ? artwork.imagePosition : backdrop?.imagePosition} />}
+      {image && <SceneArtwork path={image} position={artwork ? artwork.imagePosition : backdrop?.imagePosition} />}
       <span className="scene-stamp" data-testid="scene-stamp">
         {artwork?.captionJa ?? backdrop?.captionJa}
       </span>
@@ -119,10 +119,49 @@ export function CanalScene({
   );
 }
 
-/** Decorative backgrounds are optional; the original illustration remains the fallback. */
-function BackgroundArtwork({ path, position }: { path: string; position?: { x: number; y: number } }) {
+type Artwork = { path: string; position?: { x: number; y: number } };
+
+/** How long a scene's next picture takes to fade in over the last (styles.css, --motion-scene). */
+const ARTWORK_FADE_MS = 450;
+
+/**
+ * The scene's picture. When a line changes it, the next one waits, unseen, over the one on
+ * show until it has loaded, then fades in (at once with reduced motion) and the last one goes:
+ * the scene never cuts to the drawn fallback while the next picture loads. The first picture
+ * shows as it loads, as before.
+ */
+function SceneArtwork({ path, position }: Artwork) {
+  const [shown, setShown] = useState<Artwork>({ path, position });
+  const settled = shown.path === path;
+  // A picture on show keeps the place it is shown at, for the moment it lies under the next one.
+  useEffect(() => {
+    if (settled && shown.position !== position) setShown({ path, position });
+  }, [settled, shown.position, path, position]);
+  return <>
+    <BackgroundArtwork key={shown.path} {...(settled ? { path, position } : shown)} />
+    {!settled && <BackgroundArtwork key={path} path={path} position={position} onArrive={() => setShown({ path, position })} />}
+  </>;
+}
+
+/**
+ * Decorative backgrounds are optional; the original illustration remains the fallback.
+ * `onArrive`: the picture comes in over another one (SceneArtwork); called once it has faded
+ * in, or at once when it cannot load (the fallback then shows, as for any missing picture).
+ */
+function BackgroundArtwork({ path, position, onArrive }: Artwork & { onArrive?: () => void }) {
   const [failed, setFailed] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const arrive = useRef(onArrive);
+  arrive.current = onArrive;
+  const entering = !!onArrive;
+  useEffect(() => {
+    if (!entering || !(loaded || failed)) return;
+    const timer = window.setTimeout(() => arrive.current?.(), failed ? 0 : ARTWORK_FADE_MS);
+    return () => window.clearTimeout(timer);
+  }, [entering, loaded, failed]);
   if (failed) return null;
-  return <img src={`${import.meta.env.BASE_URL}${path}`} alt="" onError={() => setFailed(true)}
+  return <img className="scene-artwork" src={`${import.meta.env.BASE_URL}${path}`} alt=""
+    data-entering={entering || undefined} data-loaded={loaded || undefined}
+    onLoad={() => setLoaded(true)} onError={() => setFailed(true)}
     style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: position ? `${position.x}% ${position.y}%` : "center" }} />;
 }

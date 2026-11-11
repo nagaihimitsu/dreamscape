@@ -19,9 +19,11 @@ const iconSource = (item: HeldItem) => `${import.meta.env.BASE_URL}${item.iconPa
  * past the detail, Shift+Tab before the button), as ⚙設定's panel does: the
  * detail pauses the scene while it is open, so it never stays open behind the
  * focus. `onOpen` runs as it opens (the header closes its other popovers). Items
- * are read-only here: using them remains part of their events.
+ * are read-only here: using them remains part of their events. `gained`: how many
+ * times the header has shown a new item; each new count pops the button's picture
+ * once (journey-hud.css; the button itself stays where it is).
  */
-export function HeldItems({ items, onOpen }: { items: HeldItem[]; onOpen?: () => void }) {
+export function HeldItems({ items, gained, onOpen }: { items: HeldItem[]; gained?: number; onOpen?: () => void }) {
   const [open, setOpen] = useState(false);
   const groupRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -93,9 +95,12 @@ export function HeldItems({ items, onOpen }: { items: HeldItem[]; onOpen?: () =>
           setOpen(!shown);
         }}
       >
-        {single
-          ? <img src={iconSource(single)} alt="" />
-          : <><span className="held-items-bag-icon"><Icon name="bag" /><span className="held-items-count">{items.length}</span></span><span className="held-items-word">所持品</span></>}
+        {/* A new key per new item plays its pop once; one item to more (or back) keeps it. */}
+        <span key={`picture-${gained ?? 0}`} className="held-item-picture" data-gained={gained ? "" : undefined}>
+          {single
+            ? <img src={iconSource(single)} alt="" />
+            : <><span className="held-items-bag-icon"><Icon name="bag" /><span className="held-items-count">{items.length}</span></span><span className="held-items-word">所持品</span></>}
+        </span>
       </button>
       {shown && <>
         <DismissLayer owner={groupRef.current} onClose={close} />

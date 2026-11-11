@@ -1,8 +1,12 @@
 /* The header of every game screen (UI redesign §3.1): row 1 shows (status pills,
    no edge), row 2 is pressed (rectangles with a gold hairline). Shape tells the
-   role, never the colour alone (§2.3). Its height is measured into --hud-h. */
+   role, never the colour alone (§2.3). Its height is measured into --hud-h.
+   The band itself is transparent (user decision 2026-11-11): the screen shows
+   through around its parts, and each pill and button keeps its own slate ground
+   (the pills' 84 % slate keeps their text at 8:1 or more over white), so they
+   read over a photo, the parchment or text scrolling under the header alike. */
 .journey-hud {
-  --hud-pill-bg: var(--ds-on-slate-pill);
+  --hud-pill-bg: var(--ds-chip-bg);
   /* Its width is the screen's (never its content's), so it can be the query
      container for enlarged text (row 1, below). */
   container: journey-hud / inline-size;
@@ -14,7 +18,7 @@
   gap: 4px;
   padding: calc(4px + env(safe-area-inset-top)) 8px 4px;
   color: var(--ds-on-slate);
-  background: var(--ds-chip-bg);
+  background: none;
   font-family: "Noto Sans JP", sans-serif;
   font-size: 12px;
   line-height: 1.2;
@@ -161,7 +165,7 @@
   background: var(--ds-parchment);
   color: var(--ds-ink);
   box-shadow: var(--ds-card-shadow);
-  animation: hud-menu-in 120ms ease-out;
+  animation: hud-menu-in var(--motion-fast) var(--ease-out);
 }
 .hud-menu-panel[hidden] { display: none; }
 .hud-menu-panel button {
@@ -187,9 +191,38 @@
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: none; }
 }
-.reduce-motion .hud-menu-panel { animation: none; }
+/* The held items' detail hangs from the header as ⚙設定's panel does, and opens as it does. */
+.journey-hud .held-item-detail { animation: hud-menu-in var(--motion-fast) var(--ease-out); }
+
+/* A change the player sees (JourneyHud's useSeenChange; display only, the new value shows
+   and is read from the start): a budget or AP that rises grows for a moment in the
+   selected marker's yellow, one that falls dips; a new held item pops the button's
+   picture, not the button. Each plays once per change. */
+.hud-wallet [data-cue] {
+  transform-origin: 100% 50%;
+  animation: hud-value-up var(--motion-medium) var(--ease-out);
+}
+.hud-wallet [data-cue="down"] { animation-name: hud-value-down; }
+@keyframes hud-value-up {
+  40% { transform: scale(1.18); color: var(--ds-marker-selected); }
+}
+@keyframes hud-value-down {
+  40% { transform: scale(0.88); }
+}
+.journey-hud .held-item-button [data-gained] { animation: held-item-gained var(--motion-medium) var(--ease-out); }
+@keyframes held-item-gained {
+  45% { transform: scale(1.3) rotate(-8deg); }
+}
+
+.reduce-motion .hud-menu-panel,
+.reduce-motion .held-item-detail,
+.reduce-motion .hud-wallet [data-cue],
+.reduce-motion .held-item-button [data-gained] { animation: none; }
 @media (prefers-reduced-motion: reduce) {
-  .hud-menu-panel { animation: none; }
+  .journey-hud .hud-menu-panel,
+  .journey-hud .held-item-detail,
+  .journey-hud .hud-wallet [data-cue],
+  .journey-hud .held-item-button [data-gained] { animation: none; }
 }
 
 /* The two-tone focus ring (§2.1): seen on slate, on parchment and over photos. */

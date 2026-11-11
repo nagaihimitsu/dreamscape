@@ -70,6 +70,8 @@ export function ObservationViewer({
   });
   const pointsRef = useRef(points);
   pointsRef.current = points;
+  // The clues found before this observation opened: a marker found here pops once (observation.css).
+  const foundBefore = useRef(discoveredIds);
 
   function updateView(next: ViewTransform) {
     currentView.current = next;
@@ -273,7 +275,7 @@ export function ObservationViewer({
               <button
                 key={point.id}
                 type="button"
-                className={`observation-hotspot ${found ? "is-found" : ""} ${selectedId === point.id ? "is-selected" : ""}`}
+                className={`observation-hotspot ${found ? "is-found" : ""} ${found && !foundBefore.current.includes(point.id) ? "is-new" : ""} ${selectedId === point.id ? "is-selected" : ""}`}
                 style={{ left: position.x, top: position.y }}
                 data-testid={`hotspot-${point.id}`}
                 data-clue-id={point.id}
