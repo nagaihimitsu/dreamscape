@@ -18,7 +18,6 @@ import {
   startBattle,
   advanceBattle,
   answerBattle,
-  toggleBattleHint,
   leaveBattle,
   getBattleAvailability,
   getBattleOutcome,
@@ -146,37 +145,6 @@ describe("three-round quiz battle", () => {
     expect(state.activeBattle!.answers).toHaveLength(1);
     expect(state.activeBattle!.score).toBe(1);
     expect(advanceBattle(state, before.revision)).toBe(state);
-  });
-  it("remembers an opened and closed hint without affecting grading", () => {
-    let state = question(startBattle(createGame(), battleId()));
-    state = toggleBattleHint(state, state.revision);
-    expect(state.activeBattle).toMatchObject({
-      hintOpen: true,
-      hintUsed: true,
-    });
-    state = roundTrip(state);
-    state = toggleBattleHint(state, state.revision);
-    expect(state.activeBattle).toMatchObject({
-      hintOpen: false,
-      hintUsed: true,
-    });
-    state = answerBattle(
-      state,
-      quiz().questions[0].correctOptionId,
-      state.revision,
-    );
-    expect(state.activeBattle!.answers[0]).toMatchObject({
-      correct: true,
-      hintUsed: true,
-    });
-    expect(toggleBattleHint(state, state.revision)).toBe(state);
-    state = advanceBattle(state, state.revision);
-    state = question(state);
-    expect(state.activeBattle).toMatchObject({
-      hintOpen: false,
-      hintUsed: false,
-      roundIndex: 1,
-    });
   });
   it("branches enemy reactions and endings by answers and score", () => {
     // Every line shown before each action, played with the first `score` answers correct.

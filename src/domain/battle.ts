@@ -72,6 +72,10 @@ export const activeBattleSchema = z
     roundIndex: z.number().int().min(0).max(4),
     answers: z.array(battleAnswerSchema).max(5),
     score: z.number().int().min(0).max(5),
+    /**
+     * The question's hint opened and used. Kept in the save's shape; the hint now always shows under the question
+     * with no button (user decision 2026-11-11), so play leaves both false.
+     */
     hintOpen: z.boolean(),
     hintUsed: z.boolean(),
     storyState: z.string().nullable(),
@@ -623,24 +627,6 @@ export function answerBattle(
       ],
       score: active.score + (correct ? 1 : 0),
     },
-  };
-}
-export function toggleBattleHint(
-  state: GameState,
-  expectedRevision: number,
-): GameState {
-  const active = state.activeBattle;
-  if (
-    state.activeTourism ||
-    state.revision !== expectedRevision ||
-    !active ||
-    active.phase !== "question"
-  )
-    return state;
-  return {
-    ...state,
-    revision: state.revision + 1,
-    activeBattle: { ...active, hintOpen: !active.hintOpen, hintUsed: true },
   };
 }
 

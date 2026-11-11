@@ -1206,14 +1206,6 @@ dialog.modal[open] {
   color: var(--ds-ink-muted);
   font-size: 11px;
 }
-.hint-button {
-  background: transparent;
-  color: var(--ds-ink);
-  font-size: 12px;
-  padding: 8px 2px;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
 /* The explanation: a parchment panel inside the paper; the verdict pill above says right or wrong. */
 .quiz-feedback {
   margin-top: 23px;

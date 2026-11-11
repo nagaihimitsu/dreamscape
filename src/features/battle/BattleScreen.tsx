@@ -128,7 +128,6 @@ interface Props {
   choices?: SceneChoiceView[];
   onChoose?: (index: number) => void;
   onAnswer: (id: string) => boolean;
-  onHint: () => void;
   onLeave?: () => void;
   /** The leave button's words when it leads somewhere else than free time (a battle whose head says then: epilogue: 「エピローグへ進む」). */
   leaveLabel?: string;
@@ -157,7 +156,6 @@ export function BattleScreen({
   choices = [],
   onChoose,
   onAnswer,
-  onHint,
   onLeave,
   leaveLabel,
   onNotebook,
@@ -549,7 +547,6 @@ export function BattleScreen({
                     <span className={item.correct ? "correct-label" : "incorrect-label"}>
                       {item.correct ? "正解" : "不正解"}
                     </span>
-                    {item.hintUsed && <span className="fine-print">ヒント使用</span>}
                   </li>
                 ))}
               </ol>
@@ -768,21 +765,11 @@ export function BattleScreen({
                 ))}
               </dl>
             </div>
-            {active.phase === "question" && (
-              <button
-                className="hint-button"
-                aria-expanded={active.hintOpen}
-                aria-controls="question-hint"
-                onClick={onHint}
-              >
-                {active.hintOpen ? "ヒントを閉じる" : "ヒントを見る"}
-              </button>
-            )}
             {/* The hint as the heroine's whisper: her words when the question has them (hintHeroineJa),
-                else its hint (hintJa, plain narration: shown as her note, not quoted as her words). */}
-            {active.hintOpen && (
+                else its hint (hintJa, plain narration: shown as her note, not quoted as her words). Always
+                shown under the question, with no button to open or close it (user decision 2026-11-11). */}
+            {active.phase === "question" && (
               <HeroineNote
-                id="question-hint"
                 className="hint-whisper"
                 label={`${game.heroineName}の耳打ち`}
                 text={question.hintHeroineJa ?? question.hintJa}

@@ -212,7 +212,7 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 
 クイズの `id` は問題セット、`landmarkId` は観光地、`englishLevel` は `A2` / `B1` / `B2`。通常戦の `questions` は3問です。各問の `id`、英語の `questionEn`、`options` の `id` と `textEn`、`correctOptionId` を指定します。選択肢は3つ、正解IDはそのうち一つ。`vocabularyJa` の `word` / `meaning` は英単語と日本語補足（答えた後、英語ノートの「単語帳」に、その語を含む問題文か選択肢の英文と場所の写真つきの札で出ます）、`hintJa`、`correctExplanationJa`、`incorrectExplanationJa` は日本語、`sources` は各問の根拠、`difficulty` は `easy` / `medium` / `hard`。問題と選択肢だけを英語にします。解答前の会話で正解を明かさないようにします。都市フィナーレは `scope: "city_finale"`、`cityId`、`landmarkId: null`、5問です。
 
-ヒントは、ヒロインの小さな顔と「（ヒロインの名前）の耳打ち」という吹き出しで出ます。`hintJa` は地の文のままでかまいません（彼女の言葉としてかぎかっこで囲んだりはしません）。問いごとに、次の2つを任意で書けます（書かなければ今までどおり）。例は見本の編の `quizzes/smp_mihon_main_clock_tower_quiz.json`。
+ヒントは、ヒロインの小さな顔と「（ヒロインの名前）の耳打ち」という吹き出しで、問いの下にいつも出ます（開くボタンはありません）。`hintJa` は地の文のままでかまいません（彼女の言葉としてかぎかっこで囲んだりはしません）。問いごとに、次の2つを任意で書けます（書かなければ今までどおり）。例は見本の編の `quizzes/smp_mihon_main_clock_tower_quiz.json`。
 
 - `hintHeroineJa`：ヒントを彼女の言葉で書いたもの。書くと、`hintJa` の代わりにこれが吹き出しに出ます（`hintJa` も必須のまま書きます）。
 - `heroineCorrectJa`：正解したとき、解説のすぐ下に、彼女の顔と名前つきの吹き出しで出る短い一言（不正解では出ません）。得点や関係の値は出しません。答えた後の会話（`-> quiz(n) ->` の後の行）とは別で、そちらは「敵の反応を見る」の後に流れます。

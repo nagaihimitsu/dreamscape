@@ -123,7 +123,7 @@ function weight(state: GameState, action: PlayerAction): number {
       return correct !== selected ? 4 : 1;
     }
     case "evidence_submit": return 6;
-    case "battle_hint": case "guide_again": return 0.2;
+    case "guide_again": return 0.2;
     case "battle_press": case "discover": return 0.4;
     case "battle_observe": return 0.1;
     case "guide_next": case "observation_next": case "read_epilogue": case "battle_epilogue": case "depart": return 3;

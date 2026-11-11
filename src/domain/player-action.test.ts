@@ -55,14 +55,14 @@ describe("the actions a player can take now", () => {
     for (const action of actions) expect(apply(state, action), JSON.stringify(action)).not.toBe(state);
   });
 
-  it("a battle question offers its three answers and the hint, and a landmark's battle the way back to its observation", () => {
+  it("a battle question offers its three answers, and a landmark's battle the way back to its observation", () => {
     const cityId = startCity(defaultJourneyId);
     const episode = episodes.find((item) => item.cityId === cityId && item.kind !== "city_finale")!;
     const question = until(openBattleScene(newJourney(defaultJourneyId), episode.battleId), (state) => state.activeBattle!.phase === "question");
     const landmarkId = battles.find((battle) => battle.id === episode.battleId)!.landmarkId!;
     expect(listPlayerActions(question)).toEqual([
       { kind: "battle_answer", optionId: "A" }, { kind: "battle_answer", optionId: "B" }, { kind: "battle_answer", optionId: "C" },
-      { kind: "battle_hint" }, { kind: "battle_observe", landmarkId },
+      { kind: "battle_observe", landmarkId },
     ]);
   });
 

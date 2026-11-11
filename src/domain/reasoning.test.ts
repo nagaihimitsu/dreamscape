@@ -10,7 +10,6 @@ import {
   pressBattleClaim,
   selectReasoningClue,
   submitBattleEvidence,
-  toggleBattleHint,
 } from "./battle";
 import { createGame, validateGameState, type GameState } from "./game";
 import { canAccessFreeTime, startEpisode } from "./chapter";
@@ -98,31 +97,6 @@ describe("small proof steps inside three-round battles", () => {
       expect(state.activeBattle?.reasoning?.selectedClueIds).toEqual([clueId]);
       expect(unchangedProgress(state)).toEqual(unchangedProgress(initial));
       expect(state.ap).toBe(initial.ap);
-    },
-  );
-
-  it.each(["contradiction", "connection"] as const)(
-    "clears the prior question hint when entering %s without changing its recorded use",
-    (kind) => {
-      const battle = special(kind);
-      let state = startBattle(createGame(), battle.id);
-      while (state.activeBattle?.phase !== "reasoning") {
-        state = roundTrip(state);
-        if (state.activeBattle!.phase === "question") {
-          state = toggleBattleHint(state, state.revision);
-          const q =
-            battleQuizzes[battle.quizId].questions[
-              state.activeBattle!.roundIndex
-            ];
-          state = answerBattle(state, q.correctOptionId, state.revision);
-        } else state = advanceBattle(state, state.revision);
-      }
-      state = roundTrip(state);
-      expect(
-        state.activeBattle!.answers.every((answer) => answer.hintUsed),
-      ).toBe(true);
-      expect(state.activeBattle!.hintUsed).toBe(false);
-      expect(state.activeBattle!.hintOpen).toBe(false);
     },
   );
 
