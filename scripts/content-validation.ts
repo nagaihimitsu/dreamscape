@@ -491,6 +491,12 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       throw new Error(`Unknown city backdrop asset: ${displayPath(root, sources.cities[index].file)} backdropAssetId ` +
         `"${item.backdropAssetId}" is not an asset of tourism/catalog.json; use the ID of a registered tourism photo or remove the field`);
   });
+  // A travel place's own card photo (photoAssetId) names a tourism asset in the same way.
+  for (const { travel, travelFile } of travels)
+    for (const place of travel.places)
+      if (place.photoAssetId && !tourism.assets.some((asset) => asset.id === place.photoAssetId))
+        throw new Error(`Unknown travel place photo asset: ${travelFile} places["${place.id}"] photoAssetId ` +
+          `"${place.photoAssetId}" is not an asset of tourism/catalog.json; use the ID of a registered tourism photo or remove the field`);
   if (
     balance.defaultPlayerName.length > balance.maxNameLength ||
     balance.defaultHeroineName.length > balance.maxNameLength

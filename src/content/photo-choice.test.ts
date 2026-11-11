@@ -13,18 +13,22 @@ import type { TourismAsset } from "./tourism-schemas";
 const asset = (id: string, isPlaceholder = false) => ({ id, isPlaceholder }) as TourismAsset;
 
 describe("place photos", () => {
-  it("take the first landmark's photo, else the background's, skipping placeholders; the hotel has none", () => {
+  it("take the place's own photo, else the first landmark's, else the background's, skipping placeholders; the hotel only its own", () => {
     const content = {
-      assets: [asset("tower"), asset("tower_draft", true), asset("square")],
+      assets: [asset("tower"), asset("tower_draft", true), asset("square"), asset("roof")],
       landmarks: [{ id: "l_tower", imageAssetId: "tower" }, { id: "l_draft", imageAssetId: "tower_draft" }],
       backgrounds: { square_bg: { imageAssetId: "square" }, plain_bg: {} },
     };
-    const place = (id: string, landmarkIds: string[] | undefined, backgroundId: string) => ({ id, landmarkIds, backgroundId });
+    const place = (id: string, landmarkIds: string[] | undefined, backgroundId: string, photoAssetId?: string) => ({ id, landmarkIds, backgroundId, photoAssetId });
     expect(choosePlacePhoto(content, place("p", ["l_tower", "l_draft"], "square_bg"), "h")?.id).toBe("tower");
     expect(choosePlacePhoto(content, place("p", ["l_draft"], "square_bg"), "h")?.id).toBe("square");
     expect(choosePlacePhoto(content, place("p", undefined, "square_bg"), "h")?.id).toBe("square");
     expect(choosePlacePhoto(content, place("p", ["l_draft"], "plain_bg"), "h")).toBeNull();
+    expect(choosePlacePhoto(content, place("p", ["l_tower"], "square_bg", "roof"), "h")?.id).toBe("roof");
+    expect(choosePlacePhoto(content, place("p", ["l_tower"], "square_bg", "tower_draft"), "h")?.id).toBe("tower");
     expect(choosePlacePhoto(content, place("h", ["l_tower"], "square_bg"), "h")).toBeNull();
+    expect(choosePlacePhoto(content, place("h", ["l_tower"], "square_bg", "roof"), "h")?.id).toBe("roof");
+    expect(choosePlacePhoto(content, place("h", ["l_tower"], "square_bg", "tower_draft"), "h")).toBeNull();
   });
 
   it("are the registered photos of 11 of Milan's 13 places, and none for the hotel", () => {
@@ -35,6 +39,11 @@ describe("place photos", () => {
       p_duomo: "duomo_milano_photo", p_brera: "brera_courtyard_case_photo", p_supper: "last_supper_photo",
     });
     expect(getPlacePhoto("milano", "p_unknown")).toBeNull();
+  });
+
+  it("give the India journey's inns the rooftop night view (their photoAssetId)", () => {
+    for (const [cityId, hotelId] of [["delhi", "delhi_hotel_hub"], ["agra", "agra_hotel_hub"], ["jaipur", "jaipur_hotel_hub"]])
+      expect(getPlacePhoto(cityId, hotelId)?.id, cityId).toBe("gt_img_hotel_rooftop_night");
   });
 });
 

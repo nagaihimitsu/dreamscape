@@ -22,6 +22,11 @@ export const travelPlaceSchema = z.object({
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
   backgroundId: id,
+  /**
+   * The photo of the place's free-time card: a tourism asset of the same journey (content:build checks it), shown
+   * instead of its first landmark's or its background's photo. The hotel's card shows only this one (photo-choice.ts).
+   */
+  photoAssetId: id.optional(),
   /** Existing catalogs stay authoritative; these IDs identify the same physical place. */
   landmarkIds: z.array(id).optional(),
   destinationIds: z.array(id).optional(),
