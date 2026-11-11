@@ -4,21 +4,21 @@
     {
       "id": "gt_nidhi",
       "imagePath": "assets/characters/gt_nidhi/neutral.webp",
-      "placement": { "x": 68, "bottom": 0, "width": 62, "height": 82, "scale": 1, "originX": 50, "originY": 100 },
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
       "placeholderColor": "#4f6f9a",
       "variants": []
     },
     {
       "id": "gt_aman",
       "imagePath": "assets/characters/gt_aman/neutral.webp",
-      "placement": { "x": 68, "bottom": 0, "width": 62, "height": 82, "scale": 1, "originX": 50, "originY": 100 },
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
       "placeholderColor": "#9a3f3a",
       "variants": []
     },
     {
       "id": "gt_kamla",
       "imagePath": "assets/characters/gt_kamla/neutral.webp",
-      "placement": { "x": 68, "bottom": 0, "width": 62, "height": 82, "scale": 1, "originX": 50, "originY": 100 },
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
       "placeholderColor": "#a8456f",
       "variants": []
     }
