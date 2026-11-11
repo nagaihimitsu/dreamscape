@@ -10,7 +10,7 @@ import {
   tourismAssets,
   getCityContent,
 } from "../content";
-import { scenePerson } from "../domain/scene-person";
+import { scenePerson, speakingPerson } from "../domain/scene-person";
 import { defaultJourneyId, getJourney } from "../content/journeys";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
 import { waitForTravel } from "../domain/travel-game";
@@ -645,6 +645,7 @@ export function GameApp({
               speaker: encounterPlate!.name,
               narration: encounterPlate!.narration,
               person: encounterPerson && { characterId: encounterPerson.characterId, focus: portraitFocus(activeEncounter.frame.speaker, "enemy") },
+              speakingPerson: speakingPerson(storyState.people, activeEncounter.frame),
               text: activeEncounter.frame.text,
               delivery: activeEncounter.frame.delivery,
               staging: activeEncounter.frame,

@@ -23,7 +23,10 @@ import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "..
 import { useSceneTap } from "../../components/useSceneTap";
 import { resolveRomancePresentation } from "./romance-presentation";
 import { SceneHeading } from "../../components/SceneHeading";
+import { useSpeakingPerson } from "../../components/useSpeakingPerson";
+import { speakingPerson } from "../../domain/scene-person";
 import "./romance-scene.css";
+import "../journey/encounter.css";
 
 export function RomanceScene({
   game,
@@ -61,6 +64,10 @@ export function RomanceScene({
     : undefined;
   const reaction = resolveDialogueReaction(dialogueReactions, storyId, frame, "heroine");
   const emotion = reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame);
+  // A person with a portrait who speaks in their own name stands opposite her from that line
+  // (speakingPerson); `# speaker: enemy` or its reaction sends them off.
+  const speaking = speakingPerson(storyState.people, frame);
+  const personId = useSpeakingPerson(speaking, frame.speaker === "enemy" || !!resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy"));
   const { name: speaker, narration } = speakerPlate(frame, { heroine: game.heroineName, player: game.playerName }, storyState.people);
   const { ready, onReady, entries } = useDialogueLog(
     active.dateId,
@@ -157,17 +164,24 @@ export function RomanceScene({
           </a>
         </aside>
       )}
-      <div className="vn-character-layer">
-        <CharacterPortrait
-          characterId="heroine"
-          sceneId={active.dateId}
-          cityId={game.currentCityId}
-          emotion={emotion}
-          focus={portraitFocus(frame.speaker, "heroine")}
-          stand={frame.stand}
-        >
-          {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
-        </CharacterPortrait>
+      {/* With a person on stage the two stand side by side (the encounter's slots); her portrait
+          keeps its place in the tree, so it is not drawn again when they come in. */}
+      <div className={`vn-character-layer${personId ? " encounter-character-layer" : ""}`} data-two-characters={personId ? true : undefined}>
+        <div className={personId ? "encounter-character-slot encounter-character-heroine" : undefined}>
+          <CharacterPortrait
+            characterId="heroine"
+            sceneId={active.dateId}
+            cityId={game.currentCityId}
+            emotion={emotion}
+            focus={portraitFocus(frame.speaker, "heroine")}
+            stand={frame.stand}
+          >
+            {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
+          </CharacterPortrait>
+        </div>
+        {personId && <div className="encounter-character-slot encounter-character-enemy">
+          <CharacterPortrait key={personId} characterId={personId} focus={speaking === personId ? "speaking" : portraitFocus(frame.speaker, "enemy")} />
+        </div>}
       </div>
       <section
         className="vn-dialogue paper story-paper"

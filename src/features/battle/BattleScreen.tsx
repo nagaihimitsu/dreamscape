@@ -20,6 +20,8 @@ import { SceneHeading, SceneNotebookTool } from "../../components/SceneHeading";
 import { CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
 import { portraitFocus } from "../../components/speaker-focus";
 import { speakerPlate } from "../../components/speaker-plate";
+import { useSpeakingPerson } from "../../components/useSpeakingPerson";
+import { speakingPerson } from "../../domain/scene-person";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { EnemyPortrait } from "./EnemyPortrait";
@@ -300,6 +302,10 @@ export function BattleScreen({
     ? resolveDialogueExpression(dialogueExpressions, storyId, frame)
     : "neutral");
   const enemyEmotion = enemyReaction?.expression ?? (frame?.speaker === "enemy" ? frame.emotion : "neutral");
+  // A person with a portrait who speaks in their own name takes the opponent's place from that line
+  // (speakingPerson) until the opponent speaks or reacts again, or the talk gives way to a question.
+  const speaking = isDialogue && frame ? speakingPerson(storyState.people, frame) : undefined;
+  const personId = useSpeakingPerson(speaking, !isDialogue || frame?.speaker === "enemy" || !!enemyReaction);
   const plate = speakerPlate(frame ?? { speaker: "narrator" }, { heroine: game.heroineName, player: game.playerName, enemy: battle.enemyNameJa },
     storyState.people);
   const speaker = plate.name;
@@ -445,6 +451,8 @@ export function BattleScreen({
             </div>
           )}
           <div className="battle-character-slot battle-enemy">
+            {personId ? <CharacterPortrait key={personId} characterId={personId}
+              focus={speaking === personId ? "speaking" : portraitFocus(frame?.speaker, "enemy")} /> :
             <CharacterPortrait
               characterId={characterForBattle(battle.id)}
               emotion={enemyEmotion}
@@ -458,7 +466,7 @@ export function BattleScreen({
               }
             >
               {enemyReaction?.mark && <ComicEffect effect={enemyReaction.mark} reduceMotion={reduceMotion} cueKey={displayedStoryState ?? ""} />}
-            </CharacterPortrait>
+            </CharacterPortrait>}
           </div>
         </div>
       </div>

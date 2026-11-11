@@ -126,12 +126,14 @@
     {
       "id": "gt_harbans",
       "cityId": "delhi",
-      "nameJa": "ハルバンス"
+      "nameJa": "ハルバンス",
+      "characterId": "gt_harbans"
     },
     {
       "id": "gt_delhi_bangla_old_man",
       "cityId": "delhi",
-      "nameJa": "老人"
+      "nameJa": "老人",
+      "characterId": "gt_harbans"
     },
     {
       "id": "gt_suresh",
@@ -162,12 +164,14 @@
     {
       "id": "gt_zoheb",
       "cityId": "delhi",
-      "nameJa": "ゾヘブ"
+      "nameJa": "ゾヘブ",
+      "characterId": "gt_zoheb"
     },
     {
       "id": "gt_delhi_jama_young_man",
       "cityId": "delhi",
-      "nameJa": "若い男"
+      "nameJa": "若い男",
+      "characterId": "gt_zoheb"
     },
     {
       "id": "gt_anjali",
@@ -228,27 +232,32 @@
     {
       "id": "gt_kunal",
       "cityId": "delhi",
-      "nameJa": "クナール"
+      "nameJa": "クナール",
+      "characterId": "gt_kunal"
     },
     {
       "id": "gt_jasmeet",
       "cityId": "delhi",
-      "nameJa": "ジャスミート"
+      "nameJa": "ジャスミート",
+      "characterId": "gt_jasmeet"
     },
     {
       "id": "gt_monu",
       "cityId": "delhi",
-      "nameJa": "モヌ"
+      "nameJa": "モヌ",
+      "characterId": "gt_monu"
     },
     {
       "id": "gt_dubey",
       "cityId": "delhi",
-      "nameJa": "ドゥベイ"
+      "nameJa": "ドゥベイ",
+      "characterId": "gt_dubey"
     },
     {
       "id": "gt_meena",
       "cityId": "delhi",
-      "nameJa": "ミーナ"
+      "nameJa": "ミーナ",
+      "characterId": "gt_meena"
     },
     {
       "id": "gt_delhi_scam_young_man",

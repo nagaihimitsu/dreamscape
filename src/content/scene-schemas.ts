@@ -169,7 +169,8 @@ export const storyStateCatalogSchema = z.object({
   flags: z.array(z.object({ id, noteJa: text.optional() }).strict()).default([]),
   /**
    * `descriptionJa`: a line about the person in 旅の記録's 出会った人; `characterId`: the portrait
-   * (presentation/characters.json) that stands for the person in a scene with their `# person:`.
+   * (presentation/characters.json) that stands for the person in a scene with their `# person:`,
+   * and from their own lines (`# speaker: <person ID>`) in any scene (speakingPerson).
    */
   people: z.array(z.object({ id, cityId: id, nameJa: text, descriptionJa: japaneseText.optional(), characterId: id.optional() }).strict()).default([]),
   conditions: z.record(id, conditionSchema).default({}),

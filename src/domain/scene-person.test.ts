@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { scenePerson } from "./scene-person";
+import { scenePerson, speakingPerson } from "./scene-person";
 
 const people = [
   { id: "smp_lili", cityId: "mihon", nameJa: "リリ" },
@@ -18,5 +18,19 @@ describe("scenePerson", () => {
     expect(scenePerson(people, [])).toBeUndefined();
     expect(scenePerson(people, undefined)).toBeUndefined();
     expect(scenePerson(people, ["smp_unknown"])).toBeUndefined();
+  });
+});
+
+describe("speakingPerson", () => {
+  it("gives the portrait of a person who says the line in their own name", () => {
+    expect(speakingPerson(people, { speaker: "person", speakerPersonId: "smp_toma" })).toBe("smp_toma_art");
+  });
+
+  it("brings no one in for a person without a portrait, another speaker, a phone's message or a sheet's line", () => {
+    expect(speakingPerson(people, { speaker: "person", speakerPersonId: "smp_lili" })).toBeUndefined();
+    expect(speakingPerson(people, { speaker: "enemy" })).toBeUndefined();
+    expect(speakingPerson(people, { speaker: "narrator" })).toBeUndefined();
+    expect(speakingPerson(people, { speaker: "person", speakerPersonId: "smp_toma", phone: { side: "received" } })).toBeUndefined();
+    expect(speakingPerson(people, { speaker: "person", speakerPersonId: "smp_toma", letter: { kind: "note" } })).toBeUndefined();
   });
 });

@@ -60,6 +60,48 @@
       "paths": [
         "assets/characters/gt_roohi/neutral.webp"
       ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、ハルバンスの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_harbans/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、モヌの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_monu/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、ゾヘブの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_zoheb/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、ドゥベイの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_dubey/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、ミーナの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_meena/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、クナールの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_kunal/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、ジャスミートの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_jasmeet/neutral.webp"
+      ]
     }
   ]
 }
