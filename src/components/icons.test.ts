@@ -23,7 +23,7 @@ describe("Icon", () => {
     expect([...iconNames].sort()).toEqual([
       "bag", "bed", "book", "camera", "chevron-down", "chevron-right", "close", "coin", "compass", "credit",
       "external", "eye", "eye-off", "fast", "gear", "heart", "hourglass", "info", "load", "log", "map", "moon", "pin",
-      "plane", "save", "sliders", "stamp", "star", "sun", "swords", "ticket",
+      "plane", "save", "sliders", "speaker", "stamp", "star", "sun", "swords", "ticket",
     ]);
   });
 

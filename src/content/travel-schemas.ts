@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { conditionSchema } from "./condition-schemas";
 import { japaneseText } from "./text-language";
 import { tourismSourceSchema } from "./tourism-schemas";
 
@@ -19,6 +20,13 @@ export const travelPlaceSchema = z.object({
    * no story: never an event's teaser. Optional: a place without one shows no description.
    */
   descriptionJa: japaneseText.optional(),
+  /**
+   * The heroine's few words about the place (2026-11-11 user decision): when its photo card is chosen in free time, her
+   * small face and this line in a bubble show in the place's card. The first entry that holds now is said: a plain line
+   * always, a `{ textJa, when }` line while its condition holds (so those come first). `{player_name}` and
+   * `{heroine_name}` take the names set. Optional: without one, or with none holding, nothing shows.
+   */
+  heroineLinesJa: z.array(z.union([japaneseText, z.object({ textJa: japaneseText, when: conditionSchema }).strict()])).min(1).optional(),
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
   backgroundId: id,

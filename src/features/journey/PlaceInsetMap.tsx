@@ -24,7 +24,7 @@ const mark = (place: TravelPlace, html: string, size: number) => L.marker([place
  * controls, no drag or zoom, nothing to focus; a swipe over it scrolls the page). It moves to each new selection so
  * both marks show. Its OSM credit stays on it; when the tiles fail, a line under it says so (the cards still choose).
  */
-export function PlaceInsetMap({ here, there, name, glyph }: {
+export function PlaceInsetMap({ here, there, name, glyph, visited = [] }: {
   /** The current place (null when it cannot be found). */
   here: TravelPlace | null;
   /** The selected place. */
@@ -33,12 +33,16 @@ export function PlaceInsetMap({ here, there, name, glyph }: {
   name: string;
   /** Its mark: ◆ sightseeing, ♥ a date. */
   glyph: string;
+  /** The places the party has been to (visited-places.ts): their marks carry the stamp of 「行った場所」. */
+  visited?: readonly string[];
 }) {
   const [tilesFailed, setTilesFailed] = useState(false);
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const marks = useRef<L.LayerGroup | null>(null);
   const viewed = useRef(false);
+  // A list made anew each render would redraw the marks (and move the view again): its ids stand for it.
+  const visitedKey = visited.join(" ");
 
   useEffect(() => {
     const frame = container.current;
@@ -74,8 +78,9 @@ export function PlaceInsetMap({ here, there, name, glyph }: {
     group.clearLayers();
     // At the current place one mark only: the selected disc with the current place's ring.
     const from = here && here.id !== there.id ? here : null;
-    if (from) mark(from, '<span class="travel-map-marker is-here" aria-hidden="true">●</span><span class="travel-map-marker-label is-below" aria-hidden="true">現在地</span>', 32).addTo(group);
-    mark(there, `<span class="travel-map-marker is-selected${here && !from ? " is-here" : ""}" aria-hidden="true">${glyph}</span><span class="travel-map-marker-label" aria-hidden="true">${escapeHtml(name)}</span>`, 40).addTo(group);
+    const stamp = (place: TravelPlace) => (visitedKey.split(" ").includes(place.id) ? " is-visited" : "");
+    if (from) mark(from, `<span class="travel-map-marker is-here${stamp(from)}" aria-hidden="true">●</span><span class="travel-map-marker-label is-below" aria-hidden="true">現在地</span>`, 32).addTo(group);
+    mark(there, `<span class="travel-map-marker is-selected${here && !from ? " is-here" : ""}${stamp(there)}" aria-hidden="true">${glyph}</span><span class="travel-map-marker-label" aria-hidden="true">${escapeHtml(name)}</span>`, 40).addTo(group);
     // The view needs the frame's size (in a dialog, a frame or so later).
     return whenLaidOut(frame, () => {
       map.invalidateSize();
@@ -89,7 +94,7 @@ export function PlaceInsetMap({ here, there, name, glyph }: {
       if (animate) map.flyToBounds(bounds, { ...INSET_PADDING, duration: INSET_FLY_S });
       else map.fitBounds(bounds, { ...INSET_PADDING, animate: false });
     });
-  }, [here, there, name, glyph]);
+  }, [here, there, name, glyph, visitedKey]);
 
   return <div className="place-inset">
     <div ref={container} className="place-inset-map" data-testid="place-inset-map" />

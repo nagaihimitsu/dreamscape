@@ -8,23 +8,21 @@ import type { GameState } from "../../domain/game";
 import { beginStory, continueStory, type StoryStep } from "../../story/runtime";
 import { Modal, ModalTitle } from "../../components/Modal";
 import type { Learning } from "./useLearning";
+import type { LearningState } from "./learning-storage";
 import { InteractiveEnglish } from "./InteractiveEnglish";
+import { ReadAloudButton, useReadAloud } from "./ReadAloud";
 import { toggleTranslation, type Part } from "./Translations";
 import { WordBook } from "./WordBook";
 import { LocalWords } from "./LocalWords";
 import { localWordGroups } from "./local-words";
 import "./learning.css";
 
-export function answeredQuestions(game: GameState, learning: Learning) {
-  const records = game.activeBattle
-    ? { [game.activeBattle.battleId]: game.activeBattle }
-    : learning.data.records;
+/** A battle's answers as the notes keep them (learning-storage.ts) and as a battle on screen has them (its run). */
+type AnswerRecord = Pick<LearningState["records"][string], "contentHash" | "answers">;
+
+/** The questions answered in these records, by battle; a record of other content than today's (its hash) is left out. */
+function recordedQuestions(records: Record<string, AnswerRecord>) {
   return Object.entries(records).flatMap(([id, record]) => {
-    if (
-      !game.activeBattle &&
-      !game.battleRecords.some((item) => item.battleId === id)
-    )
-      return [];
     const content = getBattleContentByHash(id, record.contentHash);
     if (!content) return [];
     const { battle, quiz } = content;
@@ -38,16 +36,37 @@ export function answeredQuestions(game: GameState, learning: Learning) {
     });
   });
 }
+/** The notes' records of the battles this save has fought (its battleRecords). */
+function savedRecords(game: GameState, learning: Pick<Learning, "data">): Record<string, AnswerRecord> {
+  return Object.fromEntries(Object.entries(learning.data.records).filter(([id]) => game.battleRecords.some((item) => item.battleId === id)));
+}
+/** The questions the notes list: during a battle, its run's; else those of the battles this save has fought. */
+export function answeredQuestions(game: GameState, learning: Pick<Learning, "data">) {
+  return recordedQuestions(game.activeBattle ? { [game.activeBattle.battleId]: game.activeBattle } : savedRecords(game, learning));
+}
+/**
+ * The questions whose words the word book holds for this save (前に出た単語, met-words.ts): those of the battles it has
+ * fought, the run on screen standing for its own battle.
+ */
+export function metQuestions(game: GameState, learning: Pick<Learning, "data">) {
+  return recordedQuestions({
+    ...savedRecords(game, learning),
+    ...(game.activeBattle ? { [game.activeBattle.battleId]: game.activeBattle } : {}),
+  });
+}
 export function EnglishReview({
   game,
   learning,
   learnedWords = [],
+  readAloud = false,
   onClose,
 }: {
   game: GameState;
   learning: Learning;
   /** The words of the country learned on this device in this journey (useLocalWords), in the order learned. */
   learnedWords?: readonly string[];
+  /** 「英語を読み上げるボタンを出す」 is on and this browser can read aloud (ReadAloud.tsx). */
+  readAloud?: boolean;
   onClose: () => void;
 }) {
   const [markedOnly, setMarkedOnly] = useState(false);
@@ -66,6 +85,8 @@ export function EnglishReview({
   const selectedIndex = entries.findIndex(
     (entry) => entry.question.id === selected?.question.id,
   );
+  // The speaker buttons of the question shown: what one reads stops on another question, another view or closing.
+  const reader = useReadAloud(readAloud, `${shown}:${selected?.question.id ?? ""}`);
   const [story, setStory] = useState<StoryStep | null>(() => {
     if (!selected || !learning.data.openTopic) return null;
     const detail =
@@ -214,31 +235,34 @@ export function EnglishReview({
                   onDoubleTap={() => reveal("question")}
                 />
               </h3>
-              <button
-                type="button"
-                className="secondary review-mark"
-                aria-pressed={marked}
-                onClick={() =>
-                  learning.update((s) => {
-                    const marks = { ...s.marks };
-                    if (marked) delete marks[question.id];
-                    else marks[question.id] = JSON.stringify(tr.source);
-                    return { ...s, marks };
-                  })
-                }
-              >
-                {marked ? "復習の登録を解除" : "あとで復習する"}
-              </button>
-              <button
-                className="text-button review-translation-toggle"
-                type="button"
-                aria-expanded={showTranslation("question")}
-                onClick={() => toggle("question")}
-              >
-                {showTranslation("question")
-                  ? "問題文の訳を閉じる"
-                  : "問題文の訳を見る"}
-              </button>
+              <div className="review-question-tools">
+                <button
+                  type="button"
+                  className="secondary review-mark"
+                  aria-pressed={marked}
+                  onClick={() =>
+                    learning.update((s) => {
+                      const marks = { ...s.marks };
+                      if (marked) delete marks[question.id];
+                      else marks[question.id] = JSON.stringify(tr.source);
+                      return { ...s, marks };
+                    })
+                  }
+                >
+                  {marked ? "復習の登録を解除" : "あとで復習する"}
+                </button>
+                <ReadAloudButton reader={reader} part="question" text={question.questionEn} />
+                <button
+                  className="text-button review-translation-toggle"
+                  type="button"
+                  aria-expanded={showTranslation("question")}
+                  onClick={() => toggle("question")}
+                >
+                  {showTranslation("question")
+                    ? "問題文の訳を閉じる"
+                    : "問題文の訳を見る"}
+                </button>
+              </div>
               {showTranslation("question") && <p>{tr.questionJa}</p>}
               <ul className="review-options">
                 {question.options.map((o) => (
@@ -253,6 +277,7 @@ export function EnglishReview({
                       />
                     </span>
                     <br />
+                    <ReadAloudButton reader={reader} part={o.id} text={o.textEn} />
                     <button
                       className="text-button review-translation-toggle"
                       type="button"

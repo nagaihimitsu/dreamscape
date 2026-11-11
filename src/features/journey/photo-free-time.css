@@ -388,6 +388,18 @@
 }
 .place-card-tag.is-date { background: var(--ds-marker); }
 .place-card-hook { font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+/* The heroine's few words about the chosen place (HeroineNote, its heroineLinesJa; 2026-11-11 user decision): in the
+   card's flow, so it covers nothing and a drag that starts on it moves the row or lifts the card as anywhere else
+   (nothing in it is pressable). Each place chosen brings a new note, which comes in like a panel; under reduced motion
+   it is simply there. */
+.place-card .place-card-heroine { margin: 0; animation: place-card-heroine-in var(--motion-fast) var(--ease-out); }
+@keyframes place-card-heroine-in {
+  from { opacity: 0; transform: translateY(4px) scale(0.98); }
+}
+.reduce-motion .place-card .place-card-heroine { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .place-card .place-card-heroine { animation: none; }
+}
 .place-card-note { color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }
 .place-card .fine-print { margin: 0 2px; color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }
 

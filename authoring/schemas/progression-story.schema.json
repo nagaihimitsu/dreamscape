@@ -47,6 +47,11 @@
             "type": "string",
             "minLength": 1
           },
+          "descriptionJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
           "characterId": {
             "type": "string",
             "pattern": "^[a-z][a-z0-9_]*$"

@@ -1,7 +1,8 @@
 // The game's own line icons (UI redesign §2.5), drawn for this project on a
 // 24×24 grid: no icon font, no CDN, no copied icon set. Every icon is decorative
 // and stands next to a visible Japanese word, which carries the meaning; only
-// the universal × may stand alone, with its own aria-label on the button.
+// the universal × and the speaker (the read-aloud buttons beside English text)
+// may stand alone, with their own aria-label on the button.
 
 const n = (value: number) => Number(value.toFixed(2));
 /** A circle as path data, so every icon is a single path. */
@@ -44,6 +45,7 @@ const paths = {
   info: `${circle(12, 12, 9)}M12 11v5.5M12 7.7v.1`,
   heart: "M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z",
   ticket: "M3.5 7.5h17v3a1.5 1.5 0 0 0 0 3v3h-17v-3a1.5 1.5 0 0 0 0-3zM14.5 7.5v9",
+  speaker: "M4 9.5h3.5L12 5.5v13l-4.5-4H4zM15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11",
 } as const;
 
 export type IconName = keyof typeof paths;

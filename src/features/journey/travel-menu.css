@@ -40,7 +40,29 @@
 @media (prefers-reduced-motion: reduce) {
   .travel-map-marker.is-here::before { animation: none; opacity: 0; }
 }
-.travel-map-marker.is-visited::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: white; box-shadow: 0 0 0 1px #53655a; }
+/* A place the party has been to (「行った場所」, visited-places.ts; 2026-11-11 user decision): its mark on a warm paper
+   disc, with a stamp (a tick in a dark ink circle) at its lower right, so it differs from a plain mark by its shape, not
+   by colour alone. The selected marker's slate disc and yellow mark (later rules) still win; the stamp stays on it. */
+.travel-map-marker.is-visited { position: relative; border-radius: 50%; background: var(--ds-parchment-2); box-shadow: 0 0 0 1.5px var(--ds-gold), 0 1px 3px rgba(0, 0, 0, 0.25); }
+.travel-map-marker.is-here.is-visited { box-shadow: none; }
+.travel-map-marker.is-visited::after {
+  content: "✓";
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  display: grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--ds-ink);
+  color: var(--ds-parchment);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: none;
+  box-shadow: 0 0 0 1.5px #fff;
+}
 .travel-list { display: grid; }
 .travel-choice-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .travel-choice-header h3 { margin: 0; font-size: 16px; }
@@ -261,7 +283,6 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
   transform: scale(1.25);
 }
 .travel-map-marker.is-selected.is-here { border: 0; background: var(--ds-slate-900); box-shadow: 0 0 0 2px #fff, 0 0 0 5px var(--ds-here), 0 2px 6px rgba(0, 0, 0, 0.35); }
-.travel-map-marker.is-selected.is-visited::after { position: absolute; right: 6px; bottom: 6px; }
 .travel-map-marker-label {
   position: absolute;
   bottom: calc(100% + 9px);

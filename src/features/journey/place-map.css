@@ -35,6 +35,8 @@
 .travel-map-legend { display: flex; flex-wrap: wrap; gap: 0 12px; margin: 0; font-size: 12px; font-weight: 500; line-height: 1.4; }
 .travel-map-legend > span { white-space: nowrap; }
 .travel-map-legend-glyph { color: var(--ds-marker); }
+/* The stamp of 「行った場所」 as the marks carry it (travel-menu.css .is-visited). */
+.travel-map-legend-visited { display: inline-grid; place-items: center; width: 14px; height: 14px; margin: 0 2px; border-radius: 50%; background: var(--ds-ink); color: var(--ds-parchment); font-size: 9px; font-weight: 700; line-height: 1; vertical-align: -1px; }
 .free-time-hub .travel-map-notes > :last-child:not(.travel-map-error) { padding-bottom: 6px; }
 .travel-map-error { margin: 4px 0 0; font-size: 13px; line-height: 1.5; }
 .travel-map-legend-disc { display: inline-block; width: 12px; height: 12px; margin: 0 3px 0 2px; border-radius: 50%; background: var(--ds-slate-900); box-shadow: 0 0 0 1.5px #fff, 0 0 0 2.5px var(--ds-slate-900); vertical-align: -1px; }

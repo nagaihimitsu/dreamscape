@@ -79,6 +79,20 @@
   padding: 6px 12px;
   font-size: 13px;
 }
+/* The question's own tools in one row: 「あとで復習する」, the speaker (when shown) and 「問題文の訳を見る」. */
+.review-question-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+.review-question-tools > .review-mark {
+  margin: 0;
+}
+.review-options .read-aloud {
+  margin-right: 4px;
+}
 .review-question p,
 .review-question li {
   margin: 6px 0;
@@ -157,6 +171,44 @@
 .english-word:hover,
 .english-word:focus-visible {
   color: var(--ds-ink);
+  background: var(--ds-parchment-2);
+}
+/* 前に出た単語 (met-words.ts): a word of the word book met again in a battle's English. Every word's dotted line says it
+   can be pressed for its meaning; this one's is blue and twice as thick (not a colour alone). Its name says it too. */
+.english-word.met-word,
+.met-word {
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--ds-plate-blue);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+/* 「英語を読み上げるボタン」 (ReadAloud.tsx): a 44-px outlined square with the speaker, beside an English text and before
+   its 「訳を見る」. Outlined like the other helps, not slate like an answer; while it reads (aria-pressed), filled and edged
+   in slate. */
+.read-aloud {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--ds-field-edge);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--ds-ink);
+  vertical-align: middle;
+}
+.read-aloud .icon {
+  width: 22px;
+  height: 22px;
+}
+.read-aloud[aria-pressed="true"] {
+  border: 2px solid var(--ds-slate-800);
   background: var(--ds-parchment-2);
 }
 /* A word's meaning: a display-only parchment note under the sentence. */

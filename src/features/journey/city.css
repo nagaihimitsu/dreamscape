@@ -68,3 +68,48 @@
 .city-complete {
   padding-top: 18px;
 }
+/* 旅の記録's 「出会った人」 (MetPeople): after the stops, by city, each person's name and the writer's few words.
+   Display only: headings and hairlines, no accent line. */
+.met-people {
+  margin-top: 6px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.met-people h3 {
+  margin: 0 0 4px;
+  font-family: "Noto Serif JP", serif;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.met-people > .fine-print {
+  margin: 4px 0;
+  font-size: 0.8rem;
+}
+.met-people h4 {
+  margin: 10px 0 2px;
+  color: var(--ds-ink-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.met-people dl {
+  margin: 0;
+}
+.met-people dl > div {
+  padding: 8px 0;
+}
+.met-people dl > div + div {
+  border-top: 1px dashed var(--line);
+}
+.met-people dt {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.met-people dd {
+  margin: 2px 0 0;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}

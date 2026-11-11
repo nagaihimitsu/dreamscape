@@ -7,13 +7,17 @@ import { getDirection } from "../../domain/travel";
 import { getTravelWaitOptions, type EventChoice, type RouteChoice } from "../../domain/travel-destinations";
 import { getTravelEventDefinition, type TravelMode } from "../../domain/travel-game";
 import { compareRouteTime } from "../../domain/travel-routes";
+import { HeroineNote } from "../battle/HeroineNote";
 import { withNames } from "../romance/names";
 import { blockedWays, chooseWay, chosenEvent, eventKindJa, type DeparturePlan, type PhotoCardEntry } from "./photo-cards";
+import { placeHeroineLine } from "./place-heroine-line";
 import { PlaceInsetMap } from "./PlaceInsetMap";
 import { placeDisplayName } from "./travel-labels";
 import { formatTravelTime } from "./travel-time";
 import { TravelTours } from "./TravelTours";
 import { pressKindOf, type PressScope, type TravelSelectionApi } from "./useTravelSelection";
+import { visitedPlaceIds } from "./visited-places";
+import "../battle/battle.css";
 
 /** A held key repeats its keydown: only its first press counts (the travel guards). */
 function ignoreRepeat(event: KeyboardEvent) {
@@ -29,7 +33,8 @@ function CardName({ id, name, heading }: { id: string; name: string; heading: bo
 
 /**
  * The selected place's introduction card (B案): its name, the place's own description (`descriptionJa` of the travel
- * place: general tourist information, never an event's teaser; none, no line), then for each of its events its tag
+ * place: general tourist information, never an event's teaser; none, no line), the heroine's few words about it (her
+ * small face and a bubble, from its `heroineLinesJa`; on the page only, none without a line), then for each of its events its tag
  * (「ストーリー」 or 「デート」), the AP (when it takes some), time and admission (with several events, each tag beside its
  * title, which chooses the event a departure takes), the chosen event's ways with their time and fare; the return
  * reserve, and the small map of the current place and this one. The event and the way chosen here (`plan`) are what a
@@ -63,6 +68,8 @@ export function PlaceCard({ game, entry, api, plan, onPlan, scope = "page", map 
   const reserve = game.travel.returnReserve;
   const several = entry.events.length > 1;
   const chosen = chosenEvent(entry, plan.eventId).event.id;
+  // Her few words about the place (its heroineLinesJa), on the page only: not in the expanded map's 「選んだ行き先」.
+  const line = scope === "page" ? placeHeroineLine(game, place) : null;
   const events = entry.events.map((choice) => <PlaceEvent key={choice.event.id} game={game} placeId={place.id} choice={choice} several={several}
     chosen={choice.event.id === chosen} onChoose={() => onPlan({ eventId: choice.event.id })}
     way={{ isCurrent, selected, api, scope, picked: plan.mode, onPick: (mode) => onPlan({ mode }), quietGo }} />);
@@ -70,10 +77,12 @@ export function PlaceCard({ game, entry, api, plan, onPlan, scope = "page", map 
     data-armed={selected && api.armed ? "true" : undefined} aria-labelledby={`${id}-name`}>
     <CardName id={`${id}-name`} name={name} heading={heading} />
     {place.descriptionJa && <p className="place-card-hook">{place.descriptionJa}</p>}
+    {/* A new note for each place chosen, so it comes in again (place-card-heroine; none under reduced motion). */}
+    {line !== null && <HeroineNote key={place.id} className="place-card-heroine" label={game.heroineName} text={line} cityId={cityId} testId="place-heroine-line" />}
     {several ? <div className="place-card-event-list" role="group" aria-label="することを選ぶ">{events}</div> : events}
     {reserve > 0 && <p className="place-card-note">帰路用に{formatMoneyForCity(cityId, reserve)}を確保（所持金に含む）</p>}
     {map && <div className="place-card-map">
-      <PlaceInsetMap here={here} there={place} name={name} glyph={dateOnly ? "♥" : "◆"} />
+      <PlaceInsetMap here={here} there={place} name={name} glyph={dateOnly ? "♥" : "◆"} visited={visitedPlaceIds(game)} />
       {here && <p className="place-card-direction">{isCurrent ? "現在地" : `${placeDisplayName(game, here)}から${getDirection(here, place)}`}</p>}
     </div>}
   </section>;

@@ -18,12 +18,14 @@
     {
       "id": "smp_mihon_lili",
       "cityId": "mihon",
-      "nameJa": "リリ"
+      "nameJa": "リリ",
+      "descriptionJa": "時計塔の下で、針が三時を指す手描きのしおりを並べていた女の子。トーマの妹。"
     },
     {
       "id": "smp_mihon_toma",
       "cityId": "mihon",
-      "nameJa": "トーマ"
+      "nameJa": "トーマ",
+      "descriptionJa": "見本の時計塔の時計番の青年。止まった歯車にも、油を差し続けている。"
     }
   ],
   "conditions": {

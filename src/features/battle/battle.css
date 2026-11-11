@@ -777,6 +777,13 @@
   grid-column: 2 / -1;
   margin: 2px 0 8px;
 }
+/* An option's speaker (ReadAloud.tsx, with 「英語を読み上げるボタンを出す」): at the right of its text, next to its
+   「訳を見る」 and away from its answer button. The text runs beside it and on below it, so a short option keeps its row's
+   height (the answer button's 44 px) and a long one is only narrower for its first lines. */
+.battle-screen .option-body > .read-aloud {
+  float: right;
+  margin: 0 0 2px 6px;
+}
 /* A·B·C: the answer is the primary action of its row (slate, gold hairline, §2.3). */
 .battle-screen .quiz-choice .answer-submit {
   grid-column: 1;

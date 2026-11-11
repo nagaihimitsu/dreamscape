@@ -35,6 +35,35 @@
             "minLength": 1,
             "language": "ja"
           },
+          "heroineLinesJa": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "language": "ja"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "textJa": {
+                      "type": "string",
+                      "minLength": 1,
+                      "language": "ja"
+                    },
+                    "when": {}
+                  },
+                  "required": [
+                    "textJa",
+                    "when"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
           "latitude": {
             "type": "number",
             "minimum": -90,
