@@ -66,6 +66,10 @@ export function JourneyHud({ game, place, view, ...actions }: { game: GameState;
     .filter((item) => itemUsableIn(game, item.id, game.currentCityId) && game.inventory[item.id] === "held")
     .map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa, iconPath: item.iconPath,
       ...(item.cityId !== game.currentCityId ? { origin: `${getCities().find((city) => city.id === item.cityId)?.nameJa ?? item.cityId}から持ってきた` } : {}) }));
+  const shown = view === "all";
+  const budgetCue = useSeenChange(game.travelBudget, shown, numberChange);
+  const apCue = useSeenChange(game.ap, shown, numberChange);
+  const itemsCue = useSeenChange(items.map((item) => item.id).join("\n"), shown, itemsChange);
   return (
     <div className="journey-hud" data-testid="journey-bar" data-view={view} ref={measured} onMouseDown={keepFocusOffControls}>
       <div className="hud-status">
@@ -77,12 +81,13 @@ export function JourneyHud({ game, place, view, ...actions }: { game: GameState;
           </span>
         </p>
         <p className="hud-wallet">
-          <span className="travel-budget" data-length={moneyLength(money)} aria-label={`旅の予算 ${game.travelBudget}${currencyForCity(game.currentCityId).unitJa}`}><Icon name="coin" />{money}</span>
-          <span className="ap" aria-label={`残り${game.ap}AP`}><Icon name="star" />{game.ap}<small> AP</small></span>
+          {/* A new key per change the player sees plays its cue once (journey-hud.css). */}
+          <span key={`budget-${budgetCue?.count ?? 0}`} className="travel-budget" data-cue={budgetCue?.direction} data-length={moneyLength(money)} aria-label={`旅の予算 ${game.travelBudget}${currencyForCity(game.currentCityId).unitJa}`}><Icon name="coin" />{money}</span>
+          <span key={`ap-${apCue?.count ?? 0}`} className="ap" data-cue={apCue?.direction} aria-label={`残り${game.ap}AP`}><Icon name="star" />{game.ap}<small> AP</small></span>
         </p>
       </div>
       <div className="hud-actions">
-        <HeldItems items={items} onOpen={closeWaitMenu} />
+        <HeldItems items={items} gained={itemsCue?.count} onOpen={closeWaitMenu} />
         <nav className="hud-tools" aria-label="旅の操作">
           <span id={HUD_SCREEN_TOOL_ID} className="hud-screen-tool" />
           <HudMenu {...actions} />
@@ -91,6 +96,34 @@ export function JourneyHud({ game, place, view, ...actions }: { game: GameState;
     </div>
   );
 }
+
+type Direction = "up" | "down";
+type Cue = { direction: Direction; count: number };
+
+/**
+ * The changes of one of the header's values that the player has seen, for its cue (display only;
+ * the header always shows the value itself). The budget, the AP and the held items wait for a
+ * choice over a story scene (`shown` false, hud-view.ts), so a change made while they are hidden
+ * counts when they show again: an AP reward read on a battle's result shows as the AP rising once
+ * free time shows it. Null until the first change; nothing on the first showing.
+ */
+function useSeenChange<T>(value: T, shown: boolean, change: (seen: T, now: T) => Direction | null): Cue | null {
+  const seen = useRef(value);
+  const [cue, setCue] = useState<Cue | null>(null);
+  useEffect(() => {
+    if (!shown) return;
+    const direction = change(seen.current, value);
+    seen.current = value;
+    if (direction) setCue((last) => ({ direction, count: (last?.count ?? 0) + 1 }));
+  }, [value, shown, change]);
+  return cue;
+}
+const numberChange = (seen: number, now: number): Direction | null => now > seen ? "up" : now < seen ? "down" : null;
+/** An item the header has not shown before (one used or given away only leaves the row). */
+const itemsChange = (seen: string, now: string): Direction | null => {
+  const before = seen.split("\n");
+  return now.split("\n").some((id) => id !== "" && !before.includes(id)) ? "up" : null;
+};
 
 /**
  * A press on the header's text (the place, the money) keeps the focus where it

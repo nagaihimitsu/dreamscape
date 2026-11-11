@@ -76,6 +76,16 @@
   background: var(--ds-parchment-2);
   border-radius: 12px;
 }
+/* A found clue's explanation fades in as it opens (no movement: its 「説明を閉じる」 takes
+   a press at once); choosing another clue changes it in place. */
+.observation-detail { animation: observation-detail-in var(--motion-fast) var(--ease-out); }
+@keyframes observation-detail-in {
+  from { opacity: 0; }
+}
+.reduce-motion .observation-detail { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .observation-detail { animation: none; }
+}
 .recorded-label {
   font-size: 11px;
   color: var(--ds-here);

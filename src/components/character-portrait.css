@@ -7,6 +7,12 @@
   justify-content: center;
   opacity: .86;
   transition: opacity 180ms ease;
+  /* A character who comes into the scene fades in (a change of expression does not: the
+     portrait stays, only its picture changes). */
+  animation: vn-character-in var(--motion-medium) var(--ease-out);
+}
+@keyframes vn-character-in {
+  from { opacity: 0; }
 }
 .vn-character.is-speaking { opacity: 1; }
 .vn-character img, .vn-character svg {
@@ -16,6 +22,7 @@
   object-fit: contain;
   object-position: center bottom;
 }
+.reduce-motion .vn-character { animation: none; }
 @media (prefers-reduced-motion: reduce) {
-  .vn-character { transition: none; }
+  .vn-character { transition: none; animation: none; }
 }

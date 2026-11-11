@@ -13,6 +13,14 @@
   gap: 2px;
   cursor: pointer;
 }
+/* What the button shows, laid out as the button's own column (journey-hud.css pops it
+   when a new item comes, while the button stays put). */
+.held-item-picture {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: inherit;
+}
 .held-item-button img {
   display: block;
   width: 30px;
