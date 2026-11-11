@@ -135,7 +135,7 @@ INCLUDE modules.ink
     # speaker: narrator
     アンジャリが列から叫ぶ。
     # speaker: gt_anjali
-    外国の人、全問正解！　ずるい、来年もう一回勝負して！
+    外国の人、全問正解！　ずるい、来年また来て！　もっと難しいの出すから！
 - battle_score == 2:
     # speaker: narrator
     アンジャリが指を二本立てる。

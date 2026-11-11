@@ -11,7 +11,10 @@ interface Preferences {
   autoSave: boolean;
   dialogueSpeed: number;
   autoAdvance: boolean;
-  /** 「未読の台詞も高速送りする」 (read-skip): off, fast-forward stops at a line not read before. */
+  /**
+   * 「未読の台詞も高速送りする」 (read-skip): off, fast-forward stops at a line not read before. On by default (user
+   * decision 2026-11-11: on a first play every line is unread, so stopping made 高速送り move one line only).
+   */
   skipUnread: boolean;
   /** 「英語を読み上げるボタンを出す」 (ReadAloud.tsx): on, a speaker button beside the quizzes' English. Off by default. */
   readAloud: boolean;
@@ -23,7 +26,7 @@ const defaults: Preferences = {
   autoSave: true,
   dialogueSpeed: 25,
   autoAdvance: false,
-  skipUnread: false,
+  skipUnread: true,
   readAloud: false,
 };
 
@@ -52,7 +55,7 @@ function read(raw: string | null): Preferences | null {
       autoSave: item.autoSave === undefined ? true : item.autoSave as boolean,
       dialogueSpeed: item.dialogueSpeed === undefined ? 25 : item.dialogueSpeed as number,
       autoAdvance: item.autoAdvance === undefined ? false : item.autoAdvance as boolean,
-      skipUnread: item.skipUnread === undefined ? false : item.skipUnread as boolean,
+      skipUnread: item.skipUnread === undefined ? true : item.skipUnread as boolean,
       readAloud: item.readAloud === undefined ? false : item.readAloud as boolean,
     };
   } catch {

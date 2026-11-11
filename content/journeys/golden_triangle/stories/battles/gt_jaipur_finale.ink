@@ -82,7 +82,7 @@ INCLUDE modules.ink
     # speaker: gt_pooja
     一と四分の一！
     # speaker: narrator
-    プージャーが勝ち誇った。
+    プージャーが得意げに笑った。
     # speaker: gt_pooja
     つまりジャイプールの人間は、デリーの人の一と四分の一倍ってこと
 }
