@@ -106,7 +106,6 @@ import {
   startBattle,
   advanceBattle,
   answerBattle,
-  toggleBattleHint,
   getReasoningContext,
   getActiveBattleContent,
   selectReasoningClue,
@@ -758,9 +757,6 @@ export function GameApp({
             onChoose={(index) => commit((state) => chooseBattle(state, index, game.revision, nextRomanceRoll))}
             onAnswer={(id) =>
               commit((state) => answerBattle(state, id, game.revision))
-            }
-            onHint={() =>
-              commit((state) => toggleBattleHint(state, game.revision))
             }
             onPress={() =>
               commit((state) => pressBattleClaim(state, game.revision))

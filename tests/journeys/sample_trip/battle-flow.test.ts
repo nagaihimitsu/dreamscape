@@ -9,7 +9,7 @@ import { fnvHash } from "../../../src/content/fingerprint";
 import type { SceneEntry } from "../../../src/content/scene-schemas";
 import {
   advanceBattle, answerBattle, battleChrome, battleDialogueStop, chooseBattle, getActiveBattleContent, getReasoningContext, leaveBattle, pressBattleClaim,
-  selectReasoningClue, startBattle, submitBattleEvidence, toggleBattleHint,
+  selectReasoningClue, startBattle, submitBattleEvidence,
 } from "../../../src/domain/battle";
 import { validateGameState, type GameState } from "../../../src/domain/game";
 import { cityStart, openBattleScene } from "../../../src/dev/scenario-builders";
@@ -96,11 +96,10 @@ describe("a battle as one flow (stage 5): the sample's battles", () => {
     const question = getActiveBattleContent(state.activeBattle!).quiz.questions[0];
     expect(state.activeBattle).toMatchObject({ phase: "question", roundIndex: 0, frame: null });
     expect(state.activeBattle!.storyState).not.toBeNull();
-    state = act(state, (current) => toggleBattleHint(current, current.revision));
     const answered = act(state, (current) => answerBattle(current, question.correctOptionId, current.revision));
     // A second tap with the old revision changes nothing.
     expect(answerBattle(answered, question.correctOptionId, state.revision)).toBe(answered);
-    expect(answered.activeBattle).toMatchObject({ phase: "feedback", score: 1, answers: [expect.objectContaining({ correct: true, hintUsed: true })] });
+    expect(answered.activeBattle).toMatchObject({ phase: "feedback", score: 1, answers: [expect.objectContaining({ correct: true, hintUsed: false })] });
     const resumed = restore(answered);
     const after = act(resumed, (current) => advanceBattle(current, current.revision));
     expect(after.activeBattle).toMatchObject({ phase: "dialogue", score: 1, turns: 1 });

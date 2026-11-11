@@ -221,8 +221,7 @@
 .battle-result-history { margin-top: 12px; }
 .battle-result-history summary,
 .reward-details summary,
-.result-pending summary,
-.battle-result .episode-clear summary {
+.result-pending summary {
   cursor: pointer;
   color: var(--ds-ink);
   font-size: 13px;
@@ -268,10 +267,10 @@
   .battle-result .current-ap { margin: 2px 0; }
   .battle-result .reward-details summary,
   .battle-result .result-pending summary,
-  .battle-result .battle-result-history summary,
-  .battle-result .episode-clear summary { padding: 4px 0; }
+  .battle-result .battle-result-history summary { padding: 4px 0; }
   .battle-result .episode-clear { margin: 4px 0; padding: 8px 10px; }
   .battle-result .episode-clear h2 { font-size: 16px; margin: 1px 0; }
+  .battle-result .episode-clear > p:not(.eyebrow) { margin: 2px 0 0; line-height: 1.8; }
   .battle-result .special-result-note { margin: 4px 0; padding: 8px; line-height: 1.5; }
   .battle-result-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin-top: 8px; }
   .battle-result-actions .primary { grid-column: 1 / -1; }
@@ -346,9 +345,9 @@
     transform-origin: center bottom;
   }
 }
-/* The round bar over an answer's explanation (its verdict) and over the result
-   (「決着」). Its line stays as tall as the 44-px 手がかり帳 it held (padding
-   and edge outside it), so the explanation's start sits where it did. */
+/* The round bar over an answer's explanation (its verdict). Its line stays as
+   tall as the 44-px 手がかり帳 it held (padding and edge outside it), so the
+   explanation's start sits where it did. */
 .battle-screen .battle-roundbar {
   position: sticky;
   top: 0;

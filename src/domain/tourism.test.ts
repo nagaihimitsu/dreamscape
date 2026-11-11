@@ -20,7 +20,6 @@ import {
   getActiveBattleContent,
   leaveBattle,
   startBattle,
-  toggleBattleHint,
 } from "./battle";
 import {
   advanceTourismGuide,
@@ -191,7 +190,6 @@ describe("tourism temporarily suspends the current battle", () => {
       let state = explore(before);
       expect(advanceBattle(state, state.revision)).toBe(state);
       expect(answerBattle(state, "A", state.revision)).toBe(state);
-      expect(toggleBattleHint(state, state.revision)).toBe(state);
       expect(leaveBattle(state, state.revision)).toBe(state);
       state = discoverClue(state, clues()[0].id, state.revision);
       state = reload(state);

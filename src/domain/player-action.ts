@@ -1,4 +1,4 @@
-import { getActiveBattleContent, getBattleObservationLandmarkId, advanceBattle, answerBattle, battleChoiceDisplay, battleDialogueStop, canSubmitBattleEvidence, canToggleReasoningClue, chooseBattle, pressBattleClaim, selectReasoningClue, submitBattleEvidence, toggleBattleHint } from "./battle";
+import { getActiveBattleContent, getBattleObservationLandmarkId, advanceBattle, answerBattle, battleChoiceDisplay, battleDialogueStop, canSubmitBattleEvidence, canToggleReasoningClue, chooseBattle, pressBattleClaim, selectReasoningClue, submitBattleEvidence } from "./battle";
 import { getBattleResultExits } from "./chapter";
 import { advanceCompletedJourneyCity, getPlayerDeparture } from "./city-travel";
 import { recordAlbumPhoto } from "./album";
@@ -76,7 +76,6 @@ export type PlayerAction =
   | { kind: "battle_next" }
   | { kind: "battle_choose"; index: number }
   | { kind: "battle_answer"; optionId: string }
-  | { kind: "battle_hint" }
   | { kind: "battle_press" }
   | { kind: "evidence_toggle"; clueId: string }
   | { kind: "evidence_submit" }
@@ -143,7 +142,7 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
       const { quiz } = getActiveBattleContent(battle);
       return [
         ...quiz.questions[battle.roundIndex].options.map((option) => ({ kind: "battle_answer" as const, optionId: option.id })),
-        { kind: "battle_hint" }, ...back,
+        ...back,
       ];
     }
     if (battle.phase === "reasoning") {
@@ -224,7 +223,6 @@ export function playerActionChange(action: PlayerAction, nextRoll: () => number)
       case "battle_next": return advanceBattle(state, revision);
       case "battle_choose": return chooseBattle(state, action.index, revision, nextRoll);
       case "battle_answer": return answerBattle(state, action.optionId, revision);
-      case "battle_hint": return toggleBattleHint(state, revision);
       case "battle_press": return pressBattleClaim(state, revision);
       case "evidence_toggle": return selectReasoningClue(state, action.clueId, revision);
       case "evidence_submit": return submitBattleEvidence(state, revision);
