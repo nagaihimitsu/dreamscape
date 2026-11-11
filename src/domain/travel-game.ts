@@ -222,7 +222,7 @@ export function sleepAtHotel(state: GameState, mode: TravelMode, expectedRevisio
   const hotel = openHotel(paid, { from: state.travel.currentPlaceId, to: state.travel.hotelPlaceId, modeId: mode, arrivalMinute: plan.arrivalMinute }, nextRoll);
   if (hotel) return hotel;
   return { ...state, revision: state.revision + 1, travelBudget: budget,
-    // The next day starts at the hotel with an empty route.
-    travel: { ...state.travel, currentPlaceId: state.travel.hotelPlaceId, todayPlaceIds: [], day: plan.nextDay, minute: plan.nextMinute, returnReserve: 0, returnDeadline: DAY_END,
+    // The next day starts at the hotel with an empty route and no headlines.
+    travel: { ...state.travel, currentPlaceId: state.travel.hotelPlaceId, todayPlaceIds: [], todayEpisodeIds: [], day: plan.nextDay, minute: plan.nextMinute, returnReserve: 0, returnDeadline: DAY_END,
       ...(state.travel.calendar ? { calendar: { ...state.travel.calendar, journeyDay: state.travel.calendar.journeyDay + 1 } } : {}) } };
 }

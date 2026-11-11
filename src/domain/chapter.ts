@@ -236,7 +236,11 @@ export function isRewardEarned(state: GameState, rule: RewardRule): boolean {
     (rule.trigger === "battle_complete" || record.bestScore >= rule.minScore!)
   );
 }
-/** Records the episodes whose battle is finished; only a finale marks the whole city. */
+/**
+ * Records the episodes whose battle is finished; only a finale marks the whole city. completedEpisodeIds only grows at its
+ * end, so it is the order the episodes were completed in; the current city's episodes completed now also go after today's
+ * headlines (the travel state's `todayEpisodeIds`, save v23; the night's recap).
+ */
 function recordEpisodes(state: GameState): GameState {
   const completedEpisodeIds = [...state.completedEpisodeIds];
   const completedCityIds = [...state.completedCityIds];
@@ -258,10 +262,12 @@ function recordEpisodes(state: GameState): GameState {
     )
       completedCityIds.push(episode.cityId);
   }
-  return completedEpisodeIds.length === state.completedEpisodeIds.length &&
-    completedCityIds.length === state.completedCityIds.length
-    ? state
-    : { ...state, completedEpisodeIds, completedCityIds };
+  if (completedEpisodeIds.length === state.completedEpisodeIds.length && completedCityIds.length === state.completedCityIds.length)
+    return state;
+  const today = completedEpisodeIds.slice(state.completedEpisodeIds.length)
+    .filter((id) => episodes.some((episode) => episode.id === id && episode.cityId === state.currentCityId));
+  return { ...state, completedEpisodeIds, completedCityIds,
+    travel: today.length ? { ...state.travel, todayEpisodeIds: [...state.travel.todayEpisodeIds, ...today] } : state.travel };
 }
 export function finalizeBattleProgress(state: GameState): GameState {
   const active = state.activeBattle;
