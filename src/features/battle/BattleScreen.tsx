@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { tourSceneBadge } from "../../domain/tour";
-import { dialogueExpressions, dialogueReactions, landmarks, learningTranslations, presentation, storyState, tourismAssets } from "../../content";
+import { dialogueExpressions, dialogueReactions, landmarks, learningTranslations, storyState, tourismAssets } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
@@ -456,12 +456,7 @@ export function BattleScreen({
         plateClassName="battle-nameplate"
         cutIn={nameCut}
         narration={!!frame && plate.narration}
-        speaker={frame && showsSpeakerPlate(frame) && <>
-          {speaker}
-          {frame.emotion !== "neutral" && (
-            <span className="emotion">{presentation.emotions[frame.emotion]}</span>
-          )}
-        </>}
+        speaker={frame && showsSpeakerPlate(frame) && speaker}
         controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={auto} />}
       />}
       <section
