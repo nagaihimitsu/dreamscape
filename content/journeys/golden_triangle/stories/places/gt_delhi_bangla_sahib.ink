@@ -21,7 +21,8 @@ INCLUDE modules.ink
 巨大な鍋で豆が煮え、長い台の前に何十人もが並んで、黙々と生地を丸めている。その一人、白いひげの大柄な老人が、二人を手招きした。
 # speaker: gt_delhi_bangla_old_man
 見てるだけか。手を洗って、こっちへ来なさい。ローティーは、見るより丸める方がうまい
-# speaker: gt_delhi_bangla_old_man
+# speaker: gt_harbans
+# cutin: name
 ハルバンス・シンだ。四十年、トラックで国を縦断する大きな街道を走ってきた。降りてからは、毎日ここで生地を丸めている
 # speaker: narrator
 彼女が丸めた一枚目は、どこから見ても丸くなかった。ハルバンスはそれを持ち上げて、光にかざした。

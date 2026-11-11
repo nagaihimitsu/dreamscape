@@ -5,11 +5,12 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 わあ……これが『ベビー・タージ』だね。名前どおり、かわいい
-# speaker: enemy
+# speaker: gt_agra_itimad_woman
 ベビーではありません！
 # speaker: narrator
 ニームの木陰から、サリー姿の女性が立ち上がった。白髪をきっちり結い、布の手提げを肩にかけている。手提げから、紙の束がのぞいていた。
 # speaker: enemy
+# cutin: name
 ヴィムラーです。ヒンディー語の教師を三十八年。今は、この墓の名誉回復をしています
 # speaker: heroine
 # reaction: heroine,surprised,sweat

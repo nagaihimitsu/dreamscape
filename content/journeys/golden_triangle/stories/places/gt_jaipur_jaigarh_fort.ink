@@ -18,6 +18,7 @@ INCLUDE modules.ink
 # speaker: gt_jaipur_jaigarh_boy
 宝の地図、買わない？　この砦には、王さまの宝が隠されてる。本当だよ。昔、国が、何か月も掘って探したんだから
 # speaker: gt_raju
+# cutin: name
 ぼく、ラージュー。この地図、全部ぼくが描いたんだ
 # speaker: heroine
 # reaction: heroine,surprised,sparkle

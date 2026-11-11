@@ -300,11 +300,16 @@ export function BattleScreen({
   const heroineEmotion = heroineReaction?.expression ?? (frame && frame.speaker !== "enemy"
     ? resolveDialogueExpression(dialogueExpressions, storyId, frame)
     : "neutral");
-  const enemyEmotion = enemyReaction?.expression ?? (frame?.speaker === "enemy" ? frame.emotion : "neutral");
+  // A person line whose portrait is the opponent's own is the opponent speaking under the name the heroine knows them by
+  // before they give theirs (an alias of progression/story.json people, 2026-11-11): their portrait, expression and
+  // reaction stay the opponent's.
+  const lineSpeaker = isDialogue && frame ? speakingPerson(storyState.people, frame) : undefined;
+  const opponentSpeaks = frame?.speaker === "enemy" || (!!lineSpeaker && lineSpeaker === characterForBattle(battle.id));
+  const enemyEmotion = enemyReaction?.expression ?? (opponentSpeaks && frame ? frame.emotion : "neutral");
   // A person with a portrait who speaks in their own name takes the opponent's place from that line
   // (speakingPerson) until the opponent speaks or reacts again, or the talk gives way to a question.
-  const speaking = isDialogue && frame ? speakingPerson(storyState.people, frame) : undefined;
-  const personId = useSpeakingPerson(speaking, !isDialogue || frame?.speaker === "enemy" || !!enemyReaction);
+  const speaking = opponentSpeaks ? undefined : lineSpeaker;
+  const personId = useSpeakingPerson(speaking, !isDialogue || opponentSpeaks || !!enemyReaction);
   const plate = speakerPlate(frame ?? { speaker: "narrator" }, { heroine: game.heroineName, player: game.playerName, enemy: battle.enemyNameJa },
     storyState.people);
   const speaker = plate.name;
@@ -434,7 +439,7 @@ export function BattleScreen({
             <CharacterPortrait
               characterId={characterForBattle(battle.id)}
               emotion={enemyEmotion}
-              focus={portraitFocus(frame?.speaker, "enemy")}
+              focus={portraitFocus(opponentSpeaks ? "enemy" : frame?.speaker, "enemy")}
               fallback={battle.portrait === "abstract" ? undefined :
                 <EnemyPortrait
                   emotion={enemyEmotion}

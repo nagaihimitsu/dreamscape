@@ -22,6 +22,7 @@ INCLUDE modules.ink
 アーケードの端に、一軒だけ、まるで色の洪水のような店があった。天井まで積み上げられた、ラックの腕輪。赤、緑、黄、桃色。小さなガラスや石がはめこまれて、裸電球の下で光っている。
 店番の女性が、顔を上げた。
 # speaker: gt_nasreen
+# cutin: name
 いらっしゃい。ナスリーンよ。腕輪は、夫と義理の弟が、近くの職人の路地で、小さな炉に向かって作ってるの。売るのは、女の仕事
 { cond("battle gt_delhi_main_red_fort_battle"):
     # speaker: narrator

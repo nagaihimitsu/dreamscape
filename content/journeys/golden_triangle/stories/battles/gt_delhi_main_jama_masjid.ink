@@ -7,11 +7,12 @@ INCLUDE modules.ink
 モスクの長い階段を下りきった先、人ひとりがやっと通れる路地で、{heroine_name}の足が止まった。
 # speaker: narrator
 甘くて、少し煙たい匂い。小さな店の棚に、色の違う液体の小瓶が何十本も並んでいる。
-# speaker: enemy
+# speaker: gt_delhi_jama_old_man
 アタル。花や木を、油に閉じこめたものだ。手首を
 # speaker: narrator
 白い髭の老人が、ガラス棒を瓶に浸し、{heroine_name}の手首にひと筋つけた。
 # speaker: enemy
+# cutin: name
 ハミードだ。この路地で六十年、香油を売っている
 # speaker: heroine
 # reaction: heroine,happy,sparkle
@@ -27,6 +28,7 @@ INCLUDE modules.ink
 # speaker: enemy
 こいつが、この店を売れと言ってきた。断った。そうしたら、賭けを持ちかけてきた
 # speaker: gt_zoheb
+# cutin: name
 一時間以内に、外国の観光客がアタルを買えば、俺は一年手を引く。買わなきゃ、爺さんは店を売る。観光客が買うのは携帯のケースだけさ
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang

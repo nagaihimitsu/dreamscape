@@ -25,6 +25,7 @@ INCLUDE modules.ink
 # speaker: gt_jaipur_jal_mahal_woman
 メヘンディ、どう？　手に描く模様。ヘナで描いて、二週間くらい残るの
 # speaker: gt_farhana
+# cutin: name
 わたしはファルハーナ。この遊歩道で、毎日、旅行者や地元の娘さんたちの手に描いてるの。いつか、扇風機と鏡のある自分のお店を持つのが夢
 # speaker: heroine
 # reaction: heroine,surprised,sparkle

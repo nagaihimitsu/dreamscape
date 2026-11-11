@@ -4,12 +4,13 @@ INCLUDE modules.ink
 タージ・マハルへ続く長い水路の途中に、白い大理石のベンチがある。記念写真の列が、今日も二十人ほど伸びていた。
 # speaker: narrator
 列を眺めていた{heroine_name}の前に、青年が飛び出してきた。額に汗。胸ポケットを、何度も手で押さえている。
-# speaker: enemy
+# speaker: gt_agra_taj_young_man
 お願いがあります！　あのベンチを、十分だけ確保してください！
 # speaker: heroine
 # reaction: heroine,surprised,interrobang
 か、確保？
 # speaker: enemy
+# cutin: name
 ニキルです。ラクナウで銀行員をしています。恋人のタンヴィが、今トイレの列に並んでいて。戻ってきたら、あのベンチで指輪を出すんです。三か月前から決めてたんです
 # speaker: enemy
 写真を撮るはずだった友達が来られなくなって。列に並び直したら、彼女が戻ってきてしまう。お二人がベンチに座って、ゆっくり写真を撮っててくれれば
@@ -32,6 +33,7 @@ INCLUDE modules.ink
 # speaker: narrator
 タンヴィが静かに遮った。
 # speaker: gt_tanvi
+# cutin: name
 ねえ、ニキル。ムムターズがどこで、どうやって亡くなったか、知ってる？
 -> quiz(1) ->
 # background: gt_bg_agra_taj_mahal

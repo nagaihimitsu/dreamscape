@@ -21,6 +21,7 @@ INCLUDE modules.ink
 # speaker: narrator
 周りの露店の店主たちが、ちらりとこちらを見た。画家の筆が、止まった。
 # speaker: enemy
+# cutin: name
 ……サリームだ。この中庭で、八年描いている
 # speaker: narrator
 彼はゆっくり顔を上げた。怒鳴りはしなかった。その分、声が冷たかった。

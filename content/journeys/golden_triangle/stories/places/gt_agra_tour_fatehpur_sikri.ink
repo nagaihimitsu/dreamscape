@@ -46,6 +46,7 @@ INCLUDE modules.ink
 # speaker: narrator
 男は紙を下ろし、軽く頭を下げた。
 # speaker: gt_vinod
+# cutin: name
 ヴィノードです。運転をします。ガイドではありません。中のことは皇帝の仕事、外のことは、わたしの仕事
 # speaker: heroine
 # reaction: heroine,surprised,sparkle

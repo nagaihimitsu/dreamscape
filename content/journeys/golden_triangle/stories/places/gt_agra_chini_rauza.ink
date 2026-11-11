@@ -21,6 +21,7 @@ INCLUDE modules.ink
 # speaker: gt_agra_chini_man
 お願いがある。カップルが橋の渋滞で遅れてる。光を決めたいのに、立つ人がいない。……二人とも、身長がちょうどいい。代役をやってくれないか
 # speaker: gt_jagdeep
+# cutin: name
 ジャグディープだ。アーグラで、結婚前の二人の写真を撮ってる
 # speaker: heroine
 # reaction: heroine,surprised,question
@@ -124,7 +125,7 @@ INCLUDE modules.ink
 { cond("episode gt_agra_main_taj_mahal"):
     # speaker: narrator
     汗だくの青年と、緑のクルタの女性。青年が、こちらを見て立ち止まった。
-    # speaker: gt_agra_chini_young_man
+    # speaker: gt_nikhil
     君たちは……タージの、ベンチの！
     # speaker: gt_tanvi
     また会えた。……今日は、ベンチは要らないの。場所は、二人で決めたから

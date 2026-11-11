@@ -2,15 +2,17 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_jantar_mantar
 # speaker: narrator
 巨大な三角の斜面が、空に向かって伸びていた。世界でも指折りの大きな日時計、サムラート・ヤントラ。その日陰で、言い争いが始まっていた。
-# speaker: enemy
+# speaker: gt_jaipur_jantar_woman
 十一時四十三分？　天体物理学の博士論文を、占いの時刻に提出しろって言うんですか！
 # speaker: narrator
 声の主は、眼鏡の若い女性だった。向かいの石段には、白い腰布の老人が座っている。膝の上に、使い込んだ暦の冊子。
 # speaker: narrator
 老人は、こちらに軽く会釈した。
 # speaker: gt_shastri
+# cutin: name
 シャーストリー。毎朝ここで、影を眺めている。町の占星術師だよ
 # speaker: enemy
+# cutin: name
 ディヴィヤです。ベンガルールの研究所で、星の研究をしています。母が、わたしに黙って、この人に時刻を決めさせたんです
 # speaker: heroine
 # reaction: heroine,surprised,question

@@ -29,6 +29,7 @@ INCLUDE modules.ink
     # speaker: narrator
     奥の長い敷物の端から、大きな声が飛んできた。白いひげの大柄な老人が、こちらを手招きしていた。外国の若い二人が珍しいらしい。
     # speaker: gt_harbans
+    # cutin: name
     ハルバンス・シンだ。四十年、トラックで国じゅうを走ってきた
 }
 # speaker: narrator
@@ -38,6 +39,7 @@ INCLUDE modules.ink
 # speaker: narrator
 グルミートは、父親の方を見ないまま、軽く頭を下げた。
 # speaker: gt_gurmeet
+# cutin: name
 カナダのブランプトンで、トラックの会社をやっています
 # speaker: gt_gurmeet
 親父が、昔の自分の道を見せると言って聞かなくて。デリーから、ずっとこの街道を。……車の中で、三回喧嘩しました
