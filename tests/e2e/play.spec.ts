@@ -168,17 +168,19 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await ops.closeDialog(cleared);
 
   // A date costs AP when it starts and returns to the travel menu when it ends (docs/07 acceptance 3, 4).
-  // Its photo card (in the row, B案) only selects it; a quick double tap on its introduction card's
-  // way button then starts it once, and the second tap, landing on the travel transition that opens
-  // under the finger, does not read the date's first line on unseen: the transition takes taps while
-  // it shows (H22), and taps are held for a moment when a story scene starts (lines appear whole here,
-  // as with 文字送り「一括表示」).
+  // Its photo card (in the row, B案) only selects it, and a quick double tap on the chosen card still
+  // only keeps it chosen (a card departs on a swipe up, never on a tap). Its 「行く」 (for keys and screen
+  // readers in the row) then starts it once; a tap landing on the travel transition that opens does not
+  // read the date's first line on unseen: the transition takes taps while it shows (H22), and taps are
+  // held for a moment when a story scene starts (lines appear whole here, as with 文字送り「一括表示」).
   const novecentoCard = await ops.selectDestination(page, "p_novecento");
   await expect(novecentoCard).toHaveAttribute("data-armed", "true");
-  const novecento = await ops.centerOf(ops.wayButton(novecentoCard));
   const beforeDate = await readSave(page);
+  await ops.doubleTap(page, await ops.centerOf(ops.destination(page, "p_novecento")));
+  await expect(page.getByTestId("travel-menu").getByTestId("travel-place-p_novecento")).toHaveAttribute("data-selected", "true");
+  expect((await readSave(page)).revision, "a double tap on the chosen card does not depart").toBe(beforeDate.revision);
   await ops.holdClock(page);
-  await ops.doubleTap(page, novecento);
+  await ops.pressGo(ops.wayButton(novecentoCard));
   await expect.poll(async () => (await readSave(page)).activeDate?.dateId).toBe("milano_novecento_date_01");
   const started = await readSave(page);
   expect(started.revision).toBe(beforeDate.revision + 1);
@@ -310,8 +312,9 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
 });
 
 // The journey's own transport modes (manifest transportModes): the destination's introduction
-// card names them in its row of modes, its 「行く」 says the chosen way's line, time and fare, the
-// ride is paid and timed by its route, and the transition shows the mode's caption and art.
+// card names them in its row of modes with each one's time and fare, its 「行く」 says the chosen
+// way's line, time and fare, the ride is paid and timed by its route, and the transition shows the
+// mode's caption and art.
 test("a new Milan journey rides tram 16 to the Last Supper, named in the introduction card and shown on the way", { tag: tier.gate }, async ({ page }) => {
   await page.clock.install();
   await ops.startJourney(page, "milano");
@@ -323,7 +326,9 @@ test("a new Milan journey rides tram 16 to the Last Supper, named in the introdu
   const go = card.getByTestId("travel-go-milano_last_supper_episode");
   await expect(walk).toBeEnabled();
   await expect(tram).toBeEnabled();
-  await expect(tram).toHaveText("路面電車");
+  await expect(tram).toContainText("路面電車");
+  await expect(tram).toContainText("約18分 · €5");
+  await expect(walk).toContainText("約19分");
   // The fastest way comes chosen (tram 16, 18 minutes, before walking's 19); choosing a mode never goes.
   await expect(tram).toHaveAttribute("aria-pressed", "true");
   await expect(go).toHaveAttribute("data-mode", "tram");
@@ -337,7 +342,7 @@ test("a new Milan journey rides tram 16 to the Last Supper, named in the introdu
   await expect(card).toHaveAttribute("data-armed", "true");
   // Hold the page's clock so the short transition (0.45 s with reduced motion) stays while it is checked.
   await ops.holdClock(page);
-  await go.click();
+  await ops.pressGo(go);
   const transition = page.getByTestId("travel-transition");
   await expect(transition).toHaveAttribute("data-mode", "tram");
   await expect(transition).toHaveAttribute("data-kind", "tram");
@@ -387,7 +392,7 @@ test("in each available journey a new trip's first vehicle route is named and sh
       await expect(page.getByRole("dialog")).toHaveCount(0);
       for (const route of routesTo(to).filter((item) => modes.has(item.mode))) {
         const chip = card.locator(`[data-testid^="travel-mode-"][data-testid$="-${route.mode}"]`);
-        await expect(chip).toHaveText(modes.get(route.mode)!.nameJa);
+        await expect(chip).toContainText(modes.get(route.mode)!.nameJa);
         if (await chip.isEnabled()) { ride = { route, card, chip }; break; }
       }
       if (ride) break;
@@ -402,7 +407,7 @@ test("in each available journey a new trip's first vehicle route is named and sh
     await expect(card).toHaveAttribute("data-armed", "true");
     test.info().annotations.push({ type: "ride", description: `${journey.id}: ${route.toPlaceId} by ${mode.id} (${mode.nameJa})` });
     await ops.holdClock(page);
-    await go.click();
+    await ops.pressGo(go);
     const transition = page.getByTestId("travel-transition");
     await expect(transition).toHaveAttribute("data-mode", mode.id);
     await expect(transition).toHaveAttribute("data-kind", mode.kind);

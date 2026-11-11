@@ -2,8 +2,9 @@ import { describe, expect, it } from "vitest";
 import type { TravelRoute } from "../../content/travel-schemas";
 import type { DestinationChoices, EventChoice, RouteChoice, TravelDestinationEvent, TravelDestinationPlace } from "../../domain/travel-destinations";
 import {
-  blockedWays, cardOfTarget, cardTarget, chooseArrangement, chooseWay, eventKindJa, nearestIndex, photoCardEntries, photoCardLabel, rowCards,
-  STAY_CARD_ID, stepIndex, syncRow, TOUR_CARD_ID,
+  blockedWays, cardKinds, cardOfTarget, cardScales, cardTarget, chooseArrangement, chooseWay, defaultCardIndex, departureOf, eventKindJa, flickSpeed,
+  nearestIndex, NO_PLAN, photoCardEntries, photoCardLabel, refusalJa, rowCards, STAY_CARD_ID, stepIndex, swipeDeparts, syncRow, TOUR_CARD_ID,
+  WAIT_CARD_ID,
 } from "./photo-cards";
 
 const way = (mode: string, minutes: number, cost: number, reason?: string): RouteChoice =>
@@ -65,23 +66,29 @@ describe("the row of cards", () => {
     ]);
   });
 
-  it("ends with the tour, while there is one, and 「ホテルに戻る」", () => {
+  it("starts with 「待機」 and ends with the tour, while there is one, and 「ホテルに戻る」", () => {
     const entries = photoCardEntries(places, map);
-    expect(rowCards(entries, { tour: true }).map((card) => card.id)).toEqual(["b", "c", "d", "a", TOUR_CARD_ID, STAY_CARD_ID]);
-    expect(rowCards(entries, { tour: false }).map((card) => card.id)).toEqual(["b", "c", "d", "a", STAY_CARD_ID]);
-    expect(rowCards([], { tour: false }).map((card) => card.kind)).toEqual(["stay"]);
+    expect(rowCards(entries, { tour: true }).map((card) => card.id)).toEqual([WAIT_CARD_ID, "b", "c", "d", "a", TOUR_CARD_ID, STAY_CARD_ID]);
+    expect(rowCards(entries, { tour: false }).map((card) => card.id)).toEqual([WAIT_CARD_ID, "b", "c", "d", "a", STAY_CARD_ID]);
+    expect(rowCards([], { tour: false }).map((card) => card.kind)).toEqual(["wait", "stay"]);
   });
 
-  it("stands for the place, the hotel's 休む, or (the tour) no selection", () => {
-    const [b, , , , tour, stay] = rowCards(photoCardEntries(places, map), { tour: true });
+  it("chooses the first place's card first, else the first card", () => {
+    expect(defaultCardIndex(rowCards(photoCardEntries(places, map), { tour: true }))).toBe(1);
+    expect(defaultCardIndex(rowCards([], { tour: true }))).toBe(0);
+  });
+
+  it("stands for the place, the hotel's 休む, or (「待機」, the tour) no selection", () => {
+    const [wait, b, , , , tour, stay] = rowCards(photoCardEntries(places, map), { tour: true });
     expect(cardTarget(b)).toEqual({ kind: "place", placeId: "b" });
     expect(cardTarget(stay)).toEqual({ kind: "sleep" });
     expect(cardTarget(tour)).toBeNull();
+    expect(cardTarget(wait)).toBeNull();
   });
 
   it("keeps the chosen card the selection, and turns to the card the expanded map chose", () => {
     const cards = rowCards(photoCardEntries(places, map), { tour: true });
-    const [b, c, , , tour, stay] = cards;
+    const [, b, c, , , tour, stay] = cards;
     expect(syncRow(cards, b, { kind: "place", placeId: "b" })).toBeNull();
     expect(syncRow(cards, tour, null)).toBeNull();
     expect(syncRow(cards, stay, { kind: "sleep" })).toBeNull();
@@ -94,6 +101,24 @@ describe("the row of cards", () => {
     // The map chose a place without a card (the current place): the chosen card is selected again.
     expect(syncRow(cards, tour, { kind: "place", placeId: "here" })).toEqual({ select: null });
     expect(cardOfTarget(cards, { kind: "place", placeId: "here" })).toBeNull();
+  });
+
+  it("fills a card for the story, a date or both, and leaves 「待機」, the tour and 「ホテルに戻る」 plain", () => {
+    const cards = rowCards(photoCardEntries(places, map), { tour: true });
+    expect(cards.map((card) => [card.id, cardKinds(card)])).toEqual([
+      [WAIT_CARD_ID, "none"], ["b", "date"], ["c", "story"], ["d", "both"], ["a", "both"], [TOUR_CARD_ID, "none"], [STAY_CARD_ID, "none"],
+    ]);
+  });
+
+  it("departs for the picked event while it is there, else the first that can be done now, by its way", () => {
+    const [, , d, a] = photoCardEntries(places, map);
+    expect(departureOf(d, NO_PLAN).event.event.id).toBe("d_date");
+    expect(departureOf(d, { eventId: "d_main", mode: null }).event.event.id).toBe("d_main");
+    expect(departureOf(d, { eventId: "gone", mode: "walk" })).toMatchObject({ event: { event: { id: "d_date" } }, way: { route: { mode: "walk" } } });
+    // Nothing can be done there: the first event, no way, and its reason when a swipe tries.
+    const closed = departureOf(a, NO_PLAN);
+    expect([closed.event.event.id, closed.way]).toEqual(["a_main", null]);
+    expect(refusalJa(closed.event)).toBe("出発できません。閉まっています。");
   });
 });
 
@@ -124,6 +149,25 @@ describe("reading and moving through the cards", () => {
     expect(nearestIndex([60, 190, 320], 200)).toBe(1);
     expect(nearestIndex([60, 190, 320], 0)).toBe(0);
     expect(nearestIndex([], 100)).toBeNull();
+  });
+
+  it("shows the centre card whole size and its neighbours small, the coming card growing with the scroll", () => {
+    const rounded = (scales: number[]) => scales.map((scale) => Math.round(scale * 100) / 100);
+    expect(rounded(cardScales([0, 100, 200, 300], 100, 100, 0.4, false))).toEqual([0.4, 1, 0.4, 0.4]);
+    expect(rounded(cardScales([0, 100, 200], 150, 100, 0.4, false))).toEqual([0.4, 0.7, 0.7]);
+    // Reduced motion: no growing, the nearest card is whole size at once.
+    expect(cardScales([0, 100, 200], 140, 100, 0.4, true)).toEqual([0.4, 1, 0.4]);
+  });
+
+  it("departs on a swipe up past a third of the card, or on a quick flick up, never down", () => {
+    const speed = flickSpeed([{ t: 0, y: 300 }, { t: 50, y: 280 }, { t: 100, y: 240 }]);
+    expect(speed).toBeCloseTo(-0.8);
+    expect(flickSpeed([{ t: 0, y: 300 }])).toBe(0);
+    expect(swipeDeparts({ lift: -100, height: 300, speed: 0 })).toBe(true);
+    expect(swipeDeparts({ lift: -90, height: 300, speed: 0 })).toBe(false);
+    expect(swipeDeparts({ lift: -40, height: 300, speed })).toBe(true);
+    expect(swipeDeparts({ lift: -10, height: 300, speed: -2 })).toBe(false);
+    expect(swipeDeparts({ lift: 0, height: 300, speed: -2 })).toBe(false);
   });
 });
 

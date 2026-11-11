@@ -424,14 +424,23 @@ export const ops = {
     await expect(intro).toHaveAttribute("data-place-id", placeId);
     return intro;
   },
-  /** An introduction card's button that goes (「…で行く」, 「行く」 or 「ここで始める」); with several events, that of `eventId`. */
+  /**
+   * An introduction card's button that goes (「…で行く」, 「行く」 or 「ここで始める」; in the row of photo cards it is for screen
+   * readers and keys only, the card is swiped up: press Enter on it); with several events, that of `eventId` (shown once chosen).
+   */
   wayButton(card: Locator, eventId?: string): Locator {
     return (eventId ? card.getByTestId(`place-event-${eventId}`) : card).locator('[data-testid^="travel-go-"]').first();
+  },
+  /** Presses a 「行く」 (ops.wayButton): a click where it shows (the list, the expanded map), else Enter (the row's, for keys). */
+  async pressGo(go: Locator) {
+    if (await go.evaluate((button) => button.classList.contains("is-quiet"))) await go.press("Enter");
+    else await go.click();
   },
   /**
    * Go to a destination as B案 does: select its photo card, then in its introduction card (once armed, `data-armed`)
    * the event `eventId` (when the place has several), the mode `mode` (walking unless named; a mode is pressed only
-   * when the event has several) and its 「行く」. Fails with a clear message when the requested choice is not offered.
+   * when the event has several) and its 「行く」 (in the row, Enter on it: a finger swipes the photo card up instead).
+   * Fails with a clear message when the requested choice is not offered.
    * The page's clock must run (the arming waits on a timer): hold it only after the last press.
    */
   async goTo(page: Page, placeId: string, choice: TravelChoice = {}) {
@@ -450,8 +459,8 @@ export const ops = {
     await chooseInCard(dialog.getByTestId("map-selection").getByTestId("place-card"), placeId, choice);
   },
   /**
-   * 「ホテルに戻る」, the last card of free time's row: returns its card (休む's ways home, then 待機's 「…待つ」) once
-   * its ways home take presses (armed).
+   * 「ホテルに戻る」, the last card of free time's row: returns its card (休む's ways home) once its ways home take presses
+   * (armed). 待機's 「…待つ」 are on 「待機」, the first card.
    */
   async stay(page: Page): Promise<Locator> {
     const menu = page.getByTestId("travel-menu");
@@ -688,6 +697,12 @@ async function chooseInCard(card: Locator, placeId: string, { eventId, mode = "w
     throw new Error(`${placeId} offers the events ${ids.join(", ")}: name one of them (eventId${eventId ? `, not ${eventId}` : ""})`);
   const event = ids.length > 1 ? eventId! : ids[0];
   const block = card.getByTestId(`place-event-${event}`);
+  // Several events: the event is chosen first (its ways show under it).
+  if (ids.length > 1) {
+    const pick = block.getByTestId(`event-choice-${event}`);
+    await pick.click();
+    await expect(pick).toHaveAttribute("aria-pressed", "true");
+  }
   // Several modes: one row of modes (a press only chooses one), then the one 「行く」.
   const modes = block.locator('[data-testid^="travel-mode-"]');
   if (await modes.count()) {
@@ -702,7 +717,7 @@ async function chooseInCard(card: Locator, placeId: string, { eventId, mode = "w
   const go = block.getByTestId(`travel-go-${event}`);
   const offered = await go.getAttribute("data-mode");
   if (offered !== mode) throw new Error(`${placeId} (${event}) is not reached by ${mode}; offered: ${offered}`);
-  await go.click();
+  await ops.pressGo(go);
 }
 
 export type Pick = (state: GameState) => string;
