@@ -10,6 +10,7 @@ import {
 } from "./encounter";
 import { advanceCityEpilogue, canReadCityEpilogue, chooseCityEpilogue, completeArrivalLogo, epilogueChoiceDisplay } from "./epilogue";
 import { advanceDate, chooseDate, dateChoiceDisplay, finishDate, type GameState } from "./game";
+import { getDayEnd, type NightAction } from "./day-end";
 import { canClaimPendingRewards, claimPendingRewards } from "./rewards";
 import { openTourism, advanceTourismGuide, chooseTourismGuide, discoverClue, getDiscoverableClueIds, guideChoiceDisplay, landmarkHasGuide, replayTourismGuide, skipTourismGuide } from "./tourism";
 import { getTravelDestinations, getTravelWaitOptions } from "./travel-destinations";
@@ -91,8 +92,8 @@ export type PlayerAction =
  * the same availability rules the screens use (GameApp picks the screen by the same order:
  * encounter, epilogue, sightseeing, battle, date, free time). Used by the exploration tests;
  * when a screen gains or changes a control, change this list with it. Free time at the day's end
- * (21:00 or later) still lists its controls, although GameApp rests there by itself (dayEndRest)
- * before the screen shows: the walks try more than the screen offers.
+ * (21:00 or later, getDayEnd) offers what its night screen does: the night actions open now and
+ * the rest by its one way home (alone when there is none: the game then rests by itself).
  */
 export function listPlayerActions(state: GameState): PlayerAction[] {
   const screen = screenFor(state);
@@ -164,6 +165,9 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
       .map((choice) => ({ kind: "date_choose", index: choice.index }));
     return [date.frame.ended ? { kind: "date_finish" } : { kind: "date_next" }];
   }
+  const dayEnd = getDayEnd(state);
+  if (dayEnd) return [...dayEnd.actions.flatMap((action) => nightPlayerActions(state, action)),
+    { kind: "rest" as const, mode: dayEnd.way.mode, viaPlaceId: dayEnd.way.viaPlaceId ?? null }];
   return [
     ...getTravelDestinations(state).candidates.flatMap((event) => event.routes
       .filter((route) => getTravelEventAvailability(state, event.id, route.mode).available)
@@ -178,6 +182,13 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
     ...getTravelSleepOptions(state).filter((option) => option.plan.ok)
       .map(({ route }) => ({ kind: "rest" as const, mode: route.mode, viaPlaceId: route.viaPlaceId ?? null })),
   ];
+}
+
+/** A night screen's button as the actions it offers (GameApp wires it to the same control as in free time). */
+function nightPlayerActions(state: GameState, action: NightAction): PlayerAction[] {
+  if (action === "book_tour")
+    return getTourOffers(state).filter((choice) => choice.available).map((choice) => ({ kind: "book_tour" as const, tourId: choice.tour.id, offerId: choice.offer.id }));
+  return [{ kind: action }];
 }
 
 /** The change a screen commits for `action` (with the shown revision), as GameApp wires each control. */

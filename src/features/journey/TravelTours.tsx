@@ -43,20 +43,27 @@ function TourBookedLine({ game, onCancel }: { game: GameState; onCancel: () => b
       明日の予定：{bookedTour.titleJa}（{bookedTour.offers.find((offer) => offer.id === booked.offerId)?.sellerJa ?? "予約先"}で予約）
     </p>
     <button type="button" className="secondary travel-tour-open" data-testid="travel-tour-cancel" onClick={() => setCancelling(true)}>予約を取り消す</button>
-    {cancelling && <Modal labelledBy="travel-tour-cancel-title" className="travel-choice-modal" onClose={() => setCancelling(false)}>
-      <ModalTitle id="travel-tour-cancel-title">予約を取り消す</ModalTitle>
-      <p>予約を取り消しますか？ 代金{formatMoneyForCity(game.currentCityId, booked.pricePaid)}は戻り、このツアーの予約はなくなります。</p>
-      <ConfirmActionButton className="primary" data-testid="travel-tour-cancel-confirm" onClick={() => { if (onCancel()) setCancelling(false); }}>取り消す</ConfirmActionButton>
-      <button type="button" className="secondary" onClick={() => setCancelling(false)}>やめる</button>
-    </Modal>}
+    {cancelling && <TourCancelDialog game={game} onCancel={onCancel} onClose={() => setCancelling(false)} />}
   </>;
+}
+
+/** The cancel's dialog (the booked line's and the night screen's 「…取り消す」): the price comes back once, the booking is gone. */
+export function TourCancelDialog({ game, onCancel, onClose }: { game: GameState; onCancel: () => boolean; onClose: () => void }) {
+  const booked = game.tour?.status === "booked" ? game.tour : null;
+  if (!booked) return null;
+  return <Modal labelledBy="travel-tour-cancel-title" className="travel-choice-modal" onClose={onClose}>
+    <ModalTitle id="travel-tour-cancel-title">予約を取り消す</ModalTitle>
+    <p>予約を取り消しますか？ 代金{formatMoneyForCity(game.currentCityId, booked.pricePaid)}は戻り、このツアーの予約はなくなります。</p>
+    <ConfirmActionButton className="primary" data-testid="travel-tour-cancel-confirm" onClick={() => { if (onCancel()) onClose(); }}>取り消す</ConfirmActionButton>
+    <button type="button" className="secondary" onClick={onClose}>やめる</button>
+  </Modal>;
 }
 
 /**
  * The tours sheet 「ツアー」 (the offers here) and, from one of its offers, the booking's confirmation; `onClose` ends both
- * (also after a booking).
+ * (also after a booking). Free time's 「ツアーを見る」 and the night screen's open it.
  */
-function TourBooking({ game, onBook, onClose }: {
+export function TourBooking({ game, onBook, onClose }: {
   game: GameState;
   onBook: (tourId: string, offerId: string) => boolean;
   onClose: () => void;
