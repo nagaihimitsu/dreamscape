@@ -33,7 +33,7 @@ export function TravelTours({ game, onBook, onCancel }: {
 }
 
 /** A booked tour's line 「明日の予定：…」 and its 「予約を取り消す」 with the cancel's dialog; nothing without a booking. */
-export function TourBookedLine({ game, onCancel }: { game: GameState; onCancel: () => boolean }) {
+function TourBookedLine({ game, onCancel }: { game: GameState; onCancel: () => boolean }) {
   const [cancelling, setCancelling] = useState(false);
   const booked = game.tour?.status === "booked" ? game.tour : null;
   const bookedTour = booked && getTour(booked.tourId);
@@ -54,13 +54,12 @@ export function TourBookedLine({ game, onCancel }: { game: GameState; onCancel: 
 
 /**
  * The tours sheet 「ツアー」 (the offers here) and, from one of its offers, the booking's confirmation; `onClose` ends both
- * (also after a booking). `settlePresses` when it opens under the finger that opened it (B案's band icon, Modal).
+ * (also after a booking).
  */
-export function TourBooking({ game, onBook, onClose, settlePresses = false }: {
+function TourBooking({ game, onBook, onClose }: {
   game: GameState;
   onBook: (tourId: string, offerId: string) => boolean;
   onClose: () => void;
-  settlePresses?: boolean;
 }) {
   const [confirm, setConfirm] = useState<TourOfferChoice | null>(null);
   const cityId = game.currentCityId;
@@ -69,7 +68,7 @@ export function TourBooking({ game, onBook, onClose, settlePresses = false }: {
   const forTwo = getJourneyForCity(cityId)?.farePartySize === 2 ? "（2人分）" : "";
   const tours = [...new Map(offers.map((choice) => [choice.tour.id, choice.tour])).values()];
   return <>
-    {!confirm && <Modal labelledBy="travel-tours-title" className="travel-choice-modal travel-tours-modal" onClose={onClose} settlePresses={settlePresses}>
+    {!confirm && <Modal labelledBy="travel-tours-title" className="travel-choice-modal travel-tours-modal" onClose={onClose}>
       <ModalTitle id="travel-tours-title" onClose={onClose}>ツアー</ModalTitle>
       <p>明日の朝9:00に宿を出る日帰りのツアーです。予約すると代金を今払い、取り消すと戻ります。料金はゲーム内の目安です。</p>
       {tours.map((tour) => {

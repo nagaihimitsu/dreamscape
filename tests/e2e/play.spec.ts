@@ -10,7 +10,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   // A name that looks like markup is shown as plain text (AGENTS.md: player input is text, never HTML).
   await ops.startJourney(page, "milano", ["<b>航</b>", "澪"]);
   const menu = page.getByTestId("travel-menu");
-  // The names head 旅の記録 (opened from the header's progress).
+  // The names head 旅の記録 (opened from ⚙設定).
   const records = await ops.openRecords(page);
   await expect(records.getByTestId("travelers")).toContainText("<b>航</b>");
   await expect(records.getByTestId("travelers").locator("b")).toHaveCount(0);
@@ -161,10 +161,12 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
 
   await ops.toFreeTime(page);
   await expect(page.getByLabel(`残り${result.ap}AP`)).toBeVisible();
-  await expect(page.getByTestId("city-progress")).toContainText("観光 1 / 4");
+  const cleared = await ops.openRecords(page);
+  await expect(cleared.getByTestId("city-progress")).toContainText("観光 1 / 4");
+  await ops.closeDialog(cleared);
 
   // A date costs AP when it starts and returns to the travel menu when it ends (docs/07 acceptance 3, 4).
-  // Its photo card (in the date sheet, B案) only selects it; a quick double tap on its introduction card's
+  // Its photo card (in the row, B案) only selects it; a quick double tap on its introduction card's
   // way button then starts it once, and the second tap, landing on the travel transition that opens
   // under the finger, does not read the date's first line on unseen: the transition takes taps while
   // it shows (H22), and taps are held for a moment when a story scene starts (lines appear whole here,
@@ -333,7 +335,6 @@ test("a new Milan journey rides tram 16 to the Last Supper, named in the introdu
   await expect(go).toContainText("19分");
   await tram.click();
   await expect(go).toHaveAttribute("data-mode", "tram");
-  await expect(go).toContainText("16番");
   await expect(go).toContainText("18分 · €5");
   expect((await readSave(page)).revision).toBe(before.revision);
   await expect(card).toHaveAttribute("data-armed", "true");

@@ -56,7 +56,9 @@ test("autosaved progress, a battle question, the English note and the text speed
   expect(await readSave(page)).toEqual(progress);
   await expect(page.getByLabel(`残り${progress.ap}AP`)).toBeVisible();
   await expect(page.getByText("現在地：ドゥオモ広場")).toBeVisible();
-  await expect(page.getByTestId("city-progress")).toContainText("観光 1 / 4");
+  const records = await ops.openRecords(page);
+  await expect(records.getByTestId("city-progress")).toContainText("観光 1 / 4");
+  await ops.closeDialog(records);
   const reopened = await ops.openEnglishNote(page);
   await reopened.getByLabel("回答した問題を選ぶ").selectOption(firstQuestion!);
   await expect(reopened.getByRole("button", { name: "復習の登録を解除" })).toHaveAttribute("aria-pressed", "true");
@@ -103,15 +105,15 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await page.clock.install();
   await ops.startJourney(page);
 
-  // セーブ・ロード・ゲームの設定 live in the header's ⚙設定 (UI redesign §3.1, U2/U24/U28), a
-  // disclosure: by keyboard it opens on セーブ, the arrows move between its three items, Esc
-  // closes it back on ⚙設定, and leaving it with Tab closes it.
+  // セーブ・ロード・旅の記録・英語ノート・写真の出典 (in free time)・ゲームの設定 live in the header's ⚙設定
+  // (UI redesign §3.1, U2/U24/U28), a disclosure: by keyboard it opens on セーブ, the arrows move
+  // between its items, Esc closes it back on ⚙設定, and leaving it with Tab closes it.
   const gear = ops.settingsButton(page);
   const panel = page.getByTestId("hud-menu-panel");
   const item = (name: string) => panel.getByRole("button", { name, exact: true });
   await gear.focus();
   await page.keyboard.press("Enter");
-  await expect(panel.getByRole("button")).toHaveText(["セーブ", "ロード", "ゲームの設定"]);
+  await expect(panel.getByRole("button")).toHaveText(["セーブ", "ロード", "旅の記録", "英語ノート", "写真の出典", "ゲームの設定"]);
   await expect(item("セーブ")).toBeFocused();
   await page.keyboard.press("ArrowDown");
   await expect(item("ロード")).toBeFocused();
@@ -120,7 +122,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await expect(gear).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(item("セーブ")).toBeFocused();
-  for (let step = 0; step < 3; step++) await page.keyboard.press("Tab");
+  for (let step = 0; step < 6; step++) await page.keyboard.press("Tab");
   await expect(panel).toBeHidden();
   // ゲームの設定 opens the settings dialog, which gives the focus back to ⚙設定 when it closes.
   await gear.focus();

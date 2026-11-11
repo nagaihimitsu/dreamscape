@@ -137,8 +137,8 @@
   padding: 10px 0;
 }
 
-/* The page ends above the bottom band (its measured height, --bottom-h). */
-.app-shell.free-time-active { padding-bottom: var(--bottom-h, 60px); }
+/* The page ends above the previous screen's bottom band (its measured height, --bottom-h); B案 has no band. */
+.app-shell.free-time-active { padding-bottom: var(--bottom-h, 0px); }
 
 /* 「写真の出典」 (§3.4 item 6): a pressable rectangle on its own parchment. */
 .free-time-credits-open {

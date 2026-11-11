@@ -22,7 +22,8 @@ test("books Agra's day tour at the inn, rests, rides, visits Fatehpur Sikri and 
   await expect(page.getByTestId("travel-menu")).toHaveAttribute("aria-label", "アーグラの行き先");
   const start = await readSave(page, journeyId);
 
-  // The card shows the itinerary, both offers and their prices for two; the desk is booked after its confirmation.
+  // The tour's card in the row opens the sheet; its card shows the itinerary, both offers and their prices for two; the
+  // desk is booked after its confirmation.
   const sheet = await ops.openTours(page);
   const card = sheet.getByTestId(`travel-tour-${tour.id}`);
   await expect(card).toContainText("9:00 車でファテープル・シークリーへ（約60分）");
@@ -85,7 +86,8 @@ test("books Agra's day tour at the inn, rests, rides, visits Fatehpur Sikri and 
   await expect(page.getByTestId("travel-menu")).toBeVisible();
   await expect(page.getByRole("status").filter({ hasText: "ツアーが終わりました。" })).toBeVisible();
   await expect(page.getByTestId("travel-tour-booked")).toHaveCount(0);
-  await expect(page.getByTestId("travel-tours-open")).toHaveCount(0);
+  // Nothing more to book here: the row has no tour card.
+  await expect(page.getByTestId("travel-tour")).toHaveCount(0);
   const back = await readSave(page, journeyId);
   expect(back.tour).toBeNull();
   expect(back.completedTourIds).toEqual([tour.id]);
@@ -97,6 +99,8 @@ test("books Agra's day tour at the inn, rests, rides, visits Fatehpur Sikri and 
 test("opens Agra's tour booked from its Debug launch URL", { tag: tier.debug }, async ({ page }) => {
   await page.goto(`/?debug&city=agra&scene=tour&target=${tour.id}`);
   await ops.debugShown(page.getByTestId("debug-session"));
-  await expect(page.getByTestId("travel-tour-booked")).toHaveText(`明日の予定：${tour.titleJa}（宿のフロントで予約）`);
-  await expect(page.getByTestId("travel-tour-cancel")).toBeVisible();
+  await expect(page.getByTestId("travel-tour")).toContainText("予約済み");
+  const card = await ops.tourCard(page);
+  await expect(card.getByTestId("travel-tour-booked")).toHaveText(`明日の予定：${tour.titleJa}（宿のフロントで予約）`);
+  await expect(card.getByTestId("travel-tour-cancel")).toBeVisible();
 });

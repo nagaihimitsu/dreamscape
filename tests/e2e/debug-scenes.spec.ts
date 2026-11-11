@@ -430,7 +430,7 @@ test("encounter: the tap on the picture or the line that closes the held-item de
   await page.keyboard.press("Tab");
   await expect(detail).toBeHidden();
   await expect(page.getByTestId("dismiss-layer")).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "英語ノートを開く" })).toBeFocused();
+  await expect(ops.settingsButton(page)).toBeFocused();
   await ops.holdClock(page);
   await line.focus();
   await page.keyboard.press("Enter");

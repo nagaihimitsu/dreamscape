@@ -55,15 +55,16 @@ function sampleRoute() {
 type SampleRoute = ReturnType<typeof sampleRoute>;
 
 /**
- * Go to a place like a player: by the rented mode when a route of it leads there
- * (the introduction card's modes list walking and the rental), else walking.
+ * Go to an event's place like a player: by the rented mode when a route of it leads there
+ * (the introduction card's modes list walking and the rental), else walking. The event is
+ * named, as its place's card shows every event there (the tower's date and finale too).
  */
-async function goToPlace(page: Page, route: SampleRoute, placeId: string) {
+async function goToPlace(page: Page, route: SampleRoute, event: { id: string; placeId: string }) {
   const state = await readSave(page, JOURNEY);
   const mode = route.rental?.mode;
   const ride = mode && state.travel.rentedModeIds.includes(mode.id) &&
-    route.routes.some((item) => item.fromPlaceId === state.travel.currentPlaceId && item.toPlaceId === placeId && item.mode === mode.id);
-  await ops.goTo(page, placeId, ride ? { mode: mode.id } : {});
+    route.routes.some((item) => item.fromPlaceId === state.travel.currentPlaceId && item.toPlaceId === event.placeId && item.mode === mode.id);
+  await ops.goTo(page, event.placeId, { eventId: event.id, ...(ride ? { mode: mode.id } : {}) });
 }
 
 /** The correct answer of the open question, like a player who followed the story; "A" for other choices. */
@@ -161,7 +162,7 @@ test("the sample journey plays from a new journey through its city finale and ep
     await playUntil(page, (state) => !!state.activeEncounter?.frame.ended && !state.activeEncounter.frame.choices.length, { source, pick });
     await ops.holdClock(page);
     await page.getByTestId("encounter-advance").click();
-  } else await goToPlace(page, route, route.episode.placeId);
+  } else await goToPlace(page, route, route.episode);
   if (rental) {
     const transition = page.getByTestId("travel-transition");
     await expect(transition).toHaveAttribute("data-mode", rental.mode.id);
@@ -204,7 +205,7 @@ test("the sample journey plays from a new journey through its city finale and ep
 
   // 3. The date: by day the bench painter comes first (stage 4: the date's moment); the date's AP is kept back until the
   // date starts, then spent once, and the date ends on the map (docs/07 acceptance 3, 4).
-  await goToPlace(page, route, route.date.placeId);
+  await goToPlace(page, route, route.date);
   await expect(page.getByTestId("encounter-screen")).toBeVisible();
   expect((await readSave(page, JOURNEY)).ap).toBe(met.ap);
   await playUntil(page, (state) => !state.activeEncounter, { source, pick });
@@ -221,7 +222,7 @@ test("the sample journey plays from a new journey through its city finale and ep
   // 4. (Optional part) Special battles B and C: the place's guide, then the battle whose
   // evidence the player chooses in the clue book (AGENTS.md: 矛盾追及B・証拠連結C).
   for (const special of route.specials) {
-    await goToPlace(page, route, special.placeId);
+    await goToPlace(page, route, special);
     await expect(page.getByTestId("tourism-guide")).toBeVisible();
     await playUntil(page, (state) => state.activeTourism?.phase === "exploring", { source, pick });
     await page.getByTestId("observation-proceed").click();
@@ -238,7 +239,7 @@ test("the sample journey plays from a new journey through its city finale and ep
   // 5. The city finale clears the city (its clear reward is in the receipt, paid once). Before it, the sugar sweets
   // (stage 4: the finale's -1, paid as they end).
   const beforeFinale = await readSave(page, JOURNEY);
-  await goToPlace(page, route, route.finale.placeId);
+  await goToPlace(page, route, route.finale);
   await expect(page.getByTestId("encounter-screen")).toBeVisible();
   await playUntil(page, (state) => !state.activeEncounter, { source, pick });
   expect((await readSave(page, JOURNEY)).travelBudget).toBe(beforeFinale.travelBudget - 20);
@@ -258,7 +259,9 @@ test("the sample journey plays from a new journey through its city finale and ep
   await expect(menu).toBeVisible();
   expectNoActiveScene(ended);
   expect(ended).toMatchObject({ currentCityId: route.city.id, completedCityIds: [route.city.id], ap: finale.ap });
-  await expect(page.getByTestId("city-progress")).toContainText("都市クリア");
+  const records = await ops.openRecords(page);
+  await expect(records.getByTestId("city-progress")).toHaveText("都市クリア");
+  await ops.closeDialog(records);
   await expect(page.getByRole("button", { name: /へ出発/ })).toHaveCount(0);
 
   // The rental lasts while the party stays in the city.

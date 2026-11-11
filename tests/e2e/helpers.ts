@@ -240,11 +240,11 @@ export const ops = {
     await page.getByLabel("主人公の名前").fill(names[0]);
     await page.getByLabel("ヒロインの名前").fill(names[1]);
   },
-  /** The header's ⚙設定: a button whose small panel holds セーブ, ロード and ゲームの設定 (openMenu). */
+  /** The header's ⚙設定: a button whose small panel holds セーブ, ロード, 旅の記録, 英語ノート, 写真の出典 (free time) and ゲームの設定 (openMenu). */
   settingsButton(page: Page): Locator {
     return page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "設定", exact: true });
   },
-  /** Opens ⚙設定's panel (if it is not open yet) and returns it: セーブ, ロード, ゲームの設定. */
+  /** Opens ⚙設定's panel (if it is not open yet) and returns it. */
   async openMenu(page: Page): Promise<Locator> {
     const button = ops.settingsButton(page);
     if (await button.getAttribute("aria-expanded") !== "true") await button.click();
@@ -253,7 +253,7 @@ export const ops = {
     return panel;
   },
   /** One of ⚙設定's items, pressed from its panel (inside the header's 「旅の操作」). */
-  async menuItem(page: Page, name: "セーブ" | "ロード" | "ゲームの設定") {
+  async menuItem(page: Page, name: "セーブ" | "ロード" | "旅の記録" | "英語ノート" | "写真の出典" | "ゲームの設定") {
     await ops.openMenu(page);
     await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name, exact: true }).click();
   },
@@ -371,9 +371,9 @@ export const ops = {
     await expect(dialog).not.toHaveAttribute("data-settling");
     return { dialog, loadButton: dialog.getByRole("button", { name: "ロードする", exact: true }) };
   },
-  /** The header's progress (観光・対決 / 都市クリア) opens 旅の記録; returns that dialog. */
+  /** ⚙設定 → 「旅の記録」 (its first line, `city-progress`, is the city's progress: 観光・対決 / 都市クリア); returns that dialog. */
   async openRecords(page: Page): Promise<Locator> {
-    await page.getByTestId("city-progress").click();
+    await ops.menuItem(page, "旅の記録");
     const records = page.getByRole("dialog", { name: "旅の記録" });
     await expect(records).toBeVisible();
     return records;
@@ -396,47 +396,28 @@ export const ops = {
     await expect(detail).toBeVisible();
     return detail;
   },
+  /** ⚙設定 → 「英語ノート」. */
   async openEnglishNote(page: Page): Promise<Locator> {
-    await page.getByRole("button", { name: "英語ノートを開く" }).click();
+    await ops.menuItem(page, "英語ノート");
     const note = page.getByRole("dialog", { name: "英語ノート" });
     await expect(note).toBeVisible();
     return note;
   },
   /**
-   * A destination's photo card (B案「写真札で旅先を選ぶ」, docs/02): its button in the sightseeing row, else in the date
-   * sheet, which the band's 「デート」 opens. A press on it only selects the place (never travels).
+   * A destination's photo card (B案「写真札で旅先を選ぶ」, docs/02): its button in free time's row, which holds every
+   * place, sightseeing and dates alike. A press on it only selects the place (never travels).
    */
-  async destination(page: Page, placeId: string): Promise<Locator> {
-    const card = page.getByTestId("travel-menu").getByTestId(`travel-place-${placeId}`);
+  destination(page: Page, placeId: string): Locator {
     // The card's own button comes first (in the list the chosen row also holds its introduction card).
-    if (await card.count()) return card.getByRole("button").first();
-    return (await ops.openDates(page)).getByTestId(`date-place-${placeId}`).getByRole("button").first();
+    return page.getByTestId("travel-menu").getByTestId(`travel-place-${placeId}`).getByRole("button").first();
   },
-  /** The band's 「デート」: the date sheet with the same photo cards and introduction card, once it takes presses. */
-  async openDates(page: Page): Promise<Locator> {
-    await page.getByTestId("free-time-dates-open").click();
-    const sheet = page.getByRole("dialog", { name: "デート", exact: true });
-    await expect(sheet).toBeVisible();
-    await expect(sheet).not.toHaveAttribute("data-settling");
-    return sheet;
-  },
-  /**
-   * Select a destination by its photo card (in the sightseeing row; for a date, or when the row's card lacks the event
-   * `eventId`, in the date sheet) and return its introduction card (`place-card`) showing the place.
-   */
-  async selectDestination(page: Page, placeId: string, eventId?: string): Promise<Locator> {
+  /** Select a destination by its photo card and return its introduction card (`place-card`, every event there) showing the place. */
+  async selectDestination(page: Page, placeId: string): Promise<Locator> {
     const menu = page.getByTestId("travel-menu");
     const card = menu.getByTestId(`travel-place-${placeId}`);
-    if (await card.count()) {
-      await card.getByRole("button").first().click();
-      await expect(card).toHaveAttribute("data-selected", "true");
-      const intro = menu.getByTestId("place-card");
-      await expect(intro).toHaveAttribute("data-place-id", placeId);
-      if (!eventId || await intro.getByTestId(`place-event-${eventId}`).count()) return intro;
-    }
-    const sheet = await ops.openDates(page);
-    await sheet.getByTestId(`date-place-${placeId}`).getByRole("button").first().click();
-    const intro = sheet.getByTestId("place-card");
+    await card.getByRole("button").first().click();
+    await expect(card).toHaveAttribute("data-selected", "true");
+    const intro = menu.getByTestId("place-card");
     await expect(intro).toHaveAttribute("data-place-id", placeId);
     return intro;
   },
@@ -451,10 +432,10 @@ export const ops = {
    * The page's clock must run (the arming waits on a timer): hold it only after the last press.
    */
   async goTo(page: Page, placeId: string, choice: TravelChoice = {}) {
-    await chooseInCard(await ops.selectDestination(page, placeId, choice.eventId), placeId, choice);
+    await chooseInCard(await ops.selectDestination(page, placeId), placeId, choice);
   },
   /**
-   * The same from the expanded map: 「地図を大きく見る」, the place's marker by keyboard (Enter
+   * The same from the expanded map: the header's 「地図」 (「地図を大きく見る」), the place's marker by keyboard (Enter
    * selects it), then the same steps in the dialog's 「選んだ行き先」 (its own introduction card).
    */
   async goToFromMap(page: Page, placeId: string, choice: TravelChoice = {}) {
@@ -466,25 +447,33 @@ export const ops = {
     await chooseInCard(dialog.getByTestId("map-selection").getByTestId("place-card"), placeId, choice);
   },
   /**
-   * 休む the two-step way: 「休む」 selects the hotel and shows the ways home in the band; then
-   * 「休む」 again (one way home, once armed) or the way home `mode` (via `viaPlaceId`).
+   * 「ホテルに戻る」, the last card of free time's row: returns its card (休む's ways home, then 待機's 「…待つ」) once
+   * its ways home take presses (armed).
    */
-  async sleep(page: Page, { mode = "walk", viaPlaceId }: { mode?: string; viaPlaceId?: string } = {}) {
-    const band = page.getByTestId("travel-actions");
-    const rest = band.getByRole("button", { name: "滞在先で休む" });
-    await rest.click();
-    await expect(band).toHaveAttribute("data-selected", "true");
-    await expect(band).toHaveAttribute("data-armed", "true");
-    const routes = band.locator('[data-testid^="travel-sleep-route-"]');
-    const route = band.getByTestId(`travel-sleep-route-${mode}${viaPlaceId ? `-${viaPlaceId}` : ""}`);
-    expect(await route.count(), `a way home by ${mode}${viaPlaceId ? ` via ${viaPlaceId}` : ""}`).toBe(1);
-    // One way home: 「休む」 again; several: the way home itself.
-    if (await routes.count() === 1 && await route.isEnabled()) await rest.click();
-    else await route.click();
+  async stay(page: Page): Promise<Locator> {
+    const menu = page.getByTestId("travel-menu");
+    await menu.getByTestId("travel-stay").getByRole("button").first().click();
+    const card = menu.getByTestId("stay-card");
+    await expect(card).toHaveAttribute("data-armed", "true");
+    return card;
   },
-  /** Free time's 「ツアー」 (tour stage 2a; B案: the band's icon): the sheet of the city's tours, once it takes presses. */
+  /** 休む: 「ホテルに戻る」, then its way home `mode` (via `viaPlaceId`; at the hotel 「ここで休む」, walking). */
+  async sleep(page: Page, { mode = "walk", viaPlaceId }: { mode?: string; viaPlaceId?: string } = {}) {
+    const route = (await ops.stay(page)).getByTestId(`travel-sleep-route-${mode}${viaPlaceId ? `-${viaPlaceId}` : ""}`);
+    expect(await route.count(), `a way home by ${mode}${viaPlaceId ? ` via ${viaPlaceId}` : ""}`).toBe(1);
+    await route.click();
+  },
+  /** The tour's card in free time's row (tour stage 2a; B案): a booked tour's line with its cancel, and 「ツアーを見る」. */
+  async tourCard(page: Page): Promise<Locator> {
+    const menu = page.getByTestId("travel-menu");
+    await menu.getByTestId("travel-tour").getByRole("button").first().click();
+    const card = menu.getByTestId("tour-card");
+    await expect(card).toBeVisible();
+    return card;
+  },
+  /** The tour's card → 「ツアーを見る」: the sheet of the city's tours. */
   async openTours(page: Page): Promise<Locator> {
-    await page.getByTestId("travel-tours-open").click();
+    await (await ops.tourCard(page)).getByTestId("travel-tours-open").click();
     const sheet = page.getByRole("dialog", { name: "ツアー", exact: true });
     await expect(sheet).toBeVisible();
     await expect(sheet).not.toHaveAttribute("data-settling");

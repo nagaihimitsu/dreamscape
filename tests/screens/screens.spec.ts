@@ -89,7 +89,7 @@ const flows: FlowScene[] = [
     const cleanup = await ops.openOldDataCleanup(page);
     await ops.chooseOldData(page, cleanup, [/ミラノ編のバックアップ/]);
   } },
-  { scene: "flow-route-choice", titleJa: "移動手段の選択", descriptionJa: "旅を始めて「最後の晩餐」の写真札を選ぶ（紹介カードに徒歩と路面電車16番）", open: async (page) => {
+  { scene: "flow-route-choice", titleJa: "移動手段の選択", descriptionJa: "旅を始めて「最後の晩餐」の写真札を選ぶ（紹介カードに徒歩と路面電車）", open: async (page) => {
     await ops.startJourney(page);
     const card = await ops.selectDestination(page, "p_supper");
     await expect(card.getByTestId("travel-mode-milano_last_supper_episode-tram")).toBeVisible();
@@ -137,7 +137,7 @@ const flows: FlowScene[] = [
     const picker = note.getByLabel("回答した問題を選ぶ");
     await picker.selectOption((await picker.locator("option").nth(1).getAttribute("value"))!);
   } },
-  { scene: "flow-tour-sheet", titleJa: "ツアーの一覧", descriptionJa: "インド編のアーグラに着いて「ツアーを見る」（宿のフロントとWeb予約の料金）", open: async (page) => {
+  { scene: "flow-tour-sheet", titleJa: "ツアーの一覧", descriptionJa: "インド編のアーグラに着いて、ツアーの札から「ツアーを見る」（宿のフロントとWeb予約の料金）", open: async (page) => {
     await toAgra(page);
     await ops.openTours(page);
   } },
