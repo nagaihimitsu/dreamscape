@@ -210,6 +210,265 @@
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
       "placeholderColor": "#635f4b",
       "variants": []
+    },
+    {
+      "id": "gt_delhi_scam_suit_man",
+      "imagePath": "assets/characters/gt_delhi_scam_suit_man/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#393d50",
+      "variants": []
+    },
+    {
+      "id": "gt_delhi_porter",
+      "imagePath": "assets/characters/gt_delhi_porter/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#af6e5e",
+      "variants": []
+    },
+    {
+      "id": "gt_delhi_ticket_checker",
+      "imagePath": "assets/characters/gt_delhi_ticket_checker/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#483f3d",
+      "variants": []
+    },
+    {
+      "id": "gt_nikhil",
+      "imagePath": "assets/characters/gt_nikhil/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#646875",
+      "variants": []
+    },
+    {
+      "id": "gt_tanvi",
+      "imagePath": "assets/characters/gt_tanvi/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#53594e",
+      "variants": []
+    },
+    {
+      "id": "gt_duggal",
+      "imagePath": "assets/characters/gt_duggal/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#4d4b58",
+      "variants": []
+    },
+    {
+      "id": "gt_riya",
+      "imagePath": "assets/characters/gt_riya/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#544e56",
+      "variants": []
+    },
+    {
+      "id": "gt_agra_fort_tourist",
+      "imagePath": "assets/characters/gt_agra_fort_tourist/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#ddb572",
+      "variants": []
+    },
+    {
+      "id": "gt_vimla",
+      "imagePath": "assets/characters/gt_vimla/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#986f7b",
+      "variants": []
+    },
+    {
+      "id": "gt_mukesh",
+      "imagePath": "assets/characters/gt_mukesh/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#927b72",
+      "variants": []
+    },
+    {
+      "id": "gt_anwar",
+      "imagePath": "assets/characters/gt_anwar/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#e6d6cd",
+      "variants": []
+    },
+    {
+      "id": "gt_agra_finale_student",
+      "imagePath": "assets/characters/gt_agra_finale_student/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#5e5e62",
+      "variants": []
+    },
+    {
+      "id": "gt_samir",
+      "imagePath": "assets/characters/gt_samir/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#644943",
+      "variants": []
+    },
+    {
+      "id": "gt_jagdeep",
+      "imagePath": "assets/characters/gt_jagdeep/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#6a5842",
+      "variants": []
+    },
+    {
+      "id": "gt_agra_chini_bride",
+      "imagePath": "assets/characters/gt_agra_chini_bride/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#c7977d",
+      "variants": []
+    },
+    {
+      "id": "gt_gurmeet",
+      "imagePath": "assets/characters/gt_gurmeet/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#827169",
+      "variants": []
+    },
+    {
+      "id": "gt_agra_mariam_father",
+      "imagePath": "assets/characters/gt_agra_mariam_father/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#8b7b72",
+      "variants": []
+    },
+    {
+      "id": "gt_agra_mariam_daughter",
+      "imagePath": "assets/characters/gt_agra_mariam_daughter/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#8c8b93",
+      "variants": []
+    },
+    {
+      "id": "gt_sonia",
+      "imagePath": "assets/characters/gt_sonia/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#7d5b3e",
+      "variants": []
+    },
+    {
+      "id": "gt_agra_ram_bagh_tea_master",
+      "imagePath": "assets/characters/gt_agra_ram_bagh_tea_master/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#86766a",
+      "variants": []
+    },
+    {
+      "id": "gt_vinod",
+      "imagePath": "assets/characters/gt_vinod/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#79757c",
+      "variants": []
+    },
+    {
+      "id": "gt_agra_akbar_guard",
+      "imagePath": "assets/characters/gt_agra_akbar_guard/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#af8e65",
+      "variants": []
+    },
+    {
+      "id": "gt_saleem",
+      "imagePath": "assets/characters/gt_saleem/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#bba58e",
+      "variants": []
+    },
+    {
+      "id": "gt_jaipur_amber_shopkeeper",
+      "imagePath": "assets/characters/gt_jaipur_amber_shopkeeper/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#4e403b",
+      "variants": []
+    },
+    {
+      "id": "gt_gaura",
+      "imagePath": "assets/characters/gt_gaura/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#ae554e",
+      "variants": []
+    },
+    {
+      "id": "gt_sushma",
+      "imagePath": "assets/characters/gt_sushma/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#c26c3d",
+      "variants": []
+    },
+    {
+      "id": "gt_vishal",
+      "imagePath": "assets/characters/gt_vishal/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#afa59b",
+      "variants": []
+    },
+    {
+      "id": "gt_divya",
+      "imagePath": "assets/characters/gt_divya/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#4e5160",
+      "variants": []
+    },
+    {
+      "id": "gt_shastri",
+      "imagePath": "assets/characters/gt_shastri/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#d2b8aa",
+      "variants": []
+    },
+    {
+      "id": "gt_pooja",
+      "imagePath": "assets/characters/gt_pooja/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#95732f",
+      "variants": []
+    },
+    {
+      "id": "gt_jaipur_bride_grandmother",
+      "imagePath": "assets/characters/gt_jaipur_bride_grandmother/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#9a3f39",
+      "variants": []
+    },
+    {
+      "id": "gt_jaipur_hotel_front",
+      "imagePath": "assets/characters/gt_jaipur_hotel_front/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#d26d7c",
+      "variants": []
+    },
+    {
+      "id": "gt_kavya",
+      "imagePath": "assets/characters/gt_kavya/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#675e64",
+      "variants": []
+    },
+    {
+      "id": "gt_raju",
+      "imagePath": "assets/characters/gt_raju/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#7d6a56",
+      "variants": []
+    },
+    {
+      "id": "gt_jaipur_jaigarh_old_man",
+      "imagePath": "assets/characters/gt_jaipur_jaigarh_old_man/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#c5ac98",
+      "variants": []
+    },
+    {
+      "id": "gt_farhana",
+      "imagePath": "assets/characters/gt_farhana/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#776756",
+      "variants": []
+    },
+    {
+      "id": "gt_nasreen",
+      "imagePath": "assets/characters/gt_nasreen/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#724b3e",
+      "variants": []
     }
   ],
   "battleCharacters": {
@@ -218,6 +477,15 @@
     "gt_jaipur_finale_battle": "gt_kamla",
     "gt_delhi_main_qutb_minar_battle": "gt_ramkishan",
     "gt_delhi_main_humayun_tomb_battle": "gt_suresh",
-    "gt_delhi_main_jama_masjid_battle": "gt_hamid"
+    "gt_delhi_main_jama_masjid_battle": "gt_hamid",
+    "gt_agra_main_taj_mahal_battle": "gt_nikhil",
+    "gt_agra_main_agra_fort_battle": "gt_duggal",
+    "gt_agra_main_itimad_tomb_battle": "gt_vimla",
+    "gt_agra_main_fatehpur_sikri_battle": "gt_mukesh",
+    "gt_agra_finale_battle": "gt_anwar",
+    "gt_jaipur_main_amber_fort_battle": "gt_saleem",
+    "gt_jaipur_main_hawa_mahal_battle": "gt_gaura",
+    "gt_jaipur_main_city_palace_battle": "gt_sushma",
+    "gt_jaipur_main_jantar_mantar_battle": "gt_divya"
   }
 }

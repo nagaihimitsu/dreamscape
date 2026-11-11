@@ -50,6 +50,7 @@ INCLUDE modules.ink
 // 【3】足した札：ペーターを食べ切る
 === gt_agra_epilogue ===
 # scene: epilogue
+# person: gt_anwar
 # on_done: use gt_agra_anwar_petha
 # background: gt_bg_agra_hotel_hub
 # speaker: narrator
