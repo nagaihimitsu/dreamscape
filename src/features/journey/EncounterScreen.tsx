@@ -11,6 +11,7 @@ import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { useSceneTap } from "../../components/useSceneTap";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import type { PortraitFocus } from "../../components/speaker-focus";
+import { useStaysOnStage } from "../../components/useStaysOnStage";
 import { ComicEffect } from "../../components/ComicEffect";
 import type { ReactionMark } from "../../content/dialogue-reactions";
 import type { LineDelivery } from "../../content/tags";
@@ -43,6 +44,8 @@ export type EncounterScreenView = {
   /** The heading's tag (a running tour's 「ツアー・見学」). */
   badgeJa?: string;
   portraits?: Partial<Record<"heroine" | "enemy", { emotion: string; mark?: ReactionMark; focus?: PortraitFocus }>>;
+  /** The scene's person with a portrait (# person:): on the other side from their first line to the scene's end. */
+  person?: { characterId: string; focus?: PortraitFocus };
   cityId: string;
   sceneId?: string;
   quiz?: {
@@ -94,6 +97,11 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
     else onAdvance();
   }
   const quiz = view.quiz;
+  const personOn = useStaysOnStage(!!view.person && !!view.portraits?.enemy);
+  // Once on stage, the person stays (listening, or as they are under narration) at the lines of the others.
+  const portraits: EncounterScreenView["portraits"] = view.person && personOn && !view.portraits?.enemy
+    ? { ...view.portraits, enemy: { emotion: "neutral", focus: view.person.focus } }
+    : view.portraits;
   const autoAdvance = useAutoAdvance({ ready, canAdvance: !view.ended && !quiz && view.choices.length === 0 && !windowVisibility.hidden,
     text: view.text, onAdvance: advance, defaultEnabled: autoAdvanceEnabled,
     readSkip, lineId: !quiz && view.text ? readLineId(view.sceneId ?? view.id, view.text) : null });
@@ -102,11 +110,11 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
     <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} {...sceneTap.props}>
       <div className="vn-background" data-testid="scene-picture">{view.backgroundAsset ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundAsset.path}`} alt="" /> : <CanalScene backgroundId={view.background} />}</div>
       <SceneHeading label={view.placeJa} badge={view.badgeJa} />
-      {!quiz && view.portraits && <div className="vn-character-layer encounter-character-layer" data-two-characters={!!view.portraits.heroine && !!view.portraits.enemy}>
+      {!quiz && portraits && <div className="vn-character-layer encounter-character-layer" data-two-characters={!!portraits.heroine && !!portraits.enemy}>
         {(["heroine", "enemy"] as const).map((id) => {
-          const portrait = view.portraits?.[id];
+          const portrait = portraits?.[id];
           return portrait && <div className={`encounter-character-slot encounter-character-${id}`} key={id}>
-            <CharacterPortrait characterId={id} cityId={view.cityId} sceneId={view.sceneId} emotion={portrait.emotion} focus={portrait.focus}>
+            <CharacterPortrait characterId={id === "enemy" && view.person ? view.person.characterId : id} cityId={view.cityId} sceneId={view.sceneId} emotion={portrait.emotion} focus={portrait.focus}>
               {portrait.mark && <ComicEffect effect={portrait.mark} reduceMotion={reduceMotion} cueKey={String(view.revision)} />}
             </CharacterPortrait>
           </div>;

@@ -35,6 +35,7 @@ INCLUDE modules.ink
 // 【3】エピローグ。progression/journey.json のフィナーレの epilogueStoryId（今は epilogues/jaipur）がこの knot を指すように直す（欄の書き方は段階3で決まる）
 === gt_jaipur_epilogue ===
 # scene: epilogue
+# person: gt_kamla
 # background: gt_bg_jaipur_hotel_hub
 # speaker: narrator
 翌朝、宿の中庭。荷物をまとめ終えた二人の前に、オートリキシャが止まった。降りてきたのは、桃色のサリーのカムラだった。

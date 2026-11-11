@@ -46,6 +46,10 @@
           "nameJa": {
             "type": "string",
             "minLength": 1
+          },
+          "characterId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
           }
         },
         "required": [

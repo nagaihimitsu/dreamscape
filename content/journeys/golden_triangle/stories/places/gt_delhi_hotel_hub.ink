@@ -42,6 +42,7 @@ INCLUDE modules.ink
 // 【3】足した札：アマンの結婚式の案内を受け取る
 === gt_delhi_epilogue ===
 # scene: epilogue
+# person: gt_aman
 # on_done: item gt_delhi_aman_wedding_invitation
 # background: gt_bg_delhi_hotel_hub
 # speaker: narrator

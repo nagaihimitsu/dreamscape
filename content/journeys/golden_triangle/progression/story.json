@@ -110,5 +110,18 @@
       "noteJa": "ジャイガル砦で地図を買わず、ラージューが自分で案内した"
     }
   ],
-  "people": []
+  "people": [
+    {
+      "id": "gt_aman",
+      "cityId": "delhi",
+      "nameJa": "アマン",
+      "characterId": "gt_aman"
+    },
+    {
+      "id": "gt_kamla",
+      "cityId": "delhi",
+      "nameJa": "カムラ",
+      "characterId": "gt_kamla"
+    }
+  ]
 }

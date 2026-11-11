@@ -62,7 +62,7 @@ function checkedStep(step: StoryStep) {
 }
 
 /** The scene of the open arrival or epilogue (its file's choices and head # on_done:), when it has tags; a tour leg's narration has none. */
-function epilogueScene(active: z.infer<typeof activeEpilogueSchema>) {
+export function epilogueScene(active: z.infer<typeof activeEpilogueSchema>) {
   if (active.kind === "tour_leg") return narrationScene(active.episodeId);
   const finale = episodes.find((episode) => episode.id === active.episodeId);
   return finale && sceneOfAddress(active.kind === "arrival" ? getCityContent(finale.cityId).city.arrivalStoryId : finale.epilogueStoryId);
