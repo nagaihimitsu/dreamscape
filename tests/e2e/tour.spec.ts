@@ -68,11 +68,10 @@ test("books Agra's day tour at the inn, rests, rides, visits Fatehpur Sikri and 
   await expect(page.getByTestId("dialogue-text")).toHaveText(line!);
   expect(await readSave(page, journeyId)).toEqual(guide);
 
-  // The observation, the battle, and its result's 「ツアーを続ける」: the scene after the visit, the car back (its narration and
-  // encounter, the car), the scene at the inn, then free time at the inn.
+  // The battle (the visit has no observation since 2026-11-11, the user's decision), and its result's 「ツアーを続ける」: the
+  // scene after the visit, the car back (its narration and encounter, the car), the scene at the inn, then free time at the inn.
   await ops.settled(page);
   await page.getByTestId("tourism-skip").click();
-  await page.getByTestId("observation-proceed").click();
   await playUntil(page, (state) => state.activeBattle?.phase === "result", { source });
   const leave = page.getByRole("button", { name: /ツアーを続ける/ });
   await expect(leave).toBeVisible();
