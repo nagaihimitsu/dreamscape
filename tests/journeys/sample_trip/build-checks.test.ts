@@ -136,3 +136,20 @@ describe("A10 and a then: move (3.3 check 6, 2.3, 4.2)", () => {
       .toThrow(/No choice can be chosen at a choice point of .*smp_mihon_first_bicycle/u);
   });
 });
+
+describe("a question's reveal on its battle's landmark photo (revealRegion, 2026-11-11)", () => {
+  const FINALE_QUIZ = "quizzes/smp_mihon_finale_quiz.json";
+  const TOWER_QUIZ = "quizzes/smp_mihon_main_clock_tower_quiz.json";
+  const withRegion = (index: number, region: unknown) => (text: string) => {
+    const quiz = JSON.parse(text);
+    quiz.questions[index].revealRegion = region;
+    return JSON.stringify(quiz);
+  };
+
+  it("stops one on a city finale's question (no landmark photo) and one outside the photo, naming the file", () => {
+    expect(() => validateContent(sampleWith({ [FINALE_QUIZ]: withRegion(0, { x: 0.1, y: 0.1, width: 0.2, height: 0.2 }) })))
+      .toThrow(/写真の種明かし（revealRegion）は、対決の観光地の写真に重ねて出します：.*smp_mihon_finale_quiz\.json の問い smp_mihon_finale_q1 は都市フィナーレの問い/u);
+    expect(() => validateContent(sampleWith({ [TOWER_QUIZ]: withRegion(2, { x: 0.5, y: 0.5, width: 0.6, height: 0.2 }) })))
+      .toThrow(/smp_mihon_main_clock_tower_quiz\.json[\s\S]*写真の種明かしの範囲（revealRegion）が写真の外にはみ出しています/u);
+  });
+});

@@ -53,7 +53,7 @@ import {
   type DateDefinition,
 } from "../src/content/schemas";
 import type { TagContext } from "../src/content/tags";
-import { checkHelperKnot, validateBattleEvidence } from "./battle-validation";
+import { checkHelperKnot, revealRegionProblem, validateBattleEvidence } from "./battle-validation";
 import { landmarkOrderError, landmarkParts, tourismCatalogSchema, type VisitPart } from "../src/content/tourism-schemas";
 import type { SceneOption } from "../src/content/scene-schemas";
 import { validateTourism } from "./tourism-validation";
@@ -1139,6 +1139,9 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       productionQuestionIds.push(
         ...quiz.questions.map((question) => question.id),
       );
+      // A question's reveal (revealRegion) needs its battle's landmark photo.
+      const reveal = revealRegionProblem(quiz as QuizDefinition, tourism, displayPath(root, file));
+      if (reveal) throw new Error(reveal);
     }
     if ("scope" in quiz && quiz.scope === "city_finale") {
       if (!cities.some((item) => item.id === quiz.cityId))

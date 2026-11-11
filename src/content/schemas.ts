@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { conditionSchema } from "./condition-schemas";
 import { storyAddressSchema } from "./story-address";
+import { imageRegionSchema } from "./tourism-schemas";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const text = z.string().trim().min(1);
@@ -383,14 +384,25 @@ export const quizQuestionSchema = z
   .strict();
 
 /**
- * A battle's question: the heroine's optional lines by its quiz card (an encounter's quiz has no hint button
- * and no explanation card, so its question has neither).
+ * A battle's question: the heroine's optional lines by its quiz card and the optional reveal on the landmark
+ * photo under its explanation (an encounter's quiz has no hint button and no explanation card, so its question
+ * has none of them).
  */
 export const battleQuestionSchema = quizQuestionSchema.extend({
   /** The hint in her own words, shown in place of hintJa as her whisper. */
   hintHeroineJa: japaneseText.optional(),
   /** Her short line beside the explanation of a right answer. */
   heroineCorrectJa: japaneseText.optional(),
+  /**
+   * A part of the battle's landmark photo that the answer's feedback zooms toward and outlines (fractions of the
+   * photo, as an observation hotspot's region). content:build checks that the battle has a landmark photo.
+   */
+  revealRegion: imageRegionSchema(
+    "写真の種明かしの範囲（revealRegion）が写真の外にはみ出しています。x + width と y + height を1以下にしてください" +
+    "（Reveal region exceeds image bounds）",
+  ).optional(),
+  /** A one-line caption under the reveal (shown only with a revealRegion). */
+  revealCaptionJa: japaneseText.optional(),
 });
 
 export const quizSchema = z

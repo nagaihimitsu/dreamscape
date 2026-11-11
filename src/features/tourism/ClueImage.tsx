@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { landmarks, tourismAssets, type TourismClue } from "../../content";
+import { ImageCreditLine } from "../../components/ImageCredit";
 
 function clueAsset(clue: TourismClue) {
   const landmark = landmarks.find((item) => item.id === clue.landmarkId);
@@ -78,12 +79,5 @@ export function ClueImage({ clue }: { clue: TourismClue }) {
 export function ClueImageCredits({ clue }: { clue: TourismClue }) {
   const asset = clueAsset(clue);
   if (!asset) return null;
-  return (
-    <div className="case-image-credits">
-      {asset.isPlaceholder && <strong>仮画像 · </strong>}
-      {asset.creditJa}{" "}
-      <a href={asset.sourceUrl} target="_blank" rel="noreferrer">画像の出典</a>{" · "}
-      <a href={asset.licenseUrl} target="_blank" rel="noreferrer">利用条件</a>
-    </div>
-  );
+  return <ImageCreditLine asset={asset} className="case-image-credits" />;
 }
