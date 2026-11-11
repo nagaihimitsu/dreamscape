@@ -86,7 +86,7 @@ function choose(page: Page, roll: number) {
       const style = getComputedStyle(element);
       return box.width > 0 && box.height > 0 && style.visibility !== "hidden";
     };
-    // A control under another one (e.g. under the full-screen 「タップして会話を表示」 while the
+    // A control under another one (e.g. under the full-screen 「会話を表示」 while the
     // dialogue window is hidden) cannot be pressed: its centre hits something else. Off-screen
     // controls stay candidates (the press scrolls them into view).
     const uncovered = (element: Element) => {

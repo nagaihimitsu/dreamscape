@@ -20,27 +20,45 @@
   background: transparent;
   color: #fff;
 }
-/* Its visible hint (D7): a pressable rectangle at the bottom, above the
-   phone's home indicator. The whole scene is the control (the first tap only
-   shows the window); its focus ring is drawn on the hint. */
+/* Its visible cue (D7), without words (2026-11-11, the user's decision): a
+   44-px pressable square with an eye at the bottom, where the window was, above
+   the phone's home indicator. As it appears its ring spreads out and fades
+   twice, then it rests. The whole scene is the control (the first tap only
+   shows the window); its focus ring is drawn on the cue. Under reduced motion
+   there is no ring: the eye stands still. */
 .vn-window-restore { padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
 .vn-window-restore:focus-visible { outline: none; }
 .vn-window-restore-hint {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  min-height: 44px;
-  padding: 0 16px;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
   border: 1px solid var(--ds-gold-hairline);
   border-radius: 12px;
   background: var(--ds-slate-800);
-  color: var(--ds-on-slate);
   box-shadow: var(--ds-pill-shadow);
-  font-family: "Noto Sans JP", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
 }
-.vn-window-restore-hint .icon { width: 18px; height: 18px; color: var(--ds-gold); }
+.vn-window-restore-hint .icon { width: 22px; height: 22px; color: var(--ds-gold); }
+.vn-window-restore-hint::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 2px solid var(--ds-gold);
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  animation: vn-window-restore-call 1.1s var(--ease-out) 200ms 2;
+}
+@keyframes vn-window-restore-call {
+  from { opacity: 0.9; transform: scale(1); }
+  to { opacity: 0; transform: scale(1.7); }
+}
+.reduce-motion .vn-window-restore-hint::after { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .vn-window-restore-hint::after { animation: none; }
+}
 .vn-window-restore:focus-visible .vn-window-restore-hint {
   outline: 3px solid var(--ds-focus);
   outline-offset: 0;

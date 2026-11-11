@@ -201,10 +201,8 @@ export function RomanceScene({
             />
             {frame.choices.length ? (
               <div className="choices">
-                <p className="choice-hint">
-                  あなたは、どう返す？
-                  <span>返答を選んでください</span>
-                </p>
+                {/* No 「返答を選んでください」 under it (2026-11-11, the user's decision): the replies coming in one after another say it. */}
+                <p className="choice-hint">あなたは、どう返す？</p>
                 {frame.choices.filter((choice) => choiceDisplay?.(choice.index).show !== "hidden").map((choice, index) => (
                   <button
                     disabled={!ready || choiceReadyRevision !== game.revision || choiceDisplay?.(choice.index).show === "grey"}

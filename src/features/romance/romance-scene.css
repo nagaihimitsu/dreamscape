@@ -165,8 +165,7 @@
 .vn-dialogue .next { min-height: 44px; padding: 2px 0 2px 20px; }
 .vn-dialogue .fine-print, .vn-dialogue .eyebrow { color: var(--vn-muted); }
 .vn-dialogue .choices { margin-top: 4px; padding-top: 6px; border-color: rgba(255, 255, 255, .24); }
-.vn-dialogue .choice-hint, .vn-dialogue .choice-hint span { color: var(--vn-muted); }
-.vn-dialogue .choice-hint { margin-bottom: 4px; }
+.vn-dialogue .choice-hint { margin-bottom: 4px; color: var(--vn-muted); }
 .vn-dialogue .choice {
   min-height: 44px;
   margin: 5px 0;
