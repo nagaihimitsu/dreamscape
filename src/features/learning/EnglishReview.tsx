@@ -10,6 +10,7 @@ import { Modal, ModalTitle } from "../../components/Modal";
 import type { Learning } from "./useLearning";
 import { InteractiveEnglish } from "./InteractiveEnglish";
 import { toggleTranslation, type Part } from "./Translations";
+import { WordBook } from "./WordBook";
 import "./learning.css";
 
 export function answeredQuestions(game: GameState, learning: Learning) {
@@ -45,6 +46,8 @@ export function EnglishReview({
   onClose: () => void;
 }) {
   const [markedOnly, setMarkedOnly] = useState(false);
+  // 「問題」 (the answered questions) or 「単語帳」 (their words by place; 2026-11-11 user decision). In this view only.
+  const [view, setView] = useState<"questions" | "words">("questions");
   const allEntries = answeredQuestions(game, learning);
   const entries = markedOnly
     ? allEntries.filter((item) => learning.isMarked(item.question.id))
@@ -98,6 +101,13 @@ export function EnglishReview({
       className="english-review"
     >
       <ModalTitle id="english-review-title" className="english-review-header" onClose={onClose}>英語ノート</ModalTitle>
+      {allEntries.length > 0 && (
+        <div className="review-views" role="group" aria-label="ノートの見方">
+          <button type="button" className="secondary" aria-pressed={view === "questions"} onClick={() => setView("questions")}>問題</button>
+          <button type="button" className="secondary" aria-pressed={view === "words"} onClick={() => setView("words")}>単語帳</button>
+        </div>
+      )}
+      {view === "words" && allEntries.length > 0 ? <WordBook answered={allEntries} /> : <>
       {!selected && <p>回答済みの問題を振り返れます。復習しても得点やAPは変わりません。</p>}
       {!allEntries.length && <p>まだ回答済みの問題はありません。</p>}
       {!game.activeBattle &&
@@ -340,6 +350,7 @@ export function EnglishReview({
             </article>
           );
         })()}
+      </>}
     </Modal>
   );
 }
