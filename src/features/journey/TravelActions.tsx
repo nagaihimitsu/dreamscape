@@ -4,7 +4,7 @@ import { useMeasuredHeight } from "../../components/useMeasuredHeight";
 import type { GameState } from "../../domain/game";
 import { getTravelWaitOptions } from "../../domain/travel-destinations";
 import { SleepChoice } from "./DestinationRow";
-import { formatTravelTime } from "./travel-time";
+import { waitLabelJa } from "./photo-cards";
 import { pressKindOf, type TravelSelectionApi } from "./useTravelSelection";
 
 /** The least height of the open sleep choices (px), when the map leaves less (they scroll inside). */
@@ -60,7 +60,7 @@ export function TravelActions({ game, api, onTravelWait }: {
       <details className="travel-wait" ref={wait} onToggle={(toggle) => { if (toggle.currentTarget.open && selected) api.clear(); }}>
         <summary aria-label="時間を進める"><Icon name="hourglass" /><span className="travel-band-word">待機</span></summary>
         <div className="travel-wait-actions">
-          {waitOptions.map((option) => <button key={option.until ?? "minutes"} type="button" className="secondary" disabled={!option.available} onClick={() => onTravelWait(option.minutes)}>{option.until === null ? `${option.minutes}分待つ` : `${formatTravelTime(option.until)}まで待つ`}</button>)}
+          {waitOptions.map((option) => <button key={option.until ?? "minutes"} type="button" className="secondary" disabled={!option.available} onClick={() => onTravelWait(option.minutes)}>{waitLabelJa(option)}</button>)}
         </div>
       </details>
       <button type="button" className={`travel-sleep-toggle${selected ? " is-selected" : ""}`} aria-label="滞在先で休む" aria-expanded={selected}

@@ -1,13 +1,18 @@
 // B案「写真札で旅先を選ぶ」 (docs/02 「自由時間の画面」), its rules as pure functions: the row of cards (「待機」, each place
 // with all its events, then the tour and 「ホテルに戻る」) and the card chosen first, the selection each card stands for,
-// the event and way a swipe up takes, the fill and the tag that say what a place holds, how a card is read out, how the
-// arrow keys and a flick move the choice, how big each card of the row is, where a drag of the screen starts and which
-// way it goes, when a swipe up departs, and when the cards stand in a vertical list. The game's rules stay where they are: these only arrange what getTravelDestinations and
-// destinationChoicesOf say.
-import type { DestinationChoices, EventChoice, RouteChoice, TravelDestinationEvent, TravelDestinationPlace } from "../../domain/travel-destinations";
+// the event and way a swipe up takes (and 「待機」's wait, 「ホテルに戻る」's way home), the fill and the tag that say what a
+// place holds, how a card is read out, how the arrow keys and a flick move the choice, how big each card of the row is,
+// where a drag of the screen starts and which way it goes, when a swipe up departs, and when the cards stand in a
+// vertical list. The game's rules stay where they are: these only arrange what getTravelDestinations,
+// destinationChoicesOf, getTravelWaitOptions and getTravelSleepChoices say.
+import { DAY_END, NIGHT_START } from "../../domain/travel";
+import type {
+  DestinationChoices, EventChoice, RouteChoice, SleepOption, TravelDestinationEvent, TravelDestinationPlace, TravelWaitOption,
+} from "../../domain/travel-destinations";
 import type { TravelMode } from "../../domain/travel-game";
 import { compareRouteTime } from "../../domain/travel-routes";
 import { announcement, sameTarget, type SelectionTarget, type TargetChoices } from "./travel-selection";
+import { formatTravelTime } from "./travel-time";
 
 /** A place's card: the destination with every event there (sightseeing and dates alike). */
 export type PhotoCardEntry = {
@@ -63,6 +68,14 @@ export function defaultCardIndex(cards: readonly RowCard[]): number {
   return Math.max(0, cards.findIndex((card) => card.kind === "place"));
 }
 
+/**
+ * Whether a card takes a swipe up (and, in the row, Enter on it): a place's departs (or starts there), 「待機」's waits
+ * and 「ホテルに戻る」's rests (user decision 2026-11-11), each by what its card under the row has chosen; the tour's never.
+ */
+export function takesSwipe(card: RowCard): boolean {
+  return card.kind !== "tour";
+}
+
 /** The selection a card stands for: its place, the hotel's 休む (「ホテルに戻る」), or none (「待機」, the tour). */
 export function cardTarget(card: RowCard): SelectionTarget | null {
   return card.kind === "place" ? { kind: "place", placeId: card.id } : card.kind === "stay" ? { kind: "sleep" } : null;
@@ -115,6 +128,75 @@ export function departureOf(entry: PhotoCardEntry, plan: DeparturePlan): { event
   return { event, way: chooseWay(event.routes, plan.mode) };
 }
 
+/** A wait of 「待機」's card, as a key: `minutes` for 「30分待つ」, else the time it waits until. */
+export function waitKey(option: Pick<TravelWaitOption, "until">): string {
+  return option.until === null ? "minutes" : String(option.until);
+}
+
+/**
+ * The wait a swipe up on 「待機」 (or its 「待つ」) takes: the one the player picked while it can be waited, else the first
+ * that can (「30分待つ」 comes first: the card chosen afresh starts there), null when none can.
+ */
+export function chooseWait<T extends TravelWaitOption>(options: readonly T[], picked: string | null): T | null {
+  const open = options.filter((option) => option.available);
+  return open.find((option) => waitKey(option) === picked) ?? open[0] ?? null;
+}
+
+/** A wait in words: 「30分待つ」, 「夜(18:00)まで待つ」 until the night starts (NIGHT_START), else 「15:00まで待つ」. */
+export function waitLabelJa(option: Pick<TravelWaitOption, "minutes" | "until">): string {
+  if (option.until === null) return `${option.minutes}分待つ`;
+  return `${option.until === NIGHT_START ? `夜(${formatTravelTime(NIGHT_START)})` : formatTravelTime(option.until)}まで待つ`;
+}
+
+/** Why a wait cannot be chosen (the line under 「待機」's waits), and the live regions' words when none can be waited. */
+export const WAIT_BLOCKED_JA = `${formatTravelTime(DAY_END)}までにホテルへ帰れなくなる待ち方は選べません。`;
+export const WAIT_REFUSAL_JA = `待てません。${formatTravelTime(DAY_END)}までにホテルへ帰れなくなります。`;
+
+/** A way home of 「ホテルに戻る」's card, as a key: its mode and the place where it changes to walking (none: direct). */
+export function sleepWayKey(route: { mode: string; viaPlaceId?: string }): string {
+  return JSON.stringify([route.mode, route.viaPlaceId ?? null]);
+}
+
+/**
+ * The way home a swipe up on 「ホテルに戻る」 (or its 「休む」) takes: the one the player picked while it can be taken, else
+ * the first that can (the ways come fastest first: the card chosen afresh starts there), null when none can.
+ */
+export function chooseSleepWay<T extends Pick<SleepOption, "route" | "plan">>(options: readonly T[], picked: string | null): T | null {
+  const open = options.filter((option) => option.plan.ok);
+  return open.find((option) => sleepWayKey(option.route) === picked) ?? open[0] ?? null;
+}
+
+/**
+ * A way home in words: at the hotel 「ホテルに戻って休む」 (user decision 2026-11-11), else 「{mode}で帰る」 and, when it
+ * changes to walking at a place, 「・{place}から徒歩」 (`mode` and `via` already in words).
+ */
+export function sleepWayLabelJa({ atHotel, mode, via }: { atHotel: boolean; mode: string; via?: string }): string {
+  return atHotel ? "ホテルに戻って休む" : `${mode}で帰る${via ? `・${via}から徒歩` : ""}`;
+}
+
+/** Why a way home cannot be taken ("" when it can). */
+export function sleepReasonJa(plan: SleepOption["plan"]): string {
+  if (plan.ok) return "";
+  return plan.reason === "budget" ? "この移動手段の予算が足りません。" : "この経路では帰れません。";
+}
+
+/** The ways home that cannot be taken, one line per reason with the ways it holds back (in their order). */
+export function blockedSleepWays<T extends Pick<SleepOption, "route" | "plan">>(options: readonly T[]): { options: T[]; reason: string }[] {
+  const lines = new Map<string, T[]>();
+  for (const option of options) {
+    if (option.plan.ok) continue;
+    const reason = sleepReasonJa(option.plan);
+    lines.set(reason, [...(lines.get(reason) ?? []), option]);
+  }
+  return [...lines].map(([reason, held]) => ({ options: held, reason }));
+}
+
+/** The live regions' words when a swipe up on 「ホテルに戻る」 cannot rest: the reasons, each once (none: no way home). */
+export function sleepRefusalJa(options: readonly Pick<SleepOption, "route" | "plan">[]): string {
+  const reasons = blockedSleepWays(options).map((line) => line.reason);
+  return `休めません。${reasons.length ? reasons.join("") : "ホテルへの経路は確認されていません。"}`;
+}
+
 /** The live regions' words when a swipe up cannot depart: the chosen event's reasons, each once. */
 export function refusalJa(event: EventChoice): string {
   const reasons = blockedWays(event.routes).map((line) => line.reason).filter((reason) => reason);
@@ -154,17 +236,22 @@ export function photoCardLabel({ position, count, name, marks = [] }: {
   return [`${count}件中${position}件目`, name, ...marks].join("、");
 }
 
-/** The live regions' words when the tour's card or 「待機」's is chosen. */
+/** The live regions' words when the tour's card is chosen. */
 export const TOUR_CHOSEN_JA = "ツアーを選びました。予約の案内を出しています。";
-export const WAIT_CHOSEN_JA = "「待機」を選びました。待ち方を出しています。";
+
+/** The live regions' words when 「待機」's card is chosen: the wait its swipe up (and 「待つ」) takes (`wait`, in words), or none. */
+export function waitChosenJa(wait: string | null): string {
+  return wait ? `「待機」を選びました。待ち方を出しています（「${wait}」を選んでいます）。` : "「待機」を選びました。今は待てません。";
+}
 
 /**
  * The live regions' words for a selection: a place says where its way is (its card's button, never a second press),
- * 「ホテルに戻る」 where its ways home are; the current place and a place that cannot be visited now read as
- * before (travel-selection.ts).
+ * 「ホテルに戻る」 where its ways home are and the one its swipe up (and 「休む」) takes (`sleepWay`, in words; null: none
+ * can be taken); the current place and a place that cannot be visited now read as before (travel-selection.ts).
  */
-export function photoCardAnnouncement(target: TargetChoices, name: string, openEventId: string | null = null): string {
-  if (target.kind === "sleep") return "「ホテルに戻る」を選びました。帰り方を出しています。";
+export function photoCardAnnouncement(target: TargetChoices, name: string, openEventId: string | null = null, sleepWay: string | null = null): string {
+  if (target.kind === "sleep")
+    return sleepWay ? `「ホテルに戻る」を選びました。帰り方を出しています（「${sleepWay}」を選んでいます）。` : "「ホテルに戻る」を選びました。今は休めません。";
   if (!target.choices || !target.choices.available) return announcement(target, name, openEventId);
   return `${name}を選びました。紹介と行き方を出しています。`;
 }

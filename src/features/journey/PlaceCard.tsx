@@ -4,12 +4,15 @@ import { formatMoneyForCity } from "../../content/currency";
 import { transportLabel } from "../../content/transport";
 import type { GameState } from "../../domain/game";
 import { getDirection } from "../../domain/travel";
-import { getTravelWaitOptions, type EventChoice, type RouteChoice } from "../../domain/travel-destinations";
+import type { EventChoice, RouteChoice, SleepOption, TravelWaitOption } from "../../domain/travel-destinations";
 import { getTravelEventDefinition, type TravelMode } from "../../domain/travel-game";
 import { compareRouteTime } from "../../domain/travel-routes";
 import { HeroineNote } from "../battle/HeroineNote";
 import { withNames } from "../romance/names";
-import { blockedWays, chooseWay, chosenEvent, eventKindJa, type DeparturePlan, type PhotoCardEntry } from "./photo-cards";
+import {
+  blockedSleepWays, blockedWays, chooseSleepWay, chooseWay, chosenEvent, eventKindJa, sleepWayKey, sleepWayLabelJa, WAIT_BLOCKED_JA, waitKey,
+  waitLabelJa, type DeparturePlan, type PhotoCardEntry,
+} from "./photo-cards";
 import { placeHeroineLine } from "./place-heroine-line";
 import { PlaceInsetMap } from "./PlaceInsetMap";
 import { placeDisplayName } from "./travel-labels";
@@ -173,57 +176,108 @@ function WayPicker({ cityId, placeId, eventId, routes, isCurrent, selected, api,
   </div>;
 }
 
+/** A way home in words (photo-cards.ts sleepWayLabelJa): 「ホテルに戻って休む」 at the hotel, else 「徒歩で帰る」 and the like. */
+export function sleepWayJa(game: GameState, route: SleepOption["route"]): string {
+  const cityId = game.currentCityId;
+  const via = route.viaPlaceId ? getCityContent(cityId).travel.places.find((place) => place.id === route.viaPlaceId)?.nameJa : undefined;
+  return sleepWayLabelJa({ atHotel: game.travel.currentPlaceId === game.travel.hotelPlaceId, mode: transportLabel(cityId, route.mode), via });
+}
+
+const usesAssistance = (plan: SleepOption["plan"]) => plan.ok && plan.usedAssistance;
+
 /**
- * 「ホテルに戻る」's card: 休む (today's ways home; going back is resting, the game has no going back without resting, so
- * its photo card takes no swipe). A way home rests through the shared selection's pressSleepRoute (its arming waits out
- * a double tap), and only while 「ホテルに戻る」 is the selection.
+ * 「ホテルに戻る」's card: 休む, today's ways home as one row of choices with their time and fare, one always chosen
+ * (`picked`, else the first that can be taken, the fastest: the card chosen afresh starts there; at the hotel
+ * 「ホテルに戻って休む」). A way that cannot be taken is greyed and cannot be chosen, each reason said once under them.
+ * Going back is resting (the game has no going back without resting): a swipe up on its photo card rests by the chosen
+ * way (user decision 2026-11-11), as does its 「休む」 (`quietGo`: in the row, for screen readers and keys only), through
+ * the shared selection's pressSleepRoute (its arming waits out a double tap), and only while 「ホテルに戻る」 is the selection.
  */
-export function StayCard({ game, api, scope = "page", heading = true }: {
+export function StayCard({ game, api, picked, onPick, scope = "page", heading = true, quietGo = false }: {
   game: GameState;
   api: TravelSelectionApi;
+  /** The way home picked here (photo-cards.ts sleepWayKey; shared with the photo card's swipe and the expanded map's card). */
+  picked: string | null;
+  onPick: (key: string) => void;
   scope?: PressScope;
   heading?: boolean;
+  /** 「休む」 for screen readers and keys only (the row, where a swipe up on the photo card rests). */
+  quietGo?: boolean;
 }) {
   const id = useId();
   const cityId = game.currentCityId;
-  const { travel, travelSettings } = getCityContent(cityId);
+  const { travelSettings } = getCityContent(cityId);
   const selected = api.isSelected({ kind: "sleep" });
   const atHotel = game.travel.currentPlaceId === game.travel.hotelPlaceId;
+  const { options } = api.sleep;
+  const way = chooseSleepWay(options, picked);
+  const chosenKey = way && sleepWayKey(way.route);
+  const cost = (route: SleepOption["route"]) => `約${route.minutes}分 · ${formatMoneyForCity(cityId, route.cost)}`;
   return <section className="place-card" data-testid="stay-card" data-armed={selected && api.armed ? "true" : undefined} aria-labelledby={`${id}-name`}>
     <CardName id={`${id}-name`} name="ホテルに戻る" heading={heading} />
     <div className="place-card-event">
       <h3 className="place-card-event-title">休む</h3>
       <p className="place-card-hook">ホテルに戻って休み、翌日9:00に出発します。{game.tour?.status === "booked" && "明日の朝、予約したツアーが始まります。"}宿泊費は{formatMoneyForCity(cityId, travelSettings.lodgingCost)}、APは使いません。予算の不足分は補助されます。</p>
-      <div className="travel-routes">{api.sleep.options.map(({ route, plan }) => {
-        const via = route.viaPlaceId ? travel.places.find((place) => place.id === route.viaPlaceId)?.nameJa : undefined;
-        return <div key={JSON.stringify([route.mode, route.viaPlaceId ?? null])}>
-          <button type="button" className="travel-route" disabled={!plan.ok || !selected} onKeyDown={ignoreRepeat}
-            data-testid={`travel-sleep-route-${route.mode}${route.viaPlaceId ? `-${route.viaPlaceId}` : ""}`}
-            onClick={(click) => api.pressSleepRoute(route.mode, route.viaPlaceId ?? null, pressKindOf(click), scope)}>
-            <span>{atHotel ? "ここで休む" : `${transportLabel(cityId, route.mode)}で帰る${via ? `・${via}から徒歩` : ""}`}</span>
-            <span className="travel-route-cost">{atHotel ? "" : `約${route.minutes}分 · ${formatMoneyForCity(cityId, route.cost)}`}{plan.ok && plan.usedAssistance ? "（宿泊費の不足分は補助）" : ""}</span>
-          </button>
-          {!plan.ok && <p className="fine-print">{plan.reason === "budget" ? "この移動手段の予算が足りません。" : "この経路では帰れません。"}</p>}
-        </div>;
-      })}</div>
-      {api.sleep.options.length === 0 && <p className="fine-print">ホテルへの経路は確認されていません。</p>}
+      {options.length > 0 && <div className="place-card-ways">
+        <div className="place-card-modes is-wrapping" role="group" aria-label="帰り方">{options.map(({ route, plan }) => {
+          const key = sleepWayKey(route);
+          return <button key={key} type="button" className="place-card-mode" data-testid={`travel-sleep-route-${route.mode}${route.viaPlaceId ? `-${route.viaPlaceId}` : ""}`}
+            aria-pressed={key === chosenKey} disabled={!plan.ok} onKeyDown={ignoreRepeat} onClick={() => onPick(key)}>
+            <span>{sleepWayJa(game, route)}</span>
+            {!atHotel && <span className="place-card-mode-cost">{cost(route)}</span>}
+          </button>;
+        })}</div>
+        {way && usesAssistance(way.plan) && <p className="fine-print">この帰り方では、宿泊費の不足分が補助されます。</p>}
+        <button type="button" className={`primary place-card-go${quietGo ? " is-quiet" : ""}`} data-testid="travel-sleep-go" data-mode={way?.route.mode}
+          disabled={!way || !selected} onKeyDown={ignoreRepeat}
+          onClick={(click) => { if (way) api.pressSleepRoute(way.route.mode, way.route.viaPlaceId ?? null, pressKindOf(click), scope); }}>
+          <span>休む</span>
+          {way && !atHotel && <span className="place-card-go-cost">{cost(way.route)}</span>}
+        </button>
+        {blockedSleepWays(options).map(({ options: held, reason }) => <p key={reason} className="fine-print place-card-reason">
+          {held.length === options.length ? reason : `${held.map((option) => sleepWayJa(game, option.route)).join("、")}：${reason}`}
+        </p>)}
+      </div>}
+      {options.length === 0 && <p className="fine-print place-card-reason">ホテルへの経路は確認されていません。</p>}
     </div>
   </section>;
 }
 
-/** 「待機」's card: today's waits where the party is (「30分待つ」, 「…まで待つ」), each pressed waits at once. Not a place: no swipe. */
-export function WaitCard({ game, onTravelWait, heading = true }: {
+/**
+ * 「待機」's card: today's waits where the party is (「30分待つ」, 「夜(18:00)まで待つ」 or 「…まで待つ」) as one row of
+ * choices, one always chosen (`wait`: the card chosen afresh starts at 「30分待つ」). A wait that cannot be waited is greyed
+ * and cannot be chosen, its reason said under them. A swipe up on its photo card waits the chosen one (user decision
+ * 2026-11-11), as does its 「待つ」 (`quietGo`: in the row, for screen readers and keys only), through the same onTravelWait.
+ */
+export function WaitCard({ game, options, wait, onPick, onWait, heading = true, quietGo = false }: {
   game: GameState;
-  onTravelWait: (minutes: number) => boolean;
+  /** Today's waits (getTravelWaitOptions). */
+  options: readonly TravelWaitOption[];
+  /** The chosen wait (photo-cards.ts chooseWait), null when none can be waited. */
+  wait: TravelWaitOption | null;
+  onPick: (key: string) => void;
+  onWait: (wait: TravelWaitOption) => void;
   heading?: boolean;
+  /** 「待つ」 for screen readers and keys only (the row, where a swipe up on the photo card waits). */
+  quietGo?: boolean;
 }) {
   const id = useId();
+  const chosenKey = wait && waitKey(wait);
   return <section className="place-card" data-testid="wait-card" aria-labelledby={`${id}-name`}>
     <CardName id={`${id}-name`} name="待機" heading={heading} />
     <p className="place-card-hook">今いる場所で時間を進めます。</p>
-    <div className="place-card-modes">{getTravelWaitOptions(game).map((option) =>
-      <button key={option.until ?? "minutes"} type="button" className="place-card-mode" disabled={!option.available} onKeyDown={ignoreRepeat}
-        onClick={() => onTravelWait(option.minutes)}>{option.until === null ? `${option.minutes}分待つ` : `${formatTravelTime(option.until)}まで待つ`}</button>)}
+    <div className="place-card-ways">
+      <div className="place-card-modes is-wrapping" role="group" aria-label="待ち方">{options.map((option) => {
+        const key = waitKey(option);
+        return <button key={key} type="button" className="place-card-mode" data-testid={`travel-wait-option-${key}`} aria-pressed={key === chosenKey}
+          disabled={!option.available} onKeyDown={ignoreRepeat} onClick={() => onPick(key)}>{waitLabelJa(option)}</button>;
+      })}</div>
+      <button type="button" className={`primary place-card-go${quietGo ? " is-quiet" : ""}`} data-testid="travel-wait-go" disabled={!wait}
+        onKeyDown={ignoreRepeat} onClick={() => { if (wait) onWait(wait); }}>
+        <span>待つ</span>
+        {wait && <span className="place-card-go-cost">{formatTravelTime(game.travel.minute + wait.minutes)}まで</span>}
+      </button>
+      {options.some((option) => !option.available) && <p className="fine-print place-card-reason">{WAIT_BLOCKED_JA}</p>}
     </div>
   </section>;
 }

@@ -316,7 +316,7 @@
 .photo-cards.is-list .photo-card-text { flex: 1 1 auto; padding: 2px 0 0; }
 .photo-cards.is-list .place-card { margin-top: 6px; }
 
-/* The card under the row: a place's introduction, 「ホテルに戻る」 (休む and 待機) or the tour. */
+/* The card under the row: a place's introduction, 「待機」's waits, 「ホテルに戻る」's 休む or the tour. */
 .place-card {
   display: grid;
   gap: 8px;
@@ -404,10 +404,13 @@
 .place-card .fine-print { margin: 0 2px; color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; }
 
 /* The way: the modes in one row, each with its time and fare (pressing one only chooses it), or the one way as a line;
-   then the button that goes (in the row for screen readers and keys only: a swipe up departs). 「ホテルに戻る」's waits
-   take the same row. */
+   then the button that goes (in the row for screen readers and keys only: a swipe up departs). 「待機」's waits and
+   「ホテルに戻る」's ways home take the same row and button (「待つ」, 「休む」); their longer words wrap the row, each choice
+   at least about eight characters wide (2026-11-11). */
 .place-card-ways { display: grid; gap: 6px; margin-top: 2px; }
 .place-card-modes { display: flex; gap: 6px; }
+.place-card-modes.is-wrapping { flex-wrap: wrap; }
+.place-card-modes.is-wrapping > .place-card-mode { flex: 1 1 8em; }
 .place-card-mode {
   flex: 1 1 0;
   min-width: 0;
