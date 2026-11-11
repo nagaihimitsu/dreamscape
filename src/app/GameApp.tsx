@@ -594,6 +594,7 @@ export function GameApp({
               speaker: activeEncounter.frame.speaker === "heroine" ? game.heroineName : activeEncounter.frame.speaker === "player" ? game.playerName : "旅の風景",
               narration: activeEncounter.frame.speaker !== "heroine" && activeEncounter.frame.speaker !== "player",
               text: activeEncounter.frame.text,
+              delivery: activeEncounter.frame.delivery,
               // Hidden choices (decision 43) are left out; the letters follow the shown ones.
               choices: activeEncounter.frame.choices.flatMap((choice) => {
                 const option = encounterChoiceOption(currentEncounter, choice);

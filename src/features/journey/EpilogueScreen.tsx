@@ -7,7 +7,7 @@ import { getNextCity } from "../../domain/city-travel";
 import { tourLegUnderway } from "../../domain/tour";
 import { getJourneyForCity } from "../../content/journeys";
 import type { GameState } from "../../domain/game";
-import { DialogueText } from "../../components/DialogueText";
+import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { ComicEffect } from "../../components/ComicEffect";
@@ -110,6 +110,7 @@ export function EpilogueScreen({
         </div>
         <section
           className="paper story-paper vn-dialogue"
+          {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }}
           aria-label={label.region}
           inert={windowVisibility.hidden || showLogo}
           aria-hidden={windowVisibility.hidden || showLogo || undefined}
@@ -127,6 +128,7 @@ export function EpilogueScreen({
             key={game.revision}
             ref={sceneTap.line}
             text={frame.text}
+            delivery={frame.delivery}
             speed={autoAdvance.fast ? 0 : speed}
             onReady={onReady}
             onAdvance={advanceSafely}

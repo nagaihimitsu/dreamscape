@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CanalScene } from "../../components/CanalScene";
 import { SceneHeading } from "../../components/SceneHeading";
-import { DialogueText } from "../../components/DialogueText";
+import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
@@ -11,6 +11,7 @@ import { useSceneTap } from "../../components/useSceneTap";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { ComicEffect } from "../../components/ComicEffect";
 import type { ReactionMark } from "../../content/dialogue-reactions";
+import type { LineDelivery } from "../../content/tags";
 import type { TourismAsset } from "../../content/tourism-schemas";
 import { formatMoneyForCity } from "../../content/currency";
 import { InteractiveEnglish } from "../learning/InteractiveEnglish";
@@ -32,6 +33,8 @@ export type EncounterScreenView = {
   /** The line is the narration (「旅の風景」), no one's words. */
   narration: boolean;
   text: string;
+  /** The line's `# pause:`, `# shake:` and `# size:`. */
+  delivery?: LineDelivery;
   choices: EncounterChoiceView[];
   ended: boolean;
   finishLabel?: string;
@@ -104,7 +107,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
           </div>;
         })}
       </div>}
-      <section className="vn-dialogue paper story-paper encounter-dialogue" aria-label="寄り道の会話" data-has-choices={!!quiz || view.choices.length > 0} inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
+      <section className="vn-dialogue paper story-paper encounter-dialogue" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} aria-label="寄り道の会話" data-has-choices={!!quiz || view.choices.length > 0} inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
         <DialogueWindowHead
           speaker={view.speaker}
           narration={view.narration}
@@ -126,7 +129,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
           </>
         ) : (
           <>
-            <DialogueText key={view.revision} ref={sceneTap.line} text={view.text} speed={autoAdvance.fast ? 0 : speed} onReady={onReady} onAdvance={advance} />
+            <DialogueText key={view.revision} ref={sceneTap.line} text={view.text} delivery={view.delivery} speed={autoAdvance.fast ? 0 : speed} onReady={onReady} onAdvance={advance} />
             {view.choices.length ? (
               <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={view.id} choices={view.choices} learning={learning} onChoose={(index) => select(index, onChoose)} disabled={!ready || !choiceReady} />
             ) : view.ended ? (

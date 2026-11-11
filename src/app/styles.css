@@ -415,6 +415,11 @@ footer span {
 .unrevealed {
   visibility: hidden;
 }
+/* A line written with `# size: large` (DialogueText): the same line, larger; its
+   line spacing follows (the window's line-height is a ratio). */
+.dialogue-text .dialogue-large {
+  font-size: 1.3em;
+}
 /* Right after a press on a control, its story scene's line takes no taps:
    the second tap of the double tap must not skip the line the press brought
    (useSceneTap). A tap there falls through to the scene, which ignores it.

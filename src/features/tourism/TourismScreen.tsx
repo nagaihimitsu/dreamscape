@@ -11,7 +11,7 @@ import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import { activeGuideStoryId, observationHotspots } from "../../domain/tourism";
 import type { GameState } from "../../domain/game";
-import { DialogueText } from "../../components/DialogueText";
+import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { ComicEffect } from "../../components/ComicEffect";
@@ -190,6 +190,7 @@ export function TourismScreen({
           </div>
           <div
             className="tourism-guide paper vn-dialogue"
+            {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }}
             data-testid="tourism-guide"
             inert={windowVisibility.hidden}
             aria-hidden={windowVisibility.hidden || undefined}
@@ -204,6 +205,7 @@ export function TourismScreen({
               key={game.revision}
               ref={sceneTap.line}
               text={frame.text}
+              delivery={frame.delivery}
               speed={autoAdvance.fast ? 0 : speed}
               onReady={onReady}
               onAdvance={advanceSafely}

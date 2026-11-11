@@ -6,7 +6,7 @@ import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
 import { battleChrome, getActiveBattleContent, getBattleOutcome } from "../../domain/battle";
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
-import { DialogueText } from "../../components/DialogueText";
+import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
@@ -399,7 +399,7 @@ export function BattleScreen({
           </div>
         </div>
       </div>
-      <div className="battle-paper-shell" aria-hidden={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined} inert={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined}>
+      <div className="battle-paper-shell" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} aria-hidden={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined} inert={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined}>
       {isDialogue && <DialogueWindowHead
         plateClassName="battle-nameplate"
         narration={!!frame && frame.speaker !== "enemy" && frame.speaker !== "heroine" && frame.speaker !== "player"}
@@ -513,6 +513,7 @@ export function BattleScreen({
               key={game.revision}
               ref={sceneTap.line}
               text={frame.text}
+              delivery={frame.delivery}
               speed={auto.fast ? 0 : speed}
               onReady={onReady}
               onAdvance={advanceSafely}

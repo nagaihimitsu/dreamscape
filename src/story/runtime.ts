@@ -3,7 +3,7 @@ import { z } from "zod";
 import { presentation, scenes, stories, tagContext } from "../content";
 import { splitStoryAddress, storyFileOf } from "../content/story-address";
 import { fnvHash } from "../content/fingerprint";
-import { parseStoryTags, STORY_CALLS, type StoryCall } from "../content/tags";
+import { LINE_PAUSE_MS, parseStoryTags, STORY_CALLS, type StoryCall } from "../content/tags";
 import { readStoryFrame, storyChoicesOf, type Speaker, type StoryStep } from "./frame-reader";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import { bindMemoryReader } from "./memory";
@@ -23,6 +23,11 @@ export const storyFrameSchema = z
     reactions: z.object({
       heroine: z.object({ expression: z.string().optional(), mark: z.enum(REACTION_MARKS).optional() }).strict().optional(),
       enemy: z.object({ expression: z.string().optional(), mark: z.enum(REACTION_MARKS).optional() }).strict().optional(),
+    }).strict().optional(),
+    delivery: z.object({
+      pauseMs: z.number().int().min(LINE_PAUSE_MS.min).max(LINE_PAUSE_MS.max).optional(),
+      shake: z.literal(true).optional(),
+      large: z.literal(true).optional(),
     }).strict().optional(),
     choices: z
       .array(
