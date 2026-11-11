@@ -147,13 +147,15 @@
       "id": "gt_mehr",
       "cityId": "delhi",
       "nameJa": "メヘル",
-      "titleJa": "叔父さんに見つかりたくない大学生"
+      "titleJa": "叔父さんに見つかりたくない大学生",
+      "characterId": "gt_mehr"
     },
     {
       "id": "gt_kabir",
       "cityId": "delhi",
       "nameJa": "カビール",
-      "titleJa": "メヘルの同級生"
+      "titleJa": "メヘルの同級生",
+      "characterId": "gt_kabir"
     },
     {
       "id": "gt_delhi_humayun_man",
@@ -164,12 +166,14 @@
     {
       "id": "gt_delhi_humayun_girl",
       "cityId": "delhi",
-      "nameJa": "女の子"
+      "nameJa": "女の子",
+      "characterId": "gt_mehr"
     },
     {
       "id": "gt_delhi_humayun_woman",
       "cityId": "delhi",
-      "nameJa": "女性"
+      "nameJa": "女性",
+      "characterId": "gt_meena"
     },
     {
       "id": "gt_zoheb",
@@ -200,19 +204,22 @@
       "id": "gt_anjali",
       "cityId": "delhi",
       "nameJa": "アンジャリ",
-      "titleJa": "遠足の学級委員"
+      "titleJa": "遠足の学級委員",
+      "characterId": "gt_anjali"
     },
     {
       "id": "gt_sonu",
       "cityId": "delhi",
       "nameJa": "ソーヌー",
-      "titleJa": "敬礼が本格的な生徒"
+      "titleJa": "敬礼が本格的な生徒",
+      "characterId": "gt_sonu"
     },
     {
       "id": "gt_faiz",
       "cityId": "delhi",
       "nameJa": "ファイズ",
-      "titleJa": "ノートを閉じたままの生徒"
+      "titleJa": "ノートを閉じたままの生徒",
+      "characterId": "gt_faiz"
     },
     {
       "id": "gt_delhi_red_fort_children",
@@ -222,22 +229,26 @@
     {
       "id": "gt_delhi_red_fort_classmate",
       "cityId": "delhi",
-      "nameJa": "隣の子"
+      "nameJa": "隣の子",
+      "characterId": "gt_delhi_red_fort_classmate"
     },
     {
       "id": "gt_delhi_hotel_daughter",
       "cityId": "delhi",
-      "nameJa": "宿の娘"
+      "nameJa": "宿の娘",
+      "characterId": "gt_roohi"
     },
     {
       "id": "gt_delhi_sweet_shopkeeper",
       "cityId": "delhi",
-      "nameJa": "店主"
+      "nameJa": "店主",
+      "characterId": "gt_delhi_sweet_shopkeeper"
     },
     {
       "id": "gt_delhi_spice_trader",
       "cityId": "delhi",
-      "nameJa": "問屋"
+      "nameJa": "問屋",
+      "characterId": "gt_delhi_spice_trader"
     },
     {
       "id": "gt_roohi",
@@ -249,12 +260,14 @@
     {
       "id": "gt_delhi_hotel_okami",
       "cityId": "delhi",
-      "nameJa": "おかみ"
+      "nameJa": "おかみ",
+      "characterId": "gt_delhi_hotel_okami"
     },
     {
       "id": "gt_delhi_hotel_owner",
       "cityId": "delhi",
-      "nameJa": "宿の主人"
+      "nameJa": "宿の主人",
+      "characterId": "gt_delhi_hotel_owner"
     },
     {
       "id": "gt_kunal",
@@ -306,12 +319,14 @@
     {
       "id": "gt_delhi_scam_young_man",
       "cityId": "delhi",
-      "nameJa": "青年"
+      "nameJa": "青年",
+      "characterId": "gt_delhi_scam_young_man"
     },
     {
       "id": "gt_delhi_scam_vest_man",
       "cityId": "delhi",
-      "nameJa": "ベストの男"
+      "nameJa": "ベストの男",
+      "characterId": "gt_delhi_scam_vest_man"
     },
     {
       "id": "gt_delhi_scam_suit_man",
@@ -337,17 +352,20 @@
     {
       "id": "gt_delhi_chandni_vendor",
       "cityId": "delhi",
-      "nameJa": "屋台の男"
+      "nameJa": "屋台の男",
+      "characterId": "gt_delhi_chandni_vendor"
     },
     {
       "id": "gt_delhi_chandni_customer",
       "cityId": "delhi",
-      "nameJa": "隣の客"
+      "nameJa": "隣の客",
+      "characterId": "gt_delhi_chandni_customer"
     },
     {
       "id": "gt_delhi_auto_driver",
       "cityId": "delhi",
-      "nameJa": "運転手"
+      "nameJa": "運転手",
+      "characterId": "gt_delhi_auto_driver"
     },
     {
       "id": "gt_delhi_scam_phone_voice",
@@ -357,7 +375,8 @@
     {
       "id": "gt_delhi_red_fort_guide",
       "cityId": "delhi",
-      "nameJa": "案内の係員"
+      "nameJa": "案内の係員",
+      "characterId": "gt_delhi_red_fort_guide"
     },
     {
       "id": "gt_tanvi",

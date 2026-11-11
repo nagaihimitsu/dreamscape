@@ -102,6 +102,102 @@
       "paths": [
         "assets/characters/gt_jasmeet/neutral.webp"
       ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、アンジャリの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_anjali/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、ソーヌーの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_sonu/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、ファイズの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_faiz/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、レッド・フォートの隣の子の立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_delhi_red_fort_classmate/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、メヘルの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_mehr/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、カビールの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_kabir/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、デリーの宿のおかみの立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_delhi_hotel_okami/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、デリーの宿の主人の立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_delhi_hotel_owner/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、チャンドニー・チョークの屋台の男の立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_delhi_chandni_vendor/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、チャンドニー・チョークの隣の客の立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_delhi_chandni_customer/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、オートリキシャの運転手の立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_delhi_auto_driver/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、揚げ菓子屋の店主の立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_delhi_sweet_shopkeeper/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、香辛料の問屋の立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_delhi_spice_trader/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、レッド・フォートの案内の係員の立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_delhi_red_fort_guide/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、ニューデリー駅の名札の青年の立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_delhi_scam_young_man/neutral.webp"
+      ]
+    },
+    {
+      "noteJa": "Dreamscape のために作者が描いた、ニューデリー駅のベストの男の立ち絵（自作の絵）",
+      "paths": [
+        "assets/characters/gt_delhi_scam_vest_man/neutral.webp"
+      ]
     }
   ]
 }

@@ -98,6 +98,118 @@
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
       "placeholderColor": "#e8dca8",
       "variants": []
+    },
+    {
+      "id": "gt_anjali",
+      "imagePath": "assets/characters/gt_anjali/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#887e83",
+      "variants": []
+    },
+    {
+      "id": "gt_sonu",
+      "imagePath": "assets/characters/gt_sonu/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#42414b",
+      "variants": []
+    },
+    {
+      "id": "gt_faiz",
+      "imagePath": "assets/characters/gt_faiz/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#494754",
+      "variants": []
+    },
+    {
+      "id": "gt_delhi_red_fort_classmate",
+      "imagePath": "assets/characters/gt_delhi_red_fort_classmate/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#4e4a55",
+      "variants": []
+    },
+    {
+      "id": "gt_mehr",
+      "imagePath": "assets/characters/gt_mehr/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#467384",
+      "variants": []
+    },
+    {
+      "id": "gt_kabir",
+      "imagePath": "assets/characters/gt_kabir/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#7f7067",
+      "variants": []
+    },
+    {
+      "id": "gt_delhi_hotel_okami",
+      "imagePath": "assets/characters/gt_delhi_hotel_okami/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#804b35",
+      "variants": []
+    },
+    {
+      "id": "gt_delhi_hotel_owner",
+      "imagePath": "assets/characters/gt_delhi_hotel_owner/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#8b8186",
+      "variants": []
+    },
+    {
+      "id": "gt_delhi_chandni_vendor",
+      "imagePath": "assets/characters/gt_delhi_chandni_vendor/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#877266",
+      "variants": []
+    },
+    {
+      "id": "gt_delhi_chandni_customer",
+      "imagePath": "assets/characters/gt_delhi_chandni_customer/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#a29590",
+      "variants": []
+    },
+    {
+      "id": "gt_delhi_auto_driver",
+      "imagePath": "assets/characters/gt_delhi_auto_driver/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#86736a",
+      "variants": []
+    },
+    {
+      "id": "gt_delhi_sweet_shopkeeper",
+      "imagePath": "assets/characters/gt_delhi_sweet_shopkeeper/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#c8b0a3",
+      "variants": []
+    },
+    {
+      "id": "gt_delhi_spice_trader",
+      "imagePath": "assets/characters/gt_delhi_spice_trader/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#c0a087",
+      "variants": []
+    },
+    {
+      "id": "gt_delhi_red_fort_guide",
+      "imagePath": "assets/characters/gt_delhi_red_fort_guide/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#755f56",
+      "variants": []
+    },
+    {
+      "id": "gt_delhi_scam_young_man",
+      "imagePath": "assets/characters/gt_delhi_scam_young_man/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#7a716e",
+      "variants": []
+    },
+    {
+      "id": "gt_delhi_scam_vest_man",
+      "imagePath": "assets/characters/gt_delhi_scam_vest_man/neutral.webp",
+      "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "placeholderColor": "#635f4b",
+      "variants": []
     }
   ],
   "battleCharacters": {
