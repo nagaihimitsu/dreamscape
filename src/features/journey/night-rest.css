@@ -1,0 +1,67 @@
+/* The day's end (NightRest, docs/02 「休む」): the whole screen at night over what the rest led to, until the card ends. */
+.night-rest {
+  position: fixed;
+  z-index: 2000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  background: #111a2f;
+  /* Takes every tap while it shows (a tap ends it); a swipe does not scroll the page under it. */
+  pointer-events: auto;
+  touch-action: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  animation: night-rest-overlay 2.8s ease both;
+}
+.night-rest-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  animation: night-rest-content 2.8s ease both;
+}
+.night-rest-sky {
+  display: block;
+  width: min(180px, 52vw);
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 0 10px rgba(246, 231, 174, 0.35));
+}
+.night-rest-moon { fill: #f6e7ae; }
+.night-rest-star { fill: #fff4cc; animation: night-rest-twinkle 1.6s ease-in-out infinite alternate; }
+.night-rest-star:nth-of-type(2n) { animation-delay: -0.8s; }
+.night-rest-star:nth-of-type(3n) { animation-delay: -0.4s; }
+/* --ds-on-slate on the night colour: about 16:1. On a narrow phone the line breaks after 「、」 only. */
+.night-rest-text {
+  margin-top: 14px;
+  max-width: 100%;
+  color: var(--ds-on-slate);
+  font-family: "Noto Serif JP", serif;
+  font-size: clamp(16px, 4.8vw, 20px);
+  font-weight: 500;
+  line-height: 1.8;
+  letter-spacing: 0.04em;
+  text-align: center;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+/* Dusk deepens to night, the moon, stars and line come out, and at the end the card fades to what lies under it. */
+@keyframes night-rest-overlay {
+  0% { background-color: #3a416c; opacity: 1; }
+  22% { background-color: #111a2f; }
+  82% { opacity: 1; }
+  100% { background-color: #111a2f; opacity: 0; }
+}
+@keyframes night-rest-content {
+  0%, 12% { opacity: 0; transform: translateY(10px); }
+  36%, 100% { opacity: 1; transform: none; }
+}
+@keyframes night-rest-twinkle { from { opacity: 0.35; } to { opacity: 1; } }
+/* Reduced motion: nothing moves or fades; the line shows plainly until a tap or the card's time. */
+.night-rest.is-reduced, .night-rest.is-reduced .night-rest-content, .night-rest.is-reduced .night-rest-star { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .night-rest, .night-rest-content, .night-rest-star { animation: none; }
+}
