@@ -345,6 +345,9 @@ export function ObservationViewer({
       <p id="observation-help" className="sr-only">
         番号をタップ。2本指で拡大、ドラッグで移動。キーボードでは矢印キーで移動できます。
       </p>
+      {/* On screen only while the picture itself has keyboard focus (2026-11-11, the user's decision); screen
+          readers have the line above. */}
+      <p className="observation-key-hint" aria-hidden="true">矢印キーで移動できます。</p>
     </div>
   );
 }

@@ -136,12 +136,6 @@
   padding: 10px 12px;
 }
 
-.english-instructions {
-  font-size: 12px;
-  line-height: 1.5;
-  color: var(--ds-ink-muted);
-  margin: 10px 0;
-}
 .interactive-english {
   display: inline;
   overflow-wrap: anywhere;

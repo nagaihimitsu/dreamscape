@@ -21,6 +21,16 @@
   outline-offset: 2px;
   box-shadow: 0 0 0 6px var(--ds-slate-900);
 }
+/* The arrow keys' line: shown only while the picture itself has keyboard focus (2026-11-11, the user's decision). */
+.observation-key-hint {
+  display: none;
+  flex: 0 0 100%;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ds-ink-muted);
+}
+.observation-viewport:focus-visible ~ .observation-key-hint { display: block; }
 .observation-image {
   position: absolute;
   display: block;
