@@ -271,6 +271,34 @@
         "x": 60,
         "y": 80
       }
+    },
+    "gt_bg_agra_fatehabad_road": {
+      "nameJa": "アーグラの大通り",
+      "captionJa": "アーグラ ／ ファテハバード・ロード",
+      "color": "#7f8288",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_agra_fatehabad_road"
+    },
+    "gt_bg_agra_tour_road": {
+      "nameJa": "アーグラ〜シークリー間の道",
+      "captionJa": "アーグラ ／ キラオリ付近の国道沿い",
+      "color": "#7b7a63",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_agra_kiraoli_buffaloes"
+    },
+    "gt_bg_agra_fatehpur_sikri_bazaar": {
+      "nameJa": "ファテープル・シークリーの町",
+      "captionJa": "アーグラ ／ ファテープル・シークリーの町のバザール",
+      "color": "#6f6253",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_agra_fatehpur_sikri_bazaar"
+    },
+    "gt_bg_agra_fatehpur_sikri_distant": {
+      "nameJa": "道路から見たファテープル・シークリー",
+      "captionJa": "アーグラ ／ 道路から見たファテープル・シークリー",
+      "color": "#a39a86",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_agra_fatehpur_sikri_distant"
     }
   },
   "memories": {
