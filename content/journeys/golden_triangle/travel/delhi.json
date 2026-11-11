@@ -6,6 +6,7 @@
       "cityId": "delhi",
       "nameJa": "レッド・フォート",
       "nameEn": "Red Fort",
+      "descriptionJa": "レッド・フォートは、デリー旧市街にあるムガル帝国の宮殿城塞。1639年、都をアーグラからデリーへ移すと決めたシャー・ジャハーンが築かせ、新都シャージャハーナーバードの中心となった。そびえる赤砂岩の城壁が名の由来で、城内に謁見の間や大理石の宮殿が並ぶ世界遺産。",
       "latitude": 28.65588,
       "longitude": 77.23865,
       "backgroundId": "gt_bg_delhi_red_fort",
@@ -95,6 +96,30 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額1000ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Red Fort",
+          "url": "https://www.incredibleindia.gov.in/en/delhi/delhi/red-fort",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "1639年、シャー・ジャハーンは宮廷をアーグラからデリーへ移すと決め、新しい住まいとしてレッド・フォートの建設を命じた。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Red Fort",
+          "url": "https://www.incredibleindia.gov.in/en/delhi/delhi/red-fort",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "城塞はシャー・ジャハーンが築いた新都シャージャハーナーバード（現在のオールド・デリー）の中心にあり、名はそびえる赤砂岩の城壁に由来する。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Red Fort",
+          "url": "https://www.incredibleindia.gov.in/en/delhi/delhi/red-fort",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "城内にはディーワーネ・アーム（一般謁見の間）や白大理石の広間などがあり、ユネスコ世界遺産である。"
         }
       ],
       "landmarkIds": [
@@ -106,6 +131,7 @@
       "cityId": "delhi",
       "nameJa": "クトゥブ・ミナール",
       "nameEn": "Qutb Minar",
+      "descriptionJa": "クトゥブ・ミナールは、デリーに立つ高さ72.5mの石の塔で、インドで最も高い塔とされる。1199年にクトゥブッディーン・アイバクが礎を築き、後継者イルトゥトゥミシュが上の階を加えた。赤と淡黄色の砂岩の壁面に銘文が刻まれ、周囲にはデリーのスルターンが建てた現存最古のモスクなどが残る。",
       "latitude": 28.52442,
       "longitude": 77.18545,
       "backgroundId": "gt_bg_delhi_qutb_minar",
@@ -179,6 +205,30 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額1200ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Delhi Tourism (Government of NCT of Delhi)",
+          "title": "Qutab Minar",
+          "url": "https://delhitourism.gov.in/tourist_place/qutab_minar.html",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "赤と淡黄色の砂岩でできたクトゥブ・ミナールはインドで最も高い塔で、基部の直径14.32m、頂部約2.75m、高さ72.5m。"
+        },
+        {
+          "publisher": "Delhi Tourism (Government of NCT of Delhi)",
+          "title": "Qutab Minar",
+          "url": "https://delhitourism.gov.in/tourist_place/qutab_minar.html",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "クトゥブッディーン・アイバクが1199年に礎を築いて第1層を建て、後継者で娘婿のイルトゥトゥミシュ（在位1211〜36年）が3層を加えた。塔の各所にアラビア文字とナーガリー文字の銘文がある。"
+        },
+        {
+          "publisher": "Delhi Tourism (Government of NCT of Delhi)",
+          "title": "Qutab Minar",
+          "url": "https://delhitourism.gov.in/tourist_place/qutab_minar.html",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "塔の北東にあるクワットゥル・イスラーム・モスクは1198年にアイバクが建て、デリーのスルターンが建てた現存最古のモスクである。"
         }
       ],
       "landmarkIds": [
@@ -190,6 +240,7 @@
       "cityId": "delhi",
       "nameJa": "フマユーン廟",
       "nameEn": "Humayun’s Tomb",
+      "descriptionJa": "フマユーン廟は、デリーにあるムガル皇帝フマユーンの墓廟。16世紀に妃ベーガ・ベーグムが建てさせ、インド亜大陸で最初の庭園墓廟とされる。赤砂岩と白大理石の廟を四分割の庭園（チャールバーグ）が囲み、のちのタージ・マハルへ続く建築の先駆けとなった世界遺産。",
       "latitude": 28.59329,
       "longitude": 77.25065,
       "backgroundId": "gt_bg_delhi_humayun_tomb",
@@ -255,6 +306,30 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額1200ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Humayun's Tomb",
+          "url": "https://www.incredibleindia.gov.in/en/delhi/delhi/humayuns-tomb",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "1558年に皇妃ベーガ・ベーグムが建設を命じ、ペルシアの建築家とインドの職人が設計した。インド亜大陸で最初の庭園墓廟。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Humayun's Tomb",
+          "url": "https://www.incredibleindia.gov.in/en/delhi/delhi/humayuns-tomb",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "赤砂岩と白大理石をこれほど壮大に用いた最初の例で、コーランに語られる四分割の楽園の庭（チャールバーグ）の考え方を取り入れ、その設計はタージ・マハルへと結実した。ユネスコ世界遺産。"
+        },
+        {
+          "publisher": "Delhi Tourism (Government of NCT of Delhi)",
+          "title": "Humayun's Tomb",
+          "url": "https://delhitourism.gov.in/tourist_place/humayun_tomb.html",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "デリー観光局は、フマユーンの死の9年後の1565年に正妃ベーガ・ベーグムが建てたとし、インドにおけるムガル建築の最初の本格的な例と説明する（建設年は資料により1558年・1565年と異なるため、本文は「16世紀」とした）。"
         }
       ],
       "landmarkIds": [
@@ -266,6 +341,7 @@
       "cityId": "delhi",
       "nameJa": "インド門",
       "nameEn": "India Gate",
+      "descriptionJa": "インド門は、ニューデリーの中心に立つ高さ42mの戦争記念門。第一次世界大戦でイギリス軍として戦い命を落とした約7万人のインド兵を記念し、エドウィン・ラッチェンスの設計で1921年に礎石が置かれた。周囲には広い芝生が広がり、ピクニックの場として親しまれている。",
       "latitude": 28.61293,
       "longitude": 77.22949,
       "backgroundId": "gt_bg_delhi_india_gate",
@@ -323,6 +399,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額0ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Delhi Tourism (Government of NCT of Delhi)",
+          "title": "India Gate",
+          "url": "https://delhitourism.gov.in/tourist_place/india_gate.html",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ニューデリーの中心に立つ高さ42mのインド門は、第一次世界大戦でイギリス軍として戦い亡くなった7万人のインド兵を記念し、エドウィン・ラッチェンスが設計した。"
+        },
+        {
+          "publisher": "Delhi Tourism (Government of NCT of Delhi)",
+          "title": "India Gate",
+          "url": "https://delhitourism.gov.in/tourist_place/india_gate.html",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "礎石は1921年にコノート公が置き、10年後に総督アーウィン卿が国に捧げた。周囲の広い芝生は人気のピクニックの場所。"
         }
       ],
       "destinationIds": [
@@ -334,6 +426,7 @@
       "cityId": "delhi",
       "nameJa": "ジャーマー・マスジド",
       "nameEn": "Jama Masjid",
+      "descriptionJa": "ジャーマー・マスジドは、デリー旧市街にあるインド最大級のモスク。17世紀半ばにムガル皇帝シャー・ジャハーンが建て、彼の最後の大建築となった。赤砂岩と白大理石の縞が映える高さ40mのミナレット2本と三つの大門を持ち、中庭には2万5千人が礼拝できる。",
       "latitude": 28.6507,
       "longitude": 77.2335,
       "backgroundId": "gt_bg_delhi_jama_masjid",
@@ -415,6 +508,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額800ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Delhi Tourism (Government of NCT of Delhi)",
+          "title": "Jama Masjid",
+          "url": "https://delhitourism.gov.in/tourist_place/jama_masjid.html",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "1644年に着工し、シャー・ジャハーンの最後の大建築となった。オールド・デリーのこの大モスクはインド最大で、中庭に2万5千人の信徒が入れる。"
+        },
+        {
+          "publisher": "Delhi Tourism (Government of NCT of Delhi)",
+          "title": "Jama Masjid",
+          "url": "https://delhitourism.gov.in/tourist_place/jama_masjid.html",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "装飾豊かなモスクには三つの大門、四つの塔、赤砂岩と白大理石の帯でできた高さ40mのミナレット2本がある。"
         }
       ],
       "landmarkIds": [
@@ -495,6 +604,7 @@
       "cityId": "delhi",
       "nameJa": "ロディ・ガーデン",
       "nameEn": "Lodhi Gardens",
+      "descriptionJa": "ロディ・ガーデンは、ニューデリーにある約90エーカーの都市公園。15世紀のサイイド朝とロディ朝の廟やモスクが緑の中に点在し、八角形のムハンマド・シャー廟とシカンダル・ロディ廟、大きなドームを戴くバラ・グンバドなどが残る。朝の散歩や運動を楽しむデリーの人々に親しまれている。",
       "latitude": 28.59348,
       "longitude": 77.21956,
       "backgroundId": "gt_bg_delhi_lodhi_garden",
@@ -552,6 +662,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額0ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Delhi Tourism (Government of NCT of Delhi)",
+          "title": "Lodi Tomb",
+          "url": "https://delhitourism.gov.in/tourist_place/lodi_tomb.html",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "旧レディ・ウィリンドン公園、現在のロディ・ガーデンにはサイイド朝とロディ朝の建造物が点在する。ムハンマド・シャー廟とシカンダル・ロディ廟は八角形の墓の好例で、シーシュ・グンバドとバラ・グンバドは堂々としたドームを持つ。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Lodhi Gardens",
+          "url": "https://en.wikipedia.org/wiki/Lodhi_Gardens",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ニューデリーの約90エーカーの都市公園。ムハンマド・シャー廟は1444年、シカンダル・ロディ廟とバラ・グンバドは1494年ごろの建造で、デリー市民の朝の散歩の人気の場所。"
         }
       ],
       "destinationIds": [
@@ -563,6 +689,7 @@
       "cityId": "delhi",
       "nameJa": "アグラセン・キ・バオリ",
       "nameEn": "Agrasen ki Baoli",
+      "descriptionJa": "アグラセン・キ・バオリは、ニューデリーのヘイリー・ロードのビル街に残る階段井戸。長さ約60m、幅約15mの石造りで、14世紀ごろのものと考えられ、アーチ形のくぼみが幾層にも重なる。アグラワール共同体の祖アグラセン王が造ったと伝えられるが、正確な起源は分かっていない。",
       "latitude": 28.62609,
       "longitude": 77.22501,
       "backgroundId": "gt_bg_delhi_agrasen_baoli",
@@ -628,6 +755,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額0ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Agrasen Ki Baoli",
+          "url": "https://www.incredibleindia.gov.in/en/delhi/delhi/agrasen-ki-baoli",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ヘイリー・ロードにある長さ60m・幅15mの古い階段井戸で、14世紀にさかのぼると考えられ、インド考古調査局（ASI）の保護建造物。アーチ形のくぼみや内部の部屋を持つ。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Agrasen Ki Baoli",
+          "url": "https://www.incredibleindia.gov.in/en/delhi/delhi/agrasen-ki-baoli",
+          "checkedAt": "2026-11-11",
+          "claimType": "legend",
+          "claimJa": "地元の言い伝えでは、アグラワール共同体の祖として知られるアグラセン王が造ったとされる。ただし正確な起源ははっきりしない。"
         }
       ],
       "destinationIds": [
@@ -703,6 +846,7 @@
       "cityId": "delhi",
       "nameJa": "グルドワーラ・バングラ・サーヒブ",
       "nameEn": "Gurdwara Bangla Sahib",
+      "descriptionJa": "グルドワーラ・バングラ・サーヒブは、デリーにあるシク教の礼拝所。1664年にシク教第8代グルのハル・クリシャンが滞在したラージャ・ジャイ・シングの邸宅の跡に建ち、白大理石の建物に金色のドームが輝く。境内には聖なる池（サローワル）と、平等と奉仕を体現するランガル（無料の共同食堂）がある。",
       "latitude": 28.62646,
       "longitude": 77.20883,
       "backgroundId": "gt_bg_delhi_bangla_sahib",
@@ -752,6 +896,22 @@
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額0ルピー。現地の実際の券種や料金を保証しない。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Gurudwara Bangla Sahib",
+          "url": "https://www.incredibleindia.gov.in/en/delhi/delhi/gurudwara-bangla-sahib",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "1664年、第8代グルのハル・クリシャンがデリーを訪れ、ラージプートの王ラージャ・ジャイ・シングの邸宅に滞在した。1783年、シクの将軍バゲール・シングがその場所に小さな祠を建てた。"
+        },
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Gurudwara Bangla Sahib",
+          "url": "https://www.incredibleindia.gov.in/en/delhi/delhi/gurudwara-bangla-sahib",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "輝く白大理石の建物と金色のドームを持ち、境内に聖なる池（サローワル）と、シク教の平等と奉仕の原則を示すランガル・ホールがある。"
         }
       ],
       "destinationIds": [

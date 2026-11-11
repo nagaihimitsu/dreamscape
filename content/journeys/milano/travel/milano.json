@@ -6,6 +6,7 @@
       "cityId": "milano",
       "nameJa": "ドゥオモ広場",
       "nameEn": "Piazza del Duomo",
+      "descriptionJa": "ドゥオモ広場は、ミラノの地理的・社会的な中心にある大広場で、ゴシック様式の大聖堂ドゥオモが名の由来。大聖堂は1386年に着工し、最後の扉が開かれた1965年まで、完成にほぼ6世紀を要した。中央に国王ヴィットーリオ・エマヌエーレ2世の像が立ち、王宮やガッレリアが広場を囲む。",
       "latitude": 45.46389,
       "longitude": 9.19066,
       "backgroundId": "milano_duomo",
@@ -17,6 +18,22 @@
           "checkedAt": "2026-11-02",
           "claimType": "hypothesis",
           "claimJa": "参照先の代表点をゲーム用の地点に採用。入口や広い施設内の位置は完全一致を保証しない。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Milan Cathedral",
+          "url": "https://en.wikipedia.org/wiki/Milan_Cathedral",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "聖母マリアの降誕にささげられたミラノ大司教座の大聖堂。1386年に建設が始まり、完成にほぼ6世紀を要し、最後の扉は1965年1月6日に開かれた。イタリア共和国内で最大の教会。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Piazza del Duomo, Milan",
+          "url": "https://en.wikipedia.org/wiki/Piazza_del_Duomo,_Milan",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノの主要な広場で、地理的にも文化的・社会的にも町の中心。大聖堂にちなんで名づけられ、ガッレリアや王宮が面する。1896年、中央に国王ヴィットーリオ・エマヌエーレ2世の像が除幕された。"
         }
       ],
       "landmarkIds": [
@@ -31,6 +48,7 @@
       "cityId": "milano",
       "nameJa": "ガッレリア",
       "nameEn": "Galleria Vittorio Emanuele II",
+      "descriptionJa": "ヴィットーリオ・エマヌエーレ2世のガッレリアは、ミラノ中心部にある19世紀の屋根付きアーケード。建築家ジュゼッペ・メンゴーニが1867年に着工し、1878年に完成した。ガラスと鉄の天窓が大理石の床とモザイクを覆い、中央の八角形のまわりに老舗のカフェや店が並ぶ。",
       "latitude": 45.46564,
       "longitude": 9.19001,
       "backgroundId": "milano_galleria",
@@ -42,6 +60,22 @@
           "checkedAt": "2026-11-02",
           "claimType": "hypothesis",
           "claimJa": "参照先の代表点をゲーム用の地点に採用。入口や広い施設内の位置は完全一致を保証しない。"
+        },
+        {
+          "publisher": "inLombardia (Regione Lombardia)",
+          "title": "Vittorio Emanuele Gallery",
+          "url": "https://www.in-lombardia.it/en/tourism-in-lombardy/tourism-milan/monuments-milan/vittorio-emanuele-gallery",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "建築家ジュゼッペ・メンゴーニが1867年に建設を始め、1878年に完成した。ガラスと鉄の天窓が大理石の床とヴェネツィアのモザイクを覆う。"
+        },
+        {
+          "publisher": "inLombardia (Regione Lombardia)",
+          "title": "Vittorio Emanuele Gallery",
+          "url": "https://www.in-lombardia.it/en/tourism-in-lombardy/tourism-milan/monuments-milan/vittorio-emanuele-gallery",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "中央の八角形にはサヴォイア家の紋章があり、有名なカフェや歴史ある書店などが並ぶ主要な買い物の場所。"
         }
       ],
       "landmarkIds": [
@@ -56,6 +90,7 @@
       "cityId": "milano",
       "nameJa": "最後の晩餐",
       "nameEn": "Last Supper Museum",
+      "descriptionJa": "「最後の晩餐」は、サンタ・マリア・デッレ・グラツィエのドミニコ会修道院の旧食堂に描かれた、レオナルド・ダ・ヴィンチの壁画。1494年から1498年初めにかけて制作され、縦4.6m・横8.8mの画面が食堂の北の壁いっぱいを占める。1980年に教会・修道院とともに世界遺産に登録された。",
       "latitude": 45.46621,
       "longitude": 9.17066,
       "backgroundId": "milano_refectory",
@@ -67,6 +102,30 @@
           "checkedAt": "2026-11-02",
           "claimType": "hypothesis",
           "claimJa": "参照先の代表点をゲーム用の地点に採用。入口や広い施設内の位置は完全一致を保証しない。"
+        },
+        {
+          "publisher": "Museo del Cenacolo Vinciano",
+          "title": "The Last Supper (Leonardo da Vinci, 1452–1519)",
+          "url": "https://cenacolovinciano.org/en/museum/the-works/the-last-supper-leonardo-da-vinci-1452-1519/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "サンタ・マリア・デッレ・グラツィエのドミニコ会修道院の食堂にあり、1494年から1498年初めにかけて描かれた。寸法は460×880cm。"
+        },
+        {
+          "publisher": "Museo del Cenacolo Vinciano",
+          "title": "The Last Supper (Leonardo da Vinci, 1452–1519)",
+          "url": "https://cenacolovinciano.org/en/museum/the-works/the-last-supper-leonardo-da-vinci-1452-1519/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "1980年9月から、「最後の晩餐」は教会とドミニコ会修道院とともにユネスコ世界遺産となっている。"
+        },
+        {
+          "publisher": "Museo del Cenacolo Vinciano",
+          "title": "History",
+          "url": "https://cenacolovinciano.org/en/museum/history/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "「最後の晩餐」は修道院の食堂の北の壁全面を占める。食堂は修道士が食事をし、祈り、黙想した部屋だった。"
         }
       ],
       "landmarkIds": [
@@ -78,6 +137,7 @@
       "cityId": "milano",
       "nameJa": "スフォルツェスコ城",
       "nameEn": "Sforza Castle, Filarete Gate",
+      "descriptionJa": "スフォルツェスコ城は、15世紀にミラノ公フランチェスコ・スフォルツァが14世紀の城塞の跡に築いた城。正門のフィラレーテの塔は1521年に爆発で失われ、1900〜1905年に16世紀の図面をもとに再建された。現在は市の博物館や美術コレクションを数多く収めている。",
       "latitude": 45.46968,
       "longitude": 9.18035,
       "backgroundId": "milano_castello",
@@ -89,6 +149,22 @@
           "checkedAt": "2026-11-02",
           "claimType": "hypothesis",
           "claimJa": "参照先の代表点をゲーム用の地点に採用。入口や広い施設内の位置は完全一致を保証しない。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Castello Sforzesco",
+          "url": "https://en.wikipedia.org/wiki/Castello_Sforzesco",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "15世紀にフランチェスコ・スフォルツァが、14世紀の要塞の跡に築いた城。中央の塔の設計と装飾は彫刻家・建築家フィラレーテに依頼された。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Castello Sforzesco",
+          "url": "https://en.wikipedia.org/wiki/Castello_Sforzesco",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "1521年にフィラレーテの塔が爆発し、1900〜1905年に16世紀の図面をもとに再建された。現在は市の複数の博物館と美術コレクションを収める。"
         }
       ],
       "landmarkIds": [
@@ -100,6 +176,7 @@
       "cityId": "milano",
       "nameJa": "スカラ座前",
       "nameEn": "Piazza della Scala",
+      "descriptionJa": "スカラ座前のスカラ広場は、ミラノ中心部にある歩行者用の広場。北西側に名の由来となった名高い歌劇場スカラ座が建ち、向かいの南東側にはミラノ市庁舎パラッツォ・マリーノが面している。広場の中央には、彫刻家ピエトロ・マーニによるレオナルド・ダ・ヴィンチの記念像（1872年）が立つ。",
       "latitude": 45.4671,
       "longitude": 9.18973,
       "backgroundId": "milano_la_scala_date",
@@ -111,6 +188,22 @@
           "checkedAt": "2026-11-02",
           "claimType": "hypothesis",
           "claimJa": "参照先の代表点をゲーム用の地点に採用。入口や広い施設内の位置は完全一致を保証しない。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Piazza della Scala",
+          "url": "https://en.wikipedia.org/wiki/Piazza_della_Scala",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ中心部の歩行者用の広場で、北西側を占める名高い歌劇場スカラ座にちなんで名づけられた。南東側にはミラノ市庁舎パラッツォ・マリーノの正面がある。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Piazza della Scala",
+          "url": "https://en.wikipedia.org/wiki/Piazza_della_Scala",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "広場の中央には彫刻家ピエトロ・マーニによるレオナルド・ダ・ヴィンチの記念像（1872年）がある。"
         }
       ],
       "landmarkIds": [
@@ -125,6 +218,7 @@
       "cityId": "milano",
       "nameJa": "ブレラ",
       "nameEn": "Brera Picture Gallery",
+      "descriptionJa": "ブレラ絵画館は、ミラノのブレラ宮殿にある美術館。13世紀から20世紀までのイタリア絵画を代表する名品を集め、宗教画や大きな祭壇画が多く、ラファエロ《聖母の婚礼》やカラヴァッジョ《エマオの晩餐》などを所蔵する。宮殿には美術アカデミーや国立ブライデンセ図書館、天文台も同居している。",
       "latitude": 45.47224,
       "longitude": 9.18841,
       "backgroundId": "milano_brera_date",
@@ -136,6 +230,22 @@
           "checkedAt": "2026-11-02",
           "claimType": "hypothesis",
           "claimJa": "参照先の代表点をゲーム用の地点に採用。入口や広い施設内の位置は完全一致を保証しない。"
+        },
+        {
+          "publisher": "Pinacoteca di Brera",
+          "title": "History",
+          "url": "https://pinacotecabrera.org/en/about-us/history/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "絵画館は美術アカデミー（アッカデミア・ディ・ベッレ・アルティ）と並んで置かれ、収蔵品の中心は宗教画で、その多くが大きな祭壇画である。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Pinacoteca di Brera",
+          "url": "https://en.wikipedia.org/wiki/Pinacoteca_di_Brera",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "13世紀から20世紀のイタリア絵画の屈指のコレクションを持ち、ラファエロ《聖母の婚礼》、カラヴァッジョ《エマオの晩餐》（1606年）などを所蔵する。ブレラ宮殿にはアカデミーが同居し、天文台とブライデンセ国立図書館も置かれ続けた。"
         }
       ],
       "landmarkIds": [
@@ -150,6 +260,7 @@
       "cityId": "milano",
       "nameJa": "ダルセナ",
       "nameEn": "Scodellino Bridge, Darsena",
+      "descriptionJa": "ダルセナは、ミラノのポルタ・ティチネーゼ地区、ヴェンティクアットロ・マッジョ広場に面して広がる水辺。長い工事を経て2015年4月に再整備され、歩いて巡れる広い水辺の空間と屋根付きの市営市場が生まれた。夕暮れには散策やアペリティーボを楽しむ人々でにぎわう、ナヴィリオ地区の玄関口。",
       "latitude": 45.45235,
       "longitude": 9.17701,
       "backgroundId": "milano_darsena_finale",
@@ -161,6 +272,22 @@
           "checkedAt": "2026-11-02",
           "claimType": "hypothesis",
           "claimJa": "参照先の代表点をゲーム用の地点に採用。入口や広い施設内の位置は完全一致を保証しない。"
+        },
+        {
+          "publisher": "MilanoFree.it",
+          "title": "La Darsena di Milano tra presente e passato",
+          "url": "https://www.milanofree.it/turismo/monumenti/la-darsena-di-milano-tra-presente-e-passato.html",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ポルタ・ティチネーゼ地区のヴェンティクアットロ・マッジョ広場にある。2015年4月に全面的に改修されて開かれ、水辺の散策路と屋根付きの市営市場があり、夕方のアペリティーボや散歩の集いの場になっている。"
+        },
+        {
+          "publisher": "il Giornale",
+          "title": "Fine della lunga attesa: oggi la Darsena fa festa（2015年4月26日）",
+          "url": "https://www.ilgiornale.it/news/milano/fine-lunga-attesa-oggi-darsena-fa-festa-1120740.html",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "11年に及ぶ工事と荒廃の末、ダルセナが市民に返された。歩いて巡れる7万5千㎡以上の空間ができ、古い市場は新しい市場に置き換えられ、広場は歩行者空間になった。"
         }
       ]
     },
@@ -169,6 +296,7 @@
       "cityId": "milano",
       "nameJa": "ナヴィリオ洗濯屋小路",
       "nameEn": "Vicolo dei Lavandai",
+      "descriptionJa": "ナヴィリオ洗濯屋小路（ヴィコロ・デイ・ラヴァンダイ）は、ナヴィリオ・グランデ運河沿いの通りから入る歴史ある小さな路地。名は「洗濯屋」を意味し、19世紀にこの仕事を男性が取り仕切ったため男性形のラヴァンダイと呼ばれる。かつての商店は、暖炉や格天井の趣を残すレストランになっている。",
       "latitude": 45.4522736,
       "longitude": 9.1746997,
       "backgroundId": "milano_navigli_date",
@@ -180,6 +308,30 @@
           "checkedAt": "2026-11-02",
           "claimType": "hypothesis",
           "claimJa": "参照先の代表点をゲーム用の地点に採用。入口や広い施設内の位置は完全一致を保証しない。"
+        },
+        {
+          "publisher": "inLombardia (Regione Lombardia)",
+          "title": "Vicolo dei Lavandai",
+          "url": "https://www.in-lombardia.it/en/vicolo-dei-lavandai",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "アルザイア・ナヴィリオ・グランデにある、ナヴィリオ・グランデから入る歴史ある小さな路地。19世紀に洗濯の仕事を男性が組織したため、女性形ではなく「ラヴァンダイ」と呼ばれる。"
+        },
+        {
+          "publisher": "inLombardia (Regione Lombardia)",
+          "title": "Vicolo dei Lavandai",
+          "url": "https://www.in-lombardia.it/en/vicolo-dei-lavandai",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "かつての薬品・日用品店の部屋は、暖炉や格天井の雰囲気を残すレストランになっている。"
+        },
+        {
+          "publisher": "Wikipedia（イタリア語版）",
+          "title": "Vicolo dei Lavandai",
+          "url": "https://it.wikipedia.org/wiki/Vicolo_dei_Lavandai",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノのナヴィリオ地区、アルザイア・ナヴィリオ・グランデ14番地にある。もとは男性の作業員が洗濯を担い、組合（ラヴァンダイ信心会）をつくっていた。"
         }
       ],
       "destinationIds": [
@@ -192,6 +344,7 @@
       "cityId": "milano",
       "nameJa": "サン・サティロ教会",
       "nameEn": "Church of Santa Maria presso San Satiro",
+      "descriptionJa": "サン・サティロ教会は、ドゥオモから数歩、トリノ通りの入口にある教会。9世紀に大司教アンスペルトが建てた小礼拝堂に始まり、聖母子像への信仰の高まりを受けて15世紀後半に新しい聖堂が建てられ、ブラマンテも工事に関わった。創建期の前ロマネスク様式の鐘楼が今も残る。",
       "latitude": 45.4627,
       "longitude": 9.18777,
       "backgroundId": "milano_san_satiro_date",
@@ -203,6 +356,30 @@
           "checkedAt": "2026-11-02",
           "claimType": "hypothesis",
           "claimJa": "参照先の代表点をゲーム用の地点に採用。入口や広い施設内の位置は完全一致を保証しない。"
+        },
+        {
+          "publisher": "MilanoFree.it",
+          "title": "Chiesa di Santa Maria presso San Satiro",
+          "url": "https://www.milanofree.it/turismo/monumenti/chiesa-di-santa-maria-presso-san-satiro.html",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "トリノ通りの入口、ドゥオモから数歩の所にある。大司教アンスペルト・ダ・ビアッソーノが879年以前に小礼拝堂を創建し、その前ロマネスクの鐘楼が今も残る。"
+        },
+        {
+          "publisher": "MilanoFree.it",
+          "title": "Chiesa di Santa Maria presso San Satiro",
+          "url": "https://www.milanofree.it/turismo/monumenti/chiesa-di-santa-maria-presso-san-satiro.html",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "1242年、礼拝堂の外壁に描かれた聖母子像が傷つけられた出来事のあと民衆の信仰が高まった。1474年に土地を取得し、1476〜78年ごろ工事が始まり、ブラマンテの関与は1482年から記録される。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Santa Maria presso San Satiro",
+          "url": "https://en.wikipedia.org/wiki/Santa_Maria_presso_San_Satiro",
+          "checkedAt": "2026-11-11",
+          "claimType": "interpretation",
+          "claimJa": "現在の聖堂は1472〜1482年ごろに建てられ、設計者をブラマンテとする資料がある一方、近年の文書ではブラマンテの役割は小さく、多くはアマデーオの仕事とする見方もある（本文は「関わった」にとどめた）。"
         }
       ],
       "destinationIds": [
@@ -214,6 +391,7 @@
       "cityId": "milano",
       "nameJa": "ロースタリー",
       "nameEn": "Starbucks Reserve Roastery Milan",
+      "descriptionJa": "スターバックス・リザーブ・ロースタリー・ミラノは、ミラノ中心部のコルドゥージオ広場にある焙煎所併設のカフェ。2018年9月、1901年にルイジ・ブロッジが設計した歴史的建物の中に開業した。大きな焙煎機を囲んで焙煎の様子をぐるりと見渡せ、エスプレッソのバーや薪窯のベーカリーも備える。",
       "latitude": 45.46495,
       "longitude": 9.18609,
       "backgroundId": "milano_starbucks_roastery_date",
@@ -225,6 +403,22 @@
           "checkedAt": "2026-11-02",
           "claimType": "hypothesis",
           "claimJa": "参照先の代表点をゲーム用の地点に採用。入口や広い施設内の位置は完全一致を保証しない。"
+        },
+        {
+          "publisher": "Azure Magazine",
+          "title": "Starbucks' Milan Roastery in Piazza Cordusio（2018年11月29日）",
+          "url": "https://www.azuremagazine.com/article/milan-starbucks-piazza-cordusio/",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ロースタリーは2018年9月初めにコルドゥージオ広場の建物に開業した。建物はルイジ・ブロッジの設計で1901年に建てられた。中心にはブリアンツァのスコラーリ社製の巨大な焙煎機がある。"
+        },
+        {
+          "publisher": "Starbucks Reserve Roastery Milano",
+          "title": "Explore by bar",
+          "url": "https://www.roastery.starbucks.it/explorebybar",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "焙煎の技と科学を360度ぐるりと見渡せる。伝統的なエスプレッソのメインバー、カクテルのアリヴィアーモ・バー、薪窯でピザやパンを焼くプリンチのベーカリーがある。"
         }
       ],
       "destinationIds": [
@@ -236,6 +430,7 @@
       "cityId": "milano",
       "nameJa": "プラダ財団",
       "nameEn": "Fondazione Prada Milan",
+      "descriptionJa": "プラダ財団ミラノは、ミラノ南端のラルゴ・イザルコにある現代美術の文化施設。1910年代のジン蒸留所跡をレム・コールハース率いるOMAが改装し、2015年5月に開館した。倉庫や醸造用サイロを生かした展示空間に加え、ウェス・アンダーソンが昔のミラノのカフェを再現したバーもある。",
       "latitude": 45.44394,
       "longitude": 9.20432,
       "backgroundId": "milano_fondazione_prada_date",
@@ -247,6 +442,22 @@
           "checkedAt": "2026-11-02",
           "claimType": "hypothesis",
           "claimJa": "参照先の代表点をゲーム用の地点に採用。入口や広い施設内の位置は完全一致を保証しない。"
+        },
+        {
+          "publisher": "OMA",
+          "title": "Fondazione Prada",
+          "url": "https://www.oma.com/projects/fondazione-prada",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ南端ラルゴ・イザルコの工業地区にある、1910年のジン蒸留所跡。倉庫・研究棟・醸造用サイロなどを含む。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Fondazione Prada",
+          "url": "https://en.wikipedia.org/wiki/Fondazione_Prada",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "2015年5月9日、ラルゴ・イザルコに常設のミラノ会場を公開した。レム・コールハース率いるOMAの構想で、1910年代の蒸留所跡を転用した。ウェス・アンダーソンが昔のミラノのカフェの雰囲気を再現したバーがある。"
         }
       ],
       "destinationIds": [
@@ -258,6 +469,7 @@
       "cityId": "milano",
       "nameJa": "ノヴェチェント美術館",
       "nameEn": "Museum of the Twentieth Century",
+      "descriptionJa": "ノヴェチェント美術館は、ドゥオモ広場のそばに建つアレンガリオ宮殿にある20世紀美術の美術館。2010年12月に開館し、主にイタリアの20世紀の作品約400点を展示する。バッラやボッチョーニ、カッラら未来派の作品を集めた展示や、デ・キリコら個々の作家を紹介するコーナーが見どころ。",
       "latitude": 45.46339,
       "longitude": 9.19023,
       "backgroundId": "milano_novecento_date",
@@ -269,6 +481,22 @@
           "checkedAt": "2026-11-02",
           "claimType": "hypothesis",
           "claimJa": "参照先の代表点をゲーム用の地点に採用。入口や広い施設内の位置は完全一致を保証しない。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Museo del Novecento",
+          "url": "https://en.wikipedia.org/wiki/Museo_del_Novecento",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ中心部、ドゥオモ広場近くのアレンガリオ宮殿にあり、2010年12月6日に開館した。主にイタリアの20世紀の作品約400点を展示する。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Museo del Novecento",
+          "url": "https://en.wikipedia.org/wiki/Museo_del_Novecento",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "イタリア未来派の重要な展示（バッラ、ボッチョーニ、カッラら）と、ジョルジョ・デ・キリコなど個々の作家にささげた展示がある。"
         }
       ],
       "destinationIds": [
@@ -280,6 +508,7 @@
       "cityId": "milano",
       "nameJa": "サン・マウリツィオ教会",
       "nameEn": "Church of San Maurizio al Monastero Maggiore",
+      "descriptionJa": "サン・マウリツィオ教会は、ミラノのコルソ・マジェンタにある、かつて町で最も重要だったベネディクト会女子修道院の聖堂。1503年に建設が始まり、内部はベルナルディーノ・ルイーニらレオナルド派の画家による壁画で彩られている。「ミラノのシスティーナ礼拝堂」とも呼ばれる。",
       "latitude": 45.46544,
       "longitude": 9.17895,
       "backgroundId": "milano_san_maurizio_sound",
@@ -291,6 +520,30 @@
           "checkedAt": "2026-11-02",
           "claimType": "hypothesis",
           "claimJa": "参照先の代表点をゲーム用の地点に採用。入口や広い施設内の位置は完全一致を保証しない。"
+        },
+        {
+          "publisher": "Wikipedia（イタリア語版）",
+          "title": "Chiesa di San Maurizio al Monastero Maggiore",
+          "url": "https://it.wikipedia.org/wiki/Chiesa_di_San_Maurizio_al_Monastero_Maggiore",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "ルイーニ通りとコルソ・マジェンタの角にある。ベネディクト会に属する町で最も重要な女子修道院の聖堂で、現存する聖堂の建設は1503年に始まった。"
+        },
+        {
+          "publisher": "Wikipedia（イタリア語版）",
+          "title": "Chiesa di San Maurizio al Monastero Maggiore",
+          "url": "https://it.wikipedia.org/wiki/Chiesa_di_San_Maurizio_al_Monastero_Maggiore",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "内部はレオナルド派の広大な壁画群で飾られ（画家にベルナルディーノ・ルイーニら）、ミラノあるいはロンバルディアの「システィーナ礼拝堂」とも呼ばれる。修道院の建物は第二次世界大戦後、市立考古学博物館になった。"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "San Maurizio al Monastero Maggiore",
+          "url": "https://en.wikipedia.org/wiki/San_Maurizio_al_Monastero_Maggiore",
+          "checkedAt": "2026-11-11",
+          "claimType": "documented_fact",
+          "claimJa": "1503年からジャン・ジャコモ・ドルチェブオーノの設計で建てられ、ベルナルディーノ・ルイーニが聖カタリナの殉教（1530年）を描いた。"
         }
       ],
       "destinationIds": [
