@@ -20,7 +20,26 @@
 .travel-map-frame .leaflet-control-zoom a { width: 44px; height: 44px; line-height: 44px; }
 .travel-map-marker-wrap { background: transparent; border: 0; }
 .travel-map-marker { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: var(--ds-marker); font-size: 17px; font-weight: bold; text-shadow: -1px -1px white, 1px -1px white, -1px 1px white, 1px 1px white, 0 1px 3px rgba(0, 0, 0, 0.3); }
-.travel-map-marker.is-here { border: 3px solid var(--ds-here); border-radius: 50%; background: #fff9; }
+.travel-map-marker.is-here { position: relative; border: 3px solid var(--ds-here); border-radius: 50%; background: #fff9; }
+/* Where the couple are: a ring in the current place's green widens and fades from the mark,
+   slowly (every 2.4 s), so the eye finds it on the map. Display only, never pressed. */
+.travel-map-marker.is-here::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border: 2px solid var(--ds-here);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: map-here-pulse 2.4s var(--ease-out) infinite;
+}
+@keyframes map-here-pulse {
+  from { opacity: 0.8; transform: scale(1); }
+  60%, to { opacity: 0; transform: scale(1.7); }
+}
+.reduce-motion .travel-map-marker.is-here::before { animation: none; opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .travel-map-marker.is-here::before { animation: none; opacity: 0; }
+}
 .travel-map-marker.is-visited::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: white; box-shadow: 0 0 0 1px #53655a; }
 .travel-list { display: grid; }
 .travel-choice-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
