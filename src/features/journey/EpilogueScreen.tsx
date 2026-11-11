@@ -1,8 +1,9 @@
 import { useEffect } from "react";
-import { battles, dialogueExpressions, dialogueReactions, episodes, getCityContent } from "../../content";
+import { battles, dialogueExpressions, dialogueReactions, episodes, getCityContent, storyState } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
-import { activeEpilogueStoryId } from "../../domain/epilogue";
+import { activeEpilogueStoryId, epilogueScene } from "../../domain/epilogue";
+import { scenePerson } from "../../domain/scene-person";
 import { getNextCity } from "../../domain/city-travel";
 import { tourLegUnderway } from "../../domain/tour";
 import { getJourneyForCity } from "../../content/journeys";
@@ -11,6 +12,8 @@ import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/Dialog
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { portraitFocus } from "../../components/speaker-focus";
+import { useStaysOnStage } from "../../components/useStaysOnStage";
+import "./encounter.css";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
@@ -60,13 +63,17 @@ export function EpilogueScreen({
   const episode = episodes.find((item) => item.id === active.episodeId);
   const storyId = activeEpilogueStoryId(active) ?? episode?.epilogueStoryId ?? "";
   const reaction = resolveDialogueReaction(dialogueReactions, storyId, frame, "heroine");
+  // The scene's person with a portrait (# person:) stands opposite her from their first line or reaction.
+  const person = scenePerson(storyState.people, epilogueScene(active)?.people);
+  const personReaction = person ? resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy") : undefined;
+  const personOn = useStaysOnStage(!!person && (frame.speaker === "enemy" || !!personReaction));
   const speaker =
     frame.speaker === "heroine"
       ? game.heroineName
       : frame.speaker === "player"
         ? game.playerName
         : frame.speaker === "enemy"
-          ? battles.find((battle) => battle.id === episode?.battleId)?.enemyNameJa ?? "旅の風景"
+          ? person?.nameJa ?? battles.find((battle) => battle.id === episode?.battleId)?.enemyNameJa ?? "旅の風景"
           : "旅の風景";
   const label = active.kind === "tour_leg"
     ? { eyebrow: "ツアー", heading: leg?.labelJa ?? "ツアーの移動", region: "ツアーの移動の語り", next: "ツアーを続ける", testId: "tour-leg-screen" }
@@ -104,16 +111,29 @@ export function EpilogueScreen({
         <div className="vn-background" data-testid="scene-picture">
           <CanalScene backgroundId={frame.background} />
         </div>
-        <div className="vn-character-layer">
-          <CharacterPortrait
-            characterId="heroine"
-            sceneId={active.episodeId}
-            cityId={episode?.cityId ?? game.currentCityId}
-            emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame)}
-            focus={portraitFocus(frame.speaker, "heroine")}
-          >
-            {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
-          </CharacterPortrait>
+        {/* With the scene's person on stage the two stand side by side (the encounter's slots); her
+            portrait keeps its place in the tree, so it is not drawn again when they come in. */}
+        <div className={`vn-character-layer${person && personOn ? " encounter-character-layer" : ""}`} data-two-characters={person && personOn ? true : undefined}>
+          <div className={person && personOn ? "encounter-character-slot encounter-character-heroine" : undefined}>
+            <CharacterPortrait
+              characterId="heroine"
+              sceneId={active.episodeId}
+              cityId={episode?.cityId ?? game.currentCityId}
+              emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame)}
+              focus={portraitFocus(frame.speaker, "heroine")}
+            >
+              {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
+            </CharacterPortrait>
+          </div>
+          {person && personOn && <div className="encounter-character-slot encounter-character-enemy">
+            <CharacterPortrait
+              characterId={person.characterId}
+              emotion={personReaction?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral")}
+              focus={portraitFocus(frame.speaker, "enemy")}
+            >
+              {personReaction?.mark && <ComicEffect effect={personReaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
+            </CharacterPortrait>
+          </div>}
         </div>
         <section
           className="paper story-paper vn-dialogue"

@@ -739,6 +739,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   };
   for (const person of storyStateCatalog.people) if (!cities.some((city) => city.id === person.cityId))
     throw new Error(`Unknown city of the person ${person.id} in progression/story.json: ${person.cityId}`);
+  for (const person of storyStateCatalog.people) if (person.characterId && !characters.characters.some((item) => item.id === person.characterId))
+    throw new Error(`Unknown portrait of the person ${person.id} in progression/story.json: ${person.characterId} (register it in presentation/characters.json)`);
   const journeyOfCityId = (cityId: string) => journeyCatalog.journeys.find((item) => item.cities.some((city) => city.id === cityId))?.id;
   for (const scene of taggedScenes) {
     const label = `${storyLabel(scene.story.storyId)}${scene.story.knot ? ` (${scene.story.knot})` : ""}`;

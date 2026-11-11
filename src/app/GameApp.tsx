@@ -5,9 +5,12 @@ import {
   presentation,
   landmarks,
   localWords,
+  scenes,
+  storyState,
   tourismAssets,
   getCityContent,
 } from "../content";
+import { scenePerson } from "../domain/scene-person";
 import { defaultJourneyId, getJourney } from "../content/journeys";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
 import { waitForTravel } from "../domain/travel-game";
@@ -361,6 +364,8 @@ export function GameApp({
   const currentDate = dates.find((date) => date.id === active?.dateId);
   const activeEncounter = game?.activeEncounter;
   const currentEncounter = activeEncounter ? getActiveEncounterDefinition(activeEncounter) : undefined;
+  // The scene's person with a portrait (# person:): stands opposite the heroine and names the enemy lines.
+  const encounterPerson = currentEncounter ? scenePerson(storyState.people, scenes.find((scene) => scene.id === currentEncounter.id)?.people) : undefined;
   const encounterLandmark = landmarks.find((landmark) => landmark.id === currentEncounter?.landmarkId);
   const encounterImage = tourismAssets.find((asset) => asset.id === encounterLandmark?.imageAssetId);
   const encounterBackdrop = activeEncounter && !encounterLandmark
@@ -594,7 +599,7 @@ export function GameApp({
                 const hasEmotion = frame.emotion !== "neutral" || frame.emotionExplicit;
                 const heroineSpeaking = frame.speaker === "heroine" || frame.speaker === "narrator";
                 const showHeroine = heroine || (hasEmotion && heroineSpeaking);
-                const showEnemy = enemy || (hasEmotion && frame.speaker === "enemy");
+                const showEnemy = enemy || ((hasEmotion || !!encounterPerson) && frame.speaker === "enemy");
                 if (!showHeroine && !showEnemy) return undefined;
                 return {
                   ...(showHeroine ? { heroine: { emotion: heroine?.expression ?? (heroineSpeaking ? frame.emotion : "neutral"), mark: heroine?.mark, focus: portraitFocus(frame.speaker, "heroine") } } : {}),
@@ -609,8 +614,10 @@ export function GameApp({
                 getCityContent(currentEncounter.cityId).city.nameJa,
               background: activeEncounter.frame.background,
               backgroundAsset: encounterImage,
-              speaker: activeEncounter.frame.speaker === "heroine" ? game.heroineName : activeEncounter.frame.speaker === "player" ? game.playerName : "旅の風景",
-              narration: activeEncounter.frame.speaker !== "heroine" && activeEncounter.frame.speaker !== "player",
+              speaker: activeEncounter.frame.speaker === "heroine" ? game.heroineName : activeEncounter.frame.speaker === "player" ? game.playerName
+                : activeEncounter.frame.speaker === "enemy" && encounterPerson ? encounterPerson.nameJa : "旅の風景",
+              narration: activeEncounter.frame.speaker !== "heroine" && activeEncounter.frame.speaker !== "player" && !(activeEncounter.frame.speaker === "enemy" && encounterPerson),
+              person: encounterPerson && { characterId: encounterPerson.characterId, focus: portraitFocus(activeEncounter.frame.speaker, "enemy") },
               text: activeEncounter.frame.text,
               delivery: activeEncounter.frame.delivery,
               // Hidden choices (decision 43) are left out; the letters follow the shown ones.

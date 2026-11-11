@@ -165,7 +165,8 @@ const text = z.string().trim().min(1);
 export const storyStateCatalogSchema = z.object({
   schemaVersion: z.literal(1),
   flags: z.array(z.object({ id, noteJa: text.optional() }).strict()).default([]),
-  people: z.array(z.object({ id, cityId: id, nameJa: text }).strict()).default([]),
+  /** `characterId`: the portrait (presentation/characters.json) that stands for the person in a scene with their `# person:`. */
+  people: z.array(z.object({ id, cityId: id, nameJa: text, characterId: id.optional() }).strict()).default([]),
   conditions: z.record(id, conditionSchema).default({}),
 }).strict();
 export type StoryStateCatalog = z.infer<typeof storyStateCatalogSchema>;
