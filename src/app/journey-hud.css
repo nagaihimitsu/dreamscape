@@ -145,6 +145,10 @@
    so neither the header nor the scene under it moves when they show at a
    choice; hidden, they are neither seen, pressed, focused nor read. */
 .journey-hud[data-view="talk"] :is(.hud-wallet, .held-items, .hud-screen-tool > *) { visibility: hidden; }
+/* While a quiet line reads (`# quiet:`, hud-view.ts "quiet") the whole header steps aside, its shade over the
+   photo too, and keeps its room the same way; it comes back at once with the next line that is not quiet, or a choice.
+   The line, the window's tools and 「会話を表示」 stay where they are. */
+.journey-hud[data-view="quiet"] { visibility: hidden; }
 
 /* ⚙設定's panel: under the header, its right edge on the button's; on a short
    screen (or with large text) its items scroll inside it. */

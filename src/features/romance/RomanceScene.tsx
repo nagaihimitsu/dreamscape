@@ -10,6 +10,8 @@ import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { portraitFocus } from "../../components/speaker-focus";
 import { ComicEffect } from "../../components/ComicEffect";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
+import { LineStage, RecallLayer } from "../../components/LineStage";
+import { lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
@@ -144,10 +146,11 @@ export function RomanceScene({
   });
   const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: frame.choices.length > 0, windowHidden: windowVisibility.hidden });
   return (
-    <div className="vn-scene romance-scene" data-testid="romance-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-has-choices={frame.choices.length > 0} {...sceneTap.props}>
+    <div className="vn-scene romance-scene" data-testid="romance-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-has-choices={frame.choices.length > 0} data-quiet={frame.quiet} {...sceneTap.props}>
       <div className="vn-background" data-testid="scene-picture">
         <CanalScene backgroundId={frame.background} />
       </div>
+      <RecallLayer imageId={frame.recall} />
       {/* The date's heading (D4): its destination, or 「デート」 when it has none. */}
       <SceneHeading label={destination ? `${getCityContent(destination.cityId).city.nameJa} ／ ${destination.nameJa}` : "デート"} />
       {destination?.referenceImage && (
@@ -165,6 +168,7 @@ export function RomanceScene({
           cityId={game.currentCityId}
           emotion={emotion}
           focus={portraitFocus(frame.speaker, "heroine")}
+          stand={frame.stand}
         >
           {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
         </CharacterPortrait>
@@ -188,7 +192,7 @@ export function RomanceScene({
         )}
         <DialogueWindowHead
           narration={frame.speaker !== "heroine" && frame.speaker !== "player"}
-          speaker={<>
+          speaker={showsSpeakerPlate(frame) && <>
             {speaker}
             {frame.speaker === "heroine" && frame.emotion !== "neutral" && (
               <span className="emotion">
@@ -199,15 +203,17 @@ export function RomanceScene({
           controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
         />
         <div ref={dialogueRef} className="vn-window-body">
-            <DialogueText
-              key={game.revision}
-              ref={sceneTap.line}
-              text={frame.text}
-              delivery={frame.delivery}
-              speed={autoAdvance.fast ? 0 : speed}
-              onReady={onReady}
-              onAdvance={advance}
-            />
+            <LineStage frame={frame} names={{ heroine: game.heroineName, player: game.playerName }} compact={frame.choices.length > 0}>
+              <DialogueText
+                key={game.revision}
+                ref={sceneTap.line}
+                text={frame.text}
+                delivery={frame.delivery}
+                speed={autoAdvance.fast ? 0 : lineSpeed(speed, frame)}
+                onReady={onReady}
+                onAdvance={advance}
+              />
+            </LineStage>
             {frame.choices.length ? (
               <div className="choices">
                 {/* No 「返答を選んでください」 under it (2026-11-11, the user's decision): the replies coming in one after another say it. */}

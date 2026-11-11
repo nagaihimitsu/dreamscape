@@ -7,6 +7,8 @@ import type { GameState } from "../../domain/game";
 import { battleChrome, getActiveBattleContent, getBattleOutcome } from "../../domain/battle";
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
+import { LineStage, RecallLayer } from "../../components/LineStage";
+import { lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { readLineId, type ReadSkip } from "../../components/read-skip";
@@ -268,6 +270,8 @@ export function BattleScreen({
   }, [active.phase, active.roundIndex, animatedAnswer, answerKey, reduceMotion]);
   const frame = active.frame;
   const isDialogue = active.phase === "dialogue";
+  // The line's scene tags (LineStage), only while the talk shows its line.
+  const staging = isDialogue ? frame : null;
   // What the line's screen shows: the next button at the end of a part, the conversation's choices, and what a rebuttal line hides.
   const chrome = battleChrome(active, battle);
   const choosing = chrome.choosing;
@@ -380,6 +384,7 @@ export function BattleScreen({
       data-reduce-motion={reduceMotion || undefined}
       data-enemy-intro={enemyIntro || undefined}
       data-dialogue-hidden={isDialogue && windowVisibility.hidden || undefined}
+      data-quiet={staging?.quiet}
       {...sceneTap.props}
     >
       {active.phase === "feedback" && answer && effectAnswer === answerKey && (
@@ -404,6 +409,7 @@ export function BattleScreen({
       <div className="battle-backdrop">
         <CanalScene backgroundId={backgroundId} imageAssetId={landmarkAsset?.id} />
       </div>
+      <RecallLayer imageId={staging?.recall} />
       {/* The battle's heading in every phase (S5): its landmark, or the battle's title for a city
           finale; 手がかり帳 is in the header, shown at a choice: the talk's choices, a question, the
           reasoning stop (whose panel also has its own 「手がかり帳を開く」). */}
@@ -431,6 +437,7 @@ export function BattleScreen({
                 cityId={heroineCityId}
                 emotion={heroineEmotion}
                 focus={portraitFocus(frame?.speaker, "heroine")}
+                stand={staging?.stand}
               >
                 {heroineReaction?.mark && <ComicEffect effect={heroineReaction.mark} reduceMotion={reduceMotion} cueKey={displayedStoryState ?? ""} />}
               </CharacterPortrait>
@@ -458,7 +465,7 @@ export function BattleScreen({
       {isDialogue && <DialogueWindowHead
         plateClassName="battle-nameplate"
         narration={!!frame && frame.speaker !== "enemy" && frame.speaker !== "heroine" && frame.speaker !== "player"}
-        speaker={frame && <>
+        speaker={frame && showsSpeakerPlate(frame) && <>
           {speaker}
           {frame.emotion !== "neutral" && (
             <span className="emotion">{presentation.emotions[frame.emotion]}</span>
@@ -564,15 +571,17 @@ export function BattleScreen({
           </div>
         ) : isDialogue && frame ? (
           <>
-            <DialogueText
-              key={game.revision}
-              ref={sceneTap.line}
-              text={frame.text}
-              delivery={frame.delivery}
-              speed={auto.fast ? 0 : speed}
-              onReady={onReady}
-              onAdvance={advanceSafely}
-            />
+            <LineStage frame={frame} names={{ heroine: game.heroineName, player: game.playerName, enemy: battle.enemyNameJa }} compact={choosing}>
+              <DialogueText
+                key={game.revision}
+                ref={sceneTap.line}
+                text={frame.text}
+                delivery={frame.delivery}
+                speed={auto.fast ? 0 : lineSpeed(speed, frame)}
+                onReady={onReady}
+                onAdvance={advanceSafely}
+              />
+            </LineStage>
             {choosing && onChoose && <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="battle-choice" />}
             {chrome.advance && <button
               className="next"

@@ -1,6 +1,6 @@
 import { frameCall, type StoryFrame } from "../story/frame-reader";
 
-type Frame = Pick<StoryFrame, "choices">;
+type Frame = Pick<StoryFrame, "choices" | "quiet" | "recall">;
 
 /** The parts of the game state that say which screen is on show and whether it waits for the player's choice. */
 export interface HudState {
@@ -20,13 +20,28 @@ export interface HudState {
  *   地図; a guide's or a battle's 手がかり帳). Such a scene while it waits for a choice (one of
  *   the story's, a quiz's answer, the evidence of a battle's reasoning), and every other screen (free
  *   time, the observation, 交際開始).
- * The parts that "talk" leaves out keep their room (journey-hud.css), so nothing under the header
- * moves when they show at a choice.
+ * - "quiet": such a scene, waiting for no choice, while its line is quiet (`# quiet:`, the scene tags of
+ *   2026-11-11): the whole header steps aside. At a choice it shows "all" again.
+ * The parts that "talk" and "quiet" leave out keep their room (journey-hud.css), so nothing under the
+ * header moves when they show at a choice.
  */
-export type HudView = "all" | "talk";
+export type HudView = "all" | "talk" | "quiet";
 
 export function hudView(state: HudState | null): HudView {
-  return state && sceneWaits(state) === false ? "talk" : "all";
+  if (!state || sceneWaits(state) !== false) return "all";
+  return lineOnScreen(state)?.quiet ? "quiet" : "talk";
+}
+
+/**
+ * The frame whose line the story scene on screen shows, in sceneWaits' order (an encounter's quiz and its feedback, the
+ * observation and a battle's other phases show none): its `# quiet:` here, its `# recall:` for ⚙設定's 「画像の出典」 (GameApp).
+ */
+export function lineOnScreen({ activeEncounter: encounter, activeEpilogue: epilogue, activeTourism: tourism, activeBattle: battle, activeDate: date }: HudState): Frame | null {
+  if (encounter) return encounter.phase === "quiz" || encounter.phase === "feedback" ? null : encounter.frame;
+  if (epilogue) return epilogue.frame;
+  if (tourism) return tourism.phase === "guide" ? tourism.frame : null;
+  if (battle) return battle.phase === "dialogue" ? battle.frame : null;
+  return date?.frame ?? null;
 }
 
 /** A frame that waits for one of its choices (a battle's call to its quiz or reasoning is no choice: battleDialogueStop). */

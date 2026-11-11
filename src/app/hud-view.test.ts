@@ -47,4 +47,20 @@ describe("what the header shows", () => {
     expect(hudView({ ...observing, activeEncounter: { phase: "story", frame: line } })).toBe("talk");
     expect(hudView({ ...none, activeTourism: { phase: "guide", frame: line }, activeBattle: { phase: "question", frame: null } })).toBe("talk");
   });
+
+  // The scene tag # quiet: (2026-11-11): the header steps aside while a quiet line reads, and comes back at a choice.
+  it("steps aside for a quiet line of a scene that waits for no choice, and shows everything at a choice", () => {
+    for (const quiet of ["line", "scene"] as const) {
+      const hushed = { ...line, quiet };
+      expect(hudView({ ...none, activeDate: { frame: hushed } })).toBe("quiet");
+      expect(hudView({ ...none, activeEpilogue: { frame: hushed } })).toBe("quiet");
+      expect(hudView({ ...none, activeTourism: { phase: "guide", frame: hushed } })).toBe("quiet");
+      expect(hudView({ ...none, activeEncounter: { phase: "story", frame: hushed } })).toBe("quiet");
+      expect(hudView({ ...none, activeBattle: { phase: "dialogue", frame: hushed } })).toBe("quiet");
+      expect(hudView({ ...none, activeDate: { frame: { ...choices, quiet } } })).toBe("all");
+    }
+    // An encounter's quiz feedback and a battle's feedback show no line: the header is as it is there.
+    expect(hudView({ ...none, activeEncounter: { phase: "feedback", frame: { ...line, quiet: "scene" } } })).toBe("talk");
+    expect(hudView({ ...none, activeBattle: { phase: "feedback", frame: { ...line, quiet: "scene" } } })).toBe("talk");
+  });
 });
