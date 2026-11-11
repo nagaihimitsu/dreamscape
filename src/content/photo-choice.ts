@@ -42,29 +42,3 @@ export function choosePlacePhoto(
 export function chooseCityBackdrop(assets: readonly TourismAsset[], city: { backdropAssetId?: string }): TourismAsset | null {
   return usableAsset(assets, city.backdropAssetId);
 }
-
-/** What an album photo's image ID (a line's `# photo:`) is looked up in: the tourism photos and the backgrounds. */
-export type AlbumImageContent<Asset extends { id: string }> = {
-  assets: readonly Asset[];
-  backgrounds: Readonly<Record<string, { imageAssetId?: string }>>;
-};
-
-/**
- * The image IDs a line's `# photo:` may name (the album, 2026-11-11): every registered tourism photo by its own ID,
- * and each background that shows one (its `imageAssetId`) by the background's ID. Each is credited (ImageCredit);
- * a placeholder photo is named all the same (the album marks it 「仮画像」, as the clue book does).
- */
-export function albumImageIds(content: AlbumImageContent<{ id: string }>): string[] {
-  const assetIds = new Set(content.assets.map((asset) => asset.id));
-  return [...assetIds, ...Object.entries(content.backgrounds)
-    .filter(([, background]) => background.imageAssetId !== undefined && assetIds.has(background.imageAssetId))
-    .map(([id]) => id)];
-}
-
-/** The tourism photo an album image ID shows (albumImageIds): the photo of that ID, else the photo of the background of that ID. */
-export function albumImageAsset<Asset extends { id: string }>(content: AlbumImageContent<Asset>, imageId: string): Asset | null {
-  const own = content.assets.find((asset) => asset.id === imageId);
-  if (own) return own;
-  const assetId = Object.hasOwn(content.backgrounds, imageId) ? content.backgrounds[imageId].imageAssetId : undefined;
-  return (assetId === undefined ? undefined : content.assets.find((asset) => asset.id === assetId)) ?? null;
-}

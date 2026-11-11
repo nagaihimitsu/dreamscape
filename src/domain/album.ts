@@ -67,8 +67,8 @@ export function recordAlbumPhoto(state: GameState): GameState {
 
 /**
  * A saved album names only what this build knows, as the save's other references do: a photo the content still has
- * (an image a `# photo:` may name), a city of the save's journey and a place of that city. Otherwise the save is not
- * loaded and its data is kept (persistence loadGame).
+ * (an album image of the build, which a `# photo:` may name), a city of the save's journey and a place of that city.
+ * Otherwise the save is not loaded and its data is kept (persistence loadGame).
  */
 export function validateAlbum(state: GameState): void {
   const journeyId = getJourneyForCity(state.currentCityId)?.id;

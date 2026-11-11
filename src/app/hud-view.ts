@@ -1,6 +1,6 @@
 import { frameCall, type StoryFrame } from "../story/frame-reader";
 
-type Frame = Pick<StoryFrame, "choices" | "quiet" | "recall">;
+type Frame = Pick<StoryFrame, "choices" | "quiet">;
 
 /** The parts of the game state that say which screen is on show and whether it waits for the player's choice. */
 export interface HudState {
@@ -34,9 +34,9 @@ export function hudView(state: HudState | null): HudView {
 
 /**
  * The frame whose line the story scene on screen shows, in sceneWaits' order (an encounter's quiz and its feedback, the
- * observation and a battle's other phases show none): its `# quiet:` here, its `# recall:` for ⚙設定's 「画像の出典」 (GameApp).
+ * observation and a battle's other phases show none): its `# quiet:` here.
  */
-export function lineOnScreen({ activeEncounter: encounter, activeEpilogue: epilogue, activeTourism: tourism, activeBattle: battle, activeDate: date }: HudState): Frame | null {
+function lineOnScreen({ activeEncounter: encounter, activeEpilogue: epilogue, activeTourism: tourism, activeBattle: battle, activeDate: date }: HudState): Frame | null {
   if (encounter) return encounter.phase === "quiz" || encounter.phase === "feedback" ? null : encounter.frame;
   if (epilogue) return epilogue.frame;
   if (tourism) return tourism.phase === "guide" ? tourism.frame : null;

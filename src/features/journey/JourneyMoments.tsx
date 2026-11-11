@@ -2,7 +2,6 @@ import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from
 import { createPortal } from "react-dom";
 import { DEFAULT_ITEM_ICON } from "../../content/code-images";
 import { Icon } from "../../components/icons";
-import { ImageCreditLine } from "../../components/ImageCredit";
 import { Modal } from "../../components/Modal";
 import { reducedMotionNow, useNightCard } from "./NightRest";
 import type { EndRoll, EpisodeTitleCard, MomentPhoto, PackedItem, Packing, ResumeRecap } from "./journey-moments";
@@ -50,7 +49,8 @@ export function EpisodeTitle({ card, reduceMotion, onEnd }: { card: EpisodeTitle
 /**
  * 前回までのあらすじ: a card at the top of free time or the night screen when a resumed game opens there (the page's start
  * with a save, 「ロード」): the city, day and time, the last episode completed (its clear title and record) and the album's
- * latest photo with its credit. In the page's flow; nothing waits for it, and it goes with 「閉じる」 or when the screen changes.
+ * latest photo (the author's illustration in a 3:2 frame, no credit). In the page's flow; nothing waits for it, and it goes
+ * with 「閉じる」 or when the screen changes.
  */
 export function ResumeRecapCard({ recap, onClose }: { recap: ResumeRecap; onClose: () => void }) {
   return <section className="resume-recap" aria-labelledby="resume-recap-title" data-testid="resume-recap">
@@ -74,11 +74,8 @@ export function ResumeRecapCard({ recap, onClose }: { recap: ResumeRecap; onClos
 
 function RecapPhoto({ photo }: { photo: MomentPhoto }) {
   return <figure className="resume-recap-photo">
-    <img src={served(photo.asset.path)} alt={photo.asset.altJa} width={photo.asset.width} height={photo.asset.height} decoding="async" />
-    <figcaption>
-      <span>{photo.caption ?? photo.placeJa}{photo.asset.isPlaceholder ? " · 仮画像" : ""}</span>
-      <ImageCreditLine asset={photo.asset} className="resume-recap-credit" />
-    </figcaption>
+    <img src={served(photo.path)} alt={photo.altJa} decoding="async" />
+    <figcaption>{photo.caption ?? photo.placeJa}</figcaption>
   </figure>;
 }
 
@@ -129,7 +126,7 @@ function PackedList({ items }: { items: readonly PackedItem[] }) {
 /**
  * 旅の終わりのエンドロール: when the journey ends (its last city's epilogue read), a dialog over the whole screen: the two
  * names, then each city of the journey with the clear titles of its episodes, the people met there and its album photos
- * (each with its credit line and links), the names again at the end. It rolls up slowly by itself; a tap on it, Enter or
+ * (the author's illustrations in a 3:2 frame, no credit), the names again at the end. It rolls up slowly by itself; a tap on it, Enter or
  * Space (on the roll) or 「止める」 pauses it and 「続ける」 goes on; 「閉じる」 or Esc ends it. It stops at its end. With
  * reduced motion it does not roll: a list that scrolls by hand. Opened under the finger of the epilogue's last tap, it takes
  * no press for a moment (settlePresses). No relationship value is in it.
@@ -198,12 +195,8 @@ export function EndRollDialog({ roll, reduceMotion, onClose }: { roll: EndRoll; 
             <ul className="end-roll-photos">
               {city.photos.map((photo) => <li key={photo.imageId}>
                 <figure>
-                  <img src={served(photo.asset.path)} alt={photo.asset.altJa} width={photo.asset.width} height={photo.asset.height}
-                    loading="lazy" decoding="async" />
-                  <figcaption>
-                    <span>{photo.caption ?? photo.placeJa} · {photo.whenJa}{photo.asset.isPlaceholder ? " · 仮画像" : ""}</span>
-                    <ImageCreditLine asset={photo.asset} className="end-roll-credit" />
-                  </figcaption>
+                  <img src={served(photo.path)} alt={photo.altJa} loading="lazy" decoding="async" />
+                  <figcaption>{photo.caption ?? photo.placeJa} · {photo.whenJa}</figcaption>
                 </figure>
               </li>)}
             </ul>

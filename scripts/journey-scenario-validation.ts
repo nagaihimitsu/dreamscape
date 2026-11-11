@@ -7,11 +7,11 @@ import { balanceSchema, battleCatalogSchema, dateCatalogSchema, presentationSche
 import { isPlaceStory, storyFileOf } from "../src/content/story-address";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import type { TagContext } from "../src/content/tags";
-import { albumImageIds } from "../src/content/photo-choice";
 import { RELATIONSHIP_TONES } from "../src/domain/romance-tone";
 import { validateMemoryReferences } from "../src/story/memory";
 import { displayPath, journeyLayer, loadContentSources, parseCatalog, storyFile, type ContentSources } from "./content-sources";
 import { withContext } from "./content-validation-utils";
+import { albumImagesOf } from "./album-images";
 import { validateEpilogue } from "./epilogue-validation";
 import { compileInk, validateNoInkRandom, validateRelationshipToneSource } from "./ink-validation";
 import { choiceOption, includesModules, readFileChoices, readMainFileHead } from "./place-files";
@@ -74,6 +74,8 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
     .filter((id) => backgroundFiles[id]?.startsWith(journeyDirectory));
   const warnings: string[] = [];
   const tourism = parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json");
+  // A line's # photo: and # recall: name an album image of this journey (its public/assets/album/; album-images.ts).
+  const albumImageIds = albumImagesOf(sources).filter((image) => image.journeyId === journeyId).map((image) => image.id);
   const placeKnots = publishedPlaceKnots(sources, requirements);
   const expected = requirements.flatMap((city) => [
     ...city.main.flatMap((event) => [event.guideStoryId, event.battleStoryId]),
@@ -132,7 +134,7 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
     const travel = input.cities.find((item) => item.cityId === city.cityId)!;
     const context: TagContext = { effectIds: [], emotionIds: Object.keys(presentation.emotions),
       backgroundIds: [...new Set([...travel.places.map((place) => place.backgroundId), ...journeyBackgroundIds])],
-      photoIds: albumImageIds({ assets: tourism.assets, backgrounds: presentation.backgrounds }) };
+      photoIds: albumImageIds };
     const ownLandmarks = fragments.landmarks.filter((landmark) => landmark.cityId === city.cityId);
     const ownClues = fragments.clues.filter((clue) => ownLandmarks.some((landmark) => landmark.id === clue.landmarkId));
     const ownAssets = tourism.assets.filter((asset) => ownLandmarks.some((landmark) => landmark.imageAssetId === asset.id));

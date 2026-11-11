@@ -79,6 +79,22 @@ describe("unused public files", () => {
   });
 });
 
+describe("unused album images", () => {
+  it("counts an album image as used when a line's # photo: or # recall: names it, never by a comment", () => {
+    const sources = load({
+      ...journey("trip_a", 10, "a_city"),
+      [`${folder("trip_a")}/stories/tourism/a_guide.ink`]: "# speaker: narrator\n# photo: a_tower\n塔。\n# recall: 01_square\n広場。\n// # photo: a_old\n-> END\n",
+      [`${folder("trip_a")}/public/assets/album/a_tower.webp`]: null,
+      [`${folder("trip_a")}/public/assets/album/01_square.png`]: null,
+      [`${folder("trip_a")}/public/assets/album/a_old.webp`]: null,
+    });
+    expect(messages(unusedPublicFiles(sources))).toEqual([
+      "Unused public file: content/journeys/trip_a/public/assets/album/a_old.webp " +
+      "(neither content nor the game's code refers to assets/album/a_old.webp; it would be published without being used)",
+    ]);
+  });
+});
+
 describe("declared transport modes without routes", () => {
   it("names a declared mode that no route of the journey's cities uses", () => {
     const tram = { id: "tram", nameJa: "路面電車", movingJa: "路面電車で移動中", kind: "tram" };

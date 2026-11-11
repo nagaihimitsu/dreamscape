@@ -1,13 +1,16 @@
 import path from "node:path";
 import { IMAGE_EXTENSIONS, ownArtworkCatalogSchema } from "../src/content/own-artwork-schema";
+import { albumFolderLayer } from "./album-images";
 import { displayPath, parseCatalog, type ContentLayer, type ContentSources } from "./content-sources";
 
 // Rights of the served images (docs/02 「画像の出典と自作の絵」): every image
 // the game serves is either a credited tourism image (tourism/catalog.json
 // `assets`, with author, source, licence and modification) or artwork made
 // for Dreamscape, listed one file at a time in its layer's
-// presentation/own-artwork.json, which the credits list leaves out. A pure
-// check of the loaded sources (no file is read).
+// presentation/own-artwork.json, which the credits list leaves out. The album
+// images (a journey's public/assets/album/, album-images.ts) are Dreamscape's
+// own artwork by their folder and need no list. A pure check of the loaded
+// sources (no file is read).
 
 export const OWN_ARTWORK_KIND = "presentation/own-artwork.json";
 
@@ -65,7 +68,10 @@ export function ownArtworkByLayer(sources: Pick<ContentSources, "root" | "layers
  * 2. an image that is both;
  * 3. a listed own-artwork path that its layer does not serve (a stale line
  *    must not cover a later file of the same name);
- * 4. a path listed twice by one layer (ownArtworkByLayer).
+ * 4. a path listed twice by one layer (ownArtworkByLayer);
+ * 5. an album image (a file of a journey's public/assets/album/) that the
+ *    tourism catalog credits: the album shows only Dreamscape's own artwork,
+ *    which never needs a list line or a credit.
  * Served files that are not images (the web app manifest) are not checked.
  */
 export function checkImageRights(
@@ -82,6 +88,12 @@ export function checkImageRights(
 
   for (const [assetPath, file] of sources.publicFiles) {
     if (!isImagePath(assetPath)) continue;
+    if (albumFolderLayer(sources, file)) {
+      if (credited.has(assetPath))
+        errors.push(`アルバムの絵に出典は付けません：${show(file)} が tourism/catalog.json の assets に載っています。アルバムには Dreamscape のために作った絵だけを置き、` +
+          `出典のある写真は assets/album/ の外に置いてください（Album image registered as a credited tourism image: ${assetPath}）。`);
+      continue;
+    }
     const layer = servingLayer(sources, file);
     const listedBy = own.get(layer.id)?.get(assetPath);
     if (credited.has(assetPath) && listedBy)

@@ -4,7 +4,8 @@ import { compileInk } from "../../scripts/ink-validation";
 import { readStoryFrame, stageFrame, STACK_MAX, type StoryFrame } from "./frame-reader";
 import { storyFrameSchema } from "./runtime";
 
-const context = { effectIds: [], backgroundIds: ["street"], emotionIds: ["neutral"], photoIds: ["tower_photo"] };
+// An album image's ID is its file name (public/assets/album/3pm_tower.webp): it may start with a digit, and the saved frame keeps it.
+const context = { effectIds: [], backgroundIds: ["street"], emotionIds: ["neutral"], photoIds: ["3pm_tower"] };
 
 const script = `VAR player_name = ""
 VAR heroine_name = ""
@@ -20,7 +21,7 @@ VAR heroine_name = ""
 起きてるよ。
 # speaker: heroine
 # phone: received
-# recall: tower_photo
+# recall: 3pm_tower
 今日の写真、見て。
 * [Nice. # translation: いいね。]
 * [Again.]
@@ -69,7 +70,7 @@ describe("the scene tags on the frames of a scene", () => {
     // # quiet: scene from the first line to the scene's end; # stand: until the next one.
     expect(frames.map((frame) => frame.quiet)).toEqual(Array(9).fill("scene"));
     expect(frames.map((frame) => frame.stand)).toEqual(["apart", "apart", "apart", "apart", "apart", "close", "close", "close", "close"]);
-    expect(frames.map((frame) => frame.recall)).toEqual([undefined, undefined, undefined, "tower_photo", undefined, undefined, undefined, undefined, undefined]);
+    expect(frames.map((frame) => frame.recall)).toEqual([undefined, undefined, undefined, "3pm_tower", undefined, undefined, undefined, undefined, undefined]);
     expect(frames[0]).not.toHaveProperty("phone");
     expect(frames[1].phone).toEqual({ side: "received" });
     expect(frames[2].phone).toEqual({ side: "sent", earlier: [{ side: "received", speaker: "heroine", text: "起きてる？" }] });
@@ -101,8 +102,8 @@ describe("stageFrame", () => {
   });
 
   it("keeps the line on screen as it was when no new line was read (the story stopped at a choice first)", () => {
-    const shown = line({ recall: "tower_photo", phone: { side: "received" }, quiet: "line", stand: "near" });
-    expect(stageFrame({ stand: "close" }, shown, false)).toEqual({ recall: "tower_photo", phone: { side: "received" }, quiet: "line", stand: "close" });
+    const shown = line({ recall: "3pm_tower", phone: { side: "received" }, quiet: "line", stand: "near" });
+    expect(stageFrame({ stand: "close" }, shown, false)).toEqual({ recall: "3pm_tower", phone: { side: "received" }, quiet: "line", stand: "close" });
     expect(stageFrame({ letter: { kind: "card" } }, undefined, false)).toEqual({ letter: { kind: "card" } });
   });
 

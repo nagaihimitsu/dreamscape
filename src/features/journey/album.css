@@ -30,27 +30,21 @@ dialog.modal.album-modal {
   overflow: hidden;
   background: #26342e;
 }
-/* The list shows each photo filling its frame (the larger view shows it whole); short screens keep it low. */
+/* Each illustration fills a fixed 3:2 frame (one of another shape keeps its middle; the larger view shows it whole),
+   so the file's own size is never needed. A short screen held sideways keeps the frame low by narrowing it. */
 .album-photo img {
   display: block;
   width: 100%;
   height: auto;
-  max-height: min(46dvh, 320px);
+  aspect-ratio: 3 / 2;
   object-fit: cover;
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .album-photo { width: min(100%, 69dvh); margin-inline: auto; }
 }
 .album-photos figcaption { margin-top: 6px; }
 .album-caption { font-size: 15px; line-height: 1.6; overflow-wrap: anywhere; }
 .album-meta { font-size: 12px; line-height: 1.6; color: var(--ds-ink-muted); overflow-wrap: anywhere; }
-.album-credit summary,
-.album-photo-viewer summary {
-  cursor: pointer;
-  min-height: 44px;
-  padding: 11px 0;
-  font-size: 13px;
-  line-height: 22px;
-}
-.album-credit p,
-.album-photo-viewer details p { margin: 2px 0; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
 .album-pager {
   position: sticky;
   bottom: calc(-1 * var(--modal-pad-top, 0px));
@@ -94,7 +88,7 @@ dialog.modal.album-modal {
   .album-page[data-turn] { animation: none; }
 }
 
-/* The photo opened larger: the whole picture, its time and place, its credit, 「閉じる」 at the foot (as 背景画像). */
+/* The photo opened larger: the whole picture, its time and place, 「閉じる」 at the foot (as 背景画像). */
 dialog.modal.album-photo-viewer {
   --modal-pad-top: 16px;
   --modal-pad-inline: 16px;
@@ -109,8 +103,7 @@ dialog.modal.album-photo-viewer {
   object-fit: contain;
   background: #26342e;
 }
-.album-photo-viewer > .album-meta { margin-top: 6px; }
-.album-photo-viewer details { margin: 4px 0 8px; }
+.album-photo-viewer > .album-meta { margin: 6px 0 8px; }
 .album-photo-viewer > .secondary { min-height: 44px; }
 @media (orientation: landscape) and (max-height: 500px) {
   .album-photo-viewer > img { height: 52dvh; }

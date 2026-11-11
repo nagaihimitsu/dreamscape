@@ -32,7 +32,8 @@ import sceneConditionData from "./generated/scene-conditions.json";
 import sceneData from "./generated/scenes.json";
 import storyStateData from "./generated/content/progression/story.json";
 import { generatedScenesSchema, storyStateCatalogSchema, type SceneEntry } from "./scene-schemas";
-import { albumImageIds } from "./photo-choice";
+import albumImageData from "./generated/album-images.json";
+import { albumImageListSchema, type AlbumImage } from "./album-images";
 import { sceneConditionsSchema } from "./condition-schemas";
 import {
   battleCatalogSchema,
@@ -139,14 +140,20 @@ export const presentation = presentationSchema.parse(presentationData);
 export const dialogueReactions = dialogueReactionCatalogSchema.parse(dialogueReactionData);
 export const dialogueExpressions = dialogueExpressionCatalogSchema.parse(dialogueExpressionData);
 export const stories: Record<string, string> = generatedStories;
+/** The album's illustrations of every journey (content:build lists each journey's public/assets/album/; album-images.ts). */
+export const albumImages: readonly AlbumImage[] = albumImageListSchema.parse(albumImageData);
+/** The album image a line's `# photo:` or `# recall:` names, by its ID. */
+export function getAlbumImage(imageId: string): AlbumImage | undefined {
+  return albumImages.find((image) => image.id === imageId);
+}
 /** The scenes' `cond("…")` texts (per story) and the condition each text stands for (content:build, scripts/scene-conditions.ts). */
 export const sceneConditions = sceneConditionsSchema.parse(sceneConditionData);
 export const tagContext = {
   effectIds: effects.map((effect) => effect.id),
   backgroundIds: Object.keys(presentation.backgrounds),
   emotionIds: Object.keys(presentation.emotions),
-  /** The images a line's `# photo:` names for the album (every tourism photo, and each background that shows one). */
-  photoIds: albumImageIds({ assets: tourismAssets, backgrounds: presentation.backgrounds }),
+  /** The images a line's `# photo:` and `# recall:` may name: the album images of every journey. */
+  photoIds: albumImages.map((image) => image.id),
   localWordIds: localWords.map((word) => word.id),
   /** The people a line's `# speaker: <person ID>` may name (progression/story.json people of every journey). */
   personIds: storyState.people.map((person) => person.id),
@@ -166,6 +173,7 @@ export type {
   ObservationRegion,
 } from "./tourism-schemas";
 export type { DateDestination } from "./date-destinations";
+export type { AlbumImage } from "./album-images";
 export type { LocalWord } from "./local-words";
 export type { Tour, TourStep, TourLeg, TourEventStep, TourOffer } from "./tour-schemas";
 export type {

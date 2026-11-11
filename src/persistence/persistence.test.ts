@@ -416,18 +416,19 @@ describe("save format v23 (docs/07: one format per version, no migration)", () =
   });
 
   it("writes the album of v22: empty in a new game, kept through save and load, and required", () => {
-    // The photos the lines' # photo: took (src/domain/album.test.ts holds the recording rule and what an album may name).
+    // The photos the lines' # photo: took: the sample's album illustrations (src/domain/album.test.ts holds the recording
+    // rule and what an album may name).
     const fresh = createGame();
     expect(fresh.album).toEqual([]);
-    const photo = { imageId: "smp_bg_mihon_market", cityId: "mihon", day: 1, minute: 600, placeId: "mihon_market", storyId: "tourism/smp_mihon_market_guide" };
-    const state: GameState = { ...cityStart("mihon"), album: [photo, { ...photo, imageId: "smp_img_mihon_clock_tower", caption: "三時のまま",
+    const photo = { imageId: "smp_album_market", cityId: "mihon", day: 1, minute: 600, placeId: "mihon_market", storyId: "tourism/smp_mihon_market_guide" };
+    const state: GameState = { ...cityStart("mihon"), album: [photo, { ...photo, imageId: "smp_album_clock_tower", caption: "三時のまま",
       placeId: "mihon_clock_tower", storyId: "places/smp_mihon_clock_tower.smp_mihon_date_tower_square" }] };
     const storage = new MemoryStorage();
     expect(saveGame(storage, state)).toEqual({ ok: true });
     expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 23, album: state.album });
     expect(loadGame(storage)).toEqual({ status: "loaded", state });
     // A photo this build cannot show (its image gone from the content): unreadable, kept as it is, never overwritten.
-    const lost = JSON.stringify({ ...state, album: [{ ...photo, imageId: "smp_img_mihon_gone" }] });
+    const lost = JSON.stringify({ ...state, album: [{ ...photo, imageId: "smp_album_gone" }] });
     const lostSlot = new MemoryStorage();
     lostSlot.setItem(SAVE_KEY, lost);
     expect(loadGame(lostSlot)).toMatchObject({ status: "invalid", kind: "corrupt", raw: lost });

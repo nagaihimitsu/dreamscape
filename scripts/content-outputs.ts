@@ -15,6 +15,8 @@ export const GENERATED_DIRECTORY = "src/content/generated";
 export const BUILD_INFO_FILE = `${GENERATED_DIRECTORY}/build-info.json`;
 /** Which journey provides each tourism image, for the credits list (image-rights.ts imageJourneyIndex). */
 export const IMAGE_JOURNEYS_FILE = `${GENERATED_DIRECTORY}/image-journeys.json`;
+/** Every journey's album images (album-images.ts albumImagesOf; read by src/content/index.ts). */
+export const ALBUM_IMAGES_FILE = `${GENERATED_DIRECTORY}/album-images.json`;
 
 /**
  * Write every output of a validated build into `root`. `derivedFiles` (served
@@ -27,7 +29,7 @@ export function writeContentOutputs(
   validated: { stories: Record<string, string>; quizzes: Record<string, unknown>; tours?: readonly unknown[];
     catalogOverrides?: Partial<Record<CatalogKind, unknown>>;
     sceneConditions?: { conditions: Record<string, unknown>; stories: Record<string, string[]> };
-    scenes?: { scenes: unknown[]; rewards: unknown[] } },
+    scenes?: { scenes: unknown[]; rewards: unknown[] }; albumImages?: readonly unknown[] },
   derivedFiles: ReadonlyMap<string, string> = new Map(),
 ): void {
   const directory = path.join(root, GENERATED_DIRECTORY);
@@ -45,6 +47,8 @@ export function writeContentOutputs(
   // The scene list and the tags' AP rules (scripts/scene-table.ts; read by src/content/index.ts).
   writeFileSync(path.join(directory, "scenes.json"), `${JSON.stringify(validated.scenes ?? { scenes: [], rewards: [] }, null, 2)}\n`);
   writeFileSync(path.join(root, IMAGE_JOURNEYS_FILE), `${JSON.stringify(imageJourneyIndex(sources), null, 2)}\n`);
+  // The album's illustrations (src/content/index.ts imports the file, so it is written even with none: `[]`).
+  writeFileSync(path.join(root, ALBUM_IMAGES_FILE), `${JSON.stringify(validated.albumImages ?? [], null, 2)}\n`);
   // The game imports the validated, merged catalogs only from this mirror.
   writeContentMirror(sources, mirrorDirectory(root), validated.catalogOverrides);
   // Vite serves and builds the game's images from this folder (publicDir in vite.config.ts).

@@ -10,11 +10,14 @@ import { bindMemoryReader } from "./memory";
 import { bindItemReader, type ItemStatus } from "./items";
 import { encounters } from "../content/encounters";
 import { REACTION_MARKS } from "../content/dialogue-reactions";
+import { ALBUM_IMAGE_ID } from "../content/album-images";
 
 export type { Speaker, StoryFrame } from "./frame-reader";
 import type { StoryFrame } from "./frame-reader";
 const speakerSchema = z.enum(["narrator", "heroine", "player", "enemy", "person"]);
 const imageIdSchema = z.string().regex(/^[a-z][a-z0-9_]*$/u);
+/** A line's album image (`# photo:`, `# recall:`): its file name, which may start with a digit (src/content/album-images.ts). */
+const albumImageIdSchema = z.string().regex(ALBUM_IMAGE_ID);
 export const storyFrameSchema = z
   .object({
     text: z.string(),
@@ -33,12 +36,12 @@ export const storyFrameSchema = z
       large: z.literal(true).optional(),
     }).strict().optional(),
     photo: z.object({
-      imageId: imageIdSchema,
+      imageId: albumImageIdSchema,
       caption: z.string().min(1).optional(),
     }).strict().optional(),
     localWordIds: z.array(z.string().regex(/^[a-z][a-z0-9_]*$/u)).min(1).optional(),
     // The scene tags (frame-reader.ts stageFrame): presentation only.
-    recall: imageIdSchema.optional(),
+    recall: albumImageIdSchema.optional(),
     phone: z.object({
       side: z.enum(PHONE_SIDES),
       earlier: z.array(z.object({ side: z.enum(PHONE_SIDES), speaker: speakerSchema, personId: imageIdSchema.optional(), text: z.string().min(1) }).strict()).min(1).max(STACK_MAX).optional(),
