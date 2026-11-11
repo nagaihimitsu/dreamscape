@@ -124,7 +124,7 @@ function hashBattle(battle: BattleDefinition, quiz: typeof battleQuizzes[string]
 
 export function battleFingerprint(id: string): string {
   const battle = battles.find((item) => item.id === id);
-  if (!battle) throw new Error("バトルが見つかりません。");
+  if (!battle) throw new Error("クイズが見つかりません。");
   return hashBattle(battle, battleQuizzes[battle.quizId], tourismClues, battle.storyId);
 }
 
@@ -142,7 +142,7 @@ export function getBattleContentByHash(battleId: string, contentHash: string) {
 export function getActiveBattleContent(active: ActiveBattle) {
   const content = getBattleContentByHash(active.battleId, active.contentHash);
   if (content) return content;
-  throw new Error("バトルが更新されています。以前の途中データは保管されています。");
+  throw new Error("クイズが更新されています。以前の途中データは保管されています。");
 }
 
 export function getBattleAvailability(
@@ -159,31 +159,31 @@ export function getBattleAvailability(
  */
 function battleAvailability(state: GameState, battleId: string, mapChecked: boolean): Availability {
   if (!battles.some((item) => item.id === battleId))
-    return { available: false, reason: "バトルが見つかりません。" };
+    return { available: false, reason: "クイズが見つかりません。" };
   if (battleCityId(battleId) !== state.currentCityId)
-    return { available: false, reason: "この街の対決ではありません。" };
+    return { available: false, reason: "この街のクイズではありません。" };
   if (state.activeEncounter)
     return { available: false, reason: "途中の交流を終えてから進めます。" };
   if (state.activeTourism)
-    return { available: false, reason: "観光画面からバトルへ進んでください。" };
+    return { available: false, reason: "観光画面からクイズへ進んでください。" };
   if (state.activeDate || state.activeEpilogue)
     return { available: false, reason: "途中の恋愛会話を終えてから試せます。" };
   if (state.activeBattle && state.activeBattle.phase !== "result")
     return {
       available: false,
-      reason: "途中のクイズバトルを再開してください。",
+      reason: "途中のクイズを再開してください。",
     };
   const episode = episodes.find((item) => item.battleId === battleId);
   if (mapChecked) return { available: true, reason: "" };
   if (!isStoryBattleUnlocked(state, battleId))
-    return { available: false, reason: "先に必要な観光を終えてから対決できます。" };
+    return { available: false, reason: "先に必要な観光を終えると、クイズへ進めます。" };
   if (episode && !isEpisodeUnlocked(state, episode))
     return {
       available: false,
-      reason: "先の観光エピソードを終えると対決できます。",
+      reason: "先の観光エピソードを終えると、クイズへ進めます。",
     };
   if (episode && isEpisodeBlockedByStoryBattle(state, episode))
-    return { available: false, reason: "先に、旅の途中の対決へ進みましょう。" };
+    return { available: false, reason: "先に、旅の途中のクイズへ進みましょう。" };
   return { available: true, reason: "" };
 }
 function playerAddress(state: GameState): string {
@@ -728,7 +728,7 @@ export function validateBattleState(state: GameState): void {
     new Set(state.battleRecords.map((item) => item.battleId)).size !==
     state.battleRecords.length
   )
-    throw new Error("バトルの記録が重複しています。");
+    throw new Error("クイズの記録が重複しています。");
   for (const record of state.battleRecords) {
     const definition = battles.find((item) => item.id === record.battleId);
     const total = definition
@@ -744,19 +744,19 @@ export function validateBattleState(state: GameState): void {
       (record.attempts === 2 &&
         record.bestScore !== Math.max(record.firstScore, record.lastScore))
     )
-      throw new Error("バトルの成績が一致しません。");
+      throw new Error("クイズの成績が一致しません。");
   }
   const active = state.activeBattle;
   if (!active) return;
   if (state.activeDate || state.activeEpilogue)
-    throw new Error("恋愛会話とバトルが重複しています。");
+    throw new Error("恋愛会話とクイズが重複しています。");
   const { battle, quiz } = getActiveBattleContent(active);
   if (battleCityId(battle.id) !== state.currentCityId)
-    throw new Error("対決の都市と現在地が一致しません。");
+    throw new Error("クイズの都市と現在地が一致しません。");
   const episode = episodes.find((item) => item.battleId === battle.id);
   // A map condition (`when`) was checked on departing and may have turned false since (decision 21).
   if (episode && !episode.when && !isEpisodeUnlocked(state, episode))
-    throw new Error("未解放のバトルの途中記録です。");
+    throw new Error("未解放のクイズの途中記録です。");
   if (
     active.answers.length > quiz.questions.length ||
     active.roundIndex >= quiz.questions.length ||
@@ -811,7 +811,7 @@ export function validateBattleState(state: GameState): void {
  * reasoning's stop) after as many choices as it records, with the variables of the answers already passed to Ink.
  */
 function validateBattleRun(state: GameState, active: ActiveBattle, battle: BattleDefinition): void {
-  const fail = (message = "バトル会話の位置が一致しません。") => { throw new Error(message); };
+  const fail = (message = "クイズの会話の位置が一致しません。") => { throw new Error(message); };
   if (new Set(active.appliedOptionIds).size !== active.appliedOptionIds.length ||
       active.appliedOptionIds.some((id) => !sceneOption(battleScene(battle), id)) ||
       // Each applied choice is one of the run's choices, and a replay (the result recorded before it ends) applies none.

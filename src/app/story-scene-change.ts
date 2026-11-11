@@ -2,7 +2,7 @@
  * When a story scene starts or ends, a new screen appears under the finger.
  * A scene ends when a date finishes, a guide gives way to the observation,
  * 「問題へ進む」, an epilogue or an encounter ends; it starts when a destination
- * opens a date or a guide, 「進む」 a battle's talk, 「敵の反応を見る」 the enemy's
+ * opens a date or a guide, 「進む」 a battle's talk, 「相手の反応を見る」 the enemy's
  * reaction, 「エピローグへ進む」 the epilogue. The second tap of a quick double tap
  * on the line, the picture or the button that did it would press whatever is
  * there now: a control of the next screen (start another date and spend AP,

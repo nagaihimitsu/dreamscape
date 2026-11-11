@@ -54,7 +54,7 @@ describe("reasoning save protection", () => {
     // The saved story stops at the reasoning's call, not at a quiz's.
     change(initial, (s) => {
       s.activeBattle!.phase = "question";
-    }, "バトル会話の位置が一致しません。");
+    }, "クイズの会話の位置が一致しません。");
     change(selected, (s) => {
       s.activeBattle!.reasoning!.selectedClueIds = [
         battle().reasoning!.correctClueIds[0],
@@ -69,7 +69,7 @@ describe("reasoning save protection", () => {
     });
     change(accepted, (s) => {
       s.activeBattle!.contentHash = "changed-evidence";
-    }, "バトルが更新されています。以前の途中データは保管されています。");
+    }, "クイズが更新されています。以前の途中データは保管されています。");
     for (const { state, message } of invalid) {
       expect(() => validateGameState(state)).toThrow(message);
       const storage = new MemoryStorage();

@@ -144,17 +144,17 @@ export function validateRewardState(state: GameState): void {
     state.activeBattle.phase !== "result" ||
     receipt.battleRunId !== state.activeBattle.runId
   )
-    throw new Error("バトルの報酬記録が一致しません。");
+    throw new Error("クイズの報酬記録が一致しません。");
   const episode = episodes.find(
     (item) => item.battleId === state.activeBattle?.battleId,
   );
   const battleRules = allRewardRules.filter((rule) => rewardBattleId(rule) === state.activeBattle?.battleId);
-  if (!episode && !battleRules.length) throw new Error("この対決に報酬はありません。");
+  if (!episode && !battleRules.length) throw new Error("このクイズに報酬はありません。");
   if (
     new Set(receipt.entries.map((item) => item.rewardId)).size !==
     receipt.entries.length
   )
-    throw new Error("バトルの報酬が重複しています。");
+    throw new Error("クイズの報酬が重複しています。");
   for (const entry of receipt.entries) {
     if (
       !battleRules.some(

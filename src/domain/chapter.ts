@@ -120,11 +120,11 @@ export function getEpisodeAvailability(
           ? "先の観光エピソードを終えると出発できます。"
           // Only cities with special battles have mid-journey battles to mention.
           : storyBattlesForCity(episode.cityId).length
-            ? "観光地と旅の途中の対決を巡ると、この対決へ進めます。"
-            : "観光地を巡ると、この対決へ進めます。",
+            ? "観光地と旅の途中のクイズを巡ると、このクイズへ進めます。"
+            : "観光地を巡ると、このクイズへ進めます。",
     };
   if (isEpisodeBlockedByStoryBattle(state, episode))
-    return { available: false, reason: "先に、旅の途中の対決へ進みましょう。" };
+    return { available: false, reason: "先に、旅の途中のクイズへ進みましょう。" };
   return { available: true, reason: "" };
 }
 /** A scene is open that an episode cannot start over. */
@@ -334,7 +334,7 @@ export function validateJourneyState(state: GameState): void {
       battlePlayed(state, episode.battleId) !==
       state.completedEpisodeIds.includes(episode.id)
     )
-      throw new Error("完了したバトルと観光エピソードの記録が一致しません。");
+      throw new Error("完了したクイズと観光エピソードの記録が一致しません。");
     if (
       episode.kind === "city_finale" &&
       state.completedCityIds.includes(episode.cityId) !==

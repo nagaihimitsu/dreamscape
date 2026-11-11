@@ -109,7 +109,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "バトルを初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "battle_last_supper_first_victory",
@@ -141,7 +141,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "バトルを初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "victory_duomo_first",
@@ -173,7 +173,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "バトルを初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "victory_galleria_first",
@@ -205,7 +205,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "バトルを初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "victory_castello_first",

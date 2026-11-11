@@ -23,7 +23,7 @@ test.describe.configure({ timeout: 120_000 });
 
 /** In the page: what shows at the top of the screen, and where the explanation's first line starts. */
 function feedbackStart() {
-  const area = document.querySelector('[aria-label="クイズバトル"]')!;
+  const area = document.querySelector('[aria-label="クイズ"]')!;
   const bar = document.querySelector('[data-testid="battle-roundbar"]')!.getBoundingClientRect();
   const journeyBar = document.querySelector('[data-testid="journey-bar"]')!.getBoundingClientRect();
   const feedback = document.querySelector('[data-testid="battle-feedback"]')!.getBoundingClientRect();
@@ -64,7 +64,7 @@ test("battle on a 320×480 screen: after a wrong answer the round bar and the ex
   // The default Debug city belongs to the default journey: opening the page again brings its
   // saved battle back at once, without the title.
   await page.goto("/");
-  const battle = page.getByRole("region", { name: "クイズバトル" });
+  const battle = page.getByRole("region", { name: "クイズ", exact: true });
   await expect(battle).toBeVisible();
   await expect(page.getByTestId("debug-session")).toHaveCount(0);
   const source = savedGame(placed.journeyId);
@@ -102,14 +102,14 @@ test("battle on a 320×480 screen: after a wrong answer the round bar and the ex
   expect(held.belowJourneyBar, "the first line starts just below the held journey bar").toBeLessThanOrEqual(12);
   await stillHeld.evaluate((style) => (style as HTMLStyleElement).remove());
 
-  // 「敵の反応を見る」 at the explanation's end is reached by scrolling and reads on.
+  // 「相手の反応を見る」 at the explanation's end is reached by scrolling and reads on.
   await page.evaluate(() => scrollTo({ top: document.documentElement.scrollHeight }));
-  const reaction = battle.getByRole("button", { name: "敵の反応を見る" });
+  const reaction = battle.getByRole("button", { name: "相手の反応を見る" });
   expect(await reaction.evaluate((button) => {
     const box = button.getBoundingClientRect();
     const at = (y: number) => button.contains(document.elementFromPoint(box.left + box.width / 2, y));
     return at(box.top + 1) && at(box.bottom - 1);
-  }), "「敵の反応を見る」 shows whole at the end of the page").toBe(true);
+  }), "「相手の反応を見る」 shows whole at the end of the page").toBe(true);
   await ops.tapAt(page, await ops.centerOf(reaction));
   await expect.poll(async () => (await source(page))!.activeBattle?.phase).toBe("dialogue");
 });

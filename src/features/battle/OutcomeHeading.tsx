@@ -2,13 +2,14 @@ import type { BattleOutcome } from "../../domain/battle";
 
 /** The result's words: English on screen, Japanese for screen readers (UI stage 0, item C). */
 const OUTCOME_HEADINGS: Record<BattleOutcome, { en: string; ja: string }> = {
-  perfect: { en: "PERFECT VICTORY", ja: "完全勝利" },
-  victory: { en: "VICTORY", ja: "勝利" },
-  defeat: { en: "DEFEAT", ja: "敗北" },
+  // A quiz with a person met on the way, not a fight: no victory or defeat (user decision 2026-11-11).
+  perfect: { en: "PERFECT", ja: "全問正解" },
+  victory: { en: "CLEAR", ja: "クリア" },
+  defeat: { en: "NICE TRY", ja: "ナイストライ" },
 };
 
 /**
- * The battle result's heading. The English is decoration (aria-hidden, lang="en"), so the heading's
+ * The quiz result's heading. The English is decoration (aria-hidden, lang="en"), so the heading's
  * accessible name is the Japanese word in the visually hidden span.
  */
 export function OutcomeHeading({ outcome }: { outcome: BattleOutcome }) {

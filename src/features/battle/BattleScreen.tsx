@@ -82,7 +82,7 @@ function heldDepth(line: Element) {
  * shows whole (one that nearly fills that room may keep some of its top
  * padding under it). One taller than that room may still be left with its start
  * under the bar (a hidden one is centred, for example), so it is scrolled back
- * until the first line shows; the rest and 「敵の反応を見る」 are read by
+ * until the first line shows; the rest and 「相手の反応を見る」 are read by
  * scrolling on. Both jumps are instant, as the browser's own.
  */
 function focusFeedbackStart(feedback: HTMLElement, area: HTMLElement | null, bar: HTMLElement | null) {
@@ -470,7 +470,7 @@ export function BattleScreen({
         ref={readingArea}
         className={`paper battle-paper${isDialogue ? " battle-dialogue" : ""}`}
         id="battle-content"
-        aria-label="クイズバトル"
+        aria-label="クイズ"
         data-testid={chrome.rebuttal ? "reasoning-rebuttal" : undefined}
       >
         {/* The round bar, held at the top of the reading area: the verdict over an answer's
@@ -542,7 +542,7 @@ export function BattleScreen({
               </button>
             </div>
             <details className="battle-result-history">
-              <summary>今回の正誤と戦績</summary>
+              <summary>今回の正誤と成績</summary>
               <ol className="answer-history">
                 {active.answers.map((item, index) => (
                   <li key={item.questionId}>
@@ -754,7 +754,7 @@ export function BattleScreen({
                   data-testid="battle-advance"
                   onClick={advanceSafely}
                 >
-                  敵の反応を見る <span aria-hidden="true">→</span>
+                  相手の反応を見る <span aria-hidden="true">→</span>
                 </button>
               </div>
             )}

@@ -17,6 +17,6 @@ export function cityProgressParts(counts: CityProgressCounts): CityProgressPart[
   if (counts.cityCompleted) return [{ kind: "cleared", text: "都市クリア" }];
   const tourism: CityProgressPart = { kind: "tourism", text: `観光 ${counts.completedStops} / ${counts.stops}` };
   return counts.specialBattles
-    ? [tourism, { kind: "battles", text: `対決 ${counts.completedSpecialBattles} / ${counts.specialBattles}` }]
+    ? [tourism, { kind: "battles", text: `クイズ ${counts.completedSpecialBattles} / ${counts.specialBattles}` }]
     : [tourism];
 }

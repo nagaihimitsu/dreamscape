@@ -6,9 +6,9 @@ import { OutcomeHeading } from "./OutcomeHeading";
 // UI stage 0, item C: the result heading's accessible name is Japanese; the English stays on screen.
 describe("battle result heading", () => {
   it.each([
-    ["perfect", "PERFECT VICTORY", "完全勝利"],
-    ["victory", "VICTORY", "勝利"],
-    ["defeat", "DEFEAT", "敗北"],
+    ["perfect", "PERFECT", "全問正解"],
+    ["victory", "CLEAR", "クリア"],
+    ["defeat", "NICE TRY", "ナイストライ"],
   ] as const)("%s shows %s and is named %s", (outcome, en, ja) => {
     expect(renderToStaticMarkup(createElement(OutcomeHeading, { outcome }))).toBe(
       `<h2 class="outcome"><span lang="en" aria-hidden="true">${en}</span><span class="sr-only">${ja}</span></h2>`);

@@ -290,7 +290,7 @@ test("special battle: the tap that ends the talk before the proof does not also 
 // also pinned by play.spec.ts (the double tap on a date's destination). After a long explanation
 // the player scrolls the reading area until the button shows at its bottom edge and taps it there;
 // the second tap falls on the reaction's line, where a tap reads on.
-test("battle: a double tap on 「敵の反応を見る」 opens the reaction and stays on its first line", { tag: tier.debug }, async ({ page }) => {
+test("battle: a double tap on 「相手の反応を見る」 opens the reaction and stays on its first line", { tag: tier.debug }, async ({ page }) => {
   const target = (await tapTargets(page)).battle;
   expect(target, "a battle that Debug opens in its default city").toBeDefined();
   await page.clock.install();
@@ -300,7 +300,7 @@ test("battle: a double tap on 「敵の反応を見る」 opens the reaction and
   await advance.evaluate((button) => button.scrollIntoView({ block: "end" }));
   const reaction = await ops.centerOf(advance);
   expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest('[data-testid="battle-advance"]'), reaction),
-    "the double tap lands on 「敵の反応を見る」").toBe(true);
+    "the double tap lands on 「相手の反応を見る」").toBe(true);
   await ops.holdClock(page);
   await ops.doubleTap(page, reaction);
   await expect.poll(async () => (await debugGame(page))!.activeBattle?.phase).toBe("dialogue");
@@ -315,11 +315,11 @@ test("battle: a double tap on 「敵の反応を見る」 opens the reaction and
 // After a wrong answer the explanation, which starts with 「正しい答え：英文（訳）」, can be taller than the
 // battle paper's reading area (UI_REVIEW_CHECKLIST: 「長文・対訳・文字拡大時に内容が切れず、主な操作へ到達
 // できる。必要なスクロールは内容を読む領域に限る。」). Focus goes to it (for screen readers), and its first
-// line shows just below the round bar that stays at the top of the area, not hidden under it. 「敵の反応を
+// line shows just below the round bar that stays at the top of the area, not hidden under it. 「相手の反応を
 // 見る」 at its end is reached by scrolling the area and then shows whole, not under the bar or cut at the
 // edge (UI_REVIEW_CHECKLIST: 「スクロールして重なった部品の下に隠れない」; UI_RULES A-18: 「操作パネルの
 // 重要部分だけが見切れる」 is avoided).
-test("battle: a long explanation after a wrong answer starts below the round bar, and 「敵の反応を見る」 is reached by scrolling", { tag: tier.debug }, async ({ page }) => {
+test("battle: a long explanation after a wrong answer starts below the round bar, and 「相手の反応を見る」 is reached by scrolling", { tag: tier.debug }, async ({ page }) => {
   const target = (await tapTargets(page)).battle;
   expect(target, "a battle that Debug opens in its default city").toBeDefined();
   const wrong = await page.evaluate(async ({ modules, battleId }) => {
@@ -346,13 +346,13 @@ test("battle: a long explanation after a wrong answer starts below the round bar
   expect(start.shown, "the first line of the explanation shows, not the round bar over it").toBe(true);
   // Only a small gap above that line (the box's top padding may sit under the bar), so as much of the rest shows as can.
   expect(start.below, "the first line starts just below the round bar").toBeLessThanOrEqual(12);
-  const reaction = page.getByRole("button", { name: "敵の反応を見る" });
+  const reaction = page.getByRole("button", { name: "相手の反応を見る" });
   await page.locator("#battle-content").evaluate((area) => area.scrollTo({ top: area.scrollHeight }));
   expect(await reaction.evaluate((button) => {
     const box = button.getBoundingClientRect();
     const at = (y: number) => button.contains(document.elementFromPoint(box.left + box.width / 2, y));
     return at(box.top + 1) && at(box.bottom - 1);
-  }), "「敵の反応を見る」 shows whole at the end of the reading area").toBe(true);
+  }), "「相手の反応を見る」 shows whole at the end of the reading area").toBe(true);
   await ops.tapAt(page, await ops.centerOf(reaction));
   await expect.poll(async () => (await debugGame(page))!.activeBattle?.phase).toBe("dialogue");
 });

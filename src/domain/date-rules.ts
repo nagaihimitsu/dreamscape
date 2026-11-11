@@ -152,7 +152,7 @@ export function getDateAvailability(
   )
     return {
       available: false,
-      reason: "途中の会話・バトルを再開してください。",
+      reason: "途中の会話・クイズを再開してください。",
     };
   if ((date.kind === "normal" || !date.repeatable) && state.playedDateIds.includes(dateId))
     return {

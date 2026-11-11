@@ -162,7 +162,7 @@ describe("a battle as one flow (stage 5): the sample's battles", () => {
   it("refuses a save whose story was moved past its quiz without the answer, or whose Ink turns do not match", () => {
     let state = start(TOWER);
     while (state.activeBattle!.phase === "dialogue") state = act(state, (current) => advanceBattle(current, current.revision));
-    expect(() => restore({ ...state, activeBattle: { ...state.activeBattle!, turns: 1 } })).toThrow(/バトル会話の位置が一致しません/u);
+    expect(() => restore({ ...state, activeBattle: { ...state.activeBattle!, turns: 1 } })).toThrow(/クイズの会話の位置が一致しません/u);
     expect(() => restore({ ...state, activeBattle: { ...state.activeBattle!, roundIndex: 1 } })).toThrow();
     const first = getActiveBattleContent(state.activeBattle!).quiz.questions[0];
     const answered = act(state, (current) => answerBattle(current, first.correctOptionId, current.revision));
@@ -360,9 +360,9 @@ describe("a special battle's claim and rebuttal on the battle screen (stage 5)",
           round: active.roundIndex, chrome: battleChrome(active, battle) });
         // A scene's end is where the next line says it is: a save that moves it is refused.
         const { sceneEnd: _end, ...unmarked } = active;
-        if (active.sceneEnd) expect(() => restore({ ...state, activeBattle: unmarked })).toThrow(/バトル会話の位置が一致しません/u);
+        if (active.sceneEnd) expect(() => restore({ ...state, activeBattle: unmarked })).toThrow(/クイズの会話の位置が一致しません/u);
         else if (!battleDialogueStop(active).match(/quiz|reasoning|end/u))
-          expect(() => restore({ ...state, activeBattle: { ...active, sceneEnd: true } })).toThrow(/バトル会話の位置が一致しません/u);
+          expect(() => restore({ ...state, activeBattle: { ...active, sceneEnd: true } })).toThrow(/クイズの会話の位置が一致しません/u);
         state = act(state, (current) => advanceBattle(current, current.revision));
       } else if (active.phase === "question") state = act(state, (current) => answerBattle(current, quiz.questions[active.roundIndex].correctOptionId, current.revision));
       else state = act(state, (current) => advanceBattle(current, current.revision));
