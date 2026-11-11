@@ -34,6 +34,15 @@
       "destinationIds": [
         "mihon_tower_square"
       ],
+      "heroineLinesJa": [
+        {
+          "textJa": "針は三時のままなのに、理由を聞いたら、ちょっと違って見えるね",
+          "when": {
+            "landmarkVisited": "mihon_clock_tower"
+          }
+        },
+        "ねえ、あの時計、ずっと三時で止まってるんだって。どうしてだろう？"
+      ],
       "sources": [
         {
           "publisher": "Dreamscape 見本の旅（架空）",
@@ -55,6 +64,9 @@
       "backgroundId": "smp_bg_mihon_market",
       "landmarkIds": [
         "mihon_market"
+      ],
+      "heroineLinesJa": [
+        "{player_name}、朝市はこっちだよ。パンの焼ける匂いがしてきた"
       ],
       "sources": [
         {

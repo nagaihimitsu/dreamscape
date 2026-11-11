@@ -347,6 +347,7 @@ export function checkContentOwnership(sources: ContentSources): void {
       checkReferences(city.travelFile, `places["${String(place.id)}"]`, [
         ...fields(place, "city", ["cityId"]), ...fields(place, "background", ["backgroundId"]), ...fields(place, "asset", ["photoAssetId"]),
         ...fields(place, "landmark", ["landmarkIds"]), ...fields(place, "destination", ["destinationIds"]),
+        ...list(place.heroineLinesJa).flatMap((line) => conditionReferences(line.when, "heroineLinesJa[].when")),
       ]);
     for (const event of list(travel.events))
       checkReferences(city.travelFile, `events["${String(event.id)}"]`, [...fields(event, "city", ["cityId"]), ref(EVENT, "id", event.id)]);

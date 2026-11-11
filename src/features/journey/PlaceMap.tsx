@@ -4,13 +4,13 @@ import "leaflet/dist/leaflet.css";
 import { getCityContent } from "../../content";
 import type { TravelEvent, TravelPlace } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
-import { battlePlayed } from "../../domain/conditions";
 import { Icon } from "../../components/icons";
 import { Modal } from "../../components/Modal";
 import { fitZoom, getFocusView, labelMaxWidth } from "./map-focus";
 import { placeDisplayName } from "./travel-labels";
 import { FOCUS_MS, type PressKind } from "./travel-selection";
 import type { PressScope, TravelSelectionApi } from "./useTravelSelection";
+import { visitedPlaceIds } from "./visited-places";
 import "./place-map.css";
 
 const TILE_ERROR_JA = "地図の一部を読み込めません。通信を確認してください。行き先一覧は引き続き利用できます。";
@@ -41,7 +41,7 @@ function MapCanvas({ game, events, places, selectedId, onMarker, onFocusEnd, map
   onTilesFailed?: () => void;
 }) {
   const [tilesFailed, setTilesFailed] = useState(false);
-  const { city, travel } = getCityContent(game.currentCityId);
+  const { city } = getCityContent(game.currentCityId);
   const container = useRef<HTMLDivElement>(null);
   const markersRef = useRef<L.LayerGroup | null>(null);
   const onMarkerRef = useRef(onMarker);
@@ -100,14 +100,15 @@ function MapCanvas({ game, events, places, selectedId, onMarker, onFocusEnd, map
     const group = markersRef.current;
     if (!group) return;
     group.clearLayers();
+    // The places the party has been to (visited-places.ts): a stamp on their mark, 「行った場所」 in their name. A remaining
+    // destination may share a place with a completed event: the categories are the remaining events' only.
+    const visitedIds = visitedPlaceIds(game);
     for (const place of places) {
       const here = place.id === game.travel.currentPlaceId;
       const selected = place.id === selectedId;
       const categories = new Set(events.filter((event) => event.placeId === place.id).map((event) => event.category));
-      // A remaining destination may share a place with a completed event.
-      // Keep the place's visit history without showing the completed event's category.
-      const visited = travel.events.some((event) => event.placeId === place.id && (game.completedEpisodeIds.includes(event.id) || game.playedDateIds.includes(event.id) || battlePlayed(game, event.id)));
-      const label = `${place.nameJa}${here ? "、現在地" : ""}${categories.has("main") ? "、観光" : ""}${categories.has("date") ? "、デート" : ""}${visited ? "、訪問済み" : "、未訪問"}`;
+      const visited = visitedIds.includes(place.id);
+      const label = `${place.nameJa}${here ? "、現在地" : ""}${categories.has("main") ? "、観光" : ""}${categories.has("date") ? "、デート" : ""}${visited ? "、行った場所" : ""}`;
       const symbol = `${categories.has("main") ? "◆" : ""}${categories.has("date") ? "♥" : ""}` || "●";
       const classes = `travel-map-marker${here ? " is-here" : ""}${visited ? " is-visited" : ""}${selected ? " is-selected" : ""}`;
       // The selected marker (U21): the glyph in yellow on a dark disc, larger, with its name above (display only).
@@ -139,7 +140,7 @@ function MapCanvas({ game, events, places, selectedId, onMarker, onFocusEnd, map
       });
       marker.on("click", () => onMarkerRef.current(place.id, "pointer")).addTo(group);
     }
-  }, [places, events, travel.events, selectedId, game]);
+  }, [places, events, selectedId, game]);
 
   // The selection's focus: the destination at the centre, zoomed in as far as the current place still shows (map-focus.ts).
   useEffect(() => {
@@ -173,7 +174,7 @@ function MapLegend() {
     <span><span className="travel-map-legend-glyph" aria-hidden="true">♥</span> デート</span>
     <span><span className="travel-map-legend-glyph" aria-hidden="true">●</span> 滞在先など</span>
     <span>輪つき 現在地</span>
-    <span>白い点 訪問済み</span>
+    <span><span className="travel-map-legend-visited" aria-hidden="true">✓</span> 行った場所</span>
     <span><span className="travel-map-legend-disc" aria-hidden="true" /> 大きな丸 選んだ場所</span>
   </p>;
 }

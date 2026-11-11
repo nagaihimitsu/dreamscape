@@ -16,7 +16,7 @@ import "./travel-menu.css";
 /** How long the row stays still before the card in its centre counts as chosen (a flick's momentum and snap included). */
 const SETTLE_MS = 120;
 
-/** Whether one of the place's events has been played (today's map draws a white dot; a card names it). */
+/** Whether one of the place's events has been played (a card names it; the maps' 「行った場所」 reads more: visited-places.ts). */
 function placeVisited(game: GameState, placeId: string): boolean {
   return getCityContent(game.currentCityId).travel.events.some((event) => event.placeId === placeId &&
     (game.completedEpisodeIds.includes(event.id) || game.playedDateIds.includes(event.id) || battlePlayed(game, event.id)));

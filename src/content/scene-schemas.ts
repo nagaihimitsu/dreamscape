@@ -3,6 +3,7 @@ import { conditionSchema, RELATIONSHIP_AXES } from "./condition-schemas";
 import { rewardRuleSchema } from "./journey-schemas";
 import { quizQuestionSchema } from "./schemas";
 import { STORY_FILE_PATTERN } from "./story-address";
+import { japaneseText } from "./text-language";
 
 /**
  * The scene list content:build writes (`generated/scenes.json`; the unified event design,
@@ -159,14 +160,18 @@ export type GeneratedScenes = z.infer<typeof generatedScenesSchema>;
 /**
  * The story state an author declares (`progression/story.json`, 3a): flags (物語の状態; set by
  * `# set:` in any city's scene, read by `flag <id>`), people (`# person:`, read by `met <id>`;
- * the given-to of `# give:`) and named conditions (`condition <name>`: or, at least, nesting).
+ * the given-to of `# give:`) and named conditions (`condition <name>`: or, at least, nesting). A person's optional
+ * `descriptionJa` is shown under the name in 旅の記録's 「出会った人」 once the person is met (2026-11-11 user decision).
  */
 const text = z.string().trim().min(1);
 export const storyStateCatalogSchema = z.object({
   schemaVersion: z.literal(1),
   flags: z.array(z.object({ id, noteJa: text.optional() }).strict()).default([]),
-  /** `characterId`: the portrait (presentation/characters.json) that stands for the person in a scene with their `# person:`. */
-  people: z.array(z.object({ id, cityId: id, nameJa: text, characterId: id.optional() }).strict()).default([]),
+  /**
+   * `descriptionJa`: a line about the person in 旅の記録's 出会った人; `characterId`: the portrait
+   * (presentation/characters.json) that stands for the person in a scene with their `# person:`.
+   */
+  people: z.array(z.object({ id, cityId: id, nameJa: text, descriptionJa: japaneseText.optional(), characterId: id.optional() }).strict()).default([]),
   conditions: z.record(id, conditionSchema).default({}),
 }).strict();
 export type StoryStateCatalog = z.infer<typeof storyStateCatalogSchema>;

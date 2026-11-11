@@ -54,6 +54,7 @@ import { readAloudSupported } from "../features/learning/read-aloud";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { CityRecords } from "../features/journey/CityProgress";
+import { MetPeople } from "../features/journey/MetPeople";
 import { freeTimePhotos, PhotoCredits } from "../features/journey/PhotoCredits";
 import { AlbumDialog } from "../features/journey/AlbumDialog";
 import { TitleNameFields } from "../features/journey/TitleNameFields";
@@ -850,6 +851,7 @@ export function GameApp({
           {game.endingReached && <span className="records-relationship">交際中</span>}
         </p>
         <CityRecords game={game} />
+        <MetPeople game={game} />
       </Modal>}
       {albumOpen && game && <AlbumDialog album={game.album} currentCityId={game.currentCityId} onClose={() => setAlbumOpen(false)} />}
       {photoCreditsOpen && creditPhotos.length > 0 && <PhotoCredits photos={creditPhotos} onClose={() => setPhotoCreditsOpen(false)} />}

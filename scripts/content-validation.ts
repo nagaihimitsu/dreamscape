@@ -1349,8 +1349,13 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     ...(tour.when ? [{ field: "when", condition: tour.when }] : []),
     ...tour.offers.flatMap((offer) => offer.when ? [{ field: `offers.${offer.id}.when`, condition: offer.when }] : [])] }))
     .filter((owner) => owner.conditions.length);
-  checkConditions(conditionContent, [...conditionOwners, ...sceneConditionOwners, ...mapOwners, ...tourOwners]);
-  const conditionNotes: ContentWarning[] = [...conditionWarnings(conditionContent, runtimeEntryRules, [...sceneConditionOwners, ...mapOwners])];
+  // The places' heroine lines (heroineLinesJa, 2026-11-11): each `{ textJa, when }` read in its place's city.
+  const placeLineOwners: ConditionOwner[] = travels.flatMap(({ travel }) => travel.places.map((place) => ({
+    label: `the heroine lines of place ${place.id}`, cityId: travel.cityId,
+    conditions: (place.heroineLinesJa ?? []).flatMap((line, index) => (typeof line === "string" ? [] : [{ field: `heroineLinesJa[${index}].when`, condition: line.when }])),
+  }))).filter((owner) => owner.conditions.length);
+  checkConditions(conditionContent, [...conditionOwners, ...sceneConditionOwners, ...mapOwners, ...tourOwners, ...placeLineOwners]);
+  const conditionNotes: ContentWarning[] = [...conditionWarnings(conditionContent, runtimeEntryRules, [...sceneConditionOwners, ...mapOwners, ...placeLineOwners])];
   // The tours against their cities (tour stage 2a; tour-validation.ts): before the progression check, which reads them.
   const tourNotes = validateTours({ root, tours: tourFiles,
     cities: travels.map(({ city: current, travel, settings }) => ({ id: current.id, travel, hotelPlaceId: settings.hotelPlaceId,
