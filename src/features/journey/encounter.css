@@ -83,6 +83,12 @@
   transform: translateX(-50%) !important;
   transform-origin: center bottom !important;
 }
+/* Two people side by side (2026-11-11 user decision): each canvas is wider than its half of the
+   screen, so the two stand about three quarters as tall as one portrait alone instead of half.
+   A canvas has empty room around its figure, so the figures themselves still fit side by side. */
+.encounter-character-layer[data-two-characters="true"] .encounter-character-slot .vn-character {
+  width: min(150%, 46dvh) !important;
+}
 .encounter-character-slot .comic-effect {
   top: 2%;
   left: 64%;

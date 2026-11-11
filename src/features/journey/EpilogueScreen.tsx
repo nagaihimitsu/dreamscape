@@ -154,9 +154,11 @@ export function EpilogueScreen({
             controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
           />
           <div ref={dialogueRef} className="vn-window-body">
-          <p className="eyebrow">{label.eyebrow}</p>
+          {/* An arrival shows its city's title card and the scene label instead: its heading stays for screen
+              readers and for the focus only (2026-11-11 user decision). */}
+          <p className={arrival ? "eyebrow sr-only" : "eyebrow"}>{label.eyebrow}</p>
           {/* Takes a lost focus when the talk opens (scene-focus.ts); inert under an arrival's title card. */}
-          <h1 tabIndex={-1}>{label.heading}</h1>
+          <h1 className={arrival ? "sr-only" : undefined} tabIndex={-1}>{label.heading}</h1>
           <LineStage frame={frame} names={{ heroine: game.heroineName, player: game.playerName, enemy: enemyName }} compact={frame.choices.length > 0}>
             <DialogueText
               key={game.revision}
