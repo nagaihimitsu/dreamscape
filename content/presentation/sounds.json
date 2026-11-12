@@ -1,0 +1,715 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "antumdeluge_bell",
+      "titleJa": "Rotating Bicycle Bell",
+      "author": "AntumDeluge",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/rotating-bicycle-bell",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "antumdeluge_horn",
+      "titleJa": "Bicycle Horn",
+      "author": "AntumDeluge",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/bicycle-horn",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "antumdeluge_wings",
+      "titleJa": "Large Wings Flap",
+      "author": "AntumDeluge",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/large-wings-flap",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "blender_applause",
+      "titleJa": "Applause（Yo Frankie! より）",
+      "author": "Blender Foundation",
+      "license": "CC BY 3.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/applause",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "blender_bird_flap",
+      "titleJa": "Flap, Splat, Poo (Yo Frankie!)",
+      "author": "Blender Foundation",
+      "license": "CC BY 3.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/flap-splat-poo-yo-frankie",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "dreamscape_synth",
+      "titleJa": "Dreamscape のために合成した音",
+      "author": "Dreamscape",
+      "license": "own",
+      "checkedAt": "2026-11-12"
+    },
+    {
+      "id": "dub_doorbell",
+      "titleJa": "Doorbell ring",
+      "author": "Dub",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/doorbell-ring",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "kenney_interface",
+      "titleJa": "Interface Sounds",
+      "author": "Kenney (www.kenney.nl)",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/interface-sounds",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "kenney_jingles",
+      "titleJa": "85 Short music jingles",
+      "author": "Kenney (www.kenney.nl)",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/85-short-music-jingles",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "kenney_rpg",
+      "titleJa": "50 RPG sound effects",
+      "author": "Kenney (www.kenney.nl)",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/50-rpg-sound-effects",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "looneybits_car_start",
+      "titleJa": "Car engine start 01",
+      "author": "looneybits",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/car-engine-start-01",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "looneybits_car_start_2",
+      "titleJa": "Car engine Start Up 02",
+      "author": "looneybits",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/car-engine-start-up-02",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "nicole_pen_click",
+      "titleJa": "Pen Click Sfx Sound Effect",
+      "author": "Nicole Marie T",
+      "license": "CC BY 4.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/pen-click-sfx-sound-effect",
+      "site": "OpenGameArt.org",
+      "creditJa": "Sound Effect By Nicole Marie T"
+    },
+    {
+      "id": "rubberduck_100",
+      "titleJa": "100 CC0 SFX",
+      "author": "rubberduck",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/100-cc0-sfx",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "rubberduck_breaking",
+      "titleJa": "75 CC0 breaking / falling / hit sfx",
+      "author": "rubberduck",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "rubberduck_wood_metal",
+      "titleJa": "100 CC0 metal and wood SFX",
+      "author": "rubberduck",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/100-cc0-metal-and-wood-sfx",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "sinny_scissors",
+      "titleJa": "various scissors",
+      "author": "sinny",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/various-scissors",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "themightyglider_camera",
+      "titleJa": "Camera",
+      "author": "themightyglider",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/camera",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "zane_ringtone",
+      "titleJa": "Modern Ringtone [Chirptone]",
+      "author": "Zane Little Music",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/modern-ringtone-chirptone",
+      "site": "OpenGameArt.org"
+    }
+  ],
+  "sounds": [
+    {
+      "id": "ui_tap",
+      "useJa": "選択肢などを選んだとき",
+      "sources": [
+        "kenney_interface"
+      ],
+      "fromJa": "select_002"
+    },
+    {
+      "id": "ui_confirm",
+      "useJa": "選択を決めたとき・始めるとき",
+      "sources": [
+        "kenney_interface"
+      ],
+      "fromJa": "confirmation_001"
+    },
+    {
+      "id": "ui_open",
+      "useJa": "画面や一覧を開いたとき",
+      "sources": [
+        "kenney_interface"
+      ],
+      "fromJa": "open_002"
+    },
+    {
+      "id": "ui_close",
+      "useJa": "画面や一覧を閉じたとき",
+      "sources": [
+        "kenney_interface"
+      ],
+      "fromJa": "close_002"
+    },
+    {
+      "id": "ui_page",
+      "useJa": "ページを送ったとき",
+      "sources": [
+        "kenney_rpg"
+      ],
+      "fromJa": "bookFlip2"
+    },
+    {
+      "id": "ui_denied",
+      "useJa": "押せない選択肢を押したとき",
+      "sources": [
+        "kenney_interface"
+      ],
+      "fromJa": "error_008"
+    },
+    {
+      "id": "save",
+      "useJa": "手で保存したとき",
+      "sources": [
+        "kenney_interface"
+      ],
+      "fromJa": "glass_001"
+    },
+    {
+      "id": "phone_receive",
+      "useJa": "スマホのメッセージが届いた行",
+      "sources": [
+        "kenney_interface"
+      ],
+      "fromJa": "pluck_002 と pluck_001"
+    },
+    {
+      "id": "phone_send",
+      "useJa": "スマホのメッセージを送った行",
+      "sources": [
+        "kenney_interface"
+      ],
+      "fromJa": "maximize_003"
+    },
+    {
+      "id": "letter_open",
+      "useJa": "手紙やメモが出たとき",
+      "sources": [
+        "kenney_rpg"
+      ],
+      "fromJa": "bookOpen"
+    },
+    {
+      "id": "name_cutin",
+      "useJa": "名札が出たとき",
+      "sources": [
+        "kenney_interface"
+      ],
+      "fromJa": "maximize_004"
+    },
+    {
+      "id": "recall",
+      "useJa": "思い出の絵が重なったとき",
+      "sources": [
+        "kenney_interface"
+      ],
+      "fromJa": "glass_004"
+    },
+    {
+      "id": "local_word",
+      "useJa": "その国の言葉を覚えたとき",
+      "sources": [
+        "kenney_interface"
+      ],
+      "fromJa": "glass_002"
+    },
+    {
+      "id": "quiz_correct",
+      "useJa": "クイズの正解",
+      "sources": [
+        "kenney_interface"
+      ],
+      "fromJa": "confirmation_004"
+    },
+    {
+      "id": "quiz_incorrect",
+      "useJa": "クイズの不正解",
+      "sources": [
+        "kenney_interface"
+      ],
+      "fromJa": "question_004"
+    },
+    {
+      "id": "quiz_perfect",
+      "useJa": "クイズの全問正解",
+      "sources": [
+        "kenney_jingles"
+      ],
+      "fromJa": "jingles_PIZZA03"
+    },
+    {
+      "id": "quiz_reasoning",
+      "useJa": "推理クイズの切り込み",
+      "sources": [
+        "kenney_jingles"
+      ],
+      "fromJa": "jingles_HIT00"
+    },
+    {
+      "id": "quiz_result",
+      "useJa": "クイズの結果",
+      "sources": [
+        "kenney_jingles"
+      ],
+      "fromJa": "jingles_PIZZA04"
+    },
+    {
+      "id": "item_get",
+      "useJa": "品物を手に入れたとき",
+      "sources": [
+        "kenney_jingles"
+      ],
+      "fromJa": "jingles_PIZZA05"
+    },
+    {
+      "id": "money",
+      "useJa": "お金を払った・受け取ったとき",
+      "sources": [
+        "kenney_rpg"
+      ],
+      "fromJa": "handleCoins2"
+    },
+    {
+      "id": "travel_walk",
+      "useJa": "歩いて移動",
+      "sources": [
+        "kenney_rpg"
+      ],
+      "fromJa": "footstep00・02・04・06 を並べた"
+    },
+    {
+      "id": "city_arrive",
+      "useJa": "都市に着いたとき",
+      "sources": [
+        "kenney_jingles"
+      ],
+      "fromJa": "jingles_PIZZA02"
+    },
+    {
+      "id": "city_clear",
+      "useJa": "都市クリア",
+      "sources": [
+        "kenney_jingles"
+      ],
+      "fromJa": "jingles_PIZZA07"
+    },
+    {
+      "id": "time_passage",
+      "useJa": "時間が進むとき",
+      "sources": [
+        "kenney_interface"
+      ],
+      "fromJa": "tick_002 を4回"
+    },
+    {
+      "id": "night_rest",
+      "useJa": "夜、休むとき",
+      "sources": [
+        "kenney_jingles"
+      ],
+      "fromJa": "jingles_STEEL13"
+    },
+    {
+      "id": "episode_title",
+      "useJa": "場面のタイトルカード",
+      "sources": [
+        "kenney_rpg"
+      ],
+      "fromJa": "bookFlip1"
+    },
+    {
+      "id": "travel_bicycle",
+      "useJa": "自転車で移動",
+      "sources": [
+        "antumdeluge_bell"
+      ],
+      "fromJa": "bicycle-1"
+    },
+    {
+      "id": "travel_rail",
+      "useJa": "電車・地下鉄で移動",
+      "sources": [
+        "dreamscape_synth"
+      ],
+      "fromJa": "レールの継ぎ目の音を合成"
+    },
+    {
+      "id": "travel_car",
+      "useJa": "車で移動",
+      "sources": [
+        "looneybits_car_start"
+      ],
+      "fromJa": "generic_car_startengine"
+    },
+    {
+      "id": "travel_bus",
+      "useJa": "バスで移動",
+      "sources": [
+        "looneybits_car_start_2"
+      ],
+      "fromJa": "engine_start_up_01"
+    },
+    {
+      "id": "travel_tram",
+      "useJa": "路面電車で移動",
+      "sources": [
+        "rubberduck_100"
+      ],
+      "fromJa": "bell_02 を2回"
+    },
+    {
+      "id": "travel_three_wheeler",
+      "useJa": "三輪の乗り物で移動",
+      "sources": [
+        "antumdeluge_horn"
+      ],
+      "fromJa": "bicycle-horn-1 を2回"
+    },
+    {
+      "id": "door_knock",
+      "useJa": "戸を叩く",
+      "sources": [
+        "rubberduck_100"
+      ],
+      "fromJa": "wooden_01 を3回"
+    },
+    {
+      "id": "door_open",
+      "useJa": "扉を開ける",
+      "sources": [
+        "kenney_rpg"
+      ],
+      "fromJa": "doorOpen_1"
+    },
+    {
+      "id": "door_creak",
+      "useJa": "古い扉がきしむ",
+      "sources": [
+        "kenney_rpg"
+      ],
+      "fromJa": "doorOpen_2"
+    },
+    {
+      "id": "camera_shutter",
+      "useJa": "カメラのシャッター",
+      "sources": [
+        "themightyglider_camera"
+      ],
+      "fromJa": "photo"
+    },
+    {
+      "id": "camera_shutter_burst",
+      "useJa": "シャッターの連写",
+      "sources": [
+        "themightyglider_camera"
+      ],
+      "fromJa": "photo を4回"
+    },
+    {
+      "id": "phone_ring",
+      "useJa": "携帯の着信音",
+      "sources": [
+        "zane_ringtone"
+      ],
+      "fromJa": "chirptone の頭の2秒"
+    },
+    {
+      "id": "phone_vibrate",
+      "useJa": "携帯が震える",
+      "sources": [
+        "dreamscape_synth"
+      ],
+      "fromJa": "振動を合成"
+    },
+    {
+      "id": "phone_keypad",
+      "useJa": "電話のボタンを押す",
+      "sources": [
+        "dreamscape_synth"
+      ],
+      "fromJa": "プッシュ音を合成"
+    },
+    {
+      "id": "applause",
+      "useJa": "拍手",
+      "sources": [
+        "blender_applause"
+      ],
+      "fromJa": "頭の3.5秒"
+    },
+    {
+      "id": "pigeon_flutter",
+      "useJa": "鳩が一羽、羽ばたく",
+      "sources": [
+        "blender_bird_flap"
+      ],
+      "fromJa": "bird_flap"
+    },
+    {
+      "id": "pigeons_takeoff",
+      "useJa": "鳩の群れが飛び立つ",
+      "sources": [
+        "antumdeluge_wings",
+        "blender_bird_flap"
+      ],
+      "fromJa": "wings_flap_large に bird_flap を重ねた"
+    },
+    {
+      "id": "whistle",
+      "useJa": "笛",
+      "sources": [
+        "dreamscape_synth"
+      ],
+      "fromJa": "笛を合成"
+    },
+    {
+      "id": "glass_break_small",
+      "useJa": "小瓶が割れる",
+      "sources": [
+        "rubberduck_breaking"
+      ],
+      "fromJa": "bfh1_glass_breaking_02"
+    },
+    {
+      "id": "bat_hit",
+      "useJa": "板でボールを打つ",
+      "sources": [
+        "rubberduck_100"
+      ],
+      "fromJa": "wooden_02"
+    },
+    {
+      "id": "bricks_fall",
+      "useJa": "積んだ煉瓦が崩れる",
+      "sources": [
+        "rubberduck_breaking"
+      ],
+      "fromJa": "bfh1_rock_falling_01"
+    },
+    {
+      "id": "car_door",
+      "useJa": "車が止まり、ドアが閉まる",
+      "sources": [
+        "rubberduck_100"
+      ],
+      "fromJa": "slam_04"
+    },
+    {
+      "id": "car_horn",
+      "useJa": "車のクラクション（3回）",
+      "sources": [
+        "dreamscape_synth"
+      ],
+      "fromJa": "クラクションを合成"
+    },
+    {
+      "id": "truck_horn",
+      "useJa": "トラックの警笛が近づいて遠ざかる",
+      "sources": [
+        "dreamscape_synth"
+      ],
+      "fromJa": "警笛を合成"
+    },
+    {
+      "id": "bicycle_bell",
+      "useJa": "自転車の鈴",
+      "sources": [
+        "antumdeluge_bell"
+      ],
+      "fromJa": "bicycle-1"
+    },
+    {
+      "id": "old_bell",
+      "useJa": "古い電鈴（駅の発車ベル）",
+      "sources": [
+        "dub_doorbell"
+      ],
+      "fromJa": "doorbell-old-tring の頭の2秒"
+    },
+    {
+      "id": "bangles_clink",
+      "useJa": "腕輪が鳴る",
+      "sources": [
+        "rubberduck_100"
+      ],
+      "fromJa": "glass_02 と glass_01"
+    },
+    {
+      "id": "pen_click",
+      "useJa": "ペンのふたを閉める",
+      "sources": [
+        "nicole_pen_click"
+      ],
+      "fromJa": "Pen Click Sfx"
+    },
+    {
+      "id": "cloth_flap",
+      "useJa": "布が広がる",
+      "sources": [
+        "kenney_rpg"
+      ],
+      "fromJa": "cloth1"
+    },
+    {
+      "id": "cloth_grab",
+      "useJa": "布をつかむ",
+      "sources": [
+        "kenney_rpg"
+      ],
+      "fromJa": "cloth3"
+    },
+    {
+      "id": "wooden_window",
+      "useJa": "木の窓が鳴る",
+      "sources": [
+        "rubberduck_wood_metal"
+      ],
+      "fromJa": "wood_close_01"
+    },
+    {
+      "id": "box_open",
+      "useJa": "小箱を開ける",
+      "sources": [
+        "rubberduck_100"
+      ],
+      "fromJa": "wooded_box_open"
+    },
+    {
+      "id": "cork_pop",
+      "useJa": "小瓶の栓を抜く",
+      "sources": [
+        "rubberduck_100"
+      ],
+      "fromJa": "plop_02"
+    },
+    {
+      "id": "paper_drop",
+      "useJa": "新聞が落ちる",
+      "sources": [
+        "rubberduck_100"
+      ],
+      "fromJa": "paper_02"
+    },
+    {
+      "id": "book_close",
+      "useJa": "ノートを閉じる",
+      "sources": [
+        "kenney_rpg"
+      ],
+      "fromJa": "bookClose"
+    },
+    {
+      "id": "switch_clunk",
+      "useJa": "照明が入る",
+      "sources": [
+        "rubberduck_100"
+      ],
+      "fromJa": "switch_02"
+    },
+    {
+      "id": "footsteps_run",
+      "useJa": "走り去る足音",
+      "sources": [
+        "kenney_rpg"
+      ],
+      "fromJa": "footstep00〜06 を並べた"
+    },
+    {
+      "id": "scissors_snip",
+      "useJa": "はさみで切る",
+      "sources": [
+        "sinny_scissors"
+      ],
+      "fromJa": "hair_scissors_01"
+    },
+    {
+      "id": "impact_thud",
+      "useJa": "驚きの「ドン」",
+      "sources": [
+        "rubberduck_100"
+      ],
+      "fromJa": "hit_03"
+    },
+    {
+      "id": "shop_bells",
+      "useJa": "鈴がいっせいに鳴る",
+      "sources": [
+        "rubberduck_100"
+      ],
+      "fromJa": "bell_01〜03 を重ねた"
+    },
+    {
+      "id": "snatch",
+      "useJa": "さっとひったくる",
+      "sources": [
+        "kenney_interface",
+        "kenney_rpg"
+      ],
+      "fromJa": "maximize_004 と cloth3"
+    }
+  ]
+}

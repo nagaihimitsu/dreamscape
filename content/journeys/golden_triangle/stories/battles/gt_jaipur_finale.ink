@@ -114,6 +114,7 @@ INCLUDE modules.ink
     デリーみたいに、勝手に増えた町とは違うのよ
 }
 # speaker: narrator
+# se: wooden_window
 そのとき、屋敷の二階の格子窓が、かたりと鳴った。窓の奥に、白い髪の老婦人の影がある。
 # speaker: narrator
 花嫁の祖母だった。プージャーが小声で言う。
@@ -166,6 +167,7 @@ INCLUDE modules.ink
 # speaker: gt_jaipur_bride_grandmother
 見るためには、見られないことが必要だった。……でも、今夜は、見られてもいいわね
 # speaker: narrator
+# se: wooden_window
 窓が閉まった。しばらくして、屋敷の門の奥から、杖をついた老婦人が姿を現した。花嫁側から、驚きの声が上がる。
 {
 - battle_score == 5:
@@ -186,6 +188,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # shake: window
+# se: scissors_snip
 リボンが切られた。楽隊が一斉に鳴り出し、通りが揺れる。カムラが、{heroine_name}の手首をつかんだ。
 # speaker: enemy
 デリーで、あんたはわたしに言ったね。黙っていなくなるのは、自由とは違うって

@@ -96,6 +96,7 @@ INCLUDE modules.ink
     道を教えてくれた人たち。全員、違う方向を指さした人たち。今ごろ、次の旅行者にも、自信満々で違う方向を教えてる
 }
 # speaker: narrator
+# se: pigeon_flutter
 井戸の底の方から、鳩が一羽、斜めの階段を伝って飛び上がっていった。
 # speaker: heroine
 # emotion: teasing

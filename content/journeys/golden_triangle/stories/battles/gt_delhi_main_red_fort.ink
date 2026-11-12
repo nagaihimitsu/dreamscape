@@ -78,12 +78,14 @@ INCLUDE modules.ink
     # cutin: name
     正解！
     # speaker: narrator
+    # se: shop_bells
     ソーヌーはそう叫んで、城壁に向かって演説の真似を始めた。手振りが大きすぎて、土産物屋の棚の鈴が一斉に鳴った。
 - else:
     # speaker: gt_sonu
     # cutin: name
     ブブー
     # speaker: narrator
+    # se: shop_bells
     ソーヌーはそう言って、城壁の上で国旗を掲げる首相の真似を始めた。手振りが大きすぎて、土産物屋の棚の鈴が一斉に鳴った。
 }
 # speaker: enemy
@@ -159,6 +161,7 @@ INCLUDE modules.ink
 # emotion: serious
 はい。……だから、先生に見ていてほしかったんです。今日、あの子が話したところ
 # speaker: narrator
+# se: whistle
 先生は答えず、笛を鳴らした。列が動き出す。歩きながら、一度だけ振り返った。
 # speaker: enemy
 さっき三十八人と言いましたけど。聞いていたのは、三十九人でした

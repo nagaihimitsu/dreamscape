@@ -61,6 +61,7 @@ INCLUDE modules.ink
     名前が立派でも、客は来ないけどね
 }
 # speaker: narrator
+# se: cork_pop
 ハミードは別の瓶の栓を抜いた。今度の匂いは花ではなかった。
 # speaker: heroine
 # reaction: heroine,surprised,question
@@ -90,6 +91,7 @@ INCLUDE modules.ink
     英国の兵隊に五年取り上げられて、町の人間の請願で返ってきたんだ。しつこさは、この町の取り柄だ
 }
 # speaker: narrator
+# se: phone_ring
 そのとき、ゾヘブの電話が鳴った。画面を見て、彼は路地の角まで離れる。
 # speaker: narrator
 声を落としても、狭い路地では全部聞こえた。
@@ -160,6 +162,7 @@ INCLUDE modules.ink
 # speaker: enemy
 値引きは、同情だからな
 # speaker: narrator
+# se: phone_keypad
 店を出るとき、背中で電話のボタンを押す音がした。ゆっくり、一つずつ。ゾヘブは自分の店に戻り、充電器の列を、意味もなく並べ直していた。
 # speaker: heroine
 # reaction: heroine,smile,music

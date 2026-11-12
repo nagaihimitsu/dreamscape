@@ -12,6 +12,7 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_albert_hall
 # speaker: narrator
 アルバート・ホールは、白と薄茶の石でできた、ドームと塔だらけの博物館だった。その正面の広場が、灰色に揺れている。鳩だ。何百羽もの鳩が、地面を埋めつくしていた。
+# se: pigeons_takeoff
 広場の端で、男が小さな袋に入った穀物を売っている。買った人が撒くたびに、灰色の波が、ざあっと音を立てて動く。
 { cond("date gt_delhi_date_agrasen_baoli"):
     # speaker: heroine

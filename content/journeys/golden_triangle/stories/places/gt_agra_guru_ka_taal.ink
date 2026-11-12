@@ -121,6 +121,7 @@ INCLUDE modules.ink
 # speaker: gt_gurmeet
 運ばなくていいんだ。生きててくれれば、それで
 # speaker: narrator
+# se: truck_horn
 食堂の窓の外を、トラックが一台、長い警笛を鳴らして通り過ぎた。ハルバンスは、その音が遠ざかるまで、黙って聞いていた。
 # speaker: gt_harbans
 # pause: 900

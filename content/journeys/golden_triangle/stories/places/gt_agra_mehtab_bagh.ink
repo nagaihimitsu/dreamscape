@@ -78,6 +78,7 @@ INCLUDE modules.ink
 -
 # speaker: narrator
 彼女の最初の一球は、地面を三回はねて、打者の足もとで止まった。子どもたちが笑い、彼女も笑った。
+# se: bricks_fall
 二球目は、煉瓦の手前で失速した。三球目で、煉瓦が一つ落ちた。アウト。打った少年が信じられないという顔をして、ソニアが一番大きな声で叫んだ。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
@@ -102,6 +103,7 @@ INCLUDE modules.ink
     }
     # speaker: narrator
     # photo: gt_album_a32 # photo_caption: 最後の一球、塀を越えてアウト
+    # se: bat_hit
     打球は高く上がり、そのまま――庭の塀を越えていった。一瞬の静けさのあと、ソニアが両手を上げた。
     # speaker: gt_sonia
     アウト！　塀を越えたらアウト！　わたしたちの勝ち！
@@ -114,6 +116,7 @@ INCLUDE modules.ink
     # profile: provocative
     { romance_result == "negative":
         # speaker: narrator
+        # se: bricks_fall
         来た球に、わざと遅れて振った。板きれは空を切り、ボールは煉瓦に当たった。子どもたちが歓声を上げる。彼女だけが、笑っていなかった。
         # speaker: heroine
         # emotion: serious
@@ -122,6 +125,7 @@ INCLUDE modules.ink
         本気で投げたのに、本気で打ってもらえなかったら、わたしの一球、なかったことになっちゃう
     - else:
         # speaker: narrator
+        # se: bricks_fall
         来た球に、わざと遅れて振った。板きれは空を切り、ボールは煉瓦に当たった。子どもたちが歓声を上げる。彼女だけが、笑っていなかった。
         # speaker: heroine
         # emotion: exasperated

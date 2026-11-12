@@ -104,6 +104,7 @@ INCLUDE modules.ink
 # speaker: heroine
 ハ、ハ……はい。ハ
 # speaker: narrator
+# se: camera_shutter
 会の最後に、ドゥベイが集合写真を撮った。新入りにも送るからと、二人の番号を聞いていく。スレーシュは写真の端で、新聞で顔を隠していた。
 それから、観念したように、女性を連れてやってきた。
 # speaker: gt_suresh

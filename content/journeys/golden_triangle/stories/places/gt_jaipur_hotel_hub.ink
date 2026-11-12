@@ -44,6 +44,7 @@ INCLUDE modules.ink
 # person: gt_kamla
 # background: gt_bg_jaipur_hotel_hub
 # speaker: narrator
+# se: gt_auto_rickshaw_horn
 翌朝、宿の中庭。荷物をまとめ終えた二人の前に、オートリキシャが止まった。降りてきたのは、桃色のサリーのカムラだった。
 # speaker: narrator
 運転手が何か文句を言っている。料金を半分に値切られたらしい。
@@ -67,6 +68,7 @@ INCLUDE modules.ink
 わたしのよ。でも、あんたにもあげる。ナーニーは昨日、この家に来て六十年で初めて、行列と一緒に通りを歩いたわ。来年のガンガウルは、二人で行列を見に行くの。窓じゃなくて、下から
 # speaker: narrator
 # recall: gt_album_d01
+# se: pen_click
 カムラはペンのふたを閉め、二人を順に見た。それから、デリーの路地で初めて会ったときと同じ言い方をした。
 # speaker: enemy
 あんたの連れ、相変わらず黙ってるね。いい男は黙ってるもんだ。……でも、あんたは黙らないこと。わたしみたいに、六十年も待たないこと

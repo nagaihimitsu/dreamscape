@@ -18,6 +18,7 @@ INCLUDE modules.ink
 # speaker: heroine
 全部の窓から、誰かがこっちを見てたらって考えると……ちょっと、どきっとするね
 # speaker: narrator
+# se: car_horn
 正面から写真を撮ろうと、{heroine_name}は道の反対側へ渡った。クラクションが三回鳴り、牛が一頭、悠然と前を横切る。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat

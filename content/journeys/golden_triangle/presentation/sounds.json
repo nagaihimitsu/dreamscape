@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "antumdeluge_horn",
+      "titleJa": "Bicycle Horn",
+      "author": "AntumDeluge",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/bicycle-horn",
+      "site": "OpenGameArt.org"
+    }
+  ],
+  "sounds": [
+    {
+      "id": "gt_auto_rickshaw_horn",
+      "useJa": "オートリキシャのラッパ型の警笛",
+      "sources": [
+        "antumdeluge_horn"
+      ],
+      "fromJa": "bicycle-horn-1 を2回"
+    }
+  ]
+}

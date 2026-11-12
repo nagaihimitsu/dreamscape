@@ -39,6 +39,7 @@ INCLUDE modules.ink
     実の息子、アウラングゼーブだよ。……そして今、わしを閉じ込めようとしているのは、旅行会社のバスだ
 }
 # speaker: narrator
+# se: phone_ring
 リヤの二台の携帯が、同時に鳴った。会社と、バスの運転手らしい。
 # speaker: enemy
 # reaction: enemy,anger

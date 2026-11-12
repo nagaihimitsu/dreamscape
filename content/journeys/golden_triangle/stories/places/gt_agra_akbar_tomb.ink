@@ -129,11 +129,13 @@ INCLUDE modules.ink
 こんなに暑いと、雨の匂いが恋しくなるね。ちょっとだけ、袋の上から――
 # speaker: narrator
 # shake: window
+# se: snatch
 言い終わる前に、灰色の影が横から走り抜けた。布袋が消えていた。猿が一匹、門の壁をするすると登り、袋を片手に、こちらを見下ろしている。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 あっ！　ちょっと、それ、雨！　わたしの雨！
 # speaker: narrator
+# se: whistle
 笛の音がして、若い番人が走ってきた。猿を見上げて、ため息をつく。
 # speaker: gt_agra_akbar_guard
 追いかけちゃだめです。取引しないと。何か飲み物と交換すれば、落としてくれます。ヴリンダーヴァンの猿は、眼鏡を盗んで、果物のジュースと交換するので有名なんですよ。ここのは、まだ見習いですけど
@@ -161,6 +163,7 @@ INCLUDE modules.ink
 -
 { cond("flag gt_agra_rain_on_lawn"):
     # speaker: narrator
+    # se: glass_break_small
     小瓶が、壁の上から落ちた。石の通路で、かしゃん、と小さな音。
     次の瞬間、匂いが広がった。乾ききった芝生の上に、夏の終わりの最初の雨が降ったような、土の匂い。少し離れたところで、ブラックバックたちが、いっせいに顔を上げた。
     # speaker: heroine
@@ -185,12 +188,14 @@ INCLUDE modules.ink
 === gt_agra_akbar_tomb_monkey_glasses ===
 # speaker: narrator
 まぶしさに目を細めて、彼女が頭の上のサングラスを下ろそうとした。その手が、空を切った。
+# se: snatch
 猿が一匹、門の壁をするすると登り、サングラスを片手に、こちらを見下ろしている。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # shake: window
 あっ！　今の、わたしの頭の上から！？　気配、全然なかった！
 # speaker: narrator
+# se: whistle
 笛の音がして、若い番人が走ってきた。猿を見上げて、ため息をつく。
 # speaker: gt_agra_akbar_guard
 追いかけちゃだめです。取引しないと。何か飲み物と交換すれば、落としてくれます。ヴリンダーヴァンの猿は、眼鏡を盗んで、果物のジュースと交換するので有名なんですよ。ここのは、まだ見習いですけど

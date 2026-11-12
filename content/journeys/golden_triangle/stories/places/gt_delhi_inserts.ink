@@ -103,6 +103,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # quiet: scene
 夜中の二時。宿の廊下の長椅子で、こちらは天井の扇風機を見上げていた。洗面所との往復は、もう三回目になる。
+# se: door_open
 隣の部屋の扉が、そっと開いた。パーカーのフードをかぶった彼女が、顔だけ出す。
 # speaker: heroine
 # reaction: heroine,exasperated,sigh
@@ -155,6 +156,7 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_hotel_hub
 # speaker: narrator
 # quiet: scene
+# se: phone_vibrate
 夜中の二時。携帯が一度だけ震えた。彼女からだった。
 # speaker: heroine
 # phone: received
@@ -211,6 +213,7 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_hotel_hub
 { cond("flag gt_delhi_player_sick"):
     # speaker: narrator
+    # se: door_knock
     朝、こちらの部屋の扉を叩く音がした。開けると、宿のおかみが、湯気の立つ鍋を抱えて立っていた。後ろには、制服姿の娘が、コップを両手で持っている。
     { cond("seen gt_delhi_hotel_sick_night_player"):
         # speaker: narrator
@@ -221,6 +224,7 @@ INCLUDE modules.ink
     }
 - else:
     # speaker: narrator
+    # se: door_knock
     朝、隣の部屋の扉を叩く音がした。廊下に出てみると、宿のおかみが、湯気の立つ鍋を抱えて立っていた。後ろには、制服姿の娘が、コップを両手で持っている。
     彼女の部屋の扉が、細く開いた。
 }
@@ -335,6 +339,7 @@ Agra? Your train is cancelled today.
 # speaker: heroine
 # reaction: heroine,surprised_big,sweat
 # shake: window
+# se: impact_thud
 この値段！？
 # speaker: narrator
 男は分厚いノートを机に置いた。ここで旅を決めた人たちの感想だという。開くと、日本語がびっしり並んでいた。
@@ -376,6 +381,7 @@ Agra? Your train is cancelled today.
     掲示板を見ようって言われたとき、すごく急がせたよね。見られたら、困るみたいに
 }
 # speaker: narrator
+# se: book_close
 彼女は、手をつけていないチャイの横にノートを閉じて置き、立ち上がった。背広の男の目を、まっすぐ見る。
 # speaker: heroine
 # photo: gt_album_d84 # photo_caption: 偽の案内所で「No, thank you.」
@@ -495,6 +501,7 @@ No, thank you.
 {
 - cond("flag gt_delhi_suresh_encouraged"):
     # speaker: narrator
+    # se: phone_vibrate
     携帯が震えた。ローディー・ガーデンの笑う会の連絡に、長い伝言が一つ流れてきた。差出人は、新聞で顔を隠していた、あの人だ。
     # speaker: gt_suresh
     # phone: received
@@ -516,6 +523,7 @@ No, thank you.
     ふふっ。顔は隠れてるのに、誰だかすぐ分かる
 }
 # speaker: narrator
+# se: old_bell
 発車のベルが鳴った。窓の外を、赤いシャツが一つ、また一つと流れていく。
 # speaker: heroine
 デリーって、最初は押しの強い町だと思ってた。押されてるうちに、こっちも、ちょっとだけ押し返せるようになった気がする

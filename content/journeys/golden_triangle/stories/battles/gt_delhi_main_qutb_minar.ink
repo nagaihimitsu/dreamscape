@@ -6,6 +6,7 @@ INCLUDE modules.ink
 アイロンのきいた半袖シャツ。くたびれたリュック。視線は柱と、遠くの警備員を行ったり来たり。
 # speaker: narrator
 # shake: window
+# se: cloth_grab
 次の瞬間、男の片足が柵をまたいだ。考えるより先に、{heroine_name}の手がリュックの肩紐をつかんでいた。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
@@ -77,6 +78,7 @@ INCLUDE modules.ink
 # speaker: enemy
 科学で答えられないことを、頼まれたんですよ。父親は、科学の先生より弱い
 # speaker: narrator
+# se: whistle
 遠くで笛が鳴った。警備員がこちらを見ている。ラームキシャンは柵から一歩下がり、両手を上げてみせた。
 # speaker: heroine
 # emotion: worried
@@ -114,6 +116,7 @@ INCLUDE modules.ink
     点数は気にしなくていい。わたしも最初は、この柱を魔法だと思っていました
 }
 # speaker: narrator
+# se: camera_shutter
 彼はスマートフォンで柱の碑文を一枚だけ撮った。柵の外から、背中ではなく正面を向けて。
 # speaker: enemy
 抱くのはやめます。代わりに、この柱の旅の話を持って帰る。遠くへ運ばれても、ちゃんと立っていられた鉄の話です

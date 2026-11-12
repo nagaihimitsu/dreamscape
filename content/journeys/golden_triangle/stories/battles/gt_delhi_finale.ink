@@ -1,6 +1,7 @@
 INCLUDE modules.ink
 # background: gt_bg_delhi_red_fort
 # speaker: narrator
+# se: phone_ring
 赤い城、暗くなってから。カムラの一覧の一行目が気になって、二人はもう一度、レッド・フォートの城門の前に来ていた。そこへ、宿の主人から電話が入った。
 # speaker: gt_delhi_hotel_owner
 隣のカムラさんのお孫さんが、お二人を探しています
@@ -78,6 +79,7 @@ INCLUDE modules.ink
     ……チャンドニー・チョーク。月光の広場か。池なんて、とっくにないのに
 }
 # speaker: narrator
+# se: gt_auto_rickshaw_horn
 アマンがオートリキシャを止めた。
 # speaker: gt_delhi_auto_driver
 メーターは壊れてるよ
@@ -143,6 +145,7 @@ INCLUDE modules.ink
     光と音のショーか。城の中を歩いて回る……。暗くなってから、って、そういうことか
 }
 # speaker: narrator
+# se: switch_clunk
 ラホール門で、次の回の券を三枚買う。暗い城壁に光が走り、録音の声が、皇帝たちの時代を語り始めた。
 # speaker: narrator
 観客の列について歩きながら、アマンが首を振る。

@@ -14,6 +14,7 @@ INCLUDE modules.ink
 # speaker: enemy
 おお、ご覧なさい！　日本から来た新婚のお二人です。愛の記念碑に、愛を誓いに来られた
 # speaker: narrator
+# se: applause
 拍手が起きた。ホテルの花びらの寝台の情報は、町中のガイドに回っていたらしい。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
@@ -127,6 +128,7 @@ INCLUDE modules.ink
 わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です。わたしたちのことは、わたしたちで決めます
 # speaker: narrator
 # pause: 800
+# se: applause
 一瞬の静寂。それから、どっと拍手が起きた。さっきの拍手より、ずっと温かい音だった。
 # speaker: narrator
 アンワルは杖の先で地面を叩き、苦笑いした。
