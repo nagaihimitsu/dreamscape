@@ -128,6 +128,7 @@ INCLUDE modules.ink
 # speaker: heroine
 こんなに暑いと、雨の匂いが恋しくなるね。ちょっとだけ、袋の上から――
 # speaker: narrator
+# shake: window
 言い終わる前に、灰色の影が横から走り抜けた。布袋が消えていた。猿が一匹、門の壁をするすると登り、袋を片手に、こちらを見下ろしている。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
@@ -187,6 +188,7 @@ INCLUDE modules.ink
 猿が一匹、門の壁をするすると登り、サングラスを片手に、こちらを見下ろしている。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# shake: window
 あっ！　今の、わたしの頭の上から！？　気配、全然なかった！
 # speaker: narrator
 笛の音がして、若い番人が走ってきた。猿を見上げて、ため息をつく。

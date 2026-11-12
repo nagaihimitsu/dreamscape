@@ -220,6 +220,7 @@ INCLUDE modules.ink
         彼女は一度だけこちらを見て、息を吸った。
         # speaker: heroine
         # reaction: heroine,surprised_big,exclamation
+        # size: large
         ヤートリーガン、クリプヤー、ディヤーン、デーン！
         # speaker: narrator
         思ったより大きな声が出て、本人がいちばん驚いていた。
@@ -236,6 +237,7 @@ INCLUDE modules.ink
         似てる！　ふふっ、もう、笑っちゃって言えない
         # speaker: heroine
         # reaction: heroine,happy,music
+        # size: large
         ディヤーン、デーン！
         # speaker: narrator
         笑いながらの声は、今日いちばん大きかった。

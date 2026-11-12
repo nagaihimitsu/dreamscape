@@ -102,6 +102,7 @@ INCLUDE modules.ink
 # reaction: heroine,exasperated,sweat
 い、今のは感想です。決めたわけじゃないです
 # speaker: narrator
+# pause: 900
 ムケーシュは長いあいだ黙っていた。それから携帯を表に返し、現場監督の番号を押した。
 # speaker: enemy
 わたしだ。四時、予定どおり屋根を流せ。……それと、図面の変更だ。二階の奥に一部屋、わたしの部屋を作る。本を読む部屋だ。息子が帰ってきたら、そこで一緒に茶を飲む

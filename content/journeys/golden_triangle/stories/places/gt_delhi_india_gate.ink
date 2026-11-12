@@ -29,6 +29,7 @@ Photo, please!
 男の子が、通訳する。
 # speaker: gt_monu
 # cutin: name
+# local_word: gt_delhi_word_dadi
 ぼく、モヌ。ダーディーが、あなたも入れって。外国の人と撮ると、村で自慢できるから
 # speaker: heroine
 正直！　でも、わたしが入ったら、撮る人がいなくなっちゃう

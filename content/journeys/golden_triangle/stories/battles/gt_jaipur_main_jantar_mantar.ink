@@ -71,6 +71,7 @@ INCLUDE modules.ink
 # speaker: enemy
 十二時ちょうど。……ほら、影は……
 # speaker: narrator
+# pause: 800
 影は、正午の線に届いていなかった。まだ、目に見えて手前にある。
 # speaker: enemy
 # reaction: enemy,interrobang

@@ -126,6 +126,7 @@ INCLUDE modules.ink
 # photo: gt_album_a66 # photo_caption: 「わたしたちのことは、わたしたちで決めます」
 わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です。わたしたちのことは、わたしたちで決めます
 # speaker: narrator
+# pause: 800
 一瞬の静寂。それから、どっと拍手が起きた。さっきの拍手より、ずっと温かい音だった。
 # speaker: narrator
 アンワルは杖の先で地面を叩き、苦笑いした。

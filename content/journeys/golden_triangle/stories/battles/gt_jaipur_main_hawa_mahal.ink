@@ -96,6 +96,7 @@ INCLUDE modules.ink
 あの、今度、一緒に上に行きませんか。入場券は、わたしが……
 # speaker: enemy
 # reaction: enemy,anger
+# shake: window
 施しはいらないよ
 # speaker: narrator
 ぴしゃりとした声だった。{heroine_name}は、自分の言葉が何をしたのかに気づいた。

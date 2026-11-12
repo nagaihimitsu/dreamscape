@@ -101,6 +101,7 @@ INCLUDE modules.ink
 # sources: none
 # background: gt_bg_delhi_hotel_hub
 # speaker: narrator
+# quiet: scene
 夜中の二時。宿の廊下の長椅子で、こちらは天井の扇風機を見上げていた。洗面所との往復は、もう三回目になる。
 隣の部屋の扉が、そっと開いた。パーカーのフードをかぶった彼女が、顔だけ出す。
 # speaker: heroine
@@ -153,6 +154,7 @@ INCLUDE modules.ink
 # sources: none
 # background: gt_bg_delhi_hotel_hub
 # speaker: narrator
+# quiet: scene
 夜中の二時。携帯が一度だけ震えた。彼女からだった。
 # speaker: heroine
 # phone: received
@@ -174,6 +176,7 @@ INCLUDE modules.ink
     # speaker: heroine
     ……いいって言ったのに
     # speaker: narrator
+    # stand: close
     彼女はそれ以上何も言わず、こちらの肩に、少しだけ寄りかかった。
 * [「大丈夫なら、戻るよ」 # option: take_her_word]
     # rel: trust +1
@@ -222,6 +225,7 @@ INCLUDE modules.ink
     彼女の部屋の扉が、細く開いた。
 }
 # speaker: gt_delhi_hotel_okami
+# local_word: gt_delhi_word_khichdi
 キチュリー。米と豆を、やわらかく煮たの。うちでは、お腹を壊したら、これ。……外国の人は、みんなゴルガッパでやられるの。チャンドニー・チョークでしょ。分かるのよ、顔で
 { cond("seen gt_delhi_hotel_homework"):
     # speaker: enemy
@@ -330,6 +334,7 @@ Agra? Your train is cancelled today.
 示された額は、二人の旅の予算を全部足しても、まるで届かない数字だった。
 # speaker: heroine
 # reaction: heroine,surprised_big,sweat
+# shake: window
 この値段！？
 # speaker: narrator
 男は分厚いノートを机に置いた。ここで旅を決めた人たちの感想だという。開くと、日本語がびっしり並んでいた。
@@ -358,6 +363,7 @@ Agra? Your train is cancelled today.
 彼女の指が、ページの上で止まった。
 # speaker: heroine
 # emotion: serious
+# pause: 600
 ……これ、全部、同じ人の字だよ
 # speaker: heroine
 『と』の書き順が、全部同じ癖。インクも、三年分なのに、全部同じ青。……日本人が書いた日本語じゃない、と思う
@@ -373,6 +379,7 @@ Agra? Your train is cancelled today.
 彼女は、手をつけていないチャイの横にノートを閉じて置き、立ち上がった。背広の男の目を、まっすぐ見る。
 # speaker: heroine
 # photo: gt_album_d84 # photo_caption: 偽の案内所で「No, thank you.」
+# size: large
 No, thank you.
 # speaker: narrator
 はっきりした英語だった。それから、こちらにも聞こえるように、日本語で言い直す。
@@ -445,6 +452,7 @@ No, thank you.
 # background: gt_bg_delhi_station
 # speaker: narrator
 ホームは、発車を待つ人であふれていた。赤いシャツに真鍮の腕章をつけた荷運びの男たちが、スーツケースを三つ、頭の上に積んで、人の間をすり抜けていく。
+# local_word: gt_delhi_word_sahayak
 昔は「クーリー」と呼ばれた彼らは、今は「サハーヤク」――助ける人、という名前に変わっている。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation

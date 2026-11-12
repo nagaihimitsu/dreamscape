@@ -95,6 +95,7 @@ INCLUDE modules.ink
 # speaker: enemy
 祖母が喜びそうな返事だ
 # speaker: narrator
+# quiet: scene
 アマンが帰ったあと、{heroine_name}はチャイの最後の一口を飲み干し、窓の外を見た。路地のトラックは、もう全部積み終わっている。
 {
 - ending_reached:

@@ -76,11 +76,13 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_hawa_mahal
 { quiz_correct:
     # speaker: heroine
+    # local_word: gt_jaipur_word_sawai
     一と、四分の一。……です！
     # speaker: narrator
     今度は、さっきより大きな声が出た。プージャーが目を丸くする。
 - else:
     # speaker: gt_pooja
+    # local_word: gt_jaipur_word_sawai
     一と四分の一！
     # speaker: narrator
     プージャーが得意げに笑った。
@@ -120,6 +122,7 @@ INCLUDE modules.ink
 # speaker: narrator
 窓の老婦人が、プージャーに何か伝えた。プージャーがうなずき、声を張る。
 # speaker: gt_pooja
+# local_word: gt_jaipur_word_nani
 最後の二問は、ナーニーが出すって！　一問目。春になると、女の人たちの行列がこの通りを通る。何のお祭り？
 -> quiz(4) ->
 # background: gt_bg_jaipur_hawa_mahal
@@ -141,6 +144,7 @@ INCLUDE modules.ink
 # speaker: enemy
 六十年見てたなら、もう十分でしょう。……わたしも、六十年黙ってたのよ
 # speaker: narrator
+# quiet: line
 二人の祖母が、窓の内と外で見つめ合う。通りの喧騒が、一瞬遠のいた。
 # speaker: narrator
 窓の奥の声が、最後の問題を告げた。
@@ -181,6 +185,7 @@ INCLUDE modules.ink
     花婿代は満額！　でも答えた勇気に免じて、リボンは切ってあげる！
 }
 # speaker: narrator
+# shake: window
 リボンが切られた。楽隊が一斉に鳴り出し、通りが揺れる。カムラが、{heroine_name}の手首をつかんだ。
 # speaker: enemy
 デリーで、あんたはわたしに言ったね。黙っていなくなるのは、自由とは違うって
@@ -188,14 +193,18 @@ INCLUDE modules.ink
 今夜はわたしが言う。黙って見ているだけなのも、自由とは違うのよ
 # speaker: heroine
 # emotion: serious
+# pause: 700
 ……はい。……怖いけど、踊りたいです
 # speaker: narrator
+# stand: apart
 通りの真ん中へ、一歩。手拍子に合わせて、ぎこちなく腕を上げる。誰かが笑い、誰かが真似をし、それがすぐに踊りの輪になった。
 # speaker: narrator
+# stand: close
 {heroine_name}は振り返り、行列の端に残っていたこちらの手を取った。迷いのない手だった。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 # photo: gt_album_j54 # photo_caption: 「一緒に！　下手なのは、二人とも同じだから！」
+# size: large
 一緒に！　下手なのは、二人とも同じだから！
 # speaker: narrator
 杖の老婦人とカムラが、肩を組んで揺れている。馬の上でアマンが笑っている。頭上では、ハワー・マハルの九百を超える窓が、灯りに照らされて、ただ通りを見下ろしていた。

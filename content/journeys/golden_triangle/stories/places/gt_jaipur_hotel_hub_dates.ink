@@ -32,6 +32,7 @@ INCLUDE modules.ink
 - confession_result == "accepted":
     # speaker: heroine
     # reaction: heroine,shy_deep,blush
+    # pause: 800
     ……うん。わたしも、好き
     # speaker: heroine
     # emotion: serious
@@ -64,6 +65,7 @@ INCLUDE modules.ink
     # emotion: worried
     待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？
     # speaker: narrator
+    # stand: close
     彼女は、そう言ってから、こちらの袖のはしを、ほんの少しだけつまんだ。離れたいわけじゃない、と言うかわりに。
 }
 -> END
@@ -74,6 +76,7 @@ INCLUDE modules.ink
 // 【3】手伝いの knot：告白の前置き（選択なし）
 === gt_jaipur_confession_lead ===
 # speaker: narrator
+# quiet: scene
 しばらく、二人とも黙っていた。黙っていても気まずくない、と気づいたのは、いつからだっただろう。
 {
 - confession_result == "accepted":

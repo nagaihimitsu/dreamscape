@@ -5,6 +5,7 @@ INCLUDE modules.ink
 # speaker: narrator
 アイロンのきいた半袖シャツ。くたびれたリュック。視線は柱と、遠くの警備員を行ったり来たり。
 # speaker: narrator
+# shake: window
 次の瞬間、男の片足が柵をまたいだ。考えるより先に、{heroine_name}の手がリュックの肩紐をつかんでいた。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation

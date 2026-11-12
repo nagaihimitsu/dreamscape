@@ -26,6 +26,7 @@ INCLUDE modules.ink
 # emotion: teasing
 ねえ、かくれんぼしよう。わたしが隠れる。百数えたら、探しに来て。ちゃんと数えてね
 # speaker: narrator
+# stand: apart
 返事を待たずに、足音が廊下の奥へ消えていった。
 九十八、九十九、百。廊下に出ると、同じ形のアーチ、同じ形の扉、同じ色の壁が、どこまでも続いていた。自分が今、どの王妃の部屋の前にいるのかも分からない。
 * [名前を呼ぶ # option: call_her_name]
@@ -40,6 +41,7 @@ INCLUDE modules.ink
     - else:
         # speaker: narrator
         名前を呼ぶと、声が廊下に跳ね返って、四方から同じ名前が返ってきた。どこから自分の声が戻ってくるのかも分からない。
+        # stand: close
         三回目に呼んだとき、すぐ後ろの扉の陰から、くすくす笑う声がした。
         # speaker: heroine
         # reaction: heroine,teasing_big,music
@@ -83,6 +85,7 @@ INCLUDE modules.ink
     }
 -
 # speaker: narrator
+# stand: near
 並んで廊下を歩いた。どの扉の前を通っても、同じ部屋がある。この中に一人ずつ、王妃が住んでいた。
 # speaker: heroine
 王さまは、ほかの人に知られずに、誰の部屋にでも行けたんだよね。便利だけど、さみしい建物

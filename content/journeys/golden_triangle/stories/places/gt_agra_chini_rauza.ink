@@ -33,12 +33,14 @@ INCLUDE modules.ink
     # memory: gt_agra_date_chini_rauza_memory
     { romance_result == "negative":
         # speaker: narrator
+        # stand: apart
         一歩近づいたところで、彼女が反射的に半歩下がった。
         # speaker: heroine
         # reaction: heroine,surprised_big,sweat
         ち、近い！　ごめん、反射で。代役なのに
     - else:
         # speaker: narrator
+        # stand: close
         一歩。もう一歩。彼女の前髪が、こちらの額に触れそうになる。
         # speaker: heroine
         # reaction: heroine,shy_deep,blush
@@ -56,6 +58,7 @@ INCLUDE modules.ink
         # reaction: heroine,surprised,blush
         あ、うん。聞いてくれて、ありがとう。大丈夫。代役だし
         # speaker: narrator
+        # stand: close
         そう言って、彼女の方から、半歩だけ近づいた。
     }
 * [冗談で、思いきり遠くに立つ # option: stand_far]
@@ -79,6 +82,7 @@ INCLUDE modules.ink
 よし。次が本番の構図だ。膝をついて、これを差し出す
 # speaker: narrator
 # photo: gt_album_a47 # photo_caption: 空っぽの指輪の箱、膝をつく代役
+# stand: near
 渡されたのは、空っぽの指輪の箱だった。膝をつくと、石の床がひんやりした。見上げると、彼女が、どこを見ればいいのか分からない顔で立っていた。
 # speaker: heroine
 # reaction: heroine,surprised_big,blush
@@ -142,8 +146,10 @@ INCLUDE modules.ink
     二人は柱の陰に隠れた。アーチの下で、ニキルが膝をつく。今度の箱は、空っぽではなかった。
     タンヴィの返事は、柱の陰まで聞こえた。
     # speaker: gt_tanvi
+    # pause: 800
     ……ハーン
     # speaker: narrator
+    # local_word: gt_agra_word_haan
     短い、ヒンディー語の、はい、だった。
     # speaker: heroine
     # reaction: heroine,happy,heart

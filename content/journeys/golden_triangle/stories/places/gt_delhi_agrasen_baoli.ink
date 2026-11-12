@@ -99,6 +99,8 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # photo: gt_album_d55 # photo_caption: 鳩が顔の前に、本物の悲鳴
+# shake: window
+# size: large
 きゃああああっ！
 # speaker: narrator
 本物だった。悲鳴は井戸の壁に跳ね返り、階段を駆け上がり、上の路地まで届いた。鳩は何事もなかったように、反対側のくぼみに収まった。
@@ -186,5 +188,6 @@ INCLUDE modules.ink
 最後の一段を上りきると、路地の暑さと車の音が、いっぺんに戻ってきた。彼女は膝に手をついて、しばらく黙っていた。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# pause: 700
 ……だめだ。冷たいものが飲みたい。煩悩、一個も減ってない
 -> END
