@@ -55,8 +55,10 @@ INCLUDE modules.ink
 # speaker: narrator
 カムラは中庭の椅子に腰を下ろし、手を差し出した。デリーで渡した、あの段ボールの切れ端を出せ、という仕草だった。
 # speaker: narrator
+# photo: gt_album_j57 # photo_caption: 段ボールの六行目「通りで踊った夜」
 {heroine_name}がガイドブックから取り出すと、カムラは油性ペンで、五行の下にもう一行を書き足した。
 # speaker: enemy
+# recall: gt_album_j54
 ジャイプール。通りで踊った夜
 # speaker: heroine
 # reaction: heroine,shy,blush
@@ -64,6 +66,7 @@ INCLUDE modules.ink
 # speaker: enemy
 わたしのよ。でも、あんたにもあげる。ナーニーは昨日、この家に来て六十年で初めて、行列と一緒に通りを歩いたわ。来年のガンガウルは、二人で行列を見に行くの。窓じゃなくて、下から
 # speaker: narrator
+# recall: gt_album_d01
 カムラはペンのふたを閉め、二人を順に見た。それから、デリーの路地で初めて会ったときと同じ言い方をした。
 # speaker: enemy
 あんたの連れ、相変わらず黙ってるね。いい男は黙ってるもんだ。……でも、あんたは黙らないこと。わたしみたいに、六十年も待たないこと

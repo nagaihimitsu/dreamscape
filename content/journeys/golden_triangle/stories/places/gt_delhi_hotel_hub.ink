@@ -16,6 +16,7 @@ INCLUDE modules.ink
 # cutin: name
 カムラ、七十九歳。この家に六十年住んで、数日のうちに、ジャイプールの息子の家へ移る。
 # speaker: narrator
+# photo: gt_album_d01 # photo_caption: 路地の将軍カムラ
 そこまでを三十秒で言い切ると、彼女は{heroine_name}のガイドブックを取り上げ、鼻を鳴らした。
 # speaker: enemy
 写真がきれいすぎる。

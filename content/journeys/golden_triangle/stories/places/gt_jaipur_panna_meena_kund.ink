@@ -34,10 +34,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: exasperated
+        # recall: gt_album_a01
         サミールさん……。思い出すと、また誤解が増えそう。白鳥の折り方、毎晩練習してると思う
     - else:
         # speaker: heroine
         # reaction: heroine,teasing_big,music
+        # recall: gt_album_a01
         絶対、毎晩、白鳥の折り方を練習してる。新しいお客さんが来るたびに、首の角度を変えてると思う
     }
 * [「カムラさんから」 # option: gossip_kamla]

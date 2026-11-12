@@ -16,6 +16,7 @@ INCLUDE modules.ink
 # speaker: narrator
 赤い砂岩の大きな門をくぐる。暗いアーチの向こうに、白いものが四角く切り取られて見えた。
 # speaker: narrator
+# photo: gt_album_a05 # photo_caption: 門のアーチからはみ出していく白
 一歩進むごとに、白がアーチからはみ出していく。最後の一歩で、全体が現れた。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation

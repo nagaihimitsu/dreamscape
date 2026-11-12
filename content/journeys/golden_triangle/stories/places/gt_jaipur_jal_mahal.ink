@@ -114,6 +114,7 @@ INCLUDE modules.ink
         ……ありがとう。自分で食べられないの、ちょっと恥ずかしいね。誰かに食べさせてもらうなんて、子どものとき以来かも
     }
     # speaker: narrator
+    # photo: gt_album_j22 # photo_caption: 手が使えない彼女に、焼きとうもろこし
     一口かじって、彼女は目を細めた。唐辛子とライムが、あとから追いかけてくる。
 * [わざと少し遠ざける # option: tease_corn]
     # profile: provocative

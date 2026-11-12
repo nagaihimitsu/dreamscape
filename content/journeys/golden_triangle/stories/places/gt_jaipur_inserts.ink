@@ -138,6 +138,7 @@ INCLUDE modules.ink
 # speaker: gt_jaipur_hotel_front
 あら。ここ、名前が書いてある。ヒンディー語で。……『{player_name}』
 # speaker: narrator
+# photo: gt_album_j26 # photo_caption: 読み上げられた名前
 中庭に、短い沈黙が落ちた。彼女は、ゆっくり手のひらを閉じた。
 # speaker: heroine
 # reaction: heroine,shy_deep,blush
@@ -209,6 +210,7 @@ INCLUDE modules.ink
 - cond("flag gt_agra_rain_on_lawn"):
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # recall: gt_album_a39
     雨の匂いがあったら、一滴つけたかったな。アーグラの鹿の芝生に、全部降っちゃったけど
 }
 # speaker: heroine

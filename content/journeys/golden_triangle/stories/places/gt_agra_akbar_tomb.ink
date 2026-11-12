@@ -166,6 +166,7 @@ INCLUDE modules.ink
     # reaction: heroine,surprised,question
     ……鹿が、雨だと思ってる
     # speaker: narrator
+    # photo: gt_album_a39 # photo_caption: 雨の匂いになったアクバル廟
     彼女は割れた瓶を見下ろして、しばらく何も言わなかった。それから、こらえきれずに笑い出した。
     # speaker: heroine
     # reaction: heroine,happy,music

@@ -168,6 +168,7 @@ INCLUDE modules.ink
 # speaker: narrator
 内謁の間のアーチの下、光の届かない端の段に、小さな人影が座っていた。膝の上に、香辛料の袋。唇が動いている。
 # speaker: narrator
+# photo: gt_album_d79 # photo_caption: 光と音のショー、内謁の間の小さな人影
 駆け出しかけたアマンの前に、{heroine_name}が立った。
 # speaker: heroine
 # emotion: serious

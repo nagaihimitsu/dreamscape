@@ -101,6 +101,7 @@ INCLUDE modules.ink
         ボールは、思ったよりまっすぐ来た。振った板きれに、手ごたえがあった。
     }
     # speaker: narrator
+    # photo: gt_album_a32 # photo_caption: 最後の一球、塀を越えてアウト
     打球は高く上がり、そのまま――庭の塀を越えていった。一瞬の静けさのあと、ソニアが両手を上げた。
     # speaker: gt_sonia
     アウト！　塀を越えたらアウト！　わたしたちの勝ち！

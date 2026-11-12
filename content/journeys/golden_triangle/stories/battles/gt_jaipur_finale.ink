@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # speaker: narrator
 招待客の二人は、行列の端を歩いていた。踊る人たちの輪から、半歩だけ離れて。
 # speaker: narrator
+# recall: gt_album_d79
 輪の真ん中で、鮮やかな桃色のサリーが跳ねた。デリーで見た、ショールの小さな老婦人と同じ人だとは思えない。
 # speaker: enemy
 そこの二人！　窓際の客みたいに立ってないで！
@@ -194,6 +195,7 @@ INCLUDE modules.ink
 {heroine_name}は振り返り、行列の端に残っていたこちらの手を取った。迷いのない手だった。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
+# photo: gt_album_j54 # photo_caption: 「一緒に！　下手なのは、二人とも同じだから！」
 一緒に！　下手なのは、二人とも同じだから！
 # speaker: narrator
 杖の老婦人とカムラが、肩を組んで揺れている。馬の上でアマンが笑っている。頭上では、ハワー・マハルの九百を超える窓が、灯りに照らされて、ただ通りを見下ろしていた。

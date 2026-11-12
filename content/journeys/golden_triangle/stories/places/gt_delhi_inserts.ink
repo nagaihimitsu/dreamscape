@@ -138,6 +138,7 @@ INCLUDE modules.ink
 # speaker: heroine
 屋台のおじさん、明日もあそこで、誰かのお腹を壊してるのかな
 # speaker: narrator
+# photo: gt_album_d40 # photo_caption: 夜中二時の廊下、看病の人が先に眠る
 返事を考えているうちに、隣から静かな寝息が聞こえてきた。看病に来た人が、先に眠っている。扇風機だけが、律儀に回り続けていた。
 -> END
 
@@ -191,6 +192,7 @@ INCLUDE modules.ink
     じゃあ、わたしの青いポーチも持ってきて。粉の袋が入ってる。心配性で持ってきたのが、自分に効くとは思わなかった
 -
 # speaker: narrator
+# photo: gt_album_d41 # photo_caption: 最後の一個を譲った夜
 天井の扇風機が、ゆっくり回っている。彼女は膝にあごをのせて、小さく息を吐いた。
 # speaker: heroine
 お腹いっぱいって、言えばよかった。バスって、言えればよかった。……今度は、言う。屋台でも、ほかの所でも
@@ -370,6 +372,7 @@ Agra? Your train is cancelled today.
 # speaker: narrator
 彼女は、手をつけていないチャイの横にノートを閉じて置き、立ち上がった。背広の男の目を、まっすぐ見る。
 # speaker: heroine
+# photo: gt_album_d84 # photo_caption: 偽の案内所で「No, thank you.」
 No, thank you.
 # speaker: narrator
 はっきりした英語だった。それから、こちらにも聞こえるように、日本語で言い直す。

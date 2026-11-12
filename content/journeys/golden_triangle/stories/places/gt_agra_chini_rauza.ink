@@ -78,6 +78,7 @@ INCLUDE modules.ink
 # speaker: gt_jagdeep
 よし。次が本番の構図だ。膝をついて、これを差し出す
 # speaker: narrator
+# photo: gt_album_a47 # photo_caption: 空っぽの指輪の箱、膝をつく代役
 渡されたのは、空っぽの指輪の箱だった。膝をつくと、石の床がひんやりした。見上げると、彼女が、どこを見ればいいのか分からない顔で立っていた。
 # speaker: heroine
 # reaction: heroine,surprised_big,blush

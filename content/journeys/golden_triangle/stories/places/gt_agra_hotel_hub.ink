@@ -13,6 +13,7 @@ INCLUDE modules.ink
 寝台の上に、薔薇の花びらで大きなハート。その真ん中で、タオルで折った白鳥が二羽、くちばしを寄せ合っている。
 # speaker: gt_samir
 # cutin: name
+# photo: gt_album_a01 # photo_caption: ハネムーン・スペシャルの白鳥
 ハネムーン・スペシャルです！
 # speaker: narrator
 サミールは胸を張った。
@@ -38,6 +39,7 @@ INCLUDE modules.ink
 用意してくれた人がいるんだもんね
 # speaker: heroine
 # emotion: worried
+# recall: gt_album_d01
 カムラさんに言われたのにな。言いたいことは言いなさいって。……今の、全然言えてなかった
 # speaker: narrator
 窓の外、家々の屋根の向こうに、白いドームの先がほんの少しだけのぞいていた。
@@ -67,6 +69,7 @@ INCLUDE modules.ink
 # speaker: enemy
 部屋のことは、片付けさせておいたよ
 # speaker: narrator
+# recall: gt_album_a01
 二つの部屋の扉を開けると、どちらも、ハートも白鳥も消えていた。寝台は、ただの白い寝台に戻っている。
 {
 - ending_reached:
@@ -102,9 +105,11 @@ INCLUDE modules.ink
 - ending_reached:
     # speaker: heroine
     # emotion: smile
+    # recall: gt_album_a66
     今日、人前で『わたしたちのことは、わたしたちで決める』って言ったでしょう。あれ、恋人として言ったんだよ。ちゃんと届いてた？
 - romance_stage >= 3:
     # speaker: heroine
+    # recall: gt_album_a66
     今日、『二人で来たのは本当です』って言ったの、覚えてる？　……あれは、本当だから
 - romance_stage == 2:
     # speaker: heroine
