@@ -13,6 +13,7 @@ import { displayPath, journeyLayer, loadContentSources, parseCatalog, storyFile,
 import { withContext } from "./content-validation-utils";
 import { albumImagesOf } from "./album-images";
 import { checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
+import { checkSoundTags, soundRegistry } from "./sound-files";
 import { validateEpilogue } from "./epilogue-validation";
 import { compileInk, validateNoInkRandom, validateRelationshipToneSource } from "./ink-validation";
 import { choiceOption, includesModules, readFileChoices, readMainFileHead } from "./place-files";
@@ -80,6 +81,9 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
   // A line's # voice: names a recording of this journey (its public/assets/voice/; voice-files.ts).
   const voiceFiles = voiceFilesOf(sources);
   const voiceFolder = voiceFolderPath(sources, journeyLayer(sources, journeyId));
+  // A line's # se: names a shared sound or one of this journey (presentation/sounds.json; sound-files.ts).
+  const sounds = soundRegistry(sources);
+  const soundLayerId = journeyLayer(sources, journeyId).id;
   const placeKnots = publishedPlaceKnots(sources, requirements);
   const expected = requirements.flatMap((city) => [
     ...city.main.flatMap((event) => [event.guideStoryId, event.battleStoryId]),
@@ -121,6 +125,7 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
         warnings.push(`${displayPath(root, file)}: the protagonist speaks outside the date choices (# speaker: player); usually the protagonist speaks through the choices (not stopped)`);
       validateMemoryReferences(source, Object.keys(fragments.memories));
       checkVoiceTags(source, journeyId, voiceFiles, voiceFolder);
+      checkSoundTags(source, soundLayerId, sounds);
       // A scene's cond("…") (stage 2a): declared, literal and written as a condition; content:build checks what it names.
       // A battle includes the game's modules.ink (its quiz and reasoning calls).
       const modules = includesModules(source);

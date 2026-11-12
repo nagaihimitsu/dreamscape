@@ -55,6 +55,7 @@ INCLUDE modules.ink
 腕輪を通すとき、ナスリーンは彼女の手を握り、指の付け根をぎゅっと寄せた。手を細くして、その上を滑らせるのだ。
 # speaker: heroine
 # reaction: heroine,surprised,exclamation
+# se: bangles_clink
 い、いたた……！　あ、入った。手首で、からんって鳴った
 * [「赤が似合う」 # option: red_suits_you]
     # profile: bold
@@ -166,6 +167,7 @@ INCLUDE modules.ink
 # speaker: gt_nasreen
 割れやすいから、結婚式の日まで、はめっぱなしにしない方がいいわ
 # speaker: narrator
+# se: bangles_clink
 アーケードの下を歩くと、彼女の手首で、試しにはめたままの一本が小さく鳴った。一歩ごとに、からん、と。
 # speaker: heroine
 # emotion: smile

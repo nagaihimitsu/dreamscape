@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { japaneseText as japanese } from "./text-language";
+import { SOUND_ID } from "./sounds";
 
 /**
  * In-city transport. Walking is built in; a journey declares up to two more
@@ -31,6 +32,11 @@ export const transportModeSchema = z.object({
    * party leaves the city. A placeholder until the common condition system.
    */
   rental: z.literal(true).optional(),
+  /**
+   * The sound of the ride's transition, in place of its kind's (`travel_<kind>`): a shared sound or one of the journey's
+   * own presentation/sounds.json (content:build checks it, scripts/sound-files.ts).
+   */
+  se: z.string().regex(SOUND_ID).optional(),
 }).strict();
 export type DeclaredTransportMode = z.infer<typeof transportModeSchema>;
 export type TransportMode = Omit<DeclaredTransportMode, "kind"> & { kind: TransportArtKind };

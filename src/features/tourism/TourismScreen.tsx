@@ -14,7 +14,7 @@ import { activeGuideStoryId, observationHotspots } from "../../domain/tourism";
 import type { GameState } from "../../domain/game";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, RecallLayer } from "../../components/LineStage";
-import { lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
+import { lineCues, lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { portraitFocus } from "../../components/speaker-focus";
@@ -221,6 +221,8 @@ export function TourismScreen({
                 text={frame.text}
                 delivery={frame.delivery}
                 voiceId={frame.voiceId}
+                seId={frame.seId}
+                cues={lineCues(frame, !!nameCut)}
                 voice={autoAdvance.voice}
                 speed={autoAdvance.fast ? 0 : lineSpeed(speed, frame)}
                 onReady={onReady}

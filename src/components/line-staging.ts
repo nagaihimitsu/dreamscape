@@ -1,3 +1,4 @@
+import type { SystemSoundId } from "../content/sounds";
 import type { LetterKind, PhoneSide } from "../content/tags";
 import type { PhoneLine, Speaker, StoryFrame } from "../story/frame-reader";
 
@@ -10,6 +11,22 @@ export const QUIET_TEXT_SLOWDOWN = 1.3;
 /** The text speed of a line (milliseconds a character; 0 shows it at once): a quiet line is written a little slower. */
 export function lineSpeed(speed: number, frame: Pick<StoryFrame, "quiet"> | null | undefined): number {
   return frame?.quiet && speed > 0 ? Math.round(speed * QUIET_TEXT_SLOWDOWN) : speed;
+}
+
+/**
+ * The sounds a line's scene tags bring as its text starts (src/audio/sound-effects.ts useLineSounds): a phone message
+ * received or sent, the first line of a letter (`earlier` is empty there), its speaker's name plate when it shows
+ * (`nameCutIn`: the plate of `# cutin: name`, NameCutIn.tsx) and its recalled picture. None on a quiet line (`# quiet:`):
+ * only the author's own `# se:` sounds there.
+ */
+export function lineCues(frame: Pick<StoryFrame, "quiet" | "phone" | "letter" | "recall"> | null | undefined, nameCutIn: boolean): SystemSoundId[] {
+  if (!frame || frame.quiet) return [];
+  const cues: SystemSoundId[] = [];
+  if (frame.phone) cues.push(frame.phone.side === "received" ? "phone_receive" : "phone_send");
+  if (frame.letter && !frame.letter.earlier?.length) cues.push("letter_open");
+  if (nameCutIn) cues.push("name_cutin");
+  if (frame.recall) cues.push("recall");
+  return cues;
 }
 
 /** Whether the window's head shows the speaker's plate: a phone message names its sender itself, and a letter no one. */

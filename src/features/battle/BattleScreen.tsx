@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { tourSceneBadge } from "../../domain/tour";
-import { dialogueExpressions, dialogueReactions, landmarks, learningTranslations, storyState, tourismAssets } from "../../content";
+import { dialogueExpressions, dialogueReactions, episodes, landmarks, learningTranslations, storyState, tourismAssets } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
@@ -8,7 +8,8 @@ import { battleChrome, getActiveBattleContent, getBattleOutcome } from "../../do
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, RecallLayer } from "../../components/LineStage";
-import { lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
+import { lineCues, lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
+import { playSe } from "../../audio/sound-effects";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { readLineId, type ReadSkip } from "../../components/read-skip";
@@ -214,6 +215,24 @@ export function BattleScreen({
   }, [answerSettling]);
   const [effectAnswer, setEffectAnswer] = useState<string | null>(null);
   const answerKey = `${battle.id}:${active.roundIndex}:${answer?.optionId}`;
+  // The answer's sound, once, for an answer saved in this mounted screen (a restored feedback is silent, as it does not
+  // animate): quiz_correct or quiz_incorrect, and quiz_perfect in place of quiz_correct for the last answer of a full score.
+  const soundedAnswer = useRef<string | null>(null);
+  useEffect(() => {
+    if (active.phase !== "feedback" || !answer || animatedAnswer !== answerKey || soundedAnswer.current === answerKey) return;
+    soundedAnswer.current = answerKey;
+    playSe(perfectAnswer ? "quiz_perfect" : answer.correct ? "quiz_correct" : "quiz_incorrect");
+  }, [active.phase, answer, animatedAnswer, answerKey, perfectAnswer]);
+  // The result's sound as the result comes in this mounted screen (a restored result is silent), the same whatever the
+  // score; the result of a city finale that shows 「都市クリア」 (BattleRewards) rings city_clear instead.
+  const shownPhase = useRef(active.phase);
+  useEffect(() => {
+    const before = shownPhase.current;
+    shownPhase.current = active.phase;
+    if (active.phase !== "result" || before === "result") return;
+    const episode = episodes.find((item) => item.battleId === active.battleId);
+    playSe(episode?.kind === "city_finale" && game.completedEpisodeIds.includes(episode.id) ? "city_clear" : "quiz_result");
+  }, [active.phase, active.battleId, game.completedEpisodeIds]);
   useEffect(() => {
     if (!effectAnswer) return;
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -562,6 +581,8 @@ export function BattleScreen({
                 text={frame.text}
                 delivery={frame.delivery}
                 voiceId={frame.voiceId}
+                seId={frame.seId}
+                cues={lineCues(frame, !!nameCut)}
                 voice={auto.voice}
                 speed={auto.fast ? 0 : lineSpeed(speed, frame)}
                 onReady={onReady}

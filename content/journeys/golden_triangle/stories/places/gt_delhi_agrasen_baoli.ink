@@ -107,6 +107,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_agrasen_baoli_012
 質問……。だって、何に向かって叫べばいいのか、分からなくて
 # speaker: narrator
+# se: pigeon_flutter
 もう一度、と彼女が井戸の方を向いた、そのときだった。すぐ横のくぼみから、灰色の塊が、羽音ごと顔の前に飛び出した。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
@@ -180,6 +181,7 @@ INCLUDE modules.ink
     彼女がくぼみに隠れた。ドゥパッターを両手で広げて、羽ばたく準備をしている。たぶん、鳩のつもりだ。
 }
 # speaker: narrator
+# se: cloth_flap
 ジャスミートが階段を下りてくる。三、二、一。白い布が、ばさりと広がった。
 # speaker: gt_jasmeet
 きゃあああっ！

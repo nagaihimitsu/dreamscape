@@ -55,6 +55,7 @@ import {
 import type { TagContext } from "../src/content/tags";
 import { albumFolderPath, albumImagesOf, checkAlbumTags } from "./album-images";
 import { checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
+import { checkSoundTags, soundRegistry, soundUseProblem, soundVolumesOf, soundWarnings, transportModeSounds } from "./sound-files";
 import { checkHelperKnot, revealRegionProblem, validateBattleEvidence } from "./battle-validation";
 import { landmarkOrderError, landmarkParts, tourismCatalogSchema, type VisitPart } from "../src/content/tourism-schemas";
 import type { SceneOption } from "../src/content/scene-schemas";
@@ -542,6 +543,13 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const albumImages = albumImagesOf(sources);
   // The voices of lines (2026-11-12): the files of each journey's public/assets/voice/, the ID their file name.
   const voiceFiles = voiceFilesOf(sources);
+  // The sound effects (2026-11-12): each layer's presentation/sounds.json against its public/assets/se/ (sound-files.ts).
+  const sounds = soundRegistry(sources);
+  // A journey's transport mode may name its ride's sound (`se`): a shared sound or one of that journey's own.
+  for (const mode of transportModeSounds(sources)) {
+    const problem = soundUseProblem(mode.id, mode.journeyId, sounds, `${displayPath(root, mode.file)} の transportModes "${mode.modeId}" の se "${mode.id}"`);
+    if (problem) throw new Error(problem);
+  }
   const context: TagContext = {
     effectIds: effects.map((effect) => effect.id),
     backgroundIds: Object.keys(presentation.backgrounds),
@@ -605,6 +613,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     withContext(file, () => checkAlbumTags(authored, storyLayer, albumImages, albumFolderPath(sources, journeyLayerOfStory)));
     // A line's # voice: names a recording of the story's own journey (2026-11-12).
     withContext(file, () => checkVoiceTags(authored, storyLayer, voiceFiles, voiceFolderPath(sources, journeyLayerOfStory)));
+    // A line's # se: names a shared sound or one of the story's own journey (2026-11-12).
+    withContext(file, () => checkSoundTags(authored, storyLayer, sounds));
     const place = placeFiles.get(id);
     const main = !place && mains.some((item) => item.address === id);
     const mainHead = main ? withContext(file, () => readMainFileHead(authored)) : undefined;
@@ -1585,6 +1595,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     journey,
     /** The album's illustrations of every journey (generated/album-images.json; src/content/album-images.ts). */
     albumImages,
+    /** Every registered sound's volume (generated/sound-volumes.json; src/audio/sound-effects.ts). */
+    soundVolumes: soundVolumesOf(sounds),
     /** Images whose files checkContentImages decodes. */
     images: { characters: characterImages, tourismAssets: tourism.assets },
     /** What chooses the free-time photos (src/content/photo-choice.ts), for their derived copies (scripts/derived-images.ts). */
@@ -1606,7 +1618,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     /** The scene list and the tags' AP rules (generated/scenes.json). */
     scenes: generatedScenes,
     /** Probable mistakes that do not stop the build (content-report.ts). */
-    warnings: [...contentWarnings(sources), ...transitWarnings, ...conditionNotes, ...languageNotes, ...sceneNotes, ...tourNotes],
+    warnings: [...contentWarnings(sources), ...soundWarnings(sources, sounds), ...transitWarnings, ...conditionNotes, ...languageNotes, ...sceneNotes, ...tourNotes],
     /** What each journey folder provides, for the build report. */
     journeyContents: journeyContents(sources),
     /** Each journey's in-city transport (modes and transit ledger counts), for the build report. */

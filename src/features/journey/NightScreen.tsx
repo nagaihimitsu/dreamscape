@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 import { focusIsLost, focusQuietly } from "../../components/scene-focus";
 import { holdTaps } from "../../components/tap-hold";
+import { playSe } from "../../audio/sound-effects";
 import type { NightAction } from "../../domain/day-end";
 import type { GameState } from "../../domain/game";
 import { NightSky, reducedMotionNow, useAnnounced, useNightCard } from "./NightRest";
@@ -79,6 +80,8 @@ export function NightScreen({ game, buttons, reduceMotion, onAction, onBookTour,
  */
 export function NightLeaving({ buttons, recap, reduceMotion, onEnd }: { buttons: readonly NightButton[]; recap?: NightRecap; reduceMotion: boolean; onEnd: () => void }) {
   const { reduced, announced, end } = useNightCard({ reduceMotion, ms: NIGHT_LEAVING_MS, reducedMs: NIGHT_LEAVING_REDUCED_MS, onEnd });
+  // The night's rest from this screen: the same sound as the card of a rest the game took by itself (NightRest).
+  useEffect(() => playSe("night_rest"), []);
   return <NightLayout line={NIGHT_RESTED_JA} recap={recap} buttons={buttons} reduced={reduced} announced={announced} leaving onClick={end} />;
 }
 

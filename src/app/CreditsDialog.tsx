@@ -7,8 +7,11 @@ import {
   OWN_ARTWORK_NOTE_JA,
   parseThirdPartyLicenses,
   photoCredits,
+  SOUND_LICENSE_TEXT,
+  soundCredits,
   THIRD_PARTY_LICENSES_FILE,
   type JourneyPhotoCredits,
+  type SoundCredit,
   type ThirdPartyLicense,
 } from "../content/credits";
 import "./credits.css";
@@ -60,11 +63,36 @@ function Licences({ state }: { state: LicenceListState }) {
 }
 
 /**
- * The body of 「出典・権利の一覧」: every served tourism photo by journey (preparing journeys
- * marked, D1), the map, the fonts (D4), the libraries (D7) and the note that artwork made for
- * Dreamscape is not listed (D5). Each journey's photos and each licence text open on demand.
+ * The sound effects' sources (2026-11-12): each work once, with its author, licence (and its link), the page it comes
+ * from (none for one made for Dreamscape), the credit its author asks for, and what its sounds are used for.
  */
-export function CreditsList({ photos, licences }: { photos: readonly JourneyPhotoCredits[]; licences: LicenceListState }) {
+function SoundCredits({ sounds }: { sounds: readonly SoundCredit[] }) {
+  return <ul className="credits-sounds">
+    {sounds.map(({ source, usesJa }) => {
+      const licence = SOUND_LICENSE_TEXT[source.license];
+      return <li key={source.id}>
+        <p className="credits-place">{source.titleJa}</p>
+        <p>作者：{source.author}</p>
+        <p>ライセンス：{licence.url ? <a href={licence.url} target="_blank" rel="noreferrer">{licence.labelJa}</a> : licence.labelJa}</p>
+        {source.creditJa && <p>{source.creditJa}</p>}
+        {source.license !== "own" && source.url && <p>
+          <a href={source.url} target="_blank" rel="noreferrer">元の作品{source.site ? `（${source.site}）` : ""}</a>
+        </p>}
+        <p>使っている音：{usesJa.join("、")}</p>
+      </li>;
+    })}
+  </ul>;
+}
+
+/**
+ * The body of 「出典・権利の一覧」: every served tourism photo by journey (preparing journeys
+ * marked, D1), the sound effects' sources, the map, the fonts (D4), the libraries (D7) and the
+ * note that artwork made for Dreamscape is not listed (D5). Each journey's photos, the sounds'
+ * sources and each licence text open on demand.
+ */
+export function CreditsList({ photos, sounds = [], licences }: {
+  photos: readonly JourneyPhotoCredits[]; sounds?: readonly SoundCredit[]; licences: LicenceListState;
+}) {
   return <div className="credits-list">
     <section aria-labelledby="credits-photos-title">
       <h3 id="credits-photos-title">写真</h3>
@@ -82,6 +110,14 @@ export function CreditsList({ photos, licences }: { photos: readonly JourneyPhot
         </section>)}
       </details>)}
     </section>
+    {sounds.length > 0 && <section aria-labelledby="credits-sounds-title" data-testid="credits-sounds">
+      <h3 id="credits-sounds-title">効果音</h3>
+      <p className="fine-print">ゲームの中で鳴る音です。開くと、もとの作品ごとに作者・ライセンスと、使っている音を確かめられます。</p>
+      <details className="credits-journey">
+        <summary>効果音の出典（{sounds.length}件）</summary>
+        <SoundCredits sounds={sounds} />
+      </details>
+    </section>}
     <section aria-labelledby="credits-map-title" data-testid="credits-map">
       <h3 id="credits-map-title">地図</h3>
       <p>{MAP_CREDIT.textJa}</p>
@@ -107,9 +143,10 @@ export function CreditsList({ photos, licences }: { photos: readonly JourneyPhot
 /** 「出典・権利の一覧」 (WP20b), opened from the title screen and from ⚙設定 → ゲームの設定. */
 export function CreditsDialog({ onClose }: { onClose: () => void }) {
   const [photos] = useState(photoCredits);
+  const [sounds] = useState(soundCredits);
   const licences = useThirdPartyLicenses();
   return <Modal labelledBy="credits-title" className="credits-modal" onClose={onClose} settlePresses>
     <ModalTitle id="credits-title" onClose={onClose} closeTestId="credits-close">出典・権利の一覧</ModalTitle>
-    <CreditsList photos={photos} licences={licences} />
+    <CreditsList photos={photos} sounds={sounds} licences={licences} />
   </Modal>;
 }

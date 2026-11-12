@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { lineSpeed, phoneBubbles, QUIET_TEXT_SLOWDOWN, showsSpeakerPlate } from "./line-staging";
+import { lineCues, lineSpeed, phoneBubbles, QUIET_TEXT_SLOWDOWN, showsSpeakerPlate } from "./line-staging";
 
 // How the dialogue screens show the scene tags (2026-11-11 user decision).
 describe("the line staging", () => {
@@ -9,6 +9,15 @@ describe("the line staging", () => {
     expect(lineSpeed(40, { quiet: "line" })).toBe(Math.round(40 * QUIET_TEXT_SLOWDOWN));
     expect(lineSpeed(40, { quiet: "scene" })).toBe(52);
     expect(lineSpeed(0, { quiet: "scene" })).toBe(0);
+  });
+
+  it("rings the scene tags' sounds (a letter's first line only), and none on a quiet line", () => {
+    expect(lineCues({ phone: { side: "received" } }, false)).toEqual(["phone_receive"]);
+    expect(lineCues({ phone: { side: "sent", earlier: [{ side: "received", speaker: "heroine", text: "うん" }] } }, false)).toEqual(["phone_send"]);
+    expect(lineCues({ letter: { kind: "letter" }, recall: "smp_album_clock_tower" }, true)).toEqual(["letter_open", "name_cutin", "recall"]);
+    expect(lineCues({ letter: { kind: "letter", earlier: ["拝啓"] } }, false)).toEqual([]);
+    expect(lineCues({ phone: { side: "received" }, quiet: "line" }, true)).toEqual([]);
+    expect(lineCues(undefined, true)).toEqual([]);
   });
 
   it("hides the speaker's plate for a phone message and a letter only", () => {

@@ -69,6 +69,7 @@ INCLUDE modules.ink
 # speaker: narrator
 夜更け、宿の部屋。アーグラ行きの荷造りは半分で止まり、{heroine_name}は段ボールの切れ端を眺めていた。五行のデリー。全部、行った。
 # speaker: narrator
+# se: door_knock
 戸を叩く音。アマンが、素焼きの小さなカップのチャイを三つ、器用に指に挟んで立っていた。
 # speaker: enemy
 さっきは、失礼なことを言いました。あなたたちが祖母を連れ出したと決めつけて

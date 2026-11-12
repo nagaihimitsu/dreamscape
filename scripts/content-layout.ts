@@ -82,6 +82,8 @@ export const CATALOG_RULES = [
   { kind: "presentation/dialogue-expressions.json", fields: entries },
   { kind: "presentation/dialogue-reactions.json", fields: entries },
   { kind: "presentation/own-artwork.json", fields: { schemaVersion: same, artworks: concat } },
+  // The sound effects of each layer's public/assets/se/ and where they come from (2026-11-12; scripts/sound-files.ts).
+  { kind: "presentation/sounds.json", fields: { schemaVersion: same, sources: concat, sounds: concat } },
   { kind: "progression/journey.json", fields: { schemaVersion: same, episodes: concat, storyBattles: concat, rewards: concat } },
   // The story state an author declares (flags, people, named conditions; the unified event design, stage 3a).
   { kind: "progression/story.json", fields: { schemaVersion: same, flags: concat, people: concat, conditions: record } },
@@ -110,7 +112,8 @@ export type MergedKind = (typeof CATALOG_RULES)[number]["kind"];
  * The catalogs the core layer may hold: the base system shared by every
  * journey (balance, response profiles, the common date effects, global
  * presentation, romance stages, the shared dictionary, the characters and the
- * list of artwork made for Dreamscape that the root public/ serves).
+ * list of artwork made for Dreamscape that the root public/ serves, and the
+ * shared sound effects).
  * Every other catalog, and every city, travel, story and quiz file, belongs
  * to a journey folder.
  */
@@ -118,6 +121,7 @@ export const CORE_LAYER_KINDS: ReadonlySet<MergedKind> = new Set<MergedKind>([
   "learning/word-meanings.json",
   "presentation/characters.json",
   "presentation/own-artwork.json",
+  "presentation/sounds.json",
   "romance/balance.json",
   "romance/effect_catalog.json",
   "romance/presentation.json",

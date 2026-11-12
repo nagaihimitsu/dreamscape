@@ -92,9 +92,11 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,surprised,sweat
+        # se: box_open
         開けないでよ……！　心臓に悪い。空っぽなのは分かってるのに
     - else:
         # speaker: narrator
+        # se: box_open
         中には何もない。彼女はそれを見て、ほっとしたような、拍子抜けしたような顔で笑った。
         # speaker: heroine
         空っぽで、よかった。入ってたら、どうしようかと思った
@@ -122,10 +124,12 @@ INCLUDE modules.ink
         # reaction: heroine,shy_deep,blush
         ……っ。そういうの、代役でも、ずるい
         # speaker: narrator
+        # se: camera_shutter
         彼女は顔を手であおぎ、反射板の向こうのジャグディープをにらんだ。シャッターの音が、何度も鳴っていた。
     }
 -
 # speaker: narrator
+# se: car_door
 車の止まる音がした。走ってくる足音が二つ。
 { cond("episode gt_agra_main_taj_mahal"):
     # speaker: narrator

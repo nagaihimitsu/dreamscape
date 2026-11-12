@@ -7,6 +7,7 @@ import { getBattleContentByHash } from "../../domain/battle";
 import type { GameState } from "../../domain/game";
 import { beginStory, continueStory, type StoryStep } from "../../story/runtime";
 import { Modal, ModalTitle } from "../../components/Modal";
+import { playSe } from "../../audio/sound-effects";
 import type { Learning } from "./useLearning";
 import type { LearningState } from "./learning-storage";
 import { InteractiveEnglish } from "./InteractiveEnglish";
@@ -182,7 +183,10 @@ export function EnglishReview({
               className="secondary"
               aria-label="前の問題"
               disabled={selectedIndex <= 0}
-              onClick={() => select(entries[selectedIndex - 1].question.id)}
+              onClick={() => {
+                playSe("ui_page");
+                select(entries[selectedIndex - 1].question.id);
+              }}
             >
               前へ
             </button>
@@ -191,7 +195,10 @@ export function EnglishReview({
               className="secondary"
               aria-label={selectedIndex < 0 ? "最初の問題" : "次の問題"}
               disabled={selectedIndex === entries.length - 1}
-              onClick={() => select(entries[selectedIndex + 1].question.id)}
+              onClick={() => {
+                playSe("ui_page");
+                select(entries[selectedIndex + 1].question.id);
+              }}
             >
               {selectedIndex < 0 ? "最初" : "次へ"}
             </button>

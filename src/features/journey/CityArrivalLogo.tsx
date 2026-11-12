@@ -1,9 +1,13 @@
+import { useEffect } from "react";
+import { playCue } from "../../audio/sound-effects";
 import "./city-arrival.css";
 
 /** A short decorative title; completing it only records the presentation boundary. */
 export function CityArrivalLogo({ nameJa, reduceMotion, onEnd }: {
   nameJa: string; reduceMotion: boolean; onEnd: () => void;
 }) {
+  // Its sound as it comes (not when a load brings the arrival back: playCue).
+  useEffect(() => playCue("city_arrive"), []);
   return <div className={`city-arrival-logo${reduceMotion ? " is-reduced" : ""}`} data-testid="arrival-logo"
     onAnimationEnd={(event) => { if (event.target === event.currentTarget) onEnd(); }}>
     <div className="city-arrival-mark" role="status" aria-label={`${nameJa}に到着`}>

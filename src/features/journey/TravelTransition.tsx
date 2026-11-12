@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { TransportMode } from "../../content/transport";
 import { PassingScenery, railKinds, sceneryPace, TransportIllustration } from "./transport-art";
+import { playSe, playSound } from "../../audio/sound-effects";
 import "./travel-transition.css";
 
 /**
@@ -29,6 +30,13 @@ export function TravelTransition({ mode, reduceMotion = false, onEnd }: {
     return () => query.removeEventListener?.("change", update);
   }, []);
   const reduced = reduceMotion || systemReduced;
+  // The ride's sound as it comes: the mode's own (its manifest `se`), else its kind's (travel_walk on foot).
+  useEffect(() => {
+    if (mode.se) playSound(mode.se);
+    else playSe(`travel_${mode.kind}` as const);
+  // Once a ride (useTravelEffects gives each its own key).
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   useEffect(() => {
     const timer = window.setTimeout(() => onEndRef.current(), reduced ? 450 : 1800);
     return () => window.clearTimeout(timer);

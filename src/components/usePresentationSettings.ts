@@ -22,6 +22,10 @@ interface Preferences {
   voice: boolean;
   /** 「声の大きさ」: the voices' volume, from 0 to 1 (the slider's 0 to 100 in tens). */
   voiceVolume: number;
+  /** 「効果音を出す」 (src/audio/sound-effects.ts): on, the game's sounds and a line's `# se:` play. On by default. */
+  se: boolean;
+  /** 「効果音の大きさ」: the sound effects' volume, from 0 to 1 (the slider's 0 to 100 in tens). */
+  seVolume: number;
 }
 const defaults: Preferences = {
   schemaVersion: 1,
@@ -34,6 +38,8 @@ const defaults: Preferences = {
   readAloud: false,
   voice: true,
   voiceVolume: 0.8,
+  se: true,
+  seVolume: 0.7,
 };
 
 const isVolume = (value: unknown): value is number => typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 1;
@@ -55,9 +61,11 @@ export function readPresentationSettings(raw: string | null): Preferences | null
       (item.readAloud !== undefined && typeof item.readAloud !== "boolean") ||
       (item.voice !== undefined && typeof item.voice !== "boolean") ||
       (item.voiceVolume !== undefined && !isVolume(item.voiceVolume)) ||
+      (item.se !== undefined && typeof item.se !== "boolean") ||
+      (item.seVolume !== undefined && !isVolume(item.seVolume)) ||
       (item.dialogueSpeed !== undefined && ![0, 25, 45].includes(item.dialogueSpeed as number)) ||
       Object.keys(item).some((name) => !["schemaVersion", "confirmChoices", "reduceMotion", "autoSave", "dialogueSpeed", "autoAdvance", "skipUnread", "readAloud",
-        "voice", "voiceVolume"].includes(name))
+        "voice", "voiceVolume", "se", "seVolume"].includes(name))
     )
       return null;
     return {
@@ -71,6 +79,8 @@ export function readPresentationSettings(raw: string | null): Preferences | null
       readAloud: item.readAloud === undefined ? false : item.readAloud as boolean,
       voice: item.voice === undefined ? true : item.voice as boolean,
       voiceVolume: item.voiceVolume === undefined ? 0.8 : item.voiceVolume as number,
+      se: item.se === undefined ? true : item.se as boolean,
+      seVolume: item.seVolume === undefined ? 0.7 : item.seVolume as number,
     };
   } catch {
     return null;
@@ -102,7 +112,7 @@ export function usePresentationSettings(storage: StorageLike = window.localStora
   );
   function update(
     change: Partial<Pick<Preferences, "confirmChoices" | "reduceMotion" | "autoSave" | "dialogueSpeed" | "autoAdvance" | "skipUnread" | "readAloud"
-      | "voice" | "voiceVolume">>,
+      | "voice" | "voiceVolume" | "se" | "seVolume">>,
   ): boolean {
     if (error) return false;
     try {

@@ -1,5 +1,6 @@
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { sceneDataCatalogSchema, storyStateCatalogSchema } from "../src/content/scene-schemas";
+import { soundCatalogSchema } from "../src/content/sounds";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -64,6 +65,8 @@ const runtimeSchemas = {
   "presentation/dialogue-reactions.json": dialogueReactionCatalogSchema,
   // Not imported by the game: content:build checks the served images against it (scripts/image-rights.ts).
   "presentation/own-artwork.json": ownArtworkCatalogSchema,
+  // Read by the credits list (src/content/credits.ts); content:build checks it against the served sounds (scripts/sound-files.ts).
+  "presentation/sounds.json": soundCatalogSchema,
   "progression/journey.json": journeySchema,
   "progression/story.json": storyStateCatalogSchema,
   "romance/balance.json": balanceSchema,

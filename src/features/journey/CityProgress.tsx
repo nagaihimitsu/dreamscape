@@ -11,6 +11,7 @@ import { isTourOnlyPlace } from "../../content/travel-schemas";
 import { battlePlayed } from "../../domain/conditions";
 import { canReadCityEpilogue } from "../../domain/epilogue";
 import { cityProgressParts, type CityProgressCounts } from "./city-progress-label";
+import { playSe } from "../../audio/sound-effects";
 import "./city.css";
 
 export function CityProgress({
@@ -44,7 +45,10 @@ export function CityProgress({
           <button
             className="primary"
             data-testid={`next-story-battle-${nextBattle.battleId}`}
-            onClick={() => onStoryBattle(nextBattle.battleId)}
+            onClick={() => {
+              playSe("ui_confirm");
+              onStoryBattle(nextBattle.battleId);
+            }}
           >
             {nextBattle.actionLabelJa} <span aria-hidden="true">→</span>
           </button>
@@ -60,7 +64,10 @@ export function CityProgress({
           <button
             className="primary"
             data-testid={`next-episode-${next.id}`}
-            onClick={() => onStart(next.id)}
+            onClick={() => {
+              playSe("ui_confirm");
+              onStart(next.id);
+            }}
           >
             {next.kind === "city_finale"
               ? "都市ボスに挑む"
@@ -75,7 +82,10 @@ export function CityProgress({
           <button
             className="secondary"
             data-testid="city-epilogue"
-            onClick={() => onEpilogue(city.id)}
+            onClick={() => {
+              playSe("ui_confirm");
+              onEpilogue(city.id);
+            }}
           >
             エピローグを読む
           </button>

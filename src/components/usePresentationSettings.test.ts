@@ -21,3 +21,21 @@ describe("the presentation settings' voice", () => {
       expect(readPresentationSettings(stored(extra)), JSON.stringify(extra)).toBeNull();
   });
 });
+
+// The sound effect settings (2026-11-12): 「効果音を出す」 (`se`) and 「効果音の大きさ」 (`seVolume`, 0 to 1).
+describe("the presentation settings' sound effects", () => {
+  it("are on at 0.7 for settings stored without them, and with none stored", () => {
+    expect(readPresentationSettings(stored())).toMatchObject({ se: true, seVolume: 0.7 });
+    expect(readPresentationSettings(null)).toMatchObject({ se: true, seVolume: 0.7 });
+  });
+
+  it("read what was stored, beside the voice's own", () => {
+    expect(readPresentationSettings(stored({ se: false, seVolume: 0 }))).toMatchObject({ se: false, seVolume: 0, voice: true, voiceVolume: 0.8 });
+    expect(readPresentationSettings(stored({ seVolume: 1, voiceVolume: 0.2 }))).toMatchObject({ se: true, seVolume: 1, voiceVolume: 0.2 });
+  });
+
+  it("refuse a volume outside 0 to 1 or not a number, and a switch that is not true or false", () => {
+    for (const extra of [{ seVolume: 1.5 }, { seVolume: -1 }, { seVolume: "0.5" }, { seVolume: Number.NaN }, { se: 1 }])
+      expect(readPresentationSettings(stored(extra)), JSON.stringify(extra)).toBeNull();
+  });
+});

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { holdTaps } from "../../components/tap-hold";
+import { playSe } from "../../audio/sound-effects";
 import { DAY_END_REST_JA } from "./night-rest-text";
 import { hasNightRecap, headlinesSentenceJa, routeSentenceJa, type NightRecap } from "./night-recap";
 import { NightRecapView } from "./NightRecap";
@@ -100,6 +101,7 @@ export function useNightCard({ reduceMotion, ms, reducedMs, onEnd }: { reduceMot
  * live region; the focus stays where it is. It never changes the game.
  */
 export function NightRest({ recap, reduceMotion, onEnd }: { recap?: NightRecap; reduceMotion: boolean; onEnd: () => void }) {
+  useEffect(() => playSe("night_rest"), []);
   const shown = hasNightRecap(recap) ? recap : undefined;
   const { reduced, announced, end } = useNightCard({ reduceMotion, ms: shown ? NIGHT_REST_RECAP_MS : NIGHT_REST_MS,
     reducedMs: shown ? NIGHT_REST_RECAP_REDUCED_MS : NIGHT_REST_REDUCED_MS, onEnd });

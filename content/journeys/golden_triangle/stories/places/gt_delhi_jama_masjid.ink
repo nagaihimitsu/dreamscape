@@ -21,6 +21,7 @@ INCLUDE modules.ink
 # reaction: heroine,surprised,sparkle
 階段を上っただけなのに、旧市街が全部見える気がする
 # speaker: narrator
+# se: bicycle_bell
 見学を終えて、また長い階段を下りる。段の下は、もう別の世界だった。焼いた肉の煙、呼び込みの声、自転車リキシャの鈴。
 # speaker: narrator
 {heroine_name}は段ボールの切れ端を出した。四行目。ジャーマー・マスジド、朝のニハーリー、階段の下の店。

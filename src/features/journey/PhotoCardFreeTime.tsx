@@ -24,6 +24,7 @@ import { armedAt, type PressKind } from "./travel-selection";
 import { TravelRentals } from "./TravelRentals";
 import type { CardSwipe } from "./useCardGestures";
 import { useTravelSelection, type PressScope } from "./useTravelSelection";
+import { playSe } from "../../audio/sound-effects";
 import "./free-time-hub.css";
 import "./photo-free-time.css";
 
@@ -100,6 +101,7 @@ export function PhotoCardFreeTime({
   function chooseCard(cardId: string) {
     const card = cards.find((item) => item.id === cardId);
     if (!card) return;
+    playSe("ui_tap");
     setPick(cardId);
     api.choose(cardTarget(card));
     if (card.kind === "tour") api.announce(TOUR_CHOSEN_JA);

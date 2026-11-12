@@ -60,6 +60,8 @@ export interface StoryFrame {
   cutin?: CutInKind;
   /** The line's `# voice:` (only the line it is written on): its recording, played as its text starts (useVoice.ts). */
   voiceId?: string;
+  /** The line's `# se:` (only the line it is written on): its sound effect, played as its text starts (src/audio/sound-effects.ts). */
+  seId?: string;
   /** A battle's call (`# call:`, stage 5) is a choice the game takes itself: its screen shows no choice. */
   choices: { index: number; text: string; optionId?: string; translationJa?: string; call?: StoryCall }[];
   ended: boolean;
@@ -143,6 +145,7 @@ function readTags(
   if (parsed.stand) frame.stand = parsed.stand;
   if (parsed.cutin) frame.cutin = parsed.cutin;
   if (parsed.voiceId) frame.voiceId = parsed.voiceId;
+  if (parsed.seId) frame.seId = parsed.seId;
   if (parsed.localWordIds) frame.localWordIds = [...new Set([...(frame.localWordIds ?? []), ...parsed.localWordIds])];
   events.push(...parsed.effects);
 }
@@ -218,8 +221,11 @@ export function readStoryFrame(
       break;
     }
   }
-  // No new line: the line on screen is the previous one, whose voice has played already.
-  if (!lineRead) delete frame.voiceId;
+  // No new line: the line on screen is the previous one, whose voice and sound have played already.
+  if (!lineRead) {
+    delete frame.voiceId;
+    delete frame.seId;
+  }
   const staging = stageFrame(frame, previous, lineRead);
   for (const key of ["recall", "phone", "letter", "quiet", "stand"] as const) delete frame[key];
   Object.assign(frame, staging);

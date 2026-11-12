@@ -105,8 +105,11 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
     return adoptBaseline(writeExplicitSave(storage, current,
       { savedGame: savedGameRef.current, protectedOriginal: protectedOriginalRef.current }));
   }
-  function save() {
-    if (gameRef.current && persistCurrent()) setNotice("現在の場面を保存しました。");
+  /** The manual save (⚙設定's セーブ); whether the scene was saved. */
+  function save(): boolean {
+    if (!gameRef.current || !persistCurrent()) return false;
+    setNotice("現在の場面を保存しました。");
+    return true;
   }
   function restore() {
     const restored = loadGame(storage);

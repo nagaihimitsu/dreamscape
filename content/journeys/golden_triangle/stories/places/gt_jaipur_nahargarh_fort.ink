@@ -27,6 +27,7 @@ INCLUDE modules.ink
 ねえ、かくれんぼしよう。わたしが隠れる。百数えたら、探しに来て。ちゃんと数えてね
 # speaker: narrator
 # stand: apart
+# se: footsteps_run
 返事を待たずに、足音が廊下の奥へ消えていった。
 九十八、九十九、百。廊下に出ると、同じ形のアーチ、同じ形の扉、同じ色の壁が、どこまでも続いていた。自分が今、どの王妃の部屋の前にいるのかも分からない。
 * [名前を呼ぶ # option: call_her_name]
@@ -53,12 +54,14 @@ INCLUDE modules.ink
     # memory: gt_jaipur_date_nahargarh_fort_memory
     { romance_result == "negative":
         # speaker: narrator
+        # se: door_creak
         扉を開ける。空っぽの部屋。次の扉。また同じ部屋。七つ目の扉を開けたとき、壁にもたれた彼女が、待ちくたびれた顔をしていた。
         # speaker: heroine
         # emotion: exasperated
         遅い……。七つも待ったんだよ。途中で、出ていこうかと思った
     - else:
         # speaker: narrator
+        # se: door_creak
         扉を開ける。空っぽの部屋。壁の絵。次の扉。また同じ部屋。七つ目の扉を開けたとき、壁の絵の前で、彼女が背中を向けて立っていた。
         # speaker: heroine
         # reaction: heroine,surprised,blush

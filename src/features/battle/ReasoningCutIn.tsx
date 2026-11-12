@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from "react";
+import { playSe } from "../../audio/sound-effects";
 import "./reasoning-cutin.css";
 
 /** A presentation-only transition: completing it must not change game state. */
@@ -21,6 +22,8 @@ export function ReasoningCutIn({
     callback.current();
   }, []);
 
+  // Its sound as it comes (BattleScreen shows it only as the flow first reaches the stop in its mounted screen).
+  useEffect(() => playSe("quiz_reasoning"), []);
   useEffect(() => {
     const previouslyFocused = document.activeElement;
     skip.current?.focus({ preventScroll: true });

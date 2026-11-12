@@ -171,6 +171,7 @@ INCLUDE modules.ink
 # priority: +1
 # background: gt_bg_agra_fatehpur_sikri_bazaar
 # speaker: narrator
+# se: car_door
 ヴィノードは、大きな木の陰に車を停めた。エンジンを切ると、外の音が急に近くなった。呼び込みの声、バイクの音、どこかで鳴る鈴。
 ヴィノードは名前の紙を裏返し、電話番号を書いて、こちらに渡した。娘さんのきれいな字の裏に、道に迷った牛の字が並んだ。
 # speaker: gt_vinod

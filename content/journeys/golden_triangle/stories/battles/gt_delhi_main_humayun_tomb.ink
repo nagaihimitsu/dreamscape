@@ -113,6 +113,7 @@ INCLUDE modules.ink
 # speaker: gt_delhi_humayun_woman
 スレーシュ！
 # speaker: narrator
+# se: paper_drop
 淡い色のサリーの女性が、手を振っている。スレーシュの手から新聞が落ち、胸ポケットの薔薇が、全員の前にあらわになった。
 # speaker: narrator
 メヘルの目が、ゆっくり細くなる。

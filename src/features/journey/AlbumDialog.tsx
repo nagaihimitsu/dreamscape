@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Modal, ModalTitle } from "../../components/Modal";
+import { playSe } from "../../audio/sound-effects";
 import type { AlbumPhoto } from "../../domain/album-state";
 import { albumPages, albumSwipeStep, initialAlbumPage, type AlbumPhotoView } from "./album-pages";
 import { journeyAlbumContent } from "./journey-moments";
@@ -30,6 +31,7 @@ export function AlbumDialog({ album, currentCityId, onClose }: { album: readonly
   const go = (step: -1 | 1) => {
     const target = Math.max(0, Math.min(last, shown + step));
     if (target === shown) return;
+    playSe("ui_page");
     setTurn(step > 0 ? "next" : "back");
     setIndex(target);
   };
