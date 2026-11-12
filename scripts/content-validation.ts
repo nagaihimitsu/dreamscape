@@ -401,6 +401,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     const art = plannedJourney.titleArt;
     if (art && !servedFile(publicFiles, art.imagePath))
       throw new Error(`Missing title art image: ${plannedJourney.id}/${art.imagePath} (place it in ${journeyFolderPath(sources.tree, plannedJourney.id)}/public/)`);
+    const movie = plannedJourney.openingMovie;
+    if (movie && !servedFile(publicFiles, movie.videoPath))
+      throw new Error(`オープニングムービーのファイルがありません：${plannedJourney.id} の openingMovie.videoPath "${movie.videoPath}" を ` +
+        `${journeyFolderPath(sources.tree, plannedJourney.id)}/public/ に置いてください（Missing opening movie: ${plannedJourney.id}/${movie.videoPath}）。`);
   }
   // A registered future prototype may be referenced by its predecessor;
   // getNextCity still hides departures to incomplete cities at runtime.

@@ -59,6 +59,11 @@ export const journeyCatalogSchema = z.object({
       // Focal point kept in view when the art is cropped (percent; default centre).
       imagePosition: z.object({ x: z.number().min(0).max(100), y: z.number().min(0).max(100) }).strict().optional(),
     }).strict().optional(),
+    // The opening movie played once when a new journey starts (2026-11-13; src/features/journey/OpeningMovie.tsx): an
+    // MP4 (H.264 and AAC) served from the journey's own public/ folder. Without it the journey starts at once.
+    openingMovie: z.object({
+      videoPath: z.string().regex(/^assets\/(?!.*\.\.)[a-zA-Z0-9_./-]+\.mp4$/),
+    }).strict().optional(),
   }).strict()).min(1),
 }).strict().superRefine((catalog, context) => {
   const journeyIds = new Set<string>();
@@ -83,3 +88,4 @@ export const journeyCatalogSchema = z.object({
 export type JourneyCatalog = z.infer<typeof journeyCatalogSchema>;
 export type Journey = JourneyCatalog["journeys"][number];
 export type TitleArt = NonNullable<Journey["titleArt"]>;
+export type OpeningMovie = NonNullable<Journey["openingMovie"]>;

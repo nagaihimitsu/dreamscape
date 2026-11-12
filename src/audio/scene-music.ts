@@ -47,6 +47,8 @@ export type MusicScreen = {
   packing: boolean;
   /** The 「交際開始」 screen. */
   romanceEnding: boolean;
+  /** A journey's opening movie plays over the title (OpeningMovie.tsx; its own sound only). */
+  opening?: boolean;
   /** The night screen. */
   nightScreen: boolean;
 };
@@ -106,7 +108,7 @@ function screenTrack(play: MusicPlay, screen: MusicScreen, game: MusicGame): str
 }
 
 /**
- * The music of what GameApp shows, in its order: the title screen (`title`), the end roll (`endRoll`), a night's visual
+ * The music of what GameApp shows, in its order: silence under an opening movie, the title screen (`title`), the end roll (`endRoll`), a night's visual
  * (`night`), the packing (kept), the story screens (an encounter, an arrival or epilogue, sightseeing, a battle, a
  * date: the scene's `# bgm:`, else the place's track or the screen's usual one), the 「交際開始」 screen (kept), the
  * night screen (`night`) and free time (by the game clock). `play` null or undefined (no music list): silence.
@@ -115,7 +117,7 @@ function screenTrack(play: MusicPlay, screen: MusicScreen, game: MusicGame): str
  */
 export function sceneMusic(play: MusicPlay | null | undefined, screen: MusicScreen): SceneMusic {
   const { game } = screen;
-  if (!play) return { track: null, duck: "none" };
+  if (!play || screen.opening) return { track: null, duck: "none" };
   if (!game) return { track: play.title, duck: "none" };
   if (screen.endRoll) return { track: play.endRoll, duck: "none" };
   if (screen.nightVisual) return { track: play.night, duck: "none" };
