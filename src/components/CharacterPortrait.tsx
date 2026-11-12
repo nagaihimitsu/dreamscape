@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import characterData from "../content/generated/content/presentation/characters.json";
 import {
   battleCharacterId,
@@ -58,6 +58,8 @@ export function CharacterPortrait({
     <div className={`vn-character${focus ? ` is-${focus}` : ""}`} data-stand={stand} aria-hidden="true" style={{
       left: `${placement.x}%`, bottom: `${placement.bottom}%`, width: `${placement.width}%`, height: `${placement.height}%`,
       transform: `translateX(-50%) scale(${placement.scale})`, transformOrigin: `${placement.originX}% ${placement.originY}%`,
+      // The character's own size (characters.json figureScale): its picture, not its box (character-portrait.css).
+      ...(character.figureScale !== undefined ? { "--figure-scale": character.figureScale } as CSSProperties : {}),
     }}>
       <CharacterImage
         key={image ?? "placeholder"}

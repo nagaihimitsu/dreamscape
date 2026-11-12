@@ -131,6 +131,7 @@
       "id": "gt_mehr",
       "imagePath": "assets/characters/gt_mehr/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 0.88,
       "placeholderColor": "#467384",
       "variants": []
     },
