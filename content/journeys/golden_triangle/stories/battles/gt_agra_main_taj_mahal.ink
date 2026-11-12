@@ -100,6 +100,7 @@ INCLUDE modules.ink
 # speaker: gt_tanvi
 スライド三十枚。わたしは一枚も見てない。お母さんは見たのに
 # speaker: narrator
+# pause: 800
 沈黙。{heroine_name}は、ずっと引っかかっていたことを、やっと言葉にした。
 # speaker: heroine
 タンヴィさんが嫌なのは、タージじゃなくて……一度も、聞かれなかったこと、ですよね

@@ -98,6 +98,7 @@ INCLUDE modules.ink
 # speaker: narrator
 カムラは立ち上がり、待たせていたオートリキシャに乗り込んだ。運転手がまた何か言い、カムラが言い返す。笑い声と一緒に、桃色の町の角へ消えていった。
 # speaker: narrator
+# quiet: scene
 {heroine_name}は段ボールの切れ端を見つめた。デリーの五行と、ジャイプールの一行。アーグラの分は、空いている。
 # speaker: heroine
 アーグラは、自分で書かなきゃね。……本当の話の方を、短く

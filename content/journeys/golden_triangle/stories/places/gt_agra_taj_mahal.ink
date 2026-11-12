@@ -20,6 +20,7 @@ INCLUDE modules.ink
 一歩進むごとに、白がアーチからはみ出していく。最後の一歩で、全体が現れた。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
+# pause: 700
 ……あ
 # speaker: narrator
 {heroine_name}は、しばらく何も言わなかった。言葉が出てこない、という顔だった。

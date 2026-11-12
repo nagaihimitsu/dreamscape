@@ -70,9 +70,11 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_chandni_chowk
 { quiz_correct:
     # speaker: heroine
+    # local_word: gt_delhi_word_chandni
     チャンドニー・チョーク。月光の広場。昔の池に、月が映ったから
 - else:
     # speaker: enemy
+    # local_word: gt_delhi_word_chandni
     ……チャンドニー・チョーク。月光の広場か。池なんて、とっくにないのに
 }
 # speaker: narrator
@@ -174,10 +176,12 @@ INCLUDE modules.ink
 # emotion: serious
 一分だけ。……待ってください
 # speaker: narrator
+# quiet: scene
 録音の声の切れ目に、カムラの声が聞こえた。
 # speaker: gt_kamla
 プラカーシュ。あの冬の夜、ここで言ったでしょう。暗いから顔が見えない、なんてずるい言い方で。わたしは返事をしなかった。恥ずかしくて。それから六十年、一度も
 # speaker: gt_kamla
+# pause: 1000
 ……わたしも。わたしも、です。遅くなったけど
 # speaker: narrator
 アマンが、息を止めた。光が移り、三人の姿が照らし出される。カムラが振り向いた。
@@ -190,8 +194,10 @@ INCLUDE modules.ink
 # speaker: narrator
 カムラの声は怒っていた。けれど、孫が隣に座るのを、止めはしなかった。
 # speaker: enemy
+# local_word: gt_delhi_word_dadi
 ダーディー。……最初から教えて。祖父が、何を言ったのか
 # speaker: narrator
+# pause: 1200
 長い沈黙のあと、カムラは香辛料の袋を膝から下ろした。
 # speaker: gt_kamla
 千九百六十六年の、冬。……ここ、もっと暗かったのよ

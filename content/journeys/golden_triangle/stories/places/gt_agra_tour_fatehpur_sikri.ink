@@ -271,6 +271,7 @@ INCLUDE modules.ink
 { cond("couple"):
     # speaker: narrator
     # photo: gt_album_a27 # photo_caption: 帰りの車、こつんと落ちる頭
+    # stand: close
     頭が、こちらの肩に、こつんと落ちた。
 - else:
     # speaker: narrator

@@ -139,6 +139,7 @@ INCLUDE modules.ink
 あら。ここ、名前が書いてある。ヒンディー語で。……『{player_name}』
 # speaker: narrator
 # photo: gt_album_j26 # photo_caption: 読み上げられた名前
+# pause: 900
 中庭に、短い沈黙が落ちた。彼女は、ゆっくり手のひらを閉じた。
 # speaker: heroine
 # reaction: heroine,shy_deep,blush

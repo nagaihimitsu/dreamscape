@@ -18,6 +18,7 @@ INCLUDE modules.ink
 # speaker: narrator
 サミールは胸を張った。
 # speaker: narrator
+# pause: 700
 隣のこちらの部屋の寝台にも、まったく同じハートと白鳥が待っていた。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
@@ -86,6 +87,7 @@ INCLUDE modules.ink
 # speaker: narrator
 窓辺のグラスにだけ、着いた日の花びらが浮かんでいた。片付ける人も、それには手を出さなかったらしい。
 # speaker: narrator
+# local_word: gt_agra_word_petha
 二人は宿の屋上に上がり、アンワルにもらった菓子の箱を開けた。半透明の、四角い砂糖漬け。ペーターは冬瓜からできているのだと、箱に書いてある。
 # speaker: heroine
 # reaction: heroine,happy,music

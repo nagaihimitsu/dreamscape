@@ -38,6 +38,7 @@ INCLUDE modules.ink
 四つ目。五つ目。彼女は涙目のまま、律儀に笑ってうなずいている。口がいっぱいで、何も言えない。
 隣の男の客が、短く何か言った。
 # speaker: gt_delhi_chandni_customer
+# local_word: gt_delhi_word_bas
 バス
 # speaker: narrator
 屋台の男の手が、その客の器だけを飛ばした。
@@ -179,6 +180,7 @@ INCLUDE modules.ink
 ねえ。今日覚えた言葉、言ってみて。違う、乗り物じゃないよ。ふふ
 { cond("flag gt_delhi_golgappa_sick"):
     # speaker: narrator
+    # pause: 800
     このとき二人は、まだ知らなかった。最後の一つが、夜中に何をするのか。
 }
 -> END

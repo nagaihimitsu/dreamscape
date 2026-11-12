@@ -11,12 +11,14 @@ INCLUDE modules.ink
 # when: episodes delhi >= 1
 # background: gt_bg_delhi_bangla_sahib
 # speaker: narrator
+# local_word: gt_delhi_word_gurdwara
 金色の丸屋根の下で、入口の人たちが、次々に頭を布で覆っていた。グルドワーラー・バングラー・サーヒブ。シク教の礼拝所で、ここでは男も女も、頭を覆って入る。
 入口で配られる橙色の布を、彼女は手際よく結んだ。それから、こちらを見て、こらえきれずに笑った。
 # speaker: heroine
 # reaction: heroine,teasing,music
 待って、それ、ほどけかけてる。じっとして。はい。うん、さっきより、ずっとそれっぽい
 # speaker: narrator
+# local_word: gt_delhi_word_langar
 靴を預け、素足で白い石の上を歩く。祈りの歌が、中の広間から流れてくる。その奥に、大きな台所があった。ランガル。来た人なら誰でも、無料で食事ができる。毎日、何千人分。作るのも配るのも、ほとんどが奉仕の人たちだ。
 巨大な鍋で豆が煮え、長い台の前に何十人もが並んで、黙々と生地を丸めている。その一人、白いひげの大柄な老人が、二人を手招きした。
 # speaker: gt_delhi_bangla_old_man
@@ -162,6 +164,7 @@ INCLUDE modules.ink
     ね。もう、ちゃんと言えるんだから
 - cond("flag gt_delhi_bas_for_her"):
     # speaker: heroine
+    # size: large
     今度は自分で言う。バス！
     # speaker: narrator
     少し声が大きすぎて、列の三人先まで振り返った。それでも桶を持った人は、ちゃんと止まってくれた。

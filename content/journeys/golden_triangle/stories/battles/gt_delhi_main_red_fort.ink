@@ -104,8 +104,10 @@ INCLUDE modules.ink
 # reaction: enemy,sigh
 ……一分です。あなたが無駄にした一分は、あとで生徒に恨まれますよ
 # speaker: narrator
+# quiet: scene
 {heroine_name}は少年の前にしゃがんだ。目の高さが合う。何も聞かず、ただ待つ。
 # speaker: narrator
+# pause: 1000
 三十秒。ファイズはノートを開き、一行書いて、こちらへ向けた。それから、かすれた声で読み上げた。
 # speaker: gt_faiz
 # cutin: name

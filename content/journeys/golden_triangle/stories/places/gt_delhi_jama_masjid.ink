@@ -26,6 +26,7 @@ INCLUDE modules.ink
 {heroine_name}は段ボールの切れ端を出した。四行目。ジャーマー・マスジド、朝のニハーリー、階段の下の店。
 # speaker: heroine
 # reaction: heroine,worried,gloom
+# local_word: gt_delhi_word_nihari
 ニハーリーって、一晩じっくり煮込む朝ごはんなんだって。……今、お昼過ぎ。完全に出遅れた
 # speaker: narrator
 彼女は本気で悔しがり、通りの鍋を一つずつのぞき込んだ。どの鍋も、もう底が見えている。

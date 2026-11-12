@@ -66,6 +66,7 @@ INCLUDE modules.ink
 # reaction: heroine,surprised,question
 ……あれ。これ、雨？　降り始めの、乾いた地面の匂い
 # speaker: enemy
+# local_word: gt_delhi_word_mitti
 ミッティ。土を焼いて閉じこめる。夏の終わりの、最初の雨だ
 # speaker: narrator
 {heroine_name}は手首を鼻に近づけたまま、しばらく動かなかった。ゾヘブが店先から口を挟む。

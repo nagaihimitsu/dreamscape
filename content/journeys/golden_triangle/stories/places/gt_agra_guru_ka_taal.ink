@@ -123,6 +123,7 @@ INCLUDE modules.ink
 # speaker: narrator
 食堂の窓の外を、トラックが一台、長い警笛を鳴らして通り過ぎた。ハルバンスは、その音が遠ざかるまで、黙って聞いていた。
 # speaker: gt_harbans
+# pause: 900
 ……冬は、だめだ。道が白い
 # speaker: gt_gurmeet
 じゃあ、夏は。夏なら、道は白くない。三か月だけ。うちのトラックの、助手席に乗ればいい

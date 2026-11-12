@@ -97,6 +97,7 @@ INCLUDE modules.ink
 # speaker: narrator
 ヴィムラーは、少しのあいだ、墓廟の赤い壁を見上げていた。
 # speaker: gt_vimla
+# local_word: gt_agra_word_bahu
 嫁いだ家で、三十年、『バフー』と呼ばれたの。嫁、という意味。夫の母も、夫の弟も、近所の人も。わたしの名前を呼んだのは、学校の書類と、夫のお葬式の日の役所の人だけ
 # speaker: gt_vimla
 死んだ後に付いた名前で、今も呼ばれ続けるのは、かわいそうでしょう。……せめて、お墓くらいは

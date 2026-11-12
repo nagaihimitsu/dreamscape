@@ -122,6 +122,7 @@ INCLUDE modules.ink
 # reaction: enemy,sweat
 大学の同級生だ。四十年ぶりに連絡が来て……いや、違う、これは調査だ
 # speaker: narrator
+# pause: 800
 沈黙。庭の水路の上を、風だけが渡っていく。最初に口を開いたのはスレーシュだった。
 # speaker: enemy
 提案がある。今日この廟で、誰も、誰にも会わなかった

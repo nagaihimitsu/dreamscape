@@ -1,0 +1,277 @@
+{
+  "schemaVersion": 1,
+  "words": [
+    {
+      "id": "gt_delhi_word_bas",
+      "cityId": "delhi",
+      "word": "बस",
+      "reading": "バス",
+      "meaningJa": "もういい、そこまで（十分だ）",
+      "noteJa": "「十分な」という意味の語で、「もういい！　やめて！」と言うときにも使う。英語の bus から来た同じ音の語（バス）とは別の語。",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（बस、p. 713）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%AC%E0%A4%B8&searchhws=yes",
+          "checkedAt": "2026-11-12",
+          "claimType": "documented_fact",
+          "claimJa": "बस（bas）の項：形容詞「十分な」、間投詞「もういい！　やめて！」。別の項に、英語の bus から来た「バス（乗り物）」がある。"
+        }
+      ]
+    },
+    {
+      "id": "gt_delhi_word_dadi",
+      "cityId": "delhi",
+      "word": "दादी",
+      "reading": "ダーディー",
+      "meaningJa": "父方のおばあさん",
+      "noteJa": "母方のおばあさんは、別の語（ナーニー）で呼ぶ。",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（दादी、p. 489）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%A6%E0%A4%BE%E0%A4%A6%E0%A5%80&searchhws=yes",
+          "checkedAt": "2026-11-12",
+          "claimType": "documented_fact",
+          "claimJa": "दादी（dādī）の項：「父方の祖母」。"
+        }
+      ]
+    },
+    {
+      "id": "gt_delhi_word_nihari",
+      "cityId": "delhi",
+      "word": "निहारी",
+      "reading": "ニハーリー",
+      "meaningJa": "朝ごはん（軽い朝の食事）",
+      "noteJa": "辞書では、नहारी（ナハーリー、軽い朝食）と同じ語の、地方の言い方とされている。",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（निहारी、p. 576）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%A8%E0%A4%BF%E0%A4%B9%E0%A4%BE%E0%A4%B0%E0%A5%80&searchhws=yes",
+          "checkedAt": "2026-11-12",
+          "claimType": "documented_fact",
+          "claimJa": "निहारी（nihārī）の項：नहारी と同じ語の地方の形。"
+        },
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（नहारी、p. 548）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%A8%E0%A4%B9%E0%A4%BE%E0%A4%B0%E0%A5%80&searchhws=yes",
+          "checkedAt": "2026-11-12",
+          "claimType": "documented_fact",
+          "claimJa": "नहारी（nahārī）の項：「軽い朝食」。"
+        }
+      ]
+    },
+    {
+      "id": "gt_delhi_word_mitti",
+      "cityId": "delhi",
+      "word": "मिट्टी",
+      "reading": "ミッティ",
+      "meaningJa": "土、土壌、粘土",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（मिट्टी、p. 811）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%AE%E0%A4%BF%E0%A4%9F%E0%A5%8D%E0%A4%9F%E0%A5%80&searchhws=yes",
+          "checkedAt": "2026-11-12",
+          "claimType": "documented_fact",
+          "claimJa": "मिट्टी（miṭṭī）の項：「土、土壌、粘土」「ほこり」。"
+        }
+      ]
+    },
+    {
+      "id": "gt_delhi_word_gurdwara",
+      "cityId": "delhi",
+      "word": "गुरुद्वारा",
+      "reading": "グルドワーラー",
+      "meaningJa": "シク教の礼拝所",
+      "noteJa": "もとの意味は「グル（師）の住まい」。",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（गुरु、p. 271）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%97%E0%A5%81%E0%A4%B0%E0%A5%81&searchhws=yes",
+          "checkedAt": "2026-11-12",
+          "claimType": "documented_fact",
+          "claimJa": "गुरु（guru）の項の中の गुरुद्वारा：「グルの住まい、シク教の寺院」。"
+        }
+      ]
+    },
+    {
+      "id": "gt_delhi_word_langar",
+      "cityId": "delhi",
+      "word": "लंगर",
+      "reading": "ランガル",
+      "meaningJa": "誰でも食事ができる、無料の台所（施しの食事）",
+      "noteJa": "同じ語に「錨（いかり）」という意味もある。",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（लंगर、p. 876）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%B2%E0%A4%82%E0%A4%97%E0%A4%B0&searchhws=yes",
+          "checkedAt": "2026-11-12",
+          "claimType": "documented_fact",
+          "claimJa": "लंगर（laṅgar）の項：「錨」のほか、「公共の台所、施しの家、困っている人に配る食べ物」。"
+        }
+      ]
+    },
+    {
+      "id": "gt_delhi_word_khichdi",
+      "cityId": "delhi",
+      "word": "खिचड़ी",
+      "reading": "キチュリー",
+      "meaningJa": "米と豆をいっしょに煮た料理",
+      "noteJa": "「ごちゃまぜ」という意味でも使う。",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（खिचड़ी、p. 237）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%96%E0%A4%BF%E0%A4%9A%E0%A4%A1%E0%A4%BC%E0%A5%80&searchhws=yes",
+          "checkedAt": "2026-11-12",
+          "claimType": "documented_fact",
+          "claimJa": "खिचड़ी（khicṛī）の項：「米と豆を、ギーと香辛料でいっしょに煮た料理」「混ぜこぜ」。"
+        }
+      ]
+    },
+    {
+      "id": "gt_delhi_word_sahayak",
+      "cityId": "delhi",
+      "word": "सहायक",
+      "reading": "サハーヤク",
+      "meaningJa": "助ける人、助手",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（सहायक、p. 998）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%B8%E0%A4%B9%E0%A4%BE%E0%A4%AF%E0%A4%95&searchhws=yes",
+          "checkedAt": "2026-11-12",
+          "claimType": "documented_fact",
+          "claimJa": "सहायक（sahāyak）の項：形容詞「助ける、補助の」、名詞「助手、仲間」。"
+        }
+      ]
+    },
+    {
+      "id": "gt_delhi_word_chandni",
+      "cityId": "delhi",
+      "word": "चाँदनी",
+      "reading": "チャンドニー",
+      "meaningJa": "月の光",
+      "noteJa": "チャンドニー・チョーク（月光の広場）の「チャンドニー」。",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（चाँदनी、p. 309）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%9A%E0%A4%BE%E0%A4%81%E0%A4%A6%E0%A4%A8%E0%A5%80&searchhws=yes",
+          "checkedAt": "2026-11-12",
+          "claimType": "documented_fact",
+          "claimJa": "चाँदनी（cāṁdnī）の項：「月光、月の光」。"
+        }
+      ]
+    },
+    {
+      "id": "gt_agra_word_haan",
+      "cityId": "agra",
+      "word": "हाँ",
+      "reading": "ハーン",
+      "meaningJa": "はい",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（हाँ、p. 1066）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%B9%E0%A4%BE%E0%A4%81&searchhws=yes",
+          "checkedAt": "2026-11-12",
+          "claimType": "documented_fact",
+          "claimJa": "हाँ（hāṁ）の項：間投詞「はい」。"
+        }
+      ]
+    },
+    {
+      "id": "gt_agra_word_bahu",
+      "cityId": "agra",
+      "word": "बहू",
+      "reading": "バフー",
+      "meaningJa": "息子の妻（嫁）、花嫁",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（बहू、p. 717）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%AC%E0%A4%B9%E0%A5%82&searchhws=yes",
+          "checkedAt": "2026-11-12",
+          "claimType": "documented_fact",
+          "claimJa": "बहू（bahū）の項：「息子の妻」「若い妻、花嫁」。"
+        }
+      ]
+    },
+    {
+      "id": "gt_agra_word_petha",
+      "cityId": "agra",
+      "word": "पेठा",
+      "reading": "ペーター",
+      "meaningJa": "冬瓜（とうがん）。その砂糖漬けの菓子",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（पेठा、p. 644）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%AA%E0%A5%87%E0%A4%A0%E0%A4%BE&searchhws=yes",
+          "checkedAt": "2026-11-12",
+          "claimType": "documented_fact",
+          "claimJa": "पेठा（peṭhā）の項：「トウガン（Benincasa cerifera）」「砂糖漬けにしたペーターの切り身」。"
+        }
+      ]
+    },
+    {
+      "id": "gt_jaipur_word_mehndi",
+      "cityId": "jaipur",
+      "word": "मेहँदी",
+      "reading": "メヘンディ",
+      "meaningJa": "ヘナ。その葉の粉で手や足を染めること",
+      "noteJa": "花嫁の手足をヘナで染める、結婚の祝いの集まりの名前にもなる。",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（मेहँदी、p. 833）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%AE%E0%A5%87%E0%A4%B9%E0%A4%81%E0%A4%A6%E0%A5%80&searchhws=yes",
+          "checkedAt": "2026-11-12",
+          "claimType": "documented_fact",
+          "claimJa": "मेहँदी（mehãdī）の項：「ヘナの木。葉の粉を練って、とくに女性が手や足を染めるのに使う」「花嫁の手足を染める結婚の祝い」。"
+        }
+      ]
+    },
+    {
+      "id": "gt_jaipur_word_nani",
+      "cityId": "jaipur",
+      "word": "नानी",
+      "reading": "ナーニー",
+      "meaningJa": "母方のおばあさん",
+      "noteJa": "父方のおばあさんは、別の語（ダーディー）で呼ぶ。",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（नानी、p. 553）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%A8%E0%A4%BE%E0%A4%A8%E0%A5%80&searchhws=yes",
+          "checkedAt": "2026-11-12",
+          "claimType": "documented_fact",
+          "claimJa": "नानी（nānī）の項：「母方の祖母」。"
+        }
+      ]
+    },
+    {
+      "id": "gt_jaipur_word_sawai",
+      "cityId": "jaipur",
+      "word": "सवाई",
+      "reading": "サワーイー",
+      "meaningJa": "一と四分の一（倍の）",
+      "sources": [
+        {
+          "publisher": "Digital South Asia Library（シカゴ大学）",
+          "title": "R. S. McGregor, The Oxford Hindi-English Dictionary（सवाई、p. 995）",
+          "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%B8%E0%A4%B5%E0%A4%BE%E0%A4%88&searchhws=yes",
+          "checkedAt": "2026-11-12",
+          "claimType": "documented_fact",
+          "claimJa": "सवाई（savāī）の項：形容詞「一と四分の一倍の、四分の一だけ大きい」。"
+        }
+      ]
+    }
+  ]
+}
