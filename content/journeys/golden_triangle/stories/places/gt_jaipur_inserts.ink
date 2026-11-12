@@ -13,6 +13,7 @@ INCLUDE modules.ink
 # when: date gt_jaipur_date_jal_mahal
 # when: time night
 # background: gt_bg_jaipur_hotel_hub
+# bgm: feather_waltz
 { cond("seen gt_jaipur_hotel_mehndi_night"):
     # speaker: narrator
     今夜も、彼女が手のひらを差し出してきた。模様は、前に見たときより、ずっと濃くなっている。
@@ -116,6 +117,7 @@ INCLUDE modules.ink
 # priority: +1
 # when: date gt_jaipur_date_jal_mahal
 # background: gt_bg_jaipur_hotel_hub
+# bgm: morning
 # speaker: narrator
 朝、宿の帳場。手のひらの模様は、一晩で、オレンジから赤茶色のほうへ、ぐっと濃くなっていた。フロントの女性が、それを見て声を上げた。
 # speaker: gt_jaipur_hotel_front
@@ -165,6 +167,7 @@ INCLUDE modules.ink
 # priority: -1
 # on_done: item gt_jaipur_wedding_envelope
 # background: gt_bg_jaipur_hotel_hub
+# bgm: morning
 # speaker: narrator
 今朝、宿の中庭のテーブルに、彼女が白い封筒を一枚置いた。着いた日に、フロントの女性に教わったとおり。お祝いは現金で、金額の最後に一ルピーを足す。
 # speaker: heroine
@@ -228,6 +231,7 @@ INCLUDE modules.ink
 # when: item gt_jaipur_wedding_envelope held
 # on_done: use gt_jaipur_wedding_envelope
 # background: gt_bg_jaipur_hawa_mahal
+# bgm: gt_naraina
 # speaker: narrator
 踊りの輪がひと息ついたころ、彼女は鞄から封筒を取り出して、カムラに差し出した。
 # speaker: heroine
@@ -259,6 +263,7 @@ INCLUDE modules.ink
 # when: date gt_delhi_date_agrasen_baoli
 # sources: none
 # background: gt_bg_jaipur_hawa_mahal
+# bgm: gt_naraina
 # speaker: narrator
 踊りの輪がほどけたころ、花嫁のいとこのプージャーが、携帯を握りしめて走ってきた。画面と彼女の顔を、交互に見る。
 # speaker: gt_pooja

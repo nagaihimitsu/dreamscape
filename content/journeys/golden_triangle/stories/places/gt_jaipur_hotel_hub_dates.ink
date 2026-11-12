@@ -13,6 +13,7 @@ INCLUDE modules.ink
 # when: not couple
 # when: time night
 # background: gt_bg_hotel_rooftop_night
+# bgm: immersed
 # speaker: narrator
 宿の屋上から見る旧市街は、夜になると、桃色が橙色に変わる。どこか遠くで、結婚式の楽隊が鳴っていた。太鼓と、ラッパと、誰かの歓声。
 # speaker: heroine
@@ -144,6 +145,7 @@ INCLUDE modules.ink
 # until: date gt_delhi_date_reassurance
 # until: date gt_agra_date_reassurance
 # background: gt_bg_hotel_rooftop_night
+# bgm: stages_of_grief
 # speaker: narrator
 宿の屋上に上がると、彼女が素焼きのカップを二つ持って待っていた。湯気が、二本並んで上っている。
 # speaker: heroine

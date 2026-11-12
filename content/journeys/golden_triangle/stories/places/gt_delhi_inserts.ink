@@ -100,6 +100,7 @@ INCLUDE modules.ink
 # until: seen gt_delhi_hotel_sick_morning
 # sources: none
 # background: gt_bg_delhi_hotel_hub
+# bgm: meditation_impromptu_01
 # speaker: narrator
 # quiet: scene
 夜中の二時。宿の廊下の長椅子で、こちらは天井の扇風機を見上げていた。洗面所との往復は、もう三回目になる。
@@ -154,6 +155,7 @@ INCLUDE modules.ink
 # until: seen gt_delhi_hotel_sick_morning
 # sources: none
 # background: gt_bg_delhi_hotel_hub
+# bgm: meditation_impromptu_01
 # speaker: narrator
 # quiet: scene
 # se: phone_vibrate
@@ -211,6 +213,7 @@ INCLUDE modules.ink
 # priority: +1
 # when: flag gt_delhi_golgappa_sick
 # background: gt_bg_delhi_hotel_hub
+# bgm: morning
 { cond("flag gt_delhi_player_sick"):
     # speaker: narrator
     # se: door_knock
@@ -278,6 +281,7 @@ INCLUDE modules.ink
 # at: depart delhi
 # priority: -2
 # background: gt_bg_delhi_station_front
+# bgm: gt_vadodora
 # speaker: narrator
 宿の主人の車を降りると、ニューデリー駅の正面は、人と荷物と呼び込みの声で埋まっていた。道の向かいはパハールガンジ。安宿と土産物屋と両替屋の看板が、空が見えないほど重なっている。
 アーグラ行きの列車まで、あと五十分。彼女が携帯で乗車券を確かめていると、白いシャツに首から名札を下げた青年が、すっと隣に並んだ。
@@ -456,6 +460,7 @@ No, thank you.
 # at: depart delhi
 # priority: -1
 # background: gt_bg_delhi_station
+# bgm: gt_vadodora_chill_mix
 # speaker: narrator
 ホームは、発車を待つ人であふれていた。赤いシャツに真鍮の腕章をつけた荷運びの男たちが、スーツケースを三つ、頭の上に積んで、人の間をすり抜けていく。
 # local_word: gt_delhi_word_sahayak

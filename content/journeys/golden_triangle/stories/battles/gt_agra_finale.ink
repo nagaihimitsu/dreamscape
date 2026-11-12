@@ -144,6 +144,7 @@ INCLUDE modules.ink
     市場と隊商宿だよ。タージの南門の外に、最初から造られた町だ。墓と一緒に生まれた町なんだ
 }
 # speaker: heroine
+# bgm: touching_moments_four
 アンワルさん。わたし、今日聞いた中で一番泣けるのは、アンワルさんの話だと思います
 # speaker: enemy
 わしの？

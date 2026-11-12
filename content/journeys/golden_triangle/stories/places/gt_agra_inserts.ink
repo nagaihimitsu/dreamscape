@@ -11,6 +11,7 @@ INCLUDE modules.ink
 # when: date gt_delhi_date_agrasen_baoli
 # sources: none
 # background: gt_bg_agra_hotel_hub
+# bgm: gt_jalandhar
 # speaker: narrator
 帳場の前を通りかかると、サミールが携帯の画面と彼女の顔を、三回見比べた。
 # speaker: gt_samir

@@ -1,0 +1,293 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "incompetech_jalandhar",
+      "titleJa": "Jalandhar",
+      "author": "Kevin MacLeod",
+      "license": "CC BY 4.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1400018",
+      "site": "incompetech.com",
+      "creditJa": "\"Jalandhar\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 http://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+      "id": "incompetech_vadodora",
+      "titleJa": "Vadodora",
+      "author": "Kevin MacLeod",
+      "license": "CC BY 4.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1400049",
+      "site": "incompetech.com",
+      "creditJa": "\"Vadodora\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 http://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+      "id": "incompetech_vadodora_chill_mix",
+      "titleJa": "Vadodora Chill Mix",
+      "author": "Kevin MacLeod",
+      "license": "CC BY 4.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1400050",
+      "site": "incompetech.com",
+      "creditJa": "\"Vadodora Chill Mix\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 http://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+      "id": "incompetech_naraina",
+      "titleJa": "Naraina",
+      "author": "Kevin MacLeod",
+      "license": "CC BY 4.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1400053",
+      "site": "incompetech.com",
+      "creditJa": "\"Naraina\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 http://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+      "id": "incompetech_dhaka",
+      "titleJa": "Dhaka",
+      "author": "Kevin MacLeod",
+      "license": "CC BY 4.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1400003",
+      "site": "incompetech.com",
+      "creditJa": "\"Dhaka\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 http://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+      "id": "incompetech_mystery_bazaar",
+      "titleJa": "Mystery Bazaar",
+      "author": "Kevin MacLeod",
+      "license": "CC BY 4.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1700005",
+      "site": "incompetech.com",
+      "creditJa": "\"Mystery Bazaar\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 http://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+      "id": "incompetech_hidden_wonders",
+      "titleJa": "Hidden Wonders",
+      "author": "Kevin MacLeod",
+      "license": "CC BY 4.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1700006",
+      "site": "incompetech.com",
+      "creditJa": "\"Hidden Wonders\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 http://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+      "id": "incompetech_desert_city",
+      "titleJa": "Desert City",
+      "author": "Kevin MacLeod",
+      "license": "CC BY 4.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100564",
+      "site": "incompetech.com",
+      "creditJa": "\"Desert City\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 http://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+      "id": "oga_electronic_indian_tabla",
+      "titleJa": "Electronic Indian tabla tune",
+      "author": "obscure music",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/electronic-indian-tabla-tune",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "oga_mystical_enigmatic",
+      "titleJa": "Mystical Enigmatic Background Music",
+      "author": "CleytonKauffman",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/mystical-enigmatic-background-music",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "oga_india_rythm",
+      "titleJa": "india rythm",
+      "author": "SouljahdeShiva",
+      "license": "CC BY 3.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/india-rythm",
+      "site": "OpenGameArt.org",
+      "creditJa": "\"india rythm\" by SouljahdeShiva (OpenGameArt.org) Licensed under Creative Commons: By Attribution 3.0 http://creativecommons.org/licenses/by/3.0/"
+    },
+    {
+      "id": "oga_relics_of_past",
+      "titleJa": "Relics of Past",
+      "author": "Centurion_of_war",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/relics-of-past",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "oga_zen_theme",
+      "titleJa": "Zen Theme",
+      "author": "beardalaxy",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/zen-theme",
+      "site": "OpenGameArt.org"
+    },
+    {
+      "id": "oga_a_newcomer",
+      "titleJa": "A Newcomer (Indian tense music)",
+      "author": "Emmntt",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-12",
+      "url": "https://opengameart.org/content/a-newcomer-indian-tense-music",
+      "site": "OpenGameArt.org"
+    }
+  ],
+  "tracks": [
+    {
+      "id": "gt_jalandhar",
+      "useJa": "インドの到着の場面、インド門・メヘターブ・バーグ・ジャル・マハル",
+      "sources": [
+        "incompetech_jalandhar"
+      ],
+      "fromJa": "Jalandhar.mp3 の頭から3分（終わりの4秒を小さく）。前後の無音を切り、ほかの曲と音の大きさをそろえた"
+    },
+    {
+      "id": "gt_vadodora",
+      "useJa": "チャンドニー・チョーク、シティ・パレス、市場や駅のにぎわい",
+      "sources": [
+        "incompetech_vadodora"
+      ],
+      "fromJa": "Vadodora.mp3 の頭から3分（終わりの4秒を小さく）。前後の無音を切り、ほかの曲と音の大きさをそろえた"
+    },
+    {
+      "id": "gt_vadodora_chill_mix",
+      "useJa": "ロディ・ガーデン、ラム・バーグ、ハワー・マハル",
+      "sources": [
+        "incompetech_vadodora_chill_mix"
+      ],
+      "fromJa": "Vadodora Chill Mix.mp3 の頭から3分（終わりの4秒を小さく）。前後の無音を切り、ほかの曲と音の大きさをそろえた"
+    },
+    {
+      "id": "gt_naraina",
+      "useJa": "ジャイプールの結婚式の夜",
+      "sources": [
+        "incompetech_naraina"
+      ],
+      "fromJa": "Naraina.mp3 の頭から3分（終わりの4秒を小さく）。前後の無音を切り、ほかの曲と音の大きさをそろえた"
+    },
+    {
+      "id": "gt_tabla_tune",
+      "useJa": "アクバル廟、ジョーハリー・バザール",
+      "sources": [
+        "oga_electronic_indian_tabla"
+      ],
+      "fromJa": "Electronic Indian tabla tune の mp3 の全体。前後の無音を切り、ほかの曲と音の大きさをそろえた"
+    },
+    {
+      "id": "gt_mystical_bazaar",
+      "useJa": "アグラセン・キ・バオリ、アルバート・ホール博物館",
+      "sources": [
+        "oga_mystical_enigmatic"
+      ],
+      "fromJa": "CleytonRX - Mystical Enigmatic Background Music.mp3 の全体。前後の無音を切り、ほかの曲と音の大きさをそろえた"
+    },
+    {
+      "id": "gt_india_rhythm",
+      "useJa": "グルドワーラーの台所、ツアーの車での移動",
+      "sources": [
+        "oga_india_rythm"
+      ],
+      "fromJa": "northindianbeat.mp3 の全体（くり返し用に作られた曲なので切らない）。ほかの曲と音の大きさをそろえた"
+    },
+    {
+      "id": "gt_dhaka",
+      "useJa": "タージ・マハル、マリアム・ウッザマーニー廟、ナハルガル城",
+      "sources": [
+        "incompetech_dhaka"
+      ],
+      "fromJa": "Dhaka.mp3 の頭から3分（終わりの4秒を小さく）。前後の無音を切り、ほかの曲と音の大きさをそろえた"
+    },
+    {
+      "id": "gt_relics_of_past",
+      "useJa": "ジャーマー・マスジド、ファテープル・シークリー、パンナ・ミーナー・クンド",
+      "sources": [
+        "oga_relics_of_past"
+      ],
+      "fromJa": "relic_of_past.v2ogg_0.ogg の全体（くり返し用に作られた曲なので切らない）。ほかの曲と音の大きさをそろえた"
+    },
+    {
+      "id": "gt_zen_theme",
+      "useJa": "ロータス寺院、チーニー・カ・ラウザ、ジャンタル・マンタル",
+      "sources": [
+        "oga_zen_theme"
+      ],
+      "fromJa": "trippington_in_game.ogg の全体。前後の無音を切り、ほかの曲と音の大きさをそろえた"
+    },
+    {
+      "id": "gt_mystery_bazaar",
+      "useJa": "フマユーン廟、イティマード・ウッダウラ廟",
+      "sources": [
+        "incompetech_mystery_bazaar"
+      ],
+      "fromJa": "Mystery Bazaar.mp3 の全体。前後の無音を切り、ほかの曲と音の大きさをそろえた"
+    },
+    {
+      "id": "gt_hidden_wonders",
+      "useJa": "レッド・フォート、アーグラ城、ジャイガル城",
+      "sources": [
+        "incompetech_hidden_wonders"
+      ],
+      "fromJa": "Hidden Wonders.mp3 の全体。前後の無音を切り、ほかの曲と音の大きさをそろえた"
+    },
+    {
+      "id": "gt_desert_city",
+      "useJa": "クトゥブ・ミナール、アンベール城",
+      "sources": [
+        "incompetech_desert_city"
+      ],
+      "fromJa": "Desert City.mp3 の全体（くり返し用に作られた曲なので切らない）。ほかの曲と音の大きさをそろえた"
+    },
+    {
+      "id": "gt_a_newcomer",
+      "useJa": "デリーのフィナーレの、夜の旧市街を捜す場面",
+      "sources": [
+        "oga_a_newcomer"
+      ],
+      "fromJa": "a_newcomer_full.wav の全体（くり返し用に作られた曲なので切らない）。ほかの曲と音の大きさをそろえた"
+    }
+  ],
+  "play": {
+    "place": "gt_jalandhar",
+    "arrival": "gt_jalandhar",
+    "places": {
+      "delhi_red_fort": "gt_hidden_wonders",
+      "delhi_qutb_minar": "gt_desert_city",
+      "delhi_humayun_tomb": "gt_mystery_bazaar",
+      "delhi_india_gate": "gt_jalandhar",
+      "delhi_jama_masjid": "gt_relics_of_past",
+      "delhi_chandni_chowk": "gt_vadodora",
+      "delhi_lodhi_garden": "gt_vadodora_chill_mix",
+      "delhi_agrasen_baoli": "gt_mystical_bazaar",
+      "delhi_lotus_temple": "gt_zen_theme",
+      "delhi_bangla_sahib": "gt_india_rhythm",
+      "delhi_hotel_hub": "late_night_radio",
+      "agra_taj_mahal": "gt_dhaka",
+      "agra_agra_fort": "gt_hidden_wonders",
+      "agra_itimad_tomb": "gt_mystery_bazaar",
+      "agra_mehtab_bagh": "gt_jalandhar",
+      "agra_fatehpur_sikri": "gt_relics_of_past",
+      "agra_akbar_tomb": "gt_tabla_tune",
+      "agra_ram_bagh": "gt_vadodora_chill_mix",
+      "agra_chini_rauza": "gt_zen_theme",
+      "agra_mariam_tomb": "gt_dhaka",
+      "agra_guru_ka_taal": "gt_india_rhythm",
+      "agra_hotel_hub": "late_night_radio",
+      "jaipur_amber_fort": "gt_desert_city",
+      "jaipur_hawa_mahal": "gt_vadodora_chill_mix",
+      "jaipur_city_palace": "gt_vadodora",
+      "jaipur_jantar_mantar": "gt_zen_theme",
+      "jaipur_jal_mahal": "gt_jalandhar",
+      "jaipur_nahargarh_fort": "gt_dhaka",
+      "jaipur_albert_hall": "gt_mystical_bazaar",
+      "jaipur_jaigarh_fort": "gt_hidden_wonders",
+      "jaipur_johari_bazaar": "gt_tabla_tune",
+      "jaipur_panna_meena_kund": "gt_relics_of_past",
+      "jaipur_hotel_hub": "late_night_radio"
+    }
+  }
+}
