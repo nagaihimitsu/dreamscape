@@ -83,7 +83,7 @@ export function rememberWords(storage: StorageLike, record: LearnedWords, ids: r
   return added;
 }
 
-type FrameWords = { localWordIds?: readonly string[]; quiet?: string } | null;
+type FrameWords = { localWordIds?: readonly string[]; quiet?: string; seId?: string } | null;
 /** The parts of the game state that hold the story scenes' lines. */
 export type SceneFrames = {
   activeEncounter: { frame: FrameWords } | null;

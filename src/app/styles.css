@@ -980,6 +980,20 @@ dialog.modal[open] {
   white-space: nowrap;
   border: 0;
 }
+/* The notices over a story scene (GameApp: 「ことばを覚えた」, 「写真の札」): right under the header, one under the other
+   when both come at once. Fixed over the scene; it takes no taps (a tap there reaches the scene below). */
+.scene-notices {
+  position: fixed;
+  z-index: 14;
+  top: var(--scene-top, env(safe-area-inset-top));
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 16px 0;
+  pointer-events: none;
+}
 /* 交際開始 (UI redesign stage 2.4): the title card's parchment over the place's picture. */
 .ending {
   padding-top: 42px;

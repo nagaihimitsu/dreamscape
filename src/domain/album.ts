@@ -66,6 +66,15 @@ export function recordAlbumPhoto(state: GameState): GameState {
 }
 
 /**
+ * The photo an action has just put in the album (the last of `next`'s, when it has more than `previous`), for the notice
+ * that says so (GameApp: AlbumPhotoNotice); null when it put none. Only an action adds a photo once a game runs (a load,
+ * a new game or Debug's return is no action, and recordAlbumPhoto never adds an image already there).
+ */
+export function photoTaken(previous: Pick<GameState, "album">, next: Pick<GameState, "album">): AlbumPhoto | null {
+  return next.album.length > previous.album.length ? next.album.at(-1) ?? null : null;
+}
+
+/**
  * A saved album names only what this build knows, as the save's other references do: a photo the content still has
  * (an album image of the build, which a `# photo:` may name), a city of the save's journey and a place of that city.
  * Otherwise the save is not loaded and its data is kept (persistence loadGame).

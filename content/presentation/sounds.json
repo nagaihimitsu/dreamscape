@@ -326,6 +326,14 @@
       "fromJa": "jingles_PIZZA05"
     },
     {
+      "id": "album_photo",
+      "useJa": "アルバムに写真が入ったとき",
+      "sources": [
+        "kenney_rpg"
+      ],
+      "fromJa": "bookFlip3"
+    },
+    {
       "id": "money",
       "useJa": "お金を払った・受け取ったとき",
       "sources": [

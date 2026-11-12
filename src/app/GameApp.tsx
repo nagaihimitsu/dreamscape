@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import {
+  albumImages,
   balance,
   dates,
   presentation,
@@ -59,6 +60,8 @@ import { CityRecords } from "../features/journey/CityProgress";
 import { MetPeople } from "../features/journey/MetPeople";
 import { freeTimePhotos, PhotoCredits } from "../features/journey/PhotoCredits";
 import { AlbumDialog } from "../features/journey/AlbumDialog";
+import { ALBUM_PHOTO_NOTICE_MS, AlbumPhotoNotice, FIRST_ALBUM_PHOTO_NOTICE_MS, type AlbumPhotoNoticeState } from "../features/journey/AlbumPhotoNotice";
+import { photoTaken } from "../domain/album";
 import { TitleNameFields } from "../features/journey/TitleNameFields";
 import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
@@ -177,11 +180,21 @@ export function GameApp({
   const playMoveRef = useRef<((previous: GameState, next: GameState) => void) | null>(null);
   // The journey's moments a saved change starts (useJourneyMoments, set once it is ready below).
   const momentsRef = useRef<((previous: GameState, next: GameState) => void) | null>(null);
+  // 「写真の札」 (AlbumPhotoNotice): the photo the player's last action put in the album, for a few seconds.
+  const [photoNotice, setPhotoNotice] = useState<AlbumPhotoNoticeState | null>(null);
   const session = useGameSession(storage, displaySettings.value.autoSave, (previous, next) => {
     // The player acted: the scene a load brought back is theirs again, and its cues sound (sound-effects.ts).
     holdSceneCues(false);
     playMoveRef.current?.(previous, next);
     momentsRef.current?.(previous, next);
+    // A line's # photo: just put a photo in the album: its card, and its sound unless the line is quiet or rings its own
+    // # se: (and not during 高速送り: playCue). A load or a new game is no action, so it never shows what they bring.
+    const photo = photoTaken(previous, next);
+    if (photo) {
+      setPhotoNotice((last) => ({ id: (last?.id ?? 0) + 1, photo, first: next.album.length === 1 }));
+      const line = lineFrameOnScreen(next);
+      if (!line?.quiet && !line?.seId) playCue("album_photo");
+    }
     // The action that ended a tour (tour stage 2a) says so in free time.
     if (previous.tour && !next.tour && next.completedTourIds.length > previous.completedTourIds.length) session.setNotice("ツアーが終わりました。");
     if (!showChangesRef.current) return;
@@ -335,8 +348,9 @@ export function GameApp({
     nightShown.current = null;
     // The moments waiting belonged to the play before; the loaded game shows its recap.
     moments.restart(true);
-    // A load can bring back the same date run (the same scene key): its earlier change is not shown again.
+    // A load can bring back the same date run (the same scene key): its earlier change is not shown again, nor its photo card.
     setShownChange(null);
+    setPhotoNotice(null);
     // A load replaces the screen under the finger like a scene start, also when the same scene
     // comes back (a date, battle or encounter is a new instance: sceneEpoch): the second tap of a
     // double tap on 「ロード」 or 「ロードする」 must not read the restored line on.
@@ -374,6 +388,15 @@ export function GameApp({
     game?.activeTourism?.phase === "guide" ||
     (!game?.activeTourism && game?.activeBattle?.phase === "dialogue")
   );
+  // The photo card goes after its few seconds, or with the story scene it was shown over.
+  useEffect(() => {
+    if (!photoNotice) return;
+    const timer = window.setTimeout(() => setPhotoNotice(null), photoNotice.first ? FIRST_ALBUM_PHOTO_NOTICE_MS : ALBUM_PHOTO_NOTICE_MS);
+    return () => window.clearTimeout(timer);
+  }, [photoNotice]);
+  useEffect(() => {
+    if (!conversationActive) setPhotoNotice(null);
+  }, [conversationActive]);
   const mobilePlayActive = !!(
     conversationActive || (!game?.activeTourism && game?.activeBattle)
   );
@@ -573,8 +596,14 @@ export function GameApp({
           </div>
         )}
         {moments.recapCard}
-        {/* Only where a line can teach a word: a story scene of a build with words of the country. */}
-        {conversationActive && localWords.length > 0 && <LocalWordNotice notice={learnedWords.notice} />}
+        {/* Only where a line can teach a word or take a photo: a story scene of a build with words of the country or
+            album images. Their status regions stay mounted through the scene, so a new notice is announced. */}
+        {conversationActive && (localWords.length > 0 || albumImages.length > 0) && (
+          <div className="scene-notices">
+            {localWords.length > 0 && <LocalWordNotice notice={learnedWords.notice} />}
+            {albumImages.length > 0 && <AlbumPhotoNotice notice={photoNotice} />}
+          </div>
+        )}
         {!game ? (
           <>
             <div className="intro-art" data-testid="title-art">
