@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { getCityContent } from "../content";
 import type { StoryPhoto } from "../content/tags";
 import { cityStart, openTourismScene } from "../dev/scenario-builders";
-import { recordAlbumPhoto } from "./album";
+import { photoTaken, recordAlbumPhoto } from "./album";
 import { albumPhotoSchema } from "./album-state";
 import { validateGameState, type GameState } from "./game";
 import { applyPlayerAction } from "./player-action";
@@ -56,6 +56,16 @@ describe("the album's recording rule", () => {
       .toEqual([expect.objectContaining({ imageId: "smp_album_market", storyId: GUIDE })]);
     // (A load or a refused action changes nothing: the line it shows was taken when it was first shown.)
     expect(applyPlayerAction(shown, (current) => current, () => 0)).toBe(shown);
+  });
+
+  it("names the photo an action has just taken, for its notice, and none when the album did not grow", () => {
+    const plain = guideWith(undefined);
+    const taken = recordAlbumPhoto(guideWith({ imageId: "smp_album_market", caption: "朝市の屋根" }));
+    expect(photoTaken(plain, taken)).toEqual(taken.album[0]);
+    expect(photoTaken(taken, taken)).toBeNull();
+    expect(photoTaken(taken, recordAlbumPhoto(guideWith({ imageId: "smp_album_market" }, taken)))).toBeNull();
+    const next = recordAlbumPhoto(guideWith({ imageId: "smp_album_library" }, taken));
+    expect(photoTaken(taken, next)?.imageId).toBe("smp_album_library");
   });
 });
 

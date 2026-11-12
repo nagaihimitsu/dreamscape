@@ -36,7 +36,7 @@ export const SYSTEM_SOUND_IDS = [
   "ui_tap", "ui_confirm", "ui_open", "ui_close", "ui_page", "ui_denied", "save",
   "phone_receive", "phone_send", "letter_open", "name_cutin", "recall", "local_word",
   "quiz_correct", "quiz_incorrect", "quiz_perfect", "quiz_reasoning", "quiz_result",
-  "item_get", "money",
+  "item_get", "money", "album_photo",
   "travel_walk", "travel_rail", "travel_car", "travel_bus", "travel_tram", "travel_three_wheeler", "travel_bicycle",
   "city_arrive", "city_clear", "time_passage", "night_rest", "episode_title",
 ] as const;
