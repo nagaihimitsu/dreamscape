@@ -43,6 +43,7 @@ INCLUDE modules.ink
         三回目に呼んだとき、すぐ後ろの扉の陰から、くすくす笑う声がした。
         # speaker: heroine
         # reaction: heroine,teasing_big,music
+        # photo: gt_album_j28 # photo_caption: 同じ形の扉が続く廊下で、かくれんぼ
         ふふっ、呼ばれたら、出たくなっちゃうでしょ。ずるい探し方。でも、うれしい探し方
     }
 * [部屋を一つずつ、開けていく # option: door_by_door]

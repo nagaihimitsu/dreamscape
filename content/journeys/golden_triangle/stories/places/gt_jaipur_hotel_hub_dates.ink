@@ -38,6 +38,7 @@ INCLUDE modules.ink
     迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて。……わたしも、一緒にいたい。旅が終わっても
     # speaker: heroine
     # reaction: heroine,teasing,heart
+    # photo: gt_album_j43 # photo_caption: 楽隊の音の屋上の告白
     ふふ。顔、すごいことになってる。わたしも、たぶん、同じ顔してるけど
     # speaker: heroine
     # emotion: smile
@@ -106,6 +107,7 @@ INCLUDE modules.ink
     }
     { cond("flag gt_jaipur_mehndi_her_secret") and cond("seen gt_jaipur_hotel_mehndi_morning"):
         # speaker: narrator
+        # recall: gt_album_j26
         彼女は、手のひらを一度開いて、また閉じた。メヘンディの模様は、まだ濃く残っている。
     }
 - else:
