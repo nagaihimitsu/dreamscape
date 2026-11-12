@@ -62,6 +62,9 @@
     "imagePath": "assets/tourism/india/agra_taj_mahal.webp",
     "captionJa": "アーグラ ／ タージ・マハル"
   },
+  "openingMovie": {
+    "videoPath": "assets/movies/gt_opening.mp4"
+  },
   "authoring": {
     "eventPrefix": "gt",
     "observationFile": "authoring/journeys/golden_triangle/drafts/observation-cards.json",

@@ -223,6 +223,10 @@ export const ops = {
     const start = ops.startButton(page);
     await expect(start).toHaveAccessibleName(ops.startLabel);
     await start.click();
+    // A journey with an opening movie (manifest openingMovie) plays it first: skip it, as a player may. A browser that
+    // cannot play it ends it by itself, so it may be gone already.
+    if (await page.getByTestId("opening-movie").isVisible().catch(() => false))
+      await page.getByTestId("opening-movie-skip").click().catch(() => undefined);
   },
   /** Title screen: the start button, whatever it says (「旅をはじめる」, or 「元のデータを退避して／残して新しく始める」 over an unreadable save). */
   startButton(page: Page): Locator {

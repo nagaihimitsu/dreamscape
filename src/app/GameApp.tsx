@@ -63,6 +63,7 @@ import { MetPeople } from "../features/journey/MetPeople";
 import { freeTimePhotos, PhotoCredits } from "../features/journey/PhotoCredits";
 import { AlbumDialog } from "../features/journey/AlbumDialog";
 import { ALBUM_PHOTO_NOTICE_MS, AlbumPhotoNotice, FIRST_ALBUM_PHOTO_NOTICE_MS, type AlbumPhotoNoticeState } from "../features/journey/AlbumPhotoNotice";
+import { OpeningMovie } from "../features/journey/OpeningMovie";
 import { photoTaken } from "../domain/album";
 import { TitleNameFields } from "../features/journey/TitleNameFields";
 import { nameOrDefault } from "../domain/player-names";
@@ -187,6 +188,8 @@ export function GameApp({
   const momentsRef = useRef<((previous: GameState, next: GameState) => void) | null>(null);
   // 「写真の札」 (AlbumPhotoNotice): the photo the player's last action put in the album, for a few seconds.
   const [photoNotice, setPhotoNotice] = useState<AlbumPhotoNoticeState | null>(null);
+  // A journey's opening movie (manifest openingMovie) between 「旅をはじめる」 and the new game, with the names it starts with.
+  const [opening, setOpening] = useState<{ videoPath: string; player: string; heroine: string } | null>(null);
   const session = useGameSession(storage, displaySettings.value.autoSave, (previous, next) => {
     // The player acted: the scene a load brought back is theirs again, and its cues sound (sound-effects.ts).
     holdSceneCues(false);
@@ -325,11 +328,20 @@ export function GameApp({
 
   function begin(event: FormEvent) {
     event.preventDefault();
+    playSe("ui_confirm");
+    const playerName = nameOrDefault(player, balance.defaultPlayerName);
+    const heroineName = nameOrDefault(heroine, balance.defaultHeroineName);
+    // A journey with an opening movie plays it first (not in Debug); the game starts when it ends, so its first scene
+    // (the arrival's title, its sounds) is not run under the movie.
+    const movie = isDebug ? undefined : getJourney(journeyId)?.openingMovie;
+    if (movie) setOpening({ videoPath: movie.videoPath, player: playerName, heroine: heroineName });
+    else startJourney(playerName, heroineName);
+  }
+  function startJourney(playerName: string, heroineName: string) {
     freeTimeReturn.current = null;
     moments.restart(false);
-    playSe("ui_confirm");
     holdSceneCues(false);
-    session.begin(nameOrDefault(player, balance.defaultPlayerName), nameOrDefault(heroine, balance.defaultHeroineName), journeyId);
+    session.begin(playerName, heroineName, journeyId);
   }
   function requestDelete() {
     const result = session.prepareDelete();
@@ -440,7 +452,7 @@ export function GameApp({
   const musicJourneyId = (game && getJourneyForCity(game.currentCityId)?.id) ?? journeyId;
   useSceneMusic(sceneMusic(journeyMusicPlay(musicJourneyId), {
     game, endRoll: moments.endRollShown, nightVisual, riding, packing: !!moments.packingScene,
-    romanceEnding: showRomanceEnding, nightScreen: !!(nightScreen && dayEnd),
+    romanceEnding: showRomanceEnding, nightScreen: !!(nightScreen && dayEnd), opening: !!opening,
   }));
   const shownScreen = useRef(screen);
   useEffect(() => {
@@ -1233,6 +1245,11 @@ export function GameApp({
         </Modal>
       )}
       {creditsOpen && <CreditsDialog onClose={() => setCreditsOpen(false)} />}
+      {opening && <OpeningMovie key={opening.videoPath} src={`${import.meta.env.BASE_URL}${opening.videoPath}`}
+        muted={!displaySettings.value.bgm} onEnd={() => {
+          setOpening(null);
+          startJourney(opening.player, opening.heroine);
+        }} />}
       {oldDataOpen && oldDataStorage && <OldDataCleanup storage={oldDataStorage}
         context={oldDataContext(journeyId)} onClose={() => setOldDataOpen(false)} />}
       {travelEffects}

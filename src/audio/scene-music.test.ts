@@ -32,6 +32,10 @@ describe("the screen's music", () => {
     expect(sceneMusic(undefined, shown(game()))).toEqual({ track: null, duck: "none" });
   });
 
+  it("is silent while a journey's opening movie plays over the title", () => {
+    expect(music(null, { opening: true })).toEqual({ track: null, duck: "none" });
+  });
+
   it("plays free time's three tracks by the game clock, wrapping past midnight", () => {
     const at = (hours: number, minutes = 0) => music(game({}, hours * 60 + minutes)).track;
     expect(at(4, 59)).toBe("free_night");

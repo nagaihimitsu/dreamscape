@@ -298,6 +298,19 @@
       ],
       "additionalProperties": false
     },
+    "openingMovie": {
+      "type": "object",
+      "properties": {
+        "videoPath": {
+          "type": "string",
+          "pattern": "^assets\\/(?!.*\\.\\.)[a-zA-Z0-9_./-]+\\.mp4$"
+        }
+      },
+      "required": [
+        "videoPath"
+      ],
+      "additionalProperties": false
+    },
     "authoring": {
       "type": "object",
       "properties": {

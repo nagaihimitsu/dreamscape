@@ -182,6 +182,9 @@ export function imageReferences(sources: Pick<ContentSources, "catalogs" | "mani
   }
   for (const manifest of sources.manifests)
     if (isObject(manifest.data.titleArt)) add(manifest.file, "", [["titleArt.imagePath", manifest.data.titleArt.imagePath]]);
+  // The opening movie is a served file of its journey too (ownership; never an unused public file).
+  for (const manifest of sources.manifests)
+    if (isObject(manifest.data.openingMovie)) add(manifest.file, "", [["openingMovie.videoPath", manifest.data.openingMovie.videoPath]]);
   for (const city of sources.cities)
     if (isObject(city.data)) add(city.file, "", [["backdropImagePath", city.data.backdropImagePath]]);
   return images;
