@@ -21,6 +21,20 @@ export function RecallLayer({ imageId }: { imageId?: string }) {
 }
 
 /**
+ * A line's `# photo:` with `# photo_show: large` (2026-11-12): the album image, whole, large in a white frame over the
+ * scene (the portraits dimmed behind it) and under the window, while the line is on screen. Presentation only, on every
+ * reading of the line; the album takes the photo once (src/domain/album.ts) and its small card waits until the line has
+ * gone (GameApp). It has no credit, as the album has none.
+ */
+export function PhotoShowLayer({ photo }: { photo?: { imageId: string; show?: "large" } }) {
+  const image = photo?.show === "large" ? getAlbumImage(photo.imageId) : undefined;
+  if (!image) return null;
+  return <div className="photo-show-layer" key={image.id} aria-hidden="true" data-testid="photo-show">
+    <img src={`${import.meta.env.BASE_URL}${image.path}`} alt="" decoding="async" />
+  </div>;
+}
+
+/**
  * The line on screen (`children`, its DialogueText) as its scene tags show it: a phone message (`# phone:`) in a phone's
  * screen below the earlier messages of its run, a letter's line (`# letter:`) on its sheet below the lines written there
  * before; any other line as it is. `compact`: choices follow, so the phone keeps less room.

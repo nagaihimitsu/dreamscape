@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { CanalScene } from "../../components/CanalScene";
 import { SceneHeading } from "../../components/SceneHeading";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
-import { LineStage, RecallLayer } from "../../components/LineStage";
+import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
 import { lineCues, lineSpeed, showsSpeakerPlate, type PhoneNames } from "../../components/line-staging";
 import { playSe } from "../../audio/sound-effects";
 import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
@@ -21,7 +21,7 @@ import type { NameCutIn } from "../../components/speaker-plate";
 import { ComicEffect } from "../../components/ComicEffect";
 import type { ReactionMark } from "../../content/dialogue-reactions";
 import type { LineDelivery } from "../../content/tags";
-import type { FrameStaging, Speaker } from "../../story/frame-reader";
+import type { FrameStaging, Speaker, StoryFrame } from "../../story/frame-reader";
 import type { TourismAsset } from "../../content/tourism-schemas";
 import { formatMoneyForCity } from "../../content/currency";
 import { InteractiveEnglish } from "../learning/InteractiveEnglish";
@@ -49,8 +49,8 @@ export type EncounterScreenView = {
   voiceId?: string;
   /** The line's `# se:`: its sound, played as its text starts. */
   seId?: string;
-  /** The line's scene tags (`# recall:`, `# phone:`, `# letter:`, `# quiet:`, `# stand:`) and who speaks it. */
-  staging?: FrameStaging & { speaker: Speaker; speakerPersonId?: string };
+  /** The line's scene tags (`# recall:`, `# phone:`, `# letter:`, `# quiet:`, `# stand:`), its photo (`# photo_show:`) and who speaks it. */
+  staging?: FrameStaging & Pick<StoryFrame, "photo"> & { speaker: Speaker; speakerPersonId?: string };
   /** The names a phone's messages show (LineStage). */
   phoneNames?: PhoneNames;
   choices: EncounterChoiceView[];
@@ -139,6 +139,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
     <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} data-quiet={staging?.quiet} {...sceneTap.props}>
       <div className="vn-background" data-testid="scene-picture">{view.backgroundAsset ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundAsset.path}`} alt="" /> : <CanalScene backgroundId={view.background} />}</div>
       <RecallLayer imageId={staging?.recall} />
+      <PhotoShowLayer photo={staging?.photo} />
       <SceneHeading label={view.placeJa} badge={view.badgeJa} />
       {!quiz && portraits && <div className="vn-character-layer encounter-character-layer" data-two-characters={!!portraits.heroine && !!portraits.enemy}>
         {(["heroine", "enemy"] as const).map((id) => {

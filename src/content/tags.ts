@@ -93,11 +93,14 @@ function readSceneTag(key: SceneTagKey, value: string, result: StoryTags): void 
 /**
  * The photo a line takes into the album when it is read (src/domain/album.ts): `# photo: <imageId>`, an album image
  * (the author's illustration at a journey's public/assets/album/<imageId>.<ext>, album-images.ts; never credited),
- * with an optional `# photo_caption: <text>` among the same line's tags.
+ * with an optional `# photo_caption: <text>` among the same line's tags. `# photo_show: large` (2026-11-12) shows the
+ * picture large over the scene while the line is on screen (LineStage's PhotoShowLayer), as the writer's staging of a
+ * high point; without it the photo goes into the album with the small card only.
  */
 export interface StoryPhoto {
   imageId: string;
   caption?: string;
+  show?: "large";
 }
 
 /**
@@ -150,6 +153,7 @@ export function parseStoryTags(
 ): StoryTags {
   const result: StoryTags = { effects: [] };
   let caption: string | undefined;
+  let show: "large" | undefined;
   for (const tag of tags) {
     if (tag.trim() === "later") continue;
     const separator = tag.indexOf(":");
@@ -232,6 +236,10 @@ export function parseStoryTags(
     } else if (key === "photo_caption") {
       if (caption !== undefined) throw new Error("Duplicate photo caption tag");
       caption = value;
+    } else if (key === "photo_show") {
+      if (value !== "large") throw new Error(`Invalid photo_show tag: ${value} (write # photo_show: large)`);
+      if (show !== undefined) throw new Error("Duplicate photo_show tag");
+      show = value;
     } else if (key === "recall") {
       if (!context.photoIds?.includes(value))
         throw new Error(`Unknown recall image: ${value} (name an album image, as # photo: does: the file name of public/assets/album/<ID>.webp, .png, .jpg or .jpeg)`);
@@ -258,6 +266,10 @@ export function parseStoryTags(
   if (caption !== undefined) {
     if (!result.photo) throw new Error(`Photo caption without a photo: write # photo_caption: on the line of its # photo: (${caption})`);
     result.photo = { ...result.photo, caption };
+  }
+  if (show !== undefined) {
+    if (!result.photo) throw new Error("Photo show without a photo: write # photo_show: large on the line of its # photo:");
+    result.photo = { ...result.photo, show };
   }
   if (result.phone && result.letter)
     throw new Error(`A line is a phone message or a letter, not both: # phone: ${result.phone} and # letter: ${result.letter}`);

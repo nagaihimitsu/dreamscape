@@ -7,7 +7,7 @@ import type { GameState } from "../../domain/game";
 import { battleChrome, getActiveBattleContent, getBattleOutcome } from "../../domain/battle";
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
-import { LineStage, RecallLayer } from "../../components/LineStage";
+import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
 import { lineCues, lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { playSe } from "../../audio/sound-effects";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
@@ -419,6 +419,7 @@ export function BattleScreen({
         <CanalScene backgroundId={backgroundId} imageAssetId={landmarkAsset?.id} />
       </div>
       <RecallLayer imageId={staging?.recall} />
+      <PhotoShowLayer photo={staging?.photo} />
       {/* The battle's heading in every phase (S5): its landmark, or the battle's title for a city
           finale; 手がかり帳 is in the header, shown at a choice: the talk's choices, a question, the
           reasoning stop (whose panel also has its own 「手がかり帳を開く」). */}

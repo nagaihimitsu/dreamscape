@@ -13,7 +13,7 @@ import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import { activeGuideStoryId, observationHotspots } from "../../domain/tourism";
 import type { GameState } from "../../domain/game";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
-import { LineStage, RecallLayer } from "../../components/LineStage";
+import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
 import { lineCues, lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
@@ -187,6 +187,7 @@ export function TourismScreen({
             <CanalScene backgroundId={frame.background} imageAssetId={landmark.imageAssetId} />
           </div>
           <RecallLayer imageId={frame.recall} />
+          <PhotoShowLayer photo={frame.photo} />
           <span className="sr-only">{asset.altJa}</span>
           <div className="vn-character-layer">
             <CharacterPortrait

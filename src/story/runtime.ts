@@ -40,6 +40,7 @@ export const storyFrameSchema = z
     photo: z.object({
       imageId: albumImageIdSchema,
       caption: z.string().min(1).optional(),
+      show: z.literal("large").optional(),
     }).strict().optional(),
     localWordIds: z.array(z.string().regex(/^[a-z][a-z0-9_]*$/u)).min(1).optional(),
     // The scene tags (frame-reader.ts stageFrame): presentation only.

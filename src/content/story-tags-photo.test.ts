@@ -25,4 +25,13 @@ describe("a line's photo tags (the album, 2026-11-11)", () => {
     expect(() => parseStoryTags(["photo: tower_photo", "photo: cafe_art"], context)).toThrow("Duplicate photo tag");
     expect(() => parseStoryTags(["photo: tower_photo", "photo_caption: a", "photo_caption: b"], context)).toThrow("Duplicate photo caption tag");
   });
+
+  it("read # photo_show: large with its # photo: (2026-11-12: the picture shown large on its line), and refuse it alone, another value or twice", () => {
+    expect(parseStoryTags(["photo_show: large", "photo: cafe_art", "photo_caption: 窓ぎわで"], context).photo)
+      .toEqual({ imageId: "cafe_art", caption: "窓ぎわで", show: "large" });
+    expect(parseStoryTags(["photo: cafe_art"], context).photo).not.toHaveProperty("show");
+    expect(() => parseStoryTags(["photo_show: large"], context)).toThrow("Photo show without a photo");
+    expect(() => parseStoryTags(["photo: cafe_art", "photo_show: big"], context)).toThrow("Invalid photo_show tag: big");
+    expect(() => parseStoryTags(["photo: cafe_art", "photo_show: large", "photo_show: large"], context)).toThrow("Duplicate photo_show tag");
+  });
 });

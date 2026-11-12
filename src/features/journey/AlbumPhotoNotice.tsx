@@ -8,8 +8,11 @@ import "./album-photo-notice.css";
 export const ALBUM_PHOTO_NOTICE_MS = 4000;
 export const FIRST_ALBUM_PHOTO_NOTICE_MS = 6000;
 
-/** The photo just taken, said for a moment (`id` changes with each new notice; `first`: the journey's first photo). */
-export type AlbumPhotoNoticeState = { id: number; photo: AlbumPhoto; first: boolean };
+/**
+ * The photo just taken, said for a moment (`id` changes with each new notice; `first`: the journey's first photo;
+ * `fromLarge`: its line showed it large, `# photo_show: large`, so the card comes from that picture once the line goes).
+ */
+export type AlbumPhotoNoticeState = { id: number; photo: AlbumPhoto; first: boolean; fromLarge?: boolean };
 
 /** Where the album is, said once, with the journey's first photo. */
 export const ALBUM_PLACE_HINT_JA = "⚙設定の「アルバム」で見られます";
@@ -28,7 +31,8 @@ export function AlbumPhotoNotice({ notice }: { notice: AlbumPhotoNoticeState | n
   return (
     <div className="album-photo-notice-region" role="status" data-testid="album-photo-notice">
       {notice && (
-        <div key={notice.id} className="album-photo-notice" style={{ "--album-notice-ms": `${duration}ms` } as CSSProperties}>
+        <div key={notice.id} className="album-photo-notice" data-from-large={notice.fromLarge || undefined}
+          style={{ "--album-notice-ms": `${duration}ms` } as CSSProperties}>
           {image && <img className="album-photo-notice-picture" src={`${import.meta.env.BASE_URL}${image.path}`} alt="" decoding="async" />}
           <p className="album-photo-notice-text">
             <span className="album-photo-notice-label">アルバムに入れました</span>

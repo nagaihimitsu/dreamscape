@@ -46,7 +46,7 @@ Photo, please!
         じゃあ、お願い。……変な顔してたら、撮り直してね
     }
     # speaker: narrator
-    # photo: gt_album_d25 # photo_caption: 十三人目
+    # photo: gt_album_d25 # photo_caption: 十三人目 # photo_show: large
     # se: camera_shutter
     彼女は祖母の隣に押し込まれた。祖母はその手を握ったまま離さない。画面の中で、一人だけ顔立ちの違う十三人目が、困ったように笑っていた。
 * [写真屋を呼んで、二人とも入る # option: hire_photographer]
