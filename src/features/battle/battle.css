@@ -38,6 +38,9 @@
   inset: 0;
   pointer-events: none;
 }
+/* The portraits (z-index 1) stack as one layer, so a large photo (# photo_show: large, z-index 1, line-stage.css) lies
+   over them and under the talk's window. */
+.battle-characters { isolation: isolate; }
 .battle-screen[data-phase="dialogue"] .battle-stage {
   display: flex;
   flex-direction: column;

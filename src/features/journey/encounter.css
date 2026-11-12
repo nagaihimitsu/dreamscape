@@ -69,6 +69,10 @@
 
 .encounter-background { width: 100%; height: 100%; display: block; object-fit: cover; }
 .encounter-character-layer { inset: var(--scene-top, 0px) 0 0; height: auto; transform: none; clip-path: none; overflow: hidden; }
+/* Without the shared layer's transform the layer would not keep its portraits (z-index 1) to itself: isolated, it stacks
+   as one like her portrait's layer alone, so a large photo (# photo_show: large, z-index 1, line-stage.css) lies over
+   the people and under the window. */
+.encounter-character-layer { isolation: isolate; }
 .encounter-character-slot { position: absolute; inset: 0; }
 .encounter-character-layer[data-two-characters="true"] .encounter-character-slot { width: 50%; right: auto; }
 .encounter-character-layer[data-two-characters="true"] .encounter-character-enemy { left: 50%; }
