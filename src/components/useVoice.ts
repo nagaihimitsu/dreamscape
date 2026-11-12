@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
 import { voicePath } from "../content/voice-files";
 import { audioContext, decodedSoundCache, onAudioStateChange, onPageHidden, wantAudio } from "../audio/audio-context";
+import { duckForVoice } from "../audio/bgm";
 
 // The voices of lines (2026-11-12): a line's `# voice: <ID>` (src/content/tags.ts) plays its recording, a journey's
 // public/assets/voice/<ID>.mp3, as the line's text starts. Played through the page's one AudioContext (made and woken on a
 // user's gesture: src/audio/audio-context.ts), the most recently used voices kept decoded in memory, one voice at a time.
-// Presentation only: a voice that cannot load or play is skipped in silence and the game goes on.
+// While a voice plays, the background music is halved (src/audio/bgm.ts duckForVoice). Presentation only: a voice that
+// cannot load or play is skipped in silence and the game goes on.
 
 /** A line's voice as auto-advance waits for it: loading or playing ("busy"), or played to its end ("ended"). */
 export type LineVoiceState = "busy" | "ended";
@@ -34,6 +36,7 @@ onAudioStateChange((state) => {
 function finish(current: Playing, state: "ended" | null) {
   if (playing !== current) return;
   playing = null;
+  duckForVoice(false);
   current.source.onended = null;
   try {
     current.source.stop();
@@ -89,6 +92,7 @@ function playVoice(voiceId: string, onDone: (state: "ended" | null) => void): ()
     source.start();
     own = current;
     playing = current;
+    duckForVoice(true);
   }).catch((error: unknown) => {
     if (import.meta.env.DEV) console.warn(`台詞の声を再生できませんでした: ${voiceId}`, error);
     settle(null);

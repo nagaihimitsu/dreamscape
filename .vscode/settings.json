@@ -136,6 +136,14 @@
     },
     {
       "fileMatch": [
+        "/content/presentation/music.json",
+        "/content/journeys/*/presentation/music.json",
+        "/authoring/templates/*/presentation/music.json"
+      ],
+      "url": "./authoring/schemas/presentation-music.schema.json"
+    },
+    {
+      "fileMatch": [
         "/content/presentation/own-artwork.json",
         "/content/journeys/*/presentation/own-artwork.json",
         "/authoring/templates/*/presentation/own-artwork.json"

@@ -1,7 +1,7 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { MAP_CREDIT, OWN_ARTWORK_NOTE_JA, photoCredits } from "../content/credits";
+import { MAP_CREDIT, musicCredits, OWN_ARTWORK_NOTE_JA, photoCredits } from "../content/credits";
 import { CreditsList } from "./CreditsDialog";
 
 // 「出典・権利の一覧」 over the generated content: every journey's photos (preparing ones marked),
@@ -29,6 +29,20 @@ describe("credits list", () => {
     expect(html).toContain(OWN_ARTWORK_NOTE_JA);
     expect(html).toContain("公開版（本番ビルド）では、ここに一覧が出ます。");
     expect(html).not.toContain('data-testid="credits-licences"');
+  });
+
+  it("lists the music's works under 音楽 (2026-11-12), each once with its author, licence and the scenes it is used in", () => {
+    const music = musicCredits();
+    expect(music.length).toBeGreaterThan(0);
+    expect(new Set(music.map((credit) => credit.source.id)).size).toBe(music.length);
+    const html = renderToStaticMarkup(createElement(CreditsList, { photos: [], music, licences: { status: "dev" } }));
+    expect(html).toContain('<h3 id="credits-music-title">音楽</h3>');
+    expect(html).toContain(`<summary>音楽の出典（${music.length}件）</summary>`);
+    for (const { source, usesJa } of music) {
+      expect(html).toContain(`作者：${source.author}`);
+      expect(html).toContain(`使っている場面：${usesJa.join("、")}`);
+    }
+    expect(render({ status: "dev" })).not.toContain("credits-music");
   });
 
   it("lists each library with its version, licence and text once the production list is read", () => {

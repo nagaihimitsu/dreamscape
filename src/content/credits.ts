@@ -1,14 +1,16 @@
 import { z } from "zod";
 import imageJourneyData from "./generated/image-journeys.json";
 import soundData from "./generated/content/presentation/sounds.json";
+import musicData from "./generated/music.json";
 import { landmarks, presentation, tourismAssets } from "./index";
 import type { Journey } from "./journey-catalog";
 import { journeys } from "./journeys";
 import type { LandmarkDefinition, TourismAsset } from "./tourism-schemas";
-import { soundCatalogSchema, type SoundCatalog, type SoundSource } from "./sounds";
+import { soundCatalogSchema, type SoundEntry, type SoundSource } from "./sounds";
+import { musicDataSchema } from "./music";
 
 // The data of the credits list (「出典とライセンス」): the photos grouped by
-// journey and kind, the sound effects' sources, the map and font lines, and the
+// journey and kind, the sound effects' and the music's sources, the map and font lines, and the
 // library licences that the production build writes. Pure functions, and photoCredits() over the
 // generated content for the screen. Artwork made for Dreamscape
 // (presentation/own-artwork.json) is never listed; only the note below says so.
@@ -142,15 +144,15 @@ export const SOUND_LICENSE_TEXT: Readonly<Record<SoundSource["license"], { label
   own: { labelJa: "自作" },
 };
 
-/** One source of the sound effects in the credits list: the work, and what the sounds made from it are for (`usesJa`). */
+/** One source of the sound effects (or the music) in the credits list: the work, and what the sounds made from it are for (`usesJa`). */
 export type SoundCredit = { source: SoundSource; usesJa: string[] };
 
 /**
- * The sound effects' sources that some registered sound uses, in the order of the lists (the shared one first), each
- * once (a source that two layers list is the same work: content:build checks it, scripts/sound-files.ts) with the uses
- * of its sounds, each once.
+ * The sound effects' sources that some registered sound uses (or the music's, its tracks as `sounds`), in the order of
+ * the lists (the shared one first), each once (a source that two layers list is the same work: content:build checks it,
+ * scripts/sound-files.ts) with the uses of its sounds, each once.
  */
-export function groupSoundCredits(catalog: Pick<SoundCatalog, "sources" | "sounds">): SoundCredit[] {
+export function groupSoundCredits(catalog: { sources: readonly SoundSource[]; sounds: readonly Pick<SoundEntry, "useJa" | "sources">[] }): SoundCredit[] {
   const credits = new Map<string, SoundCredit>();
   for (const source of catalog.sources) if (!credits.has(source.id)) credits.set(source.id, { source, usesJa: [] });
   for (const sound of catalog.sounds)
@@ -164,6 +166,12 @@ export function groupSoundCredits(catalog: Pick<SoundCatalog, "sources" | "sound
 /** The sound effects' sources of the generated content (every layer's presentation/sounds.json), for the credits list. */
 export function soundCredits(): SoundCredit[] {
   return groupSoundCredits(soundCatalogSchema.parse(soundData));
+}
+
+/** The music's sources (every layer's presentation/music.json, generated/music.json), for the credits list: its tracks' uses. */
+export function musicCredits(): SoundCredit[] {
+  const music = musicDataSchema.parse(musicData);
+  return groupSoundCredits({ sources: music.sources, sounds: music.tracks });
 }
 
 /**

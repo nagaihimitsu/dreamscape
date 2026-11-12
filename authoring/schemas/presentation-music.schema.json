@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dreamscape: BGM とその出典・流す場面（presentation/music.json）",
+  "$comment": "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "titleJa": {
+            "type": "string",
+            "minLength": 1
+          },
+          "author": {
+            "type": "string",
+            "minLength": 1
+          },
+          "license": {
+            "type": "string",
+            "enum": [
+              "CC0 1.0",
+              "CC BY 3.0",
+              "CC BY 4.0",
+              "CC BY-SA 3.0",
+              "CC BY-SA 4.0",
+              "own"
+            ]
+          },
+          "checkedAt": {
+            "type": "string",
+            "format": "date",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "site": {
+            "type": "string",
+            "minLength": 1
+          },
+          "creditJa": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "titleJa",
+          "author",
+          "license",
+          "checkedAt"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "tracks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "useJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "sources": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9_]+$"
+            }
+          },
+          "fromJa": {
+            "type": "string",
+            "minLength": 1
+          },
+          "volume": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1
+          }
+        },
+        "required": [
+          "id",
+          "useJa",
+          "sources",
+          "fromJa"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "play": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "freeTime": {
+          "type": "object",
+          "properties": {
+            "morning": {
+              "type": "string",
+              "pattern": "^[a-z0-9_]+$"
+            },
+            "day": {
+              "type": "string",
+              "pattern": "^[a-z0-9_]+$"
+            },
+            "night": {
+              "type": "string",
+              "pattern": "^[a-z0-9_]+$"
+            }
+          },
+          "required": [
+            "morning",
+            "day",
+            "night"
+          ],
+          "additionalProperties": false
+        },
+        "night": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "place": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "arrival": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "epilogue": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "endRoll": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "places": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

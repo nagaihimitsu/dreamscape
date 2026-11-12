@@ -69,10 +69,13 @@ export function useJourneyMoments({ game, screen, resumed, reduceMotion, effectP
   }
   const titleCard = titleId && game ? episodeTitleCard(game, titleId) : null;
   const titleWaits = !!titleCard && (effectPlaying || !!packing);
+  const endRollShown = !!roll && !effectPlaying && !packing;
   return {
     committed,
     restart,
     openEndRoll: () => setEndRoll(true),
+    /** The credit roll is on screen (its music plays: src/audio/scene-music.ts). */
+    endRollShown,
     /** The title card waits or shows: a battle's name plate (`# cutin: name`) waits for it (BattleScreen's introHeld). */
     titleHolding: !!titleCard,
     /** The packing, shown in place of the screen (null when none). */
@@ -83,7 +86,7 @@ export function useJourneyMoments({ game, screen, resumed, reduceMotion, effectP
     overlays: <>
       {titleCard && (titleWaits ? <span hidden data-obstructs-dialogue="" />
         : <EpisodeTitle key={titleCard.episodeId} card={titleCard} reduceMotion={reduceMotion} onEnd={() => setTitleId(null)} />)}
-      {roll && !effectPlaying && !packing && <EndRollDialog roll={roll} reduceMotion={reduceMotion} onClose={closeEndRoll} />}
+      {roll && endRollShown && <EndRollDialog roll={roll} reduceMotion={reduceMotion} onClose={closeEndRoll} />}
     </>,
   };
 }

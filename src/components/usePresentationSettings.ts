@@ -26,6 +26,10 @@ interface Preferences {
   se: boolean;
   /** 「効果音の大きさ」: the sound effects' volume, from 0 to 1 (the slider's 0 to 100 in tens). */
   seVolume: number;
+  /** 「BGMを流す」 (src/audio/bgm.ts): on, the background music plays. On by default. */
+  bgm: boolean;
+  /** 「BGMの大きさ」: the music's volume, from 0 to 1 (the slider's 0 to 100 in tens). */
+  bgmVolume: number;
 }
 const defaults: Preferences = {
   schemaVersion: 1,
@@ -40,6 +44,8 @@ const defaults: Preferences = {
   voiceVolume: 0.8,
   se: true,
   seVolume: 0.7,
+  bgm: true,
+  bgmVolume: 0.4,
 };
 
 const isVolume = (value: unknown): value is number => typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 1;
@@ -63,9 +69,11 @@ export function readPresentationSettings(raw: string | null): Preferences | null
       (item.voiceVolume !== undefined && !isVolume(item.voiceVolume)) ||
       (item.se !== undefined && typeof item.se !== "boolean") ||
       (item.seVolume !== undefined && !isVolume(item.seVolume)) ||
+      (item.bgm !== undefined && typeof item.bgm !== "boolean") ||
+      (item.bgmVolume !== undefined && !isVolume(item.bgmVolume)) ||
       (item.dialogueSpeed !== undefined && ![0, 25, 45].includes(item.dialogueSpeed as number)) ||
       Object.keys(item).some((name) => !["schemaVersion", "confirmChoices", "reduceMotion", "autoSave", "dialogueSpeed", "autoAdvance", "skipUnread", "readAloud",
-        "voice", "voiceVolume", "se", "seVolume"].includes(name))
+        "voice", "voiceVolume", "se", "seVolume", "bgm", "bgmVolume"].includes(name))
     )
       return null;
     return {
@@ -81,6 +89,8 @@ export function readPresentationSettings(raw: string | null): Preferences | null
       voiceVolume: item.voiceVolume === undefined ? 0.8 : item.voiceVolume as number,
       se: item.se === undefined ? true : item.se as boolean,
       seVolume: item.seVolume === undefined ? 0.7 : item.seVolume as number,
+      bgm: item.bgm === undefined ? true : item.bgm as boolean,
+      bgmVolume: item.bgmVolume === undefined ? 0.4 : item.bgmVolume as number,
     };
   } catch {
     return null;
@@ -112,7 +122,7 @@ export function usePresentationSettings(storage: StorageLike = window.localStora
   );
   function update(
     change: Partial<Pick<Preferences, "confirmChoices" | "reduceMotion" | "autoSave" | "dialogueSpeed" | "autoAdvance" | "skipUnread" | "readAloud"
-      | "voice" | "voiceVolume" | "se" | "seVolume">>,
+      | "voice" | "voiceVolume" | "se" | "seVolume" | "bgm" | "bgmVolume">>,
   ): boolean {
     if (error) return false;
     try {

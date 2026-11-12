@@ -6,6 +6,7 @@ import { albumImageIdOf } from "../src/content/album-images";
 import { voiceTagsOf } from "./voice-files";
 import { voiceIdOf } from "../src/content/voice-files";
 import { soundIdOf } from "../src/content/sounds";
+import { trackIdOf } from "../src/content/music";
 import { imageReferences } from "./content-ownership";
 import { CODE_IMAGE_FILES } from "../src/content/code-images";
 import { displayPath, journeyFileOf, type ContentSources } from "./content-sources";
@@ -21,7 +22,7 @@ export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-pre
   | "transit-walk-missing" | "transit-route-unsourced" | "never-offered" | "date-condition-trip"
   | "later-never-again" | "same-priority" | "repeat-without-until" | "data-language"
   | "never-met-again" | "romance-only-city" | "unfindable-clue" | "battle-after-epilogue" | "money-shortfall" | "ap-shortfall"
-  | "scene-tag" | "special-date-ap" | "epilogue-unreachable" | "then-loop" | "earlier-item-start" | "tour-note" | "sound";
+  | "scene-tag" | "special-date-ap" | "epilogue-unreachable" | "then-loop" | "earlier-item-start" | "tour-note" | "sound" | "music";
 export type ContentWarning = { kind: ContentWarningKind; message: string };
 /** How content:build counts each kind of warning. */
 export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
@@ -51,6 +52,7 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "money-shortfall": "journey(s) whose budget may run short for a city's required main parts after the other events (not stopped)",
   "ap-shortfall": "city(ies) whose finale needs dates that the city's AP may not cover after the other dates (not stopped)",
   "sound": "sound effect note(s) (a journey's sound nothing plays, system sounds missing from the shared list)",
+  "music": "music note(s) (a track that no play value or # bgm: plays)",
 };
 
 /**
@@ -106,7 +108,8 @@ export function unknownJourneyFiles(sources: ContentSources): ContentWarning[] {
  * Served files that neither content (tourism images, backgrounds, item
  * icons, character images, title art, city backdrops, the album images a
  * line's `# photo:` or `# recall:` names, the voices a line's `# voice:`
- * names, the sound effects a presentation/sounds.json registers) nor the
+ * names, the sound effects a presentation/sounds.json registers, the tracks
+ * a presentation/music.json registers) nor the
  * game's code (CODE_IMAGE_FILES) refers to: every file of a
  * journey's public/ folder and of the root public/assets/. The rest of the
  * root public/ (browser icons, the web app manifest) is linked from
@@ -121,8 +124,12 @@ export function unusedPublicFiles(sources: ContentSources): ContentWarning[] {
   const soundCatalog = sources.catalogs["presentation/sounds.json"]?.value;
   const registeredSoundIds = new Set(list(isObject(soundCatalog) ? soundCatalog.sounds : undefined).map((sound) => sound.id)
     .filter((id): id is string => typeof id === "string"));
+  // A registered track is played by a play value or a line (music-files.ts checks the list and the files).
+  const musicCatalog = sources.catalogs["presentation/music.json"]?.value;
+  const registeredTrackIds = new Set(list(isObject(musicCatalog) ? musicCatalog.tracks : undefined).map((track) => track.id)
+    .filter((id): id is string => typeof id === "string"));
   const named = (assetPath: string) => namedAlbumIds.has(albumImageIdOf(assetPath) ?? "") || namedVoiceIds.has(voiceIdOf(assetPath) ?? "") ||
-    registeredSoundIds.has(soundIdOf(assetPath) ?? "");
+    registeredSoundIds.has(soundIdOf(assetPath) ?? "") || registeredTrackIds.has(trackIdOf(assetPath) ?? "");
   const checked = [path.join(sources.root, "public", "assets"), ...sources.layers.filter((layer) => layer.type === "journey")
     .map((layer) => path.join(layer.directory, "public"))].map((directory) => directory + path.sep);
   return [...sources.publicFiles].flatMap(([assetPath, file]): ContentWarning[] =>
@@ -138,6 +145,7 @@ const ENTRY_IDS: [MergedKind, string, Definition["rule"]][] = [
   ["encounters/catalog.json", "encounters", "id"],
   ["encounters/catalog.json", "items", "id"],
   ["presentation/characters.json", "characters", "id"],
+  ["presentation/music.json", "tracks", "id"],
   ["presentation/sounds.json", "sounds", "id"],
   ["progression/journey.json", "episodes", "id"],
   ["progression/journey.json", "rewards", "id"],
@@ -316,6 +324,7 @@ function entryLabel(kind: MergedKind, key: string): string {
   if (kind === "presentation/own-artwork.json") return "own artwork groups";
   // The sound effects and the works they come from (not "sources" alone, which would read as data sources).
   if (kind === "presentation/sounds.json") return key === "sources" ? "sound sources" : "sounds";
+  if (kind === "presentation/music.json") return key === "sources" ? "music sources" : "music tracks";
   // Not "words", the word meanings' label.
   if (kind === "learning/local-words.json") return "local words";
   const name = key === "questions" || key === "entries" ? path.posix.basename(kind, ".json").replaceAll("-", " ") : key;

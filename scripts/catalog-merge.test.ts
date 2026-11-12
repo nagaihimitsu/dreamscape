@@ -114,6 +114,20 @@ describe("catalog merge", () => {
     ])).toThrow('Duplicate key "words.tomb" in learning/word-meanings.json: core/words.json and gt/words.json');
   });
 
+  it("keeps each layer's own value of a layers key apart, by layer (the music's play, 2026-11-12)", () => {
+    const merged = mergeCatalog(catalogRule("presentation/music.json"), [
+      core({ schemaVersion: 1, sources: [], tracks: [{ id: "a" }], play: { title: "a" } }, "core/music.json"),
+      { file: "gt/music.json", core: false, layer: "golden_triangle", data: { tracks: [{ id: "gt_b" }], play: { title: "gt_b" } } },
+      { file: "uz/music.json", core: false, layer: "uzbekistan", data: { tracks: [] } },
+    ])!;
+    expect(merged.value).toEqual({ schemaVersion: 1, sources: [], tracks: [{ id: "a" }, { id: "gt_b" }],
+      play: { core: { title: "a" }, golden_triangle: { title: "gt_b" } } });
+    expect(merged.provenance.keys.play).toEqual({ core: "core/music.json", golden_triangle: "gt/music.json" });
+    expect(sourceFileOf(merged.provenance, ["play", "golden_triangle", "title"])).toBe("gt/music.json");
+    // A layer's file may leave it out: no empty value is added for it.
+    expect(emptyCatalog("presentation/music.json")).toEqual({ schemaVersion: 1, sources: [], tracks: [] });
+  });
+
   it("keeps core-only keys out of journey layers", () => {
     expect(() => mergeCatalog(catalogRule("romance/progression.json"), [
       core({ schemaVersion: 1, stages: [] }, "core/progression.json"),

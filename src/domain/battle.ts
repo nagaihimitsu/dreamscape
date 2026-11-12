@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SOUND_ID } from "../content/sounds";
 import { sceneConditionReader } from "./scene-conditions";
 import { hasObservation } from "../content/tourism-schemas";
 import { splitStoryAddress } from "../content/story-address";
@@ -92,6 +93,11 @@ export const activeBattleSchema = z
     linePart: z.enum(["claim", "rebuttal"]).optional(),
     /** The line ends a part before the first stop (the lines before the claim, the claim before its rebuttal): 「次へ進む」 there. */
     sceneEnd: z.literal(true).optional(),
+    /**
+     * The battle's music (`# bgm:`, a track's ID or `stop`) while it has no frame (a call's question or reasoning, the
+     * result): the music its last frame had, kept for the whole battle (src/audio/scene-music.ts; the next frame starts with it).
+     */
+    bgm: z.string().regex(SOUND_ID).optional(),
   })
   .strict();
 export type ActiveBattle = z.infer<typeof activeBattleSchema>;
@@ -224,6 +230,16 @@ function withoutLinePart(active: ActiveBattle): ActiveBattle {
   const { linePart: _part, sceneEnd: _end, ...rest } = active;
   return rest;
 }
+/** The battle without its frame's music kept apart (a frame of the battle holds it: frame-reader.ts). */
+function withoutKeptBgm(active: ActiveBattle): ActiveBattle {
+  const { bgm: _bgm, ...rest } = active;
+  return rest;
+}
+/** The battle about to lose its frame (a call, the result): the music the frame had (`# bgm:`) is kept for its next frame. */
+function keepingBgm(active: ActiveBattle): ActiveBattle {
+  const bgm = active.frame ? active.frame.bgm : active.bgm;
+  return { ...withoutKeptBgm(active), ...(bgm ? { bgm } : {}) };
+}
 /** The claim knot to tell the claim's lines by: a special battle's lines before its first stop, after quiz(roundIndex). */
 function claimToTrack(active: Pick<ActiveBattle, "reasoning" | "answers">, battle: BattleDefinition): string | undefined {
   const config = battle.reasoning;
@@ -245,7 +261,7 @@ function flowSceneEnds(state: GameState, active: ActiveBattle, battle: BattleDef
 function settleFlow(state: GameState, active: ActiveBattle, step: StoryStep): GameState {
   const { battle } = getActiveBattleContent(active);
   if (step.effects.length) throw new Error("バトル会話に # effect: は書けません。");
-  const moved: ActiveBattle = withoutLinePart({ ...active, storyState: step.storyState, frame: step.frame, hintOpen: false });
+  const moved: ActiveBattle = withoutLinePart({ ...withoutKeptBgm(active), storyState: step.storyState, frame: step.frame, hintOpen: false });
   if (step.lineRead || frameCall(step.frame) === undefined && !step.frame.ended) {
     const knot = claimToTrack(moved, battle);
     // Before the first stop: the claim's lines (from its knot), then the rebuttal's (after it).
@@ -262,7 +278,7 @@ function enterFlowCall(state: GameState, active: ActiveBattle): GameState {
   const { battle, quiz } = getActiveBattleContent(active);
   const at = storyCallAt(battle.storyId, active.storyState!);
   if (!at) throw new Error("バトルの呼び口が見つかりません。");
-  const rest = { ...withoutLinePart(active), frame: null, hintOpen: false, hintUsed: false };
+  const rest = { ...withoutLinePart(keepingBgm(active)), frame: null, hintOpen: false, hintUsed: false };
   if (at.call === "quiz") {
     // content:build checks that every path calls quiz 1..n once, in order (A16).
     if (at.arg !== active.answers.length + 1 || at.arg > quiz.questions.length)
@@ -283,7 +299,7 @@ function returnFromFlowCall(state: GameState, active: ActiveBattle, variables: R
   // Every answer so far, the one on its right-or-wrong screen included, is passed now.
   const step = selectStoryChoice(battle.storyId, active.storyState!, undefined, 0, state.memories,
     { ...flowVariables({ answers: active.answers, phase: "dialogue" }), ...variables }, {}, state.inventory, sceneConditionReader(state),
-    getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), claimToTrack(active, battle));
+    getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), claimToTrack(active, battle), active.bgm);
   return settleFlow(state, { ...active, turns: active.turns + 1 }, step);
 }
 
@@ -358,7 +374,7 @@ function finishBattle(state: GameState, active: ActiveBattle): GameState {
   const recorded = finalizeBattleProgress({
     ...state,
     activeBattle: {
-      ...withoutLinePart(active),
+      ...withoutLinePart(keepingBgm(active)),
       phase: "result",
       storyState: null,
       frame: null,

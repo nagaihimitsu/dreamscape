@@ -1,6 +1,7 @@
 import type { Story } from "inkjs";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import type { DialogueReaction, ReactionTarget } from "../content/dialogue-reactions";
+import { BGM_DEFAULT } from "../content/music";
 import {
   parseStoryTags, type CutInKind, type LetterKind, type LineDelivery, type PhoneSide, type QuietSpan, type StandPosition, type StoryCall,
   type StoryPhoto, type TagContext,
@@ -62,6 +63,11 @@ export interface StoryFrame {
   voiceId?: string;
   /** The line's `# se:` (only the line it is written on): its sound effect, played as its text starts (src/audio/sound-effects.ts). */
   seId?: string;
+  /**
+   * `# bgm:`: the scene's music from its line on (a track's ID, or `stop` for silence) until another `# bgm:` or the
+   * scene's end; absent, the scene's usual track (`# bgm: default` takes it away). src/audio/scene-music.ts reads it.
+   */
+  bgm?: string;
   /** A battle's call (`# call:`, stage 5) is a choice the game takes itself: its screen shows no choice. */
   choices: { index: number; text: string; optionId?: string; translationJa?: string; call?: StoryCall }[];
   ended: boolean;
@@ -146,6 +152,8 @@ function readTags(
   if (parsed.cutin) frame.cutin = parsed.cutin;
   if (parsed.voiceId) frame.voiceId = parsed.voiceId;
   if (parsed.seId) frame.seId = parsed.seId;
+  if (parsed.bgm === BGM_DEFAULT) delete frame.bgm;
+  else if (parsed.bgm) frame.bgm = parsed.bgm;
   if (parsed.localWordIds) frame.localWordIds = [...new Set([...(frame.localWordIds ?? []), ...parsed.localWordIds])];
   events.push(...parsed.effects);
 }
@@ -183,7 +191,7 @@ export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<
   });
 }
 
-/** Read the story to its next line (the frame keeps the previous frame's text, speaker and background). */
+/** Read the story to its next line (the frame keeps the previous frame's text, speaker, background and music). */
 export function readStoryFrame(
   story: Story,
   context: TagContext,
@@ -192,11 +200,15 @@ export function readStoryFrame(
   initialBackground = DEFAULT_BACKGROUND_ID,
   /** Say whether the line came from inside this knot (StoryStep.inKnot). */
   originKnot?: string,
+  /** The music of a fresh frame (no `previous`): a battle's `# bgm:` kept over its call (src/domain/battle.ts). */
+  initialBgm?: string,
 ): StoryStep {
+  const bgm = previous ? previous.bgm : initialBgm;
   const frame: StoryFrame = {
     text: previous?.text ?? "",
     speaker: previous?.speaker ?? "narrator",
     ...(previous?.speakerPersonId ? { speakerPersonId: previous.speakerPersonId } : {}),
+    ...(bgm ? { bgm } : {}),
     background: previous?.background ?? initialBackground,
     emotion: "neutral",
     choices: [],

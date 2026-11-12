@@ -19,6 +19,10 @@ export const IMAGE_JOURNEYS_FILE = `${GENERATED_DIRECTORY}/image-journeys.json`;
 export const ALBUM_IMAGES_FILE = `${GENERATED_DIRECTORY}/album-images.json`;
 /** Every registered sound's volume by ID (sound-files.ts soundVolumesOf; read by src/audio/sound-effects.ts). */
 export const SOUND_VOLUMES_FILE = `${GENERATED_DIRECTORY}/sound-volumes.json`;
+/** The music: every track's volume and credit, and where each journey plays them (music-files.ts musicDataOf; src/audio/bgm.ts). */
+export const MUSIC_FILE = `${GENERATED_DIRECTORY}/music.json`;
+/** The music file of a build without music: nothing plays. */
+const NO_MUSIC = { schemaVersion: 1, sources: [], tracks: [], root: null, journeys: {} };
 
 /**
  * Write every output of a validated build into `root`. `derivedFiles` (served
@@ -31,7 +35,8 @@ export function writeContentOutputs(
   validated: { stories: Record<string, string>; quizzes: Record<string, unknown>; tours?: readonly unknown[];
     catalogOverrides?: Partial<Record<CatalogKind, unknown>>;
     sceneConditions?: { conditions: Record<string, unknown>; stories: Record<string, string[]> };
-    scenes?: { scenes: unknown[]; rewards: unknown[] }; albumImages?: readonly unknown[]; soundVolumes?: Readonly<Record<string, number>> },
+    scenes?: { scenes: unknown[]; rewards: unknown[] }; albumImages?: readonly unknown[]; soundVolumes?: Readonly<Record<string, number>>;
+    music?: unknown },
   derivedFiles: ReadonlyMap<string, string> = new Map(),
 ): void {
   const directory = path.join(root, GENERATED_DIRECTORY);
@@ -53,6 +58,8 @@ export function writeContentOutputs(
   writeFileSync(path.join(root, ALBUM_IMAGES_FILE), `${JSON.stringify(validated.albumImages ?? [], null, 2)}\n`);
   // The sounds the game may play and their volumes (src/audio/sound-effects.ts imports the file, so it is written even with none: `{}`).
   writeFileSync(path.join(root, SOUND_VOLUMES_FILE), `${JSON.stringify(validated.soundVolumes ?? {}, null, 2)}\n`);
+  // The music (src/audio/bgm.ts and the credits list import the file, so it is written even with none).
+  writeFileSync(path.join(root, MUSIC_FILE), `${JSON.stringify(validated.music ?? NO_MUSIC, null, 2)}\n`);
   // The game imports the validated, merged catalogs only from this mirror.
   writeContentMirror(sources, mirrorDirectory(root), validated.catalogOverrides);
   // Vite serves and builds the game's images from this folder (publicDir in vite.config.ts).

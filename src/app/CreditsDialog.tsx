@@ -6,6 +6,7 @@ import {
   MAP_CREDIT,
   OWN_ARTWORK_NOTE_JA,
   parseThirdPartyLicenses,
+  musicCredits,
   photoCredits,
   SOUND_LICENSE_TEXT,
   soundCredits,
@@ -63,10 +64,11 @@ function Licences({ state }: { state: LicenceListState }) {
 }
 
 /**
- * The sound effects' sources (2026-11-12): each work once, with its author, licence (and its link), the page it comes
- * from (none for one made for Dreamscape), the credit its author asks for, and what its sounds are used for.
+ * The sound effects' or the music's sources (2026-11-12): each work once, with its author, licence (and its link), the
+ * page it comes from (none for one made for Dreamscape), the credit its author asks for, and what its sounds or tracks
+ * are used for (`usesLabelJa`).
  */
-function SoundCredits({ sounds }: { sounds: readonly SoundCredit[] }) {
+function SoundCredits({ sounds, usesLabelJa = "使っている音" }: { sounds: readonly SoundCredit[]; usesLabelJa?: string }) {
   return <ul className="credits-sounds">
     {sounds.map(({ source, usesJa }) => {
       const licence = SOUND_LICENSE_TEXT[source.license];
@@ -78,7 +80,7 @@ function SoundCredits({ sounds }: { sounds: readonly SoundCredit[] }) {
         {source.license !== "own" && source.url && <p>
           <a href={source.url} target="_blank" rel="noreferrer">元の作品{source.site ? `（${source.site}）` : ""}</a>
         </p>}
-        <p>使っている音：{usesJa.join("、")}</p>
+        <p>{usesLabelJa}：{usesJa.join("、")}</p>
       </li>;
     })}
   </ul>;
@@ -86,12 +88,12 @@ function SoundCredits({ sounds }: { sounds: readonly SoundCredit[] }) {
 
 /**
  * The body of 「出典・権利の一覧」: every served tourism photo by journey (preparing journeys
- * marked, D1), the sound effects' sources, the map, the fonts (D4), the libraries (D7) and the
- * note that artwork made for Dreamscape is not listed (D5). Each journey's photos, the sounds'
- * sources and each licence text open on demand.
+ * marked, D1), the sound effects' and the music's sources, the map, the fonts (D4), the libraries
+ * (D7) and the note that artwork made for Dreamscape is not listed (D5). Each journey's photos, the
+ * sounds' and the music's sources and each licence text open on demand.
  */
-export function CreditsList({ photos, sounds = [], licences }: {
-  photos: readonly JourneyPhotoCredits[]; sounds?: readonly SoundCredit[]; licences: LicenceListState;
+export function CreditsList({ photos, sounds = [], music = [], licences }: {
+  photos: readonly JourneyPhotoCredits[]; sounds?: readonly SoundCredit[]; music?: readonly SoundCredit[]; licences: LicenceListState;
 }) {
   return <div className="credits-list">
     <section aria-labelledby="credits-photos-title">
@@ -116,6 +118,14 @@ export function CreditsList({ photos, sounds = [], licences }: {
       <details className="credits-journey">
         <summary>効果音の出典（{sounds.length}件）</summary>
         <SoundCredits sounds={sounds} />
+      </details>
+    </section>}
+    {music.length > 0 && <section aria-labelledby="credits-music-title" data-testid="credits-music">
+      <h3 id="credits-music-title">音楽</h3>
+      <p className="fine-print">ゲームの中で流れる曲です。開くと、もとの作品ごとに作者・ライセンスと、使っている場面を確かめられます。</p>
+      <details className="credits-journey">
+        <summary>音楽の出典（{music.length}件）</summary>
+        <SoundCredits sounds={music} usesLabelJa="使っている場面" />
       </details>
     </section>}
     <section aria-labelledby="credits-map-title" data-testid="credits-map">
@@ -144,9 +154,10 @@ export function CreditsList({ photos, sounds = [], licences }: {
 export function CreditsDialog({ onClose }: { onClose: () => void }) {
   const [photos] = useState(photoCredits);
   const [sounds] = useState(soundCredits);
+  const [music] = useState(musicCredits);
   const licences = useThirdPartyLicenses();
   return <Modal labelledBy="credits-title" className="credits-modal" onClose={onClose} settlePresses>
     <ModalTitle id="credits-title" onClose={onClose} closeTestId="credits-close">出典・権利の一覧</ModalTitle>
-    <CreditsList photos={photos} sounds={sounds} licences={licences} />
+    <CreditsList photos={photos} sounds={sounds} music={music} licences={licences} />
   </Modal>;
 }
