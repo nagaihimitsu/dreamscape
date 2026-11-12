@@ -12,6 +12,7 @@
       "id": "gt_aman",
       "imagePath": "assets/characters/gt_aman/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#9a3f3a",
       "variants": []
     },
@@ -19,6 +20,7 @@
       "id": "gt_kamla",
       "imagePath": "assets/characters/gt_kamla/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 0.92,
       "placeholderColor": "#a8456f",
       "variants": []
     },
@@ -26,6 +28,7 @@
       "id": "gt_ramkishan",
       "imagePath": "assets/characters/gt_ramkishan/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#5f7f9e",
       "variants": []
     },
@@ -33,6 +36,7 @@
       "id": "gt_suresh",
       "imagePath": "assets/characters/gt_suresh/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.02,
       "placeholderColor": "#b8b0a2",
       "variants": []
     },
@@ -61,6 +65,7 @@
       "id": "gt_monu",
       "imagePath": "assets/characters/gt_monu/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 0.95,
       "placeholderColor": "#b8332e",
       "variants": []
     },
@@ -68,6 +73,7 @@
       "id": "gt_zoheb",
       "imagePath": "assets/characters/gt_zoheb/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#6b6e72",
       "variants": []
     },
@@ -89,6 +95,7 @@
       "id": "gt_kunal",
       "imagePath": "assets/characters/gt_kunal/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#2b2b2b",
       "variants": []
     },
@@ -139,6 +146,7 @@
       "id": "gt_kabir",
       "imagePath": "assets/characters/gt_kabir/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#7f7067",
       "variants": []
     },
@@ -146,6 +154,7 @@
       "id": "gt_delhi_hotel_okami",
       "imagePath": "assets/characters/gt_delhi_hotel_okami/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 0.97,
       "placeholderColor": "#804b35",
       "variants": []
     },
@@ -153,6 +162,7 @@
       "id": "gt_delhi_hotel_owner",
       "imagePath": "assets/characters/gt_delhi_hotel_owner/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#8b8186",
       "variants": []
     },
@@ -160,6 +170,7 @@
       "id": "gt_delhi_chandni_vendor",
       "imagePath": "assets/characters/gt_delhi_chandni_vendor/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#877266",
       "variants": []
     },
@@ -167,6 +178,7 @@
       "id": "gt_delhi_chandni_customer",
       "imagePath": "assets/characters/gt_delhi_chandni_customer/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#a29590",
       "variants": []
     },
@@ -174,6 +186,7 @@
       "id": "gt_delhi_auto_driver",
       "imagePath": "assets/characters/gt_delhi_auto_driver/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#86736a",
       "variants": []
     },
@@ -181,6 +194,7 @@
       "id": "gt_delhi_sweet_shopkeeper",
       "imagePath": "assets/characters/gt_delhi_sweet_shopkeeper/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.02,
       "placeholderColor": "#c8b0a3",
       "variants": []
     },
@@ -188,6 +202,7 @@
       "id": "gt_delhi_spice_trader",
       "imagePath": "assets/characters/gt_delhi_spice_trader/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 0.96,
       "placeholderColor": "#c0a087",
       "variants": []
     },
@@ -195,6 +210,7 @@
       "id": "gt_delhi_red_fort_guide",
       "imagePath": "assets/characters/gt_delhi_red_fort_guide/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#755f56",
       "variants": []
     },
@@ -202,6 +218,7 @@
       "id": "gt_delhi_scam_young_man",
       "imagePath": "assets/characters/gt_delhi_scam_young_man/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#7a716e",
       "variants": []
     },
@@ -209,6 +226,7 @@
       "id": "gt_delhi_scam_vest_man",
       "imagePath": "assets/characters/gt_delhi_scam_vest_man/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#635f4b",
       "variants": []
     },
@@ -216,6 +234,7 @@
       "id": "gt_delhi_scam_suit_man",
       "imagePath": "assets/characters/gt_delhi_scam_suit_man/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#393d50",
       "variants": []
     },
@@ -223,6 +242,7 @@
       "id": "gt_delhi_porter",
       "imagePath": "assets/characters/gt_delhi_porter/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.02,
       "placeholderColor": "#af6e5e",
       "variants": []
     },
@@ -230,6 +250,7 @@
       "id": "gt_delhi_ticket_checker",
       "imagePath": "assets/characters/gt_delhi_ticket_checker/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.02,
       "placeholderColor": "#483f3d",
       "variants": []
     },
@@ -237,6 +258,7 @@
       "id": "gt_nikhil",
       "imagePath": "assets/characters/gt_nikhil/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#646875",
       "variants": []
     },
@@ -272,6 +294,7 @@
       "id": "gt_vimla",
       "imagePath": "assets/characters/gt_vimla/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 0.92,
       "placeholderColor": "#986f7b",
       "variants": []
     },
@@ -279,6 +302,7 @@
       "id": "gt_mukesh",
       "imagePath": "assets/characters/gt_mukesh/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#8a6f66",
       "variants": []
     },
@@ -286,6 +310,7 @@
       "id": "gt_anwar",
       "imagePath": "assets/characters/gt_anwar/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 0.96,
       "placeholderColor": "#e6d6cd",
       "variants": []
     },
@@ -293,6 +318,7 @@
       "id": "gt_agra_finale_student",
       "imagePath": "assets/characters/gt_agra_finale_student/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#5e5e62",
       "variants": []
     },
@@ -300,6 +326,7 @@
       "id": "gt_samir",
       "imagePath": "assets/characters/gt_samir/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#644943",
       "variants": []
     },
@@ -307,6 +334,7 @@
       "id": "gt_jagdeep",
       "imagePath": "assets/characters/gt_jagdeep/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#6a5842",
       "variants": []
     },
@@ -321,6 +349,7 @@
       "id": "gt_gurmeet",
       "imagePath": "assets/characters/gt_gurmeet/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.02,
       "placeholderColor": "#827169",
       "variants": []
     },
@@ -328,6 +357,7 @@
       "id": "gt_agra_mariam_father",
       "imagePath": "assets/characters/gt_agra_mariam_father/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.02,
       "placeholderColor": "#8b7b72",
       "variants": []
     },
@@ -356,6 +386,7 @@
       "id": "gt_vinod",
       "imagePath": "assets/characters/gt_vinod/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#79757c",
       "variants": []
     },
@@ -363,6 +394,7 @@
       "id": "gt_agra_akbar_guard",
       "imagePath": "assets/characters/gt_agra_akbar_guard/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#af8e65",
       "variants": []
     },
@@ -370,6 +402,7 @@
       "id": "gt_saleem",
       "imagePath": "assets/characters/gt_saleem/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#bba58e",
       "variants": []
     },
@@ -377,6 +410,7 @@
       "id": "gt_jaipur_amber_shopkeeper",
       "imagePath": "assets/characters/gt_jaipur_amber_shopkeeper/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#6a4242",
       "variants": []
     },
@@ -384,6 +418,7 @@
       "id": "gt_gaura",
       "imagePath": "assets/characters/gt_gaura/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 0.92,
       "placeholderColor": "#ae554e",
       "variants": []
     },
@@ -391,6 +426,7 @@
       "id": "gt_sushma",
       "imagePath": "assets/characters/gt_sushma/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 0.97,
       "placeholderColor": "#c26c3d",
       "variants": []
     },
@@ -398,6 +434,7 @@
       "id": "gt_vishal",
       "imagePath": "assets/characters/gt_vishal/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 1.04,
       "placeholderColor": "#afa59b",
       "variants": []
     },
@@ -412,6 +449,7 @@
       "id": "gt_shastri",
       "imagePath": "assets/characters/gt_shastri/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 0.94,
       "placeholderColor": "#d2b8aa",
       "variants": []
     },
@@ -426,6 +464,7 @@
       "id": "gt_jaipur_bride_grandmother",
       "imagePath": "assets/characters/gt_jaipur_bride_grandmother/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 0.9,
       "placeholderColor": "#9a3f39",
       "variants": []
     },
@@ -454,6 +493,7 @@
       "id": "gt_jaipur_jaigarh_old_man",
       "imagePath": "assets/characters/gt_jaipur_jaigarh_old_man/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 0.96,
       "placeholderColor": "#c5ac98",
       "variants": []
     },
@@ -468,6 +508,7 @@
       "id": "gt_nasreen",
       "imagePath": "assets/characters/gt_nasreen/neutral.webp",
       "placement": { "x": 50, "bottom": 0, "width": 80, "height": 62, "scale": 1.4, "originX": 50, "originY": 0 },
+      "figureScale": 0.97,
       "placeholderColor": "#724b3e",
       "variants": []
     }
