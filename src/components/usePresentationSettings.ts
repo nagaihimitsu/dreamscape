@@ -18,6 +18,10 @@ interface Preferences {
   skipUnread: boolean;
   /** 「英語を読み上げるボタンを出す」 (ReadAloud.tsx): on, a speaker button beside the quizzes' English. Off by default. */
   readAloud: boolean;
+  /** 「台詞の声を出す」 (useVoice.ts): on, a line's `# voice:` plays its recording. On by default. */
+  voice: boolean;
+  /** 「声の大きさ」: the voices' volume, from 0 to 1 (the slider's 0 to 100 in tens). */
+  voiceVolume: number;
 }
 const defaults: Preferences = {
   schemaVersion: 1,
@@ -28,9 +32,14 @@ const defaults: Preferences = {
   autoAdvance: false,
   skipUnread: true,
   readAloud: false,
+  voice: true,
+  voiceVolume: 0.8,
 };
 
-function read(raw: string | null): Preferences | null {
+const isVolume = (value: unknown): value is number => typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 1;
+
+/** The stored settings (`raw`, null when none are stored: the defaults), or null when they cannot be read safely. */
+export function readPresentationSettings(raw: string | null): Preferences | null {
   if (raw === null) return defaults;
   try {
     const data: unknown = JSON.parse(raw);
@@ -44,8 +53,11 @@ function read(raw: string | null): Preferences | null {
       (item.autoAdvance !== undefined && typeof item.autoAdvance !== "boolean") ||
       (item.skipUnread !== undefined && typeof item.skipUnread !== "boolean") ||
       (item.readAloud !== undefined && typeof item.readAloud !== "boolean") ||
+      (item.voice !== undefined && typeof item.voice !== "boolean") ||
+      (item.voiceVolume !== undefined && !isVolume(item.voiceVolume)) ||
       (item.dialogueSpeed !== undefined && ![0, 25, 45].includes(item.dialogueSpeed as number)) ||
-      Object.keys(item).some((name) => !["schemaVersion", "confirmChoices", "reduceMotion", "autoSave", "dialogueSpeed", "autoAdvance", "skipUnread", "readAloud"].includes(name))
+      Object.keys(item).some((name) => !["schemaVersion", "confirmChoices", "reduceMotion", "autoSave", "dialogueSpeed", "autoAdvance", "skipUnread", "readAloud",
+        "voice", "voiceVolume"].includes(name))
     )
       return null;
     return {
@@ -57,6 +69,8 @@ function read(raw: string | null): Preferences | null {
       autoAdvance: item.autoAdvance === undefined ? false : item.autoAdvance as boolean,
       skipUnread: item.skipUnread === undefined ? true : item.skipUnread as boolean,
       readAloud: item.readAloud === undefined ? false : item.readAloud as boolean,
+      voice: item.voice === undefined ? true : item.voice as boolean,
+      voiceVolume: item.voiceVolume === undefined ? 0.8 : item.voiceVolume as number,
     };
   } catch {
     return null;
@@ -68,7 +82,7 @@ export function usePresentationSettings(storage: StorageLike = window.localStora
   const [initial] = useState(() => {
     try {
       const raw = storage.getItem(key);
-      return { raw, value: read(raw), error: "" };
+      return { raw, value: readPresentationSettings(raw), error: "" };
     } catch {
       return {
         raw: null,
@@ -87,7 +101,8 @@ export function usePresentationSettings(storage: StorageLike = window.localStora
         : "表示設定を読み込めません。元のデータは保持しています。"),
   );
   function update(
-    change: Partial<Pick<Preferences, "confirmChoices" | "reduceMotion" | "autoSave" | "dialogueSpeed" | "autoAdvance" | "skipUnread" | "readAloud">>,
+    change: Partial<Pick<Preferences, "confirmChoices" | "reduceMotion" | "autoSave" | "dialogueSpeed" | "autoAdvance" | "skipUnread" | "readAloud"
+      | "voice" | "voiceVolume">>,
   ): boolean {
     if (error) return false;
     try {

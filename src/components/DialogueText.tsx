@@ -2,6 +2,7 @@ import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "reac
 import type { LineDelivery } from "../content/tags";
 import { dialogueObstructed } from "./dialogueObstructed";
 import { DIALOGUE_LINE_ATTRIBUTE } from "./scene-tap";
+import { useLineVoice, type VoiceLink } from "./useVoice";
 
 /** What a tap on the line does, for a tap elsewhere on the scene (useSceneTap). */
 export interface DialogueTextHandle {
@@ -30,6 +31,8 @@ export function DialogueText({
   onReady,
   onAdvance,
   delivery,
+  voiceId,
+  voice,
   ref,
 }: {
   text: string;
@@ -39,6 +42,10 @@ export function DialogueText({
   onAdvance?: () => void;
   /** The line's `# pause:`, `# shake:` and `# size:` (the frame's delivery). */
   delivery?: LineDelivery;
+  /** The line's `# voice:` (the frame's voiceId): its recording plays as its text starts (useVoice.ts). */
+  voiceId?: string;
+  /** useAutoAdvance's `voice`: no voice during 高速送り, and auto mode waits for the one playing. */
+  voice?: VoiceLink;
   ref?: Ref<DialogueTextHandle>;
 }) {
   const timerRef = useRef<number | undefined>(undefined);
@@ -118,6 +125,8 @@ export function DialogueText({
     progress.shaken = true;
     shakeWindow(textRef.current);
   }, [shake, count]);
+  // The line's voice (# voice:) starts with its text too: after its pause, or at once when the text shows at once.
+  useLineVoice(voiceId, count > 0, voice?.muted ?? false, voice?.onState);
   function activate() {
     // A compact settings menu is not a native modal, so its open state must
     // also block taps on the text behind it.

@@ -11,6 +11,7 @@ import { bindItemReader, type ItemStatus } from "./items";
 import { encounters } from "../content/encounters";
 import { REACTION_MARKS } from "../content/dialogue-reactions";
 import { ALBUM_IMAGE_ID } from "../content/album-images";
+import { VOICE_ID } from "../content/voice-files";
 
 export type { Speaker, StoryFrame } from "./frame-reader";
 import type { StoryFrame } from "./frame-reader";
@@ -53,6 +54,7 @@ export const storyFrameSchema = z
     quiet: z.enum(QUIET_SPANS).optional(),
     stand: z.enum(STAND_POSITIONS).optional(),
     cutin: z.enum(CUTIN_KINDS).optional(),
+    voiceId: z.string().regex(VOICE_ID).optional(),
     choices: z
       .array(
         z

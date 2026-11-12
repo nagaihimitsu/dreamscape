@@ -72,7 +72,8 @@ export function ownArtworkByLayer(sources: Pick<ContentSources, "root" | "layers
  * 5. an album image (a file of a journey's public/assets/album/) that the
  *    tourism catalog credits: the album shows only Dreamscape's own artwork,
  *    which never needs a list line or a credit.
- * Served files that are not images (the web app manifest) are not checked.
+ * Served files that are not images (the web app manifest, the voices of
+ * public/assets/voice/: their rights are not decided yet) are not checked.
  */
 export function checkImageRights(
   sources: Pick<ContentSources, "root" | "layers" | "catalogs" | "publicFiles">,

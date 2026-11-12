@@ -1,4 +1,5 @@
 import { REACTION_MARKS, type DialogueReaction, type ReactionTarget } from "./dialogue-reactions";
+import { VOICE_ID } from "./voice-files";
 
 export interface TagContext {
   effectIds: string[];
@@ -44,6 +45,8 @@ export interface StoryTags {
   stand?: StandPosition;
   /** `# cutin: name`: the speaker's name plate over the scene for a moment (the line it is written on only). */
   cutin?: CutInKind;
+  /** `# voice: <ID>`: the recording of the line, a journey's public/assets/voice/<ID>.mp3 (the line it is written on only). */
+  voiceId?: string;
   effects: string[];
 }
 
@@ -231,6 +234,12 @@ export function parseStoryTags(
         throw new Error(`Unknown recall image: ${value} (name an album image, as # photo: does: the file name of public/assets/album/<ID>.webp, .png, .jpg or .jpeg)`);
       if (result.recall) throw new Error("Duplicate recall tag");
       result.recall = value;
+    } else if (key === "voice") {
+      // The file is checked by content:build (scripts/voice-files.ts), which knows each journey's voices.
+      if (!VOICE_ID.test(value))
+        throw new Error(`Invalid voice tag: ${value} (write # voice: <ID>, the file name of public/assets/voice/<ID>.mp3: a-z, 0-9 and _)`);
+      if (result.voiceId) throw new Error("Duplicate voice tag");
+      result.voiceId = value;
     } else if (isSceneTagKey(key)) {
       readSceneTag(key, value, result);
     } else {

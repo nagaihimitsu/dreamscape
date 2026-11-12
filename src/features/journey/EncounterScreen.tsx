@@ -44,6 +44,8 @@ export type EncounterScreenView = {
   text: string;
   /** The line's `# pause:`, `# shake:` and `# size:`. */
   delivery?: LineDelivery;
+  /** The line's `# voice:`: its recording, played as its text starts. */
+  voiceId?: string;
   /** The line's scene tags (`# recall:`, `# phone:`, `# letter:`, `# quiet:`, `# stand:`) and who speaks it. */
   staging?: FrameStaging & { speaker: Speaker; speakerPersonId?: string };
   /** The names a phone's messages show (LineStage). */
@@ -170,7 +172,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
           <>
             <LineStage frame={staging ?? { speaker: "narrator" }} names={view.phoneNames ?? {}} compact={view.choices.length > 0}>
               <DialogueText key={view.revision} ref={sceneTap.line} text={view.text} delivery={view.delivery} speed={autoAdvance.fast ? 0 : lineSpeed(speed, staging)}
-                onReady={onReady} onAdvance={advance} />
+                voiceId={view.voiceId} voice={autoAdvance.voice} onReady={onReady} onAdvance={advance} />
             </LineStage>
             {view.choices.length ? (
               <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={view.id} choices={view.choices} learning={learning} onChoose={(index) => select(index, onChoose)} disabled={!ready || !choiceReady} />
