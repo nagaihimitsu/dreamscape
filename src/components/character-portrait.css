@@ -26,6 +26,13 @@
   object-fit: contain;
   object-position: center bottom;
 }
+/* A character's own size (characters.json figureScale, --figure-scale on the portrait): the picture shrinks about its
+   bottom, so the feet stay where everyone's are and the head comes down. The box, its placement and the slots of a
+   two-person scene are unchanged. */
+.vn-character > img {
+  scale: var(--figure-scale, 1);
+  transform-origin: center bottom;
+}
 /* A face in a small round frame (CharacterFace): the standing picture, scaled so that its head
    fills the frame. Every standing picture of the heroine is a 2:3 canvas with her head at the top
    centre (about 12 % down); the placeholder figure's head sits lower in its own 2:3 canvas. */

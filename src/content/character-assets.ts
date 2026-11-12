@@ -35,6 +35,9 @@ const characterSchema = z.object({
   id,
   imagePath,
   placement: placementSchema,
+  // The figure's size in its picture, against the standard (1): a shorter person, or one who stoops or sits, is drawn
+  // smaller, feet where they were (character-portrait.css). Every screen that shows the character follows it.
+  figureScale: z.number().min(0.5).max(1.2).optional(),
   placeholderColor: z.string().regex(/^#[0-9a-fA-F]{6}$/),
   variants: z.array(variantSchema),
   costumes: z.array(costumeSchema).optional(),

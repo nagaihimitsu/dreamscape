@@ -90,7 +90,8 @@
   width: min(150%, 46dvh) !important;
 }
 .encounter-character-slot .comic-effect {
-  top: 2%;
+  /* By the head, which a smaller figure (figureScale) has lower in its box. */
+  top: calc(2% + (1 - var(--figure-scale, 1)) * 100%);
   left: 64%;
   width: clamp(20px, 18%, 36px);
 }

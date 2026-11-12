@@ -825,7 +825,7 @@
 /* An opponent drawn on the heroine's 2:3 canvas (a journey's characters.json portrait, placed like hers):
    the mark sits by the head as hers does, on the inner side so it stays on the screen. */
 .battle-enemy .vn-character:has(> img) .comic-effect {
-  top: max(3%, calc(100% - 150cqw));
+  top: max(3%, calc(100% - var(--figure-scale, 1) * 150cqw));
   left: auto;
   right: calc(50% + min(4vw, 5dvh, 15px));
 }

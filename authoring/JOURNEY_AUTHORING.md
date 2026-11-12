@@ -16,7 +16,7 @@
 
 機械的なエピソード・対決・報酬・デート条件・反応ID・思い出IDの登録は生成器が行います。人物、質問、解答、根拠となる新しい事実を自動で創作するものではありません。
 
-新しい対戦人物の専用立ち絵がない間は `portrait: "abstract"` を生成し、既存の抽象人物表示を使います。別人のミラノ用イラストは流用しません。専用画像を用意したら、その旅行編フォルダの `content/journeys/<旅行編ID>/presentation/characters.json` に人物登録（`characters`）と `battleCharacters` の割り当てを追加し、画像は同じフォルダの `public/assets/` に置きます。共通の `content/presentation/characters.json` には旅行編の人物を登録しません。
+新しい対戦人物の専用立ち絵がない間は `portrait: "abstract"` を生成し、既存の抽象人物表示を使います。別人のミラノ用イラストは流用しません。専用画像を用意したら、その旅行編フォルダの `content/journeys/<旅行編ID>/presentation/characters.json` に人物登録（`characters`）と `battleCharacters` の割り当てを追加し、画像は同じフォルダの `public/assets/` に置きます。共通の `content/presentation/characters.json` には旅行編の人物を登録しません。人物の背の高さや姿勢（前かがみ・座っているなど）で絵が大きく見えるときは、その人物に `"figureScale": 0.88` のように書くと、足の位置はそのままで絵が小さくなります（0.5〜1.2。書かなければ1。例：インド編の `gt_mehr`）。
 
 ## ウズベキスタン編の例
 

@@ -79,6 +79,11 @@
             ],
             "additionalProperties": false
           },
+          "figureScale": {
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 1.2
+          },
           "placeholderColor": {
             "type": "string",
             "pattern": "^#[0-9a-fA-F]{6}$"
