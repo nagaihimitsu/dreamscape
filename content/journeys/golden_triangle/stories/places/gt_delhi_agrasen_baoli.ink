@@ -15,6 +15,7 @@ INCLUDE modules.ink
 アグラセン・キ・バオリ。階段で水面まで下りる、昔の井戸だ。今は水が涸れて、底には鳩の声だけが溜まっている。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# voice: gt_delhi_date_agrasen_baoli_001
 すごい……。上のビルの音が、ここから急に聞こえなくなる。町の真ん中に、穴が空いてるみたい
 # speaker: narrator
 階段の途中で、大学生くらいの二人が言い争っていた。携帯を構えた青年と、白いドゥパッターを頭からかぶった女の子。
@@ -30,6 +31,7 @@ INCLUDE modules.ink
 クナールです。こっちはジャスミート。怖い動画を撮って、ネットに載せてるんです。お願いがあります。一人で底まで下りていく外国の旅行者、の役。最後に悲鳴を一つ。三十秒で終わります
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_delhi_date_agrasen_baoli_002
 わたし？　悲鳴なんて、人生で上げたことないかも……
 * [「自分が幽霊をやる」 # option: play_ghost]
     # profile: playful
@@ -37,6 +39,7 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_delhi_date_agrasen_baoli_003
         幽霊……。ほんとに驚いて、階段で転んだらどうするの
         # speaker: narrator
         結局、こちらは途中のくぼみに隠れることになった。彼女は一段ごとに、くぼみの数を数えながら下りてきた。どこにいるか、最初から分かっている顔だった。
@@ -46,6 +49,7 @@ INCLUDE modules.ink
         飛び出した瞬間、彼女は悲鳴のかわりに、思いきり吹き出した。
         # speaker: heroine
         # reaction: heroine,teasing_big,music
+        # voice: gt_delhi_date_agrasen_baoli_004
         ご、ごめんなさいっ。足、見えてた。いつもの靴だったから、ふふっ
     }
     # speaker: gt_kunal
@@ -55,10 +59,12 @@ INCLUDE modules.ink
     # memory: gt_delhi_date_agrasen_baoli_memory
     { romance_result == "negative":
         # speaker: heroine
+        # voice: gt_delhi_date_agrasen_baoli_005
         一緒だと、一人の旅行者の役にならないよ。でも、うしろにはいてね
     - else:
         # speaker: heroine
         # emotion: smile
+        # voice: gt_delhi_date_agrasen_baoli_006
         うん。一人じゃないなら、やってみる。でも、役の上では一人ってことにしてね
     }
     # speaker: narrator
@@ -69,13 +75,16 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: serious
+        # voice: gt_delhi_date_agrasen_baoli_007
         待って。勝手に決めないで。……やるかどうかは、わたしが決める
     - else:
         # speaker: heroine
         # emotion: serious
+        # voice: gt_delhi_date_agrasen_baoli_008
         心配してくれて、ありがとう。でも、やるかどうかは、わたしが決めたいな
     }
     # speaker: heroine
+    # voice: gt_delhi_date_agrasen_baoli_009
     怖いけど、ちょっとやってみたい。こういうの、旅じゃないと、たぶん一生やらないから
 -
 # speaker: narrator
@@ -84,15 +93,18 @@ INCLUDE modules.ink
 ここ、出るって言われてるんですよ。昔は底に黒い水が溜まっていて、その水に呼ばれて、飛び込んだ人がいたって。……言い伝えですけど
 # speaker: heroine
 # emotion: worried
+# voice: gt_delhi_date_agrasen_baoli_010
 水がなくなっても、話だけは残ってるんだ。……今それ、聞きたくなかったな
 # speaker: narrator
 底に着いた。涸れた井戸の口には柵があり、覗き込むと、丸い暗がりがずっと下まで続いている。クナールが手で合図をした。本番だ。
 # speaker: heroine
+# voice: gt_delhi_date_agrasen_baoli_011
 きゃ、きゃー……？
 # speaker: gt_kunal
 カット。それは悲鳴じゃない。質問だ
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_delhi_date_agrasen_baoli_012
 質問……。だって、何に向かって叫べばいいのか、分からなくて
 # speaker: narrator
 もう一度、と彼女が井戸の方を向いた、そのときだった。すぐ横のくぼみから、灰色の塊が、羽音ごと顔の前に飛び出した。
@@ -101,6 +113,7 @@ INCLUDE modules.ink
 # photo: gt_album_d55 # photo_caption: 鳩が顔の前に、本物の悲鳴
 # shake: window
 # size: large
+# voice: gt_delhi_date_agrasen_baoli_013
 きゃああああっ！
 # speaker: narrator
 本物だった。悲鳴は井戸の壁に跳ね返り、階段を駆け上がり、上の路地まで届いた。鳩は何事もなかったように、反対側のくぼみに収まった。
@@ -115,10 +128,12 @@ INCLUDE modules.ink
         # speaker: gt_jasmeet
         ……同情なら、いらない
         # speaker: heroine
+        # voice: gt_delhi_date_agrasen_baoli_014
         同情じゃないよ。本物、聞いてみたいだけ。鳩の役なら、ここにちょうどいい人がいるし
     - else:
         # speaker: heroine
         # reaction: heroine,surprised,sparkle
+        # voice: gt_delhi_date_agrasen_baoli_015
         わたしも、今そう言おうと思ってた。鳩の役なら、ここにちょうどいい人がいるし
     }
 * [「最高の悲鳴だった」と褒める # option: praise_scream]
@@ -126,15 +141,18 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,shy_deep,gloom
+        # voice: gt_delhi_date_agrasen_baoli_016
         その話、もうしないで。恥ずかしくて、井戸に入りたい
     - else:
         # speaker: heroine
         # reaction: heroine,teasing,question
+        # voice: gt_delhi_date_agrasen_baoli_017
         褒めてないよね、それ。ふふ
     }
     # speaker: narrator
     彼女はそこで、ジャスミートの顔に気づいた。
     # speaker: heroine
+    # voice: gt_delhi_date_agrasen_baoli_018
     クナールさん。これ、ジャスミートさんの動画だよね。もう一回、撮ろう。今度は、本物の鳩なしで
 * [「本物の悲鳴は、一回きりだね」 # option: once_only]
     # profile: provocative
@@ -142,13 +160,16 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: serious
+        # voice: gt_delhi_date_agrasen_baoli_019
         そういう言い方、ジャスミートさんの前でしないで。……鳩さえいれば、何回でも出るよ
     - else:
         # speaker: heroine
+        # voice: gt_delhi_date_agrasen_baoli_020
         そうかな。……鳩さえいれば、何回でも出ると思うよ
     }
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_date_agrasen_baoli_021
     ジャスミートさん、もう一回やろう。鳩の役なら、ここにちょうどいい人がいるし
 -
 { cond("flag gt_delhi_baoli_player_pigeon"):
@@ -168,6 +189,7 @@ INCLUDE modules.ink
 出た！　本当に出た！　……ねえ、今の、わたしの方がすごかったでしょ？
 # speaker: heroine
 # reaction: heroine,happy,music
+# voice: gt_delhi_date_agrasen_baoli_022
 うん、負けた。わたしのは、質問だったもん
 # speaker: narrator
 動画は、ジャスミートの悲鳴で締めることになった。
@@ -176,18 +198,22 @@ INCLUDE modules.ink
 # speaker: narrator
 彼女は少し考えてから、うなずいた。
 # speaker: heroine
+# voice: gt_delhi_date_agrasen_baoli_023
 顔は、ちょっとだけ隠してね
 # speaker: narrator
 帰りは、上り。百段を過ぎたあたりで、彼女の息が上がってきた。
 # speaker: heroine
+# voice: gt_delhi_date_agrasen_baoli_024
 この階段、百八段あるんだって。日本だと、百八って煩悩の数なんだよ。大みそかに、鐘を百八回つくでしょ
 # speaker: heroine
 # emotion: teasing
+# voice: gt_delhi_date_agrasen_baoli_025
 一段上るごとに、煩悩が一個ずつ消えてたらいいな。上に着いたら、わたし、もう何も欲しくなくなってるかも
 # speaker: narrator
 最後の一段を上りきると、路地の暑さと車の音が、いっぺんに戻ってきた。彼女は膝に手をついて、しばらく黙っていた。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # pause: 700
+# voice: gt_delhi_date_agrasen_baoli_026
 ……だめだ。冷たいものが飲みたい。煩悩、一個も減ってない
 -> END
