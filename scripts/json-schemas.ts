@@ -14,6 +14,7 @@ import { localWordsCatalogSchema } from "../src/content/local-words";
 import { ownArtworkCatalogSchema } from "../src/content/own-artwork-schema";
 import { sceneDataCatalogSchema, storyStateCatalogSchema } from "../src/content/scene-schemas";
 import { soundCatalogSchema } from "../src/content/sounds";
+import { musicCatalogSchema } from "../src/content/music";
 import { tourSchema } from "../src/content/tour-schemas";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
@@ -63,6 +64,7 @@ export const CATALOG_SCHEMAS: Record<MergedKind, { titleJa: string; schema: z.Zo
   "presentation/characters.json": { titleJa: "登場人物と衣装", schema: characterCatalogSchema },
   "presentation/dialogue-expressions.json": { titleJa: "台詞の表情", schema: dialogueExpressionCatalogSchema },
   "presentation/dialogue-reactions.json": { titleJa: "台詞の反応", schema: dialogueReactionCatalogSchema },
+  "presentation/music.json": { titleJa: "BGM とその出典・流す場面", schema: musicCatalogSchema },
   "presentation/own-artwork.json": { titleJa: "Dreamscape のために作った絵", schema: ownArtworkCatalogSchema },
   "presentation/sounds.json": { titleJa: "効果音とその出典", schema: soundCatalogSchema },
   "progression/journey.json": { titleJa: "本筋の回・特殊戦・報酬", schema: journeySchema },

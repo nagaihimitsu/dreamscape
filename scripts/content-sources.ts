@@ -372,7 +372,7 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
     // Layer order (core first), not path order, decides the merge order.
     const sources: CatalogSource[] = (catalogFiles.get(rule.kind) ?? [])
       .sort((a, b) => a.layerIndex - b.layerIndex)
-      .map((item) => ({ file: item.file, core: item.layer.type === "core", data: parseJson(item.file, bytesOf(item)) }));
+      .map((item) => ({ file: item.file, core: item.layer.type === "core", layer: item.layer.id, data: parseJson(item.file, bytesOf(item)) }));
     const absent = sources.length ? undefined : absentCatalog(rule.kind);
     const merged = absent ? { value: absent, provenance: { files: [], items: {}, keys: {}, values: {} } } : mergeCatalog(rule, sources);
     if (merged) catalogs[rule.kind] = merged;

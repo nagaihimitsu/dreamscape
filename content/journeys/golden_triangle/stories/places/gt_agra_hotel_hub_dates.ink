@@ -13,6 +13,7 @@ INCLUDE modules.ink
 # when: not couple
 # when: time night
 # background: gt_bg_hotel_rooftop_night
+# bgm: immersed
 # speaker: narrator
 宿の屋上からは、タージのドームが見えた。夜の中で、そこだけが白く、薄く光っている。
 彼女は手すりの前まで行きかけて、くるりと向きを変えた。ドームに背を向けて、反対側の、洗濯物と貯水タンクしかない方の縁に腰を下ろす。
@@ -144,6 +145,7 @@ INCLUDE modules.ink
 # when: time night
 # until: date gt_delhi_date_reassurance
 # background: gt_bg_hotel_rooftop_night
+# bgm: stages_of_grief
 # speaker: narrator
 宿の屋上に上がると、彼女が素焼きのカップを二つ持って待っていた。湯気が、二本並んで上っている。
 # speaker: heroine

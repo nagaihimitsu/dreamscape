@@ -39,3 +39,21 @@ describe("the presentation settings' sound effects", () => {
       expect(readPresentationSettings(stored(extra)), JSON.stringify(extra)).toBeNull();
   });
 });
+
+// The music settings (2026-11-12): 「BGMを流す」 (`bgm`) and 「BGMの大きさ」 (`bgmVolume`, 0 to 1).
+describe("the presentation settings' music", () => {
+  it("are on at 0.4 for settings stored without them, and with none stored", () => {
+    expect(readPresentationSettings(stored())).toMatchObject({ bgm: true, bgmVolume: 0.4 });
+    expect(readPresentationSettings(null)).toMatchObject({ bgm: true, bgmVolume: 0.4 });
+  });
+
+  it("read what was stored, beside the sound effects' own", () => {
+    expect(readPresentationSettings(stored({ bgm: false, bgmVolume: 0 }))).toMatchObject({ bgm: false, bgmVolume: 0, se: true, seVolume: 0.7 });
+    expect(readPresentationSettings(stored({ bgmVolume: 1, seVolume: 0.2 }))).toMatchObject({ bgm: true, bgmVolume: 1, seVolume: 0.2 });
+  });
+
+  it("refuse a volume outside 0 to 1 or not a number, and a switch that is not true or false", () => {
+    for (const extra of [{ bgmVolume: 1.5 }, { bgmVolume: -1 }, { bgmVolume: "0.5" }, { bgmVolume: Number.NaN }, { bgm: 1 }])
+      expect(readPresentationSettings(stored(extra)), JSON.stringify(extra)).toBeNull();
+  });
+});

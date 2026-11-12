@@ -1,14 +1,15 @@
 import { isDeepStrictEqual } from "node:util";
 import type { CatalogRule, FieldTable } from "./content-layout";
 
-/** One layer's copy of a catalog file. */
-export type CatalogSource = { file: string; core: boolean; data: unknown };
+/** One layer's copy of a catalog file (`layer`: its layer's ID, for a key each layer keeps apart; `core` when left out). */
+export type CatalogSource = { file: string; core: boolean; layer?: string; data: unknown };
 
 /**
  * Which file contributed what. Key paths are dot-joined (`wardrobe.cities`).
  * - items: the file of every array element of a concatenated key;
  * - keys: the file of every key of a merged record;
  * - values: the file whose value was used for a single value (same/core).
+ * A key each layer keeps apart (layers) records its files under keys too, by layer ID.
  */
 export type CatalogProvenance = {
   files: string[];
@@ -19,7 +20,7 @@ export type CatalogProvenance = {
 
 export type MergedCatalog = { value: unknown; provenance: CatalogProvenance };
 
-type ObjectSource = { file: string; core: boolean; data: Record<string, unknown> };
+type ObjectSource = { file: string; core: boolean; layer?: string; data: Record<string, unknown> };
 
 const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value);
@@ -98,6 +99,17 @@ function mergeFields(
       }
       provenance.keys[name] = owners;
       result.push([key, Object.fromEntries(merged)]);
+    } else if (rule.mode === "layers") {
+      // Each layer's own value, by its layer ID (the core layer's under "core"): no layer's value replaces another's.
+      const byLayer: Record<string, unknown> = Object.create(null);
+      const owners: Record<string, string> = Object.create(null);
+      for (const source of present) {
+        const layer = source.core ? "core" : source.layer ?? source.file;
+        byLayer[layer] = source.data[key];
+        owners[layer] = source.file;
+      }
+      provenance.keys[name] = owners;
+      result.push([key, { ...byLayer }]);
     } else if (rule.mode === "nested") {
       const nested = present.map((source) => {
         const value = source.data[key];

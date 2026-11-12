@@ -1,10 +1,10 @@
-// The page's audio (2026-11-12), shared by the lines' voices (src/components/useVoice.ts) and the sound effects
-// (sound-effects.ts): one AudioContext for the whole page, made and woken on a user's gesture (the only moment a browser
+// The page's audio (2026-11-12), shared by the lines' voices (src/components/useVoice.ts), the sound effects
+// (sound-effects.ts) and the music (bgm.ts): one AudioContext for the whole page, made and woken on a user's gesture (the only moment a browser
 // lets audio start), caches of decoded sounds, and the page going to the background. Played through the Web Audio API,
 // not an audio element (iOS Safari ignores an audio element's volume). Each part keeps its own gain and settings.
 
 /** A touch starts the page's audio only on its release (pointerup); a mouse and keys on their press. */
-const GESTURES = ["pointerdown", "pointerup", "keydown"] as const;
+export const AUDIO_GESTURES = ["pointerdown", "pointerup", "keydown"] as const;
 
 let context: AudioContext | undefined;
 const stateListeners = new Set<(state: AudioContextState) => void>();
@@ -63,7 +63,7 @@ function unlock() {
 function listenForGesture(on: boolean) {
   if (on === gestureListening) return;
   gestureListening = on;
-  for (const type of GESTURES) {
+  for (const type of AUDIO_GESTURES) {
     if (on) document.addEventListener(type, unlock, true);
     else document.removeEventListener(type, unlock, true);
   }

@@ -56,6 +56,7 @@ import type { TagContext } from "../src/content/tags";
 import { albumFolderPath, albumImagesOf, checkAlbumTags } from "./album-images";
 import { checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
 import { checkSoundTags, soundRegistry, soundUseProblem, soundVolumesOf, soundWarnings, transportModeSounds } from "./sound-files";
+import { checkBgmTags, musicDataOf, musicRegistry, musicWarnings } from "./music-files";
 import { checkHelperKnot, revealRegionProblem, validateBattleEvidence } from "./battle-validation";
 import { landmarkOrderError, landmarkParts, tourismCatalogSchema, type VisitPart } from "../src/content/tourism-schemas";
 import type { SceneOption } from "../src/content/scene-schemas";
@@ -550,6 +551,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     const problem = soundUseProblem(mode.id, mode.journeyId, sounds, `${displayPath(root, mode.file)} の transportModes "${mode.modeId}" の se "${mode.id}"`);
     if (problem) throw new Error(problem);
   }
+  // The background music (2026-11-12): each layer's presentation/music.json against its public/assets/bgm/ and its play (music-files.ts).
+  const music = musicRegistry(sources);
   const context: TagContext = {
     effectIds: effects.map((effect) => effect.id),
     backgroundIds: Object.keys(presentation.backgrounds),
@@ -615,6 +618,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     withContext(file, () => checkVoiceTags(authored, storyLayer, voiceFiles, voiceFolderPath(sources, journeyLayerOfStory)));
     // A line's # se: names a shared sound or one of the story's own journey (2026-11-12).
     withContext(file, () => checkSoundTags(authored, storyLayer, sounds));
+    // A line's # bgm: names a shared track or one of the story's own journey, or stop or default (2026-11-12).
+    withContext(file, () => checkBgmTags(authored, storyLayer, music.tracks));
     const place = placeFiles.get(id);
     const main = !place && mains.some((item) => item.address === id);
     const mainHead = main ? withContext(file, () => readMainFileHead(authored)) : undefined;
@@ -1597,6 +1602,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     albumImages,
     /** Every registered sound's volume (generated/sound-volumes.json; src/audio/sound-effects.ts). */
     soundVolumes: soundVolumesOf(sounds),
+    /** The tracks and where each journey plays them (generated/music.json; src/audio/bgm.ts, the credits list). */
+    music: musicDataOf(music, sources.manifests.map((manifest) => manifest.id)),
     /** Images whose files checkContentImages decodes. */
     images: { characters: characterImages, tourismAssets: tourism.assets },
     /** What chooses the free-time photos (src/content/photo-choice.ts), for their derived copies (scripts/derived-images.ts). */
@@ -1618,7 +1625,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     /** The scene list and the tags' AP rules (generated/scenes.json). */
     scenes: generatedScenes,
     /** Probable mistakes that do not stop the build (content-report.ts). */
-    warnings: [...contentWarnings(sources), ...soundWarnings(sources, sounds), ...transitWarnings, ...conditionNotes, ...languageNotes, ...sceneNotes, ...tourNotes],
+    warnings: [...contentWarnings(sources), ...soundWarnings(sources, sounds), ...musicWarnings(sources, music), ...transitWarnings, ...conditionNotes, ...languageNotes, ...sceneNotes, ...tourNotes],
     /** What each journey folder provides, for the build report. */
     journeyContents: journeyContents(sources),
     /** Each journey's in-city transport (modes and transit ledger counts), for the build report. */

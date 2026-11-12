@@ -58,6 +58,8 @@ export const storyFrameSchema = z
     cutin: z.enum(CUTIN_KINDS).optional(),
     voiceId: z.string().regex(VOICE_ID).optional(),
     seId: z.string().regex(SOUND_ID).optional(),
+    // `# bgm:` (a track's ID or `stop`), kept to the scene's end (frame-reader.ts); a frame saved without it has the scene's usual track.
+    bgm: z.string().regex(SOUND_ID).optional(),
     choices: z
       .array(
         z
@@ -130,7 +132,7 @@ function runtime(address: string, saved?: string, memoryIds: readonly string[] =
 }
 
 const readFrame = (story: Story, previous?: StoryFrame, choiceTags: readonly string[] = [], initialBackground = DEFAULT_BACKGROUND_ID,
-  originKnot?: string): StoryStep => readStoryFrame(story, tagContext, previous, choiceTags, initialBackground, originKnot);
+  originKnot?: string, initialBgm?: string): StoryStep => readStoryFrame(story, tagContext, previous, choiceTags, initialBackground, originKnot, initialBgm);
 const storyChoices = (story: Story) => storyChoicesOf(story, tagContext);
 
 export function beginStory(
@@ -207,6 +209,8 @@ export function selectStoryChoice(
   /** The background of a fresh frame (no `previous`). */
   initialBackground = DEFAULT_BACKGROUND_ID,
   originKnot?: string,
+  /** The music of a fresh frame (no `previous`): a battle's `# bgm:` kept over its call. */
+  initialBgm?: string,
 ): StoryStep {
   const story = runtime(storyId, saved, memoryIds, inventory, conditions);
   for (const [name, value] of Object.entries(variables)) {
@@ -219,7 +223,7 @@ export function selectStoryChoice(
   if (!choice) throw new Error("選択肢が見つかりません。");
   const tags = choice.tags ?? [];
   story.ChooseChoiceIndex(index);
-  return readFrame(story, previous, tags, initialBackground, originKnot);
+  return readFrame(story, previous, tags, initialBackground, originKnot, initialBgm);
 }
 
 /**

@@ -7,6 +7,7 @@ INCLUDE modules.ink
 隣のカムラさんのお孫さんが、お二人を探しています
 # background: gt_bg_delhi_hotel_hub
 # speaker: narrator
+# bgm: gt_a_newcomer
 急いで宿に戻ると、路地が騒がしかった。半分だけ荷を積んだトラック。集まった近所の人たち。段ボールには、どれも「JAIPUR」と書いてある。
 # speaker: narrator
 その真ん中で、しわの寄ったワイシャツの青年が電話に向かって怒鳴っていた。ヒンディー語と英語が、一文ごとに入れ替わる。
@@ -180,6 +181,7 @@ INCLUDE modules.ink
 一分だけ。……待ってください
 # speaker: narrator
 # quiet: scene
+# bgm: touching_moments_four
 録音の声の切れ目に、カムラの声が聞こえた。
 # speaker: gt_kamla
 プラカーシュ。あの冬の夜、ここで言ったでしょう。暗いから顔が見えない、なんてずるい言い方で。わたしは返事をしなかった。恥ずかしくて。それから六十年、一度も

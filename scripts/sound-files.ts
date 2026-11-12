@@ -18,88 +18,126 @@ export const SOUNDS_KIND = "presentation/sounds.json";
 /** A registered sound: its entry, the layer whose public/ folder serves it, and the list (sounds.json) that registers it. */
 export type RegisteredSound = { entry: SoundEntry; layer: ContentLayer; file: string };
 
+/**
+ * A kind of listed audio file (the sound effects of sounds.json, the music of music.json): its list and the key of its
+ * entries, the folder below a layer's public/ that holds its files, and its names in the messages.
+ */
+export type ListedAudio = {
+  kind: string;
+  /** The key of the list's entries (`sounds`, `tracks`). */
+  key: string;
+  folder: string;
+  pathOf: (id: string) => string;
+  idOf: (assetPath: string) => string | undefined;
+  /** The Japanese name (効果音, 曲), its short form (音, 曲) and the English one (sound, track). */
+  ja: string;
+  jaShort: string;
+  en: string;
+};
+
+/** The sound effects: presentation/sounds.json's `sounds`, the files of public/assets/se/. */
+export const SOUND_FILES: ListedAudio = {
+  kind: SOUNDS_KIND, key: "sounds", folder: SOUND_FOLDER, pathOf: soundPath, idOf: soundIdOf, ja: "効果音", jaShort: "音", en: "sound",
+};
+
+/** A layer's folder of a kind of audio file as messages show it (`public/assets/se`, `content/journeys/<journeyId>/public/assets/se`). */
+export function audioFolderPath(sources: Pick<ContentSources, "root">, layer: ContentLayer, folder: string): string {
+  const publicFolder = layer.type === "core" ? path.join(sources.root, "public") : path.join(layer.directory, "public");
+  return displayPath(sources.root, path.join(publicFolder, ...folder.split("/")));
+}
+
 /** A layer's sound folder as messages show it (`public/assets/se`, `content/journeys/<journeyId>/public/assets/se`). */
 export function soundFolderPath(sources: Pick<ContentSources, "root">, layer: ContentLayer): string {
-  const publicFolder = layer.type === "core" ? path.join(sources.root, "public") : path.join(layer.directory, "public");
-  return displayPath(sources.root, path.join(publicFolder, ...SOUND_FOLDER.split("/")));
+  return audioFolderPath(sources, layer, SOUND_FOLDER);
 }
 
 const EMPTY: SoundCatalog = { schemaVersion: 1, sources: [], sounds: [] };
 
 /**
- * The sounds every layer registers (core first), checked against the served files. Throws one error listing every
- * problem (Japanese first, English after):
- * - a sound whose `<ID>.mp3` its layer's public/assets/se/ does not serve;
- * - a file in a public/assets/se/ that its layer's list does not register as a sound (or that is not `<ID>.mp3`);
- * - a sound ID registered twice (in one list or in two layers: an ID names one file in the whole build);
- * - a sound naming a source its own list does not have;
+ * The entries of a kind of listed audio file that every layer registers (core first), checked against the served files;
+ * each problem is added to `errors` (Japanese first, English after):
+ * - an entry whose `<ID>.mp3` its layer's folder does not serve;
+ * - a file in such a folder that its layer's list does not register (or that is not `<ID>.mp3`);
+ * - an ID registered twice (in one list or in two layers: an ID names one file in the whole build);
+ * - an entry naming a source its own list does not have;
  * - a source listed twice in one list, or under one ID with other details in another layer's list (the credits list
  *   shows one source a line);
  * - a source of any licence but `own` without its page (`url`) or its author.
+ * `sourceFiles` and `entryFiles` are the list file of each source and entry (the merged catalog's provenance).
  */
-export function soundRegistry(sources: Pick<ContentSources, "root" | "layers" | "catalogs" | "publicFiles">): RegisteredSound[] {
-  const merged = sources.catalogs[SOUNDS_KIND];
-  const catalog = merged ? parseCatalog(sources, soundCatalogSchema, SOUNDS_KIND) : EMPTY;
-  const sourceFiles = merged?.provenance.items.sources ?? [];
-  const soundFiles = merged?.provenance.items.sounds ?? [];
+export function registerListedAudio(sources: Pick<ContentSources, "root" | "layers" | "publicFiles">, audio: ListedAudio,
+  listed: { sources: readonly SoundSource[]; entries: readonly SoundEntry[] }, sourceFiles: readonly string[], entryFiles: readonly string[],
+  errors: string[]): RegisteredSound[] {
   const show = (file: string) => displayPath(sources.root, file);
-  const errors: string[] = [];
+  const En = `${audio.en[0].toUpperCase()}${audio.en.slice(1)}`;
 
   const listSources = new Map<string, Map<string, SoundSource>>();
   const firstSource = new Map<string, { source: SoundSource; file: string }>();
-  catalog.sources.forEach((source, index) => {
+  listed.sources.forEach((source, index) => {
     const file = sourceFiles[index];
     const own = listSources.get(file) ?? new Map<string, SoundSource>();
     listSources.set(file, own);
     if (own.has(source.id))
-      errors.push(`効果音の出典が2回あります：${show(file)} の sources に "${source.id}" が2つあります。1つにまとめてください` +
-        `（Duplicate sound source: ${source.id}）。`);
+      errors.push(`${audio.ja}の出典が2回あります：${show(file)} の sources に "${source.id}" が2つあります。1つにまとめてください` +
+        `（Duplicate ${audio.en} source: ${source.id}）。`);
     own.set(source.id, source);
     const first = firstSource.get(source.id);
     if (!first) firstSource.set(source.id, { source, file });
     else if (first.file !== file && !isDeepStrictEqual(first.source, source))
       errors.push(`同じ ID の出典の中身が違います：${show(first.file)} と ${show(file)} の "${source.id}"。同じ作品なら同じ内容に、別の作品なら別の ID にしてください` +
-        `（Sound source ${source.id} differs between lists）。`);
+        `（${En} source ${source.id} differs between lists）。`);
     if (source.license !== "own" && (!source.url || !source.author))
-      errors.push(`効果音の出典に作品のページか作者がありません：${show(file)} の "${source.id}"（${source.license}）。自作（own）でない音は url と author を書いてください` +
-        `（Sound source without url or author: ${source.id}）。`);
+      errors.push(`${audio.ja}の出典に作品のページか作者がありません：${show(file)} の "${source.id}"（${source.license}）。自作（own）でない${audio.jaShort}は url と author を書いてください` +
+        `（${En} source without url or author: ${source.id}）。`);
   });
 
-  const sounds: RegisteredSound[] = [];
+  const entries: RegisteredSound[] = [];
   const registeredBy = new Map<string, string>();
-  catalog.sounds.forEach((entry, index) => {
-    const file = soundFiles[index];
+  listed.entries.forEach((entry, index) => {
+    const file = entryFiles[index];
     const layer = layerOfFile(sources.layers, file);
     const previous = registeredBy.get(entry.id);
     if (previous) {
-      errors.push(`同じ ID の効果音が2つあります：${show(previous)} と ${show(file)} の "${entry.id}"。ID は音のファイル名で、すべての旅行編で1つだけにします` +
-        `（Duplicate sound ID: ${entry.id}）。`);
+      errors.push(`同じ ID の${audio.ja}が2つあります：${show(previous)} と ${show(file)} の "${entry.id}"。ID は${audio.jaShort}のファイル名で、すべての旅行編で1つだけにします` +
+        `（Duplicate ${audio.en} ID: ${entry.id}）。`);
       return;
     }
     registeredBy.set(entry.id, file);
     for (const sourceId of entry.sources)
       if (!listSources.get(file)?.has(sourceId))
-        errors.push(`効果音の出典がありません：${show(file)} の音 "${entry.id}" の出典 "${sourceId}" が、同じファイルの sources にありません` +
-          `（Unknown sound source: ${entry.id}/${sourceId}）。`);
-    const served = sources.publicFiles.get(soundPath(entry.id));
+        errors.push(`${audio.ja}の出典がありません：${show(file)} の${audio.jaShort} "${entry.id}" の出典 "${sourceId}" が、同じファイルの sources にありません` +
+          `（Unknown ${audio.en} source: ${entry.id}/${sourceId}）。`);
+    const served = sources.publicFiles.get(audio.pathOf(entry.id));
     if (!served || servingLayer(sources, served) !== layer)
-      errors.push(`効果音のファイルがありません：${show(file)} の "${entry.id}" の ${entry.id}.mp3 が ${soundFolderPath(sources, layer)}/ にありません` +
-        `（Missing sound file: ${soundPath(entry.id)} is not served by its layer）。`);
-    sounds.push({ entry, layer, file });
+      errors.push(`${audio.ja}のファイルがありません：${show(file)} の "${entry.id}" の ${entry.id}.mp3 が ${audioFolderPath(sources, layer, audio.folder)}/ にありません` +
+        `（Missing ${audio.en} file: ${audio.pathOf(entry.id)} is not served by its layer）。`);
+    entries.push({ entry, layer, file });
   });
 
   for (const [assetPath, file] of sources.publicFiles) {
-    if (!assetPath.startsWith(`${SOUND_FOLDER}/`)) continue;
+    if (!assetPath.startsWith(`${audio.folder}/`)) continue;
     const layer = servingLayer(sources, file);
-    const id = soundIdOf(assetPath);
-    if (id !== undefined && sounds.some((sound) => sound.entry.id === id && sound.layer === layer)) continue;
+    const id = audio.idOf(assetPath);
+    if (id !== undefined && entries.some((item) => item.entry.id === id && item.layer === layer)) continue;
     errors.push(id === undefined
-      ? `効果音のファイル名が使えません：${show(file)}。音は ${soundFolderPath(sources, layer)}/ の直下に「ID.mp3」の名前で置きます（ID は英小文字・数字・_ だけ）` +
-        `（Invalid sound file: ${assetPath}; name it ${SOUND_FOLDER}/<ID>.mp3）。`
-      : `一覧にない効果音のファイルです：${show(file)}。${show(path.join(layer.directory, SOUNDS_KIND))} の sounds に、出典と一緒に登録してください` +
-        `（Unlisted sound file: ${assetPath}）。`);
+      ? `${audio.ja}のファイル名が使えません：${show(file)}。${audio.jaShort}は ${audioFolderPath(sources, layer, audio.folder)}/ の直下に「ID.mp3」の名前で置きます（ID は英小文字・数字・_ だけ）` +
+        `（Invalid ${audio.en} file: ${assetPath}; name it ${audio.folder}/<ID>.mp3）。`
+      : `一覧にない${audio.ja}のファイルです：${show(file)}。${show(path.join(layer.directory, audio.kind))} の ${audio.key} に、出典と一緒に登録してください` +
+        `（Unlisted ${audio.en} file: ${assetPath}）。`);
   }
+  return entries;
+}
 
+/**
+ * The sounds every layer registers (core first), checked against the served files (registerListedAudio). Throws one
+ * error listing every problem (Japanese first, English after).
+ */
+export function soundRegistry(sources: Pick<ContentSources, "root" | "layers" | "catalogs" | "publicFiles">): RegisteredSound[] {
+  const merged = sources.catalogs[SOUNDS_KIND];
+  const catalog = merged ? parseCatalog(sources, soundCatalogSchema, SOUNDS_KIND) : EMPTY;
+  const errors: string[] = [];
+  const sounds = registerListedAudio(sources, SOUND_FILES, { sources: catalog.sources, entries: catalog.sounds },
+    merged?.provenance.items.sources ?? [], merged?.provenance.items.sounds ?? [], errors);
   if (errors.length) throw new Error(errors.join("\n"));
   return sounds;
 }
@@ -127,19 +165,24 @@ export function soundUseProblem(id: string, layerId: string, sounds: readonly Re
 }
 
 const KNOT_LINE = /^\s*={2,}\s*(?:function\s+)?([A-Za-z_][A-Za-z0-9_]*)/u;
-const SE_TAG = /#\s*se\s*:([^#]*)/gu;
 
-/** A `# se:` of an Ink source: the ID it names (as written, trimmed), its line (from 1) and the knot it is in. */
+/** A `# <key>:` tag of an Ink source (`# se:`, `# bgm:`): the value it gives (as written, trimmed), its line (from 1) and the knot it is in. */
 export type SoundTag = { id: string; line: number; knot?: string };
 
-/** The `# se:` tags of an Ink source, read statically (so a line in a branch no walk takes counts too), without `//` comments. */
-export function soundTagsOf(source: string): SoundTag[] {
+/** The `# <key>:` tags of an Ink source, read statically (so a line in a branch no walk takes counts too), without `//` comments. */
+export function audioTagsOf(source: string, key: string): SoundTag[] {
   let knot: string | undefined;
+  const tag = new RegExp(`#\\s*${key}\\s*:([^#]*)`, "gu");
   return withoutComments(source).split("\n").flatMap((text, index) => {
     const head = KNOT_LINE.exec(text);
     if (head) knot = head[1];
-    return [...text.matchAll(SE_TAG)].map((match): SoundTag => ({ id: match[1].trim(), line: index + 1, ...(knot ? { knot } : {}) }));
+    return [...text.matchAll(tag)].map((match): SoundTag => ({ id: match[1].trim(), line: index + 1, ...(knot ? { knot } : {}) }));
   });
+}
+
+/** The `# se:` tags of an Ink source (audioTagsOf). */
+export function soundTagsOf(source: string): SoundTag[] {
+  return audioTagsOf(source, "se");
 }
 
 /** Throws at the first `# se:` of a story of the layer `storyLayer` that names no sound it may play (soundUseProblem). */

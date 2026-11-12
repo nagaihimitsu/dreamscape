@@ -39,10 +39,12 @@ export const SAMPLE_JOURNEY_DIRECTORY = `authoring/templates/${SAMPLE_JOURNEY_ID
  * - record: objects are merged in layer order; a key may be defined once
  *   (equalDuplicates: a repeated key is accepted when its value is identical).
  * - core: only the core layer may set it.
+ * - layers: every layer keeps its own value, by layer ID (`core` for the core
+ *   layer's); a journey's value is read over the core's by the code that uses it.
  * - nested: an object whose own keys follow a nested table.
  */
 export type FieldRule =
-  | { readonly mode: "same" | "concat" | "core" }
+  | { readonly mode: "same" | "concat" | "core" | "layers" }
   | { readonly mode: "record"; readonly equalDuplicates?: boolean }
   | { readonly mode: "nested"; readonly fields: FieldTable };
 /** Output key order is the table order (the key order of the current files). */
@@ -58,6 +60,7 @@ const same = { mode: "same" } as const;
 const concat = { mode: "concat" } as const;
 const record = { mode: "record" } as const;
 const core = { mode: "core" } as const;
+const layers = { mode: "layers" } as const;
 const entries = { schemaVersion: same, entries: concat };
 
 export const CATALOG_RULES = [
@@ -81,6 +84,9 @@ export const CATALOG_RULES = [
   },
   { kind: "presentation/dialogue-expressions.json", fields: entries },
   { kind: "presentation/dialogue-reactions.json", fields: entries },
+  // The background music of each layer's public/assets/bgm/, where it comes from, and which track plays where (`play`:
+  // the core layer's every usual track, a journey's its own over them; 2026-11-12; scripts/music-files.ts).
+  { kind: "presentation/music.json", fields: { schemaVersion: same, sources: concat, tracks: concat, play: layers } },
   { kind: "presentation/own-artwork.json", fields: { schemaVersion: same, artworks: concat } },
   // The sound effects of each layer's public/assets/se/ and where they come from (2026-11-12; scripts/sound-files.ts).
   { kind: "presentation/sounds.json", fields: { schemaVersion: same, sources: concat, sounds: concat } },
@@ -112,14 +118,15 @@ export type MergedKind = (typeof CATALOG_RULES)[number]["kind"];
  * The catalogs the core layer may hold: the base system shared by every
  * journey (balance, response profiles, the common date effects, global
  * presentation, romance stages, the shared dictionary, the characters and the
- * list of artwork made for Dreamscape that the root public/ serves, and the
- * shared sound effects).
+ * list of artwork made for Dreamscape that the root public/ serves, the
+ * shared sound effects and the shared background music).
  * Every other catalog, and every city, travel, story and quiz file, belongs
  * to a journey folder.
  */
 export const CORE_LAYER_KINDS: ReadonlySet<MergedKind> = new Set<MergedKind>([
   "learning/word-meanings.json",
   "presentation/characters.json",
+  "presentation/music.json",
   "presentation/own-artwork.json",
   "presentation/sounds.json",
   "romance/balance.json",

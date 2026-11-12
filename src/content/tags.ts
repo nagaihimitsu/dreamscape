@@ -50,6 +50,11 @@ export interface StoryTags {
   voiceId?: string;
   /** `# se: <ID>`: a sound effect played as the line starts, a registered public/assets/se/<ID>.mp3 (the line it is written on only). */
   seId?: string;
+  /**
+   * `# bgm: <ID>` / `# bgm: stop` / `# bgm: default`: the scene's music from this line on (a registered track, silence,
+   * or the scene's usual track again; frame-reader.ts keeps it to the scene's end).
+   */
+  bgm?: string;
   effects: string[];
 }
 
@@ -257,6 +262,13 @@ export function parseStoryTags(
         throw new Error(`Invalid se tag: ${value} (write # se: <ID>, a sound of presentation/sounds.json, the file name of public/assets/se/<ID>.mp3: a-z, 0-9 and _)`);
       if (result.seId) throw new Error("Duplicate se tag");
       result.seId = value;
+    } else if (key === "bgm") {
+      // The track is checked by content:build (scripts/music-files.ts), which knows the registered tracks; `stop` and
+      // `default` have the same form.
+      if (!SOUND_ID.test(value))
+        throw new Error(`Invalid bgm tag: ${value} (write # bgm: <ID>, a track of presentation/music.json, the file name of public/assets/bgm/<ID>.mp3; or # bgm: stop, # bgm: default)`);
+      if (result.bgm) throw new Error("Duplicate bgm tag");
+      result.bgm = value;
     } else if (isSceneTagKey(key)) {
       readSceneTag(key, value, result);
     } else {

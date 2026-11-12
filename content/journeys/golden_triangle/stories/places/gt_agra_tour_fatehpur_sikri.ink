@@ -16,6 +16,7 @@ INCLUDE modules.ink
 # at: tour gt_agra_tour_fatehpur_sikri out
 # priority: -1
 # background: gt_bg_agra_hotel_hub
+# bgm: morning
 # speaker: narrator
 朝の帳場で、サミールが待ちかまえていた。手には、ツアーの紙と、見覚えのある名刺。
 # speaker: gt_samir
@@ -65,6 +66,7 @@ INCLUDE modules.ink
 # scene: tour_leg
 # at: tour gt_agra_tour_fatehpur_sikri out
 # background: gt_bg_agra_fatehabad_road
+# bgm: gt_india_rhythm
 # speaker: narrator
 アーグラの町を抜けるまでが、いちばん長かった。オートリキシャ、自転車、制服の子どもたちを荷台に乗せた三輪。交差点の真ん中では、牛が一頭、信号のかわりに立ち止まっている。
 ヴィノードは、クラクションを鳴らさなかった。牛の後ろで、ただ待っている。
@@ -104,6 +106,7 @@ INCLUDE modules.ink
 # priority: after leg
 # sources: none
 # background: gt_bg_agra_tour_road
+# bgm: gt_india_rhythm
 # speaker: narrator
 しばらく黙って走ってから、ヴィノードがバックミラー越しにこちらを見た。
 # speaker: gt_vinod
@@ -170,6 +173,7 @@ INCLUDE modules.ink
 # at: tour gt_agra_tour_fatehpur_sikri out
 # priority: +1
 # background: gt_bg_agra_fatehpur_sikri_bazaar
+# bgm: gt_vadodora
 # speaker: narrator
 # se: car_door
 ヴィノードは、大きな木の陰に車を停めた。エンジンを切ると、外の音が急に近くなった。呼び込みの声、バイクの音、どこかで鳴る鈴。
@@ -195,6 +199,7 @@ INCLUDE modules.ink
 # priority: +1
 # sources: none
 # background: gt_bg_agra_fatehpur_sikri
+# bgm: gt_relics_of_past
 # speaker: narrator
 木の陰に戻ると、ヴィノードはもう車の横にいた。ボンネットの上に、新聞紙の包みが一つ。
 # speaker: gt_vinod
@@ -241,6 +246,7 @@ INCLUDE modules.ink
 # scene: tour_leg
 # at: tour gt_agra_tour_fatehpur_sikri back
 # background: gt_bg_agra_fatehpur_sikri_distant
+# bgm: atlantean_twilight
 # speaker: narrator
 帰りの車の中は、行きより静かだった。日差しが真上から照りつけ、エアコンの風が、やっと追いついてくる。
 # speaker: player
@@ -288,6 +294,7 @@ INCLUDE modules.ink
 # priority: after leg
 # sources: none
 # background: gt_bg_agra_tour_road
+# bgm: atlantean_twilight
 # speaker: narrator
 寝息のような音が聞こえはじめたころ、ヴィノードが声を落とした。
 # speaker: gt_vinod
@@ -329,6 +336,7 @@ INCLUDE modules.ink
 # priority: +1
 # sources: none
 # background: gt_bg_agra_fatehabad_road
+# bgm: atlantean_twilight
 # speaker: narrator
 大通りで車を降りると、ヴィノードが運転席の窓を下ろした。
 # speaker: gt_vinod

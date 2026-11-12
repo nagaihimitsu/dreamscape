@@ -166,5 +166,8 @@ export function useTravelEffects({ getCurrent, commit, nextRomanceRoll, reduceMo
   const playing = queue.length > 0;
   /** The night screen is fading to the morning (GameApp keeps its page as at night meanwhile). */
   const nightLeaving = current?.kind === "night_left";
-  return { travelToEvent, returnToHotel, restAtDayEnd, playMove, playing, nightLeaving, effects };
+  /** A ride's visual is on screen (the music is lowered under it), or a night's (the night's music plays): src/audio/scene-music.ts. */
+  const riding = current?.kind === "move";
+  const nightVisual = !!current && current.kind !== "move";
+  return { travelToEvent, returnToHotel, restAtDayEnd, playMove, playing, nightLeaving, riding, nightVisual, effects };
 }

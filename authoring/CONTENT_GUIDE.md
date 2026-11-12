@@ -101,6 +101,33 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 - バトルでクイズ（`-> quiz(n) ->`）から戻った後の最初の行は、場面の始まりと同じです（話し手と背景を書き直すのと同じく、`# quiet: scene` と `# stand:` も、続けたいときはもう一度書きます）。
 - 例は見本の編：時計塔のバトルとフィナーレの相手、リリの見送りの `# cutin: name`、デートの `# stand:`（`stories/places/smp_mihon_clock_tower.ink`）、エピローグの `# recall:` と `# quiet: line`（`stories/epilogues/mihon.ink`）、宿の夜の会話の頭の `# quiet: scene`、宿の朝の `# phone:`、リリの見送りの `# letter: note`（どれも場所のファイル）。
 
+### 音楽（BGM、2026-11-12）
+
+曲は、文章の後ろで小さく流れる脇役です。画面ごとのいつもの曲は一覧で決め、場面の曲は台本の札で変えられます。
+
+- 曲のファイルは、置いた層の `public/assets/bgm/<ID>.mp3` に置きます（共通はリポジトリ直下の `public/assets/bgm/`、旅行編はその旅行編の `public/assets/bgm/`。旅行編の曲の ID は旅行編の頭文字で始めます。例 `gt_jalandhar`）。同じ層の `presentation/music.json` の `tracks` に、効果音と同じ書き方（`useJa`・`sources`・`fromJa`、任意の `volume`）で登録し、作品を `sources` に書きます。「出典・権利の一覧」の「音楽」に出ます。`stop` と `default` は曲の ID にできません。
+- 一覧の `play` で、画面ごとのいつもの曲を決めます。共通の一覧（`content/presentation/music.json`）には、次の鍵をすべて書きます：`title`（タイトル画面）、`freeTime`（自由時間。`morning` 5:00〜11:59、`day` 12:00〜17:59、`night` 18:00〜4:59 の3曲）、`night`（夜の画面）、`place`（観光地の場面・クイズ・デート・道中交流）、`arrival`（都市への到着）、`epilogue`（都市のエピローグ）、`endRoll`（エンドロール）。
+- 旅行編の一覧の `play` には、変えたい鍵だけを書きます（書いた鍵が共通の曲に代わります。`freeTime` は3つまとめて書きます）。`places` に地点ごとの曲を書くと、その地点の場面で流れます（地点 ID は、その旅行編の `travel/<都市ID>.json` の `places` の `id`）。書いていない地点は `place` の曲です。旅行編の一覧には、共通の曲とその旅行編の曲を書けます（共通の一覧には共通の曲だけ）。
+
+```json
+"play": { "place": "gt_jalandhar", "places": { "delhi_red_fort": "gt_hidden_wonders", "delhi_hotel_hub": "late_night_radio" } }
+```
+
+- 台本の札 `# bgm: <曲のID>` を書くと、その行から場面の曲が変わります。`# bgm: stop` はその行から無音、`# bgm: default` はいつもの曲に戻します。場面が終わると、いつもの曲に戻ります。場面の頭（`# background:` のすぐ下など、最初の行の前）に書けば、場面の最初から流れます。バトルでは、クイズの間も、クイズの後の会話も同じ曲のままです。
+
+```ink
+# background: gt_bg_hotel_rooftop_night
+# bgm: immersed
+# speaker: narrator
+宿の屋上には、黒い貯水タンクと、物干しの綱があった。
+```
+
+- 同じ曲のまま画面が変わると、曲は頭に戻らず流れ続けます。曲が変わるときは1.5秒で重ねて入れ替え、最近流した曲は、止めた所の続きから流れます。
+- クイズの問題・判定・結果の間は、流れている曲を小さく、こもった音にします（曲は変えません。バトルの会話の間は元の大きさです。札で選んだ曲でも同じです）。`# quiet:` の行、移動の演出、台詞の声の間も、曲を少し小さくします。
+- 曲で関係の値を知らせません。親しさや信頼で曲は変わりません。告白の場面の曲は、書いた人が札で選んだ曲のままで、結果では変わりません。
+- 次のときは `content:build` が止めます：ファイルのない曲、一覧にない曲のファイル、出典のない曲、`stop`・`default` という ID、共通の `play` の鍵が足りない・`places` がある、ない曲やほかの旅行編の曲を書いた `play` と `# bgm:`、ない地点を書いた `places`、1つの行に2つの `# bgm:`。どの `play` にも `# bgm:` にもない曲は注意に出ます。
+- 遊ぶ人は、⚙設定の「BGMを流す」「BGMの大きさ」で止めたり小さくしたりできます。ブラウザの決まりで、最初のタップの後から流れます。
+
 ## 簡単な道中交流を追加する
 
 `content/journeys/milano/stories/encounters/milano_duomo_new_event.ink` を作り（名前は [IDの付け方](../docs/02_TECH_ARCHITECTURE.md#idの付け方) の `encounters/<頭>_<交流>`）、名前用変数、会話、英語の選択（ふつうは3択。選択肢の数は自由）と分岐を書きます。英文はInkを正とします。訳を付ける場合は **選択肢の角括弧の中** にタグを置きます。

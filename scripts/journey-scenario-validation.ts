@@ -14,6 +14,7 @@ import { withContext } from "./content-validation-utils";
 import { albumImagesOf } from "./album-images";
 import { checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
 import { checkSoundTags, soundRegistry } from "./sound-files";
+import { checkBgmTags, musicRegistry } from "./music-files";
 import { validateEpilogue } from "./epilogue-validation";
 import { compileInk, validateNoInkRandom, validateRelationshipToneSource } from "./ink-validation";
 import { choiceOption, includesModules, readFileChoices, readMainFileHead } from "./place-files";
@@ -84,6 +85,8 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
   // A line's # se: names a shared sound or one of this journey (presentation/sounds.json; sound-files.ts).
   const sounds = soundRegistry(sources);
   const soundLayerId = journeyLayer(sources, journeyId).id;
+  // A line's # bgm: names a shared track or one of this journey, or stop or default (presentation/music.json; music-files.ts).
+  const tracks = musicRegistry(sources).tracks;
   const placeKnots = publishedPlaceKnots(sources, requirements);
   const expected = requirements.flatMap((city) => [
     ...city.main.flatMap((event) => [event.guideStoryId, event.battleStoryId]),
@@ -126,6 +129,7 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
       validateMemoryReferences(source, Object.keys(fragments.memories));
       checkVoiceTags(source, journeyId, voiceFiles, voiceFolder);
       checkSoundTags(source, soundLayerId, sounds);
+      checkBgmTags(source, soundLayerId, tracks);
       // A scene's cond("…") (stage 2a): declared, literal and written as a condition; content:build checks what it names.
       // A battle includes the game's modules.ink (its quiz and reasoning calls).
       const modules = includesModules(source);

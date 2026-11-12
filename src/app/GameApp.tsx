@@ -12,7 +12,7 @@ import {
   getCityContent,
 } from "../content";
 import { scenePerson, speakingPerson } from "../domain/scene-person";
-import { defaultJourneyId, getJourney } from "../content/journeys";
+import { defaultJourneyId, getJourney, getJourneyForCity } from "../content/journeys";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
 import { waitForTravel } from "../domain/travel-game";
 import { getDayEnd } from "../domain/day-end";
@@ -40,6 +40,8 @@ import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
 import { useVoiceSettings } from "../components/useVoice";
 import { holdSceneCues, playCue, playSe, useSoundEffectSettings } from "../audio/sound-effects";
+import { journeyMusicPlay, useBgmSettings, useSceneMusic } from "../audio/bgm";
+import { sceneMusic } from "../audio/scene-music";
 import { useReadLines } from "../components/useReadLines";
 import { RomanceScene } from "../features/romance/RomanceScene";
 import { Modal, ModalTitle } from "../components/Modal";
@@ -166,6 +168,9 @@ export function GameApp({
   // 「効果音を出す」 and 「効果音の大きさ」 for the game's sounds and every line's `# se:` (src/audio/sound-effects.ts).
   useSoundEffectSettings(displaySettings.value.se, displaySettings.value.seVolume);
   const sePercent = Math.round(displaySettings.value.seVolume * 100);
+  // 「BGMを流す」 and 「BGMの大きさ」 for the background music (src/audio/bgm.ts).
+  useBgmSettings(displaySettings.value.bgm, displaySettings.value.bgmVolume);
+  const bgmPercent = Math.round(displaySettings.value.bgmVolume * 100);
   // This device's Debug-mode switch (journeyStorage passes its key through unscoped).
   const debugMode = useDebugMode(storage);
   // While Debug mode is on (always in a Debug session), a choice's relationship changes show above
@@ -241,7 +246,7 @@ export function GameApp({
   // Once a notice: the line's quiet is read as it comes.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [learnedNoticeId]);
-  const { travelToEvent, returnToHotel, restAtDayEnd, playMove, playing: travelEffectPlaying, nightLeaving, effects: travelEffects } = useTravelEffects({
+  const { travelToEvent, returnToHotel, restAtDayEnd, playMove, playing: travelEffectPlaying, nightLeaving, riding, nightVisual, effects: travelEffects } = useTravelEffects({
     getCurrent, commit, nextRomanceRoll, reduceMotion: displaySettings.value.reduceMotion,
   });
   playMoveRef.current = playMove;
@@ -430,6 +435,13 @@ export function GameApp({
   const moments = useJourneyMoments({ game, screen, resumed: !isDebug && loaded.status === "loaded",
     reduceMotion: displaySettings.value.reduceMotion, effectPlaying: travelEffectPlaying });
   momentsRef.current = moments.committed;
+  // The music of what this screen shows (src/audio/scene-music.ts): the journey's tracks (the game's own journey, also in
+  // Debug), the scene's # bgm:, and the quiz's, a quiet line's and a ride's lowering. Never anything of the relationship.
+  const musicJourneyId = (game && getJourneyForCity(game.currentCityId)?.id) ?? journeyId;
+  useSceneMusic(sceneMusic(journeyMusicPlay(musicJourneyId), {
+    game, endRoll: moments.endRollShown, nightVisual, riding, packing: !!moments.packingScene,
+    romanceEnding: showRomanceEnding, nightScreen: !!(nightScreen && dayEnd),
+  }));
   const shownScreen = useRef(screen);
   useEffect(() => {
     if (shownScreen.current === screen) return;
@@ -1136,7 +1148,7 @@ export function GameApp({
             常に日本語訳を表示する
           </label>
           {learning.error && <p role="status">{learning.error}</p>}
-          {/* The voices and the sound effects together, each with its own volume (shown while it is on). */}
+          {/* The voices, the sound effects and the music together, each with its own volume (shown while it is on). */}
           <h3>音</h3>
           <label className="translation-setting">
             <input type="checkbox" checked={displaySettings.value.voice} disabled={!!displaySettings.error}
@@ -1159,6 +1171,17 @@ export function GameApp({
               value={sePercent} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ seVolume: Number(event.target.value) / 100 })} />
             <span className="volume-value" aria-hidden="true">{sePercent}%</span>
+          </label>}
+          <label className="translation-setting">
+            <input type="checkbox" checked={displaySettings.value.bgm} disabled={!!displaySettings.error}
+              onChange={(event) => displaySettings.update({ bgm: event.target.checked })} /> BGMを流す
+          </label>
+          {displaySettings.value.bgm && <label className="translation-setting volume-setting">
+            BGMの大きさ
+            <input type="range" aria-label="BGMの大きさ" aria-valuetext={`${bgmPercent}%`} min={0} max={100} step={10}
+              value={bgmPercent} disabled={!!displaySettings.error}
+              onChange={(event) => displaySettings.update({ bgmVolume: Number(event.target.value) / 100 })} />
+            <span className="volume-value" aria-hidden="true">{bgmPercent}%</span>
           </label>}
           {displaySettings.error && (
             <p role="status">{displaySettings.error}</p>

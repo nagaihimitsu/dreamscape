@@ -75,7 +75,8 @@ export function ownArtworkByLayer(sources: Pick<ContentSources, "root" | "layers
  * Served files that are not images (the web app manifest, the voices of
  * public/assets/voice/: their rights are not decided yet; the sound effects of
  * public/assets/se/, whose sources presentation/sounds.json lists:
- * sound-files.ts) are not checked.
+ * sound-files.ts; the music of public/assets/bgm/, whose sources
+ * presentation/music.json lists: music-files.ts) are not checked.
  */
 export function checkImageRights(
   sources: Pick<ContentSources, "root" | "layers" | "catalogs" | "publicFiles">,
