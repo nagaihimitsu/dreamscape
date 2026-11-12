@@ -53,6 +53,7 @@ INCLUDE modules.ink
 # speaker: enemy
 ジャイプールの運転手は、デリーより素直ね。三十秒で折れた
 # speaker: narrator
+# recall: gt_album_d01
 カムラは中庭の椅子に腰を下ろし、手を差し出した。デリーで渡した、あの段ボールの切れ端を出せ、という仕草だった。
 # speaker: narrator
 {heroine_name}がガイドブックから取り出すと、カムラは油性ペンで、五行の下にもう一行を書き足した。

@@ -39,6 +39,7 @@ INCLUDE modules.ink
     迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて。……わたしも、一緒にいたい。旅が終わっても
     # speaker: heroine
     # reaction: heroine,teasing,heart
+    # photo: gt_album_d69 # photo_caption: 屋上の告白
     ふふ。顔、すごいことになってる。わたしも、たぶん、同じ顔してるけど
     # speaker: heroine
     # emotion: smile

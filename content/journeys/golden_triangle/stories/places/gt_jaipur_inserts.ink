@@ -209,6 +209,7 @@ INCLUDE modules.ink
 - cond("flag gt_agra_rain_on_lawn"):
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # recall: gt_album_a39
     雨の匂いがあったら、一滴つけたかったな。アーグラの鹿の芝生に、全部降っちゃったけど
 }
 # speaker: heroine

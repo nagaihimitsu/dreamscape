@@ -98,6 +98,7 @@ INCLUDE modules.ink
     }
     { cond("flag gt_delhi_back_word_secret"):
         # speaker: heroine
+        # recall: gt_album_d61
         あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ。あれね、『まだいたい』って書いたの
         # speaker: heroine
         # reaction: heroine,shy,blush

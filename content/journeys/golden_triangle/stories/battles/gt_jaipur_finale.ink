@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # speaker: narrator
 招待客の二人は、行列の端を歩いていた。踊る人たちの輪から、半歩だけ離れて。
 # speaker: narrator
+# recall: gt_album_d79
 輪の真ん中で、鮮やかな桃色のサリーが跳ねた。デリーで見た、ショールの小さな老婦人と同じ人だとは思えない。
 # speaker: enemy
 そこの二人！　窓際の客みたいに立ってないで！

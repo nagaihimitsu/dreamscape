@@ -98,6 +98,7 @@ INCLUDE modules.ink
 もう一度、と彼女が井戸の方を向いた、そのときだった。すぐ横のくぼみから、灰色の塊が、羽音ごと顔の前に飛び出した。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# photo: gt_album_d55 # photo_caption: 鳩が顔の前に、本物の悲鳴
 きゃああああっ！
 # speaker: narrator
 本物だった。悲鳴は井戸の壁に跳ね返り、階段を駆け上がり、上の路地まで届いた。鳩は何事もなかったように、反対側のくぼみに収まった。

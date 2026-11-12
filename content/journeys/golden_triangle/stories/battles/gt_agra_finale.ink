@@ -23,6 +23,7 @@ INCLUDE modules.ink
 # speaker: narrator
 笑いと拍手が大きくなる。{heroine_name}の言葉は、そのたびに物語の一部にされていく。
 # speaker: narrator
+# recall: gt_album_d01
 彼女は唇を結んだ。デリーで言われた言葉が、頭の中で聞こえた。言いたいことは、言いなさい。
 # speaker: heroine
 # emotion: serious
@@ -122,6 +123,7 @@ INCLUDE modules.ink
 {heroine_name}は観客に向き直った。耳が熱い。それでも、声は最初より通っていた。
 # speaker: heroine
 # reaction: heroine,shy,blush
+# photo: gt_album_a66 # photo_caption: 「わたしたちのことは、わたしたちで決めます」
 わたしたちは、新婚じゃありません。……でも、二人でここに来たのは、本当です。わたしたちのことは、わたしたちで決めます
 # speaker: narrator
 一瞬の静寂。それから、どっと拍手が起きた。さっきの拍手より、ずっと温かい音だった。

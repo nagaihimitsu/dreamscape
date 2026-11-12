@@ -14,6 +14,7 @@ INCLUDE modules.ink
 # speaker: narrator
 帳場の前を通りかかると、サミールが携帯の画面と彼女の顔を、三回見比べた。
 # speaker: gt_samir
+# recall: gt_album_d55
 失礼ですが……デリーの階段井戸の動画の方ですよね？　最後の、『きゃー？』の
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang

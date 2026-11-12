@@ -177,6 +177,7 @@ INCLUDE modules.ink
 入口で、ガイドが要ると言う人がいます。切符だけでは足りない、と言う人も。足ります。お二人の切符で、ちゃんと全部です
 # speaker: heroine
 # emotion: smile
+# recall: gt_album_d84
 大丈夫です。ノー・サンキューは、デリーで練習してきました
 # speaker: gt_vinod
 それなら安心です。デリーで練習した人は、どこでも強い
@@ -269,6 +270,7 @@ INCLUDE modules.ink
 それから、しばらく誰も話さなかった。{heroine_name}のまぶたが、ゆっくりと下りてくる。
 { cond("couple"):
     # speaker: narrator
+    # photo: gt_album_a27 # photo_caption: 帰りの車、こつんと落ちる頭
     頭が、こちらの肩に、こつんと落ちた。
 - else:
     # speaker: narrator

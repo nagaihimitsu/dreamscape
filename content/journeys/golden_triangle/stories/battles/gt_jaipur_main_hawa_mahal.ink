@@ -65,6 +65,7 @@ INCLUDE modules.ink
 # speaker: narrator
 車、リキシャ、牛、人。そのすべてが、こちらに気づかずに流れていく。
 # speaker: narrator
+# photo: gt_album_j13 # photo_caption: 格子の小窓から見下ろす、古い日傘
 古い日傘はすぐに見つかった。ガウラは客と値段で揉めていた。それから、通りがかった子どもに、トマトを一つ黙って渡した。日傘の陰で髪を直し、膝をさすった。
 # speaker: heroine
 # emotion: neutral
