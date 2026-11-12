@@ -12,7 +12,7 @@ import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
-import { LineStage, RecallLayer } from "../../components/LineStage";
+import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
 import { lineCues, lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { playSe } from "../../audio/sound-effects";
 import { useDialogueLog } from "../../components/DialogueLog";
@@ -158,6 +158,7 @@ export function RomanceScene({
         <CanalScene backgroundId={frame.background} />
       </div>
       <RecallLayer imageId={frame.recall} />
+      <PhotoShowLayer photo={frame.photo} />
       {/* The date's heading (D4): its destination, or 「デート」 when it has none. */}
       <SceneHeading label={destination ? `${getCityContent(destination.cityId).city.nameJa} ／ ${destination.nameJa}` : "デート"} />
       {destination?.referenceImage && (

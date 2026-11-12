@@ -25,6 +25,15 @@
   88% { opacity: 1; transform: none; }
   100% { opacity: 0; transform: translate(min(32vw, 150px), -28px) scale(.35); }
 }
+/* After a picture shown large (# photo_show: large), the card comes from it: larger and lower at first, then up into
+   its place under the header, as if the picture shrank into the card. */
+.album-photo-notice[data-from-large] { animation-name: album-photo-notice-from-large; }
+@keyframes album-photo-notice-from-large {
+  0% { opacity: 0; transform: translateY(22dvh) scale(2.2); }
+  9% { opacity: 1; transform: none; }
+  88% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translate(min(32vw, 150px), -28px) scale(.35); }
+}
 /* The picture's small copy, 3:2 as in the album, in a white frame, a little tilted like a print. */
 .album-photo-notice-picture {
   flex: none;
@@ -51,5 +60,6 @@
 /* Under reduced motion and 「演出を短縮する」 it comes and goes without moving. */
 .app-shell.reduce-motion .album-photo-notice { animation: none; }
 @media (prefers-reduced-motion: reduce) {
-  .album-photo-notice { animation: none; }
+  .album-photo-notice,
+  .album-photo-notice[data-from-large] { animation: none; }
 }

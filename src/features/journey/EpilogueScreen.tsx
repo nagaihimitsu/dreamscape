@@ -9,7 +9,7 @@ import { tourLegUnderway } from "../../domain/tour";
 import { getJourneyForCity } from "../../content/journeys";
 import type { GameState } from "../../domain/game";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
-import { LineStage, RecallLayer } from "../../components/LineStage";
+import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
 import { lineCues, lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
@@ -122,6 +122,7 @@ export function EpilogueScreen({
           <CanalScene backgroundId={frame.background} />
         </div>
         <RecallLayer imageId={frame.recall} />
+        <PhotoShowLayer photo={frame.photo} />
         {/* With the scene's person on stage the two stand side by side (the encounter's slots); her
             portrait keeps its place in the tree, so it is not drawn again when they come in. */}
         <div className={`vn-character-layer${opposite ? " encounter-character-layer" : ""}`} data-two-characters={opposite ? true : undefined}>

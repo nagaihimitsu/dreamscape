@@ -191,8 +191,8 @@ export function GameApp({
     // # se: (and not during 高速送り: playCue). A load or a new game is no action, so it never shows what they bring.
     const photo = photoTaken(previous, next);
     if (photo) {
-      setPhotoNotice((last) => ({ id: (last?.id ?? 0) + 1, photo, first: next.album.length === 1 }));
       const line = lineFrameOnScreen(next);
+      setPhotoNotice((last) => ({ id: (last?.id ?? 0) + 1, photo, first: next.album.length === 1, fromLarge: line?.photo?.show === "large" }));
       if (!line?.quiet && !line?.seId) playCue("album_photo");
     }
     // The action that ended a tour (tour stage 2a) says so in free time.
@@ -388,12 +388,19 @@ export function GameApp({
     game?.activeTourism?.phase === "guide" ||
     (!game?.activeTourism && game?.activeBattle?.phase === "dialogue")
   );
-  // The photo card goes after its few seconds, or with the story scene it was shown over.
+  // A photo shown large (# photo_show: large, PhotoShowLayer) has its card only once its line has gone: the card then
+  // comes from the large picture. The card goes after its few seconds, or with the story scene it was shown over.
+  const linePhoto = lineFrameOnScreen(game)?.photo;
+  const largePhotoId = linePhoto?.show === "large" ? linePhoto.imageId : undefined;
+  const shownPhotoNotice = photoNotice && photoNotice.photo.imageId !== largePhotoId ? photoNotice : null;
+  const shownPhotoNoticeId = shownPhotoNotice?.id;
   useEffect(() => {
-    if (!photoNotice) return;
-    const timer = window.setTimeout(() => setPhotoNotice(null), photoNotice.first ? FIRST_ALBUM_PHOTO_NOTICE_MS : ALBUM_PHOTO_NOTICE_MS);
+    if (!shownPhotoNotice) return;
+    const timer = window.setTimeout(() => setPhotoNotice(null), shownPhotoNotice.first ? FIRST_ALBUM_PHOTO_NOTICE_MS : ALBUM_PHOTO_NOTICE_MS);
     return () => window.clearTimeout(timer);
-  }, [photoNotice]);
+  // Once a card shows: its timer runs from then.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shownPhotoNoticeId]);
   useEffect(() => {
     if (!conversationActive) setPhotoNotice(null);
   }, [conversationActive]);
@@ -601,7 +608,7 @@ export function GameApp({
         {conversationActive && (localWords.length > 0 || albumImages.length > 0) && (
           <div className="scene-notices">
             {localWords.length > 0 && <LocalWordNotice notice={learnedWords.notice} />}
-            {albumImages.length > 0 && <AlbumPhotoNotice notice={photoNotice} />}
+            {albumImages.length > 0 && <AlbumPhotoNotice notice={shownPhotoNotice} />}
           </div>
         )}
         {!game ? (
