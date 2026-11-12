@@ -12,6 +12,7 @@ import { encounters } from "../content/encounters";
 import { REACTION_MARKS } from "../content/dialogue-reactions";
 import { ALBUM_IMAGE_ID } from "../content/album-images";
 import { VOICE_ID } from "../content/voice-files";
+import { SOUND_ID } from "../content/sounds";
 
 export type { Speaker, StoryFrame } from "./frame-reader";
 import type { StoryFrame } from "./frame-reader";
@@ -55,6 +56,7 @@ export const storyFrameSchema = z
     stand: z.enum(STAND_POSITIONS).optional(),
     cutin: z.enum(CUTIN_KINDS).optional(),
     voiceId: z.string().regex(VOICE_ID).optional(),
+    seId: z.string().regex(SOUND_ID).optional(),
     choices: z
       .array(
         z

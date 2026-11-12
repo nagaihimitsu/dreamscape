@@ -106,6 +106,7 @@ INCLUDE modules.ink
 // 呼び口の後の最初の行は、場面の始まりと同じく話し手と背景を書き直す。-> END の後に結果の画面。
 // 行の札 # pause: 600 は、その行の字が出る前に0.6秒の間を置く（タップで飛ばせる。下のヒロインの問いかけの前）。
 // 行の札 # voice: <ID> は、その行の字が出始めるときに public/assets/voice/<ID>.mp3 を流す（見本の編には声のファイルがないので、書き方の例だけ）。
+// 行の札 # se: <ID> は、その行の字が出始めるときに効果音を鳴らす（例：時計の鐘なら # se: old_bell。共通の音か、その旅行編の presentation/sounds.json の音）。
 // 名乗る前の行は呼び名の人物（progression/story.json の smp_mihon_clock_keeper「青年」）で話し、名乗った後の最初の行に # cutin: name を書く
 // （相手の名札：battles/catalog.json の enemyTitleJa と enemyNameJa）。
 === smp_mihon_main_clock_tower ===

@@ -3,6 +3,7 @@ import { Icon } from "./icons";
 import { dialogueObstructed } from "./dialogueObstructed";
 import { stopsFastForward, type ReadSkip } from "./read-skip";
 import type { LineVoiceState, VoiceLink } from "./useVoice";
+import { setSceneFastForward } from "../audio/sound-effects";
 
 /** How long auto mode waits after a line's voice has ended before it reads on (milliseconds). */
 const AFTER_VOICE_MS = 700;
@@ -53,6 +54,11 @@ export function useAutoAdvance({
   useEffect(() => {
     if (!canAdvance) setFast(false);
   }, [canAdvance]);
+  // The scene's cues outside its line (a word learned) stay silent while 高速送り runs (sound-effects.ts playCue).
+  useEffect(() => {
+    setSceneFastForward(fast);
+    return () => setSceneFastForward(false);
+  }, [fast]);
 
   useEffect(() => {
     const stopIfObstructed = () => {
@@ -99,7 +105,7 @@ export function useAutoAdvance({
     /** Fast-forward has just stopped at this line, which was not read before (said to screen readers). */
     stoppedAtUnread: stoppedAt !== null && stoppedAt === lineId,
     canStart: canAdvance && !blocked,
-    /** For the line's DialogueText (useLineVoice): no voice while 高速送り, and the voice's state for auto mode. */
+    /** For the line's DialogueText (useLineVoice, useLineSounds): no voice and no sound while 高速送り, and the voice's state for auto mode. */
     voice: voiceLink,
     toggle: () => {
       if (dialogueObstructed()) return;

@@ -27,10 +27,14 @@ dialog.modal.credits-modal {
 .credits-journey[open] { padding-bottom: 8px; }
 .credits-journey > section:first-of-type h4 { margin-top: 0; }
 .credits-photos,
+.credits-sounds,
 .credits-licences { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
-.credits-photos li { padding-top: 8px; border-top: 1px solid var(--ds-parchment-line); }
-.credits-photos li:first-child { border-top: 0; }
-.credits-photos p { margin: 2px 0; font-size: 12px; line-height: 1.5; }
+.credits-photos li,
+.credits-sounds li { padding-top: 8px; border-top: 1px solid var(--ds-parchment-line); }
+.credits-photos li:first-child,
+.credits-sounds li:first-child { border-top: 0; }
+.credits-photos p,
+.credits-sounds p { margin: 2px 0; font-size: 12px; line-height: 1.5; }
 .credits-list .credits-place { font-size: 13px; font-weight: 600; }
 .credits-licences { gap: 0; }
 .credits-licences li { border-bottom: 1px solid var(--ds-parchment-line); }

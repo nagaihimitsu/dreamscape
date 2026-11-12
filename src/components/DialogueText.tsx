@@ -3,6 +3,8 @@ import type { LineDelivery } from "../content/tags";
 import { dialogueObstructed } from "./dialogueObstructed";
 import { DIALOGUE_LINE_ATTRIBUTE } from "./scene-tap";
 import { useLineVoice, type VoiceLink } from "./useVoice";
+import { useLineSounds } from "../audio/sound-effects";
+import type { SystemSoundId } from "../content/sounds";
 
 /** What a tap on the line does, for a tap elsewhere on the scene (useSceneTap). */
 export interface DialogueTextHandle {
@@ -25,6 +27,8 @@ function shakeWindow(line: HTMLElement) {
   );
 }
 
+const NO_CUES: readonly SystemSoundId[] = [];
+
 export function DialogueText({
   text,
   speed,
@@ -32,6 +36,8 @@ export function DialogueText({
   onAdvance,
   delivery,
   voiceId,
+  seId,
+  cues = NO_CUES,
   voice,
   ref,
 }: {
@@ -44,7 +50,11 @@ export function DialogueText({
   delivery?: LineDelivery;
   /** The line's `# voice:` (the frame's voiceId): its recording plays as its text starts (useVoice.ts). */
   voiceId?: string;
-  /** useAutoAdvance's `voice`: no voice during 高速送り, and auto mode waits for the one playing. */
+  /** The line's `# se:` (the frame's seId): its sound plays as its text starts (src/audio/sound-effects.ts). */
+  seId?: string;
+  /** The sounds of the line's scene tags (line-staging.ts lineCues), played as its text starts too. */
+  cues?: readonly SystemSoundId[];
+  /** useAutoAdvance's `voice`: no voice and no sound during 高速送り, and auto mode waits for the voice playing (not for a sound). */
   voice?: VoiceLink;
   ref?: Ref<DialogueTextHandle>;
 }) {
@@ -127,6 +137,8 @@ export function DialogueText({
   }, [shake, count]);
   // The line's voice (# voice:) starts with its text too: after its pause, or at once when the text shows at once.
   useLineVoice(voiceId, count > 0, voice?.muted ?? false, voice?.onState);
+  // Its sounds (# se: and its scene tags' cues) start with its text as well, once; auto-advance does not wait for them.
+  useLineSounds(text, seId, cues, count > 0, voice?.muted ?? false);
   function activate() {
     // A compact settings menu is not a native modal, so its open state must
     // also block taps on the text behind it.

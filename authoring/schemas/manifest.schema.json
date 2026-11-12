@@ -245,6 +245,10 @@
           "rental": {
             "type": "boolean",
             "const": true
+          },
+          "se": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
           }
         },
         "required": [

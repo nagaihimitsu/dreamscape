@@ -11,6 +11,7 @@ import { HeldItems } from "../components/HeldItems";
 import { HUD_SCREEN_TOOL_ID } from "../components/HudScreenTool";
 import { Icon } from "../components/icons";
 import { holdTaps } from "../components/tap-hold";
+import { playSe } from "../audio/sound-effects";
 import type { GameState } from "../domain/game";
 import { getGameWeekday, getTimePeriod } from "../domain/travel";
 import { placeDisplayName } from "../features/journey/travel-labels";
@@ -61,7 +62,11 @@ type MenuActions = {
  * items and the screen's tool keep their room but are not shown (journey-hud.css).
  * Its height is measured as `--hud-h` for the reserves of the scenes it lies over.
  */
-export function JourneyHud({ game, place, view, ...actions }: { game: GameState; place: TravelPlace | undefined; view: HudView } & MenuActions) {
+export function JourneyHud({ game, place, view, replaced = 0, ...actions }: {
+  game: GameState; place: TravelPlace | undefined; view: HudView;
+  /** Counts the times a load (or Debug's return) put another game in place (GameApp): what it brings makes no sound. */
+  replaced?: number;
+} & MenuActions) {
   const measured = useMeasuredHeight("--hud-h");
   const weekday = getGameWeekday(game.travel.calendar);
   const money = formatMoneyForCity(game.currentCityId, game.travelBudget);
@@ -79,7 +84,21 @@ export function JourneyHud({ game, place, view, ...actions }: { game: GameState;
   }, [view]);
   const budgetCue = useSeenChange(game.travelBudget, shown, numberChange);
   const apCue = useSeenChange(game.ap, shown, numberChange);
-  const itemsCue = useSeenChange(items.map((item) => item.id).join("\n"), shown, itemsChange);
+  const itemKey = items.map((item) => item.id).join("\n");
+  const itemsCue = useSeenChange(itemKey, shown, itemsChange);
+  // item_get as a new item's picture pops (as itemsCue counts it), not for the items a load brings.
+  const itemSound = useSeenChange(itemKey, shown, itemsChange, replaced);
+  useEffect(() => {
+    if (itemSound) playSe("item_get");
+  }, [itemSound]);
+  // money as the budget changes in play (a payment or a receipt; the moment it changes, also while the header hides it),
+  // not on the first showing nor for a load.
+  const seenBudget = useRef({ budget: game.travelBudget, replaced });
+  useEffect(() => {
+    const before = seenBudget.current;
+    seenBudget.current = { budget: game.travelBudget, replaced };
+    if (before.replaced === replaced && before.budget !== game.travelBudget) playSe("money");
+  }, [game.travelBudget, replaced]);
   return (
     <div className="journey-hud" data-testid="journey-bar" data-view={view} ref={measured} onMouseDown={keepFocusOffControls}>
       <div className="hud-status">
@@ -115,17 +134,22 @@ type Cue = { direction: Direction; count: number };
  * the header always shows the value itself). The budget, the AP and the held items wait for a
  * choice over a story scene (`shown` false, hud-view.ts), so a change made while they are hidden
  * counts when they show again: an AP reward read on a battle's result shows as the AP rising once
- * free time shows it. Null until the first change; nothing on the first showing.
+ * free time shows it. Null until the first change; nothing on the first showing. `replaced`
+ * (JourneyHud's): when it changes, the value then is taken as seen, with no cue.
  */
-function useSeenChange<T>(value: T, shown: boolean, change: (seen: T, now: T) => Direction | null): Cue | null {
-  const seen = useRef(value);
+function useSeenChange<T>(value: T, shown: boolean, change: (seen: T, now: T) => Direction | null, replaced = 0): Cue | null {
+  const seen = useRef({ value, replaced });
   const [cue, setCue] = useState<Cue | null>(null);
   useEffect(() => {
+    if (seen.current.replaced !== replaced) {
+      seen.current = { value, replaced };
+      return;
+    }
     if (!shown) return;
-    const direction = change(seen.current, value);
-    seen.current = value;
+    const direction = change(seen.current.value, value);
+    seen.current = { value, replaced };
     if (direction) setCue((last) => ({ direction, count: (last?.count ?? 0) + 1 }));
-  }, [value, shown, change]);
+  }, [value, shown, change, replaced]);
   return cue;
 }
 const numberChange = (seen: number, now: number): Direction | null => now > seen ? "up" : now < seen ? "down" : null;
@@ -178,6 +202,7 @@ function HudMenu({ onSave, onLoad, onRecords, onAlbum, onEnglish, onPhotoCredits
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "Escape" || document.querySelector("dialog[open]")) return;
       event.preventDefault();
+      playSe("ui_close");
       setOpen(false);
       backToGear();
     };
@@ -232,6 +257,7 @@ function HudMenu({ onSave, onLoad, onRecords, onAlbum, onEnglish, onPhotoCredits
         aria-controls="hud-menu-panel"
         onClick={() => {
           if (!open) closeWaitMenu();
+          playSe(open ? "ui_close" : "ui_open");
           setOpen(!open);
         }}
       >
@@ -250,6 +276,7 @@ function HudMenu({ onSave, onLoad, onRecords, onAlbum, onEnglish, onPhotoCredits
         {onReturnToFreeTime && <button type="button" onClick={choose(onReturnToFreeTime)}><Icon name="map" />移動画面に戻る（Debug）</button>}
       </div>
       {open && <DismissLayer owner={group.current} onClose={(focusWasInside) => {
+        playSe("ui_close");
         setOpen(false);
         if (focusWasInside) backToGear();
       }} />}

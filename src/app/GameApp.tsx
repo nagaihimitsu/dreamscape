@@ -38,6 +38,7 @@ import { CanalScene } from "../components/CanalScene";
 import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
 import { useVoiceSettings } from "../components/useVoice";
+import { holdSceneCues, playCue, playSe, useSoundEffectSettings } from "../audio/sound-effects";
 import { useReadLines } from "../components/useReadLines";
 import { RomanceScene } from "../features/romance/RomanceScene";
 import { Modal, ModalTitle } from "../components/Modal";
@@ -50,7 +51,7 @@ import { useLearning } from "../features/learning/useLearning";
 import { EnglishReview } from "../features/learning/EnglishReview";
 import { useLocalWords } from "../features/learning/useLocalWords";
 import { LocalWordNotice } from "../features/learning/LocalWordNotice";
-import { lineWordsOnScreen } from "../features/learning/local-words";
+import { lineFrameOnScreen, lineWordsOnScreen } from "../features/learning/local-words";
 import { readAloudSupported } from "../features/learning/read-aloud";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import { nightButtons, NightScreen } from "../features/journey/NightScreen";
@@ -159,6 +160,9 @@ export function GameApp({
   // 「台詞の声を出す」 and 「声の大きさ」 for every line's `# voice:` (useVoice.ts).
   useVoiceSettings(displaySettings.value.voice, displaySettings.value.voiceVolume);
   const voicePercent = Math.round(displaySettings.value.voiceVolume * 100);
+  // 「効果音を出す」 and 「効果音の大きさ」 for the game's sounds and every line's `# se:` (src/audio/sound-effects.ts).
+  useSoundEffectSettings(displaySettings.value.se, displaySettings.value.seVolume);
+  const sePercent = Math.round(displaySettings.value.seVolume * 100);
   // This device's Debug-mode switch (journeyStorage passes its key through unscoped).
   const debugMode = useDebugMode(storage);
   // While Debug mode is on (always in a Debug session), a choice's relationship changes show above
@@ -174,6 +178,8 @@ export function GameApp({
   // The journey's moments a saved change starts (useJourneyMoments, set once it is ready below).
   const momentsRef = useRef<((previous: GameState, next: GameState) => void) | null>(null);
   const session = useGameSession(storage, displaySettings.value.autoSave, (previous, next) => {
+    // The player acted: the scene a load brought back is theirs again, and its cues sound (sound-effects.ts).
+    holdSceneCues(false);
     playMoveRef.current?.(previous, next);
     momentsRef.current?.(previous, next);
     // The action that ended a tour (tour stage 2a) says so in free time.
@@ -184,6 +190,15 @@ export function GameApp({
     if (change) setShownChange({ scene: changeScreenKey(next), change });
   });
   const { game, loaded, invalid, notice, setNotice, commit, getCurrent, save } = session;
+  // A game opened on its save (the page's start, a journey switch) shows its scene as it was: the scene's cues (a line's
+  // phone, a city's title...) wait for the player's first action, as after 「ロード」 (loadSavedGame).
+  useLayoutEffect(() => {
+    holdSceneCues(!!getCurrent());
+  // Once, as this game opens.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  // Counts the loads (and Debug's returns) that put another game in place: the header makes no sound for what they bring.
+  const [replacedGame, setReplacedGame] = useState(0);
   // Debug's 「移動画面に戻る（Debug）」 (free-time-return.ts): the last free-time state, in this tab's memory
   // only. Updated after each render, so the first render of another screen reads the free time before it.
   const debugOn = isDebug || debugMode.on;
@@ -205,6 +220,14 @@ export function GameApp({
   // The words of the country this device has learned in this journey (local-words.ts): the line on screen teaches its
   // # local_word: words. In this storage, so a Debug session keeps its own record in its isolated memory.
   const learnedWords = useLocalWords(storage, lineWordsOnScreen(game));
+  // 「ことばを覚えた」 rings (local_word) as its notice comes, but not on a quiet line nor during 高速送り (playCue).
+  const learnedNoticeId = learnedWords.notice?.id;
+  const quietLine = !!lineFrameOnScreen(game)?.quiet;
+  useEffect(() => {
+    if (learnedNoticeId !== undefined && !quietLine) playCue("local_word");
+  // Once a notice: the line's quiet is read as it comes.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [learnedNoticeId]);
   const { travelToEvent, returnToHotel, restAtDayEnd, playMove, playing: travelEffectPlaying, nightLeaving, effects: travelEffects } = useTravelEffects({
     getCurrent, commit, nextRomanceRoll, reduceMotion: displaySettings.value.reduceMotion,
   });
@@ -286,6 +309,8 @@ export function GameApp({
     event.preventDefault();
     freeTimeReturn.current = null;
     moments.restart(false);
+    playSe("ui_confirm");
+    holdSceneCues(false);
     session.begin(nameOrDefault(player, balance.defaultPlayerName), nameOrDefault(heroine, balance.defaultHeroineName), journeyId);
   }
   function requestDelete() {
@@ -302,6 +327,9 @@ export function GameApp({
   }
   function loadSavedGame() {
     if (!session.restore()) return;
+    // The restored scene's cues wait for the player's next action; the header makes no sound for what the load brings.
+    holdSceneCues(true);
+    setReplacedGame((count) => count + 1);
     // Debug's return point belonged to the play before the load, and so did a night screen seen tonight.
     freeTimeReturn.current = null;
     nightShown.current = null;
@@ -325,6 +353,7 @@ export function GameApp({
     if (!point || !current || !canReturnToFreeTime(point, current, journeyId, debugOn)) return;
     if (!session.replace(freeTimeReturnState(point, current))) return;
     moments.restart(false);
+    setReplacedGame((count) => count + 1);
     // As after a load: the undone scene's relationship change goes, the clue book closes, and the
     // free-time screen that appears under the finger takes no tap for a moment.
     setShownChange(null);
@@ -475,7 +504,10 @@ export function GameApp({
         onEnglish={() => openEnglish()}
         onPhotoCredits={creditPhotos.length ? () => setPhotoCreditsOpen(true) : undefined}
         onSceneCredits={scenePhoto ? () => setScenePhotoOpen(true) : undefined}
-        onSave={save}
+        onSave={() => {
+          if (save()) playSe("save");
+        }}
+        replaced={replacedGame}
         onLoad={reload}
         onSettings={() => {
           setPlayer(game.playerName);
@@ -651,6 +683,7 @@ export function GameApp({
               text: activeEncounter.frame.text,
               delivery: activeEncounter.frame.delivery,
               voiceId: activeEncounter.frame.voiceId,
+              seId: activeEncounter.frame.seId,
               staging: activeEncounter.frame,
               phoneNames: { heroine: game.heroineName, player: game.playerName, enemy: encounterPerson?.nameJa },
               // Hidden choices (decision 43) are left out; the letters follow the shown ones.
@@ -832,7 +865,9 @@ export function GameApp({
             buttons={nightButtons(game, dayEnd.actions, departure?.city.nameJa)}
             reduceMotion={displaySettings.value.reduceMotion}
             onAction={(kind) => {
-              if (kind === "read_epilogue") commit((state) => openOccasion(state, { kind: "epilogue" }, game.revision, nextRomanceRoll));
+              if (kind === "read_epilogue") {
+                if (commit((state) => openOccasion(state, { kind: "epilogue" }, game.revision, nextRomanceRoll))) playSe("ui_confirm");
+              }
               else if (kind === "depart") setConfirmDeparture(true);
               else if (kind === "claim_ap") commit((state) => claimPendingRewards(state, game.revision));
               else restAtDayEnd(dayEnd.way, game.revision, { by: "night_screen", buttons: nightButtons(game, dayEnd.actions, departure?.city.nameJa) });
@@ -866,7 +901,10 @@ export function GameApp({
         <p>次の街へ進みます。この街でしか使えない未使用アイテムは、持って行けません。{game.travel.rentedModeIds.length > 0 &&
           `借りている${game.travel.rentedModeIds.map((modeId) => getTransportMode(game.currentCityId, modeId)?.nameJa ?? modeId).join("・")}は返します。`}</p>
         <button type="button" className="primary" onClick={() => {
-          if (commit((state) => openOccasion(state, { kind: "depart" }, game.revision, nextRomanceRoll))) setConfirmDeparture(false);
+          if (commit((state) => openOccasion(state, { kind: "depart" }, game.revision, nextRomanceRoll))) {
+            playSe("ui_confirm");
+            setConfirmDeparture(false);
+          }
         }}>出発する</button>
         <button type="button" className="secondary" onClick={() => setConfirmDeparture(false)}>この街に残る</button>
       </Modal>}
@@ -1047,20 +1085,6 @@ export function GameApp({
           </label>}
           {readAloud && <p className="fine-print">クイズと英語ノートの英文の横に出ます。英語の声がない端末では、読まないか、ほかの言葉の声で読みます。</p>}
           <label className="translation-setting">
-            <input type="checkbox" checked={displaySettings.value.voice} disabled={!!displaySettings.error}
-              onChange={(event) => displaySettings.update({ voice: event.target.checked })} /> 台詞の声を出す
-          </label>
-          {displaySettings.value.voice && <label className="translation-setting voice-volume-setting">
-            声の大きさ
-            <input type="range" aria-label="声の大きさ" aria-valuetext={`${voicePercent}%`} min={0} max={100} step={10}
-              value={voicePercent} disabled={!!displaySettings.error}
-              onChange={(event) => displaySettings.update({ voiceVolume: Number(event.target.value) / 100 })} />
-            <span className="voice-volume-value" aria-hidden="true">{voicePercent}%</span>
-          </label>}
-          {displaySettings.error && (
-            <p role="status">{displaySettings.error}</p>
-          )}
-          <label className="translation-setting">
             <input
               type="checkbox"
               checked={learning.data.alwaysTranslate}
@@ -1076,6 +1100,33 @@ export function GameApp({
             常に日本語訳を表示する
           </label>
           {learning.error && <p role="status">{learning.error}</p>}
+          {/* The voices and the sound effects together, each with its own volume (shown while it is on). */}
+          <h3>音</h3>
+          <label className="translation-setting">
+            <input type="checkbox" checked={displaySettings.value.voice} disabled={!!displaySettings.error}
+              onChange={(event) => displaySettings.update({ voice: event.target.checked })} /> 台詞の声を出す
+          </label>
+          {displaySettings.value.voice && <label className="translation-setting volume-setting">
+            声の大きさ
+            <input type="range" aria-label="声の大きさ" aria-valuetext={`${voicePercent}%`} min={0} max={100} step={10}
+              value={voicePercent} disabled={!!displaySettings.error}
+              onChange={(event) => displaySettings.update({ voiceVolume: Number(event.target.value) / 100 })} />
+            <span className="volume-value" aria-hidden="true">{voicePercent}%</span>
+          </label>}
+          <label className="translation-setting">
+            <input type="checkbox" checked={displaySettings.value.se} disabled={!!displaySettings.error}
+              onChange={(event) => displaySettings.update({ se: event.target.checked })} /> 効果音を出す
+          </label>
+          {displaySettings.value.se && <label className="translation-setting volume-setting">
+            効果音の大きさ
+            <input type="range" aria-label="効果音の大きさ" aria-valuetext={`${sePercent}%`} min={0} max={100} step={10}
+              value={sePercent} disabled={!!displaySettings.error}
+              onChange={(event) => displaySettings.update({ seVolume: Number(event.target.value) / 100 })} />
+            <span className="volume-value" aria-hidden="true">{sePercent}%</span>
+          </label>}
+          {displaySettings.error && (
+            <p role="status">{displaySettings.error}</p>
+          )}
           <h3>名前の設定</h3>
           {active ||
           game.activeEncounter ||

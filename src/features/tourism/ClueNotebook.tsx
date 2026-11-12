@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { getCityContent, landmarks, tourismClues } from "../../content";
 import { Modal, ModalTitle } from "../../components/Modal";
+import { playSe } from "../../audio/sound-effects";
 import { ClueDetails } from "./ClueDetails";
 import { ClueImage, ClueImageCredits } from "./ClueImage";
 import "./notebook.css";
@@ -100,7 +101,10 @@ export function ClueNotebook({
             className="clue-page-button"
             disabled={currentIndex === 0}
             aria-label="前の手がかり"
-            onClick={() => setCurrentId(clues[currentIndex - 1].id)}
+            onClick={() => {
+              playSe("ui_page");
+              setCurrentId(clues[currentIndex - 1].id);
+            }}
           >
             前へ
           </button>
@@ -123,7 +127,10 @@ export function ClueNotebook({
             className="clue-page-button"
             disabled={currentIndex >= clues.length - 1}
             aria-label="次の手がかり"
-            onClick={() => setCurrentId(clues[currentIndex + 1].id)}
+            onClick={() => {
+              playSe("ui_page");
+              setCurrentId(clues[currentIndex + 1].id);
+            }}
           >
             次へ
           </button>

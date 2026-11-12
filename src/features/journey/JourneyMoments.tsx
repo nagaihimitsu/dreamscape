@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { DEFAULT_ITEM_ICON } from "../../content/code-images";
 import { Icon } from "../../components/icons";
 import { Modal } from "../../components/Modal";
+import { playSe } from "../../audio/sound-effects";
 import { reducedMotionNow, useNightCard } from "./NightRest";
 import type { EndRoll, EpisodeTitleCard, MomentPhoto, PackedItem, Packing, ResumeRecap } from "./journey-moments";
 import "./journey-moments.css";
@@ -32,6 +33,7 @@ const served = (path: string) => `${import.meta.env.BASE_URL}${path}`;
  */
 export function EpisodeTitle({ card, reduceMotion, onEnd }: { card: EpisodeTitleCard; reduceMotion: boolean; onEnd: () => void }) {
   const { reduced, announced, end } = useNightCard({ reduceMotion, ms: TITLE_MS, reducedMs: TITLE_REDUCED_MS, onEnd });
+  useEffect(() => playSe("episode_title"), []);
   const [photoFailed, setPhotoFailed] = useState(false);
   return createPortal(<div className={`episode-title-card${reduced ? " is-reduced" : ""}`} data-testid="episode-title-card"
     data-obstructs-dialogue="" onClick={end}>

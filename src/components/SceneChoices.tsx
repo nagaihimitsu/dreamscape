@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { playSe } from "../audio/sound-effects";
 
 /** A choice of a scene's choice point, as the domain shows it (decision 43: hidden choices are not passed here). */
 export type SceneChoiceView = { index: number; text: string; translationJa?: string; reason?: string; costLabel?: string };
@@ -20,7 +21,10 @@ export function SceneChoices({ choices, disabled, onChoose, testId = "scene-choi
       {choices.map((choice, ordinal) => (
         <div key={choice.index}>
           <button type="button" className="choice" data-testid={testId} disabled={disabled || !!choice.reason}
-            aria-describedby={choice.reason ? `scene-choice-reason-${choice.index}` : undefined} onClick={() => onChoose(choice.index)}>
+            aria-describedby={choice.reason ? `scene-choice-reason-${choice.index}` : undefined} onClick={() => {
+              playSe("ui_confirm");
+              onChoose(choice.index);
+            }}>
             <span className="choice-number">{String(ordinal + 1).padStart(2, "0")}</span>
             <span>{choice.text}{choice.costLabel ? `（${choice.costLabel}）` : ""}</span>
           </button>

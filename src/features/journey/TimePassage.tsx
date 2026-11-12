@@ -1,8 +1,11 @@
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
+import { playSe } from "../../audio/sound-effects";
 import "./time-passage.css";
 
 /** Decorative only: the game clock and save have already been updated. */
 export function TimePassage({ onEnd, reduceMotion }: { onEnd: () => void; reduceMotion: boolean }) {
+  useEffect(() => playSe("time_passage"), []);
   return createPortal(<div className={`time-passage${reduceMotion ? " is-reduced" : ""}`} data-testid="time-passage" aria-hidden="true"
     onAnimationEnd={(event) => { if (event.target === event.currentTarget) onEnd(); }}>
     <div className="time-passage-sky">

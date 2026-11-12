@@ -83,7 +83,7 @@ export function rememberWords(storage: StorageLike, record: LearnedWords, ids: r
   return added;
 }
 
-type FrameWords = { localWordIds?: readonly string[] } | null;
+type FrameWords = { localWordIds?: readonly string[]; quiet?: string } | null;
 /** The parts of the game state that hold the story scenes' lines. */
 export type SceneFrames = {
   activeEncounter: { frame: FrameWords } | null;
@@ -99,13 +99,17 @@ export type SceneFrames = {
  * arrival's title card covers its first line.
  */
 export function lineWordsOnScreen(state: SceneFrames | null): readonly string[] {
-  if (!state) return [];
-  const frame = state.activeEncounter ? state.activeEncounter.frame
+  return lineFrameOnScreen(state)?.localWordIds ?? [];
+}
+
+/** The frame of the line on screen whose words lineWordsOnScreen reads (null outside a story scene). */
+export function lineFrameOnScreen(state: SceneFrames | null): FrameWords {
+  if (!state) return null;
+  return state.activeEncounter ? state.activeEncounter.frame
     : state.activeEpilogue ? (state.activeEpilogue.kind === "arrival" && !state.activeEpilogue.logoComplete ? null : state.activeEpilogue.frame)
       : state.activeTourism ? (state.activeTourism.phase === "guide" ? state.activeTourism.frame : null)
         : state.activeBattle ? (state.activeBattle.phase === "dialogue" ? state.activeBattle.frame : null)
           : state.activeDate?.frame ?? null;
-  return frame?.localWordIds ?? [];
 }
 
 /** The notice of words just learned: 「ことばを覚えた：नमस्ते（ナマステ）」. */

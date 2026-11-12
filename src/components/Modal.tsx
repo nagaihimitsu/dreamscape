@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { useSettling } from "./ConfirmActionButton";
 import { Icon } from "./icons";
+import { playSe } from "../audio/sound-effects";
 /**
  * Native modal keeps keyboard focus inside and the underlying page inert.
  *
@@ -37,8 +38,14 @@ export function Modal({
     }
     const pagePosition = { top: window.scrollY, left: window.scrollX };
     element.showModal();
+    // Its sounds: ui_open as it opens, ui_close once it has gone from the page (StrictMode's second run of this
+    // effect leaves it on the page, and plays one ui_open: sound-effects.ts plays the same sound once within 80 ms).
+    playSe("ui_open");
     return () => {
       element.close();
+      window.setTimeout(() => {
+        if (!element.isConnected) playSe("ui_close");
+      });
       // If the trigger was replaced (for example by starting a date), the
       // new scene owns its own focus and scroll position.
       if (!previouslyFocused?.isConnected) return;

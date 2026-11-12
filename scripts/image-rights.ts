@@ -30,7 +30,7 @@ export function servingLayer(sources: Pick<ContentSources, "layers">, file: stri
 }
 
 /** The layer that holds a content file (journey folders sit inside the core directory: the deepest match wins). */
-function layerOfFile(layers: readonly ContentLayer[], file: string): ContentLayer {
+export function layerOfFile(layers: readonly ContentLayer[], file: string): ContentLayer {
   return [...layers].sort((a, b) => b.directory.length - a.directory.length).find((layer) => file.startsWith(layer.directory + path.sep))!;
 }
 
@@ -73,7 +73,9 @@ export function ownArtworkByLayer(sources: Pick<ContentSources, "root" | "layers
  *    tourism catalog credits: the album shows only Dreamscape's own artwork,
  *    which never needs a list line or a credit.
  * Served files that are not images (the web app manifest, the voices of
- * public/assets/voice/: their rights are not decided yet) are not checked.
+ * public/assets/voice/: their rights are not decided yet; the sound effects of
+ * public/assets/se/, whose sources presentation/sounds.json lists:
+ * sound-files.ts) are not checked.
  */
 export function checkImageRights(
   sources: Pick<ContentSources, "root" | "layers" | "catalogs" | "publicFiles">,

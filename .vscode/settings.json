@@ -144,6 +144,14 @@
     },
     {
       "fileMatch": [
+        "/content/presentation/sounds.json",
+        "/content/journeys/*/presentation/sounds.json",
+        "/authoring/templates/*/presentation/sounds.json"
+      ],
+      "url": "./authoring/schemas/presentation-sounds.schema.json"
+    },
+    {
+      "fileMatch": [
         "/content/journeys/*/progression/journey.json",
         "/authoring/templates/*/progression/journey.json"
       ],

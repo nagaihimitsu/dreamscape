@@ -13,7 +13,8 @@ import { useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, RecallLayer } from "../../components/LineStage";
-import { lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
+import { lineCues, lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
+import { playSe } from "../../audio/sound-effects";
 import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
@@ -217,6 +218,8 @@ export function RomanceScene({
                 text={frame.text}
                 delivery={frame.delivery}
                 voiceId={frame.voiceId}
+                seId={frame.seId}
+                cues={lineCues(frame, !!nameCut)}
                 voice={autoAdvance.voice}
                 speed={autoAdvance.fast ? 0 : lineSpeed(speed, frame)}
                 onReady={onReady}
@@ -245,7 +248,7 @@ export function RomanceScene({
                       if (!onSelect(choice.index, game.revision)) {
                         choiceLock.current = false;
                         pendingChoice.current = null;
-                      }
+                      } else playSe("ui_confirm");
                     }}
                   >
                     <span className="choice-number">

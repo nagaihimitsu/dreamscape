@@ -1,5 +1,6 @@
 import { REACTION_MARKS, type DialogueReaction, type ReactionTarget } from "./dialogue-reactions";
 import { VOICE_ID } from "./voice-files";
+import { SOUND_ID } from "./sounds";
 
 export interface TagContext {
   effectIds: string[];
@@ -47,6 +48,8 @@ export interface StoryTags {
   cutin?: CutInKind;
   /** `# voice: <ID>`: the recording of the line, a journey's public/assets/voice/<ID>.mp3 (the line it is written on only). */
   voiceId?: string;
+  /** `# se: <ID>`: a sound effect played as the line starts, a registered public/assets/se/<ID>.mp3 (the line it is written on only). */
+  seId?: string;
   effects: string[];
 }
 
@@ -240,6 +243,12 @@ export function parseStoryTags(
         throw new Error(`Invalid voice tag: ${value} (write # voice: <ID>, the file name of public/assets/voice/<ID>.mp3: a-z, 0-9 and _)`);
       if (result.voiceId) throw new Error("Duplicate voice tag");
       result.voiceId = value;
+    } else if (key === "se") {
+      // The sound is checked by content:build (scripts/sound-files.ts), which knows the registered sounds.
+      if (!SOUND_ID.test(value))
+        throw new Error(`Invalid se tag: ${value} (write # se: <ID>, a sound of presentation/sounds.json, the file name of public/assets/se/<ID>.mp3: a-z, 0-9 and _)`);
+      if (result.seId) throw new Error("Duplicate se tag");
+      result.seId = value;
     } else if (isSceneTagKey(key)) {
       readSceneTag(key, value, result);
     } else {

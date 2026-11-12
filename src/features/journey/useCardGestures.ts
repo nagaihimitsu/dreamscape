@@ -4,6 +4,7 @@ import {
   type DragDirection, type SwipeArea, type SwipeSample,
 } from "./photo-cards";
 import type { PressKind } from "./travel-selection";
+import { playSe } from "../../audio/sound-effects";
 
 /** What a swipe up does (in the row; null: the chosen card does not take it: the tour, photo-cards.ts takesSwipe). */
 export type CardSwipe = {
@@ -254,6 +255,7 @@ export function useCardGestures({ row, chosen, swipe, list, driving, settle }: {
   };
   /** Why it cannot depart: said, floated over the card, and the reason under the row brought into view. */
   const refuse = (current: CardSwipe) => {
+    playSe("ui_denied");
     current.refuse();
     float(current.note);
     list.current?.parentElement?.querySelector<HTMLElement>(".place-card-reason")

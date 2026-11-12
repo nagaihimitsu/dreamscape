@@ -4,8 +4,9 @@ import type { GameState } from "../../domain/game";
 import { destinationChoicesOf, getTravelDestinations, getTravelSleepChoices } from "../../domain/travel-destinations";
 import type { TravelMode } from "../../domain/travel-game";
 import { placeDisplayName } from "./travel-labels";
+import { playSe } from "../../audio/sound-effects";
 import {
-  announcement, armedAt, CLEARED_JA, clear, isArmed, pressChoice, pressEvent, pressTarget, reconcile, withFocusEnd,
+  announcement, armedAt, CLEARED_JA, clear, isArmed, pressChoice, pressEvent, pressTarget, reconcile, targetShape, withFocusEnd,
   type Choice, type PressKind, type PressResult, type PressSource, type ScrollInstruction, type SelectionTarget, type TargetChoices,
   type TravelSelection,
 } from "./travel-selection";
@@ -71,6 +72,11 @@ export function useTravelSelection(game: GameState, handlers: {
   function apply(result: PressResult, target: TargetChoices, job: Omit<ScrollJob, "scroll" | "target">) {
     const { effect } = result;
     if (effect.kind === "ignore") return;
+    // The press's sound: a departure or a rest is decided (ui_confirm); a place or 休む chosen, or its choices shown again
+    // (ui_tap); a second press where nothing can be done now, whose reason is said again (ui_denied).
+    if (effect.kind === "travel" || effect.kind === "sleep") playSe("ui_confirm");
+    else if (effect.kind === "select") playSe("ui_tap");
+    else if (effect.kind === "remind") playSe(targetShape(target) === "unavailable" || targetShape(target) === "none" ? "ui_denied" : "ui_tap");
     if (effect.kind === "travel" || effect.kind === "sleep") {
       leaveRef.current?.();
       set(null);

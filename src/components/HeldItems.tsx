@@ -2,6 +2,7 @@ import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { DEFAULT_ITEM_ICON } from "../content/code-images";
 import { DismissLayer } from "./DismissLayer";
 import { Icon } from "./icons";
+import { playSe } from "../audio/sound-effects";
 import "./held-items.css";
 
 /** `iconPath`: the item's own icon from its catalog entry; a generic icon otherwise. */
@@ -40,6 +41,7 @@ export function HeldItems({ items, gained, onOpen }: { items: HeldItem[]; gained
     if (!shown) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "Escape" || document.querySelector("dialog[open]")) return;
+      playSe("ui_close");
       setOpen(false);
       buttonRef.current?.focus();
     };
@@ -73,6 +75,7 @@ export function HeldItems({ items, gained, onOpen }: { items: HeldItem[]; gained
 
   if (!items.length) return null;
   const close = (focusWasInside: boolean) => {
+    playSe("ui_close");
     setOpen(false);
     if (focusWasInside) buttonRef.current?.focus({ preventScroll: true });
   };
@@ -96,6 +99,7 @@ export function HeldItems({ items, gained, onOpen }: { items: HeldItem[]; gained
         aria-controls={shown ? `${id}-detail` : undefined}
         onClick={() => {
           if (!shown) onOpen?.();
+          playSe(shown ? "ui_close" : "ui_open");
           setOpen(!shown);
         }}
       >
@@ -112,6 +116,7 @@ export function HeldItems({ items, gained, onOpen }: { items: HeldItem[]; gained
           <div className="held-item-detail-heading">
             <strong id={`${id}-name`}>{single ? single.name : `所持品（${items.length}個）`}</strong>
             <button type="button" className="held-item-close" aria-label={single ? "アイテムの詳細を閉じる" : "所持品を閉じる"} onClick={() => {
+              playSe("ui_close");
               setOpen(false);
               buttonRef.current?.focus();
             }}>×</button>
