@@ -2,6 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { Icon } from "./icons";
 import { dialogueObstructed } from "./dialogueObstructed";
 import { stopsFastForward, type ReadSkip } from "./read-skip";
+import type { LineVoiceState, VoiceLink } from "./useVoice";
+
+/** How long auto mode waits after a line's voice has ended before it reads on (milliseconds). */
+const AFTER_VOICE_MS = 700;
 
 /** Optional presentation state. It is never written to the game save. */
 export function useAutoAdvance({
@@ -25,6 +29,8 @@ export function useAutoAdvance({
 }) {
   const [fast, setFast] = useState(false);
   const [blocked, setBlocked] = useState(dialogueObstructed);
+  // The voice of the line on screen (`# voice:`), as its DialogueText reports it (null: none, or it stopped early).
+  const [voice, setVoice] = useState<LineVoiceState | null>(null);
   // Read-skip: arriving at a line not read before stops fast-forward (unless the reader skips unread lines too). Decided
   // while rendering the new line (React's adjustment of state during render), so it is drawn at the reader's speed.
   const [shownLine, setShownLine] = useState(lineId);
@@ -71,9 +77,11 @@ export function useAutoAdvance({
 
   useEffect(() => {
     if ((!fast && !defaultEnabled) || blocked || !ready || !canAdvance) return;
+    // Auto mode lets the line's voice finish (高速送り plays none); a voice that fails or stops early leaves the reading time.
+    if (!fast && voice === "busy") return;
     // Reading time follows the actual line without delaying unusually long
     // lines indefinitely. A manual tap remains available throughout.
-    const delay = fast ? 250 : Math.min(7000, Math.max(2000, Array.from(text).length * 90));
+    const delay = fast ? 250 : voice === "ended" ? AFTER_VOICE_MS : Math.min(7000, Math.max(2000, Array.from(text).length * 90));
     const timer = window.setTimeout(() => {
       if (!canAdvanceRef.current || dialogueObstructed()) {
         setFast(false);
@@ -82,7 +90,8 @@ export function useAutoAdvance({
       advanceRef.current();
     }, delay);
     return () => window.clearTimeout(timer);
-  }, [fast, defaultEnabled, blocked, ready, canAdvance, text]);
+  }, [fast, defaultEnabled, blocked, ready, canAdvance, text, voice]);
+  const voiceLink: VoiceLink = { muted: fast, onState: setVoice };
 
   return {
     active: fast,
@@ -90,6 +99,8 @@ export function useAutoAdvance({
     /** Fast-forward has just stopped at this line, which was not read before (said to screen readers). */
     stoppedAtUnread: stoppedAt !== null && stoppedAt === lineId,
     canStart: canAdvance && !blocked,
+    /** For the line's DialogueText (useLineVoice): no voice while 高速送り, and the voice's state for auto mode. */
+    voice: voiceLink,
     toggle: () => {
       if (dialogueObstructed()) return;
       if (canAdvance) setFast((value) => !value);

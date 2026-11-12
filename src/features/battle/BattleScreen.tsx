@@ -561,6 +561,8 @@ export function BattleScreen({
                 ref={sceneTap.line}
                 text={frame.text}
                 delivery={frame.delivery}
+                voiceId={frame.voiceId}
+                voice={auto.voice}
                 speed={auto.fast ? 0 : lineSpeed(speed, frame)}
                 onReady={onReady}
                 onAdvance={advanceSafely}

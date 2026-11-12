@@ -54,6 +54,7 @@ import {
 } from "../src/content/schemas";
 import type { TagContext } from "../src/content/tags";
 import { albumFolderPath, albumImagesOf, checkAlbumTags } from "./album-images";
+import { checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
 import { checkHelperKnot, revealRegionProblem, validateBattleEvidence } from "./battle-validation";
 import { landmarkOrderError, landmarkParts, tourismCatalogSchema, type VisitPart } from "../src/content/tourism-schemas";
 import type { SceneOption } from "../src/content/scene-schemas";
@@ -539,6 +540,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       throw new Error(`Unknown local word city: ${word.id}/${word.cityId}`);
   // The album's illustrations (2026-11-11): the files of each journey's public/assets/album/, the ID their file name.
   const albumImages = albumImagesOf(sources);
+  // The voices of lines (2026-11-12): the files of each journey's public/assets/voice/, the ID their file name.
+  const voiceFiles = voiceFilesOf(sources);
   const context: TagContext = {
     effectIds: effects.map((effect) => effect.id),
     backgroundIds: Object.keys(presentation.backgrounds),
@@ -600,6 +603,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     // A line's # photo: and # recall: name an album image of the story's own journey (2026-11-11).
     const journeyLayerOfStory = sources.layers.find((item) => item.id === storyLayer)!;
     withContext(file, () => checkAlbumTags(authored, storyLayer, albumImages, albumFolderPath(sources, journeyLayerOfStory)));
+    // A line's # voice: names a recording of the story's own journey (2026-11-12).
+    withContext(file, () => checkVoiceTags(authored, storyLayer, voiceFiles, voiceFolderPath(sources, journeyLayerOfStory)));
     const place = placeFiles.get(id);
     const main = !place && mains.some((item) => item.address === id);
     const mainHead = main ? withContext(file, () => readMainFileHead(authored)) : undefined;

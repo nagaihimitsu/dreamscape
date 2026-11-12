@@ -220,6 +220,8 @@ export function TourismScreen({
                 ref={sceneTap.line}
                 text={frame.text}
                 delivery={frame.delivery}
+                voiceId={frame.voiceId}
+                voice={autoAdvance.voice}
                 speed={autoAdvance.fast ? 0 : lineSpeed(speed, frame)}
                 onReady={onReady}
                 onAdvance={advanceSafely}

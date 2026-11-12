@@ -655,6 +655,10 @@ footer span {
 input[type="checkbox"] { accent-color: var(--ds-slate-800); }
 /* The text speed select fills its 44 px row instead of the browser's ~19 px box (field look, stage 2.3). */
 .modal .translation-setting select { min-height: 44px; margin: -10px 0; padding: 0 8px; border: 1px solid var(--ds-field-edge); border-radius: 8px; background: #fffaf1; color: var(--ds-ink); }
+/* 「声の大きさ」: the slider fills its 44 px row between its label and its value (the row's input rule sizes checkboxes). */
+.modal .voice-volume-setting { align-items: center; }
+.modal .voice-volume-setting input[type="range"] { flex: 1 1 auto; width: auto; min-width: 0; height: 44px; margin: -10px 0; accent-color: var(--ds-slate-800); }
+.voice-volume-value { flex: none; min-width: 3em; text-align: end; font-variant-numeric: tabular-nums; }
 @media (max-width: 600px) {
   dialog.modal[aria-labelledby="settings-title"] {
     --modal-pad-top: 18px;

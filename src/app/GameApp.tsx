@@ -37,6 +37,7 @@ import { oldDataContext, type KeyedStorage } from "../persistence/old-data";
 import { CanalScene } from "../components/CanalScene";
 import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
+import { useVoiceSettings } from "../components/useVoice";
 import { useReadLines } from "../components/useReadLines";
 import { RomanceScene } from "../features/romance/RomanceScene";
 import { Modal, ModalTitle } from "../components/Modal";
@@ -155,6 +156,9 @@ export function GameApp({
   // 「英語を読み上げるボタンを出す」 (ReadAloud.tsx): the setting and the buttons only where the browser can read aloud.
   const [readAloudAvailable] = useState(() => readAloudSupported(typeof window === "undefined" ? undefined : window));
   const readAloud = readAloudAvailable && displaySettings.value.readAloud;
+  // 「台詞の声を出す」 and 「声の大きさ」 for every line's `# voice:` (useVoice.ts).
+  useVoiceSettings(displaySettings.value.voice, displaySettings.value.voiceVolume);
+  const voicePercent = Math.round(displaySettings.value.voiceVolume * 100);
   // This device's Debug-mode switch (journeyStorage passes its key through unscoped).
   const debugMode = useDebugMode(storage);
   // While Debug mode is on (always in a Debug session), a choice's relationship changes show above
@@ -646,6 +650,7 @@ export function GameApp({
                 storyState.people),
               text: activeEncounter.frame.text,
               delivery: activeEncounter.frame.delivery,
+              voiceId: activeEncounter.frame.voiceId,
               staging: activeEncounter.frame,
               phoneNames: { heroine: game.heroineName, player: game.playerName, enemy: encounterPerson?.nameJa },
               // Hidden choices (decision 43) are left out; the letters follow the shown ones.
@@ -1041,6 +1046,17 @@ export function GameApp({
               onChange={(event) => displaySettings.update({ readAloud: event.target.checked })} /> 英語を読み上げるボタンを出す
           </label>}
           {readAloud && <p className="fine-print">クイズと英語ノートの英文の横に出ます。英語の声がない端末では、読まないか、ほかの言葉の声で読みます。</p>}
+          <label className="translation-setting">
+            <input type="checkbox" checked={displaySettings.value.voice} disabled={!!displaySettings.error}
+              onChange={(event) => displaySettings.update({ voice: event.target.checked })} /> 台詞の声を出す
+          </label>
+          {displaySettings.value.voice && <label className="translation-setting voice-volume-setting">
+            声の大きさ
+            <input type="range" aria-label="声の大きさ" aria-valuetext={`${voicePercent}%`} min={0} max={100} step={10}
+              value={voicePercent} disabled={!!displaySettings.error}
+              onChange={(event) => displaySettings.update({ voiceVolume: Number(event.target.value) / 100 })} />
+            <span className="voice-volume-value" aria-hidden="true">{voicePercent}%</span>
+          </label>}
           {displaySettings.error && (
             <p role="status">{displaySettings.error}</p>
           )}

@@ -12,6 +12,7 @@ import { validateMemoryReferences } from "../src/story/memory";
 import { displayPath, journeyLayer, loadContentSources, parseCatalog, storyFile, type ContentSources } from "./content-sources";
 import { withContext } from "./content-validation-utils";
 import { albumImagesOf } from "./album-images";
+import { checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
 import { validateEpilogue } from "./epilogue-validation";
 import { compileInk, validateNoInkRandom, validateRelationshipToneSource } from "./ink-validation";
 import { choiceOption, includesModules, readFileChoices, readMainFileHead } from "./place-files";
@@ -76,6 +77,9 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
   const tourism = parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json");
   // A line's # photo: and # recall: name an album image of this journey (its public/assets/album/; album-images.ts).
   const albumImageIds = albumImagesOf(sources).filter((image) => image.journeyId === journeyId).map((image) => image.id);
+  // A line's # voice: names a recording of this journey (its public/assets/voice/; voice-files.ts).
+  const voiceFiles = voiceFilesOf(sources);
+  const voiceFolder = voiceFolderPath(sources, journeyLayer(sources, journeyId));
   const placeKnots = publishedPlaceKnots(sources, requirements);
   const expected = requirements.flatMap((city) => [
     ...city.main.flatMap((event) => [event.guideStoryId, event.battleStoryId]),
@@ -116,6 +120,7 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
       if (/#\s*speaker\s*:\s*player\b/.test(code))
         warnings.push(`${displayPath(root, file)}: the protagonist speaks outside the date choices (# speaker: player); usually the protagonist speaks through the choices (not stopped)`);
       validateMemoryReferences(source, Object.keys(fragments.memories));
+      checkVoiceTags(source, journeyId, voiceFiles, voiceFolder);
       // A scene's cond("…") (stage 2a): declared, literal and written as a condition; content:build checks what it names.
       // A battle includes the game's modules.ink (its quiz and reasoning calls).
       const modules = includesModules(source);
