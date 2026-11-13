@@ -11,7 +11,7 @@ import { planThen } from "./occasion";
 import { applyPlayerAction, listPlayerActions, playerActionChange, type PlayerAction } from "./player-action";
 import { tourKeepBack, usableMoney } from "./reservations";
 import { resultExitLabel } from "./screen";
-import { bookTour, cancelTourBooking, continueTour, getTourOffers, tourFingerprint, tourLegsBetween, tourSchedule } from "./tour";
+import { bookTour, cancelTourBooking, continueTour, getTourOffers, tourFingerprint, tourLegsBetween, tourLegStart, tourSchedule } from "./tour";
 import { getTravelEventAvailability } from "./travel-game";
 import { getRentalOffers } from "./transport";
 
@@ -188,6 +188,16 @@ describe("the tour day (tour stage 2a)", () => {
     expect(tourLegsBetween(result, back).map((leg) => leg.id)).toEqual(["back"]);
     // The tour is not offered again.
     expect(getTourOffers(back)).toEqual([]);
+  });
+
+  it("knows where each leg starts (the ride's map card): the hotel for the first, the place the step before left the party at", () => {
+    install();
+    const tour = getTour(testTour.tourId)!;
+    expect(tourLegStart(tour, "out")).toBe(testTour.hotelPlaceId);
+    expect(tourLegStart(tour, "back")).toBe(testTour.placeId);
+    // An event step and an unknown step are no leg.
+    expect(tourLegStart(tour, "visit")).toBeUndefined();
+    expect(tourLegStart(tour, "nowhere")).toBeUndefined();
   });
 
   it("waits for the hotel's scenes after waking, then starts as they end; a load never starts it", () => {

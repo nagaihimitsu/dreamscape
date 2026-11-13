@@ -4,6 +4,9 @@
   inset: 0;
   display: grid;
   place-items: center;
+  /* The scene and, under it, the ride's map card together in the middle. */
+  align-content: center;
+  gap: 10px;
   /* Takes stray taps while it shows (a double tap on a destination never reaches the next scene, §3.3 H22). */
   pointer-events: auto;
   animation: travel-transition-overlay 1.8s ease both;
@@ -94,10 +97,41 @@
 @keyframes travel-transition-step { from { transform: rotate(-19deg); } to { transform: rotate(19deg); } }
 @keyframes travel-transition-still { from, to { opacity: 1; } }
 @keyframes travel-scenery-pass { to { transform: translateX(-120px); } }
+/* The ride's map card (2026-11-13; ride-map.ts): under the scene, in its parchment mount; the place left ringed in the
+   current place's green, the place reached in the markers' colour, their names in ink with a light halo (about 11:1 on the
+   card's ground). The line's dots come one after another from the place left to the place reached, from 0.25 s to about
+   1.5 s of the 1.8-s ride (opacity only); under reduced motion the whole line shows at once. */
+.travel-ride-map {
+  width: min(230px, 68vw);
+  overflow: hidden;
+  border: 4px solid var(--ds-parchment);
+  border-radius: 12px;
+  background: #eef1df;
+  box-shadow: 0 0 0 1px var(--ds-parchment-line), var(--ds-window-shadow);
+}
+.travel-ride-map svg { display: block; width: 100%; height: auto; }
+.travel-ride-dot {
+  fill: var(--ds-slate-800);
+  animation: travel-ride-dot .12s ease-out both;
+  animation-delay: calc(.25s + var(--ride-dot-at, 0) * 1.2s);
+}
+.travel-ride-from { fill: #fffaf1; stroke: var(--ds-here); stroke-width: 3; }
+.travel-ride-to { fill: var(--ds-marker); stroke: #fffaf1; stroke-width: 2; }
+.travel-ride-name {
+  fill: var(--ds-ink);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  paint-order: stroke;
+  stroke: #fffaf1;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+@keyframes travel-ride-dot { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
   .travel-transition { animation: travel-transition-still .45s steps(1, end); }
-  .travel-transition-vehicle, .travel-transition-leg, .travel-transition-arm, .travel-scenery { animation: none; }
+  .travel-transition-vehicle, .travel-transition-leg, .travel-transition-arm, .travel-scenery, .travel-ride-dot { animation: none; }
 }
 .travel-transition.is-reduced { animation: travel-transition-still .45s steps(1, end); }
 .travel-transition.is-reduced .travel-transition-vehicle, .travel-transition.is-reduced .travel-transition-leg, .travel-transition.is-reduced .travel-transition-arm,
-.travel-transition.is-reduced .travel-scenery { animation: none; }
+.travel-transition.is-reduced .travel-scenery, .travel-transition.is-reduced .travel-ride-dot { animation: none; }

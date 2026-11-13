@@ -2,10 +2,10 @@
 // small map, its stops in words, and the heroine's line of the night from the city's optional nightLinesJa (the sample
 // journey writes three).
 import { describe, expect, it } from "vitest";
-import { episodes, getCityContent } from "../../content";
+import { battleQuizzes, battles, episodes, getCityContent } from "../../content";
 import { cityStart, finishEpisode } from "../../dev/scenario-builders";
 import type { GameState } from "../../domain/game";
-import { hasNightRecap, headlinesSentenceJa, nightRecap, routeMarks, routeSentenceJa } from "./night-recap";
+import { hasNightRecap, headlinesSentenceJa, nightRecap, routeMarks, routeSentenceJa, todayWord } from "./night-recap";
 
 const SAMPLE = "mihon";
 const at = (state: GameState, day: number, todayPlaceIds: string[]): GameState =>
@@ -81,6 +81,41 @@ describe("what the night shows under its line", () => {
       expect(nightRecap(done).headlines).toEqual(["澪と見上げた三時"]);
     } finally {
       episode.clearTitleJa = written;
+    }
+  });
+});
+
+describe("今日の一語 on the night screen", () => {
+  const TOWER = "smp_mihon_main_clock_tower";
+  const FINALE = "smp_mihon_finale";
+  const quizOf = (episodeId: string) =>
+    battleQuizzes[battles.find((battle) => battle.id === episodes.find((episode) => episode.id === episodeId)!.battleId)!.quizId];
+  const firstWord = (episodeId: string) => quizOf(episodeId).questions.flatMap((question) => question.vocabularyJa)[0];
+  const today = (state: GameState, todayEpisodeIds: string[]): GameState => ({ ...state, travel: { ...state.travel, todayEpisodeIds } });
+
+  it("is the first word of the quiz of the first episode completed today, with its meaning there", () => {
+    const start = cityStart(SAMPLE);
+    expect(todayWord(start)).toBeNull();
+    const done = finishEpisode(start, TOWER);
+    const word = firstWord(TOWER);
+    expect(word).toBeDefined();
+    expect(todayWord(done)).toEqual({ word: word.word, meaningJa: word.meaning });
+    // The same night always shows the same word: the first episode of the day gives it.
+    expect(todayWord(today(done, [FINALE, TOWER]))).toEqual({ word: firstWord(FINALE).word, meaningJa: firstWord(FINALE).meaning });
+    // Only today's: an episode of an earlier day gives none.
+    expect(todayWord(today(done, []))).toBeNull();
+  });
+
+  it("goes on to the next episode of the day when a quiz has no vocabulary, and is none when no quiz has any", () => {
+    const start = cityStart(SAMPLE);
+    const questions = quizOf(TOWER).questions;
+    const written = questions.map((question) => question.vocabularyJa);
+    questions.forEach((question) => { question.vocabularyJa = []; });
+    try {
+      expect(todayWord(today(start, [TOWER]))).toBeNull();
+      expect(todayWord(today(start, ["nowhere", TOWER, FINALE]))).toEqual({ word: firstWord(FINALE).word, meaningJa: firstWord(FINALE).meaning });
+    } finally {
+      questions.forEach((question, index) => { question.vocabularyJa = written[index]; });
     }
   });
 });

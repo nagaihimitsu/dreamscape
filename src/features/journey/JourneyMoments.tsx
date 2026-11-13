@@ -5,16 +5,19 @@ import { Icon } from "../../components/icons";
 import { Modal } from "../../components/Modal";
 import { playSe } from "../../audio/sound-effects";
 import { reducedMotionNow, useNightCard } from "./NightRest";
-import type { EndRoll, EpisodeTitleCard, MomentPhoto, PackedItem, Packing, ResumeRecap } from "./journey-moments";
+import type { ChapterStampCard, EndRoll, EpisodeTitleCard, MomentPhoto, PackedItem, Packing, ResumeRecap } from "./journey-moments";
 import "./journey-moments.css";
 
 // The journey's moments (2026-11-11 user decision; the rules in journey-moments.ts, GameApp's useJourneyMoments shows them):
-// the title card as an episode begins, the recap of a resumed game, the packing as the party leaves a city, the credit roll
-// at the end of a journey. None of them changes the game or shows a relationship value.
+// the title card as an episode begins, the stamp as it ends (2026-11-13), the recap of a resumed game, the packing as the party
+// leaves a city, the credit roll at the end of a journey. None of them changes the game or shows a relationship value.
 
 /** How long the title card shows (ms): it fades in, holds and fades to the scene. Reduced motion: still, a little shorter. */
 const TITLE_MS = 2400;
 const TITLE_REDUCED_MS = 1800;
+/** The chapter's stamp (ms): it drops on and lands (its sound then), holds about a second and fades; journey-moments.css's timeline matches. */
+const STAMP_MS = 1600;
+const STAMP_LAND_MS = 260;
 /** How long the packing shows (ms; its items come in one after another). Reduced motion: still. */
 const PACKING_MS = 4200;
 const PACKING_REDUCED_MS = 3600;
@@ -46,6 +49,66 @@ export function EpisodeTitle({ card, reduceMotion, onEnd }: { card: EpisodeTitle
     </div>
     <p className="sr-only" role="status">{announced ? `${card.placeJa}。${card.titleJa}` : ""}</p>
   </div>, document.body);
+}
+
+/**
+ * 話の終わりの「完」の判 (2026-11-13 user decision): when an episode has been completed in play, on the screen the player comes
+ * back to after it (useJourneyMoments), a round red-brown seal with the episode's title and 「完」 drops onto the middle of the
+ * screen with a slight overshoot, holds about a second and fades (1.6 s), and `stamp` sounds as it lands. It takes nothing:
+ * taps pass through it (pointer-events: none), the focus stays, nothing waits for it. Its timers start on the next frame, so
+ * a stamp a visual covers in the same moment (a rest at the day's end) waits for it unseen and unheard; `onStart` says it has
+ * begun. Reduced motion: it fades in and out in place. A picture only (aria-hidden): the result screen has said the clear.
+ */
+export function ChapterStamp({ stamp, reduceMotion, onStart, onEnd }: {
+  stamp: ChapterStampCard;
+  reduceMotion: boolean;
+  onStart: () => void;
+  onEnd: () => void;
+}) {
+  const [reduced] = useState(() => reducedMotionNow(reduceMotion));
+  const onStartRef = useRef(onStart);
+  onStartRef.current = onStart;
+  const onEndRef = useRef(onEnd);
+  onEndRef.current = onEnd;
+  useEffect(() => {
+    let landed = 0;
+    let ended = 0;
+    const frame = window.requestAnimationFrame(() => {
+      onStartRef.current();
+      landed = window.setTimeout(() => playSe("stamp"), STAMP_LAND_MS);
+      ended = window.setTimeout(() => onEndRef.current(), STAMP_MS);
+    });
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(landed);
+      window.clearTimeout(ended);
+    };
+  }, []);
+  return <div className={`chapter-stamp${reduced ? " is-reduced" : ""}`} data-testid="chapter-stamp" aria-hidden="true">
+    <div className="chapter-stamp-seal">
+      <span className="chapter-stamp-title">{stamp.titleJa}</span>
+      <span className="chapter-stamp-mark">完</span>
+    </div>
+  </div>;
+}
+
+/**
+ * The departure's dialog's list (「{都市}へ出発」, 2026-11-13; departureLuggage): 「持っていく品物」, the held items that go on to
+ * the next city, and 「この街に置いていく品物」, those that stay, each with its icon and name. A part with no item is left out;
+ * nothing shows when nothing is held. Read-only.
+ */
+export function DepartureLuggage({ carried, left }: { carried: readonly PackedItem[]; left: readonly PackedItem[] }) {
+  const part = (titleJa: string, items: readonly PackedItem[], className = "") => items.length > 0 && <section className={`departure-items${className}`}>
+    <h3>{titleJa}</h3>
+    <ul>{items.map((item) => <li key={item.id}>
+      <img src={served(item.iconPath ?? DEFAULT_ITEM_ICON)} alt="" width={28} height={28} />
+      <span>{item.nameJa}</span>
+    </li>)}</ul>
+  </section>;
+  return <>
+    {part("持っていく品物", carried)}
+    {part("この街に置いていく品物", left, " is-left")}
+  </>;
 }
 
 /**

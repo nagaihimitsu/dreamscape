@@ -65,6 +65,9 @@ import { freeTimePhotos, PhotoCredits } from "../features/journey/PhotoCredits";
 import { AlbumDialog } from "../features/journey/AlbumDialog";
 import { ALBUM_PHOTO_NOTICE_MS, AlbumPhotoNotice, FIRST_ALBUM_PHOTO_NOTICE_MS, type AlbumPhotoNoticeState } from "../features/journey/AlbumPhotoNotice";
 import { OpeningMovie } from "../features/journey/OpeningMovie";
+import { DepartureLuggage } from "../features/journey/JourneyMoments";
+import { departureLuggage } from "../features/journey/journey-moments";
+import { titleArtTint } from "../features/journey/time-of-day";
 import { photoTaken } from "../domain/album";
 import { TitleNameFields } from "../features/journey/TitleNameFields";
 import { nameOrDefault } from "../domain/player-names";
@@ -329,6 +332,8 @@ export function GameApp({
   // The title starts with empty fields (the default names are their placeholders); 設定 fills in the current names.
   const [player, setPlayer] = useState(game?.playerName ?? "");
   const [heroine, setHeroine] = useState(game?.heroineName ?? "");
+  // The title art's colour of the device's time of day (2026-11-13), read once as the title opens (static, never animated).
+  const [titleTint] = useState(() => titleArtTint(new Date().getHours()));
 
   function begin(event: FormEvent) {
     event.preventDefault();
@@ -644,8 +649,8 @@ export function GameApp({
         )}
         {!game ? (
           <>
-            <div className="intro-art" data-testid="title-art">
-              <CanalScene compact artwork={getJourney(journeyId)?.titleArt} />
+            <div className="intro-art" data-testid="title-art" data-time-of-day={titleTint.period}>
+              <CanalScene compact artwork={getJourney(journeyId)?.titleArt} tint={titleTint.color ?? undefined} />
             </div>
             <section className="paper intro">
               <p className="eyebrow">旅のはじまり</p>
@@ -968,6 +973,7 @@ export function GameApp({
         <ModalTitle id="departure-title">{departure.city.nameJa}へ出発</ModalTitle>
         <p>次の街へ進みます。この街でしか使えない未使用アイテムは、持って行けません。{game.travel.rentedModeIds.length > 0 &&
           `借りている${game.travel.rentedModeIds.map((modeId) => getTransportMode(game.currentCityId, modeId)?.nameJa ?? modeId).join("・")}は返します。`}</p>
+        <DepartureLuggage {...departureLuggage(game)} />
         <button type="button" className="primary" onClick={() => {
           if (commit((state) => openOccasion(state, { kind: "depart" }, game.revision, nextRomanceRoll))) {
             playSe("ui_confirm");

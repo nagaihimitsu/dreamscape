@@ -3,6 +3,7 @@ import { getJourneyForCity } from "../../content/journeys";
 import type { TourismAsset } from "../../content/tourism-schemas";
 import type { AlbumPhoto } from "../../domain/album-state";
 import { isJourneyComplete } from "../../domain/city-travel";
+import { isCarriedItem } from "../../domain/item-cities";
 import { meets } from "../../domain/conditions";
 import type { GameState } from "../../domain/game";
 import { withNames } from "../romance/names";
@@ -73,6 +74,25 @@ export function episodeTitleCard(game: GameState, episodeId: string): EpisodeTit
   };
 }
 
+// ── 話の終わりの「完」の判 ───────────────────────────────────────────────────────────
+
+/**
+ * The episode this change completed (`previous` to `next`; the last one when several were, as a finale recorded with the
+ * stop before it), or null. completedEpisodeIds only grows as episodes are completed (chapter.ts recordEpisodes): a replay
+ * or a retry of a completed episode completes nothing, and a load or a new game is no change.
+ */
+export function completedEpisodeId(previous: Pick<GameState, "completedEpisodeIds">, next: Pick<GameState, "completedEpisodeIds">): string | null {
+  return next.completedEpisodeIds.filter((id) => !previous.completedEpisodeIds.includes(id) && episodes.some((episode) => episode.id === id)).at(-1) ?? null;
+}
+
+/** The stamp of a completed episode: its title (the names filled in), stamped with 「完」. */
+export type ChapterStampCard = { episodeId: string; titleJa: string };
+
+export function chapterStampOf(game: Pick<GameState, "playerName" | "heroineName">, episodeId: string): ChapterStampCard | null {
+  const episode = episodes.find((item) => item.id === episodeId);
+  return episode ? { episodeId, titleJa: withNames(episode.titleJa, game) } : null;
+}
+
 // ── 前回までのあらすじ ───────────────────────────────────────────────────────────────
 
 /** A photo as the recap and the credit roll show it: the album's view and the city it was taken in. */
@@ -116,6 +136,19 @@ export type PackedItem = { id: string; nameJa: string; iconPath?: string };
 /** The packing of a departure: the held items that go along (carried through the journey) and those left in the city left. */
 export type Packing = { fromCityJa: string; toCityJa: string; carried: PackedItem[]; left: PackedItem[] };
 
+const packedView = (item: (typeof encounters.items)[number]): PackedItem =>
+  ({ id: item.id, nameJa: item.nameJa, ...(item.iconPath ? { iconPath: item.iconPath } : {}) });
+
+/**
+ * What a departure would take and leave now (the departure's dialog 「{都市}へ出発」, 2026-11-13): the held items that go on
+ * to the next city (registered to be carried through the journey: isCarriedItem, as leaveForNextCity keeps them) and those
+ * that stay in this city, in the catalog's order. Both empty when nothing is held.
+ */
+export function departureLuggage(state: Pick<GameState, "inventory">): { carried: PackedItem[]; left: PackedItem[] } {
+  const held = encounters.items.filter((item) => state.inventory[item.id] === "held");
+  return { carried: held.filter((item) => isCarriedItem(item.id)).map(packedView), left: held.filter((item) => !isCarriedItem(item.id)).map(packedView) };
+}
+
 /**
  * The packing of the departure this change made (`previous` in the city left, `next` in the next city: the departure's
  * scenes ran before, as leaveForNextCity leaves the items behind after them): the items held on arriving (an item
@@ -124,7 +157,7 @@ export type Packing = { fromCityJa: string; toCityJa: string; carried: PackedIte
  */
 export function packingOf(previous: GameState, next: GameState): Packing | null {
   if (previous.currentCityId === next.currentCityId) return null;
-  const view = (item: (typeof encounters.items)[number]): PackedItem => ({ id: item.id, nameJa: item.nameJa, ...(item.iconPath ? { iconPath: item.iconPath } : {}) });
+  const view = packedView;
   const carried = encounters.items.filter((item) => next.inventory[item.id] === "held").map(view);
   const left = encounters.items.filter((item) => next.inventory[item.id] === "left_behind" && previous.inventory[item.id] !== "left_behind").map(view);
   if (!carried.length && !left.length) return null;

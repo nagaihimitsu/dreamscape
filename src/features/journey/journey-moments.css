@@ -195,6 +195,71 @@
   .packing-scene, .packing-items li { animation: none; }
 }
 
+/* ── 出発の確認の品物 ── (DepartureLuggage, 2026-11-13) in the departure's dialog: each part told by its small heading, the
+   items as icon and name in a wrapping row; what stays behind dimmed a little, as in the packing. No side accent. */
+.departure-items { margin: 14px 0 0; }
+.departure-items h3 { margin: 0 0 6px; color: var(--ds-ink-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; line-height: 1.5; }
+.departure-items ul { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; padding: 0; list-style: none; }
+.departure-items li { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+.departure-items img { flex: none; width: 28px; height: 28px; }
+.departure-items.is-left img { opacity: 0.75; }
+.departure-items + .primary { margin-top: 20px; }
+
+/* ── 話の終わりの「完」の判 ── (ChapterStamp, 2026-11-13) a round seal in red-brown ink (#8a3324; the same ink as 旅の記録's small
+   seal, city.css) on parchment, a double ring, tilted a little, in the middle of the screen. It takes no tap. It drops from
+   large to a little under its size and settles (lands at 16 %: its sound, STAMP_LAND_MS), holds and fades over 1.6 s;
+   reduced motion: it fades in and out in place. The ink on the parchment: about 7:1, 6.5:1 over the night screen. */
+.chapter-stamp {
+  position: fixed;
+  z-index: 1940;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  pointer-events: none;
+}
+.chapter-stamp-seal {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 2px;
+  width: 152px;
+  height: 152px;
+  padding: 20px;
+  border: 4px solid #8a3324;
+  border-radius: 50%;
+  background: rgba(251, 243, 230, 0.94);
+  color: #8a3324;
+  box-shadow: inset 0 0 0 3px rgba(251, 243, 230, 0.94), inset 0 0 0 5px #8a3324, 0 4px 18px rgba(40, 30, 20, 0.28);
+  text-align: center;
+  transform: rotate(-8deg);
+  animation: chapter-stamp-drop 1.6s both;
+}
+.chapter-stamp-title {
+  display: -webkit-box;
+  overflow: hidden;
+  max-width: 100%;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+.chapter-stamp-mark { font-family: "Noto Serif JP", serif; font-size: 44px; font-weight: 700; line-height: 1.1; }
+@keyframes chapter-stamp-drop {
+  0% { opacity: 0; transform: rotate(-8deg) scale(1.8); animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
+  16% { opacity: 1; transform: rotate(-8deg) scale(0.92); animation-timing-function: var(--ease-out); }
+  26%, 78% { opacity: 1; transform: rotate(-8deg) scale(1); }
+  100% { opacity: 0; transform: rotate(-8deg) scale(1); }
+}
+@keyframes chapter-stamp-fade { 0% { opacity: 0; } 15%, 78% { opacity: 1; } 100% { opacity: 0; } }
+.chapter-stamp.is-reduced .chapter-stamp-seal, .reduce-motion .chapter-stamp-seal { animation-name: chapter-stamp-fade; animation-timing-function: ease; }
+@media (prefers-reduced-motion: reduce) {
+  .chapter-stamp-seal { animation-name: chapter-stamp-fade; animation-timing-function: ease; }
+}
+
 /* ── 旅の終わりのエンドロール ── a dialog over the whole screen at night's colour; the roll scrolls in its own area, the bar
    with 「止める・続ける」 and 「閉じる」 stays at the foot within thumb reach. */
 dialog.modal.end-roll {
