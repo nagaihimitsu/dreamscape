@@ -248,6 +248,7 @@ tests/screens/                    # 人が見る画面一覧の撮影（npm run 
 | `npm run journey:new -- <旅行編ID> --name <日本語名> --city <都市ID> --city-name <日本語名>` | 見本の編を複製して新しい旅行編（準備中）を `content/journeys/<旅行編ID>/` に作る。`--prefix <接頭辞>`（省略時は旅行編ID）、`--with-optional`（特殊戦B・C、道中交流も複製）。置き換えるものは作った旅行編の `CHECKLIST.md`。見本の出典・画像・文章が残っているうちは `journey:readiness` が示し、`journey:release` は止まる（[新しい編を追加する手順](docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順)） |
 | `npm run journey:scaffold`・`journey:readiness`・`journey:release` | 旅行編へシナリオとクイズを取り込む制作ツール（[手順](authoring/JOURNEY_AUTHORING.md)） |
 | `npm run journey:transit -- --journey <旅行編ID>` | 都市ごと・乗り物ごとの交通判断（使う・使わない・走っていない・特定できず）の件数と、徒歩の経路がない向き・出典のない経路（どちらも注意）を表示（`--json` も可。「特定できず」が残ると終了コード1。[乗り物と交通判断台帳](docs/02_TECH_ARCHITECTURE.md#乗り物と交通判断台帳)） |
+| `npm run balance:report -- [--journey <旅行編ID>] [--out <ファイル>]` | 旅行編のお金・AP・関係値の出入りと合計を、都市ごとに Markdown の表にする（開発用。先に `npm run content:build`。[お金・AP・関係値のまとめ](docs/10_DEVELOPMENT_CHECKS.md#お金ap関係値のまとめ)） |
 | `npm run city:bundle` | 都市単位の作業用JSONで地点・交通・背景などを編集（[手順](authoring/CITY_BUNDLES.md)） |
 | `npm run schemas:build` | エディタの入力補助（JSON Schema）を作り直す。`authoring/schemas/` に、旅行編の `manifest.json`・都市・経路・旅行設定・交通判断台帳・クイズ・各カタログのスキーマを書き、`.vscode/settings.json` でそれぞれのファイルに結び付ける（VS Code で項目の候補・型・書き間違いが出る）。データの書式を変えたときに実行し、作ったファイルもコミットする。入力の補助だけで、検査は `content:build` |
 | `npm run icons:build` | `authoring/brand/favicon-master.png` から `public/` のファビコン（16・32・48px、顔の切り抜き）、Apple touch icon（180px）、アプリアイコン（192・512px）を作り直す。元画像を差し替えたときだけ実行し、生成した画像もコミットする |

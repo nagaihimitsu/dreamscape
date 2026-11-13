@@ -21,6 +21,7 @@
 | 単体テストの設定・テストの組・テスト用フィクスチャ（`vite.config.ts` の `test`・`scripts/test-sets.ts`・`scripts/test-image-guard.ts`・`src/content/test-fixtures.ts`） | `npx vitest run scripts/test-sets.test.ts scripts/test-image-guard.test.ts src/content/test-fixtures.test.ts`（先に `content:build`）、`npm test`（両方の組） |
 | Debug・場面の組み立て部品・Debug起動URL（`src/dev/`）、Debugモード（`src/app/debug-mode.ts`・`src/app/DebugModeSetting.tsx`・`src/main.tsx`）、関係の変化の表示（`src/domain/relationship-change.ts`・`src/components/RelationshipChangeNote.tsx`） | `npx vitest run src/dev/ src/app/debug-mode.test.ts src/app/DebugModeSetting.test.ts src/components/RelationshipChangeNote.test.ts src/domain/relationship-change.test.ts src/domain/relationship-change-play.test.ts scripts/dist-guard.test.ts scripts/e2e-specs.test.ts`（先に `npm run content:build -- --with-sample`）、`npm run build`（`dist/` の検査）、`npx playwright test --project=debug`（`debug-scenes.spec.ts`・`relationship-change.spec.ts`・`debug-mode-dev.spec.ts`）と `npm run test:e2e:prod`（`debug-mode.spec.ts`。Debugモードは本番ビルドでだけ意味が変わる）。部品・仮の場面（`test-cities.ts`・`fixture-template.ts`）を変えたら、それを使う単体テスト（`npm run test:quick`。`src/domain` と `tests/journeys/` の試験用の都市を使うテストを含む）と `inter-city.spec.ts` も実行する。Debug画面・設定のDebugモードの欄・関係の変化の表示の変更は320・360・390px幅の実画面（[Debug起動URL](#debug起動url)） |
 | 会話の全分岐検査とそのキャッシュ（`scripts/ink-validation.ts`・`scripts/story-validation-cache.ts`） | `npx vitest run scripts/story-validation-cache.test.ts scripts/story-validation-cache-content.test.ts`（先に `content:build`）、`npm run content:build -- --no-cache` と通常の `npm run content:build` が同じ結果になること。検査コードを変えると指紋が変わり、次の生成はすべて検査する（[キャッシュ](#会話の全分岐検査のキャッシュ)） |
+| お金・AP・関係値のまとめ `balance:report`（`scripts/journey-balance.ts`・`scripts/inspect-journey-balance.ts`） | `npx vitest run scripts/journey-balance.test.ts`（生成不要。速い組）。`npm run content:build` の後に `npm run balance:report -- --journey <旅行編ID>` が表を出すこと（[お金・AP・関係値のまとめ](#お金ap関係値のまとめ)） |
 | 大きな変更・公開前 | `npm run verify`、E2E一式（`npm run test:e2e`）、本番ビルドの段（`npm run test:e2e:prod`）と見本の編の段（`npm run test:e2e:sample`）、影響範囲に応じた実画面確認（`npm run screens` の画面一覧を含む）、[想定する遊び手での確認](#想定する遊び手での確認) |
 
 `npm run content:check` は差分検証ではなく全コンテンツを検証・生成する。対象テストを絞る場合、例えば `npm test -- src/domain/encounter.test.ts` は通常どおり `pretest` でコンテンツを生成してから、そのテストだけを実行する。Playwrightの `webServer` は、開発サーバーの段では `npm run dev` を実行してその `predev` がコンテンツを生成し、本番ビルドの段では `npm run build` の後に `vite preview` を起動し、見本の編の段では `npm run dev:sample`（見本を含めた生成と開発サーバー）を別のポートで起動する。既に起動したサーバーを再利用する場合は、対象の変更が反映され、生成物が最新であることを確認する。自動テストの通過だけを写真の切れ方や操作性の目視確認の代わりにはしない。
@@ -402,6 +403,18 @@
 
 | 遊び手 | 目標に届いたか | 手数 | 迷った・誤って押した箇所 | 気づいた点 | 確かめた環境（実機・端末表示、幅、ブラウザ、読み上げ） |
 | --- | --- | --- | --- | --- | --- |
+
+## お金・AP・関係値のまとめ
+
+`npm run balance:report -- --journey <旅行編ID> --out <ファイル>` は、旅行編のお金・AP・関係値の出入りを、都市ごとに Markdown の表にする。数値のバランスを決めるときの資料で、何も検査しない。
+
+- 先に `npm run content:build` を実行する。表は生成物（`src/content/generated/`）から作る。見本の編は `npm run content:build -- --with-sample` の後に読める。
+- `--journey` を省くと、全部の旅行編を出す。`--out` を省くと、画面に出す。
+- お金：開始時の予算、入場料、宿からの往復の運賃（いちばん安い経路といちばん高い経路）、ツアーの料金、場面の `# money:` と `# on_done: money`、品物を得る場面、貸し出しの料金。宿泊費・都市間の移動・2回目の入場は数えない。
+- AP：報酬（`progression/journey.json` と場面の札）、デートのAP、場面の `# ap:`。
+- 関係値：選択肢の `# rel:`・`# profile:` と場面の終わりの増減。場面ごとに、一つの道を通ったときの幅を出す。噛み合いは、はじめの確率で数えた期待値も出す。段階と告白のしきい値に、どの都市で届きうるかも出す。
+- どの選択肢を一緒に選べるかは、会話（Ink）の道をたどって調べる。効果の値は content:build の表（`scenes.json`）をそのまま使う。
+- 関係値はプレイヤーに見せない値なので、表はゲームにも公開ビルドにも入れない（`scripts/` の道具で、`src/` から読まない）。
 
 ## CI（GitHub Actions）
 
