@@ -21,8 +21,8 @@ const inserted: Inserted[] = [
   { id: "duomo_string", title: "切れた三本目", landmark: "duomo_milano", file: "places/milano_duomo", at: { place: "p_duomo" }, priority: 1,
     when: episode("milano_duomo_episode"), done: { items: ["blue_pick"] }, people: ["milano_nora"],
     options: [{ id: "coil" }, { id: "case" }, { id: "leave", later: true }] },
-  { id: "supper_pantomime", title: "広場の無声映画", landmark: "last_supper", file: "places/milano_last_supper", when: episode("milano_last_supper_episode"),
-    options: [{ id: "act" }, { id: "ask" }, { id: "leave", later: true }] },
+  { id: "supper_pantomime", title: "広場の無声映画", landmark: "last_supper", file: "places/milano_last_supper", priority: 1,
+    people: ["milano_ida", "milano_last_supper_brother"], options: [{ id: "act" }, { id: "ask" }, { id: "leave" }] },
   { id: "galleria_fortune", title: "回らない願掛け", landmark: "galleria_vittorio_emanuele_ii", file: "places/milano_galleria",
     done: { reward: "victory_galleria_first" }, repeat: "always", people: ["milano_galleria_boy", "milano_galleria_mother"],
     options: [{ id: "believe" }, { id: "doubt" }, { id: "leave" }] },
@@ -34,7 +34,8 @@ const inserted: Inserted[] = [
       { id: "boy", give: "galleria_ticket", to: "milano_galleria_boy" },
       { id: "sample", requires: [{ not: held("galleria_ticket") }] }, { id: "pay", money: -4, requires: [{ not: held("galleria_ticket") }] },
       { id: "leave", later: true }] },
-  { id: "scala_mint", title: "喉飴を噛む人", landmark: "la_scala_case", file: "places/milano_la_scala", when: { battlePlayed: "milano_la_scala_b01" },
+  { id: "scala_mint", title: "喉飴を噛む人", landmark: "la_scala_case", file: "places/milano_la_scala", at: { place: "p_scala" }, priority: 1,
+    when: { battlePlayed: "milano_la_scala_b01" }, people: ["milano_la_scala_candy_seller"],
     options: [{ id: "buy", money: -2 }, { id: "ask" }, { id: "leave", later: true }] },
   { id: "castello_pick", title: "弦を一本、余らせて", landmark: "castello_sforzesco", file: "places/milano_castello", priority: 1, people: ["milano_tino"],
     options: [{ id: "give", give: "blue_pick", to: "milano_tino" }, { id: "ask", give: "blue_pick", to: "milano_tino" }, { id: "keep" },
@@ -42,7 +43,7 @@ const inserted: Inserted[] = [
   { id: "milano_darsena_tino", title: "ダルセナの一音", landmark: "", file: "places/milano_darsena", at: { finale: "milano" }, priority: -1,
     when: { all: [{ flag: "milano_tino_needs_pick" }, held("blue_pick")] }, people: ["milano_tino"],
     options: [{ id: "give", give: "blue_pick", to: "milano_tino" }, { id: "keep" }] },
-  { id: "brera_sitter", title: "モデルは五秒", landmark: "brera_case", file: "places/milano_brera", when: { battlePlayed: "milano_brera_c01" },
+  { id: "brera_sitter", title: "モデルは五秒", landmark: "brera_case", file: "places/milano_brera", people: ["milano_brera_student"],
     options: [{ id: "pose" }, { id: "count" }, { id: "decline" }] },
 ];
 const landmarkOf = (scene: SceneEntry) => milan.find((event) => event.id === scene.id)?.landmarkId ?? "";
@@ -97,5 +98,12 @@ describe("Milan's scene list", () => {
     // Nora after the Duomo's battle (and its walk date), Tino after the castle's.
     expect(landmarkVisitOrder("duomo_milano", "after")).toEqual(["duomo_string"]);
     expect(landmarkVisitOrder("castello_sforzesco", "after")).toEqual(["castello_pick"]);
+    // The others: the student while observing Brera; the mints after La Scala's reasoning quiz; the siblings after the Last Supper's.
+    expect(landmarkVisitOrder("brera_case", "observe")).toEqual(["brera_sitter"]);
+    expect(landmarkVisitOrder("la_scala_case", "after")).toEqual(["scala_mint"]);
+    expect(landmarkVisitOrder("last_supper", "after")).toEqual(["supper_pantomime"]);
+    // No Milan encounter waits at an observation for its own landmark's battle any more (never met; the build's never-offered).
+    for (const landmarkId of ["duomo_milano", "castello_sforzesco", "la_scala_case", "last_supper"])
+      expect(landmarkVisitOrder(landmarkId, "observe"), landmarkId).toEqual([]);
   });
 });
