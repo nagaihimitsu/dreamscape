@@ -1697,9 +1697,15 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     sceneAudio: sceneAudioOf(sources.storyFiles.map(({ id, source }) => ({ id, source }))),
     /** Images whose files checkContentImages decodes. */
     images: { characters: characterImages, tourismAssets: tourism.assets },
-    /** What chooses the free-time photos (src/content/photo-choice.ts), for their derived copies (scripts/derived-images.ts). */
+    /**
+     * What chooses the free-time photos (src/content/photo-choice.ts), for their derived copies (scripts/derived-images.ts),
+     * with the places of the episodes' map events (the resume recap's place photo, journey-moments.ts recapPicture).
+     */
     photoContent: {
-      cities: travels.map(({ city, travel, settings }) => ({ city, places: travel.places, hotelPlaceId: settings.hotelPlaceId })),
+      cities: travels.map(({ city, travel, settings }) => ({
+        city, places: travel.places, hotelPlaceId: settings.hotelPlaceId,
+        episodePlaceIds: travel.events.filter((event) => journey.episodes.some((episode) => episode.id === event.id)).map((event) => event.placeId),
+      })),
       backgrounds: presentation.backgrounds,
     },
     /** The generated mirror's catalogs that differ from the merged sources (the encounters' head tags, the place scenes, the knots' map conditions). */

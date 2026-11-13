@@ -11,7 +11,10 @@ import { requireServedFile } from "./public-assets";
 
 // Reduced copies of the photos the free-time screen shows (UI spec §4.2): a
 // `card` for every photo a place's row can show (photo-choice.ts
-// choosePlacePhoto) and a `backdrop` for every city backdrop. content:build
+// choosePlacePhoto) and a `backdrop` for every city backdrop; and a `recap`
+// (2026-11-13) of the photo of each episode's map place, which the resume
+// recap shows when the episode took no album photo (journey-moments.ts
+// recapPicture: sharp on a 3× phone at its 280 px). content:build
 // makes them after the content is valid and serves them from the generated
 // public folder only (content-outputs.ts); they never enter content/ or git.
 // The copies are kept in a cache (node_modules/.cache, beside the Ink
@@ -25,11 +28,13 @@ export const DERIVED_IMAGE_SETTINGS = {
   card: { width: 240, height: 160, fit: "cover", withoutEnlargement: false, quality: 68 },
   /** The longest side 1280 px, never enlarged (target ≤ 200 KiB). */
   backdrop: { width: 1280, height: 1280, fit: "inside", withoutEnlargement: true, quality: 60 },
+  /** An 840×560 cover crop: the recap's 3:2 frame (160 px wide, 280 px on a 320-px phone) at 3× (target ≤ 80 KiB). */
+  recap: { width: 840, height: 560, fit: "cover", withoutEnlargement: false, quality: 60 },
 } as const satisfies Record<DerivedImageKind, { width: number; height: number; fit: "cover" | "inside"; withoutEnlargement: boolean; quality: number }>;
 
 /** Bump when the way a copy is encoded changes outside the settings. */
 const cacheFormat = 1;
-/** Cached copies kept (about 20 KiB a card, up to 200 KiB a backdrop); beyond this the least recently used are removed. */
+/** Cached copies kept (about 20 KiB a card, up to 80 KiB a recap, up to 200 KiB a backdrop); beyond this the least recently used are removed. */
 const keptEntries = 600;
 const repositoryRoot = path.resolve(import.meta.dirname, "..");
 export const DERIVED_IMAGE_CACHE_DIRECTORY = path.join(repositoryRoot, "node_modules", ".cache", "dreamscape", "derived-images");
@@ -45,12 +50,19 @@ export type DerivedImage = {
 
 /**
  * Every copy the game can ask for: a card per place photo, a backdrop per
- * city backdrop, once per served path. `journeyOf` maps an asset ID to the
- * journey that provides it (image-rights.ts imageJourneyIndex).
+ * city backdrop, a recap per photo of a place where an episode is on the map
+ * (`episodePlaceIds`), once per served path. `journeyOf` maps an asset ID to
+ * the journey that provides it (image-rights.ts imageJourneyIndex).
  */
 export function derivedImageList(input: {
   content: PhotoContent;
-  cities: readonly { city: { backdropAssetId?: string }; places: readonly TravelPlace[]; hotelPlaceId: string }[];
+  cities: readonly {
+    city: { backdropAssetId?: string };
+    places: readonly TravelPlace[];
+    hotelPlaceId: string;
+    /** The places of the city's episodes' map events (a landmark's place, or where a finale is set). */
+    episodePlaceIds: readonly string[];
+  }[];
   journeyOf: ReadonlyMap<string, string>;
   publicFiles: ReadonlyMap<string, string>;
 }): DerivedImage[] {
@@ -62,9 +74,11 @@ export function derivedImageList(input: {
     const served = derivedImageFile(journeyId, asset.id, kind);
     if (!images.has(served)) images.set(served, { path: served, kind, assetId: asset.id, source: requireServedFile(input.publicFiles, asset.path) });
   };
-  for (const { city, places, hotelPlaceId } of input.cities) {
+  for (const { city, places, hotelPlaceId, episodePlaceIds } of input.cities) {
     for (const place of places) add(choosePlacePhoto(input.content, place, hotelPlaceId), "card");
     add(chooseCityBackdrop(input.content.assets, city), "backdrop");
+    for (const place of places.filter((item) => episodePlaceIds.includes(item.id)))
+      add(choosePlacePhoto(input.content, place, hotelPlaceId), "recap");
   }
   return [...images.values()];
 }
