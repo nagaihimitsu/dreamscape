@@ -10,10 +10,7 @@ import type { ContentWarning } from "./content-report";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
 import { bindItemReader, type ItemStatus } from "../src/story/items";
 import { bindMemoryReader } from "../src/story/memory";
-
-function unique(ids: string[], label: string): void {
-  if (new Set(ids).size !== ids.length) throw new Error(`Duplicate ${label}`);
-}
+import { unique } from "./content-validation-utils";
 
 /** Validate dialogue separately: battle Ink remains choice- and effect-free. */
 export function validateEncounterStory(

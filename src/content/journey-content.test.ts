@@ -232,7 +232,7 @@ describe("integrated journey content contract", () => {
     await changeEpisode((episode) => {
       (episode as { kind: string }).kind = "city_clear";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/"kind"[\s\S]*Invalid option/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/kind[\s\S]*Invalid option/);
     await changeEpisode((episode) => {
       Object.assign(episode, { requiredDiscoveredClueIds: ["last_supper_light"] });
     });

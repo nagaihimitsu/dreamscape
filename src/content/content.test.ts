@@ -430,7 +430,7 @@ describe("content build acceptance", () => {
     await changeDate("milano_cafe_01", (date) => {
       date.apCost = -1;
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/"apCost"[\s\S]*Too small: expected number to be >=0/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/apCost[\s\S]*Too small: expected number to be >=0/);
   });
 
   it("requires the name variables expected by the runtime", async () => {
