@@ -3,10 +3,12 @@ import type { Choice } from "inkjs/engine/Choice";
 import { requiredLeaves, type Condition, type Leaf } from "../src/content/condition-schemas";
 import { parseConditionText } from "../src/content/condition-text";
 import type { SceneDone, SceneOption } from "../src/content/scene-schemas";
-import { parseStoryTags, type TagContext } from "../src/content/tags";
+import { parseStoryTags, type LetterKind, type PhoneSide, type StoryTags, type TagContext } from "../src/content/tags";
 import { miniGameOptionId, miniGameOutcomeIds, type MiniGameTag } from "../src/minigames/tag";
 import type { MiniGameUse } from "../src/minigames/uses";
-import type { SceneKind } from "../src/content/scene-schemas";
+import type { SceneKind, StoryStateCatalog } from "../src/content/scene-schemas";
+import { sceneStageOf, stageAfter, stageExit, standsOnStage, stageLine, type Stage, type StageScene } from "../src/components/scene-stage";
+import type { Speaker } from "../src/story/frame-reader";
 import { bindItemReader } from "../src/story/items";
 import { bindMemoryReader } from "../src/story/memory";
 import { checkLinesWithoutChoice } from "./ink-validation";
@@ -68,6 +70,12 @@ export type SceneWalkInput = {
   /** A battle (stage 5): how many quizzes it calls and, for a special battle, its reasoning. */
   battle?: { quizzes: number; reasoning?: { kind: "contradiction" | "connection"; roundIndex: number } };
   onWarning?: (message: string) => void;
+  /**
+   * Who stands on the scene's stage (src/components/scene-stage.ts): its kind, the figure of `# speaker: enemy` (the
+   * scene's `# person:` with a figure, a battle's opponent) and the people's figures. With it, a line's `# leave:` that
+   * names someone not on the stage there is warned (walkStage).
+   */
+  stage?: { kind: SceneKind; enemyFigure?: string; people: StoryStateCatalog["people"] };
   /** The scene a mini-game use belongs to (its ID and kind, the story file), and where the walk reports each use it meets. */
   scene?: { id: string; kind: SceneKind; storyId: string };
   onMiniGame?: (use: MiniGameUse) => void;
@@ -105,6 +113,47 @@ function checkMiniGameChoices(tag: MiniGameTag, choices: readonly { text: string
       "ends there; give auto another outcome if the story should go on");
 }
 
+/** What a line's tags give its stage, gathered from its tag lines without text (frame-reader.ts reads them into the line after). */
+type LineStaging = { leave: string[]; phone?: PhoneSide; letter?: LetterKind; heroineReaction: boolean; enemyReaction: boolean; emotion: boolean };
+const noStaging = (): LineStaging => ({ leave: [], heroineReaction: false, enemyReaction: false, emotion: false });
+function gatherStaging(staging: LineStaging, tags: StoryTags): void {
+  staging.leave.push(...(tags.leave ?? []).filter((who) => !staging.leave.includes(who)));
+  if (tags.phone) staging.phone = tags.phone;
+  if (tags.letter) staging.letter = tags.letter;
+  staging.heroineReaction ||= !!tags.reactions?.heroine;
+  staging.enemyReaction ||= !!tags.reactions?.enemy;
+  staging.emotion ||= tags.emotion !== undefined;
+}
+
+/**
+ * The stage after a line the walk reads (src/components/scene-stage.ts), warning about each `# leave:` naming someone
+ * who does not stand there at the line (with the line's own comings: they may say the line they leave on). The cues are
+ * the ones the screens read from the line's tags: a reaction (in an arrival or epilogue the enemy's only with a figure),
+ * and in a talk or an encounter an emotion on the narration (hers) or on the enemy's line (theirs); a guide reads none.
+ * A reaction keyed by its text in presentation/dialogue-reactions.json is not read here.
+ */
+function walkStage(previous: Stage | undefined, line: { speaker: Speaker; personId?: string; staging: LineStaging },
+  stage: NonNullable<SceneWalkInput["stage"]>, scene: StageScene, warn: (problem: string) => void): Stage {
+  const { kind } = stage;
+  const { staging, speaker } = line;
+  const talk = kind === "talk" || kind === "encounter";
+  const cues = {
+    heroine: talk && (staging.heroineReaction || (staging.emotion && speaker === "narrator")),
+    enemy: talk ? staging.enemyReaction || (staging.emotion && speaker === "enemy")
+      : kind !== "guide" && staging.enemyReaction && (kind === "date" || kind === "battle" || !!stage.enemyFigure),
+  };
+  const frame = { speaker, ...(line.personId ? { speakerPersonId: line.personId } : {}),
+    ...(staging.phone ? { phone: { side: staging.phone } } : {}), ...(staging.letter ? { letter: { kind: staging.letter } } : {}) };
+  const arrived = stageAfter(previous, stageLine(frame, stage.people, cues), scene);
+  for (const who of staging.leave) {
+    const exit = stageExit(who, stage.people);
+    if (!exit) warn(`# leave: ${who}: the person has no figure (characterId in progression/story.json people), so never stands on the stage`);
+    else if (!standsOnStage(arrived, exit, scene))
+      warn(`# leave: ${who}: ${who === "enemy" ? "the scene's enemy" : who === "heroine" ? "the heroine" : "the person"} is not on the stage there, so the tag takes no one off`);
+  }
+  return stageAfter(previous, stageLine({ ...frame, leave: staging.leave }, stage.people, cues), scene);
+}
+
 /** Walk every path of the scene; returns the number of paths. */
 export function walkScene(walked: SceneWalkInput): number {
   // Every scene the walk reads may play a mini-game (docs/13 1.3), but a confession date (docs/13 1.4).
@@ -123,15 +172,18 @@ export function walkScene(walked: SceneWalkInput): number {
   let routes = 0;
   const warned = new Set<string>();
   const warn = (message: string) => { if (!warned.has(message)) { warned.add(message); input.onWarning?.(message); } };
+  const stageScene = input.stage ? sceneStageOf(input.stage.kind, input.stage.enemyFigure) : undefined;
 
   for (const assignment of assignments) for (const result of profiled ? ["positive", "negative"] : [undefined]) {
-    type Path = { saved: string; overrides: Record<string, boolean>; trueTexts: string[]; spent: string[]; thens: number; romance: number; speaker: string;
+    type Path = { saved: string; overrides: Record<string, boolean>; trueTexts: string[]; spent: string[]; thens: number; romance: number; speaker: Speaker;
       /** A battle's quizzes called so far, its score and whether it reached its reasoning stop. */
       quizzes: number; score: number; reasoned: boolean;
       /** What the choices before on the path paid (negative) or gave (positive): money and AP. */
       money: number; ap: number;
       /** The mini-games passed since the last other choice set, each left by its 「おまかせ」 outcome (their choice points). */
-      autoChain: string[] };
+      autoChain: string[];
+      /** The person of the speaker's `# speaker: <person ID>`, kept as the frame keeps it; who stands on the stage (input.stage). */
+      personId?: string; stage?: Stage };
     // A battle's states (its stop points, by where they stop and what the path holds) and where each goes: every one must reach the end.
     const graph = new Map<string, { next: Set<string>; where: string }>();
     const edge = (from: string, to: string) => graph.get(from)?.next.add(to);
@@ -161,22 +213,37 @@ export function walkScene(walked: SceneWalkInput): number {
       story.state.LoadJson(path.saved);
       const metadata = parseStoryTags(choiceTags, input.context);
       let speaker = metadata.speaker ?? path.speaker;
+      let personId = metadata.speaker ? metadata.speakerPersonId : path.personId;
       let explicitEmotion = metadata.emotion !== undefined;
       let lines = 0;
+      // Who stands on the stage, line by line (a choice's tags belong to the line after it, as the frame reads them).
+      let stage = path.stage;
+      let staging = noStaging();
+      gatherStaging(staging, metadata);
       // The last line's # minigame: (a tag line without text belongs to the next line, as the frame reads it).
       let game: { tag: MiniGameTag; line: string } | undefined;
       while (story.canContinue) {
         checkLinesWithoutChoice(++lines);
         const text = story.Continue()?.trim() ?? "";
         const tags = parseStoryTags(story.currentTags ?? [], input.context);
-        if (tags.speaker) speaker = tags.speaker;
+        if (tags.speaker) {
+          speaker = tags.speaker;
+          personId = tags.speakerPersonId;
+        }
         if (tags.emotion !== undefined) explicitEmotion = true;
+        gatherStaging(staging, tags);
         if (battle && tags.effects.length) throw new Error(`A battle's lines take no # effect: (${input.label}); a choice's tags say what it does`);
         if (text && game?.line) throw new Error(`# minigame: ${game.tag.id} in ${input.label} is on the line "${game.line}", but the line "${text}" comes ` +
           `after it: write # minigame: on the line right before the choice set it plays`);
         if (tags.minigame) game = { tag: tags.minigame, line: text };
         else if (text && game) game.line = text;
         if (text) { input.observe?.(text, speaker, explicitEmotion); explicitEmotion = false; }
+        if (text && input.stage && stageScene) {
+          const shown = text.length > 30 ? `${text.slice(0, 30)}…` : text;
+          stage = walkStage(stage, { speaker, ...(personId ? { personId } : {}), staging }, input.stage, stageScene,
+            (problem) => warn(`${problem} (${input.label}, the line "${shown}")`));
+        }
+        if (text) staging = noStaging();
       }
       const choices = story.currentChoices;
       if (game && !choices.length)
@@ -230,8 +297,9 @@ export function walkScene(walked: SceneWalkInput): number {
           branch.state.LoadJson(checkpoint);
           for (const [name, value] of Object.entries(variables)) branch.variablesState.$(name, value);
           branch.ChooseChoiceIndex(0);
-          // The game starts a fresh frame after a call.
-          visit({ ...path, ...next, saved: branch.state.ToJson(), speaker: "narrator" }, [], key);
+          // The game starts a fresh frame after a call; the opponent asks the quiz on the stage (a cue).
+          visit({ ...path, ...next, saved: branch.state.ToJson(), speaker: "narrator", personId: undefined,
+            ...(stageScene ? { stage: stageAfter(stage, { enemyCue: true }, stageScene) } : {}) }, [], key);
         };
         if (call === "quiz") {
           const arg = story.variablesState.$("call_arg");
@@ -318,7 +386,7 @@ export function walkScene(walked: SceneWalkInput): number {
         visit({ ...path, saved: branch.state.ToJson(), overrides, trueTexts, spent, thens: path.thens + (option?.then ? 1 : 0),
           autoChain: game && option?.id === autoOption ? [...path.autoChain, gameAt] : [],
           money: path.money + (option?.money ?? 0), ap: path.ap + (option?.ap ?? 0),
-          romance: path.romance + (romanceHere ? 1 : 0), speaker }, choice.tags ?? [], key);
+          romance: path.romance + (romanceHere ? 1 : 0), speaker, personId, stage }, choice.tags ?? [], key);
       });
     };
     if (battle) graph.set("", { next: new Set(), where: "the start" });

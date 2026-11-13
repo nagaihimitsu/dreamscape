@@ -107,6 +107,7 @@ INCLUDE modules.ink
 祖母が喜びそうな返事だ
 # speaker: narrator
 # quiet: scene
+# leave: gt_aman
 アマンが帰ったあと、{heroine_name}はチャイの最後の一口を飲み干し、窓の外を見た。路地のトラックは、もう全部積み終わっている。
 {
 - ending_reached:

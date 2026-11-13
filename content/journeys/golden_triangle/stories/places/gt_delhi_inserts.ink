@@ -468,6 +468,7 @@ No, thank you.
 # speaker: gt_delhi_ticket_checker
 運休だと言われて、ここまで走ってくる人は、毎日いますよ。……間に合った人は、運がいい
 # speaker: narrator
+# leave: gt_delhi_ticket_checker
 ホームのベンチに座りこむと、彼女は大きく息を吐いた。手が、少し震えていた。
 # speaker: heroine
 # voice: gt_delhi_depart_scam_013

@@ -18,7 +18,7 @@ import { CanalScene } from "../../components/CanalScene";
 import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
-import { oppositeIsEnemy, stageLine, type StageScene } from "../../components/scene-stage";
+import { oppositeIsEnemy, sceneStageOf, stageLine } from "../../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useNameCutIn } from "../../components/NameCutIn";
 import { useSceneStage } from "../../components/useSceneStage";
@@ -77,7 +77,7 @@ export function EpilogueScreen({
   const personReaction = person ? resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy") : undefined;
   // She stands from the start; opposite her, the scene's person from their first line or reaction, and a person with a
   // figure who speaks in their own name from that line, each until the other comes in (scene-stage.ts).
-  const stageScene: StageScene = { heroineFromStart: true, ...(person ? { enemyFigure: person.characterId } : {}) };
+  const stageScene = sceneStageOf(active.kind ?? "epilogue", person?.characterId);
   const { stage, focus } = useSceneStage(stageLine(frame, storyState.people, { enemy: !!personReaction }), stageScene);
   const opposite = stage.opposite?.figure;
   const personLooks = oppositeIsEnemy(stage, stageScene);

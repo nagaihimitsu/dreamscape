@@ -4,7 +4,7 @@ import { dialogueExpressions, dialogueReactions, episodes, landmarks, learningTr
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
-import { battleChrome, getActiveBattleContent, getBattleOutcome } from "../../domain/battle";
+import { battleBackgroundId, battleChrome, getActiveBattleContent, getBattleOutcome } from "../../domain/battle";
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
@@ -24,7 +24,7 @@ import { SceneHeading, SceneNotebookTool } from "../../components/SceneHeading";
 import { CharacterFigure, CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
-import { oppositeIsEnemy, stageLine, type StageScene } from "../../components/scene-stage";
+import { oppositeIsEnemy, sceneStageOf, stageLine } from "../../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useSceneStage } from "../../components/useSceneStage";
 import { useNameCutIn } from "../../components/NameCutIn";
@@ -322,10 +322,11 @@ export function BattleScreen({
   const chrome = battleChrome(active, battle);
   const choosing = chrome.choosing;
   const partEnd = !!chrome.advance;
-  const backgroundId = frame?.background ?? battle.backgroundId;
+  // The line's background; over a quiz, the reasoning and the result the one its last line showed (battleBackgroundId).
+  const backgroundId = battleBackgroundId(active, battle);
   const landmark = landmarks.find((item) => item.id === battle.landmarkId);
   // Keep the same registered location photograph across dialogue, questions
-  // and results. A city-wide finale has no landmark and keeps its own scene.
+  // and results. A city-wide finale has no landmark: its story's background.
   const landmarkAsset = tourismAssets.find((asset) => asset.id === landmark?.imageAssetId);
   // The city whose outfit the heroine wears here (her portrait and her face by the quiz card).
   const heroineCityId = battle.cityId ?? landmark?.cityId;
@@ -347,7 +348,7 @@ export function BattleScreen({
   // under the name the heroine knows them by before they give theirs (an alias of progression/story.json people,
   // 2026-11-11): their figure, expression and reaction stay the opponent's.
   const opponentFigure = characterForBattle(battle.id);
-  const stageScene: StageScene = { heroineFromStart: true, enemyFigure: opponentFigure, enemyFromStart: true };
+  const stageScene = sceneStageOf("battle", opponentFigure);
   const line = isDialogue && frame ? stageLine(frame, storyState.people, { enemy: !!enemyReaction }) : { enemyCue: true };
   const { stage, focus } = useSceneStage(line, stageScene);
   const personId = oppositeIsEnemy(stage, stageScene) ? undefined : stage.opposite?.figure;
