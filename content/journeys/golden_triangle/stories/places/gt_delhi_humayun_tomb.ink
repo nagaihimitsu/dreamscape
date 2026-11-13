@@ -148,6 +148,8 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: enemy
     最後の皇帝が、先祖の墓に逃げ込んで、ここで捕まった。……合格だ。申告に誤りなし
+    # speaker: enemy
+    調査は以上。……さあ、君たちはもう行きなさい。わしは、ここで少し別件がある
 - else:
     # speaker: enemy
     最後の皇帝が、ここで捕まったんだ。先祖の墓に逃げ込んでな。……まあ、いい。合格にしてやる
