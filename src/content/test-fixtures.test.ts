@@ -8,7 +8,8 @@ import { loadContentSources } from "../../scripts/content-sources";
 import { checkImageRights, ownArtworkByLayer } from "../../scripts/image-rights";
 import tourismData from "./generated/content/tourism/catalog.json";
 import battleData from "./generated/content/battles/catalog.json";
-import { linkFiles, prepareContentFixture, quizSourceFile, registerOwnArtwork, replaceFixtureFile, storySourceFile } from "./test-fixtures";
+import { linkFiles, oneSceneBody, placeKnot, prepareContentFixture, quizSourceFile, registerOwnArtwork, replaceFixtureFile, storySourceFile } from "./test-fixtures";
+import { storyFileOf } from "./story-address";
 
 let fixture: string | undefined;
 afterEach(async () => {
@@ -95,13 +96,30 @@ it("copies the images where symbolic links cannot be made, and reports other err
 });
 
 it("finds the file of a story and of a quiz by their IDs, as the build does", () => {
-  // Battle IDs name the story and quiz they use; the files live in the battle's journey folder.
+  // Battles name the story (a place file's knot: the file before the dot) and quiz they use; the files live in the battle's journey folder.
   const battle = battleData.battles.find((entry) => entry.id === "milano_last_supper_01")!;
-  const story = storySourceFile(battle.storyId);
+  const story = storySourceFile(storyFileOf(battle.storyId));
   const quiz = quizSourceFile(battle.quizId);
-  expect(story).toBe(path.join("content/journeys/milano/stories", `${battle.storyId}.ink`));
+  expect(story).toBe(path.join("content/journeys/milano/stories", `${storyFileOf(battle.storyId)}.ink`));
   expect(JSON.parse(readFileSync(quiz, "utf8")).id).toBe(battle.quizId);
   expect(path.dirname(quiz)).toBe(path.join("content/journeys/milano/quizzes"));
   expect(() => storySourceFile("milano/missing")).toThrow("No story milano/missing");
   expect(() => quizSourceFile("missing_quiz")).toThrow("No quiz missing_quiz");
+});
+
+it("takes one knot out of a place file's source, and writes it as a one-scene file's body", () => {
+  const source = "INCLUDE modules.ink\n-> DONE\n\n// a\n=== one ===\n# scene: guide\n# speaker: narrator\n一。\n-> END\n\n" +
+    "=== two ===\n# scene: battle\n二。\n-> END\n\n=== two_claim ===\n主張。\n->->\n";
+  const one = placeKnot(source, "one");
+  expect(one.text).toBe("=== one ===\n# scene: guide\n# speaker: narrator\n一。\n-> END\n");
+  expect(one.without).toBe("INCLUDE modules.ink\n-> DONE\n\n// a\n=== two ===\n# scene: battle\n二。\n-> END\n\n=== two_claim ===\n主張。\n->->\n");
+  expect(oneSceneBody(one.text)).toBe("# speaker: narrator\n一。\n-> END\n");
+  // A knot ends at its blank line (its helper knots after it stay); the last knot runs to the end of the file.
+  expect(placeKnot(source, "two").text).toBe("=== two ===\n# scene: battle\n二。\n-> END\n");
+  expect(placeKnot(source, "two_claim")).toEqual({ text: "=== two_claim ===\n主張。\n->->\n", without: source.slice(0, source.indexOf("=== two_claim")) });
+  // A blank line inside a knot (between a date's choices) does not end it: the next comment or knot line does.
+  const date = "=== three ===\n# scene: date\n三。\n\n* [「はい」 # option: yes]\n    -> END\n\n// four\n=== four ===\n四。\n-> END\n";
+  expect(placeKnot(date, "three")).toEqual({ text: "=== three ===\n# scene: date\n三。\n\n* [「はい」 # option: yes]\n    -> END\n",
+    without: "// four\n=== four ===\n四。\n-> END\n" });
+  expect(() => placeKnot(source, "three")).toThrow("No knot three");
 });

@@ -4,6 +4,7 @@ import {
 } from "../content";
 import { encounters } from "../content/encounters";
 import { journeys } from "../content/journeys";
+import { placeSceneById } from "../domain/scene-effects";
 import { SAMPLE_JOURNEY_ID } from "../../scripts/content-layout";
 import { findDebugTemplate, noTemplateMessage, sampleJourneyId, type DebugTemplate, type DebugTemplateContent } from "./fixture-template";
 
@@ -111,13 +112,18 @@ describe("the template city of Debug's 仮の場面", () => {
     // A case clue that is not on the special battle's own landmark.
     content.battles = content.battles.map((battle) => battle.id === "milano_la_scala_b01" && battle.reasoning
       ? { ...battle, reasoning: { ...battle.reasoning, caseClueIds: [...battle.reasoning.caseClueIds.slice(1), "brera_clue_elsewhere"] } } : battle);
-    // The only plain item encounter needs an item to choose.
-    content.encounters = { ...content.encounters, encounters: content.encounters.encounters.map((event) => event.id === "duomo_string"
-      ? { ...event, options: event.options.map((option) => ({ ...option, requiresItemId: "galleria_ticket" })) } : event) };
-    const template = findDebugTemplate(content);
-    expect(template.city.city.id).toBe("milano");
-    expect(template.missing).toEqual(["special_b", "encounter"]);
-    expect(template.note).toBe("元にしたミラノに特殊戦B（矛盾追及）・品物をくれる道中交流がないため、仮の場面にもありません。");
+    // The only plain item encounter needs an item to choose (a place file's encounter: its scene's choice tags say so).
+    const scene = placeSceneById("duomo_string")!;
+    const kept = scene.options[0];
+    scene.options[0] = { ...kept, requires: [{ item: { id: "galleria_ticket", is: "held" } }] };
+    try {
+      const template = findDebugTemplate(content);
+      expect(template.city.city.id).toBe("milano");
+      expect(template.missing).toEqual(["special_b", "encounter"]);
+      expect(template.note).toBe("元にしたミラノに特殊戦B（矛盾追及）・品物をくれる道中交流がないため、仮の場面にもありません。");
+    } finally {
+      scene.options[0] = kept;
+    }
   });
 
   it("uses a named city as the template when it has the required roles", () => {

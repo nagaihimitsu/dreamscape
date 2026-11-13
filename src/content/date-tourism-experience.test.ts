@@ -4,6 +4,7 @@ import path from "node:path";
 import { buildContent } from "../../scripts/content-pipeline";
 import presentationData from "./generated/content/romance/presentation.json";
 import { presentationSchema } from "./schemas";
+import { splitStoryAddress } from "./story-address";
 
 type Content = Awaited<ReturnType<typeof buildContent>>;
 let content: Content;
@@ -32,6 +33,13 @@ const currentPlaceDetails: Record<string, RegExp> = {
 beforeAll(async () => {
   content = await buildContent(path.resolve("."), false);
 }, 120_000);
+/** A date's story started where the game starts it (a place file's knot by name). */
+function start(address: string): Story {
+  const { storyId, path: knot } = splitStoryAddress(address);
+  const story = new Story(content.stories[storyId]);
+  if (knot !== undefined) story.ChoosePathString(knot);
+  return story;
+}
 
 describe("tourism in normal dates", () => {
   it("connects every normal date to a real destination, sources, and a registered background", () => {
@@ -68,7 +76,7 @@ describe("tourism in normal dates", () => {
       expect(date, dateId).toBeDefined();
       for (const tone of tones) for (let first = 0; first < 3; first++) for (let second = 0; second < 3; second++)
         for (const firstResult of ["positive", "negative"]) for (const secondResult of ["positive", "negative"]) {
-          const story = new Story(content.stories[date!.storyId]);
+          const story = start(date!.storyId);
           story.BindExternalFunction("has_memory", () => false, true);
           const values: Record<string, string | number | boolean> = {
             player_name: "航", heroine_name: "りえ", player_address: "航さん",
@@ -108,9 +116,10 @@ describe("tourism in normal dates", () => {
   }, 120_000);
 
   it("keeps local conversation and the real backdrop in invitations and rain pauses for all three choices", () => {
+    // Each choice's own romance tags (# profile: and the event's memory, written below the choice).
     const cases = [
-      { id: "milano_invitation_01", detail: /先を歩きたい/, effects: ["sound_invitation_01_1_1", "sound_invitation_01_1_2", "sound_invitation_01_1_3"] },
-      { id: "milano_rain_pause_01", detail: /傘を開いたら/, effects: ["sound_rain_pause_01_1_1", "sound_rain_pause_01_1_2", "sound_rain_pause_01_1_3"] },
+      { id: "milano_invitation_01", detail: /先を歩きたい/, profiles: ["attentive", "bold", "playful"], memory: "sound_memory_invitation_01" },
+      { id: "milano_rain_pause_01", detail: /傘を開いたら/, profiles: ["playful", "honest", "attentive"], memory: "sound_memory_rain_pause_01" },
     ];
     for (const event of cases) {
       const date = content.dates.find((entry) => entry.id === event.id);
@@ -120,7 +129,7 @@ describe("tourism in normal dates", () => {
       expect(background.imageAssetId, event.id).toBeTruthy();
       expect(content.tourism.assets.find((asset) => asset.id === background.imageAssetId), event.id).toBeDefined();
       for (const stage of [1, 4]) for (let choice = 0; choice < 3; choice++) {
-        const story = new Story(content.stories[date!.storyId]);
+        const story = start(date!.storyId);
         const values: Record<string, string | number | boolean> = {
           player_name: "航", heroine_name: "りえ", player_address: "航さん",
           romance_stage: stage, ending_reached: stage === 4, confession_ready: stage === 4,
@@ -133,7 +142,8 @@ describe("tourism in normal dates", () => {
         let heroineLines = "";
         let allLines = "";
         const backgrounds = new Set<string>();
-        const effects = new Set<string>();
+        const profiles = new Set<string>();
+        const memories = new Set<string>();
         let choiceCount = 0;
         for (let guard = 0; guard < 300; guard++) {
           while (story.canContinue) {
@@ -142,7 +152,8 @@ describe("tourism in normal dates", () => {
             for (const tag of story.currentTags ?? []) {
               if (tag.startsWith("speaker:")) speaker = tag.slice("speaker:".length).trim();
               if (tag.startsWith("background:")) backgrounds.add(tag.slice("background:".length).trim());
-              if (tag.startsWith("effect:")) effects.add(tag.slice("effect:".length).trim());
+              if (tag.startsWith("profile:")) profiles.add(tag.slice("profile:".length).trim());
+              if (tag.startsWith("memory:")) memories.add(tag.slice("memory:".length).trim());
             }
             if (speaker === "heroine") heroineLines += line;
           }
@@ -157,7 +168,8 @@ describe("tourism in normal dates", () => {
         expect(backgrounds.has(date!.backgroundId), event.id).toBe(true);
         expect(allLines, event.id).toContain("ガッレリア");
         expect(heroineLines, event.id).toMatch(event.detail);
-        expect([...effects], event.id).toEqual([event.effects[choice]]);
+        expect([...profiles], event.id).toEqual([event.profiles[choice]]);
+        expect([...memories], event.id).toEqual([event.memory]);
       }
     }
   }, 30_000);

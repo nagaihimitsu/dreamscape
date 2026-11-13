@@ -3,7 +3,8 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { buildContent } from "../../scripts/content-pipeline";
-import { changeCatalogEntry, prepareContentFixture, storySourceFile } from "./test-fixtures";
+import { changeCatalogEntry, oneSceneCafeDate, prepareContentFixture, storySourceFile } from "./test-fixtures";
+import { storyFileOf } from "./story-address";
 import dateData from "./generated/content/romance/date_catalog.json";
 
 let fixture: string;
@@ -44,7 +45,8 @@ describe("response profile cross-file validation", () => {
   });
 
   it("rejects RANDOM in an active romance Ink script", async () => {
-    const storyId = dateData.dates.find((date) => date.kind === "normal")!.storyId;
+    // The first normal date (a knot of its place file: the file before the dot); the roll goes below its first background.
+    const storyId = storyFileOf(dateData.dates.find((date) => date.kind === "normal")!.storyId);
     const file = path.join(fixture, storySourceFile(storyId));
     const source = await readFile(file, "utf8");
     expect(source).toMatch(/# background:[^\n]*\n/);
@@ -63,16 +65,18 @@ describe("response profile cross-file validation", () => {
   });
 
   it("rejects an unused memoryless effect even if its response profile exists", async () => {
-    // A new effect next to Milan's own date effects.
-    await changeEffect("sound_cafe_01_2_1", (_effect, catalog) => {
+    // A new effect next to Milan's own effects (its confession's outcomes).
+    await changeEffect("milano_confession_accepted", (_effect, catalog) => {
       catalog.effects.push({ id: "unused_memoryless_effect", affectionDelta: 0, responseProfileId: "attentive" });
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(/outside recovery: unused_memoryless_effect/);
   }, 120_000);
 
   it("rejects a memoryless effect used by an ordinary date", async () => {
-    await changeEffect("sound_cafe_01_2_1", (effect) => {
-      delete effect.memoryId;
+    // An ordinary date written with # effect: (a one-scene file; Milan's dates are knots of place files and name none).
+    await oneSceneCafeDate(fixture);
+    await changeJson("content/journeys/milano/romance/effect_catalog.json", (data) => {
+      delete data.effects.find((effect: { id: string }) => effect.id === "sound_cafe_01_2_1").memoryId;
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(/outside recovery: sound_cafe_01_2_1/);
   }, 120_000);

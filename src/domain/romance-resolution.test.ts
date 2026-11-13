@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { createDebugState } from "../dev/debug-state";
 import { loadGame, saveGame, SAVE_KEY, type StorageLike } from "../persistence";
-import { effects, responseProfiles } from "../content";
-import { advanceDate, chooseDate, createGame, finishDate, startDate, validateGameState, type GameState } from "./game";
+import { responseProfiles } from "../content";
+import { advanceDate, chooseDate, createGame, finishDate, startDate, taggedDateScene, validateGameState, type GameState } from "./game";
 
 class Storage implements StorageLike {
   value: string | null = null;
@@ -77,23 +77,21 @@ describe("persisted romance choice resolutions", () => {
     expect(loadGame(storage)).toMatchObject({ status: "loaded", state: negative });
   });
 
-  it("keeps saved profiles and effect mappings when current content is rebalanced", () => {
+  it("keeps saved profiles when current content is rebalanced", () => {
+    // The date is written with tags: its choice's # profile: is part of its scene (the scene's fingerprint refuses a save
+    // made before a change of it), and the profiles' numbers are saved with the date.
     const ready = choice(startDate(currentFreeTime(), "milano_cafe_01", () => 6000));
     const saved = JSON.parse(JSON.stringify(ready));
     const baseline = chooseDate(ready, 0, ready.revision);
-    const effect = effects.find((item) => item.id === baseline.activeDate!.resolvedChoices[0].effectId)!;
-    const originalId = effect.responseProfileId!;
-    const originalProfile = responseProfiles.find((item) => item.id === originalId)!;
+    const option = taggedDateScene("milano_cafe_01")!.options.find((item) => item.id === baseline.activeDate!.resolvedChoices[0].optionId)!;
+    const originalProfile = responseProfiles.find((item) => item.id === option.profile)!;
     const originalChance = originalProfile.baseChance;
-    const alternative = responseProfiles.find((item) => item.id !== originalId)!;
     try {
-      effect.responseProfileId = alternative.id;
       originalProfile.baseChance = originalProfile.minChance;
       const restored = validateGameState(saved);
       expect(chooseDate(restored, 0, restored.revision)).toEqual(baseline);
       expect(validateGameState(JSON.parse(JSON.stringify(baseline)))).toEqual(baseline);
     } finally {
-      effect.responseProfileId = originalId;
       originalProfile.baseChance = originalChance;
     }
   });

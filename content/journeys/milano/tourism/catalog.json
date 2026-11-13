@@ -192,7 +192,7 @@
       "nameEn": "The Last Supper",
       "descriptionJa": "旧食堂で声を出さない兄と、その手を見て席を立つ妹がいる。",
       "imageAssetId": "last_supper_photo",
-      "guideStoryId": "tourism/milano_last_supper_guide",
+      "guideStoryId": "places/milano_last_supper.last_supper_guide",
       "battleId": "milano_last_supper_01",
       "clueIds": [
         "last_supper_perspective",
@@ -209,7 +209,7 @@
       "nameEn": "Milan Cathedral (Duomo di Milano)",
       "descriptionJa": "広場で録音中の男が、小さな布を頭からかぶった。",
       "imageAssetId": "duomo_milano_photo",
-      "guideStoryId": "tourism/milano_duomo_guide",
+      "guideStoryId": "places/milano_duomo.duomo_milano_guide",
       "battleId": "milano_duomo_01",
       "clueIds": [
         "duomo_marble_surface",
@@ -225,7 +225,7 @@
       "nameEn": "Galleria Vittorio Emanuele II",
       "descriptionJa": "二人の後ろで、見知らぬ人が同じ動きを繰り返している。",
       "imageAssetId": "galleria_milano_photo",
-      "guideStoryId": "tourism/milano_galleria_guide",
+      "guideStoryId": "places/milano_galleria.galleria_vittorio_emanuele_ii_guide",
       "battleId": "milano_galleria_01",
       "clueIds": [
         "galleria_roof_light",
@@ -241,7 +241,7 @@
       "nameEn": "Castello Sforzesco",
       "descriptionJa": "城の中庭で、父親が自分の鼻をかばっている。",
       "imageAssetId": "castello_courtyard_photo",
-      "guideStoryId": "tourism/milano_castello_guide",
+      "guideStoryId": "places/milano_castello.castello_sforzesco_guide",
       "battleId": "milano_castello_01",
       "clueIds": [
         "castello_bona_tower",
@@ -257,7 +257,7 @@
       "nameEn": "Teatro alla Scala",
       "descriptionJa": "スカラ座の前に、売り物でも腰掛けでもない椅子が一脚ある。",
       "imageAssetId": "la_scala_date_photo",
-      "guideStoryId": "tourism/milano_la_scala_guide",
+      "guideStoryId": "places/milano_la_scala.la_scala_case_guide",
       "battleId": "milano_la_scala_b01",
       "clueIds": [
         "scala_ducal_fire",
@@ -275,7 +275,7 @@
       "nameEn": "Pinacoteca di Brera",
       "descriptionJa": "ブレラで衣装係と演出家が、同じ布の端を持っている。",
       "imageAssetId": "brera_courtyard_case_photo",
-      "guideStoryId": "tourism/milano_brera_guide",
+      "guideStoryId": "places/milano_brera.brera_case_guide",
       "battleId": "milano_brera_c01",
       "clueIds": [
         "brera_original_altar",
