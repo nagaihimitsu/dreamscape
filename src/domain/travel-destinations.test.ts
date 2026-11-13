@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { installRepeatableDate } from "../../tests/fixtures/repeatable-date";
 import { createGame } from "./game";
 import { beginTravelEvent, getTravelEventAvailability, isCompletedTravelEvent, isTravelEventUnlocked, isUnclearedMainTravelEvent, getTravelSleepOptions, sleepAtHotel } from "./travel-game";
 import { getTravelDestinations, getTravelWaitOptions } from "./travel-destinations";
@@ -23,8 +24,17 @@ describe("main travel event completion", () => {
       expect(getTravelEventAvailability(completed, id, "walk").available).toBe(false);
       expect(beginTravelEvent(completed, id, "walk", completed.revision)).toBe(completed);
     }
-    expect(isCompletedTravelEvent({ ...initial, playedDateIds: ["milano_confession_01", "milano_recovery_01"] }, "milano_confession_01")).toBe(false);
-    expect(isCompletedTravelEvent({ ...initial, playedDateIds: ["milano_confession_01", "milano_recovery_01"] }, "milano_recovery_01")).toBe(false);
+    // The confession is played once, like the other dates (2026-11-13); a repeatable date (the recovery) stays offered.
+    const played = { ...initial, playedDateIds: ["milano_confession_01", "milano_recovery_01"] };
+    expect(isCompletedTravelEvent(played, "milano_confession_01")).toBe(true);
+    expect(isCompletedTravelEvent(played, "milano_recovery_01")).toBe(false);
+    // A confession its writer made repeatable stays offered too.
+    const restore = installRepeatableDate("milano_confession_01");
+    try {
+      expect(isCompletedTravelEvent(played, "milano_confession_01")).toBe(false);
+    } finally {
+      restore();
+    }
   });
 
   it("counts an unlocked, uncompleted finale as the guaranteed main event", () => {

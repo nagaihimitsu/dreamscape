@@ -164,6 +164,7 @@ INCLUDE modules.ink
 // デート（本筋）「橋の途中で、こちらを向く」。romance/date_catalog.json の milano_confession_01 の storyId がこの knot を指す（地図の出来事はダルセナ、場面はナヴィリオの橋）。
 // 2026-11-13 に 1場面1ファイル（stories/dates/milano_date_confession.ink）から移した。文は今のまま。
 // 告白のデートでは噛み合いの札（# profile:）と関係値の札を書かない。返事は、デートを始めたときにゲームが関係状態から決めた confession_result で分ける。
+// 告白のデートは、ほかのデートと同じく1回だけ（2026-11-13。返事にかかわらず思い出になり、保留・拒否の後も同じ告白をもう一度選べない）。
 // どの選択肢でも思い出 milano_confession_promise（橋の途中で告白したこと）を残す。マウリツィオ教会のデートを遊んでいれば、待ち合わせの話を一言足す。
 === milano_confession_01 ===
 # scene: date
