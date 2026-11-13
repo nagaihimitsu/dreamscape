@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type ComponentType, type CSSProperties, type KeyboardEvent, type PointerEvent } from "react";
 import type { MiniGamePlayProps, MiniGameRules } from "../../contract";
-import { cueTapEnd, cueTapMeter, cueTapZones, type CueTapRecord, type CueTapTuning } from "./engine";
+import { cueTapCounts, cueTapEnd, cueTapMeter, cueTapZones, type CueTapRecord, type CueTapTuning } from "./engine";
 import "./engine.css";
 
 // The cue_tap engine's play (docs/13 2.2): the field a skin draws, a meter whose needle crosses the zone where the thing
-// arrives, and one big button at the bottom (a tap on the field and Space or Enter do the same). The host's clock times
-// it; the skin's rules decide; the host shows the outcome and takes its choice.
+// arrives (or the skin's own gauge), and one big button at the bottom (a tap on the field and Space or Enter do the same).
+// The host's clock times it; the skin's rules decide; the host shows the outcome and takes its choice. A tap before the
+// thing starts coming does not count (the player can still tap): it is turned away, not taken.
 
 /** What a skin's field draws at a frame. */
 export interface CueTapView<Outcome extends string> {
@@ -26,11 +27,14 @@ export type CueTapFieldProps<Params, Outcome extends string> =
     frames(draw: (view: CueTapView<Outcome>) => void): () => void;
   };
 
+/** What a skin's gauge is given (it stands where the meter would). */
+export type CueTapGaugeProps<Params, Outcome extends string> = Pick<CueTapFieldProps<Params, Outcome>, "still" | "frames">;
+
 /** A skin of cue_tap: its timing, its rules (cueTapRules), its words and its field. */
 export interface CueTapSkin<Params, Outcome extends string> {
   tuning: CueTapTuning;
   rules: MiniGameRules<Params, Outcome, CueTapRecord>;
-  /** How to play, right above the meter (not while おまかせ plays). */
+  /** How to play, right above the meter (not while おまかせ plays); the same words as the definition's hintJa. */
   hintJa: string;
   /** The button (「振る」). */
   actionJa: string;
@@ -41,6 +45,8 @@ export interface CueTapSkin<Params, Outcome extends string> {
   /** When the play ends once its outcome is decided (the field shows what happened first). */
   endAt(decided: { outcome: Outcome; tapMs: CueTapRecord }, still: boolean): number;
   Field: ComponentType<CueTapFieldProps<Params, Outcome>>;
+  /** In place of the meter: the skin's own gauge of the coming moment (the flap's steps). Without it, the meter. */
+  Gauge?: ComponentType<CueTapGaugeProps<Params, Outcome>>;
 }
 
 /** The play of a cue_tap skin. */
@@ -59,14 +65,25 @@ export function cueTapPlay<Params, Outcome extends string>(skin: CueTapSkin<Para
     const hintId = useId();
     const autoTap = useMemo(() => (auto === null ? undefined : skin.rules.autoRecord(auto, params)), [auto, params]);
 
+    // A press on the button gives a pointerdown and then a click: the pointerdown taps; the click taps only when no
+    // pointer pressed it (a screen reader's activation). Otherwise a press turned away as too soon could tap on release.
+    const pointerPress = useRef(false);
+
     const decide = useCallback((tapMs: CueTapRecord) => {
       if (decided.current) return;
       const result = skin.rules.outcomeOf(tapMs, latest.current.params);
       decided.current = { tapMs, outcome: result, endAt: skin.endAt({ outcome: result, tapMs }, latest.current.still) };
       setOutcome(result);
     }, []);
+    // A tap before the thing starts coming is turned away: it decides nothing, and the next tap still counts. The host's
+    // feedback for a press that does nothing (a shake of the button, 「まだ！」) is to be shown from here.
+    const tooSoon = () => undefined;
     const tap = (ms: number) => {
-      if (latest.current.auto !== null || decided.current || ms < 0 || ms > end) return;
+      if (latest.current.auto !== null || decided.current || ms > end) return;
+      if (!cueTapCounts(ms, skin.tuning)) {
+        tooSoon();
+        return;
+      }
       decide(ms);
     };
 
@@ -98,7 +115,7 @@ export function cueTapPlay<Params, Outcome extends string>(skin: CueTapSkin<Para
       event.preventDefault();
       if (!event.repeat) tap(clock.at(event.timeStamp));
     };
-    const Field = skin.Field;
+    const { Field, Gauge } = skin;
     return (
       <div className="mg-engine-cue-tap" onKeyDown={onKey}>
         <div className="mg-cue-tap-field" onPointerDown={onPointer} aria-hidden="true">
@@ -106,15 +123,25 @@ export function cueTapPlay<Params, Outcome extends string>(skin: CueTapSkin<Para
         </div>
         <div className="mg-cue-tap-controls">
           {auto === null && <p className="mg-cue-tap-hint">{skin.hintJa}</p>}
-          <div className="mg-cue-tap-meter" aria-hidden="true">
-            <span className="mg-cue-tap-meter-near" style={span(zones.near)} />
-            <span className="mg-cue-tap-meter-clean" style={span(zones.clean)} />
-            <span className="mg-cue-tap-meter-needle" ref={needle} />
-          </div>
+          {Gauge ? <Gauge still={still} frames={frames} /> : (
+            <div className="mg-cue-tap-meter" aria-hidden="true">
+              <span className="mg-cue-tap-meter-near" style={span(zones.near)} />
+              <span className="mg-cue-tap-meter-clean" style={span(zones.clean)} />
+              <span className="mg-cue-tap-meter-needle" ref={needle} />
+            </div>
+          )}
           {auto !== null ? <p className="mg-cue-tap-auto">{skin.autoJa}</p> : (
             <button type="button" className="primary mg-cue-tap-action" data-testid="minigame-action" data-minigame-primary
               aria-disabled={outcome !== null || undefined} aria-describedby={hintId}
-              onPointerDown={onPointer} onClick={() => tap(clock.now())}>{skin.actionJa}</button>
+              onPointerDown={(event) => {
+                if (event.button === 0) pointerPress.current = true;
+                onPointer(event);
+              }}
+              onPointerCancel={() => { pointerPress.current = false; }}
+              onClick={(event) => {
+                if (pointerPress.current) pointerPress.current = false;
+                else tap(clock.at(event.timeStamp));
+              }}>{skin.actionJa}</button>
           )}
           <span id={hintId} className="sr-only">{skin.actionHintJa}</span>
         </div>

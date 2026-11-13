@@ -5,8 +5,8 @@ import { MINI_GAMES, miniGameDefinition } from "./registry";
 import { MINI_GAME_ART_SPRITE_EXTENSIONS } from "./art";
 
 // A line's `# minigame:` (docs/13 3.1), one form for every game:
-//   # minigame: <gameId> [auto <outcome>] [prefix <word>] [bg <backgroundId>] [art.<slot> <imageId>] [<key> <value>]…
-// auto, prefix, bg and art.<slot> are the host's keys; every other key is the game's own, read by its zod (definition
+//   # minigame: <gameId> [auto <outcome>] [prefix <word>] [bg <backgroundId>] [art.<slot> <imageId>] [retry yes] [<key> <value>]…
+// auto, prefix, bg, art.<slot> and retry are the host's keys; every other key is the game's own, read by its zod (definition
 // `params`). The game takes the place of the choice set right after the line: it takes the choice whose `# option:` is
 // its outcome (or `<prefix>_<outcome>`). Light module: src/content/tags.ts, the story reader and content:build read it.
 
@@ -26,6 +26,8 @@ export interface MiniGameTag {
   art?: Readonly<Record<string, string>>;
   /** The game's own keys, as written. */
   params?: Readonly<Record<string, string>>;
+  /** `retry yes`: the result card offers 「もう一回」 (the writer allows the real play again; by default it is played once). */
+  retry?: true;
 }
 
 /** A tag's prefix: lowercase letters and digits (the option IDs are `<prefix>_<outcome>`). */
@@ -33,10 +35,10 @@ export const MINI_GAME_PREFIX = /^[a-z][a-z0-9]*$/u;
 /** A game's own key (and an art slot's ID): lowercase letters, digits and `_`. */
 export const MINI_GAME_KEY = /^[a-z][a-z0-9_]*$/u;
 /** The host's keys, never a game's own. */
-export const MINI_GAME_HOST_KEYS = ["auto", "prefix", "bg"] as const;
+export const MINI_GAME_HOST_KEYS = ["auto", "prefix", "bg", "retry"] as const;
 /** The host's key of an art slot: `art.<slot>`. */
 const ART_KEY = /^art\.([a-z][a-z0-9_]*)$/u;
-const FORM = "# minigame: <game> [auto <outcome>] [prefix <word>] [bg <background>] [art.<slot> <image>] [<key> <value>]…";
+const FORM = "# minigame: <game> [auto <outcome>] [prefix <word>] [bg <background>] [art.<slot> <image>] [retry yes] [<key> <value>]…";
 
 
 /** The game's own keys and their descriptions (its zod object's shape), for messages and Debug's room. */
@@ -90,7 +92,7 @@ export function parseMiniGameTag(value: string, context: Partial<TagContext> = {
   const keyHelp = () => [
     ...keys.map((item) => `${item.key}: ${item.descriptionJa}`),
     ...definition.artSlots.map((slot) => `art.${slot.id}: ${slot.labelJa}`),
-    "auto, prefix, bg",
+    "auto, prefix, bg, retry yes",
   ].join("; ");
   const outcomes = definition.outcomes.map((outcome) => outcome.id);
   const tag: MiniGameTag = { id, auto: definition.defaultAuto };
@@ -110,6 +112,9 @@ export function parseMiniGameTag(value: string, context: Partial<TagContext> = {
     } else if (key === "prefix") {
       if (!MINI_GAME_PREFIX.test(word)) throw new Error(`Invalid minigame prefix: ${word} (lowercase letters and digits, like prefix again: the option IDs are again_<outcome>)`);
       tag.prefix = word;
+    } else if (key === "retry") {
+      if (word !== "yes") throw new Error(`# minigame: ${id}: retry takes yes (retry yes: the result card offers 「もう一回」; leave it out for one play)`);
+      tag.retry = true;
     } else if (key === "bg") {
       if (context.backgroundIds && !context.backgroundIds.includes(word))
         throw new Error(`Unknown background of the minigame ${id}: bg ${word} (a background the scene's # background: may name)`);
@@ -153,7 +158,7 @@ export function parseMiniGameTag(value: string, context: Partial<TagContext> = {
 export function miniGameTagText(tag: MiniGameTag): string {
   const sorted = (record: Readonly<Record<string, string>> | undefined) => Object.entries(record ?? {}).sort(([a], [b]) => a.localeCompare(b));
   return [tag.id, "auto", tag.auto, ...(tag.prefix ? ["prefix", tag.prefix] : []), ...(tag.bg ? ["bg", tag.bg] : []),
-    ...sorted(tag.art).flatMap(([slot, image]) => [`art.${slot}`, image]), ...sorted(tag.params).flat()].join(" ");
+    ...sorted(tag.art).flatMap(([slot, image]) => [`art.${slot}`, image]), ...(tag.retry ? ["retry", "yes"] : []), ...sorted(tag.params).flat()].join(" ");
 }
 
 /** Whether a saved frame's tag is one the tag reader gives now (a registered game, its keys valid in the context). */

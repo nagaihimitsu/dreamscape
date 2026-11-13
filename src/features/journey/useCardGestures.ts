@@ -264,6 +264,7 @@ export function useCardGestures({ row, chosen, swipe, list, driving, settle }: {
   /**
    * The confirmed departure: the copy flies off, then `go` runs once the press counts, for the card still chosen. After a
    * wait (`stays`) the card comes back at once; else, still here a moment later, the move did not happen and it comes back.
+   * It comes back even when `go` fails (an error: the screen stays), so the card never stays gone and the next swipe works.
    */
   const flyOff = (g: Gesture, ghost: HTMLElement, go: (kind: PressKind) => void, readyAt: number, stays: boolean) => {
     departing.current = true;
@@ -274,8 +275,11 @@ export function useCardGestures({ row, chosen, swipe, list, driving, settle }: {
     const launch = () => {
       if (chosen.current !== g.cardId) return back();
       later(() => {
-        if (chosen.current === g.cardId) go("pointer");
-        later(back, stays ? 0 : RESTORE_MS);
+        try {
+          if (chosen.current === g.cardId) go("pointer");
+        } finally {
+          later(back, stays ? 0 : RESTORE_MS);
+        }
       }, Math.max(0, readyAt - performance.now()));
     };
     if (reducedMotion()) {

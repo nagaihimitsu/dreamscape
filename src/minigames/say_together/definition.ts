@@ -5,12 +5,14 @@ import { defineMiniGame } from "../contract";
  * `say_together` (a skin of `cue_tap`): saying the words at the same moment as her. She counts 「せー」「の」 on a steady
  * beat and says them on the next; the player taps 「言う」 once. On her beat (`together`), before it (`early`: the player's
  * voice alone first), after it while she says them (`late`: hers alone first), or not at all (`silent`: she says them
- * alone). Timing, not volume (2026-11-13 user decision). First use: the Lodhi Garden date's 「一緒に言おう」.
+ * alone). Timing, not volume (2026-11-13 user decision). A tap while she takes her breath, before 「せー」, does not count.
+ * First use: the Lodhi Garden date's 「一緒に言おう」.
  *
  * Accessibility: 「言う」 is 64px at the bottom (thumb reach), Space and Enter say the words; the count reads without sound
- * (her bubble shows 「せー」「の」 and lights one dot a beat, the third dot is the gold one, as the meter's gold zone) and
- * with sound (a tick on each count, a chime when each voice starts); with less motion she does not nod on the beats and
- * the bubbles appear without popping (the dots, the words and the needle still move); the outcome is read out by the host.
+ * (her bubble shows 「せー」「の」 and lights one dot a beat, the third dot is the gold one, as the meter's gold zone, and a
+ * ring closes on it through the last beat) and with sound (a tick on each count, a chime when each voice starts); with
+ * less motion she does not nod on the beats and the bubbles appear without popping (the dots, the closing ring, the words
+ * and the needle still move); the outcome is read out by the host.
  */
 export const sayTogether = defineMiniGame({
   id: "say_together",

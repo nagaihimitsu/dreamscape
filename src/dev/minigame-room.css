@@ -40,3 +40,12 @@
 .minigame-room .minigame-room-stage { min-height: max(480px, calc(100dvh - 96px)); margin-top: 8px; border-radius: 12px; }
 .minigame-room-window { margin: 0 8px 8px; padding: 12px; border-radius: 12px; }
 .minigame-room .minigame-room-line { margin: 0 0 10px; font-size: 13px; }
+/* A slow phone's feel (E3): three choices in one row. */
+.minigame-room-delay { display: flex; flex-wrap: wrap; gap: 0 16px; margin: 4px 0 0; padding: 0; border: 0; }
+.minigame-room-delay legend { padding: 0; font-size: 13px; font-weight: 600; }
+/* The tuning numbers (E1, E2): a name and its field per line; the original value beside an edited one. */
+.minigame-room-tuning p { margin: 4px 0; }
+.minigame-room-controls .minigame-room-number { flex-wrap: wrap; justify-content: space-between; font-family: ui-monospace, monospace; font-size: 13px; }
+.minigame-room-number input[type="number"] { width: 7em; height: 44px; padding: 0 8px; font-size: 15px; }
+.minigame-room-was { flex-basis: 100%; font-family: inherit; font-size: 12px; text-align: right; }
+.minigame-room-tuning .secondary { min-height: 44px; margin-top: 4px; }
