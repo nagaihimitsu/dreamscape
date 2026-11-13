@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import usesJson from "../content/generated/minigame-uses.json";
 import { tagContext } from "../content";
-import { miniGameUseOpening, miniGameUseStates } from "../dev/minigame-room";
+import { parseDebugQuery } from "../dev/debug-query";
+import { createDebugState, resolveDebugLaunch } from "../dev/debug-state";
+import { miniGameUseLaunch, miniGameUseOpening, miniGameUseStates, miniGameUseUrl } from "../dev/minigame-room";
 import { openMiniGame } from "../domain/minigame";
 import { applyPlayerAction, listPlayerActions, playerActionChange, type PlayerAction } from "../domain/player-action";
 import { screenFor } from "../domain/screen";
@@ -43,8 +45,11 @@ function memoryStorage(): StorageLike {
   return { getItem: (key) => values.get(key) ?? null, setItem: (key, value) => { values.set(key, value); } };
 }
 
-/** Walks the scene from `start` by every action the player has; at each mini-game, checks every outcome. Returns the tags met. */
-function walkUses(start: GameState, roll: () => number): Set<string> {
+/**
+ * Walks the scene from `start` by every action the player has; at each mini-game, checks every outcome. Returns the tags met
+ * (as soon as it meets `until`, when given).
+ */
+function walkUses(start: GameState, roll: () => number, until?: string): Set<string> {
   const met = new Set<string>();
   const scene = sceneOn(start);
   const seen = new Set<string>();
@@ -58,6 +63,7 @@ function walkUses(start: GameState, roll: () => number): Set<string> {
     const actions = listPlayerActions(state);
     if (game) {
       met.add(miniGameTagText(game.tag));
+      if (until && met.has(until)) return met;
       // The player's actions there are the game's outcomes, each one.
       expect(actions, miniGameTagText(game.tag)).toEqual(MINI_GAMES[game.tag.id].outcomes.map((outcome): PlayerAction => ({ kind: "minigame", outcome: outcome.id })));
     }
@@ -91,6 +97,21 @@ describe("every mini-game use with every outcome (the generated uses list)", () 
       const { rules } = await definition.load();
       const params = miniGameParams(tagOf(use), tagContext);
       for (const outcome of definition.outcomes) expect(rules.outcomeOf(rules.autoRecord(outcome.id, params), params), outcome.id).toBe(outcome.id);
+    });
+
+  // Debug's 「ミニゲームの見本」 links each use it can open (not a scene of the hotel's moment, which 場面の確認 lacks) to its
+  // scene on the use's own branch: a date without a held item where only that reaches it (Akbar's Tomb's sunglasses).
+  const linked = uses.filter((use) => typeof miniGameUseLaunch(use) !== "string");
+  it.each(linked.map((use) => [`${use.sceneId} ${use.knot ?? ""}${use.prefix ? ` prefix ${use.prefix}` : ""}`, use] as const))(
+    "links %s from Debug's room to a scene that reaches it", (_, use) => {
+      const opened = miniGameUseUrl(use);
+      if (!("url" in opened)) throw new Error(opened.reason);
+      const parsed = parseDebugQuery(opened.url);
+      if (parsed.kind !== "launch") throw new Error(`${opened.url}: not a launch URL`);
+      const launch = resolveDebugLaunch(parsed.query);
+      if (launch.kind !== "scene") throw new Error(`${opened.url}: not a scene`);
+      const tag = miniGameTagText(tagOf(use));
+      expect([...walkUses(createDebugState(launch.settings), () => 0, tag)], opened.url).toContain(tag);
     });
 
   const byScene = new Map<string, MiniGameUse[]>();

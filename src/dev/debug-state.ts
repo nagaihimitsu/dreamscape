@@ -110,7 +110,8 @@ export function resolveDebugLaunch(query: DebugQuery): DebugLaunch {
   return { kind: "scene", settings: { ...defaults, scene: query.scene, id,
     progress, ap: query.ap ?? defaults.ap, affection: query.affection ?? defaults.affection,
     trust: query.trust ?? defaults.trust, spark: query.spark ?? defaults.spark, roll: query.roll ?? defaults.roll,
-    ...(query.from ? { from: query.from } : {}), ...(query.prep ? { prep: query.prep } : {}), ...(query.step ? { step: query.step } : {}) } };
+    ...(query.from ? { from: query.from } : {}), ...(query.prep ? { prep: query.prep } : {}), ...(query.step ? { step: query.step } : {}),
+    ...(query.without ? { without: query.without } : {}) } };
 }
 
 // Keyed by the city's content object: installing 仮の場面 again (possibly from another
@@ -125,6 +126,22 @@ function completedJourney(cityId: string): GameState {
   return cached;
 }
 
+/** The state a Debug scene starts from: the city's start, or its cleared state (kept while Debug stays open). */
+export function debugCityState(cityId: string, progress: DebugSettings["progress"]): GameState {
+  return progress === "initial" ? cityStart(cityId) : completedJourney(cityId);
+}
+
+/** The state without the held items a date's `without` names (the branch of a player who never got them); each must be held. */
+function withoutHeldItems(state: GameState, itemIds: readonly string[]): GameState {
+  if (!itemIds.length) return state;
+  const inventory = { ...state.inventory };
+  for (const id of itemIds) {
+    if (inventory[id] !== "held") throw new Error(`without の「${id}」は、Debugのこの場面の状態で持っている品物ではありません。`);
+    delete inventory[id];
+  }
+  return { ...state, inventory };
+}
+
 /** Build only states the real game functions can start; never alter player data. */
 export function createDebugState(settings: DebugSettings): GameState {
   const cityId = settings.cityId ?? defaultDebugCityId;
@@ -132,7 +149,7 @@ export function createDebugState(settings: DebugSettings): GameState {
     throw new Error("エピローグは都市クリア後に開けます。旅の進行を「都市クリア後」にしてください。");
   if (settings.scene === "tour" && settings.progress === "completed")
     throw new Error("ツアーは都市クリアの前に予約します。旅の進行を「旅の開始時」にしてください。");
-  const base = settings.progress === "initial" ? cityStart(cityId) : completedJourney(cityId);
+  const base = withoutHeldItems(debugCityState(cityId, settings.progress), settings.without ?? []);
   const state = withRelationship(withAp(base, settings.ap), settings);
   const ticket = rollTickets[settings.roll];
   switch (settings.scene) {

@@ -9,6 +9,7 @@ import { ChoicePoint } from "../minigames/host/ChoicePoint";
 import { MiniGameProvider, MiniGameSlot, type MiniGameEnvironment } from "../minigames/host/MiniGameProvider";
 import { MINI_GAME_IDS, MINI_GAMES } from "../minigames/registry";
 import { miniGameParamKeys, type MiniGameTag } from "../minigames/tag";
+import type { MiniGameUse } from "../minigames/uses";
 import { miniGameUses, miniGameUseUrl, usesProblem } from "./minigame-room";
 import "../features/romance/romance-scene.css";
 import "./minigame-room.css";
@@ -42,6 +43,19 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
   const [last, setLast] = useState<string | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const openedFrom = useRef<string | null>(null);
+  // Each use's 「Debugで開く」: a date whose story asks whether an item is held is walked to the use's own branch (a
+  // second or two to build the cleared city), so the links are worked out once, after the list has shown.
+  const [links, setLinks] = useState<ReadonlyMap<MiniGameUse, ReturnType<typeof miniGameUseUrl>> | null>(null);
+  useEffect(() => {
+    let timer = 0;
+    const frame = window.requestAnimationFrame(() => {
+      timer = window.setTimeout(() => setLinks(new Map(miniGameUses.map((use) => [use, miniGameUseUrl(use)]))), 0);
+    });
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+    };
+  }, []);
   useEffect(() => {
     window.scrollTo(0, 0);
     heading.current?.focus({ preventScroll: true });
@@ -149,10 +163,11 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
               : <p>なし</p>}
             <h3>使っている場面</h3>
             {uses.length ? <ul>{uses.map((use) => {
-              const opened = miniGameUseUrl(use);
+              const opened = links?.get(use);
               return <li key={`${use.sceneId}:${use.knot}:${use.prefix ?? ""}:${use.line}`}>
                 {use.sceneId}{use.knot && use.knot !== use.sceneId ? `（${use.knot}）` : ""}：auto {use.auto}{use.prefix ? `・prefix ${use.prefix}` : ""}
-                {"url" in opened ? <> <a href={opened.url}>Debugで開く</a></> : <span className="minigame-room-reason">（{opened.reason}）</span>}
+                {!opened ? <span className="minigame-room-reason">（開くリンクを準備中…）</span>
+                  : "url" in opened ? <> <a href={opened.url}>Debugで開く</a></> : <span className="minigame-room-reason">（{opened.reason}）</span>}
               </li>;
             })}</ul> : <p>まだありません。</p>}
             <button type="button" className="secondary minigame-room-open" data-testid={`minigame-room-open-${id}`} onClick={() => {

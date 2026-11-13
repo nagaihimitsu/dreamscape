@@ -30,6 +30,11 @@ export type DebugSettings = {
   prep?: string[];
   /** A tour (scene=tour; tour stage 2a): the event step to open (its morning played to there); without it, the tour booked. */
   step?: string;
+  /**
+   * A date (scene=date): items Debug's state holds that the date starts without, for the branch of a player who never got
+   * them (a story that asks `cond("item <id> held")`; Debug's 「ミニゲームの見本」 links a use there).
+   */
+  without?: string[];
 };
 
 /** The value range the scene picker (場面の確認) offers (AP is also capped by the game's AP limit). */
@@ -52,6 +57,7 @@ export interface DebugQuery {
   from?: string;
   prep?: string[];
   step?: string;
+  without?: string[];
 }
 
 export type ParsedDebugQuery =
@@ -67,14 +73,14 @@ const choices = {
   roll: ["positive", "negative"],
 } as const;
 /** URL items in the order a copied URL lists them. */
-export const debugQueryKeys = ["data", "city", "scene", "target", "progress", "ap", "affection", "trust", "spark", "roll", "from", "prep", "step"] as const;
+export const debugQueryKeys = ["data", "city", "scene", "target", "progress", "ap", "affection", "trust", "spark", "roll", "from", "prep", "step", "without"] as const;
 type QueryKey = (typeof debugQueryKeys)[number];
 const idPattern = /^[a-z][a-z0-9_]*$/;
 
 function parseValue(key: QueryKey, value: string): string | number {
-  if (key === "prep") {
+  if (key === "prep" || key === "without") {
     const ids = value.split(",");
-    if (ids.some((id) => !idPattern.test(id))) throw new Error(`「prep=${value}」はIDの形ではありません（場面のIDを , で区切ります）。`);
+    if (ids.some((id) => !idPattern.test(id))) throw new Error(`「${key}=${value}」はIDの形ではありません（${key === "prep" ? "場面" : "品物"}のIDを , で区切ります）。`);
     return value;
   }
   if (key === "city" || key === "target" || key === "from" || key === "step") {
@@ -120,8 +126,10 @@ export function parseDebugQuery(search: string): ParsedDebugQuery {
     if (values.from !== undefined) query.from = values.from as string;
     if (values.prep !== undefined) query.prep = (values.prep as string).split(",");
     if (values.step !== undefined) query.step = values.step as string;
+    if (values.without !== undefined) query.without = (values.without as string).split(",");
     if ((query.from || query.prep) && query.scene !== "occasion") throw new Error("from と prep は scene=occasion（場面から始める）で使います。");
     if (query.step && query.scene !== "tour") throw new Error("step は scene=tour（ツアー）で使います。");
+    if (query.without && query.scene !== "date") throw new Error("without は scene=date（デート）で使います。");
     return { kind: "launch", query };
   } catch (error) {
     return { kind: "error", message: error instanceof Error ? error.message : String(error) };
@@ -134,6 +142,7 @@ export function debugQueryString(query: DebugQuery): string {
     data: query.dataMode === "fixture" ? "fixture" : undefined, city: query.cityId, scene: query.scene,
     target: query.target, progress: query.progress, ap: query.ap, affection: query.affection,
     trust: query.trust, spark: query.spark, roll: query.roll, from: query.from, prep: query.prep?.join(","), step: query.step,
+    without: query.without?.join(","),
   };
   return ["?debug", ...debugQueryKeys.flatMap((key) =>
     values[key] === undefined ? [] : [`${key}=${encodeURIComponent(String(values[key]))}`])].join("&");
@@ -143,5 +152,6 @@ export function debugQueryString(query: DebugQuery): string {
 export function settingsQuery(dataMode: DebugDataMode, settings: DebugSettings): DebugQuery {
   return { dataMode, cityId: settings.cityId, scene: settings.scene, target: settings.id || undefined, progress: settings.progress,
     ap: settings.ap, affection: settings.affection, trust: settings.trust, spark: settings.spark, roll: settings.roll,
-    ...(settings.from ? { from: settings.from } : {}), ...(settings.prep?.length ? { prep: settings.prep } : {}), ...(settings.step ? { step: settings.step } : {}) };
+    ...(settings.from ? { from: settings.from } : {}), ...(settings.prep?.length ? { prep: settings.prep } : {}), ...(settings.step ? { step: settings.step } : {}),
+    ...(settings.without?.length ? { without: settings.without } : {}) };
 }

@@ -22,6 +22,16 @@ describe("Debug launch URLs", () => {
     expect(parseDebugQuery(debugQueryString(map))).toEqual({ kind: "launch", query: map });
   });
 
+  it("writes and reads a date's items left out (without), for a date only", () => {
+    const without = { ...settings, without: ["gt_delhi_rain_attar", "other_item"] };
+    const url = debugQueryString(settingsQuery("real", without));
+    expect(url.endsWith("&roll=negative&without=gt_delhi_rain_attar%2Cother_item")).toBe(true);
+    expect(parseDebugQuery(url)).toEqual({ kind: "launch", query: settingsQuery("real", without) });
+    expect(debugQueryString(settingsQuery("real", { ...settings, without: [] }))).not.toContain("without");
+    expect(parseDebugQuery("?debug&scene=battle&without=gt_delhi_rain_attar")).toEqual({ kind: "error", message: "without は scene=date（デート）で使います。" });
+    expect(parseDebugQuery("?debug&scene=date&without=Rain")).toEqual({ kind: "error", message: "「without=Rain」はIDの形ではありません（品物のIDを , で区切ります）。" });
+  });
+
   it("leaves omitted items to the scene picker's defaults and ignores the order", () => {
     expect(parseDebugQuery("?scene=battle&debug&city=delhi")).toEqual({ kind: "launch", query: { dataMode: "real", cityId: "delhi", scene: "battle" } });
     expect(parseDebugQuery("?debug&scene=epilogue")).toEqual({ kind: "launch", query: { dataMode: "real", scene: "epilogue" } });

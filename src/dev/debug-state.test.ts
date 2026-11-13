@@ -92,6 +92,21 @@ describe("Debug launch URLs against the content", () => {
     expect(launch("?debug&city=samarkand&scene=map")).toEqual({ kind: "map", cityId: "samarkand" });
   });
 
+  it("starts a date without a held item (without=), for the branch of a player who never got it", () => {
+    const akbar = "?debug&city=agra&scene=date&target=gt_agra_date_akbar_tomb";
+    const held = launch(akbar);
+    const left = launch(`${akbar}&without=gt_delhi_rain_attar`);
+    if (held.kind !== "scene" || left.kind !== "scene") throw new Error("not a scene");
+    expect(left.settings).toEqual({ ...held.settings, without: ["gt_delhi_rain_attar"] });
+    expect(createDebugState(held.settings).inventory.gt_delhi_rain_attar).toBe("held");
+    const state = createDebugState(left.settings);
+    expect(state.inventory).not.toHaveProperty("gt_delhi_rain_attar");
+    expect(state.activeDate?.dateId).toBe("gt_agra_date_akbar_tomb");
+    expect(validateGameState(state)).toBeTruthy();
+    expect(() => createDebugState({ ...held.settings, without: ["no_such_item"] }))
+      .toThrow("without の「no_such_item」は、Debugのこの場面の状態で持っている品物ではありません。");
+  });
+
   it.each([
     [{ dataMode: "real", cityId: "atlantis", scene: "battle" }, "都市「atlantis」は登録されていません。仮の場面の都市なら data=fixture を付けます。"],
     [{ dataMode: "real", cityId: "milano", scene: "battle", target: "gt_delhi_main_red_fort_battle" }, "「gt_delhi_main_red_fort_battle」はミラノの「バトル」にありません。"],

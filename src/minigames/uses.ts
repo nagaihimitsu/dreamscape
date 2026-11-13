@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { SCENE_KINDS } from "../content/scene-schemas";
-import { miniGameTagText } from "./tag";
+import { miniGameTagText, type MiniGameTag } from "./tag";
 
 // Where the stories use the mini-games (docs/13 3.4): what content:build's full-branch walk found, one entry per tag
 // (src/content/generated/minigame-uses.json). The game never reads it; the content-driven tests and Debug's
@@ -26,7 +26,9 @@ export const miniGameUseSchema = z.object({
 export type MiniGameUse = z.infer<typeof miniGameUseSchema>;
 export const miniGameUseListSchema = z.array(miniGameUseSchema);
 
+/** A use's tag as a frame keeps it. */
+export const miniGameUseTag = (use: MiniGameUse): MiniGameTag => ({ id: use.game, auto: use.auto, ...(use.prefix ? { prefix: use.prefix } : {}),
+  ...(use.bg ? { bg: use.bg } : {}), ...(use.art ? { art: use.art } : {}), ...(use.params ? { params: use.params } : {}) });
+
 /** The key of a use: one per scene, knot and tag as written (one tag reached on several paths is one use). */
-export const miniGameUseKey = (use: MiniGameUse): string =>
-  `${use.sceneId}|${use.knot ?? ""}|${miniGameTagText({ id: use.game, auto: use.auto, ...(use.prefix ? { prefix: use.prefix } : {}),
-    ...(use.bg ? { bg: use.bg } : {}), ...(use.art ? { art: use.art } : {}), ...(use.params ? { params: use.params } : {}) })}`;
+export const miniGameUseKey = (use: MiniGameUse): string => `${use.sceneId}|${use.knot ?? ""}|${miniGameTagText(miniGameUseTag(use))}`;
