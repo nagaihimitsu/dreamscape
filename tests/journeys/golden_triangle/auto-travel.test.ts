@@ -63,7 +63,8 @@ describe("automatic India city transition with development-only content", () => 
     expect(test_agra.currentCityId).toBe("test_agra");
     expect(test_agra.viewedEpilogueCityIds).toContain("test_delhi");
     expect(test_agra.travel).toMatchObject({ hotelPlaceId: "test_agra_hotel", currentPlaceId: "test_agra_hotel", day: 1, minute: 540 });
-    expect(test_agra.travel.calendar).toEqual({ journeyDay: 4, cityStartJourneyDay: 4, startWeekday: 0 });
+    // The next city starts the next morning (2026-11-13 user decision): Delhi's journey day 4, then Agra's day 1 on day 5.
+    expect(test_agra.travel.calendar).toEqual({ journeyDay: 5, cityStartJourneyDay: 5, startWeekday: 0 });
     expect(test_agra.inventory.test_delhi_item).toBe("left_behind");
     // The departure keeps the journey as the epilogue left it: the epilogue's own choice may change it (the sample's
     // first choice, which advanceCityEpilogue takes, gives affection +1).

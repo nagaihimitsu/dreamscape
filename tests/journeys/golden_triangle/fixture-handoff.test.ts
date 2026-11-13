@@ -77,14 +77,15 @@ describe("three-city journey using development-only fixtures", () => {
     expect(getNextCity(clearCity(test_jaipur))).toBeUndefined();
   }, 120_000);
 
-  it("preserves the game weekday when the local day resets on departure", () => {
+  // The next city starts the next morning (2026-11-13 user decision): the journey day and its weekday move on by one.
+  it("moves the journey day and weekday on by one when the local day resets on departure", () => {
     let test_delhi = clearCity(initialDelhi());
     test_delhi = validateGameState({ ...test_delhi, travel: { ...test_delhi.travel, day: 4,
       calendar: { journeyDay: 4, cityStartJourneyDay: 1, startWeekday: 0 } } });
     const test_agra = departToNextCity(test_delhi, test_delhi.revision);
     expect(test_agra.currentCityId).toBe("test_agra");
     expect(test_agra.travel.day).toBe(1);
-    expect(test_agra.travel.calendar).toEqual({ journeyDay: 4, cityStartJourneyDay: 4, startWeekday: 0 });
+    expect(test_agra.travel.calendar).toEqual({ journeyDay: 5, cityStartJourneyDay: 5, startWeekday: 0 });
     expect(validateGameState(test_agra)).toEqual(test_agra);
     const storage = new MemoryStorage();
     expect(saveGame(storage, test_agra).ok).toBe(true);

@@ -115,7 +115,9 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
       expect(state.currentCityId).toBe(cityIds[index + 1]);
       expect(state.travel).toMatchObject({ currentPlaceId: `${cityIds[index + 1]}_hotel`,
         hotelPlaceId: `${cityIds[index + 1]}_hotel`, day: 1, minute: 540 });
-      expect(state.travel.calendar?.cityStartJourneyDay).toBe(before.travel.calendar?.journeyDay);
+      // The next city starts the next morning (2026-11-13 user decision): its day 1 is the journey's next day.
+      const nextDay = before.travel.calendar!.journeyDay + 1;
+      expect(state.travel.calendar).toEqual({ ...before.travel.calendar, journeyDay: nextDay, cityStartJourneyDay: nextDay });
       expect(state.inventory[`${cityId}_item`]).toBe("left_behind");
       // The departure keeps the journey as the epilogue left it: the epilogue's own choice may change it (the sample's
       // first choice, which advanceCityEpilogue takes, gives affection +1).
