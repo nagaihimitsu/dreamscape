@@ -15,7 +15,7 @@ import { visitedPlaceIdsIn } from "./visited-places";
 import "./music-room.css";
 
 /** content:build's index of the scenes' voices and tracks (scripts/scene-audio.ts); unreadable, the room is empty. */
-const SCENE_AUDIO: SceneAudio = (() => {
+const SCENE_AUDIO: SceneAudio = ((): SceneAudio => {
   const parsed = sceneAudioSchema.safeParse(sceneAudioJson as unknown);
   return parsed.success ? parsed.data : { schemaVersion: 1, stories: {} };
 })();
