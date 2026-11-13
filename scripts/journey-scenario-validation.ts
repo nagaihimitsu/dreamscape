@@ -155,7 +155,7 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
     const travel = input.cities.find((item) => item.cityId === city.cityId)!;
     const context: TagContext = { effectIds: [], emotionIds: Object.keys(presentation.emotions),
       backgroundIds: [...new Set([...travel.places.map((place) => place.backgroundId), ...journeyBackgroundIds])],
-      photoIds: albumImageIds };
+      photoIds: albumImageIds, miniGames: false };
     const ownLandmarks = fragments.landmarks.filter((landmark) => landmark.cityId === city.cityId);
     const ownClues = fragments.clues.filter((clue) => ownLandmarks.some((landmark) => landmark.id === clue.landmarkId));
     const ownAssets = tourism.assets.filter((asset) => ownLandmarks.some((landmark) => landmark.imageAssetId === asset.id));
@@ -217,7 +217,7 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
                 confession_ready: seed.confessionReady, confession_result: seed.confessionResult ?? "deferred",
                 relationship_tone: tone, relationship_tone_before: tone, relationship_tone_after: tone };
               const key = JSON.stringify(Object.entries(variables).filter(([name]) => walk.compiled.includes(`"VAR?":"${name}"`)));
-              if (!walked.has(key)) walked.set(key, walkScene({ ...walk, variables, romanceChoices: { knot: scene.knot, count: date.choiceCount } }));
+              if (!walked.has(key)) walked.set(key, walkScene({ ...walk, context: { ...context, miniGames: true }, variables, romanceChoices: { knot: scene.knot, count: date.choiceCount } }));
               dateRoutes += walked.get(key)!;
             }
         }

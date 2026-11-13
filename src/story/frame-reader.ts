@@ -2,6 +2,7 @@ import type { Story } from "inkjs";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import type { DialogueReaction, ReactionTarget } from "../content/dialogue-reactions";
 import { BGM_DEFAULT } from "../content/music";
+import type { MiniGameTag } from "../content/mini-games";
 import {
   parseStoryTags, WEATHER_STOP, type CutInKind, type LetterKind, type LineDelivery, type PhoneSide, type QuietSpan, type StandPosition,
   type StoryCall, type StoryPhoto, type TagContext, type WeatherKind,
@@ -79,6 +80,11 @@ export interface StoryFrame {
    * `# ambience:` or the scene's end; absent, the place's own (`# ambience: default` takes it away). src/audio/scene-ambience.ts reads it.
    */
   ambience?: string;
+  /**
+   * The line's `# minigame:` (only the line it is written on; content:build checks a choice set of the game's outcomes
+   * follows it): the screen plays the game instead of showing the choices, and takes the choice of its outcome.
+   */
+  minigame?: MiniGameTag;
   /** A battle's call (`# call:`, stage 5) is a choice the game takes itself: its screen shows no choice. */
   choices: { index: number; text: string; optionId?: string; translationJa?: string; call?: StoryCall }[];
   ended: boolean;
@@ -170,6 +176,7 @@ function readTags(
   else if (parsed.weather) frame.weather = parsed.weather;
   if (parsed.tint === "on") delete frame.tint;
   else if (parsed.tint === "off") frame.tint = "off";
+  if (parsed.minigame) frame.minigame = parsed.minigame;
   if (parsed.ambience === BGM_DEFAULT) delete frame.ambience;
   else if (parsed.ambience) frame.ambience = parsed.ambience;
   if (parsed.localWordIds) frame.localWordIds = [...new Set([...(frame.localWordIds ?? []), ...parsed.localWordIds])];
