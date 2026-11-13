@@ -7,7 +7,7 @@ import { markSampleCopies, readObservationCards, tourismPhotos, tourismPhotoWarn
 import { imageJourneyIndex } from "./image-rights";
 import { sampleMarks } from "./sample-journey";
 import { chooseStoryCache, type StoryValidationCache } from "./story-validation-cache";
-import { voiceScriptWarnings } from "./voice-changes";
+import { voiceRecordWarnings } from "./voice-changes";
 
 // content:build in three steps: load (content-sources.ts reads every content
 // file once) → validate (content-validation.ts, pure; content-images.ts then
@@ -15,8 +15,8 @@ import { voiceScriptWarnings } from "./voice-changes";
 // warnings about photos to convert (image-optimization.ts) also read the
 // observation cards of authoring/, which name the photos that keep their size,
 // and the sample journey's images, whose copies are left to journey:readiness;
-// the warnings about recorded lines that changed read the voice scripts sent
-// (authoring/journeys/<journeyId>/voice/, voice-changes.ts).
+// the warnings about recorded lines that changed read what the clips say
+// (authoring/journeys/<journeyId>/voice/recorded.json, voice-changes.ts).
 //
 // This module exports only buildContent: the unit-test split (scripts/test-sets.ts) puts every test that imports
 // it in the slow "content" set. Put helpers that tests call on their own in light modules
@@ -52,5 +52,5 @@ export async function buildContent(
     derivedImages = { count: derived.files.size, made: derived.made };
   }
   const photos = markSampleCopies(tourismPhotos(sources, content.tourism, readObservationCards(root, sources.manifests, "skip")), sampleMarks().imageHashes);
-  return { ...content, derivedImages, warnings: [...content.warnings, ...tourismPhotoWarnings(sources, photos), ...voiceScriptWarnings(sources)] };
+  return { ...content, derivedImages, warnings: [...content.warnings, ...tourismPhotoWarnings(sources, photos), ...voiceRecordWarnings(sources)] };
 }
