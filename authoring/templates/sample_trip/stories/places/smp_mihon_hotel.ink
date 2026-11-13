@@ -1,17 +1,19 @@
-// 都市エピローグ（stories/epilogues/<都市ID>.ink）：都市フィナーレのあとに読む短い締めくくり。
+// 【場所のファイル】見本の宿（stories/places/<接頭辞>_<都市ID>_<場所>.ink）。宿の場所のファイルには、その都市の到着とエピローグの knot を書く
+// （見本の街には到着の会話がない）。見本の街と人物は架空。
+// - 1行目は INCLUDE modules.ink（ゲームが用意する呼び口と変数。VAR はここに書かない）、次の行は -> DONE。knot の名前＝場面のID。
+// - エピローグは、progression/journey.json のフィナーレの epilogueStoryId が「places/smp_mihon_hotel.<knot>」の住所で指す。
+INCLUDE modules.ink
+-> DONE
+
+// ───── 都市エピローグ（本筋）：都市フィナーレのあとに読む短い締めくくり。頭の札は # scene: epilogue。
 // - 日本語の選択肢と、選択肢のすぐ次の行の効果の札（# rel: など）を書ける（段階3a）。# effect は置かない。
 //   効果のある選択肢には # option: を付ける。お金や AP を減らす札（ゲームが自分で始めるエピローグの # on_done:）は書かない。
 // - romance_stage（1〜4）と ending_reached で少しだけ分岐してよい。全組合せで台詞が出るようにする。
 // - # speaker: enemy はフィナーレの対戦相手の名前で表示される。ほかの人物の言葉は地の文に入れる。
-// - 見本の街と人物は架空。
 // - 行の札の例：「思い出しそう」の行の # recall:（その行だけ、アルバムの時計塔の絵 smp_album_clock_tower が背景に
 //   うっすら出る。アルバムには入らない）と # quiet: line（その行だけ静かに：上の帯が隠れ、字が少しゆっくり、背景が落ち着く）。
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR romance_stage = 1
-VAR ending_reached = false
-
+=== smp_mihon_epilogue ===
+# scene: epilogue
 # background: smp_bg_mihon_hotel
 # speaker: narrator
 出発の朝、宿の窓から時計塔が見えた。針は、やっぱり三時を指している。

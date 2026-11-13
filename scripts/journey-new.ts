@@ -121,7 +121,7 @@ export function checkNewJourneyOptions(options: NewJourneyOptions, reserved: { j
  * The files of a new journey folder (path inside it → contents) from the
  * sample's files: the optional parts left out unless asked for, the sample's
  * journey ID, prefix and city ID replaced wherever they stand as a name or a
- * part of one (`smp_mihon_finale`, `epilogues/mihon`, `assets/tourism/sample_trip/…`,
+ * part of one (`smp_mihon_finale`, `places/smp_mihon_hotel`, `assets/tourism/sample_trip/…`,
  * paths included; letters and digits around them keep them apart from other
  * words), the manifest preparing with the given names and order, the city a
  * prototype with the city name, every tourism image a placeholder, and the

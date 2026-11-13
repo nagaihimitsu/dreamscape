@@ -3,8 +3,9 @@
 //   種類（# scene:）と、差し込みの場面なら時点（# at:）と順番（# priority:）を決める。
 // - 1行目は INCLUDE modules.ink（ゲームが用意する呼び口と変数。VAR はここに書かない）、次の行は -> DONE。
 //   Inky で1つの場面を見るときは、-> DONE を -> 見たい knot の名前 に一時的に変え、modules.ink の写しを隣に置く。
-// - 本筋（案内・バトル・デート）は、カタログ（tourism/catalog.json の guideStoryId、battles・date_catalog の storyId）が
+// - 本筋（案内・バトル・都市フィナーレ・デート）は、カタログ（tourism/catalog.json の guideStoryId、battles・date_catalog の storyId）が
 //   「places/smp_mihon_clock_tower.<knot>」の住所で指す。本筋の knot には # at:・# priority:・# repeat: を書かない。
+//   フィナーレは会場の地点の場所のファイルに、エピローグは宿の場所のファイル（places/smp_mihon_hotel.ink）に書く。
 // - 効果は選択肢のすぐ次の行の札（# give:・# rel:・# set:・# ap: など）と、頭の # on_done: にだけ書く。
 //   効果のある選択肢には [ ] の中に # option: <ID> を付ける。ゲームが効果を当ててから、選んだ後の文へ進む。
 // - 本筋の順は既定（案内 → 観察 → バトル）。条件の書き方と札の一覧は docs/02 の「場面の時点と順番」。
@@ -174,6 +175,94 @@ INCLUDE modules.ink
     # speaker: heroine
     「わたしも。来られるときに、また聞かせてください」
 }
+-> END
+
+// ───── 都市フィナーレ（本筋。battles/catalog.json の scope: "city_finale" の storyId がこの住所を指す）：都市の最後の対決。英語3択5問。
+// フィナーレの会場（travel/mihon.json の smp_mihon_finale の地点）が時計塔なので、時計塔の場所のファイルに書く。knot の名前はバトルID。
+// - 1本の流れ（段階5）：上から流れ、-> quiz(1) -> 〜 -> quiz(5) -> でクイズの画面を出す。戻ると quiz_correct（その問いの正誤）と
+//   battle_score（そこまでの正解数、0〜5）が入る。最後の -> END の後に結果の画面。
+// - 呼び口の後の最初の行は、場面の始まりと同じく話し手と背景を書き直す（ゲームは呼び口の後を新しい場面として出す）。
+// - quiz_correct と battle_score のどの組合せでも日本語の台詞が出るようにする。
+// - 勝ち負けで相手を改心させて終える定型にせず、相手にも筋の通った願いを持たせる。
+// - 行の札 # cutin: name は、その行の話し手の名札（役どころと名前）を少しのあいだ場面の上に出す。名前が初めて出る行に書く。
+=== smp_mihon_finale_battle ===
+# scene: battle
+# background: smp_bg_mihon_clock_tower
+# speaker: narrator
+夕方の広場で、町長のハンナが図面を広げていた。新しい歯車の絵に、赤い丸がついている。
+# speaker: enemy
+# cutin: name
+「来月、時計を動かします。旅の人に『時間にいいかげんな街』と言われるのは、もう嫌なの」
+# speaker: heroine
+「動かしたら、三時の約束はどうなるんですか」
+# speaker: enemy
+「約束？　時計番から聞いたのね。いいわ、この街のことをどれだけ知ったか、聞かせて」
+-> quiz(1) ->
+# background: smp_bg_mihon_clock_tower
+{ quiz_correct:
+    # speaker: enemy
+    「止まった時刻が約束になった。祖父の代の話ね。でも、今の旅人には伝わらないわ」
+- else:
+    # speaker: enemy
+    「昔の人は、止まった三時を約束の言葉にしたの。ただ、今の旅人には伝わらない」
+}
+-> quiz(2) ->
+# background: smp_bg_mihon_clock_tower
+{ quiz_correct:
+    # speaker: enemy
+    「そう、壊れていると思われる。わたしが困っているのは、そこなのよ」
+- else:
+    # speaker: enemy
+    「旅の人はまず、壊れていると思うの。わたしが困っているのは、そこ」
+}
+# speaker: heroine
+「壊れてると思われるのが嫌なら、止まってる理由を伝える方法もありそうですね」
+-> quiz(3) ->
+# background: smp_bg_mihon_clock_tower
+{ quiz_correct:
+    # speaker: enemy
+    「待つ人が文字盤を見られるように。……ベンチの向きまで、考えたことがなかった」
+- else:
+    # speaker: enemy
+    「ベンチは、待っている人が文字盤を見られるように塔を向いているの。今朝、わたしも座ってみたわ」
+}
+-> quiz(4) ->
+# background: smp_bg_mihon_clock_tower
+{ quiz_correct:
+    # speaker: enemy
+    「戻ってきた人のための鐘。時計を動かしたら、あの子の仕事はどうなるのかしら」
+- else:
+    # speaker: enemy
+    「鐘は、戻ってきた人がいるときに手で鳴らすの。トーマが毎朝油を差しているのは、そのためね」
+}
+# speaker: heroine
+「動かすか残すか、街の人にも聞いてみませんか。トーマさんも、話したそうでした」
+-> quiz(5) ->
+# background: smp_bg_mihon_clock_tower
+{ quiz_correct:
+    # speaker: enemy
+    「『三時に会おう』。……子どもの頃、わたしもそう言って友達を呼んでいたわ」
+- else:
+    # speaker: enemy
+    「この街では『三時に会おう』と誘うの。子どもの頃、わたしもそう言っていたわ」
+}
+{
+- battle_score == 5:
+    # speaker: enemy
+    「図面はしまうわ。代わりに塔の下へ、言い伝えの札を立てる。旅の人が読めるように」
+    # speaker: heroine
+    「札の最後に、『来られるときに来て』って書いてほしいな」
+- battle_score >= 3:
+    # speaker: enemy
+    「すぐには決めない。まず札を立てて、街の人の声を聞いてからにする」
+- else:
+    # speaker: enemy
+    「わたしにも、知らないことが多かったわ。決めるのは、もう少し話を聞いてから」
+}
+# speaker: narrator
+ハンナが図面を丸めると、塔の上でトーマが小さく手を振った。
+# speaker: smp_mihon_toma
+「鐘の音、上まで届きましたよ。また鳴らしに来てください」
 -> END
 
 // ───── +1：本筋の後。しおりを持っているときだけ（道中交流）。対決の結果で「自由時間へ」を押すと始まる。

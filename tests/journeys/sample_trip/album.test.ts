@@ -44,7 +44,7 @@ describe("the sample journey's album", () => {
     expect(state.activeTourism).toMatchObject({ landmarkId: "mihon_market", phase: "guide" });
     expect(state.activeTourism?.frame?.photo).toEqual({ imageId: "smp_album_market" });
     const taken = [{ imageId: "smp_album_market", cityId: "mihon", day: state.travel.day, minute: state.travel.minute,
-      placeId: "mihon_market", storyId: "tourism/smp_mihon_market_guide" }];
+      placeId: "mihon_market", storyId: "places/smp_mihon_market.smp_mihon_market_guide" }];
     expect(state.album).toEqual(taken);
     state = playUntil(state, (current) => current.activeTourism?.phase === "exploring");
     expect(state.album).toEqual(taken);

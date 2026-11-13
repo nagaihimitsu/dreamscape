@@ -1,10 +1,32 @@
-// 【任意】特殊戦C・証拠連結（battles/catalog.json の format: "C"、reasoning.kind: "connection"）。
-// - 1本の流れ（段階5）。書き方は朝市の特殊戦B（smp_mihon_special_b_market.ink）と同じで、C には追及がない（reasoning_action は
+// 【任意：特殊戦C】【場所のファイル】見本の図書室（stories/places/<接頭辞>_<都市ID>_<場所>.ink）。見本の図書室と人物は架空。
+// - この1本に、図書室の観光案内と特殊戦C・証拠連結の会話を書く。書き方は朝市の場所のファイル（places/smp_mihon_market.ink）と同じ。
+//   knot の名前＝場面のID。本筋の knot の頭の札は # scene: だけ。1行目は INCLUDE modules.ink、次の行は -> DONE（VAR は書かない）。
+// - 本筋は、カタログ（tourism/catalog.json の guideStoryId、battles/catalog.json の storyId）が「places/smp_mihon_library.<knot>」の住所で指す。
+// - 特殊戦Cを外すときは、このファイルごと外す（README の「任意の部分」）。
+INCLUDE modules.ink
+-> DONE
+
+// ───── 案内（本筋。tourism/catalog.json の guideStoryId がこの住所を指す）。
+// - 規則は通常の観光案内と同じ：選択肢・# effect なし、日本語、表示される行は40行以内。
+// - 最初の行の # photo: は、図書室の絵（public/assets/album/smp_album_library.webp）をアルバムに入れる例（説明の札なし）。
+=== smp_mihon_library_guide ===
+# scene: guide
+# background: smp_bg_mihon_library
+# speaker: narrator
+# photo: smp_album_library
+図書室の棚には、街の日誌が年ごとに並んでいる。いちばん古い背表紙は、手ずれで丸くなっていた。
+# speaker: heroine
+「時計が止まった年の日誌も、ここにあるのかな」
+-> END
+
+// ───── 特殊戦C・証拠連結（本筋。battles/catalog.json の format: "C"、reasoning.kind: "connection"。storyId がこの住所を指す）。
+// - knot の名前はバトルID。1本の流れ（段階5）。書き方は朝市の特殊戦Bと同じで、C には追及がない（reasoning_action は
 //   いつも "evidence"）。reasoning.roundIndex（ここでは2）のとおり、第2問の後・第3問の前に、資料を2枚組み合わせて示す。
+//   主張は手伝いの knot <バトル>_claim（<バトル> は、この knot の名前）。
 // - 正しい資料（correctClueIds）は異なる2枚で、順不同。1枚だけでは言えないことが2枚で言えるようにする。
 // - 観察できる事実と、そこからの解釈を台詞で区別する。
-// - 見本の図書室と人物は架空。
-INCLUDE modules.ink
+=== smp_mihon_special_c_library ===
+# scene: battle
 # background: smp_bg_mihon_library
 # speaker: enemy
 「三時の言い伝え？　記録にないことは、起きていないのと同じです」

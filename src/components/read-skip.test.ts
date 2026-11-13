@@ -23,7 +23,7 @@ describe("a line's identity", () => {
     expect(id).toMatch(/^[0-9a-f]{8}$/u);
     expect(readLineId("places/smp_mihon_clock_tower", "時計の針は、三時のまま。")).toBe(id);
     expect(readLineId("places/smp_mihon_clock_tower", "時計の針は、三時のままだ。")).not.toBe(id);
-    expect(readLineId("battles/smp_mihon_finale", "時計の針は、三時のまま。")).not.toBe(id);
+    expect(readLineId("places/smp_mihon_market", "時計の針は、三時のまま。")).not.toBe(id);
     // The story and the text are kept apart: moving characters between them makes another line.
     expect(readLineId("ab", "c")).not.toBe(readLineId("a", "bc"));
   });

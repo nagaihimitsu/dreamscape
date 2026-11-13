@@ -65,7 +65,7 @@
       "nameEn": "Mihon Morning Market",
       "descriptionJa": "パン屋のサラが、街の人は時間を守らないと怒っている。",
       "imageAssetId": "smp_img_mihon_market",
-      "guideStoryId": "tourism/smp_mihon_market_guide",
+      "guideStoryId": "places/smp_mihon_market.smp_mihon_market_guide",
       "battleId": "smp_mihon_special_b_market",
       "clueIds": [
         "smp_obs_mihon_market_rain",
@@ -80,7 +80,7 @@
       "nameEn": "Mihon Library",
       "descriptionJa": "司書のイオが、記録にない言い伝えは信じないと言う。",
       "imageAssetId": "smp_img_mihon_library",
-      "guideStoryId": "tourism/smp_mihon_library_guide",
+      "guideStoryId": "places/smp_mihon_library.smp_mihon_library_guide",
       "battleId": "smp_mihon_special_c_library",
       "clueIds": [
         "smp_obs_mihon_library_diary",

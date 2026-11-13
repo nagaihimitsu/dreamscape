@@ -110,7 +110,7 @@ describe("A10 after a then: (3.3 check 6, 2.3)", () => {
 });
 
 describe("an epilogue's spending # on_done: (A21)", () => {
-  const EPILOGUE = "stories/epilogues/mihon.ink";
+  const EPILOGUE = "stories/places/smp_mihon_hotel.ink";
   const spends = (text: string) => text.replace("# background: smp_bg_mihon_hotel\n", "# on_done: money -5\n# on_done: ap -1\n# background: smp_bg_mihon_hotel\n");
   const STOP = /An arrival or an epilogue the game starts by itself takes no # on_done: that spends money or AP/u;
 
