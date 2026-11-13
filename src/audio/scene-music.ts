@@ -20,16 +20,16 @@ export type SceneMusic = { track: string | null | undefined; duck: MusicDuck };
 /** The free time's part of the day by the game clock: morning 05:00–11:59, day 12:00–17:59, night 18:00–04:59. */
 export type FreeTimePeriod = "morning" | "day" | "night";
 
-/** A scene's frame as the music reads it: its `# bgm:` (a track or `stop`) and its `# quiet:`. */
-type MusicFrame = { bgm?: string; quiet?: string } | null;
+/** A scene's frame as the music reads it: its `# bgm:` (a track or `stop`), its `# ambience:` (scene-ambience.ts) and its `# quiet:`. */
+type MusicFrame = { bgm?: string; ambience?: string; quiet?: string } | null;
 /** The parts of the game state the music reads (GameState has them). */
 export type MusicGame = {
   travel: { minute: number; currentPlaceId: string };
   activeEncounter: { phase: string; frame: MusicFrame } | null;
   activeEpilogue: { kind?: string; logoComplete?: boolean; frame: MusicFrame } | null;
   activeTourism: { phase: string; frame: MusicFrame } | null;
-  /** A battle without a frame (a call's question, its result) keeps its frame's `# bgm:` in `bgm` (src/domain/battle.ts). */
-  activeBattle: { phase: string; frame: MusicFrame; bgm?: string } | null;
+  /** A battle without a frame (a call's question, its result) keeps its frame's `# bgm:` and `# ambience:` (src/domain/battle.ts). */
+  activeBattle: { phase: string; frame: MusicFrame; bgm?: string; ambience?: string } | null;
   activeDate: { frame: MusicFrame } | null;
 };
 
@@ -122,6 +122,13 @@ export function sceneMusic(play: MusicPlay | null | undefined, screen: MusicScre
   if (screen.endRoll) return { track: play.endRoll, duck: "none" };
   if (screen.nightVisual) return { track: play.night, duck: "none" };
   if (screen.packing) return { track: undefined, duck: screen.riding ? "travel" : "none" };
-  const duck: MusicDuck = screen.riding ? "travel" : quizOnScreen(game) ? "quiz" : lineOnScreen(game)?.quiet ? "quiet" : "none";
-  return { track: screenTrack(play, screen, game), duck };
+  return { track: screenTrack(play, screen, game), duck: musicDuck(screen, game) };
+}
+
+/**
+ * How the screen lowers what plays (the music, the ambience: scene-ambience.ts): under a ride's visual (`travel`), else
+ * while a quiz's question part is on screen (`quiz`), else on a `# quiet:` line (`quiet`).
+ */
+export function musicDuck(screen: Pick<MusicScreen, "riding">, game: MusicGame): MusicDuck {
+  return screen.riding ? "travel" : quizOnScreen(game) ? "quiz" : lineOnScreen(game)?.quiet ? "quiet" : "none";
 }

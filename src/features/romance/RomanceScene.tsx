@@ -13,6 +13,9 @@ import { useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
+import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
+import { ItemShowLayer } from "../../components/ItemShow";
+import { sceneTimeTint } from "../journey/time-of-day";
 import { lineCues, lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { playSe } from "../../audio/sound-effects";
 import { useDialogueLog } from "../../components/DialogueLog";
@@ -156,9 +159,12 @@ export function RomanceScene({
     <div className="vn-scene romance-scene" data-testid="romance-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-has-choices={frame.choices.length > 0} data-quiet={frame.quiet} {...sceneTap.props}>
       <div className="vn-background" data-testid="scene-picture">
         <CanalScene backgroundId={frame.background} />
+        <SceneTint color={sceneTimeTint(game.travel.minute, frame.tint === "off")} />
       </div>
+      <WeatherLayer weather={frame.weather} />
       <RecallLayer imageId={frame.recall} />
       <PhotoShowLayer photo={frame.photo} />
+      <ItemShowLayer itemId={frame.itemShow} quiet={!!frame.quiet} />
       {/* The date's heading (D4): its destination, or 「デート」 when it has none. */}
       <SceneHeading label={destination ? `${getCityContent(destination.cityId).city.nameJa} ／ ${destination.nameJa}` : "デート"} />
       {destination?.referenceImage && (

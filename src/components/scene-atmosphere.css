@@ -1,0 +1,196 @@
+/* The scene's atmosphere (2026-11-13 user decision; SceneAtmosphere.tsx), in the five story screens only. Decorative:
+   no presses, no focus, aria-hidden. Light on the processor: a few layers each, moved by `transform` and `opacity` only
+   (the compositor's work), standing still while the page is hidden ([data-paused]). Every movement has its still form
+   under reduced motion (the system's and 「演出を短縮する」, .reduce-motion; at the end of this file). */
+
+/* The colour of the time of day (SceneTint): inside the picture's own layer, over the picture and its quiet veil's
+   layer, so it never lies over a face or the window. A change passes over --motion-scene. */
+.scene-tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: background-color var(--motion-scene) var(--ease-out);
+}
+
+/* The weather (WeatherLayer): over the scene's picture (after it on the scene's bottom layer) and under the portraits and
+   the window, the whole scene (the picture runs on behind the header). It comes in like a picture (--motion-scene). */
+.weather-layer {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
+  contain: layout paint;
+  pointer-events: none;
+  animation: weather-in var(--motion-scene) var(--ease-out);
+}
+@keyframes weather-in {
+  from { opacity: 0; }
+}
+.weather-layer::before,
+.weather-layer::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+.weather-layer[data-paused],
+.weather-layer[data-paused]::before,
+.weather-layer[data-paused]::after,
+.weather-layer[data-paused] .weather-part,
+.weather-layer[data-paused] .weather-part::before {
+  animation-play-state: paused;
+}
+
+/* Rain: a faint grey-blue veil and two sheets of thin streaks falling at two speeds (each moves down by its own tile
+   and starts again, so the loop never shows). */
+.weather-layer[data-weather="rain"] {
+  background: rgba(64, 80, 104, 0.14);
+}
+.weather-layer[data-weather="rain"]::before,
+.weather-layer[data-weather="rain"]::after {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  will-change: transform;
+}
+.weather-layer[data-weather="rain"]::before {
+  top: -200px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='70' height='200'%3E%3Cg stroke='%23e8eff8' stroke-width='1.3' stroke-linecap='round' opacity='.55'%3E%3Cpath d='M9 12v34M47 78v30M28 140v36'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 70px 200px;
+  animation: weather-rain-near 0.45s linear infinite;
+}
+.weather-layer[data-weather="rain"]::after {
+  top: -150px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='150'%3E%3Cg stroke='%23dfe7f2' stroke-width='1' stroke-linecap='round' opacity='.35'%3E%3Cpath d='M6 20v20M30 70v18M18 118v22'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 46px 150px;
+  animation: weather-rain-far 0.6s linear infinite;
+}
+@keyframes weather-rain-near {
+  to { transform: translateY(200px); }
+}
+@keyframes weather-rain-far {
+  to { transform: translateY(150px); }
+}
+
+/* Dust: a warm haze rising from the ground that sways slowly, and fine motes drifting sideways through it. */
+.weather-layer[data-weather="dust"] {
+  background: linear-gradient(to bottom, rgba(214, 178, 120, 0.06), rgba(214, 178, 120, 0.14));
+}
+.weather-layer[data-weather="dust"]::before {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: -240px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='130'%3E%3Cg fill='%23fff4dc'%3E%3Ccircle cx='18' cy='22' r='1.6' opacity='.7'/%3E%3Ccircle cx='96' cy='64' r='1.1' opacity='.55'/%3E%3Ccircle cx='150' cy='18' r='1.4' opacity='.6'/%3E%3Ccircle cx='204' cy='96' r='1.8' opacity='.5'/%3E%3Ccircle cx='60' cy='112' r='1.2' opacity='.6'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 240px 130px;
+  animation: weather-dust-motes 26s linear infinite;
+}
+.weather-layer[data-weather="dust"]::after {
+  inset: 30% -10% -10%;
+  background: radial-gradient(ellipse 60% 55% at 30% 80%, rgba(222, 190, 136, 0.26), transparent 70%),
+    radial-gradient(ellipse 55% 50% at 75% 85%, rgba(222, 190, 136, 0.22), transparent 70%);
+  animation: weather-dust-haze 15s ease-in-out infinite alternate;
+}
+@keyframes weather-dust-motes {
+  to { transform: translateX(-240px); }
+}
+@keyframes weather-dust-haze {
+  from { transform: translateX(-3%); opacity: 0.7; }
+  to { transform: translateX(3%); opacity: 1; }
+}
+
+/* Colour powder (Holi): soft puffs of colour rising from below the window, growing and thinning as they go. */
+.weather-layer[data-weather="colors"] .weather-part {
+  position: absolute;
+  top: 82%;
+  left: var(--x);
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: radial-gradient(circle, hsla(var(--hue), 88%, 64%, 0.5) 0, hsla(var(--hue), 88%, 64%, 0.22) 42%, hsla(var(--hue), 88%, 64%, 0) 70%);
+  opacity: 0;
+  animation: weather-puff 8s ease-out infinite;
+}
+@keyframes weather-puff {
+  0% { opacity: 0; transform: translate(-50%, 0) scale(0.5); }
+  25% { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(-50%, -320%) scale(1.5); }
+}
+
+/* Petals: each falls the scene's height in its own column (its `transform` in the column's own height), swaying and
+   turning on the way. */
+.weather-layer[data-weather="petals"] .weather-part {
+  position: absolute;
+  top: 0;
+  left: var(--x);
+  width: var(--size);
+  height: 100%;
+  animation: weather-fall 11s linear infinite;
+}
+.weather-layer[data-weather="petals"] .weather-part::before {
+  content: "";
+  position: absolute;
+  top: calc(-1 * var(--size));
+  left: 0;
+  width: var(--size);
+  height: calc(var(--size) * 0.72);
+  border-radius: 80% 0 80% 0;
+  background: hsl(var(--hue), 72%, 87%);
+  box-shadow: inset -1px -1px 0 hsla(var(--hue), 60%, 70%, 0.6);
+  opacity: 0.85;
+  animation: weather-sway 2.8s ease-in-out infinite alternate;
+}
+.weather-layer[data-weather="petals"] .weather-part:nth-child(even)::before {
+  animation-duration: 3.4s;
+  animation-direction: alternate-reverse;
+}
+@keyframes weather-fall {
+  from { transform: translateY(0); }
+  to { transform: translateY(100%); }
+}
+@keyframes weather-sway {
+  from { transform: translateX(-14px) rotate(-30deg); }
+  to { transform: translateX(14px) rotate(45deg); }
+}
+
+/* Reduced motion: the weather stands still. Rain is its veil only, dust its haze without the motes, the powder its
+   soft colours where they rest, and four petals lie still across the scene. Nothing comes in over time. */
+.reduce-motion .weather-layer,
+.reduce-motion .weather-layer::after { animation: none; }
+.reduce-motion .weather-layer[data-weather="rain"]::before,
+.reduce-motion .weather-layer[data-weather="rain"]::after,
+.reduce-motion .weather-layer[data-weather="dust"]::before { display: none; }
+.reduce-motion .weather-layer[data-weather="colors"] .weather-part {
+  top: var(--rest-y);
+  opacity: 0.55;
+  transform: translate(-50%, -50%);
+  animation: none;
+}
+.reduce-motion .weather-layer[data-weather="petals"] .weather-part { animation: none; }
+.reduce-motion .weather-layer[data-weather="petals"] .weather-part:nth-child(n + 5) { display: none; }
+.reduce-motion .weather-layer[data-weather="petals"] .weather-part::before {
+  top: var(--rest-y);
+  transform: rotate(25deg);
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .weather-layer,
+  .weather-layer::after { animation: none; }
+  .weather-layer[data-weather="rain"]::before,
+  .weather-layer[data-weather="rain"]::after,
+  .weather-layer[data-weather="dust"]::before { display: none; }
+  .weather-layer[data-weather="colors"] .weather-part {
+    top: var(--rest-y);
+    opacity: 0.55;
+    transform: translate(-50%, -50%);
+    animation: none;
+  }
+  .weather-layer[data-weather="petals"] .weather-part { animation: none; }
+  .weather-layer[data-weather="petals"] .weather-part:nth-child(n + 5) { display: none; }
+  .weather-layer[data-weather="petals"] .weather-part::before {
+    top: var(--rest-y);
+    transform: rotate(25deg);
+    animation: none;
+  }
+  .scene-tint { transition: none; }
+}
+.reduce-motion .scene-tint { transition: none; }

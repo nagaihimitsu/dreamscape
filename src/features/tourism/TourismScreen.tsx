@@ -14,6 +14,9 @@ import { activeGuideStoryId, observationHotspots } from "../../domain/tourism";
 import type { GameState } from "../../domain/game";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
+import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
+import { ItemShowLayer } from "../../components/ItemShow";
+import { sceneTimeTint } from "../journey/time-of-day";
 import { lineCues, lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
@@ -185,9 +188,12 @@ export function TourismScreen({
         <div className="vn-scene tourism-guide-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-quiet={frame.quiet}>
           <div className="vn-background" data-testid="scene-picture">
             <CanalScene backgroundId={frame.background} imageAssetId={landmark.imageAssetId} />
+            <SceneTint color={sceneTimeTint(game.travel.minute, frame.tint === "off")} />
           </div>
+          <WeatherLayer weather={frame.weather} />
           <RecallLayer imageId={frame.recall} />
           <PhotoShowLayer photo={frame.photo} />
+          <ItemShowLayer itemId={frame.itemShow} quiet={!!frame.quiet} />
           <span className="sr-only">{asset.altJa}</span>
           <div className="vn-character-layer">
             <CharacterPortrait

@@ -55,8 +55,31 @@ export interface StoryTags {
    * or the scene's usual track again; frame-reader.ts keeps it to the scene's end).
    */
   bgm?: string;
+  /** `# item_show: <item ID>`: the item's card over the scene while the line is on screen (the line it is written on only). */
+  itemShow?: string;
+  /** `# weather: <kind>` / `# weather: stop`: the scene's weather from this line on (frame-reader.ts keeps it to the scene's end). */
+  weather?: WeatherKind | typeof WEATHER_STOP;
+  /** `# tint: off` / `# tint: on`: the colour of the time of day over the scene's picture, off or back on from this line. */
+  tint?: TintSwitch;
+  /** `# ambience: <ID>` / `# ambience: stop` / `# ambience: default`: the scene's ambience from this line on (as `# bgm:`). */
+  ambience?: string;
   effects: string[];
 }
+
+/**
+ * The scene's atmosphere tags (2026-11-13 user decision), presentation only, each from its line to the scene's end
+ * (frame-reader.ts): `# weather:` a light layer of rain, drifting dust, floating colour powder or falling petals over the
+ * scene's picture (`stop` ends it), `# tint:` the colour of the time of day over the picture (`off` for a picture that
+ * already shows its own evening or night, `on` again), `# ambience:` the sound of the place under the music
+ * (src/content/ambience.ts; `stop` silence, `default` the place's own again).
+ */
+export const WEATHER_KINDS = ["rain", "dust", "colors", "petals"] as const;
+export type WeatherKind = (typeof WEATHER_KINDS)[number];
+export const WEATHER_STOP = "stop";
+export const TINT_SWITCHES = ["off", "on"] as const;
+export type TintSwitch = (typeof TINT_SWITCHES)[number];
+/** An item's ID as `# item_show:` names it (content:build checks that the item exists in the story's journey). */
+export const ITEM_ID = /^[a-z][a-z0-9_]*$/u;
 
 /**
  * The scene tags (2026-11-11 user decision), presentation only, each a small closed set but `# recall:`:
@@ -111,13 +134,18 @@ export interface StoryPhoto {
 /**
  * How one line is shown, from its tags (presentation only; never the story or the game state):
  * `# pause: 600` waits that many milliseconds before its text starts (a tap shows it at once),
- * `# shake: window` shakes the dialogue window once, `# size: large` shows its text larger.
+ * `# shake: window` shakes the dialogue window once, `# shake` (or `# shake: small`, `# shake: large`) the scene itself
+ * once (its picture and its people; 2026-11-13), `# size: large` shows its text larger.
  */
 export interface LineDelivery {
   pauseMs?: number;
   shake?: true;
+  sceneShake?: SceneShakeSize;
   large?: true;
 }
+/** How hard a line's scene shake is: `# shake: small`, `# shake` alone (`normal`), `# shake: large`. */
+export const SCENE_SHAKE_SIZES = ["small", "normal", "large"] as const;
+export type SceneShakeSize = (typeof SCENE_SHAKE_SIZES)[number];
 /** The pause a line may take before its text starts (milliseconds). */
 export const LINE_PAUSE_MS = { min: 100, max: 3000 } as const;
 
@@ -131,9 +159,15 @@ function readDelivery(key: "pause" | "shake" | "size", value: string, delivery: 
     return { ...delivery, pauseMs: ms };
   }
   if (key === "shake") {
-    if (value !== "window") throw new Error(`Invalid shake tag: ${value} (write # shake: window)`);
-    if (delivery.shake) throw new Error("Duplicate shake tag");
-    return { ...delivery, shake: true };
+    // `# shake: window` shakes the dialogue window; `# shake` alone (value "") and its sizes the scene. One line may have both.
+    if (value === "window") {
+      if (delivery.shake) throw new Error("Duplicate shake tag");
+      return { ...delivery, shake: true };
+    }
+    const size = value === "" ? "normal" : value === "small" || value === "large" ? value : undefined;
+    if (!size) throw new Error(`Invalid shake tag: ${value} (write # shake, # shake: small, # shake: large or # shake: window)`);
+    if (delivery.sceneShake) throw new Error("Duplicate shake tag");
+    return { ...delivery, sceneShake: size };
   }
   if (value !== "large") throw new Error(`Invalid size tag: ${value} (write # size: large)`);
   if (delivery.large) throw new Error("Duplicate size tag");
@@ -160,10 +194,18 @@ export function parseStoryTags(
   let caption: string | undefined;
   let show: "large" | undefined;
   for (const tag of tags) {
-    if (tag.trim() === "later") continue;
+    const bare = tag.trim();
+    if (bare === "later") continue;
+    // `# shake` alone: the scene's shake (2026-11-13).
+    if (bare === "shake") {
+      result.delivery = readDelivery("shake", "", result.delivery ?? {});
+      continue;
+    }
     const separator = tag.indexOf(":");
-    const key = tag.slice(0, separator).trim();
-    const value = tag.slice(separator + 1).trim();
+    const key = separator < 0 ? bare : tag.slice(0, separator).trim();
+    const value = separator < 0 ? "" : tag.slice(separator + 1).trim();
+    if (key === "item_show" && !value)
+      throw new Error("Invalid item_show tag: name the item (write # item_show: <item ID>, an item of encounters/catalog.json)");
     if (separator < 1 || !value) throw new Error(`Invalid story tag: ${tag}`);
     if (key === "effect") {
       if (!context.effectIds.includes(value))
@@ -269,6 +311,27 @@ export function parseStoryTags(
         throw new Error(`Invalid bgm tag: ${value} (write # bgm: <ID>, a track of presentation/music.json, the file name of public/assets/bgm/<ID>.mp3; or # bgm: stop, # bgm: default)`);
       if (result.bgm) throw new Error("Duplicate bgm tag");
       result.bgm = value;
+    } else if (key === "item_show") {
+      // The item and its journey are checked by content:build (scripts/scene-effect-tags.ts), which knows each item's city.
+      if (!ITEM_ID.test(value)) throw new Error(`Invalid item_show tag: ${value} (write # item_show: <item ID>, an item of encounters/catalog.json)`);
+      if (result.itemShow) throw new Error("Duplicate item_show tag");
+      result.itemShow = value;
+    } else if (key === "weather") {
+      if (!(WEATHER_KINDS as readonly string[]).includes(value) && value !== WEATHER_STOP)
+        throw new Error(`Invalid weather tag: ${value} (write ${[...WEATHER_KINDS, WEATHER_STOP].map((item) => `# weather: ${item}`).join(", ")})`);
+      if (result.weather) throw new Error("Duplicate weather tag");
+      result.weather = value as WeatherKind | typeof WEATHER_STOP;
+    } else if (key === "tint") {
+      if (!(TINT_SWITCHES as readonly string[]).includes(value)) throw new Error(`Invalid tint tag: ${value} (write # tint: off or # tint: on)`);
+      if (result.tint) throw new Error("Duplicate tint tag");
+      result.tint = value as TintSwitch;
+    } else if (key === "ambience") {
+      // The track is checked by content:build (scripts/ambience-files.ts), which knows the registered tracks; `stop` and
+      // `default` have the same form.
+      if (!SOUND_ID.test(value))
+        throw new Error(`Invalid ambience tag: ${value} (write # ambience: <ID>, a track of presentation/ambience.json, the file name of public/assets/ambience/<ID>.mp3; or # ambience: stop, # ambience: default)`);
+      if (result.ambience) throw new Error("Duplicate ambience tag");
+      result.ambience = value;
     } else if (isSceneTagKey(key)) {
       readSceneTag(key, value, result);
     } else {

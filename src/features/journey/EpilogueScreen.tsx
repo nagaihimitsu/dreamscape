@@ -10,6 +10,9 @@ import { getJourneyForCity } from "../../content/journeys";
 import type { GameState } from "../../domain/game";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
+import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
+import { ItemShowLayer } from "../../components/ItemShow";
+import { sceneTimeTint } from "./time-of-day";
 import { lineCues, lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
@@ -120,9 +123,13 @@ export function EpilogueScreen({
       <div className="vn-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-quiet={frame.quiet} {...sceneTap.props}>
         <div className="vn-background" data-testid="scene-picture">
           <CanalScene backgroundId={frame.background} />
+          <SceneTint color={sceneTimeTint(game.travel.minute, frame.tint === "off")} />
         </div>
+        <WeatherLayer weather={frame.weather} />
         <RecallLayer imageId={frame.recall} />
         <PhotoShowLayer photo={frame.photo} />
+        {/* Not under an arrival's title card, which holds the first line. */}
+        <ItemShowLayer itemId={showLogo ? undefined : frame.itemShow} quiet={!!frame.quiet} />
         {/* With the scene's person on stage the two stand side by side (the encounter's slots); her
             portrait keeps its place in the tree, so it is not drawn again when they come in. */}
         <div className={`vn-character-layer${opposite ? " encounter-character-layer" : ""}`} data-two-characters={opposite ? true : undefined}>

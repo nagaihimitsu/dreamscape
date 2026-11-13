@@ -18,6 +18,8 @@ INCLUDE modules.ink
 // ───── -1：着いてすぐ、本筋の前。しおりの露店（道中交流）。完了すると、三時のしおりを受け取る。
 // # at: place は、この場所の観光地・デート・フィナーレのどの時点でも（段階4）。「また今度」を選ぶと、
 // 時計塔広場のデートやフィナーレの前に、もう一度出る（完了するまで）。
+// 行の札の例：しおりを手のひらにのせる行の # item_show:（その行のあいだ、品物の絵と名前を画面の真ん中に見せる。
+// 見せるだけで、品物はこの場面の終わりの # on_done: で手に入る）。
 === smp_mihon_bookmark_stall ===
 # scene: encounter
 # title: 三時のしおりの露店
@@ -33,6 +35,7 @@ INCLUDE modules.ink
 女の子「リリっていうの。トーマの妹。一枚ずつ、おまけでどうぞ」
 * [Could I have one, please? # option: ask # translation: 一枚もらえますか。]
     # speaker: narrator
+    # item_show: smp_mihon_three_bookmark
     リリはいちばん針のまっすぐな一枚を選んで、こちらの手のひらにのせた。
     # speaker: heroine
     # emotion: smile
@@ -205,7 +208,8 @@ INCLUDE modules.ink
 
 // ───── +2：この場所の後日談（会話）。鐘の銘は英語のまま見せ、訳はヒロインの台詞で言う。
 // 「鐘楼に上がらせてもらう」は AP を使い、ときめき（spark）が上がる。もう1つの選択肢は何も要らない（AP が0でも選べる）。
-// 行の札の例：鐘が鳴る行の # shake: window（会話の窓が1回揺れる）と、鐘の銘の行の # size: large（その行の字が大きく出る）。
+// 行の札の例：鐘が鳴る行の # shake: window（会話の窓が1回揺れる）と # shake: small（場面の絵と人物が1回小さく揺れる）、
+// 鐘の銘の行の # size: large（その行の字が大きく出る）。
 === smp_mihon_clock_bell ===
 # scene: talk
 # at: visit mihon_clock_tower
@@ -214,6 +218,7 @@ INCLUDE modules.ink
 # sources: none
 # speaker: narrator
 # shake: window
+# shake: small
 帰りぎわ、塔の鐘がひとつ鳴った。トーマが綱から手を離し、こちらに笑ってみせる。
 { cond("condition smp_mihon_lili_heard"):
     # speaker: heroine
@@ -274,10 +279,12 @@ Come back at three. Any three will do.
 // 手伝いの knot（頭の札なし）の中の選択は「場面の中の選択」：乱数を使わず、札の効果だけが当たる。
 // 行の札 # stand: は、ヒロインの立ち位置（apart 少し離れて・near いつもの位置・close すぐそば）。次の # stand: まで続く。
 // ここでは、ベンチの端に座る最初の行が apart、お茶の後の誘いが close、立ち上がる行が near。
+// 行の札 # weather: petals は、その行から場面の終わりまで、絵の上に花びらを散らす（場面の頭に書けば最初から。見せ方だけ）。
 === smp_mihon_date_tower_square ===
 # scene: date
 # when: episodes mihon >= 1
 # background: smp_bg_mihon_clock_tower
+# weather: petals
 # speaker: narrator
 # stand: apart
 時計塔の広場では、ベンチがどれも塔の方を向いている。{heroine_name}は一つを選んで、端に座った。
@@ -485,6 +492,7 @@ Come back at three. Any three will do.
 // ───── 宿の時点の -1（段階4）：眠る前（「休む」は昼でも選べる）。鐘を聞いた後の、最初の宿で（一度だけ）。
 // 夜だけにしたいときは # when: time night（21時に休むときも夜。時刻は宿に着いた時刻で読む）。
 // 行の札 # quiet: scene を頭に書くと、場面の最初の行から終わりまで静かな場面になる（上の帯が隠れ、字が少しゆっくり、背景が落ち着く）。
+// 行の札 # ambience: amb_night_insects は、その行から場面の終わりまで、BGMの下に共通の環境音（夜の虫の声）を小さく流す。
 === smp_mihon_hotel_bell_night ===
 # scene: talk
 # at: hotel mihon_hotel
@@ -493,6 +501,7 @@ Come back at three. Any three will do.
 # sources: none
 # background: smp_bg_mihon_hotel
 # quiet: scene
+# ambience: amb_night_insects
 # speaker: heroine
 「窓を開けると、まだ鐘の音が残ってる気がする。……今日、来てよかった」
 -> END

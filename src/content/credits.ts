@@ -2,15 +2,17 @@ import { z } from "zod";
 import imageJourneyData from "./generated/image-journeys.json";
 import soundData from "./generated/content/presentation/sounds.json";
 import musicData from "./generated/music.json";
+import ambienceData from "./generated/ambience.json";
 import { landmarks, presentation, tourismAssets } from "./index";
 import type { Journey } from "./journey-catalog";
 import { journeys } from "./journeys";
 import type { LandmarkDefinition, TourismAsset } from "./tourism-schemas";
 import { soundCatalogSchema, type SoundEntry, type SoundSource } from "./sounds";
 import { musicDataSchema } from "./music";
+import { ambienceDataSchema } from "./ambience";
 
 // The data of the credits list (「出典とライセンス」): the photos grouped by
-// journey and kind, the sound effects' and the music's sources, the map and font lines, and the
+// journey and kind, the sound effects', the music's and the ambience's sources, the map and font lines, and the
 // library licences that the production build writes. Pure functions, and photoCredits() over the
 // generated content for the screen. Artwork made for Dreamscape
 // (presentation/own-artwork.json) is never listed; only the note below says so.
@@ -172,6 +174,12 @@ export function soundCredits(): SoundCredit[] {
 export function musicCredits(): SoundCredit[] {
   const music = musicDataSchema.parse(musicData);
   return groupSoundCredits({ sources: music.sources, sounds: music.tracks });
+}
+
+/** The ambience's sources (every layer's presentation/ambience.json, generated/ambience.json), for the credits list: its tracks' uses. */
+export function ambienceCredits(): SoundCredit[] {
+  const ambience = ambienceDataSchema.parse(ambienceData);
+  return groupSoundCredits({ sources: ambience.sources, sounds: ambience.tracks });
 }
 
 /**

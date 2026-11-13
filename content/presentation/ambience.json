@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "aporee_52260_byewokko",
+      "titleJa": "Politických vězňů 1511/5, 110 00 Nové Město, Česko - Ambience in Kantýna restaurant",
+      "author": "byewokko",
+      "license": "CC BY-SA 3.0",
+      "checkedAt": "2026-11-13",
+      "url": "https://archive.org/details/aporee_45992_52260",
+      "site": "Internet Archive (radio aporee ::: maps)",
+      "creditJa": "\"Politických vězňů 1511/5, 110 00 Nové Město, Česko - Ambience in Kantýna restaurant\" by byewokko, licensed under Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0) https://creativecommons.org/licenses/by-sa/3.0/, source: radio aporee ::: maps / Internet Archive https://archive.org/details/aporee_45992_52260. Dreamscape では一部を切り出し、ループ化・モノラル化・帯域調整・音量調整して使用。"
+    },
+    {
+      "id": "aporee_39302_wu_tsancheng",
+      "titleJa": "草楠, 桃米里Puli Township - Rain",
+      "author": "Wu,Tsan-Cheng",
+      "license": "CC BY 3.0",
+      "checkedAt": "2026-11-13",
+      "url": "https://archive.org/details/aporee_32325_39302",
+      "site": "Internet Archive (radio aporee ::: maps)",
+      "creditJa": "\"草楠, 桃米里Puli Township - Rain\" by Wu,Tsan-Cheng, licensed under Creative Commons Attribution 3.0 (CC BY 3.0) https://creativecommons.org/licenses/by/3.0/, source: radio aporee ::: maps / Internet Archive https://archive.org/details/aporee_32325_39302. Dreamscape では一部を切り出し、ループ化・モノラル化・帯域調整・音量調整して使用。"
+    },
+    {
+      "id": "aporee_14201_udo_noll",
+      "titleJa": "Berlin, Treptow, allotment garden area - birds in bush",
+      "author": "udo noll",
+      "license": "CC BY-SA 3.0",
+      "checkedAt": "2026-11-13",
+      "url": "https://archive.org/details/aporee_12111_14201",
+      "site": "Internet Archive (radio aporee ::: maps)",
+      "creditJa": "\"Berlin, Treptow, allotment garden area - birds in bush\" by udo noll, licensed under Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0) https://creativecommons.org/licenses/by-sa/3.0/, source: radio aporee ::: maps / Internet Archive https://archive.org/details/aporee_12111_14201. Dreamscape では一部を切り出し、ループ化・モノラル化・帯域調整・音量調整して使用。"
+    },
+    {
+      "id": "aporee_74972_alessandro_melillo",
+      "titleJa": "Santo Stefano, 35, 39030 San Lorenzo di Sebato BZ, Italia - Crickets in late evening at Almdorf Haidenberg",
+      "author": "Alessandro Melillo",
+      "license": "CC BY 3.0",
+      "checkedAt": "2026-11-13",
+      "url": "https://archive.org/details/aporee_64920_74972",
+      "site": "Internet Archive (radio aporee ::: maps)",
+      "creditJa": "\"Santo Stefano, 35, 39030 San Lorenzo di Sebato BZ, Italia - Crickets in late evening at Almdorf Haidenberg\" by Alessandro Melillo, licensed under Creative Commons Attribution 3.0 (CC BY 3.0) https://creativecommons.org/licenses/by/3.0/, source: radio aporee ::: maps / Internet Archive https://archive.org/details/aporee_64920_74972. Dreamscape では一部を切り出し、ループ化・モノラル化・帯域調整・音量調整して使用。"
+    },
+    {
+      "id": "aporee_22903_felicity_ford",
+      "titleJa": "St. Ninian's Isle, Shetland Islands, UK - The wind in the rushes on St. Ninian's Isle",
+      "author": "Felicity Ford",
+      "license": "CC BY-SA 3.0",
+      "checkedAt": "2026-11-13",
+      "url": "https://archive.org/details/aporee_19720_22903",
+      "site": "Internet Archive (radio aporee ::: maps)",
+      "creditJa": "\"St. Ninian's Isle, Shetland Islands, UK - The wind in the rushes on St. Ninian's Isle\" by Felicity Ford, licensed under Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0) https://creativecommons.org/licenses/by-sa/3.0/, source: radio aporee ::: maps / Internet Archive https://archive.org/details/aporee_19720_22903. Dreamscape では一部を切り出し、ループ化・モノラル化・帯域調整・音量調整して使用。"
+    },
+    {
+      "id": "aporee_82042_georgescastagne",
+      "titleJa": "Place St Léger ,Chambéry, Auvergne-Rhône-Alpes, France - Foule",
+      "author": "georgescastagne",
+      "license": "CC BY 3.0",
+      "checkedAt": "2026-11-13",
+      "url": "https://archive.org/details/aporee_70370_82042",
+      "site": "Internet Archive (radio aporee ::: maps)",
+      "creditJa": "\"Place St Léger ,Chambéry, Auvergne-Rhône-Alpes, France - Foule\" by georgescastagne, licensed under Creative Commons Attribution 3.0 (CC BY 3.0) https://creativecommons.org/licenses/by/3.0/, source: radio aporee ::: maps / Internet Archive https://archive.org/details/aporee_70370_82042. Dreamscape では一部を切り出し、ループ化・モノラル化・帯域調整・音量調整して使用。"
+    }
+  ],
+  "tracks": [
+    {
+      "id": "amb_birds_park",
+      "useJa": "昼の庭・公園の小鳥のさえずり",
+      "sources": [
+        "aporee_14201_udo_noll"
+      ],
+      "fromJa": "ベルリン・トレプトーの市民農園で録った録音の1分16.3秒から60秒を切り出し、終わりに続く3秒を頭へ等パワーで重ねてつないだ（継ぎ目なしでくり返せる）。モノラル化し、120Hz以下と15kHz以上を弱め、-24 LUFSに整えた。"
+    },
+    {
+      "id": "amb_night_insects",
+      "useJa": "夜の屋外の虫の声（コオロギ・キリギリスの合唱）",
+      "sources": [
+        "aporee_74972_alessandro_melillo"
+      ],
+      "fromJa": "イタリア・南チロルの山の宿で夜（21時50分ごろ）に録った録音の1.7秒から60秒を切り出し、終わりに続く3秒を頭へ等パワーで重ねてつないだ（継ぎ目なしでくり返せる）。モノラル化し、150Hz以下と16kHz以上を弱め、-24 LUFSに整えた。"
+    },
+    {
+      "id": "amb_wind",
+      "useJa": "開けた場所を渡る風（草がそよぐ、嵐ではない）",
+      "sources": [
+        "aporee_22903_felicity_ford"
+      ],
+      "fromJa": "シェトランド諸島セント・ニニアンズ島の丘で録った録音の1分41.9秒から75秒を切り出し、終わりに続く3秒を頭へ等パワーで重ねてつないだ（継ぎ目なしでくり返せる）。モノラル化し、70Hz以下と14kHz以上を弱め、-24 LUFSに整えた。低い風のうなりを少し抑えた（250Hz以下を約6dB下げた）。"
+    },
+    {
+      "id": "amb_cafe_indoor",
+      "useJa": "屋内のカフェ・食堂のざわめきと食器の音",
+      "sources": [
+        "aporee_52260_byewokko"
+      ],
+      "fromJa": "プラハの食堂で録った録音の3分7.8秒から60秒を切り出し、終わりに続く3秒を頭へ等パワーで重ねてつないだ（継ぎ目なしでくり返せる）。モノラル化し、70Hz以下と14kHz以上を弱め、-24 LUFSに整えた。"
+    },
+    {
+      "id": "amb_rain",
+      "useJa": "降り続く雨（雷なし）",
+      "sources": [
+        "aporee_39302_wu_tsancheng"
+      ],
+      "fromJa": "台湾・埔里の早朝に録った録音の1分25秒から60秒を切り出し、終わりに続く3秒を頭へ等パワーで重ねてつないだ（継ぎ目なしでくり返せる）。モノラル化し、80Hz以下と15kHz以上を弱め、-24 LUFSに整えた。近くの雨粒の鋭い音はリミッターで抑えた。"
+    },
+    {
+      "id": "amb_crowd_outdoor",
+      "useJa": "広場の人だかりのざわめき",
+      "sources": [
+        "aporee_82042_georgescastagne"
+      ],
+      "fromJa": "フランス・シャンベリのサン・レジェ広場（クリスマスの催しの人だかり）で録った録音の3.3秒から48秒を切り出し、終わりに続く3秒を頭へ等パワーで重ねてつないだ（継ぎ目なしでくり返せる）。モノラル化し、80Hz以下と14kHz以上を弱め、-24 LUFSに整えた。57秒以降は音楽らしい音が入るため、その手前だけを使った。"
+    }
+  ]
+}
