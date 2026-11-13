@@ -60,6 +60,11 @@ const stopHiddenVoice = () => {
   if (playing) finish(playing, null);
 };
 
+/** English read aloud starts (src/audio/speech-audio.ts): the voice playing stops, as when the page is hidden. */
+export function stopLineVoice(): void {
+  if (playing) finish(playing, null);
+}
+
 /**
  * Plays the voice `voiceId` in place of the one playing. `onDone` hears "ended" when it played to its end, and null when
  * it could not load or play or was stopped (the returned function, the page hidden, the setting turned off, another
