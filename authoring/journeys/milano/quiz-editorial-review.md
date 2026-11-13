@@ -12,7 +12,7 @@
 | `duomo_candoglia_marble` | 差し替え候補 | 石の産地の暗記 | 石を選んだ人々の願いを、根拠を確認して探る。 |
 | `duomo_water_transport` | 切り口を変更 | 運搬手段の暗記 | 運河が運搬に使われた背景に人の工夫を探す。 |
 | `duomo_statue_copies` | 維持候補 | 像を守る選択が見える | 外に残すものと守るものの選択から入る。 |
-| `galleria_bull_city` | 維持候補 | 別都市の紋章という意外性 | ミラノの床に別都市の象徴がある理由を調べる。 |
+| `galleria_bull_city` | 維持候補（2026-11-13、`milano_galleria_bull_city` としてガッレリアの通常戦の第3問に採用） | 別都市の紋章という意外性 | ミラノの床に別都市の象徴がある理由を調べる。 |
 | `galleria_roof_materials` | 差し替え候補 | 屋根の材料の暗記 | 屋根の下を歩く人々の生活や願いを探す。 |
 | `galleria_city_passage` | 切り口を変更 | 施設の構造説明が中心 | 二つの広場を行き来する人の視点から問う。 |
 | `last_supper_central_triangle` | 切り口を変更 | 配置の識別に留まる | 周囲の反応と中央の静けさの対比を問う。 |

@@ -52,6 +52,7 @@ INCLUDE modules.ink
 お願い、十分だけ友達になって！
 # speaker: heroine
 # reaction: heroine,surprised,interrobang
+# voice: gt_delhi_main_humayun_tomb_001
 と、友達？　今から？
 # speaker: gt_mehr
 # cutin: name
@@ -67,6 +68,7 @@ INCLUDE modules.ink
 カビールは歴史学科だから、外国のお友達を案内してるってことにする。あなたたちは、わたしの文通相手。お願い！
 # speaker: heroine
 # emotion: worried
+# voice: gt_delhi_main_humayun_tomb_002
 え、でも、わたし、嘘は……
 # speaker: gt_delhi_humayun_man
 メヘル！
@@ -107,6 +109,7 @@ INCLUDE modules.ink
 ありがとう、あと少しだけ
 # speaker: heroine
 # emotion: worried
+# voice: gt_delhi_main_humayun_tomb_003
 ……ごめんなさい。黙ってるのも、嘘の一部みたいで、苦しいの
 # speaker: narrator
 メヘルの目が一瞬揺れた。けれど、叔父が振り返る方が早かった。
@@ -135,6 +138,7 @@ INCLUDE modules.ink
 クルタの胸ポケットから、赤いものが少しのぞいていた。薔薇だ。新聞で隠すように、彼は姿勢を変えた。
 # speaker: heroine
 # reaction: heroine,teasing,question
+# voice: gt_delhi_main_humayun_tomb_004
 ……あの、スレーシュさん。どなたかと、待ち合わせですか？
 # speaker: enemy
 # reaction: enemy,sweat
@@ -179,10 +183,12 @@ INCLUDE modules.ink
 メヘルが即答し、カビールが何度もうなずいた。三人の視線が、そろって{heroine_name}に向く。
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_main_humayun_tomb_005
 わたしは、誰にも言いません。言う相手もいないですし。……でも、いつかお母さんに、自分の口で言えたらいいなって思います。二人とも
 # speaker: enemy
 二人とも、とは。……わしも入っているのか
 # speaker: heroine
+# voice: gt_delhi_main_humayun_tomb_006
 入ってます
 # speaker: narrator
 スレーシュは落ちた新聞を拾い、少し笑った。
@@ -203,5 +209,6 @@ INCLUDE modules.ink
 叔父は東の門へ、若い二人は西の門へ。互いに振り返らないまま、別々の方向へ歩いていった。
 # speaker: heroine
 # reaction: heroine,exasperated,sigh
+# voice: gt_delhi_main_humayun_tomb_007
 ……わたし、嘘の友達になって、嘘の共犯者になって、最後は監査に通っちゃった
 -> END

@@ -76,7 +76,7 @@ INCLUDE modules.ink
 動かせた椅子が、うちまで動いてきた。そこをつないでくれる人がいればね
 # speaker: heroine
 # emotion: serious
-私、そこの証人にはなれません
+わたし、そこの証人にはなれません
 # speaker: narrator
 アダの手から布が落ちた。彼女は拾って、椅子の上に置いた。
 -> quiz(3) ->
@@ -206,7 +206,7 @@ INCLUDE modules.ink
     - else:
         # speaker: heroine
         # emotion: smile
-        いいお客さんですね。あ、こうやっておしゃべりしてるの、私のほうだ
+        いいお客さんですね。あ、こうやっておしゃべりしてるの、わたしのほうだ
     }
     -> join_1
 
@@ -271,10 +271,10 @@ INCLUDE modules.ink
     # memory: sound_memory_la_scala_date_01
     { romance_result == "negative":
         # speaker: heroine
-        もう一本だけ、私が役者でいたい。いい？
+        もう一本だけ、わたしが役者でいたい。いい？
     - else:
         # speaker: heroine
-        役者交代！　私は拍手しないよ、ちゃんと最後までは
+        役者交代！　わたしは拍手しないよ、ちゃんと最後までは
     }
     -> join_2
 

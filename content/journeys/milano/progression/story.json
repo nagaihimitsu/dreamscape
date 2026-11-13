@@ -10,12 +10,14 @@
     {
       "id": "milano_galleria_boy",
       "cityId": "milano",
-      "nameJa": "少年"
+      "nameJa": "少年",
+      "descriptionJa": "ガッレリアの雄牛のモザイクの前で、買ったばかりの靴を脱いでいた男の子。"
     },
     {
       "id": "milano_galleria_mother",
       "cityId": "milano",
-      "nameJa": "母親"
+      "nameJa": "母親",
+      "descriptionJa": "少年の母親。ガッレリアの出店の券を、何枚か預かっていた。"
     },
     {
       "id": "milano_galleria_bag_woman",
@@ -25,7 +27,8 @@
     {
       "id": "milano_rina",
       "cityId": "milano",
-      "nameJa": "リナ"
+      "nameJa": "リナ",
+      "descriptionJa": "ガッレリアの柱の陰で、手回しのプレス機で紋章を刷っていた出店の主。"
     },
     {
       "id": "milano_brera_woman",
@@ -40,7 +43,8 @@
     {
       "id": "milano_brera_student",
       "cityId": "milano",
-      "nameJa": "学生"
+      "nameJa": "学生",
+      "descriptionJa": "ブレラの中庭で素描をしていた学生。動き出す直前の膝が描けずにいた。"
     },
     {
       "id": "milano_castello_daughter",
@@ -50,17 +54,20 @@
     {
       "id": "milano_tino",
       "cityId": "milano",
-      "nameJa": "ティノ"
+      "nameJa": "ティノ",
+      "descriptionJa": "城の中庭で、小さなギターを親指で弾いていた少年。"
     },
     {
       "id": "milano_nora",
       "cityId": "milano",
-      "nameJa": "ノラ"
+      "nameJa": "ノラ",
+      "descriptionJa": "ドゥオモの前で、尖塔の上の像に向かってギターを弾いていた人。"
     },
     {
       "id": "milano_la_scala_candy_seller",
       "cityId": "milano",
-      "nameJa": "菓子売り"
+      "nameJa": "菓子売り",
+      "descriptionJa": "スカラ座の前で喉飴を売っていた人。常連の口論が長いほど、よく売れるという。"
     },
     {
       "id": "milano_la_scala_regular_man",
@@ -75,12 +82,14 @@
     {
       "id": "milano_ida",
       "cityId": "milano",
-      "nameJa": "イーダ"
+      "nameJa": "イーダ",
+      "descriptionJa": "声を休める兄に付き添っていた妹。兄の身振りを読む係。"
     },
     {
       "id": "milano_last_supper_brother",
       "cityId": "milano",
-      "nameJa": "兄"
+      "nameJa": "兄",
+      "descriptionJa": "夕方の舞台のために、声を休めていた兄。夕食の注文も手でする。"
     }
   ]
 }
