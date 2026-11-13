@@ -63,6 +63,8 @@ export const lazyDebugMarkers: readonly DevOnlyMarker[] = [
   { text: "消す（# tint: off）", source: "src/dev/effects-room.ts" },
   // 最初の3分の計測's note (2026-11-13; Debug mode only): GameApp loads it lazily in ⚙設定 while Debug mode is on.
   { text: "導入の計測：このタブで「旅をはじめる」から遊ぶと", source: "src/app/IntroTimingNote.tsx" },
+  // Debug's 台詞の声の速さ (2026-11-13; Debug mode only): GameApp loads it lazily in ⚙設定 while Debug mode is on.
+  { text: "録音した声を速く・ゆっくり聞いて", source: "src/app/DebugVoiceRate.tsx" },
   // 仮の場面 (in-memory test cities, shared by unit tests and Debug).
   { text: "仮の場面の元になる都市がありません", source: "src/dev/fixture-template.ts" },
 ];
