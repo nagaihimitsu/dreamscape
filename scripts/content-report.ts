@@ -24,7 +24,7 @@ export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-pre
   | "later-never-again" | "same-priority" | "repeat-without-until" | "data-language"
   | "never-met-again" | "romance-only-city" | "unfindable-clue" | "battle-after-epilogue" | "money-shortfall" | "ap-shortfall"
   | "scene-tag" | "special-date-ap" | "epilogue-unreachable" | "then-loop" | "earlier-item-start" | "tour-note" | "sound" | "music"
-  | "ambience";
+  | "ambience" | "voice-changed";
 export type ContentWarning = { kind: ContentWarningKind; message: string };
 /** How content:build counts each kind of warning. */
 export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
@@ -56,6 +56,7 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "sound": "sound effect note(s) (a journey's sound nothing plays, system sounds missing from the shared list)",
   "music": "music note(s) (a track that no play value or # bgm: plays)",
   "ambience": "ambience note(s) (a journey's ambience track that no play.places value or # ambience: plays)",
+  "voice-changed": "recorded line(s) whose text changed since the voice script was sent (record again; npm run voice:changes)",
 };
 
 /**

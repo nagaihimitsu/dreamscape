@@ -130,6 +130,7 @@ export const devModules = {
   content: "/src/content/index.ts",
   journeys: "/src/content/journeys.ts",
   encounters: "/src/content/encounters.ts",
+  encounter: "/src/domain/encounter.ts",
   debugState: "/src/dev/debug-state.ts",
   game: "/src/domain/game.ts",
   cityTravel: "/src/domain/city-travel.ts",
@@ -524,6 +525,16 @@ export const ops = {
   async toFreeTime(page: Page) {
     await page.getByRole("button", { name: "自由時間へ進む", exact: true }).click();
     await expect(page.getByTestId("travel-menu")).toBeVisible();
+  },
+  /**
+   * The result's 「自由時間へ進む」, then the scenes that follow the battle (Milan's 「切れた三本目」 after the Duomo's),
+   * played with their first choices, back to the travel menu. Returns the saved state there.
+   */
+  async toFreeTimeThroughScenes(page: Page): Promise<GameState> {
+    await page.getByRole("button", { name: "自由時間へ進む", exact: true }).click();
+    const state = await playUntil(page, (current) => !current.activeEncounter && !current.occasion);
+    await expect(page.getByTestId("travel-menu")).toBeVisible();
+    return state;
   },
   async toEpilogue(page: Page) {
     await page.getByRole("button", { name: "エピローグへ進む", exact: true }).click();

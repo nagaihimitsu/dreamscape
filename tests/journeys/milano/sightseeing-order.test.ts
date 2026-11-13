@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { advanceDate, chooseDate, createGame, finishDate, validateGameState, type GameState } from "../../../src/domain/game";
-import { getEpisodeAvailability, leaveBattleResult, startEpisode } from "../../../src/domain/chapter";
+import { getEpisodeAvailability, startEpisode } from "../../../src/domain/chapter";
 import { skipTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
 import { startBattle } from "../../../src/domain/battle";
-import { playBattleToResult } from "../../../src/dev/scenario-builders";
+import { leaveBattleResultAndScenes, playBattleToResult, playInsertedScenes } from "../../../src/dev/scenario-builders";
 import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, sleepAtHotel, waitForTravel } from "../../../src/domain/travel-game";
 
 const mainEpisodes = ["milano_duomo_episode", "milano_galleria_episode", "milano_last_supper_episode", "milano_castello_episode"];
@@ -13,10 +13,13 @@ function permutations<T>(items: readonly T[]): T[][] {
   return items.length === 0 ? [[]] : items.flatMap((item, i) => permutations(items.filter((_, j) => i !== j)).map((tail) => [item, ...tail]));
 }
 
-/** Execute the real battle rules and case evidence, rather than faking its receipt, and leave the result as its screen does. */
+/**
+ * Execute the real battle rules and case evidence, rather than faking its receipt, and leave the result as its screen does,
+ * with the scenes after it (a map visit's +N scenes, such as Nora's after the Duomo) played with their first choices.
+ */
 function completeBattle(initial: GameState): GameState {
   const state = playBattleToResult(initial);
-  return validateGameState(JSON.parse(JSON.stringify(leaveBattleResult(state, state.revision))));
+  return validateGameState(JSON.parse(JSON.stringify(leaveBattleResultAndScenes(state))));
 }
 
 describe("Milan independent main destinations", () => {
@@ -97,7 +100,8 @@ describe("Milan real travel itineraries", () => {
         }
         const started = beginTravelEvent(state, id, "walk", state.revision);
         expect(started).not.toBe(state);
-        state = started;
+        // The scenes before the main part (the finale's 「ダルセナの一音」 when Tino was met without the pick first).
+        state = playInsertedScenes(started);
         if (state.activeTourism) {
           if (state.activeTourism.phase === "guide") state = skipTourismGuide(state, state.revision);
           state = startTourismBattle(state, state.revision);

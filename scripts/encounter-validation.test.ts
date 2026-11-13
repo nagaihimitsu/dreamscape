@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import generatedCatalog from "../src/content/generated/content/encounters/catalog.json";
@@ -21,11 +21,14 @@ import { loadContentSources, storyFile } from "./content-sources";
 
 // These tests check the encounters of a catalog (encounters/catalog.json with one-scene stories) and Milan's items
 // (cityId "milano", the city of input()); other journeys in the generated catalog (e.g. the sample journey) have their own cities.
-// Milan's catalog keeps the Galleria fortune (its quiz and lottery); its other encounters became knots of its place files on
-// 2026-11-13, and the tests read them as test data in the catalog form they had until then (tests/fixtures/catalog-encounters/).
+// Milan's encounters became knots of its place files on 2026-11-13 (the Galleria wish the last, without its quiz and lottery), and
+// the tests read them as test data in the catalog form they had until then (tests/fixtures/catalog-encounters/). The wish has the
+// tests' own ID there (test_galleria_wish); here its lottery's prize is Milan's ticket again, as in that catalog.
 const milanLandmarks = new Set(tourismCatalogSchema.parse(tourismData).landmarks.filter((landmark) => landmark.cityId === "milano").map((landmark) => landmark.id));
 const FIXTURE = "tests/fixtures/catalog-encounters";
-const fixtureEncounters = (JSON.parse(readFileSync(path.join(FIXTURE, "catalog.json"), "utf8")) as { encounters: EncounterCatalog["encounters"] }).encounters;
+const WISH = "test_galleria_wish";
+const fixtureEncounters = (JSON.parse(readFileSync(path.join(FIXTURE, "catalog.json"), "utf8")) as { encounters: EncounterCatalog["encounters"] }).encounters
+  .map((event) => event.quiz ? { ...event, quiz: { ...event.quiz, rewardItemId: "galleria_ticket" } } : event);
 // Milan writes every encounter of its catalog in full (cityId, sources), the shape of encounterCatalogSchema (a place file's
 // scene in the generated catalog is the game's own record of it, without them: left out here).
 const catalogData = {
@@ -37,7 +40,7 @@ const catalog = encounterCatalogSchema.parse(catalogData);
 const paths = catalog.encounters.flatMap((event) => [event.storyId, ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : [])]);
 const contentSources = loadContentSources(process.cwd());
 const fixtureStory = (id: string) => path.join(FIXTURE, `${id}.ink`);
-const sources = Object.fromEntries(paths.map((id) => [id, readFileSync(fixtureEncounters.some((event) => event.storyId === id) ? fixtureStory(id) : storyFile(contentSources, id)!, "utf8")]));
+const sources = Object.fromEntries(paths.map((id) => [id, readFileSync(existsSync(fixtureStory(id)) ? fixtureStory(id) : storyFile(contentSources, id)!, "utf8")]));
 const stories = Object.fromEntries(Object.entries(sources).map(([id, source]) => [id, compileInk(source, `${id}.ink`)]));
 
 function input() {
@@ -118,7 +121,7 @@ describe("encounter content validation", () => {
     gift.options[0].requiresItemId = "galleria_ticket";
     expect(() => validateEncounterContent(data)).toThrow("matching requirement");
     gift.options[0].requiresItemId = "blue_pick";
-    // The ticket's source is the Fortune quiz; a second source would make the award ambiguous.
+    // The ticket's source is the wish's quiz; a second source would make the award ambiguous.
     data.catalog.encounters.find((event) => event.id === "duomo_string")!.completionItemId = "galleria_ticket";
     expect(() => validateEncounterContent(data)).toThrow("Duplicate encounter item source");
   });
@@ -150,7 +153,7 @@ describe("encounter content validation", () => {
       option[field] = previous;
     }
 
-    const fortune = data.catalog.encounters.find((event) => event.id === "galleria_fortune")!;
+    const fortune = data.catalog.encounters.find((event) => event.id === WISH)!;
     fortune.quiz!.rewardItemId = "foreign_item";
     expect(() => validateEncounterContent(data)).toThrow("Encounter quiz item city mismatch");
   });
@@ -190,7 +193,7 @@ describe("encounter content validation", () => {
 
   it("rejects wrong city, place, story, AP reward or response profile", () => {
     const data = input();
-    const event = data.catalog.encounters.find((item) => item.id === "galleria_fortune")!;
+    const event = data.catalog.encounters.find((item) => item.id === WISH)!;
     event.cityId = "missing_city";
     expect(() => validateEncounterContent(data)).toThrow("Unknown encounter city");
     event.cityId = "milano";
@@ -210,7 +213,7 @@ describe("encounter content validation", () => {
 
   it("allows a repeated paid choice and a paid 「また今度」 (rev. 5), but no item on a 「また今度」 of a catalog, and duplicate quiz questions", () => {
     const data = input();
-    const fortune = data.catalog.encounters.find((event) => event.id === "galleria_fortune")!;
+    const fortune = data.catalog.encounters.find((event) => event.id === WISH)!;
     fortune.options[0].cost = 4;
     expect(() => validateEncounterContent(data)).not.toThrow();
     fortune.options[0].cost = 0;
@@ -231,7 +234,7 @@ describe("encounter content validation", () => {
 
   it("allows a repeatable conversation sharing an AP reward, with item, money and choice effects too (rev. 5)", () => {
     const data = input();
-    const event = data.catalog.encounters.find((item) => item.id === "galleria_fortune")!;
+    const event = data.catalog.encounters.find((item) => item.id === WISH)!;
     expect(event.repeatable).toBe(true);
     expect(event.quiz?.chancePercent).toBe(25);
     expect(event.alternativeApRewardId).toBe("victory_galleria_first");

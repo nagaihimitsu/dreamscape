@@ -287,30 +287,30 @@
         "C": "かつて家具だけを売っていたから。"
       }
     },
-    "milano_galleria_q3": {
+    "milano_galleria_bull_city": {
       "source": {
-        "questionEn": "What did the Galleria offer people after the opera?",
+        "questionEn": "Which city does the bull mosaic in the Galleria represent?",
         "options": [
           {
             "id": "A",
-            "textEn": "A place to meet the orchestra on stage."
+            "textEn": "Milan."
           },
           {
             "id": "B",
-            "textEn": "A place to rehearse the next opera."
+            "textEn": "Venice."
           },
           {
             "id": "C",
-            "textEn": "A place to stroll and have dinner."
+            "textEn": "Turin."
           }
         ],
         "correctOptionId": "C"
       },
-      "questionJa": "オペラのあと、この通路は人々にどんな楽しみを提供しましたか。",
+      "questionJa": "ガッレリアの雄牛のモザイクが表す都市はどこ？",
       "optionsJa": {
-        "A": "舞台で楽団と会う場所。",
-        "B": "次のオペラの稽古をする場所。",
-        "C": "散策や夕食を楽しむ場所。"
+        "A": "ミラノ。",
+        "B": "ヴェネツィア。",
+        "C": "トリノ。"
       }
     },
     "milano_last_supper_q1": {

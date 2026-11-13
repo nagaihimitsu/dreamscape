@@ -3,7 +3,8 @@
    parchment tile with a gold hairline all round and a soft gold glow. */
 
 /* The layer: over the portraits (z-index 1, as a large photo) and under the window (z-index 2), in the area below the
-   header; the card sits in its upper middle, above the window. */
+   header; the card sits in its upper middle, above the window, and below the notices under the header (「写真の札」,
+   「ことばを覚えた」: their measured height --notices-h, GameApp), which would otherwise cover its top. */
 .item-show-layer {
   position: absolute;
   z-index: 1;
@@ -11,7 +12,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: clamp(16px, 7dvh, 64px) 16px 0;
+  padding: max(clamp(16px, 7dvh, 64px), calc(var(--notices-h, 0px) + 8px)) 16px 0;
   pointer-events: none;
 }
 .item-show-card {

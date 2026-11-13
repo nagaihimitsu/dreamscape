@@ -1,4 +1,4 @@
-import { encounterVisitSlot } from "../domain/encounter";
+import { encounterVisitSlot, landmarkVisitOrder } from "../domain/encounter";
 import { battles, dateDestinations, dates, episodes, getCities, getCityContent, getCityTours, getTour, landmarks, type CityContent } from "../content";
 import { isTourOnlyPlace } from "../content/travel-schemas";
 import { encounters } from "../content/encounters";
@@ -29,15 +29,19 @@ type Encounter = (typeof encounters.encounters)[number];
 
 /**
  * Debug's states hold no items: items come only from encounters. An encounter met while observing
- * starts with no encounter played before it, so one whose every choice needs an item never starts
- * there (its observation refuses it: 必要な品物を持っていません). One met before or after a
- * landmark's main part follows its moment, playing the encounters before it with their first
- * choices (startEncounterScene), which may give the item; when not, its start explains the rule.
+ * starts after the observation's scenes before it, played with their first choices (startEncounterScene),
+ * so one whose every choice needs an item that no such scene gives never starts there (its observation
+ * refuses it: 必要な品物を持っていません). One met before or after a landmark's main part follows its
+ * moment, playing the encounters before it with their first choices, which may give the item; when
+ * not, its start explains the rule.
  */
 function encounterTarget(item: Encounter): DebugTarget {
   if (encounterVisitSlot(item.id) !== "observe") return { id: item.id, name: item.titleJa };
+  const order = item.landmarkId ? landmarkVisitOrder(item.landmarkId, "observe") : [];
+  const givenBefore = new Set(order.slice(0, Math.max(0, order.indexOf(item.id)))
+    .map((id) => encounters.encounters.find((event) => event.id === id)?.completionItemId).filter((id): id is string => !!id));
   const choices = item.options.filter((option) => !option.deferCompletion);
-  const needed = choices.length && choices.every((option) => option.requiresItemId)
+  const needed = choices.length && choices.every((option) => option.requiresItemId && !givenBefore.has(option.requiresItemId))
     ? [...new Set(choices.map((option) => option.requiresItemId!))] : [];
   const names = needed.map((id) => `「${encounters.items.find((entry) => entry.id === id)?.nameJa ?? id}」`).join("・");
   return { id: item.id, name: item.titleJa, ...(needed.length ? { unavailable: `品物${names}が必要なため開けません`, unavailableKind: "item" as const } : {}) };

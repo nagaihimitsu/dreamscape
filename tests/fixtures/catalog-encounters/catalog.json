@@ -1,4 +1,25 @@
 {
+  "items": [
+    {
+      "id": "test_galleria_wish_ticket",
+      "cityId": "milano",
+      "nameJa": "試験用の展示券",
+      "descriptionJa": "試験用の願掛けのくじで当たる券。",
+      "iconPath": "assets/items/galleria-ticket.svg"
+    }
+  ],
+  "entryRules": [
+    {
+      "encounterId": "test_galleria_wish",
+      "at": [
+        "observe"
+      ],
+      "when": {
+        "episodeCompleted": "milano_galleria_episode"
+      },
+      "quizAfterLandmarkBattle": true
+    }
+  ],
   "encounters": [
     {
       "id": "duomo_string",
@@ -238,6 +259,107 @@
           "claimJa": "ブレラは身体の見え方を大胆に表現したマンテーニャの作品を所蔵する。"
         }
       ]
+    },
+    {
+      "id": "test_galleria_wish",
+      "cityId": "milano",
+      "sources": [
+        {
+          "publisher": "YesMilano",
+          "title": "Galleria Vittorio Emanuele II",
+          "url": "https://www.yesmilano.it/en/see-and-do/venues/galleria-vittorio-emanuele-ii",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリアは市民が出会い散策する場所。床の雄牛はトリノの紋章。"
+        },
+        {
+          "publisher": "YesMilano",
+          "title": "Galleria Vittorio Emanuele II",
+          "url": "https://www.yesmilano.it/en/see-and-do/venues/galleria-vittorio-emanuele-ii",
+          "checkedAt": "2026-11-02",
+          "claimType": "legend",
+          "claimJa": "雄牛の上でかかとを回すと幸運を招く、という願掛けの風習がある。"
+        }
+      ],
+      "titleJa": "試験用の願掛け",
+      "descriptionJa": "試験用の願掛け。クイズと展示券のくじがある。",
+      "storyId": "encounters/test_galleria_wish",
+      "repeatable": true,
+      "alternativeApRewardId": "victory_galleria_first",
+      "options": [
+        {
+          "id": "believe",
+          "cost": 0
+        },
+        {
+          "id": "doubt",
+          "cost": 0
+        },
+        {
+          "id": "leave",
+          "cost": 0,
+          "deferCompletion": true
+        }
+      ],
+      "quiz": {
+        "question": {
+          "id": "test_galleria_wish_bull_city",
+          "questionEn": "Which city does the bull mosaic in the Galleria represent?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Milan."
+            },
+            {
+              "id": "B",
+              "textEn": "Turin."
+            },
+            {
+              "id": "C",
+              "textEn": "Venice."
+            }
+          ],
+          "correctOptionId": "B",
+          "vocabularyJa": [
+            {
+              "word": "mosaic",
+              "meaning": "モザイク"
+            },
+            {
+              "word": "represent",
+              "meaning": "表す"
+            }
+          ],
+          "hintJa": "床のそばの案内を思い出そう。",
+          "correctExplanationJa": "雄牛はトリノの紋章。ミラノの床で、別の街の印の上に人が集まっている。",
+          "incorrectExplanationJa": "床がある都市はミラノ。描かれた雄牛が表す都市はトリノで、ヴェネツィアでもない。",
+          "sources": [
+            {
+              "publisher": "YesMilano",
+              "title": "Galleria Vittorio Emanuele II",
+              "url": "https://www.yesmilano.it/en/see-and-do/venues/galleria-vittorio-emanuele-ii",
+              "checkedAt": "2026-11-02",
+              "claimType": "documented_fact",
+              "claimJa": "ガッレリアの床にある雄牛はトリノ市の紋章。"
+            }
+          ],
+          "difficulty": "easy"
+        },
+        "translations": {
+          "questionJa": "ガッレリアの雄牛のモザイクが表す都市はどこ？",
+          "options": {
+            "A": "ミラノ。",
+            "B": "トリノ。",
+            "C": "ヴェネツィア。"
+          }
+        },
+        "chancePercent": 25,
+        "rewardItemId": "test_galleria_wish_ticket",
+        "wonStoryId": "encounters/test_galleria_wish_won",
+        "lostStoryId": "encounters/test_galleria_wish_lost",
+        "alreadyStoryId": "encounters/test_galleria_wish_already"
+      },
+      "landmarkId": "galleria_vittorio_emanuele_ii"
     }
   ]
 }

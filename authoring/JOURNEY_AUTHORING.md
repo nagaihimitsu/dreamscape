@@ -4,6 +4,8 @@
 
 インド3都市は脚本51本（どれも場所のファイルの knot：観光案内・到着・エピローグ・デート・バトル）・クイズ51問・デート24件（宿の屋上の告白と「待って」の後の6件を含む）・都市フィナーレ3件を登録済みです。今の脚本の設計は[インド編改稿の設計](journeys/golden_triangle/drafts/SCENARIO_REWRITE.md)、旧稿の脚本・出典・検証の方法は[完成版の構成と制作記録](journeys/golden_triangle/drafts/scenario/README.md)にあります。登録済みInkは `content/journeys/golden_triangle/stories/` のみを編集し、クイズは同じフォルダの `quizzes/` と対訳、メタデータは対応するカタログを更新します。制作時の `narrative.json` は初期登録入力として残し、更新内容を自動同期する正本にはしません。以下の新規登録手順は、未制作のウズベキスタン編などにも利用できます。
 
+都市を1つ足すときの作業の順番と、同時に進められる作業は [新しい都市を1つ足す手引き](NEW_CITY_GUIDE.md) にあります。
+
 ## 編集するもの
 
 - 都市の施設・営業時間のゲーム設定・料金・交通・写真・出典：既存の [city:bundle](CITY_BUNDLES.md) で都市単位に編集。

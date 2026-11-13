@@ -1,8 +1,6 @@
-// 道中交流「回らない願掛け」（encounters/catalog.json の galleria_fortune）。
-// 今は、ガッレリアの最初の観察から「進む」でバトルへ向かうときに、いつも最初に起こる。
-// 入場ルールに quizAfterLandmarkBattle があるので、条件『ガッレリアを終えた』（when の episodeCompleted）は問わない。
-// まだガッレリアのバトルを戦っていないので、クイズなしで話が終わる。クイズの後の3つの場面（_won・_lost・_already）は今は起こらない。
-// シナリオの改稿で見直す（2026-11-08 のユーザー判断）。それまで起こる時は変えない。変えたら、このコメントも直す。
+// Test fixture (not game content): the Galleria's wish in the one-scene form of a catalog encounter, with its quiz and
+// ticket lottery, as Milan had it until 2026-11-13 (the game's wish is the knot galleria_fortune of places/milano_galleria.ink,
+// without a quiz or a lottery). Its IDs are the tests' own (test_galleria_wish…), for the tests of the catalog's quiz and lottery.
 VAR player_name = ""
 VAR heroine_name = ""
 VAR player_address = ""

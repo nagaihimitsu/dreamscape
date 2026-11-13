@@ -49,6 +49,7 @@ import { sceneMusic, type MusicScreen } from "../audio/scene-music";
 import { journeyAmbiencePlay, useAmbienceSettings, useSceneAmbience } from "../audio/ambience";
 import { sceneAmbience } from "../audio/scene-ambience";
 import { useReadLines } from "../components/useReadLines";
+import { useMeasuredHeight } from "../components/useMeasuredHeight";
 import { RomanceScene } from "../features/romance/RomanceScene";
 import { Modal, ModalTitle } from "../components/Modal";
 import { ConfirmActionButton } from "../components/ConfirmActionButton";
@@ -212,6 +213,8 @@ export function GameApp({
   const momentsRef = useRef<((previous: GameState, next: GameState) => void) | null>(null);
   // 「写真の札」 (AlbumPhotoNotice): the photo the player's last action put in the album, for a few seconds.
   const [photoNotice, setPhotoNotice] = useState<AlbumPhotoNoticeState | null>(null);
+  // The notices' height under the header (--notices-h): an item card or a large photo starts below them (item-show.css).
+  const noticesHeight = useMeasuredHeight("--notices-h");
   // What the player has looked at during this play (seen-marks.ts): the held items in their open detail, the clues in
   // 手がかり帳 and the entries of 英語ノート; one not looked at has its dot (and 「NEW」). In this tab's memory only:
   // a new game, a load and Debug's return empty it (null), and then everything there is counts as seen (below).
@@ -730,7 +733,7 @@ export function GameApp({
         {/* Only where a line can teach a word or take a photo: a story scene of a build with words of the country or
             album images. Their status regions stay mounted through the scene, so a new notice is announced. */}
         {conversationActive && (localWords.length > 0 || albumImages.length > 0) && (
-          <div className="scene-notices">
+          <div className="scene-notices" ref={noticesHeight}>
             {localWords.length > 0 && <LocalWordNotice notice={learnedWords.notice} />}
             {albumImages.length > 0 && <AlbumPhotoNotice notice={shownPhotoNotice} />}
           </div>
