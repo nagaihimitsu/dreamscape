@@ -1,0 +1,170 @@
+/* Debug's 「音と演出の見本」 (EffectsRoom.tsx): a working page for one hand on a phone (320–390 px), 44 px targets.
+   Pressables are parchment rectangles with a slate edge (pressed: slate), state notes sit on their own ground, and no
+   card has a thick edge on one side. The sample stage reuses the game's own scene, header and notices. */
+.effects-room {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 12px 16px 24px;
+  color: var(--ds-ink);
+}
+.effects-room-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.effects-room h1 { margin: 0; font-size: 20px; line-height: 1.4; }
+.effects-room h2 { margin: 28px 0 8px; font-size: 18px; line-height: 1.4; letter-spacing: 0; }
+/* The room's own text only: the sample screen keeps the game's own sizes and margins. */
+.effects-room h3:not(.effects-room-screen *) { margin: 16px 0 6px; font-size: 14px; font-weight: 600; line-height: 1.4; }
+.effects-room p:not(.effects-room-screen *) { margin: 6px 0; font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+.effects-room button.effects-room-close {
+  flex: none;
+  min-height: 44px;
+  padding: 6px 12px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font-size: 13px;
+}
+.effects-room-note {
+  padding: 10px 12px;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+}
+/* A setting that is off, a missing list: a note on its own ground, not a pressable. */
+.effects-room p.effects-room-off {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #f1e7d1;
+}
+
+/* The jumps to the sections. */
+.effects-room-jump { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
+.effects-room-jump a {
+  display: inline-flex;
+  align-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: var(--ds-parchment-2);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+/* Rows of pressables, and the lists of sounds (two columns from 320 px). */
+.effects-room-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.effects-room button.effects-room-chip {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 6px 12px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.effects-room button.effects-room-chip:hover:enabled:not([aria-pressed="true"], [data-playing]) { background: var(--ds-parchment-2); }
+.effects-room button.effects-room-chip:is([aria-pressed="true"], [data-playing]) { background: var(--ds-slate-800); color: var(--ds-on-slate); }
+.effects-room button.effects-room-chip:disabled {
+  opacity: 1;
+  border-color: transparent;
+  background: var(--ds-disabled-bg);
+  color: var(--ds-disabled-ink);
+}
+.effects-room-sounds {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(136px, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.effects-room-sounds button.effects-room-chip {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+}
+.effects-room-id { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; overflow-wrap: anywhere; }
+.effects-room-use { font-size: 12px; color: var(--ds-ink-muted); }
+.effects-room button[aria-pressed="true"] .effects-room-use { color: var(--ds-on-slate-muted); }
+.effects-room button:disabled .effects-room-use { color: inherit; }
+.effects-room-voice-group { margin: 8px 0 12px; }
+.effects-room-voice-group > p.effects-room-id { margin: 0 0 4px; }
+.effects-room-voice-group button.effects-room-chip { min-width: 56px; }
+
+/* Settings and fields. */
+.effects-room-toggle { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px; line-height: 1.5; }
+.effects-room-toggle input { flex: none; width: 22px; height: 22px; margin: 0; }
+.effects-room-volume {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 3.2em;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-size: 14px;
+}
+.effects-room-volume input { width: 100%; min-height: 44px; margin: 0; }
+.effects-room-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin: 8px 0; }
+.effects-room-field { display: grid; gap: 4px; margin: 6px 0; font-size: 13px; }
+.effects-room-field select,
+.effects-room-field input {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 6px 8px;
+  border: 1px solid var(--ds-field-edge);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ds-ink);
+  font-size: 14px;
+}
+.effects-room-elsewhere { margin: 6px 0; padding-left: 20px; font-size: 14px; line-height: 1.6; }
+.effects-room-elsewhere li { margin: 4px 0; }
+
+/* The sample screen: the game's header over a short story scene. The header stays in the page's flow here (in the game
+   it sticks to the top), and the photo card sits right under it, over the scene, as the game places it. */
+.effects-room-screen { position: relative; margin: 10px 0; background: var(--ds-slate-900); }
+.effects-room-screen .journey-hud { position: relative; }
+.effects-room-stage-area { position: relative; }
+.vn-scene.effects-room-stage { min-height: 0; height: clamp(300px, 56dvh, 460px); }
+.effects-room-stage .vn-dialogue.effects-room-window { width: 92%; }
+.scene-notices.effects-room-notices { position: absolute; top: 0; }
+/* 「呼吸を止めて比べる」: the portrait's breathing only, for the comparison (the game never stops it but under reduced motion). */
+.effects-room-screen[data-breath="still"] .vn-character > :is(img, svg) { animation: none; }
+@media (max-width: 700px) {
+  /* As the game: the scene runs the phone's whole width. */
+  .effects-room-screen { margin-inline: -16px; }
+}
+
+/* What plays now, with its stop, at the bottom while the page scrolls under it. */
+.effects-room-now {
+  position: sticky;
+  bottom: 0;
+  z-index: 30;
+  display: grid;
+  gap: 4px;
+  margin: 20px -16px 0;
+  padding: 6px 16px calc(6px + env(safe-area-inset-bottom));
+  background: var(--ds-slate-900);
+  color: var(--ds-on-slate);
+}
+.effects-room-now-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; line-height: 1.4; }
+.effects-room-now-row span { min-width: 0; overflow-wrap: anywhere; }
+.effects-room-now-row button {
+  flex: none;
+  min-width: 64px;
+  min-height: 44px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font-size: 13px;
+}

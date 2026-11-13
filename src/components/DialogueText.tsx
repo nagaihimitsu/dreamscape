@@ -19,8 +19,9 @@ export const DIALOGUE_WINDOW_ATTRIBUTE = "data-dialogue-window";
 /**
  * The one shake of a line's `# shake: window`: sideways only, short, on `translate` (it adds to
  * any transform the window has and never moves the layout). None under reduced motion.
+ * Debug's 音と演出の見本 (src/dev/EffectsRoom.tsx) shakes its sample window with it.
  */
-function shakeWindow(line: HTMLElement) {
+export function shakeWindow(line: HTMLElement) {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || line.closest(".reduce-motion")) return;
   const target = line.closest<HTMLElement>(`[${DIALOGUE_WINDOW_ATTRIBUTE}]`) ?? line;
   target.animate?.(
@@ -37,8 +38,11 @@ const SCENE_ROOT = ".vn-scene, .battle-screen";
 const SHAKEN_PICTURE = ":scope > .vn-background, :scope > .battle-backdrop, :scope > .weather-layer";
 const SHAKEN_PEOPLE = ":scope > .vn-character-layer, :scope > .battle-stage";
 
-/** The one shake of a line's `# shake` (`size`): the scene's picture and people, briefly. None under reduced motion. */
-function shakeScene(line: HTMLElement | null, size: SceneShakeSize) {
+/**
+ * The one shake of a line's `# shake` (`size`): the scene's picture and people, briefly. None under reduced motion.
+ * Debug's 音と演出の見本 (src/dev/EffectsRoom.tsx) shakes its sample scene with it.
+ */
+export function shakeScene(line: HTMLElement | null, size: SceneShakeSize) {
   const root = line?.closest<HTMLElement>(SCENE_ROOT);
   if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches || root.closest(".reduce-motion")) return;
   const options = { duration: SCENE_SHAKES[size].ms, easing: "ease-out" };

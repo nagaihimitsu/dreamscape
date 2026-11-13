@@ -32,6 +32,16 @@ describe("production build guard", () => {
     }
   });
 
+  it("keeps Debug's 音と演出の見本 out of the title page with a marker of its own", () => {
+    // The room (2026-11-13) ships as Debug's lazy code: DebugMode shows it, and only DebugMode imports it.
+    const room = ["src/dev/EffectsRoom.tsx", "src/dev/effects-room.ts"];
+    expect(lazyDebugMarkers.filter((marker) => room.includes(marker.source)).map((marker) => [marker.source, marker.text])).toEqual([
+      ["src/dev/EffectsRoom.tsx", "ここでの音の設定はこの部屋だけのもので"],
+      ["src/dev/effects-room.ts", "消す（# tint: off）"],
+    ]);
+    expect(devOnlyMarkers.some((marker) => room.includes(marker.source))).toBe(false);
+  });
+
   it("finds nothing in a build without development code", () => {
     expect(findDevOnlyCode(cleanBuild)).toEqual([]);
     expect(findDebugCodeOnTitle(cleanBuild, ["index.html", ...eagerFiles(cleanBuild[0].text!)])).toEqual([]);
@@ -256,7 +266,7 @@ describe("Debug's code in the game's sources", () => {
     const shipped = readdirSync(path.join(root, "src/dev"), { recursive: true, encoding: "utf8" })
       .map((file) => `src/dev/${file.split(path.sep).join("/")}`)
       .filter((file) => /\.tsx?$/.test(file) && !/\.test\.tsx?$/.test(file));
-    expect(shipped).toEqual(expect.arrayContaining(["src/dev/DebugMode.tsx", "src/dev/scenario-builders.ts", "src/dev/test-cities.ts"]));
+    expect(shipped).toEqual(expect.arrayContaining(["src/dev/DebugMode.tsx", "src/dev/EffectsRoom.tsx", "src/dev/scenario-builders.ts", "src/dev/test-cities.ts"]));
     expect(shipped.flatMap((file) => runtimeImports(read(file)).filter((specifier) => testImport.test(specifier))
       .map((specifier) => `${file} → ${specifier}`))).toEqual([]);
   });
