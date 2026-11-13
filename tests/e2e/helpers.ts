@@ -524,10 +524,6 @@ export const ops = {
     await page.getByTestId("tourism-skip").click();
     await page.getByRole("button", { name: "進む", exact: true }).click();
   },
-  async toFreeTime(page: Page) {
-    await page.getByRole("button", { name: "自由時間へ進む", exact: true }).click();
-    await expect(page.getByTestId("travel-menu")).toBeVisible();
-  },
   /**
    * The result's 「自由時間へ進む」, then the scenes that follow the battle (Milan's 「切れた三本目」 after the Duomo's),
    * played with their first choices, back to the travel menu. Returns the saved state there.
