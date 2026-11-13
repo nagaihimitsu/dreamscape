@@ -54,7 +54,7 @@ describe("Raju's haggle at Jaigarh", () => {
   it("plays on Raju's price line, おまかせ's fair deal, with one choice per outcome", () => {
     const state = atHaggle();
     const game = openMiniGame(state)!;
-    expect(game.tag).toEqual({ id: "raju_haggle", auto: "fair_map" });
+    expect(game.tag).toEqual({ id: "raju_haggle", auto: "fair_map", bg: "gt_bg_jaipur_jaigarh_fort" });
     expect(state.activeDate!.frame.text).toContain("五十ルピー");
     expect(game.choices.map((choice) => choice.optionId)).toEqual(OUTCOMES);
     expect(listPlayerActions(state)).toEqual(OUTCOMES.map((outcome) => ({ kind: "minigame", outcome })));
@@ -110,6 +110,6 @@ describe("Raju's haggle at Jaigarh", () => {
     if (loaded.status !== "loaded") return;
     expect(openMiniGame(loaded.state)?.tag.id).toBe("raju_haggle");
     expect(miniGameAvailableOutcomes(loaded.state)).toEqual(["fair_map", "haggle_map", "decline_map"]);
-    expect(JSON.stringify(loaded.state.activeDate!.frame.minigame)).toBe(JSON.stringify({ id: "raju_haggle", auto: "fair_map" }));
+    expect(JSON.stringify(loaded.state.activeDate!.frame.minigame)).toBe(JSON.stringify({ id: "raju_haggle", auto: "fair_map", bg: "gt_bg_jaipur_jaigarh_fort" }));
   });
 });
