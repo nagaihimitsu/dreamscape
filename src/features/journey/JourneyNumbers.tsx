@@ -33,26 +33,24 @@ function CountUp({ value, format = String, reduceMotion }: { value: number; form
 
 /**
  * 旅の数字 (2026-11-13 user decision; journey-numbers.ts): the journey in a few numbers, at the end roll and in 旅の記録.
- * A line without a whole-journey number to tell (the days or rides not known for the journey, no money record, no ride
- * yet) is left out. Read-only; nothing in it is a relationship value or an English score.
+ * A line without a whole-journey number to tell (the days not known for the journey, no money record) is left out.
+ * Read-only; nothing in it is a relationship value or an English score.
  */
 export function JourneyNumbersCard({ numbers, reduceMotion }: { numbers: JourneyNumbers; reduceMotion: boolean }) {
   const id = useId();
   const count = (value: number, unit: string) => <CountUp value={value} reduceMotion={reduceMotion} format={(shown) => `${shown}${unit}`} />;
-  const rows: { label: string; value: ReactNode; wide?: true }[] = [
+  const rows: { label: string; value: ReactNode }[] = [
     ...(numbers.days !== null ? [{ label: "旅の日数", value: count(numbers.days, "日") }] : []),
     { label: "訪ねた場所", value: count(numbers.places, "か所") },
     { label: "出会った人", value: count(numbers.people, "人") },
     { label: "覚えたその国の言葉", value: count(numbers.localWords, "語") },
     { label: "アルバムの写真", value: count(numbers.photos, "枚") },
     ...(numbers.spent ? [{ label: "使ったお金", value: numbers.spent.textJa }] : []),
-    ...(numbers.rides?.length ? [{ label: "乗った乗り物",
-      value: numbers.rides.map((ride) => `${ride.nameJa} ${ride.count}回`).join("・"), wide: true as const }] : []),
   ];
   return <section className="journey-numbers" aria-labelledby={`${id}-title`} data-testid="journey-numbers">
     <h3 id={`${id}-title`}>旅の数字</h3>
     <dl>
-      {rows.map((row) => <div key={row.label} className={row.wide ? "is-wide" : undefined}>
+      {rows.map((row) => <div key={row.label}>
         <dt>{row.label}</dt>
         <dd>{row.value}</dd>
       </div>)}

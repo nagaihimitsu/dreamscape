@@ -64,6 +64,22 @@ export const journeyCatalogSchema = z.object({
     openingMovie: z.object({
       videoPath: z.string().regex(/^assets\/(?!.*\.\.)[a-zA-Z0-9_./-]+\.mp4$/),
     }).strict().optional(),
+    // Where the journey's line voices (`# voice:`, its public/assets/voice/) come from (2026-11-13), for 「出典・権利の
+    // 一覧」 (src/content/credits.ts voiceCredits): only on a journey with voice files (content:build checks it).
+    voiceCredits: z.array(z.object({
+      /** Whose voices, as the list names them (「ヒロインの声」). */
+      useJa: text,
+      /** The work that made them, as the list names it (「音声合成 Irodori-TTS v4.1-Small」). */
+      titleJa: text,
+      author: text,
+      /** The licence as its page names it (「MIT License」). */
+      license: text,
+      checkedAt: z.iso.date(),
+      /** The work's page. */
+      url: z.url({ protocol: /^https$/ }),
+      /** The credit or citation its author asks for, shown as written. */
+      creditJa: text.optional(),
+    }).strict()).min(1).optional(),
   }).strict()).min(1),
 }).strict().superRefine((catalog, context) => {
   const journeyIds = new Set<string>();
