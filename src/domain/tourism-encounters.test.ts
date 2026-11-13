@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { encounters } from "../content/encounters";
 import { createGame, type GameState } from "./game";
 import { openTourism } from "./tourism";
-import { advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter, getTourismEncounterAvailability, proceedFromTourism, startTourismEncounter } from "./encounter";
+import { advanceEncounter, chooseEncounter, encounterVisitSlot, continueTourismEncounters, encounterCanFinish, finishEncounter, getTourismEncounterAvailability, proceedFromTourism, startTourismEncounter } from "./encounter";
 
 const battleRecord = (battleId: string) => ({ battleId, attempts: 1, firstScore: 0, bestScore: 0, lastScore: 0 });
 
@@ -11,6 +11,8 @@ function visit(landmarkId: string): GameState {
     completedEpisodeIds: ["milano_duomo_episode", "milano_galleria_episode", "milano_last_supper_episode", "milano_castello_episode"],
     battleRecords: ["milano_galleria_01", "milano_la_scala_b01", "milano_brera_c01"].map(battleRecord),
     inventory: { blue_pick: "held" as const, galleria_ticket: "held" as const },
+    // The wish done: its ticket talk follows it.
+    completedEncounterIds: ["galleria_fortune"], seenEncounterIds: ["galleria_fortune"],
   };
   const result = openTourism(state, landmarkId);
   expect(result.activeTourism?.phase).toBe("exploring");
@@ -18,8 +20,9 @@ function visit(landmarkId: string): GameState {
 }
 
 describe("automatic place encounters", () => {
-  // Milan's encounters, met in a Milan game (other journeys' encounters belong to their own cities).
-  it.each(encounters.encounters.filter((event) => event.cityId === "milano").map((event) => [event.id, event.landmarkId!]))
+  // Milan's encounters met while observing, in a Milan game (other journeys' encounters belong to their own cities; the scenes
+  // before or after a landmark's main part start at those moments).
+  it.each(encounters.encounters.filter((event) => event.cityId === "milano" && encounterVisitSlot(event.id) === "observe").map((event) => [event.id, event.landmarkId!]))
     ("introduces %s when its location and existing conditions are met", (id, landmarkId) => {
       const state = visit(landmarkId);
       expect(getTourismEncounterAvailability(state, id).available).toBe(true);
@@ -39,18 +42,17 @@ describe("automatic place encounters", () => {
       const active = state.activeEncounter;
       if (seen.at(-1) !== active.encounterId) seen.push(active.encounterId);
       const before = state;
-      const choiceId = active.encounterId === "galleria_fortune" ? "believe" : active.encounterId === "galleria_print" ? "sample" : "later";
+      const choiceId = active.encounterId === "galleria_fortune" ? "believe" : "later";
       let next: GameState;
-      if (active.phase === "quiz") next = answerEncounterQuiz(state, "B", state.revision);
-      else if (active.frame.choices.length) next = chooseEncounter(state, active.frame.choices.find((choice) => choice.optionId === choiceId)!.index, state.revision);
+      if (active.frame.choices.length) next = chooseEncounter(state, active.frame.choices.find((choice) => choice.optionId === choiceId)!.index, state.revision);
       else if (encounterCanFinish(state)) next = finishEncounter(state, state.revision);
       else next = advanceEncounter(state, state.revision);
       state = continueTourismEncounters(before, next, () => 0);
     }
-    expect(seen).toEqual(["galleria_fortune", "galleria_print", "galleria_ticket_press"]);
+    expect(seen).toEqual(["galleria_fortune", "milano_galleria_ticket_gift"]);
     expect(state.activeEncounter).toBeNull();
     expect(state.occasion?.started).toEqual(seen);
     expect(state.inventory.galleria_ticket).toBe("held");
-    expect(getTourismEncounterAvailability(state, "galleria_ticket_press").available).toBe(false);
+    expect(getTourismEncounterAvailability(state, "milano_galleria_ticket_gift").available).toBe(false);
   });
 });
