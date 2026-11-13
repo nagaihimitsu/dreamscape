@@ -53,10 +53,12 @@ describe("location-based encounters", () => {
     const afterDuomo = { ...fresh, completedEpisodeIds: ["milano_duomo_episode"] };
     expect(encounterOffered(fresh, "duomo_string")).toEqual({ available: false, reason: "この場所を訪れたあとに出会えます。" });
     expect(encounterOffered(afterDuomo, "duomo_string")).toEqual({ available: true, reason: "" });
-    for (const id of ["galleria_print", "galleria_ticket_press", "scala_mint"])
+    for (const id of ["milano_galleria_ticket_gift", "scala_mint"])
       expect(encounterOffered(afterDuomo, id), id).toEqual({ available: false, reason: "この場所を訪れたあとに出会えます。" });
-    // The Galleria's wish is met in its first observation.
+    // The Galleria's wish is met in its first observation; its ticket talk after it.
     expect(encounterOffered(afterDuomo, "galleria_fortune")).toEqual({ available: true, reason: "" });
+    const afterWish = { ...afterDuomo, completedEncounterIds: ["galleria_fortune"], seenEncounterIds: ["galleria_fortune"] };
+    expect(encounterOffered(afterWish, "milano_galleria_ticket_gift")).toEqual({ available: true, reason: "" });
 
     const afterScala = { ...afterDuomo, battleRecords: [{ battleId: "milano_la_scala_b01", firstScore: 0, lastScore: 0, bestScore: 0, attempts: 1 }] };
     expect(encounterOffered(afterScala, "scala_mint")).toEqual({ available: true, reason: "" });

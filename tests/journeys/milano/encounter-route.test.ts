@@ -12,6 +12,7 @@ import {
   validateEncounterState,
 } from "../../../src/domain/encounter";
 import { encounterOffered, meetEncounter } from "../../fixtures/encounter-moment";
+import { finishEpisode, firstCorrect } from "../../../src/dev/scenario-builders";
 
 function play(state: GameState, id: string, optionId: string, roll = 0): GameState {
   const initialRevision = state.revision;
@@ -40,7 +41,7 @@ function play(state: GameState, id: string, optionId: string, roll = 0): GameSta
 }
 
 describe("Milan encounter route", () => {
-  it("defers and gives the pick, pays before the ticket, and redeems the ticket the wish's talk gives", () => {
+  it("defers and gives the pick", () => {
     const fresh = createGame("ユウ", "ミオ");
     const initial: GameState = {
       ...fresh,
@@ -60,24 +61,38 @@ describe("Milan encounter route", () => {
     game = play(game, "castello_pick", "give");
     expect(game.inventory.blue_pick).toBe("gifted");
     expect(encounterOffered(game, "castello_pick").available).toBe(false);
-    game = play(game, "galleria_print", "pay");
-    expect(game.travelBudget).toBe(budget - 4);
-    expect(encounterOffered(game, "galleria_ticket_press").available).toBe(false);
+    expect(game.travelBudget).toBe(budget);
+  });
+
+  it("redeems the ticket the wish's talk gives at Rina's crest room after the Galleria's battle", () => {
+    // A real game: the Duomo, then the Galleria with one correct answer (its two-correct reward still to earn).
+    let game = finishEpisode(finishEpisode(createGame("ユウ", "ミオ"), "milano_duomo_episode"), "milano_galleria_episode", { answer: firstCorrect(1) });
+    expect(game.claimedRewardIds).not.toContain("victory_galleria_first");
+    const budget = game.travelBudget;
     // The wish completes with any choice and earns the battle's two-correct reward once; its ticket talk gives the ticket.
     game = play(game, "galleria_fortune", "believe");
     expect(game.claimedRewardIds.filter((id) => id === "victory_galleria_first")).toHaveLength(1);
     expect(game.inventory.galleria_ticket).toBeUndefined();
+    const beforeTicket = game;
     game = play(game, "milano_galleria_ticket_gift", "");
     expect(game.inventory.galleria_ticket).toBe("held");
-    game = play(game, "galleria_ticket_press", "later");
+    // Rina's crest room, after the Galleria's battle: 「また今度」 keeps the ticket; a print uses it, or the boy gets it.
+    game = play(game, "galleria_print", "leave");
     expect(game.inventory.galleria_ticket).toBe("held");
-    game = play(game, "galleria_ticket_press", "press");
+    expect(game.completedEncounterIds).not.toContain("galleria_print");
+    const withTicket = game;
+    game = play(game, "galleria_print", "bull");
     expect(game.inventory.galleria_ticket).toBe("used");
-    game = play(game, "galleria_fortune", "doubt");
-    expect(game.inventory.galleria_ticket).toBe("used");
+    expect(game.itemUses.galleria_ticket).toEqual({ encounterId: "galleria_print", optionId: "bull" });
+    const given = play(withTicket, "galleria_print", "boy");
+    expect(given.inventory.galleria_ticket).toBe("gifted");
     expect(game.encounterRewards).toEqual({});
     expect(game.claimedRewardIds.filter((id) => id === "victory_galleria_first")).toHaveLength(1);
-    expect(game.travelBudget).toBe(budget - 4);
+    expect(game.travelBudget).toBe(budget);
+    // Without the ticket (a save of the version before the rewrite): the sample, or the paid print once.
+    const paid = play(beforeTicket, "galleria_print", "pay");
+    expect(paid.travelBudget).toBe(budget - 4);
+    expect(paid.completedEncounterIds).toContain("galleria_print");
   });
 });
 
@@ -94,7 +109,6 @@ describe("Milan place entry", () => {
     expect(encounterOffered(first, "duomo_string").available).toBe(true);
     // The wish is met in the Galleria's first observation; every choice completes it, with the shared AP.
     expect(encounterOffered(first, "galleria_fortune").available).toBe(true);
-    expect(encounterOffered(second, "galleria_print").available).toBe(false);
     expect(encounterOffered(second, "scala_mint").available).toBe(false);
 
     let state = meetEncounter(second, "galleria_fortune", () => 100);
