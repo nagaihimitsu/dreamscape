@@ -26,10 +26,12 @@ export function checkEmphasisTags(source: string): void {
     if (!text.includes(value))
       throw new Error(`強調する語が行にありません：${where}。${textLine}行目「${text}」の中にある語を、書いたとおりに書いてください` +
         `（名前は {heroine_name} のように書きます。The word of # ${key}: is not in its line: ${value}）。`);
+    // taggedLines returns the key as a string; it is always one of KEYS.
+    const tag = key as (typeof KEYS)[number];
     const own = lines.get(textLine) ?? {};
-    if (own[key] !== undefined)
+    if (own[tag] !== undefined)
       throw new Error(`1つの行に # ${key}: が2つあります：${where}。1つの行に1つにしてください（Duplicate ${key} tag on line ${textLine}）。`);
-    own[key] = value;
+    own[tag] = value;
     lines.set(textLine, own);
     if (own.em !== undefined && own.em_shake !== undefined) {
       const spans = emphasisSpans(text, own.em, own.em_shake);
