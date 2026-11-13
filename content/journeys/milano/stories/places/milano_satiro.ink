@@ -14,7 +14,7 @@ INCLUDE modules.ink
 サン・サティロ教会。祭壇の奥を見た彼女が「あれ」と言い、すぐ自分の口を押さえた。
 # speaker: heroine
 # emotion: teasing
-「私、先に気づいちゃったかも。答えを言うのと、びっくりする顔を見るの、いま迷ってます。」
+私、先に気づいちゃったかも。答えを言うのと、びっくりする顔を見るの、いま迷ってます
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
@@ -28,10 +28,10 @@ INCLUDE modules.ink
     # profile: playful
     { romance_result == "negative":
         # speaker: heroine
-        「演技しなくていいよ。ほんとに驚くところが見たいんだから。」
+        演技しなくていいよ。ほんとに驚くところが見たいんだから
     - else:
         # speaker: heroine
-        「まだ何も見てないのにその顔は早い。こっち、一歩だけ来て。」
+        まだ何も見てないのにその顔は早い。こっち、一歩だけ来て
     }
     -> join_1
 
@@ -39,10 +39,10 @@ INCLUDE modules.ink
     # profile: honest
     { romance_result == "negative":
         # speaker: heroine
-        「言うと一瞬で終わっちゃう。私に五秒だけ我慢させて。」
+        言うと一瞬で終わっちゃう。私に五秒だけ我慢させて
     - else:
         # speaker: heroine
-        「えへへ。奥行きがあるように見えて、横に寄ると景色が薄くなるの。」
+        えへへ。奥行きがあるように見えて、横に寄ると景色が薄くなるの
     }
     -> join_1
 
@@ -50,10 +50,10 @@ INCLUDE modules.ink
     # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
-        「うーん、案内しすぎたら私が答えちゃう。好きに歩いてみて。」
+        うーん、案内しすぎたら私が答えちゃう。好きに歩いてみて
     - else:
         # speaker: heroine
-        「ここ。靴一足ぶんだけ横へ。あっ、今の眉、ちゃんと見たよ。」
+        ここ。靴一足ぶんだけ横へ。あっ、今の眉、ちゃんと見たよ
     }
     -> join_1
 
@@ -61,18 +61,18 @@ INCLUDE modules.ink
 # speaker: narrator
 背後の道に限られた奥行きを、遠近法が補っている。二人は互いのいた場所を入れ替わった。
 # speaker: heroine
-「奥に見える天井、漆喰で作られた見せかけなんだって。正面からだと気づかなかった。」
-「秘密を知る前に戻れたら、今度は何を見る？」
+奥に見える天井、漆喰で作られた見せかけなんだって。正面からだと気づかなかった
+秘密を知る前に戻れたら、今度は何を見る？
 
 * [「最初に君が口を押さえたところ」 # option: second_bold]
     # profile: bold
     # memory: sound_memory_san_satiro_date_01
     { romance_result == "negative":
         # speaker: heroine
-        「今日はちゃんと建物も見て。私、一緒に見たくて誘ったの。」
+        今日はちゃんと建物も見て。私、一緒に見たくて誘ったの
     - else:
         # speaker: heroine
-        「そこ見てたの？　教会より私が分かりやすかったの、ちょっと悔しい。」
+        そこ見てたの？　教会より私が分かりやすかったの、ちょっと悔しい
     }
     -> join_2
 
@@ -81,10 +81,10 @@ INCLUDE modules.ink
     # memory: sound_memory_san_satiro_date_01
     { romance_result == "negative":
         # speaker: heroine
-        「一度知った後の違和感も楽しいよ。そこは残しておきたい。」
+        一度知った後の違和感も楽しいよ。そこは残しておきたい
     - else:
         # speaker: heroine
-        「ついてく。二度目もだませたら、向こうの圧勝だね。」
+        ついてく。二度目もだませたら、向こうの圧勝だね
     }
     -> join_2
 
@@ -93,10 +93,10 @@ INCLUDE modules.ink
     # memory: sound_memory_san_satiro_date_01
     { romance_result == "negative":
         # speaker: heroine
-        「次は隣にいてほしいな。今の顔、私ももう一回見たい。」
+        次は隣にいてほしいな。今の顔、私ももう一回見たい
     - else:
         # speaker: heroine
-        「それ、やってみよう。私が先に答えそうになったら指一本ね。」
+        それ、やってみよう。私が先に答えそうになったら指一本ね
     }
     -> join_2
 

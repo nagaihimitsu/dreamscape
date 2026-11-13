@@ -245,7 +245,7 @@ export function StayCard({ game, api, picked, onPick, scope = "page", heading = 
 }
 
 /**
- * 「待機」's card: today's waits where the party is (「30分待つ」 and, while it is day, 「夜(18:00)まで待つ」) as one row of
+ * 「待機」's card: today's waits where the party is (「30分待つ」 and, while it is day, 「夜（18:00）まで待つ」) as one row of
  * choices, one always chosen (`wait`: the card chosen afresh starts at 「30分待つ」). A wait that cannot be waited is greyed
  * and cannot be chosen, its reason said under them. A swipe up on its photo card waits the chosen one (user decision
  * 2026-11-11), as does its 「待つ」 (`quietGo`: in the row, for screen readers and keys only), through the same onTravelWait.

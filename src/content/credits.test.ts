@@ -9,8 +9,10 @@ import {
   MAP_CREDIT,
   OWN_ARTWORK_NOTE_JA,
   parseThirdPartyLicenses,
+  groupVoiceCredits,
   photoCredits,
   THIRD_PARTY_LICENSES_FILE,
+  voiceCredits,
 } from "./credits";
 import { tourismAssets } from "./index";
 import { journeys } from "./journeys";
@@ -116,6 +118,29 @@ describe("the fixed lines of the list", () => {
     // Only the places that do show fact sources are named (no date screen shows them).
     expect(OWN_ARTWORK_NOTE_JA).toBe("Dreamscape のために作った絵（キャラクターの立ち絵・アイコンなど）は、この一覧に載せていません。" +
       "情報の出典は、手がかり帳とクイズの解説に表示しています。");
+  });
+});
+
+describe("the voices' credits (2026-11-13)", () => {
+  const credit = { useJa: "ヒロインの声", titleJa: "音声合成 ta-TTS", author: "ta", license: "MIT License", checkedAt: "2026-11-13",
+    url: "https://example.com/ta-tts" };
+
+  it("lists each journey's voice credits under its name, in catalog order, and leaves out journeys without", () => {
+    expect(groupVoiceCredits([
+      { id: "ta_trip", nameJa: "ta編", voiceCredits: [credit] },
+      { id: "tb_trip", nameJa: "tb編" },
+      { id: "tc_trip", nameJa: "tc編", voiceCredits: [{ ...credit, useJa: "案内の声" }] },
+    ])).toEqual([
+      { ...credit, journeyId: "ta_trip", journeyNameJa: "ta編" },
+      { ...credit, useJa: "案内の声", journeyId: "tc_trip", journeyNameJa: "tc編" },
+    ]);
+  });
+
+  it("credits the Golden Triangle heroine's voices to the speech synthesis model they were made with", () => {
+    expect(voiceCredits().filter((item) => item.journeyId === "golden_triangle")).toEqual([expect.objectContaining({
+      useJa: "ヒロインの声", titleJa: "音声合成 Irodori-TTS v4.1-Small", author: "Aratako", license: "MIT License",
+      url: "https://huggingface.co/Aratako/Irodori-TTS-v4.1-Small",
+    })]);
   });
 });
 

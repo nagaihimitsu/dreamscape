@@ -74,11 +74,13 @@ test("Debug mode: the password in ゲームの設定 turns it on for this device
   await expect(on).toBeVisible();
 
   // Until Debug is opened, the page loads no Debug code: only the files index.html loads at once
-  // (Debug's chunks are loaded later, whatever their names).
+  // (Debug's chunks are loaded later, whatever their names) and, while Debug mode is on, the note of
+  // 最初の3分の計測 that ゲームの設定 shows under the switch (IntroTimingNote.tsx, a chunk of its own).
   const html = await (await page.request.get("/")).text();
   const eager = new Set(eagerFiles(html).map((file) => `/${file}`));
+  const introTimingNote = /^\/assets\/IntroTimingNote-[\w-]+\.js$/u;
   expect(requested.length).toBeGreaterThan(0);
-  for (const path of requested) expect(eager, `${path} is loaded before Debug is opened`).toContain(path);
+  for (const path of requested) expect(eager.has(path) || introTimingNote.test(path), `${path} is loaded before Debug is opened`).toBe(true);
 
   // 「場面の確認を開く」 opens Debug on its own page; Debug leaves the player's storage as it was.
   const kept = await bothStorages(page);

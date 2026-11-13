@@ -140,10 +140,13 @@ describe("tour offers and booking (tour stage 2a)", () => {
 
   it("keeps back the event steps' main-part payments from the booking on (the morning's visit can always pay them)", () => {
     install();
-    // The library battle pays 30 when first finished (a head # on_done: money -30, patched in).
-    const index = scenes.findIndex((scene) => scene.id === "smp_mihon_main_clock_tower");
-    const patched = { ...structuredClone(scenes[index]), id: "smp_mihon_special_c_library_head", main: { battle: testTour.eventId }, done: { money: -30 } };
-    (scenes as typeof scenes[number][]).push(patched);
+    // The library battle pays 30 when first finished (its knot's # on_done: money -30, patched in: the battle's own scene in
+    // the sample's place file, the one the game reads for the battle).
+    const list = scenes as typeof scenes[number][];
+    const index = list.findIndex((scene) => scene.main && "battle" in scene.main && scene.main.battle === testTour.eventId);
+    if (index < 0) throw new Error(`Expected the scene of battle ${testTour.eventId}`);
+    const original = list[index];
+    list[index] = { ...structuredClone(original), done: { money: -30 } };
     try {
       const state = start();
       expect(getTourOffers({ ...state, travelBudget: 39 }).map((choice) => choice.reason)[0]).toBe("帰りの交通費を確保しているため、今は予約できません。");
@@ -155,7 +158,7 @@ describe("tour offers and booking (tour stage 2a)", () => {
       expect(getRentalOffers({ ...booked, travelBudget: 36 })[0].available).toBe(true);
       expect(getTravelEventAvailability({ ...booked, travelBudget: 30 }, "smp_mihon_special_b_market", "walk").available).toBe(true);
       expect(tourKeepBack(start())).toEqual({ money: 0, ap: 0 });
-    } finally { (scenes as typeof scenes[number][]).splice((scenes as typeof scenes[number][]).indexOf(patched), 1); }
+    } finally { list[index] = original; }
   });
 });
 

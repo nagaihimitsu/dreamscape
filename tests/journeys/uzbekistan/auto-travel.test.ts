@@ -117,9 +117,11 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
         hotelPlaceId: `${cityIds[index + 1]}_hotel`, day: 1, minute: 540 });
       expect(state.travel.calendar?.cityStartJourneyDay).toBe(before.travel.calendar?.journeyDay);
       expect(state.inventory[`${cityId}_item`]).toBe("left_behind");
+      // The departure keeps the journey as the epilogue left it: the epilogue's own choice may change it (the sample's
+      // first choice, which advanceCityEpilogue takes, gives affection +1).
       for (const field of ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark",
         "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds",
-        "battleRecords", "playedDateIds", "completedEncounterIds", "seenEncounterIds", "itemUses"] as const) expect(state[field], field).toEqual(before[field]);
+        "battleRecords", "playedDateIds", "completedEncounterIds", "seenEncounterIds", "itemUses"] as const) expect(state[field], field).toEqual(lastStep[field]);
       expect(advanceCompletedJourneyCity(state, lastStep.revision)).toBe(state);
       expect(advanceCompletedJourneyCity(state, state.revision)).toBe(state);
       // A competing tab's newer snapshot blocks this departure's save.

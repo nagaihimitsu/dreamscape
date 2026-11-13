@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "people": [
+    {
+      "id": "milano_galleria_boy",
+      "cityId": "milano",
+      "nameJa": "少年"
+    },
+    {
+      "id": "milano_galleria_mother",
+      "cityId": "milano",
+      "nameJa": "母親"
+    },
+    {
+      "id": "milano_galleria_bag_woman",
+      "cityId": "milano",
+      "nameJa": "鞄の女"
+    },
+    {
+      "id": "milano_rina",
+      "cityId": "milano",
+      "nameJa": "リナ"
+    },
+    {
+      "id": "milano_brera_woman",
+      "cityId": "milano",
+      "nameJa": "女"
+    },
+    {
+      "id": "milano_brera_brother",
+      "cityId": "milano",
+      "nameJa": "弟"
+    },
+    {
+      "id": "milano_brera_student",
+      "cityId": "milano",
+      "nameJa": "学生"
+    },
+    {
+      "id": "milano_castello_daughter",
+      "cityId": "milano",
+      "nameJa": "娘"
+    },
+    {
+      "id": "milano_tino",
+      "cityId": "milano",
+      "nameJa": "ティノ"
+    },
+    {
+      "id": "milano_nora",
+      "cityId": "milano",
+      "nameJa": "ノラ"
+    },
+    {
+      "id": "milano_la_scala_candy_seller",
+      "cityId": "milano",
+      "nameJa": "菓子売り"
+    },
+    {
+      "id": "milano_ida",
+      "cityId": "milano",
+      "nameJa": "イーダ"
+    },
+    {
+      "id": "milano_last_supper_brother",
+      "cityId": "milano",
+      "nameJa": "兄"
+    }
+  ]
+}

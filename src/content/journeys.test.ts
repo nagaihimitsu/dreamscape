@@ -41,8 +41,10 @@ describe("journey catalog", () => {
       copy.journeys[0].titleArt = titleArt;
       return journeyCatalogSchema.safeParse(copy);
     };
-    // No journey has art yet: the title shows the shared default background.
-    expect(journeys.every((journey) => journey.titleArt === undefined)).toBe(true);
+    // Only India has art (its Taj Mahal photo, #54); the other journeys' title shows the shared default background.
+    expect(journeys.filter((journey) => journey.titleArt).map((journey) => [journey.id, journey.titleArt])).toEqual([
+      ["golden_triangle", { imagePath: "assets/tourism/india/agra_taj_mahal.webp", captionJa: "アーグラ ／ タージ・マハル" }],
+    ]);
     expect(withArt({ imagePath: "assets/title/milano.webp", captionJa: "ミラノ ／ 運河の午後" }).success).toBe(true);
     expect(withArt({ imagePath: "assets/title/milano.jpg", captionJa: "ミラノ", imagePosition: { x: 70, y: 40 } }).success).toBe(true);
     for (const invalid of [

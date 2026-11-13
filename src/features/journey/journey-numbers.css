@@ -35,14 +35,6 @@
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
 }
-/* The rides read as a short line across the card, not one big number. */
-.journey-numbers dl > .is-wide {
-  grid-column: 1 / -1;
-}
-.journey-numbers .is-wide dd {
-  font-family: inherit;
-  font-size: 15px;
-}
 /* In the end roll: centred in the roll's column, its own parchment over the roll's ground. */
 .end-roll .journey-numbers {
   margin: 20px auto;

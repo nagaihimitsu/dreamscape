@@ -785,14 +785,9 @@ export function validateBattleState(state: GameState): void {
   });
   if (active.score !== active.answers.filter((answer) => answer.correct).length)
     throw new Error("保存された得点が一致しません。");
-  if (active.hintOpen && !active.hintUsed)
+  // The hint always shows under the question (#94): play leaves both fields false, so either set is a forged record.
+  if (active.hintOpen || active.hintUsed)
     throw new Error("ヒントの記録が一致しません。");
-  if (
-    active.phase !== "question" &&
-    active.phase !== "feedback" &&
-    active.hintOpen
-  )
-    throw new Error("会話中にヒントは開けません。");
   if (
     (active.phase === "question" || active.phase === "reasoning") &&
     active.answers.length !== active.roundIndex
