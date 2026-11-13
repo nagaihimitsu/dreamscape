@@ -35,7 +35,11 @@ type Load = { status: "loading" } | { status: "loaded"; module: MiniGameModule }
 /** The count a play starts with: the host's 3・2・1・スタート, 「スタート！」 alone (a quick retry), or none. */
 type Count = "full" | "go" | "none";
 type Run = { id: number; clock: HostClock; practice: boolean; count: Count; startedAt: number };
-type Ended = { outcome: string; detail?: string; rating: MiniGameRating | null; word: string | null; level: FinishLevel; cardAt: number | null };
+type Ended = {
+  outcome: string; detail?: string; rating: MiniGameRating | null; word: string | null; level: FinishLevel; cardAt: number | null;
+  /** How far above the layer's bottom the card sits: over the play's main control, so a finger still tapping it hits nothing. */
+  cardBottom?: number;
+};
 type Reaction = { key: number; kind: MiniGameReaction; lineJa?: string };
 
 const prefersLessMotion = () => typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -230,7 +234,11 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     later(MINI_GAME_FINISH_MS, () => setFinishing(false));
     later(resultCardDelay(options?.holdMs), () => {
       runRef.current?.clock.stop();
-      setEnded((state) => (state ? { ...state, cardAt: performance.now() } : state));
+      // The card sits just above the play's main control (the thumb's button): taps that go on there reach the dead play.
+      const primary = stage.current?.querySelector("[data-minigame-primary]")?.getBoundingClientRect();
+      const box = layer.current?.getBoundingClientRect();
+      const cardBottom = primary && box && primary.height > 0 ? Math.round(box.bottom - primary.top + 8) : undefined;
+      setEnded((state) => (state ? { ...state, cardAt: performance.now(), ...(cardBottom !== undefined ? { cardBottom } : {}) } : state));
     });
   }, [definition, tag.id, taken, played, params, practiceParams, later]);
 
@@ -461,7 +469,7 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
             <ResultCard label={label(ended.outcome)} rating={ended.rating} {...(score ? { score } : {})}
               {...(ended.rating?.scoreJa && ended.detail ? { detail: ended.detail } : {})}
               {...(outcome?.reaction ? { face: face(outcome.reaction.kind) } : {})} {...(filledLine ? { line: filledLine } : {})}
-              practice={run.practice} retry={!!(environment.retry || tag.retry)} anchor={definition.resultAnchor ?? "bottom"} still={still} shownAt={ended.cardAt!}
+              practice={run.practice} retry={!!(environment.retry || tag.retry)} anchor={definition.resultAnchor ?? "bottom"} {...(ended.cardBottom !== undefined ? { bottom: ended.cardBottom } : {})} still={still} shownAt={ended.cardAt!}
               onNext={() => choose(ended.outcome)} onRetry={() => start(run.practice, true)} onToReal={() => start(false)} />
           )}
           {paused && !ended && (
