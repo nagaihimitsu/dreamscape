@@ -1,4 +1,33 @@
 INCLUDE modules.ink
+-> DONE
+
+// ドゥオモ（ミラノ大聖堂）の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
+// 観光案内と通常戦。
+
+// 観光案内。tourism/catalog.json の guideStoryId がこの knot を指す。
+=== duomo_milano_guide ===
+# scene: guide
+# background: milano_duomo
+# speaker: narrator
+ドゥオモ広場に出ると、{heroine_name}はスマホを縦にかまえた。画面には、大聖堂のてっぺんまできれいに入っている。
+# speaker: heroine
+「一枚目、何を撮ったと思います？」
+# speaker: player
+「大聖堂。今のはさすがに当てられる。」
+# speaker: heroine
+# emotion: teasing
+「はずれ。録音です。帰ってから十秒だけ、ここに戻れるように。」
+# speaker: narrator
+再生すると、ごそっ、ごそっ、と布をこする音がした。彼女は自分の袖をにらんだ。
+# speaker: heroine
+「……帰ってから、この上着が着られますね。」
+# speaker: narrator
+すぐそばで、もっと大きな布を頭からかぶっている人がいた。
+-> END
+
+// ───── バトル（本筋）。battles/catalog.json の milano_duomo_01 の storyId がこの knot を指す。1本の流れ（-> quiz(n) -> でクイズ）。
+=== milano_duomo_01 ===
+# scene: battle
 # background: milano_duomo
 # speaker: narrator
 布の下から棒つきのマイクだけが出ている。先端が彼女の袖を追った。

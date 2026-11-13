@@ -1,4 +1,26 @@
 INCLUDE modules.ink
+-> DONE
+
+// ブレラ絵画館の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
+// 観光案内と特殊戦C。
+
+// 観光案内。tourism/catalog.json の guideStoryId がこの knot を指す。
+=== brera_case_guide ===
+# scene: guide
+# background: milano_brera_case
+# speaker: narrator
+ブレラ宮殿の中庭で、赤と青の布を肩にかけた男が歩幅を測っていた。四歩で立ち止まり、一歩だけ戻る。
+# speaker: heroine
+「道に迷ってるんだったら、ずいぶん小さい範囲ですね。」
+# speaker: narrator
+女が布の一方を引いた。「その三歩で、客はあんたを忘れるのよ」
+# speaker: narrator
+二人はこちらを見ず、そのまま絵画館へ入った。
+-> END
+
+// ───── 特殊戦C（証拠連結）。battles/catalog.json の milano_brera_c01 の storyId がこの knot を指す。1本の流れ（-> quiz(n) -> でクイズ）。主張は手伝いの knot milano_brera_c01_claim（knot の名前＋_claim）。
+=== milano_brera_c01 ===
+# scene: battle
 # background: milano_brera_date
 # speaker: enemy
 「舞台が暗いの。青い布は沈む。別れの場面は真っ赤一色。客席の後ろまで見える。」
@@ -41,7 +63,7 @@ INCLUDE modules.ink
 「昔のお客さんが、この二人を見て恋の話をした。そこまでは私にも見える。その先は？」
 # speaker: heroine
 「絵の中にあるものと、その外で起きてたこと。両方持ってきます。」
--> milano_special_c_brera_claim ->
+-> milano_brera_c01_claim ->
 # background: milano_brera_case
 # speaker: heroine
 「布だけ見て分かることと、当時の人だから分かったこと。分けてからつなげよう。」
@@ -77,7 +99,7 @@ INCLUDE modules.ink
 弟が歩き出し、姉だけが布を持ったまま残った。稽古の続きだと分かるまで、彼女も少し息を止めた。
 -> END
 
-=== milano_special_c_brera_claim ===
+=== milano_brera_c01_claim ===
 # background: milano_brera_date
 # speaker: enemy
 「この衣装の色が、どうして二人だけの事情より大きな話になる？　画面の中と外から一枚ずつ、根拠を借りたい。」

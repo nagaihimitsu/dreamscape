@@ -165,7 +165,7 @@ describe("Ink choices and reload boundaries", () => {
     }
   }
   it("keeps names as plain Ink text in the Duomo guide", () => {
-    const storyId = "tourism/milano_duomo_guide";
+    const storyId = "places/milano_duomo.duomo_milano_guide";
     expect(beginStory(storyId, "旅人", "{heroine_name}").frame.text).toContain("{heroine_name}");
     expect(beginStory(storyId, "旅人", "<img src=x>").frame.text).toContain("<img src=x>");
   });

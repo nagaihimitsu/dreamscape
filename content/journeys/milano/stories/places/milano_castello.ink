@@ -1,4 +1,29 @@
 INCLUDE modules.ink
+-> DONE
+
+// スフォルツェスコ城の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
+// 観光案内と通常戦。
+
+// 観光案内。tourism/catalog.json の guideStoryId がこの knot を指す。
+=== castello_sforzesco_guide ===
+# scene: guide
+# background: milano_castello
+# speaker: narrator
+スフォルツェスコ城の中庭で、小さな女の子が父親の横顔をじっと見ている。父はくしゃみをこらえていた。
+# speaker: heroine
+「絵のモデルかな。」
+# speaker: narrator
+子が手を開くと、親指ほどの頭が出てきた。父がくしゃみをした。粘土の鼻も同時にひしゃげた。
+# speaker: player
+「今のはどっちが謝るんだろう。」
+# speaker: heroine
+# emotion: happy
+「私なら、くしゃみした顔のほうが欲しいです。」
+-> END
+
+// ───── バトル（本筋）。battles/catalog.json の milano_castello_01 の storyId がこの knot を指す。1本の流れ（-> quiz(n) -> でクイズ）。
+=== milano_castello_01 ===
+# scene: battle
 # background: milano_castello
 # speaker: enemy
 # cutin: name

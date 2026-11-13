@@ -12,7 +12,8 @@ describe("an epilogue's spending # on_done: in a city whose then: epilogue is a 
     const milano = selectJourneys(loadContentSources(repository), ["milano"]);
     const files = new Map(milano.tree.files);
     const edit = (file: string, change: (text: string) => string) => files.set(file, Buffer.from(change(files.get(file)!.toString("utf8"))));
-    edit("content/journeys/milano/stories/epilogues/milano.ink", (text) => text.replace("# background: milano_darsena_finale\n", "# on_done: money -5\n# background: milano_darsena_finale\n"));
+    // The epilogue is a knot of the Darsena's place file (the finale's knot before it has the same background): its head.
+    edit("content/journeys/milano/stories/places/milano_darsena.ink", (text) => text.replace("=== milano_epilogue ===\n# scene: epilogue\n", "=== milano_epilogue ===\n# scene: epilogue\n# on_done: money -5\n"));
     expect(() => validateContent(contentSourcesFromTree({ ...milano.tree, files }))).toThrow(/An arrival or an epilogue the game starts by itself/u);
     edit("content/journeys/milano/stories/encounters/milano_duomo_string.ink", (text) => text.replace(
       "* [I'll give you some room. # option: leave # translation: 少し場所を空けます。]\n", "* [I'll give you some room. # option: leave # translation: 少し場所を空けます。]\n    # then: epilogue\n"));

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { Compiler } from "inkjs/compiler/Compiler";
-import { cityContents, episodes, presentation, stories, tagContext } from "../content";
+import { battles, cityContents, episodes, landmarks, presentation, stories, tagContext } from "../content";
 import { encounters } from "../content/encounters";
 import { getBattleAvailability, startBattle } from "./battle";
 import { getAvailableStoryBattles, getEpisodeAvailability, isEpisodeUnlocked } from "./chapter";
@@ -81,6 +81,10 @@ describe("city-specific progression", () => {
     if (typeof json !== "string") throw new Error("Test Ink did not compile");
     const storyIds = ["test_city/guide", "test_city/test_battle", "test_city/encounter", "test_city/epilogue"];
     for (const id of storyIds) stories[id] = json;
+    // The copies share the template's place-file knots and battle stories: point them at this test's stories.
+    landmarks.find((item) => item.id === "test_landmark")!.guideStoryId = "test_city/guide";
+    battles.find((item) => item.id === "test_battle")!.storyId = "test_city/test_battle";
+    episodes.find((item) => item.id === "test_finale")!.epilogueStoryId = "test_city/epilogue";
     const backgroundId = "test_city_view";
     presentation.backgrounds[backgroundId] = { ...presentation.backgrounds.milano_cafe, nameJa: "試験都市" };
     tagContext.backgroundIds.push(backgroundId);
@@ -93,6 +97,7 @@ describe("city-specific progression", () => {
       expect(meetEncounter(state, "test_encounter").activeEncounter?.frame.background).toBe(backgroundId);
       expect(startCityEpilogue({ ...state, completedCityIds: ["test_city"] }, "test_city", state.revision).activeEpilogue?.frame.background).toBe(backgroundId);
     } finally {
+      for (const id of storyIds) delete stories[id];
       delete presentation.backgrounds[backgroundId];
       tagContext.backgroundIds.splice(tagContext.backgroundIds.indexOf(backgroundId), 1);
     }

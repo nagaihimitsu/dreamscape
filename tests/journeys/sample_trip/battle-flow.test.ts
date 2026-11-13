@@ -7,6 +7,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { battles, scenes, stories } from "../../../src/content";
 import { fnvHash } from "../../../src/content/fingerprint";
 import type { SceneEntry } from "../../../src/content/scene-schemas";
+import { storyFileOf } from "../../../src/content/story-address";
 import {
   advanceBattle, answerBattle, battleChrome, battleDialogueStop, chooseBattle, getActiveBattleContent, getReasoningContext, leaveBattle, pressBattleClaim,
   selectReasoningClue, startBattle, submitBattleEvidence,
@@ -410,17 +411,18 @@ describe("a special battle's claim and rebuttal on the battle screen (stage 5)",
 });
 
 // The clue book's claim and press (stage 5): read with the names, memories and items, as the flow reads them, and never
-// stopping the screen. Milan's special battle B, with names in its claim and press.
+// stopping the screen. Milan's special battle B (a knot of the Last Supper's place file, the first with a claim there),
+// with names in its claim and press.
 describe("the clue book's claim and press (stage 5)", () => {
   const milanB = "milano_last_supper_b01";
-  const storyId = battles.find((battle) => battle.id === milanB)!.storyId;
+  const storyId = storyFileOf(battles.find((battle) => battle.id === milanB)!.storyId);
   const keptMilan = stories[storyId];
   afterEach(() => {
     stories[storyId] = keptMilan;
   });
   const named = readFileSync(`content/journeys/milano/stories/${storyId}.ink`, "utf8")
     .replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, "$1「{player_name}さん、{heroine_name}さん、聞きなさい」\n");
-  const compile = (source: string) => compileInk(readMainFileHead(source).source, "milan-b.ink", { [MODULES_FILE]: MODULES_INK });
+  const compile = (source: string) => compileInk(readPlaceFile(storyId, source).source, "milan-b.ink", { [MODULES_FILE]: MODULES_INK });
   /** Play Milan's B to its stop point, press, and read the clue book's claim and press. */
   function clueBook(): { claimText: string; pressedText: string | null } {
     let state = openBattleScene(cityStart("milano", ["たいち", "あゆみ"]), milanB);
@@ -443,8 +445,9 @@ describe("the clue book's claim and press (stage 5)", () => {
 
   it("reads the claim with the player's memories, as the flow reads it", () => {
     const line = "「あの店の音を、まだ覚えているか」";
-    const remembering = named.replace("INCLUDE modules.ink\n", "INCLUDE modules.ink\nEXTERNAL has_memory(memory_id)\n")
-      .replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, `$1{ has_memory("sound_memory_cafe_01"): ${line} }\n`);
+    // A place file's top is its two lines: the declaration goes in the knot (Ink reads it anywhere).
+    const remembering = named
+      .replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, `$1EXTERNAL has_memory(memory_id)\n{ has_memory("sound_memory_cafe_01"): ${line} }\n`);
     stories[storyId] = compile(remembering);
     for (const memories of [[], ["sound_memory_cafe_01"]]) {
       const opened = openBattleScene(cityStart("milano"), milanB);

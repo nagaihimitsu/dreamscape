@@ -149,6 +149,23 @@ export function storySourceFile(id: string): string {
   return path.relative(root, file);
 }
 
+/**
+ * One knot of a place file's source (stories/places/…): its text from its line `=== <knot> ===` to the
+ * blank line after it (Milan's place files leave a blank line after each knot and its helper knots), and
+ * the source without that text. Throws when the source has no such knot.
+ */
+export function placeKnot(source: string, knot: string): { text: string; without: string } {
+  const start = source.indexOf(`=== ${knot} ===\n`);
+  if (start < 0 || (start > 0 && source[start - 1] !== "\n")) throw new Error(`No knot ${knot}`);
+  const blank = source.indexOf("\n\n", start);
+  const end = blank < 0 ? source.length : blank + 1;
+  return { text: source.slice(start, end), without: source.slice(0, start) + source.slice(blank < 0 ? end : end + 1) };
+}
+
+/** A place file's knot (placeKnot's text) as the body of a one-scene file: its lines without the knot line and its `# scene:` tag. */
+export const oneSceneBody = (knotText: string): string =>
+  knotText.split("\n").slice(1).filter((line) => !/^\s*#\s*scene\s*:/u.test(line)).join("\n");
+
 /** The file (relative to the repository root) that defines the quiz with this `id`; see storySourceFile. */
 export function quizSourceFile(id: string): string {
   const root = path.resolve(".");

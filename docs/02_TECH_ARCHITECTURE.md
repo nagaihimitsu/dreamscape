@@ -198,13 +198,13 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 
 | 種類 | ストーリーID（`stories/` の下の場所と同じ） | クイズID（ファイル名も同じ） |
 | --- | --- | --- |
-| 通常戦 | `battles/<頭>_main_<観光地>`（場所のファイル `places/<頭>_<観光地>` の knot にも書ける。knot の名前はバトルID。インド編） | `<頭>_main_<観光地>_quiz` |
-| 特殊戦B・C | `battles/<頭>_special_b_<観光地>`（Cは `special_c`） | `<頭>_special_b_<観光地>_quiz` |
-| 都市フィナーレ | `battles/<頭>_finale`（会場の観光地の場所のファイルの knot にも書ける。knot の名前はバトルID。インド編） | `<頭>_finale_quiz` |
-| 観光案内 | `tourism/<頭>_<観光地>_guide` | なし |
+| 通常戦 | `battles/<頭>_main_<観光地>`（場所のファイル `places/<頭>_<観光地>` の knot にも書ける。knot の名前はバトルID。インド編・ミラノ編） | `<頭>_main_<観光地>_quiz` |
+| 特殊戦B・C | `battles/<頭>_special_b_<観光地>`（Cは `special_c`。場所のファイルの knot にも書ける。knot の名前はバトルIDで、手伝いの knot は `<バトルID>_claim`・`_press`。ミラノ編） | `<頭>_special_b_<観光地>_quiz` |
+| 都市フィナーレ | `battles/<頭>_finale`（会場の場所のファイルの knot にも書ける。knot の名前はバトルID。インド編・ミラノ編。ミラノの会場はダルセナ `places/milano_darsena`） | `<頭>_finale_quiz` |
+| 観光案内 | `tourism/<頭>_<観光地>_guide`（場所のファイルの knot にも書ける。インド編の knot は `<頭>_<観光地>_guide`、ミラノ編は `<観光地ID>_guide`） | なし |
 | デート・恋愛の出来事 | `dates/<頭>_date_<行き先・出来事>` | なし |
 | 道中交流 | `encounters/<頭>_<交流>`（くじの結果は `_won`・`_lost`・`_already`） | なし |
-| 到着・エピローグ | `arrivals/<都市ID>`、`epilogues/<都市ID>`（宿の場所のファイル `places/<頭>_hotel_hub` の knot `<頭>_arrival`・`<頭>_epilogue` にも書ける。インド編） | なし |
+| 到着・エピローグ | `arrivals/<都市ID>`、`epilogues/<都市ID>`（宿の場所のファイル `places/<頭>_hotel_hub` の knot `<頭>_arrival`・`<頭>_epilogue` にも書ける。インド編。ミラノ編のエピローグは会場の場所のファイルの knot `milano_epilogue`） | なし |
 | 場所のファイル（その場所の場面をまとめる） | `places/<頭>_<場所>`（場所は観光地・デートの行き先・地図の地点のIDから都市名を除いた名前。例：`places/gt_delhi_red_fort`、`places/gt_delhi_lodhi_garden`、`places/gt_delhi_hotel_hub`）。一つの場所の場面は、`_<内容>` を付けた別のファイルに分けてもよい（例：宿の屋上の告白と「待って」の後の `places/gt_delhi_hotel_hub_dates`）。ツアーの行程の場面は、ツアーIDの名前の場所のファイル（`places/<ツアーID>`、例：`places/gt_agra_tour_fatehpur_sikri`） | なし |
 | 英語ノートの解説 | `learning/<頭>_english`（編に1本だけなら `learning/<接頭辞>_english` でもよい。2本目からは `learning/<頭>_<話題>_english`） | なし |
 

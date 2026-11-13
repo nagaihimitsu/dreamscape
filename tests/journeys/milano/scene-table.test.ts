@@ -1,4 +1,5 @@
-// Milan at the unified event design's stage 3a: nothing of its content moves (answer 3). content:build reads
+// Milan at the unified event design's stage 3a: its encounters stay where they are (answer 3; its guides, battles and
+// epilogue moved into place files on 2026-11-13 with their text and effects unchanged). content:build reads
 // its encounter catalog and entry rules into the scene list (origin "catalog"); this pins that the list says
 // the same as the catalogs (the same encounters, at the same visit moments and order, with the same
 // conditions, money, items and 「また今度」), and that the game still runs Milan from the catalogs.
@@ -11,10 +12,18 @@ import { visitOrder } from "../../../src/domain/encounter-moments";
 const milan = encounters.encounters.filter((event) => event.cityId === "milano");
 
 describe("Milan's scene list equals its catalogs", () => {
-  it("lists every Milan encounter once, read from the catalog, and nothing else of Milan", () => {
+  it("lists every Milan encounter once, read from the catalog; Milan's other scenes are its main parts, which do nothing of their own", () => {
     const listed = scenes.filter((scene) => scene.cityId === "milano");
     expect(milan.length).toBe(8);
-    expect(listed.map((scene) => [scene.id, scene.origin, scene.kind])).toEqual(milan.map((event) => [event.id, "catalog", "encounter"]));
+    const fromCatalog = listed.filter((scene) => scene.origin === "catalog");
+    expect(fromCatalog.map((scene) => [scene.id, scene.origin, scene.kind])).toEqual(milan.map((event) => [event.id, "catalog", "encounter"]));
+    // The guides, battles and epilogue are knots of the place files (2026-11-13): the same text, no choices, tags or moments.
+    const mains = listed.filter((scene) => scene.origin !== "catalog");
+    expect(mains.map((scene) => scene.kind).sort()).toEqual([...Array<string>(9).fill("battle"), "epilogue", ...Array<string>(6).fill("guide")]);
+    for (const scene of mains) {
+      expect([scene.origin, scene.at, scene.options, scene.done, scene.then, scene.when], scene.id).toEqual(["place", [], [], {}, undefined, undefined]);
+      expect(scene.main, scene.id).toBeDefined();
+    }
     expect(sceneRewardRules.filter((rule) => listed.some((scene) => scene.id === rule.sceneId))).toEqual([]);
   });
 
@@ -36,7 +45,7 @@ describe("Milan's scene list equals its catalogs", () => {
   it("orders each landmark's visit the same from the list as the game does from the catalogs", () => {
     for (const landmarkId of [...new Set(milan.map((event) => event.landmarkId!))])
       for (const slot of ["before", "observe", "after"] as const) {
-        const fromList = visitOrder(scenes.filter((scene) => scene.cityId === "milano").map((scene) => ({
+        const fromList = visitOrder(scenes.filter((scene) => scene.cityId === "milano" && scene.kind === "encounter").map((scene) => ({
           encounterId: scene.id, landmarkId: "visit" in scene.at[0] ? scene.at[0].visit : "", storyId: scene.story.storyId,
           priority: encounterEntryRule(scene.id)?.priority, order: scene.order,
         })), landmarkId, slot);

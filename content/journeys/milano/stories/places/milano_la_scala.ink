@@ -1,4 +1,24 @@
 INCLUDE modules.ink
+-> DONE
+
+// スカラ座の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
+// 観光案内と特殊戦B。
+
+// 観光案内。tourism/catalog.json の guideStoryId がこの knot を指す。
+=== la_scala_case_guide ===
+# scene: guide
+# background: milano_la_scala_date
+# speaker: narrator
+スカラ座の前で、女が椅子を一脚持ち上げている。通りかかった男が腰掛けようとした寸前だった。
+# speaker: narrator
+女は一度「すみません」と言い、よく考えてもう一度、「私のです」と言った。
+# speaker: heroine
+「座らせてもらえない椅子。劇場の外にもあるんですね。」
+-> END
+
+// ───── 特殊戦B（矛盾追及）。battles/catalog.json の milano_la_scala_b01 の storyId がこの knot を指す。1本の流れ（-> quiz(n) -> でクイズ）。主張・追及は手伝いの knot milano_la_scala_b01_claim、milano_la_scala_b01_press（knot の名前＋_claim・_press）。
+=== milano_la_scala_b01 ===
+# scene: battle
 # background: milano_la_scala_date
 # speaker: enemy
 「祖母の椅子を片づけに来た。家族の話じゃ「スカラ座の平土間にあった」。買い手は鼻で笑った。」
@@ -24,14 +44,14 @@ INCLUDE modules.ink
 「祖母はここにあったと言う。買い手は、そんなことは絶対にないと言う。どっちかが嘘をついたのかな。」
 # speaker: player
 「「絶対」のほうから調べてみよう。」
--> milano_special_b_la_scala_claim ->
+-> milano_la_scala_b01_claim ->
 # background: milano_la_scala_date
 # speaker: heroine
 「触って分かるのはこの椅子のことだけ。他の椅子も全部そうかは、記録を開きましょう。」
 - (stop)
 -> reasoning ->
 { reasoning_action == "press":
-    -> milano_special_b_la_scala_press ->
+    -> milano_la_scala_b01_press ->
     -> stop
 }
 { evidence_result == "failure":
@@ -82,13 +102,13 @@ INCLUDE modules.ink
 「取る。家で文句が出たら、今度は私が座ってるところをどかしてもらう。」
 -> END
 
-=== milano_special_b_la_scala_claim ===
+=== milano_la_scala_b01_claim ===
 # background: milano_la_scala_date
 # speaker: enemy
 「買い手の言い分はこう。「スカラ座の平土間の席は昔から全部固定。家に持って帰れた椅子なんてあるはずない」」
 ->->
 
-=== milano_special_b_la_scala_press ===
+=== milano_la_scala_b01_press ===
 # background: milano_la_scala_date
 # speaker: heroine
 「この椅子の来歴じゃなくて、「昔から全部」の部分ですね。どの客席のどんな記録なら確かめられるかな。」

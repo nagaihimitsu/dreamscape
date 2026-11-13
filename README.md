@@ -298,7 +298,7 @@ npm run test:saves
 | `<旅行編>/stories/battles/*.ink`                 | 日本語の敵の台詞・正誤反応・勝敗別の結末・ヒロインの余韻             |
 | `<旅行編>/tourism/catalog.json`                  | 観光地・画像の出典と権利情報・発見範囲・説明・史実とクイズの参照     |
 | `<旅行編>/stories/tourism/*.ink`                 | ヒロインの短い観光案内                                               |
-| `<旅行編>/stories/places/*.ink`                  | 場所ごとの場面をまとめたファイル（観光案内・バトル・デート・到着・宿・差し込み・ツアー。インド編はすべてここ） |
+| `<旅行編>/stories/places/*.ink`                  | 場所ごとの場面をまとめたファイル（観光案内・バトル・デート・到着・宿・差し込み・ツアー。インド編はすべて、ミラノ編は観光案内・バトル・エピローグがここ） |
 | `<旅行編>/public/assets/tourism/`                | 同梱する資料画像。外部サイトへの画像直リンクは使用しない             |
 
 各旅行編の都市・移動・クイズ・Ink と各カタログの該当項目は、同じ相対パスで `content/journeys/<旅行編ID>/` 以下に置き、`npm run content:build` が `content/` 直下の共通データと統合します。旅行編フォルダの項目は自分の都市だけを扱い、参照先は同じ旅行編か共通データに限ります。共通データには都市・移動・Ink・クイズや旅行編専用のカタログを置けません。
@@ -374,7 +374,7 @@ npm run content:check
 
 報酬の条件は `guide_read` / `battle_complete` / `battle_score` / `episode_clear` / `city_clear`。対象は通常の `episodeId` または特殊戦の `battleId` のどちらか一方を指定します。特殊戦の `episode_clear` はその対決の初完了を条件とし、観光エピソード数や都市のクリア条件は増やしません。`minScore` は好成績報酬だけに指定します。特殊戦の既存 `completionReward` は `battle_complete` として共通の報酬処理で扱います。IDは保存に使うため、公開後に変更しないでください。ミラノの `firstClearReward`（`chapter_milano_first_clear`、4AP）は『最後の晩餐』の `episode_clear` 報酬で、都市クリアのIDとは別です。章末の短い地の文はこのJSON、人物の台詞はInkに置きます。
 
-フィナーレの `epilogueStoryId` は都市ごとに設定します（ミラノは `epilogues/milano`）。Inkに名前・呼称・`romance_stage`・`ending_reached` を渡します。デートの恋愛効果（`# effect:`）は使いませんが、日本語の選択肢と効果の札（関係値・お金・APなど）は書けます（ゲームが自分で始めるエピローグでは、お金やAPを減らす `on_done:` は書けません）。デート間の固定順序はなく、実体験だけを思い出として参照します。都市クリアと交際状態は別々に記録します。
+フィナーレの `epilogueStoryId` は都市ごとに設定します（ミラノはダルセナの場所のファイルの knot `places/milano_darsena.milano_epilogue`）。Inkに名前・呼称・`romance_stage`・`ending_reached` を渡します。デートの恋愛効果（`# effect:`）は使いませんが、日本語の選択肢と効果の札（関係値・お金・APなど）は書けます（ゲームが自分で始めるエピローグでは、お金やAPを減らす `on_done:` は書けません）。デート間の固定順序はなく、実体験だけを思い出として参照します。都市クリアと交際状態は別々に記録します。
 
 ## 実装とセーブ
 

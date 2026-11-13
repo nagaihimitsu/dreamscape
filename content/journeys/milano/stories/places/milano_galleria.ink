@@ -1,4 +1,29 @@
 INCLUDE modules.ink
+-> DONE
+
+// ガッレリアの場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
+// 観光案内と通常戦。
+
+// 観光案内。tourism/catalog.json の guideStoryId がこの knot を指す。
+=== galleria_vittorio_emanuele_ii_guide ===
+# scene: guide
+# background: milano_galleria
+# speaker: narrator
+ガッレリアのガラス屋根に、靴の音がいくつも返る。{heroine_name}が十秒録る間、主人公は息まで止めていた。
+# speaker: heroine
+# emotion: smile
+「そんなに頑張らなくても。息くらい、入っていいですよ。」
+# speaker: player
+「じゃあ、息もミラノの音ってことで。」
+# speaker: narrator
+目の前を通った赤い鞄が、引き返してもう一度同じ速さで通った。
+# speaker: heroine
+「今の、巻き戻したの私じゃないよね。」
+-> END
+
+// ───── バトル（本筋）。battles/catalog.json の milano_galleria_01 の storyId がこの knot を指す。1本の流れ（-> quiz(n) -> でクイズ）。
+=== milano_galleria_01 ===
+# scene: battle
 # background: milano_galleria
 # speaker: enemy
 # cutin: name

@@ -1,4 +1,12 @@
 INCLUDE modules.ink
+-> DONE
+
+// ダルセナ（都市フィナーレの会場）の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
+// 都市フィナーレ（travel/milano.json の milano_finale の地点 p_darsena）と、その後のエピローグ。
+
+// ───── 都市フィナーレ。battles/catalog.json の milano_city_boss_01 の storyId がこの knot を指す。1本の流れ（-> quiz(n) -> でクイズ）。
+=== milano_city_boss_01 ===
+# scene: battle
 # background: milano_darsena_finale
 # speaker: narrator
 ダルセナの岸に折り畳み椅子と小さな送信機がある。椅子に座ったリヴィオは、膝にパン屑を落としたまま片手を挙げた。
@@ -110,4 +118,35 @@ INCLUDE modules.ink
 # speaker: heroine
 「その時は、お便りを出します。匿名で。」
 }
+-> END
+
+// エピローグ。progression/journey.json のフィナーレの epilogueStoryId がこの knot を指す。放送の後のダルセナ。
+=== milano_epilogue ===
+# scene: epilogue
+# background: milano_darsena_finale
+# speaker: narrator
+放送が終わったダルセナで、彼女は左の掌を開いた。さっきの網目はもう消えている。
+# speaker: player
+「最後に自分で話すって、いつ決めた？」
+# speaker: heroine
+「あの人が椅子を空けてくれたとき。座ってみたら、水がよく聴こえたから。」
+{
+- ending_reached:
+# speaker: heroine
+# emotion: shy
+「帰ったら、うちで聴こう。恋人の声って、録ると他人みたいか、試したい。」
+- romance_stage >= 3:
+# speaker: heroine
+# emotion: teasing
+「今の話も録りたかった？　もう一回聞いてくれたら、違う答えを言うかも。」
+- romance_stage == 2:
+# speaker: heroine
+# emotion: smile
+「次はそっちの好きな音も教えて。十秒、私が黙ってるから。」
+- else:
+# speaker: heroine
+「いまは、マイクなしで少しだけ歩きたいです。一緒にどうですか。」
+}
+# speaker: narrator
+上着がかすかに鳴った。彼女は袖を押さえなかった。
 -> END
