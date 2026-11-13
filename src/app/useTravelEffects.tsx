@@ -9,7 +9,8 @@ import { rideRoute, type RideRoute } from "../features/journey/ride-map";
 import { TimePassage } from "../features/journey/TimePassage";
 import { NightFade, NightRest } from "../features/journey/NightRest";
 import { NightLeaving, type NightButton } from "../features/journey/NightScreen";
-import { nightRecap, todayWord, type NightRecap, type TodayWord } from "../features/journey/night-recap";
+import { nightRecap, restNightCard, todayWord, type NightKey, type NightRecap, type TodayWord } from "../features/journey/night-recap";
+import { DAY_END_REST_JA, NIGHT_RESTED_JA } from "../features/journey/night-rest-text";
 import type { HomeRoute } from "../domain/travel-routes";
 import type { GameChange } from "./useGameSession";
 
@@ -21,16 +22,15 @@ function presentation(cityId: string, mode: TravelMode): TransportMode {
 const legArt = (leg: TourLeg): TransportMode => ({ id: leg.id, nameJa: leg.labelJa, movingJa: leg.vehicle.movingJa, kind: leg.vehicle.kind });
 
 /**
- * One decorative effect after a saved change: a ride (its art), the night of 「休む」 (「次の日」), or the one night visual of a rest
- * at the day's end (docs/02 「一日の終わり」): the card 「夜も更けたので、ホテルで休みました。」 of the rest the game took by itself,
- * the night screen's own line changed to 「ホテルで休みました。」 as it fades (its 「ホテルで休む」 slept at once), or a plain fade
- * (its 「ホテルで休む」 led to the hotel's scenes before the night).
+ * One decorative effect after a saved change: a ride (its art), the night of 「休む」 (「次の日」, or 「ホテルで休みました。」 with the
+ * night's recap when it has one: restNightCard), or the one night visual of a rest at the day's end (docs/02 「一日の終わり」): the
+ * card 「夜も更けたので、ホテルで休みました。」 of the rest the game took by itself, the night screen's own line changed to
+ * 「ホテルで休みました。」 as it fades (its 「ホテルで休む」 slept at once), or a plain fade (its 「ホテルで休む」 led to the hotel's
+ * scenes before the night).
  */
-type Effect = { kind: "move"; mode: TransportMode; route?: RideRoute } | { kind: "night" } | { kind: "day_end"; recap: NightRecap }
+type Effect = { kind: "move"; mode: TransportMode; route?: RideRoute } | { kind: "night" } | { kind: "day_end"; recap?: NightRecap; line: string }
   | { kind: "night_left"; buttons: readonly NightButton[]; recap: NightRecap; word: TodayWord | null } | { kind: "night_fade" };
 const night: Effect = { kind: "night" };
-/** The day's end card, with the night's route and line (the state before the night passes; NightRecap). */
-const dayEndCard = (atNight: GameState): Effect => ({ kind: "day_end", recap: nightRecap(atNight) });
 const nightFade: Effect = { kind: "night_fade" };
 
 /** How a rest at the day's end began: by the game itself (no night action open), or by the night screen's 「ホテルで休む」. */
@@ -51,6 +51,19 @@ export function useTravelEffects({ getCurrent, commit, nextRomanceRoll, reduceMo
   // A rest at the day's end that stopped at the hotel's scenes before the night: its night's visual plays when the night passes
   // (playMove), instead of 「次の日」. In this tab's memory only (no save format change): after a reload that night plays 「次の日」.
   const dayEndNight = useRef<{ by: DayEndRest["by"]; cityId: string; day: number } | null>(null);
+  // The last night whose recap a card showed (restNightCard: once a night). This tab's memory; nothing is saved.
+  const recapShown = useRef<NightKey | null>(null);
+  /**
+   * The card of the night that passes after `atNight` (the state before it): the day's end card (`dayEnd`, the game's own rest
+   * at 21:00) with the night's route and line, or for a rest before 21:00 「ホテルで休みました。」 with them when there are any,
+   * else 「次の日」 (restNightCard).
+   */
+  function nightCard(atNight: GameState, dayEnd: boolean): Effect {
+    const card = restNightCard(atNight, { dayEnd, shown: recapShown.current });
+    if (card.kind !== "next_day" && card.recap) recapShown.current = { cityId: atNight.currentCityId, day: atNight.travel.day };
+    if (card.kind === "next_day") return night;
+    return { kind: "day_end", recap: card.recap, line: card.kind === "day_end" ? DAY_END_REST_JA : NIGHT_RESTED_JA };
+  }
   function ownCommit(change: GameChange) {
     own.current = true;
     try { return commit(change); } finally { own.current = false; }
@@ -94,7 +107,7 @@ export function useTravelEffects({ getCurrent, commit, nextRomanceRoll, reduceMo
         // night screen's line changed in place, then a booked tour's legs. The hotel's scenes before the night first: the ride
         // home to them as after 「休む」, and the visual when the night passes (playMove).
         if (after.travel.day !== before.travel.day)
-          play([dayEnd.by === "game" ? dayEndCard(before)
+          play([dayEnd.by === "game" ? nightCard(before, true)
             : { kind: "night_left", buttons: dayEnd.buttons, recap: nightRecap(before), word: todayWord(before) }, ...tour]);
         else {
           dayEndNight.current = { by: dayEnd.by, cityId: before.currentCityId, day: before.travel.day };
@@ -105,7 +118,7 @@ export function useTravelEffects({ getCurrent, commit, nextRomanceRoll, reduceMo
       }
       const moved = tour.length ? before.travel.currentPlaceId !== before.travel.hotelPlaceId : before.travel.currentPlaceId !== after.travel.currentPlaceId;
       const slept = after.travel.day !== before.travel.day;
-      play([...(moved ? [move(before, mode, before.travel.currentPlaceId, before.travel.hotelPlaceId)] : []), ...(slept ? [night] : []), ...tour]);
+      play([...(moved ? [move(before, mode, before.travel.currentPlaceId, before.travel.hotelPlaceId)] : []), ...(slept ? [nightCard(before, false)] : []), ...tour]);
     }
     return succeeded;
   }
@@ -143,19 +156,19 @@ export function useTravelEffects({ getCurrent, commit, nextRomanceRoll, reduceMo
     const tour = legs(previous, next);
     // The night of a rest at the day's end after the hotel's scenes: its one visual instead of the ride home and 「次の日」.
     if (dayEnd) {
-      play([dayEnd === "game" ? dayEndCard(previous) : nightFade, ...tour]);
+      play([dayEnd === "game" ? nightCard(previous, true) : nightFade, ...tour]);
       return;
     }
     if (tour.length) {
       // The ride home of a rest whose move waited for its scenes, then the night, then the legs.
       const trip = previous.occasion?.kind === "hotel" && previous.occasion.trip && !previous.occasion.ran.includes("move") &&
         previous.occasion.trip.from !== previous.occasion.trip.to ? previous.occasion.trip : undefined;
-      play([...(trip ? [move(next, trip.modeId, trip.from, trip.to)] : []), ...(slept ? [night] : []), ...tour]);
+      play([...(trip ? [move(next, trip.modeId, trip.from, trip.to)] : []), ...(slept ? [nightCard(previous, false)] : []), ...tour]);
       return;
     }
     const moved = previous.travel.currentPlaceId !== next.travel.currentPlaceId;
     const mode = moved ? next.occasion?.moved ?? previous.occasion?.trip?.modeId ?? next.occasion?.trip?.modeId : undefined;
-    play([...(mode ? [move(next, mode, previous.travel.currentPlaceId, next.travel.currentPlaceId)] : []), ...(slept ? [night] : [])]);
+    play([...(mode ? [move(next, mode, previous.travel.currentPlaceId, next.travel.currentPlaceId)] : []), ...(slept ? [nightCard(previous, false)] : [])]);
   }
   /** The effect on screen ended: the next one, or nothing more (other controls may move again). */
   function done() {
@@ -167,7 +180,7 @@ export function useTravelEffects({ getCurrent, commit, nextRomanceRoll, reduceMo
   const effects = <>
     {current?.kind === "move" && <TravelTransition key={`${queue.length}:${current.mode.id}`} mode={current.mode} route={current.route} reduceMotion={reduceMotion} onEnd={done} />}
     {current?.kind === "night" && <TimePassage key={`${queue.length}:night`} reduceMotion={reduceMotion} onEnd={done} />}
-    {current?.kind === "day_end" && <NightRest key={`${queue.length}:day_end`} recap={current.recap} reduceMotion={reduceMotion} onEnd={done} />}
+    {current?.kind === "day_end" && <NightRest key={`${queue.length}:day_end`} recap={current.recap} line={current.line} reduceMotion={reduceMotion} onEnd={done} />}
     {current?.kind === "night_left" && <NightLeaving key={`${queue.length}:night_left`} buttons={current.buttons} recap={current.recap} word={current.word} reduceMotion={reduceMotion} onEnd={done} />}
     {current?.kind === "night_fade" && <NightFade key={`${queue.length}:night_fade`} reduceMotion={reduceMotion} onEnd={done} />}
   </>;

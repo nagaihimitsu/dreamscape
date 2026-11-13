@@ -56,6 +56,14 @@ export function duckForVoice(playing: boolean): void {
 }
 
 /**
+ * English read aloud starts or is over (src/audio/speech-audio.ts): the music is lowered as for a voice while it reads,
+ * and plays on after it.
+ */
+export function duckMusicForSpeech(reading: boolean): void {
+  player.duckForSpeech(reading);
+}
+
+/**
  * Applies ⚙設定's 「BGMを流す」 (`enabled`) and 「BGMの大きさ」 (`volume`, 0 to 1): off fades the music out and pauses it
  * (nothing is fetched while it is off); on plays the screen's track again; a new volume applies at once. Called by GameApp.
  */

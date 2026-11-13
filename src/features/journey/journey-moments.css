@@ -285,7 +285,9 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
 .end-roll-content { width: min(520px, 100%); margin: 0 auto; padding: 35dvh 20px 45dvh; text-align: center; }
 .end-roll.is-still .end-roll-content { padding: calc(24px + env(safe-area-inset-top)) 20px 24px; }
 .end-roll-eyebrow { color: var(--ds-on-slate-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.2em; }
-.end-roll .end-roll-title { margin: 8px 0 12px; font-size: clamp(24px, 7vw, 34px); line-height: 1.5; overflow-wrap: anywhere; }
+/* The journey's name breaks only between its words (after 「・」 and the like: keep-all), never inside one (「…トライアン／グル編」);
+   a word longer than the line still breaks (anywhere). From 7vw so that its longest word fits a 320-px phone. */
+.end-roll .end-roll-title { margin: 8px 0 12px; font-size: clamp(20px, 7vw, 34px); line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
 .end-roll-names { font-family: "Noto Serif JP", serif; font-size: 20px; letter-spacing: 0.08em; overflow-wrap: anywhere; }
 .end-roll-names span { color: var(--ds-on-slate-muted); font-size: 14px; }
 .end-roll-city { margin-top: 64px; }

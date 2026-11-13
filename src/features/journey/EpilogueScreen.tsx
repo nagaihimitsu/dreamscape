@@ -3,7 +3,7 @@ import { battles, dialogueExpressions, dialogueReactions, episodes, getCityConte
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import { activeEpilogueStoryId, epilogueScene } from "../../domain/epilogue";
-import { scenePerson, speakingPerson } from "../../domain/scene-person";
+import { scenePerson } from "../../domain/scene-person";
 import { getNextCity } from "../../domain/city-travel";
 import { tourLegUnderway } from "../../domain/tour";
 import { getJourneyForCity } from "../../content/journeys";
@@ -16,11 +16,10 @@ import { sceneTimeTint } from "./time-of-day";
 import { lineCues, lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
-import { portraitFocus } from "../../components/speaker-focus";
+import { oppositeIsEnemy, stageLine, type StageScene } from "../../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useNameCutIn } from "../../components/NameCutIn";
-import { useStaysOnStage } from "../../components/useStaysOnStage";
-import { useSpeakingPerson } from "../../components/useSpeakingPerson";
+import { useSceneStage } from "../../components/useSceneStage";
 import "./encounter.css";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
@@ -74,11 +73,12 @@ export function EpilogueScreen({
   // The scene's person with a portrait (# person:) stands opposite her from their first line or reaction.
   const person = scenePerson(storyState.people, epilogueScene(active)?.people);
   const personReaction = person ? resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy") : undefined;
-  const personOn = useStaysOnStage(!!person && (frame.speaker === "enemy" || !!personReaction));
-  // A person with a portrait who speaks in their own name stands there from that line until the scene's own person speaks or reacts.
-  const speaking = speakingPerson(storyState.people, frame);
-  const speakingOn = useSpeakingPerson(speaking, frame.speaker === "enemy" || !!personReaction);
-  const opposite = speakingOn ?? (person && personOn ? person.characterId : undefined);
+  // She stands from the start; opposite her, the scene's person from their first line or reaction, and a person with a
+  // figure who speaks in their own name from that line, each until the other comes in (scene-stage.ts).
+  const stageScene: StageScene = { heroineFromStart: true, ...(person ? { enemyFigure: person.characterId } : {}) };
+  const { stage, focus } = useSceneStage(stageLine(frame, storyState.people, { enemy: !!personReaction }), stageScene);
+  const opposite = stage.opposite?.figure;
+  const personLooks = oppositeIsEnemy(stage, stageScene);
   const finaleOpponent = battles.find((battle) => battle.id === episode?.battleId);
   const enemyName = person?.nameJa ?? finaleOpponent?.enemyNameJa;
   const { name: speaker, narration } = speakerPlate(frame, { heroine: game.heroineName, player: game.playerName, enemy: enemyName },
@@ -140,7 +140,7 @@ export function EpilogueScreen({
               sceneId={active.episodeId}
               cityId={episode?.cityId ?? game.currentCityId}
               emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame)}
-              focus={portraitFocus(frame.speaker, "heroine")}
+              focus={focus.heroine}
               stand={frame.stand}
             >
               {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
@@ -150,10 +150,10 @@ export function EpilogueScreen({
             <CharacterPortrait
               key={opposite}
               characterId={opposite}
-              emotion={speakingOn ? "neutral" : personReaction?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral")}
-              focus={speakingOn && speaking === speakingOn ? "speaking" : portraitFocus(frame.speaker, "enemy")}
+              emotion={personLooks ? personReaction?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral") : "neutral"}
+              focus={focus.opposite}
             >
-              {personReaction?.mark && <ComicEffect effect={personReaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
+              {personLooks && personReaction?.mark && <ComicEffect effect={personReaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
             </CharacterPortrait>
           </div>}
         </div>

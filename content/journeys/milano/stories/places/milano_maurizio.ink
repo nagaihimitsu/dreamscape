@@ -14,11 +14,11 @@ INCLUDE modules.ink
 サン・マウリツィオ教会の内部は壁で二つに分かれている。かつて一般の人と、修道院の内側で暮らす女性たちが、それぞれの側でミサにあずかった。
 # speaker: heroine
 修道女たちがいた向こう側にも壁画が残ってるんだって。どんな色に見えていたんだろう
-別々に絵を見て、一色だけ覚えて、ここで会いませんか。私、好きな人と同じものを見るのがデートだと思ってたから、逆をしてみたい
+別々に絵を見て、一色だけ覚えて、ここで会いませんか。わたし、好きな人と同じものを見るのがデートだと思ってたから、逆をしてみたい
 # speaker: player
 待ち合わせに遅れたら？
 # speaker: heroine
-私のほうが遅いと思います。いまから謝っておきます
+わたしのほうが遅いと思います。いまから謝っておきます
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
@@ -32,7 +32,7 @@ INCLUDE modules.ink
     # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
-        時間は少しだけ決めておこう。私、本気で見始めると長いよ
+        時間は少しだけ決めておこう。わたし、本気で見始めると長いよ
     - else:
         # speaker: heroine
         ありがとう。待たせないことより、ちゃんと見てくることをがんばる
@@ -46,7 +46,7 @@ INCLUDE modules.ink
         先に当てようとすると、あなたのことしか考えなくなるよ。絵も見たい
     - else:
         # speaker: heroine
-        ふたつ覚えていい？　私の好きな色と、あなたが好きそうな色。あ、もう反則だ
+        ふたつ覚えていい？　わたしの好きな色と、あなたが好きそうな色。あ、もう反則だ
     }
     -> join_1
 
@@ -88,7 +88,7 @@ INCLUDE modules.ink
         それはずるい。あなたが絵を見て選んだのを聞きたかった
     - else:
         # speaker: heroine
-        それだと待たせた私の色じゃない。……何色？　やっぱり聞きたい
+        それだと待たせたわたしの色じゃない。……何色？　やっぱり聞きたい
     }
     -> join_2
 
@@ -97,7 +97,7 @@ INCLUDE modules.ink
     # memory: sound_memory_maurizio_date_sound
     { romance_result == "negative":
         # speaker: heroine
-        今日だけは違うまま帰ろうよ。私の青、もう少し貸さないでおく
+        今日だけは違うまま帰ろうよ。わたしの青、もう少し貸さないでおく
     - else:
         # speaker: heroine
         うん。別々に見たから、一緒に見たい所ができた

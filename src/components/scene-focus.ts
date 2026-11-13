@@ -11,17 +11,27 @@
  * `tabIndex={-1}` (a target, not a stop in the Tab order) and the two-tone ring
  * of styles.css while the focus is visible.
  *
- * After a pointer press the browser would decide on its own whether the ring of
- * a focus moved by the page shows (Safari does not focus a tapped button, so it
- * may show it). The heading is then marked `data-quiet-focus` until it loses the
- * focus, and the ring stays hidden: a finger never brings a ring with it.
+ * The ring of a focus moved by the page shows only once a key has been pressed
+ * (`:focus-visible` as for the keyboard; 2026-11-13). Before any key (a page
+ * just loaded, which the browser may count as keyboard use) and after a pointer
+ * press (Safari does not focus a tapped button, so it may show it), the target
+ * is marked `data-quiet-focus` until it loses the focus, and the ring stays
+ * hidden: neither a finger nor a page load brings a ring with it. The focus still
+ * moves, for keyboards and screen readers; a key pressed while it is there shows
+ * its ring.
  */
 
 const QUIET = "quietFocus";
-let pointerLast = false;
+let keyLast = false;
 if (typeof document !== "undefined") {
-  document.addEventListener("pointerdown", () => { pointerLast = true; }, true);
-  document.addEventListener("keydown", () => { pointerLast = false; }, true);
+  document.addEventListener("pointerdown", () => { keyLast = false; }, true);
+  document.addEventListener("keydown", (event) => {
+    // A shortcut (Ctrl, ⌘ or Alt with a key) is not moving about the page.
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
+    keyLast = true;
+    const active = document.activeElement;
+    if (active instanceof HTMLElement) delete active.dataset[QUIET];
+  }, true);
 }
 
 /** Whether the focus is lost: on nothing, on the page body, or on the screen's own container. */
@@ -37,9 +47,9 @@ function shownHeading(container: Element): HTMLElement | null {
   return null;
 }
 
-/** Give `target` the focus without scrolling; a pointer's focus shows no ring. */
+/** Give `target` the focus without scrolling; its ring shows only after a key (none after a pointer or before any input). */
 export function focusQuietly(target: HTMLElement) {
-  if (pointerLast) {
+  if (!keyLast) {
     target.dataset[QUIET] = "";
     target.addEventListener("blur", () => delete target.dataset[QUIET], { once: true });
   } else delete target.dataset[QUIET];

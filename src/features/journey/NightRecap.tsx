@@ -4,16 +4,22 @@ import "leaflet/dist/leaflet.css";
 import { HeroineNote } from "../battle/HeroineNote";
 import { escapeHtml, OSM_TILES } from "./PlaceMap";
 import { whenLaidOut } from "./when-laid-out";
-import { routeMarks, type NightRecap, type RouteStop, type TodayWord } from "./night-recap";
+import { nudgeMarksApart, routeMarks, type NightRecap, type RouteStop, type TodayWord } from "./night-recap";
 import "../battle/battle.css";
 import "./night-rest.css";
 
 /** The closest the route's map comes (its marks still show apart). */
 const ROUTE_MAX_ZOOM = 16;
+/** A mark's height (night-rest.css .today-route-mark), and the width of the day's last place's ring around it (.is-last). */
+const MARK_HEIGHT = 28;
+const LAST_RING = 5;
+/** The room kept between two marks: their white edges (2 px each) apart. */
+const MARK_GAP = 4;
 
 /**
  * Today's route on a small map (2026-11-11 user decision): the places of the day in order, joined by a dotted line,
- * each mark numbered with its stops, and the stops listed in words under it. Display only, like the place card's map
+ * each mark numbered with its stops (marks that would hide one another drawn a little apart, nudgeMarksApart, the line
+ * still at the places), and the stops listed in words under it. Display only, like the place card's map
  * (PlaceInsetMap): no controls, nothing to focus but the OSM credit, still (no animation). When the tiles fail, a
  * line says so; the list still tells the way.
  */
@@ -38,21 +44,32 @@ export function TodayRouteMap({ route }: { route: readonly RouteStop[] }) {
     }).addTo(map);
     const points = stops.map((stop) => L.latLng(stop.place.latitude, stop.place.longitude));
     L.polyline(points, { className: "today-route-line", color: "#2b3140", weight: 3, opacity: 0.9, dashArray: "1 8", lineCap: "round", interactive: false }).addTo(map);
-    for (const mark of routeMarks(stops)) {
-      // A pill as wide as its numbers (「1・4」), centred on the place.
-      const size = Math.max(28, 12 + mark.label.length * 8);
-      L.marker([mark.place.latitude, mark.place.longitude], {
-        icon: L.divIcon({ className: "today-route-mark-wrap", iconSize: [size, 28], iconAnchor: [size / 2, 14],
-          html: `<span class="today-route-mark${mark.last ? " is-last" : ""}" aria-hidden="true">${escapeHtml(mark.label)}</span>` }),
-        interactive: false, keyboard: false, zIndexOffset: mark.last ? 1000 : 0,
-      }).addTo(map);
-    }
     const resized = new ResizeObserver(() => map.invalidateSize());
     resized.observe(frame);
-    // The view needs the frame's size (a frame or so later when it has none yet).
+    // The view needs the frame's size (a frame or so later when it has none yet); the marks need the view (where they fall).
     const cancel = whenLaidOut(frame, () => {
       map.invalidateSize();
       map.fitBounds(L.latLngBounds(points), { padding: [24, 24], maxZoom: ROUTE_MAX_ZOOM, animate: false });
+      const marks = routeMarks(stops).map((mark) => {
+        const at = L.latLng(mark.place.latitude, mark.place.longitude);
+        const { x, y } = map.latLngToLayerPoint(at);
+        // A pill as wide as its numbers (「1・4」), centred on the place; the day's last place's ring counts in its room.
+        const width = Math.max(MARK_HEIGHT, 12 + mark.label.length * 8);
+        const ring = mark.last ? 2 * LAST_RING : 0;
+        return { mark, at, width, box: { x, y, width: width + ring, height: MARK_HEIGHT + ring } };
+      });
+      // Marks that would hide one another are drawn a little apart (the map does not move again); a moved mark's place
+      // keeps a small dot, where the line meets it.
+      const nudges = nudgeMarksApart(marks.map((item) => item.box), MARK_GAP);
+      marks.forEach(({ mark, at, width }, index) => {
+        const { dx, dy } = nudges[index];
+        if (dx || dy) L.circleMarker(at, { className: "today-route-place", radius: 3, stroke: false, fillColor: "#2b3140", fillOpacity: 1, interactive: false }).addTo(map);
+        L.marker(at, {
+          icon: L.divIcon({ className: "today-route-mark-wrap", iconSize: [width, MARK_HEIGHT], iconAnchor: [width / 2 - dx, MARK_HEIGHT / 2 - dy],
+            html: `<span class="today-route-mark${mark.last ? " is-last" : ""}" aria-hidden="true">${escapeHtml(mark.label)}</span>` }),
+          interactive: false, keyboard: false, zIndexOffset: mark.last ? 1000 : 0,
+        }).addTo(map);
+      });
     });
     return () => {
       cancel();
