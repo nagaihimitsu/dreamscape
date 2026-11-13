@@ -3,7 +3,7 @@ import { getJourneyForCity } from "../content/journeys";
 import { isAuthoredEpilogueCity, startCityArrival, startCityEpilogue } from "./epilogue";
 import { isSceneOpen } from "./game-state-schema";
 import { isCarriedItem, itemUsableIn } from "./item-cities";
-import { DAY_END } from "./travel";
+import { DAY_END, DAY_START } from "./travel";
 import type { GameState } from "./game";
 
 /** Only the explicitly registered next city is a travel destination. */
@@ -55,16 +55,20 @@ export function leaveForNextCity(state: GameState): GameState {
     if (!itemUsableIn(state, id, state.currentCityId)) return state;
     if (!isCarriedItem(id)) inventory[id] = "left_behind";
   }
+  // The next city starts the next morning (2026-11-13 user decision: the clock never goes back): its day 1 at 9:00 is the
+  // journey's next day, so the weekday moves on by one as after a night.
+  const calendar = state.travel.calendar;
+  if (calendar && !Number.isSafeInteger(calendar.journeyDay + 1)) return state;
   const hotel = next.travelSettings.hotelPlaceId;
   const arrived: GameState = {
     ...state,
     revision: state.revision + 1,
     currentCityId: next.city.id,
     inventory,
-    travel: { currentPlaceId: hotel, hotelPlaceId: hotel, day: 1, minute: 9 * 60,
+    travel: { currentPlaceId: hotel, hotelPlaceId: hotel, day: 1, minute: DAY_START,
       // Rentals, ride counts, the stay's flags, today's route and headlines end here: they belong to the city where they were made.
       returnReserve: 0, returnDeadline: DAY_END, activeEvent: null, rentedModeIds: [], rideCounts: {}, temporaryFlags: [], todayPlaceIds: [], todayEpisodeIds: [],
-      ...(state.travel.calendar ? { calendar: { ...state.travel.calendar, cityStartJourneyDay: state.travel.calendar.journeyDay } } : {}) },
+      ...(calendar ? { calendar: { ...calendar, journeyDay: calendar.journeyDay + 1, cityStartJourneyDay: calendar.journeyDay + 1 } } : {}) },
   };
   return arrived;
 }
