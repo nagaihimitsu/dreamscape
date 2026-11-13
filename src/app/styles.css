@@ -937,6 +937,18 @@ input[type="checkbox"] { accent-color: var(--ds-slate-800); }
     position: relative;
   }
 }
+/* While a mini-game plays over the scene (its layer in the screen's MiniGameSlot; docs/13 2.6), the play has the whole
+   screen: the header steps aside as for a quiet line (journey-hud.css), and so does what lies under it over the scene
+   (Debug mode's strip of changes and conditions, 「ことばを覚えた」 and the photo card); the play starts at the top. They
+   come back as the play ends or is left (中断する): the start, the outcome's choice and the lines after show them as
+   before. Debug's own boxes do the same (src/dev/debug-mode.css). After the layouts above: it replaces their reserve. */
+.app-shell:has(.minigame-layer) {
+  --scene-top: env(safe-area-inset-top, 0px);
+}
+.app-shell:has(.minigame-layer) > .journey-hud,
+.app-shell:has(.minigame-layer) > main > :is(.relationship-change-region, .scene-notices) {
+  visibility: hidden;
+}
 @media (prefers-reduced-motion: reduce) {
   * {
     scroll-behavior: auto !important;
