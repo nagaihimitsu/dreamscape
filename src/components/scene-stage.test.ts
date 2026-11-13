@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { oppositeIsEnemy, stageAfter, stageFocus, stageLine, type Stage, type StageLine, type StageScene } from "./scene-stage";
+import {
+  oppositeIsEnemy, sceneStageOf, stageAfter, stageFocus, stageLine, standsOnStage, type Stage, type StageLine, type StageScene,
+} from "./scene-stage";
 
 const people = [
   { id: "smp_lili", cityId: "mihon", nameJa: "リリ" },
@@ -141,6 +143,92 @@ describe("the stage of a battle's talk (the opponent from the start)", () => {
   });
 });
 
+describe("a figure taken off the stage (# leave:, 2026-11-13)", () => {
+  const leaving = (line: StageLine, ...leave: NonNullable<StageLine["leave"]>): StageLine => ({ ...line, leave });
+
+  it("takes the scene's person off at the narration of their going, and brings them back at their next line (Delhi's epilogue)", () => {
+    const epilogue: StageScene = { heroineFromStart: true, enemyFigure: "aman" };
+    const [, aman, her, gone, herAfter, back] = read(epilogue, [narration, said("enemy"), said("heroine"), leaving(narration, { figure: "aman" }),
+      said("heroine"), said("enemy")]);
+    expect(aman.stage).toEqual({ heroine: true, opposite: { figure: "aman" } });
+    expect(her.focus).toEqual({ heroine: "speaking", opposite: "listening" });
+    // 「アマンが帰ったあと」: she stays alone; no one is dimmed for the narration.
+    expect(gone).toEqual({ stage: { heroine: true }, focus: {} });
+    expect(herAfter).toEqual({ stage: { heroine: true }, focus: { heroine: "speaking" } });
+    expect(back).toEqual({ stage: { heroine: true, opposite: { figure: "aman" } }, focus: { heroine: "listening", opposite: "speaking" } });
+    // `# leave: enemy` names the same figure.
+    expect(read(epilogue, [said("enemy"), leaving(narration, "enemy")])[1].stage).toEqual({ heroine: true });
+  });
+
+  it("takes a person who spoke in their own name off, leaving her as she is (Delhi's ticket checker, Agra Fort's tourist)", () => {
+    for (const scene of [{}, { heroineFromStart: true }] satisfies StageScene[]) {
+      const [, checker, bench, her] = read(scene, [said("heroine"), said("person", "checker"), leaving(narration, { figure: "checker" }),
+        said("heroine")]);
+      expect(checker.stage.opposite).toEqual({ figure: "checker" });
+      expect(bench).toEqual({ stage: { heroine: true }, focus: {} });
+      expect(her).toEqual({ stage: { heroine: true }, focus: { heroine: "speaking" } });
+    }
+  });
+
+  it("leaves the stage as it is for someone not standing there: another person, or the enemy when a person stands", () => {
+    const scene: StageScene = { enemyFigure: "roohi" };
+    const [, , other, enemy] = read(scene, [said("heroine"), said("person", "toma"), leaving(narration, { figure: "ana" }), leaving(narration, "enemy")]);
+    expect(other.stage).toEqual({ heroine: true, opposite: { figure: "toma" } });
+    expect(enemy.stage).toEqual({ heroine: true, opposite: { figure: "toma" } });
+  });
+
+  it("takes the heroine off even in a scene that has her from the start, until her next line or cue (not a phone's line)", () => {
+    const date: StageScene = { heroineFromStart: true };
+    const [gone, still, message, cue, line] = read(date, [leaving(narration, "heroine"), narration, { speaker: "heroine", read: true },
+      { speaker: "narrator", heroineCue: true }, said("heroine")]);
+    expect([gone, still, message].map((step) => step.stage)).toEqual([{ heroine: false }, { heroine: false }, { heroine: false }]);
+    expect(message.focus).toEqual({});
+    expect(cue.stage).toEqual({ heroine: true });
+    expect(line.stage).toEqual({ heroine: true });
+    const [, back] = read(date, [leaving(narration, "heroine"), said("heroine")]);
+    expect(back).toEqual({ stage: { heroine: true }, focus: { heroine: "speaking" } });
+  });
+
+  it("takes them off at a line they say or react on: they speak from off stage, and no one is dimmed", () => {
+    const [, , parting] = read({ heroineFromStart: true }, [narration, said("person", "toma"), leaving(said("person", "toma"), { figure: "toma" })]);
+    expect(parting).toEqual({ stage: { heroine: true }, focus: {} });
+    const [, herParting] = read({}, [said("heroine"), leaving(said("heroine"), "heroine")]);
+    expect(herParting).toEqual({ stage: { heroine: false }, focus: {} });
+  });
+
+  it("takes both off at once, and keeps a battle's opponent off until they speak, react or ask", () => {
+    const battle: StageScene = { heroineFromStart: true, enemyFigure: "nidhi", enemyFromStart: true };
+    const [both, quiet, quiz] = read(battle, [leaving(narration, "heroine", "enemy"), narration, { enemyCue: true }]);
+    expect(both.stage).toEqual({ heroine: false });
+    expect(quiet.stage).toEqual({ heroine: false });
+    expect(quiz.stage).toEqual({ heroine: false, opposite: { figure: "nidhi" } });
+  });
+
+  it("tells whether the one it names stands on the stage", () => {
+    const scene: StageScene = { enemyFigure: "roohi" };
+    const stage: Stage = { heroine: true, opposite: { figure: "roohi" } };
+    expect(standsOnStage(stage, "heroine", scene)).toBe(true);
+    expect(standsOnStage(stage, "enemy", scene)).toBe(true);
+    expect(standsOnStage(stage, { figure: "roohi" }, scene)).toBe(true);
+    expect(standsOnStage(stage, { figure: "toma" }, scene)).toBe(false);
+    expect(standsOnStage({ heroine: false, opposite: { figure: "toma" } }, "enemy", scene)).toBe(false);
+    expect(standsOnStage({ heroine: false }, "heroine", scene)).toBe(false);
+  });
+});
+
+describe("a scene's stage by its kind", () => {
+  it("has her from the start but in a talk or an encounter, the enemy's figure where the kind shows it, the stranger without one", () => {
+    expect(sceneStageOf("talk", "roohi")).toEqual({ enemyFigure: "roohi" });
+    expect(sceneStageOf("encounter")).toEqual({ enemyStandIn: "enemy" });
+    expect(sceneStageOf("battle", "nidhi")).toEqual({ heroineFromStart: true, enemyFigure: "nidhi", enemyFromStart: true });
+    for (const kind of ["arrival", "epilogue", "tour_leg"] as const) {
+      expect(sceneStageOf(kind, "aman")).toEqual({ heroineFromStart: true, enemyFigure: "aman" });
+      expect(sceneStageOf(kind)).toEqual({ heroineFromStart: true });
+    }
+    for (const kind of ["date", "guide"] as const) expect(sceneStageOf(kind, "aman")).toEqual({ heroineFromStart: true });
+  });
+});
+
 describe("a line as the stage reads it", () => {
   it("takes the speaker, the figure of a person who says it, a phone or a sheet, and the screen's cues", () => {
     expect(stageLine({ speaker: "heroine" }, people)).toEqual({ speaker: "heroine" });
@@ -153,11 +241,19 @@ describe("a line as the stage reads it", () => {
     expect(stageLine(null, people, { enemy: true })).toEqual({ enemyCue: true });
   });
 
+  it("takes who leaves as the stage knows them: the heroine, the enemy, a person's figure (none for a person without one)", () => {
+    expect(stageLine({ speaker: "narrator", leave: ["heroine", "smp_toma", "smp_lili", "enemy"] }, people))
+      .toEqual({ speaker: "narrator", leave: ["heroine", { figure: "smp_toma_art" }, "enemy"] });
+    expect(stageLine({ speaker: "narrator", leave: ["smp_lili"] }, people)).toEqual({ speaker: "narrator" });
+  });
+
   it("gives the same stage for the same line read again (a re-render, the choices after the line)", () => {
     const scenes: StageScene[] = [{}, { heroineFromStart: true }, { enemyFigure: "roohi" }, { enemyStandIn: "enemy" },
       { heroineFromStart: true, enemyFigure: "nidhi", enemyFromStart: true }];
     const lines: StageLine[] = [narration, said("heroine"), said("enemy"), { speaker: "enemy", enemyCue: true }, said("person", "toma"),
-      said("person"), said("player"), { speaker: "heroine", read: true }, { speaker: "narrator", heroineCue: true }, { enemyCue: true }];
+      said("person"), said("player"), { speaker: "heroine", read: true }, { speaker: "narrator", heroineCue: true }, { enemyCue: true },
+      { speaker: "narrator", leave: ["heroine"] }, { speaker: "narrator", leave: [{ figure: "toma" }] }, { speaker: "enemy", leave: ["enemy"] },
+      { speaker: "person", personFigure: "toma", leave: [{ figure: "toma" }, "heroine"] }];
     for (const scene of scenes) {
       for (const before of [undefined, ...lines.map((line) => stageAfter(undefined, line, scene))]) {
         for (const line of lines) {

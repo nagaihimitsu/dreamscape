@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import {
-  CUE_TAP_OUTCOMES, cueTapAutoRecord, cueTapEnd, cueTapFairness, cueTapMeter, cueTapMoment, cueTapOutcome, cueTapRules, cueTapStart,
+  CUE_TAP_OUTCOMES, cueTapAutoRecord, cueTapEnd, cueTapFairness, cueTapLateMissRecord, cueTapMeter, cueTapMoment, cueTapOutcome, cueTapRules, cueTapStart,
   cueTapTuningSchema, cueTapZones, type CueTapTuning,
 } from "./engine";
 
@@ -59,6 +59,32 @@ describe("the cue_tap engine", () => {
     expect(rules.outcomeOf(moment, {})).toBe("hit");
     expect(rules.outcomeOf(null, {})).toBe("drop");
     for (const outcome of ["hit", "drop"] as const) expect(rules.outcomeOf(rules.autoRecord(outcome, {}), {})).toBe(outcome);
+  });
+
+  it("splits a far-off tap by its side when a skin asks, and 「おまかせ」 reaches a late miss before the end", () => {
+    type Side = "hit" | "soon" | "after" | "never";
+    const rules = cueTapRules<object, Side>(tuning, { clean: "hit", early: "soon", late: "after", miss: { early: "soon", late: "after" }, none: "never" });
+    expect(rules.outcomeOf(moment, {})).toBe("hit");
+    expect(rules.outcomeOf(0, {})).toBe("soon");
+    expect(rules.outcomeOf(moment - tuning.nearMs - 1, {})).toBe("soon");
+    expect(rules.outcomeOf(moment + tuning.nearMs + 1, {})).toBe("after");
+    expect(rules.outcomeOf(cueTapEnd(tuning), {})).toBe("after");
+    expect(rules.outcomeOf(null, {})).toBe("never");
+    expect(rules.outcomeOf(cueTapEnd(tuning) + 1, {})).toBe("never");
+    for (const outcome of ["hit", "soon", "after", "never"] as const) expect(rules.outcomeOf(rules.autoRecord(outcome, {}), {})).toBe(outcome);
+    // A skin whose sides of a miss are outcomes of their own reaches each of them.
+    const own = cueTapRules<object, "clean" | "early" | "late" | "far_early" | "far_late" | "none">(tuning,
+      { clean: "clean", early: "early", late: "late", miss: { early: "far_early", late: "far_late" }, none: "none" });
+    expect(cueTapOutcome(cueTapLateMissRecord(tuning), tuning)).toBe("miss");
+    expect(cueTapLateMissRecord(tuning)).toBeLessThanOrEqual(cueTapEnd(tuning));
+    for (const outcome of ["clean", "early", "late", "far_early", "far_late", "none"] as const) expect(own.outcomeOf(own.autoRecord(outcome, {}), {})).toBe(outcome);
+  });
+
+  it("keeps a one-outcome miss as before: the early miss for 「おまかせ」", () => {
+    const rules = cueTapRules<object, "a" | "b" | "c" | "d" | "e">(tuning, { clean: "a", early: "b", late: "c", miss: "d", none: "e" });
+    expect(rules.autoRecord("d", {})).toBe(cueTapAutoRecord("miss", tuning));
+    expect(rules.outcomeOf(moment + tuning.nearMs + 1, {})).toBe("d");
+    expect(rules.outcomeOf(0, {})).toBe("d");
   });
 
   it("keeps its rules pure: no randomness, clock, DOM or React", () => {

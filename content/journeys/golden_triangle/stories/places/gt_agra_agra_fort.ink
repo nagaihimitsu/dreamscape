@@ -40,6 +40,7 @@ INCLUDE modules.ink
 # voice: gt_agra_agra_fort_guide_005
 最後の年月を、遠くのタージを見ながら……。どんな気持ちだったんだろう
 # speaker: narrator
+# leave: gt_agra_fort_tourist
 ツアーの一行が出口へ流れ始める。ただ一人、鳥打ち帽の老人が、塔の床にどっかと腰を下ろした。
 # speaker: heroine
 # reaction: heroine,surprised,question

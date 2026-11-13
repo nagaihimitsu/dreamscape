@@ -1,7 +1,9 @@
 import usesJson from "../content/generated/minigame-uses.json";
-import { episodes, scenes } from "../content";
+import { episodes, sceneConditions, scenes } from "../content";
+import type { GameState } from "../domain/game";
 import { debugQueryString, settingsQuery } from "./debug-query";
-import { debugTargets, defaultDebugSettings, type DebugScene, type DebugSettings } from "./debug-state";
+import { createDebugState, debugTargets, defaultDebugSettings, type DebugScene, type DebugSettings } from "./debug-state";
+import { cityStart, completedCity, isHotelInsert, rollTickets, startDateScene, startHotelInsertScene, withAp, withRelationship } from "./scenario-builders";
 import { miniGameUseListSchema, type MiniGameUse } from "../minigames/uses";
 
 // Debug's 「ミニゲームの見本」 (docs/13 6.6) and the content-driven test of every use (src/minigames/minigame-uses.test.ts):
@@ -25,6 +27,7 @@ export function miniGameUseLaunch(use: MiniGameUse): DebugSettings | string {
   const entry = scenes.find((scene) => scene.id === use.sceneId);
   const scene = DEBUG_SCENE[use.kind];
   if (!entry || !scene) return `${use.sceneId}（${use.kind}）はDebugの場面の確認から開けません`;
+  if (isHotelInsert(entry.id)) return `${use.sceneId}：宿の時点（「休む」）の場面は、場面の確認からは開けません`;
   const main = entry.main;
   const target = !main ? entry.id : "date" in main ? main.date : "guide" in main ? main.guide : "battle" in main ? main.battle
     : "epilogue" in main ? episodes.find((episode) => episode.cityId === main.epilogue && episode.kind === "city_finale")?.id ?? "" : "";
@@ -37,4 +40,74 @@ export function miniGameUseLaunch(use: MiniGameUse): DebugSettings | string {
 export function miniGameUseUrl(use: MiniGameUse): { url: string } | { reason: string } {
   const launch = miniGameUseLaunch(use);
   return typeof launch === "string" ? { reason: launch } : { url: debugQueryString(settingsQuery("real", launch)) };
+}
+
+/**
+ * How the content test opens a use's scene: through 場面の確認 (Debug's settings), or, for a scene of the hotel's moment
+ * (`# at: hotel …`, which 場面の確認 does not list), through 「休む」 after its city is cleared (startHotelInsertScene, with
+ * 場面の確認's defaults for the AP and the relationship); or why it cannot (a message).
+ */
+export type MiniGameUseOpening = { kind: "debug"; settings: DebugSettings } | { kind: "hotel"; settings: DebugSettings; sceneId: string };
+
+export function miniGameUseOpening(use: MiniGameUse): MiniGameUseOpening | string {
+  const entry = scenes.find((scene) => scene.id === use.sceneId);
+  if (entry && isHotelInsert(entry.id)) return { kind: "hotel", settings: { ...defaultDebugSettings(entry.cityId), scene: "encounter", id: entry.id }, sceneId: entry.id };
+  const launch = miniGameUseLaunch(use);
+  return typeof launch === "string" ? launch : { kind: "debug", settings: launch };
+}
+
+/**
+ * The branches of a hotel-moment scene the content test opens it at: none, and each `cond("…")` its story reads, alone (a
+ * flag set, another scene seen), from the scene's own list of them; not its own `seen` (the scene runs once).
+ */
+export function hotelInsertBranches(sceneId: string): string[][] {
+  const scene = scenes.find((item) => item.id === sceneId);
+  const ownSeen = (text: string) => JSON.stringify(sceneConditions.conditions[text] ?? null).includes(`"${sceneId}"`);
+  return [[], ...(scene?.conds ?? []).filter((text) => !ownSeen(text)).map((text) => [text])];
+}
+
+const clearedCities = new Map<string, GameState>();
+function clearedCity(cityId: string): GameState {
+  const cleared = clearedCities.get(cityId) ?? completedCity(cityId);
+  clearedCities.set(cityId, cleared);
+  return cleared;
+}
+
+/**
+ * A date whose story reads whether an item is held (`cond("item <id> held")`), opened again without each such item
+ * Debug's state holds: Debug's cleared city holds every item met on the way (the rain attar bought in Delhi), so the
+ * branch for a player who never got it (Akbar's Tomb's sunglasses) is walked too.
+ */
+function dateWithoutHeldItems(settings: DebugSettings): GameState[] {
+  if (settings.scene !== "date") return [];
+  const read = scenes.find((scene) => scene.main && "date" in scene.main && scene.main.date === settings.id)?.conds ?? [];
+  const items = read.map((text) => /^item (\S+) held$/u.exec(text)?.[1]).filter((id): id is string => !!id);
+  if (!items.length) return [];
+  const cityId = settings.cityId ?? "";
+  const base = withRelationship(withAp(settings.progress === "initial" ? cityStart(cityId) : clearedCity(cityId), settings.ap), settings);
+  return items.filter((id) => base.inventory[id] === "held").map((id) => {
+    const inventory = { ...base.inventory };
+    delete inventory[id];
+    return startDateScene({ ...base, inventory }, settings.id, rollTickets[settings.roll]);
+  });
+}
+
+/**
+ * The states a use's scene opens at for a reaction ticket: 場面の確認's one (a date also without each carried item its
+ * story asks about: dateWithoutHeldItems); a hotel-moment scene's, once per branch (hotelInsertBranches). A branch Debug
+ * cannot set up, or one where the scene does not start, is left out (the test then names any use it did not reach); the
+ * first (no branch) must open.
+ */
+export function miniGameUseStates(opening: MiniGameUseOpening, roll: DebugSettings["roll"]): GameState[] {
+  const settings = { ...opening.settings, roll };
+  if (opening.kind === "debug") return [createDebugState(settings), ...dateWithoutHeldItems(settings)];
+  const base = withRelationship(withAp(clearedCity(settings.cityId ?? ""), settings.ap), settings);
+  return hotelInsertBranches(opening.sceneId).flatMap((conds, index) => {
+    try {
+      return [startHotelInsertScene(base, opening.sceneId, rollTickets[roll], conds)];
+    } catch (error) {
+      if (index === 0) throw error;
+      return [];
+    }
+  });
 }
