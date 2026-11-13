@@ -706,7 +706,7 @@ EXTERNAL cond(text)
 
 - 会話の背景の画像は、各旅行編の `romance/presentation.json`（例：[ミラノ編](../content/journeys/milano/romance/presentation.json)。共通の既定背景 `default_scene`「旅の余白」は [`content/romance/presentation.json`](../content/romance/presentation.json)）の各背景に、任意の `imagePath`（配信時の `assets/` 以下のパス）を足して差し替えます。画像の置き場所は[技術設計の「共通データと旅行編フォルダ」](../docs/02_TECH_ARCHITECTURE.md#共通データと旅行編フォルダ)にあります。登録がないときと読み込めないときは今の仮の背景を出し、観察用の画像には影響しません。
 - **背景がどこか（任意、2026-11-13）**：`romance/presentation.json` の背景には、その絵の場所を書けます。地図の地点なら `placeId`（その旅行編の `travel/<都市ID>.json` の `places` の ID。宿なら、ほかの画面と同じく「滞在先のホテル」と出ます）、地図にない場所なら `placeJa`（例：`"placeJa": "ニューデリー駅"`）で、書くのはどちらか1つです。会話の場面がその背景を出している間、上の帯の場所の札は、今いる地点ではなくその場所を出します。場面が駅や宿の前の路地へ移るとき、フィナーレの途中で宿や別の地点へ行くときに、札が場面について行きます。書かない背景では、今までどおり今いる地点です。ツアーの車の中では区間の名前のまま、観光地の写真を出す場面（観光案内・観光地のクイズと道中交流）ではその観光地のままです。
-  - 同じ写真を別の場所の代わりに使うときは、背景をもう1つ登録します（同じ `imageAssetId` に、その場所の `nameJa`・`captionJa` と場所）。例：インド編の `gt_bg_delhi_paharganj`（`"placeJa": "パハールガンジ"`）と、同じ写真を宿の前の路地のイメージにした `gt_bg_delhi_hotel_alley`（`"placeId": "delhi_hotel_hub"`）。
+  - 同じ写真を別の場所の代わりに使うときは、背景をもう1つ登録します（同じ `imageAssetId` に、その場所の `nameJa`・`captionJa` と場所）。例：インド編の3つの宿のロビー `gt_bg_delhi_hotel_hub`・`gt_bg_agra_hotel_hub`・`gt_bg_jaipur_hotel_hub`（同じロビーの写真 `gt_img_hotel_illustration` に、それぞれの都市の宿の `placeId`）。
   - 到着の場面も、ほかの場面と同じく、その旅行編のどの背景でも書けます（地図の地点の背景でなくてもかまいません）。
   - どの地図にもない地点・ほかの旅行編の地点の `placeId`、`placeId` と `placeJa` の両方を書いた背景は、`content:build` が止めます。
 - タイトル画面の絵は、旅行編ごとに `manifest.json` の任意の `titleArt`（画像・説明・切り抜く位置）で指定します。ない旅行編は既定背景の色だけの場面を出します。勧める大きさ（1760×560px）と安全域は[技術設計の「既定背景とタイトルの絵」](../docs/02_TECH_ARCHITECTURE.md#既定背景とタイトルの絵)にあります。
