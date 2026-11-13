@@ -13,7 +13,9 @@ INCLUDE modules.ink
 # speaker: heroine
 道に迷ってるんだったら、ずいぶん小さい範囲ですね
 # speaker: narrator
-女が布の一方を引いた。「その三歩で、客はあんたを忘れるのよ」
+女が布の一方を引いた。
+# speaker: milano_brera_woman
+その三歩で、客はあんたを忘れるのよ
 # speaker: narrator
 二人はこちらを見ず、そのまま絵画館へ入った。
 -> END
@@ -28,8 +30,8 @@ INCLUDE modules.ink
 弟は借り物の青い布を畳もうとしなかった。二人の前にはハイエツの《接吻》がある。
 # speaker: heroine
 弟さんは、どういう色にしたいんです？
-# speaker: narrator
-弟「俺、衣装係なのに聞かれたの、今日それが初めてです」
+# speaker: milano_brera_brother
+俺、衣装係なのに聞かれたの、今日それが初めてです
 # speaker: enemy
 # reaction: heroine,serious
 時間がない。最後列の客が何を拾うか、絵に聞きに来たの
@@ -91,8 +93,8 @@ INCLUDE modules.ink
 弟は布を肩から外し、向かい合う姉の腕にその端をかぶせた。片足だけ先に出口へ向けている。
 # speaker: enemy
 ……そっちへ行くんだ
-# speaker: narrator
-弟「うん。今、最後列の人にも分かった？」
+# speaker: milano_brera_brother
+うん。今、最後列の人にも分かった？
 # speaker: enemy
 色は残す。別れを見せるのは、あんたのその足に任せる
 # speaker: narrator
@@ -118,25 +120,35 @@ INCLUDE modules.ink
 # when: battle milano_brera_c01
 # background: milano_brera_case
 # speaker: narrator
-ブレラ宮殿の中庭で、素描の学生がこちらに声をかけた。「五秒だけモデル、お願いしていいですか。動く前の人の膝が描けなくて」
+ブレラ宮殿の中庭で、素描の学生がこちらに声をかけた。
+# speaker: milano_brera_student
+五秒だけモデル、お願いしていいですか。動く前の人の膝が描けなくて
 # speaker: heroine
 五秒なら。あ、私、もう動くつもりで膝を固めちゃった
 
 * [I'll be the one about to leave. # option: pose # translation: 出ていく直前の役をやるよ。]
     # speaker: narrator
-    一歩を宙に止めると、学生は鉛筆を下ろした。「もう残る人の膝です。帰っていいですよ」。歩き出した瞬間だけ、鉛筆が動いた。
+    一歩を宙に止めると、学生は鉛筆を下ろした。
+    # speaker: milano_brera_student
+    もう残る人の膝です。帰っていいですよ
+    # speaker: narrator
+    歩き出した瞬間だけ、鉛筆が動いた。
     -> END
 
 * [I'll count to five. # option: count # translation: 五秒数えるよ。]
     # speaker: narrator
-    五、と言ったところで、彼女は肩を下ろした。学生「その後の六秒目、いまの膝です」。
+    五、と言ったところで、彼女は肩を下ろした。
+    # speaker: milano_brera_student
+    その後の六秒目、いまの膝です
     # speaker: heroine
     契約延長は、一度だけですよ
     -> END
 
 * [I'd rather stay out of the sketch. # option: decline # translation: 私は絵の外にいたいです。]
     # speaker: narrator
-    学生はすぐスケッチ帳を閉じた。「了解。今日いちばん早く立ち去れそうな膝だったから惜しいけど」。
+    学生はすぐスケッチ帳を閉じた。
+    # speaker: milano_brera_student
+    了解。今日いちばん早く立ち去れそうな膝だったから惜しいけど
     # speaker: heroine
     断った後の足が、一番描くのに向いてたね
     -> END

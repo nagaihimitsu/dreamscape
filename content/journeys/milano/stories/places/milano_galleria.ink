@@ -74,7 +74,9 @@ INCLUDE modules.ink
 # speaker: heroine
 持ちません。今撮ってるぶんを見せてください
 # speaker: narrator
-香水瓶で隠した画面の端に、鞄の女が手を差し入れた。「私にも」
+香水瓶で隠した画面の端に、鞄の女が手を差し入れた。
+# speaker: milano_galleria_bag_woman
+私にも
 -> quiz(3) ->
 # background: milano_galleria
 { quiz_correct:
@@ -113,15 +115,17 @@ INCLUDE modules.ink
 # background: milano_galleria
 # speaker: narrator
 ガッレリアで架空の出店「リナの紋章室」が、小さな手回しプレスを見せている。紙をめくると雄牛が現れ、子どもの列から鼻息の真似が返った。
-# speaker: narrator
-リナ「見本はそこに。実演一回は四ユーロ。紙が出るまで、私が何を刷ったか当てた顔をしないでね」
+# speaker: milano_rina
+見本はそこに。実演一回は四ユーロ。紙が出るまで、私が何を刷ったか当てた顔をしないでね
 
 * [Show us a fresh print, please. # option: pay # translation: 刷りたてを見せてください。]
     # money: -4
     # speaker: narrator
     リナは版に薄く色を引いた。出てきた牛の片角だけ、インクが足りない。
+    # speaker: milano_rina
+    角がないのも一回のうち。二度目は請求しないよ
     # speaker: narrator
-    リナ「角がないのも一回のうち。二度目は請求しないよ」。二枚目の牛にはちゃんと角があった。
+    二枚目の牛にはちゃんと角があった。
     # speaker: heroine
     二頭目を見ると、一頭目がかわいくなってきた
     -> END
@@ -129,8 +133,8 @@ INCLUDE modules.ink
 * [Can we look at the sample? # option: sample # translation: 見本を見てもいい？]
     # speaker: narrator
     見本には同じ牛が三つ並ぶ。端の一頭だけにリナの指紋がついていた。
-    # speaker: narrator
-    リナ「それ、いちばん先に売れかけたの。私の指をどこに飾る気か、ちょっと聞きたかった」
+    # speaker: milano_rina
+    それ、いちばん先に売れかけたの。私の指をどこに飾る気か、ちょっと聞きたかった
     # speaker: heroine
     私も、そっちから見ました
     -> END
@@ -159,8 +163,8 @@ INCLUDE modules.ink
 # background: milano_galleria
 # speaker: narrator
 ガッレリアの架空の出店「リナの紋章室」。リナは展示券を光にかざし、券の角の切れ込みを親指で確かめた。
-# speaker: narrator
-リナ「これ、当たりの人用。今日は押す係も頼めるよ。ふちを押さえるか、持ち手を握るか」
+# speaker: milano_rina
+これ、当たりの人用。今日は押す係も頼めるよ。ふちを押さえるか、持ち手を握るか
 
 * [I'll turn the handle. # option: press # translation: 私がハンドルを回します。]
     # use: galleria_ticket
@@ -173,7 +177,9 @@ INCLUDE modules.ink
 * [Please make one for us. # option: watch # translation: 一枚、刷ってください。]
     # use: galleria_ticket
     # speaker: narrator
-    リナが版を押し、彼女がそっと紙をはがした。リナ「そこが一番いい役。譲ったの、ちゃんと覚えといて」
+    リナが版を押し、彼女がそっと紙をはがした。
+    # speaker: milano_rina
+    そこが一番いい役。譲ったの、ちゃんと覚えといて
     # speaker: heroine
     はい。はがすときの音まで、たぶん覚えてます
     -> END
@@ -181,7 +187,9 @@ INCLUDE modules.ink
 * [I'll keep my ticket for later. # option: later # translation: 券はまた今度使います。]
     # later
     # speaker: narrator
-    リナは切れ込みに指を置いたまま、券をそのまま返した。「まだ切ってない。またおいで」
+    リナは切れ込みに指を置いたまま、券をそのまま返した。
+    # speaker: milano_rina
+    まだ切ってない。またおいで
     -> END
 
 // デート（本筋）。romance/date_catalog.json の milano_invitation_01 の storyId がこの knot を指す。
@@ -246,7 +254,9 @@ INCLUDE modules.ink
 横を向いた彼女の口元に、言いかけた言葉が残った。
 }
 # speaker: narrator
-彼女が選んだのは店ではなく、広場が初めてのぞく柱の間だった。「ここで、今日は私が待ってたかったの」
+彼女が選んだのは店ではなく、広場が初めてのぞく柱の間だった。
+# speaker: heroine
+ここで、今日は私が待ってたかったの
 -> END
 
 // デート（本筋）。romance/date_catalog.json の milano_reassurance_01 の storyId がこの knot を指す。
