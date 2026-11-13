@@ -21,7 +21,7 @@
     },
     {
       "storyId": "places/milano_last_supper",
-      "text": "悔しい。でも、わからないところを『同上』にはしたくないね。私も、もう一度読んでみる",
+      "text": "悔しい。でも、わからないところを『同上』にはしたくないね。わたしも、もう一度読んでみる",
       "speaker": "heroine",
       "emotion": "serious"
     },
@@ -33,7 +33,7 @@
     },
     {
       "storyId": "places/milano_last_supper",
-      "text": "私は、その続いて見える感じが好きです",
+      "text": "わたしは、その続いて見える感じが好きです",
       "speaker": "heroine",
       "emotion": "smile"
     },

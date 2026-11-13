@@ -2,7 +2,7 @@ INCLUDE modules.ink
 -> DONE
 
 // ダルセナ（都市フィナーレの会場）の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
-// 都市フィナーレ（travel/milano.json の milano_finale の地点 p_darsena）の前の「ダルセナの一音」、フィナーレと、その後のエピローグ。
+// 都市フィナーレ（travel/milano.json の milano_finale の地点 p_darsena）の前の「ダルセナの一音」、フィナーレ、告白のデート（地図の出来事がダルセナにある）と、エピローグ。
 
 // 道中交流「ダルセナの一音」（knot の名前 milano_darsena_tino）。都市フィナーレの前（# at: finale milano、# priority: -1）。
 // 城でピックを持たずにティノに会い（flag milano_tino_needs_pick）、その後ドゥオモでノラの青いピックをもらって、まだ持っているときだけ起こる。
@@ -145,7 +145,7 @@ INCLUDE modules.ink
 # speaker: enemy
 俺だったら、あの隙間に曲を入れた
 # speaker: heroine
-知ってます。だから今日は、私が持ってたんです
+知ってます。だから今日は、わたしが持ってたんです
 # speaker: narrator
 マイクを返すと、掌に網目がついていた。
 { battle_score >= 3:
@@ -158,6 +158,69 @@ INCLUDE modules.ink
 俺の番組、また聴いてくれるか。たまに場所を取り違える
 # speaker: heroine
 その時は、お便りを出します。匿名で
+}
+-> END
+
+// デート（本筋）「橋の途中で、こちらを向く」。romance/date_catalog.json の milano_confession_01 の storyId がこの knot を指す（地図の出来事はダルセナ、場面はナヴィリオの橋）。
+// 2026-11-13 に 1場面1ファイル（stories/dates/milano_date_confession.ink）から移した。文は今のまま。
+// 告白のデートでは噛み合いの札（# profile:）と関係値の札を書かない。返事は、デートを始めたときにゲームが関係状態から決めた confession_result で分ける。
+// どの選択肢でも思い出 milano_confession_promise（橋の途中で告白したこと）を残す。マウリツィオ教会のデートを遊んでいれば、待ち合わせの話を一言足す。
+=== milano_confession_01 ===
+# scene: date
+# title: 橋の途中で、こちらを向く
+# background: milano_night_landmark
+# speaker: narrator
+ナヴィリオの橋に半分ほど上がったところで、彼女の方から立ち止まった。運河を見ないで、こちらを向いている。
+# speaker: heroine
+何か言いかけたよね。渡り切る前に聞きたい
+{ cond("date milano_maurizio_date_sound"):
+    # speaker: heroine
+    あの教会で、別々に見て戻ったときも思った。待ち合わせるの、わたしけっこう好きです
+}
+* [「恋人として、これからも会いたい」 # option: as_lovers]
+    # memory: milano_confession_promise
+    # speaker: narrator
+    彼女は息を吸って、手すりから手を離した。
+* [「好きです。あなたはどう思ってる？」 # option: ask_her_heart]
+    # memory: milano_confession_promise
+    # speaker: narrator
+    彼女は一度だけうなずいた。問いを受け取った、という小さな動きだった。
+* [「帰った後の僕の予定に、君がいてほしい。付き合ってほしい」 # option: after_the_trip]
+    # memory: milano_confession_promise
+    # speaker: narrator
+    目の前の人波が切れた。彼女は渡り始めず、その場に残った。
+-
+{
+- confession_result == "accepted":
+    # speaker: heroine
+    # emotion: shy
+    うん。付き合いたい。わたし、明日何時に会うかまで、さっきから考えてた
+    # speaker: player
+    何時？
+    # speaker: heroine
+    # emotion: teasing
+    それは恋人に相談します。……あなたなんだけど
+    # speaker: narrator
+    彼女が先に手を出した。指が重なったところで、ようやく二人は橋の残り半分を渡った。
+- confession_result == "deferred":
+    # speaker: heroine
+    うれしい。だからこそ、その勢いで「うん」って言うのを待って。わたしはもう少し、自分の言葉で考えたい
+    # speaker: player
+    分かった。明日は、普通に会える？
+    # speaker: heroine
+    うん。普通に会いたいっていうのは、いま答えられる
+    # speaker: narrator
+    先に足を出したのは彼女だった。橋の下で、水が一度だけ石に当たった。
+- else:
+    # speaker: heroine
+    # emotion: serious
+    恋人としては、今は会えません。遠回しにすると、あなたに待たせてしまうから
+    # speaker: player
+    聞かせてくれてありがとう。……少しだけ、ここで休んでいく
+    # speaker: heroine
+    うん。先に橋の向こうにいるね
+    # speaker: narrator
+    すぐ隣にいなくても見えるところで、彼女は運河の方を向いた。
 }
 -> END
 
@@ -183,7 +246,7 @@ INCLUDE modules.ink
 - romance_stage == 2:
 # speaker: heroine
 # emotion: smile
-次はそっちの好きな音も教えて。十秒、私が黙ってるから
+次はそっちの好きな音も教えて。十秒、わたしが黙ってるから
 - else:
 # speaker: heroine
 いまは、マイクなしで少しだけ歩きたいです。一緒にどうですか

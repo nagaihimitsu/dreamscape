@@ -13,8 +13,8 @@
 @keyframes vn-character-in {
   from { opacity: 0; }
 }
-/* While a line is read (speaker-focus.ts): its speaker comes slightly forward, the others
-   listen, slightly dimmed; narration leaves everyone as they are. `scale` is its own
+/* While a line is read (scene-stage.ts stageFocus): its speaker on stage comes slightly forward, the others
+   listen, slightly dimmed; a line no one on stage says leaves everyone as they are. `scale` is its own
    property: it adds to the placement's transform (inline) about the same origin, and moves
    nothing else on the screen. */
 .vn-character.is-speaking { scale: 1.04; }

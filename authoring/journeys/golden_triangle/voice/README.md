@@ -15,7 +15,7 @@
 
 この台本は、リポジトリにない使い捨てのスクリプトで作りました。今の `npm run voice:script` は同じ読み方で、同じ877行を同じ文と同じ ID で抜き出します。その後バトルの会話が場所のファイルへ移ったので、バトルの台詞150行の `file`・`knot` は当時のもの（例 `battles/gt_delhi_finale.ink`・`gt_delhi_finale`）で、今の knot には `_battle` が付いています（`gt_delhi_finale_battle`）。ID は台本のまま（`gt_delhi_finale_001` など）です。
 
-届いた声：デリーの236行（台本の1〜236番目）が `content/journeys/golden_triangle/public/assets/voice/<ID>.mp3`（MP3・48kHz・モノラル・80kbps）にあり、Inkの台詞の前の `# voice: <ID>` で結び付け、`recorded.json` に2026-11-12の台本の文で記録しています。残りの641行は作っているところです。
+届いた声：321行（台本の1〜321番目。2026-11-13までに4回に分けて届いた分）が `content/journeys/golden_triangle/public/assets/voice/<ID>.mp3`（MP3・48kHz・モノラル・80kbps）にあり、Inkの台詞の前の `# voice: <ID>` で結び付け、`recorded.json` に2026-11-12の台本の文で記録しています。残りは作っているところです。アーグラのメヘターブ・バーグのデート（台本の462〜484番）はクリケットのミニゲームで書き直したので、2026-11-13に差し替えの台本（34行、うち新しい行17）を渡しました。
 
 ## 使い方
 
@@ -24,3 +24,7 @@
 3. 届いたら：MP3 を `content/journeys/golden_triangle/public/assets/voice/` に置いてから、`npm run voice:tag -- --journey golden_triangle --from <届いたファイルのフォルダ>`。`# voice:` を付け、`recorded.json` に記録します。文が台本と違う声は付けずに、理由を出します。
 4. 変わったら：`npm run voice:changes -- --journey golden_triangle` で、録り直しが要る行（`recorded.json` の文と違う行）と、まだ録音していない行の変更（いちばん新しい台本と比べる）を見ます。`npm run content:build` も、録音した行の文が変わると注意「録音した台詞が変わりました：<ID>（録り直しが必要）」を出します（文は `-- --verbose`）。
 5. 録り直す：台本を作り直して渡し、届いたら `voice:tag` で付けます。注意は、作り直した声を記録するまで消えません。
+
+## 書き直しと録り直しが要る行
+
+- `gt_agra_date_mariam_tomb_015`（マリアム廟のデート、`places/gt_agra_mariam_tomb.ink`）：「ねえ。わたし、{player_address}って呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ」。遊ぶ人が決める呼び名を言う台詞なので、このままでは声を付けられません（`content:build` はこの行の `# voice:` を止め、`voice:tag` も付けません）。2026-11-13の判断：今は呼び名入りの台本のまま声を作っていますが、いずれ呼び名を言わない文に書き直し、声も録り直します。書き直したら、新しい文で台本を作って渡します。

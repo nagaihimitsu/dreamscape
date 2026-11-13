@@ -19,7 +19,7 @@ INCLUDE modules.ink
 # speaker: narrator
 目の前を通った赤い鞄が、引き返してもう一度同じ速さで通った。
 # speaker: heroine
-今の、巻き戻したの私じゃないよね
+今の、巻き戻したのわたしじゃないよね
 -> END
 
 // ───── バトル（本筋）。battles/catalog.json の milano_galleria_01 の storyId がこの knot を指す。1本の流れ（-> quiz(n) -> でクイズ）。
@@ -58,7 +58,7 @@ INCLUDE modules.ink
 彼女の親指が止まった。再生すると、鞄の女が息を切らして値段を交渉する声まで入っていた。
 # speaker: heroine
 # emotion: serious
-……ほんとだ。これは私が消します
+……ほんとだ。これはわたしが消します
 -> quiz(2) ->
 # background: milano_galleria
 { quiz_correct:
@@ -104,7 +104,7 @@ INCLUDE modules.ink
 # speaker: narrator
 ケースにしまった瓶をもう一度出して、男は自分の顔の前に置いた。
 # speaker: heroine
-……私、記録してる側は景色に入ってないと思ってた
+……わたし、記録してる側は景色に入ってないと思ってた
 # speaker: player
 消すとき、手が止まったね
 # speaker: heroine
@@ -291,7 +291,7 @@ INCLUDE modules.ink
 # speaker: narrator
 ガッレリアの中央で、彼女がこちらの前に回った。手を伸ばし、袖に触れる直前で止める。
 # speaker: heroine
-今日は片道だけ、私が先を歩きたい。振り返ったら、そこにいてくれる？
+今日は片道だけ、わたしが先を歩きたい。振り返ったら、そこにいてくれる？
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
@@ -318,11 +318,11 @@ INCLUDE modules.ink
     # memory: sound_memory_invitation_01
     { romance_result == "negative":
         # speaker: heroine
-        顔より行き先を見てほしい。私がどっちを選ぶか
+        顔より行き先を見てほしい。わたしがどっちを選ぶか
     - else:
         # speaker: heroine
         # emotion: shy
-        それ、私は道を見ていられるかな。試してみよう
+        それ、わたしは道を見ていられるかな。試してみよう
     }
     -> join_1
 
@@ -331,10 +331,10 @@ INCLUDE modules.ink
     # memory: sound_memory_invitation_01
     { romance_result == "negative":
         # speaker: heroine
-        質問は聞きたいよ。私が先頭でも、二人で歩いてるから
+        質問は聞きたいよ。わたしが先頭でも、二人で歩いてるから
     - else:
         # speaker: heroine
-        じゃあ先に私から。お腹すいてる？　……そこで行き先が変わります
+        じゃあ先にわたしから。お腹すいてる？　……そこで行き先が変わります
     }
     -> join_1
 
@@ -346,7 +346,7 @@ INCLUDE modules.ink
 # speaker: narrator
 彼女が選んだのは店ではなく、広場が初めてのぞく柱の間だった。
 # speaker: heroine
-ここで、今日は私が待ってたかったの
+ここで、今日はわたしが待ってたかったの
 -> END
 
 // デート（本筋）。romance/date_catalog.json の milano_reassurance_01 の storyId がこの knot を指す。
@@ -388,7 +388,7 @@ INCLUDE modules.ink
         今日はその言葉が、少しだけ急かす音に聞こえた。時間をください
     - else:
         # speaker: heroine
-        言ってくれてありがとう。うまく待てなくてもいい。私が決めたら、私から話す
+        言ってくれてありがとう。うまく待てなくてもいい。わたしが決めたら、わたしから話す
     }
     -> join_1
 
@@ -400,7 +400,7 @@ INCLUDE modules.ink
         無理に面白くしなくていいよ。そばにいてくれるだけで
     - else:
         # speaker: heroine
-        どうぞ。一つ目の話題に天気を持ってきたら、私も盛大に失敗してあげる
+        どうぞ。一つ目の話題に天気を持ってきたら、わたしも盛大に失敗してあげる
     }
     -> join_1
 
@@ -444,7 +444,7 @@ INCLUDE modules.ink
         笑い話にするには、ちょっと勇気を使ったとこ。普通に戻ろう
     - else:
         # speaker: heroine
-        足で巻き戻すの初めて。台詞まで同じだと私また言いそびれるから、そこは変えてね
+        足で巻き戻すの初めて。台詞まで同じだとわたしまた言いそびれるから、そこは変えてね
     }
     -> join_1
 
@@ -466,7 +466,7 @@ INCLUDE modules.ink
         先にいい？　いま口を開けたところだから
     - else:
         # speaker: heroine
-        それ、先に聞かせて……あっ、また私の番を譲っちゃった。今日は私から
+        それ、先に聞かせて……あっ、またわたしの番を譲っちゃった。今日はわたしから
     }
     -> join_1
 
@@ -505,7 +505,7 @@ INCLUDE modules.ink
     # memory: sound_memory_city_date_01
     { romance_result == "negative":
         # speaker: heroine
-        毎回私からは寂しい。半分ずつがいい
+        毎回わたしからは寂しい。半分ずつがいい
     - else:
         # speaker: heroine
         言うよ。その代わり、そっちからも言ってね
@@ -545,7 +545,7 @@ INCLUDE modules.ink
     # memory: sound_memory_rain_pause_01
     { romance_result == "negative":
         # speaker: heroine
-        預けなくても開かないよ。私が決めたんだから
+        預けなくても開かないよ。わたしが決めたんだから
     - else:
         # speaker: heroine
         はい。利息は一緒に雨音を聞く一分で
@@ -560,7 +560,7 @@ INCLUDE modules.ink
         雨が強くなる前には歩こうね。ずっと、ではないよ
     - else:
         # speaker: heroine
-        私も。二人とも帰りそびれた顔で、ちゃんと残りたいんだね
+        わたしも。二人とも帰りそびれた顔で、ちゃんと残りたいんだね
     }
     -> join_1
 
@@ -609,7 +609,7 @@ INCLUDE modules.ink
     # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
-        また私だけが先？　小さいことでいいから、今日はそちらからも聞きたい
+        またわたしだけが先？　小さいことでいいから、今日はそちらからも聞きたい
     - else:
         # speaker: heroine
         今日は広場まで歩く。ここで終わり。さあ、そっちの番
@@ -620,10 +620,10 @@ INCLUDE modules.ink
     # profile: playful
     { romance_result == "negative":
         # speaker: heroine
-        お腹がすいてるのは分かった。私はゆっくり話せる所がいいな
+        お腹がすいてるのは分かった。わたしはゆっくり話せる所がいいな
     - else:
         # speaker: heroine
-        いい。私の希望は、立ち食いしないこと。両方かなう場所を探そう
+        いい。わたしの希望は、立ち食いしないこと。両方かなう場所を探そう
     }
     -> join_1
 
@@ -631,10 +631,10 @@ INCLUDE modules.ink
     # profile: honest
     { romance_result == "negative":
         # speaker: heroine
-        私は今、おしゃべりしたい日みたい。半分ずつにしよう
+        わたしは今、おしゃべりしたい日みたい。半分ずつにしよう
     - else:
         # speaker: heroine
-        私も。じゃあ少しだけ、次の柱まで黙ってみようか
+        わたしも。じゃあ少しだけ、次の柱まで黙ってみようか
     }
     -> join_1
 
