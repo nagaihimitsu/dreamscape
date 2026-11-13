@@ -21,6 +21,8 @@ export interface MiniGamePlayProps {
   onAbort: () => void;
 }
 
+/** The sounds of a play (registered in content/presentation/sounds.json): the bat meeting the ball, the bricks falling, the six's cheer. */
+export const CRICKET_SOUNDS = { hit: "bat_hit", bricks: "bricks_fall", cheer: "applause" } as const;
 /** A swing this soon after the play starts is the start button's second tap: ignored. */
 const SWING_LIVE_MS = 450;
 /** How long the result's label stays before the story goes on. */
@@ -111,7 +113,7 @@ export function CricketBatting({ auto, autoOutcome, still, partner, onDone, onAb
     decided.current = next;
     setOutcome(next);
     if (ms !== null) setSwung(true);
-    if (FLIGHTS[next]) playSound("bat_hit");
+    if (FLIGHTS[next]) playSound(CRICKET_SOUNDS.hit);
   }
   function swing(at: number) {
     if (auto || decided.current || !start.current) return;
@@ -153,7 +155,7 @@ export function CricketBatting({ auto, autoOutcome, still, partner, onDone, onAb
       if (!flight && !fell && ms >= BRICKS_MS) {
         fell = true;
         setBricksDown(true);
-        playSound("bricks_fall");
+        playSound(CRICKET_SOUNDS.bricks);
       }
       // Reduced motion: a hit ball does not fly; it is gone a moment after the bat meets it.
       const gone = still && !!flight && swungAt !== null && ms - swungAt > 120;
@@ -165,7 +167,7 @@ export function CricketBatting({ auto, autoOutcome, still, partner, onDone, onAb
       if (resultAt !== null && !shown && ms >= resultAt) {
         shown = true;
         setResult(LABELS[end!] ?? "");
-        if (end === "six") playSound("applause");
+        if (end === "six") playSound(CRICKET_SOUNDS.cheer);
       }
       if (resultAt !== null && ms >= resultAt + RESULT_MS) {
         latest.current.onDone(end!);
