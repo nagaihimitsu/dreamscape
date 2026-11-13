@@ -48,17 +48,14 @@ describe("location-based encounters", () => {
       expect(encounterEntryRulesSchema.safeParse({ schemaVersion: 2, entries: [{ ...duomo, ...old }] }).error?.issues[0].message).toMatch(/Unrecognized key/);
   });
 
-  it("offers the Galleria's wish in its first observation and its ticket talk only after the wish, and scala_mint after La Scala's battle", () => {
+  it("offers the Galleria's wish in its first observation and its ticket talk only after the wish, and the Brera student with no condition", () => {
     const fresh = createGame("たいち", "あゆみ");
     const afterDuomo = { ...fresh, completedEpisodeIds: ["milano_duomo_episode"] };
-    for (const id of ["milano_galleria_ticket_gift", "scala_mint"])
-      expect(encounterOffered(afterDuomo, id), id).toEqual({ available: false, reason: "この場所を訪れたあとに出会えます。" });
+    expect(encounterOffered(afterDuomo, "milano_galleria_ticket_gift")).toEqual({ available: false, reason: "この場所を訪れたあとに出会えます。" });
     // The Galleria's wish is met in its first observation; its ticket talk after it.
     expect(encounterOffered(afterDuomo, "galleria_fortune")).toEqual({ available: true, reason: "" });
     const afterWish = { ...afterDuomo, completedEncounterIds: ["galleria_fortune"], seenEncounterIds: ["galleria_fortune"] };
     expect(encounterOffered(afterWish, "milano_galleria_ticket_gift")).toEqual({ available: true, reason: "" });
-
-    const afterScala = { ...afterDuomo, battleRecords: [{ battleId: "milano_la_scala_b01", firstScore: 0, lastScore: 0, bestScore: 0, attempts: 1 }] };
-    expect(encounterOffered(afterScala, "scala_mint")).toEqual({ available: true, reason: "" });
+    expect(encounterOffered(fresh, "brera_sitter")).toEqual({ available: true, reason: "" });
   });
 });

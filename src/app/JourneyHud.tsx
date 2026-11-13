@@ -17,6 +17,7 @@ import { vibrate } from "../audio/vibration";
 import type { GameState } from "../domain/game";
 import { itemDefinition } from "../domain/item-cities";
 import { spentItemIds } from "../domain/item-changes";
+import { tourLegUnderway } from "../domain/tour";
 import { getGameWeekday, getTimePeriod } from "../domain/travel";
 import { placeDisplayName } from "../features/journey/travel-labels";
 import { formatTravelTime } from "../features/journey/travel-time";
@@ -144,7 +145,8 @@ export function JourneyHud({ game, place, view, replaced = 0, seenItemIds, onIte
     <div className="journey-hud" data-testid="journey-bar" data-view={view} ref={measured} onMouseDown={keepFocusOffControls}>
       <div className="hud-status">
         <p className="hud-plate" data-testid="journey-context">
-          <span className="hud-place"><Icon name="pin" /><span className="sr-only">現在地：</span>{placeDisplayName(game, place)}</span>
+          {/* In a tour's car (its leg's narration begun, the move not yet) the leg's label, not the place left behind. */}
+          <span className="hud-place"><Icon name="pin" /><span className="sr-only">現在地：</span>{tourLegUnderway(game)?.labelJa ?? placeDisplayName(game, place)}</span>
           <span className="hud-time">
             <Icon name={getTimePeriod(game.travel.minute) === "day" ? "sun" : "moon"} />
             {game.travel.day}日目{weekday === undefined ? null : <span aria-label={weekdayLabel(weekday).spoken}>{weekdayLabel(weekday).short}</span>} {formatTravelTime(game.travel.minute)}

@@ -32,18 +32,18 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 
 ### A. ある旅行編に都市を足す（例：ゴールデントライアングル編の4つ目の都市）
 
-- 専用のブランチで作業します。`manifest.json` に都市IDを足すと、都市データを反映するまで `content:build` が通りません（[CITY_BUNDLES](CITY_BUNDLES.md)）。
+- 専用のブランチで作業します。`manifest.json` に都市IDを足すと、都市データを反映するまで `journey:readiness`・`journey:transit` が止まります（`Missing content file: cities/<都市ID>.json`）。`content:build` は通ります（[CITY_BUNDLES](CITY_BUNDLES.md)）。
 - `<旅行編>/manifest.json` の `cities` に `{ "id": "<都市ID>", "nameJa": "<都市名>" }` を、旅の順の位置に足します。`nameJa` は都市ファイルの `nameJa` と同じにします（違うと止まる）。
 - 都市データの雛形は `npm run city:bundle -- new <都市ID> artifacts/city-work/<名前>.json` で作ります（手順6）。
 - 前の都市の `cities/<前の都市ID>.json` の `nextCityId` に新しい都市を書きます。書けるのは `manifest.json` で次の順にある都市だけです。新しい都市が制作中（`productionStatus: "prototype"`）でも書けます。次の都市が公開されるまで、遊ぶ人は前の都市にとどまります（[FUTURE_CITIES](FUTURE_CITIES.md)）。
 - 旅行編の設定は全都市に効きます。次の点に気をつけます。
   - 乗り物：`transportModes` は旅行編ごとに徒歩のほかに2つまでです。新しい都市はその中から使います。インド編ならオートリキシャ（`auto_rickshaw`）と地下鉄（`metro`）です。3つ目を足すと止まります。都市ごとに乗り物を変える仕組みはまだありません。
-  - 件数：`cityPlan` の `mainTourismCount`（本筋の観光の数）と `dateCount`（行き先のある通常デートの数）は、どの都市にも同じ数を求めます。違うと `journey:readiness` が `event_count_mismatch` を出し、`journey:release` が止まります。インド編は本筋4件・デート6件です。`cityClearAp` と `lodgingCost` も全都市で同じです。
+  - 件数：`cityPlan` の `mainTourismCount`（本筋の観光の数）と `dateCount`（行き先のある通常デートの数）は、どの都市にも同じ数を求めます。違うと `journey:readiness` が `event_count_mismatch` を出し、`journey:release` が止まります。インド編は本筋4件・デート6件です。`cityClearAp` と `lodgingCost` も全都市で同じです（違うと止まる）。
   - 予算：`initialBudget` は旅全体の残高です。都市が増えると、いちばん安く回るのに要る額も増えます。インド編は `tests/journeys/golden_triangle/budget.test.ts` が全都市の合計を確かめるので、予算を見直します（手順21）。
   - 都市の移り方：インド編は `cityTransition: "after_epilogue"` です。前の都市のエピローグを読み終えると、次の都市へ移ります。
   - オープニングムービーとタイトルの絵は旅行編に1つだけです。新しい都市には作りません。代わりに都市の到着（ロゴと到着の会話）を作ります。
 - 公開中の旅行編では、公開済みのIDを変えません。交通費を上げる・経路をなくすときは、セーブの版を上げます（[データ契約のセーブの版](../docs/07_DATA_AND_TESTS.md#セーブの版)）。
-- その旅行編の単体テスト（`tests/journeys/<旅行編ID>/`）が都市の数や都市名を前提にしていれば直します。
+- その旅行編の単体テスト（`tests/journeys/<旅行編ID>/`）と共通のテストが都市の数や都市名・予算を前提にしていれば直します（例：`src/content/journeys.test.ts` はインド編の都市の並び・予算・`cityPlan` を確かめる）。
 - 公開は `npm run journey:release -- --check --journey <旅行編ID> --through <新しい都市ID>` からです。公開済みの都市は書き直さず、新しい都市まで順に反映します（手順23）。
 
 ### B. 新しい旅行編の最初の都市（journey:new）
@@ -73,7 +73,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 | 交通判断台帳 | `<旅行編>/travel/<都市ID>-transit.json` | 乗り物を宣言した旅行編では最小 |
 | 観光写真と権利 | `<旅行編>/public/assets/tourism/…`、`<旅行編>/tourism/catalog.json` の `assets` | 最小 |
 | 観光地 | `tourism/catalog.json` の `landmarks` | 最小 |
-| 観察ポイント | `tourism/catalog.json` の `clues` | 仕上げ（推理クイズの証拠には要る） |
+| 観察ポイント | `tourism/catalog.json` の `clues` | 観察を入れる観光地（`observation: false` を書かない観光地）では最小（ないと `journey:readiness` が `observations_missing`）。推理クイズの証拠にも要る |
 | 会話の背景 | `<旅行編>/romance/presentation.json` の `backgrounds` | 最小 |
 | 本筋・フィナーレ・報酬 | `<旅行編>/progression/journey.json` の `episodes`・`rewards` | 最小 |
 | クイズの相手（対決） | `<旅行編>/battles/catalog.json` | 最小 |
@@ -150,7 +150,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 | 役目 | 数の目安 | 決まり |
 | --- | --- | --- |
 | 本筋の観光（通常のクイズ3問） | `cityPlan.mainTourismCount`（インド編4） | 実在する著名な観光地を主舞台にする |
-| 推理クイズB（矛盾追及）・C（証拠連結） | 物語に合うときだけ（稀） | 実在する著名な観光地を主舞台にする。BとCは互いに主舞台を重ねない（ミラノ編では『最後の晩餐』とも重ねない）。その場所固有の資料で推理する |
+| 推理クイズB（矛盾追及）・C（証拠連結） | 物語に合うときだけ（稀） | 実在する著名な観光地を主舞台にする。BとCは互いに主舞台を重ねない（『最後の晩餐』とも重ねない）。その場所固有の資料で推理する |
 | 都市フィナーレ（5問） | 1 | 実在する著名な観光地を主舞台にする。複数の観光地の知識や出会いを回収する |
 | デートの行き先 | `cityPlan.dateCount`（インド編6）＋告白などの特別なデート | 名所を明示し、その場所ならではの体験にする。本筋の観光地と同じ場所でもよい（データは別） |
 | 道中交流・差し込みの場面 | 自由 | 名所を明示し、その場所ならではの体験にする |
@@ -167,13 +167,13 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 ### 手順3. 移動手段を選ぶ（徒歩＋著名な乗り物2つ）・宿・地点と経路
 
 - 目的：街の中の動き方を決める。時間とお金の遊びの土台になる。
-- 前に要るもの：手順2（地点の一覧）。
+- 前に要るもの：手順1。乗り物と宿は手順2と並べて選べる。地点と経路は手順2の一覧の後。
 - 作るもの：
   - 乗り物の宣言（`manifest.json` の `transportModes`）：`{ id, nameJa, movingJa, kind, rental?, se? }`。`kind` は演出の絵で、`rail`・`tram`・`bus`・`car`・`three_wheeler`・`bicycle` から選ぶ。徒歩（`walk`）は宣言しない。借りる乗り物は `"rental": true` と、設定の `rentals`。
-  - 宿と都市の設定（`travel/<都市ID>-settings.json`）：`hotelPlaceId`、`initialBudget`、`lodgingCost`、`retryMinutes`、任意の `storyBackgroundId`・`rentals`・`notes`。
-  - 地点（`travel/<都市ID>.json` の `places`）：`id`・`nameJa`・`nameEn`・`latitude`・`longitude`・`backgroundId`・`openingWindows`・`closedWeekdays`・`sources`。
-  - 地図の出来事（同じファイルの `events`）：エピソード・推理クイズ・デートと同じID、`placeId`・`category`（`main`・`date`）・`activityMinutes`・`apCost`・`admissionCost`（2人分）。
-  - 経路（`routes`）：片道ごとに `fromPlaceId`・`toPlaceId`・`mode`・`minutes`・`cost`（片道の `farePartySize` 人分）・`estimation: "game_model"`・`sources`・任意の `transferNote`（40字以内が目安）。各地点に同じ地点への徒歩0分の経路も置く。
+  - 宿と都市の設定（`travel/<都市ID>-settings.json`）：`hotelPlaceId`、`initialBudget`、`lodgingCost`（`cityPlan.lodgingCost` と同じ）、`retryMinutes`、`notes`（ゲーム用の前提のメモ）、任意の `storyBackgroundId`・`rentals`。
+  - 地点（`travel/<都市ID>.json` の `places`）：`id`・`cityId`・`nameJa`・`nameEn`・`latitude`・`longitude`・`backgroundId`・`sources`、任意の `openingWindows`・`closedWeekdays`。観光地の地点は `landmarkIds`、デートの地点は `destinationIds` で観光地・行き先を指す（合わないと止まる）。
+  - 地図の出来事（同じファイルの `events`）：エピソード・推理クイズ・デートと同じID、`cityId`・`placeId`・`category`（`main`・`date`）・`titleJa`・`activityMinutes`・`apCost`（本筋は0、デートはデートの `apCost` と同じ。違うと止まる）・任意の `admissionCost`（2人分）。脚本がまだない出来事は `"contentStatus": "pending_content"`（制作中の都市だけ。`journey:release -- --apply` が外す）。
+  - 経路（`routes`）：片道ごとに `fromPlaceId`・`toPlaceId`・`mode`・`minutes`・`cost`（片道の `farePartySize` 人分）・`estimation: "game_model"`・`sources`・任意の `transferNote`（40字まで。超えると止まる）。各地点に同じ地点への徒歩0分の経路も置く（ないと止まる）。
   - 交通判断台帳（`travel/<都市ID>-transit.json`、`schemaVersion: 2`）：地点の組（向きを区別）×乗り物ごとに `available`・`not_suitable`・`not_applicable`・`inconclusive` と、`checkedAt`・`reasonJa`・出典。
   - 地点・経路・台帳は手順6の都市の作業用JSON（`city:bundle`）でまとめて書ける。
 - 守る決まり：
@@ -196,7 +196,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 - 作るもの：
   - 調査記録：`<制作資料>/research/<調査名>-<日付>/README.md`（例 `research/golden-triangle-20261103/`）。
   - 小話ごとに、日本語で「話の入口」「何を知りたいかという問い」「答えで見え方が変わる種明かし」を先に書く（[CONTENT_GUIDE の「題材を選ぶ」](CONTENT_GUIDE.md#題材を選ぶ)）。
-  - 出典の形はどこでも同じ：`publisher`・`title`・`url`・`checkedAt`・`claimType`・`claimJa`。`claimType` は `documented_fact`（事実）・`interpretation`（解釈）・`legend`（伝説）、ゲーム用の推定は `hypothesis`。
+  - 出典の形はどこでも同じ：`publisher`・`title`・`url`・`checkedAt`・`claimType`・`claimJa`。`claimType` は `documented_fact`（事実）・`interpretation`（解釈）・`legend`（伝説）、ゲーム用の推定は `hypothesis`（クイズの問いと `scenes/catalog.json` の出典には `hypothesis` は書けない）。
 - 出典を書く所：
 
 | 何の出典か | 書く所 |
@@ -208,7 +208,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 | 地点・経路 | `travel/<都市ID>.json` の `sources` |
 | その国の言葉 | `learning/local-words.json` の `sources` |
 
-- 守る決まり：出典や確認日を捏造しない。開けなかったページ、検索結果に出ただけの数字は出典にしない。未確認なら未確認と書く。事実・解釈・仮説・伝説を分ける。材料・寸法・年号・名前だけの暗記を主題にしない（[AGENTS.md](../AGENTS.md)）。
+- 守る決まり：出典や確認日を捏造しない。未確認なら未確認と書く。事実・解釈・仮説・伝説を分ける。材料・寸法・年号・名前だけの暗記を主題にしない（[AGENTS.md](../AGENTS.md)）。開けなかったページ、検索結果に出ただけの数字は出典にしない（CONTENT_GUIDE のツアーの項）。
 - 確かめ方と終わりの目安：事実の正しさを確かめるコマンドはありません（人が資料の該当箇所を読む）。`content:build` は出典の形と、`claimJa` などの日本語の欄に日本語があるか（注意）を見ます。終わりの目安は、作る予定のクイズ・小話のどれにも、確かめた出典がある。
 - インド編では：最初に地点・交通・入場料・画像の調査をまとめ（[全調査統合版](journeys/golden_triangle/research/golden-triangle-all-research-20261103/README.md)）、出典の優先順位も記録した。
 
@@ -247,7 +247,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
   - 場合A：前の都市の `nextCityId`。
 - 守る決まり：作業用JSONは編集用の写しで、正本は `content/` です。書き出しは `content/`・`public/` の外へ。`baseFingerprint` は手で変えない。地点・出来事のIDは都市をまたいで重ねない。
 - 確かめ方と終わりの目安：
-  - `npm run content:build` が通る。最後の旅行編ごとの1行で、都市・配信ファイル・カタログの数が増えたことを見る。
+  - `npm run content:build` が通る。旅行編ごとの1行（`Journey …`）で、都市・配信ファイル・カタログの数が増えたことを見る。
   - `npm run journey:readiness -- --journey <旅行編ID>` で、残りが脚本・クイズなどの未制作の項目だけになる。
   - `npm run dev` のタイトル画面に準備中の旅行編が並ぶ（場合B）。`/?debug&city=<都市ID>&scene=map` で地図と交通を見る。
 - インド編では：3都市の地点・交通・背景を先に登録し（#1〜#3 の旅行の土台）、脚本はその後に足した。
@@ -320,7 +320,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 | フィナーレ | 会場の地点 | `-> quiz(1) ->`〜`-> quiz(5) ->` |
 | デート | その地点（宿の屋上の告白などは `places/<頭>_<宿>_dates` も可） | `# scene: date`。選択の回数はデートの `choiceCount`（ふつう2回）。選択肢に `# profile:`・`# memory:`。`romance_result` の `positive`・`negative` で反応を変える。場所のファイルでは `# effect:` を書かない。任意で `# when:`・`# hint:` |
 | 告白のデート | 同上 | `# profile:` も結果の `# effect:` も書かない。ゲームが関係の状態から決めた `confession_result` で返事を分ける |
-| 道中交流・会話 | その場所 | `# scene: encounter`・`talk`。`# at:`・`# priority:`・`# when:`・`# until:`・`# repeat:`。英語の選択肢には `# translation:`。出典は `scenes/catalog.json` か `# sources: none` |
+| 道中交流・会話 | その場所 | `# scene: encounter`・`talk`。`# at:`・`# priority:`（どちらも必須）、任意の `# when:`・`# until:`・`# repeat:`。`encounter` は `# title:` も必須。英語の選択肢には `# translation:`。出典は `scenes/catalog.json` か `# sources: none` |
 | ほかの時点の場面 | その場所 | `# at:` に `date`・`finale`・`epilogue`・`depart`・`arrive`・`trip`・`ticket`・`hotel`・`tour`（[CONTENT_GUIDE の「道中の交流」](CONTENT_GUIDE.md#道中の交流)の表） |
 | エピローグ | 宿（`<頭>_epilogue`） | `# scene: epilogue`。フィナーレの `epilogueStoryId` で指す |
 | 出発の前 | 宿など | `# at: depart <都市ID>`（次の都市があるときだけ流れる） |
@@ -331,7 +331,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
   npm run journey:scenario -- --journey <旅行編ID> --directory authoring/journeys/<旅行編ID>/drafts/scenario --city <都市ID>
   ```
 
-  場所のファイルの読み方、頭の札、背景、デートの `# profile:`、選択の全経路、対決のクイズの正誤を確かめる（仮のクイズは作らない）。下書きと本番の両方に同じ場面があると止まる。
+  場所のファイルの読み方、頭の札、背景、デートの `# profile:`、選択の全経路、対決のクイズの正誤を確かめる（仮のクイズは作らない）。下書きと本番の両方に同じ場面があると止まる。`journey:scenario` は `journey:scaffold` と同じ入力（観察資料。手順12）と、下書きのフォルダの `<都市ID>/narrative.json`（手順12の脚本の情報。`--city` なしでは、全都市をまとめた `narrative.json` も直下に）を読む。どちらもないと動かない。
 - 守る決まり：
   - 名前は `{player_name}`・`{heroine_name}`・`{player_address}` と書き、ベタ書きしない。
   - 台詞は「」で囲まない（名札が話し手を示す）。主人公が言う言葉の選択肢だけ「」で囲む。
@@ -375,11 +375,11 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
   - 制作ツールの道（`manifest.json` に `authoring` がある旅行編）：
     1. `npm run journey:scaffold -- --requirements --journey <旅行編ID> --city <都市ID>` で、固定のID・Inkの住所・入力の雛形（`narrativeTemplate`）を見る。
     2. 雛形を JSON に保存し、各 `null` を題・紹介・クリアの文・相手の名前・デートの思い出・フィナーレの会場（`placeId`）と所要時間に置き換える。
-    3. 下書きの `stories/` を本番の `<旅行編>/stories/` へ移し（移す。写しを残すと二重管理で止まる）、クイズを `<旅行編>/quizzes/` に置く。
+    3. 下書きの `stories/` を本番の `<旅行編>/stories/` へ移し（移す。写しを残すと `journey:scenario` が二重管理で止まる）、クイズを `<旅行編>/quizzes/` に置く。カタログがまだ指していない場面は `content:build` が「No catalog points at …」で止めるので、`content:build` が通るのは次の `--apply` の後。
     4. `npm run journey:release -- --check --journey <旅行編ID> --through <都市ID> --narrative <narrative.json> --translations <和訳.json>` で一時領域に統合して検証し、通ったら `--apply` でカタログへ反映する。
   - 手で写す道：見本の編の同じ種類の項目を写し、IDと内容を置き換えて、既存のカタログの配列に足す（[CONTENT_GUIDE の「見本の編（雛形）」](CONTENT_GUIDE.md)）。
 - 制作ツールの道の制約：
-  - `journey:scaffold` は、本筋の観光地ごとに観察資料（`authoring.observationFile`）の観察ポイントと、仮でない JPEG・WebP 画像の記録（SHA-256）を求めます。観察を入れない都市には使えないので、手で写す道を使います。
+  - `journey:scaffold` は、本筋の観光地ごとに観察資料（`authoring.observationFile`）の観察ポイントと、仮でない JPEG・WebP 画像の記録（SHA-256）を求めます。観察を入れない都市には使えないので（`journey:scenario` も同じ）、手で写す道を使います。
   - 推理クイズB・Cは作りません（手で足す）。クイズの相手の絵は `portrait: "abstract"` で作ります（立ち絵は手順14）。
   - 観察資料の観察ポイントの `relatedQuestionIds` は `[]` のままにし、問題IDは公開後に `tourism/catalog.json` 側で付けます（[観察だけの手がかり](../docs/07_DATA_AND_TESTS.md#観察だけの手がかり)）。
   - `narrative.json` は初めの登録の入力です。公開後に直しても自動では反映されません。公開後の変更はカタログと都市データを直接直します。
@@ -435,7 +435,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
   - 場面の演出：`# phone:`・`# letter:`・`# quiet:`・`# stand:`・`# cutin: name`・`# reaction:`・`# emotion:`。
   - 品物と空気：`# item_show:`・`# weather:`・`# tint: off`。
   - その国の言葉：`learning/local-words.json`（出典つき）と行の `# local_word:`。
-  - データの一言：地点の `descriptionJa`（筋を明かさない一般的な案内）・`heroineLinesJa`、都市の `nightLinesJa`。
+  - データの一言：地点の `descriptionJa`（筋を明かさない一般的な案内）・`heroineLinesJa`、`travel/<都市ID>.json` の最上位の `nightLinesJa`。
 - 守る決まり：ここぞという行だけに書く。`# em:` の語は行の字にそのまま書く。彼女の一言はどの関係の段階でも自然な言葉にし、キャラクターバイブルに照らす。
 - 確かめ方と終わりの目安：`npm run content:build`（決まった値以外、行にない語、同じ行に同じ札2つで止まる）。Debug の場面の確認の「音と演出の見本を開く」で演出だけを見られる。
 - インド編では：台詞の見せ方の札とその国の言葉15語（#100）、品物の札・天気・揺れ・夜の色（#114）。
@@ -453,15 +453,16 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
   - 後半：`music.json` の `play`（`place`・`arrival`・`epilogue` など変えたい鍵と、地点ごとの `places`）、`ambience.json` の `play.places`、行の `# bgm:`・`# ambience:`・`# se:`。乗り物の音は `transportModes` の `se`。
 - 守る決まり：曲で関係の値を知らせない。告白の場面の曲は結果で変えない。環境音は継ぎ目なくくり返せるように切る。
 - 確かめ方と終わりの目安：`npm run content:build`（ファイルのない音、一覧にないファイル、出典のない音、ない地点、ほかの旅行編の音で止まる。使わない音は注意）。Debug の「音と演出の見本」で一つずつ鳴らす。「出典・権利の一覧」に出ることを見る。
-- インド編では：効果音（#102、台本の59か所）、BGM 14曲（#107。Kevin MacLeod の曲、CC BY 4.0）、環境音4つ。
+- インド編では：効果音（#102、台本の59か所）、BGM 14曲（#107。Kevin MacLeod の8曲（CC BY 4.0）と、ほかの作者の CC0 1.0・CC BY 3.0 の曲）、環境音4つ。
 
 ### 手順18. 台詞の声
 
 - 目的：ヒロインなどの台詞に声を付ける。
 - 前に要るもの：台詞の確定（手順10の点検と、手順16・21で文を変えるなら、その後）。声は1行ごとのファイルなので、文を変えると録り直しになる。
 - 作るもの：
-  - 声のIDを決める：英小文字・数字・`_`。インド編は「knot の名前＋3けたの番号」（例 `gt_delhi_date_lodhi_garden_001`）。
-  - 行に `# voice: <ID>` を書く。
+  - 台本：`npm run voice:script -- --journey <旅行編ID>` が、ヒロインの台詞を1行＝1ファイルにした台本（`heroine_lines.txt` と `entries.json`）を `artifacts/voice/<旅行編ID>/` に書く。渡した台本は `<制作資料>/voice/<渡した日付>/` に置いてコミットする（[CONTENT_GUIDE の「台詞の声の台本」](CONTENT_GUIDE.md#台詞の声の台本と台詞が変わったときの確認2026-11-13)）。
+  - 声のID：英小文字・数字・`_`。台本は「knot の名前_番号」を付ける（例 `gt_delhi_date_lodhi_garden_001`）。
+  - 声が届いたら、行に `# voice: <ID>` を書く。
   - ファイル：`<旅行編>/public/assets/voice/<ID>.mp3`（登録は要らない）。
   - 出典：`manifest.json` の `voiceCredits`（`useJa`・`titleJa`・`author`・`license`・`checkedAt`・`url`・`creditJa`）。「出典・権利の一覧」の「声」に出る。
 - 守る決まり：
@@ -469,14 +470,17 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
   - 音声合成のモデル・素材のライセンスを確かめる。
   - 実在の人の声を参考にするとき（声の見本や、音声合成の参照音声）は、その人の同意を得て記録を残す。同意の記録を置く決まった場所は、リポジトリにはまだない（`<制作資料>/research/` などにメモを置く）。
 - 確かめ方と終わりの目安：`npm run content:build`（ファイルのない ID、名前の行の声で止まる。どの行も使わないファイルは注意。声のファイルのない旅行編に `voiceCredits` を書くと止まる）。ゲームの設定「台詞の声を出す」で聞く。読み終えた場面の声は、旅の音楽室（最初の都市のクリア後、「旅の記録」から）にも並ぶ。
-- 録る行の一覧を作るコマンドは、まだ仕組みがない。`npm run journey:readthrough -- --journey <旅行編ID>` で場面の行を道ごとに読める。
+- 台詞を直したら：`npm run voice:changes -- --journey <旅行編ID>` が、渡した最新の台本と今の台詞を比べ、録り直しの要る行を出す。録音した行の文が変わると `content:build` も注意を出す。
 - インド編では：音声合成 Irodori-TTS v4.1-Small でヒロインの声を作った（#101 で26本、#110 で210本。今はデリーの236本）。
 
 ### 手順19. ミニゲーム
 
-- いまクリケットの遊びのために、ゲームの結果で選択肢の組の分かれ道を選ぶ札 `# minigame:` を作っている途中です（2026-11-13）。この手引きを書いた時点では、まだ使えません。
-- 使えるようになったら：場面の山場を1つ選び、選択肢の組の選択肢をゲームの結果にして、札を付けます。書き方は CONTENT_GUIDE に入ります。
-- 前に要るもの：その場面の初稿（手順10）。
+- 目的：デートの山場で、選択肢の代わりに短いミニゲームを遊んでもらい、その結果で選択肢を選ぶ。
+- 前に要るもの：そのデートの初稿（手順10）。
+- 作るもの：選択肢のすぐ前の行に `# minigame: <ゲーム>`（任意で `auto <結果>`・`prefix <語>`）、すぐ後に結果ごとに1つずつ選択肢（`# option:` は結果のID）。今のゲームはクリケットの打席 `cricket_batting` だけ（[CONTENT_GUIDE の「デートのミニゲーム」](CONTENT_GUIDE.md#デートのミニゲーム任意2026-11-13)）。
+- 守る決まり：書けるのは場所のファイルのデートだけ。結果は押した時刻だけで決まり、乱数は使わない。
+- 確かめ方と終わりの目安：`npm run content:build`（ないゲームや結果、結果と選択肢が1つずつ合わない、選べないことがある結果の選択肢、デートでない場面で止まる）。Debugモードでは結果のボタンで遊ばずに選べる。
+- インド編では：アーグラのメヘターブ・バーグのデートの最後の一球（`places/gt_agra_mehtab_bagh.ink`）。
 
 ### 手順20. オープニングムービー（新しい旅行編だけ）
 
@@ -514,7 +518,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 | 交通 | `npm run journey:transit -- --journey <旅行編ID>` | 判断の数、徒歩の経路がない向き |
 | 下書きの脚本 | `npm run journey:scenario -- --journey <旅行編ID> --directory <下書き> --city <都市ID>` | 下書きの全経路 |
 | 場面の並び | `npm run journey:readthrough -- --journey <旅行編ID>` | 点検のための読み物 |
-| 探索 | `npm run test:walk` | 公開中の全旅行編を種付きで歩く。公開の状態にした都市は開始地点にもなる。その都市をクリアしてエピローグを読み、都市を出られるか |
+| 探索 | `npm run test:walk` | 公開中の全旅行編を種付きで歩く。`manifest.json` の2つ目からの都市は、制作中でも開始地点になる（場合Aでは、新しい都市が `complete` になるまで止まる。コードから読んだもので、動かしてはまだ確かめていない）。その都市をクリアしてエピローグを読み、都市を出られるか |
 | 単体テスト | `npm run test:quick`、`tests/journeys/<旅行編ID>/` のテスト | 予算のテストなど |
 | 画面 | Debug 起動URL、`npm run screens` | 320・360・390px で、[UI_REVIEW_CHECKLIST](../UI_REVIEW_CHECKLIST.md) |
 | 通常の保存と再開 | 通常の操作で遊ぶ（Debug は代わりにならない） | 都市の途中でのセーブ・ロード、前の都市からの移り |
@@ -608,6 +612,7 @@ flowchart TD
 | 2 観光地 | 4 調査・5 写真 | 調べる対象と写す場所が決まらないと始められない |
 | 4 調査 | 9 クイズの英文・解説 | 確かめた出典のない事実で問題を作らない（AGENTS.md） |
 | 5 写真 | 6 都市データ | `city:bundle` の `new`・`export` は画像を先に置く。観察の `region`・`revealRegion`・SHA-256 は決まった写真に合わせる |
+| 6 の `city:bundle` の反映 | ほかの `content/`・`public/` の変更 | 書き出し（`export`・`new`）の後に `content/`・`public/`（ほかの旅行編も）が変わると、`check`・`apply` が「作業コピーが古くなっています」で断る。先に反映するか、書き出し直す |
 | 6 都市データ | 10 シナリオの検査 | `# background:`・地点・出来事のIDがないと、Ink が検査を通らない |
 | 9 クイズ | 10 対決の会話の完成、12 取り込み | `-> quiz(n) ->` の数は問いの数と合わせる。取り込みにはクイズと和訳が要る |
 | 9 クイズの英文 | 和訳 | 和訳の `source` は原文の写し。原文を変えると不一致で止まる |
@@ -639,13 +644,12 @@ Git の履歴（`git log origin/main`）から、ゴールデントライアン�
 
 - 都市ごとに乗り物を変える仕組み：乗り物は旅行編で徒歩のほかに2つまで。今の2つと違う乗り物が名物の都市は、同じ旅行編に足せない。演出の絵（`kind`）に船などはない。
 - 都市ごとに件数を変える仕組み：`cityPlan` の本筋とデートの数は全都市で同じ。
-- 観察のない都市の `journey:scaffold`：本筋の観光地ごとに観察ポイントが要る。観察を入れない都市は、見本の編から手で写す。
+- 観察のない都市の `journey:scaffold`・`journey:scenario`：本筋の観光地ごとに観察ポイントが要る。観察を入れない都市は、見本の編から手で写す。
 - 推理クイズB・Cの雛形を作るツール：`journey:scaffold` は作らない。見本の編（朝市・図書室）やミラノ編から手で写す。
 - 予算のテストの共通版：いちばん安く回れば本筋を最後まで遊べることを確かめるテストは、旅行編ごとに書く（インド編の `budget.test.ts`）。共通のテストはない。
-- 声を録る行の一覧を書き出すコマンド：ない。`journey:readthrough` で行を読む。
 - 実在の人の声の同意の記録の置き場所：決まっていない。
 - オープニングムービーの出典の欄：`openingMovie` は `videoPath` だけで、ムービーの中の映像・音楽の出典を「出典・権利の一覧」に出せない。
-- ミニゲームの札 `# minigame:`：作っている途中。
+- デートでない場面のミニゲーム：`# minigame:` は場所のファイルのデートだけに書ける。ゲームはクリケットの打席の1つだけ。
 
 ## 6. 1枚のチェックリスト
 
@@ -685,7 +689,7 @@ Git の履歴（`git log origin/main`）から、ゴールデントライアン�
 - [ ] 立ち絵を登録し、`?character-preview` で大きさ（`figureScale`）と縁を見た
 - [ ] アルバムの絵は 3:2 で、`# photo:` が指している
 - [ ] BGM・環境音・効果音の出典（作者・ライセンス・確認日）を書いた
-- [ ] 声は台詞の確定の後に作った。名前のある行に声がない。`voiceCredits` を書いた
+- [ ] 声は台詞の確定の後に作った。名前のある行に声がない。`voiceCredits` を書いた。`voice:changes` に録り直しの要る行がない
 - [ ] 場合B：タイトルの絵とオープニングムービーの権利を確かめた
 
 ### 調整と確認

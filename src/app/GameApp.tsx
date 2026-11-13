@@ -991,6 +991,8 @@ export function GameApp({
               commit((state) => chooseDate(state, index, revision))
             }
             choiceDisplay={(index) => dateChoiceDisplay(game, index)}
+            miniGameAuto={displaySettings.value.miniGameAuto}
+            debugTools={debugOn}
             onAdvance={() => {
               commit((state) => advanceDate(state, game.revision));
             }}
@@ -1254,6 +1256,11 @@ export function GameApp({
             />{" "}
             演出を短縮する
           </label>
+          <label className="translation-setting">
+            <input type="checkbox" checked={displaySettings.value.miniGameAuto} disabled={!!displaySettings.error}
+              onChange={(event) => displaySettings.update({ miniGameAuto: event.target.checked })} /> ミニゲームをおまかせにする
+          </label>
+          {displaySettings.value.miniGameAuto && <p className="fine-print">ミニゲームは押さずに自動で進み、場面ごとに決まった結果になります。</p>}
           {readAloudAvailable && <label className="translation-setting">
             <input type="checkbox" checked={displaySettings.value.readAloud} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ readAloud: event.target.checked })} /> 英語を読み上げるボタンを出す
