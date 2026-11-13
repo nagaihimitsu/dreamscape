@@ -31,7 +31,8 @@
 /* # photo_show: large (PhotoShowLayer, 2026-11-12): the line's album picture, whole, large in a white frame like a
    print, over the portraits (dimmed by the layer's veil) and under the window (z-index 2), in the area below the
    header. The picture keeps its own ratio and fits within the width and the upper part of the scene, so the window
-   below stays readable. It takes no taps (a tap reads the line on, as anywhere on the scene). */
+   below stays readable, and below the notices under the header (--notices-h, as the item card). It takes no taps (a
+   tap reads the line on, as anywhere on the scene). */
 .photo-show-layer {
   position: absolute;
   z-index: 1;
@@ -39,7 +40,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: clamp(12px, 4dvh, 40px) 16px 0;
+  padding: max(clamp(12px, 4dvh, 40px), calc(var(--notices-h, 0px) + 8px)) 16px 0;
   background: rgba(16, 20, 28, 0.5);
   pointer-events: none;
   animation: stage-fade-in var(--motion-scene) var(--ease-out);
