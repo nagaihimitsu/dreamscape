@@ -1,0 +1,205 @@
+import { useCallback, useEffect, useId, useMemo, useRef, useState, type ComponentType, type KeyboardEvent, type MouseEvent, type PointerEvent } from "react";
+import type { MiniGamePlayProps, MiniGameRules } from "../../contract";
+import { rhythmTapJudge, type RhythmTapRecord, type RhythmTapSummary, type RhythmTapTuning } from "./engine";
+import "./engine.css";
+
+// The rhythm_tap engine's play (docs/13 2.2): the field a skin draws, a lane whose marks slide to a ring at each beat
+// (the beats on screen: it plays the same with the sound off), the skin's stop button (if any) away from the big tap
+// button at the bottom (a tap on the field and Space or Enter tap too; S stops). The host's clock times it; the
+// engine judges the record as it grows; the skin's rules decide; the host shows the outcome and takes its choice.
+
+/** What a skin's field draws at a frame. */
+export interface RhythmTapView<Outcome extends string> {
+  /** The play's time (the host's clock). */
+  ms: number;
+  /** The play so far: its taps and its stop. */
+  record: RhythmTapRecord;
+  /** What the record did as of `ms`. */
+  summary: RhythmTapSummary;
+  /** The skin's outcome, once the play has ended. */
+  outcome: Outcome | null;
+  /** When the play hands its outcome to the host, once decided. */
+  endAt: number | null;
+}
+
+/** What a skin's field is given: the play's props it draws with, and the engine's frames. */
+export type RhythmTapFieldProps<Params, Outcome extends string> =
+  Pick<MiniGamePlayProps<Params, Outcome>, "params" | "still" | "seed" | "cast" | "names" | "art" | "sound" | "vibrate"> & {
+    /** Subscribes `draw` to every frame of the play (the engine's own loop); returns the unsubscribe. */
+    frames(draw: (view: RhythmTapView<Outcome>) => void): () => void;
+  };
+
+/** A skin of rhythm_tap: its beats and timing, its rules (rhythmTapRules), its words and its field. */
+export interface RhythmTapSkin<Params, Outcome extends string> {
+  tuning: RhythmTapTuning;
+  rules: MiniGameRules<Params, Outcome, RhythmTapRecord>;
+  /** How to play, above the lane (not while おまかせ plays). */
+  hintJa: string;
+  /** The big button (「食べる」「踊る」). */
+  actionJa: string;
+  /** What it does, read out with it. */
+  actionHintJa: string;
+  /** In place of the buttons while おまかせ plays. */
+  autoJa: string;
+  /** The stop button (「バス」) and what it does, read out with it; null: no stop. S presses it. */
+  stop: { labelJa: string; hintJa: string } | null;
+  /** The host's top band as the play goes (「12個目」). */
+  statusJa(summary: RhythmTapSummary): string;
+  /** The line under the outcome (a count to show; never in the story: docs/13 4.1). */
+  detailJa(summary: RhythmTapSummary, outcome: Outcome): string | undefined;
+  /** How long the field shows the end before the outcome (less with less motion). */
+  endDelayMs(outcome: Outcome, still: boolean): number;
+  Field: ComponentType<RhythmTapFieldProps<Params, Outcome>>;
+}
+
+/** How far ahead the lane shows a beat (its mark enters at the right edge this long before the beat). */
+const LANE_AHEAD_MS = 1800;
+/** Where the lane's ring is, in percent from the left; a passed mark slides on to the left edge. */
+const LANE_RING = 16;
+/** How long the ring lights after a hit. */
+const LANE_FLASH_MS = 140;
+
+const isTapKey = (event: KeyboardEvent) => event.key === " " || event.key === "Enter";
+const isStopKey = (event: KeyboardEvent) => event.key === "s" || event.key === "S";
+
+/** The play of a rhythm_tap skin. */
+export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSkin<Params, Outcome>): ComponentType<MiniGamePlayProps<Params, Outcome>> {
+  const { beats } = skin.tuning;
+  const laneAt = (beat: number, ms: number) => {
+    const ahead = (beat - ms) / LANE_AHEAD_MS;
+    return ahead >= 0 ? LANE_RING + ahead * (100 - LANE_RING) : LANE_RING + ahead * (LANE_RING / 0.35);
+  };
+  return function RhythmTapPlay(props: MiniGamePlayProps<Params, Outcome>) {
+    const { params, auto, clock, still, seed, cast, names, art, sound, vibrate } = props;
+    const taps = useRef<number[]>([]);
+    const stopMs = useRef<number | null>(null);
+    const decided = useRef<{ outcome: Outcome; endAt: number } | null>(null);
+    const [over, setOver] = useState(false);
+    const [stopped, setStopped] = useState(false);
+    const marks = useRef<(HTMLSpanElement | null)[]>([]);
+    const ring = useRef<HTMLSpanElement>(null);
+    const draws = useRef(new Set<(view: RhythmTapView<Outcome>) => void>());
+    const latest = useRef(props);
+    latest.current = props;
+    const hintId = useId();
+    const stopHintId = useId();
+    const autoPlay = useMemo(() => (auto === null ? null : skin.rules.autoRecord(auto, params)), [auto, params]);
+
+    const playing = () => latest.current.auto === null && !decided.current && stopMs.current === null;
+    const tap = (ms: number) => {
+      if (!playing() || ms < 0) return;
+      taps.current.push(ms);
+    };
+    const stop = (ms: number) => {
+      if (!skin.stop || !playing() || ms < 0) return;
+      stopMs.current = ms;
+      setStopped(true);
+    };
+
+    useEffect(() => {
+      let ended = false;
+      let status = "";
+      let flashUntil = -1;
+      let hits = 0;
+      return clock.onFrame((ms) => {
+        // 「おまかせ」 plays its record as the clock reaches each of its moments.
+        if (autoPlay) {
+          taps.current = autoPlay.taps.filter((time) => time <= ms);
+          stopMs.current = autoPlay.stopMs !== null && autoPlay.stopMs <= ms ? autoPlay.stopMs : null;
+        }
+        const record: RhythmTapRecord = { taps: taps.current, stopMs: stopMs.current };
+        const summary = rhythmTapJudge(record, skin.tuning, ms);
+        if (summary.ended && !decided.current) {
+          const outcome = skin.rules.outcomeOf(record, latest.current.params);
+          decided.current = { outcome, endAt: ms + skin.endDelayMs(outcome, latest.current.still) };
+          setOver(true);
+        }
+        const nextStatus = skin.statusJa(summary);
+        if (nextStatus !== status) {
+          status = nextStatus;
+          latest.current.status(status);
+        }
+        // The lane: each beat's mark slides to the ring; a hit one is gone (the ring lights), a missed one dims and passes.
+        if (summary.hits > hits) flashUntil = ms + LANE_FLASH_MS;
+        hits = summary.hits;
+        if (ring.current) ring.current.dataset.flash = ms < flashUntil ? "true" : "false";
+        beats.forEach((beat, index) => {
+          const mark = marks.current[index];
+          if (!mark) return;
+          const state: "hit" | "miss" | "gone" | "coming" = index < summary.judged.length ? summary.judged[index] : summary.ended ? "gone" : "coming";
+          const at = laneAt(beat, ms);
+          mark.dataset.state = state;
+          mark.style.left = `${at}%`;
+          mark.style.opacity = state === "hit" || state === "gone" || at > 100 || at < 0 ? "0" : "";
+        });
+        const done = decided.current;
+        const view: RhythmTapView<Outcome> = { ms, record, summary, outcome: done?.outcome ?? null, endAt: done?.endAt ?? null };
+        for (const draw of draws.current) draw(view);
+        if (done && !ended && ms >= done.endAt) {
+          ended = true;
+          latest.current.end(done.outcome, skin.detailJa(rhythmTapJudge(record, skin.tuning), done.outcome));
+        }
+      });
+    }, [clock, autoPlay]);
+
+    const frames = useCallback((draw: (view: RhythmTapView<Outcome>) => void) => {
+      draws.current.add(draw);
+      return () => { draws.current.delete(draw); };
+    }, []);
+    const onPointer = (event: PointerEvent) => {
+      if (event.button === 0) tap(clock.at(event.timeStamp));
+    };
+    // A click without a pointer before it (a screen reader's, a key's): the pointer's own tap came on pointerdown.
+    const onClickTap = (event: MouseEvent) => {
+      if (event.detail === 0) tap(clock.now());
+    };
+    const onKey = (event: KeyboardEvent) => {
+      const onStop = (event.target as Element | null)?.closest?.("[data-rhythm-stop]");
+      if (isStopKey(event) && skin.stop) {
+        event.preventDefault();
+        if (!event.repeat) stop(clock.at(event.timeStamp));
+        return;
+      }
+      // Enter or Space on the focused stop button presses it (its click), not the tap.
+      if (!isTapKey(event) || onStop) return;
+      event.preventDefault();
+      if (!event.repeat) tap(clock.at(event.timeStamp));
+    };
+    // A button's Space clicks on keyup: the key's tap came on keydown (one tap a press).
+    const onKeyUp = (event: KeyboardEvent) => {
+      if (event.key === " " && !(event.target as Element | null)?.closest?.("[data-rhythm-stop]")) event.preventDefault();
+    };
+    const Field = skin.Field;
+    const idle = over || stopped;
+    return (
+      <div className="mg-engine-rhythm-tap" onKeyDown={onKey} onKeyUp={onKeyUp}>
+        <div className="mg-rhythm-tap-field" onPointerDown={onPointer} aria-hidden="true">
+          <Field params={params} still={still} seed={seed} cast={cast} names={names} art={art} sound={sound} vibrate={vibrate} frames={frames} />
+        </div>
+        <div className="mg-rhythm-tap-controls">
+          <div className="mg-rhythm-tap-top" data-stop={(auto === null && !!skin.stop) || undefined}>
+            {auto === null && <p className="mg-rhythm-tap-hint">{skin.hintJa}</p>}
+            {auto === null && skin.stop && (
+              <button type="button" className="secondary mg-rhythm-tap-stop" data-testid="minigame-stop" data-rhythm-stop
+                aria-disabled={idle || undefined} aria-describedby={stopHintId}
+                onClick={(event) => stop(event.detail === 0 ? clock.now() : clock.at(event.timeStamp))}>{skin.stop.labelJa}</button>
+            )}
+          </div>
+          <div className="mg-rhythm-tap-lane" aria-hidden="true">
+            <span className="mg-rhythm-tap-ring" ref={ring} />
+            {beats.map((beat, index) => (
+              <span key={beat} className="mg-rhythm-tap-mark" data-state="coming" ref={(element) => { marks.current[index] = element; }} />
+            ))}
+          </div>
+          {auto !== null ? <p className="mg-rhythm-tap-auto">{skin.autoJa}</p> : (
+            <button type="button" className="primary mg-rhythm-tap-action" data-testid="minigame-action" data-minigame-primary
+              aria-disabled={idle || undefined} aria-describedby={hintId}
+              onPointerDown={onPointer} onClick={onClickTap}>{skin.actionJa}</button>
+          )}
+          <span id={hintId} className="sr-only">{skin.actionHintJa}</span>
+          {skin.stop && <span id={stopHintId} className="sr-only">{skin.stop.hintJa}</span>}
+        </div>
+      </div>
+    );
+  };
+}

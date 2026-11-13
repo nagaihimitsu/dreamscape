@@ -2,6 +2,10 @@ INCLUDE modules.ink
 -> DONE
 
 // ナーハルガル砦のデート（二人きり。噛み合いの選択は2回）。
+// かくれんぼはミニゲーム「かくれんぼ」（# minigame: nahargarh_hide_seek）。選択肢の代わりに、同じ形の扉が並ぶ廊下で彼女を探す。
+// 彼女は七つ目の扉（hide 7）。扉を開ける（1つ目か2つ目で見つけたら door_quick、3つ目より後なら door_by_door）・
+// 「名前を呼ぶ」を3回（call_her_name）・何もしないで待つ（just_wait）。結果の選択肢の # profile: で1回目の噛み合いが決まる。
+// 扉には名前を描かない（扉に王妃の名前が書かれていたことは、公的な資料で確かめられていない。地の文の「伝えられている」のまま）。
 
 // 【3】
 === gt_jaipur_date_nahargarh_fort ===
@@ -30,8 +34,10 @@ INCLUDE modules.ink
 # stand: apart
 # se: footsteps_run
 返事を待たずに、足音が廊下の奥へ消えていった。
+# minigame: nahargarh_hide_seek auto door_by_door hide 7
 九十八、九十九、百。廊下に出ると、同じ形のアーチ、同じ形の扉、同じ色の壁が、どこまでも続いていた。自分が今、どの王妃の部屋の前にいるのかも分からない。
-* [名前を呼ぶ # option: call_her_name]
+// かくれんぼ：選択肢の代わりにミニゲーム。探し方の ID の選択肢をゲームが選ぶ（噛み合いはここで1回）。
+* [かくれんぼ：名前を呼んで探した # option: call_her_name]
     # profile: playful
     # memory: gt_jaipur_date_nahargarh_fort_memory
     { romance_result == "negative":
@@ -50,7 +56,7 @@ INCLUDE modules.ink
         # photo: gt_album_j28 # photo_caption: 同じ形の扉が続く廊下で、かくれんぼ
         ふふっ、呼ばれたら、出たくなっちゃうでしょ。ずるい探し方。でも、うれしい探し方
     }
-* [部屋を一つずつ、開けていく # option: door_by_door]
+* [かくれんぼ：扉を一つずつ開けて見つけた # option: door_by_door]
     # profile: attentive
     # memory: gt_jaipur_date_nahargarh_fort_memory
     { romance_result == "negative":
@@ -59,7 +65,7 @@ INCLUDE modules.ink
         扉を開ける。空っぽの部屋。次の扉。また同じ部屋。七つ目の扉を開けたとき、壁にもたれた彼女が、待ちくたびれた顔をしていた。
         # speaker: heroine
         # emotion: exasperated
-        遅い……。七つも待ったんだよ。途中で、出ていこうかと思った
+        遅い……。ずっと待ってたんだよ。途中で、出ていこうかと思った
     - else:
         # speaker: narrator
         # se: door_creak
@@ -69,9 +75,36 @@ INCLUDE modules.ink
         あ……見つかった。一個ずつ、全部開けてきたの？
         # speaker: heroine
         # emotion: smile
-        七つも。ちゃんと探してくれたんだね。時間かかったのに
+        ちゃんと探してくれたんだね。時間かかったのに
     }
-* [廊下の真ん中で、待ってみる # option: just_wait]
+* [かくれんぼ：開けてすぐの扉で見つけた # option: door_quick]
+    # profile: bold
+    # memory: gt_jaipur_date_nahargarh_fort_memory
+    { romance_result == "negative":
+        # speaker: narrator
+        # se: door_creak
+        扉を開けると、もう、そこに彼女がいた。壁ぎわにしゃがもうとしたところで、目が合った。
+        # speaker: heroine
+        # emotion: exasperated
+        ……早すぎ。ちゃんと百、数えた？
+        # speaker: heroine
+        # emotion: worried
+        隠れる場所も、まだ決めてなかったのに。かくれんぼって、もう少し、探してほしいんだけどな
+    - else:
+        # speaker: narrator
+        # se: door_creak
+        扉を開けると、もう、そこに彼女がいた。壁の絵の前で、息を止めて立っている。
+        # speaker: heroine
+        # reaction: heroine,surprised_big,interrobang
+        えっ、もう？
+        # speaker: heroine
+        # emotion: teasing
+        ずるい。始まったばっかりなのに、かくれんぼ、終わっちゃった。……足音、聞いてたでしょ
+        # speaker: heroine
+        # emotion: smile
+        次は、わたしが探す番。すぐ見つけてあげるから、覚悟してね
+    }
+* [かくれんぼ：廊下の真ん中で待った # option: just_wait]
     # profile: provocative
     # memory: gt_jaipur_date_nahargarh_fort_memory
     { romance_result == "negative":

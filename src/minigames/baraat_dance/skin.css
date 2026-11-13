@@ -1,0 +1,103 @@
+/* The baraat dance's field (Skin.tsx): the procession's street over the scene (or the use's bg, or art.street); the
+   band's drum at the top, Kamla and the heroine at the sides, the player's hands at the bottom. On each drum beat the
+   root takes data-beat for a moment: the drum lights (and swells), the dancers dip. Less motion keeps the light only. */
+.mg-baraat-dance { position: absolute; inset: 0; }
+.mg-baraat-dance-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; pointer-events: none; }
+/* The band's drum: a big drum face seen from the front, its stick at the top right. */
+.mg-baraat-dance-drummer {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 3%;
+  height: 34%;
+  max-height: 150px;
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+}
+.mg-baraat-dance-drummer > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 0; }
+.mg-baraat-dance-drum {
+  position: absolute;
+  inset: 8%;
+  border: 6px solid #b0262c;
+  border-radius: 50%;
+  background: radial-gradient(circle at 45% 40%, #fbf1dc, #e6d2ab 70%);
+  box-shadow: 0 0 0 3px #d8a63c, 0 6px 14px rgba(0, 0, 0, 0.45);
+}
+/* The stick, raised; down on the beat. */
+.mg-baraat-dance-drum > span {
+  position: absolute;
+  right: -14%;
+  top: -18%;
+  width: 9%;
+  height: 52%;
+  border-radius: 6px;
+  background: linear-gradient(#e9c98c, #a9783c);
+  transform-origin: 50% 100%;
+  transform: rotate(32deg);
+}
+.mg-baraat-dance[data-beat] .mg-baraat-dance-drum {
+  background: radial-gradient(circle at 45% 40%, #fffaf0, #f6dc9a 70%);
+  box-shadow: 0 0 0 3px #f0c860, 0 0 22px rgba(240, 200, 96, 0.9);
+  transform: scale(1.06);
+}
+.mg-baraat-dance[data-beat] .mg-baraat-dance-drum > span { transform: rotate(8deg); }
+.mg-baraat-dance[data-beat] .mg-baraat-dance-drummer > img { filter: drop-shadow(0 0 10px rgba(240, 200, 96, 0.9)); }
+/* The count-in's numbers under the drum. */
+.mg-baraat-dance-count {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 40%;
+  color: #ffe6a6;
+  font-size: 44px;
+  font-weight: 700;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+  transform: translate(-50%, -50%);
+  animation: mg-baraat-dance-count 400ms ease-out both;
+}
+@keyframes mg-baraat-dance-count { from { opacity: 0.3; transform: translate(-50%, -50%) scale(1.3); } }
+/* Kamla (left) and the heroine (right), whole figures; a dip on each beat. */
+.mg-baraat-dance-dancer {
+  position: absolute;
+  z-index: 1;
+  bottom: 4%;
+  height: 60%;
+  aspect-ratio: 2 / 3;
+  transform: translateX(-50%);
+}
+.mg-baraat-dance-dancer > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
+.mg-baraat-dance-kamla { left: 21%; }
+.mg-baraat-dance-heroine { left: 79%; }
+.mg-baraat-dance[data-beat] .mg-baraat-dance-dancer { transform: translateX(-50%) translateY(2.5%); }
+.minigame-layer[data-still] .mg-baraat-dance[data-beat] .mg-baraat-dance-dancer { transform: translateX(-50%); }
+.minigame-layer[data-still] .mg-baraat-dance[data-beat] .mg-baraat-dance-drum { transform: none; }
+/* The player's hands, from the bottom: up with a tap, lit gold when it met the beat, askew when it did not. */
+.mg-baraat-dance-hands {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: -4%;
+  display: flex;
+  gap: 18%;
+  justify-content: center;
+  width: 46%;
+  max-width: 220px;
+  height: 26%;
+  transform: translateX(-50%);
+}
+.mg-baraat-dance-hands > span {
+  display: block;
+  width: 26%;
+  height: 100%;
+  transform: translateY(42%) rotate(-12deg);
+}
+.mg-baraat-dance-hands svg { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45)); }
+/* The left hand: the right one, mirrored. */
+.mg-baraat-dance-hands > span:first-child svg { transform: scaleX(-1); }
+.mg-baraat-dance-hands > span:last-child { transform: translateY(42%) rotate(12deg); }
+.mg-baraat-dance-hands[data-hands="met"] > span { transform: translateY(0) rotate(-6deg); }
+.mg-baraat-dance-hands[data-hands="met"] svg { filter: drop-shadow(0 0 3px #f0c860) drop-shadow(0 0 10px rgba(240, 200, 96, 0.9)); }
+.mg-baraat-dance-hands[data-hands="met"] > span:last-child { transform: translateY(0) rotate(6deg); }
+.mg-baraat-dance-hands[data-hands="off"] > span { transform: translateY(14%) rotate(-28deg); }
+.mg-baraat-dance-hands[data-hands="off"] > span:last-child { transform: translateY(24%) rotate(4deg); }
+.mg-baraat-dance[data-outcome="stumble"] .mg-baraat-dance-hands { transform: translateX(-50%) rotate(-10deg); }
