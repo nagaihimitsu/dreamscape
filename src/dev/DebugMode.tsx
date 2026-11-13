@@ -16,6 +16,7 @@ import { rollTickets } from "./scenario-builders";
 import { relationshipAxisLabels } from "../domain/relationship-change";
 import { PrototypePreview } from "./PrototypePreview";
 import { OccasionCandidatesView } from "./OccasionCandidatesView";
+import { EffectsRoom } from "./EffectsRoom";
 import "./debug-mode.css";
 
 type MemoryStorage = { getItem(key: string): string | null; setItem(key: string, value: string): void; removeItem(key: string): void };
@@ -51,6 +52,15 @@ export default function DebugMode() {
   const [message, setMessage] = useState("");
   const [copyMessage, setCopyMessage] = useState("");
   const urlField = useRef<HTMLInputElement>(null);
+  // 音と演出の見本 (EffectsRoom) shows in place of 場面の確認; closing it gives the focus back to its button.
+  const [effectsRoom, setEffectsRoom] = useState(false);
+  const effectsRoomButton = useRef<HTMLButtonElement>(null);
+  const effectsRoomClosed = useRef(false);
+  useEffect(() => {
+    if (effectsRoom || !effectsRoomClosed.current) return;
+    effectsRoomClosed.current = false;
+    effectsRoomButton.current?.focus();
+  }, [effectsRoom]);
   const isPrototype = getCityContent(cityId).city.productionStatus === "prototype";
   const sceneUrl = new URL(debugQueryString(isPrototype ? mapQuery(dataMode, cityId) : settingsQuery(dataMode, settings)), window.location.href).href;
 
@@ -166,6 +176,11 @@ export default function DebugMode() {
       <App key={session.key} storage={session.storage} nextRomanceRoll={session.roll} debug debugPanel={(state) => <OccasionCandidatesView state={state} />} />
     </div>
   );
+  // Never beside a game: no scene is open while it shows, so its music is the only one asked for.
+  if (effectsRoom) return <EffectsRoom onClose={() => {
+    effectsRoomClosed.current = true;
+    setEffectsRoom(false);
+  }} />;
   return (
     <main className="debug-panel" data-testid="debug-panel">
       <h1>場面の確認</h1>
@@ -229,6 +244,12 @@ export default function DebugMode() {
         <input ref={urlField} data-testid="debug-url" aria-labelledby="debug-url-title" readOnly value={sceneUrl} onFocus={(event) => event.currentTarget.select()} />
         <button type="button" className="secondary" data-testid="debug-copy-url" onClick={copyUrl}>この場面のURLをコピー</button>
         <p role="status">{copyMessage}</p>
+      </section>
+      <section className="debug-room-entry" aria-labelledby="debug-room-title">
+        <h2 id="debug-room-title">音と演出の見本</h2>
+        <p>登録されている効果音・BGM・環境音・声を鳴らし、天気・揺れ・品物の札・上の帯の手応えなどの演出を、遊ばずに確かめられます。</p>
+        <button ref={effectsRoomButton} type="button" className="secondary" data-testid="debug-open-effects-room"
+          onClick={() => setEffectsRoom(true)}>音と演出の見本を開く</button>
       </section>
       <p><a href="?character-preview">背景・人物・表情を確認</a></p>
       <a href={import.meta.env.BASE_URL}>通常プレイに戻る</a>

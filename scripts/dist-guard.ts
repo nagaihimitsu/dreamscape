@@ -58,6 +58,9 @@ export const lazyDebugMarkers: readonly DevOnlyMarker[] = [
   // Debug's explanation of an unmet condition.
   { text: "夜（18:00から眠るまで）", source: "src/dev/condition-explain.ts" },
   { text: "制作中の都市ではありません", source: "src/dev/prototype-preview-state.ts" },
+  // Debug's 音と演出の見本 (every sound and effect to check, 2026-11-13) and its rules.
+  { text: "ここでの音の設定はこの部屋だけのもので", source: "src/dev/EffectsRoom.tsx" },
+  { text: "消す（# tint: off）", source: "src/dev/effects-room.ts" },
   // 仮の場面 (in-memory test cities, shared by unit tests and Debug).
   { text: "仮の場面の元になる都市がありません", source: "src/dev/fixture-template.ts" },
 ];

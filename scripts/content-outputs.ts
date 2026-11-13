@@ -27,6 +27,8 @@ const NO_MUSIC = { schemaVersion: 1, sources: [], tracks: [], root: null, journe
 export const AMBIENCE_FILE = `${GENERATED_DIRECTORY}/ambience.json`;
 /** The ambience file of a build without ambience: nothing plays. */
 const NO_AMBIENCE = { schemaVersion: 1, sources: [], tracks: [], journeys: {} };
+/** Which layer gives each sound, track and ambience track, and each journey's voices (audio-layers.ts audioLayersOf; Debug's 音と演出の見本). */
+export const AUDIO_LAYERS_FILE = `${GENERATED_DIRECTORY}/audio-layers.json`;
 
 /**
  * Write every output of a validated build into `root`. `derivedFiles` (served
@@ -40,7 +42,7 @@ export function writeContentOutputs(
     catalogOverrides?: Partial<Record<CatalogKind, unknown>>;
     sceneConditions?: { conditions: Record<string, unknown>; stories: Record<string, string[]> };
     scenes?: { scenes: unknown[]; rewards: unknown[] }; albumImages?: readonly unknown[]; soundVolumes?: Readonly<Record<string, number>>;
-    music?: unknown; ambience?: unknown },
+    music?: unknown; ambience?: unknown; audioLayers?: unknown },
   derivedFiles: ReadonlyMap<string, string> = new Map(),
 ): void {
   const directory = path.join(root, GENERATED_DIRECTORY);
@@ -66,6 +68,8 @@ export function writeContentOutputs(
   writeFileSync(path.join(root, MUSIC_FILE), `${JSON.stringify(validated.music ?? NO_MUSIC, null, 2)}\n`);
   // The ambience (src/audio/ambience.ts and the credits list import the file, so it is written even with none).
   writeFileSync(path.join(root, AMBIENCE_FILE), `${JSON.stringify(validated.ambience ?? NO_AMBIENCE, null, 2)}\n`);
+  // The audio by layer (src/dev/EffectsRoom.tsx imports the file, so it is written even with no audio).
+  writeFileSync(path.join(root, AUDIO_LAYERS_FILE), `${JSON.stringify(validated.audioLayers ?? { schemaVersion: 1, layers: [] }, null, 2)}\n`);
   // The game imports the validated, merged catalogs only from this mirror.
   writeContentMirror(sources, mirrorDirectory(root), validated.catalogOverrides);
   // Vite serves and builds the game's images from this folder (publicDir in vite.config.ts).

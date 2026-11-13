@@ -58,6 +58,7 @@ import { checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
 import { checkSoundTags, soundRegistry, soundUseProblem, soundVolumesOf, soundWarnings, transportModeSounds } from "./sound-files";
 import { checkBgmTags, musicDataOf, musicRegistry, musicWarnings } from "./music-files";
 import { ambienceDataOf, ambienceRegistry, ambienceWarnings, checkAmbienceTags } from "./ambience-files";
+import { audioLayersOf } from "./audio-layers";
 import { checkSceneEffectTags, itemJourneys } from "./scene-effect-tags";
 import { checkHelperKnot, revealRegionProblem, validateBattleEvidence } from "./battle-validation";
 import { landmarkOrderError, landmarkParts, tourismCatalogSchema, type VisitPart } from "../src/content/tourism-schemas";
@@ -1620,6 +1621,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     music: musicDataOf(music, sources.manifests.map((manifest) => manifest.id)),
     /** The ambience tracks and each journey's places' own (generated/ambience.json; src/audio/ambience.ts, the credits list). */
     ambience: ambienceDataOf(ambience, sources.manifests.map((manifest) => manifest.id)),
+    /** Which layer gives each sound, track and ambience track, and each journey's voices (generated/audio-layers.json; Debug's 音と演出の見本). */
+    audioLayers: audioLayersOf(sources.layers, { sounds, music: music.tracks, ambience: ambience.tracks, voices: voiceFiles }),
     /** Images whose files checkContentImages decodes. */
     images: { characters: characterImages, tourismAssets: tourism.assets },
     /** What chooses the free-time photos (src/content/photo-choice.ts), for their derived copies (scripts/derived-images.ts). */
