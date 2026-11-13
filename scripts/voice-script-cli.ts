@@ -2,13 +2,14 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { errorText } from "./cli-error";
 import { loadContentSources } from "./content-sources";
+import { readVoiceHistory } from "./voice-records";
 import { formatVoiceScript, voiceScript, voiceScriptInput } from "./voice-script";
 
 // npm run voice:script -- --journey <journeyId> [--out <folder>]: the voice script of a journey's heroine lines
 // (voice-script.ts), read from content/ as it is now (no content:build needed). Writes heroine_lines.txt (for the
 // people who make the voices) and entries.json (the same lines as data, which voice:changes compares) into the
 // folder, by default artifacts/voice/<journeyId>/ (not committed). A script that is sent is kept in
-// authoring/journeys/<journeyId>/voice/<date>/ (voice-changes.ts).
+// authoring/journeys/<journeyId>/voice/<date>/ (voice-records.ts); its IDs stay those of the scripts sent before.
 const usage = "使い方: npm run voice:script -- --journey 旅行編ID [--out 書き出すフォルダ]";
 
 /** Today as YYYY-MM-DD in local time. */
@@ -28,7 +29,7 @@ try {
   const journeyId = options["--journey"];
   if (!journeyId) throw new Error(usage);
   const root = process.cwd();
-  const script = voiceScript(voiceScriptInput(loadContentSources(root), journeyId));
+  const script = voiceScript(voiceScriptInput(loadContentSources(root), journeyId, readVoiceHistory(root, journeyId)));
   const folder = path.resolve(root, options["--out"] ?? path.join("artifacts", "voice", journeyId));
   mkdirSync(folder, { recursive: true });
   writeFileSync(path.join(folder, "heroine_lines.txt"), formatVoiceScript(script, today()));

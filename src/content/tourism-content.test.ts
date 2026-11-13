@@ -61,7 +61,7 @@ async function oneSceneGuide(): Promise<{ file: string; original: string }> {
 }
 
 describe("tourism content contract", () => {
-  it("compiles one short guide, four visual discoveries and one unpositioned research card", async () => {
+  it("compiles one short guide, four visual discoveries and three unpositioned research cards", async () => {
     const result = await buildContent(fixture);
     expect(result.routes).toBeGreaterThanOrEqual(105);
     expect(result.tourismGuides).toBe(result.tourism.landmarks.length);
@@ -75,10 +75,10 @@ describe("tourism content contract", () => {
         (clue) => clue.landmarkId === "last_supper" && clue.kind === "document",
       ),
     ).toEqual([
-      expect.objectContaining({
-        id: "last_supper_technique_card",
-        region: null,
-      }),
+      // The technique card, and the two cards for what the photo cannot show (the room's windows, Matthew's gesture; 2026-11-13).
+      expect.objectContaining({ id: "last_supper_technique_card", region: null }),
+      expect.objectContaining({ id: "last_supper_real_windows", region: null }),
+      expect.objectContaining({ id: "last_supper_matthew", region: null }),
     ]);
     // The guide is a knot of its place file: the file's story, started at the knot as the game starts it.
     const { storyId, path: knot } = splitStoryAddress(result.tourism.landmarks.find((landmark) => landmark.id === landmarkId)!.guideStoryId!);

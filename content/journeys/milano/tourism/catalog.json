@@ -199,7 +199,9 @@
         "last_supper_apostle_groups",
         "last_supper_light",
         "last_supper_doorway",
-        "last_supper_technique_card"
+        "last_supper_technique_card",
+        "last_supper_real_windows",
+        "last_supper_matthew"
       ]
     },
     {
@@ -215,7 +217,9 @@
         "duomo_marble_surface",
         "duomo_spire_figures",
         "duomo_marble_waterway",
-        "duomo_original_and_copy"
+        "duomo_original_and_copy",
+        "duomo_buried_baptistery",
+        "duomo_donor_register"
       ]
     },
     {
@@ -247,7 +251,9 @@
         "castello_bona_tower",
         "castello_public_courtyard",
         "castello_sala_asse",
-        "castello_court_reception"
+        "castello_court_reception",
+        "castello_pieta_hospital",
+        "castello_pieta_rework"
       ]
     },
     {
@@ -398,7 +404,9 @@
       "titleJa": "資料：ゆっくり描くための選択",
       "descriptionJa": "画像だけでは判別できない制作技法の話。乾いた下地に描く方法なら、時間をかけて細部を直せる。一方、顔料は湿った漆喰に取り込まれず、傷みやすかった。劣化には室内環境も関わる。現在の保存は、空気の管理にも及んでいる。",
       "factId": "fact_last_supper_dry_technique",
-      "relatedQuestionIds": [],
+      "relatedQuestionIds": [
+        "milano_last_supper_q3"
+      ],
       "region": null,
       "sources": [
         {
@@ -563,7 +571,9 @@
       "titleJa": "椅子が道へ向く",
       "descriptionJa": "通路の両側には店やカフェ。写真の店先には椅子も見える。買い物だけでなく、一杯を飲みながら街を眺める時間も、この通りの風景に加わっている。",
       "factId": "fact_galleria_cafes_shops",
-      "relatedQuestionIds": [],
+      "relatedQuestionIds": [
+        "milano_galleria_q2"
+      ],
       "region": {
         "x": 0.59,
         "y": 0.65,
@@ -588,7 +598,9 @@
       "titleJa": "店の先にも続く道",
       "descriptionJa": "中央の通路は店舗の入口だけで終わらない。ガッレリアはドゥオモ広場とスカラ広場をつなぐ屋根付きの道でもある。写真で見える通路の先を、街の動線としてたどってみよう。",
       "factId": "fact_galleria_square_link",
-      "relatedQuestionIds": [],
+      "relatedQuestionIds": [
+        "milano_galleria_q1"
+      ],
       "region": {
         "x": 0.43,
         "y": 0.66,
@@ -739,7 +751,9 @@
       "titleJa": "空襲で傷ついた劇場",
       "descriptionJa": "公式の劇場史には、1943年8月の空襲でスカラ座が大きな被害を受けたとある。現在の外観の写真は当時の被害を示すものではない。",
       "factId": "scala_1943_air_raid",
-      "relatedQuestionIds": [],
+      "relatedQuestionIds": [
+        "milano_la_scala_b_q3"
+      ],
       "region": null,
       "sources": [
         {
@@ -756,10 +770,12 @@
       "id": "scala_reopening",
       "landmarkId": "la_scala_case",
       "kind": "document",
-      "titleJa": "再開の日の演奏会",
-      "descriptionJa": "記録によると、スカラ座は1946年5月に演奏会とともに再開した。再開したという日付だけで、建物が閉じた原因までは特定できない。",
+      "titleJa": "再開の前と、再開の日",
+      "descriptionJa": "記録によると、スカラ座は1946年5月に演奏会とともに再開した。その正式な再開より前、戦災を受けた劇場での演奏では、観客が普通の椅子に座ったという。再開の記念公演とは別の出来事として読み分けたい。日付だけでは、建物が閉じた原因までは特定できない。",
       "factId": "scala_reopening_concert",
-      "relatedQuestionIds": [],
+      "relatedQuestionIds": [
+        "milano_la_scala_b_q3"
+      ],
       "region": null,
       "sources": [
         {
@@ -769,6 +785,14 @@
           "checkedAt": "2026-11-01",
           "claimType": "documented_fact",
           "claimJa": "1776年に先代のドゥカーレ劇場が火災で失われ、1778年にスカラ座が完成。1943年の空襲で大きな被害を受け、再建後1946年に再開した。"
+        },
+        {
+          "publisher": "Museo Teatrale alla Scala",
+          "title": "History of the Theatre",
+          "url": "https://www.museoscala.org/en/history/theatre/history-of-the-theatre.html",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "戦災後、正式再開に先立つ演奏では、観客が普通の椅子に座った。再開記念公演と区別しよう。"
         }
       ]
     },
@@ -1024,6 +1048,156 @@
           "checkedAt": "2026-11-02",
           "claimType": "documented_fact",
           "claimJa": "《接吻》は発注者の遺贈で1886年に絵画館の所蔵になった。これは公開当時とは別の出来事。"
+        }
+      ]
+    },
+    {
+      "id": "last_supper_real_windows",
+      "landmarkId": "last_supper",
+      "kind": "document",
+      "titleJa": "資料：絵の光は、部屋の窓から",
+      "descriptionJa": "美術館の解説によると、絵の中の光は、旧食堂の左側にある本物の窓からの光とそろえて描かれている。そのため、絵の食卓が部屋の続きに見える。写真では窓と絵の向きを確かめにくいので、資料で紹介する。",
+      "factId": "fact_last_supper_real_windows",
+      "relatedQuestionIds": [
+        "milano_last_supper_q1"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano",
+          "title": "A powerful theatrical machine",
+          "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "絵の主光源は旧食堂の左側からの採光とそろう。それで絵の食卓と実際の部屋が地続きに見える。"
+        }
+      ]
+    },
+    {
+      "id": "last_supper_matthew",
+      "landmarkId": "last_supper",
+      "kind": "document",
+      "titleJa": "資料：腕と顔が、別々の相手へ",
+      "descriptionJa": "美術館の解説では、マタイは腕をキリストのほうへ伸ばしながら、顔は隣の使徒たちへ向けている。いま聞いた言葉に気づかせようとする姿だと読まれている。作者が書き残した意図ではなく、館の解釈。",
+      "factId": "fact_last_supper_matthew_gesture",
+      "relatedQuestionIds": [
+        "milano_last_supper_q2"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano",
+          "title": "A powerful theatrical machine",
+          "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+          "checkedAt": "2026-11-02",
+          "claimType": "interpretation",
+          "claimJa": "館はマタイが隣の使徒たちに、いま聞いた言葉への注意を促す姿と解説する。腕と顔が別々の相手を結ぶ。"
+        }
+      ]
+    },
+    {
+      "id": "duomo_buried_baptistery",
+      "landmarkId": "duomo_milano",
+      "kind": "document",
+      "titleJa": "資料：広場の下の洗礼堂",
+      "descriptionJa": "大聖堂管理財団によると、広場の地下には前の洗礼堂サン・ジョヴァンニ・アッレ・フォンティの跡が残る。新しい大聖堂を建てるために壊され、埋められた。アンブロジウスがアウグスティヌスに洗礼を授けた場所でもある。広場の写真には写っていない。",
+      "factId": "duomo_buried_baptistery_fact",
+      "relatedQuestionIds": [
+        "milano_duomo_q1",
+        "milano_duomo_q2"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo",
+          "title": "Archaeological Area",
+          "url": "https://www.duomomilano.it/en/art-and-culture/archaeological-area/",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "広場の地下の洗礼堂は、新しい大聖堂を建てるために取り壊され、埋められた。"
+        },
+        {
+          "publisher": "Veneranda Fabbrica del Duomo",
+          "title": "Archaeological Area",
+          "url": "https://www.duomomilano.it/en/art-and-culture/archaeological-area/",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "サン・ジョヴァンニ・アッレ・フォンティは洗礼堂。アンブロジウスがアウグスティヌスに洗礼を授けた場所でもある。"
+        }
+      ]
+    },
+    {
+      "id": "duomo_donor_register",
+      "landmarkId": "duomo_milano",
+      "kind": "document",
+      "titleJa": "資料：名前を残す名簿",
+      "descriptionJa": "大聖堂管理財団によると、寄付をした人は、希望すれば紙とオンラインの名簿に名前を残せる。石や瓦に名前を刻むのではない。",
+      "factId": "duomo_donor_register_fact",
+      "relatedQuestionIds": [
+        "milano_duomo_q3"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo",
+          "title": "Support us",
+          "url": "https://www.duomomilano.it/en/support/support-us/",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "寄付者は希望すれば、紙とオンラインの名簿に名前を載せられる。"
+        }
+      ]
+    },
+    {
+      "id": "castello_pieta_hospital",
+      "landmarkId": "castello_sforzesco",
+      "kind": "document",
+      "titleJa": "資料：ピエタの部屋の、前の姿",
+      "descriptionJa": "城の美術館によると、ロンダニーニのピエタが置かれた展示室は、もとはスペイン病院で、病気の兵士もここで療養した。中庭の写真には写っていない。",
+      "factId": "castello_pieta_hospital_fact",
+      "relatedQuestionIds": [
+        "milano_castello_q1"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Comune di Milano",
+          "title": "Museo Pietà Rondanini Michelangelo",
+          "url": "https://www.milanocastello.it/i-musei/museo-pieta-rondanini-michelangelo",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "現在の展示室は旧スペイン病院で、病気の兵士もここで療養した。"
+        }
+      ]
+    },
+    {
+      "id": "castello_pieta_rework",
+      "landmarkId": "castello_sforzesco",
+      "kind": "document",
+      "titleJa": "資料：作り変え続けた像",
+      "descriptionJa": "城の美術館によると、ミケランジェロは晩年の約十年、この像を繰り返し作り変えた。今の展示では、像の周りを歩いて多方向から見られる。",
+      "factId": "castello_pieta_rework_fact",
+      "relatedQuestionIds": [
+        "milano_castello_q2",
+        "milano_castello_q3"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Comune di Milano",
+          "title": "Museo Pietà Rondanini Michelangelo",
+          "url": "https://www.milanocastello.it/i-musei/museo-pieta-rondanini-michelangelo",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "晩年の約十年間に繰り返し作り変えた彫刻だと城の美術館は説明する。"
+        },
+        {
+          "publisher": "Comune di Milano",
+          "title": "Museo Pietà Rondanini Michelangelo",
+          "url": "https://www.milanocastello.it/i-musei/museo-pieta-rondanini-michelangelo",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "現展示では像の周囲から多方向で見られる。正面の写真一枚だけがその姿とは限らない。"
         }
       ]
     }

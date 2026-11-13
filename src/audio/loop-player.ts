@@ -1,16 +1,17 @@
 import { AUDIO_GESTURES, audioContext, onAudioStateChange, onPageHidden, runningAudioContext, wantAudio } from "./audio-context";
 import type { MusicDuck, SceneMusic } from "./scene-music";
+import { voiceDucked } from "./speech-audio";
 
 // A looping player of long tracks (2026-11-12, shared since 2026-11-13 by the background music, bgm.ts, and the ambience,
 // ambience.ts): the track the screen asks for streamed from its served path by one of two audio elements (decks; looped,
 // read as they play: no whole track is decoded) on the page's AudioContext (audio-context.ts): each deck → its own gain
 // (its fade and the track's volume) → one low-pass filter (the quiz's muffle) → the lowering (quiz, quiet, a ride, a
-// voice) → the player's setting volume → the speakers. The gains do the volume (iOS ignores an element's own). A new
-// track crossfades; the same track goes on; the last few tracks' positions are kept, so a track comes back where it
-// stopped. iOS lets an element play by itself only after it has played in a user's gesture: the reader's first gesture
-// starts both decks (an idle one on a short silence). Nothing plays while the page is hidden, the page's audio is
-// suspended or the player's setting is off, and nothing is fetched while it is off. Presentation only: a track that
-// cannot load or play is skipped in silence and the game goes on.
+// voice or English read aloud: speech-audio.ts) → the player's setting volume → the speakers. The gains do the volume
+// (iOS ignores an element's own). A new track crossfades; the same track goes on; the last few tracks' positions are
+// kept, so a track comes back where it stopped. iOS lets an element play by itself only after it has played in a user's
+// gesture: the reader's first gesture starts both decks (an idle one on a short silence). Nothing plays while the page
+// is hidden, the page's audio is suspended or the player's setting is off, and nothing is fetched while it is off.
+// Presentation only: a track that cannot load or play is skipped in silence and the game goes on.
 
 export type LoopPlayerOptions = {
   /** The part's name for the page's audio (audio-context.ts wantAudio): `bgm`, `ambience`. */
@@ -31,6 +32,11 @@ export type LoopPlayer = {
   play(target: SceneMusic): void;
   /** A line's voice starts or ends: the player is halved while it plays. */
   duckForVoice(playing: boolean): void;
+  /**
+   * English read aloud starts or is over (speech-audio.ts): the player is lowered as for a voice while it reads (the
+   * same level and fades, not twice with a voice); over, it lifts and the wanted track plays on where the speech paused it.
+   */
+  duckForSpeech(reading: boolean): void;
   /** Its setting: off fades it out and pauses it (nothing is fetched while it is off); on plays the screen's track again; a new volume applies at once. */
   applySettings(enabled: boolean, volume: number): void;
 };
@@ -41,7 +47,7 @@ const CROSSFADE_S = 1.5;
 const OFF_FADE_S = 0.5;
 /** How many tracks' positions are kept (the most recently stopped). */
 const REMEMBERED_TRACKS = 6;
-/** A voice's level (multiplied with the lowering's). */
+/** A voice's level, and English read aloud's (multiplied with the lowering's). */
 const VOICE_LEVEL = 0.5;
 /** The low-pass filter open, and muffled for a quiz ("behind a wall"). */
 const OPEN_HZ = 20_000;
@@ -69,8 +75,11 @@ type Graph = { audio: AudioContext; filter: BiquadFilterNode; level: GainNode; b
 
 let silence: string | undefined;
 
-/** A short silence (a WAV in memory) that an idle deck plays once in a gesture, so that iOS lets it play later. */
-function silenceUrl(): string {
+/**
+ * A short silence (a WAV in memory) that an idle deck plays once in a gesture, so that iOS lets it play later (as the
+ * voice element does: voice-element.ts).
+ */
+export function silenceUrl(): string {
   if (silence) return silence;
   const samples = 800;
   const bytes = new Uint8Array(44 + samples);
@@ -98,7 +107,7 @@ function silenceUrl(): string {
 }
 
 /** Plays an element, never throwing (an old browser's play() may throw instead of refusing). */
-function start(element: HTMLAudioElement): Promise<void> {
+export function playElement(element: HTMLAudioElement): Promise<void> {
   try {
     return element.play();
   } catch (error) {
@@ -110,10 +119,11 @@ function start(element: HTMLAudioElement): Promise<void> {
 export function createLoopPlayer({ part, pathOf, volumes, duckLevels, labelJa }: LoopPlayerOptions): LoopPlayer {
   /** The player's setting and volume (GameApp). Off until the settings are read. */
   const settings = { enabled: false, volume: 0.4 };
-  /** The track the screen asks for (null: silence), how it is lowered, and whether a line's voice plays. */
+  /** The track the screen asks for (null: silence), how it is lowered, and whether a line's voice plays or English is read aloud. */
   let wanted: string | null = null;
   let duck: MusicDuck = "none";
   let voice = false;
+  let speech = false;
   let decks: Deck[] | null = null;
   let graph: Graph | null = null;
   let graphFailed = false;
@@ -180,9 +190,26 @@ export function createLoopPlayer({ part, pathOf, volumes, duckLevels, labelJa }:
     return graph;
   }
 
-  /** The lowering's level now, with a voice's. */
+  /** The lowering's level now, with a voice's (or the reading's). */
   function levelOf(): number {
-    return duckLevels[duck] * (voice ? VOICE_LEVEL : 1);
+    return duckLevels[duck] * (voiceDucked({ voice, reading: speech }) ? VOICE_LEVEL : 1);
+  }
+
+  /** A voice or the reading starts or ends: the level ramps down or back when the lowering by voice changes. */
+  function setVoiceDuck(next: { voice: boolean; reading: boolean }) {
+    const was = voiceDucked({ voice, reading: speech });
+    voice = next.voice;
+    speech = next.reading;
+    const now = voiceDucked(next);
+    if (now !== was) applyLevel(now ? VOICE_DOWN_S : VOICE_UP_S);
+  }
+
+  /**
+   * After English read aloud: the wanted track's deck plays on if the speech paused it (iOS gives the speech the sound)
+   * while the page's audio runs. While the audio does not run, its change to running plays it (apply).
+   */
+  function playOn() {
+    if (active && active.track === wanted && runningAudioContext()) play(active);
   }
 
   /** Ramps a deck's gain from where it is (or `from`) to `to` in `seconds`. */
@@ -224,7 +251,7 @@ export function createLoopPlayer({ part, pathOf, volumes, duckLevels, labelJa }:
   /** Plays the deck (in silence until its gain rises); refused (no gesture yet, iOS), it is tried again at the next gesture. */
   function play(deck: Deck) {
     if (!graph || document.hidden || !settings.enabled || !deck.element.paused) return;
-    start(deck.element).then(() => {
+    playElement(deck.element).then(() => {
       deck.unlocked = true;
     }, () => {
       if (deck === active && settings.enabled) listenForGesture(true);
@@ -235,7 +262,7 @@ export function createLoopPlayer({ part, pathOf, volumes, duckLevels, labelJa }:
   function unlock(deck: Deck) {
     if (!deck.element.paused) return;
     if (!deck.track) deck.element.src = silenceUrl();
-    start(deck.element).then(() => {
+    playElement(deck.element).then(() => {
       deck.unlocked = true;
       if (deck !== active) deck.element.pause();
     }, () => listenForGesture(true));
@@ -365,9 +392,11 @@ export function createLoopPlayer({ part, pathOf, volumes, duckLevels, labelJa }:
       apply();
     },
     duckForVoice(playing) {
-      if (playing === voice) return;
-      voice = playing;
-      applyLevel(playing ? VOICE_DOWN_S : VOICE_UP_S);
+      setVoiceDuck({ voice: playing, reading: speech });
+    },
+    duckForSpeech(reading) {
+      setVoiceDuck({ voice, reading });
+      if (!reading) playOn();
     },
     applySettings(enabled, volume) {
       const was = settings.enabled;

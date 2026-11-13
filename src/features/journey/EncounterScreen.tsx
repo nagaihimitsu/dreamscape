@@ -16,9 +16,8 @@ import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "..
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { useSceneTap } from "../../components/useSceneTap";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
-import { portraitFocus, type PortraitFocus } from "../../components/speaker-focus";
-import { useStaysOnStage } from "../../components/useStaysOnStage";
-import { useSpeakingPerson } from "../../components/useSpeakingPerson";
+import { oppositeIsEnemy, type StageLine, type StageScene } from "../../components/scene-stage";
+import { useSceneStage } from "../../components/useSceneStage";
 import { useNameCutIn } from "../../components/NameCutIn";
 import type { NameCutIn } from "../../components/speaker-plate";
 import { ComicEffect } from "../../components/ComicEffect";
@@ -66,11 +65,11 @@ export type EncounterScreenView = {
   finishLabel?: string;
   /** The heading's tag (a running tour's 「ツアー・見学」). */
   badgeJa?: string;
-  portraits?: Partial<Record<"heroine" | "enemy", { emotion: string; mark?: ReactionMark; focus?: PortraitFocus }>>;
-  /** The scene's person with a portrait (# person:): on the other side from their first line to the scene's end. */
-  person?: { characterId: string; focus?: PortraitFocus };
-  /** The portrait of a person who says the line in their own name (speakingPerson): on the other side from that line. */
-  speakingPerson?: string;
+  /**
+   * Who may stand on the scene's stage (scene-stage.ts): the line as the stage reads it, the scene's figures, and how the
+   * heroine and the scene's enemy look on this line (their expression and reaction mark).
+   */
+  stage: { line: StageLine; scene: StageScene; heroine: { emotion: string; mark?: ReactionMark }; enemy: { emotion: string; mark?: ReactionMark } };
   /** The line's name plate (`# cutin: name`, nameCutIn): shown for a moment (useNameCutIn). */
   cutIn?: NameCutIn;
   cityId: string;
@@ -127,16 +126,9 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
   const quiz = view.quiz;
   // The line's name plate for a moment (`# cutin: name`; none over a quiz, which shows no line).
   const nameCut = useNameCutIn(quiz ? undefined : view.cutIn, String(view.revision));
-  const personOn = useStaysOnStage(!!view.person && !!view.portraits?.enemy);
-  // A person who speaks in their own name stands there from their line until the scene's own opposite speaks or reacts.
-  const speakingOn = useSpeakingPerson(view.speakingPerson, !!view.portraits?.enemy || view.staging?.speaker === "enemy");
-  const opposite = speakingOn ?? view.person?.characterId;
-  // Once on stage, the person stays (listening, or as they are under narration) at the lines of the others.
-  const portraits: EncounterScreenView["portraits"] = speakingOn
-    ? { ...view.portraits, enemy: { emotion: "neutral", focus: view.speakingPerson === speakingOn ? "speaking" : portraitFocus(view.staging?.speaker, "enemy") } }
-    : view.person && personOn && !view.portraits?.enemy
-    ? { ...view.portraits, enemy: { emotion: "neutral", focus: view.person.focus } }
-    : view.portraits;
+  // The heroine from her first line (or reaction) and the one opposite her, each to the scene's end or until another comes in.
+  const { stage, focus } = useSceneStage(view.stage.line, view.stage.scene);
+  const enemyLook = oppositeIsEnemy(stage, view.stage.scene) ? view.stage.enemy : undefined;
   // The quiz (its question, its feedback) shows no line: the line's staging waits for the next one.
   const staging = quiz ? undefined : view.staging;
   const autoAdvance = useAutoAdvance({ ready, canAdvance: !view.ended && !quiz && view.choices.length === 0 && !windowVisibility.hidden,
@@ -154,16 +146,19 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
       <PhotoShowLayer photo={staging?.photo} />
       <ItemShowLayer itemId={staging?.itemShow} quiet={!!staging?.quiet} />
       <SceneHeading label={view.placeJa} badge={view.badgeJa} />
-      {!quiz && portraits && <div className="vn-character-layer encounter-character-layer" data-two-characters={!!portraits.heroine && !!portraits.enemy}>
-        {(["heroine", "enemy"] as const).map((id) => {
-          const portrait = portraits?.[id];
-          return portrait && <div className={`encounter-character-slot encounter-character-${id}`} key={id}>
-            <CharacterPortrait key={id === "enemy" ? opposite : id} characterId={id === "enemy" && opposite ? opposite : id} cityId={view.cityId} sceneId={view.sceneId} emotion={portrait.emotion} focus={portrait.focus}
-              stand={id === "heroine" ? view.staging?.stand : undefined}>
-              {portrait.mark && <ComicEffect effect={portrait.mark} reduceMotion={reduceMotion} cueKey={String(view.revision)} />}
-            </CharacterPortrait>
-          </div>;
-        })}
+      {!quiz && (stage.heroine || stage.opposite) && <div className="vn-character-layer encounter-character-layer" data-two-characters={stage.heroine && !!stage.opposite}>
+        {stage.heroine && <div className="encounter-character-slot encounter-character-heroine">
+          <CharacterPortrait characterId="heroine" cityId={view.cityId} sceneId={view.sceneId} emotion={view.stage.heroine.emotion} focus={focus.heroine}
+            stand={view.staging?.stand}>
+            {view.stage.heroine.mark && <ComicEffect effect={view.stage.heroine.mark} reduceMotion={reduceMotion} cueKey={String(view.revision)} />}
+          </CharacterPortrait>
+        </div>}
+        {stage.opposite && <div className="encounter-character-slot encounter-character-enemy">
+          <CharacterPortrait key={stage.opposite.figure} characterId={stage.opposite.figure} cityId={view.cityId} sceneId={view.sceneId}
+            emotion={enemyLook?.emotion ?? "neutral"} focus={focus.opposite}>
+            {enemyLook?.mark && <ComicEffect effect={enemyLook.mark} reduceMotion={reduceMotion} cueKey={String(view.revision)} />}
+          </CharacterPortrait>
+        </div>}
       </div>}
       <section className="vn-dialogue paper story-paper encounter-dialogue" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} aria-label="寄り道の会話" data-has-choices={!!quiz || view.choices.length > 0} inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
         <DialogueWindowHead

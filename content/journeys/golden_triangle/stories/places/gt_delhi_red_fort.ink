@@ -12,24 +12,29 @@ INCLUDE modules.ink
 赤い城壁は、近づくほど空を削っていった。ラホール門の前には、手荷物検査の列が男女別に二本。{heroine_name}は女性の列に並び、振り返って小さく手を振った。
 # speaker: heroine
 # reaction: heroine,smile,music
+# voice: gt_delhi_red_fort_guide_001
 向こう側で会おうね。……なんだか、国境を越えるみたい
 # speaker: narrator
 列の前で、制服の女性係員が鞄を開けさせ、中のガイドブックを一瞥して閉じる。挟んであった段ボールの切れ端が、ひらりと落ちた。
 # speaker: heroine
 # reaction: heroine,surprised,sweat
+# voice: gt_delhi_red_fort_guide_002
 あっ、カムラさんの暗号！　これは大事なものです、すみません
 # speaker: narrator
 拾い上げて、一行目を指でなぞる。赤い城、暗くなってから。今は昼の十一時。
 # speaker: heroine
+# voice: gt_delhi_red_fort_guide_003
 暗くなってからって、何だろう。夕日がきれい、とか？　カムラさんの言い方だと、もっと何かありそう
 # speaker: narrator
 門をくぐると、外の喧騒が一段遠くなった。天井のある古い商店街が、奥へまっすぐ続いている。両側の小さな店に、腕輪や刺繍の小物がぎっしり並ぶ。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
+# voice: gt_delhi_red_fort_guide_004
 お城の中に、商店街？　入ってすぐ買い物から始まるお城、初めて
 # speaker: narrator
 腕輪の棚の前で、彼女の足が自然に遅くなる。遠くから、子どもたちの大合唱のようなざわめきが近づいてきた。
 # speaker: heroine
+# voice: gt_delhi_red_fort_guide_005
 ……見るだけ。見るだけです。まだ何も買ってません
 -> END
 
@@ -45,6 +50,7 @@ INCLUDE modules.ink
 インタビュー、プリーズ！
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# voice: gt_delhi_main_red_fort_001
 えっ、えっ、わたし？　待って、四十人？
 # speaker: enemy
 # reaction: enemy,sigh
@@ -56,6 +62,7 @@ INCLUDE modules.ink
 英語の宿題なんです。『外国人観光客に遺産について質問する』。一時半にバスが出ます。さっき韓国の団体に逃げられました
 # speaker: heroine
 # emotion: worried
+# voice: gt_delhi_main_red_fort_002
 逃げたくなる気持ちも、ちょっと分かります……
 # speaker: enemy
 分かります。わたしも毎日逃げたい。でも、この子たちを手ぶらで帰すと、帰りのバスが地獄になるんです
@@ -63,6 +70,7 @@ INCLUDE modules.ink
 先生の背後で、子どもたちが押し合う。誰が最初に聞くかで、もう小さな戦争が始まっていた。
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_main_red_fort_003
 ……分かりました。でも一人ずつ、順番に。押さないって約束してくれるなら
 # speaker: enemy
 # reaction: enemy,exclamation
@@ -99,6 +107,7 @@ INCLUDE modules.ink
 アンジャリが振り返って睨む。少年は首をすくめ、それきり何も言わなかった。何人かが笑った。
 # speaker: heroine
 # emotion: worried
+# voice: gt_delhi_main_red_fort_004
 先生。今の子は……
 # speaker: enemy
 ファイズ。話しません。去年の春から、授業で一度も
@@ -132,10 +141,12 @@ INCLUDE modules.ink
 列が崩れて歩き出す。最後の少年もノートを抱えて歩き出した。一度も開かないまま。
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_main_red_fort_005
 待ってください。まだ質問していない子がいます
 # speaker: enemy
 三十八人と一時間です。話さない子を待つ時間は、わたしにはないんです
 # speaker: heroine
+# voice: gt_delhi_main_red_fort_006
 じゃあ、わたしの時間を使います。一分だけ。……押したりしません。待つだけです
 # speaker: narrator
 先生は口を開きかけ、閉じた。腕時計を見て、もう一度{heroine_name}を見る。
@@ -171,6 +182,7 @@ INCLUDE modules.ink
 声は小さい。けれど、もう途切れなかった。楽園と書かれた広間の主が、同じ建物で囚人になった話。三十八人が、誰も茶化さずに聞いていた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# voice: gt_delhi_main_red_fort_007
 すごい。わたし、今の話、一生忘れないと思う
 {
 - battle_score == 3:
@@ -197,6 +209,7 @@ INCLUDE modules.ink
 でも、明日になったら、また黙りますよ。あなたは明日ここにいない。毎日あの子の隣にいるのは、わたしです
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_main_red_fort_008
 はい。……だから、先生に見ていてほしかったんです。今日、あの子が話したところ
 # speaker: narrator
 # se: whistle
@@ -231,6 +244,7 @@ INCLUDE modules.ink
 アマンです。カムラの孫です。この前、路地で祖母と話していたのは、あなたたちですね
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_delhi_finale_001
 はい。……カムラさんに、何か？
 # speaker: enemy
 朝から、いないんです。携帯は段ボールの上に置きっぱなし。明日の朝六時には、ジャイプールへ発つのに
@@ -240,6 +254,7 @@ INCLUDE modules.ink
 祖母に何を言ったんですか。どこかへ連れていく約束でも？　観光客についていく人じゃないんです
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_finale_002
 何も。……これを、もらっただけです
 # speaker: narrator
 デリーに着いた日に、カムラが書いてくれた見どころの一覧。五行の場所と、一行ずつの妙な注釈。アマンは読み進めるほど、顔をこわばらせた。
@@ -248,6 +263,7 @@ INCLUDE modules.ink
 # speaker: narrator
 彼は警察と病院の番号を探し始めた。指が震えて、二度、画面を押し間違える。
 # speaker: heroine
+# voice: gt_delhi_finale_003
 待ってください。あの日のカムラさん、すごくはっきりしてました。オートの運転手とはすぐ喧嘩になるから、出かけるときは地下鉄の女性車両に乗るんだって
 # speaker: enemy
 # reaction: enemy,anger
@@ -270,6 +286,7 @@ INCLUDE modules.ink
 # speaker: narrator
 病院の番号を押しかけていた指が、止まった。混乱した老人ではなく、自分の足で出かけた人。そう思い直すまでに、少し時間がかかった。
 # speaker: heroine
+# voice: gt_delhi_finale_004
 地下鉄に乗れるなら、どこへだって行けます。……それと、この一覧、最後の行だけ場所の名前がないんです
 # speaker: narrator
 五行目。カムラの字は、そこだけ大きかった。
@@ -280,6 +297,7 @@ INCLUDE modules.ink
 旧市街に川なんてない。池もない。……祖母は、また昔の話を
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_finale_005
 昔の話なら、昔の地図で読めばいいんだと思います
 -> quiz(2) ->
 # background: gt_bg_delhi_chandni_chowk
@@ -288,6 +306,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # local_word: gt_delhi_word_chandni
     # em: 月光
+    # voice: gt_delhi_finale_006
     チャンドニー・チョーク。月光の広場。昔の池に、月が映ったから
     # speaker: enemy
     ……月が水に落ちた所。祖母の地図には、まだ池があるんだ
@@ -320,6 +339,7 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_chandni_chowk
 { quiz_correct:
     # speaker: heroine
+    # voice: gt_delhi_finale_007
     カーリー・バーオリー。通りの西の端の、香辛料の市場です
 - else:
     # speaker: enemy
@@ -338,12 +358,14 @@ INCLUDE modules.ink
 # speaker: enemy
 祖母は、誰にも何も頼まない人なんです。結婚式の準備で、家族はみんな僕に頼みごとをする。祖母だけは何も言わない。だから、何を考えてるのか分からない
 # speaker: heroine
+# voice: gt_delhi_finale_008
 カムラさん、迷子じゃないと思います。行きたい所に、一つずつ行ってるだけ
 # speaker: enemy
 # reaction: enemy,anger
 八十近い人が、夜の旧市街で一人ですよ。何かあったら、あなたが責任を取れるんですか
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_finale_009
 ……取れません。だから、一緒に探してるんです
 # speaker: narrator
 アマンは言い返しかけて、やめた。代わりに、城の方角を見た。
@@ -359,6 +381,7 @@ INCLUDE modules.ink
 # ambience: gt_amb_street_traffic
 { quiz_correct:
     # speaker: heroine
+    # voice: gt_delhi_finale_010
     夜の光と音のショー。城の中を歩きながら見るんです。暗くなってから、です
 - else:
     # speaker: enemy
@@ -372,6 +395,7 @@ INCLUDE modules.ink
 # speaker: enemy
 祖父は堅物だったんです。映画も見ない人だった。こんなものに、祖母を連れてきたはずがない
 # speaker: heroine
+# voice: gt_delhi_finale_011
 でも、一覧の一行目は、ここなんです
 # speaker: enemy
 六十年前ですよ。光のショーなんて、あったはずがない。祖母の思い出は、どこかで混ざってるんです
@@ -381,6 +405,7 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_red_fort
 { quiz_correct:
     # speaker: heroine
+    # voice: gt_delhi_finale_012
     一九六五年に始まってます。アジアで最初のころの、光と音のショー。カムラさんの記憶は、混ざってなんかいません
 - else:
     # speaker: narrator
@@ -397,6 +422,7 @@ INCLUDE modules.ink
 駆け出しかけたアマンの前に、{heroine_name}が立った。
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_finale_013
 一分だけ。……待ってください
 # speaker: narrator
 # quiet: scene
@@ -412,6 +438,7 @@ INCLUDE modules.ink
 # speaker: gt_kamla
 ……あんたが連れてきたの
 # speaker: heroine
+# voice: gt_delhi_finale_014
 はい。黙っていなくなるのは、自由とは違うと思ったから。カムラさんが何を言いに来たのか、アマンさんは知らないままになるところでした
 # speaker: gt_kamla
 生意気な外国の娘だね
@@ -442,8 +469,10 @@ INCLUDE modules.ink
 そこの二人。明日の朝六時。見送りに来るなら、遅れないで。……来なくてもいいけど
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_delhi_finale_015
 ……嫌われちゃったかな
 # speaker: heroine
 # emotion: smile
+# voice: gt_delhi_finale_016
 でも、言ってよかった。たぶん、わたしにも言えることが一つ増えた
 -> END

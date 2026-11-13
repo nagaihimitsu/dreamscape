@@ -46,7 +46,7 @@ INCLUDE modules.ink
         理由が言えたら買っていい、とかじゃないよね。単に好きだったの
     - else:
         # speaker: heroine
-        朝の台所が明るくなるの。私が通るだけで
+        朝の台所が明るくなるの。わたしが通るだけで
     }
     -> join_1
 
@@ -85,7 +85,7 @@ INCLUDE modules.ink
     # memory: sound_memory_fondazione_prada_date_01
     { romance_result == "negative":
         # speaker: heroine
-        私が見せたいところも聞いてくれたら、もっといいな
+        わたしが見せたいところも聞いてくれたら、もっといいな
     - else:
         # speaker: heroine
         それなら、まず袖。あのコート、袖口だけ違う黄色だったの
@@ -100,7 +100,7 @@ INCLUDE modules.ink
         夜に隠して着るのも、ちょっと悔しい。着るなら晴れた日がいい
     - else:
         # speaker: heroine
-        少しずつ夜になるから？　いい考え。私は夕方の一駅から始めようかな
+        少しずつ夜になるから？　いい考え。わたしは夕方の一駅から始めようかな
     }
     -> join_2
 

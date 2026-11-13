@@ -11,7 +11,7 @@ import {
   tourismAssets,
   getCityContent,
 } from "../content";
-import { scenePerson, speakingPerson } from "../domain/scene-person";
+import { scenePerson } from "../domain/scene-person";
 import { defaultJourneyId, getJourney, getJourneyForCity } from "../content/journeys";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
 import { waitForTravel } from "../domain/travel-game";
@@ -38,7 +38,8 @@ import { oldDataContext, type KeyedStorage } from "../persistence/old-data";
 import { CanalScene } from "../components/CanalScene";
 import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
-import { useVoiceSettings } from "../components/useVoice";
+import { useVoiceRate, useVoiceSettings } from "../components/useVoice";
+import { effectiveVoiceRate } from "../audio/voice-rate";
 import { holdSceneCues, playCue, playSe, useSoundEffectSettings } from "../audio/sound-effects";
 import { canVibrate, useVibrationSetting, vibrate } from "../audio/vibration";
 import { heldItemIds } from "../domain/item-changes";
@@ -145,7 +146,7 @@ import { browserStorage, type AppProps } from "./app-storage";
 import { screenOnShow, storySceneChanged, storySceneOnScreen } from "./story-scene-change";
 import { focusSceneHeading } from "../components/scene-focus";
 import { holdTaps } from "../components/tap-hold";
-import { useDebugMode } from "./debug-mode";
+import { useDebugMode, useDebugVoiceRate } from "./debug-mode";
 import { DebugModeSetting } from "./DebugModeSetting";
 import { canReturnToFreeTime, freeTimeReturnState, nextFreeTimeReturn, type FreeTimeReturn } from "./free-time-return";
 import { endIntroMovie, introChange, recordIntro, startIntroTiming, type IntroTiming } from "./intro-timing";
@@ -153,11 +154,13 @@ import { relationshipChange, type RelationshipChange } from "../domain/relations
 import { RelationshipChangeNote } from "../components/RelationshipChangeNote";
 import { sceneConditionTruths } from "../domain/scene-conditions";
 import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
-import { portraitFocus } from "../components/speaker-focus";
+import { stageLine } from "../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../components/speaker-plate";
 
 /** 最初の3分の計測's note (Debug mode only): its own chunk, loaded when ⚙設定 shows it (scripts/dist-guard.ts). */
 const IntroTimingNote = lazy(() => import("./IntroTimingNote"));
+/** Debug's 台詞の声の速さ (Debug mode only): its own chunk, loaded when ⚙設定 shows it (scripts/dist-guard.ts). */
+const DebugVoiceRate = lazy(() => import("./DebugVoiceRate"));
 
 /** Where a Debug relationship change shows (decision 23): the story scene on screen, else the map or free time until the next action. */
 function changeScreenKey(state: GameState): string {
@@ -199,6 +202,11 @@ export function GameApp({
   useAmbienceSettings(displaySettings.value.ambience, displaySettings.value.bgmVolume);
   // This device's Debug-mode switch (journeyStorage passes its key through unscoped).
   const debugMode = useDebugMode(storage);
+  // Debug's 台詞の声の速さ (debug-mode.ts): this device's Debug preference, so read from the device's storage in a
+  // Debug session too (whose game lives in memory). The voices play at it while Debug mode is on (always on Debug's
+  // page) and at 1× with it off, whatever is stored (voice-rate.ts).
+  const voiceRate = useDebugVoiceRate(browserStorage);
+  useVoiceRate(effectiveVoiceRate(isDebug || debugMode.on, voiceRate.rate));
   // While Debug mode is on (always in a Debug session), a choice's relationship changes show above
   // its story scene until the scene ends or the next change (relationship-change.ts). Never saved
   // or logged. Read through a ref: a caller may hold an older `commit` (travel timers).
@@ -667,8 +675,9 @@ export function GameApp({
         onSettings={() => {
           setPlayer(game.playerName);
           setHeroine(game.heroineName);
-          // Another tab may have turned Debug mode on or off meanwhile.
+          // Another tab may have turned Debug mode on or off, or changed Debug's speed of the voices, meanwhile.
           debugMode.refresh();
+          voiceRate.refresh();
           setSettings(true);
         }}
         onReturnToFreeTime={canReturnToFreeTime(freeTimeReturn.current, game, journeyId, debugOn) ? () => setConfirmReturn(true) : undefined}
@@ -814,18 +823,22 @@ export function GameApp({
               revision: game.revision,
               sceneId: currentEncounter.id,
               cityId: currentEncounter.cityId,
-              portraits: (() => {
+              // Who may stand on the scene's stage (scene-stage.ts): the scene's person with a figure (# person:) for
+              // `# speaker: enemy`, else the generic stranger at the enemy's lines that show a feeling; the heroine from her
+              // first line, her reaction or an emotion on the narration. How each of the two looks on this line.
+              stage: (() => {
                 const frame = activeEncounter.frame;
                 const heroine = frame.reactions?.heroine;
                 const enemy = frame.reactions?.enemy;
-                const hasEmotion = frame.emotion !== "neutral" || frame.emotionExplicit;
-                const heroineSpeaking = frame.speaker === "heroine" || frame.speaker === "narrator";
-                const showHeroine = heroine || (hasEmotion && heroineSpeaking);
-                const showEnemy = enemy || ((hasEmotion || !!encounterPerson) && frame.speaker === "enemy");
-                if (!showHeroine && !showEnemy) return undefined;
+                const hasEmotion = frame.emotion !== "neutral" || !!frame.emotionExplicit;
                 return {
-                  ...(showHeroine ? { heroine: { emotion: heroine?.expression ?? (heroineSpeaking ? frame.emotion : "neutral"), mark: heroine?.mark, focus: portraitFocus(frame.speaker, "heroine") } } : {}),
-                  ...(showEnemy ? { enemy: { emotion: enemy?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral"), mark: enemy?.mark, focus: portraitFocus(frame.speaker, "enemy") } } : {}),
+                  line: stageLine(frame, storyState.people, {
+                    heroine: !!heroine || (hasEmotion && frame.speaker === "narrator"),
+                    enemy: !!enemy || (hasEmotion && frame.speaker === "enemy"),
+                  }),
+                  scene: encounterPerson ? { enemyFigure: encounterPerson.characterId } : { enemyStandIn: "enemy" },
+                  heroine: { emotion: heroine?.expression ?? (frame.speaker === "heroine" || frame.speaker === "narrator" ? frame.emotion : "neutral"), mark: heroine?.mark },
+                  enemy: { emotion: enemy?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral"), mark: enemy?.mark },
                 };
               })(),
               // A scene at no landmark (a date's, the hotel's, a trip's…; stage 4): in a tour's car (its leg's narration
@@ -838,8 +851,6 @@ export function GameApp({
               backgroundAsset: encounterImage,
               speaker: encounterPlate!.name,
               narration: encounterPlate!.narration,
-              person: encounterPerson && { characterId: encounterPerson.characterId, focus: portraitFocus(activeEncounter.frame.speaker, "enemy") },
-              speakingPerson: speakingPerson(storyState.people, activeEncounter.frame),
               cutIn: nameCutIn(activeEncounter.frame,
                 encounterPerson && { nameJa: encounterPerson.nameJa, ...(encounterPerson.titleJa ? { titleJa: encounterPerson.titleJa } : {}) },
                 storyState.people),
@@ -1184,10 +1195,10 @@ export function GameApp({
         >
           <ModalTitle id="delete-title">{isDebug ? "Debug用の一時データを消去しますか？" : "保存データを消去しますか？"}</ModalTitle>
           {isDebug ? <p>Debug用の進行と英語ノートを消去して、Debugで開いた場面を最初から開き直します。通常のセーブ・英語ノート・表示設定は消去しません。</p> : <><p>
-            このブラウザに保存された名前、旅の進行、AP、恋愛・クイズの記録、アルバム、英語ノート（単語帳・その国の言葉）と対訳設定、既読の記録を消去します。元には戻せません。
+            このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}の名前、旅の進行、AP、恋愛・クイズの記録、アルバム、英語ノート（単語帳・その国の言葉）と対訳設定、既読の記録を消去します。元には戻せません。
           </p>
           <p className="fine-print">
-            文字の速さなどの表示設定、以前に退避したバックアップ、ほかのサイトのデータは消去しません。ほかの端末やブラウザにも影響しません。
+            文字の速さなどの表示設定、以前に退避したバックアップ、ほかのサイトのデータは消去しません。ほかの旅行編の保存データ、ほかの端末やブラウザにも影響しません。
           </p></>}
           <button
             className="secondary"
@@ -1364,6 +1375,10 @@ export function GameApp({
           {!isDebug && <DebugModeSetting debugMode={debugMode} />}
           {/* 最初の3分の計測 (Debug mode only), loaded when shown. */}
           {debugOn && <Suspense fallback={null}><IntroTimingNote timing={introTiming.current} /></Suspense>}
+          {/* 台詞の声の速さ (Debug mode only), loaded when shown. */}
+          {debugOn && <Suspense fallback={null}>
+            <DebugVoiceRate rate={voiceRate.rate} onChange={voiceRate.change} voiceOn={displaySettings.value.voice} message={voiceRate.message} />
+          </Suspense>}
           <button type="button" className="text-button credits-entry"
             onClick={() => { setSettings(false); setCreditsOpen(true); }}>出典・権利の一覧</button>
           {!isDebug && oldDataStorage && <button type="button" className="text-button old-data-entry"

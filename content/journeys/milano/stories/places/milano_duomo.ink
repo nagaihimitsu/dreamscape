@@ -46,7 +46,7 @@ INCLUDE modules.ink
 # speaker: enemy
 鳩しかいない朝から。あいつらの羽音を消したら、今度は俺の腹が鳴った
 # speaker: heroine
-私、あそこも見てきます。広場って、上だけじゃなさそう
+わたし、あそこも見てきます。広場って、上だけじゃなさそう
 -> quiz(1) ->
 # background: milano_duomo
 { quiz_correct:
@@ -61,7 +61,7 @@ INCLUDE modules.ink
 # speaker: enemy
 わざわざ下まで行くのか。足音、録ってもいいか？
 # speaker: heroine
-私の分だけなら。後ろの人の分は、その人に聞いて
+わたしの分だけなら。後ろの人の分は、その人に聞いて
 -> quiz(2) ->
 # background: milano_duomo
 { quiz_correct:
@@ -181,12 +181,12 @@ INCLUDE modules.ink
 // 恋愛の選択は、選択肢のすぐ下の # profile:（と # memory:）。もとの 1場面1ファイルの # effect: と同じ噛み合いと思い出。
 === milano_walk_01 ===
 # scene: date
-# title: 私を探す一枚
+# title: わたしを探す一枚
 # background: milano_walk_landmark
 # speaker: narrator
 ドゥオモ広場でカメラを渡された。彼女はポーズを取らず、広場の人の流れにすっと混じった。
 # speaker: heroine
-大聖堂を撮って。あとで私を探せるくらい、小さく
+大聖堂を撮って。あとでわたしを探せるくらい、小さく
 足元の地下には昔の礼拝施設の跡もあるんだって。そこまで写るかな
 # speaker: player
 人物が主役じゃなくていいの？
@@ -206,7 +206,7 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: exasperated
-        私がここにいたって話だから、袖だけで済まさないで
+        わたしがここにいたって話だから、袖だけで済まさないで
     - else:
         # speaker: heroine
         # emotion: teasing

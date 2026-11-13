@@ -19,7 +19,7 @@ export function scenePerson(people: StoryStateCatalog["people"], scenePeople: re
 /**
  * The portrait of the person who says the line in their own name (`# speaker: <person ID>`), when
  * that person has one (`characterId`; 2026-11-11 user decision): from that line they stand opposite
- * the heroine in any scene (useSpeakingPerson). A phone's message or a sheet's line is read, not
+ * the heroine in any scene (scene-stage.ts). A phone's message or a sheet's line is read, not
  * said there: no one comes in for it.
  */
 export function speakingPerson(people: StoryStateCatalog["people"],

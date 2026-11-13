@@ -17,6 +17,7 @@ INCLUDE modules.ink
 芝生の上で、背中の黒い獣が数頭、草を食んでいた。ねじれた長い角。ブラックバックだ。この廟の庭では、その群れが見られる。
 # speaker: heroine
 # reaction: heroine,surprised_big,sparkle
+# voice: gt_agra_date_akbar_tomb_001
 鹿！　王さまのお墓に、鹿がいる。角、ねじれてる。あれ、どうやって伸びるんだろう
 * [「近づかずに、ここから見よう」 # option: watch_from_here]
     # profile: attentive
@@ -24,10 +25,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_agra_date_akbar_tomb_002
         ……うん。もうちょっと近くで見たかったけど。驚かせたら、かわいそうだもんね
     - else:
         # speaker: heroine
         # emotion: smile
+        # voice: gt_agra_date_akbar_tomb_003
         うん。ここからでも、草を噛む音が聞こえそう。あ、一頭、こっち見た
     }
 * [「角が何回ねじれてるか、当ててみて」 # option: guess_the_twists]
@@ -36,10 +39,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
+        # voice: gt_agra_date_akbar_tomb_004
         数えられないよ、遠すぎて……。あ、また頭下げちゃった
     - else:
         # speaker: heroine
         # reaction: heroine,teasing,music
+        # voice: gt_agra_date_akbar_tomb_005
         えっと、一、二、三、四！　ううん、五かも。ずるい、動かないで
     }
 * [「もっと近くで見よう」 # option: get_closer]
@@ -50,12 +55,14 @@ INCLUDE modules.ink
         三歩近づいたところで、ブラックバックたちはいっせいに顔を上げ、芝生の向こうへ駆けていった。
         # speaker: heroine
         # emotion: worried
+        # voice: gt_agra_date_akbar_tomb_006
         ……逃げちゃった。ちょっと、急ぎすぎたね
     - else:
         # speaker: narrator
         そっと近づくと、一頭だけが逃げずに残った。角の筋まで見える距離だった。
         # speaker: heroine
         # reaction: heroine,surprised,sparkle
+        # voice: gt_agra_date_akbar_tomb_007
         近い！　目、まつ毛が長い
     }
 -
@@ -70,9 +77,11 @@ INCLUDE modules.ink
 彼女がスマートフォンで開いた英語の案内に、この廟に眠る皇帝のことが書いてあった。アクバルは、生涯、文字を読めなかったと伝えられている。それでも本が大好きで、毎日、人に読み上げさせていた。宮廷には、たくさんの写本が集められていたという。
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_agra_date_akbar_tomb_008
 読めないのに、本が好きだったんだ……。読んでもらうって、相手が書いてあるとおりに読んでくれるって、信じることだよね
 # speaker: heroine
 # emotion: teasing
+# voice: gt_agra_date_akbar_tomb_009
 じゃあ、そのページ、読んで。わたし、皇帝の気分で聞くから
 * [真面目に読む # option: read_plainly]
     # profile: honest
@@ -81,12 +90,14 @@ INCLUDE modules.ink
         書いてあるとおりに、一行ずつ読んだ。三行目のあたりで、彼女の目がブラックバックの方へそれていった。
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
+        # voice: gt_agra_date_akbar_tomb_010
         ごめん、途中で鹿見てた。皇帝、失格だね
     - else:
         # speaker: narrator
         書いてあるとおりに、一行ずつ読んだ。彼女は腕を組み、目を閉じて、いかにも皇帝らしくうなずいていた。
         # speaker: heroine
         # emotion: smile
+        # voice: gt_agra_date_akbar_tomb_011
         よろしい。読んでもらうのって、いいね。言葉が、人の声になって届く
     }
 * [芝居がかって、朗々と読む # option: read_grandly]
@@ -94,6 +105,7 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
+        # voice: gt_agra_date_akbar_tomb_012
         声、大きすぎ……。家族連れの人たちが、こっち見てる
     - else:
         # speaker: narrator
