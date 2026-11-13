@@ -62,6 +62,18 @@ describe("saying it together's field", () => {
     expect(sayTogetherSkin.hintJa).toBe(sayTogether.hintJa);
   });
 
+  it("ends the play on the last word both voices say (together), as a voice comes alone first, or after her words", () => {
+    const { impactOf } = SAY_FIELD_POINTS;
+    const lastWord = SAY_FIELD.wordsAtMs[SAY_FIELD.wordsAtMs.length - 1];
+    expect(impactOf("together", SAY_WORDS_MS - 50)).toBe(SAY_WORDS_MS + lastWord);
+    expect(impactOf("together", SAY_WORDS_MS + 100)).toBe(SAY_WORDS_MS + 100 + lastWord);
+    expect(impactOf("early", SAY_COUNT_MS + 200)).toBe(SAY_COUNT_MS + 200);
+    expect(impactOf("late", SAY_WORDS_MS + 300)).toBe(SAY_WORDS_MS + 300);
+    expect(impactOf("silent", null)).toBe(SAY_END_MS);
+    for (const [outcome, tapMs] of [["together", SAY_WORDS_MS + 170], ["early", SAY_COUNT_MS], ["late", SAY_WORDS_MS + 400], ["silent", null]] as const)
+      expect(sayTogetherSkin.endAt({ outcome, tapMs }, false)).toBeGreaterThan(sayTogetherSkin.impactAt!({ outcome, tapMs }, false));
+  });
+
   it("ends each outcome after what it shows, before the host shows the outcome", () => {
     const at = (outcome: "together" | "early" | "late" | "silent", tapMs: number | null) => sayTogetherSkin.endAt({ outcome, tapMs }, false);
     expect(at("together", SAY_WORDS_MS)).toBeGreaterThan(SAY_WORDS_MS + SAY_FIELD.wordsMs);

@@ -34,6 +34,17 @@ describe("the catch's timing", () => {
     expect(cueTapCounts(MONKEY_RELEASE_MS, MONKEY_TUNING)).toBe(true);
   });
 
+  it("rates a catch for the result card in step with its outcome: caught ★3, fumbled ★2, missed ★1 or none without a tap", () => {
+    const stars = new Map<string, Set<number | null>>();
+    for (let ms = MONKEY_RELEASE_MS; ms <= MONKEY_END_MS + 50; ms += 5) {
+      const rated = monkeyCatchRules.rate!(ms, { thing: "bottle" })?.stars ?? null;
+      stars.set(outcome(ms), (stars.get(outcome(ms)) ?? new Set()).add(rated));
+    }
+    stars.get("missed")!.add(monkeyCatchRules.rate!(null, { thing: "bottle" })?.stars ?? null);
+    expect(Object.fromEntries([...stars].map(([key, set]) => [key, [...set].sort()]))).toEqual({ caught: [3], fumbled: [2], missed: [1, null] });
+    expect(monkeyCatchRules.rate!(MONKEY_HANDS_MS + 60, { thing: "glasses" })).toEqual({ stars: 3, scoreJa: "0.06秒差" });
+  });
+
   it("is fair on a phone, its grip gives before it lets go, and a thing not caught is gone below the hands before the play ends", () => {
     expect(cueTapFairness(MONKEY_TUNING)).toEqual([]);
     expect(MONKEY_TUNING.leadMs).toBe(MONKEY_FIELD.holdMs + MONKEY_FIELD.slipMs);

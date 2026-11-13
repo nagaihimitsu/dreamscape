@@ -31,6 +31,16 @@ describe("saying it together's timing", () => {
     expect(outcome(0)).toBe("silent");
   });
 
+  it("rates a voice for the result card in step with its outcome: together ★3, early or late ★2 near and ★1 far, silent none", () => {
+    const stars = new Map<string, Set<number | null>>();
+    for (let ms = SAY_COUNT_MS; ms <= SAY_END_MS + 50; ms += 5) {
+      const rated = sayTogetherRules.rate!(ms, {})?.stars ?? null;
+      stars.set(outcome(ms), (stars.get(outcome(ms)) ?? new Set()).add(rated));
+    }
+    expect(Object.fromEntries([...stars].map(([key, set]) => [key, [...set].sort()]))).toEqual({ early: [1, 2], together: [3], late: [1, 2], silent: [null] });
+    expect(sayTogetherRules.rate!(SAY_WORDS_MS - SAY_FIELD.beatMs, {})).toEqual({ stars: 1, scoreJa: "0.65秒早い" });
+  });
+
   it("is fair on a phone (wider after her beat, group2's −110/+170 ms), counts two even beats before the words, and lets her finish before a silent end", () => {
     expect(cueTapFairness(SAY_TUNING)).toEqual([]);
     expect([cleanEarlyMs, cleanLateMs]).toEqual([110, 170]);

@@ -211,7 +211,7 @@ export const cricketBatting = defineMiniGame({
   - `durationSec`：だいたいの長さ（カードに「約N秒」）。時間の無い探すゲームは書かない。
   - `practice`：`false`（既定）か `{ params? }`。「練習する」を出す。`params` は札の引数に重ねる。態度を選ぶゲーム（かくれんぼ・地図・手のひら）は書かない。
   - `countdown`：`"host"`（枠の 3・2・1・スタート）、`"own"`（場の中に自分の数え）、`"none"`（既定）。
-  - `music`：`"scene"`（既定）・`"calm"`・`"bright"`・`"festive"`（2.11）。
+  - `music`：`"scene"`（既定）・`"calm"`（探す）・`"bright"`（タイミング）（2.11）。リズムのゲームは `"scene"` のまま（拍が曲）。
   - `resultAnchor`：結果カードの場所。`"bottom"`（既定。止まった操作の上）か `"top"`（場の大事な絵が下にあるとき）。
 
 ### 2.4 規則（`rules.ts`。純粋関数）
@@ -323,7 +323,8 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
 
 - 効果音は、共通の `content/presentation/sounds.json` に登録した音だけを使う。ゲームはどの旅行編でも使えるコードなので、旅行編の音は使わない。定義の `sounds` に書き、`Play` は `sound(id)` で鳴らす。
 - 場面の音楽と環境音は、遊ぶ間もそのまま流す。リズムのゲームは `quietScene: true` で下げる。
-- ミニゲームの曲（任意、2026-11-13）：定義の `music` が `calm`（探す。100〜110 BPM）・`bright`（タイミング。130〜140）・`festive`（リズム。150〜160）なら、スタートで曲 `mg_calm`・`mg_bright`・`mg_festive` へ切り替え（今の曲の切り替えと同じ1.5秒のクロスフェード）、結果カードで場面の曲へ戻す（`host/music.ts`、GameApp の `onMusic`、`scene-music.ts` の `miniGameTrack`）。曲のファイルは後で足す（`content/presentation/music.json` と `public/assets/bgm/`）。登録されるまでは、場面の曲がそのまま続く（エラーにもビルドの失敗にもならない）。
+- ミニゲームの曲（任意、2026-11-13）：定義の `music` が `calm`（探す）・`bright`（タイミング）なら、スタートで曲 `mg_calm`・`mg_bright` へ切り替え（今の曲の切り替えと同じ1.5秒のクロスフェード。⚙設定の「BGMを流す」「BGMの大きさ」に従う）、結果カードで場面の曲へ戻す（`host/music.ts`、GameApp の `onMusic`、`scene-music.ts` の `miniGameTrack`）。曲は共通の一覧（`content/presentation/music.json`、ファイルは `public/assets/bgm/<ID>.mp3`）にあり、出典・権利の一覧に出る：`mg_calm` は Kevin MacLeod「Derp Nugget」（約110 BPM）、`mg_bright` は同「Desert of Lost Souls」（約134 BPM）。どちらも CC BY 4.0。曲を差し替えるときは ID を変えずに、ファイルとその出典だけを替える。登録の無い曲を名指すと、場面の曲がそのまま続く（エラーにもビルドの失敗にもならない）。
+- リズムのゲーム（ゴルガッパ・花婿の行列）には曲を付けない（2026-11-13）。ゲームの太鼓の拍（96 BPM、50→100 BPM）が音楽で、150 BPM 前後の曲を重ねると拍がずれて聞こえるため。`music` は `"scene"` のまま、`quietScene` で場面の曲を下げる。
 - 結果の音（枠）：そこまで！で `quiz_correct` か `whistle`、結果カードの★で `ui_tap`、★3で `quiz_perfect` と `applause`。皮は同じ音を重ねない（クリケットの拍手は枠に任せた）。
 - リズムの判定は画面の拍（時計）に合わせ、音の遅れに合わせない。幅を広めにして、端末ごとのずれの調整は今は作らない。調整が要ると分かったら、⚙設定の項目として足す（そのときに決める）。拍の並びは皮の定義に書く。場面の音楽の曲には合わせない（ゲームの音で拍を鳴らす）。
 
@@ -566,7 +567,7 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
 - [ ] `rules.ts`：エンジンの規則から自分の結果へ。表で足りれば表だけ（`cueTapRules(TUNING, { clean: …, early: …, late: …, miss: …, none: … })`）、足りなければ関数。調整の値（`tuning`）はここにコードで書く（札には書かない）。乱数・時刻・DOM・React・生成物を読まない（登録の検査が文を調べる）。
 - [ ] `rate`（任意）：★を出すゲームだけ。結果と食い違わない（良い結果ほど★が少なくならない）こと、数の行（`scoreJa`）。雛形が★の形を確かめる。
 - [ ] `rules.test.ts`：雛形を1行（`describeMiniGameRules(definition, rules, { records: [何もしない・すぐ終える・時間切れ…] })`）と、自分の細かいテスト。調整の値はエンジンの決まりに通す（`cue_tap` なら `expect(cueTapFairness(TUNING)).toEqual([])`）。
-- [ ] `Skin.tsx` と `skin.css`：エンジンの場に描く絵（`cue_tap` なら `CueTapSkin`：`tuning`・`rules`・`hintJa`・`actionJa`（ボタン）・`actionHintJa`（読み上げ）・`autoJa`・`endAt`（結果を見せる時刻）・`Field`、任意でメーターの代わりの `Gauge`（鳩の役の段の印））。場の根の class は `mg-<game-id>`（ID の `_` を `-` に）で、CSS はその中だけに効かせる（本番ビルドの検査の目印）。色は `--ds-*`、カードや説明の左の太い線は使わない。人物は `cast`（立ち絵）、名前は `names` を React の文字で（HTML にしない）。見た目の揺らぎは `seed`（`host/seed.ts` の `seededRandom`）から作る。時間は `clock` だけ（`performance.now`・`setTimeout` を使わない）。音は `sound(id)`（定義の `sounds` の音だけ鳴る）。動きを減らす（`still`）ときは、遊びに要らない動きを止める。
+- [ ] `Skin.tsx` と `skin.css`：エンジンの場に描く絵（`cue_tap` なら `CueTapSkin`：`tuning`・`rules`・`hintJa`・`actionJa`（ボタン）・`actionHintJa`（読み上げ）・`autoJa`・`endAt`（場が見せ終える時刻）・`Field`、任意で `impactAt`（場が結果を見せる瞬間。エンジンはそこで `end(結果, undefined, { record: 押した時刻, holdMs })` を呼ぶ。無ければ `endAt`）とメーターの代わりの `Gauge`（鳩の役の段の印）。★はエンジンの `cueTapRating`（ちょうど★3・近い★2・外れ★1・押さない★なし）を `cueTapRules` が `rate` に入れる）。場の根の class は `mg-<game-id>`（ID の `_` を `-` に）で、CSS はその中だけに効かせる（本番ビルドの検査の目印）。色は `--ds-*`、カードや説明の左の太い線は使わない。人物は `cast`（立ち絵）、名前は `names` を React の文字で（HTML にしない）。見た目の揺らぎは `seed`（`host/seed.ts` の `seededRandom`）から作る。時間は `clock` だけ（`performance.now`・`setTimeout` を使わない）。音は `sound(id)`（定義の `sounds` の音だけ鳴る）。動きを減らす（`still`）ときは、遊びに要らない動きを止める。
 - [ ] 絵の枠（任意）：旅行編の絵を入れたい所を `artSlots` に宣言する（`{ id, kind: "backdrop" | "sprite", labelJa }`。`labelJa` は何を描いた絵かを、絵を頼む人に分かるように）。`Field` は `art[枠]`（配信の URL）があればその絵を、無ければ CSS の見た目で描く。絵の位置は場の大きさの割合で決め、絵を頼むときに、ゲームが重ねて描く所（操作・メーター・上の帯）と、絵の中で合わせる所（例：遠くの三柱門の位置）を伝える。背景の枠には出典つきの観光写真も入る（2.12）ので、ゲームが動かす物（扉の板・階段・落ちる物）は、背景の絵の上にも描けるようにする。
 - [ ] 手応えと反応（2.6）：決まった瞬間に `juice`（止め・粒・揺れ・潰し）と `react`、押しても何も起きない物に `denied`。場（`Field`）では `useMiniGameKit()` から。決まった瞬間に `end(結果, detail, { record, holdMs })`（エンジンがしていなければ皮から）。背景の枠の `<img>` に `mg-photo`、押す物・見る物に `mg-play-object`。
 - [ ] `play.ts`：`export const Play = <エンジン>Play(skin)` と `export { <rules> as rules }`。調整の値は `export const tuning = <名前の付いた数の組>` と `export function retune(数の組) { return { Play, rules } }`（Debug の部屋で数を変えて試す。皮が数から場を作る形にする：`cricket_batting/Skin.tsx` の `cricketSkinFor`）。

@@ -4,6 +4,7 @@ import {
   rootMusicPlaySchema, trackIdOf, type JourneyMusicPlay, type MusicData, type MusicPlay, type RootMusicPlay,
 } from "../src/content/music";
 import { SOUND_ID, type SoundSource } from "../src/content/sounds";
+import { MINI_GAME_TRACKS } from "../src/minigames/host/music";
 import { displayPath, parseCatalog, type ContentSources } from "./content-sources";
 import type { ContentWarning } from "./content-report";
 import { audioTagsOf, registerListedAudio, type ListedAudio, type RegisteredSound } from "./sound-files";
@@ -191,12 +192,14 @@ export function musicDataOf(registry: MusicRegistry, journeyIds: readonly string
   };
 }
 
-/** The music notes that do not stop the build: a track that no `play` value and no line (`# bgm:`) plays. */
+/** The music notes that do not stop the build: a track that no `play` value, no line (`# bgm:`) and no mini-game (its `music`) plays. */
 export function musicWarnings(sources: Pick<ContentSources, "root" | "storyFiles">, registry: MusicRegistry): ContentWarning[] {
   const played = new Set([
     ...sources.storyFiles.flatMap((story) => bgmTagsOf(story.source).map((tag) => tag.id)),
     ...(registry.root ? playTrackIds(registry.root).map((item) => item.id) : []),
     ...[...registry.journeys.values()].flatMap((play) => playTrackIds(play).map((item) => item.id)),
+    // The mini-games' own tracks (docs/13 2.11): a game's definition plays them while it is played.
+    ...Object.values(MINI_GAME_TRACKS),
   ]);
   return registry.tracks.filter((track) => !played.has(track.entry.id))
     .map((track): ContentWarning => ({ kind: "music", message: `Unused track: ${displayPath(sources.root, track.file)} registers ` +
