@@ -28,11 +28,15 @@ export function useSettling(step: unknown): boolean {
 }
 
 /**
- * The irreversible action of a confirmation (e.g. 「消去する」): disabled, and shown as such, until
- * the confirmation has been on screen for CONFIRM_SETTLE_MS. Each time the confirmation opens anew
- * the button mounts anew, so the wait starts again.
+ * The irreversible action of a confirmation (e.g. 「消去する」): it ignores presses, and is shown and
+ * announced as disabled (aria-disabled; the look: styles.css `[data-settling]`), until the
+ * confirmation has been on screen for CONFIRM_SETTLE_MS. It stays in the Tab order meanwhile, so a
+ * keyboard user who presses Tab at once still reaches it. Each time the confirmation opens anew the
+ * button mounts anew, so the wait starts again.
  */
-export function ConfirmActionButton({ disabled, ...props }: ButtonHTMLAttributes<HTMLButtonElement>) {
+export function ConfirmActionButton({ disabled, onClick, ...props }: ButtonHTMLAttributes<HTMLButtonElement>) {
   const settling = useSettling(true);
-  return <button type="button" {...props} disabled={disabled || settling} />;
+  return <button type="button" {...props} disabled={disabled}
+    aria-disabled={settling || undefined} data-settling={settling || undefined}
+    onClick={(event) => { if (!settling) onClick?.(event); }} />;
 }

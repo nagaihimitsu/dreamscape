@@ -184,6 +184,22 @@ describe("checkContentOwnership", () => {
     ].join("\n")));
   });
 
+  it("lets a journey's English use only the core word meanings and its own", () => {
+    write("content/learning/word-meanings.json", { schemaVersion: 1, words: { the: "その" } });
+    write(`${gt}/learning/word-meanings.json`, { schemaVersion: 1, words: { mausoleum: "霊廟" } });
+    // The same meaning repeated in another fragment is that journey's own too.
+    write(`${uz}/learning/word-meanings.json`, { schemaVersion: 1, words: { mausoleum: "霊廟", registan: "レギスタン" } });
+    write(`${uz}/quizzes/uz_quiz.json`, { id: "uz_quiz", questions: [{ id: "uz_question", questionEn: "The mausoleum?", options: [{ textEn: "Registan" }] }] });
+    write(`${gt}/quizzes/gt_quiz.json`, { id: "gt_quiz", landmarkId: "delhi_red_fort", questions: [{ id: "gt_question", questionEn: "The mausoleum?" }] });
+    expect(() => check()).not.toThrow();
+    write(`${gt}/quizzes/gt_quiz.json`, { id: "gt_quiz", landmarkId: "delhi_red_fort", questions: [{ id: "gt_question", questionEn: "The mausoleum?",
+      options: [{ textEn: "Registan" }] }] });
+    expect(() => check()).toThrow(new Error(
+      'Reference to another layer: content/journeys/golden_triangle/quizzes/gt_quiz.json uses the English word "registan", whose meaning is defined in ' +
+      "content/journeys/uzbekistan/learning/word-meanings.json; a journey's quizzes and encounters may only use the word meanings of " +
+      "content/learning/word-meanings.json and of their own journey folder."));
+  });
+
   it("keeps cities, travel, stories, quizzes and journey catalogs out of the core layer", () => {
     city("content", "agra");
     write("content/stories/milano/walk.ink", "Walk\n");

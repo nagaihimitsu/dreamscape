@@ -175,6 +175,18 @@
       },
       "placeJa": "ニューデリー駅"
     },
+    "gt_bg_delhi_train_window": {
+      "nameJa": "ニューデリー駅（列車の窓）",
+      "captionJa": "デリー ／ ニューデリー駅（入線する列車の窓から）",
+      "color": "#675f5c",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_station_train_window",
+      "imagePosition": {
+        "x": 90,
+        "y": 50
+      },
+      "placeJa": "ニューデリー駅"
+    },
     "gt_bg_jaipur_albert_hall": {
       "nameJa": "アルバート・ホール博物館",
       "captionJa": "ジャイプール ／ アルバート・ホール博物館",
@@ -255,10 +267,38 @@
     },
     "gt_bg_delhi_hotel_alley": {
       "nameJa": "滞在先のホテルの路地（デリー）",
-      "captionJa": "デリー ／ 滞在先の路地（パハールガンジの通りを用いたイメージ）",
-      "color": "#8a6a3a",
+      "captionJa": "デリー ／ 滞在先の路地（オールドデリーの古い家並みの路地を用いたイメージ）",
+      "color": "#82827a",
       "fallback": "neutral",
-      "imageAssetId": "gt_img_delhi_paharganj",
+      "imageAssetId": "gt_img_delhi_old_lane",
+      "imagePosition": {
+        "x": 35,
+        "y": 50
+      },
+      "placeId": "delhi_hotel_hub"
+    },
+    "gt_bg_delhi_hotel_room": {
+      "nameJa": "滞在先のホテルの部屋（デリー）",
+      "captionJa": "デリー ／ 滞在先の部屋（パハールガンジの安宿の部屋を用いたイメージ）",
+      "color": "#1c1a16",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_paharganj_room_night",
+      "imagePosition": {
+        "x": 40,
+        "y": 40
+      },
+      "placeId": "delhi_hotel_hub"
+    },
+    "gt_bg_delhi_hotel_corridor": {
+      "nameJa": "滞在先のホテルの廊下（デリー）",
+      "captionJa": "デリー ／ 滞在先の廊下（ラージャスターンの宿の廊下を用いたイメージ）",
+      "color": "#7a7979",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_hotel_corridor_pushkar",
+      "imagePosition": {
+        "x": 50,
+        "y": 50
+      },
       "placeId": "delhi_hotel_hub"
     },
     "gt_bg_agra_hotel_hub": {
@@ -269,12 +309,36 @@
       "imageAssetId": "gt_img_hotel_illustration",
       "placeId": "agra_hotel_hub"
     },
+    "gt_bg_agra_hotel_room": {
+      "nameJa": "滞在先のホテルの部屋（アーグラ）",
+      "captionJa": "アーグラ ／ 滞在先の部屋（チャンディーガルのホテルの客室を用いたイメージ）",
+      "color": "#865432",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_hotel_room_chandigarh",
+      "imagePosition": {
+        "x": 82,
+        "y": 50
+      },
+      "placeId": "agra_hotel_hub"
+    },
     "gt_bg_jaipur_hotel_hub": {
       "nameJa": "滞在先のホテル（ジャイプール）",
       "captionJa": "ジャイプール ／ 滞在先（バンガロールの施設を用いたロビーのイメージ）",
       "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_hotel_illustration",
+      "placeId": "jaipur_hotel_hub"
+    },
+    "gt_bg_jaipur_hotel_courtyard": {
+      "nameJa": "滞在先のホテルの中庭（ジャイプール）",
+      "captionJa": "ジャイプール ／ 滞在先の中庭（ジャイプールのハヴェリ・ホテルの中庭を用いたイメージ）",
+      "color": "#b7a99c",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_jaipur_haveli_courtyard",
+      "imagePosition": {
+        "x": 62,
+        "y": 50
+      },
       "placeId": "jaipur_hotel_hub"
     },
     "gt_bg_hotel_rooftop_night": {
@@ -301,6 +365,18 @@
       "color": "#7b7a63",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_kiraoli_buffaloes"
+    },
+    "gt_bg_car_interior": {
+      "nameJa": "ツアーの車の中",
+      "captionJa": "ツアーの車の中（コルカタのタクシーの車内を用いたイメージ）",
+      "color": "#686a63",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_taxi_interior",
+      "imagePosition": {
+        "x": 62,
+        "y": 50
+      },
+      "placeJa": "ツアーの車の中"
     },
     "gt_bg_agra_fatehpur_sikri_bazaar": {
       "nameJa": "ファテープル・シークリーの町",

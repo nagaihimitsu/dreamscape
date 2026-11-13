@@ -2,8 +2,9 @@ import { searchRules, type SearchGame, type SearchSetup } from "../engines/searc
 
 // The hidden name's rules (docs/13 2.4): a search skin. Her palm has a few places the eye stops at (MEHNDI_SPOTS); one of
 // them hides what was written there (the tag's `target`, chosen by the Jal Mahal date's flags through cond()). Pointing at
-// it is found; pointing at another is a wrong spot (the play ends: she tells you); 「明日にする」 or the time running out is
-// later. Nothing is random. Pure.
+// it is found; pointing at another is a wrong spot (the play ends: she tells you); 「明日にする」 is later. There is no time
+// limit and no idle limit (user decision 2026-11-13: the player looks as long as they like, and 「逃げたね」 follows only
+// their own 「明日にする」). Nothing is random. Pure.
 
 export type MehndiOutcome = "found" | "wrong_spot" | "later";
 /** Where the writing hides, and what it is (2.10: the name as typed; an illegible mark where the story says Hindi letters). */
@@ -19,9 +20,6 @@ export const MEHNDI_SPOTS = ["index", "pinky", "peacock", "thumb", "vine", "wris
 export type MehndiSpot = (typeof MEHNDI_SPOTS)[number];
 export const MEHNDI_TARGETS: readonly MehndiTarget[] = ["thumb", "peacock", "vine"];
 export const MEHNDI_TEXTS: readonly MehndiText[] = ["player", "illegible", "farhana"];
-/** A night's look: then 「明日にする」 by itself (the story's later). */
-export const MEHNDI_TIME_MS = 30000;
-
 export function mehndiSetup(params: MehndiParams): SearchSetup {
   return {
     spots: MEHNDI_SPOTS.length,
@@ -29,7 +27,8 @@ export function mehndiSetup(params: MehndiParams): SearchSetup {
     // Pointing is saying 「ここ」: a wrong place ends the look (she says it is only a petal), then the story shows it.
     wrongEnds: true,
     buttons: [{ id: "later", presses: 1 }],
-    timeLimitMs: MEHNDI_TIME_MS,
+    // Only finding the place, a wrong place or 「明日にする」 ends the look (2026-11-13).
+    timeLimitMs: null,
     idleMs: null,
   };
 }
@@ -40,7 +39,7 @@ export const mehndiGame: SearchGame<MehndiParams, MehndiOutcome> = {
     switch (ending.kind) {
       case "found": return "found";
       case "wrong": return "wrong_spot";
-      // 「明日にする」, the night running out, or a play stopped with nothing.
+      // 「明日にする」. A lapse never ends this play (no time or idle limit); a record that stops with nothing reads as later.
       case "button":
       case "timeout":
       case "idle": return "later";

@@ -8702,7 +8702,7 @@
       "category": "date",
       "titleJa": "インド門で過ごす",
       "activityMinutes": 45,
-      "apCost": 2,
+      "apCost": 4,
       "admissionCost": 0
     },
     {
@@ -8722,7 +8722,7 @@
       "category": "date",
       "titleJa": "チャンドニー・チョークで過ごす",
       "activityMinutes": 80,
-      "apCost": 2,
+      "apCost": 4,
       "admissionCost": 0
     },
     {
@@ -8732,7 +8732,7 @@
       "category": "date",
       "titleJa": "ロディ・ガーデンで過ごす",
       "activityMinutes": 70,
-      "apCost": 2,
+      "apCost": 6,
       "admissionCost": 0
     },
     {
@@ -8752,7 +8752,7 @@
       "category": "date",
       "titleJa": "ロータス寺院で過ごす",
       "activityMinutes": 70,
-      "apCost": 2,
+      "apCost": 6,
       "admissionCost": 0
     },
     {

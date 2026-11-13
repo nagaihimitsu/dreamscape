@@ -7,7 +7,7 @@ import { validateGameState, type GameState } from "../domain/game";
 import { defaultJourneyId, getJourney } from "../content/journeys";
 import { debugSceneLabels, debugValueRanges, type DebugQuery, type DebugScene, type DebugSettings } from "./debug-query";
 import {
-  cityStart, completedCity, openBattleScene, openEpilogueScene, openTourismScene, rollTickets,
+  cityStart, completedCity, finishEpisode, openBattleScene, openEpilogueScene, openTourismScene, rollTickets,
   startDateScene, startEncounterScene, startOccasionScene, tourScene, withAp, withRelationship,
 } from "./scenario-builders";
 
@@ -111,7 +111,8 @@ export function resolveDebugLaunch(query: DebugQuery): DebugLaunch {
   return { kind: "scene", settings: { ...defaults, scene: query.scene, id,
     progress, ap: query.ap ?? defaults.ap, affection: query.affection ?? defaults.affection,
     trust: query.trust ?? defaults.trust, spark: query.spark ?? defaults.spark, roll: query.roll ?? defaults.roll,
-    ...(query.from ? { from: query.from } : {}), ...(query.prep ? { prep: query.prep } : {}), ...(query.step ? { step: query.step } : {}) } };
+    ...(query.from ? { from: query.from } : {}), ...(query.prep ? { prep: query.prep } : {}), ...(query.step ? { step: query.step } : {}),
+    ...(query.without ? { without: query.without } : {}), ...(query.before ? { before: query.before } : {}) } };
 }
 
 // Keyed by the city's content object: installing 仮の場面 again (possibly from another
@@ -126,6 +127,50 @@ function completedJourney(cityId: string): GameState {
   return cached;
 }
 
+/** The state a Debug scene starts from: the city's start, or its cleared state (kept while Debug stays open). */
+export function debugCityState(cityId: string, progress: DebugSettings["progress"]): GameState {
+  return progress === "initial" ? cityStart(cityId) : completedJourney(cityId);
+}
+
+/** The state without the held items a date's `without` names (the branch of a player who never got them); each must be held. */
+function withoutHeldItems(state: GameState, itemIds: readonly string[]): GameState {
+  if (!itemIds.length) return state;
+  const inventory = { ...state.inventory };
+  for (const id of itemIds) {
+    if (inventory[id] !== "held") throw new Error(`without の「${id}」は、Debugのこの場面の状態で持っている品物ではありません。`);
+    delete inventory[id];
+  }
+  return { ...state, inventory };
+}
+
+/**
+ * A date opened before an episode its story asks about (`before`): Debug's cleared city has done every episode, so that
+ * branch (Lodhi Garden's for a player who has not seen Humayun's Tomb) would never open. From the city's start, the city's
+ * other episodes (not its finale) are finished one by one, in their order, until the date can start (its own `when`); an
+ * episode that cannot be played that way (a tour's stop) is passed over.
+ */
+function dateBeforeEpisode(settings: DebugSettings, before: string, cityId: string): GameState {
+  if (!episodes.some((episode) => episode.id === before && episode.cityId === cityId && episode.kind !== "city_finale"))
+    throw new Error(`before の「${before}」は、${getCityContent(cityId).city.nameJa}のフィナーレでないエピソードではありません。`);
+  const others = episodes.filter((episode) => episode.cityId === cityId && episode.kind !== "city_finale" && episode.id !== before);
+  let state = cityStart(cityId);
+  for (const next of [...others, null]) {
+    try {
+      return startDateScene(withRelationship(withAp(withoutHeldItems(state, settings.without ?? []), settings.ap), settings), settings.id,
+        rollTickets[settings.roll]);
+    } catch (error) {
+      // The date's `when` is not met yet: one more episode.
+      if (!next) throw new Error(`「${settings.id}」は「${before}」の前には始められません（${error instanceof Error ? error.message : String(error)}）`);
+    }
+    try {
+      state = finishEpisode(state, next.id);
+    } catch {
+      // Not playable from here (a tour's stop, say): the next one.
+    }
+  }
+  throw new Error(`「${settings.id}」は「${before}」の前には始められません`);
+}
+
 /** Build only states the real game functions can start; never alter player data. */
 export function createDebugState(settings: DebugSettings): GameState {
   const cityId = settings.cityId ?? defaultDebugCityId;
@@ -133,14 +178,14 @@ export function createDebugState(settings: DebugSettings): GameState {
     throw new Error("エピローグは都市クリア後に開けます。旅の進行を「都市クリア後」にしてください。");
   if (settings.scene === "tour" && settings.progress === "completed")
     throw new Error("ツアーは都市クリアの前に予約します。旅の進行を「旅の開始時」にしてください。");
-  const base = settings.progress === "initial" ? cityStart(cityId) : completedJourney(cityId);
+  const base = withoutHeldItems(debugCityState(cityId, settings.progress), settings.without ?? []);
   const state = withRelationship(withAp(base, settings.ap), settings);
   const ticket = rollTickets[settings.roll];
   switch (settings.scene) {
     case "tourism": return openTourismScene(state, settings.id);
     case "battle": return openBattleScene(state, settings.id);
     case "encounter": return startEncounterScene(state, settings.id, ticket);
-    case "date": return startDateScene(state, settings.id, ticket);
+    case "date": return settings.before ? dateBeforeEpisode(settings, settings.before, cityId) : startDateScene(state, settings.id, ticket);
     case "occasion": return startOccasionScene(state, settings.id, settings.from, settings.prep ?? [], ticket);
     case "tour": {
       if (!getCityTours(cityId).some((item) => item.id === settings.id))
