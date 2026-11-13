@@ -21,7 +21,9 @@ import { useSceneTap } from "../../components/useSceneTap";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { CanalScene } from "../../components/CanalScene";
 import { SceneHeading, SceneNotebookTool } from "../../components/SceneHeading";
-import { CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
+import { CharacterFigure, CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
+import { ChoicePoint } from "../../minigames/host/ChoicePoint";
+import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import { oppositeIsEnemy, stageLine, type StageScene } from "../../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useSceneStage } from "../../components/useSceneStage";
@@ -623,7 +625,12 @@ export function BattleScreen({
                 onAdvance={advanceSafely}
               />
             </LineStage>
-            {choosing && onChoose && <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="battle-choice" />}
+            {choosing && onChoose && <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
+              heroine: <CharacterFigure characterId="heroine" emotion={heroineEmotion} sceneId={battle.id} cityId={heroineCityId} />,
+              person: <CharacterFigure characterId={personId ?? opponentFigure} />,
+            }}>
+              <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="battle-choice" />
+            </ChoicePoint>}
             {chrome.advance && <button
               className="next"
               data-testid={chrome.advance.testId}
@@ -842,6 +849,7 @@ export function BattleScreen({
       </section>
       </div>
       {isDialogue && <DialogueWindowRestore state={windowVisibility} />}
+      <MiniGameSlot />
       {cutIn && <ReasoningCutIn kind={cutIn} reduceMotion={reduceMotion} onComplete={() => {
         setCutIn(null);
         window.requestAnimationFrame(() =>

@@ -15,7 +15,9 @@ import { ItemShowLayer } from "../../components/ItemShow";
 import { sceneTimeTint } from "./time-of-day";
 import { lineCues, lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { CanalScene } from "../../components/CanalScene";
-import { CharacterPortrait } from "../../components/CharacterPortrait";
+import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
+import { ChoicePoint } from "../../minigames/host/ChoicePoint";
+import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import { oppositeIsEnemy, stageLine, type StageScene } from "../../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useNameCutIn } from "../../components/NameCutIn";
@@ -191,7 +193,13 @@ export function EpilogueScreen({
               onAdvance={advanceSafely}
             />
           </LineStage>
-          {frame.choices.length > 0 && onChoose && <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="epilogue-choice" />}
+          {frame.choices.length > 0 && onChoose && <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
+            heroine: <CharacterFigure characterId="heroine" emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame)}
+              sceneId={active.episodeId} cityId={episode?.cityId ?? game.currentCityId} />,
+            ...(opposite ? { person: <CharacterFigure characterId={opposite} /> } : {}),
+          }}>
+            <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="epilogue-choice" />
+          </ChoicePoint>}
           {frame.ended && <button
             className="next"
             disabled={!ready}
@@ -204,6 +212,7 @@ export function EpilogueScreen({
           </div>
         </section>
         <DialogueWindowRestore state={windowVisibility} />
+        <MiniGameSlot />
       </div>
     </div>
   );

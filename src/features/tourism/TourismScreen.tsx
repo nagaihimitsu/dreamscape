@@ -19,7 +19,9 @@ import { ItemShowLayer } from "../../components/ItemShow";
 import { sceneTimeTint } from "../journey/time-of-day";
 import { lineCues, lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { CanalScene } from "../../components/CanalScene";
-import { CharacterPortrait } from "../../components/CharacterPortrait";
+import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
+import { ChoicePoint } from "../../minigames/host/ChoicePoint";
+import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import { stageLine, type StageScene } from "../../components/scene-stage";
 import { useSceneStage } from "../../components/useSceneStage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
@@ -253,7 +255,13 @@ export function TourismScreen({
                 onAdvance={advanceSafely}
               />
             </LineStage>
-            {frame.choices.length > 0 && onChooseGuide && <SceneChoices choices={guideChoices} disabled={!ready} onChoose={onChooseGuide} testId="guide-choice" />}
+            {frame.choices.length > 0 && onChooseGuide && <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
+              heroine: <CharacterFigure characterId="heroine" emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, guideStoryId, frame)}
+                sceneId={landmark.id} cityId={landmark.cityId} />,
+              ...(personId ? { person: <CharacterFigure characterId={personId} /> } : {}),
+            }}>
+              <SceneChoices choices={guideChoices} disabled={!ready} onChoose={onChooseGuide} testId="guide-choice" />
+            </ChoicePoint>}
             {frame.ended && <button
               className="next"
               data-testid="tourism-advance"
@@ -266,6 +274,7 @@ export function TourismScreen({
             </div>
           </div>
           <DialogueWindowRestore state={windowVisibility} />
+          <MiniGameSlot />
         </div>
       ) : (
         <div className="tourism-observation">

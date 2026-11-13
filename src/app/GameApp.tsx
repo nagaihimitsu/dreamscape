@@ -898,6 +898,7 @@ export function GameApp({
                 return [{ index: choice.index, textEn: choice.text, translationJa: choice.translationJa ?? option?.translationJa ?? "", cost: shown.cost,
                   unavailableReason: shown.show === "grey" ? shown.reason : undefined, ...(shown.ap ? { apCost: shown.ap } : {}) }];
               }),
+              ...(activeEncounter.frame.minigame ? { minigame: activeEncounter.frame.minigame } : {}),
               ended: encounterCanFinish(game),
               // On a running tour (stage 2a) the visit's last scene leads on to the tour's next step; a leg's scenes (stage 3) lead on with
               // the tour. On a booked tour's morning (the hotel's scenes after waking) the last scene leads to the tour's start.

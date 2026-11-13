@@ -15,7 +15,10 @@ import { readLineId, type ReadSkip } from "../../components/read-skip";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { useSceneTap } from "../../components/useSceneTap";
-import { CharacterPortrait } from "../../components/CharacterPortrait";
+import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
+import { ChoicePoint } from "../../minigames/host/ChoicePoint";
+import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
+import type { MiniGameTag } from "../../minigames/tag";
 import { oppositeIsEnemy, type StageLine, type StageScene } from "../../components/scene-stage";
 import { useSceneStage } from "../../components/useSceneStage";
 import { useNameCutIn } from "../../components/NameCutIn";
@@ -61,6 +64,8 @@ export type EncounterScreenView = {
   /** The names a phone's messages show (LineStage). */
   phoneNames?: PhoneNames;
   choices: EncounterChoiceView[];
+  /** The line's `# minigame:`: played in place of the choices (ChoicePoint, docs/13 1.5). */
+  minigame?: MiniGameTag;
   ended: boolean;
   finishLabel?: string;
   /** The heading's tag (a running tour's 「ツアー・見学」). */
@@ -188,7 +193,12 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
                 voiceId={view.voiceId} seId={view.seId} cues={lineCues(staging, !!nameCut)} voice={autoAdvance.voice} onReady={onReady} onAdvance={advance} />
             </LineStage>
             {view.choices.length ? (
-              <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={view.id} choices={view.choices} learning={learning} onChoose={(index) => select(index, onChoose)} disabled={!ready || !choiceReady} />
+              <ChoicePoint minigame={view.minigame} ready={ready} cast={{
+                heroine: <CharacterFigure characterId="heroine" emotion={view.stage.heroine.emotion} cityId={view.cityId} sceneId={view.sceneId} />,
+                ...(stage.opposite ? { person: <CharacterFigure characterId={stage.opposite.figure} cityId={view.cityId} sceneId={view.sceneId} /> } : {}),
+              }}>
+                <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={view.id} choices={view.choices} learning={learning} onChoose={(index) => select(index, onChoose)} disabled={!ready || !choiceReady} />
+              </ChoicePoint>
             ) : view.ended ? (
               <button type="button" className="next" data-testid="encounter-advance" disabled={!ready} onClick={advance}>{view.ended ? view.finishLabel ?? "自由時間へ" : "続きを読む"} <span aria-hidden="true">→</span></button>
             ) : null}
@@ -197,6 +207,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
         </div>
       </section>
       <DialogueWindowRestore state={windowVisibility} />
+      <MiniGameSlot />
     </div>
   );
 }
