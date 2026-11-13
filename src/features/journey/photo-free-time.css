@@ -270,7 +270,8 @@
   animation: photo-card-cue-rise 1.6s ease-out infinite;
 }
 .photo-card-cue::after { animation-delay: 0.3s; }
-.photo-card[data-cue] .photo-card-cue { visibility: visible; }
+/* inherit, not visible: while its floating copy flies (useCardGestures hides the card), the cue goes with the card. */
+.photo-card[data-cue] .photo-card-cue { visibility: inherit; }
 @keyframes photo-card-cue-rise {
   0% { opacity: 0; translate: 0 5px; }
   35% { opacity: 0.9; }
