@@ -144,7 +144,7 @@ function dateWithoutHeldItems(settings: DebugSettings): DebugSettings[] {
 function dateBeforeEpisodes(settings: DebugSettings): DebugSettings[] {
   if (settings.scene !== "date") return [];
   const read = scenes.find((scene) => scene.main && "date" in scene.main && scene.main.date === settings.id)?.conds ?? [];
-  return read.map((text) => /^episode (\S+)$/u.exec(text)?.[1]).filter((id): id is string => !!id).map((before) => ({ ...settings, before }));
+  return read.map((text) => /^episode (\S+)$/u.exec(text)?.[1]).filter((id): id is string => !!id).map((before) => ({ ...settings, progress: "initial" as const, before }));
 }
 
 /** The branches of a date Debug opens besides 場面の確認's: without a held item, before an episode; those it cannot start are left out. */
