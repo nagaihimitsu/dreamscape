@@ -3,7 +3,7 @@ INCLUDE modules.ink
 
 // 宿の場所のファイル：到着とエピローグ（新しい書き方への形の移し替え。文は今のまま）
 
-// 【3】到着。cities/<都市>.json の arrivalStoryId（今は arrivals/jaipur）がこの knot を指すように直す（欄の書き方は段階3で決まる）
+// 到着。cities/<都市>.json の arrivalStoryId がこの knot を指す。
 === gt_jaipur_arrival ===
 # scene: arrival
 # background: gt_bg_jaipur_hotel_hub
@@ -38,7 +38,7 @@ INCLUDE modules.ink
 結婚式は最後の夜。それまでに、この町をちゃんと見ておきたいな。お城も、窓だらけの宮殿も、空を測る道具も。……今度は、行きたい所、わたしからも言うね
 -> END
 
-// 【3】エピローグ。progression/journey.json のフィナーレの epilogueStoryId（今は epilogues/jaipur）がこの knot を指すように直す（欄の書き方は段階3で決まる）
+// エピローグ。progression/journey.json のフィナーレの epilogueStoryId がこの knot を指す。
 === gt_jaipur_epilogue ===
 # scene: epilogue
 # person: gt_kamla

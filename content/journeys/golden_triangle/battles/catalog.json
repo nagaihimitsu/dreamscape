@@ -9,7 +9,7 @@
       "enemyNameJa": "ニディ先生",
       "enemyTitleJa": "一時半のバスを守る引率教師",
       "enemyDescriptionJa": "遠足の引率の先生。三十八人の生徒と、英語の宿題と、帰りのバスの時刻を背負っている。謝り慣れているが、一年話さない生徒のことも、ちゃんと数に入れている。",
-      "storyId": "battles/gt_delhi_main_red_fort",
+      "storyId": "places/gt_delhi_red_fort.gt_delhi_main_red_fort_battle",
       "quizId": "gt_delhi_main_red_fort_quiz",
       "backgroundId": "gt_bg_delhi_red_fort",
       "portrait": "abstract"
@@ -22,7 +22,7 @@
       "enemyNameJa": "ラームキシャン",
       "enemyTitleJa": "柵を越えたい理科の教師",
       "enemyDescriptionJa": "ウッタル・プラデーシュ州の町から、夜行バスで来た理科の教師。娘には、柱は魔法じゃないと教えた。それでも、泣いて頼まれた約束だけは、科学では片付けられない。",
-      "storyId": "battles/gt_delhi_main_qutb_minar",
+      "storyId": "places/gt_delhi_qutb_minar.gt_delhi_main_qutb_minar_battle",
       "quizId": "gt_delhi_main_qutb_minar_quiz",
       "backgroundId": "gt_bg_delhi_qutb_minar",
       "portrait": "abstract"
@@ -35,7 +35,7 @@
       "enemyNameJa": "スレーシュ",
       "enemyTitleJa": "申告の嘘を嗅ぎ分ける叔父",
       "enemyDescriptionJa": "所得税の調査官を三十五年務めた。姪の連れを帳簿のように問いただす。なぜか胸ポケットに、赤い薔薇を一輪さしている。",
-      "storyId": "battles/gt_delhi_main_humayun_tomb",
+      "storyId": "places/gt_delhi_humayun_tomb.gt_delhi_main_humayun_tomb_battle",
       "quizId": "gt_delhi_main_humayun_tomb_quiz",
       "backgroundId": "gt_bg_delhi_humayun_tomb",
       "portrait": "abstract"
@@ -48,7 +48,7 @@
       "enemyNameJa": "ハミード",
       "enemyTitleJa": "六十年、路地で香りを売る老人",
       "enemyDescriptionJa": "モスクの足もとでアタル（香油）を売り続けてきた。値引きは同情だと言って、一ルピーもまけない。隣の若者が、なぜ店を買いたがるのかは知らない。",
-      "storyId": "battles/gt_delhi_main_jama_masjid",
+      "storyId": "places/gt_delhi_jama_masjid.gt_delhi_main_jama_masjid_battle",
       "quizId": "gt_delhi_main_jama_masjid_quiz",
       "backgroundId": "gt_bg_delhi_jama_masjid",
       "portrait": "abstract"
@@ -63,7 +63,7 @@
       "enemyNameJa": "アマン",
       "enemyTitleJa": "祖母を連れ帰りたい孫",
       "enemyDescriptionJa": "カムラの孫。祖母の引っ越しと、数日後に迫った自分の結婚式の準備で、家族中の頼みごとを引き受けている。何も頼まない祖母の考えだけが、分からない。",
-      "storyId": "battles/gt_delhi_finale",
+      "storyId": "places/gt_delhi_red_fort.gt_delhi_finale_battle",
       "quizId": "gt_delhi_finale_quiz",
       "backgroundId": "gt_bg_delhi_red_fort",
       "portrait": "abstract"
@@ -76,7 +76,7 @@
       "enemyNameJa": "ニキル",
       "enemyTitleJa": "三十枚のスライドで求婚する銀行員",
       "enemyDescriptionJa": "ラクナウの銀行員。三か月前から決めていた求婚の手順を、三十枚のスライドにした。母親には見せたが、恋人本人には一枚も見せていない。",
-      "storyId": "battles/gt_agra_main_taj_mahal",
+      "storyId": "places/gt_agra_taj_mahal.gt_agra_main_taj_mahal_battle",
       "quizId": "gt_agra_main_taj_mahal_quiz",
       "backgroundId": "gt_bg_agra_taj_mahal",
       "portrait": "abstract"
@@ -89,7 +89,7 @@
       "enemyNameJa": "ドゥッガル大佐",
       "enemyTitleJa": "塔から動かない元陸軍大佐",
       "enemyDescriptionJa": "退役した陸軍大佐。命令される側を四十年やってきた、と言う。抗議の理由は立派に語るが、本当の理由だけは口にしない。",
-      "storyId": "battles/gt_agra_main_agra_fort",
+      "storyId": "places/gt_agra_agra_fort.gt_agra_main_agra_fort_battle",
       "quizId": "gt_agra_main_agra_fort_quiz",
       "backgroundId": "gt_bg_agra_agra_fort",
       "portrait": "abstract"
@@ -102,7 +102,7 @@
       "enemyNameJa": "ヴィムラー先生",
       "enemyTitleJa": "墓の名誉を回復したい元教師",
       "enemyDescriptionJa": "ヒンディー語の教師を三十八年。この墓が「タージの赤ちゃん」と呼ばれることに怒っている。三年かけて集めた署名は、四十二人分。",
-      "storyId": "battles/gt_agra_main_itimad_tomb",
+      "storyId": "places/gt_agra_itimad_tomb.gt_agra_main_itimad_tomb_battle",
       "quizId": "gt_agra_main_itimad_tomb_quiz",
       "backgroundId": "gt_bg_agra_itimad_tomb",
       "portrait": "abstract"
@@ -115,7 +115,7 @@
       "enemyNameJa": "ムケーシュ",
       "enemyTitleJa": "自分の家だけ建てられない建設業者",
       "enemyDescriptionJa": "人の家を三十年建ててきた。三年前から、息子夫婦と暮らすための自分の家を建てている。決断を他人に任せたがるのは、自分の現場だけだ。",
-      "storyId": "battles/gt_agra_main_fatehpur_sikri",
+      "storyId": "places/gt_agra_fatehpur_sikri.gt_agra_main_fatehpur_sikri_battle",
       "quizId": "gt_agra_main_fatehpur_sikri_quiz",
       "backgroundId": "gt_bg_agra_fatehpur_sikri",
       "portrait": "abstract"
@@ -130,7 +130,7 @@
       "enemyNameJa": "アンワル",
       "enemyTitleJa": "アーグラで一番泣かせるガイド",
       "enemyDescriptionJa": "四十年、タージの物語を語ってきた。本当のことは人を泣かせない、が持論。宿の支配人の叔父で、町じゅうのガイドに顔が利く。",
-      "storyId": "battles/gt_agra_finale",
+      "storyId": "places/gt_agra_taj_mahal.gt_agra_finale_battle",
       "quizId": "gt_agra_finale_quiz",
       "backgroundId": "gt_bg_agra_taj_mahal",
       "portrait": "abstract"
@@ -143,7 +143,7 @@
       "enemyNameJa": "サリーム",
       "enemyTitleJa": "中庭で八年描き続ける画家",
       "enemyDescriptionJa": "アンベール城の中庭に露店を出す細密画家。描く前に、その場所に何日も座る。説明書きは付けない。付けるなら、正しいことを書く。",
-      "storyId": "battles/gt_jaipur_main_amber_fort",
+      "storyId": "places/gt_jaipur_amber_fort.gt_jaipur_main_amber_fort_battle",
       "quizId": "gt_jaipur_main_amber_fort_quiz",
       "backgroundId": "gt_bg_jaipur_amber_fort",
       "portrait": "abstract"
@@ -156,7 +156,7 @@
       "enemyNameJa": "ガウラ",
       "enemyTitleJa": "窓の下の野菜売り",
       "enemyDescriptionJa": "毎朝四時に卸の市場で仕入れ、昼過ぎまで同じ歩道に座る。窓の数を四十年数え続けたが、宮殿の中には一度も入ったことがない。施しは受けない。",
-      "storyId": "battles/gt_jaipur_main_hawa_mahal",
+      "storyId": "places/gt_jaipur_hawa_mahal.gt_jaipur_main_hawa_mahal_battle",
       "quizId": "gt_jaipur_main_hawa_mahal_quiz",
       "backgroundId": "gt_bg_jaipur_hawa_mahal",
       "portrait": "abstract"
@@ -169,7 +169,7 @@
       "enemyNameJa": "スシュマ",
       "enemyTitleJa": "漬物で息子を引き止める母",
       "enemyDescriptionJa": "ジャイプールの母親。季節ごとに漬けた瓶を、息子の旅行鞄に詰めたい。王様だって自分の水を持っていった、が切り札。",
-      "storyId": "battles/gt_jaipur_main_city_palace",
+      "storyId": "places/gt_jaipur_city_palace.gt_jaipur_main_city_palace_battle",
       "quizId": "gt_jaipur_main_city_palace_quiz",
       "backgroundId": "gt_bg_jaipur_city_palace",
       "portrait": "abstract"
@@ -182,7 +182,7 @@
       "enemyNameJa": "ディヴィヤ",
       "enemyTitleJa": "時刻に厳しい天文学者",
       "enemyDescriptionJa": "ベンガルールの研究所で星を研究する博士課程の学生。秒単位の世界に生きている。自分が時刻を読み違えるとは思っていない。",
-      "storyId": "battles/gt_jaipur_main_jantar_mantar",
+      "storyId": "places/gt_jaipur_jantar_mantar.gt_jaipur_main_jantar_mantar_battle",
       "quizId": "gt_jaipur_main_jantar_mantar_quiz",
       "backgroundId": "gt_bg_jaipur_jantar_mantar",
       "portrait": "abstract"
@@ -197,7 +197,7 @@
       "enemyNameJa": "カムラ",
       "enemyTitleJa": "六十年黙っていた祖母",
       "enemyDescriptionJa": "デリーに六十年、ジャイプールにはまだ数日。言わなかった言葉を、デリーの城でやっと口にした。今度は、黙って見ている側を許さない。",
-      "storyId": "battles/gt_jaipur_finale",
+      "storyId": "places/gt_jaipur_hawa_mahal.gt_jaipur_finale_battle",
       "quizId": "gt_jaipur_finale_quiz",
       "backgroundId": "gt_bg_jaipur_hawa_mahal",
       "portrait": "abstract"
