@@ -3,7 +3,9 @@ import { episodes, sceneConditions, scenes } from "../content";
 import type { GameState } from "../domain/game";
 import { debugQueryString, settingsQuery } from "./debug-query";
 import { createDebugState, debugTargets, defaultDebugSettings, type DebugScene, type DebugSettings } from "./debug-state";
-import { cityStart, completedCity, isHotelInsert, rollTickets, startDateScene, startHotelInsertScene, withAp, withRelationship } from "./scenario-builders";
+import { cityStart, completedCity, finishEpisode, isHotelInsert, rollTickets, startDateScene, startHotelInsertScene, withAp, withRelationship } from "./scenario-builders";
+import { usableMoney } from "../domain/reservations";
+import { miniGameOptionId, miniGameOutcomeIds } from "../minigames/tag";
 import { miniGameUseListSchema, type MiniGameUse } from "../minigames/uses";
 
 // Debug's 「ミニゲームの見本」 (docs/13 6.6) and the content-driven test of every use (src/minigames/minigame-uses.test.ts):
@@ -93,14 +95,59 @@ function dateWithoutHeldItems(settings: DebugSettings): GameState[] {
 }
 
 /**
+ * A date whose story reads whether an episode is done (`cond("episode <id>")`), opened again before it: Debug's cleared
+ * city has done every episode (Lodhi Garden's branch for a player who has not seen Humayun's Tomb, with its 「一緒に言おう」,
+ * would never be walked). From the city's start, the city's other episodes are finished one by one, in their order, until
+ * the date can start (its own `when`); an episode that cannot be played that way is passed over.
+ */
+function dateBeforeEpisodes(settings: DebugSettings): GameState[] {
+  if (settings.scene !== "date") return [];
+  const read = scenes.find((scene) => scene.main && "date" in scene.main && scene.main.date === settings.id)?.conds ?? [];
+  const skipped = read.map((text) => /^episode (\S+)$/u.exec(text)?.[1]).filter((id): id is string => !!id);
+  const cityId = settings.cityId ?? "";
+  const others = (skip: string) => episodes.filter((episode) => episode.cityId === cityId && episode.kind !== "city_finale" && episode.id !== skip);
+  return skipped.flatMap((skip) => {
+    let state = cityStart(cityId);
+    for (const next of [...others(skip), null]) {
+      try {
+        return [startDateScene(withRelationship(withAp(state, settings.ap), settings), settings.id, rollTickets[settings.roll])];
+      } catch {
+        // The date's `when` is not met yet: one more episode.
+      }
+      if (!next) return [];
+      try {
+        state = finishEpisode(state, next.id);
+      } catch {
+        // Not playable from here (a tour's stop, say): the next one.
+      }
+    }
+    return [];
+  });
+}
+
+/**
+ * A scene whose mini-game outcomes pay money (docs/13 4.2: an outcome the player may not afford falls back, a haggle's
+ * prices), opened again with the money to spend just short of each payment: the outcomes it cannot pay are greyed there,
+ * and a play that ends on one takes its fallback. None for a scene whose outcomes pay nothing.
+ */
+export function miniGameShortPurseStates(state: GameState, sceneId: string): GameState[] {
+  const optionIds = new Set(miniGameUses.filter((use) => use.sceneId === sceneId)
+    .flatMap((use) => miniGameOutcomeIds(use.game).map((outcome) => miniGameOptionId(use, outcome))));
+  const payments = (scenes.find((scene) => scene.id === sceneId)?.options ?? [])
+    .flatMap((option) => (optionIds.has(option.id) && (option.money ?? 0) < 0 ? [-option.money!] : []));
+  return [...new Set(payments)].sort((a, b) => b - a)
+    .map((amount) => ({ ...state, travelBudget: Math.max(0, state.travelBudget - usableMoney(state) + amount - 1) }));
+}
+
+/**
  * The states a use's scene opens at for a reaction ticket: 場面の確認's one (a date also without each carried item its
- * story asks about: dateWithoutHeldItems); a hotel-moment scene's, once per branch (hotelInsertBranches). A branch Debug
- * cannot set up, or one where the scene does not start, is left out (the test then names any use it did not reach); the
- * first (no branch) must open.
+ * story asks about: dateWithoutHeldItems; and before each episode it asks about: dateBeforeEpisodes); a hotel-moment
+ * scene's, once per branch (hotelInsertBranches). A branch Debug cannot set up, or one where the scene does not start, is
+ * left out (the test then names any use it did not reach); the first (no branch) must open.
  */
 export function miniGameUseStates(opening: MiniGameUseOpening, roll: DebugSettings["roll"]): GameState[] {
   const settings = { ...opening.settings, roll };
-  if (opening.kind === "debug") return [createDebugState(settings), ...dateWithoutHeldItems(settings)];
+  if (opening.kind === "debug") return [createDebugState(settings), ...dateWithoutHeldItems(settings), ...dateBeforeEpisodes(settings)];
   const base = withRelationship(withAp(clearedCity(settings.cityId ?? ""), settings.ap), settings);
   return hotelInsertBranches(opening.sceneId).flatMap((conds, index) => {
     try {

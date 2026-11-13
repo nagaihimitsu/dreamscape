@@ -106,7 +106,7 @@ INCLUDE modules.ink
 # at: tour gt_agra_tour_fatehpur_sikri out
 # priority: after leg
 # sources: none
-# background: gt_bg_agra_tour_road
+# background: gt_bg_car_interior
 # bgm: gt_india_rhythm
 # ambience: stop
 # speaker: narrator
@@ -298,7 +298,7 @@ INCLUDE modules.ink
 # at: tour gt_agra_tour_fatehpur_sikri back
 # priority: after leg
 # sources: none
-# background: gt_bg_agra_tour_road
+# background: gt_bg_car_interior
 # bgm: atlantean_twilight
 # ambience: stop
 # speaker: narrator
