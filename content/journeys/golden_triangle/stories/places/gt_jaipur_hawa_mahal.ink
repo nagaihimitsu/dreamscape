@@ -101,8 +101,25 @@ INCLUDE modules.ink
 # speaker: narrator
 車、リキシャ、牛、人。そのすべてが、こちらに気づかずに流れていく。
 # speaker: narrator
+# minigame: parasol_search at middle auto found
+通りのあちこちに、傘が開いていた。あの中のどれかが、ガウラの日傘だ。
+// 日傘探し：選択肢の代わりにミニゲーム「日傘を探す」（格子の窓から通りの傘を押す）。古い日傘は手前の歩道の真ん中（at middle）。
+// どの結果も同じ見下ろしの場面へ合流する。手間取ったときだけフラグを立て、クイズ3の後の報告の前に一往復が増える（関係値なし）。
+* [日傘：すぐに見つけた # option: found]
+    # speaker: narrator
+    古い日傘はすぐに見つかった。
+* [日傘：何本か見間違えてから見つけた # option: found_slow]
+    # set: gt_jaipur_parasol_hard_to_find
+    # speaker: narrator
+    上から見ると、傘はどれも同じ丸に見えた。いくつか見間違えてから、やっと古い日傘が見つかった。
+* [日傘：彼女が先に見つけた # option: pointed]
+    # speaker: heroine
+    # reaction: heroine,surprised,exclamation
+    あ、いた！　ほら、あそこ。竿にくくりつけてある日傘
+-
+# speaker: narrator
 # photo: gt_album_j13 # photo_caption: 格子の小窓から見下ろす、古い日傘
-古い日傘はすぐに見つかった。ガウラは客と値段で揉めていた。それから、通りがかった子どもに、トマトを一つ黙って渡した。日傘の陰で髪を直し、膝をさすった。
+ガウラは客と値段で揉めていた。それから、通りがかった子どもに、トマトを一つ黙って渡した。日傘の陰で髪を直し、膝をさすった。
 # speaker: heroine
 # emotion: neutral
 ……ここにいた人たちも、毎日こうやって見てたんだ。下の人は、上に誰がいるか知らないまま
@@ -121,6 +138,13 @@ INCLUDE modules.ink
 通りに戻ると、ガウラが待ちかねた顔で手招きした。
 # speaker: enemy
 で？　私は、どう見えた
+// 日傘探しで手間取ったときだけの一往復（フラグは上の日傘探しの found_slow）。報告そのものは、この後の彼女の言葉のまま。
+{ cond("flag gt_jaipur_parasol_hard_to_find"):
+    # speaker: heroine
+    上から見ると、傘って、みんな同じ丸なんですね
+    # speaker: enemy
+    下から見たって同じよ。窓なんか、どれも同じ顔して並んでる。それを四十年、一つずつ数えてきたんだから
+}
 # speaker: heroine
 ガウラさんは、お客さんと値段で喧嘩してました。それから、子どもにトマトを一つあげてました。誰にも見られてないと思って
 # speaker: heroine

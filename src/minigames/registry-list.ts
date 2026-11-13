@@ -7,4 +7,5 @@ export { golgappaDuel } from "./golgappa_duel/definition";
 export { mehndiHiddenName } from "./mehndi_hidden_name/definition";
 export { monkeyCatch } from "./monkey_catch/definition";
 export { nahargarhHideSeek } from "./nahargarh_hide_seek/definition";
+export { parasolSearch } from "./parasol_search/definition";
 export { rotiRolling } from "./roti_rolling/definition";

@@ -1,0 +1,74 @@
+/* The parasol's field (Skin.tsx): the pierced stone wall of the palace's upper floor all round, a window in it (the street
+   from above, 3 wide to 4 high, under a cusped arch), the stone sill under it. The umbrellas are buttons over the street;
+   a looked-at one slides aside to show who is under it. With the use's art.street, that picture in place of the drawn
+   street. */
+.mg-parasol-search {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  container-type: size;
+  background: #8d4c43;
+}
+.mg-parasol-search-wall { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+/* The stone darkens toward the edges: the room is in shade, the street in the sun. */
+.mg-parasol-search::after {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 70% at 50% 50%, transparent 40%, rgba(40, 16, 12, 0.55));
+  content: "";
+  pointer-events: none;
+}
+.mg-parasol-search-window {
+  position: relative;
+  z-index: 1;
+  width: min(100cqw - 20px, (100cqh - 30px) * 3 / 4);
+  aspect-ratio: 3 / 4;
+  margin-bottom: 10px;
+  container-type: inline-size;
+  border-radius: 3px 3px 0 0;
+  background: #dcb2a2;
+  box-shadow: 0 0 0 3px #7d3f37, 0 0 0 7px #b0685d, 0 6px 18px rgba(30, 10, 8, 0.6);
+}
+.mg-parasol-search-view, .mg-parasol-search-street-art { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.mg-parasol-search-street-art { object-fit: cover; }
+.mg-parasol-search-view { overflow: hidden; }
+/* The sill the player leans on: a ledge of the same stone, a little wider than the window. */
+.mg-parasol-search-sill {
+  position: absolute;
+  left: -10px;
+  right: -10px;
+  bottom: -14px;
+  height: 14px;
+  border-radius: 2px;
+  background: linear-gradient(#c4776b, #8e4b42);
+  box-shadow: 0 3px 6px rgba(30, 10, 8, 0.5);
+  pointer-events: none;
+}
+/* A looked-at umbrella slides toward the road and tips, showing who is under it; the wrong ones fade a little. */
+.mg-parasol-search-canopy { transform-box: fill-box; transform-origin: 50% 50%; transition: transform 380ms ease-out, opacity 380ms ease-out; }
+.mg-parasol-search-umbrella[data-shown] .mg-parasol-search-canopy { transform: translate(14%, -42%) rotate(-10deg) scale(0.86); }
+.mg-parasol-search-umbrella[data-searched]:not([data-target]) .mg-parasol-search-canopy { opacity: 0.62; }
+.mg-parasol-search-ring-wrong { fill: none; stroke: rgba(255, 250, 241, 0.9); stroke-width: 1.6; stroke-dasharray: 4 3; }
+.mg-parasol-search-ring-found, .mg-parasol-search-ring-pointed { fill: none; stroke: #f3c95c; stroke-width: 2.4; filter: drop-shadow(0 0 3px rgba(255, 220, 140, 0.9)); }
+.mg-parasol-search-ring-pointed { stroke-dasharray: 6 3; animation: mg-parasol-search-point 900ms ease-out 2 both; }
+.mg-parasol-search-ring-found { animation: mg-parasol-search-ring 420ms ease-out both; }
+@keyframes mg-parasol-search-ring { from { opacity: 0; stroke-width: 6; } }
+@keyframes mg-parasol-search-point { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
+/* The umbrellas' buttons: as big as the umbrella, never under 44px; a ring when focused by keys. */
+.mg-parasol-search-spot {
+  position: absolute;
+  z-index: 1;
+  width: max(44px, calc(var(--spot-r) * 100cqw / 120));
+  min-height: 0;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  transform: translate(-50%, -50%);
+  touch-action: manipulation;
+  cursor: pointer;
+}
+.mg-parasol-search-spot[aria-disabled="true"] { cursor: default; }
+.mg-parasol-search-spot:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; }
