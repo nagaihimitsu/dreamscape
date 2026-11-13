@@ -67,6 +67,8 @@ import type { SeenCards } from "../features/journey/photo-cards";
 import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { CityRecords } from "../features/journey/CityProgress";
 import { MetPeople } from "../features/journey/MetPeople";
+import { JourneyNumbersCard } from "../features/journey/JourneyNumbers";
+import { journeyNumbers } from "../features/journey/journey-numbers";
 import { freeTimePhotos, PhotoCredits } from "../features/journey/PhotoCredits";
 import { AlbumDialog } from "../features/journey/AlbumDialog";
 import { ALBUM_PHOTO_NOTICE_MS, AlbumPhotoNotice, FIRST_ALBUM_PHOTO_NOTICE_MS, type AlbumPhotoNoticeState } from "../features/journey/AlbumPhotoNotice";
@@ -510,7 +512,7 @@ export function GameApp({
   const screen = nightScreen && game ? `night:${game.currentCityId}` : screenOnShow(game, { sceneEpoch, showRomanceEnding });
   // The title card, the recap, the packing and the credit roll (2026-11-11). A game opened on its save (not Debug) is resumed.
   const moments = useJourneyMoments({ game, screen, resumed: !isDebug && loaded.status === "loaded",
-    reduceMotion: displaySettings.value.reduceMotion, effectPlaying: travelEffectPlaying });
+    reduceMotion: displaySettings.value.reduceMotion, effectPlaying: travelEffectPlaying, learnedWords: learnedWords.learned });
   momentsRef.current = moments.committed;
   // The music of what this screen shows (src/audio/scene-music.ts): the journey's tracks (the game's own journey, also in
   // Debug), the scene's # bgm:, and the quiz's, a quiet line's and a ride's lowering. Never anything of the relationship.
@@ -1058,6 +1060,8 @@ export function GameApp({
           {game.endingReached && <span className="records-relationship">交際中</span>}
         </p>
         <CityRecords game={game} />
+        {/* 旅の数字 (2026-11-13): the journey so far in a few numbers, counting up as the records open. */}
+        <JourneyNumbersCard numbers={journeyNumbers(game, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion} />
         <MetPeople game={game} />
         {isJourneyComplete(game) && <button type="button" className="secondary" onClick={() => { setRecordsOpen(false); moments.openEndRoll(); }}>
           エンドロールを見る</button>}

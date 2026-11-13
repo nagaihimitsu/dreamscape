@@ -5,6 +5,9 @@ import { ChapterStamp, EndRollDialog, EpisodeTitle, PackingScene, ResumeRecapCar
 import {
   chapterStampOf, completedEpisodeId, endRollOf, episodeTitleCard, journeyEnded, openingEpisodeId, packingOf, resumeRecap, type Packing,
 } from "../features/journey/journey-moments";
+import { journeyNumbers } from "../features/journey/journey-numbers";
+
+const NO_WORDS: readonly string[] = [];
 
 /** The screens a resumed game shows its recap on: free time and the night screen (GameApp's screen keys). */
 const RECAP_SCREENS = /^(free|night):/u;
@@ -25,12 +28,14 @@ const STAMP_WAITS_ON = /^battle:/u;
  *   「ロード」, shown when that screen is free time or the night screen (`screen`, GameApp's screen key) until 「閉じる」 or
  *   another screen.
  */
-export function useJourneyMoments({ game, screen, resumed, reduceMotion, effectPlaying }: {
+export function useJourneyMoments({ game, screen, resumed, reduceMotion, effectPlaying, learnedWords = NO_WORDS }: {
   game: GameState | null;
   screen: string;
   resumed: boolean;
   reduceMotion: boolean;
   effectPlaying: boolean;
+  /** This device's words of the country in this journey: the credit roll's 旅の数字 counts them. */
+  learnedWords?: readonly string[];
 }) {
   const [titleId, setTitleId] = useState<string | null>(null);
   const [packing, setPacking] = useState<Packing | null>(null);
@@ -52,6 +57,8 @@ export function useJourneyMoments({ game, screen, resumed, reduceMotion, effectP
   });
   const recap = useMemo(() => (game && recapScreen !== null && recapScreen === screen ? resumeRecap(game) : null), [game, recapScreen, screen]);
   const roll = useMemo(() => (endRoll && game ? endRollOf(game) : null), [endRoll, game]);
+  // 旅の数字 at the top of the credit roll (2026-11-13; journey-numbers.ts).
+  const numbers = useMemo(() => (roll && game ? journeyNumbers(game, learnedWords) : null), [roll, game, learnedWords]);
 
   /** A saved change (previous → next): the moments it starts. */
   function committed(previous: GameState, next: GameState) {
@@ -112,7 +119,7 @@ export function useJourneyMoments({ game, screen, resumed, reduceMotion, effectP
         : <EpisodeTitle key={titleCard.episodeId} card={titleCard} reduceMotion={reduceMotion} onEnd={() => setTitleId(null)} />)}
       {stamp && stampShown && <ChapterStamp key={stamp.episodeId} stamp={stamp} reduceMotion={reduceMotion}
         onStart={() => { stampStarted.current = true; }} onEnd={endStamp} />}
-      {roll && endRollShown && <EndRollDialog roll={roll} reduceMotion={reduceMotion} onClose={closeEndRoll} />}
+      {roll && endRollShown && <EndRollDialog roll={roll} numbers={numbers} reduceMotion={reduceMotion} onClose={closeEndRoll} />}
     </>,
   };
 }

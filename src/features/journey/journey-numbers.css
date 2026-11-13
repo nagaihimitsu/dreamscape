@@ -1,0 +1,51 @@
+/* 旅の数字 (2026-11-13; JourneyNumbers.tsx): a parchment card of label and number pairs, two to a row where they fit,
+   one to a row on the narrowest phones; the numbers in the serif face, large enough to read at a glance. */
+.journey-numbers {
+  margin: 12px 0;
+  padding: 12px 14px;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+}
+.journey-numbers h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+.journey-numbers dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 8px 14px;
+  margin: 0;
+}
+.journey-numbers dl > div {
+  min-width: 0;
+}
+.journey-numbers dt {
+  color: var(--ds-ink-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+.journey-numbers dd {
+  margin: 2px 0 0;
+  font-family: "Noto Serif JP", serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+/* The rides read as a short line across the card, not one big number. */
+.journey-numbers dl > .is-wide {
+  grid-column: 1 / -1;
+}
+.journey-numbers .is-wide dd {
+  font-family: inherit;
+  font-size: 15px;
+}
+/* In the end roll: centred in the roll's column, its own parchment over the roll's ground. */
+.end-roll .journey-numbers {
+  margin: 20px auto;
+  max-width: 32rem;
+  text-align: left;
+}
