@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { battles, battleQuizzes, dates, encounters, presentation, scenes, stories, tagContext } from "../../../src/content";
 import { splitStoryAddress } from "../../../src/content/story-address";
 import { parseStoryTags, type StoryTags } from "../../../src/content/tags";
+import { miniGameOptionId, miniGameOutcomeIds, type MiniGameTag } from "../../../src/minigames/tag";
 import { bindItemReader } from "../../../src/story/items";
 import { bindMemoryReader } from "../../../src/story/memory";
 
@@ -25,16 +26,19 @@ function runtime(storyId: string, variables: Record<string, string | boolean | n
 }
 
 /** Read one authored segment up to its next choice/end, validating the actual
- * emitted tags (including branches that the usual happy-path smoke test misses). */
+ * emitted tags (including branches that the usual happy-path smoke test misses).
+ * `minigame`: the last line's `# minigame:`, when the choice set after it is a mini-game's outcomes (docs/13). */
 function segment(story: Story, initialSpeaker: StoryTags["speaker"] = "narrator") {
   const text: string[] = [];
   const effects: string[] = [];
   let speaker = initialSpeaker;
+  let minigame: MiniGameTag | undefined;
   for (let step = 0; story.canContinue; step++) {
     expect(step, "A scene must reach a choice or an ending").toBeLessThan(200);
     const line = story.Continue()?.trim() ?? "";
     const tags = parseStoryTags(story.currentTags ?? [], tagContext);
     speaker = tags.speaker ?? speaker;
+    minigame = tags.minigame;
     effects.push(...tags.effects);
     if (line) {
       expect(speaker, line).not.toBe("player");
@@ -42,7 +46,7 @@ function segment(story: Story, initialSpeaker: StoryTags["speaker"] = "narrator"
       text.push(line);
     }
   }
-  return { text: text.join("\n"), effects, speaker };
+  return { text: text.join("\n"), effects, speaker, minigame };
 }
 
 /** Take a choice. `result`: a romance choice's roll; an in-scene choice (a helper knot's, a mini-game's outcome) has
@@ -146,6 +150,7 @@ describe("Golden Triangle authored branching contracts", () => {
     it(`${battle.id}: every combination of correct and incorrect answers leaves the one flow playable to its end`, () => {
       // -> quiz(n) -> calls the quiz, which comes back with quiz_correct and battle_score (stage 5).
       // The battle is a knot of its landmark's place file (#116): the flow starts there, as the game starts it.
+      // A # minigame: in the conversation (docs/13; the Jaipur finale's dance) stops at its outcomes' choices: each is taken.
       const { storyId, path } = splitStoryAddress(battle.storyId);
       expect(storyId, battle.id).toMatch(/^places\/gt_[a-z_]+$/u);
       expect(path).toBe(battle.id);
@@ -154,22 +159,38 @@ describe("Golden Triangle authored branching contracts", () => {
       for (let mask = 0; mask < 1 << total; mask++) {
         const story = runtime(storyId, {});
         story.ChoosePathString(path!);
-        let score = 0;
-        for (let round = 0; round <= total; round++) {
+        const playOn = (round: number, score: number, taken: string) => {
+          const where = `${battle.id}/${mask}/${round}${taken}`;
           const part = segment(story);
-          expect(part.text, `${battle.id}/${mask}/${round}`).not.toBe("");
-          expect(part.effects).toEqual([]);
-          if (round === total) break;
-          expect(story.currentChoices.map((choice) => choice.tags), `${battle.id}/${mask}/${round}`).toEqual([["call: quiz"]]);
-          expect(story.variablesState.$("call_arg")).toBe(round + 1);
+          expect(part.text, where).not.toBe("");
+          expect(part.effects, where).toEqual([]);
+          const choices = story.currentChoices;
+          const game = part.minigame;
+          if (game && choices.length) {
+            const ids = choices.map((choice) => parseStoryTags(choice.tags ?? [], tagContext).optionId ?? "");
+            expect([...ids].sort(), where).toEqual(miniGameOutcomeIds(game.id).map((outcome) => miniGameOptionId(game, outcome)).sort());
+            const snapshot = story.state.ToJson();
+            for (let index = 0; index < ids.length; index++) {
+              story.state.LoadJson(snapshot);
+              story.ChooseChoiceIndex(index);
+              playOn(round, score, `${taken}/${ids[index]}`);
+            }
+            return;
+          }
+          if (round === total) {
+            expect(choices, where).toHaveLength(0);
+            expect(story.canContinue, where).toBe(false);
+            return;
+          }
+          expect(choices.map((choice) => choice.tags), where).toEqual([["call: quiz"]]);
+          expect(story.variablesState.$("call_arg"), where).toBe(round + 1);
           const correct = !!(mask & (1 << round));
-          score += Number(correct);
           story.variablesState.$("quiz_correct", correct);
-          story.variablesState.$("battle_score", score);
+          story.variablesState.$("battle_score", score + Number(correct));
           story.ChooseChoiceIndex(0);
-        }
-        expect(story.currentChoices).toHaveLength(0);
-        expect(story.canContinue).toBe(false);
+          playOn(round + 1, score + Number(correct), taken);
+        };
+        playOn(0, 0, "");
       }
     });
   }
