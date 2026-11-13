@@ -4,8 +4,8 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { journeyRequirements, loadJourneyScaffold } from "./journey-scaffold";
 import { prepareJourneyRelease } from "./promote-journey";
-import { splitStoryAddress } from "../src/content/story-address";
-import { ONE_SCENE_DATE_FILE, oneSceneBody, placeKnot } from "../src/content/test-fixtures";
+import { splitStoryAddress, storyFileOf } from "../src/content/story-address";
+import { placeKnot } from "../src/content/test-fixtures";
 
 // The whole journey:release pipeline (prepareJourneyRelease) on a copy of the
 // project. It needs a journey with an authoring profile, travel data and
@@ -29,7 +29,7 @@ function prepareUnpublishedFixture(root: string) {
   const quizIds = new Set(plans.flatMap((city) => [...city.main.map((event) => event.quizId), city.finale.quizId]));
   const memoryIds = new Set(plans.flatMap((city) => city.dates.map((event) => event.memoryId)));
   const storyIds = new Set(plans.flatMap((city) => [...city.main.flatMap((event) => [event.guideStoryId, event.battleStoryId]),
-    ...city.dates.map((event) => event.storyId), city.finale.battleStoryId, city.finale.epilogueStoryId]));
+    ...city.dates.map((event) => event.storyId), city.finale.battleStoryId, city.finale.epilogueStoryId]).filter((id): id is string => id !== null));
   const edit = (file: string, change: (data: any) => void) => {
     const target = path.join(root, file);
     const data = JSON.parse(readFileSync(target, "utf8"));
@@ -63,8 +63,7 @@ function prepareUnpublishedFixture(root: string) {
   edit(`${layer}/romance/presentation.json`, (data) => { for (const id of memoryIds) delete data.memories[id]; });
   for (const file of ["presentation/dialogue-expressions.json", "presentation/dialogue-reactions.json"].map((kind) => `${layer}/${kind}`))
     if (existsSync(path.join(root, file))) edit(file, (data) => { data.entries = data.entries.filter((entry: any) => !storyIds.has(entry.storyId)); });
-  for (const id of storyIds) rmSync(path.join(root, layer, "stories", `${id}.ink`), { force: true });
-  // India's guides, arrivals, dates and epilogues are knots of its place files (GT-3): unpublished with them, and with
+  // India's scenes (the scaffold's addresses, and its arrivals) are knots of its place files: unpublished with them, and with
   // the items and flags those scenes give and set.
   rmSync(path.join(root, layer, "stories/places"), { recursive: true, force: true });
   edit(`${layer}/encounters/catalog.json`, (data) => { data.items = data.items.filter((item: any) => !cityIds.has(item.cityId)); });
@@ -93,24 +92,25 @@ const date = { titleJa: "試験", descriptionJa: "試験の場面", memoryTitleJ
 const originalQuiz = JSON.parse(read(`${milano}/quizzes/milano_main_duomo_quiz.json`));
 const originalTranslations = JSON.parse(read(`${milano}/learning/translations.json`)).questions;
 /**
- * A Milan Ink template for India's folder: Milan's own backgrounds become the shared default background. A knot of
- * Milan's place files becomes a one-scene file (India's scaffold writes one-scene files): `top`, then the knot's lines.
+ * A knot of Milan's place files (with its stitches) as a template for India's folder: Milan's own backgrounds become the
+ * shared default background. India's scaffold names knots of place files, as Milan's scenes are.
  */
 const withDefaultBackground = (text: string) => text.replace(/#\s*background\s*:\s*[A-Za-z0-9_]+/gu, "# background: default_scene");
-const inkTemplate = (address: string, top: readonly string[] = []) => {
+const knotTemplate = (address: string) => {
   const { storyId, path: knot } = splitStoryAddress(address);
-  const source = read(`${milano}/stories/${storyId}.ink`);
-  return withDefaultBackground(knot === undefined ? source : [...top, oneSceneBody(placeKnot(source, knot).text)].join("\n"));
+  return withDefaultBackground(placeKnot(read(`${milano}/stories/${storyId}.ink`), knot!).text);
 };
-/** The VAR lines of a one-scene guide or epilogue (a place file's knot has them from modules.ink). */
-const nameVars = ['VAR player_name = ""', 'VAR heroine_name = ""', 'VAR player_address = ""'];
-const guideTemplate = inkTemplate("places/milano_duomo.duomo_milano_guide", [...nameVars, ""]);
-const epilogueTemplate = inkTemplate("places/milano_darsena.milano_epilogue", [...nameVars, "VAR romance_stage = 1", "VAR ending_reached = false", ""]);
-/** A one-scene date with # effect: (the scaffold's form; Milan's dates are knots of place files): the test fixture of that form. */
-const dateTemplate = withDefaultBackground(read(ONE_SCENE_DATE_FILE));
-/** A Milan battle's Ink as a one-scene template (its own -> quiz(n) -> calls, stage 5). */
+/** A template knot under the scaffold's name, without its # title: (the catalog's title is the scene's). */
+const renamedKnot = (template: string, knot: string) =>
+  [`=== ${knot} ===`, ...template.split("\n").slice(1).filter((line) => !/^\s*#\s*title\s*:/u.test(line))].join("\n");
+const guideTemplate = knotTemplate("places/milano_duomo.duomo_milano_guide");
+const epilogueTemplate = knotTemplate("places/milano_darsena.milano_epilogue");
+/** A normal date with # profile: and # memory: (a place file's date, the form of the scaffold's dates): Milan's cafe date. */
+const dateTemplate = knotTemplate("places/milano_roastery.milano_cafe_01");
+const dateTemplateMemory = "sound_memory_cafe_01";
+/** A Milan battle's knot as a template (its own -> quiz(n) -> calls, stage 5). */
 const battleTemplate = (battleId: string) =>
-  inkTemplate(JSON.parse(read(`${milano}/battles/catalog.json`)).battles.find((item: { id: string }) => item.id === battleId).storyId, ["INCLUDE modules.ink"]);
+  knotTemplate(JSON.parse(read(`${milano}/battles/catalog.json`)).battles.find((item: { id: string }) => item.id === battleId).storyId);
 
 /** India's catalogs that hold nothing but India's unpublished entries. */
 const emptiedCatalogs = ["progression/journey.json", "battles/catalog.json", "romance/date_catalog.json",
@@ -139,18 +139,29 @@ function unpublishedProject({ withoutEmptyCatalogs = false } = {}) {
   return root;
 }
 
-/** Write one city's hypothetical stories and quizzes; returns its scenario and translation files. */
-function authorCity(root: string, plan: ReturnType<typeof journeyRequirements>[number], name: string) {
+/**
+ * Write one city's hypothetical scenes and quizzes; returns its scenario and translation files and its plan. The scenes are
+ * knots of place files at the scaffold's addresses; the finale's venue (the narrative's placeId) is the first landmark.
+ */
+function authorCity(root: string, input: ReturnType<typeof loadJourneyScaffold>, cityId: string, name: string) {
+  const venue = journeyRequirements(input, [cityId])[0].main[0].landmarkId;
+  const plan = journeyRequirements(input, [cityId], { [cityId]: venue })[0];
   const write = (file: string, value: string) => { const target = path.join(root, file); mkdirSync(path.dirname(target), { recursive: true }); writeFileSync(target, value); };
   const narrative = { main: Object.fromEntries(plan.main.map((item) => [item.eventId, scene])),
     dates: Object.fromEntries(plan.dates.map((item) => [item.eventId, date])),
-    finales: { [plan.cityId]: { ...scene, placeId: plan.main[0].landmarkId, activityMinutes: 60 } } };
+    finales: { [plan.cityId]: { ...scene, placeId: venue, activityMinutes: 60 } } };
+  /** The knots of each place file, in the order added. */
+  const knots = new Map<string, string[]>();
+  const add = (address: string, template: string) => {
+    const { storyId, path: knot } = splitStoryAddress(address);
+    knots.set(storyId, [...(knots.get(storyId) ?? []), renamedKnot(template, knot!)]);
+  };
   const narrativeFile = path.join(root, `${name}scenario.json`);
   writeFileSync(narrativeFile, JSON.stringify(narrative));
   const translations: Record<string, { questionJa: string; optionsJa: Record<string, string> }> = {};
   for (const item of plan.main) {
-    write(`${layer}/stories/${item.guideStoryId}.ink`, guideTemplate);
-    write(`${layer}/stories/${item.battleStoryId}.ink`, battleTemplate("milano_duomo_01"));
+    add(item.guideStoryId, guideTemplate);
+    add(item.battleStoryId, battleTemplate("milano_duomo_01"));
     const quiz = { ...structuredClone(originalQuiz), id: item.quizId, landmarkId: item.landmarkId };
     quiz.questions.forEach((question: { id: string }, index: number) => {
       const translated = originalTranslations[question.id];
@@ -159,18 +170,11 @@ function authorCity(root: string, plan: ReturnType<typeof journeyRequirements>[n
     });
     write(`${layer}/quizzes/${item.quizId}.json`, JSON.stringify(quiz));
   }
-  for (const item of plan.dates) {
-    let story = dateTemplate;
-    const map: Record<string, string> = {
-      common_date_first_playful: item.effectIds.first.playful, common_date_first_attentive: item.effectIds.first.attentive,
-      common_date_first_honest: item.effectIds.first.honest, sound_cafe_01_2_1: item.effectIds.second.honest,
-      sound_cafe_01_2_2: item.effectIds.second.attentive, sound_cafe_01_2_3: item.effectIds.second.bold,
-    };
-    for (const [from, to] of Object.entries(map)) story = story.replaceAll(from, to);
-    write(`${layer}/stories/${item.storyId}.ink`, story);
-  }
-  write(`${layer}/stories/${plan.finale.battleStoryId}.ink`, battleTemplate("milano_city_boss_01"));
-  write(`${layer}/stories/${plan.finale.epilogueStoryId}.ink`, epilogueTemplate);
+  // A date keeps the scaffold's memory of its own.
+  for (const item of plan.dates) add(item.storyId, dateTemplate.replaceAll(dateTemplateMemory, item.memoryId));
+  add(plan.finale.battleStoryId!, battleTemplate("milano_city_boss_01"));
+  add(plan.finale.epilogueStoryId, epilogueTemplate);
+  for (const [storyId, texts] of knots) write(`${layer}/stories/${storyId}.ink`, ["INCLUDE modules.ink", "-> DONE", "", ...texts].join("\n"));
   const finalQuiz = JSON.parse(read(`${milano}/quizzes/milano_finale_quiz.json`));
   finalQuiz.id = plan.finale.quizId; finalQuiz.cityId = plan.cityId;
   finalQuiz.questions.forEach((question: { id: string }, index: number) => {
@@ -181,7 +185,7 @@ function authorCity(root: string, plan: ReturnType<typeof journeyRequirements>[n
   write(`${layer}/quizzes/${plan.finale.quizId}.json`, JSON.stringify(finalQuiz));
   const translationsFile = path.join(root, `${name}translations.json`);
   writeFileSync(translationsFile, JSON.stringify({ schemaVersion: 1, questions: translations }));
-  return { narrativeFile, translationsFile };
+  return { narrativeFile, translationsFile, plan };
 }
 
 describe("journey release pipeline (the Golden Triangle as the example)", () => {
@@ -189,13 +193,13 @@ describe("journey release pipeline (the Golden Triangle as the example)", () => 
     const root = unpublishedProject();
     try {
       const input = loadJourneyScaffold(root, "golden_triangle");
-      const plan = journeyRequirements(input, ["delhi"])[0];
-      const { narrativeFile, translationsFile } = authorCity(root, plan, "");
+      const { narrativeFile, translationsFile, plan } = authorCity(root, input, "delhi", "");
       const cityFile = path.join(root, layer, "cities/delhi.json");
       const before = readFileSync(cityFile, "utf8");
       await expect(prepareJourneyRelease(root, "golden_triangle", true, "delhi", narrativeFile)).rejects.toThrow(/クイズの和訳がありません/u);
       expect(readFileSync(cityFile, "utf8")).toBe(before);
-      const guidePath = path.join(root, layer, "stories", `${plan.main[0].guideStoryId}.ink`);
+      // The first landmark's place file (its guide, its battle and the finale).
+      const guidePath = path.join(root, layer, "stories", `${storyFileOf(plan.main[0].guideStoryId)}.ink`);
       const guide = readFileSync(guidePath, "utf8");
       rmSync(guidePath);
       await expect(prepareJourneyRelease(root, "golden_triangle", true, "delhi", narrativeFile, translationsFile)).rejects.toThrow("デリー（delhi）までに、脚本・クイズ・内容の参照がまだ揃っていません");
@@ -213,7 +217,7 @@ describe("journey release pipeline (the Golden Triangle as the example)", () => 
       expect(JSON.parse(after).episodes.filter((episode: { cityId: string }) => episode.cityId === "delhi")).toHaveLength(5);
       const translated = JSON.parse(readFileSync(path.join(root, layer, "learning/translations.json"), "utf8")).questions[`${plan.main[0].quizId}_0`];
       expect(translated.source.questionEn).toBe(originalQuiz.questions[0].questionEn);
-      expect(existsSync(path.join(root, layer, "stories", `${plan.finale.epilogueStoryId}.ink`))).toBe(true);
+      expect(existsSync(path.join(root, layer, "stories", `${storyFileOf(plan.finale.epilogueStoryId)}.ink`))).toBe(true);
       // A rerun of the published city writes nothing.
       expect((await prepareJourneyRelease(root, "golden_triangle", true, "delhi", narrativeFile, translationsFile)).files).toEqual([]);
       expect(readFileSync(journeyFile, "utf8")).toBe(after);
@@ -224,7 +228,7 @@ describe("journey release pipeline (the Golden Triangle as the example)", () => 
 
       // Add only the second city's own hypothetical content. The already
       // published first city must not be regenerated or duplicated.
-      const second = authorCity(root, journeyRequirements(input, ["agra"])[0], "agra-");
+      const second = authorCity(root, input, "agra", "agra-");
       await prepareJourneyRelease(root, "golden_triangle", true, "agra", second.narrativeFile, second.translationsFile);
       const afterSecond = JSON.parse(readFileSync(journeyFile, "utf8"));
       expect(afterSecond.episodes.filter((episode: { cityId: string }) => episode.cityId === "delhi")).toHaveLength(5);
@@ -237,8 +241,7 @@ describe("journey release pipeline (the Golden Triangle as the example)", () => 
   it("releases Delhi into India's journey folder, creating the catalogs it lacks and leaving other layers' catalogs alone", async () => {
     const root = unpublishedProject({ withoutEmptyCatalogs: true });
     try {
-      const plan = journeyRequirements(loadJourneyScaffold(root, "golden_triangle"), ["delhi"])[0];
-      const { narrativeFile, translationsFile } = authorCity(root, plan, "");
+      const { narrativeFile, translationsFile } = authorCity(root, loadJourneyScaffold(root, "golden_triangle"), "delhi", "");
       const kinds = ["progression/journey.json", "battles/catalog.json", "romance/date_catalog.json", "tourism/catalog.json",
         "romance/effect_catalog.json", "romance/presentation.json", "learning/translations.json"];
       // The core layer has the shared effects and presentation; Milan's folder has every kind.

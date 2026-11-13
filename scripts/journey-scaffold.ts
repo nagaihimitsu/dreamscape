@@ -7,6 +7,7 @@ import { episodeSchema, rewardRuleSchema } from "../src/content/journey-schemas"
 import { landmarkSchema, tourismClueSchema, tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, travelEventSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { dateDestinationsSchema } from "../src/content/date-destinations";
+import { PLACE_FOLDER, knotAddress } from "../src/content/story-address";
 import { journeyCatalogOf, loadContentSources, parseCatalog, requireCity } from "./content-sources";
 import { getJourneyAuthoringProfile } from "./journey-authoring";
 import { requireServedFile } from "./public-assets";
@@ -26,6 +27,8 @@ type CityTravel = z.infer<typeof travelCatalogSchema>;
 export type JourneyScaffoldInput = {
   cities: CityTravel[];
   eventPrefix: string;
+  /** Each city's hotel place (travel/<city>-settings.json hotelPlaceId): its place file holds the city's epilogue. */
+  hotelPlaceIds: Record<string, string>;
   imageAssetIds: Record<string, string>;
   plannedLandmarks: Record<string, string[]>;
   observations: z.infer<typeof tourismClueSchema>[];
@@ -33,31 +36,54 @@ export type JourneyScaffoldInput = {
   cityClearAp: number;
 };
 
-/** Derive every stable ID from the existing authored travel event and place. */
+/**
+ * The address of a scene's knot in the place file of a place (docs/02 「IDの付け方」, as the Golden Triangle's):
+ * `places/<prefix>_<place>.<knot>`, the place being its ID (which starts with the city ID).
+ */
+export const placeKnotAddress = (prefix: string, placeId: string, knot: string) => knotAddress(`${PLACE_FOLDER}/${prefix}_${placeId}`, knot);
+
+/** The places of a narrative's finales (their placeId), by city: the place file of each city's finale. */
+export const narrativeFinalePlaces = (narrative: z.infer<typeof journeyNarrativeSchema>): Record<string, string> =>
+  Object.fromEntries(Object.entries(narrative.finales).map(([cityId, finale]) => [cityId, finale.placeId]));
+
+/**
+ * Derive every stable ID from the existing authored travel event and place. Every scene is a knot of a place file
+ * (placeKnotAddress): a landmark's guide and battle in the landmark's, a date in its place's, the finale in its
+ * venue's and the epilogue in the hotel's. The finale's venue is `finalePlaceIds` (the narrative's placeId), else the
+ * finale's registered map event; before either is known its battleStoryId is null.
+ */
 const profiles = ["attentive", "playful", "honest", "bold", "provocative"] as const;
-export function journeyRequirements(input: JourneyScaffoldInput, selectedCityIds = input.cities.map((city) => city.cityId)) {
+export function journeyRequirements(input: JourneyScaffoldInput, selectedCityIds = input.cities.map((city) => city.cityId),
+  finalePlaceIds: Readonly<Record<string, string>> = {}) {
   if (!selectedCityIds.length || new Set(selectedCityIds).size !== selectedCityIds.length ||
       selectedCityIds.some((id) => !input.cities.some((city) => city.cityId === id)))
     throw new Error("journey:scaffold: --city の都市がこの旅行編にないか、都市の選び方が正しくありません。");
-  return input.cities.filter((city) => selectedCityIds.includes(city.cityId)).map((travel) => ({ cityId: travel.cityId,
-    // IDs come from the registered main-event namespace, excluding a later
-    // finale or special battle even when it shares an attraction.
-    main: travel.events.filter((event) => event.category === "main" && event.id.startsWith(`${input.eventPrefix}_${travel.cityId}_main_`) &&
-      input.plannedLandmarks[travel.cityId]?.includes(event.placeId)).map((event) => ({
-      eventId: event.id, landmarkId: event.placeId, battleId: `${event.id}_battle`, quizId: `${event.id}_quiz`,
-      guideStoryId: `tourism/${input.eventPrefix}_${event.placeId}_guide`, battleStoryId: `battles/${event.id}`,
-    })),
-    // The dates at a destination (normal dates); a special date at another place (India's hotel roof) is no scaffold date.
-    dates: travel.events.filter((event) => event.category === "date" && event.id.startsWith(`${input.eventPrefix}_${travel.cityId}_date_`) &&
-      !!travel.places.find((place) => place.id === event.placeId)?.destinationIds?.includes(event.placeId)).map((event) => ({
-      eventId: event.id, destinationId: event.placeId, storyId: `dates/${event.id}`, memoryId: `${event.id}_memory`,
-      effectIds: Object.fromEntries((["first", "second"] as const).map((round) => [round,
-        Object.fromEntries(profiles.map((profile) => [profile, `${event.id}_${round}_${profile}`]))])),
-    })),
-    finale: { eventId: `${input.eventPrefix}_${travel.cityId}_finale`, battleId: `${input.eventPrefix}_${travel.cityId}_finale_battle`,
-      quizId: `${input.eventPrefix}_${travel.cityId}_finale_quiz`, battleStoryId: `battles/${input.eventPrefix}_${travel.cityId}_finale`,
-      epilogueStoryId: `epilogues/${travel.cityId}` },
-  }));
+  const place = (placeId: string, knot: string) => placeKnotAddress(input.eventPrefix, placeId, knot);
+  return input.cities.filter((city) => selectedCityIds.includes(city.cityId)).map((travel) => {
+    const head = `${input.eventPrefix}_${travel.cityId}`;
+    const finale = { eventId: `${head}_finale`, battleId: `${head}_finale_battle`, quizId: `${head}_finale_quiz` };
+    const finalePlaceId = finalePlaceIds[travel.cityId] ?? travel.events.find((event) => event.id === finale.eventId)?.placeId;
+    const hotelPlaceId = input.hotelPlaceIds[travel.cityId];
+    if (!hotelPlaceId) throw new Error(`journey:scaffold: 都市 ${travel.cityId} の宿の地点（travel/${travel.cityId}-settings.json の hotelPlaceId）がありません。`);
+    return { cityId: travel.cityId,
+      // IDs come from the registered main-event namespace, excluding a later
+      // finale or special battle even when it shares an attraction.
+      main: travel.events.filter((event) => event.category === "main" && event.id.startsWith(`${head}_main_`) &&
+        input.plannedLandmarks[travel.cityId]?.includes(event.placeId)).map((event) => ({
+        eventId: event.id, landmarkId: event.placeId, battleId: `${event.id}_battle`, quizId: `${event.id}_quiz`,
+        guideStoryId: place(event.placeId, `${input.eventPrefix}_${event.placeId}_guide`), battleStoryId: place(event.placeId, `${event.id}_battle`),
+      })),
+      // The dates at a destination (normal dates); a special date at another place (India's hotel roof) is no scaffold date.
+      dates: travel.events.filter((event) => event.category === "date" && event.id.startsWith(`${head}_date_`) &&
+        !!travel.places.find((item) => item.id === event.placeId)?.destinationIds?.includes(event.placeId)).map((event) => ({
+        eventId: event.id, destinationId: event.placeId, storyId: place(event.placeId, event.id), memoryId: `${event.id}_memory`,
+        effectIds: Object.fromEntries((["first", "second"] as const).map((round) => [round,
+          Object.fromEntries(profiles.map((profile) => [profile, `${event.id}_${round}_${profile}`]))])),
+      })),
+      finale: { ...finale, battleStoryId: finalePlaceId ? place(finalePlaceId, finale.battleId) : null,
+        epilogueStoryId: place(hotelPlaceId, `${head}_epilogue`) },
+    };
+  });
 }
 
 /** Build existing catalog entries only from supplied scenario metadata.
@@ -75,7 +101,7 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
   const clues: z.infer<typeof tourismClueSchema>[] = [];
   const effects: z.infer<typeof effectSchema>[] = [];
   const memories: Record<string, { titleJa: string; descriptionJa: string }> = {};
-  const requirements = journeyRequirements(input, selectedCityIds);
+  const requirements = journeyRequirements(input, selectedCityIds, narrativeFinalePlaces(narrative));
   for (const plan of requirements) {
     const planned = input.plannedLandmarks[plan.cityId];
     if (!planned || plan.main.length !== planned.length || new Set(plan.main.map((entry) => entry.landmarkId)).size !== planned.length)
@@ -148,7 +174,7 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
       clearTitleJa: script.clearTitleJa, clearDescriptionJa: script.clearDescriptionJa }));
     battles.push(battleSchema.parse({ id: plan.finale.battleId, scope: "city_finale", cityId: plan.cityId, landmarkId: null,
       titleJa: script.titleJa, descriptionJa: script.descriptionJa, enemyNameJa: script.enemyNameJa, enemyTitleJa: script.enemyTitleJa,
-      enemyDescriptionJa: script.enemyDescriptionJa, storyId: plan.finale.battleStoryId, quizId: plan.finale.quizId,
+      enemyDescriptionJa: script.enemyDescriptionJa, storyId: placeKnotAddress(input.eventPrefix, place.id, plan.finale.battleId), quizId: plan.finale.quizId,
       backgroundId: place.backgroundId, portrait: "abstract" }));
     const destinationEvents = travel.events.filter((event) => event.placeId === place.id);
     const costs = new Set(destinationEvents.map((event) => event.admissionCost ?? 0));
@@ -201,7 +227,7 @@ export function loadJourneyScaffold(root: string, journeyId: string, sources = l
       throw new Error(`journey:scaffold: 観光地 ${landmarkId} の背景の画像が、観察資料の画像と違うか、仮の画像のままです。`);
     imageAssetIds[landmarkId] = asset.id;
   }
-  // Ensure hotel settings exist and are valid; this function never uses them as finale places.
-  for (const city of cities) travelSettingsSchema.parse(requireCity(sources, city.cityId).settings);
-  return { cities, plannedLandmarks, observations, destinations, cityClearAp: journey.cityPlan.cityClearAp, eventPrefix: profile.eventPrefix, imageAssetIds };
+  // The hotel of each city (valid settings): its place file holds the city's epilogue. It is never a finale's place.
+  const hotelPlaceIds = Object.fromEntries(cities.map((city) => [city.cityId, travelSettingsSchema.parse(requireCity(sources, city.cityId).settings).hotelPlaceId]));
+  return { cities, plannedLandmarks, observations, destinations, cityClearAp: journey.cityPlan.cityClearAp, eventPrefix: profile.eventPrefix, imageAssetIds, hotelPlaceIds };
 }

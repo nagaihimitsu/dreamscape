@@ -24,6 +24,7 @@ function scaffoldFixture(): JourneyScaffoldInput {
     observations: ids.flatMap((id) => renamed(source.observations.filter((clue) => planned.includes(clue.landmarkId)), id)),
     destinations: ids.flatMap((id) => renamed(source.destinations.filter((entry) => entry.cityId === "delhi"), id)),
     imageAssetIds: Object.fromEntries(ids.flatMap((id) => renamed(planned, id).map((landmark, index) => [landmark, `${id}_test_photo_${index}`]))),
+    hotelPlaceIds: Object.fromEntries(ids.map((id) => [id, renamed(source.hotelPlaceIds.delhi, id)])),
   };
 }
 const testScene = { titleJa: "試験", descriptionJa: "試験用", clearTitleJa: "試験", clearDescriptionJa: "試験用",
@@ -81,7 +82,19 @@ describe("journey authoring with four cities", () => {
     }
     expect(fragments.episodes.filter((episode) => episode.kind === "episode").every((episode) => episode.requiredEpisodeIds.length === 0)).toBe(true);
     expect(new Set(fragments.rewards.map((reward) => reward.id)).size).toBe(fragments.rewards.length);
-    expect(requirements.at(-1)?.finale.battleStoryId).toBe("battles/uz_khiva_finale");
+    // Every scene is a knot of a place file: the finale in its venue's (Delhi's registered finale place, renamed), the epilogue in the hotel's.
+    expect(requirements.at(-1)?.finale).toMatchObject({ battleStoryId: "places/uz_khiva_red_fort.uz_khiva_finale_battle",
+      epilogueStoryId: "places/uz_khiva_hotel_hub.uz_khiva_epilogue" });
+    expect(requirements[0].main[0]).toMatchObject({ guideStoryId: `places/uz_${requirements[0].main[0].landmarkId}.uz_${requirements[0].main[0].landmarkId}_guide`,
+      battleStoryId: `places/uz_${requirements[0].main[0].landmarkId}.${requirements[0].main[0].battleId}` });
+    expect(requirements[0].dates[0].storyId).toBe(`places/uz_${requirements[0].dates[0].destinationId}.${requirements[0].dates[0].eventId}`);
+    // Before a finale's venue is registered or written in the narrative, its knot's file is not known; the narrative's placeId decides it.
+    const unregistered = { ...input, cities: input.cities.map((city) => ({ ...city, events: city.events.filter((event) => !event.id.endsWith("_finale")) })) };
+    expect(journeyRequirements(unregistered, ["khiva"])[0].finale.battleStoryId).toBeNull();
+    const venue = requirements.at(-1)!.main[1].landmarkId;
+    expect(journeyRequirements(unregistered, ["khiva"], { khiva: venue })[0].finale.battleStoryId).toBe(`places/uz_${venue}.uz_khiva_finale_battle`);
+    expect(fragments.battles.find((battle) => battle.id === "uz_khiva_finale_battle")?.storyId)
+      .toBe(`places/uz_${requirements.at(-1)!.main[0].landmarkId}.uz_khiva_finale_battle`);
     expect(() => getJourneyAuthoringProfile(process.cwd(), "missing")).toThrow(/は登録されていないか、制作ツールの設定（manifest.json の authoring）がありません/u);
     expect(() => getJourneyAuthoringProfile(process.cwd(), "milano")).toThrow(/は登録されていないか、制作ツールの設定（manifest.json の authoring）がありません/u);
   });
