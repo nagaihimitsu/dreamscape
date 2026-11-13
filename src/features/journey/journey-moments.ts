@@ -1,10 +1,13 @@
 import { battles, cityContents, encounters, episodes, getAlbumImage, landmarks, presentation, tourismAssets, type EpisodeDefinition } from "../../content";
+import { derivedImagePath } from "../../content/derived-images";
 import { getJourneyForCity } from "../../content/journeys";
+import { getPlacePhoto } from "../../content/place-photo";
 import type { TourismAsset } from "../../content/tourism-schemas";
 import type { AlbumPhoto } from "../../domain/album-state";
 import { isJourneyComplete } from "../../domain/city-travel";
 import { isCarriedItem } from "../../domain/item-cities";
 import type { GameState } from "../../domain/game";
+import { eventPlace } from "../../domain/moments";
 import { withNames } from "../romance/names";
 import { albumPages, type AlbumContent, type AlbumPhotoView } from "./album-pages";
 import { metPeopleGroups } from "./met-people";
@@ -95,7 +98,7 @@ export function chapterStampOf(game: Pick<GameState, "playerName" | "heroineName
 
 // ── 前回までのあらすじ ───────────────────────────────────────────────────────────────
 
-/** A photo as the recap and the credit roll show it: the album's view and the city it was taken in. */
+/** A photo as the credit roll shows it: the album's view and the city it was taken in. */
 export type MomentPhoto = AlbumPhotoView & { cityId: string; cityJa: string };
 
 function photoViews(album: readonly AlbumPhoto[], currentCityId: string): MomentPhoto[] {
@@ -103,22 +106,57 @@ function photoViews(album: readonly AlbumPhoto[], currentCityId: string): Moment
 }
 
 /**
+ * The recap's picture (2026-11-13 user decision: it belongs to the same story as the text): an album photo of the episode
+ * (the author's illustration with its caption, else its place's name; no credit), or the photo of the episode's place with
+ * the place's name, the reduced `card` copy free time's card shows, and the photo's credit (`credit`).
+ */
+export type RecapPicture = { path: string; altJa: string; captionJa: string; credit?: TourismAsset };
+
+/**
+ * The stories an episode's own parts are read from, as the album records a photo's story (album.ts lineOnScreen): its
+ * landmark's guide (the observation has no line), its battle and, for a city finale, its epilogue. A date's, an
+ * encounter's or an inserted scene's story is never one, even at the same place or in the same place file (the Red Fort's
+ * file holds both its own battle and Delhi's finale).
+ */
+function episodeStoryIds(episode: EpisodeDefinition): string[] {
+  const guide = landmarks.find((item) => item.id === episode.landmarkId)?.guideStoryId;
+  const battle = battles.find((item) => item.id === episode.battleId)?.storyId;
+  return [guide, battle, episode.epilogueStoryId].filter((id) => id !== undefined);
+}
+
+/**
+ * The picture of an episode in the recap: the latest album photo taken in the episode's own parts (episodeStoryIds);
+ * else the photo of the place the episode happens at on the map (a landmark's place, or where a finale is set; content:build
+ * checks that each episode has its map event and that a landmark's is at the landmark's place), the one free time's card
+ * shows for that place (getPlacePhoto), with its credit; else none (a place without a photo, or with only a placeholder).
+ */
+export function recapPicture(game: Pick<GameState, "album" | "currentCityId">, episode: EpisodeDefinition): RecapPicture | null {
+  const own = episodeStoryIds(episode);
+  const photo = photoViews(game.album.filter((item) => own.includes(item.storyId)), game.currentCityId).at(-1);
+  if (photo) return { path: photo.path, altJa: photo.altJa, captionJa: photo.caption ?? photo.placeJa };
+  const placeId = eventPlace(episode.cityId, episode.id);
+  const place = cityContents[episode.cityId]?.travel.places.find((item) => item.id === placeId);
+  const asset = place ? getPlacePhoto(episode.cityId, place.id) : null;
+  return place && asset ? { path: derivedImagePath(asset, "card"), altJa: asset.altJa, captionJa: place.nameJa, credit: asset } : null;
+}
+
+/**
  * The recap of a resumed game: where and when the party is, the last episode completed (its clear title and record,
- * the names filled in; the city it was in when that is not the city now) and the latest photo of the album (the author's
- * illustration, no credit). Null before any episode is completed: there is nothing to recap yet (the header shows the place and time).
+ * the names filled in; the city it was in when that is not the city now) and that episode's picture (recapPicture: its
+ * own album photo, else its place's photo with the credit). Null before any episode is completed: there is nothing to
+ * recap yet (the header shows the place and time).
  */
 export type ResumeRecap = {
   cityJa: string;
   whenJa: string;
   chapter: { titleJa: string; descriptionJa: string; cityJa?: string };
-  photo?: MomentPhoto;
+  photo?: RecapPicture;
 };
 
 export function resumeRecap(game: GameState): ResumeRecap | null {
   const episode = episodes.find((item) => item.id === game.completedEpisodeIds.at(-1));
   if (!episode) return null;
-  const latest = game.album.at(-1);
-  const photo = latest ? photoViews([latest], game.currentCityId)[0] : undefined;
+  const photo = recapPicture(game, episode);
   return {
     cityJa: cityNameJa(game.currentCityId),
     whenJa: `${game.travel.day}日目 ${formatTravelTime(game.travel.minute)}`,
