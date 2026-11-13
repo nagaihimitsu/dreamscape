@@ -333,11 +333,14 @@ export function parseDone(values: readonly string[], apCap: number): SceneDone {
     else if (part === "set") done.set = [...(done.set ?? []), one()];
     else if (part === "rel") done.rel = parseRelationship(rest.join(" "), done.rel);
     else if (part === "money") done.money = (done.money ?? 0) + signedInteger(rest.join(" "), "# on_done: money");
-    else if (part === "ap") {
+    else if (part === "reward") {
+      if (done.reward !== undefined) throw new Error(`Write # on_done: reward once: ${done.reward} and ${rest.join(" ")}`);
+      done.reward = one();
+    } else if (part === "ap") {
       const amount = signedInteger(rest.join(" "), "# on_done: ap");
       if (amount === 0) throw new Error("# on_done: ap 0 does nothing");
       ap += amount;
-    } else throw new Error(`Unknown # on_done: ${value} (item, use, set, rel, money or ap)`);
+    } else throw new Error(`Unknown # on_done: ${value} (item, use, set, rel, money, ap or reward)`);
   }
   if (ap) {
     if (ap > apCap) throw new Error(`# on_done: gives ${ap} AP: at most ${apCap} (the AP cap)`);

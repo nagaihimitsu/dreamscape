@@ -159,10 +159,17 @@ export function playEpisodeToResult(state: GameState, episodeId: string, options
   return playBattleToResult(tourismToBattle(started, options), options);
 }
 
-/** Finish one main episode like a player: guide, battle and leaving its result. */
+/**
+ * Leave the battle's result screen and play the inserted scenes that follow it (a visit's `# priority: +N` / `after battle`
+ * scenes) with their first choices, back to free time.
+ */
+function leaveResult(result: GameState, options: PlayOptions): GameState {
+  return settleScenes(act(result, (current) => leaveBattleResult(current, current.revision), "対決の結果を閉じる", options), 0);
+}
+
+/** Finish one main episode like a player: guide, battle, leaving its result and the scenes after it. */
 export function finishEpisode(state: GameState, episodeId: string, options: EpisodePlayOptions = {}): GameState {
-  const result = playEpisodeToResult(state, episodeId, options);
-  return validateGameState(act(result, (current) => leaveBattleResult(current, current.revision), "対決の結果を閉じる", options));
+  return validateGameState(leaveResult(playEpisodeToResult(state, episodeId, options), options));
 }
 
 /**
@@ -193,14 +200,14 @@ export function playCityToFinaleResult(initial: GameState, options: CityPlayOpti
         throw new Error(`${cityId} のフィナーレ ${episode.id} の結果になりましたが、都市クリアになっていません。`);
       return state;
     }
-    state = act(state, (current) => leaveBattleResult(current, current.revision), "対決の結果を閉じる", options);
+    state = leaveResult(state, options);
   }
 }
 
 /** Clear the current city: every remaining battle, the finale, and leaving the finale's result (and the scenes after it). */
 export function clearCity(state: GameState, options: CityPlayOptions = {}): GameState {
   const result = playCityToFinaleResult(state, options);
-  return validateGameState(settleScenes(act(result, (current) => leaveBattleResult(current, current.revision), "フィナーレの結果を閉じる", options), 0));
+  return validateGameState(leaveResult(result, options));
 }
 
 /**

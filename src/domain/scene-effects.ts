@@ -8,7 +8,7 @@ import { itemUsableIn } from "./item-cities";
 import type { GameState } from "./game-state-schema";
 import { usableAp, usableMoney } from "./reservations";
 import { decideThen, thenPlanOf } from "./occasion-hooks";
-import { earnSceneTagAp, settlePendingAp } from "./rewards";
+import { earnRewards, earnSceneTagAp, settlePendingAp } from "./rewards";
 import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
 
 /**
@@ -155,7 +155,9 @@ export function applyDoneEffects(state: GameState, sceneId: string, done: SceneD
   next = addFlags(next, done.set);
   next = addRelationship(next, done.rel);
   next = applyMoney(next, done.money);
-  return applyAp(next, done.ap, `${sceneId}__on_done`, revision);
+  next = applyAp(next, done.ap, `${sceneId}__on_done`, revision);
+  // `# on_done: reward` (an inserted scene): the one-off reward, claimed once whichever way earns it first (the battle's score, or this scene).
+  return done.reward ? earnRewards(next, [done.reward]).state : next;
 }
 
 /** Whether a scene's done effects change the relationship (the romance progress is evaluated again then). */

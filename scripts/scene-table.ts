@@ -168,6 +168,8 @@ export function insertedSceneEncounter(entry: SceneEntry, landmarkName: (landmar
           ...(option.give ? { giftItemId: option.give.item } : {}), ...(option.use ? { consumeItemId: option.use } : {}) };
       }),
       ...(entry.done.items?.length === 1 ? { completionItemId: entry.done.items[0] } : {}),
+      // `# on_done: reward`: the save check (isRewardEarned) reads a completed encounter's alternativeApRewardId as the reward's cause.
+      ...(entry.done.reward ? { alternativeApRewardId: entry.done.reward } : {}),
       ...(entry.repeat === "always" ? { repeatable: true } : {}),
     } as EncounterDefinition,
     rule: { encounterId: entry.id, priority: entry.priority, ...(entry.when ? { when: entry.when } : {}) },
@@ -228,6 +230,37 @@ export function mainFileSceneId(main: SceneMain): string {
   if ("guide" in main) return `${main.guide}_guide`;
   if ("arrival" in main) return `${main.arrival}_arrival`;
   return `${main.epilogue}_epilogue`;
+}
+
+/** An authored reward of progression/journey.json as `# on_done: reward` reads it: its AP, trigger and city (its episode's or story battle's). */
+export type RewardOfCity = { id: string; ap: number; trigger: string; cityId: string | undefined };
+
+/**
+ * `# on_done: reward <reward ID>` (an inserted scene's other way to earn a one-off reward, docs/01): stops it on a main part (its
+ * first finish is its own trigger), an unknown reward, one that gives no AP, one of another city, and a reward that two scenes (or
+ * a scene and a catalog encounter's alternativeApRewardId) name, since the save check reads one scene as its cause. Returns the errors.
+ */
+export function sceneRewardErrors(scenes: readonly SceneEntry[], rewards: readonly RewardOfCity[],
+  catalogAlternatives: readonly { encounterId: string; rewardId: string }[] = []): string[] {
+  const errors: string[] = [];
+  const named = new Map(catalogAlternatives.map((item) => [item.rewardId, `the encounter ${item.encounterId} of encounters/catalog.json`]));
+  for (const scene of scenes) {
+    const id = scene.done.reward;
+    if (!id) continue;
+    const where = `${scene.story.storyId}${scene.story.knot ? ` (${scene.story.knot})` : ""}`;
+    if (!INSERTED_KINDS.includes(scene.kind)) {
+      errors.push(`A main part takes no # on_done: reward (${where}): its reward is its own (a guide_read, battle or episode reward of progression/journey.json)`);
+      continue;
+    }
+    const rule = rewards.find((item) => item.id === id);
+    if (!rule || rule.trigger === "scene_tag") errors.push(`# on_done: reward ${id} names no reward of progression/journey.json (${where})`);
+    else if (rule.ap <= 0) errors.push(`# on_done: reward ${id} gives no AP (${where}); write # on_done: ap +N for a scene's own AP`);
+    else if (rule.cityId !== scene.cityId) errors.push(`# on_done: reward ${id} is a reward of ${rule.cityId ?? "no city"}, the scene ${where} is in ${scene.cityId}`);
+    const other = named.get(id);
+    if (other) errors.push(`The reward ${id} is named by two ways to earn it: ${other} and # on_done: reward of ${where} (one scene per reward)`);
+    named.set(id, `# on_done: reward of ${where}`);
+  }
+  return errors;
 }
 
 /** Where a rule ID comes from, for the collision message. */
@@ -589,6 +622,7 @@ export function tourMomentErrors(scenes: readonly SceneEntry[]): string[] {
       ...(scene.done.money !== undefined ? ["# on_done: money"] : []),
       ...scene.options.filter((option) => (option.ap ?? 0) > 0).map((option) => `the choice ${option.id}'s # ap: +${option.ap}`),
       ...((scene.done.ap ?? 0) > 0 ? [`# on_done: ap +${scene.done.ap}`] : []),
+      ...(scene.done.reward ? [`# on_done: reward ${scene.done.reward}`] : []),
       ...scene.options.filter((option) => option.later).map((option) => `the choice ${option.id}'s # later (「また今度」)`),
       ...(scene.repeat === "always" ? ["# repeat: always"] : [])];
     if (spends.length)
