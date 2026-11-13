@@ -13,7 +13,7 @@ import { advanceDate, chooseDate, createGame, finishDate, startDate, validateGam
 import { openMiniGame } from "../../../src/domain/minigame";
 import { applyPlayerAction, chooseMiniGameOutcome, listPlayerActions, playerActionChange } from "../../../src/domain/player-action";
 import { advanceTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
-import { correctAnswer, playBattleToResult, wrongAnswer } from "../../../src/dev/scenario-builders";
+import { correctAnswer, playBattleToResult, withAp, wrongAnswer } from "../../../src/dev/scenario-builders";
 
 /**
  * The result screen's way out, as the screen offers it: a sightseeing result offers only 「自由時間へ」;
@@ -30,6 +30,8 @@ function closeBattleResult(result: GameState): GameState {
 }
 
 type Save = (state: GameState) => GameState;
+/** The AP in hand and the AP stored for later (the cap holds the rest back). */
+const apTotal = (state: GameState) => state.ap + state.pendingApRewards.reduce((total, reward) => total + reward.remainingAp, 0);
 const firstAction = (state: GameState) => applyPlayerAction(state, playerActionChange(listPlayerActions(state)[0], () => 0), () => 0);
 
 /** Play a moment's inserted scenes (GT-4: Agra's arrival reel) with the first action the screen offers, each step through `save`, while `going` holds. */
@@ -140,8 +142,18 @@ describe("authored Golden Triangle journey", () => {
         }
       }
       for (const date of ownDates) {
+        // Dates cost 2, 4 or 6 AP by their distance from the inn (budget.test.ts), so the AP a city has given before its finale
+        // leaves some of its dates out of reach: such a date neither starts nor spends. The test then gives it the AP it lacks,
+        // as Debug does, so that every published date is played.
+        if (state.ap < date.apCost) {
+          expect(state.pendingApRewards).toEqual([]);
+          expect(startDate(state, date.id, () => 4500)).toBe(state);
+          state = withAp(state, date.apCost);
+        }
+        const apBefore = apTotal(state);
         state = startDate(state, date.id, () => 4500);
         expect(state.activeDate?.dateId).toBe(date.id);
+        expect(apTotal(state)).toBe(apBefore - date.apCost);
         for (let steps = 0; state.activeDate; steps++) {
           expect(steps).toBeLessThan(100);
           state = checkpoint(state);
