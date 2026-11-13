@@ -84,3 +84,12 @@ describe("a burst", () => {
     }
   });
 });
+
+describe("the result card's guard", () => {
+  it("drops every press in the card's first moment, takes one after it", async () => {
+    const { resultCardReady } = await import("./ResultCard");
+    expect(resultCardReady(1000, 1000)).toBe(false);
+    expect(resultCardReady(1000, 1449)).toBe(false);
+    expect(resultCardReady(1000, 1450)).toBe(true);
+  });
+});

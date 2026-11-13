@@ -61,9 +61,11 @@ export function ResultCard({ label, rating, score, detail, face, line, practice,
   )) : null;
 
   return (
+    // A key held down from the play (its repeats) never presses the card's buttons.
     <section className="minigame-result" data-anchor={anchor} data-testid="minigame-result" aria-label={practice ? "練習の結果" : "結果"}
       style={anchor === "bottom" && bottom !== undefined
-        ? { bottom: `${bottom}px`, maxHeight: `calc(100% - ${bottom}px - var(--scene-top, 0px) - 52px)` } : undefined}>
+        ? { bottom: `${bottom}px`, maxHeight: `calc(100% - ${bottom}px - var(--scene-top, 0px) - 52px)` } : undefined}
+      onKeyDown={(event) => { if (event.repeat) event.preventDefault(); }}>
       <div className="minigame-result-head">
         {practice && <span className="minigame-result-practice">練習</span>}
         {stars && <span className="minigame-stars" data-testid="minigame-stars" data-stars={rating?.stars} aria-hidden="true">{stars}</span>}
