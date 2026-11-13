@@ -88,7 +88,8 @@ function HideSeekField({ setup, view, live, search, active, frames, cast, names,
       <span className="mg-nahargarh-hide-seek-fade mg-nahargarh-hide-seek-fade-right" aria-hidden="true"><span>›</span></span>
       {peeking && (
         <span className="mg-nahargarh-hide-seek-peek" aria-hidden="true">
-          {art.peek ? <img src={art.peek} alt="" draggable={false} /> : cast.heroine}
+          <span className="mg-nahargarh-hide-seek-peek-her">{art.peek ? <img src={art.peek} alt="" draggable={false} /> : cast.heroine}</span>
+          <span className="mg-nahargarh-hide-seek-peek-corner" />
         </span>
       )}
     </div>

@@ -2,9 +2,13 @@
    identical arched doors standing on the floor line, running on past the screen's edge (the row scrolls sideways).
    With the use's art.bay / art.room / art.peek, those pictures in place of the drawn wall and door, room and her. */
 .mg-nahargarh-hide-seek {
+  /* A bay (a door and the wall beside it) fits the field's height, up to a size where three show on a phone. */
+  --bay-h: min(74cqh, 260px);
+  --bay-w: calc(var(--bay-h) / 2);
   position: absolute;
   inset: 0;
   overflow: hidden;
+  container-type: size;
   /* The ceiling's shadow, then the lime-plastered wall, a little brighter where the courtyard's light falls. */
   background: linear-gradient(to bottom, #3a3027 0, #6a5844 7%, #d8c6a6 18%, #efe3cb 46%, #e6d6b9 100%);
 }
@@ -19,20 +23,29 @@
   touch-action: pan-x;
 }
 .mg-nahargarh-hide-seek-corridor::-webkit-scrollbar { display: none; }
-.mg-nahargarh-hide-seek-row { display: flex; align-items: flex-end; width: max-content; height: 100%; }
+/* The wall scrolls with the doors: a pilaster between bays, and a painted frieze over the doors (dots and leaves). */
+.mg-nahargarh-hide-seek-row {
+  display: flex;
+  align-items: flex-end;
+  width: max-content;
+  height: 100%;
+  background:
+    linear-gradient(to bottom, #b8925a 0 1.5px, transparent 1.5px 12.5px, #b8925a 12.5px) 0 calc(100% - var(--bay-h) - 18px) / var(--bay-w) 14px repeat-x,
+    radial-gradient(circle at 50% 50%, #a65a3a 0 3px, transparent 3.6px) 0 calc(100% - var(--bay-h) - 18px) / calc(var(--bay-w) / 3) 14px repeat-x,
+    radial-gradient(ellipse 3px 2px at 0 50%, #5f7d55 0 100%, transparent 100%) calc(var(--bay-w) / 6) calc(100% - var(--bay-h) - 18px) / calc(var(--bay-w) / 3) 14px repeat-x,
+    linear-gradient(to right, rgba(120, 90, 50, 0.18) 0 2px, transparent 2px calc(100% - 2px), rgba(120, 90, 50, 0.18) calc(100% - 2px)) 0 0 / var(--bay-w) 100% repeat-x;
+}
 /* One bay: wall, its door, the floor under it (the bays side by side make one wall and one floor). A button. */
 .mg-nahargarh-hide-seek-bay {
   position: relative;
   flex: none;
-  height: min(74%, 260px);
+  width: var(--bay-w);
+  height: var(--bay-h);
   min-height: 0;
-  aspect-ratio: 1 / 2;
   padding: 0;
   border: 0;
   border-radius: 0;
-  background:
-    linear-gradient(to right, rgba(120, 90, 50, 0.16), transparent 6%, transparent 94%, rgba(120, 90, 50, 0.16)),
-    linear-gradient(to bottom, transparent 64%, #dccaa6 64%, #d5c09a 87.4%, #7d6b56 87.4%, #7d6b56 88%, #ad9b82 88%, #8e7d67 100%);
+  background: linear-gradient(to bottom, transparent 64%, #dccaa6 64%, #d5c09a 87.4%, #7d6b56 87.4%, #7d6b56 88%, #ad9b82 88%, #8e7d67 100%);
   color: inherit;
   scroll-snap-align: center;
   cursor: pointer;
@@ -113,19 +126,29 @@
 .mg-nahargarh-hide-seek-fade-right > span { padding-right: 4px; color: var(--ds-on-slate); font-size: 30px; line-height: 1; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); }
 .mg-nahargarh-hide-seek[data-more-left] .mg-nahargarh-hide-seek-fade-left,
 .mg-nahargarh-hide-seek[data-more-right] .mg-nahargarh-hide-seek-fade-right { opacity: 1; }
-/* Doing nothing: she peeks out from the corner, at the right edge. */
-.mg-nahargarh-hide-seek-peek {
+/* Doing nothing: she leans out from behind the corridor's corner, at the right edge. */
+.mg-nahargarh-hide-seek-peek { position: absolute; z-index: 2; inset: 0; pointer-events: none; }
+/* Most of her stays behind the corner: leaning, her head and a shoulder come out past its edge. */
+.mg-nahargarh-hide-seek-peek-her {
   position: absolute;
-  z-index: 2;
+  right: -16%;
+  bottom: 0;
+  height: min(80%, 330px);
+  aspect-ratio: 2 / 3;
+  filter: drop-shadow(-4px 0 8px rgba(40, 30, 20, 0.3));
+  transform: rotate(-12deg);
+  transform-origin: 100% 100%;
+  animation: mg-nahargarh-hide-seek-peek 600ms cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+.mg-nahargarh-hide-seek-peek-her > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 100% 100%; }
+@keyframes mg-nahargarh-hide-seek-peek { from { transform: rotate(0deg); } }
+/* The corner she leans out from: the end of the wall, in shadow on its side. */
+.mg-nahargarh-hide-seek-peek-corner {
+  position: absolute;
+  top: 0;
   right: 0;
   bottom: 0;
-  height: min(80%, 340px);
-  aspect-ratio: 2 / 3;
-  transform: translateX(46%);
-  filter: drop-shadow(-4px 0 8px rgba(40, 30, 20, 0.35));
-  animation: mg-nahargarh-hide-seek-peek 600ms cubic-bezier(0.2, 0.8, 0.3, 1) both;
-  pointer-events: none;
+  width: 24%;
+  background: linear-gradient(to right, #b9a583, #d9c8a8 30%, #cdbb99);
+  box-shadow: -6px 0 10px rgba(40, 30, 20, 0.35);
 }
-.mg-nahargarh-hide-seek-peek > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 100% 100%; }
-.mg-nahargarh-hide-seek-peek:has(> img) { transform: none; }
-@keyframes mg-nahargarh-hide-seek-peek { from { transform: translateX(100%); } }
