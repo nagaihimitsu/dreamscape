@@ -6,10 +6,12 @@ import { withoutComments } from "./place-files";
 
 /**
  * The names the player sets, as a story's text writes them (src/features/romance/names.ts fills them in), with what
- * messages call them: no recording can say them (2026-11-13 user decision).
+ * messages call them: no recording can say them (2026-11-13 user decision). {player_address}, the heroine's way of
+ * calling the protagonist, is made from the protagonist's name (getPlayerAddress), so it counts as that name.
  */
 const PLAYER_SET_NAMES = [
   { placeholder: "{player_name}", nameJa: "主人公の名前", nameEn: "the protagonist's name" },
+  { placeholder: "{player_address}", nameJa: "主人公の呼び名", nameEn: "the protagonist's form of address" },
   { placeholder: "{heroine_name}", nameJa: "ヒロインの名前", nameEn: "the heroine's name" },
 ] as const;
 
@@ -73,7 +75,8 @@ const voiceTagWhere = (id: string, line: number, knot?: string) => `${knot ? `kn
  * Throws at the first `# voice:` of a story of the journey `journeyId` whose ID is not one (a-z, 0-9 and _ only) or
  * names no voice of that journey (whose voice folder is `voiceFolder`, as voiceFolderPath shows it): a missing file, or
  * another journey's (a journey folder must stay removable on its own). Then at the first whose line says
- * {player_name} or {heroine_name} (2026-11-13 user decision): the player sets both names, so no recording can say them.
+ * {player_name}, {player_address} or {heroine_name} (2026-11-13 user decision): the player sets the names (the address
+ * is made from the protagonist's), so no recording can say them.
  * Japanese first, English after.
  */
 export function checkVoiceTags(source: string, journeyId: string, voices: readonly VoiceFile[], voiceFolder: string): void {

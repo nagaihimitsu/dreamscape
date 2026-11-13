@@ -27,6 +27,13 @@ describe("the voice tags of a story", () => {
       "Voiced line says the protagonist's name: the line of # voice: ta_v1 has {player_name}");
   });
 
+  it("refuses a voiced line that says the protagonist's form of address: it is made from the protagonist's name", () => {
+    expect(() => check("=== ta_talk ===\n# voice: ta_v1\n「ねえ、{player_address}」\n")).toThrow(
+      "主人公の呼び名は声にできません：knot ta_talk の2行目の # voice: ta_v1 の台詞（3行目）に {player_address} があります。");
+    expect(() => check("=== ta_talk ===\n「{player_address}って呼ぶね」 # voice: ta_v1\n")).toThrow(
+      "Voiced line says the protagonist's form of address: the line of # voice: ta_v1 has {player_address}");
+  });
+
   it("refuses a voiced line that says the heroine's name: the player sets it too", () => {
     expect(() => check("=== ta_talk ===\n「私、{heroine_name}って言うの」 # voice: ta_v1\n")).toThrow(
       "ヒロインの名前は声にできません：knot ta_talk の2行目の # voice: ta_v1 の台詞（2行目）に {heroine_name} があります。");
