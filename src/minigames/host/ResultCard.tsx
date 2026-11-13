@@ -20,6 +20,8 @@ export interface ResultCardProps {
   practice: boolean;
   retry: boolean;
   anchor: "top" | "bottom";
+  /** With the bottom anchor: how far above the layer's bottom (the play's main control's top); else the CSS default. */
+  bottom?: number;
   still: boolean;
   /** When the card came (performance.now): the guard counts from it. */
   shownAt: number;
@@ -31,7 +33,7 @@ export interface ResultCardProps {
 /** Whether the card's guard has passed (a press now is the player's own). */
 export const resultCardReady = (shownAt: number, now = performance.now()): boolean => now - shownAt >= MINI_GAME_RESULT_GUARD_MS;
 
-export function ResultCard({ label, rating, score, detail, face, line, practice, retry, anchor, still, shownAt, onNext, onRetry, onToReal }: ResultCardProps) {
+export function ResultCard({ label, rating, score, detail, face, line, practice, retry, anchor, bottom, still, shownAt, onNext, onRetry, onToReal }: ResultCardProps) {
   const buttons = resultButtons({ practice, retry });
   const [counted, setCounted] = useState(() => (score && !still ? countedScore(score, 0) : score));
   const primary = useRef<HTMLButtonElement>(null);
@@ -59,7 +61,9 @@ export function ResultCard({ label, rating, score, detail, face, line, practice,
   )) : null;
 
   return (
-    <section className="minigame-result" data-anchor={anchor} data-testid="minigame-result" aria-label={practice ? "練習の結果" : "結果"}>
+    <section className="minigame-result" data-anchor={anchor} data-testid="minigame-result" aria-label={practice ? "練習の結果" : "結果"}
+      style={anchor === "bottom" && bottom !== undefined
+        ? { bottom: `${bottom}px`, maxHeight: `calc(100% - ${bottom}px - var(--scene-top, 0px) - 52px)` } : undefined}>
       <div className="minigame-result-head">
         {practice && <span className="minigame-result-practice">練習</span>}
         {stars && <span className="minigame-stars" data-testid="minigame-stars" data-stars={rating?.stars} aria-hidden="true">{stars}</span>}

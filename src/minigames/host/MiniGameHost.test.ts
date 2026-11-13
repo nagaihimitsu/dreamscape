@@ -27,6 +27,20 @@ describe.each(Object.keys(MINI_GAMES))("the host's start of %s", (gameId) => {
     expect(html).toContain(definition.keysJa ?? "キーボードでは遊べません");
   });
 
+  it("shows its instruction card: the title, the length, the hand of its controls, and 「練習する」 when it has practice", () => {
+    const html = render(gameId);
+    expect(html).toContain('data-testid="minigame-card"');
+    expect(html).toContain(definition.titleJa);
+    if (definition.durationSec) expect(html).toContain(`約${definition.durationSec}秒`);
+    expect(html.includes('class="minigame-hand"'), "the hand").toBe(!!definition.controls);
+    if (definition.controls) expect(html).toContain(`data-kind="${definition.controls}"`);
+    expect(html.includes('data-testid="minigame-practice"'), "practice").toBe(!!definition.practice);
+    // 「おまかせ」 plays by itself: no hand, no practice.
+    const auto = render(gameId, { auto: true });
+    expect(auto).not.toContain('data-testid="minigame-practice"');
+    expect(auto).not.toContain('class="minigame-hand"');
+  });
+
   it("offers a button per outcome in Debug mode only, and says when it plays itself", () => {
     const html = render(gameId, { debug: true });
     for (const outcome of definition.outcomes) expect(html).toContain(`data-testid="minigame-debug-${outcome.id}"`);

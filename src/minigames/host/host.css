@@ -232,7 +232,18 @@
   text-align: center;
   animation: minigame-result-in 220ms var(--ease-out, ease-out) both;
 }
+.minigame-result { overflow-y: auto; overscroll-behavior: contain; }
 .minigame-result[data-anchor="top"] { top: calc(var(--scene-top, 0px) + 52px); bottom: auto; }
+/* A short phone (320 × 568): the same card, tighter, so it fits between the band and the play's controls. */
+@media (max-height: 640px) {
+  .minigame-layer .minigame-result { gap: 2px; padding: 8px 12px 10px; }
+  .minigame-layer .minigame-result-label { font-size: 19px; }
+  .minigame-stars { font-size: 24px; }
+  .minigame-star[data-big] { font-size: 30px; }
+  .minigame-result-react .character-face { width: 44px; height: 44px; }
+  .minigame-result-actions { margin-top: 4px; }
+  .minigame-result-actions > button { min-height: 48px; }
+}
 @keyframes minigame-result-in { from { opacity: 0; transform: translateY(12px); } }
 .minigame-result-head { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 0; }
 .minigame-result-head:empty { display: none; }
