@@ -769,7 +769,11 @@ async function act(page: Page, state: GameState, pick: Pick) {
   if (state.activeEpilogue?.kind === "arrival" && !state.activeEpilogue.logoComplete) return;
   const next = page.locator(nextButtons).filter({ visible: true });
   if (await next.count()) return next.first().click();
-  return page.getByTestId("dialogue-text").click();
+  // During a line's pause (# pause:) or its typing, a tap only shows the whole line and saves nothing: the line is let
+  // finish first, so the tap goes on.
+  const line = page.getByTestId("dialogue-text");
+  await expect(line).toHaveAttribute("data-ready", "true");
+  return line.click();
 }
 
 export interface PlayOptions {
