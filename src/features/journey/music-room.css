@@ -1,0 +1,62 @@
+/* 旅の音楽室 (2026-11-13; MusicRoom.tsx): two parts, the tracks and her voices (folded by scene), each entry a full-width
+   row of at least 44 px with its mark and words; the entry playing shows pressed (the slate edge and the parchment fill
+   of a chosen row, never colour alone: its mark and aria-pressed say it too). */
+.music-room-part {
+  margin: 14px 0;
+}
+.music-room-part h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+.music-room-list {
+  display: grid;
+  gap: 6px;
+  margin: 6px 0;
+  padding: 0;
+  list-style: none;
+}
+.music-room-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 12px;
+  background: #fffaf1;
+  color: var(--ds-ink);
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.music-room-item .icon {
+  flex: none;
+  width: 20px;
+  height: 20px;
+}
+.music-room-item[aria-pressed="true"] {
+  border: 2px solid var(--ds-slate-800);
+  padding: 7px 11px;
+  background: var(--ds-parchment-2);
+  font-weight: 600;
+}
+.music-room-item:disabled {
+  background: var(--ds-disabled-bg);
+  color: var(--ds-disabled-ink);
+}
+.music-room-item.is-voice span {
+  font-family: "Noto Serif JP", serif;
+}
+.music-room-group {
+  margin: 6px 0;
+  border-bottom: 1px solid var(--ds-parchment-line);
+}
+.music-room-group > summary {
+  min-height: 44px;
+  padding: 10px 2px;
+  cursor: pointer;
+  font-weight: 600;
+}

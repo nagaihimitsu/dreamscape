@@ -68,6 +68,8 @@ import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { CityRecords } from "../features/journey/CityProgress";
 import { MetPeople } from "../features/journey/MetPeople";
 import { JourneyNumbersCard } from "../features/journey/JourneyNumbers";
+import { MusicRoom } from "../features/journey/MusicRoom";
+import { musicRoomOpen } from "../features/journey/music-room";
 import { journeyNumbers } from "../features/journey/journey-numbers";
 import { freeTimePhotos, PhotoCredits } from "../features/journey/PhotoCredits";
 import { AlbumDialog } from "../features/journey/AlbumDialog";
@@ -347,6 +349,9 @@ export function GameApp({
     } else if (step === "leave") onSwitchJourney(id);
   }
   const [recordsOpen, setRecordsOpen] = useState(false);
+  // 旅の音楽室 (MusicRoom.tsx): open, and the track it plays (the screen's own music again once it stops or closes).
+  const [musicRoom, setMusicRoom] = useState(false);
+  const [roomTrack, setRoomTrack] = useState<string | null>(null);
   const [albumOpen, setAlbumOpen] = useState(false);
   const [photoCreditsOpen, setPhotoCreditsOpen] = useState(false);
   const [scenePhotoOpen, setScenePhotoOpen] = useState(false);
@@ -520,6 +525,7 @@ export function GameApp({
   const musicScreen: MusicScreen = {
     game, endRoll: moments.endRollShown, nightVisual, riding, packing: !!moments.packingScene,
     romanceEnding: showRomanceEnding, nightScreen: !!(nightScreen && dayEnd), opening: !!opening,
+    ...(musicRoom && roomTrack ? { roomTrack } : {}),
   };
   useSceneMusic(sceneMusic(journeyMusicPlay(musicJourneyId), musicScreen));
   // The ambience under it (src/audio/scene-ambience.ts): the scene's # ambience:, else its place's own, in story scenes only.
@@ -1065,7 +1071,13 @@ export function GameApp({
         <MetPeople game={game} />
         {isJourneyComplete(game) && <button type="button" className="secondary" onClick={() => { setRecordsOpen(false); moments.openEndRoll(); }}>
           エンドロールを見る</button>}
+        {/* 旅の音楽室 (2026-11-13): once the first city is cleared. */}
+        {musicRoomOpen(game) && <button type="button" className="secondary" data-testid="music-room-open"
+          onClick={() => { setRecordsOpen(false); setMusicRoom(true); }}>旅の音楽室</button>}
       </Modal>}
+      {musicRoom && game && <MusicRoom game={game} playing={roomTrack} onPlay={setRoomTrack}
+        bgmOn={displaySettings.value.bgm} voiceOn={displaySettings.value.voice}
+        onClose={() => { setMusicRoom(false); setRoomTrack(null); }} />}
       {albumOpen && game && <AlbumDialog album={game.album} currentCityId={game.currentCityId} onClose={() => setAlbumOpen(false)} />}
       {photoCreditsOpen && creditPhotos.length > 0 && <PhotoCredits photos={creditPhotos} onClose={() => setPhotoCreditsOpen(false)} />}
       {scenePhotoOpen && scenePhoto && <BackgroundCredits asset={scenePhoto} onClose={() => setScenePhotoOpen(false)} />}

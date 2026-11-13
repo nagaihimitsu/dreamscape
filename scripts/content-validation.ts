@@ -59,6 +59,7 @@ import { checkSoundTags, soundRegistry, soundUseProblem, soundVolumesOf, soundWa
 import { checkBgmTags, musicDataOf, musicRegistry, musicWarnings } from "./music-files";
 import { ambienceDataOf, ambienceRegistry, ambienceWarnings, checkAmbienceTags } from "./ambience-files";
 import { audioLayersOf } from "./audio-layers";
+import { sceneAudioOf } from "./scene-audio";
 import { checkSceneEffectTags, itemJourneys } from "./scene-effect-tags";
 import { checkEmphasisTags } from "./line-emphasis";
 import { checkHelperKnot, revealRegionProblem, validateBattleEvidence } from "./battle-validation";
@@ -1659,6 +1660,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     ambience: ambienceDataOf(ambience, sources.manifests.map((manifest) => manifest.id)),
     /** Which layer gives each sound, track and ambience track, and each journey's voices (generated/audio-layers.json; Debug's 音と演出の見本). */
     audioLayers: audioLayersOf(sources.layers, { sounds, music: music.tracks, ambience: ambience.tracks, voices: voiceFiles }),
+    /** Each scene's voiced lines and # bgm: tracks (generated/scene-audio.json; the music room, 2026-11-13). */
+    sceneAudio: sceneAudioOf(sources.storyFiles.map(({ id, source }) => ({ id, source }))),
     /** Images whose files checkContentImages decodes. */
     images: { characters: characterImages, tourismAssets: tourism.assets },
     /** What chooses the free-time photos (src/content/photo-choice.ts), for their derived copies (scripts/derived-images.ts). */
