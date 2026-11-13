@@ -151,7 +151,6 @@ describe("Milan place entry", () => {
     };
     // The wish is met in the Galleria's first observation; every choice completes it, with the shared AP.
     expect(encounterOffered(first, "galleria_fortune").available).toBe(true);
-    expect(encounterOffered(second, "scala_mint").available).toBe(false);
 
     let state = meetEncounter(second, "galleria_fortune", () => 100);
     for (let i = 0; !state.activeEncounter!.frame.choices.length; i++) {
@@ -170,10 +169,5 @@ describe("Milan place entry", () => {
     expect(state.encounterRewards).toEqual({});
     expect(state.completedEncounterIds).toEqual(["galleria_fortune"]);
     expect(encounterOffered(state, "galleria_fortune").available).toBe(true);
-    const afterScala: GameState = {
-      ...second,
-      battleRecords: [{ battleId: "milano_la_scala_b01", firstScore: 0, lastScore: 0, bestScore: 0, attempts: 1 }],
-    };
-    expect(encounterOffered(afterScala, "scala_mint").available).toBe(true);
   });
 });

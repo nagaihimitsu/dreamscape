@@ -65,12 +65,12 @@
       "id": "scala_mint",
       "sources": [
         {
-          "publisher": "Museo Teatrale alla Scala",
-          "title": "Curios at La Scala",
-          "url": "https://www.museoscala.org/en/history/theatre/curios-at-la-scala.html",
-          "checkedAt": "2026-11-02",
+          "publisher": "Teatro alla Scala（公式）",
+          "title": "History — 1776",
+          "url": "https://www.teatroallascala.org/en/the-theater/history.html",
+          "checkedAt": "2026-10-31",
           "claimType": "documented_fact",
-          "claimJa": "劇場は上演前後にも人が集まる社交の場だった。"
+          "claimJa": "公式年表によれば、旧ドゥカーレ劇場が1776年の火災で失われ、その桟敷席の所有者たちが新劇場の建設費を負担し、スカラ座は1778年に開場した。"
         }
       ]
     },
@@ -91,12 +91,20 @@
       "id": "brera_sitter",
       "sources": [
         {
-          "publisher": "Pinacoteca di Brera",
-          "title": "Lamentation over the Dead Christ",
-          "url": "https://pinacotecabrera.org/en/collezioni/collezione-on-line/lamentation-over-the-dead-christ/",
-          "checkedAt": "2026-11-02",
+          "publisher": "Pinacoteca di Brera（公式）",
+          "title": "History",
+          "url": "https://pinacotecabrera.org/en/about-us/history/",
+          "checkedAt": "2026-11-01",
           "claimType": "documented_fact",
-          "claimJa": "ブレラは身体の見え方を大胆に表現したマンテーニャの作品を所蔵する。"
+          "claimJa": "ブレラ絵画館は1809年に正式に設立されたが、それ以前から美術学校の学生のための収集があった。"
+        },
+        {
+          "publisher": "Pinacoteca di Brera（公式）",
+          "title": "30 minutes with Carlo Crivelli — The story of this painting",
+          "url": "https://pinacotecabrera.org/en/educazione/audio-guide/30-minutes-with-carlo-crivelli/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "カメリーノのサン・ドメニコ教会の祭壇画は、マルケ地方の教会・修道院から徴発された作品とともに1811年にブレラへ届いた。委員は美術学校の学生が多様な画派を学べる収集を目指した。三つの主要画面はブレラに残り、上部の三点は別々の場所へ移った。"
         }
       ]
     }

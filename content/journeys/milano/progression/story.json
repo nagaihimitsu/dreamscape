@@ -63,6 +63,16 @@
       "nameJa": "菓子売り"
     },
     {
+      "id": "milano_la_scala_regular_man",
+      "cityId": "milano",
+      "nameJa": "常連の男"
+    },
+    {
+      "id": "milano_la_scala_regular_woman",
+      "cityId": "milano",
+      "nameJa": "常連の女"
+    },
+    {
       "id": "milano_ida",
       "cityId": "milano",
       "nameJa": "イーダ"
