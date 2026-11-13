@@ -34,12 +34,17 @@ function sceneOn(state: GameState): string {
     state.activeBattle?.battleId ?? state.activeDate?.dateId ?? "";
   return `${screen}:${id}`;
 }
-/** Where the scene's story is (its Ink state and line, and its phase: a quiz's question and its feedback hold the same line), to walk each place once. */
+/**
+ * Where the scene's story is (its Ink state and line, and its phase: a quiz's question and its feedback hold the same line;
+ * and a battle's score: the feedback after a right and a wrong answer hold the same line too, and the story after it may
+ * branch on the score), to walk each place once.
+ */
 function placeOf(state: GameState): string {
   const active = state.activeEncounter ?? state.activeEpilogue ?? state.activeTourism ?? state.activeBattle ?? state.activeDate;
   const frame = active && "frame" in active ? active.frame : null;
   const phase = active && "phase" in active ? active.phase : "";
-  return `${sceneOn(state)}|${phase}|${active && "storyState" in active ? active.storyState : ""}|${frame?.text ?? ""}|${state.travelBudget}|${state.ap}`;
+  const score = active && "score" in active ? active.score : "";
+  return `${sceneOn(state)}|${phase}|${score}|${active && "storyState" in active ? active.storyState : ""}|${frame?.text ?? ""}|${state.travelBudget}|${state.ap}`;
 }
 const frameOf = (state: GameState) => JSON.stringify((state.activeEncounter ?? state.activeEpilogue ?? state.activeTourism ?? state.activeBattle ?? state.activeDate)?.frame ?? null);
 
