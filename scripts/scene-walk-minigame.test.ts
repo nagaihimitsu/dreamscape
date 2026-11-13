@@ -21,7 +21,7 @@ function walk(body: string, extra: Partial<Parameters<typeof walkScene>[0]> = {}
   const compiled = compileInk(file.source, "places/smp_x_tower.ink", { [MODULES_FILE]: MODULES_INK });
   const scene = placeScenes({ file, compiled, apCap: 12, mains: [], landmarkCity: () => "x" })[0].entry;
   return walkScene({ compiled, start: scene.story.knot, label: scene.id, context, variables: {}, conds: scene.conds, options: scene.options,
-    itemIds: [], memoryIds: [], ...extra });
+    ...(scene.when ? { when: scene.when } : {}), itemIds: [], memoryIds: [], ...extra });
 }
 
 describe("a line's # minigame: in the scene walk", () => {
@@ -58,6 +58,40 @@ describe("a line's # minigame: in the scene walk", () => {
       .toThrow(/may not be choosable \(six\)/u);
     // What the outcome gives, and a payment the head guarantees, are fine.
     expect(walk(`# minigame: cricket_batting\nBowl.\n${choices("", { six: "    # money: +10\n", edge: "    # rel: trust +1\n" })}- -> END\n`)).toBe(5);
+  });
+
+  describe("an outcome that may be greyed, with the game's fallbacks (raju_haggle: buy_map → fair_map → haggle_map → decline_map)", () => {
+    const haggle = (pay: Record<string, string>, head = "", auto = "") =>
+      `${head}# minigame: raju_haggle${auto}\nFifty.\n` +
+      ["buy_map", "fair_map", "haggle_map", "decline_map"].map((outcome) => `* [Map: ${outcome} # option: ${outcome}]\n${pay[outcome] ?? ""}    ${outcome}\n`).join("") +
+      "- -> END\n";
+    const prices = { buy_map: "    # money: -50\n", fair_map: "    # money: -40\n", haggle_map: "    # money: -30\n" };
+
+    it("lets an outcome pay what the player may lack when its fallbacks reach one that needs nothing", () => {
+      expect(walk(haggle(prices))).toBe(4);
+      // 「おまかせ」 on a price that may be greyed is fine: it takes the fallback then.
+      expect(walk(haggle(prices, "", " auto buy_map"))).toBe(4);
+    });
+
+    it("stops when the fallbacks reach no outcome that is always choosable (so at least one always is)", () => {
+      expect(() => walk(haggle({ ...prices, decline_map: "    # money: -1\n" })))
+        .toThrow(/may not be choosable \(buy_map, fair_map, haggle_map, decline_map\), and the game's fallbacks \(buy_map → fair_map.*reach no outcome that always is/u);
+      // A head that guarantees the money makes every outcome sure.
+      expect(walk(`# when: money >= 60\n${haggle({ ...prices, decline_map: "    # money: -1\n" })}`)).toBe(4);
+    });
+
+    it("stops an outcome without a fallback that may be greyed, though another outcome has one", () => {
+      expect(() => walk(`# minigame: cricket_batting\nBowl.\n${choices("", { six: "    # money: -10\n" })}- -> END\n`))
+        .toThrow(/may not be choosable \(six\), and the game declares no fallback for it: /u);
+    });
+
+    it("follows 「おまかせ」 through the fallback it may take when it looks for a loop", () => {
+      const sticky = (extra: Record<string, string>) => ["buy_map", "fair_map", "haggle_map", "decline_map"]
+        .map((outcome) => `+ [Map: ${outcome} # option: ${outcome}]\n${extra[outcome] ?? ""}    ${outcome}\n`).join("");
+      // おまかせ's buy_map may be greyed: then fair_map, which may be too, then haggle_map, which comes back.
+      const loop = `-> game\n= game\n# minigame: raju_haggle auto buy_map\nFifty.\n${sticky({ ...prices, haggle_map: `${prices.haggle_map}    -> game\n` })}- -> END\n`;
+      expect(() => walk(loop)).toThrow("「おまかせ」 never leaves # minigame: raju_haggle");
+    });
   });
 
   it("reads a mini-game in any scene it walks, and refuses it in a confession date with the reason", () => {

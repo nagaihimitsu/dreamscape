@@ -1439,6 +1439,10 @@ dialog.modal[open] {
 .old-data-entry + .delete-entry {
   margin-top: 4px;
 }
+/* On the title, in the notice of a save it cannot open: right under its 「保存データを消去する」. */
+.notice .old-data-entry {
+  margin-top: 4px;
+}
 /* 「古い保存データの整理」 keeps one size in both steps (the list and its confirmation) and its buttons
    at its foot: 「消去せず戻る」 appears where 「選んだデータを消去する」 was and 「消去する」 where 「閉じる」
    was, so a second tap at the same place never reaches 「消去する」. Only the text above scrolls. */

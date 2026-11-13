@@ -16,7 +16,7 @@ INCLUDE modules.ink
 # priority: -1
 # when: date gt_jaipur_date_jal_mahal
 # when: time night
-# background: gt_bg_jaipur_hotel_hub
+# background: gt_bg_jaipur_hotel_courtyard
 # bgm: feather_waltz
 { cond("seen gt_jaipur_hotel_mehndi_night"):
     # speaker: narrator
@@ -173,7 +173,8 @@ INCLUDE modules.ink
 # at: finale jaipur
 # priority: -1
 # on_done: item gt_jaipur_wedding_envelope
-# background: gt_bg_jaipur_hotel_hub
+# background: gt_bg_jaipur_hotel_courtyard
+# tint: off
 # bgm: morning
 # speaker: narrator
 # item_show: gt_jaipur_wedding_envelope

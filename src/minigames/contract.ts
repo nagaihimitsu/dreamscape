@@ -18,6 +18,12 @@ export interface MiniGameOutcomeDefinition<Outcome extends string = string> {
   labelJa: string;
   /** For writers: when this happens (Debug's 「ミニゲームの見本」 shows it). */
   noteJa?: string;
+  /**
+   * The outcome a play that ends here takes instead when this one's choice cannot be taken now (a payment the player cannot
+   * afford, or anything else that greys the choice), and that one's fallback in turn (fallback.ts). The build lets an
+   * outcome whose choice is not always choosable only with fallbacks that reach one that is (docs/13 4.2).
+   */
+  fallback?: Outcome;
 }
 
 /**
@@ -40,8 +46,14 @@ export type MiniGameRawParams = Readonly<Record<string, string>>;
 export interface MiniGamePlayProps<Params = unknown, Outcome extends string = string> {
   /** The tag's own keys, read by the game's zod. */
   params: Params;
-  /** 「おまかせ」: play to this outcome with rules.autoRecord's record, by itself. */
+  /** 「おまかせ」: play to this outcome with rules.autoRecord's record, by itself (an available one: the host follows its fallbacks). */
   auto: Outcome | null;
+  /**
+   * The outcomes whose choices can be taken now (every one unless something greys a choice, such as a payment the player
+   * cannot afford). A play that ends on another takes its declared fallback (the host does it: availableOutcome in
+   * fallback.ts); a skin may show it (a price the player cannot pay drawn as lowered).
+   */
+  available: readonly Outcome[];
   /** Less motion (「演出を短縮する」 or the device's setting): no flourishes; what the play needs still moves (drawn from the clock). */
   still: boolean;
   /** For looks only (seededRandom): never in the rules. Fixed by the save, so a reload looks the same. */
