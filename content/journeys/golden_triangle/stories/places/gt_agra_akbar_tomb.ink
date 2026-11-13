@@ -3,7 +3,9 @@ INCLUDE modules.ink
 
 // アクバル廟のデート（二人きり。ほかに出るのは猿とブラックバックと、番人が少し。噛み合いの選択は2回）。
 // デリーで買った雨の匂いの小瓶（gt_delhi_rain_attar）を持っていれば、猿が盗むのはそれ。
-// 猿への応じ方は手伝いの knot の選択。追いかける・待つを選ぶと瓶が割れ、小瓶は「使った」になる。
+// 猿への応じ方（取引・追う・待つ）は手伝いの knot の選択（関係値はここ）。どれでも最後に猿が小瓶を落とし、
+// ミニゲーム「猿の落とし物」（# minigame: monkey_catch、手伝いの knot gt_agra_akbar_tomb_monkey_catch）で受け止める。
+// 受け止められなければ（fumbled・missed）瓶が割れて小瓶は「使った」になり、芝生に雨の匂いの場面になる。
 
 // 【3】
 === gt_agra_date_akbar_tomb ===
@@ -156,28 +158,33 @@ INCLUDE modules.ink
     # money: -20
     # rel: trust +1
     # speaker: narrator
-    パックのジュースを高く掲げてみせると、猿は首をかしげた。手の中の袋と、こちらのジュースを、何度も見比べる。
-    やがて、ぽとり。落ちてきた袋を彼女が両手で受け止め、こちらはジュースを壁の上へ放った。猿は器用にストローの穴を探し当てた。
-    # speaker: heroine
-    # reaction: heroine,happy,music
-    無事だった！　瓶も割れてない。取引成立。ありがとうございました？
+    パックのジュースを高く掲げてみせると、猿は首をかしげた。布袋から小瓶をつまみ出して、小瓶と、こちらのジュースを、何度も見比べる。
+    ジュースを壁の上へ放ると、猿は両手で受け取った。小瓶を持っていた方の手も、使って。
+    -> gt_agra_akbar_tomb_monkey_catch ->
+    { cond("item gt_delhi_rain_attar held"):
+        # speaker: narrator
+        壁の上では、猿が器用にストローの穴を探し当てていた。
+        # speaker: heroine
+        # reaction: heroine,teasing,music
+        取引成立、だね。……ありがとうございました？
+        # speaker: narrator
+        彼女は壁の上の猿に、律儀に頭を下げた。猿はジュースを飲みながら、それを見ていなかった。
+    }
 * [壁の下まで追いかける # option: attar_chase]
-    # use: gt_delhi_rain_attar
     # rel: spark +1
-    # set: gt_agra_rain_on_lawn
     # speaker: narrator
     壁の下まで走ると、猿は驚いて、さらに上へ跳んだ。その拍子に、布袋の口から小瓶が滑り出た。
+    -> gt_agra_akbar_tomb_monkey_catch ->
 * [「待とう。猿にも、考える時間がいる」 # option: attar_wait]
-    # use: gt_delhi_rain_attar
     # rel: affection +1
-    # set: gt_agra_rain_on_lawn
     # speaker: narrator
-    待っていると、猿は布袋の口を開け、中の小瓶を取り出した。栓を歯でくわえて、引き抜く。鼻を近づけて――大きなくしゃみを一つ。
+    待っていると、猿は布袋の口を開け、中の小瓶を取り出した。栓を歯でくわえて、引っぱる。抜けない。栓のまわりの匂いを嗅いで――大きなくしゃみを一つ。小瓶が、手から離れた。
+    -> gt_agra_akbar_tomb_monkey_catch ->
 -
 { cond("flag gt_agra_rain_on_lawn"):
     # speaker: narrator
     # se: glass_break_small
-    小瓶が、壁の上から落ちた。石の通路で、かしゃん、と小さな音。
+    石の通路で、かしゃん、と小さな音。
     次の瞬間、匂いが広がった。乾ききった芝生の上に、夏の終わりの最初の雨が降ったような、土の匂い。少し離れたところで、ブラックバックたちが、いっせいに顔を上げた。
     # speaker: heroine
     # reaction: heroine,surprised,question
@@ -191,10 +198,37 @@ INCLUDE modules.ink
     # speaker: heroine
     # emotion: smile
     でも、いいかも。これで、雨が降るたびに思い出す場所が、二つになった。路地と、鹿
-- else:
-    # speaker: narrator
-    彼女は布袋を胸に抱えたまま、壁の上の猿に律儀に頭を下げた。猿はジュースを飲みながら、それを見ていなかった。
 }
+- ->->
+
+// 【3】手伝いの knot：猿が落とした小瓶を受け止める（噛み合いでない、場面の中の選択。取引・追う・待つのどれからも来る）。
+// 選択肢の代わりにミニゲーム「猿の落とし物」。結果の選択肢に関係値は付けない（腕前で関係値が動かないように）。
+// 弾いた・届かなかったときは小瓶を使う（割れる）。ここへ来る道は、デートの knot の cond("item gt_delhi_rain_attar held") の中だけ。
+=== gt_agra_akbar_tomb_monkey_catch ===
+# speaker: narrator
+# minigame: monkey_catch auto caught
+小瓶が、壁の上から落ちてくる。考えるより先に、両手が出ていた。
+* [落ちてきた小瓶を、両手で受け止めた # option: caught]
+    # speaker: narrator
+    両手の中に、ひやりとした小さな重みが収まった。指を開くと、小瓶は割れずにそこにあった。
+    # speaker: heroine
+    # reaction: heroine,surprised_big,sparkle
+    わたしの雨、無事だった！
+    # speaker: heroine
+    # reaction: heroine,teasing,music
+    ……今の、ちょっと格好よかったよ。ちょっとだけね
+    # speaker: narrator
+    彼女は小瓶を受け取ると、今度は鞄のいちばん奥にしまった。
+* [受け止めかけて、指先で弾いた # option: fumbled]
+    # use: gt_delhi_rain_attar
+    # set: gt_agra_rain_on_lawn
+    # speaker: narrator
+    指先に、ガラスの冷たさが一瞬だけ触れた。つかんだと思った小瓶は、指の間で跳ねて、外へこぼれた。
+* [手が届かなかった # option: missed]
+    # use: gt_delhi_rain_attar
+    # set: gt_agra_rain_on_lawn
+    # speaker: narrator
+    伸ばした手の、ほんの少し先を、小瓶は落ちていった。
 - ->->
 
 // 【3】手伝いの knot：サングラスを盗まれたとき（噛み合いでない選択）

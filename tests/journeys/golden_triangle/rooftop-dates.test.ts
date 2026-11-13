@@ -110,11 +110,19 @@ describe("Golden Triangle rooftop dates (GT-3b)", () => {
   it("breaks the attar at Akbar's tomb, and gives the lac bangles and charges Johari Bazaar once", () => {
     const agra = finishEpisode(cityStart("agra"), "gt_agra_main_taj_mahal");
     expect(agra.inventory.gt_delhi_rain_attar).toBe("held");
-    const akbar = playDate(agra, "gt_agra_date_akbar_tomb", ["attar_wait"]);
-    expect(akbar.chosen).toContain("attar_wait");
+    // The monkey drops it whatever the player did about it; the catch (# minigame: monkey_catch) decides: a fumble breaks it.
+    const akbar = playDate(agra, "gt_agra_date_akbar_tomb", ["attar_wait", "fumbled"]);
+    expect(akbar.chosen).toEqual(expect.arrayContaining(["attar_wait", "fumbled"]));
     expect(akbar.state.inventory.gt_delhi_rain_attar).toBe("used");
     expect(akbar.state.storyProgress.flags).toContain("gt_agra_rain_on_lawn");
+    expect(akbar.lines).toContain("……鹿が、雨だと思ってる");
     expect(akbar.state.memories).toContain("gt_agra_date_akbar_tomb_memory");
+    // A catch keeps it, after any way of dealing with the monkey (here the chase, not the trade).
+    const caught = playDate(agra, "gt_agra_date_akbar_tomb", ["attar_chase", "caught"]);
+    expect(caught.chosen).toEqual(expect.arrayContaining(["attar_chase", "caught"]));
+    expect(caught.state.inventory.gt_delhi_rain_attar).toBe("held");
+    expect(caught.state.storyProgress.flags).not.toContain("gt_agra_rain_on_lawn");
+    expect(caught.lines).not.toContain("……鹿が、雨だと思ってる");
 
     const jaipur = finishEpisode(cityStart("jaipur"), "gt_jaipur_main_hawa_mahal");
     const johari = playDate(jaipur, "gt_jaipur_date_johari_bazaar");
