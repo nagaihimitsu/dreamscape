@@ -24,6 +24,8 @@ export const MEHNDI_PLACES: Record<MehndiSpot, { x: number; y: number; labelJa: 
 };
 /** A pointer within this of a place points at it (the places are further apart than twice this). */
 export const MEHNDI_HIT = 30;
+/** On a small palm, a finger's reach is at least this (px): a 44px target, the nearest place taken. */
+const FINGER_HIT_PX = 22;
 /** Where the writing lies at each target: its centre, its slant and the room it has. */
 const WRITING: Record<MehndiTarget, { x: number; y: number; rotate: number; width: number }> = {
   thumb: { x: 210, y: 320, rotate: -22, width: 62 },
@@ -36,10 +38,11 @@ const DRAG_PX = 10;
 const FINGER_LIFT_PX = 52;
 const SOUNDS = { found: "clue_new" } as const;
 
-/** The place a point (in the hand's units) points at, if any. */
-export function mehndiSpotAt(x: number, y: number): number | null {
-  const index = MEHNDI_SPOTS.findIndex((spot) => Math.hypot(MEHNDI_PLACES[spot].x - x, MEHNDI_PLACES[spot].y - y) <= MEHNDI_HIT);
-  return index < 0 ? null : index;
+/** The place a point (in the hand's units) points at: the nearest within `reach`, if any. */
+export function mehndiSpotAt(x: number, y: number, reach = MEHNDI_HIT): number | null {
+  const distances = MEHNDI_SPOTS.map((spot) => Math.hypot(MEHNDI_PLACES[spot].x - x, MEHNDI_PLACES[spot].y - y));
+  const nearest = distances.indexOf(Math.min(...distances));
+  return distances[nearest] <= reach ? nearest : null;
 }
 
 /** The writing's size: the name as typed, smaller for a long one, never cut (docs/13 2.10). */
@@ -68,7 +71,7 @@ function Hand() {
       <rect x="103" y="66" width="38" height="190" rx="19" transform="rotate(-2 122 246)" />
       <rect x="144" y="44" width="40" height="210" rx="20" />
       <rect x="187" y="70" width="37" height="186" rx="18" transform="rotate(5 205 246)" />
-      <rect x="236" y="176" width="40" height="160" rx="20" transform="rotate(25 256 330)" />
+      <rect x="214" y="206" width="40" height="114" rx="20" transform="rotate(22 234 320)" />
       <path d="M66 214 C60 280 70 350 100 384 L200 384 C232 352 244 300 236 228 C236 214 224 206 212 206 L84 206 C72 206 66 210 66 214 Z" />
       <path d="M100 380 L200 380 L208 420 L92 420 Z" />
     </g>
@@ -92,9 +95,9 @@ function BroadLines({ target }: { target: MehndiTarget }) {
         <rect x="103" y="66" width="38" height="32" rx="19" transform="rotate(-2 122 246)" />
         <rect x="144" y="44" width="40" height="34" rx="20" />
         <rect x="187" y="70" width="37" height="32" rx="18" transform="rotate(5 205 246)" />
-        <rect x="236" y="176" width="40" height="32" rx="20" transform="rotate(25 256 330)" />
+        <rect x="214" y="206" width="40" height="30" rx="20" transform="rotate(22 234 320)" />
       </g>
-      <path d="M70 172 L100 176 M106 140 L140 140 M146 128 L182 128 M190 146 L224 150 M242 236 L274 254" />
+      <path d="M70 172 L100 176 M106 140 L140 140 M146 128 L182 128 M190 146 L224 150 M240 258 L270 270" />
       {flower(MEHNDI_PLACES.index.x, MEHNDI_PLACES.index.y, 9)}
       {flower(MEHNDI_PLACES.pinky.x, MEHNDI_PLACES.pinky.y, 11)}
       {/* The peacock's feather: from its base in the palm up toward the ring finger, its eye near the top. */}
@@ -208,7 +211,8 @@ function MehndiField({ params, setup, view, live, search, active, names, art, so
     // A tap: the lamp to it, and a place there pointed at.
     const point = fieldPoint(event, palm.current);
     place(point.x, point.y, true);
-    const spot = mehndiSpotAt(point.x * W, point.y * H);
+    const width = palm.current.getBoundingClientRect().width;
+    const spot = mehndiSpotAt(point.x * W, point.y * H, Math.max(MEHNDI_HIT, width ? (FINGER_HIT_PX * W) / width : 0));
     if (spot !== null) search(spot);
   };
   const onFocus = (event: FocusEvent<HTMLButtonElement>, spot: MehndiSpot) => {

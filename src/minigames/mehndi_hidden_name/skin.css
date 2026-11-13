@@ -7,7 +7,7 @@
   display: grid;
   place-items: center;
   container-type: size;
-  background: radial-gradient(ellipse 70% 62% at 50% 48%, rgba(30, 22, 14, 0.3), rgba(10, 8, 6, 0.8));
+  background: radial-gradient(ellipse 70% 62% at 50% 48%, rgba(24, 18, 12, 0.5), rgba(10, 8, 6, 0.86));
 }
 .mg-mehndi-hidden-name-palm {
   --lamp-x: 50%;
@@ -23,7 +23,7 @@
 .mg-mehndi-hidden-name-dark, .mg-mehndi-hidden-name-lit { position: absolute; inset: 0; pointer-events: none; }
 .mg-mehndi-hidden-name-picture { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; }
 /* The night: the broad lines only just show. */
-.mg-mehndi-hidden-name-dark { filter: brightness(0.42) saturate(0.7); }
+.mg-mehndi-hidden-name-dark { filter: brightness(0.32) saturate(0.7); }
 /* The lamp's circle: the same hand, lit, with the fine lines and the writing. */
 .mg-mehndi-hidden-name-lit { clip-path: circle(19cqw at var(--lamp-x) var(--lamp-y)); }
 .mg-mehndi-hidden-name-glow {

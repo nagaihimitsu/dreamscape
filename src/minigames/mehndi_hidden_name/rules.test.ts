@@ -45,6 +45,9 @@ describe("the hidden name's field", () => {
     expect(mehndiSpotAt(214, 298)).toBe(MEHNDI_SPOTS.indexOf("thumb"));
     expect(mehndiSpotAt(214 + MEHNDI_HIT - 1, 298)).toBe(MEHNDI_SPOTS.indexOf("thumb"));
     expect(mehndiSpotAt(20, 20)).toBeNull();
+    // A wider reach (a finger on a small palm) takes the nearest place, never a farther one.
+    expect(mehndiSpotAt(214 - 20, 298 + 20, 60)).toBe(MEHNDI_SPOTS.indexOf("thumb"));
+    expect(mehndiSpotAt(145, 295, 60)).toBe(MEHNDI_SPOTS.indexOf("vine"));
     const places = Object.values(MEHNDI_PLACES);
     for (const a of places) for (const b of places) if (a !== b) expect(Math.hypot(a.x - b.x, a.y - b.y), `${a.labelJa}–${b.labelJa}`).toBeGreaterThan(MEHNDI_HIT * 2);
   });
