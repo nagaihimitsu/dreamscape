@@ -52,4 +52,20 @@ describe("Golden Triangle budget", () => {
     expect(report.spend.max).toBeGreaterThan(journey.initialBudget!);
     console.log(`Golden Triangle full play: ₹${report.spend.min}–₹${report.spend.max}; budget ₹${journey.initialBudget}`);
   });
+
+  // The dates' AP (user decision 2026-11-13, choose lightly): in each city the nearest two dates cost 2 AP, the next two 4 and the
+  // farthest two 6, so even all the AP a city gives leaves one date out of reach (what is left carries to the next city), while
+  // each date, and the dates a confession needs, fit the least AP a city gives (no score reward taken).
+  it("leaves one date per city out of reach of its AP, and no date out of reach of every play", () => {
+    const [input] = balanceInputs(process.cwd(), "golden_triangle");
+    for (const city of journeyBalance(input).cities) {
+      const costs = input.dates.filter((date) => date.chapterId === city.cityId && date.kind === "normal").map((date) => date.apCost).sort((a, b) => a - b);
+      const short = city.ap.dates - city.ap.gained.max;
+      expect(short, city.cityId).toBeGreaterThan(0);
+      expect(short, city.cityId).toBeLessThanOrEqual(costs[0]);
+      expect(costs.at(-1)!, city.cityId).toBeLessThanOrEqual(city.ap.gained.min);
+      expect(costs.slice(0, progression.confession.minCompletedDates).reduce((sum, cost) => sum + cost, 0), city.cityId).toBeLessThanOrEqual(city.ap.gained.min);
+      console.log(`Golden Triangle ${city.cityId}: dates ${costs.join("+")} = ${city.ap.dates} AP; the city gives ${city.ap.gained.min}–${city.ap.gained.max}`);
+    }
+  });
 });

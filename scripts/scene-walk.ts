@@ -4,6 +4,8 @@ import { requiredLeaves, type Condition, type Leaf } from "../src/content/condit
 import { parseConditionText } from "../src/content/condition-text";
 import type { SceneDone, SceneOption } from "../src/content/scene-schemas";
 import { parseStoryTags, type LetterKind, type PhoneSide, type StoryTags, type TagContext } from "../src/content/tags";
+import { availableOutcome } from "../src/minigames/fallback";
+import { miniGameDefinition } from "../src/minigames/registry";
 import { miniGameOptionId, miniGameOutcomeIds, type MiniGameTag } from "../src/minigames/tag";
 import type { MiniGameUse } from "../src/minigames/uses";
 import type { SceneKind, StoryStateCatalog } from "../src/content/scene-schemas";
@@ -32,8 +34,8 @@ import type { DialogueObserver } from "./dialogue-expression-validation";
 // and `item X gifted` true; after `# set: F`, `flag F` true.
 // - a line's `# minigame:` (docs/13 3.4) is not followed by a choice set right after its line, its choice set is not one
 //   choice per outcome of the game (by option ID; a quiz's or reasoning's call is none), an outcome may not be choosable
-//   there (checkMiniGameChoices), or 「おまかせ」 never leaves it (its auto outcome comes back to the same game without
-//   another choice set). Every walk reads mini-games (TagContext.miniGames true); a confession date's walk passes
+//   there and the game's fallbacks reach no outcome that always is (checkMiniGameChoices), or 「おまかせ」 never leaves it
+//   (its auto outcome, or a fallback おまかせ may take, comes back to the same game without another choice set). Every walk reads mini-games (TagContext.miniGames true); a confession date's walk passes
 //   "confession", which refuses them (docs/13 1.4). The uses found go to `onMiniGame` (generated/minigame-uses.json).
 // Warnings (not stopped): a choice point with only 「また今度」 and choices needing items not guaranteed there; a
 // mini-game whose 「おまかせ」 outcome is a 「また今度」 choice (おまかせ then never finishes the scene).
@@ -91,12 +93,15 @@ const sameLeaf = (left: Leaf, right: Leaf) => JSON.stringify(left) === JSON.stri
 
 /**
  * A mini-game's choice set (`# minigame:`, 2026-11-13): one choice per outcome of the game, by option ID (the outcome, or
- * `<prefix>_<outcome>`), nothing else, and each always choosable (the game takes it whatever the player has: no `# requires:`,
- * gift, use or payment that is not guaranteed there).
+ * `<prefix>_<outcome>`), nothing else. The game ends on an outcome whatever the player has, so each outcome is always
+ * choosable there (no `# requires:`, gift, use or payment that is not guaranteed there), or the game declares fallbacks for
+ * it (definition `fallback`) that reach one that always is: the play then takes that one (docs/13 4.2). So at least one
+ * outcome always is. Returns the option IDs 「おまかせ」 may take: its outcome's, and its fallbacks' up to an always choosable one.
  */
 function checkMiniGameChoices(tag: MiniGameTag, choices: readonly { text: string; optionId?: string; choosable: boolean; later: boolean }[], label: string,
-  warn: (message: string) => void): void {
-  const expected = miniGameOutcomeIds(tag.id).map((outcome) => miniGameOptionId(tag, outcome));
+  warn: (message: string) => void): string[] {
+  const outcomes = miniGameOutcomeIds(tag.id);
+  const expected = outcomes.map((outcome) => miniGameOptionId(tag, outcome));
   const written = choices.map((choice) => choice.optionId);
   const missing = expected.filter((id) => !written.includes(id));
   const extra = choices.filter((choice) => !choice.optionId || !expected.includes(choice.optionId))
@@ -104,13 +109,26 @@ function checkMiniGameChoices(tag: MiniGameTag, choices: readonly { text: string
   if (missing.length || extra.length)
     throw new Error(`The choice set of # minigame: ${tag.id} in ${label} needs one choice per outcome, by # option: ${expected.join(", ")}` +
       `${missing.length ? `; missing: ${missing.join(", ")}` : ""}${extra.length ? `; not an outcome: ${extra.join(", ")}` : ""}`);
-  const closed = choices.filter((choice) => !choice.choosable);
-  if (closed.length)
-    throw new Error(`An outcome of # minigame: ${tag.id} in ${label} may not be choosable (${closed.map((choice) => choice.optionId).join(", ")}): ` +
-      `the game takes it whatever the player has, so it needs nothing that is not guaranteed there (# requires:, # give:, # use:, a payment, a then: move)`);
+  const definition = miniGameDefinition(tag.id)!;
+  const sure = outcomes.filter((outcome) => choices.find((choice) => choice.optionId === miniGameOptionId(tag, outcome))?.choosable);
+  const stranded = outcomes.filter((outcome) => availableOutcome(definition, outcome, sure) === null);
+  if (stranded.length) {
+    const fallbacks = definition.outcomes.filter((outcome) => outcome.fallback).map((outcome) => `${outcome.id} → ${outcome.fallback}`);
+    throw new Error(`An outcome of # minigame: ${tag.id} in ${label} may not be choosable (${stranded.map((outcome) => miniGameOptionId(tag, outcome)).join(", ")}), ` +
+      `and ${fallbacks.length ? `the game's fallbacks (${fallbacks.join(", ")}) reach no outcome that always is` : "the game declares no fallback for it"}: ` +
+      "the game ends on an outcome whatever the player has, so guarantee what that choice needs there (# requires:, # give:, # use:, a payment, a then: " +
+      "move; by a # when: in the head or a cond(\"…\") on the way), or give the game's outcome a fallback (definition outcomes' fallback, docs/13 4.2)");
+  }
   if (choices.some((choice) => choice.later && choice.optionId === miniGameOptionId(tag, tag.auto)))
     warn(`# minigame: ${tag.id} in ${label}: its 「おまかせ」 outcome ${tag.auto} is a 「また今度」 choice (# later), so with ⚙設定's おまかせ the scene never ` +
       "ends there; give auto another outcome if the story should go on");
+  // 「おまかせ」 takes its outcome, or (when that one may be greyed) the fallbacks up to an always choosable one.
+  const autoWay: string[] = [];
+  for (let outcome: string | undefined = tag.auto; outcome !== undefined && !autoWay.includes(miniGameOptionId(tag, outcome));) {
+    autoWay.push(miniGameOptionId(tag, outcome));
+    outcome = sure.includes(outcome) ? undefined : definition.outcomes.find((item) => item.id === outcome)?.fallback;
+  }
+  return autoWay;
 }
 
 /** What a line's tags give its stage, gathered from its tag lines without text (frame-reader.ts reads them into the line after). */
@@ -354,9 +372,10 @@ export function walkScene(walked: SceneWalkInput): number {
         if (option.then && "move" in option.then) return false;
         return true;
       };
-      if (game) checkMiniGameChoices(game.tag, choices.map((choice, index) => ({ text: choice.text.trim(), optionId: parseStoryTags(choice.tags ?? [], input.context).optionId,
-        choosable: choosable(options[index]), later: !!options[index]?.later })), input.label, warn);
-      const autoOption = game ? miniGameOptionId(game.tag, game.tag.auto) : undefined;
+      // The options 「おまかせ」 may take there: its outcome's, and its fallbacks' while that one may be greyed.
+      const autoOptions = game ? checkMiniGameChoices(game.tag, choices.map((choice, index) => ({ text: choice.text.trim(),
+        optionId: parseStoryTags(choice.tags ?? [], input.context).optionId, choosable: choosable(options[index]), later: !!options[index]?.later })),
+      input.label, warn) : [];
       const open = options.filter(choosable);
       if (!open.length)
         throw new Error(`No choice can be chosen at a choice point of ${input.label} (line of "${choices[0].text.trim()}"): every choice needs ` +
@@ -384,7 +403,7 @@ export function walkScene(walked: SceneWalkInput): number {
         branch.state.LoadJson(checkpoint);
         branch.ChooseChoiceIndex(choice.index);
         visit({ ...path, saved: branch.state.ToJson(), overrides, trueTexts, spent, thens: path.thens + (option?.then ? 1 : 0),
-          autoChain: game && option?.id === autoOption ? [...path.autoChain, gameAt] : [],
+          autoChain: game && option && autoOptions.includes(option.id) ? [...path.autoChain, gameAt] : [],
           money: path.money + (option?.money ?? 0), ap: path.ap + (option?.ap ?? 0),
           romance: path.romance + (romanceHere ? 1 : 0), speaker, personId, stage }, choice.tags ?? [], key);
       });

@@ -75,8 +75,8 @@ export function isUnclearedMainTravelEvent(state: GameState, eventId: string): b
   return !battlePlayed(state, eventId);
 }
 
-/** Ordinary dates and completed main events are not offered for replay.
- * Retryable confession/recovery conversations retain their existing rules. */
+/** Played dates and completed main events are not offered for replay, but a date its writer made repeatable
+ * (`repeatable`: a recovery conversation; a confession only by the writer's choice, as the journeys' are played once). */
 export function isCompletedTravelEvent(state: GameState, eventId: string): boolean {
   const event = getCityContent(state.currentCityId).travel.events.find((item) => item.id === eventId);
   if (!event) return false;
@@ -125,20 +125,46 @@ export function getTravelEventAvailability(state: GameState, eventId: string, mo
     return { available: false, reason: getTransportMode(state.currentCityId, mode)?.rental ? rentalReason(state.currentCityId, mode) : reasonJa.route };
   const returns = getTravelHomeRoutes(state, event.placeId)
     .sort(compareRouteCost);
-  let reason = reasonJa.route;
   // The main parts' payments (their # on_done: money -X, ap -N; stage 3a) are checked now and kept back during the trip.
   const payments = mainPartPayments(state, eventId);
   const dateAp = dates.find((item) => item.id === eventId)?.apCost ?? 0;
   if (payments.ap && state.ap - tourKeepBack(state).ap - dateAp < payments.ap) return { available: false, reason: reasonJa.ap };
+  const current = snapshot(state);
+  const planWith = (returnRoute: HomeRoute, travelBudget = current.travelBudget) =>
+    planTravelEvent({ ...current, travelBudget }, event, outbound, returnRoute, place);
+  // Why each way home cannot be taken (cheapest first).
+  const blocked: BlockedWay[] = [];
   for (const returnRoute of returns) {
-    const plan = planTravelEvent(snapshot(state), event, outbound, returnRoute, place);
-    if (plan.ok && plan.remainingBudget - returnRoute.cost < payments.money) { reason = reasonJa.budget; continue; }
+    const plan = planWith(returnRoute);
+    if (plan.ok && plan.remainingBudget - returnRoute.cost < payments.money) { blocked.push({ returnRoute, key: "budget", text: reasonJa.budget }); continue; }
     if (plan.ok) return { available: true, reason: "", plan: { ...plan, returnReserve: returnRoute.cost } };
-    reason = plan.reason === "budget" && (event.admissionCost ?? 0) > 0
+    blocked.push({ returnRoute, key: plan.reason, text: plan.reason === "budget" && (event.admissionCost ?? 0) > 0
       ? "移動・入場や帰りのための予算が足りません。"
-      : reasonJa[plan.reason];
+      : reasonJa[plan.reason] });
   }
-  return { available: false, reason };
+  // When the ways fail for different reasons, money stays a way's reason only where money alone keeps it back: a way
+  // that would still be too late (or closed, or short of AP) with the money enough says that instead.
+  const differ = new Set(blocked.map((way) => way.key)).size > 1;
+  const reasons = !differ ? blocked : blocked.map((way) => {
+    if (way.key !== "budget") return way;
+    const funded = planWith(way.returnRoute, Number.MAX_SAFE_INTEGER);
+    return funded.ok ? way : { ...way, key: funded.reason, text: reasonJa[funded.reason] };
+  });
+  return { available: false, reason: blockedWaysReasonJa(reasons) };
+}
+
+type BlockedWay = { returnRoute: HomeRoute; key: string; text: string };
+/**
+ * A destination's reason when no way home can be taken: the ways' reason when they share one, else each kind once in
+ * one line (user decision 2026-11-13). The slower ways too late and the faster ones too dear (a way kept back by money
+ * alone would be in time): both, as one sentence.
+ */
+function blockedWaysReasonJa(blocked: readonly BlockedWay[]): string {
+  const kinds = new Set(blocked.map((way) => way.key));
+  if (kinds.size === 2 && kinds.has("time") && kinds.has("budget"))
+    return "今日はホテルへの帰路を含めると時間が足りません（速い乗り物で帰るには予算が足りません）。";
+  // Each kind once, in the order the ways were tried, in the words of its last way.
+  return [...new Map(blocked.map((way) => [way.key, way.text])).values()].join("") || reasonJa.route;
 }
 
 /** Commit the departure and scene start together; the existing scene starter charges AP. */

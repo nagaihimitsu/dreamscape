@@ -9,6 +9,7 @@ import { ChoicePoint } from "../minigames/host/ChoicePoint";
 import { MiniGameProvider, MiniGameSlot, type MiniGameEnvironment } from "../minigames/host/MiniGameProvider";
 import { MINI_GAME_IDS, MINI_GAMES } from "../minigames/registry";
 import { miniGameParamKeys, type MiniGameTag } from "../minigames/tag";
+import type { MiniGameUse } from "../minigames/uses";
 import { miniGameUses, miniGameUseUrl, usesProblem } from "./minigame-room";
 import "../features/romance/romance-scene.css";
 import "./minigame-room.css";
@@ -24,8 +25,8 @@ function memoryStorage() {
     removeItem: (key: string) => { values.delete(key); } };
 }
 
-/** The room's stage: one game, its example params, how it is played. */
-type Stage = { gameId: string; example: number; auto: string | null; still: boolean };
+/** The room's stage: one game, its example params, how it is played, the outcomes it plays as greyed (their fallbacks are taken). */
+type Stage = { gameId: string; example: number; auto: string | null; still: boolean; closed: readonly string[] };
 
 export function MiniGameRoom({ onClose }: { onClose: () => void }) {
   const [storage] = useState(memoryStorage);
@@ -42,6 +43,19 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
   const [last, setLast] = useState<string | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const openedFrom = useRef<string | null>(null);
+  // Each use's 「Debugで開く」: a date whose story asks whether an item is held is walked to the use's own branch (a
+  // second or two to build the cleared city), so the links are worked out once, after the list has shown.
+  const [links, setLinks] = useState<ReadonlyMap<MiniGameUse, ReturnType<typeof miniGameUseUrl>> | null>(null);
+  useEffect(() => {
+    let timer = 0;
+    const frame = window.requestAnimationFrame(() => {
+      timer = window.setTimeout(() => setLinks(new Map(miniGameUses.map((use) => [use, miniGameUseUrl(use)]))), 0);
+    });
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+    };
+  }, []);
   useEffect(() => {
     window.scrollTo(0, 0);
     heading.current?.focus({ preventScroll: true });
@@ -57,6 +71,7 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
     names: { player: balance.defaultPlayerName, heroine: balance.defaultHeroineName },
     revision: round,
     context: tagContext,
+    ...(stage?.closed.length && definition ? { available: definition.outcomes.map((outcome) => outcome.id).filter((id) => !stage.closed.includes(id)) } : {}),
     // The room has no choice to take: it notes the outcome and sets the game up again.
     onOutcome: (outcome) => {
       setLast(outcome);
@@ -64,7 +79,7 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
       return true;
     },
     backdrop: (backgroundId) => <CanalScene backgroundId={backgroundId} />,
-  }), [stage?.auto, stage?.still, round]);
+  }), [stage?.auto, stage?.still, stage?.closed, definition, round]);
   const tag = useMemo<MiniGameTag | undefined>(() => {
     if (!stage || !definition) return undefined;
     const params = definition.examples[stage.example] ?? {};
@@ -103,6 +118,12 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
         ))}
         <label className="minigame-room-still"><input type="checkbox" checked={stage.still} onChange={(event) => change({ still: event.target.checked })}
           data-testid="minigame-room-still" /> 動きを減らす</label>
+        {/* An outcome with a fallback may be greyed in a story (a price the player cannot pay): play it so (docs/13 4.2). */}
+        {definition.outcomes.filter((outcome) => outcome.fallback).map((outcome) => (
+          <label key={outcome.id}><input type="checkbox" checked={stage.closed.includes(outcome.id)} data-testid={`minigame-room-closed-${outcome.id}`}
+            onChange={(event) => change({ closed: event.target.checked ? [...stage.closed, outcome.id] : stage.closed.filter((id) => id !== outcome.id) })} />
+            選べないことにする：{outcome.labelJa}（代わりに {outcome.fallback}）</label>
+        ))}
         {definition.examples.length > 1 && <label className="minigame-room-example">札の引数の例
           <select value={stage.example} onChange={(event) => change({ example: Number(event.target.value) })}>
             {definition.examples.map((example, index) => <option key={index} value={index}>{Object.entries(example).map(([key, value]) => `${key} ${value}`).join(" ") || "（なし）"}</option>)}
@@ -149,17 +170,18 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
               : <p>なし</p>}
             <h3>使っている場面</h3>
             {uses.length ? <ul>{uses.map((use) => {
-              const opened = miniGameUseUrl(use);
+              const opened = links?.get(use);
               return <li key={`${use.sceneId}:${use.knot}:${use.prefix ?? ""}:${use.line}`}>
                 {use.sceneId}{use.knot && use.knot !== use.sceneId ? `（${use.knot}）` : ""}：auto {use.auto}{use.prefix ? `・prefix ${use.prefix}` : ""}
-                {"url" in opened ? <> <a href={opened.url}>Debugで開く</a></> : <span className="minigame-room-reason">（{opened.reason}）</span>}
+                {!opened ? <span className="minigame-room-reason">（開くリンクを準備中…）</span>
+                  : "url" in opened ? <> <a href={opened.url}>Debugで開く</a></> : <span className="minigame-room-reason">（{opened.reason}）</span>}
               </li>;
             })}</ul> : <p>まだありません。</p>}
             <button type="button" className="secondary minigame-room-open" data-testid={`minigame-room-open-${id}`} onClick={() => {
               openedFrom.current = id;
               setLast(null);
               setRound((count) => count + 1);
-              setStage({ gameId: id, example: 0, auto: null, still: false });
+              setStage({ gameId: id, example: 0, auto: null, still: false, closed: [] });
             }}>遊んでみる</button>
           </section>
         );

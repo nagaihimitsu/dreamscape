@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import { characterImage, characterPlacement, resolveCharacterCostume } from "../content/character-assets";
 import type { StandPosition } from "../content/tags";
@@ -11,30 +11,6 @@ import "./character-portrait.css";
 const characters = catalog.characters;
 
 export { characterForBattle } from "./character-catalog";
-
-/**
- * The picture a standing portrait shows for `path` (2026-11-13): a new expression waits, unseen, until it has loaded and
- * been decoded (src/media/preload.ts loadPicture) while the last one stays, so the figure never vanishes while the next
- * picture loads on a slow network; one loaded ahead (pictureReady) and the portrait's first picture show at once. One
- * that cannot load is shown all the same (CharacterImage then falls back to the neutral face).
- */
-function useArrivedPicture(path: string | null): string | null {
-  const [shown, setShown] = useState(path);
-  const now = path !== shown && (path === null || shown === null || pictureReady(path));
-  if (now) setShown(path);
-  useEffect(() => {
-    if (path === shown || path === null) return;
-    let live = true;
-    const arrive = () => {
-      if (live) setShown(path);
-    };
-    loadPicture(path).then(arrive, arrive);
-    return () => {
-      live = false;
-    };
-  }, [path, shown]);
-  return now ? path : shown;
-}
 
 /** A decorative layer. Position and image are independent of the Ink story, but for a scene's `# stand:` (written by its writer). */
 export function CharacterPortrait({
@@ -66,11 +42,9 @@ export function CharacterPortrait({
       : {},
     [character, sceneId, cityId, countryId, regionId, costume, pose],
   );
-  const image = character ? characterImage(character, { ...selection, emotion }) : null;
-  // A new expression stays unseen until it has loaded, the last one on show meanwhile.
-  const shown = useArrivedPicture(image);
   if (!character) return null;
   const placement = characterPlacement(character, selection);
+  const image = characterImage(character, { ...selection, emotion });
   const neutral = characterImage(character, { ...selection, emotion: "neutral" });
   return (
     <div className={`vn-character${focus ? ` is-${focus}` : ""}`} data-stand={stand} aria-hidden="true" style={{
@@ -80,8 +54,7 @@ export function CharacterPortrait({
       ...(character.figureScale !== undefined ? { "--figure-scale": character.figureScale } as CSSProperties : {}),
     }}>
       <CharacterImage
-        key={shown ?? "placeholder"}
-        path={shown}
+        path={image}
         neutralPath={neutral}
         color={character.placeholderColor}
         fallback={fallback}
@@ -114,7 +87,7 @@ export function CharacterFace({ characterId, emotion, sceneId, cityId }: {
   const neutral = characterImage(character, { ...selection, emotion: "neutral" });
   return (
     <span className="character-face" aria-hidden="true">
-      <CharacterImage key={image ?? "placeholder"} path={image} neutralPath={neutral} color={character.placeholderColor} />
+      <CharacterImage path={image} neutralPath={neutral} color={character.placeholderColor} />
     </span>
   );
 }
@@ -139,34 +112,61 @@ export function CharacterFigure({ characterId, emotion, sceneId, cityId }: {
   const neutral = characterImage(character, { ...selection, emotion: "neutral" });
   return (
     <span className="character-figure" aria-hidden="true">
-      <CharacterImage key={image ?? "placeholder"} path={image} neutralPath={neutral} color={character.placeholderColor} />
+      <CharacterImage path={image} neutralPath={neutral} color={character.placeholderColor} />
     </span>
   );
 }
 
+/**
+ * A character's picture. A new expression (or outfit) replaces the one on screen only once its file has loaded and
+ * decoded (src/media/preload.ts loadPicture; one the background loading has made ready goes up at once): until then the
+ * last picture stays up, so the figure never goes blank while a file arrives. A file that cannot be shown falls back to
+ * the neutral picture, then to `fallback` or the placeholder.
+ */
 function CharacterImage({ path, neutralPath, color, fallback, onImageError, breathOf }: {
   path: string | null;
   neutralPath: string | null;
   color: string;
   fallback?: ReactNode;
   onImageError?: (path: string) => void;
-  /** A standing portrait's character: its picture breathes (character-portrait.css), going on from where the last picture was. */
+  /** A standing portrait's character: its picture breathes (character-portrait.css). */
   breathOf?: string;
 }) {
   const [failedPaths, setFailedPaths] = useState<string[]>([]);
-  // Read once as the picture is put up (scene-atmosphere.ts portraitBreath): a new expression takes the breath on.
+  // Read once as the picture is first put up (scene-atmosphere.ts portraitBreath): the same <img> takes each new
+  // expression, so the breath goes on through a change.
   const [breath] = useState(() => {
     if (breathOf === undefined) return undefined;
     const { durationMs, delayMs } = portraitBreath(breathOf, typeof performance === "undefined" ? 0 : performance.now());
     return { animationDuration: `${durationMs}ms`, animationDelay: `${delayMs}ms` };
   });
-  const candidate = [path, neutralPath].find((item) => item && !failedPaths.includes(item));
-  if (candidate) return (
-    // A figure on stage is what the scene is about: fetched before the music and the ambience streaming meanwhile.
-    <img src={`${import.meta.env.BASE_URL}${candidate}`} alt="" fetchPriority="high" style={breath} onError={() => {
-      onImageError?.(candidate);
-      setFailedPaths((failed) => [...failed, candidate]);
-    }} />
+  const candidate = [path, neutralPath].find((item) => item && !failedPaths.includes(item)) ?? null;
+  // The picture on screen: the first at once (nothing to keep up yet), each later one once it is ready.
+  const [shown, setShown] = useState(candidate);
+  const reportError = useRef(onImageError);
+  useEffect(() => { reportError.current = onImageError; });
+  const fail = (failed: string) => {
+    reportError.current?.(failed);
+    setFailedPaths((list) => list.includes(failed) ? list : [...list, failed]);
+  };
+  useEffect(() => {
+    if (candidate === shown) return;
+    // Nothing worth keeping up (no picture, or one whose file failed), or the next is ready: it goes up at once.
+    if (!candidate || !shown || failedPaths.includes(shown) || pictureReady(candidate)) {
+      setShown(candidate);
+      return;
+    }
+    let current = true;
+    loadPicture(candidate).then(() => {
+      if (current) setShown(candidate);
+    }, () => {
+      if (current) fail(candidate);
+    });
+    return () => { current = false; };
+  }, [candidate, shown, failedPaths]);
+  // A figure on stage is what the scene is about: fetched before the music and the ambience streaming meanwhile.
+  if (shown) return (
+    <img src={`${import.meta.env.BASE_URL}${shown}`} alt="" fetchPriority="high" style={breath} onError={() => fail(shown)} />
   );
   if (fallback) return fallback;
   // Deliberately abstract placeholder, not a final character design.

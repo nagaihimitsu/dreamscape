@@ -34,7 +34,8 @@ function keepPicture(path: string, image: HTMLImageElement) {
 /**
  * Loads the picture at the served path `path` as its screen will (the same URL): a "next" one first among the page's
  * requests, decoded too unless it is only for idle time (the browser keeps decoded pictures as long as it can). It settles
- * when the picture is ready, and fails when it cannot load.
+ * when the picture can be shown, and fails when it cannot (a picture that loaded although its decode() was refused can:
+ * the <img> decodes it as it paints).
  */
 export function loadPicture(path: string, priority: PreloadPriority = "next"): Promise<void> {
   const known = pictures.get(path);
@@ -46,10 +47,14 @@ export function loadPicture(path: string, priority: PreloadPriority = "next"): P
   image.decoding = "async";
   image.fetchPriority = priority === "next" ? "high" : "low";
   image.src = servedUrl(path);
-  const loaded = priority !== "idle" ? image.decode() : new Promise<void>((resolve, reject) => {
-    image.onload = () => resolve();
-    image.onerror = () => reject(new Error(`画像を読み込めませんでした: ${path}`));
-  });
+  const loaded = priority !== "idle"
+    ? image.decode().catch((error: unknown) => {
+      if (!image.complete || image.naturalWidth === 0) throw error;
+    })
+    : new Promise<void>((resolve, reject) => {
+      image.onload = () => resolve();
+      image.onerror = () => reject(new Error(`画像を読み込めませんでした: ${path}`));
+    });
   return loaded.then(() => keepPicture(path, image));
 }
 

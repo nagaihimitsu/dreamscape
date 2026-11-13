@@ -64,6 +64,8 @@
   font-size: 13px;
   line-height: 1.5;
 }
+/* The name of a header button (「⚙設定」) kept on one line. */
+.photo-menu-note-word { white-space: nowrap; }
 
 /* The row's measures follow the stage's width (container units: the screen less its side gutters): three cards show
    whole, the chosen one in the middle (on a 390-px phone 193 px wide) and a smaller one on each side (scaled to 0.38),

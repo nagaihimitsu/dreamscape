@@ -42,7 +42,8 @@ INCLUDE modules.ink
 === gt_jaipur_epilogue ===
 # scene: epilogue
 # person: gt_kamla
-# background: gt_bg_jaipur_hotel_hub
+# background: gt_bg_jaipur_hotel_courtyard
+# tint: off
 # speaker: narrator
 # se: gt_auto_rickshaw_horn
 翌朝、宿の中庭。荷物をまとめ終えた二人の前に、オートリキシャが止まった。降りてきたのは、桃色のサリーのカムラだった。

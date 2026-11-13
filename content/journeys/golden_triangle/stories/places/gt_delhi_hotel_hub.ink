@@ -70,7 +70,8 @@ INCLUDE modules.ink
 # scene: epilogue
 # person: gt_aman
 # on_done: item gt_delhi_aman_wedding_invitation
-# background: gt_bg_delhi_hotel_hub
+# background: gt_bg_delhi_hotel_room
+# tint: off
 # speaker: narrator
 夜更け、宿の部屋。アーグラ行きの荷造りは半分で止まり、{heroine_name}は段ボールの切れ端を眺めていた。五行のデリー。全部、行った。
 # speaker: narrator

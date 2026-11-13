@@ -3,7 +3,7 @@ INCLUDE modules.ink
 
 // ジャイガル砦のデート（噛み合いの選択は2回）。
 // 宝の地図と、祖父が1976年の宝探しで水を運んだという話は、人物の作り話。砦の事実と分けて書く。
-// 地図を買うかは手伝いの knot の選択（買わなくても話は進む）。二人分のチャイは頭の # on_done: で払う。
+// 地図の値段は手伝いの knot のミニゲーム（raju_haggle）で決める（買わなくても話は進む）。二人分のチャイは頭の # on_done: で払う。
 
 // 【3】
 === gt_jaipur_date_jaigarh_fort ===
@@ -156,14 +156,30 @@ INCLUDE modules.ink
 宝物って、見つからない方が、ずっと探していられるね。五十年たっても、男の子が地図を描いて売ってるくらいに
 -> END
 
-// 【3】手伝いの knot：宝の地図を買うか（噛み合いでない選択。断ると、ラージューが地図なしで案内してくれる）
+// 【3】手伝いの knot：宝の地図の値段（ミニゲーム raju_haggle。噛み合いでない選択）。ラージューの言い値は₹50で、
+// 黙っていると₹40、₹30と下がる。決めた値段を払う。₹30で決めると、しぶしぶ安い方の地図。断るか、最後まで決めないと、
+// ラージューが地図なしで案内してくれる。払えない値段は、ゲームが次に安い値段へ下げる（どれも払えなければ断るだけ）。
+// 関係値は前の選択肢のまま（言い値は affection、いちばん安くは spark、₹40と断るは無し）。値切り方は腕前でなく態度で、
+// 値段はどれも1秒以上見えて選べる。
 === gt_jaipur_jaigarh_fort_map ===
-* [言い値で買う # option: buy_map]
+# speaker: gt_raju
+# minigame: raju_haggle auto fair_map
+五十ルピー。……でも、じっと見られると、ぼく、ちょっとずつ負けちゃう
+* [地図の値段：言い値の₹50で買った # option: buy_map]
     # money: -50
     # rel: affection +1
     # speaker: gt_raju
     まいど。……宝が見つかっても、山分けはしないよ
-* [「もう少し安くならない？」と値切る # option: haggle_map]
+* [地図の値段：₹40で話がまとまった # option: fair_map]
+    # money: -40
+    # speaker: gt_raju
+    四十。……うん、決まり。ナーナーが言ってた。ちょっとだけ値切るお客さんは、ちゃんと最後まで地図を読むって
+    # speaker: narrator
+    ラージューは地図のしわを手のひらで伸ばしてから、両手で差し出した。
+    # speaker: heroine
+    # reaction: heroine,happy,sparkle
+    本物の宝の地図だ。……ねえ、最初の印は、どこ？
+* [地図の値段：₹30まで値切った # option: haggle_map]
     # money: -30
     # rel: spark +1
     # speaker: gt_raju
@@ -173,7 +189,7 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,teasing_big,music
     ふふっ、値段で地図が変わった！
-* [「地図は、今日はいいかな」と断る # option: decline_map]
+* [地図の値段：買わなかった # option: decline_map]
     # set: gt_jaipur_raju_guided
     # speaker: gt_raju
     ……じゃあ、見習い期間ってことで、ついてきていいよ。地図は見せないけど

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { searchFairness, type SearchRecord } from "../engines/search/engine";
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { mehndiHiddenName } from "./definition";
-import { MEHNDI_SPOTS, MEHNDI_TARGETS, MEHNDI_TEXTS, mehndiRules, mehndiSetup, type MehndiParams } from "./rules";
+import { MEHNDI_SPOTS, MEHNDI_TARGETS, MEHNDI_TEXTS, mehndiRules, mehndiSetup, type MehndiOutcome, type MehndiParams } from "./rules";
 import { MEHNDI_HIT, MEHNDI_PLACES, mehndiSpotAt, writingSize } from "./Skin";
 
 const record = (actions: SearchRecord["actions"], lapse: SearchRecord["lapse"] = null): SearchRecord => ({ actions, lapse });
@@ -25,13 +25,25 @@ describe("the hidden name's rules", () => {
     expect(outcome([spot("vine")], null, { target: "vine", text: "farhana" })).toBe("found");
   });
 
-  it("leaves it for tomorrow with 「明日にする」 or when the night runs out", () => {
+  it("leaves it for tomorrow only with 「明日にする」: no time limit and no idle limit end the look (2026-11-13)", () => {
     expect(outcome([{ button: "later" }])).toBe("later");
     expect(outcome([{ button: "later" }, spot("thumb")])).toBe("later");
+    for (const target of MEHNDI_TARGETS) expect(mehndiSetup({ target, text: "player" })).toMatchObject({ timeLimitMs: null, idleMs: null });
+    expect(mehndiHiddenName.timed).toBe(false);
+    // A record with a lapse cannot come from a play now; the rules still read it (as later) rather than fail.
     expect(outcome([], "timeout")).toBe("later");
   });
 
-  it("is a fair search for every target: the writing at one of six places, thirty seconds", () => {
+  it("plays 「おまかせ」 by the player's own acts: the place, a wrong place or 「明日にする」, never by waiting", () => {
+    const plans: Record<MehndiOutcome, SearchRecord> = {
+      found: record([spot("thumb")]),
+      wrong_spot: record([spot("index")]),
+      later: record([{ button: "later" }]),
+    };
+    for (const item of mehndiHiddenName.outcomes) expect(mehndiRules.autoRecord(item.id as MehndiOutcome, thumb), item.id).toEqual(plans[item.id as MehndiOutcome]);
+  });
+
+  it("is a fair search for every target: the writing at one of six places", () => {
     for (const target of MEHNDI_TARGETS) expect(searchFairness(mehndiSetup({ target, text: "player" }))).toEqual([]);
     const schema = mehndiHiddenName.params({ effectIds: [], backgroundIds: [], emotionIds: [] });
     for (const target of MEHNDI_TARGETS) for (const text of MEHNDI_TEXTS) expect(() => schema.parse({ target, text })).not.toThrow();
