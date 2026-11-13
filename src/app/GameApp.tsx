@@ -35,7 +35,7 @@ import { titleSaveActions } from "./save-recovery";
 import type { DeleteSnapshot } from "./save-deletion";
 import { CreditsDialog } from "./CreditsDialog";
 import { OldDataCleanup } from "./OldDataCleanup";
-import { oldDataContext, type KeyedStorage } from "../persistence/old-data";
+import { oldDataContext, readOldData, type KeyedStorage } from "../persistence/old-data";
 import { CanalScene } from "../components/CanalScene";
 import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
@@ -348,6 +348,12 @@ export function GameApp({
   const [confirmDeparture, setConfirmDeparture] = useState(false);
   const [settings, setSettings] = useState(false);
   const [oldDataOpen, setOldDataOpen] = useState(false);
+  // The title's way into 「古い保存データの整理」, beside its notice of a save it cannot open: only when the list has
+  // something (read as the notice appears; the dialog says so if a cleanup has emptied it since).
+  const titleOldData = useMemo(() => {
+    if (game || !invalid || isDebug || !oldDataStorage) return false;
+    try { return readOldData(oldDataStorage, oldDataContext(journeyId)).items.length > 0; } catch { return false; }
+  }, [game, invalid, isDebug, oldDataStorage, journeyId]);
   const [creditsOpen, setCreditsOpen] = useState(false);
   const [switchJourneyTo, setSwitchJourneyTo] = useState<string | null>(null);
   // This journey's screen is the end of a switch (or of the lock's 再試行):
@@ -820,6 +826,8 @@ export function GameApp({
                   >
                     保存データを消去する
                   </button>}
+                  {titleOldData && <button type="button" className="text-button old-data-entry"
+                    onClick={() => setOldDataOpen(true)}>古い保存データの整理</button>}
                 </div>
               )}
               {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} restoreFocus={selectorFocus?.restoreFocus} />}
