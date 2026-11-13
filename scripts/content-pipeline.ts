@@ -1,9 +1,13 @@
+import { existsSync, readFileSync } from "node:fs";
 import { checkContentImages } from "./content-images";
 import { derivedImageList, prepareDerivedImages } from "./derived-images";
 import { writeContentOutputs } from "./content-outputs";
-import { loadContentSources, type ContentLoadOptions } from "./content-sources";
+import { loadContentSources, parseCatalog, type ContentLoadOptions } from "./content-sources";
 import { validateContent } from "./content-validation";
-import { markSampleCopies, readObservationCards, tourismPhotos, tourismPhotoWarnings } from "./image-optimization";
+import { characterCatalogSchema } from "../src/content/character-assets";
+import {
+  markSampleCopies, portraitsOf, portraitWarnings, readObservationCards, tourismPhotos, tourismPhotoWarnings, webpCompressionOf,
+} from "./image-optimization";
 import { imageJourneyIndex } from "./image-rights";
 import { sampleMarks } from "./sample-journey";
 import { chooseStoryCache, type StoryValidationCache } from "./story-validation-cache";
@@ -15,6 +19,7 @@ import { voiceRecordWarnings } from "./voice-changes";
 // warnings about photos to convert (image-optimization.ts) also read the
 // observation cards of authoring/, which name the photos that keep their size,
 // and the sample journey's images, whose copies are left to journey:readiness;
+// the warnings about portraits served lossless read the served WebP files;
 // the warnings about recorded lines that changed read what the clips say
 // (authoring/journeys/<journeyId>/voice/recorded.json, voice-changes.ts).
 //
@@ -52,5 +57,9 @@ export async function buildContent(
     derivedImages = { count: derived.files.size, made: derived.made };
   }
   const photos = markSampleCopies(tourismPhotos(sources, content.tourism, readObservationCards(root, sources.manifests, "skip")), sampleMarks().imageHashes);
-  return { ...content, derivedImages, warnings: [...content.warnings, ...tourismPhotoWarnings(sources, photos), ...voiceRecordWarnings(sources)] };
+  // The portraits still served lossless (image-optimization.ts; reads the served WebP files).
+  const portraits = portraitsOf(sources, parseCatalog(sources, characterCatalogSchema, "presentation/characters.json"));
+  const compressionOf = (file: string) => existsSync(file) ? webpCompressionOf(readFileSync(file)) : undefined;
+  return { ...content, derivedImages, warnings: [...content.warnings, ...tourismPhotoWarnings(sources, photos),
+    ...portraitWarnings(sources, portraits, compressionOf), ...voiceRecordWarnings(sources)] };
 }

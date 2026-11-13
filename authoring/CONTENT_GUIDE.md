@@ -690,10 +690,11 @@ EXTERNAL cond(text)
 
 ### 基本の衣装・表情の画像を足す
 
-1. 背景を透過した全身のPNGかWebPを用意します。白背景の参照画像は正式な立ち絵とは別に管理し、拡張子だけを変えて登録しないでください。基本の衣装 `default_01` の `standing_01` は **1024×1536px** を共通のキャンバスにしています。同じ衣装・ポーズの差分は、人物の位置とキャンバスをそろえ、画像ごとに切り抜きません。配信するファイルは、見た目の変わらない可逆のWebPにすると軽くなります（今の12表情は可逆のWebPで、PNGの約4割の大きさ。元のPNGは配信しない `authoring/characters/heroine/default_01/standing_01/` にあります。可逆のWebPは、たとえば sharp の `.webp({ lossless: true, effort: 6 })` や `cwebp -lossless` で作れます）。
-2. たとえば `public/assets/characters/heroine/default_01/standing_01/neutral.webp` に置き、`characters.json` の `heroine` → `costumes` → `default_01` → `poses` → `standing_01` の `expressions` に `"neutral": "assets/characters/heroine/default_01/standing_01/neutral.webp"` と登録します。パスは `public/` からの相対パスです。Dreamscape のために作った絵なので、同じパスを [`content/presentation/own-artwork.json`](../content/presentation/own-artwork.json) の立ち絵の `paths` にも1行足します（足さないと `npm run content:check` が「出典のない画像」で止まります。自作の絵は出典の一覧に載せません。[技術設計](../docs/02_TECH_ARCHITECTURE.md#画像の出典と自作の絵)）。
-3. 表情IDは `neutral`、`smile`、`happy`、`shy`、`shy_deep`、`surprised`、`surprised_big`、`worried`、`serious`、`teasing`、`teasing_big`、`exasperated` です。差分が届いたら `expressions` に1枚ずつ足し、届いていないファイルは登録しません。`neutral` だけでもその衣装が使われ、登録のない表情は同じ衣装・ポーズの `neutral` が出ます。表情の指定には Ink の `# emotion:` を使います。
-4. `npm run content:check` を実行します。登録したファイルがあること、実際の形式・寸法・透過の画素、表情や衣装の参照を確かめます。背景がきれいに切り抜けているか、透過の縁の質までは確かめないので、下のプレビューで目で確かめてください。衣装が届いていないときは基本の素材を使い、画像を読み込めなくても会話は続きます。
+1. 背景を透過した全身の絵を、可逆のPNGで用意します。白背景の参照画像は正式な立ち絵とは別に管理し、拡張子だけを変えて登録しないでください。基本の衣装 `default_01` の `standing_01` は **1024×1536px** を共通のキャンバスにしています。同じ衣装・ポーズの差分は、人物の位置とキャンバスをそろえ、画像ごとに切り抜きません。この元の絵は配信しない制作資料に、配信のパスの `assets/` より下と同じ場所で置きます（例 `authoring/characters/heroine/default_01/standing_01/neutral.png`。今の12表情の元の絵もここにあります）。
+2. 配信するパス `public/assets/characters/heroine/default_01/standing_01/neutral.webp` を、`characters.json` の `heroine` → `costumes` → `default_01` → `poses` → `standing_01` の `expressions` に `"neutral": "assets/characters/heroine/default_01/standing_01/neutral.webp"` と登録します。パスは `public/` からの相対パスで、配信するのは WebP です。Dreamscape のために作った絵なので、同じパスを [`content/presentation/own-artwork.json`](../content/presentation/own-artwork.json) の立ち絵の `paths` にも1行足します（足さないと `npm run content:check` が「出典のない画像」で止まります。自作の絵は出典の一覧に載せません。[技術設計](../docs/02_TECH_ARCHITECTURE.md#画像の出典と自作の絵)）。
+3. `npm run images:optimize -- --write` を実行すると、元の絵から配信用の軽い版（非可逆の WebP 品質85。透明度は元の絵のまま）を `public/assets/…` に作ります。2026-11-13のユーザー判断「軽い版を配る」：可逆の WebP より約8割小さく、遅い回線でも最初の場面の立ち絵が早く出て、スマートフォンの大きさでは違いが見えません。元の絵を描き直したときも同じコマンドで作り直します（変わった絵だけ書き換えます）。可逆の WebP を直接置いたときは、コマンドがそれを元の絵として制作資料にPNGで残してから軽い版にします。可逆の WebP や PNG のまま配信していると、`content:build` が注意で知らせます。
+4. 表情IDは `neutral`、`smile`、`happy`、`shy`、`shy_deep`、`surprised`、`surprised_big`、`worried`、`serious`、`teasing`、`teasing_big`、`exasperated` です。差分が届いたら `expressions` に1枚ずつ足し、届いていないファイルは登録しません。`neutral` だけでもその衣装が使われ、登録のない表情は同じ衣装・ポーズの `neutral` が出ます。表情の指定には Ink の `# emotion:` を使います。
+5. `npm run content:check` を実行します。登録したファイルがあること、実際の形式・寸法・透過の画素、表情や衣装の参照を確かめます。背景がきれいに切り抜けているか、透過の縁の質までは確かめないので、下のプレビューで目で確かめてください。衣装が届いていないときは基本の素材を使い、画像を読み込めなくても会話は続きます。
 
 ### 配置・衣装・表情の指定
 

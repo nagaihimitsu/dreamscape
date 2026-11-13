@@ -69,7 +69,7 @@ Dreamscapeを開発・制作する人の入口です。起動とコマンド、�
 | `npm run city:bundle` | 都市単位の作業用JSONで地点・交通・背景などを編集（[手順](../authoring/CITY_BUNDLES.md)） |
 | `npm run schemas:build` | エディタの入力補助（JSON Schema）を作り直す。`authoring/schemas/` に、旅行編の `manifest.json`・都市・経路・旅行設定・交通判断台帳・クイズ・各カタログのスキーマを書き、`.vscode/settings.json` でそれぞれのファイルに結び付ける（VS Code で項目の候補・型・書き間違いが出る）。データの書式を変えたときに実行し、作ったファイルもコミットする。入力の補助だけで、検査は `content:build` |
 | `npm run icons:build` | `authoring/brand/favicon-master.png` から `public/` のファビコン（16・32・48px、顔の切り抜き）、Apple touch icon（180px）、アプリアイコン（192・512px）を作り直す。元画像を差し替えたときだけ実行し、生成した画像もコミットする |
-| `npm run images:optimize` | 観光写真を配信用の WebP（品質80）にする。そのままでは確認だけで、`--write` を付けると書き換える（`--journey <旅行編ID>` で1つの旅行編だけ。例 `npm run images:optimize -- --journey <旅行編ID> --write`）。観察で拡大する写真（観光地の画像と観察資料の画像）は同じ大きさ、ほかは幅1600px・高さ1800pxの枠に収め、写真の色の情報（ICCプロファイル）は残す。カタログの `path`・`width`・`height`・`modificationJa` と観察資料の `path`・`sha256` も書き換え、元のファイルを消す（出典と確認日は変えない）。仮の画像（`isPlaceholder`）と見本の画像は変えない。変換できる写真があると `content:build` が警告する |
+| `npm run images:optimize` | 観光写真を配信用の WebP（品質80）にし、立ち絵の配信用の軽い版（非可逆の WebP 品質85、透明度は可逆）を `authoring/` の元の絵（可逆のPNG）から作る。そのままでは確認だけで、`--write` を付けると書き換える（`--journey <旅行編ID>` で1つの旅行編だけ。例 `npm run images:optimize -- --journey <旅行編ID> --write`）。観察で拡大する写真（観光地の画像と観察資料の画像）は同じ大きさ、ほかは幅1600px・高さ1800pxの枠に収め、写真の色の情報（ICCプロファイル）は残す。カタログの `path`・`width`・`height`・`modificationJa` と観察資料の `path`・`sha256` も書き換え、元のファイルを消す（出典と確認日は変えない）。仮の画像（`isPlaceholder`）と見本の画像は変えない。立ち絵は元の絵から作り直し、変わったものだけ書き換える（元の絵のない可逆の立ち絵は、先にそれを元の絵として残す）。変換できる写真や可逆のまま配信している立ち絵があると `content:build` が警告する |
 
 どの確認をいつ行うかは[開発時の確認](10_DEVELOPMENT_CHECKS.md)にあります。
 
