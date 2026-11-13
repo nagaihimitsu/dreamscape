@@ -212,7 +212,7 @@ INCLUDE modules.ink
 屋台の男は事情を察したらしい。二人の器に、交互に置き始めた。一つ置くごとに、手が速くなる。周りの客が数を数え出す。
 * [ゴルガッパの勝負：十四で、二人同時に手を上げた # option: together]
     # speaker: narrator
-    七。八。九。十二で、彼女が胸を叩いた。十三で、こちらがむせた。十四で、二人とも同時に手を上げた。
+    七。八。九。十二で、彼女が胸を叩いた。十三で、こちらの目に涙がにじんだ。十四の声に重なって、二人ともほとんど同時に手を上げた。
     # speaker: heroine
     # reaction: heroine,teasing_big,music
     # voice: gt_delhi_date_chandni_chowk_011

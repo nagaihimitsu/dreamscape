@@ -25,7 +25,40 @@
 }
 .mg-engine-shape-drag .mg-shape-drag-board[data-rolling] { cursor: grabbing; }
 .mg-engine-shape-drag .mg-shape-drag-controls { flex: none; padding: 8px 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
-.mg-engine-shape-drag .mg-shape-drag-hint { margin: 0 0 8px; font-size: 13px; line-height: 1.5; text-align: center; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+.mg-engine-shape-drag .mg-shape-drag-hint { margin: 0 0 8px; font-size: 15px; line-height: 1.45; text-align: center; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+/* The skin's meter over the hint: its name, a bar with a mark (where the outcome changes), the value in words. The bar
+   fills brighter past the mark (and the words say the number: not colour alone). */
+.mg-engine-shape-drag .mg-shape-drag-meter { display: flex; gap: 10px; align-items: center; margin: 0 0 6px; }
+.mg-engine-shape-drag .mg-shape-drag-meter-label { flex: none; font-size: 14px; font-weight: 700; }
+.mg-engine-shape-drag .mg-shape-drag-meter-bar {
+  position: relative;
+  flex: 1 1 auto;
+  height: 12px;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 6px;
+  background: rgba(31, 36, 48, 0.6);
+}
+.mg-engine-shape-drag .mg-shape-drag-meter-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 6px;
+  background: #b9a27a;
+  transition: width 160ms ease-out;
+}
+.mg-engine-shape-drag .mg-shape-drag-meter-fill[data-over] { background: #f6d27a; box-shadow: 0 0 8px rgba(246, 210, 122, 0.7); }
+.mg-engine-shape-drag .mg-shape-drag-meter-mark {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 3px;
+  border-radius: 1px;
+  background: var(--ds-on-slate);
+  box-shadow: 0 0 0 1px var(--ds-slate-900);
+  transform: translateX(-50%);
+}
+.mg-engine-shape-drag .mg-shape-drag-meter-text { flex: none; min-width: 4.5em; font-size: 15px; font-weight: 700; text-align: right; }
 .mg-engine-shape-drag .mg-shape-drag-done {
   justify-content: center;
   width: 100%;
@@ -49,7 +82,8 @@
 }
 @media (max-height: 620px) {
   .mg-engine-shape-drag .mg-shape-drag-controls { padding-top: 4px; }
-  .mg-engine-shape-drag .mg-shape-drag-hint { margin-bottom: 4px; font-size: 12px; }
+  .mg-engine-shape-drag .mg-shape-drag-hint { margin-bottom: 4px; font-size: 13px; }
+  .mg-engine-shape-drag .mg-shape-drag-meter { margin-bottom: 2px; }
   .mg-engine-shape-drag .mg-shape-drag-done, .mg-engine-shape-drag .mg-shape-drag-auto { min-height: 54px; }
 }
 /* A warning in place of the hint (the skin's: 「生地がうすくなってきた」): brighter and bold. */
