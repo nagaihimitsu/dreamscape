@@ -1,10 +1,10 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { allRewardRules, dates, effects, episodes as allEpisodes, progression } from "../../../src/content";
+import { allRewardRules, dates, episodes as allEpisodes, progression } from "../../../src/content";
 import { conditionLeaves } from "../../../src/content/condition-schemas";
 import { playBattleToResult, wrongAnswer } from "../../../src/dev/scenario-builders";
 import {
   advanceDate, chooseDate, createGame, finishDate, getDateAvailability,
-  isEventVisible, startDate, validateGameState, type GameState,
+  isEventVisible, startDate, taggedDateScene, validateGameState, type GameState,
 } from "../../../src/domain/game";
 import { enterFreeTime, getNextStoryBattle, startEpisode } from "../../../src/domain/chapter";
 import { leaveBattle, startBattle } from "../../../src/domain/battle";
@@ -125,17 +125,16 @@ describe("real-place optional dates", () => {
       const resolutions: NonNullable<GameState["activeDate"]>["resolvedChoices"] = [];
       const after = playDate(before, id, [first, second], [], resolutions);
       const memories = after.memories.filter((memory) => !before.memories.includes(memory));
-      // The second choice's effects keep their IDs (`sound_<date>_2_<n>`, named in the Ink's effect tags): the v14 renames moved the stories only.
-      const effectStem = `sound_${id.replace(/^milano_/u, "")}`;
-      const chosenEffects = [
-        effects.find((effect) => effect.id === `common_date_first_${firstProfiles[index][first]}`)!,
-        effects.find((effect) => effect.id === `${effectStem}_2_${second + 1}`)!,
-      ];
-      expect(chosenEffects.every(Boolean)).toBe(true);
+      // The date's choices as its knot writes them (# option:, # profile:, # memory:): the first moment's three, then the second's.
+      const options = taggedDateScene(id)!.options;
+      const chosen = [options.find((option) => option.id === `first_${firstProfiles[index][first]}`)!, options[3 + second]];
+      expect(chosen.every(Boolean)).toBe(true);
+      expect(chosen[1].id.startsWith("second_")).toBe(true);
       // Each destination date records one shared memory, after the second choice.
-      expect(memories).toEqual([chosenEffects[1].memoryId]);
+      expect(chosen[0].memory).toBeUndefined();
+      expect(memories).toEqual(chosen[1].memory);
       expect(after.playedDateIds).toContain(id);
-      expect(resolutions.map((entry) => entry.effectId)).toEqual(chosenEffects.map((effect) => effect.id));
+      expect(resolutions.map((entry) => entry.optionId)).toEqual(chosen.map((option) => option.id));
       expect(after.affection).toBe(before.affection + resolutions.reduce((sum, entry) => sum + entry.deltas.affection, 0));
       expect(after.trust).toBe(before.trust + resolutions.reduce((sum, entry) => sum + entry.deltas.trust, 0));
       expect(after.spark).toBe(before.spark + resolutions.reduce((sum, entry) => sum + entry.deltas.spark, 0));

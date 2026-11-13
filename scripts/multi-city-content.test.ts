@@ -1,12 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { buildContent } from "./content-pipeline";
 import { validateCityLinks } from "./city-links";
 import { readJourneyCatalog, readJourneyManifests } from "./content-sources";
 import { citySchema } from "../src/content/schemas";
-import { prepareContentFixture } from "../src/content/test-fixtures";
+import { splitStoryAddress } from "../src/content/story-address";
+import { oneSceneBody, placeKnot, prepareContentFixture } from "../src/content/test-fixtures";
 
 let root: string;
 const prefix = (id: string) => `test_${id}`;
@@ -56,10 +57,17 @@ async function addSecondCity() {
   await write(`${mi}/progression/journey.json`, journey);
 
   const battles = await read(`${mi}/battles/catalog.json`);
-  battles.battles.push(...battles.battles.filter((battle: any) => chosenEpisodes.some((episode: any) => episode.battleId === battle.id))
-    .map((battle: any) => ({ ...battle, id: prefix(battle.id), quizId: prefix(battle.quizId),
-      ...(battle.cityId ? { cityId: second.id } : {}), landmarkId: battle.landmarkId && prefix(battle.landmarkId) })));
+  const copied = battles.battles.filter((battle: any) => chosenEpisodes.some((episode: any) => episode.battleId === battle.id));
+  battles.battles.push(...copied.map((battle: any) => ({ ...battle, id: prefix(battle.id), quizId: prefix(battle.quizId), storyId: `battles/${prefix(battle.id)}`,
+    ...(battle.cityId ? { cityId: second.id } : {}), landmarkId: battle.landmarkId && prefix(battle.landmarkId) })));
   await write(`${mi}/battles/catalog.json`, battles);
+  // A place file's knot is one battle's scene: each copy gets a one-scene file with the same lines.
+  await mkdir(path.join(root, mi, "stories/battles"), { recursive: true });
+  for (const battle of copied) {
+    const { storyId, path: knot } = splitStoryAddress(battle.storyId);
+    const source = await readFile(path.join(root, mi, "stories", `${storyId}.ink`), "utf8");
+    await writeFile(path.join(root, mi, "stories/battles", `${prefix(battle.id)}.ink`), `INCLUDE modules.ink\n${oneSceneBody(placeKnot(source, knot!).text)}`);
+  }
 
   const learning = await read(`${mi}/learning/translations.json`);
   for (const name of ["milano_main_duomo_quiz", "milano_finale_quiz"]) {

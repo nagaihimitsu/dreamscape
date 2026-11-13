@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { buildContent } from "../../scripts/content-pipeline";
-import { changeCatalogEntry, prepareContentFixture } from "./test-fixtures";
+import { changeCatalogEntry, placeKnot, prepareContentFixture, storySourceFile } from "./test-fixtures";
 import { validateJourney } from "../../scripts/journey-validation";
 import { journeySchema, type JourneyConfig } from "./journey-schemas";
 import { battleCatalogSchema } from "./schemas";
@@ -89,7 +89,7 @@ describe("integrated journey content contract", () => {
     expect(finale.requiredEpisodeIds).toEqual(
       stops.map((episode) => episode.id),
     );
-    expect(finale.epilogueStoryId).toBe("epilogues/milano");
+    expect(finale.epilogueStoryId).toBe("places/milano_darsena.milano_epilogue");
     const firstClear = result.journey.rewards.find(
       (rule) => rule.id === cityData.firstClearReward.rewardSourceId,
     )!;
@@ -299,7 +299,9 @@ describe("the main parts' shape and the progression check in the build (unified 
     await changeCatalogEntry(fixture, "tourism/catalog.json", "landmarks", "last_supper", (landmark: { guideStoryId?: string }) => {
       delete landmark.guideStoryId;
     });
-    await rm(path.join(fixture, "content/journeys/milano/stories/tourism/milano_last_supper_guide.ink"));
+    // The guide is a knot of the Last Supper's place file: with no catalog pointing at it, it goes too.
+    const placeFile = path.join(fixture, storySourceFile("places/milano_last_supper"));
+    await writeFile(placeFile, placeKnot(await readFile(placeFile, "utf8"), "last_supper_guide").without);
     await expect(buildContent(fixture, false)).rejects.toThrow(/Guide reward at a landmark without a guide: milano_last_supper_episode/);
     await changeReward(rewardIds[0], (_rule, journey) => {
       journey.rewards = journey.rewards.filter((rule) => rule.id !== rewardIds[0]);
@@ -311,6 +313,7 @@ describe("the main parts' shape and the progression check in the build (unified 
       delete landmark.guideStoryId;
       landmark.observation = false;
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/Encounter while observing at a landmark without an observation: supper_pantomime/);
+    // The silent-film encounter is a knot of the Last Supper's place file, met after the observation (# priority: after observe).
+    await expect(buildContent(fixture, false)).rejects.toThrow("# priority: after observe needs a landmark with a observation: supper_pantomime at last_supper (A2)");
   });
 });

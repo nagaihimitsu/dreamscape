@@ -1,6 +1,6 @@
 import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it } from "vitest";
-import { dates, effects, progression } from "../content";
+import { dates, progression } from "../content";
 import { beginStory, continueStory } from "../story/runtime";
 import {
   advanceDate,
@@ -14,6 +14,7 @@ import {
   getPlayerAddress,
   setNames,
   startDate,
+  taggedDateScene,
   validateGameState,
   type GameState,
 } from "./game";
@@ -131,17 +132,18 @@ describe("relationship progression", () => {
           const resolutions: NonNullable<GameState["activeDate"]>["resolvedChoices"] = [];
           const completed = play(state, id, [first, second], [], resolutions);
           const firstProfiles = id === walk ? ["playful", "attentive", "bold"] : ["playful", "attentive", "honest"];
-          const chosen = [
-            effects.find((effect) => effect.id === `common_date_first_${firstProfiles[first]}`)!,
-            effects.find((effect) => effect.id === `sound_${id.replace("milano_", "")}_2_${second + 1}`)!,
-          ];
+          // The date's choices as its knot writes them (# option:, # profile:, # memory:): the first moment's three, then the second's.
+          const options = taggedDateScene(id)!.options;
+          const chosen = [options.find((option) => option.id === `first_${firstProfiles[first]}`)!, options[3 + second]];
           expect(chosen.every(Boolean)).toBe(true);
-          expect(resolutions.map((entry) => entry.effectId)).toEqual(chosen.map((effect) => effect.id));
+          expect(chosen[1].id.startsWith("second_")).toBe(true);
+          expect(resolutions.map((entry) => entry.optionId)).toEqual(chosen.map((option) => option.id));
           expect(completed.affection).toBe(before + resolutions.reduce((sum, entry) => sum + entry.deltas.affection, 0));
           expect(completed.trust).toBe(state.trust + resolutions.reduce((sum, entry) => sum + entry.deltas.trust, 0));
           expect(completed.spark).toBe(state.spark + resolutions.reduce((sum, entry) => sum + entry.deltas.spark, 0));
           expect(completed.memories.length).toBe(state.memories.length + 1);
-          expect(completed.memories).toContain(chosen[1].memoryId);
+          expect(chosen[1].memory).toHaveLength(1);
+          expect(completed.memories).toContain(chosen[1].memory![0]);
           expect(completed.ap).toBe(
             state.ap - dates.find((date) => date.id === id)!.apCost,
           );

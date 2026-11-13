@@ -7,7 +7,7 @@ import { createDebugState } from "../src/dev/debug-state";
 import { dates, getCityContent, landmarks, stories } from "../src/content";
 import { encounters } from "../src/content/encounters";
 import { normalizeEncounterCatalog } from "../src/content/encounter-schemas";
-import { prepareContentFixture, storySourceFile } from "../src/content/test-fixtures";
+import { ONE_SCENE_DATE_FILE, prepareContentFixture } from "../src/content/test-fixtures";
 import { advanceEncounter, chooseEncounter, finishEncounter } from "../src/domain/encounter";
 import { closeTourism } from "../src/domain/tourism";
 import { meetEncounter } from "../tests/fixtures/encounter-moment";
@@ -105,7 +105,8 @@ VAR heroine_name = ""
       apCost: 2,
     });
     await writeFile(travelPath, JSON.stringify(travelCatalog));
-    let dateInk = await readFile(path.join(root, storySourceFile("dates/milano_date_cafe")), "utf8");
+    // A one-scene date (# effect: after each choice), as a new author writes one: the test fixture of that form.
+    let dateInk = await readFile(path.resolve(ONE_SCENE_DATE_FILE), "utf8");
     for (const [index, profile] of [[1, "playful"], [2, "attentive"], [3, "honest"]] as const) {
       dateInk = dateInk.replace(`sound_cafe_01_2_${index}`, `common_date_second_${profile}`);
     }

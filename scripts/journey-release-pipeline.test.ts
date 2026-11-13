@@ -4,6 +4,8 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { journeyRequirements, loadJourneyScaffold } from "./journey-scaffold";
 import { prepareJourneyRelease } from "./promote-journey";
+import { splitStoryAddress } from "../src/content/story-address";
+import { ONE_SCENE_DATE_FILE, oneSceneBody, placeKnot } from "../src/content/test-fixtures";
 
 // The whole journey:release pipeline (prepareJourneyRelease) on a copy of the
 // project. It needs a journey with an authoring profile, travel data and
@@ -90,13 +92,25 @@ const scene = { titleJa: "試験", descriptionJa: "試験の場面", clearTitleJ
 const date = { titleJa: "試験", descriptionJa: "試験の場面", memoryTitleJa: "試験の思い出", memoryDescriptionJa: "試験の記録" };
 const originalQuiz = JSON.parse(read(`${milano}/quizzes/milano_main_duomo_quiz.json`));
 const originalTranslations = JSON.parse(read(`${milano}/learning/translations.json`)).questions;
-/** A Milan Ink template for India's folder: Milan's own backgrounds become the shared default background. */
-const inkTemplate = (storyId: string) =>
-  read(`${milano}/stories/${storyId}.ink`).replace(/#\s*background\s*:\s*[A-Za-z0-9_]+/gu, "# background: default_scene");
-const dateTemplate = inkTemplate("dates/milano_date_cafe");
-/** A Milan battle's Ink as a template (its own -> quiz(n) -> calls, stage 5). */
+/**
+ * A Milan Ink template for India's folder: Milan's own backgrounds become the shared default background. A knot of
+ * Milan's place files becomes a one-scene file (India's scaffold writes one-scene files): `top`, then the knot's lines.
+ */
+const withDefaultBackground = (text: string) => text.replace(/#\s*background\s*:\s*[A-Za-z0-9_]+/gu, "# background: default_scene");
+const inkTemplate = (address: string, top: readonly string[] = []) => {
+  const { storyId, path: knot } = splitStoryAddress(address);
+  const source = read(`${milano}/stories/${storyId}.ink`);
+  return withDefaultBackground(knot === undefined ? source : [...top, oneSceneBody(placeKnot(source, knot).text)].join("\n"));
+};
+/** The VAR lines of a one-scene guide or epilogue (a place file's knot has them from modules.ink). */
+const nameVars = ['VAR player_name = ""', 'VAR heroine_name = ""', 'VAR player_address = ""'];
+const guideTemplate = inkTemplate("places/milano_duomo.duomo_milano_guide", [...nameVars, ""]);
+const epilogueTemplate = inkTemplate("places/milano_darsena.milano_epilogue", [...nameVars, "VAR romance_stage = 1", "VAR ending_reached = false", ""]);
+/** A one-scene date with # effect: (the scaffold's form; Milan's dates are knots of place files): the test fixture of that form. */
+const dateTemplate = withDefaultBackground(read(ONE_SCENE_DATE_FILE));
+/** A Milan battle's Ink as a one-scene template (its own -> quiz(n) -> calls, stage 5). */
 const battleTemplate = (battleId: string) =>
-  inkTemplate(JSON.parse(read(`${milano}/battles/catalog.json`)).battles.find((item: { id: string }) => item.id === battleId).storyId);
+  inkTemplate(JSON.parse(read(`${milano}/battles/catalog.json`)).battles.find((item: { id: string }) => item.id === battleId).storyId, ["INCLUDE modules.ink"]);
 
 /** India's catalogs that hold nothing but India's unpublished entries. */
 const emptiedCatalogs = ["progression/journey.json", "battles/catalog.json", "romance/date_catalog.json",
@@ -135,7 +149,7 @@ function authorCity(root: string, plan: ReturnType<typeof journeyRequirements>[n
   writeFileSync(narrativeFile, JSON.stringify(narrative));
   const translations: Record<string, { questionJa: string; optionsJa: Record<string, string> }> = {};
   for (const item of plan.main) {
-    write(`${layer}/stories/${item.guideStoryId}.ink`, inkTemplate("tourism/milano_duomo_guide"));
+    write(`${layer}/stories/${item.guideStoryId}.ink`, guideTemplate);
     write(`${layer}/stories/${item.battleStoryId}.ink`, battleTemplate("milano_duomo_01"));
     const quiz = { ...structuredClone(originalQuiz), id: item.quizId, landmarkId: item.landmarkId };
     quiz.questions.forEach((question: { id: string }, index: number) => {
@@ -156,7 +170,7 @@ function authorCity(root: string, plan: ReturnType<typeof journeyRequirements>[n
     write(`${layer}/stories/${item.storyId}.ink`, story);
   }
   write(`${layer}/stories/${plan.finale.battleStoryId}.ink`, battleTemplate("milano_city_boss_01"));
-  write(`${layer}/stories/${plan.finale.epilogueStoryId}.ink`, inkTemplate("epilogues/milano"));
+  write(`${layer}/stories/${plan.finale.epilogueStoryId}.ink`, epilogueTemplate);
   const finalQuiz = JSON.parse(read(`${milano}/quizzes/milano_finale_quiz.json`));
   finalQuiz.id = plan.finale.quizId; finalQuiz.cityId = plan.cityId;
   finalQuiz.questions.forEach((question: { id: string }, index: number) => {

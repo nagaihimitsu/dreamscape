@@ -251,7 +251,7 @@ export function classifyContentFile(relative: string, layer: LayerType): Content
   return { type: "unknown" };
 }
 
-/** `stories/dates/milano_date_cafe.ink` (relative to its layer) → `dates/milano_date_cafe`. */
+/** `stories/dates/milano_date_confession.ink` (relative to its layer) → `dates/milano_date_confession`. */
 export function storyIdFromPath(relative: string): string | undefined {
   return /^stories\/(.+)\.ink$/u.exec(relative)?.[1];
 }

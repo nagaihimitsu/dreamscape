@@ -66,10 +66,10 @@ describe("the fictional test cities", () => {
         expect(rewardRules.filter((rule) => rule.battleId === battle.id).map((rule) => rule.id))
           .toEqual(rewardRules.filter((rule) => rule.battleId === template[`special_${kind}`]!.battle.id).map((rule) => `test_${rule.id}`));
       }
-      // The sample's stall is a place file's knot (stage 3a): the copy shares its address (its scene fingerprint).
+      // The sample's stall and Milan's broken string are place files' knots (stage 3a): the copy shares its address (its scene fingerprint).
       expect(encounters.encounters.find((item) => item.id === "test_encounter")).toMatchObject({ cityId: "test_city",
         landmarkId: "test_landmark", completionItemId: "test_item",
-        storyId: templateCityId === "mihon" ? "places/smp_mihon_clock_tower.smp_mihon_bookmark_stall" : "test_city/encounter" });
+        storyId: templateCityId === "mihon" ? "places/smp_mihon_clock_tower.smp_mihon_bookmark_stall" : "places/milano_duomo.duomo_string" });
       expect(encounters.items.find((item) => item.id === "test_item")?.cityId).toBe("test_city");
       expect(cityContents.test_city.travel.events.map((event) => event.id))
         .toEqual(["test_episode", "test_special_b", "test_special_c", "test_finale", "test_date"]);

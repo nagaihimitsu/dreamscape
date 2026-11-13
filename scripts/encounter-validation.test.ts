@@ -19,19 +19,25 @@ import { validateEncounterContent } from "./encounter-validation";
 import { zodIssues } from "../tests/fixtures/zod-issues";
 import { loadContentSources, storyFile } from "./content-sources";
 
-// These tests check Milan's encounters and items (cityId "milano", the city of input()); other
-// journeys in the generated catalog (e.g. the sample journey) have their own cities.
+// These tests check the encounters of a catalog (encounters/catalog.json with one-scene stories) and Milan's items
+// (cityId "milano", the city of input()); other journeys in the generated catalog (e.g. the sample journey) have their own cities.
+// Milan's catalog keeps the Galleria fortune (its quiz and lottery); its other encounters became knots of its place files on
+// 2026-11-13, and the tests read them as test data in the catalog form they had until then (tests/fixtures/catalog-encounters/).
 const milanLandmarks = new Set(tourismCatalogSchema.parse(tourismData).landmarks.filter((landmark) => landmark.cityId === "milano").map((landmark) => landmark.id));
-// Milan writes every encounter in full (cityId, sources), the shape of encounterCatalogSchema.
+const FIXTURE = "tests/fixtures/catalog-encounters";
+const fixtureEncounters = (JSON.parse(readFileSync(path.join(FIXTURE, "catalog.json"), "utf8")) as { encounters: EncounterCatalog["encounters"] }).encounters;
+// Milan writes every encounter of its catalog in full (cityId, sources), the shape of encounterCatalogSchema (a place file's
+// scene in the generated catalog is the game's own record of it, without them: left out here).
 const catalogData = {
   ...generatedCatalog,
   items: generatedCatalog.items.filter((item) => item.cityId === "milano"),
-  encounters: generatedCatalog.encounters.filter((event) => milanLandmarks.has(event.landmarkId ?? "")),
+  encounters: [...generatedCatalog.encounters.filter((event) => milanLandmarks.has(event.landmarkId ?? "") && !event.storyId.includes(".")), ...fixtureEncounters],
 } as EncounterCatalog;
 const catalog = encounterCatalogSchema.parse(catalogData);
 const paths = catalog.encounters.flatMap((event) => [event.storyId, ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : [])]);
 const contentSources = loadContentSources(process.cwd());
-const sources = Object.fromEntries(paths.map((id) => [id, readFileSync(storyFile(contentSources, id)!, "utf8")]));
+const fixtureStory = (id: string) => path.join(FIXTURE, `${id}.ink`);
+const sources = Object.fromEntries(paths.map((id) => [id, readFileSync(fixtureEncounters.some((event) => event.storyId === id) ? fixtureStory(id) : storyFile(contentSources, id)!, "utf8")]));
 const stories = Object.fromEntries(Object.entries(sources).map(([id, source]) => [id, compileInk(source, `${id}.ink`)]));
 
 function input() {

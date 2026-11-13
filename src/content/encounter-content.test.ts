@@ -12,8 +12,8 @@ beforeEach(async () => {
 });
 afterEach(async () => { await rm(fixture, { recursive: true, force: true }); });
 
-/** The Castello pick encounter's story (no published Ink asks about an item, so the tests add the query). */
-const PICK_STORY = "encounters/milano_castello_pick";
+/** The Galleria fortune encounter's story, a one-scene catalog encounter (no published Ink asks about an item, so the tests add the query; a place file's scenes read items with cond("item …")). */
+const PICK_STORY = "encounters/milano_galleria_fortune";
 /** The story with an Ink item query (`has_item_status`) on the item, before its last line. */
 function withItemQuery(source: string, itemId: string): string {
   expect(source).not.toContain("has_item_status");
@@ -23,7 +23,8 @@ function withItemQuery(source: string, itemId: string): string {
 
 describe("encounter build integration", () => {
   it("rejects a missing item in the actual encounter catalog", async () => {
-    await changeCatalogEntry(fixture, "encounters/catalog.json", "encounters", "castello_pick", (event) => {
+    // The Galleria fortune is the encounter Milan's catalog still holds (the others are knots of place files).
+    await changeCatalogEntry(fixture, "encounters/catalog.json", "encounters", "galleria_fortune", (event) => {
       event.options[0].giftItemId = "missing_item";
     });
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown encounter item");
@@ -49,10 +50,11 @@ describe("encounter build integration", () => {
   }, 120000);
 
   it("rejects item queries in existing stories which do not receive inventory", async () => {
-    const file = path.join(fixture, storySourceFile("dates/milano_date_cafe"));
+    // The cafe date's place file (the query lands in its last knot, the Starbucks date).
+    const file = path.join(fixture, storySourceFile("places/milano_roastery"));
     const source = await readFile(file, "utf8");
     await writeFile(file, `${source}\n{has_item_status("blue_pick", "gifted"): 持っています}\n`);
-    await expect(buildContent(fixture, false)).rejects.toThrow("Item references are only supported in encounters: dates/milano_date_cafe");
+    await expect(buildContent(fixture, false)).rejects.toThrow("Item references are only supported in encounters: places/milano_roastery");
   }, 120000);
 
   it("rejects an Ink item query belonging to another city", async () => {

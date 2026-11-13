@@ -9,14 +9,15 @@ import { buildContent } from "../../scripts/content-pipeline";
 import { changeCatalogEntry, prepareContentFixture, quizSourceFile, storySourceFile } from "./test-fixtures";
 import battleData from "./generated/content/battles/catalog.json";
 import { quizSchema, type BattleDefinition } from "./schemas";
+import { splitStoryAddress, storyFileOf } from "./story-address";
 import { parseStoryTags } from "./tags";
 
 let fixture: string;
-/** The Last Supper battle; its quiz and Ink, edited below, are found by their IDs. */
+/** The Last Supper battle; its quiz and Ink (a knot of its place file), edited below, are found by their IDs. */
 const battleId = "milano_last_supper_01";
 const battle = battleData.battles.find((entry) => entry.id === battleId)!;
 const quizPath = quizSourceFile(battle.quizId);
-const inkPath = storySourceFile(battle.storyId);
+const inkPath = storySourceFile(storyFileOf(battle.storyId));
 // The quiz as written in its file; the tests below write invalid values into it on purpose.
 const quizData: Record<string, any> = JSON.parse(readFileSync(quizPath, "utf8"));
 
@@ -45,11 +46,12 @@ async function changeInk(before: string, after: string) {
 
 /**
  * The battle's lines between its calls, each quiz answered as `answers` says (as the game returns from `-> quiz(n) ->`):
- * the lines before quiz(1), after quiz(1), …, after the last quiz.
+ * the lines before quiz(1), after quiz(1), …, after the last quiz. `knot`: where the battle starts (its place file's knot).
  */
-function dialogueParts(compiled: string, answers: boolean[]): string[] {
+function dialogueParts(compiled: string, answers: boolean[], knot?: string): string[] {
   const story = new Story(compiled);
   story.allowExternalFunctionFallbacks = true;
+  if (knot !== undefined) story.ChoosePathString(knot);
   const parts: string[] = [];
   for (let answered = 0; ; answered++) {
     const lines: string[] = [];
@@ -92,14 +94,15 @@ describe("battle content contract", () => {
 
   it("uses distinct correct/wrong reactions and completes the ending without UI prose", async () => {
     const result = await buildContent(fixture, false);
-    const compiled = result.stories[result.battles.find((item) => item.id === battleId)!.storyId];
-    const right = dialogueParts(compiled, [true, true, true]);
-    const wrong = dialogueParts(compiled, [false, false, false]);
+    const { storyId, path: knot } = splitStoryAddress(result.battles.find((item) => item.id === battleId)!.storyId);
+    const parts = (answers: boolean[]) => dialogueParts(result.stories[storyId], answers, knot);
+    const right = parts([true, true, true]);
+    const wrong = parts([false, false, false]);
     expect(right).toHaveLength(4);
     for (const index of [1, 2]) expect(right[index]).not.toBe(wrong[index]);
     // The ending responds to the last answer, while the score still
     // remains available for the battle result and reward calculations.
-    const endings = [wrong, dialogueParts(compiled, [false, true, true]), right].map((parts) => parts[3]);
+    const endings = [wrong, parts([false, true, true]), right].map((parts) => parts[3]);
     expect(endings[0]).not.toBe(endings[1]);
     expect(endings[1]).toBe(endings[2]);
     // The discovery for a later round must not be explained by the lines before it.
@@ -213,8 +216,9 @@ describe("battle content contract", () => {
       "「ランプを探してた。",
       "# effect: common_date_first_playful\n「ランプを探してた。",
     );
+    // The place file's reader reads every line of the battle's knot, the wrong answer's branch too (A7).
     await expect(buildContent(fixture, false)).rejects.toThrow(
-      "A battle's lines take no # effect:",
+      "# effect: common_date_first_playful is on an ordinary line of milano_last_supper_01",
     );
   });
 
