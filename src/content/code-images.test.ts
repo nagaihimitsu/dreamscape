@@ -16,6 +16,9 @@ function sourceFiles(directory = "src"): string[] {
   });
 }
 
+// A comment line (a line comment, or a line of a block comment): a path written there names no file.
+const isComment = (line: string) => /^\s*(?:\/\/|\/\*|\*)/u.test(line);
+
 describe("images the code uses", () => {
   it("are files of the root public/ folder, which every journey shares", () => {
     expect(CODE_IMAGE_FILES.length).toBeGreaterThan(0);
@@ -38,7 +41,7 @@ describe("images the code uses", () => {
     const contentFolder = /assets\/(?:album|ambience|bgm|minigames|se|voice)(?=["'`]|\/<)/gu;
     const naming = sourceFiles().filter((file) => file !== "src/content/code-images.ts")
       .flatMap((file) => readFileSync(path.join(root, file), "utf8").split("\n")
-        .flatMap((line, index) => (servedPath.test(line.replace(contentFolder, "")) ? [`${file}:${index + 1}: ${line.trim()}`] : [])));
+        .flatMap((line, index) => (!isComment(line) && servedPath.test(line.replace(contentFolder, "")) ? [`${file}:${index + 1}: ${line.trim()}`] : [])));
     expect(naming).toEqual([]);
   });
 });

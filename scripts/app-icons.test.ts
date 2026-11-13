@@ -10,11 +10,13 @@ import { describe, expect, it } from "vitest";
 // browser: check the files here.
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const html = readFileSync(path.join(root, "index.html"), "utf8");
+const ICON_RELS = new Set(["icon", "apple-touch-icon", "manifest"]);
+// The icon and manifest links (index.html also links the web fonts: preconnect, stylesheet).
 const links = [...html.matchAll(/<link\s[^>]*>/gu)].map(([tag]) => ({
   rel: /\srel="([^"]+)"/u.exec(tag)?.[1],
   href: /\shref="([^"]+)"/u.exec(tag)?.[1] ?? "",
   sizes: /\ssizes="([^"]+)"/u.exec(tag)?.[1],
-}));
+})).filter((link) => link.rel !== undefined && ICON_RELS.has(link.rel));
 
 /** The public/ file served at `href`, relative to the page (the build uses base "./"). */
 function publicFile(href: string): string {
