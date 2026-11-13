@@ -42,6 +42,20 @@
       "creditJa": "Dreamscape 見本の旅のための自作画像（架空の街）",
       "modificationJa": "見本用に図形だけで描いたPNG。写真や実在の建物はもとにしていない。",
       "checkedAt": "2026-11-06"
+    },
+    {
+      "id": "smp_img_mihon_sanji_pan",
+      "path": "assets/tourism/sample_trip/mihon_sanji_pan.png",
+      "width": 240,
+      "height": 160,
+      "altJa": "見本の街の架空のパン「三時パン」を描いた簡単な絵。丸いパンの表に、三時を指す時計の針が焼きつけてある。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://example.com/dreamscape-sample",
+      "licenseName": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creditJa": "Dreamscape 見本の旅のための自作画像（架空の街）",
+      "modificationJa": "旅の図鑑の見本用に図形だけで描いたPNG。写真や実在の食べ物はもとにしていない。",
+      "checkedAt": "2026-11-13"
     }
   ],
   "landmarks": [

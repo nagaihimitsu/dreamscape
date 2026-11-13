@@ -14,6 +14,7 @@ import { bindItemReader, type ItemStatus } from "./items";
 import { encounters } from "../content/encounters";
 import { REACTION_MARKS } from "../content/dialogue-reactions";
 import { ALBUM_IMAGE_ID } from "../content/album-images";
+import { TERM_ID } from "../content/glossary";
 import { VOICE_ID } from "../content/voice-files";
 import { SOUND_ID } from "../content/sounds";
 import { MINI_GAME_ID, MINI_GAME_OUTCOME_ID } from "../minigames/contract";
@@ -53,6 +54,8 @@ export const storyFrameSchema = z
       show: z.literal("large").optional(),
     }).strict().optional(),
     localWordIds: z.array(z.string().regex(/^[a-z][a-z0-9_]*$/u)).min(1).optional(),
+    // `# term:` (旅の図鑑, 2026-11-13): the terms the line names first.
+    termIds: z.array(z.string().regex(TERM_ID)).min(1).optional(),
     // The scene tags (frame-reader.ts stageFrame): presentation only.
     recall: albumImageIdSchema.optional(),
     phone: z.object({

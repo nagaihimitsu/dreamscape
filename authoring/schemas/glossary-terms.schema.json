@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dreamscape: 旅の図鑑の言葉（glossary/terms.json）",
+  "$comment": "npm run schemas:build が zod のスキーマから作ります。手で直さないでください。入力の補助だけで、検査は npm run content:build です。",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "terms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "nameJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "readingJa": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "language": "ja"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "aliasJa": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "language": "ja"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "food",
+              "creature",
+              "thing",
+              "building",
+              "custom",
+              "person",
+              "transport"
+            ]
+          },
+          "lineJa": {
+            "type": "string",
+            "minLength": 1,
+            "language": "ja"
+          },
+          "imageId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          }
+        },
+        "required": [
+          "id",
+          "nameJa",
+          "category",
+          "lineJa",
+          "imageId"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

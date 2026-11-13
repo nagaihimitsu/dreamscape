@@ -10,6 +10,7 @@ const catalog: MediaCatalog = {
   figure: (characterId, emotion, look) => `fig/${characterId}/${look.cityId ?? "-"}/${emotion}`,
   personFigure: (line) => (line.speaker === "person" && line.speakerPersonId === "kamla" ? "kamla_figure" : undefined),
   albumImage: (id) => `album/${id}`,
+  termPhoto: (id) => (id === "gone" ? undefined : `term/${id}`),
   miniGameArt: (id) => (id === "missing" ? undefined : `mg/${id}`),
   reactionMark: (mark) => `mark/${mark}`,
 };
@@ -45,6 +46,9 @@ describe("frameMedia", () => {
     expect(keys(frameMedia(frame({ speaker: "enemy" }), {}, catalog, "soon"))).toHaveLength(2);
     expect(keys(frameMedia(frame({ photo: { imageId: "a01" }, recall: "a02" }), {}, catalog, "soon")))
       .toEqual(["image:bg/cafe", "image:fig/heroine/-/neutral", "image:album/a01", "image:album/a02"]);
+    // 旅の図鑑's cards: each term's photo (one without a file is left out).
+    expect(keys(frameMedia(frame({ termIds: ["golgappa", "gone"] }), {}, catalog, "soon")))
+      .toEqual(["image:bg/cafe", "image:fig/heroine/-/neutral", "image:term/golgappa"]);
     expect(keys(frameMedia(frame({ minigame: { id: "cricket", auto: "win", bg: "pitch", art: { bowler: "bowl", ball: "missing" } } }), {}, catalog, "soon")))
       .toEqual(["image:bg/cafe", "image:fig/heroine/-/neutral", "image:bg/pitch", "image:mg/bowl"]);
   });

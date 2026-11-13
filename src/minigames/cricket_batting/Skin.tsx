@@ -31,12 +31,18 @@ const BRICKS_GROUND: Point = { x: 50, y: 94, size: 1.1 };
 const REST: Point = { x: 57, y: 90, size: 1 };
 const REST_GROUND: Point = { x: 57, y: 94, size: 1 };
 
-/** The moments of one ball with a tuning: it leaves her hand, reaches the bat, reaches the bricks. */
-type Moments = { release: number; contact: number; bricks: number; approach: number };
+/**
+ * The moments of one ball with a tuning: it leaves her hand, reaches the bat, stays by it as long as a late swing is still
+ * clean (cleanLateMs: a phone lands a tap late), reaches the bricks.
+ */
+type Moments = { release: number; contact: number; cleanUntil: number; bricks: number; approach: number };
 const momentsOf = (tuning: CueTapTuning): Moments => {
   const contact = cueTapMoment(tuning);
-  return { release: tuning.leadMs, contact, bricks: contact + CRICKET_FIELD.bricksMs, approach: tuning.approachMs };
+  const bricks = contact + CRICKET_FIELD.bricksMs;
+  return { release: tuning.leadMs, contact, cleanUntil: Math.min(contact + tuning.cleanLateMs, bricks - 60), bricks, approach: tuning.approachMs };
 };
+/** How far from the bat toward the bricks the ball gets while a late swing is still clean (it still reads as met squarely). */
+const CLEAN_DRIFT = 0.15;
 
 /** Where the ball and its shadow are `ms` after the start when nothing hits it. */
 function bowledBall(ms: number, moments: Moments): { ball: Point; ground: Point } {
@@ -53,7 +59,11 @@ function bowledBall(ms: number, moments: Moments): { ball: Point; ground: Point 
     ball = mix(BOUNCE, BAT, (s - bounceAt) / (1 - bounceAt));
     ground = mix(BOUNCE, BAT_GROUND, (s - bounceAt) / (1 - bounceAt));
   } else {
-    const past = clamp01((ms - moments.contact) / CRICKET_FIELD.bricksMs);
+    // Past the bat: it lingers by the plank through the late clean window (a swing then meets it there: a clean hit
+    // looks clean), then runs on into the bricks.
+    const clean = moments.cleanUntil - moments.contact;
+    const past = ms <= moments.cleanUntil ? CLEAN_DRIFT * clamp01((ms - moments.contact) / clean)
+      : CLEAN_DRIFT + (1 - CLEAN_DRIFT) * clamp01((ms - moments.cleanUntil) / (moments.bricks - moments.cleanUntil));
     ball = mix(BAT, BRICKS, past);
     ground = mix(BAT_GROUND, BRICKS_GROUND, past);
   }

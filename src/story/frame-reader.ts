@@ -48,6 +48,11 @@ export interface StoryFrame {
   photo?: StoryPhoto;
   /** The line's `# local_word:` words (only the line it is written on): GameApp learns them as the line is shown. */
   localWordIds?: string[];
+  /**
+   * The line's `# term:` terms (only the line it is written on): the game puts each not yet in the save's 旅の図鑑 there as
+   * the line is shown, and GameApp shows its card (src/domain/glossary.ts).
+   */
+  termIds?: string[];
   /** The line's `# recall:` (only the line it is written on): the album image shown faintly behind it. */
   recall?: string;
   /** The line's `# phone:`: a message on a phone's screen, after the earlier ones of an unbroken run of phone lines. */
@@ -186,6 +191,7 @@ function readTags(
   if (parsed.ambience === BGM_DEFAULT) delete frame.ambience;
   else if (parsed.ambience) frame.ambience = parsed.ambience;
   if (parsed.localWordIds) frame.localWordIds = [...new Set([...(frame.localWordIds ?? []), ...parsed.localWordIds])];
+  if (parsed.termIds) frame.termIds = [...new Set([...(frame.termIds ?? []), ...parsed.termIds])];
   events.push(...parsed.effects);
 }
 

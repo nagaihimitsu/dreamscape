@@ -1,15 +1,16 @@
 /**
  * What the player has looked at during this play (2026-11-13 user decision): the held items in the open items panel,
- * the clues in 手がかり帳 and the entries of 英語ノート. One not looked at yet has its mark: a small dot on its button
- * (and 「NEW」 beside a held item in the open panel). GameApp keeps this in its tab's memory only (never saved): a new
- * game, a load and Debug's return empty it, and then everything there is counts as seen (seenAll).
+ * the clues in 手がかり帳, the entries of 英語ノート and the terms of 旅の図鑑. One not looked at yet has its mark: a small
+ * dot on its button (and 「NEW」 beside a held item in the open panel and on a term's card in 旅の図鑑). GameApp keeps this
+ * in its tab's memory only (never saved): a new game, a load and Debug's return empty it, and then everything there is
+ * counts as seen (seenAll).
  */
-export type MarkKind = "items" | "clues" | "english";
+export type MarkKind = "items" | "clues" | "english" | "glossary";
 export type SeenMarks = Readonly<Record<MarkKind, ReadonlySet<string>>>;
 
 /** Everything there is, seen: the memory after a new game, a load, Debug's return or the page's start. */
 export const seenAll = (now: Readonly<Record<MarkKind, readonly string[]>>): SeenMarks =>
-  ({ items: new Set(now.items), clues: new Set(now.clues), english: new Set(now.english) });
+  ({ items: new Set(now.items), clues: new Set(now.clues), english: new Set(now.english), glossary: new Set(now.glossary) });
 
 /** The IDs of `now` not seen yet, in `now`'s order; none while the memory waits for its start (`seen` undefined). */
 export const unseenIds = (seen: ReadonlySet<string> | undefined, now: readonly string[]): string[] =>

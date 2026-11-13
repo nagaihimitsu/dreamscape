@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "./icons";
-import { dialogueObstructed } from "./dialogueObstructed";
+import { readingHeld } from "./dialogueObstructed";
 import { stopsFastForward, type ReadSkip } from "./read-skip";
 import type { LineVoiceState, VoiceLink } from "./useVoice";
 import { setSceneFastForward } from "../audio/sound-effects";
@@ -29,7 +29,7 @@ export function useAutoAdvance({
   lineId?: string | null;
 }) {
   const [fast, setFast] = useState(false);
-  const [blocked, setBlocked] = useState(dialogueObstructed);
+  const [blocked, setBlocked] = useState(readingHeld);
   // The voice of the line on screen (`# voice:`), as its DialogueText reports it (null: none, or it stopped early).
   const [voice, setVoice] = useState<LineVoiceState | null>(null);
   // Read-skip: arriving at a line not read before stops fast-forward (unless the reader skips unread lines too). Decided
@@ -62,7 +62,7 @@ export function useAutoAdvance({
 
   useEffect(() => {
     const stopIfObstructed = () => {
-      const obstructed = dialogueObstructed();
+      const obstructed = readingHeld();
       setBlocked(obstructed);
       if (obstructed) setFast(false);
     };
@@ -89,7 +89,7 @@ export function useAutoAdvance({
     // lines indefinitely. A manual tap remains available throughout.
     const delay = fast ? 250 : voice === "ended" ? AFTER_VOICE_MS : Math.min(7000, Math.max(2000, Array.from(text).length * 90));
     const timer = window.setTimeout(() => {
-      if (!canAdvanceRef.current || dialogueObstructed()) {
+      if (!canAdvanceRef.current || readingHeld()) {
         setFast(false);
         return;
       }
@@ -108,7 +108,7 @@ export function useAutoAdvance({
     /** For the line's DialogueText (useLineVoice, useLineSounds): no voice and no sound while 高速送り, and the voice's state for auto mode. */
     voice: voiceLink,
     toggle: () => {
-      if (dialogueObstructed()) return;
+      if (readingHeld()) return;
       if (canAdvance) setFast((value) => !value);
     },
   };

@@ -3,8 +3,8 @@ import type { StoryFrame } from "../story/frame-reader";
 import type { PreloadPriority, PreloadRequest } from "./preload-queue";
 
 // What a story line puts on screen that has to be loaded (2026-11-13, the background loading: preload-ahead.ts): its
-// voice, its scene's picture, the figures on stage with their expressions, the album picture it takes or recalls, its
-// mini-game's pictures and its sound effect. Pure: the catalog lookups are given (preload-ahead.ts gives the content's),
+// voice, its scene's picture, the figures on stage with their expressions, the album picture it takes or recalls, the
+// photo of its 旅の図鑑 card, its mini-game's pictures and its sound effect. Pure: the catalog lookups are given (preload-ahead.ts gives the content's),
 // so a line read ahead (src/story/runtime.ts peekStory) names the same files its screen will load.
 
 /** How the scene on screen dresses its stage, as its screen does. */
@@ -31,6 +31,8 @@ export type MediaCatalog = {
   personFigure(frame: StoryFrame): string | undefined;
   /** An album picture (`# photo:`, `# recall:`). */
   albumImage(imageId: string): string | undefined;
+  /** The photo of a 旅の図鑑 term's card (`# term:`). */
+  termPhoto(termId: string): string | undefined;
   /** A mini-game picture (`# minigame:`'s `art.<slot>`). */
   miniGameArt(imageId: string): string | undefined;
   /** The mark over a figure's head of a reaction (`# reaction:`'s mark: ComicEffect). */
@@ -54,7 +56,8 @@ function enemyEmotion(frame: Pick<StoryFrame, "speaker" | "emotion" | "reactions
 /**
  * The files a line puts on screen, at `priority`, in the order they matter: its voice (small, it starts with the line),
  * its reactions' marks (tiny, they pop up with it), the scene's picture, the heroine as she looks on it, the person or
- * enemy who says it or reacts, the album picture it takes or recalls, its mini-game's pictures, its sound effect. A
+ * enemy who says it or reacts, the album picture it takes or recalls, its 旅の図鑑 cards' photos (asked for whether or not
+ * the save has met the term: the card shows only the first time), its mini-game's pictures, its sound effect. A
  * figure is named on every line it may show on (she stands through most scenes); a file named twice is loaded once
  * (preload-queue.ts).
  */
@@ -68,6 +71,7 @@ export function frameMedia(frame: StoryFrame, look: SceneLook, catalog: MediaCat
     images.push(catalog.figure(look.enemyFigure, enemyEmotion(frame), look));
   if (frame.photo) images.push(catalog.albumImage(frame.photo.imageId));
   if (frame.recall) images.push(catalog.albumImage(frame.recall));
+  for (const termId of frame.termIds ?? []) images.push(catalog.termPhoto(termId));
   if (frame.minigame) {
     if (frame.minigame.bg) images.push(catalog.background(frame.minigame.bg));
     for (const imageId of Object.values(frame.minigame.art ?? {})) images.push(catalog.miniGameArt(imageId));
