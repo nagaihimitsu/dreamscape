@@ -1,7 +1,7 @@
 INCLUDE modules.ink
 -> DONE
 
-// バングラー・サーヒブのデート（噛み合いの選択は2回）。
+// バングラー・サーヒブのデート（噛み合いの選択は2回）。「真剣に、丸を目指す」では、主人公がミニゲーム「ローティーを伸ばす」で生地を伸ばす（手伝いの knot gt_delhi_bangla_sahib_roti）。
 // ハルバンス・シンは、アーグラのグル・カ・タールのデートで息子と一緒に再登場する。
 
 // 【3】
@@ -39,25 +39,7 @@ INCLUDE modules.ink
 * [真剣に、丸を目指す # option: aim_round]
     # profile: honest
     # memory: gt_delhi_date_bangla_sahib_memory
-    { romance_result == "negative":
-        # speaker: narrator
-        全力で伸ばした生地は、なぜか四角くなった。
-        # speaker: gt_harbans
-        ……荷台だな
-        # speaker: heroine
-        # emotion: exasperated
-        # voice: gt_delhi_date_bangla_sahib_003
-        ……わたしのより、まとまってる。ちょっと悔しい
-    - else:
-        # speaker: narrator
-        全力で伸ばした生地は、なぜか四角くなった。ハルバンスが、しげしげと眺める。
-        # speaker: gt_harbans
-        トラックの荷台だな。積みやすくていい
-        # speaker: heroine
-        # reaction: heroine,teasing_big,music
-        # voice: gt_delhi_date_bangla_sahib_004
-        ふふっ。わたしの地図より、ちゃんと役に立ちそう
-    }
+    -> gt_delhi_bangla_sahib_roti ->
 * [ハートの形にしてみる # option: heart_roti]
     # profile: bold
     # memory: gt_delhi_date_bangla_sahib_memory
@@ -207,3 +189,76 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_bangla_sahib_022
 わたし、今日、何か運べたのかな。世界地図を一枚
 -> END
+
+// 【3】手伝いの knot：主人公が丸を目指して伸ばすローティー。選択肢の代わりにミニゲーム「ローティーを伸ばす」
+// （# minigame: roti_rolling）。伸ばした形をハルバンスが名付ける。場面の中の選択なので噛み合いはなく、関係値も動かさない。
+// 彼女の声は aim_round の噛み合いの romance_result のまま。
+=== gt_delhi_bangla_sahib_roti ===
+# speaker: narrator
+ハルバンスが、新しい生地の玉を一つ、こちらの前に置いた。麺棒を渡される。
+# speaker: gt_harbans
+# minigame: roti_rolling auto truck_bed
+押して、回す。押して、回す。……あとは、手に聞け
+* [ローティー：まん丸に伸ばした # option: round]
+    # speaker: narrator
+    伸ばした生地は、ほとんど丸かった。ハルバンスはそれを持ち上げて、光にかざした。
+    # speaker: gt_harbans
+    丸い。……四十年で、いちばんつまらん地図だ
+    { romance_result == "negative":
+        # speaker: heroine
+        # emotion: exasperated
+        ……ずるい。わたしのは、インドになったのに
+    - else:
+        # speaker: heroine
+        # reaction: heroine,teasing,music
+        ふふっ。丸すぎて怒られる人、初めて見た
+    }
+* [ローティー：四角くなった # option: truck_bed]
+    { romance_result == "negative":
+        # speaker: narrator
+        全力で伸ばした生地は、なぜか四角くなった。
+        # speaker: gt_harbans
+        ……荷台だな
+        # speaker: heroine
+        # emotion: exasperated
+        # voice: gt_delhi_date_bangla_sahib_003
+        ……わたしのより、まとまってる。ちょっと悔しい
+    - else:
+        # speaker: narrator
+        全力で伸ばした生地は、なぜか四角くなった。ハルバンスが、しげしげと眺める。
+        # speaker: gt_harbans
+        トラックの荷台だな。積みやすくていい
+        # speaker: heroine
+        # reaction: heroine,teasing_big,music
+        # voice: gt_delhi_date_bangla_sahib_004
+        ふふっ。わたしの地図より、ちゃんと役に立ちそう
+    }
+* [ローティー：地図のような形になった # option: country]
+    # speaker: narrator
+    伸ばした生地は、丸とも四角ともつかない形になった。ハルバンスが、目を細める。
+    # speaker: gt_harbans
+    ほう。こっちはスリランカだ。インドの南には、島がないとな
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,sweat
+        並べないでください。……わたしのインドまで、本物っぽくなっちゃう
+    - else:
+        # speaker: heroine
+        # reaction: heroine,teasing_big,music
+        じゃあ、わたしのインドの下に置こう。地図、完成だね
+    }
+* [ローティー：伸ばしすぎて穴が開いた # option: torn]
+    # speaker: narrator
+    もう一押し、と力を込めたところで、生地の真ん中に、ぽっかり穴が開いた。
+    # speaker: gt_harbans
+    トンネルだな。……丸め直せ。生地は、何度でもやり直せる
+    { romance_result == "negative":
+        # speaker: heroine
+        # emotion: exasperated
+        真剣すぎ。……ローティーに、トンネルは要らないと思う
+    - else:
+        # speaker: heroine
+        # reaction: heroine,teasing,music
+        ふふっ。トンネル開通、おめでとう。……次のは、穴なしでね
+    }
+- ->->
