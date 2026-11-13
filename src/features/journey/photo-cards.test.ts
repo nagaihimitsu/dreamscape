@@ -5,7 +5,7 @@ import type {
 } from "../../domain/travel-destinations";
 import {
   blockedSleepWays, blockedWays, cardKinds, cardOfTarget, cardScales, cardTarget, chooseArrangement, chooseSleepWay, chooseWait, chooseWay,
-  defaultCardIndex, departureOf, joinedCardsJa, newCardIds, dragDirection, eventKindJa, flickSpeed, glideIndex, halfShown, liftsCard, liftTurnedSideways, nearestIndex,
+  defaultCardIndex, departureOf, joinedCardsJa, lockedCardId, lockedCardJa, newCardIds, dragDirection, eventKindJa, flickSpeed, glideIndex, halfShown, liftsCard, liftTurnedSideways, nearestIndex,
   NO_PLAN, pageAtEnd, photoCardAnnouncement, photoCardEntries, photoCardLabel, refusalJa, refusalNoteJa, refusalReasonsJa, rowCards,
   sleepRefusalJa, sleepRefusalReasonsJa, sleepWayKey, sleepWayLabelJa, STAY_CARD_ID, stepIndex, swipeArea, swipeDeparts, syncRow, takesSwipe,
   TOUR_CARD_ID, WAIT_BLOCKED_JA, WAIT_CARD_ID, WAIT_REFUSAL_JA, WAIT_REFUSAL_REASON_JA, waitChosenJa, waitKey, waitLabelJa, type PhotoCardEntry,
@@ -68,6 +68,20 @@ describe("the row of cards", () => {
     expect(photoCardEntries(places, map).map((entry) => [entry.place.id, entry.events.map((choice) => choice.event.id), entry.available])).toEqual([
       ["b", ["b_date"], true], ["c", ["c_main"], true], ["d", ["d_main", "d_date"], true], ["a", ["a_main", "a_date"], false],
     ]);
+  });
+
+  it("puts the locked dates' cards (2026-11-13, # hint:) after the places', before the tour; none departs or stands for a selection", () => {
+    const locked = [{ dateId: "x_date", hintJa: "塔のあとで" }, { dateId: "y_date", hintJa: "夜に" }];
+    const cards = rowCards(photoCardEntries(places, map), { tour: true, locked });
+    expect(cards.map((card) => card.id)).toEqual([WAIT_CARD_ID, "b", "c", "d", "a", lockedCardId("x_date"), lockedCardId("y_date"), TOUR_CARD_ID, STAY_CARD_ID]);
+    const card = cards[5];
+    expect(card).toEqual({ kind: "locked", id: ":locked:x_date", dateId: "x_date", hintJa: "塔のあとで" });
+    expect([takesSwipe(card), cardTarget(card), cardKinds(card)]).toEqual([false, null, "none"]);
+    // Its words are the writer's hint only.
+    expect(lockedCardJa("塔のあとで")).toBe("まだ行けません：塔のあとで");
+    // The card chosen first is still the first place's; without locked dates the row is as before.
+    expect(defaultCardIndex(cards)).toBe(1);
+    expect(rowCards(photoCardEntries(places, map), { tour: false, locked: [] }).map((item) => item.kind)).toEqual(["wait", "place", "place", "place", "place", "stay"]);
   });
 
   it("starts with 「待機」 and ends with the tour, while there is one, and 「ホテルに戻る」", () => {
@@ -355,6 +369,10 @@ describe("the cards new to the row", () => {
 
   it("never count 「待機」 or 「ホテルに戻る」", () => {
     expect(newCardIds(new Set(["b"]), [WAIT_CARD_ID, "b", STAY_CARD_ID])).toEqual([]);
+  });
+
+  it("never count a locked date's card (2026-11-13, # hint:), first shown or not", () => {
+    expect(newCardIds(new Set(["b"]), [WAIT_CARD_ID, "b", lockedCardId("x_date"), STAY_CARD_ID])).toEqual([]);
   });
 
   it("are said by their names", () => {

@@ -279,6 +279,7 @@ Come back at three. Any three will do.
     -> END
 
 // ───── デート（本筋。romance/date_catalog.json の storyId がこの住所を指す）。地図に出る条件は頭の # when:。
+// 頭の # hint: は、# when: がかなうまで自由時間の札の列に鍵のかかった灰色の札として出す一言（書いた言葉だけが出る。任意）。
 // デートの3択（噛み合いの選択）は、このデートの knot の中（stitch を含む）に置き、# option: と # profile: で書く。
 // 手伝いの knot（頭の札なし）の中の選択は「場面の中の選択」：乱数を使わず、札の効果だけが当たる。
 // 行の札 # stand: は、ヒロインの立ち位置（apart 少し離れて・near いつもの位置・close すぐそば）。次の # stand: まで続く。
@@ -287,6 +288,7 @@ Come back at three. Any three will do.
 === smp_mihon_date_tower_square ===
 # scene: date
 # when: episodes mihon >= 1
+# hint: 時計塔の番人と話したあとで
 # background: smp_bg_mihon_clock_tower
 # weather: petals
 # speaker: narrator

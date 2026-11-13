@@ -284,6 +284,18 @@ export function WaitCard({ game, options, wait, onPick, onWait, heading = true, 
 }
 
 /** The tour's card: what a tour is, then today's tours line (a booked tour with its cancel, 「ツアーを見る」 and its sheet). */
+/**
+ * A locked date's card under the row (2026-11-13, `# hint:`): 「まだ行けません」 and the writer's hint, nothing else (no
+ * place, no title, no reason): it cannot be chosen to go, and nothing on it is pressable.
+ */
+export function LockedCard({ hintJa, heading = true }: { hintJa: string; heading?: boolean }) {
+  const id = useId();
+  return <section className="place-card place-card-locked" data-testid="locked-card" aria-labelledby={`${id}-name`}>
+    <CardName id={`${id}-name`} name="まだ行けません" heading={heading} />
+    <p className="place-card-hook">{hintJa}</p>
+  </section>;
+}
+
 export function TourCard({ game, onBook, onCancel, heading = true }: {
   game: GameState;
   onBook: (tourId: string, offerId: string) => boolean;

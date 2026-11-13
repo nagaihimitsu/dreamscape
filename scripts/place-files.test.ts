@@ -102,4 +102,18 @@ describe("place files", () => {
     expect(then).toBe("epilogue");
     expect(source).toBe('VAR player_name = ""\n\n\n\n# speaker: heroine\nline\n-> END\n');
   });
+
+  it("reads a date's # hint: (2026-11-13) in a date knot's head and a one-scene file's, and stops one on another scene", () => {
+    const date = `${top}\n=== smp_x_date ===\n# scene: date\n# when: episodes x >= 1\n# hint: 塔の話を聞いたあとで\n「こんにちは」\n-> END\n`;
+    const file = readPlaceFile("places/smp_x_tower", date);
+    expect(file.source).not.toContain("# hint:");
+    expect(readHead(file.knots[0], 12)).toMatchObject({ kind: "date", hint: "塔の話を聞いたあとで" });
+    expect(() => readHead(readPlaceFile("places/smp_x_tower", talk("# at: visit x\n# priority: +1\n# hint: いつか\n")).knots[0], 12))
+      .toThrow("# hint: is a date's head tag");
+    expect(() => readPlaceFile("places/smp_x_tower", `${top}\n=== smp_x_date ===\n# scene: date\n# hint:\n「こんにちは」\n-> END\n`)).toThrow("Empty head tag");
+    const head = readMainFileHead('VAR player_name = ""\n# hint: 朝市のあとで\n# speaker: heroine\nline\n-> END\n');
+    expect(head).toEqual({ source: 'VAR player_name = ""\n\n# speaker: heroine\nline\n-> END\n', onDone: [], hint: "朝市のあとで" });
+    expect(() => readMainFileHead("# hint: 一\n# hint: 二\nline\n")).toThrow("Write # hint: once");
+    expect(() => readMainFileHead("# hint:\nline\n")).toThrow("Empty head tag: # hint:");
+  });
 });
