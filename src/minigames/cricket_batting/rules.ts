@@ -19,13 +19,19 @@ export const CRICKET_FIELD = {
   bricksMs: 260,
 } as const;
 
-/** Generous windows: a phone's tap has its own lag, and the game is a moment of the story. */
+/**
+ * Generous windows: a phone's tap has its own lag, and the game is a moment of the story. Wider after the ball's arrival
+ * (a phone lands a tap late; a little early is pulled over the wall, the heavier outcome, so that side stays as it was).
+ * The late near window ends before the ball reaches the bricks (a late swing never edges a ball already in them).
+ */
 export const CRICKET_TUNING: CueTapTuning = {
   leadMs: CRICKET_FIELD.settleMs + CRICKET_FIELD.runUpMs,
   /** From her hand to the bat. */
   approachMs: 1000,
-  cleanMs: 85,
-  nearMs: 210,
+  cleanEarlyMs: 85,
+  cleanLateMs: 125,
+  nearEarlyMs: 210,
+  nearLateMs: 250,
   noneAfterMs: 650,
 };
 
@@ -35,6 +41,9 @@ export const CRICKET_CONTACT_MS = cueTapMoment(CRICKET_TUNING);
 export const CRICKET_BRICKS_MS = CRICKET_CONTACT_MS + CRICKET_FIELD.bricksMs;
 export const CRICKET_END_MS = cueTapEnd(CRICKET_TUNING);
 
-/** Clean: straight back. A little early: pulled over the side. A little late: off the edge. Far off: bowled. No swing. */
+/**
+ * Clean: straight back. A little early: pulled over the side. A little late: off the edge. Far off: bowled. No swing (a
+ * swing during her run-up, before the ball leaves her hand, does not count: the batter can still swing at it).
+ */
 export const cricketRules = cueTapRules<CricketParams, CricketOutcome>(CRICKET_TUNING,
   { clean: "six", early: "over_wall", late: "edge", miss: "bowled", none: "no_swing" });

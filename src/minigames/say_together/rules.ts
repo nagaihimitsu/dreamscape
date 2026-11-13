@@ -23,13 +23,19 @@ export const SAY_FIELD = {
   wordsMs: 1500,
 } as const;
 
-/** Generous windows (a phone's tap has its own lag; two voices starting this close sound as one). */
+/**
+ * Generous windows (two voices starting this close sound as one), wider after her beat: a phone's touch and screen land a
+ * tap late, so the same windows on both sides made a laggy phone come in late about one play in two (group2's playtest,
+ * 2026-11-13: with these, a casual player is together about nine times in ten, a laggy phone eight).
+ */
 export const SAY_TUNING: CueTapTuning = {
   leadMs: SAY_FIELD.settleMs,
   /** From 「せー」 to the beat of the words. */
   approachMs: SAY_FIELD.beatMs * SAY_FIELD.countBeats,
-  cleanMs: 120,
-  nearMs: 300,
+  cleanEarlyMs: 110,
+  cleanLateMs: 170,
+  nearEarlyMs: 280,
+  nearLateMs: 340,
   /** She finishes the words, and a moment more, before a play without a tap ends. */
   noneAfterMs: SAY_FIELD.wordsMs + 200,
 };
