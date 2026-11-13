@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import usesJson from "../content/generated/minigame-uses.json";
-import { episodes, scenes, tagContext } from "../content";
-import { createDebugState, debugTargets, defaultDebugSettings, type DebugScene, type DebugSettings } from "../dev/debug-state";
+import { tagContext } from "../content";
+import { createDebugState } from "../dev/debug-state";
+import { miniGameUseLaunch } from "../dev/minigame-room";
 import { openMiniGame } from "../domain/minigame";
 import { applyPlayerAction, listPlayerActions, playerActionChange, type PlayerAction } from "../domain/player-action";
 import { screenFor } from "../domain/screen";
@@ -21,26 +22,6 @@ const uses = miniGameUseListSchema.parse(usesJson);
 /** A use's tag as the frame keeps it. */
 const tagOf = (use: MiniGameUse): MiniGameTag => ({ id: use.game, auto: use.auto, ...(use.prefix ? { prefix: use.prefix } : {}),
   ...(use.bg ? { bg: use.bg } : {}), ...(use.art ? { art: use.art } : {}), ...(use.params ? { params: use.params } : {}) });
-
-/** The Debug scene each scene kind opens through (the Debug launch's own table; tour legs and arrivals open with their city). */
-const DEBUG_SCENE: Partial<Record<MiniGameUse["kind"], DebugScene>> = { date: "date", guide: "tourism", battle: "battle", talk: "encounter", encounter: "encounter", epilogue: "epilogue" };
-
-/**
- * How Debug opens a use's scene: its city and the Debug target of its main part (a date, a landmark's guide, a battle, an
- * encounter, the city's finale for its epilogue). When a use is hidden behind a condition Debug's start lacks (a
- * relationship value, a flag…), add a line here that changes its settings; none is needed yet.
- */
-function debugLaunch(use: MiniGameUse): DebugSettings | string {
-  const entry = scenes.find((scene) => scene.id === use.sceneId);
-  const scene = DEBUG_SCENE[use.kind];
-  if (!entry || !scene) return `${use.sceneId} (${use.kind}) has no Debug scene: add its opener to this test`;
-  const main = entry.main;
-  const target = !main ? entry.id : "date" in main ? main.date : "guide" in main ? main.guide : "battle" in main ? main.battle
-    : "epilogue" in main ? episodes.find((episode) => episode.cityId === main.epilogue && episode.kind === "city_finale")?.id ?? "" : "";
-  const offered = debugTargets(entry.cityId)[scene].find((item) => item.id === target);
-  if (!offered || offered.unavailable) return `${use.sceneId}: Debug cannot open ${scene} ${target}${offered?.unavailable ? ` (${offered.unavailable})` : ""}`;
-  return { ...defaultDebugSettings(entry.cityId), scene, id: target };
-}
 
 /** The scene on screen (its kind and ID): the walk stays in the scene it opened. */
 function sceneOn(state: GameState): string {
@@ -116,14 +97,16 @@ describe("every mini-game use with every outcome (the generated uses list)", () 
   for (const use of uses) byScene.set(use.sceneId, [...byScene.get(use.sceneId) ?? [], use]);
   it.each([...byScene.keys()])("opens %s as Debug does and takes every outcome of each of its uses, both reaction tickets", (sceneId) => {
     const sceneUses = byScene.get(sceneId)!;
-    const launch = debugLaunch(sceneUses[0]);
-    if (typeof launch === "string") throw new Error(launch);
+    // Opened as Debug's 「ミニゲームの見本」 opens it (src/dev/minigame-room.ts): when a use is hidden behind a condition
+    // Debug's start lacks (a relationship value, a flag…), give its scene's opening the settings it needs there.
+    const launch = miniGameUseLaunch(sceneUses[0]);
+    if (typeof launch === "string") throw new Error(`${launch}: give its scene kind an opener in src/dev/minigame-room.ts`);
     const met = new Set<string>();
     for (const roll of ["positive", "negative"] as const) {
       const state = createDebugState({ ...launch, roll });
       for (const tag of walkUses(state, () => (roll === "positive" ? 0 : 9999))) met.add(tag);
     }
-    // A use not met is hidden behind a condition Debug's start lacks: give its scene an opener above.
+    // A use not met is hidden behind a condition Debug's start lacks (see above).
     const missing = sceneUses.filter((use) => !met.has(miniGameTagText(tagOf(use))));
     expect(missing.map((use) => `${use.knot ?? use.storyId}: # minigame: ${miniGameTagText(tagOf(use))}`), "uses the walk did not reach").toEqual([]);
   });

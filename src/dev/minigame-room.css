@@ -1,0 +1,40 @@
+/* Debug's 「ミニゲームの見本」 (MiniGameRoom.tsx): a working page for one hand on a phone (320–390 px), 44 px targets, as
+   「音と演出の見本」. The stage reuses the game's own scene box and the mini-games' host; no card has a thick edge on one side. */
+.minigame-room { max-width: 720px; margin: 0 auto; padding: 12px 16px 24px; color: var(--ds-ink); }
+.minigame-room-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.minigame-room h1 { margin: 0; font-size: 20px; line-height: 1.4; }
+.minigame-room h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin: 0 0 6px; font-size: 18px; line-height: 1.4; }
+.minigame-room h3 { margin: 14px 0 4px; font-size: 14px; font-weight: 600; line-height: 1.4; }
+.minigame-room p, .minigame-room li { font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+.minigame-room p { margin: 6px 0; }
+.minigame-room ul { margin: 0; padding-left: 20px; }
+.minigame-room button.minigame-room-close {
+  flex: none;
+  min-height: 44px;
+  padding: 6px 12px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font-size: 13px;
+}
+.minigame-room-note { padding: 10px 12px; border: 1px solid var(--ds-parchment-line); border-radius: 12px; background: var(--ds-parchment); }
+.minigame-room p.minigame-room-off { padding: 8px 10px; border-radius: 8px; background: var(--ds-chip-bg); }
+.minigame-room-game { margin-top: 18px; padding: 12px; border: 1px solid var(--ds-parchment-line); border-radius: 12px; background: var(--ds-parchment); }
+.minigame-room-id { color: var(--ds-ink-muted, inherit); font-size: 13px; font-weight: 400; }
+.minigame-room-facts { display: grid; grid-template-columns: max-content 1fr; gap: 2px 10px; margin: 6px 0 0; font-size: 13px; }
+.minigame-room-facts dt { font-weight: 600; }
+.minigame-room-facts dd { margin: 0; }
+.minigame-room-reason { font-size: 13px; }
+.minigame-room-game li a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; }
+.minigame-room button.minigame-room-open { width: 100%; min-height: 44px; margin-top: 12px; justify-content: center; }
+.minigame-room-controls { display: grid; gap: 2px; margin: 12px 0 0; padding: 8px 12px; border: 1px solid var(--ds-parchment-line); border-radius: 12px; }
+.minigame-room-controls legend { padding: 0 4px; font-size: 13px; font-weight: 600; }
+.minigame-room-controls label { display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px; }
+.minigame-room-controls input { width: 20px; height: 20px; }
+.minigame-room-example { flex-wrap: wrap; }
+.minigame-room-example select { min-height: 44px; }
+/* The stage: the game's scene box with a window where the choices would be; the play lies over it as in a story. */
+.minigame-room .minigame-room-stage { min-height: max(480px, calc(100dvh - 96px)); margin-top: 8px; border-radius: 12px; }
+.minigame-room-window { margin: 0 8px 8px; padding: 12px; border-radius: 12px; }
+.minigame-room .minigame-room-line { margin: 0 0 10px; font-size: 13px; }

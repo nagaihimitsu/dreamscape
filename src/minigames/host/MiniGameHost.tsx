@@ -7,6 +7,7 @@ import { miniGameDefinition } from "../registry";
 import { miniGameParams, type MiniGameTag } from "../tag";
 import { createPlayClock, type HostClock } from "./clock";
 import { miniGameSeed } from "./seed";
+import { MINI_GAME_CHOICE_GUARD_MS, MINI_GAME_RESULT_MS, MINI_GAME_START_GUARD_MS } from "./timing";
 import type { MiniGameEnvironment } from "./MiniGameProvider";
 import "./host.css";
 
@@ -15,12 +16,6 @@ import "./host.css";
 // tap to skip, the outcome's label and its announcement, then the outcome's choice. A game draws only its field and its
 // controls.
 
-/** After the line is shown, the start waits this long (the choices' guard: a tap that showed the line is not a start). */
-export const MINI_GAME_CHOICE_GUARD_MS = 300;
-/** Input this soon after the start is the start button's second tap: dropped. */
-export const MINI_GAME_START_GUARD_MS = 450;
-/** How long the outcome's label stays before its choice is taken (a tap takes it at once). */
-export const MINI_GAME_RESULT_MS = 1300;
 
 type Load = { status: "loading" } | { status: "loaded"; module: MiniGameModule } | { status: "failed" };
 type Run = { id: number; clock: HostClock; startedAt: number };

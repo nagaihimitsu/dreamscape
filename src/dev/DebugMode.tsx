@@ -17,6 +17,7 @@ import { relationshipAxisLabels } from "../domain/relationship-change";
 import { PrototypePreview } from "./PrototypePreview";
 import { OccasionCandidatesView } from "./OccasionCandidatesView";
 import { EffectsRoom } from "./EffectsRoom";
+import { MiniGameRoom } from "./MiniGameRoom";
 import "./debug-mode.css";
 
 type MemoryStorage = { getItem(key: string): string | null; setItem(key: string, value: string): void; removeItem(key: string): void };
@@ -61,6 +62,15 @@ export default function DebugMode() {
     effectsRoomClosed.current = false;
     effectsRoomButton.current?.focus();
   }, [effectsRoom]);
+  // ミニゲームの見本 (MiniGameRoom, docs/13 6.6) likewise.
+  const [miniGameRoom, setMiniGameRoom] = useState(false);
+  const miniGameRoomButton = useRef<HTMLButtonElement>(null);
+  const miniGameRoomClosed = useRef(false);
+  useEffect(() => {
+    if (miniGameRoom || !miniGameRoomClosed.current) return;
+    miniGameRoomClosed.current = false;
+    miniGameRoomButton.current?.focus();
+  }, [miniGameRoom]);
   const isPrototype = getCityContent(cityId).city.productionStatus === "prototype";
   const sceneUrl = new URL(debugQueryString(isPrototype ? mapQuery(dataMode, cityId) : settingsQuery(dataMode, settings)), window.location.href).href;
 
@@ -181,6 +191,10 @@ export default function DebugMode() {
     effectsRoomClosed.current = true;
     setEffectsRoom(false);
   }} />;
+  if (miniGameRoom) return <MiniGameRoom onClose={() => {
+    miniGameRoomClosed.current = true;
+    setMiniGameRoom(false);
+  }} />;
   return (
     <main className="debug-panel" data-testid="debug-panel">
       <h1>場面の確認</h1>
@@ -250,6 +264,12 @@ export default function DebugMode() {
         <p>登録されている効果音・BGM・環境音・声を鳴らし、天気・揺れ・品物の札・上の帯の手応えなどの演出を、遊ばずに確かめられます。</p>
         <button ref={effectsRoomButton} type="button" className="secondary" data-testid="debug-open-effects-room"
           onClick={() => setEffectsRoom(true)}>音と演出の見本を開く</button>
+      </section>
+      <section className="debug-room-entry" aria-labelledby="debug-minigame-room-title">
+        <h2 id="debug-minigame-room-title">ミニゲームの見本</h2>
+        <p>登録されているミニゲームの結果・札の引数・絵・使っている場面を一覧し、物語なしで遊べます（自分で・おまかせの各結果で・動きを減らして）。</p>
+        <button ref={miniGameRoomButton} type="button" className="secondary" data-testid="debug-open-minigame-room"
+          onClick={() => setMiniGameRoom(true)}>ミニゲームの見本を開く</button>
       </section>
       <p><a href="?character-preview">背景・人物・表情を確認</a></p>
       <a href={import.meta.env.BASE_URL}>通常プレイに戻る</a>
