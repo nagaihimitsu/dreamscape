@@ -10,6 +10,7 @@ INCLUDE modules.ink
 # scene: date
 # title: 代役の二人
 # when: episodes agra >= 1
+# hint: アーグラの観光を一つ終えてから
 # background: gt_bg_agra_chini_rauza
 # speaker: narrator
 ヤムナー川の東岸、細い道の突き当たりに、四角い墓廟がぽつんと建っていた。チーニー・カ・ラウザー。壁は一面、色とりどりの釉薬のタイルで覆われていたというが、今はほとんどが剥がれ落ち、ところどころに、青と緑と黄色が、島のように残っている。

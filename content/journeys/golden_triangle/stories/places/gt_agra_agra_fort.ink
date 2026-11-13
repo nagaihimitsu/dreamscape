@@ -118,6 +118,7 @@ INCLUDE modules.ink
 ……大佐。もしかして、車、苦手ですか？
 # speaker: enemy
 # reaction: enemy,anger
+# em_shake: 何を言うか
 軍人に向かって何を言うか！
 # speaker: narrator
 怒鳴った声は、すぐにしぼんだ。大佐は欄干の向こうのタージを見たまま、小さく言った。

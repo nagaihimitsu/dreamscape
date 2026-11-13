@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # scene: date
 # title: 笑う会の秘密
 # when: episodes delhi >= 1
+# hint: デリーの観光を一つ終えてから
 # background: gt_bg_delhi_lodhi_garden
 # speaker: narrator
 ローディー・ガーデンの芝生には、五百年以上前の墓が、まるで大きな置物のように点々と座っている。散歩の人、走る人、ベンチで新聞を読む人。墓の方が先にあって、公園は1930年代、そのまわりに後から作られたのだという。

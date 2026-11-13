@@ -167,6 +167,7 @@ INCLUDE modules.ink
     最後の皇帝は、自分の家で裁判にかけられた。詩を書く人だった。それから、遠くへ送られた
 }
 # speaker: narrator
+# em: 囚人
 声は小さい。けれど、もう途切れなかった。楽園と書かれた広間の主が、同じ建物で囚人になった話。三十八人が、誰も茶化さずに聞いていた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
@@ -286,10 +287,12 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: heroine
     # local_word: gt_delhi_word_chandni
+    # em: 月光
     チャンドニー・チョーク。月光の広場。昔の池に、月が映ったから
 - else:
     # speaker: enemy
     # local_word: gt_delhi_word_chandni
+    # em: 月光
     ……チャンドニー・チョーク。月光の広場か。池なんて、とっくにないのに
 }
 # speaker: narrator

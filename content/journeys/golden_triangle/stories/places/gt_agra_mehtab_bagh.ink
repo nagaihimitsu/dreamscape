@@ -10,6 +10,7 @@ INCLUDE modules.ink
 # scene: date
 # title: 塀を越えたらアウト
 # when: episodes agra >= 1
+# hint: アーグラの観光を一つ終えてから
 # background: gt_bg_agra_mehtab_bagh
 # weather: dust
 # speaker: narrator

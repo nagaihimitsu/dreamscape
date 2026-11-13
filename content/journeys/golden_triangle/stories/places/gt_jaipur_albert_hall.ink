@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # scene: date
 # title: ミイラより鳩
 # when: episodes jaipur >= 1
+# hint: ジャイプールの観光を一つ終えてから
 # background: gt_bg_jaipur_albert_hall
 # speaker: narrator
 アルバート・ホールは、白と薄茶の石でできた、ドームと塔だらけの博物館だった。その正面の広場が、灰色に揺れている。鳩だ。何百羽もの鳩が、地面を埋めつくしていた。
@@ -77,6 +78,7 @@ INCLUDE modules.ink
 彼女は女の子の前にしゃがんで、目の高さを合わせた。女の子は地下を指さして、小さな声で言った。
 # speaker: gt_kavya
 # cutin: name
+# em_shake: 怖い
 ……わたし、カヴィヤ。下に、ミイラがいるの。エジプトの、本物の。……みんな、平気だって。でも、わたし、怖い
 # speaker: heroine
 そっか。……実はね、わたしも、ちょっと怖い。ミイラって、本物を見たことないから

@@ -71,9 +71,11 @@ INCLUDE modules.ink
 # background: gt_bg_agra_itimad_tomb
 { quiz_correct:
     # speaker: enemy
+    # em: 先輩
     よろしい。先輩を赤ちゃん呼ばわりしていたのは、世間の方なの
 - else:
     # speaker: enemy
+    # em: こちらが先
     いいえ、こちらが先。タージの工事が始まる四年前に、もう完成していたの。世間が順番を逆にしているのよ
 }
 # speaker: narrator

@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # scene: date
 # title: 背中の字あて
 # when: episodes delhi >= 1
+# hint: デリーの観光を一つ終えてから
 # background: gt_bg_delhi_lotus_temple
 # speaker: narrator
 芝生の向こうに、白い花びらを重ねた建物が浮かんでいた。大理石の花びらは二十七枚。三枚ずつ組になって、九つの面をつくっている。
