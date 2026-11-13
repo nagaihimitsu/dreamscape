@@ -17,7 +17,7 @@ Dreamscapeを開発・制作する人の入口です。起動とコマンド、�
 | ヒロインの人物像 | [09 キャラクターバイブル](09_HEROINE_CHARACTER_BIBLE.md) |
 | 変更ごとの確認、テストの組、E2E、探索テスト、Debug起動URL、CI | [10 開発時の確認](10_DEVELOPMENT_CHECKS.md) |
 | 遊ぶ人への案内 | [11 遊び方](11_HOW_TO_PLAY.md) |
-| ミニゲームの仕組みと、ゲームの足し方（設計） | [13 ミニゲームの仕組み](13_MINIGAMES.md) |
+| ミニゲームの仕組みと、ゲームを足す人のチェックリスト（7章） | [13 ミニゲームの仕組み](13_MINIGAMES.md) |
 | 会話・クイズ・観光・デート・人物の絵の作り方 | [コンテンツ制作ガイド](../authoring/CONTENT_GUIDE.md) |
 | 新しい都市を1つ足す順番と、同時に進められる作業 | [新しい都市を1つ足す手引き](../authoring/NEW_CITY_GUIDE.md) |
 | 旅行編へシナリオとクイズを取り込む | [旅行編の制作手順](../authoring/JOURNEY_AUTHORING.md) |

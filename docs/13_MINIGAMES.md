@@ -1,6 +1,6 @@
-# 13 ミニゲームの仕組み（設計）
+# 13 ミニゲームの仕組み
 
-状態：設計だけ（2026-11-13）。コードはまだ変えていない。ユーザーと確かめた後、この文書のとおりに実装する。実装したら、この行を直し、決まりを [02 技術設計](02_TECH_ARCHITECTURE.md) と [制作ガイド](../authoring/CONTENT_GUIDE.md) へ移す。
+状態：実装済み（2026-11-13、8章の R1〜R13）。9章の問いはユーザーが答えた（2026-11-13。問い4は「背景はあった方が盛り上がる」で変わった：2.12）。決まりは [02 技術設計](02_TECH_ARCHITECTURE.md)（仕組み）と [制作ガイド](../authoring/CONTENT_GUIDE.md#ミニゲーム任意2026-11-13)（書き方）にも移した。この文書は、ゲームを作る人の手順（7章）と、設計の理由の記録として残す。実装で設計と違えた所は 10章。
 
 ## この文書の目的
 
@@ -28,18 +28,19 @@
 | 部品 | 1ゲーム1フォルダ `src/minigames/<gameId>/`。登録は1行 | 何人かが並べて作れる |
 | エンジンと皮 | 遊び方の仕組み（エンジン）と、場面ごとの絵・言葉・結果の名前（皮）を分ける。札が名指すのは皮（＝ゲーム） | 1つのエンジンで何場面も作れる。結果の名前は場面ごとに要る |
 | 規則 | 純粋関数 `outcomeOf(記録, 引数)` と `autoRecord(結果, 引数)`。乱数・時刻・DOM を読まない | テストできる。時刻・回数・形・どの操作で終えたか、どんな決め方も書ける |
-| 札 | `# minigame: <gameId> [auto <結果>] [prefix <語>] [<キー> <値>]…` の1つの形。引数はゲームの zod で調べる | 選択肢のそばに書ける。検査は1か所 |
+| 札 | `# minigame: <gameId> [auto <結果>] [prefix <語>] [bg <背景>] [art.<枠> <絵>] [<キー> <値>]…` の1つの形。引数はゲームの zod で調べる | 選択肢のそばに書ける。検査は1か所 |
 | 結果 | 結果は選択肢だけ。数（点数・値段）は Ink にも効果にも渡さない | 効果を表にして、払えるか・選べるかをビルドで調べる決まりを守る |
 | 結果の選択肢の札 | その場で保証される札なら何でも書ける（品物・お金・AP・`# requires:`・`# later`）。保証の検査を、道の上の条件と先の支払いまで広げる | 1つの一般の検査で、品物を使う結果も作れる |
 | 関係値 | ゲームは何も足さない。作者が選択肢の札で決める（デートの噛み合いの代わりなら `# profile:`、場面の中のゲームは既定で無し） | 関係値を動かすのは作者の札だけ |
 | セーブ | 新しく保存するものは無い。読み込み直すとゲームの最初から | 選択肢の所で保存する今の決まりのまま |
 | 時計 | 時間は枠が持つ。ページが裏に回ると止まり、戻ると「続ける」 | どのゲームも同じに止まる |
 | 読み込み | ゲームの画面は、そのゲームの場面で初めて読む別のファイル。タイトル画面では読まない | ゲームが増えても最初の読み込みが重くならない |
+| 絵 | ゲームの絵は CSS・SVG と直下の `public/`。使い所ごとに、背景（`bg`）と、皮が用意した絵の枠（`art.<枠>`）へ旅行編の絵を入れられる。無ければ CSS の見た目 | 「背景はあった方が盛り上がる」（2026-11-13）。旅行編の絵は1つの一般の仕組みで調べる |
 | テスト | ゲームを足しても、テストの仕組みは足さない | 並べて作る人が配線を触らない |
 
 ## 1. どこで遊べるか
 
-### 1.1 今、場所のファイルのデートだけなのはなぜか
+### 1.1 実装前、場所のファイルのデートだけだったのはなぜか
 
 次の4つが、デートの所にだけ書かれているから。どれも場面の種類の都合ではない。
 
@@ -163,6 +164,10 @@ export const cricketBatting = defineMiniGame({
   sounds: ["bat_hit", "bricks_fall", "applause"],
   quietScene: false,
   art: [],
+  artSlots: [
+    { id: "pitch", kind: "backdrop", labelJa: "打者の目から見た空き地のピッチ（…）" },
+    { id: "bowler", kind: "sprite", labelJa: "ボールを投げる構えのヒロインの全身（…）" },
+  ],
   load: () => import("./play"),
 });
 ```
@@ -173,7 +178,8 @@ export const cricketBatting = defineMiniGame({
 - `timed`：時間で進むか。ページから戻ったときに「続ける」を出す（2.7）。
 - `keysJa`：キーボードでの遊び方。`null` なら、キーボードではおまかせで進む（枠が案内する）。
 - `sounds`：使う効果音の ID（2.11）。`quietScene`：遊ぶ間、場面の音楽と環境音を下げるか（リズムのゲーム）。
-- `art`：絵のファイルを使うときだけ、その配信時のパス（2.12）。
+- `art`：ゲーム自身の絵のファイルを使うときだけ、その配信時のパス（2.12）。
+- `artSlots`：使い所が旅行編の絵を入れられる枠（2.12）。`id`（`art.<id>` のキー）、`kind`（`backdrop` は場の後ろの絵、`sprite` は場の上の人物・物で背景が透明な webp か png）、`labelJa`（何を描いた絵か。Debug の部屋とエラーの文と、絵を頼む人に出る）。
 - `load`：遊ぶ画面と規則を別のファイルとして読む。返すのは `{ Play, rules }`。
 
 ### 2.4 規則（`rules.ts`。純粋関数）
@@ -274,8 +280,9 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
 
 - まず CSS と、コードに書く SVG（TSX）で描く。ファイルが要らず、出典の問題が無く、軽い。皮の絵は皮のフォルダ（`Skin.tsx`・`skin.css`）に置く。
 - 人物は今の立ち絵を使う（`cast`）。
-- 絵のファイルが要るときは、直下の `public/assets/minigames/<gameId>/` に置き、共通の `content/presentation/own-artwork.json` に登録する（自作の絵）。定義の `art` にパスを書く。`src/content/code-images.ts` が登録の `art` も読むので、「使われていないファイル」の注意にならない。
-- 旅行編の `public/` の絵は使わない。9章の問い4。
+- ゲーム自身の絵のファイルが要るときは、直下の `public/assets/minigames/<gameId>/` に置き、共通の `content/presentation/own-artwork.json` に登録する（自作の絵）。定義の `art` にパスを書く（登録の検査 6.1 が、ファイルと一覧を確かめる）。
+- 使い所の背景（ユーザーの判断、2026-11-13「クリケットとか、背景はあった方が盛り上がると思う」。9章の問い4を変えた）：札の `bg <背景のID>` で、遊ぶ間の背景を `# background:` と同じ背景の一覧から選べる（その旅行編の背景。出典・自作の絵の検査と縮小版は、背景の今の仕組みのまま）。書かなければ、その場面の今の背景。
+- 旅行編の絵の枠：皮は `artSlots` で絵の枠を宣言できる（クリケット：`pitch` は打者の目から見たピッチの背景、`bowler` は投げるヒロインの全身）。使い所は `art.<枠> <絵のID>` で、旅行編の絵を入れる。絵は旅行編（か直下）の `public/assets/minigames/<絵のID>.<webp|png|jpg|jpeg>` に1枚ずつ置き、その層の `presentation/own-artwork.json` に載せる（載せ忘れは、配信する絵の一般の検査 `scripts/image-rights.ts` が止める）。`content:build` は一覧を `src/content/generated/minigame-art.json` に書き（`scripts/minigame-art.ts`）、札の読み方が、無い絵、無い枠、人物の枠（`sprite`）に webp・png でない絵を止め、ほかの旅行編の絵を止める（旅行編のフォルダを外せるように）。ゲームごとの検査のコードは無い。絵はゲームのファイルを読むときに一緒に先読みし、遊ぶ間だけ描く。枠に絵が無ければ、皮は CSS の見た目で描く（クリケット：描いたピッチと煉瓦、ヒロインの立ち絵）。
 - 色は共通の変数（`--ds-*`）を使う。カードや説明の左の太い線は使わない（AGENTS）。
 
 ### 2.13 読みやすさ・アクセシビリティ
@@ -294,12 +301,14 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
 選択肢の組のすぐ前の行に、1つの形で書く。
 
 ```ink
-# minigame: <gameId> [auto <結果>] [prefix <語>] [<キー> <値>] …
+# minigame: <gameId> [auto <結果>] [prefix <語>] [bg <背景>] [art.<枠> <絵>] [<キー> <値>] …
 ```
 
 - `auto <結果>`：おまかせの結果。書かなければゲームの `defaultAuto`。今の文の流れに合う結果を書く（例：かくれんぼ `door_by_door`、ローティー `truck_bed`、メヘンディ `found`、布で鳩 `perfect`、ゴルガッパ `together`）。
 - `prefix <語>`：同じ場面で同じゲームをもう一度遊ばせるとき、そちらの `# option:` を `<語>_<結果>` にする（選択肢の ID は場面の中で1つずつのため）。
-- そのほかの語：ゲームの引数。キーは英小文字・数字・`_`、値は空白を含まない1語。順は自由。同じキーは1回。
+- `bg <背景>`：遊ぶ間の背景（2.12）。`# background:` に書ける背景の ID。
+- `art.<枠> <絵>`：皮の絵の枠に入れる旅行編の絵（2.12）。
+- そのほかの語：ゲームの引数。キーは英小文字・数字・`_`、値は空白を含まない1語。順は自由。同じキーは1回。`auto`・`prefix`・`bg`・`art.<枠>` は枠のキーで、ゲームの引数にはできない。
 - すぐ後に、結果ごとに1つずつ選択肢を書く。`# option:` は結果（か `<語>_<結果>`）。選択肢の文は画面に出ないが、ログとセーブで分かるように、何が起きたかを書く（例「最後の一球：まっすぐ打ち返した」）。英語の返事を選ぶ場（道中交流）でも、結果の選択肢の文は日本語の説明でよい。
 - 結果の数はゲームごとに決まっていて、使い所で減らせない。分けたくない結果は、選択肢を同じ knot へ合流させる。
 
@@ -340,10 +349,10 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
 
 止める（エラー）：
 
-1. 札が読めない：無いゲーム（ゲームの一覧を出す）、結果に無い `auto`、`prefix` の形の誤り、知らないキー（そのゲームのキーと説明を出す）、同じキーが2回、値の無いキー、ゲームの zod に合わない引数（zod の文と、そのキーの説明を出す）。
+1. 札が読めない：無いゲーム（ゲームの一覧を出す）、結果に無い `auto`、`prefix` の形の誤り、知らないキー（そのゲームのキーと説明を出す）、同じキーが2回、値の無いキー、ゲームの zod に合わない引数（zod の文と、そのキーの説明を出す）、無い背景、無い枠（ゲームの枠を出す）、無い絵、人物の枠に webp・png でない絵、ほかの旅行編の絵。
 2. 札が選択肢に付いている。
 3. 札の行と選択肢の組の間に別の行がある、場面が終わる、選択肢が来ない。
-4. 選択肢の組が結果と1つずつ合わない（足りない、余分、`# option:` の無い選択肢）。バトルの呼び口もここで止まる。
+4. 選択肢の組が結果と1つずつ合わない（足りない、余分、`# option:` の無い選択肢）。札のすぐ後がクイズや推理の呼び口なら、その旨の文で止まる。
 5. 結果の選択肢が、選べないことがある（4.2 の保証の検査）。
 6. ミニゲームが動かない所に書いた（1.3。告白のデートは理由を言う）。
 7. おまかせで抜けられない輪：おまかせの結果をたどると、ほかの選択肢の場を通らずに同じ札へ戻る。おまかせで遊ぶ人が進めなくなるため。
@@ -354,7 +363,7 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
 
 選択肢の ID が場面の中で1つずつであることは、今の検査が見る。
 
-歩みで見つけた使い所は、`src/content/generated/minigame-uses.json` に書く（場面の ID と種類、ストーリーと knot、ゲーム、`auto`、`prefix`、引数、札の行の文）。ゲームは読まない。テスト（6.3）と Debug の部屋（6.6）が読む。
+歩みで見つけた使い所は、`src/content/generated/minigame-uses.json` に書く（場面の ID と種類、ストーリーと knot、ゲーム、`auto`、`prefix`、`bg`、`art`、引数、札の行の文）。ゲームは読まない。テスト（6.3）と Debug の部屋（6.6）が読む。
 
 ### 3.5 クリケットの札の移し方
 
@@ -409,7 +418,7 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
 
 - 新しく保存するものは無い。保存されるのは、今と同じく選択肢の所のフレーム（`frame.minigame`）と、結果の選択肢を選んだ後。
 - 遊びの途中で読み込み直すと、ゲームは開始のボタンから。
-- フレームの `minigame` は `{ id, auto, prefix?, params? }`。`params` は札に書いた語のまま（文字列）で、書いたときだけ入る。読み込みの検査（`storyFrameSchema`）は、登録にあるゲームで、札を読む関数（`parseMiniGameTag`）に通るかを確かめる。通らないセーブは、今と同じく読み込まない（元のデータは残す）。
+- フレームの `minigame` は `{ id, auto, prefix?, bg?, art?, params? }`。`bg`・`art`・`params` は札に書いた語のまま（文字列）で、書いたときだけ入る。読み込みの検査（`storyFrameSchema` の形と、`validateStorySnapshot` の中身）は、登録にあるゲームで、札を読む関数（`parseMiniGameTag`）に通るかを確かめる。通らないセーブは、今と同じく読み込まない（元のデータは残す）。
 - 今のセーブ（v23）の形は変わらない（クリケットには引数が無い）。セーブの版は上げない。
 
 ## 5. 読み込みとビルドの決まり
@@ -473,24 +482,31 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
 
 ## 7. ゲームを足す手順（作る人へ）
 
-### 7.1 新しいゲーム（エンジンがあるとき）
+ゲームを足すのは、そのゲームのフォルダと登録の1行だけ。枠・札・検査・テストの配線は触らない（7.3）。下のチェックリストを上から順に済ませる。見本は `src/minigames/cricket_batting/`（`cue_tap` の皮）と `src/minigames/engines/cue_tap/`。
 
-1. ID を決める（`[a-z][a-z0-9_]*`。場所の名前より遊びの名前。例 `monkey_catch`）。
-2. `src/minigames/<gameId>/` を作る。
-   - `definition.ts`：2.3 の項目。結果の ID は、置き換える場面の選択肢の `# option:` に合わせられる。
-   - `rules.ts`：エンジンの結果から自分の結果へ（表か関数）。`rules.test.ts`：雛形を1行と、自分のテスト。
-   - `Skin.tsx`（エンジンの場に描く絵）と `skin.css`（根は `.mg-<game-id>`）。`play.ts`：`{ Play, rules }` を出す（エンジンの `Play` に皮を渡す）。
-3. 絵は CSS と SVG。音は共通の `sounds.json` の音から選ぶ。
-4. `src/minigames/registry-list.ts` に1行（アルファベット順の場所）。
-5. Debug の「ミニゲームの見本」で遊ぶ（スマートフォンの幅、片手、動きを減らす、おまかせ、キーボード）。[UI_RULES.md](../UI_RULES.md) を見て、[UI_REVIEW_CHECKLIST.md](../UI_REVIEW_CHECKLIST.md) で自己レビューする。
-6. `npm run test:quick`（登録・規則）と `npx playwright test tests/e2e/minigames.spec.ts`。
-7. 場面に使うのは、書く人の仕事（3章）。使ったら `npm run content:build` と `npm test`（6.3）。
-8. 実在の場所・習慣を絵や結果の文に出すときは、AGENTS の「観光と学習」の決まり（事実・伝説の区別、出典を作らない）に従う。
+### 7.1 新しい皮（エンジンがあるとき）のチェックリスト
 
-### 7.2 新しいエンジン
+- [ ] ID を決めた（`[a-z][a-z0-9_]*`。場所の名前より遊びの名前。例 `monkey_catch`）。フォルダ名と同じで、公開後は変えない。
+- [ ] `src/minigames/<gameId>/definition.ts`：`defineMiniGame({...})`（2.3）。結果は2つ以上（ID は置き換える場面の `# option:` に合わせられる）、`labelJa` と任意の `noteJa`、`defaultAuto`、`params`（引数が無ければ `() => z.object({}).strict()`、あれば各キーに `.describe("日本語の説明")`。`auto`・`prefix`・`bg`・`art…` はキーにしない）、`examples`（最初は `{}`）、`startJa`・`hintJa`・`howToJa`・`titleJa`、`timed`、`keysJa`（キーで遊べなければ `null`）、`sounds`（共通の `content/presentation/sounds.json` の音だけ）、`quietScene`、`art`（ゲーム自身の絵のファイル。ふつう `[]`）、`artSlots`（旅行編の絵を入れられる枠。下）、`load: () => import("./play")`。定義から、遊ぶ画面・規則・CSS を静的に import しない（タイトル画面の読み込みに入るため）。読みやすさの注意（キー、動きを減らしたときの見え方、読み上げ）を定義のコメントに書く。
+- [ ] `rules.ts`：エンジンの規則から自分の結果へ。表で足りれば表だけ（`cueTapRules(TUNING, { clean: …, early: …, late: …, miss: …, none: … })`）、足りなければ関数。調整の値（`tuning`）はここにコードで書く（札には書かない）。乱数・時刻・DOM・React・生成物を読まない（登録の検査が文を調べる）。
+- [ ] `rules.test.ts`：雛形を1行（`describeMiniGameRules(definition, rules, { records: [何もしない・すぐ終える・時間切れ…] })`）と、自分の細かいテスト。調整の値はエンジンの決まりに通す（`cue_tap` なら `expect(cueTapFairness(TUNING)).toEqual([])`）。
+- [ ] `Skin.tsx` と `skin.css`：エンジンの場に描く絵（`cue_tap` なら `CueTapSkin`：`tuning`・`rules`・`hintJa`・`actionJa`（ボタン）・`actionHintJa`（読み上げ）・`autoJa`・`endAt`（結果を見せる時刻）・`Field`）。場の根の class は `mg-<game-id>`（ID の `_` を `-` に）で、CSS はその中だけに効かせる（本番ビルドの検査の目印）。色は `--ds-*`、カードや説明の左の太い線は使わない。人物は `cast`（立ち絵）、名前は `names` を React の文字で（HTML にしない）。見た目の揺らぎは `seed`（`host/seed.ts` の `seededRandom`）から作る。時間は `clock` だけ（`performance.now`・`setTimeout` を使わない）。音は `sound(id)`（定義の `sounds` の音だけ鳴る）。動きを減らす（`still`）ときは、遊びに要らない動きを止める。
+- [ ] 絵の枠（任意）：旅行編の絵を入れたい所を `artSlots` に宣言する（`{ id, kind: "backdrop" | "sprite", labelJa }`。`labelJa` は何を描いた絵かを、絵を頼む人に分かるように）。`Field` は `art[枠]`（配信の URL）があればその絵を、無ければ CSS の見た目で描く。絵の位置は場の大きさの割合で決め、絵を頼むときに、ゲームが重ねて描く所（操作・メーター・上の帯）と、絵の中で合わせる所（例：遠くの三柱門の位置）を伝える。
+- [ ] `play.ts`：`export const Play = <エンジン>Play(skin)` と `export { <rules> as rules }`。
+- [ ] `src/minigames/registry-list.ts` に1行（アルファベット順の場所）：`export { <name> } from "./<gameId>/definition";`。
+- [ ] 実在の場所・習慣を絵や結果の文に出すときは、AGENTS の「観光と学習」の決まり（事実・伝説の区別、出典を作らない）に従った。
+- [ ] Debug の「ミニゲームの見本」（`?debug` → 「ミニゲームの見本を開く」）で、スマートフォンの幅（390・320）、片手、自分で・おまかせの各結果・動きを減らす・キーボードで遊んだ。[UI_RULES.md](../UI_RULES.md) を見て、[UI_REVIEW_CHECKLIST.md](../UI_REVIEW_CHECKLIST.md) で自己レビューした。
+- [ ] `npx vitest run src/minigames/`（登録・規則・枠）と `npx playwright test tests/e2e/minigames.spec.ts`（ゲームを足しても、どちらも直さない）。本当の操作の E2E（押す時刻など）が欲しければ、`tests/e2e/minigame-<gameId>.spec.ts` を足す（任意）。
+- [ ] 場面に使うのは、書く人の仕事（3章、制作ガイドの「ミニゲーム」）。使ったら `npm run content:build`（使い所が `minigame-uses.json` に入る）と `npx vitest run src/minigames/minigame-uses.test.ts`（その使い所を全ての結果で遊ぶ）。
 
-- `src/minigames/engines/<engineId>/`：記録の型、`engine.ts`（純粋：記録→エンジンの結果、おまかせの記録、調整の値の zod）、`engine.test.ts`、`EnginePlay.tsx`（入力・時計・下の操作。皮の絵を受け取る所）、`engine.css`（根は `.mg-engine-<engine-id>`）。
-- 最初の皮と一緒に作る。同じエンジンの2つ目の皮は、エンジンが入ってから作る（同じエンジンを2人で同時に作らない）。
+### 7.2 新しいエンジンのチェックリスト
+
+- [ ] 最初の皮と一緒に作る。同じエンジンの2つ目の皮は、エンジンが入ってから作る（同じエンジンを2人で同時に作らない）。
+- [ ] `src/minigames/engines/<engineId>/engine.ts`：記録の型、純粋な規則（記録→エンジンの結果、おまかせの記録、調整の値の zod、公平さの決まり。`cue_tap` の `cueTapFairness` のように、端末の押す遅れより広い幅、開始の二度押しの間（`host/timing.ts` の 450ms）に終わらないこと）、皮の表から規則を作る関数。乱数・時刻・DOM・React を読まない。
+- [ ] `engine.test.ts`：調整の値の決まりと、おまかせでどのエンジンの結果にも届くことを、エンジンの言葉で。
+- [ ] `EnginePlay.tsx`：入力（タップ・長押し・1本指でなぞる・キー。2本指・マイク・カメラ・傾きは使わない）と時計（`clock.onFrame`・`clock.after`・入力の時刻は `clock.at(event.timeStamp)`）と下の操作（親指の届く所、44px 以上、主な操作は 64px 程度で `data-minigame-primary`）。皮の絵を受け取る所を型にする。なぞる場は `touch-action: none` と `overscroll-behavior: contain`、座標は `host/seed.ts` の `fieldPoint`。上の帯・結果・中断・一時停止は描かない（枠が描く）。結果は規則で決めて `end(outcome)`。
+- [ ] `engine.css`：根の class は `mg-engine-<engine-id>`（本番ビルドの検査の目印）。
+- [ ] 枠に足りない物があれば（新しい入力の種類の補助など）、自分で枠を直さず、まとめ役に頼む（7.3）。
 
 ### 7.3 ぶつかる共通のファイル
 
@@ -498,7 +514,7 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
 | --- | --- | --- |
 | `src/minigames/registry-list.ts` | 毎回1行 | 隣の行どうしだけ。アルファベット順の場所に書けば少ない |
 | `content/presentation/sounds.json` と `public/assets/se/` | 新しい効果音が要るとき | 配列の同じ所。出典（`sources`）と一緒に足す |
-| `content/presentation/own-artwork.json` | 絵のファイルが要るとき | 同じ |
+| `content/presentation/own-artwork.json` | ゲーム自身の絵のファイルが要るとき | 同じ |
 | `src/minigames/engines/<engineId>/` | エンジンを直すとき | 同じエンジンの皮を作る人どうし。エンジンを直すのは1人ずつ |
 | 枠・`ChoicePoint`・`tag.ts`・`scene-walk.ts`・`player-action.ts`・テストの雛形・E2E の補助 | 触らない。足りないときは、まとめ役に頼む | 全てのゲームに効く |
 
@@ -530,11 +546,21 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
 | R12 | 本番ビルドの検査の目印（登録から作る） | S |
 | R13 | 文書：制作ガイドの「デートのミニゲーム」を「ミニゲーム」に（どの場面でも、一般の札、保証の決まり、関係値の決まり、Debug の部屋）。新しい都市の手引きの手順19と「まだ無い仕組み」、docs/02 の説明、docs/10 の E2E の表、この文書の状態の行 | S〜M |
 
-合計はおよそ L が1つ、M が7つ、S（S〜M を含む）が5つ。共通の所が多いので、1人で順に入れる。
+合計はおよそ L が1つ、M が7つ、S（S〜M を含む）が5つ。共通の所が多いので、1人で順に入れる。2026-11-13 に全て入れた（R1〜R13 の順に1つずつのコミット。R6 は R5 の前）。R9 で新しく止まる場面は無かった。
 
-## 9. ユーザーに確かめたいこと
+## 9. ユーザーの答え（2026-11-13）
 
-1. **告白のデートの中のミニゲーム**：止める（推奨）。ミニゲームは告白の成否を変えられないが、遊ぶ人には腕前で答えが決まったように見えるため。告白の前後の差し込みの場面には書ける。
-2. **ページが裏に回ったとき**：時計を止め、戻ったら「続ける」を出す（推奨）。今のクリケットのように、最初から遊び直す形にもできる。
-3. **数を物語に渡さない**（推奨）。値段の交渉は、値段の段を結果にして作る。台詞に点数を言わせるなど、数が要る場面の予定があれば、そのときに読むだけの変数を足す。
-4. **ゲームの絵は共通の絵だけにする**（推奨。CSS・SVG と直下の `public/`）。旅行編ごとに絵を替えたいゲーム（例：都市ごとの凧の柄）が出たら、そのときに、引数で旅行編の絵を選べるようにする。
+1. **告白のデートの中のミニゲーム**：止める（推奨のとおり）。告白のデートの歩みは札をビルドのエラーで止め、理由を言う。告白の前後の差し込みの場面には書ける。
+2. **ページが裏に回ったとき**：時計を止め、戻ったら「続ける」を出す（推奨のとおり。時間で進むゲーム）。
+3. **数を物語に渡さない**（推奨のとおり）。値段の交渉のようなゲームは、段の結果にする。
+4. **絵**：推奨（共通の絵だけ）から変わった。「クリケットとか、背景はあった方が盛り上がると思う」。ゲームの絵は CSS・SVG と直下の `public/` のまま、使い所ごとに背景（`bg`）と皮の絵の枠（`art.<枠>`）へ旅行編の絵を入れられる（2.12）。クリケットは枠 `pitch`・`bowler` を持ち、絵が来るまでは CSS の見た目で描く。
+
+## 10. 実装で設計と違えた所
+
+- `chooseMiniGameOutcome` は `src/domain/player-action.ts` に置いた（`src/domain/minigame.ts` には `openMiniGame` と `miniGameOutcomeChoice`）。遊ぶ人の操作の表が `minigame` の操作から `*_choose` へ写すので、`minigame.ts` に置くと2つのモジュールが互いを読む。場面の種類から選ぶ関数への表は、設計どおり player-action.ts の1つ。
+- フレームの `minigame` に、`params` のほかに `bg` と `art` が入る（問い4の答え）。どれも任意で、セーブの版は v23 のまま。
+- 枠の時刻（選択肢の待ち 300ms、二度押し 450ms、結果 1.3秒）は `src/minigames/host/timing.ts` に置いた（E2E の補助が読む）。
+- 保証の検査（4.2）は、道の上で先に払った分を引くだけでなく、先にもらった分（`# money: +N`）も足す。支払いと同じく確かな出来事のため。今の内容で新しく止まる場面は無かった。
+- `quietScene` の音楽の下げ方は、`MusicDuck` の `minigame`（BGM 0.25、環境音 0.3）。
+- 全ての使い所のテスト（6.3）は `src/minigames/minigame-uses.test.ts`。場面の開き方の表は Debug の部屋と同じ `src/dev/minigame-room.ts` に置き、テストと部屋が同じ表を読む。
+- Debug の部屋の舞台は、開いた画面の一番上に置いた（スマートフォンで、開始と遊ぶ操作がスクロールせずに見えるように）。
