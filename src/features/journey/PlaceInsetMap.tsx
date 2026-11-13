@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import * as L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import type * as L from "leaflet";
+import { useLeaflet, type Leaflet } from "./leaflet";
 import type { TravelPlace } from "../../content/travel-schemas";
 import { escapeHtml, OSM_TILES, reducedMotion } from "./PlaceMap";
 import { whenLaidOut } from "./when-laid-out";
@@ -13,7 +13,7 @@ const INSET_MAX_ZOOM = 16;
 const INSET_PADDING = { paddingTopLeft: [36, 38] as L.PointTuple, paddingBottomRight: [36, 30] as L.PointTuple, maxZoom: INSET_MAX_ZOOM };
 const INSET_FLY_S = 0.4;
 
-const mark = (place: TravelPlace, html: string, size: number) => L.marker([place.latitude, place.longitude], {
+const mark = (L: Leaflet, place: TravelPlace, html: string, size: number) => L.marker([place.latitude, place.longitude], {
   icon: L.divIcon({ className: "travel-map-marker-wrap", html, iconSize: [size, size], iconAnchor: [size / 2, size / 2] }),
   interactive: false,
   keyboard: false,
@@ -24,7 +24,7 @@ const mark = (place: TravelPlace, html: string, size: number) => L.marker([place
  * controls, no drag or zoom, nothing to focus; a swipe over it scrolls the page). It moves to each new selection so
  * both marks show. Its OSM credit stays on it; when the tiles fail, a line under it says so (the cards still choose).
  */
-export function PlaceInsetMap({ here, there, name, glyph, visited = [] }: {
+type InsetProps = {
   /** The current place (null when it cannot be found). */
   here: TravelPlace | null;
   /** The selected place. */
@@ -35,7 +35,16 @@ export function PlaceInsetMap({ here, there, name, glyph, visited = [] }: {
   glyph: string;
   /** The places the party has been to (visited-places.ts): their marks carry the stamp of 「行った場所」. */
   visited?: readonly string[];
-}) {
+};
+
+/** Until Leaflet is loaded (leaflet.ts), the empty frame. */
+export function PlaceInsetMap(props: InsetProps) {
+  const L = useLeaflet();
+  if (L) return <LeafletInsetMap L={L} {...props} />;
+  return <div className="place-inset"><div className="place-inset-map" data-testid="place-inset-map" /></div>;
+}
+
+function LeafletInsetMap({ L, here, there, name, glyph, visited = [] }: InsetProps & { L: Leaflet }) {
   const [tilesFailed, setTilesFailed] = useState(false);
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
@@ -79,8 +88,8 @@ export function PlaceInsetMap({ here, there, name, glyph, visited = [] }: {
     // At the current place one mark only: the selected disc with the current place's ring.
     const from = here && here.id !== there.id ? here : null;
     const stamp = (place: TravelPlace) => (visitedKey.split(" ").includes(place.id) ? " is-visited" : "");
-    if (from) mark(from, `<span class="travel-map-marker is-here${stamp(from)}" aria-hidden="true">●</span><span class="travel-map-marker-label is-below" aria-hidden="true">現在地</span>`, 32).addTo(group);
-    mark(there, `<span class="travel-map-marker is-selected${here && !from ? " is-here" : ""}${stamp(there)}" aria-hidden="true">${glyph}</span><span class="travel-map-marker-label" aria-hidden="true">${escapeHtml(name)}</span>`, 40).addTo(group);
+    if (from) mark(L, from,`<span class="travel-map-marker is-here${stamp(from)}" aria-hidden="true">●</span><span class="travel-map-marker-label is-below" aria-hidden="true">現在地</span>`, 32).addTo(group);
+    mark(L, there,`<span class="travel-map-marker is-selected${here && !from ? " is-here" : ""}${stamp(there)}" aria-hidden="true">${glyph}</span><span class="travel-map-marker-label" aria-hidden="true">${escapeHtml(name)}</span>`, 40).addTo(group);
     // The view needs the frame's size (in a dialog, a frame or so later).
     return whenLaidOut(frame, () => {
       map.invalidateSize();
@@ -94,7 +103,7 @@ export function PlaceInsetMap({ here, there, name, glyph, visited = [] }: {
       if (animate) map.flyToBounds(bounds, { ...INSET_PADDING, duration: INSET_FLY_S });
       else map.fitBounds(bounds, { ...INSET_PADDING, animate: false });
     });
-  }, [here, there, name, glyph, visitedKey]);
+  }, [L, here, there, name, glyph, visitedKey]);
 
   return <div className="place-inset">
     <div ref={container} className="place-inset-map" data-testid="place-inset-map" />

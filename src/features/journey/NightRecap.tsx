@@ -1,6 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
-import * as L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import { useLeaflet } from "./leaflet";
 import { HeroineNote } from "../battle/HeroineNote";
 import { escapeHtml, OSM_TILES } from "./PlaceMap";
 import { whenLaidOut } from "./when-laid-out";
@@ -30,10 +29,12 @@ export function TodayRouteMap({ route }: { route: readonly RouteStop[] }) {
   routeRef.current = route;
   // Drawn once per route (a re-render with the same places keeps the map).
   const routeKey = route.map((stop) => stop.place.id).join(" ");
+  // The map library (leaflet.ts) comes with the first map: until then the frame stays empty (the list tells the way).
+  const L = useLeaflet();
   useEffect(() => {
     const frame = container.current;
     const stops = routeRef.current;
-    if (!frame || stops.length < 2) return;
+    if (!L || !frame || stops.length < 2) return;
     const map = L.map(frame, { zoomControl: false, dragging: false, touchZoom: false, doubleClickZoom: false, scrollWheelZoom: false, boxZoom: false, keyboard: false });
     map.attributionControl.setPrefix(false);
     // Tiles, line and marks are pictures only (the list under the map says the way).
@@ -78,7 +79,7 @@ export function TodayRouteMap({ route }: { route: readonly RouteStop[] }) {
       // As PlaceMap: a zoom animation's timer that remove() leaves running would move the removed panes.
       (map as unknown as { _animatingZoom?: boolean })._animatingZoom = false;
     };
-  }, [routeKey]);
+  }, [L, routeKey]);
   return <figure className="today-route" data-testid="today-route">
     <figcaption className="today-route-title">今日の道のり</figcaption>
     <div ref={container} className="today-route-map" />
