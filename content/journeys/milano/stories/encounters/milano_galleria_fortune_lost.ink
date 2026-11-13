@@ -11,5 +11,5 @@ VAR player_address = ""
 # speaker: narrator
 少年の母が箱を閉めた。「今日は券なし。でもリナの店は見本ならただよ。行ったら、牛の腹を見てね」
 # speaker: heroine
-「今日は角より、お腹の日みたい。」
+今日は角より、お腹の日みたい
 -> END

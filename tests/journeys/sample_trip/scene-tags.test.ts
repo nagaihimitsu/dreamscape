@@ -76,8 +76,8 @@ describe("the sample journey's scene tags", () => {
     const marked = [...new Set(frames.filter((frame) => frame.delivery?.em || frame.delivery?.emShake)
       .map((frame) => `${frame.delivery?.em ?? ""}|${frame.delivery?.emShake ?? ""}|${frame.text}`))];
     expect(marked).toEqual([
-      "|三時？|「あれ、三時？　宿を出たの、朝だったよね」",
-      "止まってる||「止まってるんだ。でも塔の下はきれいに掃いてある。放っておかれてる感じじゃないね」",
+      "|三時？|あれ、三時？　宿を出たの、朝だったよね",
+      "止まってる||止まってるんだ。でも塔の下はきれいに掃いてある。放っておかれてる感じじゃないね",
     ]);
   });
 });

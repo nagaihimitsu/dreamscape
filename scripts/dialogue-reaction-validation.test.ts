@@ -68,9 +68,9 @@ it("integrates date and battle annotations through the real content pipeline", a
     await writeFile(path.join(fixture, "content/journeys/milano/presentation/dialogue-reactions.json"), JSON.stringify({
       schemaVersion: 1,
       entries: [
-        { storyId: "places/milano_roastery", speaker: "heroine", text: "「猫舌なのに、いちばんいい匂いのときに飲みたいんです。かなり不利な趣味。」", targetCharacterId: "heroine", expression: "smile" },
-        { storyId: "places/milano_castello", speaker: "enemy", text: "「写真、一枚でよかったんだ。新しい顔を作るのは待ってくれよ。」", targetCharacterId: "enemy", mark: "question" },
-        { storyId: "places/milano_last_supper", speaker: "heroine", text: "「待って。本当に、全部が同じ理由なんですか？」", targetCharacterId: "heroine", mark: "question" },
+        { storyId: "places/milano_roastery", speaker: "heroine", text: "猫舌なのに、いちばんいい匂いのときに飲みたいんです。かなり不利な趣味", targetCharacterId: "heroine", expression: "smile" },
+        { storyId: "places/milano_castello", speaker: "enemy", text: "写真、一枚でよかったんだ。新しい顔を作るのは待ってくれよ", targetCharacterId: "enemy", mark: "question" },
+        { storyId: "places/milano_last_supper", speaker: "heroine", text: "待って。本当に、全部が同じ理由なんですか？", targetCharacterId: "heroine", mark: "question" },
       ],
     }));
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
@@ -84,7 +84,7 @@ it("integrates date and battle annotations through the real content pipeline", a
     const learningDetails = JSON.parse(await readFile(path.join(fixture, "content/journeys/milano/learning/details.json"), "utf8"));
     await writeFile(path.join(fixture, "content/journeys/milano/presentation/dialogue-reactions.json"), JSON.stringify({
       schemaVersion: 1,
-      entries: [{ storyId: learningDetails.questions.milano_last_supper_q1.storyId, speaker: "heroine", text: "「Which descriptionが、この文では主語だね。」", targetCharacterId: "heroine", mark: "question" }],
+      entries: [{ storyId: learningDetails.questions.milano_last_supper_q1.storyId, speaker: "heroine", text: "Which descriptionが、この文では主語だね", targetCharacterId: "heroine", mark: "question" }],
     }));
     await expect(buildContent(fixture, false)).rejects.toThrow("Unsupported dialogue reaction story");
   } finally {

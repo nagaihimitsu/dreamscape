@@ -85,12 +85,12 @@ describe("a battle's one flow (stage 5)", () => {
   });
 
   it("stops a flow that never ends from its stop point (-> stop after the right evidence too), and lets a wrong evidence go on (decision 35)", () => {
-    expect(() => validateContent(sampleWith({ [MARKET]: swap("「……これ、わたしのことじゃない。でも、まだ答えは聞いてないわよ」\n",
-      "「……これ、わたしのことじゃない。でも、まだ答えは聞いてないわよ」\n-> stop\n") })))
+    expect(() => validateContent(sampleWith({ [MARKET]: swap("……これ、わたしのことじゃない。でも、まだ答えは聞いてないわよ\n",
+      "……これ、わたしのことじゃない。でも、まだ答えは聞いてないわよ\n-> stop\n") })))
       .toThrow(/never ends from the reasoning stop: every way on from there comes back to it/u);
     // The author decides: without -> stop a wrong evidence goes on to the next question (the score is the quizzes' only).
-    const goesOn = sampleWith({ [MARKET]: swap("「この資料じゃ足りないみたい。時間を計る道具が書いてあるものを探そう」\n    -> stop\n",
-      "「この資料じゃ足りないみたい。時間を計る道具が書いてあるものを探そう」\n") });
+    const goesOn = sampleWith({ [MARKET]: swap("この資料じゃ足りないみたい。時間を計る道具が書いてあるものを探そう\n    -> stop\n",
+      "この資料じゃ足りないみたい。時間を計る道具が書いてあるものを探そう\n") });
     expect(() => validateContent(goesOn)).not.toThrow();
   });
 
@@ -119,8 +119,8 @@ describe("a battle's one flow (stage 5)", () => {
       "=== smp_mihon_special_b_market_claim ===\n* [「えっ」 # option: huh]\n- \n") })))
       .toThrow(/The helper knot smp_mihon_special_b_market_claim reaches a choice \("「えっ」"\), read on its own as the clue book reads it/u);
     // A choice it reaches through a knot it calls, or a call of the game's (the stop point moved into the claim), stops it too.
-    expect(() => validateContent(sampleWith({ [MARKET]: (text) => swap("「時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！」\n",
-      "「時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！」\n-> smp_claim_more ->\n")(text) +
+    expect(() => validateContent(sampleWith({ [MARKET]: (text) => swap("時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！\n",
+      "時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！\n-> smp_claim_more ->\n")(text) +
       "\n=== smp_claim_more ===\n# speaker: enemy\n「どう思う？」\n* [「そうかも」 # option: maybe]\n* [「本当に？」 # option: really]\n- ->->\n" }))).toThrow(/smp_mihon_special_b_market_claim reaches a choice \("「そうかも」"\)/u);
     expect(() => validateContent(sampleWith({ [MARKET]: swap("=== smp_mihon_special_b_market_press ===\n", "=== smp_mihon_special_b_market_press ===\n-> quiz(2) ->\n") })))
       .toThrow(/smp_mihon_special_b_market_press reaches a choice \("quiz"\)/u);
@@ -133,12 +133,12 @@ describe("a battle's one flow (stage 5)", () => {
     expect(() => validateContent(sampleWith({ [MARKET]: swap("INCLUDE modules.ink\n", "VAR player_name = \"\"\nVAR heroine_name = \"\"\n") })))
       .toThrow(/A place file starts with the two lines "INCLUDE modules\.ink" and "-> DONE"/u);
     // A call outside a battle has nothing to answer it.
-    expect(() => validateContent(sampleWith({ [TOWER]: swap("「見て、あの歯車。止まってるのに、油でぴかぴかだ」\n", "「見て、あの歯車。止まってるのに、油でぴかぴかだ」\n-> quiz(1) ->\n") })))
+    expect(() => validateContent(sampleWith({ [TOWER]: swap("見て、あの歯車。止まってるのに、油でぴかぴかだ\n", "見て、あの歯車。止まってるのに、油でぴかぴかだ\n-> quiz(1) ->\n") })))
       .toThrow(/-> quiz\(n\) -> is a battle's call \(stage 5\): .* is not a battle/u);
   });
 
   it("reads the helper knots alone with every condition, quiz result, score and memory, as the clue book may read them", () => {
-    const claimLine = "「時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！」\n";
+    const claimLine = "時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！\n";
     const pressHead = "=== smp_mihon_special_b_market_press ===\n";
     const more = () => "\n=== smp_market_more ===\n# speaker: enemy\n「どう思う？」\n* [「そうかも」 # option: maybe]\n* [「本当に？」 # option: really]\n- ->->\n";
     // A choice reached only under a condition (here: the bookmark held), only after a right answer, or only with a score.

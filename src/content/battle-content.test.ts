@@ -213,8 +213,8 @@ describe("battle content contract", () => {
 
   it("rejects reward effects even in a wrong-answer branch", async () => {
     await changeInk(
-      "「ランプを探してた。",
-      "# effect: common_date_first_playful\n「ランプを探してた。",
+      "ランプを探してた。",
+      "# effect: common_date_first_playful\nランプを探してた。",
     );
     // The place file's reader reads every line of the battle's knot, the wrong answer's branch too (A7).
     await expect(buildContent(fixture, false)).rejects.toThrow(
@@ -224,7 +224,7 @@ describe("battle content contract", () => {
 
   it("accepts English dialogue on non-default branches (any language may be written: decision 28)", async () => {
     await changeInk(
-      "「ランプを探してた。こっちの部屋の窓と、絵の光を合わせたんですね。」",
+      "ランプを探してた。こっちの部屋の窓と、絵の光を合わせたんですね",
       "You missed it.",
     );
     await expect(buildContent(fixture, false)).resolves.toBeDefined();

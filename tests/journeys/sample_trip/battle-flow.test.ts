@@ -104,7 +104,7 @@ describe("a battle as one flow (stage 5): the sample's battles", () => {
     const resumed = restore(answered);
     const after = act(resumed, (current) => advanceBattle(current, current.revision));
     expect(after.activeBattle).toMatchObject({ phase: "dialogue", score: 1, turns: 1 });
-    expect(after.activeBattle!.frame!.text).toBe("「直さずに、三時のまま残した。……修理代がなかったんだと思ってました」");
+    expect(after.activeBattle!.frame!.text).toBe("直さずに、三時のまま残した。……修理代がなかったんだと思ってました");
     expect(advanceBattle(after, answered.revision)).toBe(after);
   });
 
@@ -120,19 +120,19 @@ describe("a battle as one flow (stage 5): the sample's battles", () => {
     state = act(state, (current) => advanceBattle(current, current.revision));
     const claim: string[] = [];
     while (state.activeBattle!.phase === "dialogue") { claim.push(state.activeBattle!.frame!.text); state = act(state, (s) => advanceBattle(s, s.revision)); }
-    expect(claim.at(-1)).toBe("「時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！」");
+    expect(claim.at(-1)).toBe("時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！");
     expect(state.activeBattle).toMatchObject({ phase: "reasoning", roundIndex: 1,
       reasoning: { statementId: "smp_mihon_special_b_market_claim", pressed: false, status: "selecting", selectedClueIds: [] } });
     expect(getReasoningContext(state)).toEqual({ claimText: claim.at(-1), pressedText: null });
     state = act(state, (current) => pressBattleClaim(current, current.revision));
     expect(state.activeBattle).toMatchObject({ phase: "dialogue", roundIndex: 1, reasoning: { pressed: true } });
-    expect(state.activeBattle!.frame!.text).toBe("「誰も、よ。だから焼きたてを出しても、いつも冷めてから売れるの」");
+    expect(state.activeBattle!.frame!.text).toBe("誰も、よ。だから焼きたてを出しても、いつも冷めてから売れるの");
     state = enter(state);
     expect(state.activeBattle!.phase).toBe("reasoning");
-    expect(getReasoningContext(state)!.pressedText).toBe("「誰も、よ。だから焼きたてを出しても、いつも冷めてから売れるの」\n「……一人残らず、ですか。朝市の中にも、時間を計っている人はいませんか」");
+    expect(getReasoningContext(state)!.pressedText).toBe("誰も、よ。だから焼きたてを出しても、いつも冷めてから売れるの\n……一人残らず、ですか。朝市の中にも、時間を計っている人はいませんか");
     state = act(state, (current) => selectReasoningClue(current, "smp_obs_mihon_market_rain", current.revision));
     state = act(state, (current) => submitBattleEvidence(current, current.revision));
-    expect(state.activeBattle!.frame!.text).toBe("「その資料で、誰かが時間を守っていると言える？　わたしの『誰も』は、まだ崩れないわ」");
+    expect(state.activeBattle!.frame!.text).toBe("その資料で、誰かが時間を守っていると言える？　わたしの『誰も』は、まだ崩れないわ");
     state = enter(state);
     expect(state.activeBattle).toMatchObject({ phase: "reasoning", reasoning: { status: "incorrect", submittedClueIds: ["smp_obs_mihon_market_rain"] } });
     state = act(state, (current) => selectReasoningClue(current, "smp_obs_mihon_market_timer", current.revision));
@@ -391,7 +391,7 @@ describe("a special battle's claim and rebuttal on the battle screen (stage 5)",
   const advance = (label: string, testId = "battle-advance") => ({ label, testId });
 
   it("ends the part before the claim with 「次へ進む」, and shows the upcoming question while the claim plays (B and C)", () => {
-    for (const [battleId, round, claimLine] of [[MARKET, 1, "「時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！」"],
+    for (const [battleId, round, claimLine] of [[MARKET, 1, "時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！"],
       [LIBRARY, 2, undefined]] as const) {
       const { state, seen } = toStop(battleId);
       const claim = seen.filter((line) => line.part === "claim");

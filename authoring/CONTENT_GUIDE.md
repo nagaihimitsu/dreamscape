@@ -11,28 +11,28 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 ```ink
 # speaker: enemy
 # reaction: heroine,exasperated,sigh
-「これは絶対に本物です」
+これは絶対に本物です
 # speaker: heroine
 # emotion: serious
 # reaction: enemy,sweat
-「根拠を見せてください」
+根拠を見せてください
 ```
 
 `# reaction: heroine,sigh` のように漫符だけ、`# reaction: heroine,smile` のように表情だけも指定できます。対象は現在の表示に対応する `heroine` または `enemy` です。両者に指定する場合は別々のタグにします。明示したInkの表情・リアクションが旧外部指定より優先されます。人物が画面に表示されない場面では、その人物の漫符は表示されません。
 
 話し手（`# speaker:`）は、`narrator`（地の文）・`heroine`・`player`・`enemy`（バトルの対戦相手、場面の `# person:` で絵の立つ人）のほかに、`progression/story.json` の `people` に登録した人物のIDも書けます（`# speaker: <人物ID>`。2026-11-11）。その行はその人の台詞になり、名札にその人の `nameJa` が出ます（その人の絵は出ず、立っている絵は聞き手になります）。名前のない役（店主・運転手など）も、役名を `nameJa` にして登録できます。登録していないIDは、`content:build` がファイル・knot・行とIDを示して止めます。対戦相手と、場面の `# person:` で絵が立つ人は、今までどおり `enemy` で書きます。例は見本の編の `stories/places/smp_mihon_clock_tower.ink` のリリの見送り（`smp_mihon_lili_seeoff`）。
 
-台詞は「」で囲まずに書きます（名札が話し手を示します。2026-11-11のユーザー判断。インド編はこの書き方で、ミラノ編と見本の編は今は「」付きのまま）。台詞の中の引用（『』、看板・題名・前に聞いた言葉の「」）はそのまま書けます。地の文の中の台詞は、地の文の行と、話す人の行（`# speaker:`）に分けて書きます。
+台詞は「」で囲まずに書きます（名札が話し手を示します。2026-11-11のユーザー判断。インド編・ミラノ編・見本の編はこの書き方。ミラノ編と見本の編は2026-11-13に「」を外した。主人公が言う言葉の選択肢は、行動の選択肢と分けるため「」で囲む）。台詞の中の引用（『』、看板・題名・前に聞いた言葉の「」）はそのまま書けます。地の文の中の台詞は、地の文の行と、話す人の行（`# speaker:`）に分けて書きます（ミラノ編と見本の編には、地の文の中に台詞を書いた行がまだ残っています）。
 
 行の見せ方も、その行の札で決められます（どれも任意で、書いた行だけに効きます。書かなければ今までどおり）。どの会話の場面（観光案内・バトル・デート・道中交流と会話・到着とエピローグ）でも使えます。例は見本の編の `stories/places/smp_mihon_clock_tower.ink`（バトルの `# pause:`、鐘の会話の `# shake:` と `# size:`）。
 
 ```ink
 # speaker: heroine
 # pause: 600
-「……え？」
+……え？
 # shake: window
 # size: large
-「そんなの、聞いてない！」
+そんなの、聞いてない！
 ```
 
 - `# pause: 600`：その行の字が出る前に、書いたミリ秒だけ間を置きます（100〜3000。0.6秒なら `600`）。間の途中でタップすると、すぐに行が全部出ます。文字送りの「一括表示」と「高速送り」では間を置きません。自動送りは、間の後に行を読み終えてから進みます。
@@ -96,7 +96,7 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 # recall: smp_album_clock_tower
 # quiet: line
 # stand: close
-「短い滞在だったね。でも、あの針を見るたびに思い出しそう」
+短い滞在だったね。でも、あの針を見るたびに思い出しそう
 ```
 
 - 決まった値のほか（`# phone: left`、`# stand: far` など）、空の札、1つの行に同じ札を2つ、アルバムの絵にない ID の `# recall:`、1つの行に `# phone:` と `# letter:` の両方を書いたときは、`content:build` が止めます。
@@ -336,7 +336,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 ```ink
 -> quiz(1) ->
 # speaker: enemy
-{ quiz_correct: 「……そう、三時はただの時刻じゃない」|「三時は三時よ」 }
+{ quiz_correct: ……そう、三時はただの時刻じゃない|三時は三時よ }
 -> smp_mihon_special_b_market_claim ->
 - (stop)
 -> reasoning ->
@@ -346,11 +346,11 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 }
 { evidence_result == "failure":
     # speaker: enemy
-    「それは今年の帳面よ。昔の話をしているの」
+    それは今年の帳面よ。昔の話をしているの
     -> stop
 }
 # speaker: enemy
-「三時の欄……。昔の人も、好きな時間に買いに来てたのね」
+三時の欄……。昔の人も、好きな時間に買いに来てたのね
 -> quiz(2) ->
 ```
 

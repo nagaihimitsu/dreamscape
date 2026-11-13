@@ -13,12 +13,12 @@ INCLUDE modules.ink
 # speaker: narrator
 サン・マウリツィオ教会の内部は壁で二つに分かれている。かつて一般の人と、修道院の内側で暮らす女性たちが、それぞれの側でミサにあずかった。
 # speaker: heroine
-「修道女たちがいた向こう側にも壁画が残ってるんだって。どんな色に見えていたんだろう。」
-「別々に絵を見て、一色だけ覚えて、ここで会いませんか。私、好きな人と同じものを見るのがデートだと思ってたから、逆をしてみたい。」
+修道女たちがいた向こう側にも壁画が残ってるんだって。どんな色に見えていたんだろう
+別々に絵を見て、一色だけ覚えて、ここで会いませんか。私、好きな人と同じものを見るのがデートだと思ってたから、逆をしてみたい
 # speaker: player
-「待ち合わせに遅れたら？」
+待ち合わせに遅れたら？
 # speaker: heroine
-「私のほうが遅いと思います。いまから謝っておきます。」
+私のほうが遅いと思います。いまから謝っておきます
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
@@ -32,10 +32,10 @@ INCLUDE modules.ink
     # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
-        「時間は少しだけ決めておこう。私、本気で見始めると長いよ。」
+        時間は少しだけ決めておこう。私、本気で見始めると長いよ
     - else:
         # speaker: heroine
-        「ありがとう。待たせないことより、ちゃんと見てくることをがんばる。」
+        ありがとう。待たせないことより、ちゃんと見てくることをがんばる
     }
     -> join_1
 
@@ -43,10 +43,10 @@ INCLUDE modules.ink
     # profile: playful
     { romance_result == "negative":
         # speaker: heroine
-        「先に当てようとすると、あなたのことしか考えなくなるよ。絵も見たい。」
+        先に当てようとすると、あなたのことしか考えなくなるよ。絵も見たい
     - else:
         # speaker: heroine
-        「ふたつ覚えていい？　私の好きな色と、あなたが好きそうな色。あ、もう反則だ。」
+        ふたつ覚えていい？　私の好きな色と、あなたが好きそうな色。あ、もう反則だ
     }
     -> join_1
 
@@ -54,10 +54,10 @@ INCLUDE modules.ink
     # profile: honest
     { romance_result == "negative":
         # speaker: heroine
-        「先に見つけた方、がいいな。待つ役まで決めたくない。」
+        先に見つけた方、がいいな。待つ役まで決めたくない
     - else:
         # speaker: heroine
-        「うん。見つけたらすぐに言う。教会の中だから、ちっちゃい声でね。」
+        うん。見つけたらすぐに言う。教会の中だから、ちっちゃい声でね
     }
     -> join_1
 
@@ -65,18 +65,18 @@ INCLUDE modules.ink
 # speaker: narrator
 戻ってきた彼女は「青」と言ってから、息を吸った。
 # speaker: heroine
-「帰る途中に別の青があって、最初の青がわからなくなった。でも、戻るとき、早く話したかったのは覚えてる。」
+帰る途中に別の青があって、最初の青がわからなくなった。でも、戻るとき、早く話したかったのは覚えてる
 
 * [「じゃあ二色とも聞く」 # option: second_attentive]
     # profile: attentive
     # memory: sound_memory_maurizio_date_sound
     { romance_result == "negative":
         # speaker: heroine
-        「混ぜる前の色は戻せないな。今覚えてるほうだけでもいい？」
+        混ぜる前の色は戻せないな。今覚えてるほうだけでもいい？
     - else:
         # speaker: heroine
         # reaction: heroine,smile,sparkle
-        「最初のはひんやり。次のは、日なたの水。青を二つ持ってきたってことだね。」
+        最初のはひんやり。次のは、日なたの水。青を二つ持ってきたってことだね
     }
     -> join_2
 
@@ -85,10 +85,10 @@ INCLUDE modules.ink
     # memory: sound_memory_maurizio_date_sound
     { romance_result == "negative":
         # speaker: heroine
-        「それはずるい。あなたが絵を見て選んだのを聞きたかった。」
+        それはずるい。あなたが絵を見て選んだのを聞きたかった
     - else:
         # speaker: heroine
-        「それだと待たせた私の色じゃない。……何色？　やっぱり聞きたい。」
+        それだと待たせた私の色じゃない。……何色？　やっぱり聞きたい
     }
     -> join_2
 
@@ -97,10 +97,10 @@ INCLUDE modules.ink
     # memory: sound_memory_maurizio_date_sound
     { romance_result == "negative":
         # speaker: heroine
-        「今日だけは違うまま帰ろうよ。私の青、もう少し貸さないでおく。」
+        今日だけは違うまま帰ろうよ。私の青、もう少し貸さないでおく
     - else:
         # speaker: heroine
-        「うん。別々に見たから、一緒に見たい所ができた。」
+        うん。別々に見たから、一緒に見たい所ができた
     }
     -> join_2
 
