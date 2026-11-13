@@ -30,12 +30,16 @@ INCLUDE modules.ink
 # reaction: heroine,smile
 鼻だけ戻せないかな、鼻だけ。今の、俺の親父にそっくりだった
 # speaker: narrator
-娘は粘土の塊に親指を入れ、もう一つ穴を開けた。「じゃあおじいちゃんの貯金箱」
+娘は粘土の塊に親指を入れ、もう一つ穴を開けた。
+# speaker: milano_castello_daughter
+じゃあおじいちゃんの貯金箱
 # speaker: heroine
 # emotion: happy
 それ、いくら貯まる？
 # speaker: narrator
-娘は自分の指先を見た。「砂なら」
+娘は自分の指先を見た。
+# speaker: milano_castello_daughter
+砂なら
 # speaker: enemy
 写真、一枚でよかったんだ。新しい顔を作るのは待ってくれよ
 # speaker: narrator
@@ -50,7 +54,9 @@ INCLUDE modules.ink
 城と聞くと偉い人ばかり浮かんだけど、ここに寝かされてたのは病気の兵士だった
 }
 # speaker: narrator
-旧病院の天井を見上げてから、娘は彫刻を見た。「寝てたら、天井がいちばんよく見えるね」
+旧病院の天井を見上げてから、娘は彫刻を見た。
+# speaker: milano_castello_daughter
+寝てたら、天井がいちばんよく見えるね
 # speaker: enemy
 父さんが入院してたときも、天井のしみの話ばっかりでな。俺は毎回、外の天気を教えてた
 # speaker: heroine
@@ -86,7 +92,9 @@ INCLUDE modules.ink
 # speaker: enemy
 もう一度、俺が座る。次の顔に、親父がいたら教えてくれ
 # speaker: narrator
-娘は彼の眉を指で上げた。「笑わないで。かわいくなっちゃう」
+娘は彼の眉を指で上げた。
+# speaker: milano_castello_daughter
+笑わないで。かわいくなっちゃう
 # speaker: enemy
 そこは似せてくれていいんだけど
 # speaker: narrator
@@ -116,15 +124,21 @@ INCLUDE modules.ink
 * [Would this pick fit your hand? # option: give # translation: このピック、手に合いそう？]
     # give: blue_pick heroine
     # speaker: narrator
-    ティノは弦を一本だけ弾いた。「うわ。自分の指だと、こんなに強く弾けなかった」。中庭の壁から細く音が返る。
+    ティノは弦を一本だけ弾いた。
+    # speaker: milano_tino
+    うわ。自分の指だと、こんなに強く弾けなかった
+    # speaker: narrator
+    中庭の壁から細く音が返る。
     # speaker: heroine
     最初に鳴らしたのが一音なの、いいね
     -> END
 
 * [Could you play one note with this? # option: ask # translation: これで一音弾いてくれる？]
     # give: blue_pick heroine
+    # speaker: milano_tino
+    曲じゃなくて一音なら、外しようがないね
     # speaker: narrator
-    ティノ「曲じゃなくて一音なら、外しようがないね」。豪快に隣の弦をはじき、本人が一番驚いた。
+    豪快に隣の弦をはじき、本人が一番驚いた。
     # speaker: heroine
     いまのでお願いします。二回目は、違う音になっちゃうから
     -> END

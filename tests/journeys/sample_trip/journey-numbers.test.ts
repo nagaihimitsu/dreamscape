@@ -11,13 +11,13 @@ beforeAll(() => {
 });
 
 describe("the sample journey in numbers", () => {
-  it("starts at the first day with nothing yet, the hotel not counted as a place", () => {
+  it("starts at the first day with nothing yet, the hotel where nothing happened yet not counted", () => {
     expect(journeyNumbers(cityStart("mihon"), [])).toEqual({
-      days: 1, places: 0, people: 0, localWords: 0, photos: 0, spent: { amount: 0, textJa: "€0" }, rides: [],
+      days: 1, eventPlaces: 0, people: 0, localWords: 0, photos: 0, spent: { amount: 0, textJa: "€0" },
     });
   });
 
-  it("counts the places been to, the words learned, the photos, the money spent, the days and the rides", () => {
+  it("counts the places where something happened, the words learned, the photos, the money spent and the days, never the rides", () => {
     const start = cityStart("mihon");
     const later = {
       ...start,
@@ -28,8 +28,8 @@ describe("the sample journey in numbers", () => {
       travel: { ...start.travel, day: 2, rideCounts: { rental_bicycle: 2 } },
     };
     const numbers = journeyNumbers(later, ["smp_mihon_word_trisol", "smp_mihon_word_trisol"]);
-    expect(numbers).toMatchObject({ days: 2, places: 1, localWords: 1, photos: 1, spent: { amount: 30, textJa: "€30" } });
-    expect(numbers.rides).toEqual([{ modeId: "rental_bicycle", nameJa: "貸し自転車", count: 2 }]);
+    expect(numbers).toMatchObject({ days: 2, eventPlaces: 1, localWords: 1, photos: 1, spent: { amount: 30, textJa: "€30" } });
+    expect(numbers).not.toHaveProperty("rides");
   });
 
   it("never reads a relationship value", () => {

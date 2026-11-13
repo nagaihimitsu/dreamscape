@@ -12,9 +12,11 @@ import {
   SOUND_LICENSE_TEXT,
   soundCredits,
   THIRD_PARTY_LICENSES_FILE,
+  voiceCredits,
   type JourneyPhotoCredits,
   type SoundCredit,
   type ThirdPartyLicense,
+  type VoiceCredit,
 } from "../content/credits";
 import "./credits.css";
 
@@ -89,13 +91,14 @@ function SoundCredits({ sounds, usesLabelJa = "使っている音" }: { sounds: 
 
 /**
  * The body of 「出典・権利の一覧」: every served tourism photo by journey (preparing journeys
- * marked, D1), the sound effects' and the music's sources, the map, the fonts (D4), the libraries
- * (D7) and the note that artwork made for Dreamscape is not listed (D5). Each journey's photos, the
- * sounds' and the music's sources and each licence text open on demand.
+ * marked, D1), the sound effects', the music's and the ambience's sources, the voices' (by journey: only the
+ * journeys with voices; 2026-11-13), the map, the fonts (D4), the libraries (D7) and the note that artwork made for
+ * Dreamscape is not listed (D5). Each journey's photos, the sounds' and the music's sources and each licence text
+ * open on demand.
  */
-export function CreditsList({ photos, sounds = [], music = [], ambience = [], licences }: {
+export function CreditsList({ photos, sounds = [], music = [], ambience = [], voices = [], licences }: {
   photos: readonly JourneyPhotoCredits[]; sounds?: readonly SoundCredit[]; music?: readonly SoundCredit[]; ambience?: readonly SoundCredit[];
-  licences: LicenceListState;
+  voices?: readonly VoiceCredit[]; licences: LicenceListState;
 }) {
   return <div className="credits-list">
     <section aria-labelledby="credits-photos-title">
@@ -138,6 +141,18 @@ export function CreditsList({ photos, sounds = [], music = [], ambience = [], li
         <SoundCredits sounds={ambience} usesLabelJa="使っている音" />
       </details>
     </section>}
+    {voices.length > 0 && <section aria-labelledby="credits-voices-title" data-testid="credits-voices">
+      <h3 id="credits-voices-title">声</h3>
+      <p className="fine-print">台詞の声の作り方です。声のある旅行編だけに載せています。</p>
+      <ul className="credits-sounds">
+        {voices.map((voice) => <li key={`${voice.journeyId}-${voice.url}`}>
+          <p className="credits-place">{voice.journeyNameJa}</p>
+          <p>{voice.useJa}：{voice.titleJa}（{voice.author}、{voice.license}）</p>
+          {voice.creditJa && <p>{voice.creditJa}</p>}
+          <p><a href={voice.url} target="_blank" rel="noreferrer">元の作品</a></p>
+        </li>)}
+      </ul>
+    </section>}
     <section aria-labelledby="credits-map-title" data-testid="credits-map">
       <h3 id="credits-map-title">地図</h3>
       <p>{MAP_CREDIT.textJa}</p>
@@ -166,9 +181,10 @@ export function CreditsDialog({ onClose }: { onClose: () => void }) {
   const [sounds] = useState(soundCredits);
   const [music] = useState(musicCredits);
   const [ambience] = useState(ambienceCredits);
+  const [voices] = useState(voiceCredits);
   const licences = useThirdPartyLicenses();
   return <Modal labelledBy="credits-title" className="credits-modal" onClose={onClose} settlePresses>
     <ModalTitle id="credits-title" onClose={onClose} closeTestId="credits-close">出典・権利の一覧</ModalTitle>
-    <CreditsList photos={photos} sounds={sounds} music={music} ambience={ambience} licences={licences} />
+    <CreditsList photos={photos} sounds={sounds} music={music} ambience={ambience} voices={voices} licences={licences} />
   </Modal>;
 }

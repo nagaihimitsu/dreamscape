@@ -188,7 +188,7 @@ INCLUDE modules.ink
     # speaker: narrator
     ニーノは定規を九十度回し、原因欄を二つに分けた。三つ目の余白も残した。
     # speaker: enemy
-    私の負けだ。原因を一つにしても、問題は一つも減っていなかった
+    訂正しよう。原因を一つにしても、問題は一つも減っていなかった
     この『同上』の印は……同じ原因だと調べた後に押す。仕事が増えたぞ
     # speaker: heroine
     そのほうが、印も落ち着きそう
@@ -209,11 +209,11 @@ INCLUDE modules.ink
     ……あの人の帳簿、急に続きが気になってきた
 - else:
     # speaker: enemy
-    勝負には勝った！　原因は私の――
+    私の『すべて』が残った！　原因は私の――
     # speaker: narrator
     ニーノは言いかけて、口をつぐんだ。帳簿の「同上」を見つめている。
     # speaker: enemy
-    いや、君たちの見落としもある。まずい。勝因まで一つにできない
+    いや、君たちの見落としもある。まずい。残った理由まで一つにできない
     次までに、欄を増やしておく。……帳簿を買い直すほどではないはずだ
     # speaker: narrator
     去り際、彼は予備の鉛筆を取り出した。印はポケットに入ったままだった。
@@ -335,7 +335,7 @@ INCLUDE modules.ink
     # speaker: narrator
     エットレは最後の仕切りを抜いた。倒れると思った二枚のメモは、そのまま残った。
     # speaker: enemy
-    私の負けだ。一人ずつ見るために、関係を全部切っていた。だが、隣に誰がいるかも、その人の見え方に関わるのだな
+    認めよう。一人ずつ見るために、関係を全部切っていた。だが、隣に誰がいるかも、その人の見え方に関わるのだな
     帰ったらパンとチーズを……一度、同じ皿に乗せる。名前は食べてから決める
     # speaker: heroine
     おいしかったら、仕切りには内緒ですね
@@ -356,7 +356,7 @@ INCLUDE modules.ink
     一枚減っただけなのに、ずいぶん持ちやすそうになったね
 - else:
     # speaker: enemy
-    勝負は私の勝ちだ。だが、関係なしの判は押せなくなった
+    私の仕切りは立ったままだ。だが、関係なしの判は押せなくなった
     # speaker: narrator
     エットレは二枚のメモを別々の封筒に入れた。少し考えて、封筒同士をクリップで留めた。
     # speaker: enemy
@@ -389,9 +389,13 @@ INCLUDE modules.ink
 # when: episode milano_last_supper_episode
 # background: milano_refectory
 # speaker: narrator
-グラツィエ教会前で、イーダが両腕を伸ばして静止した。兄が首を振る。「ちがう、それだと『大きな魚』！」
+グラツィエ教会前で、イーダが両腕を伸ばして静止した。兄が首を振る。
+# speaker: milano_last_supper_brother
+ちがう、それだと『大きな魚』！
+# speaker: milano_last_supper_brother
+今日の声は店じまい。あとは妹が代わりに晩ご飯を注文する
 # speaker: narrator
-兄「今日の声は店じまい。あとは妹が代わりに晩ご飯を注文する」。どうやら、見本を見せるために一言だけ解禁したらしい。
+どうやら、見本を見せるために一言だけ解禁したらしい。
 
 * [May I try a gesture? # option: act # translation: 身振りを一つ試してもいい？]
     # speaker: narrator
@@ -402,7 +406,9 @@ INCLUDE modules.ink
 
 * [What do you actually want for dinner? # option: ask # translation: 本当は夕食に何が食べたいの？]
     # speaker: narrator
-    兄は両手で丸を作った。イーダ「……ピザ？　さっき魚じゃないって言ってたから、私が勝手にパスタにした」
+    兄は両手で丸を作った。
+    # speaker: milano_ida
+    ……ピザ？　さっき魚じゃないって言ってたから、私が勝手にパスタにした
     # speaker: heroine
     当てるのが上手な人ほど、聞くのを忘れるのかも
     -> END
@@ -410,7 +416,9 @@ INCLUDE modules.ink
 * [Enjoy your dinner together. # option: leave # translation: 二人で夕食を楽しんで。]
     # later
     # speaker: narrator
-    兄は指にキスをして、こちらへ小さく投げた。イーダ「それだけは通訳がいらないね」。
+    兄は指にキスをして、こちらへ小さく投げた。
+    # speaker: milano_ida
+    それだけは通訳がいらないね
     # speaker: heroine
     あれ、私もいつか自然にやってみたい
     -> END

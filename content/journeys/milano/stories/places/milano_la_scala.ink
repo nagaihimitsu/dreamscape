@@ -128,8 +128,8 @@ INCLUDE modules.ink
 # background: milano_la_scala_date
 # speaker: narrator
 スカラ座前で、声の大きな客が二人、飴を持って口論している。片方が袋を開け、片方が「噛んだら三秒だ」とこぼした。
-# speaker: narrator
-架空の菓子売り「この二人、毎回これで開演前の時間をつぶすのよ。小袋なら二ユーロ」
+# speaker: milano_la_scala_candy_seller
+この二人、毎回これで開演前の時間をつぶすのよ。小袋なら二ユーロ
 
 * [A small bag, please. # option: buy # translation: 小袋を一つください。]
     # money: -2
@@ -140,8 +140,10 @@ INCLUDE modules.ink
     -> END
 
 * [Who won last time? # option: ask # translation: 前はどっちが勝ったの？]
+    # speaker: milano_la_scala_candy_seller
+    私。口論が長いと、開演前にもう一袋売れるの
     # speaker: narrator
-    菓子売り「私。口論が長いと、開演前にもう一袋売れるの」。客がそろって袋を握りしめた。
+    客がそろって袋を握りしめた。
     # speaker: heroine
     今日の勝負は長くなりそう
     -> END
@@ -149,7 +151,9 @@ INCLUDE modules.ink
 * [No sweets for me, thanks. # option: leave # translation: 私は飴は遠慮します。]
     # later
     # speaker: narrator
-    菓子売りは袋をしまい、二人の客に目をやった。「あんたたちも、たまにはこの人を見習って黙ってみたら」
+    菓子売りは袋をしまい、二人の客に目をやった。
+    # speaker: milano_la_scala_candy_seller
+    あんたたちも、たまにはこの人を見習って黙ってみたら
     # speaker: narrator
     二人は同時に抗議した。飴が頬の同じ側でふくらんだ。
     -> END
@@ -215,7 +219,11 @@ INCLUDE modules.ink
 
 = join_1
 # speaker: narrator
-彼女は劇場の入口を背に、深く息を吸った。「ここにいるよ」。向こうの信号が変わるまで、誰も続きをかぶせなかった。
+彼女は劇場の入口を背に、深く息を吸った。
+# speaker: heroine
+ここにいるよ
+# speaker: narrator
+向こうの信号が変わるまで、誰も続きをかぶせなかった。
 # speaker: heroine
 昔のスカラ座では客が桟敷を好きに飾ったんだって。いまの客席、どこがいい？
 

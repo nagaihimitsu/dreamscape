@@ -32,8 +32,9 @@ INCLUDE modules.ink
 # background: smp_bg_mihon_clock_tower
 # speaker: narrator
 時計塔の下で、小さな女の子が布の上に手描きのしおりを並べている。どれも、針が三時を指していた。
-# speaker: narrator
-女の子「リリっていうの。トーマの妹。一枚ずつ、おまけでどうぞ」
+# speaker: smp_mihon_lili
+# cutin: name
+リリっていうの。トーマの妹。一枚ずつ、おまけでどうぞ
 * [Could I have one, please? # option: ask # translation: 一枚もらえますか。]
     # speaker: narrator
     # item_show: smp_mihon_three_bookmark
@@ -44,15 +45,19 @@ INCLUDE modules.ink
     -> END
 * [Did you draw these yourself? # option: drawn # translation: これ、自分で描いたの？]
     # set: smp_mihon_lili_told_why
+    # speaker: smp_mihon_lili
+    うん。兄ちゃんが直す前に、止まった時計を残しておきたくて
     # speaker: narrator
-    リリ「うん。兄ちゃんが直す前に、止まった時計を残しておきたくて」。リリは一枚を差し出した。
+    リリは一枚を差し出した。
     # speaker: heroine
     残しておきたい、か。……その気持ち、わかる気がする
     -> END
 * [Maybe next time. # option: later # translation: また今度にします。]
     # later
     # speaker: narrator
-    リリは怒らずに、しおりを一枚だけ取り分けた。リリ「来られるときに、ね」
+    リリは怒らずに、しおりを一枚だけ取り分けた。
+    # speaker: smp_mihon_lili
+    来られるときに、ね
     # speaker: heroine
     この街の子だね。言い方が、もう三時
     -> END
@@ -104,7 +109,9 @@ INCLUDE modules.ink
 # speaker: heroine
 見て、あの歯車。止まってるのに、油でぴかぴかだ
 # speaker: narrator
-油差しを持った青年が、こちらに気づいて会釈した。青年「話なら、上より広場のほうが落ち着きますよ。裏の階段が近道です」
+油差しを持った青年が、こちらに気づいて会釈した。
+# speaker: smp_mihon_clock_keeper
+話なら、上より広場のほうが落ち着きますよ。裏の階段が近道です
 # speaker: heroine
 近道、教えてもらっちゃった。……ちょっと得した気分
 -> END
@@ -347,22 +354,24 @@ Come back at three. Any three will do.
 # background: smp_bg_mihon_clock_tower
 # speaker: narrator
 広場のベンチの一つに「ぬりたて」の札が下がっている。刷毛を持った男の人が、こちらに気づいて手を止めた。
-# speaker: narrator
-男の人「すみませんね。塔のほうを向いたベンチは、毎年この時期に塗り直すんです」
+# speaker: smp_mihon_bench_painter
+すみませんね。塔のほうを向いたベンチは、毎年この時期に塗り直すんです
 * [Which bench is dry? # option: dry # translation: どのベンチなら乾いていますか。]
-    # speaker: narrator
-    男の人「端の一つだけ。……三時を待つ人の席は、いつも空けておくんですよ」
+    # speaker: smp_mihon_bench_painter
+    端の一つだけ。……三時を待つ人の席は、いつも空けておくんですよ
     -> END
 * [Why do they all face the tower? # option: why # translation: どうしてみんな塔を向いているんですか。]
-    # speaker: narrator
-    男の人「それは、座ってみれば分かります」
+    # speaker: smp_mihon_bench_painter
+    それは、座ってみれば分かります
     # speaker: heroine
     座ってみれば、か。じゃあ、確かめてみよう
     -> END
 * [Can I help you paint? # option: help # translation: 塗るのを手伝いましょうか。]
     # money: +20
+    # speaker: smp_mihon_bench_painter
+    助かります。端の一本だけ、お願いできますか
     # speaker: narrator
-    男の人「助かります。端の一本だけ、お願いできますか」。塗り終えると、男の人は小さな硬貨を二枚くれた。
+    塗り終えると、男の人は小さな硬貨を二枚くれた。
     # speaker: heroine
     手間賃だって。……三時のお茶代くらいには、なるかな
     -> END
@@ -558,7 +567,9 @@ Come back at three. Any three will do.
 # emotion: smile
 何時にしようかな。……三時じゃなかったら、怒られちゃう？
 # speaker: narrator
-リリは少し考えてから、首を横に振った。リリ「来られるときの時間で、いいよ」
+リリは少し考えてから、首を横に振った。
+# speaker: smp_mihon_lili
+来られるときの時間で、いいよ
 -> END
 
 // ───── 移動の時点の -1（段階4）：宿から初めて貸し自転車で出るとき、宿で（動く前に流れる。乗った回数は、動いたときに増える）。
