@@ -44,13 +44,16 @@ type VoicePlay = { id: string; count: number; state: LineVoiceState | "stopped" 
 
 /**
  * 旅の音楽室 (2026-11-13 user decision; rules in music-room.ts), opened from 旅の記録 once a city is cleared: the tracks
- * of the places visited and of the scenes completed, and the heroine's voiced lines of those scenes with their text.
+ * of the places visited and of the scenes completed, and the heroine's voiced lines of those scenes that this device has
+ * read (`isRead`: read-skip's record, the one 高速送り reads; a branch not taken is not listed), with their text.
  * A track plays through the game's music player (GameApp asks for it: `playing`, `onPlay`), at 「BGMの大きさ」, with
  * no ambience; a voice through the voice player, at 「声の大きさ」. With 「BGMを流す」 or 「台詞の声を出す」 off its
  * buttons are off and say why. Closing the room gives the screen its own music back. Nothing is saved.
  */
-export function MusicRoom({ game, playing, onPlay, bgmOn, voiceOn, onClose }: {
+export function MusicRoom({ game, isRead, playing, onPlay, bgmOn, voiceOn, onClose }: {
   game: GameState;
+  /** Whether this device has read a line (read-skip.ts: GameApp's record; Debug's own in a Debug session). */
+  isRead: (lineId: string) => boolean;
   /** The track the room plays now, or null. */
   playing: string | null;
   onPlay: (trackId: string | null) => void;
@@ -69,9 +72,10 @@ export function MusicRoom({ game, playing, onPlay, bgmOn, voiceOn, onClose }: {
     return {
       tracks: heardTracks({ play: journey ? journeyMusicPlay(journey.id) : null, visitedPlaceIds: cityIds.flatMap((cityId) => visitedPlaceIdsIn(game, cityId)),
         scenes: done, audio: SCENE_AUDIO, labelOf: trackUseJa }),
-      voices: heardVoices({ scenes: done, audio: SCENE_AUDIO, names: (text) => withNames(text, game), sceneLabel: (scene) => sceneLabelJa(scene, game) }),
+      voices: heardVoices({ scenes: done, audio: SCENE_AUDIO, names: (text) => withNames(text, game), sceneLabel: (scene) => sceneLabelJa(scene, game),
+        isRead }),
     };
-  }, [game]);
+  }, [game, isRead]);
   const [voice, setVoice] = useState<VoicePlay | null>(null);
   const voiceCount = useRef(0);
   function playVoice(line: RoomVoice) {
@@ -85,7 +89,7 @@ export function MusicRoom({ game, playing, onPlay, bgmOn, voiceOn, onClose }: {
   const voiceCountTotal = voices.reduce((sum, group) => sum + group.voices.length, 0);
   return <Modal labelledBy={titleId} onClose={onClose} className="music-room" settlePresses>
     <ModalTitle id={titleId} onClose={onClose}>旅の音楽室</ModalTitle>
-    <p className="fine-print">旅で聞いた曲と、{game.heroineName}の声を、もう一度聞けます。閉じると、元の曲に戻ります。</p>
+    <p className="fine-print">旅で聞いた曲と、この端末で読んだ台詞の{game.heroineName}の声を、もう一度聞けます。閉じると、元の曲に戻ります。</p>
     <section className="music-room-part" aria-labelledby={`${titleId}-tracks`}>
       <h3 id={`${titleId}-tracks`}>曲（{tracks.length}）</h3>
       {!bgmOn && <p className="fine-print">設定の「BGMを流す」がオフなので、曲は流れません。</p>}

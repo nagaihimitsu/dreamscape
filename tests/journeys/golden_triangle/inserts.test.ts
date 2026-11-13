@@ -196,7 +196,7 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
     const day = rest(chandni.state, 12 * 60);
     expect(ids(day)).toEqual(["gt_delhi_hotel_sick_morning"]);
     expect(shown(day, "彼女の部屋の扉が、細く開いた。")).toBe(true);
-    expect(shown(day, "娘はルーヒーと名乗った。十三歳。")).toBe(true);
+    expect(shown(day, "わたし、ルーヒー。十三歳。これは、クミンを煮出した水")).toBe(true);
     // The next night: the homework (it meets Roohi again), but not the sick night (# until: seen the morning).
     const night = rest(day.state, 20 * 60);
     expect(ids(night)).toEqual(["gt_delhi_hotel_homework"]);

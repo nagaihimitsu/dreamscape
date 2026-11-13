@@ -20,6 +20,12 @@ const NONE_JOINING: readonly string[] = [];
 /** How long the row stays still before the card in its centre counts as chosen (a flick's momentum and snap included). */
 const SETTLE_MS = 120;
 
+/** Scrolls the row so that `item` (one of its cards) is in its centre (nothing when it already is). */
+function centreItem(scroller: HTMLElement, item: HTMLElement, behavior: ScrollBehavior) {
+  const left = item.offsetLeft + item.offsetWidth / 2 - scroller.clientWidth / 2;
+  if (Math.abs(scroller.scrollLeft - left) >= 1) scroller.scrollTo({ left, behavior });
+}
+
 /** Whether one of the place's events has been played (a card names it; the maps' 「行った場所」 reads more: visited-places.ts). */
 function placeVisited(game: GameState, placeId: string): boolean {
   return getCityContent(game.currentCityId).travel.events.some((event) => event.placeId === placeId &&
@@ -86,13 +92,9 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
       if (Math.abs(moved) >= 1) window.scrollBy({ top: moved, behavior: INSTANT });
       return;
     }
-    const centre = (behavior: ScrollBehavior) => {
-      const left = item.offsetLeft + item.offsetWidth / 2 - scroller.clientWidth / 2;
-      if (Math.abs(scroller.scrollLeft - left) >= 1) scroller.scrollTo({ left, behavior });
-    };
     const behavior = placedIn.current === arrangement && !reducedMotion() ? "smooth" : INSTANT;
     placedIn.current = arrangement;
-    return whenLaidOut(scroller, () => centre(behavior));
+    return whenLaidOut(scroller, () => centreItem(scroller, item, behavior));
   // itemOf reads the list as rendered; the ids stand for the cards.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chosenId, arrangement, idsKey]);
@@ -157,6 +159,9 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
   function choose(cardId: string) {
     const item = itemOf(cardId);
     if (!row && item && cardId !== chosenId) anchor.current = { cardId, top: item.getBoundingClientRect().top };
+    // A press on the chosen card while the row has moved off it (a flick not settled yet) brings it back to the centre,
+    // so the row's settle keeps it chosen instead of choosing the card the row was moving to.
+    if (row && item && list.current && cardId === chosenId) centreItem(list.current, item, reducedMotion() ? INSTANT : "smooth");
     onChoose(cardId);
   }
 

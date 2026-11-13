@@ -1088,7 +1088,7 @@ export function GameApp({
         {musicRoomOpen(game) && <button type="button" className="secondary" data-testid="music-room-open"
           onClick={() => { setRecordsOpen(false); setMusicRoom(true); }}>旅の音楽室</button>}
       </Modal>}
-      {musicRoom && game && <MusicRoom game={game} playing={roomTrack} onPlay={setRoomTrack}
+      {musicRoom && game && <MusicRoom game={game} isRead={readLines.isRead} playing={roomTrack} onPlay={setRoomTrack}
         bgmOn={displaySettings.value.bgm} voiceOn={displaySettings.value.voice}
         onClose={() => { setMusicRoom(false); setRoomTrack(null); }} />}
       {albumOpen && game && <AlbumDialog album={game.album} currentCityId={game.currentCityId} onClose={() => setAlbumOpen(false)} />}

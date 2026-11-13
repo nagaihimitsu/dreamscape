@@ -1,7 +1,7 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { ambienceCredits, MAP_CREDIT, musicCredits, OWN_ARTWORK_NOTE_JA, photoCredits } from "../content/credits";
+import { ambienceCredits, MAP_CREDIT, musicCredits, OWN_ARTWORK_NOTE_JA, photoCredits, voiceCredits } from "../content/credits";
 import { CreditsList } from "./CreditsDialog";
 
 // 「出典・権利の一覧」 over the generated content: every journey's photos (preparing ones marked),
@@ -57,6 +57,17 @@ describe("credits list", () => {
       expect(html).toContain(`使っている音：${usesJa.join("、")}`);
     }
     expect(render({ status: "dev" })).not.toContain("credits-ambience");
+  });
+
+  it("lists the voices' source under 声 (2026-11-13), under the journey with voices, with its licence, citation and page", () => {
+    const voices = voiceCredits();
+    expect(voices.length).toBeGreaterThan(0);
+    const html = renderToStaticMarkup(createElement(CreditsList, { photos: [], voices, licences: { status: "dev" } }));
+    expect(html).toContain('<h3 id="credits-voices-title">声</h3>');
+    expect(html).toContain("<p>ヒロインの声：音声合成 Irodori-TTS v4.1-Small（Aratako、MIT License）</p>");
+    expect(html).toContain('<a href="https://huggingface.co/Aratako/Irodori-TTS-v4.1-Small" target="_blank" rel="noreferrer">元の作品</a>');
+    expect(html).toContain("Irodori-TTS: A Flow Matching-based Text-to-Speech Model");
+    expect(render({ status: "dev" })).not.toContain("credits-voices");
   });
 
   it("lists each library with its version, licence and text once the production list is read", () => {

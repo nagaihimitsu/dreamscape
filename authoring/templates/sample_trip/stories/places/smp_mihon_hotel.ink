@@ -20,14 +20,14 @@ INCLUDE modules.ink
 # speaker: heroine
 # recall: smp_album_clock_tower
 # quiet: line
-「短い滞在だったね。でも、あの針を見るたびに思い出しそう」
+短い滞在だったね。でも、あの針を見るたびに思い出しそう
 # speaker: narrator
 塔の下で、ハンナが街の人たちに囲まれていた。止まった三時をどうするか、みんなで話しているらしい。
 # speaker: narrator
 宿を出ると、塔の上からトーマが手を振った。鐘が二度、少し不揃いに鳴る。
 # speaker: heroine
 # reaction: heroine,surprised,question
-「あれ？　戻ってきた人のための鐘だよね。わたしたち、今から出るところなのに」
+あれ？　戻ってきた人のための鐘だよね。わたしたち、今から出るところなのに
 # speaker: narrator
 トーマが大きく口を動かした。たぶん、「また三時に」。
 * [手を振り返す # option: wave_back]
@@ -41,10 +41,10 @@ INCLUDE modules.ink
 { romance_stage >= 3:
     # speaker: heroine
     # emotion: shy
-    「……ね、{player_address}。次の三時も、一緒に来られたらいいな」
+    ……ね、{player_address}。次の三時も、一緒に来られたらいいな
 - else:
     # speaker: heroine
     # emotion: smile
-    「来られるときに、また来よう。今度は、わたしが鐘を鳴らしてもらう番かも」
+    来られるときに、また来よう。今度は、わたしが鐘を鳴らしてもらう番かも
 }
 -> END

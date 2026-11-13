@@ -18,6 +18,52 @@ import {
 } from "./story-validation-cache";
 
 const repository = path.resolve(import.meta.dirname, "..");
+/**
+ * Source code without its comments and the text of its strings: a template literal keeps the code of its `${…}`
+ * (templates nest). A string or comment never ends the code early; at worst a quote in a regular expression empties
+ * the rest of its line.
+ */
+function withoutCommentsAndText(source: string): string {
+  let code = "";
+  // For each `${` still open, the depth of the other braces inside it, so its own `}` resumes the template's text.
+  const open: number[] = [];
+  const template = (from: number): number => {
+    for (let i = from; i < source.length; i++) {
+      if (source[i] === "\\") i++;
+      else if (source[i] === "`") return i;
+      else if (source[i] === "$" && source[i + 1] === "{") {
+        open.push(0);
+        return i + 1;
+      }
+    }
+    return source.length;
+  };
+  for (let i = 0; i < source.length; i++) {
+    const char = source[i];
+    if (char === "/" && source[i + 1] === "/") {
+      const end = source.indexOf("\n", i);
+      i = end < 0 ? source.length : end - 1;
+    } else if (char === "/" && source[i + 1] === "*") {
+      const end = source.indexOf("*/", i + 2);
+      i = end < 0 ? source.length : end + 1;
+      code += " ";
+    } else if (char === '"' || char === "'") {
+      let end = i + 1;
+      while (end < source.length && source[end] !== char && source[end] !== "\n") end += source[end] === "\\" ? 2 : 1;
+      i = end;
+      code += '""';
+    } else if (char === "`" || (char === "}" && open.at(-1) === 0)) {
+      if (char === "}") open.pop();
+      i = template(i + 1);
+      code += " ";
+    } else {
+      if (open.length && char === "{") open[open.length - 1]++;
+      if (open.length && char === "}") open[open.length - 1]--;
+      code += char;
+    }
+  }
+  return code;
+}
 const header = `VAR player_name = ""
 VAR heroine_name = ""
 VAR player_address = ""
@@ -131,8 +177,11 @@ describe("Ink validation cache", () => {
     const readers = ["scripts/story-validation-cache.ts", "scripts/test-sets.ts"];
     expect(code.files).toEqual(expect.arrayContaining(readers));
     for (const file of code.files.filter((name) => !readers.includes(name))) {
-      expect(readFileSync(path.join(repository, file), "utf8"), `${file} reads data outside validateStory's input`).not.toMatch(
-        /["'](?:node:)?(?:fs|fs\/promises|child_process|process|os)["']|\bimport\.meta\b|\bprocess\.|\b(?:fetch|require)\s*\(|\b(?:globalThis|window|localStorage|sessionStorage|indexedDB|document)\b|\bMath\.random\b|\bDate\b|\bperformance\b/u);
+      const text = readFileSync(path.join(repository, file), "utf8");
+      expect(text, `${file} loads a module that reads data`).not.toMatch(/["'](?:node:)?(?:fs|fs\/promises|child_process|process|os)["']/u);
+      // The globals are looked for in the code only: a word in a comment or a string (the tag value `# shake: window`) reads nothing.
+      expect(withoutCommentsAndText(text), `${file} reads data outside validateStory's input`).not.toMatch(
+        /\bimport\.meta\b|\bprocess\.|\b(?:fetch|require)\s*\(|\b(?:globalThis|window|localStorage|sessionStorage|indexedDB|document)\b|\bMath\.random\b|\bDate\b|\bperformance\b/u);
     }
   });
 
