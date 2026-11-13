@@ -83,6 +83,8 @@ export function completeTestCity(root: string, template: ReturnType<typeof expor
   hotel.nameJa = "試験の滞在先";
   hotel.nameEn = "Test hotel";
   hotel.backgroundId = "testcity_hotel_bg";
+  // Delhi's hotel shows India's rooftop photo (#54), an asset of India's folder the test journey may not name.
+  delete hotel.photoAssetId;
   identity.fromPlaceId = hotel.id;
   identity.toPlaceId = hotel.id;
   template.city = { schemaVersion: 1, id: "testcity", countryCode: "ZZ", nameJa: "試験都市", themeJa: "試験用",

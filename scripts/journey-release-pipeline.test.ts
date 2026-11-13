@@ -61,6 +61,8 @@ function prepareUnpublishedFixture(root: string) {
     data.clues = data.clues.filter((entry: any) => !landmarkIds.has(entry.landmarkId));
   });
   edit(`${layer}/romance/presentation.json`, (data) => { for (const id of memoryIds) delete data.memories[id]; });
+  // The people drawn for India's battles (its battleCharacters, #72) go with the battles.
+  edit(`${layer}/presentation/characters.json`, (data) => { for (const id of battleIds) delete data.battleCharacters[id]; });
   for (const file of ["presentation/dialogue-expressions.json", "presentation/dialogue-reactions.json"].map((kind) => `${layer}/${kind}`))
     if (existsSync(path.join(root, file))) edit(file, (data) => { data.entries = data.entries.filter((entry: any) => !storyIds.has(entry.storyId)); });
   // India's scenes (the scaffold's addresses, and its arrivals) are knots of its place files: unpublished with them, and with

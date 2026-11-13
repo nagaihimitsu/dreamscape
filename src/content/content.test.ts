@@ -315,7 +315,8 @@ describe("content build acceptance", () => {
   });
 
   it("rejects an unknown story reference", async () => {
-    await changeDate("milano_cafe_01", (date) => {
+    // The confession is a one-scene file; a date in a place file would first leave its knot with no catalog entry.
+    await changeDate("milano_confession_01", (date) => {
       date.storyId = "milano/missing";
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(

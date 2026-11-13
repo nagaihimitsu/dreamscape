@@ -13,7 +13,7 @@ beforeAll(() => {
 describe("the sample journey in numbers", () => {
   it("starts at the first day with nothing yet, the hotel not counted as a place", () => {
     expect(journeyNumbers(cityStart("mihon"), [])).toEqual({
-      days: 1, places: 0, people: 0, localWords: 0, photos: 0, spent: { amount: 0, textJa: "€0" }, ridesCityJa: "見本の街", rides: [],
+      days: 1, places: 0, people: 0, localWords: 0, photos: 0, spent: { amount: 0, textJa: "€0" }, rides: [],
     });
   });
 

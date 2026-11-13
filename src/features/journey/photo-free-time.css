@@ -135,7 +135,7 @@
 }
 
 /* A photo card: pressable (its edge), a mat around the photo, and the name under it. Chosen: a thicker edge drawn
-   inside (the size never changes), the darker parchment (or on a fill the yellow of the ◆), a lift and the ◆ badge.
+   inside (the size never changes), the darker parchment (or on a fill the yellow of the map's selected mark) and a lift.
    Pressing and dragging never selects its text or opens the picture's own menu. */
 .photo-card {
   position: relative;

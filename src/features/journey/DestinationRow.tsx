@@ -81,7 +81,6 @@ export function DestinationRow({ game, place, choices, current, recommended, api
           {recommended && <small className="travel-recommended">おすすめ</small>}
         </span>
         <span className="travel-destination-title">
-          {selected && <span className="travel-selected-badge" aria-hidden="true">◆</span>}
           <span>{event.place.nameJa}</span>
           <Icon name={selected && expands ? "chevron-down" : "chevron-right"} />
         </span>

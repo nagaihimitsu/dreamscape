@@ -44,7 +44,8 @@ function tagsOf(part: string): { key: string; value: string }[] {
 
 /** A line's text without Ink's marks before it (gathers, a label), or "" for a line of Ink's own. */
 function lineText(content: string): string {
-  const bare = content.trim().replace(/^(?:-\s*)+/u, "").replace(/^\(\s*[A-Za-z_][A-Za-z0-9_]*\s*\)\s*/u, "").trim();
+  // A gather's `-`, never the `-` of a divert (`-> END` stays a line of Ink's own).
+  const bare = content.trim().replace(/^(?:-(?!>)\s*)+/u, "").replace(/^\(\s*[A-Za-z_][A-Za-z0-9_]*\s*\)\s*/u, "").trim();
   if (!bare || LOGIC_LINE.test(bare)) return "";
   // A branch of a conditional (`- else:`, `- battle_score == 3:`): written in ASCII and ending in a colon.
   // … and a line of code only (`{ cond("…"): -> aside -> }`): ASCII with a divert.
