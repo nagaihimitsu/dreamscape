@@ -34,6 +34,21 @@ describe.each(Object.keys(MINI_GAMES))("the host's start of %s", (gameId) => {
   });
 });
 
+describe.each(Object.keys(MINI_GAMES).filter((id) => MINI_GAMES[id].outcomes.some((outcome) => outcome.fallback)))(
+  "the host of %s, an outcome of which may be greyed", (gameId) => {
+    const definition = MINI_GAMES[gameId];
+
+    it("gives Debug's button of an outcome that cannot be taken now its fallback", () => {
+      for (const outcome of definition.outcomes.filter((item) => item.fallback)) {
+        const available = definition.outcomes.map((item) => item.id).filter((id) => id !== outcome.id);
+        const html = render(gameId, { debug: true, available });
+        expect(html).toContain(`${outcome.id} → 今は ${outcome.fallback}`);
+        for (const other of available) expect(html).not.toContain(`${other} → 今は`);
+      }
+      expect(render(gameId, { debug: true })).not.toContain("→ 今は");
+    });
+  });
+
 describe("a choice point", () => {
   it("shows the screen's own choices when the frame has no # minigame:", () => {
     const html = renderToStaticMarkup(createElement(MiniGameProvider, { value: environment() },
