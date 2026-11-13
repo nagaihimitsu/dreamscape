@@ -22,6 +22,7 @@ INCLUDE modules.ink
 写真がきれいすぎる。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_delhi_arrival_001
 わたしのガイドブック、初対面で不合格になった……
 # speaker: narrator
 カムラは段ボールの切れ端に、ヒンディー語で五行書いた。一行ずつ、ぶっきらぼうに訳してくれる。
@@ -44,10 +45,12 @@ INCLUDE modules.ink
 { ending_reached:
     # speaker: heroine
     # reaction: heroine,shy,blush
+    # voice: gt_delhi_arrival_002
     こ、恋人です。……人に言うの、まだ慣れてなくて
 - else:
     # speaker: heroine
     # reaction: heroine,surprised_big,blush
+    # voice: gt_delhi_arrival_003
     た、旅の連れです！　……今の、通訳しないでくださいね
 }
 # speaker: narrator
@@ -56,6 +59,7 @@ INCLUDE modules.ink
 デリーは押しの強い町だよ。欲しいものは、欲しいと言いなさい。黙っていたら、誰も気づかない。
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_delhi_arrival_004
 ……はい、覚えておきます。それにしても、地図というより暗号だね。せっかくなら全部回って、解いてみたいな。……ね、一緒に解いてくれる？
 -> END
 
@@ -74,6 +78,7 @@ INCLUDE modules.ink
 # speaker: enemy
 さっきは、失礼なことを言いました。あなたたちが祖母を連れ出したと決めつけて
 # speaker: heroine
+# voice: gt_delhi_epilogue_001
 いえ。……わたしも、アマンさんの立場だったら、同じことを言ったと思います
 # speaker: enemy
 祖母は、零時まで話しました。祖父が六十年前に何を言ったか。自分が何を言わなかったか
@@ -85,6 +90,7 @@ INCLUDE modules.ink
 祖母に言われました。どう出会ったかより、毎日ちゃんと言葉にしなさい、と。……六十年言わなかった人が、言うんですよ
 # speaker: heroine
 # reaction: heroine,smile,music
+# voice: gt_delhi_epilogue_002
 説得力、ありますね。経験者の言葉だもん
 # speaker: narrator
 アマンはチャイを置き、折りたたんだ紙を差し出した。結婚式の案内。場所はジャイプールの旧市街。日付は、ちょうど二人がジャイプールにいるころだった。
@@ -92,6 +98,7 @@ INCLUDE modules.ink
 祖母が、あの生意気な娘を呼べと。……『来なくてもいい』とも言ってましたけど。たぶん、来いという意味です
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_epilogue_003
 ありがとうございます。……行くかどうか、少しだけ考えさせてください。自分で決めたいので
 # speaker: enemy
 祖母が喜びそうな返事だ
@@ -102,18 +109,23 @@ INCLUDE modules.ink
 - ending_reached:
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_epilogue_004
     ねえ。わたし、言いたいことは、言いたいときに言うね。六十年後じゃなくて
     # speaker: heroine
     # reaction: heroine,shy,blush
+    # voice: gt_delhi_epilogue_005
     ……今も、一つ言いたいけど。それは明日、起きてからにする
 - romance_stage >= 3:
     # speaker: heroine
+    # voice: gt_delhi_epilogue_006
     六十年って、長いね。……わたしは、そんなに待たせたくないな。誰を、とは言わないけど
 - romance_stage == 2:
     # speaker: heroine
+    # voice: gt_delhi_epilogue_007
     言いそびれたことって、あとから重くなるんだね。わたしも、今日のうちに一つ言っておく。……付き合ってくれて、ありがとう
 - else:
     # speaker: heroine
+    # voice: gt_delhi_epilogue_008
     旅の連れに言うことじゃないかもしれないけど。今日、一人じゃなくてよかった
 }
 # speaker: narrator
@@ -122,5 +134,6 @@ INCLUDE modules.ink
 アーグラでも、言いたいことは言いなさい。それだけ言って、窓は上がった。車が角を曲がるまで、後ろの窓の小さな手は、ずっと揺れていた。
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_delhi_epilogue_009
 ……『来なくてもいい』って言った人が、一番長く手を振ってた
 -> END

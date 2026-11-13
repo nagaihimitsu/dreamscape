@@ -14,6 +14,7 @@ INCLUDE modules.ink
 インド門の前の芝生は、敷物でまだら模様になっていた。風船売り、アイスの屋台、銀の弁当箱を開ける家族。戦没者の記念門の足もとで、デリーの人たちは、日曜の居間みたいにくつろいでいる。
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_delhi_date_india_gate_001
 記念碑の前って、もっと静かな場所だと思ってた。みんな、ピクニックしてる
 # speaker: narrator
 敷物の一つから、十六くらいの男の子が走ってきた。携帯を差し出して、英語で一言。
@@ -23,6 +24,7 @@ Photo, please!
 振り返ると、敷物の上に十二人いた。腰の曲がった祖母から、よちよち歩きの子まで。ハリヤーナーの村から、年に一度のデリー見物に来たのだという。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_delhi_date_india_gate_002
 十二人！　ええと、もう少し寄ってください。あ、寄りすぎ。おばあさんが、おじさんの肘で隠れてる
 # speaker: narrator
 祖母が、細い手で彼女を招いた。撮る人も入りなさい、という仕草だった。
@@ -32,6 +34,7 @@ Photo, please!
 # local_word: gt_delhi_word_dadi
 ぼく、モヌ。ダーディーが、あなたも入れって。外国の人と撮ると、村で自慢できるから
 # speaker: heroine
+# voice: gt_delhi_date_india_gate_003
 正直！　でも、わたしが入ったら、撮る人がいなくなっちゃう
 * [「自分が撮る。君は入って」 # option: shoot_for_family]
     # profile: attentive
@@ -39,10 +42,12 @@ Photo, please!
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_delhi_date_india_gate_004
         わたしだけ？　……一緒に、がよかったな。ううん、いいの。撮って
     - else:
         # speaker: heroine
         # reaction: heroine,shy,blush
+        # voice: gt_delhi_date_india_gate_005
         じゃあ、お願い。……変な顔してたら、撮り直してね
     }
     # speaker: narrator
@@ -57,10 +62,12 @@ Photo, please!
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,surprised,sweat
+        # voice: gt_delhi_date_india_gate_006
         二人で並ぶの？　家族の人たち、絶対に何か勘違いするよ
     - else:
         # speaker: heroine
         # reaction: heroine,happy,music
+        # voice: gt_delhi_date_india_gate_007
         二人とも？　うん、それがいい。せっかくだもん
     }
     # speaker: narrator
@@ -72,10 +79,12 @@ Photo, please!
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,exasperated,sigh
+        # voice: gt_delhi_date_india_gate_008
         えっ、今？　十二人、わたし一人で並べるの？
     - else:
         # speaker: heroine
         # reaction: heroine,teasing,music
+        # voice: gt_delhi_date_india_gate_009
         人数分って、十四本だよ？　いってらっしゃい。並べておくね
     }
     # speaker: narrator
@@ -89,20 +98,24 @@ Photo, please!
 インド門の壁には、第一次世界大戦などで亡くなった兵士たちの名前が刻まれている。その数、一万三千を超える。
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_date_india_gate_010
 毎年……。それでも、毎年来てるんだ
 # speaker: gt_monu
 去年も柵の前で一時間。僕は飽きた。名前が多すぎるし、遠くて読めない
 # speaker: heroine
+# voice: gt_delhi_date_india_gate_011
 ……探したいな。おばあさんが見たいのは、たぶん写真より、そっちだと思う
 * [「一緒に探そう」 # option: search_together]
     # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_delhi_date_india_gate_012
         うん。……でも、一時間探して見つからなかったら、おばあさん、もっとがっかりしないかな
     - else:
         # speaker: heroine
         # emotion: smile
+        # voice: gt_delhi_date_india_gate_013
         うん。目、四つあれば、去年より少しは近づけるかも
     }
     -> searching
@@ -114,6 +127,7 @@ Photo, please!
         ……僕の携帯、電池が残り少ないんだけど
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
+        # voice: gt_delhi_date_india_gate_014
         あ、ごめん、無理にとは……
     - else:
         # speaker: gt_monu
@@ -125,9 +139,11 @@ Photo, please!
     { romance_result == "negative":
         # speaker: heroine
         # emotion: serious
+        # voice: gt_delhi_date_india_gate_015
         ……それ、わたしたちが決めることじゃないと思う。おばあさんに、聞いてみよう
     - else:
         # speaker: heroine
+        # voice: gt_delhi_date_india_gate_016
         ……うん。それも本当だと思う。でも、それを決めるのは、おばあさんだよね
     }
     -> not_searching
@@ -150,6 +166,7 @@ Photo, please!
 画面に、同じ名前がいくつも並んだ。ラーム・シン。ラーム・シン。もう一人、ラーム・シン。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
+# voice: gt_delhi_date_india_gate_017
 同じ名前が、こんなに！　どれがおばあさんのおじいさんなんだろう
 # speaker: narrator
 モヌが画面を見せると、祖母は目を細め、しばらく黙っていた。それから、画面の中の一番近くの一つを指さした。
@@ -157,6 +174,7 @@ Photo, please!
 ……どれでもいいって。全部、誰かのおじいさんだから、どれに手を合わせても怒られないって
 # speaker: heroine
 # emotion: smile
+# voice: gt_delhi_date_india_gate_018
 おばあさんの方が、一枚上手だった
 # speaker: narrator
 モヌは携帯を見つめたまま、小さく言った。
@@ -166,6 +184,7 @@ Photo, please!
 
 = not_searching
 # speaker: heroine
+# voice: gt_delhi_date_india_gate_019
 モヌくん、おばあさんに聞いてもらえる？　名前を、探したいですかって
 # speaker: narrator
 モヌが通訳すると、祖母は少し考え、首を横に振った。それから、門ではなく、芝生の方を指さした。
@@ -175,6 +194,7 @@ Photo, please!
 芝生の上で、よちよち歩きの子が鳩を追いかけていた。祖母はそれを、門を見上げるときと同じ目で見ていた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# voice: gt_delhi_date_india_gate_020
 探すものが、変わってたんだ。名前じゃなくて、続いていく方に
 -> family_talk
 
@@ -187,18 +207,21 @@ Photo, please!
 - cond("couple"):
     # speaker: heroine
     # reaction: heroine,shy_deep,blush
+    # voice: gt_delhi_date_india_gate_021
     け、結婚は、まだ。でも、ちゃんと付き合ってます。……それ、通訳しなくていいからね！
     # speaker: narrator
     モヌは全部訳した。祖母は満足そうにうなずき、二人の頭に順番に手を置いた。
 - cond("stage >= 3"):
     # speaker: heroine
     # reaction: heroine,teasing,blush
+    # voice: gt_delhi_date_india_gate_022
     それは、わたしにも分からない質問かな。……ね？
     # speaker: narrator
     最後の「ね」がこちらに向いていたので、祖母がひどく面白そうに笑った。
 - else:
     # speaker: heroine
     # reaction: heroine,exasperated,sweat
+    # voice: gt_delhi_date_india_gate_023
     しません！　旅の連れです。あいさつに、全力で答えちゃった
     # speaker: narrator
     祖母は聞こえないふりをして、彼女の手に揚げパンをもう一枚のせた。

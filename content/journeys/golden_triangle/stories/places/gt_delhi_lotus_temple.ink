@@ -15,9 +15,11 @@ INCLUDE modules.ink
 入口の手前で、ボランティアの若者が、並んだ人たちに静かに説明していた。どの宗教の人でも入れる。決まった儀式も、説教も、楽器の演奏もない。いちばん大事な決まりは一つ。話さないこと。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_delhi_date_lotus_temple_001
 しゃべっちゃだめなんだ。わたし、ちょっと苦手かも。思ったこと、すぐ言いたくなるから
 # speaker: heroine
 # emotion: teasing
+# voice: gt_delhi_date_lotus_temple_002
 先に言っておくね。中で笑わせてきたら、怒るから
 # speaker: narrator
 # quiet: line
@@ -82,28 +84,35 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 # stand: near
+# voice: gt_delhi_date_lotus_temple_003
 はあっ。しゃべれる！　すごかった。何もないのに、ずっと見ていられた
 # speaker: heroine
+# voice: gt_delhi_date_lotus_temple_004
 でもね、静かにしてたら、頭の中がすごくうるさかったの。考えないようにするほど、考えちゃう。あれは、修行だね
 { cond("flag gt_delhi_lotus_made_her_laugh"):
     # speaker: heroine
     # emotion: exasperated
+    # voice: gt_delhi_date_lotus_temple_005
     それと。笑わせないでって、言ったよね？　あの『じぶんも』、一生忘れないから
 }
 # speaker: heroine
 # emotion: teasing
+# voice: gt_delhi_date_lotus_temple_006
 ……で。最後の、読めた？
 * [「『まだいたい』」 # option: read_mada]
     # profile: honest
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,shy_deep,sweat
+        # voice: gt_delhi_date_lotus_temple_007
         こ、声に出して読まないでよ。……忘れて。今のは、なし
     - else:
         # speaker: heroine
         # reaction: heroine,shy_deep,blush
+        # voice: gt_delhi_date_lotus_temple_008
         読めちゃったか。点々、気づいたんだ
         # speaker: heroine
+        # voice: gt_delhi_date_lotus_temple_009
         ここに、って意味。……たぶん。今は、そういうことにしておいて
     }
 * [「『またいたい』……？」 # option: read_mata]
@@ -111,6 +120,7 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_delhi_date_lotus_temple_010
         そっか。点々、届かなかったか。……ちゃんと書いたんだけどな
     - else:
         # speaker: heroine

@@ -12,6 +12,7 @@ INCLUDE modules.ink
 ジャーマー・マスジドの門の前で、靴を脱いで預ける。{heroine_name}は門の係から薄い上着を借りて羽織り、袖の長さを確かめた。
 # speaker: heroine
 # reaction: heroine,smile,question
+# voice: gt_delhi_jama_masjid_guide_001
 似合ってる？　……あ、そういう場所じゃないね。ちゃんと見てきます
 # speaker: narrator
 裸足の足の裏に、日差しを吸った石の温度が伝わる。広い中庭の向こうで、赤と白の塔が空へ伸びていた。
@@ -19,6 +20,7 @@ INCLUDE modules.ink
 中庭の端から見下ろすと、町が足もとにある。屋根、物干しの洗濯物、給水タンク、旋回する鳩の群れ。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# voice: gt_delhi_jama_masjid_guide_002
 階段を上っただけなのに、旧市街が全部見える気がする
 # speaker: narrator
 # se: bicycle_bell
@@ -28,14 +30,17 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,worried,gloom
 # local_word: gt_delhi_word_nihari
+# voice: gt_delhi_jama_masjid_guide_003
 ニハーリーって、一晩じっくり煮込む朝ごはんなんだって。……今、お昼過ぎ。完全に出遅れた
 # speaker: narrator
 彼女は本気で悔しがり、通りの鍋を一つずつのぞき込んだ。どの鍋も、もう底が見えている。
 # speaker: heroine
+# voice: gt_delhi_jama_masjid_guide_004
 明日の朝、もう一回来る？　……って言いたいけど、明日の朝は別の街かもしれないし
 # speaker: narrator
 そのとき、路地の奥から甘い匂いが流れてきた。料理ではない。花のような、木のような、少し煙たい匂い。
 # speaker: heroine
 # emotion: smile
+# voice: gt_delhi_jama_masjid_guide_005
 ちょっとだけ寄ってもいい？　ごはんの代わりに、匂いだけでも
 -> END

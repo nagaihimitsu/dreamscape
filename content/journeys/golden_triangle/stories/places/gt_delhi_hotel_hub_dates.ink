@@ -18,6 +18,7 @@ INCLUDE modules.ink
 宿の屋上には、黒い貯水タンクと、物干しの綱と、傾いたパラボラアンテナがあった。路地の向こうから、クラクションと、どこかの家のテレビの音が上がってくる。
 隣の古い家の窓に、まだ灯りがついていた。積み上げた段ボールの影が、カーテンに映っている。
 # speaker: heroine
+# voice: gt_delhi_date_confession_001
 カムラさん、まだ起きてるのかな。六十年分の荷造りって、どれくらいかかるんだろう
 -> gt_delhi_confession_lead ->
 * [「この旅が終わっても、一緒にいたい。付き合ってほしい」 # option: stay_together]
@@ -35,36 +36,46 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,shy_deep,blush
     # pause: 800
+    # voice: gt_delhi_date_confession_002
     ……うん。わたしも、好き
     # speaker: heroine
     # emotion: serious
+    # voice: gt_delhi_date_confession_003
     迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて。……わたしも、一緒にいたい。旅が終わっても
     # speaker: heroine
     # reaction: heroine,teasing,heart
     # photo: gt_album_d69 # photo_caption: 屋上の告白
+    # voice: gt_delhi_date_confession_004
     ふふ。顔、すごいことになってる。わたしも、たぶん、同じ顔してるけど
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_date_confession_005
     旅が終わったあとのことは、一緒に決めようね。どこに行くかも、何を食べるかも。決めてもらうんじゃなくて、二人で
 - confession_result == "rejected":
     # speaker: heroine
     # emotion: serious
+    # voice: gt_delhi_date_confession_006
     ありがとう。言ってくれて、うれしかった。それは、本当
     # speaker: heroine
+    # voice: gt_delhi_date_confession_007
     でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから
     # speaker: narrator
     彼女は目をそらさなかった。言葉は短く、迷いがなかった。
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_date_confession_008
     旅は、最後まで一緒に行きたい。それも、本当。明日も、いつもみたいに、どこへ行くか一緒に決めてくれる？
 - else:
     # speaker: heroine
     # emotion: serious
+    # voice: gt_delhi_date_confession_009
     うれしい。本当に、うれしい
     # speaker: heroine
+    # voice: gt_delhi_date_confession_010
     でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、クラクションと、遠くの灯りのせいに。……それは、嫌なの。ちゃんと、わたしが決めたいから
     # speaker: heroine
     # emotion: worried
+    # voice: gt_delhi_date_confession_011
     待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？
     # speaker: narrator
     # stand: close
@@ -86,27 +97,35 @@ INCLUDE modules.ink
     - cond("date gt_delhi_date_reassurance"):
         # speaker: heroine
         # emotion: serious
+        # voice: gt_delhi_confession_lead_001
         この前の続き、したくて、屋上に誘ったの。答えは、わたしから言いたかったから
         # speaker: heroine
+        # voice: gt_delhi_confession_lead_002
         でも、わたしが答える前に、もう一回だけ、聞かせてほしい。今度は、ちゃんと受け取るから
     - cond("date gt_delhi_date_confession"):
         # speaker: heroine
         # emotion: serious
+        # voice: gt_delhi_confession_lead_003
         今夜は、わたしが誘ったの。前に言ってくれたこと、あれからずっと考えてた
         # speaker: heroine
+        # voice: gt_delhi_confession_lead_004
         だから、もう一回だけ、聞かせてほしい。今度は、ちゃんと受け取るから
     - else:
         # speaker: heroine
         # emotion: serious
+        # voice: gt_delhi_confession_lead_005
         話したいことがあって、屋上に誘ったの。今夜は、わたしから誘いたかった
         # speaker: heroine
+        # voice: gt_delhi_confession_lead_006
         でも、その前に。……何か言いかけてる顔、ずっとしてるよ。先に、聞かせて
     }
     { cond("flag gt_delhi_back_word_secret"):
         # speaker: heroine
+        # voice: gt_delhi_confession_lead_007
         あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ。あれね、『まだいたい』って書いたの
         # speaker: heroine
         # reaction: heroine,shy,blush
+        # voice: gt_delhi_confession_lead_008
         背中じゃなくて、声で言うって約束したから。……はい、言った。じゃあ、次はそっちの番
     }
 - else:
@@ -119,12 +138,14 @@ INCLUDE modules.ink
             答えは彼女から、と一度は言われていた。それでも、言わずにいられなかった。
         }
         # speaker: heroine
+        # voice: gt_delhi_confession_lead_009
         話、あるんでしょ。いいよ。最後まで、ちゃんと聞く
     - else:
         # speaker: narrator
         夕食のあと、少し涼もうと屋上に誘ったのは、こちらだった。彼女は手すりにもたれて、路地の音を数えるように聞いている。
         言うなら、今だと思った。
         # speaker: heroine
+        # voice: gt_delhi_confession_lead_010
         ん？　どうしたの、改まった顔して
     }
 }
@@ -142,18 +163,22 @@ INCLUDE modules.ink
 # speaker: narrator
 宿の屋上に上がると、彼女が素焼きのカップを二つ持って待っていた。湯気が、二本並んで上っている。
 # speaker: heroine
+# voice: gt_delhi_date_reassurance_001
 チャイ、二つもらってきた。一つは、そっちの
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_date_reassurance_002
 この前の返事の話は、今日はしない。……そのかわり、チャイが冷めるまでは、普通の話をしよう。いつもの、どうでもいい話
 * [「明日、どこへ行く？」 # option: where_tomorrow]
     # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
+        # voice: gt_delhi_date_reassurance_003
         明日の話……。うん、普通だね。普通、なんだけど、ちょっとだけ緊張する
     - else:
         # speaker: heroine
         # emotion: smile
+        # voice: gt_delhi_date_reassurance_004
         それ、いちばん普通の話。うれしい。明日は、わたしが一つ、行きたい所を言ってもいい？
     }
 * [「今日見た、いちばん変なものの話」 # option: strangest_thing]
@@ -161,10 +186,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_delhi_date_reassurance_005
         変なもの……。ごめん、今日は、あんまり周りを見てなかったかも
     - else:
         # speaker: heroine
         # reaction: heroine,teasing,music
+        # voice: gt_delhi_date_reassurance_006
         変なもの？　屋根の上を歩いてた山羊。あれ、どうやって上ったんだろうね
     }
 * [「日本に帰ったら、最初に何を食べる？」 # option: first_meal_home]
@@ -172,18 +199,22 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_delhi_date_reassurance_007
         帰ったら……。帰る話は、今はちょっと、さみしいかも
     - else:
         # speaker: heroine
         # reaction: heroine,teasing,music
+        # voice: gt_delhi_date_reassurance_008
         鮭のおにぎり。コンビニの、三か所はがすやつ。ちょっと恋しい
     }
 -
 # speaker: narrator
 チャイが冷めるまで、二人は本当に、どうでもいい話だけをした。カップの底に、香辛料の粒が沈んでいく。
 # speaker: heroine
+# voice: gt_delhi_date_reassurance_009
 待っててくれて、ありがとう。待たせてごめんね、じゃなくて、ありがとうって言いたかったの
 # speaker: heroine
 # emotion: smile
+# voice: gt_delhi_date_reassurance_010
 答えは、わたしから言うね。ちゃんと決めたら。それまでは、いつもどおりでいて。いつもどおりが、いちばん助かる
 -> END
