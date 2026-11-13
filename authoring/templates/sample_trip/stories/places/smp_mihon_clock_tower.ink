@@ -300,7 +300,7 @@ INCLUDE modules.ink
     # emotion: happy
     いいね。三時のページに挟もう。……あ、この本、三時のページなんてないや
     -> END
-* [I'll keep it a little longer. # option: later # translation: もう少し持っておきます。]
+* [I'll keep the bookmark a little longer. # option: later # translation: しおりは、もう少し持っておきます。]
     # later
     # speaker: heroine
     うん、持ってて。リリちゃんが選んでくれた一枚だもんね

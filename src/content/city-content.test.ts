@@ -176,6 +176,9 @@ describe("Milan city content", () => {
       // The epilogue is a knot of the finale's place file: its file's story, started at the knot as the game starts it.
       const { storyId, path: knot } = splitStoryAddress(finale.epilogueStoryId!);
       const story = new Story(result.stories[storyId]);
+      // The Darsena's file calls cond("…") in the confession (the game binds it for every scene); the epilogue's
+      // versions depend on the relationship only, so the epilogue itself never asks it.
+      story.BindExternalFunction("cond", (text: unknown) => { throw new Error(`The epilogue reads cond("${String(text)}")`); }, true);
       if (knot !== undefined) story.ChoosePathString(knot);
       story.variablesState.$("romance_stage", stage);
       story.variablesState.$("ending_reached", dating);

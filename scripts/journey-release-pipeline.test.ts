@@ -246,13 +246,18 @@ describe("journey release pipeline (the Golden Triangle as the example)", () => 
       const { narrativeFile, translationsFile } = authorCity(root, loadJourneyScaffold(root, "golden_triangle"), "delhi", "");
       const kinds = ["progression/journey.json", "battles/catalog.json", "romance/date_catalog.json", "tourism/catalog.json",
         "romance/effect_catalog.json", "romance/presentation.json", "learning/translations.json"];
-      // The core layer has the shared effects and presentation; Milan's folder has every kind.
+      // The core layer has the shared effects and presentation; Milan's folder has every kind but the effects (its dates
+      // name none since its confession became a knot of the Darsena's place file), and the release does not make it one.
       const otherFiles = ["content", milano].flatMap((directory) => kinds.map((kind) => path.join(root, directory, kind))).filter((file) => existsSync(file));
-      expect(otherFiles).toHaveLength(9);
+      expect(otherFiles.map((file) => path.relative(root, file).split(path.sep).join("/"))).toEqual([
+        "content/romance/effect_catalog.json", "content/romance/presentation.json",
+        ...kinds.filter((kind) => kind !== "romance/effect_catalog.json").map((kind) => `${milano}/${kind}`),
+      ]);
       const otherBefore = otherFiles.map((file) => readFileSync(file, "utf8"));
       expect(emptiedCatalogs.some((kind) => existsSync(path.join(root, layer, kind)))).toBe(false);
       await prepareJourneyRelease(root, "golden_triangle", true, "delhi", narrativeFile, translationsFile);
       expect(otherFiles.map((file) => readFileSync(file, "utf8"))).toEqual(otherBefore);
+      expect(existsSync(path.join(root, milano, "romance/effect_catalog.json"))).toBe(false);
       expect(emptiedCatalogs.every((kind) => existsSync(path.join(root, layer, kind)))).toBe(true);
       expect(JSON.parse(readFileSync(path.join(root, layer, "cities/delhi.json"), "utf8")).productionStatus).toBe("complete");
       expect(JSON.parse(readFileSync(path.join(root, layer, "manifest.json"), "utf8")).status).toBe("available");
