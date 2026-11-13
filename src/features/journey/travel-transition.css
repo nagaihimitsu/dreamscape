@@ -99,7 +99,8 @@
 @keyframes travel-scenery-pass { to { transform: translateX(-120px); } }
 /* The ride's map card (2026-11-13; ride-map.ts): under the scene, in its parchment mount; the place left ringed in the
    current place's green, the place reached in the markers' colour, their names in ink with a light halo (about 11:1 on the
-   card's ground). The line's dots come one after another from the place left to the place reached, from 0.25 s to about
+   card's ground), each whole: on more lines when its side of the card is too narrow for it (wrapPlaceName), the card then
+   a little taller. The line's dots come one after another from the place left to the place reached, from 0.25 s to about
    1.5 s of the 1.8-s ride (opacity only); under reduced motion the whole line shows at once. */
 .travel-ride-map {
   width: min(230px, 68vw);
