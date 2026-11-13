@@ -198,8 +198,9 @@ describe("Ink choices and reload boundaries", () => {
     expect(() =>
       validateGameState({ ...state, completedChapters: [state.currentCityId] }),
     ).toThrow(zodIssues({ code: "unrecognized_keys", path: [], keys: ["completedChapters"] }));
+    // Today's headlines (save v23) list the episode too; clear them so the played-battle check is the one reached.
     expect(() =>
-      validateGameState({ ...state, completedEpisodeIds: [] }),
+      validateGameState({ ...state, completedEpisodeIds: [], travel: { ...state.travel, todayEpisodeIds: [] } }),
     ).toThrow("完了したクイズと観光エピソードの記録が一致しません。");
     expect(() => validateGameState({ ...state, ap: -1 })).toThrow(zodIssues({ code: "too_small", path: ["ap"] }));
   });
