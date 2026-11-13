@@ -2,7 +2,7 @@
 
 ミラノと同じ `citySchema`、`travelCatalogSchema`、`travelSettingsSchema` の形に揃えた研究資料由来の生成ドラフトです。ゲームはこのディレクトリを読み込みません。現在の都市・地点・移動データの正本は `content/journeys/golden_triangle/cities/` と `content/journeys/golden_triangle/travel/` です。ドラフトには後から追加された徒歩のゲーム推定や入場料などがないため、そのまま `content/` に上書きしないでください。
 
-各都市は `cities/<都市ID>.json`、`travel/<都市ID>.json`、`travel/<都市ID>-settings.json` に対応し、生成時の内容と警告は `manifest.json` にあります。都市名と順序、開始資金（今は ₹3,000,000。2026-11-09 のユーザー判断で、最後のバランス調整で本来の額を決めるまでの仮の額にし、遊んでいてお金が足りなくならないようにした。それまでは ₹30,000）、無料宿泊、各都市の都市クリア4APは `content/journeys/golden_triangle/manifest.json`（旧 `content/journeys/catalog.json`）を正とします。デリー以外の `initialBudget: 0` は都市間で追加支給しない意味です。既存の出発処理は前都市の残金を引き継ぎます。
+各都市は `cities/<都市ID>.json`、`travel/<都市ID>.json`、`travel/<都市ID>-settings.json` に対応し、生成時の内容と警告は `manifest.json` にあります。都市名と順序、開始資金（₹38,000。2026-11-13 のユーザー判断で、バランス調整で決めた額。いちばん安い乗り物で回れば本筋とデートを全部遊べ、高い乗り物や寄り道の支払いを重ねると足りなくなることがある。2026-11-09〜11-13 は仮の ₹3,000,000、その前は ₹30,000）、無料宿泊、各都市の都市クリア4APは `content/journeys/golden_triangle/manifest.json`（旧 `content/journeys/catalog.json`）を正とします。デリー以外の `initialBudget: 0` は都市間で追加支給しない意味です。既存の出発処理は前都市の残金を引き継ぎます。
 
 この研究由来の生成ドラフトには各都市にメイン観光4件・デート6件の**候補**があります。その後、3都市のInk・戦闘・クイズ・デート・フィナーレを `content/` に登録しました。現行の脚本の設計は [インド編改稿の設計](SCENARIO_REWRITE.md)、旧稿の構成・編集記録は [scenario/README](scenario/README.md) を参照してください。ここに残る都市・旅行の生成ドラフトは現在のプレイ内容を表さず、完成版へ上書きしてはいけません。
 
