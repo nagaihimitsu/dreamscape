@@ -55,6 +55,22 @@ describe("the scene walk", () => {
     expect(() => walk(talk("# when: money >= 8\n", deciding))).toThrow("No choice can be chosen");
   });
 
+  it("counts money and AP as it counts items: a cond read true guarantees them, and what the path paid before comes off (docs/13 4.2, A10)", () => {
+    const pay = (id: string, tag: string) => `* [${id} # option: ${id}]\n    # ${tag}\n    ${id}\n    -> END\n`;
+    // A cond read true guarantees its money (the walk reads it both ways; false: the else).
+    expect(walk(talk("", `{ cond("money >= 50"):\n${pay("a", "money: -50")}${pay("b", "money: -60")}- else:\n    none\n    -> END\n}\n`))).toBe(3);
+    // The head's money, less what a choice before paid on the path.
+    const first = (tag: string) => `* [First # option: first]\n    # ${tag}\n    -> next\n* [Skip # option: skip]\n    -> next\n- (next)\n`;
+    const twice = first("money: -40") + pay("a", "money: -30") + pay("b", "money: -60");
+    expect(() => walk(talk("# when: money >= 50\n", twice))).toThrow("No choice can be chosen");
+    expect(walk(talk("# when: money >= 70\n", twice))).toBe(4);
+    // What a choice before gave counts too.
+    expect(walk(talk("", first("money: +30").replace("* [Skip # option: skip]\n    -> next\n", "") + pay("a", "money: -30") + "* [Leave # option: leave]\n    -> END\n"))).toBe(2);
+    const apTwice = first("ap: -1") + pay("a", "ap: -2") + pay("b", "ap: -3");
+    expect(() => walk(talk("# when: ap >= 2\n", apTwice))).toThrow("No choice can be chosen");
+    expect(walk(talk("# when: ap >= 3\n", apTwice))).toBe(4);
+  });
+
   it("does not count a then: move as sure, even on foot: it greys when no way home gets back in time or the main part there cannot be paid (A10)", () => {
     const moveOrPay = "* [Go # option: go]\n    # then: move x_tower\n    -> END\n* [Pay # option: pay]\n    # money: -50\n    -> END\n";
     expect(() => walk(talk("", moveOrPay))).toThrow(/No choice can be chosen.*add a choice that needs nothing/u);

@@ -21,8 +21,9 @@ import type { DialogueObserver } from "./dialogue-expression-validation";
 // - a path stops without an end (no choice, no end) or reads 1,000 lines without a choice (A27);
 // - a path meets two `then:` (the head's counts; A8);
 // - a choice point can be reached in a state where no choice can be chosen (A10): a choice counts
-//   when it needs nothing, or when what it needs is guaranteed (the head's `# when:`, the cond texts
-//   read true on the path, minus the items given or used before on the path);
+//   when it needs nothing, or when what it needs is guaranteed (the head's `# when:` and the cond texts
+//   read true on the path; minus the items given or used before on the path, and, for money and AP, the
+//   payments and gains of the choices before it on the path: docs/13 4.2, one rule for every need);
 // - a choice without `# option:` has effects (readPlaceFile already stops it) or an option ID the
 //   table does not know.
 // The walk applies the scene's own effects as it goes: after `# give: X`, `item X held` reads false
@@ -112,8 +113,10 @@ export function walkScene(walked: SceneWalkInput): number {
   const headLeaves = input.when ? requiredLeaves(input.when) : [];
   const reserveMoney = Math.max(0, -(input.done?.money ?? 0));
   const reserveAp = Math.max(0, -(input.done?.ap ?? 0));
-  const moneyFloor = Math.max(0, ...headLeaves.flatMap((leaf) => ("money" in leaf && leaf.money.atLeast !== undefined ? [leaf.money.atLeast] : [])));
-  const apFloor = Math.max(0, ...headLeaves.flatMap((leaf) => ("ap" in leaf && leaf.ap.atLeast !== undefined ? [leaf.ap.atLeast] : [])));
+  /** The least money (AP) the leaves guarantee: their largest `money >= N` (`ap >= N`). */
+  const floorOf = (leaves: readonly Leaf[], kind: "money" | "ap") => Math.max(0, ...leaves.flatMap((leaf) =>
+    kind === "money" ? ("money" in leaf && leaf.money.atLeast !== undefined ? [leaf.money.atLeast] : [])
+      : ("ap" in leaf && leaf.ap.atLeast !== undefined ? [leaf.ap.atLeast] : [])));
   const parsedConds = new Map(input.conds.map((text) => [text, parseConditionText(text)]));
   const profiled = input.options.some((option) => option.profile);
   const { assignments } = condWalk(input.conds);
@@ -125,6 +128,8 @@ export function walkScene(walked: SceneWalkInput): number {
     type Path = { saved: string; overrides: Record<string, boolean>; trueTexts: string[]; spent: string[]; thens: number; romance: number; speaker: string;
       /** A battle's quizzes called so far, its score and whether it reached its reasoning stop. */
       quizzes: number; score: number; reasoned: boolean;
+      /** What the choices before on the path paid (negative) or gave (positive): money and AP. */
+      money: number; ap: number;
       /** The mini-games passed since the last other choice set, each left by its 「おまかせ」 outcome (their choice points). */
       autoChain: string[] };
     // A battle's states (its stop points, by where they stop and what the path holds) and where each goes: every one must reach the end.
@@ -208,9 +213,9 @@ export function walkScene(walked: SceneWalkInput): number {
       const call = calls[0];
       if (call && !battle) throw new Error(`-> ${call === "quiz" ? "quiz(n)" : "reasoning"} -> is a battle's call (stage 5): ${input.label} is not a battle`);
       const key = battle
-        ? `${stopKey(choices)}|${JSON.stringify(path.overrides)}|${path.thens}|${path.quizzes}|${path.score}|${path.reasoned}|` +
+        ? `${stopKey(choices)}|${JSON.stringify(path.overrides)}|${path.thens}|${path.quizzes}|${path.score}|${path.reasoned}|${path.money}|${path.ap}|` +
           `${["reasoning_action", "evidence_result", "romance_result"].map((name) => String(story.variablesState.$(name))).join(",")}`
-        : `${story.state.currentPathString}|${JSON.stringify(path.overrides)}|${path.thens}|${path.romance}|${choices.map((choice) => choice.text).join("/")}`;
+        : `${story.state.currentPathString}|${JSON.stringify(path.overrides)}|${path.thens}|${path.romance}|${path.money}|${path.ap}|${choices.map((choice) => choice.text).join("/")}`;
       if (battle) {
         edge(from, key);
         if (!graph.has(key)) graph.set(key, { next: new Set(), where: call === "quiz" ? `quiz(${path.quizzes + 1})` : call === "reasoning" ? `the reasoning stop` :
@@ -256,6 +261,9 @@ export function walkScene(walked: SceneWalkInput): number {
         return condition ? requiredLeaves(condition) : [];
       })];
       const guaranteed = (leaf: Leaf) => guaranteedLeaves.some((other) => sameLeaf(other, leaf));
+      // What the scene's start and the path's true conds guarantee, after the path's own payments and gains.
+      const moneyFloor = floorOf(guaranteedLeaves, "money") + path.money;
+      const apFloor = floorOf(guaranteedLeaves, "ap") + path.ap;
       const itemGuaranteed = (item: string) => !path.spent.includes(item) && guaranteed({ item: { id: item, is: "held" } });
       const options = choices.map((choice) => {
         const id = parseStoryTags(choice.tags ?? [], input.context).optionId;
@@ -267,8 +275,9 @@ export function walkScene(walked: SceneWalkInput): number {
         if (!option) return true;
         if (option.requires?.some((condition) => !requiredLeaves(condition).length || requiredLeaves(condition).some((leaf) => !guaranteed(leaf)))) return false;
         for (const item of [option.give?.item, option.use].filter((value): value is string => !!value)) if (!itemGuaranteed(item)) return false;
-        // The head's # when: money/ap guarantees that much as the scene starts; once a then: is decided on the path (the head's or a
-        // choice's), or by this choice, what the then: keeps back may take it (2.3): only a choice that spends nothing is sure then.
+        // The head's # when: and the path's true conds guarantee money/ap (less what the path paid before); once a then: is decided
+        // on the path (the head's or a choice's), or by this choice, what the then: keeps back may take it (2.3): only a choice
+        // that spends nothing is sure then.
         const thenKeeps = path.thens > 0 || !!option.then;
         if ((option.money ?? 0) < 0 && -(option.money ?? 0) > (thenKeeps ? 0 : moneyFloor) - reserveMoney) return false;
         if ((option.ap ?? 0) < 0 && -(option.ap ?? 0) > (thenKeeps ? 0 : apFloor) - reserveAp) return false;
@@ -308,11 +317,12 @@ export function walkScene(walked: SceneWalkInput): number {
         branch.ChooseChoiceIndex(choice.index);
         visit({ ...path, saved: branch.state.ToJson(), overrides, trueTexts, spent, thens: path.thens + (option?.then ? 1 : 0),
           autoChain: game && option?.id === autoOption ? [...path.autoChain, gameAt] : [],
+          money: path.money + (option?.money ?? 0), ap: path.ap + (option?.ap ?? 0),
           romance: path.romance + (romanceHere ? 1 : 0), speaker }, choice.tags ?? [], key);
       });
     };
     if (battle) graph.set("", { next: new Set(), where: "the start" });
-    visit({ saved: first.state.ToJson(), overrides: {}, trueTexts: [], spent: [], thens: input.headThen ? 1 : 0, romance: 0, speaker: "narrator", autoChain: [],
+    visit({ saved: first.state.ToJson(), overrides: {}, trueTexts: [], spent: [], thens: input.headThen ? 1 : 0, romance: 0, speaker: "narrator", autoChain: [], money: 0, ap: 0,
       quizzes: 0, score: 0, reasoned: false }, []);
     if (battle) {
       // Every state the battle reaches must still reach its end (a stop point that only comes back to itself would hold the player).
