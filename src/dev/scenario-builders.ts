@@ -12,7 +12,7 @@
  * relationship.
  * Never imported by production code (scripts/dist-guard.ts checks the build).
  */
-import { balance, battles, dates, episodes, getCities, getCityContent, getCityTours, getTour, landmarks, type QuizQuestion, type Tour } from "../content";
+import { balance, battles, dates, episodes, getCities, getCityContent, getCityTours, getTour, landmarks, sceneConditions, type QuizQuestion, type Tour } from "../content";
 import { isTourOnlyPlace } from "../content/travel-schemas";
 import { bookTour as bookTourOffer, continueTour, getTourOffers } from "../domain/tour";
 import { encounters } from "../content/encounters";
@@ -58,6 +58,9 @@ import { getTransportModes, WALK_MODE_ID } from "../content/transport";
 import { minimumHomeFare } from "../domain/travel-routes";
 import { getUsableRoutes } from "../domain/transport";
 import { otherCityItemsMissing, unmetConditionLabels } from "./condition-explain";
+import type { Condition } from "../content/condition-schemas";
+import { meets } from "../domain/conditions";
+import { NIGHT_START } from "../domain/travel";
 
 /** The option chosen for a quiz question (its round index counts from 0). */
 export type AnswerPicker = (question: QuizQuestion, roundIndex: number) => string;
@@ -693,6 +696,75 @@ function playOccasionStep(state: GameState, ticket: number): GameState {
   if (state.activeBattle) return playBattleToResult(state);
   if (state.occasion?.romanceEnding) return act(state, (current) => closeRomanceEnding(current, current.revision, () => ticket), "「交際開始」");
   throw new Error("この時点を進められませんでした。");
+}
+
+/** A scene of the hotel's moment (`# at: hotel …`: an insert before or after the night, not a landmark visit's scene). */
+export function isHotelInsert(sceneId: string): boolean {
+  return !!sceneById(sceneId)?.at.some((at) => "hotel" in at);
+}
+
+/**
+ * Debug's records for a condition a scene needs (its `when:`, or a `cond("…")` its story reads), set directly as Debug sets
+ * the AP: a date played, a flag, a scene seen or completed, the night (the clock moved on to 18:00). Any other leaf, and a
+ * `not`, is left as it is (the caller names what stays unmet). `any` and `atLeast` take their children in order.
+ */
+function withCondition(state: GameState, condition: Condition): GameState {
+  if ("all" in condition) return condition.all.reduce(withCondition, state);
+  if ("any" in condition) {
+    for (const child of condition.any) {
+      const next = withCondition(state, child);
+      if (meets(next, child)) return next;
+    }
+    return state;
+  }
+  if ("atLeast" in condition) {
+    let next = state;
+    for (const child of condition.atLeast.of) {
+      if (condition.atLeast.of.filter((item) => meets(next, item)).length >= condition.atLeast.count) break;
+      next = withCondition(next, child);
+    }
+    return next;
+  }
+  if ("not" in condition || meets(state, condition)) return state;
+  const add = (list: readonly string[], id: string) => (list.includes(id) ? [...list] : [...list, id]);
+  if ("datePlayed" in condition) return { ...state, playedDateIds: add(state.playedDateIds, condition.datePlayed) };
+  if ("flag" in condition) return { ...state, storyProgress: { ...state.storyProgress, flags: add(state.storyProgress.flags, condition.flag) } };
+  if ("encounterSeen" in condition) return { ...state, seenEncounterIds: add(state.seenEncounterIds, condition.encounterSeen) };
+  if ("encounterCompleted" in condition) return { ...state, seenEncounterIds: add(state.seenEncounterIds, condition.encounterCompleted),
+    completedEncounterIds: add(state.completedEncounterIds, condition.encounterCompleted) };
+  if ("time" in condition && condition.time === "night")
+    return { ...state, travel: { ...state.travel, minute: Math.max(state.travel.minute, NIGHT_START) } };
+  return state;
+}
+
+/**
+ * Debug's opener of a hotel-moment insert (a scene with `# at: hotel …`; the mini-games' content test and 「ミニゲームの見本」):
+ * the records its own `when:` reads are set (withCondition), and `conds` too (texts of the `cond("…")` its story reads, for
+ * one of its branches); then 「休む」 opens the hotel's moment as on the map, and the moment's scenes before it are played with
+ * their first choices until it starts. Stops with a message when its condition cannot be met or it does not start.
+ */
+export function startHotelInsertScene(state: GameState, sceneId: string, ticket: number, conds: readonly string[] = []): GameState {
+  const scene = sceneById(sceneId);
+  if (!scene || !isHotelInsert(sceneId)) throw new Error(`${sceneId} は宿の時点（# at: hotel）の場面ではありません。`);
+  if (scene.cityId !== state.currentCityId)
+    throw new Error(`${sceneId} は${getCities().find((city) => city.id === scene.cityId)?.nameJa ?? scene.cityId}の場面です。`);
+  const needed = [scene.when, ...conds.map((text) => {
+    if (!Object.hasOwn(sceneConditions.conditions, text)) throw new Error(`場面の条件が見つかりません: ${text}`);
+    return sceneConditions.conditions[text];
+  })].filter((condition): condition is Condition => condition !== undefined);
+  let current = needed.reduce(withCondition, state);
+  const unmet = needed.flatMap((condition) => unmetConditionLabels(current, condition));
+  if (unmet.length) throw new Error(`宿の時点の場面 ${sceneId} の条件をDebugでは満たせません：${unmet.join("、")}`);
+  current = validateGameState(current);
+  const sleep = getTravelSleepOptions(current).find((option) => option.plan.ok);
+  if (!sleep) throw new Error("宿へ帰って休めません。");
+  current = act(current, (now) => sleepAtHotel(now, sleep.route.mode, now.revision, sleep.route.viaPlaceId ?? null, () => ticket), "休む");
+  for (let step = 0; current.activeEncounter?.encounterId !== sceneId; step++) {
+    if (!isSceneOpen(current) || step > MAX_STEPS)
+      throw new Error(`宿の時点の場面 ${sceneId} は「休む」の時点で始まりませんでした（条件が合わないか、先の場面が終わらせました）。`);
+    current = playOccasionStep(current, ticket);
+  }
+  return validateGameState(current);
 }
 
 /** Start a date at its place with a saved reaction ticket; its AP is spent as on the map. */

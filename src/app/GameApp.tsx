@@ -143,6 +143,7 @@ import {
   reasoningEvidenceCount,
   battleChoiceDisplay,
   chooseBattle,
+  battleBackgroundId,
 } from "../domain/battle";
 
 import { browserStorage, type AppProps } from "./app-storage";
@@ -157,7 +158,7 @@ import { relationshipChange, type RelationshipChange } from "../domain/relations
 import { RelationshipChangeNote } from "../components/RelationshipChangeNote";
 import { sceneConditionTruths } from "../domain/scene-conditions";
 import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
-import { stageLine } from "../components/scene-stage";
+import { sceneStageOf, stageLine } from "../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../components/speaker-plate";
 
 /** 最初の3分の計測's note (Debug mode only): its own chunk, loaded when ⚙設定 shows it (scripts/dist-guard.ts). */
@@ -628,16 +629,17 @@ export function GameApp({
     : game.activeEpilogue ? undefined
     : game.activeTourism ? (game.activeTourism.phase === "guide" ? landmarkPhoto(game.activeTourism.landmarkId) : undefined)
     : game.activeBattle && currentBattle
-      ? landmarkPhoto(currentBattle.landmarkId) ?? backdropPhoto(game.activeBattle.frame?.background ?? currentBattle.backgroundId)
+      ? landmarkPhoto(currentBattle.landmarkId) ?? backdropPhoto(battleBackgroundId(game.activeBattle, currentBattle))
     : active ? backdropPhoto(active.frame.background) : undefined;
   // The background the story scene on screen draws its picture from (in the order of the screens below): the header's
   // place plate names where it is, if it says (hudPlaceName). None where a landmark's photo shows: the party is there.
+  // A battle's quiz, reasoning and result keep its last line's (battleBackgroundId), so the plate stays where the story is.
   const sceneBackgroundId = !game || moments.packingScene ? undefined
     : activeEncounter && currentEncounter ? (encounterImage ? undefined : activeEncounter.frame.background)
     : game.activeEpilogue ? game.activeEpilogue.frame.background
     : game.activeTourism ? (landmarkPhoto(game.activeTourism.landmarkId) ? undefined : game.activeTourism.frame?.background)
     : game.activeBattle && currentBattle
-      ? (landmarkPhoto(currentBattle.landmarkId) ? undefined : game.activeBattle.frame?.background ?? currentBattle.backgroundId)
+      ? (landmarkPhoto(currentBattle.landmarkId) ? undefined : battleBackgroundId(game.activeBattle, currentBattle))
     : active?.frame.background;
   const nameForm = (
     <>
@@ -865,7 +867,7 @@ export function GameApp({
                     heroine: !!heroine || (hasEmotion && frame.speaker === "narrator"),
                     enemy: !!enemy || (hasEmotion && frame.speaker === "enemy"),
                   }),
-                  scene: encounterPerson ? { enemyFigure: encounterPerson.characterId } : { enemyStandIn: "enemy" },
+                  scene: sceneStageOf("encounter", encounterPerson?.characterId),
                   heroine: { emotion: heroine?.expression ?? (frame.speaker === "heroine" || frame.speaker === "narrator" ? frame.emotion : "neutral"), mark: heroine?.mark },
                   enemy: { emotion: enemy?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral"), mark: enemy?.mark },
                 };

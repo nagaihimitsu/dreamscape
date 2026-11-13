@@ -1,0 +1,56 @@
+/* The shape_drag engine (EnginePlay.tsx): the skin's backdrop fills the field, the square board sits in its middle as large
+   as the field allows, the controls sit at the bottom in thumb reach. */
+.mg-engine-shape-drag { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
+.mg-engine-shape-drag .mg-shape-drag-field {
+  position: relative;
+  display: grid;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  place-items: center;
+  container-type: size;
+}
+.mg-engine-shape-drag .mg-shape-drag-backdrop { position: absolute; inset: 0; pointer-events: none; }
+/* The board: dragged on with one finger (no scroll, no pull to reload, no text selection). */
+.mg-engine-shape-drag .mg-shape-drag-board {
+  position: relative;
+  width: min(100cqw - 24px, 100cqh - 16px);
+  aspect-ratio: 1;
+  touch-action: none;
+  overscroll-behavior: contain;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  cursor: grab;
+}
+.mg-engine-shape-drag .mg-shape-drag-board[data-rolling] { cursor: grabbing; }
+.mg-engine-shape-drag .mg-shape-drag-controls { flex: none; padding: 8px 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
+.mg-engine-shape-drag .mg-shape-drag-hint { margin: 0 0 8px; font-size: 13px; line-height: 1.5; text-align: center; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+.mg-engine-shape-drag .mg-shape-drag-done {
+  justify-content: center;
+  width: 100%;
+  min-height: 64px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-align: center;
+  touch-action: manipulation;
+}
+.mg-engine-shape-drag .mg-shape-drag-done[aria-disabled="true"] { background: var(--ds-slate-900); color: var(--ds-on-slate-muted); }
+.mg-engine-shape-drag .mg-shape-drag-auto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 64px;
+  margin: 0;
+  border-radius: 12px;
+  background: var(--ds-chip-bg);
+  font-size: 15px;
+}
+@media (max-height: 620px) {
+  .mg-engine-shape-drag .mg-shape-drag-controls { padding-top: 4px; }
+  .mg-engine-shape-drag .mg-shape-drag-hint { margin-bottom: 4px; font-size: 12px; }
+  .mg-engine-shape-drag .mg-shape-drag-done, .mg-engine-shape-drag .mg-shape-drag-auto { min-height: 54px; }
+}
+/* A warning in place of the hint (the skin's: 「生地がうすくなってきた」): brighter and bold. */
+.mg-engine-shape-drag .mg-shape-drag-hint[data-note] { color: #ffe3a3; font-weight: 700; }

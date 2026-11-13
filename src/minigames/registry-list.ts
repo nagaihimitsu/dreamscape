@@ -3,3 +3,4 @@
 export { clothFlap } from "./cloth_flap/definition";
 export { cricketBatting } from "./cricket_batting/definition";
 export { monkeyCatch } from "./monkey_catch/definition";
+export { rotiRolling } from "./roti_rolling/definition";

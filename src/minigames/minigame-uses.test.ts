@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
 import usesJson from "../content/generated/minigame-uses.json";
 import { tagContext } from "../content";
-import { createDebugState } from "../dev/debug-state";
-import { miniGameUseLaunch } from "../dev/minigame-room";
+import { miniGameUseOpening, miniGameUseStates } from "../dev/minigame-room";
 import { openMiniGame } from "../domain/minigame";
 import { applyPlayerAction, listPlayerActions, playerActionChange, type PlayerAction } from "../domain/player-action";
 import { screenFor } from "../domain/screen";
@@ -97,14 +96,14 @@ describe("every mini-game use with every outcome (the generated uses list)", () 
   for (const use of uses) byScene.set(use.sceneId, [...byScene.get(use.sceneId) ?? [], use]);
   it.each([...byScene.keys()])("opens %s as Debug does and takes every outcome of each of its uses, both reaction tickets", (sceneId) => {
     const sceneUses = byScene.get(sceneId)!;
-    // Opened as Debug's 「ミニゲームの見本」 opens it (src/dev/minigame-room.ts): when a use is hidden behind a condition
-    // Debug's start lacks (a relationship value, a flag…), give its scene's opening the settings it needs there.
-    const launch = miniGameUseLaunch(sceneUses[0]);
-    if (typeof launch === "string") throw new Error(`${launch}: give its scene kind an opener in src/dev/minigame-room.ts`);
+    // Opened as Debug's 「ミニゲームの見本」 opens it (src/dev/minigame-room.ts; a scene of the hotel's moment through 「休む」,
+    // once per branch of its story): when a use is hidden behind a condition Debug's start lacks (a relationship value, a
+    // flag…), give its scene's opening the settings it needs there.
+    const opening = miniGameUseOpening(sceneUses[0]);
+    if (typeof opening === "string") throw new Error(`${opening}: give its scene kind an opener in src/dev/minigame-room.ts`);
     const met = new Set<string>();
     for (const roll of ["positive", "negative"] as const) {
-      const state = createDebugState({ ...launch, roll });
-      for (const tag of walkUses(state, () => (roll === "positive" ? 0 : 9999))) met.add(tag);
+      for (const state of miniGameUseStates(opening, roll)) for (const tag of walkUses(state, () => (roll === "positive" ? 0 : 9999))) met.add(tag);
     }
     // A use not met is hidden behind a condition Debug's start lacks (see above).
     const missing = sceneUses.filter((use) => !met.has(miniGameTagText(tagOf(use))));
