@@ -17,6 +17,14 @@ describe("the people who speak", () => {
       .toThrow("Undeclared person in # speaker: of the knot smp_mihon_talk (line 8): smp_mihon_nobody");
   });
 
+  it("checks a # leave: the same way: heroine, enemy or a declared person (2026-11-13)", () => {
+    for (const line of ["# leave: heroine", "# leave: enemy", "# speaker: narrator # leave: smp_mihon_lili"])
+      expect(() => checkSpeakerPeople(source(line), people)).not.toThrow();
+    for (const [line, value] of [["# leave: smp_mihon_nobody", "smp_mihon_nobody"], ["# leave: narrator", "narrator"], ["    # leave: player", "player"]])
+      expect(() => checkSpeakerPeople(source(line), people), line)
+        .toThrow(`Undeclared person in # leave: of the knot smp_mihon_talk (line 8): ${value} (heroine, enemy, or a person declared`);
+  });
+
   it("reads no commented-out tag", () => {
     expect(() => checkSpeakerPeople(source("// # speaker: smp_mihon_nobody"), people)).not.toThrow();
   });

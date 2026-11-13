@@ -1,0 +1,24 @@
+/* The roti's field (Skin.tsx): the work table from above, the round board, the dough and the pin. With the use's
+   art.kitchen, that picture in place of the drawn table; art.board, art.pin and art.dough likewise. */
+.mg-roti-rolling-table {
+  position: absolute;
+  inset: 0;
+  /* A plain work table dusted with flour; the scene's picture shows faintly through its top edge. */
+  background:
+    radial-gradient(circle at 22% 30%, rgba(255, 252, 244, 0.35) 0 2px, transparent 3px) 0 0 / 46px 52px,
+    radial-gradient(circle at 70% 64%, rgba(255, 252, 244, 0.28) 0 1.5px, transparent 2.5px) 0 0 / 38px 44px,
+    linear-gradient(to bottom, rgba(196, 190, 178, 0.55), rgba(176, 170, 158, 0.94) 18%, #a9a395);
+}
+.mg-roti-rolling-table[data-art-kitchen] { background: none; }
+.mg-roti-rolling-kitchen { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
+.mg-roti-rolling { display: block; width: 100%; height: 100%; overflow: visible; }
+.mg-roti-rolling-board-face { filter: drop-shadow(0 0.01px 0.012px rgba(0, 0, 0, 0.35)); }
+.mg-roti-rolling-board-ring { fill: none; stroke: rgba(80, 48, 22, 0.28); stroke-width: 0.006; }
+.mg-roti-rolling-flour { fill: rgba(255, 252, 244, 0.55); }
+.mg-roti-rolling-dough-shadow { fill: rgba(60, 36, 14, 0.28); }
+.mg-roti-rolling-dough { stroke: rgba(170, 128, 72, 0.7); stroke-width: 0.006; stroke-linejoin: round; }
+/* The tear: the board shows through a ragged hole. */
+.mg-roti-rolling-hole { fill: #8f5f35; stroke: #f3e2bd; stroke-width: 0.008; stroke-linejoin: round; }
+.mg-roti-rolling-pin-body { fill: #c99a62; stroke: rgba(90, 58, 28, 0.55); stroke-width: 0.004; }
+.mg-roti-rolling-pin-handle { fill: #9c6c3c; }
+.mg-roti-rolling-pin { filter: drop-shadow(0 0.012px 0.01px rgba(0, 0, 0, 0.35)); }

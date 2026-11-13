@@ -22,7 +22,7 @@ import { CanalScene } from "../../components/CanalScene";
 import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
-import { stageLine, type StageScene } from "../../components/scene-stage";
+import { sceneStageOf, stageLine } from "../../components/scene-stage";
 import { useSceneStage } from "../../components/useSceneStage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useNameCutIn } from "../../components/NameCutIn";
@@ -44,7 +44,7 @@ import "./tourism.css";
 import "../journey/encounter.css";
 
 /** A guide's stage: she stands from the start; no one stands for `# speaker: enemy`. */
-const GUIDE_STAGE: StageScene = { heroineFromStart: true };
+const GUIDE_STAGE = sceneStageOf("guide");
 
 const COMPACT_OBSERVATION = "(max-width: 600px) and (min-height: 500px)";
 

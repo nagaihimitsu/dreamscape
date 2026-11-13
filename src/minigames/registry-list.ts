@@ -3,3 +3,4 @@
 export { cricketBatting } from "./cricket_batting/definition";
 export { mehndiHiddenName } from "./mehndi_hidden_name/definition";
 export { nahargarhHideSeek } from "./nahargarh_hide_seek/definition";
+export { rotiRolling } from "./roti_rolling/definition";

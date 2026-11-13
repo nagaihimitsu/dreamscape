@@ -17,7 +17,8 @@ import { authoringProfileOf } from "./journey-authoring";
 import { checkContentOwnership } from "./content-ownership";
 import { checkImageRights, OWN_ARTWORK_KIND, ownArtworkByLayer, servingLayer } from "./image-rights";
 import { contentWarnings, journeyContents, unusedWordMeanings, type ContentWarning } from "./content-report";
-import { characterCatalogSchema } from "../src/content/character-assets";
+import { battleCharacterId, characterCatalogSchema } from "../src/content/character-assets";
+import { scenePerson } from "../src/domain/scene-person";
 import { encounterCatalogInputSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
 import { encounterEntryRulesSchema, validateEncounterEntryRules } from "../src/content/encounter-entry-rules";
 import { validateEncounterContent } from "./encounter-validation";
@@ -974,7 +975,9 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     const base = { compiled: stories[storyId], start: scene.story.knot, label, context: sceneContext(scene.cityId), conds: scene.conds,
       options: scene.options, ...(scene.when ? { when: scene.when } : {}), headThen: !!scene.then, done: scene.done,
       itemIds: encounterCatalog.items.map((item) => item.id), memoryIds: Object.keys(presentation.memories), observe: observeForStory(storyId), onWarning: sceneWarn,
-      scene: { id: scene.id, kind: scene.kind, storyId }, onMiniGame };
+      scene: { id: scene.id, kind: scene.kind, storyId }, onMiniGame,
+      // Who stands on its stage (a line's # leave: naming someone not there is warned; 2026-11-13).
+      stage: { kind: scene.kind, enemyFigure: scenePerson(storyStateCatalog.people, scene.people)?.characterId, people: storyStateCatalog.people } };
     if (scene.kind === "battle") continue; // The battle walk below walks it, its calls answered.
     if (scene.kind === "date") {
       if (scene.origin !== "place") continue; // today's dates: validateStory below.
@@ -1023,7 +1026,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       : [1, 2, 3, 4].flatMap((stage) => [false, true].map((ending) => ({ romance_stage: stage, ending_reached: ending })));
     for (const variables of contexts) withContext(storyLabel(storyId), () => walkScene({ compiled: stories[storyId], label: storyLabel(storyId), context,
       variables, conds: storyConditionTexts[storyId] ?? [], options: [], itemIds: [], memoryIds: Object.keys(presentation.memories),
-      observe: observeForStory(storyId), onWarning: sceneWarn, scene: { id: main.address, kind: main.kind, storyId }, onMiniGame }));
+      observe: observeForStory(storyId), onWarning: sceneWarn, scene: { id: main.address, kind: main.kind, storyId }, onMiniGame,
+      stage: { kind: main.kind, people: storyStateCatalog.people } }));
   }
   // A12: an unconditional then: loop.
   const placeLandmarks = (placeId: string) => travels.flatMap(({ travel }) => travel.events.filter((event) => event.placeId === placeId)
@@ -1329,6 +1333,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       variables: { call_arg: 0, quiz_correct: false, answer_correct: false, battle_score: 0, reasoning_action: "", evidence_result: "" },
       battle: { quizzes: quiz.questions.length, ...(battle.reasoning ? { reasoning: { kind: battle.reasoning.kind, roundIndex: battle.reasoning.roundIndex } } : {}) },
       onWarning: sceneWarn, scene: { id: scene?.id ?? battle.id, kind: "battle", storyId: battleAddress.storyId }, onMiniGame,
+      stage: { kind: "battle", enemyFigure: battleCharacterId(characters.battleCharacters, battle.id), people: storyStateCatalog.people },
     }));
   }
   const learning = parseCatalog(learningCatalogSchema, "learning/translations.json");

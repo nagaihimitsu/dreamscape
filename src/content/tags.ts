@@ -58,6 +58,8 @@ export interface StoryTags {
   stand?: StandPosition;
   /** `# cutin: name`: the speaker's name plate over the scene for a moment (the line it is written on only). */
   cutin?: CutInKind;
+  /** `# leave: <who>` (one tag per figure): who goes off the scene's stage at this line (src/components/scene-stage.ts). */
+  leave?: string[];
   /** `# voice: <ID>`: the recording of the line, a journey's public/assets/voice/<ID>.mp3 (the line it is written on only). */
   voiceId?: string;
   /** `# se: <ID>`: a sound effect played as the line starts, a registered public/assets/se/<ID>.mp3 (the line it is written on only). */
@@ -115,6 +117,13 @@ export type StandPosition = (typeof STAND_POSITIONS)[number];
  */
 export const CUTIN_KINDS = ["name"] as const;
 export type CutInKind = (typeof CUTIN_KINDS)[number];
+
+/**
+ * `# leave: <who>` (2026-11-13 user decision): a figure goes off the scene's stage from its line until they come on again
+ * by the stage's own rule (src/components/scene-stage.ts). Who: the heroine, the scene's `enemy` (its `# person:`, a
+ * battle's opponent) or a person of progression/story.json people. Narrator and player never stand there.
+ */
+export const LEAVE_WHO = ["heroine", "enemy"] as const;
 
 type SceneTagKey = "phone" | "letter" | "quiet" | "stand" | "cutin";
 const SCENE_TAG_VALUES: Record<SceneTagKey, readonly string[]> = {
@@ -243,6 +252,13 @@ export function parseStoryTags(
         result.speaker = "person";
         result.speakerPersonId = value;
       }
+    } else if (key === "leave") {
+      const named = (LEAVE_WHO as readonly string[]).includes(value);
+      if (!named && ((RESERVED_SPEAKERS as readonly string[]).includes(value) || !/^[a-z][a-z0-9_]*$/u.test(value) ||
+        (context.personIds && !context.personIds.includes(value))))
+        throw new Error(`Unknown leave: ${value} (heroine, enemy, or a person of progression/story.json people; the narrator and the player never stand on the stage)`);
+      if (result.leave?.includes(value)) throw new Error(`Duplicate leave tag: ${value}`);
+      result.leave = [...(result.leave ?? []), value];
     } else if (key === "background") {
       if (!context.backgroundIds.includes(value))
         throw new Error(`Unknown background: ${value}`);

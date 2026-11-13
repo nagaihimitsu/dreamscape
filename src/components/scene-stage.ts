@@ -1,4 +1,4 @@
-import type { StoryStateCatalog } from "../content/scene-schemas";
+import type { SceneKind, StoryStateCatalog } from "../content/scene-schemas";
 import { speakingPerson } from "../domain/scene-person";
 import type { Speaker, StoryFrame } from "../story/frame-reader";
 
@@ -20,7 +20,15 @@ export type StageLine = {
    * line, which the stand-in needs; a battle: its quiz, where the opponent asks).
    */
   enemyCue?: boolean;
+  /** Who goes off stage at the line (`# leave:`; stageExit). */
+  leave?: StageExit[];
 };
+
+/**
+ * Who a line's `# leave:` takes off the stage (2026-11-13 user decision): the heroine, the scene's enemy (the figure of
+ * `# speaker: enemy`, or the stranger standing in for them), or the person whose figure it is.
+ */
+export type StageExit = "heroine" | "enemy" | { figure: string };
 
 /** What a scene's stage has apart from its lines. */
 export type StageScene = {
@@ -41,21 +49,54 @@ export type Stage = { heroine: boolean; opposite?: { figure: string; standIn?: t
 export type StageFocus = { heroine?: PortraitFocus; opposite?: PortraitFocus };
 
 /**
+ * A scene's stage by its kind (the screens' and content:build's one rule; 2026-11-13): the heroine from the start but in
+ * a talk or an encounter; opposite her, `enemyFigure` for `# speaker: enemy` (the scene's `# person:` with a figure, a
+ * battle's opponent from the start), in a talk or an encounter without one the generic stranger at the enemy's cued
+ * lines. A date and a guide put no one there for `enemy` (their `# speaker: enemy` sends a person off).
+ */
+export function sceneStageOf(kind: SceneKind, enemyFigure?: string): StageScene {
+  const figure = enemyFigure ? { enemyFigure } : {};
+  switch (kind) {
+    case "talk":
+    case "encounter":
+      return enemyFigure ? { enemyFigure } : { enemyStandIn: "enemy" };
+    case "battle":
+      return { heroineFromStart: true, ...figure, enemyFromStart: true };
+    case "arrival":
+    case "epilogue":
+    case "tour_leg":
+      return { heroineFromStart: true, ...figure };
+    case "date":
+    case "guide":
+      return { heroineFromStart: true };
+  }
+}
+
+/** Who a `# leave:` names on the stage: none for a person without a figure, who never stands there. */
+export function stageExit(who: string, people: StoryStateCatalog["people"]): StageExit | undefined {
+  if (who === "heroine" || who === "enemy") return who;
+  const figure = people.find((person) => person.id === who)?.characterId;
+  return figure ? { figure } : undefined;
+}
+
+/**
  * A frame as the stage reads it. `cues`: what the screen shows of the heroine and of the enemy on the line without
  * their saying it (their reactions; StageLine).
  */
 export function stageLine(
-  frame: Pick<StoryFrame, "speaker" | "speakerPersonId" | "phone" | "letter"> | null | undefined,
+  frame: Pick<StoryFrame, "speaker" | "speakerPersonId" | "phone" | "letter" | "leave"> | null | undefined,
   people: StoryStateCatalog["people"],
   cues: { heroine?: boolean; enemy?: boolean } = {},
 ): StageLine {
   const personFigure = frame ? speakingPerson(people, frame) : undefined;
+  const leave = (frame?.leave ?? []).flatMap((who) => stageExit(who, people) ?? []);
   return {
     ...(frame ? { speaker: frame.speaker } : {}),
     ...(frame?.phone || frame?.letter ? { read: true } : {}),
     ...(personFigure ? { personFigure } : {}),
     ...(cues.heroine ? { heroineCue: true } : {}),
     ...(cues.enemy ? { enemyCue: true } : {}),
+    ...(leave.length ? { leave } : {}),
   };
 }
 
@@ -71,17 +112,33 @@ export function stageLine(
  *   the scene's enemy (its `# person:`, a battle's opponent) at their line or cue. Each stays, listening or as they
  *   are, until the other comes in. An enemy without a figure speaks off stage and leaves the place empty, or puts the
  *   stand-in there for that line only when they show a feeling (enemyCue).
+ * - A line's `# leave:` takes who it names off the stage from that line (2026-11-13 user decision), even at a line they
+ *   say or react on (they speak from off stage); they come on again by the rules above, not by the scene's start: the
+ *   heroine at her next line or cue, a person at their next line, the enemy at their next line or cue (a battle's
+ *   opponent also when they ask a question).
  */
 export function stageAfter(previous: Stage | undefined, line: StageLine, scene: StageScene): Stage {
   const said = !line.read;
-  const heroine = !!scene.heroineFromStart || !!previous?.heroine || (said && line.speaker === "heroine") || !!line.heroineCue;
+  const heroine = (!previous && !!scene.heroineFromStart) || !!previous?.heroine || (said && line.speaker === "heroine") || !!line.heroineCue;
   let opposite = previous?.opposite?.standIn ? undefined : previous?.opposite;
-  if (!opposite && scene.enemyFromStart && scene.enemyFigure) opposite = { figure: scene.enemyFigure };
+  if (!previous && scene.enemyFromStart && scene.enemyFigure) opposite = { figure: scene.enemyFigure };
   if (said && line.speaker === "person" && line.personFigure) opposite = { figure: line.personFigure };
   else if ((said && line.speaker === "enemy") || line.enemyCue)
     opposite = scene.enemyFigure ? { figure: scene.enemyFigure }
       : scene.enemyStandIn && line.enemyCue ? { figure: scene.enemyStandIn, standIn: true } : undefined;
-  return opposite ? { heroine, opposite } : { heroine };
+  const arrived: Stage = opposite ? { heroine, opposite } : { heroine };
+  const leave = line.leave ?? [];
+  if (!leave.length) return arrived;
+  const herself = arrived.heroine && !leave.includes("heroine");
+  const oppositeGoes = leave.some((exit) => exit !== "heroine" && standsOnStage(arrived, exit, scene));
+  return arrived.opposite && !oppositeGoes ? { heroine: herself, opposite: arrived.opposite } : { heroine: herself };
+}
+
+/** Whether the one a `# leave:` names (StageExit) stands on the stage. */
+export function standsOnStage(stage: Stage, exit: StageExit, scene: StageScene): boolean {
+  if (exit === "heroine") return stage.heroine;
+  if (exit === "enemy") return oppositeIsEnemy(stage, scene);
+  return stage.opposite?.figure === exit.figure;
 }
 
 /**
