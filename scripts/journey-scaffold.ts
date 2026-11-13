@@ -121,7 +121,7 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
       : [["guide_read", 1, null], ["battle_complete", 1, null], ["battle_score", 1, 2], ["episode_clear", 1, null]] as const;
     for (const [trigger, ap, minScore] of rules) rewards.push(rewardRuleSchema.parse({
       id: `${episodeId}_${trigger}`, episodeId, trigger, ap, minScore,
-      titleJa: trigger === "city_clear" ? "都市を初めてクリア" : trigger === "guide_read" ? "観光案内を初めて読了" : trigger === "battle_score" ? "初めて規定数に正解" : trigger === "episode_clear" ? "観光を初めてクリア" : "対決を初めて完了",
+      titleJa: trigger === "city_clear" ? "都市を初めてクリア" : trigger === "guide_read" ? "観光案内を初めて読了" : trigger === "battle_score" ? "初めて規定数に正解" : trigger === "episode_clear" ? "観光を初めてクリア" : "クイズを初めて完了",
     }));
   };
   for (const plan of requirements) {

@@ -129,7 +129,7 @@
       "epilogueStoryId": "places/gt_agra_hotel_hub.gt_agra_epilogue",
       "battleId": "gt_agra_finale_battle",
       "titleJa": "一番いい話",
-      "descriptionJa": "名物ガイドに「新婚さん」として観客に紹介される。泣ける伝説と本当の話の、公開の勝負。",
+      "descriptionJa": "名物ガイドに「新婚さん」として観客に紹介される。泣ける伝説と本当の話の、公開のクイズ。",
       "clearTitleJa": "手を受け継いだ人の話",
       "clearDescriptionJa": "新婚ではないと、人前で言えた。ガイドは明日も古い伝説を話す。ただ、終わりに書家の名前と、南門の外の町の話を足すという。"
     },
@@ -215,7 +215,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "対決を初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "gt_delhi_main_red_fort_battle_score",
@@ -247,7 +247,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "対決を初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "gt_delhi_main_qutb_minar_battle_score",
@@ -279,7 +279,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "対決を初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "gt_delhi_main_humayun_tomb_battle_score",
@@ -311,7 +311,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "対決を初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "gt_delhi_main_jama_masjid_battle_score",
@@ -335,7 +335,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "対決を初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "gt_delhi_finale_battle_score",
@@ -367,7 +367,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "対決を初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "gt_agra_main_taj_mahal_battle_score",
@@ -399,7 +399,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "対決を初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "gt_agra_main_agra_fort_battle_score",
@@ -431,7 +431,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "対決を初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "gt_agra_main_itimad_tomb_battle_score",
@@ -463,7 +463,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "対決を初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "gt_agra_main_fatehpur_sikri_battle_score",
@@ -487,7 +487,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "対決を初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "gt_agra_finale_battle_score",
@@ -519,7 +519,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "対決を初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "gt_jaipur_main_amber_fort_battle_score",
@@ -551,7 +551,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "対決を初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "gt_jaipur_main_hawa_mahal_battle_score",
@@ -583,7 +583,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "対決を初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "gt_jaipur_main_city_palace_battle_score",
@@ -615,7 +615,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "対決を初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "gt_jaipur_main_jantar_mantar_battle_score",
@@ -639,7 +639,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "対決を初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "gt_jaipur_finale_battle_score",
