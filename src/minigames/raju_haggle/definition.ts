@@ -2,36 +2,42 @@ import { z } from "zod";
 import { defineMiniGame } from "../contract";
 
 /**
- * `raju_haggle` (a skin of `step_pick`): Raju's treasure map at Jaigarh's gate (2026-11-13). Raju calls his price and,
- * while the player holds out, lowers it: ₹50, ₹40, ₹30. The player takes the price on show with 「この値段で」, or says
- * 「やめておく」; holding out past his last price, he gives up selling. What the player pays is the price they took: each
- * outcome's choice carries that `# money:`. A price the player cannot pay now takes the next lower one (the outcomes'
- * fallbacks, docs/13 4.2), and the field shows it lowered; with none, only 「やめておく」 is left.
+ * `raju_haggle` (a skin of `step_pick`): Raju's treasure map at Jaigarh's gate (2026-11-13), the staring contest his own
+ * line sets up (「じっと見られると、ぼく、ちょっとずつ負けちゃう」). He calls ₹50; each 「じっと見る」 costs him patience
+ * (five dots), and every second stare brings his price down: ₹40, then ₹30. The player takes the price on show with
+ * 「この値段で」, or says 「やめておく」; a fifth stare and he turns away with the map, as does twelve seconds of nothing
+ * (no deal either way). Time alone never lowers the price: how far to push is the player's choice and its risk, not a
+ * reflex. What the player pays is the price they took: each outcome's choice carries that `# money:`. A price the player
+ * cannot pay now takes the next lower one (the outcomes' fallbacks, docs/13 4.2), and the field shows it lowered; with
+ * none, only 「やめておく」 is left. An attitude, not a skill: no rating and no practice (it stands for how the player
+ * haggles with a boy who draws maps).
  *
- * Accessibility: 「この値段で」 is 64px at the bottom right (thumb reach) and Space and Enter press it; 「やめておく」 sits apart
- * on the left (Tab to it, then Enter); every price stays on show over a second, so it is a choice, not a reflex. The price
- * list shows the price on show by size, a frame and a mark (not colour alone), the passed ones struck out. With less motion
- * the prices change without a slide; the time bar still runs. The host reads out the outcome.
+ * Accessibility: 「じっと見る」 (64px, middle, the focus starts there), 「この値段で」 with the price on it (64px, right; its
+ * name says the price) and 「やめておく」 (48px, left) sit at the bottom in thumb reach, Tab between them and Enter or Space
+ * presses. The top band reads out the price on show and his patience (「いまの値段 ₹40　がまん 3/5」). The price list shows
+ * the price on show by size, a frame and a mark (not colour alone), the passed ones struck out; his patience is filled
+ * and hollow dots with his face. With less motion he does not bob or flinch and the stamp does not pop. The host reads out
+ * the outcome.
  */
 export const rajuHaggle = defineMiniGame({
   id: "raju_haggle",
   engine: "step_pick",
   titleJa: "地図の値段",
-  howToJa: "ラージューの言う地図の値段が、₹50・₹40・₹30と下がっていく。「この値段で」で決めるか、「やめておく」（約5秒）",
+  howToJa: "ラージューとにらめっこ。「じっと見る」2回で地図の値段が₹50・₹40・₹30と下がるが、5回見るとラージューはへそを曲げて売ってくれない。「この値段で」で決めるか、「やめておく」（5〜12秒）",
   outcomes: [
-    { id: "buy_map", labelJa: "言い値の₹50で買った", noteJa: "最初の値段のうちに決めた（払えないときは ₹40 に）", fallback: "fair_map" },
-    { id: "fair_map", labelJa: "₹40で話がまとまった", noteJa: "2つ目の値段で決めた（払えないときは ₹30 に）", fallback: "haggle_map" },
-    { id: "haggle_map", labelJa: "₹30まで値切った", noteJa: "最後の値段まで待って決めた（払えないときは買わない）", fallback: "decline_map" },
-    { id: "decline_map", labelJa: "地図は買わなかった", noteJa: "「やめておく」を押した、または最後まで決めなかった" },
+    { id: "buy_map", labelJa: "言い値の₹50で買った", noteJa: "最初の値段で決めた（払えないときは ₹40 に）", fallback: "fair_map" },
+    { id: "fair_map", labelJa: "₹40で話がまとまった", noteJa: "2回か3回見て、₹40で決めた（払えないときは ₹30 に）", fallback: "haggle_map" },
+    { id: "haggle_map", labelJa: "₹30まで値切った", noteJa: "4回見て、₹30で決めた（払えないときは買わない）", fallback: "decline_map" },
+    { id: "decline_map", labelJa: "地図は買わなかった", noteJa: "「やめておく」を押した、5回見てラージューがへそを曲げた、または12秒何もしなかった" },
   ],
   defaultAuto: "fair_map",
   params: () => z.object({}).strict(),
   examples: [{}],
   startJa: "値段を聞く",
-  hintJa: "値段が下がっていく。決めたら「この値段で」",
+  hintJa: "「じっと見る」で値段が下がる。見すぎに注意。決めたら「この値段で」",
   timed: true,
-  keysJa: "Space・Enter で「この値段で」。Tab で「やめておく」へ",
-  sounds: ["ui_page", "stamp"],
+  keysJa: "Tab で選び、Enter・Space で押す（最初は「じっと見る」）",
+  sounds: ["ui_page", "stamp", "ui_tap", "ui_denied"],
   quietScene: false,
   art: [],
   artSlots: [
