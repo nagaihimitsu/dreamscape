@@ -47,7 +47,7 @@ export function getTravelDestinations(state: GameState) {
 export type TravelWaitOption = { minutes: number; until: number | null; available: boolean };
 
 /**
- * The 待機 menu: 「30分待つ」 and, while it is still day, 「夜(18:00)まで待つ」 (until NIGHT_START; user decision 2026-11-11:
+ * The 待機 menu: 「30分待つ」 and, while it is still day, 「夜（18:00）まで待つ」 (until NIGHT_START; user decision 2026-11-11:
  * no wait to the next opening time). The night wait is left out where it would be the same 30 minutes. Each is enabled
  * only if waiting is possible (the party can still get back to the hotel before the day ends).
  */

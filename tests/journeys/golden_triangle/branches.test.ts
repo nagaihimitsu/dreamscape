@@ -120,10 +120,15 @@ describe("Golden Triangle authored branching contracts", () => {
   for (const battle of indiaBattles) {
     it(`${battle.id}: every combination of correct and incorrect answers leaves the one flow playable to its end`, () => {
       // -> quiz(n) -> calls the quiz, which comes back with quiz_correct and battle_score (stage 5).
+      // The battle is a knot of its landmark's place file (#116): the flow starts there, as the game starts it.
+      const { storyId, path } = splitStoryAddress(battle.storyId);
+      expect(storyId, battle.id).toMatch(/^places\/gt_[a-z_]+$/u);
+      expect(path).toBe(battle.id);
       const quiz = battleQuizzes[battle.quizId];
       const total = quiz.questions.length;
       for (let mask = 0; mask < 1 << total; mask++) {
-        const story = runtime(battle.storyId, {});
+        const story = runtime(storyId, {});
+        story.ChoosePathString(path!);
         let score = 0;
         for (let round = 0; round <= total; round++) {
           const part = segment(story);

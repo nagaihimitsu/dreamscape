@@ -65,6 +65,17 @@
   "openingMovie": {
     "videoPath": "assets/movies/gt_opening.mp4"
   },
+  "voiceCredits": [
+    {
+      "useJa": "ヒロインの声",
+      "titleJa": "音声合成 Irodori-TTS v4.1-Small",
+      "author": "Aratako",
+      "license": "MIT License",
+      "checkedAt": "2026-11-13",
+      "url": "https://huggingface.co/Aratako/Irodori-TTS-v4.1-Small",
+      "creditJa": "Chihiro Arata, \"Irodori-TTS: A Flow Matching-based Text-to-Speech Model with Emoji-driven Style Control\", Hugging Face, 2026. https://huggingface.co/Aratako/Irodori-TTS-v4.1-Small"
+    }
+  ],
   "authoring": {
     "eventPrefix": "gt",
     "observationFile": "authoring/journeys/golden_triangle/drafts/observation-cards.json",

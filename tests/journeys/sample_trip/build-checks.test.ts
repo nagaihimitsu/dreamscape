@@ -69,9 +69,13 @@ describe("a date's # hint: (2026-11-13)", () => {
     expect(() => validateContent(twice)).toThrow(`The hint of date ${DATE} is written twice`);
   });
 
-  it("stops a hint at the top of a one-scene file that is not a date, and warns for a date without a when", () => {
-    expect(() => validateContent(sampleWith({ "stories/tourism/smp_mihon_market_guide.ink": (text) =>
-      text.replace('VAR player_address = ""\n', 'VAR player_address = ""\n# hint: 朝市のあとで\n') }))).toThrow("# hint: is a date's head tag");
+  it("stops a hint at the head of a scene that is not a date (a place file's knot, a one-scene file), and warns for a date without a when", () => {
+    expect(() => validateContent(sampleWith({ "stories/places/smp_mihon_market.ink": (text) =>
+      text.replace("=== smp_mihon_market_guide ===\n# scene: guide\n", "=== smp_mihon_market_guide ===\n# scene: guide\n# hint: 朝市のあとで\n") })))
+      .toThrow("# hint: is a date's head tag; smp_mihon_market_guide is a guide");
+    // The sample has no one-scene file of its own: an arrival (a one-scene file) is added for this.
+    const { added, ...city } = arrival("# hint: 朝市のあとで\n");
+    expect(() => validateContent(sampleWith(city, added))).toThrow("# hint: is a date's head tag; arrivals/mihon is not a date");
     const withoutWhen = validateContent(sampleWith({ [TOWER]: (text) => text.replace("# when: episodes mihon >= 1\n", "") }));
     expect(withoutWhen.warnings).toContainEqual({ kind: "scene-tag", message: expect.stringContaining(`鍵の札が出ないデートです：${DATE}`) });
   });

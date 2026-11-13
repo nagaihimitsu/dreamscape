@@ -31,8 +31,10 @@ describe("city arrival conversations", () => {
     expect(completeArrivalLogo(current, current.revision)).toBe(current);
     for (let line = 0; current.activeEpilogue; line++) {
       expect(line).toBeLessThan(20);
-      // Delhi's arrival: Kamla (the knot's # person:) speaks as enemy.
-      expect(["heroine", "narrator", "enemy"]).toContain(current.activeEpilogue.frame.speaker);
+      // Delhi's arrival: Kamla (the knot's # person:) speaks as enemy; Agra's Samir and Jaipur's Aman by name (# speaker: <person ID>).
+      const { frame } = current.activeEpilogue;
+      expect(["heroine", "narrator", "enemy", "person"]).toContain(frame.speaker);
+      if (frame.speaker === "person") expect(frame.speakerPersonId).toBe(({ agra: "gt_samir", jaipur: "gt_aman" } as Record<string, string>)[cityId]);
       expect(current.activeEpilogue.frame.choices).toEqual([]);
       const prior = current;
       current = advanceCityEpilogue(current, current.revision);

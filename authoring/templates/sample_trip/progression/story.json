@@ -33,6 +33,11 @@
       "id": "smp_mihon_clock_keeper",
       "cityId": "mihon",
       "nameJa": "青年"
+    },
+    {
+      "id": "smp_mihon_bench_painter",
+      "cityId": "mihon",
+      "nameJa": "男の人"
     }
   ],
   "conditions": {

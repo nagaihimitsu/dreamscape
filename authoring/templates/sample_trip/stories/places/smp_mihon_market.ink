@@ -20,7 +20,7 @@ INCLUDE modules.ink
 朝市には、色違いの屋根の店が三軒並んでいる。真ん中のパン屋から、焼きたての匂いがした。
 # speaker: heroine
 # emotion: happy
-「わ、いい匂い。……でもあの人、なんだか怒ってない？」
+わ、いい匂い。……でもあの人、なんだか怒ってない？
 -> END
 
 // ───── 特殊戦B・矛盾追及（本筋。battles/catalog.json の format: "B"、reasoning.kind: "contradiction"。storyId がこの住所を指す）。
@@ -37,21 +37,21 @@ INCLUDE modules.ink
 # scene: battle
 # background: smp_bg_mihon_market
 # speaker: enemy
-「焼きたては今なの。今！　なのに、この街の人は好きな時間にしか来ない」
+焼きたては今なの。今！　なのに、この街の人は好きな時間にしか来ない
 # speaker: narrator
 パン屋のサラは、冷めかけた丸パンの籠を抱えていた。
 # speaker: heroine
-「みんな、来られるときに来るんですよね。三時に会おう、って」
+みんな、来られるときに来るんですよね。三時に会おう、って
 # speaker: enemy
-「それよ。あの時計のせいで、街じゅうがのんびりになったの。朝市の始まり方から教えてあげる」
+それよ。あの時計のせいで、街じゅうがのんびりになったの。朝市の始まり方から教えてあげる
 -> quiz(1) ->
 # background: smp_bg_mihon_market
 { quiz_correct:
     # speaker: enemy
-    「手をたたく合図で始まる。……鐘じゃないって、よく知ってたわね」
+    手をたたく合図で始まる。……鐘じゃないって、よく知ってたわね
 - else:
     # speaker: enemy
-    「朝市は、店主たちが手をたたいて始めるの。鐘なんて待っていたら、日が暮れるわ」
+    朝市は、店主たちが手をたたいて始めるの。鐘なんて待っていたら、日が暮れるわ
 }
 -> smp_mihon_special_b_market_claim ->
 - (stop)
@@ -63,64 +63,64 @@ INCLUDE modules.ink
 { evidence_result == "failure":
     # background: smp_bg_mihon_market
     # speaker: enemy
-    「その資料で、誰かが時間を守っていると言える？　わたしの『誰も』は、まだ崩れないわ」
+    その資料で、誰かが時間を守っていると言える？　わたしの『誰も』は、まだ崩れないわ
     # speaker: heroine
-    「この資料じゃ足りないみたい。時間を計る道具が書いてあるものを探そう」
+    この資料じゃ足りないみたい。時間を計る道具が書いてあるものを探そう
     -> stop
 }
 # background: smp_bg_mihon_market
 # speaker: narrator
 サラは資料を読むと、自分の店の棚をふり返った。砂時計が、ちょうど落ちきるところだった。
 # speaker: enemy
-「……これ、わたしのことじゃない。でも、まだ答えは聞いてないわよ」
+……これ、わたしのことじゃない。でも、まだ答えは聞いてないわよ
 -> quiz(2) ->
 # background: smp_bg_mihon_market
 { quiz_correct:
     # speaker: enemy
-    「砂時計で計る。一度も焦がしたことがない。……時間を守ってる人、ここにいたわ」
+    砂時計で計る。一度も焦がしたことがない。……時間を守ってる人、ここにいたわ
 - else:
     # speaker: enemy
-    「わたしは砂時計で焼き時間を計ってるの。塔の時計なんて、最初から使ってないわ」
+    わたしは砂時計で焼き時間を計ってるの。塔の時計なんて、最初から使ってないわ
 }
 # speaker: heroine
-「塔の時計がなくても、時間の計り方はあるんですね」
+塔の時計がなくても、時間の計り方はあるんですね
 -> quiz(3) ->
 # background: smp_bg_mihon_market
 { quiz_correct:
     # speaker: enemy
-    「それぞれのやり方で守ってる。……わたしが怒ってたのは、時計じゃなくて冷めたパンね」
+    それぞれのやり方で守ってる。……わたしが怒ってたのは、時計じゃなくて冷めたパンね
 - else:
     # speaker: enemy
-    「街の人は、手の合図や砂時計で時間を守ってる。誰も守らないなんて、言いすぎだったわ」
+    街の人は、手の合図や砂時計で時間を守ってる。誰も守らないなんて、言いすぎだったわ
 }
 {
 - battle_score == 3:
     # speaker: enemy
-    「決めた。焼き上がりは『砂時計三回分』って札に書く。来られる人は、そのときに来ればいい」
+    決めた。焼き上がりは『砂時計三回分』って札に書く。来られる人は、そのときに来ればいい
     # speaker: heroine
     # emotion: happy
-    「わたし、三回目に来ます。焼きたて、食べたいので」
+    わたし、三回目に来ます。焼きたて、食べたいので
 - battle_score == 2:
     # speaker: enemy
-    「一つは外れたわね。でも、札は書いてみる。砂時計なら、誰が見ても分かるもの」
+    一つは外れたわね。でも、札は書いてみる。砂時計なら、誰が見ても分かるもの
 - else:
     # speaker: enemy
-    「勝ち負けより、パンが冷めないことの方が大事。……次は焼きたての時間に来て」
+    どっちが正しいかより、パンが冷めないことの方が大事。……次は焼きたての時間に来て
     # speaker: heroine
-    「はい。今度はちゃんと、間に合うように来ます」
+    はい。今度はちゃんと、間に合うように来ます
 }
 -> END
 
 === smp_mihon_special_b_market_claim ===
 # background: smp_bg_mihon_market
 # speaker: enemy
-「時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！」
+時計が止まってから、この街では誰も時間を守らなくなった。一人残らず、よ！
 ->->
 
 === smp_mihon_special_b_market_press ===
 # background: smp_bg_mihon_market
 # speaker: enemy
-「誰も、よ。だから焼きたてを出しても、いつも冷めてから売れるの」
+誰も、よ。だから焼きたてを出しても、いつも冷めてから売れるの
 # speaker: heroine
-「……一人残らず、ですか。朝市の中にも、時間を計っている人はいませんか」
+……一人残らず、ですか。朝市の中にも、時間を計っている人はいませんか
 ->->

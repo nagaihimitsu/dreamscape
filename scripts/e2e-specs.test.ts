@@ -53,9 +53,9 @@ describe("E2E specs", () => {
     expect(workflow).toMatch(/run: npm run test:e2e:explore\n/u);
     expect(workflow).toMatch(/run: npm run test:e2e:webkit\n/u);
     expect(workflow).toMatch(/run: npx playwright install --with-deps webkit\n/u);
-    // No other workflow waits for it, and only it installs WebKit.
+    // No other workflow waits for it, and only it installs WebKit (a comment line may name it: ci.yml says what runs by hand).
     for (const name of readdirSync(path.join(import.meta.dirname, "../.github/workflows")).filter((file) => file !== "e2e-explore.yml")) {
-      const other = readFileSync(path.join(import.meta.dirname, "../.github/workflows", name), "utf8");
+      const other = readFileSync(path.join(import.meta.dirname, "../.github/workflows", name), "utf8").replace(/^\s*#.*$/gmu, "");
       expect(other, name).not.toMatch(/e2e-explore|webkit|test:e2e:explore/u);
     }
   });

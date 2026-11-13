@@ -95,8 +95,9 @@ describe("authored Golden Triangle journey", () => {
       expect(state.activeEpilogue?.kind).toBe("arrival");
       const arrival = state;
       state = checkpoint(completeArrivalLogo(state, state.revision));
+      // A guard against a stuck arrival, not a length rule: the arrival's lines are the author's (Delhi's has 19).
       for (let steps = 0; state.activeEpilogue?.kind === "arrival"; steps++) {
-        expect(steps).toBeLessThan(15);
+        expect(steps).toBeLessThan(50);
         state = checkpoint(advanceCityEpilogue(state, state.revision));
       }
       // Agra's arrival goes on with its reel (GT-4: the Delhi stepwell date was played); then the arrival's moment closes.

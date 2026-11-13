@@ -79,7 +79,11 @@ for (const [kind, label] of [["contradiction", "B（矛盾追及）"], ["connect
   });
 }
 
-type ItemEncounter = { cityId: string; encounterId: string; itemId: string; itemName: string; correctOptionId?: string };
+type ItemEncounter = {
+  cityId: string; encounterId: string; itemId: string; itemName: string; correctOptionId?: string;
+  /** The choices of every encounter that use the item up (`<encounter ID>:<option ID>`). */
+  usingChoices: string[];
+};
 
 /** The first encounter Debug can open that gives an item, from the dev server's content. */
 function itemEncounter(page: Page): Promise<ItemEncounter | undefined> {
@@ -87,12 +91,15 @@ function itemEncounter(page: Page): Promise<ItemEncounter | undefined> {
     const { getCities } = await import(/* @vite-ignore */ modules.content);
     const { encounters } = await import(/* @vite-ignore */ modules.encounters);
     const { debugTargets } = await import(/* @vite-ignore */ modules.debugState);
+    type Option = { id: string; consumeItemId?: string };
     for (const city of getCities().filter((item: { productionStatus?: string }) => item.productionStatus !== "prototype"))
       for (const target of debugTargets(city.id).encounter.filter((item: { unavailable?: string }) => !item.unavailable)) {
         const encounter = encounters.encounters.find((item: { id: string }) => item.id === target.id);
         const itemId = encounter.quiz?.rewardItemId ?? encounter.completionItemId;
         const itemName = encounters.items.find((item: { id: string }) => item.id === itemId)?.nameJa;
-        if (itemId) return { cityId: city.id, encounterId: encounter.id, itemId, itemName, correctOptionId: encounter.quiz?.question.correctOptionId };
+        const usingChoices = encounters.encounters.flatMap((item: { id: string; options?: Option[] }) =>
+          (item.options ?? []).filter((option) => option.consumeItemId === itemId).map((option) => `${item.id}:${option.id}`));
+        if (itemId) return { cityId: city.id, encounterId: encounter.id, itemId, itemName, correctOptionId: encounter.quiz?.question.correctOptionId, usingChoices };
       }
     return undefined;
   }, devModules);
@@ -105,7 +112,14 @@ test("an encounter answered in English gives its item, and the scene ends back i
   // A won reward needs the saved ticket below its chance: the positive ticket (0) always wins.
   await ops.openDebugScene(page, settings({ cityId: encounter!.cityId, scene: "encounter", id: encounter!.encounterId, roll: "positive" }));
   await expect(page.getByTestId("encounter-screen")).toBeVisible();
-  const pick = (state: GameState) => state.activeEncounter?.phase === "quiz" ? encounter!.correctOptionId! : "A";
+  // An encounter that follows in the same observation may use the item up (since #117, Milan's 「券を一枚、手の中へ」 after
+  // 「回らない願掛け」): there the first choice that keeps it is pressed, so the item is still held back in the observation.
+  const pick = (state: GameState) => {
+    const active = state.activeEncounter;
+    if (active?.phase === "quiz") return encounter!.correctOptionId!;
+    const keeping = active?.frame.choices.findIndex((choice) => !encounter!.usingChoices.includes(`${active.encounterId}:${choice.optionId}`)) ?? 0;
+    return String.fromCharCode(65 + Math.max(keeping, 0));
+  };
   const done = await playUntil(page, (state) => state.completedEncounterIds.includes(encounter!.encounterId), { source: debugGame, pick });
   expect(done.inventory[encounter!.itemId]).toBe("held");
   // Debug meets the encounter in its landmark's observation, as play does (encounters start nowhere else);

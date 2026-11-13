@@ -304,24 +304,10 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 }
 .travel-map-marker-wrap:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 2px; border-radius: 50%; box-shadow: 0 0 0 6px var(--ds-slate-900); }
 
-/* The selected row (§3.6): a slate border and the darker parchment, the yellow-on-slate
-   badge before its name, and the hint strip inside its button. */
-/* Drawn inside the row (no border or margin), so selecting a row never moves what is under the finger. */
+/* The selected row (§3.6): a slate edge all round the row and the darker parchment, then the hint strip (or
+   its choices) inside it. No mark before its name (2026-11-13 user decision, like the cards: no ◆ badge).
+   Drawn inside the row (no border or margin), so selecting a row never moves what is under the finger. */
 .travel-destination.is-selected { border-radius: 12px; background: var(--ds-parchment-2); box-shadow: inset 0 0 0 2px var(--ds-slate-800); }
-.travel-selected-badge {
-  display: inline-grid;
-  flex: none;
-  place-items: center;
-  width: 20px;
-  height: 20px;
-  margin-right: 2px;
-  border-radius: 50%;
-  background: var(--ds-slate-900);
-  color: var(--ds-marker-selected);
-  box-shadow: 0 0 0 1.5px #fff;
-  font-size: 11px;
-  line-height: 1;
-}
 .travel-destination-title { justify-content: flex-start; }
 .travel-destination-title > .icon { margin-left: auto; }
 .travel-hint-strip {

@@ -32,29 +32,34 @@ INCLUDE modules.ink
 # background: smp_bg_mihon_clock_tower
 # speaker: narrator
 時計塔の下で、小さな女の子が布の上に手描きのしおりを並べている。どれも、針が三時を指していた。
-# speaker: narrator
-女の子「リリっていうの。トーマの妹。一枚ずつ、おまけでどうぞ」
+# speaker: smp_mihon_lili
+# cutin: name
+リリっていうの。トーマの妹。一枚ずつ、おまけでどうぞ
 * [Could I have one, please? # option: ask # translation: 一枚もらえますか。]
     # speaker: narrator
     # item_show: smp_mihon_three_bookmark
     リリはいちばん針のまっすぐな一枚を選んで、こちらの手のひらにのせた。
     # speaker: heroine
     # emotion: smile
-    「いちばんまっすぐなのを選んでくれたね。わたしが描いたら、絶対曲がる」
+    いちばんまっすぐなのを選んでくれたね。わたしが描いたら、絶対曲がる
     -> END
 * [Did you draw these yourself? # option: drawn # translation: これ、自分で描いたの？]
     # set: smp_mihon_lili_told_why
+    # speaker: smp_mihon_lili
+    うん。兄ちゃんが直す前に、止まった時計を残しておきたくて
     # speaker: narrator
-    リリ「うん。兄ちゃんが直す前に、止まった時計を残しておきたくて」。リリは一枚を差し出した。
+    リリは一枚を差し出した。
     # speaker: heroine
-    「残しておきたい、か。……その気持ち、わかる気がする」
+    残しておきたい、か。……その気持ち、わかる気がする
     -> END
 * [Maybe next time. # option: later # translation: また今度にします。]
     # later
     # speaker: narrator
-    リリは怒らずに、しおりを一枚だけ取り分けた。リリ「来られるときに、ね」
+    リリは怒らずに、しおりを一枚だけ取り分けた。
+    # speaker: smp_mihon_lili
+    来られるときに、ね
     # speaker: heroine
-    「この街の子だね。言い方が、もう三時」
+    この街の子だね。言い方が、もう三時
     -> END
 
 // ───── 0：案内（本筋。tourism/catalog.json の guideStoryId がこの住所を指す）。# effect は置かない。
@@ -69,12 +74,12 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised,question
 # em_shake: 三時？
-「あれ、三時？　宿を出たの、朝だったよね」
+あれ、三時？　宿を出たの、朝だったよね
 # speaker: narrator
 {heroine_name}は自分の時計と文字盤を見比べた。塔の針は、少しも動かない。
 # speaker: heroine
 # em: 止まってる
-「止まってるんだ。でも塔の下はきれいに掃いてある。放っておかれてる感じじゃないね」
+止まってるんだ。でも塔の下はきれいに掃いてある。放っておかれてる感じじゃないね
 # speaker: narrator
 # local_word: smp_mihon_word_trisol
 扉の上の石に「Trisól（トリソル）」と彫ってある。見本の街の古い言葉で「三時に会おう」という意味だと、案内板にあった。
@@ -82,14 +87,14 @@ INCLUDE modules.ink
 塔の扉の前で、作業着の青年が油差しを手に、文字盤を見上げている。
 # speaker: heroine
 # emotion: smile
-「直さないのか、直せないのか。……わたし、ちょっと聞いてみたい」
+直さないのか、直せないのか。……わたし、ちょっと聞いてみたい
 // 案内にも選択肢を書ける（段階3a）。「閉じる」（とばす）は、次の選択肢の前で止まる。読み直しでは効果を当てない。
 * [「まず、塔のまわりを見てみよう」 # option: look_around]
     # speaker: heroine
-    「うん。文字盤の針、近くで見るともっと不思議かも」
+    うん。文字盤の針、近くで見るともっと不思議かも
 * [「あの人に、声をかけてみようか」 # option: ask_keeper]
     # speaker: heroine
-    「いきなりは緊張するね。……でも、聞いてみたい」
+    いきなりは緊張するね。……でも、聞いてみたい
 -
 -> END
 
@@ -102,11 +107,13 @@ INCLUDE modules.ink
 # on_done: ap +1
 # sources: none
 # speaker: heroine
-「見て、あの歯車。止まってるのに、油でぴかぴかだ」
+見て、あの歯車。止まってるのに、油でぴかぴかだ
 # speaker: narrator
-油差しを持った青年が、こちらに気づいて会釈した。青年「話なら、上より広場のほうが落ち着きますよ。裏の階段が近道です」
+油差しを持った青年が、こちらに気づいて会釈した。
+# speaker: smp_mihon_clock_keeper
+話なら、上より広場のほうが落ち着きますよ。裏の階段が近道です
 # speaker: heroine
-「近道、教えてもらっちゃった。……ちょっと得した気分」
+近道、教えてもらっちゃった。……ちょっと得した気分
 -> END
 
 // ───── 0：バトル（本筋。battles/catalog.json の storyId がこの住所を指す）。1本の流れ（段階5）：頭の札の後に台詞を書き、
@@ -121,63 +128,63 @@ INCLUDE modules.ink
 # scene: battle
 # background: smp_bg_mihon_clock_tower
 # speaker: smp_mihon_clock_keeper
-「旅の人？　三時ですよ。……そう言うと、みんな自分の時計を見て笑うんです」
+旅の人？　三時ですよ。……そう言うと、みんな自分の時計を見て笑うんです
 # speaker: narrator
 青年はトーマと名乗った。塔の時計番で、毎朝、動かない歯車に油を差しているという。
 # speaker: enemy
 # cutin: name
-「今年こそ直します。止まった時計の番人なんて、仕事をしていないのと同じですから」
+今年こそ直します。止まった時計の番人なんて、仕事をしていないのと同じですから
 # speaker: heroine
 # pause: 600
-「直す前に、止まった理由を聞いてもいいですか」
+直す前に、止まった理由を聞いてもいいですか
 # speaker: enemy
-「古いから止まった。それだけ……のはずです。じゃあ、街の言い伝えで確かめましょうか」
+古いから止まった。それだけ……のはずです。じゃあ、街の言い伝えで確かめましょうか
 -> quiz(1) ->
 # background: smp_bg_mihon_clock_tower
 { quiz_correct:
     # speaker: enemy
-    「直さずに、三時のまま残した。……修理代がなかったんだと思ってました」
+    直さずに、三時のまま残した。……修理代がなかったんだと思ってました
 - else:
     # speaker: enemy
-    「言い伝えでは、街の人は新しい塔も建てず、三時のまま残したそうです」
+    言い伝えでは、街の人は新しい塔も建てず、三時のまま残したそうです
 }
 # speaker: heroine
-「お金の話なら、言い伝えにまではならない気がする。三時に何か意味があったのかな」
+お金の話なら、言い伝えにまではならない気がする。三時に何か意味があったのかな
 -> quiz(2) ->
 # background: smp_bg_mihon_clock_tower
 { quiz_correct:
     # speaker: enemy
-    「『来られるときに来て』……祖母の口癖でした。時刻のことじゃなかったのか」
+    『来られるときに来て』……祖母の口癖でした。時刻のことじゃなかったのか
 - else:
     # speaker: enemy
-    「この街の『三時に会おう』は、『来られるときに来て』なんです。ぼくも今、つながりました」
+    この街の『三時に会おう』は、『来られるときに来て』なんです。ぼくも今、つながりました
 }
 # speaker: heroine
 # reaction: heroine,smile,sparkle
-「いつ来ても三時なら、待ち合わせに遅刻がないね」
+いつ来ても三時なら、待ち合わせに遅刻がないね
 -> quiz(3) ->
 # background: smp_bg_mihon_clock_tower
 { quiz_correct:
     # speaker: enemy
-    「戻ってきた人のための鐘。……毎朝の油差しは、そのためだったんですね」
+    戻ってきた人のための鐘。……毎朝の油差しは、そのためだったんですね
 - else:
     # speaker: enemy
-    「鐘は時刻じゃなく、街に戻ってきた人がいるときに手で鳴らすんです。毎朝の油差しは、そのためでした」
+    鐘は時刻じゃなく、街に戻ってきた人がいるときに手で鳴らすんです。毎朝の油差しは、そのためでした
 }
 {
 - battle_score == 3:
     # speaker: enemy
-    「全部、街の人の約束の話だった。直すかどうか、ぼく一人で決めることじゃないですね」
+    全部、街の人の約束の話だった。直すかどうか、ぼく一人で決めることじゃないですね
     # speaker: heroine
-    「うん。でも、毎朝油を差してたのは、ちゃんと仕事だったと思う」
+    うん。でも、毎朝油を差してたのは、ちゃんと仕事だったと思う
 - battle_score == 2:
     # speaker: enemy
-    「一つ外れても、言い伝えの形は見えました。町長にも話してみます」
+    一つ外れても、言い伝えの形は見えました。町長にも話してみます
 - else:
     # speaker: enemy
-    「ぼくも知らないことばかりでした。祖母の話を、もう一度思い出してみます」
+    ぼくも知らないことばかりでした。祖母の話を、もう一度思い出してみます
     # speaker: heroine
-    「わたしも。来られるときに、また聞かせてください」
+    わたしも。来られるときに、また聞かせてください
 }
 -> END
 
@@ -196,77 +203,77 @@ INCLUDE modules.ink
 夕方の広場で、町長のハンナが図面を広げていた。新しい歯車の絵に、赤い丸がついている。
 # speaker: enemy
 # cutin: name
-「来月、時計を動かします。旅の人に『時間にいいかげんな街』と言われるのは、もう嫌なの」
+来月、時計を動かします。旅の人に『時間にいいかげんな街』と言われるのは、もう嫌なの
 # speaker: heroine
-「動かしたら、三時の約束はどうなるんですか」
+動かしたら、三時の約束はどうなるんですか
 # speaker: enemy
-「約束？　時計番から聞いたのね。いいわ、この街のことをどれだけ知ったか、聞かせて」
+約束？　時計番から聞いたのね。いいわ、この街のことをどれだけ知ったか、聞かせて
 -> quiz(1) ->
 # background: smp_bg_mihon_clock_tower
 { quiz_correct:
     # speaker: enemy
-    「止まった時刻が約束になった。祖父の代の話ね。でも、今の旅人には伝わらないわ」
+    止まった時刻が約束になった。祖父の代の話ね。でも、今の旅人には伝わらないわ
 - else:
     # speaker: enemy
-    「昔の人は、止まった三時を約束の言葉にしたの。ただ、今の旅人には伝わらない」
+    昔の人は、止まった三時を約束の言葉にしたの。ただ、今の旅人には伝わらない
 }
 -> quiz(2) ->
 # background: smp_bg_mihon_clock_tower
 { quiz_correct:
     # speaker: enemy
-    「そう、壊れていると思われる。わたしが困っているのは、そこなのよ」
+    そう、壊れていると思われる。わたしが困っているのは、そこなのよ
 - else:
     # speaker: enemy
-    「旅の人はまず、壊れていると思うの。わたしが困っているのは、そこ」
+    旅の人はまず、壊れていると思うの。わたしが困っているのは、そこ
 }
 # speaker: heroine
-「壊れてると思われるのが嫌なら、止まってる理由を伝える方法もありそうですね」
+壊れてると思われるのが嫌なら、止まってる理由を伝える方法もありそうですね
 -> quiz(3) ->
 # background: smp_bg_mihon_clock_tower
 { quiz_correct:
     # speaker: enemy
-    「待つ人が文字盤を見られるように。……ベンチの向きまで、考えたことがなかった」
+    待つ人が文字盤を見られるように。……ベンチの向きまで、考えたことがなかった
 - else:
     # speaker: enemy
-    「ベンチは、待っている人が文字盤を見られるように塔を向いているの。今朝、わたしも座ってみたわ」
+    ベンチは、待っている人が文字盤を見られるように塔を向いているの。今朝、わたしも座ってみたわ
 }
 -> quiz(4) ->
 # background: smp_bg_mihon_clock_tower
 { quiz_correct:
     # speaker: enemy
-    「戻ってきた人のための鐘。時計を動かしたら、あの子の仕事はどうなるのかしら」
+    戻ってきた人のための鐘。時計を動かしたら、あの子の仕事はどうなるのかしら
 - else:
     # speaker: enemy
-    「鐘は、戻ってきた人がいるときに手で鳴らすの。トーマが毎朝油を差しているのは、そのためね」
+    鐘は、戻ってきた人がいるときに手で鳴らすの。トーマが毎朝油を差しているのは、そのためね
 }
 # speaker: heroine
-「動かすか残すか、街の人にも聞いてみませんか。トーマさんも、話したそうでした」
+動かすか残すか、街の人にも聞いてみませんか。トーマさんも、話したそうでした
 -> quiz(5) ->
 # background: smp_bg_mihon_clock_tower
 { quiz_correct:
     # speaker: enemy
-    「『三時に会おう』。……子どもの頃、わたしもそう言って友達を呼んでいたわ」
+    『三時に会おう』。……子どもの頃、わたしもそう言って友達を呼んでいたわ
 - else:
     # speaker: enemy
-    「この街では『三時に会おう』と誘うの。子どもの頃、わたしもそう言っていたわ」
+    この街では『三時に会おう』と誘うの。子どもの頃、わたしもそう言っていたわ
 }
 {
 - battle_score == 5:
     # speaker: enemy
-    「図面はしまうわ。代わりに塔の下へ、言い伝えの札を立てる。旅の人が読めるように」
+    図面はしまうわ。代わりに塔の下へ、言い伝えの札を立てる。旅の人が読めるように
     # speaker: heroine
-    「札の最後に、『来られるときに来て』って書いてほしいな」
+    札の最後に、『来られるときに来て』って書いてほしいな
 - battle_score >= 3:
     # speaker: enemy
-    「すぐには決めない。まず札を立てて、街の人の声を聞いてからにする」
+    すぐには決めない。まず札を立てて、街の人の声を聞いてからにする
 - else:
     # speaker: enemy
-    「わたしにも、知らないことが多かったわ。決めるのは、もう少し話を聞いてから」
+    わたしにも、知らないことが多かったわ。決めるのは、もう少し話を聞いてから
 }
 # speaker: narrator
 ハンナが図面を丸めると、塔の上でトーマが小さく手を振った。
 # speaker: smp_mihon_toma
-「鐘の音、上まで届きましたよ。また鳴らしに来てください」
+鐘の音、上まで届きましたよ。また鳴らしに来てください
 -> END
 
 // ───── +1：本筋の後。しおりを持っているときだけ（道中交流）。対決の結果で「自由時間へ」を押すと始まる。
@@ -285,18 +292,18 @@ INCLUDE modules.ink
     # give: smp_mihon_three_bookmark heroine
     # speaker: heroine
     # reaction: heroine,surprised,exclamation
-    「え、いいの？　……ありがとう。旅の日記に挟んでおくね」
+    え、いいの？　……ありがとう。旅の日記に挟んでおくね
     -> END
 * [Shall we keep it in your guidebook? # option: guidebook # translation: あなたのガイドブックに挟もうか。]
     # give: smp_mihon_three_bookmark heroine
     # speaker: heroine
     # emotion: happy
-    「いいね。三時のページに挟もう。……あ、この本、三時のページなんてないや」
+    いいね。三時のページに挟もう。……あ、この本、三時のページなんてないや
     -> END
 * [I'll keep it a little longer. # option: later # translation: もう少し持っておきます。]
     # later
     # speaker: heroine
-    「うん、持ってて。リリちゃんが選んでくれた一枚だもんね」
+    うん、持ってて。リリちゃんが選んでくれた一枚だもんね
     -> END
 
 // ───── +2：この場所の後日談（会話）。鐘の銘は英語のまま見せ、訳はヒロインの台詞で言う。
@@ -315,7 +322,7 @@ INCLUDE modules.ink
 帰りぎわ、塔の鐘がひとつ鳴った。トーマが綱から手を離し、こちらに笑ってみせる。
 { cond("condition smp_mihon_lili_heard"):
     # speaker: heroine
-    「リリちゃん、止まった時計を残しておきたいって言ってた。この鐘も、きっと同じだね」
+    リリちゃん、止まった時計を残しておきたいって言ってた。この鐘も、きっと同じだね
 }
 # speaker: narrator
 鐘の縁に、外国の文字が彫ってある。昔、この街に残った旅の人が刻んだものだという。
@@ -323,15 +330,15 @@ INCLUDE modules.ink
 # size: large
 Come back at three. Any three will do.
 # speaker: heroine
-「『三時に戻っておいで。どの三時でもいいから』……だって。この街の『三時に会おう』って、ここから来たのかな」
+『三時に戻っておいで。どの三時でもいいから』……だって。この街の『三時に会おう』って、ここから来たのかな
 * [鐘楼に上がらせてもらう # option: climb]
     # ap: -1
     # rel: spark +1
     # speaker: heroine
-    「うわ、街じゅうの時計が見える。……どれも三時だね。並んで見ると、ちょっと可笑しい」
+    うわ、街じゅうの時計が見える。……どれも三時だね。並んで見ると、ちょっと可笑しい
 * [下から見上げておく # option: stay_below]
     # speaker: heroine
-    「まだ帰ってないのに、おかえりって言われたみたい」
+    まだ帰ってないのに、おかえりって言われたみたい
 -
 -> END
 
@@ -347,24 +354,26 @@ Come back at three. Any three will do.
 # background: smp_bg_mihon_clock_tower
 # speaker: narrator
 広場のベンチの一つに「ぬりたて」の札が下がっている。刷毛を持った男の人が、こちらに気づいて手を止めた。
-# speaker: narrator
-男の人「すみませんね。塔のほうを向いたベンチは、毎年この時期に塗り直すんです」
+# speaker: smp_mihon_bench_painter
+すみませんね。塔のほうを向いたベンチは、毎年この時期に塗り直すんです
 * [Which bench is dry? # option: dry # translation: どのベンチなら乾いていますか。]
-    # speaker: narrator
-    男の人「端の一つだけ。……三時を待つ人の席は、いつも空けておくんですよ」
+    # speaker: smp_mihon_bench_painter
+    端の一つだけ。……三時を待つ人の席は、いつも空けておくんですよ
     -> END
 * [Why do they all face the tower? # option: why # translation: どうしてみんな塔を向いているんですか。]
-    # speaker: narrator
-    男の人「それは、座ってみれば分かります」
+    # speaker: smp_mihon_bench_painter
+    それは、座ってみれば分かります
     # speaker: heroine
-    「座ってみれば、か。じゃあ、確かめてみよう」
+    座ってみれば、か。じゃあ、確かめてみよう
     -> END
 * [Can I help you paint? # option: help # translation: 塗るのを手伝いましょうか。]
     # money: +20
+    # speaker: smp_mihon_bench_painter
+    助かります。端の一本だけ、お願いできますか
     # speaker: narrator
-    男の人「助かります。端の一本だけ、お願いできますか」。塗り終えると、男の人は小さな硬貨を二枚くれた。
+    塗り終えると、男の人は小さな硬貨を二枚くれた。
     # speaker: heroine
-    「手間賃だって。……三時のお茶代くらいには、なるかな」
+    手間賃だって。……三時のお茶代くらいには、なるかな
     -> END
 
 // ───── デート（本筋。romance/date_catalog.json の storyId がこの住所を指す）。地図に出る条件は頭の # when:。
@@ -385,22 +394,22 @@ Come back at three. Any three will do.
 時計塔の広場では、ベンチがどれも塔の方を向いている。{heroine_name}は一つを選んで、端に座った。
 { relationship_tone == "reserved" || relationship_tone == "strained":
     # speaker: heroine
-    「ここのベンチ、待つ人が文字盤を見られる向きなんだって。……隣、どうぞ」
+    ここのベンチ、待つ人が文字盤を見られる向きなんだって。……隣、どうぞ
 - else:
     # speaker: heroine
     # emotion: teasing
-    「ここ、空いてます。三時までの席だけど、いい？」
+    ここ、空いてます。三時までの席だけど、いい？
 }
 { cond("item smp_mihon_three_bookmark held"): -> smp_mihon_date_bookmark_aside -> }
 * [「三時になるまで、ここで待とう」 # option: first_wait]
     # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
-        「あの時計、ずっと三時だよ。……待つなら、何か話して」
+        あの時計、ずっと三時だよ。……待つなら、何か話して
     - else:
         # speaker: heroine
         # emotion: smile
-        「うん。急がなくていい待ち合わせって、ちょっといいね」
+        うん。急がなくていい待ち合わせって、ちょっといいね
     }
     -> tea
 * [「もう三時は過ぎてるって、言ってもいい？」 # option: first_tease]
@@ -408,22 +417,22 @@ Come back at three. Any three will do.
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
-        「それ、トーマさんの前で言ったら落ち込んじゃうよ」
+        それ、トーマさんの前で言ったら落ち込んじゃうよ
     - else:
         # speaker: heroine
         # reaction: heroine,teasing,music
-        「だめ。この広場では、ずっと三時。言い伝え、聞いたでしょ？」
+        だめ。この広場では、ずっと三時。言い伝え、聞いたでしょ？
     }
     -> tea
 * [「時計より、隣で話す方が気になる」 # option: first_honest]
     # profile: honest
     { romance_result == "negative":
         # speaker: heroine
-        「そう？　わたしは、あの止まった針もけっこう気に入ってるんだけどな」
+        そう？　わたしは、あの止まった針もけっこう気に入ってるんだけどな
     - else:
         # speaker: heroine
         # emotion: shy
-        「……そういうこと、さらっと言うんだ。じゃあ、ちゃんと隣にいてね」
+        ……そういうこと、さらっと言うんだ。じゃあ、ちゃんと隣にいてね
     }
     -> tea
 = tea
@@ -431,38 +440,38 @@ Come back at three. Any three will do.
 広場の店からお茶が運ばれてきた。この街では、いつ頼んでも「三時のお茶」と呼ぶらしい。
 # speaker: heroine
 # stand: close
-「ねえ、わたしたちも『三時に会おう』って使ってみない？　来られるときに来て、って意味で」
+ねえ、わたしたちも『三時に会おう』って使ってみない？　来られるときに来て、って意味で
 * [「じゃあ、次の三時もここで」 # option: second_next]
     # profile: bold
     { romance_result == "negative":
         # speaker: heroine
-        「もう次の話？　……今日の三時が、まだ終わってないよ」
+        もう次の話？　……今日の三時が、まだ終わってないよ
     - else:
         # speaker: heroine
         # reaction: heroine,shy,blush
-        「……うん。約束ね。来られるときじゃなくて、ちゃんと来て」
+        ……うん。約束ね。来られるときじゃなくて、ちゃんと来て
     }
     -> ending
 * [「時刻を決めない約束は、少し不安かも」 # option: second_uneasy]
     # profile: honest
     { romance_result == "negative":
         # speaker: heroine
-        「そっか。……わたしだけ、楽しくなってたかな」
+        そっか。……わたしだけ、楽しくなってたかな
     - else:
         # speaker: heroine
         # emotion: serious
-        「言ってくれてよかった。じゃあ、来られないときは、来られないって言おう。それも約束」
+        言ってくれてよかった。じゃあ、来られないときは、来られないって言おう。それも約束
     }
     -> ending
 * [「来られるとき、と言いながら毎日呼びそう」 # option: second_every_day]
     # profile: playful
     { romance_result == "negative":
         # speaker: heroine
-        「毎日は……わたしにも予定があるよ？」
+        毎日は……わたしにも予定があるよ？
     - else:
         # speaker: heroine
         # reaction: heroine,teasing,music
-        「ふふ、毎日三時。それ、ちょっと楽しそう」
+        ふふ、毎日三時。それ、ちょっと楽しそう
     }
     -> ending
 = ending
@@ -475,11 +484,11 @@ Come back at three. Any three will do.
 { relationship_tone_after == "warm" || relationship_tone_after == "romantic_tension":
     # speaker: heroine
     # emotion: happy
-    「次は、わたしから誘うね。三時に、って」
+    次は、わたしから誘うね。三時に、って
 - else:
     # speaker: heroine
     # emotion: smile
-    「止まった時計なのに、今日は時間が早かったな」
+    止まった時計なのに、今日は時間が早かったな
 }
 -> END
 
@@ -487,18 +496,18 @@ Come back at three. Any three will do.
 === smp_mihon_date_bookmark_aside ===
 # speaker: heroine
 # reaction: heroine,surprised,exclamation
-「あれ、そのしおり……リリちゃんの？　まだ持ってたんだ」
+あれ、そのしおり……リリちゃんの？　まだ持ってたんだ
 * [「よかったら、どうぞ」 # option: give_bookmark]
     # give: smp_mihon_three_bookmark heroine
     # rel: affection +1
     # set: smp_mihon_bookmark_to_heroine
     # speaker: heroine
-    「ありがとう。……旅の日記に挟んでおくね」
+    ありがとう。……旅の日記に挟んでおくね
 * [「これは、もう少し持っていたい」 # option: keep_bookmark]
     # rel: trust +1
     # set: smp_mihon_bookmark_kept
     # speaker: heroine
-    「うん、それがいいよ。リリちゃんが、あなたに選んでくれたんだもん」
+    うん、それがいいよ。リリちゃんが、あなたに選んでくれたんだもん
 - ->->
 
 // ───── エピローグの時点の -2（段階4）：デートで「もう少し持っていたい」と答え、まだしおりを持っているときだけ。
@@ -519,13 +528,13 @@ Come back at three. Any three will do.
     # rel: spark +1
     # speaker: heroine
     # reaction: heroine,surprised,exclamation
-    「……え、今？　あのとき、持っていたいって言ってたのに」
+    ……え、今？　あのとき、持っていたいって言ってたのに
     # speaker: heroine
     # emotion: shy
-    「じゃあ、この街の三時は、わたしが預かっておくね。……ずるいなあ、こういうの」
+    じゃあ、この街の三時は、わたしが預かっておくね。……ずるいなあ、こういうの
 * [そのまま鞄にしまっておく # option: keep_before_leaving]
     # speaker: heroine
-    「なに、その顔。……いいよ。それ、あなたの旅の荷物なんだね」
+    なに、その顔。……いいよ。それ、あなたの旅の荷物なんだね
 -
 -> END
 
@@ -544,7 +553,7 @@ Come back at three. Any three will do.
 // 人物の名札：progression/story.json の titleJa（役どころ）と nameJa。話し手の名前がこの行で初めて札に出る。
 # speaker: smp_mihon_lili
 # cutin: name
-「これ、針を描いてないの。次に来るときの時間を、自分で描いてね」
+これ、針を描いてないの。次に来るときの時間を、自分で描いてね
 // 行の札 # letter: note は、その行を紙のメモに書いて見せる（話し手の札は出ない）。同じ種類の行を続けると1枚に積み重なる。
 # speaker: narrator
 しおりの裏に、鉛筆の字が三行ならんでいた。
@@ -556,9 +565,11 @@ Come back at three. Any three will do.
 リリより
 # speaker: heroine
 # emotion: smile
-「何時にしようかな。……三時じゃなかったら、怒られちゃう？」
+何時にしようかな。……三時じゃなかったら、怒られちゃう？
 # speaker: narrator
-リリは少し考えてから、首を横に振った。リリ「来られるときの時間で、いいよ」
+リリは少し考えてから、首を横に振った。
+# speaker: smp_mihon_lili
+来られるときの時間で、いいよ
 -> END
 
 // ───── 移動の時点の -1（段階4）：宿から初めて貸し自転車で出るとき、宿で（動く前に流れる。乗った回数は、動いたときに増える）。
@@ -573,14 +584,14 @@ Come back at three. Any three will do.
 # when: not rides rental_bicycle >= 1
 # sources: none
 # speaker: heroine
-「サドル、高くない？　この街、坂が少ないから、低めでも大丈夫そう」
+サドル、高くない？　この街、坂が少ないから、低めでも大丈夫そう
 * [「直してもらおうか」 # option: fix_saddle]
     # money: -50
     # speaker: narrator
     貸し出しの人が、手早くサドルを下げてくれた。
 * [「このままで行こう」 # option: as_is]
     # speaker: heroine
-    「……ちょっと高いけど、景色はよく見えるね」
+    ……ちょっと高いけど、景色はよく見えるね
 -
 -> END
 
@@ -598,7 +609,7 @@ Come back at three. Any three will do.
 # quiet: scene
 # ambience: amb_night_insects
 # speaker: heroine
-「窓を開けると、まだ鐘の音が残ってる気がする。……今日、来てよかった」
+窓を開けると、まだ鐘の音が残ってる気がする。……今日、来てよかった
 -> END
 
 // ───── 宿の時点の +1（段階4）：起きた後。予約したツアーが始まる前。
@@ -620,5 +631,5 @@ Come back at three. Any three will do.
 # speaker: narrator
 すぐに、廊下で扉の開く音がした。
 # speaker: heroine
-「おはよう。窓から時計塔が見えるよ。……今日も三時。行ってみない？」
+おはよう。窓から時計塔が見えるよ。……今日も三時。行ってみない？
 -> END

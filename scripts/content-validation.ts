@@ -54,7 +54,7 @@ import {
 } from "../src/content/schemas";
 import type { TagContext } from "../src/content/tags";
 import { albumFolderPath, albumImagesOf, checkAlbumTags } from "./album-images";
-import { checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
+import { checkVoiceCredits, checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
 import { checkSoundTags, soundRegistry, soundUseProblem, soundVolumesOf, soundWarnings, transportModeSounds } from "./sound-files";
 import { checkBgmTags, musicDataOf, musicRegistry, musicWarnings } from "./music-files";
 import { ambienceDataOf, ambienceRegistry, ambienceWarnings, checkAmbienceTags } from "./ambience-files";
@@ -574,6 +574,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const albumImages = albumImagesOf(sources);
   // The voices of lines (2026-11-12): the files of each journey's public/assets/voice/, the ID their file name.
   const voiceFiles = voiceFilesOf(sources);
+  // A manifest's voiceCredits (2026-11-13) credits voices its journey has.
+  checkVoiceCredits(sources.manifests.map((manifest) => ({ ...manifest, file: displayPath(root, manifest.file) })), voiceFiles);
   // The sound effects (2026-11-12): each layer's presentation/sounds.json against its public/assets/se/ (sound-files.ts).
   const sounds = soundRegistry(sources);
   // A journey's transport mode may name its ride's sound (`se`): a shared sound or one of that journey's own.

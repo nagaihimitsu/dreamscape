@@ -42,19 +42,23 @@ it("lists as own artwork only the images the fixture serves, and lets a test reg
   const kept = [...repository.get("core")!.keys()].filter((assetPath) => !assetPath.startsWith("assets/characters/"));
   expect(kept.length).toBeLessThan(repository.get("core")!.size);
   expect([...listed.get("core")!.keys()]).toEqual(kept);
-  expect([...listed.get("milano")!.keys()]).toEqual([...repository.get("milano")!.keys()]);
+  // A journey's own images (India's characters and backdrops) are linked, so its whole list stays.
+  for (const layer of ["milano", "golden_triangle"])
+    expect([...listed.get(layer)!.keys()], layer).toEqual([...repository.get(layer)!.keys()]);
   const tourismAssets = (tourismData.assets as { path: string }[]);
   expect(() => checkImageRights(sources, tourismAssets)).not.toThrow();
-  // An added image is refused until the test registers it, in its layer's list (created when the layer has none).
-  const title = path.join(fixture, "content/journeys/golden_triangle/public/assets/title/golden_triangle.webp");
+  // An added image is refused until the test registers it, in its layer's list (created when the layer has none:
+  // Uzbekistan, whose served images are all tourism photos).
+  expect(listed.has("uzbekistan")).toBe(false);
+  const title = path.join(fixture, "content/journeys/uzbekistan/public/assets/title/uzbekistan.webp");
   await mkdir(path.dirname(title), { recursive: true });
   await writeFile(title, "image");
   sources = loadContentSources(fixture);
-  expect(() => checkImageRights(sources, tourismAssets)).toThrow("出典のない画像：content/journeys/golden_triangle/public/assets/title/golden_triangle.webp。");
-  await registerOwnArtwork(fixture, "content/journeys/golden_triangle", ["assets/title/golden_triangle.webp"]);
+  expect(() => checkImageRights(sources, tourismAssets)).toThrow("出典のない画像：content/journeys/uzbekistan/public/assets/title/uzbekistan.webp。");
+  await registerOwnArtwork(fixture, "content/journeys/uzbekistan", ["assets/title/uzbekistan.webp"]);
   sources = loadContentSources(fixture);
   expect(() => checkImageRights(sources, tourismAssets)).not.toThrow();
-  expect([...ownArtworkByLayer(sources).byLayer.get("golden_triangle")!.keys()]).toEqual(["assets/title/golden_triangle.webp"]);
+  expect([...ownArtworkByLayer(sources).byLayer.get("uzbekistan")!.keys()]).toEqual(["assets/title/uzbekistan.webp"]);
 });
 
 it("links the journeys' images into real folders, so a test can add or replace files without touching the repository", async () => {
