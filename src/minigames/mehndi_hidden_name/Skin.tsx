@@ -271,6 +271,5 @@ export const mehndiSkin: SearchSkin<MehndiParams, MehndiOutcome> = {
   autoJa: "おまかせで探しています",
   // The writing lit and ringed, the wrong place ringed, or the lamp going out, before the outcome shows.
   endDelayMs: (ending, still) => (still ? 700 : ending.kind === "found" ? 1500 : 1100),
-  statusJa: (_, leftMs) => (leftMs === null ? "" : `のこり${Math.ceil(leftMs / 1000)}秒`),
   Field: MehndiField,
 };
