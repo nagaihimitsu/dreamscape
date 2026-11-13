@@ -280,7 +280,8 @@ export function walkScene(walked: SceneWalkInput): number {
         const knot = choices[0].sourcePath?.split(".")[0];
         if (input.scene) input.onMiniGame?.({ sceneId: input.scene.id, kind: input.scene.kind, storyId: input.scene.storyId, ...(knot ? { knot } : {}),
           game: game.tag.id, auto: game.tag.auto, ...(game.tag.prefix ? { prefix: game.tag.prefix } : {}), ...(game.tag.bg ? { bg: game.tag.bg } : {}),
-          ...(game.tag.art ? { art: { ...game.tag.art } } : {}), ...(game.tag.params ? { params: { ...game.tag.params } } : {}), line: game.line });
+          ...(game.tag.art ? { art: { ...game.tag.art } } : {}), ...(game.tag.params ? { params: { ...game.tag.params } } : {}),
+          ...(game.tag.retry ? { retry: true as const } : {}), line: game.line });
       }
       if (calls.some(Boolean) && choices.length !== 1) throw new Error(`A battle's call is offered with other choices in ${input.label}: write -> quiz(n) -> and -> reasoning -> on their own`);
       if (!choices.length) {

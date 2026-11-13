@@ -133,6 +133,12 @@ describe("the music lowered", () => {
     expect(music(game({ activeDate: { frame: frame({ quiet: "scene" }) } }), { miniGameQuiet: true }).duck).toBe("minigame");
     expect(music(game({ activeDate: { frame: frame() } }), { miniGameQuiet: true, riding: true }).duck).toBe("travel");
   });
+
+  it("plays a mini-game's own track at full level while it plays, over the scene's (docs/13 2.11)", () => {
+    expect(music(game({ activeDate: { frame: frame({ quiet: "scene" }) } }), { miniGameTrack: "mg_bright", miniGameQuiet: true }))
+      .toEqual({ track: "mg_bright", duck: "none" });
+    expect(music(game({ activeDate: { frame: frame() } }), { miniGameTrack: "mg_bright", nightVisual: true }).track).not.toBe("mg_bright");
+  });
 });
 
 describe("a journey's play over the shared one", () => {

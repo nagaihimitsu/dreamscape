@@ -28,6 +28,17 @@ export interface MiniGameEnvironment {
   backdrop?(backgroundId: string): ReactNode;
   /** A `quietScene` game plays: the scene's music and ambience go down (true) or back (false). */
   onQuiet?(quiet: boolean): void;
+  /**
+   * A game with its own music (definition `music`) reaches スタート (a track ID: host/music.ts) or its result card (null):
+   * the screen plays that track in place of the scene's, or the scene's again. A track the build lacks: the scene's goes on.
+   */
+  onMusic?(trackId: string | null): void;
+  /** The result card always offers 「もう一回」 (Debug's room); in a story only a tag's `retry yes` does. */
+  retry?: boolean;
+  /** Debug's room: the game's tuning numbers changed for its next play (the module's retune; never in a story). */
+  tuning?: Readonly<Record<string, number>>;
+  /** Debug's room: every input is read this much later (+60, +120 ms), to feel a slow phone (E3). */
+  inputDelayMs?: number;
 }
 
 type Context = { environment: MiniGameEnvironment; slot: HTMLElement | null; setSlot(element: HTMLElement | null): void };

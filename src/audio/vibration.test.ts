@@ -6,6 +6,11 @@ describe("the vibration", () => {
     expect(vibrationPattern("item")).toBe(15);
     expect(vibrationPattern("clue")).toBe(10);
     expect(vibrationPattern("shake")).toBe(40);
+    // A mini-game's moments (docs/13 2.6): still short, a good finish a little double tap.
+    expect(vibrationPattern("tap")).toBe(10);
+    expect(vibrationPattern("hit")).toBe(25);
+    expect(vibrationPattern("success")).toEqual([15, 40, 15]);
+    expect(vibrationPattern("fail")).toBe(40);
   });
 
   it("is offered only where the browser has the Vibration API", () => {

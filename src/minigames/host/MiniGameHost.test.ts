@@ -11,7 +11,7 @@ const environment = (change: Partial<MiniGameEnvironment> = {}): MiniGameEnviron
   context: { effectIds: [], backgroundIds: [], emotionIds: [] }, onOutcome: () => true, ...change,
 });
 const render = (gameId: string, change: Partial<MiniGameEnvironment> = {}, ready = true) => renderToStaticMarkup(createElement(MiniGameProvider, { value: environment(change) },
-  createElement(ChoicePoint, { minigame: { id: gameId, auto: MINI_GAMES[gameId].defaultAuto }, ready, cast: { heroine: null } },
+  createElement(ChoicePoint, { minigame: { id: gameId, auto: MINI_GAMES[gameId].defaultAuto }, ready, cast: { heroine: {} } },
     createElement("p", { "data-testid": "plain-choices" }, "choices"))));
 
 describe.each(Object.keys(MINI_GAMES))("the host's start of %s", (gameId) => {
@@ -19,7 +19,7 @@ describe.each(Object.keys(MINI_GAMES))("the host's start of %s", (gameId) => {
 
   it("shows how to play and a start that waits for the game's file, and no choices", () => {
     const html = render(gameId);
-    expect(html).toContain(definition.hintJa);
+    expect(html).toContain(definition.goalJa ?? definition.hintJa);
     expect(html).toContain("準備中…");
     expect(html).toMatch(/data-testid="minigame-start" disabled=""/u);
     expect(html).not.toContain("plain-choices");
@@ -52,7 +52,7 @@ describe.each(Object.keys(MINI_GAMES).filter((id) => MINI_GAMES[id].outcomes.som
 describe("a choice point", () => {
   it("shows the screen's own choices when the frame has no # minigame:", () => {
     const html = renderToStaticMarkup(createElement(MiniGameProvider, { value: environment() },
-      createElement(ChoicePoint, { minigame: undefined, ready: true, cast: { heroine: null } }, createElement("p", { "data-testid": "plain-choices" }, "choices"))));
+      createElement(ChoicePoint, { minigame: undefined, ready: true, cast: { heroine: {} } }, createElement("p", { "data-testid": "plain-choices" }, "choices"))));
     expect(html).toContain("plain-choices");
   });
 });
