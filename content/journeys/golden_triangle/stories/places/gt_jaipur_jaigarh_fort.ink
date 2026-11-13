@@ -190,8 +190,12 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,teasing_big,music
     ふふっ、値段で地図が変わった！
+// decline_map は「やめておく」、5回見られてへそを曲げた（「もういい！　地図は売らない！」）、何もしなかった、のどれでも来る
+// （どれかは物語に渡らない）。最初の一言は、すねたときにも、断られたときにも合う形にする。
 * [地図の値段：買わなかった # option: decline_map]
     # set: gt_jaipur_raju_guided
+    # speaker: gt_raju
+    ……ふん。ぼくの地図、すごいのに
     # speaker: gt_raju
     ……じゃあ、見習い期間ってことで、ついてきていいよ。地図は見せないけど
     # speaker: narrator

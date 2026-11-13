@@ -23,11 +23,14 @@ export const nahargarhHideSeek = defineMiniGame({
   engine: "search",
   titleJa: "かくれんぼ",
   howToJa: "同じ形の扉が12並ぶ廊下で、隠れた彼女を探す。扉を開ける・「名前を呼ぶ」（こだまに彼女の笑い声がまじる）・初めから何もしないで待つ、のどれでもよい（15〜25秒）",
+  // An attitude, not a skill: no finish word, flash or sound, no ★, no practice. Her face on the result card only: the story
+  // goes on at once with her own first words (in both of its romance branches), so the card never speaks for her.
   outcomes: [
-    { id: "call_her_name", labelJa: "名前を呼んだ", noteJa: "「名前を呼ぶ」を3回押した" },
-    { id: "door_by_door", labelJa: "一つずつ開けて見つけた", noteJa: "3つ目より後に開けた扉で見つけた" },
-    { id: "door_quick", labelJa: "すぐに見つけた", noteJa: "1つ目か2つ目に開けた扉で見つけた" },
-    { id: "just_wait", labelJa: "廊下で待った", noteJa: "扉を開けたり呼んだりする前に、何もしないで9秒たった（その後で手を止めても終わらない。6秒ごとに彼女の扉から笑い声）" },
+    { id: "call_her_name", labelJa: "名前を呼んだ", noteJa: "「名前を呼ぶ」を3回押した", finishJa: null, reaction: { kind: "tease" } },
+    { id: "door_by_door", labelJa: "一つずつ開けて見つけた", noteJa: "3つ目より後に開けた扉で見つけた", finishJa: null, reaction: { kind: "oops" } },
+    { id: "door_quick", labelJa: "すぐに見つけた", noteJa: "1つ目か2つ目に開けた扉で見つけた", finishJa: null, reaction: { kind: "surprise" } },
+    { id: "just_wait", labelJa: "廊下で待った", noteJa: "扉を開けたり呼んだりする前に、何もしないで9秒たった（その後で手を止めても終わらない。6秒ごとに彼女の扉から笑い声）",
+      finishJa: null, reaction: { kind: "oops" } },
   ],
   defaultAuto: "door_by_door",
   params: () => z.object({
@@ -36,6 +39,12 @@ export const nahargarhHideSeek = defineMiniGame({
   examples: [{}, { hide: "2" }],
   startJa: "探しに行く",
   hintJa: "扉を押して彼女を探す（名前を呼んでも、待ってもいい）",
+  goalJa: "扉を押して彼女を探す（名前を呼んでも、待ってもいい）",
+  controls: "tap-target",
+  durationSec: 20,
+  music: "calm",
+  // The result card high, over the wall and the ceiling: her in her door stays in view below it.
+  resultAnchor: "top",
   timed: true,
   keysJa: "Tab で扉を選び、Enter・Space で開ける",
   sounds: ["door_creak", "ui_tap", "pigeon_flutter"],

@@ -8,7 +8,7 @@ import { parasolSkin } from "./Skin";
 
 // The parasol's field (docs/13 2.12–2.13): each round's things as buttons named by what the picture shows (never whose),
 // the old one where the tag says, the use's art in its slot, the round and its looks in the top band.
-const view = (change: Partial<SearchView> = {}): SearchView => ({ round: 0, searched: [], done: [], presses: {}, last: null, nudge: null, ending: null, ...change });
+const view = (change: Partial<SearchView> = {}): SearchView => ({ total: 3, round: 0, searched: [], done: [], presses: {}, last: null, nudge: null, ending: null, ...change });
 const field = (params: ParasolParams, current = view(), art: Record<string, string> = {}, seed = 1) => renderToStaticMarkup(createElement(parasolSkin.Field, {
   params, still: false, seed, cast: { heroine: null }, names: { player: "Haruto", heroine: "ヒロイン" }, art, sound: () => undefined, vibrate: () => undefined,
   setup: parasolSetup(params), view: current, live: true, search: () => undefined, active: () => undefined, frames: () => () => undefined,

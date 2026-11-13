@@ -1,9 +1,10 @@
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import type { SearchFieldProps, SearchSkin, SearchView } from "../engines/search/EnginePlay";
+import { useMiniGameKit } from "../host/kit";
 import { seededRandom } from "../host/seed";
 import {
-  PARASOL_CHILDREN, PARASOL_CUSTOMERS, PARASOL_PLACES, PARASOL_SPOTS, parasolGame, parasolRules, parasolTargets,
-  type ParasolOutcome, type ParasolParams, type ParasolPlace, type ParasolSpot,
+  PARASOL_CHILDREN, PARASOL_CUSTOMERS, PARASOL_PLACES, PARASOL_SPOTS, PARASOL_TUNING, parasolGameFor, parasolRulesFor, parasolTargets,
+  type ParasolOutcome, type ParasolParams, type ParasolPlace, type ParasolSpot, type ParasolTuning,
 } from "./rules";
 import "./skin.css";
 
@@ -16,7 +17,8 @@ import "./skin.css";
 // gave). The window takes most of the field's height, as wide as the field allows; places are in % of the window, sizes
 // in a unit of its width (`--u`). Which stall stands where, and what the customers do, is shuffled by the seed (looks
 // only: her stall is the tag's `at`). With the use's art (`art.street`), that picture in place of the drawn street, cow
-// and traffic; the umbrellas, stalls and people are drawn by the game either way, with a dark edge and a shadow under them.
+// and traffic, as the back layer (the host's mg-photo); the umbrellas, stalls and people are drawn by the game either way,
+// as the play layer (mg-play-object: a dark edge and a shadow under them). Each round's find: a ring from it.
 
 /** What an umbrella looks like and what is under it. */
 export type ParasolKind =
@@ -553,10 +555,13 @@ function JaliPattern({ id }: { id: string }) {
 function status(view: SearchView): string {
   const round = Math.min(view.round, ROUND_WORDS.length - 1);
   const looked = view.searched.length - (view.done[round]?.found ? 1 : 0);
-  return `${round + 1}/${ROUND_WORDS.length}　${ROUND_WORDS[round].lookedJa} ${looked}`;
+  return `${round + 1}/${view.total}　${ROUND_WORDS[round].lookedJa} ${looked}`;
 }
 
 function ParasolField({ params, setup, view, live, search, active, frames, art, seed, still, sound, vibrate }: SearchFieldProps<ParasolParams, ParasolOutcome>) {
+  const kit = useMiniGameKit();
+  const kitRef = useRef(kit);
+  kitRef.current = kit;
   const jali = `${useId().replace(/[^a-zA-Z0-9]/gu, "")}jali`;
   const kinds = useMemo(() => parasolKinds(params.at, seed), [params.at, seed]);
   const gestures = useMemo(() => parasolGestures(params.at, seed), [params.at, seed]);
@@ -602,6 +607,9 @@ function ParasolField({ params, setup, view, live, search, active, frames, art, 
     if (over && view.done[view.done.length - 1].found) {
       play.current.sound(SOUNDS.found);
       play.current.vibrate("clue");
+      // A ring from the thing found (the last round's find ends the play: the host's finish comes over it).
+      const found = fieldRef.current?.querySelector(`[data-found-of="${view.done.length - 1}"]`) ?? null;
+      kitRef.current.juice.burst(found, "ring");
     } else play.current.sound(SOUNDS.look);
   }, [view.last]); // each action once
   // A round over: its find (or her pointing) shown a moment over the next round.
@@ -610,9 +618,9 @@ function ParasolField({ params, setup, view, live, search, active, frames, art, 
     if (!count || !view.last) return undefined;
     const at = view.last.at;
     setRecent({ round: count - 1, found: view.done[count - 1].found, at });
-    // The next round's first place takes a key player's focus (the round's buttons are new).
-    if (count < setup.rounds.length && fieldRef.current && !fieldRef.current.contains(document.activeElement))
-      fieldRef.current.querySelector<HTMLElement>("[data-minigame-primary]")?.focus({ preventScroll: true });
+    // The next round's first place takes the focus when the pressed place went with the round (its buttons are new).
+    if (count < setup.rounds.length && fieldRef.current && (!document.activeElement || document.activeElement === document.body))
+      fieldRef.current.querySelector<HTMLElement>("[data-first]")?.focus({ preventScroll: true });
     return frames((ms) => { if (ms - at >= RECENT_MS) setRecent((current) => (current?.at === at ? null : current)); });
   }, [view.done.length]); // each round over once
 
@@ -633,13 +641,20 @@ function ParasolField({ params, setup, view, live, search, active, frames, art, 
     const at = parasolPosition(place, 0);
     const style = { left: `${at.x.toFixed(2)}%`, top: `${at.y}%`, "--r": place.r } as CSSProperties;
     const ref = (element: HTMLElement | null) => { if (place.walk) walkers.current.set(id, element); };
-    const marks = { "data-walker": place.walk ? true : undefined, "data-searched": searched || undefined, "data-shown": shown || undefined };
-    if (!interactive) return <span key={id} ref={ref} className="mg-parasol-search-spot" {...marks} style={style} aria-hidden="true">{drawing}</span>;
+    const marks = {
+      "data-walker": place.walk ? true : undefined, "data-searched": searched || undefined, "data-shown": shown || undefined,
+      "data-found-of": index === targets[roundIndex] ? roundIndex : undefined,
+    };
+    if (!interactive) return <span key={id} ref={ref} className="mg-parasol-search-spot mg-play-object" {...marks} style={style} aria-hidden="true">{drawing}</span>;
     return (
-      <button key={id} type="button" ref={ref} className="mg-parasol-search-spot" data-testid={`minigame-spot-${index}`}
-        data-minigame-primary={index === 0 || undefined} {...marks}
+      <button key={id} type="button" ref={ref} className="mg-parasol-search-spot mg-play-object" data-testid={`minigame-spot-${index}`}
+        data-first={index === 0 || undefined} {...marks}
         aria-disabled={!live || searched || undefined} aria-label={`${labelJa}${searched ? "：違った" : ""}`} style={style}
-        onClick={() => { if (live && !searched) search(index); }}>
+        onClick={(event) => {
+          if (live && !searched) search(index);
+          // One looked at already: a small refusal, never a dead tap.
+          else if (live) kit.juice.denied(event.currentTarget);
+        }}>
         {drawing}
       </button>
     );
@@ -658,7 +673,7 @@ function ParasolField({ params, setup, view, live, search, active, frames, art, 
         <rect width="100%" height="100%" fill={`url(#${jali})`} />
       </svg>
       <div className="mg-parasol-search-window">
-        {art.street ? <img className="mg-parasol-search-street" src={art.street} alt="" draggable={false} /> : (
+        {art.street ? <img className="mg-parasol-search-street mg-photo" src={art.street} alt="" draggable={false} /> : (
           <>
             <Street />
             {VEHICLES.map((vehicle, index) => (
@@ -698,10 +713,10 @@ function ParasolField({ params, setup, view, live, search, active, frames, art, 
   );
 }
 
-/** The parasol as a search skin: its game, rules, words and field. */
-export const parasolSkin: SearchSkin<ParasolParams, ParasolOutcome> = {
-  game: parasolGame,
-  rules: parasolRules,
+/** The parasol as a search skin for a tuning (Debug's room retunes it): its game, rules, words and field. */
+export const parasolSkinFor = (tuning: ParasolTuning): SearchSkin<ParasolParams, ParasolOutcome> => ({
+  game: parasolGameFor(tuning),
+  rules: parasolRulesFor(tuning),
   hintJa: (view) => ROUND_WORDS[Math.min(view.round, ROUND_WORDS.length - 1)].hintJa,
   buttons: [{ id: "ask", labelJa: "どこ？", hintJa: "いま探しているものがどこか、彼女に指さしてもらいます。", tone: "secondary" }],
   autoJa: "おまかせで探しています",
@@ -709,4 +724,5 @@ export const parasolSkin: SearchSkin<ParasolParams, ParasolOutcome> = {
   endDelayMs: (_, still) => (still ? 700 : 1400),
   statusJa: (view) => status(view),
   Field: ParasolField,
-};
+});
+export const parasolSkin = parasolSkinFor(PARASOL_TUNING);

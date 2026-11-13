@@ -41,11 +41,6 @@
   color: var(--ds-on-slate-muted);
   cursor: default;
 }
-/* The take button pressed with nothing to take: a small shake (two names, so each press starts it again). */
-.mg-engine-step-pick .mg-step-pick-take[data-denied="odd"] { animation: mg-step-pick-denied-a 180ms linear; }
-.mg-engine-step-pick .mg-step-pick-take[data-denied="even"] { animation: mg-step-pick-denied-b 180ms linear; }
-@keyframes mg-step-pick-denied-a { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
-@keyframes mg-step-pick-denied-b { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 .mg-engine-step-pick .mg-step-pick-auto {
   display: flex;
   align-items: center;

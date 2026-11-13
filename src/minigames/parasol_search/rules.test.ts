@@ -3,7 +3,7 @@ import { searchFairness, type SearchAction, type SearchRecord } from "../engines
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { parasolSearch } from "./definition";
 import {
-  PARASOL_CHILDREN, PARASOL_CUSTOMERS, PARASOL_IDLE_MS, PARASOL_SPOTS, PARASOL_TOMATO_CHILD, parasolRules, parasolSetup, parasolTargets,
+  PARASOL_CHILDREN, PARASOL_CUSTOMERS, PARASOL_IDLE_MS, PARASOL_SPOTS, PARASOL_TOMATO_CHILD, PARASOL_TUNING, parasolRules, parasolSetup, parasolTargets,
   type ParasolParams, type ParasolPlace,
 } from "./rules";
 import { PARASOL_CHILD_FIELD, PARASOL_CUSTOMER_FIELD, PARASOL_FIELD, parasolGestures, parasolKinds, parasolPosition } from "./Skin";
@@ -85,8 +85,37 @@ describe("the parasol's rules", () => {
     for (const at of PLACES) expect(searchFairness(parasolSetup({ at }))).toEqual([]);
     expect(PARASOL_IDLE_MS).toBe(8000);
     const schema = parasolSearch.params({ effectIds: [], backgroundIds: [], emotionIds: [] });
-    expect(schema.parse({})).toEqual({ at: "middle" });
+    expect(schema.parse({})).toEqual({ at: "middle", rounds: 3 });
+    expect(schema.parse({ at: "left", rounds: "1" })).toEqual({ at: "left", rounds: 1 });
     expect(() => schema.parse({ at: "far" })).toThrow();
+    expect(() => schema.parse({ rounds: "4" })).toThrow();
+  });
+
+  it("plays fewer rounds when the tag says so (the practice: the old parasol only)", () => {
+    const one: ParasolParams = { at: "left", rounds: 1 };
+    expect(parasolSetup(one).rounds).toHaveLength(1);
+    expect(searchFairness(parasolSetup(one))).toEqual([]);
+    expect(parasolRules.outcomeOf(record([stall("near_2")]), one)).toBe("found");
+    expect(parasolRules.outcomeOf(record([ask]), one)).toBe("pointed");
+    for (const outcome of ["found", "found_slow", "pointed"] as const) expect(parasolRules.outcomeOf(parasolRules.autoRecord(outcome, one), one)).toBe(outcome);
+    expect(parasolSearch.practice).toEqual({ params: { at: "left", rounds: "1" } });
+  });
+
+  it("rates the look for the result card in step with the outcome: ★3 quick and clean, ★2 found, ★1 found slowly, none pointed", () => {
+    const middle: ParasolParams = { at: "middle" };
+    const all = (endMs: number | undefined, ...wrong: SearchAction[]): SearchRecord => ({ actions: [...wrong, stall("near_3"), { spot: 3 }, child(PARASOL_TOMATO_CHILD)], lapse: null, endMs });
+    expect(parasolRules.rate?.(all(12400), middle)).toEqual({ stars: 3, scoreJa: "12.4秒で見つけた" });
+    expect(parasolRules.rate?.(all(PARASOL_TUNING.starMsPerRound * 3 + 1), middle)?.stars).toBe(2);
+    expect(parasolRules.rate?.(all(9000, stall("far_1")), middle)).toEqual({ stars: 2, scoreJa: "9.0秒で見つけた" });
+    expect(parasolRules.rate?.(all(20000, stall("far_1"), stall("far_2")), middle)).toEqual({ stars: 1, scoreJa: "20.0秒で見つけた" });
+    expect(parasolRules.rate?.(all(undefined), middle)).toEqual({ stars: 2 });
+    expect(parasolRules.rate?.(record([ask, ask, ask]), middle)).toBeNull();
+    expect(parasolRules.rate?.(record([stall("near_3"), ask, child(1)]), middle)).toBeNull();
+    // One round: ★3 within one round's time.
+    expect(parasolRules.rate?.({ actions: [stall("near_2")], lapse: null, endMs: 4000 }, { at: "left", rounds: 1 })?.stars).toBe(3);
+    // Every outcome's ★ follows the outcome (the template checks rate does not throw).
+    for (const outcome of ["found", "found_slow"] as const) expect(parasolRules.rate?.(parasolRules.autoRecord(outcome, middle), middle)).not.toBeNull();
+    expect(parasolRules.rate?.(parasolRules.autoRecord("pointed", middle), middle)).toBeNull();
   });
 });
 

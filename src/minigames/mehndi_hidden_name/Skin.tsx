@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState, type FocusEvent, type PointerEvent, type ReactNode } from "react";
 import type { SearchFieldProps, SearchSkin } from "../engines/search/EnginePlay";
+import { useMiniGameKit } from "../host/kit";
 import { fieldPoint } from "../host/seed";
 import { MEHNDI_HINT_JA } from "./definition";
-import { MEHNDI_SPOTS, mehndiGame, mehndiRules, type MehndiOutcome, type MehndiParams, type MehndiSpot, type MehndiTarget } from "./rules";
+import {
+  MEHNDI_SPOTS, MEHNDI_TUNING, mehndiGameFor, mehndiRulesFor, type MehndiOutcome, type MehndiParams, type MehndiSpot, type MehndiTarget, type MehndiTuning,
+} from "./rules";
 import "./skin.css";
 
 // The hidden name's field (a search skin): her right palm held out in the night, the mehndi's broad lines dim; where the
@@ -10,8 +13,9 @@ import "./skin.css";
 // that pretends to be pattern. Drag to move the lamp (it rides a little above a finger, so the finger does not hide what
 // it lights), tap to point. A wrong place: her word by it and a dashed ring (the look goes on); after the third, the lamp
 // goes to the writing (she shows it). The six places are buttons for Tab and the screen reader; a pointer hits them by
-// where it lands. With the use's art (`art.palm`, `art.lamp`), those pictures in place of the drawn hand and lamp; the
-// writing is drawn by the game either way.
+// where it lands. Finding the writing is the one moment of impact: a short stop, stars from the writing (the host's
+// juice). With the use's art (`art.palm`, `art.lamp`), those pictures in place of the drawn hand and lamp; the writing is
+// drawn by the game either way.
 
 /** The hand's drawing, in its own units (the field keeps this shape: 5 wide to 7 high). */
 const W = 300;
@@ -51,6 +55,8 @@ const AGAIN_JA = "そこでもないよ。次も外れたら、教えちゃう�
 const SHOWN_JA = "ほら、ここ";
 /** How long her word shows (the play's clock). */
 const SAID_MS = 1600;
+/** The stop as the writing is found (ms). */
+const FOUND_STOP_MS = 120;
 /** A drag starts after this much movement (px); a shorter touch is a tap. */
 const DRAG_PX = 10;
 /** A finger's lamp rides this far above it (px). */
@@ -181,6 +187,10 @@ function MehndiField({ params, setup, view, live, search, active, frames, names,
   const press = useRef<{ id: number; x: number; y: number; moved: boolean } | null>(null);
   const play = useRef({ sound, vibrate });
   play.current = { sound, vibrate };
+  const kit = useMiniGameKit();
+  const kitRef = useRef(kit);
+  kitRef.current = kit;
+  const writingRing = useRef<HTMLSpanElement>(null);
   const target = setup.rounds[0].targets[0];
   const ending = view.ending;
   const [said, setSaid] = useState<{ spot: number; textJa: string; at: number } | null>(null);
@@ -216,8 +226,11 @@ function MehndiField({ params, setup, view, live, search, active, frames, names,
     const spot = MEHNDI_PLACES[MEHNDI_SPOTS[shown]];
     place(spot.x / W, spot.y / H, true);
     if (last === target) {
+      // The find: the writing lit, a short stop, stars from it.
       play.current.sound(SOUNDS.found);
-      play.current.vibrate("clue");
+      play.current.vibrate("success");
+      kitRef.current.juice.hitStop(FOUND_STOP_MS);
+      kitRef.current.juice.burst(writingRing.current, "star", 0.9);
     } else {
       play.current.sound(SOUNDS.wrong);
       say(shown, pointed);
@@ -284,7 +297,7 @@ function MehndiField({ params, setup, view, live, search, active, frames, names,
           <svg viewBox={`0 0 ${W} ${H}`} className="mg-mehndi-hidden-name-picture" focusable="false"><Writing params={params} name={names.player} /></svg>
         </div>
         <span className="mg-mehndi-hidden-name-glow" aria-hidden="true" />
-        <span className="mg-mehndi-hidden-name-lamp" aria-hidden="true">
+        <span className="mg-mehndi-hidden-name-lamp mg-play-object" aria-hidden="true">
           {art.lamp ? <img src={art.lamp} alt="" draggable={false} /> : (
             <svg viewBox="0 0 24 32" focusable="false">
               <path d="M8 4 h8 M12 0 v4" className="mg-mehndi-hidden-name-brass-line" />
@@ -295,26 +308,31 @@ function MehndiField({ params, setup, view, live, search, active, frames, names,
           )}
         </span>
         {wrongs.map((spot) => <span key={spot} className="mg-mehndi-hidden-name-mark-ring" data-wrong style={at(spot)} aria-hidden="true" />)}
-        {shownWriting && <span className="mg-mehndi-hidden-name-mark-ring" data-writing style={at(target)} aria-hidden="true" />}
+        {shownWriting && <span ref={writingRing} className="mg-mehndi-hidden-name-mark-ring" data-writing style={at(target)} aria-hidden="true" />}
         {said && (
           <span key={said.at} className="mg-mehndi-hidden-name-said" data-below={MEHNDI_PLACES[MEHNDI_SPOTS[said.spot]].y < H * 0.4 || undefined}
             style={at(said.spot)} role="status">{said.textJa}</span>
         )}
         {MEHNDI_SPOTS.map((spot, index) => (
           <button key={spot} type="button" className="mg-mehndi-hidden-name-spot" data-testid={`minigame-spot-${index}`}
-            data-minigame-primary={index === 0 || undefined} aria-disabled={!live || undefined} aria-label={MEHNDI_PLACES[spot].labelJa}
+            aria-disabled={!live || undefined} aria-label={MEHNDI_PLACES[spot].labelJa}
             style={{ left: `${(MEHNDI_PLACES[spot].x / W) * 100}%`, top: `${(MEHNDI_PLACES[spot].y / H) * 100}%` }}
-            onFocus={(event) => onFocus(event, spot)} onClick={() => { if (live) search(index); }} />
+            onFocus={(event) => onFocus(event, spot)} onClick={() => {
+              if (!live) return;
+              // A wrong place pointed at again by keys: her word again (never a dead press).
+              if (view.searched.includes(index) && index !== target) say(index, 1);
+              else search(index);
+            }} />
         ))}
       </div>
     </div>
   );
 }
 
-/** The hidden name as a search skin: its game, rules, words and field. */
-export const mehndiSkin: SearchSkin<MehndiParams, MehndiOutcome> = {
-  game: mehndiGame,
-  rules: mehndiRules,
+/** The hidden name as a search skin for a tuning (Debug's room retunes it): its game, rules, words and field. */
+export const mehndiSkinFor = (tuning: MehndiTuning): SearchSkin<MehndiParams, MehndiOutcome> => ({
+  game: mehndiGameFor(tuning),
+  rules: mehndiRulesFor(tuning),
   hintJa: MEHNDI_HINT_JA,
   buttons: [{ id: "later", labelJa: "明日にする", hintJa: "今夜は探すのをやめて、明日にします。", tone: "secondary" }],
   autoJa: "おまかせで探しています",
@@ -322,4 +340,5 @@ export const mehndiSkin: SearchSkin<MehndiParams, MehndiOutcome> = {
   endDelayMs: (ending, still) => (still ? 900 : ending.kind === "found" || ending.kind === "wrong" ? 1500 : 1100),
   detailJa: (ending) => (ending.kind === "wrong" ? "3回目で、彼女が場所を見せてくれた" : undefined),
   Field: MehndiField,
-};
+});
+export const mehndiSkin = mehndiSkinFor(MEHNDI_TUNING);

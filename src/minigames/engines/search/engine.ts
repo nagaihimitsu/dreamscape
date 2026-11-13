@@ -23,6 +23,8 @@ export interface SearchRecord {
    * (`idle`). null: an action ended it. A record that ends with neither (the play stopped with nothing) reads as idle.
    */
   lapse: "timeout" | "idle" | null;
+  /** When the play's ending came (ms of the host's clock from its start), for a skin's rating; the outcome never reads it. */
+  endMs?: number;
 }
 
 /** What ends a play, with how many wrong spots were searched before (each spot once a round) and how many rounds were helped. */

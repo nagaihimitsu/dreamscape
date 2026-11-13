@@ -76,7 +76,7 @@ export function stepPickPlay<Params, Outcome extends string>(skin: StepPickSkin<
     const { params, auto, available, clock, still, seed, cast, names, art, sound, vibrate } = props;
     const [view, setView] = useState<StepPickView<Outcome>>({ step: 0, pushes: 0, pushedAt: null, activeAt: 0, denied: 0, ending: null, outcome: null });
     const pushes = useRef<number[]>([]);
-    const decided = useRef<{ endAt: number; outcome: Outcome } | null>(null);
+    const decided = useRef<{ outcome: Outcome } | null>(null);
     const draws = useRef(new Set<(ms: number) => void>());
     const latest = useRef(props);
     latest.current = props;
@@ -85,12 +85,17 @@ export function stepPickPlay<Params, Outcome extends string>(skin: StepPickSkin<
     const hintId = useId();
     const autoRecord = useMemo(() => (auto === null ? null : skin.rules.autoRecord(auto, params)), [auto, params]);
 
-    const decide = useCallback((record: StepPickRecord, ms: number) => {
+    // The end at the moment it is decided (docs/13 2.6): the host's finish runs over the field's hold (the stamp, his
+    // turning away), with the record for the rules.
+    const decide = useCallback((record: StepPickRecord) => {
       if (decided.current) return;
       const ending = stepPickEnding(record, tuning);
-      const outcome = skin.rules.outcomeOf(record, latest.current.params);
-      decided.current = { outcome, endAt: ms + skin.endDelayMs(ending, latest.current.still) };
+      const kept: StepPickRecord = { pushes: [...record.pushes], end: record.end ? { ...record.end } : null };
+      const outcome = skin.rules.outcomeOf(kept, latest.current.params);
+      decided.current = { outcome };
       setView((current) => ({ ...current, ending, outcome }));
+      latest.current.end(outcome, skin.detailJa?.(outcome, latest.current.available),
+        { record: kept, holdMs: skin.endDelayMs(ending, latest.current.still) });
     }, []);
     const takeOpen = (step: number) => skin.takeOpen?.(step, latest.current.available) ?? true;
     /** A press of the push button: counted unless it comes within the push gap of the last counted one. */
@@ -101,15 +106,14 @@ export function stepPickPlay<Params, Outcome extends string>(skin: StepPickSkin<
       pushes.current = counted;
       const record: StepPickRecord = { pushes: counted, end: null };
       setView((current) => ({ ...current, step: stepPickStepOf(counted.length, tuning), pushes: counted.length, pushedAt: ms, activeAt: ms }));
-      if (stepPickEnding(record, tuning).kind === "out") decide(record, ms);
+      if (stepPickEnding(record, tuning).kind === "out") decide(record);
     }, [decide]);
     const finish = useCallback((kind: "take" | "leave", ms: number) => {
       if (decided.current) return;
-      decide({ pushes: pushes.current, end: { kind, ms } }, ms);
+      decide({ pushes: pushes.current, end: { kind, ms } });
     }, [decide]);
 
     useEffect(() => {
-      let ended = false;
       let autoIndex = 0;
       let shown: string | null = null;
       return clock.onFrame((ms) => {
@@ -118,8 +122,8 @@ export function stepPickPlay<Params, Outcome extends string>(skin: StepPickSkin<
             // おまかせ presses as its record says: its pushes, then its take or leave (or it lets the play run out).
             while (autoIndex < autoRecord.pushes.length && ms >= autoRecord.pushes[autoIndex]) push(autoRecord.pushes[autoIndex++]);
             if (autoIndex >= autoRecord.pushes.length && autoRecord.end && ms >= autoRecord.end.ms) finish(autoRecord.end.kind, autoRecord.end.ms);
-            else if (!autoRecord.end && autoIndex >= autoRecord.pushes.length && ms - latestView.current.activeAt >= tuning.idleMs) decide(autoRecord, ms);
-          } else if (ms - latestView.current.activeAt >= tuning.idleMs) decide({ pushes: pushes.current, end: null }, ms);
+            else if (!autoRecord.end && autoIndex >= autoRecord.pushes.length && ms - latestView.current.activeAt >= tuning.idleMs) decide(autoRecord);
+          } else if (ms - latestView.current.activeAt >= tuning.idleMs) decide({ pushes: pushes.current, end: null });
         }
         if (skin.statusJa) {
           const text = skin.statusJa(latestView.current, latest.current.available);
@@ -129,11 +133,6 @@ export function stepPickPlay<Params, Outcome extends string>(skin: StepPickSkin<
           }
         }
         for (const draw of draws.current) draw(ms);
-        const done = decided.current;
-        if (done && !ended && ms >= done.endAt) {
-          ended = true;
-          latest.current.end(done.outcome, skin.detailJa?.(done.outcome, latest.current.available));
-        }
       });
     }, [clock, autoRecord, decide, push, finish]);
 
@@ -144,12 +143,17 @@ export function stepPickPlay<Params, Outcome extends string>(skin: StepPickSkin<
     const live = auto === null && view.ending === null;
     const canTake = live && takeOpen(view.step);
     const detail = skin.takeDetailJa?.(view.step, available);
+    const takeButton = useRef<HTMLButtonElement>(null);
     const onTake = (timeStamp: number) => {
       if (!live) return;
       const ms = clock.at(timeStamp);
-      if (takeOpen(view.step)) finish("take", ms);
-      // Nothing to take: the button shakes a little, and the field may say why (its words are in the hint already).
-      else setView((current) => ({ ...current, denied: current.denied + 1 }));
+      if (takeOpen(view.step)) {
+        finish("take", ms);
+        return;
+      }
+      // Nothing to take: the host's refusal (a small wiggle and its sound); the field may say why (the hint says it too).
+      latest.current.juice.denied(takeButton.current);
+      setView((current) => ({ ...current, denied: current.denied + 1 }));
     };
     const Field = skin.Field;
     return (
@@ -166,9 +170,8 @@ export function stepPickPlay<Params, Outcome extends string>(skin: StepPickSkin<
               <button type="button" className="primary mg-step-pick-push" data-testid="minigame-action" data-minigame-primary
                 aria-disabled={!live || undefined} aria-describedby={`${hintId}-push`}
                 onClick={(event) => { if (live) push(clock.at(event.timeStamp)); }}>{skin.pushJa}</button>
-              <button type="button" className="primary mg-step-pick-take" data-testid="minigame-take"
-                data-denied={view.denied ? (view.denied % 2 ? "odd" : "even") : undefined} aria-disabled={!canTake || undefined}
-                aria-describedby={`${hintId}-take`}
+              <button ref={takeButton} type="button" className="primary mg-step-pick-take" data-testid="minigame-take"
+                aria-disabled={!canTake || undefined} aria-describedby={`${hintId}-take`}
                 aria-label={detail ? `${skin.takeJa}（${detail}）` : undefined}
                 onClick={(event) => onTake(event.timeStamp)}>
                 <span>{skin.takeJa}</span>

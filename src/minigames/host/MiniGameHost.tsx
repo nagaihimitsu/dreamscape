@@ -181,8 +181,8 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     reset();
     focusStart.current = true;
   }, []);
-  const sound = useCallback((id: string) => {
-    if (definition?.sounds.includes(id)) playSound(id);
+  const sound = useCallback((id: string, level?: { volume?: number; rate?: number }) => {
+    if (definition?.sounds.includes(id)) playSound(id, level);
     else if (import.meta.env.DEV) console.warn(`The mini-game ${tag.id} rings ${id}, which its definition's sounds do not list`);
   }, [definition, tag.id]);
   const juice = useMemo(() => (run ? createJuice({ stage: () => stage.current, fx: () => fx.current, still, clock: run.clock, seed, sound: playSound }) : NO_JUICE),

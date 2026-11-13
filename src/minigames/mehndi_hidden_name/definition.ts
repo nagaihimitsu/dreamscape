@@ -27,10 +27,13 @@ export const mehndiHiddenName = defineMiniGame({
   engine: "search",
   titleJa: "手のひらの模様",
   howToJa: "暗い中で灯りを動かし、手のひらの模様にまぎれた文字を探して押す。違う所は2回まで彼女が教えてくれ、3回目は彼女が場所を見せる。「明日にする」でやめる（時間の制限は無い）",
+  // An attitude more than a skill: no finish word, flash or sound, no ★, no practice (a practice would show the place). Her
+  // face on the result card only: the story goes on with her own words about what was written.
   outcomes: [
-    { id: "found", labelJa: "見つけた", noteJa: "隠した文字の所を押した" },
-    { id: "wrong_spot", labelJa: "違う所も指して、見つけた", noteJa: "文字の無い模様を押してから、文字を見つけた（3回違う所を押すと、彼女が場所を見せて終わる）。物語は過去のこととして書く" },
-    { id: "later", labelJa: "明日にする", noteJa: "「明日にする」を押した" },
+    { id: "found", labelJa: "見つけた", noteJa: "隠した文字の所を押した", finishJa: null, reaction: { kind: "cheer" } },
+    { id: "wrong_spot", labelJa: "違う所も指して、見つけた", noteJa: "文字の無い模様を押してから、文字を見つけた（3回違う所を押すと、彼女が場所を見せて終わる）。物語は過去のこととして書く",
+      finishJa: null, reaction: { kind: "tease" } },
+    { id: "later", labelJa: "明日にする", noteJa: "「明日にする」を押した", finishJa: null, reaction: { kind: "tease" } },
   ],
   defaultAuto: "found",
   params: () => z.object({
@@ -42,6 +45,12 @@ export const mehndiHiddenName = defineMiniGame({
   examples: [{ target: "thumb", text: "player" }, { target: "peacock", text: "illegible" }, { target: "vine", text: "farhana" }],
   startJa: "手のひらを見る",
   hintJa: MEHNDI_HINT_JA,
+  goalJa: "指でなぞって灯りを動かし、模様にまぎれた文字を見つけて押す",
+  controls: "drag",
+  durationSec: 15,
+  music: "calm",
+  // The result card high, over the fingertips: the writing (in the palm and at the thumb) stays in view below it.
+  resultAnchor: "top",
   timed: false,
   keysJa: "Tab で模様を選び（灯りが来る）、Enter・Space で指す",
   sounds: ["clue_new", "ui_tap"],

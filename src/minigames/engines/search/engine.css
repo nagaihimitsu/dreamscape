@@ -10,6 +10,7 @@
   -webkit-user-select: none;
 }
 .mg-engine-search .mg-search-controls { flex: none; padding: 8px 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
+.mg-engine-search .mg-search-hint:focus { outline: none; }
 .mg-engine-search .mg-search-hint { margin: 0 0 8px; font-size: 13px; line-height: 1.5; text-align: center; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); text-wrap: balance; word-break: auto-phrase; }
 .mg-engine-search .mg-search-buttons { display: grid; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; gap: 8px; }
 .mg-engine-search .mg-search-button {

@@ -22,26 +22,30 @@ export const MEHNDI_SPOTS = ["index", "pinky", "peacock", "thumb", "vine", "wris
 export type MehndiSpot = (typeof MEHNDI_SPOTS)[number];
 export const MEHNDI_TARGETS: readonly MehndiTarget[] = ["thumb", "peacock", "vine"];
 export const MEHNDI_TEXTS: readonly MehndiText[] = ["player", "illegible", "farhana"];
-/**
- * The wrong point that ends the look (2026-11-13 playtest: a first tap to light a flower ended it at once, while the story
- * said 「もっとちゃんと見て」): two wrong points are looks with her word, the third ends it.
- */
-export const MEHNDI_WRONG_LIMIT = 3;
-export function mehndiSetup(params: MehndiParams): SearchSetup {
-  return {
-    rounds: [{ spots: MEHNDI_SPOTS.length, targets: [MEHNDI_SPOTS.indexOf(params.target)] }],
-    // Pointing is saying 「ここ」: she answers a wrong place, and the third one ends the look.
-    wrongLimit: MEHNDI_WRONG_LIMIT,
+/** The hidden name's numbers (E1; Debug's room may change them for its next play). */
+export type MehndiTuning = {
+  /**
+   * The wrong point that ends the look (2026-11-13 playtest: a first tap to light a flower ended it at once, while the
+   * story said 「もっとちゃんと見て」): two wrong points are looks with her word, the third ends it.
+   */
+  wrongLimit: number;
+};
+export const MEHNDI_TUNING: MehndiTuning = { wrongLimit: 3 };
+export const MEHNDI_WRONG_LIMIT = MEHNDI_TUNING.wrongLimit;
+export const mehndiSetupFor = (tuning: MehndiTuning) => (params: MehndiParams): SearchSetup => ({
+  rounds: [{ spots: MEHNDI_SPOTS.length, targets: [MEHNDI_SPOTS.indexOf(params.target)] }],
+  // Pointing is saying 「ここ」: she answers a wrong place, and the last one ends the look (never more than there are).
+  wrongLimit: Math.min(MEHNDI_SPOTS.length - 1, Math.max(1, Math.round(tuning.wrongLimit))),
     buttons: [{ id: "later", presses: 1, ends: "play" }],
-    // Only finding the place, the third wrong place or 「明日にする」 ends the look (2026-11-13).
-    timeLimitMs: null,
-    idleMs: null,
-    idleEnds: "play",
-  };
-}
+  // Only finding the place, the third wrong place or 「明日にする」 ends the look (2026-11-13).
+  timeLimitMs: null,
+  idleMs: null,
+  idleEnds: "play",
+});
+export const mehndiSetup = mehndiSetupFor(MEHNDI_TUNING);
 
-export const mehndiGame: SearchGame<MehndiParams, MehndiOutcome> = {
-  setup: mehndiSetup,
+export const mehndiGameFor = (tuning: MehndiTuning): SearchGame<MehndiParams, MehndiOutcome> => ({
+  setup: mehndiSetupFor(tuning),
   outcome: (ending) => {
     switch (ending.kind) {
       // Found first time; after a wrong point, the story remembers it (wrong_spot, in the past tense).
@@ -63,6 +67,7 @@ export const mehndiGame: SearchGame<MehndiParams, MehndiOutcome> = {
       case "later": return { kind: "button", button: "later" };
     }
   },
-};
-
-export const mehndiRules = searchRules(mehndiGame);
+});
+export const mehndiGame = mehndiGameFor(MEHNDI_TUNING);
+export const mehndiRulesFor = (tuning: MehndiTuning) => searchRules(mehndiGameFor(tuning));
+export const mehndiRules = mehndiRulesFor(MEHNDI_TUNING);

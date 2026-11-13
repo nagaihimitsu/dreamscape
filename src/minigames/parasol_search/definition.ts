@@ -24,20 +24,37 @@ export const parasolSearch = defineMiniGame({
   engine: "search",
   titleJa: "日傘を探す",
   howToJa: "格子の窓から見下ろした通りで、古い日傘・値段で揉める客・トマトをもらった子どもを順に押して見つける。「どこ？」で彼女に教えてもらう（15〜25秒）",
+  // The finish word for the player's own find; her face (and a word that does not get ahead of the story's next lines: the
+  // narration of what the seller did, then her thought about the window) on the result card.
   outcomes: [
-    { id: "found", labelJa: "すぐに見つけた", noteJa: "3つとも自分で見つけ、違うものを見たのは合わせて1つまで" },
-    { id: "found_slow", labelJa: "何本か見て見つけた", noteJa: "3つとも自分で見つけ、違うものを2つ以上見た" },
-    // The label names no one (two women are on the scene: the heroine and the seller) until the host can put her name in.
-    { id: "pointed", labelJa: "指さしてもらって見つけた", noteJa: "どれかで「どこ？」を押したか、8秒何もしなかった（彼女が指さして、次へ進む）" },
+    { id: "found", labelJa: "すぐに見つけた", noteJa: "3つとも自分で見つけ、違うものを見たのは合わせて1つまで", finishJa: "見つけた！",
+      reaction: { kind: "cheer", linesJa: ["ちゃんと、見えたね"] } },
+    { id: "found_slow", labelJa: "何本か見て見つけた", noteJa: "3つとも自分で見つけ、違うものを2つ以上見た", finishJa: "見つけた！",
+      reaction: { kind: "cheer", linesJa: ["ふう……やっと、全部見えた"] } },
+    // Her name in the label: two women are on the scene (the heroine and the seller).
+    { id: "pointed", labelJa: "{heroine_name}と一緒に見つけた", noteJa: "どれかで「どこ？」を押したか、8秒何もしなかった（彼女が指さして、次へ進む）",
+      finishJa: null, reaction: { kind: "tease" } },
   ],
   defaultAuto: "found",
   params: () => z.object({
     at: z.enum(["left", "middle", "right"]).default("middle")
       .describe("古い日傘の場所（手前の歩道の left 左・middle 真ん中・right 右。書かなければ middle）"),
+    rounds: z.coerce.number().int().min(1).max(3).default(3)
+      .describe("見つける物の数（1 古い日傘だけ・2 値段で揉める客まで・3 トマトをもらう子どもまで。書かなければ 3）"),
   }).strict(),
-  examples: [{}, { at: "left" }, { at: "right" }],
+  examples: [{}, { at: "left" }, { at: "right" }, { at: "left", rounds: "1" }],
   startJa: "見下ろす",
   hintJa: "格子の窓から、古い日傘から順に3つ見つけて押す",
+  goalJa: "古い日傘、値段で揉める客、トマトをもらった子どもを、順に押して見つける",
+  controls: "tap-target",
+  durationSec: 20,
+  // The practice: the old parasol only, at the left stall (the real look's round 1 elsewhere, unless the tag says left).
+  practice: { params: { at: "left", rounds: "1" } },
+  // The ★ counts the time: the host's 3・2・1 starts it for everyone alike.
+  countdown: "host",
+  music: "calm",
+  // The result card high, over the far pavement: the find (her stall, the customer, the child, near the window) stays in view.
+  resultAnchor: "top",
   timed: true,
   keysJa: "Tab で選び、Enter・Space で見る",
   sounds: ["clue_new", "ui_tap"],

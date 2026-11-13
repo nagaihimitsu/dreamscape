@@ -1,10 +1,12 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { availableOutcome } from "../fallback";
 import type { StepPickFieldProps, StepPickSkin, StepPickView } from "../engines/step_pick/EnginePlay";
-import { stepPickThresholds } from "../engines/step_pick/engine";
+import { stepPickThresholds, type StepPickTuning } from "../engines/step_pick/engine";
+import { useMiniGameKit } from "../host/kit";
 import { rajuHaggle } from "./definition";
 import {
-  RAJU_MAP, RAJU_NUDGE_BEFORE_MS, RAJU_PATIENCE, RAJU_PRICES, RAJU_TUNING, rajuHaggleRules, type RajuHaggleOutcome, type RajuHaggleParams,
+  RAJU_HAGGLE_TUNING, RAJU_MAP, RAJU_NUDGE_BEFORE_MS, RAJU_PRICES, rajuHaggleRulesFor, rajuStepTuning, type RajuHaggleOutcome, type RajuHaggleParams,
+  type RajuTuning,
 } from "./rules";
 import "./skin.css";
 
@@ -13,12 +15,16 @@ import "./skin.css";
 // on show, the passed ones struck out, the coming ones faint. Each stare costs him a dot and flinches him; every second one
 // brings his price down; the last dot gone, he turns away with the map. A price the player cannot pay now shows lowered to
 // the one its outcome falls back to (the host takes that one); with none, the paper says so and only 「やめておく」 is left
-// (「この値段で」 shakes when pressed). With the use's art (`art.raju_glad`, `art.raju_unsure`, `art.raju_sulky`) his mood's
-// picture stands in place of his standing picture.
+// (「この値段で」 refuses when pressed: the host's denied). With one dot of patience left, she feels for him (her face and a
+// word in the band); the stamp lands with a squash and a small shake. With the use's art (`art.raju_glad`,
+// `art.raju_unsure`, `art.raju_sulky`) his mood's picture stands in place of his standing picture.
 
 type Mood = "glad" | "unsure" | "sulky";
-const THRESHOLDS = stepPickThresholds(RAJU_TUNING);
-const SOUNDS = { page: "ui_page", stamp: "stamp", stare: "ui_tap", denied: "ui_denied" } as const;
+const SOUNDS = { page: "ui_page", stamp: "stamp", stare: "ui_tap" } as const;
+/** Her word when his patience is down to its last dot (her face in the band). */
+const PITY_JA = "ちょっと、かわいそうかも……";
+/** His patience in dots: all of it at the start, none once he gives up. */
+const patienceOf = (tuning: StepPickTuning, pushes: number) => Math.max(0, (tuning.pushLimit ?? 0) - pushes);
 
 /** What a take at a step ends as now: its outcome, or the fallback its outcome takes (docs/13 4.2). */
 const takenAt = (step: number, available: readonly string[]): RajuHaggleOutcome =>
@@ -26,7 +32,7 @@ const takenAt = (step: number, available: readonly string[]): RajuHaggleOutcome 
 const price = (outcome: RajuHaggleOutcome) => RAJU_PRICES[outcome];
 
 /** His words now: a new price as it comes (lowered for a player who cannot pay his), a stare between prices, his end. */
-function callJa(view: StepPickView<RajuHaggleOutcome>, available: readonly string[], waiting: boolean): string {
+function callJa(view: StepPickView<RajuHaggleOutcome>, available: readonly string[], waiting: boolean, thresholds: readonly number[]): string {
   if (view.ending?.kind === "out") return "もういい！　地図は売らない！";
   if (view.ending?.kind === "none") return "……買わないの？";
   if (waiting) return "……買うの？　買わないの？";
@@ -35,7 +41,7 @@ function callJa(view: StepPickView<RajuHaggleOutcome>, available: readonly strin
   const taken = takenAt(step, available);
   if (price(taken) === null) return "……買えないなら、見るだけね";
   // A stare that has not brought the price down yet: he squirms.
-  if (view.pushes > THRESHOLDS[step]) return step === 0 ? "……う。そんなに見ないでよ" : "まだ見るの？　……ぼく、もう負けないからね";
+  if (view.pushes > thresholds[step]) return step === 0 ? "……う。そんなに見ないでよ" : "まだ見るの？　……ぼく、もう負けないからね";
   if (taken === "buy_map") return "五十ルピー！　全部、手描きだよ";
   if (taken === "fair_map") return own === taken ? "……四十なら、いいよ" : "五十は……無理そう？　じゃあ、四十";
   return own === taken ? "さ、三十！　もう、これ以上は無理！" : "……三十でいいよ。特別だからね";
@@ -82,11 +88,11 @@ function Face({ mood }: { mood: Mood }) {
 }
 
 /** His patience: five dots, filled while it lasts, hollow once spent (shape and fill, not colour alone). */
-function Patience({ left }: { left: number }) {
+function Patience({ left, total }: { left: number; total: number }) {
   return (
     <span className="mg-raju-haggle-patience" aria-hidden="true">
       <span className="mg-raju-haggle-patience-label">がまん</span>
-      {Array.from({ length: RAJU_PATIENCE }, (_, index) => <i key={index} data-spent={index >= left || undefined} />)}
+      {Array.from({ length: total }, (_, index) => <i key={index} data-spent={index >= left || undefined} />)}
     </span>
   );
 }
@@ -104,25 +110,40 @@ function DrawnMap() {
   );
 }
 
-function RajuHaggleField({ available, still, cast, art, sound, view, frames }: StepPickFieldProps<RajuHaggleParams, RajuHaggleOutcome>) {
+function RajuHaggleField({ available, still, cast, art, sound, view, frames, tuning }: StepPickFieldProps<RajuHaggleParams, RajuHaggleOutcome>) {
+  const kit = useMiniGameKit();
+  const kitRef = useRef(kit);
+  kitRef.current = kit;
+  const paper = useRef<HTMLDivElement>(null);
   const play = useRef(sound);
   play.current = sound;
+  const thresholds = stepPickThresholds(tuning);
+  const total = tuning.pushLimit ?? 0;
   const [waiting, setWaiting] = useState(false);
   // The deal as the host takes it (a price the player cannot pay falls back, as on the paper).
   const decided = view.outcome ? (availableOutcome(rajuHaggle, view.outcome, available) ?? view.outcome) as RajuHaggleOutcome : null;
-  const patience = Math.max(0, RAJU_PATIENCE - view.pushes);
+  const patience = patienceOf(tuning, view.pushes);
   const mood = moodOf(patience, decided);
   const away = view.ending?.kind === "out" || view.ending?.kind === "none";
   const nothingPayable = RAJU_MAP.steps.every((_, step) => price(takenAt(step, available)) === null);
 
-  // A stare: a soft tap; a new price: the page's sound; a deal: the stamp; the take pressed with nothing to take: denied.
-  useEffect(() => { if (view.pushes) play.current(SOUNDS.stare); }, [view.pushes]);
+  // A stare: a soft tap (his last dot: she feels for him); a new price: the page's sound; the stamp: its sound, a squash
+  // and a small shake (a deal, or no deal).
+  useEffect(() => {
+    if (!view.pushes) return;
+    play.current(SOUNDS.stare);
+    if (patienceOf(tuning, view.pushes) === 1 && !view.ending) kitRef.current.react("oops", PITY_JA);
+  }, [view.pushes]);
   useEffect(() => { if (view.step > 0 && !view.ending) play.current(SOUNDS.page); }, [view.step, view.ending]);
-  useEffect(() => { if (decided && price(decided) !== null) play.current(SOUNDS.stamp); }, [decided]);
-  useEffect(() => { if (view.denied) play.current(SOUNDS.denied); }, [view.denied]);
+  useEffect(() => {
+    if (!decided) return;
+    if (price(decided) !== null) play.current(SOUNDS.stamp);
+    kitRef.current.juice.squash(paper.current?.querySelector(".mg-raju-haggle-stamp") ?? null, "land");
+    kitRef.current.juice.shake("s");
+  }, [decided]);
   // A long while with nothing done: he asks once more before he gives up asking.
   useEffect(() => frames((ms) => {
-    const now = !view.ending && ms - view.activeAt >= RAJU_TUNING.idleMs - RAJU_NUDGE_BEFORE_MS;
+    const now = !view.ending && ms - view.activeAt >= tuning.idleMs - RAJU_NUDGE_BEFORE_MS;
     setWaiting((current) => (current === now ? current : now));
   }), [frames, view.activeAt, view.ending]);
 
@@ -130,7 +151,7 @@ function RajuHaggleField({ available, still, cast, art, sound, view, frames }: S
   const showBubble = !decided || away;
   return (
     <div className="mg-raju-haggle" data-mood={mood} data-away={away || undefined} data-still={still || undefined} data-decided={decided ?? undefined}>
-      <span className="mg-raju-haggle-raju" data-figure={picture ? "art" : cast.person ? "cast" : "drawn"}>
+      <span className="mg-raju-haggle-raju mg-play-object" data-figure={picture ? "art" : cast.person ? "cast" : "drawn"}>
         {/* Each stare flinches him (the key starts it again). */}
         <span className="mg-raju-haggle-flinch" key={view.pushes} data-stared={view.pushes > 0 || undefined}>
           {picture ? <img src={picture} alt="" draggable={false} /> : cast.person ?? <DrawnMap />}
@@ -140,12 +161,12 @@ function RajuHaggleField({ available, still, cast, art, sound, view, frames }: S
         <div className="mg-raju-haggle-bubble" key={`${view.pushes}:${view.step}:${available.join(" ")}:${view.ending?.kind ?? ""}:${waiting}:${view.denied}`}>
           <Face mood={away ? "sulky" : mood} />
           <span className="mg-raju-haggle-words">
-            <span className="mg-raju-haggle-line"><Phrased text={callJa(view, available, waiting)} /></span>
-            <Patience left={patience} />
+            <span className="mg-raju-haggle-line"><Phrased text={callJa(view, available, waiting, thresholds)} /></span>
+            <Patience left={patience} total={total} />
           </span>
         </div>
       )}
-      <div className="mg-raju-haggle-paper" data-none={nothingPayable || undefined}>
+      <div className="mg-raju-haggle-paper mg-play-object" ref={paper} data-none={nothingPayable || undefined}>
         <p className="mg-raju-haggle-paper-title">地図の値段</p>
         <ol>
           {RAJU_MAP.steps.map((own, step) => {
@@ -172,39 +193,42 @@ function RajuHaggleField({ available, still, cast, art, sound, view, frames }: S
 }
 
 /** The top band: the price on show and his patience, in words (read out). */
-function status(view: StepPickView<RajuHaggleOutcome>, available: readonly RajuHaggleOutcome[]): string {
+function status(view: StepPickView<RajuHaggleOutcome>, available: readonly RajuHaggleOutcome[], tuning: StepPickTuning): string {
   const amount = price(takenAt(Math.min(view.step, RAJU_MAP.steps.length - 1), available));
-  const patience = Math.max(0, RAJU_PATIENCE - view.pushes);
-  return `${amount === null ? "買える値段がない" : `いまの値段 ₹${amount}`}　がまん ${patience}/${RAJU_PATIENCE}`;
+  return `${amount === null ? "買える値段がない" : `いまの値段 ₹${amount}`}　がまん ${patienceOf(tuning, view.pushes)}/${tuning.pushLimit ?? 0}`;
 }
 
-/** The haggle as a step_pick skin: its steps, rules, words and field. */
-export const rajuHaggleSkin: StepPickSkin<RajuHaggleParams, RajuHaggleOutcome> = {
-  tuning: RAJU_TUNING,
-  rules: rajuHaggleRules,
-  hintJa: "「じっと見る」2回で値段が下がる。見すぎると、ラージューはへそを曲げる",
-  pushJa: "じっと見る",
-  pushHintJa: "ラージューをじっと見ます。2回で値段が一つ下がり、がまんが一つ減ります。がまんが尽きると地図は買えません。",
-  takeJa: "この値段で",
-  takeHintJa: "いま出ている値段で地図を買います。",
-  takeDetailJa: (step, available) => {
-    const amount = price(takenAt(step, available));
-    return amount === null ? "" : `₹${amount}`;
-  },
-  leaveJa: "やめておく",
-  leaveHintJa: "地図を買わずに進みます。",
-  autoJa: "おまかせで値段を決めています",
-  takeOpen: (step, available) => price(takenAt(step, available)) !== null,
-  takeClosedJa: "今は手持ちで買える値段がない。「やめておく」で進む",
-  statusJa: status,
-  // The deal's stamp, or his turning away, before the outcome shows.
-  endDelayMs: (ending, still) => (still ? 600 : ending.kind === "out" ? 1300 : 1000),
-  // What was saved, by the rupee (display only: the story gets the outcome, never the number).
-  detailJa: (outcome, available) => {
-    const taken = (availableOutcome(rajuHaggle, outcome, available) ?? outcome) as RajuHaggleOutcome;
-    const paid = price(taken);
-    const asked = price(RAJU_MAP.steps[0]);
-    return paid !== null && asked !== null && paid < asked ? `₹${asked - paid} 値切った` : undefined;
-  },
-  Field: RajuHaggleField,
-};
+/** The haggle as a step_pick skin for a tuning (Debug's room retunes it): its steps, rules, words and field. */
+export function rajuHaggleSkinFor(numbers: RajuTuning): StepPickSkin<RajuHaggleParams, RajuHaggleOutcome> {
+  const tuning = rajuStepTuning(numbers);
+  return {
+    tuning,
+    rules: rajuHaggleRulesFor(tuning),
+    hintJa: "「じっと見る」2回で値段が下がる。見すぎると、ラージューはへそを曲げる",
+    pushJa: "じっと見る",
+    pushHintJa: "ラージューをじっと見ます。2回で値段が一つ下がり、がまんが一つ減ります。がまんが尽きると地図は買えません。",
+    takeJa: "この値段で",
+    takeHintJa: "いま出ている値段で地図を買います。",
+    takeDetailJa: (step, available) => {
+      const amount = price(takenAt(step, available));
+      return amount === null ? "" : `₹${amount}`;
+    },
+    leaveJa: "やめておく",
+    leaveHintJa: "地図を買わずに進みます。",
+    autoJa: "おまかせで値段を決めています",
+    takeOpen: (step, available) => price(takenAt(step, available)) !== null,
+    takeClosedJa: "今は手持ちで買える値段がない。「やめておく」で進む",
+    statusJa: (view, available) => status(view, available, tuning),
+    // The deal's stamp, or his turning away, before the outcome shows.
+    endDelayMs: (ending, still) => (still ? 600 : ending.kind === "out" ? 1300 : 1000),
+    // What was saved, by the rupee (display only: the story gets the outcome, never the number).
+    detailJa: (outcome, available) => {
+      const taken = (availableOutcome(rajuHaggle, outcome, available) ?? outcome) as RajuHaggleOutcome;
+      const paid = price(taken);
+      const asked = price(RAJU_MAP.steps[0]);
+      return paid !== null && asked !== null && paid < asked ? `₹${asked - paid} 値切った` : undefined;
+    },
+    Field: RajuHaggleField,
+  };
+}
+export const rajuHaggleSkin = rajuHaggleSkinFor(RAJU_HAGGLE_TUNING);

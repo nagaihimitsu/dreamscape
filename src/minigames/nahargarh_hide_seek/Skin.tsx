@@ -1,17 +1,22 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { SearchFieldProps, SearchSkin, SearchView } from "../engines/search/EnginePlay";
+import { useMiniGameKit } from "../host/kit";
 import { seededRandom } from "../host/seed";
-import { HIDE_SEEK_DOORS, HIDE_SEEK_HINT_MS, hideSeekGame, hideSeekRules, type HideSeekOutcome, type HideSeekParams } from "./rules";
+import {
+  HIDE_SEEK_DOORS, HIDE_SEEK_TUNING, hideSeekGameFor, hideSeekRulesFor, type HideSeekOutcome, type HideSeekParams, type HideSeekTuning,
+} from "./rules";
 import "./skin.css";
 
 // The hide-and-seek's field (a search skin): a stretch of the palace corridor, a row of identical arched doors on one wall
 // that runs on past the screen's edge (it scrolls), under the ceiling's beams and the wall lamps' light. An opened door
 // shows an empty room with something small going on in it (looks only, from the seed), or her. 「名前を呼ぶ」 sends her name
 // back from every door, and from hers a giggle after it (a clue for the ear: the third call ends the play). Once the player
-// has opened a door or called, doing nothing brings a hint: a giggle, and her door's handles move. Doing nothing at all
-// from the start ends with her peeking from the corner. No names on the doors. With the use's art (`art.bay`, `art.room`,
-// `art.peek`), those pictures in place of the drawn wall and doorway (its leaves still drawn over it and opened), room
-// and her standing picture.
+// has opened a door or called, doing nothing brings a hint: a giggle, her door's handles move, and her face in the
+// band (react). Doing nothing at all from the start ends with her peeking from the corner. Finding her is the one moment
+// of impact: a short stop, her door's leaves swing past open and back, a ring and stars at her face (the host's juice).
+// No names on the doors. With the use's art (`art.bay`, `art.room`, `art.peek`), those pictures in place of the drawn
+// wall and doorway (the photos as the back layer, `mg-photo`; its leaves still drawn over it and opened, `mg-play-object`),
+// room and her standing picture.
 
 /** How long a call's echo shows over the doors. */
 const ECHO_MS = 1400;
@@ -19,8 +24,13 @@ const ECHO_MS = 1400;
 const HER_ECHO_DELAY_MS = 120;
 /** How long a hint's giggle shows. */
 const GIGGLE_MS = 1400;
-/** A call's sound until an echo sound exists: three soft taps this far apart (the host plays each at its set volume). */
+/** A call's sound until an echo sound exists: three soft taps this far apart, fading like an echo (a share of the volume). */
 const CALL_TAP_MS = [0, 120, 240];
+const CALL_TAP_VOLUME = [0.6, 0.35, 0.2];
+/** An empty room's creak, lower and longer than her door's (its playback rate). */
+const EMPTY_CREAK_RATE = 0.85;
+/** The stop as her door opens (ms). */
+const FOUND_STOP_MS = 90;
 const SOUNDS = { creak: "door_creak", call: "ui_tap", pigeon: "pigeon_flutter" } as const;
 
 /** What goes on in an empty room as its door opens (looks only; the seed deals them out to the empty doors). */
@@ -97,6 +107,10 @@ function RoomEvent({ kind }: { kind: HideSeekRoomEvent }) {
 }
 
 function HideSeekField({ setup, view, live, search, active, frames, cast, names, art, seed, still, sound, vibrate }: SearchFieldProps<HideSeekParams, HideSeekOutcome>) {
+  const kit = useMiniGameKit();
+  const kitRef = useRef(kit);
+  kitRef.current = kit;
+  const face = useRef<HTMLSpanElement>(null);
   const scroller = useRef<HTMLDivElement>(null);
   const doors = useRef<(HTMLButtonElement | null)[]>([]);
   const [more, setMore] = useState({ left: false, right: true });
@@ -108,15 +122,22 @@ function HideSeekField({ setup, view, live, search, active, frames, cast, names,
   const events = useMemo(() => hideSeekRoomEvents(seed, target), [seed, target]);
   const peeking = view.ending?.kind === "idle" || view.ending?.kind === "timeout";
 
-  // A door opened: its creak (and the room's own sound), the corridor brought to it (おまかせ opens doors out of view), a
-  // tap when it is hers.
+  // A door opened: its creak (an empty room's lower, and the room's own sound), the corridor brought to it (おまかせ opens
+  // doors out of view); hers, the find: a short stop on her door, then a ring and stars at her face.
   const opened = view.searched.length;
   useEffect(() => {
     if (!opened) return;
     const door = view.searched[opened - 1];
-    play.current.sound(SOUNDS.creak);
-    if (door === target) play.current.vibrate("clue");
-    else if (events[door] === "pigeon") play.current.sound(SOUNDS.pigeon);
+    if (door === target) {
+      play.current.sound(SOUNDS.creak);
+      play.current.vibrate("hit");
+      kitRef.current.juice.hitStop(FOUND_STOP_MS, doors.current[door]);
+      kitRef.current.juice.burst(face.current, "ring", 1.2);
+      kitRef.current.juice.burst(face.current, "star");
+    } else {
+      play.current.sound(SOUNDS.creak, { rate: EMPTY_CREAK_RATE });
+      if (events[door] === "pigeon") play.current.sound(SOUNDS.pigeon);
+    }
     // The corridor only (scrollIntoView would scroll the scene under the play too).
     const box = scroller.current;
     const bay = doors.current[door];
@@ -133,15 +154,17 @@ function HideSeekField({ setup, view, live, search, active, frames, cast, names,
       const showing = call !== null && ms - call < ECHO_MS ? call : null;
       setEcho((current) => (current === showing ? current : showing));
       while (call !== null && taps < CALL_TAP_MS.length && ms - call >= CALL_TAP_MS[taps]) {
+        play.current.sound(SOUNDS.call, { volume: CALL_TAP_VOLUME[taps] });
         taps += 1;
-        play.current.sound(SOUNDS.call);
       }
     });
   }, [frames, view.last]);
-  // A hint: the giggle at her door, or at the corridor's edge on her side when her door is out of view.
+  // A hint: the giggle at her door, or at the corridor's edge on her side when her door is out of view; her teasing face
+  // in the band (no words: the giggle is hers).
   useEffect(() => {
     const at = view.nudge;
     if (at === null) return undefined;
+    kitRef.current.react("tease");
     const box = scroller.current?.getBoundingClientRect();
     const door = doors.current[target]?.getBoundingClientRect();
     const where = !box || !door || (door.right > box.left + 8 && door.left < box.right - 8) ? "door" : door.left >= box.right - 8 ? "right" : "left";
@@ -159,7 +182,7 @@ function HideSeekField({ setup, view, live, search, active, frames, cast, names,
 
   return (
     <div className="mg-nahargarh-hide-seek" data-art-bay={art.bay ? true : undefined} data-more-left={more.left || undefined}
-      data-more-right={more.right || undefined} style={{ "--hide-seek-bay": art.bay ? `url("${art.bay}")` : undefined, "--hide-seek-room": art.room ? `url("${art.room}")` : undefined } as CSSProperties}>
+      data-more-right={more.right || undefined}>
       <div className="mg-nahargarh-hide-seek-corridor" ref={scroller} onScroll={onScroll} onPointerDown={active}>
         <div className="mg-nahargarh-hide-seek-row">
           {Array.from({ length: HIDE_SEEK_DOORS }, (_, door) => {
@@ -168,13 +191,19 @@ function HideSeekField({ setup, view, live, search, active, frames, cast, names,
             const event = events[door];
             return (
               <button key={door} type="button" ref={(element) => { doors.current[door] = element; }} className="mg-nahargarh-hide-seek-bay"
-                data-testid={`minigame-spot-${door}`} data-minigame-primary={door === 0 || undefined} data-open={open || undefined}
+                data-testid={`minigame-spot-${door}`} data-open={open || undefined}
                 data-hers={(open && hers) || undefined} aria-disabled={!live || open || undefined}
                 aria-label={`扉${door + 1}${open && hers ? "：見つけた" : open ? "：空っぽの部屋" : ""}`}
-                onClick={() => { if (live && !open) search(door); }}>
-                <span className="mg-nahargarh-hide-seek-door" aria-hidden="true">
+                onClick={(event) => {
+                  if (live && !open) search(door);
+                  // An open door has nothing more behind it: a small refusal, never a dead tap.
+                  else if (live) kit.juice.denied(event.currentTarget);
+                }}>
+                {art.bay && <span className="mg-nahargarh-hide-seek-bay-photo" aria-hidden="true"><img className="mg-photo" src={art.bay} alt="" draggable={false} /></span>}
+                <span className="mg-nahargarh-hide-seek-door mg-play-object" aria-hidden="true">
                   <span className="mg-nahargarh-hide-seek-room">
-                    {open && hers && <span className="mg-nahargarh-hide-seek-her">{cast.heroine}</span>}
+                    {art.room && <img className="mg-nahargarh-hide-seek-room-photo mg-photo" src={art.room} alt="" draggable={false} />}
+                    {open && hers && <span className="mg-nahargarh-hide-seek-her">{cast.heroine}<span className="mg-nahargarh-hide-seek-face" ref={face} /></span>}
                     {open && !hers && event && <RoomEvent kind={event} />}
                   </span>
                   <span className="mg-nahargarh-hide-seek-leaf mg-nahargarh-hide-seek-leaf-left">
@@ -215,16 +244,17 @@ function HideSeekField({ setup, view, live, search, active, frames, cast, names,
   );
 }
 
-/** The hide-and-seek as a search skin: its game, rules, words and field. */
-export const hideSeekSkin: SearchSkin<HideSeekParams, HideSeekOutcome> = {
-  game: hideSeekGame,
-  rules: hideSeekRules,
+/** The hide-and-seek as a search skin for a tuning (Debug's room retunes it): its game, rules, words and field. */
+export const hideSeekSkinFor = (tuning: HideSeekTuning): SearchSkin<HideSeekParams, HideSeekOutcome> => ({
+  game: hideSeekGameFor(tuning),
+  rules: hideSeekRulesFor(tuning),
   hintJa: "扉を押して開ける。廊下は横に続いている",
   buttons: [{ id: "call", labelJa: "名前を呼ぶ", hintJa: "廊下に向かって、彼女の名前を呼びます。こだまの中に、返事がまじるかもしれません。", tone: "secondary" }],
   autoJa: "おまかせで探しています",
   // Her in the open door, the last echo, or her peeking from the corner, before the outcome shows.
   endDelayMs: (ending, still) => (still ? 700 : ending.kind === "found" ? 1400 : ending.kind === "button" ? 1300 : 1500),
   statusJa: (view) => status(view),
-  nudgeMs: HIDE_SEEK_HINT_MS,
+  nudgeMs: tuning.hintMs,
   Field: HideSeekField,
-};
+});
+export const hideSeekSkin = hideSeekSkinFor(HIDE_SEEK_TUNING);

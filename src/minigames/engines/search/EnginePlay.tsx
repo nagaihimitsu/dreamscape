@@ -9,6 +9,8 @@ import "./engine.css";
 
 /** What the field shows: where the play is (the engine's progress), the latest action, a hint, and the ending once there is one. */
 export interface SearchView extends Omit<SearchProgress, "ending" | "misses" | "helped" | "acted"> {
+  /** How many rounds the play has (most games: one). */
+  total: number;
   /** The latest action and when it was done (the host's clock), for a field that shows it for a moment (an echo, a creak). */
   last: { action: SearchAction; at: number } | null;
   /**
@@ -71,8 +73,8 @@ function lapseAt(record: SearchRecord, setup: SearchSetup): number {
   return after + (setup.idleMs ?? setup.timeLimitMs ?? 3000);
 }
 
-const viewOf = (progress: SearchProgress, last: SearchView["last"], nudge: number | null): SearchView => ({
-  round: progress.round, searched: progress.searched, done: progress.done, presses: progress.presses, last, nudge, ending: progress.ending,
+const viewOf = (progress: SearchProgress, total: number, last: SearchView["last"], nudge: number | null): SearchView => ({
+  total, round: progress.round, searched: progress.searched, done: progress.done, presses: progress.presses, last, nudge, ending: progress.ending,
 });
 
 /** The play of a search skin. */
@@ -81,9 +83,9 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
     const { params, auto, clock, still, seed, cast, names, art, sound, vibrate } = props;
     const setup = useMemo(() => skin.game.setup(params), [params]);
     const autoRecord = useMemo(() => (auto === null ? null : skin.rules.autoRecord(auto, params)), [auto, params]);
-    const [view, setView] = useState<SearchView>(() => viewOf(searchProgress([], setup), null, null));
+    const [view, setView] = useState<SearchView>(() => viewOf(searchProgress([], setup), setup.rounds.length, null, null));
     const actions = useRef<SearchAction[]>([]);
-    const decided = useRef<{ outcome: Outcome; endAt: number; detailJa?: string } | null>(null);
+    const decided = useRef<{ outcome: Outcome } | null>(null);
     const lastActive = useRef(0);
     const lastNudge = useRef(0);
     const draws = useRef(new Set<(ms: number) => void>());
@@ -93,12 +95,17 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
     latestView.current = view;
     const hintId = useId();
 
+    // The end at the moment it is decided (docs/13 2.6): the host's finish runs over the field's hold (her in the open
+    // door, the ring), and the record (with when it ended) goes with it for the ★.
     const finish = useCallback((record: SearchRecord, ms: number) => {
       if (decided.current) return;
       const ending = searchEnding(record, setup);
-      const outcome = skin.rules.outcomeOf(record, latest.current.params);
-      decided.current = { outcome, endAt: ms + skin.endDelayMs(ending, latest.current.still), detailJa: skin.detailJa?.(ending) };
+      const kept: SearchRecord = { actions: [...record.actions], lapse: record.lapse, endMs: Math.max(0, Math.round(ms)) };
+      const outcome = skin.rules.outcomeOf(kept, latest.current.params);
+      const holdMs = skin.endDelayMs(ending, latest.current.still);
+      decided.current = { outcome };
       setView((current) => ({ ...current, ending }));
+      latest.current.end(outcome, skin.detailJa?.(ending), { record: kept, holdMs });
     }, [setup]);
     const act = useCallback((action: SearchAction, ms: number) => {
       if (decided.current) return;
@@ -109,12 +116,11 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
       if ("spot" in action && after.searched.length === before.searched.length && after.round === before.round && !after.ending) return;
       if ("button" in action && !setup.buttons.some((button) => button.id === action.button)) return;
       actions.current = [...actions.current, action];
-      setView(viewOf(after, { action, at: ms }, latestView.current.nudge));
+      setView(viewOf(after, setup.rounds.length, { action, at: ms }, latestView.current.nudge));
       if (after.ending) finish({ actions: actions.current, lapse: null }, ms);
     }, [setup, finish]);
 
     useEffect(() => {
-      let ended = false;
       let autoIndex = 0;
       let shown: string | null = null;
       return clock.onFrame((ms) => {
@@ -149,11 +155,6 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
           }
         }
         for (const draw of draws.current) draw(ms);
-        const done = decided.current;
-        if (done && !ended && ms >= done.endAt) {
-          ended = true;
-          latest.current.end(done.outcome, done.detailJa);
-        }
       });
     }, [clock, autoRecord, setup, act, finish]);
     const live = auto === null && view.ending === null;
@@ -176,7 +177,9 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
             setup={setup} view={view} live={live} search={search} active={active} frames={frames} />
         </div>
         <div className="mg-search-controls">
-          {auto === null && <p className="mg-search-hint" id={hintId}>{hint}</p>}
+          {/* The play starts here (the host focuses it, and the result card sits just above it, over the controls): read out,
+              it says how to play; Tab goes on to the buttons, Shift+Tab back to the places. */}
+          {auto === null && <p className="mg-search-hint" id={hintId} tabIndex={-1} data-minigame-primary>{hint}</p>}
           {auto !== null ? <p className="mg-search-auto">{skin.autoJa}</p> : (
             <div className="mg-search-buttons">
               {skin.buttons.map((button) => (
