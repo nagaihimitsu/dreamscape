@@ -340,6 +340,8 @@
   }
   .mobile-observation-active .observation-controls { flex: 1 1 0; }
   .mobile-observation-active .observation-options { flex: none; }
+  /* 「観光案内をもう一度読む」 and 「進む」 on a row of their own under the toolbar. */
+  .mobile-observation-active .observation-next { flex: 1 0 100%; margin: 0 0 2px; }
   /* The image and the explanation have separate space: neither covers the
      selected point, and the picture stays draggable while the clue is open. */
   .mobile-observation-active .observation-detail {

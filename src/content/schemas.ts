@@ -178,8 +178,16 @@ export const presentationSchema = z
             x: z.number().min(0).max(100),
             y: z.number().min(0).max(100),
           }).strict().optional(),
+          /**
+           * Where the background is (optional, 2026-11-13): a place on a city map of the same journey (`placeId`; named as
+           * the screens name it, the hotel 「滞在先のホテル」) or a place not on the map (`placeJa`). While a story scene
+           * shows the background, the header's place plate names it (src/features/journey/travel-labels.ts hudPlaceName).
+           */
+          placeId: id.optional(),
+          placeJa: text.optional(),
         })
-        .strict(),
+        .strict()
+        .refine((background) => !(background.placeId && background.placeJa), "A background names its place by placeId or placeJa, not both"),
     ),
     emotions: z.record(id, text),
     memories: z.record(

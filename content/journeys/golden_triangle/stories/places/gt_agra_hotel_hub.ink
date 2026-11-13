@@ -87,6 +87,8 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 窓辺のグラスにだけ、着いた日の花びらが浮かんでいた。片付ける人も、それには手を出さなかったらしい。
+# background: gt_bg_hotel_rooftop_night
+# tint: off
 # speaker: narrator
 # local_word: gt_agra_word_petha
 二人は宿の屋上に上がり、アンワルにもらった菓子の箱を開けた。半透明の、四角い砂糖漬け。ペーターは冬瓜からできているのだと、箱に書いてある。

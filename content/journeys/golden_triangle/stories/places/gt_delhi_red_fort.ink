@@ -230,7 +230,7 @@ INCLUDE modules.ink
 赤い城、暗くなってから。カムラの一覧の一行目が気になって、二人はもう一度、レッド・フォートの城門の前に来ていた。そこへ、宿の主人から電話が入った。
 # speaker: gt_delhi_hotel_owner
 隣のカムラさんのお孫さんが、お二人を探しています
-# background: gt_bg_delhi_hotel_hub
+# background: gt_bg_delhi_hotel_alley
 # ambience: amb_crowd_outdoor
 # speaker: narrator
 # bgm: gt_a_newcomer
@@ -269,7 +269,7 @@ INCLUDE modules.ink
 # reaction: enemy,anger
 女性車両？　そんなもの、あるわけない。……ほら。やっぱり、話がおかしいんです
 -> quiz(1) ->
-# background: gt_bg_delhi_hotel_hub
+# background: gt_bg_delhi_hotel_alley
 { quiz_correct:
     # speaker: narrator
     アマンは黙って携帯で調べ、画面を見つめたまま動かなくなった。

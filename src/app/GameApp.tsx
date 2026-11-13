@@ -612,6 +612,15 @@ export function GameApp({
     : game.activeBattle && currentBattle
       ? landmarkPhoto(currentBattle.landmarkId) ?? backdropPhoto(game.activeBattle.frame?.background ?? currentBattle.backgroundId)
     : active ? backdropPhoto(active.frame.background) : undefined;
+  // The background the story scene on screen draws its picture from (in the order of the screens below): the header's
+  // place plate names where it is, if it says (hudPlaceName). None where a landmark's photo shows: the party is there.
+  const sceneBackgroundId = !game || moments.packingScene ? undefined
+    : activeEncounter && currentEncounter ? (encounterImage ? undefined : activeEncounter.frame.background)
+    : game.activeEpilogue ? game.activeEpilogue.frame.background
+    : game.activeTourism ? (landmarkPhoto(game.activeTourism.landmarkId) ? undefined : game.activeTourism.frame?.background)
+    : game.activeBattle && currentBattle
+      ? (landmarkPhoto(currentBattle.landmarkId) ? undefined : game.activeBattle.frame?.background ?? currentBattle.backgroundId)
+    : active?.frame.background;
   const nameForm = (
     <>
       <label>
@@ -652,6 +661,7 @@ export function GameApp({
       {game && <JourneyHud
         game={game}
         place={currentTravelPlace}
+        sceneBackgroundId={sceneBackgroundId}
         view={hudView(game)}
         onRecords={() => setRecordsOpen(true)}
         onAlbum={() => setAlbumOpen(true)}

@@ -10,7 +10,7 @@ import { fitZoom, getFocusView, labelMaxWidth } from "./map-focus";
 import { placeDisplayName } from "./travel-labels";
 import { FOCUS_MS, type PressKind } from "./travel-selection";
 import type { PressScope, TravelSelectionApi } from "./useTravelSelection";
-import { visitedPlaceIds } from "./visited-places";
+import { trailPlaceIds, visitedPlaceIds } from "./visited-places";
 import "./place-map.css";
 
 const TILE_ERROR_JA = "地図の一部を読み込めません。通信を確認してください。行き先一覧は引き続き利用できます。";
@@ -139,6 +139,22 @@ function MapCanvas({ game, events, places, selectedId, onMarker, onFocusEnd, map
         });
       });
       marker.on("click", () => onMarkerRef.current(place.id, "pointer")).addTo(group);
+    }
+    // The trail (visited-places.ts trailPlaceIds): the places been to that have no mark above keep a small stamp, which
+    // cannot be chosen or focused (the list holds every destination); the legend names it.
+    const { travel } = getCityContent(game.currentCityId);
+    for (const id of trailPlaceIds(game, places.map((place) => place.id))) {
+      const place = travel.places.find((item) => item.id === id);
+      if (!place) continue;
+      const icon = L.divIcon({ className: "travel-map-trail-wrap", html: '<span class="travel-map-trail" aria-hidden="true">✓</span>', iconSize: [18, 18], iconAnchor: [9, 9] });
+      const trail = L.marker([place.latitude, place.longitude], { icon, interactive: false, keyboard: false, zIndexOffset: -1000 });
+      trail.on("add", () => {
+        const element = trail.getElement();
+        if (!element) return;
+        element.setAttribute("aria-hidden", "true");
+        element.dataset.testid = `map-trail-${place.id}`;
+      });
+      trail.addTo(group);
     }
   }, [places, events, selectedId, game]);
 

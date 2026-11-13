@@ -278,6 +278,7 @@ export function TourismScreen({
             landmarkName={landmark.nameJa}
             onNotebook={onNotebook}
             onProceed={onBattle}
+            onReplayGuide={landmark.guideStoryId ? onReplayGuide : undefined}
             onSelect={(id) => selectClue(id, false)}
           />
           {selected && detailOpen && (
@@ -299,7 +300,6 @@ export function TourismScreen({
             <p>{asset.creditJa}</p>
             <p>{asset.modificationJa}</p>
             <p><a href={asset.sourceUrl} target="_blank" rel="noreferrer">画像の出典</a> · <a href={asset.licenseUrl} target="_blank" rel="noreferrer">{asset.licenseName}</a></p>
-            {landmark.guideStoryId && <button className="text-button" data-testid="guide-replay" onClick={onReplayGuide}>観光案内をもう一度読む</button>}
           </details>
         </div>
       )}

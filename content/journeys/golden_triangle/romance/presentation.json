@@ -55,7 +55,8 @@
       "captionJa": "アーグラ ／ メヘターブ・バーグ",
       "color": "#817569",
       "fallback": "neutral",
-      "imageAssetId": "gt_img_agra_mehtab_bagh"
+      "imageAssetId": "gt_img_agra_mehtab_bagh",
+      "placeId": "agra_mehtab_bagh"
     },
     "gt_bg_agra_ram_bagh": {
       "nameJa": "ラム・バーグ",
@@ -90,7 +91,8 @@
       "captionJa": "デリー ／ チャンドニー・チョーク",
       "color": "#817569",
       "fallback": "neutral",
-      "imageAssetId": "gt_img_delhi_chandni_chowk"
+      "imageAssetId": "gt_img_delhi_chandni_chowk",
+      "placeId": "delhi_chandni_chowk"
     },
     "gt_bg_delhi_humayun_tomb": {
       "nameJa": "フマユーン廟",
@@ -132,7 +134,8 @@
       "captionJa": "デリー ／ パハールガンジ",
       "color": "#8a6a3a",
       "fallback": "neutral",
-      "imageAssetId": "gt_img_delhi_paharganj"
+      "imageAssetId": "gt_img_delhi_paharganj",
+      "placeJa": "パハールガンジ"
     },
     "gt_bg_delhi_qutb_minar": {
       "nameJa": "クトゥブ・ミナール",
@@ -157,7 +160,8 @@
       "imagePosition": {
         "x": 60,
         "y": 10
-      }
+      },
+      "placeJa": "ニューデリー駅"
     },
     "gt_bg_delhi_station_front": {
       "nameJa": "ニューデリー駅（正面）",
@@ -168,7 +172,8 @@
       "imagePosition": {
         "x": 35,
         "y": 70
-      }
+      },
+      "placeJa": "ニューデリー駅"
     },
     "gt_bg_jaipur_albert_hall": {
       "nameJa": "アルバート・ホール博物館",
@@ -241,25 +246,36 @@
       "imageAssetId": "gt_img_jaipur_panna_meena_kund"
     },
     "gt_bg_delhi_hotel_hub": {
-      "nameJa": "デリーの滞在先",
+      "nameJa": "滞在先のホテル（デリー）",
       "captionJa": "デリー ／ 滞在先（バンガロールの施設を用いたロビーのイメージ）",
       "color": "#817569",
       "fallback": "neutral",
-      "imageAssetId": "gt_img_hotel_illustration"
+      "imageAssetId": "gt_img_hotel_illustration",
+      "placeId": "delhi_hotel_hub"
+    },
+    "gt_bg_delhi_hotel_alley": {
+      "nameJa": "滞在先のホテルの路地（デリー）",
+      "captionJa": "デリー ／ 滞在先の路地（パハールガンジの通りを用いたイメージ）",
+      "color": "#8a6a3a",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_paharganj",
+      "placeId": "delhi_hotel_hub"
     },
     "gt_bg_agra_hotel_hub": {
-      "nameJa": "アーグラの滞在先",
+      "nameJa": "滞在先のホテル（アーグラ）",
       "captionJa": "アーグラ ／ 滞在先（バンガロールの施設を用いたロビーのイメージ）",
       "color": "#817569",
       "fallback": "neutral",
-      "imageAssetId": "gt_img_hotel_illustration"
+      "imageAssetId": "gt_img_hotel_illustration",
+      "placeId": "agra_hotel_hub"
     },
     "gt_bg_jaipur_hotel_hub": {
-      "nameJa": "ジャイプールの滞在先",
+      "nameJa": "滞在先のホテル（ジャイプール）",
       "captionJa": "ジャイプール ／ 滞在先（バンガロールの施設を用いたロビーのイメージ）",
       "color": "#817569",
       "fallback": "neutral",
-      "imageAssetId": "gt_img_hotel_illustration"
+      "imageAssetId": "gt_img_hotel_illustration",
+      "placeId": "jaipur_hotel_hub"
     },
     "gt_bg_hotel_rooftop_night": {
       "nameJa": "宿の屋上（夜）",

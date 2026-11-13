@@ -33,7 +33,8 @@ function CountUp({ value, format = String, reduceMotion }: { value: number; form
 
 /**
  * 旅の数字 (2026-11-13 user decision; journey-numbers.ts): the journey in a few numbers, at the end roll and in 旅の記録.
- * A line without a whole-journey number to tell (the days not known for the journey, no money record) is left out.
+ * A line without a whole-journey number to tell (the days not known for the journey, no money record) is left out, and so is
+ * a line of a kind the journey has none of (no one to meet, no words of the country, no album pictures).
  * Read-only; nothing in it is a relationship value or an English score.
  */
 export function JourneyNumbersCard({ numbers, reduceMotion }: { numbers: JourneyNumbers; reduceMotion: boolean }) {
@@ -42,9 +43,9 @@ export function JourneyNumbersCard({ numbers, reduceMotion }: { numbers: Journey
   const rows: { label: string; value: ReactNode }[] = [
     ...(numbers.days !== null ? [{ label: "旅の日数", value: count(numbers.days, "日") }] : []),
     { label: "出来事のあった場所", value: count(numbers.eventPlaces, "か所") },
-    { label: "出会った人", value: count(numbers.people, "人") },
-    { label: "覚えたその国の言葉", value: count(numbers.localWords, "語") },
-    { label: "アルバムの写真", value: count(numbers.photos, "枚") },
+    ...(numbers.people !== null ? [{ label: "出会った人", value: count(numbers.people, "人") }] : []),
+    ...(numbers.localWords !== null ? [{ label: "覚えたその国の言葉", value: count(numbers.localWords, "語") }] : []),
+    ...(numbers.photos !== null ? [{ label: "アルバムの写真", value: count(numbers.photos, "枚") }] : []),
     ...(numbers.spent ? [{ label: "使ったお金", value: numbers.spent.textJa }] : []),
   ];
   return <section className="journey-numbers" aria-labelledby={`${id}-title`} data-testid="journey-numbers">
