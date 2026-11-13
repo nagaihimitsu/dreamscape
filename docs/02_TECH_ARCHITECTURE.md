@@ -17,39 +17,51 @@
 - `effect` は**許可済みイベントIDをルール層に渡す**だけ。文字列をコードとして評価しない。同一効果の適用はイベント単位で冪等にする。
 - ヒロイン/主人公名や現在の呼称は、GameStateから読み込み、Inkの変数または安全なプレースホルダーに渡す。新規台詞に固定名を直書きしない。
 
-## 推奨フォルダ（Codexが現状調査のうえ適宜調整）
+## フォルダ構成
+
+ゲームの仕組み（共通コード・共通データ）と、各旅行編（ミラノ編、インド・ゴールデントライアングル編など）のデータを分ける。旅行編は `content/journeys/<journeyId>/` のフォルダ1つで、フォルダを追加して `npm run content:build` を実行すると、コードを変えずに旅行編の一覧に加わる（追加の手順・統合の規則・IDの付け方は下の「新しい編を追加する手順」）。最小の例は、遊べる架空の旅行編の[見本の編](../authoring/templates/sample_trip/README.md)（開発・テスト専用）。
+
 ```
-src/
-  app/                  # 画面遷移・起動
-  components/           # DialogueBox, ChoiceButtons, CharacterPortrait
-  features/romance/     # RomanceScreen, DateMenu
-  features/tourism/     # 将来: TourismScreen, Observation
-  features/battle/      # 将来: BattleScreen, QuestionCard
-  domain/               # AP, event eligibility, affection, rewards（UIに依存しない）
-  content/              # 読み込みとスキーマ検証
-    generated/          # content:build の生成物（Git管理しない・手動編集しない）
-  story/                # inkjs実行アダプタ
-  persistence/          # セーブ・復元・データ保護
-  types/                # GameState, Event, Content types
-content/                # 共通データ（全旅行編で共有する基盤）
-  journeys/<journeyId>/ # 旅行編ごとのフォルダ（manifest.json, cities/, travel/, stories/, quizzes/, 各カタログ, public/assets/ の画像）
-scripts/                # Inkコンパイル・コンテンツ検証・共通の制作ツール
-  journeys/<journeyId>/ # その旅行編だけの制作ツール（共通コード・ツールからは読み込まない）
-authoring/              # 共通の制作手順・テンプレート
-  brand/                # ファビコンの元画像（npm run icons:build が public/ のアイコンを生成）
-  characters/           # ヒロインの立ち絵の元のPNG（配信しない。配信するのは public/assets/characters/ の可逆WebP）
-  journeys/<journeyId>/ # 旅行編ごとの下書き・調査記録（ゲームは読み込まない）
-  templates/sample_trip/ # 開発・テスト専用の見本の編（明示したときだけ読み、本番には入らない。npm run journey:new の元。下の「見本の編」）
-public/                # ファビコン・アプリアイコン・manifest.webmanifest（index.html から相対パスで参照）
-  assets/              # 全旅行編で共有する画像・音声（ヒロイン、演出、共通アイコン）
-tests/e2e/             # E2E（Playwright）。段ごとのタグ（gate・debug・prod・sample・smoke）で実行を分ける（docs/10「E2Eの段」）
-  explore/             # 週1回のモンキー（@explore。docs/10「探索テスト」）
-tests/explore/         # 全旅行編を種付きで歩くゲーム関数の層の探索（単体テストの content の組。docs/10「探索テスト」）
-tests/screens/          # 人が見る画面一覧の撮影（npm run screens。合否にしない）
-tests/fixtures/         # 単体テスト用の保存データと状態（ゲームには含めない）
-tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作ツールの単体テストと補助（共通のコード・テストからは読み込まない。docs/10「旅行編ごとのテスト」）
-.github/workflows/      # CI（ci.yml・e2e.yml）、週1回の探索（e2e-explore.yml）と GitHub Pages への公開（pages.yml）
+src/                          # ゲーム本体（React・ゲームルール・保存）
+  app/                        # 画面遷移・起動・設定
+  components/                 # 会話の窓・選択肢・人物など共通の部品
+  features/                   # 画面ごとの部品（romance・tourism・battle・journey・learning）
+  domain/                     # ゲームルールの純粋関数（AP、条件、報酬、旅行など。UIに依存しない）
+  content/                    # 生成物の読み込みとスキーマ検証
+    generated/                # content:build の生成物（Git管理しない・手動で編集しない）
+  story/                      # inkjs の実行アダプタ
+  persistence/                # セーブ・復元・データ保護
+  audio/                      # 効果音・BGM・環境音・振動
+  random/                     # 恋愛の抽選に使う乱数の元
+  dev/                        # Debug と素材のプレビュー（本番では開いたときにだけ読み込む別のファイル）
+content/                      # 共通データ（全旅行編で共有：恋愛の段階・数値、共通デート効果、既定背景、辞書、人物）
+  journeys/<journeyId>/       # 旅行編フォルダ（フォルダ名＝旅行編ID）
+    manifest.json             # 登録（名前・並び順 order・公開状態・都市の順序・通貨・初期値・任意のタイトルの絵）
+    cities/ travel/           # 都市・都市内の地点と移動
+    stories/**/*.ink quizzes/ # 会話とクイズ
+    battles/ progression/ romance/ tourism/ encounters/ learning/ presentation/  # 各カタログ（必要なものだけ）
+    public/assets/            # その旅行編だけが使う画像
+public/                       # ファビコン・アプリアイコン（npm run icons:build で生成）・manifest.webmanifest（index.html から相対パスで参照）
+  assets/                     # 全旅行編で共有する画像・音声（ヒロイン、演出、共通アイコン）
+authoring/                    # 共通の制作手順とテンプレート
+  brand/                      # ファビコン・アプリアイコンの元画像
+  characters/                 # ヒロインの立ち絵の元のPNG（配信しない。配信するのは public/assets/characters/ の可逆WebP）
+  journeys/<journeyId>/       # 旅行編ごとの下書き・調査記録（ゲームは読み込まない）
+  schemas/                    # エディタの入力補助（npm run schemas:build が生成）
+  templates/sample_trip/      # 見本の編（開発・テスト専用の架空の「見本の街」。明示したときだけ読み、本番には入らない。npm run journey:new の元。下の「見本の編」）
+  templates/journey-new-checklist.md  # journey:new が新しい旅行編に書く CHECKLIST.md の元
+scripts/                      # Inkコンパイル・コンテンツ検証・生成・共通の制作ツール
+  journeys/<journeyId>/       # その旅行編だけの制作ツール（共通コード・ツールからは読み込まない）
+tests/e2e/                    # E2E（Playwright）。段ごとのタグ（gate・debug・prod・sample・smoke）で実行を分ける（docs/10「E2Eの段」）
+  explore/                    # モンキー（@explore。手動で実行。docs/10「探索テスト」）
+tests/explore/                # 全旅行編を種付きで歩くゲーム関数の層の探索（単体テストの content の組。npm test に含まれる。docs/10「探索テスト」）
+tests/screens/                # 人が見る画面一覧の撮影（npm run screens。合否にしない）
+tests/fixtures/               # 単体テスト用の保存データと状態（ゲームには含めない）
+tests/journeys/<journeyId>/   # その旅行編だけの内容・経路・制作ツールの単体テストと補助（フォルダに置けば npm test に加わる。共通のコード・テストからは読み込まない。docs/10「旅行編ごとのテスト」）
+.github/workflows/            # CI（ci.yml。PRは本番ビルドだけ）、手動のE2E・探索（e2e.yml・e2e-explore.yml）と GitHub Pages への公開（pages.yml）
 ```
+
+コマンドの一覧は[開発の手引き](12_DEVELOPMENT.md#コマンド)にある。
 
 ## 共通データと旅行編フォルダ
 
@@ -350,8 +362,16 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 
 既存の入口を保ちながら、次の単位で処理を分担する。
 
+- 画面（`src/app/`・`src/components/`・`src/features/`）は表示・操作と、保存した後の状態の反映だけを持つ。APや関係の値の計算はしない。
+- `src/domain/battle.ts`：採点・問いの順・結果・成績、資料の選択・追及・組み合わせ。クイズを終えたときに共通の章の進行を呼ぶ。`src/domain/tourism.ts`：案内・訪問・発見・クイズとの行き来。案内を読み終えたときに共通の報酬の処理へ知らせる。`src/domain/chapter.ts`：エピソードと特殊戦が開く条件、エピソードと都市の完了の記録、自由時間。デートの開く条件（`when`・`until`）と道中交流の入場ルールの条件は、`src/domain/conditions.ts` の `meets` がエピソードなどの記録から決める（何も保存しない）。`src/domain/epilogue.ts`：到着の会話とエピローグの開始・途中の保存・読了。`src/domain/rewards.ts`：一度かぎりのAP、上限を超えた残り、結果の画面の報酬の記録。`src/domain/travel.ts`・`travel-game.ts`：旅行の事前の計算と、現在地・時刻・支払いの状態の更新。
+- `src/features/tourism/viewport.ts`：観察の画像の座標・拡大・動かせる範囲の計算。
+- 都市のデータは登録したカタログから読み、観光・バトル・デート・背景は今の都市に絞って参照する（都市の追加と所属の検証は[都市の追加手順](../authoring/FUTURE_CITIES.md)）。
+- `src/story/`：inkjs の公式の `Continue`・`currentChoices`・`ChooseChoiceIndex` と状態のJSONを包むアダプタ。
+- `src/persistence/`：保存領域のアダプタ・保存データの検証・バックアップ・古い保存データの整理（`old-data.ts`）。
+- `src/dev/`：Debug（「場面の確認」・`?debug`・Debug起動URL）と素材のプレビュー。`scenario-builders.ts` は単体テスト・Debug・E2Eが共有する場面の組み立て部品、`test-cities.ts` は仮の場面と単体テストの試験用の都市、`fixture-template.ts` はその元にする都市を役割で選ぶ関数。本番ビルドには、Debugモードがオンの端末で開いたときにだけ読み込む別のファイルとして入る（テスト用の読み取り口 `debug-hook.ts` は開発サーバーだけ）。Debugモードの切り替えは `src/app/debug-mode.ts`、関係の変化の計算は `src/domain/relationship-change.ts`。
+- `src/content/`・`scripts/`：データ契約・許可した札・ビルド時の検証。`scripts/journeys/<journeyId>/` はその旅行編だけの制作ツール（例：インド編の `india:check`）で、共通のコードとツールからは読み込まない。
 - `src/app/App.tsx` は旅行編の選択と保存領域のロック、`GameApp.tsx` はゲーム画面と画面間の操作を担当する。`useGameSession.ts` が状態更新・保存・復元・削除時の競合確認をまとめ（1回の操作の反映は `src/domain/player-action.ts` の `applyPlayerAction`。地図の行き先の完了と、クリアした都市からの自動の出発を同じ保存単位にする。ミラノの通しテストも同じ関数で操作する。同じファイルの `listPlayerActions` は、画面が出す操作を画面と同じ判定の関数から並べ、探索テストが使う）、`useTravelEffects.tsx` が成功した移動の演出を扱う。保存と別タブの保護の判定は画面から分けた関数（`src/app/save-recovery.ts`・`unsaved-progress.ts`・`save-deletion.ts`、`src/persistence/journey-lock.ts`）が持つ（[画面の保護を担う関数](10_DEVELOPMENT_CHECKS.md#画面の保護を担う関数)）。
-- `src/domain/game.ts` はゲームの状態遷移を扱う。保存形式の定義は `game-state-schema.ts`、デートの条件判定は `date-rules.ts`、保存された進行の整合確認は `game-state-validation.ts` に分ける。既存の公開関数と型は `game.ts` から引き続き利用できる。
+- `src/domain/game.ts` はゲームの状態遷移（デートを始められるか・APの消費・恋愛の選択の効果・思い出と告白の進行など）を扱う。保存形式の定義は `game-state-schema.ts`、デートの条件判定は `date-rules.ts`、保存された進行の整合確認は `game-state-validation.ts` に分ける。既存の公開関数と型は `game.ts` から引き続き利用できる。
 - 共通条件管理システム（段階1）：条件の形は `src/content/condition-schemas.ts`（zod だけを読む軽いモジュール。生成したカタログを実行時に読むときも使う）、判定は `src/domain/conditions.ts` の `meets(state, condition)`（今の記録を読むだけで何も書かない）。デートの `when`・`until`（`date-rules.ts`）と入場ルールの `when`（`encounter.ts`）は `meets` だけで判定する。バトルを遊んだか（`battleRecords` の `attempts`）を読むのは同じファイルの `battlePlayed` だけ。セーブの読み込みでは、進行中のデートの条件を調べ直さない（始めたときに満たしていたため。条件を直してもセーブが読めなくならない）。Debugの説明は `src/dev/condition-explain.ts`。
 - `src/domain/travel-destinations.ts` は行き先候補と待機時刻を計算する。帰宿候補と宿泊計画は `travel-game.ts` を画面表示と実際の操作で共用し、画面内に同じルールを重複実装しない。
 - `scripts/content-pipeline.ts` の `buildContent`（`content:build`）は、読み込み → 検証 → 書き出しの3段階で動く。
@@ -458,4 +478,4 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 ## 品質
 - `npm run dev` / `npm run build` / `npm run test` を初期導入。TypeScript型チェック、ユニットテスト、Inkコンパイル失敗時の検出。
 - `content/` にあるサンプルは検証されるまで試作扱い。実際の実装でサンプルの見た目や数値を固定しない。
-- 実際の依存バージョン、Inkコンパイラ方法、ライセンス、Vite対応をCodexが公式資料から確認し、手元で動く手順をREADMEに記録する。
+- 実際の依存バージョン、Inkコンパイラ方法、ライセンス、Vite対応をCodexが公式資料から確認し、手元で動く手順を[開発の手引き](12_DEVELOPMENT.md)に記録する。

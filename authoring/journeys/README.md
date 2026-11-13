@@ -4,6 +4,7 @@
 
 - `drafts/`：下書き・観察カードなどの作業資料
 - `research/`：調査記録
+- 編集メモ：ミラノ編の観光クイズの編集上の棚卸しは [quiz-editorial-review.md](milano/quiz-editorial-review.md)、まだ使っていない小話の候補は [milano/drafts/](milano/drafts/) にある。候補はゲームに読み込まれず、史実の最終確認や公開の承認を示すものではない
 - その他：旅行編専用の制作補助（例：インド編の `scaffold/`）や編集メモ（例：ミラノ編の画像の権利情報の写し `image-licenses/`）、配信しない自作の絵の元画像（例：インド編の移動画面の背景の元のJPEG `backdrops/`。配信するWebPは `content/journeys/golden_triangle/public/assets/backdrops/`）
 
 全旅行編で共有する手順書とテンプレートは `authoring/` 直下（[制作マニュアル](../CONTENT_GUIDE.md)、[テンプレート](../templates/) など）にあります。制作ツールが使う観察カードや交通判断の場所は、各旅行編の `content/journeys/<旅行編ID>/manifest.json` の `authoring` で指定します。
