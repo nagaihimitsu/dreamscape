@@ -490,6 +490,7 @@ tests/journeys/<journeyId>/   # その旅行編だけの内容・経路・制作
 
 - 旅行編ごとのデータ（上の「生成物」の `journey-parts/`）：開いた旅行編の分だけを読み込む。タイトル画面はほかの旅行編のデータを読み込まない（`scripts/check-dist.ts` が確かめる）。
 - 後から読み込むもの：地図のライブラリ（Leaflet とその見た目。`src/features/journey/leaflet.ts` の `useLeaflet`。最初の地図が出るときに読み込み、それまでは地図の枠だけ。読み込めなくても行き先の一覧で選べる）と、ボタンで開くダイアログ（出典・権利の一覧、古い保存データの整理、旅の音楽室、アルバム。`src/components/LazyDialog.tsx`。読み込む間は何も出さず、読み込めないときはその旨の小さなダイアログを出して、遊んでいる旅は続けられる）。どれもDebugモードがオフでも読み込むファイルとして、Debugのコードがないことを `scripts/check-dist.ts` が確かめる。
+- Webフォント（Noto Sans JP・Noto Serif JP の400・500・600。どの太さも使っている）：`index.html` の `<link rel="stylesheet">` で読み込み、`fonts.googleapis.com`・`fonts.gstatic.com` へ先に接続する（`preconnect`）。スタイルシートの `@import` では、ゲームのスタイルシートが届くまでフォントの読み込みが始まらなかった。
 
 ## 品質
 - `npm run dev` / `npm run build` / `npm run test` を初期導入。TypeScript型チェック、ユニットテスト、Inkコンパイル失敗時の検出。
