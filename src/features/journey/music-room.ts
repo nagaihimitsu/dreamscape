@@ -1,13 +1,16 @@
+import { readLineId } from "../../components/read-skip";
 import type { MusicPlay } from "../../content/music";
 import type { SceneAudio } from "../../content/scene-audio";
 import type { SceneEntry } from "../../content/scene-schemas";
+import { knotAddress } from "../../content/story-address";
 import type { GameState } from "../../domain/game";
 
 // 旅の音楽室 (2026-11-13 user decision): the tracks and the heroine's voiced lines the player has already heard, derived
-// from what the game keeps (no new saved data): the tracks of the places visited and the `# bgm:` of the scenes
-// completed, and the `# voice:` lines of those scenes with their text (content:build's index, scene-audio.json). It
-// opens once the player has cleared a city. Pure: MusicRoom.tsx gives it the content and plays what is chosen through
-// the game's own players. Nothing here reads a relationship value.
+// from what the game and this device keep (no new saved data): the tracks of the places visited and the `# bgm:` of the
+// scenes completed, and, of those scenes' `# voice:` lines (content:build's index, scene-audio.json), only the ones this
+// device has read (read-skip's record, src/components/read-skip.ts), so the branch not taken is never shown. It opens once
+// the player has cleared a city. Pure: MusicRoom.tsx gives it the content and plays what is chosen through the game's own
+// players. Nothing here reads a relationship value.
 
 /** The room opens once the player has cleared their first city. */
 export const musicRoomOpen = (game: Pick<GameState, "completedCityIds">): boolean => game.completedCityIds.length > 0;
@@ -72,23 +75,44 @@ export function heardTracks({ play, visitedPlaceIds, scenes, audio, labelOf }: {
 }
 
 /**
- * The voiced lines heard, by completed scene (in `scenes`' order; a scene without one is left out), each line once in
- * the whole room; `names` fills in {player_name} and {heroine_name}, `sceneLabel` names each scene.
+ * The story a scene's lines are read under in read-skip's record (readLineId's first part): the one its screen gives
+ * them, the lines of the knots it calls included. A date's ID (RomanceScene), a battle's ID (BattleScreen), an inserted
+ * scene's ID (EncounterScreen); else its story address: a guide (TourismScreen: the landmark's guideStoryId), an
+ * epilogue, an arrival, a tour's leg (EpilogueScreen: activeEpilogueStoryId).
  */
-export function heardVoices<S extends RoomScene>({ scenes, audio, names, sceneLabel }: {
+export function readStoryKey(scene: Pick<RoomScene, "id" | "kind" | "main" | "story">): string {
+  if (scene.kind === "talk" || scene.kind === "encounter") return scene.id;
+  const main = scene.main;
+  if (main && "date" in main) return main.date;
+  if (main && "battle" in main) return main.battle;
+  const { storyId, knot } = scene.story;
+  return knot === undefined ? storyId : knotAddress(storyId, knot);
+}
+
+/**
+ * The voiced lines heard, by completed scene (in `scenes`' order; a scene without one is left out), each line once in
+ * the whole room: only the lines this device has read (`isRead`, read-skip's record: the line's story key and its text
+ * as shown, the names filled in), so a branch not taken stays unheard. `names` fills in {player_name} and
+ * {heroine_name}, as the story does; `sceneLabel` names each scene. A voiced line whose text has Ink's own logic (a
+ * `{…}` other than the names, glue) shows other words than written and is not found (no voiced line has any today).
+ */
+export function heardVoices<S extends RoomScene>({ scenes, audio, names, sceneLabel, isRead }: {
   scenes: readonly S[];
   audio: SceneAudio;
   names: (text: string) => string;
   sceneLabel: (scene: S) => string;
+  isRead: (lineId: string) => boolean;
 }): RoomVoiceGroup[] {
   const seen = new Set<string>();
   return scenes.flatMap((scene) => {
+    const key = readStoryKey(scene);
     const voices: RoomVoice[] = [];
     for (const address of sceneAddresses(scene))
       for (const voice of audio.stories[address]?.voices ?? []) {
-        if (seen.has(voice.id)) continue;
+        const textJa = names(voice.textJa);
+        if (seen.has(voice.id) || !isRead(readLineId(key, textJa))) continue;
         seen.add(voice.id);
-        voices.push({ id: voice.id, textJa: names(voice.textJa) });
+        voices.push({ id: voice.id, textJa });
       }
     return voices.length ? [{ sceneId: scene.id, labelJa: sceneLabel(scene), voices }] : [];
   });
