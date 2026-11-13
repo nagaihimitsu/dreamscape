@@ -389,9 +389,13 @@ INCLUDE modules.ink
 # when: episode milano_last_supper_episode
 # background: milano_refectory
 # speaker: narrator
-グラツィエ教会前で、イーダが両腕を伸ばして静止した。兄が首を振る。「ちがう、それだと『大きな魚』！」
+グラツィエ教会前で、イーダが両腕を伸ばして静止した。兄が首を振る。
+# speaker: milano_last_supper_brother
+ちがう、それだと『大きな魚』！
+# speaker: milano_last_supper_brother
+今日の声は店じまい。あとは妹が代わりに晩ご飯を注文する
 # speaker: narrator
-兄「今日の声は店じまい。あとは妹が代わりに晩ご飯を注文する」。どうやら、見本を見せるために一言だけ解禁したらしい。
+どうやら、見本を見せるために一言だけ解禁したらしい。
 
 * [May I try a gesture? # option: act # translation: 身振りを一つ試してもいい？]
     # speaker: narrator
@@ -402,7 +406,9 @@ INCLUDE modules.ink
 
 * [What do you actually want for dinner? # option: ask # translation: 本当は夕食に何が食べたいの？]
     # speaker: narrator
-    兄は両手で丸を作った。イーダ「……ピザ？　さっき魚じゃないって言ってたから、私が勝手にパスタにした」
+    兄は両手で丸を作った。
+    # speaker: milano_ida
+    ……ピザ？　さっき魚じゃないって言ってたから、私が勝手にパスタにした
     # speaker: heroine
     当てるのが上手な人ほど、聞くのを忘れるのかも
     -> END
@@ -410,7 +416,9 @@ INCLUDE modules.ink
 * [Enjoy your dinner together. # option: leave # translation: 二人で夕食を楽しんで。]
     # later
     # speaker: narrator
-    兄は指にキスをして、こちらへ小さく投げた。イーダ「それだけは通訳がいらないね」。
+    兄は指にキスをして、こちらへ小さく投げた。
+    # speaker: milano_ida
+    それだけは通訳がいらないね
     # speaker: heroine
     あれ、私もいつか自然にやってみたい
     -> END
