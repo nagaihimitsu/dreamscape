@@ -1,0 +1,78 @@
+/* Small feedback marks (components/fx.tsx, 2026-11-13 user decision): decorative, aria-hidden, no presses.
+   A button that carries one is an fx-host. */
+.fx-host { position: relative; }
+
+/* キラリ: after the bag's pop (260 ms) a light crosses the button diagonally, then three tiny sparkles burst out and
+   fade; about 0.8 s (SPARKLE_MS). */
+.fx-sparkle {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.fx-sparkle-sweep {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+.fx-sparkle-sweep::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 45%;
+  background: linear-gradient(90deg, rgba(255, 248, 225, 0), rgba(255, 248, 225, 0.85), rgba(255, 248, 225, 0));
+  transform: translateX(-130%) skewX(-22deg);
+  animation: fx-sweep 420ms var(--ease-out) 180ms both;
+}
+@keyframes fx-sweep {
+  to { transform: translateX(260%) skewX(-22deg); }
+}
+.fx-star {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  background: radial-gradient(circle, #fffbea 0 30%, var(--ds-marker-selected) 70%);
+  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+  opacity: 0;
+  animation: fx-star 440ms var(--ease-out) both;
+}
+.fx-star-1 { left: 86%; top: 12%; --fx-x: 7px; --fx-y: -8px; animation-delay: 280ms; }
+.fx-star-2 { left: 14%; top: 22%; --fx-x: -7px; --fx-y: -6px; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; animation-delay: 330ms; }
+.fx-star-3 { left: 80%; top: 84%; --fx-x: 6px; --fx-y: 6px; width: 6px; height: 6px; margin: -3px 0 0 -3px; animation-delay: 380ms; }
+@keyframes fx-star {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.2) rotate(0deg); }
+  35% { opacity: 1; transform: translate(calc(var(--fx-x) * 0.5), calc(var(--fx-y) * 0.5)) scale(1) rotate(30deg); }
+  100% { opacity: 0; transform: translate(var(--fx-x), var(--fx-y)) scale(0.5) rotate(70deg); }
+}
+/* Under reduced motion and 「演出を短縮する」: one soft gold glow on the button, nothing moves. */
+@keyframes fx-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 163, 95, 0); }
+  35% { box-shadow: 0 0 10px 3px rgba(201, 163, 95, 0.8); }
+}
+.reduce-motion .fx-sparkle-sweep,
+.reduce-motion .fx-star { display: none; }
+.reduce-motion .fx-sparkle { animation: fx-glow 700ms ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  .fx-sparkle-sweep,
+  .fx-star { display: none; }
+  .fx-sparkle { animation: fx-glow 700ms ease-out both; }
+}
+
+/* Something new (a held item not looked at, a clue or an English-note entry): a small dot at the button's top left
+   corner, clear of its icon and of the bag's count; the selected marker's yellow with a slate ring, 8:1 on the slate
+   buttons. Its meaning is in the button's name. */
+.fx-dot {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ds-marker-selected);
+  box-shadow: 0 0 0 1.5px var(--ds-slate-900);
+  pointer-events: none;
+}

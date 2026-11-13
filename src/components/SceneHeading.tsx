@@ -1,5 +1,6 @@
 import { HudScreenTool } from "./HudScreenTool";
 import { Icon } from "./icons";
+import { NotebookCueMarks } from "./notebook-cue";
 
 /**
  * A story scene's heading (a sightseeing guide's landmark, a battle's landmark or
@@ -17,13 +18,14 @@ export function SceneHeading({ label, badge }: { label: string; badge?: string }
 /**
  * 手がかり帳 (S1, S6) of a sightseeing guide and of a battle: the screen's
  * own tool in the header, before ⚙設定 (HudScreenTool). The header shows it only
- * while the scene waits for a choice (hud-view.ts).
+ * while the scene waits for a choice (hud-view.ts). Its marks: notebook-cue.tsx.
  */
 export function SceneNotebookTool({ onClick }: { onClick: () => void }) {
   return (
     <HudScreenTool>
-      <button type="button" className="hud-tool" onClick={onClick}>
+      <button type="button" className="hud-tool fx-host" onClick={onClick}>
         <Icon name="book" /><span className="hud-tool-word">手がかり帳</span>
+        <NotebookCueMarks />
       </button>
     </HudScreenTool>
   );

@@ -105,3 +105,66 @@
 .held-item-lines li { overflow-wrap: anywhere; }
 .held-item-lines li + li { margin-top: 4px; }
 .held-item-lines li::marker { font-family: Georgia, serif; font-size: 0.85em; }
+
+/* 「NEW」 beside an item the player had not looked at when the detail opened (2026-11-13 user decision): white on the
+   markers' rose, 6:1. In the single item's heading it follows the name, before the ×. */
+.held-item-new {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 0 5px;
+  border-radius: 4px;
+  background: var(--ds-marker);
+  color: #fff;
+  font-family: Georgia, serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 16px;
+  vertical-align: 1px;
+}
+.held-item-detail-heading .held-item-new { flex: none; margin: 12px auto 0 -2px; }
+
+/* An item given away or used (2026-11-13 user decision): the button's picture shrinks for a moment and a faint copy of
+   the item's icon floats up from the button and fades (from where the button was, when it was the last item: an empty
+   box of the button's size, for that moment only). Under reduced motion: no shrink, the copy only fades where it is. */
+.held-item-button [data-spent] { animation: held-item-spent var(--motion-medium) var(--ease-out); }
+@keyframes held-item-spent {
+  40% { transform: scale(0.8); }
+}
+.held-items-gone {
+  position: relative;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  pointer-events: none;
+}
+.held-item-ghost {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  animation: held-item-ghost 760ms var(--ease-out) both;
+}
+.held-item-ghost img,
+.held-item-button .held-item-ghost img {
+  width: 26px;
+  height: 26px;
+  padding: 3px;
+  border-radius: 50%;
+  background: var(--ds-parchment);
+}
+@keyframes held-item-ghost {
+  0% { opacity: 0.75; transform: none; }
+  100% { opacity: 0; transform: translateY(-30px) scale(0.85); }
+}
+@keyframes held-item-ghost-fade {
+  0% { opacity: 0.6; }
+  100% { opacity: 0; }
+}
+.reduce-motion .held-item-button [data-spent] { animation: none; }
+.reduce-motion .held-item-ghost { animation-name: held-item-ghost-fade; animation-duration: 500ms; }
+@media (prefers-reduced-motion: reduce) {
+  .held-item-button [data-spent] { animation: none; }
+  .held-item-ghost { animation-name: held-item-ghost-fade; animation-duration: 500ms; }
+}

@@ -40,6 +40,10 @@ import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
 import { useVoiceSettings } from "../components/useVoice";
 import { holdSceneCues, playCue, playSe, useSoundEffectSettings } from "../audio/sound-effects";
+import { canVibrate, useVibrationSetting, vibrate } from "../audio/vibration";
+import { heldItemIds } from "../domain/item-changes";
+import { NotebookCueContext } from "../components/notebook-cue";
+import { addedIds, englishNoteKeys, markSeen, seenAll, unseenIds, type SeenMarks } from "./seen-marks";
 import { journeyMusicPlay, useBgmSettings, useSceneMusic } from "../audio/bgm";
 import { sceneMusic } from "../audio/scene-music";
 import { useReadLines } from "../components/useReadLines";
@@ -51,7 +55,7 @@ import { BattleScreen } from "../features/battle/BattleScreen";
 import { TourismScreen } from "../features/tourism/TourismScreen";
 import { ClueNotebook } from "../features/tourism/ClueNotebook";
 import { useLearning } from "../features/learning/useLearning";
-import { EnglishReview } from "../features/learning/EnglishReview";
+import { EnglishReview, metQuestions } from "../features/learning/EnglishReview";
 import { useLocalWords } from "../features/learning/useLocalWords";
 import { LocalWordNotice } from "../features/learning/LocalWordNotice";
 import { lineFrameOnScreen, lineWordsOnScreen } from "../features/learning/local-words";
@@ -170,6 +174,9 @@ export function GameApp({
   // 「効果音を出す」 and 「効果音の大きさ」 for the game's sounds and every line's `# se:` (src/audio/sound-effects.ts).
   useSoundEffectSettings(displaySettings.value.se, displaySettings.value.seVolume);
   const sePercent = Math.round(displaySettings.value.seVolume * 100);
+  // 「振動する」 (src/audio/vibration.ts): the setting only where the browser can vibrate.
+  const [vibrationAvailable] = useState(() => canVibrate(typeof navigator === "undefined" ? undefined : navigator));
+  useVibrationSetting(vibrationAvailable && displaySettings.value.vibration);
   // 「BGMを流す」 and 「BGMの大きさ」 for the background music (src/audio/bgm.ts).
   useBgmSettings(displaySettings.value.bgm, displaySettings.value.bgmVolume);
   const bgmPercent = Math.round(displaySettings.value.bgmVolume * 100);
@@ -189,6 +196,12 @@ export function GameApp({
   const momentsRef = useRef<((previous: GameState, next: GameState) => void) | null>(null);
   // 「写真の札」 (AlbumPhotoNotice): the photo the player's last action put in the album, for a few seconds.
   const [photoNotice, setPhotoNotice] = useState<AlbumPhotoNoticeState | null>(null);
+  // What the player has looked at during this play (seen-marks.ts): the held items in their open detail, the clues in
+  // 手がかり帳 and the entries of 英語ノート; one not looked at has its dot (and 「NEW」). In this tab's memory only:
+  // a new game, a load and Debug's return empty it (null), and then everything there is counts as seen (below).
+  const [seenMarks, setSeenMarks] = useState<SeenMarks | null>(null);
+  // Counts the actions that recorded a new clue in 手がかり帳: each gleams on its button (notebook-cue.tsx).
+  const [clueGleam, setClueGleam] = useState(0);
   // A journey's opening movie (manifest openingMovie) between 「旅をはじめる」 and the new game, with the names it starts with.
   const [opening, setOpening] = useState<{ videoPath: string; player: string; heroine: string } | null>(null);
   const session = useGameSession(storage, displaySettings.value.autoSave, (previous, next) => {
@@ -203,6 +216,12 @@ export function GameApp({
       const line = lineFrameOnScreen(next);
       setPhotoNotice((last) => ({ id: (last?.id ?? 0) + 1, photo, first: next.album.length === 1, fromLarge: line?.photo?.show === "large" }));
       if (!line?.quiet && !line?.seId) playCue("album_photo");
+    }
+    // A clue just recorded in 手がかり帳: clue_new, a short vibration and the notebook's button gleams (2026-11-13).
+    if (addedIds(previous.discoveredClueIds, next.discoveredClueIds).length) {
+      setClueGleam((count) => count + 1);
+      playSe("clue_new");
+      vibrate("clue");
     }
     // The action that ended a tour (tour stage 2a) says so in free time.
     if (previous.tour && !next.tour && next.completedTourIds.length > previous.completedTourIds.length) session.setNotice("ツアーが終わりました。");
@@ -329,6 +348,27 @@ export function GameApp({
   // The title starts with empty fields (the default names are their placeholders); 設定 fills in the current names.
   const [player, setPlayer] = useState(game?.playerName ?? "");
   const [heroine, setHeroine] = useState(game?.heroineName ?? "");
+  // The marks of what is new (seenMarks above): the memory starts from everything there is, and what the player opens is seen.
+  // 英語ノート's entries, read again when an answer, a record or a word learned changes (the records' content is checked).
+  const englishKey = useMemo(
+    () => (game ? englishNoteKeys(metQuestions(game, learning), learnedWords.learned) : []).join("\n"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [!!game, game?.battleRecords, game?.activeBattle?.battleId, game?.activeBattle?.contentHash, game?.activeBattle?.answers, learning.data.records, learnedWords.learned],
+  );
+  const englishIds = englishKey ? englishKey.split("\n") : [];
+  useEffect(() => {
+    if (game && !seenMarks) setSeenMarks(seenAll({ items: heldItemIds(game.inventory), clues: game.discoveredClueIds, english: englishIds }));
+  });
+  useEffect(() => {
+    if (notebook && game) setSeenMarks((marks) => marks && markSeen(marks, "clues", game.discoveredClueIds));
+  }, [notebook, game]);
+  useEffect(() => {
+    if (englishOpen) setSeenMarks((marks) => marks && markSeen(marks, "english", englishIds));
+  // The entries as a key: the list itself is made again at each render.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [englishOpen, englishKey]);
+  const notebookCue = { gleam: clueGleam, unseen: !!game && unseenIds(seenMarks?.clues, game.discoveredClueIds).length > 0 };
+  const englishNew = unseenIds(seenMarks?.english, englishIds).length > 0;
 
   function begin(event: FormEvent) {
     event.preventDefault();
@@ -344,6 +384,7 @@ export function GameApp({
   function startJourney(playerName: string, heroineName: string) {
     freeTimeReturn.current = null;
     seenCards.current = new Map();
+    setSeenMarks(null);
     moments.restart(false);
     holdSceneCues(false);
     session.begin(playerName, heroineName, journeyId);
@@ -365,9 +406,11 @@ export function GameApp({
     // The restored scene's cues wait for the player's next action; the header makes no sound for what the load brings.
     holdSceneCues(true);
     setReplacedGame((count) => count + 1);
-    // Debug's return point belonged to the play before the load, and so did a night screen seen tonight and the cards seen.
+    // Debug's return point belonged to the play before the load, and so did a night screen seen tonight, the cards seen
+    // and what was looked at (its marks start again from what the load brings).
     freeTimeReturn.current = null;
     seenCards.current = new Map();
+    setSeenMarks(null);
     nightShown.current = null;
     // The moments waiting belonged to the play before; the loaded game shows its recap.
     moments.restart(true);
@@ -391,6 +434,7 @@ export function GameApp({
     if (!session.replace(freeTimeReturnState(point, current))) return;
     moments.restart(false);
     seenCards.current = new Map();
+    setSeenMarks(null);
     setReplacedGame((count) => count + 1);
     // As after a load: the undone scene's relationship change goes, the clue book closes, and the
     // free-time screen that appears under the finger takes no tap for a moment.
@@ -566,9 +610,16 @@ export function GameApp({
         onPhotoCredits={creditPhotos.length ? () => setPhotoCreditsOpen(true) : undefined}
         onSceneCredits={scenePhoto ? () => setScenePhotoOpen(true) : undefined}
         onSave={() => {
-          if (save()) playSe("save");
+          const saved = save();
+          if (saved) playSe("save");
+          return saved;
         }}
         replaced={replacedGame}
+        seenItemIds={seenMarks?.items}
+        onItemsSeen={(ids) => setSeenMarks((marks) => marks && markSeen(marks, "items", ids))}
+        englishNew={englishNew}
+        // 「…を手に入れました」 waits while the notices over a story scene show (one under the header at a time).
+        holdNotices={!!shownPhotoNotice || !!learnedWords.notice}
         onLoad={reload}
         onSettings={() => {
           setPlayer(game.playerName);
@@ -615,7 +666,9 @@ export function GameApp({
           </span>
         </div>
       )}
-      {/* A tap on main's own margin beside a narrow story scene reads on (scene-tap.ts). */}
+      {/* A tap on main's own margin beside a narrow story scene reads on (scene-tap.ts). The screens' 手がかり帳 buttons
+          read their marks from NotebookCueContext. */}
+      <NotebookCueContext.Provider value={notebookCue}>
       <main id="main" ref={main} tabIndex={-1} {...{ [PAGE_MARGIN_ATTRIBUTE]: "" }}>
         {showChanges && <RelationshipChangeNote change={game && shownChange && shownChange.scene === changeScreenKey(game) ? shownChange.change : null}
           conditions={storyScene && game ? sceneConditionTruths(game) : []} />}
@@ -961,6 +1014,7 @@ export function GameApp({
           />
         )}
       </main>
+      </NotebookCueContext.Provider>
       <footer>
         Dreamscape <span>·</span> 旅の余白に、ふたりの物語。
       </footer>
@@ -1168,8 +1222,9 @@ export function GameApp({
             常に日本語訳を表示する
           </label>
           {learning.error && <p role="status">{learning.error}</p>}
-          {/* The voices, the sound effects and the music together, each with its own volume (shown while it is on). */}
-          <h3>音</h3>
+          {/* The voices, the sound effects and the music together, each with its own volume (shown while it is on), and
+              the vibration where the browser can vibrate. */}
+          <h3>{vibrationAvailable ? "音と振動" : "音"}</h3>
           <label className="translation-setting">
             <input type="checkbox" checked={displaySettings.value.voice} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ voice: event.target.checked })} /> 台詞の声を出す
@@ -1203,6 +1258,11 @@ export function GameApp({
               onChange={(event) => displaySettings.update({ bgmVolume: Number(event.target.value) / 100 })} />
             <span className="volume-value" aria-hidden="true">{bgmPercent}%</span>
           </label>}
+          {vibrationAvailable && <label className="translation-setting">
+            <input type="checkbox" checked={displaySettings.value.vibration} disabled={!!displaySettings.error}
+              onChange={(event) => displaySettings.update({ vibration: event.target.checked })} /> 振動する
+          </label>}
+          {vibrationAvailable && displaySettings.value.vibration && <p className="fine-print">品物や手がかりを手に入れたときに、端末が短く震えます。</p>}
           {displaySettings.error && (
             <p role="status">{displaySettings.error}</p>
           )}

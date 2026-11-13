@@ -57,3 +57,21 @@ describe("the presentation settings' music", () => {
       expect(readPresentationSettings(stored(extra)), JSON.stringify(extra)).toBeNull();
   });
 });
+
+// The vibration setting (2026-11-13): 「振動する」 (`vibration`), offered where the browser can vibrate.
+describe("the presentation settings' vibration", () => {
+  it("is on for settings stored without it, and with none stored", () => {
+    expect(readPresentationSettings(stored())).toMatchObject({ vibration: true });
+    expect(readPresentationSettings(null)).toMatchObject({ vibration: true });
+  });
+
+  it("reads what was stored, beside the sounds' own", () => {
+    expect(readPresentationSettings(stored({ vibration: false }))).toMatchObject({ vibration: false, se: true, bgm: true });
+    expect(readPresentationSettings(stored({ vibration: true, se: false }))).toMatchObject({ vibration: true, se: false });
+  });
+
+  it("refuses a switch that is not true or false", () => {
+    for (const extra of [{ vibration: "on" }, { vibration: 1 }, { vibration: null }])
+      expect(readPresentationSettings(stored(extra)), JSON.stringify(extra)).toBeNull();
+  });
+});

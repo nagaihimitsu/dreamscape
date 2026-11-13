@@ -13,6 +13,7 @@ import {
   type Size,
   type ViewTransform,
 } from "./viewport";
+import { NotebookCueMarks } from "../../components/notebook-cue";
 import "./observation.css";
 
 interface ObservationPoint {
@@ -253,7 +254,9 @@ export function ObservationViewer({
       >
         <div className="observation-overlay">
           <span className="observation-location">{landmarkName}</span>
-          <button type="button" className="notebook-button" onPointerDown={(event) => event.stopPropagation()} onClick={onNotebook}>手がかり帳</button>
+          <button type="button" className="notebook-button fx-host" onPointerDown={(event) => event.stopPropagation()} onClick={onNotebook}>
+            手がかり帳<NotebookCueMarks />
+          </button>
         </div>
         <img
           className="observation-image"
