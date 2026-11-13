@@ -18,12 +18,12 @@
       "id": "duomo_string",
       "sources": [
         {
-          "publisher": "Veneranda Fabbrica del Duomo",
-          "title": "Archaeological Area",
-          "url": "https://www.duomomilano.it/en/art-and-culture/archaeological-area/",
-          "checkedAt": "2026-11-02",
+          "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+          "title": "Adopt a Spire — statues and façade spires",
+          "url": "https://www.duomomilano.it/en/support/adopt-a-spire/",
+          "checkedAt": "2026-10-30",
           "claimType": "documented_fact",
-          "claimJa": "広場の下に旧礼拝施設の遺跡が残る。"
+          "claimJa": "公式の尖塔一覧は、正面の尖塔上に立つ聖アグリコラや聖ジェネシウスなどの像を紹介している。尖塔と、その頂上の人物像を別の要素として確認できる。"
         }
       ]
     },
@@ -78,12 +78,12 @@
       "id": "castello_pick",
       "sources": [
         {
-          "publisher": "Comune di Milano",
-          "title": "Museo Pietà Rondanini Michelangelo",
-          "url": "https://www.milanocastello.it/i-musei/museo-pieta-rondanini-michelangelo",
-          "checkedAt": "2026-11-02",
+          "publisher": "Comune di Milano（ミラノ市公式）",
+          "title": "Carta dei Servizi dei Musei del Castello Sforzesco, p. 3",
+          "url": "https://www.comune.milano.it/documents/20118/3102963/21dicembre2022CARTA%2BDEI%2BSERVIZI%2BDEL%2BSERVIZIO%2BMUSEI%2BCASTELLO_2022.pdf/e05d9e1b-754d-97af-7b5b-5952df8331e4?download=true&t=1763981294913&version=1.0",
+          "checkedAt": "2026-10-30",
           "claimType": "documented_fact",
-          "claimJa": "スフォルツェスコ城はピエタを所蔵する。"
+          "claimJa": "防御のための要塞から宮廷の住まいへ変化し、修復・再建を経て博物館や図書館を収める公共の文化施設となったことを説明している。"
         }
       ]
     },

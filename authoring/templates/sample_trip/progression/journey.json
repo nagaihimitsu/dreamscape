@@ -40,7 +40,7 @@
       "completionReward": {
         "id": "smp_mihon_special_b_market_complete",
         "ap": 1,
-        "titleJa": "朝市の対決を初めて完了"
+        "titleJa": "朝市の推理クイズを初めて完了"
       },
       "requiredEpisodeIds": [],
       "titleJa": "誰も時間を守らない？",
@@ -52,7 +52,7 @@
       "completionReward": {
         "id": "smp_mihon_special_c_library_complete",
         "ap": 1,
-        "titleJa": "図書室の対決を初めて完了"
+        "titleJa": "図書室の推理クイズを初めて完了"
       },
       "requiredEpisodeIds": [],
       "titleJa": "記録にない約束",
@@ -75,7 +75,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "対決を初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "smp_mihon_main_clock_tower_battle_score",
@@ -91,7 +91,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "対決を初めて完了"
+      "titleJa": "クイズを初めて完了"
     },
     {
       "id": "smp_mihon_finale_battle_score",

@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { DEFAULT_ITEM_ICON } from "../../content/code-images";
 import { Icon } from "../../components/icons";
 import { Modal } from "../../components/Modal";
+import { useMeasuredHeight } from "../../components/useMeasuredHeight";
 import { playSe } from "../../audio/sound-effects";
 import { reducedMotionNow, useNightCard } from "./NightRest";
 import type { ChapterStampCard, EndRoll, EpisodeTitleCard, MomentPhoto, PackedItem, Packing, ResumeRecap } from "./journey-moments";
@@ -120,7 +121,9 @@ export function DepartureLuggage({ carried, left }: { carried: readonly PackedIt
  * with 「閉じる」 or when the screen changes.
  */
 export function ResumeRecapCard({ recap, onClose }: { recap: ResumeRecap; onClose: () => void }) {
-  return <section className="resume-recap" aria-labelledby="resume-recap-title" data-testid="resume-recap">
+  // Its height (--recap-h) is the night screen's room for it: that screen lies under it and starts below it.
+  const measured = useMeasuredHeight("--recap-h");
+  return <section ref={measured} className="resume-recap" aria-labelledby="resume-recap-title" data-testid="resume-recap">
     <div className="resume-recap-head">
       <div>
         <h2 id="resume-recap-title" className="resume-recap-title">前回までのあらすじ</h2>
