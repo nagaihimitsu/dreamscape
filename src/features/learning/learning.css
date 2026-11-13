@@ -283,9 +283,15 @@
 .english-review .review-views .secondary { flex: 1 1 auto; width: auto; min-height: 44px; margin: 0; padding: 6px 10px; font-size: 14px; }
 .english-review .review-views .secondary[aria-pressed="true"] { background: var(--ds-slate-800); color: var(--ds-on-slate); }
 
-/* 「単語帳」 (WordBook): the places in the order met, each with its words' cards, two to a row on a phone. */
+/* 「単語帳」 (WordBook): the places in the order met, each under its photo and name once, with its words' cards (words
+   only), two to a row on a phone. */
 .word-book { padding-bottom: 12px; }
-.word-book-place h3 { margin: 14px 0 6px; font-size: 15px; line-height: 1.5; overflow-wrap: anywhere; }
+.word-book-place-head { display: flex; align-items: center; gap: 10px; margin: 14px 0 8px; }
+.word-book-place-photo { flex: 0 0 auto; width: 84px; aspect-ratio: 3 / 2; overflow: hidden; border-radius: 8px; background: var(--ds-slate-800); }
+.word-book-place-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* No photo: the free-time cards' plain tile (the place's background colour, else slate) with the sightseeing mark. */
+.word-book-place-plain { display: grid; place-items: center; width: 100%; height: 100%; background: var(--ds-slate-800); color: rgba(255, 255, 255, 0.92); font-size: 18px; }
+.word-book-place h3 { margin: 0; font-size: 15px; line-height: 1.5; overflow-wrap: anywhere; }
 .word-book-cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -330,14 +336,9 @@
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
+.word-card-face.is-front { justify-content: center; min-height: 64px; padding: 10px 10px 22px; }
 .word-card-face.is-back { justify-content: flex-start; padding: 8px 10px 22px; background: var(--ds-parchment-2); transform: rotateY(180deg); }
-.word-card-photo { display: block; aspect-ratio: 3 / 2; background: var(--ds-slate-800); }
-.word-card-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
-/* No photo: the free-time cards' plain tile (the place's background colour, else slate) with the sightseeing mark. */
-.word-card-plain { display: grid; place-items: center; width: 100%; height: 100%; background: var(--ds-slate-800); color: rgba(255, 255, 255, 0.92); font-size: 22px; }
-.word-card-place { color: var(--ds-ink-muted); font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; }
-.word-card-face.is-front .word-card-place { padding: 4px 10px 0; }
-.word-card-word { padding: 0 10px 22px; font-size: 17px; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
+.word-card-word { font-size: 17px; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
 .word-card-meaning { font-size: 14px; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
 .word-card-sentence { color: var(--ds-ink-muted); font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
 /* That the card turns: a small mark in its corner (decorative). */
