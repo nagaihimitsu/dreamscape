@@ -14,6 +14,9 @@ import { centreOf, INSTANT, reducedMotion, rowItems, useCardGestures, type CardS
 import { whenLaidOut } from "./when-laid-out";
 import "./travel-menu.css";
 
+/** No card joining the row. */
+const NONE_JOINING: readonly string[] = [];
+
 /** How long the row stays still before the card in its centre counts as chosen (a flick's momentum and snap included). */
 const SETTLE_MS = 120;
 
@@ -35,7 +38,7 @@ function placeVisited(game: GameState, placeId: string): boolean {
  * under it (with its 「行く」), and the pressed row stays where it was. The chosen card is the list's one Tab stop; ←→ (in
  * the list also ↑↓), Home and End move the choice.
  */
-export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, recommendedId, card, swipe }: {
+export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, recommendedId, card, swipe, joining = NONE_JOINING }: {
   game: GameState;
   /** At least one card. */
   cards: readonly RowCard[];
@@ -48,6 +51,8 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
   card: ReactNode;
   /** The chosen card's swipe up (a place's, 「待機」's or 「ホテルに戻る」's), or null. */
   swipe: CardSwipe | null;
+  /** The cards joining the row now (photo-cards.ts newCardIds; PhotoCardFreeTime), in the row's order: dealt in. */
+  joining?: readonly string[];
 }) {
   const list = useRef<HTMLUListElement>(null);
   const chosen = useRef(chosenId);
@@ -121,6 +126,15 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
 
   useEffect(() => () => window.clearTimeout(settle.current), []);
 
+  // In the list a card that joins out of sight is brought into view (the row turns to it: PhotoCardFreeTime chooses it).
+  const joiningKey = joining.join(" ");
+  useEffect(() => {
+    if (row || !joining.length) return;
+    itemOf(joining[0])?.scrollIntoView({ block: "nearest", behavior: reducedMotion() ? INSTANT : "smooth" });
+  // The key stands for the joining cards; itemOf reads the list as rendered.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [joiningKey, row]);
+
   /** After a flick or a drag let go: the card that came to rest in the centre is chosen. */
   function settleSoon() {
     window.clearTimeout(settle.current);
@@ -154,7 +168,8 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
         const isChosen = rowCard.id === chosenId;
         const marks = [face.top, face.bottom, face.available ? null : "今は行けない"].filter((mark): mark is string => !!mark);
         const classes = ["photo-card", face.kinds === "none" ? null : `is-${face.kinds}`, face.available ? null : "is-unavailable"];
-        return <li key={rowCard.id} data-card-id={rowCard.id} data-testid={face.testId} data-selected={isChosen ? "true" : undefined}>
+        return <li key={rowCard.id} data-card-id={rowCard.id} data-testid={face.testId} data-selected={isChosen ? "true" : undefined}
+          data-joining={joining.includes(rowCard.id) ? "true" : undefined}>
           <button type="button" className={classes.filter((name) => name).join(" ")} tabIndex={rowCard.id === tabStop ? 0 : -1}
             aria-current={isChosen ? "true" : undefined} data-cue={row && isChosen && swipe?.go ? "true" : undefined}
             aria-label={photoCardLabel({ position: index + 1, count: cards.length, name: face.name, marks })}
@@ -233,7 +248,7 @@ function cardFace(game: GameState, card: RowCard, recommendedId: string | null |
   const here = placeId === game.travel.currentPlaceId;
   return {
     testId: `travel-place-${placeId}`,
-    name: placeDisplayName(game, entry.place.events[0].place),
+    name: rowCardName(game, card),
     available: entry.available,
     top: here ? "現在地" : placeId === recommendedId ? "おすすめ" : null,
     bottom: placeVisited(game, placeId) ? "訪問済み" : null,
@@ -241,6 +256,14 @@ function cardFace(game: GameState, card: RowCard, recommendedId: string | null |
     kinds,
     swipeable,
   };
+}
+
+/** A card's name (its face, and what the live region says when it joins the row). */
+export function rowCardName(game: GameState, card: RowCard): string {
+  if (card.kind === "wait") return "待機";
+  if (card.kind === "stay") return "ホテルに戻る";
+  if (card.kind === "tour") return "ツアー";
+  return placeDisplayName(game, card.entry.place.events[0].place);
 }
 
 /** A tile in place of a photo: the place's background colour (else the slate) with a mark. */

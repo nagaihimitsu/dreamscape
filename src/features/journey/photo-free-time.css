@@ -342,6 +342,35 @@
   pointer-events: none;
 }
 
+/* A card new to the row (PhotoCardFreeTime useJoiningCards, 2026-11-13): a destination the story opened is dealt in.
+   After JOIN_DELAY_MS (the screen has appeared; card_new sounds then) it springs up from small with a gold gleam that
+   fades as it settles. Its slot keeps its place throughout (only the card moves), and the motion stays inside the row's
+   padding, which clips. In the list it slides in from the side. Reduced motion: it fades in with the gleam, unmoving. */
+.photo-cards > li[data-joining] { animation: photo-card-join 760ms var(--ease-out) 220ms both; }
+.photo-cards.is-list > li[data-joining] { animation-name: photo-card-join-list; }
+@keyframes photo-card-join {
+  0% { opacity: 0; scale: 0.4; translate: 0 -8px; filter: drop-shadow(0 0 0 rgba(201, 163, 95, 0)); }
+  55% { opacity: 1; scale: 1.06; translate: 0 0; filter: drop-shadow(0 0 8px rgba(201, 163, 95, 0.95)); }
+  78% { scale: 0.98; }
+  100% { opacity: 1; scale: 1; filter: drop-shadow(0 0 0 rgba(201, 163, 95, 0)); }
+}
+@keyframes photo-card-join-list {
+  0% { opacity: 0; translate: 32px 0; filter: drop-shadow(0 0 0 rgba(201, 163, 95, 0)); }
+  60% { opacity: 1; translate: -4px 0; filter: drop-shadow(0 0 8px rgba(201, 163, 95, 0.95)); }
+  100% { opacity: 1; translate: 0 0; filter: drop-shadow(0 0 0 rgba(201, 163, 95, 0)); }
+}
+@keyframes photo-card-join-still {
+  0% { opacity: 0; filter: drop-shadow(0 0 0 rgba(201, 163, 95, 0)); }
+  50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(201, 163, 95, 0.95)); }
+  100% { opacity: 1; filter: drop-shadow(0 0 0 rgba(201, 163, 95, 0)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .photo-cards > li[data-joining],
+  .photo-cards.is-list > li[data-joining] { animation-name: photo-card-join-still; }
+}
+.reduce-motion .photo-cards > li[data-joining],
+.reduce-motion .photo-cards.is-list > li[data-joining] { animation-name: photo-card-join-still; }
+
 /* The list (short screens, large text, sideways): one card per line, the photo at the left; the chosen row's
    introduction card opens under it. */
 .photo-cards.is-list { flex-direction: column; gap: 6px; margin: 0; padding: 0; overflow: visible; scroll-snap-type: none; }

@@ -3,6 +3,7 @@ import { getCityContent } from "../../content";
 import { getCityBackdropPath } from "../../content/city-backdrop";
 import { HudScreenTool } from "../../components/HudScreenTool";
 import { Icon } from "../../components/icons";
+import type { GameState } from "../../domain/game";
 import { getTourOffers } from "../../domain/tour";
 import { getTravelWaitOptions } from "../../domain/travel-destinations";
 import { CityProgress } from "./CityProgress";
@@ -11,12 +12,12 @@ import { FreeTimeBackdrop } from "./FreeTimeBackdrop";
 import { FreeTimeExtras } from "./FreeTimeExtras";
 import { SIDE_BY_SIDE_QUERY } from "./free-time-layout";
 import { timeOfDayTint } from "./time-of-day";
-import { PhotoCardPicker } from "./PhotoCardPicker";
+import { PhotoCardPicker, rowCardName } from "./PhotoCardPicker";
 import { PlaceCard, sleepWayJa, StayCard, TourCard, WaitCard } from "./PlaceCard";
 import { Announce, mapPlaces, PlaceMapDialog } from "./PlaceMap";
 import {
-  cardOfTarget, cardTarget, chooseArrangement, chooseSleepWay, chooseWait, defaultCardIndex, departureOf, NO_PLAN, photoCardAnnouncement,
-  photoCardEntries, refusalJa, refusalNoteJa, refusalReasonsJa, rowCards, sleepRefusalJa, sleepRefusalReasonsJa, syncRow, takesSwipe,
+  cardOfTarget, cardTarget, chooseArrangement, chooseSleepWay, chooseWait, defaultCardIndex, departureOf, joinedCardsJa, newCardIds, NO_PLAN,
+  photoCardAnnouncement, photoCardEntries, refusalJa, refusalNoteJa, refusalReasonsJa, rowCards, sleepRefusalJa, sleepRefusalReasonsJa, syncRow, takesSwipe,
   TOUR_CHOSEN_JA, WAIT_REFUSAL_JA, WAIT_REFUSAL_REASON_JA, waitChosenJa, waitLabelJa,
   type CardArrangement, type DeparturePlan, type PhotoCardEntry, type RowCard,
 } from "./photo-cards";
@@ -42,6 +43,7 @@ import "./photo-free-time.css";
  */
 export function PhotoCardFreeTime({
   game, onClaimRewards, onStartEpisode, onEpilogue, onBattle, onTravelEvent, onRent, onBookTour, onCancelTour, onTravelWait, onTravelSleep, nextCityName, onDepart,
+  seenCards,
 }: FreeTimeHubProps) {
   const { city } = getCityContent(game.currentCityId);
   const backdrop = getCityBackdropPath(game.currentCityId) !== null;
@@ -69,6 +71,11 @@ export function PhotoCardFreeTime({
   const places = useMemo(() => [...nearby, ...other], [nearby, other]);
   const tour = getTourOffers(game).length > 0 || game.tour?.status === "booked";
   const cards = useMemo(() => rowCards(photoCardEntries(places, api.choices), { tour }), [places, api.choices, tour]);
+  const joining = useJoiningCards(game, cards, seenCards, (fresh) => {
+    // The row turns to the first new card (quietly, as the screen's own choice), and the live region names them all.
+    setPick(fresh[0].id);
+    api.announce(joinedCardsJa(fresh.map((card) => rowCardName(game, card))));
+  });
   // The card remembered while it is still in the row, else the first place's (photo-cards.ts defaultCardIndex).
   const chosen = cards.find((card) => card.id === pick) ?? cards[defaultCardIndex(cards)];
   // Another card chosen: 「待機」 and 「ホテルに戻る」 start again from their first choice (adjusted while rendering).
@@ -174,7 +181,7 @@ export function PhotoCardFreeTime({
       <div className="photo-stage">
         <CardProbe />
         <PhotoCardPicker game={game} cards={cards} chosenId={chosen.id} onChoose={chooseCard} arrangement={arrangement}
-          recommendedId={recommendedMainId} card={cardOf(chosen)} swipe={swipeFor(chosen)} />
+          recommendedId={recommendedMainId} card={cardOf(chosen)} swipe={swipeFor(chosen)} joining={joining} />
       </div>
       <TravelRentals game={game} onRent={onRent} />
       <Announce message={api.message} testId="travel-announce" />
@@ -188,6 +195,46 @@ export function PhotoCardFreeTime({
       onMarker={(placeId, kind) => api.pressMarker(placeId, kind, false, "dialog")} onFocusEnd={api.focusEnd} onClose={() => setMapOpen(false)}
       selection={{ message: api.message, slot }} />}
   </section>;
+}
+
+/** When a joining card's motion starts (photo-free-time.css photo-card-join's delay: the screen has appeared). */
+const JOIN_DELAY_MS = 220;
+/** How long the cards count as joining (the motion's delay and length, with some room). */
+const JOIN_MS = 1400;
+
+/**
+ * The cards new to the row (2026-11-13, photo-cards.ts newCardIds): a destination the story opened (a date whose `when:`
+ * came true, a night's encounter...) or a tour on offer, found against the cards the row has shown in this city during
+ * this play (`seenCards`, GameApp's memory; without it nothing joins). When some appear (as the screen opens after a
+ * scene, or while it shows), `onJoin` hears them in the row's order, they are dealt in (photo-free-time.css) and
+ * card_new sounds once as they come. Returns the ids joining now.
+ */
+function useJoiningCards(game: GameState, cards: readonly RowCard[], seenCards: FreeTimeHubProps["seenCards"],
+  onJoin: (fresh: readonly RowCard[]) => void): readonly string[] {
+  const [joining, setJoining] = useState<readonly string[]>([]);
+  const cityId = game.currentCityId;
+  useLayoutEffect(() => {
+    if (!seenCards) return;
+    const seen = seenCards.current.get(cityId) ?? null;
+    const ids = cards.map((card) => card.id);
+    seenCards.current.set(cityId, new Set([...(seen ?? []), ...ids]));
+    const fresh = newCardIds(seen, ids);
+    if (!fresh.length) return;
+    setJoining(fresh);
+    onJoin(fresh.map((id) => cards.find((card) => card.id === id)!));
+  // Each row as it shows (the memory makes a second look find nothing new).
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cards]);
+  useEffect(() => {
+    if (!joining.length) return;
+    const sound = window.setTimeout(() => playSe("card_new"), JOIN_DELAY_MS);
+    const done = window.setTimeout(() => setJoining([]), JOIN_MS);
+    return () => {
+      window.clearTimeout(sound);
+      window.clearTimeout(done);
+    };
+  }, [joining]);
+  return joining;
 }
 
 /** A hidden middle card with a two-line name and its swipe cue: its height (larger text included) chooses row or list. */

@@ -5,7 +5,7 @@ import type {
 } from "../../domain/travel-destinations";
 import {
   blockedSleepWays, blockedWays, cardKinds, cardOfTarget, cardScales, cardTarget, chooseArrangement, chooseSleepWay, chooseWait, chooseWay,
-  defaultCardIndex, departureOf, dragDirection, eventKindJa, flickSpeed, glideIndex, halfShown, liftsCard, liftTurnedSideways, nearestIndex,
+  defaultCardIndex, departureOf, joinedCardsJa, newCardIds, dragDirection, eventKindJa, flickSpeed, glideIndex, halfShown, liftsCard, liftTurnedSideways, nearestIndex,
   NO_PLAN, pageAtEnd, photoCardAnnouncement, photoCardEntries, photoCardLabel, refusalJa, refusalNoteJa, refusalReasonsJa, rowCards,
   sleepRefusalJa, sleepRefusalReasonsJa, sleepWayKey, sleepWayLabelJa, STAY_CARD_ID, stepIndex, swipeArea, swipeDeparts, syncRow, takesSwipe,
   TOUR_CARD_ID, WAIT_BLOCKED_JA, WAIT_CARD_ID, WAIT_REFUSAL_JA, WAIT_REFUSAL_REASON_JA, waitChosenJa, waitKey, waitLabelJa, type PhotoCardEntry,
@@ -336,5 +336,29 @@ describe("row or list", () => {
 
   it("keeps the row until the card is measured", () => {
     expect(chooseArrangement({ ...phone, card: 0 })).toBe("row");
+  });
+});
+
+describe("the cards new to the row", () => {
+  const row = [WAIT_CARD_ID, "b", "c", "d", TOUR_CARD_ID, STAY_CARD_ID];
+
+  it("are none the first time the row shows (a load, a new game, an arrival)", () => {
+    expect(newCardIds(null, row)).toEqual([]);
+  });
+
+  it("are the places and the tour the row has not shown before, in the row's order", () => {
+    expect(newCardIds(new Set([WAIT_CARD_ID, "c", STAY_CARD_ID]), row)).toEqual(["b", "d", TOUR_CARD_ID]);
+    expect(newCardIds(new Set(row), row)).toEqual([]);
+    // A card that left the row and comes back (a night's place by day) has been seen.
+    expect(newCardIds(new Set([...row, "e"]), [...row.slice(0, 2), "e", ...row.slice(2)])).toEqual([]);
+  });
+
+  it("never count 「待機」 or 「ホテルに戻る」", () => {
+    expect(newCardIds(new Set(["b"]), [WAIT_CARD_ID, "b", STAY_CARD_ID])).toEqual([]);
+  });
+
+  it("are said by their names", () => {
+    expect(joinedCardsJa(["インド門"])).toBe("新しい行き先が加わりました：インド門");
+    expect(joinedCardsJa(["インド門", "ツアー"])).toBe("新しい行き先が加わりました：インド門、ツアー");
   });
 });

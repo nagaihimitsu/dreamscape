@@ -63,6 +63,15 @@
       "site": "OpenGameArt.org"
     },
     {
+      "id": "kenney_casino",
+      "titleJa": "54 Casino sound effects (cards, dice, chips)",
+      "author": "Kenney (www.kenney.nl)",
+      "license": "CC0 1.0",
+      "checkedAt": "2026-11-13",
+      "url": "https://opengameart.org/content/54-casino-sound-effects-cards-dice-chips",
+      "site": "OpenGameArt.org"
+    },
+    {
       "id": "kenney_interface",
       "titleJa": "Interface Sounds",
       "author": "Kenney (www.kenney.nl)",
@@ -332,6 +341,15 @@
         "kenney_rpg"
       ],
       "fromJa": "bookFlip3"
+    },
+    {
+      "id": "card_new",
+      "useJa": "自由時間に新しい行き先のカードが加わったとき",
+      "sources": [
+        "kenney_casino",
+        "kenney_interface"
+      ],
+      "fromJa": "card-slide-1 に glass_005 を重ねた"
     },
     {
       "id": "money",

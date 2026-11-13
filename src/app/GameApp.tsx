@@ -57,6 +57,7 @@ import { LocalWordNotice } from "../features/learning/LocalWordNotice";
 import { lineFrameOnScreen, lineWordsOnScreen } from "../features/learning/local-words";
 import { readAloudSupported } from "../features/learning/read-aloud";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
+import type { SeenCards } from "../features/journey/photo-cards";
 import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { CityRecords } from "../features/journey/CityProgress";
 import { MetPeople } from "../features/journey/MetPeople";
@@ -224,6 +225,9 @@ export function GameApp({
   // only. Updated after each render, so the first render of another screen reads the free time before it.
   const debugOn = isDebug || debugMode.on;
   const freeTimeReturn = useRef<FreeTimeReturn | null>(null);
+  // The cards free time's row has shown during this play, per city (photo-cards.ts newCardIds): a card it has not is
+  // dealt in. In this tab's memory only, emptied by a new game, a load and Debug's return (what they bring is not new).
+  const seenCards = useRef<SeenCards>(new Map());
   useEffect(() => {
     freeTimeReturn.current = nextFreeTimeReturn(freeTimeReturn.current, game, journeyId, debugOn);
   }, [game, journeyId, debugOn]);
@@ -339,6 +343,7 @@ export function GameApp({
   }
   function startJourney(playerName: string, heroineName: string) {
     freeTimeReturn.current = null;
+    seenCards.current = new Map();
     moments.restart(false);
     holdSceneCues(false);
     session.begin(playerName, heroineName, journeyId);
@@ -360,8 +365,9 @@ export function GameApp({
     // The restored scene's cues wait for the player's next action; the header makes no sound for what the load brings.
     holdSceneCues(true);
     setReplacedGame((count) => count + 1);
-    // Debug's return point belonged to the play before the load, and so did a night screen seen tonight.
+    // Debug's return point belonged to the play before the load, and so did a night screen seen tonight and the cards seen.
     freeTimeReturn.current = null;
+    seenCards.current = new Map();
     nightShown.current = null;
     // The moments waiting belonged to the play before; the loaded game shows its recap.
     moments.restart(true);
@@ -384,6 +390,7 @@ export function GameApp({
     if (!point || !current || !canReturnToFreeTime(point, current, journeyId, debugOn)) return;
     if (!session.replace(freeTimeReturnState(point, current))) return;
     moments.restart(false);
+    seenCards.current = new Map();
     setReplacedGame((count) => count + 1);
     // As after a load: the undone scene's relationship change goes, the clue book closes, and the
     // free-time screen that appears under the finger takes no tap for a moment.
@@ -950,6 +957,7 @@ export function GameApp({
             onTravelSleep={(mode, viaPlaceId) => returnToHotel(mode, viaPlaceId, game.revision)}
             nextCityName={departure?.city.nameJa}
             onDepart={() => setConfirmDeparture(true)}
+            seenCards={seenCards}
           />
         )}
       </main>

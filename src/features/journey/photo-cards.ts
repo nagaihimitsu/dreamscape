@@ -63,6 +63,24 @@ export function rowCards(entries: readonly PhotoCardEntry[], { tour }: { tour: b
   return [{ kind: "wait", id: WAIT_CARD_ID }, ...places, ...(tour ? [{ kind: "tour", id: TOUR_CARD_ID } as const] : []), { kind: "stay", id: STAY_CARD_ID }];
 }
 
+/**
+ * The cards new to the row (2026-11-13): those of `ids` (the row as it shows now, in its order) that `seen` (every card
+ * the row has shown in this city during this play) does not hold. None the first time the row shows (`seen` null: what
+ * a load, a new game or an arrival brings is not new), and never 「待機」 or 「ホテルに戻る」 (always in the row). A
+ * destination opened by the story (a date whose `when:` became true, a night's encounter...) is a new place card, or the
+ * tour's card once a tour is offered.
+ */
+export function newCardIds(seen: ReadonlySet<string> | null, ids: readonly string[]): string[] {
+  if (!seen) return [];
+  return ids.filter((id) => id !== WAIT_CARD_ID && id !== STAY_CARD_ID && !seen.has(id));
+}
+
+/** The cards the row has shown during this play, per city (GameApp's memory: a load, a new game or Debug's return empties it). */
+export type SeenCards = Map<string, ReadonlySet<string>>;
+
+/** What the live region says as new cards join the row (their names, in the row's order). */
+export const joinedCardsJa = (names: readonly string[]): string => `新しい行き先が加わりました：${names.join("、")}`;
+
 /** The card chosen when the screen opens (and when the chosen card leaves the row): the first place's, else the first. */
 export function defaultCardIndex(cards: readonly RowCard[]): number {
   return Math.max(0, cards.findIndex((card) => card.kind === "place"));
