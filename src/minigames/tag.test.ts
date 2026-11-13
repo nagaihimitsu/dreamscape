@@ -3,7 +3,7 @@ import { z } from "zod";
 import { parseStoryTags } from "../content/tags";
 import { defineMiniGame, type AnyMiniGameDefinition } from "./contract";
 import { cricketBatting } from "./cricket_batting/definition";
-import { isValidMiniGameTag, miniGameChoice, miniGameOptionId, miniGameTagText, parseMiniGameTag } from "./tag";
+import { isValidMiniGameTag, miniGameArtPath, miniGameChoice, miniGameOptionId, miniGameTagText, parseMiniGameTag } from "./tag";
 
 const context = { effectIds: [], backgroundIds: ["bg_pitch"], emotionIds: ["neutral"], miniGameArt: { pitch_x: "assets/minigames/pitch_x.jpg", girl: "assets/minigames/girl.webp" } };
 
@@ -64,6 +64,23 @@ describe("a line's # minigame:", () => {
     expect(() => parseMiniGameTag("cricket_batting art.bowler pitch_x", context)).toThrow("art.bowler is a figure on the field, so a webp or png");
     // A list absent from the context is not checked (the game checks only what content:build passed).
     expect(parseMiniGameTag("cricket_batting bg anywhere art.pitch any").bg).toBe("anywhere");
+  });
+
+  // A backdrop slot takes the journey's own picture or a credited tourism photo (docs/13 2.12); a sprite takes only its own.
+  it("fills a backdrop slot with a mini-game picture or a tourism photo, and refuses a photo as a figure and an ID neither has", () => {
+    const withPhotos = { ...context, miniGamePhotos: { gt_img_lawn: "assets/tourism/india/lawn.webp" } };
+    expect(parseMiniGameTag("cricket_batting art.pitch pitch_x", withPhotos).art).toEqual({ pitch: "pitch_x" });
+    expect(parseMiniGameTag("cricket_batting art.pitch gt_img_lawn art.bowler girl", withPhotos).art).toEqual({ pitch: "gt_img_lawn", bowler: "girl" });
+    expect(miniGameArtPath(withPhotos, "pitch_x")).toBe("assets/minigames/pitch_x.jpg");
+    expect(miniGameArtPath(withPhotos, "gt_img_lawn")).toBe("assets/tourism/india/lawn.webp");
+    expect(miniGameArtPath(withPhotos, "missing")).toBeUndefined();
+    expect(() => parseMiniGameTag("cricket_batting art.bowler gt_img_lawn", withPhotos))
+      .toThrow("The minigame art gt_img_lawn of art.bowler is a tourism photo: art.bowler is a figure on the field");
+    expect(() => parseMiniGameTag("cricket_batting art.pitch gt_img_missing", withPhotos)).toThrow("Unknown minigame art: art.pitch gt_img_missing");
+    // Either list alone is checked: an ID the context's photos lack is refused without a mini-game picture list too.
+    expect(() => parseMiniGameTag("cricket_batting art.pitch pitch_x", { miniGamePhotos: withPhotos.miniGamePhotos })).toThrow("Unknown minigame art: art.pitch pitch_x");
+    expect(isValidMiniGameTag(parseMiniGameTag("cricket_batting art.pitch gt_img_lawn", withPhotos), withPhotos)).toBe(true);
+    expect(isValidMiniGameTag(parseMiniGameTag("cricket_batting art.pitch gt_img_lawn", withPhotos), { ...context, miniGamePhotos: {} })).toBe(false);
   });
 
   it("is refused where content:build says no mini-game can run, and in a confession date with its reason", () => {

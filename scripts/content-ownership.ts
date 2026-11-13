@@ -129,13 +129,16 @@ const DEFINITIONS: [MergedKind, string, Namespace][] = [
   ["learning/local-words.json", "words", "localWord"],
 ];
 
-/** `# background: id`, `# effect: id` and `# local_word: id` tags of an Ink source. */
+/** `# background: id`, `# effect: id` and `# local_word: id` tags of an Ink source, and a `# minigame:`'s `bg` and `art.<slot>`. */
 function inkTagReferences(source: string): Reference[] {
   const namespaces: Record<string, Namespace> = { background: "background", effect: "effect", local_word: "localWord" };
   return [...[...source.matchAll(/#\s*(background|effect|local_word)\s*:\s*([A-Za-z0-9_]+)/gu)]
     .map(([, tag, id]) => ref(namespaces[tag], `#${tag}`, id)),
   // A # minigame:'s bg <id> (docs/13) is a background like # background:.
-  ...[...source.matchAll(/#\s*minigame\s*:[^#\n]*?\sbg\s+([A-Za-z0-9_]+)/gu)].map(([, id]) => ref("background", "#minigame bg", id))];
+  ...[...source.matchAll(/#\s*minigame\s*:[^#\n]*?\sbg\s+([A-Za-z0-9_]+)/gu)].map(([, id]) => ref("background", "#minigame bg", id)),
+  // Its art.<slot> <id> may name a tourism photo (a backdrop; docs/13 2.12); a mini-game picture is no asset (minigame-art.ts).
+  ...[...source.matchAll(/#\s*minigame\s*:([^#\n]*)/gu)].flatMap(([, words]) =>
+    [...words.matchAll(/\sart\.([a-z][a-z0-9_]*)\s+([A-Za-z0-9_]+)/gu)].map(([, slot, id]) => ref("asset", `#minigame art.${slot}`, id)))];
 }
 
 /** A served image (a path below public/, e.g. `assets/tourism/x.webp`) that a content file refers to. */

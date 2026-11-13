@@ -33,13 +33,13 @@ import { useGameSession } from "./useGameSession";
 import { leaveStep } from "./unsaved-progress";
 import { titleSaveActions } from "./save-recovery";
 import type { DeleteSnapshot } from "./save-deletion";
-import { CreditsDialog } from "./CreditsDialog";
-import { OldDataCleanup } from "./OldDataCleanup";
+import { LazyDialog } from "../components/LazyDialog";
 import { oldDataContext, readOldData, type KeyedStorage } from "../persistence/old-data";
 import { CanalScene } from "../components/CanalScene";
 import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
 import { useVoiceRate, useVoiceSettings } from "../components/useVoice";
+import { usePreloadAhead } from "../media/preload-ahead";
 import { effectiveVoiceRate } from "../audio/voice-rate";
 import { holdSceneCues, playCue, playSe, useSoundEffectSettings } from "../audio/sound-effects";
 import { canVibrate, useVibrationSetting, vibrate } from "../audio/vibration";
@@ -73,11 +73,9 @@ import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { CityRecords } from "../features/journey/CityProgress";
 import { MetPeople } from "../features/journey/MetPeople";
 import { JourneyNumbersCard } from "../features/journey/JourneyNumbers";
-import { MusicRoom } from "../features/journey/MusicRoom";
 import { musicRoomOpen } from "../features/journey/music-room";
 import { journeyNumbers } from "../features/journey/journey-numbers";
 import { freeTimePhotos, PhotoCredits } from "../features/journey/PhotoCredits";
-import { AlbumDialog } from "../features/journey/AlbumDialog";
 import { ALBUM_PHOTO_NOTICE_MS, AlbumPhotoNotice, FIRST_ALBUM_PHOTO_NOTICE_MS, type AlbumPhotoNoticeState } from "../features/journey/AlbumPhotoNotice";
 import { OpeningMovie } from "../features/journey/OpeningMovie";
 import { DepartureLuggage } from "../features/journey/JourneyMoments";
@@ -165,6 +163,12 @@ import { nameCutIn, speakerPlate } from "../components/speaker-plate";
 const IntroTimingNote = lazy(() => import("./IntroTimingNote"));
 /** Debug's 台詞の声の速さ (Debug mode only): its own chunk, loaded when ⚙設定 shows it (scripts/dist-guard.ts). */
 const DebugVoiceRate = lazy(() => import("./DebugVoiceRate"));
+// Dialogs opened from a button, each its own file, loaded when first opened (the title page and the scenes do not need
+// them; LazyDialog shows nothing while one loads and says so if it cannot be loaded).
+const CreditsDialog = lazy(() => import("./CreditsDialog").then((module) => ({ default: module.CreditsDialog })));
+const OldDataCleanup = lazy(() => import("./OldDataCleanup").then((module) => ({ default: module.OldDataCleanup })));
+const MusicRoom = lazy(() => import("../features/journey/MusicRoom").then((module) => ({ default: module.MusicRoom })));
+const AlbumDialog = lazy(() => import("../features/journey/AlbumDialog").then((module) => ({ default: module.AlbumDialog })));
 
 /** Where a Debug relationship change shows (decision 23): the story scene on screen, else the map or free time until the next action. */
 function changeScreenKey(state: GameState): string {
@@ -266,6 +270,9 @@ export function GameApp({
     if (change) setShownChange({ scene: changeScreenKey(next), change });
   });
   const { game, loaded, invalid, notice, setNotice, commit, getCurrent, save } = session;
+  // The background loading (src/media/preload-ahead.ts): after each saved change, the pictures and voices of the lines
+  // ahead; on the title, the new journey's arrival; nothing while the opening movie streams.
+  usePreloadAhead(game, journeyId, !!opening);
   // A game opened on its save (the page's start, a journey switch) shows its scene as it was: the scene's cues (a line's
   // phone, a city's title...) wait for the player's first action, as after 「ロード」 (loadSavedGame).
   useLayoutEffect(() => {
@@ -1148,10 +1155,14 @@ export function GameApp({
         {musicRoomOpen(game) && <button type="button" className="secondary" data-testid="music-room-open"
           onClick={() => { setRecordsOpen(false); setMusicRoom(true); }}>旅の音楽室</button>}
       </Modal>}
-      {musicRoom && game && <MusicRoom game={game} isRead={readLines.isRead} playing={roomTrack} onPlay={setRoomTrack}
-        bgmOn={displaySettings.value.bgm} voiceOn={displaySettings.value.voice}
-        onClose={() => { setMusicRoom(false); setRoomTrack(null); }} />}
-      {albumOpen && game && <AlbumDialog album={game.album} currentCityId={game.currentCityId} onClose={() => setAlbumOpen(false)} />}
+      {musicRoom && game && <LazyDialog onClose={() => { setMusicRoom(false); setRoomTrack(null); }}>
+        <MusicRoom game={game} isRead={readLines.isRead} playing={roomTrack} onPlay={setRoomTrack}
+          bgmOn={displaySettings.value.bgm} voiceOn={displaySettings.value.voice}
+          onClose={() => { setMusicRoom(false); setRoomTrack(null); }} />
+      </LazyDialog>}
+      {albumOpen && game && <LazyDialog onClose={() => setAlbumOpen(false)}>
+        <AlbumDialog album={game.album} currentCityId={game.currentCityId} onClose={() => setAlbumOpen(false)} />
+      </LazyDialog>}
       {photoCreditsOpen && creditPhotos.length > 0 && <PhotoCredits photos={creditPhotos} onClose={() => setPhotoCreditsOpen(false)} />}
       {scenePhotoOpen && scenePhoto && <BackgroundCredits asset={scenePhoto} onClose={() => setScenePhotoOpen(false)} />}
       {notebook && game && (canObserve || cityNotebook) && (
@@ -1438,15 +1449,16 @@ export function GameApp({
           </button>
         </Modal>
       )}
-      {creditsOpen && <CreditsDialog onClose={() => setCreditsOpen(false)} />}
+      {creditsOpen && <LazyDialog onClose={() => setCreditsOpen(false)}><CreditsDialog onClose={() => setCreditsOpen(false)} /></LazyDialog>}
       {opening && <OpeningMovie key={opening.videoPath} src={`${import.meta.env.BASE_URL}${opening.videoPath}`}
         muted={!displaySettings.value.bgm} onEnd={() => {
           if (introTiming.current) introTiming.current = endIntroMovie(introTiming.current, performance.now());
           setOpening(null);
           startJourney(opening.player, opening.heroine);
         }} />}
-      {oldDataOpen && oldDataStorage && <OldDataCleanup storage={oldDataStorage}
-        context={oldDataContext(journeyId)} onClose={() => setOldDataOpen(false)} />}
+      {oldDataOpen && oldDataStorage && <LazyDialog onClose={() => setOldDataOpen(false)}>
+        <OldDataCleanup storage={oldDataStorage} context={oldDataContext(journeyId)} onClose={() => setOldDataOpen(false)} />
+      </LazyDialog>}
       {travelEffects}
       {moments.overlays}
     </div>

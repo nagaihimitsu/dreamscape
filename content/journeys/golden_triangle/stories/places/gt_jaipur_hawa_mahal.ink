@@ -101,8 +101,25 @@ INCLUDE modules.ink
 # speaker: narrator
 車、リキシャ、牛、人。そのすべてが、こちらに気づかずに流れていく。
 # speaker: narrator
+# minigame: parasol_search at middle auto found art.street gt_img_jaipur_view_from_hawa_mahal
+通りのあちこちに、傘が開いていた。あの中のどれかが、ガウラの日傘だ。
+// 日傘探し：選択肢の代わりにミニゲーム「日傘を探す」（格子の窓から通りの傘を押す）。古い日傘は手前の歩道の真ん中（at middle）。
+// どの結果も同じ見下ろしの場面へ合流する。手間取ったときだけフラグを立て、クイズ3の後の報告の前に一往復が増える（関係値なし）。
+* [日傘：すぐに見つけた # option: found]
+    # speaker: narrator
+    古い日傘はすぐに見つかった。
+* [日傘：何本か見間違えてから見つけた # option: found_slow]
+    # set: gt_jaipur_parasol_hard_to_find
+    # speaker: narrator
+    上から見ると、傘はどれも同じ丸に見えた。いくつか見間違えてから、やっと古い日傘が見つかった。
+* [日傘：彼女が先に見つけた # option: pointed]
+    # speaker: heroine
+    # reaction: heroine,surprised,exclamation
+    あ、いた！　ほら、あそこ。竿にくくりつけてある日傘
+-
+# speaker: narrator
 # photo: gt_album_j13 # photo_caption: 格子の小窓から見下ろす、古い日傘
-古い日傘はすぐに見つかった。ガウラは客と値段で揉めていた。それから、通りがかった子どもに、トマトを一つ黙って渡した。日傘の陰で髪を直し、膝をさすった。
+ガウラは客と値段で揉めていた。それから、通りがかった子どもに、トマトを一つ黙って渡した。日傘の陰で髪を直し、膝をさすった。
 # speaker: heroine
 # emotion: neutral
 ……ここにいた人たちも、毎日こうやって見てたんだ。下の人は、上に誰がいるか知らないまま
@@ -121,6 +138,13 @@ INCLUDE modules.ink
 通りに戻ると、ガウラが待ちかねた顔で手招きした。
 # speaker: enemy
 で？　私は、どう見えた
+// 日傘探しで手間取ったときだけの一往復（フラグは上の日傘探しの found_slow）。報告そのものは、この後の彼女の言葉のまま。
+{ cond("flag gt_jaipur_parasol_hard_to_find"):
+    # speaker: heroine
+    上から見ると、傘って、みんな同じ丸なんですね
+    # speaker: enemy
+    下から見たって同じよ。窓なんか、どれも同じ顔して並んでる。それを四十年、一つずつ数えてきたんだから
+}
 # speaker: heroine
 ガウラさんは、お客さんと値段で喧嘩してました。それから、子どもにトマトを一つあげてました。誰にも見られてないと思って
 # speaker: heroine
@@ -169,6 +193,8 @@ INCLUDE modules.ink
 # ambience: gt_amb_street_traffic
 # speaker: narrator
 旅の最後の日。昼のうちに、二人はハワー・マハルの前で、行列が通る道を確かめておいた。そして、日が暮れた。
+# background: gt_bg_jaipur_hawa_mahal_night
+# tint: off
 # speaker: narrator
 # bgm: gt_naraina
 # ambience: amb_crowd_outdoor
@@ -216,7 +242,7 @@ INCLUDE modules.ink
 # cutin: name
 わたしはプージャー。花嫁のいとこよ。一問目。この町は、どうしてピンク色なのか。わかる？
 -> quiz(1) ->
-# background: gt_bg_jaipur_hawa_mahal
+# background: gt_bg_jaipur_hawa_mahal_night
 { quiz_correct:
     # speaker: narrator
     プージャーが悔しそうに舌打ちした。
@@ -242,7 +268,7 @@ INCLUDE modules.ink
 # speaker: gt_pooja
 この町の王様の称号、サワーイー。その意味、デリーの人は知らないでしょう？
 -> quiz(2) ->
-# background: gt_bg_jaipur_hawa_mahal
+# background: gt_bg_jaipur_hawa_mahal_night
 { quiz_correct:
     # speaker: heroine
     # local_word: gt_jaipur_word_sawai
@@ -270,7 +296,7 @@ INCLUDE modules.ink
 # speaker: gt_pooja
 三問目。この町はね、きちんと設計して造られたの。誰が、どうやって設計したと思う？
 -> quiz(3) ->
-# background: gt_bg_jaipur_hawa_mahal
+# background: gt_bg_jaipur_hawa_mahal_night
 { quiz_correct:
     # speaker: heroine
     ヴィディヤーダルという人が、古い建築の手引きに沿って、線を引いた町、です
@@ -295,7 +321,7 @@ INCLUDE modules.ink
 # local_word: gt_jaipur_word_nani
 最後の二問は、ナーニーが出すって！　一問目。春になると、女の人たちの行列がこの通りを通る。何のお祭り？
 -> quiz(4) ->
-# background: gt_bg_jaipur_hawa_mahal
+# background: gt_bg_jaipur_hawa_mahal_night
 { quiz_correct:
     # speaker: heroine
     ガンガウル。女神さまを敬う、春のお祭り
@@ -321,7 +347,7 @@ INCLUDE modules.ink
 # speaker: gt_jaipur_bride_grandmother
 この窓はね、向かいの宮殿の窓と同じ作り。こんな細かな格子は、何のためにあったと思う？
 -> quiz(5) ->
-# background: gt_bg_jaipur_hawa_mahal
+# background: gt_bg_jaipur_hawa_mahal_night
 { quiz_correct:
     # speaker: heroine
     # em: 見られずに
@@ -379,9 +405,8 @@ INCLUDE modules.ink
 {heroine_name}は振り返り、行列の端に残っていたこちらの手を取った。迷いのない手だった。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
-# photo: gt_album_j54 # photo_caption: 「一緒に！　下手なのは、二人とも同じだから！」
 # size: large
-# minigame: baraat_dance auto off_beat_together
+# minigame: baraat_dance auto off_beat_together bg gt_bg_jaipur_baraat_night
 一緒に！　下手なのは、二人とも同じだから！
 // 踊り：選択肢の代わりにミニゲーム「花婿の行列で踊る」。どの結果も同じ結びへ合流し、変わるのは結びの前の数行の色だけ（関係値なし）。
 * [踊り：太鼓の拍に乗れた # option: in_step]
@@ -413,6 +438,8 @@ INCLUDE modules.ink
     # speaker: narrator
     つかまれた手ごと、輪の真ん中へ引っぱり込まれた。
 -
+// 踊りの写真は、どの結果の後も、合流したこの行で1回（踊りの前の行に付けると、遊ぶ場の上に写真の札が重なるため）。
 # speaker: narrator
+# photo: gt_album_j54 # photo_caption: 「一緒に！　下手なのは、二人とも同じだから！」
 杖の老婦人とカムラが、肩を組んで揺れている。馬の上でアマンが笑っている。頭上では、ハワー・マハルの九百を超える窓が、灯りに照らされて、ただ通りを見下ろしていた。
 -> END

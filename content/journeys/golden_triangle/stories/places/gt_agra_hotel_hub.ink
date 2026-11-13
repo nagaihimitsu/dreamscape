@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # background: gt_bg_agra_hotel_hub
 # speaker: narrator
 アーグラの宿は、タージ・マハルの南門に近い路地の奥にあった。若い支配人のサミールが自ら彼女の部屋まで案内し、扉を開けた瞬間、{heroine_name}が固まった。
+# background: gt_bg_agra_hotel_room_heart
 # speaker: narrator
 # se: door_open
 寝台の上に、薔薇の花びらで大きなハート。その真ん中で、タオルで折った白鳥が二羽、くちばしを寄せ合っている。
@@ -23,30 +24,36 @@ INCLUDE modules.ink
 隣のこちらの部屋の寝台にも、まったく同じハートと白鳥が待っていた。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# voice: gt_agra_arrival_001
 は、ハネムーン！？　ち、違います、わたしたち、新婚じゃ……！
 # speaker: narrator
 皆さん、最初はそうおっしゃいます。三回説明して、三回とも笑顔で流された。去り際に置いていった名刺には、こう添えてあった。叔父はアーグラ一のガイドです。愛の物語なら、叔父に。
 { ending_reached:
     # speaker: heroine
     # reaction: heroine,shy_deep,blush
+    # voice: gt_agra_arrival_002
     ……恋人では、あるけど。新婚では、ない。そこは、大事なところだから
 - else:
     # speaker: heroine
     # reaction: heroine,shy,blush
+    # voice: gt_agra_arrival_003
     どうしよう。白鳥、すごく仲良さそう。……見ないで、白鳥
 }
 # speaker: narrator
 彼女は花びらを集め、捨てようとして手を止めた。洗面所のグラスに水を張り、そこへ浮かべる。
 # speaker: heroine
+# voice: gt_agra_arrival_004
 用意してくれた人がいるんだもんね
 # speaker: heroine
 # emotion: worried
 # recall: gt_album_d01
+# voice: gt_agra_arrival_005
 カムラさんに言われたのにな。言いたいことは言いなさいって。……今の、全然言えてなかった
 # speaker: narrator
 窓の外、家々の屋根の向こうに、白いドームの先がほんの少しだけのぞいていた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# voice: gt_agra_arrival_006
 あ……見えた。あれ、タージ・マハルの屋根だよね。写真で百回は見たのに、指先がそわそわする。……よし。誤解は、ちゃんと解く。その前に、どこから行こうか
 -> END
 
@@ -63,6 +70,7 @@ INCLUDE modules.ink
 おお、本当の話のお嬢さん。今日の客の一人がね、明日もう一度タージへ行くそうだ。壁の書家の名前を、自分の目で探しに
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# voice: gt_agra_epilogue_001
 えっ……本当ですか
 # speaker: enemy
 本当の話だよ。わしは、嘘は物語の中でしかつかない
@@ -70,6 +78,8 @@ INCLUDE modules.ink
 彼はチャイを飲み干し、甥の肩を叩いて立ち上がった。
 # speaker: enemy
 部屋のことは、片付けさせておいたよ
+# background: gt_bg_agra_hotel_room
+# leave: gt_anwar
 # speaker: narrator
 # recall: gt_album_a01
 二つの部屋の扉を開けると、どちらも、ハートも白鳥も消えていた。寝台は、ただの白い寝台に戻っている。
@@ -77,12 +87,15 @@ INCLUDE modules.ink
 - ending_reached:
     # speaker: heroine
     # reaction: heroine,shy,blush
+    # voice: gt_agra_epilogue_002
     ……全部、片付いちゃった。ちょっとだけ残してもらえばよかった、かな。今のは、聞かなかったことにして
 - romance_stage >= 3:
     # speaker: heroine
+    # voice: gt_agra_epilogue_003
     片付けてもらえて、よかった。……よかった、はず。うん
 - else:
     # speaker: heroine
+    # voice: gt_agra_epilogue_004
     ほっとした。……ほっとしたのに、少しだけ寂しいのは、なんでだろう
 }
 # speaker: narrator
@@ -94,34 +107,42 @@ INCLUDE modules.ink
 二人は宿の屋上に上がり、アンワルにもらった菓子の箱を開けた。半透明の、四角い砂糖漬け。ペーターは冬瓜からできているのだと、箱に書いてある。
 # speaker: heroine
 # reaction: heroine,happy,music
+# voice: gt_agra_epilogue_005
 甘い……。でも、思ったより軽い。冬瓜って、こんなに化けるんだ
 # speaker: narrator
 暗い屋根の連なりの向こうに、タージの白いドームが、ぼんやり浮かんでいる。
 # speaker: heroine
+# voice: gt_agra_epilogue_006
 本当の話を、ちゃんと届く言葉で言うのって、難しいね。正しいだけじゃ、アンワルさんの言うとおり、誰も泣かない
 # speaker: heroine
 # emotion: serious
+# voice: gt_agra_epilogue_007
 でも今日、自分の言葉で言えた。カムラさんに、報告できる
 # speaker: narrator
 彼女は鞄から、デリーでアマンにもらった案内を取り出した。ジャイプールの結婚式の日付を、指でなぞる。
 # speaker: heroine
+# voice: gt_agra_epilogue_008
 ジャイプールの結婚式、行きたい。誘われたからじゃなくて、わたしが行きたいの。……一緒に、来てくれる？
 {
 - ending_reached:
     # speaker: heroine
     # emotion: smile
     # recall: gt_album_a66
+    # voice: gt_agra_epilogue_009
     今日、人前で『わたしたちのことは、わたしたちで決める』って言ったでしょう。あれ、恋人として言ったんだよ。ちゃんと届いてた？
 - romance_stage >= 3:
     # speaker: heroine
     # recall: gt_album_a66
+    # voice: gt_agra_epilogue_010
     今日、『二人で来たのは本当です』って言ったの、覚えてる？　……あれは、本当だから
 - romance_stage == 2:
     # speaker: heroine
     # reaction: heroine,teasing,blush
+    # voice: gt_agra_epilogue_011
     人前で、『わたしたち』って言っちゃった。……勢いだからね。勢い、だから
 - else:
     # speaker: heroine
+    # voice: gt_agra_epilogue_012
     人前で話すの、すごく怖かった。隣にいてくれて、助かった。……ありがとう
 }
 # speaker: narrator

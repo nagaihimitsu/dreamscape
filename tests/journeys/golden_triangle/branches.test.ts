@@ -62,7 +62,7 @@ function choose(story: Story, index: number, result: "positive" | "negative" | u
 
 describe("Golden Triangle authored branching contracts", () => {
   it("covers the complete published cast and independent date set", () => {
-    expect(indiaDates).toHaveLength(24);
+    expect(indiaDates).toHaveLength(25);
     expect(indiaBattles).toHaveLength(15);
     const normal = indiaDates.filter((date) => date.kind === "normal");
     expect(normal).toHaveLength(18);
@@ -75,7 +75,7 @@ describe("Golden Triangle authored branching contracts", () => {
       expect(date.storyId).toMatch(new RegExp(`^places/gt_${date.chapterId}_[a-z_]+\\.${date.id}$`));
     }
     expect(indiaDates.filter((date) => date.kind !== "normal").map((date) => date.kind).sort())
-      .toEqual(["confession", "confession", "confession", "reassurance", "reassurance", "reassurance"]);
+      .toEqual(["answer", "confession", "confession", "confession", "reassurance", "reassurance", "reassurance"]);
   });
 
   // The 18 normal dates (place-file knots with tags, GT-3b): every path, with every cond text true and false and both
@@ -151,16 +151,17 @@ describe("Golden Triangle authored branching contracts", () => {
       // -> quiz(n) -> calls the quiz, which comes back with quiz_correct and battle_score (stage 5).
       // The battle is a knot of its landmark's place file (#116): the flow starts there, as the game starts it.
       // A # minigame: in the conversation (docs/13; the Jaipur finale's dance) stops at its outcomes' choices: each is taken.
+      // A cond("…") in the conversation (Hawa Mahal's flag after the parasol): every text read the same way, false then true.
       const { storyId, path } = splitStoryAddress(battle.storyId);
       expect(storyId, battle.id).toMatch(/^places\/gt_[a-z_]+$/u);
       expect(path).toBe(battle.id);
       const quiz = battleQuizzes[battle.quizId];
       const total = quiz.questions.length;
-      for (let mask = 0; mask < 1 << total; mask++) {
-        const story = runtime(storyId, {});
+      for (const truth of [false, true]) for (let mask = 0; mask < 1 << total; mask++) {
+        const story = runtime(storyId, {}, () => truth);
         story.ChoosePathString(path!);
         const playOn = (round: number, score: number, taken: string) => {
-          const where = `${battle.id}/${mask}/${round}${taken}`;
+          const where = `${battle.id}/${truth}/${mask}/${round}${taken}`;
           const part = segment(story);
           expect(part.text, where).not.toBe("");
           expect(part.effects, where).toEqual([]);

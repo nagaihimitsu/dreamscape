@@ -142,7 +142,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
   const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: !!quiz || view.choices.length > 0, windowHidden: windowVisibility.hidden });
   return (
     <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} data-quiet={staging?.quiet} {...sceneTap.props}>
-      <div className="vn-background" data-testid="scene-picture">{view.backgroundAsset ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundAsset.path}`} alt="" /> : <CanalScene backgroundId={view.background} />}
+      <div className="vn-background" data-testid="scene-picture">{view.backgroundAsset ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundAsset.path}`} alt="" decoding="async" fetchPriority="high" /> : <CanalScene backgroundId={view.background} />}
         <SceneTint color={sceneTimeTint(view.minute, view.staging?.tint === "off")} />
       </div>
       {/* The scene's weather stays over its quiz too. */}

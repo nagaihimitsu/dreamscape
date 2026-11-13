@@ -123,6 +123,20 @@ export function confessionResult(state: GameState): "accepted" | "deferred" | "r
     ? "deferred" : "rejected";
 }
 
+/**
+ * Her answer to a deferred confession (a date of kind `answer`; 2026-11-13): she says yes when the relationship meets
+ * the confession's success condition, else a gentle, final "not as lovers, for now" (`rejected`). Never random, never
+ * another deferral.
+ */
+export function deferralAnswer(state: GameState): "accepted" | "rejected" {
+  return canConfessSuccessfully(state) ? "accepted" : "rejected";
+}
+
+/** The outcome a date that decides the confession fixes when it starts (decidesConfession): a confession's, or her answer. */
+export function decidingOutcome(state: GameState, date: Pick<DateDefinition, "kind">): "accepted" | "deferred" | "rejected" {
+  return date.kind === "answer" ? deferralAnswer(state) : confessionResult(state);
+}
+
 /** A repeatable conversation prevents random setbacks from permanently blocking recovery. */
 function canRecoverRelationship(state: GameState): boolean {
   if (state.endingReached || completedDateCount(state) === 0) return false;
@@ -140,6 +154,8 @@ export function isEventVisible(state: GameState, dateId: string): boolean {
       (!date.recovery || canRecoverRelationship(state)) &&
       (!state.endingReached || date.kind === "normal" || date.allowAfterEnding) &&
       !untilReached(state, date) &&
+      // A date that needs a pending deferral (a reassurance, her answer) closes once it is answered, even if it was shown.
+      (!date.needsDeferred || state.confessionStatus === "deferred") &&
       (date.kind === "normal"
         ? !state.playedDateIds.includes(dateId) && meets(state, date.when)
         : state.unlockedEventIds.includes(dateId) || meetsDateConditions(state, date)),

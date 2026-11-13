@@ -1,6 +1,7 @@
 import { battles, dates, effects, episodes, getCityContent, scenes, storyState } from "../content";
 import { fileDateScene, taggedDateScene } from "./reservations";
 import { validateStorySnapshot } from "../story/runtime";
+import { decidesConfession } from "../content/schemas";
 import { activeDateStoryId, completedDateCount, dateBelongsToCity } from "./date-rules";
 import type { GameState } from "./game-state-schema";
 import { resolveRomanceChoice } from "./romance-random";
@@ -117,10 +118,10 @@ export function validateActiveDateState(state: GameState): void {
     // A one-scene date whose choice tags move the values (stage 3b): the values between and after its choices are not re-derived.
     const fileMoves = !!fileDateScene(date.id)?.options.some((option) => option.rel);
     if (active.resolutionMode === "fixed") {
-      if (date.kind !== "confession" || active.randomPlan.length || active.resolvedChoices.length || active.responseSnapshot)
+      if (!decidesConfession(date) || active.randomPlan.length || active.resolvedChoices.length || active.responseSnapshot)
         throw new Error("告白の結果記録が一致しません。");
     } else {
-      if (date.kind === "confession" || !active.responseSnapshot || active.randomPlan.length !== date.choiceCount ||
+      if (decidesConfession(date) || !active.responseSnapshot || active.randomPlan.length !== date.choiceCount ||
           active.resolvedChoices.length !== active.choiceCount)
         throw new Error("恋愛リアクションの進行記録が一致しません。");
       for (const [choiceNumber, saved] of active.resolvedChoices.entries()) {
@@ -155,7 +156,9 @@ export function validateActiveDateState(state: GameState): void {
       throw new Error("デートの履歴が一致しません。");
     if (
       active.choiceCount > date.choiceCount ||
-      (active.pendingOutcome && date.kind !== "confession")
+      (active.pendingOutcome && !decidesConfession(date)) ||
+      // Her answer is fixed when it starts, and is never another deferral (2026-11-13).
+      (date.kind === "answer" && (!active.pendingOutcome || active.pendingOutcome === "deferred"))
     )
       throw new Error("会話の進行記録が一致しません。");
     const lastResolution = active.resolvedChoices.at(-1);

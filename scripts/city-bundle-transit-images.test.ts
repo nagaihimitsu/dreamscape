@@ -92,9 +92,10 @@ describe("city editing bundle: transit ledgers, images and observations", () => 
     await expect(applyCityBundle(root, prematureRelease, true)).rejects.toThrow("都市の公開状態（productionStatus）は city:bundle では変えられません");
     expect(fingerprint(root)).toBe(before);
     const shared = exportCityBundle(root, "delhi");
-    const sharedAsset = shared.assets.find((item) => item.id === "gt_img_hotel_illustration")!;
+    // The rooftop photo is shared: the three cities' rooftop dates show the same background.
+    const sharedAsset = shared.assets.find((item) => item.id === "gt_img_hotel_rooftop_night")!;
     sharedAsset.altJa = "他都市の画像を変えてはならない";
-    await expect(applyCityBundle(root, shared, true)).rejects.toThrow("ほかの都市の画像や共有の画像は変えられません: gt_img_hotel_illustration");
+    await expect(applyCityBundle(root, shared, true)).rejects.toThrow("ほかの都市の画像や共有の画像は変えられません: gt_img_hotel_rooftop_night");
     expect(fingerprint(root)).toBe(before);
   }, 180_000);
 

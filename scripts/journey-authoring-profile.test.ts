@@ -20,7 +20,7 @@ function issues(authoring: Record<string, unknown>) {
   try {
     authoringProfileOf(manifest(authoring), label);
   } catch (error) {
-    expect((error as Error).message).toContain(`制作ツールの設定（authoring）の形が違います: ${label}: `);
+    expect((error as Error).message).toContain(`制作ツールの設定（authoring）の形が違います: ${label}:\n  - `);
     return ((error as Error).cause as { issues: { path: PropertyKey[]; message: string }[] }).issues
       .map((issue) => `${issue.path.join(".")}: ${issue.message}`);
   }

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { voicePath } from "../content/voice-files";
-import { audioContext, decodedSoundCache, onAudioStateChange, onPageHidden, wantAudio } from "../audio/audio-context";
+import { audioContext, decodedSoundCache, fetchSound, madeAudioContext, onAudioStateChange, onPageHidden, wantAudio } from "../audio/audio-context";
 import { duckForVoice as duckMusicForVoice } from "../audio/bgm";
 import { duckAmbienceForVoice } from "../audio/ambience";
 import { clampVoiceRate, effectiveVoiceMs } from "../audio/voice-rate";
@@ -264,6 +264,18 @@ function playVoice(voiceId: string, onDone: Done): () => void {
     loading?.cancel();
     settle(null);
   };
+}
+
+/**
+ * Loads the voice `voiceId` ahead of its line (2026-11-13, the background loading: src/media/preload.ts): into the decoded
+ * voices once the page's audio has been made (it then starts at once), before that only its file (the browser's cache).
+ * Nothing while 「台詞の声を出す」 is off. Settles when it has loaded or failed.
+ */
+export function preloadVoice(voiceId: string): Promise<void> {
+  if (!settings.enabled) return Promise.resolve();
+  const audio = madeAudioContext();
+  const url = voiceUrl(voiceId);
+  return audio ? loadVoice(audio, url).then(() => undefined) : fetchSound(url, LOAD_TIMEOUT_MS);
 }
 
 /**

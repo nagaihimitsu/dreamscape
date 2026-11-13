@@ -15,7 +15,7 @@ export interface TagContext {
   personIds?: readonly string[];
   /**
    * Whether a line may start a mini-game (`# minigame:`; docs/13 1.3): content:build's full-branch walk (scene-walk.ts)
-   * says true, every other reading false, a confession date "confession" (refused, docs/13 1.4); absent: allowed (the
+   * says true, every other reading false, a confession date or her answer "confession" (refused, docs/13 1.4); absent: allowed (the
    * game reads only what content:build passed).
    */
   miniGames?: boolean | "confession";
@@ -24,6 +24,12 @@ export interface TagContext {
    * gives a scene its journey's and the root's; absent: not checked.
    */
   miniGameArt?: Readonly<Record<string, string>>;
+  /**
+   * The tourism photos (tourism/catalog.json assets, credited like every photo) a backdrop slot (`art.<slot>` of kind
+   * backdrop) may name, ID → served path (docs/13 2.12); content:build keeps a story to its journey's (content-ownership.ts).
+   * Absent with miniGameArt absent too: not checked.
+   */
+  miniGamePhotos?: Readonly<Record<string, string>>;
 }
 
 /** The speakers every line may name; any other `# speaker:` names a person of progression/story.json people (2026-11-11). */
@@ -377,7 +383,7 @@ export function parseStoryTags(
     } else if (key === "minigame") {
       // Where it may run and what follows it (a choice set of its outcomes) are content:build's (scripts/scene-walk.ts).
       if (context.miniGames === "confession")
-        throw new Error(`# minigame: ${value}: no mini-game in a confession date: her answer must never look decided by skill or luck ` +
+        throw new Error(`# minigame: ${value}: no mini-game in a confession date or her answer to a deferral: her answer must never look decided by skill or luck ` +
           "(docs/13 1.4); write it in a scene before or after it (# at: date <the confession>)");
       if (context.miniGames === false)
         throw new Error(`# minigame: ${value}: a mini-game runs at a choice set of a scene written in a place file (stories/places/: a date, ` +

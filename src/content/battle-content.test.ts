@@ -161,26 +161,26 @@ describe("battle content contract", () => {
     await changeQuiz((quiz) => {
       quiz.questions[0].correctOptionId = "D";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/"correctOptionId"[\s\S]*Invalid option/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/correctOptionId[\s\S]*Invalid option/);
   });
 
   it("requires source evidence with claim category, URL and real calendar date", async () => {
     await changeQuiz((quiz) => {
       quiz.questions[0].sources = [];
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/"sources"[\s\S]*Too small: expected array to have >=1 items/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/sources[\s\S]*Too small: expected array to have >=1 items/);
     await changeQuiz((quiz) => {
       quiz.questions[0].sources[0].checkedAt = "2026-02-30";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/"checkedAt"[\s\S]*Invalid ISO date/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/checkedAt[\s\S]*Invalid ISO date/);
     await changeQuiz((quiz) => {
       quiz.questions[0].sources[0].url = "javascript:alert(1)";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/"url"[\s\S]*Invalid URL/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/url[\s\S]*Invalid URL/);
     await changeQuiz((quiz) => {
       quiz.questions[0].sources[0].claimType = "probably_true";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/"claimType"[\s\S]*Invalid option/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/claimType[\s\S]*Invalid option/);
   });
 
   it("warns about Japanese questions and English explanations without stopping the build (data-language)", async () => {

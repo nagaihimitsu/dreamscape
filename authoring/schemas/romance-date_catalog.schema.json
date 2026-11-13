@@ -25,7 +25,8 @@
               "normal",
               "special",
               "confession",
-              "reassurance"
+              "reassurance",
+              "answer"
             ]
           },
           "chapterId": {

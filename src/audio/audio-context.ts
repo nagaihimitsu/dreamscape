@@ -89,6 +89,26 @@ export function onPageHidden(listener: () => void): void {
   });
 }
 
+/** A sound file's bytes; it fails when it has not loaded within `timeoutMs` (a stalled request must not hold anything up). */
+function soundBytes(url: string, timeoutMs: number): Promise<ArrayBuffer> {
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+  return fetch(url, { signal: controller.signal })
+    .then((response) => {
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.arrayBuffer();
+    })
+    .finally(() => window.clearTimeout(timer));
+}
+
+/**
+ * Fetches a sound file into the browser's cache only (the background loading before the page's audio has been made:
+ * src/media/preload.ts), so its decoding later reads it from there. Settles when it has loaded or failed.
+ */
+export function fetchSound(url: string, timeoutMs: number): Promise<void> {
+  return soundBytes(url, timeoutMs).then(() => undefined);
+}
+
 /**
  * A cache of decoded sounds by URL: `load` gives the decoded sound from memory or fetches and decodes it, keeping the
  * `size` most recently used (or their loading). A sound that has not loaded within `timeoutMs` fails (a stalled request
@@ -103,15 +123,7 @@ export function decodedSoundCache(size: number, timeoutMs: number): (audio: Audi
       buffers.set(url, cached);
       return cached;
     }
-    const controller = new AbortController();
-    const timer = window.setTimeout(() => controller.abort(), timeoutMs);
-    const loading = fetch(url, { signal: controller.signal })
-      .then((response) => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.arrayBuffer();
-      })
-      .then((data) => audio.decodeAudioData(data))
-      .finally(() => window.clearTimeout(timer));
+    const loading = soundBytes(url, timeoutMs).then((data) => audio.decodeAudioData(data));
     buffers.set(url, loading);
     loading.catch(() => {
       if (buffers.get(url) === loading) buffers.delete(url);

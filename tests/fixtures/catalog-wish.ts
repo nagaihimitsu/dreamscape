@@ -7,6 +7,7 @@ import { encounters } from "../../src/content/encounters";
 import type { EncounterCatalog, EncounterDefinition } from "../../src/content/encounter-schemas";
 import type { EncounterEntryRule } from "../../src/content/encounter-entry-rules";
 import { encounterEntryRuleList } from "../../src/domain/encounter";
+import { addJourneyWordMeanings } from "./word-meanings";
 
 type EncounterItem = EncounterCatalog["items"][number];
 
@@ -46,9 +47,16 @@ export function installCatalogWish(): () => void {
 }
 
 /**
+ * The meanings of the words of the wish's choices that the core dictionary lacks: only the Golden Triangle's defines them
+ * (these meanings), and a Milan encounter may use only the core dictionary and Milan's own (content-ownership.ts).
+ */
+const WISH_WORD_MEANINGS = { count: "数える", luck: "運", my: "私の" };
+
+/**
  * Add the wish in its catalog form to a content fixture's Milan (prepareContentFixture), for the build tests of a catalog
- * encounter: its entry, item, entry rule and four stories. Without alternativeApRewardId: the game's wish earns that reward
- * (# on_done: reward), and one reward has one way to earn it. Returns the fixture path of the wish's story file.
+ * encounter: its entry, item, entry rule, four stories and the word meanings its English needs in Milan's own dictionary.
+ * Without alternativeApRewardId: the game's wish earns that reward (# on_done: reward), and one reward has one way to earn
+ * it. Returns the fixture path of the wish's story file.
  */
 export async function addCatalogWishToContent(fixtureRoot: string, change: (wish: EncounterDefinition) => void = () => {}): Promise<string> {
   const milano = path.join(fixtureRoot, "content/journeys/milano");
@@ -64,5 +72,6 @@ export async function addCatalogWishToContent(fixtureRoot: string, change: (wish
   await mkdir(path.join(milano, "stories/encounters"), { recursive: true });
   for (const id of [wish.storyId, wish.quiz!.wonStoryId, wish.quiz!.lostStoryId, wish.quiz!.alreadyStoryId])
     await writeFile(path.join(milano, "stories", `${id}.ink`), readFileSync(path.join(FIXTURE, `${id}.ink`), "utf8"));
+  await addJourneyWordMeanings(fixtureRoot, "milano", WISH_WORD_MEANINGS);
   return path.join(milano, "stories", `${wish.storyId}.ink`);
 }

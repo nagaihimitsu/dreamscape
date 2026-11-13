@@ -11,6 +11,7 @@ import { ONE_SCENE_DATE_FILE, prepareContentFixture } from "../src/content/test-
 import { advanceEncounter, chooseEncounter, finishEncounter } from "../src/domain/encounter";
 import { closeTourism } from "../src/domain/tourism";
 import { meetEncounter } from "../tests/fixtures/encounter-moment";
+import { addJourneyWordMeanings } from "../tests/fixtures/word-meanings";
 import { advanceDate, chooseDate, finishDate, startDate, validateGameState } from "../src/domain/game";
 import { buildContent } from "./content-pipeline";
 
@@ -45,6 +46,9 @@ it("builds a new encounter and date with Ink, small catalog entries and a travel
       ],
     });
     await writeFile(encountersPath, JSON.stringify(encounterCatalog));
+    // A Milan encounter's English may use the word meanings of the core dictionary and Milan's own (content-ownership.ts):
+    // "question" and "tea" are only in the Golden Triangle's, so the author gives Milan its own, with the same meanings.
+    await addJourneyWordMeanings(root, "milano", { question: "質問", tea: "紅茶、茶" });
     // Milan's scenes are knots of its place files since the Milano rewrite: a new author's one-scene files start the folders.
     await mkdir(path.join(root, "content/journeys/milano/stories/encounters"), { recursive: true });
     await mkdir(path.join(root, "content/journeys/milano/stories/dates"), { recursive: true });

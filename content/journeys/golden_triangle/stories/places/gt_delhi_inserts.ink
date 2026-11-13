@@ -108,7 +108,7 @@ INCLUDE modules.ink
 # when: time night
 # until: seen gt_delhi_hotel_sick_morning
 # sources: none
-# background: gt_bg_delhi_hotel_hub
+# background: gt_bg_delhi_hotel_corridor
 # bgm: meditation_impromptu_01
 # speaker: narrator
 # quiet: scene
@@ -171,7 +171,7 @@ INCLUDE modules.ink
 # when: time night
 # until: seen gt_delhi_hotel_sick_morning
 # sources: none
-# background: gt_bg_delhi_hotel_hub
+# background: gt_bg_delhi_hotel_room
 # bgm: meditation_impromptu_01
 # speaker: narrator
 # quiet: scene
@@ -185,6 +185,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # phone: received
 やっぱりいい。寝て
+# background: gt_bg_delhi_hotel_corridor
 # speaker: narrator
 廊下に出ると、彼女が長椅子で膝を抱えていた。顔が白い。
 # speaker: heroine
@@ -237,7 +238,7 @@ INCLUDE modules.ink
 # at: hotel delhi_hotel_hub
 # priority: +1
 # when: flag gt_delhi_golgappa_sick
-# background: gt_bg_delhi_hotel_hub
+# background: gt_bg_delhi_hotel_corridor
 # bgm: morning
 { cond("flag gt_delhi_player_sick"):
     # speaker: narrator
@@ -358,6 +359,7 @@ Agra? Your train is cancelled today.
 # ambience: stop
 # speaker: narrator
 道を渡り、大通りから一本入った路地の、狭い階段を上がる。扉には、大きな英語の看板。政府公認・観光案内所。中にはインドの旗が飾られ、額に入った「証明書」が壁に並び、天井の扇風機がゆっくり回っていた。
+# background: gt_bg_delhi_scam_office
 背広の男が、にこやかに立ち上がった。
 # speaker: gt_delhi_scam_suit_man
 座ってください。まずはチャイを
@@ -587,6 +589,7 @@ No, thank you.
     # voice: gt_delhi_depart_station_006
     ふふっ。顔は隠れてるのに、誰だかすぐ分かる
 }
+# background: gt_bg_delhi_train_window
 # speaker: narrator
 # se: old_bell
 発車のベルが鳴った。窓の外を、赤いシャツが一つ、また一つと流れていく。

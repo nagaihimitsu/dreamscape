@@ -19,10 +19,12 @@ INCLUDE modules.ink
 宿の屋上からは、タージのドームが見えた。夜の中で、そこだけが白く、薄く光っている。
 彼女は手すりの前まで行きかけて、くるりと向きを変えた。ドームに背を向けて、反対側の、洗濯物と貯水タンクしかない方の縁に腰を下ろす。
 # speaker: heroine
+# voice: gt_agra_date_confession_001
 タージの方を向いてると、なんだか、誰かの有名な恋の話の中にいるみたいで。こっち向きの方が、落ち着く
 { cond("date gt_agra_date_chini_rauza"):
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_date_confession_002
     チーニー・カ・ラウザーで聞いたこと、ちょっと分かる。誰かの物語の、背景にならない所がいいって
 }
 -> gt_agra_confession_lead ->
@@ -41,31 +43,39 @@ INCLUDE modules.ink
     # speaker: heroine
     # reaction: heroine,shy_deep,blush
     # pause: 800
+    # voice: gt_agra_date_confession_003
     ……うん。わたしも、好き
     # speaker: heroine
     # emotion: serious
+    # voice: gt_agra_date_confession_004
     迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて。……わたしも、一緒にいたい。旅が終わっても
     # speaker: heroine
     # reaction: heroine,teasing,heart
     # photo: gt_album_a59 # photo_caption: タージに背を向けた告白
+    # voice: gt_agra_date_confession_005
     ふふ。顔、すごいことになってる。わたしも、たぶん、同じ顔してるけど
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_date_confession_006
     旅が終わったあとのことは、一緒に決めようね。どこに行くかも、何を食べるかも。決めてもらうんじゃなくて、二人で
 - confession_result == "rejected":
     # speaker: heroine
     # emotion: serious
+    # voice: gt_agra_date_confession_007
     ありがとう。言ってくれて、うれしかった。それは、本当
     # speaker: heroine
+    # voice: gt_agra_date_confession_008
     でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから
     # speaker: narrator
     彼女は目をそらさなかった。言葉は短く、迷いがなかった。
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_date_confession_009
     旅は、最後まで一緒に行きたい。それも、本当。明日も、いつもみたいに、どこへ行くか一緒に決めてくれる？
 - else:
     # speaker: heroine
     # emotion: serious
+    # voice: gt_agra_date_confession_010
     うれしい。本当に、うれしい
     # speaker: heroine
     でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、遠くのドームと、夜の風のせいに。……それは、嫌なの。ちゃんと、わたしが決めたいから

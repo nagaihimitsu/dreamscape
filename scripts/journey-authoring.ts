@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { readJourneyManifests } from "./content-sources";
+import { schemaIssueLines } from "./content-validation-utils";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 /** A relative posix path: no absolute path, drive letter or backslash, and no empty, "." or ".." segment. */
@@ -39,7 +40,7 @@ function profileSchemaOf(manifest: Record<string, unknown>) {
 export function authoringProfileOf(manifest: Record<string, unknown>, label: string): JourneyAuthoringProfile | undefined {
   if (manifest.authoring === undefined) return undefined;
   const parsed = profileSchemaOf(manifest).safeParse(manifest.authoring);
-  if (!parsed.success) throw new Error(`制作ツールの設定（authoring）の形が違います: ${label}: ${parsed.error.message}`, { cause: parsed.error });
+  if (!parsed.success) throw new Error(`制作ツールの設定（authoring）の形が違います: ${label}:\n${schemaIssueLines(parsed.error.issues)}`, { cause: parsed.error });
   return parsed.data;
 }
 

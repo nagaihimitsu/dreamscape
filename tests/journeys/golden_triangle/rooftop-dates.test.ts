@@ -2,11 +2,14 @@ import { describe, expect, it, onTestFinished } from "vitest";
 import { contentSourcesFromTree, readContentTree, selectJourneys } from "../../../scripts/content-sources";
 import { validateContent } from "../../../scripts/content-validation";
 import { dates, scenes } from "../../../src/content";
-import { cityStart, clearCity, departFromClearedCity, finishEpisode, newJourney, withAp, withRelationship } from "../../../src/dev/scenario-builders";
+import { cityStart, clearCity, departFromClearedCity, finishEpisode, newJourney, nextMorning, withAp, withRelationship } from "../../../src/dev/scenario-builders";
 import { meets } from "../../../src/domain/conditions";
 import { evaluateProgression } from "../../../src/domain/date-rules";
-import { advanceDate, chooseDate, dateChoiceDisplay, finishDate, getDateAvailability, startDate, validateGameState, type GameState } from "../../../src/domain/game";
-import { isCompletedTravelEvent } from "../../../src/domain/travel-game";
+import { advanceDate, chooseDate, dateChoiceDisplay, finishDate, getDateAvailability, isEventVisible, startDate, validateGameState, type GameState } from "../../../src/domain/game";
+import { closeRomanceEnding } from "../../../src/domain/occasion";
+import { applyPlayerAction } from "../../../src/domain/player-action";
+import { screenFor } from "../../../src/domain/screen";
+import { beginTravelEvent, isCompletedTravelEvent } from "../../../src/domain/travel-game";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 import { installRepeatableDate } from "../../fixtures/repeatable-date";
 
@@ -82,10 +85,12 @@ const played = { available: false, reason: "このひとときは、もう思い
 const waiting = { available: false, reason: "新しいひとときを過ごしてから、もう一度話せます。" };
 
 describe("Golden Triangle rooftop dates (GT-3b)", () => {
-  it("has eight dates in each city: six at a destination and the two rooftop dates at the hotel", () => {
+  it("has eight dates in each city: six at a destination and the two rooftop dates at the hotel; Jaipur also her answer", () => {
     for (const cityId of ["delhi", "agra", "jaipur"]) {
       const own = dates.filter((date) => date.chapterId === cityId);
-      expect(own.map((date) => date.kind).sort()).toEqual(["confession", "normal", "normal", "normal", "normal", "normal", "normal", "reassurance"]);
+      // Jaipur, the last city, has her answer after a deferral there too (no later confession can follow; 2026-11-13).
+      expect(own.map((date) => date.kind).sort()).toEqual([...(cityId === "jaipur" ? ["answer"] : []),
+        "confession", "normal", "normal", "normal", "normal", "normal", "normal", "reassurance"]);
       for (const kind of ["confession", "reassurance"]) {
         const date = own.find((item) => item.kind === kind)!;
         expect(date).toMatchObject({ apCost: 0, minRomanceStage: 2, choiceCount: 1, backgroundId: "gt_bg_hotel_rooftop_night",
@@ -231,5 +236,110 @@ describe("Golden Triangle rooftop dates (GT-3b)", () => {
       "(gt_delhi_rooftop_talk, the date gt_delhi_date_confession): # title: 「屋上で」 differs from titleJa 「屋上の、言いたいこと」") });
     expect(validate((ink) => ink.replace("# option: stay_together]\n", "# option: stay_together]\n    # profile: attentive\n")))
       .toThrow("A confession date takes no # profile: (its outcome is never random; B2)");
+  }, 120_000);
+});
+
+/**
+ * Her answer (2026-11-13): Jaipur is the last city, so after a deferral at its confession no later confession can follow;
+ * she gives her answer herself, by day (the next day at the earliest: the confession is at night), at the street before
+ * Hawa Mahal. The answer is the relationship state's when it starts (deferralAnswer): yes, or a final "not now".
+ */
+describe("her answer in Jaipur after a deferral there (2026-11-13)", () => {
+  const answer = "gt_jaipur_date_answer";
+  /** Jaipur after a sightseeing and three dates, deferred at its rooftop confession at 19:00; made once. */
+  let jaipurDeferred: GameState | undefined;
+  function deferredInJaipur(): GameState {
+    return jaipurDeferred ??= (() => {
+      let state = finishEpisode(cityStart("jaipur"), "gt_jaipur_main_hawa_mahal");
+      for (const dateId of normalDates("jaipur").slice(0, 3)) state = playDate(state, dateId).state;
+      const deferred = playDate(evening(state, outcomeValues.deferred), "gt_jaipur_date_confession");
+      expect(deferred.lines).toContain("待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？");
+      expect(deferred.state.confessionStatus).toBe("deferred");
+      return deferred.state;
+    })();
+  }
+  /** `state` after a night at the hotel, with the given relationship values. */
+  const morningAfter = (state: GameState, values: Values): GameState => evaluateProgression(withRelationship(nextMorning(state), values));
+
+  it("waits for the day: not on the night of the deferral, then at the hotel the next morning", () => {
+    const deferred = deferredInJaipur();
+    expect(isEventVisible(deferred, answer)).toBe(false);
+    expect(getDateAvailability(deferred, answer).available).toBe(false);
+    const morning = morningAfter(deferred, outcomeValues.deferred);
+    expect(morning.travel.minute).toBe(9 * 60);
+    expect(isEventVisible(morning, answer)).toBe(true);
+    expect(getDateAvailability(morning, answer)).toEqual({ available: true, reason: "" });
+    // Without a deferral there is nothing to answer.
+    expect(getDateAvailability(validateGameState({ ...morning, confessionStatus: "none", playedDateIds: morning.playedDateIds
+      .filter((id) => id !== "gt_jaipur_date_confession") }), answer).available).toBe(false);
+  }, 300_000);
+
+  it("says not now when the confession's condition is not met: a final rejection, after keeping her promise", () => {
+    // The reassurance on the night of the deferral (her promise: 「答えは、わたしから言うね」).
+    const reassured = playDate(deferredInJaipur(), "gt_jaipur_date_reassurance");
+    expect(reassured.lines).toContain("答えは、わたしから言うね。ちゃんと決めたら。それまでは、いつもどおりでいて。いつもどおりが、いちばん助かる");
+    const morning = morningAfter(reassured.state, outcomeValues.deferred);
+    const started = startDate(morning, answer);
+    expect(started.activeDate).toMatchObject({ pendingOutcome: "rejected", resolutionMode: "fixed", randomPlan: [], responseSnapshot: null });
+    const { state, lines } = playDate(morning, answer);
+    expect(lines).toContain("答えは、わたしから言うって約束したもんね。だから、今日はわたしから");
+    expect(lines).toContain("恋人としては、今は、一緒にいられない。これが、わたしの答え。待たせたのに、ごめんなさい");
+    expect(lines).not.toContain("好き。……付き合いたい。旅が終わっても、一緒にいたい");
+    expect(state).toMatchObject({ confessionStatus: "rejected", endingReached: false });
+    expect(state.memories).not.toContain("gt_jaipur_date_answer_memory");
+    // Answered: her answer is a memory, and nothing waits for the deferral any more (the reassurance, had it not been played).
+    expect(getDateAvailability(state, answer)).toEqual(played);
+    const unreassured = playDate(morningAfter(deferredInJaipur(), outcomeValues.deferred), answer);
+    expect(unreassured.lines).not.toContain("答えは、わたしから言うって約束したもんね。だから、今日はわたしから");
+    expect(unreassured.state.confessionStatus).toBe("rejected");
+    expect(isEventVisible(atNight(unreassured.state), "gt_jaipur_date_reassurance")).toBe(false);
+  }, 300_000);
+
+  it("says yes when it is met: the couple ending, its memory and the 「交際開始」 screen, from the map", () => {
+    const morning = morningAfter(deferredInJaipur(), outcomeValues.accepted);
+    let state = applyPlayerAction(morning, (current) => beginTravelEvent(current, answer, "walk", current.revision, () => 0), () => 0);
+    expect(state.occasion).toMatchObject({ kind: "date", parts: ["date", "ending"] });
+    expect(state.activeDate).toMatchObject({ dateId: answer, pendingOutcome: "accepted", resolutionMode: "fixed" });
+    const lines: string[] = [];
+    for (let step = 0; state.activeDate; step++) {
+      expect(step).toBeLessThan(200);
+      state = roundtrip(state);
+      const active = state.activeDate!;
+      lines.push(active.frame.text);
+      const change = active.frame.ended ? (current: GameState) => finishDate(current, current.revision)
+        : active.frame.choices.length ? (current: GameState) => chooseDate(current, active.frame.choices[1].index, current.revision)
+          : (current: GameState) => advanceDate(current, current.revision);
+      state = applyPlayerAction(state, change, () => 0);
+    }
+    expect(lines).toContain("好き。……付き合いたい。旅が終わっても、一緒にいたい");
+    expect(lines).toContain("だめ。一日一回まで。……うそ。好き。はい、二回目。三回目は、夜に取っておく");
+    expect(state).toMatchObject({ confessionStatus: "accepted", endingReached: true });
+    expect(state.memories).toContain("gt_jaipur_date_answer_memory");
+    expect(state.occasion).toMatchObject({ at: "main:ending", romanceEnding: true });
+    expect(screenFor(roundtrip(state))).toBe("romance_ending");
+    const free = roundtrip(closeRomanceEnding(state, state.revision, () => 0));
+    expect(free.occasion).toBeNull();
+    expect(free.endingReached).toBe(true);
+    expect(getDateAvailability(free, answer)).toEqual({ available: false, reason: "ふたりの物語は、交際エンディングを迎えました。" });
+  }, 300_000);
+
+  it("is checked by the build: it answers a deferral, and is decided like a confession", () => {
+    const tree = readContentTree(process.cwd());
+    const validate = (change: (catalog: { dates: Record<string, unknown>[] }) => void, ink: (text: string) => string = (text) => text) => {
+      const files = new Map(tree.files);
+      const catalogFile = "content/journeys/golden_triangle/romance/date_catalog.json";
+      const catalog = JSON.parse(files.get(catalogFile)!.toString("utf8")) as { dates: Record<string, unknown>[] };
+      change(catalog);
+      files.set(catalogFile, Buffer.from(JSON.stringify(catalog)));
+      const inkFile = "content/journeys/golden_triangle/stories/places/gt_jaipur_hotel_hub_dates.ink";
+      files.set(inkFile, Buffer.from(ink(files.get(inkFile)!.toString("utf8"))));
+      return () => validateContent(selectJourneys(contentSourcesFromTree({ ...tree, files }), ["golden_triangle"]));
+    };
+    const own = (catalog: { dates: Record<string, unknown>[] }) => catalog.dates.find((date) => date.id === answer)!;
+    expect(validate((catalog) => { own(catalog).needsDeferred = false; })).toThrow("it needs needsDeferred: true");
+    expect(validate((catalog) => { (own(catalog).validationContexts as Record<string, unknown>[])[0].confessionResult = "deferred"; }))
+      .toThrow(`Her answer ${answer} is never another deferral`);
+    expect(validate(() => undefined, (text) => text.replace("# option: same_by_day]\n", "# option: same_by_day]\n    # profile: attentive\n")))
+      .toThrow("A date of her answer takes no # profile: (its outcome is never random; B2)");
   }, 120_000);
 });

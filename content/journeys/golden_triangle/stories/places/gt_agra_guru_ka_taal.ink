@@ -15,6 +15,7 @@ INCLUDE modules.ink
 デリーへ続く幹線道路を、トラックが途切れなく唸りながら走っていく。その道沿いに、赤い砂岩の塔を残した、古い石の貯水池があった。グル・カ・タール。
 雨水をためるために、1610年に造られた。塔はもとは十二本あり、今は八本が残る。シク教の言い伝えでは、九代目のグル、テーグ・バハードゥルが、ここで自ら捕らえられに出たとされ、そのそばに礼拝所が建っている。
 # speaker: heroine
+# voice: gt_agra_date_guru_ka_taal_001
 道路の音が、すごい。でも、池の方を向くと、少しだけ静かになるね
 # speaker: narrator
 礼拝所の食堂で、湯気の立つ豆の皿を受け取ったときだった。
@@ -25,6 +26,7 @@ INCLUDE modules.ink
     世界地図！　世界地図の娘じゃないか！
     # speaker: heroine
     # reaction: heroine,surprised_big,exclamation
+    # voice: gt_agra_date_guru_ka_taal_002
     ハルバンスさん！　どうして、アーグラに？
 - else:
     # speaker: narrator
@@ -57,6 +59,7 @@ INCLUDE modules.ink
 親父に言ってください。意地を張るのもいい加減にしろ、と
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_agra_date_guru_ka_taal_003
 ……隣に座ってるのに
 * [「君が決めていいよ」と、目で合図する # option: leave_it_to_her]
     # profile: attentive
@@ -64,10 +67,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_agra_date_guru_ka_taal_004
         えっ、わたし一人で？　……う、うん。やってみる
     - else:
         # speaker: heroine
         # emotion: smile
+        # voice: gt_agra_date_guru_ka_taal_005
         うん。任せて。わたし、こういうの、ちょっとだけ得意かも
     }
 * [グルミートの方に、チャイを持っていく # option: tea_for_gurmeet]
@@ -78,6 +83,7 @@ INCLUDE modules.ink
         湯気の立つ素焼きのカップを置いたが、グルミートは手をつけなかった。父親の方から、鼻を鳴らす音がした。
         # speaker: heroine
         # reaction: heroine,exasperated,sweat
+        # voice: gt_agra_date_guru_ka_taal_006
         ……あ、冷めないうちに、どうぞ
     - else:
         # speaker: narrator
@@ -97,13 +103,16 @@ INCLUDE modules.ink
 -
 # speaker: heroine
 # emotion: serious
+# voice: gt_agra_date_guru_ka_taal_007
 ごめんなさい。伝言は、運べません
 # speaker: heroine
+# voice: gt_agra_date_guru_ka_taal_008
 わたしが伝えたら、お二人の言葉じゃなくなっちゃうから。……そのかわり、一つずつ聞いてもいいですか。何が、怖いんですか
 # speaker: narrator
 二人とも、同時に彼女を見た。怒っているというより、そんなことを聞かれたのは初めてだ、という顔だった。
 { cond("flag gt_delhi_harbans_fear_told"):
     # speaker: heroine
+    # voice: gt_agra_date_guru_ka_taal_009
     ハルバンスさん。デリーで話してくれたこと、ご自分で言えますか
     # speaker: narrator
     ハルバンスは、しばらく豆の皿を見ていた。それから、息子の方を見ないまま、口を開いた。
@@ -150,16 +159,19 @@ INCLUDE modules.ink
 # speaker: narrator
 食堂を出て、古い貯水池のふちに立つ。四百年分の雨を受けとめてきた、深い石の底。道路の向こうでは、相変わらずトラックが走っている。
 # speaker: heroine
+# voice: gt_agra_date_guru_ka_taal_010
 わたし、どっちの味方もしなかったね。……できなかった、の方が近いかな
 * [「それで、よかったと思う」 # option: it_was_right]
     # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_agra_date_guru_ka_taal_011
         そうかな。……本当は、何もできなかっただけかも
     - else:
         # speaker: heroine
         # emotion: smile
+        # voice: gt_agra_date_guru_ka_taal_012
         うん。伝言を運ばなくてよかった。同じことでも、自分の口で言った方が、ちゃんと届くもんね
     }
 * [「正直、少し息子さんの味方だった」 # option: honest_side]
@@ -167,10 +179,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: serious
+        # voice: gt_agra_date_guru_ka_taal_013
         そう？　……わたしは、お父さんの方だったかも。運ばない自分を見せたくないの、分かるから
     - else:
         # speaker: heroine
         # reaction: heroine,surprised,question
+        # voice: gt_agra_date_guru_ka_taal_014
         そうなの？　実は、わたしも。電話が鳴るのが怖いって、あれ、ずるいくらい本当だった
     }
 * [「来年の夏、ブランプトンまで洗車を手伝いに行こう」 # option: go_wash_trucks]
@@ -178,14 +192,17 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: exasperated
+        # voice: gt_agra_date_guru_ka_taal_015
         ……今、ちょっと真面目な話してたんだけど
     - else:
         # speaker: heroine
         # reaction: heroine,teasing_big,music
+        # voice: gt_agra_date_guru_ka_taal_016
         ふふっ、洗車係の、助手の助手？　ハルバンスさん、絶対に口出ししてくるよ。ホースの持ち方から
     }
 -
 # speaker: heroine
 # emotion: smile
+# voice: gt_agra_date_guru_ka_taal_017
 隣に座ってるなら、なおさらだね。伝言じゃなくて、自分の口で
 -> END

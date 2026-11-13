@@ -304,15 +304,12 @@
       "fromPlaceId": "jaipur_amber_fort",
       "toPlaceId": "jaipur_panna_meena_kund",
       "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-13",
+      "reasonJa": "歩いて12分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。（2026-11-13 に徒歩の経路を足し、それまでのオートの経路を外した）",
       "sourceRefs": [
         "s12_indiaesque_jaipur",
-        "s5_tomtom_india",
-        "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model"
+        "walk_station_model"
       ]
     },
     {
@@ -2557,15 +2554,12 @@
       "fromPlaceId": "jaipur_panna_meena_kund",
       "toPlaceId": "jaipur_amber_fort",
       "mode": "auto_rickshaw",
-      "status": "available",
-      "checkedAt": "2026-11-07",
-      "reasonJa": "旅行情報の目安に合わせた式（₹60＋1kmあたり₹20）で出した1台（2人）分の料金と時間（ゲーム用の推定）。公定運賃ではない。",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-13",
+      "reasonJa": "歩いて12分で着く（15分以内）ので、オートの経路は置かない。オートで行けないという意味ではない。（2026-11-13 に徒歩の経路を足し、それまでのオートの経路を外した）",
       "sourceRefs": [
         "s12_indiaesque_jaipur",
-        "s5_tomtom_india",
-        "s4_tomtom_delhi",
-        "s17_osrm_car",
-        "agra_jaipur_auto_model"
+        "walk_station_model"
       ]
     },
     {

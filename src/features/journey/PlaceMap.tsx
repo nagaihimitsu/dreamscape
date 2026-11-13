@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import * as L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import type * as L from "leaflet";
+import { useLeaflet, type Leaflet } from "./leaflet";
 import { getCityContent } from "../../content";
 import type { TravelEvent, TravelPlace } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
@@ -28,8 +28,7 @@ export const OSM_TILES = {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
 };
 
-/** Both map sizes use the same tiles, markers and selection behavior. */
-function MapCanvas({ game, events, places, selectedId, onMarker, onFocusEnd, mapRef, initialView, expanded = false, onTilesFailed }: Props & {
+type MapCanvasProps = Props & {
   places: Place[];
   selectedId: string | null;
   onMarker: MarkerPress;
@@ -39,7 +38,19 @@ function MapCanvas({ game, events, places, selectedId, onMarker, onFocusEnd, map
   expanded?: boolean;
   /** Where the caller shows the tile error itself (the small map: under its legend, U10). */
   onTilesFailed?: () => void;
-}) {
+};
+
+const mapLabel = (cityNameJa: string) => `${cityNameJa}の地図。ドラッグで移動、ピンチまたはプラス・マイナスで拡大縮小できます。`;
+
+/** Both map sizes use the same tiles, markers and selection behavior. Until Leaflet is loaded (leaflet.ts), the empty frame. */
+function MapCanvas(props: MapCanvasProps) {
+  const L = useLeaflet();
+  if (L) return <LeafletMapCanvas L={L} {...props} />;
+  return <div className="travel-map-frame" role="region" aria-label={mapLabel(getCityContent(props.game.currentCityId).city.nameJa)}
+    data-testid={props.expanded ? "travel-map-expanded-canvas" : "travel-map-canvas"} />;
+}
+
+function LeafletMapCanvas({ L, game, events, places, selectedId, onMarker, onFocusEnd, mapRef, initialView, expanded = false, onTilesFailed }: MapCanvasProps & { L: Leaflet }) {
   const [tilesFailed, setTilesFailed] = useState(false);
   const { city } = getCityContent(game.currentCityId);
   const container = useRef<HTMLDivElement>(null);
@@ -178,7 +189,7 @@ function MapCanvas({ game, events, places, selectedId, onMarker, onFocusEnd, map
   }, [selectedId]);
 
   return <>
-    <div ref={container} className="travel-map-frame" role="region" aria-label={`${city.nameJa}の地図。ドラッグで移動、ピンチまたはプラス・マイナスで拡大縮小できます。`} data-testid={expanded ? "travel-map-expanded-canvas" : "travel-map-canvas"} />
+    <div ref={container} className="travel-map-frame" role="region" aria-label={mapLabel(city.nameJa)} data-testid={expanded ? "travel-map-expanded-canvas" : "travel-map-canvas"} />
     {tilesFailed && !onTilesFailed && <p role="status">{TILE_ERROR_JA}</p>}
   </>;
 }

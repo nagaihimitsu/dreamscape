@@ -294,10 +294,17 @@
       "minAffection": 0,
       "storyId": "places/milano_galleria.milano_reassurance_01",
       "when": {
-        "episodesCompleted": {
-          "city": "milano",
-          "atLeast": 1
-        }
+        "all": [
+          {
+            "episodesCompleted": {
+              "city": "milano",
+              "atLeast": 1
+            }
+          },
+          {
+            "time": "night"
+          }
+        ]
       },
       "rewardOnlyOnce": true,
       "backgroundId": "milano_city_date_landmark",
@@ -330,6 +337,65 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": true
+        }
+      ]
+    },
+    {
+      "id": "milano_answer_01",
+      "kind": "answer",
+      "chapterId": "milano",
+      "titleJa": "今日は返事をする日",
+      "descriptionJa": "返事をしないと決めた夜のあと。昼のダルセナで、彼女は通りの名前の話から始める。",
+      "apCost": 0,
+      "minRomanceStage": 2,
+      "minAffection": 0,
+      "storyId": "places/milano_darsena.milano_answer_01",
+      "when": {
+        "all": [
+          {
+            "datePlayed": "milano_reassurance_01"
+          },
+          {
+            "time": "day"
+          }
+        ]
+      },
+      "rewardOnlyOnce": true,
+      "backgroundId": "milano_darsena_finale",
+      "repeatable": false,
+      "needsDeferred": true,
+      "choiceCount": 1,
+      "effectCount": 1,
+      "validationContexts": [
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "confessionResult": "rejected",
+          "endingReached": false
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": true,
+          "confessionResult": "accepted",
+          "endingReached": false
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "confessionResult": "rejected",
+          "endingReached": false
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "confessionResult": "accepted",
+          "endingReached": false
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": false,
+          "confessionResult": "rejected",
+          "endingReached": false
         }
       ]
     },

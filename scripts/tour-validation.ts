@@ -4,6 +4,7 @@ import { conditionLeaves, type Condition } from "../src/content/condition-schema
 import type { SceneEntry } from "../src/content/scene-schemas";
 import { DAY_END, DAY_START } from "../src/domain/travel";
 import { displayPath, type ContentSources } from "./content-sources";
+import { schemaIssueLines } from "./content-validation-utils";
 import type { ContentWarning } from "./content-report";
 
 // The tours of the journey folders (tour design stage 2a; `tours/<tourId>.json`): their shape
@@ -34,7 +35,7 @@ export function parseTourFiles(sources: Pick<ContentSources, "root" | "tourFiles
       throw new Error(`ツアーのファイル名がツアーIDと違います（Tour file name differs from its id）: ${shown} のIDは ${JSON.stringify(data.id)} です。` +
         `ファイル名を ${data.id}.json にしてください。`);
     const parsed = tourSchema.safeParse(data);
-    if (!parsed.success) throw new Error(`Invalid tour ${shown}: ${parsed.error.message}`, { cause: parsed.error });
+    if (!parsed.success) throw new Error(`Invalid tour ${shown}:\n${schemaIssueLines(parsed.error.issues)}`, { cause: parsed.error });
     const previous = seen.get(parsed.data.id);
     if (previous) throw new Error(`Duplicate tour ID ${parsed.data.id}: ${previous} and ${shown}`);
     seen.set(parsed.data.id, shown);

@@ -115,6 +115,7 @@ INCLUDE modules.ink
         門まで届きそうな声で読み上げると、近くの家族連れが振り返り、ブラックバックまで顔を上げた。
         # speaker: heroine
         # reaction: heroine,teasing_big,music
+        # voice: gt_agra_date_akbar_tomb_013
         ふふっ、声が大きい！　皇帝は、そこまで頼んでない
     }
 * [一行だけ、嘘を混ぜて読む # option: read_with_a_lie]
@@ -122,18 +123,22 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: serious
+        # voice: gt_agra_date_akbar_tomb_014
         今、嘘ついたでしょ。……読んでもらうのは信じることだって、言ったばかりなのに
     - else:
         # speaker: heroine
         # reaction: heroine,teasing,question
+        # voice: gt_agra_date_akbar_tomb_015
         待って。『皇帝は猿と取引した』って、今、書いてあった？
         # speaker: heroine
+        # voice: gt_agra_date_akbar_tomb_016
         わたし、皇帝のふりしてるだけで、英語なら読めるんだよ。アクバルの読み手、くびね
     }
 -
 # speaker: narrator
 帰り道、芝生のはずれで、ブラックバックが一頭、こちらをじっと見ていた。
 # speaker: heroine
+# voice: gt_agra_date_akbar_tomb_017
 ここ、王さまのお墓なのに、鹿と猿の方が主人みたいだね。わたしたち、お客さんなのに、すっかり振り回されちゃった
 -> END
 
@@ -142,6 +147,7 @@ INCLUDE modules.ink
 # speaker: narrator
 暑さに顔をしかめながら、彼女が鞄から小さな布袋を取り出した。デリーの路地で買った、雨の匂いの小瓶だ。
 # speaker: heroine
+# voice: gt_agra_akbar_tomb_monkey_attar_001
 こんなに暑いと、雨の匂いが恋しくなるね。ちょっとだけ、袋の上から――
 # speaker: narrator
 # shake: window
@@ -149,6 +155,7 @@ INCLUDE modules.ink
 言い終わる前に、灰色の影が横から走り抜けた。布袋が消えていた。猿が一匹、門の壁をするすると登り、袋を片手に、こちらを見下ろしている。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# voice: gt_agra_akbar_tomb_monkey_attar_002
 あっ！　ちょっと、それ、雨！　わたしの雨！
 # speaker: narrator
 # se: whistle
@@ -189,15 +196,18 @@ INCLUDE modules.ink
     次の瞬間、匂いが広がった。乾ききった芝生の上に、夏の終わりの最初の雨が降ったような、土の匂い。少し離れたところで、ブラックバックたちが、いっせいに顔を上げた。
     # speaker: heroine
     # reaction: heroine,surprised,question
+    # voice: gt_agra_akbar_tomb_monkey_attar_004
     ……鹿が、雨だと思ってる
     # speaker: narrator
     # photo: gt_album_a39 # photo_caption: 雨の匂いになったアクバル廟
     彼女は割れた瓶を見下ろして、しばらく何も言わなかった。それから、こらえきれずに笑い出した。
     # speaker: heroine
     # reaction: heroine,happy,music
+    # voice: gt_agra_akbar_tomb_monkey_attar_005
     日本で雨が降ったら、あの路地を思い出すはずだったのに。インドの芝生に、先に降っちゃった
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_akbar_tomb_monkey_attar_006
     でも、いいかも。これで、雨が降るたびに思い出す場所が、二つになった。路地と、鹿
 }
 - ->->
@@ -208,7 +218,7 @@ INCLUDE modules.ink
 // おまかせは fumbled：雨の場面（アルバムの写真 a39）へ進む（クリケットのおまかせも、写真のある結末へ進むのと同じ考え）。
 === gt_agra_akbar_tomb_monkey_catch_attar ===
 # speaker: narrator
-# minigame: monkey_catch auto fumbled
+# minigame: monkey_catch auto fumbled art.wall gt_img_agra_akbar_tomb_gate
 小瓶が、壁の上から落ちてくる。考えるより先に、両手が出ていた。
 * [落ちてきた小瓶を、両手で受け止めた # option: caught]
     # speaker: narrator
@@ -242,6 +252,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # shake: window
+# voice: gt_agra_akbar_tomb_monkey_glasses_001
 あっ！　今の、わたしの頭の上から！？　気配、全然なかった！
 # speaker: narrator
 # se: whistle
@@ -256,6 +267,7 @@ INCLUDE modules.ink
     -> gt_agra_akbar_tomb_monkey_catch_glasses ->
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_agra_akbar_tomb_monkey_glasses_002
     歯形がついてる。でも、かけられる。記念になっちゃった
 * [壁の下まで追いかける # option: glasses_chase]
     # rel: spark +1
@@ -263,6 +275,7 @@ INCLUDE modules.ink
     壁の下まで走ると、猿はさらに上へ逃げ、そこで、サングラスを自分の顔にかけた。
     # speaker: heroine
     # reaction: heroine,teasing_big,music
+    # voice: gt_agra_akbar_tomb_monkey_glasses_003
     似合ってる。ふふっ、どうしよう、すごく似合ってる
     # speaker: narrator
     彼女が笑いながら写真を撮ると、猿はまぶしそうに空を見上げ、サングラスを外して、ぽいと放った。思ったより暗かったらしい。
@@ -274,6 +287,7 @@ INCLUDE modules.ink
     -> gt_agra_akbar_tomb_monkey_catch_glasses ->
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_akbar_tomb_monkey_glasses_004
     待ったら返ってきた。取引より、待つ方が安かったね
 - ->->
 
@@ -281,7 +295,7 @@ INCLUDE modules.ink
 // prefix glasses で。結果の選択肢に関係値は付けない）。どの結果でも、サングラスは無事に戻る。
 === gt_agra_akbar_tomb_monkey_catch_glasses ===
 # speaker: narrator
-# minigame: monkey_catch prefix glasses thing glasses auto caught
+# minigame: monkey_catch prefix glasses thing glasses auto caught art.wall gt_img_agra_akbar_tomb_gate
 サングラスが、壁の上から落ちてくる。考えるより先に、両手が出ていた。
 * [落ちてきたサングラスを、両手で受け止めた # option: glasses_caught]
     # speaker: narrator

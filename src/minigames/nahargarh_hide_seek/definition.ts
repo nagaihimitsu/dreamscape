@@ -37,7 +37,7 @@ export const nahargarhHideSeek = defineMiniGame({
   quietScene: false,
   art: [],
   artSlots: [
-    { id: "bay", kind: "backdrop", labelJa: "廊下の壁の一区画と、閉じたアーチの扉1つ（横に並べるとつながる絵。扉は場が描き開ける）" },
+    { id: "bay", kind: "backdrop", labelJa: "廊下の壁の一区画と、その戸口1つ（横に並べるとつながる絵。扉の板は場が上に描いて開ける）" },
     { id: "room", kind: "backdrop", labelJa: "開いた扉の奥に見える、誰もいない部屋（壁の絵と、小さな窓の光）" },
     { id: "peek", kind: "sprite", labelJa: "廊下の角から、そっと顔を出すヒロイン（上半身、立ち絵の画風、背景は透明）" },
   ],

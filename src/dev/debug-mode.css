@@ -13,6 +13,13 @@
 @media (max-width: 480px) {
   .debug-session .app-shell.mobile-play-active { height: calc(100dvh - 56px); }
 }
+/* While a mini-game plays, Debug's bar and 「この時点の候補」 step aside and give the play their room, as the journey's
+   header does (src/app/styles.css); they come back as the play ends or is left. */
+.debug-session:has(.minigame-layer) > .debug-session-bar,
+.app-shell:has(.minigame-layer) > main > .debug-candidates { display: none; }
+@media (max-width: 480px) {
+  .debug-session:has(.minigame-layer) .app-shell.mobile-play-active { height: 100dvh; }
+}
 .debug-panel [role="alert"] { background: #f1e7d1; padding: 10px 12px; border-radius: 4px; overflow-wrap: anywhere; }
 .debug-launch-error { display: grid; gap: 14px; align-content: start; }
 .debug-url { display: grid; gap: 8px; margin: 28px 0 20px; }

@@ -5,6 +5,7 @@ import { isTourOnlyPlace, type TravelCatalog, type TravelRoute } from "../src/co
 import { WALK_MODE_ID } from "../src/content/transport-schemas";
 import { japaneseText as japanese } from "../src/content/text-language";
 import { SAMPLE_SOURCE_URL } from "./sample-journey";
+import { schemaIssueLines } from "./content-validation-utils";
 
 type TourismSource = z.infer<typeof tourismSourceSchema>;
 
@@ -86,7 +87,7 @@ const pairKey = (from: string, to: string, mode: string) => `${from} → ${to}�
  */
 export function inspectCityTransit(travel: TravelCatalog, raw: unknown, modes: readonly string[], file = "transit ledger"): CityTransitReview {
   const parsed = transitLedgerSchema.safeParse(raw);
-  if (!parsed.success) throw new Error(`交通判断台帳の形式が違います: ${file}（Invalid transit ledger）: ${parsed.error.message}`, { cause: parsed.error });
+  if (!parsed.success) throw new Error(`交通判断台帳の形式が違います: ${file}（Invalid transit ledger）:\n${schemaIssueLines(parsed.error.issues)}`, { cause: parsed.error });
   const ledger = parsed.data;
   const fail = (japanese: string, english: string) => new Error(`${japanese}: ${file}（${english}）`);
   if (ledger.cityId !== travel.cityId) throw fail(`台帳の都市 ${ledger.cityId} が経路の都市 ${travel.cityId} と違います`, "Transit city mismatch");

@@ -174,6 +174,71 @@ export function miniGameMarkers(gameIds: readonly string[], engineIds: readonly 
   ];
 }
 
+/**
+ * The modules only Debug mode opens with a dynamic import (src/main.tsx, src/app/GameApp.tsx). Vite names each one's
+ * lazy chunk, and its stylesheet, after the module: `assets/<name>-<hash>.js` / `.css`. The files of the normal game
+ * (gameFiles) stop at them. A renamed module makes its chunk count as the game's, so the check then fails on its
+ * Debug code instead of passing it by.
+ */
+export const debugEntryModules: readonly { name: string; source: string }[] = [
+  { name: "DebugMode", source: "src/dev/DebugMode.tsx" },
+  { name: "CharacterPreview", source: "src/dev/CharacterPreview.tsx" },
+  { name: "IntroTimingNote", source: "src/app/IntroTimingNote.tsx" },
+  { name: "DebugVoiceRate", source: "src/app/DebugVoiceRate.tsx" },
+];
+
+/** Whether a built file is the lazy chunk (or its stylesheet) of a module only Debug mode opens (debugEntryModules). */
+export function isDebugEntryChunk(path: string): boolean {
+  return debugEntryModules.some(({ name }) => new RegExp(`^assets/${name}-[\\w-]+\\.(?:js|css)$`, "u").test(path));
+}
+
+/**
+ * The scripts a built script imports: `from "…"`, `import "…"` and `import("…")` (also with a template literal, as
+ * Vite writes the journeys' parts) of a relative path that is a file of the build, as build paths.
+ */
+export function importedScripts(script: DistFile, paths: ReadonlySet<string>): string[] {
+  const found = new Set<string>();
+  for (const [, specifier] of (script.text ?? "").matchAll(/\b(?:from|import)\s*\(?\s*["'`](\.{1,2}\/[^"'`\s]+\.js)["'`]/gu)) {
+    const resolved = new URL(specifier, `https://build.invalid/${script.path}`).pathname.slice(1);
+    if (paths.has(resolved)) found.add(resolved);
+  }
+  return [...found];
+}
+
+/**
+ * The files the game may load while Debug mode is off: the title files and every script they reach by its imports
+ * (static or dynamic: the journeys' parts, the maps' library, the dialogs, the mini-games' play), except through a
+ * module only Debug mode opens (isDebugEntryChunk); and every stylesheet but those modules' own (Vite loads a chunk's
+ * stylesheet with it).
+ */
+export function gameFiles(files: readonly DistFile[], titleFiles: readonly string[]): string[] {
+  const byPath = new Map(files.map((file) => [file.path, file]));
+  const paths = new Set(byPath.keys());
+  const reached = new Set(titleFiles);
+  const queue = [...titleFiles];
+  while (queue.length) {
+    const file = byPath.get(queue.pop()!);
+    if (!file?.path.endsWith(".js")) continue;
+    for (const next of importedScripts(file, paths))
+      if (!reached.has(next) && !isDebugEntryChunk(next)) { reached.add(next); queue.push(next); }
+  }
+  for (const path of paths) if (path.endsWith(".css") && !isDebugEntryChunk(path)) reached.add(path);
+  return [...reached];
+}
+
+/**
+ * The start of the `marker` of each journey's part of the content (content:build writes it, scripts/content-outputs.ts;
+ * no game code contains it): `<marker><journeyId>`. A production build makes each part a file of its own, which the
+ * page loads when that journey opens: none may be in a title file, and no file may hold two journeys' parts.
+ */
+export const JOURNEY_PART_MARKER = "dreamscape-journey-part:";
+
+/** The journeys whose part (JOURNEY_PART_MARKER) a built file holds. */
+export function journeyPartsIn(text: string | null): string[] {
+  const found = (text ?? "").matchAll(new RegExp(`${JOURNEY_PART_MARKER}([a-z][a-z0-9_]*)`, "gu"));
+  return [...new Set([...found].map((match) => match[1]))];
+}
+
 export interface DistCheck {
   /** Test-only code or data in any built file or path (devOnlyMarkers over every file). */
   devOnly: DevOnlyFinding[];
@@ -183,8 +248,16 @@ export interface DistCheck {
   missing: string[];
   /** Debug code in a title file (lazyDebugMarkers over titleFiles only). */
   onTitle: DebugOnTitleFinding[];
+  /** The files the game may load with Debug mode off (gameFiles: the title files and what they import). */
+  gameFiles: string[];
+  /** Debug code in a file the game loads later (lazyDebugMarkers over gameFiles but the title files). */
+  inGame: DebugOnTitleFinding[];
   /** A mini-game's or engine's play in a title file (miniGameMarkers over titleFiles only). */
   miniGamesOnTitle: DebugOnTitleFinding[];
+  /** A journey's part of the content in a title file (journeyPartsIn). */
+  journeyPartsOnTitle: { path: string; journeyIds: string[] }[];
+  /** A file that holds the parts of more than one journey. */
+  mixedJourneyParts: { path: string; journeyIds: string[] }[];
 }
 
 /**
@@ -196,13 +269,40 @@ export function checkDist(files: readonly DistFile[], miniGames: readonly DevOnl
   const indexHtml = files.find((file) => file.path === "index.html")?.text ?? "";
   // The page itself and what it loads at once; Debug's chunks load only when Debug is opened.
   const titleFiles = ["index.html", ...eagerFiles(indexHtml)];
+  const game = gameFiles(files, titleFiles);
+  const parts = files.map((file) => ({ path: file.path, journeyIds: journeyPartsIn(file.text) })).filter((file) => file.journeyIds.length);
   return {
     devOnly: findDevOnlyCode(files),
     titleFiles,
     missing: titleFiles.filter((name) => !files.some((file) => file.path === name)),
     onTitle: findDebugCodeOnTitle(files, titleFiles),
+    gameFiles: game,
+    inGame: findDebugCodeOnTitle(files, game.filter((path) => !titleFiles.includes(path))),
     miniGamesOnTitle: findDebugCodeOnTitle(files, titleFiles, miniGames),
+    journeyPartsOnTitle: parts.filter((file) => titleFiles.includes(file.path)),
+    mixedJourneyParts: parts.filter((file) => file.journeyIds.length > 1),
   };
+}
+
+/** A report of Debug code in a file the game loads after the title for the person who ran the build. */
+export function describeDebugInGame(folder: string, findings: readonly DebugOnTitleFinding[]): string {
+  return [
+    `本番ビルド（${folder}）の、Debugモードがオフでも読み込むファイル（タイトル画面のファイルが import でたどるもの）にDebugのコードが入っています。`,
+    ...findings.map(({ path, marker }) => `- ${path} に「${marker.text}」（目印の由来: ${marker.source}）`),
+    "Debugの画面は src/main.tsx と src/app/GameApp.tsx の Debug 用の React.lazy（scripts/dist-guard.ts の debugEntryModules）からだけ読み込みます。",
+    "ゲームのコードから src/dev/ やDebug専用のモジュールを import していないか、Debug専用のモジュールの名前を変えていないかを確認してください。",
+  ].join("\n");
+}
+
+/** A report of journeys' parts of the content on the title page or together in a file. */
+export function describeJourneyParts(folder: string, check: Pick<DistCheck, "journeyPartsOnTitle" | "mixedJourneyParts">): string {
+  return [
+    `本番ビルド（${folder}）で、旅行編ごとのデータ（src/content/generated/journey-parts/）が分かれていません。`,
+    ...check.journeyPartsOnTitle.map(({ path, journeyIds }) => `- タイトル画面で読み込む ${path} に ${journeyIds.join("・")} のデータ`),
+    ...check.mixedJourneyParts.map(({ path, journeyIds }) => `- ${path} に複数の旅行編（${journeyIds.join("・")}）のデータ`),
+    "旅行編のデータは src/content/index.ts の loadJourneyContent が、その旅行編を開くときに import.meta.glob で1つずつ読み込みます。",
+    "ゲームのコードから generated/journey-parts/ のファイルを静的な import で読み込んでいないかを確認してください。",
+  ].join("\n");
 }
 
 /** A report of a mini-game's play on the title page for the person who ran the build. */

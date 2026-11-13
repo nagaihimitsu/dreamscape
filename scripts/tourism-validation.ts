@@ -5,11 +5,7 @@ import { checkLinesWithoutChoice } from "./ink-validation";
 import { forEachCondAssignment } from "./scene-conditions";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
 import type { DialogueObserver } from "./dialogue-expression-validation";
-
-function unique(values: string[], label: string) {
-  if (new Set(values).size !== values.length)
-    throw new Error(`Duplicate ${label}`);
-}
+import { unique } from "./content-validation-utils";
 
 /**
  * Tourism is optional; the content contract never grants effects or asks Ink choices.

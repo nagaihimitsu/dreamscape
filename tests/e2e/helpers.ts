@@ -7,9 +7,30 @@ import { DEBUG_HOOK_NAME, type DreamscapeDebugHook } from "../../src/dev/debug-h
 import { debugQueryString, settingsQuery, type DebugDataMode, type DebugSettings } from "../../src/dev/debug-query";
 import { openMiniGame } from "../../src/domain/minigame";
 import { MINI_GAME_START_GUARD_MS } from "../../src/minigames/host/timing";
+import { isDebugEntryChunk, journeyPartsIn, lazyDebugMarkers } from "../../scripts/dist-guard";
 
 export { expect };
 export type { Locator, Page };
+
+/**
+ * Production build (AGENTS.md 「Debugの画面はタイトル画面で読み込むファイルに入れない」, docs/07 acceptance 14): the
+ * scripts and stylesheets a page loaded (`paths`, as served paths) hold no Debug code: besides the files index.html
+ * loads at once (eagerFiles), the game loads its other files later (a journey's part, the maps' library, a dialog, a
+ * mini-game's play). None is a module only Debug mode opens (isDebugEntryChunk, unless `allowed` names it), and each
+ * is read and searched for Debug's markers (lazyDebugMarkers), whatever its name. Returns the journeys whose part of
+ * the content the page loaded (journeyPartsIn).
+ */
+export async function expectNoDebugCode(page: Page, paths: readonly string[], allowed: (path: string) => boolean = () => false): Promise<string[]> {
+  const parts = new Set<string>();
+  for (const path of new Set(paths)) {
+    if (allowed(path)) continue;
+    expect(isDebugEntryChunk(path.slice(1)), `${path} is one of Debug's own files`).toBe(false);
+    const text = await (await page.request.get(path)).text();
+    expect(lazyDebugMarkers.filter((marker) => text.includes(marker.text)).map((marker) => marker.text), path).toEqual([]);
+    for (const journeyId of journeyPartsIn(text)) parts.add(journeyId);
+  }
+  return [...parts];
+}
 
 /**
  * Tiers (docs/10「E2Eの段」): each test names the tiers it runs in, and every

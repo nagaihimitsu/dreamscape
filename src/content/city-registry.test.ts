@@ -62,8 +62,9 @@ it("registers India's authored events while keeping estimated route costs explic
       expect(route.sources.some((source) => source.claimType === "hypothesis")).toBe(true);
     }
   }
-  // 18 dates at a destination and, at each hotel, the rooftop confession and reassurance (GT-3b).
-  expect([main, finales, dates]).toEqual([12, 3, 24]);
+  // 18 dates at a destination and, at each hotel, the rooftop confession and reassurance (GT-3b),
+  // plus Jaipur's answer after a deferral (2026-11-13).
+  expect([main, finales, dates]).toEqual([12, 3, 25]);
   expect(getCityContent("delhi").travel.places.find((place) => place.id === "delhi_lotus_temple")?.closedWeekdays).toEqual([0]);
   expect(getCityContent("agra").travel.places.find((place) => place.id === "agra_taj_mahal")?.closedWeekdays).toEqual([4]);
 });

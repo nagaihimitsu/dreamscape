@@ -1,6 +1,8 @@
 /**
  * Fails when the production build contains test-only code or data, loads
- * Debug's code on the title page (Debug ships only as lazily loaded files), or
+ * Debug's code on the title page or in a file the game loads with Debug mode off
+ * (Debug ships only as lazily loaded files it alone opens), loads a journey's part
+ * of the content on the title page or mixes two journeys' parts in a file, or
  * lacks the licence notices of the bundled libraries (see scripts/dist-guard.ts).
  * `npm run build` and `npm run verify` run it after `vite build`.
  *
@@ -9,7 +11,8 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import {
-  checkDist, checkThirdPartyLicenses, describeDebugOnTitle, describeFindings, describeMiniGamesOnTitle, isTextAsset, miniGameMarkers,
+  checkDist, checkThirdPartyLicenses, describeDebugInGame, describeDebugOnTitle, describeFindings, describeJourneyParts, describeMiniGamesOnTitle,
+  isTextAsset, miniGameMarkers,
   THIRD_PARTY_LICENSES_PATH, type DistFile,
 } from "./dist-guard";
 import { MINI_GAME_ENGINES, MINI_GAME_IDS } from "../src/minigames/registry";
@@ -31,7 +34,8 @@ const files: DistFile[] = readdirSync(root, { recursive: true, withFileTypes: tr
   });
 
 // Every file goes to the check (scripts/dist-guard.test.ts runs this command on small builds).
-const { devOnly, titleFiles, missing, onTitle, miniGamesOnTitle } = checkDist(files, miniGameMarkers(MINI_GAME_IDS, MINI_GAME_ENGINES));
+const check = checkDist(files, miniGameMarkers(MINI_GAME_IDS, MINI_GAME_ENGINES));
+const { devOnly, titleFiles, missing, onTitle, gameFiles, inGame, miniGamesOnTitle } = check;
 if (devOnly.length > 0) {
   console.error(describeFindings(folder, devOnly));
   process.exit(1);
@@ -44,8 +48,16 @@ if (onTitle.length > 0) {
   console.error(describeDebugOnTitle(folder, onTitle));
   process.exit(1);
 }
+if (inGame.length > 0) {
+  console.error(describeDebugInGame(folder, inGame));
+  process.exit(1);
+}
 if (miniGamesOnTitle.length > 0) {
   console.error(describeMiniGamesOnTitle(folder, miniGamesOnTitle));
+  process.exit(1);
+}
+if (check.journeyPartsOnTitle.length > 0 || check.mixedJourneyParts.length > 0) {
+  console.error(describeJourneyParts(folder, check));
   process.exit(1);
 }
 const dependencies = Object.keys(JSON.parse(readFileSync("package.json", "utf8")).dependencies ?? {});
@@ -56,5 +68,6 @@ if (licenseProblems.length > 0) {
   process.exit(1);
 }
 console.log(`${folder} の検査: テスト専用のコードとデータは含まれていません（${files.length} ファイル）。` +
-  `タイトル画面で読み込む ${titleFiles.length} ファイルにDebugのコードとミニゲームの遊ぶ部分はありません。` +
+  `タイトル画面で読み込む ${titleFiles.length} ファイルにDebugのコードとミニゲームの遊ぶ部分と旅行編ごとのデータはなく、` +
+  `Debugモードがオフでも読み込む ${gameFiles.length} ファイルにDebugのコードはありません。` +
   `ライブラリのライセンス一覧（${THIRD_PARTY_LICENSES_PATH}）に dependencies の ${dependencies.length} 件があります`);

@@ -97,6 +97,7 @@ INCLUDE modules.ink
 しばらく、二人とも黙っていた。黙っていても気まずくない、と気づいたのは、いつからだっただろう。
 {
 - confession_result == "accepted":
+    // 次の2つの道（前の「待って」の後のデート・前の告白）は、このデートを繰り返せるように（JSON の repeatable）したときだけ通る（各都市1回の今は通らない）。声の収録があるので消さない。
     {
     - cond("date gt_delhi_date_reassurance"):
         # speaker: heroine
@@ -133,6 +134,7 @@ INCLUDE modules.ink
         背中じゃなくて、声で言うって約束したから。……はい、言った。じゃあ、次はそっちの番
     }
 - else:
+    // 次の道（前の告白の後の挑み直し）は、このデートを繰り返せるように（JSON の repeatable）したときだけ通る（各都市1回の今は通らない）。声の収録があるので消さない。
     {
     - cond("date gt_delhi_date_confession"):
         # speaker: narrator

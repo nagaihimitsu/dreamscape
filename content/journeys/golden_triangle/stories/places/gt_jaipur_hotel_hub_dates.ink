@@ -4,6 +4,7 @@ INCLUDE modules.ink
 // ジャイプールの宿の屋上：告白のデートと、「待って」と言われた後のデート（どちらも新しく足すデート。2026-11-09 に足すと決めた）。
 // 告白のデートでは噛み合いの札（# profile:）と関係値の札を書かない。返事は confession_result で分ける。前置きも、同じ返事で分ける（2026-11-09 の直し）。
 // 都市ごとに同じ形のファイルがある（gt_delhi_hotel_hub_dates.ink ほか）。
+// ジャイプールだけ、最後に「待って」の後の彼女の返事（gt_jaipur_date_answer。2026-11-13）がある。地図の出来事は宿で、場面は宿の近くの通り。
 
 // 【3】
 === gt_jaipur_date_confession ===
@@ -203,4 +204,107 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: smile
 答えは、わたしから言うね。ちゃんと決めたら。それまでは、いつもどおりでいて。いつもどおりが、いちばん助かる
+-> END
+
+// 【3】「待って」の後の、彼女の返事（kind: answer。2026-11-13 のユーザー判断「彼女から返事をする場面を足す」）。
+// ジャイプールは旅の最後の都市なので、ここの告白で「待って」と言われると、後の都市の告白で告白し直せない。そこで、彼女から返事をする。
+// 主人公はもう一度告白しない（告白は各都市で1回）。彼女が誘い、彼女が先に話す。
+// 地図に出るのは、ジャイプールの告白のデートで「待って」と言われた後（JSON の needsDeferred と、頭の # when: date）の昼（# when: time day）。
+// 告白は夜にしか出ないので、返事は早くても次の日の昼になる（「旅の夜のせいにしたくない」と言った彼女が、昼を選ぶ）。
+// インド編はフィナーレを終えるとすぐエピローグが始まり、旅が終わる（manifest.json の cityTransition）。「待って」は夜で、フィナーレは昼なので、
+// 次の日の朝、宿の出来事として、フィナーレより先に選べる（強制はしない）。フィナーレを先に遊んでも、旅の後の自由時間にまだ出る（# until: を書かない）。
+// 返事は、デートを始めたときの関係の値で決まる（confession_result：告白が成立する条件を満たせば accepted、満たさなければ rejected。
+// 乱数では決めず、もう一度「待って」にもならない）。噛み合いの札（# profile:）と関係値の札は書かない。
+// 選択は、返事を聞いた後の主人公の返し（1回。choiceCount）。交際が始まる道だけ、思い出 gt_jaipur_date_answer_memory を残す。
+// 場所：宿（バディー・チャウパル付近）から角をひとつ曲がったハワー・マハルの正面の通り。格子窓の目的・窓の数・入口・町の色の由来は
+// 観光とフィナーレのクイズの答えなので、ここでは言わない（見えるもの：桃色の正面と、たくさんの小さな窓だけ）。
+// 前の「待って」の後のデート（どの都市でも）を遊んでいれば、「わたしから言う」の約束を一言。フィナーレの後なら、通りで踊った夜を一言。
+=== gt_jaipur_date_answer ===
+# scene: date
+# title: 夜のせいにしない返事
+# when: date gt_jaipur_date_confession
+# when: time day
+# background: gt_bg_jaipur_hawa_mahal
+# bgm: inner_light
+# speaker: narrator
+宿の玄関で、彼女が先に待っていた。「すぐそこだから」とだけ言って、角をひとつ曲がる。
+ハワー・マハルの正面に、日の光が当たっていた。夜の屋上からは橙色に見えた町が、いまは、ちゃんと桃色をしている。
+# speaker: heroine
+見て。夜と、ぜんぜん色がちがう。……こっちが、この町のふだんの顔なのかな
+# speaker: narrator
+どこかの店のシャッターが上がる音。牛が一頭、ゆっくり通りを渡っていく。楽隊の音は、どこにもしない。
+# speaker: heroine
+# emotion: serious
+屋上で、夜のせいにしたくないって言ったでしょ。楽隊と、灯りのせいに。だから、昼にしたの。いちばん普通の時間に
+{ cond("date gt_delhi_date_reassurance") or cond("date gt_agra_date_reassurance") or cond("date gt_jaipur_date_reassurance"):
+    # speaker: heroine
+    答えは、わたしから言うって約束したもんね。だから、今日はわたしから
+}
+{ cond("episode gt_jaipur_finale"):
+    # speaker: heroine
+    # emotion: smile
+    それに、通りの真ん中で踊れたんだもん。通りの真ん中でなら、ちゃんと言える気がした
+}
+{ confession_result == "accepted":
+    -> yes
+- else:
+    -> not_now
+}
+
+= yes
+# speaker: heroine
+# quiet: scene
+# pause: 600
+好き。……付き合いたい。旅が終わっても、一緒にいたい
+# speaker: heroine
+# reaction: heroine,teasing,blush
+昼間に、牛の横で言ってるんだからね。もう、夜のせいにはできないよ
+# speaker: narrator
+すぐ後ろを、さっきの牛が通っていった。彼女は笑いそうになるのをこらえて、こちらを見たままでいた。
+* [「僕も、好きだ。昼でも、同じだ」 # option: same_by_day]
+    # memory: gt_jaipur_date_answer_memory
+    # speaker: heroine
+    # reaction: heroine,shy_deep,heart
+    知ってた。……うそ。ちょっとだけ、こわかった。今、聞けてよかった
+* [「もう一回、言って」 # option: say_it_again]
+    # memory: gt_jaipur_date_answer_memory
+    # speaker: heroine
+    # reaction: heroine,teasing_big,music
+    だめ。一日一回まで。……うそ。好き。はい、二回目。三回目は、夜に取っておく
+* [黙って、手を差し出す # option: offer_hand]
+    # memory: gt_jaipur_date_answer_memory
+    # speaker: narrator
+    彼女は少しだけ迷ってから、自分の手を重ねた。
+    # speaker: heroine
+    # reaction: heroine,shy,blush
+    ……ふふ。窓がこんなにあるのに。まあ、いいか。見られても
+-
+# speaker: heroine
+# emotion: smile
+じゃあ、恋人になって最初の行き先、わたしが決めていい？　……もう、決めてあるんだけど
+-> END
+
+= not_now
+# speaker: heroine
+# quiet: scene
+ちゃんと考えた。夜の気持ちじゃなくて、昼の明るさで。……それで、決めた
+# speaker: heroine
+恋人としては、今は、一緒にいられない。これが、わたしの答え。待たせたのに、ごめんなさい
+# speaker: narrator
+彼女は目をそらさなかった。たくさんの小さな窓が、上から二人を見下ろしていた。
+# speaker: heroine
+この旅で隣にいてくれたのは、本当にうれしかった。それは、答えとは別に、ちゃんと本当
+* [「聞かせてくれて、ありがとう」 # option: thank_her]
+    # speaker: heroine
+    うん。……言うの、こわかった。でも、黙ったまま旅を終えるほうが、もっといやだった
+* [「少しだけ、一人で歩いてくる」 # option: walk_alone]
+    # speaker: heroine
+    うん。宿で待ってる。戻ってきたら、チャイにしよう。今度は、わたしがおごる
+* [「残りの旅も、いつもどおりで」 # option: as_usual]
+    # speaker: heroine
+    # reaction: heroine,exasperated,sweat
+    それ、わたしが言おうと思ってたのに。……先に言われちゃった
+-
+# speaker: narrator
+通りの向こうで、また一枚、シャッターが上がった。町は、いつもどおりに動いていた。
 -> END

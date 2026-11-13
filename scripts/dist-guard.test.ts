@@ -6,8 +6,9 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
-  checkDist, checkThirdPartyLicenses, describeDebugOnTitle, describeFindings, describeMiniGamesOnTitle, devOnlyMarkers, eagerFiles,
-  findDebugCodeOnTitle, findDevOnlyCode, isTextAsset, lazyDebugMarkers, miniGameMarkers, THIRD_PARTY_LICENSES_PATH, type DistFile,
+  checkDist, checkThirdPartyLicenses, debugEntryModules, describeDebugInGame, describeDebugOnTitle, describeFindings, describeJourneyParts,
+  describeMiniGamesOnTitle, devOnlyMarkers, eagerFiles, findDebugCodeOnTitle, findDevOnlyCode, importedScripts, isDebugEntryChunk, isTextAsset,
+  JOURNEY_PART_MARKER, journeyPartsIn, lazyDebugMarkers, miniGameMarkers, THIRD_PARTY_LICENSES_PATH, type DistFile,
 } from "./dist-guard";
 import { MINI_GAME_ENGINES, MINI_GAME_IDS } from "../src/minigames/registry";
 import { runtimeImports } from "./test-sets";
@@ -151,6 +152,7 @@ describe("production build guard", () => {
   it("checks every built file for test-only code and the title page's files for Debug code", () => {
     expect(checkDist(checkedBuild)).toEqual({
       devOnly: [], titleFiles: ["index.html", "assets/index-abc.js", "assets/index-abc.css"], missing: [], onTitle: [], miniGamesOnTitle: [],
+      gameFiles: ["index.html", "assets/index-abc.js", "assets/index-abc.css"], inGame: [], journeyPartsOnTitle: [], mixedJourneyParts: [],
     });
     // The lazy Debug chunk is searched for the test hook and the sample journey like every other file.
     expect(checkDist(hookAndSampleInDebug).devOnly.map(({ path, marker }) => [path, marker.text])).toEqual([
@@ -164,6 +166,73 @@ describe("production build guard", () => {
     // A file index.html loads at once that the build lacks, and a build without index.html.
     expect(checkDist(checkedBuild.filter((file) => file.path !== "assets/index-abc.css")).missing).toEqual(["assets/index-abc.css"]);
     expect(checkDist(checkedBuild.filter((file) => file.path !== "index.html")).missing).toEqual(["index.html"]);
+  });
+
+  // A build split as the real one: the entry imports a shared chunk, loads a journey's part, a dialog and Debug lazily;
+  // the dialog imports a chunk of its own, and Debug a chunk only it uses.
+  const splitHtml = '<script type="module" src="./assets/index-abc.js"></script><link rel="modulepreload" href="./assets/shared-s1.js"><link rel="stylesheet" href="./assets/index-abc.css">';
+  const splitBuild: DistFile[] = [
+    { path: "index.html", text: splitHtml },
+    { path: "assets/index-abc.js", text: 'import{a}from"./shared-s1.js";const m=()=>import(`./milano-m1.js`),c=()=>import("./CreditsDialog-c1.js"),d=()=>Y(()=>import("./DebugMode-x1.js"),__vite__mapDeps([0,1]));const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./DebugMode-x1.js","./debug-only-o1.js"])))=>i.map(i=>d[i])' },
+    { path: "assets/index-abc.css", text: ".travel-menu{display:grid}" },
+    { path: "assets/shared-s1.js", text: "export const a=1" },
+    { path: "assets/milano-m1.js", text: 'var e={marker:"dreamscape-journey-part:milano",journeyId:"milano",stories:{}};export{e as default}' },
+    { path: "assets/CreditsDialog-c1.js", text: 'import "./credits-data-k1.js";export const C=1' },
+    { path: "assets/CreditsDialog-c2.css", text: ".credits{display:grid}" },
+    { path: "assets/credits-data-k1.js", text: "export const k=1" },
+    { path: "assets/DebugMode-x1.js", text: 'import"./debug-only-o1.js";jsx("main",{className:"debug-panel"})' },
+    { path: "assets/DebugMode-x2.css", text: ".debug-panel{display:grid}" },
+    { path: "assets/debug-only-o1.js", text: 'throw Error("仮の場面の元になる都市がありません。")' },
+  ];
+
+  it("follows the title's imports to every file the game loads with Debug mode off, stopping at Debug's own modules", () => {
+    const check = checkDist(splitBuild);
+    expect(check.titleFiles).toEqual(["index.html", "assets/index-abc.js", "assets/shared-s1.js", "assets/index-abc.css"]);
+    // Static and dynamic imports (a template literal too) and every stylesheet but Debug's; not the chunk only Debug imports.
+    expect(check.gameFiles.sort()).toEqual(["assets/CreditsDialog-c1.js", "assets/CreditsDialog-c2.css", "assets/credits-data-k1.js",
+      "assets/index-abc.css", "assets/index-abc.js", "assets/milano-m1.js", "assets/shared-s1.js", "index.html"]);
+    expect(check.onTitle).toEqual([]);
+    expect(check.inGame).toEqual([]);
+    expect(isDebugEntryChunk("assets/DebugMode-x1.js")).toBe(true);
+    expect(isDebugEntryChunk("assets/DebugModeSetting-x1.js")).toBe(false);
+    expect(importedScripts(splitBuild[5], new Set(splitBuild.map((file) => file.path)))).toEqual(["assets/credits-data-k1.js"]);
+    // Debug's code in a chunk the game loads later (a dialog's own chunk, or its stylesheet) is found.
+    const leaked = withText(withText(splitBuild, "assets/credits-data-k1.js", 'const p="Debug · 通常セーブとは別"'), "assets/CreditsDialog-c2.css", ".debug-panel{}");
+    expect(checkDist(leaked).inGame.map(({ path, marker }) => [path, marker.text])).toEqual([
+      ["assets/CreditsDialog-c2.css", "debug-panel"],
+      ["assets/credits-data-k1.js", "Debug · 通常セーブとは別"],
+    ]);
+    expect(describeDebugInGame("dist", checkDist(leaked).inGame)).toContain("- assets/credits-data-k1.js に「Debug · 通常セーブとは別」（目印の由来: src/dev/DebugMode.tsx）");
+    // A renamed Debug module counts as the game's: its Debug code then fails the check.
+    const renamed = splitBuild.map((file) => ({ ...file, path: file.path.replace("DebugMode-x1", "DebugScreen-x1"),
+      text: file.text?.replaceAll("DebugMode-x1", "DebugScreen-x1") ?? null }));
+    expect(checkDist(renamed).inGame.map(({ path }) => path)).toEqual(["assets/DebugScreen-x1.js", "assets/debug-only-o1.js"]);
+  });
+
+  it("keeps each journey's part of the content in a file of its own, off the title page", () => {
+    expect(journeyPartsIn('{marker:"dreamscape-journey-part:milano"}')).toEqual(["milano"]);
+    expect(journeyPartsIn('{marker:"dreamscape-core-part"}')).toEqual([]);
+    expect(checkDist(splitBuild).journeyPartsOnTitle).toEqual([]);
+    expect(checkDist(splitBuild).mixedJourneyParts).toEqual([]);
+    // A part imported statically by the title, and two parts in one file.
+    const onTitle = withText(splitBuild, "assets/shared-s1.js", 'var g={marker:"dreamscape-journey-part:golden_triangle"}');
+    expect(checkDist(onTitle).journeyPartsOnTitle).toEqual([{ path: "assets/shared-s1.js", journeyIds: ["golden_triangle"] }]);
+    const mixed = withText(splitBuild, "assets/milano-m1.js", 'var g={marker:"dreamscape-journey-part:golden_triangle"}');
+    expect(checkDist(mixed).mixedJourneyParts).toEqual([{ path: "assets/milano-m1.js", journeyIds: ["milano", "golden_triangle"] }]);
+    expect(describeJourneyParts("dist", checkDist(onTitle))).toContain("- タイトル画面で読み込む assets/shared-s1.js に golden_triangle のデータ");
+    // content:build writes the marker into every journey's part, and the game's code never names it.
+    expect(read("scripts/content-outputs.ts")).toContain("`${JOURNEY_PART_MARKER}${journeyId}`");
+    expect(productionSources().filter((file) => read(file).includes(JOURNEY_PART_MARKER))).toEqual([]);
+  });
+
+  it("names Debug's own modules after files that exist and are loaded only lazily", () => {
+    for (const { name, source } of debugEntryModules) {
+      expect(path.basename(source).replace(/\.tsx?$/u, ""), source).toBe(name);
+      expect(existsSync(path.join(root, source)), source).toBe(true);
+      const importers = productionSources().filter((file) => runtimeImports(read(file)).some((specifier) => specifier.endsWith(`/${name}`)));
+      expect(importers.length, `${source} is imported`).toBeGreaterThan(0);
+      for (const file of importers) expect(read(file), `${file} imports ${source} lazily`).toMatch(new RegExp(`import\\("\\.{1,2}/(?:dev/)?${name}"\\)`, "u"));
+    }
   });
 
   it("passes a clean build and fails the build command (scripts/check-dist.ts) on a leak, whichever built file holds the code", () => {
@@ -262,7 +331,8 @@ describe("Debug's code in the game's sources", () => {
     // Each one is a dynamic import only (a lazy chunk the title page does not load, checked by
     // scripts/check-dist.ts on every build); a static import of the same module would add a second line above.
     const main = read("src/main.tsx");
-    const lazy = [...main.matchAll(/= React\.lazy\(\(\) => import\("(\.\/dev\/\w+)"\)\);/g)].map((match) => match[1]);
+    // (Each loads every journey's content first: Debug opens any journey's scenes.)
+    const lazy = [...main.matchAll(/= React\.lazy\(\(\) => loadAllJourneyContent\(\)\.then\(\(\) => import\("(\.\/dev\/\w+)"\)\)\);/g)].map((match) => match[1]);
     expect(lazy.sort()).toEqual(["./dev/CharacterPreview", "./dev/DebugMode"]);
     // ?debug and ?character-preview open them only on the development server or on a device whose
     // Debug mode is on (AGENTS.md; the boot production test checks it with a fresh browser).
