@@ -264,6 +264,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       (recordKey !== undefined ? merged?.provenance.keys[key]?.[recordKey] : undefined) ?? merged?.provenance.files[0];
     return file ? displayPath(root, file) : kind;
   };
+  /** The file of each entry of a merged catalog's list `key`, in order (the duplicate messages name them). */
+  const entryFiles = (kind: CatalogKind, key: string) => (sources.catalogs[kind]?.provenance.items[key] ?? []).map((file) => displayPath(root, file));
   const parseCatalog = <T>(schema: z.ZodType<T>, kind: CatalogKind): T => {
     const parsed = parseSourceCatalog(sources, schema, kind);
     const merged = sources.catalogs[kind];
@@ -328,10 +330,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : []),
   ]))];
   const battles = parseCatalog(battleCatalogSchema, "battles/catalog.json").battles;
-  unique(
-    battles.map((battle) => battle.id),
-    "battleId",
-  );
+  unique(battles.map((battle) => battle.id), "battleId", entryFiles("battles/catalog.json", "battles"));
   let dates = parseCatalog(dateCatalogSchema, "romance/date_catalog.json").dates;
   // A battle's or a date's knot head # when: (and a date's # until:) is its map condition (decision 22): the
   // build writes it into the same JSON field; writing both stops (A4).
@@ -414,12 +413,14 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const effects = parseCatalog(effectCatalogSchema, "romance/effect_catalog.json").effects;
   const responseProfiles = parseCatalog(responseProfileCatalogSchema, "romance/response_profiles.json").profiles;
   unique(responseProfiles.map((profile) => profile.id), "response profile ID");
-  const cities = sources.cities.map(({ file, data }) => {
-    const city = parseSourceFile(citySchema, file, data);
-    if (path.basename(file) !== `${city.id}.json`) throw new Error(`City file ID mismatch: ${file}/${city.id}`);
+  const cityFiles = sources.cities.map(({ file }) => displayPath(root, file));
+  const cities = sources.cities.map(({ file, data }, index) => {
+    const city = parseSourceFile(citySchema, cityFiles[index], data);
+    if (path.basename(file) !== `${city.id}.json`)
+      throw new Error(`City file ID mismatch: ${cityFiles[index]} has the id "${city.id}" (name the file <id>.json)`);
     return city;
   });
-  unique(cities.map((city) => city.id), "city ID");
+  unique(cities.map((city) => city.id), "city ID", cityFiles);
   const journeyCatalog = parseCatalog(journeyCatalogSchema, "journeys/catalog.json");
   // The first available journey (manifest order) opens the title screen, a new
   // game and Debug; each available journey's starting city is checked below.
@@ -458,19 +459,22 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const presentation = parseCatalog(presentationSchema, "romance/presentation.json");
   const travels = cities.map((item, index) => {
     const files = sources.cities[index];
-    const travel = parseSourceFile(travelCatalogSchema, files.travelFile, files.travel);
-    return { city: item, travel, travelFile: displayPath(root, files.travelFile), settingsFile: displayPath(root, files.settingsFile),
-      transit: files.transit, transitFile: displayPath(root, files.transitFile),
-      settings: parseSourceFile(travelSettingsSchema, files.settingsFile, files.settings) };
+    const travelFile = displayPath(root, files.travelFile);
+    const settingsFile = displayPath(root, files.settingsFile);
+    const travel = parseSourceFile(travelCatalogSchema, travelFile, files.travel);
+    return { city: item, travel, travelFile, settingsFile, transit: files.transit, transitFile: displayPath(root, files.transitFile),
+      settings: parseSourceFile(travelSettingsSchema, settingsFile, files.settings) };
   });
   for (const { city: registeredCity, settings } of travels) {
     const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === registeredCity.id));
     if (owner?.cityPlan && settings.lodgingCost !== owner.cityPlan.lodgingCost)
       throw new Error(`City lodging cost does not match journey plan: ${registeredCity.id}`);
   }
-  unique(travels.flatMap(({ travel }) => travel.places.map((place) => place.id)), "travel place ID");
-  unique(travels.flatMap(({ travel }) => travel.events.map((event) => event.id)), "travel event ID");
-  unique(destinations.map((destination) => destination.id), "date destination ID");
+  unique(travels.flatMap(({ travel }) => travel.places.map((place) => place.id)), "travel place ID",
+    travels.flatMap(({ travel, travelFile }) => travel.places.map(() => travelFile)));
+  unique(travels.flatMap(({ travel }) => travel.events.map((event) => event.id)), "travel event ID",
+    travels.flatMap(({ travel, travelFile }) => travel.events.map(() => travelFile)));
+  unique(destinations.map((destination) => destination.id), "date destination ID", entryFiles("romance/date_destinations.json", "destinations"));
   for (const destination of destinations) {
     if (!cities.some((item) => item.id === destination.cityId))
       throw new Error(`Unknown date destination city: ${destination.id}/${destination.cityId}`);
@@ -493,21 +497,15 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     sceneIds: wardrobeSceneIds,
   });
   const progression = parseCatalog(progressionSchema, "romance/progression.json");
-  unique(
-    dates.map((date) => date.id),
-    "dateId",
-  );
-  unique(
-    effects.map((effect) => effect.id),
-    "effectId",
-  );
-  unique(cities.flatMap((item) => item.landmarkIdsPlanned), "landmarkId");
-  unique(tourism.landmarks.map((item) => item.id), "tourism landmark ID");
-  unique(tourism.assets.map((item) => item.id), "tourism asset ID");
-  unique(tourism.clues.map((item) => item.id), "tourism clue ID");
-  unique(tourism.clues.map((item) => item.factId), "tourism fact ID");
-  unique(encounterCatalog.items.map((item) => item.id), "encounter item ID");
-  unique(encounterCatalog.encounters.map((item) => item.id), "encounter ID");
+  unique(dates.map((date) => date.id), "dateId", entryFiles("romance/date_catalog.json", "dates"));
+  unique(effects.map((effect) => effect.id), "effectId", entryFiles("romance/effect_catalog.json", "effects"));
+  unique(cities.flatMap((item) => item.landmarkIdsPlanned), "landmarkId", cities.flatMap((item, index) => item.landmarkIdsPlanned.map(() => cityFiles[index])));
+  unique(tourism.landmarks.map((item) => item.id), "tourism landmark ID", entryFiles("tourism/catalog.json", "landmarks"));
+  unique(tourism.assets.map((item) => item.id), "tourism asset ID", entryFiles("tourism/catalog.json", "assets"));
+  unique(tourism.clues.map((item) => item.id), "tourism clue ID", entryFiles("tourism/catalog.json", "clues"));
+  unique(tourism.clues.map((item) => item.factId), "tourism fact ID", entryFiles("tourism/catalog.json", "clues"));
+  unique(encounterCatalog.items.map((item) => item.id), "encounter item ID", entryFiles("encounters/catalog.json", "items"));
+  unique(encounterCatalog.encounters.map((item) => item.id), "encounter ID", entryFiles("encounters/catalog.json", "encounters"));
   if (encounterCatalog.items.some((item) => !cities.some((entry) => entry.id === item.cityId)) ||
       encounterCatalog.encounters.some((item) => !cities.some((entry) => entry.id === item.cityId)))
     throw new Error("Unknown encounter/item city");
@@ -515,12 +513,16 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   encounterCatalog.items.forEach((item, index) => {
     if (item.iconPath) withContext(`encounter item ${item.id}`, () => requireServedFile(publicFiles, item.iconPath!, journeyFolderOf(itemFiles[index])));
   });
-  unique(journey.episodes.map((item) => item.id), "episode ID");
-  unique(journey.episodes.map((item) => item.battleId), "episode battle ID");
-  unique(journey.storyBattles.map((item) => item.battleId), "story battle ID");
-  unique(cities.map((item) => item.firstClearReward.rewardSourceId), "reward source");
-  unique(journey.rewards.map((item) => item.id), "journey reward ID");
-  unique([...journey.rewards.map((item) => item.id), ...journey.storyBattles.flatMap((item) => item.completionReward ? [item.completionReward.id] : [])], "journey reward ID");
+  const episodeFiles = entryFiles("progression/journey.json", "episodes");
+  const storyBattleFiles = entryFiles("progression/journey.json", "storyBattles");
+  const rewardFiles = entryFiles("progression/journey.json", "rewards");
+  unique(journey.episodes.map((item) => item.id), "episode ID", episodeFiles);
+  unique(journey.episodes.map((item) => item.battleId), "episode battle ID", episodeFiles);
+  unique(journey.storyBattles.map((item) => item.battleId), "story battle ID", storyBattleFiles);
+  unique(cities.map((item) => item.firstClearReward.rewardSourceId), "reward source", cityFiles);
+  unique(journey.rewards.map((item) => item.id), "journey reward ID", rewardFiles);
+  unique([...journey.rewards.map((item) => item.id), ...journey.storyBattles.flatMap((item) => item.completionReward ? [item.completionReward.id] : [])], "journey reward ID",
+    [...rewardFiles, ...journey.storyBattles.flatMap((item, index) => item.completionReward ? [storyBattleFiles[index]] : [])]);
   if (tourism.clues.some((clue) => !tourism.landmarks.some((landmark) => landmark.id === clue.landmarkId)))
     throw new Error("Unknown or mismatched tourism clue");
   if (tourism.landmarks.some((landmark) => !cities.some((entry) => entry.id === landmark.cityId && entry.landmarkIdsPlanned.includes(landmark.id))))
@@ -1269,19 +1271,22 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   // Example quizzes (*.example.json) are validated but never played. Production quizzes are discovered by data alone.
   const quizzes: Record<string, QuizDefinition> = {};
   const productionQuestionIds: string[] = [];
+  const quizFiles = new Map<string, string>();
   for (const { file, example: isExample, data } of sources.quizFiles) {
+    const quizFile = displayPath(root, file);
     const quiz = isExample
-      ? parseSourceFile(quizExampleSchema, file, data)
-      : parseSourceFile(quizSchema, file, data);
-    languageNotes.push(...dataLanguageWarnings(isExample ? quizExampleSchema : quizSchema, data, displayPath(root, file)));
+      ? parseSourceFile(quizExampleSchema, quizFile, data)
+      : parseSourceFile(quizSchema, quizFile, data);
+    languageNotes.push(...dataLanguageWarnings(isExample ? quizExampleSchema : quizSchema, data, quizFile));
     if (!isExample) {
-      if (quizzes[quiz.id]) throw new Error(`Duplicate quizId: ${quiz.id}`);
+      if (quizzes[quiz.id]) throw new Error(`Duplicate quizId: "${quiz.id}" (${quizFiles.get(quiz.id)} and ${quizFile})`);
+      quizFiles.set(quiz.id, quizFile);
       quizzes[quiz.id] = quiz as QuizDefinition;
       productionQuestionIds.push(
         ...quiz.questions.map((question) => question.id),
       );
       // A question's reveal (revealRegion) needs its battle's landmark photo.
-      const reveal = revealRegionProblem(quiz as QuizDefinition, tourism, displayPath(root, file));
+      const reveal = revealRegionProblem(quiz as QuizDefinition, tourism, quizFile);
       if (reveal) throw new Error(reveal);
     }
     if ("scope" in quiz && quiz.scope === "city_finale") {

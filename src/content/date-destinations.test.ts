@@ -70,11 +70,11 @@ describe("date destination content references", () => {
 
   it("rejects malformed source URL, date and claim classification", async () => {
     await editScalaDestination((destination) => { destination.facts[0].url = "not-a-url"; });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/"url"[\s\S]*Invalid URL/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/url[\s\S]*Invalid URL/);
     await editScalaDestination((destination) => { destination.facts[0].checkedAt = "not-a-date"; });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/"checkedAt"[\s\S]*Invalid ISO date/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/checkedAt[\s\S]*Invalid ISO date/);
     await editScalaDestination((destination) => { destination.facts[0].claimType = "unknown"; });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/"claimType"[\s\S]*Invalid option/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/claimType[\s\S]*Invalid option/);
   });
 
   it("rejects a reference to an unknown episode in the date's condition", async () => {

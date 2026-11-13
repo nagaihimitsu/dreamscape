@@ -82,7 +82,7 @@ describe("standalone content inspection", () => {
       throw new Error("accepted an invalid background");
     } catch (error) {
       expect((error as Error).message).toBe(`検証失敗: ${fragment}`);
-      expect(String((error as Error).cause)).toContain(`Invalid content in ${fragment}`);
+      expect(String((error as Error).cause)).toContain(`Invalid content in content/journeys/test_journey/romance/presentation.json:\n  - backgrounds.test_journey_bg`);
     }
   });
 });

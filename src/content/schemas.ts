@@ -185,7 +185,7 @@ export const presentationSchema = z
           captionJa: text,
           color: z.string().regex(/^#[0-9a-fA-F]{6}$/),
           fallback: z.enum(["canal", "neutral"]).optional(),
-          imagePath: z.string().regex(/^assets\/(?!.*(?:^|\/)\.\.(?:\/|$))[a-zA-Z0-9_./-]+\.(?:png|webp|svg)$/).nullable().optional(),
+          imagePath: z.string().regex(/^assets\/(?!.*\.\.)[a-zA-Z0-9_./-]+\.(?:png|webp|svg)$/).nullable().optional(),
           // Reuse the tourism image ledger, including its source and licence.
           imageAssetId: id.optional(),
           imagePosition: z.object({

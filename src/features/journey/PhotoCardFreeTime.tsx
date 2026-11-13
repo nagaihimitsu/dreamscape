@@ -28,6 +28,7 @@ import { TravelRentals } from "./TravelRentals";
 import type { CardSwipe } from "./useCardGestures";
 import { useTravelSelection, type PressScope } from "./useTravelSelection";
 import { playSe } from "../../audio/sound-effects";
+import { usePreloadDestination } from "../../media/preload-ahead";
 import "./free-time-hub.css";
 import "./photo-free-time.css";
 
@@ -91,6 +92,13 @@ export function PhotoCardFreeTime({
     setWaitPick(null);
     setSleepPick(null);
   }
+  // The chosen place's scenes load their first pictures and voices in the background (src/media/preload-ahead.ts): each
+  // event that can be done now, by its first way.
+  const chosenWays = useMemo(() => chosen.kind !== "place" ? [] : chosen.entry.events.flatMap((choice) => {
+    const way = choice.available ? choice.routes.find((route) => route.available) : undefined;
+    return way ? [{ eventId: choice.event.id, mode: way.route.mode }] : [];
+  }), [chosen]);
+  usePreloadDestination(game, chosenWays);
   const waitOptions = useMemo(() => getTravelWaitOptions(game), [game]);
   // No place can be gone to now: whether the money is why, for good in this city (budget-dead-end.ts; B1, 2026-11-13).
   const noPlace = !cards.some((card) => card.kind === "place" && card.entry.available);

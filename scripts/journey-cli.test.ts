@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
-import { errorText } from "./cli-error";
+import { codeError, errorText } from "./cli-error";
 import { journeyReleaseSummary, namedJa, parseJourneyScaffoldArgs } from "./journey-cli";
 
 const root = path.resolve(import.meta.dirname, "..");
@@ -21,6 +21,14 @@ describe("journey authoring commands", () => {
     expect(errorText(new Error("Cannot read JSON khiva.json", { cause: parse }))).toBe(`Cannot read JSON khiva.json\n${parse.message}`);
     expect(errorText(new Error(`形が違います: ${parse.message}`, { cause: parse }))).toBe(`形が違います: ${parse.message}`);
     expect(errorText("plain")).toBe("plain");
+    // A schema error under the message that names its file is left out: the message lists its problems.
+    const schema = Object.assign(new Error('[{ "path": ["id"] }]'), { issues: [{ path: ["id"], message: "Required" }] });
+    expect(errorText(new Error("Invalid content in a.json:\n  - id: Required", { cause: schema }))).toBe("Invalid content in a.json:\n  - id: Required");
+  });
+
+  it("tell a mistake in the code from a problem the content checks found", () => {
+    expect(codeError(new Error("Duplicate dateId: \"a\""))).toBe(false);
+    expect(codeError(new Error("a.ink: line 3", { cause: new TypeError("x is undefined") }))).toBe(true);
   });
 
   it("journey:scaffold prints the requirements without a mode, and --fragments needs its narrative file", () => {
@@ -157,7 +165,7 @@ describe("journey authoring commands", () => {
         ["city-bundle-cli.ts", ["apply", file("none.json", "{}")],
           `作業コピーの形式が違います: ${path.join(folder, "none.json")}。export か new で作った作業コピー（schemaVersion: 2）を使います。`],
         ["city-bundle-cli.ts", ["check", file("broken.json", "{")], `作業コピーを JSON として読めません: ${path.join(folder, "broken.json")}（`],
-        ["inspect-content.ts", ["--type", "city", file("city.json", "{}")], `検証失敗: ${path.join(folder, "city.json")}\n[`],
+        ["inspect-content.ts", ["--type", "city", file("city.json", "{}")], `検証失敗: ${path.join(folder, "city.json")}\n  - `],
       ];
       for (const [script, args, message] of cases) {
         const result = run(script, args);
