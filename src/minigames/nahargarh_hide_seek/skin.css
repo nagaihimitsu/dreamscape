@@ -142,6 +142,9 @@
 }
 .mg-nahargarh-hide-seek-peek-her > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 100% 100%; }
 @keyframes mg-nahargarh-hide-seek-peek { from { transform: rotate(0deg); } }
+/* The use's art.peek is drawn leaning already: upright, its right part behind the corner, sliding out from it. */
+.mg-nahargarh-hide-seek-peek-her:has(> img) { right: 0; transform: none; animation-name: mg-nahargarh-hide-seek-peek-art; }
+@keyframes mg-nahargarh-hide-seek-peek-art { from { transform: translateX(24%); } }
 /* The corner she leans out from: the end of the wall, in shadow on its side. */
 .mg-nahargarh-hide-seek-peek-corner {
   position: absolute;
