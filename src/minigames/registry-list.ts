@@ -8,3 +8,4 @@ export { mehndiHiddenName } from "./mehndi_hidden_name/definition";
 export { monkeyCatch } from "./monkey_catch/definition";
 export { nahargarhHideSeek } from "./nahargarh_hide_seek/definition";
 export { rotiRolling } from "./roti_rolling/definition";
+export { sayTogether } from "./say_together/definition";

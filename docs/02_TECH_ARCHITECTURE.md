@@ -110,6 +110,7 @@ tests/journeys/<journeyId>/   # その旅行編だけの内容・経路・制作
   - `manifest.json` の `cities[].nameJa` と、その都市の `cities/<都市ID>.json` の `nameJa` が違う（`City name differs from the manifest`）。
   - `productionStatus: "complete"` の都市に、その都市の `kind: "city_finale"` のエピソード（`progression/journey.json`）がない（`Complete city has no city finale`）。都市クリアと次の都市への出発はフィナーレの後に起きるため（エピローグは、制作者が `then: epilogue` で始める時を書いた都市ではその時、書かない都市ではフィナーレの後）。
   - データの画像（観光画像の `path`、背景の `imagePath`、品物の `iconPath`、人物画像、タイトルの絵）が、別の旅行編の `public/` の画像を指す。旅行編のデータが使えるのは自分の `public/` と直下の `public/` の画像、共通データが使えるのは直下の `public/` の画像だけ（`Reference to another layer`）。
+  - 旅行編のクイズ・道中交流の英文の語の意味が、共通の辞書（`content/learning/word-meanings.json`）にも自分の旅行編の辞書にもなく、別の旅行編の辞書にだけある（`Reference to another layer`。その旅行編を外すと意味がなくなる。語を共通の辞書へ移す）。
   - `manifest.json` の `authoring` のパス（`observationFile`）が、`/` 区切りのリポジトリからの相対パスでない（絶対パス、`..`、`\` を含む）か、`authoring/journeys/<旅行編ID>/` の外を指す。`imageDirectory` は配信時のパス（`assets/` で始まる相対パス）。
   - 配信する画像が、出典つきの観光画像でも自作の絵の一覧にある絵でもない（「出典のない画像」）、その両方である、一覧にあるファイルをその層が配信していない、同じ層の一覧に2回ある（下の「画像の出典と自作の絵」）。
   - アルバムの絵（旅行編の `public/assets/album/`）のファイル名が ID にならない、同じ ID の絵が2つある、行の `# photo:`・`# recall:` がその旅行編のアルバムの絵にない ID を書く、アルバムの絵が `tourism/catalog.json` に出典つきで載っている（下の「画像の出典と自作の絵」）。
