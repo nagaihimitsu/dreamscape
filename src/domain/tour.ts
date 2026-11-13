@@ -72,8 +72,11 @@ export function tourPayments(state: Readonly<GameState>, tour: Tour, from = 0): 
   }, { money: 0, ap: 0 });
 }
 
-/** A tour offered at the party's place now, with whether it can be booked and why not. */
-export type TourOfferChoice = { tour: Tour; offer: TourOffer; available: boolean; reason: string };
+/**
+ * A tour offered at the party's place now, with whether it can be booked and why not. `shortOfMoney`: the money cannot pay it
+ * (its price, or the lodging and the steps' payments after it), whatever else holds it back (budget-dead-end.ts reads it).
+ */
+export type TourOfferChoice = { tour: Tour; offer: TourOffer; available: boolean; reason: string; shortOfMoney: boolean };
 
 /** Whether the tour is offered at all: not finished, its condition met, every event step's event open, shown and not done. */
 function tourListed(state: GameState, tour: Tour): boolean {
@@ -102,11 +105,11 @@ export function getTourOffers(state: GameState): TourOfferChoice[] {
       place.id === travel.events.find((event) => event.id === step.eventId)?.placeId)).find((place) => place?.closedWeekdays?.includes(tomorrow));
     return tour.offers.filter((offer) => meets(state, offer.when) && (!offer.placeIds || offer.placeIds.includes(state.travel.currentPlaceId)))
       .map((offer) => {
+        const short = state.travelBudget < offer.price ? "旅行予算が足りません。"
+          : usableMoney(state) - offer.price - lodging < payments.money ? "帰りの交通費を確保しているため、今は予約できません。" : "";
         const reason = closed ? `明日は${closed.nameJa}が休みのため、このツアーは催行されません。`
-          : state.travelBudget < offer.price ? "旅行予算が足りません。"
-          : usableMoney(state) - offer.price - lodging < payments.money ? "帰りの交通費を確保しているため、今は予約できません。"
-          : usableAp(state) < payments.ap ? "APが足りません。" : "";
-        return { tour, offer, available: !reason, reason };
+          : short || (usableAp(state) < payments.ap ? "APが足りません。" : "");
+        return { tour, offer, available: !reason, reason, shortOfMoney: short !== "" };
       });
   });
 }

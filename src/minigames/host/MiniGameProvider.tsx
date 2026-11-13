@@ -17,6 +17,11 @@ export interface MiniGameEnvironment {
   revision: number;
   /** The lists a tag's keys are read with (the game's own keys; its art). */
   context: TagContext;
+  /**
+   * The outcomes whose choices can be taken now (undefined: every one). A play, 「おまかせ」 and Debug's buttons that end on
+   * another take its declared fallback (fallback.ts, docs/13 4.2).
+   */
+  available?: readonly string[];
   /** Takes the outcome's choice (as the screen's choice button would); false when it cannot be taken now. */
   onOutcome(outcome: string): boolean;
   /** The picture behind a play whose tag names `bg` (the scene's background drawer). */
