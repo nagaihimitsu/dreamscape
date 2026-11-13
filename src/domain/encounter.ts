@@ -18,7 +18,7 @@ import { beginLandmarkObservation, startTourismBattle } from "./tourism";
 import { battlePlayed, meets } from "./conditions";
 import { advanceOccasion, commitThen, leaveObservation, occasionSteps, planThen } from "./occasion";
 import { visitOrder, visitSlot, type MomentEntry, type VisitSlot } from "./encounter-moments";
-import { battles, episodes, getCityContent } from "../content";
+import { battles, cityContents, episodes } from "../content";
 import { applyChoiceEffects, applyDoneEffects, changesRelationship, choiceDisplay, doneReserve, insertedDoneReserve, placeSceneById, sceneById, sceneOption, type ChoiceDisplay } from "./scene-effects";
 import type { SceneOption } from "../content/scene-schemas";
 import { itemUsableIn } from "./item-cities";
@@ -34,13 +34,15 @@ const entryRule = (event: EncounterDefinition) => encounterEntryRule(event.id);
 /**
  * The landmarks a moment of a scene runs at (stage 3: `visit <landmark>`, `visit any` = every landmark of
  * the scene's city, `place <place>` = the landmarks visited at that place); a catalog's encounter at its landmark.
+ * A `place` of a city whose content is not loaded (another journey's: a production page loads only the open
+ * journey's part, src/content/index.ts loadJourneyContent) has no landmark here: none of its places can be visited.
  */
 function sceneLandmarks(event: EncounterDefinition): string[] {
   const scene = sceneById(event.id);
   if (!scene || !scene.at.length) return event.landmarkId ? [event.landmarkId] : [];
   // (A stage-4 moment other than a visit runs at no landmark: moments.ts places it.)
   return [...new Set(scene.at.flatMap((moment) => "place" in moment
-    ? getCityContent(event.cityId).travel.events.filter((item) => item.placeId === moment.place).flatMap((item) => visitedLandmarkOfEvent(item.id) ?? [])
+    ? (cityContents[event.cityId]?.travel.events ?? []).filter((item) => item.placeId === moment.place).flatMap((item) => visitedLandmarkOfEvent(item.id) ?? [])
     : !("visit" in moment) ? [] : moment.visit === "any" ? landmarks.filter((landmark) => landmark.cityId === event.cityId).map((landmark) => landmark.id) : [moment.visit]))];
 }
 /** Whether the encounter runs at the landmark's visit. */

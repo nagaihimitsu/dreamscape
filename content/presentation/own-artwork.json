@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "artworks": [
     {
-      "noteJa": "Dreamscape のために作者が用意したヒロインの立ち絵",
+      "noteJa": "Dreamscape のために作者が用意したヒロインの立ち絵（配信するのは軽い版の WebP。元の可逆の絵は authoring/characters/heroine/）",
       "paths": [
         "assets/characters/heroine/default_01/standing_01/exasperated.webp",
         "assets/characters/heroine/default_01/standing_01/happy.webp",

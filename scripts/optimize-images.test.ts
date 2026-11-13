@@ -5,8 +5,10 @@ import path from "node:path";
 import sharp, { type Sharp } from "sharp";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { TourismAsset } from "../src/content/tourism-schemas";
-import { markSampleCopies, type ObservationCards, type PhotoSkip, type TourismPhoto } from "./image-optimization";
-import { applyPhotoSteps, planPhotos } from "./optimize-images";
+import {
+  markSampleCopies, portraitOriginalOf, webpCompressionOf, type ObservationCards, type PhotoSkip, type Portrait, type TourismPhoto,
+} from "./image-optimization";
+import { applyPhotoSteps, applyPortraitSteps, planPhotos, planPortraits } from "./optimize-images";
 import { jsonText } from "./sample-journey";
 
 // npm run images:optimize on a small journey folder of photos made here (no repository content).
@@ -176,5 +178,90 @@ describe("npm run images:optimize", () => {
     expect(readFileSync(catalogFile(), "utf8")).toBe(catalogText);
     expect(existsSync(served("assets/tourism/demo/a.jpg"))).toBe(true);
     expect(readFileSync(served("assets/tourism/demo/a.webp")).equals(left)).toBe(true);
+  });
+});
+
+describe("npm run images:optimize on the portraits", () => {
+  /** A small figure: a coloured gradient inside a soft-edged ellipse on a transparent canvas. */
+  async function figure(file: string, encode: (image: Sharp) => Sharp, hue = 0): Promise<Buffer> {
+    const width = 48, height = 72;
+    const pixels = Buffer.alloc(width * height * 4);
+    for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+      const index = (y * width + x) * 4;
+      const distance = Math.hypot((x - width / 2) / (width / 2.4), (y - height / 2) / (height / 2.2));
+      pixels[index] = (hue + x * 5) % 256;
+      pixels[index + 1] = (y * 3) % 256;
+      pixels[index + 2] = ((x + y) * 7) % 256;
+      pixels[index + 3] = Math.round(255 * Math.min(1, Math.max(0, (1 - distance) * 6)));
+    }
+    const bytes = await encode(sharp(pixels, { raw: { width, height, channels: 4 } })).toBuffer();
+    mkdirSync(path.dirname(file), { recursive: true });
+    writeFileSync(file, bytes);
+    return bytes;
+  }
+  const alpha = async (input: string | Buffer) => (await sharp(input).ensureAlpha().extractChannel(3).raw().toBuffer());
+  const pixels = async (input: string | Buffer) => (await sharp(input).ensureAlpha().raw().toBuffer());
+  const portrait = (assetPath: string, journeyId: string | undefined, sample = false): Portrait => ({
+    assetPath, journeyId, sample,
+    file: path.join(root, journeyId ? `content/journeys/${journeyId}/public` : "public", assetPath),
+    original: path.join(root, portraitOriginalOf(assetPath, journeyId)),
+  });
+
+  it("makes each served portrait a lossy WebP of its lossless original, with the same alpha, and a second run writes nothing", async () => {
+    const shared = portrait("assets/characters/heroine/a/neutral.webp", undefined);
+    const fresh = portrait("assets/characters/d_new/neutral.webp", "demo");
+    const kept = portrait("assets/characters/d_kept/neutral.webp", "demo");
+    const lossyOnly = portrait("assets/characters/d_lossy/neutral.webp", "demo");
+    const png = portrait("assets/characters/d_png/neutral.png", "demo");
+    const sample = portrait("assets/characters/s_guide/neutral.webp", "sample_trip", true);
+    const original = await figure(shared.original, (item) => item.png());
+    const losslessServed = await figure(shared.file, (item) => item.webp({ lossless: true }));
+    await figure(fresh.original, (item) => item.png(), 90);
+    // A lossless served picture without an original: it becomes the original (PNG, same pixels) before the light copy.
+    const keptServed = await figure(kept.file, (item) => item.webp({ lossless: true }), 40);
+    const lossyServed = await figure(lossyOnly.file, (item) => item.webp({ quality: 80 }), 120);
+    const pngServed = await figure(png.file, (item) => item.png(), 160);
+    const sampleServed = await figure(sample.file, (item) => item.webp({ lossless: true }), 200);
+
+    const steps = planPortraits([shared, fresh, kept, lossyOnly, png, sample]);
+    expect(steps.map((step) => [step.portrait.assetPath, step.served, step.hasOriginal, step.outcome.kind === "skip" ? step.outcome.reason : "make"]))
+      .toEqual([
+        [shared.assetPath, "lossless", true, "make"], [fresh.assetPath, "missing", true, "make"], [kept.assetPath, "lossless", false, "make"],
+        [lossyOnly.assetPath, "lossy", false, "no-original"], [png.assetPath, "other", false, "png-path"], [sample.assetPath, "lossless", false, "sample"],
+      ]);
+    expect(steps[0].bytes).toBe(losslessServed.length);
+    const written = await applyPortraitSteps(steps);
+    expect([...written.keys()]).toEqual([shared.assetPath, fresh.assetPath, kept.assetPath]);
+    expect(written.get(shared.assetPath)).toEqual({ before: losslessServed.length, after: readFileSync(shared.file).length, changed: true, keptOriginal: false });
+    expect(written.get(fresh.assetPath)).toMatchObject({ before: 0, changed: true, keptOriginal: false });
+    expect(written.get(kept.assetPath)).toMatchObject({ before: keptServed.length, changed: true, keptOriginal: true });
+    for (const item of [shared, fresh, kept]) {
+      const bytes = readFileSync(item.file);
+      expect(webpCompressionOf(bytes)).toBe("lossy");
+      expect((await alpha(bytes)).equals(await alpha(item.original))).toBe(true);
+    }
+    expect(readFileSync(shared.original).equals(original)).toBe(true);
+    expect((await sharp(kept.original).metadata()).format).toBe("png");
+    expect((await pixels(kept.original)).equals(await pixels(keptServed))).toBe(true);
+    expect(readFileSync(lossyOnly.file).equals(lossyServed)).toBe(true);
+    expect(readFileSync(png.file).equals(pngServed)).toBe(true);
+    expect(readFileSync(sample.file).equals(sampleServed)).toBe(true);
+    expect([lossyOnly, png, sample].some((item) => existsSync(item.original))).toBe(false);
+
+    const lightCopies = [shared, fresh, kept].map((item) => readFileSync(item.file));
+    const again = await applyPortraitSteps(planPortraits([shared, fresh, kept]));
+    expect([...again.values()].map((item) => [item.changed, item.keptOriginal])).toEqual([[false, false], [false, false], [false, false]]);
+    expect([shared, fresh, kept].every((item, index) => readFileSync(item.file).equals(lightCopies[index]))).toBe(true);
+  });
+
+  it("makes the served copy again when the original is redrawn", async () => {
+    const item = portrait("assets/characters/d_redrawn/neutral.webp", "demo");
+    await figure(item.original, (image) => image.png());
+    await applyPortraitSteps(planPortraits([item]));
+    const first = readFileSync(item.file);
+    await figure(item.original, (image) => image.png(), 128);
+    const written = await applyPortraitSteps(planPortraits([item]));
+    expect(written.get(item.assetPath)).toMatchObject({ before: first.length, changed: true });
+    expect(readFileSync(item.file).equals(first)).toBe(false);
   });
 });
