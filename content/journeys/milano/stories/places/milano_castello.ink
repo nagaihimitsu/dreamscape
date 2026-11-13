@@ -18,7 +18,7 @@ INCLUDE modules.ink
 今のはどっちが謝るんだろう
 # speaker: heroine
 # emotion: happy
-私なら、くしゃみした顔のほうが欲しいです
+わたしなら、くしゃみした顔のほうが欲しいです
 -> END
 
 // ───── バトル（本筋）。battles/catalog.json の milano_castello_01 の storyId がこの knot を指す。1本の流れ（-> quiz(n) -> でクイズ）。
@@ -75,7 +75,7 @@ INCLUDE modules.ink
 # speaker: narrator
 娘は一歩ずつ像のまわりを歩いた。父は動かない。こちら側の形が気に入ったらしい。
 # speaker: heroine
-私は、こっちの横顔が好き。そっちからはどうですか？
+わたしは、こっちの横顔が好き。そっちからはどうですか？
 # speaker: enemy
 ここから動いたら、好きだった形を忘れそうでね
 -> quiz(3) ->

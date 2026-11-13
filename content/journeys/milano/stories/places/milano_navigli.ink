@@ -48,7 +48,7 @@ INCLUDE modules.ink
         先頭はちょっと恥ずかしい。一緒にいて、遅くなったらそのままで
     - else:
         # speaker: heroine
-        じゃあ、この辺。私、運河側だといつも遅くなる
+        じゃあ、この辺。わたし、運河側だといつも遅くなる
     }
     -> join_1
 
@@ -67,14 +67,14 @@ INCLUDE modules.ink
 # speaker: narrator
 橋の手前で彼女が止まった。立ち飲みの輪を避けたのかと思ったら、手すりの向こうを見ていた。
 # speaker: heroine
-私がゆっくりなの、疲れたからだと思った？
+わたしがゆっくりなの、疲れたからだと思った？
 
 * [「少しそう思った」 # option: second_honest]
     # profile: honest
     # memory: sound_memory_night_01
     { romance_result == "negative":
         # speaker: heroine
-        見ただけで決めなくてよかった。今は、橋から水を見たいの
+        少し、か。……疲れてはいないよ。今は、橋から水を見たいだけ
     - else:
         # speaker: heroine
         正解は半分。疲れたのと、まだ帰りたくないのと
@@ -144,7 +144,7 @@ INCLUDE modules.ink
         一人で十分だよ。少し先で、片手が寒そうな人を見てて
     - else:
         # speaker: heroine
-        私も横にいよう。二人ともこの姿勢だと、何か隠してる人みたいだけど
+        わたしも横にいよう。二人ともこの姿勢だと、何か隠してる人みたいだけど
     }
     -> join_1
 
@@ -163,7 +163,7 @@ INCLUDE modules.ink
     # profile: honest
     { romance_result == "negative":
         # speaker: heroine
-        私はここで手渡したい。少し待ってもいい？
+        わたしはここで手渡したい。少し待ってもいい？
     - else:
         # speaker: heroine
         うん。勝手に持って遠くへ行く前に、それがいい
@@ -196,7 +196,7 @@ INCLUDE modules.ink
         もう少し待ちたかったな。手袋じゃなくて、この景色に
     - else:
         # speaker: heroine
-        うん。何もしないで待つの、私は意外と苦手。付き合ってくれてありがとう
+        うん。何もしないで待つの、わたしは意外と苦手。付き合ってくれてありがとう
     }
     -> join_2
 

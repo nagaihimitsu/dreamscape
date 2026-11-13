@@ -20,17 +20,20 @@ const SCENE_AUDIO: SceneAudio = ((): SceneAudio => {
   return parsed.success ? parsed.data : { schemaVersion: 1, stories: {} };
 })();
 
-/** What a completed scene is called in the room's list of voices: its title, its date's, battle's or place's name. */
+/**
+ * What a completed scene is called in the room's list of voices: a main part by what it is (a guide, a battle's or a date's
+ * title, a city's epilogue or arrival), another scene by its title. The scene table titles a main part by its place or
+ * city only (an arrival and its city's epilogue are both 「デリー」), so that title is not used for a main part.
+ */
 function sceneLabelJa(scene: SceneEntry, game: Pick<GameState, "playerName" | "heroineName">): string {
   const city = (cityId: string) => cityContents[cityId]?.city.nameJa ?? cityId;
   const main = scene.main;
-  const label = scene.title ??
-    (!main ? (scene.kind === "tour_leg" ? "ツアーの移動" : "道中の会話")
-      : "guide" in main ? `${landmarks.find((landmark) => landmark.id === main.guide)?.nameJa ?? main.guide}の案内`
-      : "battle" in main ? battles.find((battle) => battle.id === main.battle)?.titleJa ?? main.battle
-      : "date" in main ? dates.find((date) => date.id === main.date)?.titleJa ?? main.date
-      : "epilogue" in main ? `${city(main.epilogue)}のエピローグ`
-      : `${city(main.arrival)}に到着`);
+  const label = !main ? scene.title ?? (scene.kind === "tour_leg" ? "ツアーの移動" : "道中の会話")
+    : "guide" in main ? `${landmarks.find((landmark) => landmark.id === main.guide)?.nameJa ?? main.guide}の案内`
+    : "battle" in main ? battles.find((battle) => battle.id === main.battle)?.titleJa ?? main.battle
+    : "date" in main ? dates.find((date) => date.id === main.date)?.titleJa ?? main.date
+    : "epilogue" in main ? `${city(main.epilogue)}のエピローグ`
+    : `${city(main.arrival)}に到着`;
   return withNames(label, game);
 }
 

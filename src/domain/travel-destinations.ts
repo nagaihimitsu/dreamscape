@@ -2,7 +2,7 @@ import { getCityContent } from "../content";
 import type { TravelEvent, TravelPlace, TravelRoute } from "../content/travel-schemas";
 import type { GameState } from "./game";
 import { NIGHT_START, groupDestinationEvents, selectNearbyDestinations, type DestinationPlace } from "./travel";
-import { getTravelEventAvailability, getTravelSleepOptions, isTravelEventVisible, isUnclearedMainTravelEvent, waitForTravel } from "./travel-game";
+import { getTravelEventAvailability, getTravelSleepOptions, isTravelEventVisible, isUnclearedMainTravelEvent, travelWaitEnd, waitForTravel } from "./travel-game";
 import { isTransportModeUsable } from "./transport";
 
 export type TravelDestinationEvent = TravelEvent & {
@@ -48,13 +48,19 @@ export type TravelWaitOption = { minutes: number; until: number | null; availabl
 
 /**
  * The 待機 menu: 「30分待つ」 and, while it is still day, 「夜（18:00）まで待つ」 (until NIGHT_START; user decision 2026-11-11:
- * no wait to the next opening time). The night wait is left out where it would be the same 30 minutes. Each is enabled
- * only if waiting is possible (the party can still get back to the hotel before the day ends).
+ * no wait to the next opening time). The night wait is left out where it would be the same 30 minutes. At the inn after
+ * 20:30, 「30分待つ」 is the wait to 21:00 (travelWaitEnd; 2026-11-13). Each is enabled only if waiting is possible (the
+ * party can still get back to the hotel before the day ends).
  */
 export function getTravelWaitOptions(state: GameState): TravelWaitOption[] {
-  const toNight = NIGHT_START - state.travel.minute;
+  const { minute } = state.travel;
+  const toNight = NIGHT_START - minute;
   const options = [{ minutes: 30, until: null }, ...(toNight > 0 && toNight !== 30 ? [{ minutes: toNight, until: NIGHT_START }] : [])];
-  return options.map((option) => ({ ...option, available: waitForTravel(state, option.minutes, state.revision) !== state }));
+  return options.map((option) => {
+    const end = travelWaitEnd(state, option.minutes);
+    const wait = end !== null && end < minute + option.minutes ? { minutes: end - minute, until: end } : option;
+    return { ...wait, available: waitForTravel(state, wait.minutes, state.revision) !== state };
+  });
 }
 
 /** One route of an event, as the destination's choices offer it (data order). */

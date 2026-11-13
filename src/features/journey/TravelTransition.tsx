@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import type { TransportMode } from "../../content/transport";
 import { PassingScenery, railKinds, sceneryPace, TransportIllustration } from "./transport-art";
-import { RIDE_MAP, rideMapLayout, type RideLabel, type RideMapLayout, type RideRoute } from "./ride-map";
+import { RIDE_MAP, RIDE_NAME_LINE, rideMapLayout, type RideLabel, type RideMapLayout, type RideRoute } from "./ride-map";
 import { playSe, playSound } from "../../audio/sound-effects";
 import { useNightCard } from "./NightRest";
 import "./travel-transition.css";
@@ -72,12 +72,14 @@ export function TravelTransition({ mode, route, reduceMotion = false, onEnd }: {
   </div>, document.body);
 }
 
-/** The ride's map card: the line's dots (each comes at its share of the ride, --ride-dot-at), then both places and their names. */
+/** The ride's map card: the line's dots (each comes at its share of the ride, --ride-dot-at), then both places and their whole names. */
 function RideMap({ layout }: { layout: RideMapLayout }) {
   const last = Math.max(1, layout.dots.length - 1);
-  const name = (label: RideLabel) => <text className="travel-ride-name" x={label.x} y={label.y} textAnchor={label.anchor}>{label.text}</text>;
+  const name = (label: RideLabel) => <text className="travel-ride-name" textAnchor={label.anchor}>
+    {label.lines.map((line, index) => <tspan key={index} x={label.x} y={label.y + index * RIDE_NAME_LINE}>{line}</tspan>)}
+  </text>;
   return <div className="travel-ride-map" data-testid="travel-transition-map">
-    <svg viewBox={`0 0 ${RIDE_MAP.width} ${RIDE_MAP.height}`} focusable="false">
+    <svg viewBox={`0 0 ${RIDE_MAP.width} ${layout.height}`} focusable="false">
       {layout.dots.map((dot, index) => <circle key={index} className="travel-ride-dot" cx={dot.x} cy={dot.y} r={1.8}
         style={{ "--ride-dot-at": index / last } as CSSProperties} />)}
       <circle className="travel-ride-from" cx={layout.from.x} cy={layout.from.y} r={5} />

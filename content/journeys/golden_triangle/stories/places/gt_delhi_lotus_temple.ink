@@ -126,9 +126,11 @@ INCLUDE modules.ink
     - else:
         # speaker: heroine
         # reaction: heroine,teasing_big,music
+        # voice: gt_delhi_date_lotus_temple_011
         ふふっ。点々、背中だと消えちゃうんだね
         # speaker: heroine
         # emotion: smile
+        # voice: gt_delhi_date_lotus_temple_012
         でも、それも合ってるかも。また来たいもん。正解は、教えない
     }
 * [「読めなかった」 # option: couldnt_read]
@@ -137,22 +139,28 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_delhi_date_lotus_temple_013
         ……そっか。ゆっくり書いたのにな
         # speaker: heroine
+        # voice: gt_delhi_date_lotus_temple_014
         ううん、いい。いつか、ちゃんと声で言うね。背中じゃなくて
     - else:
         # speaker: heroine
         # emotion: smile
+        # voice: gt_delhi_date_lotus_temple_015
         そっか。……じゃあ、いい。読めなかったなら、その方がいいのかも
         # speaker: heroine
+        # voice: gt_delhi_date_lotus_temple_016
         声に出すと、なんだか本当になっちゃいそうだったから、背中に書いたの。いつか、ちゃんと声で言うね。背中じゃなくて
     }
 -
 # speaker: narrator
 池の水面に、白い花びらがもう一つ映っていた。彼女はしばらくそれを眺めてから、靴のかかとを直した。
 # speaker: heroine
+# voice: gt_delhi_date_lotus_temple_017
 ここ、何を祈ってもいいし、何も祈らなくてもいいんだって。わたし、祈るかわりに、字を書いちゃった
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_delhi_date_lotus_temple_018
 怒られなかったから、セーフ。ね？
 -> END

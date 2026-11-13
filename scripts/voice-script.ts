@@ -4,17 +4,19 @@ import { isPlaceStory } from "../src/content/story-address";
 import { displayPath, parseCatalog, type ContentSources } from "./content-sources";
 import { taggedLines, tagsOf, tagStart } from "./line-tag-text";
 import { withoutComments } from "./place-files";
-import { PLAYER_SET_NAMES, voiceFilesOf, voiceTagsOf } from "./voice-files";
+import { PLAYER_SET_NAMES, voiceFilesOf } from "./voice-files";
 
 // The voice script (npm run voice:script, 2026-11-13): the heroine's spoken lines of a journey, one entry per line of
 // text (one recording, one file named by the entry's ID), with the scene, the branches it sits in, the line before it
 // and its emotion and staging tags, for the people who make the voices. Read statically from the Ink sources (so a
 // line in a branch no walk takes is in too), in the reading of the 2026-11-12 script of the India heroine (877 lines):
 // a `# speaker:` holds until the next one or the next knot or stitch; message and letter lines (`# phone:`,
-// `# letter:`) are read, not spoken, so they are left out. A line with a `# voice:` keeps that tag's ID (a recording
-// is never renumbered); another line's ID is `<knot>_<NNN>`, its place among the knot's heroine lines, unless a
-// recording or an earlier line has that ID (it then takes the knot's next free number).
-// Pure on the loaded sources (no file is read); voice-script-cli.ts writes the files.
+// `# letter:`) are read, not spoken, so they are left out.
+// The IDs are stable (2026-11-13): a line with a `# voice:` keeps that ID (a recording is never renumbered); a line
+// whose text is as it was last sent keeps the ID it was sent with (the scripts kept in authoring/, newest first,
+// matched as voice:changes does: matchSameLines); any other line gets `<knot>_<NNN>` after the highest number any
+// script, recording or line has used for that knot, so one ID never names two texts.
+// Pure on the loaded sources and the scripts sent (no file is read); voice-script-cli.ts writes the files.
 
 /** The line before a heroine line, as the script shows it: who says it, and what. */
 export type PreviousLine = [speaker: string, text: string];
@@ -56,15 +58,26 @@ export type VoiceScriptInput = {
   people: ReadonlyMap<string, string>;
   /** Battle story address (`places/<file>.<knot>`, or a one-scene file's story ID) → its title and opponent. */
   battles: ReadonlyMap<string, { titleJa?: string; enemyNameJa?: string }>;
-  /** IDs a line without a `# voice:` never takes: the journey's voice files and `# voice:` IDs. */
-  recordings: ReadonlySet<string>;
+  /** The scripts sent, newest first (voice-records.ts). */
+  scripts: readonly SentVoiceScript[];
+  /** The IDs of the recorded-text file (voice-records.ts): a line without a `# voice:` never takes one. */
+  recorded: ReadonlySet<string>;
+  /** The journey's voice files (an ID a new line never takes). */
+  voiceFiles: ReadonlySet<string>;
 };
 
 export type VoiceScript = Pick<VoiceScriptInput, "journeyId" | "nameJa" | "cities" | "storiesPath"> & {
   lines: VoiceLine[];
+  /** The IDs of the lines with a `# voice:` (recorded lines). */
+  tagged: ReadonlySet<string>;
   /** Heroine lines left out: messages (`# phone:`) and letters or notes (`# letter:`). */
   skipped: number;
 };
+
+/** What the comparisons read of a sent script's line (its entries.json may hold more). */
+export type ScriptedLine = Pick<VoiceLine, "id" | "text" | "file" | "knot" | "title">;
+/** A script sent to the people who make the voices: its date (its folder's name), its entries.json and its lines. */
+export type SentVoiceScript = { journeyId: string; date: string; file: string; lines: ScriptedLine[] };
 
 // The tags' words for the voice maker (the faces and marks of presentation/, in words that say how it sounds).
 const EMOTIONS: Readonly<Record<string, string>> = {
@@ -290,23 +303,67 @@ function flagsOf(text: string): string[] {
   ];
 }
 
-/** Settle the IDs: a `# voice:`'s, else `<knot>_<NNN>` when free, else the knot's next free number. */
-function settleIds(drafts: readonly Draft[], recordings: ReadonlySet<string>): string[] {
-  const used = new Set([...recordings, ...drafts.flatMap((draft) => draft.voiceId === undefined ? [] : [draft.voiceId])]);
-  const ids = drafts.map((draft) => draft.voiceId ?? `${draft.knot}_${String(draft.number).padStart(3, "0")}`);
-  const taken: number[] = [];
-  drafts.forEach((draft, index) => {
-    if (draft.voiceId !== undefined) return;
-    if (used.has(ids[index])) taken.push(index);
-    else used.add(ids[index]);
+/** What the matching reads of a line. */
+type Matchable = Pick<VoiceLine, "id" | "text" | "file" | "knot">;
+
+/**
+ * The same lines of an earlier list (a script sent) and a later one (the lines now), as index pairs: the same ID and
+ * text, else the same text in the same knot, else in the same city (each in written order, one line for one line).
+ * voice:script keeps IDs by it and voice:changes compares by it.
+ */
+export function matchSameLines(earlier: readonly Matchable[], later: readonly Matchable[], cityIds: readonly string[]): [number, number][] {
+  const pairs: [number, number][] = [];
+  const earlierLeft = new Set(earlier.keys());
+  const laterLeft = new Set(later.keys());
+  const pass = (key: (line: Matchable) => string) => {
+    const waiting = new Map<string, number[]>();
+    for (const index of laterLeft) waiting.set(key(later[index]), [...waiting.get(key(later[index])) ?? [], index]);
+    for (const index of [...earlierLeft]) {
+      const match = waiting.get(key(earlier[index]))?.shift();
+      if (match === undefined) continue;
+      pairs.push([index, match]);
+      earlierLeft.delete(index);
+      laterLeft.delete(match);
+    }
+  };
+  pass((line) => `${line.id}\0${line.text}`);
+  pass((line) => `${line.knot}\0${line.text}`);
+  pass((line) => `${cityOfFile(line.file, cityIds)}\0${line.text}`);
+  return pairs;
+}
+
+const numbered = (knot: string, number: number) => `${knot}_${String(number).padStart(3, "0")}`;
+
+/**
+ * The IDs: a `# voice:`'s; else the ID the line's text was last sent with (an ID no recording keeps); else the knot's
+ * next number after the highest that any script sent, recording, voice file or line has used.
+ */
+function settleIds(drafts: readonly Draft[], input: VoiceScriptInput): string[] {
+  const ids = drafts.map((draft) => draft.voiceId);
+  const tagged = ids.filter((id) => id !== undefined);
+  // Each ID with the text it was last sent with (the newest script that has it).
+  const lastSent = new Map<string, ScriptedLine>();
+  for (const script of input.scripts) for (const line of script.lines) if (!lastSent.has(line.id)) lastSent.set(line.id, line);
+  const recorded = new Set([...input.recorded, ...tagged]);
+  const sent = [...lastSent.values()].filter((line) => !recorded.has(line.id));
+  const waiting = drafts.flatMap((draft, index) => draft.voiceId === undefined ? [index] : []);
+  // A waiting line is matched by its place in its knot first (the 2026-11-12 numbering), then by its text.
+  const pairs = matchSameLines(sent, waiting.map((index) => ({ ...drafts[index], id: numbered(drafts[index].knot, drafts[index].number) })),
+    input.cities.map((city) => city.id));
+  for (const [sentIndex, waitingIndex] of pairs) ids[waiting[waitingIndex]] = sent[sentIndex].id;
+  const used = new Set([...lastSent.keys(), ...recorded, ...input.voiceFiles, ...ids.filter((id) => id !== undefined)]);
+  const highest = new Map<string, number>();
+  return drafts.map(({ knot }, index) => {
+    const known = ids[index];
+    if (known !== undefined) return known;
+    const prefix = `${knot}_`;
+    let number = highest.get(knot) ?? Math.max(0, ...[...used].map((id) =>
+      id.startsWith(prefix) && /^\d+$/u.test(id.slice(prefix.length)) ? Number(id.slice(prefix.length)) : 0));
+    do number++; while (used.has(numbered(knot, number)));
+    highest.set(knot, number);
+    used.add(numbered(knot, number));
+    return numbered(knot, number);
   });
-  for (const index of taken) {
-    const { knot } = drafts[index];
-    const numbers = [...used].map((id) => id.startsWith(`${knot}_`) && /^\d+$/u.test(id.slice(knot.length + 1)) ? Number(id.slice(knot.length + 1)) : 0);
-    ids[index] = `${knot}_${String(Math.max(0, ...numbers) + 1).padStart(3, "0")}`;
-    used.add(ids[index]);
-  }
-  return ids;
 }
 
 /** The voice script of a journey: its heroine lines city by city (the journey's order), place files first, then by file name. */
@@ -323,12 +380,13 @@ export function voiceScript(input: VoiceScriptInput): VoiceScript {
   });
   const read = stories.map((story) => readStory(story.storyId, story.source, input));
   const drafts = read.flatMap((item) => item.drafts);
-  const ids = settleIds(drafts, input.recordings);
+  const ids = settleIds(drafts, input);
   return {
     journeyId: input.journeyId, nameJa: input.nameJa, cities: input.cities, storiesPath: input.storiesPath,
     // In the key order of the 2026-11-12 entries.
     lines: drafts.map(({ line, text, emo, staging, context, prev, flags, file, knot, title }, index) =>
       ({ line, id: ids[index], text, emo, staging, context, prev, flags, file, knot, title })),
+    tagged: new Set(drafts.flatMap((draft) => draft.voiceId === undefined ? [] : [draft.voiceId])),
     skipped: read.reduce((sum, item) => sum + item.skipped, 0),
   };
 }
@@ -375,8 +433,12 @@ const peopleSchema = z.object({ people: z.array(z.object({ id: z.string(), nameJ
 const battlesSchema = z.object({ battles: z.array(z.object({ storyId: z.string(), titleJa: z.string().optional(), enemyNameJa: z.string().optional() })) });
 const manifestSchema = z.object({ nameJa: z.string(), cities: z.array(z.object({ id: z.string(), nameJa: z.string() })) });
 
-/** What voiceScript reads of a journey of the loaded sources. Throws for a journey that is not one. */
-export function voiceScriptInput(sources: ContentSources, journeyId: string): VoiceScriptInput {
+/**
+ * What voiceScript reads of a journey of the loaded sources, with the scripts sent and the recorded IDs
+ * (voice-records.ts readVoiceHistory). Throws for a journey that is not one.
+ */
+export function voiceScriptInput(sources: ContentSources, journeyId: string,
+  history: { scripts: readonly SentVoiceScript[]; recorded: ReadonlyMap<string, unknown> }): VoiceScriptInput {
   const manifest = sources.manifests.find((item) => item.id === journeyId);
   const layer = sources.layers.find((item) => item.type === "journey" && item.id === journeyId);
   if (!manifest || !layer)
@@ -390,9 +452,8 @@ export function voiceScriptInput(sources: ContentSources, journeyId: string): Vo
     storiesPath: `${displayPath(sources.root, path.join(layer.directory, "stories"))}/`,
     people: new Map(people.map((person) => [person.id, person.nameJa])),
     battles: new Map(battles.map((battle) => [battle.storyId, battle])),
-    recordings: new Set([
-      ...voiceFilesOf(sources).filter((voice) => voice.journeyId === journeyId).map((voice) => voice.id),
-      ...stories.flatMap((story) => voiceTagsOf(story.source).map((tag) => tag.id)),
-    ]),
+    scripts: history.scripts,
+    recorded: new Set(history.recorded.keys()),
+    voiceFiles: new Set(voiceFilesOf(sources).filter((voice) => voice.journeyId === journeyId).map((voice) => voice.id)),
   };
 }

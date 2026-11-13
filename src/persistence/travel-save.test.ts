@@ -122,13 +122,13 @@ describe("travel save and concurrency", () => {
     expect(slept.ap).toBe(3);
   });
 
-  it("permits waiting up to 21:00 at the hotel, but not beyond it", () => {
+  it("permits waiting up to 21:00 at the hotel, a later wait ending at 21:00, and none from 21:00", () => {
     const initial = createGame();
     const state = { ...initial, travel: { ...initial.travel, minute: 20 * 60 + 30 } };
     const waited = waitForTravel(state, 30, state.revision);
     expect(waited.travel.minute).toBe(21 * 60);
     expect(waitForTravel(waited, 1, waited.revision)).toBe(waited);
-    expect(waitForTravel({ ...state, travel: { ...state.travel, minute: 20 * 60 + 31 } }, 30, state.revision).travel.minute).toBe(20 * 60 + 31);
+    expect(waitForTravel({ ...state, travel: { ...state.travel, minute: 20 * 60 + 31 } }, 30, state.revision).travel.minute).toBe(21 * 60);
   });
 
   it("reserves an actual two-leg paid return when walking would be too late, reloads and pays once", () => {

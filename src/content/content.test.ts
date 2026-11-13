@@ -16,7 +16,7 @@ import { tourismCatalogSchema } from "./tourism-schemas";
 import { parseStoryTags } from "./tags";
 import { isPlaceStory, splitStoryAddress, storyFileOf } from "./story-address";
 import { RELATIONSHIP_TONES } from "../domain/romance-tone";
-import { changeCatalogEntry, ONE_SCENE_DATE_EFFECTS, ONE_SCENE_DATE_FILE, oneSceneCafeDate, prepareContentFixture, quizSourceFile, registerOwnArtwork, storySourceFile } from "./test-fixtures";
+import { changeCatalogEntry, MILAN_EFFECTS_FILE, ONE_SCENE_CONFESSION_EFFECTS, ONE_SCENE_DATE_EFFECTS, ONE_SCENE_DATE_FILE, oneSceneCafeDate, oneSceneConfession, prepareContentFixture, quizSourceFile, registerOwnArtwork, storySourceFile } from "./test-fixtures";
 
 let fixture: string;
 // The checks of a one-scene date (# effect: after each choice) run on Milan's cafe date put back in that form in the
@@ -329,7 +329,9 @@ describe("content build acceptance", () => {
   });
 
   it("rejects an unknown story reference", async () => {
-    // The confession is a one-scene file; a date in a place file would first leave its knot with no catalog entry.
+    // The confession in its one-scene form (its knot taken out of the Darsena's place file, which would otherwise be left with no
+    // catalog entry), then the date catalog points nowhere.
+    await oneSceneConfession(fixture);
     await changeDate("milano_confession_01", (date) => {
       date.storyId = "milano/missing";
     });
@@ -444,10 +446,15 @@ describe("content build acceptance", () => {
   });
 
   it("rejects relationship rewards attached to confession outcomes", async () => {
+    // The one-scene confession's outcome effects (Milan's confession is a place file's knot without them since 2026-11-13).
+    await oneSceneConfession(fixture);
+    const effectsFile = path.join(fixture, MILAN_EFFECTS_FILE);
+    const original = await readFile(effectsFile, "utf8");
     for (const field of ["affectionDelta", "trustDelta", "sparkDelta"]) {
-      // Each change starts again from the repository's file: one field at a time.
-      await changeCatalogEntry<Record<string, unknown>>(fixture, "romance/effect_catalog.json", "effects", "milano_confession_accepted",
-        (outcome) => { outcome[field] = 1; });
+      // One field at a time, from the catalog as the fixture wrote it.
+      const catalog = JSON.parse(original) as { effects: Record<string, unknown>[] };
+      catalog.effects.find((effect) => effect.id === "milano_confession_accepted")![field] = 1;
+      await writeFile(effectsFile, JSON.stringify(catalog));
       await expect(buildContent(fixture, false)).rejects.toThrow(
         "Confession outcome cannot award relationship points",
       );
@@ -461,6 +468,8 @@ describe("content build acceptance", () => {
     // A knot of its place file, started by name as the game starts it.
     const { storyId, path: knot } = splitStoryAddress(invitation.storyId);
     const story = new Story(result.stories[storyId]);
+    // Its opening line asks cond(…) whether a date was played; either answer leads to the same three choices.
+    story.BindExternalFunction("cond", () => false, true);
     if (knot !== undefined) story.ChoosePathString(knot);
     while (story.canContinue) story.Continue();
     expect(story.currentChoices).toHaveLength(3);
@@ -500,7 +509,7 @@ describe("content build acceptance", () => {
 
   it("rejects invalid confession readiness branches", async () => {
     await replace(
-      storySourceFile("dates/milano_date_confession"),
+      await oneSceneConfession(fixture),
       'confession_result == "accepted":',
       "true:",
     );
@@ -511,7 +520,7 @@ describe("content build acceptance", () => {
 
   it("rejects missing outcome events in confession", async () => {
     await replace(
-      storySourceFile("dates/milano_date_confession"),
+      await oneSceneConfession(fixture),
       "# effect: milano_confession_accepted",
       // A choice's effect (no outcome) where the outcome belongs.
       "# effect: common_date_first_attentive",
@@ -527,7 +536,7 @@ describe("content build acceptance", () => {
     const changed = source.replace("# effect: common_date_first_playful", "# effect: milano_confession_deferred");
     expect(changed).not.toBe(source);
     const compiled = compileInk(changed);
-    const all = [...effects, ...ONE_SCENE_DATE_EFFECTS];
+    const all = [...effects, ...ONE_SCENE_DATE_EFFECTS, ...ONE_SCENE_CONFESSION_EFFECTS];
     const context = {
       effectIds: all.map((effect) => effect.id),
       backgroundIds: Object.keys(presentation.backgrounds),

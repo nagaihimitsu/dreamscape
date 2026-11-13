@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { effects } from "../content";
+import { effects, scenes } from "../content";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
 import { getBattleAvailability, startBattle } from "./battle";
 import { clearCity, playBattleToResult } from "../dev/scenario-builders";
@@ -77,7 +77,7 @@ describe("two registered cities through the real game runtime", () => {
     expect(newGame.currentCityId).toBe("milano");
     expect(getNextCity(newGame)).toBeUndefined();
     const reached = finishMilan();
-    const memory = effects.find((effect) => effect.memoryId)?.memoryId;
+    const memory = effects.find((effect) => effect.memoryId)?.memoryId ?? scenes.flatMap((scene) => scene.options.flatMap((option) => option.memory ?? []))[0];
     if (!memory) throw new Error("No existing memory fixture");
     const before = validateGameState({ ...reached, inventory: { ...reached.inventory, blue_pick: "held" },
       completedEncounterIds: [...reached.completedEncounterIds, "duomo_string"], seenEncounterIds: [...reached.seenEncounterIds, "duomo_string"],
