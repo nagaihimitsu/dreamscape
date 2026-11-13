@@ -11,7 +11,14 @@
 .mg-engine-step-pick .mg-step-pick-buttons > button { justify-content: center; min-height: 64px; text-align: center; touch-action: manipulation; }
 .mg-engine-step-pick .mg-step-pick-take { font-size: 19px; font-weight: 700; letter-spacing: 0.08em; }
 .mg-engine-step-pick .mg-step-pick-leave { font-size: 15px; }
-.mg-engine-step-pick .mg-step-pick-buttons > button[aria-disabled="true"] { background: var(--ds-slate-900); color: var(--ds-on-slate-muted); }
+/* Not pressable now (the play is decided, or the main button has nothing to take): a dashed outline, not a filled button. */
+.mg-engine-step-pick .mg-step-pick-buttons > button[aria-disabled="true"] {
+  border: 1.5px dashed rgba(255, 250, 241, 0.45);
+  background: rgba(31, 36, 48, 0.45);
+  box-shadow: none;
+  color: var(--ds-on-slate-muted);
+  cursor: default;
+}
 .mg-engine-step-pick .mg-step-pick-auto {
   display: flex;
   align-items: center;
