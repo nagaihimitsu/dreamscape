@@ -14,6 +14,7 @@ import tourismData from "./generated/content/tourism/catalog.json";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "./travel-schemas";
 import sharedPartData from "./generated/shared-part.json";
+import { bundledParts, partLoaders } from "./journey-part-files";
 import generatedTours from "./generated/tours.json";
 import { tourCatalogSchema, type Tour } from "./tour-schemas";
 import progressionData from "./generated/content/romance/progression.json";
@@ -166,7 +167,9 @@ function addJourneyPart(data: unknown, journeyId?: string): void {
   loadedParts.add(part.journeyId);
 }
 addJourneyPart(sharedPartData);
-const partFiles = import.meta.glob("./generated/journey-parts/*.json", { import: "default" });
+// The parts that come with the game: none in a production build, every one on the development server and in the unit
+// tests (journey-part-files.ts), which then read any journey's content at once.
+for (const data of Object.values(bundledParts)) addJourneyPart(data);
 const partFile = (journeyId: string) => `./generated/journey-parts/${journeyId}.json`;
 const pendingParts = new Map<string, Promise<void>>();
 /** Whether the journey's content is loaded: its stories, quizzes and cities can be read. */
@@ -179,7 +182,7 @@ export function journeyContentLoaded(journeyId: string): boolean {
  */
 export function loadJourneyContent(journeyId: string): Promise<void> {
   if (loadedParts.has(journeyId)) return Promise.resolve();
-  const load = partFiles[partFile(journeyId)];
+  const load = partLoaders[partFile(journeyId)];
   if (!load) return Promise.reject(new Error(`Unknown journey content: ${journeyId}`));
   let pending = pendingParts.get(journeyId);
   if (!pending) {
@@ -190,11 +193,8 @@ export function loadJourneyContent(journeyId: string): Promise<void> {
 }
 /** Load the content of every journey (Debug and the asset preview, which open any journey's scenes). */
 export async function loadAllJourneyContent(): Promise<void> {
-  await Promise.all(Object.keys(partFiles).map((file) => loadJourneyContent(file.slice(file.lastIndexOf("/") + 1, -".json".length))));
+  await Promise.all(Object.keys(partLoaders).map((file) => loadJourneyContent(file.slice(file.lastIndexOf("/") + 1, -".json".length))));
 }
-// The development server and the unit tests have every journey's content before any module reads it (Debug, the
-// tests' states of any journey); only a production build loads the parts one by one (the branch is left out of it).
-if (import.meta.env.DEV) await loadAllJourneyContent();
 
 /** The album's illustrations of every journey (content:build lists each journey's public/assets/album/; album-images.ts). */
 export const albumImages: readonly AlbumImage[] = albumImageListSchema.parse(albumImageData);
