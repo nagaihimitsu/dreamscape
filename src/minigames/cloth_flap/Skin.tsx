@@ -65,17 +65,20 @@ function reactionOf(outcome: ClothFlapOutcome, tapMs: number | null): { at: numb
   }
 }
 
-/** The one coming down (drawn when the use gives no picture): a young woman in a kurta, side on, walking to the right. */
+/**
+ * The one coming down (drawn when the use gives no picture): a young woman side on, walking to the right, in the colours
+ * of Jasmeet's standing picture without her dupatta (lent for the pigeon): a cream kurta, blue jeans, long black hair.
+ */
 function WalkerFigure() {
   return (
     <svg viewBox="0 0 40 104" className="mg-cloth-flap-walker-figure" aria-hidden="true">
-      <path d="M17 10 Q 9 24, 12 44" fill="none" stroke="#2a211c" strokeWidth="4" strokeLinecap="round" />
-      <path d="M17 66 L 15 98 M25 66 L 29 98" stroke="#e6dac4" strokeWidth="6" strokeLinecap="round" />
-      <path d="M12 99 L 18 99 M27 99 L 34 99" stroke="#5a4636" strokeWidth="3.5" strokeLinecap="round" />
-      <path d="M14 22 L 28 22 L 33 68 L 9 68 Z" fill="#3f7f86" />
-      <path d="M26 26 Q 32 40, 30 52" fill="none" stroke="#3f7f86" strokeWidth="5" strokeLinecap="round" />
+      <path d="M17 10 Q 8 26, 11 48" fill="none" stroke="#1f1a17" strokeWidth="5" strokeLinecap="round" />
+      <path d="M17 64 L 15 97 M25 64 L 29 97" stroke="#4a6f9a" strokeWidth="6" strokeLinecap="round" />
+      <path d="M12 99 L 18 99 M27 99 L 34 99" stroke="#6b4a30" strokeWidth="3.5" strokeLinecap="round" />
+      <path d="M14 22 L 28 22 L 32 70 L 10 70 Z" fill="#efe4cc" stroke="#6b5a45" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d="M26 26 Q 32 40, 30 52" fill="none" stroke="#e4d6b8" strokeWidth="5" strokeLinecap="round" />
       <circle cx="21" cy="12" r="8" fill="#b98b6b" />
-      <path d="M13 11 Q 15 2, 23 3 Q 29 4, 29 9 Q 22 7, 16 13 Z" fill="#2a211c" />
+      <path d="M13 12 Q 14 2, 23 3 Q 29 4, 29 9 Q 22 7, 16 14 Z" fill="#1f1a17" />
     </svg>
   );
 }

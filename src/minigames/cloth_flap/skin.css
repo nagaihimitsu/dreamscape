@@ -115,7 +115,7 @@
   border: 5px solid #7d6a55;
   border-bottom: 0;
   border-radius: 48% 48% 0 0 / 26% 26% 0 0;
-  box-shadow: 0 0 0 200vmax rgba(46, 36, 28, 0.94), inset 0 8px 18px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 0 0 200vmax #2e241c, inset 0 8px 18px rgba(0, 0, 0, 0.45);
   pointer-events: none;
 }
 /* The cloth in the player's hands at the bottom of the niche: folded, then spread wide on the tap. */
