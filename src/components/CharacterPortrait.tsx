@@ -9,7 +9,7 @@ import {
   resolveCharacterCostume,
 } from "../content/character-assets";
 import type { StandPosition } from "../content/tags";
-import type { PortraitFocus } from "./speaker-focus";
+import type { PortraitFocus } from "./scene-stage";
 import { portraitBreath } from "./scene-atmosphere";
 import "./character-portrait.css";
 
@@ -34,7 +34,7 @@ export function CharacterPortrait({
   cityId?: string;
   countryId?: string;
   regionId?: string;
-  /** Speaking (slightly forward) or listening (slightly dimmed) while a line is read; none for narration (portraitFocus). */
+  /** Speaking (slightly forward) or listening (slightly dimmed) while a line is read; none when no one on stage says it (stageFocus). */
   focus?: PortraitFocus;
   /** Where the scene's `# stand:` puts her (line-stage.css); none: her placement as it is. */
   stand?: StandPosition;

@@ -11,7 +11,7 @@ INCLUDE modules.ink
 # speaker: narrator
 旧食堂に入った瞬間、絵の横幅を目で追うだけで首が動いた。{heroine_name}はスマホを出しかけて、鞄の底にしまう。
 # speaker: heroine
-今日はあとで録ります。ここで、私が何を言いそうになったか
+今日はあとで録ります。ここで、わたしが何を言いそうになったか
 # speaker: narrator
 隣の男が手のひらを少し開いた。連れの女性が男の手から、自分の手首へと目を移す。
 # speaker: player
@@ -85,7 +85,7 @@ INCLUDE modules.ink
 # speaker: narrator
 外へ出ると、彼女は録音を始めた。三秒で止めた。
 # speaker: heroine
-さっき、あの人の静かな時間を、私がいい話にして持って帰ろうとした。なんて言えばいいかな
+さっき、あの人の静かな時間を、わたしがいい話にして持って帰ろうとした。なんて言えばいいかな
 # speaker: player
 三秒のままでも、いいんじゃない
 # speaker: narrator
@@ -218,7 +218,7 @@ INCLUDE modules.ink
     # speaker: narrator
     去り際、彼は予備の鉛筆を取り出した。印はポケットに入ったままだった。
     # speaker: heroine
-    悔しい。でも、わからないところを『同上』にはしたくないね。私も、もう一度読んでみる
+    悔しい。でも、わからないところを『同上』にはしたくないね。わたしも、もう一度読んでみる
 }
 -> END
 
@@ -279,7 +279,7 @@ INCLUDE modules.ink
     # speaker: enemy
     絵の部屋が、実際の食堂の続きに見える……壁が仕切りの仕事をしていない！
     # speaker: heroine
-    私は、その続いて見える感じが好きです
+    わたしは、その続いて見える感じが好きです
 - else:
     # speaker: enemy
     遠近法や光で、描かれた空間が実際の食堂の続きに見える。別の箱に収まった小さな絵、ではないのだ
@@ -342,7 +342,7 @@ INCLUDE modules.ink
     # speaker: narrator
     エットレは二枚の名札を重ねて持ち、出口へ向かった。
     # speaker: heroine
-    ……{player_address}。私、三人ずつの表情も、もう少し見たくなった。中央を見たら、周りも気になった
+    ……{player_address}。わたし、三人ずつの表情も、もう少し見たくなった。中央を見たら、周りも気になった
 - battle_score == 2:
     # speaker: enemy
     見落としは一つ。だが、無関係だと決めつけた私の仕切りは、もう立たない
@@ -366,7 +366,7 @@ INCLUDE modules.ink
     # speaker: narrator
     彼はクリップを見ないようにして去った。{heroine_name}は、残った絵をゆっくり見直した。
     # speaker: heroine
-    私たちも、答えを急いだかも。二つとも読んで、どこまで言えるか考えたいね
+    わたしたちも、答えを急いだかも。二つとも読んで、どこまで言えるか考えたいね
 }
 -> END
 

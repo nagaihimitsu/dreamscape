@@ -172,7 +172,7 @@ INCLUDE modules.ink
 # speaker: player
 二つとも言うのは？
 # speaker: heroine
-私、たぶん長く話すと最後を「じゃあね」でごまかす
+わたし、たぶん長く話すと最後を「じゃあね」でごまかす
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
@@ -197,10 +197,10 @@ INCLUDE modules.ink
     # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
-        それを選べる人は強いね。私は、今日は何か言いたい
+        それを選べる人は強いね。わたしは、今日は何か言いたい
     - else:
         # speaker: heroine
-        うん。でも私は、何も言わなかった日のことばかり覚えてる
+        うん。でもわたしは、何も言わなかった日のことばかり覚えてる
     }
     -> join_1
 
@@ -229,7 +229,7 @@ INCLUDE modules.ink
         答えるまで待たせるのも難しいよね。聞かれなくても言えるようになりたい
     - else:
         # speaker: heroine
-        私もそうしてほしい。事情があるなら、遠回りでも聞いて
+        わたしもそうしてほしい。事情があるなら、遠回りでも聞いて
     }
     -> join_2
 
@@ -238,7 +238,7 @@ INCLUDE modules.ink
     # memory: sound_memory_brera_date_01
     { romance_result == "negative":
         # speaker: heroine
-        「またね」って約束かな。私はたまに、軽く言われると迷う
+        「またね」って約束かな。わたしはたまに、軽く言われると迷う
     - else:
         # speaker: heroine
         いい。短いのに、もう一回分ある
@@ -253,7 +253,7 @@ INCLUDE modules.ink
         予約すると、違う言葉が出た日に困るよ。空けておきたい
     - else:
         # speaker: heroine
-        じゃあ私から。「遅い」。待ってたって伝わるでしょ
+        じゃあわたしから。「遅い」。待ってたって伝わるでしょ
     }
     -> join_2
 

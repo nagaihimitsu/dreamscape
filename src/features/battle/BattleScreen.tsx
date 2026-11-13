@@ -22,10 +22,9 @@ import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { CanalScene } from "../../components/CanalScene";
 import { SceneHeading, SceneNotebookTool } from "../../components/SceneHeading";
 import { CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
-import { portraitFocus } from "../../components/speaker-focus";
+import { oppositeIsEnemy, stageLine, type StageScene } from "../../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
-import { useSpeakingPerson } from "../../components/useSpeakingPerson";
-import { speakingPerson } from "../../domain/scene-person";
+import { useSceneStage } from "../../components/useSceneStage";
 import { useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
@@ -340,16 +339,18 @@ export function BattleScreen({
   const heroineEmotion = heroineReaction?.expression ?? (frame && frame.speaker !== "enemy"
     ? resolveDialogueExpression(dialogueExpressions, storyId, frame)
     : "neutral");
-  // A person line whose portrait is the opponent's own is the opponent speaking under the name the heroine knows them by
-  // before they give theirs (an alias of progression/story.json people, 2026-11-11): their portrait, expression and
-  // reaction stay the opponent's.
-  const lineSpeaker = isDialogue && frame ? speakingPerson(storyState.people, frame) : undefined;
-  const opponentSpeaks = frame?.speaker === "enemy" || (!!lineSpeaker && lineSpeaker === characterForBattle(battle.id));
+  // The opponent stands from the start; a person with a figure who speaks in their own name takes their place from that
+  // line until the opponent speaks or reacts again, or the talk gives way to a question, where the opponent asks
+  // (scene-stage.ts). She stands in the talk. A person line whose figure is the opponent's own is the opponent speaking
+  // under the name the heroine knows them by before they give theirs (an alias of progression/story.json people,
+  // 2026-11-11): their figure, expression and reaction stay the opponent's.
+  const opponentFigure = characterForBattle(battle.id);
+  const stageScene: StageScene = { heroineFromStart: true, enemyFigure: opponentFigure, enemyFromStart: true };
+  const line = isDialogue && frame ? stageLine(frame, storyState.people, { enemy: !!enemyReaction }) : { enemyCue: true };
+  const { stage, focus } = useSceneStage(line, stageScene);
+  const personId = oppositeIsEnemy(stage, stageScene) ? undefined : stage.opposite?.figure;
+  const opponentSpeaks = frame?.speaker === "enemy" || line.personFigure === opponentFigure;
   const enemyEmotion = enemyReaction?.expression ?? (opponentSpeaks && frame ? frame.emotion : "neutral");
-  // A person with a portrait who speaks in their own name takes the opponent's place from that line
-  // (speakingPerson) until the opponent speaks or reacts again, or the talk gives way to a question.
-  const speaking = opponentSpeaks ? undefined : lineSpeaker;
-  const personId = useSpeakingPerson(speaking, !isDialogue || opponentSpeaks || !!enemyReaction);
   const plate = speakerPlate(frame ?? { speaker: "narrator" }, { heroine: game.heroineName, player: game.playerName, enemy: battle.enemyNameJa },
     storyState.people);
   const speaker = plate.name;
@@ -477,7 +478,7 @@ export function BattleScreen({
                 sceneId={battle.id}
                 cityId={heroineCityId}
                 emotion={heroineEmotion}
-                focus={portraitFocus(frame?.speaker, "heroine")}
+                focus={focus.heroine}
                 stand={staging?.stand}
               >
                 {heroineReaction?.mark && <ComicEffect effect={heroineReaction.mark} reduceMotion={reduceMotion} cueKey={displayedStoryState ?? ""} />}
@@ -485,12 +486,11 @@ export function BattleScreen({
             </div>
           )}
           <div className="battle-character-slot battle-enemy">
-            {personId ? <CharacterPortrait key={personId} characterId={personId}
-              focus={speaking === personId ? "speaking" : portraitFocus(frame?.speaker, "enemy")} /> :
+            {personId ? <CharacterPortrait key={personId} characterId={personId} focus={focus.opposite} /> :
             <CharacterPortrait
-              characterId={characterForBattle(battle.id)}
+              characterId={opponentFigure}
               emotion={enemyEmotion}
-              focus={portraitFocus(opponentSpeaks ? "enemy" : frame?.speaker, "enemy")}
+              focus={focus.opposite}
               fallback={battle.portrait === "abstract" ? undefined :
                 <EnemyPortrait
                   emotion={enemyEmotion}
