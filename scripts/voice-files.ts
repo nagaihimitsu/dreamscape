@@ -47,6 +47,19 @@ export function voiceTagsOf(source: string): VoiceTag[] {
   });
 }
 
+/**
+ * Throws at the first manifest whose `voiceCredits` (where the journey's voices come from, 2026-11-13; shown in
+ * 「出典・権利の一覧」) credits voices its journey does not have: no file in its voice folder. `file` is the manifest as
+ * messages show it. Japanese first, English after.
+ */
+export function checkVoiceCredits(manifests: readonly { id: string; file: string; data: Record<string, unknown> }[], voices: readonly VoiceFile[]): void {
+  for (const { id, file, data } of manifests) {
+    if (data.voiceCredits === undefined || voices.some((voice) => voice.journeyId === id)) continue;
+    throw new Error(`声のない旅行編に声の出典があります：${file} の voiceCredits。この旅行編の public/${VOICE_FOLDER}/ に声のファイルがありません。` +
+      `声を置くか、voiceCredits を外してください（Voice credits without voices: journey ${id} has no file in public/${VOICE_FOLDER}/）。`);
+  }
+}
+
 /** Where a `# voice:` is, as messages show it: 「knot gt_a の12行目の # voice: gt_a_001」. */
 const voiceTagWhere = (id: string, line: number, knot?: string) => `${knot ? `knot ${knot} の` : ""}${line}行目の # voice: ${id}`;
 

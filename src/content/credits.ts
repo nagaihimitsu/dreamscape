@@ -182,6 +182,19 @@ export function ambienceCredits(): SoundCredit[] {
   return groupSoundCredits({ sources: ambience.sources, sounds: ambience.tracks });
 }
 
+/** Where a journey's line voices come from (its manifest's `voiceCredits`, 2026-11-13), under the journey's name. */
+export type VoiceCredit = NonNullable<Journey["voiceCredits"]>[number] & { journeyId: string; journeyNameJa: string };
+
+/** The voices' sources, journey by journey in catalog order (content:build allows them only on a journey with voices). */
+export function groupVoiceCredits(catalog: readonly Pick<Journey, "id" | "nameJa" | "voiceCredits">[]): VoiceCredit[] {
+  return catalog.flatMap((journey) => (journey.voiceCredits ?? []).map((credit) => ({ ...credit, journeyId: journey.id, journeyNameJa: journey.nameJa })));
+}
+
+/** The voices' sources of the generated content, for the credits list. */
+export function voiceCredits(): VoiceCredit[] {
+  return groupVoiceCredits(journeys);
+}
+
 /**
  * The libraries bundled into the production build and their licences, as
  * Vite's `build.license` writes them (`third-party-licenses.json` next to
