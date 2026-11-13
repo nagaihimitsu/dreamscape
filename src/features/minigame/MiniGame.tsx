@@ -1,15 +1,15 @@
-import { useState, type ComponentType, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { MINI_GAMES } from "../../minigames/registry";
 import { miniGameChoice, type MiniGameTag } from "../../minigames/tag";
-import { playSe } from "../../audio/sound-effects";
-import { CricketBatting, type MiniGamePlayProps } from "./CricketBatting";
+import type { MiniGameModule } from "../../minigames/contract";
+import { createPlayClock, type HostClock } from "../../minigames/host/clock";
+import { playSe, playSound } from "../../audio/sound-effects";
+import { vibrate } from "../../audio/vibration";
 import "./minigame.css";
 
-/** Each game's play (src/minigames/registry.ts lists the games and their outcomes). */
-const PLAYS: Record<string, ComponentType<MiniGamePlayProps>> = {
-  cricket_batting: CricketBatting,
-};
+/** How long the result's label stays before the story goes on. */
+const RESULT_MS = 1300;
 
 /**
  * A line's `# minigame:` (2026-11-13): where the choices would be, the game's start button (and, with Debug mode on, a
@@ -34,9 +34,14 @@ export function MiniGame({ tag, choices, ready, auto, debug, reduceMotion, host,
   onChoose: (index: number) => boolean;
 }) {
   const [playing, setPlaying] = useState(false);
+  const [module, setModule] = useState<MiniGameModule | null>(null);
   const definition = MINI_GAMES[tag.id];
-  const Play = PLAYS[tag.id];
   const still = reduceMotion || (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
+  useEffect(() => {
+    let live = true;
+    void definition.load().then((loaded) => { if (live) setModule(loaded); });
+    return () => { live = false; };
+  }, [definition]);
   function finish(outcome: string) {
     const choice = miniGameChoice(choices, tag, outcome);
     if (!choice || !onChoose(choice.index)) setPlaying(false);
@@ -44,7 +49,7 @@ export function MiniGame({ tag, choices, ready, auto, debug, reduceMotion, host,
   return (
     <div className="choices minigame-ready" data-testid="minigame">
       <p className="choice-hint">{auto ? "おまかせで遊びます。" : definition.hintJa}</p>
-      <button type="button" className="primary minigame-start" data-testid="minigame-start" disabled={!ready || playing}
+      <button type="button" className="primary minigame-start" data-testid="minigame-start" disabled={!ready || playing || !module}
         onClick={() => {
           playSe("ui_confirm");
           setPlaying(true);
@@ -60,8 +65,49 @@ export function MiniGame({ tag, choices, ready, auto, debug, reduceMotion, host,
           ))}
         </div>
       )}
-      {playing && host && createPortal(
-        <Play auto={auto} autoOutcome={tag.auto} still={still} partner={partner} onDone={finish} onAbort={() => setPlaying(false)} />, host)}
+      {playing && host && module && createPortal(
+        <Layer module={module} title={definition.titleJa} labels={Object.fromEntries(definition.outcomes.map((item) => [item.id, item.labelJa]))}
+          auto={auto ? tag.auto : null} still={still} partner={partner} onDone={finish} onAbort={() => setPlaying(false)} />, host)}
     </div>
+  );
+}
+
+/** The play over the scene: the game's field and controls, then its outcome's label for a moment. */
+function Layer({ module, title, labels, auto, still, partner, onDone, onAbort }: {
+  module: MiniGameModule; title: string; labels: Readonly<Record<string, string>>; auto: string | null; still: boolean; partner?: ReactNode;
+  onDone: (outcome: string) => void; onAbort: () => void;
+}) {
+  const clock = useMemo<HostClock>(() => createPlayClock(), []);
+  const [result, setResult] = useState<string | null>(null);
+  const layer = useRef<HTMLElement>(null);
+  const latest = useRef({ onDone, onAbort });
+  latest.current = { onDone, onAbort };
+  useEffect(() => {
+    (layer.current?.querySelector<HTMLElement>("[data-minigame-primary]") ?? layer.current)?.focus({ preventScroll: true });
+    // A hidden page stops the play: it starts again from its button.
+    const hidden = () => { if (document.hidden) latest.current.onAbort(); };
+    document.addEventListener("visibilitychange", hidden);
+    return () => {
+      clock.stop();
+      document.removeEventListener("visibilitychange", hidden);
+    };
+  }, [clock]);
+  useEffect(() => {
+    if (result === null) return;
+    const timer = window.setTimeout(() => latest.current.onDone(result), RESULT_MS);
+    return () => window.clearTimeout(timer);
+  }, [result]);
+  const Play = module.Play;
+  return (
+    <section ref={layer} tabIndex={-1} className="minigame-layer" data-testid="minigame-play" data-still={still || undefined}
+      data-outcome={result ?? undefined} data-no-advance aria-label={title} onClick={(event) => event.stopPropagation()}>
+      <Play params={{}} auto={auto} still={still} seed={0} clock={clock} cast={{ heroine: partner }} names={{ player: "", heroine: "" }} art={{}}
+        sound={playSound} vibrate={vibrate} status={() => undefined} end={(outcome) => {
+          clock.stop();
+          setResult(outcome);
+        }} />
+      {result !== null && <p className="minigame-result">{labels[result]}</p>}
+      <p className="sr-only" role="status">{result !== null ? labels[result] : ""}</p>
+    </section>
   );
 }

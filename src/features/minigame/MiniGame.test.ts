@@ -3,7 +3,6 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { cricketBatting } from "../../minigames/cricket_batting/definition";
-import { CRICKET_SOUNDS } from "./CricketBatting";
 import { MiniGame } from "./MiniGame";
 
 const render = (props: Partial<Parameters<typeof MiniGame>[0]> = {}) => renderToStaticMarkup(createElement(MiniGame, {
@@ -32,6 +31,6 @@ describe("a mini-game's place among the choices", () => {
   it("plays only sounds the shared list registers", () => {
     const registered = (JSON.parse(readFileSync(new URL("../../../content/presentation/sounds.json", import.meta.url), "utf8")) as { sounds: { id: string }[] })
       .sounds.map((sound) => sound.id);
-    for (const id of Object.values(CRICKET_SOUNDS)) expect(registered).toContain(id);
+    for (const id of cricketBatting.sounds) expect(registered).toContain(id);
   });
 });
