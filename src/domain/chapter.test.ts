@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, onTestFinished } from "vitest";
+import { installRepeatableDate } from "../../tests/fixtures/repeatable-date";
 import { meets } from "./conditions";
 import {
   balance,
@@ -190,6 +191,8 @@ describe("integrated tourism, battle, and free time", () => {
   });
 
   it("continues a zero-score journey after rejection, deferral and eventual acceptance", () => {
+    // The repeat mechanism, on Milan's confession made repeatable for the test (the journey's own is played once).
+    onTestFinished(installRepeatableDate("milano_confession_01"));
     let state = startEpisode(createGame(), "milano_last_supper_episode");
     state = finishBattle(startTourismBattle(state, state.revision), 0);
     state = enterFreeTime(state, state.revision);

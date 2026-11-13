@@ -9,8 +9,8 @@ import {
   unusedPublicFiles,
   unusedTransportModes,
   unusedWordMeanings,
-  wordUses,
 } from "./content-report";
+import { wordUses } from "./content-ownership";
 import { contentSourcesFromTree, contentTreeFromFiles, loadContentSources } from "./content-sources";
 
 // The build report works on loaded sources only: small content trees in
@@ -178,8 +178,8 @@ describe("word meanings", () => {
   it("knows which layers' English uses each word", () => {
     const uses = wordUses(load(files()));
     expect([...uses.keys()].sort()).toEqual(["a", "bell", "cafe", "cat", "hold", "it", "mausoleum", "on", "rings", "sat", "the"]);
-    expect([...uses.get("the")!]).toEqual(["trip_a", "trip_b"]);
-    expect([...uses.get("hold")!]).toEqual(["trip_a"]);
+    expect([...uses.get("the")!.keys()]).toEqual(["trip_a", "trip_b"]);
+    expect(Object.fromEntries(uses.get("hold")!)).toEqual({ trip_a: path.join(root, folder("trip_a"), "stories/encounters/bell.ink") });
   });
 
   it("lists the entries no English text uses, per file", () => {

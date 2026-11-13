@@ -1,5 +1,7 @@
 // The journey's moments (2026-11-11 user decision; journey-moments.ts): the title card as an episode begins, the recap of a
 // resumed game, the packing of a departure and the credit roll at the end of a journey, as pure rules over the game.
+import { existsSync } from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { episodes, getAlbumImage, landmarks, scenes, storyState, tourismAssets } from "../../content";
 import {
@@ -46,10 +48,10 @@ const jaipurEpilogue = indiaPhoto("gt_album_j57", "jaipur", "jaipur_hotel_hub", 
 /** The recap's album picture: the author's illustration with its caption, no credit. */
 const albumPicture = (photo: AlbumPhoto): RecapPicture =>
   ({ path: getAlbumImage(photo.imageId)!.path, altJa: photo.caption!, captionJa: photo.caption! });
-/** The recap's picture of a place: free time's card copy of the photo, the place's name and the photo's credit. */
+/** The recap's picture of a place: the larger `recap` copy of free time's card photo, the place's name and the photo's credit. */
 const placePicture = (journeyId: string, assetId: string, placeJa: string): RecapPicture => {
   const asset = tourismAssets.find((item) => item.id === assetId)!;
-  return { path: `assets/derived/${journeyId}/${assetId}.card.webp`, altJa: asset.altJa, captionJa: placeJa, credit: asset };
+  return { path: `assets/derived/${journeyId}/${assetId}.recap.webp`, altJa: asset.altJa, captionJa: placeJa, credit: asset };
 };
 
 describe("the title card as an episode begins", () => {
@@ -198,6 +200,15 @@ describe("the recap's picture (the same story as its text)", () => {
       .toEqual(placePicture("golden_triangle", "gt_img_agra_taj_mahal", "タージ・マハル"));
     expect(recapPicture({ album: [], currentCityId: "mihon" }, episode("smp_mihon_finale")))
       .toEqual(placePicture("sample_trip", "smp_img_mihon_clock_tower", "見本の時計塔"));
+  });
+
+  it("finds the place photo's recap copy that content:build made, for every episode", () => {
+    const missing = episodes.flatMap((item) => {
+      const picture = recapPicture({ album: [], currentCityId: item.cityId }, item);
+      return picture && !existsSync(path.join("src/content/generated/public", picture.path)) ? [picture.path] : [];
+    });
+    expect(missing).toEqual([]);
+    expect(episodes.filter((item) => recapPicture({ album: [], currentCityId: item.cityId }, item) === null).map((item) => item.id)).toEqual([]);
   });
 
   it("shows no picture when the place has only a placeholder photo", () => {
