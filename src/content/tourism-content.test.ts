@@ -101,15 +101,15 @@ describe("tourism content contract", () => {
     await changeEntry("assets", assetId, (asset) => {
       asset.licenseName = "";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/"licenseName"[\s\S]*Too small: expected string to have >=1 characters/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/licenseName[\s\S]*Too small: expected string to have >=1 characters/);
     await changeEntry("assets", assetId, (asset) => {
       asset.sourceUrl = "not-a-source";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/"sourceUrl"[\s\S]*Invalid URL/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/sourceUrl[\s\S]*Invalid URL/);
     await changeEntry("assets", assetId, (asset) => {
       asset.checkedAt = "unknown";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/"checkedAt"[\s\S]*Invalid ISO date/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/checkedAt[\s\S]*Invalid ISO date/);
   });
 
   it("rejects image dimensions that disagree with the registered file", async () => {
@@ -148,7 +148,7 @@ describe("tourism content contract", () => {
     await changeEntry("clues", clueIds[0], (clue) => {
       clue.region!.width = 0;
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/"width"[\s\S]*Too small: expected number to be >0/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/width[\s\S]*Too small: expected number to be >0/);
   });
 
   it("keeps nonvisual research cards separate from image hotspots", async () => {
@@ -235,11 +235,11 @@ describe("tourism content contract", () => {
     await changeEntry("clues", clueIds[0], (clue) => {
       (clue.sources[0] as { claimType: string }).claimType = "maybe_true";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/"claimType"[\s\S]*Invalid option/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/claimType[\s\S]*Invalid option/);
     await changeEntry("clues", clueIds[0], (clue) => {
       clue.sources = [];
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/"sources"[\s\S]*Too small: expected array to have >=1 items/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/sources[\s\S]*Too small: expected array to have >=1 items/);
   });
 
   it("requires guide variables needed for safe snapshot restoration", async () => {

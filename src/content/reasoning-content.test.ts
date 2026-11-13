@@ -139,7 +139,7 @@ describe("special battle content contract", () => {
           ...battle,
           reasoning: { ...reasoning, correctClueIds: [] },
         }),
-      ).toThrow(/"correctClueIds"[\s\S]*Too small: expected array to have exactly/);
+      ).toThrow(/correctClueIds[\s\S]*Too small: expected array to have exactly/);
       expect(() =>
         battleSchema.parse({
           ...battle,
@@ -178,7 +178,7 @@ describe("special battle content contract", () => {
         ...b,
         reasoning: { ...b.reasoning, roundIndex: 3 },
       }),
-    ).toThrow(/"roundIndex"[\s\S]*Too big: expected number to be <=2/);
+    ).toThrow(/roundIndex[\s\S]*Too big: expected number to be <=2/);
   });
 
   it("rejects missing case evidence and evidence from a different landmark", async () => {

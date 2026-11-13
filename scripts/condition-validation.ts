@@ -195,7 +195,8 @@ function ownLandmarkWarnings(content: ConditionContent, rules: readonly EntryRul
     const where = typeof rule.priority === "number" ? `before the main part of ${encounter.landmarkId}'s visit` : `while observing ${encounter.landmarkId}`;
     return own.length ? [{ kind: "never-offered", message: `Encounter never offered: ${encounter.id} is looked up only ${where}, ` +
       `but its entry rule's when needs ${own.join(" and ")} of that same landmark, which is played only after the observation ` +
-      `(read another place's progress, or wait for the later moments of stage 3)` }] : [];
+      `(read another place's progress, or look it up later: after the visit's main part with a positive # priority:, ` +
+      `or at a later moment such as a trip (# at: trip) or the finale's after battle)` }] : [];
   });
 }
 

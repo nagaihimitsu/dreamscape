@@ -163,8 +163,8 @@ describe("loadContentSources with journey layers", () => {
     // The second (journey layer) entry becomes invalid.
     sources.catalogs["battles/catalog.json"]!.value = { schemaVersion: 1, battles: [{ id: "core_battle" }, { id: "Bad ID" }] };
     expect(() => parseCatalog(sources, schema, "battles/catalog.json"))
-      .toThrow(`Invalid content in ${path.join(root, "content/journeys/golden_triangle/battles/catalog.json")}: `);
-    // Positions are those inside each file; every file with a bad entry is named on its own line.
+      .toThrow("Invalid content in content/journeys/golden_triangle/battles/catalog.json:\n  - battles[0].id: ");
+    // Positions are those inside each file; every file with a bad entry is named on its own line, each problem on a short line.
     sources.catalogs["battles/catalog.json"]!.value = { schemaVersion: 1, battles: [{ id: "Core" }, { id: "Bad ID" }] };
     const message = (() => {
       try {
@@ -173,14 +173,12 @@ describe("loadContentSources with journey layers", () => {
         return (error as Error).message;
       }
     })()!;
-    const lines = message.split("\n").filter((line) => line.startsWith("Invalid content in "));
-    expect(lines).toEqual([
-      `Invalid content in ${path.join(root, "content/battles/catalog.json")}: [`,
-      `Invalid content in ${path.join(root, "content/journeys/golden_triangle/battles/catalog.json")}: [`,
+    expect(message.split("\n").map((line) => line.replace(/^( {2}- [^:]+: ).*$/u, "$1…"))).toEqual([
+      "Invalid content in content/battles/catalog.json:",
+      "  - battles[0].id: …",
+      "Invalid content in content/journeys/golden_triangle/battles/catalog.json:",
+      "  - battles[0].id: …",
     ]);
-    const [core, journey] = message.split("\nInvalid content in ").map((part) => JSON.parse(part.slice(part.indexOf(": [") + 2)));
-    expect(core.map((issue: { path: unknown }) => issue.path)).toEqual([["battles", 0, "id"]]);
-    expect(journey.map((issue: { path: unknown }) => issue.path)).toEqual([["battles", 0, "id"]]);
     // A core-layer kind no layer provides is missing; a journey kind is empty (see absentCatalog).
     expect(() => parseCatalog(sources, schema, "romance/balance.json")).toThrow("Missing content file: romance/balance.json (no content layer provides it)");
     expect(sources.catalogs["romance/balance.json"]).toBeUndefined();
@@ -189,7 +187,7 @@ describe("loadContentSources with journey layers", () => {
     });
     expect(sources.catalogs["learning/details.json"]!.value).toEqual({ schemaVersion: 1, questions: {} });
     expect(() => parseCatalog(sources, z.object({ assets: z.array(z.unknown()).min(1) }).strip(), "tourism/catalog.json"))
-      .toThrow("Invalid content in tourism/catalog.json (no content layer provides it): ");
+      .toThrow("Invalid content in tourism/catalog.json (no content layer provides it):\n  - assets: ");
     expect(displayPath(root, requireCity(sources, "delhi").settingsFile)).toBe("content/journeys/golden_triangle/travel/delhi-settings.json");
     expect(() => requireCity(sources, "rome")).toThrow("Missing content file: cities/rome.json (no content layer provides it)");
     expect(storyFile(sources, "milano/cafe_03")).toBe(path.join(root, "content/journeys/milano/stories/milano/cafe_03.ink"));

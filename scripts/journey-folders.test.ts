@@ -215,7 +215,7 @@ describe("journey folders", () => {
       delete (details.questions.gt_agra_fort_jahanara_care as { storyId?: string }).storyId;
       writeFileSync(detailsFile, JSON.stringify(details));
       const error = await buildContent(root, false).then(() => undefined, (caught: Error) => caught);
-      expect(error?.message.startsWith(`Invalid content in ${detailsFile}: `)).toBe(true);
+      expect(error?.message.startsWith(`Invalid content in ${path.relative(root, detailsFile)}:\n  - questions.gt_agra_fort_jahanara_care.storyId: `)).toBe(true);
       expect((error?.cause as { issues: { path: PropertyKey[] }[] }).issues.map((issue) => issue.path))
         .toEqual([["questions", "gt_agra_fort_jahanara_care", "storyId"]]);
     } finally {

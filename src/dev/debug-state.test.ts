@@ -39,6 +39,17 @@ describe("debug scene preparation", () => {
       expect(validateGameState(game)).toEqual(game);
     }
   });
+  it("opens her answer after Debug's records of a deferral (2026-11-13): Debug's relationship values decide it", () => {
+    for (const [cityId, id] of [["milano", "milano_answer_01"], ["jaipur", "gt_jaipur_date_answer"]] as const) {
+      expect(debugTargets(cityId).date.map((target) => target.id)).toContain(id);
+      for (const [values, outcome] of [[{ affection: 0, trust: 0, spark: 0 }, "rejected"], [{ affection: 8, trust: 4, spark: 4 }, "accepted"]] as const) {
+        const game = createDebugState({ ...base, cityId, scene: "date", id, ...values });
+        expect(validateGameState(game)).toEqual(game);
+        expect(game).toMatchObject({ confessionStatus: "deferred", ...values });
+        expect(game.activeDate).toMatchObject({ dateId: id, pendingOutcome: outcome, resolutionMode: "fixed" });
+      }
+    }
+  }, 120_000);
   it("does not open a locked scene and keeps the AP limit", () => {
     expect(() => createDebugState({ ...base, scene: "date", id: "milano_brera_date_01", progress: "initial" })).toThrow("この進行状態ではデートを始められません。APや解放条件を確認してください。");
     // Debug names the unmet part of the date's condition; AP alone gives no condition text.
@@ -90,6 +101,33 @@ describe("Debug launch URLs against the content", () => {
     expect(launch("?debug&city=milano&scene=date&target=milano_brera_date_01&ap=3&roll=negative")).toEqual({ kind: "scene",
       settings: { ...defaultDebugSettings("milano"), scene: "date", id: "milano_brera_date_01", ap: 3, roll: "negative" } });
     expect(launch("?debug&city=samarkand&scene=map")).toEqual({ kind: "map", cityId: "samarkand" });
+  });
+
+  it("starts a date without a held item (without=), for the branch of a player who never got it", () => {
+    const akbar = "?debug&city=agra&scene=date&target=gt_agra_date_akbar_tomb";
+    const held = launch(akbar);
+    const left = launch(`${akbar}&without=gt_delhi_rain_attar`);
+    if (held.kind !== "scene" || left.kind !== "scene") throw new Error("not a scene");
+    expect(left.settings).toEqual({ ...held.settings, without: ["gt_delhi_rain_attar"] });
+    expect(createDebugState(held.settings).inventory.gt_delhi_rain_attar).toBe("held");
+    const state = createDebugState(left.settings);
+    expect(state.inventory).not.toHaveProperty("gt_delhi_rain_attar");
+    expect(state.activeDate?.dateId).toBe("gt_agra_date_akbar_tomb");
+    expect(validateGameState(state)).toBeTruthy();
+    expect(() => createDebugState({ ...held.settings, without: ["no_such_item"] }))
+      .toThrow("without の「no_such_item」は、Debugのこの場面の状態で持っている品物ではありません。");
+  });
+
+  it("starts a date before an episode its story asks about (before=), from the city's start", () => {
+    const lodhi = launch("?debug&city=delhi&scene=date&target=gt_delhi_date_lodhi_garden&before=gt_delhi_main_humayun_tomb");
+    if (lodhi.kind !== "scene") throw new Error("not a scene");
+    const state = createDebugState(lodhi.settings);
+    expect(state.activeDate?.dateId).toBe("gt_delhi_date_lodhi_garden");
+    expect(state.completedEpisodeIds).not.toContain("gt_delhi_main_humayun_tomb");
+    expect(state.completedEpisodeIds.length).toBeGreaterThan(0);
+    expect(validateGameState(state)).toBeTruthy();
+    expect(() => createDebugState({ ...lodhi.settings, before: "gt_agra_main_agra_fort" }))
+      .toThrow("before の「gt_agra_main_agra_fort」は、デリーのフィナーレでないエピソードではありません。");
   });
 
   it.each([

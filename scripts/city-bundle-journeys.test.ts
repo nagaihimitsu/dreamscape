@@ -29,7 +29,7 @@ describe("city editing bundle: new cities and journey folders", () => {
     expect(compactTemplate.travel.routes).toEqual([]);
     expect(compactTemplate.travel.routeSources).toEqual({});
     expect(compactTemplate.travel.samePlaceRoute).toBeUndefined();
-    await expect(applyCityBundle(root, template, true)).rejects.toThrow(/"countryCode"[\s\S]*Too small: expected string to have exactly 2 characters/);
+    await expect(applyCityBundle(root, template, true)).rejects.toThrow(/countryCode[\s\S]*Too small: expected string to have exactly 2 characters/);
     expect(fingerprint(root)).toBe(before);
     expect(newFiles.every((file) => !existsSync(path.join(root, file)))).toBe(true);
 

@@ -6,7 +6,8 @@ import { defineMiniGame } from "../contract";
  * night is dim; a small lamp brings out the fine lines where it is held. Somewhere in the pattern there is writing that
  * pretends to be pattern (the tag's `target`: the thumb's base, the peacock feather's base, the central vine). The player
  * drags the lamp over her palm and taps where the writing is (`found`), or taps a place where there is none
- * (`wrong_spot`), or presses 「明日にする」 or lets the night run out (`later`).
+ * (`wrong_spot`), or presses 「明日にする」 (`later`). No time limit (2026-11-13): only those three end the look, so the
+ * game does not run on time (`timed: false`: a hidden page needs no 「続ける」).
  * The writing (`text`, docs/13 2.10): `player` the player's name as typed (any script, drawn as text, never as HTML);
  * `illegible` a deliberately unreadable mark under a top line, where the story says Hindi letters (no letters are made up);
  * `farhana` the Latin letters FARHANA over a row of small unreadable marks (the story's phone number, never a number).
@@ -19,11 +20,11 @@ export const mehndiHiddenName = defineMiniGame({
   id: "mehndi_hidden_name",
   engine: "search",
   titleJa: "手のひらの模様",
-  howToJa: "暗い中で灯りを動かし、手のひらの模様にまぎれた文字を探して押す。「明日にする」でやめる（約30秒）",
+  howToJa: "暗い中で灯りを動かし、手のひらの模様にまぎれた文字を探して押す。「明日にする」でやめる（時間の制限は無い）",
   outcomes: [
     { id: "found", labelJa: "見つけた", noteJa: "隠した文字の所を押した" },
     { id: "wrong_spot", labelJa: "違う所を指した", noteJa: "文字の無い模様を押した" },
-    { id: "later", labelJa: "明日にする", noteJa: "「明日にする」を押したか、30秒たった" },
+    { id: "later", labelJa: "明日にする", noteJa: "「明日にする」を押した" },
   ],
   defaultAuto: "found",
   params: () => z.object({
@@ -35,7 +36,7 @@ export const mehndiHiddenName = defineMiniGame({
   examples: [{ target: "thumb", text: "player" }, { target: "peacock", text: "illegible" }, { target: "vine", text: "farhana" }],
   startJa: "手のひらを見る",
   hintJa: "灯りを動かして、模様にまぎれた文字を探す",
-  timed: true,
+  timed: false,
   keysJa: "Tab で模様を選び（灯りが来る）、Enter・Space で指す",
   sounds: ["clue_new"],
   quietScene: false,

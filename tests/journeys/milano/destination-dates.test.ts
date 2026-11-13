@@ -1,11 +1,15 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { allRewardRules, dates, episodes as allEpisodes, progression } from "../../../src/content";
 import { conditionLeaves } from "../../../src/content/condition-schemas";
-import { playBattleToResult, wrongAnswer } from "../../../src/dev/scenario-builders";
+import { nextMorning, playBattleToResult, withAp, withRelationship, wrongAnswer } from "../../../src/dev/scenario-builders";
 import {
-  advanceDate, chooseDate, createGame, finishDate, getDateAvailability,
+  advanceDate, chooseDate, createGame, evaluateProgression, finishDate, getDateAvailability,
   isEventVisible, startDate, taggedDateScene, validateGameState, type GameState,
 } from "../../../src/domain/game";
+import { beginTravelEvent, getTravelEventAvailability, isCompletedTravelEvent } from "../../../src/domain/travel-game";
+import { closeRomanceEnding } from "../../../src/domain/occasion";
+import { applyPlayerAction } from "../../../src/domain/player-action";
+import { screenFor } from "../../../src/domain/screen";
 import { enterFreeTime, getNextStoryBattle, startEpisode } from "../../../src/domain/chapter";
 import { leaveBattle, startBattle } from "../../../src/domain/battle";
 import { skipTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
@@ -56,6 +60,8 @@ function clearEpisode(initial: GameState, episodeId: string): GameState {
   return validateGameState(JSON.parse(JSON.stringify(state)));
 }
 
+/** Milan's reassurance is offered at night (2026-11-13: her answer follows on a later day). */
+const atNight = (state: GameState): GameState => validateGameState({ ...state, travel: { ...state.travel, minute: 19 * 60 } });
 function playDate(initial: GameState, dateId: string, selections: number[], transcript: string[] = [], resolutions: NonNullable<GameState["activeDate"]>["resolvedChoices"] = []): GameState {
   let state = startDate(initial, dateId, stableRolls());
   expect(state.activeDate?.dateId).toBe(dateId);
@@ -267,6 +273,117 @@ describe("real-place optional dates", () => {
     expect(state.endingReached).toBe(true);
     expect(state.confessionStatus).toBe("accepted");
   }, 60000);
+});
+
+describe("Milan's confession, played once like every date (2026-11-13)", () => {
+  const confession = "milano_confession_01";
+  const closed = { available: false, reason: "このひとときは、もう思い出になりました。" };
+  /** After the Duomo and three dates, at stage 2 or more (the confession's minRomanceStage); made once. */
+  let threeDates: GameState | undefined;
+  const afterThreeDates = () => threeDates ??= (() => {
+    let state = clearEpisode(createGame(), "milano_duomo_episode");
+    for (const id of ["milano_cafe_01", "milano_walk_01", "milano_night_01"]) state = playDate(withAp(state, 12), id, [0, 0]);
+    state = evaluateProgression(withRelationship(state, { affection: 2, trust: 1, spark: 0 }));
+    expect(state.romanceStage).toBeGreaterThanOrEqual(2);
+    return state;
+  })();
+
+  it.each([
+    ["accepted", { affection: 8, trust: 4, spark: 4 }],
+    ["deferred", { affection: 4, trust: 2, spark: 0 }],
+    ["rejected", { affection: 0, trust: 0, spark: 0 }],
+  ] as const)("after %s, the confession date is not offered again", (outcome, values) => {
+    const before = evaluateProgression(withRelationship(afterThreeDates(), values));
+    expect(getDateAvailability(before, confession)).toEqual({ available: true, reason: "" });
+    expect(isCompletedTravelEvent(before, confession)).toBe(false);
+    let state = playDate(before, confession, [0]);
+    expect(state.confessionStatus).toBe(outcome);
+    // After an acceptance, the ending is the reason it gives first.
+    expect(getDateAvailability(state, confession)).toEqual(outcome === "accepted"
+      ? { available: false, reason: "ふたりの物語は、交際エンディングを迎えました。" } : closed);
+    expect(isCompletedTravelEvent(state, confession)).toBe(true);
+    expect(startDate(state, confession)).toBe(state);
+    // Nor after what would let a repeatable one be played again: the reassurance after a deferral, a new date after a rejection.
+    if (outcome === "accepted") return;
+    state = outcome === "deferred" ? playDate(atNight(state), "milano_reassurance_01", [0])
+      : playDate(withAp(state, 12), "milano_san_satiro_date_01", [0, 0]);
+    expect(getDateAvailability(state, confession)).toEqual(closed);
+  }, 60000);
+
+  /**
+   * Her answer (2026-11-13): Milan is a one-city journey, so after the deferral no later confession can follow; she gives
+   * her answer herself at the Darsena, by day after the reassurance's night (the day she said 「今日は返事をしない」 never
+   * has it). The answer is the relationship state's when it starts (deferralAnswer): yes, or a final "not now".
+   */
+  describe("her answer after the deferral (2026-11-13)", () => {
+    const answer = "milano_answer_01";
+    const reassurance = "milano_reassurance_01";
+    /** Deferred at the confession after three dates; made once. */
+    let deferral: GameState | undefined;
+    const deferred = () => deferral ??= (() => {
+      const transcript: string[] = [];
+      const state = playDate(evaluateProgression(withRelationship(afterThreeDates(), { affection: 4, trust: 2, spark: 0 })), confession, [0], transcript);
+      expect(transcript).toContain("うれしい。だからこそ、その勢いで「うん」って言うのを待って。わたしはもう少し、自分の言葉で考えたい");
+      expect(state.confessionStatus).toBe("deferred");
+      return state;
+    })();
+    /** The reassurance on a night after the deferral, then a night at the hotel; the next morning with the given values. */
+    const morningAfterReassurance = (values: Pick<GameState, "affection" | "trust" | "spark">): GameState =>
+      evaluateProgression(withRelationship(nextMorning(playDate(atNight(deferred()), reassurance, [1])), values));
+
+    it("waits for the reassurance's night and a later day", () => {
+      expect(getDateAvailability(deferred(), answer).available).toBe(false);
+      expect(getDateAvailability(atNight(deferred()), answer).available).toBe(false);
+      const reassured = playDate(atNight(deferred()), reassurance, [1]);
+      // Not on the night she said 「今日は返事をしない」.
+      expect(getDateAvailability(reassured, answer).available).toBe(false);
+      const morning = nextMorning(reassured);
+      expect(morning.travel.minute).toBe(9 * 60);
+      expect(isEventVisible(morning, answer)).toBe(true);
+      expect(getDateAvailability(morning, answer)).toEqual({ available: true, reason: "" });
+    }, 60000);
+
+    it("says not now when the confession's condition is not met: a final rejection", () => {
+      const morning = morningAfterReassurance({ affection: 4, trust: 2, spark: 0 });
+      expect(startDate(morning, answer).activeDate).toMatchObject({ pendingOutcome: "rejected", resolutionMode: "fixed", randomPlan: [] });
+      const transcript: string[] = [];
+      const state = playDate(morning, answer, [2], transcript);
+      expect(transcript).toContain("ガッレリアで、今日は返事をしないって言った。だから、今日はする。わたしから");
+      expect(transcript).toContain("待っててくれたのに、ごめんなさい。これが、わたしの答え。遠回しにはしない");
+      expect(transcript).toContain("うん。それは、橋の上で答えたときから変わってない。普通に会いたい");
+      expect(transcript).not.toContain("付き合いたい。恋人として、帰ってからも会いたい");
+      expect(state).toMatchObject({ confessionStatus: "rejected", endingReached: false });
+      expect(state.memories).not.toContain("milano_answer_memory");
+      expect(getDateAvailability(state, answer)).toEqual(closed);
+      expect(isEventVisible(atNight(state), reassurance)).toBe(false);
+    }, 60000);
+
+    it("says yes when it is met: the couple ending, its memory and the 「交際開始」 screen, from the map", () => {
+      const morning = morningAfterReassurance({ affection: 8, trust: 4, spark: 4 });
+      const mode = ["walk", "tram", "taxi"].find((item) => getTravelEventAvailability(morning, answer, item).available)!;
+      let state = applyPlayerAction(morning, (current) => beginTravelEvent(current, answer, mode, current.revision, () => 0), () => 0);
+      expect(state.occasion).toMatchObject({ kind: "date", parts: ["date", "ending"] });
+      const transcript: string[] = [];
+      for (let step = 0; state.activeDate; step++) {
+        expect(step).toBeLessThan(200);
+        state = validateGameState(JSON.parse(JSON.stringify(state)));
+        const active = state.activeDate!;
+        transcript.push(active.frame.text);
+        const change = active.frame.ended ? (current: GameState) => finishDate(current, current.revision)
+          : active.frame.choices.length ? (current: GameState) => chooseDate(current, active.frame.choices[0].index, current.revision)
+            : (current: GameState) => advanceDate(current, current.revision);
+        state = applyPlayerAction(state, change, () => 0);
+      }
+      expect(transcript).toContain("付き合いたい。恋人として、帰ってからも会いたい");
+      expect(state).toMatchObject({ confessionStatus: "accepted", endingReached: true });
+      expect(state.memories).toContain("milano_answer_memory");
+      expect(state.occasion).toMatchObject({ at: "main:ending", romanceEnding: true });
+      expect(screenFor(validateGameState(JSON.parse(JSON.stringify(state))))).toBe("romance_ending");
+      const free = validateGameState(JSON.parse(JSON.stringify(closeRomanceEnding(state, state.revision, () => 0))));
+      expect(free.occasion).toBeNull();
+      expect(getDateAvailability(free, answer)).toEqual({ available: false, reason: "ふたりの物語は、交際エンディングを迎えました。" });
+    }, 60000);
+  });
 });
 
 /** Reproducible positive outcomes with varied delta tickets for these progression tests. */

@@ -1,5 +1,6 @@
 import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, onTestFinished } from "vitest";
+import { installRepeatableDate } from "../../tests/fixtures/repeatable-date";
 import { dates, progression } from "../content";
 import { beginStory, continueStory } from "../story/runtime";
 import {
@@ -182,13 +183,18 @@ describe("confession and relationship ending", () => {
     expect(startDate(started, confession)).toBe(started);
   });
   it("lets a deferred relationship grow and earn the ending exactly once", () => {
+    // A second confession after a deferral, on Milan's confession made repeatable for the test (the journey's own is played once).
+    onTestFinished(installRepeatableDate(confession));
     let state = toInvitation();
     expect(canConfessSuccessfully(state)).toBe(false);
     const ap = state.ap;
     state = play(state, confession, [0]);
     expect(state.confessionStatus).toBe("deferred");
     expect(state.endingReached).toBe(false);
-    expect(state.unlockedEventIds).toContain(reassurance);
+    // Milan's reassurance is offered at night (2026-11-13: her answer follows on a later day).
+    expect(getDateAvailability(state, reassurance).available).toBe(false);
+    state = validateGameState({ ...state, travel: { ...state.travel, minute: 19 * 60 } });
+    expect(getDateAvailability(state, reassurance).available).toBe(true);
     const before = state.affection;
     const reassuranceResolutions: NonNullable<GameState["activeDate"]>["resolvedChoices"] = [];
     state = play(state, reassurance, [1], [], reassuranceResolutions);
@@ -209,6 +215,8 @@ describe("confession and relationship ending", () => {
     expect(validateGameState(JSON.parse(JSON.stringify(state)))).toEqual(state);
   });
   it("requires another shared date after rejection and can eventually accept without the invitation", () => {
+    // The wait after a rejection, on Milan's confession made repeatable for the test (the journey's own is played once).
+    onTestFinished(installRepeatableDate(confession));
     let state = { ...toWalk(), trust: 0 };
     expect(canConfessSuccessfully(state)).toBe(false);
     const transcript: string[] = [];

@@ -67,7 +67,7 @@ describe("validateContent on sources in memory", () => {
 
   it("names the layer file of an invalid catalog entry", () => {
     expect(() => validateContent(load(badProgression(files()))))
-      .toThrow(`Invalid content in ${path.join(root, journeyFolder("trip_a"), "progression/journey.json")}: `);
+      .toThrow(`Invalid content in ${journeyFolder("trip_a")}/progression/journey.json:\n  - `);
   });
 
   it("rejects a reference to another journey's content, naming both files", () => {

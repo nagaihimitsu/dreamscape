@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, onTestFinished } from "vitest";
+import { installRepeatableDate } from "../../tests/fixtures/repeatable-date";
 import { createDebugState } from "../dev/debug-state";
 import {
   advanceDate, canConfessSuccessfully, chooseDate, completedDateCount, finishDate,
@@ -122,6 +123,8 @@ describe("relationship recovery when free time is exhausted", () => {
   });
 
   it("requires completing a new conversation after rejection before re-confessing", () => {
+    // The wait after a rejection, on Milan's confession made repeatable for the test (the journey's own is played once).
+    onTestFinished(installRepeatableDate(confessionId));
     let state: GameState = { ...stranded(), romanceStage: 2, affection: 0, trust: 0, spark: 0 };
     state = complete(state, confessionId);
     expect(state.confessionStatus).toBe("rejected");

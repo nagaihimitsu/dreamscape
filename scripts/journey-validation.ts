@@ -4,11 +4,7 @@ import type {
   QuizDefinition,
 } from "../src/content/schemas";
 import type { LandmarkDefinition } from "../src/content/tourism-schemas";
-
-function unique(values: string[], label: string) {
-  if (new Set(values).size !== values.length)
-    throw new Error(`Duplicate ${label}`);
-}
+import { unique } from "./content-validation-utils";
 
 function validateRewardAmount(rule: RewardRule, quiz: QuizDefinition | undefined, apCap: number) {
   if (rule.ap > apCap)

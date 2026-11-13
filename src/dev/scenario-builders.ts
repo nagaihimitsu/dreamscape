@@ -12,7 +12,7 @@
  * relationship.
  * Never imported by production code (scripts/dist-guard.ts checks the build).
  */
-import { balance, battles, dates, episodes, getCities, getCityContent, getCityTours, getTour, landmarks, sceneConditions, type QuizQuestion, type Tour } from "../content";
+import { balance, battles, dates, episodes, getCities, getCityContent, getCityTours, getTour, landmarks, progression, sceneConditions, type DateDefinition, type QuizQuestion, type Tour } from "../content";
 import { isTourOnlyPlace } from "../content/travel-schemas";
 import { bookTour as bookTourOffer, continueTour, getTourOffers } from "../domain/tour";
 import { encounters } from "../content/encounters";
@@ -29,7 +29,7 @@ import { sceneById, sceneOption } from "../domain/scene-effects";
 import { isSceneOpen } from "../domain/game-state-schema";
 import { hasObservation, landmarkParts } from "../content/tourism-schemas";
 import { advanceCityEpilogue, chooseCityEpilogue, completeArrivalLogo, epilogueChoiceDisplay, isAuthoredEpilogueCity } from "../domain/epilogue";
-import { createGame, startDate, validateGameState, type GameState } from "../domain/game";
+import { completedDateCount, createGame, startDate, validateGameState, type GameState } from "../domain/game";
 import { advanceTourismGuide, beginLandmarkGuide, chooseTourismGuide, getTourismAvailability, guideChoiceDisplay, openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "../domain/tourism";
 
 /** The first shown, choosable choice of the open guide (stage 3a: a guide may have choices), if any. */
@@ -60,7 +60,7 @@ import { getUsableRoutes } from "../domain/transport";
 import { otherCityItemsMissing, unmetConditionLabels } from "./condition-explain";
 import type { Condition } from "../content/condition-schemas";
 import { meets } from "../domain/conditions";
-import { NIGHT_START } from "../domain/travel";
+import { DAY_START, getTimePeriod, NIGHT_START } from "../domain/travel";
 
 /** The option chosen for a quiz question (its round index counts from 0). */
 export type AnswerPicker = (question: QuizQuestion, roundIndex: number) => string;
@@ -397,6 +397,11 @@ function restAtHotel(state: GameState, options: PlayOptions = {}): GameState {
   return act(state, (current) => sleepAtHotel(current, sleep.route.mode, current.revision, sleep.route.viaPlaceId ?? null, () => rollTickets.positive), "休む", options);
 }
 
+/** Rest at the hotel like a player and play the hotel's scenes with their first choices: the next morning (9:00). */
+export function nextMorning(state: GameState): GameState {
+  return validateGameState(settleScenes(restAtHotel(state), 0));
+}
+
 /**
  * Play a running tour's current step like a player: an event step's visit (the guide, read or skipped by `options.guide`, the
  * observation's 「進む」, the scenes with their first choices, the battle to its result (`options.onResult` there) and 「ツアーを続ける」),
@@ -705,8 +710,9 @@ export function isHotelInsert(sceneId: string): boolean {
 
 /**
  * Debug's records for a condition a scene needs (its `when:`, or a `cond("…")` its story reads), set directly as Debug sets
- * the AP: a date played, a flag, a scene seen or completed, the night (the clock moved on to 18:00). Any other leaf, and a
- * `not`, is left as it is (the caller names what stays unmet). `any` and `atLeast` take their children in order.
+ * the AP: a date played, a flag, a scene seen or completed, the night (the clock moved on to 18:00), the day (the clock set
+ * to the morning's 9:00, when it is not day). Any other leaf, and a `not`, is left as it is (the caller names what stays
+ * unmet). `any` and `atLeast` take their children in order.
  */
 function withCondition(state: GameState, condition: Condition): GameState {
   if ("all" in condition) return condition.all.reduce(withCondition, state);
@@ -734,7 +740,30 @@ function withCondition(state: GameState, condition: Condition): GameState {
     completedEncounterIds: add(state.completedEncounterIds, condition.encounterCompleted) };
   if ("time" in condition && condition.time === "night")
     return { ...state, travel: { ...state.travel, minute: Math.max(state.travel.minute, NIGHT_START) } };
+  if ("time" in condition && condition.time === "day" && getTimePeriod(state.travel.minute) !== "day")
+    return { ...state, travel: { ...state.travel, minute: DAY_START } };
   return state;
+}
+
+/**
+ * Debug's records for a date that follows a deferral (needsDeferred: her answer, a reassurance), set directly as Debug sets
+ * the AP: the city's confession played and deferred, at the stage it needs, after the ordinary dates a confession counts (the
+ * city's first ones recorded as played, as many as are missing), so Debug's relationship values alone decide her answer
+ * (deferralAnswer). Then the parts of the date's own `when` Debug can set (withCondition: the reassurance played, the day).
+ */
+function withDeferral(state: GameState, date: DateDefinition): GameState {
+  if (state.endingReached) throw new Error("交際エンディングの後は、保留の後の場面を開けません。");
+  const own = dates.filter((item) => item.chapterId === state.currentCityId);
+  const confession = own.find((item) => item.kind === "confession");
+  if (!confession) throw new Error("この都市には告白のデートがないため、保留の後の場面を開けません。");
+  const missing = Math.max(0, progression.confession.minCompletedDates - completedDateCount(state));
+  const ordinary = own.filter((item) => item.kind === "normal" && !state.playedDateIds.includes(item.id)).slice(0, missing).map((item) => item.id);
+  const deferred: GameState = state.confessionStatus === "deferred" ? state : {
+    ...state, confessionStatus: "deferred", lastRejectedDateCount: null, recoveryAfterRejection: false,
+    romanceStage: Math.max(state.romanceStage, confession.minRomanceStage) as GameState["romanceStage"],
+    playedDateIds: [...new Set([...state.playedDateIds, ...ordinary, confession.id])],
+  };
+  return date.when ? withCondition(deferred, date.when) : deferred;
 }
 
 /**
@@ -767,9 +796,14 @@ export function startHotelInsertScene(state: GameState, sceneId: string, ticket:
   return validateGameState(current);
 }
 
-/** Start a date at its place with a saved reaction ticket; its AP is spent as on the map. */
+/**
+ * Start a date at its place with a saved reaction ticket; its AP is spent as on the map. A date that follows a deferral (her
+ * answer) starts after Debug's records of one (withDeferral): Debug's relationship values decide her answer.
+ */
 export function startDateScene(state: GameState, dateId: string, ticket: number): GameState {
-  const placed = atPlace(state, scenePlaceId(state.currentCityId, dateId, undefined));
+  const definition = dates.find((item) => item.id === dateId);
+  const ready = definition?.needsDeferred ? withDeferral(state, definition) : state;
+  const placed = atPlace(ready, scenePlaceId(state.currentCityId, dateId, undefined));
   const next = startDate(placed, dateId, () => ticket);
   if (!next.activeDate) {
     // Debug names the unmet parts of the date's when, and an until that has been reached.

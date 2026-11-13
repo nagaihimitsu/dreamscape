@@ -1,4 +1,5 @@
 import path from "node:path";
+import { codeError, errorText } from "./cli-error";
 import { SAMPLE_JOURNEY_DIRECTORY } from "./content-layout";
 import { buildContent } from "./content-pipeline";
 import { CONTENT_WARNING_LABELS, formatJourneyContents, type ContentWarningKind } from "./content-report";
@@ -59,7 +60,8 @@ try {
   else if (unusedWords) console.log(`${unusedWords} word meaning(s) that no quiz or encounter text uses; list: npm run content:build -- --verbose`);
 } catch (error) {
   if (!verbose) staleWarnings.forEach((message) => warn(message));
-  console.error(error);
+  // A content problem: its message and causes. The stack trace only with --verbose, or for a mistake in the code.
+  console.error(verbose || codeError(error) ? error : errorText(error));
   process.exitCode = 1;
 } finally {
   console.warn = warn;

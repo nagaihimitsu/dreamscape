@@ -320,6 +320,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 | フィナーレ | 会場の地点 | `-> quiz(1) ->`〜`-> quiz(5) ->` |
 | デート | その地点（宿の屋上の告白などは `places/<頭>_<宿>_dates` も可） | `# scene: date`。選択の回数はデートの `choiceCount`（ふつう2回）。選択肢に `# profile:`・`# memory:`。`romance_result` の `positive`・`negative` で反応を変える。場所のファイルでは `# effect:` を書かない。任意で `# when:`・`# hint:` |
 | 告白のデート | 同上 | `# profile:` も結果の `# effect:` も書かない。ゲームが関係の状態から決めた `confession_result` で返事を分ける |
+| 彼女の返事（`kind: answer`） | 同上 | 保留の後に告白し直せない都市に置く。告白と同じく `# profile:` を書かず、`confession_result`（`accepted` か `rejected`）で分ける。カタログで `needsDeferred: true`、`# when:` で保留の後の一緒の時間（[CONTENT_GUIDE](CONTENT_GUIDE.md)の「彼女の返事」） |
 | 道中交流・会話 | その場所 | `# scene: encounter`・`talk`。`# at:`・`# priority:`（どちらも必須）、任意の `# when:`・`# until:`・`# repeat:`。`encounter` は `# title:` も必須。英語の選択肢には `# translation:`。出典は `scenes/catalog.json` か `# sources: none` |
 | ほかの時点の場面 | その場所 | `# at:` に `date`・`finale`・`epilogue`・`depart`・`arrive`・`trip`・`ticket`・`hotel`・`tour`（[CONTENT_GUIDE の「道中の交流」](CONTENT_GUIDE.md#道中の交流)の表） |
 | エピローグ | 宿（`<頭>_epilogue`） | `# scene: epilogue`。フィナーレの `epilogueStoryId` で指す |

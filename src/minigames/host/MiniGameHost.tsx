@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { playSe, playSound } from "../../audio/sound-effects";
 import { vibrate } from "../../audio/vibration";
 import type { MiniGameCast, MiniGameModule } from "../contract";
+import { availableOutcome } from "../fallback";
 import { miniGameDefinition } from "../registry";
 import { miniGameParams, type MiniGameTag } from "../tag";
 import { createPlayClock, type HostClock } from "./clock";
@@ -47,7 +48,12 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
   const latest = useRef(environment);
   latest.current = environment;
   const still = environment.reduceMotion || prefersLessMotion();
-  const auto = environment.auto ? tag.auto : null;
+  // The outcomes whose choices can be taken now; one that cannot takes its declared fallback (docs/13 4.2), おまかせ's too.
+  const allOutcomes = useMemo(() => definition?.outcomes.map((outcome) => outcome.id) ?? [], [definition]);
+  const availableKey = (environment.available ?? allOutcomes).join(" ");
+  const available = useMemo(() => (availableKey ? availableKey.split(" ") : []), [availableKey]);
+  const taken = useCallback((outcome: string) => (definition && availableOutcome(definition, outcome, available)) ?? outcome, [definition, available]);
+  const auto = environment.auto ? taken(tag.auto) : null;
   // The tag's keys as the game reads them (a saved tag was read with the same reader; a failure shows like a failed load).
   const params = useMemo(() => {
     try {
@@ -111,8 +117,8 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
       return;
     }
     setRun((current) => { current?.clock.stop(); return current; });
-    setResult((current) => current ?? { outcome, ...(detail ? { detail } : {}) });
-  }, [definition, tag.id]);
+    setResult((current) => current ?? { outcome: taken(outcome), ...(detail ? { detail } : {}) });
+  }, [definition, tag.id, taken]);
   const sound = useCallback((id: string) => {
     if (definition?.sounds.includes(id)) playSound(id);
     else if (import.meta.env.DEV) console.warn(`The mini-game ${tag.id} rings ${id}, which its definition's sounds do not list`);
@@ -207,7 +213,7 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
           <p>ミニゲームを読み込めませんでした。</p>
           <div className="minigame-failed-actions">
             {load.status === "failed" && <button type="button" className="secondary" data-testid="minigame-retry" onClick={() => setAttempt((count) => count + 1)}>もう一度</button>}
-            <button type="button" className="primary" data-testid="minigame-fallback" disabled={!armed} onClick={() => choose(tag.auto)}>おまかせで進める</button>
+            <button type="button" className="primary" data-testid="minigame-fallback" disabled={!armed} onClick={() => choose(taken(tag.auto))}>おまかせで進める</button>
           </div>
         </div>
       ) : (
@@ -225,7 +231,8 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
           <p className="fine-print">Debug：結果を選ぶ</p>
           {definition.outcomes.map((outcome) => (
             <button key={outcome.id} type="button" className="secondary" data-testid={`minigame-debug-${outcome.id}`} disabled={!armed || !!run}
-              onClick={() => choose(outcome.id)}>{outcome.labelJa}（{outcome.id}）</button>
+              onClick={() => choose(taken(outcome.id))}>
+              {outcome.labelJa}（{outcome.id}{taken(outcome.id) !== outcome.id ? ` → 今は ${taken(outcome.id)}` : ""}）</button>
           ))}
         </div>
       )}
@@ -241,7 +248,7 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
             <button type="button" className="minigame-quit" data-testid="minigame-quit" data-minigame-quit onClick={quit}>中断する</button>
           </header>
           <div className="minigame-stage">
-            <Play key={run.id} params={params.value} auto={auto} still={still} seed={seed} clock={run.clock} cast={cast}
+            <Play key={run.id} params={params.value} auto={auto} available={available} still={still} seed={seed} clock={run.clock} cast={cast}
               names={environment.names} art={art} sound={sound} vibrate={vibrate} status={setStatus} end={end} />
           </div>
           {result && <p className="minigame-result" data-testid="minigame-result" aria-hidden="true">

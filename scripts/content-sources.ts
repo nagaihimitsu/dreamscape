@@ -2,6 +2,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { journeyCatalogSchema, type JourneyCatalog } from "../src/content/journey-catalog";
 import { localIssuePath, mergeCatalog, sourceFileOf, type CatalogSource, type MergedCatalog } from "./catalog-merge";
+import { schemaIssueLines, schemaIssues, type SchemaIssue } from "./content-validation-utils";
 import {
   absentCatalog,
   CATALOG_RULES,
@@ -496,39 +497,39 @@ export function publicRoots(root: string, layers: readonly ContentLayer[] = cont
  * Issues without a single source file (e.g. a rule over the whole merged
  * list) name every file of the catalog with the merged positions.
  */
-export function parseCatalog<T>(sources: Pick<ContentSources, "catalogs">, schema: { parse(value: unknown): T }, kind: CatalogKind): T {
+export function parseCatalog<T>(sources: Pick<ContentSources, "catalogs" | "root">, schema: { parse(value: unknown): T }, kind: CatalogKind): T {
   const merged = sources.catalogs[kind];
   if (!merged) throw new Error(`Missing content file: ${kind} (no content layer provides it)`);
   try {
     return schema.parse(merged.value);
   } catch (error) {
-    const issues = (error as { issues?: { path?: PropertyKey[] }[] }).issues ?? [];
+    const issues = schemaIssues(error);
     const located = issues.map((issue) => ({ issue, file: sourceFileOf(merged.provenance, issue.path ?? []) }));
     if (located.length && located.every((item) => item.file)) {
-      const byFile = new Map<string, unknown[]>();
+      const byFile = new Map<string, SchemaIssue[]>();
       for (const { issue, file } of located)
         byFile.set(file!, [...(byFile.get(file!) ?? []), { ...issue, path: localIssuePath(merged.provenance, issue.path ?? []) }]);
-      throw new Error([...byFile].map(([file, fileIssues]) => `Invalid content in ${file}: ${JSON.stringify(fileIssues, null, 2)}`).join("\n"),
+      throw new Error([...byFile].map(([file, fileIssues]) => invalidContent(displayPath(sources.root, file), fileIssues, error)).join("\n"),
         { cause: error });
     }
-    const label = merged.provenance.files.join(", ") || `${kind} (no content layer provides it)`;
-    throw new Error(
-      `Invalid content in ${label}: ${error instanceof Error ? error.message : String(error)}`,
-      { cause: error },
-    );
+    const label = merged.provenance.files.map((file) => displayPath(sources.root, file)).join(", ") || `${kind} (no content layer provides it)`;
+    throw new Error(invalidContent(label, issues, error), { cause: error });
   }
 }
 
-/** Parse one loaded file's JSON with its schema; errors name the file. */
+/** Parse one loaded file's JSON with its schema; errors name the file (`file`: as the message shows it, e.g. a displayPath). */
 export function parseSourceFile<T>(schema: { parse(value: unknown): T }, file: string, data: unknown): T {
   try {
     return schema.parse(data);
   } catch (error) {
-    throw new Error(
-      `Invalid content in ${file}: ${error instanceof Error ? error.message : String(error)}`,
-      { cause: error },
-    );
+    throw new Error(invalidContent(file, schemaIssues(error), error), { cause: error });
   }
+}
+
+/** The schema error of a file: a heading, then one short line per problem. An error without problems keeps its own message. */
+function invalidContent(label: string, issues: readonly SchemaIssue[], error: unknown): string {
+  return issues.length ? `Invalid content in ${label}:\n${schemaIssueLines(issues)}`
+    : `Invalid content in ${label}: ${error instanceof Error ? error.message : String(error)}`;
 }
 
 /** The city's files (city plus travel files in the same layer), or a clear error when no layer has them. */

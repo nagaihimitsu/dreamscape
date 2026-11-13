@@ -1,5 +1,6 @@
 import { battles, dates, episodes, getCityContent, getTour, landmarks } from "../content";
 import { landmarkParts } from "../content/tourism-schemas";
+import { decidesConfession } from "../content/schemas";
 import { secureRomanceRoll } from "../random/romance-source";
 import { startVisitBattle } from "./battle";
 import { battlePlayed } from "./conditions";
@@ -52,7 +53,8 @@ const withOccasion = (state: GameState, occasion: Occasion | null): GameState =>
 function occasionOf(state: Readonly<GameState>, eventId: string): Occasion | undefined {
   const base = { eventId, ran: [], at: null, started: [] };
   const date = dates.find((item) => item.id === eventId);
-  if (date) return { ...base, kind: "date", landmarkId: null, parts: date.kind === "confession" ? ["date", "ending"] : ["date"] };
+  // A confession or her answer may begin the relationship: 「交際開始」 follows it when it does (3.9 (c)).
+  if (date) return { ...base, kind: "date", landmarkId: null, parts: decidesConfession(date) ? ["date", "ending"] : ["date"] };
   const landmarkId = visitedLandmarkOfEvent(eventId);
   if (landmarkId) return visitOccasion(state, landmarkId, eventId);
   const battleId = episodes.find((item) => item.id === eventId)?.battleId ?? battles.find((item) => item.id === eventId)?.id;

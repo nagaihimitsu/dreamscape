@@ -150,6 +150,8 @@ function playMilano(allCorrect: boolean): GameState {
   return s;
 }
 
+/** Milan's reassurance is offered at night (2026-11-13: her answer follows on a later day). */
+const atNight = (state: GameState): GameState => validateGameState({ ...state, travel: { ...state.travel, minute: 19 * 60 } });
 function playDate(initial: GameState, id: string, amount = 9999, picks = [0, 0]): GameState {
   let n = 0;
   let s = startDate(initial, id, () => (n++ % 4 === 0 ? 0 : amount));
@@ -175,7 +177,7 @@ describe("full Milan route", () => {
     expect(confessionResult(early)).toBe("deferred");
     const postponed = playDate(early, "milano_confession_01");
     expect(postponed.confessionStatus).toBe("deferred");
-    expect(playDate(postponed, "milano_reassurance_01").endingReached).toBe(false);
+    expect(playDate(atNight(postponed), "milano_reassurance_01").endingReached).toBe(false);
     const rejectedSeed = playDate(s, "milano_san_satiro_date_01", 0, [0, 2]);
     expect(confessionResult(rejectedSeed)).toBe("rejected");
     expect(playDate(rejectedSeed, "milano_confession_01").confessionStatus).toBe("rejected");

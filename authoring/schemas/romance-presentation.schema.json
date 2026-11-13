@@ -63,7 +63,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "pattern": "^assets\\/(?!.*(?:^|\\/)\\.\\.(?:\\/|$))[a-zA-Z0-9_./-]+\\.(?:png|webp|svg)$"
+                "pattern": "^assets\\/(?!.*\\.\\.)[a-zA-Z0-9_./-]+\\.(?:png|webp|svg)$"
               },
               {
                 "type": "null"

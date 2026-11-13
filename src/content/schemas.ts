@@ -13,7 +13,11 @@ const validationContextKey = (context: object) =>
 export const dateSchema = z
   .object({
     id,
-    kind: z.enum(["normal", "special", "confession", "reassurance"]).default("normal"),
+    /**
+     * `answer` (2026-11-13): her answer to a deferred confession, where she speaks first (needsDeferred). Like a
+     * confession, its outcome is fixed when it starts from the relationship state (decidesConfession), but never a deferral.
+     */
+    kind: z.enum(["normal", "special", "confession", "reassurance", "answer"]).default("normal"),
     chapterId: id,
     titleJa: text,
     descriptionJa: text.default("ふたりで旅先を訪ねる。"),
@@ -69,7 +73,17 @@ export const dateSchema = z
   .refine(
     (date) => date.kind === "normal" || !date.destinationId,
     "Destinations are for normal dates",
+  )
+  .refine(
+    (date) => date.kind !== "answer" || date.needsDeferred,
+    "Her answer (kind answer) answers a deferral: it needs needsDeferred: true",
   );
+
+/**
+ * The dates whose outcome is the confession status, fixed when they start from the relationship state (never random, no
+ * `# profile:`, the 「交際開始」 screen after an acceptance): a confession, and her answer to a deferred one (`answer`).
+ */
+export const decidesConfession = (date: { kind: string }): boolean => date.kind === "confession" || date.kind === "answer";
 
 export const dateCatalogSchema = z
   .object({ schemaVersion: version, dates: z.array(dateSchema).min(1) })
@@ -171,7 +185,7 @@ export const presentationSchema = z
           captionJa: text,
           color: z.string().regex(/^#[0-9a-fA-F]{6}$/),
           fallback: z.enum(["canal", "neutral"]).optional(),
-          imagePath: z.string().regex(/^assets\/(?!.*(?:^|\/)\.\.(?:\/|$))[a-zA-Z0-9_./-]+\.(?:png|webp|svg)$/).nullable().optional(),
+          imagePath: z.string().regex(/^assets\/(?!.*\.\.)[a-zA-Z0-9_./-]+\.(?:png|webp|svg)$/).nullable().optional(),
           // Reuse the tourism image ledger, including its source and licence.
           imageAssetId: id.optional(),
           imagePosition: z.object({

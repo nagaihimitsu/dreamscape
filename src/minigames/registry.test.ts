@@ -2,6 +2,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
 import { MINI_GAME_ID, MINI_GAME_OUTCOME_ID } from "./contract";
+import { fallbackProblems } from "./fallback";
 import { MINI_GAME_ENGINES, MINI_GAME_IDS, MINI_GAMES } from "./registry";
 import { MINI_GAME_HOST_KEYS, MINI_GAME_KEY, miniGameParamKeys } from "./tag";
 
@@ -52,6 +53,10 @@ describe.each(MINI_GAME_IDS)("the mini-game %s", (id) => {
     }
     expect(outcomeIds).toContain(definition.defaultAuto);
     for (const text of [definition.titleJa, definition.howToJa, definition.startJa, definition.hintJa]) expect(text).toMatch(japanese);
+  });
+
+  it("declares fallbacks (for an outcome whose choice may be greyed) only to its other outcomes, never in a loop", () => {
+    expect(fallbackProblems(definition)).toEqual([]);
   });
 
   it("reads its own keys with a strict zod object, each described, never a host key, and its examples with it", () => {

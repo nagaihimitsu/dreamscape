@@ -45,7 +45,7 @@ describe("Golden Triangle in-city transport: walk, auto-rickshaw, metro", () => 
 
   it("is reported in the content:build summary with its three ledgers", () => {
     const summary = validateContent(selectJourneys(loadContentSources(process.cwd()), ["golden_triangle"])).transport;
-    expect(summary).toContain("Transport golden_triangle: modes walk, auto_rickshaw, metro; transit ledgers 3: available 334, not_suitable 134, not_applicable 152, inconclusive 0");
+    expect(summary).toContain("Transport golden_triangle: modes walk, auto_rickshaw, metro; transit ledgers 3: available 332, not_suitable 136, not_applicable 152, inconclusive 0");
   }, 120_000);
 
   it("keeps one ready ledger per city with a decision for every direction and mode (journey:transit)", () => {
@@ -62,9 +62,9 @@ describe("Golden Triangle in-city transport: walk, auto-rickshaw, metro", () => 
     }
     expect(byCity.delhi.counts).toEqual({ auto_rickshaw: statuses(108, 2), metro: statuses(44, 66) });
     expect(byCity.agra.counts).toEqual({ auto_rickshaw: statuses(86, 4), metro: statuses(4, 2, 84) });
-    expect(byCity.jaipur.counts).toEqual({ auto_rickshaw: statuses(92, 18), metro: statuses(0, 42, 68) });
+    expect(byCity.jaipur.counts).toEqual({ auto_rickshaw: statuses(90, 20), metro: statuses(0, 42, 68) });
     // Warnings, not errors: directions without a walking route. Every vehicle route has its sources.
-    expect([byCity.delhi.missingWalks.length, byCity.agra.missingWalks.length, byCity.jaipur.missingWalks.length]).toEqual([68, 72, 68]);
+    expect([byCity.delhi.missingWalks.length, byCity.agra.missingWalks.length, byCity.jaipur.missingWalks.length]).toEqual([68, 72, 66]);
     expect(byCity.delhi.unsupportedRoutes).toEqual([]);
     expect(byCity.jaipur.unsupportedRoutes).toEqual([]);
     expect(byCity.agra.unsupportedRoutes).toEqual([]);

@@ -2,7 +2,8 @@ INCLUDE modules.ink
 -> DONE
 
 // ダルセナ（都市フィナーレの会場）の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
-// 都市フィナーレ（travel/milano.json の milano_finale の地点 p_darsena）の前の「ダルセナの一音」、フィナーレ、告白のデート（地図の出来事がダルセナにある）と、エピローグ。
+// 都市フィナーレ（travel/milano.json の milano_finale の地点 p_darsena）の前の「ダルセナの一音」、フィナーレ、告白のデートと「待って」の後の彼女の返事
+// （どちらも地図の出来事がダルセナにある）と、エピローグ。
 
 // 道中交流「ダルセナの一音」（knot の名前 milano_darsena_tino）。都市フィナーレの前（# at: finale milano、# priority: -1）。
 // 城でピックを持たずにティノに会い（flag milano_tino_needs_pick）、その後ドゥオモでノラの青いピックをもらって、まだ持っているときだけ起こる。
@@ -164,6 +165,8 @@ INCLUDE modules.ink
 // デート（本筋）「橋の途中で、こちらを向く」。romance/date_catalog.json の milano_confession_01 の storyId がこの knot を指す（地図の出来事はダルセナ、場面はナヴィリオの橋）。
 // 2026-11-13 に 1場面1ファイル（stories/dates/milano_date_confession.ink）から移した。文は今のまま。
 // 告白のデートでは噛み合いの札（# profile:）と関係値の札を書かない。返事は、デートを始めたときにゲームが関係状態から決めた confession_result で分ける。
+// 告白のデートは、ほかのデートと同じく1回だけ（2026-11-13。返事にかかわらず思い出になり、保留・拒否の後も同じ告白をもう一度選べない）。
+// 「待って」の後は、ガッレリアの「今日は返事をしない日」の次の日以降に、彼女から返事をする（下の milano_answer_01）。
 // どの選択肢でも思い出 milano_confession_promise（橋の途中で告白したこと）を残す。マウリツィオ教会のデートを遊んでいれば、待ち合わせの話を一言足す。
 === milano_confession_01 ===
 # scene: date
@@ -222,6 +225,101 @@ INCLUDE modules.ink
     # speaker: narrator
     すぐ隣にいなくても見えるところで、彼女は運河の方を向いた。
 }
+-> END
+
+// デート「今日は返事をする日」：「待って」の後の、彼女の返事（kind: answer。2026-11-13 のユーザー判断「彼女から返事をする場面を足す」）。
+// romance/date_catalog.json の milano_answer_01 の storyId がこの knot を指す（地図の出来事はダルセナ）。
+// ミラノ編は1都市で、告白のデートは1回なので、「待って」の後に告白し直す場面がない。そこで、彼女から返事をする（主人公はもう一度告白しない）。
+// 地図に出るのは、「待って」と言われ（JSON の needsDeferred）、ガッレリアの「今日は返事をしない日」（milano_reassurance_01）を遊んだ後の昼
+// （JSON の when）。「今日は返事をしない日」は夜だけ出るので、返事は早くてもその次の日になる（「今日はしない」と言った日には言わない）。
+// エピローグの前でも後でも出る（エピローグは自由時間か夜の画面から読むので、先に休めば必ず間に合う）。
+// 返事は、デートを始めたときの関係の値で決まる（confession_result：告白が成立する条件を満たせば accepted、満たさなければ rejected。
+// 乱数では決めず、もう一度「待って」にもならない）。噛み合いの札（# profile:）と関係値の札は書かない。
+// 選択は、返事を聞いた後の主人公の返し（1回。choiceCount）。交際が始まる道だけ、思い出 milano_answer_memory を残す。
+// 場所：ダルセナから運河沿いに延びる通り Alzaia Naviglio Grande の入口。alzaia は「水路で舟を岸から引く綱」と「その引き道」
+// （Treccani「alzaia」）。市内の区間は、昔は舟を綱で上流へ引いた二本の引き道に沿う（italia.it「Naviglio Grande」ドイツ語版）。どちらも2026-11-13に確認。
+// 港・大理石・洗い場はフィナーレのクイズの答えなので、ここでは言わない。フィナーレの後なら、ラジオの十秒を一言。
+=== milano_answer_01 ===
+# scene: date
+# title: 今日は返事をする日
+# background: milano_darsena_finale
+# speaker: narrator
+昼のダルセナは、水に空が映っていた。岸の段には、人がまばらに座っている。
+彼女は運河沿いの通りの入口で立ち止まり、角の標識を指さした。
+# speaker: heroine
+『アルザイア・ナヴィリオ・グランデ』。この名前、あれから調べたの
+# speaker: heroine
+アルザイアって、岸から舟を引っぱる綱のこと。昔は、流れに逆らって上る舟を、この道から綱で引いてたんだって
+# speaker: heroine
+# emotion: serious
+橋の上で「待って」って言ったのは、流れで「うん」って言いたくなかったから。勢いに運ばれるんじゃなくて、自分で引っぱって行きたかった
+# speaker: heroine
+# reaction: heroine,teasing
+……今の、ちょっと格好つけた。でも、本当にそう思ってたの
+{ cond("episode milano_finale"):
+    # speaker: heroine
+    ラジオで十秒しゃべったとき、分かった気がする。自分の声って、出してみると、ちゃんと自分のなんだって
+}
+# speaker: heroine
+ガッレリアで、今日は返事をしないって言った。だから、今日はする。わたしから
+{ confession_result == "accepted":
+    -> yes
+- else:
+    -> not_now
+}
+
+= yes
+# speaker: heroine
+# emotion: shy
+付き合いたい。恋人として、帰ってからも会いたい
+# speaker: player
+……今のは、勢いじゃない？
+# speaker: heroine
+# reaction: heroine,teasing
+勢いだったら、こんなに時間かからないでしょ。ちゃんと、自分で引っぱってきた答え
+* [「待ってよかった」 # option: worth_waiting]
+    # memory: milano_answer_memory
+    # speaker: heroine
+    # emotion: smile
+    待たせたわたしが言うのも変だけど、わたしも、待ってよかった。自分の言葉、ちゃんと見つかったから
+* [「明日の予定、一緒に決めよう」 # option: plan_tomorrow]
+    # memory: milano_answer_memory
+    # speaker: heroine
+    # emotion: smile
+    うん。明日の朝ごはんは、わたしが選ぶ。その次は、あなた。順番にね
+* [「もう一回、言ってほしい」 # option: say_again]
+    # memory: milano_answer_memory
+    # speaker: heroine
+    # reaction: heroine,teasing
+    一回で覚えてほしかったな。……付き合いたい。はい。今の、録っておけばよかったね
+-
+# speaker: narrator
+差し出された手を取ると、彼女は標識の下を通って、運河沿いを歩き出した。綱を引くみたいに、ほんの少しだけ前を。
+-> END
+
+= not_now
+# speaker: heroine
+# emotion: serious
+恋人には、今はなれない。何度考えても、そこに戻ってきた
+# speaker: heroine
+待っててくれたのに、ごめんなさい。これが、わたしの答え。遠回しにはしない
+# speaker: player
+……うん
+# speaker: heroine
+この旅で、あなたと歩いたのは、本当に楽しかった。それは答えとは別に、ちゃんと残しておきたい
+* [「自分の言葉で言ってくれて、ありがとう」 # option: thank_her]
+    # speaker: heroine
+    うん。借りてきた言葉で答えたら、あなたに失礼だと思ったから
+* [「少し、一人で運河を歩いてくる」 # option: walk_alone]
+    # speaker: heroine
+    うん。わたしは、ここの段に座ってる。戻ってきたら、普通の話からしよう
+* [「明日も、普通に会える？」 # option: see_you_tomorrow]
+    # speaker: heroine
+    # emotion: smile
+    うん。それは、橋の上で答えたときから変わってない。普通に会いたい
+-
+# speaker: narrator
+水に映った空が、風で少しだけ揺れて、また元に戻った。
 -> END
 
 // エピローグ。progression/journey.json のフィナーレの epilogueStoryId がこの knot を指す。放送の後のダルセナ。

@@ -215,6 +215,59 @@ export function peekStoryLine(storyId: string, saved: string, memoryIds: readonl
   return { line: step.lineRead, inKnot: step.lineRead && !!step.inKnot };
 }
 
+/** How far peekStory reads: the lines ahead, and after each choice it stops at (at most `choices` of them) its first lines. */
+export type PeekReach = { lines: number; choices: number; choiceLines: number };
+
+/** A saved story's lines ahead (peekStory): its next lines in order, and the first lines after each of its next choices. */
+export type StoryPeek = { lines: StoryFrame[]; choices: StoryFrame[][] };
+
+/**
+ * Reads up to `count` lines from `story` (a throwaway copy) after `previous`, stopping at a choice or the end; the first
+ * line with the tags of the choice just made (`choiceTags`), as the game reads it.
+ */
+function readAhead(story: Story, previous: StoryFrame, count: number, lines: StoryFrame[], choiceTags: readonly string[] = []): void {
+  let frame = previous;
+  while (lines.length < count && story.canContinue) {
+    const step = readFrame(story, frame, lines.length ? [] : choiceTags);
+    if (!step.lineRead) break;
+    lines.push(step.frame);
+    frame = step.frame;
+    if (frame.choices.length) break;
+  }
+}
+
+/**
+ * The lines a saved story is about to show (2026-11-13, the background loading of their pictures and voices:
+ * src/media/preload-ahead.ts), read on throwaway copies of it, so the story, its save and the game are not changed (each
+ * step of the game reads a fresh copy of the saved state in the same way). From the line on screen (`previous`, with its
+ * saved state `saved`): the next `reach.lines` lines up to a choice or the end; where they stop at choices (or the line on
+ * screen does), the first `reach.choiceLines` lines after each of the first `reach.choices` choices, as if it were made (a
+ * battle's call, which the game takes itself, is not). The effects of the lines and choices are not applied: a line that
+ * depends on them may differ from what the game shows. Never throws: a story that cannot be read ahead gives what was read.
+ */
+export function peekStory(storyId: string, saved: string, previous: StoryFrame, memoryIds: readonly string[],
+  inventory: Readonly<Record<string, ItemStatus>>, conditions: StoryConditionReader | undefined, reach: PeekReach): StoryPeek {
+  const peek: StoryPeek = { lines: [], choices: [] };
+  try {
+    const story = runtime(storyId, saved, memoryIds, inventory, conditions);
+    if (!previous.choices.length) readAhead(story, previous, reach.lines, peek.lines);
+    const last = peek.lines.at(-1) ?? previous;
+    if (!last.choices.length || last.choices.some((choice) => choice.call) || story.canContinue) return peek;
+    const atChoices = story.state.ToJson();
+    for (const choice of last.choices.slice(0, reach.choices)) {
+      const branch = runtime(storyId, atChoices, memoryIds, inventory, conditions);
+      const tags = branch.currentChoices.find((item) => item.index === choice.index)?.tags ?? [];
+      branch.ChooseChoiceIndex(choice.index);
+      const lines: StoryFrame[] = [];
+      peek.choices.push(lines);
+      readAhead(branch, { ...last, choices: [] }, reach.choiceLines, lines, tags);
+    }
+  } catch {
+    // Reading ahead is a guess: a line it cannot read (a condition only the game's state answers) ends it there.
+  }
+  return peek;
+}
+
 // Optional presentation context was not present in earlier published Ink.
 function setOptionalVariables(story: Story, variables: Record<string, string | number | boolean>): void {
   for (const [name, value] of Object.entries(variables)) {

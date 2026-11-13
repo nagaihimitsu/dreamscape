@@ -34,11 +34,12 @@ import { leaveStep } from "./unsaved-progress";
 import { titleSaveActions } from "./save-recovery";
 import type { DeleteSnapshot } from "./save-deletion";
 import { LazyDialog } from "../components/LazyDialog";
-import { oldDataContext, type KeyedStorage } from "../persistence/old-data";
+import { oldDataContext, readOldData, type KeyedStorage } from "../persistence/old-data";
 import { CanalScene } from "../components/CanalScene";
 import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
 import { useVoiceRate, useVoiceSettings } from "../components/useVoice";
+import { usePreloadAhead } from "../media/preload-ahead";
 import { effectiveVoiceRate } from "../audio/voice-rate";
 import { holdSceneCues, playCue, playSe, useSoundEffectSettings } from "../audio/sound-effects";
 import { canVibrate, useVibrationSetting, vibrate } from "../audio/vibration";
@@ -53,7 +54,7 @@ import { useReadLines } from "../components/useReadLines";
 import { useMeasuredHeight } from "../components/useMeasuredHeight";
 import { RomanceScene } from "../features/romance/RomanceScene";
 import { MiniGameProvider, type MiniGameEnvironment } from "../minigames/host/MiniGameProvider";
-import { chooseMiniGameOutcome } from "../domain/player-action";
+import { chooseMiniGameOutcome, miniGameAvailableOutcomes } from "../domain/player-action";
 import { Modal, ModalTitle } from "../components/Modal";
 import { ConfirmActionButton } from "../components/ConfirmActionButton";
 import { withNames } from "../features/romance/names";
@@ -269,6 +270,9 @@ export function GameApp({
     if (change) setShownChange({ scene: changeScreenKey(next), change });
   });
   const { game, loaded, invalid, notice, setNotice, commit, getCurrent, save } = session;
+  // The background loading (src/media/preload-ahead.ts): after each saved change, the pictures and voices of the lines
+  // ahead; on the title, the new journey's arrival; nothing while the opening movie streams.
+  usePreloadAhead(game, journeyId, !!opening);
   // A game opened on its save (the page's start, a journey switch) shows its scene as it was: the scene's cues (a line's
   // phone, a city's title...) wait for the player's first action, as after 「ロード」 (loadSavedGame).
   useLayoutEffect(() => {
@@ -351,6 +355,12 @@ export function GameApp({
   const [confirmDeparture, setConfirmDeparture] = useState(false);
   const [settings, setSettings] = useState(false);
   const [oldDataOpen, setOldDataOpen] = useState(false);
+  // The title's way into 「古い保存データの整理」, beside its notice of a save it cannot open: only when the list has
+  // something (read as the notice appears; the dialog says so if a cleanup has emptied it since).
+  const titleOldData = useMemo(() => {
+    if (game || !invalid || isDebug || !oldDataStorage) return false;
+    try { return readOldData(oldDataStorage, oldDataContext(journeyId)).items.length > 0; } catch { return false; }
+  }, [game, invalid, isDebug, oldDataStorage, journeyId]);
   const [creditsOpen, setCreditsOpen] = useState(false);
   const [switchJourneyTo, setSwitchJourneyTo] = useState<string | null>(null);
   // This journey's screen is the end of a switch (or of the lock's 再試行):
@@ -544,6 +554,8 @@ export function GameApp({
   // A line's # minigame: in any story screen (docs/13 1.5): what every play gets, once; a quiet game lowers the music.
   const [miniGameQuiet, setMiniGameQuiet] = useState(false);
   const revision = game?.revision ?? 0;
+  // The outcomes whose choices can be taken now (a payment the player cannot afford greys one; its fallback is taken).
+  const miniGameAvailable = (game && miniGameAvailableOutcomes(game))?.join(" ");
   const miniGameEnvironment = useMemo<MiniGameEnvironment>(() => ({
     auto: displaySettings.value.miniGameAuto,
     debug: debugOn,
@@ -551,11 +563,13 @@ export function GameApp({
     names: { player: game?.playerName ?? "", heroine: game?.heroineName ?? "" },
     revision,
     context: tagContext,
+    ...(miniGameAvailable !== undefined ? { available: miniGameAvailable ? miniGameAvailable.split(" ") : [] } : {}),
     // The outcome's choice, as the screen's choice button takes it (player-action.ts).
     onOutcome: (outcome) => commit((state) => chooseMiniGameOutcome(state, outcome, revision, nextRomanceRoll)),
     backdrop: (backgroundId) => <CanalScene backgroundId={backgroundId} />,
     onQuiet: setMiniGameQuiet,
-  }), [displaySettings.value.miniGameAuto, displaySettings.value.reduceMotion, debugOn, game?.playerName, game?.heroineName, revision, commit, nextRomanceRoll]);
+  }), [displaySettings.value.miniGameAuto, displaySettings.value.reduceMotion, debugOn, game?.playerName, game?.heroineName, revision, miniGameAvailable,
+    commit, nextRomanceRoll]);
   // A new screen takes a lost focus on its visible heading (scene-focus.ts, UI redesign §3.7 E);
   // free time opens at the top of the page, not at the scroll position of the screen before it
   // (the title, scrolled to 「旅をはじめる」 on a short phone).
@@ -819,6 +833,8 @@ export function GameApp({
                   >
                     保存データを消去する
                   </button>}
+                  {titleOldData && <button type="button" className="text-button old-data-entry"
+                    onClick={() => setOldDataOpen(true)}>古い保存データの整理</button>}
                 </div>
               )}
               {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} restoreFocus={selectorFocus?.restoreFocus} />}

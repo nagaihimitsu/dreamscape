@@ -16,6 +16,9 @@ async function openRoom(page: Page): Promise<string[]> {
   return page.locator("section[data-game]").evaluateAll((items) => items.map((item) => item.getAttribute("data-game")!));
 }
 
+/** The time one game of the room may take in the walk through every game (about 11 s on CI). */
+const PER_GAME_MS = 20_000;
+
 /** Longer than any timed game's play (the longest, 手のひらの模様, is about 30 seconds). */
 const LONGER_THAN_ANY_GAME_MS = 60_000;
 
@@ -31,6 +34,8 @@ function setHidden(page: Page, hidden: boolean): Promise<void> {
 test("every mini-game starts into its play, stops with 中断する and Esc, and plays each outcome by おまかせ", { tag: tier.debug }, async ({ page }) => {
   const games = await openRoom(page);
   expect(games.length).toBeGreaterThan(0);
+  // Each game takes about 11 s on CI (its starts, stops and every outcome): the budget grows with the room.
+  test.setTimeout(30_000 + games.length * PER_GAME_MS);
   for (const id of games) {
     await page.getByTestId(`minigame-room-open-${id}`).click();
     await expect(page.getByTestId("minigame-room-stage")).toHaveAttribute("data-game", id);

@@ -15,6 +15,7 @@ import {
   advanceDate,
   chooseDate,
   finishDate,
+  getDateAvailability,
   type GameState,
 } from "../../../src/domain/game";
 import {
@@ -146,6 +147,8 @@ function tour(initial = createGame()): GameState {
   }
   return state;
 }
+/** Milan's reassurance is offered at night (2026-11-13: her answer follows on a later day). */
+const atNight = (state: GameState): GameState => validateGameState({ ...state, travel: { ...state.travel, minute: 19 * 60 } });
 function playDate(initial: GameState, id: string, choices = [0, 0]): GameState {
   let state = startDate(initial, id, stableRolls());
   expect(state.activeDate?.dateId).toBe(id);
@@ -369,7 +372,7 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(ended.confessionStatus).toBe("accepted");
     expect(startDate(ended, date.id)).toBe(ended);
   });
-  it("funds optional dates and a deferred-then-accepted confession from zero-score city play", () => {
+  it("funds optional dates and a deferred confession from zero-score city play; the confession is played once", () => {
     let state = finishEpisode(tour(), finale(), 0);
     state = enterFreeTime(state, state.revision);
     expect(totalAp(state)).toBe(19);
@@ -378,12 +381,13 @@ describe("Milan's four episodes and distinct city finale", () => {
     state = playDate(state, "milano_invitation_01", [0]);
     state = playDate(state, "milano_confession_01", [0]);
     expect(state.confessionStatus).toBe("deferred");
-    // Respecting her request for time raises trust; a second confession can
-    // then succeed without changing the battle rewards.
-    state = playDate(state, "milano_reassurance_01", [1]);
+    // Respecting her request for time; the confession, played once like every date (2026-11-13), stays a memory.
+    state = playDate(atNight(state), "milano_reassurance_01", [1]);
     state = playDate(state, "milano_night_01", [0, 1]);
-    state = playDate(state, "milano_confession_01", [0]);
-    expect(state.endingReached).toBe(true);
+    expect(getDateAvailability(state, "milano_confession_01"))
+      .toEqual({ available: false, reason: "このひとときは、もう思い出になりました。" });
+    expect(startDate(state, "milano_confession_01")).toBe(state);
+    expect(state.endingReached).toBe(false);
     expect(totalAp(state)).toBe(11);
     expect(state.completedCityIds).toEqual(["milano"]);
   });
