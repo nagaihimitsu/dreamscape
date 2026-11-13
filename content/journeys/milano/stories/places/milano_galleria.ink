@@ -350,6 +350,8 @@ INCLUDE modules.ink
 -> END
 
 // デート（本筋）。romance/date_catalog.json の milano_reassurance_01 の storyId がこの knot を指す。
+// 「待って」の後に、夜だけ出る（JSON の when の time night。2026-11-13）。「今日は返事をしない」と言った日には返事をせず、次の日以降の昼に、
+// ダルセナで彼女から返事をする（milano_darsena.ink の milano_answer_01）。
 // 恋愛の選択は、選択肢のすぐ下の # profile:（と # memory:）。もとの 1場面1ファイルの # effect: と同じ噛み合いと思い出。
 === milano_reassurance_01 ===
 # scene: date

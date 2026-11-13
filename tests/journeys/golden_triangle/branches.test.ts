@@ -62,7 +62,7 @@ function choose(story: Story, index: number, result: "positive" | "negative" | u
 
 describe("Golden Triangle authored branching contracts", () => {
   it("covers the complete published cast and independent date set", () => {
-    expect(indiaDates).toHaveLength(24);
+    expect(indiaDates).toHaveLength(25);
     expect(indiaBattles).toHaveLength(15);
     const normal = indiaDates.filter((date) => date.kind === "normal");
     expect(normal).toHaveLength(18);
@@ -75,7 +75,7 @@ describe("Golden Triangle authored branching contracts", () => {
       expect(date.storyId).toMatch(new RegExp(`^places/gt_${date.chapterId}_[a-z_]+\\.${date.id}$`));
     }
     expect(indiaDates.filter((date) => date.kind !== "normal").map((date) => date.kind).sort())
-      .toEqual(["confession", "confession", "confession", "reassurance", "reassurance", "reassurance"]);
+      .toEqual(["answer", "confession", "confession", "confession", "reassurance", "reassurance", "reassurance"]);
   });
 
   // The 18 normal dates (place-file knots with tags, GT-3b): every path, with every cond text true and false and both

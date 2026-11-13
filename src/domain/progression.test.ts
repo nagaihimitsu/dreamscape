@@ -191,7 +191,10 @@ describe("confession and relationship ending", () => {
     state = play(state, confession, [0]);
     expect(state.confessionStatus).toBe("deferred");
     expect(state.endingReached).toBe(false);
-    expect(state.unlockedEventIds).toContain(reassurance);
+    // Milan's reassurance is offered at night (2026-11-13: her answer follows on a later day).
+    expect(getDateAvailability(state, reassurance).available).toBe(false);
+    state = validateGameState({ ...state, travel: { ...state.travel, minute: 19 * 60 } });
+    expect(getDateAvailability(state, reassurance).available).toBe(true);
     const before = state.affection;
     const reassuranceResolutions: NonNullable<GameState["activeDate"]>["resolvedChoices"] = [];
     state = play(state, reassurance, [1], [], reassuranceResolutions);

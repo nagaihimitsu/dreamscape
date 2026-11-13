@@ -46,6 +46,7 @@ import {
   balanceSchema,
   citySchema,
   dateCatalogSchema,
+  decidesConfession,
   effectCatalogSchema,
   responseProfileCatalogSchema,
   presentationSchema,
@@ -785,10 +786,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       return option ? [option] : [];
     });
     if (main.kind === "date") {
-      const confession = dates.find((date) => date.storyId === main.address)?.kind === "confession";
-      if (confession && withContext(storyLabel(main.address), () => readFileChoices(main.address, storySources[main.address]))
+      const deciding = dates.find((date) => date.storyId === main.address);
+      if (deciding && decidesConfession(deciding) && withContext(storyLabel(main.address), () => readFileChoices(main.address, storySources[main.address]))
         .some((choice) => choice.tags.some((tag) => tag.key === "profile")))
-        throw new Error(`A confession date takes no # profile: (its outcome is never random; B2): ${storyLabel(main.address)}`);
+        throw new Error(`A ${deciding.kind === "answer" ? "date of her answer" : "confession date"} takes no # profile: (its outcome is never random; B2): ${storyLabel(main.address)}`);
     }
     if (!head && !options.length) continue;
     unique(options.map((option) => option.id), `option ID of ${main.address}`);
@@ -845,8 +846,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       throw new Error(`The sources of ${scene.id} are written twice: # sources: none in ${label} and sources in scenes/catalog.json (keep one; A4)`);
     if (scene.title !== undefined && !/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(scene.title) && scene.origin === "place")
       languageNotes.push({ kind: "data-language", message: `\`# title:\` に日本語がありません：${scene.id}「${scene.title}」。道中交流の題名や保留 AP の題名として、そのまま出ます（止めません）。` });
-    for (const option of scene.options) if (option.profile && scene.kind === "date" && dateOf(scene)?.kind === "confession")
-      throw new Error(`A confession date takes no # profile: (its outcome is never random; B2): ${label}`);
+    for (const option of scene.options) if (option.profile && scene.kind === "date" && decidesConfession(dateOf(scene) ?? { kind: "normal" }))
+      throw new Error(`A ${dateOf(scene)!.kind === "answer" ? "date of her answer" : "confession date"} takes no # profile: (its outcome is never random; B2): ${label}`);
   }
   // A date knot's # title: and the date catalog's titleJa (what the map and the records show) are kept equal (DA-5; a note, not stopped).
   for (const scene of placeEntries) if (scene.kind === "date") {
@@ -857,8 +858,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   // A place file's date: its own knot's choices are the romance choices (# profile:), a helper knot's are in-scene choices (no profile; 3.5).
   for (const scene of placeEntries) if (scene.kind === "date") for (const option of scene.options) {
     const own = option.knot === scene.story.knot;
-    // A confession's own choices are its direct choices (no # profile:, B2; its outcome is confession_result, DA-1).
-    if (own && dateOf(scene)?.kind === "confession") continue;
+    // A confession's or her answer's own choices are its direct choices (no # profile:, B2; its outcome is confession_result, DA-1).
+    if (own && decidesConfession(dateOf(scene) ?? { kind: "normal" })) continue;
     if (own && !option.profile)
       throw new Error(`A romance choice of the date ${scene.id} needs # profile: (the choice ${option.id}); an in-scene choice goes in a helper knot`);
     if (!own && option.profile)
@@ -886,7 +887,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
           `(${{ give: "giftItemId", use: "consumeItemId", later: "deferCompletion", profile: "responseProfileId" }[key]}); write it once (A4)`);
       catalogChoiceTags.set(event.id, options);
     } else if (date) {
-      if (date.kind === "confession" && options.some((option) => option.profile)) throw new Error(`A confession date takes no # profile: (B2): ${storyLabel(id)}`);
+      if (decidesConfession(date) && options.some((option) => option.profile))
+        throw new Error(`A ${date.kind === "answer" ? "date of her answer" : "confession date"} takes no # profile: (B2): ${storyLabel(id)}`);
       if (fileEntries.some((entry) => entry.story.storyId === id)) { fileEntries.find((entry) => entry.story.storyId === id)!.options.push(...options); continue; }
       fileEntries.push({ id: mainFileSceneId({ date: date.id }), kind: "date", title: date.titleJa, cityId: date.chapterId, story: { storyId: id }, main: { date: date.id },
         at: [], order: 0, repeat: "once", people: [], options, done: {}, conds: storyConditionTexts[id] ?? [], knots: [], fingerprint: fnvHash(stories[id]), origin: "file" });
@@ -982,8 +984,9 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     if (scene.kind === "date") {
       if (scene.origin !== "place") continue; // today's dates: validateStory below.
       const date = dateOf(scene)!;
-      // A confession is walked with each validation context's outcome (confession_result; DA-1): its own choice points
-      // (no # profile:) are the direct choices its choiceCount counts.
+      // A confession (and her answer) is walked with each validation context's outcome (confession_result; DA-1): its own
+      // choice points (no # profile:) are the direct choices its choiceCount counts.
+      const deciding = decidesConfession(date);
       // Contexts that differ only in variables the file never reads walk the same paths: each distinct one is walked
       // once and counted for every context (the route total is unchanged).
       const compiledText = stories[storyId];
@@ -991,12 +994,12 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       for (const seed of date.validationContexts) for (const tone of RELATIONSHIP_TONES) {
         const variables = { romance_stage: seed.romanceStage, ending_reached: seed.endingReached ?? false,
           relationship_tone: tone, relationship_tone_before: tone, relationship_tone_after: tone,
-          memory_callback: progression.fallbackMemoryCallbackJa, confession_ready: date.kind === "confession" && seed.confessionReady,
-          confession_result: date.kind === "confession" ? seed.confessionResult ?? (seed.confessionReady ? "accepted" : "deferred") : "deferred" };
+          memory_callback: progression.fallbackMemoryCallbackJa, confession_ready: deciding && seed.confessionReady,
+          confession_result: deciding ? seed.confessionResult ?? (seed.confessionReady ? "accepted" : "deferred") : "deferred" };
         const key = JSON.stringify(Object.entries(variables).filter(([name]) => compiledText.includes(`"VAR?":"${name}"`)));
-        // No mini-game in a confession date (docs/13 1.4): its walk refuses the tag.
+        // No mini-game in a confession date or her answer (docs/13 1.4): its walk refuses the tag.
         if (!walked.has(key)) walked.set(key, withContext(label, () => walkScene({ ...base,
-          context: { ...base.context, ...(date.kind === "confession" ? { miniGames: "confession" as const } : {}) }, variables,
+          context: { ...base.context, ...(deciding ? { miniGames: "confession" as const } : {}) }, variables,
           romanceChoices: { knot: scene.story.knot!, count: date.choiceCount } })));
         routes += walked.get(key)!;
         dateRoutes[date.id] = (dateRoutes[date.id] ?? 0) + walked.get(key)!;
@@ -1147,10 +1150,23 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       date.choiceCount !== 1 || date.effectCount !== 1))
       throw new Error(`Recovery event must be a repeatable special with one choice and effect: ${date.id}`);
     if (
-      (date.kind === "normal" || date.kind === "special" || date.kind === "reassurance") &&
+      (date.kind === "normal" || date.kind === "special" || date.kind === "reassurance" || date.kind === "answer") &&
       date.repeatable && !date.recovery
     )
       throw new Error(`One-time event is repeatable: ${date.id}`);
+    // Her answer (2026-11-13) answers a deferral (needsDeferred: the schema): a confession of its journey must be able to
+    // defer first, and she answers yes or "not as lovers, for now", never another deferral.
+    if (date.kind === "answer") {
+      if (!dates.some((item) => item.kind === "confession" && journeyOfCityId(item.chapterId) === journeyOfCityId(date.chapterId)))
+        throw new Error(`Her answer ${date.id} answers a deferred confession, but its journey has no confession date`);
+      if (date.validationContexts.some((context) => context.confessionResult === "deferred" || context.confessionResult === undefined))
+        throw new Error(`Her answer ${date.id} is never another deferral: give each validation context confessionResult accepted or rejected`);
+      if (["accepted", "rejected"].some((result) => !date.validationContexts.some((context) => context.confessionResult === result)))
+        throw new Error(`Her answer ${date.id} needs accepted and rejected validation contexts`);
+      // She says yes exactly when the confession would succeed (deferralAnswer): confession_ready and her answer agree.
+      if (date.validationContexts.some((context) => context.confessionReady !== (context.confessionResult === "accepted")))
+        throw new Error(`Her answer ${date.id}: a validation context's confessionReady must be true exactly when its confessionResult is accepted`);
+    }
     // Rev. 5: the number of romance choices is the date definition's (the walk checks the Ink meets it).
     if (
       date.kind === "confession" &&
@@ -1171,7 +1187,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
           if (!date.validationContexts.some(hasReference) || !date.validationContexts.some((seed) => !hasReference(seed)))
             throw new Error(`Memory reference needs present and absent validation contexts: ${storyId}/${reference}`);
         }
-        const randomReactions = storyId === date.storyId && date.kind !== "confession" && date.choiceCount > 0;
+        const randomReactions = storyId === date.storyId && !decidesConfession(date) && date.choiceCount > 0;
         // Reuse existing contexts and add only enough representative contexts
         // to exercise all tones.
         const contextCount = randomReactions

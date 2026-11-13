@@ -67,7 +67,8 @@ export function debugTargets(cityId: string): Record<DebugScene, DebugTarget[]> 
     // A landmark's visit's scenes (a scene of another moment, stage 4, runs when its moment opens in play: the date, the hotel…).
     encounter: encounters.encounters.filter((item) => item.cityId === cityId && item.landmarkId)
       .map((item) => (atTourOnly(item.landmarkId) ? { id: item.id, name: item.titleJa, ...TOUR_ONLY } : encounterTarget(item))),
-    date: dates.filter((item) => item.kind === "normal" && travel.events.some((event) => event.id === item.id))
+    // Ordinary dates, and her answer to a deferral (opened after Debug's records of one: startDateScene).
+    date: dates.filter((item) => (item.kind === "normal" || item.kind === "answer") && travel.events.some((event) => event.id === item.id))
       .map((item) => mark({ id: item.id, name: item.titleJa }, atTourOnly(undefined, item.id))),
     epilogue: episodes.filter((item) => item.cityId === cityId && item.kind === "city_finale" && item.epilogueStoryId)
       .map((item) => ({ id: item.id, name: `${city.nameJa}のエピローグ` })),

@@ -39,6 +39,17 @@ describe("debug scene preparation", () => {
       expect(validateGameState(game)).toEqual(game);
     }
   });
+  it("opens her answer after Debug's records of a deferral (2026-11-13): Debug's relationship values decide it", () => {
+    for (const [cityId, id] of [["milano", "milano_answer_01"], ["jaipur", "gt_jaipur_date_answer"]] as const) {
+      expect(debugTargets(cityId).date.map((target) => target.id)).toContain(id);
+      for (const [values, outcome] of [[{ affection: 0, trust: 0, spark: 0 }, "rejected"], [{ affection: 8, trust: 4, spark: 4 }, "accepted"]] as const) {
+        const game = createDebugState({ ...base, cityId, scene: "date", id, ...values });
+        expect(validateGameState(game)).toEqual(game);
+        expect(game).toMatchObject({ confessionStatus: "deferred", ...values });
+        expect(game.activeDate).toMatchObject({ dateId: id, pendingOutcome: outcome, resolutionMode: "fixed" });
+      }
+    }
+  }, 120_000);
   it("does not open a locked scene and keeps the AP limit", () => {
     expect(() => createDebugState({ ...base, scene: "date", id: "milano_brera_date_01", progress: "initial" })).toThrow("この進行状態ではデートを始められません。APや解放条件を確認してください。");
     // Debug names the unmet part of the date's condition; AP alone gives no condition text.

@@ -147,6 +147,8 @@ function tour(initial = createGame()): GameState {
   }
   return state;
 }
+/** Milan's reassurance is offered at night (2026-11-13: her answer follows on a later day). */
+const atNight = (state: GameState): GameState => validateGameState({ ...state, travel: { ...state.travel, minute: 19 * 60 } });
 function playDate(initial: GameState, id: string, choices = [0, 0]): GameState {
   let state = startDate(initial, id, stableRolls());
   expect(state.activeDate?.dateId).toBe(id);
@@ -380,7 +382,7 @@ describe("Milan's four episodes and distinct city finale", () => {
     state = playDate(state, "milano_confession_01", [0]);
     expect(state.confessionStatus).toBe("deferred");
     // Respecting her request for time; the confession, played once like every date (2026-11-13), stays a memory.
-    state = playDate(state, "milano_reassurance_01", [1]);
+    state = playDate(atNight(state), "milano_reassurance_01", [1]);
     state = playDate(state, "milano_night_01", [0, 1]);
     expect(getDateAvailability(state, "milano_confession_01"))
       .toEqual({ available: false, reason: "このひとときは、もう思い出になりました。" });

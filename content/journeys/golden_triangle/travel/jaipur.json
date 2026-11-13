@@ -6705,6 +6705,16 @@
       "activityMinutes": 15,
       "apCost": 0,
       "admissionCost": 0
+    },
+    {
+      "id": "gt_jaipur_date_answer",
+      "cityId": "jaipur",
+      "placeId": "jaipur_hotel_hub",
+      "category": "date",
+      "titleJa": "夜のせいにしない返事",
+      "activityMinutes": 30,
+      "apCost": 0,
+      "admissionCost": 0
     }
   ]
 }

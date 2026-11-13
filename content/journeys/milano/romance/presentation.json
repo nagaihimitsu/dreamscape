@@ -214,6 +214,10 @@
     "sound_memory_reassurance_01": {
       "titleJa": "今日は返事をしない日",
       "descriptionJa": "返事を急がずに過ごす時間を選んだ。"
+    },
+    "milano_answer_memory": {
+      "titleJa": "岸から引く綱",
+      "descriptionJa": "ダルセナの通りの標識の前で、彼女が自分の言葉で返事をくれた。"
     }
   }
 }

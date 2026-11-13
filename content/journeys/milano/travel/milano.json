@@ -4857,6 +4857,15 @@
       "apCost": 0
     },
     {
+      "id": "milano_answer_01",
+      "cityId": "milano",
+      "placeId": "p_darsena",
+      "category": "date",
+      "titleJa": "今日は返事をする日",
+      "activityMinutes": 15,
+      "apCost": 0
+    },
+    {
       "id": "milano_city_date_01",
       "cityId": "milano",
       "placeId": "p_galleria",

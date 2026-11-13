@@ -5,7 +5,7 @@ import { deriveRelationshipTone } from "./romance-tone";
 import { secureRomanceRoll } from "../random/romance-source";
 import { DAY_END } from "./travel";
 import { validateEncounterState } from "./encounter";
-import { responseProfileSchema } from "../content/schemas";
+import { decidesConfession, responseProfileSchema } from "../content/schemas";
 import { validateEpilogueState } from "./epilogue";
 import {
   validateJourneyState,
@@ -37,7 +37,7 @@ import {
 import { GAME_STATE_VERSION, gameStateSchema, nameSchema, type GameState, type ActiveDate } from "./game-state-schema";
 import {
   activeDateStoryId, completedDateCount, evaluateProgression, getPlayerAddress,
-  getMemoryCallback, canConfessSuccessfully, confessionResult,
+  getMemoryCallback, canConfessSuccessfully, confessionResult, decidingOutcome,
   getDateAvailability, dateBelongsToCity,
 } from "./date-rules";
 
@@ -54,7 +54,7 @@ export { GAME_STATE_VERSION, gameStateSchema } from "./game-state-schema";
 export type { GameState, ActiveDate } from "./game-state-schema";
 export {
   completedDateCount, evaluateProgression, getPlayerAddress, getMemoryCallback,
-  canConfessSuccessfully, confessionResult,
+  canConfessSuccessfully, confessionResult, deferralAnswer,
   activeDateStoryId, isDateUnlockedForTravel, isEventVisible, getDateAvailability,
 } from "./date-rules";
 
@@ -219,6 +219,9 @@ export function startDate(state: GameState, dateId: string, nextRoll: () => numb
     ((date.kind === "normal" || !date.repeatable) && state.playedDateIds.includes(dateId)) || state.ap < date.apCost;
   if (decided ? impossible : !getDateAvailability(state, dateId).available) return state;
   const placeId = getCityContent(state.currentCityId).travel.events.find((item) => item.id === dateId)?.placeId ?? state.travel.currentPlaceId;
+  // A date that decides the confession (a confession, her answer) passes the outcome it fixes now; other dates read a confession's.
+  const deciding = decidesConfession(date);
+  const outcome = deciding ? decidingOutcome(state, date) : confessionResult(state);
   const result = beginStory(date.storyId, state.playerName, state.heroineName, {
     relationship_tone: deriveRelationshipTone(state),
     relationship_tone_before: deriveRelationshipTone(state),
@@ -228,7 +231,7 @@ export function startDate(state: GameState, dateId: string, nextRoll: () => numb
     memory_callback: getMemoryCallback(state),
     ending_reached: state.endingReached,
     confession_ready: canConfessSuccessfully(state),
-    confession_result: confessionResult(state),
+    confession_result: outcome,
   }, state.memories, {}, getCityStoryBackground(state.currentCityId, placeId), sceneConditionReader(state));
   const next = {
     ...state,
@@ -248,15 +251,16 @@ export function startDate(state: GameState, dateId: string, nextRoll: () => numb
       turnCount: 0,
       step: 1,
       appliedEffectIds: [],
-      // A confession written with tags (a place file's knot; DA-1): its outcome is confession_result, fixed now from the
-      // relationship state and passed to Ink as the same value (never random; no # effect: sets it).
-      pendingOutcome: date.kind === "confession" && taggedDateScene(date.id) ? confessionResult(state) : null,
-      resolutionMode: date.kind === "confession" ? "fixed" : "random_v1",
-      randomPlan: date.kind === "confession" ? [] : createRomanceRollPlan(date.choiceCount, nextRoll),
+      // A confession written with tags (a place file's knot; DA-1), and her answer to a deferral in any form (2026-11-13):
+      // its outcome is confession_result, fixed now from the relationship state and passed to Ink as the same value
+      // (never random; no # effect: sets it). A one-scene confession's comes from its # effect:.
+      pendingOutcome: deciding && (date.kind === "answer" || taggedDateScene(date.id)) ? outcome : null,
+      resolutionMode: deciding ? "fixed" : "random_v1",
+      randomPlan: deciding ? [] : createRomanceRollPlan(date.choiceCount, nextRoll),
       resolvedChoices: [],
       // Freeze the data used by every future choice in this event, so an
       // editorial rebalance cannot change a saved ticket after a reload.
-      responseSnapshot: date.kind === "confession" ? null : {
+      responseSnapshot: deciding ? null : {
         profiles: responseProfiles.map((profile) => responseProfileSchema.parse(profile)),
         effectProfiles: Object.fromEntries(effects.flatMap((effect) =>
           effect.responseProfileId ? [[effect.id, effect.responseProfileId]] : [])),
@@ -412,8 +416,9 @@ function chooseTaggedDate(state: GameState, active: ActiveDate, scene: NonNullab
   const revision = state.revision + 1;
   const toneBefore = deriveRelationshipTone(state);
   const own = option.knot === scene.story.knot;
-  // A confession's own choices are its direct choices (counted by choiceCount, DA-1): no ticket, no reaction, only their tags.
-  const direct = own && date.kind === "confession";
+  // A confession's or her answer's own choices are its direct choices (counted by choiceCount, DA-1): no ticket, no
+  // reaction, only their tags.
+  const direct = own && decidesConfession(date);
   if (!own || direct) {
     const next = active.replay ? state : applyChoiceEffects(state, scene.id, option, revision).state;
     const tone = deriveRelationshipTone(next);
@@ -452,13 +457,12 @@ export function finishDate(
   const date = dates.find((item) => item.id === active.dateId)!;
   if (
     active.choiceCount !== date.choiceCount ||
-    (date.kind === "confession" && !active.pendingOutcome)
+    (decidesConfession(date) && !active.pendingOutcome)
   )
     return state;
-  const confessionStatus =
-    date.kind === "confession"
-      ? active.pendingOutcome!
-      : state.confessionStatus;
+  // A confession's outcome, or her answer to a deferral (accepted or rejected; 2026-11-13), is the confession status now.
+  const deciding = decidesConfession(date);
+  const confessionStatus = deciding ? active.pendingOutcome! : state.confessionStatus;
   // The date's main # on_done: (a place file's knot or a one-scene file's head), the first time it is finished.
   const doneScene = mainScene({ date: date.id });
   if (doneScene && !active.replay && !state.playedDateIds.includes(date.id))
@@ -467,7 +471,7 @@ export function finishDate(
   // A confession may follow a deferral (a later city's, or this one again when its writer made it repeatable; the
   // journeys' are played once, 2026-11-13); the first eventual acceptance still earns its one ending memory.
   // Commit this together with the ending, not while displaying the confession response.
-  if (date.kind === "confession" && confessionStatus === "accepted") {
+  if (deciding && confessionStatus === "accepted") {
     for (const effect of effects) {
       if (
         effect.outcome === "accepted" &&
@@ -485,10 +489,10 @@ export function finishDate(
     revision: state.revision + 1,
     activeDate: null,
     confessionStatus,
-    lastRejectedDateCount: date.kind === "confession"
+    lastRejectedDateCount: deciding
       ? (confessionStatus === "rejected" ? completedDateCount(state) : null)
       : state.lastRejectedDateCount,
-    recoveryAfterRejection: date.kind === "confession" ? false :
+    recoveryAfterRejection: deciding ? false :
       (state.confessionStatus === "rejected" && date.recovery ? true : state.recoveryAfterRejection),
     // Only a completed recovery counts as an experience; keep ordinary date IDs unchanged.
     completedRecoveryCount: date.recovery ? Math.min(3, state.completedRecoveryCount + 1) : state.completedRecoveryCount,

@@ -729,6 +729,55 @@
           "endingReached": true
         }
       ]
+    },
+    {
+      "id": "gt_jaipur_date_answer",
+      "kind": "answer",
+      "chapterId": "jaipur",
+      "titleJa": "夜のせいにしない返事",
+      "descriptionJa": "「待って」と言った後の、昼。彼女が先に宿を出て、ハワー・マハルの前で振り返る。",
+      "apCost": 0,
+      "minRomanceStage": 2,
+      "minAffection": 0,
+      "storyId": "places/gt_jaipur_hotel_hub_dates.gt_jaipur_date_answer",
+      "rewardOnlyOnce": true,
+      "backgroundId": "gt_bg_jaipur_hawa_mahal",
+      "repeatable": false,
+      "needsDeferred": true,
+      "choiceCount": 1,
+      "effectCount": 1,
+      "validationContexts": [
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "confessionResult": "rejected",
+          "endingReached": false
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": true,
+          "confessionResult": "accepted",
+          "endingReached": false
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "confessionResult": "rejected",
+          "endingReached": false
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "confessionResult": "accepted",
+          "endingReached": false
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": false,
+          "confessionResult": "rejected",
+          "endingReached": false
+        }
+      ]
     }
   ]
 }

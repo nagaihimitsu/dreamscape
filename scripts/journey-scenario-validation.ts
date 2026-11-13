@@ -2,7 +2,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { parseSceneConditions, readSceneConditions } from "./scene-conditions";
 import path from "node:path";
 import { isDeepStrictEqual } from "node:util";
-import { balanceSchema, presentationSchema } from "../src/content/schemas";
+import { balanceSchema, decidesConfession, presentationSchema } from "../src/content/schemas";
 import { splitStoryAddress } from "../src/content/story-address";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import type { SceneKind } from "../src/content/scene-schemas";
@@ -217,8 +217,8 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
                 confession_ready: seed.confessionReady, confession_result: seed.confessionResult ?? "deferred",
                 relationship_tone: tone, relationship_tone_before: tone, relationship_tone_after: tone };
               const key = JSON.stringify(Object.entries(variables).filter(([name]) => walk.compiled.includes(`"VAR?":"${name}"`)));
-              // No mini-game in a confession date (docs/13 1.4): its walk refuses the tag.
-              if (!walked.has(key)) walked.set(key, walkScene({ ...walk, context: { ...context, ...(date.kind === "confession" ? { miniGames: "confession" as const } : {}) },
+              // No mini-game in a confession date or her answer (docs/13 1.4): its walk refuses the tag.
+              if (!walked.has(key)) walked.set(key, walkScene({ ...walk, context: { ...context, ...(decidesConfession(date) ? { miniGames: "confession" as const } : {}) },
                 variables, romanceChoices: { knot: scene.knot, count: date.choiceCount } }));
               dateRoutes += walked.get(key)!;
             }
