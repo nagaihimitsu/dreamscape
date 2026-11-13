@@ -8,6 +8,7 @@ import { FreeTimeBackdrop } from "./FreeTimeBackdrop";
 import { FreeTimeCredits, FreeTimeExtras } from "./FreeTimeExtras";
 import { mapSticks, SIDE_BY_SIDE_QUERY } from "./free-time-layout";
 import { PhotoCardFreeTime } from "./PhotoCardFreeTime";
+import type { SeenCards } from "./photo-cards";
 import { freeTimePhotos } from "./PhotoCredits";
 import { TravelActions } from "./TravelActions";
 import { TravelMenu } from "./TravelMenu";
@@ -28,6 +29,8 @@ export type FreeTimeHubProps = {
   onTravelSleep: (mode: TravelRoute["mode"], viaPlaceId: string | null) => boolean;
   nextCityName?: string;
   onDepart: () => void;
+  /** The cards free time's row has shown during this play, per city (GameApp's memory): a card it has not is dealt in. */
+  seenCards?: { current: SeenCards };
 };
 
 /**
