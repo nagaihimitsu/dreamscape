@@ -10,7 +10,7 @@ describe("header text", () => {
   it("sets a long budget smaller, by its characters", () => {
     expect(moneyLength("€60")).toBe("regular");
     expect(moneyLength("₹30,000")).toBe("regular");
-    // Golden Triangle's budget until the final balance pass (₹3,000,000) is set smaller, like Laos' kip.
+    // A seven-digit amount is long whatever its currency, like Laos' kip.
     expect(moneyLength("₹3,000,000")).toBe("long");
     expect(moneyLength("₭2,000,000")).toBe("long");
     expect(moneyLength("soʻm 4,000,000")).toBe("longer");
