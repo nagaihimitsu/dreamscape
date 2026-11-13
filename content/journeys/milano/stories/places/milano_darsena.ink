@@ -145,7 +145,7 @@ INCLUDE modules.ink
 # speaker: enemy
 俺だったら、あの隙間に曲を入れた
 # speaker: heroine
-知ってます。だから今日は、私が持ってたんです
+知ってます。だから今日は、わたしが持ってたんです
 # speaker: narrator
 マイクを返すと、掌に網目がついていた。
 { battle_score >= 3:
@@ -175,7 +175,7 @@ INCLUDE modules.ink
 何か言いかけたよね。渡り切る前に聞きたい
 { cond("date milano_maurizio_date_sound"):
     # speaker: heroine
-    あの教会で、別々に見て戻ったときも思った。待ち合わせるの、私けっこう好きです
+    あの教会で、別々に見て戻ったときも思った。待ち合わせるの、わたしけっこう好きです
 }
 * [「恋人として、これからも会いたい」 # option: as_lovers]
     # memory: milano_confession_promise
@@ -194,7 +194,7 @@ INCLUDE modules.ink
 - confession_result == "accepted":
     # speaker: heroine
     # emotion: shy
-    うん。付き合いたい。私、明日何時に会うかまで、さっきから考えてた
+    うん。付き合いたい。わたし、明日何時に会うかまで、さっきから考えてた
     # speaker: player
     何時？
     # speaker: heroine
@@ -204,7 +204,7 @@ INCLUDE modules.ink
     彼女が先に手を出した。指が重なったところで、ようやく二人は橋の残り半分を渡った。
 - confession_result == "deferred":
     # speaker: heroine
-    うれしい。だからこそ、その勢いで「うん」って言うのを待って。私はもう少し、自分の言葉で考えたい
+    うれしい。だからこそ、その勢いで「うん」って言うのを待って。わたしはもう少し、自分の言葉で考えたい
     # speaker: player
     分かった。明日は、普通に会える？
     # speaker: heroine
@@ -246,7 +246,7 @@ INCLUDE modules.ink
 - romance_stage == 2:
 # speaker: heroine
 # emotion: smile
-次はそっちの好きな音も教えて。十秒、私が黙ってるから
+次はそっちの好きな音も教えて。十秒、わたしが黙ってるから
 - else:
 # speaker: heroine
 いまは、マイクなしで少しだけ歩きたいです。一緒にどうですか

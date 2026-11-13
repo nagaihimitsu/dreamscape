@@ -14,7 +14,7 @@ INCLUDE modules.ink
 サン・サティロ教会。祭壇の奥を見た彼女が「あれ」と言い、すぐ自分の口を押さえた。
 # speaker: heroine
 # emotion: teasing
-私、先に気づいちゃったかも。答えを言うのと、びっくりする顔を見るの、いま迷ってます
+わたし、先に気づいちゃったかも。答えを言うのと、びっくりする顔を見るの、いま迷ってます
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
@@ -39,7 +39,7 @@ INCLUDE modules.ink
     # profile: honest
     { romance_result == "negative":
         # speaker: heroine
-        言うと一瞬で終わっちゃう。私に五秒だけ我慢させて
+        言うと一瞬で終わっちゃう。わたしに五秒だけ我慢させて
     - else:
         # speaker: heroine
         えへへ。奥行きがあるように見えて、横に寄ると景色が薄くなるの
@@ -50,7 +50,7 @@ INCLUDE modules.ink
     # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
-        うーん、案内しすぎたら私が答えちゃう。好きに歩いてみて
+        うーん、案内しすぎたらわたしが答えちゃう。好きに歩いてみて
     - else:
         # speaker: heroine
         ここ。靴一足ぶんだけ横へ。あっ、今の眉、ちゃんと見たよ
@@ -69,10 +69,10 @@ INCLUDE modules.ink
     # memory: sound_memory_san_satiro_date_01
     { romance_result == "negative":
         # speaker: heroine
-        今日はちゃんと建物も見て。私、一緒に見たくて誘ったの
+        今日はちゃんと建物も見て。わたし、一緒に見たくて誘ったの
     - else:
         # speaker: heroine
-        そこ見てたの？　教会より私が分かりやすかったの、ちょっと悔しい
+        そこ見てたの？　教会よりわたしが分かりやすかったの、ちょっと悔しい
     }
     -> join_2
 
@@ -93,10 +93,10 @@ INCLUDE modules.ink
     # memory: sound_memory_san_satiro_date_01
     { romance_result == "negative":
         # speaker: heroine
-        次は隣にいてほしいな。今の顔、私ももう一回見たい
+        次は隣にいてほしいな。今の顔、わたしももう一回見たい
     - else:
         # speaker: heroine
-        それ、やってみよう。私が先に答えそうになったら指一本ね
+        それ、やってみよう。わたしが先に答えそうになったら指一本ね
     }
     -> join_2
 
