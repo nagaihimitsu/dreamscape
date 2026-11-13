@@ -56,6 +56,27 @@ describe("check 9: a then: epilogue at a stage-4 moment (3.3, 3.9 (d))", () => {
   });
 });
 
+describe("a date's # hint: (2026-11-13)", () => {
+  const TOWER = "stories/places/smp_mihon_clock_tower.ink";
+  const DATE = "smp_mihon_date_tower_square";
+
+  it("goes into the date's hintJa, and stops one written in the catalog too", () => {
+    expect(validateContent(sample).dates.find((date) => date.id === DATE)?.hintJa).toBe("時計塔の番人と話したあとで");
+    const twice = sampleWith({ "romance/date_catalog.json": (text) => {
+      const catalog = JSON.parse(text) as { dates: Record<string, unknown>[] };
+      return JSON.stringify({ ...catalog, dates: catalog.dates.map((date) => (date.id === DATE ? { ...date, hintJa: "もう一つ" } : date)) });
+    } });
+    expect(() => validateContent(twice)).toThrow(`The hint of date ${DATE} is written twice`);
+  });
+
+  it("stops a hint at the top of a one-scene file that is not a date, and warns for a date without a when", () => {
+    expect(() => validateContent(sampleWith({ "stories/tourism/smp_mihon_market_guide.ink": (text) =>
+      text.replace('VAR player_address = ""\n', 'VAR player_address = ""\n# hint: 朝市のあとで\n') }))).toThrow("# hint: is a date's head tag");
+    const withoutWhen = validateContent(sampleWith({ [TOWER]: (text) => text.replace("# when: episodes mihon >= 1\n", "") }));
+    expect(withoutWhen.warnings).toContainEqual({ kind: "scene-tag", message: expect.stringContaining(`鍵の札が出ないデートです：${DATE}`) });
+  });
+});
+
 describe("the warnings of every moment (2.5, 2.6)", () => {
   it("names a moment that never opens, and the sample's -1 of two files at the finale (they run in file name order)", () => {
     const knot = (name: string, at: string) => `\n=== ${name} ===\n# scene: talk\n# at: ${at}\n# priority: -1\n# sources: none\n# speaker: heroine\n「うん」\n-> END\n`;
