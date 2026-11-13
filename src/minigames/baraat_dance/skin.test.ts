@@ -2,6 +2,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { baraatDance } from "./definition";
+import { rhythmTapEnd } from "../engines/rhythm_tap/engine";
 import { baraatSkin } from "./Skin";
 
 // The baraat dance's art slots (docs/13 2.12): a use's pictures in place of the drawn drum and of the standing pictures
@@ -34,8 +35,9 @@ describe("the baraat dance's field", () => {
     expect(html).not.toContain(`class="mg-baraat-dance-drum"`);
   });
 
-  it("has no stop button: the dance ends with the drum", () => {
+  it("has no stop button: the dance ends with the drum, within 14 s left alone (the generic E2E waits 15 s after 続ける)", () => {
     expect(baraatSkin.stop).toBeNull();
     expect(baraatSkin.actionJa).toBe("踊る");
+    expect(rhythmTapEnd(baraatSkin.tuning) + baraatSkin.endDelayMs("stood_still", false)).toBeLessThan(14_000);
   });
 });

@@ -10,17 +10,17 @@ export type BaraatParams = object;
 /** The drum's tempo (its own: not the scene's music, docs/13 2.11), its count-in and the beats to dance. */
 export const BARAAT_BPM = 96;
 export const BARAAT_COUNT_IN = 4;
-export const BARAAT_BEATS = 18;
+export const BARAAT_BEATS = 16;
 export const BARAAT_INTERVAL_MS = rhythmTapInterval(BARAAT_BPM);
 /** The count-in's four drum beats (before the first to dance), from 0.6 s. */
 export const BARAAT_COUNT_IN_BEATS = rhythmTapBeats({ firstMs: 600, count: BARAAT_COUNT_IN, intervalMs: BARAAT_INTERVAL_MS });
 
-/** About 14 s: the count-in, then 18 beats; generous windows, wider late (the drum is heard after it is seen). */
+/** About 13 s: the count-in, then 16 beats; generous windows, wider late (the drum is heard after it is seen). */
 export const BARAAT_TUNING: RhythmTapTuning = {
   beats: rhythmTapBeats({ firstMs: BARAAT_COUNT_IN_BEATS[BARAAT_COUNT_IN - 1] + BARAAT_INTERVAL_MS, count: BARAAT_BEATS, intervalMs: BARAAT_INTERVAL_MS }),
   earlyMs: 120,
   lateMs: 180,
-  endAfterMs: 700,
+  endAfterMs: 600,
 };
 
 /** In step: this many of the beats met (70%). */

@@ -3,7 +3,7 @@ import { defineMiniGame } from "../contract";
 
 /**
  * `baraat_dance` (a skin of `rhythm_tap`): the Jaipur finale's last moment, dancing in the groom's procession. The
- * band's drum counts four, then beats steadily (96 a minute) for 18 beats; the player taps 「踊る」 on each. Most
+ * band's drum counts four, then beats steadily (96 a minute) for 16 beats; the player taps 「踊る」 on each. Most
  * beats met is `in_step`; taps mostly between the beats, `stumble`; no tap at all, `stood_still`; anything else,
  * `off_beat_together` (the finale's own words: 「下手なのは、二人とも同じだから」). The outcome changes only the closing
  * lines' colour, never the ending.
@@ -19,10 +19,10 @@ export const baraatDance = defineMiniGame({
   id: "baraat_dance",
   engine: "rhythm_tap",
   titleJa: "花婿の行列で踊る",
-  howToJa: "楽隊の太鼓が4つ数えてから、太鼓が鳴るたびに「踊る」を押す（約14秒）",
+  howToJa: "楽隊の太鼓が4つ数えてから、太鼓が鳴るたびに「踊る」を押す（約13秒）",
   outcomes: [
-    { id: "in_step", labelJa: "拍に乗って踊れた", noteJa: "18拍のうち13拍以上に合わせた" },
-    { id: "off_beat_together", labelJa: "ずれたまま、二人で踊った", noteJa: "押したが、合ったのは12拍まで" },
+    { id: "in_step", labelJa: "拍に乗って踊れた", noteJa: "16拍のうち12拍以上に合わせた" },
+    { id: "off_beat_together", labelJa: "ずれたまま、二人で踊った", noteJa: "押したが、合ったのは11拍まで" },
     { id: "stumble", labelJa: "足がもつれた", noteJa: "拍の合間に押した数が、合った数より多い" },
     { id: "stood_still", labelJa: "立ったままだった", noteJa: "一度も押さなかった" },
   ],
