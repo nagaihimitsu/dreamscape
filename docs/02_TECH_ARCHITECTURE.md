@@ -190,7 +190,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 
 - ストーリーIDは、その層の `stories/` からの相対パスから `.ink` を除いたもの（例：`content/journeys/milano/stories/dates/milano_date_confession.ink` → `dates/milano_date_confession`）。旅行編フォルダ名は含まない。複数の旅行編が `stories/battles/` のような同じフォルダ名を使えるため、ファイル名（または旅行編専用のサブフォルダ）でIDが重ならないようにする。1つのファイルに場面をいくつも書く「場所のファイル」（`places/<頭>_<場所>`）では、場面の住所は「ストーリーID＋knotの名前」で、knotの名前が場面のIDになる（保存に入る。扱いは [必要な安定ID](07_DATA_AND_TESTS.md#必要な安定id) の道中交流のIDと同じ）。knotの名前を変えると、その場面を記録したセーブは、理由を出して再開を断る（データは残す）。ファイルの間で移すだけなら、場面のIDは変わらない。
 - 都市・地点・観光地・発見・画像・背景・思い出・効果・デート・行き先・エピソード・報酬・対決・クイズ・問題・道中交流・品物・旅行編のIDは、すべての旅行編で共有する一つの名前空間にある。保存データもこれらのIDを記録するため、公開後は変更しない（例外として、セーブ版 v14 で一度だけ改名した。以後は変えない。[セーブの版](07_DATA_AND_TESTS.md#セーブの版)）。乗り物のID（`transportModes[].id`）は旅行編の中だけで一意（2つの旅行編が同じ `taxi` を使える）だが、保存データ（`travel.rentedModeIds`・`travel.rideCounts`）に入るので、同じく公開後は変えない。品物を渡す・使う道中交流の選択肢のID（Inkの `# option:`）も保存データ（`itemUses`）に入るので、公開後は変えない。
-- 新しい旅行編では、`manifest.json` の `authoring.eventPrefix` と同じ接頭辞をIDとストーリーのファイル名に付けることを推奨する（インド編 `gt_`、ウズベキスタン編 `uz_`、ルアンパパーン編 `lpb_`）。地点ID（観光地・デートの行き先・移動の地点）は都市IDを接頭辞にする（例：`delhi_red_fort`）。都市ごとに1本のストーリーは都市IDをファイル名にしてよい（例：`arrivals/delhi`・`epilogues/delhi`）。英語ノートの話題ID（`learning/details.json` の `topics[].id`）も全旅行編で重ならないよう同じ接頭辞を付ける（例：`gt_which_subject`）。ミラノ編は接頭辞を持たない。ストーリー・クイズ・問題は下の「IDの付け方」に合わせて頭を `milano` にした（セーブ版 v14）。対決・デート・エピソード・報酬などのIDは作成時からの名前（`milano_duomo_01` など）のままで、効果・思い出・英語ノートの話題・背景の一部には `sound_` が残る（Inkのタグと保存データに入る名前のため）。`authoring.eventPrefix` を持つ旅行編でこの決まりに合わないIDは、`content:build` が警告する（ミラノ編は接頭辞を持たないため対象外。既存の例外は `UNPREFIXED_ID_EXCEPTIONS`）。対象は、カタログの項目のID（対決・道中交流・品物・人物・エピソード・報酬・デート・行き先・効果・画像・観光地・発見）、背景・思い出、英語ノートの話題、ストーリー、クイズと問題、都市の `firstClearReward.rewardSourceId`、移動の地点とイベント。
+- 新しい旅行編では、`manifest.json` の `authoring.eventPrefix` と同じ接頭辞をIDとストーリーのファイル名に付けることを推奨する（インド編 `gt_`、ウズベキスタン編 `uz_`、ルアンパパーン編 `lpb_`）。地点ID（観光地・デートの行き先・移動の地点）は都市IDを接頭辞にする（例：`delhi_red_fort`）。1場面1ファイルで都市ごとに1本のストーリーは、都市IDをファイル名にしてよい（例：`arrivals/<都市ID>`・`epilogues/<都市ID>`）。英語ノートの話題ID（`learning/details.json` の `topics[].id`）も全旅行編で重ならないよう同じ接頭辞を付ける（例：`gt_which_subject`）。ミラノ編は接頭辞を持たない。ストーリー・クイズ・問題は下の「IDの付け方」に合わせて頭を `milano` にした（セーブ版 v14）。対決・デート・エピソード・報酬などのIDは作成時からの名前（`milano_duomo_01` など）のままで、効果・思い出・英語ノートの話題・背景の一部には `sound_` が残る（Inkのタグと保存データに入る名前のため）。`authoring.eventPrefix` を持つ旅行編でこの決まりに合わないIDは、`content:build` が警告する（ミラノ編は接頭辞を持たないため対象外。既存の例外は `UNPREFIXED_ID_EXCEPTIONS`）。対象は、カタログの項目のID（対決・道中交流・品物・人物・エピソード・報酬・デート・行き先・効果・画像・観光地・発見）、背景・思い出、英語ノートの話題、ストーリー、クイズと問題、都市の `firstClearReward.rewardSourceId`、移動の地点とイベント。
 
 ### IDの付け方
 
@@ -198,19 +198,20 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 
 | 種類 | ストーリーID（`stories/` の下の場所と同じ） | クイズID（ファイル名も同じ） |
 | --- | --- | --- |
-| 通常戦 | `battles/<頭>_main_<観光地>`（場所のファイル `places/<頭>_<観光地>` の knot にも書ける。knot の名前はバトルID。インド編・ミラノ編） | `<頭>_main_<観光地>_quiz` |
-| 特殊戦B・C | `battles/<頭>_special_b_<観光地>`（Cは `special_c`。場所のファイルの knot にも書ける。knot の名前はバトルIDで、手伝いの knot は `<バトルID>_claim`・`_press`。ミラノ編） | `<頭>_special_b_<観光地>_quiz` |
-| 都市フィナーレ | `battles/<頭>_finale`（会場の場所のファイルの knot にも書ける。knot の名前はバトルID。インド編・ミラノ編。ミラノの会場はダルセナ `places/milano_darsena`） | `<頭>_finale_quiz` |
-| 観光案内 | `tourism/<頭>_<観光地>_guide`（場所のファイルの knot にも書ける。インド編の knot は `<頭>_<観光地>_guide`、ミラノ編は `<観光地ID>_guide`） | なし |
-| デート・恋愛の出来事 | `dates/<頭>_date_<行き先・出来事>`（行き先の場所のファイルの knot にも書ける。knot の名前はデートID。インド編・ミラノ編。ミラノ編の告白のデートは `dates/milano_date_confession` のまま） | なし |
-| 道中交流 | `encounters/<頭>_<交流>`（くじの結果は `_won`・`_lost`・`_already`。観光地の場所のファイルの knot にも書ける。knot の名前は交流ID。見本の編・ミラノ編。ミラノ編のガッレリアの願掛けとその結果は `encounters/` のまま） | なし |
-| 到着・エピローグ | `arrivals/<都市ID>`、`epilogues/<都市ID>`（宿の場所のファイル `places/<頭>_hotel_hub` の knot `<頭>_arrival`・`<頭>_epilogue` にも書ける。インド編。ミラノ編のエピローグは会場の場所のファイルの knot `milano_epilogue`） | なし |
+| 通常戦 | `places/<頭>_<観光地>.<バトルID>`（観光地の場所のファイルの knot。knot の名前はバトルID） | `<頭>_main_<観光地>_quiz` |
+| 特殊戦B・C | `places/<頭>_<観光地>.<バトルID>`（バトルIDは `<頭>_special_b_<観光地>`、Cは `special_c`。手伝いの knot は `<バトルID>_claim`・`_press`） | `<頭>_special_b_<観光地>_quiz` |
+| 都市フィナーレ | `places/<頭>_<会場>.<バトルID>`（会場の地点の場所のファイルの knot。バトルIDは `<頭>_finale_battle`） | `<頭>_finale_quiz` |
+| 観光案内 | `places/<頭>_<観光地>.<頭>_<観光地>_guide`（観光地の場所のファイルの knot） | なし |
+| デート・恋愛の出来事 | `places/<頭>_<地点>.<デートID>`（デートの地点の場所のファイルの knot。デートIDは `<頭>_date_<行き先・出来事>`） | なし |
+| 道中交流・会話 | `places/<頭>_<場所>.<交流ID>`（交流IDは `<頭>_<交流>`） | なし |
+| 到着・エピローグ | `places/<頭>_<宿>.<頭>_arrival`・`<頭>_epilogue`（宿の場所のファイルの knot。例：`places/gt_delhi_hotel_hub.gt_delhi_epilogue`） | なし |
 | 場所のファイル（その場所の場面をまとめる） | `places/<頭>_<場所>`（場所は観光地・デートの行き先・地図の地点のIDから都市名を除いた名前。例：`places/gt_delhi_red_fort`、`places/gt_delhi_lodhi_garden`、`places/gt_delhi_hotel_hub`）。一つの場所の場面は、`_<内容>` を付けた別のファイルに分けてもよい（例：宿の屋上の告白と「待って」の後の `places/gt_delhi_hotel_hub_dates`）。ツアーの行程の場面は、ツアーIDの名前の場所のファイル（`places/<ツアーID>`、例：`places/gt_agra_tour_fatehpur_sikri`） | なし |
 | 英語ノートの解説 | `learning/<頭>_english`（編に1本だけなら `learning/<接頭辞>_english` でもよい。2本目からは `learning/<頭>_<話題>_english`） | なし |
 
+- 1場面1ファイル（1つの場面を1本のInkに書く形）も、今も使える。置き場所と名前は `battles/<頭>_main_<観光地>`（特殊戦は `battles/<頭>_special_b_<観光地>`、フィナーレは `battles/<頭>_finale`）、`tourism/<頭>_<観光地>_guide`、`dates/<頭>_date_<行き先・出来事>`、`encounters/<頭>_<交流>`（くじの結果は `_won`・`_lost`・`_already`）、`arrivals/<都市ID>`・`epilogues/<都市ID>`。クイズとくじのある道中交流は、この形で書く。
 - 使う文字は英小文字・数字・`_` だけ。英語のレベル（`B1`）や連番（`_01`）は名前に入れない。番号で区別せず、違いを表す語を選ぶ。
 - 会話の名前の「観光地」は、観光地IDから都市名を除いた名前（`delhi_red_fort` → `red_fort`）。ミラノは対決IDで使っている短い名前（`duomo`、`galleria`、`last_supper`、`castello`、`la_scala`、`brera`）。デートの「行き先・出来事」は、行き先IDから都市名を除いた名前。2つのデートが同じ行き先を使うときや行き先がないときは、出来事を表す語（`milano_date_confession`）。
-- 通常戦の会話の名前は、その観光の出来事・エピソードのIDと同じにする（`journey:scaffold` も同じ名前を作る）。
+- 通常戦の knot の名前はバトルID（`journey:scaffold` もこの名前を作る。その観光の出来事・エピソードのIDでもよい。1場面1ファイルなら、ファイルの名前を出来事のIDと同じにする）。
 - クイズのファイル名はクイズIDと同じにする（`quizzes/<クイズID>.json`、例のクイズは `quizzes/<クイズID>.example.json`）。違うと `content:build` が止まる。
 
 問題ID ＝ `<頭>_<観光地>_<要点>`。対決のクイズ・例のクイズ・道中交流のクイズに使う。
@@ -237,12 +238,12 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 
 ### 新しい編を追加する手順
 
-新しい旅行編は、見本の編 [`authoring/templates/sample_trip/`](../authoring/templates/sample_trip/README.md) を複製する `npm run journey:new` で作る。見本は1都市で観光案内・通常戦・デート・都市フィナーレ・エピローグまで遊べる20ファイルと、任意の特殊戦B・C・道中交流を持ち、その README に必須のファイルと、外したときに `content:build` が出すエラーを一覧している（下の「見本の編」）。各ファイルの書き方は見本で確かめられ、`npm run dev:sample` で実際に遊べる。
+新しい旅行編は、見本の編 [`authoring/templates/sample_trip/`](../authoring/templates/sample_trip/README.md) を複製する `npm run journey:new` で作る。見本は1都市で観光案内・通常戦・デート・都市フィナーレ・エピローグまで遊べる19ファイルと、任意の特殊戦B・C・道中交流を持ち、その README に必須のファイルと、外したときに `content:build` が出すエラーを一覧している（下の「見本の編」）。各ファイルの書き方は見本で確かめられ、`npm run dev:sample` で実際に遊べる。
 
 1. 旅行編ID・都市ID・IDの接頭辞と日本語名を決め、`npm run journey:new -- <旅行編ID> --name <旅行編の日本語名> --city <都市ID> --city-name <都市の日本語名> [--prefix <接頭辞>] [--with-optional]` を実行する（例：`npm run journey:new -- kyoto_trip --name 京都の旅 --city kyoto --city-name 京都 --prefix ky`）。
    - 見本を `content/journeys/<旅行編ID>/` に複製し、見本の旅行編ID `sample_trip`・接頭辞 `smp`・都市ID `mihon` を、IDの一部（`smp_mihon_finale` → `ky_kyoto_finale`）・ストーリーID・ファイル名・画像のパスも含めて置き換える。`--prefix` を省くと旅行編IDを接頭辞にする。任意の部分（特殊戦B・C、品物つきの道中交流）は `--with-optional` を付けたときだけ複製する。
    - 作った旅行編は準備中（`manifest.json` の `status: "preparing"`、都市は `productionStatus: "prototype"`）で、並び順 `order` は既存の旅行編の最大値の次の10の倍数（見本の予約 9000 は使わない）、観光画像はすべて仮の扱い（`isPlaceholder: true`）。`manifest.json` の `nameJa`・`cities[].nameJa` と都市の `nameJa` は指定した日本語名で、`authoring`（`eventPrefix`・観察資料のパス・画像フォルダ）を必ず持つので、接頭辞の警告と `journey:readiness`・`journey:release`・`city:bundle` がすぐに使える。`journey:scaffold`（観察ポイントからの登録の生成）は観察資料 `authoring/journeys/<旅行編ID>/drafts/observation-cards.json`（`journey:new` はパスだけを決め、ファイルは作らない）に、仮でない JPEG または WebP の観光画像ごとの記録（パスと SHA-256）と出典を確かめた観察ポイントを置いてから、`journey:transit` は、`transportModes` に乗り物を宣言したら都市ごとの交通判断台帳を置いて使う（乗り物を宣言しないうちは徒歩だけで台帳は要らない。上の「乗り物と交通判断台帳」。[JOURNEY_AUTHORING](../authoring/JOURNEY_AUTHORING.md)。見本の画像は PNG なので、そのままでは使えない）。置き換えるものの一覧を `CHECKLIST.md` に書く（`.md` は読み込まれない）。
-   - 日本語名（`--name`・`--city-name`）は必須で、省略時の既定値はない。形式に合わないID、見本の名前（上の「予約された名前」）を含むID・接頭辞、既にある旅行編ID（フォルダ）と都市ID、他の旅行編の `authoring.eventPrefix` と同じ接頭辞、既にあるIDが `<接頭辞>_` で始まる接頭辞（接頭辞を宣言していないミラノ編の `milano_…` や `duomo_…`、共通データのIDも含む）を拒否し、作った内容が `content:build` と同じ検証を通らないとき（例：ストーリーIDの重複）も何も書き込まない。書き込みは `content/journeys/.new-…`（ドットで始まるフォルダは読み込まれない）に書いてから名前を変える。
+   - 日本語名（`--name`・`--city-name`）は必須で、省略時の既定値はない。形式に合わないID、見本の名前（上の「予約された名前」）を含むID・接頭辞、既にある旅行編ID（フォルダ）と都市ID、他の旅行編の `authoring.eventPrefix` と同じ接頭辞、既にあるIDが `<接頭辞>_` で始まる接頭辞（接頭辞を宣言していないミラノ編の `milano_…` や `duomo_…`、共通データのIDも含む）を拒否し、作った内容が `content:build` と同じ検証を通らないとき（例：地点IDの重複）も何も書き込まない。書き込みは `content/journeys/.new-…`（ドットで始まるフォルダは読み込まれない）に書いてから名前を変える。
 2. `npm run content:build` を実行し、`npm run dev` のタイトル画面に旅行編が「準備中」として並ぶこと、`?debug` で都市が「制作中」として選べることを確認する。`npm run journey:readiness -- --journey <旅行編ID>` で、残っている見本の内容と未完成の項目（仮の画像など）を確かめる。
 3. `CHECKLIST.md` に沿って、実在する著名な観光地、実際に確認した出典、権利を確認した画像、新しい文章に置き換える（AGENTS.md、[CONTENT_GUIDE](../authoring/CONTENT_GUIDE.md)。ヒロインの台詞は [キャラクターバイブル](09_HEROINE_CHARACTER_BIBLE.md) を読んでから書く）。旅行編の `currency`・`initialBudget`・`cityPlan` なども決める。タイトルの絵は任意の `titleArt` で後から付けられる（下の「既定背景とタイトルの絵」）。見本の出典（`https://example.com/` のURL）、見本と同じ画像、見本の文章が残っているうちは、readiness が `sample_content_left` として一覧し、`journey:release` は公開を止める（下の「見本の編」）。
 4. 都市を増やすときは、都市ごとに `cities/<都市ID>.json`（最初は `productionStatus: "prototype"`。`nameJa` は `manifest.json` の `cities[].nameJa` と同じにする）、`travel/<都市ID>.json`、`travel/<都市ID>-settings.json`（旅行編が乗り物を宣言していれば `travel/<都市ID>-transit.json` も。上の「乗り物と交通判断台帳」）を置く。都市別の作業用JSON（[CITY_BUNDLES](../authoring/CITY_BUNDLES.md)）で作成・反映してもよい。複数の都市を回る旅行編では、各都市の `nextCityId` で同じ旅行編の次の都市をつなぐ（[FUTURE_CITIES](../authoring/FUTURE_CITIES.md) の手順5）。観察資料と画像を用意した後は、観光地・デートの登録に `journey:scaffold`（[JOURNEY_AUTHORING](../authoring/JOURNEY_AUTHORING.md)。手順1の注意）も使える。
@@ -258,7 +259,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 
 ### 見本の編
 
-`authoring/templates/sample_trip/` は、開発・テスト専用の遊べる最小の旅行編「見本の旅」（旅行編ID `sample_trip`、都市 `mihon`「見本の街」、接頭辞 `smp_`、`order: 9000`）。必須の20ファイル（登録・都市・移動と設定・背景・デートの行き先と通常デート1件・観光地と観察ポイント・進行と報酬・通常戦3問と都市フィナーレ5問・和訳・語の意味・Ink 5本・自作画像1枚）と、任意の特殊戦B・特殊戦C・品物つきの道中交流を持つ。ファイルの一覧と役割、外したときのエラー、任意の部分の外し方はその [README](../authoring/templates/sample_trip/README.md)、各Inkの書き方はファイル冒頭のコメントにある。
+`authoring/templates/sample_trip/` は、開発・テスト専用の遊べる最小の旅行編「見本の旅」（旅行編ID `sample_trip`、都市 `mihon`「見本の街」、接頭辞 `smp_`、`order: 9000`）。必須の19ファイル（登録・都市・移動と設定・背景・デートの行き先と通常デート1件・観光地と観察ポイント・進行と報酬・話し手の人物・通常戦3問と都市フィナーレ5問・和訳・語の意味・場所のファイルのInk 2本（時計塔と宿）・自作画像1枚・アルバムの絵1枚）と、任意の特殊戦B・特殊戦C・品物つきの道中交流を持つ。ファイルの一覧と役割、外したときのエラー、任意の部分の外し方はその [README](../authoring/templates/sample_trip/README.md)、各Inkの書き方はファイル冒頭のコメントにある。
 
 - 架空であること：街・人物・言い伝え・出典・画像はすべて架空で、AGENTS.md の実在地と出典の規則の例外として認められている（開発・テスト専用に限る）。出典は `https://example.com/dreamscape-sample`、`claimJa` は「見本用の架空の…」で始め、画像は図形だけの自作PNG（CC0）。本番の旅行編にこれらを残さない。
 - 読み込み：`content/journeys/` の外にあるため、通常の `npm run content:build`・`npm run dev`・`npm run build`・制作ツール（`journey:readiness`・`city:bundle`・`journey:release` など）は読まない。`scripts/content-sources.ts` の `loadContentSources(root, { extraJourneyDirectories })` に明示したフォルダだけを旅行編として加え（フォルダ名が旅行編ID。`root` の中で `content/` の外にあり、`content/journeys/` の旅行編と同じ名前でないこと）、統合・所有・画像の検査は `content/journeys/` の旅行編と同じに行う。`npm run content:build -- --with-sample` はこの方法で見本を加え、`src/content/generated/build-info.json` に記録する。`npm run dev:sample` は見本を含めて生成してから開発サーバーを起動する。
@@ -336,7 +337,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 - **正解のためと決め**（2026-11-13のユーザー判断。`src/features/battle/answer-beat.ts`、単体テストあり）：その画面で正解を選ぶと、選んだ札を押したまま 0.15 秒（`CORRECT_HOLD_MS`。二度押しを無視する 0.35 秒の内側なのでタップは遅れない）ほかを何も変えずに止め、次に札に金色の光の輪と `quiz_correct`、それから今までの判・解説・ヒロインの一言を出す。動きを減らす設定では止めず光だけ。不正解は今までどおり静か（通常のクイズは音と札の小さな揺れだけ）。採点と保存は先に済んでいる。
 - **クイズの画面のヒロインの言葉**（2026-11-11、任意）：ヒントは、ヒロインの小さな顔（`CharacterFace`）と「（名前）の耳打ち」の吹き出し（`src/features/battle/HeroineNote.tsx`）で、問いの下にいつも出す（開く・閉じるボタンはない。2026-11-11のユーザー判断）。問いの `hintHeroineJa` があればその言葉、なければ `hintJa`。正解の解説の下には、問いの `heroineCorrectJa` があるときだけ、彼女の一言を同じ形で出す。どちらも対決のクイズの問い（`battleQuestionSchema`）だけの任意の項目。
 - **答えの後の写真の種明かし**（2026-11-11のユーザー判断、任意）：問いに `revealRegion`（観察の `region` と同じ形。`src/content/tourism-schemas.ts` の `imageRegionSchema`）があると、正誤と解説（と彼女の一言）の下に、対決の観光地の写真（背景と同じファイル）を小さな枠（写真の縦横比で、高さは180pxと画面の高さの28%の小さいほうまで、高さ599px以下の画面では120pxまで）で出し、その範囲へゆっくり寄って囲む（`src/features/battle/LandmarkReveal.tsx`、寄り方は `reveal-zoom.ts` の `revealZoom`、単体テストあり。動きを減らす設定では寄らずにすぐ囲む）。任意の `revealCaptionJa` は下の1行。写真の下に手がかり帳の写真と同じ出典の1行（`ImageCreditLine`）を出す（⚙設定の「画像の出典」も同じ写真）。写真の外の範囲・都市フィナーレの問い・観光地の写真がない問いは `content:build` が止める（`scripts/battle-validation.ts` の `revealRegionProblem`）。書かなければ今までどおり。
-- **新しい旅行編**：`journey:scaffold`（とそれを使う `journey:release`）は、対決を1本の流れで作る。`journey:scenario` は、対決の脚本（下書きも公開済みも）を `content:build` と同じく歩いて確かめ、`INCLUDE modules.ink` で始まらない対決の脚本を止める。`journey:new` は見本の編（1本の流れ）を写す。
+- **新しい旅行編**：`journey:scaffold`（とそれを使う `journey:release`）は、対決を1本の流れで作る。`journey:scenario` は、下書きの場所のファイルの対決の knot を `content:build` と同じく歩いて確かめる（公開済みの knot は `content:build` が歩く）。`journey:new` は見本の編（1本の流れ）を写す。
 
 ## レイヤー間の依存
 - `screens/components` → アプリ操作サービス → `domain` 純粋関数 → `persistence`

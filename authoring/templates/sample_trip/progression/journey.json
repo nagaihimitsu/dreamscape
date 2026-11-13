@@ -26,7 +26,7 @@
           { "battlePlayed": "smp_mihon_special_c_library" }
         ]
       },
-      "epilogueStoryId": "epilogues/mihon",
+      "epilogueStoryId": "places/smp_mihon_hotel.smp_mihon_epilogue",
       "battleId": "smp_mihon_finale_battle",
       "titleJa": "時計を動かす日",
       "descriptionJa": "町長のハンナが、時計を動かす図面を広げている。",

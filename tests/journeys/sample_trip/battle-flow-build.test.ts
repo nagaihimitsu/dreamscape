@@ -12,7 +12,9 @@ import { validateContent } from "../../../scripts/content-validation";
 const repository = path.resolve(".");
 const prefix = `${SAMPLE_JOURNEY_DIRECTORY}/`;
 const TOWER = "stories/places/smp_mihon_clock_tower.ink";
-const MARKET = "stories/battles/smp_mihon_special_b_market.ink";
+const MARKET = "stories/places/smp_mihon_market.ink";
+/** The market's special battle as a one-scene file (a form content:build still accepts), made in memory by oneSceneMarket. */
+const MARKET_FILE = "stories/battles/smp_mihon_special_b_market.ink";
 const CATALOG = "battles/catalog.json";
 let sample: ContentSources;
 
@@ -20,7 +22,7 @@ beforeAll(() => {
   sample = selectJourneys(loadContentSources(repository, { extraJourneyDirectories: [SAMPLE_JOURNEY_DIRECTORY] }), [SAMPLE_JOURNEY_ID]);
 });
 
-function sampleWith(changes: Record<string, (text: string) => string>): ContentSources {
+function sampleWith(changes: Record<string, (text: string) => string>, added: Record<string, string> = {}): ContentSources {
   const files = new Map(sample.tree.files);
   for (const [file, change] of Object.entries(changes)) {
     const before = files.get(`${prefix}${file}`)!.toString("utf8");
@@ -28,6 +30,7 @@ function sampleWith(changes: Record<string, (text: string) => string>): ContentS
     expect(after, `${file} unchanged`).not.toBe(before);
     files.set(`${prefix}${file}`, Buffer.from(after));
   }
+  for (const [file, text] of Object.entries(added)) files.set(`${prefix}${file}`, Buffer.from(text));
   return contentSourcesFromTree({ ...sample.tree, files });
 }
 /** The text with one exact part replaced (the part must be there once). */
@@ -40,6 +43,18 @@ const battleEntry = (id: string, change: (battle: Record<string, unknown>) => vo
   change(catalog.battles.find((battle) => battle.id === id)!);
   return JSON.stringify(catalog);
 };
+/**
+ * The sample with the market's special battle as a one-scene file (MARKET_FILE): `top`, then the knot's lines (without its
+ * # scene:) and its helper knots, changed by `change`; the catalog points at the file, and the place file keeps its guide only.
+ */
+function oneSceneMarket(top: string, change: (text: string) => string = (text) => text): ContentSources {
+  const place = sample.tree.files.get(`${prefix}${MARKET}`)!.toString("utf8");
+  const start = place.indexOf("=== smp_mihon_special_b_market ===\n");
+  const body = place.slice(start).split("\n").slice(1).filter((line) => !/^\s*#\s*scene\s*:/u.test(line)).join("\n");
+  return sampleWith({ [MARKET]: (text) => text.slice(0, start),
+    [CATALOG]: battleEntry("smp_mihon_special_b_market", (battle) => { battle.storyId = "battles/smp_mihon_special_b_market"; }) },
+  { [MARKET_FILE]: change(`${top}${body}`) });
+}
 
 describe("a battle's one flow (stage 5)", () => {
   it("builds the sample's four battles and walks every quiz answer and reasoning action", () => {
@@ -86,10 +101,10 @@ describe("a battle's one flow (stage 5)", () => {
     const result = validateContent(withChoice);
     expect(result.scenes.scenes.find((scene) => scene.id === "smp_mihon_main_clock_tower")!.options).toEqual([
       { id: "ask_why", knot: "smp_mihon_main_clock_tower", rel: { trust: 1 } }, { id: "legend_first", knot: "smp_mihon_main_clock_tower" }]);
-    // A choice without # option: (no effects) in a one-scene battle: walked with the battle's calls answered.
+    // A choice without # option: (no effects) in a special battle's knot: walked with the battle's calls answered.
     expect(() => validateContent(sampleWith({ [MARKET]: swap("-> quiz(1) ->\n", "* [「へえ」]\n    「へえ」\n* [「なるほど」]\n    「なるほど」\n- \n-> quiz(1) ->\n") }))).not.toThrow();
-    // A one-scene battle's choices too.
-    const inFile = validateContent(sampleWith({ [MARKET]: swap("-> quiz(1) ->\n", "+ [「パンの話を」 # option: bread]\n    # rel: affection +1\n- \n-> quiz(1) ->\n") }));
+    // A one-scene battle's choices too (the market's battle as a one-scene file).
+    const inFile = validateContent(oneSceneMarket("INCLUDE modules.ink\n", swap("-> quiz(1) ->\n", "+ [「パンの話を」 # option: bread]\n    # rel: affection +1\n- \n-> quiz(1) ->\n")));
     expect(inFile.scenes.scenes.find((scene) => scene.id === "smp_mihon_special_b_market")!.options).toEqual([{ id: "bread", knot: "smp_mihon_special_b_market", rel: { affection: 1 } }]);
     // Every choice needs something (here: an item it gives) at a choice point no head guarantees: A10 stops it.
     expect(() => validateContent(sampleWith({ [TOWER]: (text) => text.replace("\n-> quiz(1) ->\n",
@@ -113,8 +128,10 @@ describe("a battle's one flow (stage 5)", () => {
     expect(() => validateContent(sampleWith({ [MARKET]: swap("=== smp_mihon_special_b_market_claim ===\n",
       "=== smp_mihon_special_b_market_claim ===\n* [「えっ」]\n- \n") })))
       .toThrow(/The helper knot smp_mihon_special_b_market_claim reaches a choice \("「えっ」"\), read on its own as the clue book reads it/u);
+    // A one-scene battle file with its own VAR lines in place of INCLUDE modules.ink has no quiz to call; a place file starts with the include.
+    expect(() => validateContent(oneSceneMarket("VAR player_name = \"\"\nVAR heroine_name = \"\"\n"))).toThrow(/quiz/u);
     expect(() => validateContent(sampleWith({ [MARKET]: swap("INCLUDE modules.ink\n", "VAR player_name = \"\"\nVAR heroine_name = \"\"\n") })))
-      .toThrow(/quiz/u);
+      .toThrow(/A place file starts with the two lines "INCLUDE modules\.ink" and "-> DONE"/u);
     // A call outside a battle has nothing to answer it.
     expect(() => validateContent(sampleWith({ [TOWER]: swap("「見て、あの歯車。止まってるのに、油でぴかぴかだ」\n", "「見て、あの歯車。止まってるのに、油でぴかぴかだ」\n-> quiz(1) ->\n") })))
       .toThrow(/-> quiz\(n\) -> is a battle's call \(stage 5\): .* is not a battle/u);
@@ -138,7 +155,8 @@ describe("a battle's one flow (stage 5)", () => {
       presentation.memories = { ...presentation.memories, smp_mihon_test_memory: { titleJa: "検証の思い出", descriptionJa: "検証専用" } };
       return JSON.stringify(presentation);
     } };
-    const external = swap("INCLUDE modules.ink\n", "INCLUDE modules.ink\nEXTERNAL has_memory(memory_id)\n");
+    // A place file's top is its two lines: the declaration goes in a knot (Ink reads it anywhere).
+    const external = swap("=== smp_mihon_special_b_market_claim ===\n", "=== smp_mihon_special_b_market_claim ===\nEXTERNAL has_memory(memory_id)\n");
     const remembered = '{ has_memory("smp_mihon_test_memory"): 「あのときの話ね」 }\n';
     expect(() => validateContent(sampleWith({ ...memory, [MARKET]: (text) => swap(claimLine, `${claimLine}${remembered}`)(
       swap("-> quiz(1) ->\n", `${remembered}-> quiz(1) ->\n`)(external(text))) }))).not.toThrow();

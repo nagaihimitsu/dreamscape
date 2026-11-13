@@ -103,12 +103,17 @@ describe("journey:new copy of the sample", () => {
     const full = scaffoldJourney(sample, { ...options, withOptional: true }, checklist);
     expect(minimal.size).toBe(sample.readme.core.length + 1);
     expect(full.size).toBe(sample.files.size + 1);
-    expect([...minimal.keys()]).toContain("stories/battles/ky_kyoto_finale.ink");
+    expect([...minimal.keys()]).toContain("stories/places/ky_kyoto_hotel.ink");
     expect([...minimal.keys()]).toContain("public/assets/tourism/kyoto_trip/kyoto_clock_tower.png");
     expect([...full.keys()]).toContain("quizzes/ky_kyoto_special_b_market_quiz.json");
-    // A new journey's battles, as the sample's: the Ink includes modules.ink.
-    expect(full.get("stories/battles/ky_kyoto_finale.ink")!.toString("utf8")).toMatch(/^INCLUDE modules\.ink$/mu);
-    expect(full.get("stories/battles/ky_kyoto_special_b_market.ink")!.toString("utf8")).toContain("=== ky_kyoto_special_b_market_claim ===");
+    // A new journey's scenes, as the sample's: knots of place files that include modules.ink (the finale in the file of its
+    // venue, the clock tower; the epilogue in the hotel's), and no one-scene file.
+    const tower = minimal.get("stories/places/ky_kyoto_clock_tower.ink")!.toString("utf8");
+    expect(tower).toMatch(/^INCLUDE modules\.ink$/mu);
+    expect(tower).toContain("=== ky_kyoto_finale_battle ===");
+    expect(minimal.get("stories/places/ky_kyoto_hotel.ink")!.toString("utf8")).toContain("=== ky_kyoto_epilogue ===");
+    expect(full.get("stories/places/ky_kyoto_market.ink")!.toString("utf8")).toContain("=== ky_kyoto_special_b_market_claim ===");
+    expect([...full.keys()].filter((file) => file.startsWith("stories/") && !file.startsWith("stories/places/"))).toEqual([]);
     // No name of the sample is left as an ID, a part of one or a path (English names such as "Mihon Inn" are text to rewrite).
     const left = /(?<![A-Za-z0-9])(sample_trip|smp|mihon)(?![A-Za-z0-9])/u;
     for (const [file, bytes] of full) {
@@ -131,17 +136,17 @@ describe("journey:new copy of the sample", () => {
     const list = minimal.get(CHECKLIST_FILE)!.toString("utf8");
     expect(list).not.toContain("{{");
     expect(list).toContain("# 京都の旅（kyoto_trip）の置き換えチェックリスト");
-    expect(list).toContain("- [ ] `stories/battles/ky_kyoto_finale.ink` — 都市フィナーレの会話");
+    expect(list).toContain("- [ ] `stories/places/ky_kyoto_hotel.ink` — 宿の場所のファイル：都市エピローグ（到着の会話を書くときも、宿の場所のファイルに書く）");
     for (const file of minimal.keys()) if (file !== CHECKLIST_FILE) expect(list, file).toContain(`\`${file}\``);
     expect(full.get(CHECKLIST_FILE)!.toString("utf8")).toContain("- [ ] `quizzes/ky_kyoto_special_b_market_quiz.json` — 任意の部分「特殊戦B（矛盾追及）」");
     expect(optionalFiles.length).toBe(full.size - minimal.size);
   });
 
   it("replaces the sample's names only where they stand alone or between separators", () => {
-    const words = { a: "smp_mihon_x", b: "epilogues/mihon", c: "smpx", d: "mihonia", e: "xmihon", f: "sample_trips", g: "Mihon Inn", h: "assets/tourism/sample_trip/a-mihon.png" };
+    const words = { a: "smp_mihon_x", b: "places/smp_mihon_hotel", c: "smpx", d: "mihonia", e: "xmihon", f: "sample_trips", g: "Mihon Inn", h: "assets/tourism/sample_trip/a-mihon.png" };
     const files = scaffoldJourney({ ...sample, files: new Map([...sample.files, ["extra.json", Buffer.from(JSON.stringify(words))]]) },
       { ...kyoto, withOptional: true, order: 50 }, checklist);
-    expect(json(files, "extra.json")).toEqual({ ...words, a: "ky_kyoto_x", b: "epilogues/kyoto", h: "assets/tourism/kyoto_trip/a-kyoto.png" });
+    expect(json(files, "extra.json")).toEqual({ ...words, a: "ky_kyoto_x", b: "places/ky_kyoto_hotel", h: "assets/tourism/kyoto_trip/a-kyoto.png" });
   });
 });
 
@@ -267,13 +272,24 @@ describe("journey:new in a copy of the repository", () => {
         .toThrow(new RegExp(`^IDの接頭辞「${kp}」で始まるIDがすでにあります（content/journeys/${k}/[^）]+ の「(?:[a-z_]+/)?${kp}_[a-z0-9_]+」）。--prefix で別の接頭辞を指定してください。$`, "u"));
     } finally { writeFileSync(manifestFile, manifest); }
     expect(() => createJourney(root, { ...first, ...other, nameJa: "" })).toThrow("--name には名前を1行で指定してください");
-    // A story ID of another journey that the copy would define again (its epilogue `epilogues/<cityId>`).
-    const taken = path.join(journeyDirectory(root, k), `stories/epilogues/${other.cityId}.ink`);
+    // A story ID the copy would define again starts with its prefix (its story files are `places/<prefix>_…`), which the prefix
+    // check above refuses first.
+    const taken = path.join(journeyDirectory(root, k), `stories/places/${other.prefix}_${other.cityId}_hotel.ink`);
     writeFileSync(taken, "// taken\n-> END\n");
     try {
-      expect(() => createJourney(root, { ...first, ...other }))
-        .toThrow(new RegExp(`^作った旅行編が内容の検証を通らなかったため、何も書き込んでいません: .*epilogues/${other.cityId}`, "u"));
+      expect(() => createJourney(root, { ...first, ...other })).toThrow(`IDの接頭辞「${other.prefix}」で始まるIDがすでにあります`);
     } finally { rmSync(taken); }
+    // An ID of another journey outside the prefix's family that the copy would define again (its hotel's place ID
+    // `<cityId>_hotel`): the content validation refuses the copy.
+    const travelFile = path.join(journeyDirectory(root, k), `travel/${kc}.json`);
+    const travel = readFileSync(travelFile, "utf8");
+    const places = JSON.parse(travel) as { places: { id: string }[] };
+    places.places.push({ ...places.places[0], id: `${other.cityId}_hotel` });
+    writeFileSync(travelFile, JSON.stringify(places));
+    try {
+      expect(() => createJourney(root, { ...first, ...other }))
+        .toThrow(/^作った旅行編が内容の検証を通らなかったため、何も書き込んでいません: .*Duplicate travel place ID/u);
+    } finally { writeFileSync(travelFile, travel); }
     expect(journeyFolders()).toEqual(current);
   });
 

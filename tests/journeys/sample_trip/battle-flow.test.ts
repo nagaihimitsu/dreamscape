@@ -6,7 +6,7 @@ import { readFileSync } from "node:fs";
 import { afterEach, describe, expect, it } from "vitest";
 import { battles, scenes, stories } from "../../../src/content";
 import { fnvHash } from "../../../src/content/fingerprint";
-import type { SceneEntry } from "../../../src/content/scene-schemas";
+import type { SceneEntry, SceneOption } from "../../../src/content/scene-schemas";
 import { storyFileOf } from "../../../src/content/story-address";
 import {
   advanceBattle, answerBattle, battleChrome, battleDialogueStop, chooseBattle, getActiveBattleContent, getReasoningContext, leaveBattle, pressBattleClaim,
@@ -187,14 +187,34 @@ describe("a battle as one flow (stage 5): the sample's battles", () => {
 
 // A conversation's choices in a battle (decision 10): the sample has none, so the tests below give its battles some, in memory.
 const placeStory = "places/smp_mihon_clock_tower";
+/** The market's place file: its guide and its special battle B (a place file's battle knot). */
+const marketStory = "places/smp_mihon_market";
+/** The market's battle as a one-scene file (a form the build still accepts), made in memory from its knot (marketAsFile). */
 const fileStory = "battles/smp_mihon_special_b_market";
-const kept = { place: stories[placeStory], file: stories[fileStory], scenes: [...scenes] };
+const marketBattle = battles.find((battle) => battle.id === MARKET)!;
+const kept = { place: stories[placeStory], market: stories[marketStory], marketStoryId: marketBattle.storyId, scenes: [...scenes] };
 afterEach(() => {
   stories[placeStory] = kept.place;
-  stories[fileStory] = kept.file;
+  stories[marketStory] = kept.market;
+  delete stories[fileStory];
+  marketBattle.storyId = kept.marketStoryId;
   (scenes as SceneEntry[]).splice(0, scenes.length, ...kept.scenes);
 });
 const source = (storyId: string) => readFileSync(`${SAMPLE_JOURNEY_DIRECTORY}/stories/${storyId}.ink`, "utf8");
+/** The market's battle knot as a one-scene file: `INCLUDE modules.ink`, the knot's lines (without its # scene:), then its helper knots. */
+const marketAsFile = (change: (text: string) => string) => {
+  const text = source(marketStory);
+  const body = text.slice(text.indexOf(`=== ${MARKET} ===\n`)).split("\n").slice(1).filter((line) => !/^\s*#\s*scene\s*:/u.test(line));
+  return change(["INCLUDE modules.ink", ...body].join("\n"));
+};
+/** Play the market's battle from the one-scene file `written`: the battle points at the file, whose scene (its choices) replaces the knot's. */
+function useMarketFile(written: string, options: SceneOption[]) {
+  stories[fileStory] = compileInk(readMainFileHead(written).source, "market.ink", { [MODULES_FILE]: MODULES_INK });
+  marketBattle.storyId = fileStory;
+  (scenes as SceneEntry[])[scenes.findIndex((item) => item.id === MARKET)] = { id: MARKET, kind: "battle", title: "誰も時間を守らない？", cityId: "mihon",
+    story: { storyId: fileStory }, main: { battle: MARKET }, at: [], order: 0, repeat: "once", people: [], options, done: {}, conds: [], knots: [],
+    fingerprint: fnvHash(stories[fileStory]), origin: "file" };
+}
 
 describe("a battle's conversation choices (stage 5, decision 10)", () => {
   it("apply their tags on the battle's first play only, before Ink goes on, and hide or grey as other scenes' choices", () => {
@@ -272,13 +292,11 @@ describe("a battle's conversation choices (stage 5, decision 10)", () => {
     const legend = running.activeBattle!.frame!.choices.find((item) => item.optionId === "legend_first")!;
     const played = play(act(running, (current) => chooseBattle(current, legend.index, current.revision)), { answers: [true, true, true] }).state;
     expect(restore(given(leaveBattle(played, played.revision), tower.id, "give_bookmark")).itemUses[bookmark].optionId).toBe("give_bookmark");
-    // The market battle (a one-scene battle file) with a choice that gives the bookmark: the same rule.
-    stories[fileStory] = compileInk(readMainFileHead(source(fileStory).replace("\n-> quiz(1) ->\n",
+    // The market battle as a one-scene battle file (made from its knot) with a choice that gives the bookmark: the same rule.
+    useMarketFile(marketAsFile((text) => text.replace("\n-> quiz(1) ->\n",
       "\n* [「このしおり、どうぞ」 # option: give_bookmark_market]\n    # give: smp_mihon_three_bookmark heroine\n" +
-      "* [「先にパンの話を」 # option: bread_first]\n- \n-> quiz(1) ->\n")).source, "market.ink", { [MODULES_FILE]: MODULES_INK });
-    (scenes as SceneEntry[]).push({ id: MARKET, kind: "battle", title: "誰も時間を守らない？", cityId: "mihon", story: { storyId: fileStory }, main: { battle: MARKET },
-      at: [], order: 0, repeat: "once", people: [], options: [{ id: "give_bookmark_market", knot: MARKET, give: { item: bookmark, to: "heroine" } },
-        { id: "bread_first", knot: MARKET }], done: {}, conds: [], knots: [], fingerprint: fnvHash(stories[fileStory]), origin: "file" });
+      "* [「先にパンの話を」 # option: bread_first]\n- \n-> quiz(1) ->\n")), [{ id: "give_bookmark_market", knot: MARKET, give: { item: bookmark, to: "heroine" } },
+      { id: "bread_first", knot: MARKET }]);
     expect(() => restore(given(holding, MARKET, "give_bookmark_market"))).toThrow(refused);
     let market = openBattleScene(holding, MARKET);
     while (battleDialogueStop(market.activeBattle!) !== "choices") market = act(market, (current) => advanceBattle(current, current.revision));
@@ -308,12 +326,13 @@ describe("a battle's conversation choices (stage 5, decision 10)", () => {
   });
 
   it("apply a choice's tags once in a run, when the flow comes back to it (a choice after the press)", () => {
-    const written = source(fileStory).replace("=== smp_mihon_special_b_market_press ===\n",
+    const written = source(marketStory).replace("=== smp_mihon_special_b_market_press ===\n",
       "=== smp_mihon_special_b_market_press ===\n+ [「本当に、一人も？」 # option: doubt]\n    # rel: spark +1\n    # profile: attentive\n- \n");
-    stories[fileStory] = compileInk(readMainFileHead(written).source, "market.ink", { [MODULES_FILE]: MODULES_INK });
-    (scenes as SceneEntry[]).push({ id: MARKET, kind: "battle", title: "誰も時間を守らない？", cityId: "mihon", story: { storyId: fileStory }, main: { battle: MARKET },
-      at: [], order: 0, repeat: "once", people: [], options: [{ id: "doubt", knot: "smp_mihon_special_b_market", rel: { spark: 1 }, profile: "attentive" }],
-      done: {}, conds: [], knots: [], fingerprint: fnvHash(stories[fileStory]), origin: "file" });
+    stories[marketStory] = compileInk(readPlaceFile(marketStory, written).source, "market.ink", { [MODULES_FILE]: MODULES_INK });
+    // The market's battle knot (a place file's): its scene's option is the choice in the press, its helper knot.
+    const market = scenes.find((item) => item.id === MARKET)!;
+    (scenes as SceneEntry[])[scenes.indexOf(market)] = { ...market, options: [
+      { id: "doubt", knot: "smp_mihon_special_b_market_press", rel: { spark: 1 }, profile: "attentive" }] };
     let state = start(MARKET);
     const toStop = (current: GameState) => {
       let next = current;
@@ -394,9 +413,9 @@ describe("a special battle's claim and rebuttal on the battle screen (stage 5)",
   });
 
   it("plays a rebuttal after the claim, saved line by line, without the clue book", () => {
-    const written = source(fileStory).replace("-> smp_mihon_special_b_market_claim ->\n",
+    const written = source(marketStory).replace("-> smp_mihon_special_b_market_claim ->\n",
       "-> smp_mihon_special_b_market_claim ->\n# background: smp_bg_mihon_market\n# speaker: heroine\n「待って。一人残らず、ですか」\n「確かめてみましょう」\n");
-    stories[fileStory] = compileInk(readMainFileHead(written).source, "market.ink", { [MODULES_FILE]: MODULES_INK });
+    stories[marketStory] = compileInk(readPlaceFile(marketStory, written).source, "market.ink", { [MODULES_FILE]: MODULES_INK });
     const { seen } = toStop(MARKET);
     const claim = seen.filter((line) => line.part === "claim");
     const rebuttal = seen.filter((line) => line.part === "rebuttal");

@@ -35,15 +35,26 @@ describe("Golden Triangle authoring scaffold", () => {
     expect(finale.admissionCost ?? 0).toBe(destinationEvent.admissionCost ?? 0);
   });
 
-  it("names the stories as the published catalogs do (docs/02 「IDの付け方」): the guide after the landmark (its knot in the landmark's place file), the battle after its event", () => {
+  it("names the scenes as the published catalogs do (docs/02 「IDの付け方」): knots of place files, at the addresses India publishes", () => {
     const catalog = (file: string) => JSON.parse(readFileSync(`content/journeys/golden_triangle/${file}`, "utf8"));
     const guides = new Map(catalog("tourism/catalog.json").landmarks.map((landmark: { id: string; guideStoryId: string }) => [landmark.id, landmark.guideStoryId]));
     const battles = new Map(catalog("battles/catalog.json").battles.map((battle: { id: string; storyId: string }) => [battle.id, battle.storyId]));
-    for (const plan of journeyRequirements(input)) for (const main of plan.main) {
-      expect(main.guideStoryId).toBe(`tourism/gt_${main.landmarkId}_guide`);
-      // The published guide is the knot of the scaffold's name in the landmark's place file (GT-3a: form only).
-      expect(guides.get(main.landmarkId)).toBe(`places/gt_${main.landmarkId}.${main.guideStoryId.split("/").at(-1)}`);
-      expect(battles.get(main.battleId)).toBe(main.battleStoryId);
+    const dates = new Map(catalog("romance/date_catalog.json").dates.map((date: { id: string; storyId: string }) => [date.id, date.storyId]));
+    const epilogues = new Map(catalog("progression/journey.json").episodes.map((episode: { id: string; epilogueStoryId?: string }) => [episode.id, episode.epilogueStoryId]));
+    for (const plan of journeyRequirements(input)) {
+      for (const main of plan.main) {
+        // The guide and the battle in the landmark's place file.
+        expect(main.guideStoryId).toBe(`places/gt_${main.landmarkId}.gt_${main.landmarkId}_guide`);
+        expect(guides.get(main.landmarkId)).toBe(main.guideStoryId);
+        expect(main.battleStoryId).toBe(`places/gt_${main.landmarkId}.${main.battleId}`);
+        expect(battles.get(main.battleId)).toBe(main.battleStoryId);
+      }
+      // A date in its place's file, the finale in its venue's (the registered finale's place), the epilogue in the hotel's.
+      for (const date of plan.dates) expect(dates.get(date.eventId)).toBe(date.storyId);
+      expect(plan.finale.battleStoryId).toMatch(new RegExp(`^places/gt_${plan.cityId}_[a-z_]+\\.gt_${plan.cityId}_finale_battle$`, "u"));
+      expect(battles.get(plan.finale.battleId)).toBe(plan.finale.battleStoryId);
+      expect(plan.finale.epilogueStoryId).toBe(`places/gt_${input.hotelPlaceIds[plan.cityId]}.gt_${plan.cityId}_epilogue`);
+      expect(epilogues.get(plan.finale.eventId)).toBe(plan.finale.epilogueStoryId);
     }
   });
 });

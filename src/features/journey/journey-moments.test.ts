@@ -21,7 +21,7 @@ const DUOMO = "milano_duomo_episode";
 const episode = (id: string) => episodes.find((item) => item.id === id)!;
 /** Two photos of the sample's album, its illustrations (album.test.ts holds what an album may name). */
 const photos: AlbumPhoto[] = [
-  { imageId: "smp_album_market", cityId: "mihon", day: 1, minute: 600, placeId: "mihon_market", storyId: "tourism/smp_mihon_market_guide" },
+  { imageId: "smp_album_market", cityId: "mihon", day: 1, minute: 600, placeId: "mihon_market", storyId: "places/smp_mihon_market.smp_mihon_market_guide" },
   { imageId: "smp_album_clock_tower", caption: "三時のまま", cityId: "mihon", day: 1, minute: 660, placeId: "mihon_clock_tower",
     storyId: "places/smp_mihon_clock_tower.smp_mihon_date_tower_square" },
 ];
