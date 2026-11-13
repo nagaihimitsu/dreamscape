@@ -8,6 +8,7 @@ INCLUDE modules.ink
 === gt_agra_fatehpur_sikri_guide ===
 # scene: guide
 # background: gt_bg_agra_fatehpur_sikri
+# weather: dust
 # speaker: narrator
 アーグラから車で一時間ほど。畑の中の道の先、尾根の上に、赤い石の町が丸ごと載っていた。
 # speaker: heroine

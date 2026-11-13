@@ -11,6 +11,7 @@ INCLUDE modules.ink
 # title: 塀を越えたらアウト
 # when: episodes agra >= 1
 # background: gt_bg_agra_mehtab_bagh
+# weather: dust
 # speaker: narrator
 メヘターブ・バーグの庭をひと回りして外に出ると、塀の向こうは、隣の村の空き地になっていた。乾いた土の上で、子どもたちがクリケットをしている。打席の向こう、川の対岸には、白いドームが浮かんでいた。
 # speaker: heroine

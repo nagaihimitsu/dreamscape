@@ -129,6 +129,7 @@ INCLUDE modules.ink
 # speaker: gt_zoheb
 うちの親父、その時間にここで毎年、同じ瓶を買ってた
 # speaker: narrator
+# item_show: gt_delhi_rain_attar
 柱時計が、賭けの一時間まであと数分を指している。{heroine_name}はミッティの小瓶を手に取った。
 # speaker: heroine
 # emotion: serious

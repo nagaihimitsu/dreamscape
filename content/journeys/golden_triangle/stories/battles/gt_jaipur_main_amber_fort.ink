@@ -121,6 +121,7 @@ INCLUDE modules.ink
 # speaker: narrator
 サリームは{heroine_name}の手から絵を取り、裏返した。細い筆で、自分の名前を書き入れる。
 # speaker: enemy
+# item_show: gt_jaipur_salim_miniature
 おれの仕事だと言えるときだけ、名前を書く。……これは、あんたの絵だ
 # speaker: heroine
 # reaction: heroine,smile,sparkle

@@ -169,6 +169,7 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_hotel_hub
 # bgm: morning
 # speaker: narrator
+# item_show: gt_jaipur_wedding_envelope
 今朝、宿の中庭のテーブルに、彼女が白い封筒を一枚置いた。着いた日に、フロントの女性に教わったとおり。お祝いは現金で、金額の最後に一ルピーを足す。
 # speaker: heroine
 割り切れない数は、縁起がいい。終わりにしないで、続いていく感じ、だったよね

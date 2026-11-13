@@ -13,6 +13,7 @@ INCLUDE modules.ink
 # when: not couple
 # when: time night
 # background: gt_bg_hotel_rooftop_night
+# tint: off
 # bgm: immersed
 # speaker: narrator
 宿の屋上には、黒い貯水タンクと、物干しの綱と、傾いたパラボラアンテナがあった。路地の向こうから、クラクションと、どこかの家のテレビの音が上がってくる。
@@ -159,6 +160,7 @@ INCLUDE modules.ink
 # when: not couple
 # when: time night
 # background: gt_bg_hotel_rooftop_night
+# tint: off
 # bgm: stages_of_grief
 # speaker: narrator
 宿の屋上に上がると、彼女が素焼きのカップを二つ持って待っていた。湯気が、二本並んで上っている。

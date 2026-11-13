@@ -192,6 +192,8 @@ INCLUDE modules.ink
 # speaker: narrator
 # shake: window
 # se: scissors_snip
+# shake
+# weather: petals
 リボンが切られた。楽隊が一斉に鳴り出し、通りが揺れる。カムラが、{heroine_name}の手首をつかんだ。
 # speaker: enemy
 デリーで、あんたはわたしに言ったね。黙っていなくなるのは、自由とは違うって

@@ -14,6 +14,7 @@ INCLUDE modules.ink
 # sources: none
 # background: gt_bg_delhi_india_gate
 # speaker: narrator
+# item_show: gt_delhi_family_photo
 別れぎわ、モヌが刷り上がった写真を、もう一枚頼んでくれた。一枚は村へ。もう一枚は、こちらへ。
 # speaker: heroine
 # emotion: smile
@@ -377,6 +378,7 @@ Agra? Your train is cancelled today.
 # shake: window
 # se: impact_thud
 # voice: gt_delhi_depart_scam_004
+# shake: small
 この値段！？
 # speaker: narrator
 男は分厚いノートを机に置いた。ここで旅を決めた人たちの感想だという。開くと、日本語がびっしり並んでいた。
