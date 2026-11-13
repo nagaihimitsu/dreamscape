@@ -9,7 +9,7 @@ import { miniGameDefinition } from "../registry";
 import { miniGameArtPath, miniGameParams, type MiniGameTag } from "../tag";
 import type { MiniGameStageCast } from "./ChoicePoint";
 import { browserClockDriver, createPlayClock, type HostClock } from "./clock";
-import { countPhase, fillNames, FINISH, finishLevel, finishWord, pickLine, REACTION_EMOTION, resultButtons, resultCardDelay, type CountPhase, type FinishLevel } from "./flow";
+import { countPhase, fillNames, FINISH, finishLevel, finishWord, pickLine, REACTION_EMOTION, resultButtons, resultCardDelay, type CountPhase, type FinishLevel, type ScreenSpan } from "./flow";
 import { HandDemo } from "./HandDemo";
 import { createJuice, NO_JUICE } from "./juice";
 import { MiniGameKitContext, type MiniGameKit } from "./kit";
@@ -39,6 +39,8 @@ type Ended = {
   outcome: string; detail?: string; rating: MiniGameRating | null; word: string | null; level: FinishLevel; cardAt: number | null;
   /** How far above the layer's bottom the card sits: over the play's main control, so a finger still tapping it hits nothing. */
   cardBottom?: number;
+  /** The play's field on the screen as the card comes (the card goes compact rather than hide too much of it). */
+  field?: ScreenSpan;
 };
 type Reaction = { key: number; kind: MiniGameReaction; lineJa?: string };
 
@@ -238,7 +240,12 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
       const primary = stage.current?.querySelector("[data-minigame-primary]")?.getBoundingClientRect();
       const box = layer.current?.getBoundingClientRect();
       const cardBottom = primary && box && primary.height > 0 ? Math.round(box.bottom - primary.top + 8) : undefined;
-      setEnded((state) => (state ? { ...state, cardAt: performance.now(), ...(cardBottom !== undefined ? { cardBottom } : {}) } : state));
+      // The play's field (an engine's first part, above its controls): the card goes compact rather than hide too much of it.
+      const play = stage.current?.firstElementChild?.firstElementChild?.getBoundingClientRect();
+      const field = play && play.height > 0 ? { top: Math.round(play.top), bottom: Math.round(play.bottom) } : undefined;
+      setEnded((state) => (state ? {
+        ...state, cardAt: performance.now(), ...(cardBottom !== undefined ? { cardBottom } : {}), ...(field ? { field } : {}),
+      } : state));
     });
   }, [definition, tag.id, taken, played, params, practiceParams, later]);
 
@@ -469,7 +476,8 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
             <ResultCard label={label(ended.outcome)} rating={ended.rating} {...(score ? { score } : {})}
               {...(ended.rating?.scoreJa && ended.detail ? { detail: ended.detail } : {})}
               {...(outcome?.reaction ? { face: face(outcome.reaction.kind) } : {})} {...(filledLine ? { line: filledLine } : {})}
-              practice={run.practice} retry={!!(environment.retry || tag.retry)} anchor={definition.resultAnchor ?? "bottom"} {...(ended.cardBottom !== undefined ? { bottom: ended.cardBottom } : {})} still={still} shownAt={ended.cardAt!}
+              practice={run.practice} retry={!!(environment.retry || tag.retry)} anchor={definition.resultAnchor ?? "bottom"} {...(ended.cardBottom !== undefined ? { bottom: ended.cardBottom } : {})}
+              {...(ended.field ? { field: ended.field } : {})} still={still} shownAt={ended.cardAt!}
               onNext={() => choose(ended.outcome)} onRetry={() => start(run.practice, true)} onToReal={() => start(false)} />
           )}
           {paused && !ended && (

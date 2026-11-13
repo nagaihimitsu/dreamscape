@@ -234,16 +234,23 @@
 }
 .minigame-result { overflow-y: auto; overscroll-behavior: contain; }
 .minigame-result[data-anchor="top"] { top: calc(var(--scene-top, 0px) + 52px); bottom: auto; }
-/* A short phone (320 × 568): the same card, tighter, so it fits between the band and the play's controls. */
-@media (max-height: 640px) {
-  .minigame-layer .minigame-result { gap: 2px; padding: 8px 12px 10px; }
-  .minigame-layer .minigame-result-label { font-size: 19px; }
-  .minigame-stars { font-size: 24px; }
-  .minigame-star[data-big] { font-size: 30px; }
-  .minigame-result-react .character-face { width: 44px; height: 44px; }
-  .minigame-result-actions { margin-top: 4px; }
-  .minigame-result-actions > button { min-height: 48px; }
-}
+/* Compact (ResultCard's data-compact: a play 700 px high or less, or where the full card would cover more than 45% of
+   the field): ★ beside the label on one row, a small face beside the score and her line, tight padding; the buttons stay
+   44 px. The key picture of the field stays in view above it. */
+.minigame-layer .minigame-result[data-compact] { gap: 2px; padding: 6px 10px 8px; }
+.minigame-result-title { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; column-gap: 8px; max-width: 100%; }
+.minigame-result[data-compact] .minigame-stars { gap: 2px; font-size: 18px; }
+.minigame-result[data-compact] .minigame-star[data-big] { font-size: 22px; }
+.minigame-layer .minigame-result[data-compact] .minigame-result-label { font-size: 17px; line-height: 1.3; }
+.minigame-result[data-compact] .minigame-result-react { justify-content: center; gap: 8px; margin-top: 2px; }
+.minigame-result[data-compact] .minigame-result-react .character-face { flex: none; width: 36px; height: 36px; border-width: 1.5px; }
+.minigame-result-texts { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; }
+.minigame-result-react:not(:has(.character-face)) .minigame-result-texts { align-items: center; }
+.minigame-layer .minigame-result[data-compact] .minigame-result-score { font-size: 14px; line-height: 1.3; }
+.minigame-layer .minigame-result[data-compact] .minigame-result-detail { font-size: 12px; line-height: 1.3; }
+.minigame-layer .minigame-result[data-compact] .minigame-result-line { padding: 2px 8px; border-radius: 10px; font-size: 13px; line-height: 1.35; }
+.minigame-result[data-compact] .minigame-result-actions { margin-top: 4px; }
+.minigame-result[data-compact] .minigame-result-actions > button { min-height: 44px; padding-top: 6px; padding-bottom: 6px; line-height: 1.4; }
 @keyframes minigame-result-in { from { opacity: 0; transform: translateY(12px); } }
 .minigame-result-head { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 0; }
 .minigame-result-head:empty { display: none; }

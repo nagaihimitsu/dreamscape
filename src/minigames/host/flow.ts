@@ -37,6 +37,24 @@ export const resultCardDelay = (holdMs: number | undefined): number => Math.max(
 /** A hit-stop's length: 40–150 ms, 90 when the game names none. */
 export const hitStopMs = (ms: number | undefined): number => Math.min(150, Math.max(40, ms === undefined || !Number.isFinite(ms) ? 90 : ms));
 
+/** A span on the screen, top to bottom (client pixels). */
+export interface ScreenSpan { top: number; bottom: number }
+/** The result card goes compact when it would cover more than this much of the play's field (its key picture)… */
+export const RESULT_CARD_MAX_COVER = 0.45;
+/** …or the play's layer is this short or shorter (a short phone: 320 × 568, 360 × 640, 375 × 667). */
+export const RESULT_CARD_SHORT_PX = 700;
+
+/**
+ * Whether the result card is compact (★ beside its label, a small face beside the score and her line, tighter, buttons
+ * still 44 px): on a short layer, or when the full card would cover more than RESULT_CARD_MAX_COVER of the field.
+ */
+export function resultCardCompact({ card, field, layerHeight }: { card: ScreenSpan; field?: ScreenSpan; layerHeight: number }): boolean {
+  if (layerHeight > 0 && layerHeight <= RESULT_CARD_SHORT_PX) return true;
+  if (!field || field.bottom <= field.top) return false;
+  const overlap = Math.max(0, Math.min(card.bottom, field.bottom) - Math.max(card.top, field.top));
+  return overlap / (field.bottom - field.top) > RESULT_CARD_MAX_COVER;
+}
+
 /** What the result card offers. */
 export interface ResultButtons {
   /** 「次へ」: take the outcome's choice (never in practice). */

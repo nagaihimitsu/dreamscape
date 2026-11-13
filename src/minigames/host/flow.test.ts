@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { burstAngles, countedScore, countPhase, fillNames, FINISH, finishLevel, finishWord, hitStopMs, pickLine, resultButtons, resultCardDelay } from "./flow";
+import { burstAngles, countedScore, countPhase, fillNames, FINISH, finishLevel, finishWord, hitStopMs, pickLine, RESULT_CARD_MAX_COVER, RESULT_CARD_SHORT_PX, resultButtons, resultCardCompact, resultCardDelay } from "./flow";
 import { MINI_GAME_COUNT_MS, MINI_GAME_FINISH_MS, MINI_GAME_GO_MS } from "./timing";
 
 describe("the host's count", () => {
@@ -82,6 +82,27 @@ describe("a burst", () => {
       expect(gap).toBeGreaterThanOrEqual(60 - 30);
       expect(gap).toBeLessThanOrEqual(60 + 30);
     }
+  });
+});
+
+describe("the compact result card", () => {
+  it("is compact on a short play (320 × 568 to 375 × 667), whatever it covers", () => {
+    expect(resultCardCompact({ card: { top: 500, bottom: 560 }, layerHeight: 568 })).toBe(true);
+    expect(resultCardCompact({ card: { top: 500, bottom: 560 }, layerHeight: RESULT_CARD_SHORT_PX })).toBe(true);
+    expect(resultCardCompact({ card: { top: 500, bottom: 560 }, layerHeight: RESULT_CARD_SHORT_PX + 1 })).toBe(false);
+  });
+
+  it("is compact on a taller play only when the full card would cover more than 45% of the field", () => {
+    const field = { top: 100, bottom: 600 };
+    // 37% of the field (390 × 844's cards): full.
+    expect(resultCardCompact({ card: { top: 415, bottom: 680 }, field, layerHeight: 844 })).toBe(false);
+    // 46%: compact.
+    expect(resultCardCompact({ card: { top: 370, bottom: 680 }, field, layerHeight: 844 })).toBe(true);
+    expect(resultCardCompact({ card: { top: 600 - 500 * RESULT_CARD_MAX_COVER, bottom: 700 }, field, layerHeight: 844 })).toBe(false);
+    // A card below the field covers none of it; without a field, only the height decides.
+    expect(resultCardCompact({ card: { top: 610, bottom: 900 }, field, layerHeight: 844 })).toBe(false);
+    expect(resultCardCompact({ card: { top: 0, bottom: 800 }, layerHeight: 844 })).toBe(false);
+    expect(resultCardCompact({ card: { top: 0, bottom: 800 }, field: { top: 10, bottom: 10 }, layerHeight: 844 })).toBe(false);
   });
 });
 
