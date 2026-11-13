@@ -16,7 +16,8 @@ INCLUDE modules.ink
 # priority: -1
 # when: date gt_jaipur_date_jal_mahal
 # when: time night
-# background: gt_bg_jaipur_hotel_courtyard
+# background: gt_bg_jaipur_hotel_courtyard_night
+# tint: off
 # bgm: feather_waltz
 { cond("seen gt_jaipur_hotel_mehndi_night"):
     # speaker: narrator
@@ -239,7 +240,8 @@ INCLUDE modules.ink
 # priority: +1
 # when: item gt_jaipur_wedding_envelope held
 # on_done: use gt_jaipur_wedding_envelope
-# background: gt_bg_jaipur_hawa_mahal
+# background: gt_bg_jaipur_hawa_mahal_night
+# tint: off
 # bgm: gt_naraina
 # speaker: narrator
 踊りの輪がひと息ついたころ、彼女は鞄から封筒を取り出して、カムラに差し出した。
@@ -271,7 +273,8 @@ INCLUDE modules.ink
 # priority: +2
 # when: date gt_delhi_date_agrasen_baoli
 # sources: none
-# background: gt_bg_jaipur_hawa_mahal
+# background: gt_bg_jaipur_hawa_mahal_night
+# tint: off
 # bgm: gt_naraina
 # speaker: narrator
 踊りの輪がほどけたころ、花嫁のいとこのプージャーが、携帯を握りしめて走ってきた。画面と彼女の顔を、交互に見る。
