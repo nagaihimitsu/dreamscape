@@ -4,7 +4,11 @@ import App from "./app/App";
 import { browserStorage } from "./app/app-storage";
 import { readDebugMode } from "./app/debug-mode";
 import { loadAllJourneyContent } from "./content";
+import { registerServiceWorker } from "./app/service-worker";
 import "./app/styles.css";
+
+// Later visits read the game's files from the browser (production builds only; src/app/service-worker.ts).
+if (import.meta.env.PROD) registerServiceWorker();
 
 // Debug's 「場面の確認」 (?debug, launch URLs) and the asset preview (?character-preview)
 // run on their own page and never mount beside a normal game. They are loaded only
