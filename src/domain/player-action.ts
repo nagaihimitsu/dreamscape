@@ -193,19 +193,37 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
   ];
 }
 
-/** The outcomes of the mini-game open on screen (openMiniGame), each whose choice the choice set has; null: none open. */
+/** The outcomes the mini-game open on screen can end on (miniGameAvailableOutcomes), as the player's actions; null: none open. */
 function miniGameActions(state: GameState): PlayerAction[] | null {
-  const game = openMiniGame(state);
-  const definition = game && miniGameDefinition(game.tag.id);
-  if (!game || !definition) return null;
-  return definition.outcomes.filter((outcome) => miniGameChoice(game.choices, game.tag, outcome.id))
-    .map((outcome) => ({ kind: "minigame" as const, outcome: outcome.id }));
+  return miniGameAvailableOutcomes(state)?.map((outcome) => ({ kind: "minigame" as const, outcome })) ?? null;
 }
 
 /** The choice button of each scene (the one table from a scene's kind to its choice; docs/13 1.5). */
 const CHOOSE_ACTION = {
   encounter: "encounter_choose", epilogue: "epilogue_choose", guide: "guide_choose", battle: "battle_choose", date: "date_choose",
 } as const satisfies Record<MiniGameScene, PlayerAction["kind"]>;
+/** Whether each scene's choice button can be pressed now (the same rules as its screen's button). */
+const CHOICE_OPEN = {
+  encounter: (state, index) => getEncounterOptionAvailability(state, index).available,
+  epilogue: (state, index) => epilogueChoiceDisplay(state, index).show === "open",
+  guide: (state, index) => guideChoiceDisplay(state, index).show === "open",
+  battle: (state, index) => battleChoiceDisplay(state, index).show === "open",
+  date: (state, index) => dateChoiceDisplay(state, index).show === "open",
+} as const satisfies Record<MiniGameScene, (state: GameState, index: number) => boolean>;
+
+/**
+ * The outcomes of the mini-game open on screen (openMiniGame) whose choices can be taken now, in the game's order: its
+ * play ends on one of them (a play that ends on another takes its declared fallback; fallback.ts, docs/13 4.2). Null: none open.
+ */
+export function miniGameAvailableOutcomes(state: GameState): string[] | null {
+  const game = openMiniGame(state);
+  const definition = game && miniGameDefinition(game.tag.id);
+  if (!game || !definition) return null;
+  return definition.outcomes.flatMap((outcome) => {
+    const choice = miniGameChoice(game.choices, game.tag, outcome.id);
+    return choice && CHOICE_OPEN[game.scene](state, choice.index) ? [outcome.id] : [];
+  });
+}
 
 /**
  * A mini-game's outcome (docs/13 1.5): the choice whose `# option:` is the outcome's, taken through the same action as the

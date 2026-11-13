@@ -4,6 +4,8 @@ import type { GameState } from "../domain/game";
 import { debugQueryString, settingsQuery } from "./debug-query";
 import { createDebugState, debugTargets, defaultDebugSettings, type DebugScene, type DebugSettings } from "./debug-state";
 import { cityStart, completedCity, isHotelInsert, rollTickets, startDateScene, startHotelInsertScene, withAp, withRelationship } from "./scenario-builders";
+import { usableMoney } from "../domain/reservations";
+import { miniGameOptionId, miniGameOutcomeIds } from "../minigames/tag";
 import { miniGameUseListSchema, type MiniGameUse } from "../minigames/uses";
 
 // Debug's 「ミニゲームの見本」 (docs/13 6.6) and the content-driven test of every use (src/minigames/minigame-uses.test.ts):
@@ -90,6 +92,20 @@ function dateWithoutHeldItems(settings: DebugSettings): GameState[] {
     delete inventory[id];
     return startDateScene({ ...base, inventory }, settings.id, rollTickets[settings.roll]);
   });
+}
+
+/**
+ * A scene whose mini-game outcomes pay money (docs/13 4.2: an outcome the player may not afford falls back, a haggle's
+ * prices), opened again with the money to spend just short of each payment: the outcomes it cannot pay are greyed there,
+ * and a play that ends on one takes its fallback. None for a scene whose outcomes pay nothing.
+ */
+export function miniGameShortPurseStates(state: GameState, sceneId: string): GameState[] {
+  const optionIds = new Set(miniGameUses.filter((use) => use.sceneId === sceneId)
+    .flatMap((use) => miniGameOutcomeIds(use.game).map((outcome) => miniGameOptionId(use, outcome))));
+  const payments = (scenes.find((scene) => scene.id === sceneId)?.options ?? [])
+    .flatMap((option) => (optionIds.has(option.id) && (option.money ?? 0) < 0 ? [-option.money!] : []));
+  return [...new Set(payments)].sort((a, b) => b - a)
+    .map((amount) => ({ ...state, travelBudget: Math.max(0, state.travelBudget - usableMoney(state) + amount - 1) }));
 }
 
 /**
