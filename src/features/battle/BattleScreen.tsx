@@ -627,7 +627,7 @@ export function BattleScreen({
               />
             </LineStage>
             {choosing && onChoose && <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
-              heroine: <CharacterFigure characterId="heroine" emotion={heroineEmotion} sceneId={battle.id} cityId={heroineCityId} />,
+              heroine: { emotion: heroineEmotion, sceneId: battle.id, cityId: heroineCityId },
               person: <CharacterFigure characterId={personId ?? opponentFigure} />,
             }}>
               <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="battle-choice" />

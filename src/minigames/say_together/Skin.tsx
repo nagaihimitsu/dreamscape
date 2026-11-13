@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import type { CueTapFieldProps, CueTapSkin } from "../engines/cue_tap/EnginePlay";
 import { SAY_COUNT_MS, SAY_END_MS, SAY_FIELD, SAY_TUNING, SAY_WORDS_MS, sayTogetherRules, type SayTogetherOutcome, type SayTogetherParams } from "./rules";
 import "./skin.css";
 
 // Saying it together's field (a cue_tap skin): the player's view across a wide morning lawn, a stone tomb far off on the
 // left, her standing a step away on the right. Her bubble over her head counts the beats (「せー」「の」, one dot a beat,
-// the third dot gold) and shows her words from the third; the player's bubble rises from the bottom left on the tap. On
-// the beat both bubbles glow together. With the use's art (`art.lawn`, `art.heroine`) the drawn lawn and her standing
-// picture give way to those pictures.
+// the third dot gold, a ring closing on it through the last beat) and shows her words from the third; the player's
+// bubble rises from the bottom left on the tap. On the beat both bubbles glow together, and their last word, 「デーン！」,
+// is the loudest (written large). With the use's art (`art.lawn`, `art.heroine`) the drawn lawn and her standing picture
+// give way to those pictures.
 
 /** The words, as said: one more shows each SAY_FIELD.wordsAtMs. Katakana as the story writes them (not a name). */
 const WORDS = ["ヤートリーガン、", "クリプヤー、", "ディヤーン、", "デーン！"] as const;
@@ -17,7 +18,7 @@ const COUNT = ["せー", "の"] as const;
 const BEATS_AT = Array.from({ length: SAY_FIELD.countBeats }, (_, beat) => SAY_COUNT_MS + SAY_FIELD.beatMs * beat);
 /** Her nod on a count beat lasts this long (not with less motion). */
 const NOD_MS = 180;
-/** The sounds of a play (definition `sounds`): a tick on each count, a chime when a voice starts (two voices this close: one). */
+/** The sounds of a play (definition `sounds`): a tick on each count, a chime when a voice starts (two together: one). */
 const SOUNDS = { tick: "ui_tap", voice: "local_word" } as const;
 
 /** How many words have been said `ms` after a voice started at `from` (0 before it). */
@@ -30,7 +31,17 @@ function beatsLit(ms: number): number {
   return BEATS_AT.filter((at) => ms >= at).length + (ms >= SAY_WORDS_MS ? 1 : 0);
 }
 
-/** What the field draws at a frame (only changes re-render). */
+/**
+ * The ring closing on the gold dot through the last beat (「の」 to the words): its size, from 1 (wide) to 0 (on the
+ * dot) as her beat comes, or null when it is not shown (before 「の」, from the words on).
+ */
+function closingAt(ms: number): number | null {
+  const from = BEATS_AT[BEATS_AT.length - 1];
+  if (ms < from || ms >= SAY_WORDS_MS) return null;
+  return 1 - (ms - from) / (SAY_WORDS_MS - from);
+}
+
+/** What the field draws at a frame (only changes re-render; the closing ring is drawn straight from the frames). */
 interface SayView {
   lit: number;
   her: number;
@@ -74,32 +85,33 @@ function FarTomb() {
 
 /** The words said so far (at least the first), each kept whole on a line: a line breaks between words, never inside one. */
 function Words({ count }: { count: number }) {
-  return <>{WORDS.slice(0, Math.max(1, count)).map((word) => <span key={word} className="mg-say-together-word">{word}</span>)}</>;
+  const said = WORDS.slice(0, Math.max(1, count));
+  return <>{said.map((word, index) => (
+    <span key={word} className="mg-say-together-word" data-last={index === WORDS.length - 1 || undefined}>{word}</span>
+  ))}</>;
 }
 
-function Dots({ lit }: { lit: number }) {
+function Dots({ lit, closing }: { lit: number; closing: RefObject<HTMLElement | null> }) {
   return (
     <span className="mg-say-together-dots">
-      {[0, 1, 2].map((dot) => <span key={dot} data-lit={dot < lit || undefined} data-words={dot === 2 || undefined} />)}
+      {[0, 1, 2].map((dot) => (
+        <span key={dot} data-lit={dot < lit || undefined} data-words={dot === 2 || undefined}>
+          {dot === 2 && <i className="mg-say-together-closing" ref={closing} />}
+        </span>
+      ))}
     </span>
   );
 }
 
 function SayTogetherField({ cast, names, still, art, sound, vibrate, frames }: CueTapFieldProps<SayTogetherParams, SayTogetherOutcome>) {
   const [view, setView] = useState<SayView>(START);
+  const closing = useRef<HTMLElement>(null);
   const play = useRef({ sound, vibrate });
   play.current = { sound, vibrate };
   useEffect(() => {
     let ticked = 0;
     let herVoice = false;
     let yourVoice = false;
-    const chimed: number[] = [];
-    // A chime when a voice starts; two voices starting within the together window ring once (they sound as one).
-    const chime = (at: number) => {
-      if (chimed.some((other) => Math.abs(other - at) <= SAY_TUNING.cleanMs)) return;
-      chimed.push(at);
-      play.current.sound(SOUNDS.voice);
-    };
     let shown = START;
     return frames(({ ms, tapMs, outcome }) => {
       while (ticked < BEATS_AT.length && ms >= BEATS_AT[ticked]) {
@@ -107,13 +119,20 @@ function SayTogetherField({ cast, names, still, art, sound, vibrate, frames }: C
         play.current.sound(SOUNDS.tick);
         play.current.vibrate("clue");
       }
+      // A chime when a voice starts; two voices together sound as one (hers rings, on her beat).
       if (tapMs !== null && !yourVoice) {
         yourVoice = true;
-        chime(tapMs);
+        if (outcome !== "together") play.current.sound(SOUNDS.voice);
       }
       if (ms >= SAY_WORDS_MS && !herVoice) {
         herVoice = true;
-        chime(SAY_WORDS_MS);
+        play.current.sound(SOUNDS.voice);
+      }
+      const ring = closing.current;
+      if (ring) {
+        const size = tapMs !== null && tapMs < SAY_WORDS_MS ? null : closingAt(ms);
+        ring.style.opacity = size === null ? "0" : "1";
+        if (size !== null) ring.style.transform = `translate(-50%, -50%) scale(${1 + 2.2 * size})`;
       }
       const next = viewAt(ms, tapMs, outcome, still);
       if (!sameView(next, shown)) {
@@ -134,7 +153,7 @@ function SayTogetherField({ cast, names, still, art, sound, vibrate, frames }: C
           {art.heroine ? <img src={art.heroine} alt="" draggable={false} /> : cast.heroine}
         </span>
         <span className="mg-say-together-bubble mg-say-together-bubble-her" data-words={view.her > 0 || undefined} data-together={view.together || undefined}>
-          <span className="mg-say-together-bubble-head"><small>{names.heroine}</small><Dots lit={view.lit} /></span>
+          <span className="mg-say-together-bubble-head"><small>{names.heroine}</small><Dots lit={view.lit} closing={closing} /></span>
           <span className="mg-say-together-text">{herText}</span>
         </span>
         {view.look && <span className="mg-say-together-mark">？</span>}
@@ -161,7 +180,7 @@ export const sayTogetherSkin: CueTapSkin<SayTogetherParams, SayTogetherOutcome> 
   // look (silent), before the outcome shows.
   endAt: ({ outcome, tapMs }) => {
     switch (outcome) {
-      case "together": return SAY_WORDS_MS + SAY_FIELD.wordsMs + 300;
+      case "together": return SAY_WORDS_MS + SAY_FIELD.wordsMs + 400;
       case "early": return SAY_WORDS_MS + 900;
       case "late": return (tapMs ?? SAY_WORDS_MS) + 900;
       case "silent": return SAY_END_MS + 700;
@@ -170,5 +189,5 @@ export const sayTogetherSkin: CueTapSkin<SayTogetherParams, SayTogetherOutcome> 
   Field: SayTogetherField,
 };
 
-/** For the tests: the field's view at a frame, and her count's beats. */
-export const SAY_FIELD_POINTS = { viewAt, beatsLit, wordsSaid, BEATS_AT, WORDS } as const;
+/** For the tests: the field's view at a frame, her count's beats and the ring closing on the last one. */
+export const SAY_FIELD_POINTS = { viewAt, beatsLit, wordsSaid, closingAt, BEATS_AT, WORDS } as const;

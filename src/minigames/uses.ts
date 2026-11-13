@@ -20,6 +20,8 @@ export const miniGameUseSchema = z.object({
   bg: word.optional(),
   art: z.record(z.string(), word).optional(),
   params: z.record(z.string(), word).optional(),
+  /** `retry yes`: the result card offers 「もう一回」. */
+  retry: z.literal(true).optional(),
   /** The tag's line (its text), to find it in the story. */
   line: z.string(),
 }).strict();
@@ -28,7 +30,8 @@ export const miniGameUseListSchema = z.array(miniGameUseSchema);
 
 /** A use's tag as a frame keeps it. */
 export const miniGameUseTag = (use: MiniGameUse): MiniGameTag => ({ id: use.game, auto: use.auto, ...(use.prefix ? { prefix: use.prefix } : {}),
-  ...(use.bg ? { bg: use.bg } : {}), ...(use.art ? { art: use.art } : {}), ...(use.params ? { params: use.params } : {}) });
+  ...(use.bg ? { bg: use.bg } : {}), ...(use.art ? { art: use.art } : {}), ...(use.params ? { params: use.params } : {}),
+  ...(use.retry ? { retry: true as const } : {}) });
 
 /** The key of a use: one per scene, knot and tag as written (one tag reached on several paths is one use). */
 export const miniGameUseKey = (use: MiniGameUse): string => `${use.sceneId}|${use.knot ?? ""}|${miniGameTagText(miniGameUseTag(use))}`;

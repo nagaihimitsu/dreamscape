@@ -11,8 +11,9 @@
   cursor: pointer;
 }
 .mg-engine-cue-tap .mg-cue-tap-controls { flex: none; padding: 10px 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
-/* How to play, right above the meter it speaks of. */
-.mg-engine-cue-tap .mg-cue-tap-hint { margin: 0 0 6px; font-size: 13px; line-height: 1.5; text-align: center; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+/* How to play, right above the meter it speaks of (read at a glance mid-play: 15px, 13px where a line would not fit). */
+.mg-engine-cue-tap .mg-cue-tap-hint { margin: 0 0 6px; font-size: 15px; line-height: 1.45; text-align: center; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+@media (max-width: 360px) { .mg-engine-cue-tap .mg-cue-tap-hint { font-size: 13px; } }
 /* The meter: its needle crosses it from the thing's start to the end of the play; gold where it arrives. The clean zone is
    brighter, narrower and glows (not told by colour alone). */
 .mg-engine-cue-tap .mg-cue-tap-meter {

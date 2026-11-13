@@ -87,6 +87,7 @@ export const storyFrameSchema = z
       bg: imageIdSchema.optional(),
       art: z.record(z.string().regex(MINI_GAME_KEY), z.string().regex(MINI_GAME_ART_ID)).optional(),
       params: z.record(z.string().regex(MINI_GAME_KEY), z.string().regex(/^\S+$/u)).optional(),
+      retry: z.literal(true).optional(),
     }).strict().optional(),
     choices: z
       .array(

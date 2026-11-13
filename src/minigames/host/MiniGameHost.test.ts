@@ -11,7 +11,7 @@ const environment = (change: Partial<MiniGameEnvironment> = {}): MiniGameEnviron
   context: { effectIds: [], backgroundIds: [], emotionIds: [] }, onOutcome: () => true, ...change,
 });
 const render = (gameId: string, change: Partial<MiniGameEnvironment> = {}, ready = true) => renderToStaticMarkup(createElement(MiniGameProvider, { value: environment(change) },
-  createElement(ChoicePoint, { minigame: { id: gameId, auto: MINI_GAMES[gameId].defaultAuto }, ready, cast: { heroine: null } },
+  createElement(ChoicePoint, { minigame: { id: gameId, auto: MINI_GAMES[gameId].defaultAuto }, ready, cast: { heroine: {} } },
     createElement("p", { "data-testid": "plain-choices" }, "choices"))));
 
 describe.each(Object.keys(MINI_GAMES))("the host's start of %s", (gameId) => {
@@ -19,12 +19,26 @@ describe.each(Object.keys(MINI_GAMES))("the host's start of %s", (gameId) => {
 
   it("shows how to play and a start that waits for the game's file, and no choices", () => {
     const html = render(gameId);
-    expect(html).toContain(definition.hintJa);
+    expect(html).toContain(definition.goalJa ?? definition.hintJa);
     expect(html).toContain("準備中…");
     expect(html).toMatch(/data-testid="minigame-start" disabled=""/u);
     expect(html).not.toContain("plain-choices");
     expect(html).not.toContain("minigame-debug-");
     expect(html).toContain(definition.keysJa ?? "キーボードでは遊べません");
+  });
+
+  it("shows its instruction card: the title, the length, the hand of its controls, and 「練習する」 when it has practice", () => {
+    const html = render(gameId);
+    expect(html).toContain('data-testid="minigame-card"');
+    expect(html).toContain(definition.titleJa);
+    if (definition.durationSec) expect(html).toContain(`約${definition.durationSec}秒`);
+    expect(html.includes('class="minigame-hand"'), "the hand").toBe(!!definition.controls);
+    if (definition.controls) expect(html).toContain(`data-kind="${definition.controls}"`);
+    expect(html.includes('data-testid="minigame-practice"'), "practice").toBe(!!definition.practice);
+    // 「おまかせ」 plays by itself: no hand, no practice.
+    const auto = render(gameId, { auto: true });
+    expect(auto).not.toContain('data-testid="minigame-practice"');
+    expect(auto).not.toContain('class="minigame-hand"');
   });
 
   it("offers a button per outcome in Debug mode only, and says when it plays itself", () => {
@@ -52,7 +66,7 @@ describe.each(Object.keys(MINI_GAMES).filter((id) => MINI_GAMES[id].outcomes.som
 describe("a choice point", () => {
   it("shows the screen's own choices when the frame has no # minigame:", () => {
     const html = renderToStaticMarkup(createElement(MiniGameProvider, { value: environment() },
-      createElement(ChoicePoint, { minigame: undefined, ready: true, cast: { heroine: null } }, createElement("p", { "data-testid": "plain-choices" }, "choices"))));
+      createElement(ChoicePoint, { minigame: undefined, ready: true, cast: { heroine: {} } }, createElement("p", { "data-testid": "plain-choices" }, "choices"))));
     expect(html).toContain("plain-choices");
   });
 });
