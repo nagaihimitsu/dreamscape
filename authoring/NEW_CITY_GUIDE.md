@@ -32,7 +32,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 
 ### A. ある旅行編に都市を足す（例：ゴールデントライアングル編の4つ目の都市）
 
-- 専用のブランチで作業します。`manifest.json` に都市IDを足すと、都市データを反映するまで `journey:readiness`・`journey:transit` が止まります（`Missing content file: cities/<都市ID>.json`）。`content:build` は通ります（[CITY_BUNDLES](CITY_BUNDLES.md) の「検証は通らない」は、2026-11-13 のコードには当たらない）。
+- 専用のブランチで作業します。`manifest.json` に都市IDを足すと、都市データを反映するまで `journey:readiness`・`journey:transit` が止まります（`Missing content file: cities/<都市ID>.json`）。`content:build` は通ります（[CITY_BUNDLES](CITY_BUNDLES.md)）。
 - `<旅行編>/manifest.json` の `cities` に `{ "id": "<都市ID>", "nameJa": "<都市名>" }` を、旅の順の位置に足します。`nameJa` は都市ファイルの `nameJa` と同じにします（違うと止まる）。
 - 都市データの雛形は `npm run city:bundle -- new <都市ID> artifacts/city-work/<名前>.json` で作ります（手順6）。
 - 前の都市の `cities/<前の都市ID>.json` の `nextCityId` に新しい都市を書きます。書けるのは `manifest.json` で次の順にある都市だけです。新しい都市が制作中（`productionStatus: "prototype"`）でも書けます。次の都市が公開されるまで、遊ぶ人は前の都市にとどまります（[FUTURE_CITIES](FUTURE_CITIES.md)）。
