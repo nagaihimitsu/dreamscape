@@ -379,7 +379,6 @@ INCLUDE modules.ink
 {heroine_name}は振り返り、行列の端に残っていたこちらの手を取った。迷いのない手だった。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
-# photo: gt_album_j54 # photo_caption: 「一緒に！　下手なのは、二人とも同じだから！」
 # size: large
 # minigame: baraat_dance auto off_beat_together
 一緒に！　下手なのは、二人とも同じだから！
@@ -413,6 +412,8 @@ INCLUDE modules.ink
     # speaker: narrator
     つかまれた手ごと、輪の真ん中へ引っぱり込まれた。
 -
+// 踊りの写真は、どの結果の後も、合流したこの行で1回（踊りの前の行に付けると、遊ぶ場の上に写真の札が重なるため）。
 # speaker: narrator
+# photo: gt_album_j54 # photo_caption: 「一緒に！　下手なのは、二人とも同じだから！」
 杖の老婦人とカムラが、肩を組んで揺れている。馬の上でアマンが笑っている。頭上では、ハワー・マハルの九百を超える窓が、灯りに照らされて、ただ通りを見下ろしていた。
 -> END
