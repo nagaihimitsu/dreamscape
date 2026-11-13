@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
+import { getCityContent } from "../../../src/content";
 import { cityStart } from "../../../src/dev/scenario-builders";
 import { journeyNumbers } from "../../../src/features/journey/journey-numbers";
+import { eventPlaceIdsIn } from "../../../src/features/journey/visited-places";
 
 // 旅の数字 (2026-11-13) on a journey of several cities: every number is the whole journey's. Without a calendar the days
 // are kept per city, so they are the journey's only while the party is still in its first city; the rides (kept per
@@ -26,5 +28,17 @@ describe("the numbers of a journey of several cities", () => {
     const agra = cityStart("agra");
     const { calendar: _calendar, ...travel } = agra.travel;
     expect(journeyNumbers({ ...agra, travel: { ...travel, day: 2 } }, []).days).toBeNull();
+  });
+
+  it("counts the places where something happened in every city, never a place only passed through today", () => {
+    const agra = cityStart("agra");
+    const delhi = eventPlaceIdsIn(agra, "delhi");
+    // Delhi was played through to its end before Agra: its places still count there.
+    expect(delhi.length).toBeGreaterThan(0);
+    expect(journeyNumbers(agra, []).eventPlaces).toBe(delhi.length + eventPlaceIdsIn(agra, "agra").length);
+    const { hotelPlaceId } = getCityContent("agra").travelSettings;
+    const passed = getCityContent("agra").travel.places.find((place) => place.id !== hotelPlaceId && !eventPlaceIdsIn(agra, "agra").includes(place.id))!;
+    const moved = { ...agra, travel: { ...agra.travel, currentPlaceId: passed.id, todayPlaceIds: [passed.id] } };
+    expect(journeyNumbers(moved, []).eventPlaces).toBe(journeyNumbers(agra, []).eventPlaces);
   });
 });

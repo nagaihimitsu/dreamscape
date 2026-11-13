@@ -41,7 +41,7 @@ export function JourneyNumbersCard({ numbers, reduceMotion }: { numbers: Journey
   const count = (value: number, unit: string) => <CountUp value={value} reduceMotion={reduceMotion} format={(shown) => `${shown}${unit}`} />;
   const rows: { label: string; value: ReactNode }[] = [
     ...(numbers.days !== null ? [{ label: "旅の日数", value: count(numbers.days, "日") }] : []),
-    { label: "訪ねた場所", value: count(numbers.places, "か所") },
+    { label: "出来事のあった場所", value: count(numbers.eventPlaces, "か所") },
     { label: "出会った人", value: count(numbers.people, "人") },
     { label: "覚えたその国の言葉", value: count(numbers.localWords, "語") },
     { label: "アルバムの写真", value: count(numbers.photos, "枚") },
