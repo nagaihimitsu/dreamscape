@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
   centreStroke, convexHull, keyStroke, polygonArea, regularPolygon, shapeClassify, shapeDragFairness, shapeDragRules, shapeDragTuningSchema,
-  shapeEnds, shapeMeasures, shapeOfRecord, shapeRoll, shapeStart,
+  shapeEnds, shapeHeavy, shapeMeasures, shapeOfRecord, shapeRoll, shapeStart,
   type ShapeClassifier, type ShapeDragTuning, type ShapeStroke,
 } from "./engine";
 
@@ -147,6 +147,17 @@ describe("the shape_drag measures and classes", () => {
     expect(() => rules.autoRecord("nothing" as Shape, {})).toThrow();
   });
 
+  it("pushes less with a heavy pin once the shape is big enough (any of its sizes), the same as before until then", () => {
+    const heavy: ShapeDragTuning = { ...tuning, heavy: { gain: 0.1, atLeast: { area: 4, span: 0.9 } } };
+    const small = shapeOfRecord([centreStroke(UP, 0.5)], heavy, shapes);
+    expect(shapeHeavy(small, heavy)).toBe(false);
+    expect(shapeRoll(small, centreStroke(0, 0.5), heavy)).toEqual(shapeRoll(small, centreStroke(0, 0.5), tuning));
+    const big = shapeOfRecord(Array.from({ length: 6 }, (_, index) => centreStroke(index * 45, 0.5)), tuning, shapes);
+    expect(shapeHeavy(big, heavy)).toBe(true);
+    expect(shapeHeavy(big, tuning)).toBe(false);
+    expect(polygonArea(shapeRoll(big, centreStroke(0, 0.5), heavy).points)).toBeLessThan(polygonArea(shapeRoll(big, centreStroke(0, 0.5), tuning).points));
+  });
+
   it("rolls through the centre with the arrows, and the diagonal with Shift", () => {
     expect(keyStroke("ArrowUp", false, tuning)).toEqual(centreStroke(UP, tuning.keyStroke));
     expect(keyStroke("ArrowUp", true, tuning)).toEqual(centreStroke(UP + 45, tuning.keyStroke));
@@ -161,6 +172,11 @@ describe("the shape_drag fairness", () => {
     expect(shapeDragFairness({ ...tuning, minStroke: 0.01 }, shapes).join()).toContain("tap");
     expect(shapeDragFairness({ ...tuning, keyStroke: 0.02 }, shapes).join()).toContain("keys would not roll");
     expect(shapeDragFairness({ ...tuning, timeMs: 3000 }, shapes).join()).toContain("timeMs");
+    // No time limit: a stroke limit ends the play (not the 「done」 button alone).
+    expect(shapeDragFairness({ ...tuning, timeMs: null, maxStrokes: 8 }, shapes)).toEqual([]);
+    expect(shapeDragFairness({ ...tuning, timeMs: null }, shapes).join()).toContain("neither timeMs nor maxStrokes");
+    expect(shapeDragFairness({ ...tuning, heavy: { gain: 0.3, atLeast: { area: 5 } } }, shapes).join()).toContain("heavy pin's gain");
+    expect(shapeDragFairness({ ...tuning, heavy: { gain: 0.1, atLeast: {} } }, shapes).join()).toContain("no size to start from");
     expect(shapeDragFairness(tuning, { ...shapes, classes: [{ outcome: "torn", atLeast: { roundness: 0.5 }, ends: true }] }).join()).toContain("can go down");
     expect(shapeDragFairness(tuning, { ...shapes, classes: [{ outcome: "torn", below: { area: 3 }, ends: true }] }).join()).toContain("upper bound");
     expect(shapeDragFairness(tuning, { ...shapes, classes: [{ outcome: "torn", atLeast: { area: 0.5 }, ends: true }] }).join()).toContain("start shape");

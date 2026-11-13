@@ -2,9 +2,10 @@ import { z } from "zod";
 import type { MiniGameRules } from "../../contract";
 
 // The `shape_drag` engine's rules (docs/13 2.2): a soft shape (dough) on a square board; each one-finger stroke rolls it
-// out, and after each stroke it turns a little. When the play ends, the shape's measures (how big, how round, how boxy,
-// how far across the board) give the skin's outcome through the skin's thresholds. Nothing is random: the same strokes
-// give the same shape. Pure geometry: no clock, DOM or React (EnginePlay.tsx draws and times; a skin draws the board).
+// out, and after each stroke it turns a little. When the play ends (a stroke limit, the 「done」 button, an ending shape,
+// or a time limit if the skin has one), the shape's measures (how big, how round, how boxy, how far across the board)
+// give the skin's outcome through the skin's thresholds. Nothing is random: the same strokes give the same shape. Pure
+// geometry: no clock, DOM or React (EnginePlay.tsx draws and times; a skin draws the board).
 //
 // The geometry. The shape is a convex polygon on the board, its centroid at the board's centre. A stroke is a rolling pin
 // pushed along the finger's way: the part of the shape inside the pin's strip (`band` on each side of the finger's line)
@@ -36,14 +37,22 @@ export const shapeDragTuningSchema = z.object({
   minStroke: z.number().positive(),
   /** After each stroke the shape turns this much (clockwise on the screen). */
   turnDeg: z.number().min(-180).max(180),
-  /** The play's time. */
-  timeMs: z.number().int().positive(),
+  /** The play's time, from its first stroke (null: no time limit; the strokes, the 「done」 button or an ending class end it). */
+  timeMs: z.number().int().positive().nullable(),
   /** The play ends after this many strokes (null: only the time, the 「done」 button or an ending class end it). */
   maxStrokes: z.number().int().positive().nullable(),
   /** The 「done」 button works from this many strokes on. */
   minStrokesToFinish: z.number().int().min(0),
   /** A key's stroke: through the centre, this long. */
   keyStroke: z.number().positive(),
+  /**
+   * A heavier pin near the end of the shape's way (a tear): once the shape is at least this big (area, span), a stroke
+   * pushes with this gain instead, so a careful player can stop in time.
+   */
+  heavy: z.object({
+    gain: z.number().positive(),
+    atLeast: z.object({ area: z.number().positive().optional(), span: z.number().positive().optional() }).strict(),
+  }).strict().optional(),
 }).strict();
 export type ShapeDragTuning = z.infer<typeof shapeDragTuningSchema>;
 
@@ -173,6 +182,17 @@ export function shapeStart(tuning: ShapeDragTuning): ShapeState {
   return { points: regularPolygon(tuning.sides, tuning.startRadius), strokes: 0 };
 }
 
+/** Whether the pin is heavy now: the shape has reached any of the tuning's `heavy` sizes. */
+export function shapeHeavy(state: ShapeState, tuning: ShapeDragTuning): boolean {
+  const heavy = tuning.heavy;
+  if (!heavy) return false;
+  const measures = shapeMeasures(state, tuning);
+  return (heavy.atLeast.area !== undefined && measures.area >= heavy.atLeast.area) || (heavy.atLeast.span !== undefined && measures.span >= heavy.atLeast.span);
+}
+
+/** How far a stroke pushes the shape per board width of stroke: the heavy pin's gain near a tear, the tuning's before. */
+const shapeGain = (state: ShapeState, tuning: ShapeDragTuning): number => (tuning.heavy && shapeHeavy(state, tuning) ? tuning.heavy.gain : tuning.gain);
+
 /**
  * The shape after one stroke (rolled out, centred, turned), or the same shape when the stroke is a tap or its strip misses
  * the shape. `turned: false` leaves out the turn (the drawing turns it after the finger lifts).
@@ -187,7 +207,7 @@ export function shapeRoll(state: ShapeState, stroke: ShapeStroke, tuning: ShapeD
   const line = dot(across, from);
   const under = clip(clip(state.points, across, line + tuning.band), { x: -across.x, y: -across.y }, -(line - tuning.band));
   if (under.length < 3 || polygonArea(under) < EPSILON) return state;
-  const push = Math.min(length * tuning.gain, tuning.maxPush);
+  const push = Math.min(length * shapeGain(state, tuning), tuning.maxPush);
   const carried = under.map((point) => ({ x: point.x + along.x * push, y: point.y + along.y * push }));
   const hull = convexHull([...state.points, ...carried]);
   const middle = centroid(hull);
@@ -278,6 +298,8 @@ export function keyStroke(key: string, shift: boolean, tuning: ShapeDragTuning):
 export const SHAPE_DRAG_MIN_STROKE = 0.03;
 /** At least this long to play (ms): time to see the shape, roll a few strokes and finish. */
 export const SHAPE_DRAG_MIN_TIME_MS = 6000;
+/** Without a stroke for this long (from the start or the last stroke), the board shows how to roll again. */
+export const SHAPE_DRAG_IDLE_HINT_MS = 3000;
 
 /** The reasons a skin's tuning and shapes do not make a fair play (none: fair). */
 export function shapeDragFairness<Outcome extends string>(tuning: ShapeDragTuning, classifier: ShapeClassifier<Outcome>): string[] {
@@ -285,7 +307,10 @@ export function shapeDragFairness<Outcome extends string>(tuning: ShapeDragTunin
   if (tuning.minStroke < SHAPE_DRAG_MIN_STROKE) problems.push(`minStroke ${tuning.minStroke} is shorter than a tap's slip (${SHAPE_DRAG_MIN_STROKE})`);
   if (tuning.band < tuning.minStroke) problems.push(`band ${tuning.band} is narrower than minStroke`);
   if (tuning.keyStroke < tuning.minStroke) problems.push(`keyStroke ${tuning.keyStroke} is shorter than minStroke: keys would not roll`);
-  if (tuning.timeMs < SHAPE_DRAG_MIN_TIME_MS) problems.push(`timeMs ${tuning.timeMs} is shorter than ${SHAPE_DRAG_MIN_TIME_MS}`);
+  if (tuning.heavy && tuning.heavy.gain >= tuning.gain) problems.push(`the heavy pin's gain ${tuning.heavy.gain} is not less than gain ${tuning.gain}`);
+  if (tuning.heavy && tuning.heavy.atLeast.area === undefined && tuning.heavy.atLeast.span === undefined) problems.push("the heavy pin has no size to start from");
+  if (tuning.timeMs !== null && tuning.timeMs < SHAPE_DRAG_MIN_TIME_MS) problems.push(`timeMs ${tuning.timeMs} is shorter than ${SHAPE_DRAG_MIN_TIME_MS}`);
+  if (tuning.timeMs === null && tuning.maxStrokes === null) problems.push("neither timeMs nor maxStrokes: only the 「done」 button would end the play");
   if (tuning.maxStrokes !== null && tuning.maxStrokes < tuning.minStrokesToFinish) problems.push("maxStrokes is less than minStrokesToFinish");
   for (const item of classifier.classes) {
     if (!item.ends) continue;
