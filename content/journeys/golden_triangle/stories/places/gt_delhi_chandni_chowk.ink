@@ -10,6 +10,7 @@ INCLUDE modules.ink
 # scene: date
 # title: バス、と言うまで
 # when: episodes delhi >= 1
+# hint: デリーの観光を一つ終えてから
 # on_done: money -40
 # background: gt_bg_delhi_chandni_chowk
 { cond("time night"):

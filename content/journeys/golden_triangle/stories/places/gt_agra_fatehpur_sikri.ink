@@ -76,11 +76,13 @@ INCLUDE modules.ink
 # background: gt_bg_agra_fatehpur_sikri
 { quiz_correct:
     # speaker: enemy
+    # em: イエス
     イエス……？　キリストの？　イスラームの皇帝の門に？
     # speaker: heroine
     はい。マリアの子イエスの言葉、って書いてあるそうです
 - else:
     # speaker: enemy
+    # em: イエス
     ……待て。翻訳の続きに出てる。『マリアの子イエスは言った』。キリストの言葉だ。イスラームの皇帝の門に？
 }
 # speaker: narrator

@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # scene: date
 # title: 世界地図のローティー
 # when: episodes delhi >= 1
+# hint: デリーの観光を一つ終えてから
 # background: gt_bg_delhi_bangla_sahib
 # speaker: narrator
 # local_word: gt_delhi_word_gurdwara

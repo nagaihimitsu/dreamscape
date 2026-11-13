@@ -10,6 +10,7 @@ INCLUDE modules.ink
 # scene: date
 # title: 猿との取引
 # when: episodes agra >= 1
+# hint: アーグラの観光を一つ終えてから
 # background: gt_bg_agra_akbar_tomb
 # speaker: narrator
 シカンドラのアクバル廟は、門だけで一つの宮殿のようだった。赤い砂岩の大門をくぐると、広い芝生の向こうに、墓廟が低く横たわっている。

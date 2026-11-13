@@ -10,6 +10,7 @@ INCLUDE modules.ink
 # scene: date
 # title: 欲しいものは、欲しいと
 # when: episodes jaipur >= 1
+# hint: ジャイプールの観光を一つ終えてから
 # on_done: money -500
 # on_done: item gt_jaipur_lac_bangles
 # background: gt_bg_jaipur_johari_bazaar

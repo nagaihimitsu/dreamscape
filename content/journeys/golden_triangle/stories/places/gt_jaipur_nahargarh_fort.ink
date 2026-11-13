@@ -8,6 +8,7 @@ INCLUDE modules.ink
 # scene: date
 # title: 同じ形の部屋
 # when: episodes jaipur >= 1
+# hint: ジャイプールの観光を一つ終えてから
 # background: gt_bg_jaipur_nahargarh_fort
 # speaker: narrator
 ナーハルガル砦は、ジャイプールの町を見下ろす尾根の上にあった。城壁の端に立つと、桃色の旧市街が、碁盤の目のまま足もとに広がっている。

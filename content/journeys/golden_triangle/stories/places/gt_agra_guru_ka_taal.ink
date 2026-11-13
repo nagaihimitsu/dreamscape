@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # scene: date
 # title: 寒い国へは、夏だけ
 # when: episodes agra >= 1
+# hint: アーグラの観光を一つ終えてから
 # background: gt_bg_agra_guru_ka_taal
 # speaker: narrator
 デリーへ続く幹線道路を、トラックが途切れなく唸りながら走っていく。その道沿いに、赤い砂岩の塔を残した、古い石の貯水池があった。グル・カ・タール。

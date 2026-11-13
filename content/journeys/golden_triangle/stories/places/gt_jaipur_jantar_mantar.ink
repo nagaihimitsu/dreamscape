@@ -86,11 +86,13 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_jantar_mantar
 { quiz_correct:
     # speaker: enemy
+    # em: 二秒
     ……二秒。石の装置で、二秒？　三百年近く前に？
 - else:
     # speaker: narrator
     シャーストリーが言った。
     # speaker: gt_shastri
+    # em: 二秒
     二秒だよ
     # speaker: narrator
     ディヴィヤの口が、半分開いたまま止まった。

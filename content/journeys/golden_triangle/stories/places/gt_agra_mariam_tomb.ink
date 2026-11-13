@@ -10,6 +10,7 @@ INCLUDE modules.ink
 # scene: date
 # title: 本当の名前
 # when: episodes agra >= 1
+# hint: アーグラの観光を一つ終えてから
 # background: gt_bg_agra_mariam_tomb
 # speaker: narrator
 アクバル廟から少し離れた所に、赤い砂岩の四角い建物が、芝生の真ん中に静かに建っていた。マリアム・ウッザマーニーの墓廟。訪れる人は、ずっと少ない。
