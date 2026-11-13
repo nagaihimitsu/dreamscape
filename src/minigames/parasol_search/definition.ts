@@ -3,27 +3,32 @@ import { defineMiniGame } from "../contract";
 
 /**
  * `parasol_search` (a skin of `search`): Hawa Mahal's upper floor, a lattice window over the old city's street. Looking
- * down, the street is full of round umbrellas and parasols: stalls on both pavements, two people walking with them, a cow,
- * an auto-rickshaw and a cycle-rickshaw. One of them is the old parasol of the vegetable seller below (the tag's `at`:
- * left, middle or right on the near pavement). The player taps umbrellas to look (a wrong one is only looked at, and the
- * search goes on), or presses 「どこ？」, or does nothing until she points it out. Outcomes: found among the first two
- * looked at (`found`), found later (`found_slow`), or pointed out by her (`pointed`). Nothing is random; the street claims
- * nothing about the place (an ordinary street from above).
+ * down, the street is full of round umbrellas and parasols: five stalls on each pavement, three people walking with them,
+ * a cow, an auto-rickshaw and a cycle-rickshaw. Three rounds, the three things the heroine later tells the vegetable
+ * seller she saw (2026-11-13 playtest): her old parasol (the tag's `at`: left, middle or right on the near pavement; two
+ * other old parasols and two other vegetable stalls make the player look at both clues), the customer arguing with her
+ * over the price, the child she gave a tomato to. The player taps to look (a wrong one is only looked at, and the round
+ * goes on), or presses 「どこ？」, or does nothing until she points it out (the next round comes either way). Outcomes:
+ * all three found by the player with at most one wrong look in all (`found`), with more (`found_slow`), or any of them
+ * pointed out by her (`pointed`). Nothing is random (the seed only shuffles which other stall stands where); the street
+ * claims nothing about the place (an ordinary street from above).
  *
- * Accessibility: each umbrella is a button in the tab order, named by what is drawn there (its colour and the stall or
- * walker under it), the same clues the picture gives, never by whose it is; Enter or Space looks at it; 「どこ？」 is a
- * 56px button at the bottom. With less motion the walkers and the traffic stand still, and a looked-at umbrella moves aside
- * at once instead of sliding. The outcome is read out by the host.
+ * Accessibility: each round's things are buttons in the tab order (the next round's first takes the focus), named by what
+ * is drawn there (an umbrella's colour and the stall or walker under it; a customer's stall and what they do; what a
+ * child holds), the same clues the picture gives, never by whose it is; Enter or Space looks at it; 「どこ？」 is a 56px
+ * button at the bottom; the top band says the round and the looks. With less motion the walkers, children and traffic
+ * stand still, and a looked-at umbrella moves aside at once instead of sliding. The outcome is read out by the host.
  */
 export const parasolSearch = defineMiniGame({
   id: "parasol_search",
   engine: "search",
   titleJa: "日傘を探す",
-  howToJa: "格子の窓から見下ろした通りで、傘を押して古い日傘を探す。「どこ？」で彼女に教えてもらう（約10秒）",
+  howToJa: "格子の窓から見下ろした通りで、古い日傘・値段で揉める客・トマトをもらった子どもを順に押して見つける。「どこ？」で彼女に教えてもらう（15〜25秒）",
   outcomes: [
-    { id: "found", labelJa: "すぐに見つけた", noteJa: "違う傘を1本まで見て、古い日傘を押した" },
-    { id: "found_slow", labelJa: "何本か見て見つけた", noteJa: "違う傘を2本以上見てから、古い日傘を押した" },
-    { id: "pointed", labelJa: "彼女が見つけた", noteJa: "「どこ？」を押したか、8秒何もしなかった" },
+    { id: "found", labelJa: "すぐに見つけた", noteJa: "3つとも自分で見つけ、違うものを見たのは合わせて1つまで" },
+    { id: "found_slow", labelJa: "何本か見て見つけた", noteJa: "3つとも自分で見つけ、違うものを2つ以上見た" },
+    // The label names no one (two women are on the scene: the heroine and the seller) until the host can put her name in.
+    { id: "pointed", labelJa: "指さしてもらって見つけた", noteJa: "どれかで「どこ？」を押したか、8秒何もしなかった（彼女が指さして、次へ進む）" },
   ],
   defaultAuto: "found",
   params: () => z.object({
@@ -32,14 +37,14 @@ export const parasolSearch = defineMiniGame({
   }).strict(),
   examples: [{}, { at: "left" }, { at: "right" }],
   startJa: "見下ろす",
-  hintJa: "格子の窓から、通りの古い日傘を探す",
+  hintJa: "格子の窓から、古い日傘から順に3つ見つけて押す",
   timed: true,
-  keysJa: "Tab で傘を選び、Enter・Space で見る",
+  keysJa: "Tab で選び、Enter・Space で見る",
   sounds: ["clue_new", "ui_tap"],
   quietScene: false,
   art: [],
   artSlots: [
-    { id: "street", kind: "backdrop", labelJa: "格子の窓から真下に見下ろす旧市街の通り（向かいの店先・歩道・車道と、立ち止まった牛・停めたオートリキシャ・手前の歩道。傘・屋台・人はゲームが描くので描かない。横長 17:10）" },
+    { id: "street", kind: "backdrop", labelJa: "格子の窓から真下に見下ろす旧市街の通り（上から、向かいの店先・歩道・車道・手前の歩道。傘・屋台・人・子どもはゲームが描くので描かない。窓はおよそ 4:5 の縦長で、横長の絵は左右が切れる）" },
   ],
   load: () => import("./play"),
 });

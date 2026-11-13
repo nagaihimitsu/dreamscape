@@ -8,8 +8,9 @@ INCLUDE modules.ink
 // 【4】宿・眠る前：手のひらの模様の中を探す（「明日にする」は # later。夜だけ）
 // 探すのはミニゲーム「手のひらの模様」（# minigame: mehndi_hidden_name）。灯りを動かし、模様にまぎれた文字を押す。
 // 文字の場所と中身は、ジャル・マハルのフラグで分かれ道に書き分ける（主人公の名前は入れたとおりに。ヒンディー語の文字の所は、
-// わざと読めない印にする：偽の文字は作らない）。結果は found・wrong_spot（違う所を指した。その後で found）・later（「明日にする」
-// のボタン。時間の制限は無い（2026-11-13）。# later なので、また次の夜に出る）。場面の中のゲームなので、関係値の札は付けない。
+// わざと読めない印にする：偽の文字は作らない）。結果は found・wrong_spot（違う所も指してから見つけた。違う所は2回まで彼女が
+// 答えて探すのが続き、3回目は彼女が場所を見せる。その後で found）・later（「明日にする」のボタン。時間の制限は無い
+// （2026-11-13）。# later なので、また次の夜に出る）。場面の中のゲームなので、関係値の札は付けない。
 === gt_jaipur_hotel_mehndi_night ===
 # scene: talk
 # at: hotel jaipur_hotel_hub
@@ -60,17 +61,21 @@ INCLUDE modules.ink
 // 選択肢の代わりにミニゲーム。結果の ID の選択肢をゲームが選ぶ。
 * [模様の中の文字を見つけた # option: found]
     -> found
-* [文字の無い所を指した # option: wrong_spot]
+// wrong_spot はゲームの中で違う所を指した後（そのたびに彼女が「そこは、ただの花びら」などと答え、探すのは続く）。
+// その後で自分で見つけたときも、3回目に違う所を指して彼女が場所を見せたときも、この選択肢。だから台詞は、済んだことを振り返る形にする。
+* [違う所も指してから、模様の中の文字を見つけた # option: wrong_spot]
     { cond("flag gt_jaipur_mehndi_her_secret") and cond("seen gt_jaipur_hotel_mehndi_morning"):
+        # speaker: narrator
+        今朝、フロントの女性が指さした所だったのに。最初に指したのは、まるで違う模様だった。
         # speaker: heroine
         # reaction: heroine,teasing,question
-        そこじゃないよ。今朝フロントの人が指さした所、もう忘れちゃった？
+        今朝、教えてもらったばっかりなのに。……ふふ、忘れっぽいんだから
     - else:
+        # speaker: narrator
+        最初に指したのは、文字ではなく、ただの模様だった。くすっと笑われて、灯りで模様をたどり直した。
         # speaker: heroine
         # reaction: heroine,teasing,question
-        そこ？　ふふ、そこはただの花びらだよ
-        # speaker: heroine
-        そんなにすぐ分かる所には、ないと思うな。……ほら、もっとちゃんと見て
+        さっき、自信満々に違う所を指してたでしょ。……ふふ、あの顔、見せてあげたかったな
     }
     -> found
 * [「色が濃くなる明日にする」 # option: later]

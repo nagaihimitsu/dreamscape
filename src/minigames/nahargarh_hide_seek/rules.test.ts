@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import { searchFairness, type SearchRecord } from "../engines/search/engine";
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { nahargarhHideSeek } from "./definition";
-import { HIDE_SEEK_DOORS, hideSeekRules, hideSeekSetup } from "./rules";
+import { HIDE_SEEK_DOORS, HIDE_SEEK_HINT_MS, HIDE_SEEK_IDLE_MS, hideSeekRules, hideSeekSetup } from "./rules";
+import { searchProgress } from "../engines/search/engine";
 
 const record = (actions: SearchRecord["actions"], lapse: SearchRecord["lapse"] = null): SearchRecord => ({ actions, lapse });
 
@@ -23,7 +24,20 @@ describe("the hide-and-seek's rules", () => {
     expect(outcome(doors(1, 2, 3, 4, 5, 6, 7))).toBe("door_by_door");
     // A door opened twice counts once; an empty room does not end the play.
     expect(outcome(doors(3, 3, 7))).toBe("door_quick");
-    expect(outcome(doors(1, 2, 3), "idle")).toBe("just_wait");
+    expect(outcome(doors(12, 11, 10, 7))).toBe("door_by_door");
+  });
+
+  it("ends with waiting only before the first door or call: after that, doing nothing is a hint, never an end", () => {
+    const setup = hideSeekSetup(params);
+    expect(setup.idleEnds).toBe("before_action");
+    expect(searchProgress([{ idle: true }], setup).ending).toEqual({ kind: "idle", misses: 0, helped: 0 });
+    expect(searchProgress([...doors(1, 2, 3), { idle: true }, { idle: true }], setup).ending).toBeNull();
+    expect(searchProgress([{ button: "call" }, { idle: true }], setup).ending).toBeNull();
+    // The play goes on after a pause: her door still ends it as the doors opened say.
+    expect(outcome([...doors(1, 2, 3), { idle: true }, ...doors(7)])).toBe("door_by_door");
+    expect(outcome([...doors(4), { idle: true }, ...doors(7)])).toBe("door_quick");
+    // The hint comes before waiting could end an unstarted play, and both leave time to look.
+    expect(HIDE_SEEK_HINT_MS).toBeLessThan(HIDE_SEEK_IDLE_MS);
   });
 
   it("ends with the third call, whatever was opened before; two calls and nothing more is waiting", () => {
@@ -41,10 +55,11 @@ describe("the hide-and-seek's rules", () => {
     expect(hideSeekRules.autoRecord("door_by_door", { hide: 1 }).actions).toHaveLength(3);
   });
 
-  it("is a fair search: nine doors, her door the tag's, time to look before waiting ends it", () => {
+  it("is a fair search: twelve doors, her door the tag's (the 7th by default), time to look before waiting ends it", () => {
+    expect(HIDE_SEEK_DOORS).toBe(12);
     for (const hide of [1, 7, HIDE_SEEK_DOORS]) expect(searchFairness(hideSeekSetup({ hide }))).toEqual([]);
-    expect(hideSeekSetup({ hide: 7 }).targets).toEqual([6]);
-    expect(hideSeekSetup({ hide: 40 }).targets).toEqual([HIDE_SEEK_DOORS - 1]);
+    expect(hideSeekSetup({ hide: 7 }).rounds[0].targets).toEqual([6]);
+    expect(hideSeekSetup({ hide: 40 }).rounds[0].targets).toEqual([HIDE_SEEK_DOORS - 1]);
     expect(nahargarhHideSeek.params({ effectIds: [], backgroundIds: [], emotionIds: [] }).parse({})).toEqual({ hide: 7 });
   });
 });
