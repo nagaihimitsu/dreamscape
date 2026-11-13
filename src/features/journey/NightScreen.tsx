@@ -37,7 +37,8 @@ export function nightButtons(game: GameState, actions: readonly NightAction[], n
  * opens (the tours' sheet and the cancel's dialog here, the epilogue, the departure's dialog, the stored AP); the free-time
  * screen (its photo cards included) is not there meanwhile. The screen is the game's state, not a saved mark: when a flow comes
  * back at 21:00 or later it shows again with what is left. Taps are held as it appears and when its buttons change (the second
- * tap of a double tap presses none of them); a lost focus goes to its first button; its line is announced.
+ * tap of a double tap presses none of them); a lost focus goes to its first button (its ring only once a key has been pressed:
+ * focusQuietly, so after a load it does not look chosen); its line is announced.
  */
 export function NightScreen({ game, buttons, reduceMotion, onAction, onBookTour, onCancelTour }: {
   game: GameState;
