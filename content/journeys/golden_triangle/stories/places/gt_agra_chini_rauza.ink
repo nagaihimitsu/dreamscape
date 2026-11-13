@@ -16,6 +16,7 @@ INCLUDE modules.ink
 ヤムナー川の東岸、細い道の突き当たりに、四角い墓廟がぽつんと建っていた。チーニー・カ・ラウザー。壁は一面、色とりどりの釉薬のタイルで覆われていたというが、今はほとんどが剥がれ落ち、ところどころに、青と緑と黄色が、島のように残っている。
 眠っているのは、アフザル・ハーン・シーラーズィー。学者で詩人で、シャー・ジャハーンの宰相を務めた人だ。
 # speaker: heroine
+# voice: gt_agra_date_chini_rauza_001
 色が、少しだけ残ってる。全部残ってたら、どんなだったんだろう。目が痛いくらい、きらきらしてたのかな
 # speaker: narrator
 アーチの下で、口ひげの男が、銀色の反射板を抱えて電話に怒鳴っていた。電話を切ると、二人を上から下まで眺め、ぱっと顔を明るくした。
@@ -26,6 +27,7 @@ INCLUDE modules.ink
 ジャグディープだ。アーグラで、結婚前の二人の写真を撮ってる
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_agra_date_chini_rauza_002
 代役……カップルの？
 # speaker: gt_jagdeep
 立ってるだけでいい。顔は写さない。光を見るだけだ。はい、アーチの下で向かい合って。もっと近く。……もっと。おでこがくっつくくらい
@@ -38,6 +40,7 @@ INCLUDE modules.ink
         一歩近づいたところで、彼女が反射的に半歩下がった。
         # speaker: heroine
         # reaction: heroine,surprised_big,sweat
+        # voice: gt_agra_date_chini_rauza_003
         ち、近い！　ごめん、反射で。代役なのに
     - else:
         # speaker: narrator
@@ -45,6 +48,7 @@ INCLUDE modules.ink
         一歩。もう一歩。彼女の前髪が、こちらの額に触れそうになる。
         # speaker: heroine
         # reaction: heroine,shy_deep,blush
+        # voice: gt_agra_date_chini_rauza_004
         ……代役、だからね。光を見るための
     }
 * [「これ以上は、彼女に聞いてから」 # option: ask_her_first]
@@ -53,10 +57,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # reaction: heroine,shy,sweat
+        # voice: gt_agra_date_chini_rauza_005
         そこで聞かれると、余計に恥ずかしい……。だ、大丈夫だから
     - else:
         # speaker: heroine
         # reaction: heroine,surprised,blush
+        # voice: gt_agra_date_chini_rauza_006
         あ、うん。聞いてくれて、ありがとう。大丈夫。代役だし
         # speaker: narrator
         # stand: close
@@ -68,6 +74,7 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_agra_date_chini_rauza_007
         ……そんなに離れなくても、いいのに
         # speaker: gt_jagdeep
         遠い！　別れ話の写真か！
@@ -76,6 +83,7 @@ INCLUDE modules.ink
         遠い！　別れ話の写真か！
         # speaker: heroine
         # reaction: heroine,teasing_big,music
+        # voice: gt_agra_date_chini_rauza_008
         ふふっ！　だめ、もう、顔が戻らない。代役が笑ってたら、光、決まらないよね
     }
 -
@@ -87,6 +95,7 @@ INCLUDE modules.ink
 渡されたのは、空っぽの指輪の箱だった。膝をつくと、石の床がひんやりした。見上げると、彼女が、どこを見ればいいのか分からない顔で立っていた。
 # speaker: heroine
 # reaction: heroine,surprised_big,blush
+# voice: gt_agra_date_chini_rauza_009
 こ、これ、代役だよね？　分かってるけど。分かってるんだけど
 * [黙って、空の箱を開ける # option: open_empty_box]
     # profile: honest
@@ -94,12 +103,14 @@ INCLUDE modules.ink
         # speaker: heroine
         # reaction: heroine,surprised,sweat
         # se: box_open
+        # voice: gt_agra_date_chini_rauza_010
         開けないでよ……！　心臓に悪い。空っぽなのは分かってるのに
     - else:
         # speaker: narrator
         # se: box_open
         中には何もない。彼女はそれを見て、ほっとしたような、拍子抜けしたような顔で笑った。
         # speaker: heroine
+        # voice: gt_agra_date_chini_rauza_011
         空っぽで、よかった。入ってたら、どうしようかと思った
     }
 * [「台本どおりに」と言ってみる # option: by_the_script]
@@ -107,10 +118,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: worried
+        # voice: gt_agra_date_chini_rauza_012
         台本、か。……そうだよね。代役だもんね
     - else:
         # speaker: heroine
         # reaction: heroine,teasing,music
+        # voice: gt_agra_date_chini_rauza_013
         台本、あるんだ。ふふ、ジャグディープさん、台詞はいらないって
     }
 * [「本番のつもりで」と言ってみる # option: like_the_real_one]
@@ -119,10 +132,12 @@ INCLUDE modules.ink
     { romance_result == "negative":
         # speaker: heroine
         # emotion: serious
+        # voice: gt_agra_date_chini_rauza_014
         そういうの、冗談で言わないで。……代役でも、わたし、ちゃんと聞いちゃうから
     - else:
         # speaker: heroine
         # reaction: heroine,shy_deep,blush
+        # voice: gt_agra_date_chini_rauza_015
         ……っ。そういうの、代役でも、ずるい
         # speaker: narrator
         # se: camera_shutter
@@ -158,6 +173,7 @@ INCLUDE modules.ink
     短い、ヒンディー語の、はい、だった。
     # speaker: heroine
     # reaction: heroine,happy,heart
+    # voice: gt_agra_date_chini_rauza_016
     言った。今、ちゃんと言った。場所から、一緒に決めたら、本当に同じ答えになった
 - else:
     # speaker: narrator
@@ -168,6 +184,7 @@ INCLUDE modules.ink
     撮影が始まると、二人は柱の陰に下がった。アーチの下で、花婿になる方が、花嫁の髪についた埃を、真剣な顔で取ってやっていた。ジャグディープは、構図にない、その一枚を一番長く撮っていた。
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_date_chini_rauza_017
     決めた構図より、決めてない方が、いい写真になるんだね
 }
 # speaker: narrator
@@ -178,6 +195,7 @@ INCLUDE modules.ink
 # speaker: narrator
 帰りぎわ、彼女は墓廟の壁に残った青いタイルの前で立ち止まった。四百年近く、雨と日差しを受けて、それでも落ちなかった一枚。
 # speaker: heroine
+# voice: gt_agra_date_chini_rauza_018
 ちょっとだけ残る方が、本当っぽい、か。なんだか、分かる気がする
 -> END
 
@@ -187,17 +205,21 @@ INCLUDE modules.ink
     # rel: affection +1
     # speaker: heroine
     # reaction: heroine,shy,blush
+    # voice: gt_agra_chini_rauza_test_shot_001
     じゃあ、わたしの携帯にも送ってもらおう。……代役の記念に
 * [「消してください」 # option: delete_test_shot]
     # speaker: heroine
+    # voice: gt_agra_chini_rauza_test_shot_002
     ……うん。そうだね。本物じゃないもんね
     # speaker: narrator
     ジャグディープが写真を消す間、彼女は画面から目をそらしていた。消えたのを確かめてから、小さく言った。
     # speaker: heroine
+    # voice: gt_agra_chini_rauza_test_shot_003
     ちょっとだけ、もったいなかったかな
 * [「君が決めて」 # option: she_decides_shot]
     # rel: trust +1
     # speaker: heroine
     # emotion: smile
+    # voice: gt_agra_chini_rauza_test_shot_004
     わたしが？　……残す。代役だったけど、緊張したのは本物だったから
 - ->->
