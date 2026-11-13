@@ -46,6 +46,11 @@ export function duckAmbienceForVoice(playing: boolean): void {
   player.duckForVoice(playing);
 }
 
+/** English read aloud starts or is over (src/audio/speech-audio.ts): the ambience is lowered as the music is, and plays on after it. */
+export function duckAmbienceForSpeech(reading: boolean): void {
+  player.duckForSpeech(reading);
+}
+
 /** The ambience's volume from ⚙設定's 「BGMの大きさ」 (0 to 1): half of it. */
 export const ambienceVolume = (bgmVolume: number): number => Math.max(0, Math.min(1, bgmVolume)) * AMBIENCE_LEVEL;
 

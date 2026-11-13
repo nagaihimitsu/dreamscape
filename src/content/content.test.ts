@@ -133,6 +133,20 @@ describe("content build acceptance", () => {
     });
     await expect(buildContent(fixture, false)).rejects.toThrow("Background cannot specify both imagePath and imageAssetId: milano_walk");
   }, 120000);
+  it("accepts a background that says where it is by a map place or a name, and rejects an unknown place or both", async () => {
+    type Background = { placeId?: string; placeJa?: string };
+    const changeWalk = (change: (background: Background) => void) =>
+      changeCatalogEntry<Background>(fixture, "romance/presentation.json", "backgrounds", "milano_walk", change);
+    await changeWalk((background) => { background.placeId = "p_navigli"; });
+    await expect(buildContent(fixture, false)).resolves.toBeDefined();
+    await changeWalk((background) => { background.placeId = "p_nowhere"; });
+    await expect(buildContent(fixture, false)).rejects.toThrow("Unknown background place: milano_walk/p_nowhere");
+    await changeWalk((background) => { background.placeId = "p_navigli"; background.placeJa = "運河の道"; });
+    await expect(buildContent(fixture, false)).rejects.toThrow("A background names its place by placeId or placeJa, not both");
+    // Each change starts from the repository's entry.
+    await changeWalk((background) => { background.placeJa = "運河の道"; });
+    await expect(buildContent(fixture, false)).resolves.toBeDefined();
+  }, 120000);
   it("rejects an undefined character ID and a registered but missing image", async () => {
     const file = path.join(fixture, "content/presentation/characters.json");
     const data = JSON.parse(await readFile(file, "utf8"));

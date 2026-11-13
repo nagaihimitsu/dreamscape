@@ -7,7 +7,7 @@ import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
-import { portraitFocus } from "../../components/speaker-focus";
+import { stageLine, type StageScene } from "../../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
@@ -30,10 +30,12 @@ import { resolveRomancePresentation } from "./romance-presentation";
 import { SceneHeading } from "../../components/SceneHeading";
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
-import { useSpeakingPerson } from "../../components/useSpeakingPerson";
-import { speakingPerson } from "../../domain/scene-person";
+import { useSceneStage } from "../../components/useSceneStage";
 import "./romance-scene.css";
 import "../journey/encounter.css";
+
+/** A date's stage: she stands from the start; no one stands for `# speaker: enemy`. */
+const DATE_STAGE: StageScene = { heroineFromStart: true };
 
 export function RomanceScene({
   game,
@@ -71,10 +73,11 @@ export function RomanceScene({
     : undefined;
   const reaction = resolveDialogueReaction(dialogueReactions, storyId, frame, "heroine");
   const emotion = reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame);
-  // A person with a portrait who speaks in their own name stands opposite her from that line
-  // (speakingPerson); `# speaker: enemy` or its reaction sends them off.
-  const speaking = speakingPerson(storyState.people, frame);
-  const personId = useSpeakingPerson(speaking, frame.speaker === "enemy" || !!resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy"));
+  // She stands from the start; a person with a figure who speaks in their own name stands opposite her from that line
+  // (scene-stage.ts); `# speaker: enemy` or its reaction (no one with a figure in a date) sends them off.
+  const { stage, focus } = useSceneStage(stageLine(frame, storyState.people,
+    { enemy: !!resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy") }), DATE_STAGE);
+  const personId = stage.opposite?.figure;
   const { name: speaker, narration } = speakerPlate(frame, { heroine: game.heroineName, player: game.playerName }, storyState.people);
   // A line's `# cutin: name` shows its speaker's name plate for a moment (NameCutIn; a person's: a date has no one opposite).
   const nameCut = useNameCutIn(nameCutIn(frame, undefined, storyState.people), active.storyState);
@@ -200,14 +203,14 @@ export function RomanceScene({
             sceneId={active.dateId}
             cityId={game.currentCityId}
             emotion={emotion}
-            focus={portraitFocus(frame.speaker, "heroine")}
+            focus={focus.heroine}
             stand={frame.stand}
           >
             {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
           </CharacterPortrait>
         </div>
         {personId && <div className="encounter-character-slot encounter-character-enemy">
-          <CharacterPortrait key={personId} characterId={personId} focus={speaking === personId ? "speaking" : portraitFocus(frame.speaker, "enemy")} />
+          <CharacterPortrait key={personId} characterId={personId} focus={focus.opposite} />
         </div>}
       </div>
       <section

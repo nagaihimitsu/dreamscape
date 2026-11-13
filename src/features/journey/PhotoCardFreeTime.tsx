@@ -44,7 +44,7 @@ import "./photo-free-time.css";
  */
 export function PhotoCardFreeTime({
   game, onClaimRewards, onStartEpisode, onEpilogue, onBattle, onTravelEvent, onRent, onBookTour, onCancelTour, onTravelWait, onTravelSleep, nextCityName, onDepart,
-  seenCards,
+  seenCards, debug = false,
 }: FreeTimeHubProps) {
   const { city } = getCityContent(game.currentCityId);
   const backdrop = getCityBackdropPath(game.currentCityId) !== null;
@@ -71,11 +71,12 @@ export function PhotoCardFreeTime({
   const { current, nearby, other, candidates, recommendedMainId } = api.destinations;
   const places = useMemo(() => [...nearby, ...other], [nearby, other]);
   const tour = getTourOffers(game).length > 0 || game.tour?.status === "booked";
-  // The dates not open yet whose writer gave a hint (# hint:, 2026-11-13): locked cards after the places', never chosen to go.
-  const locked = useMemo(() => hintedLockedDates(game), [game]);
+  // The dates not open yet whose writer gave a hint (# hint:, 2026-11-13): with Debug mode on only, locked cards after the
+  // places', never chosen to go (players never see them: a date joins the row as a new card once it opens).
+  const locked = useMemo(() => (debug ? hintedLockedDates(game) : []), [game, debug]);
   const lockedKey = locked.map((date) => `${date.dateId}:${date.hintJa}`).join("\n");
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const cards = useMemo(() => rowCards(photoCardEntries(places, api.choices), { tour, locked }), [places, api.choices, tour, lockedKey]);
+  const cards = useMemo(() => rowCards(photoCardEntries(places, api.choices), { tour, locked, debug }), [places, api.choices, tour, lockedKey, debug]);
   const joining = useJoiningCards(game, cards, seenCards, (fresh) => {
     // The row turns to the first new card (quietly, as the screen's own choice), and the live region names them all.
     setPick(fresh[0].id);

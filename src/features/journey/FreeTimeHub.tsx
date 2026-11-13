@@ -31,6 +31,8 @@ export type FreeTimeHubProps = {
   onDepart: () => void;
   /** The cards free time's row has shown during this play, per city (GameApp's memory): a card it has not is dealt in. */
   seenCards?: { current: SeenCards };
+  /** Debug mode is on (a Debug session, or this device's switch): the row also shows the dates not open yet with their hints. */
+  debug?: boolean;
 };
 
 /**

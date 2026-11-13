@@ -78,22 +78,26 @@ button:disabled {
   opacity: 0.45;
   cursor: default;
 }
-/* The two-tone focus ring of the redesign (§2.1): visible on slate, on parchment and over photos. */
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-select:focus-visible,
-summary:focus-visible {
+/* The two-tone focus ring of the redesign (§2.1): visible on slate, on parchment and over photos. Not on a control the page
+   focused before any key was pressed (data-quiet-focus, src/components/scene-focus.ts: the night screen's first button after a
+   load); :where() keeps the rule as weak as before, so the controls' own rings still win. */
+button:focus-visible:not(:where([data-quiet-focus])),
+a:focus-visible:not(:where([data-quiet-focus])),
+input:focus-visible:not(:where([data-quiet-focus])),
+select:focus-visible:not(:where([data-quiet-focus])),
+summary:focus-visible:not(:where([data-quiet-focus])) {
   outline: 3px solid var(--ds-focus);
   outline-offset: 2px;
   box-shadow: 0 0 0 6px var(--ds-slate-900);
 }
+/* (Nor the browser's own ring on it.) */
+[data-quiet-focus]:focus-visible { outline: none; }
 /* The game's main area takes the focus only as a starting point (after a
    switch or 再試行, or the brand link); it is not a control to outline. */
 main[tabindex="-1"]:focus { outline: none; }
 /* A screen's heading that takes a lost focus (src/components/scene-focus.ts, UI
    redesign §3.7 E and K): the two-tone ring (§2.1) while the focus is visible,
-   never after a finger (data-quiet-focus). */
+   never after a finger or before any key (data-quiet-focus). */
 h1[tabindex="-1"]:focus { outline: none; }
 h1[tabindex="-1"]:focus-visible:not([data-quiet-focus]) {
   outline: 3px solid var(--ds-focus);

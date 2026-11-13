@@ -121,10 +121,15 @@
   .resume-recap-body { flex-direction: column; }
   .resume-recap-photo { flex: none; width: 100%; }
 }
-/* Above the night screen (a fixed layer under the header), as a notice is; the screen's content starts below it (its
-   measured height, its 8-px margin and the screen's own 12 px), so on a short phone it covers neither the line nor a button. */
+/* Above the night screen (a fixed layer under the header), as a notice is. The screen's scrolling room starts below it: the
+   header's and the card's measured heights and the card's two 8-px margins are a transparent top border (the night's colour
+   shows through it, and a scroll container shows its content only inside its border), then the screen's own 12 px. So on a
+   short phone, where the screen scrolls, nothing of it (the moon, the line, a button, today's route) passes under the card. */
 .night-active > main > .resume-recap { position: relative; z-index: 16; }
-.night-active > main:has(> .resume-recap) .night-screen { padding-top: calc(var(--hud-h, 96px) + var(--recap-h, 0px) + 20px); }
+.night-active > main:has(> .resume-recap) .night-screen {
+  border-top: calc(var(--hud-h, 96px) + var(--recap-h, 0px) + 16px) solid transparent;
+  padding-top: 12px;
+}
 
 /* ── 荷造りの場面 ── over the whole screen in the parchment of the arrival's title card; the suitcase (drawn: a rounded case
    with a handle) holds what goes along, what stays is set apart under it, dimmed. */
@@ -285,7 +290,9 @@ dialog.modal.end-roll[open] { display: flex; flex-direction: column; }
 .end-roll-content { width: min(520px, 100%); margin: 0 auto; padding: 35dvh 20px 45dvh; text-align: center; }
 .end-roll.is-still .end-roll-content { padding: calc(24px + env(safe-area-inset-top)) 20px 24px; }
 .end-roll-eyebrow { color: var(--ds-on-slate-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.2em; }
-.end-roll .end-roll-title { margin: 8px 0 12px; font-size: clamp(24px, 7vw, 34px); line-height: 1.5; overflow-wrap: anywhere; }
+/* The journey's name breaks only between its words (after 「・」 and the like: keep-all), never inside one (「…トライアン／グル編」);
+   a word longer than the line still breaks (anywhere). From 7vw so that its longest word fits a 320-px phone. */
+.end-roll .end-roll-title { margin: 8px 0 12px; font-size: clamp(20px, 7vw, 34px); line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
 .end-roll-names { font-family: "Noto Serif JP", serif; font-size: 20px; letter-spacing: 0.08em; overflow-wrap: anywhere; }
 .end-roll-names span { color: var(--ds-on-slate-muted); font-size: 14px; }
 .end-roll-city { margin-top: 64px; }

@@ -38,7 +38,17 @@ export function runningAudioContext(): AudioContext | undefined {
   return context?.state === "running" ? context : undefined;
 }
 
-/** Hears every change of the page's audio state (running, suspended, closed). */
+/** The page's AudioContext when it has been made, whatever its state (nothing is made here): speech-audio.ts wakes it. */
+export function madeAudioContext(): AudioContext | undefined {
+  return context;
+}
+
+/** Whether a part wants the page's audio (its setting is on: wantAudio). */
+export function audioWanted(): boolean {
+  return wanting.size > 0;
+}
+
+/** Hears every change of the page's audio state (running, suspended, Safari's interrupted, closed). */
 export function onAudioStateChange(listener: (state: AudioContextState) => void): void {
   stateListeners.add(listener);
 }

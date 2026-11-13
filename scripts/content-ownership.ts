@@ -15,7 +15,7 @@ import { conditionLeaves, conditionSchema, leafKind, leafReference } from "../sr
 
 type Namespace =
   | "city" | "landmark" | "asset" | "clue" | "battle" | "episode" | "reward" | "date" | "destination" | "effect"
-  | "background" | "memory" | "story" | "quiz" | "question" | "encounter" | "item" | "localWord";
+  | "background" | "memory" | "story" | "quiz" | "question" | "encounter" | "item" | "localWord" | "place";
 /** A reference: what it points to, through which field, and the referenced ID(s). */
 type Reference = { namespace: Namespace | readonly Namespace[]; field: string; ids: unknown };
 type Definition = { layer: string; file: string; cityId?: string };
@@ -101,7 +101,7 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
     destinations: (entry) => [...fields(entry, "city", ["cityId"]), ...fields(entry, "background", ["backgroundId"])],
   },
   "romance/effect_catalog.json": { effects: (entry) => fields(entry, "memory", ["memoryId"]) },
-  "romance/presentation.json": { backgrounds: (entry) => fields(entry, "asset", ["imageAssetId"]) },
+  "romance/presentation.json": { backgrounds: (entry) => [...fields(entry, "asset", ["imageAssetId"]), ...fields(entry, "place", ["placeId"])] },
   "romance/progression.json": { memoryCallbacks: (entry) => fields(entry, "memory", ["memoryId"]) },
   "tourism/catalog.json": {
     landmarks: (entry) => [
@@ -277,6 +277,9 @@ export function checkContentOwnership(sources: ContentSources): void {
   for (const [key, namespace] of [["backgrounds", "background"], ["memories", "memory"]] as const)
     for (const [id, file] of Object.entries(presentation?.provenance.keys[key] ?? {})) define(namespace, id, file);
   for (const story of sources.storyFiles) define("story", story.id, story.file);
+  // A city map's places (a background names where it is by one: placeId).
+  for (const city of sources.cities)
+    if (isObject(city.travel)) for (const place of list(city.travel.places)) define("place", place.id, city.travelFile);
   const quizzes = sources.quizFiles;
   for (const quiz of quizzes.filter((item) => !item.example && isObject(item.data))) {
     const data = quiz.data as Entry;

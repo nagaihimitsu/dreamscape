@@ -215,6 +215,16 @@ describe("checkContentOwnership", () => {
       'Reference to another layer: content/journeys/golden_triangle/travel/delhi-settings.json storyBackgroundId "milano_cafe" ' +
       "is the background defined in content/journeys/milano/romance/presentation.json; a journey folder may only refer to its own content and the core layer.");
   });
+
+  it("checks the map place a background says it is at (placeId)", () => {
+    city(uz, "tashkent", {}, { places: [{ id: "tashkent_hotel", cityId: "tashkent" }] });
+    write(`${gt}/romance/presentation.json`, { schemaVersion: 1, backgrounds: { gt_bg_red_fort: { placeId: "delhi_red_fort" } } });
+    expect(() => check()).not.toThrow();
+    write(`${gt}/romance/presentation.json`, { schemaVersion: 1, backgrounds: { gt_bg_red_fort: { placeId: "tashkent_hotel" } } });
+    expect(() => check()).toThrow(
+      'Reference to another layer: content/journeys/golden_triangle/romance/presentation.json backgrounds.gt_bg_red_fort placeId "tashkent_hotel" ' +
+      "is the place defined in content/journeys/uzbekistan/travel/tashkent.json; a journey folder may only refer to its own content and the core layer.");
+  });
 });
 
 describe("title art", () => {

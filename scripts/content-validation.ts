@@ -29,7 +29,7 @@ import { checkConditions, conditionWarnings, dateConditionOwners, entryRuleCondi
 import { mainPaymentsOf, progressionErrors, progressionWarnings, sceneItemsOf, tourProgression, type ProgressionContent } from "./progression-check";
 import { parseSceneConditions, readSceneConditions } from "./scene-conditions";
 import type { Condition } from "../src/content/condition-schemas";
-import { validateBackgroundAssets, validateCharacters } from "./presentation-validation";
+import { validateBackgroundAssets, validateBackgroundPlaces, validateCharacters } from "./presentation-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
 import { dialogueReactionCatalogSchema } from "../src/content/dialogue-reactions";
 import { createDialogueReactionValidator } from "./dialogue-reaction-validation";
@@ -476,6 +476,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   }
   const characters = parseCatalog(characterCatalogSchema, "presentation/characters.json");
   validateBackgroundAssets(publicFiles, presentation.backgrounds, tourism.assets);
+  validateBackgroundPlaces(presentation.backgrounds, new Set(travels.flatMap(({ travel }) => travel.places.map((place) => place.id))));
   const wardrobeSceneIds = new Set([
     ...dates.map((date) => date.id),
     ...battles.map((battle) => battle.id),
@@ -1000,10 +1001,9 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     const contexts = scene.kind === "arrival" || scene.kind === "epilogue"
       ? [1, 2, 3, 4].flatMap((stage) => [false, true].map((ending) => ({ romance_stage: stage, ending_reached: ending })))
       : [{ romance_stage: 1, ending_reached: false }];
-    // An arrival's background tags name its city's places' backgrounds (as validateEpilogue checks a one-scene arrival).
-    const arrivalContext = scene.kind === "arrival"
-      ? { context: { ...context, backgroundIds: travels.find(({ city }) => city.id === scene.cityId)?.travel.places.map((place) => place.backgroundId) ?? [] } } : {};
-    for (const variables of contexts) withContext(label, () => walkScene({ ...base, ...arrivalContext, variables }));
+    // An arrival, like every scene, may show any registered background (2026-11-13: the street or station it happens at
+    // need not be a place of the map; content-ownership.ts keeps it to the journey's own).
+    for (const variables of contexts) withContext(label, () => walkScene({ ...base, variables }));
   }
   // Guides with choices (one-scene files) are walked as scenes even without tags.
   for (const storyId of fileChoiceStories) {
@@ -1609,10 +1609,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       epilogueScenarios += 8;
       continue;
     }
-    const backgrounds = travels.find(({ city }) => city.id === current.id)!.travel.places.map((place) => place.backgroundId);
     if (fileChoiceStories.has(storyId)) { epilogueScenarios += 8; continue; } // walked as a scene above (choices, stage 3a)
-    epilogueScenarios += withContext(storyLabel(storyId), () =>
-      validateEpilogue(compiled, { ...context, backgroundIds: backgrounds }, observeForStory(storyId)));
+    epilogueScenarios += withContext(storyLabel(storyId), () => validateEpilogue(compiled, context, observeForStory(storyId)));
   }
   for (const episode of journey.episodes) {
     if (!episode.epilogueStoryId) continue;
