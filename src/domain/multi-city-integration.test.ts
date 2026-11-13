@@ -5,7 +5,7 @@ import { getBattleAvailability, startBattle } from "./battle";
 import { clearCity, playBattleToResult } from "../dev/scenario-builders";
 import { departToNextCity, getNextCity } from "./city-travel";
 import { getEpisodeAvailability, leaveBattleResult, startEpisode } from "./chapter";
-import { advanceEncounter, chooseEncounter, encounterCanFinish, finishEncounter, proceedFromTourism } from "./encounter";
+import { advanceEncounter, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter, proceedFromTourism } from "./encounter";
 import { meetEncounter } from "../../tests/fixtures/encounter-moment";
 import { startCityEpilogue } from "./epilogue";
 import { createGame, getDateAvailability, startDate, validateGameState, type GameState } from "./game";
@@ -38,9 +38,10 @@ function playEncounter(initial: GameState, encounterId: string, optionId: string
     expect(step, `${encounterId}/${optionId}`).toBeLessThan(100);
     const choice = state.activeEncounter.frame.choices.find((item) => item.optionId === optionId);
     state = choice ? chooseEncounter(state, choice.index, state.revision)
-      : encounterCanFinish(state) ? finishEncounter(state, state.revision) : advanceEncounter(state, state.revision);
+      : encounterCanFinish(state) ? continueTourismEncounters(state, finishEncounter(state, state.revision), () => 0) : advanceEncounter(state, state.revision);
   }
-  return closeTourism(state, state.revision);
+  // Met while observing, it returns to the observation (closed here); after a battle (Nora, Tino), its moment went on.
+  return state.activeTourism ? closeTourism(state, state.revision) : state;
 }
 
 describe("two registered cities through the real game runtime", () => {

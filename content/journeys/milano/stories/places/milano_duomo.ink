@@ -2,7 +2,7 @@ INCLUDE modules.ink
 -> DONE
 
 // ドゥオモ（ミラノ大聖堂）の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
-// 観光案内、通常戦、道中交流とデート。
+// 観光案内、通常戦、道中交流（バトルの後と散歩のデートの後の「切れた三本目」）とデート。
 
 // 観光案内。tourism/catalog.json の guideStoryId がこの knot を指す。
 === duomo_milano_guide ===
@@ -107,41 +107,46 @@ INCLUDE modules.ink
 -> END
 
 // 道中交流「切れた三本目」（knot の名前 duomo_string が交流のID）。
-// 今は起こらない：条件『ドゥオモを終えた』（頭の # when: episode …）は、ドゥオモのバトルを終えると満たす。その後は交流が始まる観察がない。
-// バトルを終えると、ドゥオモは地図の行き先に出なくなる。バトルの画面（結果の画面も）から観察に戻れるが、バトルの途中なので交流は始まらない。
-// この交流でもらう青いピックは「弦を一本、余らせて」で使う。
-// シナリオの改稿で見直す（2026-11-08 のユーザー判断）。それまで起こる時は変えない。変えたら、このコメントも直す。
-// 2026-11-13 に 1場面1ファイル・encounters/catalog.json・entry-rules.json からこの場所のファイルへ移した。観察で「進む」を押した後（# priority: after observe）に始まり、終わると観察に戻る。起こる時・順・選択の働き（お金・品物・「また今度」）は前と同じ。
+// ドゥオモの場所（p_duomo）の本筋の後（# priority: +1）：ドゥオモのバトルの結果を閉じた後と、散歩のデート（milano_walk_01）の後。ドゥオモを終えた後だけ。
+// 完了すると青いピックをもらう（# on_done: item blue_pick）。「場所を空ける」は「また今度」で、散歩のデートの後にまた会える。
+// ピックの行き先：城でピックのないティノにもう会っていれば（flag milano_tino_needs_pick）ダルセナを教え、まだならノラは「城の中庭の子に」と言う。
+// 尖塔の上に人物像が立つことは scenes/catalog.json の出典。リヴィオの話には頼らない（デートの後にも読める）。
 === duomo_string ===
 # scene: encounter
 # title: 切れた三本目
-# at: visit duomo_milano
-# priority: after observe
+# at: place p_duomo
+# priority: +1
 # when: episode milano_duomo_episode
+# person: milano_nora
 # on_done: item blue_pick
 # background: milano_duomo
 # speaker: narrator
-ドゥオモを背に演奏していたノラが、三本目の弦を切った。予備の袋を歯で開けようとして、丸ごと落とす。
+大聖堂の正面の脇で、ギターを抱えた女が弦を張り替えていた。開いたケースは空っぽで、足を止める客もいない。
+# speaker: milano_nora
+# cutin: name
+客はいるよ。上に
+# speaker: narrator
+女が顎で示した先、尖った塔のてっぺんに、石の人が立っている。あっちの塔にも、こっちの塔にも。
+# speaker: milano_nora
+ノラ。毎日あの人たちに向かって弾いてる。一度も帰らない客なんて、ほかにいないからね
+# speaker: heroine
+ほんとだ……。下から見ると、みんなで聴いてくれてるみたい
+# speaker: narrator
+鈍い音がして、三本目の弦が跳ねた。ノラは予備の袋を歯で開けようとして、袋ごと石畳に落とした。
 # speaker: milano_nora
 拾うの、私が先だとギターも一緒に落ちる。悪いけど、片方だけ手、貸してくれる？
 # speaker: heroine
-ギターのほう、持ちたいです。……思ったより、軽くない
+わたし、ギターのほうを持ちます。……思ったより、軽くない
 
 * [I'll hold the loose string. # option: coil # translation: ほどけた弦を押さえます。]
     # speaker: narrator
-    丸まる弦を押さえると、ノラの両手が空いた。足元のケースから、青いピックを二枚出す。
-    # speaker: milano_nora
-    一枚どうぞ。城の中庭で小さいギターを弾いてる子がいたら、その子に。いなけりゃ、あなたの
-    # speaker: heroine
-    直接渡すかは、会ってから決めようか
-    -> END
+    丸まる弦を押さえると、ノラの両手が空いた。新しい弦を張り終えると、ケースの隅から青いピックを二枚出した。
+    -> duomo_string_pick
 
 * [Let me pick up the packet. # option: case # translation: 袋を拾います。]
     # speaker: narrator
-    袋を拾うと、中から青いピックがこぼれた。ノラは一本だけ音を鳴らしてから、二枚のうち一枚を押し戻した。
-    # speaker: milano_nora
-    予備が誰かの本番になる日もあるよ。城で弾いてる子が見えたら、よろしく
-    -> END
+    袋を拾うと、中から青いピックがこぼれた。ノラは新しい弦を一本だけ鳴らしてから、二枚のうち一枚をこちらへ押し戻した。
+    -> duomo_string_pick
 
 * [I'll give you some room. # option: leave # translation: 少し場所を空けます。]
     # later
@@ -150,8 +155,27 @@ INCLUDE modules.ink
     # speaker: milano_nora
     場所も助かる。また弾いてるときにね
     # speaker: heroine
-    今度ここを通ったら、弦が戻ったか聴いてみましょう
+    今度ここを通ったら、弦が戻ったか聴いてみよう
     -> END
+
+=== duomo_string_pick ===
+# speaker: milano_nora
+# item_show: blue_pick
+一枚どうぞ。予備が、誰かの本番になる日もあるから
+{ cond("flag milano_tino_needs_pick"):
+    # speaker: heroine
+    あ……城の中庭で、親指で弾いてた子がいた。ケースに、これと同じ形の跡があったの
+    # speaker: milano_nora
+    ティノだ。あの子、ダルセナの岸でもよく弾いてる。会えたら渡して。私からって言わなくていい
+- else:
+    # speaker: milano_nora
+    城の中庭で小さいギターを弾いてる子がいたら、その子に。いなけりゃ、あなたの
+    # speaker: heroine
+    渡すかどうかは、会ってから決めようか
+}
+# speaker: narrator
+張り替えた弦が鳴った。塔の上の客は、今日も一人も帰らなかった。
+-> END
 
 // デート（本筋）。romance/date_catalog.json の milano_walk_01 の storyId がこの knot を指す。
 // 恋愛の選択は、選択肢のすぐ下の # profile:（と # memory:）。もとの 1場面1ファイルの # effect: と同じ噛み合いと思い出。

@@ -33,7 +33,8 @@ test("autosaved progress, a battle question, the English note and the text speed
   await page.reload();
   await expect(page.getByTestId("battle-rewards")).toBeVisible();
   expect(await readSave(page)).toEqual(result);
-  await ops.toFreeTime(page);
+  // Through Nora's scene after the Duomo's battle, to free time.
+  await ops.toFreeTimeThroughScenes(page);
   const progress = await readSave(page);
   expect(progress.completedEpisodeIds).toEqual(["milano_duomo_episode"]);
   expect(progress.ap).toBe(result.ap);

@@ -53,7 +53,7 @@ const epilogueStep = (current: GameState) => {
   const choice = firstEpilogueChoice(current);
   return choice ? chooseCityEpilogue(current, choice.index, current.revision) : advanceCityEpilogue(current, current.revision);
 };
-import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, getTravelSleepOptions, sleepAtHotel } from "../domain/travel-game";
+import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, getTravelSleepOptions, sleepAtHotel, waitForTravel } from "../domain/travel-game";
 import { getTransportModes, WALK_MODE_ID } from "../content/transport";
 import { minimumHomeFare } from "../domain/travel-routes";
 import { getUsableRoutes } from "../domain/transport";
@@ -165,6 +165,23 @@ export function playEpisodeToResult(state: GameState, episodeId: string, options
  */
 function leaveResult(result: GameState, options: PlayOptions): GameState {
   return settleScenes(act(result, (current) => leaveBattleResult(current, current.revision), "対決の結果を閉じる", options), 0);
+}
+
+/**
+ * Leave the open battle's result screen as its button does, then play the inserted scenes that follow it with their first
+ * choices (a choice without a `# then:` first), until no inserted scene is open: a map visit's +N scenes (Milan's Nora,
+ * Tino and Rina) come there.
+ */
+export function leaveBattleResultAndScenes(result: GameState): GameState {
+  return validateGameState(leaveResult(result, {}));
+}
+
+/**
+ * Play the inserted scenes the running moment shows (a map visit's scenes before its main part, the finale's -1 scenes such
+ * as Milan's 「ダルセナの一音」) with their first choices, until no inserted scene is open; the main part is left to its player.
+ */
+export function playInsertedScenes(state: GameState): GameState {
+  return validateGameState(settleScenes(state, 0));
 }
 
 /** Finish one main episode like a player: guide, battle, leaving its result and the scenes after it. */
@@ -530,15 +547,26 @@ function throughObservation(initial: GameState, ticket: number): GameState {
 }
 
 /** Depart from the map to the landmark's map event (its episode or special battle) by the first mode that can go now. */
-function departToLandmark(state: GameState, landmarkId: string, ticket: number): GameState {
-  const { travel } = getCityContent(state.currentCityId);
-  const event = travel.events.find((item) => visitedLandmarkOfEvent(item.id) === landmarkId &&
-    [WALK_MODE_ID, ...getTransportModes(state.currentCityId).map((mode) => mode.id)].some((mode) => getTravelEventAvailability(state, item.id, mode).available));
-  const mode = event && [WALK_MODE_ID, ...getTransportModes(state.currentCityId).map((item) => item.id)]
-    .find((item) => getTravelEventAvailability(state, event.id, item).available);
-  if (!event || !mode)
+function departToLandmark(initial: GameState, landmarkId: string, ticket: number): GameState {
+  const { travel } = getCityContent(initial.currentCityId);
+  const modes = [WALK_MODE_ID, ...getTransportModes(initial.currentCityId).map((mode) => mode.id)];
+  const departure = (state: GameState) => {
+    const event = travel.events.find((item) => visitedLandmarkOfEvent(item.id) === landmarkId &&
+      modes.some((mode) => getTravelEventAvailability(state, item.id, mode).available));
+    const mode = event && modes.find((item) => getTravelEventAvailability(state, event.id, item).available);
+    return event && mode ? { event, mode } : undefined;
+  };
+  // A place that opens later in the day (Milan's castle at 10:00): the party waits for it, as a player does on the map.
+  let state = initial;
+  for (let count = 0; !departure(state) && count < 24; count++) {
+    const waited = waitForTravel(state, 30, state.revision);
+    if (waited === state) break;
+    state = waited;
+  }
+  const found = departure(state);
+  if (!found)
     throw new Error("この交流は、地図から観光地へ出発したときに起きます。この進行状態ではその観光地へ出発できません。旅の進行を「旅の開始時」にしてください。");
-  return act(state, (current) => beginTravelEvent(current, event.id, mode, current.revision, () => ticket), `${landmarkId} へ出発`);
+  return act(state, (current) => beginTravelEvent(current, found.event.id, found.mode, current.revision, () => ticket), `${landmarkId} へ出発`);
 }
 
 /**

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { getCityContent } from "../content";
 import { createGame, type GameState } from "../domain/game";
 import { leaveBattleResult } from "../domain/chapter";
-import { playBattleToResult } from "../dev/scenario-builders";
+import { leaveBattleResultAndScenes, playBattleToResult } from "../dev/scenario-builders";
 import { closeTourism, openTourism, skipTourismGuide, startTourismBattle } from "../domain/tourism";
 import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, getTravelHomeRoutes, sleepAtHotel, waitForTravel } from "../domain/travel-game";
 import { loadGame, SAVE_KEY, saveGame, type StorageLike } from "./index";
@@ -16,12 +16,12 @@ class MemoryStorage implements StorageLike {
   removeItem(key: string) { this.values.delete(key); }
 }
 
-/** Skip the guide and win the battle; GameApp settles the map event at the result (so does the builder). */
+/** Skip the guide and play the battle; GameApp settles the map event at the result (so does the builder). */
 function completeMainEvent(initial: GameState): GameState {
   const explored = skipTourismGuide(initial, initial.revision);
   const result = playBattleToResult(startTourismBattle(explored, explored.revision));
-  // The visit's time window settles when its occasion closes: leaving the result (stage 3b).
-  return leaveBattleResult(result, result.revision);
+  // The visit's time window settles when its occasion closes: leaving the result and the scenes after it (Nora's after the Duomo; stage 3b).
+  return leaveBattleResultAndScenes(result);
 }
 
 describe("travel save and concurrency", () => {

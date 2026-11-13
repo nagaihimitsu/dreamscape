@@ -20,9 +20,9 @@ describe("location-based encounters", () => {
     expect(rules.entries.filter((entry) => entry.quizAfterLandmarkBattle)).toEqual([]);
     const wishRule: EncounterEntryRule = { encounterId: WISH, at: ["observe"], when: { episodeCompleted: "milano_galleria_episode" }, quizAfterLandmarkBattle: true };
     expect(() => validateEncounterEntryRules({ ...rules, entries: [...rules.entries, wishRule] }, [...encounters.encounters, catalogWish()])).not.toThrow();
-    // Milan's broken string is a place file's knot (2026-11-13): its head tags give the rule (after observe, its # when:).
+    // Milan's broken string is a place file's knot: its head tags give the rule (after the Duomo's main part, +1, its # when:).
     expect(rules.entries.find((entry) => entry.encounterId === "duomo_string"))
-      .toEqual({ encounterId: "duomo_string", priority: "after observe", when: { episodeCompleted: "milano_duomo_episode" } });
+      .toEqual({ encounterId: "duomo_string", priority: 1, when: { episodeCompleted: "milano_duomo_episode" } });
     // A rule written in JSON (as the string's was until then).
     const duomo: EncounterEntryRule = { encounterId: "duomo_string", at: ["observe"], when: { episodeCompleted: "milano_duomo_episode" } };
     expect(() => validateEncounterEntryRules({ ...rules, entries: [{ ...duomo, quizAfterLandmarkBattle: true }] }, encounters.encounters))
@@ -48,11 +48,9 @@ describe("location-based encounters", () => {
       expect(encounterEntryRulesSchema.safeParse({ schemaVersion: 2, entries: [{ ...duomo, ...old }] }).error?.issues[0].message).toMatch(/Unrecognized key/);
   });
 
-  it("offers duomo_string in the Duomo's observation after its episode and scala_mint after La Scala's battle, and keeps the Galleria's later encounters closed", () => {
+  it("offers the Galleria's wish in its first observation and its ticket talk only after the wish, and scala_mint after La Scala's battle", () => {
     const fresh = createGame("たいち", "あゆみ");
     const afterDuomo = { ...fresh, completedEpisodeIds: ["milano_duomo_episode"] };
-    expect(encounterOffered(fresh, "duomo_string")).toEqual({ available: false, reason: "この場所を訪れたあとに出会えます。" });
-    expect(encounterOffered(afterDuomo, "duomo_string")).toEqual({ available: true, reason: "" });
     for (const id of ["milano_galleria_ticket_gift", "scala_mint"])
       expect(encounterOffered(afterDuomo, id), id).toEqual({ available: false, reason: "この場所を訪れたあとに出会えます。" });
     // The Galleria's wish is met in its first observation; its ticket talk after it.
