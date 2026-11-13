@@ -33,8 +33,8 @@ function CountUp({ value, format = String, reduceMotion }: { value: number; form
 
 /**
  * 旅の数字 (2026-11-13 user decision; journey-numbers.ts): the journey in a few numbers, at the end roll and in 旅の記録.
- * A line without a number to tell (no days known, no money record, no ride yet) is left out. Read-only; nothing in it is
- * a relationship value or an English score.
+ * A line without a whole-journey number to tell (the days or rides not known for the journey, no money record, no ride
+ * yet) is left out. Read-only; nothing in it is a relationship value or an English score.
  */
 export function JourneyNumbersCard({ numbers, reduceMotion }: { numbers: JourneyNumbers; reduceMotion: boolean }) {
   const id = useId();
@@ -46,7 +46,7 @@ export function JourneyNumbersCard({ numbers, reduceMotion }: { numbers: Journey
     { label: "覚えたその国の言葉", value: count(numbers.localWords, "語") },
     { label: "アルバムの写真", value: count(numbers.photos, "枚") },
     ...(numbers.spent ? [{ label: "使ったお金", value: numbers.spent.textJa }] : []),
-    ...(numbers.rides.length ? [{ label: `${numbers.ridesCityJa}で乗った乗り物`,
+    ...(numbers.rides?.length ? [{ label: "乗った乗り物",
       value: numbers.rides.map((ride) => `${ride.nameJa} ${ride.count}回`).join("・"), wide: true as const }] : []),
   ];
   return <section className="journey-numbers" aria-labelledby={`${id}-title`} data-testid="journey-numbers">
