@@ -205,9 +205,10 @@ INCLUDE modules.ink
 // 【3】手伝いの knot：猿が落とした小瓶を受け止める（噛み合いでない、場面の中の選択。取引・追う・待つのどれからも来る）。
 // 選択肢の代わりにミニゲーム「猿の落とし物」。結果の選択肢に関係値は付けない（腕前で関係値が動かないように）。
 // 弾いた・届かなかったときは小瓶を使う（割れる）。ここへ来る道は、デートの knot の cond("item gt_delhi_rain_attar held") の中だけ。
+// おまかせは fumbled：雨の場面（アルバムの写真 a39）へ進む（クリケットのおまかせも、写真のある結末へ進むのと同じ考え）。
 === gt_agra_akbar_tomb_monkey_catch_attar ===
 # speaker: narrator
-# minigame: monkey_catch auto caught
+# minigame: monkey_catch auto fumbled
 小瓶が、壁の上から落ちてくる。考えるより先に、両手が出ていた。
 * [落ちてきた小瓶を、両手で受け止めた # option: caught]
     # speaker: narrator
