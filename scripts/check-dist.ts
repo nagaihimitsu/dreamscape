@@ -9,8 +9,10 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import {
-  checkDist, checkThirdPartyLicenses, describeDebugOnTitle, describeFindings, isTextAsset, THIRD_PARTY_LICENSES_PATH, type DistFile,
+  checkDist, checkThirdPartyLicenses, describeDebugOnTitle, describeFindings, describeMiniGamesOnTitle, isTextAsset, miniGameMarkers,
+  THIRD_PARTY_LICENSES_PATH, type DistFile,
 } from "./dist-guard";
+import { MINI_GAME_ENGINES, MINI_GAME_IDS } from "../src/minigames/registry";
 
 const folder = process.argv[2] ?? "dist";
 const root = path.resolve(folder);
@@ -29,7 +31,7 @@ const files: DistFile[] = readdirSync(root, { recursive: true, withFileTypes: tr
   });
 
 // Every file goes to the check (scripts/dist-guard.test.ts runs this command on small builds).
-const { devOnly, titleFiles, missing, onTitle } = checkDist(files);
+const { devOnly, titleFiles, missing, onTitle, miniGamesOnTitle } = checkDist(files, miniGameMarkers(MINI_GAME_IDS, MINI_GAME_ENGINES));
 if (devOnly.length > 0) {
   console.error(describeFindings(folder, devOnly));
   process.exit(1);
@@ -42,6 +44,10 @@ if (onTitle.length > 0) {
   console.error(describeDebugOnTitle(folder, onTitle));
   process.exit(1);
 }
+if (miniGamesOnTitle.length > 0) {
+  console.error(describeMiniGamesOnTitle(folder, miniGamesOnTitle));
+  process.exit(1);
+}
 const dependencies = Object.keys(JSON.parse(readFileSync("package.json", "utf8")).dependencies ?? {});
 const licenses = files.find((file) => file.path === THIRD_PARTY_LICENSES_PATH)?.text ?? null;
 const licenseProblems = checkThirdPartyLicenses(licenses, dependencies);
@@ -50,5 +56,5 @@ if (licenseProblems.length > 0) {
   process.exit(1);
 }
 console.log(`${folder} の検査: テスト専用のコードとデータは含まれていません（${files.length} ファイル）。` +
-  `タイトル画面で読み込む ${titleFiles.length} ファイルにDebugのコードはありません。` +
+  `タイトル画面で読み込む ${titleFiles.length} ファイルにDebugのコードとミニゲームの遊ぶ部分はありません。` +
   `ライブラリのライセンス一覧（${THIRD_PARTY_LICENSES_PATH}）に dependencies の ${dependencies.length} 件があります`);

@@ -160,6 +160,20 @@ export function findDebugCodeOnTitle(
   return findings;
 }
 
+/**
+ * The mini-games' markers (docs/13 5): a game's play, rules, CSS and art load through its definition's `load()`, in files
+ * the title page does not load. Every game's root class `mg-<game-id>` and every engine's `mg-engine-<engine-id>` (an ID's
+ * `_` as `-`) may appear only in such files. Made from the registry's IDs (check-dist.ts passes them), so adding a game
+ * changes no check; scripts/dist-guard.test.ts checks each folder's sources carry its marker.
+ */
+export function miniGameMarkers(gameIds: readonly string[], engineIds: readonly string[]): DevOnlyMarker[] {
+  const dashed = (id: string) => id.replaceAll("_", "-");
+  return [
+    ...gameIds.map((id) => ({ text: `mg-${dashed(id)}`, source: `src/minigames/${id}/` })),
+    ...engineIds.map((id) => ({ text: `mg-engine-${dashed(id)}`, source: `src/minigames/engines/${id}/` })),
+  ];
+}
+
 export interface DistCheck {
   /** Test-only code or data in any built file or path (devOnlyMarkers over every file). */
   devOnly: DevOnlyFinding[];
@@ -169,6 +183,8 @@ export interface DistCheck {
   missing: string[];
   /** Debug code in a title file (lazyDebugMarkers over titleFiles only). */
   onTitle: DebugOnTitleFinding[];
+  /** A mini-game's or engine's play in a title file (miniGameMarkers over titleFiles only). */
+  miniGamesOnTitle: DebugOnTitleFinding[];
 }
 
 /**
@@ -176,7 +192,7 @@ export interface DistCheck {
  * licence check. Which marker list scans which files is decided here (and unit
  * tested), so the command only reads the folder, passes every file and prints.
  */
-export function checkDist(files: readonly DistFile[]): DistCheck {
+export function checkDist(files: readonly DistFile[], miniGames: readonly DevOnlyMarker[] = []): DistCheck {
   const indexHtml = files.find((file) => file.path === "index.html")?.text ?? "";
   // The page itself and what it loads at once; Debug's chunks load only when Debug is opened.
   const titleFiles = ["index.html", ...eagerFiles(indexHtml)];
@@ -185,7 +201,18 @@ export function checkDist(files: readonly DistFile[]): DistCheck {
     titleFiles,
     missing: titleFiles.filter((name) => !files.some((file) => file.path === name)),
     onTitle: findDebugCodeOnTitle(files, titleFiles),
+    miniGamesOnTitle: findDebugCodeOnTitle(files, titleFiles, miniGames),
   };
+}
+
+/** A report of a mini-game's play on the title page for the person who ran the build. */
+export function describeMiniGamesOnTitle(folder: string, findings: readonly DebugOnTitleFinding[]): string {
+  return [
+    `本番ビルド（${folder}）のタイトル画面で読み込むファイルに、ミニゲームの遊ぶ部分が入っています。`,
+    ...findings.map(({ path, marker }) => `- ${path} に「${marker.text}」（目印の由来: ${marker.source}）`),
+    "ゲームの遊ぶ画面・規則・CSS・絵は、definition.ts の load: () => import(\"./play\") からだけ読み込みます（docs/13 5章）。",
+    "definition.ts やゲームの外のコードから、そのフォルダの play・Skin・rules・CSS を静的な import で読み込んでいないかを確認してください。",
+  ].join("\n");
 }
 
 /** A report of Debug code on the title page for the person who ran the build. */
