@@ -99,13 +99,21 @@ export function useNightCard({ reduceMotion, ms, reducedMs, onEnd }: { reduceMot
  * moment of holdTaps has passed) or Enter, Space or Esc ends it at once, and it always ends by itself. With reduced motion
  * nothing moves: the line shows plainly until a tap or 2 s. Screen readers hear the line (and the route and her line) from a
  * live region; the focus stays where it is. It never changes the game.
+ * The same card, its `line` 「ホテルで休みました。」, is the night of a rest before 21:00 whose night has a recap (2026-11-13;
+ * night-recap.ts restNightCard), in place of 「次の日」.
  */
-export function NightRest({ recap, reduceMotion, onEnd }: { recap?: NightRecap; reduceMotion: boolean; onEnd: () => void }) {
+export function NightRest({ recap, line = DAY_END_REST_JA, reduceMotion, onEnd }: {
+  recap?: NightRecap;
+  /** The card's line: the day's end's (21:00), or 「ホテルで休みました。」 for an earlier rest. */
+  line?: string;
+  reduceMotion: boolean;
+  onEnd: () => void;
+}) {
   useEffect(() => playSe("night_rest"), []);
   const shown = hasNightRecap(recap) ? recap : undefined;
   const { reduced, announced, end } = useNightCard({ reduceMotion, ms: shown ? NIGHT_REST_RECAP_MS : NIGHT_REST_MS,
     reducedMs: shown ? NIGHT_REST_RECAP_REDUCED_MS : NIGHT_REST_REDUCED_MS, onEnd });
-  const heard = shown ? [DAY_END_REST_JA, headlinesSentenceJa(shown.headlines), routeSentenceJa(shown.route), shown.line === null ? "" : `${shown.heroineName}：${shown.line}`].join("") : DAY_END_REST_JA;
+  const heard = shown ? [line, headlinesSentenceJa(shown.headlines), routeSentenceJa(shown.route), shown.line === null ? "" : `${shown.heroineName}：${shown.line}`].join("") : line;
   // `data-obstructs-dialogue`: a scene under the card (the hotel's after waking, a tour's morning) waits for it as for an open
   // dialog (dialogueObstructed: no typing, auto-advance or reading on), and the tap that ends it does not read on either.
   return createPortal(<div className={`night-rest${reduced ? " is-reduced" : ""}${shown ? " has-recap" : ""}`} data-testid="night-rest" data-obstructs-dialogue=""
@@ -113,7 +121,7 @@ export function NightRest({ recap, reduceMotion, onEnd }: { recap?: NightRecap; 
     <div className="night-rest-content">
       <NightSky />
       {/* Seen here; read from the live region below (not twice). */}
-      <p className="night-rest-text" aria-hidden="true">{DAY_END_REST_JA}</p>
+      <p className="night-rest-text" aria-hidden="true">{line}</p>
       {shown && <div aria-hidden="true"><NightRecapView recap={shown} /></div>}
     </div>
     <p className="sr-only" role="status">{announced ? heard : ""}</p>

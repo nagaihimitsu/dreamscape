@@ -3,7 +3,14 @@ import type { Choice } from "inkjs/engine/Choice";
 import { requiredLeaves, type Condition, type Leaf } from "../src/content/condition-schemas";
 import { parseConditionText } from "../src/content/condition-text";
 import type { SceneDone, SceneOption } from "../src/content/scene-schemas";
-import { parseStoryTags, type TagContext } from "../src/content/tags";
+import { parseStoryTags, type LetterKind, type PhoneSide, type StoryTags, type TagContext } from "../src/content/tags";
+import { availableOutcome } from "../src/minigames/fallback";
+import { miniGameDefinition } from "../src/minigames/registry";
+import { miniGameOptionId, miniGameOutcomeIds, type MiniGameTag } from "../src/minigames/tag";
+import type { MiniGameUse } from "../src/minigames/uses";
+import type { SceneKind, StoryStateCatalog } from "../src/content/scene-schemas";
+import { sceneStageOf, stageAfter, stageExit, standsOnStage, stageLine, type Stage, type StageScene } from "../src/components/scene-stage";
+import type { Speaker } from "../src/story/frame-reader";
 import { bindItemReader } from "../src/story/items";
 import { bindMemoryReader } from "../src/story/memory";
 import { checkLinesWithoutChoice } from "./ink-validation";
@@ -18,13 +25,20 @@ import type { DialogueObserver } from "./dialogue-expression-validation";
 // - a path stops without an end (no choice, no end) or reads 1,000 lines without a choice (A27);
 // - a path meets two `then:` (the head's counts; A8);
 // - a choice point can be reached in a state where no choice can be chosen (A10): a choice counts
-//   when it needs nothing, or when what it needs is guaranteed (the head's `# when:`, the cond texts
-//   read true on the path, minus the items given or used before on the path);
+//   when it needs nothing, or when what it needs is guaranteed (the head's `# when:` and the cond texts
+//   read true on the path; minus the items given or used before on the path, and, for money and AP, the
+//   payments and gains of the choices before it on the path: docs/13 4.2, one rule for every need);
 // - a choice without `# option:` has effects (readPlaceFile already stops it) or an option ID the
 //   table does not know.
 // The walk applies the scene's own effects as it goes: after `# give: X`, `item X held` reads false
 // and `item X gifted` true; after `# set: F`, `flag F` true.
-// Warning (not stopped): a choice point with only 「また今度」 and choices needing items not guaranteed there.
+// - a line's `# minigame:` (docs/13 3.4) is not followed by a choice set right after its line, its choice set is not one
+//   choice per outcome of the game (by option ID; a quiz's or reasoning's call is none), an outcome may not be choosable
+//   there and the game's fallbacks reach no outcome that always is (checkMiniGameChoices), or 「おまかせ」 never leaves it
+//   (its auto outcome, or a fallback おまかせ may take, comes back to the same game without another choice set). Every walk reads mini-games (TagContext.miniGames true); a confession date's walk passes
+//   "confession", which refuses them (docs/13 1.4). The uses found go to `onMiniGame` (generated/minigame-uses.json).
+// Warnings (not stopped): a choice point with only 「また今度」 and choices needing items not guaranteed there; a
+// mini-game whose 「おまかせ」 outcome is a 「また今度」 choice (おまかせ then never finishes the scene).
 //
 // A battle (stage 5, `battle`): the walk answers its calls as the game does (modules.ink): each
 // `-> quiz(n) ->` right and wrong, each `-> reasoning ->` with every action (B: press, evidence success and failure; C:
@@ -58,6 +72,15 @@ export type SceneWalkInput = {
   /** A battle (stage 5): how many quizzes it calls and, for a special battle, its reasoning. */
   battle?: { quizzes: number; reasoning?: { kind: "contradiction" | "connection"; roundIndex: number } };
   onWarning?: (message: string) => void;
+  /**
+   * Who stands on the scene's stage (src/components/scene-stage.ts): its kind, the figure of `# speaker: enemy` (the
+   * scene's `# person:` with a figure, a battle's opponent) and the people's figures. With it, a line's `# leave:` that
+   * names someone not on the stage there is warned (walkStage).
+   */
+  stage?: { kind: SceneKind; enemyFigure?: string; people: StoryStateCatalog["people"] };
+  /** The scene a mini-game use belongs to (its ID and kind, the story file), and where the walk reports each use it meets. */
+  scene?: { id: string; kind: SceneKind; storyId: string };
+  onMiniGame?: (use: MiniGameUse) => void;
 };
 
 /** Where a stopped story is: its choices' source and the tunnels they return through (a call's site, not only the call's knot). */
@@ -68,25 +91,117 @@ function stopKey(choices: readonly Choice[]): string {
 
 const sameLeaf = (left: Leaf, right: Leaf) => JSON.stringify(left) === JSON.stringify(right);
 
+/**
+ * A mini-game's choice set (`# minigame:`, 2026-11-13): one choice per outcome of the game, by option ID (the outcome, or
+ * `<prefix>_<outcome>`), nothing else. The game ends on an outcome whatever the player has, so each outcome is always
+ * choosable there (no `# requires:`, gift, use or payment that is not guaranteed there), or the game declares fallbacks for
+ * it (definition `fallback`) that reach one that always is: the play then takes that one (docs/13 4.2). So at least one
+ * outcome always is. Returns the option IDs 「おまかせ」 may take: its outcome's, and its fallbacks' up to an always choosable one.
+ */
+function checkMiniGameChoices(tag: MiniGameTag, choices: readonly { text: string; optionId?: string; choosable: boolean; later: boolean }[], label: string,
+  warn: (message: string) => void): string[] {
+  const outcomes = miniGameOutcomeIds(tag.id);
+  const expected = outcomes.map((outcome) => miniGameOptionId(tag, outcome));
+  const written = choices.map((choice) => choice.optionId);
+  const missing = expected.filter((id) => !written.includes(id));
+  const extra = choices.filter((choice) => !choice.optionId || !expected.includes(choice.optionId))
+    .map((choice) => choice.optionId ?? `「${choice.text}」 (no # option:)`);
+  if (missing.length || extra.length)
+    throw new Error(`The choice set of # minigame: ${tag.id} in ${label} needs one choice per outcome, by # option: ${expected.join(", ")}` +
+      `${missing.length ? `; missing: ${missing.join(", ")}` : ""}${extra.length ? `; not an outcome: ${extra.join(", ")}` : ""}`);
+  const definition = miniGameDefinition(tag.id)!;
+  const sure = outcomes.filter((outcome) => choices.find((choice) => choice.optionId === miniGameOptionId(tag, outcome))?.choosable);
+  const stranded = outcomes.filter((outcome) => availableOutcome(definition, outcome, sure) === null);
+  if (stranded.length) {
+    const fallbacks = definition.outcomes.filter((outcome) => outcome.fallback).map((outcome) => `${outcome.id} → ${outcome.fallback}`);
+    throw new Error(`An outcome of # minigame: ${tag.id} in ${label} may not be choosable (${stranded.map((outcome) => miniGameOptionId(tag, outcome)).join(", ")}), ` +
+      `and ${fallbacks.length ? `the game's fallbacks (${fallbacks.join(", ")}) reach no outcome that always is` : "the game declares no fallback for it"}: ` +
+      "the game ends on an outcome whatever the player has, so guarantee what that choice needs there (# requires:, # give:, # use:, a payment, a then: " +
+      "move; by a # when: in the head or a cond(\"…\") on the way), or give the game's outcome a fallback (definition outcomes' fallback, docs/13 4.2)");
+  }
+  if (choices.some((choice) => choice.later && choice.optionId === miniGameOptionId(tag, tag.auto)))
+    warn(`# minigame: ${tag.id} in ${label}: its 「おまかせ」 outcome ${tag.auto} is a 「また今度」 choice (# later), so with ⚙設定's おまかせ the scene never ` +
+      "ends there; give auto another outcome if the story should go on");
+  // 「おまかせ」 takes its outcome, or (when that one may be greyed) the fallbacks up to an always choosable one.
+  const autoWay: string[] = [];
+  for (let outcome: string | undefined = tag.auto; outcome !== undefined && !autoWay.includes(miniGameOptionId(tag, outcome));) {
+    autoWay.push(miniGameOptionId(tag, outcome));
+    outcome = sure.includes(outcome) ? undefined : definition.outcomes.find((item) => item.id === outcome)?.fallback;
+  }
+  return autoWay;
+}
+
+/** What a line's tags give its stage, gathered from its tag lines without text (frame-reader.ts reads them into the line after). */
+type LineStaging = { leave: string[]; phone?: PhoneSide; letter?: LetterKind; heroineReaction: boolean; enemyReaction: boolean; emotion: boolean };
+const noStaging = (): LineStaging => ({ leave: [], heroineReaction: false, enemyReaction: false, emotion: false });
+function gatherStaging(staging: LineStaging, tags: StoryTags): void {
+  staging.leave.push(...(tags.leave ?? []).filter((who) => !staging.leave.includes(who)));
+  if (tags.phone) staging.phone = tags.phone;
+  if (tags.letter) staging.letter = tags.letter;
+  staging.heroineReaction ||= !!tags.reactions?.heroine;
+  staging.enemyReaction ||= !!tags.reactions?.enemy;
+  staging.emotion ||= tags.emotion !== undefined;
+}
+
+/**
+ * The stage after a line the walk reads (src/components/scene-stage.ts), warning about each `# leave:` naming someone
+ * who does not stand there at the line (with the line's own comings: they may say the line they leave on). The cues are
+ * the ones the screens read from the line's tags: a reaction (in an arrival or epilogue the enemy's only with a figure),
+ * and in a talk or an encounter an emotion on the narration (hers) or on the enemy's line (theirs); a guide reads none.
+ * A reaction keyed by its text in presentation/dialogue-reactions.json is not read here.
+ */
+function walkStage(previous: Stage | undefined, line: { speaker: Speaker; personId?: string; staging: LineStaging },
+  stage: NonNullable<SceneWalkInput["stage"]>, scene: StageScene, warn: (problem: string) => void): Stage {
+  const { kind } = stage;
+  const { staging, speaker } = line;
+  const talk = kind === "talk" || kind === "encounter";
+  const cues = {
+    heroine: talk && (staging.heroineReaction || (staging.emotion && speaker === "narrator")),
+    enemy: talk ? staging.enemyReaction || (staging.emotion && speaker === "enemy")
+      : kind !== "guide" && staging.enemyReaction && (kind === "date" || kind === "battle" || !!stage.enemyFigure),
+  };
+  const frame = { speaker, ...(line.personId ? { speakerPersonId: line.personId } : {}),
+    ...(staging.phone ? { phone: { side: staging.phone } } : {}), ...(staging.letter ? { letter: { kind: staging.letter } } : {}) };
+  const arrived = stageAfter(previous, stageLine(frame, stage.people, cues), scene);
+  for (const who of staging.leave) {
+    const exit = stageExit(who, stage.people);
+    if (!exit) warn(`# leave: ${who}: the person has no figure (characterId in progression/story.json people), so never stands on the stage`);
+    else if (!standsOnStage(arrived, exit, scene))
+      warn(`# leave: ${who}: ${who === "enemy" ? "the scene's enemy" : who === "heroine" ? "the heroine" : "the person"} is not on the stage there, so the tag takes no one off`);
+  }
+  return stageAfter(previous, stageLine({ ...frame, leave: staging.leave }, stage.people, cues), scene);
+}
+
 /** Walk every path of the scene; returns the number of paths. */
-export function walkScene(input: SceneWalkInput): number {
+export function walkScene(walked: SceneWalkInput): number {
+  // Every scene the walk reads may play a mini-game (docs/13 1.3), but a confession date (docs/13 1.4).
+  const input = { ...walked, context: { ...walked.context, miniGames: walked.context.miniGames === "confession" ? "confession" as const : true } };
   const optionById = new Map(input.options.map((option) => [option.id, option]));
   const headLeaves = input.when ? requiredLeaves(input.when) : [];
   const reserveMoney = Math.max(0, -(input.done?.money ?? 0));
   const reserveAp = Math.max(0, -(input.done?.ap ?? 0));
-  const moneyFloor = Math.max(0, ...headLeaves.flatMap((leaf) => ("money" in leaf && leaf.money.atLeast !== undefined ? [leaf.money.atLeast] : [])));
-  const apFloor = Math.max(0, ...headLeaves.flatMap((leaf) => ("ap" in leaf && leaf.ap.atLeast !== undefined ? [leaf.ap.atLeast] : [])));
+  /** The least money (AP) the leaves guarantee: their largest `money >= N` (`ap >= N`). */
+  const floorOf = (leaves: readonly Leaf[], kind: "money" | "ap") => Math.max(0, ...leaves.flatMap((leaf) =>
+    kind === "money" ? ("money" in leaf && leaf.money.atLeast !== undefined ? [leaf.money.atLeast] : [])
+      : ("ap" in leaf && leaf.ap.atLeast !== undefined ? [leaf.ap.atLeast] : [])));
   const parsedConds = new Map(input.conds.map((text) => [text, parseConditionText(text)]));
   const profiled = input.options.some((option) => option.profile);
   const { assignments } = condWalk(input.conds);
   let routes = 0;
   const warned = new Set<string>();
   const warn = (message: string) => { if (!warned.has(message)) { warned.add(message); input.onWarning?.(message); } };
+  const stageScene = input.stage ? sceneStageOf(input.stage.kind, input.stage.enemyFigure) : undefined;
 
   for (const assignment of assignments) for (const result of profiled ? ["positive", "negative"] : [undefined]) {
-    type Path = { saved: string; overrides: Record<string, boolean>; trueTexts: string[]; spent: string[]; thens: number; romance: number; speaker: string;
+    type Path = { saved: string; overrides: Record<string, boolean>; trueTexts: string[]; spent: string[]; thens: number; romance: number; speaker: Speaker;
       /** A battle's quizzes called so far, its score and whether it reached its reasoning stop. */
-      quizzes: number; score: number; reasoned: boolean };
+      quizzes: number; score: number; reasoned: boolean;
+      /** What the choices before on the path paid (negative) or gave (positive): money and AP. */
+      money: number; ap: number;
+      /** The mini-games passed since the last other choice set, each left by its 「おまかせ」 outcome (their choice points). */
+      autoChain: string[];
+      /** The person of the speaker's `# speaker: <person ID>`, kept as the frame keeps it; who stands on the stage (input.stage). */
+      personId?: string; stage?: Stage };
     // A battle's states (its stop points, by where they stop and what the path holds) and where each goes: every one must reach the end.
     const graph = new Map<string, { next: Set<string>; where: string }>();
     const edge = (from: string, to: string) => graph.get(from)?.next.add(to);
@@ -116,19 +231,57 @@ export function walkScene(input: SceneWalkInput): number {
       story.state.LoadJson(path.saved);
       const metadata = parseStoryTags(choiceTags, input.context);
       let speaker = metadata.speaker ?? path.speaker;
+      let personId = metadata.speaker ? metadata.speakerPersonId : path.personId;
       let explicitEmotion = metadata.emotion !== undefined;
       let lines = 0;
+      // Who stands on the stage, line by line (a choice's tags belong to the line after it, as the frame reads them).
+      let stage = path.stage;
+      let staging = noStaging();
+      gatherStaging(staging, metadata);
+      // The last line's # minigame: (a tag line without text belongs to the next line, as the frame reads it).
+      let game: { tag: MiniGameTag; line: string } | undefined;
       while (story.canContinue) {
         checkLinesWithoutChoice(++lines);
         const text = story.Continue()?.trim() ?? "";
         const tags = parseStoryTags(story.currentTags ?? [], input.context);
-        if (tags.speaker) speaker = tags.speaker;
+        if (tags.speaker) {
+          speaker = tags.speaker;
+          personId = tags.speakerPersonId;
+        }
         if (tags.emotion !== undefined) explicitEmotion = true;
+        gatherStaging(staging, tags);
         if (battle && tags.effects.length) throw new Error(`A battle's lines take no # effect: (${input.label}); a choice's tags say what it does`);
+        if (text && game?.line) throw new Error(`# minigame: ${game.tag.id} in ${input.label} is on the line "${game.line}", but the line "${text}" comes ` +
+          `after it: write # minigame: on the line right before the choice set it plays`);
+        if (tags.minigame) game = { tag: tags.minigame, line: text };
+        else if (text && game) game.line = text;
         if (text) { input.observe?.(text, speaker, explicitEmotion); explicitEmotion = false; }
+        if (text && input.stage && stageScene) {
+          const shown = text.length > 30 ? `${text.slice(0, 30)}…` : text;
+          stage = walkStage(stage, { speaker, ...(personId ? { personId } : {}), staging }, input.stage, stageScene,
+            (problem) => warn(`${problem} (${input.label}, the line "${shown}")`));
+        }
+        if (text) staging = noStaging();
       }
       const choices = story.currentChoices;
+      if (game && !choices.length)
+        throw new Error(`# minigame: ${game.tag.id} in ${input.label} is not followed by a choice set (the line "${game.line}"): the game takes one of the choices right after its line`);
+      if (choices.some((choice) => parseStoryTags(choice.tags ?? [], input.context).minigame))
+        throw new Error(`# minigame: is written on a choice in ${input.label}: write it on the line right before the choice set`);
       const calls = choices.map((choice) => parseStoryTags(choice.tags ?? [], input.context).call);
+      const gameAt = game ? stopKey(choices) : "";
+      if (game) {
+        if (calls.some(Boolean))
+          throw new Error(`# minigame: ${game.tag.id} in ${input.label} comes right before a quiz's or reasoning's call: a mini-game takes a choice set ` +
+            "of its outcomes; put it on a line before or after the quiz (docs/13 1.3)");
+        if (path.autoChain.includes(gameAt))
+          throw new Error(`「おまかせ」 never leaves # minigame: ${game.tag.id} in ${input.label}: its auto outcome ${game.tag.auto} comes back to the ` +
+            "same game without another choice set on the way, so a player with ⚙設定's おまかせ cannot go on; give auto an outcome that leads on (docs/13 3.4)");
+        const knot = choices[0].sourcePath?.split(".")[0];
+        if (input.scene) input.onMiniGame?.({ sceneId: input.scene.id, kind: input.scene.kind, storyId: input.scene.storyId, ...(knot ? { knot } : {}),
+          game: game.tag.id, auto: game.tag.auto, ...(game.tag.prefix ? { prefix: game.tag.prefix } : {}), ...(game.tag.bg ? { bg: game.tag.bg } : {}),
+          ...(game.tag.art ? { art: { ...game.tag.art } } : {}), ...(game.tag.params ? { params: { ...game.tag.params } } : {}), line: game.line });
+      }
       if (calls.some(Boolean) && choices.length !== 1) throw new Error(`A battle's call is offered with other choices in ${input.label}: write -> quiz(n) -> and -> reasoning -> on their own`);
       if (!choices.length) {
         if (path.thens > 1) throw new Error(`A path of ${input.label} meets ${path.thens} then: (at most one per path, the head's counted; A8)`);
@@ -145,9 +298,9 @@ export function walkScene(input: SceneWalkInput): number {
       const call = calls[0];
       if (call && !battle) throw new Error(`-> ${call === "quiz" ? "quiz(n)" : "reasoning"} -> is a battle's call (stage 5): ${input.label} is not a battle`);
       const key = battle
-        ? `${stopKey(choices)}|${JSON.stringify(path.overrides)}|${path.thens}|${path.quizzes}|${path.score}|${path.reasoned}|` +
+        ? `${stopKey(choices)}|${JSON.stringify(path.overrides)}|${path.thens}|${path.quizzes}|${path.score}|${path.reasoned}|${path.money}|${path.ap}|` +
           `${["reasoning_action", "evidence_result", "romance_result"].map((name) => String(story.variablesState.$(name))).join(",")}`
-        : `${story.state.currentPathString}|${JSON.stringify(path.overrides)}|${path.thens}|${path.romance}|${choices.map((choice) => choice.text).join("/")}`;
+        : `${story.state.currentPathString}|${JSON.stringify(path.overrides)}|${path.thens}|${path.romance}|${path.money}|${path.ap}|${choices.map((choice) => choice.text).join("/")}`;
       if (battle) {
         edge(from, key);
         if (!graph.has(key)) graph.set(key, { next: new Set(), where: call === "quiz" ? `quiz(${path.quizzes + 1})` : call === "reasoning" ? `the reasoning stop` :
@@ -162,8 +315,9 @@ export function walkScene(input: SceneWalkInput): number {
           branch.state.LoadJson(checkpoint);
           for (const [name, value] of Object.entries(variables)) branch.variablesState.$(name, value);
           branch.ChooseChoiceIndex(0);
-          // The game starts a fresh frame after a call.
-          visit({ ...path, ...next, saved: branch.state.ToJson(), speaker: "narrator" }, [], key);
+          // The game starts a fresh frame after a call; the opponent asks the quiz on the stage (a cue).
+          visit({ ...path, ...next, saved: branch.state.ToJson(), speaker: "narrator", personId: undefined,
+            ...(stageScene ? { stage: stageAfter(stage, { enemyCue: true }, stageScene) } : {}) }, [], key);
         };
         if (call === "quiz") {
           const arg = story.variablesState.$("call_arg");
@@ -193,6 +347,9 @@ export function walkScene(input: SceneWalkInput): number {
         return condition ? requiredLeaves(condition) : [];
       })];
       const guaranteed = (leaf: Leaf) => guaranteedLeaves.some((other) => sameLeaf(other, leaf));
+      // What the scene's start and the path's true conds guarantee, after the path's own payments and gains.
+      const moneyFloor = floorOf(guaranteedLeaves, "money") + path.money;
+      const apFloor = floorOf(guaranteedLeaves, "ap") + path.ap;
       const itemGuaranteed = (item: string) => !path.spent.includes(item) && guaranteed({ item: { id: item, is: "held" } });
       const options = choices.map((choice) => {
         const id = parseStoryTags(choice.tags ?? [], input.context).optionId;
@@ -204,8 +361,9 @@ export function walkScene(input: SceneWalkInput): number {
         if (!option) return true;
         if (option.requires?.some((condition) => !requiredLeaves(condition).length || requiredLeaves(condition).some((leaf) => !guaranteed(leaf)))) return false;
         for (const item of [option.give?.item, option.use].filter((value): value is string => !!value)) if (!itemGuaranteed(item)) return false;
-        // The head's # when: money/ap guarantees that much as the scene starts; once a then: is decided on the path (the head's or a
-        // choice's), or by this choice, what the then: keeps back may take it (2.3): only a choice that spends nothing is sure then.
+        // The head's # when: and the path's true conds guarantee money/ap (less what the path paid before); once a then: is decided
+        // on the path (the head's or a choice's), or by this choice, what the then: keeps back may take it (2.3): only a choice
+        // that spends nothing is sure then.
         const thenKeeps = path.thens > 0 || !!option.then;
         if ((option.money ?? 0) < 0 && -(option.money ?? 0) > (thenKeeps ? 0 : moneyFloor) - reserveMoney) return false;
         if ((option.ap ?? 0) < 0 && -(option.ap ?? 0) > (thenKeeps ? 0 : apFloor) - reserveAp) return false;
@@ -214,6 +372,10 @@ export function walkScene(input: SceneWalkInput): number {
         if (option.then && "move" in option.then) return false;
         return true;
       };
+      // The options 「おまかせ」 may take there: its outcome's, and its fallbacks' while that one may be greyed.
+      const autoOptions = game ? checkMiniGameChoices(game.tag, choices.map((choice, index) => ({ text: choice.text.trim(),
+        optionId: parseStoryTags(choice.tags ?? [], input.context).optionId, choosable: choosable(options[index]), later: !!options[index]?.later })),
+      input.label, warn) : [];
       const open = options.filter(choosable);
       if (!open.length)
         throw new Error(`No choice can be chosen at a choice point of ${input.label} (line of "${choices[0].text.trim()}"): every choice needs ` +
@@ -241,11 +403,13 @@ export function walkScene(input: SceneWalkInput): number {
         branch.state.LoadJson(checkpoint);
         branch.ChooseChoiceIndex(choice.index);
         visit({ ...path, saved: branch.state.ToJson(), overrides, trueTexts, spent, thens: path.thens + (option?.then ? 1 : 0),
-          romance: path.romance + (romanceHere ? 1 : 0), speaker }, choice.tags ?? [], key);
+          autoChain: game && option && autoOptions.includes(option.id) ? [...path.autoChain, gameAt] : [],
+          money: path.money + (option?.money ?? 0), ap: path.ap + (option?.ap ?? 0),
+          romance: path.romance + (romanceHere ? 1 : 0), speaker, personId, stage }, choice.tags ?? [], key);
       });
     };
     if (battle) graph.set("", { next: new Set(), where: "the start" });
-    visit({ saved: first.state.ToJson(), overrides: {}, trueTexts: [], spent: [], thens: input.headThen ? 1 : 0, romance: 0, speaker: "narrator",
+    visit({ saved: first.state.ToJson(), overrides: {}, trueTexts: [], spent: [], thens: input.headThen ? 1 : 0, romance: 0, speaker: "narrator", autoChain: [], money: 0, ap: 0,
       quizzes: 0, score: 0, reasoned: false }, []);
     if (battle) {
       // Every state the battle reaches must still reach its end (a stop point that only comes back to itself would hold the player).

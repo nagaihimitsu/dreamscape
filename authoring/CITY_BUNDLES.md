@@ -42,7 +42,7 @@ npm run city:bundle -- apply artifacts/city-work/india-delhi.json
 
 先に対象旅行編の `content/journeys/<旅行編ID>/manifest.json` の `cities` に都市IDと都市名を登録し、都市の順番や通貨などの旅行編共通設定を決めます。都市IDは既存の都市と重ならないものを使います。使用する画像の本体を `content/journeys/<旅行編ID>/public/assets/` に用意した後、その都市の編集用JSONの雛形を作ります。
 
-旅行編に都市IDだけを先に追加すると、都市データの `apply` が終わるまで全体のコンテンツ検証は通りません。専用ブランチで作業し、必要な都市データをまとめて準備してください。
+旅行編に都市IDだけを先に追加すると、都市データの `apply` が終わるまで `journey:readiness`・`journey:transit` が止まります（`Missing content file: cities/<都市ID>.json`。`content:build` は通ります）。専用ブランチで作業し、必要な都市データをまとめて準備してください。
 
 ```sh
 # sample_city は旅行編へ登録した都市IDに置き換える

@@ -1,8 +1,12 @@
 // The journey's moments (2026-11-11 user decision; journey-moments.ts): the title card as an episode begins, the recap of a
 // resumed game, the packing of a departure and the credit roll at the end of a journey, as pure rules over the game.
+import { existsSync } from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { episodes, landmarks, scenes, storyState, tourismAssets } from "../../content";
-import { cityStart, completedCity, finishEpisode, openEpilogueScene, playEpisodeToResult, readEpilogue } from "../../dev/scenario-builders";
+import { episodes, getAlbumImage, landmarks, scenes, storyState, tourismAssets } from "../../content";
+import {
+  cityStart, completedCity, finishEpisode, openEpilogueScene, playEpisodeToResult, readEpilogue, startDateScene, withAp,
+} from "../../dev/scenario-builders";
 import type { AlbumPhoto } from "../../domain/album-state";
 import { leaveForNextCity } from "../../domain/city-travel";
 import { startEpisode } from "../../domain/chapter";
@@ -11,7 +15,8 @@ import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../
 import { advanceTourismGuide } from "../../domain/tourism";
 import { beginTravelEvent } from "../../domain/travel-game";
 import {
-  chapterStampOf, completedEpisodeId, departureLuggage, endRollOf, episodeTitleCard, journeyEnded, openingEpisodeId, packingOf, resumeRecap,
+  chapterStampOf, completedEpisodeId, departureLuggage, endRollOf, episodeTitleCard, journeyEnded, openingEpisodeId, packingOf, recapPicture,
+  resumeRecap, type RecapPicture,
 } from "./journey-moments";
 import { formatTravelTime } from "./travel-time";
 
@@ -25,6 +30,29 @@ const photos: AlbumPhoto[] = [
   { imageId: "smp_album_clock_tower", caption: "三時のまま", cityId: "mihon", day: 1, minute: 660, placeId: "mihon_clock_tower",
     storyId: "places/smp_mihon_clock_tower.smp_mihon_date_tower_square" },
 ];
+/** A photo of the India journey's album, taken in the story at `storyId` (a place file's knot). */
+const indiaPhoto = (imageId: string, cityId: string, placeId: string, storyId: string, caption?: string): AlbumPhoto =>
+  ({ imageId, ...(caption === undefined ? {} : { caption }), cityId, day: 2, minute: 600, placeId, storyId: `places/${storyId}` });
+const JAMA_MASJID = "gt_delhi_main_jama_masjid";
+const RED_FORT = "gt_delhi_main_red_fort";
+const TAJ_MAHAL = "gt_agra_main_taj_mahal";
+/** Delhi's arrival, the Agrasen ki Baoli date (the user's 2026-11-13 case), Delhi's finale battle at the Red Fort. */
+const delhiArrival = indiaPhoto("gt_album_d01", "delhi", "delhi_hotel_hub", "gt_delhi_hotel_hub.gt_delhi_arrival", "路地の将軍カムラ");
+const baoliDate = indiaPhoto("gt_album_d55", "delhi", "delhi_agrasen_baoli", "gt_delhi_agrasen_baoli.gt_delhi_date_agrasen_baoli", "鳩が顔の前に、本物の悲鳴");
+const delhiFinale = indiaPhoto("gt_album_d79", "delhi", "delhi_red_fort", "gt_delhi_red_fort.gt_delhi_finale_battle", "光と音のショー、内謁の間の小さな人影");
+/** The Taj Mahal's guide, Agra's finale battle in the same place file, a date at the Mehtab Bagh; Jaipur's epilogue. */
+const tajGuide = indiaPhoto("gt_album_a05", "agra", "agra_taj_mahal", "gt_agra_taj_mahal.gt_agra_taj_mahal_guide", "門のアーチからはみ出していく白");
+const agraFinale = indiaPhoto("gt_album_a66", "agra", "agra_taj_mahal", "gt_agra_taj_mahal.gt_agra_finale_battle", "「わたしたちのことは、わたしたちで決めます」");
+const mehtabDate = indiaPhoto("gt_album_a32", "agra", "agra_mehtab_bagh", "gt_agra_mehtab_bagh.gt_agra_mehtab_bagh_ball_over_wall", "最後の一球、塀を越えてアウト");
+const jaipurEpilogue = indiaPhoto("gt_album_j57", "jaipur", "jaipur_hotel_hub", "gt_jaipur_hotel_hub.gt_jaipur_epilogue", "段ボールの六行目「通りで踊った夜」");
+/** The recap's album picture: the author's illustration with its caption, no credit. */
+const albumPicture = (photo: AlbumPhoto): RecapPicture =>
+  ({ path: getAlbumImage(photo.imageId)!.path, altJa: photo.caption!, captionJa: photo.caption! });
+/** The recap's picture of a place: the larger `recap` copy of free time's card photo, the place's name and the photo's credit. */
+const placePicture = (journeyId: string, assetId: string, placeJa: string): RecapPicture => {
+  const asset = tourismAssets.find((item) => item.id === assetId)!;
+  return { path: `assets/derived/${journeyId}/${assetId}.recap.webp`, altJa: asset.altJa, captionJa: placeJa, credit: asset };
+};
 
 describe("the title card as an episode begins", () => {
   it("shows once, as the episode's first part opens after the inserted scenes before it, never while they run", () => {
@@ -90,7 +118,7 @@ describe("the recap of a resumed game", () => {
     expect(resumeRecap(cityStart("mihon"))).toBeNull();
   });
 
-  it("tells where and when, the last episode completed and the album's latest photo, the author's illustration with no credit", () => {
+  it("tells where and when, the last episode completed and that episode's picture", () => {
     const done = finishEpisode(cityStart("mihon", ["航", "澪"]), CLOCK_TOWER);
     const tower = episode(CLOCK_TOWER);
     const recap = resumeRecap(done)!;
@@ -99,12 +127,11 @@ describe("the recap of a resumed game", () => {
       chapter: { titleJa: tower.clearTitleJa, descriptionJa: tower.clearDescriptionJa },
     });
     expect(recap.chapter.cityJa).toBeUndefined();
-    expect(resumeRecap({ ...done, album: [] })?.photo).toBeUndefined();
-    const withPhotos = resumeRecap({ ...done, album: photos })!;
-    expect(withPhotos.photo).toEqual({ imageId: "smp_album_clock_tower", path: "assets/album/smp_album_clock_tower.webp", altJa: "三時のまま",
-      caption: "三時のまま", whenJa: "1日目 11:00", placeJa: expect.any(String), cityId: "mihon", cityJa: "見本の街" });
-    // Without a caption, its alternative text is 「思い出の絵」.
-    expect(resumeRecap({ ...done, album: [photos[0]] })?.photo).toMatchObject({ path: "assets/album/smp_album_market.webp", altJa: "思い出の絵" });
+    // The tower's episode took no photo: its place's photo, whatever the album holds (the tower's date photo at the same
+    // place and the market guide's are other stories).
+    const towerPhoto = placePicture("sample_trip", "smp_img_mihon_clock_tower", "見本の時計塔");
+    expect(recap.photo).toEqual(towerPhoto);
+    expect(resumeRecap({ ...done, album: photos })?.photo).toEqual(towerPhoto);
     // The names are filled in.
     const written = tower.clearDescriptionJa;
     tower.clearDescriptionJa = "{heroine_name}は三時の針を見上げた。";
@@ -120,6 +147,78 @@ describe("the recap of a resumed game", () => {
     const last = episode(agra.completedEpisodeIds.at(-1)!);
     expect(last.cityId).toBe("delhi");
     expect(resumeRecap(agra)).toMatchObject({ cityJa: "アーグラ", chapter: { titleJa: last.clearTitleJa, cityJa: "デリー" } });
+  });
+
+  it("shows the Jama Masjid's photo, not the date photo taken after it (the user's case, 2026-11-13)", () => {
+    // Delhi: the Jama Masjid's episode completed, then the Agrasen ki Baoli date played to its end like a player.
+    let state = startDateScene(withAp(finishEpisode(cityStart("delhi", ["航", "澪"]), JAMA_MASJID), 12), "gt_delhi_date_agrasen_baoli", 0);
+    for (let step = 0; state.activeDate; step++) {
+      expect(step, "the date did not end").toBeLessThan(300);
+      state = applyPlayerAction(state, playerActionChange(listPlayerActions(state)[0], roll), roll);
+    }
+    expect(state.completedEpisodeIds.at(-1)).toBe(JAMA_MASJID);
+    expect(state.album.at(-1)).toMatchObject({ imageId: baoliDate.imageId, storyId: baoliDate.storyId });
+    expect(resumeRecap(state)).toMatchObject({
+      chapter: { titleJa: "賭けではなく、欲しいから" },
+      photo: placePicture("golden_triangle", "gt_img_delhi_jama_masjid", "ジャーマー・マスジド"),
+    });
+  });
+});
+
+describe("the recap's picture (the same story as its text)", () => {
+  it("takes the latest album photo of the episode's own parts over a later photo of another story, with its caption and no credit", () => {
+    expect(recapPicture({ album: [tajGuide, mehtabDate], currentCityId: "agra" }, episode(TAJ_MAHAL))).toEqual(albumPicture(tajGuide));
+    // An own photo without a caption is named by its place, its alternative text 「思い出の絵」 as in the album.
+    const uncaptioned = indiaPhoto(tajGuide.imageId, "agra", "agra_taj_mahal", "gt_agra_taj_mahal.gt_agra_taj_mahal_guide");
+    expect(recapPicture({ album: [uncaptioned, mehtabDate], currentCityId: "agra" }, episode(TAJ_MAHAL)))
+      .toEqual({ path: getAlbumImage(tajGuide.imageId)!.path, altJa: "思い出の絵", captionJa: "タージ・マハル" });
+  });
+
+  it("shows the photo of the episode's place, as free time's card does, with its credit, when the episode took no photo", () => {
+    const jamaMasjid = placePicture("golden_triangle", "gt_img_delhi_jama_masjid", "ジャーマー・マスジド");
+    expect(jamaMasjid.credit).toMatchObject({ creditJa: expect.stringContaining("Wikimedia Commons"), isPlaceholder: false });
+    expect(recapPicture({ album: [delhiArrival, baoliDate], currentCityId: "delhi" }, episode(JAMA_MASJID))).toEqual(jamaMasjid);
+    // With an empty album too.
+    expect(recapPicture({ album: [], currentCityId: "delhi" }, episode(JAMA_MASJID))).toEqual(jamaMasjid);
+    // From the next city as well (the episode's own city names the place).
+    expect(recapPicture({ album: [], currentCityId: "agra" }, episode(JAMA_MASJID))).toEqual(jamaMasjid);
+  });
+
+  it("never takes another story's photo of the same place or place file", () => {
+    // Delhi's finale is at the Red Fort, in the Red Fort's place file: its photo is not the Red Fort episode's.
+    expect(recapPicture({ album: [delhiFinale], currentCityId: "delhi" }, episode(RED_FORT)))
+      .toEqual(placePicture("golden_triangle", "gt_img_delhi_red_fort", "レッド・フォート"));
+    // Nor is Agra's finale photo the Taj Mahal episode's.
+    expect(recapPicture({ album: [tajGuide, agraFinale], currentCityId: "agra" }, episode(TAJ_MAHAL))).toEqual(albumPicture(tajGuide));
+  });
+
+  it("takes a finale's own battle or epilogue photo, else the photo of the place the finale is set at", () => {
+    expect(recapPicture({ album: [delhiFinale, baoliDate], currentCityId: "delhi" }, episode("gt_delhi_finale"))).toEqual(albumPicture(delhiFinale));
+    expect(recapPicture({ album: [jaipurEpilogue], currentCityId: "jaipur" }, episode("gt_jaipur_finale"))).toEqual(albumPicture(jaipurEpilogue));
+    // Agra's finale took no photo: the Taj Mahal's guide photo is the Taj Mahal episode's, so the finale shows its place's photo.
+    expect(recapPicture({ album: [tajGuide], currentCityId: "agra" }, episode("gt_agra_finale")))
+      .toEqual(placePicture("golden_triangle", "gt_img_agra_taj_mahal", "タージ・マハル"));
+    expect(recapPicture({ album: [], currentCityId: "mihon" }, episode("smp_mihon_finale")))
+      .toEqual(placePicture("sample_trip", "smp_img_mihon_clock_tower", "見本の時計塔"));
+  });
+
+  it("finds the place photo's recap copy that content:build made, for every episode", () => {
+    const missing = episodes.flatMap((item) => {
+      const picture = recapPicture({ album: [], currentCityId: item.cityId }, item);
+      return picture && !existsSync(path.join("src/content/generated/public", picture.path)) ? [picture.path] : [];
+    });
+    expect(missing).toEqual([]);
+    expect(episodes.filter((item) => recapPicture({ album: [], currentCityId: item.cityId }, item) === null).map((item) => item.id)).toEqual([]);
+  });
+
+  it("shows no picture when the place has only a placeholder photo", () => {
+    const asset = tourismAssets.find((item) => item.id === "gt_img_delhi_jama_masjid")!;
+    asset.isPlaceholder = true;
+    try {
+      expect(recapPicture({ album: [baoliDate], currentCityId: "delhi" }, episode(JAMA_MASJID))).toBeNull();
+    } finally {
+      asset.isPlaceholder = false;
+    }
   });
 });
 

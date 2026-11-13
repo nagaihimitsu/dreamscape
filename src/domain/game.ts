@@ -464,7 +464,8 @@ export function finishDate(
   if (doneScene && !active.replay && !state.playedDateIds.includes(date.id))
     state = applyDoneEffects(state, doneScene.id, doneScene.done, state.revision + 1);
   const memories = [...state.memories];
-  // A deferred attempt is replayable; the first eventual acceptance still earns its one ending memory.
+  // A confession may follow a deferral (a later city's, or this one again when its writer made it repeatable; the
+  // journeys' are played once, 2026-11-13); the first eventual acceptance still earns its one ending memory.
   // Commit this together with the ending, not while displaying the confession response.
   if (date.kind === "confession" && confessionStatus === "accepted") {
     for (const effect of effects) {

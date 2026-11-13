@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { encounters } from "../../content/encounters";
 import { cityStart } from "../../dev/scenario-builders";
 import type { GameState } from "../../domain/game";
-import { visitedPlaceIds } from "./visited-places";
+import { trailPlaceIds, visitedPlaceIds } from "./visited-places";
 
 const SAMPLE = "mihon";
 const start = () => cityStart(SAMPLE);
@@ -37,5 +37,12 @@ describe("the places the party has been to", () => {
     expect(seen?.landmarkId).toBe("mihon_clock_tower");
     expect(visitedPlaceIds({ ...start(), seenEncounterIds: ["smp_mihon_clock_gears"] })).toEqual(["mihon_hotel", "mihon_clock_tower"]);
     expect(visitedPlaceIds({ ...start(), seenEncounterIds: [] })).toEqual(["mihon_hotel"]);
+  });
+
+  it("leaves on the map's trail only the places been to that the map marks no other way", () => {
+    const state = { ...travel(start(), { currentPlaceId: "mihon_market" }), visitedLandmarkIds: ["mihon_library"] };
+    // The hotel and the market are marked as the hotel and the current place; the clock tower has an open event.
+    expect(trailPlaceIds(state, ["mihon_hotel", "mihon_market", "mihon_clock_tower"])).toEqual(["mihon_library"]);
+    expect(trailPlaceIds(state, ["mihon_hotel", "mihon_market", "mihon_library"])).toEqual([]);
   });
 });

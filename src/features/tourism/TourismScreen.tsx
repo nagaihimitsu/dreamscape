@@ -19,8 +19,11 @@ import { ItemShowLayer } from "../../components/ItemShow";
 import { sceneTimeTint } from "../journey/time-of-day";
 import { lineCues, lineSpeed, showsSpeakerPlate } from "../../components/line-staging";
 import { CanalScene } from "../../components/CanalScene";
-import { CharacterPortrait } from "../../components/CharacterPortrait";
-import { portraitFocus } from "../../components/speaker-focus";
+import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
+import { ChoicePoint } from "../../minigames/host/ChoicePoint";
+import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
+import { sceneStageOf, stageLine } from "../../components/scene-stage";
+import { useSceneStage } from "../../components/useSceneStage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
@@ -38,6 +41,10 @@ import { useSceneTap } from "../../components/useSceneTap";
 import { ObservationViewer } from "./ObservationViewer";
 import { ClueDetails } from "./ClueDetails";
 import "./tourism.css";
+import "../journey/encounter.css";
+
+/** A guide's stage: she stands from the start; no one stands for `# speaker: enemy`. */
+const GUIDE_STAGE = sceneStageOf("guide");
 
 const COMPACT_OBSERVATION = "(max-width: 600px) and (min-height: 500px)";
 
@@ -104,6 +111,10 @@ export function TourismScreen({
   const reaction = frame && active.phase === "guide"
     ? resolveDialogueReaction(dialogueReactions, guideStoryId, frame, "heroine")
     : undefined;
+  // She stands through the guide; a person with a figure who speaks in their own name stands opposite her from that line
+  // (scene-stage.ts). A guide read again starts with her alone.
+  const { stage, focus } = useSceneStage(active.phase === "guide" ? stageLine(frame, storyState.people) : {}, GUIDE_STAGE, active.phase);
+  const personId = stage.opposite?.figure;
   const plate = speakerPlate(frame ?? { speaker: "narrator" }, { heroine: game.heroineName, player: game.playerName }, storyState.people);
   const speaker = plate.name;
   // A line's `# cutin: name` shows its speaker's name plate for a moment (NameCutIn; a person's: a guide has no one opposite).
@@ -196,17 +207,24 @@ export function TourismScreen({
           <PhotoShowLayer photo={frame.photo} />
           <ItemShowLayer itemId={frame.itemShow} quiet={!!frame.quiet} />
           <span className="sr-only">{asset.altJa}</span>
-          <div className="vn-character-layer">
-            <CharacterPortrait
-              characterId="heroine"
-              sceneId={landmark.id}
-              cityId={landmark.cityId}
-              emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, guideStoryId, frame)}
-              focus={portraitFocus(frame.speaker, "heroine")}
-              stand={frame.stand}
-            >
-              {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState ?? undefined} />}
-            </CharacterPortrait>
+          {/* With a person on stage the two stand side by side (the encounter's slots); her portrait keeps its place in
+              the tree, so it is not drawn again when they come in. */}
+          <div className={`vn-character-layer${personId ? " encounter-character-layer" : ""}`} data-two-characters={personId ? true : undefined}>
+            <div className={personId ? "encounter-character-slot encounter-character-heroine" : undefined}>
+              <CharacterPortrait
+                characterId="heroine"
+                sceneId={landmark.id}
+                cityId={landmark.cityId}
+                emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, guideStoryId, frame)}
+                focus={focus.heroine}
+                stand={frame.stand}
+              >
+                {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState ?? undefined} />}
+              </CharacterPortrait>
+            </div>
+            {personId && <div className="encounter-character-slot encounter-character-enemy">
+              <CharacterPortrait key={personId} characterId={personId} focus={focus.opposite} />
+            </div>}
           </div>
           <div
             className="tourism-guide paper vn-dialogue"
@@ -237,7 +255,13 @@ export function TourismScreen({
                 onAdvance={advanceSafely}
               />
             </LineStage>
-            {frame.choices.length > 0 && onChooseGuide && <SceneChoices choices={guideChoices} disabled={!ready} onChoose={onChooseGuide} testId="guide-choice" />}
+            {frame.choices.length > 0 && onChooseGuide && <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
+              heroine: <CharacterFigure characterId="heroine" emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, guideStoryId, frame)}
+                sceneId={landmark.id} cityId={landmark.cityId} />,
+              ...(personId ? { person: <CharacterFigure characterId={personId} /> } : {}),
+            }}>
+              <SceneChoices choices={guideChoices} disabled={!ready} onChoose={onChooseGuide} testId="guide-choice" />
+            </ChoicePoint>}
             {frame.ended && <button
               className="next"
               data-testid="tourism-advance"
@@ -250,6 +274,7 @@ export function TourismScreen({
             </div>
           </div>
           <DialogueWindowRestore state={windowVisibility} />
+          <MiniGameSlot />
         </div>
       ) : (
         <div className="tourism-observation">
@@ -262,6 +287,7 @@ export function TourismScreen({
             landmarkName={landmark.nameJa}
             onNotebook={onNotebook}
             onProceed={onBattle}
+            onReplayGuide={landmark.guideStoryId ? onReplayGuide : undefined}
             onSelect={(id) => selectClue(id, false)}
           />
           {selected && detailOpen && (
@@ -283,7 +309,6 @@ export function TourismScreen({
             <p>{asset.creditJa}</p>
             <p>{asset.modificationJa}</p>
             <p><a href={asset.sourceUrl} target="_blank" rel="noreferrer">画像の出典</a> · <a href={asset.licenseUrl} target="_blank" rel="noreferrer">{asset.licenseName}</a></p>
-            {landmark.guideStoryId && <button className="text-button" data-testid="guide-replay" onClick={onReplayGuide}>観光案内をもう一度読む</button>}
           </details>
         </div>
       )}

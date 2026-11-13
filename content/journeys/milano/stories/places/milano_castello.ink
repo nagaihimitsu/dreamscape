@@ -2,7 +2,7 @@ INCLUDE modules.ink
 -> DONE
 
 // スフォルツェスコ城の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
-// 観光案内、通常戦と道中交流。
+// 観光案内、通常戦と道中交流（バトルの後の「弦を一本、余らせて」）。
 
 // 観光案内。tourism/catalog.json の guideStoryId がこの knot を指す。
 === castello_sforzesco_guide ===
@@ -18,7 +18,7 @@ INCLUDE modules.ink
 今のはどっちが謝るんだろう
 # speaker: heroine
 # emotion: happy
-私なら、くしゃみした顔のほうが欲しいです
+わたしなら、くしゃみした顔のほうが欲しいです
 -> END
 
 // ───── バトル（本筋）。battles/catalog.json の milano_castello_01 の storyId がこの knot を指す。1本の流れ（-> quiz(n) -> でクイズ）。
@@ -75,7 +75,7 @@ INCLUDE modules.ink
 # speaker: narrator
 娘は一歩ずつ像のまわりを歩いた。父は動かない。こちら側の形が気に入ったらしい。
 # speaker: heroine
-私は、こっちの横顔が好き。そっちからはどうですか？
+わたしは、こっちの横顔が好き。そっちからはどうですか？
 # speaker: enemy
 ここから動いたら、好きだった形を忘れそうでね
 -> quiz(3) ->
@@ -102,49 +102,93 @@ INCLUDE modules.ink
 -> END
 
 // 道中交流「弦を一本、余らせて」（knot の名前 castello_pick が交流のID）。
-// 今は起こらない：条件『スフォルツェスコ城を終えた』（頭の # when: episode …）は、城のバトルを終えると満たす。その後は交流が始まる観察がない。
-// バトルを終えると、城は地図の行き先に出なくなる。バトルの画面（結果の画面も）から観察に戻れるが、バトルの途中なので交流は始まらない。
-// 後回しにする選択肢（option: later）以外は青いピックが要る。青いピックも、今は起こらない「切れた三本目」でしか手に入らない。
-// シナリオの改稿で見直す（2026-11-08 のユーザー判断）。それまで起こる時は変えない。変えたら、このコメントも直す。
-// 2026-11-13 に 1場面1ファイル・encounters/catalog.json・entry-rules.json からこの場所のファイルへ移した。観察で「進む」を押した後（# priority: after observe）に始まり、終わると観察に戻る。起こる時・順・選択の働き（お金・品物・「また今度」）は前と同じ。
-// 頭の # when: item blue_pick held は、前のカタログの決まり（「また今度」のほかの選択肢がみな品物を要るとき、その品物がなければ始まらない）を書いたもの。
+// スフォルツェスコ城の訪問の本筋の後（# priority: +1）：城のバトルの結果を閉じた後。条件はない（城にはデートがないので「また今度」もない）。
+// 青いピック（ドゥオモの「切れた三本目」でもらう）を持っていれば、ティノに渡すか、持っておく（どちらも完了）。
+// 持っていなければ、聴く・尋ねる・通り過ぎる（どれも完了し、フラグ milano_tino_needs_pick を立てる。後でピックをもらったら、フィナーレの前のダルセナで渡せる）。
+// 城が砦から宮廷の住まいへ、今は博物館や図書館の入る場所になったことは scenes/catalog.json の出典。
 === castello_pick ===
 # scene: encounter
 # title: 弦を一本、余らせて
 # at: visit castello_sforzesco
-# priority: after observe
-# when: episode milano_castello_episode
-# when: item blue_pick held
+# priority: +1
+# person: milano_tino
 # background: milano_castello
 # speaker: narrator
-城の中庭の端で、小さなギターを抱えたティノが、親指に絆創膏を巻き直している。開いたケースに青い三角の跡だけがあった。
+城の中庭の端で、少年が小さなギターを抱えていた。親指に絆創膏を巻き直しては、同じ和音を弾く。
+# speaker: milano_tino
+# cutin: name
+ここ、音が壁に当たって返ってくるんだ。家だと、隣の人が壁を叩き返してくるけど
 # speaker: heroine
-ノラさんのピック、あそこの形と同じですね
+お城の中で練習していいの？
+# speaker: milano_tino
+もとは砦で、そのあと宮廷の住まいだったんだって。今は博物館と図書館が入ってるから、中庭は誰でも歩ける。ぼくみたいなのでも
+# speaker: narrator
+開いたケースに、青い三角の跡だけが残っていた。
+{ cond("item blue_pick held"):
+    # speaker: heroine
+    ……ノラさんのピック、あの跡と同じ形だ
+    -> castello_pick_with_pick
+- else:
+    # speaker: heroine
+    あの跡、何が入ってたんだろう。……聞きすぎかな
+    -> castello_pick_without_pick
+}
 
+// ピックを持っているとき（渡す・一音を頼む・持っておく）。
+=== castello_pick_with_pick ===
 * [Would this pick fit your hand? # option: give # translation: このピック、手に合いそう？]
-    # give: blue_pick heroine
+    # give: blue_pick milano_tino
     # speaker: narrator
     ティノは弦を一本だけ弾いた。
     # speaker: milano_tino
     うわ。自分の指だと、こんなに強く弾けなかった
     # speaker: narrator
-    中庭の壁から細く音が返る。
+    中庭の壁から、細く音が返ってきた。
     # speaker: heroine
     最初に鳴らしたのが一音なの、いいね
     -> END
 
 * [Could you play one note with this? # option: ask # translation: これで一音弾いてくれる？]
-    # give: blue_pick heroine
+    # give: blue_pick milano_tino
     # speaker: milano_tino
     曲じゃなくて一音なら、外しようがないね
     # speaker: narrator
-    豪快に隣の弦をはじき、本人が一番驚いた。
+    豪快に隣の弦をはじき、本人がいちばん驚いた。
     # speaker: heroine
     いまのでお願いします。二回目は、違う音になっちゃうから
     -> END
 
-* [I'll hold on to it for now. # option: later # translation: 今は自分で持っておくよ。]
-    # later
+* [I'll hold on to it for now. # option: keep # translation: 今は自分で持っておくよ。]
     # speaker: narrator
-    彼女はケースの青い跡の上に落ちた葉を取り、ティノに目で挨拶した。ピックはまだ手元にある。
+    彼女はケースの青い跡に落ちた葉を払い、ティノに目で挨拶した。ピックは、まだ手元にある。
+    # speaker: heroine
+    渡すなら、あの子が欲しいって言ってからでもいいよね
+    -> END
+
+// ピックを持っていないとき（聴く・尋ねる・通り過ぎる）。どれも、後でダルセナで渡せるようにフラグを立てる。
+=== castello_pick_without_pick ===
+* [Can I listen for a while? # option: listen # translation: しばらく聴いていてもいい？]
+    # set: milano_tino_needs_pick
+    # speaker: narrator
+    少年は同じ和音を三回弾いた。三回目だけ、壁からの返事が少し遅れた。
+    # speaker: milano_tino
+    今の、聞こえた？　お城が一拍おくれて弾くんだ
+    # speaker: heroine
+    聞こえた。……壁が相棒なんだね
+    -> END
+
+* [Did something use to sit in that case? # option: wonder # translation: そのケース、何か入ってたの？]
+    # set: milano_tino_needs_pick
+    # speaker: milano_tino
+    青いピック。ドゥオモの前で弾いてる人にもらったんだけど、どこかに落とした。親指でも弾けるし
+    # speaker: narrator
+    絆創膏の下の親指は、少し赤かった。
+    # speaker: heroine
+    ……そっか。見かけたら、覚えておくね
+    -> END
+
+* [Let's not interrupt him. # option: pass # translation: 邪魔しないでおこう。]
+    # set: milano_tino_needs_pick
+    # speaker: narrator
+    二人は中庭の反対側を回った。背中のほうで、和音が一つ、壁に当たって返ってきた。
     -> END

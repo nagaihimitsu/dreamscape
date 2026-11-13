@@ -1,6 +1,7 @@
 import { REACTION_MARKS, type DialogueReaction, type ReactionTarget } from "./dialogue-reactions";
 import { VOICE_ID } from "./voice-files";
 import { SOUND_ID } from "./sounds";
+import { parseMiniGameTag, type MiniGameTag } from "../minigames/tag";
 
 export interface TagContext {
   effectIds: string[];
@@ -12,6 +13,17 @@ export interface TagContext {
   localWordIds?: readonly string[];
   /** The people of progression/story.json, for `# speaker: <person ID>`; absent: a tool that only reads the lines (not checked). */
   personIds?: readonly string[];
+  /**
+   * Whether a line may start a mini-game (`# minigame:`; docs/13 1.3): content:build's full-branch walk (scene-walk.ts)
+   * says true, every other reading false, a confession date "confession" (refused, docs/13 1.4); absent: allowed (the
+   * game reads only what content:build passed).
+   */
+  miniGames?: boolean | "confession";
+  /**
+   * The mini-game pictures a `# minigame:`'s `art.<slot>` may name (ID → served path; src/minigames/art.ts): content:build
+   * gives a scene its journey's and the root's; absent: not checked.
+   */
+  miniGameArt?: Readonly<Record<string, string>>;
 }
 
 /** The speakers every line may name; any other `# speaker:` names a person of progression/story.json people (2026-11-11). */
@@ -46,6 +58,8 @@ export interface StoryTags {
   stand?: StandPosition;
   /** `# cutin: name`: the speaker's name plate over the scene for a moment (the line it is written on only). */
   cutin?: CutInKind;
+  /** `# leave: <who>` (one tag per figure): who goes off the scene's stage at this line (src/components/scene-stage.ts). */
+  leave?: string[];
   /** `# voice: <ID>`: the recording of the line, a journey's public/assets/voice/<ID>.mp3 (the line it is written on only). */
   voiceId?: string;
   /** `# se: <ID>`: a sound effect played as the line starts, a registered public/assets/se/<ID>.mp3 (the line it is written on only). */
@@ -63,6 +77,8 @@ export interface StoryTags {
   tint?: TintSwitch;
   /** `# ambience: <ID>` / `# ambience: stop` / `# ambience: default`: the scene's ambience from this line on (as `# bgm:`). */
   ambience?: string;
+  /** `# minigame: <game> [auto <outcome>] [prefix <word>] [bg …] [art.<slot> …] [<key> <value>]…`: the choice set right after the line is played (src/minigames/tag.ts). */
+  minigame?: MiniGameTag;
   effects: string[];
 }
 
@@ -101,6 +117,13 @@ export type StandPosition = (typeof STAND_POSITIONS)[number];
  */
 export const CUTIN_KINDS = ["name"] as const;
 export type CutInKind = (typeof CUTIN_KINDS)[number];
+
+/**
+ * `# leave: <who>` (2026-11-13 user decision): a figure goes off the scene's stage from its line until they come on again
+ * by the stage's own rule (src/components/scene-stage.ts). Who: the heroine, the scene's `enemy` (its `# person:`, a
+ * battle's opponent) or a person of progression/story.json people. Narrator and player never stand there.
+ */
+export const LEAVE_WHO = ["heroine", "enemy"] as const;
 
 type SceneTagKey = "phone" | "letter" | "quiet" | "stand" | "cutin";
 const SCENE_TAG_VALUES: Record<SceneTagKey, readonly string[]> = {
@@ -229,6 +252,13 @@ export function parseStoryTags(
         result.speaker = "person";
         result.speakerPersonId = value;
       }
+    } else if (key === "leave") {
+      const named = (LEAVE_WHO as readonly string[]).includes(value);
+      if (!named && ((RESERVED_SPEAKERS as readonly string[]).includes(value) || !/^[a-z][a-z0-9_]*$/u.test(value) ||
+        (context.personIds && !context.personIds.includes(value))))
+        throw new Error(`Unknown leave: ${value} (heroine, enemy, or a person of progression/story.json people; the narrator and the player never stand on the stage)`);
+      if (result.leave?.includes(value)) throw new Error(`Duplicate leave tag: ${value}`);
+      result.leave = [...(result.leave ?? []), value];
     } else if (key === "background") {
       if (!context.backgroundIds.includes(value))
         throw new Error(`Unknown background: ${value}`);
@@ -344,6 +374,17 @@ export function parseStoryTags(
       result.delivery = key === "em" ? { ...result.delivery, em: value } : { ...result.delivery, emShake: value };
     } else if (isSceneTagKey(key)) {
       readSceneTag(key, value, result);
+    } else if (key === "minigame") {
+      // Where it may run and what follows it (a choice set of its outcomes) are content:build's (scripts/scene-walk.ts).
+      if (context.miniGames === "confession")
+        throw new Error(`# minigame: ${value}: no mini-game in a confession date: her answer must never look decided by skill or luck ` +
+          "(docs/13 1.4); write it in a scene before or after it (# at: date <the confession>)");
+      if (context.miniGames === false)
+        throw new Error(`# minigame: ${value}: a mini-game runs at a choice set of a scene written in a place file (stories/places/: a date, ` +
+          "a talk or encounter, a guide, an arrival, an epilogue, a tour leg or a battle's talk, in its knot or a helper knot it calls), " +
+          "not in a catalog encounter, a one-scene date, a scene without choices or a quiz's or reasoning's call (docs/13 1.3)");
+      if (result.minigame) throw new Error("Duplicate minigame tag");
+      result.minigame = parseMiniGameTag(value, context);
     } else {
       throw new Error(`Unknown story tag: ${key}`);
     }

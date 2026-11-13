@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { Story } from "inkjs";
@@ -45,6 +45,9 @@ it("builds a new encounter and date with Ink, small catalog entries and a travel
       ],
     });
     await writeFile(encountersPath, JSON.stringify(encounterCatalog));
+    // Milan's scenes are knots of its place files since the Milano rewrite: a new author's one-scene files start the folders.
+    await mkdir(path.join(root, "content/journeys/milano/stories/encounters"), { recursive: true });
+    await mkdir(path.join(root, "content/journeys/milano/stories/dates"), { recursive: true });
     await writeFile(path.join(root, "content/journeys/milano/stories/encounters/fixture_simple_encounter.ink"), `VAR player_name = ""
 VAR heroine_name = ""
 # background: milano_galleria

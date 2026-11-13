@@ -23,7 +23,7 @@ beforeAll(() => {
 afterAll(() => rmSync(directory, { recursive: true, force: true }));
 
 describe("derived photo copies", () => {
-  it("lists a card per place photo and a backdrop per city backdrop, once each, under the journey that provides the photo", () => {
+  it("lists a card per place photo, a backdrop per city backdrop and a recap per episode place's photo, once each, under the journey that provides the photo", () => {
     const assets = [asset("a_tower"), asset("a_square"), asset("a_draft", true), asset("b_bridge")];
     const images = derivedImageList({
       content: {
@@ -34,6 +34,8 @@ describe("derived photo copies", () => {
       cities: [
         {
           city: { backdropAssetId: "a_tower" }, hotelPlaceId: "p_hotel",
+          // Episodes at the tower (twice: one copy) and at the plain place (no photo, no copy).
+          episodePlaceIds: ["p_tower", "p_again", "p_plain"],
           places: [
             { id: "p_tower", landmarkIds: ["tower"], backgroundId: "plain_bg" },
             { id: "p_again", landmarkIds: ["tower"], backgroundId: "plain_bg" },
@@ -43,7 +45,7 @@ describe("derived photo copies", () => {
             { id: "p_hotel", backgroundId: "square_bg" },
           ] as never,
         },
-        { city: { backdropAssetId: "a_draft" }, hotelPlaceId: "q_hotel", places: [{ id: "q_hotel", backgroundId: "plain_bg" }] as never },
+        { city: { backdropAssetId: "a_draft" }, hotelPlaceId: "q_hotel", episodePlaceIds: [], places: [{ id: "q_hotel", backgroundId: "plain_bg" }] as never },
       ],
       journeyOf: new Map([["a_tower", "trip_a"], ["a_square", "trip_a"], ["a_draft", "trip_a"], ["b_bridge", "trip_b"]]),
       publicFiles: new Map(assets.map((item) => [item.path, `/photos/${item.id}.jpg`])),
@@ -52,12 +54,14 @@ describe("derived photo copies", () => {
       ["assets/derived/trip_a/a_tower.card.webp", "/photos/a_tower.jpg"],
       ["assets/derived/trip_a/a_square.card.webp", "/photos/a_square.jpg"],
       ["assets/derived/trip_a/a_tower.backdrop.webp", "/photos/a_tower.jpg"],
+      ["assets/derived/trip_a/a_tower.recap.webp", "/photos/a_tower.jpg"],
     ]);
   });
 
-  it("makes a 240×160 card and a backdrop of at most 1280 px that is never enlarged", async () => {
+  it("makes a 240×160 card, an 840×560 recap and a backdrop of at most 1280 px that is never enlarged", async () => {
     const wide = await photo(2000, 1000);
     expect(await sharp(await encodeDerivedImage(wide, "card")).metadata()).toMatchObject({ format: "webp", width: 240, height: 160 });
+    expect(await sharp(await encodeDerivedImage(wide, "recap")).metadata()).toMatchObject({ format: "webp", width: 840, height: 560 });
     expect(await sharp(await encodeDerivedImage(wide, "backdrop")).metadata()).toMatchObject({ format: "webp", width: 1280, height: 640 });
     expect(await sharp(await encodeDerivedImage(await photo(600, 900), "backdrop")).metadata()).toMatchObject({ width: 600, height: 900 });
   });

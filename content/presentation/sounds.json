@@ -778,6 +778,22 @@
         "kenney_rpg"
       ],
       "fromJa": "maximize_004 と cloth3"
+    },
+    {
+      "id": "puri_crunch",
+      "useJa": "揚げた薄い玉をかじる（ミニゲーム）",
+      "sources": [
+        "dreamscape_synth"
+      ],
+      "fromJa": "かじる音を合成"
+    },
+    {
+      "id": "drum_beat",
+      "useJa": "楽隊の大きな太鼓を一打ち（ミニゲーム）",
+      "sources": [
+        "dreamscape_synth"
+      ],
+      "fromJa": "太鼓を合成"
     }
   ]
 }

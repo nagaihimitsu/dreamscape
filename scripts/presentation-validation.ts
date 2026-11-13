@@ -25,6 +25,17 @@ export function validateBackgroundAssets(
   }
 }
 
+/**
+ * A background's `placeId` (where it is, for the header's place plate) names a place on a loaded city map; that the
+ * place is of the background's own journey is content-ownership.ts's check.
+ */
+export function validateBackgroundPlaces(backgrounds: Presentation["backgrounds"], placeIds: ReadonlySet<string>): void {
+  for (const [backgroundId, background] of Object.entries(backgrounds))
+    if (background.placeId && !placeIds.has(background.placeId))
+      throw new Error(`Unknown background place: ${backgroundId}/${background.placeId} (placeId names a place of travel/<cityId>.json; ` +
+        "for a place not on the map write placeJa)");
+}
+
 /** A registered costume image: decoded by validateCharacterImage once the content is valid (see content-images.ts). */
 export type CharacterImage = { file: string; imagePath: string; canvas: { width: number; height: number }; label: string };
 

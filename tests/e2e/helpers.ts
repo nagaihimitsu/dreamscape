@@ -5,6 +5,8 @@ import type { QuizDefinition } from "../../src/content/schemas";
 import type { GameState } from "../../src/domain/game";
 import { DEBUG_HOOK_NAME, type DreamscapeDebugHook } from "../../src/dev/debug-hook";
 import { debugQueryString, settingsQuery, type DebugDataMode, type DebugSettings } from "../../src/dev/debug-query";
+import { openMiniGame } from "../../src/domain/minigame";
+import { MINI_GAME_START_GUARD_MS } from "../../src/minigames/host/timing";
 
 export { expect };
 export type { Locator, Page };
@@ -130,6 +132,7 @@ export const devModules = {
   content: "/src/content/index.ts",
   journeys: "/src/content/journeys.ts",
   encounters: "/src/content/encounters.ts",
+  encounter: "/src/domain/encounter.ts",
   debugState: "/src/dev/debug-state.ts",
   game: "/src/domain/game.ts",
   cityTravel: "/src/domain/city-travel.ts",
@@ -521,9 +524,15 @@ export const ops = {
     await page.getByTestId("tourism-skip").click();
     await page.getByRole("button", { name: "進む", exact: true }).click();
   },
-  async toFreeTime(page: Page) {
+  /**
+   * The result's 「自由時間へ進む」, then the scenes that follow the battle (Milan's 「切れた三本目」 after the Duomo's),
+   * played with their first choices, back to the travel menu. Returns the saved state there.
+   */
+  async toFreeTimeThroughScenes(page: Page): Promise<GameState> {
     await page.getByRole("button", { name: "自由時間へ進む", exact: true }).click();
+    const state = await playUntil(page, (current) => !current.activeEncounter && !current.occasion);
     await expect(page.getByTestId("travel-menu")).toBeVisible();
+    return state;
   },
   async toEpilogue(page: Page) {
     await page.getByRole("button", { name: "エピローグへ進む", exact: true }).click();
@@ -755,6 +764,17 @@ async function act(page: Page, state: GameState, pick: Pick) {
   const date = state.activeDate;
   const encounter = state.activeEncounter;
   if (state.activeBattle?.phase === "question") return page.getByTestId(`answer-${pick(state)}`).click();
+  // A line's # minigame: in any scene (docs/13 6.4) shows its start in place of the choices. Started, a tap on the play
+  // after the start's double-tap guard ends it: with ⚙設定's おまかせ on (a play-through test writes it in the presentation
+  // settings' key) it skips to the tag's auto outcome; otherwise the game's field takes the tap (the cricket swings) and
+  // the play ends by itself. The outcome's choice is then taken, which the poll below sees saved.
+  if (openMiniGame(state)) {
+    await page.getByTestId("minigame-start").click();
+    const play = page.getByTestId("minigame-play");
+    await expect(play).toBeVisible();
+    await page.waitForTimeout(MINI_GAME_START_GUARD_MS + 50);
+    return play.click();
+  }
   if (date?.frame.choices.length) return page.getByTestId("date-choice").first().click();
   // A guide's, an arrival's or an epilogue's Japanese choices (stage 3a): the first shown one.
   if (state.activeTourism?.phase === "guide" && state.activeTourism.frame?.choices.length) return page.getByTestId("guide-choice").first().click();

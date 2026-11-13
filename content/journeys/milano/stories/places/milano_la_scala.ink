@@ -2,7 +2,7 @@ INCLUDE modules.ink
 -> DONE
 
 // スカラ座の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
-// 観光案内、特殊戦B、道中交流とデート。
+// 観光案内、特殊戦B、道中交流（推理クイズの後とデートの後の「喉飴を噛む人」）とデート。
 
 // 観光案内。tourism/catalog.json の guideStoryId がこの knot を指す。
 === la_scala_case_guide ===
@@ -76,7 +76,7 @@ INCLUDE modules.ink
 動かせた椅子が、うちまで動いてきた。そこをつないでくれる人がいればね
 # speaker: heroine
 # emotion: serious
-私、そこの証人にはなれません
+わたし、そこの証人にはなれません
 # speaker: narrator
 アダの手から布が落ちた。彼女は拾って、椅子の上に置いた。
 -> quiz(3) ->
@@ -115,21 +115,38 @@ INCLUDE modules.ink
 ->->
 
 // 道中交流「喉飴を噛む人」（knot の名前 scala_mint が交流のID）。
-// 今は起こらない：条件『スカラ座の特殊戦を戦った』（頭の # when: battle …）を満たすと、スカラ座の観察はもう開かないため。
-// 特殊戦を戦うと、スカラ座は地図の行き先に出なくなる。
-// シナリオの改稿で見直す（2026-11-08 のユーザー判断）。それまで起こる時は変えない。変えたら、このコメントも直す。
-// 2026-11-13 に 1場面1ファイル・encounters/catalog.json・entry-rules.json からこの場所のファイルへ移した。観察で「進む」を押した後（# priority: after observe）に始まり、終わると観察に戻る。起こる時・順・選択の働き（お金・品物・「また今度」）は前と同じ。
+// スカラ座の場所（p_scala）の本筋の後（# priority: +1）：スカラ座の推理クイズ（特殊戦B）の結果を閉じた後と、スカラ座のデートの後。特殊戦を遊んだ後だけ。
+// 「飴は遠慮する」は「また今度」で、スカラ座のデートの後にまた会える。小袋は2ユーロ。
+// 前の劇場が焼け、その桟敷の持ち主たちが新しい劇場の建設費を出したことは scenes/catalog.json の出典。推理クイズの答え（桟敷の内装・平土間の椅子・瓦礫の中の演奏）には触れない。
+// デートの後にも読めるように、アダの椅子の件を前提にしない。
 === scala_mint ===
 # scene: encounter
 # title: 喉飴を噛む人
-# at: visit la_scala_case
-# priority: after observe
+# at: place p_scala
+# priority: +1
 # when: battle milano_la_scala_b01
+# person: milano_la_scala_candy_seller
 # background: milano_la_scala_date
 # speaker: narrator
-スカラ座前で、声の大きな客が二人、飴を持って口論している。片方が袋を開け、片方が「噛んだら三秒だ」とこぼした。
+スカラ座の前の柵のそばで、年配の客が二人、喉飴の袋を挟んで言い合っている。
+# speaker: milano_la_scala_regular_man
+うちの祖父さんは桟敷を持ってた。だから俺は、この劇場の半分は身内みたいなもんだ
+# speaker: milano_la_scala_regular_woman
+桟敷なら、うちの祖母だって。あなたのところは、もっと上の階でしょう
 # speaker: milano_la_scala_candy_seller
-この二人、毎回これで開演前の時間をつぶすのよ。小袋なら二ユーロ
+# cutin: name
+開演前の名物よ。この二人、毎回これで喉を使うの。だから飴が売れる。小袋なら二ユーロ
+# speaker: heroine
+桟敷の話なら……この劇場って、前の劇場が火事で焼けたあと、そこの桟敷の持ち主たちがお金を出して建てたんですよね
+# speaker: narrator
+二人が同時に彼女を見た。
+# speaker: milano_la_scala_regular_man
+……つまり、祖父さんの前の代から身内ってことだな
+# speaker: milano_la_scala_regular_woman
+建てたのは、うちの祖母の、そのまた祖母よ
+# speaker: heroine
+# emotion: teasing
+あ。火に油、注いじゃった
 
 * [A small bag, please. # option: buy # translation: 小袋を一つください。]
     # money: -2
@@ -139,19 +156,17 @@ INCLUDE modules.ink
     ……三秒、もたなかったです
     -> END
 
-* [Who won last time? # option: ask # translation: 前はどっちが勝ったの？]
+* [Who usually gets the last word? # option: ask # translation: いつもは、どっちが最後に言い返すの？]
     # speaker: milano_la_scala_candy_seller
     私。口論が長いと、開演前にもう一袋売れるの
     # speaker: narrator
     客がそろって袋を握りしめた。
     # speaker: heroine
-    今日の勝負は長くなりそう
+    今日は長くなりそう
     -> END
 
-* [No sweets for me, thanks. # option: leave # translation: 私は飴は遠慮します。]
+* [No sweets for me, thanks. # option: leave # translation: 飴は遠慮しておきます。]
     # later
-    # speaker: narrator
-    菓子売りは袋をしまい、二人の客に目をやった。
     # speaker: milano_la_scala_candy_seller
     あんたたちも、たまにはこの人を見習って黙ってみたら
     # speaker: narrator
@@ -191,7 +206,7 @@ INCLUDE modules.ink
     - else:
         # speaker: heroine
         # emotion: smile
-        いいお客さんですね。あ、こうやっておしゃべりしてるの、私のほうだ
+        いいお客さんですね。あ、こうやっておしゃべりしてるの、わたしのほうだ
     }
     -> join_1
 
@@ -256,10 +271,10 @@ INCLUDE modules.ink
     # memory: sound_memory_la_scala_date_01
     { romance_result == "negative":
         # speaker: heroine
-        もう一本だけ、私が役者でいたい。いい？
+        もう一本だけ、わたしが役者でいたい。いい？
     - else:
         # speaker: heroine
-        役者交代！　私は拍手しないよ、ちゃんと最後までは
+        役者交代！　わたしは拍手しないよ、ちゃんと最後までは
     }
     -> join_2
 

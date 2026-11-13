@@ -17,7 +17,8 @@ import { authoringProfileOf } from "./journey-authoring";
 import { checkContentOwnership } from "./content-ownership";
 import { checkImageRights, OWN_ARTWORK_KIND, ownArtworkByLayer, servingLayer } from "./image-rights";
 import { contentWarnings, journeyContents, unusedWordMeanings, type ContentWarning } from "./content-report";
-import { characterCatalogSchema } from "../src/content/character-assets";
+import { battleCharacterId, characterCatalogSchema } from "../src/content/character-assets";
+import { scenePerson } from "../src/domain/scene-person";
 import { encounterCatalogInputSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
 import { encounterEntryRulesSchema, validateEncounterEntryRules } from "../src/content/encounter-entry-rules";
 import { validateEncounterContent } from "./encounter-validation";
@@ -29,7 +30,7 @@ import { checkConditions, conditionWarnings, dateConditionOwners, entryRuleCondi
 import { mainPaymentsOf, progressionErrors, progressionWarnings, sceneItemsOf, tourProgression, type ProgressionContent } from "./progression-check";
 import { parseSceneConditions, readSceneConditions } from "./scene-conditions";
 import type { Condition } from "../src/content/condition-schemas";
-import { validateBackgroundAssets, validateCharacters } from "./presentation-validation";
+import { validateBackgroundAssets, validateBackgroundPlaces, validateCharacters } from "./presentation-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
 import { dialogueReactionCatalogSchema } from "../src/content/dialogue-reactions";
 import { createDialogueReactionValidator } from "./dialogue-reaction-validation";
@@ -54,6 +55,8 @@ import {
 } from "../src/content/schemas";
 import type { TagContext } from "../src/content/tags";
 import { albumFolderPath, albumImagesOf, checkAlbumTags } from "./album-images";
+import { checkMiniGameArtTags, miniGameArtOf } from "./minigame-art";
+import { miniGameUseKey, type MiniGameUse } from "../src/minigames/uses";
 import { checkVoiceCredits, checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
 import { checkSoundTags, soundRegistry, soundUseProblem, soundVolumesOf, soundWarnings, transportModeSounds } from "./sound-files";
 import { checkBgmTags, musicDataOf, musicRegistry, musicWarnings } from "./music-files";
@@ -81,7 +84,7 @@ import { includesModules, readFileChoices, readMainFileHead, readPlaceFile, choi
 import { checkSpeakerPeople } from "./speaker-people";
 import { MODULES_FILE, MODULES_INK } from "./modules-ink";
 import { walkScene } from "./scene-walk";
-import { catalogScenes, checkRuleIds, checkSceneReferences, insertedSceneEncounter, mainFileSceneId, mergeCatalogChoiceTags, placeScenes, sceneConditionsOf, sceneTagRules, thenLoopErrors, thenLoopWarnings, momentText, momentWarnings, tourMomentErrors, type MainAddresses, type ThenLoopContext } from "./scene-table";
+import { catalogScenes, checkRuleIds, checkSceneReferences, insertedSceneEncounter, mainFileSceneId, mergeCatalogChoiceTags, placeScenes, sceneConditionsOf, sceneRewardErrors, sceneTagRules, thenLoopErrors, thenLoopWarnings, momentText, momentWarnings, tourMomentErrors, type MainAddresses, type ThenLoopContext } from "./scene-table";
 import { sceneDataCatalogSchema, storyStateCatalogSchema, type SceneEntry, type SceneMain } from "../src/content/scene-schemas";
 import { fnvHash } from "../src/content/fingerprint";
 import { parseConditionText, combineWhenUntil } from "../src/content/condition-text";
@@ -475,6 +478,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   }
   const characters = parseCatalog(characterCatalogSchema, "presentation/characters.json");
   validateBackgroundAssets(publicFiles, presentation.backgrounds, tourism.assets);
+  validateBackgroundPlaces(presentation.backgrounds, new Set(travels.flatMap(({ travel }) => travel.places.map((place) => place.id))));
   const wardrobeSceneIds = new Set([
     ...dates.map((date) => date.id),
     ...battles.map((battle) => battle.id),
@@ -572,6 +576,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       throw new Error(`Unknown local word city: ${word.id}/${word.cityId}`);
   // The album's illustrations (2026-11-11): the files of each journey's public/assets/album/, the ID their file name.
   const albumImages = albumImagesOf(sources);
+  // The mini-games' pictures (2026-11-13): the files of each layer's public/assets/minigames/, the ID their file name.
+  const miniGameArt = miniGameArtOf(sources);
   // The voices of lines (2026-11-12): the files of each journey's public/assets/voice/, the ID their file name.
   const voiceFiles = voiceFilesOf(sources);
   // A manifest's voiceCredits (2026-11-13) credits voices its journey has.
@@ -595,6 +601,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     photoIds: albumImages.map((image) => image.id),
     localWordIds: localWords.map((word) => word.id),
     personIds: storyStateCatalog.people.map((person) => person.id),
+    // A line's # minigame: runs where the full-branch walk (scene-walk.ts) reads it; every other reading refuses it (docs/13 1.3).
+    miniGames: false,
+    // A # minigame:'s art.<slot> names a mini-game picture (of the story's own journey or the root: checkMiniGameArtTags below).
+    miniGameArt: Object.fromEntries(miniGameArt.map((image) => [image.id, image.path])),
   };
   for (const effect of effects) {
     if (effect.responseProfileId && !responseProfiles.some((profile) => profile.id === effect.responseProfileId))
@@ -650,6 +660,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     // A line's # photo: and # recall: name an album image of the story's own journey (2026-11-11).
     const journeyLayerOfStory = sources.layers.find((item) => item.id === storyLayer)!;
     withContext(file, () => checkAlbumTags(authored, storyLayer, albumImages, albumFolderPath(sources, journeyLayerOfStory)));
+    // A # minigame:'s art.<slot> names a picture of the story's own journey or the root (docs/13 2.12).
+    withContext(file, () => checkMiniGameArtTags(authored, storyLayer, miniGameArt));
     // A line's # voice: names a recording of the story's own journey (2026-11-12).
     withContext(file, () => checkVoiceTags(authored, storyLayer, voiceFiles, voiceFolderPath(sources, journeyLayerOfStory)));
     // A line's # se: names a shared sound or one of the story's own journey (2026-11-12).
@@ -953,13 +965,19 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   }
   // The walk of each tagged scene with choices or tags (scene-walk.ts): every path ends, A8, A10.
   const walkedGuides = new Set<string>();
+  // The mini-game uses the walks meet (docs/13 3.4; generated/minigame-uses.json), one per scene, knot and tag.
+  const miniGameUses = new Map<string, MiniGameUse>();
+  const onMiniGame = (use: MiniGameUse) => { miniGameUses.set(miniGameUseKey(use), use); };
   const sceneContext = (cityId: string): TagContext => ({ ...context, backgroundIds: context.backgroundIds });
   for (const scene of taggedScenes) {
     const storyId = scene.story.storyId;
     const label = `${storyLabel(storyId)}${scene.story.knot ? ` (${scene.story.knot})` : ""}`;
     const base = { compiled: stories[storyId], start: scene.story.knot, label, context: sceneContext(scene.cityId), conds: scene.conds,
       options: scene.options, ...(scene.when ? { when: scene.when } : {}), headThen: !!scene.then, done: scene.done,
-      itemIds: encounterCatalog.items.map((item) => item.id), memoryIds: Object.keys(presentation.memories), observe: observeForStory(storyId), onWarning: sceneWarn };
+      itemIds: encounterCatalog.items.map((item) => item.id), memoryIds: Object.keys(presentation.memories), observe: observeForStory(storyId), onWarning: sceneWarn,
+      scene: { id: scene.id, kind: scene.kind, storyId }, onMiniGame,
+      // Who stands on its stage (a line's # leave: naming someone not there is warned; 2026-11-13).
+      stage: { kind: scene.kind, enemyFigure: scenePerson(storyStateCatalog.people, scene.people)?.characterId, people: storyStateCatalog.people } };
     if (scene.kind === "battle") continue; // The battle walk below walks it, its calls answered.
     if (scene.kind === "date") {
       if (scene.origin !== "place") continue; // today's dates: validateStory below.
@@ -976,7 +994,9 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
           memory_callback: progression.fallbackMemoryCallbackJa, confession_ready: date.kind === "confession" && seed.confessionReady,
           confession_result: date.kind === "confession" ? seed.confessionResult ?? (seed.confessionReady ? "accepted" : "deferred") : "deferred" };
         const key = JSON.stringify(Object.entries(variables).filter(([name]) => compiledText.includes(`"VAR?":"${name}"`)));
-        if (!walked.has(key)) walked.set(key, withContext(label, () => walkScene({ ...base, variables,
+        // No mini-game in a confession date (docs/13 1.4): its walk refuses the tag.
+        if (!walked.has(key)) walked.set(key, withContext(label, () => walkScene({ ...base,
+          context: { ...base.context, ...(date.kind === "confession" ? { miniGames: "confession" as const } : {}) }, variables,
           romanceChoices: { knot: scene.story.knot!, count: date.choiceCount } })));
         routes += walked.get(key)!;
         dateRoutes[date.id] = (dateRoutes[date.id] ?? 0) + walked.get(key)!;
@@ -991,10 +1011,9 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     const contexts = scene.kind === "arrival" || scene.kind === "epilogue"
       ? [1, 2, 3, 4].flatMap((stage) => [false, true].map((ending) => ({ romance_stage: stage, ending_reached: ending })))
       : [{ romance_stage: 1, ending_reached: false }];
-    // An arrival's background tags name its city's places' backgrounds (as validateEpilogue checks a one-scene arrival).
-    const arrivalContext = scene.kind === "arrival"
-      ? { context: { ...context, backgroundIds: travels.find(({ city }) => city.id === scene.cityId)?.travel.places.map((place) => place.backgroundId) ?? [] } } : {};
-    for (const variables of contexts) withContext(label, () => walkScene({ ...base, ...arrivalContext, variables }));
+    // An arrival, like every scene, may show any registered background (2026-11-13: the street or station it happens at
+    // need not be a place of the map; content-ownership.ts keeps it to the journey's own).
+    for (const variables of contexts) withContext(label, () => walkScene({ ...base, variables }));
   }
   // Guides with choices (one-scene files) are walked as scenes even without tags.
   for (const storyId of fileChoiceStories) {
@@ -1007,7 +1026,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       : [1, 2, 3, 4].flatMap((stage) => [false, true].map((ending) => ({ romance_stage: stage, ending_reached: ending })));
     for (const variables of contexts) withContext(storyLabel(storyId), () => walkScene({ compiled: stories[storyId], label: storyLabel(storyId), context,
       variables, conds: storyConditionTexts[storyId] ?? [], options: [], itemIds: [], memoryIds: Object.keys(presentation.memories),
-      observe: observeForStory(storyId), onWarning: sceneWarn }));
+      observe: observeForStory(storyId), onWarning: sceneWarn, scene: { id: main.address, kind: main.kind, storyId }, onMiniGame,
+      stage: { kind: main.kind, people: storyStateCatalog.people } }));
   }
   // A12: an unconditional then: loop.
   const placeLandmarks = (placeId: string) => travels.flatMap(({ travel }) => travel.events.filter((event) => event.placeId === placeId)
@@ -1065,6 +1085,14 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const sceneTitle = (scene: SceneEntry) => scene.title ?? tourism.landmarks.find((landmark) => scene.at[0] && landmark.id === momentLandmarks(scene.at[0], scene.cityId)[0])?.nameJa ??
     cities.find((city) => city.id === scene.cityId)?.nameJa ?? scene.id;
   const tagRules = sceneTagRules([...taggedScenes, ...catalogEntries], sceneTitle);
+  // `# on_done: reward` (an inserted scene's other way to earn a one-off reward): a reward of the scene's city, with AP, named once.
+  const rewardCity = (rule: (typeof journey.rewards)[number]) => rule.episodeId !== undefined
+    ? journey.episodes.find((episode) => episode.id === rule.episodeId)?.cityId
+    : (() => { const battle = battles.find((item) => item.id === rule.battleId);
+      return battle?.cityId ?? tourism.landmarks.find((item) => item.id === battle?.landmarkId)?.cityId; })();
+  const rewardProblems = sceneRewardErrors(taggedScenes, journey.rewards.map((rule) => ({ id: rule.id, ap: rule.ap, trigger: rule.trigger, cityId: rewardCity(rule) })),
+    encounterCatalog.encounters.flatMap((event) => event.alternativeApRewardId ? [{ encounterId: event.id, rewardId: event.alternativeApRewardId }] : []));
+  if (rewardProblems.length) throw new Error(rewardProblems.join("\n"));
   checkRuleIds(tagRules, [
     ...journey.rewards.map((rule) => ({ id: rule.id, origin: `the reward ${rule.id} of progression/journey.json` })),
     ...journey.storyBattles.flatMap((battle) => battle.completionReward ? [{ id: battle.completionReward.id, origin: `the completion reward of ${battle.battleId}` }] : []),
@@ -1304,7 +1332,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       itemIds: encounterCatalog.items.map((item) => item.id), memoryIds: Object.keys(presentation.memories), observe: observeForStory(battleAddress.storyId),
       variables: { call_arg: 0, quiz_correct: false, answer_correct: false, battle_score: 0, reasoning_action: "", evidence_result: "" },
       battle: { quizzes: quiz.questions.length, ...(battle.reasoning ? { reasoning: { kind: battle.reasoning.kind, roundIndex: battle.reasoning.roundIndex } } : {}) },
-      onWarning: sceneWarn,
+      onWarning: sceneWarn, scene: { id: scene?.id ?? battle.id, kind: "battle", storyId: battleAddress.storyId }, onMiniGame,
+      stage: { kind: "battle", enemyFigure: battleCharacterId(characters.battleCharacters, battle.id), people: storyStateCatalog.people },
     }));
   }
   const learning = parseCatalog(learningCatalogSchema, "learning/translations.json");
@@ -1592,10 +1621,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       epilogueScenarios += 8;
       continue;
     }
-    const backgrounds = travels.find(({ city }) => city.id === current.id)!.travel.places.map((place) => place.backgroundId);
     if (fileChoiceStories.has(storyId)) { epilogueScenarios += 8; continue; } // walked as a scene above (choices, stage 3a)
-    epilogueScenarios += withContext(storyLabel(storyId), () =>
-      validateEpilogue(compiled, { ...context, backgroundIds: backgrounds }, observeForStory(storyId)));
+    epilogueScenarios += withContext(storyLabel(storyId), () => validateEpilogue(compiled, context, observeForStory(storyId)));
   }
   for (const episode of journey.episodes) {
     if (!episode.epilogueStoryId) continue;
@@ -1654,6 +1681,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     journey,
     /** The album's illustrations of every journey (generated/album-images.json; src/content/album-images.ts). */
     albumImages,
+    /** The mini-games' pictures of every layer (generated/minigame-art.json; src/minigames/art.ts). */
+    miniGameArt,
+    /** Where the stories use the mini-games (generated/minigame-uses.json; src/minigames/uses.ts): the tests and Debug's room read it. */
+    miniGameUses: [...miniGameUses.entries()].sort(([left], [right]) => left.localeCompare(right)).map(([, use]) => use),
     /** Every registered sound's volume (generated/sound-volumes.json; src/audio/sound-effects.ts). */
     soundVolumes: soundVolumesOf(sounds),
     /** The tracks and where each journey plays them (generated/music.json; src/audio/bgm.ts, the credits list). */
@@ -1666,9 +1697,15 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     sceneAudio: sceneAudioOf(sources.storyFiles.map(({ id, source }) => ({ id, source }))),
     /** Images whose files checkContentImages decodes. */
     images: { characters: characterImages, tourismAssets: tourism.assets },
-    /** What chooses the free-time photos (src/content/photo-choice.ts), for their derived copies (scripts/derived-images.ts). */
+    /**
+     * What chooses the free-time photos (src/content/photo-choice.ts), for their derived copies (scripts/derived-images.ts),
+     * with the places of the episodes' map events (the resume recap's place photo, journey-moments.ts recapPicture).
+     */
     photoContent: {
-      cities: travels.map(({ city, travel, settings }) => ({ city, places: travel.places, hotelPlaceId: settings.hotelPlaceId })),
+      cities: travels.map(({ city, travel, settings }) => ({
+        city, places: travel.places, hotelPlaceId: settings.hotelPlaceId,
+        episodePlaceIds: travel.events.filter((event) => journey.episodes.some((episode) => episode.id === event.id)).map((event) => event.placeId),
+      })),
       backgrounds: presentation.backgrounds,
     },
     /** The generated mirror's catalogs that differ from the merged sources (the encounters' head tags, the place scenes, the knots' map conditions). */

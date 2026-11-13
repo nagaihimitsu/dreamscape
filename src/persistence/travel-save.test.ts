@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { getCityContent } from "../content";
 import { createGame, type GameState } from "../domain/game";
 import { leaveBattleResult } from "../domain/chapter";
-import { playBattleToResult } from "../dev/scenario-builders";
+import { leaveBattleResultAndScenes, playBattleToResult } from "../dev/scenario-builders";
 import { closeTourism, openTourism, skipTourismGuide, startTourismBattle } from "../domain/tourism";
 import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, getTravelHomeRoutes, sleepAtHotel, waitForTravel } from "../domain/travel-game";
 import { loadGame, SAVE_KEY, saveGame, type StorageLike } from "./index";
@@ -16,12 +16,12 @@ class MemoryStorage implements StorageLike {
   removeItem(key: string) { this.values.delete(key); }
 }
 
-/** Skip the guide and win the battle; GameApp settles the map event at the result (so does the builder). */
+/** Skip the guide and play the battle; GameApp settles the map event at the result (so does the builder). */
 function completeMainEvent(initial: GameState): GameState {
   const explored = skipTourismGuide(initial, initial.revision);
   const result = playBattleToResult(startTourismBattle(explored, explored.revision));
-  // The visit's time window settles when its occasion closes: leaving the result (stage 3b).
-  return leaveBattleResult(result, result.revision);
+  // The visit's time window settles when its occasion closes: leaving the result and the scenes after it (Nora's after the Duomo; stage 3b).
+  return leaveBattleResultAndScenes(result);
 }
 
 describe("travel save and concurrency", () => {
@@ -122,13 +122,13 @@ describe("travel save and concurrency", () => {
     expect(slept.ap).toBe(3);
   });
 
-  it("permits waiting up to 21:00 at the hotel, but not beyond it", () => {
+  it("permits waiting up to 21:00 at the hotel, a later wait ending at 21:00, and none from 21:00", () => {
     const initial = createGame();
     const state = { ...initial, travel: { ...initial.travel, minute: 20 * 60 + 30 } };
     const waited = waitForTravel(state, 30, state.revision);
     expect(waited.travel.minute).toBe(21 * 60);
     expect(waitForTravel(waited, 1, waited.revision)).toBe(waited);
-    expect(waitForTravel({ ...state, travel: { ...state.travel, minute: 20 * 60 + 31 } }, 30, state.revision).travel.minute).toBe(20 * 60 + 31);
+    expect(waitForTravel({ ...state, travel: { ...state.travel, minute: 20 * 60 + 31 } }, 30, state.revision).travel.minute).toBe(21 * 60);
   });
 
   it("reserves an actual two-leg paid return when walking would be too late, reloads and pays once", () => {

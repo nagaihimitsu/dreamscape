@@ -18,6 +18,7 @@ import {
   progression,
   stories,
   tourismClues,
+  tagContext,
   getCityStoryBackground,
   type BattleDefinition,
 } from "../content";
@@ -104,6 +105,12 @@ export const activeBattleSchema = z
     weather: z.enum(WEATHER_KINDS).optional(),
     tint: z.literal("off").optional(),
     ambience: z.string().regex(SOUND_ID).optional(),
+    /**
+     * The background its last frame showed (`frame.background`), kept while it has no frame and drawn there
+     * (battleBackgroundId; 2026-11-13 user decision). Unlike the parts above, the next frame does not start with it: the
+     * line after a call starts as a new scene (docs/02). Optional in save v23: a run saved without it shows the battle's own.
+     */
+    background: z.string().regex(/^[a-z][a-z0-9_]*$/u).optional(),
   })
   .strict();
 export type ActiveBattle = z.infer<typeof activeBattleSchema>;
@@ -237,17 +244,33 @@ function withoutLinePart(active: ActiveBattle): ActiveBattle {
   return rest;
 }
 /**
- * The battle without its frame's sticky parts kept apart (`# bgm:`, `# weather:`, `# tint:`, `# ambience:`; a frame of
- * the battle holds them: frame-reader.ts).
+ * The battle without its frame's parts kept apart (`# bgm:`, `# weather:`, `# tint:`, `# ambience:` and the background;
+ * a frame of the battle holds them: frame-reader.ts).
  */
 function withoutKeptBgm(active: ActiveBattle): ActiveBattle {
   const rest = { ...active };
   for (const key of STICKY_KEYS) delete rest[key];
+  delete rest.background;
   return rest;
 }
-/** The battle about to lose its frame (a call, the result): the sticky parts the frame had are kept for its next frame. */
+/**
+ * The battle about to lose its frame (a call, the result): the sticky parts the frame had are kept for its next frame,
+ * and its background for the screens without a frame (battleBackgroundId).
+ */
 function keepingBgm(active: ActiveBattle): ActiveBattle {
-  return { ...withoutKeptBgm(active), ...stickyOf(active.frame ?? active) };
+  const background = active.frame?.background ?? active.background;
+  return { ...withoutKeptBgm(active), ...stickyOf(active.frame ?? active), ...(background !== undefined ? { background } : {}) };
+}
+
+/**
+ * The background a battle's picture is drawn from, and the header's place with it (2026-11-13 user decision): its line's
+ * (`# background:`, or the city's start background its scene began with); while it shows no line (a quiz's question
+ * and its answer, the reasoning, the result) the one its last line showed, kept over the call; the battle's own
+ * (`backgroundId`) only when none was kept (a run saved before the battle kept it). A landmark's photo is drawn over it.
+ */
+export function battleBackgroundId(active: { frame: { background: string } | null; background?: string },
+  battle: { backgroundId: string }): string {
+  return active.frame?.background ?? active.background ?? battle.backgroundId;
 }
 /** The claim knot to tell the claim's lines by: a special battle's lines before its first stop, after quiz(roundIndex). */
 function claimToTrack(active: Pick<ActiveBattle, "reasoning" | "answers">, battle: BattleDefinition): string | undefined {
@@ -824,6 +847,9 @@ function validateBattleRun(state: GameState, active: ActiveBattle, battle: Battl
       active.appliedOptionIds.length > active.turns ||
       (active.appliedOptionIds.length && active.phase !== "result" && state.battleRecords.some((record) => record.battleId === battle.id)))
     fail("保存された選択の記録が一致しません。");
+  // The kept background: only while there is no frame, and one the content knows (as a frame's background is checked).
+  if (active.background !== undefined && (active.frame !== null || !tagContext.backgroundIds.includes(active.background)))
+    fail("保存された場面の情報が一致しません。");
   if (active.phase === "result") {
     if (active.storyState !== null || active.frame !== null) fail("不要な会話状態が保存されています。");
     validateProof(active, battle);

@@ -33,10 +33,15 @@ const currentPlaceDetails: Record<string, RegExp> = {
 beforeAll(async () => {
   content = await buildContent(path.resolve("."), false);
 }, 120_000);
-/** A date's story started where the game starts it (a place file's knot by name). */
+/**
+ * A date's story started where the game starts it (a place file's knot by name). Other scenes of a place file may
+ * call cond("…") (the game binds it for every scene); the dates walked here never ask it, so every path is the
+ * choices' and the relationship's.
+ */
 function start(address: string): Story {
   const { storyId, path: knot } = splitStoryAddress(address);
   const story = new Story(content.stories[storyId]);
+  story.BindExternalFunction("cond", (text: unknown) => { throw new Error(`${address} reads cond("${String(text)}")`); }, true);
   if (knot !== undefined) story.ChoosePathString(knot);
   return story;
 }

@@ -2,6 +2,7 @@ import type { Story } from "inkjs";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import type { DialogueReaction, ReactionTarget } from "../content/dialogue-reactions";
 import { BGM_DEFAULT } from "../content/music";
+import type { MiniGameTag } from "../minigames/tag";
 import {
   parseStoryTags, WEATHER_STOP, type CutInKind, type LetterKind, type LineDelivery, type PhoneSide, type QuietSpan, type StandPosition,
   type StoryCall, type StoryPhoto, type TagContext, type WeatherKind,
@@ -59,6 +60,11 @@ export interface StoryFrame {
   stand?: StandPosition;
   /** The line's `# cutin:` (only the line it is written on): its speaker's name plate over the scene for a moment. */
   cutin?: CutInKind;
+  /**
+   * The line's `# leave:` (only the line it is written on): who goes off the scene's stage at it (heroine, enemy or a
+   * person's ID, as written); src/components/scene-stage.ts keeps them off until they come on again.
+   */
+  leave?: string[];
   /** The line's `# voice:` (only the line it is written on): its recording, played as its text starts (useVoice.ts). */
   voiceId?: string;
   /** The line's `# se:` (only the line it is written on): its sound effect, played as its text starts (src/audio/sound-effects.ts). */
@@ -79,6 +85,11 @@ export interface StoryFrame {
    * `# ambience:` or the scene's end; absent, the place's own (`# ambience: default` takes it away). src/audio/scene-ambience.ts reads it.
    */
   ambience?: string;
+  /**
+   * The line's `# minigame:` (only the line it is written on; content:build checks a choice set of the game's outcomes
+   * follows it): the screen plays the game instead of showing the choices, and takes the choice of its outcome.
+   */
+  minigame?: MiniGameTag;
   /** A battle's call (`# call:`, stage 5) is a choice the game takes itself: its screen shows no choice. */
   choices: { index: number; text: string; optionId?: string; translationJa?: string; call?: StoryCall }[];
   ended: boolean;
@@ -161,6 +172,7 @@ function readTags(
   if (parsed.quiet) frame.quiet = parsed.quiet;
   if (parsed.stand) frame.stand = parsed.stand;
   if (parsed.cutin) frame.cutin = parsed.cutin;
+  if (parsed.leave) frame.leave = [...new Set([...(frame.leave ?? []), ...parsed.leave])];
   if (parsed.voiceId) frame.voiceId = parsed.voiceId;
   if (parsed.seId) frame.seId = parsed.seId;
   if (parsed.bgm === BGM_DEFAULT) delete frame.bgm;
@@ -170,6 +182,7 @@ function readTags(
   else if (parsed.weather) frame.weather = parsed.weather;
   if (parsed.tint === "on") delete frame.tint;
   else if (parsed.tint === "off") frame.tint = "off";
+  if (parsed.minigame) frame.minigame = parsed.minigame;
   if (parsed.ambience === BGM_DEFAULT) delete frame.ambience;
   else if (parsed.ambience) frame.ambience = parsed.ambience;
   if (parsed.localWordIds) frame.localWordIds = [...new Set([...(frame.localWordIds ?? []), ...parsed.localWordIds])];
@@ -177,7 +190,7 @@ function readTags(
 }
 
 /** What the scene tags put on a frame. */
-export type FrameStaging = Pick<StoryFrame, "recall" | "phone" | "letter" | "quiet" | "stand" | "itemShow">;
+export type FrameStaging = Pick<StoryFrame, "recall" | "phone" | "letter" | "quiet" | "stand" | "itemShow" | "leave">;
 
 /**
  * The parts of a frame that last from their line to the scene's end (`# bgm:`, `# weather:`, `# tint:`, `# ambience:`):
@@ -205,7 +218,7 @@ export function stickyOf(from: FrameSticky | null | undefined): FrameSticky {
  *   lines: a line without `# phone:` ends it), a letter's line after the lines of the frame before it when that was
  *   written on the same kind of paper; the oldest go first beyond STACK_MAX;
  * - when no new line was read (the story stopped at a choice or its end first), the line on screen is the previous
- *   one: it keeps that line's recall, phone, letter, quiet and item card (`# item_show:`).
+ *   one: it keeps that line's recall, phone, letter, quiet, item card (`# item_show:`) and who left at it (`# leave:`).
  */
 export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<StoryFrame, "speaker" | "speakerPersonId" | "text">) | undefined,
   lineRead: boolean): FrameStaging {
@@ -213,7 +226,8 @@ export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<
   const shown = (staging: FrameStaging): FrameStaging => Object.fromEntries(Object.entries({ ...staging, stand })
     .filter(([, value]) => value !== undefined)) as FrameStaging;
   if (!lineRead && previous)
-    return shown({ recall: previous.recall, phone: previous.phone, letter: previous.letter, quiet: previous.quiet, itemShow: previous.itemShow });
+    return shown({ recall: previous.recall, phone: previous.phone, letter: previous.letter, quiet: previous.quiet, itemShow: previous.itemShow,
+      leave: previous.leave });
   const before = previous?.text ? previous : undefined;
   const phoneEarlier = tagged.phone && before?.phone
     ? [...(before.phone.earlier ?? []), { side: before.phone.side, speaker: before.speaker,
@@ -226,6 +240,7 @@ export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<
     letter: tagged.letter && { kind: tagged.letter.kind, ...(letterEarlier.length ? { earlier: letterEarlier } : {}) },
     quiet: previous?.quiet === "scene" ? "scene" : tagged.quiet,
     itemShow: tagged.itemShow,
+    leave: tagged.leave,
   });
 }
 
@@ -276,7 +291,7 @@ export function readStoryFrame(
     delete frame.seId;
   }
   const staging = stageFrame(frame, previous, lineRead);
-  for (const key of ["recall", "phone", "letter", "quiet", "stand", "itemShow"] as const) delete frame[key];
+  for (const key of ["recall", "phone", "letter", "quiet", "stand", "itemShow", "leave"] as const) delete frame[key];
   Object.assign(frame, staging);
   frame.choices = storyChoicesOf(story, context);
   if (frame.choices.some((choice) => choice.call) && frame.choices.length !== 1)

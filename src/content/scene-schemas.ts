@@ -102,6 +102,12 @@ export const sceneDoneSchema = z.object({
   rel: relationshipDeltaSchema.optional(),
   money: signed.optional(),
   ap: signed.optional(),
+  /**
+   * `# on_done: reward <reward ID>` (an inserted scene only): finishing the scene earns that one-off reward of
+   * progression/journey.json, the same claim as its own trigger (docs/01: a cultural encounter may earn a reward
+   * another way). It is claimed once (claimedRewardIds), whichever comes first; the save check reads the scene as its cause.
+   */
+  reward: id.optional(),
 }).strict();
 export type SceneDone = z.infer<typeof sceneDoneSchema>;
 

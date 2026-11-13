@@ -4,7 +4,7 @@ import { presentation, scenes, stories, tagContext } from "../content";
 import { splitStoryAddress, storyFileOf } from "../content/story-address";
 import { fnvHash } from "../content/fingerprint";
 import {
-  CUTIN_KINDS, ITEM_ID, LETTER_KINDS, LINE_PAUSE_MS, parseStoryTags, PHONE_SIDES, QUIET_SPANS, SCENE_SHAKE_SIZES, STAND_POSITIONS, STORY_CALLS,
+  CUTIN_KINDS, ITEM_ID, LEAVE_WHO, LETTER_KINDS, LINE_PAUSE_MS, parseStoryTags, PHONE_SIDES, QUIET_SPANS, SCENE_SHAKE_SIZES, STAND_POSITIONS, STORY_CALLS,
   WEATHER_KINDS, type StoryCall,
 } from "../content/tags";
 import { readStoryFrame, STACK_MAX, storyChoicesOf, type FrameSticky, type Speaker, type StoryStep } from "./frame-reader";
@@ -16,6 +16,9 @@ import { REACTION_MARKS } from "../content/dialogue-reactions";
 import { ALBUM_IMAGE_ID } from "../content/album-images";
 import { VOICE_ID } from "../content/voice-files";
 import { SOUND_ID } from "../content/sounds";
+import { MINI_GAME_ID, MINI_GAME_OUTCOME_ID } from "../minigames/contract";
+import { isValidMiniGameTag, MINI_GAME_KEY, MINI_GAME_PREFIX } from "../minigames/tag";
+import { MINI_GAME_ART_ID } from "../minigames/art";
 
 export type { Speaker, StoryFrame } from "./frame-reader";
 import type { StoryFrame } from "./frame-reader";
@@ -63,6 +66,8 @@ export const storyFrameSchema = z
     quiet: z.enum(QUIET_SPANS).optional(),
     stand: z.enum(STAND_POSITIONS).optional(),
     cutin: z.enum(CUTIN_KINDS).optional(),
+    // `# leave:` (2026-11-13): who goes off the scene's stage at the line, as written (heroine, enemy or a person's ID).
+    leave: z.array(imageIdSchema).min(1).optional(),
     voiceId: z.string().regex(VOICE_ID).optional(),
     seId: z.string().regex(SOUND_ID).optional(),
     // `# bgm:` (a track's ID or `stop`), kept to the scene's end (frame-reader.ts); a frame saved without it has the scene's usual track.
@@ -73,6 +78,16 @@ export const storyFrameSchema = z
     weather: z.enum(WEATHER_KINDS).optional(),
     tint: z.literal("off").optional(),
     ambience: z.string().regex(SOUND_ID).optional(),
+    // A line's `# minigame:` (docs/13 4.6): the game the screen plays instead of showing the choices after it, its keys as
+    // written (params and art only when the tag has them); validateStorySnapshot reads it again with the tag reader.
+    minigame: z.object({
+      id: z.string().regex(MINI_GAME_ID),
+      auto: z.string().regex(MINI_GAME_OUTCOME_ID),
+      prefix: z.string().regex(MINI_GAME_PREFIX).optional(),
+      bg: imageIdSchema.optional(),
+      art: z.record(z.string().regex(MINI_GAME_KEY), z.string().regex(MINI_GAME_ART_ID)).optional(),
+      params: z.record(z.string().regex(MINI_GAME_KEY), z.string().regex(/^\S+$/u)).optional(),
+    }).strict().optional(),
     choices: z
       .array(
         z
@@ -311,7 +326,11 @@ export function validateStorySnapshot(
     (frame.recall && !tagContext.photoIds.includes(frame.recall)) ||
     // A person's line names a declared person (and only a person's line names one).
     (frame.speaker === "person") !== (frame.speakerPersonId !== undefined) ||
-    (frame.speakerPersonId !== undefined && !tagContext.personIds.includes(frame.speakerPersonId))
+    (frame.speakerPersonId !== undefined && !tagContext.personIds.includes(frame.speakerPersonId)) ||
+    // Who leaves the stage at the line: the heroine, the scene's enemy or a declared person (as parseStoryTags reads `# leave:`).
+    (frame.leave?.some((who) => !(LEAVE_WHO as readonly string[]).includes(who) && !tagContext.personIds.includes(who)) ?? false) ||
+    // A line's # minigame: reads now as the tag reader reads it: a registered game, its outcome, keys and pictures (docs/13 4.6).
+    (frame.minigame !== undefined && !isValidMiniGameTag(frame.minigame, tagContext))
   )
     throw new Error("保存された場面の情報が一致しません。");
   if (

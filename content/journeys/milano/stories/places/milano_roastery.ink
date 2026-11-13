@@ -56,7 +56,7 @@ INCLUDE modules.ink
     # profile: honest
     { romance_result == "negative":
         # speaker: heroine
-        好きかどうか、私もまだ分かんない。もう少し待ってから決めて
+        好きかどうか、わたしもまだ分かんない。もう少し待ってから決めて
     - else:
         # speaker: heroine
         ひと口ずつ、あとで交換しようよ。比べたい
@@ -74,7 +74,7 @@ INCLUDE modules.ink
     # memory: sound_memory_cafe_01
     { romance_result == "negative":
         # speaker: heroine
-        うーん。もうひと口は私が決める。まだお水の番
+        うーん。もうひと口はわたしが決める。まだお水の番
     - else:
         # speaker: heroine
         それ。美味しいかは保留なのに、カップはもう持ち上がってる
@@ -86,7 +86,7 @@ INCLUDE modules.ink
     # memory: sound_memory_cafe_01
     { romance_result == "negative":
         # speaker: heroine
-        あとでだと忘れちゃう。私は今、変な顔のうちに言いたい
+        あとでだと忘れちゃう。わたしは今、変な顔のうちに言いたい
     - else:
         # speaker: heroine
         いい。先に言われると、その味を探しちゃうから
@@ -144,7 +144,7 @@ INCLUDE modules.ink
         朝寝坊だけじゃ味が分かんないよ。好きな朝ごはんから聞いていい？
     - else:
         # speaker: heroine
-        じゃあ香りで起こす係を探そう。コーヒーに任せて、私は二度寝
+        じゃあ香りで起こす係を探そう。コーヒーに任せて、わたしは二度寝
     }
     -> join_1
 
@@ -152,10 +152,10 @@ INCLUDE modules.ink
     # profile: bold
     { romance_result == "negative":
         # speaker: heroine
-        当てられる前に、自分で決めたいな。私の番を少し待って
+        当てられる前に、自分で決めたいな。わたしの番を少し待って
     - else:
         # speaker: heroine
-        どうぞ。私の顔を見て答え直すのは一回まで
+        どうぞ。わたしの顔を見て答え直すのは一回まで
     }
     -> join_1
 
@@ -175,17 +175,17 @@ INCLUDE modules.ink
 焙煎の様子の見える場所で、彼女は甘い香りのほうへ少し寄った。
 # speaker: heroine
 ここ、昔は郵便局だったんだって。香りも届けられたらよかったのに
-実は、私に選んでほしかったのは豆？　それとも、考えてる時間のほう？
+実は、わたしに選んでほしかったのは豆？　それとも、考えてる時間のほう？
 
 * [「ばれた。後のほう」 # option: second_honest]
     # profile: honest
     # memory: sound_memory_starbucks_roastery_date_01
     { romance_result == "negative":
         # speaker: heroine
-        そっか。私は本当に、気に入る味を見つけたかったよ
+        そっか。わたしは本当に、気に入る味を見つけたかったよ
     - else:
         # speaker: heroine
-        私も。ちゃんと考えたから、今日は空のポケットで大成功
+        わたしも。ちゃんと考えたから、今日は空のポケットで大成功
     }
     -> join_2
 

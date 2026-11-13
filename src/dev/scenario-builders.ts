@@ -12,7 +12,7 @@
  * relationship.
  * Never imported by production code (scripts/dist-guard.ts checks the build).
  */
-import { balance, battles, dates, episodes, getCities, getCityContent, getCityTours, getTour, landmarks, type QuizQuestion, type Tour } from "../content";
+import { balance, battles, dates, episodes, getCities, getCityContent, getCityTours, getTour, landmarks, sceneConditions, type QuizQuestion, type Tour } from "../content";
 import { isTourOnlyPlace } from "../content/travel-schemas";
 import { bookTour as bookTourOffer, continueTour, getTourOffers } from "../domain/tour";
 import { encounters } from "../content/encounters";
@@ -22,7 +22,7 @@ import { getNextEpisode, getNextStoryBattle, leaveBattleResult, startEpisode, st
 import { departToNextCity } from "../domain/city-travel";
 import {
   advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterCanFinish, encounterEntryRule, encounterVisitSlot, finishEncounter,
-  getEncounterOptionAvailability, leaveBattleToFreeTime, proceedFromTourism, startTourismEncounter, visitedLandmarkOfEvent,
+  getEncounterOptionAvailability, leaveBattleToFreeTime, nextObservationScene, proceedFromTourism, startTourismEncounter, visitedLandmarkOfEvent,
 } from "../domain/encounter";
 import { advanceOccasion, closeRomanceEnding, openEpilogue, openOccasion } from "../domain/occasion";
 import { sceneById, sceneOption } from "../domain/scene-effects";
@@ -53,11 +53,14 @@ const epilogueStep = (current: GameState) => {
   const choice = firstEpilogueChoice(current);
   return choice ? chooseCityEpilogue(current, choice.index, current.revision) : advanceCityEpilogue(current, current.revision);
 };
-import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, getTravelSleepOptions, sleepAtHotel } from "../domain/travel-game";
+import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, getTravelSleepOptions, sleepAtHotel, waitForTravel } from "../domain/travel-game";
 import { getTransportModes, WALK_MODE_ID } from "../content/transport";
 import { minimumHomeFare } from "../domain/travel-routes";
 import { getUsableRoutes } from "../domain/transport";
 import { otherCityItemsMissing, unmetConditionLabels } from "./condition-explain";
+import type { Condition } from "../content/condition-schemas";
+import { meets } from "../domain/conditions";
+import { NIGHT_START } from "../domain/travel";
 
 /** The option chosen for a quiz question (its round index counts from 0). */
 export type AnswerPicker = (question: QuizQuestion, roundIndex: number) => string;
@@ -159,10 +162,34 @@ export function playEpisodeToResult(state: GameState, episodeId: string, options
   return playBattleToResult(tourismToBattle(started, options), options);
 }
 
-/** Finish one main episode like a player: guide, battle and leaving its result. */
+/**
+ * Leave the battle's result screen and play the inserted scenes that follow it (a visit's `# priority: +N` / `after battle`
+ * scenes) with their first choices, back to free time.
+ */
+function leaveResult(result: GameState, options: PlayOptions): GameState {
+  return settleScenes(act(result, (current) => leaveBattleResult(current, current.revision), "対決の結果を閉じる", options), 0);
+}
+
+/**
+ * Leave the open battle's result screen as its button does, then play the inserted scenes that follow it with their first
+ * choices (a choice without a `# then:` first), until no inserted scene is open: a map visit's +N scenes (Milan's Nora,
+ * Tino and Rina) come there.
+ */
+export function leaveBattleResultAndScenes(result: GameState): GameState {
+  return validateGameState(leaveResult(result, {}));
+}
+
+/**
+ * Play the inserted scenes the running moment shows (a map visit's scenes before its main part, the finale's -1 scenes such
+ * as Milan's 「ダルセナの一音」) with their first choices, until no inserted scene is open; the main part is left to its player.
+ */
+export function playInsertedScenes(state: GameState): GameState {
+  return validateGameState(settleScenes(state, 0));
+}
+
+/** Finish one main episode like a player: guide, battle, leaving its result and the scenes after it. */
 export function finishEpisode(state: GameState, episodeId: string, options: EpisodePlayOptions = {}): GameState {
-  const result = playEpisodeToResult(state, episodeId, options);
-  return validateGameState(act(result, (current) => leaveBattleResult(current, current.revision), "対決の結果を閉じる", options));
+  return validateGameState(leaveResult(playEpisodeToResult(state, episodeId, options), options));
 }
 
 /**
@@ -193,14 +220,14 @@ export function playCityToFinaleResult(initial: GameState, options: CityPlayOpti
         throw new Error(`${cityId} のフィナーレ ${episode.id} の結果になりましたが、都市クリアになっていません。`);
       return state;
     }
-    state = act(state, (current) => leaveBattleResult(current, current.revision), "対決の結果を閉じる", options);
+    state = leaveResult(state, options);
   }
 }
 
 /** Clear the current city: every remaining battle, the finale, and leaving the finale's result (and the scenes after it). */
 export function clearCity(state: GameState, options: CityPlayOptions = {}): GameState {
   const result = playCityToFinaleResult(state, options);
-  return validateGameState(settleScenes(act(result, (current) => leaveBattleResult(current, current.revision), "フィナーレの結果を閉じる", options), 0));
+  return validateGameState(leaveResult(result, options));
 }
 
 /**
@@ -506,16 +533,43 @@ function untilEncounter(initial: GameState, encounterId: string, ticket: number)
   return state;
 }
 
+/**
+ * From an opened guide or observation, on to the landmark's battle as a player goes: the guide skipped, then the
+ * observation's 「進む」, its scenes played with their first choices, until the battle starts.
+ */
+function throughObservation(initial: GameState, ticket: number): GameState {
+  let state = initial;
+  for (let step = 0; !state.activeBattle; step++) {
+    if (step > MAX_STEPS) throw new Error("観察から対決へ進めませんでした。");
+    if (state.activeTourism?.phase === "guide") state = act(state, guideSkip, "観光案内を飛ばす");
+    else if (state.activeEncounter) state = playEncounterFirstChoice(state, ticket);
+    else if (state.activeTourism) state = act(state, (current) => proceedFromTourism(current, current.revision, () => ticket), "観察の「進む」");
+    else throw new Error("観察から対決へ進めませんでした。");
+  }
+  return state;
+}
+
 /** Depart from the map to the landmark's map event (its episode or special battle) by the first mode that can go now. */
-function departToLandmark(state: GameState, landmarkId: string, ticket: number): GameState {
-  const { travel } = getCityContent(state.currentCityId);
-  const event = travel.events.find((item) => visitedLandmarkOfEvent(item.id) === landmarkId &&
-    [WALK_MODE_ID, ...getTransportModes(state.currentCityId).map((mode) => mode.id)].some((mode) => getTravelEventAvailability(state, item.id, mode).available));
-  const mode = event && [WALK_MODE_ID, ...getTransportModes(state.currentCityId).map((item) => item.id)]
-    .find((item) => getTravelEventAvailability(state, event.id, item).available);
-  if (!event || !mode)
+function departToLandmark(initial: GameState, landmarkId: string, ticket: number): GameState {
+  const { travel } = getCityContent(initial.currentCityId);
+  const modes = [WALK_MODE_ID, ...getTransportModes(initial.currentCityId).map((mode) => mode.id)];
+  const departure = (state: GameState) => {
+    const event = travel.events.find((item) => visitedLandmarkOfEvent(item.id) === landmarkId &&
+      modes.some((mode) => getTravelEventAvailability(state, item.id, mode).available));
+    const mode = event && modes.find((item) => getTravelEventAvailability(state, event.id, item).available);
+    return event && mode ? { event, mode } : undefined;
+  };
+  // A place that opens later in the day (Milan's castle at 10:00): the party waits for it, as a player does on the map.
+  let state = initial;
+  for (let count = 0; !departure(state) && count < 24; count++) {
+    const waited = waitForTravel(state, 30, state.revision);
+    if (waited === state) break;
+    state = waited;
+  }
+  const found = departure(state);
+  if (!found)
     throw new Error("この交流は、地図から観光地へ出発したときに起きます。この進行状態ではその観光地へ出発できません。旅の進行を「旅の開始時」にしてください。");
-  return act(state, (current) => beginTravelEvent(current, event.id, mode, current.revision, () => ticket), `${landmarkId} へ出発`);
+  return act(state, (current) => beginTravelEvent(current, found.event.id, found.mode, current.revision, () => ticket), `${landmarkId} へ出発`);
 }
 
 /**
@@ -542,8 +596,13 @@ export function startEncounterScene(state: GameState, encounterId: string, ticke
     let next = untilEncounter(departToLandmark(state, encounter.landmarkId, ticket), encounterId, ticket);
     if (slot === "after" && next.activeEncounter?.encounterId !== encounterId) {
       if (next.activeEncounter) throw new Error(unmetRule(next));
-      next = playBattleToResult(tourismToBattle(next, {}), {});
-      next = untilEncounter(act(next, (current) => leaveBattleToFreeTime(current, current.revision, () => ticket), "対決の結果を閉じる"), encounterId, ticket);
+      const arrived = next;
+      const afterBattle = (atBattle: GameState) => untilEncounter(act(playBattleToResult(atBattle, {}),
+        (current) => leaveBattleToFreeTime(current, current.revision, () => ticket), "対決の結果を閉じる"), encounterId, ticket);
+      next = afterBattle(tourismToBattle(arrived, {}));
+      // A scene whose condition a scene of the observation meets (Rina's crest room after the Galleria's wish): the visit
+      // again, through its observation's scenes with their first choices, as play meets them.
+      if (next.activeEncounter?.encounterId !== encounterId) next = afterBattle(throughObservation(arrived, ticket));
     }
     if (next.activeEncounter?.encounterId !== encounterId) throw new Error(unmetRule(next));
     return validateGameState(next);
@@ -551,9 +610,20 @@ export function startEncounterScene(state: GameState, encounterId: string, ticke
   const placed = atPlace(state, scenePlaceId(state.currentCityId, undefined, encounter?.landmarkId));
   let observing = encounter?.landmarkId ? openTourism(placed, encounter.landmarkId) : placed;
   for (let step = 0; observing.activeTourism?.phase === "guide" && step < MAX_STEPS; step++) observing = guideSkip(observing);
-  const next = startTourismEncounter(observing, encounterId, observing.revision, () => ticket);
+  let next = startTourismEncounter(observing, encounterId, observing.revision, () => ticket);
+  // A scene whose condition an earlier scene of the same observation meets (the Galleria's ticket talk after its wish): the
+  // observation's scenes before it are played with their first choices, as play meets them, until it starts.
+  for (let count = 0; next.activeEncounter?.encounterId !== encounterId && count < 20; count++) {
+    if (next.activeEncounter) observing = playEncounterFirstChoice(next, ticket);
+    else {
+      const earlier = nextObservationScene(observing);
+      if (!earlier || earlier === encounterId) break;
+      observing = playEncounterFirstChoice(act(observing, (current) => proceedFromTourism(current, current.revision, () => ticket), "観察の「進む」"), ticket);
+    }
+    next = observing.activeEncounter ? observing : startTourismEncounter(observing, encounterId, observing.revision, () => ticket);
+  }
   // The observation reads the rule's `when` (unless the quiz waits for the battle); Debug names what is missing.
-  if (!next.activeEncounter) throw new Error(unmetRule(observing));
+  if (next.activeEncounter?.encounterId !== encounterId) throw new Error(unmetRule(observing));
   return validateGameState(next);
 }
 
@@ -626,6 +696,75 @@ function playOccasionStep(state: GameState, ticket: number): GameState {
   if (state.activeBattle) return playBattleToResult(state);
   if (state.occasion?.romanceEnding) return act(state, (current) => closeRomanceEnding(current, current.revision, () => ticket), "「交際開始」");
   throw new Error("この時点を進められませんでした。");
+}
+
+/** A scene of the hotel's moment (`# at: hotel …`: an insert before or after the night, not a landmark visit's scene). */
+export function isHotelInsert(sceneId: string): boolean {
+  return !!sceneById(sceneId)?.at.some((at) => "hotel" in at);
+}
+
+/**
+ * Debug's records for a condition a scene needs (its `when:`, or a `cond("…")` its story reads), set directly as Debug sets
+ * the AP: a date played, a flag, a scene seen or completed, the night (the clock moved on to 18:00). Any other leaf, and a
+ * `not`, is left as it is (the caller names what stays unmet). `any` and `atLeast` take their children in order.
+ */
+function withCondition(state: GameState, condition: Condition): GameState {
+  if ("all" in condition) return condition.all.reduce(withCondition, state);
+  if ("any" in condition) {
+    for (const child of condition.any) {
+      const next = withCondition(state, child);
+      if (meets(next, child)) return next;
+    }
+    return state;
+  }
+  if ("atLeast" in condition) {
+    let next = state;
+    for (const child of condition.atLeast.of) {
+      if (condition.atLeast.of.filter((item) => meets(next, item)).length >= condition.atLeast.count) break;
+      next = withCondition(next, child);
+    }
+    return next;
+  }
+  if ("not" in condition || meets(state, condition)) return state;
+  const add = (list: readonly string[], id: string) => (list.includes(id) ? [...list] : [...list, id]);
+  if ("datePlayed" in condition) return { ...state, playedDateIds: add(state.playedDateIds, condition.datePlayed) };
+  if ("flag" in condition) return { ...state, storyProgress: { ...state.storyProgress, flags: add(state.storyProgress.flags, condition.flag) } };
+  if ("encounterSeen" in condition) return { ...state, seenEncounterIds: add(state.seenEncounterIds, condition.encounterSeen) };
+  if ("encounterCompleted" in condition) return { ...state, seenEncounterIds: add(state.seenEncounterIds, condition.encounterCompleted),
+    completedEncounterIds: add(state.completedEncounterIds, condition.encounterCompleted) };
+  if ("time" in condition && condition.time === "night")
+    return { ...state, travel: { ...state.travel, minute: Math.max(state.travel.minute, NIGHT_START) } };
+  return state;
+}
+
+/**
+ * Debug's opener of a hotel-moment insert (a scene with `# at: hotel …`; the mini-games' content test and 「ミニゲームの見本」):
+ * the records its own `when:` reads are set (withCondition), and `conds` too (texts of the `cond("…")` its story reads, for
+ * one of its branches); then 「休む」 opens the hotel's moment as on the map, and the moment's scenes before it are played with
+ * their first choices until it starts. Stops with a message when its condition cannot be met or it does not start.
+ */
+export function startHotelInsertScene(state: GameState, sceneId: string, ticket: number, conds: readonly string[] = []): GameState {
+  const scene = sceneById(sceneId);
+  if (!scene || !isHotelInsert(sceneId)) throw new Error(`${sceneId} は宿の時点（# at: hotel）の場面ではありません。`);
+  if (scene.cityId !== state.currentCityId)
+    throw new Error(`${sceneId} は${getCities().find((city) => city.id === scene.cityId)?.nameJa ?? scene.cityId}の場面です。`);
+  const needed = [scene.when, ...conds.map((text) => {
+    if (!Object.hasOwn(sceneConditions.conditions, text)) throw new Error(`場面の条件が見つかりません: ${text}`);
+    return sceneConditions.conditions[text];
+  })].filter((condition): condition is Condition => condition !== undefined);
+  let current = needed.reduce(withCondition, state);
+  const unmet = needed.flatMap((condition) => unmetConditionLabels(current, condition));
+  if (unmet.length) throw new Error(`宿の時点の場面 ${sceneId} の条件をDebugでは満たせません：${unmet.join("、")}`);
+  current = validateGameState(current);
+  const sleep = getTravelSleepOptions(current).find((option) => option.plan.ok);
+  if (!sleep) throw new Error("宿へ帰って休めません。");
+  current = act(current, (now) => sleepAtHotel(now, sleep.route.mode, now.revision, sleep.route.viaPlaceId ?? null, () => ticket), "休む");
+  for (let step = 0; current.activeEncounter?.encounterId !== sceneId; step++) {
+    if (!isSceneOpen(current) || step > MAX_STEPS)
+      throw new Error(`宿の時点の場面 ${sceneId} は「休む」の時点で始まりませんでした（条件が合わないか、先の場面が終わらせました）。`);
+    current = playOccasionStep(current, ticket);
+  }
+  return validateGameState(current);
 }
 
 /** Start a date at its place with a saved reaction ticket; its AP is spent as on the map. */

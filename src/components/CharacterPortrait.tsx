@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import characterData from "../content/generated/content/presentation/characters.json";
 import {
@@ -9,7 +9,7 @@ import {
   resolveCharacterCostume,
 } from "../content/character-assets";
 import type { StandPosition } from "../content/tags";
-import type { PortraitFocus } from "./speaker-focus";
+import type { PortraitFocus } from "./scene-stage";
 import { portraitBreath } from "./scene-atmosphere";
 import "./character-portrait.css";
 
@@ -34,7 +34,7 @@ export function CharacterPortrait({
   cityId?: string;
   countryId?: string;
   regionId?: string;
-  /** Speaking (slightly forward) or listening (slightly dimmed) while a line is read; none for narration (portraitFocus). */
+  /** Speaking (slightly forward) or listening (slightly dimmed) while a line is read; none when no one on stage says it (stageFocus). */
   focus?: PortraitFocus;
   /** Where the scene's `# stand:` puts her (line-stage.css); none: her placement as it is. */
   stand?: StandPosition;
@@ -63,7 +63,6 @@ export function CharacterPortrait({
       ...(character.figureScale !== undefined ? { "--figure-scale": character.figureScale } as CSSProperties : {}),
     }}>
       <CharacterImage
-        key={image ?? "placeholder"}
         path={image}
         neutralPath={neutral}
         color={character.placeholderColor}
@@ -97,33 +96,99 @@ export function CharacterFace({ characterId, emotion, sceneId, cityId }: {
   const neutral = characterImage(character, { ...selection, emotion: "neutral" });
   return (
     <span className="character-face" aria-hidden="true">
-      <CharacterImage key={image ?? "placeholder"} path={image} neutralPath={neutral} color={character.placeholderColor} />
+      <CharacterImage path={image} neutralPath={neutral} color={character.placeholderColor} />
     </span>
   );
 }
 
+/**
+ * The character's whole standing picture in a box its caller places and sizes (the mini-game's bowler at the far end of
+ * the pitch): the scene's outfit, without a placement of its own or breathing. Decorative.
+ */
+export function CharacterFigure({ characterId, emotion, sceneId, cityId }: {
+  characterId: string;
+  emotion?: string;
+  sceneId?: string;
+  cityId?: string;
+}) {
+  const character = characters.find((item) => item.id === characterId);
+  const selection = useMemo(
+    () => character ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId }) : {},
+    [character, sceneId, cityId],
+  );
+  if (!character) return null;
+  const image = characterImage(character, { ...selection, emotion });
+  const neutral = characterImage(character, { ...selection, emotion: "neutral" });
+  return (
+    <span className="character-figure" aria-hidden="true">
+      <CharacterImage path={image} neutralPath={neutral} color={character.placeholderColor} />
+    </span>
+  );
+}
+
+/**
+ * Load and decode the picture at `src` off screen; true once it can be shown at once, false when it cannot be shown. A
+ * picture that loaded although its decode() was refused still counts (the <img> decodes it as it paints).
+ */
+async function loadPicture(src: string): Promise<boolean> {
+  const picture = new Image();
+  picture.src = src;
+  try {
+    await picture.decode();
+    return true;
+  } catch {
+    return picture.complete && picture.naturalWidth > 0;
+  }
+}
+
+/**
+ * A character's picture. A new expression (or outfit) replaces the one on screen only once its file has loaded and
+ * decoded (loadPicture): until then the last picture stays up, so the figure never goes blank while a file arrives. A
+ * file that cannot be shown falls back to the neutral picture, then to `fallback` or the placeholder.
+ */
 function CharacterImage({ path, neutralPath, color, fallback, onImageError, breathOf }: {
   path: string | null;
   neutralPath: string | null;
   color: string;
   fallback?: ReactNode;
   onImageError?: (path: string) => void;
-  /** A standing portrait's character: its picture breathes (character-portrait.css), going on from where the last picture was. */
+  /** A standing portrait's character: its picture breathes (character-portrait.css). */
   breathOf?: string;
 }) {
   const [failedPaths, setFailedPaths] = useState<string[]>([]);
-  // Read once as the picture is put up (scene-atmosphere.ts portraitBreath): a new expression takes the breath on.
+  // Read once as the picture is first put up (scene-atmosphere.ts portraitBreath): the same <img> takes each new
+  // expression, so the breath goes on through a change.
   const [breath] = useState(() => {
     if (breathOf === undefined) return undefined;
     const { durationMs, delayMs } = portraitBreath(breathOf, typeof performance === "undefined" ? 0 : performance.now());
     return { animationDuration: `${durationMs}ms`, animationDelay: `${delayMs}ms` };
   });
-  const candidate = [path, neutralPath].find((item) => item && !failedPaths.includes(item));
-  if (candidate) return (
-    <img src={`${import.meta.env.BASE_URL}${candidate}`} alt="" style={breath} onError={() => {
-      onImageError?.(candidate);
-      setFailedPaths((failed) => [...failed, candidate]);
-    }} />
+  const candidate = [path, neutralPath].find((item) => item && !failedPaths.includes(item)) ?? null;
+  // The picture on screen: the first at once (nothing to keep up yet), each later one once it is ready.
+  const [shown, setShown] = useState(candidate);
+  const reportError = useRef(onImageError);
+  useEffect(() => { reportError.current = onImageError; });
+  const fail = (failed: string) => {
+    reportError.current?.(failed);
+    setFailedPaths((list) => list.includes(failed) ? list : [...list, failed]);
+  };
+  useEffect(() => {
+    if (candidate === shown) return;
+    // Nothing worth keeping up (no picture, or one whose file failed): the next goes up at once.
+    if (!candidate || !shown || failedPaths.includes(shown)) {
+      setShown(candidate);
+      return;
+    }
+    let current = true;
+    void loadPicture(`${import.meta.env.BASE_URL}${candidate}`).then((ready) => {
+      if (!current) return;
+      if (ready) setShown(candidate);
+      else fail(candidate);
+    });
+    return () => { current = false; };
+  }, [candidate, shown, failedPaths]);
+  if (shown) return (
+    <img src={`${import.meta.env.BASE_URL}${shown}`} alt="" style={breath} onError={() => fail(shown)} />
   );
   if (fallback) return fallback;
   // Deliberately abstract placeholder, not a final character design.

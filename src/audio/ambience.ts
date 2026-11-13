@@ -31,7 +31,7 @@ export function journeyAmbiencePlay(journeyId: string): AmbienceJourneyPlay {
 /** The ambience's level against the music's 「BGMの大きさ」. */
 export const AMBIENCE_LEVEL = 0.5;
 /** Each lowering (a quiz's question part lower and muffled, a quiet line a little; under a ride it does not play). */
-const DUCK_LEVELS: Readonly<Record<MusicDuck, number>> = { none: 1, quiz: 0.35, quiet: 0.6, travel: 0.6 };
+const DUCK_LEVELS: Readonly<Record<MusicDuck, number>> = { none: 1, quiz: 0.35, quiet: 0.6, travel: 0.6, minigame: 0.3 };
 
 const player = createLoopPlayer({
   part: "ambience",
@@ -44,6 +44,11 @@ const player = createLoopPlayer({
 /** A line's voice starts or ends (src/components/useVoice.ts): the ambience is halved while it plays, as the music is. */
 export function duckAmbienceForVoice(playing: boolean): void {
   player.duckForVoice(playing);
+}
+
+/** English read aloud starts or is over (src/audio/speech-audio.ts): the ambience is lowered as the music is, and plays on after it. */
+export function duckAmbienceForSpeech(reading: boolean): void {
+  player.duckForSpeech(reading);
 }
 
 /** The ambience's volume from ⚙設定's 「BGMの大きさ」 (0 to 1): half of it. */

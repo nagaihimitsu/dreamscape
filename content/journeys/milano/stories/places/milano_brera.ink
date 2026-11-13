@@ -108,23 +108,27 @@ INCLUDE modules.ink
 ->->
 
 // 道中交流「モデルは五秒」（knot の名前 brera_sitter が交流のID）。
-// 今は起こらない：条件『ブレラ絵画館の特殊戦を戦った』（頭の # when: battle …）を満たすと、ブレラ絵画館の観察はもう開かないため。
-// 特殊戦を戦うと、ブレラ絵画館は地図の行き先に出なくなる。
-// シナリオの改稿で見直す（2026-11-08 のユーザー判断）。それまで起こる時は変えない。変えたら、このコメントも直す。
-// 2026-11-13 に 1場面1ファイル・encounters/catalog.json・entry-rules.json からこの場所のファイルへ移した。観察で「進む」を押した後（# priority: after observe）に始まり、終わると観察に戻る。起こる時・順・選択の働き（お金・品物・「また今度」）は前と同じ。
+// ブレラ絵画館の観察で「進む」を押した後（# priority: after observe）に始まり、終わると観察に戻る。条件はない。どの選択肢でも完了する。
+// 絵画館の絵が、正式な設立の前から美術学校の学生が学べるように集められたことは scenes/catalog.json の出典。
+// 観察の後に流れるので、推理クイズの答え（《接吻》の衣装と1859年の展覧会、マンテーニャの視点）には触れない。
 === brera_sitter ===
 # scene: encounter
 # title: モデルは五秒
 # at: visit brera_case
 # priority: after observe
-# when: battle milano_brera_c01
+# person: milano_brera_student
 # background: milano_brera_case
 # speaker: narrator
-ブレラ宮殿の中庭で、素描の学生がこちらに声をかけた。
+ブレラ宮殿の中庭で、画板を抱えた学生がこちらに声をかけた。柱の陰にも、座り込んで描いている学生が何人かいる。
 # speaker: milano_brera_student
-五秒だけモデル、お願いしていいですか。動く前の人の膝が描けなくて
+# cutin: name
+五秒だけモデル、お願いしていいですか。動き出す直前の膝が、どうしても描けなくて
 # speaker: heroine
-五秒なら。あ、私、もう動くつもりで膝を固めちゃった
+みんな、ここで描いてるんだね
+# speaker: milano_brera_student
+ここの絵画館の絵、もとは美術学校の学生が見て学べるように集められたんです。絵画館として開く前から。だから僕ら、ここに来ると、ちょっとだけ自分の分もある気がして
+# speaker: heroine
+五秒なら。……あ、わたし、もう動くつもりで膝を固めちゃった
 
 * [I'll be the one about to leave. # option: pose # translation: 出ていく直前の役をやるよ。]
     # speaker: narrator
@@ -141,16 +145,16 @@ INCLUDE modules.ink
     # speaker: milano_brera_student
     その後の六秒目、いまの膝です
     # speaker: heroine
-    契約延長は、一度だけですよ
+    延長は一度だけですよ
     -> END
 
-* [I'd rather stay out of the sketch. # option: decline # translation: 私は絵の外にいたいです。]
+* [I'd rather stay out of the sketch. # option: decline # translation: 絵には入らないでおきます。]
     # speaker: narrator
-    学生はすぐスケッチ帳を閉じた。
+    学生はすぐ画板を閉じた。
     # speaker: milano_brera_student
-    了解。今日いちばん早く立ち去れそうな膝だったから惜しいけど
+    了解。今日いちばん早く立ち去れそうな膝だったから、惜しいけど
     # speaker: heroine
-    断った後の足が、一番描くのに向いてたね
+    断ったあとの足が、いちばん描きたい足だったんだ
     -> END
 
 // デート（本筋）。romance/date_catalog.json の milano_brera_date_01 の storyId がこの knot を指す。
@@ -168,7 +172,7 @@ INCLUDE modules.ink
 # speaker: player
 二つとも言うのは？
 # speaker: heroine
-私、たぶん長く話すと最後を「じゃあね」でごまかす
+わたし、たぶん長く話すと最後を「じゃあね」でごまかす
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
@@ -193,10 +197,10 @@ INCLUDE modules.ink
     # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
-        それを選べる人は強いね。私は、今日は何か言いたい
+        それを選べる人は強いね。わたしは、今日は何か言いたい
     - else:
         # speaker: heroine
-        うん。でも私は、何も言わなかった日のことばかり覚えてる
+        うん。でもわたしは、何も言わなかった日のことばかり覚えてる
     }
     -> join_1
 
@@ -225,7 +229,7 @@ INCLUDE modules.ink
         答えるまで待たせるのも難しいよね。聞かれなくても言えるようになりたい
     - else:
         # speaker: heroine
-        私もそうしてほしい。事情があるなら、遠回りでも聞いて
+        わたしもそうしてほしい。事情があるなら、遠回りでも聞いて
     }
     -> join_2
 
@@ -234,7 +238,7 @@ INCLUDE modules.ink
     # memory: sound_memory_brera_date_01
     { romance_result == "negative":
         # speaker: heroine
-        「またね」って約束かな。私はたまに、軽く言われると迷う
+        「またね」って約束かな。わたしはたまに、軽く言われると迷う
     - else:
         # speaker: heroine
         いい。短いのに、もう一回分ある
@@ -249,7 +253,7 @@ INCLUDE modules.ink
         予約すると、違う言葉が出た日に困るよ。空けておきたい
     - else:
         # speaker: heroine
-        じゃあ私から。「遅い」。待ってたって伝わるでしょ
+        じゃあわたしから。「遅い」。待ってたって伝わるでしょ
     }
     -> join_2
 

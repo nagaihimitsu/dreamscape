@@ -10,8 +10,9 @@ import {
   storyState,
   tourismAssets,
   getCityContent,
+  tagContext,
 } from "../content";
-import { scenePerson, speakingPerson } from "../domain/scene-person";
+import { scenePerson } from "../domain/scene-person";
 import { defaultJourneyId, getJourney, getJourneyForCity } from "../content/journeys";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
 import { waitForTravel } from "../domain/travel-game";
@@ -34,11 +35,12 @@ import { titleSaveActions } from "./save-recovery";
 import type { DeleteSnapshot } from "./save-deletion";
 import { CreditsDialog } from "./CreditsDialog";
 import { OldDataCleanup } from "./OldDataCleanup";
-import { oldDataContext, type KeyedStorage } from "../persistence/old-data";
+import { oldDataContext, readOldData, type KeyedStorage } from "../persistence/old-data";
 import { CanalScene } from "../components/CanalScene";
 import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
-import { useVoiceSettings } from "../components/useVoice";
+import { useVoiceRate, useVoiceSettings } from "../components/useVoice";
+import { effectiveVoiceRate } from "../audio/voice-rate";
 import { holdSceneCues, playCue, playSe, useSoundEffectSettings } from "../audio/sound-effects";
 import { canVibrate, useVibrationSetting, vibrate } from "../audio/vibration";
 import { heldItemIds } from "../domain/item-changes";
@@ -49,7 +51,10 @@ import { sceneMusic, type MusicScreen } from "../audio/scene-music";
 import { journeyAmbiencePlay, useAmbienceSettings, useSceneAmbience } from "../audio/ambience";
 import { sceneAmbience } from "../audio/scene-ambience";
 import { useReadLines } from "../components/useReadLines";
+import { useMeasuredHeight } from "../components/useMeasuredHeight";
 import { RomanceScene } from "../features/romance/RomanceScene";
+import { MiniGameProvider, type MiniGameEnvironment } from "../minigames/host/MiniGameProvider";
+import { chooseMiniGameOutcome, miniGameAvailableOutcomes } from "../domain/player-action";
 import { Modal, ModalTitle } from "../components/Modal";
 import { ConfirmActionButton } from "../components/ConfirmActionButton";
 import { withNames } from "../features/romance/names";
@@ -138,13 +143,14 @@ import {
   reasoningEvidenceCount,
   battleChoiceDisplay,
   chooseBattle,
+  battleBackgroundId,
 } from "../domain/battle";
 
 import { browserStorage, type AppProps } from "./app-storage";
 import { screenOnShow, storySceneChanged, storySceneOnScreen } from "./story-scene-change";
 import { focusSceneHeading } from "../components/scene-focus";
 import { holdTaps } from "../components/tap-hold";
-import { useDebugMode } from "./debug-mode";
+import { useDebugMode, useDebugVoiceRate } from "./debug-mode";
 import { DebugModeSetting } from "./DebugModeSetting";
 import { canReturnToFreeTime, freeTimeReturnState, nextFreeTimeReturn, type FreeTimeReturn } from "./free-time-return";
 import { endIntroMovie, introChange, recordIntro, startIntroTiming, type IntroTiming } from "./intro-timing";
@@ -152,11 +158,13 @@ import { relationshipChange, type RelationshipChange } from "../domain/relations
 import { RelationshipChangeNote } from "../components/RelationshipChangeNote";
 import { sceneConditionTruths } from "../domain/scene-conditions";
 import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
-import { portraitFocus } from "../components/speaker-focus";
+import { sceneStageOf, stageLine } from "../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../components/speaker-plate";
 
 /** 最初の3分の計測's note (Debug mode only): its own chunk, loaded when ⚙設定 shows it (scripts/dist-guard.ts). */
 const IntroTimingNote = lazy(() => import("./IntroTimingNote"));
+/** Debug's 台詞の声の速さ (Debug mode only): its own chunk, loaded when ⚙設定 shows it (scripts/dist-guard.ts). */
+const DebugVoiceRate = lazy(() => import("./DebugVoiceRate"));
 
 /** Where a Debug relationship change shows (decision 23): the story scene on screen, else the map or free time until the next action. */
 function changeScreenKey(state: GameState): string {
@@ -198,6 +206,11 @@ export function GameApp({
   useAmbienceSettings(displaySettings.value.ambience, displaySettings.value.bgmVolume);
   // This device's Debug-mode switch (journeyStorage passes its key through unscoped).
   const debugMode = useDebugMode(storage);
+  // Debug's 台詞の声の速さ (debug-mode.ts): this device's Debug preference, so read from the device's storage in a
+  // Debug session too (whose game lives in memory). The voices play at it while Debug mode is on (always on Debug's
+  // page) and at 1× with it off, whatever is stored (voice-rate.ts).
+  const voiceRate = useDebugVoiceRate(browserStorage);
+  useVoiceRate(effectiveVoiceRate(isDebug || debugMode.on, voiceRate.rate));
   // While Debug mode is on (always in a Debug session), a choice's relationship changes show above
   // its story scene until the scene ends or the next change (relationship-change.ts). Never saved
   // or logged. Read through a ref: a caller may hold an older `commit` (travel timers).
@@ -212,6 +225,8 @@ export function GameApp({
   const momentsRef = useRef<((previous: GameState, next: GameState) => void) | null>(null);
   // 「写真の札」 (AlbumPhotoNotice): the photo the player's last action put in the album, for a few seconds.
   const [photoNotice, setPhotoNotice] = useState<AlbumPhotoNoticeState | null>(null);
+  // The notices' height under the header (--notices-h): an item card or a large photo starts below them (item-show.css).
+  const noticesHeight = useMeasuredHeight("--notices-h");
   // What the player has looked at during this play (seen-marks.ts): the held items in their open detail, the clues in
   // 手がかり帳 and the entries of 英語ノート; one not looked at has its dot (and 「NEW」). In this tab's memory only:
   // a new game, a load and Debug's return empty it (null), and then everything there is counts as seen (below).
@@ -333,6 +348,12 @@ export function GameApp({
   const [confirmDeparture, setConfirmDeparture] = useState(false);
   const [settings, setSettings] = useState(false);
   const [oldDataOpen, setOldDataOpen] = useState(false);
+  // The title's way into 「古い保存データの整理」, beside its notice of a save it cannot open: only when the list has
+  // something (read as the notice appears; the dialog says so if a cleanup has emptied it since).
+  const titleOldData = useMemo(() => {
+    if (game || !invalid || isDebug || !oldDataStorage) return false;
+    try { return readOldData(oldDataStorage, oldDataContext(journeyId)).items.length > 0; } catch { return false; }
+  }, [game, invalid, isDebug, oldDataStorage, journeyId]);
   const [creditsOpen, setCreditsOpen] = useState(false);
   const [switchJourneyTo, setSwitchJourneyTo] = useState<string | null>(null);
   // This journey's screen is the end of a switch (or of the lock's 再試行):
@@ -523,6 +544,25 @@ export function GameApp({
   const nextEpisode = game ? getNextEpisode(game) : null;
   const nextStoryBattle = game ? getNextStoryBattle(game) : null;
   const frame = active?.frame;
+  // A line's # minigame: in any story screen (docs/13 1.5): what every play gets, once; a quiet game lowers the music.
+  const [miniGameQuiet, setMiniGameQuiet] = useState(false);
+  const revision = game?.revision ?? 0;
+  // The outcomes whose choices can be taken now (a payment the player cannot afford greys one; its fallback is taken).
+  const miniGameAvailable = (game && miniGameAvailableOutcomes(game))?.join(" ");
+  const miniGameEnvironment = useMemo<MiniGameEnvironment>(() => ({
+    auto: displaySettings.value.miniGameAuto,
+    debug: debugOn,
+    reduceMotion: displaySettings.value.reduceMotion,
+    names: { player: game?.playerName ?? "", heroine: game?.heroineName ?? "" },
+    revision,
+    context: tagContext,
+    ...(miniGameAvailable !== undefined ? { available: miniGameAvailable ? miniGameAvailable.split(" ") : [] } : {}),
+    // The outcome's choice, as the screen's choice button takes it (player-action.ts).
+    onOutcome: (outcome) => commit((state) => chooseMiniGameOutcome(state, outcome, revision, nextRomanceRoll)),
+    backdrop: (backgroundId) => <CanalScene backgroundId={backgroundId} />,
+    onQuiet: setMiniGameQuiet,
+  }), [displaySettings.value.miniGameAuto, displaySettings.value.reduceMotion, debugOn, game?.playerName, game?.heroineName, revision, miniGameAvailable,
+    commit, nextRomanceRoll]);
   // A new screen takes a lost focus on its visible heading (scene-focus.ts, UI redesign §3.7 E);
   // free time opens at the top of the page, not at the scroll position of the screen before it
   // (the title, scrolled to 「旅をはじめる」 on a short phone).
@@ -537,7 +577,7 @@ export function GameApp({
   const musicScreen: MusicScreen = {
     game, endRoll: moments.endRollShown, nightVisual, riding, packing: !!moments.packingScene,
     romanceEnding: showRomanceEnding, nightScreen: !!(nightScreen && dayEnd), opening: !!opening,
-    ...(musicRoom && roomTrack ? { roomTrack } : {}),
+    ...(musicRoom && roomTrack ? { roomTrack } : {}), miniGameQuiet,
   };
   useSceneMusic(sceneMusic(journeyMusicPlay(musicJourneyId), musicScreen));
   // The ambience under it (src/audio/scene-ambience.ts): the scene's # ambience:, else its place's own, in story scenes only.
@@ -599,8 +639,18 @@ export function GameApp({
     : game.activeEpilogue ? undefined
     : game.activeTourism ? (game.activeTourism.phase === "guide" ? landmarkPhoto(game.activeTourism.landmarkId) : undefined)
     : game.activeBattle && currentBattle
-      ? landmarkPhoto(currentBattle.landmarkId) ?? backdropPhoto(game.activeBattle.frame?.background ?? currentBattle.backgroundId)
+      ? landmarkPhoto(currentBattle.landmarkId) ?? backdropPhoto(battleBackgroundId(game.activeBattle, currentBattle))
     : active ? backdropPhoto(active.frame.background) : undefined;
+  // The background the story scene on screen draws its picture from (in the order of the screens below): the header's
+  // place plate names where it is, if it says (hudPlaceName). None where a landmark's photo shows: the party is there.
+  // A battle's quiz, reasoning and result keep its last line's (battleBackgroundId), so the plate stays where the story is.
+  const sceneBackgroundId = !game || moments.packingScene ? undefined
+    : activeEncounter && currentEncounter ? (encounterImage ? undefined : activeEncounter.frame.background)
+    : game.activeEpilogue ? game.activeEpilogue.frame.background
+    : game.activeTourism ? (landmarkPhoto(game.activeTourism.landmarkId) ? undefined : game.activeTourism.frame?.background)
+    : game.activeBattle && currentBattle
+      ? (landmarkPhoto(currentBattle.landmarkId) ? undefined : battleBackgroundId(game.activeBattle, currentBattle))
+    : active?.frame.background;
   const nameForm = (
     <>
       <label>
@@ -641,6 +691,7 @@ export function GameApp({
       {game && <JourneyHud
         game={game}
         place={currentTravelPlace}
+        sceneBackgroundId={sceneBackgroundId}
         view={hudView(game)}
         onRecords={() => setRecordsOpen(true)}
         onAlbum={() => setAlbumOpen(true)}
@@ -664,8 +715,9 @@ export function GameApp({
         onSettings={() => {
           setPlayer(game.playerName);
           setHeroine(game.heroineName);
-          // Another tab may have turned Debug mode on or off meanwhile.
+          // Another tab may have turned Debug mode on or off, or changed Debug's speed of the voices, meanwhile.
           debugMode.refresh();
+          voiceRate.refresh();
           setSettings(true);
         }}
         onReturnToFreeTime={canReturnToFreeTime(freeTimeReturn.current, game, journeyId, debugOn) ? () => setConfirmReturn(true) : undefined}
@@ -709,6 +761,7 @@ export function GameApp({
       {/* A tap on main's own margin beside a narrow story scene reads on (scene-tap.ts). The screens' 手がかり帳 buttons
           read their marks from NotebookCueContext. */}
       <NotebookCueContext.Provider value={notebookCue}>
+      <MiniGameProvider value={miniGameEnvironment}>
       <main id="main" ref={main} tabIndex={-1} {...{ [PAGE_MARGIN_ATTRIBUTE]: "" }}>
         {showChanges && <RelationshipChangeNote change={game && shownChange && shownChange.scene === changeScreenKey(game) ? shownChange.change : null}
           conditions={storyScene && game ? sceneConditionTruths(game) : []} />}
@@ -730,7 +783,7 @@ export function GameApp({
         {/* Only where a line can teach a word or take a photo: a story scene of a build with words of the country or
             album images. Their status regions stay mounted through the scene, so a new notice is announced. */}
         {conversationActive && (localWords.length > 0 || albumImages.length > 0) && (
-          <div className="scene-notices">
+          <div className="scene-notices" ref={noticesHeight}>
             {localWords.length > 0 && <LocalWordNotice notice={learnedWords.notice} />}
             {albumImages.length > 0 && <AlbumPhotoNotice notice={shownPhotoNotice} />}
           </div>
@@ -773,6 +826,8 @@ export function GameApp({
                   >
                     保存データを消去する
                   </button>}
+                  {titleOldData && <button type="button" className="text-button old-data-entry"
+                    onClick={() => setOldDataOpen(true)}>古い保存データの整理</button>}
                 </div>
               )}
               {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} restoreFocus={selectorFocus?.restoreFocus} />}
@@ -811,18 +866,22 @@ export function GameApp({
               revision: game.revision,
               sceneId: currentEncounter.id,
               cityId: currentEncounter.cityId,
-              portraits: (() => {
+              // Who may stand on the scene's stage (scene-stage.ts): the scene's person with a figure (# person:) for
+              // `# speaker: enemy`, else the generic stranger at the enemy's lines that show a feeling; the heroine from her
+              // first line, her reaction or an emotion on the narration. How each of the two looks on this line.
+              stage: (() => {
                 const frame = activeEncounter.frame;
                 const heroine = frame.reactions?.heroine;
                 const enemy = frame.reactions?.enemy;
-                const hasEmotion = frame.emotion !== "neutral" || frame.emotionExplicit;
-                const heroineSpeaking = frame.speaker === "heroine" || frame.speaker === "narrator";
-                const showHeroine = heroine || (hasEmotion && heroineSpeaking);
-                const showEnemy = enemy || ((hasEmotion || !!encounterPerson) && frame.speaker === "enemy");
-                if (!showHeroine && !showEnemy) return undefined;
+                const hasEmotion = frame.emotion !== "neutral" || !!frame.emotionExplicit;
                 return {
-                  ...(showHeroine ? { heroine: { emotion: heroine?.expression ?? (heroineSpeaking ? frame.emotion : "neutral"), mark: heroine?.mark, focus: portraitFocus(frame.speaker, "heroine") } } : {}),
-                  ...(showEnemy ? { enemy: { emotion: enemy?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral"), mark: enemy?.mark, focus: portraitFocus(frame.speaker, "enemy") } } : {}),
+                  line: stageLine(frame, storyState.people, {
+                    heroine: !!heroine || (hasEmotion && frame.speaker === "narrator"),
+                    enemy: !!enemy || (hasEmotion && frame.speaker === "enemy"),
+                  }),
+                  scene: sceneStageOf("encounter", encounterPerson?.characterId),
+                  heroine: { emotion: heroine?.expression ?? (frame.speaker === "heroine" || frame.speaker === "narrator" ? frame.emotion : "neutral"), mark: heroine?.mark },
+                  enemy: { emotion: enemy?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral"), mark: enemy?.mark },
                 };
               })(),
               // A scene at no landmark (a date's, the hotel's, a trip's…; stage 4): in a tour's car (its leg's narration
@@ -835,8 +894,6 @@ export function GameApp({
               backgroundAsset: encounterImage,
               speaker: encounterPlate!.name,
               narration: encounterPlate!.narration,
-              person: encounterPerson && { characterId: encounterPerson.characterId, focus: portraitFocus(activeEncounter.frame.speaker, "enemy") },
-              speakingPerson: speakingPerson(storyState.people, activeEncounter.frame),
               cutIn: nameCutIn(activeEncounter.frame,
                 encounterPerson && { nameJa: encounterPerson.nameJa, ...(encounterPerson.titleJa ? { titleJa: encounterPerson.titleJa } : {}) },
                 storyState.people),
@@ -855,6 +912,7 @@ export function GameApp({
                 return [{ index: choice.index, textEn: choice.text, translationJa: choice.translationJa ?? option?.translationJa ?? "", cost: shown.cost,
                   unavailableReason: shown.show === "grey" ? shown.reason : undefined, ...(shown.ap ? { apCost: shown.ap } : {}) }];
               }),
+              ...(activeEncounter.frame.minigame ? { minigame: activeEncounter.frame.minigame } : {}),
               ended: encounterCanFinish(game),
               // On a running tour (stage 2a) the visit's last scene leads on to the tour's next step; a leg's scenes (stage 3) lead on with
               // the tour. On a booked tour's morning (the hotel's scenes after waking) the last scene leads to the tour's start.
@@ -1052,9 +1110,11 @@ export function GameApp({
             nextCityName={departure?.city.nameJa}
             onDepart={() => setConfirmDeparture(true)}
             seenCards={seenCards}
+            debug={debugOn}
           />
         )}
       </main>
+      </MiniGameProvider>
       </NotebookCueContext.Provider>
       <footer>
         Dreamscape <span>·</span> 旅の余白に、ふたりの物語。
@@ -1178,10 +1238,10 @@ export function GameApp({
         >
           <ModalTitle id="delete-title">{isDebug ? "Debug用の一時データを消去しますか？" : "保存データを消去しますか？"}</ModalTitle>
           {isDebug ? <p>Debug用の進行と英語ノートを消去して、Debugで開いた場面を最初から開き直します。通常のセーブ・英語ノート・表示設定は消去しません。</p> : <><p>
-            このブラウザに保存された名前、旅の進行、AP、恋愛・クイズの記録、アルバム、英語ノート（単語帳・その国の言葉）と対訳設定、既読の記録を消去します。元には戻せません。
+            このブラウザに保存された{getJourney(journeyId)?.nameJa ?? "この旅行編"}の名前、旅の進行、AP、恋愛・クイズの記録、アルバム、英語ノート（単語帳・その国の言葉）と対訳設定、既読の記録を消去します。元には戻せません。
           </p>
           <p className="fine-print">
-            文字の速さなどの表示設定、以前に退避したバックアップ、ほかのサイトのデータは消去しません。ほかの端末やブラウザにも影響しません。
+            文字の速さなどの表示設定、以前に退避したバックアップ、ほかのサイトのデータは消去しません。ほかの旅行編の保存データ、ほかの端末やブラウザにも影響しません。
           </p></>}
           <button
             className="secondary"
@@ -1251,6 +1311,11 @@ export function GameApp({
             />{" "}
             演出を短縮する
           </label>
+          <label className="translation-setting">
+            <input type="checkbox" checked={displaySettings.value.miniGameAuto} disabled={!!displaySettings.error}
+              onChange={(event) => displaySettings.update({ miniGameAuto: event.target.checked })} /> ミニゲームをおまかせにする
+          </label>
+          {displaySettings.value.miniGameAuto && <p className="fine-print">ミニゲームは押さずに自動で進み、場面ごとに決まった結果になります。</p>}
           {readAloudAvailable && <label className="translation-setting">
             <input type="checkbox" checked={displaySettings.value.readAloud} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ readAloud: event.target.checked })} /> 英語を読み上げるボタンを出す
@@ -1353,6 +1418,10 @@ export function GameApp({
           {!isDebug && <DebugModeSetting debugMode={debugMode} />}
           {/* 最初の3分の計測 (Debug mode only), loaded when shown. */}
           {debugOn && <Suspense fallback={null}><IntroTimingNote timing={introTiming.current} /></Suspense>}
+          {/* 台詞の声の速さ (Debug mode only), loaded when shown. */}
+          {debugOn && <Suspense fallback={null}>
+            <DebugVoiceRate rate={voiceRate.rate} onChange={voiceRate.change} voiceOn={displaySettings.value.voice} message={voiceRate.message} />
+          </Suspense>}
           <button type="button" className="text-button credits-entry"
             onClick={() => { setSettings(false); setCreditsOpen(true); }}>出典・権利の一覧</button>
           {!isDebug && oldDataStorage && <button type="button" className="text-button old-data-entry"

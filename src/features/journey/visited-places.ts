@@ -18,6 +18,15 @@ export function visitedPlaceIds(game: Readonly<GameState>): string[] {
 }
 
 /**
+ * The trail on the current city's map (2026-11-13 user decision): the places the party has been to (visitedPlaceIds) that
+ * the map marks no other way (`markedIds`: the hotel, the current place and the places of the open events). Each keeps a
+ * small stamp that cannot be chosen, so the trail still reads once a place's events are over. In the city's place order.
+ */
+export function trailPlaceIds(game: Readonly<GameState>, markedIds: readonly string[]): string[] {
+  return visitedPlaceIds(game).filter((id) => !markedIds.includes(id));
+}
+
+/**
  * The places of a city of the journey the party has been to, by the same records: for the current city visitedPlaceIds;
  * for another, the places where something happened (eventPlaceIdsIn: the hotel and today's moves belong to the current
  * city only). None for a city whose content this build lacks.

@@ -6,9 +6,10 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
-  checkDist, checkThirdPartyLicenses, describeDebugOnTitle, describeFindings, devOnlyMarkers, eagerFiles, findDebugCodeOnTitle, findDevOnlyCode,
-  isTextAsset, lazyDebugMarkers, THIRD_PARTY_LICENSES_PATH, type DistFile,
+  checkDist, checkThirdPartyLicenses, describeDebugOnTitle, describeFindings, describeMiniGamesOnTitle, devOnlyMarkers, eagerFiles,
+  findDebugCodeOnTitle, findDevOnlyCode, isTextAsset, lazyDebugMarkers, miniGameMarkers, THIRD_PARTY_LICENSES_PATH, type DistFile,
 } from "./dist-guard";
+import { MINI_GAME_ENGINES, MINI_GAME_IDS } from "../src/minigames/registry";
 import { runtimeImports } from "./test-sets";
 
 // No content build needed: the markers are checked against the repository's
@@ -149,7 +150,7 @@ describe("production build guard", () => {
 
   it("checks every built file for test-only code and the title page's files for Debug code", () => {
     expect(checkDist(checkedBuild)).toEqual({
-      devOnly: [], titleFiles: ["index.html", "assets/index-abc.js", "assets/index-abc.css"], missing: [], onTitle: [],
+      devOnly: [], titleFiles: ["index.html", "assets/index-abc.js", "assets/index-abc.css"], missing: [], onTitle: [], miniGamesOnTitle: [],
     });
     // The lazy Debug chunk is searched for the test hook and the sample journey like every other file.
     expect(checkDist(hookAndSampleInDebug).devOnly.map(({ path, marker }) => [path, marker.text])).toEqual([
@@ -206,6 +207,24 @@ describe("production build guard", () => {
     } finally {
       rmSync(folder, { recursive: true, force: true });
     }
+  });
+
+  it("keeps every mini-game's play and engine out of the title page, by markers made from the registry (docs/13 5)", () => {
+    const markers = miniGameMarkers(MINI_GAME_IDS, MINI_GAME_ENGINES);
+    expect(markers.map((marker) => marker.text)).toContain("mg-cricket-batting");
+    expect(markers.map((marker) => marker.text)).toContain("mg-engine-cue-tap");
+    // Each folder's sources carry its marker (a renamed class would leave the check blind).
+    for (const { text, source } of markers) {
+      const files = readdirSync(path.join(root, source), { recursive: true, encoding: "utf8" }).filter((file) => /\.(tsx?|css)$/u.test(file));
+      expect(files.some((file) => readFileSync(path.join(root, source, file), "utf8").includes(text)), `${source} has no "${text}"`).toBe(true);
+    }
+    // In a lazily loaded chunk it is fine; in the entry script or its CSS it is on the title page.
+    const lazy = [...checkedBuild, { path: "assets/play-x2.js", text: 'jsx("div",{className:"mg-cricket-batting"})' }];
+    expect(checkDist(lazy, markers).miniGamesOnTitle).toEqual([]);
+    const eager = withText(checkedBuild, "assets/index-abc.css", ".mg-engine-cue-tap{display:flex}");
+    expect(checkDist(eager, markers).miniGamesOnTitle.map(({ path, marker }) => [path, marker.text])).toEqual([["assets/index-abc.css", "mg-engine-cue-tap"]]);
+    expect(describeMiniGamesOnTitle("dist", checkDist(eager, markers).miniGamesOnTitle))
+      .toContain("- assets/index-abc.css に「mg-engine-cue-tap」（目印の由来: src/minigames/engines/cue_tap/）");
   });
 
   it("names the file, the text and its source in the reports", () => {

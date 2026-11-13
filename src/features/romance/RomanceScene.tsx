@@ -6,8 +6,8 @@ import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
 import { CanalScene } from "../../components/CanalScene";
-import { CharacterPortrait } from "../../components/CharacterPortrait";
-import { portraitFocus } from "../../components/speaker-focus";
+import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
+import { sceneStageOf, stageLine } from "../../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
@@ -28,10 +28,14 @@ import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "..
 import { useSceneTap } from "../../components/useSceneTap";
 import { resolveRomancePresentation } from "./romance-presentation";
 import { SceneHeading } from "../../components/SceneHeading";
-import { useSpeakingPerson } from "../../components/useSpeakingPerson";
-import { speakingPerson } from "../../domain/scene-person";
+import { ChoicePoint } from "../../minigames/host/ChoicePoint";
+import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
+import { useSceneStage } from "../../components/useSceneStage";
 import "./romance-scene.css";
 import "../journey/encounter.css";
+
+/** A date's stage: she stands from the start; no one stands for `# speaker: enemy`. */
+const DATE_STAGE = sceneStageOf("date");
 
 export function RomanceScene({
   game,
@@ -69,10 +73,11 @@ export function RomanceScene({
     : undefined;
   const reaction = resolveDialogueReaction(dialogueReactions, storyId, frame, "heroine");
   const emotion = reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame);
-  // A person with a portrait who speaks in their own name stands opposite her from that line
-  // (speakingPerson); `# speaker: enemy` or its reaction sends them off.
-  const speaking = speakingPerson(storyState.people, frame);
-  const personId = useSpeakingPerson(speaking, frame.speaker === "enemy" || !!resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy"));
+  // She stands from the start; a person with a figure who speaks in their own name stands opposite her from that line
+  // (scene-stage.ts); `# speaker: enemy` or its reaction (no one with a figure in a date) sends them off.
+  const { stage, focus } = useSceneStage(stageLine(frame, storyState.people,
+    { enemy: !!resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy") }), DATE_STAGE);
+  const personId = stage.opposite?.figure;
   const { name: speaker, narration } = speakerPlate(frame, { heroine: game.heroineName, player: game.playerName }, storyState.people);
   // A line's `# cutin: name` shows its speaker's name plate for a moment (NameCutIn; a person's: a date has no one opposite).
   const nameCut = useNameCutIn(nameCutIn(frame, undefined, storyState.people), active.storyState);
@@ -141,6 +146,19 @@ export function RomanceScene({
   useEffect(() => {
     choiceLock.current = false;
   }, [game.revision]);
+  /** Take a pressed choice; `text`: the pressed choice's, shown leaving. */
+  function select(index: number, text?: string): boolean {
+    if (choiceLock.current || windowVisibility.hidden || dialogueObstructed()) return false;
+    choiceLock.current = true;
+    pendingChoice.current = text === undefined ? null : { revision: game.revision, dateId: active.dateId, choiceCount: active.choiceCount, text };
+    if (!onSelect(index, game.revision)) {
+      choiceLock.current = false;
+      pendingChoice.current = null;
+      return false;
+    }
+    if (text !== undefined) playSe("ui_confirm");
+    return true;
+  }
   function advance() {
     if (!ready || frame.choices.length || windowVisibility.hidden || dialogueObstructed()) return;
     if (frame.ended) onFinish();
@@ -185,14 +203,14 @@ export function RomanceScene({
             sceneId={active.dateId}
             cityId={game.currentCityId}
             emotion={emotion}
-            focus={portraitFocus(frame.speaker, "heroine")}
+            focus={focus.heroine}
             stand={frame.stand}
           >
             {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
           </CharacterPortrait>
         </div>
         {personId && <div className="encounter-character-slot encounter-character-enemy">
-          <CharacterPortrait key={personId} characterId={personId} focus={speaking === personId ? "speaking" : portraitFocus(frame.speaker, "enemy")} />
+          <CharacterPortrait key={personId} characterId={personId} focus={focus.opposite} />
         </div>}
       </div>
       <section
@@ -235,6 +253,11 @@ export function RomanceScene({
               />
             </LineStage>
             {frame.choices.length ? (
+              // A line's # minigame: plays instead of the choices; its outcome takes its choice (ChoicePoint).
+              <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
+                heroine: <CharacterFigure characterId="heroine" emotion="serious" sceneId={active.dateId} cityId={game.currentCityId} />,
+                ...(personId ? { person: <CharacterFigure characterId={personId} /> } : {}),
+              }}>
               <div className="choices">
                 {/* No 「返答を選んでください」 under it (2026-11-11, the user's decision): the replies coming in one after another say it. */}
                 <p className="choice-hint">あなたは、どう返す？</p>
@@ -244,20 +267,7 @@ export function RomanceScene({
                     key={`${game.revision}-${choice.index}`}
                     className="choice"
                     data-testid="date-choice"
-                    onClick={() => {
-                      if (choiceLock.current || windowVisibility.hidden || dialogueObstructed()) return;
-                      choiceLock.current = true;
-                      pendingChoice.current = {
-                        revision: game.revision,
-                        dateId: active.dateId,
-                        choiceCount: active.choiceCount,
-                        text: choice.text,
-                      };
-                      if (!onSelect(choice.index, game.revision)) {
-                        choiceLock.current = false;
-                        pendingChoice.current = null;
-                      } else playSe("ui_confirm");
-                    }}
+                    onClick={() => select(choice.index, choice.text)}
                   >
                     <span className="choice-number">
                       {String(index + 1).padStart(2, "0")}
@@ -266,6 +276,7 @@ export function RomanceScene({
                   </button>
                 ))}
               </div>
+              </ChoicePoint>
             ) : frame.ended ? (
               <button disabled={!ready} className="primary" data-testid="date-finish" onClick={advance}>
                 {date?.kind === "normal"
@@ -277,6 +288,7 @@ export function RomanceScene({
         </div>
       </section>
       <DialogueWindowRestore state={windowVisibility} />
+      <MiniGameSlot />
     </div>
   );
 }

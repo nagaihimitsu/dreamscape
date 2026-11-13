@@ -4,6 +4,7 @@ import { CORE_LAYER_KINDS, type MergedKind } from "./content-layout";
 import { localIssuePath } from "./catalog-merge";
 import { servedFile } from "./public-assets";
 import { conditionLeaves, conditionSchema, leafKind, leafReference } from "../src/content/condition-schemas";
+import { normalizeWord, wordPattern } from "../src/content/word-meanings";
 
 // Ownership of content across layers. Every journey folder must stay
 // removable on its own: its entries describe only its own cities, and what
@@ -15,7 +16,7 @@ import { conditionLeaves, conditionSchema, leafKind, leafReference } from "../sr
 
 type Namespace =
   | "city" | "landmark" | "asset" | "clue" | "battle" | "episode" | "reward" | "date" | "destination" | "effect"
-  | "background" | "memory" | "story" | "quiz" | "question" | "encounter" | "item" | "localWord";
+  | "background" | "memory" | "story" | "quiz" | "question" | "encounter" | "item" | "localWord" | "place";
 /** A reference: what it points to, through which field, and the referenced ID(s). */
 type Reference = { namespace: Namespace | readonly Namespace[]; field: string; ids: unknown };
 type Definition = { layer: string; file: string; cityId?: string };
@@ -101,7 +102,7 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
     destinations: (entry) => [...fields(entry, "city", ["cityId"]), ...fields(entry, "background", ["backgroundId"])],
   },
   "romance/effect_catalog.json": { effects: (entry) => fields(entry, "memory", ["memoryId"]) },
-  "romance/presentation.json": { backgrounds: (entry) => fields(entry, "asset", ["imageAssetId"]) },
+  "romance/presentation.json": { backgrounds: (entry) => [...fields(entry, "asset", ["imageAssetId"]), ...fields(entry, "place", ["placeId"])] },
   "romance/progression.json": { memoryCallbacks: (entry) => fields(entry, "memory", ["memoryId"]) },
   "tourism/catalog.json": {
     landmarks: (entry) => [
@@ -131,8 +132,10 @@ const DEFINITIONS: [MergedKind, string, Namespace][] = [
 /** `# background: id`, `# effect: id` and `# local_word: id` tags of an Ink source. */
 function inkTagReferences(source: string): Reference[] {
   const namespaces: Record<string, Namespace> = { background: "background", effect: "effect", local_word: "localWord" };
-  return [...source.matchAll(/#\s*(background|effect|local_word)\s*:\s*([A-Za-z0-9_]+)/gu)]
-    .map(([, tag, id]) => ref(namespaces[tag], `#${tag}`, id));
+  return [...[...source.matchAll(/#\s*(background|effect|local_word)\s*:\s*([A-Za-z0-9_]+)/gu)]
+    .map(([, tag, id]) => ref(namespaces[tag], `#${tag}`, id)),
+  // A # minigame:'s bg <id> (docs/13) is a background like # background:.
+  ...[...source.matchAll(/#\s*minigame\s*:[^#\n]*?\sbg\s+([A-Za-z0-9_]+)/gu)].map(([, id]) => ref("background", "#minigame bg", id))];
 }
 
 /** A served image (a path below public/, e.g. `assets/tourism/x.webp`) that a content file refers to. */
@@ -191,6 +194,75 @@ export function imageReferences(sources: Pick<ContentSources, "catalogs" | "mani
 }
 
 /**
+ * The English an encounter story shows as choices: the text of each Ink
+ * choice line (`* [Could you play one note? # option: ask]`) without its
+ * label, conditions, tags and divert. Narration and tags are Japanese or IDs.
+ */
+function inkChoiceTexts(source: string): string[] {
+  return source.split("\n").flatMap((line) => {
+    const choice = /^\s*[*+][\s*+]*(.*)$/u.exec(line);
+    return choice ? [choice[1].replace(/^\([^)]*\)/u, "").replaceAll(/\{[^}]*\}/gu, "").split("#")[0].split("->")[0].replaceAll(/[[\]]/gu, "")] : [];
+  });
+}
+
+/**
+ * Each word (normalized like the game's word lookup) of the English shown
+ * with word meanings, and the layers whose texts use it, each with the first
+ * file that does: questions and options of the quiz files (samples excluded),
+ * and of encounters: their quiz, their catalog option texts and the choices of
+ * their Ink story.
+ */
+export function wordUses(sources: ContentSources): Map<string, Map<string, string>> {
+  const uses = new Map<string, Map<string, string>>();
+  const use = (text: unknown, layer: string, file: string) => {
+    if (typeof text === "string") for (const word of text.match(wordPattern) ?? []) {
+      const key = normalizeWord(word);
+      const layers = uses.get(key) ?? new Map<string, string>();
+      if (!layers.has(layer)) layers.set(layer, file);
+      uses.set(key, layers);
+    }
+  };
+  const question = (value: unknown, layer: string, file: string) => {
+    if (!isObject(value)) return;
+    use(value.questionEn, layer, file);
+    for (const option of list(value.options)) use(option.textEn, layer, file);
+  };
+  for (const quiz of sources.quizFiles)
+    if (!quiz.example && isObject(quiz.data)) for (const item of list(quiz.data.questions)) question(item, quiz.layer, quiz.file);
+  const layerOf = (file: string) => sources.layers.find((layer) => layer.type === "journey" && file.startsWith(layer.directory + path.sep))?.id ?? "core";
+  const stories = new Map(sources.storyFiles.map((story) => [story.id, story]));
+  const encounters = sources.catalogs["encounters/catalog.json"];
+  const entries = isObject(encounters?.value) && Array.isArray(encounters.value.encounters) ? encounters.value.encounters : [];
+  entries.forEach((encounter: unknown, index: number) => {
+    if (!isObject(encounter)) return;
+    const file = encounters!.provenance.items.encounters[index];
+    if (isObject(encounter.quiz)) question(encounter.quiz.question, layerOf(file), file);
+    for (const option of list(encounter.options)) use(option.textEn, layerOf(file), file);
+    const story = typeof encounter.storyId === "string" ? stories.get(encounter.storyId) : undefined;
+    if (story) for (const text of inkChoiceTexts(story.source)) use(text, story.layer, story.file);
+  });
+  return uses;
+}
+
+/**
+ * The files that define each word meaning (learning/word-meanings.json of the
+ * core layer and the journey fragments), read from each file itself: the
+ * merged catalog keeps one owner per word, and fragments may repeat a word
+ * with the same meaning.
+ */
+function wordDefinitions(sources: ContentSources): Map<string, string[]> {
+  const definitions = new Map<string, string[]>();
+  for (const file of sources.catalogs["learning/word-meanings.json"]?.provenance.files ?? []) {
+    const bytes = sources.tree.files.get(path.relative(sources.root, file).split(path.sep).join("/"));
+    // The merge has already read every file as JSON.
+    const data: unknown = bytes ? JSON.parse(bytes.toString("utf8")) : undefined;
+    for (const word of isObject(data) && isObject(data.words) ? Object.keys(data.words) : [])
+      definitions.set(word, [...(definitions.get(word) ?? []), file]);
+  }
+  return definitions;
+}
+
+/**
  * Check that every layer keeps to its own content (spec: ownership checks).
  * - A city file in a journey folder must be listed in that journey's manifest.
  * - The core layer holds only CORE_LAYER_KINDS catalogs (no cities, travel,
@@ -202,6 +274,8 @@ export function imageReferences(sources: Pick<ContentSources, "catalogs" | "mani
  *   battles, quizzes, backgrounds, images, memories, effects, …) must be
  *   defined in the same layer or in the core layer; the core layer may refer
  *   only to core content.
+ * - The English of a journey's quizzes and encounters uses only word
+ *   meanings of the core dictionary or of the journey's own fragment.
  * - Images (tourism images, backgrounds, item icons, character images, a
  *   manifest's title art, a city's own-artwork backdrop) are served from the
  *   journey's own public/ folder or the root public/; the core layer uses only
@@ -275,6 +349,9 @@ export function checkContentOwnership(sources: ContentSources): void {
   for (const [key, namespace] of [["backgrounds", "background"], ["memories", "memory"]] as const)
     for (const [id, file] of Object.entries(presentation?.provenance.keys[key] ?? {})) define(namespace, id, file);
   for (const story of sources.storyFiles) define("story", story.id, story.file);
+  // A city map's places (a background names where it is by one: placeId).
+  for (const city of sources.cities)
+    if (isObject(city.travel)) for (const place of list(city.travel.places)) define("place", place.id, city.travelFile);
   const quizzes = sources.quizFiles;
   for (const quiz of quizzes.filter((item) => !item.example && isObject(item.data))) {
     const data = quiz.data as Entry;
@@ -378,6 +455,18 @@ export function checkContentOwnership(sources: ContentSources): void {
       checkReferences(tour.file, "", [...fields(tour.data, "city", ["cityId"]),
         ...list(tour.data.steps).map((step) => ref(EVENT, "steps[].eventId", step.eventId)), ...conditionReferences(tour.data.when, "when"),
         ...list(tour.data.offers).flatMap((offer) => conditionReferences(offer.when, "offers[].when"))]);
+
+  // Word meanings merge into one dictionary, so a journey's English could lean on another journey's fragment and lose its
+  // meanings when that journey is removed. A word with no meaning at all is left to the content pipeline.
+  const wordFiles = wordDefinitions(sources);
+  for (const [word, users] of wordUses(sources)) {
+    const files = wordFiles.get(word);
+    if (!files) continue;
+    for (const [layerId, file] of users)
+      if (!files.some((item) => layerOf(item).type === "core" || layerOf(item).id === layerId))
+        errors.push(`Reference to another layer: ${show(file)} uses the English word "${word}", whose meaning is defined in ${show(files[0])}; ` +
+          "a journey's quizzes and encounters may only use the word meanings of content/learning/word-meanings.json and of their own journey folder.");
+  }
 
   if (errors.length) throw new Error([...new Set(errors)].join("\n"));
 }

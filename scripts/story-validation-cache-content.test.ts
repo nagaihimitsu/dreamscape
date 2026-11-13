@@ -2,7 +2,7 @@ import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
-import { prepareContentFixture } from "../src/content/test-fixtures";
+import { oneSceneConfession, prepareContentFixture } from "../src/content/test-fixtures";
 import { buildContent } from "./content-pipeline";
 import { dateCatalogSchema } from "../src/content/schemas";
 import { isPlaceStory } from "../src/content/story-address";
@@ -11,8 +11,11 @@ import { openStoryValidationCache } from "./story-validation-cache";
 
 // The validation cache on the repository's real content: a build answered
 // from the cache gives the same result, warnings and errors as one without it.
+// The cache holds the full-branch validations of one-scene dates. Every date of
+// the repository is a knot of a place file since the Milano rewrite (walked as a
+// scene, never cached), so the content is the repository's with Milan's
+// confession in its one-scene form, as it was before the rewrite.
 
-const repository = path.resolve(import.meta.dirname, "..");
 let cacheDirectory: string;
 let fixture: string;
 
@@ -20,6 +23,7 @@ beforeAll(async () => {
   cacheDirectory = mkdtempSync(path.join(tmpdir(), "ink-cache-content-"));
   fixture = mkdtempSync(path.join(tmpdir(), "ink-cache-fixture-"));
   await prepareContentFixture(fixture);
+  await oneSceneConfession(fixture);
 });
 afterAll(() => {
   rmSync(cacheDirectory, { recursive: true, force: true });
@@ -45,16 +49,16 @@ const check = async (root: string, storyCache: ReturnType<typeof openStoryValida
 
 describe("Ink validation cache on the real content", () => {
   it("gives the same result and warnings as a build without it, and reuses every date validation", async () => {
-    const live = await check(repository, null);
+    const live = await check(fixture, null);
     expect(live.result).toBeDefined();
     const cold = openTestCache()!;
-    expect(await check(repository, cold)).toEqual(live);
+    expect(await check(fixture, cold)).toEqual(live);
     // Two declared contexts of a date can give the same inputs; the second one is reused even in the first build. The cache
     // holds the one-scene dates' validations (Milan's confession; the other dates are knots of place files, walked as scenes).
     expect(cold.stats.run).toBeGreaterThan(0);
     expect(cold.stats.reused).toBeLessThan(5);
     const warm = openTestCache()!;
-    expect(await check(repository, warm)).toEqual(live);
+    expect(await check(fixture, warm)).toEqual(live);
     expect(warm.stats).toEqual({ reused: cold.stats.reused + cold.stats.run, run: 0 });
   });
 

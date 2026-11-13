@@ -5,8 +5,10 @@ import { encounters } from "../../../src/content/encounters";
 import { clearCity, cityStart, departFromClearedCity, finishEpisode, newJourney, withAp } from "../../../src/dev/scenario-builders";
 import { getActiveBattleContent } from "../../../src/domain/battle";
 import { startDate, validateGameState, type GameState } from "../../../src/domain/game";
+import { openMiniGame } from "../../../src/domain/minigame";
 import { applyPlayerAction, listPlayerActions, playerActionChange, type PlayerAction } from "../../../src/domain/player-action";
 import { screenFor } from "../../../src/domain/screen";
+import { miniGameOptionId } from "../../../src/minigames/tag";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 
 /**
@@ -46,7 +48,8 @@ type Played = { state: GameState; lines: string[]; scenes: { id: string; day: nu
 
 /**
  * Play on with the screen's actions (never the map's) until `done`: a choice among `prefer` (option IDs) when the
- * screen shows one, else its first choice; the correct answer in a battle. Records the lines shown, the inserted
+ * screen shows one, else its first choice; at a mini-game, the outcome whose option ID is among `prefer`, else its
+ * first outcome; the correct answer in a battle. Records the lines shown, the inserted
  * scenes as they start (with the day) and the options chosen.
  */
 function play(initial: GameState, done: (state: GameState) => boolean, prefer: readonly string[] = []): Played {
@@ -66,9 +69,15 @@ function play(initial: GameState, done: (state: GameState) => boolean, prefer: r
     if (!actions.length) throw new Error(`no action on the screen ${screenFor(state)}`);
     let action = actions[0];
     const choices = actions.filter((item): item is Extract<PlayerAction, { index: number }> => "index" in item);
+    const outcomes = actions.filter((item): item is Extract<PlayerAction, { kind: "minigame" }> => item.kind === "minigame");
+    const game = openMiniGame(state);
     if (choices.length) {
       action = choices.find((item) => prefer.includes(optionOf(state, item.index) ?? "")) ?? choices[0];
       played.chosen.push(optionOf(state, action.index) ?? "");
+    } else if (game && outcomes.length) {
+      // A # minigame: shows the game in place of its choices (docs/13): its outcome takes the choice of the same option ID.
+      action = outcomes.find((item) => prefer.includes(miniGameOptionId(game.tag, item.outcome))) ?? outcomes[0];
+      played.chosen.push(miniGameOptionId(game.tag, action.outcome));
     }
     const battle = state.activeBattle;
     if (battle?.phase === "question")
@@ -256,10 +265,12 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
     const jaipurStart = () => (jaipur ??= finishEpisode(cityStart("jaipur"), "gt_jaipur_main_hawa_mahal"));
 
     it("plays the mehndi night (「明日にする」 leaves it for another night), the morning after, and the night again once", () => {
+      // The night is the mehndi_hidden_name mini-game: its outcome later (「明日にする」, # later) leaves it, found ends it.
       const jalMahal = playDate(jaipurStart(), "gt_jaipur_date_jal_mahal", ["you_decide"]);
       expect(jalMahal.chosen).toContain("you_decide");
-      const first = rest(jalMahal.state, 20 * 60, ["tomorrow_then", "did_hear"]);
+      const first = rest(jalMahal.state, 20 * 60, ["later", "did_hear"]);
       expect(ids(first)).toEqual(["gt_jaipur_hotel_mehndi_night", "gt_jaipur_hotel_mehndi_morning"]);
+      expect(first.chosen).toContain("later");
       expect(first.scenes.map((scene) => scene.day)).toEqual([jalMahal.state.travel.day, jalMahal.state.travel.day + 1]);
       expect(shown(first, "逃げたね。いいよ。明日の方が、濃くて見つけやすいかも")).toBe(true);
       expect(shown(first, "あら。ここ、名前が書いてある。ヒンディー語で。")).toBe(true);
@@ -267,8 +278,9 @@ describe("Golden Triangle inserted scenes (GT-4)", () => {
       expect(first.state.seenEncounterIds).toContain("gt_jaipur_hotel_mehndi_night");
       expect(first.state.completedEncounterIds).not.toContain("gt_jaipur_hotel_mehndi_night");
       expect(first.state.completedEncounterIds).toContain("gt_jaipur_hotel_mehndi_morning");
-      const second = rest(first.state, 20 * 60, ["search_patiently"]);
+      const second = rest(first.state, 20 * 60, ["found"]);
       expect(ids(second)).toEqual(["gt_jaipur_hotel_mehndi_night"]);
+      expect(second.chosen).toContain("found");
       expect(shown(second, "今夜も、彼女が手のひらを差し出してきた。")).toBe(true);
       expect(shown(second, "けれど、何と書いてあるかは、もう知っている。")).toBe(true);
       expect(second.state.completedEncounterIds).toContain("gt_jaipur_hotel_mehndi_night");

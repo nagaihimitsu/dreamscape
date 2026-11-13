@@ -74,7 +74,7 @@
       "completionReward": {
         "id": "battle_scala_first",
         "ap": 1,
-        "titleJa": "スカラ座の対決を初めて完了"
+        "titleJa": "スカラ座の推理クイズを初めて完了"
       },
       "requiredEpisodeIds": [],
       "titleJa": "椅子にも身元がある",
@@ -86,7 +86,7 @@
       "completionReward": {
         "id": "battle_brera_first",
         "ap": 1,
-        "titleJa": "ブレラの対決を初めて完了"
+        "titleJa": "ブレラの推理クイズを初めて完了"
       },
       "requiredEpisodeIds": [],
       "titleJa": "青い布をほどくまで",
@@ -229,7 +229,7 @@
       "trigger": "battle_complete",
       "ap": 1,
       "minScore": null,
-      "titleJa": "都市ボスとの対決を初めて完了"
+      "titleJa": "都市フィナーレのクイズを初めて完了"
     },
     {
       "id": "victory_milano_finale_first",
@@ -237,7 +237,7 @@
       "trigger": "battle_score",
       "ap": 1,
       "minScore": 3,
-      "titleJa": "都市ボスで初めて3問以上正解"
+      "titleJa": "都市フィナーレのクイズで初めて3問以上正解"
     },
     {
       "id": "city_milano_first_clear",
@@ -269,7 +269,7 @@
       "trigger": "episode_clear",
       "ap": 1,
       "minScore": null,
-      "titleJa": "スカラ座の対決を初めてクリア"
+      "titleJa": "スカラ座の推理クイズを初めてクリア"
     },
     {
       "id": "guide_brera_first",
@@ -293,7 +293,7 @@
       "trigger": "episode_clear",
       "ap": 1,
       "minScore": null,
-      "titleJa": "ブレラの対決を初めてクリア"
+      "titleJa": "ブレラの推理クイズを初めてクリア"
     }
   ]
 }

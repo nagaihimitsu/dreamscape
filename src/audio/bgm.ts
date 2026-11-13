@@ -32,7 +32,7 @@ export function trackUseJa(trackId: string): string | undefined {
 }
 
 /** The level of each lowering (a voice's halves it again: loop-player.ts). */
-const DUCK_LEVELS: Readonly<Record<MusicDuck, number>> = { none: 1, quiz: 0.35, quiet: 0.5, travel: 0.6 };
+const DUCK_LEVELS: Readonly<Record<MusicDuck, number>> = { none: 1, quiz: 0.35, quiet: 0.5, travel: 0.6, minigame: 0.25 };
 
 const player = createLoopPlayer({
   part: "bgm",
@@ -53,6 +53,14 @@ export function playSceneMusic(target: SceneMusic): void {
 /** A line's voice starts or ends (src/components/useVoice.ts): the music is halved while it plays. */
 export function duckForVoice(playing: boolean): void {
   player.duckForVoice(playing);
+}
+
+/**
+ * English read aloud starts or is over (src/audio/speech-audio.ts): the music is lowered as for a voice while it reads,
+ * and plays on after it.
+ */
+export function duckMusicForSpeech(reading: boolean): void {
+  player.duckForSpeech(reading);
 }
 
 /**

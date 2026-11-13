@@ -4,7 +4,7 @@ import { dialogueExpressions, dialogueReactions, episodes, landmarks, learningTr
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
-import { battleChrome, getActiveBattleContent, getBattleOutcome } from "../../domain/battle";
+import { battleBackgroundId, battleChrome, getActiveBattleContent, getBattleOutcome } from "../../domain/battle";
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
@@ -21,11 +21,12 @@ import { useSceneTap } from "../../components/useSceneTap";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { CanalScene } from "../../components/CanalScene";
 import { SceneHeading, SceneNotebookTool } from "../../components/SceneHeading";
-import { CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
-import { portraitFocus } from "../../components/speaker-focus";
+import { CharacterFigure, CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
+import { ChoicePoint } from "../../minigames/host/ChoicePoint";
+import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
+import { oppositeIsEnemy, sceneStageOf, stageLine } from "../../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
-import { useSpeakingPerson } from "../../components/useSpeakingPerson";
-import { speakingPerson } from "../../domain/scene-person";
+import { useSceneStage } from "../../components/useSceneStage";
 import { useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
 import { useDialogueLog } from "../../components/DialogueLog";
@@ -321,10 +322,11 @@ export function BattleScreen({
   const chrome = battleChrome(active, battle);
   const choosing = chrome.choosing;
   const partEnd = !!chrome.advance;
-  const backgroundId = frame?.background ?? battle.backgroundId;
+  // The line's background; over a quiz, the reasoning and the result the one its last line showed (battleBackgroundId).
+  const backgroundId = battleBackgroundId(active, battle);
   const landmark = landmarks.find((item) => item.id === battle.landmarkId);
   // Keep the same registered location photograph across dialogue, questions
-  // and results. A city-wide finale has no landmark and keeps its own scene.
+  // and results. A city-wide finale has no landmark: its story's background.
   const landmarkAsset = tourismAssets.find((asset) => asset.id === landmark?.imageAssetId);
   // The city whose outfit the heroine wears here (her portrait and her face by the quiz card).
   const heroineCityId = battle.cityId ?? landmark?.cityId;
@@ -340,16 +342,18 @@ export function BattleScreen({
   const heroineEmotion = heroineReaction?.expression ?? (frame && frame.speaker !== "enemy"
     ? resolveDialogueExpression(dialogueExpressions, storyId, frame)
     : "neutral");
-  // A person line whose portrait is the opponent's own is the opponent speaking under the name the heroine knows them by
-  // before they give theirs (an alias of progression/story.json people, 2026-11-11): their portrait, expression and
-  // reaction stay the opponent's.
-  const lineSpeaker = isDialogue && frame ? speakingPerson(storyState.people, frame) : undefined;
-  const opponentSpeaks = frame?.speaker === "enemy" || (!!lineSpeaker && lineSpeaker === characterForBattle(battle.id));
+  // The opponent stands from the start; a person with a figure who speaks in their own name takes their place from that
+  // line until the opponent speaks or reacts again, or the talk gives way to a question, where the opponent asks
+  // (scene-stage.ts). She stands in the talk. A person line whose figure is the opponent's own is the opponent speaking
+  // under the name the heroine knows them by before they give theirs (an alias of progression/story.json people,
+  // 2026-11-11): their figure, expression and reaction stay the opponent's.
+  const opponentFigure = characterForBattle(battle.id);
+  const stageScene = sceneStageOf("battle", opponentFigure);
+  const line = isDialogue && frame ? stageLine(frame, storyState.people, { enemy: !!enemyReaction }) : { enemyCue: true };
+  const { stage, focus } = useSceneStage(line, stageScene);
+  const personId = oppositeIsEnemy(stage, stageScene) ? undefined : stage.opposite?.figure;
+  const opponentSpeaks = frame?.speaker === "enemy" || line.personFigure === opponentFigure;
   const enemyEmotion = enemyReaction?.expression ?? (opponentSpeaks && frame ? frame.emotion : "neutral");
-  // A person with a portrait who speaks in their own name takes the opponent's place from that line
-  // (speakingPerson) until the opponent speaks or reacts again, or the talk gives way to a question.
-  const speaking = opponentSpeaks ? undefined : lineSpeaker;
-  const personId = useSpeakingPerson(speaking, !isDialogue || opponentSpeaks || !!enemyReaction);
   const plate = speakerPlate(frame ?? { speaker: "narrator" }, { heroine: game.heroineName, player: game.playerName, enemy: battle.enemyNameJa },
     storyState.people);
   const speaker = plate.name;
@@ -477,7 +481,7 @@ export function BattleScreen({
                 sceneId={battle.id}
                 cityId={heroineCityId}
                 emotion={heroineEmotion}
-                focus={portraitFocus(frame?.speaker, "heroine")}
+                focus={focus.heroine}
                 stand={staging?.stand}
               >
                 {heroineReaction?.mark && <ComicEffect effect={heroineReaction.mark} reduceMotion={reduceMotion} cueKey={displayedStoryState ?? ""} />}
@@ -485,12 +489,11 @@ export function BattleScreen({
             </div>
           )}
           <div className="battle-character-slot battle-enemy">
-            {personId ? <CharacterPortrait key={personId} characterId={personId}
-              focus={speaking === personId ? "speaking" : portraitFocus(frame?.speaker, "enemy")} /> :
+            {personId ? <CharacterPortrait key={personId} characterId={personId} focus={focus.opposite} /> :
             <CharacterPortrait
-              characterId={characterForBattle(battle.id)}
+              characterId={opponentFigure}
               emotion={enemyEmotion}
-              focus={portraitFocus(opponentSpeaks ? "enemy" : frame?.speaker, "enemy")}
+              focus={focus.opposite}
               fallback={battle.portrait === "abstract" ? undefined :
                 <EnemyPortrait
                   emotion={enemyEmotion}
@@ -623,7 +626,12 @@ export function BattleScreen({
                 onAdvance={advanceSafely}
               />
             </LineStage>
-            {choosing && onChoose && <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="battle-choice" />}
+            {choosing && onChoose && <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
+              heroine: <CharacterFigure characterId="heroine" emotion={heroineEmotion} sceneId={battle.id} cityId={heroineCityId} />,
+              person: <CharacterFigure characterId={personId ?? opponentFigure} />,
+            }}>
+              <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="battle-choice" />
+            </ChoicePoint>}
             {chrome.advance && <button
               className="next"
               data-testid={chrome.advance.testId}
@@ -842,6 +850,7 @@ export function BattleScreen({
       </section>
       </div>
       {isDialogue && <DialogueWindowRestore state={windowVisibility} />}
+      <MiniGameSlot />
       {cutIn && <ReasoningCutIn kind={cutIn} reduceMotion={reduceMotion} onComplete={() => {
         setCutIn(null);
         window.requestAnimationFrame(() =>

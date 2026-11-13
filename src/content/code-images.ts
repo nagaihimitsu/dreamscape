@@ -15,7 +15,7 @@ export function reactionMarkImage(mark: ReactionMark): string {
 }
 
 /** The reduced copies of tourism photos that content:build writes (scripts/derived-images.ts). */
-export type DerivedImageKind = "card" | "backdrop";
+export type DerivedImageKind = "card" | "backdrop" | "recap";
 
 /**
  * The served file of a tourism photo's reduced copy, written by content:build

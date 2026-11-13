@@ -4,6 +4,7 @@
 
 - `drafts/`：下書き・観察カードなどの作業資料
 - `research/`：調査記録
+- `voice/`：台詞の声の記録。声を作る人に渡した台本の控え（渡した日付のフォルダごと）と、届いた声が言っている文（`recorded.json`）。`npm run voice:script`・`voice:tag`・`voice:changes` と `content:build` が使う。例：[インド編](golden_triangle/voice/README.md)
 - 編集メモ：ミラノ編の観光クイズの編集上の棚卸しは [quiz-editorial-review.md](milano/quiz-editorial-review.md)、まだ使っていない小話の候補は [milano/drafts/](milano/drafts/) にある。候補はゲームに読み込まれず、史実の最終確認や公開の承認を示すものではない
 - その他：旅行編専用の制作補助（例：インド編の `scaffold/`）や編集メモ（例：ミラノ編の画像の権利情報の写し `image-licenses/`）、配信しない自作の絵の元画像（例：インド編の移動画面の背景の元のJPEG `backdrops/`。配信するWebPは `content/journeys/golden_triangle/public/assets/backdrops/`）
 

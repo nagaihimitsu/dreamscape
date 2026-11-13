@@ -47,6 +47,9 @@
     "journey:scenario": "tsx scripts/check-journey-scenario.ts",
     "journey:readthrough": "tsx scripts/inspect-journey-readthrough.ts",
     "balance:report": "tsx scripts/inspect-journey-balance.ts",
+    "voice:script": "tsx scripts/voice-script-cli.ts",
+    "voice:changes": "tsx scripts/voice-changes-cli.ts",
+    "voice:tag": "tsx scripts/voice-tag-cli.ts",
     "story:move-memos": "tsx scripts/move-story-memos.ts"
   },
   "dependencies": {

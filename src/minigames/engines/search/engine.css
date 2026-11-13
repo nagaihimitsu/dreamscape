@@ -1,0 +1,40 @@
+/* The search engine (EnginePlay.tsx): the skin's field of spots fills the middle; the hint and the skin's buttons sit at
+   the bottom in thumb reach. */
+.mg-engine-search { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
+.mg-engine-search .mg-search-field {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.mg-engine-search .mg-search-controls { flex: none; padding: 8px 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
+.mg-engine-search .mg-search-hint { margin: 0 0 8px; font-size: 13px; line-height: 1.5; text-align: center; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+.mg-engine-search .mg-search-buttons { display: grid; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; gap: 8px; }
+.mg-engine-search .mg-search-button {
+  justify-content: center;
+  min-height: 56px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: center;
+  touch-action: manipulation;
+}
+.mg-engine-search .mg-search-button.secondary { border-color: rgba(255, 250, 241, 0.5); background: rgba(20, 24, 32, 0.55); color: var(--ds-on-slate); }
+.mg-engine-search .mg-search-button[aria-disabled="true"] { background: var(--ds-slate-900); color: var(--ds-on-slate-muted); }
+.mg-engine-search .mg-search-auto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  margin: 0;
+  border-radius: 12px;
+  background: var(--ds-chip-bg);
+  font-size: 15px;
+}
+@media (max-height: 620px) {
+  .mg-engine-search .mg-search-controls { padding-top: 6px; }
+  .mg-engine-search .mg-search-hint { margin-bottom: 4px; font-size: 12px; }
+  .mg-engine-search .mg-search-button, .mg-engine-search .mg-search-auto { min-height: 48px; }
+}

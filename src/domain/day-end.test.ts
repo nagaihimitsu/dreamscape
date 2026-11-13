@@ -11,7 +11,8 @@ import { createGame, type GameState } from "./game";
 import { listPlayerActions } from "./player-action";
 import { bookTour } from "./tour";
 import { DAY_END, DAY_START, moveToPlace, TODAY_PLACES_MAX } from "./travel";
-import { beginTravelEvent, getTravelSleepOptions, sleepAtHotel } from "./travel-game";
+import { getTravelWaitOptions } from "./travel-destinations";
+import { beginTravelEvent, getTravelSleepOptions, sleepAtHotel, travelWaitEnd, waitForTravel } from "./travel-game";
 
 /** A new Milan game (free time at the hotel, 9:00 of day 1) with the party moved to a place and a time in memory. */
 function at(placeId: string, minute: number): GameState {
@@ -68,6 +69,50 @@ describe("the rest at the day's end", () => {
     expect(getTravelSleepOptions(latest).some((option) => option.plan.ok)).toBe(false);
     expect(dayEndRest(latest)).toBeNull();
     expect(getDayEnd(latest)).toBeNull();
+  });
+});
+
+// The evening's last wait (2026-11-13 user decision): at the inn a wait that would pass 21:00 ends at 21:00 and the day's end
+// follows as after any other way to 21:00; away from the inn it is refused (the party must be able to get back by 21:00).
+describe("the last wait of the evening", () => {
+  const { hotelPlaceId: hotel } = getCityContent("milano").travelSettings;
+  const evening = DAY_END - 20;
+
+  it("at the inn ends at 21:00, offered as 「21:00まで待つ」, and the game then rests as at any 21:00 with no night action", () => {
+    const inn = at(hotel, evening);
+    expect(travelWaitEnd(inn, 30)).toBe(DAY_END);
+    expect(travelWaitEnd(inn, 10)).toBe(evening + 10);
+    expect(getTravelWaitOptions(inn)).toEqual([{ minutes: 20, until: DAY_END, available: true }]);
+    expect(getDayEnd(inn)).toBeNull();
+    // The menu's wait and a 30-minute one (a player action, an older menu) both stop at 21:00.
+    for (const minutes of [20, 30]) {
+      const waited = waitForTravel(inn, minutes, inn.revision);
+      expect(waited.travel).toMatchObject({ minute: DAY_END, currentPlaceId: hotel, returnReserve: 0 });
+      expect(waited.revision).toBe(inn.revision + 1);
+      expect(getDayEnd(waited)).toEqual(getDayEnd(at(hotel, DAY_END)));
+      expect(getDayEnd(waited)?.actions).toEqual([]);
+      expect(kinds(waited)).toEqual(["rest"]);
+    }
+  });
+
+  it("at the inn brings the night screen when a night action is open", () => {
+    const inn = { ...at(hotel, evening), pendingApRewards: [{ rewardId: "test_reward", earnedAp: 2, remainingAp: 2 }] };
+    const waited = waitForTravel(inn, 30, inn.revision);
+    expect(waited.travel.minute).toBe(DAY_END);
+    expect(getDayEnd(waited)?.actions).toEqual(["claim_ap"]);
+  });
+
+  it("away from the inn is refused when it would pass 21:00, as before", () => {
+    const away = at("p_duomo", evening);
+    expect(travelWaitEnd(away, 30)).toBeNull();
+    expect(getTravelWaitOptions(away)).toEqual([{ minutes: 30, until: null, available: false }]);
+    expect(waitForTravel(away, 30, away.revision)).toBe(away);
+  });
+
+  it("is none from 21:00 on, at the inn too", () => {
+    const night = at(hotel, DAY_END);
+    expect(travelWaitEnd(night, 30)).toBeNull();
+    expect(waitForTravel(night, 30, night.revision)).toBe(night);
   });
 });
 

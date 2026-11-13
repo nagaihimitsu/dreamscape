@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { buildContent } from "../../scripts/content-pipeline";
 import { changeCatalogEntry, prepareContentFixture, storySourceFile } from "./test-fixtures";
+import { addCatalogWishToContent, WISH } from "../../tests/fixtures/catalog-wish";
 
 let fixture: string;
 beforeEach(async () => {
@@ -12,8 +13,12 @@ beforeEach(async () => {
 });
 afterEach(async () => { await rm(fixture, { recursive: true, force: true }); });
 
-/** The Galleria fortune encounter's story, a one-scene catalog encounter (no published Ink asks about an item, so the tests add the query; a place file's scenes read items with cond("item …")). */
-const PICK_STORY = "encounters/milano_galleria_fortune";
+/**
+ * A one-scene catalog encounter's story: the tests' wish in its catalog form, added to the fixture's Milan (no Milan encounter is
+ * left in the catalog since 2026-11-13). No published Ink asks about an item, so the tests add the query; a place file's scenes
+ * read items with cond("item …").
+ */
+const PICK_STORY = `encounters/${WISH}`;
 /** The story with an Ink item query (`has_item_status`) on the item, before its last line. */
 function withItemQuery(source: string, itemId: string): string {
   expect(source).not.toContain("has_item_status");
@@ -23,8 +28,7 @@ function withItemQuery(source: string, itemId: string): string {
 
 describe("encounter build integration", () => {
   it("rejects a missing item in the actual encounter catalog", async () => {
-    // The Galleria fortune is the encounter Milan's catalog still holds (the others are knots of place files).
-    await changeCatalogEntry(fixture, "encounters/catalog.json", "encounters", "galleria_fortune", (event) => {
+    await addCatalogWishToContent(fixture, (event) => {
       event.options[0].giftItemId = "missing_item";
     });
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown encounter item");
@@ -38,13 +42,13 @@ describe("encounter build integration", () => {
   }, 120000);
 
   it("rejects an unknown item referenced in encounter Ink", async () => {
-    const file = path.join(fixture, storySourceFile(PICK_STORY));
+    const file = await addCatalogWishToContent(fixture);
     await writeFile(file, withItemQuery(await readFile(file, "utf8"), "missing_item"));
     await expect(buildContent(fixture, false)).rejects.toThrow("has_item_status requires a known literal item and status");
   }, 120000);
 
   it("accepts a known item of the encounter's own city referenced in encounter Ink", async () => {
-    const file = path.join(fixture, storySourceFile(PICK_STORY));
+    const file = await addCatalogWishToContent(fixture);
     await writeFile(file, withItemQuery(await readFile(file, "utf8"), "blue_pick"));
     await expect(buildContent(fixture, false)).resolves.toBeDefined();
   }, 120000);
@@ -85,7 +89,7 @@ describe("encounter build integration", () => {
     }));
     const settings = JSON.parse(await readFile(path.join(fixture, "content/journeys/milano/travel/milano-settings.json"), "utf8"));
     await writeFile(path.join(fixture, "content/journeys/milano/travel/fixture_city-settings.json"), JSON.stringify({ ...settings, hotelPlaceId: "fixture_hotel" }));
-    const storyFile = path.join(fixture, storySourceFile(PICK_STORY));
+    const storyFile = await addCatalogWishToContent(fixture);
     await writeFile(storyFile, withItemQuery(await readFile(storyFile, "utf8"), "foreign_item"));
     await expect(buildContent(fixture, false)).rejects.toThrow(`Encounter story item city mismatch: ${PICK_STORY}/foreign_item`);
   }, 120000);

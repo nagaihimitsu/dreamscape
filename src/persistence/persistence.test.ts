@@ -293,7 +293,7 @@ describe("save format v23 (docs/07: one format per version, no migration)", () =
   });
 
   it("round-trips the condition records written in play, and keeps a save of this version without them as unreadable and untouched", () => {
-    /** The encounter met in a new observation of its landmark and played with one option to its end. */
+    /** The encounter met at its moment (Nora and Tino after their landmark's battle) and played with one option to its end; its moment goes on. */
     const play = (initial: GameState, encounterId: string, optionId: string) => {
       let state = meetEncounter(initial, encounterId);
       for (let step = 0; state.activeEncounter; step++) {
@@ -301,7 +301,7 @@ describe("save format v23 (docs/07: one format per version, no migration)", () =
         const active = state.activeEncounter;
         const choice = active.frame.choices.find((item) => item.optionId === optionId);
         state = choice ? chooseEncounter(state, choice.index, state.revision)
-          : encounterCanFinish(state) ? finishEncounter(state, state.revision) : advanceEncounter(state, state.revision);
+          : encounterCanFinish(state) ? continueTourismEncounters(state, finishEncounter(state, state.revision), () => 0) : advanceEncounter(state, state.revision);
       }
       return state;
     };
@@ -351,15 +351,15 @@ describe("save format v23 (docs/07: one format per version, no migration)", () =
     ] as const)
       expect(() => validateGameState(story(shape)), JSON.stringify(shape)).toThrow(zodIssues(issue));
     // An encounter in progress belongs to the moment record (stage 3b): started in it, at its landmark's visit, its
-    // current step (or, met while observing, from the observation).
-    const meeting = meetEncounter(completedCity("milano"), "duomo_string");
-    expect(meeting.occasion).toMatchObject({ landmarkId: "duomo_milano", at: "main:observe", started: ["duomo_string"] });
+    // current step (or, met while observing, from the observation: the Galleria's wish).
+    const meeting = meetEncounter(completedCity("milano"), "galleria_fortune");
+    expect(meeting.occasion).toMatchObject({ landmarkId: "galleria_vittorio_emanuele_ii", at: "main:observe", started: ["galleria_fortune"] });
     expect(validateGameState(JSON.parse(JSON.stringify(meeting)))).toEqual(meeting);
     const moment = (fields: object) => ({ ...meeting, occasion: { ...meeting.occasion!, ...fields } });
     // No moment at all: the shape of the removed free-time start.
     expect(() => validateGameState({ ...meeting, occasion: null })).toThrow("道中交流の時点の記録が一致しません。");
     expect(() => validateGameState(moment({ started: [] }))).toThrow("道中交流の時点の記録が一致しません。");
-    expect(() => validateGameState(moment({ landmarkId: "galleria_vittorio_emanuele_ii" }))).toThrow(/一致しません。/u);
+    expect(() => validateGameState(moment({ landmarkId: "duomo_milano" }))).toThrow(/一致しません。/u);
     expect(() => validateGameState(moment({ at: "left:observe" }))).toThrow("道中交流の時点の記録が一致しません。");
     // The record's shape is strict: refused by the schema before the moment check.
     expect(() => validateGameState(moment({ detour: { eventId: "milano_duomo_episode" } })))

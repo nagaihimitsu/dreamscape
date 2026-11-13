@@ -83,13 +83,16 @@ type ItemEncounter = {
   cityId: string; encounterId: string; itemId: string; itemName: string; correctOptionId?: string;
   /** The choices of every encounter that use the item up (`<encounter ID>:<option ID>`). */
   usingChoices: string[];
+  /** Where in its landmark's visit it runs: while observing (`observe`), or before or after the main part. */
+  slot: string;
 };
 
-/** The first encounter Debug can open that gives an item, from the dev server's content. */
+/** The first encounter Debug can open that gives an item and is answered with a choice, from the dev server's content. */
 function itemEncounter(page: Page): Promise<ItemEncounter | undefined> {
   return page.evaluate(async (modules) => {
     const { getCities } = await import(/* @vite-ignore */ modules.content);
     const { encounters } = await import(/* @vite-ignore */ modules.encounters);
+    const { encounterVisitSlot } = await import(/* @vite-ignore */ modules.encounter);
     const { debugTargets } = await import(/* @vite-ignore */ modules.debugState);
     type Option = { id: string; consumeItemId?: string };
     for (const city of getCities().filter((item: { productionStatus?: string }) => item.productionStatus !== "prototype"))
@@ -99,21 +102,26 @@ function itemEncounter(page: Page): Promise<ItemEncounter | undefined> {
         const itemName = encounters.items.find((item: { id: string }) => item.id === itemId)?.nameJa;
         const usingChoices = encounters.encounters.flatMap((item: { id: string; options?: Option[] }) =>
           (item.options ?? []).filter((option) => option.consumeItemId === itemId).map((option) => `${item.id}:${option.id}`));
-        if (itemId) return { cityId: city.id, encounterId: encounter.id, itemId, itemName, correctOptionId: encounter.quiz?.question.correctOptionId, usingChoices };
+        if (itemId && encounter.options?.length)
+          return { cityId: city.id, encounterId: encounter.id, itemId, itemName, correctOptionId: encounter.quiz?.question.correctOptionId, usingChoices,
+            slot: encounterVisitSlot(encounter.id) ?? "" };
       }
     return undefined;
   }, devModules);
 }
 
 // AGENTS.md 「英語は…道中交流で主人公の返答・行動を選ぶ3択に用いる」「品物は所属都市を登録し、その都市で入手する…」.
-test("an encounter answered in English gives its item, and the scene ends back in its landmark's observation", { tag: tier.debug }, async ({ page }) => {
+test("an encounter answered in English gives its item, and its moment goes on (to the observation, or to free time after a battle)", { tag: tier.debug }, async ({ page }) => {
   const encounter = await itemEncounter(page);
   expect(encounter, "an encounter with an item that Debug can open").toBeDefined();
+  // A scene after a landmark's battle (Milan's Nora) is met from the journey's start, as Debug plays the visit to it.
+  const observing = encounter!.slot === "observe";
   // A won reward needs the saved ticket below its chance: the positive ticket (0) always wins.
-  await ops.openDebugScene(page, settings({ cityId: encounter!.cityId, scene: "encounter", id: encounter!.encounterId, roll: "positive" }));
+  await ops.openDebugScene(page, settings({ cityId: encounter!.cityId, scene: "encounter", id: encounter!.encounterId, roll: "positive",
+    ...(observing ? {} : { progress: "initial" as const }) }));
   await expect(page.getByTestId("encounter-screen")).toBeVisible();
-  // An encounter that follows in the same observation may use the item up (since #117, Milan's 「券を一枚、手の中へ」 after
-  // 「回らない願掛け」): there the first choice that keeps it is pressed, so the item is still held back in the observation.
+  // A scene that follows in the same moment may use the item up: there the first choice that keeps it is pressed, so the
+  // item is still held when the moment goes on.
   const pick = (state: GameState) => {
     const active = state.activeEncounter;
     if (active?.phase === "quiz") return encounter!.correctOptionId!;
@@ -122,11 +130,16 @@ test("an encounter answered in English gives its item, and the scene ends back i
   };
   const done = await playUntil(page, (state) => state.completedEncounterIds.includes(encounter!.encounterId), { source: debugGame, pick });
   expect(done.inventory[encounter!.itemId]).toBe("held");
-  // Debug meets the encounter in its landmark's observation, as play does (encounters start nowhere else);
-  // encounters waiting in the same observation may follow, and the scene ends back in that observation.
+  // Debug meets the encounter at its moment, as play does: met while observing, it ends back in that observation (encounters
+  // waiting there may follow); met after the battle, the visit goes on to free time.
   const after = await playUntil(page, (state) => !state.activeEncounter, { source: debugGame, pick });
-  expect(after.activeTourism, "the observation the encounter started from").not.toBeNull();
-  await expect(page.getByTestId("observation-viewport")).toBeVisible();
+  if (observing) {
+    expect(after.activeTourism, "the observation the encounter started from").not.toBeNull();
+    await expect(page.getByTestId("observation-viewport")).toBeVisible();
+  } else {
+    expect(after.activeTourism).toBeNull();
+    await expect(page.getByTestId("travel-menu")).toBeVisible();
+  }
   // There the header lists it among the items held in this city (over a conversation it shows them only
   // at a choice): its detail (or, with more items, the list of every held item) names it.
   await expect(await ops.openHeldItems(page)).toContainText(encounter!.itemName);

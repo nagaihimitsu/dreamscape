@@ -9,7 +9,7 @@ INCLUDE modules.ink
 # scene: arrival
 # person: gt_kamla
 # on_done: item gt_delhi_kamla_memo
-# background: gt_bg_delhi_hotel_hub
+# background: gt_bg_delhi_hotel_alley
 # speaker: narrator
 宿は住宅街の路地にあった。隣の古い家から段ボールが次々に運び出され、路地の真ん中では、プラスチックの椅子に座った小柄な老婦人が、落花生を割りながら運び手たちに指図している。将軍みたいに。
 # speaker: enemy
@@ -107,6 +107,7 @@ INCLUDE modules.ink
 祖母が喜びそうな返事だ
 # speaker: narrator
 # quiet: scene
+# leave: gt_aman
 アマンが帰ったあと、{heroine_name}はチャイの最後の一口を飲み干し、窓の外を見た。路地のトラックは、もう全部積み終わっている。
 {
 - ending_reached:
@@ -131,6 +132,7 @@ INCLUDE modules.ink
     # voice: gt_delhi_epilogue_008
     旅の連れに言うことじゃないかもしれないけど。今日、一人じゃなくてよかった
 }
+# background: gt_bg_delhi_hotel_alley
 # speaker: narrator
 翌朝六時。車の窓が下り、カムラが顔を出した。見送りに来た二人を見ても、表情は変えない。
 # speaker: narrator

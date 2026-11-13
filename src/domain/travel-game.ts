@@ -75,8 +75,8 @@ export function isUnclearedMainTravelEvent(state: GameState, eventId: string): b
   return !battlePlayed(state, eventId);
 }
 
-/** Ordinary dates and completed main events are not offered for replay.
- * Retryable confession/recovery conversations retain their existing rules. */
+/** Played dates and completed main events are not offered for replay, but a date its writer made repeatable
+ * (`repeatable`: a recovery conversation; a confession only by the writer's choice, as the journeys' are played once). */
 export function isCompletedTravelEvent(state: GameState, eventId: string): boolean {
   const event = getCityContent(state.currentCityId).travel.events.find((item) => item.id === eventId);
   if (!event) return false;
@@ -197,14 +197,28 @@ export function finishTravelEventIfComplete(previous: GameState, next: GameState
   return { ...next, travel: { ...next.travel, minute: active.endMinute, activeEvent: null } };
 }
 
+/**
+ * When a wait of `minutes` from now ends: that much later while it ends by the day's end (21:00); at the inn a wait that
+ * would pass 21:00 ends at 21:00 (2026-11-13 user decision: the party is home, so the evening's last wait brings the night,
+ * and the day's end follows as after any other way to 21:00). Null when it cannot be waited: from 21:00 on, or away from
+ * the inn past 21:00 (the party must be able to get back by then; waitForTravel also checks the way home).
+ */
+export function travelWaitEnd(state: Pick<GameState, "travel">, minutes: number): number | null {
+  const { minute, currentPlaceId, hotelPlaceId } = state.travel;
+  if (minute >= DAY_END) return null;
+  if (minute + minutes <= DAY_END) return minute + minutes;
+  return currentPlaceId === hotelPlaceId ? DAY_END : null;
+}
+
 export function waitForTravel(state: GameState, minutes: number, expectedRevision: number): GameState {
-  if (state.revision !== expectedRevision || hasActiveScene(state) ||
-      !Number.isSafeInteger(minutes) || minutes <= 0 || state.travel.minute + minutes > DAY_END) return state;
+  if (state.revision !== expectedRevision || hasActiveScene(state) || !Number.isSafeInteger(minutes) || minutes <= 0) return state;
+  const end = travelWaitEnd(state, minutes);
+  if (end === null) return state;
   const home = getTravelHomeRoutes(state, state.travel.currentPlaceId)
-    .filter((item) => item.cost <= state.travelBudget - tourKeepBack(state).money && state.travel.minute + minutes + item.minutes <= DAY_END)
+    .filter((item) => item.cost <= state.travelBudget - tourKeepBack(state).money && end + item.minutes <= DAY_END)
     .sort(compareRouteCost)[0];
   if (!home) return state;
-  return { ...state, revision: state.revision + 1, travel: { ...state.travel, minute: state.travel.minute + minutes, returnReserve: home.cost, returnDeadline: DAY_END } };
+  return { ...state, revision: state.revision + 1, travel: { ...state.travel, minute: end, returnReserve: home.cost, returnDeadline: DAY_END } };
 }
 
 /** `viaPlaceId`: undefined selects a feasible route for legacy callers; null

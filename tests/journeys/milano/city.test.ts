@@ -15,6 +15,7 @@ import {
   advanceDate,
   chooseDate,
   finishDate,
+  getDateAvailability,
   type GameState,
 } from "../../../src/domain/game";
 import {
@@ -40,11 +41,10 @@ import {
   startTourismBattle,
   openTourism,
   getTourismAvailability,
-  closeTourism,
 } from "../../../src/domain/tourism";
 import { startCityEpilogue, advanceCityEpilogue } from "../../../src/domain/epilogue";
-import { chooseEncounter, advanceEncounter, encounterCanFinish, finishEncounter } from "../../../src/domain/encounter";
 import { meetEncounter } from "../../fixtures/encounter-moment";
+import { playInsertedScenes } from "../../../src/dev/scenario-builders";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 const episodes = allEpisodes.filter((episode) => episode.cityId === "milano");
 const restore = (state: GameState) => {
@@ -164,22 +164,17 @@ function playDate(initial: GameState, id: string, choices = [0, 0]): GameState {
 }
 const finale = () => episodes.find((item) => item.kind === "city_finale")!;
 
+/**
+ * Nora's pick: her scene comes after the Duomo's battle (here played again in a visit of its own, as the map no longer leads
+ * there), and her first choice gives the pick; then free time.
+ */
 function collectPick(initial: GameState): GameState {
   let state = meetEncounter(initial, "duomo_string");
   expect(state.activeEncounter?.encounterId).toBe("duomo_string");
-  for (let count = 0; state.activeEncounter && count < 100; count++) {
-    const active = state.activeEncounter;
-    state = active.frame.choices.length
-      ? chooseEncounter(state, 0, state.revision)
-      : encounterCanFinish(state)
-        ? finishEncounter(state, state.revision)
-        : advanceEncounter(state, state.revision);
-  }
+  state = playInsertedScenes(state);
   expect(state.activeEncounter).toBeNull();
   expect(state.inventory.blue_pick).toBe("held");
-  // The encounter returned to the Duomo's observation; leave it for free time.
-  expect(state.activeTourism?.landmarkId).toBe("duomo_milano");
-  return restore(closeTourism(state, state.revision));
+  return restore(state);
 }
 
 /** Build an accepted relationship through current dates and confession. */
@@ -233,8 +228,9 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(loaded.confessionStatus).toBe(ending.confessionStatus);
     expect(loaded.inventory.blue_pick).toBe("held");
     expect(loaded.memories).toEqual(ending.memories);
-    expect(loaded.ap).toBe(ending.ap);
-    expect(loaded.pendingApRewards).toEqual(ending.pendingApRewards);
+    // Collecting the pick played the Duomo's battle again (its rewards are the battle's): the save keeps what it holds.
+    expect(loaded.ap).toBe(state.ap);
+    expect(loaded.pendingApRewards).toEqual(state.pendingApRewards);
     expect(loaded.travelBudget).toBe(ending.travelBudget);
   });
   it("allows sightseeing in any order while keeping the city finale locked", () => {
@@ -374,7 +370,7 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(ended.confessionStatus).toBe("accepted");
     expect(startDate(ended, date.id)).toBe(ended);
   });
-  it("funds optional dates and a deferred-then-accepted confession from zero-score city play", () => {
+  it("funds optional dates and a deferred confession from zero-score city play; the confession is played once", () => {
     let state = finishEpisode(tour(), finale(), 0);
     state = enterFreeTime(state, state.revision);
     expect(totalAp(state)).toBe(19);
@@ -383,12 +379,13 @@ describe("Milan's four episodes and distinct city finale", () => {
     state = playDate(state, "milano_invitation_01", [0]);
     state = playDate(state, "milano_confession_01", [0]);
     expect(state.confessionStatus).toBe("deferred");
-    // Respecting her request for time raises trust; a second confession can
-    // then succeed without changing the battle rewards.
+    // Respecting her request for time; the confession, played once like every date (2026-11-13), stays a memory.
     state = playDate(state, "milano_reassurance_01", [1]);
     state = playDate(state, "milano_night_01", [0, 1]);
-    state = playDate(state, "milano_confession_01", [0]);
-    expect(state.endingReached).toBe(true);
+    expect(getDateAvailability(state, "milano_confession_01"))
+      .toEqual({ available: false, reason: "このひとときは、もう思い出になりました。" });
+    expect(startDate(state, "milano_confession_01")).toBe(state);
+    expect(state.endingReached).toBe(false);
     expect(totalAp(state)).toBe(11);
     expect(state.completedCityIds).toEqual(["milano"]);
   });

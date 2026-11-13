@@ -1,11 +1,14 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { DEFAULT_ITEM_ICON } from "../../content/code-images";
+import { RECAP_PHOTO_NOTE_JA } from "../../content/credits";
 import { Icon } from "../../components/icons";
+import { ImageCreditLine } from "../../components/ImageCredit";
 import { Modal } from "../../components/Modal";
+import { useMeasuredHeight } from "../../components/useMeasuredHeight";
 import { playSe } from "../../audio/sound-effects";
 import { reducedMotionNow, useNightCard } from "./NightRest";
-import type { ChapterStampCard, EndRoll, EpisodeTitleCard, MomentPhoto, PackedItem, Packing, ResumeRecap } from "./journey-moments";
+import type { ChapterStampCard, EndRoll, EpisodeTitleCard, PackedItem, Packing, RecapPicture, ResumeRecap } from "./journey-moments";
 import type { JourneyNumbers } from "./journey-numbers";
 import { JourneyNumbersCard } from "./JourneyNumbers";
 import "./journey-moments.css";
@@ -115,12 +118,17 @@ export function DepartureLuggage({ carried, left }: { carried: readonly PackedIt
 
 /**
  * 前回までのあらすじ: a card at the top of free time or the night screen when a resumed game opens there (the page's start
- * with a save, 「ロード」): the city, day and time, the last episode completed (its clear title and record) and the album's
- * latest photo (the author's illustration in a 3:2 frame, no credit). In the page's flow; nothing waits for it, and it goes
- * with 「閉じる」 or when the screen changes.
+ * with a save, 「ロード」): the city, day and time, the last episode completed (its clear title and record) and that
+ * episode's picture in a 3:2 frame (recapPicture, 2026-11-13): its own album photo (the author's illustration with its
+ * caption, no credit), else its place's photo (the one free time's card shows, in its larger `recap` copy) captioned with
+ * the place's name, and across the card's foot the photo's credit line (ImageCreditLine, as the clue book's photo has it)
+ * with the note that the copy is reduced and cropped (RECAP_PHOTO_NOTE_JA, worded as 「写真の出典」's). In the page's
+ * flow; nothing waits for it, and it goes with 「閉じる」 or when the screen changes.
  */
 export function ResumeRecapCard({ recap, onClose }: { recap: ResumeRecap; onClose: () => void }) {
-  return <section className="resume-recap" aria-labelledby="resume-recap-title" data-testid="resume-recap">
+  // Its height (--recap-h) is the night screen's room for it: that screen lies under it and starts below it.
+  const measured = useMeasuredHeight("--recap-h");
+  return <section ref={measured} className="resume-recap" aria-labelledby="resume-recap-title" data-testid="resume-recap">
     <div className="resume-recap-head">
       <div>
         <h2 id="resume-recap-title" className="resume-recap-title">前回までのあらすじ</h2>
@@ -136,13 +144,17 @@ export function ResumeRecapCard({ recap, onClose }: { recap: ResumeRecap; onClos
         <p>{recap.chapter.descriptionJa}</p>
       </div>
     </div>
+    {recap.photo?.credit && <div className="resume-recap-credit">
+      <ImageCreditLine asset={recap.photo.credit} className="resume-recap-credit-line" />
+      <p>{RECAP_PHOTO_NOTE_JA}</p>
+    </div>}
   </section>;
 }
 
-function RecapPhoto({ photo }: { photo: MomentPhoto }) {
+function RecapPhoto({ photo }: { photo: RecapPicture }) {
   return <figure className="resume-recap-photo">
     <img src={served(photo.path)} alt={photo.altJa} decoding="async" />
-    <figcaption>{photo.caption ?? photo.placeJa}</figcaption>
+    <figcaption>{photo.captionJa}</figcaption>
   </figure>;
 }
 

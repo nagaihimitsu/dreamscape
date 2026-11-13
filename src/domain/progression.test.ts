@@ -1,5 +1,6 @@
 import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, onTestFinished } from "vitest";
+import { installRepeatableDate } from "../../tests/fixtures/repeatable-date";
 import { dates, progression } from "../content";
 import { beginStory, continueStory } from "../story/runtime";
 import {
@@ -153,22 +154,24 @@ describe("relationship progression", () => {
 });
 
 describe("confession and relationship ending", () => {
-  it("recalls the San Maurizio date only when its actual memory is present", () => {
-    const storyId = "dates/milano_date_confession";
-    const opening = (memories: string[]) => {
-      let step = beginStory(storyId, "晴", "灯", {}, memories);
+  it("recalls the San Maurizio date only when it was played", () => {
+    // The confession is a knot of the Darsena's place file; it reads cond("date milano_maurizio_date_sound").
+    const storyId = "places/milano_darsena.milano_confession_01";
+    const opening = (played: string[]) => {
+      const conditions = (text: string) => text.startsWith("date ") && played.includes(text.slice("date ".length));
+      let step = beginStory(storyId, "晴", "灯", {}, [], {}, undefined, conditions);
       const lines: string[] = [];
       for (let i = 0; !step.frame.choices.length && i < 100; i++) {
         lines.push(step.frame.text);
-        step = continueStory(storyId, step.storyState, step.frame, memories);
+        step = continueStory(storyId, step.storyState, step.frame, [], {}, {}, conditions);
       }
       expect(step.frame.choices).toHaveLength(3);
       lines.push(step.frame.text);
       return lines.join("\n");
     };
-    expect(opening(["sound_memory_maurizio_date_sound"]))
+    expect(opening(["milano_maurizio_date_sound"]))
       .toContain("あの教会で、別々に見て戻ったときも思った");
-    expect(opening(["sound_memory_cafe_01"]))
+    expect(opening(["milano_cafe_01"]))
       .not.toContain("あの教会で、別々に見て戻ったときも思った");
   });
   it("offers confession from stage 2 even before success is guaranteed, without charging AP", () => {
@@ -180,6 +183,8 @@ describe("confession and relationship ending", () => {
     expect(startDate(started, confession)).toBe(started);
   });
   it("lets a deferred relationship grow and earn the ending exactly once", () => {
+    // A second confession after a deferral, on Milan's confession made repeatable for the test (the journey's own is played once).
+    onTestFinished(installRepeatableDate(confession));
     let state = toInvitation();
     expect(canConfessSuccessfully(state)).toBe(false);
     const ap = state.ap;
@@ -207,6 +212,8 @@ describe("confession and relationship ending", () => {
     expect(validateGameState(JSON.parse(JSON.stringify(state)))).toEqual(state);
   });
   it("requires another shared date after rejection and can eventually accept without the invitation", () => {
+    // The wait after a rejection, on Milan's confession made repeatable for the test (the journey's own is played once).
+    onTestFinished(installRepeatableDate(confession));
     let state = { ...toWalk(), trust: 0 };
     expect(canConfessSuccessfully(state)).toBe(false);
     const transcript: string[] = [];
@@ -226,19 +233,21 @@ describe("confession and relationship ending", () => {
       state.memories.filter((id) => id === "milano_confession_promise"),
     ).toHaveLength(1);
   });
-  it("commits the ending and promise together only after its final line", () => {
+  it("records the confession's memory with the choice, and commits the ending only after its final line", () => {
     let state = lowPath();
     expect(canConfessSuccessfully(state)).toBe(true);
     state = startDate(state, confession);
     while (!state.activeDate!.frame.choices.length)
       state = advanceDate(state, state.revision);
     const choiceRevision = state.revision;
+    expect(state.memories).not.toContain("milano_confession_promise");
     state = chooseDate(state, 0, choiceRevision);
     expect(chooseDate(state, 0, choiceRevision)).toBe(state);
+    // The memory (that the confession was made) is the choice's # memory:, kept in the save that passes the choice to Ink.
+    expect(state.memories.filter((id) => id === "milano_confession_promise")).toHaveLength(1);
     while (!state.activeDate!.frame.ended)
       state = advanceDate(state, state.revision);
     expect(state.endingReached).toBe(false);
-    expect(state.memories).not.toContain("milano_confession_promise");
     const finalRevision = state.revision;
     state = finishDate(
       validateGameState(JSON.parse(JSON.stringify(state))),

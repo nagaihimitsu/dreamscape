@@ -34,6 +34,8 @@ import storyStateData from "./generated/content/progression/story.json";
 import { generatedScenesSchema, storyStateCatalogSchema, type SceneEntry } from "./scene-schemas";
 import albumImageData from "./generated/album-images.json";
 import { albumImageListSchema, type AlbumImage } from "./album-images";
+import miniGameArtData from "./generated/minigame-art.json";
+import { miniGameArtListSchema, type MiniGameArt } from "../minigames/art";
 import { sceneConditionsSchema } from "./condition-schemas";
 import {
   battleCatalogSchema,
@@ -148,6 +150,8 @@ export function getAlbumImage(imageId: string): AlbumImage | undefined {
 }
 /** The scenes' `cond("…")` texts (per story) and the condition each text stands for (content:build, scripts/scene-conditions.ts). */
 export const sceneConditions = sceneConditionsSchema.parse(sceneConditionData);
+/** The mini-games' pictures of every layer (content:build lists each public/assets/minigames/; src/minigames/art.ts). */
+export const miniGameArt: readonly MiniGameArt[] = miniGameArtListSchema.parse(miniGameArtData);
 export const tagContext = {
   effectIds: effects.map((effect) => effect.id),
   backgroundIds: Object.keys(presentation.backgrounds),
@@ -157,6 +161,8 @@ export const tagContext = {
   localWordIds: localWords.map((word) => word.id),
   /** The people a line's `# speaker: <person ID>` may name (progression/story.json people of every journey). */
   personIds: storyState.people.map((person) => person.id),
+  /** The pictures a # minigame:'s art.<slot> may name (ID → served path). */
+  miniGameArt: Object.fromEntries(miniGameArt.map((image) => [image.id, image.path])) as Readonly<Record<string, string>>,
 };
 export type {
   BattleDefinition,
