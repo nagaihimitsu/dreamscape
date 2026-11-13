@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { effects, getCityContent, rewardRules } from "../../../src/content";
+import { effects, getCityContent, rewardRules, scenes } from "../../../src/content";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 import { journeyStorage } from "../../../src/persistence/journey-storage";
 import { createDebugState } from "../../../src/dev/debug-state";
@@ -38,7 +38,7 @@ describe("three-city journey using development-only fixtures", () => {
     expect(getTravelEventDefinition(initial, "test_agra_episode")).toBeUndefined();
     expect(getTravelEventDefinition(initial, "milano_duomo_episode")).toBeUndefined();
     let test_delhi = clearCity(initial);
-    const memory = effects.find((entry) => entry.memoryId)?.memoryId;
+    const memory = effects.find((entry) => entry.memoryId)?.memoryId ?? scenes.flatMap((scene) => scene.options.flatMap((option) => option.memory ?? []))[0];
     if (!memory) throw new Error("Expected a memory fixture");
     test_delhi = validateGameState({ ...test_delhi, playerName: "主人公", heroineName: "ヒロイン", affection: 3, trust: 2, spark: 1,
       memories: [memory], completedEncounterIds: [...test_delhi.completedEncounterIds, "test_delhi_encounter"],

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { effects, getCityContent } from "../../../src/content";
+import { effects, getCityContent, scenes } from "../../../src/content";
 import { getJourney } from "../../../src/content/journeys";
 import { createDebugState } from "../../../src/dev/debug-state";
 import { clearCity } from "../../../src/dev/scenario-builders";
@@ -53,7 +53,7 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
 
   it("starts independently and preserves histories, money and pending AP across all three departures", () => {
     const journey = getJourney("uzbekistan")!;
-    const memory = effects.find((effect) => effect.memoryId)?.memoryId;
+    const memory = effects.find((effect) => effect.memoryId)?.memoryId ?? scenes.flatMap((scene) => scene.options.flatMap((option) => option.memory ?? []))[0];
     if (!memory) throw new Error("No existing memory fixture");
     let state = createGame("旅人", "相手", { journeyId: journey.id, initialState: { ...journey.initialState!, ap: 12 } });
     expect(state.currentCityId).toBe("tashkent");
