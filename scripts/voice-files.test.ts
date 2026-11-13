@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { checkVoiceCredits, checkVoiceTags } from "./voice-files";
 
 // content:build's checks of `# voice:` (scripts/voice-files.ts): the file of the line's own journey, and (2026-11-13) never
-// on a line that says the protagonist's name, which the player sets.
+// on a line that says the protagonist's or the heroine's name, which the player sets.
 
 const folder = "content/journeys/ta_trip/public/assets/voice";
 const voices = [{ id: "ta_v1", journeyId: "ta_trip" }, { id: "tb_v1", journeyId: "tb_trip" }];
@@ -25,6 +25,15 @@ describe("the voice tags of a story", () => {
       "主人公の名前は声にできません：knot ta_talk の2行目の # voice: ta_v1 の台詞（2行目）に {player_name} があります。");
     expect(() => check("=== ta_talk ===\n# voice: ta_v1\n\n「ねえ、{player_name}」\n")).toThrow(
       "Voiced line says the protagonist's name: the line of # voice: ta_v1 has {player_name}");
+  });
+
+  it("refuses a voiced line that says the heroine's name: the player sets it too", () => {
+    expect(() => check("=== ta_talk ===\n「私、{heroine_name}って言うの」 # voice: ta_v1\n")).toThrow(
+      "ヒロインの名前は声にできません：knot ta_talk の2行目の # voice: ta_v1 の台詞（2行目）に {heroine_name} があります。");
+    expect(() => check("=== ta_talk ===\n# voice: ta_v1\n「{heroine_name}でいいよ」\n")).toThrow(
+      "Voiced line says the heroine's name: the line of # voice: ta_v1 has {heroine_name}");
+    // A line without a voice may say it.
+    expect(() => check("=== ta_talk ===\n「行こう」 # voice: ta_v1\n{heroine_name}が笑った。\n")).not.toThrow();
   });
 });
 

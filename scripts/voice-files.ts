@@ -4,12 +4,18 @@ import { displayPath, type ContentLayer, type ContentSources } from "./content-s
 import { taggedLines } from "./line-tag-text";
 import { withoutComments } from "./place-files";
 
-/** The protagonist's name in a story's text (src/features/romance/names.ts fills it in). */
-const PLAYER_NAME = "{player_name}";
+/**
+ * The names the player sets, as a story's text writes them (src/features/romance/names.ts fills them in), with what
+ * messages call them: no recording can say them (2026-11-13 user decision).
+ */
+const PLAYER_SET_NAMES = [
+  { placeholder: "{player_name}", nameJa: "主人公の名前", nameEn: "the protagonist's name" },
+  { placeholder: "{heroine_name}", nameJa: "ヒロインの名前", nameEn: "the heroine's name" },
+] as const;
 
 // content:build's voices (2026-11-12; src/content/voice-files.ts): the recordings of each journey's
-// public/assets/voice/<ID>.mp3 and the `# voice:` tags of the journeys' stories. Nothing registers the files (their
-// rights entry is not decided yet), the image-rights check reads only images (image-rights.ts isImagePath), and a file
+// public/assets/voice/<ID>.mp3 and the `# voice:` tags of the journeys' stories. Where they come from is the manifest's
+// voiceCredits (2026-11-13), the image-rights check reads only images (image-rights.ts isImagePath), and a file
 // no line names is an unused public file (content-report.ts, a warning). Pure checks of the loaded sources (no file is
 // read). Light module (no content loading).
 
@@ -67,7 +73,7 @@ const voiceTagWhere = (id: string, line: number, knot?: string) => `${knot ? `kn
  * Throws at the first `# voice:` of a story of the journey `journeyId` whose ID is not one (a-z, 0-9 and _ only) or
  * names no voice of that journey (whose voice folder is `voiceFolder`, as voiceFolderPath shows it): a missing file, or
  * another journey's (a journey folder must stay removable on its own). Then at the first whose line says
- * {player_name} (2026-11-13 user decision): the player sets the protagonist's name, so no recording can say it.
+ * {player_name} or {heroine_name} (2026-11-13 user decision): the player sets both names, so no recording can say them.
  * Japanese first, English after.
  */
 export function checkVoiceTags(source: string, journeyId: string, voices: readonly VoiceFile[], voiceFolder: string): void {
@@ -86,9 +92,10 @@ export function checkVoiceTags(source: string, journeyId: string, voices: readon
   }
   // The line a tag belongs to (line-tag-text.ts: the same line, else the next line of text), as written.
   for (const { value, line, knot, text, textLine } of taggedLines(source, ["voice"])) {
-    if (!text?.includes(PLAYER_NAME)) continue;
-    throw new Error(`主人公の名前は声にできません：${voiceTagWhere(value, line, knot)} の台詞（${textLine}行目）に ${PLAYER_NAME} があります。` +
-      `主人公の名前は遊ぶ人が決めるので、録音した声では言えません。名前を言わない台詞にするか、# voice: を外してください` +
-      `（Voiced line says the protagonist's name: the line of # voice: ${value} has ${PLAYER_NAME}; names are set by the player, so a recording cannot say it）。`);
+    const name = PLAYER_SET_NAMES.find((item) => text?.includes(item.placeholder));
+    if (!name) continue;
+    throw new Error(`${name.nameJa}は声にできません：${voiceTagWhere(value, line, knot)} の台詞（${textLine}行目）に ${name.placeholder} があります。` +
+      `${name.nameJa}は遊ぶ人が決めるので、録音した声では言えません。名前を言わない台詞にするか、# voice: を外してください` +
+      `（Voiced line says ${name.nameEn}: the line of # voice: ${value} has ${name.placeholder}; names are set by the player, so a recording cannot say it）。`);
   }
 }
