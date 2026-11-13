@@ -37,6 +37,7 @@ import { OutcomeHeading } from "./OutcomeHeading";
 import { HeroineNote } from "./HeroineNote";
 import { LandmarkReveal } from "./LandmarkReveal";
 import { DOUBLE_TAP_WINDOW_MS, isSecondTap } from "../../components/double-tap";
+import { answerBeat, CORRECT_HOLD_MS } from "./answer-beat";
 import {
   Translation,
   TranslationAll,
@@ -218,14 +219,29 @@ export function BattleScreen({
   }, [answerSettling]);
   const [effectAnswer, setEffectAnswer] = useState<string | null>(null);
   const answerKey = `${battle.id}:${active.roundIndex}:${answer?.optionId}`;
+  // ためと決め (CORRECT_HOLD_MS): the right answer being held still (its key), then the one whose option gives its gold
+  // pulse. Presentation only: the answer is saved and scored before either; a restored feedback has neither.
+  const [heldAnswer, setHeldAnswer] = useState<string | null>(null);
+  const [glowAnswer, setGlowAnswer] = useState<string | null>(null);
+  const holding = active.phase === "feedback" && heldAnswer === answerKey;
+  useEffect(() => {
+    if (!heldAnswer) return;
+    const timer = window.setTimeout(() => {
+      setHeldAnswer(null);
+      setGlowAnswer(heldAnswer);
+      setEffectAnswer(heldAnswer);
+    }, CORRECT_HOLD_MS);
+    return () => window.clearTimeout(timer);
+  }, [heldAnswer]);
   // The answer's sound, once, for an answer saved in this mounted screen (a restored feedback is silent, as it does not
   // animate): quiz_correct or quiz_incorrect, and quiz_perfect in place of quiz_correct for the last answer of a full score.
+  // A right answer's comes as its hold ends, with its pulse.
   const soundedAnswer = useRef<string | null>(null);
   useEffect(() => {
-    if (active.phase !== "feedback" || !answer || animatedAnswer !== answerKey || soundedAnswer.current === answerKey) return;
+    if (active.phase !== "feedback" || !answer || animatedAnswer !== answerKey || holding || soundedAnswer.current === answerKey) return;
     soundedAnswer.current = answerKey;
     playSe(perfectAnswer ? "quiz_perfect" : answer.correct ? "quiz_correct" : "quiz_incorrect");
-  }, [active.phase, answer, animatedAnswer, answerKey, perfectAnswer]);
+  }, [active.phase, answer, animatedAnswer, answerKey, perfectAnswer, holding]);
   // The result's sound as the result comes in this mounted screen (a restored result is silent), the same whatever the
   // score; the result of a city finale that shows 「都市クリア」 (BattleRewards) rings city_clear instead.
   const shownPhase = useRef(active.phase);
@@ -262,7 +278,8 @@ export function BattleScreen({
     };
   }, [active.phase, answerKey, effectAnswer, perfectAnswer, reduceMotion]);
   useEffect(() => {
-    if (active.phase !== "feedback") return;
+    // The feedback is not on the page while its right answer is held (it comes, and is focused, after).
+    if (active.phase !== "feedback" || holding) return;
     const focusFeedback = () => {
       const feedback = document.getElementById("battle-feedback");
       if (feedback) focusFeedbackStart(feedback, readingArea.current, roundBar.current);
@@ -292,7 +309,7 @@ export function BattleScreen({
       document.removeEventListener("keydown", cancel, true);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [active.phase, active.roundIndex, animatedAnswer, answerKey, reduceMotion]);
+  }, [active.phase, active.roundIndex, animatedAnswer, answerKey, reduceMotion, holding]);
   const frame = active.frame;
   const isDialogue = active.phase === "dialogue";
   // The line's scene tags (LineStage), only while the talk shows its line.
@@ -368,7 +385,9 @@ export function BattleScreen({
     : undefined, displayedStoryState ?? "", introHeld);
   const isResult = active.phase === "result";
   /** The answer whose explanation shows (its verdict heads the reading area). */
-  const verdict = active.phase === "feedback" ? answer : undefined;
+  const verdict = active.phase === "feedback" && !holding ? answer : undefined;
+  // What the quiz card shows of the answer: nothing yet while a right answer is held (the card stays as it was tapped).
+  const shownAnswer = holding ? undefined : answer;
   const isSpecial = !!battle.reasoning;
   const showReasoning =
     !!battle.reasoning && battle.reasoning.roundIndex === active.roundIndex;
@@ -394,6 +413,8 @@ export function BattleScreen({
       }}
       data-phase={isDialogue ? "dialogue" : active.phase}
       data-answer-settling={answerSettling || undefined}
+      // ためと決め: the right answer held still (battle.css keeps the tapped card as it was, its option pressed).
+      data-answer-held={holding || undefined}
       data-effect-active={active.phase === "feedback" && effectAnswer === answerKey || undefined}
       // An ordinary quiz's wrong answer, saved in this screen, plays no stamp: its card gives a small shake (battle.css).
       data-answer-missed={active.phase === "feedback" && !!answer && !answer.correct && !isSpecial && animatedAnswer === answerKey || undefined}
@@ -650,15 +671,17 @@ export function BattleScreen({
               {question.options.map((option) => {
                 const selected = answer?.optionId === option.id;
                 const correct =
-                  answer && option.id === question.correctOptionId;
+                  shownAnswer && option.id === question.correctOptionId;
+                // The right answer's gold pulse, once its hold has ended (or at once under reduced motion).
+                const glowing = selected && !holding && active.phase === "feedback" && glowAnswer === answerKey;
                 return (
                   <div
                     key={`${question.id}:${option.id}`}
-                    className={`quiz-option-wrap ${selected ? "selected-panel" : ""} ${answer && !selected ? "other-panel" : ""}`}
+                    className={`quiz-option-wrap ${selected ? "selected-panel" : ""} ${shownAnswer && !selected ? "other-panel" : ""}`}
                   >
                     <div
                       data-testid={`option-text-${option.id}`}
-                      className={`quiz-choice ${selected ? "chosen" : ""} ${correct ? "correct" : ""}`}
+                      className={`quiz-choice ${selected ? "chosen" : ""} ${correct ? "correct" : ""}${glowing ? " answer-glow" : ""}`}
                     >
                       <button
                         type="button"
@@ -672,9 +695,13 @@ export function BattleScreen({
                             setAnswerSettling(true);
                             const key = `${battle.id}:${active.roundIndex}:${option.id}`;
                             setAnimatedAnswer(key);
-                            if ((isSpecial || option.id === question.correctOptionId) && !reduceMotion && !document.hidden &&
-                                !window.matchMedia("(prefers-reduced-motion: reduce)").matches)
-                              setEffectAnswer(key);
+                            const moving = !reduceMotion && !document.hidden && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+                            // A right answer: held still first (its pulse, sound, stamp and feedback come after); under
+                            // reduced motion no hold, its glow at once. A wrong one of a special battle: its stamp.
+                            const beat = answerBeat({ right: option.id === question.correctOptionId, moving, special: isSpecial });
+                            if (beat === "hold") setHeldAnswer(key);
+                            else if (beat === "glow") setGlowAnswer(key);
+                            else if (beat === "stamp") setEffectAnswer(key);
                           }
                         }}
                       >
@@ -692,7 +719,7 @@ export function BattleScreen({
                             revealTranslation(learning, question.id, option.id)
                           }
                         />
-                        {answer && (
+                        {shownAnswer && (
                           <span className="option-mark">
                             {selected ? "選んだ答え" : ""}
                             {correct ? " ✓ 正解" : ""}
@@ -709,7 +736,7 @@ export function BattleScreen({
                 );
               })}
             </div>
-            {active.phase === "feedback" && answer && (
+            {active.phase === "feedback" && answer && !holding && (
               <div
                 className={`quiz-feedback ${answer.correct ? "correct-feedback" : ""}`}
                 data-testid="battle-feedback"
@@ -796,7 +823,7 @@ export function BattleScreen({
             {/* The hint as the heroine's whisper: her words when the question has them (hintHeroineJa),
                 else its hint (hintJa, plain narration: shown as her note, not quoted as her words). Always
                 shown under the question, with no button to open or close it (user decision 2026-11-11). */}
-            {active.phase === "question" && (
+            {(active.phase === "question" || holding) && (
               <HeroineNote
                 className="hint-whisper"
                 label={`${game.heroineName}の耳打ち`}
