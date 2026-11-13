@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { centreStroke, shapeDragFairness, shapeHeavy, shapeMeasures, shapeOfRecord, shapeRoll, shapeStart, type ShapeStroke } from "../engines/shape_drag/engine";
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { rotiRolling } from "./definition";
-import { ROTI_AUTO, ROTI_BIG_SPAN, ROTI_SHAPES, ROTI_TUNING, rotiDetail, rotiNote, rotiRoundness, rotiRules } from "./rules";
+import { ROTI_AUTO, ROTI_BIG_SPAN, ROTI_NUMBERS, ROTI_SHAPES, ROTI_TUNING, rotiDetail, rotiGame, rotiNote, rotiRoundness, rotiRules } from "./rules";
 import { rotiArrowDegrees } from "./Skin";
 
 const UP = 270;
@@ -92,5 +92,37 @@ describe("the roti's shapes", () => {
     const small = measuresOf(times(4, (index) => centreStroke(index * 45, 0.5)));
     expect(rotiDetail(small, "round")).toBe(`丸さ ${Math.round(small.roundness * 100)}%`);
     expect(rotiDetail(round, "torn")).toBeUndefined();
+  });
+
+  it("rates in step with the outcome: round and big ★3, round ★2, a box, a country or a hole ★1", () => {
+    const rate = (strokes: readonly ShapeStroke[]) => rotiRules.rate!(strokes, {});
+    const big = times(8, (index) => centreStroke(index * 45, 0.5));
+    expect(rate(big)).toEqual({ stars: 3, scoreJa: rotiDetail(measuresOf(big), "round") });
+    const small = times(8, (index) => centreStroke(index * 45, 0.3));
+    expect(rotiRules.outcomeOf(small, {})).toBe("round");
+    expect(rate(small)).toMatchObject({ stars: 2 });
+    expect(rate(ROTI_AUTO.truck_bed)).toMatchObject({ stars: 1, scoreJa: expect.stringMatching(/^丸さ \d+%$/u) });
+    expect(rate(ROTI_AUTO.country)).toMatchObject({ stars: 1 });
+    expect(rate(ROTI_AUTO.torn)).toEqual({ stars: 1 });
+    // Over many plays, a round one never has fewer ★ than any other.
+    let seed = 11;
+    const random = () => { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; };
+    let lowestRound = 3;
+    let highestOther = 1;
+    for (let play = 0; play < 300; play++) {
+      const strokes = times(8, (index) => centreStroke(index * 45 + (random() - 0.5) * 60, 0.3 + random() * 0.5));
+      const stars = rate(strokes)?.stars ?? 0;
+      if (rotiRules.outcomeOf(strokes, {}) === "round") lowestRound = Math.min(lowestRound, stars);
+      else highestOther = Math.max(highestOther, stars);
+    }
+    expect(highestOther).toBeLessThanOrEqual(lowestRound);
+  });
+
+  it("builds the same roti from its numbers, and another from edited ones (Debug's room)", () => {
+    expect(rotiGame(ROTI_NUMBERS).tuning).toEqual(ROTI_TUNING);
+    const longer = rotiGame({ ...ROTI_NUMBERS, maxStrokes: 10, roundness: 0.9 });
+    expect(longer.tuning.maxStrokes).toBe(10);
+    expect(shapeDragFairness(longer.tuning, longer.shapes)).toEqual([]);
+    expect(longer.shapes.classes.find((item) => item.outcome === "round")?.atLeast?.roundness).toBe(0.9);
   });
 });

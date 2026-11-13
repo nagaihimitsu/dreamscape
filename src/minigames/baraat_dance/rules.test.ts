@@ -4,7 +4,7 @@ import { describeMiniGameRules } from "../testing/rules-contract";
 import { baraatDance } from "./definition";
 import {
   BARAAT_BEATS, BARAAT_COUNT_IN_BEATS, BARAAT_FAST_INTERVAL_MS, BARAAT_IN_STEP_EXTRA, BARAAT_IN_STEP_HITS, BARAAT_INTERVAL_MS,
-  BARAAT_SLOW_BEATS, BARAAT_TUNING, baraatRules,
+  BARAAT_NUMBERS, BARAAT_SLOW_BEATS, BARAAT_TUNING, baraatGame, baraatRules,
 } from "./rules";
 
 const { beats } = BARAAT_TUNING;
@@ -57,5 +57,26 @@ describe("the baraat dance", () => {
     for (const gap of [150, 200, 250, 280]) expect(taps(mash(gap)), `every ${gap} ms`).toBe("stumble");
     for (const gap of [150, 200, 250, 280, 300, 350, 400, 450, 500]) expect(taps(mash(gap)), `every ${gap} ms`).not.toBe("in_step");
     expect(outcome({})).toBe("stood_still");
+  });
+
+  it("rates in step with the outcome: in step ★2, ★3 with 10 beats or more right on the drum, off the beat or stumbling ★1, standing still not", () => {
+    const rate = (list: readonly number[]) => baraatRules.rate!({ taps: list, stopMs: null }, {});
+    expect(rate(beats)).toEqual({ stars: 3, scoreJa: "ぴったり 16拍・16拍中16拍" });
+    // Every beat met, but late (inside the window, past ぴったり): in step, ★2.
+    expect(rate(beats.map((beat) => beat + 140))).toEqual({ stars: 2, scoreJa: "ぴったり 0拍・16拍中16拍" });
+    expect(rate(beats.map((beat, index) => beat + (index < BARAAT_NUMBERS.threeStarPerfects ? 0 : 140)))).toMatchObject({ stars: 3 });
+    expect(rate(beats.map((beat, index) => beat + (index < BARAAT_NUMBERS.threeStarPerfects - 1 ? 0 : 140)))).toMatchObject({ stars: 2 });
+    expect(rate(beats.slice(0, 8))).toMatchObject({ stars: 1 });
+    expect(rate(mash(200))).toMatchObject({ stars: 1 });
+    expect(rate([])).toBeNull();
+    expect(rate(BARAAT_COUNT_IN_BEATS)).toBeNull();
+  });
+
+  it("builds the same dance from its numbers, and another from edited ones (Debug's room)", () => {
+    expect(baraatGame(BARAAT_NUMBERS).tuning).toEqual(BARAAT_TUNING);
+    const faster = baraatGame({ ...BARAAT_NUMBERS, bpm: 104, fastBpm: 120 });
+    expect(faster.tuning.beats[1] - faster.tuning.beats[0]).toBe(577);
+    expect(rhythmTapFairness(faster.tuning)).toEqual([]);
+    expect(faster.rules.outcomeOf({ taps: faster.tuning.beats, stopMs: null }, {})).toBe("in_step");
   });
 });
