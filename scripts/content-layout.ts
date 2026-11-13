@@ -67,6 +67,8 @@ export const CATALOG_RULES = [
   { kind: "battles/catalog.json", fields: { schemaVersion: same, battles: concat } },
   { kind: "encounters/catalog.json", fields: { schemaVersion: same, items: concat, encounters: concat } },
   { kind: "encounters/entry-rules.json", fields: entries, schemaVersion: 2 },
+  // 旅の図鑑's terms (optional; src/content/glossary.ts).
+  { kind: "glossary/terms.json", fields: { schemaVersion: same, terms: concat } },
   { kind: "learning/details.json", fields: { schemaVersion: same, questions: record } },
   // The words of the countries visited (optional; src/content/local-words.ts).
   { kind: "learning/local-words.json", fields: { schemaVersion: same, words: concat } },

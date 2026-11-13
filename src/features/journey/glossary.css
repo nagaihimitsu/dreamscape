@@ -1,0 +1,249 @@
+/* 旅の図鑑 (2026-11-13 user decision): the card a line's # term: shows over the story (GlossaryTermWindow), and the
+   collection in ⚙設定 (GlossaryDialog). Parchment tiles with a hairline all round, as the item card (item-show.css): no
+   thick edge on one side. Every pressable is at least 44 px. */
+
+/* The card over the story: the whole screen takes the tap that closes it; its middle darkens most, its edges least, so
+   the scene stays in sight and the dialogue window below stays readable. Over the header and the scene (z-index 20 and
+   below), under the journey's moments and the travel transition (1900 and above). The card sits high, clear of the
+   dialogue window where the screen allows. */
+.glossary-term-window {
+  position: fixed;
+  inset: 0;
+  z-index: 1800;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: max(16px, 7dvh, env(safe-area-inset-top)) 16px 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: radial-gradient(ellipse 90% 62% at 50% 40%, rgba(14, 12, 10, 0.68), rgba(14, 12, 10, 0.44) 62%, rgba(14, 12, 10, 0.16));
+  cursor: pointer;
+  animation: glossary-dim-in var(--motion-medium) var(--ease-out) both;
+}
+@keyframes glossary-dim-in {
+  from { opacity: 0; }
+}
+.glossary-term-card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: min(100%, 320px);
+  margin: 0 auto;
+  padding: 12px 16px 12px;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 18px;
+  background: radial-gradient(circle at 50% 30%, #fffaf0, var(--ds-parchment) 70%);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 24px rgba(246, 196, 69, 0.22);
+  color: var(--ds-ink);
+  text-align: center;
+  animation: glossary-card-in var(--motion-scene) var(--ease-out) both;
+}
+@keyframes glossary-card-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+}
+/* 「旅の図鑑に追加」: a small label, not a control (no edge, no press). */
+.glossary-term-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgba(201, 163, 95, 0.22);
+  color: var(--ds-ink-muted);
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.04em;
+}
+.glossary-term-mark .icon { width: 14px; height: 14px; }
+.glossary-term-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(190px, 28dvh);
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #e9dcc4;
+}
+.glossary-term-name {
+  margin: 4px 0 0;
+  font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.glossary-term-subtitle {
+  margin: 0;
+  color: var(--ds-ink-muted);
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.glossary-term-line {
+  margin: 2px 0 0;
+  font-size: 15px;
+  line-height: 1.65;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.glossary-term-close.secondary {
+  min-height: 44px;
+  margin-top: 6px;
+  font-size: 14px;
+}
+.glossary-term-count { margin-left: 4px; font-size: 12px; color: var(--ds-ink-muted); }
+/* A short screen held sideways: the photo beside the words, so the card stays within the screen. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .glossary-term-window { padding-top: max(8px, env(safe-area-inset-top)); }
+  .glossary-term-card {
+    display: grid;
+    grid-template-columns: minmax(0, 42%) minmax(0, 1fr);
+    grid-template-areas: "photo mark" "photo name" "photo subtitle" "photo line" "photo close";
+    align-content: start;
+    column-gap: 14px;
+    row-gap: 4px;
+    width: min(100%, 600px);
+    text-align: left;
+  }
+  .glossary-term-photo { grid-area: photo; align-self: start; max-height: 70dvh; }
+  .glossary-term-mark { grid-area: mark; justify-self: start; }
+  .glossary-term-name { grid-area: name; margin: 0; font-size: 18px; }
+  .glossary-term-subtitle { grid-area: subtitle; }
+  .glossary-term-line { grid-area: line; margin: 0; }
+  .glossary-term-close.secondary { grid-area: close; }
+}
+
+/* 「旅の図鑑」 in ⚙設定: the shared frame, how far it has come under its title, then a group per category (told apart
+   by its heading) of small square cards, three or more to a row on a phone. */
+dialog.modal.glossary-modal {
+  --modal-pad-top: 16px;
+  --modal-pad-inline: 16px;
+  width: min(560px, calc(100% - 24px));
+  max-width: 560px;
+  max-height: calc(100dvh - 24px);
+}
+.glossary-modal .modal-title-bar { margin-bottom: 4px; }
+.glossary-progress { margin: 0 0 4px; font-size: 15px; font-weight: 600; line-height: 1.6; }
+.glossary-debug-note { margin: 0 0 4px; }
+.glossary-empty { margin: 0 0 8px; font-size: 14px; line-height: 1.7; }
+.glossary-group h3 {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 12px 0 8px;
+  font-family: "Noto Serif JP", serif;
+  font-size: 17px;
+  line-height: 1.4;
+}
+.glossary-group-count { font-family: inherit; font-size: 12px; font-weight: 400; color: var(--ds-ink-muted); }
+.glossary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.glossary-card {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 10px;
+  background: #fffaf1;
+  color: var(--ds-ink);
+  font: inherit;
+  text-align: left;
+}
+button.glossary-card:hover { background: var(--ds-parchment-2); }
+.glossary-card-photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  background: #e9dcc4;
+}
+.glossary-card-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.glossary-card-name {
+  padding: 4px 6px 6px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+/* 「NEW」 on a term met since 旅の図鑑 was last opened (as beside a held item: held-items.css). */
+.glossary-card-new {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  padding: 0 5px;
+  border-radius: 4px;
+  background: var(--ds-marker);
+  color: #fff;
+  font-family: Georgia, serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 16px;
+}
+/* Debug: a term not met yet, shown with its mark. */
+.glossary-card-unmet {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  padding: 0 5px;
+  border-radius: 4px;
+  background: var(--ds-chip-bg);
+  color: var(--ds-on-slate);
+  font-size: 10px;
+  line-height: 16px;
+}
+button.glossary-card:not([data-met]) .glossary-card-photo img { opacity: 0.55; }
+/* A term not met yet: an empty card, dashed, with neither its photo nor its name. */
+.glossary-card-empty { border-style: dashed; background: transparent; }
+.glossary-card-empty .glossary-card-photo { background: transparent; color: var(--ds-ink-muted); font-size: 22px; }
+
+/* A card opened larger: the photo whole, its words, its credit; 「閉じる」 in the title bar, which stays at the top while the
+   dialog scrolls (on a short phone the credit lies below the fold). */
+dialog.modal.glossary-entry {
+  --modal-pad-top: 16px;
+  --modal-pad-inline: 16px;
+  width: min(92vw, 560px);
+  max-width: 560px;
+}
+.glossary-entry .modal-title-bar { margin-bottom: 4px; }
+.glossary-entry-subtitle { margin: 0 0 8px; color: var(--ds-ink-muted); font-size: 13px; line-height: 1.5; }
+.glossary-entry-photo {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: min(50dvh, 420px);
+  margin: 0 auto;
+  border-radius: 8px;
+}
+.glossary-entry-line { margin: 10px 0 0; font-size: 15px; line-height: 1.7; overflow-wrap: anywhere; }
+.glossary-entry-credit { margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--ds-parchment-line); font-size: 12px; line-height: 1.6; color: var(--ds-ink-muted); overflow-wrap: anywhere; }
+.glossary-entry-credit h3 { margin: 0 0 4px; font-size: 13px; color: var(--ds-ink); }
+.glossary-entry-credit p { margin: 0 0 2px; }
+
+/* Reduced motion and 「演出を短縮する」 (the app shell's .reduce-motion): the card and the dimming show at once. */
+.reduce-motion .glossary-term-window,
+.reduce-motion .glossary-term-card { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .glossary-term-window,
+  .glossary-term-card { animation: none; }
+}

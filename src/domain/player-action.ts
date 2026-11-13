@@ -2,6 +2,7 @@ import { getActiveBattleContent, getBattleObservationLandmarkId, advanceBattle, 
 import { getBattleResultExits } from "./chapter";
 import { advanceCompletedJourneyCity, getPlayerDeparture } from "./city-travel";
 import { recordAlbumPhoto } from "./album";
+import { recordGlossaryTerms } from "./glossary";
 import { advanceOccasion, closeRomanceEnding, openOccasion } from "./occasion";
 import { screenFor } from "./screen";
 import { secureRomanceRoll } from "../random/romance-source";
@@ -33,13 +34,14 @@ import {
 export function applyPlayerAction(previous: GameState, change: (state: GameState) => GameState, nextRoll: () => number = secureRomanceRoll): GameState {
   // The action, its occasion run to its next stop (4.1), the trip's window, the tour's next steps (a booked tour's start on its
   // morning, a running tour's legs after its visit; tour stage 2a), the city's automatic move, the occasion that move opened
-  // (its negative scenes start in the same action), and the album's photo of the line then on screen. Nothing runs after an
-  // action that changed nothing (a load is never changed).
+  // (its negative scenes start in the same action), and the album's photo and 旅の図鑑's terms of the line then on screen.
+  // Nothing runs after an action that changed nothing (a load is never changed).
   const changed = finishTravelEventIfComplete(previous, advanceOccasion(change(previous), nextRoll));
   if (changed === previous) return previous;
   const toured = continueTour(changed, nextRoll);
-  // The line the action leaves on screen takes its # photo: into the album (once per image; album.ts).
-  return recordAlbumPhoto(advanceOccasion(advanceCompletedJourneyCity(toured, toured.revision), nextRoll));
+  // The line the action leaves on screen takes its # photo: into the album (once per image; album.ts) and its # term:
+  // terms into 旅の図鑑 (once per term; glossary.ts).
+  return recordGlossaryTerms(recordAlbumPhoto(advanceOccasion(advanceCompletedJourneyCity(toured, toured.revision), nextRoll)));
 }
 
 /**

@@ -415,6 +415,29 @@ describe("save format v23 (docs/07: one format per version, no migration)", () =
     expect(slot.getItem(SAVE_KEY)).toBe(raw);
   });
 
+  it("writes 旅の図鑑, an optional field of v23: empty in a new game, kept through save and load, absent in an older save", () => {
+    // The terms the lines' # term: named: the sample's fictional 三時パン (src/domain/glossary.test.ts holds the recording rule).
+    const fresh = createGame();
+    expect(fresh.glossary).toEqual([]);
+    const state: GameState = { ...cityStart("mihon"), glossary: ["smp_term_mihon_sanji_pan"] };
+    const storage = new MemoryStorage();
+    expect(saveGame(storage, state)).toEqual({ ok: true });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 23, glossary: ["smp_term_mihon_sanji_pan"] });
+    expect(loadGame(storage)).toEqual({ status: "loaded", state });
+    // A save of this version written before 旅の図鑑 (no field): it loads, with nothing met, and saves again as it is.
+    const { glossary: _glossary, ...older } = cityStart("mihon");
+    const slot = new MemoryStorage();
+    slot.setItem(SAVE_KEY, JSON.stringify(older));
+    expect(loadGame(slot)).toEqual({ status: "loaded", state: older });
+    // A term this build does not have (gone from the content): unreadable, kept as it is, never overwritten.
+    const lost = JSON.stringify({ ...state, glossary: ["smp_term_gone"] });
+    const lostSlot = new MemoryStorage();
+    lostSlot.setItem(SAVE_KEY, lost);
+    expect(loadGame(lostSlot)).toMatchObject({ status: "invalid", kind: "corrupt", raw: lost });
+    expect(saveGame(lostSlot, state).ok).toBe(false);
+    expect(lostSlot.getItem(SAVE_KEY)).toBe(lost);
+  });
+
   it("writes the album of v22: empty in a new game, kept through save and load, and required", () => {
     // The photos the lines' # photo: took: the sample's album illustrations (src/domain/album.test.ts holds the recording
     // rule and what an album may name).

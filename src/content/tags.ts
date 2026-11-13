@@ -1,6 +1,7 @@
 import { REACTION_MARKS, type DialogueReaction, type ReactionTarget } from "./dialogue-reactions";
 import { VOICE_ID } from "./voice-files";
 import { SOUND_ID } from "./sounds";
+import { TERM_ID } from "./glossary";
 import { parseMiniGameTag, type MiniGameTag } from "../minigames/tag";
 
 export interface TagContext {
@@ -11,6 +12,8 @@ export interface TagContext {
   photoIds?: readonly string[];
   /** The word IDs of learning/local-words.json, for `# local_word:`; absent: a tool that only reads the lines (not checked). */
   localWordIds?: readonly string[];
+  /** The term IDs of glossary/terms.json (旅の図鑑), for `# term:`; absent: a tool that only reads the lines (not checked). */
+  termIds?: readonly string[];
   /** The people of progression/story.json, for `# speaker: <person ID>`; absent: a tool that only reads the lines (not checked). */
   personIds?: readonly string[];
   /**
@@ -46,6 +49,8 @@ export interface StoryTags {
   translationJa?: string;
   /** `# local_word: <id>`: the words of the country the line teaches (learned when it is shown in normal play). */
   localWordIds?: string[];
+  /** `# term: <id>`: the 旅の図鑑 terms the line names first (their card shows the first time in a game; src/domain/glossary.ts). */
+  termIds?: string[];
   /** `# call: quiz` / `# call: reasoning`: the one choice of modules.ink's battle calls (stage 5). */
   call?: StoryCall;
   /** `# pause:`, `# shake:`, `# size:`, `# em:` and `# em_shake:`: how the line is shown (presentation only). */
@@ -315,6 +320,13 @@ export function parseStoryTags(
         throw new Error(`Unknown local word: ${value} (not in learning/local-words.json)`);
       if (result.localWordIds?.includes(value)) throw new Error(`Duplicate local_word tag: ${value}`);
       result.localWordIds = [...(result.localWordIds ?? []), value];
+    } else if (key === "term") {
+      // Its journey is checked by content:build (scripts/glossary-terms.ts), which knows each term's journey.
+      if (!TERM_ID.test(value)) throw new Error(`Invalid term tag: ${value} (write # term: <term ID>, a term of glossary/terms.json)`);
+      if (context.termIds && !context.termIds.includes(value))
+        throw new Error(`Unknown term: ${value} (not in glossary/terms.json)`);
+      if (result.termIds?.includes(value)) throw new Error(`Duplicate term tag: ${value}`);
+      result.termIds = [...(result.termIds ?? []), value];
     } else if (key === "pause" || key === "shake" || key === "size") {
       result.delivery = readDelivery(key, value, result.delivery ?? {});
     } else if (key === "photo") {

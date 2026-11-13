@@ -49,6 +49,7 @@ import { validateOccasionState } from "./occasion";
 import { validateTourState } from "./tour";
 import { advanceRunningOccasion } from "./occasion-hooks";
 import { validateAlbum } from "./album";
+import { validateGlossary } from "./glossary";
 
 export { GAME_STATE_VERSION, gameStateSchema } from "./game-state-schema";
 export type { GameState, ActiveDate } from "./game-state-schema";
@@ -106,6 +107,7 @@ export function createGame(
     playedDateIds: [],
     memories: [],
     album: [],
+    glossary: [],
     activeDate: null,
     unlockedEventIds: [],
     confessionStatus: initial?.confessionStatus ?? "none",
@@ -520,5 +522,6 @@ export function validateGameState(input: unknown): GameState {
   validateActiveDateState(state);
   validateStoryProgress(state);
   validateAlbum(state);
+  validateGlossary(state);
   return state;
 }

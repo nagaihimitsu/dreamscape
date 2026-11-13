@@ -87,6 +87,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 | 品物 | `<旅行編>/encounters/catalog.json` の `items` | 仕上げ |
 | ツアー | `<旅行編>/tours/<ツアーID>.json` | 仕上げ |
 | その国の言葉 | `<旅行編>/learning/local-words.json` | 仕上げ |
+| 旅の図鑑の言葉 | `<旅行編>/glossary/terms.json`、写真は `tourism/catalog.json` の `assets`、行の `# term:` | 仕上げ（耳慣れない言葉があるとき） |
 | 立ち絵 | `<旅行編>/presentation/characters.json`、`public/assets/characters/` | 仕上げ（ないと抽象の表示） |
 | 自由時間の背景 | 都市の `backdropImagePath` か `backdropAssetId` | 仕上げ |
 | アルバムの絵 | `<旅行編>/public/assets/album/<ID>.webp` | 仕上げ |
@@ -207,6 +208,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 | 会話・道中交流・ツアーの語り（`# scene: talk`・`encounter`・`tour_leg`） | `scenes/catalog.json`（場面のID）。土地の事実を言わない場面は knot の頭に `# sources: none`。どちらもないと止まる |
 | 地点・経路 | `travel/<都市ID>.json` の `sources` |
 | その国の言葉 | `learning/local-words.json` の `sources` |
+| 旅の図鑑の言葉の写真 | `tourism/catalog.json` の `assets`（`imageId` が指す写真の出典） |
 
 - 守る決まり：出典や確認日を捏造しない。未確認なら未確認と書く。事実・解釈・仮説・伝説を分ける。材料・寸法・年号・名前だけの暗記を主題にしない（[AGENTS.md](../AGENTS.md)）。開けなかったページ、検索結果に出ただけの数字は出典にしない（CONTENT_GUIDE のツアーの項）。
 - 確かめ方と終わりの目安：事実の正しさを確かめるコマンドはありません（人が資料の該当箇所を読む）。`content:build` は出典の形と、`claimJa` などの日本語の欄に日本語があるか（注意）を見ます。終わりの目安は、作る予定のクイズ・小話のどれにも、確かめた出典がある。
@@ -436,6 +438,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
   - 場面の演出：`# phone:`・`# letter:`・`# quiet:`・`# stand:`・`# cutin: name`・`# reaction:`・`# emotion:`。
   - 品物と空気：`# item_show:`・`# weather:`・`# tint: off`。
   - その国の言葉：`learning/local-words.json`（出典つき）と行の `# local_word:`。
+  - 旅の図鑑：耳慣れない言葉（料理・生き物・建物など）を `glossary/terms.json` に書き、写真を `tourism/catalog.json` の `assets` に出典つきで登録し、言葉が初めて出うる行の前に `# term:` を置く（書き方は [CONTENT_GUIDE の「旅の図鑑の言葉」](CONTENT_GUIDE.md#旅の図鑑の言葉任意2026-11-13)）。
   - データの一言：地点の `descriptionJa`（筋を明かさない一般的な案内）・`heroineLinesJa`、`travel/<都市ID>.json` の最上位の `nightLinesJa`。
 - 守る決まり：ここぞという行だけに書く。`# em:` の語は行の字にそのまま書く。彼女の一言はどの関係の段階でも自然な言葉にし、キャラクターバイブルに照らす。
 - 確かめ方と終わりの目安：`npm run content:build`（決まった値以外、行にない語、同じ行に同じ札2つで止まる）。Debug の場面の確認の「音と演出の見本を開く」で演出だけを見られる。
