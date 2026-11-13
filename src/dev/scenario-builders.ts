@@ -22,7 +22,7 @@ import { getNextEpisode, getNextStoryBattle, leaveBattleResult, startEpisode, st
 import { departToNextCity } from "../domain/city-travel";
 import {
   advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterCanFinish, encounterEntryRule, encounterVisitSlot, finishEncounter,
-  getEncounterOptionAvailability, leaveBattleToFreeTime, proceedFromTourism, startTourismEncounter, visitedLandmarkOfEvent,
+  getEncounterOptionAvailability, leaveBattleToFreeTime, nextObservationScene, proceedFromTourism, startTourismEncounter, visitedLandmarkOfEvent,
 } from "../domain/encounter";
 import { advanceOccasion, closeRomanceEnding, openEpilogue, openOccasion } from "../domain/occasion";
 import { sceneById, sceneOption } from "../domain/scene-effects";
@@ -558,9 +558,20 @@ export function startEncounterScene(state: GameState, encounterId: string, ticke
   const placed = atPlace(state, scenePlaceId(state.currentCityId, undefined, encounter?.landmarkId));
   let observing = encounter?.landmarkId ? openTourism(placed, encounter.landmarkId) : placed;
   for (let step = 0; observing.activeTourism?.phase === "guide" && step < MAX_STEPS; step++) observing = guideSkip(observing);
-  const next = startTourismEncounter(observing, encounterId, observing.revision, () => ticket);
+  let next = startTourismEncounter(observing, encounterId, observing.revision, () => ticket);
+  // A scene whose condition an earlier scene of the same observation meets (the Galleria's ticket talk after its wish): the
+  // observation's scenes before it are played with their first choices, as play meets them, until it starts.
+  for (let count = 0; next.activeEncounter?.encounterId !== encounterId && count < 20; count++) {
+    if (next.activeEncounter) observing = playEncounterFirstChoice(next, ticket);
+    else {
+      const earlier = nextObservationScene(observing);
+      if (!earlier || earlier === encounterId) break;
+      observing = playEncounterFirstChoice(act(observing, (current) => proceedFromTourism(current, current.revision, () => ticket), "観察の「進む」"), ticket);
+    }
+    next = observing.activeEncounter ? observing : startTourismEncounter(observing, encounterId, observing.revision, () => ticket);
+  }
   // The observation reads the rule's `when` (unless the quiz waits for the battle); Debug names what is missing.
-  if (!next.activeEncounter) throw new Error(unmetRule(observing));
+  if (next.activeEncounter?.encounterId !== encounterId) throw new Error(unmetRule(observing));
   return validateGameState(next);
 }
 

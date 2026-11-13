@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
 import { createDebugState } from "../../../src/dev/debug-state";
-import { encounters } from "../../../src/content/encounters";
-import { advanceEncounter, answerEncounterQuiz, chooseEncounter, encounterCanFinish, finishEncounter, validateEncounterState } from "../../../src/domain/encounter";
+import { advanceEncounter, chooseEncounter, encounterCanFinish, finishEncounter, validateEncounterState } from "../../../src/domain/encounter";
 import { encounterOffered, meetEncounter } from "../../fixtures/encounter-moment";
 import { closeTourism } from "../../../src/domain/tourism";
 
@@ -55,24 +54,24 @@ describe("the Milan pick and location encounters", () => {
     expect(encounterOffered(paid, "galleria_ticket_press").available).toBe(false);
   });
 
-  it("lets a preexisting ticket be used later even after paying for the ordinary print", () => {
+  it("lets the wish's ticket be used later even after paying for the ordinary print", () => {
     let state = createDebugState({
       scene: "encounter", id: "galleria_fortune", progress: "completed",
       ap: 9, affection: 0, trust: 0, spark: 0, roll: "positive",
     });
-    const answer = encounters.encounters.find((item) => item.id === "galleria_fortune")!.quiz!.question.correctOptionId;
     for (let step = 0; state.activeEncounter && step < 100; step++) {
       const active = state.activeEncounter;
-      state = active.phase === "quiz"
-        ? answerEncounterQuiz(state, answer, state.revision)
-        : active.frame.choices.length
-          ? chooseEncounter(state, 0, state.revision)
-          : encounterCanFinish(state)
-            ? finishEncounter(state, state.revision)
-            : advanceEncounter(state, state.revision);
+      state = active.frame.choices.length
+        ? chooseEncounter(state, 0, state.revision)
+        : encounterCanFinish(state)
+          ? finishEncounter(state, state.revision)
+          : advanceEncounter(state, state.revision);
       state = validateGameState(JSON.parse(JSON.stringify(state)));
     }
     expect(state.activeEncounter).toBeNull();
+    expect(state.completedEncounterIds).toContain("galleria_fortune");
+    // The ticket is the talk's that follows the wish (no lottery since 2026-11-13).
+    state = play(state, "milano_galleria_ticket_gift", "");
     expect(state.inventory.galleria_ticket).toBe("held");
     expect(state.activeTourism?.landmarkId).toBe("galleria_vittorio_emanuele_ii");
     state = closeTourism(state, state.revision);

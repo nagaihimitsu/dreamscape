@@ -1,8 +1,9 @@
 INCLUDE modules.ink
 -> DONE
 
-// ガッレリアの場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
-// 観光案内、通常戦、道中交流とデート（告白を除く特別なデートも、地図の出来事がガッレリアにある）。道中交流「回らない願掛け」（クイズと抽選がある）とその結果は、今も 1場面1ファイル（stories/encounters/）。
+// ガッレリアの場所のファイル。
+// 観光案内、通常戦、道中交流と会話、デート（告白を除く特別なデートも、地図の出来事がガッレリアにある）。
+// 訪問の流れ：案内 → 観察 → 「回らない願掛け」 → 「券を一枚」 → バトル。観察の後の場面は、終わるたびに観察へ戻り、「進む」で次へ進む。
 
 // 観光案内。tourism/catalog.json の guideStoryId がこの knot を指す。
 === galleria_vittorio_emanuele_ii_guide ===
@@ -98,6 +99,82 @@ INCLUDE modules.ink
 消すとき、手が止まったね
 # speaker: heroine
 うん。いい音だったから。そこが一番いやだった
+-> END
+
+// 道中交流「回らない願掛け」（knot の名前 galleria_fortune が交流のID。2026-11-13 に 1場面1ファイル・encounters/catalog.json から移した）。
+// ガッレリアの観察で「進む」を押した後（# priority: after observe）に始まり、終わると観察に戻る。どの選択肢でも完了する（「また今度」はない）。
+// 観察を開き直すと、また会える（# repeat: always。前のカタログと同じ）。報酬は一度だけ。
+// 完了すると、バトルの2問正解と同じ報酬（victory_galleria_first、AP+1）を一度だけ受け取る（# on_done: reward。docs/01 の文化交流の代わりの達成）。
+// 雄牛がどこの紋章かは言わない（観察の資料と、バトルの第3問の答え）。言い伝えは言い伝えとして言う（出典は scenes/catalog.json）。
+=== galleria_fortune ===
+# scene: encounter
+# title: 回らない願掛け
+# at: visit galleria_vittorio_emanuele_ii
+# priority: after observe
+# repeat: always
+# person: milano_galleria_boy
+# person: milano_galleria_mother
+# on_done: reward victory_galleria_first
+# background: milano_galleria
+# speaker: narrator
+ガッレリアの真ん中の床、雄牛のモザイクの前で、少年が靴を脱いでいる。母親が、片足立ちの彼の肩を支えた。
+# speaker: milano_galleria_boy
+# cutin: name
+かかとで回るといいことがあるんでしょ。僕の靴、昨日買ったばっかり。靴だけ良くなったら困る
+# speaker: milano_galleria_mother
+# cutin: name
+そういう言い伝えなの。雄牛の上で、かかとで一回転。効いたかどうかは、誰も確かめてないけどね
+# speaker: heroine
+ちょっと回ってみたいな……。でも、靴下で回るの、怖くない？
+
+* [I'll keep count for you. # option: believe # translation: 回数を数えるよ。]
+    # speaker: narrator
+    少年は靴を履き直し、かかとで一周だけして、自分で拍手した。
+    # speaker: milano_galleria_boy
+    一回でやめとく。残りは明日の僕の分
+    # speaker: heroine
+    いいね。使い切らない運
+    -> END
+
+* [I'd rather make my own luck. # option: doubt # translation: 運は自分で作りたいな。]
+    # speaker: milano_galleria_mother
+    なら、この子が転ばないように一歩あけて。いいこと一個、もうできた
+    # speaker: heroine
+    いまの一歩、けっこういいご利益ですね
+    -> END
+
+* [I'll leave the bull in peace. # option: leave # translation: 雄牛はそっとしておくよ。]
+    # speaker: milano_galleria_boy
+    牛にも休み時間いるもんね
+    # speaker: narrator
+    少年は靴紐を結び直し、順番を後ろの人へ譲った。
+    # speaker: heroine
+    ……ほんとは、わたしもちょっと回ってみたかった。次に来たときにしよう
+    -> END
+
+// 会話「券を一枚」（knot の名前 milano_galleria_ticket_gift）。願掛けを終えた後、同じ観察から「進む」で始まる。
+// 少年の母親が、リナの紋章室の展示券をくれる（くじではなく、子どもの相手をしてくれた人へのお礼。どの選択肢の後でも同じ）。
+// 券はリナの紋章室（galleria_print）で使う。今の版のセーブで願掛けを終えている人は、この会話に会わずに券を持たない（リナの見本と実演の道がある）。
+=== milano_galleria_ticket_gift ===
+# scene: talk
+# at: visit galleria_vittorio_emanuele_ii
+# priority: after observe
+# when: done galleria_fortune
+# person: milano_galleria_mother
+# on_done: item galleria_ticket
+# sources: none
+# background: milano_galleria
+# speaker: narrator
+柱のそばで、少年の母親が財布から細長い紙を一枚抜いた。
+# speaker: milano_galleria_mother
+これ、リナの紋章室の券。手回しの版画の出店でね、この子の相手をしてくれた人に渡してって、何枚か預かってるの
+# speaker: heroine
+わたしたち、靴の話をしてただけですよ？
+# speaker: milano_galleria_mother
+この子、知らない人とは靴の話しかしないの。それを最後まで聞いてくれたら、十分
+# speaker: narrator
+# item_show: galleria_ticket
+券の角には、切り込みが一つだけ入っていた。
 -> END
 
 // 道中交流「版の実演、手はポケットに」（knot の名前 galleria_print が交流のID）。

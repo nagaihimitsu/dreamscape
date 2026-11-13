@@ -6,7 +6,6 @@ import { describe, expect, it } from "vitest";
 import { createGame, type GameState } from "../../../src/domain/game";
 import {
   advanceEncounter,
-  answerEncounterQuiz,
   chooseEncounter,
   encounterCanFinish,
   finishEncounter,
@@ -14,7 +13,7 @@ import {
 } from "../../../src/domain/encounter";
 import { encounterOffered, meetEncounter } from "../../fixtures/encounter-moment";
 
-function play(state: GameState, id: string, optionId: string, roll = 0, answer = "B"): GameState {
+function play(state: GameState, id: string, optionId: string, roll = 0): GameState {
   const initialRevision = state.revision;
   let next = meetEncounter(state, id, () => roll);
   expect(next.revision, id).not.toBe(initialRevision);
@@ -23,9 +22,7 @@ function play(state: GameState, id: string, optionId: string, roll = 0, answer =
     // Reconstruct the complete active snapshot between every action.
     next = JSON.parse(JSON.stringify(next)) as GameState;
     const active = next.activeEncounter!;
-    if (active.phase === "quiz") {
-      next = answerEncounterQuiz(next, answer, next.revision);
-    } else if (active.frame.choices.length) {
+    if (active.frame.choices.length) {
       const choice = active.frame.choices.find((item) => item.optionId === optionId);
       expect(choice, `${id}/${optionId}`).toBeDefined();
       next = chooseEncounter(next, choice!.index, next.revision);
@@ -43,7 +40,7 @@ function play(state: GameState, id: string, optionId: string, roll = 0, answer =
 }
 
 describe("Milan encounter route", () => {
-  it("defers and gives the pick, pays before the ticket, keeps draws and redeems the ticket later", () => {
+  it("defers and gives the pick, pays before the ticket, and redeems the ticket the wish's talk gives", () => {
     const fresh = createGame("ユウ", "ミオ");
     const initial: GameState = {
       ...fresh,
@@ -66,27 +63,21 @@ describe("Milan encounter route", () => {
     game = play(game, "galleria_print", "pay");
     expect(game.travelBudget).toBe(budget - 4);
     expect(encounterOffered(game, "galleria_ticket_press").available).toBe(false);
-    game = play(game, "galleria_fortune", "believe", 1, "A");
-    expect(game.encounterRewards.galleria_fortune).toBeUndefined();
-    const beforeDraw = game;
-    game = play(game, "galleria_fortune", "doubt", 2499);
+    // The wish completes with any choice and earns the battle's two-correct reward once; its ticket talk gives the ticket.
+    game = play(game, "galleria_fortune", "believe");
+    expect(game.claimedRewardIds.filter((id) => id === "victory_galleria_first")).toHaveLength(1);
+    expect(game.inventory.galleria_ticket).toBeUndefined();
+    game = play(game, "milano_galleria_ticket_gift", "");
     expect(game.inventory.galleria_ticket).toBe("held");
-    expect(game.encounterRewards.galleria_fortune.won).toBe(true);
     game = play(game, "galleria_ticket_press", "later");
     expect(game.inventory.galleria_ticket).toBe("held");
     game = play(game, "galleria_ticket_press", "press");
     expect(game.inventory.galleria_ticket).toBe("used");
-    game = play(game, "galleria_fortune", "believe", 9999);
+    game = play(game, "galleria_fortune", "doubt");
     expect(game.inventory.galleria_ticket).toBe("used");
-    expect(game.encounterRewards.galleria_fortune.roll).toBe(2499);
+    expect(game.encounterRewards).toEqual({});
     expect(game.claimedRewardIds.filter((id) => id === "victory_galleria_first")).toHaveLength(1);
     expect(game.travelBudget).toBe(budget - 4);
-
-    let lost = play(beforeDraw, "galleria_fortune", "doubt", 2500);
-    expect(lost.encounterRewards.galleria_fortune.won).toBe(false);
-    lost = play(lost, "galleria_fortune", "believe", 0);
-    expect(lost.encounterRewards.galleria_fortune.roll).toBe(2500);
-    expect(lost.inventory.galleria_ticket).toBeUndefined();
   });
 });
 
@@ -101,7 +92,7 @@ describe("Milan place entry", () => {
       battleRecords: [{ battleId: "milano_galleria_01", firstScore: 0, lastScore: 0, bestScore: 0, attempts: 1 }],
     };
     expect(encounterOffered(first, "duomo_string").available).toBe(true);
-    // The fortune teller is met in the Galleria's first observation; her quiz waits for its battle.
+    // The wish is met in the Galleria's first observation; every choice completes it, with the shared AP.
     expect(encounterOffered(first, "galleria_fortune").available).toBe(true);
     expect(encounterOffered(second, "galleria_print").available).toBe(false);
     expect(encounterOffered(second, "scala_mint").available).toBe(false);
@@ -116,12 +107,12 @@ describe("Milan place entry", () => {
     while (state.activeEncounter) {
       expect(state.activeEncounter.phase).toBe("story");
       validateEncounterState(state);
-      state = advanceEncounter(state, state.revision);
+      state = encounterCanFinish(state) ? finishEncounter(state, state.revision) : advanceEncounter(state, state.revision);
     }
-    expect(state.ap).toBe(0);
+    expect(state.ap).toBe(second.ap + 1);
     expect(state.inventory).toEqual({});
     expect(state.encounterRewards).toEqual({});
-    expect(state.completedEncounterIds).toEqual([]);
+    expect(state.completedEncounterIds).toEqual(["galleria_fortune"]);
     expect(encounterOffered(state, "galleria_fortune").available).toBe(true);
     const afterScala: GameState = {
       ...second,
