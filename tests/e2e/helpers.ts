@@ -755,6 +755,9 @@ async function act(page: Page, state: GameState, pick: Pick) {
   const date = state.activeDate;
   const encounter = state.activeEncounter;
   if (state.activeBattle?.phase === "question") return page.getByTestId(`answer-${pick(state)}`).click();
+  // A date's mini-game (# minigame:) shows its start button instead of the choices: started and left alone, it ends with
+  // its no-input outcome (cricket_batting: no_swing) within about 5 s and takes that choice (the poll below sees it saved).
+  if (date?.frame.choices.length && date.frame.minigame) return page.getByTestId("minigame-start").click();
   if (date?.frame.choices.length) return page.getByTestId("date-choice").first().click();
   // A guide's, an arrival's or an epilogue's Japanese choices (stage 3a): the first shown one.
   if (state.activeTourism?.phase === "guide" && state.activeTourism.frame?.choices.length) return page.getByTestId("guide-choice").first().click();
