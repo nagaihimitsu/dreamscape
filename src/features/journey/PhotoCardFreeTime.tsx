@@ -183,8 +183,9 @@ export function PhotoCardFreeTime({
     <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} showNext={false} />
 
     <section className="photo-menu" aria-label={`${city.nameJa}の行き先`} data-testid="travel-menu">
+      {/* 「待機」 is named only while one of its waits can be made (late in the evening none can). */}
       {!cards.some((card) => card.kind === "place" && card.entry.available) &&
-        <p className="photo-menu-note">今すぐ行ける場所はありません。「ホテルに戻る」で休むか、「待機」で時間を待てます。</p>}
+        <p className="photo-menu-note">{wait ? "今すぐ行ける場所はありません。「ホテルに戻る」で休むか、「待機」で時間を待てます。" : "今すぐ行ける場所はありません。「ホテルに戻る」で休めます。"}</p>}
       <div className="photo-stage">
         <CardProbe />
         <PhotoCardPicker game={game} cards={cards} chosenId={chosen.id} onChoose={chooseCard} arrangement={arrangement}
