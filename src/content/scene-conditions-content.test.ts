@@ -5,6 +5,8 @@ import path from "node:path";
 import { buildContent } from "../../scripts/content-pipeline";
 import { prepareContentFixture, storySourceFile } from "./test-fixtures";
 import { addCatalogWishToContent } from "../../tests/fixtures/catalog-wish";
+// The repository's own build (pretest makes it): the conditions the fixture's scenes read before the epilogue changes.
+import repositoryConditions from "./generated/scene-conditions.json";
 
 // A scene's cond("…") through content:build (unified event design stage 2a): declared, read like the
 // other conditions where the scene is played, walked true and false, and listed for the game.
@@ -36,10 +38,16 @@ describe("cond in a scene's Ink", () => {
   it("builds, walks both values and lists the text with its condition for the game", async () => {
     await epilogueWith("rel affection >= 3");
     const result = await buildContent(fixture);
-    // The epilogue's text and its condition, beside the scenes of other journeys that read cond (India's place files).
+    // The epilogue's text and its condition, beside the scenes of other journeys that read cond (India's place files)
+    // and Milan's other scenes that read it since the Milano rewrite (the castle's, Duomo's and Galleria's knots and
+    // the Darsena's confession, as the repository's build lists them): only the Darsena's file gains the epilogue's
+    // condition. The fixture has no sample journey.
     expect(result.sceneConditions.conditions["rel affection >= 3"]).toEqual({ relationship: { axis: "affection", atLeast: 3 } });
-    expect(Object.entries(result.sceneConditions.stories).filter(([storyId]) => !storyId.startsWith("places/gt_")))
-      .toEqual([[epilogueFile, ["rel affection >= 3"]]]);
+    const others = (stories: Record<string, string[]>) => Object.fromEntries(Object.entries(stories)
+      .filter(([storyId]) => !storyId.startsWith("places/gt_") && !storyId.startsWith("places/smp_")));
+    const before = others(repositoryConditions.stories);
+    expect(before[epilogueFile] ?? []).not.toContain("rel affection >= 3");
+    expect(others(result.sceneConditions.stories)).toEqual({ ...before, [epilogueFile]: [...before[epilogueFile] ?? [], "rel affection >= 3"] });
     const generated = JSON.parse(await readFile(path.join(fixture, "src/content/generated/scene-conditions.json"), "utf8"));
     expect(generated).toEqual(result.sceneConditions);
   }, 120000);
