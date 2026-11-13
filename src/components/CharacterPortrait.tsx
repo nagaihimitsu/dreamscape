@@ -1,25 +1,16 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
-import characterData from "../content/generated/content/presentation/characters.json";
-import {
-  battleCharacterId,
-  characterCatalogSchema,
-  characterImage,
-  characterPlacement,
-  resolveCharacterCostume,
-} from "../content/character-assets";
+import { characterImage, characterPlacement, resolveCharacterCostume } from "../content/character-assets";
 import type { StandPosition } from "../content/tags";
+import { loadPicture, pictureReady } from "../media/preload";
+import { characterCatalog as catalog } from "./character-catalog";
 import type { PortraitFocus } from "./scene-stage";
 import { portraitBreath } from "./scene-atmosphere";
 import "./character-portrait.css";
 
-const catalog = characterCatalogSchema.parse(characterData);
 const characters = catalog.characters;
 
-/** Artwork assignment lives outside the battle data and does not affect saves. */
-export function characterForBattle(battleId: string): string {
-  return battleCharacterId(catalog.battleCharacters, battleId);
-}
+export { characterForBattle } from "./character-catalog";
 
 /** A decorative layer. Position and image are independent of the Ink story, but for a scene's `# stand:` (written by its writer). */
 export function CharacterPortrait({
@@ -63,7 +54,6 @@ export function CharacterPortrait({
       ...(character.figureScale !== undefined ? { "--figure-scale": character.figureScale } as CSSProperties : {}),
     }}>
       <CharacterImage
-        key={image ?? "placeholder"}
         path={image}
         neutralPath={neutral}
         color={character.placeholderColor}
@@ -97,7 +87,7 @@ export function CharacterFace({ characterId, emotion, sceneId, cityId }: {
   const neutral = characterImage(character, { ...selection, emotion: "neutral" });
   return (
     <span className="character-face" aria-hidden="true">
-      <CharacterImage key={image ?? "placeholder"} path={image} neutralPath={neutral} color={character.placeholderColor} />
+      <CharacterImage path={image} neutralPath={neutral} color={character.placeholderColor} />
     </span>
   );
 }
@@ -122,33 +112,61 @@ export function CharacterFigure({ characterId, emotion, sceneId, cityId }: {
   const neutral = characterImage(character, { ...selection, emotion: "neutral" });
   return (
     <span className="character-figure" aria-hidden="true">
-      <CharacterImage key={image ?? "placeholder"} path={image} neutralPath={neutral} color={character.placeholderColor} />
+      <CharacterImage path={image} neutralPath={neutral} color={character.placeholderColor} />
     </span>
   );
 }
 
+/**
+ * A character's picture. A new expression (or outfit) replaces the one on screen only once its file has loaded and
+ * decoded (src/media/preload.ts loadPicture; one the background loading has made ready goes up at once): until then the
+ * last picture stays up, so the figure never goes blank while a file arrives. A file that cannot be shown falls back to
+ * the neutral picture, then to `fallback` or the placeholder.
+ */
 function CharacterImage({ path, neutralPath, color, fallback, onImageError, breathOf }: {
   path: string | null;
   neutralPath: string | null;
   color: string;
   fallback?: ReactNode;
   onImageError?: (path: string) => void;
-  /** A standing portrait's character: its picture breathes (character-portrait.css), going on from where the last picture was. */
+  /** A standing portrait's character: its picture breathes (character-portrait.css). */
   breathOf?: string;
 }) {
   const [failedPaths, setFailedPaths] = useState<string[]>([]);
-  // Read once as the picture is put up (scene-atmosphere.ts portraitBreath): a new expression takes the breath on.
+  // Read once as the picture is first put up (scene-atmosphere.ts portraitBreath): the same <img> takes each new
+  // expression, so the breath goes on through a change.
   const [breath] = useState(() => {
     if (breathOf === undefined) return undefined;
     const { durationMs, delayMs } = portraitBreath(breathOf, typeof performance === "undefined" ? 0 : performance.now());
     return { animationDuration: `${durationMs}ms`, animationDelay: `${delayMs}ms` };
   });
-  const candidate = [path, neutralPath].find((item) => item && !failedPaths.includes(item));
-  if (candidate) return (
-    <img src={`${import.meta.env.BASE_URL}${candidate}`} alt="" style={breath} onError={() => {
-      onImageError?.(candidate);
-      setFailedPaths((failed) => [...failed, candidate]);
-    }} />
+  const candidate = [path, neutralPath].find((item) => item && !failedPaths.includes(item)) ?? null;
+  // The picture on screen: the first at once (nothing to keep up yet), each later one once it is ready.
+  const [shown, setShown] = useState(candidate);
+  const reportError = useRef(onImageError);
+  useEffect(() => { reportError.current = onImageError; });
+  const fail = (failed: string) => {
+    reportError.current?.(failed);
+    setFailedPaths((list) => list.includes(failed) ? list : [...list, failed]);
+  };
+  useEffect(() => {
+    if (candidate === shown) return;
+    // Nothing worth keeping up (no picture, or one whose file failed), or the next is ready: it goes up at once.
+    if (!candidate || !shown || failedPaths.includes(shown) || pictureReady(candidate)) {
+      setShown(candidate);
+      return;
+    }
+    let current = true;
+    loadPicture(candidate).then(() => {
+      if (current) setShown(candidate);
+    }, () => {
+      if (current) fail(candidate);
+    });
+    return () => { current = false; };
+  }, [candidate, shown, failedPaths]);
+  // A figure on stage is what the scene is about: fetched before the music and the ambience streaming meanwhile.
+  if (shown) return (
+    <img src={`${import.meta.env.BASE_URL}${shown}`} alt="" fetchPriority="high" style={breath} onError={() => fail(shown)} />
   );
   if (fallback) return fallback;
   // Deliberately abstract placeholder, not a final character design.

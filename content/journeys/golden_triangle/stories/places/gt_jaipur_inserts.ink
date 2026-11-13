@@ -9,14 +9,14 @@ INCLUDE modules.ink
 // 探すのはミニゲーム「手のひらの模様」（# minigame: mehndi_hidden_name）。灯りを動かし、模様にまぎれた文字を押す。
 // 文字の場所と中身は、ジャル・マハルのフラグで分かれ道に書き分ける（主人公の名前は入れたとおりに。ヒンディー語の文字の所は、
 // わざと読めない印にする：偽の文字は作らない）。結果は found・wrong_spot（違う所を指した。その後で found）・later（「明日にする」
-// のボタンか、時間切れ。# later なので、また次の夜に出る）。場面の中のゲームなので、関係値の札は付けない。
+// のボタン。時間の制限は無い（2026-11-13）。# later なので、また次の夜に出る）。場面の中のゲームなので、関係値の札は付けない。
 === gt_jaipur_hotel_mehndi_night ===
 # scene: talk
 # at: hotel jaipur_hotel_hub
 # priority: -1
 # when: date gt_jaipur_date_jal_mahal
 # when: time night
-# background: gt_bg_jaipur_hotel_hub
+# background: gt_bg_jaipur_hotel_courtyard
 # bgm: feather_waltz
 { cond("seen gt_jaipur_hotel_mehndi_night"):
     # speaker: narrator
@@ -173,7 +173,8 @@ INCLUDE modules.ink
 # at: finale jaipur
 # priority: -1
 # on_done: item gt_jaipur_wedding_envelope
-# background: gt_bg_jaipur_hotel_hub
+# background: gt_bg_jaipur_hotel_courtyard
+# tint: off
 # bgm: morning
 # speaker: narrator
 # item_show: gt_jaipur_wedding_envelope

@@ -1,7 +1,9 @@
 import { useEffect, useRef } from "react";
 import soundVolumeData from "../content/generated/sound-volumes.json";
 import { soundPath, type SystemSoundId } from "../content/sounds";
-import { audioContext, decodedSoundCache, onAudioStateChange, onPageHidden, runningAudioContext, wantAudio } from "./audio-context";
+import {
+  audioContext, decodedSoundCache, fetchSound, madeAudioContext, onAudioStateChange, onPageHidden, runningAudioContext, wantAudio,
+} from "./audio-context";
 import { admitsSe, SE_LATE_MS, SE_MAX_PLAYING } from "./se-rules";
 
 // The sound effects (2026-11-12): the sounds the game plays by itself (playSe: a tap, a dialog, a quiz's answer, a ride)
@@ -104,6 +106,17 @@ export function playSound(id: string): void {
       console.warn(`効果音を再生できませんでした: ${id}`, error);
     }
   });
+}
+
+/**
+ * Loads the registered sound `id` ahead of its line (2026-11-13, the background loading: src/media/preload.ts): into the
+ * decoded sounds once the page's audio has been made, before that only its file (the browser's cache). Nothing for a
+ * sound that is not registered or while 「効果音を出す」 is off. Settles when it has loaded or failed.
+ */
+export function preloadSound(id: string): Promise<void> {
+  if (!Object.hasOwn(volumes, id) || !settings.enabled) return Promise.resolve();
+  const audio = madeAudioContext();
+  return audio ? load(audio, urlOf(id)).then(() => undefined) : fetchSound(urlOf(id), LOAD_TIMEOUT_MS);
 }
 
 /** Plays a sound the game plays by itself (playSound), at the moment its thing appears or its action happens. */

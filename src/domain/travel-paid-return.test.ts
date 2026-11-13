@@ -101,3 +101,34 @@ describe("a destination with no walking route home", () => {
     }
   });
 });
+
+describe("the reason of a destination that no way home lets the party take", () => {
+  // In memory: from the Duomo, a slow walk home (60 min) and a fast taxi (10 min, 10).
+  function withWaysHome(check: () => void) {
+    const routes = getCityContent("milano").travel.routes;
+    const saved = [...routes];
+    try {
+      const walk = saved.find((item) => item.fromPlaceId === "p_duomo" && item.toPlaceId === "p_hotel" && item.mode === "walk")!;
+      routes.splice(0, routes.length, ...saved.filter((item) => item.fromPlaceId !== "p_duomo" || item.toPlaceId !== "p_hotel"),
+        { ...walk, minutes: 60 }, { ...walk, mode: "taxi" as const, minutes: 10, cost: 10 });
+      check();
+    } finally {
+      routes.splice(0, routes.length, ...saved);
+    }
+  }
+  const at = (minute: number, travelBudget: number) => ({ ...createGame(), travelBudget, travel: { ...createGame().travel, minute } });
+  // Leaving the hotel at 19:28, the visit (a 7-minute walk there, 75 minutes) ends at 20:50: the taxi is home by 21:00.
+  const lastTaxi = 19 * 60 + 28;
+
+  it("names both when the walk home is too late and the taxi, in time, too dear", () => withWaysHome(() => {
+    expect(getTravelEventAvailability(at(lastTaxi, 9), "milano_duomo_episode", "walk")).toEqual({ available: false,
+      reason: "今日はホテルへの帰路を含めると時間が足りません（速い乗り物で帰るには予算が足りません）。" });
+    expect(getTravelEventAvailability(at(lastTaxi, 10), "milano_duomo_episode", "walk").plan?.returnReserve).toBe(10);
+  }));
+
+  it("names the time alone when the taxi would be late too, whatever the money", () => withWaysHome(() => {
+    expect(getTravelEventAvailability(at(lastTaxi + 1, 9), "milano_duomo_episode", "walk")).toEqual({ available: false,
+      reason: "今日はホテルへの帰路を含めると時間が足りません。" });
+    expect(getTravelEventAvailability(at(lastTaxi + 1, 10), "milano_duomo_episode", "walk").available).toBe(false);
+  }));
+});
