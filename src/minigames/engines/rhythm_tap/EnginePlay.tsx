@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type ComponentType, type KeyboardEvent, type MouseEvent, type PointerEvent } from "react";
 import type { MiniGamePlayProps, MiniGameRules } from "../../contract";
-import { rhythmTapJudge, rhythmTapPerfect, type RhythmTapRecord, type RhythmTapSummary, type RhythmTapTuning } from "./engine";
+import { rhythmTapJudge, rhythmTapOpens, rhythmTapPerfect, type RhythmTapRecord, type RhythmTapSummary, type RhythmTapTuning } from "./engine";
 import "./engine.css";
 
 // The rhythm_tap engine's play (docs/13 2.2): the field a skin draws, a lane whose marks slide to a ring at each beat
 // (the beats on screen: it plays the same with the sound off; a count-in's beats pass as hollow crosses, not to tap; a
 // partner's stop rides the lane as a flag), the skin's stop button (if any) away from the big tap button at the bottom
 // (a tap on the field and Space or Enter tap too; S stops). The host's clock times it; the engine judges the record as it
-// grows; the skin's rules decide; the host shows the outcome and takes its choice.
+// grows; the skin's rules decide, and the play ends at that moment (end with the record for the ★, the field's hold after
+// it); the host shows the finish and the result card and takes its choice.
 
 /** What a skin's field draws at a frame. */
 export interface RhythmTapView<Outcome extends string> {
@@ -52,7 +53,7 @@ export interface RhythmTapSkin<Params, Outcome extends string> {
   statusJa(summary: RhythmTapSummary): string;
   /** The line under the outcome (a count to show; never in the story: docs/13 4.1). */
   detailJa(summary: RhythmTapSummary, outcome: Outcome): string | undefined;
-  /** How long the field shows the end before the outcome (less with less motion). */
+  /** How long the field still shows the end after it is decided (the host's finish runs over it; less with less motion). */
   endDelayMs(outcome: Outcome, still: boolean): number;
   Field: ComponentType<RhythmTapFieldProps<Params, Outcome>>;
 }
@@ -80,6 +81,7 @@ const Palm = () => (
 export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSkin<Params, Outcome>): ComponentType<MiniGamePlayProps<Params, Outcome>> {
   const { beats } = skin.tuning;
   const countIn = skin.countIn ?? [];
+  const opens = rhythmTapOpens(skin.tuning);
   const laneAt = (beat: number, ms: number) => {
     const ahead = (beat - ms) / LANE_AHEAD_MS;
     return ahead >= 0 ? LANE_RING + ahead * (100 - LANE_RING) : LANE_RING + ahead * (LANE_RING / 0.35);
@@ -101,6 +103,7 @@ export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSki
     const flag = useRef<HTMLSpanElement>(null);
     const ring = useRef<HTMLSpanElement>(null);
     const stopButton = useRef<HTMLButtonElement>(null);
+    const actionButton = useRef<HTMLButtonElement>(null);
     const draws = useRef(new Set<(view: RhythmTapView<Outcome>) => void>());
     const latest = useRef(props);
     latest.current = props;
@@ -112,6 +115,9 @@ export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSki
     const tap = (ms: number) => {
       if (!playing() || ms < 0) return;
       taps.current.push(ms);
+      // Before the first beat's window the tap counts for nothing (rhythmTapJudge). With a count-in it is clapping along
+      // (the skin's field shows it); without one, the button turns it away (a press never does nothing at all).
+      if (ms < opens && !countIn.length) latest.current.juice.denied(actionButton.current);
     };
     const stop = (ms: number) => {
       if (!skin.stop || !playing() || ms < 0) return;
@@ -120,7 +126,6 @@ export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSki
     };
 
     useEffect(() => {
-      let ended = false;
       let status = "";
       let flashUntil = -1;
       let flash: "perfect" | "good" = "good";
@@ -133,10 +138,15 @@ export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSki
         }
         const record: RhythmTapRecord = { taps: taps.current, stopMs: stopMs.current };
         const summary = rhythmTapJudge(record, skin.tuning, ms);
+        // The end at the moment it is decided (docs/13 2.6): the host's finish runs over the field's hold (her hand, the
+        // cough), and the record goes with it for the ★.
         if (summary.ended && !decided.current) {
           const outcome = skin.rules.outcomeOf(record, latest.current.params);
-          decided.current = { outcome, endAt: ms + skin.endDelayMs(outcome, latest.current.still) };
+          const holdMs = skin.endDelayMs(outcome, latest.current.still);
+          decided.current = { outcome, endAt: ms + holdMs };
           setOver(true);
+          const kept: RhythmTapRecord = { taps: [...record.taps], stopMs: record.stopMs };
+          latest.current.end(outcome, skin.detailJa(rhythmTapJudge(kept, skin.tuning), outcome), { record: kept, holdMs });
         }
         const nextStatus = skin.statusJa(summary);
         if (nextStatus !== status) {
@@ -168,10 +178,6 @@ export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSki
         const done = decided.current;
         const view: RhythmTapView<Outcome> = { ms, record, summary, outcome: done?.outcome ?? null, endAt: done?.endAt ?? null };
         for (const draw of draws.current) draw(view);
-        if (done && !ended && ms >= done.endAt) {
-          ended = true;
-          latest.current.end(done.outcome, skin.detailJa(rhythmTapJudge(record, skin.tuning), done.outcome));
-        }
       });
     }, [clock, autoPlay]);
 
@@ -229,7 +235,7 @@ export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSki
             {skin.partner && <span className="mg-rhythm-tap-flag" ref={flag}><span>{skin.partner.flagJa}</span></span>}
           </div>
           {auto !== null ? <p className="mg-rhythm-tap-auto">{skin.autoJa}</p> : (
-            <button type="button" className="primary mg-rhythm-tap-action" data-testid="minigame-action" data-minigame-primary
+            <button ref={actionButton} type="button" className="primary mg-rhythm-tap-action" data-testid="minigame-action" data-minigame-primary
               aria-disabled={idle || undefined} aria-describedby={hintId}
               onPointerDown={onPointer} onClick={onClickTap}>{skin.actionJa}</button>
           )}

@@ -4,6 +4,24 @@
    flips (the dancers sway the other way). Less motion keeps the light only. */
 .mg-baraat-dance { position: absolute; inset: 0; }
 .mg-baraat-dance-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; pointer-events: none; }
+/* The street photo is a night one: softened as every photo (mg-photo) but not darkened further. */
+.mg-baraat-dance .mg-baraat-dance-backdrop.mg-photo { filter: saturate(0.85) contrast(0.92) brightness(1.08) blur(1.5px); }
+/* The procession's lights over the dark street (D1: they fill the dark between the photo and the drawn figures): warm,
+   soft-edged, twinkling slowly (still with less motion), with a warm glow over the top of the field. */
+.mg-baraat-dance-lights {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 90% 55% at 50% 18%, rgba(255, 190, 110, 0.22), transparent 70%);
+}
+.mg-baraat-dance-lights > span {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 214, 140, 0.9) 0 18%, rgba(255, 170, 80, 0.45) 40%, transparent 70%);
+  transform: translate(-50%, -50%);
+  animation: mg-baraat-dance-twinkle 1800ms ease-in-out var(--mg-baraat-dance-twinkle, 0ms) infinite alternate;
+}
+@keyframes mg-baraat-dance-twinkle { from { opacity: 0.55; } to { opacity: 1; } }
 /* The band's drum: a big drum face seen from the front, its stick at the top right; its centre over the lane's ring
    (the lane is the controls' width less 16 px a side, its ring 16% along it). */
 .mg-baraat-dance-drummer {
@@ -86,12 +104,12 @@
 .mg-baraat-dance-grade[data-kind="perfect"] { color: #ffd76a; font-size: 20px; }
 .mg-baraat-dance-grade small { color: #fffaf1; font-size: 12px; }
 @keyframes mg-baraat-dance-grade { from { opacity: 0.4; transform: translate(-50%, 30%) scale(0.85); } }
-/* The band speeds up: said at the top for a moment. */
+/* The band speeds up: said near the top for a moment (below her face under the band, which says it too). */
 .mg-baraat-dance-faster {
   position: absolute;
   z-index: 5;
   left: 50%;
-  top: 5%;
+  top: 15%;
   padding: 4px 14px;
   border-radius: 16px;
   background: rgba(138, 31, 36, 0.88);

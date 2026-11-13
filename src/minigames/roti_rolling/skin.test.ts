@@ -22,7 +22,7 @@ describe("the roti's field", () => {
     expect(backdrop({})).toContain("mg-roti-rolling-table");
     expect(backdrop({})).not.toContain("<img");
     const html = board({});
-    expect(html).toContain('class="mg-roti-rolling"');
+    expect(html).toContain('class="mg-roti-rolling mg-play-object"');
     expect(html).toContain("mg-roti-rolling-board-face");
     expect(html).toContain("mg-roti-rolling-pin-body");
     expect(html).toContain('data-testid="roti-dough"');
