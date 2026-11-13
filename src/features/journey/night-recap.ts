@@ -49,6 +49,26 @@ export function todayWord(game: Pick<GameState, "travel">): TodayWord | null {
 export const hasNightRecap = (recap: NightRecap | undefined): recap is NightRecap =>
   !!recap && (recap.headlines.length > 0 || recap.route.length > 1 || recap.line !== null);
 
+/** A night: the city and the day it ends. */
+export type NightKey = { cityId: string; day: number };
+
+/**
+ * The card a night shows as it passes at the hotel (useTravelEffects), `atNight` being the state before it passes:
+ * - `dayEnd` (the game's own rest at 21:00): the day's end card, with the night's recap when it has one (as before);
+ * - a rest before 21:00 (2026-11-13 user decision: whenever the day ends by resting, the night shows what the 21:00 card
+ *   shows): the card 「ホテルで休みました。」 with the recap when the night has one (hasNightRecap: today's route when the party
+ *   went out, today's headlines, her line), else 「次の日」 (`next_day`) as before.
+ * A night shows its recap once (`shown`: the last night that showed it, the caller's memory; nothing is saved).
+ */
+export type RestNightCard = { kind: "day_end"; recap?: NightRecap } | { kind: "rest"; recap: NightRecap } | { kind: "next_day" };
+
+export function restNightCard(atNight: GameState, { dayEnd, shown }: { dayEnd: boolean; shown: NightKey | null }): RestNightCard {
+  const recap = nightRecap(atNight);
+  const fresh = hasNightRecap(recap) && !(shown?.cityId === atNight.currentCityId && shown.day === atNight.travel.day);
+  if (dayEnd) return fresh ? { kind: "day_end", recap } : { kind: "day_end" };
+  return fresh ? { kind: "rest", recap } : { kind: "next_day" };
+}
+
 /** Today's headlines said in words (the card's live region): 「今日の見出し：いつ来ても三時、三時の約束。」 */
 export function headlinesSentenceJa(headlines: readonly string[]): string {
   return headlines.length ? `今日の見出し：${headlines.join("、")}。` : "";

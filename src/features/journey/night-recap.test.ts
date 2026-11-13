@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import { battleQuizzes, battles, episodes, getCityContent } from "../../content";
 import { cityStart, finishEpisode } from "../../dev/scenario-builders";
 import type { GameState } from "../../domain/game";
-import { hasNightRecap, headlinesSentenceJa, nightRecap, routeMarks, routeSentenceJa, todayWord } from "./night-recap";
+import { hasNightRecap, headlinesSentenceJa, nightRecap, restNightCard, routeMarks, routeSentenceJa, todayWord } from "./night-recap";
 
 const SAMPLE = "mihon";
 const at = (state: GameState, day: number, todayPlaceIds: string[]): GameState =>
@@ -82,6 +82,40 @@ describe("what the night shows under its line", () => {
     } finally {
       episode.clearTitleJa = written;
     }
+  });
+});
+
+// Whenever the day ends by resting at the hotel, not only at 21:00, the night shows its recap (2026-11-13 user decision).
+describe("the card of a night at the hotel", () => {
+  const milan = cityStart("milano");
+  const night = (state: GameState) => ({ cityId: state.currentCityId, day: state.travel.day });
+
+  it("shows the recap for a rest before 21:00 after the party went out, in place of 「次の日」", () => {
+    const out = at(milan, 1, ["p_duomo", "p_galleria"]);
+    const card = restNightCard(out, { dayEnd: false, shown: null });
+    expect(card).toEqual({ kind: "rest", recap: nightRecap(out) });
+    expect(card.kind === "rest" && card.recap.route.map((stop) => stop.place.id)).toEqual(["p_hotel", "p_duomo", "p_galleria"]);
+    // Headlines alone are a recap too (the same rule as at 21:00).
+    expect(restNightCard(finishEpisode(milan, "milano_duomo_episode"), { dayEnd: false, shown: null }).kind).toBe("rest");
+  });
+
+  it("is the plain 「次の日」 for a rest before 21:00 with nothing to recap (the party stayed in, a city without night lines)", () => {
+    expect(restNightCard(milan, { dayEnd: false, shown: null })).toEqual({ kind: "next_day" });
+  });
+
+  it("is the day's end card at 21:00 as before, with the recap when there is one", () => {
+    const out = at(milan, 1, ["p_duomo"]);
+    expect(restNightCard(out, { dayEnd: true, shown: null })).toEqual({ kind: "day_end", recap: nightRecap(out) });
+    expect(restNightCard(milan, { dayEnd: true, shown: null })).toEqual({ kind: "day_end" });
+  });
+
+  it("shows a night's recap once: not again for the same night, again for the next", () => {
+    const out = at(milan, 1, ["p_duomo"]);
+    expect(restNightCard(out, { dayEnd: false, shown: night(out) })).toEqual({ kind: "next_day" });
+    expect(restNightCard(out, { dayEnd: true, shown: night(out) })).toEqual({ kind: "day_end" });
+    const nextDay = at(milan, 2, ["p_duomo"]);
+    expect(restNightCard(nextDay, { dayEnd: false, shown: night(out) }).kind).toBe("rest");
+    expect(restNightCard(out, { dayEnd: false, shown: { cityId: "delhi", day: 1 } }).kind).toBe("rest");
   });
 });
 
