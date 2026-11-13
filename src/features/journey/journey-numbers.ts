@@ -1,7 +1,6 @@
 import { cityContents } from "../../content";
 import { formatMoneyForCity } from "../../content/currency";
 import { getJourneyForCity } from "../../content/journeys";
-import { getTransportMode } from "../../content/transport";
 import type { GameState } from "../../domain/game";
 import { metPeopleGroups } from "./met-people";
 import { visitedPlaceIdsIn } from "./visited-places";
@@ -10,12 +9,10 @@ import { visitedPlaceIdsIn } from "./visited-places";
 // from what the game and this device already keep (nothing new is saved). Never a relationship value, never an English
 // score (AGENTS.md: the quizzes estimate no English ability).
 
-/** A vehicle and how many times the party took it in the journey. */
-export type RideNumber = { modeId: string; nameJa: string; count: number };
-
-// Every number is the whole journey's (2026-11-13 user decision). What is kept per city (travel.day without a calendar,
-// travel.rideCounts: both start again in each city) is the journey's only while the party is still in its first city;
-// after that the number is not known (null) and its line is left out, never a part shown as the whole.
+// Every number is the whole journey's (2026-11-13 user decision). The days without a calendar (travel.day starts again
+// in each city) are the journey's only while the party is still in its first city; after that they are not known (null)
+// and their line is left out, never a part shown as the whole. The rides are not shown at all: travel.rideCounts is per
+// city and no record keeps them for the journey.
 export type JourneyNumbers = {
   /** The journey's days so far: its calendar's day, or (no calendar) the day while still in the first city; else null. */
   days: number | null;
@@ -29,8 +26,6 @@ export type JourneyNumbers = {
   photos: number;
   /** The journey's starting budget less what is left, in the journey's currency (never below 0); null without a start. */
   spent: { amount: number; textJa: string } | null;
-  /** The journey's rides by vehicle (most first; walking is never counted) while still in the first city; else null. */
-  rides: RideNumber[] | null;
 };
 
 /** The budget the journey started with: its manifest's, else its first city's (as a new game starts: src/domain/game.ts). */
@@ -51,7 +46,7 @@ export function journeyNumbers(game: GameState, learnedWordIds: readonly string[
   }, 0);
   const start = startingBudget(game);
   const spent = start === null ? null : Math.max(0, start - game.travelBudget);
-  // No city left yet: this city's own records are the journey's.
+  // No city left yet: this city's own day is the journey's.
   const firstCity = cityIds[0] === game.currentCityId;
   return {
     days: game.travel.calendar?.journeyDay ?? (firstCity ? game.travel.day : null),
@@ -60,9 +55,6 @@ export function journeyNumbers(game: GameState, learnedWordIds: readonly string[
     localWords: new Set(learnedWordIds).size,
     photos: game.album.length,
     spent: spent === null ? null : { amount: spent, textJa: formatMoneyForCity(game.currentCityId, spent) },
-    rides: firstCity ? Object.entries(game.travel.rideCounts)
-      .map(([modeId, count]) => ({ modeId, nameJa: getTransportMode(game.currentCityId, modeId)?.nameJa ?? modeId, count }))
-      .sort((a, b) => b.count - a.count || a.nameJa.localeCompare(b.nameJa, "ja")) : null,
   };
 }
 
