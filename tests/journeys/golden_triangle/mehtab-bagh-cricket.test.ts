@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { dates } from "../../../src/content";
-import { miniGameChoice, miniGameOutcomeIds } from "../../../src/content/mini-games";
+import { miniGameChoice, miniGameOutcomeIds } from "../../../src/minigames/tag";
 import { cityStart, finishEpisode, startDateScene, withAp } from "../../../src/dev/scenario-builders";
 import { advanceDate, chooseDate, finishDate, validateGameState, type GameState } from "../../../src/domain/game";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";

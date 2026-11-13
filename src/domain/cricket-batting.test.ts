@@ -3,7 +3,7 @@ import {
   CRICKET_CONTACT_MS, CRICKET_END_MS, CRICKET_RELEASE_MS, CRICKET_TIMING, cricketAutoSwing, cricketMeter, cricketMeterZones, cricketOutcome,
   type CricketOutcome,
 } from "./cricket-batting";
-import { miniGameOutcomeIds } from "../content/mini-games";
+import { miniGameOutcomeIds } from "../minigames/tag";
 
 const { cleanMs, nearMs } = CRICKET_TIMING;
 

@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
-import { MINI_GAMES } from "../../content/mini-games";
+import { cricketBatting } from "../../minigames/cricket_batting/definition";
 import { playSound } from "../../audio/sound-effects";
 import {
   CRICKET_CONTACT_MS, CRICKET_END_MS, CRICKET_RELEASE_MS, CRICKET_TIMING, cricketAutoSwing, cricketMeter, cricketMeterZones, cricketOutcome,
@@ -27,7 +27,7 @@ export const CRICKET_SOUNDS = { hit: "bat_hit", bricks: "bricks_fall", cheer: "a
 const SWING_LIVE_MS = 450;
 /** How long the result's label stays before the story goes on. */
 const RESULT_MS = 1300;
-const LABELS: Readonly<Record<string, string>> = Object.fromEntries(MINI_GAMES.cricket_batting.outcomes.map((outcome) => [outcome.id, outcome.labelJa]));
+const LABELS: Readonly<Record<string, string>> = Object.fromEntries(cricketBatting.outcomes.map((outcome) => [outcome.id, outcome.labelJa]));
 const BRICKS_MS = CRICKET_CONTACT_MS + CRICKET_TIMING.bricksMs;
 
 type Point = { x: number; y: number; size: number };
@@ -197,7 +197,7 @@ export function CricketBatting({ auto, autoOutcome, still, partner, onDone, onAb
   };
   const zones = cricketMeterZones();
   const span = ([from, to]: [number, number]): CSSProperties => ({ left: `${from * 100}%`, width: `${(to - from) * 100}%` });
-  const definition = MINI_GAMES.cricket_batting;
+  const definition = cricketBatting;
   return (
     <section ref={layer} tabIndex={-1} className="minigame-layer cricket" data-testid="minigame-play" data-still={still || undefined}
       data-outcome={outcome ?? undefined} data-no-advance aria-label="クリケットの打席" onKeyDown={onKey} onClick={(event) => event.stopPropagation()}>

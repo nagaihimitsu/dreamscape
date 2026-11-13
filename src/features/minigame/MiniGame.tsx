@@ -1,12 +1,13 @@
 import { useState, type ComponentType, type ReactNode } from "react";
 import { createPortal } from "react-dom";
-import { MINI_GAMES, miniGameChoice, type MiniGameId, type MiniGameTag } from "../../content/mini-games";
+import { MINI_GAMES } from "../../minigames/registry";
+import { miniGameChoice, type MiniGameTag } from "../../minigames/tag";
 import { playSe } from "../../audio/sound-effects";
 import { CricketBatting, type MiniGamePlayProps } from "./CricketBatting";
 import "./minigame.css";
 
-/** Each game's play (src/content/mini-games.ts lists the games and their outcomes). */
-const PLAYS: Record<MiniGameId, ComponentType<MiniGamePlayProps>> = {
+/** Each game's play (src/minigames/registry.ts lists the games and their outcomes). */
+const PLAYS: Record<string, ComponentType<MiniGamePlayProps>> = {
   cricket_batting: CricketBatting,
 };
 

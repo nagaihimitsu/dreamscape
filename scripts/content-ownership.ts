@@ -131,8 +131,10 @@ const DEFINITIONS: [MergedKind, string, Namespace][] = [
 /** `# background: id`, `# effect: id` and `# local_word: id` tags of an Ink source. */
 function inkTagReferences(source: string): Reference[] {
   const namespaces: Record<string, Namespace> = { background: "background", effect: "effect", local_word: "localWord" };
-  return [...source.matchAll(/#\s*(background|effect|local_word)\s*:\s*([A-Za-z0-9_]+)/gu)]
-    .map(([, tag, id]) => ref(namespaces[tag], `#${tag}`, id));
+  return [...[...source.matchAll(/#\s*(background|effect|local_word)\s*:\s*([A-Za-z0-9_]+)/gu)]
+    .map(([, tag, id]) => ref(namespaces[tag], `#${tag}`, id)),
+  // A # minigame:'s bg <id> (docs/13) is a background like # background:.
+  ...[...source.matchAll(/#\s*minigame\s*:[^#\n]*?\sbg\s+([A-Za-z0-9_]+)/gu)].map(([, id]) => ref("background", "#minigame bg", id))];
 }
 
 /** A served image (a path below public/, e.g. `assets/tourism/x.webp`) that a content file refers to. */

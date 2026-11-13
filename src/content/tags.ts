@@ -1,7 +1,7 @@
 import { REACTION_MARKS, type DialogueReaction, type ReactionTarget } from "./dialogue-reactions";
 import { VOICE_ID } from "./voice-files";
 import { SOUND_ID } from "./sounds";
-import { parseMiniGameTag, type MiniGameTag } from "./mini-games";
+import { parseMiniGameTag, type MiniGameTag } from "../minigames/tag";
 
 export interface TagContext {
   effectIds: string[];
@@ -14,10 +14,16 @@ export interface TagContext {
   /** The people of progression/story.json, for `# speaker: <person ID>`; absent: a tool that only reads the lines (not checked). */
   personIds?: readonly string[];
   /**
-   * Whether a line may start a mini-game (`# minigame:`): content:build says false for the scenes whose screen cannot
-   * run one and true for a place file's date; absent: allowed (the game reads only what content:build passed).
+   * Whether a line may start a mini-game (`# minigame:`; docs/13 1.3): content:build's full-branch walk (scene-walk.ts)
+   * says true, every other reading false, a confession date "confession" (refused, docs/13 1.4); absent: allowed (the
+   * game reads only what content:build passed).
    */
-  miniGames?: boolean;
+  miniGames?: boolean | "confession";
+  /**
+   * The mini-game pictures a `# minigame:`'s `art.<slot>` may name (ID → served path; src/minigames/art.ts): content:build
+   * gives a scene its journey's and the root's; absent: not checked.
+   */
+  miniGameArt?: Readonly<Record<string, string>>;
 }
 
 /** The speakers every line may name; any other `# speaker:` names a person of progression/story.json people (2026-11-11). */
@@ -69,7 +75,7 @@ export interface StoryTags {
   tint?: TintSwitch;
   /** `# ambience: <ID>` / `# ambience: stop` / `# ambience: default`: the scene's ambience from this line on (as `# bgm:`). */
   ambience?: string;
-  /** `# minigame: <game> [auto <outcome>] [prefix <word>]`: the choice set right after the line is played (src/content/mini-games.ts). */
+  /** `# minigame: <game> [auto <outcome>] [prefix <word>] [bg …] [art.<slot> …] [<key> <value>]…`: the choice set right after the line is played (src/minigames/tag.ts). */
   minigame?: MiniGameTag;
   effects: string[];
 }
@@ -354,10 +360,15 @@ export function parseStoryTags(
       readSceneTag(key, value, result);
     } else if (key === "minigame") {
       // Where it may run and what follows it (a choice set of its outcomes) are content:build's (scripts/scene-walk.ts).
+      if (context.miniGames === "confession")
+        throw new Error(`# minigame: ${value}: no mini-game in a confession date: her answer must never look decided by skill or luck ` +
+          "(docs/13 1.4); write it in a scene before or after it (# at: date <the confession>)");
       if (context.miniGames === false)
-        throw new Error(`# minigame: ${value}: a mini-game runs in a date written in a place file (stories/places/, the date's knot or a helper knot it calls) only`);
+        throw new Error(`# minigame: ${value}: a mini-game runs at a choice set of a scene written in a place file (stories/places/: a date, ` +
+          "a talk or encounter, a guide, an arrival, an epilogue, a tour leg or a battle's talk, in its knot or a helper knot it calls), " +
+          "not in a catalog encounter, a one-scene date, a scene without choices or a quiz's or reasoning's call (docs/13 1.3)");
       if (result.minigame) throw new Error("Duplicate minigame tag");
-      result.minigame = parseMiniGameTag(value);
+      result.minigame = parseMiniGameTag(value, context);
     } else {
       throw new Error(`Unknown story tag: ${key}`);
     }

@@ -4,7 +4,7 @@ import { requiredLeaves, type Condition, type Leaf } from "../src/content/condit
 import { parseConditionText } from "../src/content/condition-text";
 import type { SceneDone, SceneOption } from "../src/content/scene-schemas";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
-import { miniGameOptionId, miniGameOutcomeIds, type MiniGameTag } from "../src/content/mini-games";
+import { miniGameOptionId, miniGameOutcomeIds, type MiniGameTag } from "../src/minigames/tag";
 import { bindItemReader } from "../src/story/items";
 import { bindMemoryReader } from "../src/story/memory";
 import { checkLinesWithoutChoice } from "./ink-validation";

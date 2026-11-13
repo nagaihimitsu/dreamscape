@@ -1,4 +1,4 @@
-// The cricket batting mini-game's rules (`# minigame: cricket_batting`, src/content/mini-games.ts): one ball, one tap.
+// The cricket batting mini-game's rules (`# minigame: cricket_batting`, src/minigames/cricket_batting/definition.ts): one ball, one tap.
 // The outcome comes from when the player swings, against when the ball reaches the bat; nothing is random (the taped
 // ball's wobble on screen is drawn the same way every time and changes nothing). Times are milliseconds from the
 // start of the play (the press of 「構える」). Pure: the screen (src/features/minigame/CricketBatting.tsx) draws and times.
