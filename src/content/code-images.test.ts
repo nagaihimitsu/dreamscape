@@ -32,9 +32,10 @@ describe("images the code uses", () => {
   it("are named only in code-images.ts", () => {
     // A served path in a string, after a template expression (`${BASE_URL}assets/`) or in CSS url(…).
     const servedPath = /[`"'}(](?:\.?\/)?assets\//u;
-    // The folders whose files the content names by ID (album images, music, ambience, sounds, voices; content:build
-    // checks each named file) are named by their modules as the folder alone or with a placeholder (`<folder>/<ID>`), never a file of the code.
-    const contentFolder = /assets\/(?:album|ambience|bgm|se|voice)(?=["'`]|\/<)/gu;
+    // The folders whose files the content names by ID (album images, music, ambience, mini-game pictures, sounds, voices;
+    // content:build checks each named file) are named by their modules as the folder alone or with a placeholder
+    // (`<folder>/<ID>`), never a file of the code.
+    const contentFolder = /assets\/(?:album|ambience|bgm|minigames|se|voice)(?=["'`]|\/<)/gu;
     const naming = sourceFiles().filter((file) => file !== "src/content/code-images.ts")
       .flatMap((file) => readFileSync(path.join(root, file), "utf8").split("\n")
         .flatMap((line, index) => (servedPath.test(line.replace(contentFolder, "")) ? [`${file}:${index + 1}: ${line.trim()}`] : [])));
