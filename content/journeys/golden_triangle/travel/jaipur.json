@@ -1371,52 +1371,20 @@
     {
       "fromPlaceId": "jaipur_amber_fort",
       "toPlaceId": "jaipur_panna_meena_kund",
-      "mode": "auto_rickshaw",
-      "minutes": 10,
-      "cost": 90,
-      "estimation": "game_model",
+      "mode": "walk",
+      "minutes": 12,
+      "cost": 0,
       "sources": [
         {
-          "publisher": "Indiaesque",
-          "title": "Getting Around Jaipur（Facts checked 14 September 2026）",
-          "url": "https://indiaesque.com/jaipur/getting-around/",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "ジャイプールのオート（料金は交渉できると書く）：旧市街内₹50〜150、旧市街→アンベール城₹250〜350、旧市街→ナハルガル城₹150〜250（道路で約14km、坂道を30〜40分）。"
-        },
-        {
-          "publisher": "TomTom",
-          "title": "TomTom Traffic Index: India",
-          "url": "https://www.tomtom.com/traffic-index/country/india/",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "2025年の混雑度：ニューデリー60.2%（4位）、ジャイプール58.7%（6位）。アーグラは掲載なし。"
-        },
-        {
-          "publisher": "TomTom",
-          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
-          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
+          "publisher": "FOSSGIS（routing.openstreetmap.de、routed-foot）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "地点どうしの歩く経路の計算（アンベール城とパンナ・ミーナー・クンド）",
+          "url": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/",
+          "checkedAt": "2026-11-13",
           "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+          "claimJa": "2026-11-13 に計算した歩く経路は約0.78km（どちら向きも同じ）。地点の代表点から道までの約0.09kmを足した約0.87kmを、分速75m（地下鉄の駅まで歩く分と同じ換算）で割って切り上げ、12分とした。城の坂・階段と門の位置は考えていない。現地の歩道の通行可否を保証しない。"
         }
-      ]
+      ],
+      "estimation": "game_model"
     },
     {
       "fromPlaceId": "jaipur_amber_fort",
@@ -5627,52 +5595,20 @@
     {
       "fromPlaceId": "jaipur_panna_meena_kund",
       "toPlaceId": "jaipur_amber_fort",
-      "mode": "auto_rickshaw",
-      "minutes": 10,
-      "cost": 80,
-      "estimation": "game_model",
+      "mode": "walk",
+      "minutes": 12,
+      "cost": 0,
       "sources": [
         {
-          "publisher": "Indiaesque",
-          "title": "Getting Around Jaipur（Facts checked 14 September 2026）",
-          "url": "https://indiaesque.com/jaipur/getting-around/",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "ジャイプールのオート（料金は交渉できると書く）：旧市街内₹50〜150、旧市街→アンベール城₹250〜350、旧市街→ナハルガル城₹150〜250（道路で約14km、坂道を30〜40分）。"
-        },
-        {
-          "publisher": "TomTom",
-          "title": "TomTom Traffic Index: India",
-          "url": "https://www.tomtom.com/traffic-index/country/india/",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "2025年の混雑度：ニューデリー60.2%（4位）、ジャイプール58.7%（6位）。アーグラは掲載なし。"
-        },
-        {
-          "publisher": "TomTom",
-          "title": "TomTom Traffic Index: New Delhi traffic in 2025",
-          "url": "https://www.tomtom.com/traffic-index/new-delhi-traffic/",
-          "checkedAt": "2026-11-07",
-          "claimType": "documented_fact",
-          "claimJa": "2025年のニューデリー：車で10kmの平均所要24分、朝夕の平均速度は時速20.8km、混雑度60.2%。車全体の統計で、オートの統計ではない。"
-        },
-        {
-          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
-          "title": "車の経路計算 table/v1/driving（ゴールデントライアングル3都市の各11地点）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
+          "publisher": "FOSSGIS（routing.openstreetmap.de、routed-foot）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "地点どうしの歩く経路の計算（アンベール城とパンナ・ミーナー・クンド）",
+          "url": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/",
+          "checkedAt": "2026-11-13",
           "claimType": "hypothesis",
-          "claimJa": "地点の代表点どうしの車の道路距離を2026-11-07に計算した値。門の位置やオートの通行規制は考えていない。"
-        },
-        {
-          "publisher": "Dreamscape ゲーム編集",
-          "title": "オートリキシャの所要時間と料金の推定（アーグラ・ジャイプール）",
-          "url": "https://router.project-osrm.org/table/v1/driving/",
-          "checkedAt": "2026-11-07",
-          "claimType": "hypothesis",
-          "claimJa": "料金は旅行情報の目安に合わせた式（₹60＋道路1kmあたり₹20、₹10単位で切り上げ）の1台（2人）分で、公定運賃ではない。時間はオートを探して料金を決める5分（仮定）＋10kmまでを時速20.8km、10kmを超える部分を時速40km（仮定。資料はない）で計算し、5分単位で切り上げた値。実際の運賃・時間ではない。"
+          "claimJa": "2026-11-13 に計算した歩く経路は約0.78km（どちら向きも同じ）。地点の代表点から道までの約0.09kmを足した約0.87kmを、分速75m（地下鉄の駅まで歩く分と同じ換算）で割って切り上げ、12分とした。城の坂・階段と門の位置は考えていない。現地の歩道の通行可否を保証しない。"
         }
-      ]
+      ],
+      "estimation": "game_model"
     },
     {
       "fromPlaceId": "jaipur_panna_meena_kund",

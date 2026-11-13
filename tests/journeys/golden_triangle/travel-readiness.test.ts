@@ -105,7 +105,7 @@ describe("India city travel data", () => {
       const routes = travel.routes.filter((route) => route.fromPlaceId === from.id && route.toPlaceId === to.id);
       return routes.every((route) => route.mode === "walk") ? routes : [];
     }));
-    expect(walkOnly).toHaveLength({ delhi: 2, agra: 4, jaipur: 18 }[cityId]);
+    expect(walkOnly).toHaveLength({ delhi: 2, agra: 4, jaipur: 20 }[cityId]);
     // A walk of 15 minutes or less leaves no vehicle route (decision T5).
     expect(walkOnly.every((route) => route.minutes <= 15)).toBe(true);
     expect(travel.routes.filter((route) => route.mode === "walk" && route.fromPlaceId !== route.toPlaceId && route.minutes <= 15)).toEqual(walkOnly);
