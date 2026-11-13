@@ -8,10 +8,10 @@ import { voiceDucked } from "./speech-audio";
 // (its fade and the track's volume) → one low-pass filter (the quiz's muffle) → the lowering (quiz, quiet, a ride, a
 // voice or English read aloud: speech-audio.ts) → the player's setting volume → the speakers. The gains do the volume
 // (iOS ignores an element's own). A new track crossfades; the same track goes on; the last few tracks' positions are
-// kept, so a track comes back where it stopped. iOS lets an element play by itself only after it has played in a user's gesture: the reader's first gesture
-// starts both decks (an idle one on a short silence). Nothing plays while the page is hidden, the page's audio is
-// suspended or the player's setting is off, and nothing is fetched while it is off. Presentation only: a track that
-// cannot load or play is skipped in silence and the game goes on.
+// kept, so a track comes back where it stopped. iOS lets an element play by itself only after it has played in a user's
+// gesture: the reader's first gesture starts both decks (an idle one on a short silence). Nothing plays while the page
+// is hidden, the page's audio is suspended or the player's setting is off, and nothing is fetched while it is off.
+// Presentation only: a track that cannot load or play is skipped in silence and the game goes on.
 
 export type LoopPlayerOptions = {
   /** The part's name for the page's audio (audio-context.ts wantAudio): `bgm`, `ambience`. */
