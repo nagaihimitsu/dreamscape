@@ -1,6 +1,6 @@
 /* The rhythm_tap engine (EnginePlay.tsx): the skin's field fills the middle; at the bottom in thumb reach, the hint and
    the stop button (away from the big button: the lane lies between them), the lane of beats, the big tap button. */
-.mg-engine-rhythm-tap { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
+.mg-engine-rhythm-tap { position: relative; display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
 .mg-engine-rhythm-tap .mg-rhythm-tap-field {
   position: relative;
   flex: 1 1 auto;
@@ -104,11 +104,13 @@
   background: var(--ds-chip-bg);
   font-size: 15px;
 }
-/* A short screen keeps the field: the hint (the start showed it just before) gives way. */
+/* A short screen keeps the field: the hint (the start showed it just before) gives way, and the stop button goes up to the
+   field's top right corner (further still from the big button). */
 @media (max-height: 620px) {
   .mg-engine-rhythm-tap .mg-rhythm-tap-hint { display: none; }
+  .mg-engine-rhythm-tap .mg-rhythm-tap-top { margin: 0; }
+  .mg-engine-rhythm-tap .mg-rhythm-tap-top[data-stop] { position: absolute; z-index: 2; top: 8px; right: 12px; min-height: 0; }
   .mg-engine-rhythm-tap .mg-rhythm-tap-controls { padding-top: 4px; }
-  .mg-engine-rhythm-tap .mg-rhythm-tap-top { margin-bottom: 4px; }
   .mg-engine-rhythm-tap .mg-rhythm-tap-lane { height: 30px; margin-bottom: 8px; }
   .mg-engine-rhythm-tap .mg-rhythm-tap-action, .mg-engine-rhythm-tap .mg-rhythm-tap-auto { min-height: 54px; }
 }
