@@ -165,7 +165,10 @@ EXTERNAL has_item_status(id, status)
 }
 -> END`,
 };
-/** A test encounter at the Galleria, in the shape of the published Galleria print stall (city, landmark, sources). */
+/**
+ * A test encounter at the Galleria, in the shape of the published Galleria print stall (its city and landmark; since
+ * 2026-11-13 the stall is a knot of the Galleria's place file, whose generated catalog entry has no sources).
+ */
 function testEncounter(id: string, options: EncounterDefinition["options"], extra: Partial<EncounterDefinition> = {}): EncounterDefinition {
   const base = structuredClone(encounters.encounters.find((event) => event.id === "galleria_print")!);
   return { ...base, id, titleJa: "試験用の寄り道", descriptionJa: "試験用の寄り道。", storyId: `encounters/${id}`, options, ...extra };

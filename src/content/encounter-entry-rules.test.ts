@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { zodIssues } from "../../tests/fixtures/zod-issues";
 import ruleData from "./generated/content/encounters/entry-rules.json";
 import { encounters } from "./encounters";
-import { encounterEntryRulesSchema, validateEncounterEntryRules } from "./encounter-entry-rules";
+import { encounterEntryRulesSchema, validateEncounterEntryRules, type EncounterEntryRule } from "./encounter-entry-rules";
 import { createGame } from "../domain/game";
 import { encounterOffered } from "../../tests/fixtures/encounter-moment";
 
@@ -16,8 +16,11 @@ describe("location-based encounters", () => {
       .toThrow("Unknown encounter entry: unknown_encounter");
     // Only the Galleria fortune (an encounter with a quiz) defers its quiz until the landmark battle.
     expect(rules.entries.filter((entry) => entry.quizAfterLandmarkBattle).map((entry) => entry.encounterId)).toEqual(["galleria_fortune"]);
-    const duomo = rules.entries.find((entry) => entry.encounterId === "duomo_string")!;
-    expect(duomo).toEqual({ encounterId: "duomo_string", at: ["observe"], when: { episodeCompleted: "milano_duomo_episode" } });
+    // Milan's broken string is a place file's knot (2026-11-13): its head tags give the rule (after observe, its # when:).
+    expect(rules.entries.find((entry) => entry.encounterId === "duomo_string"))
+      .toEqual({ encounterId: "duomo_string", priority: "after observe", when: { episodeCompleted: "milano_duomo_episode" } });
+    // A rule written in JSON (as the string's was until then).
+    const duomo: EncounterEntryRule = { encounterId: "duomo_string", at: ["observe"], when: { episodeCompleted: "milano_duomo_episode" } };
     expect(() => validateEncounterEntryRules({ ...rules, entries: [{ ...duomo, quizAfterLandmarkBattle: true }] }, encounters.encounters))
       .toThrow("A quiz after the landmark battle needs an encounter with a quiz: duomo_string");
     // `at` is optional (= observe) and takes only the observation; `when` is optional too.

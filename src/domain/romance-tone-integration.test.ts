@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { Story } from "inkjs";
 import { createDebugState } from "../dev/debug-state";
 import { dates, stories } from "../content";
+import { storyFileOf } from "../content/story-address";
 import { advanceDate, chooseDate, startDate, validateGameState, type GameState } from "./game";
 import { deriveRelationshipTone } from "./romance-tone";
 
@@ -15,7 +16,7 @@ function currentFreeTime(): GameState {
 function storyVariables(state: GameState) {
   const active = state.activeDate!;
   const date = dates.find((item) => item.id === active.dateId)!;
-  const story = new Story(stories[date.storyId]);
+  const story = new Story(stories[storyFileOf(date.storyId)]);
   story.state.LoadJson(active.storyState);
   return story.variablesState;
 }
@@ -56,7 +57,7 @@ describe("relationship tone in an active date", () => {
     const state = startDate(currentFreeTime(), "milano_novecento_date_01", () => 0);
     const active = state.activeDate!;
     const date = dates.find((item) => item.id === active.dateId)!;
-    const story = new Story(stories[date.storyId]);
+    const story = new Story(stories[storyFileOf(date.storyId)]);
     story.state.LoadJson(active.storyState);
     // Simulate a future change to tone thresholds: the already displayed frame
     // and story fingerprint remain valid even if the old derived tone differs.

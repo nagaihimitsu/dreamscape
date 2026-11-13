@@ -205,7 +205,7 @@ VAR heroine_name = ""
 
 ## 簡単な通常デートを追加する
 
-新しいInk（`content/journeys/milano/stories/dates/milano_date_new.ink`。名前は `dates/<頭>_date_<行き先・出来事>`）に既存の通常デートと同様の変数、デートの定義の `choiceCount` の回数（ふつう2回）の選択（選択肢はふつう3つ。数は自由）、結果別の反応を記述します。各分岐では、1回目に `# effect: common_date_first_attentive`、2回目に `# effect: common_date_second_attentive` のような共通効果を使えます。末尾は `attentive`、`playful`、`honest`、`bold`、`provocative` から、その返答に合う既存の確率特性を選びます。結果は `romance_result` の `positive` / `negative` で描き分けます。共通効果は個別の思い出を保存しません。場所固有の思い出が必要な場合は従来どおり固有effectとmemoryを追加します。
+新しいInk（`content/journeys/milano/stories/dates/milano_date_new.ink`。名前は `dates/<頭>_date_<行き先・出来事>`）に告白のデート（`dates/milano_date_confession.ink`）と同様の名前用変数、デートの定義の `choiceCount` の回数（ふつう2回）の選択（選択肢はふつう3つ。数は自由）、結果別の反応を記述します。各分岐では、1回目に `# effect: common_date_first_attentive`、2回目に `# effect: common_date_second_attentive` のような共通効果を使えます。末尾は `attentive`、`playful`、`honest`、`bold`、`provocative` から、その返答に合う既存の確率特性を選びます。結果は `romance_result` の `positive` / `negative` で描き分けます。共通効果は個別の思い出を保存しません。場所固有の思い出が必要な場合は従来どおり固有effectとmemoryを追加します。
 
 `content/journeys/milano/romance/date_catalog.json` の `dates` には、例えば次の最小設定を追加できます。開く条件 `when` は `{ "episodesCompleted": { "city": "milano", "atLeast": 1 } }`（その都市のエピソードを1つ終えたら）が標準で、2 AP、一度限り、交際後も利用可能が既定です。`when` を書かないデートは、進行の条件なしに最初から開きます。特定の観光地を訪れた後に開きたい場合は、`destinationId` と `when: { "episodeCompleted": "<エピソードID>" }` などを書いてください（書き方は[条件の書き方](#条件の書き方)）。
 
@@ -483,9 +483,9 @@ EXTERNAL cond(text)
 
 ### 道中の交流
 
-現在の小さなミラノの寄り道は `content/journeys/milano/encounters/catalog.json` と `content/journeys/milano/stories/encounters/` で管理します。カタログには安定した交流・選択・品物ID、観光地、必要な費用や条件、実際に確認した出典を記録し、選択肢の英文と任意の訳はInkに書きます。各品物にも `cityId` を付け、入手・所持条件・贈与・使用・Inkからの参照を同じ都市の場面に限ります。旅の間持ち歩く品物（`"carry": "journey"`）だけは、入手はその都市のまま、所持条件（`item … held`。`# when:`・`# requires:`・`cond("…")` のどれでも）・贈与・使用を旅の後の都市でも書けます（Inkの `has_item_status` は、今どおりその都市の品物だけ）。入手都市のクリア後も使える機会を設けてください。メモや手紙のように文字が書かれた品物は、任意の `linesJa`（文の配列）に書かれている行を書くと、持ち物を開いたときに説明の下へ順に出ます。物語の途中で書き足される行は `{ "textJa": "…", "when": 条件 }` と書くと、条件を満たした後だけ出ます（2026-11-11のユーザー判断）。価格や展示・人物はゲーム内の設定です。旅の予算、品物、APは別に扱います。メイン観光・都市フィナーレ・デートが地図に出る条件に品物やお金を書くかは制作者が決め、書いたときは、どの都市もクリアできる道が残るようにします（`content:build` と探索テストが確かめます）。条件を書かない都市やデートは、購入しなくても続けられます。
+現在の小さなミラノの寄り道は、観光地の場所のファイル（`content/journeys/milano/stories/places/`）の knot に書き（出典は `scenes/catalog.json`）、品物とガッレリアの願掛け（クイズとくじがあるため1場面1ファイル）は `content/journeys/milano/encounters/catalog.json` と `content/journeys/milano/stories/encounters/` で管理します。カタログには安定した交流・選択・品物ID、観光地、必要な費用や条件、実際に確認した出典を記録し、選択肢の英文と任意の訳はInkに書きます。各品物にも `cityId` を付け、入手・所持条件・贈与・使用・Inkからの参照を同じ都市の場面に限ります。旅の間持ち歩く品物（`"carry": "journey"`）だけは、入手はその都市のまま、所持条件（`item … held`。`# when:`・`# requires:`・`cond("…")` のどれでも）・贈与・使用を旅の後の都市でも書けます（Inkの `has_item_status` は、今どおりその都市の品物だけ）。入手都市のクリア後も使える機会を設けてください。メモや手紙のように文字が書かれた品物は、任意の `linesJa`（文の配列）に書かれている行を書くと、持ち物を開いたときに説明の下へ順に出ます。物語の途中で書き足される行は `{ "textJa": "…", "when": 条件 }` と書くと、条件を満たした後だけ出ます（2026-11-11のユーザー判断）。価格や展示・人物はゲーム内の設定です。旅の予算、品物、APは別に扱います。メイン観光・都市フィナーレ・デートが地図に出る条件に品物やお金を書くかは制作者が決め、書いたときは、どの都市もクリアできる道が残るようにします（`content:build` と探索テストが確かめます）。条件を書かない都市やデートは、購入しなくても続けられます。
 
-道中交流は、観光地の時点で始まります。交流のInkの頭に札（`at: visit <観光地>`・`priority:`・`when:`・`until:`・`repeat:`）を書くと、本筋の前（`-1` など）・観察の後（`after observe`）・本筋の後（`+1` など）に置けます（今使っているのは見本の編だけ。見本の編では、時計塔の場面を場所のファイル `stories/places/smp_mihon_clock_tower.ink` の knot に書いている。1場面1ファイルの交流のInkの頭にも、同じ札を書ける）。
+道中交流は、観光地の時点で始まります。交流のInkの頭に札（`at: visit <観光地>`・`priority:`・`when:`・`until:`・`repeat:`）を書くと、本筋の前（`-1` など）・観察の後（`after observe`）・本筋の後（`+1` など）に置けます（見本の編では、時計塔の場面を場所のファイル `stories/places/smp_mihon_clock_tower.ink` の knot に書いている。ミラノ編のガッレリアの願掛けのほかの交流も、観光地の場所のファイルの knot に `at: visit <観光地>`・`priority: after observe`・`when:` を書いている。1場面1ファイルの交流のInkの頭にも、同じ札を書ける）。
 
 場所のファイルの会話（`# scene: talk`）と道中交流（`# scene: encounter`）は、観光地のほかの時点にも置けます（段階4）。`# at:` に書けるのは次のとおりです。
 

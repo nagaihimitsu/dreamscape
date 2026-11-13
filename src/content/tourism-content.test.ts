@@ -1,16 +1,22 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { Story } from "inkjs";
 import { buildContent } from "../../scripts/content-pipeline";
-import { changeCatalogEntry, prepareContentFixture, replaceFixtureFile, storySourceFile } from "./test-fixtures";
+import { changeCatalogEntry, oneSceneBody, placeKnot, prepareContentFixture, replaceFixtureFile, storySourceFile } from "./test-fixtures";
 import catalogData from "./generated/content/tourism/catalog.json";
+import { splitStoryAddress } from "./story-address";
 import type { TourismCatalog } from "./tourism-schemas";
 import { resolvePublicFile } from "../../scripts/public-assets";
 
 let fixture: string;
-const guidePath = storySourceFile("tourism/milano_last_supper_guide");
+// The Last Supper's guide: a knot of its place file.
+const guidePath = storySourceFile("places/milano_last_supper");
+const guideKnot = "last_supper_guide";
+// The guide written as a one-scene file (the form the sample journey's guides keep) for the checks of that form.
+const oneSceneId = "tourism/milano_last_supper_guide";
+const oneScenePath = path.join(path.dirname(path.dirname(guidePath)), `${oneSceneId}.ink`);
 // The Last Supper landmark, its first clues and an image asset.
 const assetId = "darsena_finale_photo";
 const landmarkId = "last_supper";
@@ -34,11 +40,24 @@ function changeEntry(key: string, id: string, change: (entry: never, catalog: To
   return changeCatalogEntry(fixture, "tourism/catalog.json", key, id, change);
 }
 const clue = (catalog: TourismCatalog, id: string) => catalog.clues.find((entry) => entry.id === id)!;
-async function changeGuide(before: string, after: string) {
+/** Take the guide's knot out of the fixture's place file; returns the knot's text. */
+async function withoutGuideKnot(): Promise<string> {
   const file = path.join(fixture, guidePath);
-  const source = await readFile(file, "utf8");
-  expect(source).toContain(before);
-  await writeFile(file, source.replace(before, after));
+  const { text, without } = placeKnot(await readFile(file, "utf8"), guideKnot);
+  await writeFile(file, without);
+  return text;
+}
+/**
+ * Write the guide as a one-scene file with its own VAR lines, out of its place file, and point the landmark at it.
+ * Returns the file and its text.
+ */
+async function oneSceneGuide(): Promise<{ file: string; original: string }> {
+  const original = ['VAR player_name = ""', 'VAR heroine_name = ""', 'VAR player_address = ""', "", oneSceneBody(await withoutGuideKnot())].join("\n");
+  const file = path.join(fixture, oneScenePath);
+  await mkdir(path.dirname(file), { recursive: true });
+  await writeFile(file, original);
+  await changeEntry("landmarks", landmarkId, (landmark) => { landmark.guideStoryId = oneSceneId; });
+  return { file, original };
 }
 
 describe("tourism content contract", () => {
@@ -61,9 +80,10 @@ describe("tourism content contract", () => {
         region: null,
       }),
     ]);
-    const story = new Story(
-      result.stories[result.tourism.landmarks[0].guideStoryId!],
-    );
+    // The guide is a knot of its place file: the file's story, started at the knot as the game starts it.
+    const { storyId, path: knot } = splitStoryAddress(result.tourism.landmarks.find((landmark) => landmark.id === landmarkId)!.guideStoryId!);
+    const story = new Story(result.stories[storyId]);
+    if (knot !== undefined) story.ChoosePathString(knot);
     story.variablesState.$("heroine_name", "紫乃");
     story.variablesState.$("player_address", "航さん");
     const lines: string[] = [];
@@ -162,13 +182,15 @@ describe("tourism content contract", () => {
     for (const [field, message] of [
       ["cityId", "Unknown tourism city/landmark"],
       ["imageAssetId", "Unknown tourism imageAssetId: last_supper"],
-      ["guideStoryId", "Unknown tourism guideStoryId: tourism/missing"],
       ["battleId", "Tourism battle landmark mismatch: last_supper"],
+      ["guideStoryId", "Unknown tourism guideStoryId: tourism/missing"],
     ] as const) {
       await changeEntry("landmarks", landmarkId, (landmark) => {
         landmark[field] =
           field === "guideStoryId" ? "tourism/missing" : "missing";
       });
+      // The guide's knot goes too (a knot no catalog points at stops the build first); the guide is checked last.
+      if (field === "guideStoryId") await withoutGuideKnot();
       await expect(buildContent(fixture, false)).rejects.toThrow(message);
     }
   });
@@ -221,12 +243,17 @@ describe("tourism content contract", () => {
   });
 
   it("requires guide variables needed for safe snapshot restoration", async () => {
-    await changeGuide('VAR player_address = ""', "// removed variable");
+    // A place file's guide has them from modules.ink; a one-scene guide declares them itself.
+    const { file, original } = await oneSceneGuide();
+    expect(original).toContain('VAR player_address = ""');
+    await writeFile(file, original.replace('VAR player_address = ""', "// removed variable"));
     await expect(buildContent(fixture, false)).rejects.toThrow("(landmark last_supper): Missing tourism guide variable: player_address");
   });
 
   it("forbids Ink effects in tourism guides, accepts choices (stage 3a, walked as a scene) and English prose", async () => {
+    // The guide is the place file's first knot: its -> END comes first.
     const original = await readFile(path.join(fixture, guidePath), "utf8");
+    expect(original.indexOf(`=== ${guideKnot} ===`)).toBeLessThan(original.indexOf("-> END"));
     await writeFile(
       path.join(fixture, guidePath),
       original.replace(
@@ -234,8 +261,9 @@ describe("tourism content contract", () => {
         "# effect: common_date_first_playful\n余韻。\n-> END",
       ),
     );
+    // The place file's reader stops an effect tag on a line of the guide's knot (A7).
     await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Tourism guide cannot grant effects",
+      `# effect: common_date_first_playful is on an ordinary line of ${guideKnot}`,
     );
     await writeFile(
       path.join(fixture, guidePath),

@@ -10,6 +10,7 @@ import { validateEpilogue } from "../../scripts/epilogue-validation";
 import { validateJourney } from "../../scripts/journey-validation";
 import { battleCatalogSchema, battleSchema, quizSchema } from "./schemas";
 import { journeySchema } from "./journey-schemas";
+import { splitStoryAddress } from "./story-address";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import { balance, battleQuizzes, getCities } from ".";
 // Read-only data comes from the generated mirror; fixture edits use changeCatalogEntry.
@@ -172,7 +173,10 @@ describe("Milan city content", () => {
       [3, false],
       [4, true],
     ] as const) {
-      const story = new Story(result.stories[finale.epilogueStoryId!]);
+      // The epilogue is a knot of the finale's place file: its file's story, started at the knot as the game starts it.
+      const { storyId, path: knot } = splitStoryAddress(finale.epilogueStoryId!);
+      const story = new Story(result.stories[storyId]);
+      if (knot !== undefined) story.ChoosePathString(knot);
       story.variablesState.$("romance_stage", stage);
       story.variablesState.$("ending_reached", dating);
       const lines: string[] = [];
