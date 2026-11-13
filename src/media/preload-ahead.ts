@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { dates, episodes, getAlbumImage, getCityContent, landmarks, presentation, scenes, storyState, tagContext, tourismAssets } from "../content";
+import { dates, episodes, getAlbumImage, getCityContent, glossaryTerms, landmarks, presentation, scenes, storyState, tagContext, tourismAssets } from "../content";
 import { getCityBackdropPath } from "../content/city-backdrop";
 import { reactionMarkImage } from "../content/code-images";
 import { derivedImagePath } from "../content/derived-images";
@@ -38,6 +38,10 @@ export const contentMediaCatalog: MediaCatalog = {
   figure: (characterId, emotion, look) => characterPicture(characterId, emotion, { sceneId: look.sceneId, cityId: look.cityId }) ?? undefined,
   personFigure: (frame) => speakingPerson(storyState.people, frame),
   albumImage: (imageId) => getAlbumImage(imageId)?.path,
+  termPhoto(termId) {
+    const imageId = glossaryTerms.find((term) => term.id === termId)?.imageId;
+    return tourismAssets.find((asset) => asset.id === imageId)?.path;
+  },
   miniGameArt: (imageId) => miniGameArtPath(tagContext, imageId),
   reactionMark: reactionMarkImage,
 };

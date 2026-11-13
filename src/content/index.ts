@@ -36,6 +36,8 @@ import { generatedScenesSchema, storyStateCatalogSchema, type SceneEntry } from 
 import albumImageData from "./generated/album-images.json";
 import { albumImageListSchema, type AlbumImage } from "./album-images";
 import miniGameArtData from "./generated/minigame-art.json";
+import glossaryData from "./generated/glossary.json";
+import { glossaryListSchema, type ListedTerm } from "./glossary";
 import { miniGameArtListSchema, type MiniGameArt } from "../minigames/art";
 import { sceneConditionsSchema } from "./condition-schemas";
 import {
@@ -203,6 +205,12 @@ export const albumImages: readonly AlbumImage[] = albumImageListSchema.parse(alb
 export function getAlbumImage(imageId: string): AlbumImage | undefined {
   return albumImages.find((image) => image.id === imageId);
 }
+/** 旅の図鑑's terms of every journey, each with its journey (content:build lists them; src/content/glossary.ts). */
+export const glossaryTerms: readonly ListedTerm[] = glossaryListSchema.parse(glossaryData);
+/** The terms of a journey, in the order of its glossary/terms.json. */
+export function journeyTerms(journeyId: string): ListedTerm[] {
+  return glossaryTerms.filter((term) => term.journeyId === journeyId);
+}
 /** The scenes' `cond("…")` texts (per story) and the condition each text stands for (content:build, scripts/scene-conditions.ts). */
 export const sceneConditions = sceneConditionsSchema.parse(sceneConditionData);
 /** The mini-games' pictures of every layer (content:build lists each public/assets/minigames/; src/minigames/art.ts). */
@@ -214,6 +222,8 @@ export const tagContext = {
   /** The images a line's `# photo:` and `# recall:` may name: the album images of every journey. */
   photoIds: albumImages.map((image) => image.id),
   localWordIds: localWords.map((word) => word.id),
+  /** The terms a line's `# term:` may name (旅の図鑑, every journey's). */
+  termIds: glossaryTerms.map((term) => term.id),
   /** The people a line's `# speaker: <person ID>` may name (progression/story.json people of every journey). */
   personIds: storyState.people.map((person) => person.id),
   /** The pictures a # minigame:'s art.<slot> may name (ID → served path). */
@@ -238,6 +248,7 @@ export type {
 export type { DateDestination } from "./date-destinations";
 export type { AlbumImage } from "./album-images";
 export type { LocalWord } from "./local-words";
+export type { GlossaryTerm, ListedTerm } from "./glossary";
 export type { Tour, TourStep, TourLeg, TourEventStep, TourOffer } from "./tour-schemas";
 export type {
   EpisodeDefinition,

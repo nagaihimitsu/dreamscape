@@ -16,7 +16,7 @@ import { normalizeWord, wordPattern } from "../src/content/word-meanings";
 
 type Namespace =
   | "city" | "landmark" | "asset" | "clue" | "battle" | "episode" | "reward" | "date" | "destination" | "effect"
-  | "background" | "memory" | "story" | "quiz" | "question" | "encounter" | "item" | "localWord" | "place";
+  | "background" | "memory" | "story" | "quiz" | "question" | "encounter" | "item" | "localWord" | "place" | "term";
 /** A reference: what it points to, through which field, and the referenced ID(s). */
 type Reference = { namespace: Namespace | readonly Namespace[]; field: string; ids: unknown };
 type Definition = { layer: string; file: string; cityId?: string };
@@ -73,6 +73,8 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
   },
   "learning/details.json": { questions: (entry, key) => [ref("question", "question ID", key), ...fields(entry, "story", ["storyId"])] },
   "learning/local-words.json": { words: (entry) => fields(entry, "city", ["cityId"]) },
+  // A 旅の図鑑 term's picture is a tourism photo of its own journey.
+  "glossary/terms.json": { terms: (entry) => fields(entry, "asset", ["imageId"]) },
   "learning/translations.json": { questions: (_, key) => [ref("question", "question ID", key)] },
   "presentation/characters.json": {
     battleCharacters: (_, key) => [ref("battle", "battle ID", key)],
@@ -127,12 +129,13 @@ const DEFINITIONS: [MergedKind, string, Namespace][] = [
   ["encounters/catalog.json", "encounters", "encounter"],
   ["encounters/catalog.json", "items", "item"],
   ["learning/local-words.json", "words", "localWord"],
+  ["glossary/terms.json", "terms", "term"],
 ];
 
-/** `# background: id`, `# effect: id` and `# local_word: id` tags of an Ink source, and a `# minigame:`'s `bg` and `art.<slot>`. */
+/** `# background: id`, `# effect: id`, `# local_word: id` and `# term: id` tags of an Ink source, and a `# minigame:`'s `bg` and `art.<slot>`. */
 function inkTagReferences(source: string): Reference[] {
-  const namespaces: Record<string, Namespace> = { background: "background", effect: "effect", local_word: "localWord" };
-  return [...[...source.matchAll(/#\s*(background|effect|local_word)\s*:\s*([A-Za-z0-9_]+)/gu)]
+  const namespaces: Record<string, Namespace> = { background: "background", effect: "effect", local_word: "localWord", term: "term" };
+  return [...[...source.matchAll(/#\s*(background|effect|local_word|term)\s*:\s*([A-Za-z0-9_]+)/gu)]
     .map(([, tag, id]) => ref(namespaces[tag], `#${tag}`, id)),
   // A # minigame:'s bg <id> (docs/13) is a background like # background:.
   ...[...source.matchAll(/#\s*minigame\s*:[^#\n]*?\sbg\s+([A-Za-z0-9_]+)/gu)].map(([, id]) => ref("background", "#minigame bg", id)),

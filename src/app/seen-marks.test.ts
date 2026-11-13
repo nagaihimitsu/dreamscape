@@ -2,12 +2,20 @@ import { describe, expect, it } from "vitest";
 import { addedIds, englishNoteKeys, markSeen, seenAll, unseenIds } from "./seen-marks";
 
 describe("the marks of what the player has not looked at yet", () => {
-  const start = seenAll({ items: ["charm"], clues: ["altar"], english: ["word:namaste"] });
+  const start = seenAll({ items: ["charm"], clues: ["altar"], english: ["word:namaste"], glossary: ["gt_term_golgappa"] });
 
   it("count everything there is as seen after a new game, a load or Debug's return", () => {
     expect(unseenIds(start.items, ["charm"])).toEqual([]);
     expect(unseenIds(start.clues, ["altar"])).toEqual([]);
     expect(unseenIds(start.english, ["word:namaste"])).toEqual([]);
+    expect(unseenIds(start.glossary, ["gt_term_golgappa"])).toEqual([]);
+  });
+
+  it("mark a term met in play as new in 旅の図鑑 until it is opened", () => {
+    expect(unseenIds(start.glossary, ["gt_term_golgappa", "gt_term_blackbuck"])).toEqual(["gt_term_blackbuck"]);
+    const opened = markSeen(start, "glossary", ["gt_term_golgappa", "gt_term_blackbuck"]);
+    expect(unseenIds(opened.glossary, ["gt_term_golgappa", "gt_term_blackbuck"])).toEqual([]);
+    expect(opened.english).toBe(start.english);
   });
 
   it("show what came after, in its order, and nothing while the memory waits for its start", () => {
