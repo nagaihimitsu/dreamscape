@@ -121,10 +121,15 @@
   .resume-recap-body { flex-direction: column; }
   .resume-recap-photo { flex: none; width: 100%; }
 }
-/* Above the night screen (a fixed layer under the header), as a notice is; the screen's content starts below it (its
-   measured height, its 8-px margin and the screen's own 12 px), so on a short phone it covers neither the line nor a button. */
+/* Above the night screen (a fixed layer under the header), as a notice is. The screen's scrolling room starts below it: the
+   header's and the card's measured heights and the card's two 8-px margins are a transparent top border (the night's colour
+   shows through it, and a scroll container shows its content only inside its border), then the screen's own 12 px. So on a
+   short phone, where the screen scrolls, nothing of it (the moon, the line, a button, today's route) passes under the card. */
 .night-active > main > .resume-recap { position: relative; z-index: 16; }
-.night-active > main:has(> .resume-recap) .night-screen { padding-top: calc(var(--hud-h, 96px) + var(--recap-h, 0px) + 20px); }
+.night-active > main:has(> .resume-recap) .night-screen {
+  border-top: calc(var(--hud-h, 96px) + var(--recap-h, 0px) + 16px) solid transparent;
+  padding-top: 12px;
+}
 
 /* ── 荷造りの場面 ── over the whole screen in the parchment of the arrival's title card; the suitcase (drawn: a rounded case
    with a handle) holds what goes along, what stays is set apart under it, dimmed. */
