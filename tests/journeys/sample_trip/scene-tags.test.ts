@@ -69,4 +69,15 @@ describe("the sample journey's scene tags", () => {
     expect(frames.length).toBeGreaterThan(3);
     expect(frames.every((frame) => frame.weather === "petals")).toBe(true);
   });
+
+  it("emphasises one word and makes another tremble on the guide's lines, and only there", () => {
+    // The emphasis tags (2026-11-13): # em_shake: on her 「三時？」, # em: on her 「止まってる」, each on its line only.
+    const { frames } = playUntil(depart(cityStart("mihon"), "smp_mihon_main_clock_tower"), free, (state) => state.activeTourism?.frame ?? undefined);
+    const marked = [...new Set(frames.filter((frame) => frame.delivery?.em || frame.delivery?.emShake)
+      .map((frame) => `${frame.delivery?.em ?? ""}|${frame.delivery?.emShake ?? ""}|${frame.text}`))];
+    expect(marked).toEqual([
+      "|三時？|「あれ、三時？　宿を出たの、朝だったよね」",
+      "止まってる||「止まってるんだ。でも塔の下はきれいに掃いてある。放っておかれてる感じじゃないね」",
+    ]);
+  });
 });

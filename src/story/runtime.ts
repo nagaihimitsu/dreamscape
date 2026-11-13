@@ -40,6 +40,9 @@ export const storyFrameSchema = z
       shake: z.literal(true).optional(),
       sceneShake: z.enum(SCENE_SHAKE_SIZES).optional(),
       large: z.literal(true).optional(),
+      // `# em:` and `# em_shake:` (2026-11-13): the words of the line shown emphasised and trembling.
+      em: z.string().min(1).optional(),
+      emShake: z.string().min(1).optional(),
     }).strict().optional(),
     photo: z.object({
       imageId: albumImageIdSchema,

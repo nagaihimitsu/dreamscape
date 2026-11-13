@@ -30,7 +30,7 @@ export interface StoryTags {
   localWordIds?: string[];
   /** `# call: quiz` / `# call: reasoning`: the one choice of modules.ink's battle calls (stage 5). */
   call?: StoryCall;
-  /** `# pause:`, `# shake:` and `# size:`: how the line is shown (presentation only). */
+  /** `# pause:`, `# shake:`, `# size:`, `# em:` and `# em_shake:`: how the line is shown (presentation only). */
   delivery?: LineDelivery;
   /** `# photo:` with its `# photo_caption:`: the photo the line puts in the album (2026-11-11). */
   photo?: StoryPhoto;
@@ -135,13 +135,17 @@ export interface StoryPhoto {
  * How one line is shown, from its tags (presentation only; never the story or the game state):
  * `# pause: 600` waits that many milliseconds before its text starts (a tap shows it at once),
  * `# shake: window` shakes the dialogue window once, `# shake` (or `# shake: small`, `# shake: large`) the scene itself
- * once (its picture and its people; 2026-11-13), `# size: large` shows its text larger.
+ * once (its picture and its people; 2026-11-13), `# size: large` shows its text larger, `# em: <語>` shows the first <語>
+ * of its text emphasised and `# em_shake: <語>` makes the first <語> tremble (2026-11-13; content:build checks that the
+ * line's text has the word: scripts/line-emphasis.ts).
  */
 export interface LineDelivery {
   pauseMs?: number;
   shake?: true;
   sceneShake?: SceneShakeSize;
   large?: true;
+  em?: string;
+  emShake?: string;
 }
 /** How hard a line's scene shake is: `# shake: small`, `# shake` alone (`normal`), `# shake: large`. */
 export const SCENE_SHAKE_SIZES = ["small", "normal", "large"] as const;
@@ -206,6 +210,8 @@ export function parseStoryTags(
     const value = separator < 0 ? "" : tag.slice(separator + 1).trim();
     if (key === "item_show" && !value)
       throw new Error("Invalid item_show tag: name the item (write # item_show: <item ID>, an item of encounters/catalog.json)");
+    if ((key === "em" || key === "em_shake") && !value)
+      throw new Error(`Invalid ${key} tag: name the word (write # ${key}: <a word of the line>)`);
     if (separator < 1 || !value) throw new Error(`Invalid story tag: ${tag}`);
     if (key === "effect") {
       if (!context.effectIds.includes(value))
@@ -332,6 +338,10 @@ export function parseStoryTags(
         throw new Error(`Invalid ambience tag: ${value} (write # ambience: <ID>, a track of presentation/ambience.json, the file name of public/assets/ambience/<ID>.mp3; or # ambience: stop, # ambience: default)`);
       if (result.ambience) throw new Error("Duplicate ambience tag");
       result.ambience = value;
+    } else if (key === "em" || key === "em_shake") {
+      // The word is checked against the line's text by content:build (scripts/line-emphasis.ts), which reads the source.
+      if ((key === "em" ? result.delivery?.em : result.delivery?.emShake) !== undefined) throw new Error(`Duplicate ${key} tag`);
+      result.delivery = key === "em" ? { ...result.delivery, em: value } : { ...result.delivery, emShake: value };
     } else if (isSceneTagKey(key)) {
       readSceneTag(key, value, result);
     } else {

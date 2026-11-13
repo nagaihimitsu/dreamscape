@@ -60,6 +60,7 @@ import { checkBgmTags, musicDataOf, musicRegistry, musicWarnings } from "./music
 import { ambienceDataOf, ambienceRegistry, ambienceWarnings, checkAmbienceTags } from "./ambience-files";
 import { audioLayersOf } from "./audio-layers";
 import { checkSceneEffectTags, itemJourneys } from "./scene-effect-tags";
+import { checkEmphasisTags } from "./line-emphasis";
 import { checkHelperKnot, revealRegionProblem, validateBattleEvidence } from "./battle-validation";
 import { landmarkOrderError, landmarkParts, tourismCatalogSchema, type VisitPart } from "../src/content/tourism-schemas";
 import type { SceneOption } from "../src/content/scene-schemas";
@@ -635,6 +636,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     withContext(file, () => checkAmbienceTags(authored, storyLayer, ambience.tracks));
     // A line's # item_show: names an item of the story's own journey; # weather: and # tint: their own values (2026-11-13).
     withContext(file, () => checkSceneEffectTags(authored, storyLayer, storyItemJourneys));
+    // A line's # em: and # em_shake: name a word of its own text (2026-11-13).
+    withContext(file, () => checkEmphasisTags(authored));
     const place = placeFiles.get(id);
     const main = !place && mains.some((item) => item.address === id);
     const mainHead = main ? withContext(file, () => readMainFileHead(authored)) : undefined;

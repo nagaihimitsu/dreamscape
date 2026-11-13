@@ -1,12 +1,14 @@
-import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "react";
+import { useEffect, useImperativeHandle, useMemo, useRef, useState, type CSSProperties, type Ref } from "react";
 import type { LineDelivery, SceneShakeSize } from "../content/tags";
 import { vibrate } from "../audio/vibration";
 import { SCENE_SHAKES, sceneShakeFrames } from "./scene-atmosphere";
 import { dialogueObstructed } from "./dialogueObstructed";
 import { DIALOGUE_LINE_ATTRIBUTE } from "./scene-tap";
 import { useLineVoice, type VoiceLink } from "./useVoice";
-import { useLineSounds } from "../audio/sound-effects";
+import { sceneCuesQuiet, useLineSounds } from "../audio/sound-effects";
 import type { SystemSoundId } from "../content/sounds";
+import { emphasisSpans, type EmphasisSpan } from "../content/emphasis";
+import "./emphasis.css";
 
 /** What a tap on the line does, for a tap elsewhere on the scene (useSceneTap). */
 export interface DialogueTextHandle {
@@ -52,6 +54,27 @@ export function shakeScene(line: HTMLElement | null, size: SceneShakeSize) {
 
 const NO_CUES: readonly SystemSoundId[] = [];
 
+/**
+ * A part of the line as it is revealed (`count` characters shown): plain text, the `# em:` word (bold in the accent
+ * colour, with a small pop as its first character appears) or the `# em_shake:` word (bold, each character trembling
+ * a little once shown). The characters not shown yet keep their place (`.unrevealed`), in the same face, so the
+ * line never moves as it is typed. `still`: no pop and no tremble (reduced motion is CSS's: emphasis.css).
+ */
+function LinePart({ span, chars, count, still }: { span: EmphasisSpan; chars: readonly string[]; count: number; still: boolean }) {
+  const split = Math.max(span.start, Math.min(span.end, count));
+  const shown = chars.slice(span.start, split).join("");
+  const hidden = chars.slice(split, span.end).join("");
+  const rest = hidden && <span className="unrevealed">{hidden}</span>;
+  if (span.kind === "plain") return <>{shown}{rest}</>;
+  if (span.kind === "em")
+    return <span className={`dialogue-em${count > span.start ? " is-shown" : ""}${still ? " is-still" : ""}`}>{shown}{rest}</span>;
+  return <span className={`dialogue-em-shake${still ? " is-still" : ""}`}>
+    {chars.slice(span.start, span.end).map((char, index) => <span key={index}
+      className={`dialogue-em-shake-char${span.start + index < count ? "" : " unrevealed"}`}
+      style={{ "--em-i": index } as CSSProperties}>{char}</span>)}
+  </span>;
+}
+
 export function DialogueText({
   text,
   speed,
@@ -90,6 +113,15 @@ export function DialogueText({
   const chars = Array.from(text);
   const pauseMs = delivery?.pauseMs ?? 0;
   const shake = !!delivery?.shake;
+  // The line's `# em:` and `# em_shake:` words (emphasis.ts). A line a load brought back, or one shown during 高速送り,
+  // shows them without their motion, as its cues stay silent then (sceneCuesQuiet).
+  const em = delivery?.em;
+  const emShake = delivery?.emShake;
+  const spans = useMemo(() => emphasisSpans(text, em, emShake), [text, em, emShake]);
+  const emphasised = spans.some((span) => span.kind !== "plain");
+  // Read as the line comes (each line is its own text).
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const stillWords = useMemo(() => sceneCuesQuiet(), [text]);
   useEffect(() => {
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -211,8 +243,10 @@ export function DialogueText({
       >
         <span className="sr-only">{text}</span>
         <span aria-hidden="true" className={delivery?.large ? "dialogue-large" : undefined}>
-          {chars.slice(0, count).join("")}
-          <span className="unrevealed">{chars.slice(count).join("")}</span>
+          {emphasised ? spans.map((span) => <LinePart key={span.start} span={span} chars={chars} count={count} still={stillWords} />) : <>
+            {chars.slice(0, count).join("")}
+            <span className="unrevealed">{chars.slice(count).join("")}</span>
+          </>}
         </span>
         {onAdvance && (
           <span
