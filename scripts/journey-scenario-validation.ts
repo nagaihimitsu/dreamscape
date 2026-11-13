@@ -217,7 +217,9 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
                 confession_ready: seed.confessionReady, confession_result: seed.confessionResult ?? "deferred",
                 relationship_tone: tone, relationship_tone_before: tone, relationship_tone_after: tone };
               const key = JSON.stringify(Object.entries(variables).filter(([name]) => walk.compiled.includes(`"VAR?":"${name}"`)));
-              if (!walked.has(key)) walked.set(key, walkScene({ ...walk, context: { ...context, miniGames: true }, variables, romanceChoices: { knot: scene.knot, count: date.choiceCount } }));
+              // No mini-game in a confession date (docs/13 1.4): its walk refuses the tag.
+              if (!walked.has(key)) walked.set(key, walkScene({ ...walk, context: { ...context, ...(date.kind === "confession" ? { miniGames: "confession" as const } : {}) },
+                variables, romanceChoices: { knot: scene.knot, count: date.choiceCount } }));
               dateRoutes += walked.get(key)!;
             }
         }

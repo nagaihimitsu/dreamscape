@@ -55,6 +55,7 @@ import {
 import type { TagContext } from "../src/content/tags";
 import { albumFolderPath, albumImagesOf, checkAlbumTags } from "./album-images";
 import { checkMiniGameArtTags, miniGameArtOf } from "./minigame-art";
+import { miniGameUseKey, type MiniGameUse } from "../src/minigames/uses";
 import { checkVoiceCredits, checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
 import { checkSoundTags, soundRegistry, soundUseProblem, soundVolumesOf, soundWarnings, transportModeSounds } from "./sound-files";
 import { checkBgmTags, musicDataOf, musicRegistry, musicWarnings } from "./music-files";
@@ -963,13 +964,17 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   }
   // The walk of each tagged scene with choices or tags (scene-walk.ts): every path ends, A8, A10.
   const walkedGuides = new Set<string>();
+  // The mini-game uses the walks meet (docs/13 3.4; generated/minigame-uses.json), one per scene, knot and tag.
+  const miniGameUses = new Map<string, MiniGameUse>();
+  const onMiniGame = (use: MiniGameUse) => { miniGameUses.set(miniGameUseKey(use), use); };
   const sceneContext = (cityId: string): TagContext => ({ ...context, backgroundIds: context.backgroundIds });
   for (const scene of taggedScenes) {
     const storyId = scene.story.storyId;
     const label = `${storyLabel(storyId)}${scene.story.knot ? ` (${scene.story.knot})` : ""}`;
     const base = { compiled: stories[storyId], start: scene.story.knot, label, context: sceneContext(scene.cityId), conds: scene.conds,
       options: scene.options, ...(scene.when ? { when: scene.when } : {}), headThen: !!scene.then, done: scene.done,
-      itemIds: encounterCatalog.items.map((item) => item.id), memoryIds: Object.keys(presentation.memories), observe: observeForStory(storyId), onWarning: sceneWarn };
+      itemIds: encounterCatalog.items.map((item) => item.id), memoryIds: Object.keys(presentation.memories), observe: observeForStory(storyId), onWarning: sceneWarn,
+      scene: { id: scene.id, kind: scene.kind, storyId }, onMiniGame };
     if (scene.kind === "battle") continue; // The battle walk below walks it, its calls answered.
     if (scene.kind === "date") {
       if (scene.origin !== "place") continue; // today's dates: validateStory below.
@@ -986,7 +991,9 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
           memory_callback: progression.fallbackMemoryCallbackJa, confession_ready: date.kind === "confession" && seed.confessionReady,
           confession_result: date.kind === "confession" ? seed.confessionResult ?? (seed.confessionReady ? "accepted" : "deferred") : "deferred" };
         const key = JSON.stringify(Object.entries(variables).filter(([name]) => compiledText.includes(`"VAR?":"${name}"`)));
-        if (!walked.has(key)) walked.set(key, withContext(label, () => walkScene({ ...base, context: { ...base.context, miniGames: true }, variables,
+        // No mini-game in a confession date (docs/13 1.4): its walk refuses the tag.
+        if (!walked.has(key)) walked.set(key, withContext(label, () => walkScene({ ...base,
+          context: { ...base.context, ...(date.kind === "confession" ? { miniGames: "confession" as const } : {}) }, variables,
           romanceChoices: { knot: scene.story.knot!, count: date.choiceCount } })));
         routes += walked.get(key)!;
         dateRoutes[date.id] = (dateRoutes[date.id] ?? 0) + walked.get(key)!;
@@ -1016,7 +1023,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       : [1, 2, 3, 4].flatMap((stage) => [false, true].map((ending) => ({ romance_stage: stage, ending_reached: ending })));
     for (const variables of contexts) withContext(storyLabel(storyId), () => walkScene({ compiled: stories[storyId], label: storyLabel(storyId), context,
       variables, conds: storyConditionTexts[storyId] ?? [], options: [], itemIds: [], memoryIds: Object.keys(presentation.memories),
-      observe: observeForStory(storyId), onWarning: sceneWarn }));
+      observe: observeForStory(storyId), onWarning: sceneWarn, scene: { id: main.address, kind: main.kind, storyId }, onMiniGame }));
   }
   // A12: an unconditional then: loop.
   const placeLandmarks = (placeId: string) => travels.flatMap(({ travel }) => travel.events.filter((event) => event.placeId === placeId)
@@ -1321,7 +1328,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       itemIds: encounterCatalog.items.map((item) => item.id), memoryIds: Object.keys(presentation.memories), observe: observeForStory(battleAddress.storyId),
       variables: { call_arg: 0, quiz_correct: false, answer_correct: false, battle_score: 0, reasoning_action: "", evidence_result: "" },
       battle: { quizzes: quiz.questions.length, ...(battle.reasoning ? { reasoning: { kind: battle.reasoning.kind, roundIndex: battle.reasoning.roundIndex } } : {}) },
-      onWarning: sceneWarn,
+      onWarning: sceneWarn, scene: { id: scene?.id ?? battle.id, kind: "battle", storyId: battleAddress.storyId }, onMiniGame,
     }));
   }
   const learning = parseCatalog(learningCatalogSchema, "learning/translations.json");
@@ -1671,6 +1678,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     albumImages,
     /** The mini-games' pictures of every layer (generated/minigame-art.json; src/minigames/art.ts). */
     miniGameArt,
+    /** Where the stories use the mini-games (generated/minigame-uses.json; src/minigames/uses.ts): the tests and Debug's room read it. */
+    miniGameUses: [...miniGameUses.entries()].sort(([left], [right]) => left.localeCompare(right)).map(([, use]) => use),
     /** Every registered sound's volume (generated/sound-volumes.json; src/audio/sound-effects.ts). */
     soundVolumes: soundVolumesOf(sounds),
     /** The tracks and where each journey plays them (generated/music.json; src/audio/bgm.ts, the credits list). */

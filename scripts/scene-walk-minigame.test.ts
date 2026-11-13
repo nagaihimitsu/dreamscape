@@ -4,11 +4,12 @@ import { MODULES_FILE, MODULES_INK } from "./modules-ink";
 import { readPlaceFile } from "./place-files";
 import { placeScenes } from "./scene-table";
 import { walkScene } from "./scene-walk";
+import type { MiniGameUse } from "../src/minigames/uses";
 
-// The build's checks of a line's # minigame: (2026-11-13): a choice set of the game's outcomes right after its line,
-// each always choosable, and only in a scene whose screen can run it (a place file's date: the context says so).
+// The build's checks of a line's # minigame: (docs/13 3.4): a choice set of the game's outcomes right after its line,
+// each always choosable, 「おまかせ」 that leads on, and any scene the walk reads but a confession date.
 
-const context = { effectIds: [], backgroundIds: [], emotionIds: ["neutral"], miniGames: true };
+const context = { effectIds: [], backgroundIds: [], emotionIds: ["neutral"] };
 const top = "INCLUDE modules.ink\n-> DONE\n";
 const outcomes = ["six", "over_wall", "edge", "bowled", "no_swing"];
 const choices = (prefix = "", extra: Record<string, string> = {}) =>
@@ -59,8 +60,44 @@ describe("a line's # minigame: in the scene walk", () => {
     expect(walk(`# minigame: cricket_batting\nBowl.\n${choices("", { six: "    # money: +10\n", edge: "    # rel: trust +1\n" })}- -> END\n`)).toBe(5);
   });
 
-  it("is refused in a scene whose screen cannot run a mini-game", () => {
-    expect(() => walk(`# minigame: cricket_batting\nBowl.\n${choices()}- -> END\n`, { context: { ...context, miniGames: false } }))
-      .toThrow("a mini-game runs at a choice set of a scene written in a place file");
+  it("reads a mini-game in any scene it walks, and refuses it in a confession date with the reason", () => {
+    // A walk reads every scene with mini-games on (the readers outside the walk say false: tag.test.ts).
+    expect(walk(`# minigame: cricket_batting\nBowl.\n${choices()}- -> END\n`, { context: { ...context, miniGames: false } })).toBe(5);
+    expect(() => walk(`# minigame: cricket_batting\nBowl.\n${choices()}- -> END\n`, { context: { ...context, miniGames: "confession" } }))
+      .toThrow("no mini-game in a confession date");
+  });
+
+  it("stops a mini-game whose 「おまかせ」 outcome comes back to it without another choice set", () => {
+    // Sticky choices (+): a once-only one is gone when the game comes back.
+    const sticky = (prefix = "", extra: Record<string, string> = {}) => choices(prefix, extra).replaceAll("* [", "+ [");
+    const loop = `-> game\n= game\n# minigame: cricket_batting auto edge\nBowl.\n${sticky("", { edge: "    -> game\n" })}- -> END\n`;
+    expect(() => walk(loop)).toThrow("「おまかせ」 never leaves # minigame: cricket_batting");
+    // Another outcome may come back (the player plays again); and a choice set on the way breaks the loop.
+    expect(walk(`-> game\n= game\n# minigame: cricket_batting auto six\nBowl.\n${sticky("", { edge: "    -> game\n" })}- -> END\n`)).toBeGreaterThan(0);
+    const asked = `-> game\n= game\n# minigame: cricket_batting auto edge\nBowl.\n${sticky("", { edge: "    -> again\n" })}- -> END\n` +
+      "= again\nAgain?\n+ [Yes]\n    -> game\n+ [No]\n    -> END\n";
+    expect(walk(asked)).toBeGreaterThan(0);
+  });
+
+  it("warns when 「おまかせ」 takes a 「また今度」 choice", () => {
+    const warnings: string[] = [];
+    walk(`# minigame: cricket_batting auto edge\nBowl.\n${choices("", { edge: "    # later\n" })}- -> END\n`, { onWarning: (message) => warnings.push(message) });
+    expect(warnings.join("\n")).toContain("its 「おまかせ」 outcome edge is a 「また今度」 choice");
+  });
+
+  it("stops a mini-game right before a quiz's call", () => {
+    const source = `${top}\n=== smp_x_battle ===\n# minigame: cricket_batting\nBowl.\n-> quiz(1) ->\nDone.\n-> END\n`;
+    const compiled = compileInk(source, "places/smp_x_arena.ink", { [MODULES_FILE]: MODULES_INK });
+    expect(() => walkScene({ compiled, start: "smp_x_battle", label: "smp_x_battle", context, conds: [], options: [], itemIds: [], memoryIds: [],
+      variables: { call_arg: 0, quiz_correct: false, answer_correct: false, battle_score: 0, reasoning_action: "", evidence_result: "" },
+      battle: { quizzes: 1 } })).toThrow("comes right before a quiz's or reasoning's call");
+  });
+
+  it("reports each use it meets once per path, with its scene, knot and tag", () => {
+    const uses: MiniGameUse[] = [];
+    walk(`# minigame: cricket_batting auto edge\nBowl.\n${choices()}- -> END\n`, {
+      scene: { id: "smp_x_date", kind: "talk", storyId: "places/smp_x_tower" }, onMiniGame: (use) => uses.push(use) });
+    expect(uses[0]).toEqual({ sceneId: "smp_x_date", kind: "talk", storyId: "places/smp_x_tower", knot: "smp_x_date", game: "cricket_batting",
+      auto: "edge", line: "Bowl." });
   });
 });

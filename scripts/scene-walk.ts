@@ -5,6 +5,8 @@ import { parseConditionText } from "../src/content/condition-text";
 import type { SceneDone, SceneOption } from "../src/content/scene-schemas";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
 import { miniGameOptionId, miniGameOutcomeIds, type MiniGameTag } from "../src/minigames/tag";
+import type { MiniGameUse } from "../src/minigames/uses";
+import type { SceneKind } from "../src/content/scene-schemas";
 import { bindItemReader } from "../src/story/items";
 import { bindMemoryReader } from "../src/story/memory";
 import { checkLinesWithoutChoice } from "./ink-validation";
@@ -25,10 +27,13 @@ import type { DialogueObserver } from "./dialogue-expression-validation";
 //   table does not know.
 // The walk applies the scene's own effects as it goes: after `# give: X`, `item X held` reads false
 // and `item X gifted` true; after `# set: F`, `flag F` true.
-// - a line's `# minigame:` (2026-11-13) is not followed by a choice set right after its line, its choice set is not one
-//   choice per outcome of the game (by option ID), or an outcome may not be choosable there (checkMiniGameChoices); a
-//   scene whose screen cannot run a mini-game refuses the tag through its context (TagContext.miniGames).
-// Warning (not stopped): a choice point with only 「また今度」 and choices needing items not guaranteed there.
+// - a line's `# minigame:` (docs/13 3.4) is not followed by a choice set right after its line, its choice set is not one
+//   choice per outcome of the game (by option ID; a quiz's or reasoning's call is none), an outcome may not be choosable
+//   there (checkMiniGameChoices), or 「おまかせ」 never leaves it (its auto outcome comes back to the same game without
+//   another choice set). Every walk reads mini-games (TagContext.miniGames true); a confession date's walk passes
+//   "confession", which refuses them (docs/13 1.4). The uses found go to `onMiniGame` (generated/minigame-uses.json).
+// Warnings (not stopped): a choice point with only 「また今度」 and choices needing items not guaranteed there; a
+// mini-game whose 「おまかせ」 outcome is a 「また今度」 choice (おまかせ then never finishes the scene).
 //
 // A battle (stage 5, `battle`): the walk answers its calls as the game does (modules.ink): each
 // `-> quiz(n) ->` right and wrong, each `-> reasoning ->` with every action (B: press, evidence success and failure; C:
@@ -62,6 +67,9 @@ export type SceneWalkInput = {
   /** A battle (stage 5): how many quizzes it calls and, for a special battle, its reasoning. */
   battle?: { quizzes: number; reasoning?: { kind: "contradiction" | "connection"; roundIndex: number } };
   onWarning?: (message: string) => void;
+  /** The scene a mini-game use belongs to (its ID and kind, the story file), and where the walk reports each use it meets. */
+  scene?: { id: string; kind: SceneKind; storyId: string };
+  onMiniGame?: (use: MiniGameUse) => void;
 };
 
 /** Where a stopped story is: its choices' source and the tunnels they return through (a call's site, not only the call's knot). */
@@ -77,7 +85,8 @@ const sameLeaf = (left: Leaf, right: Leaf) => JSON.stringify(left) === JSON.stri
  * `<prefix>_<outcome>`), nothing else, and each always choosable (the game takes it whatever the player has: no `# requires:`,
  * gift, use or payment that is not guaranteed there).
  */
-function checkMiniGameChoices(tag: MiniGameTag, choices: readonly { text: string; optionId?: string; choosable: boolean }[], label: string): void {
+function checkMiniGameChoices(tag: MiniGameTag, choices: readonly { text: string; optionId?: string; choosable: boolean; later: boolean }[], label: string,
+  warn: (message: string) => void): void {
   const expected = miniGameOutcomeIds(tag.id).map((outcome) => miniGameOptionId(tag, outcome));
   const written = choices.map((choice) => choice.optionId);
   const missing = expected.filter((id) => !written.includes(id));
@@ -90,10 +99,15 @@ function checkMiniGameChoices(tag: MiniGameTag, choices: readonly { text: string
   if (closed.length)
     throw new Error(`An outcome of # minigame: ${tag.id} in ${label} may not be choosable (${closed.map((choice) => choice.optionId).join(", ")}): ` +
       `the game takes it whatever the player has, so it needs nothing that is not guaranteed there (# requires:, # give:, # use:, a payment, a then: move)`);
+  if (choices.some((choice) => choice.later && choice.optionId === miniGameOptionId(tag, tag.auto)))
+    warn(`# minigame: ${tag.id} in ${label}: its 「おまかせ」 outcome ${tag.auto} is a 「また今度」 choice (# later), so with ⚙設定's おまかせ the scene never ` +
+      "ends there; give auto another outcome if the story should go on");
 }
 
 /** Walk every path of the scene; returns the number of paths. */
-export function walkScene(input: SceneWalkInput): number {
+export function walkScene(walked: SceneWalkInput): number {
+  // Every scene the walk reads may play a mini-game (docs/13 1.3), but a confession date (docs/13 1.4).
+  const input = { ...walked, context: { ...walked.context, miniGames: walked.context.miniGames === "confession" ? "confession" as const : true } };
   const optionById = new Map(input.options.map((option) => [option.id, option]));
   const headLeaves = input.when ? requiredLeaves(input.when) : [];
   const reserveMoney = Math.max(0, -(input.done?.money ?? 0));
@@ -110,7 +124,9 @@ export function walkScene(input: SceneWalkInput): number {
   for (const assignment of assignments) for (const result of profiled ? ["positive", "negative"] : [undefined]) {
     type Path = { saved: string; overrides: Record<string, boolean>; trueTexts: string[]; spent: string[]; thens: number; romance: number; speaker: string;
       /** A battle's quizzes called so far, its score and whether it reached its reasoning stop. */
-      quizzes: number; score: number; reasoned: boolean };
+      quizzes: number; score: number; reasoned: boolean;
+      /** The mini-games passed since the last other choice set, each left by its 「おまかせ」 outcome (their choice points). */
+      autoChain: string[] };
     // A battle's states (its stop points, by where they stop and what the path holds) and where each goes: every one must reach the end.
     const graph = new Map<string, { next: Set<string>; where: string }>();
     const edge = (from: string, to: string) => graph.get(from)?.next.add(to);
@@ -163,6 +179,19 @@ export function walkScene(input: SceneWalkInput): number {
       if (choices.some((choice) => parseStoryTags(choice.tags ?? [], input.context).minigame))
         throw new Error(`# minigame: is written on a choice in ${input.label}: write it on the line right before the choice set`);
       const calls = choices.map((choice) => parseStoryTags(choice.tags ?? [], input.context).call);
+      const gameAt = game ? stopKey(choices) : "";
+      if (game) {
+        if (calls.some(Boolean))
+          throw new Error(`# minigame: ${game.tag.id} in ${input.label} comes right before a quiz's or reasoning's call: a mini-game takes a choice set ` +
+            "of its outcomes; put it on a line before or after the quiz (docs/13 1.3)");
+        if (path.autoChain.includes(gameAt))
+          throw new Error(`「おまかせ」 never leaves # minigame: ${game.tag.id} in ${input.label}: its auto outcome ${game.tag.auto} comes back to the ` +
+            "same game without another choice set on the way, so a player with ⚙設定's おまかせ cannot go on; give auto an outcome that leads on (docs/13 3.4)");
+        const knot = choices[0].sourcePath?.split(".")[0];
+        if (input.scene) input.onMiniGame?.({ sceneId: input.scene.id, kind: input.scene.kind, storyId: input.scene.storyId, ...(knot ? { knot } : {}),
+          game: game.tag.id, auto: game.tag.auto, ...(game.tag.prefix ? { prefix: game.tag.prefix } : {}), ...(game.tag.bg ? { bg: game.tag.bg } : {}),
+          ...(game.tag.art ? { art: { ...game.tag.art } } : {}), ...(game.tag.params ? { params: { ...game.tag.params } } : {}), line: game.line });
+      }
       if (calls.some(Boolean) && choices.length !== 1) throw new Error(`A battle's call is offered with other choices in ${input.label}: write -> quiz(n) -> and -> reasoning -> on their own`);
       if (!choices.length) {
         if (path.thens > 1) throw new Error(`A path of ${input.label} meets ${path.thens} then: (at most one per path, the head's counted; A8)`);
@@ -249,7 +278,8 @@ export function walkScene(input: SceneWalkInput): number {
         return true;
       };
       if (game) checkMiniGameChoices(game.tag, choices.map((choice, index) => ({ text: choice.text.trim(), optionId: parseStoryTags(choice.tags ?? [], input.context).optionId,
-        choosable: choosable(options[index]) })), input.label);
+        choosable: choosable(options[index]), later: !!options[index]?.later })), input.label, warn);
+      const autoOption = game ? miniGameOptionId(game.tag, game.tag.auto) : undefined;
       const open = options.filter(choosable);
       if (!open.length)
         throw new Error(`No choice can be chosen at a choice point of ${input.label} (line of "${choices[0].text.trim()}"): every choice needs ` +
@@ -277,11 +307,12 @@ export function walkScene(input: SceneWalkInput): number {
         branch.state.LoadJson(checkpoint);
         branch.ChooseChoiceIndex(choice.index);
         visit({ ...path, saved: branch.state.ToJson(), overrides, trueTexts, spent, thens: path.thens + (option?.then ? 1 : 0),
+          autoChain: game && option?.id === autoOption ? [...path.autoChain, gameAt] : [],
           romance: path.romance + (romanceHere ? 1 : 0), speaker }, choice.tags ?? [], key);
       });
     };
     if (battle) graph.set("", { next: new Set(), where: "the start" });
-    visit({ saved: first.state.ToJson(), overrides: {}, trueTexts: [], spent: [], thens: input.headThen ? 1 : 0, romance: 0, speaker: "narrator",
+    visit({ saved: first.state.ToJson(), overrides: {}, trueTexts: [], spent: [], thens: input.headThen ? 1 : 0, romance: 0, speaker: "narrator", autoChain: [],
       quizzes: 0, score: 0, reasoned: false }, []);
     if (battle) {
       // Every state the battle reaches must still reach its end (a stop point that only comes back to itself would hold the player).
