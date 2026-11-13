@@ -6,6 +6,7 @@ import {
   presentation,
   landmarks,
   localWords,
+  journeyTerms,
   scenes,
   storyState,
   tourismAssets,
@@ -41,12 +42,12 @@ import { usePresentationSettings } from "../components/usePresentationSettings";
 import { useVoiceRate, useVoiceSettings } from "../components/useVoice";
 import { usePreloadAhead } from "../media/preload-ahead";
 import { effectiveVoiceRate } from "../audio/voice-rate";
-import { holdSceneCues, playCue, playSe, useSoundEffectSettings } from "../audio/sound-effects";
+import { holdSceneCues, playCue, playSe, sceneCuesQuiet, useSoundEffectSettings } from "../audio/sound-effects";
 import { canVibrate, useVibrationSetting, vibrate } from "../audio/vibration";
 import { heldItemIds } from "../domain/item-changes";
 import { NotebookCueContext } from "../components/notebook-cue";
 import { addedIds, englishNoteKeys, markSeen, seenAll, unseenIds, type SeenMarks } from "./seen-marks";
-import { journeyMusicPlay, useBgmSettings, useSceneMusic } from "../audio/bgm";
+import { hasTrack, journeyMusicPlay, useBgmSettings, useSceneMusic } from "../audio/bgm";
 import { sceneMusic, type MusicScreen } from "../audio/scene-music";
 import { journeyAmbiencePlay, useAmbienceSettings, useSceneAmbience } from "../audio/ambience";
 import { sceneAmbience } from "../audio/scene-ambience";
@@ -82,6 +83,8 @@ import { DepartureLuggage } from "../features/journey/JourneyMoments";
 import { departureLuggage } from "../features/journey/journey-moments";
 import { titleArtTint } from "../features/journey/time-of-day";
 import { photoTaken } from "../domain/album";
+import { metTerms, termsAdded, termsToShow } from "../domain/glossary";
+import { GlossaryTermWindow } from "../features/journey/GlossaryTermWindow";
 import { TitleNameFields } from "../features/journey/TitleNameFields";
 import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
@@ -169,6 +172,7 @@ const CreditsDialog = lazy(() => import("./CreditsDialog").then((module) => ({ d
 const OldDataCleanup = lazy(() => import("./OldDataCleanup").then((module) => ({ default: module.OldDataCleanup })));
 const MusicRoom = lazy(() => import("../features/journey/MusicRoom").then((module) => ({ default: module.MusicRoom })));
 const AlbumDialog = lazy(() => import("../features/journey/AlbumDialog").then((module) => ({ default: module.AlbumDialog })));
+const GlossaryDialog = lazy(() => import("../features/journey/GlossaryDialog").then((module) => ({ default: module.GlossaryDialog })));
 
 /** Where a Debug relationship change shows (decision 23): the story scene on screen, else the map or free time until the next action. */
 function changeScreenKey(state: GameState): string {
@@ -229,6 +233,11 @@ export function GameApp({
   const momentsRef = useRef<((previous: GameState, next: GameState) => void) | null>(null);
   // 「写真の札」 (AlbumPhotoNotice): the photo the player's last action put in the album, for a few seconds.
   const [photoNotice, setPhotoNotice] = useState<AlbumPhotoNoticeState | null>(null);
+  // 旅の図鑑's card (GlossaryTermWindow): the terms the player's last action put in 旅の図鑑 (`addedTerms`, with whether
+  // its line is quiet), then the card that shows them over their story scene (`termCard`) once the line on screen is known
+  // not to be passed by 高速送り (below).
+  const [addedTerms, setAddedTerms] = useState<{ key: number; ids: string[]; quiet: boolean } | null>(null);
+  const [termCard, setTermCard] = useState<{ key: number; ids: string[]; quiet: boolean; scene: string | null } | null>(null);
   // The notices' height under the header (--notices-h): an item card or a large photo starts below them (item-show.css).
   const noticesHeight = useMeasuredHeight("--notices-h");
   // What the player has looked at during this play (seen-marks.ts): the held items in their open detail, the clues in
@@ -255,6 +264,9 @@ export function GameApp({
       setPhotoNotice((last) => ({ id: (last?.id ?? 0) + 1, photo, first: next.album.length === 1, fromLarge: line?.photo?.show === "large" }));
       if (!line?.quiet && !line?.seId) playCue("album_photo");
     }
+    // A line's # term: just put terms in 旅の図鑑: their card shows, unless 高速送り passes the line (the effect below).
+    const terms = termsAdded(previous, next);
+    if (terms.length) setAddedTerms((last) => ({ key: (last?.key ?? 0) + 1, ids: terms, quiet: !!lineFrameOnScreen(next)?.quiet }));
     // A clue just recorded in 手がかり帳: clue_new, a short vibration and the notebook's button gleams (2026-11-13).
     if (addedIds(previous.discoveredClueIds, next.discoveredClueIds).length) {
       setClueGleam((count) => count + 1);
@@ -303,9 +315,12 @@ export function GameApp({
   }, [storyScene]);
   const titleActions = titleSaveActions(loaded);
   const learning = useLearning(game, storage, !isDebug);
+  // 旅の図鑑's card shows over its scene (below): the notices under the header wait for it to close, not lost behind it.
+  const termCardShown = !!termCard && termCard.scene === storyScene;
   // The words of the country this device has learned in this journey (local-words.ts): the line on screen teaches its
-  // # local_word: words. In this storage, so a Debug session keeps its own record in its isolated memory.
-  const learnedWords = useLocalWords(storage, lineWordsOnScreen(game));
+  // # local_word: words. In this storage, so a Debug session keeps its own record in its isolated memory. A word of a line
+  // that also names a term is learned at once; its 「ことばを覚えた」 shows once the term's card has closed.
+  const learnedWords = useLocalWords(storage, lineWordsOnScreen(game), termCardShown);
   // 「ことばを覚えた」 rings (local_word) as its notice comes, but not on a quiet line nor during 高速送り (playCue).
   const learnedNoticeId = learnedWords.notice?.id;
   const quietLine = !!lineFrameOnScreen(game)?.quiet;
@@ -408,7 +423,7 @@ export function GameApp({
   );
   const englishIds = englishKey ? englishKey.split("\n") : [];
   useEffect(() => {
-    if (game && !seenMarks) setSeenMarks(seenAll({ items: heldItemIds(game.inventory), clues: game.discoveredClueIds, english: englishIds }));
+    if (game && !seenMarks) setSeenMarks(seenAll({ items: heldItemIds(game.inventory), clues: game.discoveredClueIds, english: englishIds, glossary: metTerms(game) }));
   });
   useEffect(() => {
     if (notebook && game) setSeenMarks((marks) => marks && markSeen(marks, "clues", game.discoveredClueIds));
@@ -420,6 +435,31 @@ export function GameApp({
   }, [englishOpen, englishKey]);
   const notebookCue = { gleam: clueGleam, unseen: !!game && unseenIds(seenMarks?.clues, game.discoveredClueIds).length > 0 };
   const englishNew = unseenIds(seenMarks?.english, englishIds).length > 0;
+  // 旅の図鑑: in ⚙設定 for a journey that has terms; its dot while a term met in play has not been seen there. Opening it
+  // shows 「NEW」 on those terms (as they were as it opened) and counts them as seen.
+  // The journey of the game on screen (a Debug session opens any journey's scene).
+  const glossaryJourneyId = (game && getJourneyForCity(game.currentCityId)?.id) ?? journeyId;
+  const hasTerms = journeyTerms(glossaryJourneyId).length > 0;
+  const metGlossary = game ? metTerms(game) : [];
+  const glossaryNew = unseenIds(seenMarks?.glossary, metGlossary).length > 0;
+  const [glossaryOpen, setGlossaryOpen] = useState<{ newIds: string[] } | null>(null);
+  function openGlossary() {
+    setGlossaryOpen({ newIds: unseenIds(seenMarks?.glossary, metGlossary) });
+    setSeenMarks((marks) => marks && markSeen(marks, "glossary", metGlossary));
+  }
+  // The card of the terms an action added waits for the line on screen to be drawn: 高速送り (and a scene a load brought
+  // back) keeps it from opening (sceneCuesQuiet; the terms are in 旅の図鑑 all the same). The scene's own effects have run
+  // by then (a child's before its parent's), so 高速送り that stops at this unread line lets the card show.
+  useEffect(() => {
+    const ids = addedTerms ? termsToShow(addedTerms.ids, sceneCuesQuiet()) : [];
+    if (addedTerms && ids.length) setTermCard({ ...addedTerms, ids, scene: storyScene });
+  // Once for each action that added terms (the scene on screen is read as it is then).
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addedTerms]);
+  // The card belongs to its scene: another screen (a load, Debug's return) takes it away.
+  useEffect(() => {
+    if (termCard && termCard.scene !== storyScene) setTermCard(null);
+  }, [termCard, storyScene]);
   // The title art's colour of the device's time of day (2026-11-13), read once as the title opens (static, never animated).
   const [titleTint] = useState(() => titleArtTint(new Date().getHours()));
 
@@ -517,7 +557,8 @@ export function GameApp({
   // comes from the large picture. The card goes after its few seconds, or with the story scene it was shown over.
   const linePhoto = lineFrameOnScreen(game)?.photo;
   const largePhotoId = linePhoto?.show === "large" ? linePhoto.imageId : undefined;
-  const shownPhotoNotice = photoNotice && photoNotice.photo.imageId !== largePhotoId ? photoNotice : null;
+  // 旅の図鑑's card holds the photo's card as it holds 「ことばを覚えた」: it shows (its whole time) once the card closes.
+  const shownPhotoNotice = photoNotice && photoNotice.photo.imageId !== largePhotoId && !termCardShown ? photoNotice : null;
   const shownPhotoNoticeId = shownPhotoNotice?.id;
   useEffect(() => {
     if (!shownPhotoNotice) return;
@@ -553,6 +594,8 @@ export function GameApp({
   const frame = active?.frame;
   // A line's # minigame: in any story screen (docs/13 1.5): what every play gets, once; a quiet game lowers the music.
   const [miniGameQuiet, setMiniGameQuiet] = useState(false);
+  // A game's own music (docs/13 2.11): its track while it plays, only once the build has it (else the scene's goes on).
+  const [miniGameTrack, setMiniGameTrack] = useState<string | null>(null);
   const revision = game?.revision ?? 0;
   // The outcomes whose choices can be taken now (a payment the player cannot afford greys one; its fallback is taken).
   const miniGameAvailable = (game && miniGameAvailableOutcomes(game))?.join(" ");
@@ -568,6 +611,7 @@ export function GameApp({
     onOutcome: (outcome) => commit((state) => chooseMiniGameOutcome(state, outcome, revision, nextRomanceRoll)),
     backdrop: (backgroundId) => <CanalScene backgroundId={backgroundId} />,
     onQuiet: setMiniGameQuiet,
+    onMusic: (track) => setMiniGameTrack(track && hasTrack(track) ? track : null),
   }), [displaySettings.value.miniGameAuto, displaySettings.value.reduceMotion, debugOn, game?.playerName, game?.heroineName, revision, miniGameAvailable,
     commit, nextRomanceRoll]);
   // A new screen takes a lost focus on its visible heading (scene-focus.ts, UI redesign §3.7 E);
@@ -584,7 +628,7 @@ export function GameApp({
   const musicScreen: MusicScreen = {
     game, endRoll: moments.endRollShown, nightVisual, riding, packing: !!moments.packingScene,
     romanceEnding: showRomanceEnding, nightScreen: !!(nightScreen && dayEnd), opening: !!opening,
-    ...(musicRoom && roomTrack ? { roomTrack } : {}), miniGameQuiet,
+    ...(musicRoom && roomTrack ? { roomTrack } : {}), miniGameQuiet, ...(miniGameTrack ? { miniGameTrack } : {}),
   };
   useSceneMusic(sceneMusic(journeyMusicPlay(musicJourneyId), musicScreen));
   // The ambience under it (src/audio/scene-ambience.ts): the scene's # ambience:, else its place's own, in story scenes only.
@@ -702,6 +746,7 @@ export function GameApp({
         view={hudView(game)}
         onRecords={() => setRecordsOpen(true)}
         onAlbum={() => setAlbumOpen(true)}
+        onGlossary={hasTerms ? openGlossary : undefined}
         onEnglish={() => openEnglish()}
         onPhotoCredits={creditPhotos.length ? () => setPhotoCreditsOpen(true) : undefined}
         onSceneCredits={scenePhoto ? () => setScenePhotoOpen(true) : undefined}
@@ -714,6 +759,7 @@ export function GameApp({
         seenItemIds={seenMarks?.items}
         onItemsSeen={(ids) => setSeenMarks((marks) => marks && markSeen(marks, "items", ids))}
         englishNew={englishNew}
+        glossaryNew={glossaryNew}
         // 「…を手に入れました」 waits while the notices over a story scene show (one under the header at a time), and while a
         // line's item card shows or flies into the bag.
         holdNotices={!!shownPhotoNotice || !!learnedWords.notice || !!lineItemId || !!itemLeave}
@@ -1163,6 +1209,11 @@ export function GameApp({
       {albumOpen && game && <LazyDialog onClose={() => setAlbumOpen(false)}>
         <AlbumDialog album={game.album} currentCityId={game.currentCityId} onClose={() => setAlbumOpen(false)} />
       </LazyDialog>}
+      {glossaryOpen && game && <LazyDialog onClose={() => setGlossaryOpen(null)}>
+        <GlossaryDialog journeyId={glossaryJourneyId} met={metGlossary} newIds={glossaryOpen.newIds} revealAll={debugOn} onClose={() => setGlossaryOpen(null)} />
+      </LazyDialog>}
+      {termCardShown && termCard && game &&
+        <GlossaryTermWindow key={termCard.key} termIds={termCard.ids} quiet={termCard.quiet} onDone={() => setTermCard(null)} />}
       {photoCreditsOpen && creditPhotos.length > 0 && <PhotoCredits photos={creditPhotos} onClose={() => setPhotoCreditsOpen(false)} />}
       {scenePhotoOpen && scenePhoto && <BackgroundCredits asset={scenePhoto} onClose={() => setScenePhotoOpen(false)} />}
       {notebook && game && (canObserve || cityNotebook) && (

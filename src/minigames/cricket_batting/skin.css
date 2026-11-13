@@ -11,6 +11,12 @@
     linear-gradient(to bottom, #cbb083, #b88f5a);
   opacity: 0.94;
 }
+/* Over a photo (the use's bg): the drawn pitch fades into it far off, its ground a little greyer (D1, group1 3). */
+.minigame-backdrop ~ .minigame-stage .mg-cricket-batting-pitch {
+  -webkit-mask-image: linear-gradient(transparent, #000 22%);
+  mask-image: linear-gradient(transparent, #000 22%);
+  filter: saturate(0.8);
+}
 .mg-cricket-batting-crease { position: absolute; height: 2px; background: rgba(255, 250, 241, 0.75); }
 .mg-cricket-batting-crease-far { top: 29%; left: 41%; width: 18%; height: 1px; }
 .mg-cricket-batting-crease-near { top: 82%; left: 19%; width: 62%; }
@@ -28,8 +34,14 @@
   transform-origin: 50% 100%;
 }
 .mg-cricket-batting-bowler > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
-/* Her short run-up: a step nearer, bobbing, until the ball leaves her hand (CRICKET_FIELD settle and run-up). */
-.mg-cricket-batting-bowler[data-running] { animation: mg-cricket-batting-run-up 1100ms linear 600ms both; }
+/* Her short run-up: a step nearer, bobbing, until the ball leaves her hand (CRICKET_FIELD settle and run-up; the delays
+   come from the tuning: Skin.tsx), a little squash at the end and a stretch as she lets go. */
+.mg-cricket-batting-bowler[data-running] {
+  animation:
+    mg-cricket-batting-run-up 1100ms linear var(--mg-cricket-batting-settle, 600ms) both,
+    mg-cricket-batting-release 260ms ease-out calc(var(--mg-cricket-batting-release, 1700ms) - 150ms) both;
+}
+@keyframes mg-cricket-batting-release { 0% { scale: 1; } 55% { scale: 1.06 0.94; } 70% { scale: 0.96 1.08; } 100% { scale: 1; } }
 @keyframes mg-cricket-batting-run-up {
   0% { transform: translateX(-50%) translateY(-7%) scale(0.86); }
   25% { transform: translateX(-50%) translateY(-6%) scale(0.9); }

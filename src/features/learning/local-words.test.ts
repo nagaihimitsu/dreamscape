@@ -8,7 +8,7 @@ import { LOCAL_WORDS_KEY } from "../../persistence";
 import { journeyStorage } from "../../persistence/journey-storage";
 import {
   JOURNEY_WORDS_TITLE_JA, learnedNoticeText, learnWords, lineWordsOnScreen, localWordGroups, openLearnedWords, parseLearnedWords,
-  rememberWords, serializeLearnedWords, type SceneFrames,
+  rememberWords, serializeLearnedWords, shownWordNotice, type SceneFrames,
 } from "./local-words";
 
 function memory(initial: Record<string, string> = {}) {
@@ -136,5 +136,18 @@ describe("「その国の言葉」 of the English notes", () => {
     expect(learnedNoticeText([{ word: "नमस्ते", reading: "ナマステ" }])).toBe("ことばを覚えた：नमस्ते（ナマステ）");
     expect(learnedNoticeText([{ word: "नमस्ते", reading: "ナマステ" }, { word: "चाय", reading: "チャーイ" }]))
       .toBe("ことばを覚えた：नमस्ते（ナマステ）、चाय（チャーイ）");
+  });
+});
+
+describe("「ことばを覚えた」 on a line that also names a 旅の図鑑 term", () => {
+  it("waits while the term's card shows and comes once it has closed, the word learned all the same", () => {
+    const storage = journeyStorage(memory(), "trip_a");
+    const record = openLearnedWords(storage);
+    // The word is learned as its line shows, whether or not a term's card covers the line.
+    expect(rememberWords(storage, record, ["a_word"], new Set(["a_word"]))).toEqual(["a_word"]);
+    const notice = { id: 1, words: [] };
+    expect(shownWordNotice(notice, true)).toBeNull();
+    expect(shownWordNotice(notice, false)).toBe(notice);
+    expect(shownWordNotice(null, false)).toBeNull();
   });
 });

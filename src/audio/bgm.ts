@@ -21,6 +21,9 @@ function readMusicData(): MusicData {
 }
 const data = readMusicData();
 
+/** Whether the build has the track `trackId` (a mini-game's own music plays only once its file is registered: docs/13 2.11). */
+export const hasTrack = (trackId: string): boolean => data.tracks.some((track) => track.id === trackId);
+
 /** The tracks the journey `journeyId` plays where (the shared ones when the build has no entry for it), or null without music. */
 export function journeyMusicPlay(journeyId: string): MusicPlay | null {
   return Object.hasOwn(data.journeys, journeyId) ? data.journeys[journeyId] : data.root;

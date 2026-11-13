@@ -90,15 +90,33 @@
   border: 2px solid var(--ds-ink-muted);
   border-radius: 50%;
 }
-.mg-say-together-dots > span[data-words] { width: 14px; height: 14px; border-color: #c08a2a; }
+.mg-say-together-dots > span[data-words] { position: relative; width: 14px; height: 14px; border-color: #c08a2a; }
 .mg-say-together-dots > span[data-lit] { border-color: var(--ds-ink); background: var(--ds-ink); }
-.mg-say-together-dots > span[data-words][data-lit] { border-color: #c08a2a; background: #f0c860; }
-/* After she said them alone: she turns to the player (？ by her head). */
+.mg-say-together-dots > span[data-words][data-lit] { border-color: #c08a2a; background: #f0c860; box-shadow: 0 0 8px rgba(240, 200, 96, 0.9); }
+/* Through the last beat (「の」 to the words), a ring closes on the gold dot: it lands on it on her beat (the play's frames
+   size it; it is the count, so it moves with less motion too, as the needle does). */
+.mg-say-together-closing {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  box-sizing: border-box;
+  border: 2px solid #c08a2a;
+  border-radius: 50%;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+/* The last word, 「デーン！」, is the loudest: written large; together, it glows in both bubbles. */
+.mg-say-together-word[data-last] { font-size: 1.3em; line-height: 1.15; letter-spacing: 0.02em; }
+.mg-say-together-bubble[data-together] .mg-say-together-word[data-last] { color: #8a5a10; text-shadow: 0 0 10px rgba(240, 200, 96, 0.9); }
+/* After she said them alone: she turns to the player (？ by her head, on the side away from the outcome's label). */
 .mg-say-together-mark {
   position: absolute;
   z-index: 4;
-  left: 4%;
-  top: 4%;
+  right: 6%;
+  top: 2%;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import {
-  rhythmTapBeats, rhythmTapEnd, rhythmTapFairness, rhythmTapInterval, rhythmTapJudge, rhythmTapRecordOf, rhythmTapRules,
-  rhythmTapTuningSchema, rhythmTapVsPartner, type RhythmTapTuning,
+  rhythmTapBeats, rhythmTapEnd, rhythmTapFairness, rhythmTapInterval, rhythmTapJudge, rhythmTapRecordOf, rhythmTapRules, rhythmTapThen,
+  rhythmTapTuningSchema, rhythmTapVsPartner, rhythmTapWindow, type RhythmTapTuning,
 } from "./engine";
 
 // The rhythm_tap engine's rules in its own words (docs/13 6.2): a skin's test passes its tuning through rhythmTapFairness.
@@ -16,12 +16,46 @@ describe("the rhythm_tap engine", () => {
     expect(judge(beats)).toMatchObject({ hits: 5, misses: 0, strays: 0, streak: 5, longestStreak: 5, ended: "end", endMs: rhythmTapEnd(tuning) });
     // The window's edges: earlyMs before, lateMs after.
     expect(judge([1000 - 120, 1600 + 200]).judged.slice(0, 2)).toEqual(["hit", "hit"]);
-    expect(judge([1000 - 121, 1600 + 201]).judged.slice(0, 2)).toEqual(["miss", "miss"]);
-    expect(judge([1000 - 121, 1600 + 201])).toMatchObject({ hits: 0, strays: 2 });
+    expect(judge([1600 - 121, 2200 + 201]).judged.slice(0, 3)).toEqual(["miss", "miss", "miss"]);
+    expect(judge([1600 - 121, 2200 + 201])).toMatchObject({ hits: 0, strays: 2, misses: 5 });
     // A second tap on a beat already hit is a stray; a tap between windows is one too.
     expect(judge([1000, 1010, 1300, 1600])).toMatchObject({ hits: 2, strays: 2, judged: ["hit", "hit", "miss", "miss", "miss"] });
     // The runs of hits.
     expect(judge([1000, 1600, 2800, 3400])).toMatchObject({ streak: 2, longestStreak: 2, misses: 1 });
+  });
+
+  it("does not count taps before the first beat's window opens (a count-in): neither a tap nor a stray", () => {
+    expect(judge([100, 500, 879, 1000])).toMatchObject({ taps: 1, strays: 0, hits: 1 });
+    expect(judge([100, 500, 879])).toMatchObject({ taps: 0, strays: 0, hits: 0 });
+  });
+
+  it("grades a hit right on its beat (the perfect window) apart from one inside the window", () => {
+    const graded = { perfect: { earlyMs: 50, lateMs: 90 } };
+    expect(judge([1000 - 50, 1600 + 90, 2200 - 51, 2800 + 91, 3400], null, graded)).toMatchObject({ hits: 5, perfects: 3 });
+    expect(judge([950, 1700], null, graded).offsets.slice(0, 3)).toEqual([-50, 100, null]);
+    // Without a perfect window, no hit is graded apart.
+    expect(judge(beats).perfects).toBe(0);
+  });
+
+  it("narrows the windows of the peak's beats", () => {
+    const peaked = { ...tuning, peak: { from: 3, earlyMs: 100, lateMs: 120 } };
+    expect(rhythmTapWindow(peaked, 2)).toEqual({ earlyMs: 120, lateMs: 200 });
+    expect(rhythmTapWindow(peaked, 3)).toEqual({ earlyMs: 100, lateMs: 120 });
+    expect(rhythmTapJudge({ taps: [1000, 1600, 2200 + 200, 2800 + 121, 3400 - 101], stopMs: null }, peaked).judged).toEqual(["hit", "hit", "hit", "miss", "miss"]);
+  });
+
+  it("fills the stray gauge with each stray and empties a drop with each hit; a full gauge counts as a miss toward the limit", () => {
+    const gauged = { strayLimit: 3, missLimit: 2 };
+    // Two strays, a hit (one drop off), two more: the gauge is full once, a miss.
+    expect(judge([1000, 1300, 1400, 1600, 1900, 2000], null, gauged, 2100)).toMatchObject({ strays: 4, overflows: 1, gauge: 0, misses: 0, ended: null });
+    // The second overflow ends the play at that tap.
+    const mashed = judge(Array.from({ length: 30 }, (_, index) => 900 + index * 100), null, gauged);
+    expect(mashed).toMatchObject({ ended: "misses", overflows: 2 });
+    expect(mashed.endMs).toBeLessThan(2000);
+    // A miss and an overflow reach the limit together.
+    expect(judge([1000, 1300, 1400, 1450, 2200], null, gauged)).toMatchObject({ ended: "misses", misses: 1, overflows: 1, endMs: 1600 + 200 });
+    // Without a gauge, strays never count as misses.
+    expect(judge(Array.from({ length: 30 }, (_, index) => 900 + index * 100), null, { missLimit: 2 })).toMatchObject({ ended: "end", overflows: 0 });
   });
 
   it("judges as of a moment: an open window is not yet a miss, a passed one is", () => {
@@ -78,6 +112,7 @@ describe("the rhythm_tap engine", () => {
     expect(faster).toEqual([1000, 2200, 3100, 3700, 4300, 4900]);
     expect(rhythmTapBeats({ firstMs: 1000, count: 6, intervalMs: 1200, endIntervalMs: 600, rampBeats: 4 })).toEqual(faster);
     expect(rhythmTapInterval(96)).toBe(625);
+    expect(rhythmTapThen([1000, 1500], [400, 300])).toEqual([1000, 1500, 1900, 2200]);
   });
 
   it("calls a tuning unfair when a phone's tap lag, the start's double tap, crowded beats or the end would decide the play", () => {
@@ -90,6 +125,15 @@ describe("the rhythm_tap engine", () => {
     expect(rhythmTapFairness({ ...tuning, endAfterMs: 150 }).join()).toContain("inside the last beat's window");
     expect(rhythmTapFairness({ ...tuning, partnerStop: 5 }).join()).toContain("partnerStop 5");
     expect(rhythmTapFairness({ ...tuning, beats: [1000] }).join()).toContain("not a rhythm_tap tuning");
+    expect(rhythmTapFairness({ ...tuning, peak: { from: 2, earlyMs: 60, lateMs: 100 } }).join()).toContain("peak.earlyMs 60");
+    expect(rhythmTapFairness({ ...tuning, peak: { from: 2, earlyMs: 100, lateMs: 90 } }).join()).toContain("peak.lateMs 90");
+    expect(rhythmTapFairness({ ...tuning, peak: { from: 5, earlyMs: 100, lateMs: 120 } }).join()).toContain("past the last beat");
+    expect(rhythmTapFairness({ ...tuning, beats: [1000, 1600, 1900], peak: { from: 2, earlyMs: 100, lateMs: 120 } }).join()).toContain("touches the one before");
+    expect(rhythmTapFairness({ ...tuning, perfect: { earlyMs: 40, lateMs: 50 } }).join()).toContain("narrower than 100 ms");
+    expect(rhythmTapFairness({ ...tuning, perfect: { earlyMs: 70, lateMs: 60 } }).join()).toContain("narrower late than early");
+    expect(rhythmTapFairness({ ...tuning, perfect: { earlyMs: 130, lateMs: 150 } }).join()).toContain("wider than the hit window");
+    expect(rhythmTapFairness({ ...tuning, strayLimit: 2 }).join()).toContain("one slip of the thumb");
+    expect(rhythmTapFairness({ ...tuning, peak: { from: 2, earlyMs: 100, lateMs: 120 }, perfect: { earlyMs: 50, lateMs: 90 }, strayLimit: 3 })).toEqual([]);
     expect(() => rhythmTapTuningSchema.parse({ ...tuning, lateMs: 0 })).toThrow();
   });
 

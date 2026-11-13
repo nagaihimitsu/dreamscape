@@ -11,12 +11,16 @@ import { screenFor } from "./screen";
 // re-read, a reload, a replayed guide or a resumed save never adds the same image again. Debug plays in its own
 // memory storage (src/dev/DebugMode.tsx), so nothing it records reaches the normal save.
 
+/** What the line on screen puts in the save the first time it shows: its album photo and its 旅の図鑑 terms. */
+export type RecordedLine = { photo?: StoryPhoto; termIds?: readonly string[] };
+
 /**
  * The line on screen and the story it is read from, in the order of the screens (screen.ts): an encounter's, an
  * arrival's (once its title card has gone) or an epilogue's or a tour leg's narration, a sightseeing guide's, a
  * battle's talk, a date's. Null when no story line shows (free time, the observation, a battle's question, 交際開始).
+ * The album and 旅の図鑑 (glossary.ts) record from it.
  */
-function lineOnScreen(state: GameState): { frame: { photo?: StoryPhoto }; storyId: string } | null {
+export function lineOnScreen(state: GameState): { frame: RecordedLine; storyId: string } | null {
   const screen = screenFor(state);
   if (screen === "encounter") return { frame: state.activeEncounter!.frame, storyId: state.activeEncounter!.storyId };
   if (screen === "epilogue") {

@@ -1,29 +1,37 @@
-import { rhythmTapBeats, rhythmTapRules, rhythmTapVsPartner, type RhythmTapSummary, type RhythmTapTuning } from "../engines/rhythm_tap/engine";
+import { rhythmTapBeats, rhythmTapRules, rhythmTapThen, rhythmTapVsPartner, type RhythmTapSummary, type RhythmTapTuning } from "../engines/rhythm_tap/engine";
 
 // The golgappa duel's rules (docs/13 2.4): a rhythm_tap skin. The player's golgappa are the beats; she gets hers between
-// them (the field draws them) and raises her hand after her 14th. Two left in the bowl end the play (a choke); the
-// player's 「バス」 against her 14th decides the rest. Nothing is random. Pure.
+// them (the field draws them) and raises her hand after her 14th. Two left in the bowl end the play (a choke), and so
+// does mashing: a bite at nothing (a stray) fills the choke gauge, a golgappa eaten empties a drop, and a full gauge
+// leaves one in the bowl. After her 14th the vendor goes faster and the windows narrow: going on past her is a risk.
+// The player's 「バス」 against her hand decides the rest. Nothing is random. Pure. Every number to tune is here (E1).
 
 export type GolgappaOutcome = "together" | "you_first" | "choke" | "outlast";
 /** The duel has no keys of its own. */
 export type GolgappaParams = object;
 
-/** She raises her hand after her 14th (the scene's count: 「十四で、二人とも同時に手を上げた」). */
+/** She raises her hand after her 14th (the scene's count: 「十四で、二人とも手を上げた」). */
 export const GOLGAPPA_HER_STOP = 14;
-/** Raising the hand this many golgappa before or after her is 「同時」. */
-export const GOLGAPPA_TOGETHER_WITHIN = 1;
+/** Raising the hand this many golgappa after her (the player's own count) is still 「同時」. */
+export const GOLGAPPA_TOGETHER_AFTER = 1;
+/** Raising it before her 14th by no more than this (ms before her hand goes up) is still 「同時」: nobody sees the gap. */
+export const GOLGAPPA_TOGETHER_BEFORE_MS = 150;
 
 /**
- * The player's golgappa: the first after the vendor's reach, 1.2 s apart, faster evenly to 0.6 s by the 14th, then
- * steady; 17 in all (about 15 s). Generous windows: a golgappa can be eaten as it lands and a while after; a missed one
- * stays in the bowl, and the second one there ends the play.
+ * The player's golgappa: the first after the vendor's reach, 1.2 s apart, faster evenly to 0.6 s by the 14th; then the
+ * peak after her hand goes up, 0.48, 0.42 and 0.42 s apart with a narrower late window; 17 in all (about 14 s).
+ * Generous windows: a golgappa can be eaten as it lands and a while after. A missed one stays in the bowl; a full choke
+ * gauge (three bites at nothing, less the golgappa eaten since) leaves one too; the second one there ends the play.
  */
 export const GOLGAPPA_TUNING: RhythmTapTuning = {
-  beats: rhythmTapBeats({ firstMs: 1400, count: 17, intervalMs: 1200, endIntervalMs: 600, rampBeats: GOLGAPPA_HER_STOP }),
+  beats: rhythmTapThen(rhythmTapBeats({ firstMs: 1400, count: GOLGAPPA_HER_STOP, intervalMs: 1200, endIntervalMs: 600 }), [480, 420, 420]),
   earlyMs: 150,
   lateMs: 300,
+  peak: { from: GOLGAPPA_HER_STOP, earlyMs: 150, lateMs: 200 },
+  perfect: { earlyMs: 60, lateMs: 90 },
   endAfterMs: 700,
   missLimit: 2,
+  strayLimit: 3,
   partnerStop: GOLGAPPA_HER_STOP,
 };
 
@@ -36,7 +44,7 @@ export function golgappaHerLandings(tuning: RhythmTapTuning = GOLGAPPA_TUNING): 
   const gapBefore = (index: number) => (index === 0 ? beats[1] - beats[0] : beats[index] - beats[index - 1]);
   return beats.slice(0, GOLGAPPA_HER_STOP).map((beat, index) => beat - Math.round(gapBefore(index) / 2));
 }
-/** When she raises her hand: her 14th eaten. */
+/** When she raises her hand: her 14th eaten (just before the player's 14th lands). */
 export const GOLGAPPA_HER_HAND_MS = golgappaHerLandings()[GOLGAPPA_HER_STOP - 1] + GOLGAPPA_FIELD.herEatMs;
 
 /** The outcome of what the player did. */
@@ -45,8 +53,10 @@ export function golgappaOutcome(summary: RhythmTapSummary): GolgappaOutcome {
   const ahead = rhythmTapVsPartner(summary, GOLGAPPA_TUNING);
   // Never raised: ate every one the vendor had.
   if (ahead === null) return "outlast";
-  if (ahead < -GOLGAPPA_TOGETHER_WITHIN) return "you_first";
-  return ahead <= GOLGAPPA_TOGETHER_WITHIN ? "together" : "outlast";
+  // Just before her hand (her 14th in her mouth): nobody could tell who was first.
+  if (ahead === -1) return (summary.endMs ?? 0) >= GOLGAPPA_HER_HAND_MS - GOLGAPPA_TOGETHER_BEFORE_MS ? "together" : "you_first";
+  if (ahead < 0) return "you_first";
+  return ahead <= GOLGAPPA_TOGETHER_AFTER ? "together" : "outlast";
 }
 
 const all = () => true;

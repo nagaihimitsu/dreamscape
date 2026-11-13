@@ -1,4 +1,5 @@
-import { cueTapEnd, cueTapMoment, cueTapRules, type CueTapTuning } from "../engines/cue_tap/engine";
+import type { MiniGameRules } from "../contract";
+import { cueTapEnd, cueTapMoment, cueTapRules, type CueTapRecord, type CueTapTuning } from "../engines/cue_tap/engine";
 
 // Saying it together (docs/13 2.4): a cue_tap skin. She counts 「せー」「の」 on a steady beat and says the words on the next
 // one; the player says them with one tap. On her beat the two voices overlap (together); before it, the player's voice
@@ -23,13 +24,19 @@ export const SAY_FIELD = {
   wordsMs: 1500,
 } as const;
 
-/** Generous windows (a phone's tap has its own lag; two voices starting this close sound as one). */
+/**
+ * Generous windows (two voices starting this close sound as one), wider after her beat: a phone's touch and screen land a
+ * tap late, so the same windows on both sides made a laggy phone come in late about one play in two (group2's playtest,
+ * 2026-11-13: with these, a casual player is together about nine times in ten, a laggy phone eight).
+ */
 export const SAY_TUNING: CueTapTuning = {
   leadMs: SAY_FIELD.settleMs,
   /** From 「せー」 to the beat of the words. */
   approachMs: SAY_FIELD.beatMs * SAY_FIELD.countBeats,
-  cleanMs: 120,
-  nearMs: 300,
+  cleanEarlyMs: 110,
+  cleanLateMs: 170,
+  nearEarlyMs: 280,
+  nearLateMs: 340,
   /** She finishes the words, and a moment more, before a play without a tap ends. */
   noneAfterMs: SAY_FIELD.wordsMs + 200,
 };
@@ -39,6 +46,14 @@ export const SAY_COUNT_MS = SAY_TUNING.leadMs;
 export const SAY_WORDS_MS = cueTapMoment(SAY_TUNING);
 export const SAY_END_MS = cueTapEnd(SAY_TUNING);
 
-/** On her beat: together. Any tap before: the player first; any after, while she says them: she first. No tap: silent. */
-export const sayTogetherRules = cueTapRules<SayTogetherParams, SayTogetherOutcome>(SAY_TUNING,
-  { clean: "together", early: "early", late: "late", miss: { early: "early", late: "late" }, none: "silent" });
+/**
+ * Saying it together's rules with a tuning (the story's, or Debug's room's edited one). On her beat: together. Any tap
+ * before: the player first; any after, while she says them: she first. No tap: silent. ★ from the engine: on the beat
+ * ★3, a little off ★2, far off ★1 (its outcome is early or late all the same), no tap none.
+ */
+export function sayTogetherRulesFor(tuning: CueTapTuning): MiniGameRules<SayTogetherParams, SayTogetherOutcome, CueTapRecord> {
+  return cueTapRules<SayTogetherParams, SayTogetherOutcome>(tuning,
+    { clean: "together", early: "early", late: "late", miss: { early: "early", late: "late" }, none: "silent" });
+}
+
+export const sayTogetherRules = sayTogetherRulesFor(SAY_TUNING);

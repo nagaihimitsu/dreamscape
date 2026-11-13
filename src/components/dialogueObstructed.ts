@@ -11,6 +11,18 @@ export function dialogueObstructed(): boolean {
   );
 }
 
+/** Marks a window over the scene that holds its reading on (旅の図鑑's card, GlossaryTermWindow). */
+export const HOLDS_READING_ATTRIBUTE = "data-holds-reading";
+
+/**
+ * The scene must not read on (a tap, a key, auto mode, 高速送り) while dialogueObstructed holds or a window over it holds
+ * the reading (HOLDS_READING_ATTRIBUTE: 旅の図鑑's card). Unlike a modal, such a window lets the line write itself on and
+ * its voice play: only going on to the next line waits.
+ */
+export function readingHeld(): boolean {
+  return dialogueObstructed() || !!document.querySelector(`[${HOLDS_READING_ATTRIBUTE}]`);
+}
+
 /**
  * A pointer that goes down at `point` on a story scene must not read on while
  * something lies over the scene there: all that dialogueObstructed counts, a

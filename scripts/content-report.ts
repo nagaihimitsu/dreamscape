@@ -23,7 +23,7 @@ export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-pre
   | "later-never-again" | "same-priority" | "repeat-without-until" | "data-language"
   | "never-met-again" | "romance-only-city" | "unfindable-clue" | "battle-after-epilogue" | "money-shortfall" | "ap-shortfall"
   | "scene-tag" | "special-date-ap" | "epilogue-unreachable" | "then-loop" | "earlier-item-start" | "tour-note" | "sound" | "music"
-  | "ambience" | "voice-changed";
+  | "ambience" | "voice-changed" | "glossary";
 export type ContentWarning = { kind: ContentWarningKind; message: string };
 /** How content:build counts each kind of warning. */
 export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
@@ -56,6 +56,7 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "sound": "sound effect note(s) (a journey's sound nothing plays, system sounds missing from the shared list)",
   "music": "music note(s) (a track that no play value or # bgm: plays)",
   "ambience": "ambience note(s) (a journey's ambience track that no play.places value or # ambience: plays)",
+  "glossary": "glossary note(s) (旅の図鑑: a term's line over 40 characters, a term no # term: names, a term tagged twice in one scene or on a choice)",
   "voice-changed": "recorded line(s) whose text is no longer what their voice says, or not in recorded.json (record again; npm run voice:changes)",
 };
 
@@ -153,6 +154,7 @@ const ENTRY_IDS: [MergedKind, string, Definition["rule"]][] = [
   ["battles/catalog.json", "battles", "id"],
   ["encounters/catalog.json", "encounters", "id"],
   ["encounters/catalog.json", "items", "id"],
+  ["glossary/terms.json", "terms", "id"],
   ["presentation/characters.json", "characters", "id"],
   ["presentation/music.json", "tracks", "id"],
   ["presentation/ambience.json", "tracks", "id"],

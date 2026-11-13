@@ -67,6 +67,62 @@ describe("the host's play clock", () => {
     expect(clock.at(99_999)).toBe(500);
   });
 
+  it("holds time at 0 through a lead: its frames draw the start, its timers wait, an input in it falls before 0", () => {
+    const fake = fakeDriver();
+    const clock = createPlayClock(fake.driver, { leadMs: 900 });
+    const seen: number[] = [];
+    let started = false;
+    clock.onFrame((ms) => seen.push(ms));
+    clock.after(0, () => { started = true; });
+    fake.tick(300);
+    expect(clock.leadLeft()).toBe(600);
+    expect(clock.at(1250)).toBe(-650);
+    fake.tick(500);
+    expect(started).toBe(false);
+    expect(seen).toEqual([0, 0]);
+    fake.tick(150);
+    expect(started).toBe(true);
+    expect(clock.leadLeft()).toBe(0);
+    expect(seen).toEqual([0, 0, 50]);
+  });
+
+  it("stands still through a hit-stop: frames go on at the same moment, timers wait, then time runs on", () => {
+    const fake = fakeDriver();
+    const clock = createPlayClock(fake.driver);
+    const seen: number[] = [];
+    let fired = false;
+    clock.onFrame((ms) => seen.push(ms));
+    clock.after(150, () => { fired = true; });
+    fake.tick(100);
+    clock.hold(90);
+    fake.tick(40);
+    // A longer hit-stop in the middle of one extends it; a shorter one does not shorten it.
+    clock.hold(80);
+    clock.hold(5);
+    fake.tick(40);
+    fake.tick(60);
+    expect(fired).toBe(false);
+    fake.tick(40);
+    expect(seen).toEqual([100, 100, 100, 120, 160]);
+    expect(fired).toBe(true);
+    // A hidden page cuts a hit-stop short: its stopped part counts, then the pause's.
+    clock.hold(100);
+    fake.tick(30);
+    clock.pause();
+    fake.tick(1000);
+    clock.resume();
+    fake.tick(16);
+    expect(clock.now()).toBe(176);
+  });
+
+  it("reads every input later by Debug's slow-phone delay", () => {
+    const fake = fakeDriver();
+    const clock = createPlayClock(fake.driver, { inputDelayMs: 120 });
+    fake.tick(500);
+    expect(clock.at(1480)).toBe(600);
+    expect(clock.now()).toBe(500);
+  });
+
   it("ends everything when stopped, and asks no frame without anything to call", () => {
     const fake = fakeDriver();
     const clock = createPlayClock(fake.driver);

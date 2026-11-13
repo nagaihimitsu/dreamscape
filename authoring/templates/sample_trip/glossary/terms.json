@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "terms": [
+    {
+      "id": "smp_term_mihon_sanji_pan",
+      "nameJa": "三時パン",
+      "readingJa": "さんじパン",
+      "aliasJa": null,
+      "category": "food",
+      "lineJa": "見本の街の朝市で焼く架空の丸パン。表に三時を指す針の模様がある。",
+      "imageId": "smp_img_mihon_sanji_pan"
+    }
+  ]
+}

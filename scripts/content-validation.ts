@@ -65,6 +65,7 @@ import { ambienceDataOf, ambienceRegistry, ambienceWarnings, checkAmbienceTags }
 import { audioLayersOf } from "./audio-layers";
 import { sceneAudioOf } from "./scene-audio";
 import { checkSceneEffectTags, itemJourneys } from "./scene-effect-tags";
+import { checkTermTags, glossaryTermsOf, glossaryWarnings } from "./glossary-terms";
 import { checkEmphasisTags } from "./line-emphasis";
 import { checkHelperKnot, revealRegionProblem, validateBattleEvidence } from "./battle-validation";
 import { landmarkOrderError, landmarkParts, tourismCatalogSchema, type VisitPart } from "../src/content/tourism-schemas";
@@ -105,6 +106,7 @@ import {
   validateLearning,
 } from "../src/content/learning-schema";
 import { localWordsCatalogSchema } from "../src/content/local-words";
+import { glossaryCatalogSchema } from "../src/content/glossary";
 
 // Validation of the loaded content (validateContent): pure checks of the
 // sources that content-sources.ts read, with the Ink compiled here. Nothing
@@ -579,6 +581,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       throw new Error(`Unknown local word city: ${word.id}/${word.cityId}`);
   // The album's illustrations (2026-11-11): the files of each journey's public/assets/album/, the ID their file name.
   const albumImages = albumImagesOf(sources);
+  // 旅の図鑑's terms (optional; 2026-11-13): a line's # term: names one of its journey's (checkTermTags below).
+  const glossaryTerms = glossaryTermsOf(sources, parseCatalog(glossaryCatalogSchema, "glossary/terms.json").terms,
+    new Set(tourism.assets.map((asset) => asset.id)));
+  const termJourneys = new Map(glossaryTerms.map((term) => [term.id, term.journeyId]));
   // The mini-games' pictures (2026-11-13): the files of each layer's public/assets/minigames/, the ID their file name; an art
   // slot names one of them or a tourism photo by its ID, so no ID is both.
   const miniGameArt = miniGameArtOf(sources);
@@ -608,6 +614,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     // A line's # photo: and # recall: name an album image (of the story's own journey: checkAlbumTags below).
     photoIds: albumImages.map((image) => image.id),
     localWordIds: localWords.map((word) => word.id),
+    termIds: glossaryTerms.map((term) => term.id),
     personIds: storyStateCatalog.people.map((person) => person.id),
     // A line's # minigame: runs where the full-branch walk (scene-walk.ts) reads it; every other reading refuses it (docs/13 1.3).
     miniGames: false,
@@ -682,6 +689,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     withContext(file, () => checkAmbienceTags(authored, storyLayer, ambience.tracks));
     // A line's # item_show: names an item of the story's own journey; # weather: and # tint: their own values (2026-11-13).
     withContext(file, () => checkSceneEffectTags(authored, storyLayer, storyItemJourneys));
+    // A line's # term: names a 旅の図鑑 term of the story's own journey (2026-11-13).
+    withContext(file, () => checkTermTags(authored, storyLayer, termJourneys));
     // A line's # em: and # em_shake: name a word of its own text (2026-11-13).
     withContext(file, () => checkEmphasisTags(authored));
     const place = placeFiles.get(id);
@@ -1709,6 +1718,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     journey,
     /** The album's illustrations of every journey (generated/album-images.json; src/content/album-images.ts). */
     albumImages,
+    /** 旅の図鑑's terms of every journey with their journeys (generated/glossary.json; src/content/glossary.ts). */
+    glossaryTerms,
     /** The mini-games' pictures of every layer (generated/minigame-art.json; src/minigames/art.ts). */
     miniGameArt,
     /** Where the stories use the mini-games (generated/minigame-uses.json; src/minigames/uses.ts): the tests and Debug's room read it. */
@@ -1750,7 +1761,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     /** The scene list and the tags' AP rules (generated/scenes.json). */
     scenes: generatedScenes,
     /** Probable mistakes that do not stop the build (content-report.ts). */
-    warnings: [...contentWarnings(sources), ...soundWarnings(sources, sounds), ...musicWarnings(sources, music), ...ambienceWarnings(sources, ambience), ...transitWarnings, ...conditionNotes, ...languageNotes, ...sceneNotes, ...tourNotes],
+    warnings: [...contentWarnings(sources), ...soundWarnings(sources, sounds), ...musicWarnings(sources, music), ...ambienceWarnings(sources, ambience), ...transitWarnings, ...conditionNotes, ...languageNotes, ...sceneNotes, ...tourNotes,
+      ...glossaryWarnings(sources, glossaryTerms)],
     /** What each journey folder provides, for the build report. */
     journeyContents: journeyContents(sources),
     /** Each journey's in-city transport (modes and transit ledger counts), for the build report. */
