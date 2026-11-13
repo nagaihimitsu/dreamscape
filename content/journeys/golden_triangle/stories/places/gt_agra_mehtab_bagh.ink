@@ -98,7 +98,7 @@ INCLUDE modules.ink
 板きれのバットを渡された。マウンドの代わりの土の盛り上がりに、彼女が立つ。ボールを握り直して、まっすぐこちらを見た。
 # speaker: heroine
 # emotion: serious
-# minigame: cricket_batting auto over_wall
+# minigame: cricket_batting auto over_wall bg gt_bg_agra_mehtab_bagh_lawn
 本気で投げるから。本気で打ってね
 // 最後の一球：選択肢の代わりにミニゲーム。打った結果の ID の選択肢をゲームが選ぶ（噛み合いはここで1回）。
 * [最後の一球：まっすぐ打ち返した # option: six]
@@ -159,7 +159,7 @@ INCLUDE modules.ink
 // 場面の中の選択なので噛み合いはない。彼女の声は、一球目の噛み合いの romance_result のまま）
 === gt_agra_mehtab_bagh_another_ball ===
 # speaker: narrator
-# minigame: cricket_batting prefix again auto over_wall
+# minigame: cricket_batting prefix again auto over_wall bg gt_bg_agra_mehtab_bagh_lawn
 ソニアがボールを投げ返す。彼女はそれを両手で受け取って、もう一度、土の盛り上がりに立った。
 * [もう一球：まっすぐ打ち返した # option: again_six]
     -> gt_agra_mehtab_bagh_ball_six ->

@@ -19,7 +19,10 @@ export interface MiniGameTag {
   prefix?: string;
   /** `bg <backgroundId>`: the picture behind the play (a background `# background:` may name); else the scene's own. */
   bg?: string;
-  /** `art.<slot> <imageId>`: the skin's pictures from the journey (public/assets/minigames/<imageId>.*). */
+  /**
+   * `art.<slot> <imageId>`: the skin's pictures from the journey: a mini-game picture (public/assets/minigames/<imageId>.*),
+   * or in a backdrop slot a tourism photo (its catalog asset ID; miniGameArtPath).
+   */
   art?: Readonly<Record<string, string>>;
   /** The game's own keys, as written. */
   params?: Readonly<Record<string, string>>;
@@ -61,11 +64,20 @@ export function miniGameChoice<T extends { index: number; optionId?: string }>(c
 }
 
 /**
+ * The served path of the picture an art slot names (`art.<slot> <imageId>`): the mini-game picture of that ID, else the
+ * tourism photo (a backdrop slot's; parseMiniGameTag checks which slot may take which); undefined when neither has it.
+ */
+export function miniGameArtPath(context: Pick<TagContext, "miniGameArt" | "miniGamePhotos">, imageId: string): string | undefined {
+  return context.miniGameArt?.[imageId] ?? context.miniGamePhotos?.[imageId];
+}
+
+/**
  * Read a `# minigame:` value. Throws (the message says how to write it) for an unknown game, a key without a value, a
  * repeated key, an unknown key (with the game's keys), an `auto` that is not an outcome, a prefix that is not lowercase
- * letters and digits, a `bg` the context's backgrounds lack, an art slot the game lacks or an image the context's
- * mini-game art lacks (a sprite must be webp or png), and the game's keys its zod refuses. Lists absent from the context
- * are not checked. `games`: the registry (a test passes its own).
+ * letters and digits, a `bg` the context's backgrounds lack, an art slot the game lacks, an image neither the context's
+ * mini-game art nor its tourism photos have (a sprite must be a mini-game picture, webp or png; a photo fills a backdrop
+ * slot only), and the game's keys its zod refuses. Lists absent from the context are not checked. `games`: the registry
+ * (a test passes its own).
  */
 export function parseMiniGameTag(value: string, context: Partial<TagContext> = {},
   games: Readonly<Record<string, AnyMiniGameDefinition>> = MINI_GAMES): MiniGameTag {
@@ -107,9 +119,13 @@ export function parseMiniGameTag(value: string, context: Partial<TagContext> = {
       if (!declared) throw new Error(`Unknown art slot of the minigame ${id}: ${key} (${definition.artSlots.length
         ? `its slots: ${definition.artSlots.map((item) => `art.${item.id}: ${item.labelJa}`).join("; ")}` : "it has no art slots"})`);
       const path = context.miniGameArt?.[word];
-      if (context.miniGameArt && path === undefined)
+      const photo = path === undefined ? context.miniGamePhotos?.[word] : undefined;
+      if ((context.miniGameArt || context.miniGamePhotos) && path === undefined && photo === undefined)
         throw new Error(`Unknown minigame art: ${key} ${word} (an image public/assets/minigames/${word}.<webp|png|jpg|jpeg> of the scene's journey, ` +
-          `listed in its presentation/own-artwork.json)`);
+          `listed in its presentation/own-artwork.json; a backdrop slot may also name a photo of its tourism/catalog.json assets)`);
+      if (photo !== undefined && declared.kind === "sprite")
+        throw new Error(`The minigame art ${word} of ${key} is a tourism photo: art.${slot} is a figure on the field, so a webp or png with a ` +
+          `transparent background in public/assets/minigames/ (a photo fills a backdrop slot only)`);
       if (path !== undefined && declared.kind === "sprite" && !MINI_GAME_ART_SPRITE_EXTENSIONS.some((extension) => path.toLowerCase().endsWith(`.${extension}`)))
         throw new Error(`The minigame art ${word} of ${key} is ${path}: art.${slot} is a figure on the field, so a webp or png with a transparent background`);
       art[slot] = word;

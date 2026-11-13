@@ -33,7 +33,9 @@
 .minigame-room-controls label { display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px; }
 .minigame-room-controls input { width: 20px; height: 20px; }
 .minigame-room-example { flex-wrap: wrap; }
-.minigame-room-example select { min-height: 44px; }
+.minigame-room-example select { min-height: 44px; min-width: 0; max-width: 100%; }
+/* A use's pictures (bg, art.<slot>): long IDs, so the choice takes the line's width and its text is cut, not the page widened. */
+.minigame-room-pictures select { width: 100%; text-overflow: ellipsis; }
 /* The stage: the game's scene box with a window where the choices would be; the play lies over it as in a story. */
 .minigame-room .minigame-room-stage { min-height: max(480px, calc(100dvh - 96px)); margin-top: 8px; border-radius: 12px; }
 .minigame-room-window { margin: 0 8px 8px; padding: 12px; border-radius: 12px; }

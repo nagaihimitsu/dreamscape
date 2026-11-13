@@ -8,7 +8,7 @@ import "./skin.css";
 // niche (the middle) and on. The player's hands hold the folded cloth at the bottom of the niche. Everything sits on a
 // stage of a fixed shape (3:4, as large as the field holds; dark stone around it), so a stairs picture's steps stay under
 // her feet on every screen. With the use's art (`art.stairs`, `art.walker`) the drawn stairs and figure give way to those
-// pictures.
+// pictures; a far-wall picture (`art.wall`, e.g. a photo) takes the drawn wall's place only, the stairs drawn over it.
 
 type Foot = { x: number; y: number };
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
@@ -154,9 +154,11 @@ function ClothFlapField({ still, art, sound, frames }: CueTapFieldProps<ClothFla
     });
   }, [frames, still]);
   return (
-    <div className="mg-cloth-flap" data-art-stairs={art.stairs ? true : undefined} data-still={still || undefined}>
+    <div className="mg-cloth-flap" data-art-stairs={art.stairs ? true : undefined} data-art-wall={art.wall && !art.stairs ? true : undefined}
+      data-still={still || undefined}>
       <span className="mg-cloth-flap-stage">
-        {art.stairs && <img className="mg-cloth-flap-backdrop" src={art.stairs} alt="" draggable={false} />}
+        {art.stairs ? <img className="mg-cloth-flap-backdrop" src={art.stairs} alt="" draggable={false} />
+          : art.wall && <img className="mg-cloth-flap-backdrop" src={art.wall} alt="" draggable={false} />}
         <span className="mg-cloth-flap-far-wall"><span /><span /><span /></span>
         <span className="mg-cloth-flap-stairs" style={{ clipPath: STAIRS }} />
         <span className="mg-cloth-flap-mark-step" style={{ left: `${NICHE.x}%`, top: `${NICHE.y}%` }} />

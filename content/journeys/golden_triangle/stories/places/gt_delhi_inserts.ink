@@ -359,6 +359,7 @@ Agra? Your train is cancelled today.
 # ambience: stop
 # speaker: narrator
 道を渡り、大通りから一本入った路地の、狭い階段を上がる。扉には、大きな英語の看板。政府公認・観光案内所。中にはインドの旗が飾られ、額に入った「証明書」が壁に並び、天井の扇風機がゆっくり回っていた。
+# background: gt_bg_delhi_scam_office
 背広の男が、にこやかに立ち上がった。
 # speaker: gt_delhi_scam_suit_man
 座ってください。まずはチャイを

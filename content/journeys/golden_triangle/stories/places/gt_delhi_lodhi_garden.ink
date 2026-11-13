@@ -301,7 +301,7 @@ INCLUDE modules.ink
     うん、二人なら届きそう。わたしが『せーの』って言うから、その次ね
 }
 # speaker: narrator
-# minigame: say_together auto together
+# minigame: say_together auto together art.lawn gt_img_delhi_lodhi_lawn
 彼女は小さく息を吸って、こちらを見た。
 * [声を合わせた：「の」の次の拍で、二人の声がそろった # option: together]
     { romance_result == "negative":

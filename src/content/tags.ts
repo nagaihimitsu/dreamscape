@@ -24,6 +24,12 @@ export interface TagContext {
    * gives a scene its journey's and the root's; absent: not checked.
    */
   miniGameArt?: Readonly<Record<string, string>>;
+  /**
+   * The tourism photos (tourism/catalog.json assets, credited like every photo) a backdrop slot (`art.<slot>` of kind
+   * backdrop) may name, ID → served path (docs/13 2.12); content:build keeps a story to its journey's (content-ownership.ts).
+   * Absent with miniGameArt absent too: not checked.
+   */
+  miniGamePhotos?: Readonly<Record<string, string>>;
 }
 
 /** The speakers every line may name; any other `# speaker:` names a person of progression/story.json people (2026-11-11). */

@@ -579,8 +579,13 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       throw new Error(`Unknown local word city: ${word.id}/${word.cityId}`);
   // The album's illustrations (2026-11-11): the files of each journey's public/assets/album/, the ID their file name.
   const albumImages = albumImagesOf(sources);
-  // The mini-games' pictures (2026-11-13): the files of each layer's public/assets/minigames/, the ID their file name.
+  // The mini-games' pictures (2026-11-13): the files of each layer's public/assets/minigames/, the ID their file name; an art
+  // slot names one of them or a tourism photo by its ID, so no ID is both.
   const miniGameArt = miniGameArtOf(sources);
+  for (const image of miniGameArt)
+    if (tourism.assets.some((asset) => asset.id === image.id))
+      throw new Error(`ミニゲームの絵と観光写真のIDが同じです：${image.id}。art.<枠> はどちらも ID で名指すので、ミニゲームの絵のファイル名を変えてください` +
+        `（Mini-game art ID is also a tourism asset ID: ${image.id}）。`);
   // The voices of lines (2026-11-12): the files of each journey's public/assets/voice/, the ID their file name.
   const voiceFiles = voiceFilesOf(sources);
   // A manifest's voiceCredits (2026-11-13) credits voices its journey has.
@@ -606,8 +611,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     personIds: storyStateCatalog.people.map((person) => person.id),
     // A line's # minigame: runs where the full-branch walk (scene-walk.ts) reads it; every other reading refuses it (docs/13 1.3).
     miniGames: false,
-    // A # minigame:'s art.<slot> names a mini-game picture (of the story's own journey or the root: checkMiniGameArtTags below).
+    // A # minigame:'s art.<slot> names a mini-game picture (of the story's own journey or the root: checkMiniGameArtTags below),
+    // or in a backdrop slot a tourism photo (of the story's own journey: content-ownership.ts).
     miniGameArt: Object.fromEntries(miniGameArt.map((image) => [image.id, image.path])),
+    miniGamePhotos: Object.fromEntries(tourism.assets.map((asset) => [asset.id, asset.path])),
   };
   for (const effect of effects) {
     if (effect.responseProfileId && !responseProfiles.some((profile) => profile.id === effect.responseProfileId))

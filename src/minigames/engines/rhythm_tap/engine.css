@@ -105,11 +105,12 @@
   font-size: 15px;
 }
 /* A short screen keeps the field: the hint (the start showed it just before) gives way, and the stop button goes up to the
-   field's top right corner (further still from the big button). */
+   field's top right corner (further still from the big button), over what the field draws there (the golgappa vendor's
+   hand passes that corner). */
 @media (max-height: 620px) {
   .mg-engine-rhythm-tap .mg-rhythm-tap-hint { display: none; }
   .mg-engine-rhythm-tap .mg-rhythm-tap-top { margin: 0; }
-  .mg-engine-rhythm-tap .mg-rhythm-tap-top[data-stop] { position: absolute; z-index: 2; top: 8px; right: 12px; min-height: 0; }
+  .mg-engine-rhythm-tap .mg-rhythm-tap-top[data-stop] { position: absolute; z-index: 10; top: 8px; right: 12px; min-height: 0; }
   .mg-engine-rhythm-tap .mg-rhythm-tap-controls { padding-top: 4px; }
   .mg-engine-rhythm-tap .mg-rhythm-tap-lane { height: 30px; margin-bottom: 8px; }
   .mg-engine-rhythm-tap .mg-rhythm-tap-action, .mg-engine-rhythm-tap .mg-rhythm-tap-auto { min-height: 54px; }

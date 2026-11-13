@@ -15,9 +15,9 @@ import "../features/romance/romance-scene.css";
 import "./minigame-room.css";
 
 // Debug's 「ミニゲームの見本」 (docs/13 6.6): every registered game, its outcomes, keys, art slots and uses, and a stage to
-// play each with its examples (by hand, by each 「おまかせ」 outcome, with less motion) through the game's own host, without
-// a story or a save. It runs on the Debug page only (DebugMode shows it in place of 場面の確認). It reads and writes no
-// save, English notebook, presentation setting or Debug-mode key: its settings live in its own memory.
+// play each with its examples and a use's pictures (by hand, by each 「おまかせ」 outcome, with less motion) through the
+// game's own host, without a story or a save. It runs on the Debug page only (DebugMode shows it in place of 場面の確認).
+// It reads and writes no save, English notebook, presentation setting or Debug-mode key: its settings live in its own memory.
 
 function memoryStorage() {
   const values = new Map<string, string>();
@@ -25,8 +25,24 @@ function memoryStorage() {
     removeItem: (key: string) => { values.delete(key); } };
 }
 
-/** The room's stage: one game, its example params, how it is played, the outcomes it plays as greyed (their fallbacks are taken). */
-type Stage = { gameId: string; example: number; auto: string | null; still: boolean; closed: readonly string[] };
+/**
+ * The room's stage: one game, its example params, the pictures of one of its uses (an index of picturedUses, -1 for the
+ * game's own drawing), how it is played, the outcomes it plays as greyed (their fallbacks are taken).
+ */
+type Stage = { gameId: string; example: number; pictures: number; auto: string | null; still: boolean; closed: readonly string[] };
+
+/** A game's uses that give it pictures (`bg`, `art.<slot>`), each set of pictures once: the stage can show each. */
+function picturedUses(gameId: string): MiniGameUse[] {
+  const seen = new Set<string>();
+  return miniGameUses.filter((use) => {
+    const key = JSON.stringify([use.bg ?? null, Object.entries(use.art ?? {}).sort()]);
+    if (use.game !== gameId || (!use.bg && !use.art) || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+const picturesLabel = (use: MiniGameUse) =>
+  [use.bg ? `bg ${use.bg}` : "", ...Object.entries(use.art ?? {}).sort().map(([slot, image]) => `art.${slot} ${image}`)].filter(Boolean).join(" ");
 
 export function MiniGameRoom({ onClose }: { onClose: () => void }) {
   const [storage] = useState(memoryStorage);
@@ -80,11 +96,14 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
     },
     backdrop: (backgroundId) => <CanalScene backgroundId={backgroundId} />,
   }), [stage?.auto, stage?.still, stage?.closed, definition, round]);
+  const pictured = useMemo(() => (stage ? picturedUses(stage.gameId) : []), [stage]);
   const tag = useMemo<MiniGameTag | undefined>(() => {
     if (!stage || !definition) return undefined;
     const params = definition.examples[stage.example] ?? {};
-    return { id: definition.id, auto: stage.auto ?? definition.defaultAuto, ...(Object.keys(params).length ? { params } : {}) };
-  }, [stage, definition]);
+    const pictures = pictured[stage.pictures];
+    return { id: definition.id, auto: stage.auto ?? definition.defaultAuto, ...(pictures?.bg ? { bg: pictures.bg } : {}),
+      ...(pictures?.art ? { art: pictures.art } : {}), ...(Object.keys(params).length ? { params } : {}) };
+  }, [stage, definition, pictured]);
   const change = (next: Partial<Stage>) => {
     setStage((current) => (current ? { ...current, ...next } : current));
     setLast(null);
@@ -127,6 +146,13 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
         {definition.examples.length > 1 && <label className="minigame-room-example">札の引数の例
           <select value={stage.example} onChange={(event) => change({ example: Number(event.target.value) })}>
             {definition.examples.map((example, index) => <option key={index} value={index}>{Object.entries(example).map(([key, value]) => `${key} ${value}`).join(" ") || "（なし）"}</option>)}
+          </select>
+        </label>}
+        {/* The pictures a story gives the game (bg, art.<slot>): a use's, or the game's own drawing. */}
+        {pictured.length > 0 && <label className="minigame-room-example minigame-room-pictures">絵（使っている場面の bg・art）
+          <select value={stage.pictures} data-testid="minigame-room-pictures" onChange={(event) => change({ pictures: Number(event.target.value) })}>
+            {pictured.map((use, index) => <option key={index} value={index}>{use.sceneId}：{picturesLabel(use)}</option>)}
+            <option value={-1}>なし（ゲームが描く絵）</option>
           </select>
         </label>}
       </fieldset>
@@ -181,7 +207,7 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
               openedFrom.current = id;
               setLast(null);
               setRound((count) => count + 1);
-              setStage({ gameId: id, example: 0, auto: null, still: false, closed: [] });
+              setStage({ gameId: id, example: 0, pictures: picturedUses(id).length ? 0 : -1, auto: null, still: false, closed: [] });
             }}>遊んでみる</button>
           </section>
         );

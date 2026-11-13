@@ -15,6 +15,7 @@ import { sceneConditionReader } from "../domain/scene-conditions";
 import { scenePerson, speakingPerson } from "../domain/scene-person";
 import { activeGuideStoryId } from "../domain/tourism";
 import { beginTravelEvent, type TravelMode } from "../domain/travel-game";
+import { miniGameArtPath } from "../minigames/tag";
 import { peekStory, type PeekReach } from "../story/runtime";
 import type { StoryFrame } from "../story/frame-reader";
 import { preloadMedia, type PreloadSource } from "./preload";
@@ -37,7 +38,7 @@ export const contentMediaCatalog: MediaCatalog = {
   figure: (characterId, emotion, look) => characterPicture(characterId, emotion, { sceneId: look.sceneId, cityId: look.cityId }) ?? undefined,
   personFigure: (frame) => speakingPerson(storyState.people, frame),
   albumImage: (imageId) => getAlbumImage(imageId)?.path,
-  miniGameArt: (imageId) => tagContext.miniGameArt[imageId],
+  miniGameArt: (imageId) => miniGameArtPath(tagContext, imageId),
   reactionMark: reactionMarkImage,
 };
 

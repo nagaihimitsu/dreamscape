@@ -215,6 +215,17 @@
       "fallback": "neutral",
       "imageAssetId": "gt_img_jaipur_hawa_mahal"
     },
+    "gt_bg_jaipur_hawa_mahal_night": {
+      "nameJa": "ハワー・マハル（夜）",
+      "captionJa": "ジャイプール ／ ハワー・マハル（夜）",
+      "color": "#78614d",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_jaipur_hawa_mahal_night",
+      "imagePosition": {
+        "x": 45,
+        "y": 50
+      }
+    },
     "gt_bg_jaipur_jaigarh_fort": {
       "nameJa": "ジャイガル城",
       "captionJa": "ジャイプール ／ ジャイガル城",
@@ -259,10 +270,14 @@
     },
     "gt_bg_delhi_hotel_hub": {
       "nameJa": "滞在先のホテル（デリー）",
-      "captionJa": "デリー ／ 滞在先（バンガロールの施設を用いたロビーのイメージ）",
-      "color": "#817569",
+      "captionJa": "デリー ／ 滞在先（パハールガンジの宿の帳場を用いたイメージ）",
+      "color": "#827c71",
       "fallback": "neutral",
-      "imageAssetId": "gt_img_hotel_illustration",
+      "imageAssetId": "gt_img_delhi_paharganj_reception",
+      "imagePosition": {
+        "x": 40,
+        "y": 50
+      },
       "placeId": "delhi_hotel_hub"
     },
     "gt_bg_delhi_hotel_alley": {
@@ -291,22 +306,38 @@
     },
     "gt_bg_delhi_hotel_corridor": {
       "nameJa": "滞在先のホテルの廊下（デリー）",
-      "captionJa": "デリー ／ 滞在先の廊下（ラージャスターンの宿の廊下を用いたイメージ）",
-      "color": "#7a7979",
+      "captionJa": "デリー ／ 滞在先の廊下（パハールガンジの宿の廊下を用いたイメージ）",
+      "color": "#757172",
       "fallback": "neutral",
-      "imageAssetId": "gt_img_hotel_corridor_pushkar",
+      "imageAssetId": "gt_img_delhi_paharganj_corridor",
       "imagePosition": {
-        "x": 50,
+        "x": 45,
         "y": 50
       },
       "placeId": "delhi_hotel_hub"
     },
+    "gt_bg_delhi_scam_office": {
+      "nameJa": "二階の「観光案内所」（デリー）",
+      "captionJa": "デリー ／ 二階の「観光案内所」（インドの学校の校長室を用いたイメージ）",
+      "color": "#78755e",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_india_office_interior",
+      "imagePosition": {
+        "x": 48,
+        "y": 50
+      },
+      "placeJa": "パハールガンジ"
+    },
     "gt_bg_agra_hotel_hub": {
       "nameJa": "滞在先のホテル（アーグラ）",
-      "captionJa": "アーグラ ／ 滞在先（バンガロールの施設を用いたロビーのイメージ）",
-      "color": "#817569",
+      "captionJa": "アーグラ ／ 滞在先（アーグラの宿の中庭を用いたイメージ）",
+      "color": "#81766e",
       "fallback": "neutral",
-      "imageAssetId": "gt_img_hotel_illustration",
+      "imageAssetId": "gt_img_agra_hotel_courtyard",
+      "imagePosition": {
+        "x": 60,
+        "y": 50
+      },
       "placeId": "agra_hotel_hub"
     },
     "gt_bg_agra_hotel_room": {
@@ -321,12 +352,52 @@
       },
       "placeId": "agra_hotel_hub"
     },
+    "gt_bg_agra_hotel_room_heart": {
+      "nameJa": "滞在先のホテルの部屋・ハネムーンの飾り（アーグラ）",
+      "captionJa": "アーグラ ／ 滞在先の部屋（インドの婚礼の寝台の花飾りを用いたイメージ）",
+      "color": "#887c71",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_india_wedding_flower_bed",
+      "imagePosition": {
+        "x": 50,
+        "y": 50
+      },
+      "placeId": "agra_hotel_hub"
+    },
     "gt_bg_jaipur_hotel_hub": {
       "nameJa": "滞在先のホテル（ジャイプール）",
-      "captionJa": "ジャイプール ／ 滞在先（バンガロールの施設を用いたロビーのイメージ）",
-      "color": "#817569",
+      "captionJa": "ジャイプール ／ 滞在先（ジャイプールのハヴェリ・ホテルの広間を用いたイメージ）",
+      "color": "#8f795e",
       "fallback": "neutral",
-      "imageAssetId": "gt_img_hotel_illustration",
+      "imageAssetId": "gt_img_jaipur_haveli_lounge",
+      "imagePosition": {
+        "x": 50,
+        "y": 50
+      },
+      "placeId": "jaipur_hotel_hub"
+    },
+    "gt_bg_jaipur_hotel_window": {
+      "nameJa": "滞在先のホテルの窓（ジャイプール）",
+      "captionJa": "ジャイプール ／ 滞在先の窓から（ハワー・マハルの窓からの眺めを用いたイメージ）",
+      "color": "#6a6153",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_jaipur_hawa_mahal_window_view",
+      "imagePosition": {
+        "x": 50,
+        "y": 50
+      },
+      "placeId": "jaipur_hotel_hub"
+    },
+    "gt_bg_jaipur_hotel_room": {
+      "nameJa": "滞在先のホテルの部屋（ジャイプール）",
+      "captionJa": "ジャイプール ／ 滞在先の部屋（ジャイプールのハヴェリ・ホテルの客室を用いたイメージ）",
+      "color": "#826535",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_jaipur_haveli_room",
+      "imagePosition": {
+        "x": 50,
+        "y": 50
+      },
       "placeId": "jaipur_hotel_hub"
     },
     "gt_bg_jaipur_hotel_courtyard": {
@@ -338,6 +409,18 @@
       "imagePosition": {
         "x": 62,
         "y": 50
+      },
+      "placeId": "jaipur_hotel_hub"
+    },
+    "gt_bg_jaipur_hotel_courtyard_night": {
+      "nameJa": "滞在先のホテルの中庭・夜（ジャイプール）",
+      "captionJa": "ジャイプール ／ 滞在先の中庭・夜（ジャイプールの宿の夜の中庭を用いたイメージ）",
+      "color": "#392d1a",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_jaipur_guesthouse_courtyard_night",
+      "imagePosition": {
+        "x": 50,
+        "y": 55
       },
       "placeId": "jaipur_hotel_hub"
     },
@@ -391,6 +474,29 @@
       "color": "#a39a86",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_fatehpur_sikri_distant"
+    },
+    "gt_bg_agra_mehtab_bagh_lawn": {
+      "nameJa": "メヘターブ・バーグの芝地",
+      "captionJa": "アーグラ ／ メヘターブ・バーグ",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imagePosition": {
+        "x": 50,
+        "y": 40
+      },
+      "placeId": "agra_mehtab_bagh",
+      "imageAssetId": "gt_img_agra_mehtab_bagh_lawn"
+    },
+    "gt_bg_jaipur_baraat_night": {
+      "nameJa": "夜の花婿の行列（ジャイプール）",
+      "captionJa": "ジャイプール ／ 夜の花婿の行列",
+      "color": "#2b2622",
+      "fallback": "neutral",
+      "imagePosition": {
+        "x": 0,
+        "y": 40
+      },
+      "imageAssetId": "gt_img_jaipur_baraat_night"
     }
   },
   "memories": {

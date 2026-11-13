@@ -101,7 +101,7 @@ INCLUDE modules.ink
 # speaker: narrator
 車、リキシャ、牛、人。そのすべてが、こちらに気づかずに流れていく。
 # speaker: narrator
-# minigame: parasol_search at middle auto found
+# minigame: parasol_search at middle auto found art.street gt_img_jaipur_view_from_hawa_mahal
 通りのあちこちに、傘が開いていた。あの中のどれかが、ガウラの日傘だ。
 // 日傘探し：選択肢の代わりにミニゲーム「日傘を探す」（格子の窓から通りの傘を押す）。古い日傘は手前の歩道の真ん中（at middle）。
 // どの結果も同じ見下ろしの場面へ合流する。手間取ったときだけフラグを立て、クイズ3の後の報告の前に一往復が増える（関係値なし）。
@@ -193,6 +193,8 @@ INCLUDE modules.ink
 # ambience: gt_amb_street_traffic
 # speaker: narrator
 旅の最後の日。昼のうちに、二人はハワー・マハルの前で、行列が通る道を確かめておいた。そして、日が暮れた。
+# background: gt_bg_jaipur_hawa_mahal_night
+# tint: off
 # speaker: narrator
 # bgm: gt_naraina
 # ambience: amb_crowd_outdoor
@@ -240,7 +242,7 @@ INCLUDE modules.ink
 # cutin: name
 わたしはプージャー。花嫁のいとこよ。一問目。この町は、どうしてピンク色なのか。わかる？
 -> quiz(1) ->
-# background: gt_bg_jaipur_hawa_mahal
+# background: gt_bg_jaipur_hawa_mahal_night
 { quiz_correct:
     # speaker: narrator
     プージャーが悔しそうに舌打ちした。
@@ -266,7 +268,7 @@ INCLUDE modules.ink
 # speaker: gt_pooja
 この町の王様の称号、サワーイー。その意味、デリーの人は知らないでしょう？
 -> quiz(2) ->
-# background: gt_bg_jaipur_hawa_mahal
+# background: gt_bg_jaipur_hawa_mahal_night
 { quiz_correct:
     # speaker: heroine
     # local_word: gt_jaipur_word_sawai
@@ -294,7 +296,7 @@ INCLUDE modules.ink
 # speaker: gt_pooja
 三問目。この町はね、きちんと設計して造られたの。誰が、どうやって設計したと思う？
 -> quiz(3) ->
-# background: gt_bg_jaipur_hawa_mahal
+# background: gt_bg_jaipur_hawa_mahal_night
 { quiz_correct:
     # speaker: heroine
     ヴィディヤーダルという人が、古い建築の手引きに沿って、線を引いた町、です
@@ -319,7 +321,7 @@ INCLUDE modules.ink
 # local_word: gt_jaipur_word_nani
 最後の二問は、ナーニーが出すって！　一問目。春になると、女の人たちの行列がこの通りを通る。何のお祭り？
 -> quiz(4) ->
-# background: gt_bg_jaipur_hawa_mahal
+# background: gt_bg_jaipur_hawa_mahal_night
 { quiz_correct:
     # speaker: heroine
     ガンガウル。女神さまを敬う、春のお祭り
@@ -345,7 +347,7 @@ INCLUDE modules.ink
 # speaker: gt_jaipur_bride_grandmother
 この窓はね、向かいの宮殿の窓と同じ作り。こんな細かな格子は、何のためにあったと思う？
 -> quiz(5) ->
-# background: gt_bg_jaipur_hawa_mahal
+# background: gt_bg_jaipur_hawa_mahal_night
 { quiz_correct:
     # speaker: heroine
     # em: 見られずに
@@ -404,7 +406,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 # size: large
-# minigame: baraat_dance auto off_beat_together
+# minigame: baraat_dance auto off_beat_together bg gt_bg_jaipur_baraat_night
 一緒に！　下手なのは、二人とも同じだから！
 // 踊り：選択肢の代わりにミニゲーム「花婿の行列で踊る」。どの結果も同じ結びへ合流し、変わるのは結びの前の数行の色だけ（関係値なし）。
 * [踊り：太鼓の拍に乗れた # option: in_step]

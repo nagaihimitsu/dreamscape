@@ -460,7 +460,7 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 - `auto <結果>`：⚙設定の「ミニゲームをおまかせにする」がオンのとき、ゲームは押さずに進み（画面を押すとすぐ結果へ）、この結果になります。書かなければゲームの既定。今の文の流れに合う結果を書きます。
 - `prefix <語>`：同じ場面で同じゲームをもう一度遊ばせるとき（`# option:` は場面の中で1つずつなので）、そちらの選択肢の `# option:` を `<語>_<結果>`（`prefix again` なら `again_six` など）にします。
 - `bg <背景>`：遊ぶ間の背景の絵。`# background:` に書ける背景のIDです（その旅行編の `romance/presentation.json` の `backgrounds`）。書かなければ、その場面の今の背景のまま。
-- `art.<名前> <絵>`：ゲームが用意した絵の枠（例：クリケットの `art.pitch` は打者の目から見た空き地、`art.bowler` は投げるヒロインの全身）に、旅行編の絵を入れます。絵は旅行編の `public/assets/minigames/<絵のID>.webp`（png・jpg・jpeg も可。人物や物の枠は背景が透明な webp か png）に置き、その旅行編の `presentation/own-artwork.json` に載せます。書かなければ、ゲームの絵（CSS で描いたもの）のまま。
+- `art.<名前> <絵>`：ゲームが用意した絵の枠（例：クリケットの `art.pitch` は打者の目から見た空き地、`art.bowler` は投げるヒロインの全身）に、旅行編の絵を入れます。絵は旅行編の `public/assets/minigames/<絵のID>.webp`（png・jpg・jpeg も可。人物や物の枠は背景が透明な webp か png）に置き、その旅行編の `presentation/own-artwork.json` に載せます。背景の枠（Debug の部屋で「背景」と出る枠）には、その旅行編の `tourism/catalog.json` の `assets` に出典つきで登録した写真のIDも書けます（出典・権利の一覧に、ほかの写真と同じく出ます。人物や物の枠には書けません）。書かなければ、ゲームの絵（CSS で描いたもの）のまま。
 - そのほかのキーは、ゲームごとの引数です（ゲームが決めます。キーと説明は Debug の部屋とエラーの文に出ます）。クリケットにはありません。
 - 状態で変えたいときは、`cond()` の分かれ道に札を書き分けます。札は選択肢の組の前の最後の行に付いていれば、どの分かれ道からでもかまいません。
 - 結果の数はゲームごとに決まっていて、使い所で減らせません。分けたくない結果は、選択肢を同じ所へ合流させます。
@@ -709,7 +709,7 @@ EXTERNAL cond(text)
 
 - 会話の背景の画像は、各旅行編の `romance/presentation.json`（例：[ミラノ編](../content/journeys/milano/romance/presentation.json)。共通の既定背景 `default_scene`「旅の余白」は [`content/romance/presentation.json`](../content/romance/presentation.json)）の各背景に、任意の `imagePath`（配信時の `assets/` 以下のパス）を足して差し替えます。画像の置き場所は[技術設計の「共通データと旅行編フォルダ」](../docs/02_TECH_ARCHITECTURE.md#共通データと旅行編フォルダ)にあります。登録がないときと読み込めないときは今の仮の背景を出し、観察用の画像には影響しません。
 - **背景がどこか（任意、2026-11-13）**：`romance/presentation.json` の背景には、その絵の場所を書けます。地図の地点なら `placeId`（その旅行編の `travel/<都市ID>.json` の `places` の ID。宿なら、ほかの画面と同じく「滞在先のホテル」と出ます）、地図にない場所なら `placeJa`（例：`"placeJa": "ニューデリー駅"`）で、書くのはどちらか1つです。会話の場面がその背景を出している間、上の帯の場所の札は、今いる地点ではなくその場所を出します。場面が駅や宿の前の路地へ移るとき、フィナーレの途中で宿や別の地点へ行くときに、札が場面について行きます。書かない背景では、今までどおり今いる地点です。ツアーの車の中では区間の名前のまま、観光地の写真を出す場面（観光案内・観光地のクイズと道中交流）ではその観光地のままです。
-  - 同じ写真を別の場所の代わりに使うときは、背景をもう1つ登録します（同じ `imageAssetId` に、その場所の `nameJa`・`captionJa` と場所）。例：インド編の3つの宿のロビー `gt_bg_delhi_hotel_hub`・`gt_bg_agra_hotel_hub`・`gt_bg_jaipur_hotel_hub`（同じロビーの写真 `gt_img_hotel_illustration` に、それぞれの都市の宿の `placeId`）。
+  - 同じ写真を別の場所の代わりに使うときは、背景をもう1つ登録します（同じ `imageAssetId` に、その場所の `nameJa`・`captionJa` と場所）。
   - 到着の場面も、ほかの場面と同じく、その旅行編のどの背景でも書けます（地図の地点の背景でなくてもかまいません）。
   - どの地図にもない地点・ほかの旅行編の地点の `placeId`、`placeId` と `placeJa` の両方を書いた背景は、`content:build` が止めます。
 - タイトル画面の絵は、旅行編ごとに `manifest.json` の任意の `titleArt`（画像・説明・切り抜く位置）で指定します。ない旅行編は既定背景の色だけの場面を出します。勧める大きさ（1760×560px）と安全域は[技術設計の「既定背景とタイトルの絵」](../docs/02_TECH_ARCHITECTURE.md#既定背景とタイトルの絵)にあります。

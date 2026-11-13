@@ -218,6 +218,8 @@ export const tagContext = {
   personIds: storyState.people.map((person) => person.id),
   /** The pictures a # minigame:'s art.<slot> may name (ID → served path). */
   miniGameArt: Object.fromEntries(miniGameArt.map((image) => [image.id, image.path])) as Readonly<Record<string, string>>,
+  /** The tourism photos a # minigame:'s backdrop slot may name (ID → served path; docs/13 2.12). */
+  miniGamePhotos: Object.fromEntries(tourismAssets.map((asset) => [asset.id, asset.path])) as Readonly<Record<string, string>>,
 };
 export type {
   BattleDefinition,

@@ -6,7 +6,8 @@ import "./skin.css";
 // The hide-and-seek's field (a search skin): a stretch of the palace corridor, a row of identical arched doors on one wall
 // that runs on past the screen's edge (it scrolls). An opened door shows an empty room, or her; 「名前を呼ぶ」 sends her name
 // back from every door; doing nothing ends with her peeking from the corner. No names on the doors. With the use's art
-// (`art.bay`, `art.room`, `art.peek`), those pictures in place of the drawn wall and door, room and her standing picture.
+// (`art.bay`, `art.room`, `art.peek`), those pictures in place of the drawn wall and doorway (its leaves still drawn over it
+// and opened), room and her standing picture.
 
 /** How long a call's echo shows over the doors. */
 const ECHO_MS = 1400;

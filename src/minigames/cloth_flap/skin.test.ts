@@ -23,12 +23,22 @@ describe("the flap's field", () => {
   });
 
   it("puts the use's pictures in its declared slots", () => {
-    expect(clothFlap.artSlots.map((slot) => [slot.id, slot.kind])).toEqual([["stairs", "backdrop"], ["walker", "sprite"]]);
+    expect(clothFlap.artSlots.map((slot) => [slot.id, slot.kind])).toEqual([["stairs", "backdrop"], ["wall", "backdrop"], ["walker", "sprite"]]);
     const html = field({ stairs: "/assets/minigames/stairs.webp", walker: "/assets/minigames/walker.webp" });
     expect(html).toContain('data-art-stairs="true"');
     expect(html).toContain('src="/assets/minigames/stairs.webp"');
     expect(html).toContain('src="/assets/minigames/walker.webp"');
     expect(html).not.toContain("mg-cloth-flap-walker-figure");
+  });
+
+  it("puts a far-wall picture (a photo) under the drawn stairs, figure and cloth", () => {
+    const html = field({ wall: "/assets/tourism/india/wall.webp" });
+    expect(html).toContain('data-art-wall="true"');
+    expect(html).not.toContain("data-art-stairs");
+    expect(html).toContain('src="/assets/tourism/india/wall.webp"');
+    expect(html).toContain("mg-cloth-flap-stairs");
+    expect(html).toContain("mg-cloth-flap-walker-figure");
+    expect(html).toContain("mg-cloth-flap-cloth");
   });
 
   it("walks her down one step at a time, her foot on the niche's step at the moment, on down past it to the end", () => {
