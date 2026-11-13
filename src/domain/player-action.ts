@@ -15,6 +15,9 @@ import { getDayEnd, type NightAction } from "./day-end";
 import { canClaimPendingRewards, claimPendingRewards } from "./rewards";
 import { openTourism, advanceTourismGuide, chooseTourismGuide, discoverClue, getDiscoverableClueIds, guideChoiceDisplay, landmarkHasGuide, replayTourismGuide, skipTourismGuide } from "./tourism";
 import { getTravelDestinations, getTravelWaitOptions } from "./travel-destinations";
+import { miniGameOutcomeChoice, openMiniGame, type MiniGameScene } from "./minigame";
+import { miniGameDefinition } from "../minigames/registry";
+import { miniGameChoice } from "../minigames/tag";
 import { getRentalOffers, rentTransport } from "./transport";
 import { bookTour, cancelTourBooking, continueTour, getTourOffers } from "./tour";
 import {
@@ -82,6 +85,8 @@ export type PlayerAction =
   | { kind: "battle_observe"; landmarkId: string }
   | { kind: "battle_epilogue" }
   | { kind: "battle_leave" }
+  // A line's # minigame: in any of those scenes (ChoicePoint, docs/13 1.5): played, its outcome takes its choice.
+  | { kind: "minigame"; outcome: string }
   // Dates: RomanceScene.
   | { kind: "date_choose"; index: number }
   | { kind: "date_next" }
@@ -99,6 +104,8 @@ export type PlayerAction =
  */
 export function listPlayerActions(state: GameState): PlayerAction[] {
   const screen = screenFor(state);
+  // A line's # minigame: shows its start in place of the choices: what the player can end it with is its outcomes.
+  const played = miniGameActions(state);
   if (screen === "romance_ending") return [{ kind: "romance_close" }];
   const encounter = screen === "encounter" ? state.activeEncounter : null;
   if (encounter) {
@@ -106,7 +113,7 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
       return getActiveEncounterDefinition(encounter).quiz!.question.options.map((option) => ({ kind: "encounter_answer", optionId: option.id }));
     if (encounter.phase === "feedback") return [{ kind: "encounter_next" }];
     if (encounter.frame.choices.length)
-      return encounter.frame.choices.filter((choice) => getEncounterOptionAvailability(state, choice.index).available)
+      return played ?? encounter.frame.choices.filter((choice) => getEncounterOptionAvailability(state, choice.index).available)
         .map((choice) => ({ kind: "encounter_choose", index: choice.index }));
     return [encounterCanFinish(state) ? { kind: "encounter_finish" } : { kind: "encounter_next" }];
   }
@@ -114,14 +121,14 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
   if (epilogue) {
     if (epilogue.kind === "arrival" && !epilogue.logoComplete) return [{ kind: "arrival_logo" }];
     if (epilogue.frame.choices.length)
-      return epilogue.frame.choices.filter((choice) => epilogueChoiceDisplay(state, choice.index).show === "open")
+      return played ?? epilogue.frame.choices.filter((choice) => epilogueChoiceDisplay(state, choice.index).show === "open")
         .map((choice) => ({ kind: "epilogue_choose", index: choice.index }));
     return [{ kind: "epilogue_next" }];
   }
   const tourism = state.activeTourism;
   if (tourism) {
     if (tourism.phase === "guide" && tourism.frame?.choices.length)
-      return tourism.frame.choices.filter((choice) => guideChoiceDisplay(state, choice.index).show === "open")
+      return played ?? tourism.frame.choices.filter((choice) => guideChoiceDisplay(state, choice.index).show === "open")
         .map((choice) => ({ kind: "guide_choose", index: choice.index }));
     if (tourism.phase === "guide") return [{ kind: "guide_next" }, { kind: "guide_close" }];
     return [
@@ -135,7 +142,7 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
     const back: PlayerAction[] = observe ? [{ kind: "battle_observe", landmarkId: observe }] : [];
     // A flow battle's conversation may stop at its choices (stage 5).
     if (battle.phase === "dialogue" && battleDialogueStop(battle) === "choices")
-      return [...battle.frame!.choices.filter((choice) => battleChoiceDisplay(state, choice.index).show === "open")
+      return [...played ?? battle.frame!.choices.filter((choice) => battleChoiceDisplay(state, choice.index).show === "open")
         .map((choice) => ({ kind: "battle_choose" as const, index: choice.index })), ...back];
     if (battle.phase === "dialogue" || battle.phase === "feedback") return [{ kind: "battle_next" }, ...back];
     if (battle.phase === "question") {
@@ -163,7 +170,7 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
   }
   const date = state.activeDate;
   if (date) {
-    if (date.frame.choices.length) return date.frame.choices.filter((choice) => dateChoiceDisplay(state, choice.index).show === "open")
+    if (date.frame.choices.length) return played ?? date.frame.choices.filter((choice) => dateChoiceDisplay(state, choice.index).show === "open")
       .map((choice) => ({ kind: "date_choose", index: choice.index }));
     return [date.frame.ended ? { kind: "date_finish" } : { kind: "date_next" }];
   }
@@ -184,6 +191,29 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
     ...getTravelSleepOptions(state).filter((option) => option.plan.ok)
       .map(({ route }) => ({ kind: "rest" as const, mode: route.mode, viaPlaceId: route.viaPlaceId ?? null })),
   ];
+}
+
+/** The outcomes of the mini-game open on screen (openMiniGame), each whose choice the choice set has; null: none open. */
+function miniGameActions(state: GameState): PlayerAction[] | null {
+  const game = openMiniGame(state);
+  const definition = game && miniGameDefinition(game.tag.id);
+  if (!game || !definition) return null;
+  return definition.outcomes.filter((outcome) => miniGameChoice(game.choices, game.tag, outcome.id))
+    .map((outcome) => ({ kind: "minigame" as const, outcome: outcome.id }));
+}
+
+/** The choice button of each scene (the one table from a scene's kind to its choice; docs/13 1.5). */
+const CHOOSE_ACTION = {
+  encounter: "encounter_choose", epilogue: "epilogue_choose", guide: "guide_choose", battle: "battle_choose", date: "date_choose",
+} as const satisfies Record<MiniGameScene, PlayerAction["kind"]>;
+
+/**
+ * A mini-game's outcome (docs/13 1.5): the choice whose `# option:` is the outcome's, taken through the same action as the
+ * scene's choice button. Unchanged when the revision moved on, no mini-game is open or its choice cannot be taken.
+ */
+export function chooseMiniGameOutcome(state: GameState, outcome: string, revision: number, nextRoll: () => number = secureRomanceRoll): GameState {
+  if (state.revision !== revision) return state;
+  return playerActionChange({ kind: "minigame", outcome }, nextRoll)(state);
 }
 
 /** A night screen's button as the actions it offers (GameApp wires it to the same control as in free time). */
@@ -228,6 +258,10 @@ export function playerActionChange(action: PlayerAction, nextRoll: () => number)
       case "evidence_submit": return submitBattleEvidence(state, revision);
       case "battle_observe": return openTourism(state, action.landmarkId);
       case "battle_leave": return leaveBattleToFreeTime(state, revision, nextRoll);
+      case "minigame": {
+        const choice = miniGameOutcomeChoice(state, action.outcome);
+        return choice ? playerActionChange({ kind: CHOOSE_ACTION[choice.scene], index: choice.index }, nextRoll)(state) : state;
+      }
       case "date_choose": return chooseDate(state, action.index, revision);
       case "date_next": return advanceDate(state, revision);
       case "date_finish": return finishDate(state, revision);

@@ -54,7 +54,7 @@ import { useReadLines } from "../components/useReadLines";
 import { useMeasuredHeight } from "../components/useMeasuredHeight";
 import { RomanceScene } from "../features/romance/RomanceScene";
 import { MiniGameProvider, type MiniGameEnvironment } from "../minigames/host/MiniGameProvider";
-import { miniGameChoice } from "../minigames/tag";
+import { chooseMiniGameOutcome } from "../domain/player-action";
 import { Modal, ModalTitle } from "../components/Modal";
 import { ConfirmActionButton } from "../components/ConfirmActionButton";
 import { withNames } from "../features/romance/names";
@@ -539,22 +539,19 @@ export function GameApp({
   const frame = active?.frame;
   // A line's # minigame: in any story screen (docs/13 1.5): what every play gets, once; a quiet game lowers the music.
   const [miniGameQuiet, setMiniGameQuiet] = useState(false);
+  const revision = game?.revision ?? 0;
   const miniGameEnvironment = useMemo<MiniGameEnvironment>(() => ({
     auto: displaySettings.value.miniGameAuto,
     debug: debugOn,
     reduceMotion: displaySettings.value.reduceMotion,
     names: { player: game?.playerName ?? "", heroine: game?.heroineName ?? "" },
-    revision: game?.revision ?? 0,
+    revision,
     context: tagContext,
-    onOutcome: (outcome) => {
-      const date = getCurrent()?.activeDate;
-      const tag = date?.frame.minigame;
-      const choice = tag && miniGameChoice(date.frame.choices, tag, outcome);
-      return !!choice && commit((state) => chooseDate(state, choice.index, state.revision));
-    },
+    // The outcome's choice, as the screen's choice button takes it (player-action.ts).
+    onOutcome: (outcome) => commit((state) => chooseMiniGameOutcome(state, outcome, revision, nextRomanceRoll)),
     backdrop: (backgroundId) => <CanalScene backgroundId={backgroundId} />,
     onQuiet: setMiniGameQuiet,
-  }), [displaySettings.value.miniGameAuto, displaySettings.value.reduceMotion, debugOn, game?.playerName, game?.heroineName, game?.revision, getCurrent, commit]);
+  }), [displaySettings.value.miniGameAuto, displaySettings.value.reduceMotion, debugOn, game?.playerName, game?.heroineName, revision, commit, nextRomanceRoll]);
   // A new screen takes a lost focus on its visible heading (scene-focus.ts, UI redesign §3.7 E);
   // free time opens at the top of the page, not at the scroll position of the screen before it
   // (the title, scrolled to 「旅をはじめる」 on a short phone).

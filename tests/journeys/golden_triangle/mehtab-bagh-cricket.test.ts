@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { dates } from "../../../src/content";
-import { miniGameChoice, miniGameOutcomeIds } from "../../../src/minigames/tag";
+import { miniGameOutcomeIds } from "../../../src/minigames/tag";
+import { chooseMiniGameOutcome, listPlayerActions } from "../../../src/domain/player-action";
 import { cityStart, finishEpisode, startDateScene, withAp } from "../../../src/dev/scenario-builders";
 import { advanceDate, chooseDate, finishDate, validateGameState, type GameState } from "../../../src/domain/game";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
@@ -8,7 +9,8 @@ import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 /**
  * The Mehtab Bagh date's last ball (2026-11-13): a cricket mini-game instead of a choice. Its outcome takes the choice of
  * the same option ID, whose # profile: is the date's second mesh choice; no swing leads to one more ball whose choices are
- * in-scene (option IDs again_*), so a play has exactly one mesh resolution for the last ball.
+ * in-scene (option IDs again_*), so a play has exactly one mesh resolution for the last ball. The outcome is taken as the
+ * screen takes it (chooseMiniGameOutcome, docs/13 1.5).
  */
 const DATE_ID = "gt_agra_date_mehtab_bagh";
 
@@ -28,9 +30,11 @@ function play(outcomes: string[]): { state: GameState; games: string[][]; lines:
     else if (frame.choices.length && frame.minigame) {
       games.push(frame.choices.map((choice) => choice.optionId ?? ""));
       autos.push(frame.minigame.auto);
-      const choice = miniGameChoice(frame.choices, frame.minigame, left.shift()!);
-      expect(choice, "the outcome's choice").toBeDefined();
-      state = chooseDate(state, choice!.index, state.revision);
+      // The player's actions there are the game's outcomes, not the choices.
+      expect(listPlayerActions(state)).toEqual(miniGameOutcomeIds("cricket_batting").map((outcome) => ({ kind: "minigame", outcome })));
+      const next = chooseMiniGameOutcome(state, left.shift()!, state.revision);
+      expect(next, "the outcome's choice").not.toBe(state);
+      state = next;
     } else if (frame.choices.length) state = chooseDate(state, frame.choices[0].index, state.revision);
     else state = advanceDate(state, state.revision);
     state = validateGameState(state);
@@ -73,10 +77,9 @@ describe("the Mehtab Bagh date's cricket mini-game", () => {
         expect(saveGame(storage, state).ok).toBe(true);
         expect(loadGame(storage)).toEqual({ status: "loaded", state });
       }
-      if (frame.choices.length) {
-        const choice = frame.minigame ? miniGameChoice(frame.choices, frame.minigame, outcomes.shift()!)! : frame.choices[0];
-        state = chooseDate(state, choice.index, state.revision);
-      } else state = advanceDate(state, state.revision);
+      if (frame.choices.length && frame.minigame) state = chooseMiniGameOutcome(state, outcomes.shift()!, state.revision);
+      else if (frame.choices.length) state = chooseDate(state, frame.choices[0].index, state.revision);
+      else state = advanceDate(state, state.revision);
     }
     expect(outcomes).toEqual([]);
     const active = state.activeDate!;
