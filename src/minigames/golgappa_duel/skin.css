@@ -1,0 +1,176 @@
+/* The golgappa duel's field (Skin.tsx): the stall's counter from the customer's side over the scene (or the use's bg);
+   with the use's art.stall, that picture in place of the drawn pot, heap and counter. */
+.mg-golgappa-duel { position: absolute; inset: 0; }
+.mg-golgappa-duel-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; pointer-events: none; }
+/* The vendor's side: a steel pot of green water on the left, a heap of fried shells on the right, the wooden counter. */
+.mg-golgappa-duel-pot {
+  position: absolute;
+  left: 4%;
+  top: 9%;
+  width: 30%;
+  aspect-ratio: 2.4 / 1;
+  border: 4px solid #c4c8cc;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 45% 40%, #9cc35f, #5a8a33 70%);
+  box-shadow: 0 3px 0 #8d9297, 0 6px 10px rgba(0, 0, 0, 0.35);
+}
+.mg-golgappa-duel-heap {
+  position: absolute;
+  right: 4%;
+  top: 7%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 28%;
+  padding: 4px 4px 10px;
+  border-radius: 0 0 40% 40%;
+  background: linear-gradient(#b98b4e, #8c6334);
+}
+.mg-golgappa-duel-heap > span {
+  width: 24px;
+  height: 22px;
+  margin: -3px -1px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #f3d18a, #d79b45 60%, #a8702c);
+}
+.mg-golgappa-duel-counter {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  top: 64%;
+  bottom: 0;
+  border-top: 3px solid #b88a55;
+  background:
+    repeating-linear-gradient(90deg, rgba(60, 34, 14, 0.18) 0 2px, transparent 2px 46px),
+    linear-gradient(#8a5a32, #5f3b1f);
+}
+.mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-counter { display: none; }
+/* Her: leaning at the counter on the left, behind her bowl; a little bob as she eats one. */
+.mg-golgappa-duel-her {
+  position: absolute;
+  z-index: 1;
+  left: 25%;
+  bottom: 6%;
+  height: 72%;
+  aspect-ratio: 2 / 3;
+  transform: translateX(-50%);
+}
+.mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-her { z-index: 2; }
+.mg-golgappa-duel-her > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
+.mg-golgappa-duel-her[data-eating] { animation: mg-golgappa-duel-bob 240ms ease-out; }
+@keyframes mg-golgappa-duel-bob { 50% { transform: translateX(-50%) translateY(2%); } }
+/* The vendor's hand, waiting over the bowl of the next one to drop. */
+.mg-golgappa-duel-hand {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: 4%;
+  width: 34px;
+  height: 46px;
+  border-radius: 14px 14px 16px 16px;
+  background: linear-gradient(#a86f45, #8a5634);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+  transform: translateX(-50%);
+  transition: left 160ms ease-out;
+}
+.mg-golgappa-duel-hand::after {
+  content: "";
+  position: absolute;
+  left: -8px;
+  bottom: 6px;
+  width: 14px;
+  height: 22px;
+  border-radius: 8px;
+  background: #9a6340;
+}
+/* The leaf bowls: the player's a little larger (nearer). */
+.mg-golgappa-duel-bowl {
+  position: absolute;
+  z-index: 3;
+  width: 26%;
+  max-width: 120px;
+  aspect-ratio: 2 / 1;
+  transform: translate(-50%, -50%);
+}
+.mg-golgappa-duel-bowl-you { width: 31%; max-width: 140px; }
+.mg-golgappa-duel-bowl > img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.mg-golgappa-duel-bowl-drawn {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 10% 10% 50% 50% / 20% 20% 80% 80%;
+  background:
+    radial-gradient(ellipse at 50% 18%, #3e5a24 0 34%, transparent 35%),
+    linear-gradient(#7d9a45, #4f6c2a);
+  box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.15), 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+.mg-golgappa-duel-bowl-you[data-choked] { animation: mg-golgappa-duel-shake 380ms ease-in-out 2; }
+@keyframes mg-golgappa-duel-shake {
+  25% { transform: translate(-53%, -50%); }
+  75% { transform: translate(-47%, -50%); }
+}
+/* Golgappa: in a bowl (up to three left in the player's), falling from the hand. */
+.mg-golgappa-duel-in-bowl, .mg-golgappa-duel-fall { position: absolute; width: 34px; height: 30px; }
+.mg-golgappa-duel-in-bowl { left: 50%; top: 2%; transform: translate(-50%, -50%); }
+.mg-golgappa-duel-in-bowl[data-place="1"] { left: 30%; top: 12%; }
+.mg-golgappa-duel-in-bowl[data-place="2"] { left: 70%; top: 12%; }
+.mg-golgappa-duel-fall { z-index: 5; opacity: 0; transform: translate(-50%, -50%); pointer-events: none; }
+.mg-golgappa-duel-fall-you { width: 40px; height: 35px; }
+.mg-golgappa-duel-in-bowl > img, .mg-golgappa-duel-fall > img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.mg-golgappa-duel-puri-drawn {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 50% 30%, #6f9c3c 0 22%, #3d2a14 23% 28%, transparent 29%),
+    radial-gradient(circle at 40% 45%, #f5d796, #d89b45 62%, #a46a28);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
+}
+/* What is said and heard: a bite, her 「バス」 over her, the player's over their bowl, the cough. */
+.mg-golgappa-duel-bite, .mg-golgappa-duel-say {
+  position: absolute;
+  z-index: 6;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.mg-golgappa-duel-bite {
+  color: #ffe6a6;
+  font-size: 18px;
+  font-weight: 700;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  animation: mg-golgappa-duel-pop 380ms ease-out both;
+}
+@keyframes mg-golgappa-duel-pop { from { opacity: 0.4; transform: translate(-50%, -20%) scale(0.8); } }
+.mg-golgappa-duel-say {
+  padding: 4px 12px;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 14px;
+  background: var(--ds-window-bg);
+  color: var(--ds-ink);
+  font-size: 17px;
+  font-weight: 700;
+  box-shadow: var(--ds-window-shadow);
+}
+.mg-golgappa-duel-say-her { top: 18%; }
+.mg-golgappa-duel-say-choke { font-style: italic; }
+/* The counts under the bowls: each name (as written, wrapped rather than cut) over its number. */
+.mg-golgappa-duel-count {
+  position: absolute;
+  z-index: 6;
+  top: 91%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 44%;
+  transform: translate(-50%, -50%);
+  color: var(--ds-on-slate);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+.mg-golgappa-duel-count small { font-size: 11px; font-weight: 400; overflow-wrap: anywhere; }

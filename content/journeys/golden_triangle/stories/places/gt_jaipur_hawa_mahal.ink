@@ -162,6 +162,7 @@ INCLUDE modules.ink
 -> END
 
 // ───── 都市フィナーレ。battles/catalog.json の gt_jaipur_finale_battle の storyId がこの knot を指す。1本の流れ（-> quiz(n) -> でクイズ）。
+// 最後の踊りはミニゲーム「花婿の行列で踊る」（# minigame: baraat_dance）。結果で変わるのは結びの前の数行だけ。
 === gt_jaipur_finale_battle ===
 # scene: battle
 # background: gt_bg_jaipur_hawa_mahal
@@ -380,7 +381,38 @@ INCLUDE modules.ink
 # reaction: heroine,happy,sparkle
 # photo: gt_album_j54 # photo_caption: 「一緒に！　下手なのは、二人とも同じだから！」
 # size: large
+# minigame: baraat_dance auto off_beat_together
 一緒に！　下手なのは、二人とも同じだから！
+// 踊り：選択肢の代わりにミニゲーム「花婿の行列で踊る」。どの結果も同じ結びへ合流し、変わるのは結びの前の数行の色だけ（関係値なし）。
+* [踊り：太鼓の拍に乗れた # option: in_step]
+    # speaker: narrator
+    太鼓の音に、足が勝手に乗った。カムラが、踊りながら目を丸くする。
+    # speaker: enemy
+    なによ。やればできるじゃない
+    # speaker: heroine
+    # reaction: heroine,surprised,sweat
+    下手なの、わたしだけだった……！
+* [踊り：ずれたまま、二人で踊った # option: off_beat_together]
+    # speaker: narrator
+    太鼓とは、どうしても合わない。それでも、腕を上げるのも下ろすのも、{heroine_name}と同じだった。
+    # speaker: heroine
+    # reaction: heroine,teasing,music
+    ずれてる。でも、二人で同じだけずれてる
+* [踊り：足がもつれた # option: stumble]
+    # speaker: narrator
+    三歩目で、足がもつれた。肩が{heroine_name}にぶつかり、二人で一緒によろける。
+    # speaker: heroine
+    # reaction: heroine,teasing_big,music
+    ふふっ。今のも、踊りってことにしよう
+* [踊り：立ったままだった # option: stood_still]
+    # speaker: narrator
+    足が、地面に貼りついたように動かなかった。太鼓だけが、どんどん先へ行く。
+    # speaker: heroine
+    # emotion: serious
+    見てるだけは、自由とは違うんでしょ。……ほら
+    # speaker: narrator
+    つかまれた手ごと、輪の真ん中へ引っぱり込まれた。
+-
 # speaker: narrator
 杖の老婦人とカムラが、肩を組んで揺れている。馬の上でアマンが笑っている。頭上では、ハワー・マハルの九百を超える窓が、灯りに照らされて、ただ通りを見下ろしていた。
 -> END

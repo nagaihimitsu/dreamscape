@@ -4,6 +4,7 @@ INCLUDE modules.ink
 // チャンドニー・チョークのデート（二人きり。噛み合いの選択は2回）。
 // 「チャンドニー」の名の由来はデリーのフィナーレの答えなので、ここでは言わない。
 // 一皿分の代金は、頭の # on_done: で払う（選択のない買い物）。腹を壊した夜と翌朝は gt_delhi_inserts.ink【4】。
+// 勝負を挑むと、ミニゲーム「ゴルガッパの勝負」（手伝いの knot gt_delhi_chandni_chowk_duel）。
 
 // 【3】
 === gt_delhi_date_chandni_chowk ===
@@ -109,13 +110,7 @@ INCLUDE modules.ink
         # speaker: narrator
         こちらも器を受け取ると、彼女の目つきが変わった。涙目のまま、口の端だけで笑う。受けて立つ、という顔だった。
     }
-    # speaker: narrator
-    屋台の男は事情を察したらしい。二人の器に、交互に、同じ速さで置き始めた。周りの客が数を数え出す。七。八。九。
-    十二で、彼女が胸を叩いた。十三で、こちらがむせた。十四で、二人とも同時に手を上げた。
-    # speaker: heroine
-    # reaction: heroine,teasing_big,music
-    # voice: gt_delhi_date_chandni_chowk_011
-    引き分け！　今の、わたしの方が一瞬早かったけどね
+    -> gt_delhi_chandni_chowk_duel ->
 -
 # speaker: narrator
 屋台の男が、指を一本立てた。
@@ -207,3 +202,42 @@ INCLUDE modules.ink
     このとき二人は、まだ知らなかった。最後の一つが、夜中に何をするのか。
 }
 -> END
+
+// 【3】手伝いの knot：ゴルガッパの勝負（勝負を挑んだときだけ）。選択肢の代わりにミニゲーム「ゴルガッパの勝負」
+// （# minigame: golgappa_duel）。場面の中の選択なので噛み合いも関係値もない。彼女は十四個目で手を上げる。
+// 「バス」は客と二人が口にする言葉として書き、屋台の決まりとしては言わない。
+=== gt_delhi_chandni_chowk_duel ===
+# speaker: narrator
+# minigame: golgappa_duel auto together
+屋台の男は事情を察したらしい。二人の器に、交互に置き始めた。一つ置くごとに、手が速くなる。周りの客が数を数え出す。
+* [ゴルガッパの勝負：十四で、二人同時に手を上げた # option: together]
+    # speaker: narrator
+    七。八。九。十二で、彼女が胸を叩いた。十三で、こちらがむせた。十四で、二人とも同時に手を上げた。
+    # speaker: heroine
+    # reaction: heroine,teasing_big,music
+    # voice: gt_delhi_date_chandni_chowk_011
+    引き分け！　今の、わたしの方が一瞬早かったけどね
+* [ゴルガッパの勝負：先に「バス」と言った # option: you_first]
+    # speaker: narrator
+    先に手を上げたのは、こちらだった。屋台の男の手が、こちらの器だけを飛ばしていく。彼女は横目でこちらを見ながら、十四まで食べて、ゆっくり手を上げた。
+    # speaker: heroine
+    # reaction: heroine,teasing_big,music
+    わたしの勝ち。……ほんとは、わたしもあと一個で言うところだった。内緒ね
+* [ゴルガッパの勝負：器にたまって、むせた # option: choke]
+    # speaker: narrator
+    器の中に、二つたまっていた。慌てて一つ放り込むと、酸っぱい水が喉に飛び込んだ。むせて、声が出ない。
+    # speaker: narrator
+    彼女が、こちらの器の上に手をかざした。
+    # speaker: heroine
+    # reaction: heroine,surprised,exclamation
+    バス！　この人の分も、バス！
+    # speaker: heroine
+    # reaction: heroine,teasing,music
+    勝負は、わたしの勝ちでいい？　……はい、水。ゆっくり飲んで
+* [ゴルガッパの勝負：彼女より長く食べ続けた # option: outlast]
+    # speaker: narrator
+    十四で、彼女が手を上げた。こちらの手は、上がらなかった。数える声が、ひときわ大きくなる。屋台の男がとうとう笑って手を止めると、周りの客から拍手が起きた。
+    # speaker: heroine
+    # reaction: heroine,teasing,music
+    負けた……。でも、勝った人の顔じゃないよ、それ。真っ赤だし、涙まで出てる
+- ->->
