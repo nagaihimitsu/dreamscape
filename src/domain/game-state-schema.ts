@@ -128,6 +128,9 @@ export const gameStateSchema = z.object({
   memories: uniqueStrings,
   // The album (save v22; src/domain/album.ts): the photos the lines' # photo: took, each image once, in the order taken.
   album: albumSchema,
+  // 旅の図鑑 (2026-11-13, an optional field of save v23; src/domain/glossary.ts): the terms the lines' # term: named, each
+  // once, in the order met. A save written before it has none (nothing met yet); a new game starts it empty.
+  glossary: z.array(stableContentId).refine((items) => new Set(items).size === items.length, "同じ言葉が旅の図鑑に2つあります。").optional(),
   activeDate: activeDateSchema.nullable(),
   unlockedEventIds: uniqueStrings,
   confessionStatus: z.enum(["none", "deferred", "rejected", "accepted"]),

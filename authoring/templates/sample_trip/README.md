@@ -101,6 +101,13 @@
 - ファイル：`learning/local-words.json`
 - 項目のID：`smp_mihon_word_trisol`（場所のファイルからは、その ID を書いた行（札とその説明のコメント）を消す）
 
+### 旅の図鑑
+
+日本の旅行者がすぐには思い浮かべられない言葉に、初めて出会った行で写真と1行の説明の小窓を出す例です（2026-11-13）。朝市の観光案内の2行目で架空のパン「三時パン」が出ると、画面の真ん中が暗くなって小窓が出て、⚙設定の「旅の図鑑」に入ります（同じセーブでは二度と出ません）。言葉の一覧は `glossary/terms.json`、写真は `tourism/catalog.json` の `assets` に出典つきで登録した自作の絵、小窓を出す行は場所のファイルの札 # term: です。朝市の観光案内は特殊戦Bの部分にあるので、特殊戦Bだけを外すと、札のない言葉として `content:build` の注意に出ます（止まりません）。
+
+- ファイル：`glossary/terms.json`、`public/assets/tourism/sample_trip/mihon_sanji_pan.png`
+- 項目のID：`smp_term_mihon_sanji_pan`、`smp_img_mihon_sanji_pan`（場所のファイルからは、その ID を書いた行（札）を消す）
+
 任意の英文だけが使う語は `learning/word-meanings.json` に残ります。使われない語はエラーではなく、`npm run content:build -- --verbose` で一覧できます。
 
 ## 遊び方の流れとAP

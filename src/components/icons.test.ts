@@ -22,7 +22,7 @@ describe("Icon", () => {
   it("covers the redesign's icon set", () => {
     expect([...iconNames].sort()).toEqual([
       "bag", "bed", "book", "camera", "chevron-down", "chevron-right", "close", "coin", "compass", "credit",
-      "external", "eye", "eye-off", "fast", "gear", "heart", "hourglass", "info", "load", "lock", "log", "map", "moon", "music", "pin",
+      "external", "eye", "eye-off", "fast", "gear", "heart", "hourglass", "info", "lens", "load", "lock", "log", "map", "moon", "music", "pin",
       "plane", "save", "sliders", "speaker", "stamp", "star", "sun", "swords", "ticket",
     ]);
   });

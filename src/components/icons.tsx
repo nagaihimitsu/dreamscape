@@ -49,6 +49,8 @@ const paths = {
   // A padlock (a date's locked card, 2026-11-13) and two notes (旅の音楽室).
   lock: "M6.5 10.5h11v9h-11zM8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5M12 14.2v2.3",
   music: `M9 17.5V5.5l10-2v12${circle(6.8, 17.5, 2.2)}${circle(16.8, 15.5, 2.2)}`,
+  // 旅の図鑑: a magnifying glass.
+  lens: `${circle(10.5, 10.5, 6)}M15 15l5.5 5.5`,
 } as const;
 
 export type IconName = keyof typeof paths;

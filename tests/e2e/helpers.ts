@@ -288,7 +288,7 @@ export const ops = {
     return panel;
   },
   /** One of ⚙設定's items, pressed from its panel (inside the header's 「旅の操作」). */
-  async menuItem(page: Page, name: "セーブ" | "ロード" | "旅の記録" | "アルバム" | "英語ノート" | "写真の出典" | "画像の出典" | "ゲームの設定") {
+  async menuItem(page: Page, name: "セーブ" | "ロード" | "旅の記録" | "アルバム" | "旅の図鑑" | "英語ノート" | "写真の出典" | "画像の出典" | "ゲームの設定") {
     await ops.openMenu(page);
     await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: new RegExp(`^${name}\\s*(?:、|$)`, "u") }).click();
   },
@@ -671,6 +671,19 @@ export const ops = {
   async settled(page: Page) {
     await expect(page.locator("[data-answer-settling], [data-tap-settling], html[data-tap-hold], [data-testid=travel-transition], [data-testid=night-rest], [data-testid=night-leaving], [data-testid=night-fade], [data-testid=episode-title-card], [data-testid=packing-scene]")).toHaveCount(0);
   },
+  /**
+   * 旅の図鑑's cards over a line (`# term:`, the first time a term shows in the game): 「とじる」 on each, as a player
+   * reads them, until none is left (each takes no tap for the moment of a double tap: settled waits for it).
+   */
+  async closeTermCards(page: Page) {
+    const card = page.getByTestId("glossary-term-window");
+    for (let shown = 0; shown < 20 && await card.isVisible(); shown++) {
+      await ops.settled(page);
+      await page.getByTestId("glossary-term-close").click();
+    }
+    await expect(card).toHaveCount(0);
+    await ops.settled(page);
+  },
   /** A story scene's 「ログ」: opens the dialogue log. */
   async openDialogueLog(page: Page): Promise<Locator> {
     await page.getByRole("button", { name: "会話ログ", exact: true }).click();
@@ -782,6 +795,8 @@ const nextButtons = ["tourism-advance", "battle-advance", "epilogue-advance", "a
 async function act(page: Page, state: GameState, pick: Pick) {
   // Right after an answer, a reply or a scene's end, taps are ignored for a moment (the second tap of a double tap).
   await ops.settled(page);
+  // 旅の図鑑's card over a line (# term:, its first time in the game) takes the next taps and reads nothing on.
+  await ops.closeTermCards(page);
   const date = state.activeDate;
   const encounter = state.activeEncounter;
   if (state.activeBattle?.phase === "question") return page.getByTestId(`answer-${pick(state)}`).click();
@@ -831,8 +846,9 @@ export async function playUntil(page: Page, done: (state: GameState) => boolean,
   for (let step = 0; step < 200; step++) {
     const state = (await source(page))!;
     if (done(state)) {
-      // The caller may tap at once (also with the page's clock held).
+      // The caller may tap at once (also with the page's clock held), also where the last action brought 旅の図鑑's card.
       await ops.settled(page);
+      await ops.closeTermCards(page);
       return state;
     }
     await act(page, state, pick);
