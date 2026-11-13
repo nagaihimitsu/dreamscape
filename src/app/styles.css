@@ -74,7 +74,10 @@ button {
   cursor: pointer;
   touch-action: manipulation;
 }
-button:disabled {
+/* [data-settling]: a confirmation's action while it still waits (ConfirmActionButton): it looks disabled, but stays in
+   the Tab order (aria-disabled), so its rules follow each :disabled rule of the buttons it is drawn as. */
+button:disabled,
+button[data-settling] {
   opacity: 0.45;
   cursor: default;
 }
@@ -321,7 +324,7 @@ h3 {
   text-align: left;
   transition: background 0.15s;
 }
-.primary:hover:enabled {
+.primary:hover:enabled:not(:where([data-settling])) {
   background: var(--ds-slate-900);
 }
 .primary:focus-visible { box-shadow: inset 0 0 0 1px var(--ds-gold-hairline), 0 0 0 6px var(--ds-slate-900); }
@@ -704,10 +707,12 @@ input[type="checkbox"] { accent-color: var(--ds-slate-800); }
   border: 1.5px solid var(--ds-slate-800);
   border-radius: 12px;
 }
-.secondary:hover:enabled { background: var(--ds-parchment-2); }
+.secondary:hover:enabled:not(:where([data-settling])) { background: var(--ds-parchment-2); }
 /* Disabled (§2.1): its own ground and ink, no edge; the reason stays in the text beside it. */
 .primary:disabled,
-.secondary:disabled {
+.secondary:disabled,
+.primary[data-settling],
+.secondary[data-settling] {
   opacity: 1;
   background: var(--ds-disabled-bg);
   color: var(--ds-disabled-ink);
