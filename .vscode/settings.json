@@ -114,6 +114,14 @@
     },
     {
       "fileMatch": [
+        "/content/presentation/ambience.json",
+        "/content/journeys/*/presentation/ambience.json",
+        "/authoring/templates/*/presentation/ambience.json"
+      ],
+      "url": "./authoring/schemas/presentation-ambience.schema.json"
+    },
+    {
+      "fileMatch": [
         "/content/presentation/characters.json",
         "/content/journeys/*/presentation/characters.json",
         "/authoring/templates/*/presentation/characters.json"

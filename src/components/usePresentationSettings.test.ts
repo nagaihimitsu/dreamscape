@@ -75,3 +75,21 @@ describe("the presentation settings' vibration", () => {
       expect(readPresentationSettings(stored(extra)), JSON.stringify(extra)).toBeNull();
   });
 });
+
+// The ambience setting (2026-11-13): 「環境音を流す」 (`ambience`), beside the music's; its level is half of 「BGMの大きさ」.
+describe("the presentation settings' ambience", () => {
+  it("is on for settings stored without it, and with none stored", () => {
+    expect(readPresentationSettings(stored())).toMatchObject({ ambience: true });
+    expect(readPresentationSettings(null)).toMatchObject({ ambience: true });
+  });
+
+  it("reads what was stored, apart from the music's own switch", () => {
+    expect(readPresentationSettings(stored({ ambience: false }))).toMatchObject({ ambience: false, bgm: true, bgmVolume: 0.4 });
+    expect(readPresentationSettings(stored({ ambience: true, bgm: false }))).toMatchObject({ ambience: true, bgm: false });
+  });
+
+  it("refuses a switch that is not true or false", () => {
+    for (const extra of [{ ambience: "on" }, { ambience: 0 }, { ambience: null }])
+      expect(readPresentationSettings(stored(extra)), JSON.stringify(extra)).toBeNull();
+  });
+});

@@ -1,7 +1,7 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { MAP_CREDIT, musicCredits, OWN_ARTWORK_NOTE_JA, photoCredits } from "../content/credits";
+import { ambienceCredits, MAP_CREDIT, musicCredits, OWN_ARTWORK_NOTE_JA, photoCredits } from "../content/credits";
 import { CreditsList } from "./CreditsDialog";
 
 // 「出典・権利の一覧」 over the generated content: every journey's photos (preparing ones marked),
@@ -43,6 +43,20 @@ describe("credits list", () => {
       expect(html).toContain(`使っている場面：${usesJa.join("、")}`);
     }
     expect(render({ status: "dev" })).not.toContain("credits-music");
+  });
+
+  it("lists the ambience's recordings under 環境音 (2026-11-13), each once with its author, licence and what it is used for", () => {
+    const ambience = ambienceCredits();
+    expect(ambience.length).toBeGreaterThan(0);
+    expect(new Set(ambience.map((credit) => credit.source.id)).size).toBe(ambience.length);
+    const html = renderToStaticMarkup(createElement(CreditsList, { photos: [], ambience, licences: { status: "dev" } }));
+    expect(html).toContain('<h3 id="credits-ambience-title">環境音</h3>');
+    expect(html).toContain(`<summary>環境音の出典（${ambience.length}件）</summary>`);
+    for (const { source, usesJa } of ambience) {
+      expect(html).toContain(`作者：${source.author}`);
+      expect(html).toContain(`使っている音：${usesJa.join("、")}`);
+    }
+    expect(render({ status: "dev" })).not.toContain("credits-ambience");
   });
 
   it("lists each library with its version, licence and text once the production list is read", () => {

@@ -1,5 +1,7 @@
 import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "react";
-import type { LineDelivery } from "../content/tags";
+import type { LineDelivery, SceneShakeSize } from "../content/tags";
+import { vibrate } from "../audio/vibration";
+import { SCENE_SHAKES, sceneShakeFrames } from "./scene-atmosphere";
 import { dialogueObstructed } from "./dialogueObstructed";
 import { DIALOGUE_LINE_ATTRIBUTE } from "./scene-tap";
 import { useLineVoice, type VoiceLink } from "./useVoice";
@@ -25,6 +27,23 @@ function shakeWindow(line: HTMLElement) {
     [{ translate: "0 0" }, { translate: "-6px 0" }, { translate: "5px 0" }, { translate: "-3px 0" }, { translate: "2px 0" }, { translate: "0 0" }],
     { duration: 320, easing: "ease-out" },
   );
+}
+
+/**
+ * The layers of a story scene that a line's `# shake` moves (2026-11-13): its picture, its weather and its people,
+ * never its window, its heading or the header. The picture grows a little meanwhile, so its edges never show.
+ */
+const SCENE_ROOT = ".vn-scene, .battle-screen";
+const SHAKEN_PICTURE = ":scope > .vn-background, :scope > .battle-backdrop, :scope > .weather-layer";
+const SHAKEN_PEOPLE = ":scope > .vn-character-layer, :scope > .battle-stage";
+
+/** The one shake of a line's `# shake` (`size`): the scene's picture and people, briefly. None under reduced motion. */
+function shakeScene(line: HTMLElement | null, size: SceneShakeSize) {
+  const root = line?.closest<HTMLElement>(SCENE_ROOT);
+  if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches || root.closest(".reduce-motion")) return;
+  const options = { duration: SCENE_SHAKES[size].ms, easing: "ease-out" };
+  for (const layer of root.querySelectorAll<HTMLElement>(SHAKEN_PICTURE)) layer.animate?.(sceneShakeFrames(size, true), options);
+  for (const layer of root.querySelectorAll<HTMLElement>(SHAKEN_PEOPLE)) layer.animate?.(sceneShakeFrames(size, false), options);
 }
 
 const NO_CUES: readonly SystemSoundId[] = [];
@@ -138,7 +157,13 @@ export function DialogueText({
   // The line's voice (# voice:) starts with its text too: after its pause, or at once when the text shows at once.
   useLineVoice(voiceId, count > 0, voice?.muted ?? false, voice?.onState);
   // Its sounds (# se: and its scene tags' cues) start with its text as well, once; auto-advance does not wait for them.
-  useLineSounds(text, seId, cues, count > 0, voice?.muted ?? false);
+  // Its scene shake (# shake) is one of its cues: once, with a short vibration (its own setting; also under reduced
+  // motion, which has no shake), never for a line a load brought back nor during 高速送り.
+  const sceneShake = delivery?.sceneShake;
+  useLineSounds(text, seId, cues, count > 0, voice?.muted ?? false, sceneShake ? () => {
+    shakeScene(textRef.current, sceneShake);
+    vibrate("shake");
+  } : undefined);
   function activate() {
     // A compact settings menu is not a native modal, so its open state must
     // also block taps on the text behind it.

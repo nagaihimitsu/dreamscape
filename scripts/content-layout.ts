@@ -82,6 +82,9 @@ export const CATALOG_RULES = [
       wardrobe: { mode: "nested", fields: { regions: core, countries: core, cities: record, scenes: record } },
     },
   },
+  // The ambience (環境音) of each layer's public/assets/ambience/, where it comes from, and a journey's places' own tracks
+  // (`play`, by layer; 2026-11-13; scripts/ambience-files.ts).
+  { kind: "presentation/ambience.json", fields: { schemaVersion: same, sources: concat, tracks: concat, play: layers } },
   { kind: "presentation/dialogue-expressions.json", fields: entries },
   { kind: "presentation/dialogue-reactions.json", fields: entries },
   // The background music of each layer's public/assets/bgm/, where it comes from, and which track plays where (`play`:
@@ -119,12 +122,13 @@ export type MergedKind = (typeof CATALOG_RULES)[number]["kind"];
  * journey (balance, response profiles, the common date effects, global
  * presentation, romance stages, the shared dictionary, the characters and the
  * list of artwork made for Dreamscape that the root public/ serves, the
- * shared sound effects and the shared background music).
+ * shared sound effects, the shared background music and the shared ambience).
  * Every other catalog, and every city, travel, story and quiz file, belongs
  * to a journey folder.
  */
 export const CORE_LAYER_KINDS: ReadonlySet<MergedKind> = new Set<MergedKind>([
   "learning/word-meanings.json",
+  "presentation/ambience.json",
   "presentation/characters.json",
   "presentation/music.json",
   "presentation/own-artwork.json",

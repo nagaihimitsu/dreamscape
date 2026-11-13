@@ -3,8 +3,11 @@ import { z } from "zod";
 import { presentation, scenes, stories, tagContext } from "../content";
 import { splitStoryAddress, storyFileOf } from "../content/story-address";
 import { fnvHash } from "../content/fingerprint";
-import { CUTIN_KINDS, LETTER_KINDS, LINE_PAUSE_MS, parseStoryTags, PHONE_SIDES, QUIET_SPANS, STAND_POSITIONS, STORY_CALLS, type StoryCall } from "../content/tags";
-import { readStoryFrame, STACK_MAX, storyChoicesOf, type Speaker, type StoryStep } from "./frame-reader";
+import {
+  CUTIN_KINDS, ITEM_ID, LETTER_KINDS, LINE_PAUSE_MS, parseStoryTags, PHONE_SIDES, QUIET_SPANS, SCENE_SHAKE_SIZES, STAND_POSITIONS, STORY_CALLS,
+  WEATHER_KINDS, type StoryCall,
+} from "../content/tags";
+import { readStoryFrame, STACK_MAX, storyChoicesOf, type FrameSticky, type Speaker, type StoryStep } from "./frame-reader";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import { bindMemoryReader } from "./memory";
 import { bindItemReader, type ItemStatus } from "./items";
@@ -35,6 +38,7 @@ export const storyFrameSchema = z
     delivery: z.object({
       pauseMs: z.number().int().min(LINE_PAUSE_MS.min).max(LINE_PAUSE_MS.max).optional(),
       shake: z.literal(true).optional(),
+      sceneShake: z.enum(SCENE_SHAKE_SIZES).optional(),
       large: z.literal(true).optional(),
     }).strict().optional(),
     photo: z.object({
@@ -60,6 +64,12 @@ export const storyFrameSchema = z
     seId: z.string().regex(SOUND_ID).optional(),
     // `# bgm:` (a track's ID or `stop`), kept to the scene's end (frame-reader.ts); a frame saved without it has the scene's usual track.
     bgm: z.string().regex(SOUND_ID).optional(),
+    // The scene's atmosphere (2026-11-13; presentation only): a line's item card, and the weather, the tint switched off
+    // and the ambience kept to the scene's end like `# bgm:` (frame-reader.ts).
+    itemShow: z.string().regex(ITEM_ID).optional(),
+    weather: z.enum(WEATHER_KINDS).optional(),
+    tint: z.literal("off").optional(),
+    ambience: z.string().regex(SOUND_ID).optional(),
     choices: z
       .array(
         z
@@ -132,7 +142,8 @@ function runtime(address: string, saved?: string, memoryIds: readonly string[] =
 }
 
 const readFrame = (story: Story, previous?: StoryFrame, choiceTags: readonly string[] = [], initialBackground = DEFAULT_BACKGROUND_ID,
-  originKnot?: string, initialBgm?: string): StoryStep => readStoryFrame(story, tagContext, previous, choiceTags, initialBackground, originKnot, initialBgm);
+  originKnot?: string, initialSticky?: FrameSticky): StoryStep =>
+  readStoryFrame(story, tagContext, previous, choiceTags, initialBackground, originKnot, initialSticky);
 const storyChoices = (story: Story) => storyChoicesOf(story, tagContext);
 
 export function beginStory(
@@ -209,8 +220,8 @@ export function selectStoryChoice(
   /** The background of a fresh frame (no `previous`). */
   initialBackground = DEFAULT_BACKGROUND_ID,
   originKnot?: string,
-  /** The music of a fresh frame (no `previous`): a battle's `# bgm:` kept over its call. */
-  initialBgm?: string,
+  /** The sticky parts of a fresh frame (no `previous`): a battle's `# bgm:`, `# weather:`, `# tint:` and `# ambience:` kept over its call. */
+  initialSticky?: FrameSticky,
 ): StoryStep {
   const story = runtime(storyId, saved, memoryIds, inventory, conditions);
   for (const [name, value] of Object.entries(variables)) {
@@ -223,7 +234,7 @@ export function selectStoryChoice(
   if (!choice) throw new Error("選択肢が見つかりません。");
   const tags = choice.tags ?? [];
   story.ChooseChoiceIndex(index);
-  return readFrame(story, previous, tags, initialBackground, originKnot, initialBgm);
+  return readFrame(story, previous, tags, initialBackground, originKnot, initialSticky);
 }
 
 /**

@@ -3,6 +3,9 @@ import { CanalScene } from "../../components/CanalScene";
 import { SceneHeading } from "../../components/SceneHeading";
 import { DIALOGUE_WINDOW_ATTRIBUTE, DialogueText } from "../../components/DialogueText";
 import { LineStage, PhotoShowLayer, RecallLayer } from "../../components/LineStage";
+import { SceneTint, WeatherLayer } from "../../components/SceneAtmosphere";
+import { ItemShowLayer } from "../../components/ItemShow";
+import { sceneTimeTint } from "./time-of-day";
 import { lineCues, lineSpeed, showsSpeakerPlate, type PhoneNames } from "../../components/line-staging";
 import { playSe } from "../../audio/sound-effects";
 import { DialogueControls, DialogueWindowHead } from "../../components/DialogueControls";
@@ -49,8 +52,13 @@ export type EncounterScreenView = {
   voiceId?: string;
   /** The line's `# se:`: its sound, played as its text starts. */
   seId?: string;
-  /** The line's scene tags (`# recall:`, `# phone:`, `# letter:`, `# quiet:`, `# stand:`), its photo (`# photo_show:`) and who speaks it. */
-  staging?: FrameStaging & Pick<StoryFrame, "photo"> & { speaker: Speaker; speakerPersonId?: string };
+  /**
+   * The line's scene tags (`# recall:`, `# phone:`, `# letter:`, `# quiet:`, `# stand:`, `# item_show:`), its photo
+   * (`# photo_show:`), the scene's weather and tint (`# weather:`, `# tint:`) and who speaks it.
+   */
+  staging?: FrameStaging & Pick<StoryFrame, "photo" | "weather" | "tint"> & { speaker: Speaker; speakerPersonId?: string };
+  /** The game clock (minutes from midnight): the colour of the time of day over the scene's picture. */
+  minute: number;
   /** The names a phone's messages show (LineStage). */
   phoneNames?: PhoneNames;
   choices: EncounterChoiceView[];
@@ -137,9 +145,14 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
   const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: !!quiz || view.choices.length > 0, windowHidden: windowVisibility.hidden });
   return (
     <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} data-quiet={staging?.quiet} {...sceneTap.props}>
-      <div className="vn-background" data-testid="scene-picture">{view.backgroundAsset ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundAsset.path}`} alt="" /> : <CanalScene backgroundId={view.background} />}</div>
+      <div className="vn-background" data-testid="scene-picture">{view.backgroundAsset ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundAsset.path}`} alt="" /> : <CanalScene backgroundId={view.background} />}
+        <SceneTint color={sceneTimeTint(view.minute, view.staging?.tint === "off")} />
+      </div>
+      {/* The scene's weather stays over its quiz too. */}
+      <WeatherLayer weather={view.staging?.weather} />
       <RecallLayer imageId={staging?.recall} />
       <PhotoShowLayer photo={staging?.photo} />
+      <ItemShowLayer itemId={staging?.itemShow} quiet={!!staging?.quiet} />
       <SceneHeading label={view.placeJa} badge={view.badgeJa} />
       {!quiz && portraits && <div className="vn-character-layer encounter-character-layer" data-two-characters={!!portraits.heroine && !!portraits.enemy}>
         {(["heroine", "enemy"] as const).map((id) => {

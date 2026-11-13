@@ -2,6 +2,7 @@ import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, r
 import { sceneDataCatalogSchema, storyStateCatalogSchema } from "../src/content/scene-schemas";
 import { soundCatalogSchema } from "../src/content/sounds";
 import { mergedMusicCatalogSchema } from "../src/content/music";
+import { mergedAmbienceCatalogSchema } from "../src/content/ambience";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -61,6 +62,8 @@ const runtimeSchemas = {
   "learning/local-words.json": localWordsCatalogSchema,
   "learning/translations.json": learningCatalogSchema,
   "learning/word-meanings.json": wordMeaningsSchema,
+  // Read by content:build only (scripts/ambience-files.ts writes what the game reads: generated/ambience.json); each layer's play by layer.
+  "presentation/ambience.json": mergedAmbienceCatalogSchema,
   "presentation/characters.json": characterCatalogSchema,
   "presentation/dialogue-expressions.json": dialogueExpressionCatalogSchema,
   "presentation/dialogue-reactions.json": dialogueReactionCatalogSchema,

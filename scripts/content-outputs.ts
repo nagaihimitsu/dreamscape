@@ -23,6 +23,10 @@ export const SOUND_VOLUMES_FILE = `${GENERATED_DIRECTORY}/sound-volumes.json`;
 export const MUSIC_FILE = `${GENERATED_DIRECTORY}/music.json`;
 /** The music file of a build without music: nothing plays. */
 const NO_MUSIC = { schemaVersion: 1, sources: [], tracks: [], root: null, journeys: {} };
+/** The ambience: every track's volume and credit, and each journey's places' own (ambience-files.ts ambienceDataOf; src/audio/ambience.ts). */
+export const AMBIENCE_FILE = `${GENERATED_DIRECTORY}/ambience.json`;
+/** The ambience file of a build without ambience: nothing plays. */
+const NO_AMBIENCE = { schemaVersion: 1, sources: [], tracks: [], journeys: {} };
 
 /**
  * Write every output of a validated build into `root`. `derivedFiles` (served
@@ -36,7 +40,7 @@ export function writeContentOutputs(
     catalogOverrides?: Partial<Record<CatalogKind, unknown>>;
     sceneConditions?: { conditions: Record<string, unknown>; stories: Record<string, string[]> };
     scenes?: { scenes: unknown[]; rewards: unknown[] }; albumImages?: readonly unknown[]; soundVolumes?: Readonly<Record<string, number>>;
-    music?: unknown },
+    music?: unknown; ambience?: unknown },
   derivedFiles: ReadonlyMap<string, string> = new Map(),
 ): void {
   const directory = path.join(root, GENERATED_DIRECTORY);
@@ -60,6 +64,8 @@ export function writeContentOutputs(
   writeFileSync(path.join(root, SOUND_VOLUMES_FILE), `${JSON.stringify(validated.soundVolumes ?? {}, null, 2)}\n`);
   // The music (src/audio/bgm.ts and the credits list import the file, so it is written even with none).
   writeFileSync(path.join(root, MUSIC_FILE), `${JSON.stringify(validated.music ?? NO_MUSIC, null, 2)}\n`);
+  // The ambience (src/audio/ambience.ts and the credits list import the file, so it is written even with none).
+  writeFileSync(path.join(root, AMBIENCE_FILE), `${JSON.stringify(validated.ambience ?? NO_AMBIENCE, null, 2)}\n`);
   // The game imports the validated, merged catalogs only from this mirror.
   writeContentMirror(sources, mirrorDirectory(root), validated.catalogOverrides);
   // Vite serves and builds the game's images from this folder (publicDir in vite.config.ts).

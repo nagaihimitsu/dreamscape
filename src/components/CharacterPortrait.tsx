@@ -10,6 +10,7 @@ import {
 } from "../content/character-assets";
 import type { StandPosition } from "../content/tags";
 import type { PortraitFocus } from "./speaker-focus";
+import { portraitBreath } from "./scene-atmosphere";
 import "./character-portrait.css";
 
 const catalog = characterCatalogSchema.parse(characterData);
@@ -68,6 +69,7 @@ export function CharacterPortrait({
         color={character.placeholderColor}
         fallback={fallback}
         onImageError={onImageError}
+        breathOf={characterId}
       />
       {children}
     </div>
@@ -100,24 +102,32 @@ export function CharacterFace({ characterId, emotion, sceneId, cityId }: {
   );
 }
 
-function CharacterImage({ path, neutralPath, color, fallback, onImageError }: {
+function CharacterImage({ path, neutralPath, color, fallback, onImageError, breathOf }: {
   path: string | null;
   neutralPath: string | null;
   color: string;
   fallback?: ReactNode;
   onImageError?: (path: string) => void;
+  /** A standing portrait's character: its picture breathes (character-portrait.css), going on from where the last picture was. */
+  breathOf?: string;
 }) {
   const [failedPaths, setFailedPaths] = useState<string[]>([]);
+  // Read once as the picture is put up (scene-atmosphere.ts portraitBreath): a new expression takes the breath on.
+  const [breath] = useState(() => {
+    if (breathOf === undefined) return undefined;
+    const { durationMs, delayMs } = portraitBreath(breathOf, typeof performance === "undefined" ? 0 : performance.now());
+    return { animationDuration: `${durationMs}ms`, animationDelay: `${delayMs}ms` };
+  });
   const candidate = [path, neutralPath].find((item) => item && !failedPaths.includes(item));
   if (candidate) return (
-    <img src={`${import.meta.env.BASE_URL}${candidate}`} alt="" onError={() => {
+    <img src={`${import.meta.env.BASE_URL}${candidate}`} alt="" style={breath} onError={() => {
       onImageError?.(candidate);
       setFailedPaths((failed) => [...failed, candidate]);
     }} />
   );
   if (fallback) return fallback;
   // Deliberately abstract placeholder, not a final character design.
-  return <svg viewBox="0 0 240 360" role="presentation" focusable="false">
+  return <svg viewBox="0 0 240 360" role="presentation" focusable="false" style={breath}>
     <ellipse cx="120" cy="350" rx="88" ry="8" fill="#302f2b" opacity=".15" />
     <path d="M42 350v-81c0-48 30-73 78-73s78 25 78 73v81" fill={color} />
     <path d="M92 187h56v34H92z" fill={color} />

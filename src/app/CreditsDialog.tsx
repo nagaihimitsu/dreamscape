@@ -7,6 +7,7 @@ import {
   OWN_ARTWORK_NOTE_JA,
   parseThirdPartyLicenses,
   musicCredits,
+  ambienceCredits,
   photoCredits,
   SOUND_LICENSE_TEXT,
   soundCredits,
@@ -92,8 +93,9 @@ function SoundCredits({ sounds, usesLabelJa = "使っている音" }: { sounds: 
  * (D7) and the note that artwork made for Dreamscape is not listed (D5). Each journey's photos, the
  * sounds' and the music's sources and each licence text open on demand.
  */
-export function CreditsList({ photos, sounds = [], music = [], licences }: {
-  photos: readonly JourneyPhotoCredits[]; sounds?: readonly SoundCredit[]; music?: readonly SoundCredit[]; licences: LicenceListState;
+export function CreditsList({ photos, sounds = [], music = [], ambience = [], licences }: {
+  photos: readonly JourneyPhotoCredits[]; sounds?: readonly SoundCredit[]; music?: readonly SoundCredit[]; ambience?: readonly SoundCredit[];
+  licences: LicenceListState;
 }) {
   return <div className="credits-list">
     <section aria-labelledby="credits-photos-title">
@@ -128,6 +130,14 @@ export function CreditsList({ photos, sounds = [], music = [], licences }: {
         <SoundCredits sounds={music} usesLabelJa="使っている場面" />
       </details>
     </section>}
+    {ambience.length > 0 && <section aria-labelledby="credits-ambience-title" data-testid="credits-ambience">
+      <h3 id="credits-ambience-title">環境音</h3>
+      <p className="fine-print">場面の後ろで小さく流れる、場所の音です。開くと、もとの録音ごとに作者・ライセンスと、使っている音を確かめられます。</p>
+      <details className="credits-journey">
+        <summary>環境音の出典（{ambience.length}件）</summary>
+        <SoundCredits sounds={ambience} usesLabelJa="使っている音" />
+      </details>
+    </section>}
     <section aria-labelledby="credits-map-title" data-testid="credits-map">
       <h3 id="credits-map-title">地図</h3>
       <p>{MAP_CREDIT.textJa}</p>
@@ -155,9 +165,10 @@ export function CreditsDialog({ onClose }: { onClose: () => void }) {
   const [photos] = useState(photoCredits);
   const [sounds] = useState(soundCredits);
   const [music] = useState(musicCredits);
+  const [ambience] = useState(ambienceCredits);
   const licences = useThirdPartyLicenses();
   return <Modal labelledBy="credits-title" className="credits-modal" onClose={onClose} settlePresses>
     <ModalTitle id="credits-title" onClose={onClose} closeTestId="credits-close">出典・権利の一覧</ModalTitle>
-    <CreditsList photos={photos} sounds={sounds} music={music} licences={licences} />
+    <CreditsList photos={photos} sounds={sounds} music={music} ambience={ambience} licences={licences} />
   </Modal>;
 }
