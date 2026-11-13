@@ -100,7 +100,7 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 
 - 決まった値のほか（`# phone: left`、`# stand: far` など）、空の札、1つの行に同じ札を2つ、アルバムの絵にない ID の `# recall:`、1つの行に `# phone:` と `# letter:` の両方を書いたときは、`content:build` が止めます。
 - バトルでクイズ（`-> quiz(n) ->`）から戻った後の最初の行は、場面の始まりと同じです（話し手と背景を書き直すのと同じく、`# quiet: scene` と `# stand:` も、続けたいときはもう一度書きます）。
-- 例は見本の編：時計塔のバトルとフィナーレの相手、リリの見送りの `# cutin: name`、デートの `# stand:`（`stories/places/smp_mihon_clock_tower.ink`）、エピローグの `# recall:` と `# quiet: line`（`stories/epilogues/mihon.ink`）、宿の夜の会話の頭の `# quiet: scene`、宿の朝の `# phone:`、リリの見送りの `# letter: note`（どれも場所のファイル）。
+- 例は見本の編：時計塔のバトルとフィナーレの相手、リリの見送りの `# cutin: name`、デートの `# stand:`（`stories/places/smp_mihon_clock_tower.ink`）、エピローグの `# recall:` と `# quiet: line`（`stories/places/smp_mihon_hotel.ink`）、宿の夜の会話の頭の `# quiet: scene`、宿の朝の `# phone:`、リリの見送りの `# letter: note`（どれも場所のファイル）。
 
 ### 品物を見せる札と場面の空気（任意、2026-11-13）
 
@@ -233,16 +233,16 @@ VAR heroine_name = ""
 | 観光地・画像・発見・資料       | `tourism/catalog.json`                                                                           | `<旅行編>/tourism/catalog.json` の各配列                  |
 | 英語3択（通常戦3問・フィナーレ5問） | `quizzes/smp_mihon_main_clock_tower_quiz.json`, `quizzes/smp_mihon_finale_quiz.json`             | `<旅行編>/quizzes/<クイズID>.json`（ファイル名＝クイズID）   |
 | 敵と通常戦、矛盾追及、証拠連結 | `battles/catalog.json`（特殊戦は `quizzes/smp_mihon_special_b_market_quiz.json`・`smp_mihon_special_c_library_quiz.json` も） | `<旅行編>/battles/catalog.json` の `battles`              |
-| 敵の会話                       | `stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_main_clock_tower`（場所のファイルの knot）, `stories/battles/smp_mihon_special_b_market.ink`, `smp_mihon_special_c_library.ink`, `smp_mihon_finale.ink` | `<旅行編>/stories/battles/`                               |
+| 敵の会話                       | `stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_main_clock_tower`・`smp_mihon_finale_battle`, `stories/places/smp_mihon_market.ink` の `smp_mihon_special_b_market`, `stories/places/smp_mihon_library.ink` の `smp_mihon_special_c_library`（場所のファイルの knot） | `<旅行編>/stories/places/`（1場面1ファイルの `stories/battles/` も使える） |
 | デート、行き先、背景           | `romance/date_catalog.json`, `romance/date_destinations.json`, `romance/presentation.json`       | `<旅行編>/romance/` の対応するカタログ                    |
-| デートの会話                   | `stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_date_tower_square`（場所のファイルの knot） | `<旅行編>/stories/dates/` など                            |
-| 観光案内                       | `stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_clock_tower_guide`、`stories/tourism/smp_mihon_market_guide.ink` | `<旅行編>/stories/tourism/`                               |
+| デートの会話                   | `stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_date_tower_square`（場所のファイルの knot） | `<旅行編>/stories/places/`（1場面1ファイルの `stories/dates/` も使える） |
+| 観光案内                       | `stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_clock_tower_guide`、`stories/places/smp_mihon_market.ink` の `smp_mihon_market_guide` | `<旅行編>/stories/places/`（1場面1ファイルの `stories/tourism/` も使える） |
 | 都市・順路・報酬               | `cities/mihon.json`, `progression/journey.json`                                                  | `<旅行編>/cities/`, `<旅行編>/progression/journey.json`   |
-| 道中交流と品物                 | `encounters/catalog.json`（品物）, `stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_bookmark_stall` | `<旅行編>/encounters/catalog.json`, `<旅行編>/stories/encounters/` |
+| 道中交流と品物                 | `encounters/catalog.json`（品物）, `stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_bookmark_stall` | `<旅行編>/encounters/catalog.json`, `<旅行編>/stories/places/`（1場面1ファイルの `stories/encounters/` も使える） |
 
 デート専用の効果と思い出（`romance/effect_catalog.json` の固有effect、`romance/presentation.json` の `memories`）は見本にありません。効果の項目はミラノ編の `romance/effect_catalog.json` を参考にします。選択肢の札（`# profile:`・`# memory:`）で書くデートは、インド編の `romance/presentation.json` の `memories` と場所のファイル（例：`stories/places/gt_delhi_lodhi_garden.ink`）を参考にします（インド編に `effect_catalog.json` はありません）。
 
-JSONにはコメントを入れず、カンマ、引用符、配列の括弧を保ちます。`schemaVersion` はデータ形式の版で、個々のコンテンツIDとは別です。編集前に対象ファイルを複製し、既存内容を消さずに追加してください。表示名は変更できますが、公開済みIDはセーブ・他データの参照に使うため変更しないでください。新しいIDは英小文字で始め、英小文字・数字・`_` を使います。IDはすべての旅行編で共有する一つの名前空間にあるため、新しい旅行編では `manifest.json` の `authoring.eventPrefix` と同じ接頭辞（例：`gt_`、`uz_`）を付けます（地点IDは都市IDを接頭辞にします。付け忘れは `content:build` が警告します）。`storyId` は `tourism/gt_delhi_red_fort_guide` のように、旅行編フォルダの `stories/`（`content/journeys/<旅行編ID>/stories/`）からの拡張子なしの相対パスです。旅行編フォルダ名は含まないため、他の旅行編と同じフォルダ名（`battles/` など）を使う場合はファイル名に接頭辞を付けて重ならないようにします。会話・クイズ・問題の名前（「頭 ＋ 役割 ＋ 場所・話題」）と、クイズのファイル名をクイズIDと同じにする決まりは [技術設計の「IDの付け方」](../docs/02_TECH_ARCHITECTURE.md#idの付け方) にあります。共通データ（`content/` 直下）には都市・移動・Ink・クイズや旅行編専用のカタログを置けません。
+JSONにはコメントを入れず、カンマ、引用符、配列の括弧を保ちます。`schemaVersion` はデータ形式の版で、個々のコンテンツIDとは別です。編集前に対象ファイルを複製し、既存内容を消さずに追加してください。表示名は変更できますが、公開済みIDはセーブ・他データの参照に使うため変更しないでください。新しいIDは英小文字で始め、英小文字・数字・`_` を使います。IDはすべての旅行編で共有する一つの名前空間にあるため、新しい旅行編では `manifest.json` の `authoring.eventPrefix` と同じ接頭辞（例：`gt_`、`uz_`）を付けます（地点IDは都市IDを接頭辞にします。付け忘れは `content:build` が警告します）。`storyId` は、旅行編フォルダの `stories/`（`content/journeys/<旅行編ID>/stories/`）からの拡張子なしの相対パスで、場所のファイルの場面は `places/gt_delhi_red_fort.gt_delhi_red_fort_guide` のように後ろに `.knot の名前` を付けます。旅行編フォルダ名は含まないため、他の旅行編と同じフォルダ名（`battles/` など）を使う場合はファイル名に接頭辞を付けて重ならないようにします。会話・クイズ・問題の名前（「頭 ＋ 役割 ＋ 場所・話題」）と、クイズのファイル名をクイズIDと同じにする決まりは [技術設計の「IDの付け方」](../docs/02_TECH_ARCHITECTURE.md#idの付け方) にあります。共通データ（`content/` 直下）には都市・移動・Ink・クイズや旅行編専用のカタログを置けません。
 
 ## 題材を選ぶ
 
@@ -254,8 +254,8 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 
 1. 事実・解釈・伝説を区別し、各項目の出典と日付を記録します。写真の作者、ライセンス、加工内容と利用条件も確認します。
 2. 見本の `tourism/catalog.json` を見ながら、画像を `assets`、場所を `landmarks`、その発見を `clues` に登録します。画像は旅行編の `content/journeys/<旅行編ID>/public/` 以下に配置し、`path` に `public/` を除いたパス（配信時のパス）を書きます。
-3. 3問のクイズ（見本の `quizzes/smp_mihon_main_clock_tower_quiz.json`）と、要る場所なら観光案内（`stories/tourism/smp_mihon_market_guide.ink`。場所のファイルなら knot）を作り、対応するIDをそろえます。
-4. 見本の `battles/catalog.json` の通常戦と `stories/battles/smp_mihon_special_b_market.ink`（場所のファイルの knot の形は `stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_main_clock_tower`）を参考に、敵・会話と問題を結びます（下の「対決の会話を1本の流れで書く」）。演出背景は `<旅行編>/romance/presentation.json` に登録します。
+3. 3問のクイズ（見本の `quizzes/smp_mihon_main_clock_tower_quiz.json`）と、要る場所なら観光案内（その場所の場所のファイルの knot。見本の `stories/places/smp_mihon_market.ink` の `smp_mihon_market_guide`）を作り、対応するIDをそろえます。
+4. 見本の `battles/catalog.json` の通常戦と、場所のファイルの knot `stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_main_clock_tower`（特殊戦は `stories/places/smp_mihon_market.ink` の `smp_mihon_special_b_market`）を参考に、敵・会話と問題を結びます（下の「対決の会話を1本の流れで書く」）。演出背景は `<旅行編>/romance/presentation.json` に登録します。
 5. 順路・報酬を `<旅行編>/progression/journey.json` の既存配列に追加し、参照関係を確認します。新都市の追加には後述の現行制約があります。
 6. 後述の検証と編集者レビューを済ませてからGitで採用します。
 
@@ -319,7 +319,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 
 ### 対決の会話を1本の流れで書く（段階5）
 
-対決の会話は、上から下へ1本に流れるInkに書きます。見本の編の4本（`stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_main_clock_tower`、`stories/battles/smp_mihon_special_b_market.ink`・`smp_mihon_special_c_library.ink`・`smp_mihon_finale.ink`）が手本です。
+対決の会話は、上から下へ1本に流れるInkに書きます。見本の編の4本（`stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_main_clock_tower`・`smp_mihon_finale_battle`、`stories/places/smp_mihon_market.ink` の `smp_mihon_special_b_market`、`stories/places/smp_mihon_library.ink` の `smp_mihon_special_c_library`）が手本です。
 
 - 置き場所は、その場所の場所のファイルの knot（頭の札は `# scene: battle`）か、1場面1ファイル（`stories/battles/<頭>_…`）です。1場面1ファイルは、1行目を `INCLUDE modules.ink` にし、`VAR` を書きません（ゲームが用意する呼び口と変数。Inkyで見るときは、場所のファイルと同じく `src/story/modules.ink` の写しを隣に置く）。
 - `-> quiz(1) ->` と書いた所で、ゲームがクイズの画面（ヒント・答え・正誤と解説）を出します。正誤の画面から進むと、`quiz_correct`（その問いの正誤）と `battle_score`（そこまでの正解数）が入って続きます。クイズは第1問から順に、どの道でも1回ずつ呼びます（通常戦は3問、都市フィナーレは5問。順が違う・足りない道は `content:build` が止めます）。最後の `-> END` の後に結果の画面が出ます。
@@ -379,7 +379,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 
 `effect_catalog.json` の各 `id` と任意の `memoryId` はInkの `# effect:` に対応します。新しい台本では、選択肢の札（`# profile:`・`# memory:`・`# rel:`）で同じことを直接書けます（ビルドが選択肢ごとの表にします。改稿前のミラノ編は `# effect:` のまま。インド編のデートは場所のファイル `stories/places/` の札で書いています。例：`places/gt_delhi_lodhi_garden.ink`）。告白を除く恋愛選択には `responseProfileId` を指定し、`content/romance/response_profiles.json` のリスク特性から選びます。`responseProfileId` を指定した選択の関係値は確率判定で決まり、固定の `affectionDelta`・`trustDelta`・`sparkDelta` は使われません。`affectionDelta` は `0` とし、`trustDelta`・`sparkDelta` は書きません。台詞と選択の性格に合うプロフィールを選び、全段階をレビューしてください。思い出は `presentation.json` の `memories` に同じIDと `titleJa` / `descriptionJa` を登録します。Stage・告白条件は `progression.json` で管理し、特定デートIDを条件にしません。
 
-Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受け取ります。`# speaker: narrator` / `heroine` / `player` / `enemy` / 登録した人物のID（[Inkで会話と演出を作る](#inkで会話と演出を作る)）、`# background: 登録済みID`、`# emotion: 登録済みID` を使い、本文はふつう日本語で書きます（英語の台詞や選択肢も書けます。ビルドは止めません）。デートの `* [選択肢]` と各分岐直後の札（`# option:` と `# profile:`）、`->` の合流例は見本の場所のファイル `stories/places/smp_mihon_clock_tower.ink` のデート `smp_mihon_date_tower_square` を参照（今の1場面1ファイルのデートは、各分岐直後に `# effect: 登録済みID`）。通常デートは3択を2回、各選択直後・最初の発話の前に対応する `# effect:` を1つ置きます。Inkで `romance_result` と `affection_delta`・`trust_delta`・`spark_delta` を宣言し、`romance_result` の positive と negative それぞれで異なる人物らしい反応を書きます。確率計算と乱数はInkに書きません。告白は確定的な別契約です（場所のファイルの告白は `# profile:` も結果の `# effect:` も書かず、始めたときにゲームが関係状態から決めた `confession_result` で返事を分けます。デートの knot の中の選択の回数が `choiceCount` です。例：インド編の `places/gt_delhi_hotel_hub_dates.ink`）。案内とバトルには恋愛effectを置きません。バトルの会話は1本の流れで書きます（[対決の会話を1本の流れで書く](#対決の会話を1本の流れで書く段階5)。`-> quiz(n) ->` でクイズを呼び、戻ると `quiz_correct`・`battle_score` で分岐する）。場所のファイル（`stories/places/`）では、変数はゲームが用意する `modules.ink` が宣言するので、`VAR` を書きません（1場面1ファイルのバトルも、1行目を `INCLUDE modules.ink` にして `VAR` を書かない）。案内にも選択肢と効果の札を書けます（読み直しでは当てない）。特殊戦の主張（`<バトル>_claim`）・追及（`<バトル>_press`）・証拠成功／失敗（`evidence_result` の分かれ道）の例は見本の `stories/battles/smp_mihon_special_b_market.ink`（B）と `smp_mihon_special_c_library.ink`（C）にあります。
+Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受け取ります。`# speaker: narrator` / `heroine` / `player` / `enemy` / 登録した人物のID（[Inkで会話と演出を作る](#inkで会話と演出を作る)）、`# background: 登録済みID`、`# emotion: 登録済みID` を使い、本文はふつう日本語で書きます（英語の台詞や選択肢も書けます。ビルドは止めません）。デートの `* [選択肢]` と各分岐直後の札（`# option:` と `# profile:`）、`->` の合流例は見本の場所のファイル `stories/places/smp_mihon_clock_tower.ink` のデート `smp_mihon_date_tower_square` を参照（今の1場面1ファイルのデートは、各分岐直後に `# effect: 登録済みID`）。通常デートは3択を2回、各選択直後・最初の発話の前に対応する `# effect:` を1つ置きます。Inkで `romance_result` と `affection_delta`・`trust_delta`・`spark_delta` を宣言し、`romance_result` の positive と negative それぞれで異なる人物らしい反応を書きます。確率計算と乱数はInkに書きません。告白は確定的な別契約です（場所のファイルの告白は `# profile:` も結果の `# effect:` も書かず、始めたときにゲームが関係状態から決めた `confession_result` で返事を分けます。デートの knot の中の選択の回数が `choiceCount` です。例：インド編の `places/gt_delhi_hotel_hub_dates.ink`）。案内とバトルには恋愛effectを置きません。バトルの会話は1本の流れで書きます（[対決の会話を1本の流れで書く](#対決の会話を1本の流れで書く段階5)。`-> quiz(n) ->` でクイズを呼び、戻ると `quiz_correct`・`battle_score` で分岐する）。場所のファイル（`stories/places/`）では、変数はゲームが用意する `modules.ink` が宣言するので、`VAR` を書きません（1場面1ファイルのバトルも、1行目を `INCLUDE modules.ink` にして `VAR` を書かない）。案内にも選択肢と効果の札を書けます（読み直しでは当てない）。特殊戦の主張（`<バトル>_claim`）・追及（`<バトル>_press`）・証拠成功／失敗（`evidence_result` の分かれ道）の例は見本の `stories/places/smp_mihon_market.ink`（B）と `stories/places/smp_mihon_library.ink`（C）にあります。
 
 会話中の無言リアクションは、通常はInkの `# reaction:` で指定します。既存の `content/journeys/milano/presentation/dialogue-reactions.json` は、公開済みの脚本を変えずに演出を付けた旧指定として維持します。外部指定では固定台詞の完全一致が必要で、変数を含む行には指定できません。脚本を更新した場合、参照先の消えた旧指定は検証時に警告されます。
 
@@ -590,7 +590,7 @@ EXTERNAL cond(text)
 ```sh
 npm run content:inspect -- --type quiz authoring/templates/sample_trip/quizzes/smp_mihon_main_clock_tower_quiz.json
 npm run content:inspect -- --type battle-catalog authoring/templates/sample_trip/battles/catalog.json
-npm run content:inspect -- authoring/templates/sample_trip/stories/epilogues/mihon.ink
+npm run content:inspect -- authoring/templates/sample_trip/stories/places/smp_mihon_hotel.ink
 ```
 
 単体検証はJSONの構文・指定形式とInkのコンパイルを調べます。参照先、Inkタグ、分岐の全文脈は単体では検証しません。正式データの変更後に `npm run content:check` を実行すると、全コンテンツの構造・参照を検証し、ゲーム用のデータを生成します。生成ファイルを書き換えずに全体を確認したい場合は、代わりに `npm run content:inspect -- --all` を利用できます。`npm run test:saves` はコンテンツ生成後に保存関連の単体テスト（`src/persistence/`）を実行します。過去のセーブの更新後の再開を保証するものではありません。

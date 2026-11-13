@@ -285,7 +285,7 @@ npm run test:saves
 
 | 編集ファイル                                     | 内容                                                                 |
 | ------------------------------------------------ | -------------------------------------------------------------------- |
-| `<旅行編>/stories/**/*.ink`                      | 会話、選択肢、リアクション、タグ                                     |
+| `<旅行編>/stories/places/*.ink`                  | 場所のファイル：その場所の場面（観光案内・バトルの敵の台詞と正誤反応と結末・デート・道中交流と会話・到着とエピローグ（宿のファイル）・ツアー）を knot ごとに書く。会話・選択肢・リアクション・タグ |
 | `<旅行編>/romance/date_catalog.json`             | 種別、表示文、AP費用、必要章・履歴、シナリオ参照、選択回数・検証条件 |
 | `<旅行編>/romance/effect_catalog.json` | 好感度差分、思い出ID、告白結果（accepted/deferred）。共通デート効果は `<共通>`。新しい台本は、Inkの選択肢の札にも書ける |
 | `<共通>/romance/progression.json`                | 4段階の閾値・必要履歴・敬称、告白成立条件（思い出の引用は `<旅行編>`） |
@@ -295,10 +295,8 @@ npm run test:saves
 | `<旅行編>/cities/<都市ID>.json`                  | 都市名・予定観光地・初回クリア報酬（`firstClearReward`）             |
 | `<旅行編>/battles/catalog.json`                  | A/B/Cの形式、敵、クイズ・Ink参照、推理ラウンド、ケース資料・正解証拠 |
 | `<旅行編>/quizzes/*.json`                        | 通常3問・都市ボス5問、正解ID、語彙、ヒント、正誤解説、難易度、出典   |
-| `<旅行編>/stories/battles/*.ink`                 | 日本語の敵の台詞・正誤反応・勝敗別の結末・ヒロインの余韻             |
 | `<旅行編>/tourism/catalog.json`                  | 観光地・画像の出典と権利情報・発見範囲・説明・史実とクイズの参照     |
-| `<旅行編>/stories/tourism/*.ink`                 | ヒロインの短い観光案内                                               |
-| `<旅行編>/stories/places/*.ink`                  | 場所ごとの場面をまとめたファイル（観光案内・バトル・デート・到着・宿・差し込み・ツアー。インド編はすべて、ミラノ編も告白のデートとガッレリアの願掛け（とその結果）のほかはここ） |
+| `<旅行編>/stories/<種類>/*.ink`                  | 1場面1ファイル（`battles/`・`tourism/`・`dates/`・`encounters/`・`arrivals/`・`epilogues/`）。今も使える。クイズとくじのある道中交流と、英語ノートの解説（`learning/`）はこの形 |
 | `<旅行編>/public/assets/tourism/`                | 同梱する資料画像。外部サイトへの画像直リンクは使用しない             |
 
 各旅行編の都市・移動・クイズ・Ink と各カタログの該当項目は、同じ相対パスで `content/journeys/<旅行編ID>/` 以下に置き、`npm run content:build` が `content/` 直下の共通データと統合します。旅行編フォルダの項目は自分の都市だけを扱い、参照先は同じ旅行編か共通データに限ります。共通データには都市・移動・Ink・クイズや旅行編専用のカタログを置けません。
@@ -327,7 +325,7 @@ npm run content:check
 
 出典は `sources` に公式資料のURL・発行元・タイトル・確認日・根拠文を保存します。`claimType` は documented_fact / interpretation / legend で区別し、学説は断定せず根拠文に明記します。今回は美術館の公式解説 [A powerful theatrical machine](https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/) と [Backstage](https://cenacolovinciano.org/en/museum/backstage/) を参照しています。プレイヤーには解答後に根拠リンクを表示し、出題前に解説を見せません。
 
-対決のInkは1本の流れで書きます（統一イベント設計の段階5）。1場面1ファイルは1行目を `INCLUDE modules.ink` にして `VAR` を書かず、上から台詞を書いて `-> quiz(1) ->` 〜 `-> quiz(3) ->`（都市ボスは5問）でクイズの画面を呼びます。戻ると `quiz_correct`（その問いの正誤）と `battle_score`（正解数）が入り、`-> END` の後に結果の画面が出ます。クイズの選択・採点はTypeScriptが担当します。会話の中に日本語の選択肢と効果の札を書け、札はその対決を初めて遊ぶときに選択肢ごとに1回だけ当たります。書き方は [制作ガイド](authoring/CONTENT_GUIDE.md#対決の会話を1本の流れで書く段階5)。Inkは設定した名前と `player_address` を受け取り、既存の文字送り・speaker/background/emotionタグを使います。
+対決のInkは1本の流れで書きます（統一イベント設計の段階5）。場所のファイルの knot（1場面1ファイルなら、1行目を `INCLUDE modules.ink` にして `VAR` を書かない）に、上から台詞を書いて `-> quiz(1) ->` 〜 `-> quiz(3) ->`（都市ボスは5問）でクイズの画面を呼びます。戻ると `quiz_correct`（その問いの正誤）と `battle_score`（正解数）が入り、`-> END` の後に結果の画面が出ます。クイズの選択・採点はTypeScriptが担当します。会話の中に日本語の選択肢と効果の札を書け、札はその対決を初めて遊ぶときに選択肢ごとに1回だけ当たります。書き方は [制作ガイド](authoring/CONTENT_GUIDE.md#対決の会話を1本の流れで書く段階5)。Inkは設定した名前と `player_address` を受け取り、既存の文字送り・speaker/background/emotionタグを使います。
 
 バトル用検証は、通常3問／都市ボス5問・各3択・正解参照・重複ID・語彙・出典に加え、1本の流れの対決を、クイズの全部の正誤と特殊戦の止まる所の全部の結果で最後まで歩き、クイズを第1問から順に1回ずつ呼ぶか（A16）、止まる所が `roundIndex` の所にあるか、終わりに届かない状態がないかを確かめます。日本語の導入や証拠提示成功時の台詞が、続く英語の答えを直接教えていないか、史実が正しいかは脚本レビューでも確認してください。クイズも `src/content/generated/quizzes.json` に生成されます。生成物は手動編集しません。
 
@@ -339,7 +337,7 @@ npm run content:check
 - `caseClueIds`: 手がかり帳へ常時提供する既存の証拠ID（3〜5枚）。観光の `clues` を再利用。
 - `correctClueIds`: Bは1枚、Cは異なる2枚。Cは順不同で判定。
 
-推理の結論は、同じ `roundIndex` のクイズの `correctOptionId` で指定します。証拠の選択と英語の採点は独立しており、証拠だけで3択に自動回答しません。`-> quiz(<roundIndex>) ->` の後に、主張を手伝いの knot `<バトル>_claim` に書いて `-> <バトル>_claim ->` で流し、`- (stop)` と `-> reasoning ->` で止まります。戻ると `reasoning_action`（`"press"` か `"evidence"`）と `evidence_result`（`"success"` か `"failure"`）で分かれ、追及と違う資料の後に `-> stop` と書くと選び直せます。追及の文を `<バトル>_press` に書くと帳面の「追及で聞いたこと」にも出ます。例は見本の `stories/battles/smp_mihon_special_b_market.ink`。主張は帳面にも表示されるため、短い日本語にしてください。台詞はInk、証拠・条件はJSON、判定・保存はTypeScript、入力と描画はReactです。
+推理の結論は、同じ `roundIndex` のクイズの `correctOptionId` で指定します。証拠の選択と英語の採点は独立しており、証拠だけで3択に自動回答しません。`-> quiz(<roundIndex>) ->` の後に、主張を手伝いの knot `<バトル>_claim` に書いて `-> <バトル>_claim ->` で流し、`- (stop)` と `-> reasoning ->` で止まります。戻ると `reasoning_action`（`"press"` か `"evidence"`）と `evidence_result`（`"success"` か `"failure"`）で分かれ、追及と違う資料の後に `-> stop` と書くと選び直せます。追及の文を `<バトル>_press` に書くと帳面の「追及で聞いたこと」にも出ます。例は見本の `stories/places/smp_mihon_market.ink` の knot `smp_mihon_special_b_market`。主張は帳面にも表示されるため、短い日本語にしてください。台詞はInk、証拠・条件はJSON、判定・保存はTypeScript、入力と描画はReactです。
 
 ビルド時に形式と推理種別、証拠枚数・重複・正解の包含、証拠IDと観光地の一致、ラウンド範囲、主張の knot と止まる所を検証します。正解証拠と結論が論理的に一意かは出典と脚本も照合してください。本編への配置は `content/journeys/<旅行編ID>/progression/journey.json` の `storyBattles` に、対決ID、前後のエピソードID、案内文とボタン名を指定します。B/C戦績を完了記録に使い、観光エピソードや報酬を重複登録しません。
 
