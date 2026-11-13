@@ -81,7 +81,7 @@ import { includesModules, readFileChoices, readMainFileHead, readPlaceFile, choi
 import { checkSpeakerPeople } from "./speaker-people";
 import { MODULES_FILE, MODULES_INK } from "./modules-ink";
 import { walkScene } from "./scene-walk";
-import { catalogScenes, checkRuleIds, checkSceneReferences, insertedSceneEncounter, mainFileSceneId, mergeCatalogChoiceTags, placeScenes, sceneConditionsOf, sceneTagRules, thenLoopErrors, thenLoopWarnings, momentText, momentWarnings, tourMomentErrors, type MainAddresses, type ThenLoopContext } from "./scene-table";
+import { catalogScenes, checkRuleIds, checkSceneReferences, insertedSceneEncounter, mainFileSceneId, mergeCatalogChoiceTags, placeScenes, sceneConditionsOf, sceneRewardErrors, sceneTagRules, thenLoopErrors, thenLoopWarnings, momentText, momentWarnings, tourMomentErrors, type MainAddresses, type ThenLoopContext } from "./scene-table";
 import { sceneDataCatalogSchema, storyStateCatalogSchema, type SceneEntry, type SceneMain } from "../src/content/scene-schemas";
 import { fnvHash } from "../src/content/fingerprint";
 import { parseConditionText, combineWhenUntil } from "../src/content/condition-text";
@@ -1065,6 +1065,14 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const sceneTitle = (scene: SceneEntry) => scene.title ?? tourism.landmarks.find((landmark) => scene.at[0] && landmark.id === momentLandmarks(scene.at[0], scene.cityId)[0])?.nameJa ??
     cities.find((city) => city.id === scene.cityId)?.nameJa ?? scene.id;
   const tagRules = sceneTagRules([...taggedScenes, ...catalogEntries], sceneTitle);
+  // `# on_done: reward` (an inserted scene's other way to earn a one-off reward): a reward of the scene's city, with AP, named once.
+  const rewardCity = (rule: (typeof journey.rewards)[number]) => rule.episodeId !== undefined
+    ? journey.episodes.find((episode) => episode.id === rule.episodeId)?.cityId
+    : (() => { const battle = battles.find((item) => item.id === rule.battleId);
+      return battle?.cityId ?? tourism.landmarks.find((item) => item.id === battle?.landmarkId)?.cityId; })();
+  const rewardProblems = sceneRewardErrors(taggedScenes, journey.rewards.map((rule) => ({ id: rule.id, ap: rule.ap, trigger: rule.trigger, cityId: rewardCity(rule) })),
+    encounterCatalog.encounters.flatMap((event) => event.alternativeApRewardId ? [{ encounterId: event.id, rewardId: event.alternativeApRewardId }] : []));
+  if (rewardProblems.length) throw new Error(rewardProblems.join("\n"));
   checkRuleIds(tagRules, [
     ...journey.rewards.map((rule) => ({ id: rule.id, origin: `the reward ${rule.id} of progression/journey.json` })),
     ...journey.storyBattles.flatMap((battle) => battle.completionReward ? [{ id: battle.completionReward.id, origin: `the completion reward of ${battle.battleId}` }] : []),
