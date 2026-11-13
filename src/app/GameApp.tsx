@@ -38,7 +38,8 @@ import { oldDataContext, type KeyedStorage } from "../persistence/old-data";
 import { CanalScene } from "../components/CanalScene";
 import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
-import { useVoiceSettings } from "../components/useVoice";
+import { useVoiceRate, useVoiceSettings } from "../components/useVoice";
+import { effectiveVoiceRate } from "../audio/voice-rate";
 import { holdSceneCues, playCue, playSe, useSoundEffectSettings } from "../audio/sound-effects";
 import { canVibrate, useVibrationSetting, vibrate } from "../audio/vibration";
 import { heldItemIds } from "../domain/item-changes";
@@ -145,7 +146,7 @@ import { browserStorage, type AppProps } from "./app-storage";
 import { screenOnShow, storySceneChanged, storySceneOnScreen } from "./story-scene-change";
 import { focusSceneHeading } from "../components/scene-focus";
 import { holdTaps } from "../components/tap-hold";
-import { useDebugMode } from "./debug-mode";
+import { useDebugMode, useDebugVoiceRate } from "./debug-mode";
 import { DebugModeSetting } from "./DebugModeSetting";
 import { canReturnToFreeTime, freeTimeReturnState, nextFreeTimeReturn, type FreeTimeReturn } from "./free-time-return";
 import { endIntroMovie, introChange, recordIntro, startIntroTiming, type IntroTiming } from "./intro-timing";
@@ -158,6 +159,8 @@ import { nameCutIn, speakerPlate } from "../components/speaker-plate";
 
 /** 最初の3分の計測's note (Debug mode only): its own chunk, loaded when ⚙設定 shows it (scripts/dist-guard.ts). */
 const IntroTimingNote = lazy(() => import("./IntroTimingNote"));
+/** Debug's 台詞の声の速さ (Debug mode only): its own chunk, loaded when ⚙設定 shows it (scripts/dist-guard.ts). */
+const DebugVoiceRate = lazy(() => import("./DebugVoiceRate"));
 
 /** Where a Debug relationship change shows (decision 23): the story scene on screen, else the map or free time until the next action. */
 function changeScreenKey(state: GameState): string {
@@ -199,6 +202,11 @@ export function GameApp({
   useAmbienceSettings(displaySettings.value.ambience, displaySettings.value.bgmVolume);
   // This device's Debug-mode switch (journeyStorage passes its key through unscoped).
   const debugMode = useDebugMode(storage);
+  // Debug's 台詞の声の速さ (debug-mode.ts): this device's Debug preference, so read from the device's storage in a
+  // Debug session too (whose game lives in memory). The voices play at it while Debug mode is on (always on Debug's
+  // page) and at 1× with it off, whatever is stored (voice-rate.ts).
+  const voiceRate = useDebugVoiceRate(browserStorage);
+  useVoiceRate(effectiveVoiceRate(isDebug || debugMode.on, voiceRate.rate));
   // While Debug mode is on (always in a Debug session), a choice's relationship changes show above
   // its story scene until the scene ends or the next change (relationship-change.ts). Never saved
   // or logged. Read through a ref: a caller may hold an older `commit` (travel timers).
@@ -667,8 +675,9 @@ export function GameApp({
         onSettings={() => {
           setPlayer(game.playerName);
           setHeroine(game.heroineName);
-          // Another tab may have turned Debug mode on or off meanwhile.
+          // Another tab may have turned Debug mode on or off, or changed Debug's speed of the voices, meanwhile.
           debugMode.refresh();
+          voiceRate.refresh();
           setSettings(true);
         }}
         onReturnToFreeTime={canReturnToFreeTime(freeTimeReturn.current, game, journeyId, debugOn) ? () => setConfirmReturn(true) : undefined}
@@ -1365,6 +1374,10 @@ export function GameApp({
           {!isDebug && <DebugModeSetting debugMode={debugMode} />}
           {/* 最初の3分の計測 (Debug mode only), loaded when shown. */}
           {debugOn && <Suspense fallback={null}><IntroTimingNote timing={introTiming.current} /></Suspense>}
+          {/* 台詞の声の速さ (Debug mode only), loaded when shown. */}
+          {debugOn && <Suspense fallback={null}>
+            <DebugVoiceRate rate={voiceRate.rate} onChange={voiceRate.change} voiceOn={displaySettings.value.voice} message={voiceRate.message} />
+          </Suspense>}
           <button type="button" className="text-button credits-entry"
             onClick={() => { setSettings(false); setCreditsOpen(true); }}>出典・権利の一覧</button>
           {!isDebug && oldDataStorage && <button type="button" className="text-button old-data-entry"

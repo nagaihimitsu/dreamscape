@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { StorageLike } from "../persistence";
+import { VOICE_RATE_DEFAULT, clampVoiceRate, parseVoiceRate } from "../audio/voice-rate";
 
 /**
  * Debug mode (user decision 2026-11-08): anyone can turn it on in ゲームの設定 with the
@@ -91,5 +92,58 @@ export function useDebugMode(storage: DebugModeStorage) {
     refresh,
     turnOn: (password: string): "ok" | "wrong" | "failed" => isDebugModePassword(password) ? change(true) : "wrong",
     turnOff: () => change(false),
+  };
+}
+
+/**
+ * Debug's speed of the lines' voices (2026-11-13 user request; the rule: src/audio/voice-rate.ts): this device's Debug
+ * preference beside the switch, under its own key, never part of a save, a backup, the English notes, the display
+ * settings or Debug's memory storage (neither 「保存データの消去」 nor 「古い保存データの整理」 touches it). It counts only
+ * while Debug mode is on (effectiveVoiceRate). 1× is stored as no key.
+ */
+export const DEBUG_VOICE_RATE_KEY = "dreamscape.debug-voice-rate.v1";
+
+/** The stored speed on its scale: 1 when nothing (or no number) is stored or the storage cannot be read. */
+export function readDebugVoiceRate(storage: Pick<StorageLike, "getItem">): number {
+  try {
+    return parseVoiceRate(storage.getItem(DEBUG_VOICE_RATE_KEY));
+  } catch {
+    return VOICE_RATE_DEFAULT;
+  }
+}
+
+/** Stores the speed (on its scale; 1× removes the key). A storage that refuses keeps what it had and says so. */
+export function writeDebugVoiceRate(storage: DebugModeStorage, rate: number): DebugModeWrite {
+  const next = clampVoiceRate(rate);
+  try {
+    if (next === VOICE_RATE_DEFAULT) storage.removeItem(DEBUG_VOICE_RATE_KEY);
+    else storage.setItem(DEBUG_VOICE_RATE_KEY, String(next));
+    return { ok: true };
+  } catch {
+    return { ok: false, message: "この端末に保存できなかったため、この声の速さはページを開き直すと元に戻ります。" };
+  }
+}
+
+/**
+ * The speed for Debug's control (⚙設定, 音と演出の見本): a change applies at once, also when the storage refuses it
+ * (then `message` says it will not stay). `refresh` reads the stored value again (when ⚙設定 opens, as the switch).
+ */
+export function useDebugVoiceRate(storage: DebugModeStorage) {
+  const [rate, setRate] = useState(() => readDebugVoiceRate(storage));
+  const [message, setMessage] = useState("");
+  return {
+    /** The stored speed (it plays only while Debug mode is on: effectiveVoiceRate). */
+    rate,
+    /** A storage failure of the last change, or "". */
+    message,
+    refresh() {
+      setRate(readDebugVoiceRate(storage));
+      setMessage("");
+    },
+    change(next: number) {
+      const result = writeDebugVoiceRate(storage, next);
+      setRate(clampVoiceRate(next));
+      setMessage(result.ok ? "" : result.message);
+    },
   };
 }

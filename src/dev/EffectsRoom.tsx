@@ -17,8 +17,11 @@ import { playSceneMusic, useBgmSettings, useSceneMusic } from "../audio/bgm";
 import { playSceneAmbience, useAmbienceSettings, useSceneAmbience } from "../audio/ambience";
 import { canVibrate, useVibrationSetting, vibrate, type VibrationKind } from "../audio/vibration";
 import type { MusicDuck } from "../audio/scene-music";
-import { useLineVoice, useVoiceSettings, type LineVoiceState } from "../components/useVoice";
+import { useLineVoice, useVoiceRate, useVoiceSettings, type LineVoiceState } from "../components/useVoice";
 import { usePresentationSettings } from "../components/usePresentationSettings";
+import { browserStorage } from "../app/app-storage";
+import { useDebugVoiceRate } from "../app/debug-mode";
+import DebugVoiceRate from "../app/DebugVoiceRate";
 import { CanalScene } from "../components/CanalScene";
 import { CharacterPortrait } from "../components/CharacterPortrait";
 import { SceneTint, WeatherLayer } from "../components/SceneAtmosphere";
@@ -50,7 +53,8 @@ import "./effects-room.css";
 // (DebugMode shows it in place of 場面の確認, never beside a game), through the game's own players and components. It
 // reads and writes no save, English notebook, presentation setting or Debug-mode key, and changes no game: its sound
 // settings live in its own memory (the game's defaults to start with), its sample header shows a state built in memory
-// by the scene builders and never saved. Everything it plays stops as it closes.
+// by the scene builders and never saved. Everything it plays stops as it closes. Only Debug's speed of the voices is
+// this device's (src/app/debug-mode.ts, the same value as ⚙設定's Debug part), as the voices are auditioned here.
 
 const parsedLayers = audioLayersSchema.safeParse(audioLayersJson);
 const LAYERS = parsedLayers.success ? parsedLayers.data.layers : [];
@@ -123,6 +127,9 @@ export function EffectsRoom({ onClose }: { onClose: () => void }) {
   const [vibrationAvailable] = useState(() => canVibrate(typeof navigator === "undefined" ? undefined : navigator));
   // The game's own setting hooks (as GameApp), with the room's settings.
   useVoiceSettings(sound.voice, sound.voiceVolume);
+  // Debug's speed of the voices, this device's (Debug's page: Debug mode counts as on).
+  const voiceRate = useDebugVoiceRate(browserStorage);
+  useVoiceRate(voiceRate.rate);
   useSoundEffectSettings(sound.se, sound.seVolume);
   useVibrationSetting(vibrationAvailable && sound.vibration);
   useBgmSettings(sound.bgm, sound.bgmVolume);
@@ -178,7 +185,7 @@ export function EffectsRoom({ onClose }: { onClose: () => void }) {
       </header>
       <p className="effects-room-note">
         Debug専用の確認の部屋です。登録されている効果音・BGM・環境音・声を一つずつ鳴らし、天気・揺れ・品物の札・上の帯の手応えなどの演出を、遊ばずにゲームと同じ部品で見られます。
-        セーブ・英語ノート・⚙設定・ゲームの進行は何も変えません。ここでの音の設定はこの部屋だけのもので（初めはゲームの初期値）、閉じると流している音はすべて止まります。
+        セーブ・英語ノート・⚙設定・ゲームの進行は何も変えません。ここでの音の設定はこの部屋だけのもので（初めはゲームの初期値）、閉じると流している音はすべて止まります。ただし「台詞の声の速さ」はDebugの設定で、⚙設定のDebugの欄と同じ値がこの端末に残ります。
       </p>
       {LIST_PROBLEMS.length > 0 && <p className="effects-room-off" role="alert">
         {LIST_PROBLEMS.join("・")}を読めませんでした。npm run content:build で作り直してから開き直してください。読めた一覧だけを出しています。
@@ -235,7 +242,8 @@ export function EffectsRoom({ onClose }: { onClose: () => void }) {
       </section>
 
       <VoiceSection enabled={sound.voice} percent={voicePercent} voice={voice}
-        onToggle={(on) => settings.update({ voice: on })} onVolume={(value) => settings.update({ voiceVolume: value })} onPlay={playVoice} />
+        onToggle={(on) => settings.update({ voice: on })} onVolume={(value) => settings.update({ voiceVolume: value })} onPlay={playVoice}
+        rate={<DebugVoiceRate rate={voiceRate.rate} onChange={voiceRate.change} voiceOn={sound.voice} message={voiceRate.message} />} />
 
       <EffectsStage reduce={reduce} systemReduced={systemReduced} onReduce={setReduce}
         onRide={(mode, route) => {
@@ -323,9 +331,11 @@ const VOICE_STATES: Readonly<Record<VoicePlay["state"], string>> = {
   stopped: "は止まりました（止めたとき、ほかの声に替えたとき、読み込めないときもここで止まります）。",
 };
 
-function VoiceSection({ enabled, percent, voice, onToggle, onVolume, onPlay }: {
+function VoiceSection({ enabled, percent, voice, onToggle, onVolume, onPlay, rate }: {
   enabled: boolean; percent: number; voice: VoicePlay | null;
   onToggle: (on: boolean) => void; onVolume: (value: number) => void; onPlay: (id: string) => void;
+  /** Debug's 台詞の声の速さ (DebugVoiceRate). */
+  rate: ReactNode;
 }) {
   const [query, setQuery] = useState("");
   return <section aria-labelledby="effects-room-voice">
@@ -333,6 +343,7 @@ function VoiceSection({ enabled, percent, voice, onToggle, onVolume, onPlay }: {
     <Toggle checked={enabled} onChange={onToggle}>台詞の声を出す</Toggle>
     {enabled ? <Volume label="声の大きさ" percent={percent} onChange={onVolume} />
       : <Off>「台詞の声を出す」がオフなので、声は鳴りません（ゲームと同じ）。</Off>}
+    {rate}
     <p>旅行編の public/assets/voice/ にある声のファイルを、場面ごと（IDの最後の番号の前まで）に並べています。ゲームの声と同じ流し方で、1つずつ鳴り、鳴っている間はBGMと環境音が半分になります。</p>
     {VOICE_LAYERS.length > 0 && <label className="effects-room-field">
       IDで絞り込む

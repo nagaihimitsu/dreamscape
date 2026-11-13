@@ -75,8 +75,11 @@ type Graph = { audio: AudioContext; filter: BiquadFilterNode; level: GainNode; b
 
 let silence: string | undefined;
 
-/** A short silence (a WAV in memory) that an idle deck plays once in a gesture, so that iOS lets it play later. */
-function silenceUrl(): string {
+/**
+ * A short silence (a WAV in memory) that an idle deck plays once in a gesture, so that iOS lets it play later (as the
+ * voice element does: voice-element.ts).
+ */
+export function silenceUrl(): string {
   if (silence) return silence;
   const samples = 800;
   const bytes = new Uint8Array(44 + samples);
@@ -104,7 +107,7 @@ function silenceUrl(): string {
 }
 
 /** Plays an element, never throwing (an old browser's play() may throw instead of refusing). */
-function start(element: HTMLAudioElement): Promise<void> {
+export function playElement(element: HTMLAudioElement): Promise<void> {
   try {
     return element.play();
   } catch (error) {
@@ -248,7 +251,7 @@ export function createLoopPlayer({ part, pathOf, volumes, duckLevels, labelJa }:
   /** Plays the deck (in silence until its gain rises); refused (no gesture yet, iOS), it is tried again at the next gesture. */
   function play(deck: Deck) {
     if (!graph || document.hidden || !settings.enabled || !deck.element.paused) return;
-    start(deck.element).then(() => {
+    playElement(deck.element).then(() => {
       deck.unlocked = true;
     }, () => {
       if (deck === active && settings.enabled) listenForGesture(true);
@@ -259,7 +262,7 @@ export function createLoopPlayer({ part, pathOf, volumes, duckLevels, labelJa }:
   function unlock(deck: Deck) {
     if (!deck.element.paused) return;
     if (!deck.track) deck.element.src = silenceUrl();
-    start(deck.element).then(() => {
+    playElement(deck.element).then(() => {
       deck.unlocked = true;
       if (deck !== active) deck.element.pause();
     }, () => listenForGesture(true));
