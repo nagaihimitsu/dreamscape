@@ -75,5 +75,36 @@
       ],
       "fromJa": "インド・ベンガルール（バンガロール）の鉄道駅で早朝に録った録音の2分25.3秒から60秒を切り出し、終わりに続く3秒を頭へ等パワーで重ねてつないだ（継ぎ目なしでくり返せる）。モノラル化し、110Hz以下と14kHz以上を弱め、-24 LUFSに整えた。録音に混じる15.7kHzの高い持続音を取り除いた。"
     }
-  ]
+  ],
+  "play": {
+    "places": {
+      "delhi_red_fort": "amb_crowd_outdoor",
+      "delhi_qutb_minar": "amb_birds_park",
+      "delhi_humayun_tomb": "amb_birds_park",
+      "delhi_india_gate": "gt_amb_street_traffic",
+      "delhi_jama_masjid": "gt_amb_bazaar",
+      "delhi_chandni_chowk": "gt_amb_bazaar",
+      "delhi_lodhi_garden": "amb_birds_park",
+      "delhi_lotus_temple": "amb_birds_park",
+      "agra_taj_mahal": "amb_crowd_outdoor",
+      "agra_agra_fort": "amb_wind",
+      "agra_itimad_tomb": "amb_birds_park",
+      "agra_mehtab_bagh": "amb_wind",
+      "agra_fatehpur_sikri": "amb_wind",
+      "agra_akbar_tomb": "amb_birds_park",
+      "agra_ram_bagh": "amb_birds_park",
+      "agra_chini_rauza": "amb_wind",
+      "agra_mariam_tomb": "amb_birds_park",
+      "jaipur_amber_fort": "amb_wind",
+      "jaipur_hawa_mahal": "gt_amb_street_traffic",
+      "jaipur_city_palace": "amb_crowd_outdoor",
+      "jaipur_jantar_mantar": "amb_crowd_outdoor",
+      "jaipur_jal_mahal": "amb_wind",
+      "jaipur_nahargarh_fort": "amb_wind",
+      "jaipur_albert_hall": "gt_amb_street_traffic",
+      "jaipur_jaigarh_fort": "amb_wind",
+      "jaipur_johari_bazaar": "gt_amb_bazaar",
+      "jaipur_panna_meena_kund": "amb_birds_park"
+    }
+  }
 }

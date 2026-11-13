@@ -1,9 +1,11 @@
 INCLUDE modules.ink
 # background: gt_bg_jaipur_hawa_mahal
+# ambience: gt_amb_street_traffic
 # speaker: narrator
 旅の最後の日。昼のうちに、二人はハワー・マハルの前で、行列が通る道を確かめておいた。そして、日が暮れた。
 # speaker: narrator
 # bgm: gt_naraina
+# ambience: amb_crowd_outdoor
 夜の旧市街。照明に浮かぶハワー・マハルの前を、花婿の行列がゆっくり進んでいた。
 # speaker: narrator
 赤い制服の楽隊。頭に灯りを載せて歩く男たち。白い馬の上には、花の房で顔を隠したアマン。その前で、親戚たちが道いっぱいに踊っている。

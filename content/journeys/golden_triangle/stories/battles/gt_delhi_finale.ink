@@ -1,11 +1,13 @@
 INCLUDE modules.ink
 # background: gt_bg_delhi_red_fort
+# ambience: gt_amb_street_traffic
 # speaker: narrator
 # se: phone_ring
 赤い城、暗くなってから。カムラの一覧の一行目が気になって、二人はもう一度、レッド・フォートの城門の前に来ていた。そこへ、宿の主人から電話が入った。
 # speaker: gt_delhi_hotel_owner
 隣のカムラさんのお孫さんが、お二人を探しています
 # background: gt_bg_delhi_hotel_hub
+# ambience: amb_crowd_outdoor
 # speaker: narrator
 # bgm: gt_a_newcomer
 急いで宿に戻ると、路地が騒がしかった。半分だけ荷を積んだトラック。集まった近所の人たち。段ボールには、どれも「JAIPUR」と書いてある。
@@ -70,6 +72,7 @@ INCLUDE modules.ink
 昔の話なら、昔の地図で読めばいいんだと思います
 -> quiz(2) ->
 # background: gt_bg_delhi_chandni_chowk
+# ambience: gt_amb_bazaar
 { quiz_correct:
     # speaker: heroine
     # local_word: gt_delhi_word_chandni
@@ -138,6 +141,7 @@ INCLUDE modules.ink
 赤い城――暗くなってから
 -> quiz(4) ->
 # background: gt_bg_delhi_red_fort
+# ambience: gt_amb_street_traffic
 { quiz_correct:
     # speaker: heroine
     夜の光と音のショー。城の中を歩きながら見るんです。暗くなってから、です

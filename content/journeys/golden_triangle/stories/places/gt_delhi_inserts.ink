@@ -309,6 +309,7 @@ INCLUDE modules.ink
 # priority: -2
 # background: gt_bg_delhi_station_front
 # bgm: gt_vadodora
+# ambience: gt_amb_street_traffic
 # speaker: narrator
 宿の主人の車を降りると、ニューデリー駅の正面は、人と荷物と呼び込みの声で埋まっていた。道の向かいはパハールガンジ。安宿と土産物屋と両替屋の看板が、空が見えないほど重なっている。
 アーグラ行きの列車まで、あと五十分。彼女が携帯で乗車券を確かめていると、白いシャツに首から名札を下げた青年が、すっと隣に並んだ。
@@ -353,6 +354,7 @@ Agra? Your train is cancelled today.
 
 = across_the_road
 # background: gt_bg_delhi_paharganj
+# ambience: stop
 # speaker: narrator
 道を渡り、大通りから一本入った路地の、狭い階段を上がる。扉には、大きな英語の看板。政府公認・観光案内所。中にはインドの旗が飾られ、額に入った「証明書」が壁に並び、天井の扇風機がゆっくり回っていた。
 背広の男が、にこやかに立ち上がった。
@@ -450,6 +452,7 @@ No, thank you.
     ……行こう。取り返すより、電車。ここで揉めて、もっと何かなくすのは嫌
 }
 # background: gt_bg_delhi_station_front
+# ambience: gt_amb_street_traffic
 # speaker: narrator
 階段を駆け下り、道を渡る。駅の入口で、赤いシャツの荷運びの男が、こちらの出てきた路地を見て、首を振った。
 # speaker: gt_delhi_porter
@@ -457,6 +460,7 @@ No, thank you.
 # speaker: narrator
 男が顎で示した電光掲示板に、アーグラ行きの列車が出ていた。定刻。発車番線も、ちゃんと表示されている。
 # background: gt_bg_delhi_station
+# ambience: gt_amb_railway_station
 # speaker: narrator
 念のため、ホームにいた黒い上着の検札係に乗車券を見せると、彼は画面を一瞥して、うなずいただけだった。
 # speaker: gt_delhi_ticket_checker
@@ -507,6 +511,7 @@ No, thank you.
 # priority: -1
 # background: gt_bg_delhi_station
 # bgm: gt_vadodora_chill_mix
+# ambience: gt_amb_railway_station
 # speaker: narrator
 ホームは、発車を待つ人であふれていた。赤いシャツに真鍮の腕章をつけた荷運びの男たちが、スーツケースを三つ、頭の上に積んで、人の間をすり抜けていく。
 # local_word: gt_delhi_word_sahayak

@@ -2,6 +2,7 @@ INCLUDE modules.ink
 // 【3】1場面1ファイルの頭の札（結果を初めて記録したとき1回当たる）。足した札：アンワルの詫びのペーターを受け取る（アーグラのエピローグで食べ切る）
 # on_done: item gt_agra_anwar_petha
 # background: gt_bg_agra_taj_mahal
+# ambience: amb_crowd_outdoor
 # speaker: narrator
 タージ・マハルの正門の近くに、ひときわ大きな人だかりができていた。真ん中に、白いクルタに銀の握りの杖を持った老ガイドが立っている。
 # speaker: narrator
@@ -53,6 +54,7 @@ INCLUDE modules.ink
 # speaker: enemy
 日が傾いたら、対岸の庭へ参りましょう。この旅の最後の、とっておきの話は、そこでいたします
 # background: gt_bg_agra_mehtab_bagh
+# ambience: amb_wind
 # speaker: narrator
 川を渡ったメヘターブ・バーグの岸辺。夕日に染まるタージが、川向こうに正面から見えた。
 # speaker: enemy
