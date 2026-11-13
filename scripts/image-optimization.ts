@@ -5,10 +5,10 @@ import { z } from "zod";
 import type { TourismAsset } from "../src/content/tourism-schemas";
 import type { ContentWarning } from "./content-report";
 import { displayPath, type ContentSources, type JourneyManifest } from "./content-sources";
-import { authoringProfileOf } from "./journey-authoring";
-import { requireServedFile } from "./public-assets";
+import { authoringFolder, authoringProfileOf } from "./journey-authoring";
+import { requireServedFile, servedFile } from "./public-assets";
 
-// How tourism photos are served: as WebP.
+// How tourism photos are served: as WebP. (The portraits: further below, PORTRAIT_WEBP.)
 // A photo the observation viewer zooms (up to 5×) keeps its size; any other
 // photo fits in 1600×1800 px (portrait photos keep the width a 3× phone
 // screen needs). JPEG and PNG photos are re-encoded as WebP (quality 80),
@@ -174,5 +174,105 @@ export function tourismPhotoWarnings(sources: ContentSources, photos: readonly T
     const command = `npm run images:optimize -- ${photo.journeyId ? `--journey ${photo.journeyId} ` : ""}--write`;
     return [{ kind: "tourism-photo", message: `観光写真を軽くできます: ${displayPath(sources.root, photo.catalogFile)} の "${photo.asset.id}"` +
       `（${photo.asset.path}、${size}）。${command} で、${fix}。` }];
+  });
+}
+
+// How the standing pictures (the portraits of presentation/characters.json) are served (2026-11-13 user decision
+// 「軽い版を配る」): the drawn original stays lossless (PNG) in the authoring folder of the layer whose catalog names
+// the portrait, never served, and the served file is a lossy WebP copy of it with the transparency kept exactly
+// (PORTRAIT_WEBP). Lossless portraits (about 300–900 KB each) filled a slow phone link in a new journey's first ~40 s;
+// the copies are about 80 % smaller, with no difference visible at phone size. A copy keeps the served path, so
+// nothing that names it changes. `npm run images:optimize` makes the copies from the originals (optimize-images.ts);
+// content:build warns about a portrait still served lossless. The sample journey's portraits are left alone.
+
+/** sharp's WebP settings of a served portrait: lossy colour, lossless alpha (alphaQuality 100), sharp RGB→YUV conversion. */
+export const PORTRAIT_WEBP = { quality: 85, alphaQuality: 100, smartSubsample: true, effort: 6 } as const;
+
+/** A portrait the character catalogs name: its served path and file, and where its lossless original lives. */
+export type Portrait = {
+  /** The served path (assets/…), as characters.json names it. */
+  assetPath: string;
+  /** The journey whose characters.json names it (undefined: the shared content/presentation/characters.json). */
+  journeyId: string | undefined;
+  /** The served file (absolute): the loaded public file, or where that layer would serve it. */
+  file: string;
+  /** The lossless original (absolute; portraitOriginalOf). */
+  original: string;
+  /** Named by the sample journey (authoring/templates/): never converted. */
+  sample: boolean;
+};
+
+/**
+ * Where the lossless original of a served portrait lives: the same path below `assets/` in the authoring folder of
+ * the layer (authoring/ for the shared layer, authoring/journeys/<journeyId>/ for a journey), as a PNG. For example
+ * golden_triangle's assets/characters/gt_kamla/neutral.webp → authoring/journeys/golden_triangle/characters/gt_kamla/neutral.png.
+ */
+export function portraitOriginalOf(assetPath: string, journeyId: string | undefined): string {
+  const below = assetPath.replace(/^assets\//u, "");
+  return `${journeyId ? authoringFolder(journeyId) : "authoring/"}${below.slice(0, below.length - path.posix.extname(below).length)}.png`;
+}
+
+type CharacterPictures = { characters: readonly { imagePath: string | null; variants: readonly { imagePath: string | null }[];
+  costumes?: readonly { poses: readonly { expressions: Record<string, string> }[] }[] }[] };
+
+/**
+ * The raster portraits (.png, .webp; not the SVG placeholders) the merged character catalog names (each character's
+ * imagePath, its variants' and its costumes' expressions), once each, in catalog order. `catalog` is the validated
+ * merged catalog (same order as its provenance, which gives the layer of each character).
+ */
+export function portraitsOf(sources: ContentSources, catalog: CharacterPictures): Portrait[] {
+  const files = sources.catalogs["presentation/characters.json"]?.provenance.items.characters ?? [];
+  const templates = path.join(sources.root, "authoring", "templates") + path.sep;
+  const seen = new Set<string>();
+  return catalog.characters.flatMap((character, index): Portrait[] => {
+    const catalogFile = files[index] ?? "";
+    const manifest = sources.manifests.find((item) => catalogFile.startsWith(item.directory + path.sep));
+    const paths = [character.imagePath, ...character.variants.map((variant) => variant.imagePath),
+      ...(character.costumes ?? []).flatMap((costume) => costume.poses.flatMap((pose) => Object.values(pose.expressions)))];
+    return paths.flatMap((assetPath): Portrait[] => {
+      if (!assetPath || !/\.(?:png|webp)$/iu.test(assetPath) || seen.has(assetPath)) return [];
+      seen.add(assetPath);
+      return [{
+        assetPath, journeyId: manifest?.id,
+        file: servedFile(sources.publicFiles, assetPath) ?? path.join(manifest?.directory ?? sources.root, "public", assetPath),
+        original: path.join(sources.root, portraitOriginalOf(assetPath, manifest?.id)),
+        sample: catalogFile.startsWith(templates),
+      }];
+    });
+  });
+}
+
+/** How WebP bytes are compressed, by their first image chunk (VP8 lossy, VP8L lossless); undefined when they are no WebP. */
+export function webpCompressionOf(bytes: Uint8Array): "lossy" | "lossless" | undefined {
+  const ascii = (start: number) => String.fromCharCode(...bytes.subarray(start, start + 4));
+  if (bytes.length < 12 || ascii(0) !== "RIFF" || ascii(8) !== "WEBP") return undefined;
+  for (let offset = 12; offset + 8 <= bytes.length;) {
+    const chunk = ascii(offset);
+    if (chunk === "VP8 ") return "lossy";
+    if (chunk === "VP8L") return "lossless";
+    const size = (bytes[offset + 4] | (bytes[offset + 5] << 8) | (bytes[offset + 6] << 16) | (bytes[offset + 7] << 24)) >>> 0;
+    offset += 8 + size + (size & 1);
+  }
+  return undefined;
+}
+
+/**
+ * content:build's warning for each portrait served lossless that npm run images:optimize would make light: a PNG path
+ * (to rename to .webp first), or a lossless WebP. `compressionOf` reads a served WebP file (webpCompressionOf of its
+ * bytes). Never an error: the portrait works, it is only heavier than needed.
+ */
+export function portraitWarnings(sources: ContentSources, portraits: readonly Portrait[],
+  compressionOf: (file: string) => "lossy" | "lossless" | undefined): ContentWarning[] {
+  return portraits.flatMap((portrait): ContentWarning[] => {
+    const png = photoFormatOfPath(portrait.assetPath) === "png";
+    if (portrait.sample || (!png && compressionOf(portrait.file) !== "lossless")) return [];
+    const command = `npm run images:optimize -- ${portrait.journeyId ? `--journey ${portrait.journeyId} ` : ""}--write`;
+    const original = displayPath(sources.root, portrait.original);
+    const light = `配信用の軽い版（非可逆のWebP 品質${PORTRAIT_WEBP.quality}、透明度はそのまま）`;
+    return [{ kind: "portrait", message: png
+      ? `立ち絵を軽くできます: ${portrait.assetPath}（PNG）。characters.json と own-artwork.json のパスを .webp にし、元の絵を ${original} に置いてから、` +
+        `${command} で${light}を作ります。`
+      : `立ち絵を軽くできます: ${portrait.assetPath}（可逆のWebP）。${command} で、元の絵 ${original} から${light}にします` +
+        "（元の絵がなければ、今の絵をそこへPNGで残します）。" }];
   });
 }

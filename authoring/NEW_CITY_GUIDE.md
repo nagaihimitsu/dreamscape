@@ -408,12 +408,12 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 - 目的：クイズの相手や出会う人に絵を付ける。
 - 前に要るもの：手順7（人物の設計）。台本の完成は待たなくてよい。
 - 作るもの：
-  - 絵：背景を透過した全身の絵。配信は可逆の WebP（`<旅行編>/public/assets/characters/<人物ID>/neutral.webp`）。元のPNGは `<制作資料>/characters/<人物ID>/`。
+  - 絵：背景を透過した全身の絵。元の絵は可逆のPNGで `<制作資料>/characters/<人物ID>/neutral.png`（配信しない）。配信するのは、`npm run images:optimize -- --journey <旅行編ID> --write` が元の絵から作る軽い版（非可逆の WebP 品質85、透明度は元の絵のまま。`<旅行編>/public/assets/characters/<人物ID>/neutral.webp`）。
   - 登録：`<旅行編>/presentation/characters.json` の `characters`（`id`・`imagePath`・`placement`・`placeholderColor`・`variants`）と、対決への割り当て `battleCharacters`（バトルID → 人物ID）。名前で話す人は `progression/story.json` の `people` の `characterId`。
   - 大きさ：背の高さや姿勢で大きく見える人に `"figureScale": 0.88` のように書く（0.5〜1.2。足の位置はそのまま）。
   - own-artwork への登録。
 - 守る決まり：別の人のイラストを流用しない。共通の `content/presentation/characters.json` に旅行編の人物を登録しない。
-- 確かめ方と終わりの目安：`npm run content:build`（形式・寸法・透過・参照）。`npm run dev` を開き、URLに `?character-preview` を付けて見る。透過の縁は目で見る。
+- 確かめ方と終わりの目安：`npm run content:build`（形式・寸法・透過・参照。可逆のまま配信している立ち絵は注意で出る）。`npm run dev` を開き、URLに `?character-preview` を付けて見る。透過の縁は目で見る。
 - インド編では：登場人物67人の立ち絵（#88）。年齢・体格・姿勢に合わせて `figureScale` を付けた（#103・#104。例 `gt_mehr`）。
 
 ### 手順15. アルバムの絵
@@ -687,7 +687,7 @@ Git の履歴（`git log origin/main`）から、ゴールデントライアン�
 ### 絵と音
 
 - [ ] 背景・自由時間の背景・品物のアイコンを登録した。自作の絵は `own-artwork.json` にある
-- [ ] 立ち絵を登録し、`?character-preview` で大きさ（`figureScale`）と縁を見た
+- [ ] 立ち絵を登録し、配信は軽い版にし（`images:optimize`）、`?character-preview` で大きさ（`figureScale`）と縁を見た
 - [ ] アルバムの絵は 3:2 で、`# photo:` が指している
 - [ ] BGM・環境音・効果音の出典（作者・ライセンス・確認日）を書いた
 - [ ] 声は台詞の確定の後に作った。名前のある行に声がない。`voiceCredits` を書いた。`voice:changes` に録り直しの要る行がない

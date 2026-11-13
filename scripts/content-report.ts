@@ -18,7 +18,7 @@ import { isObservationOnlyClue } from "../src/content/tourism-schemas";
 // the game, and what each journey folder provides. content:build prints the
 // warnings as counts (details with --verbose) and one line per journey.
 
-export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-prefix" | "unused-transport-mode" | "tourism-photo"
+export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-prefix" | "unused-transport-mode" | "tourism-photo" | "portrait"
   | "transit-walk-missing" | "transit-route-unsourced" | "never-offered" | "date-condition-trip"
   | "later-never-again" | "same-priority" | "repeat-without-until" | "data-language"
   | "never-met-again" | "romance-only-city" | "unfindable-clue" | "battle-after-epilogue" | "money-shortfall" | "ap-shortfall"
@@ -37,6 +37,7 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "id-prefix": "ID(s) without the journey prefix",
   "unused-transport-mode": "declared transport mode(s) without routes",
   "tourism-photo": "tourism photo(s) to convert to WebP (npm run images:optimize)",
+  "portrait": "portrait(s) served lossless, to make light (npm run images:optimize)",
   "transit-walk-missing": "city(ies) with a transit ledger and direction(s) without a walking route",
   "transit-route-unsourced": "city transport mode(s) with route(s) lacking a game-model estimate or a documented fact",
   "never-offered": "encounter(s) or date(s) whose condition can never be met where it is checked",

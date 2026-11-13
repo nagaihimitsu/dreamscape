@@ -2,12 +2,13 @@ import { createHash } from "node:crypto";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import sharp from "sharp";
 import { afterEach, describe, expect, it } from "vitest";
 import type { TourismAsset } from "../src/content/tourism-schemas";
 import { contentSourcesFromTree, contentTreeFromFiles, type JourneyManifest } from "./content-sources";
 import {
-  hasShareAlikeStatement, markSampleCopies, noteAfterConversion, photoFormatOfPath, planPhoto, readObservationCards, tourismPhotos,
-  tourismPhotoWarnings, webpPathOf,
+  hasShareAlikeStatement, markSampleCopies, noteAfterConversion, photoFormatOfPath, planPhoto, PORTRAIT_WEBP, portraitOriginalOf, portraitsOf,
+  portraitWarnings, readObservationCards, tourismPhotos, tourismPhotoWarnings, webpCompressionOf, webpPathOf,
 } from "./image-optimization";
 
 // The photo rule on its own, and on small content trees in memory (nothing below `root` exists).
@@ -172,5 +173,85 @@ describe("reading the observation cards", () => {
     expect(readObservationCards(directory, manifests, "skip")).toEqual([{ journeyId: "trip", file: path.join(directory, profile("trip").observationFile),
       images: { trip_place: { path: "assets/tourism/trip/a.jpg", sha256: "a".repeat(64) } } }]);
     expect(() => readObservationCards(directory!, manifests, "throw")).toThrow("観察資料を読めません: authoring/journeys/broken/drafts/observation-cards.json");
+  });
+});
+
+describe("portraits", () => {
+  const placement = { x: 50, bottom: 0, width: 80, height: 62, scale: 1.4, originX: 50, originY: 0 };
+  const character = (id: string, imagePath: string | null, extra: object = {}) =>
+    ({ id, imagePath, placement, placeholderColor: "#4f6f9a", variants: [], ...extra });
+  const heroine = character("heroine", null, {
+    variants: [{ emotion: "shy", imagePath: "assets/presentation/heroine_shy_placeholder.svg" }],
+    costumes: [{ id: "default_01", poses: [{ id: "standing_01", canvas: { width: 1024, height: 1536 }, expressions: {
+      neutral: "assets/characters/heroine/default_01/standing_01/neutral.webp", smile: "assets/characters/heroine/default_01/standing_01/smile.webp" } }] }],
+  });
+  const shared = { schemaVersion: 1, characters: [heroine, character("enemy", null)] };
+  const trip = { schemaVersion: 1, characters: [character("t_guide", "assets/characters/t_guide/neutral.webp"),
+    character("t_old", "assets/characters/t_old/neutral.png"), character("t_twin", "assets/characters/t_guide/neutral.webp")] };
+  const sample = { schemaVersion: 1, characters: [character("s_guide", "assets/characters/s_guide/neutral.webp")] };
+  const sources = contentSourcesFromTree(contentTreeFromFiles(root, {
+    "content/presentation/characters.json": json(shared),
+    "public/assets/characters/heroine/default_01/standing_01/neutral.webp": null,
+    "public/assets/characters/heroine/default_01/standing_01/smile.webp": null,
+    ...journeyFiles("content/journeys/trip", "trip", 10, []),
+    "content/journeys/trip/presentation/characters.json": json(trip),
+    "content/journeys/trip/public/assets/characters/t_guide/neutral.webp": null,
+    "content/journeys/trip/public/assets/characters/t_old/neutral.png": null,
+    ...journeyFiles("authoring/templates/sample_trip", "sample_trip", 9000, []),
+    "authoring/templates/sample_trip/presentation/characters.json": json(sample),
+    "authoring/templates/sample_trip/public/assets/characters/s_guide/neutral.webp": null,
+  }, { sample_trip: "authoring/templates/sample_trip" }));
+  const portraits = portraitsOf(sources, { characters: [...shared.characters, ...trip.characters, ...sample.characters] });
+
+  it("keeps each portrait's lossless original at the same path below assets/ in its layer's authoring folder, as a PNG", () => {
+    expect(portraitOriginalOf("assets/characters/heroine/default_01/standing_01/neutral.webp", undefined))
+      .toBe("authoring/characters/heroine/default_01/standing_01/neutral.png");
+    expect(portraitOriginalOf("assets/characters/gt_kamla/neutral.webp", "golden_triangle"))
+      .toBe("authoring/journeys/golden_triangle/characters/gt_kamla/neutral.png");
+    expect(portraitOriginalOf("assets/characters/t_old/neutral.png", "trip")).toBe("authoring/journeys/trip/characters/t_old/neutral.png");
+  });
+  it("lists the raster portraits the catalogs name, once each, with their layer, served file and original; no SVG placeholder", () => {
+    expect(portraits.map((item) => [item.assetPath, item.journeyId ?? null, item.sample])).toEqual([
+      ["assets/characters/heroine/default_01/standing_01/neutral.webp", null, false],
+      ["assets/characters/heroine/default_01/standing_01/smile.webp", null, false],
+      ["assets/characters/t_guide/neutral.webp", "trip", false],
+      ["assets/characters/t_old/neutral.png", "trip", false],
+      ["assets/characters/s_guide/neutral.webp", "sample_trip", true],
+    ]);
+    expect(portraits[0].file).toBe(path.join(root, "public/assets/characters/heroine/default_01/standing_01/neutral.webp"));
+    expect(portraits[0].original).toBe(path.join(root, "authoring/characters/heroine/default_01/standing_01/neutral.png"));
+    expect(portraits[2].file).toBe(path.join(root, "content/journeys/trip/public/assets/characters/t_guide/neutral.webp"));
+    expect(portraits[2].original).toBe(path.join(root, "authoring/journeys/trip/characters/t_guide/neutral.png"));
+  });
+  it("names where the layer would serve a portrait that has no file yet", () => {
+    // The trip's first character (provenance: the trip's characters.json) with a picture not drawn yet.
+    const [made] = portraitsOf(sources, { characters: [...shared.characters, character("t_guide", "assets/characters/t_new/neutral.webp")] })
+      .filter((item) => item.assetPath.includes("t_new"));
+    expect(made.file).toBe(path.join(root, "content/journeys/trip/public/assets/characters/t_new/neutral.webp"));
+    expect(made.original).toBe(path.join(root, "authoring/journeys/trip/characters/t_new/neutral.png"));
+  });
+  it("tells lossy from lossless WebP by the first image chunk, with or without alpha", async () => {
+    const picture = sharp({ create: { width: 16, height: 16, channels: 4, background: { r: 200, g: 80, b: 60, alpha: 0.5 } } });
+    expect(webpCompressionOf(await picture.clone().webp({ ...PORTRAIT_WEBP, effort: 0 }).toBuffer())).toBe("lossy");
+    expect(webpCompressionOf(await picture.clone().webp({ lossless: true }).toBuffer())).toBe("lossless");
+    expect(webpCompressionOf(await picture.clone().removeAlpha().webp({ quality: 80 }).toBuffer())).toBe("lossy");
+    expect(webpCompressionOf(await picture.clone().png().toBuffer())).toBeUndefined();
+    expect(webpCompressionOf(Buffer.from("RIFF\0\0\0\0WEBP"))).toBeUndefined();
+  });
+  it("warns about each portrait still served lossless, with the command and the original, but not about the sample's", () => {
+    const lossless = new Set([portraits[0].file, portraits[2].file, portraits[4].file]);
+    const warnings = portraitWarnings(sources, portraits, (file) => lossless.has(file) ? "lossless" : "lossy");
+    expect(warnings.every((warning) => warning.kind === "portrait")).toBe(true);
+    expect(warnings.map((warning) => warning.message)).toEqual([
+      "立ち絵を軽くできます: assets/characters/heroine/default_01/standing_01/neutral.webp（可逆のWebP）。npm run images:optimize -- --write で、" +
+        "元の絵 authoring/characters/heroine/default_01/standing_01/neutral.png から配信用の軽い版（非可逆のWebP 品質85、透明度はそのまま）にします" +
+        "（元の絵がなければ、今の絵をそこへPNGで残します）。",
+      "立ち絵を軽くできます: assets/characters/t_guide/neutral.webp（可逆のWebP）。npm run images:optimize -- --journey trip --write で、" +
+        "元の絵 authoring/journeys/trip/characters/t_guide/neutral.png から配信用の軽い版（非可逆のWebP 品質85、透明度はそのまま）にします" +
+        "（元の絵がなければ、今の絵をそこへPNGで残します）。",
+      "立ち絵を軽くできます: assets/characters/t_old/neutral.png（PNG）。characters.json と own-artwork.json のパスを .webp にし、" +
+        "元の絵を authoring/journeys/trip/characters/t_old/neutral.png に置いてから、npm run images:optimize -- --journey trip --write で" +
+        "配信用の軽い版（非可逆のWebP 品質85、透明度はそのまま）を作ります。",
+    ]);
   });
 });

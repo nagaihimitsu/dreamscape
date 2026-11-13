@@ -1,12 +1,14 @@
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
+import { characterCatalogSchema } from "../src/content/character-assets";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
-import { displayPath, loadContentSources, parseCatalog } from "./content-sources";
+import { displayPath, loadContentSources, parseCatalog, type ContentSources } from "./content-sources";
 import {
-  markSampleCopies, noteAfterConversion, PHOTO_BOX, PHOTO_QUALITY, planPhoto, readObservationCards, tourismPhotos, webpPathOf,
-  type ObservationCards, type PhotoFormat, type PhotoSkip, type TourismPhoto,
+  markSampleCopies, noteAfterConversion, PHOTO_BOX, PHOTO_QUALITY, photoFormatOfPath, planPhoto, PORTRAIT_WEBP, portraitsOf,
+  readObservationCards, tourismPhotos, webpCompressionOf, webpPathOf,
+  type ObservationCards, type PhotoFormat, type PhotoSkip, type Portrait, type TourismPhoto,
 } from "./image-optimization";
 import { jsonText, sampleMarks } from "./sample-journey";
 
@@ -15,7 +17,8 @@ import { jsonText, sampleMarks } from "./sample-journey";
 // decides; applyPhotoSteps writes the WebP files, the catalog records (path,
 // width, height, modificationJa) and the observation cards (path, sha256),
 // then removes the old files. Sources and check dates stay: the conversion
-// does not re-check where a photo comes from.
+// does not re-check where a photo comes from. It also makes the light copies
+// of the portraits (below).
 
 export type PhotoStep = {
   photo: TourismPhoto;
@@ -119,20 +122,93 @@ export async function applyPhotoSteps(root: string, steps: readonly PhotoStep[],
   return written;
 }
 
-/** The photos of the repository's content (all journeys, or one), with the observation cards the conversion updates. */
-export function loadPhotos(root: string, journeyId?: string): { photos: TourismPhoto[]; cards: ObservationCards[] } {
+// The portraits (image-optimization.ts PORTRAIT_WEBP): planPortraits reads each served file and decides; applyPortraitSteps
+// encodes each from its lossless original (keeping a lossless served picture that has no original there as the original
+// first) and writes the served copy when its bytes change. The encoding is deterministic, so a second run writes nothing.
+
+/** What happens to a portrait: made light from its original, or left as it is (and why). */
+export type PortraitStep = {
+  portrait: Portrait;
+  /** The served file as it is: missing, a lossy or lossless WebP (anything else: the PNG paths and broken files are left alone). */
+  served: "missing" | "lossy" | "lossless" | "other";
+  /** The served file's bytes (0: missing). */
+  bytes: number;
+  /** The lossless original exists (authoring/…). */
+  hasOriginal: boolean;
+  outcome: { kind: "make" } | { kind: "skip"; reason: "sample" | "png-path" | "no-original" };
+};
+/** A portrait made light: its bytes before (0: there was no file) and after, and whether the file changed. */
+export type PortraitWrite = { before: number; after: number; changed: boolean; keptOriginal: boolean };
+
+/** What npm run images:optimize would do with each portrait (reads the served files, writes nothing). */
+export function planPortraits(portraits: readonly Portrait[]): PortraitStep[] {
+  return portraits.map((portrait): PortraitStep => {
+    const bytes = existsSync(portrait.file) ? readFileSync(portrait.file) : undefined;
+    const served = !bytes ? "missing" : webpCompressionOf(bytes) ?? "other";
+    const hasOriginal = existsSync(portrait.original);
+    const skip = portrait.sample ? "sample" : photoFormatOfPath(portrait.assetPath) !== "webp" ? "png-path"
+      : !hasOriginal && served !== "lossless" ? "no-original" : undefined;
+    return { portrait, served, bytes: bytes?.length ?? 0, hasOriginal, outcome: skip ? { kind: "skip", reason: skip } : { kind: "make" } };
+  });
+}
+
+/**
+ * Make the portraits planned to `make` light: keep a lossless served picture without an original as the original
+ * (PNG, the same pixels), encode each original by PORTRAIT_WEBP, and write the served file when its bytes change.
+ * Returns the portraits by served path.
+ */
+export async function applyPortraitSteps(steps: readonly PortraitStep[]): Promise<Map<string, PortraitWrite>> {
+  const makes = steps.filter((step) => step.outcome.kind === "make");
+  for (const step of makes.filter((item) => !item.hasOriginal)) {
+    mkdirSync(path.dirname(step.portrait.original), { recursive: true });
+    replaceFile(step.portrait.original, await sharp(readFileSync(step.portrait.file)).png({ compressionLevel: 9 }).toBuffer());
+  }
+  // libuv runs a few encodings at once (each takes a second or two at effort 6).
+  const encoded = await Promise.all(makes.map((step) => sharp(step.portrait.original).webp(PORTRAIT_WEBP).toBuffer()));
+  const written = new Map<string, PortraitWrite>();
+  makes.forEach((step, index) => {
+    const data = encoded[index];
+    const before = existsSync(step.portrait.file) ? readFileSync(step.portrait.file) : undefined;
+    const changed = !before || !before.equals(data);
+    if (changed) {
+      mkdirSync(path.dirname(step.portrait.file), { recursive: true });
+      replaceFile(step.portrait.file, data);
+    }
+    written.set(step.portrait.assetPath, { before: before?.length ?? 0, after: data.length, changed, keptOriginal: !step.hasOriginal });
+  });
+  return written;
+}
+
+/** The repository's content, with the journey `journeyId` (if given) checked to exist. */
+function loadSources(root: string, journeyId?: string): ContentSources {
   const sources = loadContentSources(root);
   if (journeyId && !sources.manifests.some((manifest) => manifest.id === journeyId))
     throw new Error(`旅行編「${journeyId}」がありません（content/journeys/<旅行編ID>/manifest.json）。`);
+  return sources;
+}
+
+/** The photos of the repository's content (all journeys, or one), with the observation cards the conversion updates. */
+export function loadPhotos(root: string, journeyId?: string, sources = loadSources(root, journeyId)): { photos: TourismPhoto[]; cards: ObservationCards[] } {
   const cards = readObservationCards(root, sources.manifests, "throw");
   const photos = tourismPhotos(sources, parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json"), cards)
     .filter((photo) => !journeyId || photo.journeyId === journeyId);
   return { photos: markSampleCopies(photos, sampleMarks().imageHashes), cards };
 }
 
-/** Plan (and with `write`, apply) the conversion of the repository's photos. */
-export async function optimizeImages(root: string, options: { journeyId?: string; write: boolean }): Promise<{ steps: PhotoStep[]; written: Map<string, PhotoWrite> }> {
-  const { photos, cards } = loadPhotos(root, options.journeyId);
+/** The portraits of the repository's content (all journeys and the shared layer, or one journey's). */
+export function loadPortraits(root: string, journeyId?: string, sources = loadSources(root, journeyId)): Portrait[] {
+  return portraitsOf(sources, parseCatalog(sources, characterCatalogSchema, "presentation/characters.json"))
+    .filter((portrait) => !journeyId || portrait.journeyId === journeyId);
+}
+
+/** Plan (and with `write`, apply) the conversion of the repository's photos and portraits. */
+export async function optimizeImages(root: string, options: { journeyId?: string; write: boolean }): Promise<{
+  steps: PhotoStep[]; written: Map<string, PhotoWrite>; portraitSteps: PortraitStep[]; portraitsWritten: Map<string, PortraitWrite>;
+}> {
+  const sources = loadSources(root, options.journeyId);
+  const { photos, cards } = loadPhotos(root, options.journeyId, sources);
   const steps = await planPhotos(photos);
-  return { steps, written: options.write ? await applyPhotoSteps(root, steps, cards) : new Map() };
+  const portraitSteps = planPortraits(loadPortraits(root, options.journeyId, sources));
+  const written = options.write ? await applyPhotoSteps(root, steps, cards) : new Map<string, PhotoWrite>();
+  return { steps, written, portraitSteps, portraitsWritten: options.write ? await applyPortraitSteps(portraitSteps) : new Map() };
 }
