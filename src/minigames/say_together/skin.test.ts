@@ -53,11 +53,20 @@ describe("saying it together's field", () => {
     expect(viewAt(SAY_END_MS + 1, null, "silent", false)).toMatchObject({ look: true, her: WORDS.length });
   });
 
+  it("closes a ring on the gold dot through the last beat, and writes the last word large", () => {
+    const { closingAt, BEATS_AT } = SAY_FIELD_POINTS;
+    expect(closingAt(BEATS_AT[0])).toBeNull();
+    expect(closingAt(BEATS_AT[1])).toBe(1);
+    expect(closingAt(SAY_WORDS_MS - 1)).toBeCloseTo(0, 2);
+    expect(closingAt(SAY_WORDS_MS)).toBeNull();
+    expect(sayTogetherSkin.hintJa).toBe(sayTogether.hintJa);
+  });
+
   it("ends each outcome after what it shows, before the host shows the outcome", () => {
     const at = (outcome: "together" | "early" | "late" | "silent", tapMs: number | null) => sayTogetherSkin.endAt({ outcome, tapMs }, false);
     expect(at("together", SAY_WORDS_MS)).toBeGreaterThan(SAY_WORDS_MS + SAY_FIELD.wordsMs);
     expect(at("early", SAY_COUNT_MS)).toBeGreaterThan(SAY_WORDS_MS);
-    expect(at("late", SAY_WORDS_MS + SAY_TUNING.nearMs)).toBeGreaterThan(SAY_WORDS_MS + SAY_TUNING.nearMs);
+    expect(at("late", SAY_WORDS_MS + SAY_TUNING.nearLateMs)).toBeGreaterThan(SAY_WORDS_MS + SAY_TUNING.nearLateMs);
     expect(at("silent", null)).toBeGreaterThan(SAY_END_MS);
   });
 });

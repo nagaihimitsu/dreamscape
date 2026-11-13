@@ -2,7 +2,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { clothFlap } from "./definition";
-import { CLOTH_END_MS, CLOTH_FIELD, CLOTH_START_MS } from "./rules";
+import { CLOTH_END_MS, CLOTH_FIELD, CLOTH_START_MS, CLOTH_TUNING, clothFlapRules } from "./rules";
 import { CLOTH_FIELD_POINTS, clothFlapSkin } from "./Skin";
 
 // The flap's art slots (docs/13 2.12) and her walk: a use's pictures in place of the drawn stairs and figure, the CSS look
@@ -41,13 +41,48 @@ describe("the flap's field", () => {
     expect(html).toContain("mg-cloth-flap-cloth");
   });
 
-  it("walks her down one step at a time, her foot on the niche's step at the moment, on down past it to the end", () => {
-    const { footOn, NICHE, nicheMs, walkerAt } = CLOTH_FIELD_POINTS;
+  it("walks her down one step at a time, standing on the gold step exactly while a flap is perfect, on down past it to the end", () => {
+    const { footOn, NICHE, nicheMs, walkerAt, landingOf, LAST_STEP } = CLOTH_FIELD_POINTS;
+    const { cleanEarlyMs, cleanLateMs } = CLOTH_TUNING;
     expect(walkerAt(0).foot).toEqual(footOn(0));
     expect(walkerAt(CLOTH_START_MS).foot).toEqual(footOn(0));
-    expect(walkerAt(nicheMs).foot).toEqual(NICHE);
     expect(footOn(CLOTH_FIELD.stepsToNiche)).toEqual(NICHE);
-    expect(walkerAt(CLOTH_END_MS).foot).toEqual(footOn(CLOTH_FIELD.stepsToNiche + CLOTH_FIELD.stepsPast));
-    expect(walkerAt(CLOTH_END_MS + 5000).foot).toEqual(footOn(CLOTH_FIELD.stepsToNiche + CLOTH_FIELD.stepsPast));
+    // The picture is the judgement: on the gold step through the whole perfect window, never outside it.
+    for (let ms = nicheMs - cleanEarlyMs; ms <= nicheMs + cleanLateMs; ms += 10) {
+      expect(walkerAt(ms).foot, String(ms - nicheMs)).toEqual(NICHE);
+      expect(clothFlapRules.outcomeOf(ms, {})).toBe("perfect");
+    }
+    expect(walkerAt(nicheMs - cleanEarlyMs - 15).foot).not.toEqual(NICHE);
+    expect(walkerAt(nicheMs + cleanLateMs + 15).foot).not.toEqual(NICHE);
+    expect(clothFlapRules.outcomeOf(nicheMs - cleanEarlyMs - 15, {})).toBe("early");
+    expect(clothFlapRules.outcomeOf(nicheMs + cleanLateMs + 15, {})).toBe("late");
+    // Her foot lands on the gold step as the perfect window opens; each step's landing is a step's length after the last.
+    expect(landingOf(CLOTH_FIELD.stepsToNiche)).toBe(nicheMs - cleanEarlyMs);
+    expect(landingOf(2) - landingOf(1)).toBe(CLOTH_FIELD.stepMs);
+    expect(walkerAt(CLOTH_END_MS).foot).toEqual(footOn(LAST_STEP));
+    expect(walkerAt(CLOTH_END_MS + 5000).foot).toEqual(footOn(LAST_STEP));
+  });
+
+  it("lights a step's mark as her foot lands on it, the gold one as the perfect window opens", () => {
+    const { stepsLanded, landingOf, nicheMs } = CLOTH_FIELD_POINTS;
+    expect(stepsLanded(CLOTH_START_MS)).toBe(0);
+    expect(stepsLanded(landingOf(1) - 1)).toBe(0);
+    expect(stepsLanded(landingOf(1))).toBe(1);
+    expect(stepsLanded(nicheMs - CLOTH_TUNING.cleanEarlyMs - 1)).toBe(CLOTH_FIELD.stepsToNiche - 1);
+    expect(stepsLanded(nicheMs - CLOTH_TUNING.cleanEarlyMs)).toBe(CLOTH_FIELD.stepsToNiche);
+    expect(field({})).toContain("mg-cloth-flap-mark-step");
+    expect(clothFlapSkin.Gauge).toBeDefined();
+  });
+
+  it("shows the pigeon in two still places with less motion (it still leaves the niche), gliding otherwise", () => {
+    const { pigeonAlong } = CLOTH_FIELD_POINTS;
+    expect(pigeonAlong(0.2, true)).toBeLessThan(0.5);
+    expect(pigeonAlong(0.8, true)).toBeGreaterThan(0.5);
+    expect(pigeonAlong(0.2, true)).toBe(pigeonAlong(0.4, true));
+    expect(pigeonAlong(0.3, false)).toBe(0.3);
+  });
+
+  it("says the same words before the play and in it", () => {
+    expect(clothFlapSkin.hintJa).toBe(clothFlap.hintJa);
   });
 });
