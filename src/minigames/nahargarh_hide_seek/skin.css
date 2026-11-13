@@ -1,6 +1,7 @@
 /* The hide-and-seek's field (Skin.tsx): the corridor wall of the queens' rooms, lit from the courtyard side; a row of
    identical arched doors standing on the floor line, running on past the screen's edge (the row scrolls sideways).
-   With the use's art.bay / art.room / art.peek, those pictures in place of the drawn wall and door, room and her. */
+   With the use's art.bay / art.room / art.peek, those pictures in place of the drawn wall and doorway (the leaves stay),
+   room and her. */
 .mg-nahargarh-hide-seek {
   /* A bay (a door and the wall beside it) fits the field's height, up to a size where three show on a phone. */
   --bay-h: min(74cqh, 260px);
@@ -74,10 +75,8 @@
     radial-gradient(ellipse 22% 14% at 50% 34%, rgba(255, 228, 170, 0.55), transparent 100%),
     linear-gradient(to bottom, #4a3a2b, #2a2018 70%, #3a2e22);
 }
+/* A bay picture (e.g. a photo of a doorway) has its own frame; the field still draws the leaves and opens them. */
 .mg-nahargarh-hide-seek[data-art-bay] .mg-nahargarh-hide-seek-door { box-shadow: none; }
-.mg-nahargarh-hide-seek[data-art-bay] .mg-nahargarh-hide-seek-leaf { display: none; }
-.mg-nahargarh-hide-seek[data-art-bay] .mg-nahargarh-hide-seek-room { opacity: 0; transition: opacity 260ms ease-out; }
-.mg-nahargarh-hide-seek[data-art-bay] [data-open] .mg-nahargarh-hide-seek-room { opacity: 1; }
 /* The leaves: teak with brass studs; opening folds each to its hinge. */
 .mg-nahargarh-hide-seek-leaf {
   position: absolute;

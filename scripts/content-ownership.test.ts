@@ -163,6 +163,14 @@ describe("checkContentOwnership", () => {
     ].join("\n")));
   });
 
+  it("keeps a # minigame:'s art.<slot> photo to the story's journey (its own mini-game pictures are minigame-art.ts's)", () => {
+    write(`${gt}/stories/dates/gt_date.ink`, "Play\n# minigame: cricket_batting art.pitch gt_img_red_fort art.bowler own_bowler\n* [Hit # option: six]\n");
+    expect(() => check()).not.toThrow();
+    write(`${gt}/stories/dates/gt_date.ink`, "Play\n# minigame: cricket_batting auto six art.pitch duomo_photo\n* [Hit # option: six]\n");
+    expect(() => check()).toThrow(new Error('Reference to another layer: content/journeys/golden_triangle/stories/dates/gt_date.ink #minigame art.pitch ' +
+      '"duomo_photo" is the asset defined in content/journeys/milano/tourism/catalog.json; a journey folder may only refer to its own content and the core layer.'));
+  });
+
   it("checks each English-note question and the story it opens in the question's journey", () => {
     write(`${gt}/stories/learning/gt_english.ink`, "Note\n");
     write(`${uz}/stories/learning/uz_english.ink`, "Note\n");

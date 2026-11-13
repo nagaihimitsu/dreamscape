@@ -208,7 +208,7 @@ INCLUDE modules.ink
 // おまかせは fumbled：雨の場面（アルバムの写真 a39）へ進む（クリケットのおまかせも、写真のある結末へ進むのと同じ考え）。
 === gt_agra_akbar_tomb_monkey_catch_attar ===
 # speaker: narrator
-# minigame: monkey_catch auto fumbled
+# minigame: monkey_catch auto fumbled art.wall gt_img_agra_akbar_tomb_gate
 小瓶が、壁の上から落ちてくる。考えるより先に、両手が出ていた。
 * [落ちてきた小瓶を、両手で受け止めた # option: caught]
     # speaker: narrator
@@ -281,7 +281,7 @@ INCLUDE modules.ink
 // prefix glasses で。結果の選択肢に関係値は付けない）。どの結果でも、サングラスは無事に戻る。
 === gt_agra_akbar_tomb_monkey_catch_glasses ===
 # speaker: narrator
-# minigame: monkey_catch prefix glasses thing glasses auto caught
+# minigame: monkey_catch prefix glasses thing glasses auto caught art.wall gt_img_agra_akbar_tomb_gate
 サングラスが、壁の上から落ちてくる。考えるより先に、両手が出ていた。
 * [落ちてきたサングラスを、両手で受け止めた # option: glasses_caught]
     # speaker: narrator

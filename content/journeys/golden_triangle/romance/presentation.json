@@ -391,6 +391,29 @@
       "color": "#a39a86",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_fatehpur_sikri_distant"
+    },
+    "gt_bg_agra_mehtab_bagh_lawn": {
+      "nameJa": "メヘターブ・バーグの芝地",
+      "captionJa": "アーグラ ／ メヘターブ・バーグ",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imagePosition": {
+        "x": 50,
+        "y": 40
+      },
+      "placeId": "agra_mehtab_bagh",
+      "imageAssetId": "gt_img_agra_mehtab_bagh_lawn"
+    },
+    "gt_bg_jaipur_baraat_night": {
+      "nameJa": "夜の花婿の行列（ジャイプール）",
+      "captionJa": "ジャイプール ／ 夜の花婿の行列",
+      "color": "#2b2622",
+      "fallback": "neutral",
+      "imagePosition": {
+        "x": 0,
+        "y": 40
+      },
+      "imageAssetId": "gt_img_jaipur_baraat_night"
     }
   },
   "memories": {

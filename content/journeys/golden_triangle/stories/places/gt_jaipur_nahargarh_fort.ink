@@ -34,7 +34,7 @@ INCLUDE modules.ink
 # stand: apart
 # se: footsteps_run
 返事を待たずに、足音が廊下の奥へ消えていった。
-# minigame: nahargarh_hide_seek auto door_by_door hide 7
+# minigame: nahargarh_hide_seek auto door_by_door hide 7 art.bay gt_img_jaipur_nahargarh_doorways art.room gt_img_jaipur_nahargarh_chamber
 九十八、九十九、百。廊下に出ると、同じ形のアーチ、同じ形の扉、同じ色の壁が、どこまでも続いていた。自分が今、どの王妃の部屋の前にいるのかも分からない。
 // かくれんぼ：選択肢の代わりにミニゲーム。探し方の ID の選択肢をゲームが選ぶ（噛み合いはここで1回）。
 * [かくれんぼ：名前を呼んで探した # option: call_her_name]

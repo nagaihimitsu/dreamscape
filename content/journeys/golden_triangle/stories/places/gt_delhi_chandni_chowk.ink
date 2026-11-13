@@ -208,7 +208,7 @@ INCLUDE modules.ink
 // 「バス」は客と二人が口にする言葉として書き、屋台の決まりとしては言わない。
 === gt_delhi_chandni_chowk_duel ===
 # speaker: narrator
-# minigame: golgappa_duel auto together
+# minigame: golgappa_duel auto together art.stall gt_img_delhi_golgappa_stall
 屋台の男は事情を察したらしい。二人の器に、交互に置き始めた。一つ置くごとに、手が速くなる。周りの客が数を数え出す。
 * [ゴルガッパの勝負：十四で、二人同時に手を上げた # option: together]
     # speaker: narrator

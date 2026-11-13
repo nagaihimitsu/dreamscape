@@ -229,7 +229,7 @@ INCLUDE modules.ink
 # speaker: narrator
 鳩の役は、こちらだった。くぼみに隠れ、ドゥパッターを両手に持って、羽ばたく準備をする。
 # speaker: narrator
-# minigame: cloth_flap auto perfect
+# minigame: cloth_flap auto perfect art.wall gt_img_delhi_agrasen_baoli_wall
 上から、ジャスミートの足音が下りてくる。一段、また一段。くぼみの前の段まで、あと少し。
 * [布を広げた：ちょうど目の前で # option: perfect]
     # speaker: narrator

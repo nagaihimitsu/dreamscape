@@ -35,6 +35,7 @@ export const clothFlap = defineMiniGame({
   art: [],
   artSlots: [
     { id: "stairs", kind: "backdrop", labelJa: "階段井戸の壁のくぼみの中から見た、左上から右下へ下りる石の階段と向かいの壁（手前にくぼみのアーチの縁）" },
+    { id: "wall", kind: "backdrop", labelJa: "階段の向こうの、向かいの壁だけ（くぼみの並ぶ石積み。階段・人・布はゲームが上に描く。縦3:4、上が明るく下ほど暗い）" },
     { id: "walker", kind: "sprite", labelJa: "右へ向かって階段を下りる若い女性の横向きの全身（クルタ姿、背景は透明）" },
   ],
   load: () => import("./play"),

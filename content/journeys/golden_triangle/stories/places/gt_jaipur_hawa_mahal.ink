@@ -101,7 +101,7 @@ INCLUDE modules.ink
 # speaker: narrator
 車、リキシャ、牛、人。そのすべてが、こちらに気づかずに流れていく。
 # speaker: narrator
-# minigame: parasol_search at middle auto found
+# minigame: parasol_search at middle auto found art.street gt_img_jaipur_view_from_hawa_mahal
 通りのあちこちに、傘が開いていた。あの中のどれかが、ガウラの日傘だ。
 // 日傘探し：選択肢の代わりにミニゲーム「日傘を探す」（格子の窓から通りの傘を押す）。古い日傘は手前の歩道の真ん中（at middle）。
 // どの結果も同じ見下ろしの場面へ合流する。手間取ったときだけフラグを立て、クイズ3の後の報告の前に一往復が増える（関係値なし）。
@@ -404,7 +404,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 # size: large
-# minigame: baraat_dance auto off_beat_together
+# minigame: baraat_dance auto off_beat_together bg gt_bg_jaipur_baraat_night
 一緒に！　下手なのは、二人とも同じだから！
 // 踊り：選択肢の代わりにミニゲーム「花婿の行列で踊る」。どの結果も同じ結びへ合流し、変わるのは結びの前の数行の色だけ（関係値なし）。
 * [踊り：太鼓の拍に乗れた # option: in_step]

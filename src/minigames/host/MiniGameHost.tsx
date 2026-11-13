@@ -5,7 +5,7 @@ import { vibrate } from "../../audio/vibration";
 import type { MiniGameCast, MiniGameModule } from "../contract";
 import { availableOutcome } from "../fallback";
 import { miniGameDefinition } from "../registry";
-import { miniGameParams, type MiniGameTag } from "../tag";
+import { miniGameArtPath, miniGameParams, type MiniGameTag } from "../tag";
 import { createPlayClock, type HostClock } from "./clock";
 import { miniGameSeed } from "./seed";
 import { MINI_GAME_CHOICE_GUARD_MS, MINI_GAME_RESULT_MS, MINI_GAME_START_GUARD_MS } from "./timing";
@@ -63,7 +63,7 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     }
   }, [tag, environment.context]);
   const art = useMemo(() => Object.fromEntries(Object.entries(tag.art ?? {}).flatMap(([slotId, imageId]) => {
-    const path = environment.context.miniGameArt?.[imageId];
+    const path = miniGameArtPath(environment.context, imageId);
     return path ? [[slotId, `${import.meta.env.BASE_URL}${path}`]] : [];
   })), [tag, environment.context]);
   const seed = useMemo(() => miniGameSeed(environment.revision, tag.id, tag.prefix), [environment.revision, tag]);

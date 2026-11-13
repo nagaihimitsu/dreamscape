@@ -27,9 +27,11 @@
   outline: none;
 }
 @keyframes minigame-in { from { opacity: 0; } }
-/* A use's bg: its picture under the play, in place of the scene's. */
+/* A use's bg: its picture under the play, in place of the scene's, filling the layer as the scene's own does (the scene's
+   drawer, CanalScene, has a height of its own and a caption pill, which the scene's background hides too). */
 .minigame-backdrop { position: absolute; inset: 0; z-index: -1; }
-.minigame-backdrop > * { position: absolute; inset: 0; }
+.minigame-layer .minigame-backdrop > * { position: absolute; inset: 0; width: 100%; height: 100%; }
+.minigame-backdrop .scene-stamp { display: none; }
 /* The same darkening under the controls as over the scene's own picture. */
 .minigame-backdrop::after {
   content: "";

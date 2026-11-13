@@ -163,7 +163,7 @@ INCLUDE modules.ink
 // 値段はどれも1秒以上見えて選べる。
 === gt_jaipur_jaigarh_fort_map ===
 # speaker: gt_raju
-# minigame: raju_haggle auto fair_map
+# minigame: raju_haggle auto fair_map bg gt_bg_jaipur_jaigarh_fort
 五十ルピー。……でも、じっと見られると、ぼく、ちょっとずつ負けちゃう
 * [地図の値段：言い値の₹50で買った # option: buy_map]
     # money: -50

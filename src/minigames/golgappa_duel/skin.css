@@ -2,6 +2,11 @@
    with the use's art.stall, that picture in place of the drawn pot, heap and counter. */
 .mg-golgappa-duel { position: absolute; inset: 0; }
 .mg-golgappa-duel-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; pointer-events: none; }
+/* A stall picture (a photo has heaps of golgappa of its own) is a little darker, and the falling ones have a dark edge,
+   so the eye follows the one that falls. */
+.mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-backdrop { filter: brightness(0.7); }
+.mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-fall .mg-golgappa-duel-puri-drawn { box-shadow: 0 0 0 2px #2a1a0c, 0 3px 6px rgba(0, 0, 0, 0.6); }
+.mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-fall > img { filter: drop-shadow(0 0 1.5px #2a1a0c) drop-shadow(0 3px 4px rgba(0, 0, 0, 0.6)); }
 /* The vendor's side: a steel pot of green water on the left, a heap of fried shells on the right, the wooden counter. */
 .mg-golgappa-duel-pot {
   position: absolute;
@@ -60,7 +65,8 @@
 .mg-golgappa-duel-her[data-art] { bottom: 36%; height: 46%; aspect-ratio: 3 / 4; }
 /* Over a stall picture (its own counter, no drawn one), her standing picture shows its top only, above that counter. */
 .mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-her:not([data-art]) { bottom: 36%; height: 46%; aspect-ratio: 3 / 4; overflow: hidden; }
-.mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-her:not([data-art]) img { object-fit: cover; object-position: 50% 4%; }
+/* (The standing picture is 2:3, nearly the box's shape: drawn twice the box's width from its top, head to waist show.) */
+.mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-her:not([data-art]) img { width: 200%; max-width: none; height: auto; margin-left: -50%; }
 .mg-golgappa-duel-her > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
 .mg-golgappa-duel-her[data-eating] { animation: mg-golgappa-duel-bob 240ms ease-out; }
 @keyframes mg-golgappa-duel-bob { 50% { transform: translateX(-50%) translateY(2%); } }
