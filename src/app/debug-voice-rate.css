@@ -1,0 +1,44 @@
+/*
+ * Debug's 台詞の声の速さ (DebugVoiceRate.tsx): in ⚙設定 → ゲームの設定 after 「Debugモード」 and in Debug's 音と演出の見本.
+ * Loaded with it (never by the title page). The slider fills its 44 px row between its label and its value; the
+ * reset is a secondary button of 48 px, as the Debug-mode section's. No thick left border (AGENTS.md).
+ */
+.debug-voice-rate {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+.debug-voice-rate h3 {
+  margin: 0;
+}
+.debug-voice-rate p {
+  margin: 0;
+}
+.debug-voice-rate-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 4.2em;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-size: 14px;
+}
+.debug-voice-rate-row input[type="range"] {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  margin: 0;
+  accent-color: var(--ds-slate-800);
+}
+.debug-voice-rate-value {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+.debug-voice-rate .secondary {
+  min-height: 48px;
+  margin-top: 0;
+}
+.debug-voice-rate [role="alert"] {
+  color: #873b34;
+  font-size: 13px;
+  line-height: 1.7;
+}

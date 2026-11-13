@@ -1,6 +1,9 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { DEBUG_MODE_KEY, DEBUG_MODE_PASSWORD, isDebugModePassword, readDebugMode, writeDebugMode } from "./debug-mode";
+import {
+  DEBUG_MODE_KEY, DEBUG_MODE_PASSWORD, DEBUG_VOICE_RATE_KEY, isDebugModePassword, readDebugMode, readDebugVoiceRate, writeDebugMode,
+  writeDebugVoiceRate,
+} from "./debug-mode";
 
 // User decision 2026-11-08: Debug mode for everyone from 設定, with the password 「adminmode」,
 // which is not a secret; a per-device preference with its own key.
@@ -79,5 +82,49 @@ describe("Debug mode password", () => {
   it("refuses anything else", () => {
     for (const input of ["", "admin", "adminmode1", "admin mode", "admin_mode", "adminnode", "パスワード"])
       expect(isDebugModePassword(input), JSON.stringify(input)).toBe(false);
+  });
+});
+
+// Debug's speed of the voices (2026-11-13 user request; the rule: src/audio/voice-rate.test.ts).
+describe("Debug's speed of the voices", () => {
+  it("is a device preference under its own versioned key, beside the switch", () => {
+    expect(DEBUG_VOICE_RATE_KEY).toBe("dreamscape.debug-voice-rate.v1");
+    expect(DEBUG_VOICE_RATE_KEY).not.toBe(DEBUG_MODE_KEY);
+  });
+
+  it("reads 1 when nothing, no number or an unreadable storage is there, and keeps a stored rate on its scale", () => {
+    expect(readDebugVoiceRate(memory())).toBe(1);
+    expect(readDebugVoiceRate(refusing())).toBe(1);
+    expect(readDebugVoiceRate(memory({ [DEBUG_VOICE_RATE_KEY]: "fast" }))).toBe(1);
+    expect(readDebugVoiceRate(memory({ [DEBUG_VOICE_RATE_KEY]: "1.25" }))).toBe(1.25);
+    expect(readDebugVoiceRate(memory({ [DEBUG_VOICE_RATE_KEY]: "3" }))).toBe(1.5);
+    expect(readDebugVoiceRate(memory({ [DEBUG_VOICE_RATE_KEY]: "0.71" }))).toBe(0.75);
+  });
+
+  it("writes its key only, and stores 1× as no key", () => {
+    const others = { "dreamscape.presentation.v1": "{}", [DEBUG_MODE_KEY]: "on", "dreamscape.journey.milano.save.v1": "{}" };
+    const store = memory(others);
+    expect(writeDebugVoiceRate(store, 1.2)).toEqual({ ok: true });
+    expect(Object.fromEntries(store.values)).toEqual({ ...others, [DEBUG_VOICE_RATE_KEY]: "1.2" });
+    expect(readDebugVoiceRate(store)).toBe(1.2);
+    // Off the scale: kept on it.
+    expect(writeDebugVoiceRate(store, 9)).toEqual({ ok: true });
+    expect(store.values.get(DEBUG_VOICE_RATE_KEY)).toBe("1.5");
+    expect(writeDebugVoiceRate(store, 1)).toEqual({ ok: true });
+    expect(Object.fromEntries(store.values)).toEqual(others);
+  });
+
+  it("stays when Debug mode is turned off (it counts only while Debug mode is on: voice-rate.ts)", () => {
+    const store = memory({ [DEBUG_MODE_KEY]: "on", [DEBUG_VOICE_RATE_KEY]: "0.8" });
+    expect(writeDebugMode(store, false)).toEqual({ ok: true });
+    expect(Object.fromEntries(store.values)).toEqual({ [DEBUG_VOICE_RATE_KEY]: "0.8" });
+  });
+
+  it("reports a storage that refuses, and changes nothing", () => {
+    const store = refusing({ [DEBUG_VOICE_RATE_KEY]: "1.1" });
+    const refused = { ok: false, message: "この端末に保存できなかったため、この声の速さはページを開き直すと元に戻ります。" };
+    expect(writeDebugVoiceRate(store, 1.3)).toEqual(refused);
+    expect(writeDebugVoiceRate(store, 1)).toEqual(refused);
+    expect(Object.fromEntries(store.values)).toEqual({ [DEBUG_VOICE_RATE_KEY]: "1.1" });
   });
 });
