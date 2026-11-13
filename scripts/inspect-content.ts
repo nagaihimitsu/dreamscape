@@ -31,6 +31,8 @@ import {
 } from "../src/content/journey-schemas";
 import { buildContent } from "./content-pipeline";
 import { compileInk } from "./ink-validation";
+import { includesModules } from "./place-files";
+import { MODULES_FILE, MODULES_INK } from "./modules-ink";
 import { validateQuizEntries } from "./quiz-validation";
 import { classifyContentFile, toPosix, type MergedKind } from "./content-layout";
 import { loadContentSources, parseCatalog } from "./content-sources";
@@ -110,7 +112,8 @@ export async function inspectFile(
   }
   try {
     const raw = await readFile(resolved, "utf8");
-    if (selected === "ink") compileInk(raw, resolved);
+    // A place file (or a one-scene battle) includes the game's modules.ink: compiled with it, as content:build does.
+    if (selected === "ink") compileInk(raw, resolved, includesModules(raw) ? { [MODULES_FILE]: MODULES_INK } : {});
     else {
       const data: unknown = JSON.parse(raw);
       const schema: { parse(value: unknown): unknown } = schemas[selected as keyof typeof schemas];

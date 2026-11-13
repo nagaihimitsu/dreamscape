@@ -420,7 +420,7 @@ describe("save format v23 (docs/07: one format per version, no migration)", () =
     // rule and what an album may name).
     const fresh = createGame();
     expect(fresh.album).toEqual([]);
-    const photo = { imageId: "smp_album_market", cityId: "mihon", day: 1, minute: 600, placeId: "mihon_market", storyId: "tourism/smp_mihon_market_guide" };
+    const photo = { imageId: "smp_album_market", cityId: "mihon", day: 1, minute: 600, placeId: "mihon_market", storyId: "places/smp_mihon_market.smp_mihon_market_guide" };
     const state: GameState = { ...cityStart("mihon"), album: [photo, { ...photo, imageId: "smp_album_clock_tower", caption: "三時のまま",
       placeId: "mihon_clock_tower", storyId: "places/smp_mihon_clock_tower.smp_mihon_date_tower_square" }] };
     const storage = new MemoryStorage();

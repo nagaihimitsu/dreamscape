@@ -11,7 +11,7 @@ import { applyPlayerAction } from "./player-action";
 // with where and when it was read; and what a saved album may name (an album image of the build: the author's
 // illustrations at public/assets/album/). On the sample journey's market guide (fictional).
 
-const GUIDE = "tourism/smp_mihon_market_guide";
+const GUIDE = "places/smp_mihon_market.smp_mihon_market_guide";
 const restore = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
 /** The market's guide open at its first line, with this photo on the line (or none). */
 function guideWith(photo: StoryPhoto | undefined, state = openTourismScene(cityStart("mihon"), "mihon_market")): GameState {

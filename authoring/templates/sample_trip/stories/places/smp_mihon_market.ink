@@ -1,14 +1,40 @@
-// 【任意】特殊戦B・矛盾追及（battles/catalog.json の format: "B"、reasoning.kind: "contradiction"）。
-// - 1本の流れ（段階5）：-> quiz(n) -> でクイズ、-> reasoning -> が止まる所（資料を選ぶ画面）。reasoning.roundIndex（ここでは1）の
+// 【任意：特殊戦B】【場所のファイル】見本の朝市（stories/places/<接頭辞>_<都市ID>_<場所>.ink）。見本の朝市と人物は架空。
+// - この1本に、朝市の観光案内と特殊戦B・矛盾追及の会話を書く。knot の名前＝場面のID（保存に入る）。knot の行のすぐ下の札（頭の札）
+//   # scene: で種類を決める。本筋の knot には # at:・# priority:・# repeat: を書かない（順番は観光地の順）。
+// - 1行目は INCLUDE modules.ink（ゲームが用意する呼び口と変数。VAR はここに書かない）、次の行は -> DONE。
+//   Inky で1つの場面を見るときは、-> DONE を -> 見たい knot の名前 に一時的に変え、modules.ink の写しを隣に置く。
+// - 本筋は、カタログ（tourism/catalog.json の guideStoryId、battles/catalog.json の storyId）が「places/smp_mihon_market.<knot>」の住所で指す。
+// - 特殊戦Bを外すときは、このファイルごと外す（README の「任意の部分」）。
+INCLUDE modules.ink
+-> DONE
+
+// ───── 案内（本筋。tourism/catalog.json の guideStoryId がこの住所を指す）。
+// - 規則は通常の観光案内と同じ：選択肢・# effect なし、日本語、表示される行は40行以内。
+// - 特殊戦は地図の地点から直接始まるため、この案内は観光地の情報として登録しておく。
+// - 最初の行の # photo: は、朝市の絵（public/assets/album/smp_album_market.webp）をアルバムに入れる例（説明の札なし）。
+=== smp_mihon_market_guide ===
+# scene: guide
+# background: smp_bg_mihon_market
+# speaker: narrator
+# photo: smp_album_market
+朝市には、色違いの屋根の店が三軒並んでいる。真ん中のパン屋から、焼きたての匂いがした。
+# speaker: heroine
+# emotion: happy
+「わ、いい匂い。……でもあの人、なんだか怒ってない？」
+-> END
+
+// ───── 特殊戦B・矛盾追及（本筋。battles/catalog.json の format: "B"、reasoning.kind: "contradiction"。storyId がこの住所を指す）。
+// - knot の名前はバトルID。1本の流れ（段階5）：-> quiz(n) -> でクイズ、-> reasoning -> が止まる所（資料を選ぶ画面）。reasoning.roundIndex（ここでは1）の
 //   とおり、第1問の後・第2問の前に止まる。主張は手伝いの knot <バトル>_claim に書き、止まる所の前に -> <バトル>_claim -> で流す
 //   （手がかり帳の「主張」も、ゲームがこの knot を読んで出す）。追及（ゆさぶり）の文は <バトル>_press（手がかり帳の「追及で聞いたこと」）。
+//   <バトル> は、この knot の名前（smp_mihon_special_b_market）。
 // - 止まる所から戻ると reasoning_action が "press"（追及）か "evidence"（資料）で、資料なら evidence_result が "success" か "failure"。
 //   追及と違う資料の後に -> stop と書くと、止まる所（- (stop)）へ戻って選び直せる（決定35。書かなければ次へ進む）。
 //   正しい資料の後は -> stop と書かずに次の問いへ進む（戻ってばかりの流れはビルドが止める）。資料は得点を変えない。
 // - 正しい資料（correctClueIds）は1つ。どの資料が正しいかは台詞で明かさない。証拠の判定と英語3択はゲーム側。
 // - 主張は大きすぎる断言にし、資料1枚で崩れるようにする。
-// - 見本の朝市と人物は架空。
-INCLUDE modules.ink
+=== smp_mihon_special_b_market ===
+# scene: battle
 # background: smp_bg_mihon_market
 # speaker: enemy
 「焼きたては今なの。今！　なのに、この街の人は好きな時間にしか来ない」

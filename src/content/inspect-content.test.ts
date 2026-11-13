@@ -55,6 +55,10 @@ describe("standalone content inspection", () => {
     await writeFile(file, "こんにちは。\n-> END\n");
     expect(await inspectFile(file)).toBe("ink");
     await expect(inspectFile(file, "other")).rejects.toThrow("--type");
+    // A place file includes the game's modules.ink (a battle's -> quiz(n) -> is one of its calls).
+    const place = path.join(directory, "place.ink");
+    await writeFile(place, "INCLUDE modules.ink\n-> DONE\n\n=== a_battle ===\n# scene: battle\n「検証です」\n-> quiz(1) ->\n-> END\n");
+    expect(await inspectFile(place)).toBe("ink");
   });
   it("checks a catalog of a journey folder as part of the merged catalog", async () => {
     const presentation = JSON.parse(await readFile(path.resolve("src/content/generated/content/romance/presentation.json"), "utf8"));
