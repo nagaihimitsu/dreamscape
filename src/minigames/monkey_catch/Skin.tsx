@@ -4,8 +4,9 @@ import { MONKEY_FIELD, MONKEY_HANDS_MS, MONKEY_RELEASE_MS, MONKEY_TUNING, monkey
 import "./skin.css";
 
 // The catch's field (a cue_tap skin): the player at the foot of the gate's wall, looking up. The monkey sits on the wall's
-// edge holding the bottle out; it lets go, the bottle tumbles down and grows as it comes, and the player's hands wait at
-// the bottom. With the use's art (`art.wall`, `art.monkey`) the drawn wall and monkey give way to those pictures.
+// edge holding the thing out (the tag's `thing`: a small bottle, or sunglasses); it lets go, the thing tumbles down and
+// grows as it comes, and the player's hands wait at the bottom. With the use's art (`art.wall`, `art.monkey`) the drawn
+// wall and monkey give way to those pictures.
 
 type Point = { x: number; y: number; size: number };
 const mix = (from: Point, to: Point, t: number): Point => ({ x: from.x + (to.x - from.x) * t, y: from.y + (to.y - from.y) * t, size: from.size + (to.size - from.size) * t });
@@ -78,8 +79,8 @@ function Hand({ side }: { side: "left" | "right" }) {
   );
 }
 
-function MonkeyCatchField({ still, art, sound, frames }: CueTapFieldProps<MonkeyCatchParams, MonkeyCatchOutcome>) {
-  const bottle = useRef<HTMLSpanElement>(null);
+function MonkeyCatchField({ params, still, art, sound, frames }: CueTapFieldProps<MonkeyCatchParams, MonkeyCatchOutcome>) {
+  const thing = useRef<HTMLSpanElement>(null);
   const [dropped, setDropped] = useState(false);
   const [closed, setClosed] = useState(false);
   const [holding, setHolding] = useState(false);
@@ -114,7 +115,7 @@ function MonkeyCatchField({ still, art, sound, frames }: CueTapFieldProps<Monkey
         where = bounced(untouched(meetsAt(tapMs)), ms - meetsAt(tapMs));
       }
       if (where.y > 120) hidden = true;
-      const element = bottle.current;
+      const element = thing.current;
       if (!element) return;
       // It tumbles as it falls (drawn the same every time; with less motion it does not turn).
       const turn = still || held ? 0 : -14 + 400 * clamp01((ms - MONKEY_RELEASE_MS) / MONKEY_TUNING.approachMs) + Math.max(0, ms - MONKEY_HANDS_MS) * 0.5;
@@ -138,7 +139,9 @@ function MonkeyCatchField({ still, art, sound, frames }: CueTapFieldProps<Monkey
         <Hand side="left" />
         <Hand side="right" />
       </span>
-      <span className="mg-monkey-catch-bottle" ref={bottle}><span className="mg-monkey-catch-bottle-glass" /></span>
+      <span className="mg-monkey-catch-thing" ref={thing} data-thing={params.thing}>
+        {params.thing === "glasses" ? <span className="mg-monkey-catch-glasses"><span /><span /></span> : <span className="mg-monkey-catch-bottle" />}
+      </span>
     </div>
   );
 }
@@ -149,7 +152,7 @@ export const monkeyCatchSkin: CueTapSkin<MonkeyCatchParams, MonkeyCatchOutcome> 
   rules: monkeyCatchRules,
   hintJa: "針が金色の所に来たら「受け止める」",
   actionJa: "受け止める",
-  actionHintJa: "落ちてくる小瓶が手に届くのに合わせて押します。",
+  actionHintJa: "落ちてくる物が手に届くのに合わせて押します。",
   autoJa: "おまかせで受け止めています",
   // The catch settling in the hands, the bounce off the fingers, or the bottle falling out of sight, before the outcome shows.
   endAt: ({ outcome, tapMs }, still) => {

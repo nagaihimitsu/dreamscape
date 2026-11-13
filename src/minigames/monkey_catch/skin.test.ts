@@ -5,8 +5,8 @@ import { monkeyCatch } from "./definition";
 import { monkeyCatchSkin } from "./Skin";
 
 // The catch's art slots (docs/13 2.12): a use's pictures in place of the drawn wall and monkey, and the CSS look without them.
-const field = (art: Record<string, string>) => renderToStaticMarkup(createElement(monkeyCatchSkin.Field, {
-  params: {}, still: false, seed: 1, cast: { heroine: createElement("i", { "data-testid": "standing-picture" }) }, names: { player: "主人公", heroine: "ヒロイン" },
+const field = (art: Record<string, string>, thing: "bottle" | "glasses" = "bottle") => renderToStaticMarkup(createElement(monkeyCatchSkin.Field, {
+  params: { thing }, still: false, seed: 1, cast: { heroine: createElement("i", { "data-testid": "standing-picture" }) }, names: { player: "主人公", heroine: "ヒロイン" },
   art, sound: () => undefined, vibrate: () => undefined, frames: () => () => undefined,
 }));
 
@@ -18,6 +18,14 @@ describe("the catch's field", () => {
     expect(html).toContain("mg-monkey-catch-monkey-figure");
     expect(html).not.toContain("<img");
     expect(html).not.toContain("standing-picture");
+  });
+
+  it("drops the small bottle, or the sunglasses when the tag says thing glasses (its rules are the same)", () => {
+    expect(field({})).toContain("mg-monkey-catch-bottle");
+    expect(field({})).not.toContain("mg-monkey-catch-glasses");
+    expect(field({}, "glasses")).toContain("mg-monkey-catch-glasses");
+    expect(field({}, "glasses")).not.toContain("mg-monkey-catch-bottle");
+    expect(monkeyCatch.params({ effectIds: [], backgroundIds: [], emotionIds: [] }).parse({})).toEqual({ thing: "bottle" });
   });
 
   it("puts the use's pictures in its declared slots", () => {

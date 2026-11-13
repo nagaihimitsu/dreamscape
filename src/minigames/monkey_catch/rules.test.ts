@@ -8,7 +8,7 @@ describeMiniGameRules(monkeyCatch, monkeyCatchRules, { records: [null, 0, MONKEY
 
 describe("the catch's timing", () => {
   const { cleanMs, nearMs } = MONKEY_TUNING;
-  const outcome = (ms: number | null) => monkeyCatchRules.outcomeOf(ms, {});
+  const outcome = (ms: number | null) => monkeyCatchRules.outcomeOf(ms, { thing: "bottle" });
 
   it("catches it right as it reaches the hands, lets it bounce off a little early or late, misses it further off", () => {
     expect(outcome(MONKEY_HANDS_MS)).toBe("caught");

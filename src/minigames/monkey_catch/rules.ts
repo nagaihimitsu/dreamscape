@@ -1,11 +1,12 @@
 import { cueTapEnd, cueTapMoment, cueTapRules, type CueTapTuning } from "../engines/cue_tap/engine";
+import type { MONKEY_THINGS } from "./definition";
 
 // The monkey's catch (docs/13 2.4): a cue_tap skin. The monkey on the wall lets go of what it took; one tap closes the
 // hands as it reaches them. Nothing is random (the bottle's tumble on screen is drawn the same every time). Pure.
 
 export type MonkeyCatchOutcome = "caught" | "fumbled" | "missed";
-/** The catch has no keys of its own. */
-export type MonkeyCatchParams = object;
+/** The tag's keys: what the monkey drops (the picture only; the timing is the same). */
+export type MonkeyCatchParams = { thing: (typeof MONKEY_THINGS)[number] };
 
 /** The field's own moments. */
 export const MONKEY_FIELD = {
