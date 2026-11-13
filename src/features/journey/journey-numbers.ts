@@ -1,8 +1,8 @@
-import { cityContents } from "../../content";
+import { albumImages, cityContents, localWords } from "../../content";
 import { formatMoneyForCity } from "../../content/currency";
 import { getJourneyForCity } from "../../content/journeys";
 import type { GameState } from "../../domain/game";
-import { metPeopleGroups } from "./met-people";
+import { declaresPeople, metPeopleGroups } from "./met-people";
 import { eventPlaceIdsIn } from "./visited-places";
 
 // 旅の数字 (2026-11-13 user decision): a short card of the journey in numbers, at the end roll and in 旅の記録, derived
@@ -22,12 +22,12 @@ export type JourneyNumbers = {
    * something happened there. Not every place reached: a place only passed through is kept for today only.
    */
   eventPlaces: number;
-  /** The people met (旅の記録's 出会った人). */
-  people: number;
-  /** The words of the country this device has learned in this journey (learning/local-words). */
-  localWords: number;
-  /** The album's photos. */
-  photos: number;
+  /** The people met (旅の記録's 出会った人); null for a journey with no one to meet. */
+  people: number | null;
+  /** The words of the country this device has learned in this journey (learning/local-words); null for a journey without any. */
+  localWords: number | null;
+  /** The album's photos; null for a journey without album pictures. */
+  photos: number | null;
   /** The journey's starting budget less what is left, in the journey's currency (never below 0); null without a start. */
   spent: { amount: number; textJa: string } | null;
 };
@@ -40,10 +40,16 @@ function startingBudget(game: Pick<GameState, "currentCityId">): number | null {
   return cityContents[journey.cities[0]?.id ?? ""]?.travelSettings.initialBudget ?? null;
 }
 
-/** The journey in numbers for `game`, with the words of the country this device has learned (`learnedWordIds`). */
+/**
+ * The journey in numbers for `game`, with the words of the country this device has learned (`learnedWordIds`). A number
+ * whose kind the journey's content has none of (no one to meet, no words of the country, no album pictures: Milano has
+ * neither words nor pictures) is null, and its line is left out rather than a lasting 0 (2026-11-13 user decision).
+ */
 export function journeyNumbers(game: GameState, learnedWordIds: readonly string[]): JourneyNumbers {
   const journey = getJourneyForCity(game.currentCityId);
   const cityIds = journey?.cities.map((city) => city.id) ?? [game.currentCityId];
+  const hasWords = localWords.some((word) => word.cityId !== undefined && cityIds.includes(word.cityId));
+  const hasPictures = albumImages.some((image) => image.journeyId === journey?.id);
   const eventPlaces = cityIds.reduce((sum, cityId) => sum + eventPlaceIdsIn(game, cityId).length, 0);
   const start = startingBudget(game);
   const spent = start === null ? null : Math.max(0, start - game.travelBudget);
@@ -52,9 +58,9 @@ export function journeyNumbers(game: GameState, learnedWordIds: readonly string[
   return {
     days: game.travel.calendar?.journeyDay ?? (firstCity ? game.travel.day : null),
     eventPlaces,
-    people: metPeopleGroups(game).reduce((sum, group) => sum + group.people.length, 0),
-    localWords: new Set(learnedWordIds).size,
-    photos: game.album.length,
+    people: declaresPeople(game) ? metPeopleGroups(game).reduce((sum, group) => sum + group.people.length, 0) : null,
+    localWords: hasWords ? new Set(learnedWordIds).size : null,
+    photos: hasPictures ? game.album.length : null,
     spent: spent === null ? null : { amount: spent, textJa: formatMoneyForCity(game.currentCityId, spent) },
   };
 }

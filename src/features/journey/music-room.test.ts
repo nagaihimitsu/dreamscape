@@ -4,7 +4,7 @@ import { cityContents, episodes, landmarks, scenes } from "../../content";
 import sceneAudioJson from "../../content/generated/scene-audio.json";
 import { mergeMusicPlay } from "../../content/music";
 import { sceneAudioSchema, type SceneAudio } from "../../content/scene-audio";
-import { heardTracks, heardVoices, musicRoomOpen, readStoryKey, sceneAddresses, sceneCompleted, type RoomGame, type RoomScene } from "./music-room";
+import { heardTracks, heardVoices, musicRoomOpen, readStoryKey, sceneAddresses, sceneCompleted, sceneGroup, type RoomGame, type RoomScene, type SceneNames } from "./music-room";
 
 const SCENE_AUDIO_INDEX = sceneAudioSchema.parse(sceneAudioJson);
 
@@ -15,7 +15,7 @@ const game = (extra: Partial<RoomGame> = {}): RoomGame => ({
   activeEpilogue: null, currentCityId: "ta_city", completedCityIds: [], ...extra,
 });
 const scene = (id: string, extra: Partial<RoomScene> = {}): RoomScene =>
-  ({ id, kind: "talk", at: [], story: { storyId: "places/ta_tower", knot: id }, knots: [id], ...extra });
+  ({ id, kind: "talk", cityId: "ta_city", at: [], story: { storyId: "places/ta_tower", knot: id }, knots: [id], ...extra });
 const nowhere = () => false;
 
 describe("the music room", () => {
@@ -60,16 +60,36 @@ describe("the music room", () => {
     epilogue: "e", endRoll: "r" }, { places: { ta_fort: "ta_fort_theme" } });
   const labels: Record<string, string> = { ta_place: "街の曲", ta_fort_theme: "砦の曲", ta_tense: "張りつめた曲" };
 
+  const labelOf = (id: string) => labels[id];
+  const placeName = (id: string) => ({ ta_fort: "砦", ta_market: "市場", ta_well: "井戸", ta_bridge: "橋", ta_mill: "水車" })[id] ?? id;
+  const sceneLabel = (item: RoomScene) => `場面 ${item.id}`;
+
   it("lists the visited places' tracks, then the completed scenes' # bgm:, each once and only the build's tracks", () => {
     const scenes = [scene("ta_talk"), scene("ta_date")];
-    expect(heardTracks({ play, visitedPlaceIds: ["ta_fort", "ta_market"], scenes, audio, labelOf: (id) => labels[id] })).toEqual([
-      { id: "ta_fort_theme", labelJa: "砦の曲" }, { id: "ta_place", labelJa: "街の曲" }, { id: "ta_tense", labelJa: "張りつめた曲" },
-    ]);
-    expect(heardTracks({ play: null, visitedPlaceIds: ["ta_fort"], scenes: [], audio, labelOf: (id) => labels[id] })).toEqual([]);
+    expect(heardTracks({ play, visitedPlaceIds: ["ta_fort", "ta_market"], scenes, audio, labelOf, placeName, sceneLabel }).map((track) => track.id))
+      .toEqual(["ta_fort_theme", "ta_place", "ta_tense"]);
+    expect(heardTracks({ play: null, visitedPlaceIds: ["ta_fort"], scenes: [], audio, labelOf, placeName, sceneLabel })).toEqual([]);
+  });
+
+  it("names a place's track by the visited places that play it only, another track by its own words", () => {
+    // 「砦の曲」 and 「街の曲」 would name every place that plays them; 「張りつめた曲」 plays at no place.
+    expect(heardTracks({ play, visitedPlaceIds: ["ta_fort", "ta_market"], scenes: [scene("ta_talk"), scene("ta_date")], audio, labelOf, placeName, sceneLabel }))
+      .toEqual([{ id: "ta_fort_theme", labelJa: "砦" }, { id: "ta_place", labelJa: "市場" }, { id: "ta_tense", labelJa: "張りつめた曲" }]);
+    // More than three places: the first three and 「など」.
+    expect(heardTracks({ play, visitedPlaceIds: ["ta_market", "ta_well", "ta_bridge", "ta_mill"], scenes: [], audio, labelOf, placeName, sceneLabel }))
+      .toEqual([{ id: "ta_place", labelJa: "市場、井戸、橋など" }]);
+    // A place's track heard only in a scene (no visited place plays it yet): the scene's name.
+    const placeTrackInScene: SceneAudio = { schemaVersion: 1, stories: { "places/ta_tower.ta_talk": { voices: [], bgm: ["ta_fort_theme"] } } };
+    expect(heardTracks({ play, visitedPlaceIds: [], scenes: [scene("ta_talk")], audio: placeTrackInScene, labelOf, placeName, sceneLabel }))
+      .toEqual([{ id: "ta_fort_theme", labelJa: "場面 ta_talk" }]);
+    // Two place tracks heard in the same scene only: told apart.
+    const twoInScene: SceneAudio = { schemaVersion: 1, stories: { "places/ta_tower.ta_talk": { voices: [], bgm: ["ta_fort_theme", "ta_place"] } } };
+    expect(heardTracks({ play, visitedPlaceIds: [], scenes: [scene("ta_talk")], audio: twoInScene, labelOf, placeName, sceneLabel }))
+      .toEqual([{ id: "ta_fort_theme", labelJa: "場面 ta_talk（その1）" }, { id: "ta_place", labelJa: "場面 ta_talk（その2）" }]);
   });
 
   const names = (text: string) => text.replaceAll("{heroine_name}", "さくら");
-  const sceneLabel = (item: RoomScene) => `場面 ${item.id}`;
+  const group = (item: RoomScene) => ({ key: item.id, labelJa: `場面 ${item.id}` });
   /** read-skip's record with these lines read: [story key, text as shown]. */
   const readOf = (lines: [string, string][]) => {
     const ids = new Set(lines.map(([key, text]) => readLineId(key, text)));
@@ -79,19 +99,66 @@ describe("the music room", () => {
   it("lists the completed scenes' voiced lines by scene, each line once, with the names filled in", () => {
     const isRead = readOf([["ta_talk", "さくらの声"], ["ta_talk", "二つめ"], ["ta_date", "二つめ"], ["ta_date", "三つめ"]]);
     const groups = heardVoices({ scenes: [scene("ta_talk"), scene("ta_date", { kind: "date", main: { date: "ta_date" } }), scene("ta_silent")],
-      audio, names, sceneLabel, isRead });
+      audio, names, group, isRead });
     expect(groups).toEqual([
-      { sceneId: "ta_talk", labelJa: "場面 ta_talk", voices: [{ id: "ta_v1", textJa: "さくらの声" }, { id: "ta_v2", textJa: "二つめ" }] },
-      { sceneId: "ta_date", labelJa: "場面 ta_date", voices: [{ id: "ta_v3", textJa: "三つめ" }] },
+      { key: "ta_talk", labelJa: "場面 ta_talk", voices: [{ id: "ta_v1", textJa: "さくらの声" }, { id: "ta_v2", textJa: "二つめ" }] },
+      { key: "ta_date", labelJa: "場面 ta_date", voices: [{ id: "ta_v3", textJa: "三つめ" }] },
     ]);
   });
 
   it("lists only the lines this device has read: a branch not taken stays out, and a line read in another scene", () => {
     // ta_v2 was read in the date only, ta_v1 never (its branch was not taken), the names as the story showed them.
     const isRead = readOf([["ta_date", "二つめ"], ["ta_talk", "{heroine_name}の声"]]);
-    const groups = heardVoices({ scenes: [scene("ta_talk"), scene("ta_date", { kind: "date", main: { date: "ta_date" } })], audio, names, sceneLabel, isRead });
-    expect(groups).toEqual([{ sceneId: "ta_date", labelJa: "場面 ta_date", voices: [{ id: "ta_v2", textJa: "二つめ" }] }]);
-    expect(heardVoices({ scenes: [scene("ta_talk")], audio, names, sceneLabel, isRead: () => false })).toEqual([]);
+    const groups = heardVoices({ scenes: [scene("ta_talk"), scene("ta_date", { kind: "date", main: { date: "ta_date" } })], audio, names, group, isRead });
+    expect(groups).toEqual([{ key: "ta_date", labelJa: "場面 ta_date", voices: [{ id: "ta_v2", textJa: "二つめ" }] }]);
+    expect(heardVoices({ scenes: [scene("ta_talk")], audio, names, group, isRead: () => false })).toEqual([]);
+  });
+
+  const sceneNames: SceneNames = {
+    city: (id) => ({ ta_city: "試験の街" })[id] ?? id, landmark: (id) => ({ ta_tower: "試験の塔" })[id] ?? id,
+    place: (_city, id) => ({ ta_gate: "試験の門" })[id] ?? id, battle: (id) => ({ ta_battle: "塔の問い" })[id] ?? id,
+    date: (id) => ({ ta_date: "塔の上で" })[id] ?? id, tour: (id) => ({ ta_tour: "試験のツアー" })[id] ?? id,
+  };
+
+  it("names a main part by what it is, a titled scene by its title, an untitled one by where and when it happens", () => {
+    const label = (extra: Partial<RoomScene>) => sceneGroup(scene("ta_scene", extra), sceneNames).labelJa;
+    // The scene table's title of a main part is its place or city only: never used.
+    expect(label({ kind: "arrival", main: { arrival: "ta_city" }, title: "試験の街" })).toBe("試験の街に到着");
+    expect(label({ kind: "epilogue", main: { epilogue: "ta_city" }, title: "試験の街" })).toBe("試験の街のエピローグ");
+    expect(label({ kind: "guide", main: { guide: "ta_tower" }, title: "試験の塔" })).toBe("試験の塔の案内");
+    expect(label({ kind: "battle", main: { battle: "ta_battle" } })).toBe("塔の問い");
+    expect(label({ kind: "date", main: { date: "ta_date" } })).toBe("塔の上で");
+    expect(label({ title: "鐘の話" })).toBe("鐘の話");
+    expect(label({ at: [{ hotel: "any" }] })).toBe("試験の街の宿で");
+    expect(label({ at: [{ depart: "ta_city" }] })).toBe("試験の街を発つ日");
+    expect(label({ at: [{ arrive: "ta_city" }] })).toBe("試験の街に着いた日");
+    expect(label({ at: [{ visit: "ta_tower" }] })).toBe("試験の塔で");
+    expect(label({ at: [{ visit: "any" }] })).toBe("試験の街の観光地で");
+    expect(label({ at: [{ place: "ta_gate" }] })).toBe("試験の門で");
+    expect(label({ at: [{ ticket: "ta_gate" }] })).toBe("試験の門の窓口で");
+    expect(label({ at: [{ date: "ta_date" }] })).toBe("デート「塔の上で」で");
+    expect(label({ at: [{ finale: "ta_city" }] })).toBe("試験の街のフィナーレで");
+    expect(label({ at: [{ epilogue: "ta_city" }] })).toBe("試験の街のエピローグで");
+    expect(label({ at: [{ trip: "walk" }] })).toBe("試験の街の移動中に");
+    expect(label({ kind: "tour_leg", at: [{ tour: "ta_tour", step: "out" }] })).toBe("試験のツアーで");
+    expect(label({})).toBe("試験の街で");
+  });
+
+  it("puts the untitled scenes of one moment in one group, where the first stands", () => {
+    const isRead = readOf([["ta_talk", "さくらの声"], ["ta_talk", "二つめ"], ["ta_date", "三つめ"]]);
+    const groups = heardVoices({
+      scenes: [scene("ta_talk", { at: [{ hotel: "ta_inn" }] }), scene("ta_title", { title: "鐘の話" }),
+        scene("ta_date", { at: [{ hotel: "any" }], story: { storyId: "places/ta_tower", knot: "ta_date" }, knots: ["ta_date"] })],
+      audio: { schemaVersion: 1, stories: {
+        ...audio.stories, "places/ta_tower.ta_title": { voices: [{ id: "ta_v9", textJa: "鐘" }], bgm: [] },
+      } },
+      names, group: (item) => sceneGroup(item, sceneNames), isRead: (id) => isRead(id) || id === readLineId("ta_title", "鐘"),
+    });
+    expect(groups).toEqual([
+      { key: "at:試験の街の宿で", labelJa: "試験の街の宿で",
+        voices: [{ id: "ta_v1", textJa: "さくらの声" }, { id: "ta_v2", textJa: "二つめ" }, { id: "ta_v3", textJa: "三つめ" }] },
+      { key: "ta_title", labelJa: "鐘の話", voices: [{ id: "ta_v9", textJa: "鐘" }] },
+    ]);
   });
 
   it("reads each scene's lines under the story its screen gives them", () => {
