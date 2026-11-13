@@ -18,6 +18,10 @@ function meetsDateConditions(state: GameState, date: DateDefinition): boolean {
   );
 }
 
+/**
+ * After a rejection, a confession waits for a new ordinary date or a completed recovery: a later city's confession
+ * (each city's is played once, 2026-11-13) or one its writer made repeatable (`repeatable`).
+ */
 function isConfessionOnCooldown(state: GameState, date: DateDefinition): boolean {
   return date.kind === "confession" && state.confessionStatus === "rejected" &&
     state.lastRejectedDateCount !== null && completedDateCount(state) <= state.lastRejectedDateCount &&

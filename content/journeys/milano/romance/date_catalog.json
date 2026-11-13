@@ -225,7 +225,7 @@
       },
       "rewardOnlyOnce": true,
       "backgroundId": "milano_night_landmark",
-      "repeatable": true,
+      "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 1,
       "effectCount": 1,
