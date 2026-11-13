@@ -50,6 +50,7 @@ INCLUDE modules.ink
 インタビュー、プリーズ！
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# voice: gt_delhi_main_red_fort_001
 えっ、えっ、わたし？　待って、四十人？
 # speaker: enemy
 # reaction: enemy,sigh
@@ -61,6 +62,7 @@ INCLUDE modules.ink
 英語の宿題なんです。『外国人観光客に遺産について質問する』。一時半にバスが出ます。さっき韓国の団体に逃げられました
 # speaker: heroine
 # emotion: worried
+# voice: gt_delhi_main_red_fort_002
 逃げたくなる気持ちも、ちょっと分かります……
 # speaker: enemy
 分かります。わたしも毎日逃げたい。でも、この子たちを手ぶらで帰すと、帰りのバスが地獄になるんです
@@ -68,6 +70,7 @@ INCLUDE modules.ink
 先生の背後で、子どもたちが押し合う。誰が最初に聞くかで、もう小さな戦争が始まっていた。
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_main_red_fort_003
 ……分かりました。でも一人ずつ、順番に。押さないって約束してくれるなら
 # speaker: enemy
 # reaction: enemy,exclamation
@@ -104,6 +107,7 @@ INCLUDE modules.ink
 アンジャリが振り返って睨む。少年は首をすくめ、それきり何も言わなかった。何人かが笑った。
 # speaker: heroine
 # emotion: worried
+# voice: gt_delhi_main_red_fort_004
 先生。今の子は……
 # speaker: enemy
 ファイズ。話しません。去年の春から、授業で一度も
@@ -137,10 +141,12 @@ INCLUDE modules.ink
 列が崩れて歩き出す。最後の少年もノートを抱えて歩き出した。一度も開かないまま。
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_main_red_fort_005
 待ってください。まだ質問していない子がいます
 # speaker: enemy
 三十八人と一時間です。話さない子を待つ時間は、わたしにはないんです
 # speaker: heroine
+# voice: gt_delhi_main_red_fort_006
 じゃあ、わたしの時間を使います。一分だけ。……押したりしません。待つだけです
 # speaker: narrator
 先生は口を開きかけ、閉じた。腕時計を見て、もう一度{heroine_name}を見る。
@@ -176,6 +182,7 @@ INCLUDE modules.ink
 声は小さい。けれど、もう途切れなかった。楽園と書かれた広間の主が、同じ建物で囚人になった話。三十八人が、誰も茶化さずに聞いていた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# voice: gt_delhi_main_red_fort_007
 すごい。わたし、今の話、一生忘れないと思う
 {
 - battle_score == 3:
@@ -202,6 +209,7 @@ INCLUDE modules.ink
 でも、明日になったら、また黙りますよ。あなたは明日ここにいない。毎日あの子の隣にいるのは、わたしです
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_main_red_fort_008
 はい。……だから、先生に見ていてほしかったんです。今日、あの子が話したところ
 # speaker: narrator
 # se: whistle

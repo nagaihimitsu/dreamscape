@@ -74,6 +74,7 @@ INCLUDE modules.ink
 肩紐を握る手に、男の体重がかかる。離せば、彼は柵の内側だ。
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_main_qutb_minar_003
 柵があるのには、理由があると思うんです。追い出されたら、約束どころじゃなくなっちゃう
 # speaker: enemy
 # reaction: enemy,anger
@@ -99,6 +100,7 @@ INCLUDE modules.ink
 わたし、理科の教師なんです。毎年この柱の話を授業でします。生徒は必ず『魔法？』と聞く
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_delhi_main_qutb_minar_004
 先生、だったんですか
 # speaker: enemy
 なので、あなたにも聞きます。千六百年、雨ざらしで、なぜ錆びないのか
@@ -115,6 +117,7 @@ INCLUDE modules.ink
     惜しい。答えは鉄の中のリンです。表面に薄い膜ができて、錆を食い止める。魔法じゃないんです
 }
 # speaker: heroine
+# voice: gt_delhi_main_qutb_minar_005
 じゃあ、どうして抱きたいんですか。願いがかなうって、信じてないのに
 # speaker: narrator
 ラームキシャンはしばらく黙り、ボールペンを胸ポケットに戻した。
@@ -127,6 +130,7 @@ INCLUDE modules.ink
 遠くで笛が鳴った。警備員がこちらを見ている。ラームキシャンは柵から一歩下がり、両手を上げてみせた。
 # speaker: heroine
 # emotion: worried
+# voice: gt_delhi_main_qutb_minar_006
 抱く代わりになるもの、何か……
 # speaker: narrator
 {heroine_name}は案内板の前へ回り込んだ。小さな文字を、指でたどる。この柱が、どこから来たのか。
@@ -135,6 +139,7 @@ INCLUDE modules.ink
 { quiz_correct:
     # speaker: heroine
     # reaction: heroine,smile,sparkle
+    # voice: gt_delhi_main_qutb_minar_007
     この柱、ここで生まれたんじゃないんですね。ずっと遠くの丘から運ばれてきて、知らない町で、何百年も立ってる
 - else:
     # speaker: enemy
@@ -145,6 +150,7 @@ INCLUDE modules.ink
 # speaker: enemy
 ……娘は、来年デリーの大学を受けたいと言っています。わたしは、反対しているんです。遠すぎるって
 # speaker: heroine
+# voice: gt_delhi_main_qutb_minar_008
 試験が怖いのは、娘さんだけじゃなかったんですね
 # speaker: enemy
 # reaction: enemy,sweat
@@ -171,9 +177,11 @@ INCLUDE modules.ink
 それと。知らない男のリュックをいきなりつかむのは、危ないです。次はやめなさい
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_delhi_main_qutb_minar_009
 止めたのに、叱られた……
 # speaker: narrator
 男の背中が人混みに消える。{heroine_name}は自分の手のひらを見た。肩紐の重さが、まだ残っている。
 # speaker: heroine
+# voice: gt_delhi_main_qutb_minar_010
 ……わたし、人の鞄をつかんだの、初めてかも
 -> END
