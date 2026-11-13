@@ -1,6 +1,5 @@
 import { useId, useMemo, useRef, useState } from "react";
-import { battles, cityContents, dates, landmarks, scenes } from "../../content";
-import type { SceneEntry } from "../../content/scene-schemas";
+import { battles, cityContents, dates, getTour, landmarks, scenes } from "../../content";
 import sceneAudioJson from "../../content/generated/scene-audio.json";
 import { getJourneyForCity } from "../../content/journeys";
 import { sceneAudioSchema, type SceneAudio } from "../../content/scene-audio";
@@ -10,7 +9,7 @@ import { Modal, ModalTitle } from "../../components/Modal";
 import { useLineVoice, type LineVoiceState } from "../../components/useVoice";
 import type { GameState } from "../../domain/game";
 import { withNames } from "../romance/names";
-import { heardTracks, heardVoices, sceneCompleted, type RoomVoice } from "./music-room";
+import { heardTracks, heardVoices, sceneCompleted, sceneGroup, type RoomVoice, type SceneNames } from "./music-room";
 import { visitedPlaceIdsIn } from "./visited-places";
 import "./music-room.css";
 
@@ -20,22 +19,15 @@ const SCENE_AUDIO: SceneAudio = ((): SceneAudio => {
   return parsed.success ? parsed.data : { schemaVersion: 1, stories: {} };
 })();
 
-/**
- * What a completed scene is called in the room's list of voices: a main part by what it is (a guide, a battle's or a date's
- * title, a city's epilogue or arrival), another scene by its title. The scene table titles a main part by its place or
- * city only (an arrival and its city's epilogue are both 「デリー」), so that title is not used for a main part.
- */
-function sceneLabelJa(scene: SceneEntry, game: Pick<GameState, "playerName" | "heroineName">): string {
-  const city = (cityId: string) => cityContents[cityId]?.city.nameJa ?? cityId;
-  const main = scene.main;
-  const label = !main ? scene.title ?? (scene.kind === "tour_leg" ? "ツアーの移動" : "道中の会話")
-    : "guide" in main ? `${landmarks.find((landmark) => landmark.id === main.guide)?.nameJa ?? main.guide}の案内`
-    : "battle" in main ? battles.find((battle) => battle.id === main.battle)?.titleJa ?? main.battle
-    : "date" in main ? dates.find((date) => date.id === main.date)?.titleJa ?? main.date
-    : "epilogue" in main ? `${city(main.epilogue)}のエピローグ`
-    : `${city(main.arrival)}に到着`;
-  return withNames(label, game);
-}
+/** The names the room's voice groups use (music-room.ts sceneGroup), from the content; each falls back to its ID. */
+const SCENE_NAMES: SceneNames = {
+  city: (cityId) => cityContents[cityId]?.city.nameJa ?? cityId,
+  landmark: (landmarkId) => landmarks.find((landmark) => landmark.id === landmarkId)?.nameJa ?? landmarkId,
+  place: (cityId, placeId) => cityContents[cityId]?.travel.places.find((place) => place.id === placeId)?.nameJa ?? placeId,
+  battle: (battleId) => battles.find((battle) => battle.id === battleId)?.titleJa ?? battleId,
+  date: (dateId) => dates.find((date) => date.id === dateId)?.titleJa ?? dateId,
+  tour: (tourId) => getTour(tourId)?.titleJa ?? tourId,
+};
 
 /** The voice the room plays, through the game's own voice player (useVoice.ts): its setting and volume, the music halved. */
 function VoicePlayback({ voiceId, onState }: { voiceId: string; onState: (state: LineVoiceState | null) => void }) {
@@ -75,8 +67,11 @@ export function MusicRoom({ game, isRead, playing, onPlay, bgmOn, voiceOn, onClo
     return {
       tracks: heardTracks({ play: journey ? journeyMusicPlay(journey.id) : null, visitedPlaceIds: cityIds.flatMap((cityId) => visitedPlaceIdsIn(game, cityId)),
         scenes: done, audio: SCENE_AUDIO, labelOf: trackUseJa }),
-      voices: heardVoices({ scenes: done, audio: SCENE_AUDIO, names: (text) => withNames(text, game), sceneLabel: (scene) => sceneLabelJa(scene, game),
-        isRead }),
+      voices: heardVoices({ scenes: done, audio: SCENE_AUDIO, names: (text) => withNames(text, game), isRead,
+        group: (scene) => {
+          const { key, labelJa } = sceneGroup(scene, SCENE_NAMES);
+          return { key, labelJa: withNames(labelJa, game) };
+        } }),
     };
   }, [game, isRead]);
   const [voice, setVoice] = useState<VoicePlay | null>(null);
@@ -109,7 +104,7 @@ export function MusicRoom({ game, isRead, playing, onPlay, bgmOn, voiceOn, onClo
     <section className="music-room-part" aria-labelledby={`${titleId}-voices`}>
       <h3 id={`${titleId}-voices`}>{game.heroineName}の声（{voiceCountTotal}）</h3>
       {!voiceOn && <p className="fine-print">設定の「台詞の声を出す」がオフなので、声は出ません。</p>}
-      {voices.length ? voices.map((group) => <details key={group.sceneId} className="music-room-group">
+      {voices.length ? voices.map((group) => <details key={group.key} className="music-room-group">
         <summary>{group.labelJa}（{group.voices.length}）</summary>
         <ul className="music-room-list">
           {group.voices.map((line) => <li key={line.id}>

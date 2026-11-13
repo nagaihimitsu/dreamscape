@@ -1,7 +1,7 @@
 import { readLineId } from "../../components/read-skip";
 import type { MusicPlay } from "../../content/music";
 import type { SceneAudio } from "../../content/scene-audio";
-import type { SceneEntry } from "../../content/scene-schemas";
+import type { SceneAt, SceneEntry } from "../../content/scene-schemas";
 import { knotAddress } from "../../content/story-address";
 import type { GameState } from "../../domain/game";
 
@@ -16,7 +16,7 @@ import type { GameState } from "../../domain/game";
 export const musicRoomOpen = (game: Pick<GameState, "completedCityIds">): boolean => game.completedCityIds.length > 0;
 
 /** A scene as the room reads it (the scene table's entry). */
-export type RoomScene = Pick<SceneEntry, "id" | "kind" | "main" | "at" | "story" | "knots">;
+export type RoomScene = Pick<SceneEntry, "id" | "kind" | "main" | "at" | "story" | "knots" | "cityId" | "title">;
 /** The parts of the game the room reads. */
 export type RoomGame = Pick<GameState, "seenEncounterIds" | "completedTourIds" | "completedGuideIds" | "battleRecords" | "playedDateIds" |
   "viewedEpilogueCityIds" | "activeEpilogue" | "currentCityId" | "completedCityIds">;
@@ -49,8 +49,59 @@ export function sceneAddresses(scene: Pick<RoomScene, "story" | "knots">): strin
 export type RoomTrack = { id: string; labelJa: string };
 /** A voiced line of the room: its recording and its text (the names filled in). */
 export type RoomVoice = { id: string; textJa: string };
-/** The voiced lines of one completed scene, under its name. */
-export type RoomVoiceGroup = { sceneId: string; labelJa: string; voices: RoomVoice[] };
+/** The voiced lines of one completed scene, or of the untitled scenes of one moment, under its name. */
+export type RoomVoiceGroup = { key: string; labelJa: string; voices: RoomVoice[] };
+/** Where the room's voice list puts a scene: the group's key and its name. */
+export type SceneGroup = { key: string; labelJa: string };
+
+/** The names the room gives the content a scene refers to (each falls back to the ID). */
+export type SceneNames = {
+  city: (cityId: string) => string;
+  landmark: (landmarkId: string) => string;
+  place: (cityId: string, placeId: string) => string;
+  battle: (battleId: string) => string;
+  date: (dateId: string) => string;
+  tour: (tourId: string) => string;
+};
+
+/** Where and when a moment of `# at:` happens, in words (an untitled scene's group name). */
+function momentLabelJa(at: SceneAt, cityId: string, names: SceneNames): string {
+  if ("visit" in at) return at.visit === "any" ? `${names.city(cityId)}の観光地で` : `${names.landmark(at.visit)}で`;
+  if ("place" in at) return `${names.place(cityId, at.place)}で`;
+  if ("date" in at) return `デート「${names.date(at.date)}」で`;
+  if ("finale" in at) return `${names.city(at.finale)}のフィナーレで`;
+  if ("epilogue" in at) return `${names.city(at.epilogue)}のエピローグで`;
+  if ("depart" in at) return `${names.city(at.depart)}を発つ日`;
+  if ("arrive" in at) return `${names.city(at.arrive)}に着いた日`;
+  if ("hotel" in at) return `${names.city(cityId)}の宿で`;
+  if ("trip" in at) return `${names.city(cityId)}の移動中に`;
+  if ("ticket" in at) return `${names.place(cityId, at.ticket)}の窓口で`;
+  return `${names.tour(at.tour)}で`;
+}
+
+/**
+ * Where the room's voice list puts a completed scene (2026-11-13 user decision): a main part on its own, named by what it
+ * is (a guide, a battle's or a date's title, a city's epilogue or arrival); another scene with a title on its own under
+ * it; an untitled scene (a talk at the hotel, before a departure, a tour leg …) together with the untitled scenes of the
+ * same moment, named by where and when they happen (its first `# at:`: 「デリーの宿で」, 「デリーを発つ日」), from the
+ * content alone. The scene table titles a main part by its place or city only, so that title is not used for one.
+ */
+export function sceneGroup(scene: Pick<RoomScene, "id" | "main" | "at" | "cityId" | "title">, names: SceneNames): SceneGroup {
+  const main = scene.main;
+  if (main) {
+    const labelJa = "guide" in main ? `${names.landmark(main.guide)}の案内`
+      : "battle" in main ? names.battle(main.battle)
+      : "date" in main ? names.date(main.date)
+      : "epilogue" in main ? `${names.city(main.epilogue)}のエピローグ`
+      : `${names.city(main.arrival)}に到着`;
+    return { key: scene.id, labelJa };
+  }
+  if (scene.title) return { key: scene.id, labelJa: scene.title };
+  const at = scene.at[0];
+  // The name says the city and the place or moment, so the scenes it names together are one group (a tour's legs and steps too).
+  const labelJa = at ? momentLabelJa(at, scene.cityId, names) : `${names.city(scene.cityId)}で`;
+  return { key: `at:${labelJa}`, labelJa };
+}
 
 /**
  * The tracks heard: each visited place's own track (else the journey's usual place track), in the order of
@@ -93,18 +144,20 @@ export function readStoryKey(scene: Pick<RoomScene, "id" | "kind" | "main" | "st
  * The voiced lines heard, by completed scene (in `scenes`' order; a scene without one is left out), each line once in
  * the whole room: only the lines this device has read (`isRead`, read-skip's record: the line's story key and its text
  * as shown, the names filled in), so a branch not taken stays unheard. `names` fills in {player_name} and
- * {heroine_name}, as the story does; `sceneLabel` names each scene. A voiced line whose text has Ink's own logic (a
- * `{…}` other than the names, glue) shows other words than written and is not found (no voiced line has any today).
+ * {heroine_name}, as the story does; `group` puts each scene in its group (sceneGroup): the scenes of one group share it,
+ * where its first scene stands. A voiced line whose text has Ink's own logic (a `{…}` other than the names, glue) shows
+ * other words than written and is not found (no voiced line has any today).
  */
-export function heardVoices<S extends RoomScene>({ scenes, audio, names, sceneLabel, isRead }: {
+export function heardVoices<S extends RoomScene>({ scenes, audio, names, group, isRead }: {
   scenes: readonly S[];
   audio: SceneAudio;
   names: (text: string) => string;
-  sceneLabel: (scene: S) => string;
+  group: (scene: S) => SceneGroup;
   isRead: (lineId: string) => boolean;
 }): RoomVoiceGroup[] {
   const seen = new Set<string>();
-  return scenes.flatMap((scene) => {
+  const groups = new Map<string, RoomVoiceGroup>();
+  for (const scene of scenes) {
     const key = readStoryKey(scene);
     const voices: RoomVoice[] = [];
     for (const address of sceneAddresses(scene))
@@ -114,6 +167,11 @@ export function heardVoices<S extends RoomScene>({ scenes, audio, names, sceneLa
         seen.add(voice.id);
         voices.push({ id: voice.id, textJa });
       }
-    return voices.length ? [{ sceneId: scene.id, labelJa: sceneLabel(scene), voices }] : [];
-  });
+    if (!voices.length) continue;
+    const { key: groupKey, labelJa } = group(scene);
+    const shared = groups.get(groupKey);
+    if (shared) shared.voices.push(...voices);
+    else groups.set(groupKey, { key: groupKey, labelJa, voices });
+  }
+  return [...groups.values()];
 }
