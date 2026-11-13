@@ -38,6 +38,7 @@ import { HeroineNote } from "./HeroineNote";
 import { LandmarkReveal } from "./LandmarkReveal";
 import { DOUBLE_TAP_WINDOW_MS, isSecondTap } from "../../components/double-tap";
 import { answerBeat, CORRECT_HOLD_MS } from "./answer-beat";
+import { showIgnoredTap } from "../../components/ignored-tap";
 import {
   Translation,
   TranslationAll,
@@ -409,6 +410,8 @@ export function BattleScreen({
         if (answeredAt.current !== null && isSecondTap(performance.now() - answeredAt.current)) {
           event.preventDefault();
           event.stopPropagation();
+          // Heard and ignored: a faint ring where it landed (2026-11-13).
+          if (event.detail > 0) showIgnoredTap(event.clientX, event.clientY);
         }
       }}
       data-phase={isDialogue ? "dialogue" : active.phase}
