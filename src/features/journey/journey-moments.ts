@@ -108,7 +108,8 @@ function photoViews(album: readonly AlbumPhoto[], currentCityId: string): Moment
 /**
  * The recap's picture (2026-11-13 user decision: it belongs to the same story as the text): an album photo of the episode
  * (the author's illustration with its caption, else its place's name; no credit), or the photo of the episode's place with
- * the place's name, the reduced `card` copy free time's card shows, and the photo's credit (`credit`).
+ * the place's name, as its reduced and cropped `recap` copy (840×560, sharp at 3×; content:build makes one for each
+ * episode's place), and the photo's credit (`credit`).
  */
 export type RecapPicture = { path: string; altJa: string; captionJa: string; credit?: TourismAsset };
 
@@ -127,8 +128,9 @@ function episodeStoryIds(episode: EpisodeDefinition): string[] {
 /**
  * The picture of an episode in the recap: the latest album photo taken in the episode's own parts (episodeStoryIds);
  * else the photo of the place the episode happens at on the map (a landmark's place, or where a finale is set; content:build
- * checks that each episode has its map event and that a landmark's is at the landmark's place), the one free time's card
- * shows for that place (getPlacePhoto), with its credit; else none (a place without a photo, or with only a placeholder).
+ * checks that each episode has its map event and that a landmark's is at the landmark's place), the photo free time's card
+ * shows for that place (getPlacePhoto) in its larger `recap` copy, with its credit; else none (a place without a photo, or
+ * with only a placeholder).
  */
 export function recapPicture(game: Pick<GameState, "album" | "currentCityId">, episode: EpisodeDefinition): RecapPicture | null {
   const own = episodeStoryIds(episode);
@@ -137,7 +139,7 @@ export function recapPicture(game: Pick<GameState, "album" | "currentCityId">, e
   const placeId = eventPlace(episode.cityId, episode.id);
   const place = cityContents[episode.cityId]?.travel.places.find((item) => item.id === placeId);
   const asset = place ? getPlacePhoto(episode.cityId, place.id) : null;
-  return place && asset ? { path: derivedImagePath(asset, "card"), altJa: asset.altJa, captionJa: place.nameJa, credit: asset } : null;
+  return place && asset ? { path: derivedImagePath(asset, "recap"), altJa: asset.altJa, captionJa: place.nameJa, credit: asset } : null;
 }
 
 /**
