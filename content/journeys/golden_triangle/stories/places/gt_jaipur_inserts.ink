@@ -6,6 +6,10 @@ INCLUDE modules.ink
 // 服装は別の作業（ジャイプール用の衣装）で決まるので、服の色や種類は書かない。
 
 // 【4】宿・眠る前：手のひらの模様の中を探す（「明日にする」は # later。夜だけ）
+// 探すのはミニゲーム「手のひらの模様」（# minigame: mehndi_hidden_name）。灯りを動かし、模様にまぎれた文字を押す。
+// 文字の場所と中身は、ジャル・マハルのフラグで分かれ道に書き分ける（主人公の名前は入れたとおりに。ヒンディー語の文字の所は、
+// わざと読めない印にする：偽の文字は作らない）。結果は found・wrong_spot（違う所を指した。その後で found）・later（「明日にする」
+// のボタンか、時間切れ。# later なので、また次の夜に出る）。場面の中のゲームなので、関係値の札は付けない。
 === gt_jaipur_hotel_mehndi_night ===
 # scene: talk
 # at: hotel jaipur_hotel_hub
@@ -35,37 +39,40 @@ INCLUDE modules.ink
 {
 - cond("flag gt_jaipur_mehndi_his_name"):
     # speaker: narrator
+    # minigame: mehndi_hidden_name target thumb text player auto found
     花びらと蔓の間を、目でたどる。どこかに、自分の名前があるはずだった。
 - cond("flag gt_jaipur_mehndi_her_secret"):
     { cond("seen gt_jaipur_hotel_mehndi_morning"):
         # speaker: narrator
+        # minigame: mehndi_hidden_name target peacock text illegible auto found
         何が、どこに書いてあるかは、もう聞いてしまった。それでも、花びらと蔓の間を、自分の目でたどる。
     - else:
         # speaker: narrator
+        # minigame: mehndi_hidden_name target peacock text illegible auto found
         何が隠されているのかも、分からない。花びらと蔓の間を、目でたどる。
     }
 - else:
     # speaker: narrator
+    # minigame: mehndi_hidden_name target vine text farhana auto found
     名前は隠していない、はずだった。けれど、手のひらの真ん中の蔓だけ、妙に形がこみいっている。
 }
-* [指でたどりながら、根気よく探す # option: search_patiently]
-    # rel: trust +1
+// 選択肢の代わりにミニゲーム。結果の ID の選択肢をゲームが選ぶ。
+* [模様の中の文字を見つけた # option: found]
     -> found
-* [見つけたふりをする # option: pretend_found]
-    # rel: trust -1
+* [文字の無い所を指した # option: wrong_spot]
     { cond("flag gt_jaipur_mehndi_her_secret") and cond("seen gt_jaipur_hotel_mehndi_morning"):
         # speaker: heroine
         # reaction: heroine,teasing,question
-        ほんと？　それ、フロントの人が見つけた所でしょ
+        そこじゃないよ。今朝フロントの人が指さした所、もう忘れちゃった？
     - else:
         # speaker: heroine
         # reaction: heroine,teasing,question
-        ほんと？　じゃあ、指でさして。そこ、ただの花びらだよ
+        そこ？　ふふ、そこはただの花びらだよ
+        # speaker: heroine
+        そんなにすぐ分かる所には、ないと思うな。……ほら、もっとちゃんと見て
     }
-    # speaker: heroine
-    見つけたふり、すぐばれるんだから。ちゃんと探して
     -> found
-* [「色が濃くなる明日にする」 # option: tomorrow_then]
+* [「色が濃くなる明日にする」 # option: later]
     # later
     # speaker: heroine
     # emotion: smile
