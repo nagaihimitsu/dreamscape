@@ -10,7 +10,8 @@ import { isDateUnlockedForTravel } from "../../../src/domain/date-rules";
 import { meets } from "../../../src/domain/conditions";
 import { advanceCityEpilogue, completeArrivalLogo, startCityArrival, startCityEpilogue } from "../../../src/domain/epilogue";
 import { advanceDate, chooseDate, createGame, finishDate, startDate, validateGameState, type GameState } from "../../../src/domain/game";
-import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../../src/domain/player-action";
+import { openMiniGame } from "../../../src/domain/minigame";
+import { applyPlayerAction, chooseMiniGameOutcome, listPlayerActions, playerActionChange } from "../../../src/domain/player-action";
 import { advanceTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
 import { correctAnswer, playBattleToResult, wrongAnswer } from "../../../src/dev/scenario-builders";
 
@@ -246,6 +247,11 @@ it("finishes the three-city story without any date or optional memory, in altern
           expect(answerBattle(state, option, beforeAnswer.revision)).toBe(state);
           state = roundtrip(state);
           if (correct) score++;
+        } else if (openMiniGame(state)) {
+          // A # minigame: in the conversation (docs/13; the Jaipur finale's dance): its 「おまかせ」 outcome takes its choice.
+          const revision = state.revision;
+          state = roundtrip(chooseMiniGameOutcome(state, openMiniGame(state)!.tag.auto, revision, () => 0));
+          expect(state.revision).toBeGreaterThan(revision);
         } else state = advanceBattle(state, state.revision);
       }
       expect(state.activeBattle?.score).toBe(score);
