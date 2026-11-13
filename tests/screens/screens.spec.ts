@@ -121,18 +121,18 @@ const flows: FlowScene[] = [
     await toBattle(page);
     await playUntil(page, (state) => state.activeBattle?.phase === "result");
   } },
-  { scene: "flow-date", titleJa: "デート（行き先と訪問先の写真）", descriptionJa: "ドゥオモの対決の後、ノヴェチェント美術館のデートを始める", open: async (page) => {
+  { scene: "flow-date", titleJa: "デート（行き先と訪問先の写真）", descriptionJa: "ドゥオモの対決とその後の道中交流「切れた三本目」（最初の選択）の後、ノヴェチェント美術館のデートを始める", open: async (page) => {
     await toBattle(page);
     await playUntil(page, (state) => state.activeBattle?.phase === "result");
-    await ops.toFreeTime(page);
+    await ops.toFreeTimeThroughScenes(page);
     await ops.goTo(page, "p_novecento");
     await expect(page.getByTestId("romance-scene")).toBeVisible();
     await ops.settled(page);
   } },
-  { scene: "flow-english-note", titleJa: "英語ノート", descriptionJa: "ドゥオモの対決の後、最初の問題を選ぶ", open: async (page) => {
+  { scene: "flow-english-note", titleJa: "英語ノート", descriptionJa: "ドゥオモの対決とその後の道中交流「切れた三本目」（最初の選択）の後、英語ノートで最初の問題を選ぶ", open: async (page) => {
     await toBattle(page);
     await playUntil(page, (state) => state.activeBattle?.phase === "result");
-    await ops.toFreeTime(page);
+    await ops.toFreeTimeThroughScenes(page);
     const note = await ops.openEnglishNote(page);
     const picker = note.getByLabel("回答した問題を選ぶ");
     await picker.selectOption((await picker.locator("option").nth(1).getAttribute("value"))!);

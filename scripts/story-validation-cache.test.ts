@@ -174,9 +174,11 @@ describe("Ink validation cache", () => {
     // Data read at run time (files, the environment, the clock, chance) would
     // be in neither the fingerprint nor the key. Only the cache itself and the
     // import parser it uses (test-sets.ts) read files, and not for validateStory.
+    // Only code runs: a stylesheet in the list (a mini-game's, reached through its
+    // definition's load()) reads nothing, whatever its names say (`--ds-window-…`).
     const readers = ["scripts/story-validation-cache.ts", "scripts/test-sets.ts"];
     expect(code.files).toEqual(expect.arrayContaining(readers));
-    for (const file of code.files.filter((name) => !readers.includes(name))) {
+    for (const file of code.files.filter((name) => !readers.includes(name) && /\.(?:ts|tsx|mts)$/u.test(name))) {
       const text = readFileSync(path.join(repository, file), "utf8");
       expect(text, `${file} loads a module that reads data`).not.toMatch(/["'](?:node:)?(?:fs|fs\/promises|child_process|process|os)["']/u);
       // The globals are looked for in the code only: a word in a comment or a string (the tag value `# shake: window`) reads nothing.
