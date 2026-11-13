@@ -74,7 +74,7 @@ INCLUDE modules.ink
     # memory: sound_memory_night_01
     { romance_result == "negative":
         # speaker: heroine
-        見ただけで決めなくてよかった。今は、橋から水を見たいの
+        少し、か。……疲れてはいないよ。今は、橋から水を見たいだけ
     - else:
         # speaker: heroine
         正解は半分。疲れたのと、まだ帰りたくないのと
