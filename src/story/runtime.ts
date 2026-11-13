@@ -17,7 +17,7 @@ import { ALBUM_IMAGE_ID } from "../content/album-images";
 import { VOICE_ID } from "../content/voice-files";
 import { SOUND_ID } from "../content/sounds";
 import { MINI_GAME_ID, MINI_GAME_OUTCOME_ID } from "../minigames/contract";
-import { MINI_GAME_KEY, MINI_GAME_PREFIX } from "../minigames/tag";
+import { isValidMiniGameTag, MINI_GAME_KEY, MINI_GAME_PREFIX } from "../minigames/tag";
 import { MINI_GAME_ART_ID } from "../minigames/art";
 
 export type { Speaker, StoryFrame } from "./frame-reader";
@@ -324,7 +324,9 @@ export function validateStorySnapshot(
     (frame.recall && !tagContext.photoIds.includes(frame.recall)) ||
     // A person's line names a declared person (and only a person's line names one).
     (frame.speaker === "person") !== (frame.speakerPersonId !== undefined) ||
-    (frame.speakerPersonId !== undefined && !tagContext.personIds.includes(frame.speakerPersonId))
+    (frame.speakerPersonId !== undefined && !tagContext.personIds.includes(frame.speakerPersonId)) ||
+    // A line's # minigame: reads now as the tag reader reads it: a registered game, its outcome, keys and pictures (docs/13 4.6).
+    (frame.minigame !== undefined && !isValidMiniGameTag(frame.minigame, tagContext))
   )
     throw new Error("保存された場面の情報が一致しません。");
   if (

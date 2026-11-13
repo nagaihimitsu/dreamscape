@@ -4,7 +4,7 @@ import { miniGameOutcomeIds } from "../../../src/minigames/tag";
 import { chooseMiniGameOutcome, listPlayerActions } from "../../../src/domain/player-action";
 import { cityStart, finishEpisode, startDateScene, withAp } from "../../../src/dev/scenario-builders";
 import { advanceDate, chooseDate, finishDate, validateGameState, type GameState } from "../../../src/domain/game";
-import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
+import { loadGame, parseGameState, saveGame, type StorageLike } from "../../../src/persistence";
 
 /**
  * The Mehtab Bagh date's last ball (2026-11-13): a cricket mini-game instead of a choice. Its outcome takes the choice of
@@ -61,6 +61,18 @@ describe("the Mehtab Bagh date's cricket mini-game", () => {
       const { games } = play(["no_swing", second]);
       expect(games[1]).toEqual(miniGameOutcomeIds("cricket_batting").map((id) => `again_${id}`));
     }
+  });
+
+  it("saves the mini-game's tag with its frame, and loads no frame whose tag the tag reader no longer reads (docs/13 4.6)", () => {
+    const apCost = dates.find((date) => date.id === DATE_ID)!.apCost;
+    let state = startDateScene(withAp(finishEpisode(cityStart("agra"), "gt_agra_main_taj_mahal"), apCost), DATE_ID, 4500);
+    while (!state.activeDate!.frame.minigame || !state.activeDate!.frame.choices.length)
+      state = state.activeDate!.frame.choices.length ? chooseDate(state, state.activeDate!.frame.choices[0].index, state.revision) : advanceDate(state, state.revision);
+    expect(parseGameState(JSON.stringify(state))).toEqual(state);
+    const minigame = state.activeDate!.frame.minigame!;
+    const altered = (change: object) => JSON.stringify({ ...state, activeDate: { ...state.activeDate, frame: { ...state.activeDate!.frame, minigame: { ...minigame, ...change } } } });
+    for (const change of [{ id: "tennis" }, { auto: "home_run" }, { art: { sky: "pitch" } }, { params: { level: "easy" } }, { bg: "no_such_background" }])
+      expect(() => parseGameState(altered(change)), JSON.stringify(change)).toThrow("保存された場面の情報が一致しません。");
   });
 
   it("keeps one mesh resolution per play in the saved date: the replay draws no second ticket", () => {
