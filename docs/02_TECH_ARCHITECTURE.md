@@ -123,7 +123,7 @@ tests/journeys/<journeyId>/   # その旅行編だけの内容・経路・制作
 - 警告（生成は続ける。件数を表示し、`npm run content:build -- --verbose` で一覧。判定は `scripts/content-report.ts`）。警告があっても、単体テスト（`test:quick`・`npm test`）・CI・`npm run verify`・公開は失敗しない。直すかどうかは制作者が一覧を見て判断する
   - 旅行編フォルダの読み込まれず配信もされないファイル（上の「統合の規則」）。
   - データからもゲームのコードからも参照されない、旅行編の `public/` と直下の `public/assets/` のファイル（参照されないまま公開される）。コードが自分で使う画像（演出の画像・既定の品物アイコン）は `src/content/code-images.ts` に一覧し、`src/content/code-images.test.ts` が、それらが直下の `public/` にあることと、ほかのコードが配信パス（`assets/…`）を直接書いていないことを確かめる（開発サーバーは存在しない画像にもページを返すため、ブラウザでは欠落に気付けない）。直下の `public/` のブラウザのアイコンとWebアプリのマニフェストは `index.html` が参照し、`scripts/app-icons.test.ts` が検査するため対象外。
-  - 録音した台詞が変わった（`# voice:` のある行の文が、渡した最新の声の台本 `authoring/journeys/<旅行編ID>/voice/<日付>/entries.json` の同じ ID の文と違う。録り直しが要る。台本は `authoring/` にあるので、この判定もそれを読む。`scripts/voice-changes.ts`。一覧は `npm run voice:changes`）。
+  - 録音した台詞が変わった（`# voice:` のある行の文が、その声が言っている文 `authoring/journeys/<旅行編ID>/voice/recorded.json`（`npm run voice:tag` が書く）と違う。録り直しが要る。`recorded.json` にない `# voice:` も注意。記録は `authoring/` にあるので、この判定もそれを読む。`scripts/voice-changes.ts`。一覧は `npm run voice:changes`）。
   - `npm run images:optimize` で軽くできる観光写真：JPEG・PNG の写真と、観察で拡大しないのに幅1600px・高さ1800pxの枠を超える WebP の写真（観察で拡大する写真は、観光地の `imageAssetId` と、公開前の都市の観察資料 `authoring.observationFile` の画像。仮の画像（`isPlaceholder`）と見本の編の画像は対象外。判定は `scripts/image-optimization.ts`。観察資料は `authoring/` にあるので、この判定だけはそれも読む）。
   - `authoring.eventPrefix` を持つ旅行編の、接頭辞の決まり（下の「ストーリーIDとIDの名前空間」）に合わないID。既存の例外は `scripts/content-report.ts` の `UNPREFIXED_ID_EXCEPTIONS` に挙げ、新しいIDは例外に足さず接頭辞を付ける。例外に挙げたIDが実データから無くなると、単体テスト（`scripts/content-report.test.ts`）が失敗する（使われない例外を残さないため）。
   - `manifest.json` の `transportModes` に宣言したのに、その旅行編のどの都市の経路にも使われていない乗り物（`unusedTransportModes`。経路を足すか、宣言を消す）。

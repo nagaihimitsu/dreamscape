@@ -1,0 +1,949 @@
+{
+  "schemaVersion": 1,
+  "clips": {
+    "gt_delhi_date_agrasen_baoli_001": {
+      "text": "すごい……。上のビルの音が、ここから急に聞こえなくなる。町の真ん中に、穴が空いてるみたい",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_002": {
+      "text": "わたし？　悲鳴なんて、人生で上げたことないかも……",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_003": {
+      "text": "幽霊……。ほんとに驚いて、階段で転んだらどうするの",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_004": {
+      "text": "ご、ごめんなさいっ。足、見えてた。いつもの靴だったから、ふふっ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_005": {
+      "text": "一緒だと、一人の旅行者の役にならないよ。でも、うしろにはいてね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_006": {
+      "text": "うん。一人じゃないなら、やってみる。でも、役の上では一人ってことにしてね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_007": {
+      "text": "待って。勝手に決めないで。……やるかどうかは、わたしが決める",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_008": {
+      "text": "心配してくれて、ありがとう。でも、やるかどうかは、わたしが決めたいな",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_009": {
+      "text": "怖いけど、ちょっとやってみたい。こういうの、旅じゃないと、たぶん一生やらないから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_010": {
+      "text": "水がなくなっても、話だけは残ってるんだ。……今それ、聞きたくなかったな",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_011": {
+      "text": "きゃ、きゃー……？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_012": {
+      "text": "質問……。だって、何に向かって叫べばいいのか、分からなくて",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_013": {
+      "text": "きゃああああっ！",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_014": {
+      "text": "同情じゃないよ。本物、聞いてみたいだけ。鳩の役なら、ここにちょうどいい人がいるし",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_015": {
+      "text": "わたしも、今そう言おうと思ってた。鳩の役なら、ここにちょうどいい人がいるし",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_016": {
+      "text": "その話、もうしないで。恥ずかしくて、井戸に入りたい",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_017": {
+      "text": "褒めてないよね、それ。ふふ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_018": {
+      "text": "クナールさん。これ、ジャスミートさんの動画だよね。もう一回、撮ろう。今度は、本物の鳩なしで",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_019": {
+      "text": "そういう言い方、ジャスミートさんの前でしないで。……鳩さえいれば、何回でも出るよ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_020": {
+      "text": "そうかな。……鳩さえいれば、何回でも出ると思うよ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_021": {
+      "text": "ジャスミートさん、もう一回やろう。鳩の役なら、ここにちょうどいい人がいるし",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_022": {
+      "text": "うん、負けた。わたしのは、質問だったもん",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_023": {
+      "text": "顔は、ちょっとだけ隠してね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_024": {
+      "text": "この階段、百八段あるんだって。日本だと、百八って煩悩の数なんだよ。大みそかに、鐘を百八回つくでしょ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_025": {
+      "text": "一段上るごとに、煩悩が一個ずつ消えてたらいいな。上に着いたら、わたし、もう何も欲しくなくなってるかも",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_agrasen_baoli_026": {
+      "text": "……だめだ。冷たいものが飲みたい。煩悩、一個も減ってない",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_001": {
+      "text": "待って、それ、ほどけかけてる。じっとして。はい。うん、さっきより、ずっとそれっぽい",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_002": {
+      "text": "丸くしようとしたんです……。世界地図を作ろうとしたわけじゃなくて",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_003": {
+      "text": "……わたしのより、まとまってる。ちょっと悔しい",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_004": {
+      "text": "ふふっ。わたしの地図より、ちゃんと役に立ちそう",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_005": {
+      "text": "こ、ここで、それ？　お祈りの台所なのに。ちょっと恥ずかしいよ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_006": {
+      "text": "……ねえ、それ、誰にあげるの",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_007": {
+      "text": "そっか。じゃあ、知らない誰かが、ハートを食べるんだ。……それはそれで、いいね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_008": {
+      "text": "あ、待って。自分でやる。……下手でも、わたしの地図だから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_009": {
+      "text": "ありがとう。でも、ここは自分で。直されたら、地図が普通の丸になっちゃう",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_010": {
+      "text": "毎週、電話してくれるんですね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_011": {
+      "text": "あ、えっと……生地、乾いちゃいますよ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_012": {
+      "text": "そうですよね。わたしたちも、カナダに行くわけじゃないのに、言っちゃいました",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_013": {
+      "text": "わたしも、役に立てていないと不安になる方なので……少し、分かります。ちゃんとした答えは、出せないですけど",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_014": {
+      "text": "あ……すみません。聞いてないわけじゃ、ないんです",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_015": {
+      "text": "わたしも黙ってたら、上手くなりますか？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_016": {
+      "text": "わたしの地図だ！　焼けると、ちゃんとおいしそうに見える",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_017": {
+      "text": "バス。ありがとうございます",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_018": {
+      "text": "ね。もう、ちゃんと言えるんだから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_019": {
+      "text": "今度は自分で言う。バス！",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_020": {
+      "text": "残しちゃいけないんだよね。うん。食べる。食べるけど……断り方、誰か教えて",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_021": {
+      "text": "誰が食べたか分からないけど、わたしのローティー、もう誰かのお腹に入ってるんだよね。なんだか不思議。知らない人に、ちょっとだけ届いた感じ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_bangla_sahib_022": {
+      "text": "わたし、今日、何か運べたのかな。世界地図を一枚",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_001": {
+      "text": "見て。あの人たち、丸いのを一口で食べてる。中に、水が入ってるの？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_002": {
+      "text": "やってみたい。一個だけ。ううん、一皿だけ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_003": {
+      "text": "すっぱ、からっ、おいしい！　口の中で、割れた！",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_004": {
+      "text": "……今の、わたしが言うところだったのに。止めてもらうの、ちょっと悔しい",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_005": {
+      "text": "助かった。助かったけど。次は、自分で言うからね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_006": {
+      "text": "ば、ばす……",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_007": {
+      "text": "……言葉は合ってるのに、声が足りなかった",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_008": {
+      "text": "バ、バス！",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_009": {
+      "text": "止まった！　乗り物の名前で止まった！　これ、日本に持って帰りたい言葉かも",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_010": {
+      "text": "勝負？　今？　……もう五個食べてるんだよ、わたし",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_011": {
+      "text": "引き分け！　今の、わたしの方が一瞬早かったけどね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_012": {
+      "text": "……食べたい。食べたいけど、もう入らないかも。でも、せっかくくれたのに",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_013": {
+      "text": "あっ。それ、わたしのだったのに。ほんとに食べたかったんだよ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_014": {
+      "text": "あ、ずるい。ふふ、涙出てる。わたしの分まで、ありがとう。たぶん、すごく後悔する味だね、それ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_015": {
+      "text": "顔で決めないで。食べたいけど、言う前に決められると、ちょっと悔しい",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_016": {
+      "text": "ばれた？　じゃあ、いただきます。最後の一個って、いちばんおいしい気がするから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_017": {
+      "text": "バス！",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_018": {
+      "text": "……ずれた。わたし、ちょっと早かったね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_019": {
+      "text": "バス！",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_020": {
+      "text": "水なしの、おまけのおまけ。断ったのに、もらえちゃった。言ってみるものだね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_021": {
+      "text": "この通り、たぶん一日じゃ全部は無理だね。お店の数より、人の数の方が多そう",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_chandni_chowk_022": {
+      "text": "ねえ。今日覚えた言葉、言ってみて。違う、乗り物じゃないよ。ふふ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_arrival_001": {
+      "text": "わたしのガイドブック、初対面で不合格になった……",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_arrival_002": {
+      "text": "こ、恋人です。……人に言うの、まだ慣れてなくて",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_arrival_003": {
+      "text": "た、旅の連れです！　……今の、通訳しないでくださいね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_arrival_004": {
+      "text": "……はい、覚えておきます。それにしても、地図というより暗号だね。せっかくなら全部回って、解いてみたいな。……ね、一緒に解いてくれる？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_epilogue_001": {
+      "text": "いえ。……わたしも、アマンさんの立場だったら、同じことを言ったと思います",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_epilogue_002": {
+      "text": "説得力、ありますね。経験者の言葉だもん",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_epilogue_003": {
+      "text": "ありがとうございます。……行くかどうか、少しだけ考えさせてください。自分で決めたいので",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_epilogue_004": {
+      "text": "ねえ。わたし、言いたいことは、言いたいときに言うね。六十年後じゃなくて",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_epilogue_005": {
+      "text": "……今も、一つ言いたいけど。それは明日、起きてからにする",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_epilogue_006": {
+      "text": "六十年って、長いね。……わたしは、そんなに待たせたくないな。誰を、とは言わないけど",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_epilogue_007": {
+      "text": "言いそびれたことって、あとから重くなるんだね。わたしも、今日のうちに一つ言っておく。……付き合ってくれて、ありがとう",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_epilogue_008": {
+      "text": "旅の連れに言うことじゃないかもしれないけど。今日、一人じゃなくてよかった",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_epilogue_009": {
+      "text": "……『来なくてもいい』って言った人が、一番長く手を振ってた",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_confession_001": {
+      "text": "カムラさん、まだ起きてるのかな。六十年分の荷造りって、どれくらいかかるんだろう",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_confession_002": {
+      "text": "……うん。わたしも、好き",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_confession_003": {
+      "text": "迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて。……わたしも、一緒にいたい。旅が終わっても",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_confession_004": {
+      "text": "ふふ。顔、すごいことになってる。わたしも、たぶん、同じ顔してるけど",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_confession_005": {
+      "text": "旅が終わったあとのことは、一緒に決めようね。どこに行くかも、何を食べるかも。決めてもらうんじゃなくて、二人で",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_confession_006": {
+      "text": "ありがとう。言ってくれて、うれしかった。それは、本当",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_confession_007": {
+      "text": "でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_confession_008": {
+      "text": "旅は、最後まで一緒に行きたい。それも、本当。明日も、いつもみたいに、どこへ行くか一緒に決めてくれる？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_confession_009": {
+      "text": "うれしい。本当に、うれしい",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_confession_010": {
+      "text": "でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、クラクションと、遠くの灯りのせいに。……それは、嫌なの。ちゃんと、わたしが決めたいから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_confession_011": {
+      "text": "待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_confession_lead_001": {
+      "text": "この前の続き、したくて、屋上に誘ったの。答えは、わたしから言いたかったから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_confession_lead_002": {
+      "text": "でも、わたしが答える前に、もう一回だけ、聞かせてほしい。今度は、ちゃんと受け取るから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_confession_lead_003": {
+      "text": "今夜は、わたしが誘ったの。前に言ってくれたこと、あれからずっと考えてた",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_confession_lead_004": {
+      "text": "だから、もう一回だけ、聞かせてほしい。今度は、ちゃんと受け取るから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_confession_lead_005": {
+      "text": "話したいことがあって、屋上に誘ったの。今夜は、わたしから誘いたかった",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_confession_lead_006": {
+      "text": "でも、その前に。……何か言いかけてる顔、ずっとしてるよ。先に、聞かせて",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_confession_lead_007": {
+      "text": "あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ。あれね、『まだいたい』って書いたの",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_confession_lead_008": {
+      "text": "背中じゃなくて、声で言うって約束したから。……はい、言った。じゃあ、次はそっちの番",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_confession_lead_009": {
+      "text": "話、あるんでしょ。いいよ。最後まで、ちゃんと聞く",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_confession_lead_010": {
+      "text": "ん？　どうしたの、改まった顔して",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_reassurance_001": {
+      "text": "チャイ、二つもらってきた。一つは、そっちの",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_reassurance_002": {
+      "text": "この前の返事の話は、今日はしない。……そのかわり、チャイが冷めるまでは、普通の話をしよう。いつもの、どうでもいい話",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_reassurance_003": {
+      "text": "明日の話……。うん、普通だね。普通、なんだけど、ちょっとだけ緊張する",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_reassurance_004": {
+      "text": "それ、いちばん普通の話。うれしい。明日は、わたしが一つ、行きたい所を言ってもいい？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_reassurance_005": {
+      "text": "変なもの……。ごめん、今日は、あんまり周りを見てなかったかも",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_reassurance_006": {
+      "text": "変なもの？　屋根の上を歩いてた山羊。あれ、どうやって上ったんだろうね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_reassurance_007": {
+      "text": "帰ったら……。帰る話は、今はちょっと、さみしいかも",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_reassurance_008": {
+      "text": "鮭のおにぎり。コンビニの、三か所はがすやつ。ちょっと恋しい",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_reassurance_009": {
+      "text": "待っててくれて、ありがとう。待たせてごめんね、じゃなくて、ありがとうって言いたかったの",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_reassurance_010": {
+      "text": "答えは、わたしから言うね。ちゃんと決めたら。それまでは、いつもどおりでいて。いつもどおりが、いちばん助かる",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_humayun_tomb_guide_001": {
+      "text": "静か……。さっきまでの道路の音、どこに行ったの？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_humayun_tomb_guide_002": {
+      "text": "三本目……一、二、三。あの木かな。ベンチがあって、確かに涼しそう",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_humayun_tomb_guide_003": {
+      "text": "ねえ、気づいた？　家族連れじゃない二人組、すごく多い。しかも、みんな少しだけ離れて座ってる",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_humayun_tomb_guide_004": {
+      "text": "カムラさんの『三本目の木陰』も、もしかして……。いや、勝手に想像するのはやめよう。失礼だよね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_humayun_tomb_guide_005": {
+      "text": "……でも、ちょっとだけ想像しちゃった。廟の中も見に行こう。水路沿いに歩いたら、正面から見えるはず",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_001": {
+      "text": "記念碑の前って、もっと静かな場所だと思ってた。みんな、ピクニックしてる",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_002": {
+      "text": "十二人！　ええと、もう少し寄ってください。あ、寄りすぎ。おばあさんが、おじさんの肘で隠れてる",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_003": {
+      "text": "正直！　でも、わたしが入ったら、撮る人がいなくなっちゃう",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_004": {
+      "text": "わたしだけ？　……一緒に、がよかったな。ううん、いいの。撮って",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_005": {
+      "text": "じゃあ、お願い。……変な顔してたら、撮り直してね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_006": {
+      "text": "二人で並ぶの？　家族の人たち、絶対に何か勘違いするよ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_007": {
+      "text": "二人とも？　うん、それがいい。せっかくだもん",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_008": {
+      "text": "えっ、今？　十二人、わたし一人で並べるの？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_009": {
+      "text": "人数分って、十四本だよ？　いってらっしゃい。並べておくね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_010": {
+      "text": "毎年……。それでも、毎年来てるんだ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_011": {
+      "text": "……探したいな。おばあさんが見たいのは、たぶん写真より、そっちだと思う",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_012": {
+      "text": "うん。……でも、一時間探して見つからなかったら、おばあさん、もっとがっかりしないかな",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_013": {
+      "text": "うん。目、四つあれば、去年より少しは近づけるかも",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_014": {
+      "text": "あ、ごめん、無理にとは……",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_015": {
+      "text": "……それ、わたしたちが決めることじゃないと思う。おばあさんに、聞いてみよう",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_016": {
+      "text": "……うん。それも本当だと思う。でも、それを決めるのは、おばあさんだよね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_017": {
+      "text": "同じ名前が、こんなに！　どれがおばあさんのおじいさんなんだろう",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_018": {
+      "text": "おばあさんの方が、一枚上手だった",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_019": {
+      "text": "モヌくん、おばあさんに聞いてもらえる？　名前を、探したいですかって",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_020": {
+      "text": "探すものが、変わってたんだ。名前じゃなくて、続いていく方に",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_021": {
+      "text": "け、結婚は、まだ。でも、ちゃんと付き合ってます。……それ、通訳しなくていいからね！",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_022": {
+      "text": "それは、わたしにも分からない質問かな。……ね？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_023": {
+      "text": "しません！　旅の連れです。あいさつに、全力で答えちゃった",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_india_gate_print_001": {
+      "text": "十四人。旅のアルバムに、知らない親戚が増えちゃった",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_homework_001": {
+      "text": "女性車両？　地下鉄の？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_homework_002": {
+      "text": "低くても、ルーヒーさんの好きな場所は変わらないよ。先生が知らない場所を教えてあげるの、ちょっと気持ちよくない？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_homework_003": {
+      "text": "ねえ。インド門のを出して、女性車両のは、自分用に書いておくのはどう？　誰にも見せない作文も、あっていいと思う",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_homework_004": {
+      "text": "変じゃない。全然。そっか、それ、すごくよく分かる",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_homework_005": {
+      "text": "わたしもね、小学生のとき、『好きな場所』の作文に、近所のコインランドリーって書いたの。回ってる洗濯物を見てると、落ち着くから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_homework_006": {
+      "text": "先生、すごく困った顔してた。でも、あの作文が、今でもいちばん好き",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_homework_007": {
+      "text": "うん。お互いさまだね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_night_player_001": {
+      "text": "やっぱり。扉の音が、三回したから。最後の一個でしょ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_night_player_002": {
+      "text": "心配性だから、全部持ってきたの。笑っていいよ。でも、今日は役に立つでしょ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_night_player_003": {
+      "text": "大丈夫な人は、二時に廊下にいないよ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_night_player_004": {
+      "text": "起こしたくなかったのは、分かる。でも、わたしだって、たまには頼られたい。……これ飲むまでは、戻らないから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_night_player_005": {
+      "text": "えっ。……うん。言ってくれて、うれしい",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_night_player_006": {
+      "text": "いつも、わたしが聞いてもらう方だから。今日は逆だね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_night_player_007": {
+      "text": "勝負してたの？　もう、ふふっ。夜中なのに、笑わせないでよ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_night_player_008": {
+      "text": "屋台のおじさん、明日もあそこで、誰かのお腹を壊してるのかな",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_night_heroine_001": {
+      "text": "……起こしちゃった。ごめん。大丈夫、大丈夫だから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_night_heroine_002": {
+      "text": "最後の一個、自分で食べたいって言ったんだもん。自業自得。屋台のおじさんが、すごくうれしそうだったから、断れなくて",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_night_heroine_003": {
+      "text": "……いいって言ったのに",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_night_heroine_004": {
+      "text": "……うん",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_night_heroine_005": {
+      "text": "待って。……やっぱり、いて。大丈夫じゃない。ちゃんと言うの、まだ下手だね、わたし",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_night_heroine_006": {
+      "text": "夜中だよ。起こしたら悪い……って言っても、行くんだよね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_night_heroine_007": {
+      "text": "じゃあ、わたしの青いポーチも持ってきて。粉の袋が入ってる。心配性で持ってきたのが、自分に効くとは思わなかった",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_night_heroine_008": {
+      "text": "お腹いっぱいって、言えばよかった。バスって、言えればよかった。……今度は、言う。屋台でも、ほかの所でも",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_morning_001": {
+      "text": "今日は、わたしが決める日。午前中は休み。異議は受けつけません",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_morning_002": {
+      "text": "いつも、どこへ行くか決めてもらってるから。たまには、ね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_hotel_sick_morning_003": {
+      "text": "いいなあ。うちの朝も、こんなふうに、うるさかった。キチュリー、やさしい味がする",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_001": {
+      "text": "えっ、運休？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_002": {
+      "text": "二人とも、同じこと言ってる……。わざわざ教えてくれたんだし、話だけでも、聞いてみる？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_003": {
+      "text": "でも……もし本当だったら。乗り遅れたら、アーグラの宿も、全部ずれちゃう",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_004": {
+      "text": "この値段！？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_005": {
+      "text": "……これ、全部、同じ人の字だよ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_006": {
+      "text": "『と』の書き順が、全部同じ癖。インクも、三年分なのに、全部同じ青。……日本人が書いた日本語じゃない、と思う",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_007": {
+      "text": "それに、さっきのアプリ、『定刻』って出てた。古いのは、たぶん、こっちの話の方",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_008": {
+      "text": "掲示板を見ようって言われたとき、すごく急がせたよね。見られたら、困るみたいに",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_009": {
+      "text": "No, thank you.",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_010": {
+      "text": "けっこうです。自分で、確かめます",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_011": {
+      "text": "それなら、自分で確かめて、乗り遅れます",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_012": {
+      "text": "……行こう。取り返すより、電車。ここで揉めて、もっと何かなくすのは嫌",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_013": {
+      "text": "親切だと思ったのが、全部、お芝居だった。名札も、ベストも、電話の声も。……悔しい。最初に、ついて行こうって言ったの、わたしだから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_014": {
+      "text": "でも、教えてくれた荷運びの人も、検札の人も、本物だった。宿のご主人も、ルーヒーさんも。……疑うのは疲れるけど、全部を疑うようには、なりたくないな",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_015": {
+      "text": "手付金は、高い授業料だったね。……ううん、やっぱり悔しい。でも、払ったのは一人のせいじゃないよ。二人で、あの部屋まで行ったんだから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_016": {
+      "text": "ノー・サンキューって、ゴルガッパの『バス』より、ずっと言いにくかった",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_017": {
+      "text": "字を見るの、好きだから。手書きの看板とか、メニューとか。好きなことが、役に立った",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_018": {
+      "text": "ううん。一人で全部背負わないで。止められなかったのは、わたしも同じ。次は、二人で、先に掲示板を見よう",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_scam_019": {
+      "text": "半分ずつ、いいね。全部疑うのも、全部信じるのも、嫌だもん",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_station_001": {
+      "text": "見て、頭の上に三つ！　しかも走ってる。あれ、首、どうなってるんだろう",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_station_002": {
+      "text": "よかった！　まあまあの点で、大喜び。それ、いちばんいい成績だと思います",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_station_003": {
+      "text": "そっか。書いたんだ。ふふ、よかった",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_station_004": {
+      "text": "……一時間、遅かった",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_station_005": {
+      "text": "二人とも、自分の口で言えたんだ。叔父さんが先に言ったから、メヘルさんも言えたのかな",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_station_006": {
+      "text": "ふふっ。顔は隠れてるのに、誰だかすぐ分かる",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_depart_station_007": {
+      "text": "デリーって、最初は押しの強い町だと思ってた。押されてるうちに、こっちも、ちょっとだけ押し返せるようになった気がする",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_jama_masjid_guide_001": {
+      "text": "似合ってる？　……あ、そういう場所じゃないね。ちゃんと見てきます",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_jama_masjid_guide_002": {
+      "text": "階段を上っただけなのに、旧市街が全部見える気がする",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_jama_masjid_guide_003": {
+      "text": "ニハーリーって、一晩じっくり煮込む朝ごはんなんだって。……今、お昼過ぎ。完全に出遅れた",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_jama_masjid_guide_004": {
+      "text": "明日の朝、もう一回来る？　……って言いたいけど、明日の朝は別の街かもしれないし",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_jama_masjid_guide_005": {
+      "text": "ちょっとだけ寄ってもいい？　ごはんの代わりに、匂いだけでも",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_001": {
+      "text": "お墓の間を、みんなジョギングしてる。日本だと、ちょっと考えられないね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_002": {
+      "text": "え、なに？　何がおかしかったの？　誰も、何も言ってないよね？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_003": {
+      "text": "理由がないのに笑うの、難しい……。顔が、ひきつってるのが自分で分かる",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_004": {
+      "text": "ちょ、ちょっと、声が大きい。みんな、こっち見てる……",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_005": {
+      "text": "誰と話してるの、それ。だめ、止まらない。作り笑いじゃなくなっちゃった",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_006": {
+      "text": "見てるだけ？　……一人でやるの、恥ずかしいって分かってるのに",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_007": {
+      "text": "あっ、見てるだけ？　ずるい。わたしだけ変な顔させる気？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_008": {
+      "text": "あ、手は……ううん、大丈夫。並んでやろう",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_009": {
+      "text": "……うん。一人だと恥ずかしいけど、二人なら、恥ずかしさも半分だね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_010": {
+      "text": "スレーシュさん！",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_011": {
+      "text": "ハ、ハ……はい。ハ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_012": {
+      "text": "メヘルさんなら、笑わないと思います",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_013": {
+      "text": "理由は、言えません。わたしが言っていいことじゃないので。……でも、たぶん、笑いません",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_014": {
+      "text": "……それで、いいのかな",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_015": {
+      "text": "見た？　あのおじいさん、胸に薔薇さしてた。デートかな。別々に帰るところまで、本気だね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_016": {
+      "text": "や、ヤートリーガン、クリプヤー、ディヤーン、デーン",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_017": {
+      "text": "……今の、九割くらい、そっちの声だったよ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_018": {
+      "text": "……そう言われると、余計に出ないかも",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_019": {
+      "text": "ヤートリーガン、クリプヤー、ディヤーン、デーン！",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_020": {
+      "text": "からかわないで。本当に恥ずかしいんだから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_021": {
+      "text": "似てる！　ふふっ、もう、笑っちゃって言えない",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_022": {
+      "text": "ディヤーン、デーン！",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_023": {
+      "text": "ねえ、さっきの、もう一回やってみる。理由のない笑い",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_024": {
+      "text": "ハ、ハ、ハ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_025": {
+      "text": "だめだ、一人だと、ただの変な人だね。理由のない笑いって、誰かと一緒じゃないと、できないのかも",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lodhi_garden_026": {
+      "text": "理由がなくても笑っていいって言われると、ちょっと楽になるね。わたし、いつも、笑っていい理由を探してから笑ってた気がする",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lotus_temple_001": {
+      "text": "しゃべっちゃだめなんだ。わたし、ちょっと苦手かも。思ったこと、すぐ言いたくなるから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lotus_temple_002": {
+      "text": "先に言っておくね。中で笑わせてきたら、怒るから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lotus_temple_003": {
+      "text": "はあっ。しゃべれる！　すごかった。何もないのに、ずっと見ていられた",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lotus_temple_004": {
+      "text": "でもね、静かにしてたら、頭の中がすごくうるさかったの。考えないようにするほど、考えちゃう。あれは、修行だね",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lotus_temple_005": {
+      "text": "それと。笑わせないでって、言ったよね？　あの『じぶんも』、一生忘れないから",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lotus_temple_006": {
+      "text": "……で。最後の、読めた？",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lotus_temple_007": {
+      "text": "こ、声に出して読まないでよ。……忘れて。今のは、なし",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lotus_temple_008": {
+      "text": "読めちゃったか。点々、気づいたんだ",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lotus_temple_009": {
+      "text": "ここに、って意味。……たぶん。今は、そういうことにしておいて",
+      "script": "2026-11-12"
+    },
+    "gt_delhi_date_lotus_temple_010": {
+      "text": "そっか。点々、届かなかったか。……ちゃんと書いたんだけどな",
+      "script": "2026-11-12"
+    }
+  }
+}
