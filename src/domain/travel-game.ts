@@ -75,8 +75,8 @@ export function isUnclearedMainTravelEvent(state: GameState, eventId: string): b
   return !battlePlayed(state, eventId);
 }
 
-/** Ordinary dates and completed main events are not offered for replay.
- * Retryable confession/recovery conversations retain their existing rules. */
+/** Played dates and completed main events are not offered for replay, but a date its writer made repeatable
+ * (`repeatable`: a recovery conversation; a confession only by the writer's choice, as the journeys' are played once). */
 export function isCompletedTravelEvent(state: GameState, eventId: string): boolean {
   const event = getCityContent(state.currentCityId).travel.events.find((item) => item.id === eventId);
   if (!event) return false;

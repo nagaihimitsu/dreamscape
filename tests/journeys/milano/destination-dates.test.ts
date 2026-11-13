@@ -1,11 +1,12 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { allRewardRules, dates, episodes as allEpisodes, progression } from "../../../src/content";
 import { conditionLeaves } from "../../../src/content/condition-schemas";
-import { playBattleToResult, wrongAnswer } from "../../../src/dev/scenario-builders";
+import { playBattleToResult, withAp, withRelationship, wrongAnswer } from "../../../src/dev/scenario-builders";
 import {
-  advanceDate, chooseDate, createGame, finishDate, getDateAvailability,
+  advanceDate, chooseDate, createGame, evaluateProgression, finishDate, getDateAvailability,
   isEventVisible, startDate, taggedDateScene, validateGameState, type GameState,
 } from "../../../src/domain/game";
+import { isCompletedTravelEvent } from "../../../src/domain/travel-game";
 import { enterFreeTime, getNextStoryBattle, startEpisode } from "../../../src/domain/chapter";
 import { leaveBattle, startBattle } from "../../../src/domain/battle";
 import { skipTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
@@ -266,6 +267,42 @@ describe("real-place optional dates", () => {
     state = playDate(state, "milano_confession_01", [2]);
     expect(state.endingReached).toBe(true);
     expect(state.confessionStatus).toBe("accepted");
+  }, 60000);
+});
+
+describe("Milan's confession, played once like every date (2026-11-13)", () => {
+  const confession = "milano_confession_01";
+  const closed = { available: false, reason: "このひとときは、もう思い出になりました。" };
+  /** After the Duomo and three dates, at stage 2 or more (the confession's minRomanceStage); made once. */
+  let threeDates: GameState | undefined;
+  const afterThreeDates = () => threeDates ??= (() => {
+    let state = clearEpisode(createGame(), "milano_duomo_episode");
+    for (const id of ["milano_cafe_01", "milano_walk_01", "milano_night_01"]) state = playDate(withAp(state, 12), id, [0, 0]);
+    state = evaluateProgression(withRelationship(state, { affection: 2, trust: 1, spark: 0 }));
+    expect(state.romanceStage).toBeGreaterThanOrEqual(2);
+    return state;
+  })();
+
+  it.each([
+    ["accepted", { affection: 8, trust: 4, spark: 4 }],
+    ["deferred", { affection: 4, trust: 2, spark: 0 }],
+    ["rejected", { affection: 0, trust: 0, spark: 0 }],
+  ] as const)("after %s, the confession date is not offered again", (outcome, values) => {
+    const before = evaluateProgression(withRelationship(afterThreeDates(), values));
+    expect(getDateAvailability(before, confession)).toEqual({ available: true, reason: "" });
+    expect(isCompletedTravelEvent(before, confession)).toBe(false);
+    let state = playDate(before, confession, [0]);
+    expect(state.confessionStatus).toBe(outcome);
+    // After an acceptance, the ending is the reason it gives first.
+    expect(getDateAvailability(state, confession)).toEqual(outcome === "accepted"
+      ? { available: false, reason: "ふたりの物語は、交際エンディングを迎えました。" } : closed);
+    expect(isCompletedTravelEvent(state, confession)).toBe(true);
+    expect(startDate(state, confession)).toBe(state);
+    // Nor after what would let a repeatable one be played again: the reassurance after a deferral, a new date after a rejection.
+    if (outcome === "accepted") return;
+    state = outcome === "deferred" ? playDate(state, "milano_reassurance_01", [0])
+      : playDate(withAp(state, 12), "milano_san_satiro_date_01", [0, 0]);
+    expect(getDateAvailability(state, confession)).toEqual(closed);
   }, 60000);
 });
 
