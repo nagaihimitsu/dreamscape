@@ -12,8 +12,8 @@ export interface ParasolParams {
   at: ParasolPlace;
 }
 
-/** The umbrellas, in the field's order (and Tab's): the far pavement, the road, the near pavement. */
-export const PARASOL_SPOTS = ["far_left", "far_middle", "far_right", "road_upper", "road_lower", "near_walk", "near_left", "near_middle", "near_right"] as const;
+/** The umbrellas, in the field's order (and Tab's): four stalls on the far pavement, two walkers in the road, three stalls on the near pavement. */
+export const PARASOL_SPOTS = ["far_1", "far_2", "far_3", "far_4", "road_left", "road_right", "near_left", "near_middle", "near_right"] as const;
 export type ParasolSpot = (typeof PARASOL_SPOTS)[number];
 /** The near pavement's stalls, where the old parasol may be. */
 export const PARASOL_PLACES: Record<ParasolPlace, ParasolSpot> = { left: "near_left", middle: "near_middle", right: "near_right" };

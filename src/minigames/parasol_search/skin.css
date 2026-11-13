@@ -1,7 +1,8 @@
-/* The parasol's field (Skin.tsx): the pierced stone wall of the palace's upper floor all round, a window in it (the street
-   from above, 3 wide to 4 high, under a cusped arch), the stone sill under it. The umbrellas are buttons over the street;
-   a looked-at one slides aside to show who is under it. With the use's art.street, that picture in place of the drawn
-   street. */
+/* The parasol's field (Skin.tsx): the pierced stone wall of the palace's upper floor all round, a window in it as wide as
+   the field and at most as tall as wide (the street from above under a cusped arch), the stone sill under it. Places are
+   in % of the window; sizes in --u, a unit of the window's smaller side, so the three rows keep apart on a short phone.
+   The umbrellas are the buttons; a looked-at one slides aside to show who is under it. With the use's art.street, that
+   picture in place of the drawn street. */
 .mg-parasol-search {
   position: absolute;
   inset: 0;
@@ -20,55 +21,72 @@
   pointer-events: none;
 }
 .mg-parasol-search-window {
+  --side: min(100cqw - 20px, 560px);
+  --u: calc(min(100cqw, 170cqh) / 240);
   position: relative;
   z-index: 1;
-  width: min(100cqw - 20px, (100cqh - 30px) * 3 / 4);
-  aspect-ratio: 3 / 4;
-  margin-bottom: 10px;
-  container-type: inline-size;
+  width: var(--side);
+  height: min(100cqh - 16px, var(--side));
+  overflow: hidden;
+  container-type: size;
   border-radius: 3px 3px 0 0;
   background: #dcb2a2;
   box-shadow: 0 0 0 3px #7d3f37, 0 0 0 7px #b0685d, 0 6px 18px rgba(30, 10, 8, 0.6);
 }
-.mg-parasol-search-view, .mg-parasol-search-street-art { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
-.mg-parasol-search-street-art { object-fit: cover; }
-.mg-parasol-search-view { overflow: hidden; }
-/* The sill the player leans on: a ledge of the same stone, a little wider than the window. */
+.mg-parasol-search-street { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+/* The cow and the traffic: drawn things at a place, their size in the window's unit. */
+.mg-parasol-search-place { position: absolute; display: block; line-height: 0; transform: translate(-50%, -50%); pointer-events: none; }
+.mg-parasol-search-thing { display: block; width: calc(var(--size) * var(--u)); height: auto; }
+/* The window's arch over the top corners, and the sill the player leans on (just under the window, over its edge). */
+.mg-parasol-search-arch { position: absolute; z-index: 3; top: 0; left: 0; display: block; width: 100%; height: min(20cqh, 14cqw); pointer-events: none; }
 .mg-parasol-search-sill {
   position: absolute;
-  left: -10px;
-  right: -10px;
-  bottom: -14px;
-  height: 14px;
-  border-radius: 2px;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: max(6px, 2.4cqh);
   background: linear-gradient(#c4776b, #8e4b42);
-  box-shadow: 0 3px 6px rgba(30, 10, 8, 0.5);
+  box-shadow: 0 -2px 4px rgba(30, 10, 8, 0.35);
   pointer-events: none;
 }
-/* A looked-at umbrella slides toward the road and tips, showing who is under it; the wrong ones fade a little. */
-.mg-parasol-search-canopy { transform-box: fill-box; transform-origin: 50% 50%; transition: transform 380ms ease-out, opacity 380ms ease-out; }
-.mg-parasol-search-umbrella[data-shown] .mg-parasol-search-canopy { transform: translate(14%, -42%) rotate(-10deg) scale(0.86); }
-.mg-parasol-search-umbrella[data-searched]:not([data-target]) .mg-parasol-search-canopy { opacity: 0.62; }
-.mg-parasol-search-ring-wrong { fill: none; stroke: rgba(255, 250, 241, 0.9); stroke-width: 1.6; stroke-dasharray: 4 3; }
-.mg-parasol-search-ring-found, .mg-parasol-search-ring-pointed { fill: none; stroke: #f3c95c; stroke-width: 2.4; filter: drop-shadow(0 0 3px rgba(255, 220, 140, 0.9)); }
-.mg-parasol-search-ring-pointed { stroke-dasharray: 6 3; animation: mg-parasol-search-point 900ms ease-out 2 both; }
-.mg-parasol-search-ring-found { animation: mg-parasol-search-ring 420ms ease-out both; }
-@keyframes mg-parasol-search-ring { from { opacity: 0; stroke-width: 6; } }
-@keyframes mg-parasol-search-point { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
-/* The umbrellas' buttons: as big as the umbrella, never under 44px; a ring when focused by keys. */
+/* The umbrellas: buttons as big as the umbrella, never under 44px, the drawing (with the stall beside it) centred on them. */
 .mg-parasol-search-spot {
   position: absolute;
   z-index: 1;
-  width: max(44px, calc(var(--spot-r) * 100cqw / 120));
+  width: max(44px, calc(var(--r) * 2 * var(--u) + 4px));
   min-height: 0;
   aspect-ratio: 1;
   padding: 0;
   border: 0;
   border-radius: 50%;
   background: transparent;
+  box-shadow: none;
   transform: translate(-50%, -50%);
   touch-action: manipulation;
   cursor: pointer;
 }
+.mg-parasol-search-spot[data-walker] { z-index: 2; }
 .mg-parasol-search-spot[aria-disabled="true"] { cursor: default; }
 .mg-parasol-search-spot:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; }
+.mg-parasol-search-unit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  width: calc(var(--reach) * 2 * var(--u));
+  height: calc(var(--reach) * 2 * var(--u));
+  overflow: visible;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+/* A looked-at umbrella slides toward the road and tips, showing who is under it; the wrong ones fade a little. */
+.mg-parasol-search-canopy { transform-box: fill-box; transform-origin: 50% 50%; transition: transform 380ms ease-out, opacity 380ms ease-out; }
+.mg-parasol-search-spot[data-shown] .mg-parasol-search-canopy { transform: translate(14%, -42%) rotate(-10deg) scale(0.86); }
+.mg-parasol-search-spot[data-searched]:not([data-target]) .mg-parasol-search-canopy { opacity: 0.62; }
+.mg-parasol-search-ring-wrong { fill: none; stroke: rgba(255, 250, 241, 0.95); stroke-width: 1.6; stroke-dasharray: 4 3; }
+.mg-parasol-search-ring-found, .mg-parasol-search-ring-pointed { fill: none; stroke: #f3c95c; stroke-width: 2.4; filter: drop-shadow(0 0 3px rgba(255, 220, 140, 0.9)); }
+.mg-parasol-search-ring-pointed { stroke-dasharray: 6 3; animation: mg-parasol-search-point 900ms ease-out 2 both; }
+.mg-parasol-search-ring-found { animation: mg-parasol-search-ring 420ms ease-out both; }
+@keyframes mg-parasol-search-ring { from { opacity: 0; stroke-width: 6; } }
+@keyframes mg-parasol-search-point { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
