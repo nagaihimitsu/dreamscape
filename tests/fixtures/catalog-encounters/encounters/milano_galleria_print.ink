@@ -1,3 +1,5 @@
+// Test fixture (not game content): this encounter's story in the one-scene form of a catalog encounter, as Milan had it
+// until 2026-11-13 (the game's is a knot of a place file). For the tests of the catalog encounters' checks.
 // 道中交流「版の実演、手はポケットに」（encounters/catalog.json の galleria_print）。
 // 今は、最後の晩餐をガッレリアより先に終えたときだけ起こる：ガッレリアの最初の観察から「進む」でバトルへ向かうとき、「回らない願掛け」に続けて始まる。
 // 条件は『最後の晩餐を終えた』（入場ルールの when の episodeCompleted）。ガッレリアを先に終えると起こらない。

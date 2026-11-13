@@ -1,16 +1,14 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR romance_stage = 1
-VAR ending_reached = false
-VAR relationship_tone = "reserved"
-VAR relationship_tone_before = "reserved"
-VAR relationship_tone_after = "reserved"
-VAR romance_result = "neutral"
-VAR affection_delta = 0
-VAR trust_delta = 0
-VAR spark_delta = 0
+INCLUDE modules.ink
+-> DONE
 
+// サン・マウリツィオ教会の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
+// デート。
+
+// デート（本筋）。romance/date_catalog.json の milano_maurizio_date_sound の storyId がこの knot を指す。
+// 恋愛の選択は、選択肢のすぐ下の # profile:（と # memory:）。もとの 1場面1ファイルの # effect: と同じ噛み合いと思い出。
+=== milano_maurizio_date_sound ===
+# scene: date
+# title: 別々に見て、ここで会う
 # background: milano_san_maurizio_sound
 # speaker: narrator
 サン・マウリツィオ教会の内部は壁で二つに分かれている。かつて一般の人と、修道院の内側で暮らす女性たちが、それぞれの側でミサにあずかった。
@@ -30,8 +28,8 @@ VAR spark_delta = 0
 先に去りかけて、彼女は一度だけ小さく手を振った。
 }
 
-* [「時間は決めずに待つ」]
-    # effect: common_date_first_attentive
+* [「時間は決めずに待つ」 # option: first_attentive]
+    # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
         「時間は少しだけ決めておこう。私、本気で見始めると長いよ。」
@@ -41,8 +39,8 @@ VAR spark_delta = 0
     }
     -> join_1
 
-* [「僕の色も当ててみて」]
-    # effect: common_date_first_playful
+* [「僕の色も当ててみて」 # option: first_playful]
+    # profile: playful
     { romance_result == "negative":
         # speaker: heroine
         「先に当てようとすると、あなたのことしか考えなくなるよ。絵も見たい。」
@@ -52,8 +50,8 @@ VAR spark_delta = 0
     }
     -> join_1
 
-* [「会ったら先に声をかけて」]
-    # effect: common_date_first_honest
+* [「会ったら先に声をかけて」 # option: first_honest]
+    # profile: honest
     { romance_result == "negative":
         # speaker: heroine
         「先に見つけた方、がいいな。待つ役まで決めたくない。」
@@ -63,14 +61,15 @@ VAR spark_delta = 0
     }
     -> join_1
 
-=== join_1 ===
+= join_1
 # speaker: narrator
 戻ってきた彼女は「青」と言ってから、息を吸った。
 # speaker: heroine
 「帰る途中に別の青があって、最初の青がわからなくなった。でも、戻るとき、早く話したかったのは覚えてる。」
 
-* [「じゃあ二色とも聞く」]
-    # effect: sound_maurizio_date_sound_2_1
+* [「じゃあ二色とも聞く」 # option: second_attentive]
+    # profile: attentive
+    # memory: sound_memory_maurizio_date_sound
     { romance_result == "negative":
         # speaker: heroine
         「混ぜる前の色は戻せないな。今覚えてるほうだけでもいい？」
@@ -81,8 +80,9 @@ VAR spark_delta = 0
     }
     -> join_2
 
-* [「僕は待ってる間の色にする」]
-    # effect: sound_maurizio_date_sound_2_2
+* [「僕は待ってる間の色にする」 # option: second_bold]
+    # profile: bold
+    # memory: sound_memory_maurizio_date_sound
     { romance_result == "negative":
         # speaker: heroine
         「それはずるい。あなたが絵を見て選んだのを聞きたかった。」
@@ -92,8 +92,9 @@ VAR spark_delta = 0
     }
     -> join_2
 
-* [「次は二人で同じ青を探そう」]
-    # effect: sound_maurizio_date_sound_2_3
+* [「次は二人で同じ青を探そう」 # option: second_honest]
+    # profile: honest
+    # memory: sound_memory_maurizio_date_sound
     { romance_result == "negative":
         # speaker: heroine
         「今日だけは違うまま帰ろうよ。私の青、もう少し貸さないでおく。」
@@ -103,7 +104,7 @@ VAR spark_delta = 0
     }
     -> join_2
 
-=== join_2 ===
+= join_2
 { relationship_tone_after == "romantic_tension" || relationship_tone_after == "guarded_attraction":
 # speaker: narrator
 戻ってきた二人の足が、同じ床で向かい合わせに止まった。

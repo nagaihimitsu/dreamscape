@@ -151,13 +151,16 @@ export function storySourceFile(id: string): string {
 
 /**
  * One knot of a place file's source (stories/places/…): its text from its line `=== <knot> ===` to the
- * blank line after it (Milan's place files leave a blank line after each knot and its helper knots), and
- * the source without that text. Throws when the source has no such knot.
+ * blank line before the next knot or comment line (Milan's place files leave a blank line between a knot,
+ * its helper knots and the next scene's comments), and the source without that text. Throws when the
+ * source has no such knot.
  */
 export function placeKnot(source: string, knot: string): { text: string; without: string } {
   const start = source.indexOf(`=== ${knot} ===\n`);
   if (start < 0 || (start > 0 && source[start - 1] !== "\n")) throw new Error(`No knot ${knot}`);
-  const blank = source.indexOf("\n\n", start);
+  const next = /\n\n(?=\/\/|===)/gu;
+  next.lastIndex = start;
+  const blank = next.exec(source)?.index ?? -1;
   const end = blank < 0 ? source.length : blank + 1;
   return { text: source.slice(start, end), without: source.slice(0, start) + source.slice(blank < 0 ? end : end + 1) };
 }
@@ -165,6 +168,40 @@ export function placeKnot(source: string, knot: string): { text: string; without
 /** A place file's knot (placeKnot's text) as the body of a one-scene file: its lines without the knot line and its `# scene:` tag. */
 export const oneSceneBody = (knotText: string): string =>
   knotText.split("\n").slice(1).filter((line) => !/^\s*#\s*scene\s*:/u.test(line)).join("\n");
+
+/**
+ * A one-scene date in the form journey:scaffold writes and content:build still checks (`# effect:` after each choice):
+ * Milan's cafe date as it was until 2026-11-13 (the game's is a knot of places/milano_roastery.ink). Relative to the repository.
+ */
+export const ONE_SCENE_DATE_FILE = "tests/fixtures/one-scene-date-cafe.ink";
+/** The effects its second choice names (Milan's effect catalog had them until 2026-11-13; its first choice names the shared common_date_* ones). */
+export const ONE_SCENE_DATE_EFFECTS = [
+  { id: "sound_cafe_01_2_1", affectionDelta: 0, responseProfileId: "honest", memoryId: "sound_memory_cafe_01" },
+  { id: "sound_cafe_01_2_2", affectionDelta: 0, responseProfileId: "attentive", memoryId: "sound_memory_cafe_01" },
+  { id: "sound_cafe_01_2_3", affectionDelta: 0, responseProfileId: "bold", memoryId: "sound_memory_cafe_01" },
+] as const;
+
+/**
+ * Put Milan's cafe date (milano_cafe_01) in the one-scene form into a fixture made by prepareContentFixture, for the
+ * checks of that form: ONE_SCENE_DATE_FILE as stories/dates/milano_date_cafe.ink, its effects in Milan's effect
+ * catalog, the date catalog's storyId pointing at it, and its knot taken out of the roastery's place file. Returns the
+ * file (relative to the fixture). A later changeCatalogEntry of the date or the effect catalog starts again from the
+ * repository's file, so a test changes those in the fixture's files instead.
+ */
+export async function oneSceneCafeDate(fixture: string): Promise<string> {
+  const file = "content/journeys/milano/stories/dates/milano_date_cafe.ink";
+  await writeFile(path.join(fixture, file), await readFile(path.resolve(ONE_SCENE_DATE_FILE), "utf8"));
+  const effectsFile = path.join(fixture, "content/journeys/milano/romance/effect_catalog.json");
+  const effects = JSON.parse(await readFile(effectsFile, "utf8")) as { effects: object[] };
+  effects.effects.push(...ONE_SCENE_DATE_EFFECTS.map((effect) => ({ ...effect })));
+  await writeFile(effectsFile, JSON.stringify(effects));
+  await changeCatalogEntry(fixture, "romance/date_catalog.json", "dates", "milano_cafe_01", (date: { storyId: string }) => {
+    date.storyId = "dates/milano_date_cafe";
+  });
+  const place = path.join(fixture, "content/journeys/milano/stories/places/milano_roastery.ink");
+  await writeFile(place, placeKnot(await readFile(place, "utf8"), "milano_cafe_01").without);
+  return file;
+}
 
 /** The file (relative to the repository root) that defines the quiz with this `id`; see storySourceFile. */
 export function quizSourceFile(id: string): string {

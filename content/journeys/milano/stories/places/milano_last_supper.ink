@@ -2,7 +2,7 @@ INCLUDE modules.ink
 -> DONE
 
 // 『最後の晩餐』（旧食堂）の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
-// 観光案内、通常戦と、特殊戦B・C（どちらも旧食堂が舞台）。
+// 観光案内、通常戦と、特殊戦B・C（どちらも旧食堂が舞台）、道中交流。
 
 // 観光案内。tourism/catalog.json の guideStoryId がこの knot を指す。
 === last_supper_guide ===
@@ -375,3 +375,42 @@ INCLUDE modules.ink
 # speaker: enemy
 「人の並びと、部屋の奥行きは無関係だ。二つの資料で、この絵の見え方について何か言えるかね？」
 ->->
+
+// 道中交流「広場の無声映画」（knot の名前 supper_pantomime が交流のID）。
+// 今は起こらない：条件『最後の晩餐を終えた』（頭の # when: episode …）は、最後の晩餐のバトルを終えると満たす。その後は交流が始まる観察がない。
+// バトルを終えると、最後の晩餐は地図の行き先に出なくなる。バトルの画面（結果の画面も）から観察に戻れるが、バトルの途中なので交流は始まらない。
+// シナリオの改稿で見直す（2026-11-08 のユーザー判断）。それまで起こる時は変えない。変えたら、このコメントも直す。
+// 2026-11-13 に 1場面1ファイル・encounters/catalog.json・entry-rules.json からこの場所のファイルへ移した。観察で「進む」を押した後（# priority: after observe）に始まり、終わると観察に戻る。起こる時・順・選択の働き（お金・品物・「また今度」）は前と同じ。
+=== supper_pantomime ===
+# scene: encounter
+# title: 広場の無声映画
+# at: visit last_supper
+# priority: after observe
+# when: episode milano_last_supper_episode
+# background: milano_refectory
+# speaker: narrator
+グラツィエ教会前で、イーダが両腕を伸ばして静止した。兄が首を振る。「ちがう、それだと『大きな魚』！」
+# speaker: narrator
+兄「今日の声は店じまい。あとは妹が代わりに晩ご飯を注文する」。どうやら、見本を見せるために一言だけ解禁したらしい。
+
+* [May I try a gesture? # option: act # translation: 身振りを一つ試してもいい？]
+    # speaker: narrator
+    指を一本立て、くるくる回した。兄はフォークを巻き取る真似で応じた。
+    # speaker: heroine
+    「通じた。食べたいものの話になると、みんな役者なんですね。」
+    -> END
+
+* [What do you actually want for dinner? # option: ask # translation: 本当は夕食に何が食べたいの？]
+    # speaker: narrator
+    兄は両手で丸を作った。イーダ「……ピザ？　さっき魚じゃないって言ってたから、私が勝手にパスタにした」
+    # speaker: heroine
+    「当てるのが上手な人ほど、聞くのを忘れるのかも。」
+    -> END
+
+* [Enjoy your dinner together. # option: leave # translation: 二人で夕食を楽しんで。]
+    # later
+    # speaker: narrator
+    兄は指にキスをして、こちらへ小さく投げた。イーダ「それだけは通訳がいらないね」。
+    # speaker: heroine
+    「あれ、私もいつか自然にやってみたい。」
+    -> END

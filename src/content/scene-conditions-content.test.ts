@@ -12,8 +12,8 @@ let fixture: string;
 const epilogueFile = "places/milano_darsena";
 const epilogue = storySourceFile(epilogueFile);
 const line = "放送が終わったダルセナで、彼女は左の掌を開いた。さっきの網目はもう消えている。";
-// A one-scene file (Milan's encounters stay one-scene files): it declares cond itself (decision 40).
-const oneScene = storySourceFile("encounters/milano_castello_pick");
+// A one-scene file (the Galleria fortune, an encounter of Milan's catalog): it declares cond itself (decision 40).
+const oneScene = storySourceFile("encounters/milano_galleria_fortune");
 
 beforeEach(async () => {
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-cond-"));

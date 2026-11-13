@@ -1,13 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { Story } from "inkjs";
 import { dates, stories } from "../../../src/content/index";
+import { splitStoryAddress } from "../../../src/content/story-address";
 import type { RelationshipTone } from "../../../src/domain/romance-tone";
 
 describe("relationship tone in the Brera conversation", () => {
   it("shows the present relationship and the result together in the Brera date's conversation", () => {
-    const currentStoryId = dates.find((entry) => entry.id === "milano_brera_date_01")!.storyId;
+    // A knot of the Brera place file: its file's story, started at the knot as the game starts it.
+    const { storyId, path: knot } = splitStoryAddress(dates.find((entry) => entry.id === "milano_brera_date_01")!.storyId);
     const run = (tone: RelationshipTone, result: "positive" | "negative") => {
-      const story = new Story(stories[currentStoryId]);
+      const story = new Story(stories[storyId]);
+      if (knot !== undefined) story.ChoosePathString(knot);
       story.variablesState.$("player_name", "たいち");
       story.variablesState.$("heroine_name", "あゆみ");
       story.variablesState.$("relationship_tone", tone);

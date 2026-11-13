@@ -117,5 +117,9 @@ it("takes one knot out of a place file's source, and writes it as a one-scene fi
   // A knot ends at its blank line (its helper knots after it stay); the last knot runs to the end of the file.
   expect(placeKnot(source, "two").text).toBe("=== two ===\n# scene: battle\n二。\n-> END\n");
   expect(placeKnot(source, "two_claim")).toEqual({ text: "=== two_claim ===\n主張。\n->->\n", without: source.slice(0, source.indexOf("=== two_claim")) });
+  // A blank line inside a knot (between a date's choices) does not end it: the next comment or knot line does.
+  const date = "=== three ===\n# scene: date\n三。\n\n* [「はい」 # option: yes]\n    -> END\n\n// four\n=== four ===\n四。\n-> END\n";
+  expect(placeKnot(date, "three")).toEqual({ text: "=== three ===\n# scene: date\n三。\n\n* [「はい」 # option: yes]\n    -> END\n",
+    without: "// four\n=== four ===\n四。\n-> END\n" });
   expect(() => placeKnot(source, "three")).toThrow("No knot three");
 });

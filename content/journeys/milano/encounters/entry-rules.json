@@ -2,15 +2,6 @@
   "schemaVersion": 2,
   "entries": [
     {
-      "encounterId": "duomo_string",
-      "at": [
-        "observe"
-      ],
-      "when": {
-        "episodeCompleted": "milano_duomo_episode"
-      }
-    },
-    {
       "encounterId": "galleria_fortune",
       "at": [
         "observe"
@@ -19,60 +10,6 @@
         "episodeCompleted": "milano_galleria_episode"
       },
       "quizAfterLandmarkBattle": true
-    },
-    {
-      "encounterId": "supper_pantomime",
-      "at": [
-        "observe"
-      ],
-      "when": {
-        "episodeCompleted": "milano_last_supper_episode"
-      }
-    },
-    {
-      "encounterId": "galleria_print",
-      "at": [
-        "observe"
-      ],
-      "when": {
-        "episodeCompleted": "milano_last_supper_episode"
-      }
-    },
-    {
-      "encounterId": "galleria_ticket_press",
-      "at": [
-        "observe"
-      ],
-      "when": {
-        "episodeCompleted": "milano_last_supper_episode"
-      }
-    },
-    {
-      "encounterId": "scala_mint",
-      "at": [
-        "observe"
-      ],
-      "when": {
-        "battlePlayed": "milano_la_scala_b01"
-      }
-    },
-    {
-      "encounterId": "castello_pick",
-      "at": [
-        "observe"
-      ],
-      "when": {
-        "episodeCompleted": "milano_castello_episode"
-      }
-    },
-    {
-      "encounterId": "brera_sitter",
-      "at": [
-        "observe"
-      ],
-      "when": {
-        "battlePlayed": "milano_brera_c01"
-      }
     }
   ]
 }

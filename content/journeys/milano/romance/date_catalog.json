@@ -8,7 +8,7 @@
       "descriptionJa": "ロースタリーで彼女の一杯をうらやんだことから、味見の順番を二人で決める。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "dates/milano_date_cafe",
+      "storyId": "places/milano_roastery.milano_cafe_01",
       "when": {
         "episodesCompleted": {
           "city": "milano",
@@ -62,7 +62,7 @@
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "dates/milano_date_duomo_square_walk",
+      "storyId": "places/milano_duomo.milano_walk_01",
       "when": {
         "episodesCompleted": {
           "city": "milano",
@@ -114,7 +114,7 @@
       "apCost": 0,
       "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "dates/milano_date_invitation",
+      "storyId": "places/milano_galleria.milano_invitation_01",
       "when": {
         "episodesCompleted": {
           "city": "milano",
@@ -164,7 +164,7 @@
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "dates/milano_date_naviglio_night",
+      "storyId": "places/milano_navigli.milano_night_01",
       "when": {
         "episodesCompleted": {
           "city": "milano",
@@ -292,7 +292,7 @@
       "apCost": 0,
       "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "dates/milano_date_reassurance",
+      "storyId": "places/milano_galleria.milano_reassurance_01",
       "when": {
         "episodesCompleted": {
           "city": "milano",
@@ -342,7 +342,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "dates/milano_date_galleria_revisit",
+      "storyId": "places/milano_galleria.milano_city_date_01",
       "when": {
         "all": [
           {
@@ -402,7 +402,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "dates/milano_date_la_scala",
+      "storyId": "places/milano_la_scala.milano_la_scala_date_01",
       "when": {
         "episodeCompleted": "milano_galleria_episode"
       },
@@ -451,7 +451,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "dates/milano_date_brera",
+      "storyId": "places/milano_brera.milano_brera_date_01",
       "when": {
         "episodeCompleted": "milano_last_supper_episode"
       },
@@ -500,7 +500,7 @@
       "apCost": 1,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "dates/milano_date_navigli",
+      "storyId": "places/milano_navigli.milano_navigli_date_01",
       "when": {
         "episodeCompleted": "milano_castello_episode"
       },
@@ -549,7 +549,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "dates/milano_date_san_satiro",
+      "storyId": "places/milano_satiro.milano_san_satiro_date_01",
       "when": {
         "episodeCompleted": "milano_duomo_episode"
       },
@@ -598,7 +598,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "dates/milano_date_starbucks_roastery",
+      "storyId": "places/milano_roastery.milano_starbucks_roastery_date_01",
       "when": {
         "episodeCompleted": "milano_galleria_episode"
       },
@@ -647,7 +647,7 @@
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "dates/milano_date_fondazione_prada",
+      "storyId": "places/milano_prada.milano_fondazione_prada_date_01",
       "when": {
         "episodeCompleted": "milano_last_supper_episode"
       },
@@ -700,7 +700,7 @@
       "apCost": 0,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "dates/milano_date_rain_pause",
+      "storyId": "places/milano_galleria.milano_rain_pause_01",
       "when": {
         "all": [
           {
@@ -755,7 +755,7 @@
       "apCost": 0,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "dates/milano_date_recovery",
+      "storyId": "places/milano_galleria.milano_recovery_01",
       "when": {
         "episodesCompleted": {
           "city": "milano",
@@ -802,7 +802,7 @@
       "apCost": 1,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "dates/milano_date_novecento",
+      "storyId": "places/milano_novecento.milano_novecento_date_01",
       "when": {
         "episodeCompleted": "milano_duomo_episode"
       },
@@ -851,7 +851,7 @@
       "apCost": 1,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "dates/milano_date_san_maurizio",
+      "storyId": "places/milano_maurizio.milano_maurizio_date_sound",
       "when": {
         "episodeCompleted": "milano_castello_episode"
       },

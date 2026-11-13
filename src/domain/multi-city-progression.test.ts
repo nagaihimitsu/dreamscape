@@ -84,6 +84,7 @@ describe("city-specific progression", () => {
     // The copies share the template's place-file knots and battle stories: point them at this test's stories.
     landmarks.find((item) => item.id === "test_landmark")!.guideStoryId = "test_city/guide";
     battles.find((item) => item.id === "test_battle")!.storyId = "test_city/test_battle";
+    encounters.encounters.find((item) => item.id === "test_encounter")!.storyId = "test_city/encounter";
     episodes.find((item) => item.id === "test_finale")!.epilogueStoryId = "test_city/epilogue";
     const backgroundId = "test_city_view";
     presentation.backgrounds[backgroundId] = { ...presentation.backgrounds.milano_cafe, nameJa: "試験都市" };

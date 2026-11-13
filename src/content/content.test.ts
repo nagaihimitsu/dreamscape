@@ -14,12 +14,13 @@ import { normalizeEncounterCatalog } from "./encounter-schemas";
 import { battleCatalogSchema, citySchema, dateCatalogSchema } from "./schemas";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import { parseStoryTags } from "./tags";
-import { isPlaceStory, storyFileOf } from "./story-address";
+import { isPlaceStory, splitStoryAddress, storyFileOf } from "./story-address";
 import { RELATIONSHIP_TONES } from "../domain/romance-tone";
-import { changeCatalogEntry, prepareContentFixture, quizSourceFile, registerOwnArtwork, storySourceFile } from "./test-fixtures";
+import { changeCatalogEntry, ONE_SCENE_DATE_EFFECTS, ONE_SCENE_DATE_FILE, oneSceneCafeDate, prepareContentFixture, quizSourceFile, registerOwnArtwork, storySourceFile } from "./test-fixtures";
 
 let fixture: string;
-const storyFile = storySourceFile("dates/milano_date_cafe");
+// The checks of a one-scene date (# effect: after each choice) run on Milan's cafe date put back in that form in the
+// fixture (oneSceneCafeDate); the game's dates are knots of place files.
 const dateFile = "content/journeys/milano/romance/date_catalog.json";
 
 beforeEach(async () => {
@@ -301,13 +302,15 @@ describe("content build acceptance", () => {
   });
 
   it("reflects edited Ink prose in runtime without a UI source change", async () => {
+    // The cafe date is a knot of the roastery's place file: the game starts it by name.
     await replace(
-      storyFile,
+      storySourceFile("places/milano_roastery"),
       "ロースタリーの焙煎を見ていたら",
       "窓辺に、二人分のコーヒー。",
     );
     const result = await buildContent(fixture, false);
-    const story = new Story(result.stories["dates/milano_date_cafe"]);
+    const story = new Story(result.stories["places/milano_roastery"]);
+    story.ChoosePathString("milano_cafe_01");
     expect(story.Continue()).toContain("窓辺に、二人分のコーヒー。");
   });
 
@@ -339,6 +342,7 @@ describe("content build acceptance", () => {
   });
 
   it("rejects undefined effects even on a non-default branch", async () => {
+    const storyFile = await oneSceneCafeDate(fixture);
     await replace(
       storyFile,
       "effect: sound_cafe_01_2_3",
@@ -350,6 +354,7 @@ describe("content build acceptance", () => {
   });
 
   it("rejects unrecognized tags instead of treating them as code", async () => {
+    const storyFile = await oneSceneCafeDate(fixture);
     await replace(storyFile, "# emotion: teasing", "# javascript: alert(1)");
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Unknown story tag",
@@ -357,6 +362,7 @@ describe("content build acceptance", () => {
   });
 
   it("rejects unknown background IDs", async () => {
+    const storyFile = await oneSceneCafeDate(fixture);
     await replace(storyFile, "background: milano_starbucks_roastery_date", "background: nowhere");
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Unknown background",
@@ -364,6 +370,7 @@ describe("content build acceptance", () => {
   });
 
   it("fails on broken Ink instead of emitting a stale story", async () => {
+    const storyFile = await oneSceneCafeDate(fixture);
     await replace(storyFile, "-> join_1", "-> missing_knot");
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Ink compilation failed",
@@ -372,6 +379,7 @@ describe("content build acceptance", () => {
 
   it("accepts a choice moment with two choices, and stops one with none left (decision 41)", async () => {
     // How many choices a moment offers is the author's (one or more).
+    const storyFile = await oneSceneCafeDate(fixture);
     await replace(
       storyFile,
       "* [「その一口目、実況しようか」]",
@@ -387,6 +395,7 @@ describe("content build acceptance", () => {
   });
 
   it("rejects routes ending before the second choice", async () => {
+    const storyFile = await oneSceneCafeDate(fixture);
     await replace(storyFile, "-> join_1", "-> END");
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Expected 2 choice moments",
@@ -408,8 +417,9 @@ describe("content build acceptance", () => {
   });
 
   it("requires the name variables expected by the runtime", async () => {
+    // A one-scene date declares them (a place file's come from modules.ink).
     await replace(
-      storySourceFile("dates/milano_date_invitation"),
+      await oneSceneCafeDate(fixture),
       'VAR player_name = ""',
       "// player name accidentally removed",
     );
@@ -433,7 +443,10 @@ describe("content build acceptance", () => {
     const result = await buildContent(fixture, false);
     const invitation = result.dates.find((date) => date.kind === "special")!;
     expect(invitation.choiceCount).toBe(1);
-    const story = new Story(result.stories[invitation.storyId]);
+    // A knot of its place file, started by name as the game starts it.
+    const { storyId, path: knot } = splitStoryAddress(invitation.storyId);
+    const story = new Story(result.stories[storyId]);
+    if (knot !== undefined) story.ChoosePathString(knot);
     while (story.canContinue) story.Continue();
     expect(story.currentChoices).toHaveLength(3);
   });
@@ -485,7 +498,8 @@ describe("content build acceptance", () => {
     await replace(
       storySourceFile("dates/milano_date_confession"),
       "# effect: milano_confession_accepted",
-      "# effect: sound_invitation_01_1_1",
+      // A choice's effect (no outcome) where the outcome belongs.
+      "# effect: common_date_first_attentive",
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Confession must resolve exactly one outcome",
@@ -493,16 +507,18 @@ describe("content build acceptance", () => {
   });
 
   it("rejects outcome effects in a normal date", async () => {
-    const source = await readFile(path.join(fixture, storyFile), "utf8");
+    // A one-scene normal date (the form that writes # effect:), with the effects it names.
+    const source = await readFile(path.resolve(ONE_SCENE_DATE_FILE), "utf8");
     const changed = source.replace("# effect: common_date_first_playful", "# effect: milano_confession_deferred");
     expect(changed).not.toBe(source);
     const compiled = compileInk(changed);
+    const all = [...effects, ...ONE_SCENE_DATE_EFFECTS];
     const context = {
-      effectIds: effects.map((effect) => effect.id),
+      effectIds: all.map((effect) => effect.id),
       backgroundIds: Object.keys(presentation.backgrounds),
       emotionIds: Object.keys(presentation.emotions),
     };
-    expect(() => validateStory(compiled, context, { choiceCount: 2, effectCount: 2, kind: "normal" }, {}, effects))
+    expect(() => validateStory(compiled, context, { choiceCount: 2, effectCount: 2, kind: "normal" }, {}, all))
       .toThrow("Only confession can apply a confession outcome");
   });
 

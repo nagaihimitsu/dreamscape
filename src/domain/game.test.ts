@@ -120,7 +120,9 @@ describe("AP and date rules", () => {
 });
 
 describe("Ink choices and reload boundaries", () => {
-  const firstEffects = ["common_date_first_playful", "common_date_first_attentive", "common_date_first_honest"];
+  // The cafe date's choices by their option IDs (its knot's # option:, with their # profile:).
+  const firstOptions = ["first_playful", "first_attentive", "first_honest"];
+  const secondOptions = ["second_honest", "second_attentive", "second_bold"];
   for (let first = 0; first < 3; first++) {
     for (let second = 0; second < 3; second++) {
       it(`plays route ${first + 1}/${second + 1}, round-tripping every line and choice`, () => {
@@ -154,8 +156,8 @@ describe("Ink choices and reload boundaries", () => {
         expect(state.ap).toBe(2);
         expect(state.playedDateIds).toEqual([dateId]);
         expect(state.memories).toEqual(["sound_memory_cafe_01"]);
-        expect(resolutions.map((entry) => entry.effectId)).toEqual([
-          firstEffects[first], `sound_cafe_01_2_${second + 1}`,
+        expect(resolutions.map((entry) => entry.optionId)).toEqual([
+          firstOptions[first], secondOptions[second],
         ]);
         expect(state.affection).toBe(
           resolutions.reduce((sum, resolution) => sum + resolution.deltas.affection, 0),

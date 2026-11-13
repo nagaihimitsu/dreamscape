@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import { journeyRequirements, loadJourneyScaffold } from "./journey-scaffold";
 import { prepareJourneyRelease } from "./promote-journey";
 import { splitStoryAddress } from "../src/content/story-address";
-import { oneSceneBody, placeKnot } from "../src/content/test-fixtures";
+import { ONE_SCENE_DATE_FILE, oneSceneBody, placeKnot } from "../src/content/test-fixtures";
 
 // The whole journey:release pipeline (prepareJourneyRelease) on a copy of the
 // project. It needs a journey with an authoring profile, travel data and
@@ -96,17 +96,18 @@ const originalTranslations = JSON.parse(read(`${milano}/learning/translations.js
  * A Milan Ink template for India's folder: Milan's own backgrounds become the shared default background. A knot of
  * Milan's place files becomes a one-scene file (India's scaffold writes one-scene files): `top`, then the knot's lines.
  */
+const withDefaultBackground = (text: string) => text.replace(/#\s*background\s*:\s*[A-Za-z0-9_]+/gu, "# background: default_scene");
 const inkTemplate = (address: string, top: readonly string[] = []) => {
   const { storyId, path: knot } = splitStoryAddress(address);
   const source = read(`${milano}/stories/${storyId}.ink`);
-  const text = knot === undefined ? source : [...top, oneSceneBody(placeKnot(source, knot).text)].join("\n");
-  return text.replace(/#\s*background\s*:\s*[A-Za-z0-9_]+/gu, "# background: default_scene");
+  return withDefaultBackground(knot === undefined ? source : [...top, oneSceneBody(placeKnot(source, knot).text)].join("\n"));
 };
 /** The VAR lines of a one-scene guide or epilogue (a place file's knot has them from modules.ink). */
 const nameVars = ['VAR player_name = ""', 'VAR heroine_name = ""', 'VAR player_address = ""'];
 const guideTemplate = inkTemplate("places/milano_duomo.duomo_milano_guide", [...nameVars, ""]);
 const epilogueTemplate = inkTemplate("places/milano_darsena.milano_epilogue", [...nameVars, "VAR romance_stage = 1", "VAR ending_reached = false", ""]);
-const dateTemplate = inkTemplate("dates/milano_date_cafe");
+/** A one-scene date with # effect: (the scaffold's form; Milan's dates are knots of place files): the test fixture of that form. */
+const dateTemplate = withDefaultBackground(read(ONE_SCENE_DATE_FILE));
 /** A Milan battle's Ink as a one-scene template (its own -> quiz(n) -> calls, stage 5). */
 const battleTemplate = (battleId: string) =>
   inkTemplate(JSON.parse(read(`${milano}/battles/catalog.json`)).battles.find((item: { id: string }) => item.id === battleId).storyId, ["INCLUDE modules.ink"]);

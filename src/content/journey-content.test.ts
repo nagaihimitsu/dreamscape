@@ -313,6 +313,7 @@ describe("the main parts' shape and the progression check in the build (unified 
       delete landmark.guideStoryId;
       landmark.observation = false;
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/Encounter while observing at a landmark without an observation: supper_pantomime/);
+    // The silent-film encounter is a knot of the Last Supper's place file, met after the observation (# priority: after observe).
+    await expect(buildContent(fixture, false)).rejects.toThrow("# priority: after observe needs a landmark with a observation: supper_pantomime at last_supper (A2)");
   });
 });

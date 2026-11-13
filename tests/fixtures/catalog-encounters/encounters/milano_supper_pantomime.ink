@@ -1,3 +1,5 @@
+// Test fixture (not game content): this encounter's story in the one-scene form of a catalog encounter, as Milan had it
+// until 2026-11-13 (the game's is a knot of a place file). For the tests of the catalog encounters' checks.
 // 道中交流「広場の無声映画」（encounters/catalog.json の supper_pantomime）。
 // 今は起こらない：条件『最後の晩餐を終えた』（入場ルールの when の episodeCompleted）は、最後の晩餐のバトルを終えると満たす。その後は交流が始まる観察がない。
 // バトルを終えると、最後の晩餐は地図の行き先に出なくなる。バトルの画面（結果の画面も）から観察に戻れるが、バトルの途中なので交流は始まらない。

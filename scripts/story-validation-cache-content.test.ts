@@ -5,6 +5,7 @@ import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { prepareContentFixture } from "../src/content/test-fixtures";
 import { buildContent } from "./content-pipeline";
 import { dateCatalogSchema } from "../src/content/schemas";
+import { isPlaceStory } from "../src/content/story-address";
 import { loadContentSources, parseCatalog } from "./content-sources";
 import { openStoryValidationCache } from "./story-validation-cache";
 
@@ -48,8 +49,9 @@ describe("Ink validation cache on the real content", () => {
     expect(live.result).toBeDefined();
     const cold = openTestCache()!;
     expect(await check(repository, cold)).toEqual(live);
-    // Two declared contexts of a date can give the same inputs; the second one is reused even in the first build.
-    expect(cold.stats.run).toBeGreaterThan(100);
+    // Two declared contexts of a date can give the same inputs; the second one is reused even in the first build. The cache
+    // holds the one-scene dates' validations (Milan's confession; the other dates are knots of place files, walked as scenes).
+    expect(cold.stats.run).toBeGreaterThan(0);
     expect(cold.stats.reused).toBeLessThan(5);
     const warm = openTestCache()!;
     expect(await check(repository, warm)).toEqual(live);
@@ -57,9 +59,9 @@ describe("Ink validation cache on the real content", () => {
   });
 
   it("reports the same error with and without it when a date story breaks", async () => {
-    // The first date validated: break its first choice moment by repeating a choice text.
+    // The first date validated through the cache (a one-scene date): break its first choice moment by repeating a choice text.
     const sources = loadContentSources(fixture);
-    const firstDate = parseCatalog(sources, dateCatalogSchema, "romance/date_catalog.json").dates[0];
+    const firstDate = parseCatalog(sources, dateCatalogSchema, "romance/date_catalog.json").dates.find((date) => !isPlaceStory(date.storyId))!;
     const file = sources.storyFiles.find((story) => story.id === firstDate.storyId)!.file;
     const source = readFileSync(file, "utf8");
     const choices = [...source.matchAll(/^\s*[*+]\s*\[([^\]]+)\]/gmu)];

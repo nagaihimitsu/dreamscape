@@ -1,3 +1,5 @@
+// Test fixture (not game content): a one-scene date in the form journey:scaffold writes and content:build still accepts
+// (# effect: after each choice). It is Milan's cafe date as it was until 2026-11-13; the game's is a knot of places/milano_roastery.ink.
 VAR player_name = ""
 VAR heroine_name = ""
 VAR player_address = ""

@@ -272,7 +272,7 @@ npm run test:saves
 
 ## 文章・データの編集
 
-会話の編集元は各旅行編フォルダ `content/journeys/<旅行編ID>/stories/` の `.ink` ファイルです。ストーリーIDは `stories/` からの相対パスです。ミラノのデートは、例えば [`dates/milano_date_cafe.ink`](content/journeys/milano/stories/dates/milano_date_cafe.ink) にあります。インドの配置は [制作記録の編集元一覧](authoring/journeys/golden_triangle/drafts/scenario/README.md#編集元) を参照してください。台詞と選択肢をReactに埋め込まず、Inkに置いています。
+会話の編集元は各旅行編フォルダ `content/journeys/<旅行編ID>/stories/` の `.ink` ファイルです。ストーリーIDは `stories/` からの相対パスです。ミラノのデートは、例えば [`places/milano_roastery.ink`](content/journeys/milano/stories/places/milano_roastery.ink) の knot `milano_cafe_01` にあります（告白のデートは [`dates/milano_date_confession.ink`](content/journeys/milano/stories/dates/milano_date_confession.ink)）。インドの配置は [制作記録の編集元一覧](authoring/journeys/golden_triangle/drafts/scenario/README.md#編集元) を参照してください。台詞と選択肢をReactに埋め込まず、Inkに置いています。
 
 ```ink
 # speaker: heroine
@@ -298,7 +298,7 @@ npm run test:saves
 | `<旅行編>/stories/battles/*.ink`                 | 日本語の敵の台詞・正誤反応・勝敗別の結末・ヒロインの余韻             |
 | `<旅行編>/tourism/catalog.json`                  | 観光地・画像の出典と権利情報・発見範囲・説明・史実とクイズの参照     |
 | `<旅行編>/stories/tourism/*.ink`                 | ヒロインの短い観光案内                                               |
-| `<旅行編>/stories/places/*.ink`                  | 場所ごとの場面をまとめたファイル（観光案内・バトル・デート・到着・宿・差し込み・ツアー。インド編はすべて、ミラノ編は観光案内・バトル・エピローグがここ） |
+| `<旅行編>/stories/places/*.ink`                  | 場所ごとの場面をまとめたファイル（観光案内・バトル・デート・到着・宿・差し込み・ツアー。インド編はすべて、ミラノ編も告白のデートとガッレリアの願掛け（とその結果）のほかはここ） |
 | `<旅行編>/public/assets/tourism/`                | 同梱する資料画像。外部サイトへの画像直リンクは使用しない             |
 
 各旅行編の都市・移動・クイズ・Ink と各カタログの該当項目は、同じ相対パスで `content/journeys/<旅行編ID>/` 以下に置き、`npm run content:build` が `content/` 直下の共通データと統合します。旅行編フォルダの項目は自分の都市だけを扱い、参照先は同じ旅行編か共通データに限ります。共通データには都市・移動・Ink・クイズや旅行編専用のカタログを置けません。

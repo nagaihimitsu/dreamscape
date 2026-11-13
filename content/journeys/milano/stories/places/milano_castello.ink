@@ -2,7 +2,7 @@ INCLUDE modules.ink
 -> DONE
 
 // スフォルツェスコ城の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
-// 観光案内と通常戦。
+// 観光案内、通常戦と道中交流。
 
 // 観光案内。tourism/catalog.json の guideStoryId がこの knot を指す。
 === castello_sforzesco_guide ===
@@ -92,3 +92,45 @@ INCLUDE modules.ink
 # speaker: narrator
 父が笑うたび、娘の作る眉が険しくなった。彼女は二人のそばを、そっと通り過ぎた。
 -> END
+
+// 道中交流「弦を一本、余らせて」（knot の名前 castello_pick が交流のID）。
+// 今は起こらない：条件『スフォルツェスコ城を終えた』（頭の # when: episode …）は、城のバトルを終えると満たす。その後は交流が始まる観察がない。
+// バトルを終えると、城は地図の行き先に出なくなる。バトルの画面（結果の画面も）から観察に戻れるが、バトルの途中なので交流は始まらない。
+// 後回しにする選択肢（option: later）以外は青いピックが要る。青いピックも、今は起こらない「切れた三本目」でしか手に入らない。
+// シナリオの改稿で見直す（2026-11-08 のユーザー判断）。それまで起こる時は変えない。変えたら、このコメントも直す。
+// 2026-11-13 に 1場面1ファイル・encounters/catalog.json・entry-rules.json からこの場所のファイルへ移した。観察で「進む」を押した後（# priority: after observe）に始まり、終わると観察に戻る。起こる時・順・選択の働き（お金・品物・「また今度」）は前と同じ。
+// 頭の # when: item blue_pick held は、前のカタログの決まり（「また今度」のほかの選択肢がみな品物を要るとき、その品物がなければ始まらない）を書いたもの。
+=== castello_pick ===
+# scene: encounter
+# title: 弦を一本、余らせて
+# at: visit castello_sforzesco
+# priority: after observe
+# when: episode milano_castello_episode
+# when: item blue_pick held
+# background: milano_castello
+# speaker: narrator
+城の中庭の端で、小さなギターを抱えたティノが、親指に絆創膏を巻き直している。開いたケースに青い三角の跡だけがあった。
+# speaker: heroine
+「ノラさんのピック、あそこの形と同じですね。」
+
+* [Would this pick fit your hand? # option: give # translation: このピック、手に合いそう？]
+    # give: blue_pick heroine
+    # speaker: narrator
+    ティノは弦を一本だけ弾いた。「うわ。自分の指だと、こんなに強く弾けなかった」。中庭の壁から細く音が返る。
+    # speaker: heroine
+    「最初に鳴らしたのが一音なの、いいね。」
+    -> END
+
+* [Could you play one note with this? # option: ask # translation: これで一音弾いてくれる？]
+    # give: blue_pick heroine
+    # speaker: narrator
+    ティノ「曲じゃなくて一音なら、外しようがないね」。豪快に隣の弦をはじき、本人が一番驚いた。
+    # speaker: heroine
+    「いまのでお願いします。二回目は、違う音になっちゃうから。」
+    -> END
+
+* [I'll hold on to it for now. # option: later # translation: 今は自分で持っておくよ。]
+    # later
+    # speaker: narrator
+    彼女はケースの青い跡の上に落ちた葉を取り、ティノに目で挨拶した。ピックはまだ手元にある。
+    -> END

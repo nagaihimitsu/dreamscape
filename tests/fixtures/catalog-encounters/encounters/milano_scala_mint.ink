@@ -1,3 +1,5 @@
+// Test fixture (not game content): this encounter's story in the one-scene form of a catalog encounter, as Milan had it
+// until 2026-11-13 (the game's is a knot of a place file). For the tests of the catalog encounters' checks.
 // 道中交流「喉飴を噛む人」（encounters/catalog.json の scala_mint）。
 // 今は起こらない：条件『スカラ座の特殊戦を戦った』（入場ルールの when の battlePlayed）を満たすと、スカラ座の観察はもう開かないため。
 // 特殊戦を戦うと、スカラ座は地図の行き先に出なくなる。

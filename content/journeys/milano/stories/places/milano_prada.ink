@@ -1,16 +1,14 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR romance_stage = 1
-VAR ending_reached = false
-VAR relationship_tone = "reserved"
-VAR relationship_tone_before = "reserved"
-VAR relationship_tone_after = "reserved"
-VAR romance_result = "neutral"
-VAR affection_delta = 0
-VAR trust_delta = 0
-VAR spark_delta = 0
+INCLUDE modules.ink
+-> DONE
 
+// プラダ財団の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
+// デート。
+
+// デート（本筋）。romance/date_catalog.json の milano_fondazione_prada_date_01 の storyId がこの knot を指す。
+// 恋愛の選択は、選択肢のすぐ下の # profile:（と # memory:）。もとの 1場面1ファイルの # effect: と同じ噛み合いと思い出。
+=== milano_fondazione_prada_date_01 ===
+# scene: date
+# title: 金色のせいにする
 # background: milano_fondazione_prada_date
 # speaker: narrator
 元蒸留所を生かしたプラダ財団。金色の建物の前で、彼女は上着を一度脱いで、すぐに着直した。
@@ -30,8 +28,8 @@ VAR spark_delta = 0
 彼女は主人公の上着の色と自分の袖を並べた。
 }
 
-* [「家では一軍だったんだ」]
-    # effect: common_date_first_playful
+* [「家では一軍だったんだ」 # option: first_playful]
+    # profile: playful
     { romance_result == "negative":
         # speaker: heroine
         「笑うところかな。外に着ていきたかったのは、ほんとだよ。」
@@ -41,8 +39,8 @@ VAR spark_delta = 0
     }
     -> join_1
 
-* [「その色のどこが好き？」]
-    # effect: common_date_first_attentive
+* [「その色のどこが好き？」 # option: first_attentive]
+    # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
         「理由が言えたら買っていい、とかじゃないよね。単に好きだったの。」
@@ -52,8 +50,8 @@ VAR spark_delta = 0
     }
     -> join_1
 
-* [「着てるところ、見てみたい」]
-    # effect: common_date_first_bold
+* [「着てるところ、見てみたい」 # option: first_bold]
+    # profile: bold
     { romance_result == "negative":
         # speaker: heroine
         「見せるってなるとまた着られなくなりそう。自分から出てくるまで待って。」
@@ -63,15 +61,16 @@ VAR spark_delta = 0
     }
     -> join_1
 
-=== join_1 ===
+= join_1
 # speaker: narrator
 金色の外側の下には元の建物の形が残っている。彼女は壁と並んで、肩幅を比べるように立った。
 # speaker: heroine
 「ここ、昔の建物と新しく作った建物が並んでるんだって。金色の方は昔からあった建物なんだね。」
 「目立ちたい日と、見られたくない日って、同じ日に来るんだね。」
 
-* [「横に立って一緒に目立つ」]
-    # effect: sound_fondazione_prada_date_01_2_1
+* [「横に立って一緒に目立つ」 # option: second_bold]
+    # profile: bold
+    # memory: sound_memory_fondazione_prada_date_01
     { romance_result == "negative":
         # speaker: heroine
         「今日は一人で立ってみる。写真はまだ撮らないでね。」
@@ -81,8 +80,9 @@ VAR spark_delta = 0
     }
     -> join_2
 
-* [「見たいところだけ見るよ」]
-    # effect: sound_fondazione_prada_date_01_2_2
+* [「見たいところだけ見るよ」 # option: second_attentive]
+    # profile: attentive
+    # memory: sound_memory_fondazione_prada_date_01
     { romance_result == "negative":
         # speaker: heroine
         「私が見せたいところも聞いてくれたら、もっといいな。」
@@ -92,8 +92,9 @@ VAR spark_delta = 0
     }
     -> join_2
 
-* [「僕なら夕方から着る」]
-    # effect: sound_fondazione_prada_date_01_2_3
+* [「僕なら夕方から着る」 # option: second_honest]
+    # profile: honest
+    # memory: sound_memory_fondazione_prada_date_01
     { romance_result == "negative":
         # speaker: heroine
         「夜に隠して着るのも、ちょっと悔しい。着るなら晴れた日がいい。」
@@ -103,7 +104,7 @@ VAR spark_delta = 0
     }
     -> join_2
 
-=== join_2 ===
+= join_2
 { relationship_tone_after == "romantic_tension" || relationship_tone_after == "guarded_attraction":
 # speaker: narrator
 彼女の袖の裏だけが、さっきより少し長く出ていた。

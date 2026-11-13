@@ -1,16 +1,14 @@
-VAR player_name = ""
-VAR heroine_name = ""
-VAR player_address = ""
-VAR romance_stage = 1
-VAR ending_reached = false
-VAR relationship_tone = "reserved"
-VAR relationship_tone_before = "reserved"
-VAR relationship_tone_after = "reserved"
-VAR romance_result = "neutral"
-VAR affection_delta = 0
-VAR trust_delta = 0
-VAR spark_delta = 0
+INCLUDE modules.ink
+-> DONE
 
+// ノヴェチェント美術館の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
+// デート。
+
+// デート（本筋）。romance/date_catalog.json の milano_novecento_date_01 の storyId がこの knot を指す。
+// 恋愛の選択は、選択肢のすぐ下の # profile:（と # memory:）。もとの 1場面1ファイルの # effect: と同じ噛み合いと思い出。
+=== milano_novecento_date_01 ===
+# scene: date
+# title: 空中に書いた名前
 # background: milano_novecento_date
 # speaker: narrator
 ノヴェチェント美術館。フォンタナのネオンの線を目で追っていた彼女が、指で小さな曲線を描いた。
@@ -31,8 +29,8 @@ VAR spark_delta = 0
 彼女は主人公の視線と重なる高さで、もう一度指を動かした。
 }
 
-* [「最後まで見てから読む」]
-    # effect: common_date_first_attentive
+* [「最後まで見てから読む」 # option: first_attentive]
+    # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
         「最後まで書くと簡単すぎるよ。途中で一度だけ予想して。」
@@ -42,8 +40,8 @@ VAR spark_delta = 0
     }
     -> join_1
 
-* [「もう一画だけください」]
-    # effect: common_date_first_playful
+* [「もう一画だけください」 # option: first_playful]
+    # profile: playful
     { romance_result == "negative":
         # speaker: heroine
         「ヒントを出すと答えまで言いそう。少し黙ってるね。」
@@ -53,8 +51,8 @@ VAR spark_delta = 0
     }
     -> join_1
 
-* [「字より、書く人に似てる」]
-    # effect: common_date_first_bold
+* [「字より、書く人に似てる」 # option: first_bold]
+    # profile: bold
     { romance_result == "negative":
         # speaker: heroine
         「どう似てるか言ってくれないと、褒められたのか困るな。」
@@ -64,14 +62,15 @@ VAR spark_delta = 0
     }
     -> join_1
 
-=== join_1 ===
+= join_1
 # speaker: narrator
 線は光らず、次の一画を描くと前の一画が消える。彼女は最後のところで、人差し指を握った。
 # speaker: heroine
 「ほんとは自分の名前。最後まで書くと、ここに落書きした気がして。」
 
-* [「僕の手のひらなら空いてる」]
-    # effect: sound_novecento_date_01_2_1
+* [「僕の手のひらなら空いてる」 # option: second_bold]
+    # profile: bold
+    # memory: sound_memory_novecento_date_01
     { romance_result == "negative":
         # speaker: heroine
         「それは近すぎるかな。もう少し広いところに書きたい。」
@@ -82,8 +81,9 @@ VAR spark_delta = 0
     }
     -> join_2
 
-* [「最後の一画だけ覚えるよ」]
-    # effect: sound_novecento_date_01_2_2
+* [「最後の一画だけ覚えるよ」 # option: second_honest]
+    # profile: honest
+    # memory: sound_memory_novecento_date_01
     { romance_result == "negative":
         # speaker: heroine
         「それだけだと他の人の名前にもなるよ。今日は声で名乗ろうかな。」
@@ -93,8 +93,9 @@ VAR spark_delta = 0
     }
     -> join_2
 
-* [「消えるのも作品のうち」]
-    # effect: sound_novecento_date_01_2_3
+* [「消えるのも作品のうち」 # option: second_playful]
+    # profile: playful
+    # memory: sound_memory_novecento_date_01
     { romance_result == "negative":
         # speaker: heroine
         「すぐ「作品」って呼ばれると恥ずかしいよ。ただ遊んでいたい。」
@@ -104,7 +105,7 @@ VAR spark_delta = 0
     }
     -> join_2
 
-=== join_2 ===
+= join_2
 { relationship_tone_after == "romantic_tension" || relationship_tone_after == "guarded_attraction":
 # speaker: narrator
 名前の最後の曲線を、彼女は二人の間に残した。
