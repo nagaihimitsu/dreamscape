@@ -4,7 +4,7 @@
     {
       "storyId": "places/milano_last_supper",
       "speaker": "enemy",
-      "text": "「それは将来の『同上』のために確保してある！」",
+      "text": "それは将来の『同上』のために確保してある！",
       "targetCharacterId": "heroine",
       "expression": "exasperated",
       "mark": "sigh"
@@ -12,14 +12,14 @@
     {
       "storyId": "places/milano_last_supper",
       "speaker": "heroine",
-      "text": "「横に持っているから、だと思います」",
+      "text": "横に持っているから、だと思います",
       "targetCharacterId": "enemy",
       "mark": "sweat"
     },
     {
       "storyId": "places/milano_last_supper",
       "speaker": "enemy",
-      "text": "「だから困る！　パンとチーズも、隣に置くと勝手にサンドイッチを名乗る。私は仕切りを入れる」",
+      "text": "だから困る！　パンとチーズも、隣に置くと勝手にサンドイッチを名乗る。私は仕切りを入れる",
       "targetCharacterId": "heroine",
       "expression": "exasperated",
       "mark": "sigh"
@@ -27,7 +27,7 @@
     {
       "storyId": "places/milano_last_supper",
       "speaker": "heroine",
-      "text": "「……中央の人は？」",
+      "text": "……中央の人は？",
       "targetCharacterId": "enemy",
       "mark": "sweat"
     }

@@ -17,6 +17,7 @@ import { CHECKLIST_FILE, CHECKLIST_TEMPLATE, checkNewJourneyOptions, createJourn
 import { manifestKeyOrderProblems } from "./json-schemas";
 import { prepareJourneyRelease } from "./promote-journey";
 import { readSampleJourney } from "./sample-journey";
+import { taggedLines } from "./line-tag-text";
 
 // `npm run journey:new` copies the sample journey into a new preparing
 // journey; journey:readiness and journey:release refuse it until the sample's
@@ -174,8 +175,22 @@ async function replaceSampleContent(folder: string): Promise<void> {
     } else if (file === "learning/word-meanings.json") {
       // Glosses are shared phrasing; a word other journeys define must keep their exact meaning.
     } else if (file.endsWith(".json")) writeFileSync(absolute, `${JSON.stringify(rewrite(JSON.parse(readFileSync(absolute, "utf8"))), null, 2)}\n`);
-    else if (file.endsWith(".ink"))
-      writeFileSync(absolute, readFileSync(absolute, "utf8").split("\n").map((line) => (line.trim().startsWith("//") ? line : mark(line))).join("\n"));
+    else if (file.endsWith(".ink")) {
+      // A `# em:` / `# em_shake:` names a word of its line as written: the word is marked in the tag and in the line alike.
+      const source = readFileSync(absolute, "utf8");
+      const emphasis = taggedLines(source, ["em", "em_shake"]);
+      const tagLines = new Set(emphasis.map((tag) => tag.line));
+      const words = new Map<number, string[]>();
+      for (const tag of emphasis) if (tag.textLine !== null) words.set(tag.textLine, [...(words.get(tag.textLine) ?? []), tag.value]);
+      const markWords = (line: string, own: string[]) => own.reduce((text, word) => text.replace(word, mark(word)), line).replaceAll("Mihon", "Kyoto");
+      const markTags = (line: string) => line.replace(/(#\s*em(?:_shake)?\s*:\s*)([^#]*?)(\s*(?=#|$))/gu, (_all, head: string, word: string, tail: string) => `${head}${mark(word)}${tail}`);
+      writeFileSync(absolute, source.split("\n").map((line, index) => {
+        if (line.trim().startsWith("//")) return line;
+        const own = words.get(index + 1);
+        const text = own ? markWords(line, own) : tagLines.has(index + 1) ? line : mark(line);
+        return tagLines.has(index + 1) ? markTags(text) : text;
+      }).join("\n"));
+    }
   }
 }
 

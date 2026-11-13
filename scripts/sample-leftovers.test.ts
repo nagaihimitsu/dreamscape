@@ -12,7 +12,7 @@ const files = (entries: Record<string, string | Buffer>) =>
   new Map(Object.entries(entries).map(([file, data]): [string, Buffer] => [file, Buffer.isBuffer(data) ? data : Buffer.from(data)]));
 const json = (value: unknown) => JSON.stringify(value);
 const placeFile = sample.files.get("stories/places/smp_mihon_clock_tower.ink")!.toString("utf8");
-const sampleLine = placeFile.split("\n").find((line) => line.startsWith("「止まってるんだ。"))!;
+const sampleLine = placeFile.split("\n").find((line) => line.startsWith("止まってるんだ。"))!;
 
 describe("sample leftovers", () => {
   it("finds every kind in the sample itself, and nothing in the repository's journeys", () => {
@@ -29,7 +29,7 @@ describe("sample leftovers", () => {
       "quizzes/q.json": json({ sources: [{ url: SAMPLE_SOURCE_URL }, { url: "https://www.example.com/other" }, { url: "https://example.com.evil.jp/" }] }),
       "public/assets/tourism/kyoto/market.png": image,
       "public/assets/tourism/kyoto/new.png": Buffer.concat([image, Buffer.from([0])]),
-      "stories/tourism/guide.ink": `// ${sampleLine}\n${sampleLine}\n  ${sampleLine}\n「止まってるんだ。」\n`,
+      "stories/tourism/guide.ink": `// ${sampleLine}\n${sampleLine}\n  ${sampleLine}\n止まってるんだ。\n`,
       "romance/presentation.json": json({ backgrounds: { a: { nameJa: "見本の宿", captionJa: "時計塔の広場" } } }),
       "CHECKLIST.md": sampleLine,
     }))).toEqual([

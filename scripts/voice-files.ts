@@ -1,7 +1,11 @@
 import path from "node:path";
 import { VOICE_FOLDER, VOICE_ID, voiceIdOf } from "../src/content/voice-files";
 import { displayPath, type ContentLayer, type ContentSources } from "./content-sources";
+import { taggedLines } from "./line-tag-text";
 import { withoutComments } from "./place-files";
+
+/** The protagonist's name in a story's text (src/features/romance/names.ts fills it in). */
+const PLAYER_NAME = "{player_name}";
 
 // content:build's voices (2026-11-12; src/content/voice-files.ts): the recordings of each journey's
 // public/assets/voice/<ID>.mp3 and the `# voice:` tags of the journeys' stories. Nothing registers the files (their
@@ -43,14 +47,19 @@ export function voiceTagsOf(source: string): VoiceTag[] {
   });
 }
 
+/** Where a `# voice:` is, as messages show it: 「knot gt_a の12行目の # voice: gt_a_001」. */
+const voiceTagWhere = (id: string, line: number, knot?: string) => `${knot ? `knot ${knot} の` : ""}${line}行目の # voice: ${id}`;
+
 /**
  * Throws at the first `# voice:` of a story of the journey `journeyId` whose ID is not one (a-z, 0-9 and _ only) or
  * names no voice of that journey (whose voice folder is `voiceFolder`, as voiceFolderPath shows it): a missing file, or
- * another journey's (a journey folder must stay removable on its own). Japanese first, English after.
+ * another journey's (a journey folder must stay removable on its own). Then at the first whose line says
+ * {player_name} (2026-11-13 user decision): the player sets the protagonist's name, so no recording can say it.
+ * Japanese first, English after.
  */
 export function checkVoiceTags(source: string, journeyId: string, voices: readonly VoiceFile[], voiceFolder: string): void {
   for (const { id, line, knot } of voiceTagsOf(source)) {
-    const where = `${knot ? `knot ${knot} の` : ""}${line}行目の # voice: ${id}`;
+    const where = voiceTagWhere(id, line, knot);
     if (!VOICE_ID.test(id))
       throw new Error(`声の ID が使えません：${where}。ID は ${voiceFolder}/ に置いた「ID.mp3」のファイル名で、英小文字・数字・_ だけです` +
         `（Invalid voice tag: # voice: ${id}; write # voice: <ID> with an ID of a-z, 0-9 and _）。`);
@@ -61,5 +70,12 @@ export function checkVoiceTags(source: string, journeyId: string, voices: readon
         `（Voice of another journey: # voice: ${id} is a file of ${voice.journeyId}）。`
       : `声のファイルがありません：${where} の ${id}.mp3 が ${voiceFolder}/ にありません。そこに置いてください` +
         `（Unknown voice: # voice: ${id} is not a file of ${voiceFolder}/）。`);
+  }
+  // The line a tag belongs to (line-tag-text.ts: the same line, else the next line of text), as written.
+  for (const { value, line, knot, text, textLine } of taggedLines(source, ["voice"])) {
+    if (!text?.includes(PLAYER_NAME)) continue;
+    throw new Error(`主人公の名前は声にできません：${voiceTagWhere(value, line, knot)} の台詞（${textLine}行目）に ${PLAYER_NAME} があります。` +
+      `主人公の名前は遊ぶ人が決めるので、録音した声では言えません。名前を言わない台詞にするか、# voice: を外してください` +
+      `（Voiced line says the protagonist's name: the line of # voice: ${value} has ${PLAYER_NAME}; names are set by the player, so a recording cannot say it）。`);
   }
 }

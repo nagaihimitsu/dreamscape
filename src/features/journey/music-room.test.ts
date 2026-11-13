@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest";
+import { readLineId } from "../../components/read-skip";
+import { cityContents, episodes, landmarks, scenes } from "../../content";
+import sceneAudioJson from "../../content/generated/scene-audio.json";
 import { mergeMusicPlay } from "../../content/music";
-import type { SceneAudio } from "../../content/scene-audio";
-import { heardTracks, heardVoices, musicRoomOpen, sceneAddresses, sceneCompleted, type RoomGame, type RoomScene } from "./music-room";
+import { sceneAudioSchema, type SceneAudio } from "../../content/scene-audio";
+import { heardTracks, heardVoices, musicRoomOpen, readStoryKey, sceneAddresses, sceneCompleted, type RoomGame, type RoomScene } from "./music-room";
+
+const SCENE_AUDIO_INDEX = sceneAudioSchema.parse(sceneAudioJson);
 
 // 旅の音楽室 (2026-11-13): what the player has heard, from the scenes completed and the places visited only.
 
@@ -63,12 +68,51 @@ describe("the music room", () => {
     expect(heardTracks({ play: null, visitedPlaceIds: ["ta_fort"], scenes: [], audio, labelOf: (id) => labels[id] })).toEqual([]);
   });
 
+  const names = (text: string) => text.replaceAll("{heroine_name}", "さくら");
+  const sceneLabel = (item: RoomScene) => `場面 ${item.id}`;
+  /** read-skip's record with these lines read: [story key, text as shown]. */
+  const readOf = (lines: [string, string][]) => {
+    const ids = new Set(lines.map(([key, text]) => readLineId(key, text)));
+    return (id: string) => ids.has(id);
+  };
+
   it("lists the completed scenes' voiced lines by scene, each line once, with the names filled in", () => {
-    const groups = heardVoices({ scenes: [scene("ta_talk"), scene("ta_date"), scene("ta_silent")], audio,
-      names: (text) => text.replaceAll("{heroine_name}", "さくら"), sceneLabel: (item) => `場面 ${item.id}` });
+    const isRead = readOf([["ta_talk", "さくらの声"], ["ta_talk", "二つめ"], ["ta_date", "二つめ"], ["ta_date", "三つめ"]]);
+    const groups = heardVoices({ scenes: [scene("ta_talk"), scene("ta_date", { kind: "date", main: { date: "ta_date" } }), scene("ta_silent")],
+      audio, names, sceneLabel, isRead });
     expect(groups).toEqual([
       { sceneId: "ta_talk", labelJa: "場面 ta_talk", voices: [{ id: "ta_v1", textJa: "さくらの声" }, { id: "ta_v2", textJa: "二つめ" }] },
       { sceneId: "ta_date", labelJa: "場面 ta_date", voices: [{ id: "ta_v3", textJa: "三つめ" }] },
     ]);
+  });
+
+  it("lists only the lines this device has read: a branch not taken stays out, and a line read in another scene", () => {
+    // ta_v2 was read in the date only, ta_v1 never (its branch was not taken), the names as the story showed them.
+    const isRead = readOf([["ta_date", "二つめ"], ["ta_talk", "{heroine_name}の声"]]);
+    const groups = heardVoices({ scenes: [scene("ta_talk"), scene("ta_date", { kind: "date", main: { date: "ta_date" } })], audio, names, sceneLabel, isRead });
+    expect(groups).toEqual([{ sceneId: "ta_date", labelJa: "場面 ta_date", voices: [{ id: "ta_v2", textJa: "二つめ" }] }]);
+    expect(heardVoices({ scenes: [scene("ta_talk")], audio, names, sceneLabel, isRead: () => false })).toEqual([]);
+  });
+
+  it("reads each scene's lines under the story its screen gives them", () => {
+    expect(readStoryKey(scene("ta_talk"))).toBe("ta_talk");
+    expect(readStoryKey(scene("ta_meet", { kind: "encounter" }))).toBe("ta_meet");
+    expect(readStoryKey(scene("ta_date_scene", { kind: "date", main: { date: "ta_date" } }))).toBe("ta_date");
+    expect(readStoryKey(scene("ta_battle_scene", { kind: "battle", main: { battle: "ta_battle" } }))).toBe("ta_battle");
+    expect(readStoryKey(scene("ta_guide", { kind: "guide", main: { guide: "ta_tower" } }))).toBe("places/ta_tower.ta_guide");
+    expect(readStoryKey(scene("ta_end", { kind: "epilogue", main: { epilogue: "ta_city" }, story: { storyId: "epilogues/ta_city" } })))
+      .toBe("epilogues/ta_city");
+  });
+
+  it("matches the screens' stories for every voiced scene of the build (a guide's, an epilogue's, an arrival's)", () => {
+    const voiced = scenes.filter((item) => sceneAddresses(item).some((address) => SCENE_AUDIO_INDEX.stories[address]?.voices.length));
+    expect(voiced.length).toBeGreaterThan(0);
+    for (const item of voiced) {
+      const key = readStoryKey(item);
+      const main = item.main;
+      if (main && "guide" in main) expect(key).toBe(landmarks.find((landmark) => landmark.id === main.guide)?.guideStoryId);
+      else if (main && "epilogue" in main) expect(episodes.map((episode) => episode.epilogueStoryId)).toContain(key);
+      else if (main && "arrival" in main) expect(key).toBe(cityContents[main.arrival]?.city.arrivalStoryId);
+    }
   });
 });

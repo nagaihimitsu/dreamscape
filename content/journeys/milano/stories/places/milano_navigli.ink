@@ -13,14 +13,14 @@ INCLUDE modules.ink
 # speaker: narrator
 ナヴィリオの夜。向こう岸の声が水を越えてくる。隣の足音だけ、ときどき半拍遅れる。
 # speaker: heroine
-「さっきから歩幅を合わせようとして、歩き方を忘れました。」
+さっきから歩幅を合わせようとして、歩き方を忘れました
 # speaker: player
 # reaction: heroine,exasperated,sigh
-「どうりで右足だけ偉そうだった。」
+どうりで右足だけ偉そうだった
 # speaker: heroine
 # emotion: exasperated
-「見てたの、それ。先に言ってよ。」
-「運河沿いには、家の入口をつなぐ共同の廊下がある建物もあるんだって。つい窓を見ちゃう。」
+見てたの、それ。先に言ってよ
+運河沿いには、家の入口をつなぐ共同の廊下がある建物もあるんだって。つい窓を見ちゃう
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
@@ -34,10 +34,10 @@ INCLUDE modules.ink
     # profile: playful
     { romance_result == "negative":
         # speaker: heroine
-        「競争すると余計に頑張っちゃうよ。今日はゆっくりがいい。」
+        競争すると余計に頑張っちゃうよ。今日はゆっくりがいい
     - else:
         # speaker: heroine
-        「三歩なら勝つ。よーい、って言った人がもう一歩出てるから。」
+        三歩なら勝つ。よーい、って言った人がもう一歩出てるから
     }
     -> join_1
 
@@ -45,10 +45,10 @@ INCLUDE modules.ink
     # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
-        「先頭はちょっと恥ずかしい。一緒にいて、遅くなったらそのままで。」
+        先頭はちょっと恥ずかしい。一緒にいて、遅くなったらそのままで
     - else:
         # speaker: heroine
-        「じゃあ、この辺。私、運河側だといつも遅くなる。」
+        じゃあ、この辺。私、運河側だといつも遅くなる
     }
     -> join_1
 
@@ -56,10 +56,10 @@ INCLUDE modules.ink
     # profile: honest
     { romance_result == "negative":
         # speaker: heroine
-        「言うのは簡単なんだけど、つい見ちゃうんだよね、隣の足。」
+        言うのは簡単なんだけど、つい見ちゃうんだよね、隣の足
     - else:
         # speaker: heroine
-        「それ、やってみたかった。合わなくなったら橋で待とう。」
+        それ、やってみたかった。合わなくなったら橋で待とう
     }
     -> join_1
 
@@ -67,17 +67,17 @@ INCLUDE modules.ink
 # speaker: narrator
 橋の手前で彼女が止まった。立ち飲みの輪を避けたのかと思ったら、手すりの向こうを見ていた。
 # speaker: heroine
-「私がゆっくりなの、疲れたからだと思った？」
+私がゆっくりなの、疲れたからだと思った？
 
 * [「少しそう思った」 # option: second_honest]
     # profile: honest
     # memory: sound_memory_night_01
     { romance_result == "negative":
         # speaker: heroine
-        「見ただけで決めなくてよかった。今は、橋から水を見たいの。」
+        見ただけで決めなくてよかった。今は、橋から水を見たいの
     - else:
         # speaker: heroine
-        「正解は半分。疲れたのと、まだ帰りたくないのと。」
+        正解は半分。疲れたのと、まだ帰りたくないのと
     }
     -> join_2
 
@@ -86,10 +86,10 @@ INCLUDE modules.ink
     # memory: sound_memory_night_01
     { romance_result == "negative":
         # speaker: heroine
-        「気持ちまで先回りしないで。言いたくなったら自分で言うね。」
+        気持ちまで先回りしないで。言いたくなったら自分で言うね
     - else:
         # speaker: heroine
-        「……それをそっちが先に言うの、ずるい。うん、もう少し。」
+        ……それをそっちが先に言うの、ずるい。うん、もう少し
     }
     -> join_2
 
@@ -98,10 +98,10 @@ INCLUDE modules.ink
     # memory: sound_memory_night_01
     { romance_result == "negative":
         # speaker: heroine
-        「座らずに、そばで立っててくれる？　今そこで灯りが切れそう。」
+        座らずに、そばで立っててくれる？　今そこで灯りが切れそう
     - else:
         # speaker: heroine
-        「ありがとう。座った途端、もう一周する元気が出てきた。困ったね。」
+        ありがとう。座った途端、もう一周する元気が出てきた。困ったね
     }
     -> join_2
 
@@ -123,10 +123,10 @@ INCLUDE modules.ink
 # speaker: narrator
 洗濯屋小路の石の洗い場の近くに、子どもの赤い手袋が落ちていた。拾った彼女が、しゃがんだまま止まる。
 # speaker: heroine
-「遠くから見える所に掛けたい。でも、子どもの目の高さって、ここなんだね。」
-「この傾いた石、昔は洗濯する人たちが水を引いて使ってたんだって。手袋を置いたら濡れちゃうかな。」
+遠くから見える所に掛けたい。でも、子どもの目の高さって、ここなんだね
+この傾いた石、昔は洗濯する人たちが水を引いて使ってたんだって。手袋を置いたら濡れちゃうかな
 # speaker: player
-「僕らの見やすいところが、いちばんとは限らないか。」
+僕らの見やすいところが、いちばんとは限らないか
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
@@ -141,10 +141,10 @@ INCLUDE modules.ink
     # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
-        「一人で十分だよ。少し先で、片手が寒そうな人を見てて。」
+        一人で十分だよ。少し先で、片手が寒そうな人を見てて
     - else:
         # speaker: heroine
-        「私も横にいよう。二人ともこの姿勢だと、何か隠してる人みたいだけど。」
+        私も横にいよう。二人ともこの姿勢だと、何か隠してる人みたいだけど
     }
     -> join_1
 
@@ -152,10 +152,10 @@ INCLUDE modules.ink
     # profile: playful
     { romance_result == "negative":
         # speaker: heroine
-        「見ただけで当てるより、いま来た道にいるか見てみたい。」
+        見ただけで当てるより、いま来た道にいるか見てみたい
     - else:
         # speaker: heroine
-        「いい観察。……あの人、片方だけ手をポケットに。あ、大人だった。」
+        いい観察。……あの人、片方だけ手をポケットに。あ、大人だった
     }
     -> join_1
 
@@ -163,10 +163,10 @@ INCLUDE modules.ink
     # profile: honest
     { romance_result == "negative":
         # speaker: heroine
-        「私はここで手渡したい。少し待ってもいい？」
+        私はここで手渡したい。少し待ってもいい？
     - else:
         # speaker: heroine
-        「うん。勝手に持って遠くへ行く前に、それがいい。」
+        うん。勝手に持って遠くへ行く前に、それがいい
     }
     -> join_1
 
@@ -174,17 +174,17 @@ INCLUDE modules.ink
 # speaker: narrator
 洗い場の石には、人がそこで働いていた頃の傾きが残っている。彼女が同じ高さに手を置くと、さっきの親子が戻ってきた。
 # speaker: heroine
-「持ち主、見つかった。なのに、立ちたくない。いまの高さだと、水の色がちょっと違う。」
+持ち主、見つかった。なのに、立ちたくない。いまの高さだと、水の色がちょっと違う
 
 * [「その目線、貸して」 # option: second_playful]
     # profile: playful
     # memory: sound_memory_navigli_date_01
     { romance_result == "negative":
         # speaker: heroine
-        「真似して転ばないで。濡れてない場所で見よう。」
+        真似して転ばないで。濡れてない場所で見よう
     - else:
         # speaker: heroine
-        「貸し出し無料。返すときは、膝に手をついてゆっくりね。」
+        貸し出し無料。返すときは、膝に手をついてゆっくりね
     }
     -> join_2
 
@@ -193,10 +193,10 @@ INCLUDE modules.ink
     # memory: sound_memory_navigli_date_01
     { romance_result == "negative":
         # speaker: heroine
-        「もう少し待ちたかったな。手袋じゃなくて、この景色に。」
+        もう少し待ちたかったな。手袋じゃなくて、この景色に
     - else:
         # speaker: heroine
-        「うん。何もしないで待つの、私は意外と苦手。付き合ってくれてありがとう。」
+        うん。何もしないで待つの、私は意外と苦手。付き合ってくれてありがとう
     }
     -> join_2
 
@@ -205,10 +205,10 @@ INCLUDE modules.ink
     # memory: sound_memory_navigli_date_01
     { romance_result == "negative":
         # speaker: heroine
-        「大丈夫、自分で立てる。隣が空いてたほうが立ちやすいよ。」
+        大丈夫、自分で立てる。隣が空いてたほうが立ちやすいよ
     - else:
         # speaker: heroine
-        「ありがとう。……思ったよりちゃんと握っちゃった。」
+        ありがとう。……思ったよりちゃんと握っちゃった
     }
     -> join_2
 
