@@ -17,6 +17,17 @@ const HANDS_MS = 180;
 /** The sound of a play (definition `sounds`): the drum, on every beat. */
 const SOUNDS = { drum: "drum_beat" } as const;
 
+/** One of the player's raised hands (an open palm over a sleeve); the left one is this, mirrored. */
+const Hand = () => (
+  <svg viewBox="0 0 40 80" aria-hidden="true">
+    <rect x="7" y="52" width="26" height="28" rx="4" fill="#f0e6d4" />
+    <rect x="12" y="34" width="16" height="22" rx="5" fill="#c58b5c" />
+    <rect x="9" y="20" width="22" height="22" rx="7" fill="#c58b5c" />
+    {[9.5, 15, 20.5, 26].map((x) => <rect key={x} x={x} y={x === 9.5 || x === 26 ? 9 : 5} width="4.6" height="18" rx="2.3" fill="#c58b5c" />)}
+    <rect x="1" y="22" width="5" height="15" rx="2.5" fill="#c58b5c" transform="rotate(-28 3.5 30)" />
+  </svg>
+);
+
 /** The last drum beat at or before `ms` (its index), or -1. */
 const lastBeat = (ms: number) => {
   let index = -1;
@@ -72,7 +83,7 @@ function BaraatField({ cast, art, sound, frames }: RhythmTapFieldProps<BaraatPar
       <span className="mg-baraat-dance-dancer mg-baraat-dance-heroine">
         {art.heroine ? <img src={art.heroine} alt="" draggable={false} /> : cast.heroine}
       </span>
-      <span className="mg-baraat-dance-hands" data-hands={hands}><span /><span /></span>
+      <span className="mg-baraat-dance-hands" data-hands={hands}><span><Hand /></span><span><Hand /></span></span>
     </div>
   );
 }

@@ -165,15 +165,19 @@ export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSki
       event.preventDefault();
       if (!event.repeat) tap(clock.at(event.timeStamp));
     };
+    // A button's Space clicks on keyup: the key's tap came on keydown (one tap a press).
+    const onKeyUp = (event: KeyboardEvent) => {
+      if (event.key === " " && !(event.target as Element | null)?.closest?.("[data-rhythm-stop]")) event.preventDefault();
+    };
     const Field = skin.Field;
     const idle = over || stopped;
     return (
-      <div className="mg-engine-rhythm-tap" onKeyDown={onKey}>
+      <div className="mg-engine-rhythm-tap" onKeyDown={onKey} onKeyUp={onKeyUp}>
         <div className="mg-rhythm-tap-field" onPointerDown={onPointer} aria-hidden="true">
           <Field params={params} still={still} seed={seed} cast={cast} names={names} art={art} sound={sound} vibrate={vibrate} frames={frames} />
         </div>
         <div className="mg-rhythm-tap-controls">
-          <div className="mg-rhythm-tap-top">
+          <div className="mg-rhythm-tap-top" data-stop={(auto === null && !!skin.stop) || undefined}>
             {auto === null && <p className="mg-rhythm-tap-hint">{skin.hintJa}</p>}
             {auto === null && skin.stop && (
               <button type="button" className="secondary mg-rhythm-tap-stop" data-testid="minigame-stop" data-rhythm-stop

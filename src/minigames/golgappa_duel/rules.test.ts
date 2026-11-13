@@ -34,7 +34,9 @@ describe("the golgappa duel", () => {
       if (index > 0) expect(land).toBeGreaterThan(beats[index - 1]);
     });
     expect(hers[0]).toBeGreaterThan(GOLGAPPA_FIELD.fallMs);
-    expect(beats[GOLGAPPA_HER_STOP] - beats[GOLGAPPA_HER_STOP - 1]).toBeGreaterThan(GOLGAPPA_FIELD.fallMs);
+    // One falls at a time: each drop (hers or the player's) starts after the one before has landed.
+    const drops = [...hers, ...beats].sort((a, b) => a - b);
+    for (const [index, drop] of drops.slice(1).entries()) expect(drop - drops[index], `drop ${index + 2}`).toBeGreaterThan(GOLGAPPA_FIELD.fallMs);
     expect(GOLGAPPA_HER_HAND_MS).toBeGreaterThan(beats[GOLGAPPA_HER_STOP - 2]);
     expect(GOLGAPPA_HER_HAND_MS).toBeLessThan(beats[GOLGAPPA_HER_STOP]);
   });

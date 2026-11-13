@@ -9,8 +9,8 @@
   z-index: 2;
   left: 50%;
   top: 3%;
-  width: 30%;
-  max-width: 150px;
+  height: 34%;
+  max-height: 150px;
   aspect-ratio: 1;
   transform: translateX(-50%);
 }
@@ -81,19 +81,22 @@
   gap: 18%;
   justify-content: center;
   width: 46%;
+  max-width: 220px;
   height: 26%;
   transform: translateX(-50%);
 }
 .mg-baraat-dance-hands > span {
-  width: 22%;
+  display: block;
+  width: 26%;
   height: 100%;
-  border-radius: 40% 40% 10% 10%;
-  background: linear-gradient(#c58b5c 0 38%, #f0e6d4 38%);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
   transform: translateY(42%) rotate(-12deg);
 }
+.mg-baraat-dance-hands svg { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45)); }
+/* The left hand: the right one, mirrored. */
+.mg-baraat-dance-hands > span:first-child svg { transform: scaleX(-1); }
 .mg-baraat-dance-hands > span:last-child { transform: translateY(42%) rotate(12deg); }
-.mg-baraat-dance-hands[data-hands="met"] > span { transform: translateY(0) rotate(-6deg); box-shadow: 0 0 0 3px #f0c860, 0 0 16px rgba(240, 200, 96, 0.8); }
+.mg-baraat-dance-hands[data-hands="met"] > span { transform: translateY(0) rotate(-6deg); }
+.mg-baraat-dance-hands[data-hands="met"] svg { filter: drop-shadow(0 0 3px #f0c860) drop-shadow(0 0 10px rgba(240, 200, 96, 0.9)); }
 .mg-baraat-dance-hands[data-hands="met"] > span:last-child { transform: translateY(0) rotate(6deg); }
 .mg-baraat-dance-hands[data-hands="off"] > span { transform: translateY(14%) rotate(-28deg); }
 .mg-baraat-dance-hands[data-hands="off"] > span:last-child { transform: translateY(24%) rotate(4deg); }

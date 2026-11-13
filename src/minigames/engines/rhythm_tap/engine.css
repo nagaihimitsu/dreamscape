@@ -12,7 +12,8 @@
   cursor: pointer;
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-controls { flex: none; padding: 8px 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
-.mg-engine-rhythm-tap .mg-rhythm-tap-top { display: flex; align-items: center; justify-content: flex-end; gap: 12px; min-height: 44px; margin: 0 0 8px; }
+.mg-engine-rhythm-tap .mg-rhythm-tap-top { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin: 0 0 8px; }
+.mg-engine-rhythm-tap .mg-rhythm-tap-top[data-stop] { min-height: 44px; }
 .mg-engine-rhythm-tap .mg-rhythm-tap-hint {
   flex: 1 1 auto;
   min-width: 0;
@@ -25,8 +26,10 @@
 .mg-engine-rhythm-tap .mg-rhythm-tap-stop {
   flex: none;
   justify-content: center;
+  width: auto;
   min-width: 88px;
   min-height: 44px;
+  margin: 0;
   padding: 0 16px;
   border-radius: 22px;
   font-size: 16px;
@@ -101,9 +104,11 @@
   background: var(--ds-chip-bg);
   font-size: 15px;
 }
+/* A short screen keeps the field: the hint (the start showed it just before) gives way. */
 @media (max-height: 620px) {
+  .mg-engine-rhythm-tap .mg-rhythm-tap-hint { display: none; }
   .mg-engine-rhythm-tap .mg-rhythm-tap-controls { padding-top: 4px; }
   .mg-engine-rhythm-tap .mg-rhythm-tap-top { margin-bottom: 4px; }
-  .mg-engine-rhythm-tap .mg-rhythm-tap-lane { margin-bottom: 8px; }
+  .mg-engine-rhythm-tap .mg-rhythm-tap-lane { height: 30px; margin-bottom: 8px; }
   .mg-engine-rhythm-tap .mg-rhythm-tap-action, .mg-engine-rhythm-tap .mg-rhythm-tap-auto { min-height: 54px; }
 }

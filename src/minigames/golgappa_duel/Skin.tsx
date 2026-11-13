@@ -111,7 +111,7 @@ function GolgappaField({ cast, art, names, sound, vibrate, frames }: RhythmTapFi
           <span className="mg-golgappa-duel-counter" />
         </>
       )}
-      <span className="mg-golgappa-duel-her" data-eating={herBowl || undefined}>
+      <span className="mg-golgappa-duel-her" data-art={art.heroine ? true : undefined} data-eating={herBowl || undefined}>
         {art.heroine ? <img src={art.heroine} alt="" draggable={false} /> : cast.heroine}
       </span>
       <span className="mg-golgappa-duel-hand" ref={hand} />

@@ -27,8 +27,8 @@ export const GOLGAPPA_TUNING: RhythmTapTuning = {
   partnerStop: GOLGAPPA_HER_STOP,
 };
 
-/** The field's moments: how long a golgappa falls, and how long she takes to eat hers and (after her 14th) raise her hand. */
-export const GOLGAPPA_FIELD = { fallMs: 420, herEatMs: 250 } as const;
+/** The field's moments: how long a golgappa falls (less than half the shortest gap: one falls at a time), and how long she takes to eat hers and (after her 14th) raise her hand. */
+export const GOLGAPPA_FIELD = { fallMs: 280, herEatMs: 250 } as const;
 
 /** When her golgappa lands: halfway before each of the player's (the vendor gives hers first in each round). */
 export function golgappaHerLandings(tuning: RhythmTapTuning = GOLGAPPA_TUNING): number[] {
