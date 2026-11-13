@@ -157,7 +157,7 @@ import { relationshipChange, type RelationshipChange } from "../domain/relations
 import { RelationshipChangeNote } from "../components/RelationshipChangeNote";
 import { sceneConditionTruths } from "../domain/scene-conditions";
 import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
-import { stageLine } from "../components/scene-stage";
+import { sceneStageOf, stageLine } from "../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../components/speaker-plate";
 
 /** 最初の3分の計測's note (Debug mode only): its own chunk, loaded when ⚙設定 shows it (scripts/dist-guard.ts). */
@@ -865,7 +865,7 @@ export function GameApp({
                     heroine: !!heroine || (hasEmotion && frame.speaker === "narrator"),
                     enemy: !!enemy || (hasEmotion && frame.speaker === "enemy"),
                   }),
-                  scene: encounterPerson ? { enemyFigure: encounterPerson.characterId } : { enemyStandIn: "enemy" },
+                  scene: sceneStageOf("encounter", encounterPerson?.characterId),
                   heroine: { emotion: heroine?.expression ?? (frame.speaker === "heroine" || frame.speaker === "narrator" ? frame.emotion : "neutral"), mark: heroine?.mark },
                   enemy: { emotion: enemy?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral"), mark: enemy?.mark },
                 };

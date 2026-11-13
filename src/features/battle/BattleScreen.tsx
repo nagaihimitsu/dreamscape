@@ -24,7 +24,7 @@ import { SceneHeading, SceneNotebookTool } from "../../components/SceneHeading";
 import { CharacterFigure, CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
-import { oppositeIsEnemy, stageLine, type StageScene } from "../../components/scene-stage";
+import { oppositeIsEnemy, sceneStageOf, stageLine } from "../../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useSceneStage } from "../../components/useSceneStage";
 import { useNameCutIn } from "../../components/NameCutIn";
@@ -347,7 +347,7 @@ export function BattleScreen({
   // under the name the heroine knows them by before they give theirs (an alias of progression/story.json people,
   // 2026-11-11): their figure, expression and reaction stay the opponent's.
   const opponentFigure = characterForBattle(battle.id);
-  const stageScene: StageScene = { heroineFromStart: true, enemyFigure: opponentFigure, enemyFromStart: true };
+  const stageScene = sceneStageOf("battle", opponentFigure);
   const line = isDialogue && frame ? stageLine(frame, storyState.people, { enemy: !!enemyReaction }) : { enemyCue: true };
   const { stage, focus } = useSceneStage(line, stageScene);
   const personId = oppositeIsEnemy(stage, stageScene) ? undefined : stage.opposite?.figure;

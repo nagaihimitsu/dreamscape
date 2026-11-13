@@ -7,7 +7,7 @@ import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
-import { stageLine, type StageScene } from "../../components/scene-stage";
+import { sceneStageOf, stageLine } from "../../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
@@ -35,7 +35,7 @@ import "./romance-scene.css";
 import "../journey/encounter.css";
 
 /** A date's stage: she stands from the start; no one stands for `# speaker: enemy`. */
-const DATE_STAGE: StageScene = { heroineFromStart: true };
+const DATE_STAGE = sceneStageOf("date");
 
 export function RomanceScene({
   game,
