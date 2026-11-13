@@ -173,7 +173,7 @@ describe("「待機」 and 「ホテルに戻る」 go by a swipe up too (user d
 
   it("names the waits: the minutes, the night with its time, else the time", () => {
     expect(waitLabelJa(minutes)).toBe("30分待つ");
-    expect(waitLabelJa(night)).toBe("夜(18:00)まで待つ");
+    expect(waitLabelJa(night)).toBe("夜（18:00）まで待つ");
     expect(waitLabelJa({ minutes: 45, until: 15 * 60 + 30 })).toBe("15:30まで待つ");
     expect(WAIT_BLOCKED_JA).toBe("21:00までにホテルへ帰れなくなる待ち方は選べません。");
     expect(WAIT_REFUSAL_JA).toBe("待てません。21:00までにホテルへ帰れなくなります。");

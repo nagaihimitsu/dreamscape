@@ -85,7 +85,7 @@ INCLUDE modules.ink
     書いたのはアミール・フスローです！
 - else:
     # speaker: narrator
-    アンジャリが勝ち誇って正解を読み上げる。
+    アンジャリが胸を張って正解を読み上げる。
     # speaker: gt_anjali
     地上に楽園があるなら、それはここ！　書いたのはアミール・フスローです！
 }
@@ -289,6 +289,8 @@ INCLUDE modules.ink
     # local_word: gt_delhi_word_chandni
     # em: 月光
     チャンドニー・チョーク。月光の広場。昔の池に、月が映ったから
+    # speaker: enemy
+    ……月が水に落ちた所。祖母の地図には、まだ池があるんだ
 - else:
     # speaker: enemy
     # local_word: gt_delhi_word_chandni
