@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
 import { createDebugState } from "../../../src/dev/debug-state";
-import { encounters } from "../../../src/content/encounters";
-import { advanceEncounter, answerEncounterQuiz, chooseEncounter, encounterCanFinish, finishEncounter, validateEncounterState } from "../../../src/domain/encounter";
+import { advanceEncounter, chooseEncounter, encounterCanFinish, finishEncounter, validateEncounterState } from "../../../src/domain/encounter";
 import { encounterOffered, meetEncounter } from "../../fixtures/encounter-moment";
 import { closeTourism } from "../../../src/domain/tourism";
 
@@ -47,43 +46,35 @@ describe("the Milan pick and location encounters", () => {
     expect(encounterOffered(state, "castello_pick").available).toBe(false);
   });
 
-  it("does not require a ticket for the ordinary print visit and spends the stated cost exactly once", () => {
-    const base = { ...createGame("たいち", "あゆみ"), completedEpisodeIds: ["milano_last_supper_episode"] };
-    const paid = play(base, "galleria_print", "pay");
-    expect(paid.travelBudget).toBe(base.travelBudget - 4);
-    expect(paid.inventory.galleria_ticket).toBeUndefined();
-    expect(encounterOffered(paid, "galleria_ticket_press").available).toBe(false);
-  });
-
-  it("lets a preexisting ticket be used later even after paying for the ordinary print", () => {
+  it("hands the wish's ticket on to Rina's crest room after the battle, where a print uses it once", () => {
     let state = createDebugState({
       scene: "encounter", id: "galleria_fortune", progress: "completed",
       ap: 9, affection: 0, trust: 0, spark: 0, roll: "positive",
     });
-    const answer = encounters.encounters.find((item) => item.id === "galleria_fortune")!.quiz!.question.correctOptionId;
     for (let step = 0; state.activeEncounter && step < 100; step++) {
       const active = state.activeEncounter;
-      state = active.phase === "quiz"
-        ? answerEncounterQuiz(state, answer, state.revision)
-        : active.frame.choices.length
-          ? chooseEncounter(state, 0, state.revision)
-          : encounterCanFinish(state)
-            ? finishEncounter(state, state.revision)
-            : advanceEncounter(state, state.revision);
+      state = active.frame.choices.length
+        ? chooseEncounter(state, 0, state.revision)
+        : encounterCanFinish(state)
+          ? finishEncounter(state, state.revision)
+          : advanceEncounter(state, state.revision);
       state = validateGameState(JSON.parse(JSON.stringify(state)));
     }
     expect(state.activeEncounter).toBeNull();
+    expect(state.completedEncounterIds).toContain("galleria_fortune");
+    // The ticket is the talk's that follows the wish (no lottery since 2026-11-13).
+    state = play(state, "milano_galleria_ticket_gift", "");
     expect(state.inventory.galleria_ticket).toBe("held");
     expect(state.activeTourism?.landmarkId).toBe("galleria_vittorio_emanuele_ii");
     state = closeTourism(state, state.revision);
     const before = state.travelBudget;
-    state = play(state, "galleria_print", "pay");
-    expect(state.travelBudget).toBe(before - 4);
-    state = play(state, "galleria_ticket_press", "later");
+    // With the ticket, the stall offers its prints (the paid print and the sample are hidden); 「また今度」 keeps it.
+    state = play(state, "galleria_print", "leave");
     expect(state.inventory.galleria_ticket).toBe("held");
-    state = play(state, "galleria_ticket_press", "press");
+    state = play(state, "galleria_print", "roof");
     expect(state.inventory.galleria_ticket).toBe("used");
-    expect(state.itemUses).toEqual({ galleria_ticket: { encounterId: "galleria_ticket_press", optionId: "press" } });
-    expect(state.travelBudget).toBe(before - 4);
+    expect(state.itemUses).toEqual({ galleria_ticket: { encounterId: "galleria_print", optionId: "roof" } });
+    expect(state.completedEncounterIds).toContain("galleria_print");
+    expect(state.travelBudget).toBe(before);
   });
 });

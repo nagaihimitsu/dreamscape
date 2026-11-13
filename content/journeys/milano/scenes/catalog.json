@@ -2,6 +2,19 @@
   "schemaVersion": 1,
   "scenes": [
     {
+      "id": "galleria_fortune",
+      "sources": [
+        {
+          "publisher": "YesMilano",
+          "title": "Galleria Vittorio Emanuele II",
+          "url": "https://www.yesmilano.it/en/see-and-do/venues/galleria-vittorio-emanuele-ii",
+          "checkedAt": "2026-11-02",
+          "claimType": "legend",
+          "claimJa": "雄牛の上でかかとを回すと幸運を招く、という願掛けの風習がある。"
+        }
+      ]
+    },
+    {
       "id": "duomo_string",
       "sources": [
         {
@@ -31,25 +44,20 @@
       "id": "galleria_print",
       "sources": [
         {
-          "publisher": "YesMilano",
-          "title": "Galleria Vittorio Emanuele II",
-          "url": "https://www.yesmilano.it/en/see-and-do/venues/galleria-vittorio-emanuele-ii",
-          "checkedAt": "2026-11-02",
+          "publisher": "Comune di Milano（ミラノ市公式）",
+          "title": "Galleria Vittorio Emanuele II. Restoration of the Bull mosaic completed.",
+          "url": "https://www.comune.milano.it/en/w/galleria-vittorio-emanuele-ii.-completato-il-restauro-del-mosaico-del-toro",
+          "checkedAt": "2026-10-30",
           "claimType": "documented_fact",
-          "claimJa": "ガッレリアは市民が出会い散策する場所。床の雄牛はトリノの紋章。"
-        }
-      ]
-    },
-    {
-      "id": "galleria_ticket_press",
-      "sources": [
+          "claimJa": "ミラノ市の修復案内は、雄牛をトリノの紋章と説明している。"
+        },
         {
-          "publisher": "YesMilano",
-          "title": "Galleria Vittorio Emanuele II",
-          "url": "https://www.yesmilano.it/en/see-and-do/venues/galleria-vittorio-emanuele-ii",
-          "checkedAt": "2026-11-02",
+          "publisher": "Comune di Milano（ミラノ市公式）",
+          "title": "Galleria Vittorio Emanuele II. Project approved for roof consolidation and restoration work.",
+          "url": "https://www.comune.milano.it/en/w/galleria-vittorio-emanuele-ii.-approvato-il-progetto-per-gli-interventi-di-consolidamento-e-restauro-della-copertura",
+          "checkedAt": "2026-10-30",
           "claimType": "documented_fact",
-          "claimJa": "ガッレリアは市民が出会い散策する場所。床の雄牛はトリノの紋章。"
+          "claimJa": "ミラノ市の屋根修復計画は、ガッレリアの屋根を鉄とガラスによる構造と明記している。"
         }
       ]
     },

@@ -18,6 +18,7 @@ Dreamscapeを開発・制作する人の入口です。起動とコマンド、�
 | 変更ごとの確認、テストの組、E2E、探索テスト、Debug起動URL、CI | [10 開発時の確認](10_DEVELOPMENT_CHECKS.md) |
 | 遊ぶ人への案内 | [11 遊び方](11_HOW_TO_PLAY.md) |
 | 会話・クイズ・観光・デート・人物の絵の作り方 | [コンテンツ制作ガイド](../authoring/CONTENT_GUIDE.md) |
+| 新しい都市を1つ足す順番と、同時に進められる作業 | [新しい都市を1つ足す手引き](../authoring/NEW_CITY_GUIDE.md) |
 | 旅行編へシナリオとクイズを取り込む | [旅行編の制作手順](../authoring/JOURNEY_AUTHORING.md) |
 | 都市のデータをまとめて編集する | [都市データの編集](../authoring/CITY_BUNDLES.md)、[都市の追加手順](../authoring/FUTURE_CITIES.md) |
 | 遊べる最小の旅行編（開発・テスト専用） | [見本の編](../authoring/templates/sample_trip/README.md) |

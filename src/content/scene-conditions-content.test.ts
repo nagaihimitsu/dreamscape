@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { buildContent } from "../../scripts/content-pipeline";
 import { prepareContentFixture, storySourceFile } from "./test-fixtures";
+import { addCatalogWishToContent } from "../../tests/fixtures/catalog-wish";
 
 // A scene's cond("…") through content:build (unified event design stage 2a): declared, read like the
 // other conditions where the scene is played, walked true and false, and listed for the game.
@@ -12,8 +13,7 @@ let fixture: string;
 const epilogueFile = "places/milano_darsena";
 const epilogue = storySourceFile(epilogueFile);
 const line = "放送が終わったダルセナで、彼女は左の掌を開いた。さっきの網目はもう消えている。";
-// A one-scene file (the Galleria fortune, an encounter of Milan's catalog): it declares cond itself (decision 40).
-const oneScene = storySourceFile("encounters/milano_galleria_fortune");
+// A one-scene file (the tests' wish in its catalog form, added to the fixture's Milan): it declares cond itself (decision 40).
 
 beforeEach(async () => {
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-cond-"));
@@ -45,8 +45,8 @@ describe("cond in a scene's Ink", () => {
   }, 120000);
 
   it("stops a one-scene file without the declaration, with how to add it (decision 40)", async () => {
-    const file = path.join(fixture, oneScene);
-    await writeFile(file, `${await readFile(path.resolve(oneScene), "utf8")}\n{ cond("couple"): x }\n`);
+    const file = await addCatalogWishToContent(fixture);
+    await writeFile(file, `${await readFile(file, "utf8")}\n{ cond("couple"): x }\n`);
     await expect(buildContent(fixture, false)).rejects.toThrow(/cond\("…"\) needs its declaration in this file: add the line\n {2}EXTERNAL cond\(text\)/u);
   }, 120000);
 

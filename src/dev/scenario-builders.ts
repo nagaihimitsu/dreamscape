@@ -22,7 +22,7 @@ import { getNextEpisode, getNextStoryBattle, leaveBattleResult, startEpisode, st
 import { departToNextCity } from "../domain/city-travel";
 import {
   advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterCanFinish, encounterEntryRule, encounterVisitSlot, finishEncounter,
-  getEncounterOptionAvailability, leaveBattleToFreeTime, proceedFromTourism, startTourismEncounter, visitedLandmarkOfEvent,
+  getEncounterOptionAvailability, leaveBattleToFreeTime, nextObservationScene, proceedFromTourism, startTourismEncounter, visitedLandmarkOfEvent,
 } from "../domain/encounter";
 import { advanceOccasion, closeRomanceEnding, openEpilogue, openOccasion } from "../domain/occasion";
 import { sceneById, sceneOption } from "../domain/scene-effects";
@@ -513,6 +513,22 @@ function untilEncounter(initial: GameState, encounterId: string, ticket: number)
   return state;
 }
 
+/**
+ * From an opened guide or observation, on to the landmark's battle as a player goes: the guide skipped, then the
+ * observation's 「進む」, its scenes played with their first choices, until the battle starts.
+ */
+function throughObservation(initial: GameState, ticket: number): GameState {
+  let state = initial;
+  for (let step = 0; !state.activeBattle; step++) {
+    if (step > MAX_STEPS) throw new Error("観察から対決へ進めませんでした。");
+    if (state.activeTourism?.phase === "guide") state = act(state, guideSkip, "観光案内を飛ばす");
+    else if (state.activeEncounter) state = playEncounterFirstChoice(state, ticket);
+    else if (state.activeTourism) state = act(state, (current) => proceedFromTourism(current, current.revision, () => ticket), "観察の「進む」");
+    else throw new Error("観察から対決へ進めませんでした。");
+  }
+  return state;
+}
+
 /** Depart from the map to the landmark's map event (its episode or special battle) by the first mode that can go now. */
 function departToLandmark(state: GameState, landmarkId: string, ticket: number): GameState {
   const { travel } = getCityContent(state.currentCityId);
@@ -549,8 +565,13 @@ export function startEncounterScene(state: GameState, encounterId: string, ticke
     let next = untilEncounter(departToLandmark(state, encounter.landmarkId, ticket), encounterId, ticket);
     if (slot === "after" && next.activeEncounter?.encounterId !== encounterId) {
       if (next.activeEncounter) throw new Error(unmetRule(next));
-      next = playBattleToResult(tourismToBattle(next, {}), {});
-      next = untilEncounter(act(next, (current) => leaveBattleToFreeTime(current, current.revision, () => ticket), "対決の結果を閉じる"), encounterId, ticket);
+      const arrived = next;
+      const afterBattle = (atBattle: GameState) => untilEncounter(act(playBattleToResult(atBattle, {}),
+        (current) => leaveBattleToFreeTime(current, current.revision, () => ticket), "対決の結果を閉じる"), encounterId, ticket);
+      next = afterBattle(tourismToBattle(arrived, {}));
+      // A scene whose condition a scene of the observation meets (Rina's crest room after the Galleria's wish): the visit
+      // again, through its observation's scenes with their first choices, as play meets them.
+      if (next.activeEncounter?.encounterId !== encounterId) next = afterBattle(throughObservation(arrived, ticket));
     }
     if (next.activeEncounter?.encounterId !== encounterId) throw new Error(unmetRule(next));
     return validateGameState(next);
@@ -558,9 +579,20 @@ export function startEncounterScene(state: GameState, encounterId: string, ticke
   const placed = atPlace(state, scenePlaceId(state.currentCityId, undefined, encounter?.landmarkId));
   let observing = encounter?.landmarkId ? openTourism(placed, encounter.landmarkId) : placed;
   for (let step = 0; observing.activeTourism?.phase === "guide" && step < MAX_STEPS; step++) observing = guideSkip(observing);
-  const next = startTourismEncounter(observing, encounterId, observing.revision, () => ticket);
+  let next = startTourismEncounter(observing, encounterId, observing.revision, () => ticket);
+  // A scene whose condition an earlier scene of the same observation meets (the Galleria's ticket talk after its wish): the
+  // observation's scenes before it are played with their first choices, as play meets them, until it starts.
+  for (let count = 0; next.activeEncounter?.encounterId !== encounterId && count < 20; count++) {
+    if (next.activeEncounter) observing = playEncounterFirstChoice(next, ticket);
+    else {
+      const earlier = nextObservationScene(observing);
+      if (!earlier || earlier === encounterId) break;
+      observing = playEncounterFirstChoice(act(observing, (current) => proceedFromTourism(current, current.revision, () => ticket), "観察の「進む」"), ticket);
+    }
+    next = observing.activeEncounter ? observing : startTourismEncounter(observing, encounterId, observing.revision, () => ticket);
+  }
   // The observation reads the rule's `when` (unless the quiz waits for the battle); Debug names what is missing.
-  if (!next.activeEncounter) throw new Error(unmetRule(observing));
+  if (next.activeEncounter?.encounterId !== encounterId) throw new Error(unmetRule(observing));
   return validateGameState(next);
 }
 

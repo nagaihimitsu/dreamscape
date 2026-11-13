@@ -5,6 +5,7 @@ import { encounters } from "./encounters";
 import { encounterEntryRulesSchema, validateEncounterEntryRules, type EncounterEntryRule } from "./encounter-entry-rules";
 import { createGame } from "../domain/game";
 import { encounterOffered } from "../../tests/fixtures/encounter-moment";
+import { catalogWish, WISH } from "../../tests/fixtures/catalog-wish";
 
 describe("location-based encounters", () => {
   it("parses version 2 rules and refuses what no game can use", () => {
@@ -14,8 +15,11 @@ describe("location-based encounters", () => {
     expect(() => encounterEntryRulesSchema.parse({ ...rules, entries: [...rules.entries, rules.entries[0]] })).toThrow(zodIssues({ code: "custom", message: "Duplicate encounter entry rule" }));
     expect(() => validateEncounterEntryRules({ ...rules, entries: [{ ...rules.entries[0], encounterId: "unknown_encounter" }] }, encounters.encounters))
       .toThrow("Unknown encounter entry: unknown_encounter");
-    // Only the Galleria fortune (an encounter with a quiz) defers its quiz until the landmark battle.
-    expect(rules.entries.filter((entry) => entry.quizAfterLandmarkBattle).map((entry) => entry.encounterId)).toEqual(["galleria_fortune"]);
+    // No published encounter has a quiz since Milan's wish became a place-file knot (2026-11-13). The catalog form still defers
+    // an encounter's quiz until the landmark battle: the tests' wish in that form (tests/fixtures/catalog-wish.ts) keeps it checked.
+    expect(rules.entries.filter((entry) => entry.quizAfterLandmarkBattle)).toEqual([]);
+    const wishRule: EncounterEntryRule = { encounterId: WISH, at: ["observe"], when: { episodeCompleted: "milano_galleria_episode" }, quizAfterLandmarkBattle: true };
+    expect(() => validateEncounterEntryRules({ ...rules, entries: [...rules.entries, wishRule] }, [...encounters.encounters, catalogWish()])).not.toThrow();
     // Milan's broken string is a place file's knot (2026-11-13): its head tags give the rule (after observe, its # when:).
     expect(rules.entries.find((entry) => entry.encounterId === "duomo_string"))
       .toEqual({ encounterId: "duomo_string", priority: "after observe", when: { episodeCompleted: "milano_duomo_episode" } });
@@ -49,10 +53,12 @@ describe("location-based encounters", () => {
     const afterDuomo = { ...fresh, completedEpisodeIds: ["milano_duomo_episode"] };
     expect(encounterOffered(fresh, "duomo_string")).toEqual({ available: false, reason: "この場所を訪れたあとに出会えます。" });
     expect(encounterOffered(afterDuomo, "duomo_string")).toEqual({ available: true, reason: "" });
-    for (const id of ["galleria_print", "galleria_ticket_press", "scala_mint"])
+    for (const id of ["milano_galleria_ticket_gift", "scala_mint"])
       expect(encounterOffered(afterDuomo, id), id).toEqual({ available: false, reason: "この場所を訪れたあとに出会えます。" });
-    // The fortune teller's quiz waits for the Galleria battle (quizAfterLandmarkBattle): her story is met in the first observation.
+    // The Galleria's wish is met in its first observation; its ticket talk after it.
     expect(encounterOffered(afterDuomo, "galleria_fortune")).toEqual({ available: true, reason: "" });
+    const afterWish = { ...afterDuomo, completedEncounterIds: ["galleria_fortune"], seenEncounterIds: ["galleria_fortune"] };
+    expect(encounterOffered(afterWish, "milano_galleria_ticket_gift")).toEqual({ available: true, reason: "" });
 
     const afterScala = { ...afterDuomo, battleRecords: [{ battleId: "milano_la_scala_b01", firstScore: 0, lastScore: 0, bestScore: 0, attempts: 1 }] };
     expect(encounterOffered(afterScala, "scala_mint")).toEqual({ available: true, reason: "" });
