@@ -100,8 +100,9 @@ function registerCity(cityId: string, travelData: unknown): void {
     throw new Error(`Invalid city travel registration: ${city.id}`);
   cityContents[city.id] = { city, travel, travelSettings };
 }
+/** The loaded cities in the order of their IDs (whichever journey's part came first). */
 export function getCities(): CityContent["city"][] {
-  return Object.values(cityContents).map((content) => content.city);
+  return Object.values(cityContents).map((content) => content.city).sort((left, right) => left.id < right.id ? -1 : left.id > right.id ? 1 : 0);
 }
 export function getCityContent(cityId: string): CityContent {
   const content = cityContents[cityId];
