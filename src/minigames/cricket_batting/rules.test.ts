@@ -25,6 +25,23 @@ describe("the cricket's timing", () => {
     expect(outcome(null)).toBe("no_swing");
   });
 
+  it("rates a swing for the result card in step with its outcome (a clean hit ★3, near ★2, a miss ★1, no swing none), saying how far off", () => {
+    const rate = (ms: number | null) => cricketRules.rate!(ms, {});
+    expect(rate(CRICKET_CONTACT_MS)).toEqual({ stars: 3, scoreJa: "ずれ 0.00秒" });
+    expect(rate(CRICKET_CONTACT_MS + 40)).toEqual({ stars: 3, scoreJa: "ずれ 0.04秒" });
+    expect(rate(CRICKET_CONTACT_MS - 120)).toEqual({ stars: 2, scoreJa: "0.12秒早い" });
+    expect(rate(CRICKET_CONTACT_MS + 150)).toEqual({ stars: 2, scoreJa: "0.15秒遅い" });
+    expect(rate(CRICKET_CONTACT_MS + nearLateMs + 50)?.stars).toBe(1);
+    expect(rate(null)).toBeNull();
+    // ★ never disagree with the story's outcome: each outcome's swings have one number of ★.
+    const stars = new Map<string, Set<number | null>>();
+    for (let ms = CRICKET_RELEASE_MS; ms <= CRICKET_END_MS + 50; ms += 5) {
+      const outcome = cricketRules.outcomeOf(ms, {});
+      stars.set(outcome, (stars.get(outcome) ?? new Set()).add(rate(ms)?.stars ?? null));
+    }
+    expect(Object.fromEntries([...stars].map(([outcome, set]) => [outcome, [...set]]))).toEqual({ six: [3], over_wall: [2], edge: [2], bowled: [1], no_swing: [null] });
+  });
+
   it("is fair on a phone, and the ball reaches the bricks after the near window, before the end", () => {
     expect(cueTapFairness(CRICKET_TUNING)).toEqual([]);
     expect(CRICKET_TUNING.leadMs).toBe(CRICKET_FIELD.settleMs + CRICKET_FIELD.runUpMs);

@@ -194,7 +194,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
             </LineStage>
             {view.choices.length ? (
               <ChoicePoint minigame={view.minigame} ready={ready} cast={{
-                heroine: <CharacterFigure characterId="heroine" emotion={view.stage.heroine.emotion} cityId={view.cityId} sceneId={view.sceneId} />,
+                heroine: { emotion: view.stage.heroine.emotion, cityId: view.cityId, sceneId: view.sceneId },
                 ...(stage.opposite ? { person: <CharacterFigure characterId={stage.opposite.figure} cityId={view.cityId} sceneId={view.sceneId} /> } : {}),
               }}>
                 <EncounterChoices formatMoney={(amount) => formatMoneyForCity(view.cityId, amount)} id={view.id} choices={view.choices} learning={learning} onChoose={(index) => select(index, onChoose)} disabled={!ready || !choiceReady} />

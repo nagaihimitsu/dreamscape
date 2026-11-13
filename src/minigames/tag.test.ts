@@ -99,6 +99,15 @@ describe("a line's # minigame:", () => {
     expect(isValidMiniGameTag({ ...tag, art: { sky: "pitch_x" } }, context)).toBe(false);
   });
 
+  it("reads the host's retry yes (the result card offers 「もう一回」), and nothing else for it", () => {
+    const tag = parseMiniGameTag("cricket_batting retry yes", context);
+    expect(tag).toEqual({ id: "cricket_batting", auto: "six", retry: true });
+    expect(miniGameTagText(tag)).toBe("cricket_batting auto six retry yes");
+    expect(isValidMiniGameTag(tag, context)).toBe(true);
+    expect(parseMiniGameTag("cricket_batting", context).retry).toBeUndefined();
+    expect(() => parseMiniGameTag("cricket_batting retry no", context)).toThrow("retry takes yes");
+  });
+
   it("takes the choice whose option ID is the outcome's, after the prefix when the tag has one", () => {
     const choices = [{ index: 0, optionId: "six" }, { index: 1, optionId: "again_six" }, { index: 2 }];
     expect(miniGameOptionId({}, "six")).toBe("six");

@@ -194,8 +194,8 @@ export function EpilogueScreen({
             />
           </LineStage>
           {frame.choices.length > 0 && onChoose && <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
-            heroine: <CharacterFigure characterId="heroine" emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame)}
-              sceneId={active.episodeId} cityId={episode?.cityId ?? game.currentCityId} />,
+            heroine: { emotion: reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame), sceneId: active.episodeId,
+              cityId: episode?.cityId ?? game.currentCityId },
             ...(opposite ? { person: <CharacterFigure characterId={opposite} /> } : {}),
           }}>
             <SceneChoices choices={choices} disabled={!ready} onChoose={onChoose} testId="epilogue-choice" />

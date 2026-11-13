@@ -56,6 +56,8 @@ export type MusicScreen = {
   roomTrack?: string;
   /** A mini-game whose definition says `quietScene` is played over the scene (docs/13 2.11). */
   miniGameQuiet?: boolean;
+  /** A mini-game's own track (definition `music`, registered in the build) from its スタート to its result card (docs/13 2.11). */
+  miniGameTrack?: string;
 };
 
 const DAY = 24 * 60;
@@ -128,6 +130,8 @@ export function sceneMusic(play: MusicPlay | null | undefined, screen: MusicScre
   if (screen.endRoll) return { track: play.endRoll, duck: "none" };
   if (screen.nightVisual) return { track: play.night, duck: "none" };
   if (screen.packing) return { track: undefined, duck: screen.riding ? "travel" : "none" };
+  // A mini-game's own track, at full level (its quietScene lowers the ambience only), crossfaded in and back out.
+  if (screen.miniGameTrack) return { track: screen.miniGameTrack, duck: "none" };
   return { track: screenTrack(play, screen, game), duck: musicDuck(screen, game) };
 }
 

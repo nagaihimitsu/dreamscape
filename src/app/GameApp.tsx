@@ -46,7 +46,7 @@ import { canVibrate, useVibrationSetting, vibrate } from "../audio/vibration";
 import { heldItemIds } from "../domain/item-changes";
 import { NotebookCueContext } from "../components/notebook-cue";
 import { addedIds, englishNoteKeys, markSeen, seenAll, unseenIds, type SeenMarks } from "./seen-marks";
-import { journeyMusicPlay, useBgmSettings, useSceneMusic } from "../audio/bgm";
+import { hasTrack, journeyMusicPlay, useBgmSettings, useSceneMusic } from "../audio/bgm";
 import { sceneMusic, type MusicScreen } from "../audio/scene-music";
 import { journeyAmbiencePlay, useAmbienceSettings, useSceneAmbience } from "../audio/ambience";
 import { sceneAmbience } from "../audio/scene-ambience";
@@ -553,6 +553,8 @@ export function GameApp({
   const frame = active?.frame;
   // A line's # minigame: in any story screen (docs/13 1.5): what every play gets, once; a quiet game lowers the music.
   const [miniGameQuiet, setMiniGameQuiet] = useState(false);
+  // A game's own music (docs/13 2.11): its track while it plays, only once the build has it (else the scene's goes on).
+  const [miniGameTrack, setMiniGameTrack] = useState<string | null>(null);
   const revision = game?.revision ?? 0;
   // The outcomes whose choices can be taken now (a payment the player cannot afford greys one; its fallback is taken).
   const miniGameAvailable = (game && miniGameAvailableOutcomes(game))?.join(" ");
@@ -568,6 +570,7 @@ export function GameApp({
     onOutcome: (outcome) => commit((state) => chooseMiniGameOutcome(state, outcome, revision, nextRomanceRoll)),
     backdrop: (backgroundId) => <CanalScene backgroundId={backgroundId} />,
     onQuiet: setMiniGameQuiet,
+    onMusic: (track) => setMiniGameTrack(track && hasTrack(track) ? track : null),
   }), [displaySettings.value.miniGameAuto, displaySettings.value.reduceMotion, debugOn, game?.playerName, game?.heroineName, revision, miniGameAvailable,
     commit, nextRomanceRoll]);
   // A new screen takes a lost focus on its visible heading (scene-focus.ts, UI redesign §3.7 E);
@@ -584,7 +587,7 @@ export function GameApp({
   const musicScreen: MusicScreen = {
     game, endRoll: moments.endRollShown, nightVisual, riding, packing: !!moments.packingScene,
     romanceEnding: showRomanceEnding, nightScreen: !!(nightScreen && dayEnd), opening: !!opening,
-    ...(musicRoom && roomTrack ? { roomTrack } : {}), miniGameQuiet,
+    ...(musicRoom && roomTrack ? { roomTrack } : {}), miniGameQuiet, ...(miniGameTrack ? { miniGameTrack } : {}),
   };
   useSceneMusic(sceneMusic(journeyMusicPlay(musicJourneyId), musicScreen));
   // The ambience under it (src/audio/scene-ambience.ts): the scene's # ambience:, else its place's own, in story scenes only.
