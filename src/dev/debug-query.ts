@@ -35,6 +35,12 @@ export type DebugSettings = {
    * them (a story that asks `cond("item <id> held")`; Debug's 「ミニゲームの見本」 links a use there).
    */
   without?: string[];
+  /**
+   * A date (scene=date): an episode of the city its story asks about (`cond("episode <id>")`), not yet done. The date
+   * opens from the city's start with the city's other episodes finished one by one until it can start (Lodhi Garden
+   * before Humayun's Tomb); `progress` is not read.
+   */
+  before?: string;
 };
 
 /** The value range the scene picker (場面の確認) offers (AP is also capped by the game's AP limit). */
@@ -58,6 +64,7 @@ export interface DebugQuery {
   prep?: string[];
   step?: string;
   without?: string[];
+  before?: string;
 }
 
 export type ParsedDebugQuery =
@@ -73,7 +80,7 @@ const choices = {
   roll: ["positive", "negative"],
 } as const;
 /** URL items in the order a copied URL lists them. */
-export const debugQueryKeys = ["data", "city", "scene", "target", "progress", "ap", "affection", "trust", "spark", "roll", "from", "prep", "step", "without"] as const;
+export const debugQueryKeys = ["data", "city", "scene", "target", "progress", "ap", "affection", "trust", "spark", "roll", "from", "prep", "step", "without", "before"] as const;
 type QueryKey = (typeof debugQueryKeys)[number];
 const idPattern = /^[a-z][a-z0-9_]*$/;
 
@@ -83,7 +90,7 @@ function parseValue(key: QueryKey, value: string): string | number {
     if (ids.some((id) => !idPattern.test(id))) throw new Error(`「${key}=${value}」はIDの形ではありません（${key === "prep" ? "場面" : "品物"}のIDを , で区切ります）。`);
     return value;
   }
-  if (key === "city" || key === "target" || key === "from" || key === "step") {
+  if (key === "city" || key === "target" || key === "from" || key === "step" || key === "before") {
     // A moment's target may say its kind (target=visit:<landmark>).
     if (key === "target" && value.startsWith("visit:")) value = value.slice("visit:".length);
     if (!idPattern.test(value)) throw new Error(`「${key}=${value}」はIDの形ではありません（小文字の英字で始まり、小文字の英数字と _ だけ）。`);
@@ -127,9 +134,10 @@ export function parseDebugQuery(search: string): ParsedDebugQuery {
     if (values.prep !== undefined) query.prep = (values.prep as string).split(",");
     if (values.step !== undefined) query.step = values.step as string;
     if (values.without !== undefined) query.without = (values.without as string).split(",");
+    if (values.before !== undefined) query.before = values.before as string;
     if ((query.from || query.prep) && query.scene !== "occasion") throw new Error("from と prep は scene=occasion（場面から始める）で使います。");
     if (query.step && query.scene !== "tour") throw new Error("step は scene=tour（ツアー）で使います。");
-    if (query.without && query.scene !== "date") throw new Error("without は scene=date（デート）で使います。");
+    if ((query.without || query.before) && query.scene !== "date") throw new Error("without と before は scene=date（デート）で使います。");
     return { kind: "launch", query };
   } catch (error) {
     return { kind: "error", message: error instanceof Error ? error.message : String(error) };
@@ -142,7 +150,7 @@ export function debugQueryString(query: DebugQuery): string {
     data: query.dataMode === "fixture" ? "fixture" : undefined, city: query.cityId, scene: query.scene,
     target: query.target, progress: query.progress, ap: query.ap, affection: query.affection,
     trust: query.trust, spark: query.spark, roll: query.roll, from: query.from, prep: query.prep?.join(","), step: query.step,
-    without: query.without?.join(","),
+    without: query.without?.join(","), before: query.before,
   };
   return ["?debug", ...debugQueryKeys.flatMap((key) =>
     values[key] === undefined ? [] : [`${key}=${encodeURIComponent(String(values[key]))}`])].join("&");
@@ -153,5 +161,5 @@ export function settingsQuery(dataMode: DebugDataMode, settings: DebugSettings):
   return { dataMode, cityId: settings.cityId, scene: settings.scene, target: settings.id || undefined, progress: settings.progress,
     ap: settings.ap, affection: settings.affection, trust: settings.trust, spark: settings.spark, roll: settings.roll,
     ...(settings.from ? { from: settings.from } : {}), ...(settings.prep?.length ? { prep: settings.prep } : {}), ...(settings.step ? { step: settings.step } : {}),
-    ...(settings.without?.length ? { without: settings.without } : {}) };
+    ...(settings.without?.length ? { without: settings.without } : {}), ...(settings.before ? { before: settings.before } : {}) };
 }

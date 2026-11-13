@@ -22,13 +22,14 @@ describe("Debug launch URLs", () => {
     expect(parseDebugQuery(debugQueryString(map))).toEqual({ kind: "launch", query: map });
   });
 
-  it("writes and reads a date's items left out (without), for a date only", () => {
-    const without = { ...settings, without: ["gt_delhi_rain_attar", "other_item"] };
+  it("writes and reads a date's items left out (without) and the episode it opens before (before), for a date only", () => {
+    const without = { ...settings, without: ["gt_delhi_rain_attar", "other_item"], before: "gt_delhi_main_humayun_tomb" };
     const url = debugQueryString(settingsQuery("real", without));
-    expect(url.endsWith("&roll=negative&without=gt_delhi_rain_attar%2Cother_item")).toBe(true);
+    expect(url.endsWith("&roll=negative&without=gt_delhi_rain_attar%2Cother_item&before=gt_delhi_main_humayun_tomb")).toBe(true);
     expect(parseDebugQuery(url)).toEqual({ kind: "launch", query: settingsQuery("real", without) });
-    expect(debugQueryString(settingsQuery("real", { ...settings, without: [] }))).not.toContain("without");
-    expect(parseDebugQuery("?debug&scene=battle&without=gt_delhi_rain_attar")).toEqual({ kind: "error", message: "without は scene=date（デート）で使います。" });
+    expect(debugQueryString(settingsQuery("real", { ...settings, without: [] }))).not.toMatch(/without|before/u);
+    expect(parseDebugQuery("?debug&scene=battle&without=gt_delhi_rain_attar")).toEqual({ kind: "error", message: "without と before は scene=date（デート）で使います。" });
+    expect(parseDebugQuery("?debug&scene=tourism&before=gt_delhi_main_humayun_tomb")).toEqual({ kind: "error", message: "without と before は scene=date（デート）で使います。" });
     expect(parseDebugQuery("?debug&scene=date&without=Rain")).toEqual({ kind: "error", message: "「without=Rain」はIDの形ではありません（品物のIDを , で区切ります）。" });
   });
 

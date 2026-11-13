@@ -107,6 +107,18 @@ describe("Debug launch URLs against the content", () => {
       .toThrow("without の「no_such_item」は、Debugのこの場面の状態で持っている品物ではありません。");
   });
 
+  it("starts a date before an episode its story asks about (before=), from the city's start", () => {
+    const lodhi = launch("?debug&city=delhi&scene=date&target=gt_delhi_date_lodhi_garden&before=gt_delhi_main_humayun_tomb");
+    if (lodhi.kind !== "scene") throw new Error("not a scene");
+    const state = createDebugState(lodhi.settings);
+    expect(state.activeDate?.dateId).toBe("gt_delhi_date_lodhi_garden");
+    expect(state.completedEpisodeIds).not.toContain("gt_delhi_main_humayun_tomb");
+    expect(state.completedEpisodeIds.length).toBeGreaterThan(0);
+    expect(validateGameState(state)).toBeTruthy();
+    expect(() => createDebugState({ ...lodhi.settings, before: "gt_agra_main_agra_fort" }))
+      .toThrow("before の「gt_agra_main_agra_fort」は、デリーのフィナーレでないエピソードではありません。");
+  });
+
   it.each([
     [{ dataMode: "real", cityId: "atlantis", scene: "battle" }, "都市「atlantis」は登録されていません。仮の場面の都市なら data=fixture を付けます。"],
     [{ dataMode: "real", cityId: "milano", scene: "battle", target: "gt_delhi_main_red_fort_battle" }, "「gt_delhi_main_red_fort_battle」はミラノの「バトル」にありません。"],

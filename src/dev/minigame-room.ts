@@ -5,7 +5,7 @@ import { openMiniGame } from "../domain/minigame";
 import { applyPlayerAction, listPlayerActions, playerActionChange } from "../domain/player-action";
 import { debugQueryString, settingsQuery } from "./debug-query";
 import { createDebugState, debugCityState, debugTargets, defaultDebugSettings, type DebugScene, type DebugSettings } from "./debug-state";
-import { cityStart, finishEpisode, isHotelInsert, rollTickets, startDateScene, startHotelInsertScene, withAp, withRelationship } from "./scenario-builders";
+import { isHotelInsert, rollTickets, startHotelInsertScene, withAp, withRelationship } from "./scenario-builders";
 import { miniGameTagText } from "../minigames/tag";
 import { miniGameUseKey, miniGameUseListSchema, miniGameUseTag, type MiniGameUse } from "../minigames/uses";
 
@@ -41,8 +41,9 @@ export function miniGameUseLaunch(use: MiniGameUse): DebugSettings | string {
 
 /**
  * The Debug launch URL (`?debug&…`) that opens a use's scene on the use's own branch, or why it cannot be opened: 場面の確認's
- * settings, or for a date whose story asks whether an item is held, the settings without it when only those reach the use
- * (Akbar's Tomb's sunglasses: dateWithoutHeldItems, which the content test walks too).
+ * settings, or for a date whose story asks whether an item is held or an episode is done, the settings without the item
+ * or before the episode when only those reach the use (Akbar's Tomb's sunglasses, Lodhi Garden's 「一緒に言おう」:
+ * dateBranches, which the content test walks too).
  */
 export function miniGameUseUrl(use: MiniGameUse): { url: string } | { reason: string } {
   const launch = miniGameUseLaunch(use);
@@ -51,13 +52,13 @@ export function miniGameUseUrl(use: MiniGameUse): { url: string } | { reason: st
 
 const branches = new Map<string, DebugSettings>();
 function useBranch(use: MiniGameUse, launch: DebugSettings): DebugSettings {
-  const variants = dateWithoutHeldItems(launch);
-  if (!variants.length) return launch;
   const key = miniGameUseKey(use);
   const known = branches.get(key);
   if (known) return known;
-  const options = [launch, ...variants];
-  const branch = options[firstReaching(options.map(createDebugState), miniGameTagText(miniGameUseTag(use)))] ?? launch;
+  const variants = dateBranches(launch);
+  const options = [{ settings: launch, state: variants.length ? createDebugState(launch) : null }, ...variants];
+  const index = variants.length ? firstReaching(options.map((option) => option.state!), miniGameTagText(miniGameUseTag(use))) : 0;
+  const branch = options[index]?.settings ?? launch;
   branches.set(key, branch);
   return branch;
 }
@@ -136,33 +137,24 @@ function dateWithoutHeldItems(settings: DebugSettings): DebugSettings[] {
 }
 
 /**
- * A date whose story reads whether an episode is done (`cond("episode <id>")`), opened again before it: Debug's cleared
- * city has done every episode (Lodhi Garden's branch for a player who has not seen Humayun's Tomb, with its 「一緒に言おう」,
- * would never be walked). From the city's start, the city's other episodes are finished one by one, in their order, until
- * the date can start (its own `when`); an episode that cannot be played that way is passed over.
+ * A date whose story reads whether an episode is done (`cond("episode <id>")`), opened again before it (the settings'
+ * `before`; createDebugState builds it from the city's start): Debug's cleared city has done every episode, so Lodhi
+ * Garden's branch for a player who has not seen Humayun's Tomb, with its 「一緒に言おう」, is walked and linked too.
  */
-function dateBeforeEpisodes(settings: DebugSettings): GameState[] {
+function dateBeforeEpisodes(settings: DebugSettings): DebugSettings[] {
   if (settings.scene !== "date") return [];
   const read = scenes.find((scene) => scene.main && "date" in scene.main && scene.main.date === settings.id)?.conds ?? [];
-  const skipped = read.map((text) => /^episode (\S+)$/u.exec(text)?.[1]).filter((id): id is string => !!id);
-  const cityId = settings.cityId ?? "";
-  const others = (skip: string) => episodes.filter((episode) => episode.cityId === cityId && episode.kind !== "city_finale" && episode.id !== skip);
-  return skipped.flatMap((skip) => {
-    let state = cityStart(cityId);
-    for (const next of [...others(skip), null]) {
-      try {
-        return [startDateScene(withRelationship(withAp(state, settings.ap), settings), settings.id, rollTickets[settings.roll])];
-      } catch {
-        // The date's `when` is not met yet: one more episode.
-      }
-      if (!next) return [];
-      try {
-        state = finishEpisode(state, next.id);
-      } catch {
-        // Not playable from here (a tour's stop, say): the next one.
-      }
+  return read.map((text) => /^episode (\S+)$/u.exec(text)?.[1]).filter((id): id is string => !!id).map((before) => ({ ...settings, before }));
+}
+
+/** The branches of a date Debug opens besides 場面の確認's: without a held item, before an episode; those it cannot start are left out. */
+function dateBranches(settings: DebugSettings): { settings: DebugSettings; state: GameState }[] {
+  return [...dateWithoutHeldItems(settings), ...dateBeforeEpisodes(settings)].flatMap((branch) => {
+    try {
+      return [{ settings: branch, state: createDebugState(branch) }];
+    } catch {
+      return [];
     }
-    return [];
   });
 }
 
@@ -174,7 +166,7 @@ function dateBeforeEpisodes(settings: DebugSettings): GameState[] {
  */
 export function miniGameUseStates(opening: MiniGameUseOpening, roll: DebugSettings["roll"]): GameState[] {
   const settings = { ...opening.settings, roll };
-  if (opening.kind === "debug") return [...[settings, ...dateWithoutHeldItems(settings)].map(createDebugState), ...dateBeforeEpisodes(settings)];
+  if (opening.kind === "debug") return [createDebugState(settings), ...dateBranches(settings).map((branch) => branch.state)];
   const base = withRelationship(withAp(debugCityState(settings.cityId ?? "", "completed"), settings.ap), settings);
   return hotelInsertBranches(opening.sceneId).flatMap((conds, index) => {
     try {
