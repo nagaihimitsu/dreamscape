@@ -263,6 +263,23 @@
   overflow-wrap: anywhere;
 }
 .today-headlines li + li { border-top: 1px solid var(--ds-gold-hairline); }
+/* 今日の一語 (TodayWordLine, 2026-11-13): a small plain line at the night screen's end, its label as the headlines' heading, the
+   English word in the night line's serif, its meaning beside it (--ds-on-slate about 16:1, the muted label about 13:1). */
+.today-word {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0 10px;
+  width: 100%;
+  margin: 18px 0 0;
+  color: var(--ds-on-slate);
+  line-height: 1.6;
+  text-align: center;
+}
+.today-word-label { flex-basis: 100%; color: var(--ds-on-slate-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; }
+.today-word-en { font-family: "Noto Serif JP", serif; font-size: 17px; letter-spacing: 0.02em; overflow-wrap: anywhere; }
+.today-word-meaning { font-size: 13px; overflow-wrap: anywhere; }
 /* A short landscape phone: the card (which cannot scroll) leaves its moon out to keep the route and line whole. */
 @media (max-height: 480px) {
   .night-rest.has-recap .night-rest-sky { display: none; }

@@ -1,0 +1,141 @@
+/* The header's feedback effects (2026-11-13 user decision; JourneyHud, HudFlight, ItemGainNotice): display only,
+   decorative or polite text, never pressed. Each has its reduced-motion form under both the system setting and
+   「演出を短縮する」 (.reduce-motion). */
+
+/* 「{品物名}を手に入れました」: a parchment pill hanging from the header's bottom edge (below Debug mode's strip when
+   it shows a change), over the screen; the region takes no presses and has no size of its own. */
+.item-gain-notice-region {
+  position: absolute;
+  top: calc(100% + 6px + var(--change-h, 0px));
+  left: 8px;
+  right: 8px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+.journey-hud .item-gain-notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: min(100%, 340px);
+  margin: 0;
+  padding: 5px 14px 5px 6px;
+  border-radius: 16px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  box-shadow: var(--ds-pill-shadow);
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  animation: item-gain-notice 2500ms var(--ease-out) both;
+}
+.item-gain-notice img {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  padding: 3px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--ds-parchment-line);
+}
+@keyframes item-gain-notice {
+  0% { opacity: 0; transform: translateY(-6px); }
+  7% { opacity: 1; transform: none; }
+  90% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateY(-4px); }
+}
+@keyframes item-gain-notice-fade {
+  0% { opacity: 0; }
+  7%, 90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.reduce-motion .journey-hud .item-gain-notice { animation-name: item-gain-notice-fade; }
+@media (prefers-reduced-motion: reduce) {
+  .journey-hud .item-gain-notice { animation-name: item-gain-notice-fade; }
+}
+
+/* Coins into the budget, stars into the AP as they rise in play (HudFlight): from around the screen's centre, one
+   after another (70 ms apart, 520 ms each: hud-cues.ts), speeding up into the value and fading on it; the value's pop
+   (journey-hud.css) waits for the first ones to arrive. None under reduced motion, where the pop is off too. */
+.hud-flight {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.hud-flight-token {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  opacity: 0;
+  animation: hud-flight 520ms cubic-bezier(0.5, 0, 0.75, 0.45) both;
+}
+.hud-flight-coin {
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff3c4 0 18%, var(--ds-marker-selected) 48%, #b8862f 100%);
+  box-shadow: inset 0 0 0 1.5px rgba(110, 74, 18, 0.55), 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.hud-flight-star {
+  background: radial-gradient(circle, #fffbea 0 25%, var(--ds-marker-selected) 70%);
+  clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+@keyframes hud-flight {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  15% { opacity: 1; transform: translate(calc(var(--dx) * 0.03), calc(var(--dy) * 0.03)) scale(1.1); }
+  82% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.55); }
+}
+.hud-wallet [data-cue="up"][data-fly] { animation-delay: 520ms; }
+.reduce-motion .hud-flight { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .hud-flight { display: none; }
+}
+
+/* ⚙設定's marks: the English note's dot (fx.css; on the panel's parchment the markers' rose, 5.9:1, at the item's end),
+   and a manual save's ribbon bookmark that drops onto the button's top right corner and fades (a brief highlight of
+   the button under reduced motion). */
+.hud-menu-panel .fx-dot {
+  position: static;
+  flex: none;
+  margin-left: auto;
+  background: var(--ds-marker);
+  box-shadow: 0 0 0 1.5px var(--ds-parchment);
+}
+.hud-save-mark {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.hud-save-ribbon {
+  position: absolute;
+  top: -1px;
+  right: 6px;
+  width: 10px;
+  height: 14px;
+  background: linear-gradient(var(--ds-marker-selected), var(--ds-gold));
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 72%, 0 100%);
+  animation: hud-save-ribbon 800ms var(--ease-out) both;
+}
+@keyframes hud-save-ribbon {
+  0% { opacity: 0; transform: translateY(-14px); }
+  30% { opacity: 1; transform: none; }
+  40% { transform: translateY(-2px); }
+  52% { transform: none; }
+  78% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes hud-save-highlight {
+  0%, 100% { background: rgba(246, 196, 69, 0); box-shadow: inset 0 0 0 0 rgba(246, 196, 69, 0); }
+  30% { background: rgba(246, 196, 69, 0.18); box-shadow: inset 0 0 0 2px rgba(246, 196, 69, 0.9); }
+}
+.reduce-motion .hud-save-ribbon { display: none; }
+.reduce-motion .hud-save-mark { animation: hud-save-highlight 700ms ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  .hud-save-ribbon { display: none; }
+  .hud-save-mark { animation: hud-save-highlight 700ms ease-out both; }
+}

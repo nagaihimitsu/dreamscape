@@ -248,10 +248,11 @@ export const ops = {
   },
   /**
    * The header's ⚙設定: a button whose small panel holds セーブ, ロード, 旅の記録, アルバム, 英語ノート, 写真の出典 (free time)
-   * or 画像の出典 (a story scene's photo) and ゲームの設定 (openMenu).
+   * or 画像の出典 (a story scene's photo) and ゲームの設定 (openMenu). While 英語ノート has a new entry, its name and
+   * 「英語ノート」's go on with 「、…新しい項目あり」 (its dot).
    */
   settingsButton(page: Page): Locator {
-    return page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "設定", exact: true });
+    return page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: /^設定(?:、|$)/u });
   },
   /** Opens ⚙設定's panel (if it is not open yet) and returns it. */
   async openMenu(page: Page): Promise<Locator> {
@@ -264,7 +265,7 @@ export const ops = {
   /** One of ⚙設定's items, pressed from its panel (inside the header's 「旅の操作」). */
   async menuItem(page: Page, name: "セーブ" | "ロード" | "旅の記録" | "アルバム" | "英語ノート" | "写真の出典" | "画像の出典" | "ゲームの設定") {
     await ops.openMenu(page);
-    await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name, exact: true }).click();
+    await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: new RegExp(`^${name}(?:、|$)`, "u") }).click();
   },
   /**
    * ⚙設定 → 「ゲームの設定」: returns the settings dialog (文字送り, 自動保存, names, the saved data)
@@ -394,9 +395,12 @@ export const ops = {
     await ops.closeDialog(records);
     return travelers;
   },
-  /** The header's held items: one item's own button (「{item}の詳細」), or 「所持品」 (「所持品（{n}個）」) for two or more. */
+  /**
+   * The header's held items: one item's own button (「{item}の詳細」), or 「所持品」 (「所持品（{n}個）」) for two or more;
+   * 「、新しい品物あり」 follows while one has not been looked at (its dot).
+   */
   heldItemsButton(page: Page): Locator {
-    return page.getByRole("group", { name: "所持アイテム" }).getByRole("button", { name: /の詳細$|^所持品（\d+個）$/u });
+    return page.getByRole("group", { name: "所持アイテム" }).getByRole("button", { name: /(?:の詳細|^所持品（\d+個）)(?:、新しい品物あり)?$/u });
   },
   /** Opens the held items' detail (the item, or every held item) under the header and returns it. */
   async openHeldItems(page: Page): Promise<Locator> {

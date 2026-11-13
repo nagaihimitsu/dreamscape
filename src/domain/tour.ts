@@ -40,6 +40,14 @@ export function tourSchedule(tour: Tour): TourScheduleStep[] {
   });
 }
 
+/** Where a leg of the tour starts: the place the step before it left the party at (the hotel for the first step); undefined for another step. */
+export function tourLegStart(tour: Tour, legId: string): string | undefined {
+  const schedule = tourSchedule(tour);
+  const index = schedule.findIndex((item) => item.step.kind === "leg" && item.step.id === legId);
+  if (index < 0) return undefined;
+  return index === 0 ? getCityContent(tour.cityId).travelSettings.hotelPlaceId : schedule[index - 1].placeId;
+}
+
 /**
  * The saved fingerprint of a running tour: its steps' structure and each event's place and time. Labels, sources, offers and
  * prices are left out (changing them keeps a running tour); a changed step refuses the save (「ツアーの内容が更新されています。」).

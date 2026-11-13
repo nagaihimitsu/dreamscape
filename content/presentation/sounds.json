@@ -352,6 +352,48 @@
       "fromJa": "card-slide-1 に glass_005 を重ねた"
     },
     {
+      "id": "item_pouch",
+      "useJa": "品物を手に入れて袋に入れたとき",
+      "sources": [
+        "kenney_rpg",
+        "kenney_interface"
+      ],
+      "fromJa": "handleSmallLeather に glass_006 を重ねた"
+    },
+    {
+      "id": "item_give",
+      "useJa": "品物を渡した・使ったとき",
+      "sources": [
+        "kenney_rpg",
+        "kenney_interface"
+      ],
+      "fromJa": "handleSmallLeather2 に minimize_003 を小さく重ねた"
+    },
+    {
+      "id": "ap_gain",
+      "useJa": "APが増えたとき",
+      "sources": [
+        "kenney_interface"
+      ],
+      "fromJa": "glass_003"
+    },
+    {
+      "id": "clue_new",
+      "useJa": "手がかり帳に手がかりが増えたとき",
+      "sources": [
+        "kenney_interface"
+      ],
+      "fromJa": "drop_002 に glass_005 を小さく重ねた"
+    },
+    {
+      "id": "stamp",
+      "useJa": "章を終えて判子を押すとき",
+      "sources": [
+        "kenney_rpg"
+      ],
+      "fromJa": "bookPlace2"
+    },
+    {
       "id": "money",
       "useJa": "お金を払った・受け取ったとき",
       "sources": [

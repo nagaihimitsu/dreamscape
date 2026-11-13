@@ -8,6 +8,7 @@ export function CanalScene({
   backgroundId = DEFAULT_BACKGROUND_ID,
   imageAssetId,
   artwork,
+  tint,
 }: {
   compact?: boolean;
   backgroundId?: string;
@@ -15,6 +16,8 @@ export function CanalScene({
   imageAssetId?: string;
   /** A journey's title art: its own image and caption over this scene, which stays as the fallback. */
   artwork?: TitleArt;
+  /** A colour laid over the picture, under its caption (the title's time of day: time-of-day.ts titleArtTint). */
+  tint?: string;
 }) {
   const backdrop = presentation.backgrounds[backgroundId];
   const landmarkImage = imageAssetId
@@ -112,6 +115,7 @@ export function CanalScene({
       </svg>
       )}
       {image && <SceneArtwork path={image} position={artwork ? artwork.imagePosition : backdrop?.imagePosition} />}
+      {tint && <span className="canal-scene-tint" style={{ backgroundColor: tint }} />}
       <span className="scene-stamp" data-testid="scene-stamp">
         {artwork?.captionJa ?? backdrop?.captionJa}
       </span>

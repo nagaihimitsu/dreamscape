@@ -151,7 +151,11 @@ export function CityRecords({ game }: { game: GameState }) {
                         ? "訪問できる"
                         : "この先"}
                 </p>
-                <h3>{landmark?.nameJa ?? "都市フィナーレ"}</h3>
+                {/* A completed stop's small seal of 「完」 (2026-11-13), as stamped when it ended; 「クリア」 above says it in words. */}
+                <div className="stop-title">
+                  <h3>{landmark?.nameJa ?? "都市フィナーレ"}</h3>
+                  {cleared && <span className="stop-seal" aria-hidden="true">完</span>}
+                </div>
                 {landmark && (
                   <p>
                     手がかり{" "}

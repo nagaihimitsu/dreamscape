@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import { HeroineNote } from "../battle/HeroineNote";
 import { escapeHtml, OSM_TILES } from "./PlaceMap";
 import { whenLaidOut } from "./when-laid-out";
-import { routeMarks, type NightRecap, type RouteStop } from "./night-recap";
+import { routeMarks, type NightRecap, type RouteStop, type TodayWord } from "./night-recap";
 import "../battle/battle.css";
 import "./night-rest.css";
 
@@ -83,6 +83,18 @@ export function TodayHeadlines({ headlines }: { headlines: readonly string[] }) 
     <h2 id={titleId} className="today-headlines-title">今日の見出し</h2>
     <ol>{headlines.map((headline, index) => <li key={index}>{headline}</li>)}</ol>
   </section>;
+}
+
+/**
+ * 今日の一語 (2026-11-13 user decision): one English word or phrase met today and its meaning there (todayWord), a small plain
+ * line at the end of the night screen. Display only, read in the screen's order (no live region).
+ */
+export function TodayWordLine({ word }: { word: TodayWord }) {
+  return <p className="today-word" data-testid="today-word">
+    <span className="today-word-label">今日の一語<span className="sr-only">：</span></span>
+    <span className="today-word-en" lang="en">{word.word}</span>
+    <span className="today-word-meaning">{word.meaningJa}</span>
+  </p>;
 }
 
 /** Under the night's line: today's headlines (episodes completed today), today's route (when the party went out) and the heroine's line of the night (when written). */

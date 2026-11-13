@@ -2,7 +2,7 @@
 // resumed game, the packing of a departure and the credit roll at the end of a journey, as pure rules over the game.
 import { describe, expect, it } from "vitest";
 import { episodes, landmarks, scenes, storyState, tourismAssets } from "../../content";
-import { cityStart, completedCity, finishEpisode, openEpilogueScene, readEpilogue } from "../../dev/scenario-builders";
+import { cityStart, completedCity, finishEpisode, openEpilogueScene, playEpisodeToResult, readEpilogue } from "../../dev/scenario-builders";
 import type { AlbumPhoto } from "../../domain/album-state";
 import { leaveForNextCity } from "../../domain/city-travel";
 import { startEpisode } from "../../domain/chapter";
@@ -11,7 +11,7 @@ import { applyPlayerAction, listPlayerActions, playerActionChange } from "../../
 import { advanceTourismGuide } from "../../domain/tourism";
 import { beginTravelEvent } from "../../domain/travel-game";
 import {
-  endRollOf, episodeTitleCard, journeyEnded, openingEpisodeId, packingOf, resumeRecap,
+  chapterStampOf, completedEpisodeId, departureLuggage, endRollOf, episodeTitleCard, journeyEnded, openingEpisodeId, packingOf, resumeRecap,
 } from "./journey-moments";
 import { formatTravelTime } from "./travel-time";
 
@@ -144,6 +144,64 @@ describe("the packing of a departure", () => {
     const empty: GameState = { ...cleared, inventory: {} };
     expect(packingOf(empty, leaveForNextCity(empty))).toBeNull();
     expect(packingOf(cleared, cleared)).toBeNull();
+  });
+});
+
+describe("the departure dialog's items (「{都市}へ出発」)", () => {
+  it("lists before leaving what the packing will carry on and what it will leave in the city", () => {
+    const cleared = completedCity("agra");
+    const leaving: GameState = { ...cleared, inventory: {
+      gt_delhi_kamla_memo: "held", gt_agra_anwar_petha: "held", gt_delhi_family_photo: "left_behind", gt_delhi_rain_attar: "gifted",
+    } };
+    const luggage = departureLuggage(leaving);
+    expect(luggage).toEqual({
+      carried: [{ id: "gt_delhi_kamla_memo", nameJa: "カムラの段ボールのメモ" }],
+      left: [{ id: "gt_agra_anwar_petha", nameJa: "ペーター" }],
+    });
+    // The same split the departure makes (leaveForNextCity, then the packing).
+    const packed = packingOf(leaving, leaveForNextCity(leaving))!;
+    expect(luggage).toEqual({ carried: packed.carried, left: packed.left });
+  });
+
+  it("is empty when nothing is held, and keeps only the part that has an item", () => {
+    const cleared = completedCity("agra");
+    expect(departureLuggage({ ...cleared, inventory: {} })).toEqual({ carried: [], left: [] });
+    expect(departureLuggage({ ...cleared, inventory: { gt_delhi_rain_attar: "gifted", gt_agra_anwar_petha: "held" } }))
+      .toEqual({ carried: [], left: [{ id: "gt_agra_anwar_petha", nameJa: "ペーター" }] });
+  });
+});
+
+describe("the stamp 「完」 as an episode ends", () => {
+  it("names the episode the change completed, once; a change that completes nothing names none", () => {
+    const start = cityStart("mihon", ["航", "澪"]);
+    const result = playEpisodeToResult(start, CLOCK_TOWER);
+    // Completed at the battle's result (the stamp waits for the next screen: useJourneyMoments).
+    expect(result.completedEpisodeIds).toContain(CLOCK_TOWER);
+    expect(completedEpisodeId(start, result)).toBe(CLOCK_TOWER);
+    expect(completedEpisodeId(result, result)).toBeNull();
+    // Leaving the result completes nothing more.
+    const done = finishEpisode(start, CLOCK_TOWER);
+    expect(completedEpisodeId(result, done)).toBeNull();
+  });
+
+  it("takes the last of several completed at once, and leaves out an ID that is no episode", () => {
+    const before = { completedEpisodeIds: [] };
+    expect(completedEpisodeId(before, { completedEpisodeIds: [CLOCK_TOWER, "smp_mihon_finale"] })).toBe("smp_mihon_finale");
+    expect(completedEpisodeId(before, { completedEpisodeIds: [CLOCK_TOWER, "not_an_episode"] })).toBe(CLOCK_TOWER);
+  });
+
+  it("stamps the episode's title with the names filled in", () => {
+    const game = cityStart("mihon", ["航", "澪"]);
+    const tower = episode(CLOCK_TOWER);
+    expect(chapterStampOf(game, CLOCK_TOWER)).toEqual({ episodeId: CLOCK_TOWER, titleJa: tower.titleJa });
+    expect(chapterStampOf(game, "not_an_episode")).toBeNull();
+    const written = tower.titleJa;
+    tower.titleJa = "{heroine_name}と三時の塔";
+    try {
+      expect(chapterStampOf(game, CLOCK_TOWER)?.titleJa).toBe("澪と三時の塔");
+    } finally {
+      tower.titleJa = written;
+    }
   });
 });
 

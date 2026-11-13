@@ -11,15 +11,26 @@ import { HeldItems } from "../components/HeldItems";
 import { HUD_SCREEN_TOOL_ID } from "../components/HudScreenTool";
 import { Icon } from "../components/icons";
 import { holdTaps } from "../components/tap-hold";
+import { NewDot, useCuePlaying } from "../components/fx";
 import { playSe } from "../audio/sound-effects";
+import { vibrate } from "../audio/vibration";
 import type { GameState } from "../domain/game";
+import { itemDefinition } from "../domain/item-cities";
+import { spentItemIds } from "../domain/item-changes";
 import { getGameWeekday, getTimePeriod } from "../domain/travel";
 import { placeDisplayName } from "../features/journey/travel-labels";
 import { formatTravelTime } from "../features/journey/travel-time";
 import { moneyLength, weekdayLabel } from "./journey-hud-text";
 import type { HudView } from "./hud-view";
+import { flightTokens, itemsChange, numberChange, type Direction } from "./hud-cues";
+import { FLIGHT_TOTAL_MS, HudFlight } from "./HudFlight";
+import { ItemGainNotice } from "./ItemGainNotice";
 import { useMeasuredHeight } from "../components/useMeasuredHeight";
 import "./journey-hud.css";
+import "./hud-effects.css";
+
+/** How long a save's ribbon plays on ⚙設定 (milliseconds; hud-effects.css). */
+const SAVE_MARK_MS = 900;
 
 /**
  * The header's popovers open one at a time, all hanging from its bottom edge:
@@ -37,7 +48,8 @@ function closeWaitMenu() {
  * story scene shows a registered photo (its credits: the scene shows no 出典 of its own).
  */
 type MenuActions = {
-  onSave: () => void;
+  /** セーブ: whether the scene was saved (a ribbon then drops onto ⚙設定). */
+  onSave: () => boolean;
   onLoad: () => void;
   onRecords: () => void;
   /** 「アルバム」: the photos the journey's lines took (AlbumDialog). */
@@ -61,11 +73,22 @@ type MenuActions = {
  * that waits for no choice (`view` "talk", hud-view.ts) the budget and AP, the held
  * items and the screen's tool keep their room but are not shown (journey-hud.css).
  * Its height is measured as `--hud-h` for the reserves of the scenes it lies over.
+ * Its feedback (2026-11-13 user decision; display only, for changes in play): the held items' キラリ, their
+ * 「NEW」 and their float as one is given away, 「…を手に入れました」 under it (ItemGainNotice), coins and
+ * stars flying into a rising budget and AP (HudFlight), the English note's dot and a save's ribbon on ⚙設定.
  */
-export function JourneyHud({ game, place, view, replaced = 0, ...actions }: {
+export function JourneyHud({ game, place, view, replaced = 0, seenItemIds, onItemsSeen, englishNew = false, holdNotices = false, ...actions }: {
   game: GameState; place: TravelPlace | undefined; view: HudView;
-  /** Counts the times a load (or Debug's return) put another game in place (GameApp): what it brings makes no sound. */
+  /** Counts the times a load (or Debug's return) put another game in place (GameApp): what it brings has no cue. */
   replaced?: number;
+  /** The held items the player has looked at in the open detail during this play (GameApp's memory, seen-marks.ts). */
+  seenItemIds?: ReadonlySet<string>;
+  /** The detail opened on these held items: they are seen. */
+  onItemsSeen?: (ids: readonly string[]) => void;
+  /** 英語ノート has an entry the player has not opened it on: a dot on ⚙設定 and on its 「英語ノート」. */
+  englishNew?: boolean;
+  /** Holds 「…を手に入れました」 while something else shows under the header (ItemGainNotice's `hold`). */
+  holdNotices?: boolean;
 } & MenuActions) {
   const measured = useMeasuredHeight("--hud-h");
   const weekday = getGameWeekday(game.travel.calendar);
@@ -82,23 +105,34 @@ export function JourneyHud({ game, place, view, replaced = 0, ...actions }: {
     if (view === "quiet" && focused instanceof HTMLElement && focused.closest(".journey-hud"))
       document.querySelector<HTMLElement>(`[${DIALOGUE_LINE_ATTRIBUTE}]`)?.focus({ preventScroll: true });
   }, [view]);
-  const budgetCue = useSeenChange(game.travelBudget, shown, numberChange);
-  const apCue = useSeenChange(game.ap, shown, numberChange);
+  const budgetCue = useSeenChange(game.travelBudget, shown, valueChange, replaced);
+  const apCue = useSeenChange(game.ap, shown, valueChange, replaced);
   const itemKey = items.map((item) => item.id).join("\n");
-  const itemsCue = useSeenChange(itemKey, shown, itemsChange);
-  // item_get as a new item's picture pops (as itemsCue counts it), not for the items a load brings.
-  const itemSound = useSeenChange(itemKey, shown, itemsChange, replaced);
+  const itemsCue = useSeenChange(itemKey, shown, itemsChange, replaced);
+  const spentCue = useSeenChange(game.inventory, shown, spentChange, replaced);
+  // item_pouch (and a short vibration) as a new item's picture pops and キラリ crosses the bag, not for the items a load
+  // brings; item_give as one given away or used leaves it.
   useEffect(() => {
-    if (itemSound) playSe("item_get");
-  }, [itemSound]);
-  // money as the budget changes in play (a payment or a receipt; the moment it changes, also while the header hides it),
-  // not on the first showing nor for a load.
-  const seenBudget = useRef({ budget: game.travelBudget, replaced });
+    if (!itemsCue) return;
+    playSe("item_pouch");
+    vibrate("item");
+  }, [itemsCue]);
   useEffect(() => {
-    const before = seenBudget.current;
-    seenBudget.current = { budget: game.travelBudget, replaced };
-    if (before.replaced === replaced && before.budget !== game.travelBudget) playSe("money");
-  }, [game.travelBudget, replaced]);
+    if (spentCue) playSe("item_give");
+  }, [spentCue]);
+  // money as the budget changes in play (a payment or a receipt) and ap_gain as the AP rises (a reward, a scene's AP):
+  // the moment it changes, also while the header hides it; not on the first showing nor for a load.
+  usePlayChange(game.travelBudget, replaced, playMoney);
+  usePlayChange(game.ap, replaced, playApGain);
+  // Coins into the budget and stars into the AP as they rise (HudFlight), then the value's pop.
+  const budgetRef = useRef<HTMLSpanElement>(null);
+  const apRef = useRef<HTMLSpanElement>(null);
+  const coins = budgetCue?.change.direction === "up" ? flightTokens("coin", budgetCue.change.from, budgetCue.change.to) : 0;
+  const stars = apCue?.change.direction === "up" ? flightTokens("star", apCue.change.from, apCue.change.to) : 0;
+  const coinsFlying = useCuePlaying(coins ? budgetCue?.count : undefined, FLIGHT_TOTAL_MS);
+  const starsFlying = useCuePlaying(stars ? apCue?.count : undefined, FLIGHT_TOTAL_MS);
+  const spentIcon = spentCue ? itemDefinition(spentCue.change[0])?.iconPath : undefined;
+  const newItemIds = items.filter((item) => seenItemIds && !seenItemIds.has(item.id)).map((item) => item.id);
   return (
     <div className="journey-hud" data-testid="journey-bar" data-view={view} ref={measured} onMouseDown={keepFocusOffControls}>
       <div className="hud-status">
@@ -111,23 +145,29 @@ export function JourneyHud({ game, place, view, replaced = 0, ...actions }: {
         </p>
         <p className="hud-wallet">
           {/* A new key per change the player sees plays its cue once (journey-hud.css). */}
-          <span key={`budget-${budgetCue?.count ?? 0}`} className="travel-budget" data-cue={budgetCue?.direction} data-length={moneyLength(money)} aria-label={`旅の予算 ${game.travelBudget}${currencyForCity(game.currentCityId).unitJa}`}><Icon name="coin" />{money}</span>
-          <span key={`ap-${apCue?.count ?? 0}`} className="ap" data-cue={apCue?.direction} aria-label={`残り${game.ap}AP`}><Icon name="star" />{game.ap}<small> AP</small></span>
+          <span key={`budget-${budgetCue?.count ?? 0}`} ref={budgetRef} className="travel-budget" data-cue={budgetCue?.change.direction} data-fly={coins ? "" : undefined}
+            data-length={moneyLength(money)} aria-label={`旅の予算 ${game.travelBudget}${currencyForCity(game.currentCityId).unitJa}`}><Icon name="coin" />{money}</span>
+          <span key={`ap-${apCue?.count ?? 0}`} ref={apRef} className="ap" data-cue={apCue?.change.direction} data-fly={stars ? "" : undefined}
+            aria-label={`残り${game.ap}AP`}><Icon name="star" />{game.ap}<small> AP</small></span>
         </p>
       </div>
       <div className="hud-actions">
-        <HeldItems items={items} gained={itemsCue?.count} onOpen={closeWaitMenu} />
+        <HeldItems items={items} gained={itemsCue?.count} onOpen={closeWaitMenu}
+          spent={spentCue ? { count: spentCue.count, iconPath: spentIcon } : undefined}
+          newIds={newItemIds} onSeen={() => onItemsSeen?.(items.map((item) => item.id))} />
         <nav className="hud-tools" aria-label="旅の操作">
           <span id={HUD_SCREEN_TOOL_ID} className="hud-screen-tool" />
-          <HudMenu {...actions} />
+          <HudMenu {...actions} englishNew={englishNew} />
         </nav>
       </div>
+      <ItemGainNotice inventory={game.inventory} replaced={replaced} hold={holdNotices || view === "quiet"} />
+      {coinsFlying && <HudFlight key={`coins-${budgetCue?.count}`} kind="coin" count={coins} to={budgetRef} />}
+      {starsFlying && <HudFlight key={`stars-${apCue?.count}`} kind="star" count={stars} to={apRef} />}
     </div>
   );
 }
 
-type Direction = "up" | "down";
-type Cue = { direction: Direction; count: number };
+type Cue<C> = { change: C; count: number };
 
 /**
  * The changes of one of the header's values that the player has seen, for its cue (display only;
@@ -137,26 +177,44 @@ type Cue = { direction: Direction; count: number };
  * free time shows it. Null until the first change; nothing on the first showing. `replaced`
  * (JourneyHud's): when it changes, the value then is taken as seen, with no cue.
  */
-function useSeenChange<T>(value: T, shown: boolean, change: (seen: T, now: T) => Direction | null, replaced = 0): Cue | null {
+function useSeenChange<T, C>(value: T, shown: boolean, change: (seen: T, now: T) => C | null, replaced: number): Cue<C> | null {
   const seen = useRef({ value, replaced });
-  const [cue, setCue] = useState<Cue | null>(null);
+  const [cue, setCue] = useState<Cue<C> | null>(null);
   useEffect(() => {
     if (seen.current.replaced !== replaced) {
       seen.current = { value, replaced };
       return;
     }
     if (!shown) return;
-    const direction = change(seen.current.value, value);
+    const found = change(seen.current.value, value);
     seen.current = { value, replaced };
-    if (direction) setCue((last) => ({ direction, count: (last?.count ?? 0) + 1 }));
+    if (found !== null) setCue((last) => ({ change: found, count: (last?.count ?? 0) + 1 }));
   }, [value, shown, change, replaced]);
   return cue;
 }
-const numberChange = (seen: number, now: number): Direction | null => now > seen ? "up" : now < seen ? "down" : null;
-/** An item the header has not shown before (one used or given away only leaves the row). */
-const itemsChange = (seen: string, now: string): Direction | null => {
-  const before = seen.split("\n");
-  return now.split("\n").some((id) => id !== "" && !before.includes(id)) ? "up" : null;
+/** A budget or AP that rose or fell, from what to what. */
+const valueChange = (seen: number, now: number): { direction: Direction; from: number; to: number } | null => {
+  const direction = numberChange(seen, now);
+  return direction && { direction, from: seen, to: now };
+};
+/** The held items given away or used (not those a departure left behind). */
+const spentChange = (seen: GameState["inventory"], now: GameState["inventory"]): string[] | null => {
+  const spent = spentItemIds(seen, now);
+  return spent.length ? spent : null;
+};
+
+/** Calls `onChange` as `value` changes in play: not on the first showing nor for a load (`replaced`, JourneyHud's). */
+function usePlayChange(value: number, replaced: number, onChange: (before: number, now: number) => void) {
+  const seen = useRef({ value, replaced });
+  useEffect(() => {
+    const before = seen.current;
+    seen.current = { value, replaced };
+    if (before.replaced === replaced && before.value !== value) onChange(before.value, value);
+  }, [value, replaced, onChange]);
+}
+const playMoney = () => playSe("money");
+const playApGain = (before: number, now: number) => {
+  if (now > before) playSe("ap_gain");
 };
 
 /**
@@ -185,9 +243,15 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
  * picture, where a tap reads on). 旅の記録, 英語ノート and the credits open their
  * dialogs at once, as their own buttons did (the second tap lands inside the dialog);
  * アルバム's dialog takes no press for that moment, as its photos open larger on a tap.
+ * Its marks (2026-11-13 user decision): while 英語ノート has an entry the player has not
+ * opened it on (`englishNew`), a dot on ⚙設定 and on 「英語ノート」, said in their names;
+ * a manual save that succeeded drops a small ribbon onto ⚙設定, which fades.
  */
-function HudMenu({ onSave, onLoad, onRecords, onAlbum, onEnglish, onPhotoCredits, onSceneCredits, onSettings, onReturnToFreeTime }: MenuActions) {
+function HudMenu({ onSave, onLoad, onRecords, onAlbum, onEnglish, onPhotoCredits, onSceneCredits, onSettings, onReturnToFreeTime, englishNew }: MenuActions & { englishNew: boolean }) {
   const [open, setOpen] = useState(false);
+  // Counts the manual saves that succeeded: each new count drops the ribbon once.
+  const [saved, setSaved] = useState(0);
+  const savePlaying = useCuePlaying(saved, SAVE_MARK_MS);
   const group = useRef<HTMLDivElement>(null);
   const gear = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
@@ -251,7 +315,7 @@ function HudMenu({ onSave, onLoad, onRecords, onAlbum, onEnglish, onPhotoCredits
       <button
         ref={gear}
         type="button"
-        className="hud-tool"
+        className="hud-tool fx-host"
         data-testid="hud-menu"
         aria-expanded={open}
         aria-controls="hud-menu-panel"
@@ -262,13 +326,17 @@ function HudMenu({ onSave, onLoad, onRecords, onAlbum, onEnglish, onPhotoCredits
         }}
       >
         <Icon name="gear" /><span className="hud-tool-word">設定</span>
+        {englishNew && <NewDot label="英語ノートに新しい項目あり" />}
+        {savePlaying && <span key={saved} className="hud-save-mark" aria-hidden="true"><span className="hud-save-ribbon" /></span>}
       </button>
       <div id="hud-menu-panel" className="hud-menu-panel" data-testid="hud-menu-panel" ref={panel} hidden={!open} onKeyDown={moveWithArrows}>
-        <button type="button" onClick={choose(onSave, true)}><Icon name="save" />セーブ</button>
+        <button type="button" onClick={choose(() => {
+          if (onSave()) setSaved((count) => count + 1);
+        }, true)}><Icon name="save" />セーブ</button>
         <button type="button" onClick={choose(onLoad)}><Icon name="load" />ロード</button>
         <button type="button" onClick={choose(onRecords)}><Icon name="stamp" />旅の記録</button>
         <button type="button" onClick={choose(onAlbum)}><Icon name="camera" />アルバム</button>
-        <button type="button" onClick={choose(onEnglish)}><Icon name="book" />英語ノート</button>
+        <button type="button" onClick={choose(onEnglish)}><Icon name="book" />英語ノート{englishNew && <NewDot label="新しい項目あり" />}</button>
         {onPhotoCredits && <button type="button" onClick={choose(onPhotoCredits)}><Icon name="credit" />写真の出典</button>}
         {onSceneCredits && <button type="button" onClick={choose(onSceneCredits)}><Icon name="credit" />画像の出典</button>}
         <button type="button" onClick={choose(onSettings)}><Icon name="sliders" />ゲームの設定</button>
