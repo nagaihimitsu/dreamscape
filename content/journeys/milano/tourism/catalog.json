@@ -533,7 +533,9 @@
       "titleJa": "資料：雄牛の出身地",
       "descriptionJa": "床の雄牛はトリノの紋章。この写真では雄牛の細部は確認できないため、資料カードで紹介する。雄牛の上で回ると幸運が来るという言い伝えもあるが、その効き目が確認された史実ではない。",
       "factId": "fact_galleria_turin_bull",
-      "relatedQuestionIds": [],
+      "relatedQuestionIds": [
+        "milano_galleria_bull_city"
+      ],
       "region": null,
       "sources": [
         {

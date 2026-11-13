@@ -75,18 +75,28 @@ INCLUDE modules.ink
 # speaker: heroine
 持ちません。今撮ってるぶんを見せてください
 # speaker: narrator
-香水瓶で隠した画面の端に、鞄の女が手を差し入れた。
+サンドロは画面を胸に伏せ、床のモザイクへ顎をしゃくった。雄牛の上で、また誰かがかかとで回っている。
+# speaker: enemy
+次はあれだ。「ミラノの幸運の香り」。回る人と、この街の牛。説明いらずだろ
 # speaker: milano_galleria_bag_woman
-私にも
+その牛、ほんとにミラノの牛？
 -> quiz(3) ->
 # background: milano_galleria
 { quiz_correct:
 # speaker: heroine
-劇が終わってからも、人の夜は続いたんですね
+ミラノの真ん中で、みんなトリノの牛の上を回ってたんだ
+# speaker: heroine
+よその街の印に、ここの人が願掛けしてる。わたし、そういうの好きです
 - else:
 # speaker: heroine
-幕が下りたら今度は夕飯。散歩まで含めて一晩のお出かけだったんですね
+ミラノの床でも、雄牛はトリノの印。「この街の牛」じゃなかったんですね
 }
+# speaker: enemy
+……コピーは書き直しだ。「よその街の幸運」じゃ、香水は売れない
+# speaker: narrator
+伏せた画面の端に、鞄の女が手を差し入れた。
+# speaker: milano_galleria_bag_woman
+私にも
 # speaker: narrator
 三人に画面を囲まれて、男は二人の映ったテイクを消した。鞄の女は、自分の分の出演料を受け取るまで引かなかった。
 # speaker: enemy
