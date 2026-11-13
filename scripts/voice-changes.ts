@@ -1,53 +1,26 @@
-import { existsSync, readdirSync, readFileSync } from "node:fs";
-import path from "node:path";
-import { z } from "zod";
 import type { ContentWarning } from "./content-report";
 import { displayPath, type ContentSources } from "./content-sources";
 import { errorText } from "./cli-error";
-import { authoringFolder } from "./journey-authoring";
 import { taggedLines } from "./line-tag-text";
-import { cityOfFile, showNames, type VoiceLine } from "./voice-script";
+import { readRecordedClips, type RecordedClip, type RecordedClips } from "./voice-records";
+import { cityOfFile, matchSameLines, showNames, type ScriptedLine, type SentVoiceScript, type VoiceLine, type VoiceScript } from "./voice-script";
 
-// The voice scripts that were sent (2026-11-13): each kept as it was sent in authoring/journeys/<journeyId>/voice/<date>/
-// (the readable script, its entries.json and the guide), so that a line whose text changes after it was scripted or
-// recorded is found: npm run voice:changes lists them against the latest script (compareVoiceScripts), and
-// content:build warns when a recorded line (`# voice:`) no longer says what the script said (voiceScriptWarnings).
+// Which heroine lines changed since their voices were scripted or recorded (2026-11-13): npm run voice:changes lists
+// them (voiceChanges, formatVoiceChanges), and content:build warns about a recorded line whose text changed
+// (voiceRecordWarnings). A recorded line (one with a `# voice:`) is compared with what its clip says (recorded.json,
+// voice-records.ts), so it is reported until a new clip is recorded; the other lines with the newest script sent.
 
-/** What the comparisons read of a sent script's line (entries.json may hold more). */
-export type ScriptedLine = Pick<VoiceLine, "id" | "text" | "file" | "knot" | "title">;
-/** A sent script: its date (its folder's name), its entries.json and its lines. */
-export type SentVoiceScript = { journeyId: string; date: string; file: string; lines: ScriptedLine[] };
-
-const DATE_FOLDER = /^\d{4}-\d{2}-\d{2}$/u;
-const scriptedLinesSchema = z.array(z.object({ id: z.string(), text: z.string(), file: z.string(), knot: z.string(), title: z.string() }));
-
-/** Where a journey's sent scripts are kept: `authoring/journeys/<journeyId>/voice/` (one folder per date, YYYY-MM-DD). */
-export const voiceScriptsFolder = (journeyId: string) => `${authoringFolder(journeyId)}voice/`;
-
-/** The latest script sent for a journey (the date folder of voiceScriptsFolder with an entries.json), if any. Throws for one it cannot read. */
-export function readLatestVoiceScript(root: string, journeyId: string): SentVoiceScript | undefined {
-  const folder = path.join(root, voiceScriptsFolder(journeyId));
-  if (!existsSync(folder)) return undefined;
-  const date = readdirSync(folder, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory() && DATE_FOLDER.test(entry.name) && existsSync(path.join(folder, entry.name, "entries.json")))
-    .map((entry) => entry.name).sort().at(-1);
-  if (!date) return undefined;
-  const file = path.join(folder, date, "entries.json");
-  try {
-    return { journeyId, date, file, lines: scriptedLinesSchema.parse(JSON.parse(readFileSync(file, "utf8"))) };
-  } catch (error) {
-    throw new Error(`渡した声の台本を読めません：${displayPath(root, file)}（Cannot read the voice script）`, { cause: error });
-  }
-}
-
-/** A line whose text changed: as the script had it, as it is now, and whether its recording exists. */
-export type VoiceChange = { old: ScriptedLine; now: VoiceLine; recorded: boolean };
 export type VoiceChanges = {
-  /** Lines that say what the script said. */
+  /** Recorded lines whose text is no longer what their clip says: to record again. */
+  rerecord: { now: VoiceLine; recorded: RecordedClip }[];
+  /** Recorded clips that no line names any more (no `# voice:` has the ID). */
+  unused: { id: string; recorded: RecordedClip }[];
+  /** Lines with a `# voice:` that recorded.json does not have (not tagged by voice:tag). */
+  unlisted: VoiceLine[];
+  /** The lines not recorded, against the newest script's lines not recorded: */
   same: number;
-  changed: VoiceChange[];
-  removed: { old: ScriptedLine; recorded: boolean }[];
-  /** Heroine lines the script does not have. */
+  changed: { old: ScriptedLine; now: VoiceLine }[];
+  removed: ScriptedLine[];
   added: VoiceLine[];
 };
 
@@ -67,113 +40,111 @@ export function textSimilarity(left: string, right: string): number {
 const SIMILAR = 0.45;
 
 /**
- * The script's lines against the current ones. A line is the same when its ID and text are, else when a line of the
- * same city has its text (in order); a recorded ID left on both sides is one line rewritten; the leftovers of a city
- * pair as rewritten lines by similarity (the most alike first); the rest are removed and added. `recordings` are the
- * journey's voice IDs (files and `# voice:`).
+ * The current lines against their records: each recorded line against what its clip says; the other lines against
+ * the newest script's other lines (the same line by matchSameLines; leftovers of a city paired as rewritten lines by
+ * similarity, the most alike first; the rest removed and added).
  */
-export function compareVoiceScripts(script: readonly ScriptedLine[], current: readonly VoiceLine[], cityIds: readonly string[],
-  recordings: ReadonlySet<string>): VoiceChanges {
-  const cityOf = (line: { file: string }) => cityOfFile(line.file, cityIds);
-  const oldLeft = new Set(script.keys());
-  const newLeft = new Set(current.keys());
-  const match = (oldIndex: number, newIndex: number) => {
-    oldLeft.delete(oldIndex);
-    newLeft.delete(newIndex);
+export function voiceChanges(script: VoiceScript, newest: SentVoiceScript | undefined, recorded: RecordedClips): VoiceChanges {
+  const isRecorded = (line: { id: string }) => script.tagged.has(line.id);
+  const recordedLines = script.lines.filter(isRecorded);
+  const earlier = (newest?.lines ?? []).filter((line) => !isRecorded(line) && !recorded.has(line.id));
+  const later = script.lines.filter((line) => !isRecorded(line));
+  const cityIds = script.cities.map((city) => city.id);
+  const earlierLeft = new Set(earlier.keys());
+  const laterLeft = new Set(later.keys());
+  const pair = (earlierIndex: number, laterIndex: number) => {
+    earlierLeft.delete(earlierIndex);
+    laterLeft.delete(laterIndex);
   };
-  const byId = new Map(current.map((line, index) => [line.id, index]));
-  script.forEach((line, index) => {
-    const now = byId.get(line.id);
-    if (now !== undefined && newLeft.has(now) && current[now].text === line.text) match(index, now);
-  });
-  const textKey = (line: ScriptedLine) => `${cityOf(line)}\0${line.text}`;
-  const byText = new Map<string, number[]>();
-  for (const index of newLeft) {
-    const key = textKey(current[index]);
-    byText.set(key, [...byText.get(key) ?? [], index]);
-  }
-  for (const index of [...oldLeft]) {
-    const now = byText.get(textKey(script[index]))?.shift();
-    if (now !== undefined) match(index, now);
-  }
-  const same = script.length - oldLeft.size;
+  for (const [earlierIndex, laterIndex] of matchSameLines(earlier, later, cityIds)) pair(earlierIndex, laterIndex);
+  const same = earlier.length - earlierLeft.size;
+  const cityOf = (line: { file: string }) => cityOfFile(line.file, cityIds);
   const changed: [number, number][] = [];
-  for (const index of [...oldLeft]) {
-    const now = byId.get(script[index].id);
-    if (recordings.has(script[index].id) && now !== undefined && newLeft.has(now)) {
-      changed.push([index, now]);
-      match(index, now);
-    }
+  const candidates = [...earlierLeft].flatMap((earlierIndex) => [...laterLeft]
+    .filter((laterIndex) => cityOf(earlier[earlierIndex]) === cityOf(later[laterIndex]))
+    .map((laterIndex) => ({ earlierIndex, laterIndex, ratio: textSimilarity(earlier[earlierIndex].text, later[laterIndex].text) })))
+    .filter((item) => item.ratio >= SIMILAR)
+    .sort((left, right) => right.ratio - left.ratio || left.earlierIndex - right.earlierIndex || left.laterIndex - right.laterIndex);
+  for (const { earlierIndex, laterIndex } of candidates) {
+    if (!earlierLeft.has(earlierIndex) || !laterLeft.has(laterIndex)) continue;
+    changed.push([earlierIndex, laterIndex]);
+    pair(earlierIndex, laterIndex);
   }
-  const candidates = [...oldLeft].flatMap((oldIndex) => [...newLeft].filter((newIndex) => cityOf(script[oldIndex]) === cityOf(current[newIndex]))
-    .map((newIndex) => ({ oldIndex, newIndex, ratio: textSimilarity(script[oldIndex].text, current[newIndex].text) })))
-    .filter((pair) => pair.ratio >= SIMILAR)
-    .sort((left, right) => right.ratio - left.ratio || left.oldIndex - right.oldIndex || left.newIndex - right.newIndex);
-  for (const { oldIndex, newIndex } of candidates) {
-    if (!oldLeft.has(oldIndex) || !newLeft.has(newIndex)) continue;
-    changed.push([oldIndex, newIndex]);
-    match(oldIndex, newIndex);
-  }
-  const recorded = (line: ScriptedLine) => recordings.has(line.id);
+  const ascending = (left: number, right: number) => left - right;
   return {
+    rerecord: recordedLines.flatMap((now) => {
+      const clip = recorded.get(now.id);
+      return clip && clip.text !== now.text ? [{ now, recorded: clip }] : [];
+    }),
+    unused: [...recorded].filter(([id]) => !script.tagged.has(id)).map(([id, clip]) => ({ id, recorded: clip })),
+    unlisted: recordedLines.filter((now) => !recorded.has(now.id)),
     same,
-    changed: changed.sort(([left], [right]) => left - right).map(([oldIndex, newIndex]) =>
-      ({ old: script[oldIndex], now: current[newIndex], recorded: recorded(script[oldIndex]) })),
-    removed: [...oldLeft].sort((left, right) => left - right).map((index) => ({ old: script[index], recorded: recorded(script[index]) })),
-    added: [...newLeft].sort((left, right) => left - right).map((index) => current[index]),
+    changed: changed.sort(([left], [right]) => left - right).map(([earlierIndex, laterIndex]) => ({ old: earlier[earlierIndex], now: later[laterIndex] })),
+    removed: [...earlierLeft].sort(ascending).map((index) => earlier[index]),
+    added: [...laterLeft].sort(ascending).map((index) => later[index]),
   };
 }
 
-/** What voice:changes prints: the counts, then the recorded lines (to record again), the others, and the new lines. */
-export function formatVoiceChanges(changes: VoiceChanges, script: SentVoiceScript, journey: { id: string; nameJa: string }, scriptFile: string): string[] {
-  const head = `${journey.nameJa}（${journey.id}）：${script.date}に渡した声の台本（${script.lines.length}行、${scriptFile}）と今のシナリオの比べ`;
-  const { same, changed, removed, added } = changes;
-  if (!changed.length && !removed.length && !added.length) return [head, `変わった台詞はありません。台本の${same}行は、どれも今のシナリオと同じです。`];
+/** What voice:changes prints: what was compared, the counts, then the recorded lines first, the others, and the new lines. */
+export function formatVoiceChanges(changes: VoiceChanges, script: VoiceScript, newest: { date: string; count: number; file: string },
+  recorded: { count: number; file: string }): string[] {
+  const { rerecord, unused, unlisted, same, changed, removed, added } = changes;
+  const head = [
+    `${script.nameJa}（${script.journeyId}）：今のヒロインの台詞 ${script.lines.length}行（録音済み ${script.tagged.size}行）を比べました。`,
+    `録音済みの行は録音した声 ${recorded.count}本の文（${recorded.file}）と、まだ録音していない行は${newest.date}に渡した台本（${newest.count}行、${newest.file}）と比べます。`,
+  ];
+  if (!rerecord.length && !unused.length && !unlisted.length && !changed.length && !removed.length && !added.length)
+    return [...head, `変わった台詞はありません（録音済みの${script.tagged.size}行は録音した文のまま、まだ録音していない${same}行は台本のままです）。`];
   const where = (line: Pick<VoiceLine, "title" | "file">) => `${line.title}（${line.file}）`;
+  const clipText = (clip: RecordedClip) => `  録音：${clip.text}（${clip.script}の台本）`;
   // One box per line, each ending in a blank line.
-  const changedBoxes = (items: VoiceChange[]) => items.flatMap(({ old, now }) =>
-    [`[${old.id}]${now.id === old.id ? "" : `（今のID：${now.id}）`}　${where(now)}`, `  台本：${old.text}`, `  今　：${now.text}`, ""]);
-  const removedBoxes = (items: VoiceChanges["removed"]) => items.flatMap(({ old }) => [`[${old.id}]　${where(old)}`, `  台本：${old.text}`, ""]);
-  const [rerecord, rewritten] = [changed.filter((item) => item.recorded), changed.filter((item) => !item.recorded)];
-  const [unused, dropped] = [removed.filter((item) => item.recorded), removed.filter((item) => !item.recorded)];
   const sections: [string, string[]][] = [
-    [`■ 録り直しが必要：録音した台詞が変わりました（${rerecord.length}行）`, changedBoxes(rerecord)],
-    [`■ 録音した台詞がなくなりました（${unused.length}行。その声のファイルは使われなくなります）`, removedBoxes(unused)],
-    [`■ まだ録音していない台詞が変わりました（${rewritten.length}行。今の文で作ります）`, changedBoxes(rewritten)],
-    [`■ まだ録音していない台詞がなくなりました（${dropped.length}行。作らなくてよい台詞です）`, removedBoxes(dropped)],
+    [`■ 録り直しが必要：録音した台詞が変わりました（${rerecord.length}行）`,
+      rerecord.flatMap(({ now, recorded: clip }) => [`[${now.id}]　${where(now)}`, clipText(clip), `  今　：${now.text}`, ""])],
+    [`■ 使われなくなった声：録音した台詞の # voice: がなくなりました（${unused.length}本）`,
+      unused.flatMap(({ id, recorded: clip }) => [`[${id}]`, clipText(clip), ""])],
+    [`■ 録音した文の記録がない声（${unlisted.length}行。npm run voice:tag で付けると記録されます）`,
+      unlisted.flatMap((now) => [`[${now.id}]　${where(now)}`, `  今　：${now.text}`, ""])],
+    [`■ まだ録音していない台詞が変わりました（${changed.length}行。新しい ID で、今の文で作ります）`,
+      changed.flatMap(({ old, now }) => [`[${old.id}]（今のID：${now.id}）　${where(now)}`, `  台本：${old.text}`, `  今　：${now.text}`, ""])],
+    [`■ まだ録音していない台詞がなくなりました（${removed.length}行。作らなくてよい台詞です）`,
+      removed.flatMap((old) => [`[${old.id}]　${where(old)}`, `  台本：${old.text}`, ""])],
     [`■ 台本にない新しい台詞（${added.length}行。声を作るときは npm run voice:script で台本を作り直します）`,
       added.flatMap((now) => [`[${now.id}]　${where(now)}`, `  今　：${now.text}`, ""])],
   ];
   return [
-    head,
-    `台本と同じ ${same}行／変わった ${changed.length}行（録音済み ${rerecord.length}行）／なくなった ${removed.length}行（録音済み ${unused.length}行）／` +
-      `台本にない ${added.length}行`,
+    ...head,
+    `録り直し ${rerecord.length}行／使われなくなった声 ${unused.length}本／記録のない声 ${unlisted.length}行／` +
+      `まだ録音していない台詞：台本と同じ ${same}行・変わった ${changed.length}行・なくなった ${removed.length}行・台本にない ${added.length}行`,
     // A section's last box leaves its blank line to the next heading.
     ...sections.filter(([, boxes]) => boxes.length).flatMap(([title, boxes]) => ["", title, "", ...boxes.slice(0, -1)]),
   ];
 }
 
 /**
- * content:build's warnings for a journey's sent script: each recorded line (a `# voice:`) whose text is no longer the
- * script's for that ID (the voice says the old text). The story files are the journey's of `sources`.
+ * content:build's warnings for a journey's recorded.json: each `# voice:` of its stories whose line no longer says what
+ * the clip says (record again), and each `# voice:` the file does not have (its text cannot be checked).
  */
-export function changedRecordingWarnings(sources: Pick<ContentSources, "root" | "storyFiles">, script: SentVoiceScript): ContentWarning[] {
-  const scripted = new Map(script.lines.map((line) => [line.id, line.text]));
-  return sources.storyFiles.filter((story) => story.layer === script.journeyId).flatMap((story) =>
+export function recordedLineWarnings(sources: Pick<ContentSources, "root" | "storyFiles">, journeyId: string, recorded: RecordedClips): ContentWarning[] {
+  return sources.storyFiles.filter((story) => story.layer === journeyId).flatMap((story) =>
     taggedLines(story.source, ["voice"]).flatMap(({ value, text, textLine }): ContentWarning[] => {
-      const old = scripted.get(value);
-      if (old === undefined || text === null || showNames(text) === old) return [];
+      if (text === null) return [];
+      const where = `${displayPath(sources.root, story.file)} の${textLine}行目`;
+      const clip = recorded.get(value);
+      if (!clip) return [{ kind: "voice-changed", message: `録音した文の記録がない声です：${value}（${where}）。` +
+        "npm run voice:tag で付けると、録音した文が記録されます。" }];
+      if (showNames(text) === clip.text) return [];
       return [{ kind: "voice-changed", message: `録音した台詞が変わりました：${value}（録り直しが必要）。` +
-        `${script.date}の台本：${old}　今：${showNames(text)}（${displayPath(sources.root, story.file)} の${textLine}行目）` }];
+        `録音した文（${clip.script}の台本）：${clip.text}　今：${showNames(text)}（${where}）` }];
     }));
 }
 
-/** changedRecordingWarnings for every journey with a sent script; a script that cannot be read is a warning too (it breaks no play). */
-export function voiceScriptWarnings(sources: Pick<ContentSources, "root" | "storyFiles" | "manifests">): ContentWarning[] {
+/** recordedLineWarnings for every journey with a recorded.json; one that cannot be read is a warning too (it breaks no play). */
+export function voiceRecordWarnings(sources: Pick<ContentSources, "root" | "storyFiles" | "manifests">): ContentWarning[] {
   return sources.manifests.flatMap((manifest): ContentWarning[] => {
     try {
-      const script = readLatestVoiceScript(sources.root, manifest.id);
-      return script ? changedRecordingWarnings(sources, script) : [];
+      const recorded = readRecordedClips(sources.root, manifest.id);
+      return recorded ? recordedLineWarnings(sources, manifest.id, recorded) : [];
     } catch (error) {
       return [{ kind: "voice-changed", message: errorText(error) }];
     }
