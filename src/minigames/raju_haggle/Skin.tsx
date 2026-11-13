@@ -152,16 +152,20 @@ function RajuHaggleField({ available, still, cast, art, sound, view, frames }: S
             const taken = takenAt(step, available);
             const amount = price(taken);
             const state = step < view.step ? "passed" : step === view.step ? "now" : "coming";
+            const deal = !!decided && price(decided) !== null && step === view.step;
             return (
-              <li key={own} data-state={state} data-deal={(!!decided && view.ending?.kind === "take" && step === view.step) || undefined}>
+              <li key={own} data-state={state} data-deal={deal || undefined}>
                 <span className="mg-raju-haggle-mark" aria-hidden="true">{state === "now" && !decided ? "▶" : ""}</span>
                 {taken !== own && <s className="mg-raju-haggle-was">₹{price(own)}</s>}
                 <span className="mg-raju-haggle-price">{amount === null ? "買えない" : `₹${amount}`}</span>
+                {/* The deal: stamped at the end of its price's row, the price still readable. */}
+                {deal && <span className="mg-raju-haggle-stamp" data-on="row">決まり</span>}
               </li>
             );
           })}
         </ol>
-        {decided && <span className="mg-raju-haggle-stamp">{price(decided) === null ? "買わない" : "決まり"}</span>}
+        {/* No deal: stamped across the paper's middle. */}
+        {decided && price(decided) === null && <span className="mg-raju-haggle-stamp">買わない</span>}
       </div>
     </div>
   );

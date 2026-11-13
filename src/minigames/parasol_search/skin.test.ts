@@ -46,6 +46,14 @@ describe("the parasol's field", () => {
     expect(labels(third)).toEqual(["通りを行く子ども、凧を持っている", "通りを行く子ども、トマトを持っている", "通りを行く子ども、青いボールを持っている"]);
   });
 
+  it("draws every customer's gesture on either side of the road as well-formed shapes, whatever the seed deals", () => {
+    const hers = parasolTargets({ at: "middle" })[0];
+    for (const seed of [0, 1, 2, 3, 4, 5, 6, 7]) {
+      const html = field({ at: "middle" }, view({ round: 1, done: [{ searched: [hers], found: true }] }), {}, seed);
+      for (const [, d] of html.matchAll(/ d="([^"]*)"/gu)) expect(d, `seed ${seed}`).not.toMatch(/--|NaN|undefined/u);
+    }
+  });
+
   it("marks what was looked at, and at the end the find or her pointing", () => {
     const looked = field({ at: "middle" }, view({ searched: [1] }));
     expect(labels(looked)[1]).toMatch(/：違った$/u);

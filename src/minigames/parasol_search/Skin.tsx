@@ -376,7 +376,9 @@ function Customer({ gesture, place, ring }: { gesture: ParasolGesture; place: Pl
   const face = place.y < ROW.road ? -1 : 1;
   const arms: Record<ParasolGesture, ReactNode> = {
     argue: <path d={`M-8 ${2 * face} l-5 ${7 * face} M8 ${2 * face} l5 ${7 * face}`} stroke={OUTLINE} strokeWidth="2.4" strokeLinecap="round" />,
-    ask: <path d={`M5 ${2 * face} l3 ${7 * face} m-1.6 0 v${2.4 * face} m1.6 -${2.4 * face} v${2.6 * face} m1.6 -${2.6 * face} v${2.4 * face}`} stroke={OUTLINE} strokeWidth="1.6" strokeLinecap="round" />,
+    // An arm out to the stall, three fingers up at its end.
+    ask: <path d={`M5 ${2 * face} l3 ${7 * face} m-1.6 0 v${fixed(2.4 * face)} m1.6 ${fixed(-2.4 * face)} v${fixed(2.6 * face)} m1.6 ${fixed(-2.6 * face)} v${fixed(2.4 * face)}`}
+      stroke={OUTLINE} strokeWidth="1.6" strokeLinecap="round" />,
     laugh: null,
     wave: <path d={`M8 0 l7 ${-5 * face}`} stroke={OUTLINE} strokeWidth="2.4" strokeLinecap="round" />,
     basket: null,

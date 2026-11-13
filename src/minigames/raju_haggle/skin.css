@@ -101,7 +101,8 @@
 .mg-raju-haggle-paper li[data-state="now"] .mg-raju-haggle-mark { font-size: 16px; }
 /* Nothing he could sell for what the player has: the prices are the paper's words, smaller. */
 .mg-raju-haggle-paper[data-none] li[data-state] { font-size: 15px; }
-/* The deal or no deal: a red ink stamp across the middle of the paper, on one line however narrow the phone. */
+/* The deal or no deal: a red ink stamp, on one line however narrow the phone: at the end of the deal's row (its price
+   left readable), or across the middle of the paper for no deal. */
 .mg-raju-haggle-stamp {
   position: absolute;
   left: 50%;
@@ -118,6 +119,7 @@
   transform: translate(-50%, -50%) rotate(-12deg);
   animation: mg-raju-haggle-stamp 220ms var(--ease-out, ease-out) both;
 }
+.mg-raju-haggle-stamp[data-on="row"] { left: auto; right: -8px; top: 50%; font-size: clamp(13px, 3.6vw, 16px); transform: translateY(-50%) rotate(-12deg); }
 @keyframes mg-raju-haggle-stamp { from { opacity: 0; scale: 1.6; } }
 
 @media (max-height: 620px) {
