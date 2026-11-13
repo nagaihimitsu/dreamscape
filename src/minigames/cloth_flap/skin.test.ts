@@ -82,6 +82,18 @@ describe("the flap's field", () => {
     expect(pigeonAlong(0.3, false)).toBe(0.3);
   });
 
+  it("ends the play as she reacts (the host's finish over it), and holds the rest of the picture before the result card", () => {
+    const { nicheMs } = CLOTH_FIELD_POINTS;
+    const at = (outcome: "perfect" | "early" | "late" | "frozen", tapMs: number | null) =>
+      [clothFlapSkin.impactAt!({ outcome, tapMs }, false), clothFlapSkin.endAt({ outcome, tapMs }, false)];
+    expect(at("perfect", nicheMs)).toEqual([nicheMs + 120, nicheMs + 120 + 850]);
+    // An early flap ends as she sees it; the pigeon and her scream come in the hold.
+    const [earlyImpact, earlyEnd] = at("early", nicheMs - 600);
+    expect(earlyImpact).toBe(nicheMs - 480);
+    expect(earlyEnd).toBeGreaterThan(earlyImpact + 450);
+    expect(at("frozen", null)[0]).toBe(CLOTH_END_MS);
+  });
+
   it("says the same words before the play and in it", () => {
     expect(clothFlapSkin.hintJa).toBe(clothFlap.hintJa);
   });

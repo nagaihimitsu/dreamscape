@@ -52,6 +52,20 @@ describe("the catch's field", () => {
     expect(ringAt(MONKEY_HANDS_MS)).toBe(1);
   });
 
+  it("ends the play as the thing meets the hands or goes past them, holding the rest before the result card", () => {
+    const { impactOf } = MONKEY_FIELD_POINTS;
+    // Closed a little early, it lands in the hands as it arrives; closed late, as they close.
+    expect(impactOf("caught", MONKEY_HANDS_MS - 60)).toBe(MONKEY_HANDS_MS);
+    expect(impactOf("caught", MONKEY_HANDS_MS + 100)).toBe(MONKEY_HANDS_MS + 100);
+    expect(impactOf("fumbled", MONKEY_HANDS_MS - 150)).toBe(MONKEY_HANDS_MS);
+    // Closed far too soon: as it goes past them; too late: as they close on nothing; no tap: once the play is over.
+    expect(impactOf("missed", MONKEY_RELEASE_MS + 100)).toBeGreaterThan(MONKEY_HANDS_MS);
+    expect(impactOf("missed", MONKEY_HANDS_MS + 400)).toBe(MONKEY_HANDS_MS + 400);
+    expect(impactOf("missed", null)).toBe(MONKEY_END_MS);
+    for (const [outcome, tapMs] of [["caught", MONKEY_HANDS_MS], ["fumbled", MONKEY_HANDS_MS + 200], ["missed", null]] as const)
+      expect(monkeyCatchSkin.endAt({ outcome, tapMs }, false)).toBeGreaterThan(monkeyCatchSkin.impactAt!({ outcome, tapMs }, false));
+  });
+
   it("says the same words before the play and in it", () => {
     expect(monkeyCatchSkin.hintJa).toBe(monkeyCatch.hintJa);
   });

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { MiniGameRules } from "../../contract";
+import type { MiniGameRating, MiniGameRules } from "../../contract";
 
 // The `cue_tap` engine's rules (docs/13 2.2): something comes toward the player, and one tap meets it. The outcome comes
 // from when the player taps against the moment it arrives; nothing is random. Times are milliseconds of the host's clock
@@ -124,6 +124,22 @@ export function cueTapLateMissRecord(tuning: CueTapTuning): number {
 }
 
 /**
+ * The result card's ★ for a tap (display only: never saved, never in Ink; docs/13 4.1), in step with the engine's outcome:
+ * clean ★3, early or late ★2, a miss ★1, no tap none. The score line says how far off the tap was, which way, so practice
+ * shows where to move (「0.03秒差」「0.12秒早い」「0.15秒遅い」).
+ */
+export function cueTapRating(record: CueTapRecord, tuning: CueTapTuning): MiniGameRating | null {
+  const engine = cueTapOutcome(record, tuning);
+  if (engine === "none" || record === null) return null;
+  const off = record - cueTapMoment(tuning);
+  const seconds = (Math.abs(off) / 1000).toFixed(2);
+  return {
+    stars: engine === "clean" ? 3 : engine === "miss" ? 1 : 2,
+    scoreJa: engine === "clean" ? `${seconds}秒差` : `${seconds}秒${off < 0 ? "早い" : "遅い"}`,
+  };
+}
+
+/**
  * A skin's table from the engine's outcomes to its own. A far-off tap (`miss`) gives one outcome, or one for each side of
  * the moment (`{ early, late }`): a skin whose far-off taps tell different stories (a cloth spread while she is still far
  * up the stairs, or long after she has passed).
@@ -135,6 +151,7 @@ export type CueTapMap<Outcome extends string> = Readonly<Record<Exclude<CueTapOu
 /**
  * A skin's rules from the engine's (docs/13 2.4): `map` gives each engine outcome the skin's outcome. 「おまかせ」 to a
  * skin outcome taps as the first engine outcome mapped to it (in the order clean, early, late, miss early, miss late, none).
+ * The ★ are the engine's (cueTapRating); a skin may give its own rate in their place.
  */
 export function cueTapRules<Params, Outcome extends string>(tuning: CueTapTuning, map: CueTapMap<Outcome>): MiniGameRules<Params, Outcome, CueTapRecord> {
   const { miss } = map;
@@ -159,5 +176,6 @@ export function cueTapRules<Params, Outcome extends string>(tuning: CueTapTuning
       if (!tap) throw new Error(`No cue_tap outcome gives ${outcome}`);
       return tap[1];
     },
+    rate: (record) => cueTapRating(record, tuning),
   };
 }
