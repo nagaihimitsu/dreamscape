@@ -388,7 +388,7 @@ function EffectsStage({ reduce, systemReduced, onReduce, onRide }: {
   const [portrait, setPortrait] = useState(true);
   const [breathStill, setBreathStill] = useState(false);
   const cityItems = encounters.items.filter((item) => item.cityId === cityId);
-  const [itemId, setItemId] = useState(() => cityItems[0]?.id);
+  const [itemId, setItemId] = useState<string | undefined>(() => cityItems[0]?.id);
   const [itemShow, setItemShow] = useState<string | undefined>(undefined);
 
   const [demo, setDemo] = useState<Demo>(() => demoOf(cityId));
