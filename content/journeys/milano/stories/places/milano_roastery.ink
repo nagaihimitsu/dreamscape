@@ -14,12 +14,12 @@ INCLUDE modules.ink
 # reaction: heroine,worried,sweat
 ロースタリーの焙煎を見ていたら、彼女の小さいカップだけ先に届いた。鼻を近づけて、ちょっと困った顔をする。
 # speaker: heroine
-「湯気はすごく好き。飲むほうは……まだ舌が信用できません。」
+湯気はすごく好き。飲むほうは……まだ舌が信用できません
 # speaker: player
-「熱いの苦手だった？」
+熱いの苦手だった？
 # speaker: heroine
-「猫舌なのに、いちばんいい匂いのときに飲みたいんです。かなり不利な趣味。」
-「あの透明な管、焙煎する前の豆が通ってるんだって。追いかけているうちに冷めるかな。」
+猫舌なのに、いちばんいい匂いのときに飲みたいんです。かなり不利な趣味
+あの透明な管、焙煎する前の豆が通ってるんだって。追いかけているうちに冷めるかな
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
@@ -33,11 +33,11 @@ INCLUDE modules.ink
     # profile: playful
     { romance_result == "negative":
         # speaker: heroine
-        「実況されたら、勢いで飲んでしまいそう。ちょっと待って。」
+        実況されたら、勢いで飲んでしまいそう。ちょっと待って
     - else:
         # speaker: heroine
         # emotion: teasing
-        「まだ試合前です。選手の舌から冷静な判断を引き出しています。」
+        まだ試合前です。選手の舌から冷静な判断を引き出しています
     }
     -> join_1
 
@@ -45,10 +45,10 @@ INCLUDE modules.ink
     # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
-        「今席を離れると、ちょうどいい瞬間も逃しそう。ここで待ちたい。」
+        今席を離れると、ちょうどいい瞬間も逃しそう。ここで待ちたい
     - else:
         # speaker: heroine
-        「いいね。あそこで豆が返るたび、香りの向きが変わる気がする。」
+        いいね。あそこで豆が返るたび、香りの向きが変わる気がする
     }
     -> join_1
 
@@ -56,10 +56,10 @@ INCLUDE modules.ink
     # profile: honest
     { romance_result == "negative":
         # speaker: heroine
-        「好きかどうか、私もまだ分かんない。もう少し待ってから決めて。」
+        好きかどうか、私もまだ分かんない。もう少し待ってから決めて
     - else:
         # speaker: heroine
-        「ひと口ずつ、あとで交換しようよ。比べたい。」
+        ひと口ずつ、あとで交換しようよ。比べたい
     }
     -> join_1
 
@@ -67,17 +67,17 @@ INCLUDE modules.ink
 # speaker: narrator
 やっと飲めた彼女は目を丸くした。隣に置いた水を飲み、もう一度味を確かめる。
 # speaker: heroine
-「思ってたより酸っぱい。でも、嫌いっていうのとも違う。こういうとき、何て言う？」
+思ってたより酸っぱい。でも、嫌いっていうのとも違う。こういうとき、何て言う？
 
 * [「もうひと口ほしい味」 # option: second_honest]
     # profile: honest
     # memory: sound_memory_cafe_01
     { romance_result == "negative":
         # speaker: heroine
-        「うーん。もうひと口は私が決める。まだお水の番。」
+        うーん。もうひと口は私が決める。まだお水の番
     - else:
         # speaker: heroine
-        「それ。美味しいかは保留なのに、カップはもう持ち上がってる。」
+        それ。美味しいかは保留なのに、カップはもう持ち上がってる
     }
     -> join_2
 
@@ -86,10 +86,10 @@ INCLUDE modules.ink
     # memory: sound_memory_cafe_01
     { romance_result == "negative":
         # speaker: heroine
-        「あとでだと忘れちゃう。私は今、変な顔のうちに言いたい。」
+        あとでだと忘れちゃう。私は今、変な顔のうちに言いたい
     - else:
         # speaker: heroine
-        「いい。先に言われると、その味を探しちゃうから。」
+        いい。先に言われると、その味を探しちゃうから
     }
     -> join_2
 
@@ -98,10 +98,10 @@ INCLUDE modules.ink
     # memory: sound_memory_cafe_01
     { romance_result == "negative":
         # speaker: heroine
-        「顔を見られると味に集中できないよ。カップの方を見てて。」
+        顔を見られると味に集中できないよ。カップの方を見てて
     - else:
         # speaker: heroine
-        「そんなに出てた？　じゃあそっちが飲むときは絶対見る。」
+        そんなに出てた？　じゃあそっちが飲むときは絶対見る
     }
     -> join_2
 
@@ -123,11 +123,11 @@ INCLUDE modules.ink
 # speaker: narrator
 豆を選ぶ人の手元を眺めながら、彼女が自分のポケットを両方裏返した。糸くずが一つ落ちた。
 # speaker: heroine
-「今日は豆を買いません。買わない日のほうが、値段を見ずに好きなのを選べるから。」
+今日は豆を買いません。買わない日のほうが、値段を見ずに好きなのを選べるから
 # speaker: player
-「じゃあ、どれを僕に選ぶ？」
+じゃあ、どれを僕に選ぶ？
 # speaker: heroine
-「待って。そこ、当ててもらう側も参加する仕組みにしたい。」
+待って。そこ、当ててもらう側も参加する仕組みにしたい
 {
 - relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
@@ -141,10 +141,10 @@ INCLUDE modules.ink
     # profile: playful
     { romance_result == "negative":
         # speaker: heroine
-        「朝寝坊だけじゃ味が分かんないよ。好きな朝ごはんから聞いていい？」
+        朝寝坊だけじゃ味が分かんないよ。好きな朝ごはんから聞いていい？
     - else:
         # speaker: heroine
-        「じゃあ香りで起こす係を探そう。コーヒーに任せて、私は二度寝。」
+        じゃあ香りで起こす係を探そう。コーヒーに任せて、私は二度寝
     }
     -> join_1
 
@@ -152,10 +152,10 @@ INCLUDE modules.ink
     # profile: bold
     { romance_result == "negative":
         # speaker: heroine
-        「当てられる前に、自分で決めたいな。私の番を少し待って。」
+        当てられる前に、自分で決めたいな。私の番を少し待って
     - else:
         # speaker: heroine
-        「どうぞ。私の顔を見て答え直すのは一回まで。」
+        どうぞ。私の顔を見て答え直すのは一回まで
     }
     -> join_1
 
@@ -163,10 +163,10 @@ INCLUDE modules.ink
     # profile: attentive
     { romance_result == "negative":
         # speaker: heroine
-        「理由までうまく言えるかな。今日は匂いだけで決めてもいい？」
+        理由までうまく言えるかな。今日は匂いだけで決めてもいい？
     - else:
         # speaker: heroine
-        「賛成。値札の代わりに理由がついてるおみやげだ。」
+        賛成。値札の代わりに理由がついてるおみやげだ
     }
     -> join_1
 
@@ -174,18 +174,18 @@ INCLUDE modules.ink
 # speaker: narrator
 焙煎の様子の見える場所で、彼女は甘い香りのほうへ少し寄った。
 # speaker: heroine
-「ここ、昔は郵便局だったんだって。香りも届けられたらよかったのに。」
-「実は、私に選んでほしかったのは豆？　それとも、考えてる時間のほう？」
+ここ、昔は郵便局だったんだって。香りも届けられたらよかったのに
+実は、私に選んでほしかったのは豆？　それとも、考えてる時間のほう？
 
 * [「ばれた。後のほう」 # option: second_honest]
     # profile: honest
     # memory: sound_memory_starbucks_roastery_date_01
     { romance_result == "negative":
         # speaker: heroine
-        「そっか。私は本当に、気に入る味を見つけたかったよ。」
+        そっか。私は本当に、気に入る味を見つけたかったよ
     - else:
         # speaker: heroine
-        「私も。ちゃんと考えたから、今日は空のポケットで大成功。」
+        私も。ちゃんと考えたから、今日は空のポケットで大成功
     }
     -> join_2
 
@@ -194,10 +194,10 @@ INCLUDE modules.ink
     # memory: sound_memory_starbucks_roastery_date_01
     { romance_result == "negative":
         # speaker: heroine
-        「それは洗濯で落とそう。今はちゃんと選んでるんだから。」
+        それは洗濯で落とそう。今はちゃんと選んでるんだから
     - else:
         # speaker: heroine
-        「いちばん長く旅してるやつだ。持ち主より先におみやげ決まったね。」
+        いちばん長く旅してるやつだ。持ち主より先におみやげ決まったね
     }
     -> join_2
 
@@ -206,10 +206,10 @@ INCLUDE modules.ink
     # memory: sound_memory_starbucks_roastery_date_01
     { romance_result == "negative":
         # speaker: heroine
-        「秘密ばっかりは寂しい。ひとことでも聞かせて。」
+        秘密ばっかりは寂しい。ひとことでも聞かせて
     - else:
         # speaker: heroine
-        「じゃあ宿題。次に聞いたとき、ちゃんと自分の言葉でね。」
+        じゃあ宿題。次に聞いたとき、ちゃんと自分の言葉でね
     }
     -> join_2
 

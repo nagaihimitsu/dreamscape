@@ -21,7 +21,7 @@ INCLUDE modules.ink
 # speaker: narrator
 広場の屋台に、時計の形の砂糖菓子が並んでいた。針はどれも三時を指している。
 # speaker: heroine
-「二つください。……はい、一個ずつ。最後の勝負の前の、三時のおやつ」
+二つください。……はい、一個ずつ。最後の勝負の前の、三時のおやつ
 -> END
 
 // ───── フィナーレの時点の +1：バトルの結果の後。エピローグへ進むか、もう少し街にいるかを選ぶ。
@@ -33,14 +33,14 @@ INCLUDE modules.ink
 # sources: none
 # background: smp_bg_mihon_clock_tower
 # speaker: heroine
-「終わったね。……このまま、この街の最後の話にしちゃう？　それとも、もう少しだけ歩く？」
+終わったね。……このまま、この街の最後の話にしちゃう？　それとも、もう少しだけ歩く？
 * [「今日は、ここまでにしよう」 # option: to_epilogue]
     # then: epilogue
     # speaker: heroine
-    「うん。じゃあ、最後に鐘の音を聞いていこう」
+    うん。じゃあ、最後に鐘の音を聞いていこう
 * [「もう少し、歩こう」 # option: stay]
     # speaker: heroine
-    「やった。宿に戻るまで、まだ時間あるよね」
+    やった。宿に戻るまで、まだ時間あるよね
 -
 -> END
 
@@ -56,5 +56,5 @@ INCLUDE modules.ink
 # sources: none
 # background: smp_bg_mihon_hotel
 # speaker: heroine
-「おはよう。窓の外、今日も三時。……そろそろ、この街ともお別れだね」
+おはよう。窓の外、今日も三時。……そろそろ、この街ともお別れだね
 -> END
