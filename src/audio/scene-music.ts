@@ -51,6 +51,8 @@ export type MusicScreen = {
   opening?: boolean;
   /** The night screen. */
   nightScreen: boolean;
+  /** 旅の音楽室 plays this track (2026-11-13): it plays at full level, without the ambience, until the room stops it or closes. */
+  roomTrack?: string;
 };
 
 const DAY = 24 * 60;
@@ -118,6 +120,7 @@ function screenTrack(play: MusicPlay, screen: MusicScreen, game: MusicGame): str
 export function sceneMusic(play: MusicPlay | null | undefined, screen: MusicScreen): SceneMusic {
   const { game } = screen;
   if (!play || screen.opening) return { track: null, duck: "none" };
+  if (screen.roomTrack) return { track: screen.roomTrack, duck: "none" };
   if (!game) return { track: play.title, duck: "none" };
   if (screen.endRoll) return { track: play.endRoll, duck: "none" };
   if (screen.nightVisual) return { track: play.night, duck: "none" };

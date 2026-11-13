@@ -10,6 +10,7 @@ INCLUDE modules.ink
 # scene: date
 # title: 最後のバツ印
 # when: episodes jaipur >= 1
+# hint: ジャイプールの観光を一つ終えてから
 # on_done: money -20
 # background: gt_bg_jaipur_jaigarh_fort
 # speaker: narrator

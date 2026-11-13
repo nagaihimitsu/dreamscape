@@ -10,6 +10,7 @@ INCLUDE modules.ink
 # scene: date
 # title: 文字どおりの井戸端会議
 # when: episodes jaipur >= 1
+# hint: ジャイプールの観光を一つ終えてから
 # background: gt_bg_jaipur_panna_meena_kund
 # speaker: narrator
 アンベールの町はずれに、四角い穴が、地面に深く口を開けていた。パンナー・ミーナー・カ・クンド。雨水をためるための、十六世紀の階段井戸だ。

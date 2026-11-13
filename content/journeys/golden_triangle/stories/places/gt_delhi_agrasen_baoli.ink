@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # scene: date
 # title: 本物の悲鳴
 # when: episodes delhi >= 1
+# hint: デリーの観光を一つ終えてから
 # background: gt_bg_delhi_agrasen_baoli
 # speaker: narrator
 ガラス張りのビルに囲まれた路地の奥に、それは突然口を開けていた。石の階段が、まっすぐ地面の下へ下りていく。両側の壁には、アーチの形のくぼみが何層も並んでいる。
@@ -115,6 +116,7 @@ INCLUDE modules.ink
 # shake: window
 # size: large
 # voice: gt_delhi_date_agrasen_baoli_013
+# em_shake: きゃああああっ
 きゃああああっ！
 # speaker: narrator
 本物だった。悲鳴は井戸の壁に跳ね返り、階段を駆け上がり、上の路地まで届いた。鳩は何事もなかったように、反対側のくぼみに収まった。

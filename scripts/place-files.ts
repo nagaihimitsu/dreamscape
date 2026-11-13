@@ -16,7 +16,7 @@ import { AFTER_PARTS, type AfterPart, type RelationshipDelta, type SceneAt, type
 //
 // Light module (no content loading): unit tests use it directly.
 
-export const PLACE_HEAD_TAGS = ["scene", "title", "at", "priority", "when", "until", "repeat", "person", "on_done", "then", "sources"] as const;
+export const PLACE_HEAD_TAGS = ["scene", "title", "at", "priority", "when", "until", "repeat", "person", "on_done", "then", "sources", "hint"] as const;
 export const CHOICE_EFFECT_TAGS = ["requires", "give", "use", "rel", "profile", "memory", "effect", "set", "money", "ap", "then", "later"] as const;
 /**
  * Kinds a place file may hold (a hotel's place file may hold its city's arrival and epilogue knots; their moments' talks may be in any place
@@ -415,6 +415,8 @@ export type PlaceHead = {
   done: SceneDone;
   then?: SceneThen;
   sources?: "none";
+  /** A date's `# hint:` (2026-11-13): its locked card's words in free time while its map condition does not hold. */
+  hint?: string;
 };
 
 /** Read a knot's head tags; throws for a value of the wrong form and for a moment or position of a later stage (A3). */
@@ -454,6 +456,10 @@ export function readHead(knot: PlaceKnot, apCap: number): PlaceHead | undefined 
   const sources = single("sources");
   if (sources !== undefined && sources !== "none") throw new Error(`# sources: takes none (list a scene's sources in scenes/catalog.json): ${sources}`);
   const then = single("then");
+  const hint = single("hint");
+  if (hint !== undefined && kind !== "date")
+    throw new Error(`# hint: は、デートの頭の札です：${knot.name} は # scene: ${kind} です。デートの knot に書いてください` +
+      `（# hint: is a date's head tag; ${knot.name} is a ${kind}）。`);
   return {
     kind: kind as SceneKind,
     ...(single("title") ? { title: single("title") } : {}),
@@ -464,34 +470,40 @@ export function readHead(knot: PlaceKnot, apCap: number): PlaceHead | undefined 
     done: parseDone(values("on_done"), apCap),
     ...(then ? { then: parseThen(then) } : {}),
     ...(sources ? { sources } : {}),
+    ...(hint ? { hint } : {}),
   };
 }
 
 /**
  * The head of a one-scene file of a main part (arrival, guide, battle, epilogue, date; 3.1): the
- * `# on_done:` and `# then:` lines after the VAR lines and before the first other line. Returns the
- * source with them blanked (the story compiles as before) and their values.
+ * `# on_done:`, `# then:` and (a date's, 2026-11-13) `# hint:` lines after the VAR lines and before the first
+ * other line. Returns the source with them blanked (the story compiles as before) and their values.
  */
-export function readMainFileHead(source: string): { source: string; onDone: string[]; then?: string } {
+export function readMainFileHead(source: string): { source: string; onDone: string[]; then?: string; hint?: string } {
   const lines = source.split("\n");
   const code = withoutComments(source).split("\n");
   let index = 0;
   while (index < code.length && /^\s*(?:$|(?:VAR|CONST|INCLUDE|EXTERNAL)\s)/u.test(code[index])) index++;
   const onDone: string[] = [];
   let then: string | undefined;
+  let hint: string | undefined;
   for (; index < code.length && TAG_LINE.test(code[index]); index++) {
     const tags = tagsOf(code[index], index + 1);
-    const heads = tags.filter((tag) => tag.key === "on_done" || tag.key === "then");
+    const heads = tags.filter((tag) => tag.key === "on_done" || tag.key === "then" || tag.key === "hint");
     if (!heads.length) continue;
-    if (heads.length !== tags.length) throw new Error(`Write # on_done: and # then: on their own lines (line ${index + 1})`);
+    if (heads.length !== tags.length) throw new Error(`Write # on_done:, # then: and # hint: on their own lines (line ${index + 1})`);
     for (const tag of heads) {
       if (tag.key === "on_done") onDone.push(tag.value);
-      else if (then !== undefined) throw new Error("Write # then: once at the top of the file");
+      else if (tag.key === "hint") {
+        if (hint !== undefined) throw new Error("Write # hint: once at the top of the file");
+        if (!tag.value) throw new Error(`# hint: の一言がありません（${index + 1}行目）。# hint: <一言> と書いてください（Empty head tag: # hint:）。`);
+        hint = tag.value;
+      } else if (then !== undefined) throw new Error("Write # then: once at the top of the file");
       else then = tag.value;
     }
     lines[index] = "";
   }
-  return { source: lines.join("\n"), onDone, ...(then !== undefined ? { then } : {}) };
+  return { source: lines.join("\n"), onDone, ...(then !== undefined ? { then } : {}), ...(hint !== undefined ? { hint } : {}) };
 }
 
 /**

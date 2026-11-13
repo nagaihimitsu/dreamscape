@@ -4,7 +4,12 @@ import type { TransportMode } from "../../content/transport";
 import { PassingScenery, railKinds, sceneryPace, TransportIllustration } from "./transport-art";
 import { RIDE_MAP, rideMapLayout, type RideLabel, type RideMapLayout, type RideRoute } from "./ride-map";
 import { playSe, playSound } from "../../audio/sound-effects";
+import { useNightCard } from "./NightRest";
 import "./travel-transition.css";
+
+/** How long a ride's visual shows (ms; travel-transition.css's timeline matches); reduced motion: still, shorter. */
+const RIDE_MS = 1800;
+const RIDE_REDUCED_MS = 450;
 
 /**
  * Small, decorative transition; movement and saving are handled by the caller.
@@ -44,15 +49,14 @@ export function TravelTransition({ mode, route, reduceMotion = false, onEnd }: {
   // Once a ride (useTravelEffects gives each its own key).
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  useEffect(() => {
-    const timer = window.setTimeout(() => onEndRef.current(), reduced ? 450 : 1800);
-    return () => window.clearTimeout(timer);
-  }, [mode.id, reduced]);
+  // It ends by itself (1.8 s; reduced motion 0.45 s), or at once on a tap or Enter, Space or Esc (2026-11-13), as the
+  // night cards do: the taps are held a moment as it comes and as it goes (the double tap that started the ride).
+  const { end } = useNightCard({ reduceMotion: reduced, ms: RIDE_MS, reducedMs: RIDE_REDUCED_MS, onEnd: () => onEndRef.current() });
   const onRails = railKinds.has(mode.kind);
   const map = route ? rideMapLayout(route) : null;
 
   return createPortal(<div className={`travel-transition${reduced ? " is-reduced" : ""}`}
-    data-testid="travel-transition" data-mode={mode.id} data-kind={mode.kind} aria-hidden="true">
+    data-testid="travel-transition" data-mode={mode.id} data-kind={mode.kind} aria-hidden="true" onClick={end}>
     <div className="travel-transition-scene" data-pace={sceneryPace(mode.kind)}>
       <span className="travel-transition-label">{mode.movingJa}</span>
       <span className="travel-transition-hill travel-transition-hill-back" />

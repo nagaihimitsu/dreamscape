@@ -30,6 +30,19 @@ export function dateBelongsToCity(state: GameState, date: DateDefinition): boole
   return getCityContent(state.currentCityId).travel.events.some((event) => event.id === date.id && event.category === "date");
 }
 
+/**
+ * The dates of the current city that free time's row shows as a locked card with their writer's hint (2026-11-13,
+ * `# hint:`; photo-cards.ts): a date with a hint and a map condition (`when`) that does not hold yet, not unlocked nor
+ * played, and that nothing closes for good first (its `until`, the ending for a date that does not go on after it). A
+ * relationship repair never shows one. Read from the progress only: no relationship value decides it.
+ */
+export function hintedLockedDates(state: GameState): { dateId: string; hintJa: string }[] {
+  return dates.flatMap((date) => date.hintJa && date.when && !date.recovery && dateBelongsToCity(state, date) &&
+    !meets(state, date.when) && !untilReached(state, date) && !state.playedDateIds.includes(date.id) &&
+    !state.unlockedEventIds.includes(date.id) && (!state.endingReached || date.kind === "normal" || date.allowAfterEnding)
+    ? [{ dateId: date.id, hintJa: date.hintJa }] : []);
+}
+
 /** Progress and relationship requirements only; AP and opening hours do not hide a destination. */
 export function isDateUnlockedForTravel(state: GameState, dateId: string): boolean {
   const date = dates.find((item) => item.id === dateId);

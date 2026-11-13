@@ -323,11 +323,13 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_hawa_mahal
 { quiz_correct:
     # speaker: heroine
+    # em: 見られずに
     中の人が、見られずに、外を見るため。……通りも、お祭りも、市場も
 - else:
     # speaker: narrator
     窓の奥の声が、自分で答えた。
     # speaker: gt_jaipur_bride_grandmother
+    # em: 見られずに
     見られずに、見るためよ。通りも、お祭りも、市場も
 }
 # speaker: narrator

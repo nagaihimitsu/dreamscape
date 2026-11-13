@@ -1,0 +1,53 @@
+/* A line's # em: and # em_shake: words (2026-11-13; DialogueText, emphasis.ts): bold in the accent colour of the
+   window they are read in (gold on the dark window and a sent message, the map markers' rose on paper and a received
+   message). # em: gives one small pop as its first character appears; # em_shake: trembles a little, character by
+   character, while it is on screen. Both are inline blocks from the start, shown or not, so the line never reflows
+   as it is typed. Reduced motion (the system's and 「演出を短縮する」): bold only, still. */
+.dialogue-text {
+  --em-accent: #f6c445;
+}
+.phone-bubble .dialogue-text,
+.letter-sheet .dialogue-text {
+  --em-accent: var(--ds-marker);
+}
+.phone-message[data-side="sent"] .phone-bubble .dialogue-text {
+  --em-accent: #ffe08a;
+}
+.dialogue-em,
+.dialogue-em-shake {
+  color: var(--em-accent);
+  font-weight: 700;
+}
+.dialogue-em,
+.dialogue-em-shake-char {
+  display: inline-block;
+}
+.dialogue-em.is-shown:not(.is-still) {
+  animation: dialogue-em-pop 320ms var(--ease-out) both;
+}
+.dialogue-em-shake:not(.is-still) .dialogue-em-shake-char:not(.unrevealed) {
+  animation: dialogue-em-tremble 360ms steps(1, end) infinite;
+  /* Each character on its own beat, so the word shivers rather than slides. */
+  animation-delay: calc(var(--em-i, 0) * -90ms);
+}
+@keyframes dialogue-em-pop {
+  0% { scale: 1; }
+  45% { scale: 1.16; }
+  100% { scale: 1; }
+}
+@keyframes dialogue-em-tremble {
+  0% { translate: 0 0; }
+  25% { translate: 0.7px -0.8px; }
+  50% { translate: -0.8px 0.4px; }
+  75% { translate: 0.5px 0.8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dialogue-em,
+  .dialogue-em-shake-char {
+    animation: none !important;
+  }
+}
+.reduce-motion .dialogue-em,
+.reduce-motion .dialogue-em-shake-char {
+  animation: none !important;
+}

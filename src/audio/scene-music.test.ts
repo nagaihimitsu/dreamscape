@@ -36,6 +36,15 @@ describe("the screen's music", () => {
     expect(music(null, { opening: true })).toEqual({ track: null, duck: "none" });
   });
 
+  it("plays 旅の音楽室's track at full level over any screen (2026-11-13), and the screen's own again without it", () => {
+    const scene = game({ activeEncounter: { phase: "quiz", frame: frame({ bgm: "tense" }) } });
+    expect(music(scene, { roomTrack: "tj_fort_theme" })).toEqual({ track: "tj_fort_theme", duck: "none" });
+    expect(music(game(), { roomTrack: "night_theme", riding: true })).toEqual({ track: "night_theme", duck: "none" });
+    expect(music(scene)).toEqual({ track: "tense", duck: "quiz" });
+    // Silence without a music list, as everywhere.
+    expect(sceneMusic(null, shown(game(), { roomTrack: "tj_fort_theme" }))).toEqual({ track: null, duck: "none" });
+  });
+
   it("plays free time's three tracks by the game clock, wrapping past midnight", () => {
     const at = (hours: number, minutes = 0) => music(game({}, hours * 60 + minutes)).track;
     expect(at(4, 59)).toBe("free_night");

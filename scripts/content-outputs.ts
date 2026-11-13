@@ -29,6 +29,8 @@ export const AMBIENCE_FILE = `${GENERATED_DIRECTORY}/ambience.json`;
 const NO_AMBIENCE = { schemaVersion: 1, sources: [], tracks: [], journeys: {} };
 /** Which layer gives each sound, track and ambience track, and each journey's voices (audio-layers.ts audioLayersOf; Debug's 音と演出の見本). */
 export const AUDIO_LAYERS_FILE = `${GENERATED_DIRECTORY}/audio-layers.json`;
+/** Each scene's voiced lines and # bgm: tracks (scene-audio.ts sceneAudioOf; the music room, src/features/journey/music-room.ts). */
+export const SCENE_AUDIO_FILE = `${GENERATED_DIRECTORY}/scene-audio.json`;
 
 /**
  * Write every output of a validated build into `root`. `derivedFiles` (served
@@ -42,7 +44,7 @@ export function writeContentOutputs(
     catalogOverrides?: Partial<Record<CatalogKind, unknown>>;
     sceneConditions?: { conditions: Record<string, unknown>; stories: Record<string, string[]> };
     scenes?: { scenes: unknown[]; rewards: unknown[] }; albumImages?: readonly unknown[]; soundVolumes?: Readonly<Record<string, number>>;
-    music?: unknown; ambience?: unknown; audioLayers?: unknown },
+    music?: unknown; ambience?: unknown; audioLayers?: unknown; sceneAudio?: unknown },
   derivedFiles: ReadonlyMap<string, string> = new Map(),
 ): void {
   const directory = path.join(root, GENERATED_DIRECTORY);
@@ -70,6 +72,8 @@ export function writeContentOutputs(
   writeFileSync(path.join(root, AMBIENCE_FILE), `${JSON.stringify(validated.ambience ?? NO_AMBIENCE, null, 2)}\n`);
   // The audio by layer (src/dev/EffectsRoom.tsx imports the file, so it is written even with no audio).
   writeFileSync(path.join(root, AUDIO_LAYERS_FILE), `${JSON.stringify(validated.audioLayers ?? { schemaVersion: 1, layers: [] }, null, 2)}\n`);
+  // What each scene lets the player hear (the music room imports the file, so it is written even with nothing).
+  writeFileSync(path.join(root, SCENE_AUDIO_FILE), `${JSON.stringify(validated.sceneAudio ?? { schemaVersion: 1, stories: {} }, null, 2)}\n`);
   // The game imports the validated, merged catalogs only from this mirror.
   writeContentMirror(sources, mirrorDirectory(root), validated.catalogOverrides);
   // Vite serves and builds the game's images from this folder (publicDir in vite.config.ts).

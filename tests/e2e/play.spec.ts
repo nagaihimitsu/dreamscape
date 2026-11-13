@@ -187,22 +187,21 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   expect(started.ap).toBeLessThan(result.ap);
   await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
   // The travel transition outlasts that hold (0.45 s with reduced motion). Its overlay takes every tap
-  // while it shows (UI redesign H22): a tap on the date's line under it does not read on, nor one on
-  // its card. The clock is held, so the transition stays meanwhile.
+  // while it shows (UI redesign H22): a tap on it ends it at once (2026-11-13) and never reaches the
+  // date's line under it, and the taps are held a moment again as it goes, so a second tap reads
+  // nothing on either. The clock is held, so nothing else ends meanwhile.
   const transition = page.getByTestId("travel-transition");
   await expect(transition).toBeVisible();
   await expect(page.locator("[data-tap-settling], html[data-tap-hold]"), "the start hold is over").toHaveCount(0);
   const firstLine = await line.textContent();
   const onLine = await ops.centerOf(line);
   await page.touchscreen.tap(onLine.x, onLine.y);
+  await expect(transition).toHaveCount(0);
   await expect(line).toHaveText(firstLine!);
   expect((await readSave(page)).revision).toBe(started.revision);
-  // The card sits in the middle of the transition's overlay.
-  const card = await ops.centerOf(transition);
-  await page.touchscreen.tap(card.x, card.y);
-  await expect(transition).toBeVisible();
+  await page.touchscreen.tap(onLine.x, onLine.y);
+  await expect(line).toHaveText(firstLine!);
   await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
-  await expect(transition).toHaveCount(0);
   await page.clock.resume();
   await ops.settled(page);
   const opened = await readSave(page);

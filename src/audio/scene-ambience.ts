@@ -39,7 +39,8 @@ function storyAmbience(play: AmbienceJourneyPlay, game: MusicGame): string | nul
  */
 export function sceneAmbience(play: AmbienceJourneyPlay | null | undefined, screen: MusicScreen): SceneMusic {
   const { game } = screen;
-  if (!play || !game || screen.opening || screen.endRoll || screen.nightVisual || screen.packing || screen.riding) return { track: null, duck: "none" };
+  if (!play || !game || screen.opening || screen.endRoll || screen.nightVisual || screen.packing || screen.riding || screen.roomTrack)
+    return { track: null, duck: "none" };
   const track = storyAmbience(play, game);
   return { track, duck: track === null ? "none" : musicDuck(screen, game) };
 }

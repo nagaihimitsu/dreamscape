@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # scene: date
 # title: 十三人目
 # when: episodes delhi >= 1
+# hint: デリーの観光を一つ終えてから
 # background: gt_bg_delhi_india_gate
 # speaker: narrator
 インド門の前の芝生は、敷物でまだら模様になっていた。風船売り、アイスの屋台、銀の弁当箱を開ける家族。戦没者の記念門の足もとで、デリーの人たちは、日曜の居間みたいにくつろいでいる。

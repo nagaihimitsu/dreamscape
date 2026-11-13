@@ -103,9 +103,11 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_amber_fort
 { quiz_correct:
     # speaker: heroine
+    # em: 鏡
     何千もの小さな鏡。だから点で描いたんですね。……星じゃない。鏡なんだ
 - else:
     # speaker: enemy
+    # em: 鏡
     鏡だ。何千もの、小さな鏡。星に見えるのは、写真がぼやけていたからだ。実物を見ていない証拠だ
 }
 # speaker: narrator

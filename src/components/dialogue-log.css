@@ -1,3 +1,5 @@
 .vn-log { max-height: 52vh; overflow: auto; padding: 0; list-style: none; }
 .vn-log li { padding: 10px 0; border-bottom: 1px solid var(--ds-parchment-line); }
 .vn-log p { margin: 4px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+/* A line's # em: and # em_shake: words (2026-11-13): bold in the accent colour on parchment, without motion. */
+.vn-log .vn-log-em { color: var(--ds-marker); font-weight: 700; }

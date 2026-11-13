@@ -9,6 +9,7 @@ INCLUDE modules.ink
 # scene: date
 # title: 皇帝の不満リスト
 # when: episodes agra >= 1
+# hint: アーグラの観光を一つ終えてから
 # on_done: money -80
 # background: gt_bg_agra_ram_bagh
 # speaker: narrator

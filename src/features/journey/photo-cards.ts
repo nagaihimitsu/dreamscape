@@ -47,32 +47,48 @@ export const WAIT_CARD_ID = ":wait";
 export const TOUR_CARD_ID = ":tour";
 export const STAY_CARD_ID = ":stay";
 
-/** A card of the row: 「待機」 (the waits), a place, the city's tour (booking, cancelling) or 「ホテルに戻る」 (休む). */
+/** The id of a locked date's card (`:locked:<date ID>`; no place id starts with a colon). */
+const LOCKED_PREFIX = ":locked:";
+export const lockedCardId = (dateId: string): string => `${LOCKED_PREFIX}${dateId}`;
+
+/**
+ * A card of the row: 「待機」 (the waits), a place, a date not open yet whose writer gave it a hint (`# hint:`, 2026-11-13;
+ * date-rules.ts hintedLockedDates), the city's tour (booking, cancelling) or 「ホテルに戻る」 (休む).
+ */
 export type RowCard =
   | { kind: "wait"; id: typeof WAIT_CARD_ID }
   | { kind: "place"; id: string; entry: PhotoCardEntry }
+  | { kind: "locked"; id: string; dateId: string; hintJa: string }
   | { kind: "tour"; id: typeof TOUR_CARD_ID }
   | { kind: "stay"; id: typeof STAY_CARD_ID };
 
 /**
- * The row: 「待機」 at the left end (always), the places' cards, then the tour while one is offered or booked here, then
- * 「ホテルに戻る」 at the right end (always).
+ * The row: 「待機」 at the left end (always), the places' cards, the locked dates' cards (`locked`, in their order), then
+ * the tour while one is offered or booked here, then 「ホテルに戻る」 at the right end (always).
  */
-export function rowCards(entries: readonly PhotoCardEntry[], { tour }: { tour: boolean }): RowCard[] {
+export function rowCards(entries: readonly PhotoCardEntry[], { tour, locked = [] }: {
+  tour: boolean;
+  locked?: readonly { dateId: string; hintJa: string }[];
+}): RowCard[] {
   const places = entries.map((entry): RowCard => ({ kind: "place", id: entry.place.id, entry }));
-  return [{ kind: "wait", id: WAIT_CARD_ID }, ...places, ...(tour ? [{ kind: "tour", id: TOUR_CARD_ID } as const] : []), { kind: "stay", id: STAY_CARD_ID }];
+  const lockedCards = locked.map((date): RowCard => ({ kind: "locked", id: lockedCardId(date.dateId), dateId: date.dateId, hintJa: date.hintJa }));
+  return [{ kind: "wait", id: WAIT_CARD_ID }, ...places, ...lockedCards, ...(tour ? [{ kind: "tour", id: TOUR_CARD_ID } as const] : []),
+    { kind: "stay", id: STAY_CARD_ID }];
 }
+
+/** What a locked date's card says (its face's words for readers, and the live regions' when it is chosen): the writer's hint only. */
+export const lockedCardJa = (hintJa: string): string => `まだ行けません：${hintJa}`;
 
 /**
  * The cards new to the row (2026-11-13): those of `ids` (the row as it shows now, in its order) that `seen` (every card
  * the row has shown in this city during this play) does not hold. None the first time the row shows (`seen` null: what
- * a load, a new game or an arrival brings is not new), and never 「待機」 or 「ホテルに戻る」 (always in the row). A
- * destination opened by the story (a date whose `when:` became true, a night's encounter...) is a new place card, or the
- * tour's card once a tour is offered.
+ * a load, a new game or an arrival brings is not new), and never 「待機」, 「ホテルに戻る」 (always in the row) or a locked
+ * date's card. A destination opened by the story (a date whose `when:` became true, a night's encounter...) is a new
+ * place card, or the tour's card once a tour is offered.
  */
 export function newCardIds(seen: ReadonlySet<string> | null, ids: readonly string[]): string[] {
   if (!seen) return [];
-  return ids.filter((id) => id !== WAIT_CARD_ID && id !== STAY_CARD_ID && !seen.has(id));
+  return ids.filter((id) => id !== WAIT_CARD_ID && id !== STAY_CARD_ID && !id.startsWith(LOCKED_PREFIX) && !seen.has(id));
 }
 
 /** The cards the row has shown during this play, per city (GameApp's memory: a load, a new game or Debug's return empties it). */
@@ -88,13 +104,14 @@ export function defaultCardIndex(cards: readonly RowCard[]): number {
 
 /**
  * Whether a card takes a swipe up (and, in the row, Enter on it): a place's departs (or starts there), 「待機」's waits
- * and 「ホテルに戻る」's rests (user decision 2026-11-11), each by what its card under the row has chosen; the tour's never.
+ * and 「ホテルに戻る」's rests (user decision 2026-11-11), each by what its card under the row has chosen; the tour's and a
+ * locked date's never.
  */
 export function takesSwipe(card: RowCard): boolean {
-  return card.kind !== "tour";
+  return card.kind !== "tour" && card.kind !== "locked";
 }
 
-/** The selection a card stands for: its place, the hotel's 休む (「ホテルに戻る」), or none (「待機」, the tour). */
+/** The selection a card stands for: its place, the hotel's 休む (「ホテルに戻る」), or none (「待機」, a locked date, the tour). */
 export function cardTarget(card: RowCard): SelectionTarget | null {
   return card.kind === "place" ? { kind: "place", placeId: card.id } : card.kind === "stay" ? { kind: "sleep" } : null;
 }

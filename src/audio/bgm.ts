@@ -26,6 +26,11 @@ export function journeyMusicPlay(journeyId: string): MusicPlay | null {
   return Object.hasOwn(data.journeys, journeyId) ? data.journeys[journeyId] : data.root;
 }
 
+/** What a registered track is for (its `useJa`, as the credits list says it), or undefined for a track the build lacks. */
+export function trackUseJa(trackId: string): string | undefined {
+  return data.tracks.find((track) => track.id === trackId)?.useJa;
+}
+
 /** The level of each lowering (a voice's halves it again: loop-player.ts). */
 const DUCK_LEVELS: Readonly<Record<MusicDuck, number>> = { none: 1, quiz: 0.35, quiet: 0.5, travel: 0.6 };
 

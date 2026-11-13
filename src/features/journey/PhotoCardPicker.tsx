@@ -6,8 +6,8 @@ import { Icon } from "../../components/icons";
 import { battlePlayed } from "../../domain/conditions";
 import type { GameState } from "../../domain/game";
 import {
-  cardKinds, cardScales, nearestIndex, photoCardLabel, stepIndex, takesSwipe, type CardArrangement, type CardKinds, type PhotoCardEntry,
-  type RowCard,
+  cardKinds, cardScales, lockedCardJa, nearestIndex, photoCardLabel, stepIndex, takesSwipe, type CardArrangement, type CardKinds,
+  type PhotoCardEntry, type RowCard,
 } from "./photo-cards";
 import { placeDisplayName } from "./travel-labels";
 import { centreOf, INSTANT, reducedMotion, rowItems, useCardGestures, type CardSwipe } from "./useCardGestures";
@@ -166,13 +166,15 @@ export function PhotoCardPicker({ game, cards, chosenId, onChoose, arrangement, 
       {cards.map((rowCard, index) => {
         const face = cardFace(game, rowCard, recommendedId);
         const isChosen = rowCard.id === chosenId;
+        const locked = rowCard.kind === "locked";
         const marks = [face.top, face.bottom, face.available ? null : "今は行けない"].filter((mark): mark is string => !!mark);
-        const classes = ["photo-card", face.kinds === "none" ? null : `is-${face.kinds}`, face.available ? null : "is-unavailable"];
+        const classes = ["photo-card", face.kinds === "none" ? null : `is-${face.kinds}`, face.available ? null : "is-unavailable", locked ? "is-locked" : null];
         return <li key={rowCard.id} data-card-id={rowCard.id} data-testid={face.testId} data-selected={isChosen ? "true" : undefined}
           data-joining={joining.includes(rowCard.id) ? "true" : undefined}>
           <button type="button" className={classes.filter((name) => name).join(" ")} tabIndex={rowCard.id === tabStop ? 0 : -1}
             aria-current={isChosen ? "true" : undefined} data-cue={row && isChosen && swipe?.go ? "true" : undefined}
-            aria-label={photoCardLabel({ position: index + 1, count: cards.length, name: face.name, marks })}
+            // A locked date reads 「まだ行けません：<hint>」 (its writer's words, nothing more).
+            aria-label={photoCardLabel({ position: index + 1, count: cards.length, name: locked ? lockedCardJa(face.name) : face.name, marks: locked ? [] : marks })}
             // A drag that started on it clicks nothing (useCardGestures takes that click away).
             onClick={() => choose(rowCard.id)}
             onKeyDown={(key) => {
@@ -243,6 +245,10 @@ function cardFace(game: GameState, card: RowCard, recommendedId: string | null |
   if (card.kind === "tour")
     return { testId: "travel-tour", name: "ツアー", available: true, top: game.tour?.status === "booked" ? "予約済み" : null, bottom: null, kinds, swipeable,
       photo: <PlainTile><Icon name="ticket" /></PlainTile> };
+  // A date not open yet (2026-11-13, # hint:): a grey silhouette with a lock, its name the writer's hint (nothing else).
+  if (card.kind === "locked")
+    return { testId: `travel-locked-${card.dateId}`, name: card.hintJa, available: false, top: null, bottom: null, kinds, swipeable,
+      photo: <span className="photo-card-plain photo-card-silhouette"><Icon name="lock" /></span> };
   const { entry } = card;
   const placeId = entry.place.id;
   const here = placeId === game.travel.currentPlaceId;
@@ -263,6 +269,7 @@ export function rowCardName(game: GameState, card: RowCard): string {
   if (card.kind === "wait") return "待機";
   if (card.kind === "stay") return "ホテルに戻る";
   if (card.kind === "tour") return "ツアー";
+  if (card.kind === "locked") return lockedCardJa(card.hintJa);
   return placeDisplayName(game, card.entry.place.events[0].place);
 }
 

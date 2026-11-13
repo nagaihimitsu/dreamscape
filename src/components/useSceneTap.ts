@@ -2,9 +2,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { DialogueTextHandle } from "./DialogueText";
 import { dialogueObstructed, tapsObstructed } from "./dialogueObstructed";
 import { DOUBLE_TAP_WINDOW_MS, isSecondTap } from "./double-tap";
+import { showIgnoredTap } from "./ignored-tap";
 import { DIALOGUE_LINE_ATTRIBUTE, ignoresWindowToolTap, pressesControl, shouldAdvanceOnTap, windowToolAt, type SceneTapState, type TapNode } from "./scene-tap";
 
 const elementOf = (target: EventTarget | null) => target instanceof Element ? target : null;
+/** What the scene reads of a click. */
+type TapEvent = { target: EventTarget | null; detail: number; clientX: number; clientY: number };
+/** Where a pointer tapped (`detail` 0: a click without a pointer, as a screen reader's or Enter's, has no point). */
+const pointOf = (event: TapEvent) => (event.detail > 0 ? { x: event.clientX, y: event.clientY } : undefined);
 
 /**
  * The click handling of a story scene: a tap that is not on a control does what
@@ -52,12 +57,16 @@ export function useSceneTap({ active, ...state }: Omit<SceneTapState, "obstructe
     const timer = window.setTimeout(() => setSettlingFrom(null), DOUBLE_TAP_WINDOW_MS);
     return () => window.clearTimeout(timer);
   }, [settlingFrom]);
-  function read(target: Element | null) {
+  /** A tap on the scene (`point`: where a pointer tapped; none for a click without one, as a screen reader's). */
+  function read(target: Element | null, point?: { x: number; y: number }) {
     const scene = root.current;
     if (!active || !scene) return;
     const settling = pressedAt.current !== null && isSecondTap(performance.now() - pressedAt.current);
-    if (shouldAdvanceOnTap(target, scene, { ...state, settling, obstructed: dialogueObstructed() }))
-      line.current?.activate();
+    const tap = { ...state, settling, obstructed: dialogueObstructed() };
+    if (shouldAdvanceOnTap(target, scene, tap)) line.current?.activate();
+    // A tap that would read on but comes the moment after a press (its double tap's second): a faint ring where it
+    // landed says it was heard and ignored (2026-11-13, ignored-tap.ts).
+    else if (settling && point && shouldAdvanceOnTap(target, scene, { ...tap, settling: false })) showIgnoredTap(point.x, point.y);
   }
   const readFromPage = useRef(read);
   readFromPage.current = read;
@@ -81,6 +90,7 @@ export function useSceneTap({ active, ...state }: Omit<SceneTapState, "obstructe
       if (event.detail > 0 && ignoresWindowToolTap(windowToolAt(target, root.current), pressed.current, sincePress, distance)) {
         event.preventDefault();
         event.stopPropagation();
+        showIgnoredTap(event.clientX, event.clientY);
         overlaid = false;
         return;
       }
@@ -95,9 +105,9 @@ export function useSceneTap({ active, ...state }: Omit<SceneTapState, "obstructe
       overlaid = false;
     };
     // Clicks inside the scene reach its root's onClick; this one hears the rest of the page (its margin).
-    const onPageClick = (event: Event) => {
+    const onPageClick = (event: MouseEvent) => {
       const target = elementOf(event.target);
-      if (target && !root.current?.contains(target)) readFromPage.current(target);
+      if (target && !root.current?.contains(target)) readFromPage.current(target, pointOf(event));
     };
     document.addEventListener("pointerdown", onPointerDown, true);
     document.addEventListener("pointercancel", onPointerCancel, true);
@@ -115,7 +125,7 @@ export function useSceneTap({ active, ...state }: Omit<SceneTapState, "obstructe
     /** Spread on the scene's root element. */
     props: {
       ref: attach,
-      onClick: (event: { target: EventTarget | null }) => read(elementOf(event.target)),
+      onClick: (event: TapEvent) => read(elementOf(event.target), pointOf(event)),
       "data-tap-settling": active && settlingFrom !== null || undefined,
     },
   };

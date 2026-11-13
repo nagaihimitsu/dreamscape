@@ -13,10 +13,11 @@ import { FreeTimeExtras } from "./FreeTimeExtras";
 import { SIDE_BY_SIDE_QUERY } from "./free-time-layout";
 import { timeOfDayTint } from "./time-of-day";
 import { PhotoCardPicker, rowCardName } from "./PhotoCardPicker";
-import { PlaceCard, sleepWayJa, StayCard, TourCard, WaitCard } from "./PlaceCard";
+import { LockedCard, PlaceCard, sleepWayJa, StayCard, TourCard, WaitCard } from "./PlaceCard";
 import { Announce, mapPlaces, PlaceMapDialog } from "./PlaceMap";
+import { hintedLockedDates } from "../../domain/date-rules";
 import {
-  cardOfTarget, cardTarget, chooseArrangement, chooseSleepWay, chooseWait, defaultCardIndex, departureOf, joinedCardsJa, newCardIds, NO_PLAN,
+  cardOfTarget, cardTarget, chooseArrangement, chooseSleepWay, chooseWait, defaultCardIndex, departureOf, joinedCardsJa, lockedCardJa, newCardIds, NO_PLAN,
   photoCardAnnouncement, photoCardEntries, refusalJa, refusalNoteJa, refusalReasonsJa, rowCards, sleepRefusalJa, sleepRefusalReasonsJa, syncRow, takesSwipe,
   TOUR_CHOSEN_JA, WAIT_REFUSAL_JA, WAIT_REFUSAL_REASON_JA, waitChosenJa, waitLabelJa,
   type CardArrangement, type DeparturePlan, type PhotoCardEntry, type RowCard,
@@ -70,7 +71,11 @@ export function PhotoCardFreeTime({
   const { current, nearby, other, candidates, recommendedMainId } = api.destinations;
   const places = useMemo(() => [...nearby, ...other], [nearby, other]);
   const tour = getTourOffers(game).length > 0 || game.tour?.status === "booked";
-  const cards = useMemo(() => rowCards(photoCardEntries(places, api.choices), { tour }), [places, api.choices, tour]);
+  // The dates not open yet whose writer gave a hint (# hint:, 2026-11-13): locked cards after the places', never chosen to go.
+  const locked = useMemo(() => hintedLockedDates(game), [game]);
+  const lockedKey = locked.map((date) => `${date.dateId}:${date.hintJa}`).join("\n");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const cards = useMemo(() => rowCards(photoCardEntries(places, api.choices), { tour, locked }), [places, api.choices, tour, lockedKey]);
   const joining = useJoiningCards(game, cards, seenCards, (fresh) => {
     // The row turns to the first new card (quietly, as the screen's own choice), and the live region names them all.
     setPick(fresh[0].id);
@@ -112,6 +117,7 @@ export function PhotoCardFreeTime({
     setPick(cardId);
     api.choose(cardTarget(card));
     if (card.kind === "tour") api.announce(TOUR_CHOSEN_JA);
+    if (card.kind === "locked") api.announce(lockedCardJa(card.hintJa));
     if (card.kind === "wait") {
       // The wait its swipe up takes (newly chosen: the first, 「30分待つ」).
       const shown = chooseWait(waitOptions, cardId === chosen.id ? waitPick : null);
@@ -130,6 +136,7 @@ export function PhotoCardFreeTime({
         heading={heading} quietGo={quietGo} />;
     if (card.kind === "stay") return <StayCard game={game} api={api} picked={sleepPick} onPick={setSleepPick} scope={scope} heading={heading} quietGo={quietGo} />;
     if (card.kind === "tour") return <TourCard game={game} onBook={onBookTour} onCancel={onCancelTour} heading={heading} />;
+    if (card.kind === "locked") return <LockedCard hintJa={card.hintJa} heading={heading} />;
     return <PlaceCard game={game} entry={card.entry} api={api} scope={scope} map={scope === "page"} heading={heading}
       plan={planOf(card.id)} onPlan={(change) => changePlan(card.id, change)} quietGo={quietGo} />;
   };

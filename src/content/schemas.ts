@@ -24,6 +24,11 @@ export const dateSchema = z
     when: conditionSchema.optional(),
     /** When the date is over for good, even if it was unlocked: a true `until` closes it. */
     until: conditionSchema.optional(),
+    /**
+     * The writer's hint (2026-11-13; also a date knot's or a one-scene date file's head `# hint:`): while `when` does
+     * not hold yet, free time's row shows the date as a locked card with these words (date-rules.ts hintedLockedDates).
+     */
+    hintJa: text.optional(),
     destinationId: id.optional(),
     allowAfterEnding: z.boolean().optional(),
     rewardOnlyOnce: z.boolean().default(true),

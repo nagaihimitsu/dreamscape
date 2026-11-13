@@ -10,6 +10,7 @@ INCLUDE modules.ink
 # scene: date
 # title: 手のひらに隠した名前
 # when: episodes jaipur >= 1
+# hint: ジャイプールの観光を一つ終えてから
 # on_done: money -340
 # background: gt_bg_jaipur_jal_mahal
 { cond("time night"):

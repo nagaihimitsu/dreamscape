@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import {
   albumImages,
   balance,
@@ -67,6 +67,10 @@ import type { SeenCards } from "../features/journey/photo-cards";
 import { nightButtons, NightScreen } from "../features/journey/NightScreen";
 import { CityRecords } from "../features/journey/CityProgress";
 import { MetPeople } from "../features/journey/MetPeople";
+import { JourneyNumbersCard } from "../features/journey/JourneyNumbers";
+import { MusicRoom } from "../features/journey/MusicRoom";
+import { musicRoomOpen } from "../features/journey/music-room";
+import { journeyNumbers } from "../features/journey/journey-numbers";
 import { freeTimePhotos, PhotoCredits } from "../features/journey/PhotoCredits";
 import { AlbumDialog } from "../features/journey/AlbumDialog";
 import { ALBUM_PHOTO_NOTICE_MS, AlbumPhotoNotice, FIRST_ALBUM_PHOTO_NOTICE_MS, type AlbumPhotoNoticeState } from "../features/journey/AlbumPhotoNotice";
@@ -143,12 +147,16 @@ import { holdTaps } from "../components/tap-hold";
 import { useDebugMode } from "./debug-mode";
 import { DebugModeSetting } from "./DebugModeSetting";
 import { canReturnToFreeTime, freeTimeReturnState, nextFreeTimeReturn, type FreeTimeReturn } from "./free-time-return";
+import { endIntroMovie, introChange, recordIntro, startIntroTiming, type IntroTiming } from "./intro-timing";
 import { relationshipChange, type RelationshipChange } from "../domain/relationship-change";
 import { RelationshipChangeNote } from "../components/RelationshipChangeNote";
 import { sceneConditionTruths } from "../domain/scene-conditions";
 import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
 import { portraitFocus } from "../components/speaker-focus";
 import { nameCutIn, speakerPlate } from "../components/speaker-plate";
+
+/** 最初の3分の計測's note (Debug mode only): its own chunk, loaded when ⚙設定 shows it (scripts/dist-guard.ts). */
+const IntroTimingNote = lazy(() => import("./IntroTimingNote"));
 
 /** Where a Debug relationship change shows (decision 23): the story scene on screen, else the map or free time until the next action. */
 function changeScreenKey(state: GameState): string {
@@ -212,6 +220,9 @@ export function GameApp({
   const [clueGleam, setClueGleam] = useState(0);
   // A journey's opening movie (manifest openingMovie) between 「旅をはじめる」 and the new game, with the names it starts with.
   const [opening, setOpening] = useState<{ videoPath: string; player: string; heroine: string } | null>(null);
+  // 最初の3分の計測 (Debug mode only; intro-timing.ts): from the last 「旅をはじめる」 in this tab, never saved; a load and
+  // Debug's return end it.
+  const introTiming = useRef<IntroTiming | null>(null);
   const session = useGameSession(storage, displaySettings.value.autoSave, (previous, next) => {
     // The player acted: the scene a load brought back is theirs again, and its cues sound (sound-effects.ts).
     holdSceneCues(false);
@@ -234,6 +245,7 @@ export function GameApp({
     // The action that ended a tour (tour stage 2a) says so in free time.
     if (previous.tour && !next.tour && next.completedTourIds.length > previous.completedTourIds.length) session.setNotice("ツアーが終わりました。");
     if (!showChangesRef.current) return;
+    if (introTiming.current) introTiming.current = recordIntro(introTiming.current, performance.now(), introChange(previous, next));
     const change = relationshipChange(previous, next);
     // Above the story scene on screen, or (decision 23) above the map or free time until the next action.
     if (change) setShownChange({ scene: changeScreenKey(next), change });
@@ -345,6 +357,9 @@ export function GameApp({
     } else if (step === "leave") onSwitchJourney(id);
   }
   const [recordsOpen, setRecordsOpen] = useState(false);
+  // 旅の音楽室 (MusicRoom.tsx): open, and the track it plays (the screen's own music again once it stops or closes).
+  const [musicRoom, setMusicRoom] = useState(false);
+  const [roomTrack, setRoomTrack] = useState<string | null>(null);
   const [albumOpen, setAlbumOpen] = useState(false);
   const [photoCreditsOpen, setPhotoCreditsOpen] = useState(false);
   const [scenePhotoOpen, setScenePhotoOpen] = useState(false);
@@ -388,6 +403,8 @@ export function GameApp({
     // A journey with an opening movie plays it first (not in Debug); the game starts when it ends, so its first scene
     // (the arrival's title, its sounds) is not run under the movie.
     const movie = isDebug ? undefined : getJourney(journeyId)?.openingMovie;
+    // Debug mode measures the first minutes from here (with and without the movie).
+    introTiming.current = debugOn ? startIntroTiming(performance.now(), !!movie) : null;
     if (movie) setOpening({ videoPath: movie.videoPath, player: playerName, heroine: heroineName });
     else startJourney(playerName, heroineName);
   }
@@ -422,8 +439,9 @@ export function GameApp({
     seenCards.current = new Map();
     setSeenMarks(null);
     nightShown.current = null;
-    // The moments waiting belonged to the play before; the loaded game shows its recap.
+    // The moments waiting belonged to the play before; the loaded game shows its recap. So did Debug's measure.
     moments.restart(true);
+    introTiming.current = null;
     // A load can bring back the same date run (the same scene key): its earlier change is not shown again, nor its photo card.
     setShownChange(null);
     setPhotoNotice(null);
@@ -443,6 +461,7 @@ export function GameApp({
     if (!point || !current || !canReturnToFreeTime(point, current, journeyId, debugOn)) return;
     if (!session.replace(freeTimeReturnState(point, current))) return;
     moments.restart(false);
+    introTiming.current = null;
     seenCards.current = new Map();
     setSeenMarks(null);
     setReplacedGame((count) => count + 1);
@@ -510,7 +529,7 @@ export function GameApp({
   const screen = nightScreen && game ? `night:${game.currentCityId}` : screenOnShow(game, { sceneEpoch, showRomanceEnding });
   // The title card, the recap, the packing and the credit roll (2026-11-11). A game opened on its save (not Debug) is resumed.
   const moments = useJourneyMoments({ game, screen, resumed: !isDebug && loaded.status === "loaded",
-    reduceMotion: displaySettings.value.reduceMotion, effectPlaying: travelEffectPlaying });
+    reduceMotion: displaySettings.value.reduceMotion, effectPlaying: travelEffectPlaying, learnedWords: learnedWords.learned });
   momentsRef.current = moments.committed;
   // The music of what this screen shows (src/audio/scene-music.ts): the journey's tracks (the game's own journey, also in
   // Debug), the scene's # bgm:, and the quiz's, a quiet line's and a ride's lowering. Never anything of the relationship.
@@ -518,6 +537,7 @@ export function GameApp({
   const musicScreen: MusicScreen = {
     game, endRoll: moments.endRollShown, nightVisual, riding, packing: !!moments.packingScene,
     romanceEnding: showRomanceEnding, nightScreen: !!(nightScreen && dayEnd), opening: !!opening,
+    ...(musicRoom && roomTrack ? { roomTrack } : {}),
   };
   useSceneMusic(sceneMusic(journeyMusicPlay(musicJourneyId), musicScreen));
   // The ambience under it (src/audio/scene-ambience.ts): the scene's # ambience:, else its place's own, in story scenes only.
@@ -527,6 +547,7 @@ export function GameApp({
     if (shownScreen.current === screen) return;
     shownScreen.current = screen;
     if (screen.startsWith("free:") || screen.startsWith("night:")) window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    if (screen.startsWith("free:") && introTiming.current) introTiming.current = recordIntro(introTiming.current, performance.now(), { milestones: ["free"] });
     focusSceneHeading(main.current);
   }, [screen]);
   useEffect(() => {
@@ -1058,10 +1079,18 @@ export function GameApp({
           {game.endingReached && <span className="records-relationship">交際中</span>}
         </p>
         <CityRecords game={game} />
+        {/* 旅の数字 (2026-11-13): the journey so far in a few numbers, counting up as the records open. */}
+        <JourneyNumbersCard numbers={journeyNumbers(game, learnedWords.learned)} reduceMotion={displaySettings.value.reduceMotion} />
         <MetPeople game={game} />
         {isJourneyComplete(game) && <button type="button" className="secondary" onClick={() => { setRecordsOpen(false); moments.openEndRoll(); }}>
           エンドロールを見る</button>}
+        {/* 旅の音楽室 (2026-11-13): once the first city is cleared. */}
+        {musicRoomOpen(game) && <button type="button" className="secondary" data-testid="music-room-open"
+          onClick={() => { setRecordsOpen(false); setMusicRoom(true); }}>旅の音楽室</button>}
       </Modal>}
+      {musicRoom && game && <MusicRoom game={game} playing={roomTrack} onPlay={setRoomTrack}
+        bgmOn={displaySettings.value.bgm} voiceOn={displaySettings.value.voice}
+        onClose={() => { setMusicRoom(false); setRoomTrack(null); }} />}
       {albumOpen && game && <AlbumDialog album={game.album} currentCityId={game.currentCityId} onClose={() => setAlbumOpen(false)} />}
       {photoCreditsOpen && creditPhotos.length > 0 && <PhotoCredits photos={creditPhotos} onClose={() => setPhotoCreditsOpen(false)} />}
       {scenePhotoOpen && scenePhoto && <BackgroundCredits asset={scenePhoto} onClose={() => setScenePhotoOpen(false)} />}
@@ -1322,6 +1351,8 @@ export function GameApp({
             </form>
           )}
           {!isDebug && <DebugModeSetting debugMode={debugMode} />}
+          {/* 最初の3分の計測 (Debug mode only), loaded when shown. */}
+          {debugOn && <Suspense fallback={null}><IntroTimingNote timing={introTiming.current} /></Suspense>}
           <button type="button" className="text-button credits-entry"
             onClick={() => { setSettings(false); setCreditsOpen(true); }}>出典・権利の一覧</button>
           {!isDebug && oldDataStorage && <button type="button" className="text-button old-data-entry"
@@ -1341,6 +1372,7 @@ export function GameApp({
       {creditsOpen && <CreditsDialog onClose={() => setCreditsOpen(false)} />}
       {opening && <OpeningMovie key={opening.videoPath} src={`${import.meta.env.BASE_URL}${opening.videoPath}`}
         muted={!displaySettings.value.bgm} onEnd={() => {
+          if (introTiming.current) introTiming.current = endIntroMovie(introTiming.current, performance.now());
           setOpening(null);
           startJourney(opening.player, opening.heroine);
         }} />}
