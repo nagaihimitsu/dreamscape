@@ -1,0 +1,119 @@
+/* Raju's haggle (Skin.tsx): over the scene's picture (the fort's gate), Raju on the left from the bottom, his bubble over
+   him, the paper of his prices on the right. */
+.mg-raju-haggle { position: absolute; inset: 0; color: var(--ds-ink); }
+/* Raju: his standing picture, feet at the bottom, never wider than the left half (the paper keeps the right). */
+.mg-raju-haggle-raju { position: absolute; left: 0; bottom: 0; width: 50%; height: 64%; }
+.mg-raju-haggle-raju > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
+.mg-raju-haggle-raju[data-figure="drawn"] { display: flex; align-items: center; justify-content: center; }
+.mg-raju-haggle-drawn-map { width: 86%; height: auto; transform: rotate(-6deg); filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35)); }
+/* His glad face bobs a little; sulky, he turns a little away. */
+.mg-raju-haggle[data-mood="glad"] .mg-raju-haggle-raju { animation: mg-raju-haggle-bob 700ms ease-in-out infinite alternate; }
+.mg-raju-haggle[data-mood="sulky"] .mg-raju-haggle-raju { transform: rotate(-2deg) translateX(-2%); transform-origin: 50% 100%; transition: transform 200ms ease-out; }
+@keyframes mg-raju-haggle-bob { from { transform: translateY(0); } to { transform: translateY(-1.5%); } }
+.mg-raju-haggle[data-still] .mg-raju-haggle-raju { animation: none; transform: none; }
+
+/* His words: a speech bubble over him, its tail down to his head. */
+.mg-raju-haggle-bubble {
+  position: absolute;
+  top: 4%;
+  left: 4%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: min(64%, 300px);
+  margin: 0;
+  padding: 8px 12px 8px 8px;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 14px;
+  background: var(--ds-parchment);
+  box-shadow: var(--ds-card-shadow);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  animation: mg-raju-haggle-say 200ms var(--ease-out, ease-out) both;
+}
+.mg-raju-haggle-bubble::after {
+  content: "";
+  position: absolute;
+  left: 26px;
+  bottom: -9px;
+  width: 16px;
+  height: 16px;
+  border-right: 1px solid var(--ds-parchment-line);
+  border-bottom: 1px solid var(--ds-parchment-line);
+  background: var(--ds-parchment);
+  transform: rotate(45deg);
+}
+@keyframes mg-raju-haggle-say { from { opacity: 0; transform: translateY(4px); } }
+.mg-raju-haggle-face { flex: none; width: 32px; height: 32px; }
+
+/* The paper of his prices: a page torn from a notebook, the price on show large in a frame with a mark, passed ones struck
+   out, coming ones faint (not colour alone); the bar under it is the time before he lowers it. */
+.mg-raju-haggle-paper {
+  position: absolute;
+  top: 25%;
+  right: 4%;
+  width: 44%;
+  max-width: 210px;
+  padding: 8px 10px 12px;
+  border-radius: 4px 6px 3px 5px;
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 25px, rgba(120, 160, 200, 0.28) 25px 26px),
+    #f6f0e2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  transform: rotate(1.5deg);
+}
+.mg-raju-haggle-paper-title { margin: 0 0 4px; color: var(--ds-ink-muted); font-size: 12px; font-weight: 600; text-align: center; }
+.mg-raju-haggle-paper ol { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.mg-raju-haggle-paper li {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 6px;
+  min-height: 34px;
+  padding: 2px 6px 2px 2px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.mg-raju-haggle-mark { width: 1em; color: #c8302a; font-size: 14px; text-align: center; }
+.mg-raju-haggle-price { font-variant-numeric: tabular-nums; }
+.mg-raju-haggle-was { color: var(--ds-ink-muted); font-size: 13px; font-weight: 400; }
+.mg-raju-haggle-paper li[data-state="passed"] { opacity: 0.55; }
+.mg-raju-haggle-paper li[data-state="passed"] .mg-raju-haggle-price { text-decoration: line-through 2px #c8302a; }
+.mg-raju-haggle-paper li[data-state="coming"] { opacity: 0.45; font-size: 16px; }
+.mg-raju-haggle-paper li[data-state="now"] { border-color: var(--ds-ink); background: rgba(255, 255, 255, 0.7); font-size: 26px; }
+.mg-raju-haggle-paper li[data-state="now"] .mg-raju-haggle-mark { font-size: 16px; }
+/* Nothing he could sell for what the player has: the prices are the paper's words, smaller. */
+.mg-raju-haggle-paper[data-none] li { font-size: 15px; }
+/* The time left on the price on show. */
+.mg-raju-haggle-time { display: block; height: 6px; margin: 8px 4px 0; overflow: hidden; border-radius: 3px; background: rgba(59, 47, 42, 0.15); }
+.mg-raju-haggle-time > span { display: block; height: 100%; background: var(--ds-gold); transform-origin: 0 50%; }
+/* The deal: a red ink stamp over its price; no deal: over the paper. */
+.mg-raju-haggle-stamp {
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  padding: 0 6px;
+  border: 2px solid #c8302a;
+  border-radius: 6px;
+  background: rgba(255, 250, 241, 0.85);
+  color: #b2241f;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.6;
+  transform: translateY(-50%) rotate(-10deg);
+  animation: mg-raju-haggle-stamp 220ms var(--ease-out, ease-out) both;
+}
+.mg-raju-haggle-stamp-off { top: 46%; right: 50%; font-size: 18px; transform: translate(50%, -50%) rotate(-10deg); }
+@keyframes mg-raju-haggle-stamp { from { opacity: 0; scale: 1.6; } }
+
+@media (max-height: 620px) {
+  .mg-raju-haggle-bubble { top: 2%; font-size: 14px; }
+  .mg-raju-haggle-paper { top: 24%; }
+  .mg-raju-haggle-paper li { min-height: 30px; font-size: 17px; }
+  .mg-raju-haggle-paper li[data-state="now"] { font-size: 22px; }
+}

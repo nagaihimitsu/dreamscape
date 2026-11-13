@@ -1,0 +1,28 @@
+/* The step_pick engine (EnginePlay.tsx): the skin's field fills the middle, the two buttons sit at the bottom in thumb
+   reach: the leave button narrower and quieter on the left, the main one wide on the right (apart, so a thumb does not hit both). */
+.mg-engine-step-pick { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
+.mg-engine-step-pick .mg-step-pick-field { position: relative; flex: 1 1 auto; min-height: 0; overflow: hidden; user-select: none; -webkit-user-select: none; }
+.mg-engine-step-pick .mg-step-pick-controls { flex: none; padding: 10px 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
+.mg-engine-step-pick .mg-step-pick-hint { margin: 0 0 8px; font-size: 13px; line-height: 1.5; text-align: center; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+.mg-engine-step-pick .mg-step-pick-buttons { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr); gap: 14px; }
+/* The main button comes first in the page (focus order), drawn on the right. */
+.mg-engine-step-pick .mg-step-pick-take { grid-column: 2; grid-row: 1; }
+.mg-engine-step-pick .mg-step-pick-leave { grid-column: 1; grid-row: 1; }
+.mg-engine-step-pick .mg-step-pick-buttons > button { justify-content: center; min-height: 64px; text-align: center; touch-action: manipulation; }
+.mg-engine-step-pick .mg-step-pick-take { font-size: 19px; font-weight: 700; letter-spacing: 0.08em; }
+.mg-engine-step-pick .mg-step-pick-leave { font-size: 15px; }
+.mg-engine-step-pick .mg-step-pick-buttons > button[aria-disabled="true"] { background: var(--ds-slate-900); color: var(--ds-on-slate-muted); }
+.mg-engine-step-pick .mg-step-pick-auto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 64px;
+  margin: 0;
+  border-radius: 12px;
+  background: var(--ds-chip-bg);
+  font-size: 15px;
+}
+@media (max-height: 620px) {
+  .mg-engine-step-pick .mg-step-pick-controls { padding-top: 6px; }
+  .mg-engine-step-pick .mg-step-pick-buttons > button, .mg-engine-step-pick .mg-step-pick-auto { min-height: 54px; }
+}
