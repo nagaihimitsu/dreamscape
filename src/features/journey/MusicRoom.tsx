@@ -1,6 +1,7 @@
 import { useId, useMemo, useRef, useState } from "react";
 import { battles, cityContents, dates, getTour, landmarks, scenes } from "../../content";
 import sceneAudioJson from "../../content/generated/scene-audio.json";
+import type { SceneEntry } from "../../content/scene-schemas";
 import { getJourneyForCity } from "../../content/journeys";
 import { sceneAudioSchema, type SceneAudio } from "../../content/scene-audio";
 import { journeyMusicPlay, trackUseJa } from "../../audio/bgm";
@@ -64,14 +65,20 @@ export function MusicRoom({ game, isRead, playing, onPlay, bgmOn, voiceOn, onClo
     const reached = (cityId: string) => cityId === game.currentCityId || game.completedCityIds.includes(cityId) ||
       (at(cityId) >= 0 && at(cityId) < at(game.currentCityId));
     const done = scenes.filter((scene) => sceneCompleted(scene, game, reached));
+    const group = (scene: SceneEntry) => {
+      const { key, labelJa } = sceneGroup(scene, SCENE_NAMES);
+      return { key, labelJa: withNames(labelJa, game) };
+    };
+    // A visited place by its name; a city's hotel as 「…の宿」, as the voices' groups say it.
+    const placeName = (placeId: string) => {
+      const cityId = cityIds.find((id) => cityContents[id]?.travel.places.some((place) => place.id === placeId)) ?? game.currentCityId;
+      return cityContents[cityId]?.travelSettings.hotelPlaceId === placeId ? `${SCENE_NAMES.city(cityId)}の宿` : SCENE_NAMES.place(cityId, placeId);
+    };
     return {
       tracks: heardTracks({ play: journey ? journeyMusicPlay(journey.id) : null, visitedPlaceIds: cityIds.flatMap((cityId) => visitedPlaceIdsIn(game, cityId)),
-        scenes: done, audio: SCENE_AUDIO, labelOf: trackUseJa }),
-      voices: heardVoices({ scenes: done, audio: SCENE_AUDIO, names: (text) => withNames(text, game), isRead,
-        group: (scene) => {
-          const { key, labelJa } = sceneGroup(scene, SCENE_NAMES);
-          return { key, labelJa: withNames(labelJa, game) };
-        } }),
+        scenes: done, audio: SCENE_AUDIO, labelOf: trackUseJa, placeName,
+        sceneLabel: (scene) => group(scene).labelJa }),
+      voices: heardVoices({ scenes: done, audio: SCENE_AUDIO, names: (text) => withNames(text, game), isRead, group }),
     };
   }, [game, isRead]);
   const [voice, setVoice] = useState<VoicePlay | null>(null);

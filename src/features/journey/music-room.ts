@@ -103,26 +103,51 @@ export function sceneGroup(scene: Pick<RoomScene, "id" | "main" | "at" | "cityId
   return { key: `at:${labelJa}`, labelJa };
 }
 
+/** How many places or scenes a track's name lists before 「など」. */
+export const TRACK_LABEL_USES = 3;
+
 /**
  * The tracks heard: each visited place's own track (else the journey's usual place track), in the order of
  * `visitedPlaceIds`, then the `# bgm:` tracks of the completed scenes in their order, each once; only tracks the build
- * has (`labelOf` knows them).
+ * has (`labelOf` knows them). A place's track (one the journey's music plays at a place) is named by the visited places
+ * that play it (`placeName`; its words in the credits list every place, later cities' too: 2026-11-13 user decision),
+ * else by the completed scenes that play it (`sceneLabel`), each name once, the first TRACK_LABEL_USES and 「など」 after
+ * more. Another track keeps its words (`labelOf`), which say the kind of scene it is for.
  */
-export function heardTracks({ play, visitedPlaceIds, scenes, audio, labelOf }: {
+export function heardTracks<S extends RoomScene>({ play, visitedPlaceIds, scenes, audio, labelOf, placeName, sceneLabel }: {
   play: MusicPlay | null;
   visitedPlaceIds: readonly string[];
-  scenes: readonly RoomScene[];
+  scenes: readonly S[];
   audio: SceneAudio;
   labelOf: (trackId: string) => string | undefined;
+  placeName: (placeId: string) => string;
+  sceneLabel: (scene: S) => string;
 }): RoomTrack[] {
-  const ids: string[] = [];
-  if (play) for (const placeId of visitedPlaceIds) ids.push(Object.hasOwn(play.places, placeId) ? play.places[placeId] : play.place);
+  // Where each track was heard: at visited places, in completed scenes; in the order first heard.
+  const places = new Map<string, string[]>();
+  const inScenes = new Map<string, string[]>();
+  const order: string[] = [];
+  const add = (uses: Map<string, string[]>, trackId: string, where: string) => {
+    if (!order.includes(trackId)) order.push(trackId);
+    const names = uses.get(trackId) ?? [];
+    if (!names.includes(where)) names.push(where);
+    uses.set(trackId, names);
+  };
+  if (play) for (const placeId of visitedPlaceIds) add(places, Object.hasOwn(play.places, placeId) ? play.places[placeId] : play.place, placeName(placeId));
   for (const scene of scenes)
-    for (const address of sceneAddresses(scene)) ids.push(...(audio.stories[address]?.bgm ?? []));
-  return [...new Set(ids)].flatMap((id) => {
-    const labelJa = labelOf(id);
-    return labelJa ? [{ id, labelJa }] : [];
+    for (const address of sceneAddresses(scene))
+      for (const trackId of audio.stories[address]?.bgm ?? []) add(inScenes, trackId, sceneLabel(scene));
+  const placeTracks = new Set(play ? [play.place, ...Object.values(play.places)] : []);
+  const listed = (names: readonly string[]) => `${names.slice(0, TRACK_LABEL_USES).join("、")}${names.length > TRACK_LABEL_USES ? "など" : ""}`;
+  const tracks = order.flatMap((id) => {
+    const words = labelOf(id);
+    if (words === undefined) return [];
+    return [{ id, labelJa: placeTracks.has(id) ? listed(places.get(id) ?? inScenes.get(id) ?? []) : words }];
   });
+  // Two tracks heard in the same scenes only would read alike: 「（その1）」「（その2）」 tell them apart.
+  const count = (labelJa: string) => tracks.filter((track) => track.labelJa === labelJa).length;
+  return tracks.map((track, index) => count(track.labelJa) < 2 ? track
+    : { ...track, labelJa: `${track.labelJa}（その${tracks.slice(0, index + 1).filter((other) => other.labelJa === track.labelJa).length}）` });
 }
 
 /**
