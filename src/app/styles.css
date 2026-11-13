@@ -211,6 +211,9 @@ h3 {
 @media (prefers-reduced-motion: reduce) {
   .scene-artwork[data-entering][data-loaded] { animation: none; }
 }
+/* The title art's colour of the time of day (CanalScene `tint`, 2026-11-13; time-of-day.ts titleArtTint): one still layer over
+   the picture and under its caption, so the caption pill and the title card's text beside it keep their contrast. */
+.canal-scene-tint { position: absolute; inset: 0; pointer-events: none; }
 /* The art's caption: a display-only pill over the picture (§2.3, §2.4). */
 .scene-stamp {
   position: absolute;

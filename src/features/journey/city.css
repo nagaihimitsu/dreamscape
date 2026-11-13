@@ -57,6 +57,30 @@
   line-height: 1.6;
   margin: 2px 0 8px;
 }
+/* The stop's name and, once completed, its small seal of 「完」 (2026-11-13): the stamp's red-brown ink (#8a3324, about 7:1 on
+   the parchment; journey-moments.css .chapter-stamp-seal) in a ring, tilted as the stamp. Static. */
+.stop-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 2px 0 8px;
+}
+.stop-info .stop-title h3 { min-width: 0; margin: 0; }
+.stop-seal {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1.5px solid #8a3324;
+  border-radius: 50%;
+  color: #8a3324;
+  font-family: "Noto Serif JP", serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  transform: rotate(-8deg);
+}
 .stop-info p {
   font-size: 0.8rem;
   margin: 4px 0;

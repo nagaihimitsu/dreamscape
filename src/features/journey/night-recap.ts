@@ -1,4 +1,4 @@
-import { episodes, getCityContent } from "../../content";
+import { battleQuizzes, battles, episodes, getCityContent } from "../../content";
 import type { TravelPlace } from "../../content/travel-schemas";
 import { nightLineJa, todayRoute } from "../../domain/day-end";
 import type { GameState } from "../../domain/game";
@@ -25,6 +25,24 @@ export function nightRecap(game: GameState): NightRecap {
   const headlines = game.travel.todayEpisodeIds.flatMap((id) => episodes.filter((episode) => episode.id === id))
     .map((episode) => withNames(episode.clearTitleJa, game));
   return { headlines, route: route.length > 1 ? route : [], line: line === null ? null : withNames(line, game), heroineName: game.heroineName, cityId: game.currentCityId };
+}
+
+/** 今日の一語: an English word or phrase met today and its meaning there. */
+export type TodayWord = { word: string; meaningJa: string };
+
+/**
+ * 今日の一語 (2026-11-13 user decision; the night screen): the first word of the vocabulary (`vocabularyJa`) of the quiz of
+ * the first episode completed today that has one (today's headlines' `todayEpisodeIds`; the quiz's questions in order), so
+ * the same night always shows the same word. Null when no episode was completed today or its quizzes have no vocabulary.
+ */
+export function todayWord(game: Pick<GameState, "travel">): TodayWord | null {
+  for (const episodeId of game.travel.todayEpisodeIds) {
+    const battle = battles.find((item) => item.id === episodes.find((episode) => episode.id === episodeId)?.battleId);
+    const questions = battle ? battleQuizzes[battle.quizId]?.questions ?? [] : [];
+    const item = questions.flatMap((question) => question.vocabularyJa)[0];
+    if (item) return { word: item.word, meaningJa: item.meaning };
+  }
+  return null;
 }
 
 /** Whether the night has anything to show under its line. */

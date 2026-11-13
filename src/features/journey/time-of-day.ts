@@ -1,6 +1,7 @@
 // The colour of the time of day laid over the free-time background (user decision 2026-11-11): pale and cool in
 // the morning, none at midday, warm orange in the late afternoon and evening, deep blue at night. PhotoCardFreeTime
-// lays it as one fixed layer over the city's backdrop (or its map-like pattern), under every card.
+// lays it as one fixed layer over the city's backdrop (or its map-like pattern), under every card. The title screen's art
+// takes its own, by the device's clock (titleArtTint, 2026-11-13).
 
 /** Red, green and blue (0–255) and the opacity (0–1). */
 type Rgba = readonly [red: number, green: number, blue: number, alpha: number];
@@ -29,6 +30,28 @@ const STOPS: readonly (readonly [minute: number, tint: Rgba])[] = [
   [18 * 60 + 40, NIGHT],
   [DAY, NIGHT],
 ];
+
+/** The title screen's part of the day by the device's clock. */
+export type TitlePeriod = "morning" | "day" | "evening" | "night";
+
+/** The title art's tints: a faint warm wash in the morning, none by day, amber in the evening, deep blue at night. */
+const TITLE_TINTS: Readonly<Record<TitlePeriod, string | null>> = {
+  morning: "rgba(255, 196, 140, 0.14)",
+  day: null,
+  evening: "rgba(255, 150, 50, 0.2)",
+  night: "rgba(18, 30, 78, 0.38)",
+};
+
+/**
+ * The title art's colour of the time of day (user decision 2026-11-13) at the device's local `hour` (0–23; another number
+ * wraps, one that is not a number counts as midday): morning 5–9, day 10–15, evening 16–18, night 19–4. Laid over the
+ * picture only (under its caption), never over the title card's text, and still: it is read once as the title opens.
+ */
+export function titleArtTint(hour: number): { period: TitlePeriod; color: string | null } {
+  const at = Number.isFinite(hour) ? ((Math.floor(hour) % 24) + 24) % 24 : 12;
+  const period: TitlePeriod = at >= 5 && at < 10 ? "morning" : at >= 10 && at < 16 ? "day" : at >= 16 && at < 19 ? "evening" : "night";
+  return { period, color: TITLE_TINTS[period] };
+}
 
 /**
  * The CSS colour of the time of day at the game clock's `minute` (minutes from midnight; a minute past midnight, as
