@@ -130,6 +130,26 @@
       "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1200076",
       "site": "incompetech.com",
       "creditJa": "\"Easy Lemon\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 http://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+      "id": "incompetech_derp_nugget",
+      "titleJa": "Derp Nugget",
+      "author": "Kevin MacLeod",
+      "license": "CC BY 4.0",
+      "checkedAt": "2026-11-13",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1800013",
+      "site": "incompetech.com",
+      "creditJa": "\"Derp Nugget\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 http://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+      "id": "incompetech_desert_of_lost_souls",
+      "titleJa": "Desert of Lost Souls",
+      "author": "Kevin MacLeod",
+      "license": "CC BY 4.0",
+      "checkedAt": "2026-11-13",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1800001",
+      "site": "incompetech.com",
+      "creditJa": "\"Desert of Lost Souls\" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 4.0 http://creativecommons.org/licenses/by/4.0/"
     }
   ],
   "tracks": [
@@ -236,6 +256,22 @@
         "incompetech_easy_lemon"
       ],
       "fromJa": "Easy Lemon.mp3 の全体。前後の無音を切り、ほかの曲と音の大きさをそろえた"
+    },
+    {
+      "id": "mg_calm",
+      "useJa": "ミニゲームの探す遊び（城のかくれんぼ、市場の日傘、手のひらの名前）",
+      "sources": [
+        "incompetech_derp_nugget"
+      ],
+      "fromJa": "Derp Nugget.mp3 の 52.42〜104.78秒（24小節）をくり返し用に切り出した（終わりの30ミリ秒を、切り出しの直前の音へ重ねてつないだ）。ほかの曲と音の大きさをそろえた"
+    },
+    {
+      "id": "mg_bright",
+      "useJa": "ミニゲームのタイミングの遊び（クリケット、猿の落とし物、鳩の役、一緒に言う）",
+      "sources": [
+        "incompetech_desert_of_lost_souls"
+      ],
+      "fromJa": "Desert of Lost Souls.mp3 の 41.46〜156.09秒（64小節、曲がひと回りする長さ）をくり返し用に切り出した（終わりの30ミリ秒を、切り出しの直前の音へ重ねてつないだ）。ほかの曲と音の大きさをそろえた"
     }
   ],
   "play": {

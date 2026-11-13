@@ -45,8 +45,8 @@ export type MiniGameControl = "tap" | "tap-target" | "drag" | "timing" | "rhythm
  */
 export type MiniGameReaction = "cheer" | "surprise" | "laugh" | "tease" | "oops";
 
-/** A game's music while it plays (docs/13 2.11): the scene's track, or one of the shared mini-game tracks (host/music.ts). */
-export type MiniGameMusic = "scene" | "calm" | "bright" | "festive";
+/** A game's music while it plays (docs/13 2.11): the scene's track, or a shared mini-game track (host/music.ts; a rhythm game keeps "scene": its beat is its music). */
+export type MiniGameMusic = "scene" | "calm" | "bright";
 
 /** Who starts the play's time: the host's 3・2・1・スタート, the game's own count in its field, or no count (a search). */
 export type MiniGameCountdown = "host" | "own" | "none";

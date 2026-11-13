@@ -211,7 +211,7 @@ export const cricketBatting = defineMiniGame({
   - `durationSec`：だいたいの長さ（カードに「約N秒」）。時間の無い探すゲームは書かない。
   - `practice`：`false`（既定）か `{ params? }`。「練習する」を出す。`params` は札の引数に重ねる。態度を選ぶゲーム（かくれんぼ・地図・手のひら）は書かない。
   - `countdown`：`"host"`（枠の 3・2・1・スタート）、`"own"`（場の中に自分の数え）、`"none"`（既定）。
-  - `music`：`"scene"`（既定）・`"calm"`・`"bright"`・`"festive"`（2.11）。
+  - `music`：`"scene"`（既定）・`"calm"`（探す）・`"bright"`（タイミング）（2.11）。リズムのゲームは `"scene"` のまま（拍が曲）。
   - `resultAnchor`：結果カードの場所。`"bottom"`（既定。止まった操作の上）か `"top"`（場の大事な絵が下にあるとき）。
 
 ### 2.4 規則（`rules.ts`。純粋関数）
@@ -323,7 +323,8 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
 
 - 効果音は、共通の `content/presentation/sounds.json` に登録した音だけを使う。ゲームはどの旅行編でも使えるコードなので、旅行編の音は使わない。定義の `sounds` に書き、`Play` は `sound(id)` で鳴らす。
 - 場面の音楽と環境音は、遊ぶ間もそのまま流す。リズムのゲームは `quietScene: true` で下げる。
-- ミニゲームの曲（任意、2026-11-13）：定義の `music` が `calm`（探す。100〜110 BPM）・`bright`（タイミング。130〜140）・`festive`（リズム。150〜160）なら、スタートで曲 `mg_calm`・`mg_bright`・`mg_festive` へ切り替え（今の曲の切り替えと同じ1.5秒のクロスフェード）、結果カードで場面の曲へ戻す（`host/music.ts`、GameApp の `onMusic`、`scene-music.ts` の `miniGameTrack`）。曲のファイルは後で足す（`content/presentation/music.json` と `public/assets/bgm/`）。登録されるまでは、場面の曲がそのまま続く（エラーにもビルドの失敗にもならない）。
+- ミニゲームの曲（任意、2026-11-13）：定義の `music` が `calm`（探す）・`bright`（タイミング）なら、スタートで曲 `mg_calm`・`mg_bright` へ切り替え（今の曲の切り替えと同じ1.5秒のクロスフェード。⚙設定の「BGMを流す」「BGMの大きさ」に従う）、結果カードで場面の曲へ戻す（`host/music.ts`、GameApp の `onMusic`、`scene-music.ts` の `miniGameTrack`）。曲は共通の一覧（`content/presentation/music.json`、ファイルは `public/assets/bgm/<ID>.mp3`）にあり、出典・権利の一覧に出る：`mg_calm` は Kevin MacLeod「Derp Nugget」（約110 BPM）、`mg_bright` は同「Desert of Lost Souls」（約134 BPM）。どちらも CC BY 4.0。曲を差し替えるときは ID を変えずに、ファイルとその出典だけを替える。登録の無い曲を名指すと、場面の曲がそのまま続く（エラーにもビルドの失敗にもならない）。
+- リズムのゲーム（ゴルガッパ・花婿の行列）には曲を付けない（2026-11-13）。ゲームの太鼓の拍（96 BPM、50→100 BPM）が音楽で、150 BPM 前後の曲を重ねると拍がずれて聞こえるため。`music` は `"scene"` のまま、`quietScene` で場面の曲を下げる。
 - 結果の音（枠）：そこまで！で `quiz_correct` か `whistle`、結果カードの★で `ui_tap`、★3で `quiz_perfect` と `applause`。皮は同じ音を重ねない（クリケットの拍手は枠に任せた）。
 - リズムの判定は画面の拍（時計）に合わせ、音の遅れに合わせない。幅を広めにして、端末ごとのずれの調整は今は作らない。調整が要ると分かったら、⚙設定の項目として足す（そのときに決める）。拍の並びは皮の定義に書く。場面の音楽の曲には合わせない（ゲームの音で拍を鳴らす）。
 
