@@ -59,6 +59,10 @@ test("Debug mode: the password in ゲームの設定 turns it on for this device
   await expect(start).toBeFocused();
 
   // The password as a phone types it (a capital first letter, a trailing space) turns it on: only its key is written.
+  // While it was off, ゲームの設定 showed no Debug-only control (and loaded none: checked below).
+  const voiceRate = settings.getByTestId("debug-voice-rate");
+  await expect(voiceRate).toHaveCount(0);
+  const requestedWhileOff = requested.length;
   await start.click();
   await field.fill("Adminmode ");
   await field.press("Enter");
@@ -68,19 +72,24 @@ test("Debug mode: the password in ゲームの設定 turns it on for this device
   expect(await allStorage(page)).toEqual({ ...before, [DEBUG_MODE_KEY]: "on" });
   await ops.closeDialog(settings);
 
-  // A preference of this device: still on after a reload.
+  // A preference of this device: still on after a reload; ゲームの設定 then shows Debug's 台詞の声の速さ.
   await page.reload();
   settings = await ops.openSettings(page);
   await expect(on).toBeVisible();
+  await expect(voiceRate).toBeVisible();
 
   // Until Debug is opened, the page loads no Debug code: only the files index.html loads at once
-  // (Debug's chunks are loaded later, whatever their names) and, while Debug mode is on, the note of
-  // 最初の3分の計測 that ゲームの設定 shows under the switch (IntroTimingNote.tsx, a chunk of its own).
+  // (Debug's chunks are loaded later, whatever their names) and, once Debug mode is on, the parts that
+  // ゲームの設定 shows under the switch, each a chunk of its own: the note of 最初の3分の計測
+  // (IntroTimingNote.tsx) and 台詞の声の速さ (DebugVoiceRate.tsx and its stylesheet). None of them while it is off.
   const html = await (await page.request.get("/")).text();
   const eager = new Set(eagerFiles(html).map((file) => `/${file}`));
-  const introTimingNote = /^\/assets\/IntroTimingNote-[\w-]+\.js$/u;
-  expect(requested.length).toBeGreaterThan(0);
-  for (const path of requested) expect(eager.has(path) || introTimingNote.test(path), `${path} is loaded before Debug is opened`).toBe(true);
+  const debugModeParts = [/^\/assets\/IntroTimingNote-[\w-]+\.js$/u, /^\/assets\/DebugVoiceRate-[\w-]+\.(?:js|css)$/u];
+  expect(requestedWhileOff).toBeGreaterThan(0);
+  for (const [index, path] of requested.entries()) {
+    const debugModePart = index >= requestedWhileOff && debugModeParts.some((part) => part.test(path));
+    expect(eager.has(path) || debugModePart, `${path} is loaded ${index < requestedWhileOff ? "while Debug mode is off" : "before Debug is opened"}`).toBe(true);
+  }
 
   // 「場面の確認を開く」 opens Debug on its own page; Debug leaves the player's storage as it was.
   const kept = await bothStorages(page);
@@ -116,6 +125,7 @@ test("Debug mode: the password in ゲームの設定 turns it on for this device
   await section.getByRole("button", { name: "Debugモードをオフにする" }).click();
   await expect(section.getByText("Debugモードをオフにしました。")).toBeVisible();
   await expect(start).toBeFocused();
+  await expect(voiceRate).toHaveCount(0);
   expect(await allStorage(page)).not.toHaveProperty([DEBUG_MODE_KEY]);
   await ops.closeDialog(settings);
   // With it off, the production build ignores ?debug again.
