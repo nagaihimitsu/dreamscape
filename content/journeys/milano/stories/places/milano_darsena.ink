@@ -2,7 +2,48 @@ INCLUDE modules.ink
 -> DONE
 
 // ダルセナ（都市フィナーレの会場）の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
-// 都市フィナーレ（travel/milano.json の milano_finale の地点 p_darsena）と、その後のエピローグ。
+// 都市フィナーレ（travel/milano.json の milano_finale の地点 p_darsena）の前の「ダルセナの一音」、フィナーレと、その後のエピローグ。
+
+// 道中交流「ダルセナの一音」（knot の名前 milano_darsena_tino）。都市フィナーレの前（# at: finale milano、# priority: -1）。
+// 城でピックを持たずにティノに会い（flag milano_tino_needs_pick）、その後ドゥオモでノラの青いピックをもらって、まだ持っているときだけ起こる。
+// 城を先に回ったときの小さな回収。渡す・持っておくのどちらでも完了する。
+// リヴィオは出さない。フィナーレのクイズの題材（港・大理石・洗い場・椅子・人数の制限）には触れない。土地の事実は言わない（# sources: none）。
+=== milano_darsena_tino ===
+# scene: encounter
+# title: ダルセナの一音
+# at: finale milano
+# priority: -1
+# when: flag milano_tino_needs_pick
+# when: item blue_pick held
+# person: milano_tino
+# sources: none
+# background: milano_darsena_finale
+# speaker: narrator
+岸の階段の途中で、小さなギターを膝にのせた少年がいた。城の中庭のティノだ。今日も親指で弾いている。
+# speaker: milano_tino
+あ、お城の。……ここ、水の音があるから、間違えても目立たないんだ
+# speaker: narrator
+ポケットの中で、青いピックの角が指に当たった。
+# speaker: heroine
+# item_show: blue_pick
+ねえ、これ。あのケースの跡と、同じ形
+
+* [Here, this is yours. # option: give # translation: はい、これはきみの。]
+    # give: blue_pick milano_tino
+    # speaker: narrator
+    ティノはピックを指先でつまみ、弦を一本だけ弾いた。音は、水の上を渡っていった。
+    # speaker: milano_tino
+    ……親指より、ちょっと遠くまで行く
+    # speaker: heroine
+    一音目、聴けてよかった
+    -> END
+
+* [I'll keep it a little longer. # option: keep # translation: もう少し持っておくね。]
+    # speaker: narrator
+    ピックはポケットに戻った。ティノは気にしたふうもなく、また親指で弦をはじいた。
+    # speaker: heroine
+    わたしは、渡してもいいと思ったけどな。……決めたなら、旅の終わりまでちゃんと持ってて
+    -> END
 
 // ───── 都市フィナーレ。battles/catalog.json の milano_city_boss_01 の storyId がこの knot を指す。1本の流れ（-> quiz(n) -> でクイズ）。
 === milano_city_boss_01 ===

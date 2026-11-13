@@ -161,7 +161,10 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   expect(result.completedEpisodeIds).toEqual(["milano_duomo_episode"]);
   expect(result.ap).toBeGreaterThan(0);
 
-  await ops.toFreeTime(page);
+  // Nora's scene after the Duomo's battle (「切れた三本目」) comes before free time: its first choice gives her blue pick.
+  const free = await ops.toFreeTimeThroughScenes(page);
+  expect(free.completedEncounterIds).toEqual(["duomo_string"]);
+  expect(free.inventory.blue_pick).toBe("held");
   await expect(page.getByLabel(`残り${result.ap}AP`)).toBeVisible();
   const cleared = await ops.openRecords(page);
   await expect(cleared.getByTestId("city-progress")).toContainText("観光 1 / 4");
