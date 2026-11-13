@@ -52,6 +52,7 @@ INCLUDE modules.ink
 # speaker: gt_nasreen
 ……言い伝えだけどね
 # speaker: narrator
+# item_show: gt_jaipur_lac_bangles
 腕輪を通すとき、ナスリーンは彼女の手を握り、指の付け根をぎゅっと寄せた。手を細くして、その上を滑らせるのだ。
 # speaker: heroine
 # reaction: heroine,surprised,exclamation

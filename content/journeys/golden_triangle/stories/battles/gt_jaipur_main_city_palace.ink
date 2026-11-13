@@ -118,6 +118,7 @@ INCLUDE modules.ink
     答えは、まあまあね。でも、判定は一番いいのを出してくれた
 }
 # speaker: narrator
+# item_show: gt_jaipur_sushma_lime_pickle
 スシュマは手提げから小瓶を一つ取り出し、{heroine_name}の手に握らせた。ライムの漬物。審判の報酬だという。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat

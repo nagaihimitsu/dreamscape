@@ -25,6 +25,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_arrival_001
 わたしのガイドブック、初対面で不合格になった……
 # speaker: narrator
+# item_show: gt_delhi_kamla_memo
 カムラは段ボールの切れ端に、ヒンディー語で五行書いた。一行ずつ、ぶっきらぼうに訳してくれる。
 # speaker: enemy
 わたしのデリー。赤い城、暗くなってから。クトゥブ・ミナール、鉄の柱、もう抱けない、腹立たしい。フマユーン廟、東の門から三本目の木陰。ジャーマー・マスジド、朝のニハーリー、階段の下の店。
@@ -74,6 +75,7 @@ INCLUDE modules.ink
 夜更け、宿の部屋。アーグラ行きの荷造りは半分で止まり、{heroine_name}は段ボールの切れ端を眺めていた。五行のデリー。全部、行った。
 # speaker: narrator
 # se: door_knock
+# shake: small
 戸を叩く音。アマンが、素焼きの小さなカップのチャイを三つ、器用に指に挟んで立っていた。
 # speaker: enemy
 さっきは、失礼なことを言いました。あなたたちが祖母を連れ出したと決めつけて
@@ -93,6 +95,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_epilogue_002
 説得力、ありますね。経験者の言葉だもん
 # speaker: narrator
+# item_show: gt_delhi_aman_wedding_invitation
 アマンはチャイを置き、折りたたんだ紙を差し出した。結婚式の案内。場所はジャイプールの旧市街。日付は、ちょうど二人がジャイプールにいるころだった。
 # speaker: enemy
 祖母が、あの生意気な娘を呼べと。……『来なくてもいい』とも言ってましたけど。たぶん、来いという意味です
