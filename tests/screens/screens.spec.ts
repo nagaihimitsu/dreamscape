@@ -4,7 +4,7 @@ import path from "node:path";
 import type { Shot } from "../../scripts/dev/screen-gallery";
 import { debugExampleUrls } from "../../scripts/dev/screen-gallery";
 import { debugQueryString } from "../../src/dev/debug-query";
-import { debugGame, expect, ops, placeSave, playUntil, test, type Page } from "../e2e/helpers";
+import { debugGame, expect, ops, placeSave, playUntil, savedGame, test, type Page } from "../e2e/helpers";
 
 // Screens for people checking by eye (`npm run screens`, docs/10「人が画面を確かめる」).
 // Not a gate and no image comparison: each test only brings a screen up the way a
@@ -153,19 +153,40 @@ for (const flow of flows)
     await save(page, flow.scene, flow.titleJa, { kind: "flow", descriptionJa: flow.descriptionJa }, page.viewportSize()!.width);
   });
 
-// The tour's car (tour stage 2a): booked at Agra's inn, then 休む; the page's clock held during the night so the car's art stays.
+// The tour's car (tour stage 2a): booked at Agra's inn, then 休む. 「次の日」 and the tour day's scenes before the car play first
+// (the morning at the inn, the car's narration and the encounter in the car, as in tour.spec.ts); the car's art shows as that
+// encounter ends. Its last lines are tapped on with the page's clock held, so the art stays once it shows.
 test("ツアーの車の移動（通常の操作）", async ({ page }) => {
+  // Long flow (docs/10「不安定さと時間の決まり」): the night and three scenes are read before the car.
+  test.setTimeout(120_000);
+  const source = savedGame("golden_triangle");
+  const inCar = "gt_agra_tour_out_mother";
   await toAgra(page);
   await ops.bookTour(page, "hotel_desk");
   await ops.sleep(page);
-  await ops.holdClock(page);
+  // The night's overlay takes every tap while it shows: the morning is played after it.
+  await expect(page.getByTestId("time-passage")).toBeVisible();
+  await expect(page.getByTestId("time-passage")).toHaveCount(0, { timeout: 10_000 });
+  await playUntil(page, (state) => state.activeEncounter?.encounterId === inCar && !!state.activeEncounter.chosen?.length, { source });
+  for (let step = 0; (await source(page))!.activeEncounter?.encounterId === inCar; step++) {
+    expect(step, "the encounter in the car ends").toBeLessThan(40);
+    const before = (await source(page))!.revision;
+    await page.clock.resume();
+    await ops.settled(page);
+    const next = page.getByTestId("encounter-advance");
+    const tap = await next.isVisible() ? next : page.getByTestId("dialogue-text");
+    if (tap !== next) await expect(tap).toHaveAttribute("data-ready", "true");
+    await ops.holdClock(page);
+    await tap.click();
+    await expect.poll(async () => (await source(page))!.revision).toBeGreaterThan(before);
+  }
   await expect(page.getByTestId("travel-transition")).toHaveAttribute("data-kind", "car");
   const width = page.viewportSize()!.width;
   const file = `shots/${width}/flow-tour-car.png`;
   mkdirSync(path.join(out, `shots/${width}`), { recursive: true });
   const image = await page.screenshot({ path: path.join(out, file), fullPage: true, animations: "disabled", caret: "hide" });
   const shot: Shot = { scene: "flow-tour-car", titleJa: "ツアーの車の移動", width, file, sha256: createHash("sha256").update(image).digest("hex"),
-    route: { kind: "flow", descriptionJa: "アーグラでツアーを予約して休み、翌朝の車の移動（時計を止めて撮る）" } };
+    route: { kind: "flow", descriptionJa: "アーグラでツアーを予約して休み、翌朝の宿の場面・車の語り・車の中の交流の後の車の移動（時計を止めて撮る）" } };
   writeFileSync(path.join(out, `shots/${width}/flow-tour-car.json`), JSON.stringify(shot, null, 2));
 });
 
