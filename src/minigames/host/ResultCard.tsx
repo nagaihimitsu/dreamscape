@@ -1,12 +1,14 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import type { MiniGameRating } from "../contract";
-import { countedScore, resultButtons } from "./flow";
+import { countedScore, resultButtons, resultCardCompact, type ScreenSpan } from "./flow";
 import { MINI_GAME_RESULT_GUARD_MS, MINI_GAME_SCORE_COUNT_MS, MINI_GAME_STAR_STEP_MS } from "./timing";
 
 // The result card (docs/13 2.6; group3 6.3-5): low over the play's dead controls (or high: `resultAnchor`), so the
 // field's key picture stays in view. ★ one by one (a rated play only), the outcome's label, the score counted up from 0,
 // the heroine's face and line, and its buttons. Every press in its first moment is dropped (a finger still tapping the
-// play does not skip it); its buttons did not exist when that finger went down, so no press of it reaches them.
+// play does not skip it); its buttons did not exist when that finger went down, so no press of it reaches them. On a short
+// play, or where the full card would cover too much of the field, it is compact: ★ beside the label on one row, a small
+// face beside the score and her line, tighter (resultCardCompact); its buttons stay 44 px or more.
 
 export interface ResultCardProps {
   label: string;
@@ -22,6 +24,8 @@ export interface ResultCardProps {
   anchor: "top" | "bottom";
   /** With the bottom anchor: how far above the layer's bottom (the play's main control's top); else the CSS default. */
   bottom?: number;
+  /** The play's field on the screen (its key picture): the card goes compact when it would cover too much of it. */
+  field?: ScreenSpan;
   still: boolean;
   /** When the card came (performance.now): the guard counts from it. */
   shownAt: number;
@@ -33,10 +37,18 @@ export interface ResultCardProps {
 /** Whether the card's guard has passed (a press now is the player's own). */
 export const resultCardReady = (shownAt: number, now = performance.now()): boolean => now - shownAt >= MINI_GAME_RESULT_GUARD_MS;
 
-export function ResultCard({ label, rating, score, detail, face, line, practice, retry, anchor, bottom, still, shownAt, onNext, onRetry, onToReal }: ResultCardProps) {
+export function ResultCard({ label, rating, score, detail, face, line, practice, retry, anchor, bottom, field, still, shownAt, onNext, onRetry, onToReal }: ResultCardProps) {
   const buttons = resultButtons({ practice, retry });
   const [counted, setCounted] = useState(() => (score && !still ? countedScore(score, 0) : score));
+  const card = useRef<HTMLElement>(null);
+  const [compact, setCompact] = useState(false);
   const primary = useRef<HTMLButtonElement>(null);
+  // Measured once as it comes, before it is painted: the full card, or the compact one when that would hide too much.
+  useLayoutEffect(() => {
+    const box = card.current?.getBoundingClientRect();
+    const layer = card.current?.parentElement?.getBoundingClientRect();
+    if (box && resultCardCompact({ card: box, ...(field ? { field } : {}), layerHeight: layer?.height ?? 0 })) setCompact(true);
+  }, [field]);
   // The score counts up from 0 (at once with less motion).
   useEffect(() => {
     if (!score || still) return;
@@ -51,7 +63,7 @@ export function ResultCard({ label, rating, score, detail, face, line, practice,
   }, [score, still, shownAt]);
   useEffect(() => {
     primary.current?.focus({ preventScroll: true });
-  }, []);
+  }, [compact]);
   const guarded = (action: () => void) => () => {
     if (resultCardReady(shownAt)) action();
   };
@@ -59,21 +71,43 @@ export function ResultCard({ label, rating, score, detail, face, line, practice,
     <span key={index} className="minigame-star" data-on={index <= rating.stars || undefined} data-big={rating.stars === 3 && index === 3 || undefined}
       style={still ? undefined : { animationDelay: `${(index - 1) * MINI_GAME_STAR_STEP_MS}ms` }}>★</span>
   )) : null;
+  const head = (practice || stars) && (
+    <div className="minigame-result-head">
+      {practice && <span className="minigame-result-practice">練習</span>}
+      {stars && <span className="minigame-stars" data-testid="minigame-stars" data-stars={rating?.stars} aria-hidden="true">{stars}</span>}
+    </div>
+  );
+  const labelLine = <p className="minigame-result-label" aria-hidden="true">{label}</p>;
+  const scoreLine = counted && <p className="minigame-result-score" data-testid="minigame-score" aria-hidden="true">{counted}</p>;
+  const detailLine = detail && <p className="minigame-result-detail" aria-hidden="true">{detail}</p>;
+  const lineText = line && <p className="minigame-result-line">{line}</p>;
 
   return (
     // A key held down from the play (its repeats) never presses the card's buttons.
-    <section className="minigame-result" data-anchor={anchor} data-testid="minigame-result" aria-label={practice ? "練習の結果" : "結果"}
+    <section ref={card} className="minigame-result" data-anchor={anchor} data-compact={compact || undefined} data-testid="minigame-result"
+      aria-label={practice ? "練習の結果" : "結果"}
       style={anchor === "bottom" && bottom !== undefined
         ? { bottom: `${bottom}px`, maxHeight: `calc(100% - ${bottom}px - var(--scene-top, 0px) - 52px)` } : undefined}
       onKeyDown={(event) => { if (event.repeat) event.preventDefault(); }}>
-      <div className="minigame-result-head">
-        {practice && <span className="minigame-result-practice">練習</span>}
-        {stars && <span className="minigame-stars" data-testid="minigame-stars" data-stars={rating?.stars} aria-hidden="true">{stars}</span>}
-      </div>
-      <p className="minigame-result-label" aria-hidden="true">{label}</p>
-      {counted && <p className="minigame-result-score" data-testid="minigame-score" aria-hidden="true">{counted}</p>}
-      {detail && <p className="minigame-result-detail" aria-hidden="true">{detail}</p>}
-      {face && <div className="minigame-result-react" aria-hidden="true">{face}{line && <p className="minigame-result-line">{line}</p>}</div>}
+      {compact ? (
+        <>
+          <div className="minigame-result-title">{head}{labelLine}</div>
+          {(face || scoreLine || detailLine) && (
+            <div className="minigame-result-react" aria-hidden="true">
+              {face}
+              <div className="minigame-result-texts">{scoreLine}{detailLine}{face && lineText}</div>
+            </div>
+          )}
+        </>
+      ) : (
+        <>
+          {head}
+          {labelLine}
+          {scoreLine}
+          {detailLine}
+          {face && <div className="minigame-result-react" aria-hidden="true">{face}{lineText}</div>}
+        </>
+      )}
       <div className="minigame-result-actions">
         {buttons.retry && <button type="button" className="secondary" data-testid="minigame-again" onClick={guarded(onRetry)}>もう一回</button>}
         {buttons.toReal && <button ref={primary} type="button" className="primary" data-testid="minigame-to-real" data-minigame-card-primary
