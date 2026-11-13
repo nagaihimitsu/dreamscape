@@ -3,7 +3,7 @@ INCLUDE modules.ink
 
 // 宿の場所のファイル：到着とエピローグ（新しい書き方への形の移し替え。文は今のまま）
 
-// 【3】到着。cities/<都市>.json の arrivalStoryId（今は arrivals/delhi）がこの knot を指すように直す（欄の書き方は段階3で決まる）
+// 到着。cities/<都市>.json の arrivalStoryId がこの knot を指す。
 // 【3】足した札：カムラの段ボールのメモを受け取る
 === gt_delhi_arrival ===
 # scene: arrival
@@ -64,7 +64,7 @@ INCLUDE modules.ink
 ……はい、覚えておきます。それにしても、地図というより暗号だね。せっかくなら全部回って、解いてみたいな。……ね、一緒に解いてくれる？
 -> END
 
-// 【3】エピローグ。progression/journey.json のフィナーレの epilogueStoryId（今は epilogues/delhi）がこの knot を指すように直す（欄の書き方は段階3で決まる）
+// エピローグ。progression/journey.json のフィナーレの epilogueStoryId がこの knot を指す。
 // 【3】足した札：アマンの結婚式の案内を受け取る
 === gt_delhi_epilogue ===
 # scene: epilogue

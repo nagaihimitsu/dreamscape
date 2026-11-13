@@ -35,7 +35,7 @@
 | --- | --- |
 | 到着会話 | `content/journeys/golden_triangle/stories/places/gt_{delhi,agra,jaipur}_hotel_hub.ink` の knot `gt_<都市>_arrival`（都市定義の `arrivalStoryId` から参照） |
 | 案内 | `content/journeys/golden_triangle/stories/places/gt_<観光地>.ink` の knot `gt_<観光地>_guide`（`tourism/catalog.json` の `guideStoryId` から参照） |
-| 通常戦・ボス | `content/journeys/golden_triangle/stories/battles/gt_*.ink` |
+| 通常戦・ボス | `content/journeys/golden_triangle/stories/places/gt_<観光地>.ink` の knot（バトルID。都市フィナーレは会場の観光地のファイル：レッド・フォート、タージ・マハル、ハワー・マハル。`battles/catalog.json` の `storyId` から参照） |
 | デート | `content/journeys/golden_triangle/stories/places/gt_<都市>_<行き先>.ink` の knot（デートID）。宿の屋上の告白・「待って」の後は `places/gt_<都市>_hotel_hub_dates.ink`（`romance/date_catalog.json` の `storyId` から参照） |
 | 都市の締め | `content/journeys/golden_triangle/stories/places/gt_{delhi,agra,jaipur}_hotel_hub.ink` の knot `gt_<都市>_epilogue`（フィナーレの `epilogueStoryId` から参照） |
 | 差し込みの場面（宿の夜と朝、デリーの出発、アーグラの到着、ジャイプールのフィナーレの前後、インド門のデートの後） | `content/journeys/golden_triangle/stories/places/gt_{delhi,agra,jaipur}_inserts.ink` の knot（時点は頭の `# at:`・`# priority:`）。土地の事実を言う場面の出典は `content/journeys/golden_triangle/scenes/catalog.json`、ほかは `# sources: none` |

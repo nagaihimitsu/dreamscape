@@ -3,7 +3,7 @@ INCLUDE modules.ink
 
 // 宿の場所のファイル：到着とエピローグ（新しい書き方への形の移し替え。文は今のまま）
 
-// 【3】到着。cities/<都市>.json の arrivalStoryId（今は arrivals/agra）がこの knot を指すように直す（欄の書き方は段階3で決まる）
+// 到着。cities/<都市>.json の arrivalStoryId がこの knot を指す。
 === gt_agra_arrival ===
 # scene: arrival
 # background: gt_bg_agra_hotel_hub
@@ -50,7 +50,7 @@ INCLUDE modules.ink
 あ……見えた。あれ、タージ・マハルの屋根だよね。写真で百回は見たのに、指先がそわそわする。……よし。誤解は、ちゃんと解く。その前に、どこから行こうか
 -> END
 
-// 【3】エピローグ。progression/journey.json のフィナーレの epilogueStoryId（今は epilogues/agra）がこの knot を指すように直す（欄の書き方は段階3で決まる）
+// エピローグ。progression/journey.json のフィナーレの epilogueStoryId がこの knot を指す。
 // 【3】足した札：ペーターを食べ切る
 === gt_agra_epilogue ===
 # scene: epilogue

@@ -198,9 +198,9 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 
 | 種類 | ストーリーID（`stories/` の下の場所と同じ） | クイズID（ファイル名も同じ） |
 | --- | --- | --- |
-| 通常戦 | `battles/<頭>_main_<観光地>` | `<頭>_main_<観光地>_quiz` |
+| 通常戦 | `battles/<頭>_main_<観光地>`（場所のファイル `places/<頭>_<観光地>` の knot にも書ける。knot の名前はバトルID。インド編） | `<頭>_main_<観光地>_quiz` |
 | 特殊戦B・C | `battles/<頭>_special_b_<観光地>`（Cは `special_c`） | `<頭>_special_b_<観光地>_quiz` |
-| 都市フィナーレ | `battles/<頭>_finale` | `<頭>_finale_quiz` |
+| 都市フィナーレ | `battles/<頭>_finale`（会場の観光地の場所のファイルの knot にも書ける。knot の名前はバトルID。インド編） | `<頭>_finale_quiz` |
 | 観光案内 | `tourism/<頭>_<観光地>_guide` | なし |
 | デート・恋愛の出来事 | `dates/<頭>_date_<行き先・出来事>` | なし |
 | 道中交流 | `encounters/<頭>_<交流>`（くじの結果は `_won`・`_lost`・`_already`） | なし |
