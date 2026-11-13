@@ -10,6 +10,7 @@ import {
   storyState,
   tourismAssets,
   getCityContent,
+  tagContext,
 } from "../content";
 import { scenePerson, speakingPerson } from "../domain/scene-person";
 import { defaultJourneyId, getJourney, getJourneyForCity } from "../content/journeys";
@@ -51,6 +52,8 @@ import { sceneAmbience } from "../audio/scene-ambience";
 import { useReadLines } from "../components/useReadLines";
 import { useMeasuredHeight } from "../components/useMeasuredHeight";
 import { RomanceScene } from "../features/romance/RomanceScene";
+import { MiniGameProvider, type MiniGameEnvironment } from "../minigames/host/MiniGameProvider";
+import { miniGameChoice } from "../minigames/tag";
 import { Modal, ModalTitle } from "../components/Modal";
 import { ConfirmActionButton } from "../components/ConfirmActionButton";
 import { withNames } from "../features/romance/names";
@@ -526,6 +529,24 @@ export function GameApp({
   const nextEpisode = game ? getNextEpisode(game) : null;
   const nextStoryBattle = game ? getNextStoryBattle(game) : null;
   const frame = active?.frame;
+  // A line's # minigame: in any story screen (docs/13 1.5): what every play gets, once; a quiet game lowers the music.
+  const [miniGameQuiet, setMiniGameQuiet] = useState(false);
+  const miniGameEnvironment = useMemo<MiniGameEnvironment>(() => ({
+    auto: displaySettings.value.miniGameAuto,
+    debug: debugOn,
+    reduceMotion: displaySettings.value.reduceMotion,
+    names: { player: game?.playerName ?? "", heroine: game?.heroineName ?? "" },
+    revision: game?.revision ?? 0,
+    context: tagContext,
+    onOutcome: (outcome) => {
+      const date = getCurrent()?.activeDate;
+      const tag = date?.frame.minigame;
+      const choice = tag && miniGameChoice(date.frame.choices, tag, outcome);
+      return !!choice && commit((state) => chooseDate(state, choice.index, state.revision));
+    },
+    backdrop: (backgroundId) => <CanalScene backgroundId={backgroundId} />,
+    onQuiet: setMiniGameQuiet,
+  }), [displaySettings.value.miniGameAuto, displaySettings.value.reduceMotion, debugOn, game?.playerName, game?.heroineName, game?.revision, getCurrent, commit]);
   // A new screen takes a lost focus on its visible heading (scene-focus.ts, UI redesign §3.7 E);
   // free time opens at the top of the page, not at the scroll position of the screen before it
   // (the title, scrolled to 「旅をはじめる」 on a short phone).
@@ -540,7 +561,7 @@ export function GameApp({
   const musicScreen: MusicScreen = {
     game, endRoll: moments.endRollShown, nightVisual, riding, packing: !!moments.packingScene,
     romanceEnding: showRomanceEnding, nightScreen: !!(nightScreen && dayEnd), opening: !!opening,
-    ...(musicRoom && roomTrack ? { roomTrack } : {}),
+    ...(musicRoom && roomTrack ? { roomTrack } : {}), miniGameQuiet,
   };
   useSceneMusic(sceneMusic(journeyMusicPlay(musicJourneyId), musicScreen));
   // The ambience under it (src/audio/scene-ambience.ts): the scene's # ambience:, else its place's own, in story scenes only.
@@ -712,6 +733,7 @@ export function GameApp({
       {/* A tap on main's own margin beside a narrow story scene reads on (scene-tap.ts). The screens' 手がかり帳 buttons
           read their marks from NotebookCueContext. */}
       <NotebookCueContext.Provider value={notebookCue}>
+      <MiniGameProvider value={miniGameEnvironment}>
       <main id="main" ref={main} tabIndex={-1} {...{ [PAGE_MARGIN_ATTRIBUTE]: "" }}>
         {showChanges && <RelationshipChangeNote change={game && shownChange && shownChange.scene === changeScreenKey(game) ? shownChange.change : null}
           conditions={storyScene && game ? sceneConditionTruths(game) : []} />}
@@ -991,8 +1013,6 @@ export function GameApp({
               commit((state) => chooseDate(state, index, revision))
             }
             choiceDisplay={(index) => dateChoiceDisplay(game, index)}
-            miniGameAuto={displaySettings.value.miniGameAuto}
-            debugTools={debugOn}
             onAdvance={() => {
               commit((state) => advanceDate(state, game.revision));
             }}
@@ -1060,6 +1080,7 @@ export function GameApp({
           />
         )}
       </main>
+      </MiniGameProvider>
       </NotebookCueContext.Provider>
       <footer>
         Dreamscape <span>·</span> 旅の余白に、ふたりの物語。

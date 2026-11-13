@@ -32,7 +32,7 @@ export function trackUseJa(trackId: string): string | undefined {
 }
 
 /** The level of each lowering (a voice's halves it again: loop-player.ts). */
-const DUCK_LEVELS: Readonly<Record<MusicDuck, number>> = { none: 1, quiz: 0.35, quiet: 0.5, travel: 0.6 };
+const DUCK_LEVELS: Readonly<Record<MusicDuck, number>> = { none: 1, quiz: 0.35, quiet: 0.5, travel: 0.6, minigame: 0.25 };
 
 const player = createLoopPlayer({
   part: "bgm",

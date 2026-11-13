@@ -1,0 +1,114 @@
+/* The mini-games' shared host (MiniGameHost.tsx; docs/13 2.6). The start sits where the choices would be (in the dialogue
+   window); the play lies over the whole scene, below what lies over the scene's top (--scene-top): the top band, the game's
+   stage (its field and, at the bottom in thumb reach, its controls). */
+.minigame-ready .minigame-start { justify-content: center; gap: 8px; font-size: 16px; font-weight: 700; }
+.minigame-ready .choice-hint { margin: 0 0 8px; }
+/* How to play with keys: only where a keyboard is likely (a fine pointer that hovers). */
+.minigame-ready .minigame-keys { display: none; margin: 6px 0 0; }
+@media (hover: hover) and (pointer: fine) { .minigame-ready .minigame-keys { display: block; } }
+.minigame-failed p { margin: 0 0 8px; }
+.minigame-failed-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.minigame-failed-actions > button { justify-content: center; min-height: 44px; }
+.minigame-debug { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 8px; margin-top: 10px; }
+.minigame-debug .fine-print { grid-column: 1 / -1; margin: 0; }
+.minigame-debug .secondary { min-height: 44px; margin-top: 6px; padding: 6px 8px; font-size: 12px; line-height: 1.4; }
+
+.minigame-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--scene-top, 0px);
+  color: var(--ds-on-slate);
+  /* The scene's picture (or the use's bg) stays behind the field; the bottom darkens under the controls. */
+  background: linear-gradient(to bottom, rgba(20, 24, 32, 0.2), rgba(20, 24, 32, 0.15) 45%, rgba(20, 24, 32, 0.88));
+  animation: minigame-in var(--motion-fast, 180ms) var(--ease-out, ease-out);
+  outline: none;
+}
+@keyframes minigame-in { from { opacity: 0; } }
+/* A use's bg: its picture under the play, in place of the scene's. */
+.minigame-backdrop { position: absolute; inset: 0; z-index: -1; }
+.minigame-backdrop > * { position: absolute; inset: 0; }
+/* The top band: the game's name, its short status, 「中断する」 (a quiet secondary control). */
+.minigame-band {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 4px 8px 4px 16px;
+  background: rgba(20, 24, 32, 0.55);
+  font-size: 13px;
+}
+.minigame-band-title { font-weight: 700; white-space: nowrap; }
+.minigame-band-status { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ds-on-slate-muted); }
+.minigame-layer .minigame-quit {
+  flex: none;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 250, 241, 0.35);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ds-on-slate);
+  font-size: 13px;
+}
+.minigame-stage { position: relative; display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
+.minigame-result {
+  position: absolute;
+  z-index: 7;
+  left: 50%;
+  top: 42%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  margin: 0;
+  padding: 12px 22px;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 16px;
+  background: var(--ds-window-bg);
+  box-shadow: var(--ds-window-shadow);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  transform: translateX(-50%);
+  animation: minigame-result-in 260ms var(--ease-out, ease-out) both;
+}
+.minigame-result small { font-size: 14px; font-weight: 400; }
+@keyframes minigame-result-in { from { opacity: 0; transform: translateX(-50%) scale(0.9); } }
+/* 一時停止中 (a timed game after the page was hidden): over the play, 「続ける」 first. */
+.minigame-pause {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+  background: rgba(20, 24, 32, 0.78);
+}
+.minigame-pause p { margin: 0 0 6px; font-size: 18px; font-weight: 700; text-align: center; }
+.minigame-pause button { justify-content: center; min-height: 52px; }
+
+/* 「演出を短縮する」 and the device's reduced motion: no fade, run-up, sweep, tumble or pop (what the play needs still moves,
+   drawn from the clock). */
+.minigame-layer[data-still],
+.minigame-layer[data-still] *,
+.reduce-motion .minigame-layer,
+.reduce-motion .minigame-layer * { animation: none !important; transition: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .minigame-layer, .minigame-layer * { animation: none !important; transition: none !important; }
+}
+/* The play's place in each story screen (MiniGameSlot): no box of its own, the play lies over the whole scene. */
+.minigame-slot { display: contents; }
+/* While a play lies over the scene, only the scene's picture and its weather stay under it: the people, the window and its
+   tools come back when the play ends (the story then goes on from the outcome's choice). */
+:is(.vn-scene, .battle-screen):has(> .minigame-slot > .minigame-layer) > :not(.vn-background, .battle-backdrop, .weather-layer, .minigame-slot) {
+  visibility: hidden;
+}

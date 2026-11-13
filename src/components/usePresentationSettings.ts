@@ -34,7 +34,7 @@ interface Preferences {
   ambience: boolean;
   /** 「振動する」 (src/audio/vibration.ts): on, a held item gained or a clue recorded vibrates briefly where the browser can. On by default. */
   vibration: boolean;
-  /** 「ミニゲームをおまかせにする」 (src/features/minigame/MiniGame.tsx): on, a line's `# minigame:` plays itself to its `auto` outcome. Off by default. */
+  /** 「ミニゲームをおまかせにする」 (src/minigames/host/MiniGameHost.tsx): on, a line's `# minigame:` plays itself to its `auto` outcome. Off by default. */
   miniGameAuto: boolean;
 }
 const defaults: Preferences = {
