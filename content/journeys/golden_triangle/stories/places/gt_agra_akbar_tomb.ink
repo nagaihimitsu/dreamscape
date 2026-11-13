@@ -240,7 +240,7 @@ INCLUDE modules.ink
     # use: gt_delhi_rain_attar
     # set: gt_agra_rain_on_lawn
     # speaker: narrator
-    伸ばした手の、ほんの少し先を、小瓶は落ちていった。
+    伸ばした手の先をかすめて、小瓶は落ちていった。
 - ->->
 
 // 【3】手伝いの knot：サングラスを盗まれたとき（噛み合いでない選択）
