@@ -190,16 +190,62 @@ export const ONE_SCENE_DATE_EFFECTS = [
  */
 export async function oneSceneCafeDate(fixture: string): Promise<string> {
   const file = "content/journeys/milano/stories/dates/milano_date_cafe.ink";
+  await mkdir(path.join(fixture, "content/journeys/milano/stories/dates"), { recursive: true });
   await writeFile(path.join(fixture, file), await readFile(path.resolve(ONE_SCENE_DATE_FILE), "utf8"));
-  const effectsFile = path.join(fixture, "content/journeys/milano/romance/effect_catalog.json");
-  const effects = JSON.parse(await readFile(effectsFile, "utf8")) as { effects: object[] };
-  effects.effects.push(...ONE_SCENE_DATE_EFFECTS.map((effect) => ({ ...effect })));
-  await writeFile(effectsFile, JSON.stringify(effects));
+  await addMilanEffects(fixture, ONE_SCENE_DATE_EFFECTS);
   await changeCatalogEntry(fixture, "romance/date_catalog.json", "dates", "milano_cafe_01", (date: { storyId: string }) => {
     date.storyId = "dates/milano_date_cafe";
   });
   const place = path.join(fixture, "content/journeys/milano/stories/places/milano_roastery.ink");
   await writeFile(place, placeKnot(await readFile(place, "utf8"), "milano_cafe_01").without);
+  return file;
+}
+
+/** Milan's effect catalog in a fixture (`content/journeys/milano/romance/effect_catalog.json`; Milan has none since 2026-11-13). */
+export const MILAN_EFFECTS_FILE = "content/journeys/milano/romance/effect_catalog.json";
+
+/** Add effects to Milan's effect catalog in a fixture, making the file when Milan has none. */
+async function addMilanEffects(fixture: string, added: readonly object[]): Promise<void> {
+  const file = path.join(fixture, MILAN_EFFECTS_FILE);
+  let catalog: { schemaVersion: number; effects: object[] } = { schemaVersion: 1, effects: [] };
+  try {
+    catalog = JSON.parse(await readFile(file, "utf8")) as typeof catalog;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+  }
+  catalog.effects.push(...added.map((effect) => ({ ...effect })));
+  await writeFile(file, JSON.stringify(catalog));
+}
+
+/**
+ * Milan's confession in the one-scene form with its outcome effects (`# effect:` in each reply, for the checks of that
+ * form): as it was until 2026-11-13 (the game's is the knot milano_confession_01 of places/milano_darsena.ink).
+ * Relative to the repository.
+ */
+export const ONE_SCENE_CONFESSION_FILE = "tests/fixtures/one-scene-confession.ink";
+/** The outcome effects its replies name (Milan's effect catalog had them until 2026-11-13). */
+export const ONE_SCENE_CONFESSION_EFFECTS = [
+  { id: "milano_confession_accepted", affectionDelta: 0, memoryId: "milano_confession_promise", outcome: "accepted" },
+  { id: "milano_confession_deferred", affectionDelta: 0, outcome: "deferred" },
+  { id: "milano_confession_rejected", affectionDelta: 0, trustDelta: 0, sparkDelta: 0, outcome: "rejected" },
+] as const;
+
+/**
+ * Put Milan's confession (milano_confession_01) in the one-scene form into a fixture made by prepareContentFixture:
+ * ONE_SCENE_CONFESSION_FILE as stories/dates/milano_date_confession.ink, its outcome effects in Milan's effect catalog
+ * (MILAN_EFFECTS_FILE), the date catalog's storyId pointing at it, and its knot taken out of the Darsena's place file.
+ * Returns the file (relative to the fixture). Change the effects in the fixture's MILAN_EFFECTS_FILE (the repository has none).
+ */
+export async function oneSceneConfession(fixture: string): Promise<string> {
+  const file = "content/journeys/milano/stories/dates/milano_date_confession.ink";
+  await mkdir(path.join(fixture, "content/journeys/milano/stories/dates"), { recursive: true });
+  await writeFile(path.join(fixture, file), await readFile(path.resolve(ONE_SCENE_CONFESSION_FILE), "utf8"));
+  await addMilanEffects(fixture, ONE_SCENE_CONFESSION_EFFECTS);
+  await changeCatalogEntry(fixture, "romance/date_catalog.json", "dates", "milano_confession_01", (date: { storyId: string }) => {
+    date.storyId = "dates/milano_date_confession";
+  });
+  const place = path.join(fixture, "content/journeys/milano/stories/places/milano_darsena.ink");
+  await writeFile(place, placeKnot(await readFile(place, "utf8"), "milano_confession_01").without);
   return file;
 }
 

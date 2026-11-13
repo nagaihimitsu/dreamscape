@@ -3,7 +3,7 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { buildContent } from "../../scripts/content-pipeline";
-import { changeCatalogEntry, oneSceneCafeDate, prepareContentFixture, storySourceFile } from "./test-fixtures";
+import { changeCatalogEntry, MILAN_EFFECTS_FILE, oneSceneCafeDate, oneSceneConfession, prepareContentFixture, storySourceFile } from "./test-fixtures";
 import { storyFileOf } from "./story-address";
 import dateData from "./generated/content/romance/date_catalog.json";
 
@@ -37,7 +37,10 @@ describe("response profile cross-file validation", () => {
   });
 
   it("rejects an outcome effect that attempts to use a response profile", async () => {
-    await changeEffect("milano_confession_accepted", (outcome) => {
+    // The one-scene confession's outcome effects (Milan's confession is a place file's knot without them since 2026-11-13).
+    await oneSceneConfession(fixture);
+    await changeJson(MILAN_EFFECTS_FILE, (data) => {
+      const outcome = data.effects.find((effect: { id: string }) => effect.id === "milano_confession_accepted");
       expect(outcome.outcome).toBe("accepted");
       outcome.responseProfileId = "attentive";
     });
@@ -65,8 +68,8 @@ describe("response profile cross-file validation", () => {
   });
 
   it("rejects an unused memoryless effect even if its response profile exists", async () => {
-    // A new effect next to Milan's own effects (its confession's outcomes).
-    await changeEffect("milano_confession_accepted", (_effect, catalog) => {
+    // A new effect next to the shared date effects.
+    await changeEffect("common_date_first_attentive", (_effect, catalog) => {
       catalog.effects.push({ id: "unused_memoryless_effect", affectionDelta: 0, responseProfileId: "attentive" });
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(/outside recovery: unused_memoryless_effect/);

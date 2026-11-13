@@ -1,10 +1,11 @@
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { contentSourcesFromTree, contentTreeFromFiles } from "./content-sources";
-import { cityOfFile, formatVoiceScript, voiceScript, voiceScriptInput, type VoiceScriptInput } from "./voice-script";
+import { cityOfFile, formatVoiceScript, voiceScript, voiceScriptInput, type ScriptedLine, type VoiceScriptInput } from "./voice-script";
 
 // The voice script (npm run voice:script): the heroine lines of a journey's Ink sources with their scene, branches, the
-// line before and their tags in words, and their IDs (a `# voice:`'s, else `<knot>_<NNN>`, never a recording's).
+// line before and their tags in words, and their stable IDs (a `# voice:`'s, else the ID the same text was last sent
+// with, else a number no script or recording has used).
 
 const SQUARE = `INCLUDE modules.ink
 -> DONE
@@ -61,17 +62,18 @@ const SQUARE = `INCLUDE modules.ink
 これが広場
 `;
 
-const input = (stories: VoiceScriptInput["stories"], recordings: string[] = []): VoiceScriptInput => ({
+const input = (stories: VoiceScriptInput["stories"], history: Partial<Pick<VoiceScriptInput, "scripts" | "recorded" | "voiceFiles">> = {}): VoiceScriptInput => ({
   journeyId: "ta_trip", nameJa: "テストの旅", storiesPath: "content/journeys/ta_trip/stories/",
   cities: [{ id: "west", nameJa: "西" }, { id: "east", nameJa: "東" }],
   stories,
   people: new Map([["ta_lili", "リリ"]]),
   battles: new Map([["places/ta_west_square.ta_square_battle", { titleJa: "時計の番人", enemyNameJa: "番人" }]]),
-  recordings: new Set(recordings),
+  scripts: [], recorded: new Set(), voiceFiles: new Set(),
+  ...history,
 });
 
 describe("the heroine lines of a voice script", () => {
-  const script = voiceScript(input([{ storyId: "places/ta_west_square", source: SQUARE }], ["ta_square_date_001"]));
+  const script = voiceScript(input([{ storyId: "places/ta_west_square", source: SQUARE }]));
   const line = (text: string) => script.lines.find((item) => item.text === text);
 
   it("reads every heroine line, a speaker holding until the next, and leaves out messages", () => {
@@ -122,13 +124,43 @@ describe("the heroine lines of a voice script", () => {
   });
 });
 
-describe("the IDs of lines without a # voice:", () => {
-  const story = (lines: string) => [{ storyId: "places/ta_west_gate", source: `=== ta_gate ===\n# speaker: heroine\n${lines}` }];
+describe("the IDs of a voice script", () => {
+  const gate = (knot: string, lines: string) => [{ storyId: "places/ta_west_gate", source: `=== ${knot} ===\n# speaker: heroine\n${lines}` }];
+  const sent = (date: string, lines: [string, string][]) => ({ journeyId: "ta_trip", date, file: "",
+    lines: lines.map(([id, text]): ScriptedLine => ({ id, text, knot: "ta_gate", file: "places/ta_west_gate.ink", title: "門" })) });
+  const ids = (script: ReturnType<typeof voiceScript>) => script.lines.map((item) => [item.text, item.id]);
+  const first = sent("2026-11-12", [["ta_gate_001", "いち"], ["ta_gate_002", "に"], ["ta_gate_003", "さん"]]);
 
-  it("never takes a recorded ID: a taken number gives the knot's next free one", () => {
-    // The first line's recording is _002; the second line's own number is taken, and _004 is a file of no line.
-    const script = voiceScript(input(story("# voice: ta_gate_002\nいち\nに\nさん\n"), ["ta_gate_002", "ta_gate_004"]));
-    expect(script.lines.map((item) => [item.text, item.id])).toEqual([["いち", "ta_gate_002"], ["に", "ta_gate_005"], ["さん", "ta_gate_003"]]);
+  it("numbers a knot's lines when nothing was sent", () => {
+    expect(ids(voiceScript(input(gate("ta_gate", "いち\nに\n"))))).toEqual([["いち", "ta_gate_001"], ["に", "ta_gate_002"]]);
+  });
+
+  it("keeps the IDs sent when a line is inserted at the top; the new line takes a number never used", () => {
+    expect(ids(voiceScript(input(gate("ta_gate", "ぜろ\nいち\nに\nさん\n"), { scripts: [first] })))).toEqual([
+      ["ぜろ", "ta_gate_004"], ["いち", "ta_gate_001"], ["に", "ta_gate_002"], ["さん", "ta_gate_003"]]);
+  });
+
+  it("keeps the IDs sent under a renamed knot (the battles moved to place files)", () => {
+    expect(ids(voiceScript(input(gate("ta_gate_battle", "いち\nよん\n"), { scripts: [first] })))).toEqual([
+      ["いち", "ta_gate_001"], ["よん", "ta_gate_battle_001"]]);
+  });
+
+  it("gives a rewritten line a new ID, after every number a script, recording or file has used", () => {
+    const older = sent("2026-11-01", [["ta_gate_007", "なな"]]);
+    const script = voiceScript(input(gate("ta_gate", "いち\nにい\nさん\n"), { scripts: [first, older], voiceFiles: new Set(["ta_gate_009"]) }));
+    expect(ids(script)).toEqual([["いち", "ta_gate_001"], ["にい", "ta_gate_010"], ["さん", "ta_gate_003"]]);
+  });
+
+  it("matches the text an ID was last sent with, not an older script's", () => {
+    const resent = sent("2026-11-20", [["ta_gate_001", "いち、です"], ["ta_gate_002", "に"]]);
+    expect(ids(voiceScript(input(gate("ta_gate", "いち\nに\n"), { scripts: [resent, first] })))).toEqual([["いち", "ta_gate_004"], ["に", "ta_gate_002"]]);
+  });
+
+  it("keeps a # voice: ID whatever the text, and never gives a recorded ID to another line", () => {
+    // ta_gate_002's line was rewritten (its tag stays); ta_gate_003's clip has no line any more.
+    const script = voiceScript(input(gate("ta_gate", "# voice: ta_gate_002\nにい\nさん\nに\n"), { scripts: [first], recorded: new Set(["ta_gate_003"]) }));
+    expect(ids(script)).toEqual([["にい", "ta_gate_002"], ["さん", "ta_gate_004"], ["に", "ta_gate_005"]]);
+    expect([...script.tagged]).toEqual(["ta_gate_002"]);
   });
 });
 
@@ -169,7 +201,7 @@ describe("the readable voice script", () => {
 });
 
 describe("what a voice script reads of a journey", () => {
-  it("reads the journey's cities, people, battles and recordings from the loaded content", () => {
+  it("reads the journey's cities, people, battles and voice files from the loaded content, with the voice records", () => {
     const json = (value: unknown) => JSON.stringify(value);
     const trip = "content/journeys/ta_trip";
     const sources = contentSourcesFromTree(contentTreeFromFiles(path.join(path.sep, "virtual", "dreamscape"), {
@@ -182,12 +214,13 @@ describe("what a voice script reads of a journey", () => {
       [`${trip}/public/assets/voice/ta_square_date_001.mp3`]: null,
       [`${trip}/public/assets/voice/ta_old_line.mp3`]: null,
     }));
-    const read = voiceScriptInput(sources, "ta_trip");
+    const scripts = [{ journeyId: "ta_trip", date: "2026-11-12", file: "", lines: [] }];
+    const read = voiceScriptInput(sources, "ta_trip", { scripts, recorded: new Map([["ta_square_date_001", { text: "きれいな時計だね", script: "2026-11-12" }]]) });
     expect(read).toMatchObject({ nameJa: "テストの旅", cities: [{ id: "west", nameJa: "西" }], storiesPath: `${trip}/stories/` });
     expect(read.stories.map((story) => story.storyId)).toEqual(["places/ta_west_square"]);
     expect(read.people.get("ta_lili")).toBe("リリ");
     expect(read.battles.get("places/ta_west_square.ta_square_battle")?.enemyNameJa).toBe("番人");
-    expect([...read.recordings].sort()).toEqual(["ta_old_line", "ta_square_date_001"]);
-    expect(() => voiceScriptInput(sources, "tb_trip")).toThrow("旅行編がありません：tb_trip");
+    expect(read).toMatchObject({ scripts, recorded: new Set(["ta_square_date_001"]), voiceFiles: new Set(["ta_square_date_001", "ta_old_line"]) });
+    expect(() => voiceScriptInput(sources, "tb_trip", { scripts: [], recorded: new Map() })).toThrow("旅行編がありません：tb_trip");
   });
 });

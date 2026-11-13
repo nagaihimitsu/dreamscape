@@ -12,20 +12,24 @@ INCLUDE modules.ink
 アーグラ城の赤い城壁は、デリーの赤い城より、さらに分厚く見えた。入口の門へ続く坂道の両側に、高い壁がそびえている。
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_agra_agra_fort_guide_001
 デリーのお城と、色がそっくり。……兄弟みたいだね
 # speaker: narrator
 城壁の上を、猿が一列になって歩いていた。一匹が、観光客の持つ水のボトルをじっと見ている。
 # speaker: heroine
 # reaction: heroine,worried,sweat
+# voice: gt_agra_agra_fort_guide_002
 あの子、狙ってる。ボトル、しまっておこう。……目、合わせないようにしよう
 # speaker: narrator
 門の中は、赤い石の宮殿と白い大理石の宮殿が、隣り合って並んでいた。旗を掲げた添乗員のあとを、ツアーの一行が列になって進んでいく。
 # speaker: heroine
+# voice: gt_agra_agra_fort_guide_003
 赤い建物と、白い建物。同じお城の中で、こんなに雰囲気が違うんだ
 # speaker: narrator
 白い建物のテラスに出ると、川の向こうに、小さく白いドームが見えた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# voice: gt_agra_agra_fort_guide_004
 あれ、タージ・マハルだ。こんなに遠くから、ちゃんと見えるんだね
 # speaker: narrator
 川に面した八角形の塔の欄干から、ツアーの人々が順番にタージを眺めている。誰かが言った。
@@ -33,11 +37,13 @@ INCLUDE modules.ink
 ここは、ある皇帝が、最後の年月を過ごした場所なんだって
 # speaker: heroine
 # emotion: neutral
+# voice: gt_agra_agra_fort_guide_005
 最後の年月を、遠くのタージを見ながら……。どんな気持ちだったんだろう
 # speaker: narrator
 ツアーの一行が出口へ流れ始める。ただ一人、鳥打ち帽の老人が、塔の床にどっかと腰を下ろした。
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_agra_agra_fort_guide_006
 ……あの人、動かないね
 -> END
 

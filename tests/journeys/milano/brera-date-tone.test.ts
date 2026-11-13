@@ -32,8 +32,8 @@ describe("relationship tone in the Brera conversation", () => {
     const romantic = run("romantic_tension", "positive");
     const strained = run("strained", "negative");
     const guarded = run("guarded_attraction", "negative");
-    expect(reserved).toContain("私もそうしてほしい");
-    expect(romantic).toContain("私もそうしてほしい");
+    expect(reserved).toContain("わたしもそうしてほしい");
+    expect(romantic).toContain("わたしもそうしてほしい");
     expect(strained).toContain("答えるまで待たせるのも難しい");
     expect(guarded).toContain("答えるまで待たせるのも難しい");
     expect(romantic).toContain("台詞を選び終えた口元");

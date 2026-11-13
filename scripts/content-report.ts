@@ -56,7 +56,7 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "sound": "sound effect note(s) (a journey's sound nothing plays, system sounds missing from the shared list)",
   "music": "music note(s) (a track that no play value or # bgm: plays)",
   "ambience": "ambience note(s) (a journey's ambience track that no play.places value or # ambience: plays)",
-  "voice-changed": "recorded line(s) whose text changed since the voice script was sent (record again; npm run voice:changes)",
+  "voice-changed": "recorded line(s) whose text is no longer what their voice says, or not in recorded.json (record again; npm run voice:changes)",
 };
 
 /**
