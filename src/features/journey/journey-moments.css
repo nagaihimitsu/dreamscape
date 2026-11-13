@@ -109,9 +109,14 @@
 .resume-recap-close .icon { width: 16px; height: 16px; }
 .resume-recap-body { display: flex; gap: 12px; align-items: flex-start; margin-top: 8px; }
 .resume-recap-photo { flex: 0 0 min(38%, 160px); margin: 0; }
-/* The album's illustration in the same 3:2 frame as the album (a picture of another shape keeps its middle). */
+/* The album's illustration in the same 3:2 frame as the album (a picture of another shape keeps its middle); a place's
+   photo is its 3:2 card copy. */
 .resume-recap-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 8px; background: #26342e; }
 .resume-recap-photo figcaption { margin-top: 4px; font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; }
+/* A place's photo: its credit line across the card's foot, quiet (as the clue book's). Its links are in the text (docs/10)
+   and keep their words whole. */
+.resume-recap-credit { margin-top: 6px; color: var(--ds-ink-muted); font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; }
+.resume-recap-credit a { color: var(--ds-ink); white-space: nowrap; }
 .resume-recap-chapter { min-width: 0; }
 .resume-recap-city { margin: 0; color: var(--ds-ink-muted); font-size: 12px; }
 .resume-recap-chapter h3 { margin: 0; font-family: "Noto Serif JP", serif; font-size: 17px; line-height: 1.5; overflow-wrap: anywhere; }

@@ -2,11 +2,12 @@ import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from
 import { createPortal } from "react-dom";
 import { DEFAULT_ITEM_ICON } from "../../content/code-images";
 import { Icon } from "../../components/icons";
+import { ImageCreditLine } from "../../components/ImageCredit";
 import { Modal } from "../../components/Modal";
 import { useMeasuredHeight } from "../../components/useMeasuredHeight";
 import { playSe } from "../../audio/sound-effects";
 import { reducedMotionNow, useNightCard } from "./NightRest";
-import type { ChapterStampCard, EndRoll, EpisodeTitleCard, MomentPhoto, PackedItem, Packing, ResumeRecap } from "./journey-moments";
+import type { ChapterStampCard, EndRoll, EpisodeTitleCard, PackedItem, Packing, RecapPicture, ResumeRecap } from "./journey-moments";
 import type { JourneyNumbers } from "./journey-numbers";
 import { JourneyNumbersCard } from "./JourneyNumbers";
 import "./journey-moments.css";
@@ -116,9 +117,11 @@ export function DepartureLuggage({ carried, left }: { carried: readonly PackedIt
 
 /**
  * 前回までのあらすじ: a card at the top of free time or the night screen when a resumed game opens there (the page's start
- * with a save, 「ロード」): the city, day and time, the last episode completed (its clear title and record) and the album's
- * latest photo (the author's illustration in a 3:2 frame, no credit). In the page's flow; nothing waits for it, and it goes
- * with 「閉じる」 or when the screen changes.
+ * with a save, 「ロード」): the city, day and time, the last episode completed (its clear title and record) and that
+ * episode's picture in a 3:2 frame (recapPicture, 2026-11-13): its own album photo (the author's illustration with its
+ * caption, no credit), else its place's photo as free time's card shows it, captioned with the place's name, and the
+ * photo's credit line (ImageCreditLine, as the clue book's photo has it) across the card's foot. In the page's flow;
+ * nothing waits for it, and it goes with 「閉じる」 or when the screen changes.
  */
 export function ResumeRecapCard({ recap, onClose }: { recap: ResumeRecap; onClose: () => void }) {
   // Its height (--recap-h) is the night screen's room for it: that screen lies under it and starts below it.
@@ -139,13 +142,14 @@ export function ResumeRecapCard({ recap, onClose }: { recap: ResumeRecap; onClos
         <p>{recap.chapter.descriptionJa}</p>
       </div>
     </div>
+    {recap.photo?.credit && <ImageCreditLine asset={recap.photo.credit} className="resume-recap-credit" />}
   </section>;
 }
 
-function RecapPhoto({ photo }: { photo: MomentPhoto }) {
+function RecapPhoto({ photo }: { photo: RecapPicture }) {
   return <figure className="resume-recap-photo">
     <img src={served(photo.path)} alt={photo.altJa} decoding="async" />
-    <figcaption>{photo.caption ?? photo.placeJa}</figcaption>
+    <figcaption>{photo.captionJa}</figcaption>
   </figure>;
 }
 
