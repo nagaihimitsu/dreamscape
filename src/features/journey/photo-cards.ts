@@ -53,7 +53,7 @@ export const lockedCardId = (dateId: string): string => `${LOCKED_PREFIX}${dateI
 
 /**
  * A card of the row: 「待機」 (the waits), a place, a date not open yet whose writer gave it a hint (`# hint:`, 2026-11-13;
- * date-rules.ts hintedLockedDates), the city's tour (booking, cancelling) or 「ホテルに戻る」 (休む).
+ * date-rules.ts hintedLockedDates; only while Debug mode is on), the city's tour (booking, cancelling) or 「ホテルに戻る」 (休む).
  */
 export type RowCard =
   | { kind: "wait"; id: typeof WAIT_CARD_ID }
@@ -63,15 +63,19 @@ export type RowCard =
   | { kind: "stay"; id: typeof STAY_CARD_ID };
 
 /**
- * The row: 「待機」 at the left end (always), the places' cards, the locked dates' cards (`locked`, in their order), then
- * the tour while one is offered or booked here, then 「ホテルに戻る」 at the right end (always).
+ * The row: 「待機」 at the left end (always), the places' cards, then the tour while one is offered or booked here, then
+ * 「ホテルに戻る」 at the right end (always). A destination not open yet is not in the row (2026-11-13 user decision: it joins
+ * as a new card once it opens, newCardIds); a place open but not usable now (its hours, AP, the way back by 21:00) is, with
+ * its reasons. Only while Debug mode is on (`debug`, the writer's check) do the dates not open yet whose writer gave a hint
+ * (`locked`, in their order) stand as locked cards after the places'.
  */
-export function rowCards(entries: readonly PhotoCardEntry[], { tour, locked = [] }: {
+export function rowCards(entries: readonly PhotoCardEntry[], { tour, locked = [], debug = false }: {
   tour: boolean;
   locked?: readonly { dateId: string; hintJa: string }[];
+  debug?: boolean;
 }): RowCard[] {
   const places = entries.map((entry): RowCard => ({ kind: "place", id: entry.place.id, entry }));
-  const lockedCards = locked.map((date): RowCard => ({ kind: "locked", id: lockedCardId(date.dateId), dateId: date.dateId, hintJa: date.hintJa }));
+  const lockedCards = debug ? locked.map((date): RowCard => ({ kind: "locked", id: lockedCardId(date.dateId), dateId: date.dateId, hintJa: date.hintJa })) : [];
   return [{ kind: "wait", id: WAIT_CARD_ID }, ...places, ...lockedCards, ...(tour ? [{ kind: "tour", id: TOUR_CARD_ID } as const] : []),
     { kind: "stay", id: STAY_CARD_ID }];
 }

@@ -31,8 +31,8 @@ export function dateBelongsToCity(state: GameState, date: DateDefinition): boole
 }
 
 /**
- * The dates of the current city that free time's row shows as a locked card with their writer's hint (2026-11-13,
- * `# hint:`; photo-cards.ts): a date with a hint and a map condition (`when`) that does not hold yet, not unlocked nor
+ * The dates of the current city that free time's row shows as a locked card with their writer's hint while Debug mode
+ * is on (2026-11-13, `# hint:`; photo-cards.ts rowCards; players never see them): a date with a hint and a map condition (`when`) that does not hold yet, not unlocked nor
  * played, and that nothing closes for good first (its `until`, the ending for a date that does not go on after it). A
  * relationship repair never shows one. Read from the progress only: no relationship value decides it.
  */

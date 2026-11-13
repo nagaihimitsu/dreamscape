@@ -1057,6 +1057,7 @@ export function GameApp({
             nextCityName={departure?.city.nameJa}
             onDepart={() => setConfirmDeparture(true)}
             seenCards={seenCards}
+            debug={debugOn}
           />
         )}
       </main>

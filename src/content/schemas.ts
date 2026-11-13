@@ -26,7 +26,8 @@ export const dateSchema = z
     until: conditionSchema.optional(),
     /**
      * The writer's hint (2026-11-13; also a date knot's or a one-scene date file's head `# hint:`): while `when` does
-     * not hold yet, free time's row shows the date as a locked card with these words (date-rules.ts hintedLockedDates).
+     * not hold yet and Debug mode is on, free time's row shows the date as a locked card with these words (date-rules.ts
+     * hintedLockedDates; players never see it: the date joins the row once it opens).
      */
     hintJa: text.optional(),
     destinationId: id.optional(),
