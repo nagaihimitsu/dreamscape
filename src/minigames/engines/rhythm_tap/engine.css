@@ -1,0 +1,109 @@
+/* The rhythm_tap engine (EnginePlay.tsx): the skin's field fills the middle; at the bottom in thumb reach, the hint and
+   the stop button (away from the big button: the lane lies between them), the lane of beats, the big tap button. */
+.mg-engine-rhythm-tap { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
+.mg-engine-rhythm-tap .mg-rhythm-tap-field {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+.mg-engine-rhythm-tap .mg-rhythm-tap-controls { flex: none; padding: 8px 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
+.mg-engine-rhythm-tap .mg-rhythm-tap-top { display: flex; align-items: center; justify-content: flex-end; gap: 12px; min-height: 44px; margin: 0 0 8px; }
+.mg-engine-rhythm-tap .mg-rhythm-tap-hint {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+/* The stop: a quiet secondary button, smaller than the tap and above the lane (a fast thumb does not reach it by chance). */
+.mg-engine-rhythm-tap .mg-rhythm-tap-stop {
+  flex: none;
+  justify-content: center;
+  min-width: 88px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 22px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  touch-action: manipulation;
+}
+.mg-engine-rhythm-tap .mg-rhythm-tap-stop[aria-disabled="true"] { opacity: 0.55; }
+/* The lane: marks come from the right and meet the ring at each beat. A hit lights the ring (brighter and thicker, not
+   colour alone); a missed mark turns hollow and dim and slides on. */
+.mg-engine-rhythm-tap .mg-rhythm-tap-lane {
+  position: relative;
+  height: 36px;
+  margin: 0 0 12px;
+  overflow: hidden;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 18px;
+  background: rgba(255, 250, 241, 0.12);
+}
+.mg-engine-rhythm-tap .mg-rhythm-tap-ring,
+.mg-engine-rhythm-tap .mg-rhythm-tap-mark {
+  position: absolute;
+  top: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.mg-engine-rhythm-tap .mg-rhythm-tap-ring {
+  left: 16%;
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(240, 200, 96, 0.75);
+}
+.mg-engine-rhythm-tap .mg-rhythm-tap-ring[data-flash="true"] {
+  border-width: 5px;
+  border-color: #f6d27a;
+  background: rgba(240, 200, 96, 0.35);
+  box-shadow: 0 0 10px rgba(240, 200, 96, 0.8);
+}
+.mg-engine-rhythm-tap .mg-rhythm-tap-mark {
+  left: 110%;
+  width: 18px;
+  height: 18px;
+  background: var(--ds-on-slate);
+  box-shadow: 0 0 0 2px var(--ds-slate-900);
+}
+.mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-state="miss"] {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--ds-on-slate-muted);
+  background: transparent;
+  box-shadow: none;
+  opacity: 0.6;
+}
+.mg-engine-rhythm-tap .mg-rhythm-tap-action {
+  justify-content: center;
+  width: 100%;
+  min-height: 64px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-align: center;
+  touch-action: manipulation;
+}
+.mg-engine-rhythm-tap .mg-rhythm-tap-action[aria-disabled="true"] { background: var(--ds-slate-900); color: var(--ds-on-slate-muted); }
+.mg-engine-rhythm-tap .mg-rhythm-tap-auto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 64px;
+  margin: 0;
+  border-radius: 12px;
+  background: var(--ds-chip-bg);
+  font-size: 15px;
+}
+@media (max-height: 620px) {
+  .mg-engine-rhythm-tap .mg-rhythm-tap-controls { padding-top: 4px; }
+  .mg-engine-rhythm-tap .mg-rhythm-tap-top { margin-bottom: 4px; }
+  .mg-engine-rhythm-tap .mg-rhythm-tap-lane { margin-bottom: 8px; }
+  .mg-engine-rhythm-tap .mg-rhythm-tap-action, .mg-engine-rhythm-tap .mg-rhythm-tap-auto { min-height: 54px; }
+}
