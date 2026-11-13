@@ -1,4 +1,4 @@
-import { dates, getCityContent } from "../../content";
+import { cityContents, dates, getCityContent } from "../../content";
 import { encounters } from "../../content/encounters";
 import { battlePlayed } from "../../domain/conditions";
 import type { GameState } from "../../domain/game";
@@ -14,8 +14,19 @@ import type { GameState } from "../../domain/game";
  * In the city's place order.
  */
 export function visitedPlaceIds(game: Readonly<GameState>): string[] {
-  const { travel } = getCityContent(game.currentCityId);
-  const placeIds = new Set([game.travel.hotelPlaceId, game.travel.currentPlaceId, ...game.travel.todayPlaceIds]);
+  return visitedPlaceIdsIn(game, game.currentCityId);
+}
+
+/**
+ * The places of a city of the journey the party has been to, by the same records (旅の数字, 2026-11-13): for the current
+ * city visitedPlaceIds; for another, the places of its landmarks, dates and map events done (the hotel and today's moves
+ * belong to the current city only). None for a city whose content this build lacks.
+ */
+export function visitedPlaceIdsIn(game: Readonly<GameState>, cityId: string): string[] {
+  if (!cityContents[cityId]) return [];
+  const { travel } = getCityContent(cityId);
+  const here = cityId === game.currentCityId;
+  const placeIds = new Set(here ? [game.travel.hotelPlaceId, game.travel.currentPlaceId, ...game.travel.todayPlaceIds] : []);
   const landmarkIds = new Set([...game.visitedLandmarkIds, ...game.completedGuideIds,
     ...encounters.encounters.filter((encounter) => encounter.landmarkId && game.seenEncounterIds.includes(encounter.id)).map((encounter) => encounter.landmarkId!)]);
   const destinationIds = new Set(dates.filter((date) => date.destinationId && game.playedDateIds.includes(date.id)).map((date) => date.destinationId!));

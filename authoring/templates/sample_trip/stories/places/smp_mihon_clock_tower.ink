@@ -58,6 +58,8 @@ INCLUDE modules.ink
 
 // ───── 0：案内（本筋。tourism/catalog.json の guideStoryId がこの住所を指す）。# effect は置かない。
 // 行の札 # local_word: smp_mihon_word_trisol は、その行が出たときにその国の言葉を1つ覚える（下の扉の文字の行。learning/local-words.json の語で、英語ノートの「その国の言葉」に並ぶ）。
+// 行の札 # em_shake: <語> は、その行の最初の<語>を小さく震わせる（ヒロインの「三時？」）。# em: <語> は、その行の最初の<語>を
+// 太字と強調の色で見せる（「止まってる」）。語は、その行の字に書いたとおりに書く（名前は {heroine_name} のまま）。
 === smp_mihon_clock_tower_guide ===
 # scene: guide
 # background: smp_bg_mihon_clock_tower
@@ -65,10 +67,12 @@ INCLUDE modules.ink
 広場の真ん中に、見本の街の時計塔が立っている。文字盤の針は三時を指していた。
 # speaker: heroine
 # reaction: heroine,surprised,question
+# em_shake: 三時？
 「あれ、三時？　宿を出たの、朝だったよね」
 # speaker: narrator
 {heroine_name}は自分の時計と文字盤を見比べた。塔の針は、少しも動かない。
 # speaker: heroine
+# em: 止まってる
 「止まってるんだ。でも塔の下はきれいに掃いてある。放っておかれてる感じじゃないね」
 # speaker: narrator
 # local_word: smp_mihon_word_trisol
@@ -275,6 +279,7 @@ Come back at three. Any three will do.
     -> END
 
 // ───── デート（本筋。romance/date_catalog.json の storyId がこの住所を指す）。地図に出る条件は頭の # when:。
+// 頭の # hint: は、# when: がかなうまで自由時間の札の列に鍵のかかった灰色の札として出す一言（書いた言葉だけが出る。任意）。
 // デートの3択（噛み合いの選択）は、このデートの knot の中（stitch を含む）に置き、# option: と # profile: で書く。
 // 手伝いの knot（頭の札なし）の中の選択は「場面の中の選択」：乱数を使わず、札の効果だけが当たる。
 // 行の札 # stand: は、ヒロインの立ち位置（apart 少し離れて・near いつもの位置・close すぐそば）。次の # stand: まで続く。
@@ -283,6 +288,7 @@ Come back at three. Any three will do.
 === smp_mihon_date_tower_square ===
 # scene: date
 # when: episodes mihon >= 1
+# hint: 時計塔の番人と話したあとで
 # background: smp_bg_mihon_clock_tower
 # weather: petals
 # speaker: narrator

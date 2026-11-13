@@ -99,7 +99,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
   onAnswer: (index: number) => boolean;
   onFinish: () => void;
 }) {
-  const { ready, onReady, entries } = useDialogueLog(view.id, view.revision, view.speaker, view.quiz ? "" : view.text);
+  const { ready, onReady, entries } = useDialogueLog(view.id, view.revision, view.speaker, view.quiz ? "" : view.text, view.delivery);
   const windowVisibility = useDialogueWindow();
   const [choiceReady, setChoiceReady] = useState(false);
   const lock = useRef(false);

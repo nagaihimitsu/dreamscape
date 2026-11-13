@@ -1,0 +1,31 @@
+/* The ring of a tap the game ignores for a moment (2026-11-13; ignored-tap.ts): faint, at the tap's point, over
+   everything and taking nothing (pointer events none), gone in 0.42 s. A light ring with a dark edge reads on a photo
+   and on paper alike. Reduced motion (the system's and 「演出を短縮する」, read as it is made): it fades in place. */
+.ignored-tap {
+  position: fixed;
+  z-index: 3000;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 2px solid rgba(255, 250, 241, 0.85);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(31, 36, 48, 0.35);
+  pointer-events: none;
+  opacity: 0;
+  animation: ignored-tap-ring 420ms var(--ease-out, ease-out) both;
+}
+@keyframes ignored-tap-ring {
+  0% { opacity: 0.7; scale: 0.45; }
+  100% { opacity: 0; scale: 1.15; }
+}
+.ignored-tap.is-still {
+  animation: ignored-tap-fade 260ms ease-out both;
+}
+@keyframes ignored-tap-fade {
+  0%, 100% { opacity: 0; }
+  40% { opacity: 0.6; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ignored-tap { animation: ignored-tap-fade 260ms ease-out both; }
+}
+.reduce-motion .ignored-tap { animation: ignored-tap-fade 260ms ease-out both; }

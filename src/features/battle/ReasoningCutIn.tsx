@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { playSe } from "../../audio/sound-effects";
+import { isSecondTap } from "../../components/double-tap";
+import { showIgnoredTap } from "../../components/ignored-tap";
 import "./reasoning-cutin.css";
 
 /** A presentation-only transition: completing it must not change game state. */
@@ -16,6 +18,7 @@ export function ReasoningCutIn({
   callback.current = onComplete;
   const completed = useRef(false);
   const skip = useRef<HTMLButtonElement>(null);
+  const shownAt = useRef(performance.now());
   const finish = useCallback(() => {
     if (completed.current) return;
     completed.current = true;
@@ -53,6 +56,15 @@ export function ReasoningCutIn({
       data-testid="reasoning-cutin"
       data-kind={kind}
       data-reduce-motion={reduceMotion || undefined}
+      // A tap anywhere on it skips it too (2026-11-13), but not the second tap of the double tap that brought it.
+      onClick={(event) => {
+        if (event.target instanceof Element && event.target.closest("button")) return;
+        if (isSecondTap(performance.now() - shownAt.current)) {
+          if (event.detail > 0) showIgnoredTap(event.clientX, event.clientY);
+          return;
+        }
+        finish();
+      }}
       onKeyDown={(event) => {
         if (event.key === "Escape") {
           event.preventDefault();

@@ -98,6 +98,7 @@ export function EpilogueScreen({
     game.revision,
     speaker,
     frame.text,
+    frame.delivery,
   );
   const advanceSafely = () => {
     if (ready && !showLogo && !windowVisibility.hidden && !dialogueObstructed()) onAdvance();

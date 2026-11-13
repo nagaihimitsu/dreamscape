@@ -17,6 +17,7 @@ import { checkSoundTags, soundRegistry } from "./sound-files";
 import { checkBgmTags, musicRegistry } from "./music-files";
 import { ambienceRegistry, checkAmbienceTags } from "./ambience-files";
 import { catalogItemJourneys, checkSceneEffectTags } from "./scene-effect-tags";
+import { checkEmphasisTags } from "./line-emphasis";
 import { validateEpilogue } from "./epilogue-validation";
 import { compileInk, validateNoInkRandom, validateRelationshipToneSource } from "./ink-validation";
 import { choiceOption, includesModules, readFileChoices, readMainFileHead } from "./place-files";
@@ -138,6 +139,7 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
       checkBgmTags(source, soundLayerId, tracks);
       checkAmbienceTags(source, soundLayerId, ambienceTracks);
       checkSceneEffectTags(source, soundLayerId, items);
+      checkEmphasisTags(source);
       // A scene's cond("…") (stage 2a): declared, literal and written as a condition; content:build checks what it names.
       // A battle includes the game's modules.ink (its quiz and reasoning calls).
       const modules = includesModules(source);

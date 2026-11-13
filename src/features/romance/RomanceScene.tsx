@@ -81,6 +81,7 @@ export function RomanceScene({
     game.revision,
     speaker,
     frame.text,
+    frame.delivery,
   );
   const windowVisibility = useDialogueWindow();
   const dialogueRef = useDialogueScrollReset<HTMLDivElement>(active.storyState);

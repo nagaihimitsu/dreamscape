@@ -46,6 +46,9 @@ const paths = {
   heart: "M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z",
   ticket: "M3.5 7.5h17v3a1.5 1.5 0 0 0 0 3v3h-17v-3a1.5 1.5 0 0 0 0-3zM14.5 7.5v9",
   speaker: "M4 9.5h3.5L12 5.5v13l-4.5-4H4zM15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11",
+  // A padlock (a date's locked card, 2026-11-13) and two notes (旅の音楽室).
+  lock: "M6.5 10.5h11v9h-11zM8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5M12 14.2v2.3",
+  music: `M9 17.5V5.5l10-2v12${circle(6.8, 17.5, 2.2)}${circle(16.8, 15.5, 2.2)}`,
 } as const;
 
 export type IconName = keyof typeof paths;

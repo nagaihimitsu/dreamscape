@@ -113,6 +113,7 @@ export function TourismScreen({
     game.revision,
     speaker,
     frame?.text ?? "",
+    frame?.delivery,
   );
   const advanceSafely = () => {
     if (ready && !windowVisibility.hidden && !dialogueObstructed()) onAdvance();

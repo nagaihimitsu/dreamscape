@@ -127,6 +127,14 @@ export function setSceneFastForward(on: boolean): void {
 }
 
 /**
+ * Whether the scene's cues wait now: a load or the page's start has brought the scene back (holdSceneCues) or 高速送り
+ * runs. A line shown then has no motion of its own either (its `# em:` pop and `# em_shake:` tremble: DialogueText).
+ */
+export function sceneCuesQuiet(): boolean {
+  return cuesHeld || fastForward;
+}
+
+/**
  * Plays a cue of the scene on screen (a line's phone, letter, name plate or recall, a word learned, a city's title):
  * playSe, but not for a scene a load has just brought back (holdSceneCues) nor during 高速送り.
  */

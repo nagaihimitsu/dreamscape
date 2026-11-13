@@ -59,7 +59,9 @@ import { checkSoundTags, soundRegistry, soundUseProblem, soundVolumesOf, soundWa
 import { checkBgmTags, musicDataOf, musicRegistry, musicWarnings } from "./music-files";
 import { ambienceDataOf, ambienceRegistry, ambienceWarnings, checkAmbienceTags } from "./ambience-files";
 import { audioLayersOf } from "./audio-layers";
+import { sceneAudioOf } from "./scene-audio";
 import { checkSceneEffectTags, itemJourneys } from "./scene-effect-tags";
+import { checkEmphasisTags } from "./line-emphasis";
 import { checkHelperKnot, revealRegionProblem, validateBattleEvidence } from "./battle-validation";
 import { landmarkOrderError, landmarkParts, tourismCatalogSchema, type VisitPart } from "../src/content/tourism-schemas";
 import type { SceneOption } from "../src/content/scene-schemas";
@@ -368,7 +370,28 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       }
       journeyChanged = true;
     }
+    // A date's head # hint: (2026-11-13): a date knot's of a place file, or the head of a one-scene date file; the build
+    // writes it into the date's hintJa (writing both stops, as for when).
+    const headHint = (address: string): { hint: string; label: string } | undefined => {
+      const { storyId, path: knotPath } = splitStoryAddress(address);
+      if (knotPath !== undefined) {
+        const hint = placeFiles.get(storyId)?.knots.find((item) => item.name === knotPath)?.head.find((tag) => tag.key === "hint")?.value;
+        return hint ? { hint, label: `${storyLabel(storyId)} (${knotPath})` } : undefined;
+      }
+      const file = sources.storyFiles.find((story) => story.id === storyId);
+      const hint = file && withContext(file.file, () => readMainFileHead(file.source).hint);
+      return hint ? { hint, label: storyLabel(storyId) } : undefined;
+    };
     for (const date of dates) {
+      const hinted = headHint(date.storyId);
+      if (hinted) {
+        if (date.hintJa)
+          throw new Error(`The hint of date ${date.id} is written twice: ${hinted.label} has # hint:, romance/date_catalog.json has hintJa (keep one; A4)`);
+        dates = dates.map((item) => (item.id === date.id ? { ...item, hintJa: hinted.hint } : item));
+        const raw = dateValue?.dates.find((item) => item.id === date.id);
+        if (raw) raw.hintJa = hinted.hint;
+        datesChanged = true;
+      }
       const head = knotWhen(date.storyId);
       if (!head) continue;
       if ((head.when.length && date.when) || (head.until.length && date.until))
@@ -635,10 +658,16 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     withContext(file, () => checkAmbienceTags(authored, storyLayer, ambience.tracks));
     // A line's # item_show: names an item of the story's own journey; # weather: and # tint: their own values (2026-11-13).
     withContext(file, () => checkSceneEffectTags(authored, storyLayer, storyItemJourneys));
+    // A line's # em: and # em_shake: name a word of its own text (2026-11-13).
+    withContext(file, () => checkEmphasisTags(authored));
     const place = placeFiles.get(id);
     const main = !place && mains.some((item) => item.address === id);
     const mainHead = main ? withContext(file, () => readMainFileHead(authored)) : undefined;
     if (mainHead && (mainHead.onDone.length || mainHead.then !== undefined)) mainFileHeads.set(id, mainHead);
+    // A head # hint: is a date's (2026-11-13; dates read it above).
+    if (mainHead?.hint !== undefined && !mains.some((item) => item.address === id && item.kind === "date"))
+      throw new Error(`# hint: は、デートの頭の札です：${storyLabel(id)} はデートではありません。デートのファイルか knot に書いてください` +
+        `（# hint: is a date's head tag; ${id} is not a date）。`);
     const source = place ? place.source : mainHead ? mainHead.source
       : encounterHeads.has(id) ? withContext(file, () => readEncounterHead(authored).source) : authored;
     // A place file, or a one-scene file that includes the game's modules.ink (a battle, stage 5).
@@ -1072,6 +1101,14 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       date.allowAfterEnding && date.kind !== "normal"
     )
       throw new Error(`After-ending date must be normal: ${date.id}`);
+    // A hint (2026-11-13) shows only while the date's when does not hold: without a when, nobody sees it; a date that
+    // also opens on the relationship (or a repair) may close its locked card without opening (both warnings).
+    if (date.hintJa && (!date.when || date.recovery))
+      sceneNotes.push({ kind: "scene-tag", message: `鍵の札が出ないデートです：${date.id} の # hint:（hintJa）は、${date.recovery
+        ? "関係修復のデートには出ません" : "地図に出る条件（# when: か when）がないので、どこにも出ません"}（止めません）。` });
+    else if (date.hintJa && (date.minAffection > 0 || date.minRomanceStage > 1 || date.needsDeferred))
+      sceneNotes.push({ kind: "scene-tag", message: `鍵の札が開かずに消えることがあります：${date.id} は関係の値でも開くので、` +
+        "# when: がかなっても関係が足りなければ、鍵の札が消えてデートは出ません（止めません）。" });
     // Decision 32: a special date that costs AP is the author's choice (a warning; it cannot start without the AP).
     if (date.kind !== "normal" && date.apCost !== 0)
       sceneNotes.push({ kind: "special-date-ap", message: `AP を使う特別なデートです：${date.id}（${date.kind}）は ${date.apCost} AP。ふつうは AP 不要（0）です。AP が足りないと始められません（止めません）。` +
@@ -1623,6 +1660,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     ambience: ambienceDataOf(ambience, sources.manifests.map((manifest) => manifest.id)),
     /** Which layer gives each sound, track and ambience track, and each journey's voices (generated/audio-layers.json; Debug's 音と演出の見本). */
     audioLayers: audioLayersOf(sources.layers, { sounds, music: music.tracks, ambience: ambience.tracks, voices: voiceFiles }),
+    /** Each scene's voiced lines and # bgm: tracks (generated/scene-audio.json; the music room, 2026-11-13). */
+    sceneAudio: sceneAudioOf(sources.storyFiles.map(({ id, source }) => ({ id, source }))),
     /** Images whose files checkContentImages decodes. */
     images: { characters: characterImages, tourismAssets: tourism.assets },
     /** What chooses the free-time photos (src/content/photo-choice.ts), for their derived copies (scripts/derived-images.ts). */

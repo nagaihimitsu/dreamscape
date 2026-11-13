@@ -6,6 +6,8 @@ import { Modal } from "../../components/Modal";
 import { playSe } from "../../audio/sound-effects";
 import { reducedMotionNow, useNightCard } from "./NightRest";
 import type { ChapterStampCard, EndRoll, EpisodeTitleCard, MomentPhoto, PackedItem, Packing, ResumeRecap } from "./journey-moments";
+import type { JourneyNumbers } from "./journey-numbers";
+import { JourneyNumbersCard } from "./JourneyNumbers";
 import "./journey-moments.css";
 
 // The journey's moments (2026-11-11 user decision; the rules in journey-moments.ts, GameApp's useJourneyMoments shows them):
@@ -196,7 +198,13 @@ function PackedList({ items }: { items: readonly PackedItem[] }) {
  * reduced motion it does not roll: a list that scrolls by hand. Opened under the finger of the epilogue's last tap, it takes
  * no press for a moment (settlePresses). No relationship value is in it.
  */
-export function EndRollDialog({ roll, reduceMotion, onClose }: { roll: EndRoll; reduceMotion: boolean; onClose: () => void }) {
+export function EndRollDialog({ roll, numbers, reduceMotion, onClose }: {
+  roll: EndRoll;
+  /** 旅の数字 (2026-11-13), under the names at the roll's top: its numbers count up as the roll opens. */
+  numbers?: JourneyNumbers | null;
+  reduceMotion: boolean;
+  onClose: () => void;
+}) {
   const [still] = useState(() => reducedMotionNow(reduceMotion));
   const [playing, setPlaying] = useState(!still);
   const [ended, setEnded] = useState(still);
@@ -245,6 +253,7 @@ export function EndRollDialog({ roll, reduceMotion, onClose }: { roll: EndRoll; 
         <p className="end-roll-eyebrow">旅の終わり</p>
         <h2 id="end-roll-title" className="end-roll-title">{roll.journeyJa || "旅の記録"}</h2>
         {names}
+        {numbers && <JourneyNumbersCard numbers={numbers} reduceMotion={reduceMotion} />}
         {roll.cities.map((city) => <section key={city.id} className="end-roll-city" aria-labelledby={`end-roll-city-${city.id}`}>
           <h3 id={`end-roll-city-${city.id}`}>{city.nameJa}</h3>
           {city.chapters.length > 0 && <>
