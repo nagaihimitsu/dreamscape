@@ -2,8 +2,9 @@ import { withoutComments } from "./place-files";
 
 // The line a line tag belongs to, read statically from an Ink source (so a line in a branch no walk takes counts too):
 // Ink gives a tag on a line of its own to the next line of text, and a tag after a line's text to that line. Used by
-// content:build's checks of `# em:` and `# em_shake:` (line-emphasis.ts) and its index of the voiced lines
-// (scene-audio.ts). The text is the line's raw text before its tags: names such as {heroine_name} are left as written.
+// content:build's checks of `# em:` and `# em_shake:` (line-emphasis.ts), its index of the voiced lines
+// (scene-audio.ts) and the voice script (voice-script.ts). The text is the line's raw text before its tags: names such
+// as {heroine_name} are left as written.
 // Light module (no content loading): unit tests use it directly.
 
 const KNOT_LINE = /^\s*={2,}\s*(?:function\s+)?([A-Za-z_][A-Za-z0-9_]*)/u;
@@ -26,7 +27,7 @@ export type TaggedLine = {
 };
 
 /** Where the line's tags start: its first `#` that Ink does not read as text (`\#` is a `#` in the text). */
-function tagStart(line: string): number {
+export function tagStart(line: string): number {
   for (let index = 0; index < line.length; index++) {
     if (line[index] === "\\") index++;
     else if (line[index] === "#") return index;
@@ -35,7 +36,7 @@ function tagStart(line: string): number {
 }
 
 /** A tag part's tags (`# key: value`, `# key`), in order. */
-function tagsOf(part: string): { key: string; value: string }[] {
+export function tagsOf(part: string): { key: string; value: string }[] {
   return part.slice(1).split("#").map((item) => item.trim()).filter(Boolean).map((item) => {
     const separator = item.indexOf(":");
     return separator < 0 ? { key: item, value: "" } : { key: item.slice(0, separator).trim(), value: item.slice(separator + 1).trim() };

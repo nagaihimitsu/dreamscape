@@ -4,6 +4,7 @@ import { requiredLeaves, type Condition, type Leaf } from "../src/content/condit
 import { parseConditionText } from "../src/content/condition-text";
 import type { SceneDone, SceneOption } from "../src/content/scene-schemas";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
+import { miniGameOptionId, miniGameOutcomeIds, type MiniGameTag } from "../src/content/mini-games";
 import { bindItemReader } from "../src/story/items";
 import { bindMemoryReader } from "../src/story/memory";
 import { checkLinesWithoutChoice } from "./ink-validation";
@@ -24,6 +25,9 @@ import type { DialogueObserver } from "./dialogue-expression-validation";
 //   table does not know.
 // The walk applies the scene's own effects as it goes: after `# give: X`, `item X held` reads false
 // and `item X gifted` true; after `# set: F`, `flag F` true.
+// - a line's `# minigame:` (2026-11-13) is not followed by a choice set right after its line, its choice set is not one
+//   choice per outcome of the game (by option ID), or an outcome may not be choosable there (checkMiniGameChoices); a
+//   scene whose screen cannot run a mini-game refuses the tag through its context (TagContext.miniGames).
 // Warning (not stopped): a choice point with only 「また今度」 and choices needing items not guaranteed there.
 //
 // A battle (stage 5, `battle`): the walk answers its calls as the game does (modules.ink): each
@@ -67,6 +71,26 @@ function stopKey(choices: readonly Choice[]): string {
 }
 
 const sameLeaf = (left: Leaf, right: Leaf) => JSON.stringify(left) === JSON.stringify(right);
+
+/**
+ * A mini-game's choice set (`# minigame:`, 2026-11-13): one choice per outcome of the game, by option ID (the outcome, or
+ * `<prefix>_<outcome>`), nothing else, and each always choosable (the game takes it whatever the player has: no `# requires:`,
+ * gift, use or payment that is not guaranteed there).
+ */
+function checkMiniGameChoices(tag: MiniGameTag, choices: readonly { text: string; optionId?: string; choosable: boolean }[], label: string): void {
+  const expected = miniGameOutcomeIds(tag.id).map((outcome) => miniGameOptionId(tag, outcome));
+  const written = choices.map((choice) => choice.optionId);
+  const missing = expected.filter((id) => !written.includes(id));
+  const extra = choices.filter((choice) => !choice.optionId || !expected.includes(choice.optionId))
+    .map((choice) => choice.optionId ?? `「${choice.text}」 (no # option:)`);
+  if (missing.length || extra.length)
+    throw new Error(`The choice set of # minigame: ${tag.id} in ${label} needs one choice per outcome, by # option: ${expected.join(", ")}` +
+      `${missing.length ? `; missing: ${missing.join(", ")}` : ""}${extra.length ? `; not an outcome: ${extra.join(", ")}` : ""}`);
+  const closed = choices.filter((choice) => !choice.choosable);
+  if (closed.length)
+    throw new Error(`An outcome of # minigame: ${tag.id} in ${label} may not be choosable (${closed.map((choice) => choice.optionId).join(", ")}): ` +
+      `the game takes it whatever the player has, so it needs nothing that is not guaranteed there (# requires:, # give:, # use:, a payment, a then: move)`);
+}
 
 /** Walk every path of the scene; returns the number of paths. */
 export function walkScene(input: SceneWalkInput): number {
@@ -118,6 +142,8 @@ export function walkScene(input: SceneWalkInput): number {
       let speaker = metadata.speaker ?? path.speaker;
       let explicitEmotion = metadata.emotion !== undefined;
       let lines = 0;
+      // The last line's # minigame: (a tag line without text belongs to the next line, as the frame reads it).
+      let game: { tag: MiniGameTag; line: string } | undefined;
       while (story.canContinue) {
         checkLinesWithoutChoice(++lines);
         const text = story.Continue()?.trim() ?? "";
@@ -125,9 +151,17 @@ export function walkScene(input: SceneWalkInput): number {
         if (tags.speaker) speaker = tags.speaker;
         if (tags.emotion !== undefined) explicitEmotion = true;
         if (battle && tags.effects.length) throw new Error(`A battle's lines take no # effect: (${input.label}); a choice's tags say what it does`);
+        if (text && game?.line) throw new Error(`# minigame: ${game.tag.id} in ${input.label} is on the line "${game.line}", but the line "${text}" comes ` +
+          `after it: write # minigame: on the line right before the choice set it plays`);
+        if (tags.minigame) game = { tag: tags.minigame, line: text };
+        else if (text && game) game.line = text;
         if (text) { input.observe?.(text, speaker, explicitEmotion); explicitEmotion = false; }
       }
       const choices = story.currentChoices;
+      if (game && !choices.length)
+        throw new Error(`# minigame: ${game.tag.id} in ${input.label} is not followed by a choice set (the line "${game.line}"): the game takes one of the choices right after its line`);
+      if (choices.some((choice) => parseStoryTags(choice.tags ?? [], input.context).minigame))
+        throw new Error(`# minigame: is written on a choice in ${input.label}: write it on the line right before the choice set`);
       const calls = choices.map((choice) => parseStoryTags(choice.tags ?? [], input.context).call);
       if (calls.some(Boolean) && choices.length !== 1) throw new Error(`A battle's call is offered with other choices in ${input.label}: write -> quiz(n) -> and -> reasoning -> on their own`);
       if (!choices.length) {
@@ -214,6 +248,8 @@ export function walkScene(input: SceneWalkInput): number {
         if (option.then && "move" in option.then) return false;
         return true;
       };
+      if (game) checkMiniGameChoices(game.tag, choices.map((choice, index) => ({ text: choice.text.trim(), optionId: parseStoryTags(choice.tags ?? [], input.context).optionId,
+        choosable: choosable(options[index]) })), input.label);
       const open = options.filter(choosable);
       if (!open.length)
         throw new Error(`No choice can be chosen at a choice point of ${input.label} (line of "${choices[0].text.trim()}"): every choice needs ` +

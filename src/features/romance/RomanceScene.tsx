@@ -6,7 +6,7 @@ import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
 import { CanalScene } from "../../components/CanalScene";
-import { CharacterPortrait } from "../../components/CharacterPortrait";
+import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
 import { portraitFocus } from "../../components/speaker-focus";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useNameCutIn } from "../../components/NameCutIn";
@@ -28,6 +28,7 @@ import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "..
 import { useSceneTap } from "../../components/useSceneTap";
 import { resolveRomancePresentation } from "./romance-presentation";
 import { SceneHeading } from "../../components/SceneHeading";
+import { MiniGame } from "../minigame/MiniGame";
 import { useSpeakingPerson } from "../../components/useSpeakingPerson";
 import { speakingPerson } from "../../domain/scene-person";
 import "./romance-scene.css";
@@ -44,6 +45,8 @@ export function RomanceScene({
   choiceDisplay,
   onAdvance,
   onFinish,
+  miniGameAuto = false,
+  debugTools = false,
 }: {
   game: GameState;
   date: DateDefinition | undefined;
@@ -58,6 +61,10 @@ export function RomanceScene({
   choiceDisplay?: (index: number) => ChoiceDisplay;
   onAdvance: () => void;
   onFinish: () => void;
+  /** 「ミニゲームをおまかせにする」: a line's `# minigame:` plays itself to its `auto` outcome (MiniGame.tsx). */
+  miniGameAuto?: boolean;
+  /** Debug mode: a mini-game's outcome may be picked directly. */
+  debugTools?: boolean;
 }) {
   const active = game.activeDate!;
   const frame = active.frame;
@@ -141,6 +148,21 @@ export function RomanceScene({
   useEffect(() => {
     choiceLock.current = false;
   }, [game.revision]);
+  /** Take a choice (a press, or a mini-game's outcome); `text`: the pressed choice's, shown leaving (a mini-game shows its own result). */
+  function select(index: number, text?: string): boolean {
+    if (choiceLock.current || windowVisibility.hidden || dialogueObstructed()) return false;
+    choiceLock.current = true;
+    pendingChoice.current = text === undefined ? null : { revision: game.revision, dateId: active.dateId, choiceCount: active.choiceCount, text };
+    if (!onSelect(index, game.revision)) {
+      choiceLock.current = false;
+      pendingChoice.current = null;
+      return false;
+    }
+    if (text !== undefined) playSe("ui_confirm");
+    return true;
+  }
+  // The scene the play of a line's `# minigame:` lies over (MiniGame.tsx).
+  const [miniGameHost, setMiniGameHost] = useState<HTMLDivElement | null>(null);
   function advance() {
     if (!ready || frame.choices.length || windowVisibility.hidden || dialogueObstructed()) return;
     if (frame.ended) onFinish();
@@ -234,7 +256,12 @@ export function RomanceScene({
                 onAdvance={advance}
               />
             </LineStage>
-            {frame.choices.length ? (
+            {frame.choices.length && frame.minigame ? (
+              // A line's # minigame: plays instead of the choices; its outcome takes its choice (MiniGame.tsx).
+              <MiniGame key={game.revision} tag={frame.minigame} choices={frame.choices} ready={ready && choiceReadyRevision === game.revision}
+                auto={miniGameAuto} debug={debugTools} reduceMotion={reduceMotion} host={miniGameHost} onChoose={(index) => select(index)}
+                partner={<CharacterFigure characterId="heroine" emotion="serious" sceneId={active.dateId} cityId={game.currentCityId} />} />
+            ) : frame.choices.length ? (
               <div className="choices">
                 {/* No 「返答を選んでください」 under it (2026-11-11, the user's decision): the replies coming in one after another say it. */}
                 <p className="choice-hint">あなたは、どう返す？</p>
@@ -244,20 +271,7 @@ export function RomanceScene({
                     key={`${game.revision}-${choice.index}`}
                     className="choice"
                     data-testid="date-choice"
-                    onClick={() => {
-                      if (choiceLock.current || windowVisibility.hidden || dialogueObstructed()) return;
-                      choiceLock.current = true;
-                      pendingChoice.current = {
-                        revision: game.revision,
-                        dateId: active.dateId,
-                        choiceCount: active.choiceCount,
-                        text: choice.text,
-                      };
-                      if (!onSelect(choice.index, game.revision)) {
-                        choiceLock.current = false;
-                        pendingChoice.current = null;
-                      } else playSe("ui_confirm");
-                    }}
+                    onClick={() => select(choice.index, choice.text)}
                   >
                     <span className="choice-number">
                       {String(index + 1).padStart(2, "0")}
@@ -277,6 +291,7 @@ export function RomanceScene({
         </div>
       </section>
       <DialogueWindowRestore state={windowVisibility} />
+      {frame.minigame && <div className="minigame-host" ref={setMiniGameHost} />}
     </div>
   );
 }

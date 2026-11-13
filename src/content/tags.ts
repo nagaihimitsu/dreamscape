@@ -1,6 +1,7 @@
 import { REACTION_MARKS, type DialogueReaction, type ReactionTarget } from "./dialogue-reactions";
 import { VOICE_ID } from "./voice-files";
 import { SOUND_ID } from "./sounds";
+import { parseMiniGameTag, type MiniGameTag } from "./mini-games";
 
 export interface TagContext {
   effectIds: string[];
@@ -12,6 +13,11 @@ export interface TagContext {
   localWordIds?: readonly string[];
   /** The people of progression/story.json, for `# speaker: <person ID>`; absent: a tool that only reads the lines (not checked). */
   personIds?: readonly string[];
+  /**
+   * Whether a line may start a mini-game (`# minigame:`): content:build says false for the scenes whose screen cannot
+   * run one and true for a place file's date; absent: allowed (the game reads only what content:build passed).
+   */
+  miniGames?: boolean;
 }
 
 /** The speakers every line may name; any other `# speaker:` names a person of progression/story.json people (2026-11-11). */
@@ -63,6 +69,8 @@ export interface StoryTags {
   tint?: TintSwitch;
   /** `# ambience: <ID>` / `# ambience: stop` / `# ambience: default`: the scene's ambience from this line on (as `# bgm:`). */
   ambience?: string;
+  /** `# minigame: <game> [auto <outcome>] [prefix <word>]`: the choice set right after the line is played (src/content/mini-games.ts). */
+  minigame?: MiniGameTag;
   effects: string[];
 }
 
@@ -344,6 +352,12 @@ export function parseStoryTags(
       result.delivery = key === "em" ? { ...result.delivery, em: value } : { ...result.delivery, emShake: value };
     } else if (isSceneTagKey(key)) {
       readSceneTag(key, value, result);
+    } else if (key === "minigame") {
+      // Where it may run and what follows it (a choice set of its outcomes) are content:build's (scripts/scene-walk.ts).
+      if (context.miniGames === false)
+        throw new Error(`# minigame: ${value}: a mini-game runs in a date written in a place file (stories/places/, the date's knot or a helper knot it calls) only`);
+      if (result.minigame) throw new Error("Duplicate minigame tag");
+      result.minigame = parseMiniGameTag(value);
     } else {
       throw new Error(`Unknown story tag: ${key}`);
     }
