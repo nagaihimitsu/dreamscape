@@ -85,7 +85,7 @@ INCLUDE modules.ink
     書いたのはアミール・フスローです！
 - else:
     # speaker: narrator
-    アンジャリが勝ち誇って正解を読み上げる。
+    アンジャリが胸を張って正解を読み上げる。
     # speaker: gt_anjali
     地上に楽園があるなら、それはここ！　書いたのはアミール・フスローです！
 }

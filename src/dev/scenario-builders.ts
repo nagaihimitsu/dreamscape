@@ -27,10 +27,10 @@ import {
 import { advanceOccasion, closeRomanceEnding, openEpilogue, openOccasion } from "../domain/occasion";
 import { sceneById, sceneOption } from "../domain/scene-effects";
 import { isSceneOpen } from "../domain/game-state-schema";
-import { landmarkParts } from "../content/tourism-schemas";
+import { hasObservation, landmarkParts } from "../content/tourism-schemas";
 import { advanceCityEpilogue, chooseCityEpilogue, completeArrivalLogo, epilogueChoiceDisplay, isAuthoredEpilogueCity } from "../domain/epilogue";
 import { createGame, startDate, validateGameState, type GameState } from "../domain/game";
-import { advanceTourismGuide, chooseTourismGuide, guideChoiceDisplay, openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "../domain/tourism";
+import { advanceTourismGuide, beginLandmarkGuide, chooseTourismGuide, getTourismAvailability, guideChoiceDisplay, openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "../domain/tourism";
 
 /** The first shown, choosable choice of the open guide (stage 3a: a guide may have choices), if any. */
 const firstGuideChoice = (state: GameState) =>
@@ -459,8 +459,14 @@ function scenePlaceId(cityId: string, eventId: string | undefined, landmarkId: s
 
 /** Open a landmark's sightseeing guide at its place (re-read when the landmark was already visited). */
 export function openTourismScene(state: GameState, landmarkId: string): GameState {
-  let next = openTourism(atPlace(state, scenePlaceId(state.currentCityId, undefined, landmarkId)), landmarkId);
+  const at = atPlace(state, scenePlaceId(state.currentCityId, undefined, landmarkId));
+  let next = openTourism(at, landmarkId);
   if (next.activeTourism?.phase === "exploring") next = replayTourismGuide(next, next.revision);
+  // A visited landmark without an observation (India's) has no observation to re-read the guide from: the guide opens
+  // as its visit opens it (beginLandmarkGuide), and its end goes on to the landmark's battle.
+  else if (!next.activeTourism && at.visitedLandmarkIds.includes(landmarkId) && getTourismAvailability(at, landmarkId).available &&
+      landmarks.some((item) => item.id === landmarkId && !hasObservation(item)))
+    next = beginLandmarkGuide(at, landmarkId);
   if (!next.activeTourism) throw new Error("この進行状態では場所を開けません。都市クリア後を選んでください。");
   return validateGameState(next);
 }

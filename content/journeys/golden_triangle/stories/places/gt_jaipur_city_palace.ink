@@ -63,7 +63,7 @@ INCLUDE modules.ink
 # reaction: heroine,worried,sweat
 え、ええと……それは……
 # speaker: narrator
-スシュマは返事を待たず、銀の壺を指さした。勝ちを確信した弁護士のような手つきだった。
+スシュマは返事を待たず、銀の壺を指さした。最後の証拠を出す弁護士のような手つきだった。
 # speaker: enemy
 この壺はね、昔の王様が外国へ持っていったのよ。中に何を入れていったと思う？
 -> quiz(1) ->
