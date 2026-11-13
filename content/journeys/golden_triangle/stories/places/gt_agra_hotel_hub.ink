@@ -6,9 +6,10 @@ INCLUDE modules.ink
 // 到着。cities/<都市>.json の arrivalStoryId がこの knot を指す。
 === gt_agra_arrival ===
 # scene: arrival
-# background: gt_bg_agra_hotel_room
+# background: gt_bg_agra_hotel_hub
 # speaker: narrator
 アーグラの宿は、タージ・マハルの南門に近い路地の奥にあった。若い支配人のサミールが自ら彼女の部屋まで案内し、扉を開けた瞬間、{heroine_name}が固まった。
+# background: gt_bg_agra_hotel_room_heart
 # speaker: narrator
 # se: door_open
 寝台の上に、薔薇の花びらで大きなハート。その真ん中で、タオルで折った白鳥が二羽、くちばしを寄せ合っている。

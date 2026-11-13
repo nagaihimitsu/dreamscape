@@ -6,12 +6,13 @@ INCLUDE modules.ink
 // 到着。cities/<都市>.json の arrivalStoryId がこの knot を指す。
 === gt_jaipur_arrival ===
 # scene: arrival
-# background: gt_bg_jaipur_hotel_hub
+# background: gt_bg_jaipur_hotel_window
 # speaker: narrator
 ジャイプールの宿は、旧市街の城壁の近くにあった。窓の外の壁も、向かいの家も、通りの門も、くすんだ桃色に塗られている。
 # speaker: heroine
 # reaction: heroine,happy,sparkle
 本当に、町じゅうがピンク……。写真より、ちょっと赤っぽいね。夕方の空みたいな色
+# background: gt_bg_jaipur_hotel_room
 # speaker: narrator
 荷物を置くなり、{heroine_name}は携帯を開いた。アマンからの連絡だ。
 # speaker: gt_aman
@@ -23,6 +24,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 お、踊らせる……！？　行くとは言ったけど、踊るとは言ってない……！
+# background: gt_bg_jaipur_hotel_hub
 # speaker: narrator
 何を着ていくのか、お祝いには何を持っていくのか。宿のフロントの女性に尋ねると、笑って教えてくれた。封筒に入れた現金がふつうで、金額の最後に一ルピーを足す。割り切れない数は、縁起がいいから。
 # speaker: heroine

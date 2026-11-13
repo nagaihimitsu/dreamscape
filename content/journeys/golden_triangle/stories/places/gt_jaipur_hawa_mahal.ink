@@ -193,6 +193,8 @@ INCLUDE modules.ink
 # ambience: gt_amb_street_traffic
 # speaker: narrator
 旅の最後の日。昼のうちに、二人はハワー・マハルの前で、行列が通る道を確かめておいた。そして、日が暮れた。
+# background: gt_bg_jaipur_hawa_mahal_night
+# tint: off
 # speaker: narrator
 # bgm: gt_naraina
 # ambience: amb_crowd_outdoor
@@ -240,7 +242,7 @@ INCLUDE modules.ink
 # cutin: name
 わたしはプージャー。花嫁のいとこよ。一問目。この町は、どうしてピンク色なのか。わかる？
 -> quiz(1) ->
-# background: gt_bg_jaipur_hawa_mahal
+# background: gt_bg_jaipur_hawa_mahal_night
 { quiz_correct:
     # speaker: narrator
     プージャーが悔しそうに舌打ちした。
@@ -266,7 +268,7 @@ INCLUDE modules.ink
 # speaker: gt_pooja
 この町の王様の称号、サワーイー。その意味、デリーの人は知らないでしょう？
 -> quiz(2) ->
-# background: gt_bg_jaipur_hawa_mahal
+# background: gt_bg_jaipur_hawa_mahal_night
 { quiz_correct:
     # speaker: heroine
     # local_word: gt_jaipur_word_sawai
@@ -294,7 +296,7 @@ INCLUDE modules.ink
 # speaker: gt_pooja
 三問目。この町はね、きちんと設計して造られたの。誰が、どうやって設計したと思う？
 -> quiz(3) ->
-# background: gt_bg_jaipur_hawa_mahal
+# background: gt_bg_jaipur_hawa_mahal_night
 { quiz_correct:
     # speaker: heroine
     ヴィディヤーダルという人が、古い建築の手引きに沿って、線を引いた町、です
@@ -319,7 +321,7 @@ INCLUDE modules.ink
 # local_word: gt_jaipur_word_nani
 最後の二問は、ナーニーが出すって！　一問目。春になると、女の人たちの行列がこの通りを通る。何のお祭り？
 -> quiz(4) ->
-# background: gt_bg_jaipur_hawa_mahal
+# background: gt_bg_jaipur_hawa_mahal_night
 { quiz_correct:
     # speaker: heroine
     ガンガウル。女神さまを敬う、春のお祭り
@@ -345,7 +347,7 @@ INCLUDE modules.ink
 # speaker: gt_jaipur_bride_grandmother
 この窓はね、向かいの宮殿の窓と同じ作り。こんな細かな格子は、何のためにあったと思う？
 -> quiz(5) ->
-# background: gt_bg_jaipur_hawa_mahal
+# background: gt_bg_jaipur_hawa_mahal_night
 { quiz_correct:
     # speaker: heroine
     # em: 見られずに
