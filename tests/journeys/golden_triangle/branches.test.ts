@@ -45,10 +45,12 @@ function segment(story: Story, initialSpeaker: StoryTags["speaker"] = "narrator"
   return { text: text.join("\n"), effects, speaker };
 }
 
-function choose(story: Story, index: number, result: "positive" | "negative", speaker: StoryTags["speaker"]) {
+/** Take a choice. `result`: a romance choice's roll; an in-scene choice (a helper knot's, a mini-game's outcome) has
+ * none and keeps the roll the last romance choice left, as the game does (chooseTaggedDate sets no romance_result). */
+function choose(story: Story, index: number, result: "positive" | "negative" | undefined, speaker: StoryTags["speaker"]) {
   const choice = story.currentChoices[index];
   const tags = parseStoryTags(choice.tags ?? [], tagContext);
-  story.variablesState.$("romance_result", result);
+  if (result) story.variablesState.$("romance_result", result);
   story.ChooseChoiceIndex(index);
   const next = segment(story, tags.speaker ?? speaker);
   return { ...next, effects: [...tags.effects, ...next.effects] };
@@ -74,11 +76,15 @@ describe("Golden Triangle authored branching contracts", () => {
 
   // The 18 normal dates (place-file knots with tags, GT-3b): every path, with every cond text true and false and both
   // reaction results, ends; meets the two romance choices; keeps exactly one memory; and each romance choice reacts to the roll.
+  // A romance choice's reaction is what follows it up to the next romance choice or the end, through any in-scene choices on
+  // the way (a helper knot's choices, a mini-game's outcomes: docs/13): on each path through those, it differs by the roll.
   for (const date of indiaDates.filter((item) => item.kind === "normal")) {
     it(`${date.id}: every path ends with two romance choices and one memory, and each romance choice reacts to the roll`, () => {
       const scene = scenes.find((item) => item.id === date.id)!;
       const { storyId, path } = splitStoryAddress(date.storyId);
       const options = new Map(scene.options.map((option) => [option.id, option]));
+      const optionOf = (choice: { tags: string[] | null }) => options.get(parseStoryTags(choice.tags ?? [], tagContext).optionId ?? "");
+      const isOwn = (choice: { tags: string[] | null }) => optionOf(choice)?.knot === scene.story.knot;
       let endings = 0;
       for (const truth of [false, true]) for (const dating of [false, true]) {
         const story = runtime(storyId, { romance_stage: dating ? 4 : 1, ending_reached: dating,
@@ -86,6 +92,21 @@ describe("Golden Triangle authored branching contracts", () => {
         story.ChoosePathString(path!);
         const intro = segment(story);
         expect(intro.effects).toEqual([]);
+        /** The text from a romance choice on, by the in-scene choices taken (`/<option>…`), up to the next romance choice or the end. */
+        const reaction = (snapshot: string, text: string, speaker: StoryTags["speaker"], taken = ""): Map<string, string> => {
+          story.state.LoadJson(snapshot);
+          const choices = story.currentChoices;
+          if (!choices.length || choices.some(isOwn)) return new Map([[taken, text]]);
+          const ids = choices.map((choice, index) => optionOf(choice)?.id ?? String(index));
+          const found = new Map<string, string>();
+          for (let index = 0; index < ids.length; index++) {
+            story.state.LoadJson(snapshot);
+            const next = choose(story, index, undefined, speaker);
+            for (const [key, value] of reaction(story.state.ToJson(), `${text}\n${next.text}`, next.speaker, `${taken}/${ids[index]}`))
+              found.set(key, value);
+          }
+          return found;
+        };
         const walk = (snapshot: string, speaker: StoryTags["speaker"], romance: number, memories: string[]) => {
           story.state.LoadJson(snapshot);
           const choices = story.currentChoices;
@@ -98,17 +119,21 @@ describe("Golden Triangle authored branching contracts", () => {
             return;
           }
           for (let index = 0; index < choices.length; index++) {
-            const option = options.get(parseStoryTags(choices[index].tags ?? [], tagContext).optionId ?? "");
-            const own = option?.knot === scene.story.knot;
-            const responses: string[] = [];
-            for (const result of own ? (["positive", "negative"] as const) : (["positive"] as const)) {
+            const option = optionOf(choices[index]);
+            const own = isOwn(choices[index]);
+            const responses: Map<string, string>[] = [];
+            for (const result of own ? (["positive", "negative"] as const) : [undefined]) {
               story.state.LoadJson(snapshot);
               const next = choose(story, index, result, speaker);
               expect(next.effects, context).toEqual([]);
-              responses.push(next.text);
-              walk(story.state.ToJson(), next.speaker, romance + (own ? 1 : 0), [...memories, ...(option?.memory ?? [])]);
+              const after = story.state.ToJson();
+              if (own) responses.push(reaction(after, next.text, next.speaker));
+              walk(after, next.speaker, romance + (own ? 1 : 0), [...memories, ...(option?.memory ?? [])]);
             }
-            if (own) expect(responses[0], `${context}: ${option!.id} must react to the saved roll`).not.toBe(responses[1]);
+            if (!own) continue;
+            const [positive, negative] = responses;
+            for (const taken of new Set([...positive.keys(), ...negative.keys()]))
+              expect(positive.get(taken), `${context}: ${option!.id}${taken} must react to the saved roll`).not.toBe(negative.get(taken));
           }
         };
         walk(story.state.ToJson(), intro.speaker, 0, []);
