@@ -1,0 +1,150 @@
+/* The flap's field (Skin.tsx): the view from inside a niche of the stepwell, through its arch, of the stairs she comes
+   down. Over the scene's picture (or the use's bg); with the use's art.stairs, that picture in place of the drawn stairs. */
+.mg-cloth-flap { position: absolute; inset: 0; container-type: size; background: #2e241c; }
+/* The stage: 3:4, as large as the field holds, in its middle (the stairs picture is drawn for this shape). */
+.mg-cloth-flap-stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(100cqw, 75cqh);
+  height: min(100cqh, 133.333cqw);
+  transform: translate(-50%, -50%);
+}
+.mg-cloth-flap-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; pointer-events: none; }
+/* The far wall across the stairs: pale stone, light from above, three rows of arched niches. */
+.mg-cloth-flap-far-wall {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 6%;
+  padding: 10% 8% 30%;
+  background: linear-gradient(to bottom, rgba(214, 190, 150, 0.9), rgba(150, 124, 92, 0.92) 70%, rgba(96, 78, 58, 0.95));
+}
+.mg-cloth-flap-far-wall > span {
+  background:
+    radial-gradient(ellipse 9% 60% at 12% 100%, rgba(52, 40, 30, 0.55) 0 98%, transparent 100%),
+    radial-gradient(ellipse 9% 60% at 37% 100%, rgba(52, 40, 30, 0.55) 0 98%, transparent 100%),
+    radial-gradient(ellipse 9% 60% at 62% 100%, rgba(52, 40, 30, 0.55) 0 98%, transparent 100%),
+    radial-gradient(ellipse 9% 60% at 87% 100%, rgba(52, 40, 30, 0.55) 0 98%, transparent 100%);
+  border-bottom: 2px solid rgba(80, 62, 44, 0.45);
+}
+/* The stairs (their outline from Skin.tsx): a warmer stone, each tread a little lighter at its edge. */
+.mg-cloth-flap-stairs {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(to bottom, rgba(255, 236, 200, 0.22) 0 2px, transparent 2px 4.5%),
+    linear-gradient(to bottom, #b39470, #8a6c4c 60%, #5e4834);
+  filter: drop-shadow(0 -1px 0 rgba(255, 240, 210, 0.4));
+}
+/* A stairs picture shows its own wall and steps. */
+.mg-cloth-flap[data-art-stairs] .mg-cloth-flap-far-wall,
+.mg-cloth-flap[data-art-stairs] .mg-cloth-flap-stairs { display: none; }
+/* The step in front of the niche: a faint mark on its edge (where the gold of the meter is). */
+.mg-cloth-flap-mark-step {
+  position: absolute;
+  z-index: 2;
+  width: 7.2%;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(240, 200, 96, 0.85);
+  box-shadow: 0 0 6px rgba(240, 200, 96, 0.6);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+/* The one coming down: her feet on the point the play's frames move (Skin.tsx), one step at a time. */
+.mg-cloth-flap-walker {
+  position: absolute;
+  z-index: 3;
+  left: 6.8%;
+  top: 39%;
+  height: 30%;
+  aspect-ratio: 40 / 104;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+}
+.mg-cloth-flap-walker-body { display: block; width: 100%; height: 100%; transform-origin: 50% 100%; }
+.mg-cloth-flap-walker-body[data-turned] { transform: scaleX(-1); }
+.mg-cloth-flap-walker-figure, .mg-cloth-flap-walker-body > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
+.mg-cloth-flap-walker[data-react="scream"] .mg-cloth-flap-walker-body { animation: mg-cloth-flap-jolt 360ms ease-out both; }
+.mg-cloth-flap-walker[data-react="scream"] .mg-cloth-flap-walker-body[data-turned] { animation-name: mg-cloth-flap-jolt-turned; }
+.mg-cloth-flap-walker[data-react="laugh"] .mg-cloth-flap-walker-body { animation: mg-cloth-flap-laugh 300ms ease-in-out infinite alternate; }
+@keyframes mg-cloth-flap-jolt {
+  0% { transform: translateY(0); }
+  30% { transform: translateY(-10%) rotate(-4deg); }
+  60% { transform: translateY(-4%) rotate(3deg); }
+  100% { transform: translateY(-2%); }
+}
+@keyframes mg-cloth-flap-jolt-turned {
+  0% { transform: scaleX(-1); }
+  30% { transform: scaleX(-1) translateY(-10%) rotate(-4deg); }
+  60% { transform: scaleX(-1) translateY(-4%) rotate(3deg); }
+  100% { transform: scaleX(-1) translateY(-2%); }
+}
+@keyframes mg-cloth-flap-laugh { to { transform: translateY(-3%); } }
+.mg-cloth-flap[data-still] .mg-cloth-flap-walker-body { animation: none; }
+/* The mark over her head: ！ (a scream), ♪ (a laugh), ？ (she peers back). */
+.mg-cloth-flap-bubble {
+  position: absolute;
+  left: 50%;
+  bottom: 104%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 30px;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 15px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+/* The niche's arch around the view: dark stone outside the opening, a lighter edge. */
+.mg-cloth-flap-arch {
+  position: absolute;
+  z-index: 5;
+  left: 5%;
+  right: 5%;
+  top: 5%;
+  bottom: -4%;
+  border: 5px solid #7d6a55;
+  border-bottom: 0;
+  border-radius: 48% 48% 0 0 / 26% 26% 0 0;
+  box-shadow: 0 0 0 200vmax #2e241c, inset 0 8px 18px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+/* The cloth in the player's hands at the bottom of the niche: folded, then spread wide on the tap. */
+.mg-cloth-flap-cloth {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  bottom: 2%;
+  width: 34%;
+  height: 9%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.mg-cloth-flap-cloth > span {
+  position: absolute;
+  inset: 0;
+  border-radius: 40% 40% 30% 30% / 60% 60% 40% 40%;
+  background:
+    repeating-linear-gradient(100deg, rgba(200, 196, 186, 0.5) 0 3px, transparent 3px 16px),
+    linear-gradient(to bottom, #fbf8f1, #e7e1d4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  transform-origin: 50% 100%;
+  transition: transform 160ms cubic-bezier(0.2, 0.9, 0.3, 1.2), border-radius 160ms ease-out;
+}
+.mg-cloth-flap-cloth[data-open] > span { transform: scale(2.3, 3.4); border-radius: 46% 54% 20% 20% / 70% 64% 20% 20%; }
+.mg-cloth-flap[data-still] .mg-cloth-flap-cloth > span { transition: none; }
+/* The real pigeon (after an early flap), moved by the play's frames. */
+.mg-cloth-flap-pigeon { position: absolute; z-index: 7; left: 54%; top: 84%; width: 64px; height: 44px; opacity: 0; pointer-events: none; }
+.mg-cloth-flap-pigeon-figure { display: block; width: 100%; height: 100%; }
+.mg-cloth-flap-pigeon-wing { transform-box: fill-box; transform-origin: 80% 90%; animation: mg-cloth-flap-wing 120ms ease-in-out infinite alternate; }
+@keyframes mg-cloth-flap-wing { to { transform: scaleY(-0.6); } }
+.mg-cloth-flap[data-still] .mg-cloth-flap-pigeon-wing { animation: none; }

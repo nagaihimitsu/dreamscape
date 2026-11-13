@@ -3,6 +3,8 @@ INCLUDE modules.ink
 
 // アグラセン・キ・バオリのデート（噛み合いの選択は2回）。
 // ここで撮られた短い動画は、アーグラの到着の後と、ジャイプールのフィナーレの後で話題になる（差し込み【4】）。
+// 鳩の役が主人公のとき（gt_delhi_baoli_player_pigeon）は、布を広げる所がミニゲーム「鳩の役」（# minigame: cloth_flap、
+// 手伝いの knot gt_delhi_agrasen_baoli_pigeon_flap）。どの結果でも、ジャスミートの本物の悲鳴で動画が撮れる。
 
 // 【3】
 === gt_delhi_date_agrasen_baoli ===
@@ -175,15 +177,14 @@ INCLUDE modules.ink
     ジャスミートさん、もう一回やろう。鳩の役なら、ここにちょうどいい人がいるし
 -
 { cond("flag gt_delhi_baoli_player_pigeon"):
-    # speaker: narrator
-    鳩の役は、こちらだった。くぼみに隠れ、ドゥパッターを両手で広げて、羽ばたく準備をする。
+    -> gt_delhi_agrasen_baoli_pigeon_flap ->
 - else:
     # speaker: narrator
     彼女がくぼみに隠れた。ドゥパッターを両手で広げて、羽ばたく準備をしている。たぶん、鳩のつもりだ。
+    # speaker: narrator
+    # se: cloth_flap
+    ジャスミートが階段を下りてくる。三、二、一。白い布が、ばさりと広がった。
 }
-# speaker: narrator
-# se: cloth_flap
-ジャスミートが階段を下りてくる。三、二、一。白い布が、ばさりと広がった。
 # speaker: gt_jasmeet
 きゃあああっ！
 # speaker: narrator
@@ -220,3 +221,34 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_agrasen_baoli_026
 ……だめだ。冷たいものが飲みたい。煩悩、一個も減ってない
 -> END
+
+// 【3】手伝いの knot：鳩の役が主人公のとき（噛み合いでない、場面の中の選択）。
+// 選択肢の代わりにミニゲーム「鳩の役」：足音がくぼみの前の段に来たときに布を広げる。結果の選択肢に関係値は付けない。
+// どの結果も、戻った先のジャスミートの本物の悲鳴へつながる（後の動画の話：布を広げて飛び出す鳩の役）。
+=== gt_delhi_agrasen_baoli_pigeon_flap ===
+# speaker: narrator
+鳩の役は、こちらだった。くぼみに隠れ、ドゥパッターを両手に持って、羽ばたく準備をする。
+# speaker: narrator
+# minigame: cloth_flap auto perfect
+上から、ジャスミートの足音が下りてくる。一段、また一段。くぼみの前の段まで、あと少し。
+* [布を広げた：ちょうど目の前で # option: perfect]
+    # speaker: narrator
+    三、二、一。白い布が、ばさりと広がった。
+* [布を広げた：早すぎた # option: early]
+    # speaker: narrator
+    早すぎた。広げた布は、ジャスミートがまだ何段も上にいるうちに、ばさりと鳴った。
+    # speaker: gt_jasmeet
+    見えてるよ。鳩にしては、大きすぎ
+    # speaker: narrator
+    # se: pigeon_flutter
+    彼女が笑いかけた、そのとき。布の音に驚いた本物の鳩が、くぼみの奥から、こちらの肩を越えて飛び出した。
+* [布を広げた：遅すぎた # option: late]
+    # speaker: narrator
+    遅かった。足音は、もうくぼみの前を過ぎていた。広げた布が、ジャスミートの背中のすぐ後ろで、ばさりと鳴る。振り返った彼女の目の前いっぱいに、白い布があった。
+* [布を広げられなかった # option: frozen]
+    # speaker: narrator
+    手が、動かなかった。足音はくぼみの前を通り過ぎ、少し下で止まった。
+    ジャスミートが引き返してきて、そっと、くぼみを覗き込む。目が合った。
+    # se: cloth_flap
+    驚いたのは、こちらが先だった。飛びのいた拍子に、ドゥパッターが勝手に、ばさりと広がった。
+- ->->

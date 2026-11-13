@@ -3,7 +3,7 @@ import { episodes, sceneConditions, scenes } from "../content";
 import type { GameState } from "../domain/game";
 import { debugQueryString, settingsQuery } from "./debug-query";
 import { createDebugState, debugTargets, defaultDebugSettings, type DebugScene, type DebugSettings } from "./debug-state";
-import { completedCity, isHotelInsert, rollTickets, startHotelInsertScene, withAp, withRelationship } from "./scenario-builders";
+import { cityStart, completedCity, isHotelInsert, rollTickets, startDateScene, startHotelInsertScene, withAp, withRelationship } from "./scenario-builders";
 import { miniGameUseListSchema, type MiniGameUse } from "../minigames/uses";
 
 // Debug's 「ミニゲームの見本」 (docs/13 6.6) and the content-driven test of every use (src/minigames/minigame-uses.test.ts):
@@ -67,19 +67,41 @@ export function hotelInsertBranches(sceneId: string): string[][] {
 }
 
 const clearedCities = new Map<string, GameState>();
+function clearedCity(cityId: string): GameState {
+  const cleared = clearedCities.get(cityId) ?? completedCity(cityId);
+  clearedCities.set(cityId, cleared);
+  return cleared;
+}
 
 /**
- * The states a use's scene opens at for a reaction ticket: 場面の確認's one; a hotel-moment scene's, once per branch
- * (hotelInsertBranches). A branch Debug cannot set up, or one where the scene does not start, is left out (the test then
- * names any use it did not reach); the first (no branch) must open.
+ * A date whose story reads whether an item is held (`cond("item <id> held")`), opened again without each such item
+ * Debug's state holds: Debug's cleared city holds every item met on the way (the rain attar bought in Delhi), so the
+ * branch for a player who never got it (Akbar's Tomb's sunglasses) is walked too.
+ */
+function dateWithoutHeldItems(settings: DebugSettings): GameState[] {
+  if (settings.scene !== "date") return [];
+  const read = scenes.find((scene) => scene.main && "date" in scene.main && scene.main.date === settings.id)?.conds ?? [];
+  const items = read.map((text) => /^item (\S+) held$/u.exec(text)?.[1]).filter((id): id is string => !!id);
+  if (!items.length) return [];
+  const cityId = settings.cityId ?? "";
+  const base = withRelationship(withAp(settings.progress === "initial" ? cityStart(cityId) : clearedCity(cityId), settings.ap), settings);
+  return items.filter((id) => base.inventory[id] === "held").map((id) => {
+    const inventory = { ...base.inventory };
+    delete inventory[id];
+    return startDateScene({ ...base, inventory }, settings.id, rollTickets[settings.roll]);
+  });
+}
+
+/**
+ * The states a use's scene opens at for a reaction ticket: 場面の確認's one (a date also without each carried item its
+ * story asks about: dateWithoutHeldItems); a hotel-moment scene's, once per branch (hotelInsertBranches). A branch Debug
+ * cannot set up, or one where the scene does not start, is left out (the test then names any use it did not reach); the
+ * first (no branch) must open.
  */
 export function miniGameUseStates(opening: MiniGameUseOpening, roll: DebugSettings["roll"]): GameState[] {
   const settings = { ...opening.settings, roll };
-  if (opening.kind === "debug") return [createDebugState(settings)];
-  const cityId = settings.cityId ?? "";
-  const cleared = clearedCities.get(cityId) ?? completedCity(cityId);
-  clearedCities.set(cityId, cleared);
-  const base = withRelationship(withAp(cleared, settings.ap), settings);
+  if (opening.kind === "debug") return [createDebugState(settings), ...dateWithoutHeldItems(settings)];
+  const base = withRelationship(withAp(clearedCity(settings.cityId ?? ""), settings.ap), settings);
   return hotelInsertBranches(opening.sceneId).flatMap((conds, index) => {
     try {
       return [startHotelInsertScene(base, opening.sceneId, rollTickets[roll], conds)];

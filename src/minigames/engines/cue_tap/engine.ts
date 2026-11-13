@@ -93,17 +93,46 @@ export function cueTapZones(tuning: CueTapTuning): { near: [number, number]; cle
   };
 }
 
+/** 「おまかせ」's late miss: halfway between the near window's end and the play's end (a miss after the moment). */
+export function cueTapLateMissRecord(tuning: CueTapTuning): number {
+  return cueTapMoment(tuning) + (tuning.nearMs + tuning.noneAfterMs) / 2;
+}
+
+/**
+ * A skin's table from the engine's outcomes to its own. A far-off tap (`miss`) gives one outcome, or one for each side of
+ * the moment (`{ early, late }`): a skin whose far-off taps tell different stories (a cloth spread while she is still far
+ * up the stairs, or long after she has passed).
+ */
+export type CueTapMap<Outcome extends string> = Readonly<Record<Exclude<CueTapOutcome, "miss">, Outcome> & {
+  miss: Outcome | Readonly<{ early: Outcome; late: Outcome }>;
+}>;
+
 /**
  * A skin's rules from the engine's (docs/13 2.4): `map` gives each engine outcome the skin's outcome. 「おまかせ」 to a
- * skin outcome taps as the first engine outcome mapped to it.
+ * skin outcome taps as the first engine outcome mapped to it (in the order clean, early, late, miss early, miss late, none).
  */
-export function cueTapRules<Params, Outcome extends string>(tuning: CueTapTuning, map: Readonly<Record<CueTapOutcome, Outcome>>): MiniGameRules<Params, Outcome, CueTapRecord> {
+export function cueTapRules<Params, Outcome extends string>(tuning: CueTapTuning, map: CueTapMap<Outcome>): MiniGameRules<Params, Outcome, CueTapRecord> {
+  const { miss } = map;
+  const missEarly = typeof miss === "string" ? miss : miss.early;
+  const missLate = typeof miss === "string" ? miss : miss.late;
+  const taps: readonly (readonly [Outcome, CueTapRecord])[] = [
+    [map.clean, cueTapAutoRecord("clean", tuning)],
+    [map.early, cueTapAutoRecord("early", tuning)],
+    [map.late, cueTapAutoRecord("late", tuning)],
+    [missEarly, cueTapAutoRecord("miss", tuning)],
+    [missLate, cueTapLateMissRecord(tuning)],
+    [map.none, cueTapAutoRecord("none", tuning)],
+  ];
   return {
-    outcomeOf: (record) => map[cueTapOutcome(record, tuning)],
+    outcomeOf: (record) => {
+      const engine = cueTapOutcome(record, tuning);
+      if (engine !== "miss") return map[engine];
+      return (record as number) < cueTapMoment(tuning) ? missEarly : missLate;
+    },
     autoRecord: (outcome) => {
-      const engine = CUE_TAP_OUTCOMES.find((item) => map[item] === outcome);
-      if (!engine) throw new Error(`No cue_tap outcome gives ${outcome}`);
-      return cueTapAutoRecord(engine, tuning);
+      const tap = taps.find(([mapped]) => mapped === outcome);
+      if (!tap) throw new Error(`No cue_tap outcome gives ${outcome}`);
+      return tap[1];
     },
   };
 }
