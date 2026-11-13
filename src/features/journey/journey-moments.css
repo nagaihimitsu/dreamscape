@@ -121,8 +121,10 @@
   .resume-recap-body { flex-direction: column; }
   .resume-recap-photo { flex: none; width: 100%; }
 }
-/* Above the night screen (a fixed layer under the header), as a notice is. */
+/* Above the night screen (a fixed layer under the header), as a notice is; the screen's content starts below it (its
+   measured height, its 8-px margin and the screen's own 12 px), so on a short phone it covers neither the line nor a button. */
 .night-active > main > .resume-recap { position: relative; z-index: 16; }
+.night-active > main:has(> .resume-recap) .night-screen { padding-top: calc(var(--hud-h, 96px) + var(--recap-h, 0px) + 20px); }
 
 /* ── 荷造りの場面 ── over the whole screen in the parchment of the arrival's title card; the suitcase (drawn: a rounded case
    with a handle) holds what goes along, what stays is set apart under it, dimmed. */
