@@ -60,10 +60,19 @@ export function useAmbienceSettings(enabled: boolean, bgmVolume: number): void {
   }, [enabled, bgmVolume]);
 }
 
+/**
+ * Sends the screen's ambience to the player (as bgm.ts playSceneMusic): a new track crossfades in, the same one goes on,
+ * null fades to silence, undefined keeps what plays; the lowering ramps to its level. Debug's 音と演出の見本
+ * (src/dev/EffectsRoom.tsx) sends its silence with it as it closes.
+ */
+export function playSceneAmbience(target: SceneMusic): void {
+  player.play(target);
+}
+
 /** Plays the screen's ambience (GameApp: sceneAmbience of what it shows), as it changes. */
 export function useSceneAmbience(target: SceneMusic): void {
   const { track, duck } = target;
   useEffect(() => {
-    player.play({ track, duck });
+    playSceneAmbience({ track, duck });
   }, [track, duck]);
 }
