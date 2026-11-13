@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { currencyForCity, formatMoneyForCity } from "../content/currency";
 import { encounters } from "../content/encounters";
-import { getCities } from "../content";
+import { getCities, getCityContent, presentation } from "../content";
 import { itemUsableIn } from "../domain/item-cities";
 import { itemLines } from "../domain/item-lines";
 import type { TravelPlace } from "../content/travel-schemas";
@@ -19,7 +19,7 @@ import { itemDefinition } from "../domain/item-cities";
 import { spentItemIds } from "../domain/item-changes";
 import { tourLegUnderway } from "../domain/tour";
 import { getGameWeekday, getTimePeriod } from "../domain/travel";
-import { placeDisplayName } from "../features/journey/travel-labels";
+import { hudPlaceName, placeDisplayName, type MapCity } from "../features/journey/travel-labels";
 import { formatTravelTime } from "../features/journey/travel-time";
 import { moneyLength, weekdayLabel } from "./journey-hud-text";
 import type { HudView } from "./hud-view";
@@ -31,6 +31,12 @@ import type { ItemShowLeave } from "./useItemShowLeave";
 import { useMeasuredHeight } from "../components/useMeasuredHeight";
 import "./journey-hud.css";
 import "./hud-effects.css";
+
+/** Every loaded city's map (place IDs are unique across them), for a background that names its place by placeId. */
+const mapCities = (): MapCity[] => getCities().map((city) => {
+  const { travel, travelSettings } = getCityContent(city.id);
+  return { hotelPlaceId: travelSettings.hotelPlaceId, places: travel.places };
+});
 
 /** How long a save's ribbon plays on ⚙設定 (milliseconds; hud-effects.css). */
 const SAVE_MARK_MS = 900;
@@ -81,9 +87,14 @@ type MenuActions = {
  * stars flying into a rising budget and AP (HudFlight), the English note's dot and a save's ribbon on ⚙設定, and a
  * line's item card (`# item_show:`) flying into the held items as its line goes (ItemShowFlight).
  */
-export function JourneyHud({ game, place, view, replaced = 0, seenItemIds, onItemsSeen, englishNew = false, holdNotices = false, itemFlight = null,
-  ...actions }: {
+export function JourneyHud({ game, place, view, sceneBackgroundId, replaced = 0, seenItemIds, onItemsSeen, englishNew = false, holdNotices = false,
+  itemFlight = null, ...actions }: {
   game: GameState; place: TravelPlace | undefined; view: HudView;
+  /**
+   * The background the story scene on screen draws its picture from (GameApp; none in free time or where a landmark's
+   * photo shows): when it says where it is (`placeId`/`placeJa`), the place plate names that place (hudPlaceName).
+   */
+  sceneBackgroundId?: string;
   /** Counts the times a load (or Debug's return) put another game in place (GameApp): what it brings has no cue. */
   replaced?: number;
   /** The held items the player has looked at in the open detail during this play (GameApp's memory, seen-marks.ts). */
@@ -141,12 +152,16 @@ export function JourneyHud({ game, place, view, replaced = 0, seenItemIds, onIte
   const starsFlying = useCuePlaying(stars ? apCue?.count : undefined, FLIGHT_TOTAL_MS);
   const spentIcon = spentCue ? itemDefinition(spentCue.change[0])?.iconPath : undefined;
   const newItemIds = items.filter((item) => seenItemIds && !seenItemIds.has(item.id)).map((item) => item.id);
+  // In a tour's car (its leg's narration begun, the move not yet) the leg's label, not the place left behind; while the
+  // scene shows a background that says where it is (a station, the hotel's alley in a finale), that place.
+  const backdrop = sceneBackgroundId === undefined ? undefined : presentation.backgrounds[sceneBackgroundId];
+  const placeJa = hudPlaceName(placeDisplayName(game, place), { legJa: tourLegUnderway(game)?.labelJa, backdrop },
+    backdrop?.placeId ? mapCities() : []);
   return (
     <div className="journey-hud" data-testid="journey-bar" data-view={view} ref={measured} onMouseDown={keepFocusOffControls}>
       <div className="hud-status">
         <p className="hud-plate" data-testid="journey-context">
-          {/* In a tour's car (its leg's narration begun, the move not yet) the leg's label, not the place left behind. */}
-          <span className="hud-place"><Icon name="pin" /><span className="sr-only">現在地：</span>{tourLegUnderway(game)?.labelJa ?? placeDisplayName(game, place)}</span>
+          <span className="hud-place"><Icon name="pin" /><span className="sr-only">現在地：</span>{placeJa}</span>
           <span className="hud-time">
             <Icon name={getTimePeriod(game.travel.minute) === "day" ? "sun" : "moon"} />
             {game.travel.day}日目{weekday === undefined ? null : <span aria-label={weekdayLabel(weekday).spoken}>{weekdayLabel(weekday).short}</span>} {formatTravelTime(game.travel.minute)}
