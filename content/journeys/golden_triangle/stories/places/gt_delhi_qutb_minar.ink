@@ -12,25 +12,30 @@ INCLUDE modules.ink
 クトゥブ・ミナールを見上げた{heroine_name}の帽子が、後ろへずり落ちた。押さえ直しても、顔はまだ空を向いている。
 # speaker: heroine
 # reaction: heroine,surprised,exclamation
+# voice: gt_delhi_qutb_minar_guide_001
 高い……！　近くで見ると、塔の表面に、文字がびっしり彫ってある
 # speaker: narrator
 赤い砂岩の帯の間を、文字の帯が巻き上がっていく。家族連れが塔を背に並び、誰かが毎回「もうちょっと下がって」と叫んでいた。
 # speaker: heroine
 # reaction: heroine,exasperated,dizzy
+# voice: gt_delhi_qutb_minar_guide_002
 首が痛い。背の高いものって、ずるいね。目を全部持っていく
 # speaker: narrator
 彼女はガイドブックから段ボールの切れ端を出した。二行目。クトゥブ・ミナール、鉄の柱、もう抱けない、腹立たしい。
 # speaker: heroine
+# voice: gt_delhi_qutb_minar_guide_003
 鉄の柱……あ、あれかな。塔の近くの、黒い柱
 # speaker: narrator
 塔の足元の中庭に、黒っぽい鉄の柱が立っていた。人の背丈の何倍か。根元は、低い柵にぐるりと囲まれている。
 # speaker: heroine
 # emotion: neutral
+# voice: gt_delhi_qutb_minar_guide_004
 『もう抱けない』ってことは、昔は抱けたんだ。……カムラさん、抱いたことあるのかな。誰かと一緒に
 # speaker: narrator
 想像したらしく、彼女は一人で小さく笑った。それから、柵の前で何かを測るように手を動かしている男の人に気づいて、首をかしげた。
 # speaker: heroine
 # reaction: heroine,worried,question
+# voice: gt_delhi_qutb_minar_guide_005
 ……あの人、柵の高さ、測ってない？
 -> END
 
@@ -48,6 +53,7 @@ INCLUDE modules.ink
 次の瞬間、男の片足が柵をまたいだ。考えるより先に、{heroine_name}の手がリュックの肩紐をつかんでいた。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
+# voice: gt_delhi_main_qutb_minar_001
 だ、だめです！
 # speaker: gt_delhi_qutb_man
 # reaction: enemy,sweat
@@ -60,6 +66,7 @@ INCLUDE modules.ink
 # speaker: enemy
 祖父は結婚の前に、この柱を抱きました。父は就職の面接の前に。来月、娘が高校の卒業試験を受けるんです
 # speaker: heroine
+# voice: gt_delhi_main_qutb_minar_002
 娘さんに、頼まれたんですか？
 # speaker: enemy
 電話で。『パパ、デリーに行くなら鉄の柱を抱いてきて』と。……約束したんです
