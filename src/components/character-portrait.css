@@ -75,6 +75,20 @@
   --stand-x: -8%;
 }
 .vn-character[data-stand].is-speaking { scale: calc(var(--stand-scale) * 1.04); }
+/* Breathing (2026-11-13 user decision): a standing portrait's picture rises and falls slowly by 1.5 px, its length
+   (4.2 to 4.9 s) and its moment by its character (the inline duration and delay: scene-atmosphere.ts portraitBreath),
+   so two people never breathe together. On the picture's own `translate`: it adds to the portrait's placement, its
+   speaking `scale` and its `# stand:` place and moves nothing else. Off under reduced motion. */
+.vn-character > img,
+.vn-character > svg {
+  animation: vn-breathe 4600ms ease-in-out infinite;
+}
+@keyframes vn-breathe {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -1.5px; }
+}
+.reduce-motion .vn-character > :is(img, svg),
+.battle-screen[data-reduce-motion="true"] .vn-character > :is(img, svg) { animation: none; }
 /* Under reduced motion no one moves forward; the listeners' dimming stays. A `# stand:` place comes at once. */
 .reduce-motion .vn-character { animation: none; transition: none; }
 .reduce-motion .vn-character.is-speaking { scale: none; }
@@ -83,6 +97,7 @@
 .reduce-motion .vn-character[data-stand].is-speaking { scale: var(--stand-scale); }
 @media (prefers-reduced-motion: reduce) {
   .vn-character { transition: none; animation: none; }
+  .vn-character > :is(img, svg) { animation: none; }
   .vn-character.is-speaking { scale: none; }
   .vn-character[data-stand] { transition: none; }
   .vn-character[data-stand].is-speaking { scale: var(--stand-scale); }

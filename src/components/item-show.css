@@ -1,0 +1,151 @@
+/* A line's # item_show: (2026-11-13 user decision; ItemShow.tsx): the item's card in the middle of the scene, and its
+   way into the header's bag. Display only: no presses, no focus, aria-hidden. No thick edge on one side: the card is a
+   parchment tile with a gold hairline all round and a soft gold glow. */
+
+/* The layer: over the portraits (z-index 1, as a large photo) and under the window (z-index 2), in the area below the
+   header; the card sits in its upper middle, above the window. */
+.item-show-layer {
+  position: absolute;
+  z-index: 1;
+  inset: var(--scene-top, 0px) 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: clamp(16px, 7dvh, 64px) 16px 0;
+  pointer-events: none;
+}
+.item-show-card {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  min-width: 140px;
+  max-width: min(100%, 260px);
+  padding: 18px 20px 12px;
+  overflow: hidden;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 18px;
+  background: radial-gradient(circle at 50% 36%, #fff7dc, var(--ds-parchment) 68%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 0 28px rgba(246, 196, 69, 0.32);
+  color: var(--ds-ink);
+  animation: item-show-in var(--motion-scene) var(--ease-out) both;
+}
+@keyframes item-show-in {
+  from { opacity: 0; transform: scale(0.9); }
+}
+/* The picture: an SVG as large as the card allows (up to 160 px, less on a short or narrow screen); a picture of pixels
+   at its own size at most, so it stays sharp. A gold glow breathes softly behind it. */
+.item-show-picture {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.item-show-picture::before {
+  content: "";
+  position: absolute;
+  inset: -28%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(246, 196, 69, 0.42), rgba(246, 196, 69, 0) 66%);
+  animation: item-show-glow 2.4s ease-in-out infinite alternate;
+}
+@keyframes item-show-glow {
+  from { opacity: 0.55; }
+  to { opacity: 1; }
+}
+.item-show-picture img {
+  position: relative;
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(160px, 40vw);
+  max-height: min(160px, 24dvh);
+}
+.item-show-picture img[data-vector] {
+  width: min(160px, 40vw, 24dvh);
+  height: min(160px, 40vw, 24dvh);
+}
+.item-show-name {
+  position: relative;
+  max-width: 100%;
+  font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+/* The gleam: one diagonal light crossing the card soon after it appears. */
+.item-show-gleam {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0) 65%);
+  transform: translateX(-120%);
+  animation: item-show-gleam 1100ms var(--ease-out) 250ms both;
+}
+@keyframes item-show-gleam {
+  to { transform: translateX(120%); }
+}
+/* A short landscape screen: a smaller card, so the window below stays clear. */
+@media (max-height: 500px) {
+  .item-show-layer { padding-top: 8px; }
+  .item-show-card { gap: 4px; padding: 10px 14px 8px; }
+  .item-show-name { font-size: 14px; }
+}
+
+/* As its line goes (ItemShowFlight, in the header's layer over the screen): the card, as it was, shrinks and flies into
+   the held items' button and fades on it (`fly`), or fades where it was (`fade`). */
+.item-show-flight {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.item-show-card.item-show-leaving {
+  position: absolute;
+  min-width: 0;
+  max-width: none;
+  transform-origin: 50% 50%;
+  animation: item-show-fade 400ms var(--ease-out) both;
+}
+.item-show-card.item-show-leaving[data-mode="fly"] {
+  animation: item-show-fly 650ms cubic-bezier(0.5, 0, 0.75, 0.45) both;
+}
+@keyframes item-show-fly {
+  0% { opacity: 1; transform: none; }
+  18% { transform: scale(1.04); }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--dx, 0px), var(--dy, 0px)) scale(var(--to-scale, 0.2)); }
+}
+@keyframes item-show-fade {
+  from { opacity: 1; }
+  to { opacity: 0; transform: scale(0.96); }
+}
+@keyframes item-show-fade-only {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes item-show-fade-in {
+  from { opacity: 0; }
+}
+
+/* Reduced motion: the card fades in and out where it is, without its scale, gleam, breathing glow or flight. */
+.reduce-motion .item-show-card { animation-name: item-show-fade-in; }
+.reduce-motion .item-show-gleam { display: none; }
+.reduce-motion .item-show-picture::before { animation: none; opacity: 0.8; }
+.reduce-motion .item-show-card.item-show-leaving,
+.reduce-motion .item-show-card.item-show-leaving[data-mode="fly"] { animation: item-show-fade-only 400ms ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  .item-show-card { animation-name: item-show-fade-in; }
+  .item-show-gleam { display: none; }
+  .item-show-picture::before { animation: none; opacity: 0.8; }
+  .item-show-card.item-show-leaving,
+  .item-show-card.item-show-leaving[data-mode="fly"] { animation: item-show-fade-only 400ms ease-out both; }
+}

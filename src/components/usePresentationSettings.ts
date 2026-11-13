@@ -30,6 +30,8 @@ interface Preferences {
   bgm: boolean;
   /** 「BGMの大きさ」: the music's volume, from 0 to 1 (the slider's 0 to 100 in tens). */
   bgmVolume: number;
+  /** 「環境音を流す」 (src/audio/ambience.ts): on, the places' ambience plays under the music, at half its volume. On by default. */
+  ambience: boolean;
   /** 「振動する」 (src/audio/vibration.ts): on, a held item gained or a clue recorded vibrates briefly where the browser can. On by default. */
   vibration: boolean;
 }
@@ -48,6 +50,7 @@ const defaults: Preferences = {
   seVolume: 0.7,
   bgm: true,
   bgmVolume: 0.4,
+  ambience: true,
   vibration: true,
 };
 
@@ -74,10 +77,11 @@ export function readPresentationSettings(raw: string | null): Preferences | null
       (item.seVolume !== undefined && !isVolume(item.seVolume)) ||
       (item.bgm !== undefined && typeof item.bgm !== "boolean") ||
       (item.bgmVolume !== undefined && !isVolume(item.bgmVolume)) ||
+      (item.ambience !== undefined && typeof item.ambience !== "boolean") ||
       (item.vibration !== undefined && typeof item.vibration !== "boolean") ||
       (item.dialogueSpeed !== undefined && ![0, 25, 45].includes(item.dialogueSpeed as number)) ||
       Object.keys(item).some((name) => !["schemaVersion", "confirmChoices", "reduceMotion", "autoSave", "dialogueSpeed", "autoAdvance", "skipUnread", "readAloud",
-        "voice", "voiceVolume", "se", "seVolume", "bgm", "bgmVolume", "vibration"].includes(name))
+        "voice", "voiceVolume", "se", "seVolume", "bgm", "bgmVolume", "ambience", "vibration"].includes(name))
     )
       return null;
     return {
@@ -95,6 +99,7 @@ export function readPresentationSettings(raw: string | null): Preferences | null
       seVolume: item.seVolume === undefined ? 0.7 : item.seVolume as number,
       bgm: item.bgm === undefined ? true : item.bgm as boolean,
       bgmVolume: item.bgmVolume === undefined ? 0.4 : item.bgmVolume as number,
+      ambience: item.ambience === undefined ? true : item.ambience as boolean,
       vibration: item.vibration === undefined ? true : item.vibration as boolean,
     };
   } catch {
@@ -127,7 +132,7 @@ export function usePresentationSettings(storage: StorageLike = window.localStora
   );
   function update(
     change: Partial<Pick<Preferences, "confirmChoices" | "reduceMotion" | "autoSave" | "dialogueSpeed" | "autoAdvance" | "skipUnread" | "readAloud"
-      | "voice" | "voiceVolume" | "se" | "seVolume" | "bgm" | "bgmVolume" | "vibration">>,
+      | "voice" | "voiceVolume" | "se" | "seVolume" | "bgm" | "bgmVolume" | "ambience" | "vibration">>,
   ): boolean {
     if (error) return false;
     try {

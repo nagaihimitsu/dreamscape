@@ -13,6 +13,14 @@ describe("a line's pause, shake and size tags", () => {
     expect(parseStoryTags(["speaker: heroine", "emotion: smile"], context)).not.toHaveProperty("delivery");
   });
 
+  it("reads the scene's shake (2026-11-13): # shake alone, its two sizes, and beside the window's shake", () => {
+    expect(parseStoryTags(["shake"], context).delivery).toEqual({ sceneShake: "normal" });
+    expect(parseStoryTags([" shake "], context).delivery).toEqual({ sceneShake: "normal" });
+    expect(parseStoryTags(["shake: small"], context).delivery).toEqual({ sceneShake: "small" });
+    expect(parseStoryTags(["shake: large", "pause: 300"], context).delivery).toEqual({ sceneShake: "large", pauseMs: 300 });
+    expect(parseStoryTags(["shake: window", "shake"], context).delivery).toEqual({ shake: true, sceneShake: "normal" });
+  });
+
   it("rejects a pause that is not a sane number of milliseconds, other values and repeated tags", () => {
     for (const [tag, message] of [
       ["pause: 0.6", "Invalid pause tag: 0.6"],
@@ -22,12 +30,14 @@ describe("a line's pause, shake and size tags", () => {
       ["pause: 3001", "Invalid pause tag: 3001"],
       ["pause: long", "Invalid pause tag: long"],
       ["shake: screen", "Invalid shake tag: screen"],
+      ["shake: medium", "Invalid shake tag: medium"],
       ["size: small", "Invalid size tag: small"],
-      ["shake", "Invalid story tag: shake"],
+      ["shake:", "Invalid story tag: shake:"],
     ])
       expect(() => parseStoryTags([tag], context), tag).toThrow(message);
     expect(() => parseStoryTags(["pause: 300", "pause: 600"], context)).toThrow("Duplicate pause tag");
     expect(() => parseStoryTags(["shake: window", "shake: window"], context)).toThrow("Duplicate shake tag");
+    expect(() => parseStoryTags(["shake", "shake: large"], context)).toThrow("Duplicate shake tag");
     expect(() => parseStoryTags(["size: large", "size: large"], context)).toThrow("Duplicate size tag");
   });
 });

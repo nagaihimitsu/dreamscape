@@ -15,6 +15,7 @@ import { ownArtworkCatalogSchema } from "../src/content/own-artwork-schema";
 import { sceneDataCatalogSchema, storyStateCatalogSchema } from "../src/content/scene-schemas";
 import { soundCatalogSchema } from "../src/content/sounds";
 import { musicCatalogSchema } from "../src/content/music";
+import { ambienceCatalogSchema } from "../src/content/ambience";
 import { tourSchema } from "../src/content/tour-schemas";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
@@ -61,6 +62,7 @@ export const CATALOG_SCHEMAS: Record<MergedKind, { titleJa: string; schema: z.Zo
   "learning/local-words.json": { titleJa: "その国の言葉", schema: localWordsCatalogSchema },
   "learning/translations.json": { titleJa: "クイズの和訳", schema: learningCatalogSchema },
   "learning/word-meanings.json": { titleJa: "語彙の意味", schema: wordMeaningsSchema },
+  "presentation/ambience.json": { titleJa: "環境音とその出典・流す地点", schema: ambienceCatalogSchema },
   "presentation/characters.json": { titleJa: "登場人物と衣装", schema: characterCatalogSchema },
   "presentation/dialogue-expressions.json": { titleJa: "台詞の表情", schema: dialogueExpressionCatalogSchema },
   "presentation/dialogue-reactions.json": { titleJa: "台詞の反応", schema: dialogueReactionCatalogSchema },

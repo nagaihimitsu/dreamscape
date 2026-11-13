@@ -45,7 +45,9 @@ import { heldItemIds } from "../domain/item-changes";
 import { NotebookCueContext } from "../components/notebook-cue";
 import { addedIds, englishNoteKeys, markSeen, seenAll, unseenIds, type SeenMarks } from "./seen-marks";
 import { journeyMusicPlay, useBgmSettings, useSceneMusic } from "../audio/bgm";
-import { sceneMusic } from "../audio/scene-music";
+import { sceneMusic, type MusicScreen } from "../audio/scene-music";
+import { journeyAmbiencePlay, useAmbienceSettings, useSceneAmbience } from "../audio/ambience";
+import { sceneAmbience } from "../audio/scene-ambience";
 import { useReadLines } from "../components/useReadLines";
 import { RomanceScene } from "../features/romance/RomanceScene";
 import { Modal, ModalTitle } from "../components/Modal";
@@ -77,6 +79,7 @@ import { TitleNameFields } from "../features/journey/TitleNameFields";
 import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
 import { useJourneyMoments } from "./useJourneyMoments";
+import { useItemShowLeave } from "./useItemShowLeave";
 import { JourneyHud } from "./JourneyHud";
 import { hudView } from "./hud-view";
 import { BackgroundCredits } from "../components/BackgroundCredits";
@@ -183,6 +186,8 @@ export function GameApp({
   // 「BGMを流す」 and 「BGMの大きさ」 for the background music (src/audio/bgm.ts).
   useBgmSettings(displaySettings.value.bgm, displaySettings.value.bgmVolume);
   const bgmPercent = Math.round(displaySettings.value.bgmVolume * 100);
+  // 「環境音を流す」 for the places' ambience, at half of 「BGMの大きさ」 (src/audio/ambience.ts).
+  useAmbienceSettings(displaySettings.value.ambience, displaySettings.value.bgmVolume);
   // This device's Debug-mode switch (journeyStorage passes its key through unscoped).
   const debugMode = useDebugMode(storage);
   // While Debug mode is on (always in a Debug session), a choice's relationship changes show above
@@ -477,6 +482,10 @@ export function GameApp({
   useEffect(() => {
     if (!conversationActive) setPhotoNotice(null);
   }, [conversationActive]);
+  // A line's item card (# item_show:, ItemShowLayer) and its way into the header's bag as the line goes: 「…を手に入れました」
+  // waits until the card has gone.
+  const lineItemId = lineFrameOnScreen(game)?.itemShow;
+  const itemLeave = useItemShowLeave(lineItemId, game?.inventory, replacedGame);
   const mobilePlayActive = !!(
     conversationActive || (!game?.activeTourism && game?.activeBattle)
   );
@@ -506,10 +515,13 @@ export function GameApp({
   // The music of what this screen shows (src/audio/scene-music.ts): the journey's tracks (the game's own journey, also in
   // Debug), the scene's # bgm:, and the quiz's, a quiet line's and a ride's lowering. Never anything of the relationship.
   const musicJourneyId = (game && getJourneyForCity(game.currentCityId)?.id) ?? journeyId;
-  useSceneMusic(sceneMusic(journeyMusicPlay(musicJourneyId), {
+  const musicScreen: MusicScreen = {
     game, endRoll: moments.endRollShown, nightVisual, riding, packing: !!moments.packingScene,
     romanceEnding: showRomanceEnding, nightScreen: !!(nightScreen && dayEnd), opening: !!opening,
-  }));
+  };
+  useSceneMusic(sceneMusic(journeyMusicPlay(musicJourneyId), musicScreen));
+  // The ambience under it (src/audio/scene-ambience.ts): the scene's # ambience:, else its place's own, in story scenes only.
+  useSceneAmbience(sceneAmbience(journeyAmbiencePlay(musicJourneyId), musicScreen));
   const shownScreen = useRef(screen);
   useEffect(() => {
     if (shownScreen.current === screen) return;
@@ -623,8 +635,10 @@ export function GameApp({
         seenItemIds={seenMarks?.items}
         onItemsSeen={(ids) => setSeenMarks((marks) => marks && markSeen(marks, "items", ids))}
         englishNew={englishNew}
-        // 「…を手に入れました」 waits while the notices over a story scene show (one under the header at a time).
-        holdNotices={!!shownPhotoNotice || !!learnedWords.notice}
+        // 「…を手に入れました」 waits while the notices over a story scene show (one under the header at a time), and while a
+        // line's item card shows or flies into the bag.
+        holdNotices={!!shownPhotoNotice || !!learnedWords.notice || !!lineItemId || !!itemLeave}
+        itemFlight={itemLeave}
         onLoad={reload}
         onSettings={() => {
           setPlayer(game.playerName);
@@ -810,6 +824,7 @@ export function GameApp({
               voiceId: activeEncounter.frame.voiceId,
               seId: activeEncounter.frame.seId,
               staging: activeEncounter.frame,
+              minute: game.travel.minute,
               phoneNames: { heroine: game.heroineName, player: game.playerName, enemy: encounterPerson?.nameJa },
               // Hidden choices (decision 43) are left out; the letters follow the shown ones.
               choices: activeEncounter.frame.choices.flatMap((choice) => {
@@ -1264,6 +1279,11 @@ export function GameApp({
               onChange={(event) => displaySettings.update({ bgmVolume: Number(event.target.value) / 100 })} />
             <span className="volume-value" aria-hidden="true">{bgmPercent}%</span>
           </label>}
+          <label className="translation-setting">
+            <input type="checkbox" checked={displaySettings.value.ambience} disabled={!!displaySettings.error}
+              onChange={(event) => displaySettings.update({ ambience: event.target.checked })} /> 環境音を流す
+          </label>
+          {displaySettings.value.ambience && <p className="fine-print">場所の音（雨・市場・鳥の声など）を、BGMの半分の大きさで流します。</p>}
           {vibrationAvailable && <label className="translation-setting">
             <input type="checkbox" checked={displaySettings.value.vibration} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ vibration: event.target.checked })} /> 振動する

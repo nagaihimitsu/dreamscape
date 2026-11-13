@@ -157,11 +157,14 @@ let lastLine: string | null = null;
  * The sounds of the line on screen (DialogueText): its `# se:` (`seId`) and the cues of its scene tags (`cues`,
  * line-staging.ts lineCues), once as its text starts (`started`: after its `# pause:`), none while `muted` (高速送り). A
  * frame that kept the line before it (the story stopped at a choice or its end) has no `# se:` (frame-reader.ts), and its
- * cues are not played again: a line with the same text as the last one plays its `# se:` only.
+ * cues are not played again: a line with the same text as the last one plays its `# se:` only. `onCue`: the line's
+ * cue that is no sound (its scene shake, `# shake`), run as its cues play: not for a scene a load brought back
+ * (holdSceneCues), nor during 高速送り, nor again for a line kept on screen.
  */
-export function useLineSounds(text: string, seId: string | undefined, cues: readonly SystemSoundId[], started: boolean, muted: boolean): void {
-  const latest = useRef({ seId, cues, muted });
-  latest.current = { seId, cues, muted };
+export function useLineSounds(text: string, seId: string | undefined, cues: readonly SystemSoundId[], started: boolean, muted: boolean,
+  onCue?: () => void): void {
+  const latest = useRef({ seId, cues, muted, onCue });
+  latest.current = { seId, cues, muted, onCue };
   const heard = useRef<string | null>(null);
   useEffect(() => {
     if (!started || heard.current === text) return;
@@ -171,6 +174,8 @@ export function useLineSounds(text: string, seId: string | undefined, cues: read
     const line = latest.current;
     if (line.muted) return;
     if (line.seId) playSound(line.seId);
-    if (!kept) for (const cue of line.cues) playCue(cue);
+    if (kept) return;
+    for (const cue of line.cues) playCue(cue);
+    if (!cuesHeld && !fastForward) line.onCue?.();
   }, [text, started]);
 }

@@ -58,4 +58,15 @@ describe("the sample journey's scene tags", () => {
     expect(stands[0]).toBe("apart");
     expect(stands.filter((stand, index) => stand !== stands[index - 1])).toEqual(["apart", "close", "near"]);
   });
+
+  it("shows the bookmark's card on the line that hands it over, shakes the scene as the bell rings, and lets petals fall through the date", () => {
+    // The atmosphere tags (2026-11-13): # item_show: on its line only, # shake: small beside # shake: window, # weather: to the scene's end.
+    const tower = playUntil(depart(cityStart("mihon"), "smp_mihon_main_clock_tower"), free, (state) => state.activeEncounter?.frame);
+    const cards = [...new Set(tower.frames.filter((frame) => frame.itemShow).map((frame) => `${frame.itemShow} ${frame.text}`))];
+    expect(cards).toEqual(["smp_mihon_three_bookmark リリはいちばん針のまっすぐな一枚を選んで、こちらの手のひらにのせた。"]);
+    expect(tower.frames.find((frame) => frame.text.startsWith("帰りぎわ、塔の鐘がひとつ鳴った。"))?.delivery).toEqual({ shake: true, sceneShake: "small" });
+    const { frames } = playUntil(depart(tower.state, "smp_mihon_date_tower_square"), free, (state) => state.activeDate?.frame);
+    expect(frames.length).toBeGreaterThan(3);
+    expect(frames.every((frame) => frame.weather === "petals")).toBe(true);
+  });
 });

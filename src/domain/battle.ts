@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { SOUND_ID } from "../content/sounds";
+import { WEATHER_KINDS } from "../content/tags";
+import { STICKY_KEYS, stickyOf } from "../story/frame-reader";
 import { sceneConditionReader } from "./scene-conditions";
 import { hasObservation } from "../content/tourism-schemas";
 import { splitStoryAddress } from "../content/story-address";
@@ -98,6 +100,10 @@ export const activeBattleSchema = z
      * result): the music its last frame had, kept for the whole battle (src/audio/scene-music.ts; the next frame starts with it).
      */
     bgm: z.string().regex(SOUND_ID).optional(),
+    /** Its weather (`# weather:`), its tint switched off (`# tint: off`) and its ambience (`# ambience:`), kept the same way (2026-11-13). */
+    weather: z.enum(WEATHER_KINDS).optional(),
+    tint: z.literal("off").optional(),
+    ambience: z.string().regex(SOUND_ID).optional(),
   })
   .strict();
 export type ActiveBattle = z.infer<typeof activeBattleSchema>;
@@ -230,15 +236,18 @@ function withoutLinePart(active: ActiveBattle): ActiveBattle {
   const { linePart: _part, sceneEnd: _end, ...rest } = active;
   return rest;
 }
-/** The battle without its frame's music kept apart (a frame of the battle holds it: frame-reader.ts). */
+/**
+ * The battle without its frame's sticky parts kept apart (`# bgm:`, `# weather:`, `# tint:`, `# ambience:`; a frame of
+ * the battle holds them: frame-reader.ts).
+ */
 function withoutKeptBgm(active: ActiveBattle): ActiveBattle {
-  const { bgm: _bgm, ...rest } = active;
+  const rest = { ...active };
+  for (const key of STICKY_KEYS) delete rest[key];
   return rest;
 }
-/** The battle about to lose its frame (a call, the result): the music the frame had (`# bgm:`) is kept for its next frame. */
+/** The battle about to lose its frame (a call, the result): the sticky parts the frame had are kept for its next frame. */
 function keepingBgm(active: ActiveBattle): ActiveBattle {
-  const bgm = active.frame ? active.frame.bgm : active.bgm;
-  return { ...withoutKeptBgm(active), ...(bgm ? { bgm } : {}) };
+  return { ...withoutKeptBgm(active), ...stickyOf(active.frame ?? active) };
 }
 /** The claim knot to tell the claim's lines by: a special battle's lines before its first stop, after quiz(roundIndex). */
 function claimToTrack(active: Pick<ActiveBattle, "reasoning" | "answers">, battle: BattleDefinition): string | undefined {
@@ -299,7 +308,7 @@ function returnFromFlowCall(state: GameState, active: ActiveBattle, variables: R
   // Every answer so far, the one on its right-or-wrong screen included, is passed now.
   const step = selectStoryChoice(battle.storyId, active.storyState!, undefined, 0, state.memories,
     { ...flowVariables({ answers: active.answers, phase: "dialogue" }), ...variables }, {}, state.inventory, sceneConditionReader(state),
-    getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), claimToTrack(active, battle), active.bgm);
+    getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId), claimToTrack(active, battle), stickyOf(active));
   return settleFlow(state, { ...active, turns: active.turns + 1 }, step);
 }
 

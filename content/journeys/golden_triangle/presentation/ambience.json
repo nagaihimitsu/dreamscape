@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "aporee_14262_fodere",
+      "titleJa": "Saundatti, Main street, Vegetables market",
+      "author": "François-Emmanuel Fodéré",
+      "license": "CC BY-SA 3.0",
+      "checkedAt": "2026-11-13",
+      "url": "https://archive.org/details/aporee_12171_14262",
+      "site": "Internet Archive (radio aporee ::: maps)",
+      "creditJa": "\"Saundatti, Main street, Vegetables market\" by François-Emmanuel Fodéré, licensed under Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0) https://creativecommons.org/licenses/by-sa/3.0/, source: radio aporee ::: maps / Internet Archive https://archive.org/details/aporee_12171_14262. Dreamscape では一部を切り出し、ループ化・モノラル化・帯域調整・音量調整して使用。"
+    },
+    {
+      "id": "aporee_14220_fodere",
+      "titleJa": "Bijapur, Central Market, Above the market",
+      "author": "François-Emmanuel Fodéré",
+      "license": "CC BY-SA 3.0",
+      "checkedAt": "2026-11-13",
+      "url": "https://archive.org/details/aporee_12130_14220",
+      "site": "Internet Archive (radio aporee ::: maps)",
+      "creditJa": "\"Bijapur, Central Market, Above the market\" by François-Emmanuel Fodéré, licensed under Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0) https://creativecommons.org/licenses/by-sa/3.0/, source: radio aporee ::: maps / Internet Archive https://archive.org/details/aporee_12130_14220. Dreamscape では一部を切り出し、ループ化・モノラル化・帯域調整・音量調整して使用。"
+    },
+    {
+      "id": "aporee_11575_fodere",
+      "titleJa": "Hubli, Sri Gurunathrudha Swami Math, Bells & Co",
+      "author": "François-Emmanuel Fodéré",
+      "license": "CC BY-SA 3.0",
+      "checkedAt": "2026-11-13",
+      "url": "https://archive.org/details/aporee_9667_11575",
+      "site": "Internet Archive (radio aporee ::: maps)",
+      "creditJa": "\"Hubli, Sri Gurunathrudha Swami Math, Bells & Co\" by François-Emmanuel Fodéré, licensed under Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0) https://creativecommons.org/licenses/by-sa/3.0/, source: radio aporee ::: maps / Internet Archive https://archive.org/details/aporee_9667_11575. Dreamscape では一部を切り出し、ループ化・モノラル化・帯域調整・音量調整して使用。"
+    },
+    {
+      "id": "aporee_11100_fodere",
+      "titleJa": "Bangalore, BANGALORE CY JN railway station, prayer snack & chai",
+      "author": "François-Emmanuel Fodéré",
+      "license": "CC BY-SA 3.0",
+      "checkedAt": "2026-11-13",
+      "url": "https://archive.org/details/aporee_9228_11100",
+      "site": "Internet Archive (radio aporee ::: maps)",
+      "creditJa": "\"Bangalore, BANGALORE CY JN railway station, prayer snack & chai\" by François-Emmanuel Fodéré, licensed under Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0) https://creativecommons.org/licenses/by-sa/3.0/, source: radio aporee ::: maps / Internet Archive https://archive.org/details/aporee_9228_11100. Dreamscape では一部を切り出し、ループ化・モノラル化・帯域調整・音量調整して使用。"
+    }
+  ],
+  "tracks": [
+    {
+      "id": "gt_amb_bazaar",
+      "useJa": "インドの市場・バザールの人混みと売り声",
+      "sources": [
+        "aporee_14262_fodere"
+      ],
+      "fromJa": "インド・カルナータカ州サウンダッティの野菜市場で録った録音の2分0.1秒から60秒を切り出し、終わりに続く3秒を頭へ等パワーで重ねてつないだ（継ぎ目なしでくり返せる）。モノラル化し、100Hz以下と14kHz以上を弱め、-24 LUFSに整えた。3分6秒ごろの大きなクラクションを避けた区間を選んだ。"
+    },
+    {
+      "id": "gt_amb_street_traffic",
+      "useJa": "インドの通りのクラクションと車・バイクの往来",
+      "sources": [
+        "aporee_14220_fodere"
+      ],
+      "fromJa": "インド・カルナータカ州ビジャープルの中央市場を見下ろす場所で録った録音の48秒から60秒を切り出し、終わりに続く3秒を頭へ等パワーで重ねてつないだ（継ぎ目なしでくり返せる）。モノラル化し、90Hz以下と14kHz以上を弱め、-24 LUFSに整えた。"
+    },
+    {
+      "id": "gt_amb_temple_bells",
+      "useJa": "ヒンドゥー寺院の鐘が鳴り続ける境内",
+      "sources": [
+        "aporee_11575_fodere"
+      ],
+      "fromJa": "インド・カルナータカ州フブリの寺院（マハー・シヴァラートリの日）で録った録音の34.2秒から60秒を切り出し、終わりに続く3秒を頭へ等パワーで重ねてつないだ（継ぎ目なしでくり返せる）。モノラル化し、100Hz以下と14kHz以上を弱め、-24 LUFSに整えた。"
+    },
+    {
+      "id": "gt_amb_railway_station",
+      "useJa": "インドの鉄道駅のホーム（人の声・停車中の機関車）",
+      "sources": [
+        "aporee_11100_fodere"
+      ],
+      "fromJa": "インド・ベンガルール（バンガロール）の鉄道駅で早朝に録った録音の2分25.3秒から60秒を切り出し、終わりに続く3秒を頭へ等パワーで重ねてつないだ（継ぎ目なしでくり返せる）。モノラル化し、110Hz以下と14kHz以上を弱め、-24 LUFSに整えた。録音に混じる15.7kHzの高い持続音を取り除いた。"
+    }
+  ],
+  "play": {
+    "places": {
+      "delhi_red_fort": "amb_crowd_outdoor",
+      "delhi_qutb_minar": "amb_birds_park",
+      "delhi_humayun_tomb": "amb_birds_park",
+      "delhi_india_gate": "gt_amb_street_traffic",
+      "delhi_jama_masjid": "gt_amb_bazaar",
+      "delhi_chandni_chowk": "gt_amb_bazaar",
+      "delhi_lodhi_garden": "amb_birds_park",
+      "delhi_lotus_temple": "amb_birds_park",
+      "agra_taj_mahal": "amb_crowd_outdoor",
+      "agra_agra_fort": "amb_wind",
+      "agra_itimad_tomb": "amb_birds_park",
+      "agra_mehtab_bagh": "amb_wind",
+      "agra_fatehpur_sikri": "amb_wind",
+      "agra_akbar_tomb": "amb_birds_park",
+      "agra_ram_bagh": "amb_birds_park",
+      "agra_chini_rauza": "amb_wind",
+      "agra_mariam_tomb": "amb_birds_park",
+      "jaipur_amber_fort": "amb_wind",
+      "jaipur_hawa_mahal": "gt_amb_street_traffic",
+      "jaipur_city_palace": "amb_crowd_outdoor",
+      "jaipur_jantar_mantar": "amb_crowd_outdoor",
+      "jaipur_jal_mahal": "amb_wind",
+      "jaipur_nahargarh_fort": "amb_wind",
+      "jaipur_albert_hall": "gt_amb_street_traffic",
+      "jaipur_jaigarh_fort": "amb_wind",
+      "jaipur_johari_bazaar": "gt_amb_bazaar",
+      "jaipur_panna_meena_kund": "amb_birds_park"
+    }
+  }
+}

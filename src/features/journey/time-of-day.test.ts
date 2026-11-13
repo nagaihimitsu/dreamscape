@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { titleArtTint, timeOfDayTint } from "./time-of-day";
+import { SCENE_TINT_STRENGTH, sceneTimeTint, titleArtTint, timeOfDayTint } from "./time-of-day";
 
 const at = (hours: number, minutes = 0) => hours * 60 + minutes;
 const alphaOf = (color: string) => Number(/, ([\d.]+)\)$/u.exec(color)![1]);
@@ -61,5 +61,25 @@ describe("the title art's colour of the device's time of day", () => {
     expect(titleArtTint(-1)).toEqual(titleArtTint(23));
     expect(titleArtTint(9.75).period).toBe("morning");
     expect(titleArtTint(Number.NaN)).toEqual({ period: "day", color: null });
+  });
+});
+
+describe("a story scene's colour of the time of day (2026-11-13)", () => {
+  it("is free time's colour at half its opacity: the evening's amber and the night's blue, none at midday", () => {
+    expect(sceneTimeTint(at(16, 30), false)).toBe("rgba(255, 138, 51, 0.11)");
+    expect(sceneTimeTint(at(21), false)).toBe("rgba(18, 30, 78, 0.21)");
+    expect(sceneTimeTint(at(9), false)).toBe("rgba(214, 232, 255, 0.08)");
+    expect(sceneTimeTint(at(12), false)).toBe("rgba(0, 0, 0, 0)");
+    for (let minute = 0; minute < 24 * 60; minute += 10)
+      expect(alphaOf(sceneTimeTint(minute, false))).toBeLessThanOrEqual(alphaOf(timeOfDayTint(minute)) * SCENE_TINT_STRENGTH + 0.001);
+  });
+
+  it("is none after the scene's # tint: off, at any hour", () => {
+    for (const minute of [at(6), at(12), at(17), at(22)]) expect(sceneTimeTint(minute, true)).toBe("rgba(0, 0, 0, 0)");
+  });
+
+  it("keeps free time's own colour as it was (full strength by default)", () => {
+    expect(timeOfDayTint(at(21), 1)).toBe(timeOfDayTint(at(21)));
+    expect(timeOfDayTint(at(21), 0)).toBe("rgba(0, 0, 0, 0)");
   });
 });

@@ -15,6 +15,8 @@ import { albumImagesOf } from "./album-images";
 import { checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
 import { checkSoundTags, soundRegistry } from "./sound-files";
 import { checkBgmTags, musicRegistry } from "./music-files";
+import { ambienceRegistry, checkAmbienceTags } from "./ambience-files";
+import { catalogItemJourneys, checkSceneEffectTags } from "./scene-effect-tags";
 import { validateEpilogue } from "./epilogue-validation";
 import { compileInk, validateNoInkRandom, validateRelationshipToneSource } from "./ink-validation";
 import { choiceOption, includesModules, readFileChoices, readMainFileHead } from "./place-files";
@@ -87,6 +89,10 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
   const soundLayerId = journeyLayer(sources, journeyId).id;
   // A line's # bgm: names a shared track or one of this journey, or stop or default (presentation/music.json; music-files.ts).
   const tracks = musicRegistry(sources).tracks;
+  // A line's # ambience: names a shared ambience track or one of this journey, or stop or default (presentation/ambience.json;
+  // ambience-files.ts), its # item_show: an item of this journey (scene-effect-tags.ts).
+  const ambienceTracks = ambienceRegistry(sources).tracks;
+  const items = catalogItemJourneys(sources);
   const placeKnots = publishedPlaceKnots(sources, requirements);
   const expected = requirements.flatMap((city) => [
     ...city.main.flatMap((event) => [event.guideStoryId, event.battleStoryId]),
@@ -130,6 +136,8 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
       checkVoiceTags(source, journeyId, voiceFiles, voiceFolder);
       checkSoundTags(source, soundLayerId, sounds);
       checkBgmTags(source, soundLayerId, tracks);
+      checkAmbienceTags(source, soundLayerId, ambienceTracks);
+      checkSceneEffectTags(source, soundLayerId, items);
       // A scene's cond("…") (stage 2a): declared, literal and written as a condition; content:build checks what it names.
       // A battle includes the game's modules.ink (its quiz and reasoning calls).
       const modules = includesModules(source);

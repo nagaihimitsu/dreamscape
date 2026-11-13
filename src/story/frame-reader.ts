@@ -3,8 +3,8 @@ import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import type { DialogueReaction, ReactionTarget } from "../content/dialogue-reactions";
 import { BGM_DEFAULT } from "../content/music";
 import {
-  parseStoryTags, type CutInKind, type LetterKind, type LineDelivery, type PhoneSide, type QuietSpan, type StandPosition, type StoryCall,
-  type StoryPhoto, type TagContext,
+  parseStoryTags, WEATHER_STOP, type CutInKind, type LetterKind, type LineDelivery, type PhoneSide, type QuietSpan, type StandPosition,
+  type StoryCall, type StoryPhoto, type TagContext, type WeatherKind,
 } from "../content/tags";
 
 // How a story's next line becomes the frame on screen (runtime.ts), in a light module (no content loading).
@@ -68,6 +68,17 @@ export interface StoryFrame {
    * scene's end; absent, the scene's usual track (`# bgm: default` takes it away). src/audio/scene-music.ts reads it.
    */
   bgm?: string;
+  /** The line's `# item_show:` (only the line it is written on): the item's card over the scene (ItemShowLayer). */
+  itemShow?: string;
+  /** `# weather:`: the scene's weather from its line on until another `# weather:`, `# weather: stop` or the scene's end. */
+  weather?: WeatherKind;
+  /** `# tint: off`: no colour of the time of day over the scene's picture, from its line on until `# tint: on` or the scene's end. */
+  tint?: "off";
+  /**
+   * `# ambience:`: the scene's ambience from its line on (a track's ID, or `stop` for silence) until another
+   * `# ambience:` or the scene's end; absent, the place's own (`# ambience: default` takes it away). src/audio/scene-ambience.ts reads it.
+   */
+  ambience?: string;
   /** A battle's call (`# call:`, stage 5) is a choice the game takes itself: its screen shows no choice. */
   choices: { index: number; text: string; optionId?: string; translationJa?: string; call?: StoryCall }[];
   ended: boolean;
@@ -154,12 +165,37 @@ function readTags(
   if (parsed.seId) frame.seId = parsed.seId;
   if (parsed.bgm === BGM_DEFAULT) delete frame.bgm;
   else if (parsed.bgm) frame.bgm = parsed.bgm;
+  if (parsed.itemShow) frame.itemShow = parsed.itemShow;
+  if (parsed.weather === WEATHER_STOP) delete frame.weather;
+  else if (parsed.weather) frame.weather = parsed.weather;
+  if (parsed.tint === "on") delete frame.tint;
+  else if (parsed.tint === "off") frame.tint = "off";
+  if (parsed.ambience === BGM_DEFAULT) delete frame.ambience;
+  else if (parsed.ambience) frame.ambience = parsed.ambience;
   if (parsed.localWordIds) frame.localWordIds = [...new Set([...(frame.localWordIds ?? []), ...parsed.localWordIds])];
   events.push(...parsed.effects);
 }
 
 /** What the scene tags put on a frame. */
-export type FrameStaging = Pick<StoryFrame, "recall" | "phone" | "letter" | "quiet" | "stand">;
+export type FrameStaging = Pick<StoryFrame, "recall" | "phone" | "letter" | "quiet" | "stand" | "itemShow">;
+
+/**
+ * The parts of a frame that last from their line to the scene's end (`# bgm:`, `# weather:`, `# tint:`, `# ambience:`):
+ * each frame of a scene starts with the frame's before it, and a battle keeps them over its calls (src/domain/battle.ts).
+ */
+export const STICKY_KEYS = ["bgm", "weather", "tint", "ambience"] as const;
+export type FrameSticky = Pick<StoryFrame, (typeof STICKY_KEYS)[number]>;
+
+/** The sticky parts of a frame (or of what keeps them, a battle over its call), the absent ones left out. */
+export function stickyOf(from: FrameSticky | null | undefined): FrameSticky {
+  const sticky: FrameSticky = {};
+  if (!from) return sticky;
+  for (const key of STICKY_KEYS) {
+    const value = from[key];
+    if (value !== undefined) Object.assign(sticky, { [key]: value });
+  }
+  return sticky;
+}
 
 /**
  * The staging of a frame from its own scene tags (`tagged`: what its tags read, a phone or a letter without earlier
@@ -169,14 +205,15 @@ export type FrameStaging = Pick<StoryFrame, "recall" | "phone" | "letter" | "qui
  *   lines: a line without `# phone:` ends it), a letter's line after the lines of the frame before it when that was
  *   written on the same kind of paper; the oldest go first beyond STACK_MAX;
  * - when no new line was read (the story stopped at a choice or its end first), the line on screen is the previous
- *   one: it keeps that line's recall, phone, letter and quiet.
+ *   one: it keeps that line's recall, phone, letter, quiet and item card (`# item_show:`).
  */
 export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<StoryFrame, "speaker" | "speakerPersonId" | "text">) | undefined,
   lineRead: boolean): FrameStaging {
   const stand = tagged.stand ?? previous?.stand;
   const shown = (staging: FrameStaging): FrameStaging => Object.fromEntries(Object.entries({ ...staging, stand })
     .filter(([, value]) => value !== undefined)) as FrameStaging;
-  if (!lineRead && previous) return shown({ recall: previous.recall, phone: previous.phone, letter: previous.letter, quiet: previous.quiet });
+  if (!lineRead && previous)
+    return shown({ recall: previous.recall, phone: previous.phone, letter: previous.letter, quiet: previous.quiet, itemShow: previous.itemShow });
   const before = previous?.text ? previous : undefined;
   const phoneEarlier = tagged.phone && before?.phone
     ? [...(before.phone.earlier ?? []), { side: before.phone.side, speaker: before.speaker,
@@ -188,10 +225,11 @@ export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<
     phone: tagged.phone && { side: tagged.phone.side, ...(phoneEarlier.length ? { earlier: phoneEarlier } : {}) },
     letter: tagged.letter && { kind: tagged.letter.kind, ...(letterEarlier.length ? { earlier: letterEarlier } : {}) },
     quiet: previous?.quiet === "scene" ? "scene" : tagged.quiet,
+    itemShow: tagged.itemShow,
   });
 }
 
-/** Read the story to its next line (the frame keeps the previous frame's text, speaker, background and music). */
+/** Read the story to its next line (the frame keeps the previous frame's text, speaker, background, music, weather, tint and ambience). */
 export function readStoryFrame(
   story: Story,
   context: TagContext,
@@ -200,15 +238,14 @@ export function readStoryFrame(
   initialBackground = DEFAULT_BACKGROUND_ID,
   /** Say whether the line came from inside this knot (StoryStep.inKnot). */
   originKnot?: string,
-  /** The music of a fresh frame (no `previous`): a battle's `# bgm:` kept over its call (src/domain/battle.ts). */
-  initialBgm?: string,
+  /** The sticky parts of a fresh frame (no `previous`): a battle's `# bgm:`, `# weather:`… kept over its call (src/domain/battle.ts). */
+  initialSticky?: FrameSticky,
 ): StoryStep {
-  const bgm = previous ? previous.bgm : initialBgm;
   const frame: StoryFrame = {
     text: previous?.text ?? "",
     speaker: previous?.speaker ?? "narrator",
     ...(previous?.speakerPersonId ? { speakerPersonId: previous.speakerPersonId } : {}),
-    ...(bgm ? { bgm } : {}),
+    ...stickyOf(previous ?? initialSticky),
     background: previous?.background ?? initialBackground,
     emotion: "neutral",
     choices: [],
@@ -239,7 +276,7 @@ export function readStoryFrame(
     delete frame.seId;
   }
   const staging = stageFrame(frame, previous, lineRead);
-  for (const key of ["recall", "phone", "letter", "quiet", "stand"] as const) delete frame[key];
+  for (const key of ["recall", "phone", "letter", "quiet", "stand", "itemShow"] as const) delete frame[key];
   Object.assign(frame, staging);
   frame.choices = storyChoicesOf(story, context);
   if (frame.choices.some((choice) => choice.call) && frame.choices.length !== 1)

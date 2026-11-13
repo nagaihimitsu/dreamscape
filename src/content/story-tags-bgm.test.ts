@@ -53,7 +53,7 @@ describe("a line's music tag", () => {
 
   it("starts a new scene without it, and a fresh frame with the music it is given (a battle's call returning)", () => {
     expect(readStoryFrame(new Story(compileInk("次の場面。\n-> END\n")), context).frame).not.toHaveProperty("bgm");
-    const back = readStoryFrame(new Story(compileInk("戻ってきた。\n-> END\n")), context, undefined, [], undefined, undefined, "immersed").frame;
+    const back = readStoryFrame(new Story(compileInk("戻ってきた。\n-> END\n")), context, undefined, [], undefined, undefined, { bgm: "immersed" }).frame;
     expect(back).toMatchObject({ text: "戻ってきた。", bgm: "immersed" });
   });
 });

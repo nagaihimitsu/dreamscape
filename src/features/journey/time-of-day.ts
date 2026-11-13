@@ -13,6 +13,8 @@ const EVENING: Rgba = [255, 138, 51, 0.22];
 
 /** Minutes in a day: the clock wraps here. */
 const DAY = 24 * 60;
+/** No colour (midday, a tint switched off). */
+const TRANSPARENT = "rgba(0, 0, 0, 0)";
 
 /**
  * The tint at these minutes from midnight (increasing, from 0 to the next midnight); between two, it passes from one to
@@ -57,9 +59,9 @@ export function titleArtTint(hour: number): { period: TitlePeriod; color: string
  * The CSS colour of the time of day at the game clock's `minute` (minutes from midnight; a minute past midnight, as
  * on a late return, wraps). Between two stops it passes as one colour fading into the other over the picture
  * (interpolated premultiplied by its opacity, as the browser blends a colour transition), so a tint fading out keeps
- * its hue. Midday is fully transparent.
+ * its hue. Midday is fully transparent. `strength` scales its opacity (a story scene's is weaker: sceneTimeTint).
  */
-export function timeOfDayTint(minute: number): string {
+export function timeOfDayTint(minute: number, strength = 1): string {
   const time = Number.isFinite(minute) ? ((minute % DAY) + DAY) % DAY : 12 * 60;
   // STOPS[0] is at 0 and the last at DAY, so the next stop is never the first and always found.
   const next = STOPS.findIndex(([at]) => at > time);
@@ -67,8 +69,21 @@ export function timeOfDayTint(minute: number): string {
   const [toAt, to] = STOPS[next];
   const share = (time - fromAt) / (toAt - fromAt);
   const alpha = from[3] + (to[3] - from[3]) * share;
-  if (alpha <= 0) return "rgba(0, 0, 0, 0)";
+  if (alpha <= 0 || !(strength > 0)) return TRANSPARENT;
   const channel = (index: 0 | 1 | 2) =>
     Math.round((from[index] * from[3] + (to[index] * to[3] - from[index] * from[3]) * share) / alpha);
-  return `rgba(${channel(0)}, ${channel(1)}, ${channel(2)}, ${Math.round(alpha * 1000) / 1000})`;
+  return `rgba(${channel(0)}, ${channel(1)}, ${channel(2)}, ${Math.round(alpha * Math.min(strength, 1) * 1000) / 1000})`;
+}
+
+/** How strong a story scene's colour of the time of day is against free time's (its picture is the writer's choice). */
+export const SCENE_TINT_STRENGTH = 0.5;
+
+/**
+ * The colour of the time of day over a story scene's picture (2026-11-13 user decision): free time's by the game clock
+ * at SCENE_TINT_STRENGTH of its opacity (an evening's amber, a night's blue, a faint morning), laid on the picture only
+ * (never on the portraits or the window). Transparent from a line's `# tint: off` (`off`; a picture that already shows
+ * its own evening or night) until `# tint: on` or the scene's end.
+ */
+export function sceneTimeTint(minute: number, off: boolean): string {
+  return off ? TRANSPARENT : timeOfDayTint(minute, SCENE_TINT_STRENGTH);
 }

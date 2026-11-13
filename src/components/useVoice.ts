@@ -1,13 +1,20 @@
 import { useEffect, useRef } from "react";
 import { voicePath } from "../content/voice-files";
 import { audioContext, decodedSoundCache, onAudioStateChange, onPageHidden, wantAudio } from "../audio/audio-context";
-import { duckForVoice } from "../audio/bgm";
+import { duckForVoice as duckMusicForVoice } from "../audio/bgm";
+import { duckAmbienceForVoice } from "../audio/ambience";
 
 // The voices of lines (2026-11-12): a line's `# voice: <ID>` (src/content/tags.ts) plays its recording, a journey's
 // public/assets/voice/<ID>.mp3, as the line's text starts. Played through the page's one AudioContext (made and woken on a
 // user's gesture: src/audio/audio-context.ts), the most recently used voices kept decoded in memory, one voice at a time.
-// While a voice plays, the background music is halved (src/audio/bgm.ts duckForVoice). Presentation only: a voice that
-// cannot load or play is skipped in silence and the game goes on.
+// While a voice plays, the background music and the ambience are halved (src/audio/bgm.ts duckForVoice,
+// src/audio/ambience.ts). Presentation only: a voice that cannot load or play is skipped in silence and the game goes on.
+
+/** The music and the ambience are halved while a voice plays. */
+function duckForVoice(playing: boolean) {
+  duckMusicForVoice(playing);
+  duckAmbienceForVoice(playing);
+}
 
 /** A line's voice as auto-advance waits for it: loading or playing ("busy"), or played to its end ("ended"). */
 export type LineVoiceState = "busy" | "ended";
