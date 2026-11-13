@@ -49,6 +49,26 @@ export function todayWord(game: Pick<GameState, "travel">): TodayWord | null {
 export const hasNightRecap = (recap: NightRecap | undefined): recap is NightRecap =>
   !!recap && (recap.headlines.length > 0 || recap.route.length > 1 || recap.line !== null);
 
+/** A night: the city and the day it ends. */
+export type NightKey = { cityId: string; day: number };
+
+/**
+ * The card a night shows as it passes at the hotel (useTravelEffects), `atNight` being the state before it passes:
+ * - `dayEnd` (the game's own rest at 21:00): the day's end card, with the night's recap when it has one (as before);
+ * - a rest before 21:00 (2026-11-13 user decision: whenever the day ends by resting, the night shows what the 21:00 card
+ *   shows): the card 「ホテルで休みました。」 with the recap when the night has one (hasNightRecap: today's route when the party
+ *   went out, today's headlines, her line), else 「次の日」 (`next_day`) as before.
+ * A night shows its recap once (`shown`: the last night that showed it, the caller's memory; nothing is saved).
+ */
+export type RestNightCard = { kind: "day_end"; recap?: NightRecap } | { kind: "rest"; recap: NightRecap } | { kind: "next_day" };
+
+export function restNightCard(atNight: GameState, { dayEnd, shown }: { dayEnd: boolean; shown: NightKey | null }): RestNightCard {
+  const recap = nightRecap(atNight);
+  const fresh = hasNightRecap(recap) && !(shown?.cityId === atNight.currentCityId && shown.day === atNight.travel.day);
+  if (dayEnd) return fresh ? { kind: "day_end", recap } : { kind: "day_end" };
+  return fresh ? { kind: "rest", recap } : { kind: "next_day" };
+}
+
 /** Today's headlines said in words (the card's live region): 「今日の見出し：いつ来ても三時、三時の約束。」 */
 export function headlinesSentenceJa(headlines: readonly string[]): string {
   return headlines.length ? `今日の見出し：${headlines.join("、")}。` : "";
@@ -67,6 +87,45 @@ export function routeMarks(route: readonly RouteStop[]): { place: TravelPlace; l
   });
   const lastId = route[route.length - 1]?.place.id;
   return [...marks.values()].map(({ place, numbers }) => ({ place, label: numbers.join("・"), last: place.id === lastId }));
+}
+
+/** A mark on the route's map: its centre where its place is drawn (pixels) and its size. */
+export type MarkBox = { x: number; y: number; width: number; height: number };
+/** How far a mark is drawn from its place (pixels). */
+export type MarkNudge = { dx: number; dy: number };
+
+/**
+ * How far each mark of the route's map moves so that none hides another (2026-11-13: places close together hid each other's
+ * numbers, as Delhi's Red Fort under the hotel's 「1・3・5」). Two marks that overlap (less than `gap` apart) move apart along
+ * the axis that needs less, each half the way: the one lower (or further right) on, the other back; marks at one spot part
+ * vertically, the later one down. Round after round until none overlaps (at most `rounds`). Marks that do not overlap stay
+ * where their places are, and the same marks always move the same. The route's line still joins the places themselves.
+ */
+export function nudgeMarksApart(boxes: readonly MarkBox[], gap = 2, rounds = 50): MarkNudge[] {
+  const at = boxes.map(({ x, y }) => ({ x, y }));
+  for (let round = 0; round < rounds; round++) {
+    let moved = false;
+    for (let i = 0; i < boxes.length; i++) {
+      for (let j = i + 1; j < boxes.length; j++) {
+        const overX = (boxes[i].width + boxes[j].width) / 2 + gap - Math.abs(at[j].x - at[i].x);
+        const overY = (boxes[i].height + boxes[j].height) / 2 + gap - Math.abs(at[j].y - at[i].y);
+        if (overX <= 0.01 || overY <= 0.01) continue;
+        moved = true;
+        if (overY <= overX) {
+          const away = at[j].y >= at[i].y ? 1 : -1;
+          at[i].y -= (away * overY) / 2;
+          at[j].y += (away * overY) / 2;
+        } else {
+          const away = at[j].x >= at[i].x ? 1 : -1;
+          at[i].x -= (away * overX) / 2;
+          at[j].x += (away * overX) / 2;
+        }
+      }
+    }
+    if (!moved) break;
+  }
+  const tenth = (value: number) => Math.round(value * 10) / 10 || 0;
+  return at.map((point, index) => ({ dx: tenth(point.x - boxes[index].x), dy: tenth(point.y - boxes[index].y) }));
 }
 
 /** Today's route said in words (the card's live region): 「今日の道のり：滞在先のホテル、時計塔、朝市。」 */

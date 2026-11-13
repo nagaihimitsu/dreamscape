@@ -88,7 +88,9 @@ dialog.modal.album-modal {
   .album-page[data-turn] { animation: none; }
 }
 
-/* The photo opened larger: the whole picture, its time and place, 「閉じる」 at the foot (as 背景画像). */
+/* The photo opened larger: the whole picture, its time and place, 「閉じる」 at the foot (as 背景画像). The frame is the
+   picture's own shape (2026-11-13 user decision: no empty band around a wide picture on a phone held upright), as wide as
+   the dialog and no taller than its share of the screen; a picture taller than that keeps its shape, narrower. */
 dialog.modal.album-photo-viewer {
   --modal-pad-top: 16px;
   --modal-pad-inline: 16px;
@@ -98,13 +100,15 @@ dialog.modal.album-photo-viewer {
 .album-photo-viewer .modal-title-bar { margin-bottom: 8px; }
 .album-photo-viewer > img {
   display: block;
-  width: 100%;
-  height: min(60dvh, 520px);
-  object-fit: contain;
-  background: #26342e;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: min(60dvh, 520px);
+  margin: 0 auto;
+  border-radius: 8px;
 }
 .album-photo-viewer > .album-meta { margin: 6px 0 8px; }
 .album-photo-viewer > .secondary { min-height: 44px; }
 @media (orientation: landscape) and (max-height: 500px) {
-  .album-photo-viewer > img { height: 52dvh; }
+  .album-photo-viewer > img { max-height: 52dvh; }
 }

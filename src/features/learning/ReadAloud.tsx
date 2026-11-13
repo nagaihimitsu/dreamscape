@@ -1,57 +1,30 @@
 import { useEffect, useId, useSyncExternalStore } from "react";
+import { duckAmbienceForSpeech } from "../../audio/ambience";
+import { audioWanted, madeAudioContext, onAudioStateChange } from "../../audio/audio-context";
+import { duckMusicForSpeech } from "../../audio/bgm";
+import { createSpeechAudio } from "../../audio/speech-audio";
 import { Icon } from "../../components/icons";
-import { pickEnglishVoice, READ_ALOUD_LANG, readAloudLabel, readAloudText } from "./read-aloud";
+import { stopLineVoice } from "../../components/useVoice";
+import { readAloudLabel } from "./read-aloud";
+import { createSpeechReader } from "./read-aloud-speech";
 
-// 「英語を読み上げるボタン」 (2026-11-11 user decision): the browser's speech behind the buttons. The page reads one
-// utterance at a time (speechSynthesis has one queue), held here with the key of the button that started it; holding
-// it also keeps Chrome from collecting it before its end event.
-let reading: { key: string; utterance: SpeechSynthesisUtterance } | null = null;
-const listeners = new Set<() => void>();
-function setReading(next: typeof reading) {
-  reading = next;
-  for (const listener of listeners) listener();
-}
-function subscribe(listener: () => void) {
-  listeners.add(listener);
-  return () => {
-    listeners.delete(listener);
-  };
-}
-const readingKey = () => reading?.key ?? null;
-
-/** Stops what is being read, if a button whose key starts with `prefix` started it. */
-function stopReading(prefix = "") {
-  if (!reading?.key.startsWith(prefix)) return;
-  setReading(null);
-  window.speechSynthesis.cancel();
-}
-
-/**
- * Reads `text` in English, instead of anything being read. Called in the press's own click handler: iOS Safari speaks
- * only from a user's gesture.
- */
-function startReading(key: string, text: string) {
-  const said = readAloudText(text);
-  if (!said) return;
-  const synth = window.speechSynthesis;
-  const utterance = new window.SpeechSynthesisUtterance(said);
-  utterance.lang = READ_ALOUD_LANG;
-  const voice = pickEnglishVoice(synth.getVoices());
-  if (voice) utterance.voice = voice;
-  // One cut off (by the next press, a stop) may end after the next has started: only the one being read clears it.
-  const done = () => {
-    if (reading?.utterance === utterance) setReading(null);
-  };
-  utterance.addEventListener("end", done);
-  utterance.addEventListener("error", done);
-  if (synth.speaking || synth.pending) synth.cancel();
-  setReading({ key, utterance });
-  try {
-    synth.speak(utterance);
-  } catch {
-    done();
-  }
-}
+// 「英語を読み上げるボタン」 (2026-11-11 user decision): the buttons over the browser's speech (read-aloud-speech.ts: one
+// reading at a time). While it reads, the page's sound gives way (src/audio/speech-audio.ts, 2026-11-13): the music and
+// the ambience lowered as for a line's voice, a voice playing stopped; after it, they play on with no tap, the page's
+// audio woken where the speech stopped it (iOS).
+const sound = createSpeechAudio({
+  audio: madeAudioContext,
+  wanted: audioWanted,
+  hidden: () => document.hidden,
+  duck: (reading) => {
+    duckMusicForSpeech(reading);
+    duckAmbienceForSpeech(reading);
+  },
+  stopVoice: stopLineVoice,
+  now: () => performance.now(),
+});
+onAudioStateChange(sound.stateChanged);
+const speech = createSpeechReader(() => window, sound);
 
 /**
  * The read-aloud buttons of one screen (`enabled`: the setting is on and the browser can read). What one of them reads
@@ -61,26 +34,26 @@ function startReading(key: string, text: string) {
  */
 export function useReadAloud(enabled: boolean, scope: string) {
   const owner = `${useId()}|`;
-  const current = useSyncExternalStore(subscribe, readingKey, () => null);
+  const current = useSyncExternalStore(speech.subscribe, speech.key, () => null);
   useEffect(() => {
     if (!enabled) return;
     // Chrome loads its voices on the first ask: ask early, so that the first press can choose an English voice.
     window.speechSynthesis.getVoices();
     const onHidden = () => {
-      if (document.hidden) stopReading(owner);
+      if (document.hidden) speech.stop(owner);
     };
     document.addEventListener("visibilitychange", onHidden);
     return () => {
       document.removeEventListener("visibilitychange", onHidden);
-      stopReading(owner);
+      speech.stop(owner);
     };
   }, [enabled, scope, owner]);
   return {
     enabled,
     isReading: (part: string) => current === owner + part,
     toggle: (part: string, text: string) => {
-      if (reading?.key === owner + part) stopReading();
-      else startReading(owner + part, text);
+      if (speech.key() === owner + part) speech.stop();
+      else speech.start(owner + part, text);
     },
   };
 }

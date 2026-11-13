@@ -95,6 +95,11 @@ const stopHiddenVoice = () => {
   if (playing) finish(playing, null);
 };
 
+/** English read aloud starts (src/audio/speech-audio.ts): the voice playing stops, as when the page is hidden. */
+export function stopLineVoice(): void {
+  if (playing) finish(playing, null);
+}
+
 /** Starts `buffer` on the page's audio at 1×; its end finishes `voice`. */
 function bufferSound(audio: AudioContext, buffer: AudioBuffer, voice: () => Voice): BufferSound {
   const source = audio.createBufferSource();

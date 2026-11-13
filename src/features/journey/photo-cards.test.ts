@@ -70,9 +70,18 @@ describe("the row of cards", () => {
     ]);
   });
 
-  it("puts the locked dates' cards (2026-11-13, # hint:) after the places', before the tour; none departs or stands for a selection", () => {
+  it("leaves out the destinations not open yet: players never see the locked dates' cards (2026-11-13), only the cards shown count", () => {
     const locked = [{ dateId: "x_date", hintJa: "塔のあとで" }, { dateId: "y_date", hintJa: "夜に" }];
     const cards = rowCards(photoCardEntries(places, map), { tour: true, locked });
+    expect(cards.map((card) => card.id)).toEqual([WAIT_CARD_ID, "b", "c", "d", "a", TOUR_CARD_ID, STAY_CARD_ID]);
+    expect(rowCards(photoCardEntries(places, map), { tour: true, locked, debug: false })).toEqual(cards);
+    // A place open but not usable now (closed: 「a」) stays, with its reasons.
+    expect(cards.find((card) => card.id === "a")).toMatchObject({ kind: "place", entry: { available: false } });
+  });
+
+  it("with Debug mode on, puts the locked dates' cards (# hint:) after the places', before the tour; none departs or stands for a selection", () => {
+    const locked = [{ dateId: "x_date", hintJa: "塔のあとで" }, { dateId: "y_date", hintJa: "夜に" }];
+    const cards = rowCards(photoCardEntries(places, map), { tour: true, locked, debug: true });
     expect(cards.map((card) => card.id)).toEqual([WAIT_CARD_ID, "b", "c", "d", "a", lockedCardId("x_date"), lockedCardId("y_date"), TOUR_CARD_ID, STAY_CARD_ID]);
     const card = cards[5];
     expect(card).toEqual({ kind: "locked", id: ":locked:x_date", dateId: "x_date", hintJa: "塔のあとで" });
@@ -81,7 +90,20 @@ describe("the row of cards", () => {
     expect(lockedCardJa("塔のあとで")).toBe("まだ行けません：塔のあとで");
     // The card chosen first is still the first place's; without locked dates the row is as before.
     expect(defaultCardIndex(cards)).toBe(1);
-    expect(rowCards(photoCardEntries(places, map), { tour: false, locked: [] }).map((item) => item.kind)).toEqual(["wait", "place", "place", "place", "place", "stay"]);
+    expect(rowCards(photoCardEntries(places, map), { tour: false, locked: [], debug: true }).map((item) => item.kind)).toEqual(["wait", "place", "place", "place", "place", "stay"]);
+  });
+
+  it("deals in a date's place as a new card once the date opens, the same as with Debug mode on", () => {
+    // Before: the date at 「e」 is not open (its place has nothing else, so it has no card); after: it is.
+    const before = photoCardEntries(places, map);
+    const opened = new Map([...map, ["e", choices([event("e_date", "date", true)])]]);
+    const after = photoCardEntries([...places, place("e")], opened);
+    for (const debug of [false, true]) {
+      const shown = rowCards(before, { tour: false, locked: [{ dateId: "e_date", hintJa: "塔のあとで" }], debug }).map((card) => card.id);
+      const now = rowCards(after, { tour: false, debug }).map((card) => card.id);
+      expect(now).toEqual([WAIT_CARD_ID, "b", "c", "d", "e", "a", STAY_CARD_ID]);
+      expect(newCardIds(new Set(shown), now)).toEqual(["e"]);
+    }
   });
 
   it("starts with 「待機」 and ends with the tour, while there is one, and 「ホテルに戻る」", () => {

@@ -26,7 +26,8 @@ export const dateSchema = z
     until: conditionSchema.optional(),
     /**
      * The writer's hint (2026-11-13; also a date knot's or a one-scene date file's head `# hint:`): while `when` does
-     * not hold yet, free time's row shows the date as a locked card with these words (date-rules.ts hintedLockedDates).
+     * not hold yet and Debug mode is on, free time's row shows the date as a locked card with these words (date-rules.ts
+     * hintedLockedDates; players never see it: the date joins the row once it opens).
      */
     hintJa: text.optional(),
     destinationId: id.optional(),
@@ -177,8 +178,16 @@ export const presentationSchema = z
             x: z.number().min(0).max(100),
             y: z.number().min(0).max(100),
           }).strict().optional(),
+          /**
+           * Where the background is (optional, 2026-11-13): a place on a city map of the same journey (`placeId`; named as
+           * the screens name it, the hotel 「滞在先のホテル」) or a place not on the map (`placeJa`). While a story scene
+           * shows the background, the header's place plate names it (src/features/journey/travel-labels.ts hudPlaceName).
+           */
+          placeId: id.optional(),
+          placeJa: text.optional(),
         })
-        .strict(),
+        .strict()
+        .refine((background) => !(background.placeId && background.placeJa), "A background names its place by placeId or placeJa, not both"),
     ),
     emotions: z.record(id, text),
     memories: z.record(

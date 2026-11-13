@@ -176,7 +176,10 @@ describe("the actions a player can take now", () => {
       { minutes: 30, until: null, available: true },
       { minutes: NIGHT_START - morning.travel.minute, until: NIGHT_START, available: true },
     ]);
+    // At the hotel after 20:30, 「30分待つ」 is the wait to 21:00 (away from it such a wait is refused: day-end.test.ts).
     const late = { ...morning, travel: { ...morning.travel, minute: DAY_END - 20 } };
-    expect(getTravelWaitOptions(late)[0]).toEqual({ minutes: 30, until: null, available: false });
+    expect(late.travel.currentPlaceId).toBe(late.travel.hotelPlaceId);
+    expect(getTravelWaitOptions(late)).toEqual([{ minutes: 20, until: DAY_END, available: true }]);
+    expect(getTravelWaitOptions({ ...late, travel: { ...late.travel, minute: DAY_END } })[0]).toEqual({ minutes: 30, until: null, available: false });
   });
 });

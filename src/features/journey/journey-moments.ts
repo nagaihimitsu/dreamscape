@@ -1,13 +1,13 @@
-import { battles, cityContents, encounters, episodes, getAlbumImage, landmarks, presentation, storyState, tourismAssets, type EpisodeDefinition } from "../../content";
+import { battles, cityContents, encounters, episodes, getAlbumImage, landmarks, presentation, tourismAssets, type EpisodeDefinition } from "../../content";
 import { getJourneyForCity } from "../../content/journeys";
 import type { TourismAsset } from "../../content/tourism-schemas";
 import type { AlbumPhoto } from "../../domain/album-state";
 import { isJourneyComplete } from "../../domain/city-travel";
 import { isCarriedItem } from "../../domain/item-cities";
-import { meets } from "../../domain/conditions";
 import type { GameState } from "../../domain/game";
 import { withNames } from "../romance/names";
 import { albumPages, type AlbumContent, type AlbumPhotoView } from "./album-pages";
+import { metPeopleGroups } from "./met-people";
 import { formatTravelTime } from "./travel-time";
 
 // The journey's moments (2026-11-11 user decision) as pure rules, apart from their screens: the title card when an
@@ -175,12 +175,13 @@ export type EndRoll = { journeyJa: string; playerName: string; heroineName: stri
 
 /**
  * The credit roll of the journey: the two names, then each city of the journey in its order with the clear titles of
- * its completed episodes, the people met there (the story state's `people` whose `met` holds: a scene naming them was
- * seen) and the album's photos taken there. Never a relationship value.
+ * its completed episodes, the people met there (旅の記録's 「出会った人」: met-people.ts metPeopleGroups) and the album's
+ * photos taken there. Never a relationship value.
  */
 export function endRollOf(game: GameState): EndRoll {
   const journey = getJourneyForCity(game.currentCityId);
   const photos = photoViews(game.album, game.currentCityId);
+  const met = metPeopleGroups(game);
   const cityIds = journey?.cities.map((city) => city.id) ?? [game.currentCityId];
   return {
     journeyJa: journey?.nameJa ?? "",
@@ -191,7 +192,7 @@ export function endRollOf(game: GameState): EndRoll {
       nameJa: cityNameJa(id),
       chapters: game.completedEpisodeIds.flatMap((episodeId) => episodes.filter((episode) => episode.id === episodeId && episode.cityId === id))
         .map((episode) => withNames(episode.clearTitleJa, game)),
-      people: storyState.people.filter((person) => person.cityId === id && meets(game, { met: person.id })).map((person) => person.nameJa),
+      people: met.find((group) => group.cityId === id)?.people.map((person) => person.nameJa) ?? [],
       photos: photos.filter((photo) => photo.cityId === id),
     })),
   };

@@ -227,7 +227,19 @@
 }
 .observation-options { align-items: center; gap: 4px; }
 .observation-marker-toggle { white-space: nowrap; }
-.observation-options .observation-proceed {
+/* 「観光案内をもう一度読む」 beside 「進む」, on their own row under the toolbar (2026-11-13 user decision). */
+.observation-next { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin: 0 0 8px; }
+.observation-replay {
+  min-height: 44px;
+  padding: 6px 12px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font-size: 13px;
+}
+.observation-options .observation-proceed,
+.observation-next .observation-proceed {
   width: auto;
   flex: none;
   min-height: 44px;
@@ -242,4 +254,6 @@
   .observation-options { gap: 2px; }
   .observation-marker-toggle { padding-inline: 5px; }
   .observation-proceed { padding-inline: 8px; }
+  .observation-next { flex: 1 0 100%; grid-column: 1 / -1; gap: 6px; margin: 2px 0 6px; }
+  .observation-replay { padding-inline: 10px; }
 }
