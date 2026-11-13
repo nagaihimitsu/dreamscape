@@ -1,4 +1,4 @@
-import { encounterVisitSlot } from "../domain/encounter";
+import { encounterEntryRuleList, encounterVisitSlot } from "../domain/encounter";
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { getJourney } from "../content/journeys";
@@ -49,10 +49,22 @@ describe("debug scene preparation", () => {
     expect(createDebugState({ ...base, ap: 99 }).ap).toBe(12);
   });
   it("names the unmet part of an encounter's entry rule before its milestone", () => {
-    expect(() => createDebugState({ ...base, scene: "encounter", id: "duomo_string", progress: "initial" }))
-      .toThrow("この進行状態では交流を始められません。必要な進行や品物を確認してください。入場の条件を満たしていません：エピソード「無人の広場、一名追加」を終えた");
-    // The fortune teller's quiz waits for the battle: her observation ignores the rule's when.
+    // Since Milan's rewrite (2026-11-13) Debug plays every Milan encounter's moment to the point its condition holds; a
+    // condition planted on an observation's encounter (in memory) stays unmet from the journey's start.
+    const rule = encounterEntryRuleList.find((item) => item.encounterId === "brera_sitter")!;
+    const kept = rule.when;
+    rule.when = { episodeCompleted: "milano_duomo_episode" };
+    try {
+      expect(() => createDebugState({ ...base, scene: "encounter", id: "brera_sitter", progress: "initial" }))
+        .toThrow("この進行状態では交流を始められません。必要な進行や品物を確認してください。入場の条件を満たしていません：エピソード「無人の広場、一名追加」を終えた");
+    } finally {
+      if (kept) rule.when = kept;
+      else delete rule.when;
+    }
+    // The Galleria's wish opens in its first observation; Nora after the Duomo's battle; Tino after the castle's (which opens at 10:00).
     expect(createDebugState({ ...base, scene: "encounter", id: "galleria_fortune", progress: "initial" }).activeEncounter?.encounterId).toBe("galleria_fortune");
+    expect(createDebugState({ ...base, scene: "encounter", id: "duomo_string", progress: "initial" }).activeEncounter?.encounterId).toBe("duomo_string");
+    expect(createDebugState({ ...base, scene: "encounter", id: "castello_pick", progress: "initial" }).activeEncounter?.encounterId).toBe("castello_pick");
   });
   it("opens a cleared city's epilogue, not before the clear", () => {
     const game = createDebugState({ ...base, scene: "epilogue", id: "milano_finale" });
@@ -84,8 +96,6 @@ describe("Debug launch URLs against the content", () => {
     [{ dataMode: "real", cityId: "atlantis", scene: "battle" }, "都市「atlantis」は登録されていません。仮の場面の都市なら data=fixture を付けます。"],
     [{ dataMode: "real", cityId: "milano", scene: "battle", target: "gt_delhi_main_red_fort_battle" }, "「gt_delhi_main_red_fort_battle」はミラノの「バトル」にありません。"],
     [{ dataMode: "real", cityId: "delhi", scene: "encounter" }, "デリーには「人物との交流」の場面がありません。"],
-    [{ dataMode: "real", cityId: "milano", scene: "encounter", target: "castello_pick" },
-      "「castello_pick」（弦を一本、余らせて）は、品物「青いピック」が必要なため開けません。Debugの場面は品物を持たない状態から始まります。"],
     [{ dataMode: "real", cityId: "milano", scene: "map" }, "地図・交通の確認（scene=map）は制作中の都市だけで使えます。"],
     [{ dataMode: "real", cityId: "samarkand", scene: "battle" }, "サマルカンドは制作中の都市で、物語・クイズはまだありません。地図・交通は scene=map で確認できます。"],
   ] satisfies Array<[DebugQuery, string]>)("explains a URL that does not fit the content: %o", (query, message) => {
@@ -118,7 +128,8 @@ describe("Debug launch URLs against the content", () => {
         }
       }
     }
-    expect(unavailable).toEqual(expect.arrayContaining(["castello_pick"]));
+    // Every Milan encounter opens (Tino's choices without the pick need nothing; with it, Debug plays Nora first when she comes before).
+    expect(unavailable).toEqual([]);
     // The gift needs the bookmark, which the stall before it (played with its first choice) gives.
     // The clock tower's place file (stage 3a) also has two talks; a talk without # title: is named after its place.
     expect(debugTargets("mihon").encounter).toEqual([

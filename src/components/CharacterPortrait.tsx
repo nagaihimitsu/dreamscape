@@ -102,6 +102,31 @@ export function CharacterFace({ characterId, emotion, sceneId, cityId }: {
   );
 }
 
+/**
+ * The character's whole standing picture in a box its caller places and sizes (the mini-game's bowler at the far end of
+ * the pitch): the scene's outfit, without a placement of its own or breathing. Decorative.
+ */
+export function CharacterFigure({ characterId, emotion, sceneId, cityId }: {
+  characterId: string;
+  emotion?: string;
+  sceneId?: string;
+  cityId?: string;
+}) {
+  const character = characters.find((item) => item.id === characterId);
+  const selection = useMemo(
+    () => character ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId }) : {},
+    [character, sceneId, cityId],
+  );
+  if (!character) return null;
+  const image = characterImage(character, { ...selection, emotion });
+  const neutral = characterImage(character, { ...selection, emotion: "neutral" });
+  return (
+    <span className="character-figure" aria-hidden="true">
+      <CharacterImage key={image ?? "placeholder"} path={image} neutralPath={neutral} color={character.placeholderColor} />
+    </span>
+  );
+}
+
 function CharacterImage({ path, neutralPath, color, fallback, onImageError, breathOf }: {
   path: string | null;
   neutralPath: string | null;

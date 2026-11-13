@@ -130,6 +130,7 @@ export const devModules = {
   content: "/src/content/index.ts",
   journeys: "/src/content/journeys.ts",
   encounters: "/src/content/encounters.ts",
+  encounter: "/src/domain/encounter.ts",
   debugState: "/src/dev/debug-state.ts",
   game: "/src/domain/game.ts",
   cityTravel: "/src/domain/city-travel.ts",
@@ -525,6 +526,16 @@ export const ops = {
     await page.getByRole("button", { name: "自由時間へ進む", exact: true }).click();
     await expect(page.getByTestId("travel-menu")).toBeVisible();
   },
+  /**
+   * The result's 「自由時間へ進む」, then the scenes that follow the battle (Milan's 「切れた三本目」 after the Duomo's),
+   * played with their first choices, back to the travel menu. Returns the saved state there.
+   */
+  async toFreeTimeThroughScenes(page: Page): Promise<GameState> {
+    await page.getByRole("button", { name: "自由時間へ進む", exact: true }).click();
+    const state = await playUntil(page, (current) => !current.activeEncounter && !current.occasion);
+    await expect(page.getByTestId("travel-menu")).toBeVisible();
+    return state;
+  },
   async toEpilogue(page: Page) {
     await page.getByRole("button", { name: "エピローグへ進む", exact: true }).click();
     await expect(page.getByTestId("city-epilogue-screen")).toBeVisible();
@@ -755,6 +766,9 @@ async function act(page: Page, state: GameState, pick: Pick) {
   const date = state.activeDate;
   const encounter = state.activeEncounter;
   if (state.activeBattle?.phase === "question") return page.getByTestId(`answer-${pick(state)}`).click();
+  // A date's mini-game (# minigame:) shows its start button instead of the choices: started and left alone, it ends with
+  // its no-input outcome (cricket_batting: no_swing) within about 5 s and takes that choice (the poll below sees it saved).
+  if (date?.frame.choices.length && date.frame.minigame) return page.getByTestId("minigame-start").click();
   if (date?.frame.choices.length) return page.getByTestId("date-choice").first().click();
   // A guide's, an arrival's or an epilogue's Japanese choices (stage 3a): the first shown one.
   if (state.activeTourism?.phase === "guide" && state.activeTourism.frame?.choices.length) return page.getByTestId("guide-choice").first().click();

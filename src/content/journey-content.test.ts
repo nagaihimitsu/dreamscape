@@ -308,12 +308,12 @@ describe("the main parts' shape and the progression check in the build (unified 
     });
     const result = await buildContent(fixture, false);
     expect(result.tourism.landmarks.find((landmark) => landmark.id === "last_supper")?.guideStoryId).toBeUndefined();
-    // Each change starts from the repository's file (changeCatalogEntry), so it removes the guide again.
-    await changeCatalogEntry(fixture, "tourism/catalog.json", "landmarks", "last_supper", (landmark: { guideStoryId?: string; observation?: boolean }) => {
-      delete landmark.guideStoryId;
+    // Each change starts from the repository's file (changeCatalogEntry): the Last Supper's guide and its knot come back.
+    await writeFile(placeFile, await readFile(path.resolve(storySourceFile("places/milano_last_supper")), "utf8"));
+    await changeCatalogEntry(fixture, "tourism/catalog.json", "landmarks", "brera_case", (landmark: { observation?: boolean }) => {
       landmark.observation = false;
     });
-    // The silent-film encounter is a knot of the Last Supper's place file, met after the observation (# priority: after observe).
-    await expect(buildContent(fixture, false)).rejects.toThrow("# priority: after observe needs a landmark with a observation: supper_pantomime at last_supper (A2)");
+    // The Brera student is a knot of Brera's place file, met after the observation (# priority: after observe).
+    await expect(buildContent(fixture, false)).rejects.toThrow("# priority: after observe needs a landmark with a observation: brera_sitter at brera_case (A2)");
   });
 });

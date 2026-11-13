@@ -65,6 +65,7 @@ INCLUDE modules.ink
 ハミードだ。この路地で六十年、香油を売っている
 # speaker: heroine
 # reaction: heroine,happy,sparkle
+# voice: gt_delhi_main_jama_masjid_001
 わ……。薔薇なのに、甘すぎない。ずっと嗅いでいられる
 # speaker: gt_delhi_jama_young_man
 客だ！　時計、スタート！
@@ -81,6 +82,7 @@ INCLUDE modules.ink
 一時間以内に、外国の観光客がアタルを買えば、俺は一年手を引く。買わなきゃ、爺さんは店を売る。観光客が買うのは携帯のケースだけさ
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# voice: gt_delhi_main_jama_masjid_002
 えっ、じゃあ、わたしが……判定なんですか？
 # speaker: enemy
 先に言っておく。気の毒だから買う、なら、出ていってくれ。同情で売った香りは、すぐ飛ぶ
@@ -114,6 +116,7 @@ INCLUDE modules.ink
 ハミードは別の瓶の栓を抜いた。今度の匂いは花ではなかった。
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_delhi_main_jama_masjid_003
 ……あれ。これ、雨？　降り始めの、乾いた地面の匂い
 # speaker: enemy
 # local_word: gt_delhi_word_mitti
@@ -148,6 +151,7 @@ INCLUDE modules.ink
 はい、アサドさん。……まだです。お父さん、頑固で。ええ、ドバイの部屋の話も、まだ
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_main_jama_masjid_004
 ……アサドさんって
 # speaker: narrator
 戻ってきたゾヘブは、{heroine_name}の顔を見て観念したように息を吐いた。ハミードには聞こえない声で言う。
@@ -157,6 +161,7 @@ INCLUDE modules.ink
 俺は店なんか欲しくない。ガキの頃、冬じゅうここで匂いをかいでたんだ
 # speaker: heroine
 # emotion: worried
+# voice: gt_delhi_main_jama_masjid_005
 ……ハミードさん本人は、ドバイに行きたいって、言ったんですか？
 # speaker: narrator
 ゾヘブは答えなかった。答えを知らない顔だった。
@@ -182,10 +187,12 @@ INCLUDE modules.ink
 柱時計が、賭けの一時間まであと数分を指している。{heroine_name}はミッティの小瓶を手に取った。
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_main_jama_masjid_006
 わたし、これを買います。雨の匂いが欲しいから。……でも、それで勝負に勝ったことにはしないでください
 # speaker: enemy
 どういう意味だ
 # speaker: heroine
+# voice: gt_delhi_main_jama_masjid_007
 お店のことは、賭けじゃなくて、息子さんと話して決めてほしいんです。ゾヘブさんを通さずに、直接
 # speaker: narrator
 老人の目が、隣の若者に向いた。ゾヘブは逃げなかった。
@@ -216,5 +223,6 @@ INCLUDE modules.ink
 店を出るとき、背中で電話のボタンを押す音がした。ゆっくり、一つずつ。ゾヘブは自分の店に戻り、充電器の列を、意味もなく並べ直していた。
 # speaker: heroine
 # reaction: heroine,smile,music
+# voice: gt_delhi_main_jama_masjid_008
 ……雨の匂い、まだしてる。日本で雨が降ったら、たぶん、この路地を思い出すね
 -> END

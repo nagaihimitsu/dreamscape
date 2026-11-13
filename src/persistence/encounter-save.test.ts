@@ -12,8 +12,9 @@ class MemoryStorage implements StorageLike {
   getItem(key: string) { return this.values.get(key) ?? null; }
   setItem(key: string, value: string) { this.values.set(key, value); }
 }
+// An encounter Debug opens in its landmark's observation (the Galleria's wish; Nora and Tino come after their battles).
 const initial: DebugSettings = {
-  scene: "encounter", id: "duomo_string", progress: "completed", ap: 9,
+  scene: "encounter", id: "galleria_fortune", progress: "completed", ap: 9,
   affection: 0, trust: 0, spark: 0, roll: "positive",
 };
 
@@ -38,8 +39,8 @@ describe("encounter save protection", () => {
 
   it("blocks other activity and reward mutation while an encounter is active", () => {
     const state = createDebugState(initial);
-    expect(getBattleAvailability(state, "milano_duomo_01").available).toBe(false);
-    expect(getTourismAvailability(state, "duomo_milano").available).toBe(false);
+    expect(getBattleAvailability(state, "milano_galleria_01").available).toBe(false);
+    expect(getTourismAvailability(state, "galleria_vittorio_emanuele_ii").available).toBe(false);
     expect(startDate(state, "milano_cafe_01")).toBe(state);
     expect(setNames(state, "name", "name")).toBe(state);
     expect(claimPendingRewards(state, state.revision)).toBe(state);

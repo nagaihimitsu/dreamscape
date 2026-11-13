@@ -1,5 +1,11 @@
 {
   "schemaVersion": 1,
+  "flags": [
+    {
+      "id": "milano_tino_needs_pick",
+      "noteJa": "城の中庭で、青いピックを持たずにティノに会った（フィナーレの前の「ダルセナの一音」の条件）。"
+    }
+  ],
   "people": [
     {
       "id": "milano_galleria_boy",
@@ -55,6 +61,16 @@
       "id": "milano_la_scala_candy_seller",
       "cityId": "milano",
       "nameJa": "菓子売り"
+    },
+    {
+      "id": "milano_la_scala_regular_man",
+      "cityId": "milano",
+      "nameJa": "常連の男"
+    },
+    {
+      "id": "milano_la_scala_regular_woman",
+      "cityId": "milano",
+      "nameJa": "常連の女"
     },
     {
       "id": "milano_ida",

@@ -16,6 +16,7 @@ import { REACTION_MARKS } from "../content/dialogue-reactions";
 import { ALBUM_IMAGE_ID } from "../content/album-images";
 import { VOICE_ID } from "../content/voice-files";
 import { SOUND_ID } from "../content/sounds";
+import { MINI_GAME_IDS, type MiniGameId } from "../content/mini-games";
 
 export type { Speaker, StoryFrame } from "./frame-reader";
 import type { StoryFrame } from "./frame-reader";
@@ -73,6 +74,12 @@ export const storyFrameSchema = z
     weather: z.enum(WEATHER_KINDS).optional(),
     tint: z.literal("off").optional(),
     ambience: z.string().regex(SOUND_ID).optional(),
+    // A line's `# minigame:` (2026-11-13): the game the screen plays instead of showing the choices after it.
+    minigame: z.object({
+      id: z.enum(MINI_GAME_IDS as [MiniGameId, ...MiniGameId[]]),
+      auto: z.string().regex(/^[a-z][a-z0-9_]*$/u),
+      prefix: z.string().regex(/^[a-z][a-z0-9]*$/u).optional(),
+    }).strict().optional(),
     choices: z
       .array(
         z

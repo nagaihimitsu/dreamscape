@@ -595,6 +595,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     photoIds: albumImages.map((image) => image.id),
     localWordIds: localWords.map((word) => word.id),
     personIds: storyStateCatalog.people.map((person) => person.id),
+    // A line's # minigame: runs in a place file's date only (its walk below says true); every other story refuses it.
+    miniGames: false,
   };
   for (const effect of effects) {
     if (effect.responseProfileId && !responseProfiles.some((profile) => profile.id === effect.responseProfileId))
@@ -976,7 +978,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
           memory_callback: progression.fallbackMemoryCallbackJa, confession_ready: date.kind === "confession" && seed.confessionReady,
           confession_result: date.kind === "confession" ? seed.confessionResult ?? (seed.confessionReady ? "accepted" : "deferred") : "deferred" };
         const key = JSON.stringify(Object.entries(variables).filter(([name]) => compiledText.includes(`"VAR?":"${name}"`)));
-        if (!walked.has(key)) walked.set(key, withContext(label, () => walkScene({ ...base, variables,
+        if (!walked.has(key)) walked.set(key, withContext(label, () => walkScene({ ...base, context: { ...base.context, miniGames: true }, variables,
           romanceChoices: { knot: scene.story.knot!, count: date.choiceCount } })));
         routes += walked.get(key)!;
         dateRoutes[date.id] = (dateRoutes[date.id] ?? 0) + walked.get(key)!;

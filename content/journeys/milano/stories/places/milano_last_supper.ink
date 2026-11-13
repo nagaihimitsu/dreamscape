@@ -377,25 +377,27 @@ INCLUDE modules.ink
 ->->
 
 // 道中交流「広場の無声映画」（knot の名前 supper_pantomime が交流のID）。
-// 今は起こらない：条件『最後の晩餐を終えた』（頭の # when: episode …）は、最後の晩餐のバトルを終えると満たす。その後は交流が始まる観察がない。
-// バトルを終えると、最後の晩餐は地図の行き先に出なくなる。バトルの画面（結果の画面も）から観察に戻れるが、バトルの途中なので交流は始まらない。
-// シナリオの改稿で見直す（2026-11-08 のユーザー判断）。それまで起こる時は変えない。変えたら、このコメントも直す。
-// 2026-11-13 に 1場面1ファイル・encounters/catalog.json・entry-rules.json からこの場所のファイルへ移した。観察で「進む」を押した後（# priority: after observe）に始まり、終わると観察に戻る。起こる時・順・選択の働き（お金・品物・「また今度」）は前と同じ。
+// 『最後の晩餐』の訪問の本筋の後（# priority: +1）：バトルの結果を閉じた後（この場所にデートはないので、いつもバトルの直後）。条件はない。どの選択肢でも完了する。
+// バトルの最後に角を曲がった兄妹に、その先でまた会う。声を休める兄が、身振りで夕食を頼む。
+// 絵の人物が手と顔の向きで反応を伝えることは scenes/catalog.json の出典（館の解説）。
 === supper_pantomime ===
 # scene: encounter
 # title: 広場の無声映画
 # at: visit last_supper
-# priority: after observe
-# when: episode milano_last_supper_episode
+# priority: +1
+# person: milano_ida
+# person: milano_last_supper_brother
 # background: milano_refectory
 # speaker: narrator
-グラツィエ教会前で、イーダが両腕を伸ばして静止した。兄が首を振る。
-# speaker: milano_last_supper_brother
-ちがう、それだと『大きな魚』！
-# speaker: milano_last_supper_brother
-今日の声は店じまい。あとは妹が代わりに晩ご飯を注文する
+教会の前の角を曲がった先に、さっきの兄妹がいた。兄は声を休めたまま、両腕を大きく広げて静止している。
+# speaker: milano_ida
+それだと「大きな魚」。……違うの？　今日の注文、この人が手でやるって言い出して
+# speaker: heroine
+絵の中の人たちも、声じゃなくて、手と顔の向きで返事してましたね
+# speaker: milano_ida
+あの人たちは、ずっとあの手のままで通じてるから
 # speaker: narrator
-どうやら、見本を見せるために一言だけ解禁したらしい。
+兄が首を振り、今度は指で四角を描いた。
 
 * [May I try a gesture? # option: act # translation: 身振りを一つ試してもいい？]
     # speaker: narrator
@@ -406,19 +408,18 @@ INCLUDE modules.ink
 
 * [What do you actually want for dinner? # option: ask # translation: 本当は夕食に何が食べたいの？]
     # speaker: narrator
-    兄は両手で丸を作った。
+    兄は少し考えてから、両手で丸を作った。
     # speaker: milano_ida
-    ……ピザ？　さっき魚じゃないって言ってたから、私が勝手にパスタにした
+    ……ピザ？　四角って言うから、私が勝手にパスタにした
     # speaker: heroine
-    当てるのが上手な人ほど、聞くのを忘れるのかも
+    当てるより、聞いたほうが早かったね。……わたしも、さっきの手、聞けばよかったんだ
     -> END
 
 * [Enjoy your dinner together. # option: leave # translation: 二人で夕食を楽しんで。]
-    # later
     # speaker: narrator
     兄は指にキスをして、こちらへ小さく投げた。
     # speaker: milano_ida
     それだけは通訳がいらないね
     # speaker: heroine
-    あれ、私もいつか自然にやってみたい
+    あれ、わたしもいつか自然にやってみたい
     -> END

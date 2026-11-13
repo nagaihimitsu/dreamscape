@@ -9,7 +9,7 @@ import { withoutComments } from "./place-files";
  * messages call them: no recording can say them (2026-11-13 user decision). {player_address}, the heroine's way of
  * calling the protagonist, is made from the protagonist's name (getPlayerAddress), so it counts as that name.
  */
-const PLAYER_SET_NAMES = [
+export const PLAYER_SET_NAMES = [
   { placeholder: "{player_name}", nameJa: "主人公の名前", nameEn: "the protagonist's name" },
   { placeholder: "{player_address}", nameJa: "主人公の呼び名", nameEn: "the protagonist's form of address" },
   { placeholder: "{heroine_name}", nameJa: "ヒロインの名前", nameEn: "the heroine's name" },
