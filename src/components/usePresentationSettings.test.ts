@@ -93,3 +93,17 @@ describe("the presentation settings' ambience", () => {
       expect(readPresentationSettings(stored(extra)), JSON.stringify(extra)).toBeNull();
   });
 });
+
+// The mini-game setting (2026-11-13): 「ミニゲームをおまかせにする」 (`miniGameAuto`), a device preference like the others.
+describe("the presentation settings' mini-game おまかせ", () => {
+  it("is off for settings stored without it and with none stored, and reads what was stored", () => {
+    expect(readPresentationSettings(stored())).toMatchObject({ miniGameAuto: false });
+    expect(readPresentationSettings(null)).toMatchObject({ miniGameAuto: false });
+    expect(readPresentationSettings(stored({ miniGameAuto: true }))).toMatchObject({ miniGameAuto: true, reduceMotion: false });
+  });
+
+  it("refuses a switch that is not true or false", () => {
+    for (const extra of [{ miniGameAuto: "on" }, { miniGameAuto: 1 }, { miniGameAuto: null }])
+      expect(readPresentationSettings(stored(extra)), JSON.stringify(extra)).toBeNull();
+  });
+});
