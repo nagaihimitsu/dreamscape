@@ -256,3 +256,9 @@ export const OWN_ARTWORK_NOTE_JA =
  * The copies keep the photo's own credit and licence; this note adds the change to `modificationJa`.
  */
 export const DERIVED_PHOTO_NOTE_JA = "この画面では、写真を縮小して表示しています（一覧の写真は切り抜きもしています）。";
+
+/**
+ * The same note under the one photo of the resume recap (2026-11-13; journey-moments.ts recapPicture): a place's photo in
+ * its `recap` copy, reduced and cropped to the card's 3:2 frame (derived-images.ts), beside its credit line.
+ */
+export const RECAP_PHOTO_NOTE_JA = "写真を縮小して表示しています（枠に合わせて切り抜きもしています）。";
