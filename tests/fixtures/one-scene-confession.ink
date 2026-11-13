@@ -1,3 +1,6 @@
+// Test fixture (not game content): Milan's confession in the one-scene form with its outcome effects (# effect: in each
+// reply branch, from Milan's effect catalog), as it was until 2026-11-13 (the game's is the knot milano_confession_01 of
+// places/milano_darsena.ink, whose replies follow confession_result without effects). For the tests of that form.
 VAR player_name = ""
 VAR heroine_name = ""
 VAR player_address = ""

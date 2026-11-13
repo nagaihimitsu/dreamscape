@@ -216,7 +216,7 @@
       "apCost": 0,
       "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "dates/milano_date_confession",
+      "storyId": "places/milano_darsena.milano_confession_01",
       "when": {
         "episodesCompleted": {
           "city": "milano",

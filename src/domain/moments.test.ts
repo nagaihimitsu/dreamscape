@@ -96,11 +96,11 @@ describe("a date's moment with the 「交際開始」 screen (3.9 (c))", () => {
 
   /** Milan after its first sightseeing and a date, with the values a confession needs: the confession, departed to from the map. */
   function confessionDate(then: SceneThen): GameState {
-    // The confession date's head then: (as its file would write it; here in memory, its story is the real one).
-    const entry: SceneEntry = { id: "zz_test_confession", kind: "date", title: "告白", cityId: "milano", story: { storyId: "dates/milano_date_confession" },
-      main: { date: "milano_confession_01" }, at: [], order: 0, repeat: "once", people: [], options: [], done: {}, then, conds: [], knots: [], fingerprint: "test", origin: "file" };
-    (scenes as SceneEntry[]).push(entry);
-    undo.push(() => (scenes as SceneEntry[]).splice((scenes as SceneEntry[]).indexOf(entry), 1));
+    // The confession date's head then: (as its knot would write it; here in memory, on the real knot of the Darsena's place file).
+    const existing = (scenes as SceneEntry[]).find((scene) => scene.main && "date" in scene.main && scene.main.date === "milano_confession_01")!;
+    const before = existing.then;
+    existing.then = then;
+    undo.push(() => { existing.then = before; });
     const debug = createDebugState({ scene: "tourism", id: "duomo_milano", progress: "completed", ap: 12, affection: 10, trust: 10, spark: 10, roll: "positive" });
     let state = restore({ ...debug, activeTourism: null });
     // The confession needs three dates done (romance/progression.json).
