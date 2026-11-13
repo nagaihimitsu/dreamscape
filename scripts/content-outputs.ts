@@ -4,6 +4,7 @@ import { generatedPublicDirectory, mirrorDirectory, type CatalogKind } from "./c
 import type { MergedCatalog } from "./catalog-merge";
 import { listFiles, type ContentSources } from "./content-sources";
 import { imageJourneyIndex } from "./image-rights";
+import { JOURNEY_PART_MARKER } from "./dist-guard";
 
 // The outputs of content:build, written after the content was validated:
 // the compiled stories and quizzes, the generated mirror of the merged
@@ -60,6 +61,9 @@ export function writeContentOutputs(
   // Every journey's tours (src/content/index.ts imports the file, so it is written even with no tour: `[]`).
   writeFileSync(path.join(directory, "tours.json"), `${JSON.stringify(validated.tours ?? [], null, 2)}\n`);
   writeFileSync(path.join(directory, "stories.json"), `${JSON.stringify(validated.stories, null, 2)}\n`);
+  // The game reads the stories, quizzes and city travel per journey (src/content/journey-parts.ts): the other files keep
+  // every journey together for the tools and the tests.
+  writeJourneyParts(root, journeyParts(sources, validated.stories, validated.quizzes));
   // The scenes' cond("…") texts and their conditions (scripts/scene-conditions.ts; read by src/domain/scene-conditions.ts).
   writeFileSync(path.join(directory, "scene-conditions.json"),
     `${JSON.stringify(validated.sceneConditions ?? { conditions: {}, stories: {} }, null, 2)}\n`);
@@ -86,6 +90,55 @@ export function writeContentOutputs(
   writeContentMirror(sources, mirrorDirectory(root), validated.catalogOverrides);
   // Vite serves and builds the game's images from this folder (publicDir in vite.config.ts).
   assemblePublicDirectory(new Map([...sources.publicFiles, ...derivedFiles]), generatedPublicDirectory(root));
+}
+
+/** A journey's part of the game's content (src/content/journey-parts.ts reads it). */
+export type JourneyPart = {
+  /** JOURNEY_PART_MARKER (scripts/dist-guard.ts) and the journey ID: the production build check finds each part's file by it. */
+  marker: string;
+  journeyId: string;
+  /** The compiled stories of the journey's folder, by story ID. */
+  stories: Record<string, string>;
+  /** The quizzes of the journey's folder (not the examples), by quiz ID. */
+  quizzes: Record<string, unknown>;
+  /** The travel file (places, routes, events) of each city of the journey's folder, by city ID. */
+  travel: Record<string, unknown>;
+};
+/** Where the game's journey parts are: `<journeyId>.json` each (production builds load each when its journey opens). */
+export const JOURNEY_PARTS_DIRECTORY = `${GENERATED_DIRECTORY}/journey-parts`;
+/** The part of the core layer (content/ outside the journeys), loaded with the game; normally empty. */
+export const SHARED_PART_FILE = `${GENERATED_DIRECTORY}/shared-part.json`;
+
+/**
+ * Split the validated stories and quizzes and the cities' travel files by the layer that provides them: one part per
+ * journey folder (an empty one for a journey without any), and the core layer's (`shared`, whose marker is not a
+ * journey's: it comes with the game).
+ */
+export function journeyParts(
+  sources: Pick<ContentSources, "layers" | "storyFiles" | "quizFiles" | "cities">,
+  stories: Readonly<Record<string, string>>, quizzes: Readonly<Record<string, unknown>>,
+): { shared: JourneyPart; journeys: JourneyPart[] } {
+  const part = (journeyId: string, marker = `${JOURNEY_PART_MARKER}${journeyId}`): JourneyPart => ({ marker, journeyId, stories: {}, quizzes: {}, travel: {} });
+  const shared = part("core", "dreamscape-core-part");
+  const journeys = new Map(sources.layers.filter((layer) => layer.type === "journey").map((layer) => [layer.id, part(layer.id)]));
+  const of = (layer: string) => journeys.get(layer) ?? shared;
+  const storyLayer = new Map(sources.storyFiles.map((story) => [story.id, story.layer]));
+  for (const [id, compiled] of Object.entries(stories)) of(storyLayer.get(id) ?? "core").stories[id] = compiled;
+  const quizLayer = new Map(sources.quizFiles.filter((quiz) => !quiz.example)
+    .map((quiz) => [(quiz.data as { id?: unknown } | null)?.id, quiz.layer] as const));
+  for (const [id, quiz] of Object.entries(quizzes)) of(quizLayer.get(id) ?? "core").quizzes[id] = quiz;
+  for (const city of sources.cities) of(city.layer).travel[city.id] = city.travel;
+  return { shared, journeys: [...journeys.values()] };
+}
+
+/** Write the parts (journeyParts): each journey's in JOURNEY_PARTS_DIRECTORY (removing a journey's that is gone), the core layer's to SHARED_PART_FILE. */
+function writeJourneyParts(root: string, parts: ReturnType<typeof journeyParts>): void {
+  const directory = path.join(root, JOURNEY_PARTS_DIRECTORY);
+  mkdirSync(directory, { recursive: true });
+  const files = new Map(parts.journeys.map((part) => [`${part.journeyId}.json`, part]));
+  for (const file of readdirSync(directory)) if (!files.has(file)) rmSync(path.join(directory, file), { recursive: true, force: true });
+  for (const [file, part] of files) writeFileSync(path.join(directory, file), `${JSON.stringify(part)}\n`);
+  writeFileSync(path.join(root, SHARED_PART_FILE), `${JSON.stringify(parts.shared)}\n`);
 }
 
 /**

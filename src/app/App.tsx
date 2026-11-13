@@ -11,6 +11,8 @@ import { UnavailableJourney } from "../features/journey/UnavailableJourney";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
 import { holdTaps } from "../components/tap-hold";
 import { GameApp } from "./GameApp";
+import { JourneyContentGate } from "./JourneyContentGate";
+import { loadJourneyContent } from "../content";
 import type { KeyedStorage } from "../persistence/old-data";
 import { browserKeyedStorage, browserStorage, type AppProps } from "./app-storage";
 
@@ -46,6 +48,11 @@ export default function App(props: AppProps = {}) {
   }, []);
   const journey = getJourney(journeyId);
   const lockStatus = useJourneyLock(journeyId, scopedStorage, lockAttempt, needsJourneyLock(journey, !!props.debug));
+  // A playable journey's content starts loading at once, while the lock is checked (JourneyContentGate waits for it).
+  const playable = !props.debug && journey?.status === "available";
+  useEffect(() => {
+    if (playable) loadJourneyContent(journeyId).catch(() => undefined);
+  }, [playable, journeyId]);
   // Debug supplies an isolated, pre-populated game; do not alter its storage.
   if (props.debug) return <GameApp {...props} />;
   const lockNotice = journeyLockNotice(lockStatus);
@@ -59,8 +66,11 @@ export default function App(props: AppProps = {}) {
   }
   // 「古い保存データの整理」 reads the browser's own storage; a page given another storage has none.
   const oldDataStorage = props.storage ? undefined : browserKeyedStorage;
-  if (journey?.initialState) return <PlayableJourney key={journeyId} {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={switchJourney} selectorFocus={selectorFocus} oldDataStorage={oldDataStorage} />;
-  return <GameApp key={journeyId} {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={switchJourney} selectorFocus={selectorFocus} oldDataStorage={oldDataStorage} />;
+  return <JourneyContentGate key={journeyId} journeyId={journeyId} onSwitchJourney={switchJourney} selectorFocus={selectorFocus}>
+    {journey?.initialState
+      ? <PlayableJourney {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={switchJourney} selectorFocus={selectorFocus} oldDataStorage={oldDataStorage} />
+      : <GameApp {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={switchJourney} selectorFocus={selectorFocus} oldDataStorage={oldDataStorage} />}
+  </JourneyContentGate>;
 }
 
 /**

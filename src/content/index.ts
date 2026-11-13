@@ -1,3 +1,4 @@
+import { z } from "zod";
 import wordData from "./generated/content/learning/word-meanings.json";
 import { wordMeaningsSchema } from "./word-meanings";
 import detailsData from "./generated/content/learning/details.json";
@@ -12,7 +13,7 @@ import { getAllRewardRules, journeySchema } from "./journey-schemas";
 import tourismData from "./generated/content/tourism/catalog.json";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "./travel-schemas";
-import generatedQuizzes from "./generated/quizzes.json";
+import sharedPartData from "./generated/shared-part.json";
 import generatedTours from "./generated/tours.json";
 import { tourCatalogSchema, type Tour } from "./tour-schemas";
 import progressionData from "./generated/content/romance/progression.json";
@@ -27,7 +28,6 @@ import dialogueExpressionData from "./generated/content/presentation/dialogue-ex
 import dialogueReactionData from "./generated/content/presentation/dialogue-reactions.json";
 import { dialogueReactionCatalogSchema } from "./dialogue-reactions";
 import { dialogueExpressionCatalogSchema } from "./dialogue-expressions";
-import generatedStories from "./generated/stories.json";
 import sceneConditionData from "./generated/scene-conditions.json";
 import sceneData from "./generated/scenes.json";
 import storyStateData from "./generated/content/progression/story.json";
@@ -79,20 +79,22 @@ export const tourismClues = tourism.clues;
 // No type argument on import.meta.glob: Vitest's file-system module cache leaves a
 // module uncached only when its text contains "import.meta.glob(", and a cached
 // copy would keep an old city list after a build adds or removes a city.
+// A city's travel file (places, routes, events) comes with its journey's part (below).
 const cityFiles: Record<string, unknown> = import.meta.glob("./generated/content/cities/*.json", { eager: true, import: "default" });
-const travelFiles: Record<string, unknown> = import.meta.glob("./generated/content/travel/*.json", { eager: true, import: "default" });
+const settingsFiles: Record<string, unknown> = import.meta.glob("./generated/content/travel/*-settings.json", { eager: true, import: "default" });
 export type CityContent = {
   city: ReturnType<typeof citySchema.parse>;
   travel: ReturnType<typeof travelCatalogSchema.parse>;
   travelSettings: ReturnType<typeof travelSettingsSchema.parse>;
 };
+/** The cities of the journeys whose content is loaded (loadJourneyContent below), by city ID. */
 export const cityContents: Record<string, CityContent> = Object.create(null);
-for (const [file, data] of Object.entries(cityFiles)) {
-  const city = citySchema.parse(data);
-  if (!file.endsWith(`/${city.id}.json`) || cityContents[city.id])
-    throw new Error(`Invalid or duplicate city registration: ${file}`);
-  const travel = travelCatalogSchema.parse(travelFiles[`./generated/content/travel/${city.id}.json`]);
-  const travelSettings = travelSettingsSchema.parse(travelFiles[`./generated/content/travel/${city.id}-settings.json`]);
+function registerCity(cityId: string, travelData: unknown): void {
+  const city = citySchema.parse(cityFiles[`./generated/content/cities/${cityId}.json`]);
+  if (city.id !== cityId || cityContents[city.id])
+    throw new Error(`Invalid or duplicate city registration: ${cityId}`);
+  const travel = travelCatalogSchema.parse(travelData);
+  const travelSettings = travelSettingsSchema.parse(settingsFiles[`./generated/content/travel/${city.id}-settings.json`]);
   if (travel.cityId !== city.id || !travel.places.some((place) => place.id === travelSettings.hotelPlaceId))
     throw new Error(`Invalid city travel registration: ${city.id}`);
   cityContents[city.id] = { city, travel, travelSettings };
@@ -114,12 +116,8 @@ export function getCityStoryBackground(cityId: string, placeId: string): string 
   return travelSettings.storyBackgroundId ?? (travel.places.find((place) => place.id === placeId) ??
     travel.places.find((place) => place.id === travelSettings.hotelPlaceId))?.backgroundId;
 }
-export const battleQuizzes: Record<string, QuizDefinition> = Object.fromEntries(
-  Object.entries(generatedQuizzes).map(([id, quiz]) => [
-    id,
-    quizSchema.parse(quiz),
-  ]),
-);
+/** The quizzes of the journeys whose content is loaded, by quiz ID. */
+export const battleQuizzes: Record<string, QuizDefinition> = Object.create(null);
 /**
  * Every journey's tours (`tours/<tourId>.json`; tour design stage 2a). Fixture tours of the unit tests
  * are added here and removed again (src/dev/test-tours.ts), like the fixture cities.
@@ -141,7 +139,63 @@ export const balance = balanceSchema.parse(balanceData);
 export const presentation = presentationSchema.parse(presentationData);
 export const dialogueReactions = dialogueReactionCatalogSchema.parse(dialogueReactionData);
 export const dialogueExpressions = dialogueExpressionCatalogSchema.parse(dialogueExpressionData);
-export const stories: Record<string, string> = generatedStories;
+/** The compiled stories of the journeys whose content is loaded, by story ID. */
+export const stories: Record<string, string> = Object.create(null);
+
+/**
+ * A journey's part of the content (content:build, scripts/content-outputs.ts journeyParts): the stories, quizzes and
+ * cities' travel of its folder, the bulk of the content. A production build makes each part a file of its own that the
+ * page loads when the journey opens (loadJourneyContent; src/app/JourneyContentGate.tsx), so the title and a journey
+ * download no other journey's part. The core layer's part (normally empty) comes with the game.
+ */
+const journeyPartSchema = z.object({
+  marker: z.string(),
+  journeyId: z.string(),
+  stories: z.record(z.string(), z.string()),
+  quizzes: z.record(z.string(), z.unknown()),
+  travel: z.record(z.string(), z.unknown()),
+}).strict();
+const loadedParts = new Set<string>();
+function addJourneyPart(data: unknown, journeyId?: string): void {
+  const part = journeyPartSchema.parse(data);
+  if (journeyId !== undefined && part.journeyId !== journeyId) throw new Error(`Journey content mismatch: ${journeyId}`);
+  if (loadedParts.has(part.journeyId)) return;
+  for (const [id, quiz] of Object.entries(part.quizzes)) battleQuizzes[id] = quizSchema.parse(quiz);
+  for (const [cityId, travel] of Object.entries(part.travel)) registerCity(cityId, travel);
+  Object.assign(stories, part.stories);
+  loadedParts.add(part.journeyId);
+}
+addJourneyPart(sharedPartData);
+const partFiles = import.meta.glob("./generated/journey-parts/*.json", { import: "default" });
+const partFile = (journeyId: string) => `./generated/journey-parts/${journeyId}.json`;
+const pendingParts = new Map<string, Promise<void>>();
+/** Whether the journey's content is loaded: its stories, quizzes and cities can be read. */
+export function journeyContentLoaded(journeyId: string): boolean {
+  return loadedParts.has(journeyId);
+}
+/**
+ * Load the journey's content (once; a failed load can be tried again). Rejects for a journey without a part, and when
+ * its file cannot be loaded (offline, or a newer version of the game replaced it on the server).
+ */
+export function loadJourneyContent(journeyId: string): Promise<void> {
+  if (loadedParts.has(journeyId)) return Promise.resolve();
+  const load = partFiles[partFile(journeyId)];
+  if (!load) return Promise.reject(new Error(`Unknown journey content: ${journeyId}`));
+  let pending = pendingParts.get(journeyId);
+  if (!pending) {
+    pending = load().then((data) => addJourneyPart(data, journeyId)).finally(() => pendingParts.delete(journeyId));
+    pendingParts.set(journeyId, pending);
+  }
+  return pending;
+}
+/** Load the content of every journey (Debug and the asset preview, which open any journey's scenes). */
+export async function loadAllJourneyContent(): Promise<void> {
+  await Promise.all(Object.keys(partFiles).map((file) => loadJourneyContent(file.slice(file.lastIndexOf("/") + 1, -".json".length))));
+}
+// The development server and the unit tests have every journey's content before any module reads it (Debug, the
+// tests' states of any journey); only a production build loads the parts one by one (the branch is left out of it).
+if (import.meta.env.DEV) await loadAllJourneyContent();
+
 /** The album's illustrations of every journey (content:build lists each journey's public/assets/album/; album-images.ts). */
 export const albumImages: readonly AlbumImage[] = albumImageListSchema.parse(albumImageData);
 /** The album image a line's `# photo:` or `# recall:` names, by its ID. */

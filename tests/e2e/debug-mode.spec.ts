@@ -1,7 +1,6 @@
 import { DEBUG_MODE_KEY } from "../../src/app/debug-mode";
 import { debugQueryString } from "../../src/dev/debug-query";
-import { eagerFiles } from "../../scripts/dist-guard";
-import { allStorage, bothStorages, expect, ops, test, tier, type Page } from "./helpers";
+import { allStorage, bothStorages, expect, expectNoDebugCode, ops, test, tier, type Page } from "./helpers";
 
 // User decision 2026-11-08: anyone can turn Debug mode on in ゲームの設定 (⚙設定) with the password 「adminmode」
 // (not a secret: anyone may see it; it only prevents turning it on by accident). While it is on,
@@ -78,18 +77,17 @@ test("Debug mode: the password in ゲームの設定 turns it on for this device
   await expect(on).toBeVisible();
   await expect(voiceRate).toBeVisible();
 
-  // Until Debug is opened, the page loads no Debug code: only the files index.html loads at once
-  // (Debug's chunks are loaded later, whatever their names) and, once Debug mode is on, the parts that
-  // ゲームの設定 shows under the switch, each a chunk of its own: the note of 最初の3分の計測
-  // (IntroTimingNote.tsx) and 台詞の声の速さ (DebugVoiceRate.tsx and its stylesheet). None of them while it is off.
-  const html = await (await page.request.get("/")).text();
-  const eager = new Set(eagerFiles(html).map((file) => `/${file}`));
+  // Until Debug is opened, the page loads no Debug code: the files index.html loads at once and those the game
+  // loads later (Milan's part of the content, the map, …), none with Debug's code (expectNoDebugCode; Debug's chunks
+  // are loaded later, whatever their names), and, once Debug mode is on, the parts that ゲームの設定 shows under the
+  // switch, each a chunk of its own: the note of 最初の3分の計測 (IntroTimingNote.tsx) and 台詞の声の速さ
+  // (DebugVoiceRate.tsx and its stylesheet). None of them while it is off.
   const debugModeParts = [/^\/assets\/IntroTimingNote-[\w-]+\.js$/u, /^\/assets\/DebugVoiceRate-[\w-]+\.(?:js|css)$/u];
+  const isDebugModePart = (path: string) => debugModeParts.some((part) => part.test(path));
   expect(requestedWhileOff).toBeGreaterThan(0);
-  for (const [index, path] of requested.entries()) {
-    const debugModePart = index >= requestedWhileOff && debugModeParts.some((part) => part.test(path));
-    expect(eager.has(path) || debugModePart, `${path} is loaded ${index < requestedWhileOff ? "while Debug mode is off" : "before Debug is opened"}`).toBe(true);
-  }
+  expect(await expectNoDebugCode(page, requested.slice(0, requestedWhileOff))).toEqual(["milano"]);
+  expect(requested.slice(requestedWhileOff).some(isDebugModePart)).toBe(true);
+  await expectNoDebugCode(page, requested.slice(requestedWhileOff), isDebugModePart);
 
   // 「場面の確認を開く」 opens Debug on its own page; Debug leaves the player's storage as it was.
   const kept = await bothStorages(page);
