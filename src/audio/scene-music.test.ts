@@ -128,6 +128,11 @@ describe("the music lowered", () => {
     expect(music(game(), { riding: true })).toEqual({ track: "free_morning", duck: "travel" });
     expect(music(game(), { packing: true, riding: true })).toEqual({ track: undefined, duck: "travel" });
   });
+
+  it("lowers everything under a quiet mini-game (docs/13 2.11), a ride's visual still first", () => {
+    expect(music(game({ activeDate: { frame: frame({ quiet: "scene" }) } }), { miniGameQuiet: true }).duck).toBe("minigame");
+    expect(music(game({ activeDate: { frame: frame() } }), { miniGameQuiet: true, riding: true }).duck).toBe("travel");
+  });
 });
 
 describe("a journey's play over the shared one", () => {

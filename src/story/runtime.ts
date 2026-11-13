@@ -16,7 +16,9 @@ import { REACTION_MARKS } from "../content/dialogue-reactions";
 import { ALBUM_IMAGE_ID } from "../content/album-images";
 import { VOICE_ID } from "../content/voice-files";
 import { SOUND_ID } from "../content/sounds";
-import { MINI_GAME_IDS, type MiniGameId } from "../content/mini-games";
+import { MINI_GAME_ID, MINI_GAME_OUTCOME_ID } from "../minigames/contract";
+import { MINI_GAME_KEY, MINI_GAME_PREFIX } from "../minigames/tag";
+import { MINI_GAME_ART_ID } from "../minigames/art";
 
 export type { Speaker, StoryFrame } from "./frame-reader";
 import type { StoryFrame } from "./frame-reader";
@@ -74,11 +76,15 @@ export const storyFrameSchema = z
     weather: z.enum(WEATHER_KINDS).optional(),
     tint: z.literal("off").optional(),
     ambience: z.string().regex(SOUND_ID).optional(),
-    // A line's `# minigame:` (2026-11-13): the game the screen plays instead of showing the choices after it.
+    // A line's `# minigame:` (docs/13 4.6): the game the screen plays instead of showing the choices after it, its keys as
+    // written (params and art only when the tag has them); validateStorySnapshot reads it again with the tag reader.
     minigame: z.object({
-      id: z.enum(MINI_GAME_IDS as [MiniGameId, ...MiniGameId[]]),
-      auto: z.string().regex(/^[a-z][a-z0-9_]*$/u),
-      prefix: z.string().regex(/^[a-z][a-z0-9]*$/u).optional(),
+      id: z.string().regex(MINI_GAME_ID),
+      auto: z.string().regex(MINI_GAME_OUTCOME_ID),
+      prefix: z.string().regex(MINI_GAME_PREFIX).optional(),
+      bg: imageIdSchema.optional(),
+      art: z.record(z.string().regex(MINI_GAME_KEY), z.string().regex(MINI_GAME_ART_ID)).optional(),
+      params: z.record(z.string().regex(MINI_GAME_KEY), z.string().regex(/^\S+$/u)).optional(),
     }).strict().optional(),
     choices: z
       .array(

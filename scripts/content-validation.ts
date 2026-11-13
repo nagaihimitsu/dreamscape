@@ -54,6 +54,7 @@ import {
 } from "../src/content/schemas";
 import type { TagContext } from "../src/content/tags";
 import { albumFolderPath, albumImagesOf, checkAlbumTags } from "./album-images";
+import { checkMiniGameArtTags, miniGameArtOf } from "./minigame-art";
 import { checkVoiceCredits, checkVoiceTags, voiceFilesOf, voiceFolderPath } from "./voice-files";
 import { checkSoundTags, soundRegistry, soundUseProblem, soundVolumesOf, soundWarnings, transportModeSounds } from "./sound-files";
 import { checkBgmTags, musicDataOf, musicRegistry, musicWarnings } from "./music-files";
@@ -573,6 +574,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       throw new Error(`Unknown local word city: ${word.id}/${word.cityId}`);
   // The album's illustrations (2026-11-11): the files of each journey's public/assets/album/, the ID their file name.
   const albumImages = albumImagesOf(sources);
+  // The mini-games' pictures (2026-11-13): the files of each layer's public/assets/minigames/, the ID their file name.
+  const miniGameArt = miniGameArtOf(sources);
   // The voices of lines (2026-11-12): the files of each journey's public/assets/voice/, the ID their file name.
   const voiceFiles = voiceFilesOf(sources);
   // A manifest's voiceCredits (2026-11-13) credits voices its journey has.
@@ -596,8 +599,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     photoIds: albumImages.map((image) => image.id),
     localWordIds: localWords.map((word) => word.id),
     personIds: storyStateCatalog.people.map((person) => person.id),
-    // A line's # minigame: runs in a place file's date only (its walk below says true); every other story refuses it.
+    // A line's # minigame: runs where the full-branch walk (scene-walk.ts) reads it; every other reading refuses it (docs/13 1.3).
     miniGames: false,
+    // A # minigame:'s art.<slot> names a mini-game picture (of the story's own journey or the root: checkMiniGameArtTags below).
+    miniGameArt: Object.fromEntries(miniGameArt.map((image) => [image.id, image.path])),
   };
   for (const effect of effects) {
     if (effect.responseProfileId && !responseProfiles.some((profile) => profile.id === effect.responseProfileId))
@@ -653,6 +658,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     // A line's # photo: and # recall: name an album image of the story's own journey (2026-11-11).
     const journeyLayerOfStory = sources.layers.find((item) => item.id === storyLayer)!;
     withContext(file, () => checkAlbumTags(authored, storyLayer, albumImages, albumFolderPath(sources, journeyLayerOfStory)));
+    // A # minigame:'s art.<slot> names a picture of the story's own journey or the root (docs/13 2.12).
+    withContext(file, () => checkMiniGameArtTags(authored, storyLayer, miniGameArt));
     // A line's # voice: names a recording of the story's own journey (2026-11-12).
     withContext(file, () => checkVoiceTags(authored, storyLayer, voiceFiles, voiceFolderPath(sources, journeyLayerOfStory)));
     // A line's # se: names a shared sound or one of the story's own journey (2026-11-12).
@@ -1662,6 +1669,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     journey,
     /** The album's illustrations of every journey (generated/album-images.json; src/content/album-images.ts). */
     albumImages,
+    /** The mini-games' pictures of every layer (generated/minigame-art.json; src/minigames/art.ts). */
+    miniGameArt,
     /** Every registered sound's volume (generated/sound-volumes.json; src/audio/sound-effects.ts). */
     soundVolumes: soundVolumesOf(sounds),
     /** The tracks and where each journey plays them (generated/music.json; src/audio/bgm.ts, the credits list). */

@@ -2,7 +2,7 @@ import type { Story } from "inkjs";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import type { DialogueReaction, ReactionTarget } from "../content/dialogue-reactions";
 import { BGM_DEFAULT } from "../content/music";
-import type { MiniGameTag } from "../content/mini-games";
+import type { MiniGameTag } from "../minigames/tag";
 import {
   parseStoryTags, WEATHER_STOP, type CutInKind, type LetterKind, type LineDelivery, type PhoneSide, type QuietSpan, type StandPosition,
   type StoryCall, type StoryPhoto, type TagContext, type WeatherKind,

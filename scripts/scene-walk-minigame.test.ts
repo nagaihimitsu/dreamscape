@@ -61,6 +61,6 @@ describe("a line's # minigame: in the scene walk", () => {
 
   it("is refused in a scene whose screen cannot run a mini-game", () => {
     expect(() => walk(`# minigame: cricket_batting\nBowl.\n${choices()}- -> END\n`, { context: { ...context, miniGames: false } }))
-      .toThrow("a mini-game runs in a date written in a place file");
+      .toThrow("a mini-game runs at a choice set of a scene written in a place file");
   });
 });

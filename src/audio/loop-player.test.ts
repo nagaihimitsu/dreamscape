@@ -95,7 +95,7 @@ class FakeAudio {
 
 /** A fresh fake document for each test (a page's listeners stay on its own). */
 let fakeDocument = Object.assign(new EventTarget(), { hidden: false });
-const DUCKS = { none: 1, quiz: 0.35, quiet: 0.5, travel: 0.6 };
+const DUCKS = { none: 1, quiz: 0.35, quiet: 0.5, travel: 0.6, minigame: 0.25 };
 
 /** A player on a fresh fake page, its graph made by the reader's first gesture and the track "a" playing under a quiz. */
 async function playingPlayer(): Promise<{ player: LoopPlayer; audio: FakeAudioContext; level: FakeParam; deck: FakeAudio }> {

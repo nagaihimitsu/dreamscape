@@ -1,0 +1,64 @@
+/* The cue_tap engine (EnginePlay.tsx): the skin's field fills the middle, the controls sit at the bottom in thumb reach. */
+.mg-engine-cue-tap { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
+.mg-engine-cue-tap .mg-cue-tap-field {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+.mg-engine-cue-tap .mg-cue-tap-controls { flex: none; padding: 10px 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
+/* How to play, right above the meter it speaks of. */
+.mg-engine-cue-tap .mg-cue-tap-hint { margin: 0 0 6px; font-size: 13px; line-height: 1.5; text-align: center; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+/* The meter: its needle crosses it from the thing's start to the end of the play; gold where it arrives. The clean zone is
+   brighter, narrower and glows (not told by colour alone). */
+.mg-engine-cue-tap .mg-cue-tap-meter {
+  position: relative;
+  height: 14px;
+  margin: 0 0 12px;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 7px;
+  background: rgba(255, 250, 241, 0.16);
+}
+.mg-engine-cue-tap .mg-cue-tap-meter-near, .mg-engine-cue-tap .mg-cue-tap-meter-clean { position: absolute; top: 0; bottom: 0; }
+.mg-engine-cue-tap .mg-cue-tap-meter-near { background: rgba(201, 163, 95, 0.42); }
+.mg-engine-cue-tap .mg-cue-tap-meter-clean { border-radius: 3px; background: #f0c860; box-shadow: 0 0 6px rgba(240, 200, 96, 0.7); }
+.mg-engine-cue-tap .mg-cue-tap-meter-needle {
+  position: absolute;
+  top: -5px;
+  bottom: -5px;
+  left: 0;
+  width: 4px;
+  border-radius: 2px;
+  background: var(--ds-on-slate);
+  box-shadow: 0 0 0 1px var(--ds-slate-900);
+  transform: translateX(-50%);
+}
+.mg-engine-cue-tap .mg-cue-tap-action {
+  justify-content: center;
+  width: 100%;
+  min-height: 64px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-align: center;
+  touch-action: manipulation;
+}
+.mg-engine-cue-tap .mg-cue-tap-action[aria-disabled="true"] { background: var(--ds-slate-900); color: var(--ds-on-slate-muted); }
+.mg-engine-cue-tap .mg-cue-tap-auto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 64px;
+  margin: 0;
+  border-radius: 12px;
+  background: var(--ds-chip-bg);
+  font-size: 15px;
+}
+@media (max-height: 620px) {
+  .mg-engine-cue-tap .mg-cue-tap-controls { padding-top: 6px; }
+  .mg-engine-cue-tap .mg-cue-tap-action, .mg-engine-cue-tap .mg-cue-tap-auto { min-height: 54px; }
+}

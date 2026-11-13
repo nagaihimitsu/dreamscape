@@ -7,9 +7,10 @@ import { BGM_STOP, type MusicPlay } from "../content/music";
 
 /**
  * How the track playing is lowered: `quiz` while a quiz's question part is on screen (quieter and muffled, the track
- * goes on), `quiet` on a `# quiet:` line, `travel` under a ride's visual (its sound is heard), `none` otherwise.
+ * goes on), `quiet` on a `# quiet:` line, `travel` under a ride's visual (its sound is heard), `minigame` while a game
+ * whose definition asks it (`quietScene`, a rhythm game: its beat is heard) is played, `none` otherwise.
  */
-export type MusicDuck = "none" | "quiz" | "quiet" | "travel";
+export type MusicDuck = "none" | "quiz" | "quiet" | "travel" | "minigame";
 
 /**
  * What the screen asks of the music: `track` a track's ID, null for silence, undefined to keep whatever plays (the
@@ -53,6 +54,8 @@ export type MusicScreen = {
   nightScreen: boolean;
   /** 旅の音楽室 plays this track (2026-11-13): it plays at full level, without the ambience, until the room stops it or closes. */
   roomTrack?: string;
+  /** A mini-game whose definition says `quietScene` is played over the scene (docs/13 2.11). */
+  miniGameQuiet?: boolean;
 };
 
 const DAY = 24 * 60;
@@ -132,6 +135,6 @@ export function sceneMusic(play: MusicPlay | null | undefined, screen: MusicScre
  * How the screen lowers what plays (the music, the ambience: scene-ambience.ts): under a ride's visual (`travel`), else
  * while a quiz's question part is on screen (`quiz`), else on a `# quiet:` line (`quiet`).
  */
-export function musicDuck(screen: Pick<MusicScreen, "riding">, game: MusicGame): MusicDuck {
-  return screen.riding ? "travel" : quizOnScreen(game) ? "quiz" : lineOnScreen(game)?.quiet ? "quiet" : "none";
+export function musicDuck(screen: Pick<MusicScreen, "riding" | "miniGameQuiet">, game: MusicGame): MusicDuck {
+  return screen.riding ? "travel" : screen.miniGameQuiet ? "minigame" : quizOnScreen(game) ? "quiz" : lineOnScreen(game)?.quiet ? "quiet" : "none";
 }
