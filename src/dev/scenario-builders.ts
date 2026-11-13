@@ -513,6 +513,22 @@ function untilEncounter(initial: GameState, encounterId: string, ticket: number)
   return state;
 }
 
+/**
+ * From an opened guide or observation, on to the landmark's battle as a player goes: the guide skipped, then the
+ * observation's 「進む」, its scenes played with their first choices, until the battle starts.
+ */
+function throughObservation(initial: GameState, ticket: number): GameState {
+  let state = initial;
+  for (let step = 0; !state.activeBattle; step++) {
+    if (step > MAX_STEPS) throw new Error("観察から対決へ進めませんでした。");
+    if (state.activeTourism?.phase === "guide") state = act(state, guideSkip, "観光案内を飛ばす");
+    else if (state.activeEncounter) state = playEncounterFirstChoice(state, ticket);
+    else if (state.activeTourism) state = act(state, (current) => proceedFromTourism(current, current.revision, () => ticket), "観察の「進む」");
+    else throw new Error("観察から対決へ進めませんでした。");
+  }
+  return state;
+}
+
 /** Depart from the map to the landmark's map event (its episode or special battle) by the first mode that can go now. */
 function departToLandmark(state: GameState, landmarkId: string, ticket: number): GameState {
   const { travel } = getCityContent(state.currentCityId);
@@ -549,8 +565,13 @@ export function startEncounterScene(state: GameState, encounterId: string, ticke
     let next = untilEncounter(departToLandmark(state, encounter.landmarkId, ticket), encounterId, ticket);
     if (slot === "after" && next.activeEncounter?.encounterId !== encounterId) {
       if (next.activeEncounter) throw new Error(unmetRule(next));
-      next = playBattleToResult(tourismToBattle(next, {}), {});
-      next = untilEncounter(act(next, (current) => leaveBattleToFreeTime(current, current.revision, () => ticket), "対決の結果を閉じる"), encounterId, ticket);
+      const arrived = next;
+      const afterBattle = (atBattle: GameState) => untilEncounter(act(playBattleToResult(atBattle, {}),
+        (current) => leaveBattleToFreeTime(current, current.revision, () => ticket), "対決の結果を閉じる"), encounterId, ticket);
+      next = afterBattle(tourismToBattle(arrived, {}));
+      // A scene whose condition a scene of the observation meets (Rina's crest room after the Galleria's wish): the visit
+      // again, through its observation's scenes with their first choices, as play meets them.
+      if (next.activeEncounter?.encounterId !== encounterId) next = afterBattle(throughObservation(arrived, ticket));
     }
     if (next.activeEncounter?.encounterId !== encounterId) throw new Error(unmetRule(next));
     return validateGameState(next);

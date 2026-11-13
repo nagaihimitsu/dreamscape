@@ -3,7 +3,7 @@ INCLUDE modules.ink
 
 // ガッレリアの場所のファイル。
 // 観光案内、通常戦、道中交流と会話、デート（告白を除く特別なデートも、地図の出来事がガッレリアにある）。
-// 訪問の流れ：案内 → 観察 → 「回らない願掛け」 → 「券を一枚」 → バトル。観察の後の場面は、終わるたびに観察へ戻り、「進む」で次へ進む。
+// 訪問の流れ：案内 → 観察 → 「回らない願掛け」 → 「券を一枚」 → バトル → 「リナの紋章室」。観察の後の場面は、終わると次の場面か観察へ戻る。
 
 // 観光案内。tourism/catalog.json の guideStoryId がこの knot を指す。
 === galleria_vittorio_emanuele_ii_guide ===
@@ -164,7 +164,7 @@ INCLUDE modules.ink
 
 // 会話「券を一枚」（knot の名前 milano_galleria_ticket_gift）。願掛けを終えた後、同じ観察から「進む」で始まる。
 // 少年の母親が、リナの紋章室の展示券をくれる（くじではなく、子どもの相手をしてくれた人へのお礼。どの選択肢の後でも同じ）。
-// 券はリナの紋章室（galleria_print）で使う。今の版のセーブで願掛けを終えている人は、この会話に会わずに券を持たない（リナの見本と実演の道がある）。
+// 券はバトルの後の「リナの紋章室」（galleria_print）で使う。今の版のセーブで願掛けを終えている人は、この会話に会わずに券を持たない（リナの見本と実演の道がある）。
 === milano_galleria_ticket_gift ===
 # scene: talk
 # at: visit galleria_vittorio_emanuele_ii
@@ -187,43 +187,91 @@ INCLUDE modules.ink
 券の角には、切り込みが一つだけ入っていた。
 -> END
 
-// 道中交流「版の実演、手はポケットに」（knot の名前 galleria_print が交流のID）。
-// 今は、最後の晩餐をガッレリアより先に終えたときだけ起こる：ガッレリアの最初の観察から「進む」でバトルへ向かうとき、「回らない願掛け」に続けて始まる。
-// 条件は『最後の晩餐を終えた』（頭の # when: episode …）。ガッレリアを先に終えると起こらない。
-// ガッレリアのバトルを終えると、ガッレリアは地図の行き先に出なくなる。バトルの画面（結果の画面も）から観察に戻れるが、バトルの途中なので交流は始まらない。
-// シナリオの改稿で見直す（2026-11-08 のユーザー判断）。それまで起こる時は変えない。変えたら、このコメントも直す。
-// 2026-11-13 に 1場面1ファイル・encounters/catalog.json・entry-rules.json からこの場所のファイルへ移した。観察で「進む」を押した後（# priority: after observe）に始まり、終わると観察に戻る。起こる時・順・選択の働き（お金・品物・「また今度」）は前と同じ。
+// 道中交流「リナの紋章室」（knot の名前 galleria_print が交流のID。2026-11-13 の改稿で「券を一枚、手の中へ」（galleria_ticket_press）をまとめた）。
+// ガッレリアの場所（p_galleria）の本筋の後（# priority: +1）：ガッレリアのバトルの結果を閉じた後と、ガッレリアのデートの後に始まる。願掛けを見た後だけ。
+// 券（願掛けの後の会話でもらう）を持っていれば、刷る版を選ぶ：雄牛・屋根・列の少年に譲る（くじの代わりの「候補から選ぶ」。どれも正誤はない）。
+// 券がなければ（今の版のセーブで願掛けを終えた人も）、見本を見るか、4ユーロで実演。どちらの道にも「また今度」があり、同じ場所の後の時点（デートの後）にまた会える。
+// リナの出店はゲームの中の作り物（本文で実在の店と思わせない）。雄牛がトリノの紋章であること、屋根が鉄とガラスであることは scenes/catalog.json の出典。
+// バトルの直後でもデートの後でも読めるように、直前の出来事を前提にしない。
 === galleria_print ===
 # scene: encounter
-# title: 版の実演、手はポケットに
-# at: visit galleria_vittorio_emanuele_ii
-# priority: after observe
-# when: episode milano_last_supper_episode
+# title: リナの紋章室
+# at: place p_galleria
+# priority: +1
+# when: seen galleria_fortune
+# person: milano_rina
 # background: milano_galleria
 # speaker: narrator
-ガッレリアで架空の出店「リナの紋章室」が、小さな手回しプレスを見せている。紙をめくると雄牛が現れ、子どもの列から鼻息の真似が返った。
+柱の陰に、折り畳みの台が一つ。手回しのプレス機の横で、刷り上がった紙が洗濯ばさみに吊られて揺れている。
 # speaker: milano_rina
-見本はそこに。実演一回は四ユーロ。紙が出るまで、私が何を刷ったか当てた顔をしないでね
+# cutin: name
+紋章室へようこそ。部屋って言っても、この台一つだけどね
+# speaker: narrator
+吊られた一枚は、床のモザイクと同じ雄牛だった。
+# speaker: milano_rina
+床の雄牛は、トリノの紋章。ミラノの真ん中に、よその街の牛がいる。私はそういう物を刷るのが好きなの
+{ cond("item galleria_ticket held"):
+    # speaker: milano_rina
+    その券、使う？　切り込みを入れる代わりに、好きな版で一枚刷ってあげる
+    # speaker: narrator
+    もう一枚の版には、細い線が格子に組まれていた。ガラスの面を、鉄の骨が区切っている。頭の上の屋根と同じ形だ。
+    # speaker: heroine
+    わたしなら屋根かな。床ばっかり見てたから、上のあの線に気づくの、遅くなっちゃった
+    # speaker: narrator
+    台の端に、雄牛の前で靴を脱いでいた少年がいた。券を持たずに、列の一番後ろでつま先立ちしている。
+- else:
+    # speaker: milano_rina
+    見本はただ。実演は一回四ユーロ。紙が出るまで、私が何を刷ったか当てた顔をしないでね
+}
+
+* [The bull, please. # option: bull # translation: 雄牛でお願いします。]
+    # use: galleria_ticket
+    # speaker: narrator
+    ハンドルを半回転。紙をはがすと、雄牛の腹がいちばん濃く出ていた。
+    # speaker: heroine
+    床では踏まれてる牛が、紙の上だと胸を張ってる。……うん、こっちも好き
+    -> END
+
+* [The roof, please. # option: roof # translation: 屋根でお願いします。]
+    # use: galleria_ticket
+    # speaker: narrator
+    刷り上がった紙の上で、細い線が交差していた。リナが光にかざすと、線の間だけが白く抜ける。
+    # speaker: heroine
+    # emotion: happy
+    わたしの言ったの、聞いてたんだ。……これなら、見上げなくても持って帰れるね
+    -> END
+
+* [Let the boy print his own. # option: boy # translation: あの子に自分で刷らせてあげて。]
+    # give: galleria_ticket milano_galleria_boy
+    # speaker: narrator
+    少年は券を両手で受け取り、ハンドルに体ごとぶら下がった。出てきた雄牛は、角が片方かすれていた。
+    # speaker: milano_galleria_boy
+    これ、僕の。一回しか回してないから
+    # speaker: heroine
+    わたしも一枚ほしかったけど……あの顔は、刷っても出ないもんね
+    -> END
+
+* [Can we look at the sample? # option: sample # translation: 見本を見てもいい？]
+    # requires: not item galleria_ticket held
+    # speaker: narrator
+    見本には同じ牛が三頭並ぶ。端の一頭だけに、リナの指の跡がついていた。
+    # speaker: milano_rina
+    それ、いちばん先に売れかけたの。私の指をどこに飾る気か、ちょっと聞きたかった
+    # speaker: heroine
+    わたしも、その一頭から見ました
+    -> END
 
 * [Show us a fresh print, please. # option: pay # translation: 刷りたてを見せてください。]
+    # requires: not item galleria_ticket held
     # money: -4
     # speaker: narrator
     リナは版に薄く色を引いた。出てきた牛の片角だけ、インクが足りない。
     # speaker: milano_rina
     角がないのも一回のうち。二度目は請求しないよ
     # speaker: narrator
-    二枚目の牛にはちゃんと角があった。
+    二枚目の牛には、ちゃんと角があった。
     # speaker: heroine
     二頭目を見ると、一頭目がかわいくなってきた
-    -> END
-
-* [Can we look at the sample? # option: sample # translation: 見本を見てもいい？]
-    # speaker: narrator
-    見本には同じ牛が三つ並ぶ。端の一頭だけにリナの指紋がついていた。
-    # speaker: milano_rina
-    それ、いちばん先に売れかけたの。私の指をどこに飾る気か、ちょっと聞きたかった
-    # speaker: heroine
-    私も、そっちから見ました
     -> END
 
 * [We'll come back another time. # option: leave # translation: また別のときに来ます。]
@@ -232,51 +280,6 @@ INCLUDE modules.ink
     リナは手の甲で挨拶した。掌は真っ青だった。
     # speaker: heroine
     あれで握手してたら、立派なお土産ができてたね
-    -> END
-
-// 道中交流「券を一枚、手の中へ」（knot の名前 galleria_ticket_press が交流のID）。
-// 今は起こらない：後回しにする選択肢（option: later）以外は展示券が要る。展示券は「回らない願掛け」のクイズの当たりでしか手に入らず、そのクイズが今は起こらないため。
-// 頭の # when: の条件は『最後の晩餐を終えた』（episode …）。
-// シナリオの改稿で見直す（2026-11-08 のユーザー判断）。それまで起こる時は変えない。変えたら、このコメントも直す。
-// 2026-11-13 に 1場面1ファイル・encounters/catalog.json・entry-rules.json からこの場所のファイルへ移した。観察で「進む」を押した後（# priority: after observe）に始まり、終わると観察に戻る。起こる時・順・選択の働き（お金・品物・「また今度」）は前と同じ。
-// 頭の # when: item galleria_ticket held は、前のカタログの決まり（「また今度」のほかの選択肢がみな品物を要るとき、その品物がなければ始まらない）を書いたもの。
-=== galleria_ticket_press ===
-# scene: encounter
-# title: 券を一枚、手の中へ
-# at: visit galleria_vittorio_emanuele_ii
-# priority: after observe
-# when: episode milano_last_supper_episode
-# when: item galleria_ticket held
-# background: milano_galleria
-# speaker: narrator
-ガッレリアの架空の出店「リナの紋章室」。リナは展示券を光にかざし、券の角の切れ込みを親指で確かめた。
-# speaker: milano_rina
-これ、当たりの人用。今日は押す係も頼めるよ。ふちを押さえるか、持ち手を握るか
-
-* [I'll turn the handle. # option: press # translation: 私がハンドルを回します。]
-    # use: galleria_ticket
-    # speaker: narrator
-    半回転で腕が重くなった。紙を持ち上げると、雄牛の腹がいちばん濃い。
-    # speaker: heroine
-    そのへんで頑張ったの、見てて知ってた
-    -> END
-
-* [Please make one for us. # option: watch # translation: 一枚、刷ってください。]
-    # use: galleria_ticket
-    # speaker: narrator
-    リナが版を押し、彼女がそっと紙をはがした。
-    # speaker: milano_rina
-    そこが一番いい役。譲ったの、ちゃんと覚えといて
-    # speaker: heroine
-    はい。はがすときの音まで、たぶん覚えてます
-    -> END
-
-* [I'll keep my ticket for later. # option: later # translation: 券はまた今度使います。]
-    # later
-    # speaker: narrator
-    リナは切れ込みに指を置いたまま、券をそのまま返した。
-    # speaker: milano_rina
-    まだ切ってない。またおいで
     -> END
 
 // デート（本筋）。romance/date_catalog.json の milano_invitation_01 の storyId がこの knot を指す。
