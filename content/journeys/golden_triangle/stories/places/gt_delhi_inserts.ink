@@ -17,6 +17,7 @@ INCLUDE modules.ink
 別れぎわ、モヌが刷り上がった写真を、もう一枚頼んでくれた。一枚は村へ。もう一枚は、こちらへ。
 # speaker: heroine
 # emotion: smile
+# voice: gt_delhi_date_india_gate_print_001
 十四人。旅のアルバムに、知らない親戚が増えちゃった
 -> END
 
@@ -45,6 +46,7 @@ INCLUDE modules.ink
 先生は、インド門とか、赤い城とかって書いてほしいの。でも、わたしの好きな場所は、地下鉄の女性車両
 # speaker: heroine
 # reaction: heroine,surprised,question
+# voice: gt_delhi_hotel_homework_001
 女性車両？　地下鉄の？
 # speaker: enemy
 先頭の車両。女の人しか乗れないの。学校の行き帰りに、おばさんと乗るんだ。みんなしゃべって、笑って、お菓子を分けてくれる人もいて、床に座って宿題する子もいて
@@ -57,6 +59,7 @@ INCLUDE modules.ink
     でも、点が低かったら？
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_hotel_homework_002
     低くても、ルーヒーさんの好きな場所は変わらないよ。先生が知らない場所を教えてあげるの、ちょっと気持ちよくない？
     # speaker: enemy
     ……気持ちいいかも
@@ -66,6 +69,7 @@ INCLUDE modules.ink
     # speaker: narrator
     ルーヒーは消しゴムで「女性車両」を消しはじめた。彼女が、その手元を少し寂しそうに見ていた。
     # speaker: heroine
+    # voice: gt_delhi_hotel_homework_003
     ねえ。インド門のを出して、女性車両のは、自分用に書いておくのはどう？　誰にも見せない作文も、あっていいと思う
 * [「どうして、そこが好きなの？」 # option: ask_why_metro]
     # rel: affection +1
@@ -76,17 +80,21 @@ INCLUDE modules.ink
     女性車両だと、わたしも、ただの乗客の一人。……それが好き。変？
     # speaker: heroine
     # reaction: heroine,surprised,sparkle
+    # voice: gt_delhi_hotel_homework_004
     変じゃない。全然。そっか、それ、すごくよく分かる
 -
 # speaker: heroine
 # emotion: smile
+# voice: gt_delhi_hotel_homework_005
 わたしもね、小学生のとき、『好きな場所』の作文に、近所のコインランドリーって書いたの。回ってる洗濯物を見てると、落ち着くから
 # speaker: heroine
 # reaction: heroine,teasing,music
+# voice: gt_delhi_hotel_homework_006
 先生、すごく困った顔してた。でも、あの作文が、今でもいちばん好き
 # speaker: enemy
 コインランドリー……。日本の子って、変
 # speaker: heroine
+# voice: gt_delhi_hotel_homework_007
 うん。お互いさまだね
 -> END
 
@@ -108,10 +116,12 @@ INCLUDE modules.ink
 隣の部屋の扉が、そっと開いた。パーカーのフードをかぶった彼女が、顔だけ出す。
 # speaker: heroine
 # reaction: heroine,exasperated,sigh
+# voice: gt_delhi_hotel_sick_night_player_001
 やっぱり。扉の音が、三回したから。最後の一個でしょ
 # speaker: narrator
 彼女は小さなポーチを持って出てきた。中には、薬、絆創膏、使い捨てのカイロ、粉の袋が、きっちり並んでいる。
 # speaker: heroine
+# voice: gt_delhi_hotel_sick_night_player_002
 心配性だから、全部持ってきたの。笑っていいよ。でも、今日は役に立つでしょ
 # speaker: narrator
 彼女は粉を水のボトルに入れて振った。脱水を防ぐための、塩と砂糖の粉だという。
@@ -119,26 +129,32 @@ INCLUDE modules.ink
     # rel: trust -1
     # speaker: heroine
     # emotion: serious
+    # voice: gt_delhi_hotel_sick_night_player_003
     大丈夫な人は、二時に廊下にいないよ
     # speaker: heroine
+    # voice: gt_delhi_hotel_sick_night_player_004
     起こしたくなかったのは、分かる。でも、わたしだって、たまには頼られたい。……これ飲むまでは、戻らないから
 * [「……ちょっとだけ、いてくれる？」 # option: stay_a_little]
     # rel: affection +1, trust +1
     # speaker: heroine
     # reaction: heroine,surprised,blush
+    # voice: gt_delhi_hotel_sick_night_player_005
     えっ。……うん。言ってくれて、うれしい
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_hotel_sick_night_player_006
     いつも、わたしが聞いてもらう方だから。今日は逆だね
 * [「次は勝つ」 # option: next_time_i_win]
     # rel: spark +1
     # speaker: heroine
     # reaction: heroine,teasing_big,music
+    # voice: gt_delhi_hotel_sick_night_player_007
     勝負してたの？　もう、ふふっ。夜中なのに、笑わせないでよ
 -
 # speaker: narrator
 ボトルを受け取って飲むと、塩の薄いスポーツドリンクのような味がした。彼女は長椅子の端に座り、壁に頭をもたせかける。
 # speaker: heroine
+# voice: gt_delhi_hotel_sick_night_player_008
 屋台のおじさん、明日もあそこで、誰かのお腹を壊してるのかな
 # speaker: narrator
 # photo: gt_album_d40 # photo_caption: 夜中二時の廊下、看病の人が先に眠る
@@ -172,12 +188,15 @@ INCLUDE modules.ink
 廊下に出ると、彼女が長椅子で膝を抱えていた。顔が白い。
 # speaker: heroine
 # emotion: worried
+# voice: gt_delhi_hotel_sick_night_heroine_001
 ……起こしちゃった。ごめん。大丈夫、大丈夫だから
 # speaker: heroine
+# voice: gt_delhi_hotel_sick_night_heroine_002
 最後の一個、自分で食べたいって言ったんだもん。自業自得。屋台のおじさんが、すごくうれしそうだったから、断れなくて
 * [黙って隣に座る # option: sit_beside]
     # rel: affection +1
     # speaker: heroine
+    # voice: gt_delhi_hotel_sick_night_heroine_003
     ……いいって言ったのに
     # speaker: narrator
     # stand: close
@@ -185,23 +204,28 @@ INCLUDE modules.ink
 * [「大丈夫なら、戻るよ」 # option: take_her_word]
     # rel: trust +1
     # speaker: heroine
+    # voice: gt_delhi_hotel_sick_night_heroine_004
     ……うん
     # speaker: narrator
     背を向けかけたところで、袖を引かれた。
     # speaker: heroine
     # reaction: heroine,shy_deep,blush
+    # voice: gt_delhi_hotel_sick_night_heroine_005
     待って。……やっぱり、いて。大丈夫じゃない。ちゃんと言うの、まだ下手だね、わたし
 * [「宿の台所で、お湯をもらってくる」 # option: fetch_hot_water]
     # rel: trust +1
     # speaker: heroine
+    # voice: gt_delhi_hotel_sick_night_heroine_006
     夜中だよ。起こしたら悪い……って言っても、行くんだよね
     # speaker: heroine
+    # voice: gt_delhi_hotel_sick_night_heroine_007
     じゃあ、わたしの青いポーチも持ってきて。粉の袋が入ってる。心配性で持ってきたのが、自分に効くとは思わなかった
 -
 # speaker: narrator
 # photo: gt_album_d41 # photo_caption: 最後の一個を譲った夜
 天井の扇風機が、ゆっくり回っている。彼女は膝にあごをのせて、小さく息を吐いた。
 # speaker: heroine
+# voice: gt_delhi_hotel_sick_night_heroine_008
 お腹いっぱいって、言えばよかった。バスって、言えればよかった。……今度は、言う。屋台でも、ほかの所でも
 -> END
 
@@ -255,15 +279,18 @@ INCLUDE modules.ink
     彼女が鍋を受け取り、身振りと片言の英語で、おかみと何か話をつけた。昼まで部屋で寝ていること。夕方に、もう一度お粥をもらうこと。
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_hotel_sick_morning_001
     今日は、わたしが決める日。午前中は休み。異議は受けつけません
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_delhi_hotel_sick_morning_002
     いつも、どこへ行くか決めてもらってるから。たまには、ね
 - else:
     # speaker: narrator
     彼女は毛布にくるまったまま扉にもたれて、親子のやりとりを聞きながら、弱々しく笑っていた。
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_hotel_sick_morning_003
     いいなあ。うちの朝も、こんなふうに、うるさかった。キチュリー、やさしい味がする
 }
 # speaker: narrator
@@ -291,6 +318,7 @@ Agra? Your train is cancelled today.
 アーグラ行きの列車は、今日は運休だという。今朝、決まったのだと。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
+# voice: gt_delhi_depart_scam_001
 えっ、運休？
 # speaker: gt_delhi_scam_young_man
 外国の方の振り替えは、観光客の窓口でしかできません。でも、駅の中の窓口は、今日は工事で閉まっています。臨時の窓口が、道の向かいに。歩いて五分です
@@ -300,6 +328,7 @@ Agra? Your train is cancelled today.
 アーグラ？　運休、運休。早く向かいの窓口へ。代わりの席が、なくなるよ
 # speaker: heroine
 # emotion: worried
+# voice: gt_delhi_depart_scam_002
 二人とも、同じこと言ってる……。わざわざ教えてくれたんだし、話だけでも、聞いてみる？
 * [「話を聞くだけなら」と、ついて行く # option: just_listen]
     -> across_the_road
@@ -318,6 +347,7 @@ Agra? Your train is cancelled today.
     アプリは古い情報です。今朝決まったことは、まだ載りません
     # speaker: heroine
     # emotion: worried
+    # voice: gt_delhi_depart_scam_003
     でも……もし本当だったら。乗り遅れたら、アーグラの宿も、全部ずれちゃう
     -> across_the_road
 
@@ -344,6 +374,7 @@ Agra? Your train is cancelled today.
 # reaction: heroine,surprised_big,sweat
 # shake: window
 # se: impact_thud
+# voice: gt_delhi_depart_scam_004
 この値段！？
 # speaker: narrator
 男は分厚いノートを机に置いた。ここで旅を決めた人たちの感想だという。開くと、日本語がびっしり並んでいた。
@@ -373,15 +404,19 @@ Agra? Your train is cancelled today.
 # speaker: heroine
 # emotion: serious
 # pause: 600
+# voice: gt_delhi_depart_scam_005
 ……これ、全部、同じ人の字だよ
 # speaker: heroine
+# voice: gt_delhi_depart_scam_006
 『と』の書き順が、全部同じ癖。インクも、三年分なのに、全部同じ青。……日本人が書いた日本語じゃない、と思う
 {
 - cond("flag gt_delhi_scam_checked"):
     # speaker: heroine
+    # voice: gt_delhi_depart_scam_007
     それに、さっきのアプリ、『定刻』って出てた。古いのは、たぶん、こっちの話の方
 - cond("flag gt_delhi_scam_doubted"):
     # speaker: heroine
+    # voice: gt_delhi_depart_scam_008
     掲示板を見ようって言われたとき、すごく急がせたよね。見られたら、困るみたいに
 }
 # speaker: narrator
@@ -390,14 +425,17 @@ Agra? Your train is cancelled today.
 # speaker: heroine
 # photo: gt_album_d84 # photo_caption: 偽の案内所で「No, thank you.」
 # size: large
+# voice: gt_delhi_depart_scam_009
 No, thank you.
 # speaker: narrator
 はっきりした英語だった。それから、こちらにも聞こえるように、日本語で言い直す。
 # speaker: heroine
+# voice: gt_delhi_depart_scam_010
 けっこうです。自分で、確かめます
 # speaker: gt_delhi_scam_suit_man
 列車に乗り遅れますよ。後で泣いても、知りません
 # speaker: heroine
+# voice: gt_delhi_depart_scam_011
 それなら、自分で確かめて、乗り遅れます
 { cond("flag gt_delhi_scam_paid"):
     # speaker: narrator
@@ -408,6 +446,7 @@ No, thank you.
     机の向こうで、引き出しはもう鍵がかかっていた。
     # speaker: heroine
     # emotion: serious
+    # voice: gt_delhi_depart_scam_012
     ……行こう。取り返すより、電車。ここで揉めて、もっと何かなくすのは嫌
 }
 # background: gt_bg_delhi_station_front
@@ -425,32 +464,39 @@ No, thank you.
 # speaker: narrator
 ホームのベンチに座りこむと、彼女は大きく息を吐いた。手が、少し震えていた。
 # speaker: heroine
+# voice: gt_delhi_depart_scam_013
 親切だと思ったのが、全部、お芝居だった。名札も、ベストも、電話の声も。……悔しい。最初に、ついて行こうって言ったの、わたしだから
 # speaker: heroine
 # emotion: serious
+# voice: gt_delhi_depart_scam_014
 でも、教えてくれた荷運びの人も、検札の人も、本物だった。宿のご主人も、ルーヒーさんも。……疑うのは疲れるけど、全部を疑うようには、なりたくないな
 { cond("flag gt_delhi_scam_paid"):
     # speaker: heroine
+    # voice: gt_delhi_depart_scam_015
     手付金は、高い授業料だったね。……ううん、やっぱり悔しい。でも、払ったのは一人のせいじゃないよ。二人で、あの部屋まで行ったんだから
 }
 { cond("flag gt_delhi_said_bas"):
     # speaker: heroine
     # reaction: heroine,exasperated,sigh
+    # voice: gt_delhi_depart_scam_016
     ノー・サンキューって、ゴルガッパの『バス』より、ずっと言いにくかった
 }
 * [「よく気づいたね」 # option: well_spotted]
     # rel: trust +1
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_depart_scam_017
     字を見るの、好きだから。手書きの看板とか、メニューとか。好きなことが、役に立った
 * [「もっと早く止めればよかった」 # option: should_have_stopped]
     # rel: affection +1
     # speaker: heroine
+    # voice: gt_delhi_depart_scam_018
     ううん。一人で全部背負わないで。止められなかったのは、わたしも同じ。次は、二人で、先に掲示板を見よう
 * [「次からは、知らない人の話と掲示板、半分ずつ信じよう」 # option: half_and_half]
     # rel: spark +1
     # speaker: heroine
     # reaction: heroine,teasing,music
+    # voice: gt_delhi_depart_scam_019
     半分ずつ、いいね。全部疑うのも、全部信じるのも、嫌だもん
 - -> END
 
@@ -467,6 +513,7 @@ No, thank you.
 昔は「クーリー」と呼ばれた彼らは、今は「サハーヤク」――助ける人、という名前に変わっている。
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
+# voice: gt_delhi_depart_station_001
 見て、頭の上に三つ！　しかも走ってる。あれ、首、どうなってるんだろう
 { cond("seen gt_delhi_hotel_homework"):
     -> roohi_news
@@ -483,6 +530,7 @@ No, thank you.
     作文、先生がクラスで読み上げたそうです。点は、まあまあ。でも本人は大喜びで。女性車両の子たちが、拍手してくれたとか
     # speaker: heroine
     # reaction: heroine,happy,sparkle
+    # voice: gt_delhi_depart_station_002
     よかった！　まあまあの点で、大喜び。それ、いちばんいい成績だと思います
 - else:
     # speaker: gt_delhi_hotel_owner
@@ -490,6 +538,7 @@ No, thank you.
     インド門の作文、満点だったそうです。……それと、家で、もう一つ書いていました。女性車両のを。誰にも見せないそうです。親にも
     # speaker: heroine
     # emotion: smile
+    # voice: gt_delhi_depart_station_003
     そっか。書いたんだ。ふふ、よかった
 }
 # speaker: narrator
@@ -499,6 +548,7 @@ No, thank you.
 追伸。駅前で、運休だと言われても、信じないように。毎年、うちのお客さんの誰かが引っかかるので
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
+# voice: gt_delhi_depart_station_004
 ……一時間、遅かった
 -> messages
 
@@ -516,6 +566,7 @@ No, thank you.
     それから、メヘルにも申告があるそうだ。今夜、カビールという青年が夕食に来る。……わしは、何も知らなかったことにしておく
     # speaker: heroine
     # reaction: heroine,happy,heart
+    # voice: gt_delhi_depart_station_005
     二人とも、自分の口で言えたんだ。叔父さんが先に言ったから、メヘルさんも言えたのかな
 - cond("flag gt_delhi_suresh_kept_secret"):
     # speaker: narrator
@@ -525,11 +576,13 @@ No, thank you.
     この写真には、誰も写っていない
     # speaker: heroine
     # reaction: heroine,teasing_big,music
+    # voice: gt_delhi_depart_station_006
     ふふっ。顔は隠れてるのに、誰だかすぐ分かる
 }
 # speaker: narrator
 # se: old_bell
 発車のベルが鳴った。窓の外を、赤いシャツが一つ、また一つと流れていく。
 # speaker: heroine
+# voice: gt_delhi_depart_station_007
 デリーって、最初は押しの強い町だと思ってた。押されてるうちに、こっちも、ちょっとだけ押し返せるようになった気がする
 -> END
