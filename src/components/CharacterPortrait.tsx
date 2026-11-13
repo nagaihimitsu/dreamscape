@@ -1,24 +1,39 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
-import characterData from "../content/generated/content/presentation/characters.json";
-import {
-  battleCharacterId,
-  characterCatalogSchema,
-  characterImage,
-  characterPlacement,
-  resolveCharacterCostume,
-} from "../content/character-assets";
+import { characterImage, characterPlacement, resolveCharacterCostume } from "../content/character-assets";
 import type { StandPosition } from "../content/tags";
+import { loadPicture, pictureReady } from "../media/preload";
+import { characterCatalog as catalog } from "./character-catalog";
 import type { PortraitFocus } from "./scene-stage";
 import { portraitBreath } from "./scene-atmosphere";
 import "./character-portrait.css";
 
-const catalog = characterCatalogSchema.parse(characterData);
 const characters = catalog.characters;
 
-/** Artwork assignment lives outside the battle data and does not affect saves. */
-export function characterForBattle(battleId: string): string {
-  return battleCharacterId(catalog.battleCharacters, battleId);
+export { characterForBattle } from "./character-catalog";
+
+/**
+ * The picture a standing portrait shows for `path` (2026-11-13): a new expression waits, unseen, until it has loaded and
+ * been decoded (src/media/preload.ts loadPicture) while the last one stays, so the figure never vanishes while the next
+ * picture loads on a slow network; one loaded ahead (pictureReady) and the portrait's first picture show at once. One
+ * that cannot load is shown all the same (CharacterImage then falls back to the neutral face).
+ */
+function useArrivedPicture(path: string | null): string | null {
+  const [shown, setShown] = useState(path);
+  const now = path !== shown && (path === null || shown === null || pictureReady(path));
+  if (now) setShown(path);
+  useEffect(() => {
+    if (path === shown || path === null) return;
+    let live = true;
+    const arrive = () => {
+      if (live) setShown(path);
+    };
+    loadPicture(path).then(arrive, arrive);
+    return () => {
+      live = false;
+    };
+  }, [path, shown]);
+  return now ? path : shown;
 }
 
 /** A decorative layer. Position and image are independent of the Ink story, but for a scene's `# stand:` (written by its writer). */
@@ -51,9 +66,11 @@ export function CharacterPortrait({
       : {},
     [character, sceneId, cityId, countryId, regionId, costume, pose],
   );
+  const image = character ? characterImage(character, { ...selection, emotion }) : null;
+  // A new expression stays unseen until it has loaded, the last one on show meanwhile.
+  const shown = useArrivedPicture(image);
   if (!character) return null;
   const placement = characterPlacement(character, selection);
-  const image = characterImage(character, { ...selection, emotion });
   const neutral = characterImage(character, { ...selection, emotion: "neutral" });
   return (
     <div className={`vn-character${focus ? ` is-${focus}` : ""}`} data-stand={stand} aria-hidden="true" style={{
@@ -63,8 +80,8 @@ export function CharacterPortrait({
       ...(character.figureScale !== undefined ? { "--figure-scale": character.figureScale } as CSSProperties : {}),
     }}>
       <CharacterImage
-        key={image ?? "placeholder"}
-        path={image}
+        key={shown ?? "placeholder"}
+        path={shown}
         neutralPath={neutral}
         color={character.placeholderColor}
         fallback={fallback}
@@ -145,7 +162,8 @@ function CharacterImage({ path, neutralPath, color, fallback, onImageError, brea
   });
   const candidate = [path, neutralPath].find((item) => item && !failedPaths.includes(item));
   if (candidate) return (
-    <img src={`${import.meta.env.BASE_URL}${candidate}`} alt="" style={breath} onError={() => {
+    // A figure on stage is what the scene is about: fetched before the music and the ambience streaming meanwhile.
+    <img src={`${import.meta.env.BASE_URL}${candidate}`} alt="" fetchPriority="high" style={breath} onError={() => {
       onImageError?.(candidate);
       setFailedPaths((failed) => [...failed, candidate]);
     }} />

@@ -40,6 +40,7 @@ import { CanalScene } from "../components/CanalScene";
 import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
 import { useVoiceRate, useVoiceSettings } from "../components/useVoice";
+import { usePreloadAhead } from "../media/preload-ahead";
 import { effectiveVoiceRate } from "../audio/voice-rate";
 import { holdSceneCues, playCue, playSe, useSoundEffectSettings } from "../audio/sound-effects";
 import { canVibrate, useVibrationSetting, vibrate } from "../audio/vibration";
@@ -266,6 +267,9 @@ export function GameApp({
     if (change) setShownChange({ scene: changeScreenKey(next), change });
   });
   const { game, loaded, invalid, notice, setNotice, commit, getCurrent, save } = session;
+  // The background loading (src/media/preload-ahead.ts): after each saved change, the pictures and voices of the lines
+  // ahead; on the title, the new journey's arrival; nothing while the opening movie streams.
+  usePreloadAhead(game, journeyId, !!opening);
   // A game opened on its save (the page's start, a journey switch) shows its scene as it was: the scene's cues (a line's
   // phone, a city's title...) wait for the player's first action, as after 「ロード」 (loadSavedGame).
   useLayoutEffect(() => {

@@ -164,7 +164,8 @@ function BackgroundArtwork({ path, position, onArrive }: Artwork & { onArrive?: 
     return () => window.clearTimeout(timer);
   }, [entering, loaded, failed]);
   if (failed) return null;
-  return <img className="scene-artwork" src={`${import.meta.env.BASE_URL}${path}`} alt=""
+  // The scene's picture is what the screen is about (fetched before the music and the ambience streaming meanwhile).
+  return <img className="scene-artwork" src={`${import.meta.env.BASE_URL}${path}`} alt="" decoding="async" fetchPriority="high"
     data-entering={entering || undefined} data-loaded={loaded || undefined}
     onLoad={() => setLoaded(true)} onError={() => setFailed(true)}
     style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: position ? `${position.x}% ${position.y}%` : "center" }} />;
