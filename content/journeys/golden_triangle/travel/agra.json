@@ -6753,7 +6753,7 @@
       "category": "date",
       "titleJa": "アクバル廟で過ごす",
       "activityMinutes": 80,
-      "apCost": 2,
+      "apCost": 6,
       "admissionCost": 620
     },
     {
@@ -6763,7 +6763,7 @@
       "category": "date",
       "titleJa": "ラム・バーグで過ごす",
       "activityMinutes": 60,
-      "apCost": 2,
+      "apCost": 4,
       "admissionCost": 600
     },
     {
@@ -6783,7 +6783,7 @@
       "category": "date",
       "titleJa": "マリアム・ウッザマーニー廟で過ごす",
       "activityMinutes": 50,
-      "apCost": 2,
+      "apCost": 6,
       "admissionCost": 600
     },
     {
@@ -6793,7 +6793,7 @@
       "category": "date",
       "titleJa": "グル・カ・タールで過ごす",
       "activityMinutes": 55,
-      "apCost": 2,
+      "apCost": 4,
       "admissionCost": 0
     },
     {

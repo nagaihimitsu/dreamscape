@@ -6623,7 +6623,7 @@
       "category": "date",
       "titleJa": "ジャル・マハルで過ごす",
       "activityMinutes": 30,
-      "apCost": 2,
+      "apCost": 4,
       "admissionCost": 0
     },
     {
@@ -6633,7 +6633,7 @@
       "category": "date",
       "titleJa": "ナハルガル城で過ごす",
       "activityMinutes": 90,
-      "apCost": 2,
+      "apCost": 4,
       "admissionCost": 1200
     },
     {
@@ -6653,7 +6653,7 @@
       "category": "date",
       "titleJa": "ジャイガル城で過ごす",
       "activityMinutes": 90,
-      "apCost": 2,
+      "apCost": 6,
       "admissionCost": 1000
     },
     {
@@ -6673,7 +6673,7 @@
       "category": "date",
       "titleJa": "パンナ・ミーナー・クンドで過ごす",
       "activityMinutes": 45,
-      "apCost": 2,
+      "apCost": 6,
       "admissionCost": 0
     },
     {
