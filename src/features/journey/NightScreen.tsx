@@ -11,9 +11,12 @@ import { hasNightRecap, nightRecap, todayWord, type NightRecap, type TodayWord }
 import { NightRecapView, TodayWordLine } from "./NightRecap";
 import "./night-rest.css";
 
-/** How long 「ホテルで休みました。」 shows before the night screen has faded to the morning (ms); reduced motion: still. */
+/**
+ * How long 「ホテルで休みました。」 shows before the night screen has faded to the morning (ms); reduced motion: still, a
+ * little shorter (2026-11-13: no fade to wait for; the night's route and word were on the screen before it).
+ */
 const NIGHT_LEAVING_MS = 2000;
-const NIGHT_LEAVING_REDUCED_MS = 2000;
+const NIGHT_LEAVING_REDUCED_MS = 1400;
 
 /** A button of the night screen: a night action, or the rest. */
 export type NightButton = { kind: NightAction | "rest"; label: string };
@@ -78,7 +81,7 @@ export function NightScreen({ game, buttons, reduceMotion, onAction, onBookTour,
  * 「ホテルで休みました。」 and its buttons gone from sight (their room kept, so nothing moves; its route and line are the night's,
  * given by useTravelEffects), over the next morning, until it has
  * faded to it (2 s; a tap or Enter, Space or Esc ends it at once). With reduced motion it does not fade: the line shows plainly
- * until a tap or 2 s. Inside the app shell (not a portal), so it lies under the header as the night screen does.
+ * until a tap or 1.4 s. Inside the app shell (not a portal), so it lies under the header as the night screen does.
  */
 export function NightLeaving({ buttons, recap, word = null, reduceMotion, onEnd }: {
   buttons: readonly NightButton[];
