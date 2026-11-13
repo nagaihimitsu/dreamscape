@@ -8,10 +8,9 @@ import { voiceIdOf } from "../src/content/voice-files";
 import { soundIdOf } from "../src/content/sounds";
 import { trackIdOf } from "../src/content/music";
 import { ambienceIdOf } from "../src/content/ambience";
-import { imageReferences } from "./content-ownership";
+import { imageReferences, wordUses } from "./content-ownership";
 import { CODE_IMAGE_FILES } from "../src/content/code-images";
 import { displayPath, journeyFileOf, type ContentSources } from "./content-sources";
-import { normalizeWord, wordPattern } from "../src/content/word-meanings";
 import { isObservationOnlyClue } from "../src/content/tourism-schemas";
 
 // What content:build reports besides errors (pure, on the loaded sources):
@@ -258,54 +257,6 @@ export function unprefixedIds(sources: ContentSources): ContentWarning[] {
     warnings.push({ kind: "id-prefix", message: `ID without the journey prefix: ${definition.where} "${definition.id}" (${convention})` });
   }
   return warnings;
-}
-
-/**
- * The English an encounter story shows as choices: the text of each Ink
- * choice line (`* [Could you play one note? # option: ask]`) without its
- * label, conditions, tags and divert. Narration and tags are Japanese or IDs.
- */
-function inkChoiceTexts(source: string): string[] {
-  return source.split("\n").flatMap((line) => {
-    const choice = /^\s*[*+][\s*+]*(.*)$/u.exec(line);
-    return choice ? [choice[1].replace(/^\([^)]*\)/u, "").replaceAll(/\{[^}]*\}/gu, "").split("#")[0].split("->")[0].replaceAll(/[[\]]/gu, "")] : [];
-  });
-}
-
-/**
- * Each word (normalized like the game's word lookup) of the English shown
- * with word meanings, and the layers whose texts use it: questions and options
- * of the quiz files (samples excluded), and of encounters: their quiz, their
- * catalog option texts and the choices of their Ink story.
- */
-export function wordUses(sources: ContentSources): Map<string, Set<string>> {
-  const uses = new Map<string, Set<string>>();
-  const use = (text: unknown, layer: string) => {
-    if (typeof text === "string") for (const word of text.match(wordPattern) ?? []) {
-      const key = normalizeWord(word);
-      uses.set(key, (uses.get(key) ?? new Set()).add(layer));
-    }
-  };
-  const question = (value: unknown, layer: string) => {
-    if (!isObject(value)) return;
-    use(value.questionEn, layer);
-    for (const option of list(value.options)) use(option.textEn, layer);
-  };
-  for (const quiz of sources.quizFiles)
-    if (!quiz.example && isObject(quiz.data)) for (const item of list(quiz.data.questions)) question(item, quiz.layer);
-  const layerOf = (file: string) => sources.layers.find((layer) => layer.type === "journey" && file.startsWith(layer.directory + path.sep))?.id ?? "core";
-  const stories = new Map(sources.storyFiles.map((story) => [story.id, story]));
-  const encounters = sources.catalogs["encounters/catalog.json"];
-  const entries = isObject(encounters?.value) && Array.isArray(encounters.value.encounters) ? encounters.value.encounters : [];
-  entries.forEach((encounter: unknown, index: number) => {
-    if (!isObject(encounter)) return;
-    const layer = layerOf(encounters!.provenance.items.encounters[index]);
-    if (isObject(encounter.quiz)) question(encounter.quiz.question, layer);
-    for (const option of list(encounter.options)) use(option.textEn, layer);
-    const story = typeof encounter.storyId === "string" ? stories.get(encounter.storyId) : undefined;
-    if (story) for (const text of inkChoiceTexts(story.source)) use(text, story.layer);
-  });
-  return uses;
 }
 
 /** Words of a word-meanings file that no English text uses. */

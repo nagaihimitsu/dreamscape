@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, onTestFinished } from "vitest";
+import { installRepeatableDate } from "../../tests/fixtures/repeatable-date";
 import { createDebugState } from "../dev/debug-state";
 import { dates } from "../content";
 import {
@@ -95,6 +96,8 @@ describe("open romance progression", () => {
   });
 
   it("requires a new shared date after rejection, while travel and other dates remain available", () => {
+    // The wait after a rejection, on Milan's confession made repeatable for the test (the journey's own is played once).
+    onTestFinished(installRepeatableDate("milano_confession_01"));
     const seed = { ...initial(), romanceStage: 2 as const, affection: 0, trust: 0, spark: 0,
       playedDateIds: ["milano_cafe_01"] };
     let state = play(seed, "milano_confession_01", [0]);
