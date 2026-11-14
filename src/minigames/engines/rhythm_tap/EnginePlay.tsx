@@ -7,7 +7,7 @@ import "./engine.css";
 // (the beats on screen: it plays the same with the sound off; a count-in's beats pass as hollow crosses, not to tap; a
 // rest passes as a hollow bar, not to tap either: a feint's looks like a beat's until shortly before; a big beat's mark
 // is bigger; a partner's stop rides the lane as a flag), the skin's stop button (if any) away from the big tap button at the bottom
-// (a tap on the field and Space or Enter tap too; S stops). The host's clock times it; the engine judges the record as it
+// (a tap on the field and Space or Enter tap too; S stops; both buttons act on pointerdown). The host's clock times it; the engine judges the record as it
 // grows; the skin's rules decide, and the play ends at that moment (end with the record for the ★, the field's hold after
 // it); the host shows the finish and the result card and takes its choice.
 
@@ -221,6 +221,15 @@ export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSki
     const onClickTap = (event: MouseEvent) => {
       if (event.detail === 0) tap(clock.now());
     };
+    // The stop acts on pointerdown too, as the tap does (a click waits for the finger to lift: tens of milliseconds later,
+    // more on a phone, where the stop's moment counts); a click without a pointer (Enter or Space on it, a screen reader's)
+    // presses it then. S presses it from anywhere (onKey).
+    const onStopPointer = (event: PointerEvent) => {
+      if (event.button === 0) stop(clock.at(event.timeStamp));
+    };
+    const onStopClick = (event: MouseEvent) => {
+      if (event.detail === 0) stop(clock.now());
+    };
     const onKey = (event: KeyboardEvent) => {
       const onStop = (event.target as Element | null)?.closest?.("[data-rhythm-stop]");
       if (isStopKey(event) && skin.stop) {
@@ -250,7 +259,7 @@ export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSki
             {auto === null && skin.stop && (
               <button ref={stopButton} type="button" className="mg-rhythm-tap-stop" data-testid="minigame-stop" data-rhythm-stop
                 aria-disabled={idle || undefined} aria-describedby={stopHintId}
-                onClick={(event) => stop(event.detail === 0 ? clock.now() : clock.at(event.timeStamp))}><Palm />{skin.stop.labelJa}</button>
+                onPointerDown={onStopPointer} onClick={onStopClick}><Palm />{skin.stop.labelJa}</button>
             )}
           </div>
           <div className="mg-rhythm-tap-lane" aria-hidden="true">

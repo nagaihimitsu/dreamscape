@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useMiniGameKit } from "../host/kit";
 import type { RhythmTapFieldProps, RhythmTapSkin } from "../engines/rhythm_tap/EnginePlay";
 import { rhythmTapPerfect } from "../engines/rhythm_tap/engine";
-import { GOLGAPPA_GAME, GOLGAPPA_HER_BLUFF, GOLGAPPA_HER_STOP, type GolgappaGame, type GolgappaOutcome, type GolgappaParams } from "./rules";
+import { GOLGAPPA_GAME, GOLGAPPA_HER_BLUFF, GOLGAPPA_HER_STOP, golgappaDetail, type GolgappaGame, type GolgappaOutcome, type GolgappaParams } from "./rules";
 import "./skin.css";
 
 // The golgappa duel's field (a rhythm_tap skin): the stall's counter from the customer's side, her leaf bowl on the left
@@ -36,7 +36,10 @@ const BLUFF_MS = 900;
 const COUNT_FROM = 10;
 const COUNT_MS = 520;
 const COUNT_WORDS = ["", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十"];
-/** Her line as her 13th goes down (the heroine's quick reaction): the next one is her last. */
+/**
+ * Her line as her 13th goes down: the next one is her last. In her bubble beside her face (not the host's reaction in
+ * the corner), where her 「バス！」 takes its place as her hand goes up: one place to watch, never both at once.
+ */
 const HER_NEXT_IS_LAST = "わたし、次でバス";
 /** Her bluff's words beside her face (not a reaction: the field's own), before and after the joke. */
 const BLUFF_WORDS = ["バ……", "バ……なんてね"] as const;
@@ -65,16 +68,14 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
   const yourBeats = tuning.beats;
   const feints = tuning.rests?.at ?? [];
   const gaugeSize = tuning.strayLimit ?? 0;
-  /** Her 13th eaten: she says the next is her last. */
+  /** Her 13th eaten: she says the next is her last (beside her face, until her hand goes up: her 「バス！」 takes its place). */
   const herWarnMs = herLandings[GOLGAPPA_HER_STOP - 2] + numbers.herEatMs;
-  /**
-   * Her 10th eaten, as the onlookers start counting: the sour water gets to her (her face only). Not when it would come
-   * too near her warning for the host to show both (a reaction at most every 1.5 s; Debug's room's edited numbers).
-   */
+  /** Her bluff's bubble ends by her warning at the latest (the same place beside her face; Debug's room's edited numbers). */
+  const bluffEndMs = Math.min(bluffMs + BLUFF_MS, herWarnMs);
+  /** Her 10th eaten, as the onlookers start counting: the sour water gets to her (her face only). */
   const herTenthMs = herLandings[COUNT_FROM - 1] + numbers.herEatMs;
-  const tenthFace = herWarnMs - herTenthMs >= REACT_APART_MS;
-  /** A reaction of her own at `ms` (her laugh at a bitten feint) does not crowd out her warning or her 10th's face. */
-  const freeToReact = (ms: number) => [herWarnMs, ...(tenthFace ? [herTenthMs] : [])].every((at) => Math.abs(at - ms) >= REACT_APART_MS);
+  /** A reaction of her own at `ms` (her laugh at a bitten feint) does not crowd out her 10th's face or her warning. */
+  const freeToReact = (ms: number) => [herWarnMs, herTenthMs].every((at) => Math.abs(at - ms) >= REACT_APART_MS);
 
   function GolgappaField({ cast, art, names, sound, vibrate, frames }: RhythmTapFieldProps<GolgappaParams, GolgappaOutcome>) {
     const hand = useRef<HTMLSpanElement>(null);
@@ -96,6 +97,7 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
     const [choked, setChoked] = useState(false);
     const [feintWord, setFeintWord] = useState<"fooled" | "kept" | null>(null);
     const [bluff, setBluff] = useState<0 | 1 | 2>(0);
+    const [warning, setWarning] = useState(false);
     const kit = useMiniGameKit();
     const live = useRef({ sound, vibrate, kit });
     live.current = { sound, vibrate, kit };
@@ -114,7 +116,6 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
       let feintKind: "fooled" | "kept" = "kept";
       let woundUp = -1;
       let tenth = false;
-      let warned = false;
       let herUp = false;
       let finished = false;
       let chokeAt: number | null = null;
@@ -190,16 +191,13 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
         const herLanded = herLandings.filter((time) => time <= ms).length;
         setHerCount(herLanded);
         setHerBowl(herLanded > 0 && ms - herLandings[herLanded - 1] < numbers.herEatMs && herLanded <= GOLGAPPA_HER_STOP);
-        if (tenthFace && !tenth && ms >= herTenthMs && !over) {
+        if (!tenth && ms >= herTenthMs && !over) {
           tenth = true;
           live.current.kit.react("oops");
         }
-        setBluff(over || ms < bluffMs || ms >= bluffMs + BLUFF_MS ? 0 : ms < bluffMs + BLUFF_TEASE_MS ? 1 : 2);
-        if (!warned && ms >= herWarnMs && !over) {
-          warned = true;
-          live.current.kit.react("tease", HER_NEXT_IS_LAST);
-        }
+        setBluff(over || ms < bluffMs || ms >= bluffEndMs ? 0 : ms < bluffMs + BLUFF_TEASE_MS ? 1 : 2);
         const up = ms >= handMs;
+        setWarning(!over && !up && ms >= herWarnMs);
         if (up && !herUp && !over) {
           live.current.sound(SOUNDS.her);
           juice.burst(herSay.current, "ring", 0.8);
@@ -294,6 +292,7 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
             <Palm />{BLUFF_WORDS[bluff - 1]}
           </span>
         )}
+        {warning && <span className="mg-golgappa-duel-say mg-golgappa-duel-warn" data-testid="golgappa-warn" style={{ left: `${HER.x + 17}%` }}>{HER_NEXT_IS_LAST}</span>}
         <span ref={herSay} className="mg-golgappa-duel-say mg-golgappa-duel-say-her" data-shown={herStopped || undefined} style={{ left: `${HER.x + 17}%` }}>
           <Palm />バス！
         </span>
@@ -316,8 +315,8 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
     partner: { atMs: handMs, flagJa: "バス" },
     restRevealMs: numbers.feintTellMs,
     statusJa: (summary) => (summary.came > 0 ? `${summary.came}個目` : ""),
-    // The card's score (rules.ts golgappaRating) says it all: no line of its own.
-    detailJa: () => undefined,
+    // The card's score (rules.ts golgappaRating), and under it what ★3 asks for when a play with her or past her missed it.
+    detailJa: golgappaDetail,
     // Her hand and the player's 「バス」 (or the cough) stay a moment under the host's finish.
     endDelayMs: (outcome, still) => (still ? 450 : outcome === "choke" ? 1000 : 800),
     Field: GolgappaField,

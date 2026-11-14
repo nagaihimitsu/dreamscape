@@ -13,7 +13,9 @@ import {
 // and so does mashing: a bite at nothing (a stray) fills the choke gauge, a golgappa eaten empties a drop, and a full
 // gauge leaves one in the bowl. After her hand the vendor's climax (a fast run, a second feint, a hold, a last double)
 // has narrower windows and no longer waits: one missed there (or a full gauge) is a choke (the next lands on it):
-// going on past her is a real risk. The player's 「バス」 against her hand decides the rest. Nothing is random. Pure.
+// going on past her is a real risk. Its first one (the player's 15th) lands while the thumb goes to 「バス」 after her
+// hand: a slip there is an ordinary one (round 3 fix, 2026-11-14: stopping with her never chokes for a normal reaction).
+// The player's 「バス」 against her hand decides the rest. Nothing is random. Pure.
 // Every number to tune is in GOLGAPPA_NUMBERS (E1; Debug's room edits them: play.ts retune).
 
 export type GolgappaOutcome = "together" | "you_first" | "choke" | "outlast";
@@ -24,7 +26,10 @@ export type GolgappaParams = object;
 export const GOLGAPPA_HER_STOP = 14;
 /** At her 12th she bluffs: her hand half up, then she thumps her chest and eats on (「十二で、彼女が胸を叩いた」). */
 export const GOLGAPPA_HER_BLUFF = 12;
-/** Raising the hand this many golgappa after her (the player's own count) is still 「同時」. */
+/**
+ * Raising the hand this many golgappa after her (the player's own count) is still 「同時」; so is one more landed but not
+ * eaten yet (the thumb on its way to 「バス」 after her hand: the player has not eaten on past her).
+ */
 export const GOLGAPPA_TOGETHER_AFTER = 1;
 
 /**
@@ -112,9 +117,23 @@ export interface GolgappaGame {
  * right on the landing, and the feints bitten at.
  */
 export function golgappaRating(summary: RhythmTapSummary, outcome: GolgappaOutcome): MiniGameRating {
-  const clean = summary.misses === 0 && summary.overflows === 0 && summary.fooled === 0;
-  const stars = outcome === "choke" || outcome === "you_first" ? 1 : outcome === "outlast" && clean ? 3 : 2;
+  const stars = outcome === "choke" || outcome === "you_first" ? 1 : outcome === "outlast" && golgappaClean(summary) ? 3 : 2;
   return { stars, scoreJa: `${summary.hits}個食べた・ぴったり${summary.perfects}${summary.fooled ? `・つられた${summary.fooled}` : ""}` };
+}
+
+/** Nothing left in the bowl (no miss, no full choke gauge) and no feint bitten at: the clean play ★3 asks for past her. */
+function golgappaClean(summary: RhythmTapSummary): boolean {
+  return summary.misses === 0 && summary.overflows === 0 && summary.fooled === 0;
+}
+
+/**
+ * The card's line under the score: what ★3 asks for, when a play with her or past her did not get it (the story's
+ * default, done perfectly, is ★2: it says why in a few words). None for ★3 or ★1.
+ */
+export function golgappaDetail(summary: RhythmTapSummary, outcome: GolgappaOutcome): string | undefined {
+  if (outcome === "together") return "★3は彼女より長く、残さず・つられずに";
+  if (outcome === "outlast" && !golgappaClean(summary)) return "★3は残さず・つられずに";
+  return undefined;
 }
 
 const all = () => true;
@@ -131,7 +150,11 @@ export function golgappaGame(numbers: GolgappaNumbers = GOLGAPPA_NUMBERS): Golga
     beats,
     earlyMs: numbers.earlyMs,
     lateMs: numbers.lateMs,
-    peak: { from: GOLGAPPA_HER_STOP, earlyMs: numbers.peakEarlyMs, lateMs: numbers.peakLateMs, missLimit: numbers.peakMissLimit },
+    // The climax's one-slip limit from its second beat (the player's 16th): its first lands as the thumb goes to 「バス」.
+    peak: {
+      from: GOLGAPPA_HER_STOP, earlyMs: numbers.peakEarlyMs, lateMs: numbers.peakLateMs, missLimit: numbers.peakMissLimit,
+      limitFrom: GOLGAPPA_HER_STOP + GOLGAPPA_TOGETHER_AFTER,
+    },
     perfect: { earlyMs: numbers.perfectEarlyMs, lateMs: numbers.perfectLateMs },
     endAfterMs: numbers.endAfterMs,
     missLimit: numbers.missLimit,
@@ -150,7 +173,10 @@ export function golgappaGame(numbers: GolgappaNumbers = GOLGAPPA_NUMBERS): Golga
     // Just before her hand (her 14th in her mouth): nobody could tell who was first.
     if (ahead === -1) return (summary.endMs ?? 0) >= handMs - numbers.togetherBeforeMs ? "together" : "you_first";
     if (ahead < 0) return "you_first";
-    return ahead <= GOLGAPPA_TOGETHER_AFTER ? "together" : "outlast";
+    if (ahead <= GOLGAPPA_TOGETHER_AFTER) return "together";
+    // One more has landed, but the player has not eaten it: they stopped eating with her (a slow thumb on its way to
+    // 「バス」). Eaten, they went on past her. (Missed, the climax's limit has choked them before the stop.)
+    return summary.judged[GOLGAPPA_HER_STOP + GOLGAPPA_TOGETHER_AFTER] === "hit" ? "outlast" : "together";
   };
   const fairness = () => {
     const problems = rhythmTapFairness(tuning);

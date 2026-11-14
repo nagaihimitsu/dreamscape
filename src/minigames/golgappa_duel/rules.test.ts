@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { RHYTHM_TAP_BOTS, rhythmTapBotRandom, rhythmTapBotReaction, rhythmTapBotTally, rhythmTapBotTaps } from "../engines/rhythm_tap/bot";
+import { RHYTHM_TAP_BOTS, rhythmTapBotGauss, rhythmTapBotRandom, rhythmTapBotReaction, rhythmTapBotTally, rhythmTapBotTaps } from "../engines/rhythm_tap/bot";
 import { rhythmTapEnd, rhythmTapFairness, rhythmTapJudge, rhythmTapRecordOf, rhythmTapWindow } from "../engines/rhythm_tap/engine";
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { golgappaDuel } from "./definition";
 import {
-  GOLGAPPA_GAME, GOLGAPPA_HER_BLUFF, GOLGAPPA_HER_HAND_MS, GOLGAPPA_HER_STOP, GOLGAPPA_NUMBERS, GOLGAPPA_TUNING, golgappaGame, golgappaRules,
+  GOLGAPPA_GAME, GOLGAPPA_HER_BLUFF, GOLGAPPA_HER_HAND_MS, GOLGAPPA_HER_STOP, GOLGAPPA_NUMBERS, GOLGAPPA_TUNING, golgappaDetail, golgappaGame, golgappaRules,
 } from "./rules";
 
 const { beats } = GOLGAPPA_TUNING;
@@ -68,7 +68,7 @@ describe("the golgappa duel", () => {
     expect(herLandings[GOLGAPPA_HER_STOP - 2] + GOLGAPPA_NUMBERS.herEatMs - bluffMs).toBeGreaterThanOrEqual(500);
   });
 
-  it("raises together from just before her hand until the player's 16th lands, first before that (her bluff's trap), outlasts after it", () => {
+  it("raises together from just before her hand until the player has eaten their 16th, first before that (her bluff's trap), outlasts after it", () => {
     expect(outcome({ hit: all, stopAfter: 14 })).toBe("together");
     expect(outcome({ hit: all, stopAfter: 15 })).toBe("together");
     expect(outcome({ hit: all, stopAfter: 12 })).toBe("you_first");
@@ -85,6 +85,23 @@ describe("the golgappa duel", () => {
     // One left in the bowl does not stop the duel.
     expect(outcome({ hit: (index) => index !== 3, stopAfter: 14 })).toBe("together");
     expect(outcome({ hit: (index) => index !== 3 })).toBe("outlast");
+    // The 16th landed but not eaten yet (the thumb on its way to バス): with her; eaten, past her.
+    const sixteenth = beats[GOLGAPPA_HER_STOP + 1];
+    expect(golgappaRules.outcomeOf({ taps: beats.slice(0, GOLGAPPA_HER_STOP + 1), stopMs: sixteenth + 100 }, {})).toBe("together");
+    expect(golgappaRules.outcomeOf({ taps: beats.slice(0, GOLGAPPA_HER_STOP + 2), stopMs: sixteenth + 100 }, {})).toBe("outlast");
+  });
+
+  it("is with her for a player who stops eating at her hand and reaches for バス (the playtester's +650/+700/+900 ms), not a choke", () => {
+    // All 14 on the landing, the 15th left (the thumb went to バス), バス this long after her hand.
+    const reacted = (afterHand: number) => golgappaRules.outcomeOf({ taps: beats.slice(0, GOLGAPPA_HER_STOP), stopMs: GOLGAPPA_HER_HAND_MS + afterHand }, {});
+    for (const afterHand of [300, 650, 700, 900, 1000]) expect(reacted(afterHand), `hand + ${afterHand} ms`).toBe("together");
+    // Until the 16th's window closes too: then two are in the bowl (the 15th and 16th), a choke.
+    const sixteenthCloses = beats[GOLGAPPA_HER_STOP + 1] + rhythmTapWindow(GOLGAPPA_TUNING, GOLGAPPA_HER_STOP + 1).lateMs;
+    expect(reacted(sixteenthCloses - GOLGAPPA_HER_HAND_MS - 1)).toBe("together");
+    expect(reacted(sixteenthCloses - GOLGAPPA_HER_HAND_MS)).toBe("choke");
+    expect(sixteenthCloses - GOLGAPPA_HER_HAND_MS).toBeGreaterThanOrEqual(1000);
+    // One left from before her hand, and the 15th on it: two in the bowl, a choke (the bowl shows the first).
+    expect(golgappaRules.outcomeOf({ taps: beats.slice(0, GOLGAPPA_HER_STOP).filter((_, index) => index !== 5), stopMs: GOLGAPPA_HER_HAND_MS + 900 }, {})).toBe("choke");
   });
 
   it("chokes on the second one left in the bowl, before any later 「バス」; doing nothing chokes early", () => {
@@ -93,9 +110,12 @@ describe("the golgappa duel", () => {
     expect(outcome({ hit: (index) => index < 5, stopAfter: 6 })).toBe("you_first");
   });
 
-  it("chokes on a single one missed in the climax (the vendor no longer waits), never with her 「バス」 before it", () => {
-    for (let index = GOLGAPPA_HER_STOP; index < beats.length; index += 1)
+  it("chokes on a single one missed in the climax from the 16th (the vendor no longer waits), never with her 「バス」 before it", () => {
+    for (let index = GOLGAPPA_HER_STOP + 1; index < beats.length; index += 1)
       expect(outcome({ hit: (beat) => beat !== index }), `missing the ${index + 1}th`).toBe("choke");
+    // The 15th (the climax's first: it lands as the thumb goes to バス) missed alone is one left, as before her hand.
+    expect(outcome({ hit: (beat) => beat !== GOLGAPPA_HER_STOP })).toBe("outlast");
+    expect(outcome({ hit: (beat) => beat !== GOLGAPPA_HER_STOP && beat !== GOLGAPPA_HER_STOP + 1 })).toBe("choke");
     expect(outcome({ hit: (beat) => beat !== GOLGAPPA_HER_STOP - 1 })).toBe("outlast");
     expect(outcome({ hit: (beat) => beat < GOLGAPPA_HER_STOP, stopAfter: GOLGAPPA_HER_STOP })).toBe("together");
     // Late and a little early on the fast ones (inside the peak's window) is still eaten.
@@ -103,7 +123,7 @@ describe("the golgappa duel", () => {
     expect([earlyMs, lateMs]).toEqual([GOLGAPPA_NUMBERS.peakEarlyMs, GOLGAPPA_NUMBERS.peakLateMs]);
     const edges = beats.map((beat, index) => (index < GOLGAPPA_HER_STOP ? beat : index % 2 ? beat + lateMs : beat - earlyMs));
     expect(golgappaRules.outcomeOf({ taps: edges, stopMs: null }, {})).toBe("outlast");
-    const past = beats.map((beat, index) => (index === GOLGAPPA_HER_STOP ? beat + lateMs + 1 : beat));
+    const past = beats.map((beat, index) => (index === GOLGAPPA_HER_STOP + 1 ? beat + lateMs + 1 : beat));
     expect(golgappaRules.outcomeOf({ taps: past, stopMs: null }, {})).toBe("choke");
   });
 
@@ -135,6 +155,13 @@ describe("the golgappa duel", () => {
     const rate = (record: { taps: readonly number[]; stopMs: number | null }) => golgappaRules.rate!(record, {});
     const plan = (hit: (index: number) => boolean, stopAfter?: number) => rhythmTapRecordOf({ hit, ...(stopAfter === undefined ? {} : { stopAfter }) }, GOLGAPPA_TUNING);
     expect(rate(plan(all, 14))).toEqual({ stars: 2, scoreJa: "14個食べた・ぴったり14" });
+    // The card says why a perfect play with her is ★2 (and what a ★2 play past her missed); nothing under ★3 or ★1.
+    const detail = (record: { taps: readonly number[]; stopMs: number | null }) =>
+      golgappaDetail(rhythmTapJudge(record, GOLGAPPA_TUNING), golgappaRules.outcomeOf(record, {}));
+    expect(detail(plan(all, 14))).toBe("★3は彼女より長く、残さず・つられずに");
+    expect(detail({ taps: [...beats, feints[0]], stopMs: null })).toBe("★3は残さず・つられずに");
+    expect(detail(plan(all))).toBeUndefined();
+    expect(detail(plan(all, 10))).toBeUndefined();
     expect(rate(plan((index) => index !== 3, 14))).toMatchObject({ stars: 2 });
     expect(rate(plan(all))).toEqual({ stars: 3, scoreJa: "20個食べた・ぴったり20" });
     expect(rate(plan((index) => index !== 3))).toMatchObject({ stars: 2 });
@@ -204,5 +231,25 @@ describe("the golgappa duel, played by round 3's bots", () => {
     expect(together.skilled.outcomes.together).toBeGreaterThan(0.9);
     expect(together.careless.outcomes.choke).toBeGreaterThan(0.2);
     for (const id of ["together", "you_first", "choke"]) expect(together.careless.outcomes[id], id).toBeGreaterThan(0);
+  });
+
+  // A player who stops eating once they see her hand (a reaction), then moves the thumb up to 「バス」 (on a short screen
+  // it is at the field's top right: 380 ± 90 ms) and presses it: the 15th lands meanwhile. Before the fix the 15th's miss
+  // choked them from 0.7 s after her hand (far thumb: average together 38 %, choke 49 %).
+  it("saying it with her after reaching for バス: the average player is with her, not choking on the 15th", () => {
+    const reach = (bot: (typeof RHYTHM_TAP_BOTS)[number], seed: number) => {
+      const random = rhythmTapBotRandom(seed);
+      const scene = { beats, rests: feints.map((at) => ({ at, tellMs: GOLGAPPA_NUMBERS.feintTellMs })) };
+      return rhythmTapBotTally(Array.from({ length: PLAYS }, () => {
+        const seen = (random() < bot.lapse * 2 ? bluffMs : GOLGAPPA_HER_HAND_MS) + rhythmTapBotReaction(bot, random);
+        const stopMs = Math.round(seen + Math.max(120, 380 + rhythmTapBotGauss(random) * 90));
+        const record = { taps: rhythmTapBotTaps(scene, bot, random).filter((tap) => tap < seen), stopMs };
+        return { outcome: golgappaRules.outcomeOf(record, {}), stars: golgappaRules.rate!(record, {})?.stars ?? null };
+      }));
+    };
+    const reached = reach(average, 8);
+    expect(reached.outcomes.together).toBeGreaterThan(0.75);
+    expect(reached.outcomes.choke ?? 0).toBeLessThan(0.1);
+    expect(reach(skilled, 9).outcomes.together).toBeGreaterThan(0.9);
   });
 });

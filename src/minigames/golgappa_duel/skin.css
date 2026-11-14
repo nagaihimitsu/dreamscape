@@ -80,12 +80,13 @@
 /* Her bluff's joke: she thumps her chest (a little bob; none with less motion). */
 .minigame-layer:not([data-still]) .mg-golgappa-duel-her[data-thump] { animation: mg-golgappa-duel-bob 180ms ease-out 2; }
 @keyframes mg-golgappa-duel-bob { 50% { transform: translateX(-50%) translateY(2%); } }
-/* The vendor's hand, waiting over the bowl of the next one to drop. */
+/* The vendor's hand, waiting over the bowl of the next one to drop (low enough that a feint's raised, shaking hand stays
+   inside the field on a short screen: 40% of its height up, ±9° and its gold edge). */
 .mg-golgappa-duel-hand {
   position: absolute;
   z-index: 4;
   left: 50%;
-  top: 4%;
+  top: max(4%, 28px);
   height: min(46px, 18%);
   aspect-ratio: 34 / 46;
   border-radius: 40% 40% 45% 45% / 30% 30% 35% 35%;
@@ -226,8 +227,9 @@
 }
 .mg-golgappa-duel-say-her[data-shown] { visibility: visible; animation: mg-golgappa-duel-pop 300ms ease-out both; }
 .mg-golgappa-duel-say svg { width: 22px; height: 22px; fill: var(--ds-marker); }
-/* Her bluff beside her face: a plain bubble (no gold ring), the palm only half up, smaller; then her joke. */
-.mg-golgappa-duel-bluff { top: 30%; font-size: 16px; animation: mg-golgappa-duel-pop 240ms ease-out both; }
+/* Her bluff beside her face: a plain bubble (no gold ring), the palm only half up, smaller; then her joke. Her warning
+   (「わたし、次でバス」) in the same place after it, plain too, until her 「バス！」 takes its place. */
+.mg-golgappa-duel-bluff, .mg-golgappa-duel-warn { top: 30%; font-size: 16px; animation: mg-golgappa-duel-pop 240ms ease-out both; }
 .mg-golgappa-duel-bluff svg { width: 18px; height: 18px; rotate: 55deg; opacity: 0.8; }
 .mg-golgappa-duel-bluff[data-joke] svg { rotate: 100deg; }
 /* The vendor's 「フェイント！」 under his hand (a bite at his feint), and the player's 「見切った！」 over the bowl (held still). */
@@ -307,8 +309,8 @@
   .mg-golgappa-duel-count small { font-size: 10px; }
 }
 /* A short screen: the engine sends 「バス」 up into the field (its top left); here it goes to the top right instead, under
-   where her face and bubble show (her 「わたし、次でバス」 is the play's only spoken cue), clear of the band's 「中断する」 and
-   right of the player's falling golgappa; the palm over the word keeps it narrow (still 44 px and more each way). */
+   where the host shows her face (her 10th, a laugh at a bitten feint), clear of the band's 「中断する」 and right of the
+   player's falling golgappa; the palm over the word keeps it narrow (still 44 px and more each way). */
 @media (max-height: 620px) {
   .mg-engine-rhythm-tap:has(.mg-golgappa-duel) .mg-rhythm-tap-top[data-stop] { left: auto; right: 6px; top: 72px; }
   .mg-engine-rhythm-tap:has(.mg-golgappa-duel) .mg-rhythm-tap-stop {
