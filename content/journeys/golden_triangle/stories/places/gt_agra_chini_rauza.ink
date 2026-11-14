@@ -30,7 +30,9 @@ INCLUDE modules.ink
 # voice: gt_agra_date_chini_rauza_002
 代役……カップルの？
 # speaker: gt_jagdeep
-立ってるだけでいい。顔は写さない。光を見るだけだ。はい、アーチの下で向かい合って。もっと近く。……もっと。おでこがくっつくくらい
+立ってるだけでいい。台詞はいらない。顔も作らなくていい。光を見るだけだ
+# speaker: gt_jagdeep
+はい、アーチの下で向かい合って。もっと近く。……もっと。おでこがくっつくくらい
 * [指示どおり、近づく # option: step_closer]
     # profile: bold
     # memory: gt_agra_date_chini_rauza_memory
@@ -163,7 +165,7 @@ INCLUDE modules.ink
     # speaker: gt_tanvi
     今日は、一枚も決めないで撮って。……写真屋さんを呼んだのは、この人の、唯一のわがままなの
     # speaker: narrator
-    二人は柱の陰に隠れた。アーチの下で、ニキルが膝をつく。今度の箱は、空っぽではなかった。
+    代役の二人は、柱の陰に隠れた。アーチの下で、ニキルが膝をつく。今度の箱は、空っぽではなかった。
     タンヴィの返事は、柱の陰まで聞こえた。
     # speaker: gt_tanvi
     # pause: 800
@@ -181,7 +183,9 @@ INCLUDE modules.ink
     # speaker: gt_agra_chini_bride
     タージは、みんなが撮るでしょう。わたしたちの写真の後ろに、ほかの人の恋の話が写るのは、ちょっと嫌だったの。ここは、色が少しだけ残ってる。全部残ってるより、その方が、わたしたちに似てる気がして
     # speaker: narrator
-    撮影が始まると、二人は柱の陰に下がった。アーチの下で、花婿になる方が、花嫁の髪についた埃を、真剣な顔で取ってやっていた。ジャグディープは、構図にない、その一枚を一番長く撮っていた。
+    撮影が始まると、代役の二人は柱の陰に下がった。アーチの下で、花婿になる方が、花嫁の髪についた埃を、真剣な顔で取ってやっていた。
+    # speaker: narrator
+    ジャグディープは、構図にない、その一枚を一番長く撮っていた。
     # speaker: heroine
     # emotion: smile
     # voice: gt_agra_date_chini_rauza_017
