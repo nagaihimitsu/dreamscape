@@ -129,15 +129,16 @@ function activeStoryId(active: ActiveEncounter, id: string): string {
  * repeatable, and the items its actionable choices need). Encounters start
  * only at their landmark's visit: before its main part, while observing
  * (getTourismEncounterAvailability) or after its battle; there is no way to
- * start one from free time.
+ * start one from free time. Play reads only `available`; the reasons are for
+ * Debug's candidate table (momentSceneAvailability).
  */
 function getEncounterEntryAvailability(state: GameState, event: EncounterDefinition): Availability {
-  if (event.cityId !== state.currentCityId) return unavailable("この街では出かけられません。");
+  if (event.cityId !== state.currentCityId) return unavailable("この街の場面ではありません。");
   if (!meets(state, entryRule(event)?.when)) return unavailable("この場所を訪れたあとに出会えます。");
-  if (!canAccessFreeTime(state)) return unavailable("旅を進めると出かけられます。");
+  if (!canAccessFreeTime(state)) return unavailable("旅を進めると始められます。");
   if (state.activeEncounter || state.activeDate || state.activeTourism || state.activeEpilogue || state.activeBattle)
-    return unavailable("途中の場面を終えてから出かけられます。");
-  if (!event.repeatable && state.completedEncounterIds.includes(event.id)) return unavailable("この寄り道は終えています。");
+    return unavailable("途中の場面を終えてから始められます。");
+  if (!event.repeatable && state.completedEncounterIds.includes(event.id)) return unavailable("この場面は終えています。");
   // A head # then: (stage 3b) that cannot be paid keeps the scene from showing (2.3).
   const head = sceneById(event.id)?.then;
   const plan = head && planThen(state, head, event.id, insertedDoneReserve(event.id));

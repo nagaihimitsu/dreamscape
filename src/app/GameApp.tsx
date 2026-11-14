@@ -118,7 +118,6 @@ import {
   getCurrentEpisode,
   getNextEpisode,
   getNextStoryBattle,
-  startEpisode,
 } from "../domain/chapter";
 import { claimPendingRewards } from "../domain/rewards";
 import "../features/journey/journey.css";
@@ -131,7 +130,6 @@ import {
   replayTourismGuide,
 } from "../domain/tourism";
 import {
-  startBattle,
   advanceBattle,
   answerBattle,
   getReasoningContext,
@@ -1151,9 +1149,7 @@ export function GameApp({
           <FreeTimeHub
             game={game}
             onClaimRewards={() => commit((state) => claimPendingRewards(state, game.revision))}
-            onStartEpisode={(id) => commit((state) => startEpisode(state, id))}
             onEpilogue={() => commit((state) => openOccasion(state, { kind: "epilogue" }, game.revision, nextRomanceRoll))}
-            onBattle={(id) => commit((state) => startBattle(state, id))}
             onTravelEvent={(id, mode) => travelToEvent(id, mode, game.revision)}
             onRent={(modeId) => commit((state) => rentTransport(state, modeId, game.revision))}
             onBookTour={(tourId, offerId) => commit((state) => bookTour(state, tourId, offerId, game.revision))}

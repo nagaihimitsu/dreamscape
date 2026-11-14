@@ -2,18 +2,22 @@ import { useEffect, useRef, useState } from "react";
 import { useMiniGameKit } from "../host/kit";
 import type { RhythmTapFieldProps, RhythmTapSkin } from "../engines/rhythm_tap/EnginePlay";
 import { rhythmTapPerfect } from "../engines/rhythm_tap/engine";
-import { GOLGAPPA_GAME, GOLGAPPA_HER_STOP, type GolgappaGame, type GolgappaOutcome, type GolgappaParams } from "./rules";
+import { GOLGAPPA_GAME, GOLGAPPA_HER_BLUFF, GOLGAPPA_HER_STOP, type GolgappaGame, type GolgappaOutcome, type GolgappaParams } from "./rules";
 import "./skin.css";
 
 // The golgappa duel's field (a rhythm_tap skin): the stall's counter from the customer's side, her leaf bowl on the left
-// with her behind it, the player's on the right, the vendor's hand above. The hand drops hers, then the player's (a soft
-// 「ぽとっ」 as the player's lands: the beat to eat on); each count is under its bowl. A bite crumbles over the bowl (a
-// star right on the landing, with a bigger golden 「パリッ！」); a bite at nothing clacks and fills a drop of the choke
-// gauge beside the player's bowl, and a full gauge coughs one golgappa back into the bowl. A missed one stays in the
-// bowl (after her hand, the next one lands on it: a choke). Her face under the band as her 10th goes down (the sour
-// water gets to her), and one golgappa before her 14th she says she is about to stop; her raised palm and 「バス！」 come
-// beside her face after it (the lane's flag meets its ring then); the onlookers count aloud from the 10th.
-// With the use's art (`art.stall`, `art.heroine`, `art.bowl`, `art.puri`) those pictures take the drawn ones' places.
+// with her behind it, the player's on the right, the vendor's hand above. The hand holds the next golgappa over a bowl and
+// drops it (a soft 「ぽとっ」 as the player's lands: the beat to eat on); each count is under its bowl. A feint: the hand
+// rises high and shakes over the player's bowl (the lane's mark turns into a rest at the same moment) and drops nothing; a
+// bite at it clacks with the vendor's 「フェイント！」 and fills two drops of the choke gauge, holding still is 「見切った！」.
+// A bite crumbles over the bowl (a star right on the landing, with a bigger golden 「パリッ！」); a bite at nothing clacks
+// and fills a drop of the choke gauge beside the player's bowl, and a full gauge coughs one golgappa back into the bowl.
+// A missed one stays in the bowl (after her hand, the next one lands on it: a choke). Her face under the band as her 10th
+// goes down (the sour water gets to her); at her 12th she bluffs beside her face (her palm half up, 「バ……」, then
+// 「なんてね」 as she thumps her chest: no flag on the lane, no gold ring); one golgappa before her 14th she says she is
+// about to stop; her raised palm and 「バス！」 come beside her face after it (the lane's flag meets its ring then); the
+// onlookers count aloud from the 10th. With the use's art (`art.stall`, `art.heroine`, `art.bowl`, `art.puri`) those
+// pictures take the drawn ones' places.
 
 /** Where things are, in percent of the field: the hand's height, the bowls (her on the left, the player's on the right). */
 const HAND_Y = 12;
@@ -23,19 +27,26 @@ const YOU = { x: 71, y: 77 };
 const BITE_MS = 380;
 const CLACK_MS = 300;
 const COUGH_MS = 700;
+/** How long the vendor's 「フェイント！」 or the player's 「見切った！」 shows, and the hand's grin after a feint. */
+const FEINT_WORD_MS = 750;
+/** Her bluff: 「バ……」 with her palm half up this long, then 「なんてね」 (her chest) until the end of the bluff. */
+const BLUFF_TEASE_MS = 380;
+const BLUFF_MS = 900;
 /** The onlookers count aloud from this golgappa of the player's on (「周りの客が数を数え出す」), each word this long. */
 const COUNT_FROM = 10;
 const COUNT_MS = 520;
-const COUNT_WORDS = ["", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七"];
+const COUNT_WORDS = ["", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十"];
 /** Her line as her 13th goes down (the heroine's quick reaction): the next one is her last. */
 const HER_NEXT_IS_LAST = "わたし、次でバス";
+/** Her bluff's words beside her face (not a reaction: the field's own), before and after the joke. */
+const BLUFF_WORDS = ["バ……", "バ……なんてね"] as const;
 /** The host shows her reactions at most this often (with a little to spare). */
 const REACT_APART_MS = 1600;
 
-/** The sounds of a play (definition `sounds`): a landing, a bite, her hand on the counter. */
-const SOUNDS = { land: "cork_pop", bite: "puri_crunch", her: "stamp" } as const;
+/** The sounds of a play (definition `sounds`): a landing, a bite, her hand on the counter, the vendor's wind-up. */
+const SOUNDS = { land: "cork_pop", bite: "puri_crunch", her: "stamp", windup: "snatch" } as const;
 
-/** The next landing at or after `ms` in a sorted list (its index), or -1. */
+/** The next time at or after `ms` in a sorted list (its index), or -1. */
 const nextIndex = (times: readonly number[], ms: number) => times.findIndex((time) => time >= ms);
 
 /** A golgappa (the use's picture, or the drawn one). */
@@ -50,8 +61,9 @@ const Palm = () => (
 
 /** The duel's skin built from its game (the story's, or Debug's room's edited numbers: play.ts retune). */
 export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParams, GolgappaOutcome> {
-  const { tuning, herLandings, handMs, numbers } = game;
+  const { tuning, herLandings, handMs, bluffMs, moves, numbers } = game;
   const yourBeats = tuning.beats;
+  const feints = tuning.rests?.at ?? [];
   const gaugeSize = tuning.strayLimit ?? 0;
   /** Her 13th eaten: she says the next is her last. */
   const herWarnMs = herLandings[GOLGAPPA_HER_STOP - 2] + numbers.herEatMs;
@@ -61,6 +73,8 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
    */
   const herTenthMs = herLandings[COUNT_FROM - 1] + numbers.herEatMs;
   const tenthFace = herWarnMs - herTenthMs >= REACT_APART_MS;
+  /** A reaction of her own at `ms` (her laugh at a bitten feint) does not crowd out her warning or her 10th's face. */
+  const freeToReact = (ms: number) => [herWarnMs, ...(tenthFace ? [herTenthMs] : [])].every((at) => Math.abs(at - ms) >= REACT_APART_MS);
 
   function GolgappaField({ cast, art, names, sound, vibrate, frames }: RhythmTapFieldProps<GolgappaParams, GolgappaOutcome>) {
     const hand = useRef<HTMLSpanElement>(null);
@@ -80,6 +94,8 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
     const [herStopped, setHerStopped] = useState(false);
     const [youStopped, setYouStopped] = useState(false);
     const [choked, setChoked] = useState(false);
+    const [feintWord, setFeintWord] = useState<"fooled" | "kept" | null>(null);
+    const [bluff, setBluff] = useState<0 | 1 | 2>(0);
     const kit = useMiniGameKit();
     const live = useRef({ sound, vibrate, kit });
     live.current = { sound, vibrate, kit };
@@ -89,10 +105,14 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
       let strays = 0;
       let overflows = 0;
       let landed = 0;
+      let rests = 0;
       let biteAt = Number.NEGATIVE_INFINITY;
       let biteKind: "perfect" | "good" = "good";
       let clackAt = Number.NEGATIVE_INFINITY;
       let coughAt = Number.NEGATIVE_INFINITY;
+      let feintAt = Number.NEGATIVE_INFINITY;
+      let feintKind: "fooled" | "kept" = "kept";
+      let woundUp = -1;
       let tenth = false;
       let warned = false;
       let herUp = false;
@@ -152,11 +172,21 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
         }
         setCough(ms - coughAt < COUGH_MS && summary.ended !== "misses");
         setGauge(summary.gauge);
+        // A feint judged: bitten at (the vendor's 「フェイント！」, her laugh when it does not crowd her words) or seen
+        // through (「見切った！」 over the player's bowl, a ring).
+        if (summary.rests.length > rests) {
+          rests = summary.rests.length;
+          feintKind = summary.rests[rests - 1];
+          feintAt = ms;
+          if (feintKind === "kept") juice.burst(yourBowl.current, "ring", 0.7);
+          else if (!over && freeToReact(ms)) live.current.kit.react("laugh");
+        }
+        setFeintWord(ms - feintAt < FEINT_WORD_MS && !over ? feintKind : null);
         // The onlookers count the player's golgappa aloud from the 10th.
         const word = served >= COUNT_FROM && !over && ms - yourBeats[served - 1] < COUNT_MS ? COUNT_WORDS[served] ?? null : null;
         setCrowd(word);
-        // Hers: she eats each a moment after it lands; as her 13th goes down she says the next is her last; her hand goes up
-        // after her 14th (a slap on the counter, a ring round her 「バス！」).
+        // Hers: she eats each a moment after it lands; at her 12th she bluffs; as her 13th goes down she says the next is
+        // her last; her hand goes up after her 14th (a slap on the counter, a ring round her 「バス！」).
         const herLanded = herLandings.filter((time) => time <= ms).length;
         setHerCount(herLanded);
         setHerBowl(herLanded > 0 && ms - herLandings[herLanded - 1] < numbers.herEatMs && herLanded <= GOLGAPPA_HER_STOP);
@@ -164,6 +194,7 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
           tenth = true;
           live.current.kit.react("oops");
         }
+        setBluff(over || ms < bluffMs || ms >= bluffMs + BLUFF_MS ? 0 : ms < bluffMs + BLUFF_TEASE_MS ? 1 : 2);
         if (!warned && ms >= herWarnMs && !over) {
           warned = true;
           live.current.kit.react("tease", HER_NEXT_IS_LAST);
@@ -200,11 +231,24 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
         const herDrop = herNext >= 0 && !(over && summary.ended !== "stop") ? falling(HER, herLandings[herNext] - ms) : null;
         place(yourFall.current, YOU.x, yourDrop?.y ?? HAND_Y, !!yourDrop);
         place(herFall.current, HER.x, herDrop?.y ?? HAND_Y, !!herDrop);
-        // The hand waits over the bowl of the next one to drop.
-        const nextYours = yours >= 0 ? yourBeats[yours] : Infinity;
-        const nextHers = herNext >= 0 ? herLandings[herNext] : Infinity;
-        const toward = nextHers < nextYours ? HER : nextYours < Infinity ? YOU : { x: 50, y: 0 };
-        if (hand.current) hand.current.style.left = `${toward.x}%`;
+        // The hand waits over the bowl of its next move with the golgappa in its fingers (not while one falls); a feint's
+        // wind-up lifts it high and shakes it (its tell, with the lane's mark), and it wags a moment after.
+        const move = over ? -1 : moves.findIndex((next) => next.at >= ms);
+        const next = move >= 0 ? moves[move] : null;
+        const toward = !next ? { x: 50, y: 0 } : next.to === "her" ? HER : YOU;
+        const feint = next?.feint && next.at - ms <= numbers.feintTellMs ? move : -1;
+        if (feint >= 0 && feint !== woundUp) {
+          woundUp = feint;
+          live.current.sound(SOUNDS.windup, { volume: 0.5 });
+        }
+        const lastFeint = feints.filter((at) => at <= ms).pop();
+        const grin = !over && lastFeint !== undefined && ms - lastFeint < FEINT_WORD_MS;
+        if (hand.current) {
+          hand.current.style.left = `${toward.x}%`;
+          hand.current.dataset.windup = feint >= 0 ? "up" : "";
+          hand.current.dataset.grin = grin && feint < 0 ? "yes" : "";
+          hand.current.dataset.holding = next && !yourDrop && !herDrop && !grin ? "yes" : "";
+        }
       });
     }, [frames]);
 
@@ -217,10 +261,12 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
             <span className="mg-golgappa-duel-counter" />
           </>
         )}
-        <span className="mg-golgappa-duel-her" data-art={art.heroine ? true : undefined} data-eating={herBowl || undefined}>
+        <span className="mg-golgappa-duel-her" data-art={art.heroine ? true : undefined} data-eating={herBowl || undefined} data-thump={bluff === 2 || undefined}>
           {art.heroine ? <img src={art.heroine} alt="" draggable={false} /> : cast.heroine}
         </span>
-        <span className="mg-golgappa-duel-hand mg-play-object" ref={hand} />
+        <span className="mg-golgappa-duel-hand mg-play-object" ref={hand}>
+          <span className="mg-golgappa-duel-held"><Puri art={art.puri} /></span>
+        </span>
         <span className="mg-golgappa-duel-bowl mg-golgappa-duel-bowl-her mg-play-object" style={{ left: `${HER.x}%`, top: `${HER.y}%` }}>
           {art.bowl ? <img src={art.bowl} alt="" draggable={false} /> : <span className="mg-golgappa-duel-bowl-drawn" />}
           {herBowl && <span className="mg-golgappa-duel-in-bowl"><Puri art={art.puri} /></span>}
@@ -239,8 +285,15 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
         {bite && !choked && (
           <span className="mg-golgappa-duel-bite" data-kind={bite} style={{ left: `${YOU.x}%`, top: `${YOU.y - 17}%` }}>{bite === "perfect" ? "パリッ！" : "パリッ"}</span>
         )}
-        {clack && !bite && !cough && !choked && <span className="mg-golgappa-duel-clack" style={{ left: `${YOU.x}%`, top: `${YOU.y - 16}%` }}>カチッ</span>}
+        {clack && !bite && !cough && !choked && feintWord !== "fooled" && <span className="mg-golgappa-duel-clack" style={{ left: `${YOU.x}%`, top: `${YOU.y - 16}%` }}>カチッ</span>}
+        {feintWord === "fooled" && <span className="mg-golgappa-duel-feint" data-testid="golgappa-feint" style={{ left: `${YOU.x}%` }}>フェイント！</span>}
+        {feintWord === "kept" && <span className="mg-golgappa-duel-seen" data-testid="golgappa-seen" style={{ left: `${YOU.x}%`, top: `${YOU.y - 17}%` }}>見切った！</span>}
         {crowd && <span className="mg-golgappa-duel-crowd" key={crowd}>{crowd}！</span>}
+        {bluff > 0 && (
+          <span className="mg-golgappa-duel-say mg-golgappa-duel-bluff" data-joke={bluff === 2 || undefined} data-testid="golgappa-bluff" style={{ left: `${HER.x + 17}%` }}>
+            <Palm />{BLUFF_WORDS[bluff - 1]}
+          </span>
+        )}
         <span ref={herSay} className="mg-golgappa-duel-say mg-golgappa-duel-say-her" data-shown={herStopped || undefined} style={{ left: `${HER.x + 17}%` }}>
           <Palm />バス！
         </span>
@@ -255,12 +308,13 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
   return {
     tuning,
     rules: game.rules,
-    hintJa: "落ちたら「食べる」。旗は彼女の「バス」",
+    hintJa: "落ちたら「食べる」。振りかぶるだけはフェイント。旗が彼女の「バス」",
     actionJa: "食べる",
-    actionHintJa: "自分の器にゴルガッパが落ちるたびに押します。何もない時に押すと、むせそうになります。",
+    actionHintJa: "自分の器にゴルガッパが落ちるたびに押します。屋台の男が手を高く振りかぶって何も落とさない時（フェイント）や、何もない時に押すと、むせそうになります。",
     autoJa: "おまかせで食べています",
-    stop: { labelJa: "バス", hintJa: "もう十分、と手を上げます。押すと勝負が終わります。彼女は14個目で手を上げます。" },
+    stop: { labelJa: "バス", hintJa: `もう十分、と手を上げます。押すと勝負が終わります。彼女は${GOLGAPPA_HER_STOP}個目で手を上げます（レーンの旗が輪に重なる時。${GOLGAPPA_HER_BLUFF}個目の手は冗談です）。` },
     partner: { atMs: handMs, flagJa: "バス" },
+    restRevealMs: numbers.feintTellMs,
     statusJa: (summary) => (summary.came > 0 ? `${summary.came}個目` : ""),
     // The card's score (rules.ts golgappaRating) says it all: no line of its own.
     detailJa: () => undefined,

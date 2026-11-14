@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { contentId } from "../content/content-id";
 
-/** A content ID kept in a save: lower-case letters, digits and underscores, starting with a letter. */
-export const stableContentId = z.string().regex(/^[a-z][a-z0-9_]*$/);
+/** A content ID kept in a save: the content ID rule (src/content/content-id.ts). */
+export const stableContentId = contentId;

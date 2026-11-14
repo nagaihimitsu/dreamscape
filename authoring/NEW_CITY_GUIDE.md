@@ -2,7 +2,7 @@
 
 Dreamscape に都市を1つ足すときの、作業の順番の手引きです。どの作業を先にし、どれを同時に進められるかを示します。書き方の細かい決まりは、各手順に挙げた資料にあります。
 
-- ここに書いたコマンド・項目・ファイルは、2026-11-13 のリポジトリにあるものです。まだないものは「まだ仕組みがない」と書きます。
+- ここに書いたコマンド・項目・ファイルは、2026-11-14 のリポジトリにあるものです（コマンドと検査の決まりは、この日にコードと照らした）。まだないものは「まだ仕組みがない」と書きます。
 - 決まりの元は [AGENTS.md](../AGENTS.md) です。この手引きと食い違うときは AGENTS.md に従います。
 - 例はインド・ゴールデントライアングル編です（旅行編ID `golden_triangle`、接頭辞 `gt`、デリー・アーグラ・ジャイプール）。ファイルの書き方の手本は、架空の街の[見本の編](templates/sample_trip/README.md)です。
 
@@ -289,7 +289,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 - 目的：レイトン式の3択を中心に、見え方が変わる問いを作る。
 - 前に要るもの：手順4（出典）、手順8（どの回でどんな問いか）。推理クイズの証拠は手順6の観察ポイント。
 - 作るもの：
-  - 通常のクイズ：`quizzes/<頭>_main_<観光地>_quiz.json`（ファイル名＝クイズID）。3問。各問に `id`（`<頭>_<観光地>_<要点>`）・`questionEn`・`options`（A・B・C の `textEn`）・`correctOptionId`・`vocabularyJa`・`hintJa`・`correctExplanationJa`・`incorrectExplanationJa`・`sources`・`difficulty`。クイズに `englishLevel`（`A2`・`B1`・`B2`）。
+  - 通常のクイズ：`quizzes/<頭>_main_<観光地>_quiz.json`（ファイル名＝クイズID）。3問。各問に `id`（`<頭>_<観光地>_<要点>`）・`questionEn`・`options`（A・B・C の `textEn`）・`correctOptionId`・`vocabularyJa`・`hintJa`・`correctExplanationJa`・`incorrectExplanationJa`・`sources`・`difficulty`。クイズに `englishLevel`（`A2`・`B1`・`B2`）。今のクイズはどれも `B1` で、英語は B1 ほどを目安にする（遊ぶ人が英語の難しさを選ぶ設定はなく、ゲームはこの値を使わない）。
   - 任意：`hintHeroineJa`（ヒントを彼女の言葉で）、`heroineCorrectJa`（正解の後の一言）、`revealRegion`・`revealCaptionJa`（答えの後の写真の種明かし）。
   - フィナーレ：`quizzes/<頭>_finale_quiz.json`。5問、`scope: "city_finale"`・`cityId`・`landmarkId: null`。
   - 推理クイズB・C：`battles/catalog.json` の `format`（`"B"`・`"C"`）と `reasoning`（`kind` は `contradiction`・`connection`、`roundIndex`、候補の証拠 `caseClueIds` 3〜5枚、正解 `correctClueIds` はBが1枚・Cが2枚）。`progression/journey.json` の `storyBattles` に対決ID・前提・案内文・ボタン名・`completionReward`。
@@ -360,7 +360,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
   - 選択のない場面の札：`# on_done: money -300`・`# on_done: ap -1`・`# on_done: item <品物ID>`・`# on_done: set …`。
   - フラグ：`progression/story.json` の `flags` に宣言する。
   - 一度かぎりのAP報酬：`progression/journey.json` の `rewards`（`trigger` は `guide_read`・`battle_complete`・`battle_score`・`episode_clear`・`city_clear`）。場面の札から作る `scene_tag` は作者が書かない。
-  - デートのAP：デートの `apCost`（通常は2）。入場料：出来事の `admissionCost`（2人分）。
+  - デートのAP：デートの `apCost`（作者が決める。インド編の通常デートは2・4・6、告白などの特別なデートは0）。入場料：出来事の `admissionCost`（2人分）。
 - 守る決まり：
   - 品物は所属都市で手に入れ、贈与・使用もその都市で行う。持ち歩く印のない品物は、次の都市へ出発すると置いていく。次の都市がある都市の、持ち歩く印のない品物には、その都市での使い道が要る（ないと止まる）。入手元のない品物も止まる。
   - APは0〜12（上限を超えた分は保留）。読み直し・再読込・セーブ再開・連打で二重に増減しない（ゲームが守る）。
@@ -475,7 +475,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
   - 実在の人の声を参考にするとき（声の見本や、音声合成の参照音声）は、その人の同意を得て記録を残す。同意の記録を置く決まった場所は、リポジトリにはまだない（`<制作資料>/research/` などにメモを置く）。
 - 確かめ方と終わりの目安：`npm run content:build`（ファイルのない ID、名前の行の声で止まる。どの行も使わないファイルは注意。声のファイルのない旅行編に `voiceCredits` を書くと止まる）。ゲームの設定「台詞の声を出す」で聞く。読み終えた場面の声は、旅の音楽室（最初の都市のクリア後、「旅の記録」から）にも並ぶ。
 - 台詞を直したら：`npm run voice:changes -- --journey <旅行編ID>` が、録音した行を `recorded.json` の文と、まだ録音していない行を渡した最新の台本と比べ、録り直しの要る行を出す。録音した行の文が変わると `content:build` も注意を出す（作り直した声を `voice:tag` で記録するまで消えない）。
-- インド編では：音声合成 Irodori-TTS v4.1-Small でヒロインの声を作った（#101 で26本、#110 で210本。今はデリーの236本）。
+- インド編では：音声合成 Irodori-TTS v4.1-Small でヒロインの声を作った（#101 で26本、#110 で210本、#125・#126 で171本。今はデリーとアーグラの407本）。
 
 ### 手順19. ミニゲーム
 
@@ -484,7 +484,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 - 作るもの：選択肢のすぐ前の行に `# minigame: <ゲーム>`（任意で `auto <結果>`・`prefix <語>`・`bg <背景>`・`art.<名前> <絵>`・ゲームの引数）、すぐ後に結果ごとに1つずつ選択肢（`# option:` は結果のID）。ゲームの一覧は Debug の「ミニゲームの見本」にある（[CONTENT_GUIDE の「ミニゲーム」](CONTENT_GUIDE.md#ミニゲーム任意2026-11-13)）。旅行編の絵を使うときは `public/assets/minigames/` に置き、`presentation/own-artwork.json` に載せる。
 - 守る決まり：場所のファイルの場面ならどこでも書けるが、告白のデートには書かない。結果は遊び方だけで決まり、乱数は使わない。結果の選択肢の支払い・品物は、場面の頭か道の上の条件で保証する。関係値は作者の札だけで動く。
 - 確かめ方と終わりの目安：`npm run content:build`（書き方の誤り、結果と選択肢が1つずつ合わない、選べないことがある結果の選択肢、書けない所、おまかせで抜けられない輪で止まる）。Debug の「ミニゲームの見本」の「Debugで開く」でその場面を開き、Debugモードの結果のボタンで各結果の後を読む。
-- インド編では：アーグラのメヘターブ・バーグのデートの最後の一球（`places/gt_agra_mehtab_bagh.ink`）。
+- インド編では：3都市の場面で11本を使っている（例：アーグラのメヘターブ・バーグのデートの最後の一球 `places/gt_agra_mehtab_bagh.ink`、ジャイプールのラージューの地図の値段 `places/gt_jaipur_jaigarh_fort.ink`）。
 
 ### 手順20. オープニングムービー（新しい旅行編だけ）
 
@@ -518,7 +518,7 @@ Dreamscape に都市を1つ足すときの、作業の順番の手引きです�
 | --- | --- | --- |
 | 生成と検査 | `npm run content:build`（`-- --verbose` で注意の一覧、`-- --no-cache` で全部検査し直す） | エラーは直す。注意は読んで残すか決める |
 | 1ファイル | `npm run content:inspect -- <ファイル>`（`-- --all` は生成物を書かずに全体） | 形とInkのコンパイル |
-| 公開の準備 | `npm run journey:readiness -- --journey <旅行編ID>` | 足りないもの、見本の残り、件数、「特定できず」の交通 |
+| 公開の準備 | `npm run journey:readiness -- --journey <旅行編ID>` | 足りないもの、見本の残り、件数、「特定できず」の交通。見本のままの設定（国コード・座標・通貨と開始資金）は「確かめること」に出る（止めない） |
 | 交通 | `npm run journey:transit -- --journey <旅行編ID>` | 判断の数、徒歩の経路がない向き |
 | 下書きの脚本 | `npm run journey:scenario -- --journey <旅行編ID> --directory <下書き> --city <都市ID>` | 下書きの全経路 |
 | 場面の並び | `npm run journey:readthrough -- --journey <旅行編ID>` | 点検のための読み物 |
@@ -653,7 +653,7 @@ Git の履歴（`git log origin/main`）から、ゴールデントライアン�
 - 予算のテストの共通版：いちばん安く回れば本筋を最後まで遊べることを確かめるテストは、旅行編ごとに書く（インド編の `budget.test.ts`）。共通のテストはない。
 - 実在の人の声の同意の記録の置き場所：決まっていない。
 - オープニングムービーの出典の欄：`openingMovie` は `videoPath` だけで、ムービーの中の映像・音楽の出典を「出典・権利の一覧」に出せない。
-- ミニゲームの種類：今あるゲームはクリケットの打席（`cue_tap` の仕組み）の1つだけ。かくれんぼ・なぞる・リズムのゲームの仕組み（`search`・`shape_drag`・`rhythm_tap`）はまだ無い（[13 ミニゲームの仕組み](../docs/13_MINIGAMES.md)）。
+- その都市だけのミニゲーム：今ある11本（クリケットの打席・ゴルガッパ・かくれんぼ・ローティーなど。仕組みは `cue_tap`・`rhythm_tap`・`search`・`shape_drag`・`step_pick` の5つ）は、どれもインド編の場面のために作ったもの。新しい都市に合うゲームがなければ、ゲームを1本足す（[13 ミニゲームの仕組み](../docs/13_MINIGAMES.md)の7章）。
 
 ## 6. 1枚のチェックリスト
 

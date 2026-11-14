@@ -10,6 +10,7 @@ import { mainScene, sceneOfAddress } from "./reservations";
 import { advanceRunningOccasion } from "./occasion-hooks";
 import { evaluateProgression } from "./date-rules";
 import { battleCityId, finalizeBattleProgress, isEpisodeBlockedByStoryBattle, isEpisodeUnlocked, isStoryBattleUnlocked } from "./chapter";
+import { stableContentId } from "./stable-id";
 import {
   battles,
   episodes,
@@ -91,7 +92,7 @@ export const activeBattleSchema = z
      */
     turns: z.number().int().nonnegative(),
     /** The conversation's choices whose tags this run applied (decision 10: once per battle, and only on its first play). */
-    appliedOptionIds: z.array(z.string().regex(/^[a-z][a-z0-9_]*$/u)),
+    appliedOptionIds: z.array(stableContentId),
     /** A special battle's line before its first stop point: its claim (from the helper knot) or its rebuttal (after the claim). */
     linePart: z.enum(["claim", "rebuttal"]).optional(),
     /** The line ends a part before the first stop (the lines before the claim, the claim before its rebuttal): 「次へ進む」 there. */
@@ -110,7 +111,7 @@ export const activeBattleSchema = z
      * (battleBackgroundId; 2026-11-13 user decision). Unlike the parts above, the next frame does not start with it: the
      * line after a call starts as a new scene (docs/02). Optional in save v23: a run saved without it shows the battle's own.
      */
-    background: z.string().regex(/^[a-z][a-z0-9_]*$/u).optional(),
+    background: stableContentId.optional(),
   })
   .strict();
 export type ActiveBattle = z.infer<typeof activeBattleSchema>;

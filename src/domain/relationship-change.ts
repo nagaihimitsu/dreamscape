@@ -42,16 +42,28 @@ export function relationshipChange(previous: RelationshipChangeState, next: Rela
   return { axes: changed, reaction, replay: !!dateChoice && date!.replay };
 }
 
+/** What stands between two parts of a line (relationshipChangeLines). */
+export const RELATIONSHIP_PART_GAP = "　";
+
 const signed = (value: number) => value < 0 ? `−${-value}` : `${value}`;
 const delta = (value: number) => value > 0 ? `+${value}` : signed(value);
 
-/** The display's Japanese lines: the values (or that none changed), then the reaction. */
-export function describeRelationshipChange(change: RelationshipChange): string[] {
+/**
+ * The display's Japanese lines, each as the parts the display keeps whole on a
+ * narrow screen: the values (one part per changed axis with its numbers, such as
+ * 「恋愛の意識 +1（0→1）」, or that none changed), then the reaction.
+ */
+export function relationshipChangeLines(change: RelationshipChange): string[][] {
   const values = change.axes.length
-    ? change.axes.map((item) => `${relationshipAxisLabels[item.axis]} ${delta(item.delta)}（${signed(item.before)}→${signed(item.after)}）`).join("　")
-    : `関係の値は変わりません${change.replay ? "（振り返りの会話のため）" : ""}`;
+    ? change.axes.map((item) => `${relationshipAxisLabels[item.axis]} ${delta(item.delta)}（${signed(item.before)}→${signed(item.after)}）`)
+    : [`関係の値は変わりません${change.replay ? "（振り返りの会話のため）" : ""}`];
   if (!change.reaction) return [values];
   const result = change.reaction.result === "positive" ? "噛み合った" : "噛み合わなかった";
   const chance = change.reaction.chancePercent === null ? "" : `（噛み合う確率 ${Math.round(change.reaction.chancePercent)}%）`;
-  return [values, `反応：${result}${chance}`];
+  return [values, [`反応：${result}${chance}`]];
+}
+
+/** The display's lines as text (a line's parts joined by 「　」, as the display shows them). */
+export function describeRelationshipChange(change: RelationshipChange): string[] {
+  return relationshipChangeLines(change).map((parts) => parts.join(RELATIONSHIP_PART_GAP));
 }

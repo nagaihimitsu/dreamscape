@@ -2,6 +2,7 @@ import { z } from "zod";
 import { balance } from "../content";
 import { getJourney, journeys } from "../content/journeys";
 import { createGame, validateGameState } from "../domain/game";
+import { stableContentId } from "../domain/stable-id";
 import { SAVE_KEY, writeIfUnchanged, type SaveResult, type StorageLike } from "./index";
 import { storagePhysicalKey } from "./journey-storage";
 
@@ -10,8 +11,8 @@ import { storagePhysicalKey } from "./journey-storage";
 const draftSchema = z.object({
   kind: z.literal("journey_preparation"),
   schemaVersion: z.literal(1),
-  journeyId: z.string().regex(/^[a-z][a-z0-9_]*$/),
-  currentCityId: z.string().regex(/^[a-z][a-z0-9_]*$/),
+  journeyId: stableContentId,
+  currentCityId: stableContentId,
   playerName: z.string().trim().min(1).max(balance.maxNameLength),
   heroineName: z.string().trim().min(1).max(balance.maxNameLength),
   ap: z.number().int().min(0).max(balance.apCap),

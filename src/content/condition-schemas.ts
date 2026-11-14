@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { contentId as id } from "./content-id";
 
 /**
  * Conditions (the common condition system): JSON written by authors in date catalogs
@@ -11,7 +12,6 @@ import { z } from "zod";
  * `atLeast`) or a leaf, which reads one existing record of the game state.
  */
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/u);
 const positive = z.number().int().min(1);
 const range = z.object({ atLeast: positive.optional(), atMost: positive.optional() }).strict()
   .refine((value) => value.atLeast !== undefined || value.atMost !== undefined, "A range needs atLeast or atMost")
