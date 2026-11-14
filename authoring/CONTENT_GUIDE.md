@@ -25,6 +25,15 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 | `<旅行編>/quizzes/*.json` | 通常3問・都市フィナーレ5問、正解ID、語句、ヒント、正誤の解説、難易度、出典 |
 | `<旅行編>/tourism/catalog.json` | 観光地・画像の出典と権利・発見の範囲・説明・史実とクイズの参照 |
 | `<旅行編>/public/assets/tourism/` | 同梱する資料の画像。外部サイトの画像へ直接リンクしない |
+| `<旅行編>/romance/date_destinations.json` | デートの行き先と、その場所の事実・出典（下の「デートで訪れる観光地」） |
+| `<旅行編>/travel/<都市ID>.json`・`<都市ID>-settings.json` | 地点・経路・地図の出来事（`events`）、宿・予算・借りる乗り物（[都市データの編集](CITY_BUNDLES.md)、下の「都市内の移動（乗り物）」） |
+| `<旅行編>/scenes/catalog.json` | 差し込みの場面（道中交流・会話・ツアーの語り）の出典。場面のIDごと |
+| `<旅行編>/progression/story.json` | 物語のフラグ `flags`、名前で話す人 `people`、名前付きの条件 `conditions` |
+| `<旅行編>/encounters/catalog.json` | 品物 `items`（クイズとくじのある道中交流のカタログの形では `encounters` も） |
+| `<旅行編>/learning/` | 単語の意味・対訳・英語ノートの解説・その国の言葉（下の「単語の意味」から） |
+| `<旅行編>/glossary/terms.json` | 旅の図鑑の言葉（任意。下の「旅の図鑑の言葉」） |
+| `<旅行編>/presentation/` | 人物の絵（`characters.json`）、BGM・環境音・効果音（`music.json`・`ambience.json`・`sounds.json`。共通の分は `<共通>/presentation/`）、自作の絵の一覧（`own-artwork.json`） |
+| `<旅行編>/tours/<ツアーID>.json` | 日帰りツアー（任意。下の「ツアー」） |
 
 ## Inkで会話と演出を作る
 
