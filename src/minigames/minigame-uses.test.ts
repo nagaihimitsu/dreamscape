@@ -12,7 +12,7 @@ import { loadGame, saveGame, type StorageLike } from "../persistence";
 import { availableOutcome } from "./fallback";
 import { MINI_GAMES } from "./registry";
 import { miniGameOptionId, miniGameParams, miniGameTagText, type MiniGameTag } from "./tag";
-import { miniGameUseListSchema, type MiniGameUse } from "./uses";
+import { miniGameUseListSchema, miniGameUseTag, type MiniGameUse } from "./uses";
 
 // Every use of every game, with every outcome (docs/13 6.3): content:build's walk lists the uses
 // (generated/minigame-uses.json); this opens each one's scene as Debug opens it, walks it by the player's actions
@@ -23,9 +23,8 @@ import { miniGameUseListSchema, type MiniGameUse } from "./uses";
 
 const uses = miniGameUseListSchema.parse(usesJson);
 
-/** A use's tag as the frame keeps it. */
-const tagOf = (use: MiniGameUse): MiniGameTag => ({ id: use.game, auto: use.auto, ...(use.prefix ? { prefix: use.prefix } : {}),
-  ...(use.bg ? { bg: use.bg } : {}), ...(use.art ? { art: use.art } : {}), ...(use.params ? { params: use.params } : {}) });
+/** A use's tag as the frame keeps it (its `retry yes` too). */
+const tagOf = (use: MiniGameUse): MiniGameTag => miniGameUseTag(use);
 
 /** The scene on screen (its kind and ID): the walk stays in the scene it opened. */
 function sceneOn(state: GameState): string {
