@@ -2,7 +2,7 @@
 
 この文書は、既存の旅行編に都市を加えるときの、都市のデータの登録と、都市の移り方・保存の決まりです。作業の順番（調査・脚本・絵・音・調整・公開）は [新しい都市を1つ足す手引き](NEW_CITY_GUIDE.md) を先に読んでください。旅行編そのものを加える場合は、`npm run journey:new` で見本の編から `content/journeys/<旅行編ID>/` を作る [新しい編を追加する手順](../docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順) から始め、都市ごとの登録は以下に従います。遊べる最小の旅行編フォルダの例は [見本の編](templates/sample_trip/README.md)（開発・テスト専用）です。
 
-旅行編は独立した新規ゲームです。旅行編ごとのフォルダ `content/journeys/<旅行編ID>/`（フォルダ名は旅行編IDと一致）の `manifest.json` に、旅行編のID、一覧での並び順 `order`（旅行編間で重複不可）、都市の順序、通貨、公開状態と初期値を登録します。ゲームが読む旅行編一覧は `npm run content:build` がすべての `manifest.json` から生成します。ミラノ編とゴールデントライアングル編は別々に保存され、互いの進行や予算を引き継ぎません。インド編はデリー、アーグラ、ジャイプールの3都市に地点・背景・市内移動・観光・デート・シナリオ・クイズを登録済みです。各都市は `complete`、旅行編は `available` とし、ミラノ未クリアでも開始できます。これらはビルド対象の状態であり、サイトのデプロイとは別です。ウズベキスタン編は引き続き制作基盤のみの `preparing` です。
+旅行編は独立した新規ゲームです。旅行編ごとのフォルダ `content/journeys/<旅行編ID>/`（フォルダ名は旅行編IDと一致）の `manifest.json` に、旅行編のID、一覧での並び順 `order`（旅行編間で重複不可）、都市の順序、通貨、公開状態と初期値を登録します。ゲームが読む旅行編一覧は `npm run content:build` がすべての `manifest.json` から生成します。ミラノ編とゴールデントライアングル編は別々に保存され、互いの進行や予算を引き継ぎません。インド編はデリー、アーグラ、ジャイプールの3都市に地点・背景・市内移動・観光・デート・シナリオ・クイズを登録済みです。各都市は `complete`、旅行編は `available` とし、ミラノ未クリアでも開始できます。これらはビルド対象の状態であり、サイトのデプロイとは別です。ウズベキスタン編とルアンパパーン編は、引き続き制作基盤のみの `preparing` です。
 
 インド編の地点・交通・入場料・画像の制作調査には、[全調査統合版](journeys/golden_triangle/research/golden-triangle-all-research-20261103/README.md) と、そこに記載された出典の優先順位を参照してください。これは研究台帳であり、本番の経路・イベント・画像カタログではありません。
 
@@ -41,4 +41,4 @@
 
 ## 旅行編ごとのシナリオ取り込み
 
-インドとウズベキスタンは共通の `journey:scaffold`・`journey:readiness`・`journey:release` を利用する。都市数はカタログから取得し、3都市には固定しない。具体的な入力手順は [JOURNEY_AUTHORING](JOURNEY_AUTHORING.md) を参照。都市間の移動方式は旅行編の `cityTransition`、料金の対象人数は `farePartySize` で指定する。未指定の移動方式は従来どおり任意出発。
+インド・ウズベキスタン・ルアンパパーンと、`journey:new` で作った旅行編は、共通の `journey:scaffold`・`journey:readiness`・`journey:release` を利用する（`manifest.json` に `authoring` がないミラノ編は対象外）。都市数はカタログから取得し、3都市には固定しない。具体的な入力手順は [JOURNEY_AUTHORING](JOURNEY_AUTHORING.md) を参照。都市間の移動方式は旅行編の `cityTransition`、料金の対象人数は `farePartySize` で指定する。未指定の移動方式は従来どおり任意出発。

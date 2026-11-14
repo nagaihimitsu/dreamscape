@@ -32,7 +32,7 @@ npm run city:bundle -- apply artifacts/city-work/india-delhi.json
 
 都市IDは、各旅行編の `content/journeys/<旅行編ID>/manifest.json` の `cities` に書かれています。例えばミラノは `npm run city:bundle -- export milano artifacts/city-work/italy-milano.json` のように書き出します。登録済みの観光地と観察ポイントも作業コピーに含まれます。
 
-書き出してから `content/` や `public/` のいずれか、インド編の観察カードが変更された場合、他都市の変更や画像の追加も含め、古い作業コピーの反映は拒否されます。その場合は、画像・元データを準備したうえで、別名へ再度 `export` し、編集した項目を新しいコピーへ移してください。新しいコピーの `baseFingerprint` は移し替えず、そのまま残します。`baseFingerprint` は競合検出に使うため、手で変更しないでください。都市IDや公開状態もこの操作では変更できません。
+書き出してから `content/` や `public/` のいずれか、旅行編の観察資料（`manifest.json` の `authoring.observationFile`）が変更された場合、他都市の変更や画像の追加も含め、古い作業コピーの反映は拒否されます。その場合は、画像・元データを準備したうえで、別名へ再度 `export` し、編集した項目を新しいコピーへ移してください。新しいコピーの `baseFingerprint` は移し替えず、そのまま残します。`baseFingerprint` は競合検出に使うため、手で変更しないでください。都市IDや公開状態もこの操作では変更できません。
 
 都市の到着会話を付ける場合は、都市定義の `arrivalStoryId` に登録済みInkのIDを指定します。ロゴに使う都市名も同じ都市定義から表示します。本文の作り方は [旅行編の制作手順](JOURNEY_AUTHORING.md#都市に到着したときの会話) を参照してください。
 
@@ -107,9 +107,9 @@ npm run city:bundle -- apply artifacts/city-work/sample-city.json
 
 画像本体は、その旅行編の `content/journeys/<旅行編ID>/public/assets/`（全旅行編で共有する画像はリポジトリ直下の `public/assets/`）に置く必要があります。JSONの `path` には `public/` を除いた配信時のパス（例: `assets/tourism/india/delhi_red_fort.webp`）を書き、画像の実体は含まれません。画像のファイル名・出典・ライセンス・利用条件を確認し、参照に合うファイルを `export` / `new` の前に用意してください。画像を変える場合は、観察位置や説明も新しい画像で確認が必要です。
 
-インド編の観察画像は記録済みのハッシュと照合します。ミラノの既存観察画像には旧画像のハッシュがないため、`export` より前に同じパスの画像ファイルを差し替えた場合、その差し替えを自動では検出できません。画像を変更したときは、観察ポイントの位置・説明・出典を必ず再確認してください。
+観察資料（`authoring.observationFile`）を持つ旅行編（インド・ウズベキスタン・ルアンパパーン）の観察画像は、観察資料に記録したハッシュと照合します。ミラノ編には観察資料がなく、観察画像のハッシュも記録していないため、`export` より前に同じパスの画像ファイルを差し替えた場合、その差し替えを自動では検出できません。画像を変更したときは、観察ポイントの位置・説明・出典を必ず再確認してください。
 
-複数都市が使う画像も参照できます。例えばインド３都市のホテル背景は共通画像を使用しています。共通画像の情報を一都市だけの編集として変更・削除することはできません。他都市の定義・参照や既存IDと衝突する変更、必要な画像が存在しない変更も検証で拒否されます。
+複数都市が使う画像も参照できます（今はどの都市も、その都市だけの画像を使っています。インド3都市の宿の背景も、2026-11-14 には都市ごとに別の写真です）。共通画像の情報を一都市だけの編集として変更・削除することはできません。他都市の定義・参照や既存IDと衝突する変更、必要な画像が存在しない変更も検証で拒否されます。
 
 交通時間・料金・座標・営業時間にはゲーム用の推定値があります。実際の時刻や運賃と混同せず、出典や推定の根拠も各項目に残してください。徒歩経路を座標の直線距離だけから現実の経路として扱うことはできません。
 
@@ -122,7 +122,7 @@ npm run city:bundle -- apply artifacts/city-work/sample-city.json
 - インド編には既存の[制作補助](journeys/golden_triangle/scaffold/README.md)と[完成確認・公開手順](journeys/golden_triangle/drafts/RELEASE_GATE.md)があります。シナリオ・クイズとそのメタデータ・訳を用意したうえで、生成・検証できます。特殊戦B・Cは現行の制作補助では自動設定されず、別途制作・登録が必要です。
 - 都市や旅行編を公開可能にする判断と検証は、この編集操作とは別です。未完成の都市が本番でプレイ可能と表示されないよう、制作状態を維持します。
 
-調査資料として残すファイルと、現在のゲームに反映済みの値は一致しないことがあります。特に `authoring/journeys/golden_triangle/drafts/cities/` と `travel/` は古い研究由来の生成ドラフトで、現在の交通や入場料の正本ではありません。編集用コピーの代わりにそのドラフトを本番データへ上書きしないでください。同じ旅行編の `scenario/` には今回の脚本・クイズの制作記録を置き、実行用Inkの正本は `content/journeys/golden_triangle/stories/` にまとめています。
+調査資料として残すファイルと、現在のゲームに反映済みの値は一致しないことがあります。特に `authoring/journeys/golden_triangle/drafts/cities/` と `travel/` は古い研究由来の生成ドラフトで、現在の交通や入場料の正本ではありません。編集用コピーの代わりにそのドラフトを本番データへ上書きしないでください。同じ旅行編の `drafts/scenario/` には旧稿（2026-11-04 の「三分間の旅」）の脚本・クイズの下書きと制作記録を置き、実行用Inkの正本は `content/journeys/golden_triangle/stories/` にまとめています。
 
 ## ウズベキスタン4都市
 
@@ -130,4 +130,4 @@ npm run city:bundle -- apply artifacts/city-work/sample-city.json
 
 ## ルアンパパーン
 
-`npm run city:bundle -- export luang_prabang artifacts/city-work/laos-luang-prabang.json` で編集できます。市街地の観光候補・写真・徒歩と車の推定経路を登録し、旅行編は制作中です。根拠・交通の採否・未制作項目は[調査記録](journeys/luang_prabang/research/luang-prabang-20261104/README.md)を参照してください。クァンシーの滝と将来のツアー機能は含まれていません。
+`npm run city:bundle -- export luang_prabang artifacts/city-work/laos-luang-prabang.json` で編集できます。市街地の観光候補・写真・徒歩と車の推定経路を登録し、旅行編は制作中です。根拠・交通の採否・未制作項目は[調査記録](journeys/luang_prabang/research/luang-prabang-20261104/README.md)を参照してください。クァンシーの滝（郊外へのツアー）は登録していません。ツアー（`tours/`）は都市の作業コピーに含まれないので、[CONTENT_GUIDE のツアー](CONTENT_GUIDE.md#ツアー決まった行程の日帰り)の手順で別に作ります。
