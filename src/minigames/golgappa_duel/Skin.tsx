@@ -10,8 +10,9 @@ import "./skin.css";
 // 「ぽとっ」 as the player's lands: the beat to eat on); each count is under its bowl. A bite crumbles over the bowl (a
 // star right on the landing, with a bigger golden 「パリッ！」); a bite at nothing clacks and fills a drop of the choke
 // gauge beside the player's bowl, and a full gauge coughs one golgappa back into the bowl. A missed one stays in the
-// bowl. One golgappa before her 14th she says she is about to stop (her face under the band); her raised palm and
-// 「バス！」 come beside her face after it (the lane's flag meets its ring then); the onlookers count aloud from the 10th.
+// bowl (after her hand, the next one lands on it: a choke). Her face under the band as her 10th goes down (the sour
+// water gets to her), and one golgappa before her 14th she says she is about to stop; her raised palm and 「バス！」 come
+// beside her face after it (the lane's flag meets its ring then); the onlookers count aloud from the 10th.
 // With the use's art (`art.stall`, `art.heroine`, `art.bowl`, `art.puri`) those pictures take the drawn ones' places.
 
 /** Where things are, in percent of the field: the hand's height, the bowls (her on the left, the player's on the right). */
@@ -28,6 +29,8 @@ const COUNT_MS = 520;
 const COUNT_WORDS = ["", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七"];
 /** Her line as her 13th goes down (the heroine's quick reaction): the next one is her last. */
 const HER_NEXT_IS_LAST = "わたし、次でバス";
+/** The host shows her reactions at most this often (with a little to spare). */
+const REACT_APART_MS = 1600;
 
 /** The sounds of a play (definition `sounds`): a landing, a bite, her hand on the counter. */
 const SOUNDS = { land: "cork_pop", bite: "puri_crunch", her: "stamp" } as const;
@@ -52,6 +55,12 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
   const gaugeSize = tuning.strayLimit ?? 0;
   /** Her 13th eaten: she says the next is her last. */
   const herWarnMs = herLandings[GOLGAPPA_HER_STOP - 2] + numbers.herEatMs;
+  /**
+   * Her 10th eaten, as the onlookers start counting: the sour water gets to her (her face only). Not when it would come
+   * too near her warning for the host to show both (a reaction at most every 1.5 s; Debug's room's edited numbers).
+   */
+  const herTenthMs = herLandings[COUNT_FROM - 1] + numbers.herEatMs;
+  const tenthFace = herWarnMs - herTenthMs >= REACT_APART_MS;
 
   function GolgappaField({ cast, art, names, sound, vibrate, frames }: RhythmTapFieldProps<GolgappaParams, GolgappaOutcome>) {
     const hand = useRef<HTMLSpanElement>(null);
@@ -84,9 +93,12 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
       let biteKind: "perfect" | "good" = "good";
       let clackAt = Number.NEGATIVE_INFINITY;
       let coughAt = Number.NEGATIVE_INFINITY;
+      let tenth = false;
       let warned = false;
       let herUp = false;
       let finished = false;
+      let chokeAt: number | null = null;
+      let coughed = false;
       const place = (element: HTMLElement | null, x: number, y: number, shown: boolean) => {
         if (!element) return;
         element.style.left = `${x}%`;
@@ -102,14 +114,19 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
       return frames(({ ms, record, summary, outcome }) => {
         const { juice } = live.current.kit;
         const over = summary.ended !== null;
-        // The player's: landed so far (until the stop), eaten, left in the bowl (a missed one, or one coughed back).
-        const served = summary.came;
+        // The player's: landed so far (until the stop), eaten, left in the bowl (a missed one, or one coughed back). A
+        // choke with one left (after her hand the vendor no longer waits): the next one, already falling, lands on it.
+        const left = Math.max(0, summary.came - summary.hits) + summary.overflows;
+        const tailAt = summary.ended === "misses" && summary.endMs !== null && left < numbers.missLimit
+          ? yourBeats.find((beat) => beat > summary.endMs! && beat - summary.endMs! <= numbers.fallMs) ?? null : null;
+        const tailIn = tailAt !== null && ms >= tailAt ? 1 : 0;
+        const served = summary.came + tailIn;
         if (served > landed) {
           landed = served;
           live.current.sound(SOUNDS.land);
         }
         setYourCount(served);
-        setInBowl(Math.min(3, Math.max(0, served - summary.hits) + summary.overflows));
+        setInBowl(Math.min(3, left + tailIn));
         // A bite: its crunch, crumbs over the bowl (a star right on the landing) and the bowl pressed.
         if (summary.hits > hits) {
           hits = summary.hits;
@@ -143,6 +160,10 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
         const herLanded = herLandings.filter((time) => time <= ms).length;
         setHerCount(herLanded);
         setHerBowl(herLanded > 0 && ms - herLandings[herLanded - 1] < numbers.herEatMs && herLanded <= GOLGAPPA_HER_STOP);
+        if (tenthFace && !tenth && ms >= herTenthMs && !over) {
+          tenth = true;
+          live.current.kit.react("oops");
+        }
         if (!warned && ms >= herWarnMs && !over) {
           warned = true;
           live.current.kit.react("tease", HER_NEXT_IS_LAST);
@@ -155,21 +176,25 @@ export function golgappaSkinFor(game: GolgappaGame): RhythmTapSkin<GolgappaParam
         herUp = up;
         setHerStopped(up);
         setYouStopped(record.stopMs !== null && summary.ended === "stop");
-        // The end's moment in the field: the cough (a splash and a small shake), outlasting her (a shake and stars).
+        // The end's moment in the field: the cough (a splash and a small shake; once the next one has landed on the one
+        // left, when it was falling), outlasting her (a shake and stars).
         if (outcome && !finished) {
           finished = true;
-          if (outcome === "choke") {
-            setChoked(true);
-            live.current.vibrate("shake");
-            juice.burst(yourBowl.current, "splash", 1);
-            juice.shake("s");
-          } else if (outcome === "outlast") {
+          if (outcome === "choke") chokeAt = tailAt ?? ms;
+          else if (outcome === "outlast") {
             juice.burst(yourBowl.current, "star", 1.2);
             juice.shake("m");
           }
         }
-        // The falling ones: the player's (not after the stop or the end), hers (her 14 only).
-        const yours = over ? -1 : nextIndex(yourBeats, ms);
+        if (chokeAt !== null && !coughed && ms >= chokeAt) {
+          coughed = true;
+          setChoked(true);
+          live.current.vibrate("shake");
+          juice.burst(yourBowl.current, "splash", 1);
+          juice.shake("s");
+        }
+        // The falling ones: the player's (not after the stop or the end, but for the one landing on a choke), hers (her 14 only).
+        const yours = over ? (tailAt !== null && ms < tailAt ? yourBeats.indexOf(tailAt) : -1) : nextIndex(yourBeats, ms);
         const yourDrop = yours >= 0 ? falling(YOU, yourBeats[yours] - ms) : null;
         const herNext = nextIndex(herLandings, ms);
         const herDrop = herNext >= 0 && !(over && summary.ended !== "stop") ? falling(HER, herLandings[herNext] - ms) : null;

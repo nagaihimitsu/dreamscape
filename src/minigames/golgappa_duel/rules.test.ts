@@ -26,7 +26,7 @@ describe("the golgappa duel", () => {
     expect(beats).toHaveLength(17);
     expect(beats[1] - beats[0]).toBe(1200);
     expect(beats[GOLGAPPA_HER_STOP - 1] - beats[GOLGAPPA_HER_STOP - 2]).toBe(600);
-    expect(beats.slice(GOLGAPPA_HER_STOP - 1).map((beat, index, after) => (index ? beat - after[index - 1] : 0)).slice(1)).toEqual([480, 420, 420]);
+    expect(beats.slice(GOLGAPPA_HER_STOP - 1).map((beat, index, after) => (index ? beat - after[index - 1] : 0)).slice(1)).toEqual([460, 400, 360]);
     expect(rhythmTapWindow(GOLGAPPA_TUNING, GOLGAPPA_HER_STOP - 1).lateMs).toBeGreaterThan(rhythmTapWindow(GOLGAPPA_TUNING, GOLGAPPA_HER_STOP).lateMs);
     expect(end).toBeGreaterThan(14000);
     expect(end).toBeLessThan(16500);
@@ -71,6 +71,22 @@ describe("the golgappa duel", () => {
     expect(outcome({ hit: (index) => index < 5, stopAfter: 6 })).toBe("you_first");
   });
 
+  it("chokes on a single one missed after her hand (the vendor no longer waits), never with her 「バス」 before it", () => {
+    for (const index of [GOLGAPPA_HER_STOP, GOLGAPPA_HER_STOP + 1, GOLGAPPA_HER_STOP + 2])
+      expect(outcome({ hit: (beat) => beat !== index }), `missing the ${index + 1}th`).toBe("choke");
+    // The same slip before her hand leaves one in the bowl and goes on.
+    expect(outcome({ hit: (beat) => beat !== GOLGAPPA_HER_STOP - 1 })).toBe("outlast");
+    // Raising the hand with her: the fast ones after it do not count.
+    expect(outcome({ hit: (beat) => beat < GOLGAPPA_HER_STOP, stopAfter: GOLGAPPA_HER_STOP })).toBe("together");
+    // Late and a little early on the fast ones (inside −110/+200) is still eaten.
+    const { earlyMs, lateMs } = rhythmTapWindow(GOLGAPPA_TUNING, GOLGAPPA_HER_STOP);
+    expect([earlyMs, lateMs]).toEqual([GOLGAPPA_NUMBERS.peakEarlyMs, GOLGAPPA_NUMBERS.peakLateMs]);
+    const edges = beats.map((beat, index) => (index < GOLGAPPA_HER_STOP ? beat : index % 2 ? beat + lateMs : beat - earlyMs));
+    expect(golgappaRules.outcomeOf({ taps: edges, stopMs: null }, {})).toBe("outlast");
+    const past = beats.map((beat, index) => (index === GOLGAPPA_HER_STOP ? beat + lateMs + 1 : beat));
+    expect(golgappaRules.outcomeOf({ taps: past, stopMs: null }, {})).toBe("choke");
+  });
+
   it("chokes a masher at any speed, with or without a 「バス」 after her; a double tap now and then is no fault", () => {
     for (const gap of [100, 150, 200, 250, 300, 350, 400]) {
       expect(golgappaRules.outcomeOf({ taps: mash(gap), stopMs: null }, {}), `every ${gap} ms`).toBe("choke");
@@ -113,9 +129,9 @@ describe("the golgappa duel", () => {
 
   it("builds the same duel from its numbers, and another from edited ones (Debug's room)", () => {
     expect(golgappaGame(GOLGAPPA_NUMBERS).tuning).toEqual(GOLGAPPA_TUNING);
-    const slower = golgappaGame({ ...GOLGAPPA_NUMBERS, firstGapMs: 1500, peakLateMs: 250 });
+    const slower = golgappaGame({ ...GOLGAPPA_NUMBERS, firstGapMs: 1500, peakLateMs: 240 });
     expect(slower.tuning.beats[1] - slower.tuning.beats[0]).toBe(1500);
-    expect(slower.tuning.peak?.lateMs).toBe(250);
+    expect(slower.tuning.peak?.lateMs).toBe(240);
     expect(rhythmTapFairness(slower.tuning)).toEqual([]);
     expect(slower.handMs).toBeGreaterThan(GOLGAPPA_HER_HAND_MS);
   });

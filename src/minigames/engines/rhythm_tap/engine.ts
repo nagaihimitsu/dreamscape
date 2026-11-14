@@ -6,9 +6,9 @@ import type { MiniGameRating, MiniGameRules } from "../../contract";
 // it (one inside the finer `perfect` window is right on it: ぴったり); a beat whose window closes without one is missed;
 // a tap that meets no beat (or a beat already hit) is a stray. Taps before the first beat's window opens (a count-in,
 // the vendor's reach) are not counted at all: tapping along with a count is no fault. A skin may narrow the last beats'
-// windows (the play's peak), give the player a stop button (the play ends when they press it), a partner who stops after
-// a fixed beat, a limit of misses that ends the play, and a stray gauge (each stray fills it, each hit empties one; full,
-// it counts as a miss: mashing does not pay). Times are milliseconds of the host's clock from the play's start.
+// windows (the play's peak; a smaller limit of misses there too), give the player a stop button (the play ends when they
+// press it), a partner who stops after a fixed beat, a limit of misses that ends the play, and a stray gauge (each stray
+// fills it, each hit empties one; full, it counts as a miss: mashing does not pay). Times are milliseconds of the host's clock from the play's start.
 //
 // Audio latency (docs/13 2.11): the beats are judged against the screen's beat on the host's clock (input times through
 // clock.at(event.timeStamp)), never against the sound, and there is no per-device offset setting. A sound reaches the
@@ -30,8 +30,14 @@ export const rhythmTapTuningSchema = z.object({
   earlyMs: windowMs,
   /** A tap this much after a beat still hits it; when it has passed without one, the beat is missed. */
   lateMs: windowMs,
-  /** The play's peak: from the beat at index `from` (from 0) on, these windows (narrower than the others). */
-  peak: z.object({ from: z.number().int().nonnegative(), earlyMs: windowMs, lateMs: windowMs }).strict().optional(),
+  /**
+   * The play's peak: from the beat at index `from` (from 0) on, these windows (narrower than the others), and a smaller
+   * miss limit if given (`missLimit`: misses in all, the stray gauge's overflows with them, that end the play once a beat
+   * of the peak is missed or the gauge overflows in it: a slip there costs more).
+   */
+  peak: z.object({
+    from: z.number().int().nonnegative(), earlyMs: windowMs, lateMs: windowMs, missLimit: z.number().int().positive().optional(),
+  }).strict().optional(),
   /** A hit this close to its beat is right on it (ぴったり): a finer grade inside every window; none: one grade. */
   perfect: z.object({ earlyMs: windowMs, lateMs: windowMs }).strict().optional(),
   /** After the last beat, the play ends (by itself). */
@@ -117,6 +123,8 @@ export function rhythmTapFairness(tuning: RhythmTapTuning): string[] {
     if (perfect && (perfect.earlyMs > earlyMs || perfect.lateMs > lateMs)) problems.push(`the perfect window is wider than the ${name}hit window`);
   }
   if (peak && peak.from >= beats.length) problems.push(`peak.from ${peak.from} is past the last beat`);
+  if (peak?.missLimit !== undefined && tuning.missLimit !== undefined && peak.missLimit >= tuning.missLimit)
+    problems.push(`peak.missLimit ${peak.missLimit} is not smaller than missLimit ${tuning.missLimit}`);
   if (perfect) {
     if (perfect.earlyMs + perfect.lateMs < RHYTHM_TAP_MIN_PERFECT_MS) problems.push(`the perfect window is narrower than ${RHYTHM_TAP_MIN_PERFECT_MS} ms in all (a phone's tap lag)`);
     if (perfect.lateMs < perfect.earlyMs) problems.push("the perfect window is narrower late than early");
@@ -144,7 +152,7 @@ const isTime = (value: unknown): value is number => typeof value === "number" &&
  * the end. Nothing after the end counts (taps, the stop), nor taps before the first beat's window.
  */
 export function rhythmTapJudge(record: RhythmTapRecord, tuning: RhythmTapTuning, now = Number.POSITIVE_INFINITY): RhythmTapSummary {
-  const { beats, missLimit, strayLimit } = tuning;
+  const { beats, missLimit, peak, strayLimit } = tuning;
   const last = rhythmTapEnd(tuning);
   const stop = isTime(record.stopMs) && record.stopMs <= last ? record.stopMs : null;
   let ended: RhythmTapEnd | null = stop !== null && stop <= now ? "stop" : last <= now ? "end" : null;
@@ -160,7 +168,11 @@ export function rhythmTapJudge(record: RhythmTapRecord, tuning: RhythmTapTuning,
   let gauge = 0;
   let overflows = 0;
   let tapped = 0;
-  const limited = () => missLimit !== undefined && misses + overflows >= missLimit;
+  /** Whether the misses so far end the play, as of a slip at the beat at `index` (the peak's own limit from its first beat on). */
+  const limited = (index: number) => {
+    const limit = peak?.missLimit !== undefined && index >= peak.from ? Math.min(peak.missLimit, missLimit ?? peak.missLimit) : missLimit;
+    return limit !== undefined && misses + overflows >= limit;
+  };
   /** Misses every beat whose window closed before `time` (or at it, when `inclusive`); true when that reached the limit. */
   const close = (time: number, inclusive: boolean): boolean => {
     while (next < beats.length) {
@@ -170,7 +182,7 @@ export function rhythmTapJudge(record: RhythmTapRecord, tuning: RhythmTapTuning,
       offsets.push(null);
       misses += 1;
       next += 1;
-      if (limited()) {
+      if (limited(next - 1)) {
         cutoff = to;
         ended = "misses";
         return true;
@@ -198,7 +210,8 @@ export function rhythmTapJudge(record: RhythmTapRecord, tuning: RhythmTapTuning,
     if (gauge < strayLimit) continue;
     gauge = 0;
     overflows += 1;
-    if (limited()) {
+    // A tap at nothing on the way to a beat of the peak is a slip of the peak.
+    if (limited(next)) {
       cutoff = tap;
       ended = "misses";
       full = true;

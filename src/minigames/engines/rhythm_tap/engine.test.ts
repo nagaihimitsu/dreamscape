@@ -44,6 +44,20 @@ describe("the rhythm_tap engine", () => {
     expect(rhythmTapJudge({ taps: [1000, 1600, 2200 + 200, 2800 + 121, 3400 - 101], stopMs: null }, peaked).judged).toEqual(["hit", "hit", "hit", "miss", "miss"]);
   });
 
+  it("ends the play at the peak's own, smaller miss limit once a beat of the peak is missed (or the gauge overflows in it)", () => {
+    const peaked = { ...tuning, missLimit: 2, strayLimit: 3, peak: { from: 3, earlyMs: 100, lateMs: 120, missLimit: 1 } };
+    // Before the peak a single miss does not end the play; in it, one does (at the missed beat's window's end).
+    expect(rhythmTapJudge({ taps: [1000, 2200, 2800, 3400], stopMs: null }, peaked)).toMatchObject({ ended: "end", misses: 1 });
+    expect(rhythmTapJudge({ taps: [1000, 1600, 2200, 3400], stopMs: null }, peaked)).toMatchObject({ ended: "misses", misses: 1, endMs: 2800 + 120 });
+    // An overflow on the way to a beat of the peak ends it too; one before the peak does not.
+    expect(rhythmTapJudge({ taps: [1000, 1600, 2200, 2400, 2450, 2500, 2800], stopMs: null }, peaked)).toMatchObject({ ended: "misses", overflows: 1, endMs: 2500 });
+    expect(rhythmTapJudge({ taps: [1000, 1200, 1250, 1300, 1600, 2200, 2800, 3400], stopMs: null }, peaked)).toMatchObject({ ended: "end", overflows: 1 });
+    // A stop before the peak's beat is judged leaves it unjudged.
+    expect(rhythmTapJudge({ taps: [1000, 1600, 2200], stopMs: 2700 }, peaked)).toMatchObject({ ended: "stop", misses: 0 });
+    expect(rhythmTapFairness(peaked)).toEqual([]);
+    expect(rhythmTapFairness({ ...peaked, peak: { ...peaked.peak, missLimit: 2 } }).join()).toContain("peak.missLimit 2");
+  });
+
   it("fills the stray gauge with each stray and empties a drop with each hit; a full gauge counts as a miss toward the limit", () => {
     const gauged = { strayLimit: 3, missLimit: 2 };
     // Two strays, a hit (one drop off), two more: the gauge is full once, a miss.

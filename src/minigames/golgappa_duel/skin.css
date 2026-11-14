@@ -250,3 +250,18 @@
   .mg-golgappa-duel-count { font-size: 15px; }
   .mg-golgappa-duel-count small { font-size: 10px; }
 }
+/* A short screen: the engine sends 「バス」 up into the field (its top left); here it goes to the top right instead, under
+   where her face and bubble show (her 「わたし、次でバス」 is the play's only spoken cue), clear of the band's 「中断する」 and
+   right of the player's falling golgappa; the palm over the word keeps it narrow (still 44 px and more each way). */
+@media (max-height: 620px) {
+  .mg-engine-rhythm-tap:has(.mg-golgappa-duel) .mg-rhythm-tap-top[data-stop] { left: auto; right: 6px; top: 72px; }
+  .mg-engine-rhythm-tap:has(.mg-golgappa-duel) .mg-rhythm-tap-stop {
+    flex-direction: column;
+    gap: 0;
+    min-width: 60px;
+    min-height: 52px;
+    padding: 4px 10px;
+    font-size: 15px;
+    line-height: 1.15;
+  }
+}
