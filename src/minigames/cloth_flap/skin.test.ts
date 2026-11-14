@@ -74,6 +74,39 @@ describe("the flap's field", () => {
     expect(clothFlapSkin.Gauge).toBeDefined();
   });
 
+  it("lets her finish stepping off the gold step after a late flap before she turns (never turned on the gold step)", () => {
+    const { nicheMs, standAfter, walkerAt, stopsAt, standsAt, landingOf, reactionOf, footOn, NICHE } = CLOTH_FIELD_POINTS;
+    const next = CLOTH_FIELD.stepsToNiche + 1;
+    for (let late = CLOTH_TUNING.cleanLateMs + 1; late <= CLOTH_TUNING.nearLateMs + CLOTH_FIELD.stepMs; late += 10) {
+      const tapMs = nicheMs + late;
+      expect(clothFlapRules.outcomeOf(tapMs, {}), String(late)).toBe("late");
+      const turnsAt = reactionOf("late", tapMs).at;
+      // By the time she turns, her foot is down on a step (not in the air, not on the gold one).
+      const { foot, lift } = walkerAt(Math.min(turnsAt, stopsAt("late", tapMs)));
+      expect(lift, String(late)).toBe(0);
+      expect(foot, String(late)).not.toEqual(NICHE);
+      expect(turnsAt, String(late)).toBeGreaterThanOrEqual(stopsAt("late", tapMs) + 40);
+    }
+    // A flap just as she steps off: she lands on the next step, then turns there.
+    expect(stopsAt("late", nicheMs + standAfter + 50)).toBe(landingOf(next));
+    expect(walkerAt(stopsAt("late", nicheMs + 200)).foot).toEqual(footOn(next));
+    // Standing on a step, she stops at once; an early or perfect flap stops her where she is; no flap, never.
+    expect(standsAt(landingOf(next) + 10)).toBe(landingOf(next) + 10);
+    expect(stopsAt("early", nicheMs - 150)).toBe(nicheMs - 150);
+    expect(stopsAt("perfect", nicheMs)).toBe(nicheMs);
+    expect(stopsAt("frozen", null)).toBe(Number.POSITIVE_INFINITY);
+  });
+
+  it("rings one footstep a landing, the gold one higher and louder than the four before it", () => {
+    const { footstepLevel } = CLOTH_FIELD_POINTS;
+    expect(clothFlap.sounds).toContain("footstep");
+    expect(clothFlap.sounds).not.toContain("travel_walk");
+    const gold = footstepLevel(CLOTH_FIELD.stepsToNiche);
+    expect(gold.rate).toBeGreaterThan(1);
+    expect(gold.volume).toBeGreaterThan(footstepLevel(1).volume);
+    expect(footstepLevel(CLOTH_FIELD.stepsToNiche + 1).volume).toBeLessThan(footstepLevel(1).volume);
+  });
+
   it("shows the pigeon in two still places with less motion (it still leaves the niche), gliding otherwise", () => {
     const { pigeonAlong } = CLOTH_FIELD_POINTS;
     expect(pigeonAlong(0.2, true)).toBeLessThan(0.5);

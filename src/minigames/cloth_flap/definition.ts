@@ -15,7 +15,7 @@ import { defineMiniGame } from "../contract";
  *
  * Accessibility: 「広げる」 is 64px at the bottom (thumb reach), Space and Enter spread the cloth; in place of a meter, a
  * numbered mark for each of her steps lights as her foot lands (on the stairs and under the field; the gold one is larger
- * and glows, not colour alone), with a footstep sound on the first step and again on the gold one; with less motion she
+ * and glows, not colour alone), with a footstep sound on each (the gold one a little higher); with less motion she
  * does not bob on her steps, the cloth spreads at once without fluttering and the pigeon shows in two places instead of
  * flying across (her steps and the marks still move); the outcome is read out by the host.
  */
@@ -26,9 +26,9 @@ export const clothFlap = defineMiniGame({
   howToJa: "階段を下りてくる人の足が、くぼみの前の金色の段に着く瞬間に、「広げる」を1回押して布を広げる（約4秒）",
   outcomes: [
     { id: "perfect", labelJa: "目の前で広げた", noteJa: "金色の段に立っている間に押した", finishJa: "ばさっ！",
-      reaction: { kind: "laugh", linesJa: ["鳩、上手すぎ……！", "今の、完璧な鳩だった"] } },
+      reaction: { kind: "laugh", linesJa: ["鳩、上手すぎ！", "今の、完璧な鳩だった"] } },
     { id: "early", labelJa: "早すぎた", noteJa: "金色の段に足が着く前に押した", finishJa: "バレた！",
-      reaction: { kind: "tease", linesJa: ["せっかちな鳩……", "あっ、まだ早いよ……"] } },
+      reaction: { kind: "tease", linesJa: ["ふふ、せっかちな鳩"] } },
     { id: "late", labelJa: "遅すぎた", noteJa: "金色の段から足が離れてから押した", finishJa: "後ろから！",
       reaction: { kind: "laugh", linesJa: ["後ろから来る鳩、初めて見た"] } },
     { id: "frozen", labelJa: "広げられなかった", noteJa: "最後まで押さなかった", finishJa: "固まった！",
@@ -48,7 +48,7 @@ export const clothFlap = defineMiniGame({
   music: "bright",
   timed: true,
   keysJa: "Space・Enter で広げる",
-  sounds: ["travel_walk", "cloth_flap", "pigeon_flutter"],
+  sounds: ["footstep", "cloth_flap", "pigeon_flutter"],
   quietScene: false,
   art: [],
   artSlots: [
