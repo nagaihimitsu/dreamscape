@@ -137,8 +137,11 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_hotel_alley
 # speaker: narrator
 翌朝六時。車の窓が下り、カムラが顔を出した。見送りに来た二人を見ても、表情は変えない。
+# speaker: gt_kamla
+アーグラでも、言いたいことは言いなさい
 # speaker: narrator
-アーグラでも、言いたいことは言いなさい。それだけ言って、窓は上がった。車が角を曲がるまで、後ろの窓の小さな手は、ずっと揺れていた。
+# leave: gt_kamla
+それだけ言って、窓は上がった。車が角を曲がるまで、後ろの窓の小さな手は、ずっと揺れていた。
 # speaker: heroine
 # reaction: heroine,teasing,music
 # voice: gt_delhi_epilogue_009
