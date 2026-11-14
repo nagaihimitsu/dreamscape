@@ -65,6 +65,9 @@ export const ROTI_NUMBERS = {
 } as const;
 export type RotiNumbers = { readonly [Key in keyof typeof ROTI_NUMBERS]: number };
 
+/** A dough under this many times the ball's area is still the ball (the card says 「まだ玉のまま」, not how round). */
+export const ROTI_BALL_AREA = 1.3;
+
 /** What each window of Harbans's beat is (the skin's words and the tava's glow follow it). */
 export type RotiWindowKind = "open" | "pause" | "quick" | "breath" | "hot";
 /** The windows in order, and what his hand does after each (the last ends the play: he lifts the roti). */
@@ -214,10 +217,12 @@ export function rotiGame(numbers: RotiNumbers = ROTI_NUMBERS): RotiGame {
   });
   const perfect = (measures: ShapeMeasures) =>
     measures.span >= numbers.bigSpan && Math.round(measures.roundness * 100) >= Math.round(numbers.perfectRoundness * 100);
-  // A box says how boxy (group2 N2: 「丸さ 81%」 on a box read like a round one); まん丸 only on the ★3 roti (N3).
+  // A box says how boxy (group2 N2: 「丸さ 81%」 on a box read like a round one); まん丸 only on the ★3 roti (N3). A ball
+  // barely rolled or not at all says so, not its roundness (2026-11-14 playtest: doing nothing read 「丸さ 100%」).
   const score = (measures: ShapeMeasures, outcome: RotiOutcome): string | undefined => {
     if (outcome === "torn") return undefined;
     if (outcome === "truck_bed") return `四角さ ${Math.round(measures.boxiness * 100)}%`;
+    if (outcome === "country" && measures.area < numbers.roundArea) return measures.area < ROTI_BALL_AREA ? "まだ玉のまま" : "伸ばし足りない";
     const round = `丸さ ${roundness(measures).percent}%`;
     if (outcome !== "round" || measures.span < numbers.bigSpan) return round;
     return perfect(measures) ? `${round}・まん丸・大きさ ◎` : `${round}・大きさ ◎`;

@@ -67,9 +67,12 @@
 .mg-roti-rolling-harbans-figure .character-figure { position: absolute; left: -50%; top: 0; width: 200%; height: auto; }
 .mg-roti-rolling-harbans-figure .character-figure img,
 .mg-roti-rolling-harbans-figure .character-figure svg { width: 100%; height: auto; object-position: center top; }
+/* His word: to the left of his figure, clear of it and over it (2026-11-14 playtest: its end ran under him), and held long
+   enough to read (opaque about 1.6 s; it fades out after). Without his figure (Debug's room), from his corner. */
 .mg-roti-rolling-harbans-word {
   position: absolute;
-  right: 70%;
+  z-index: 2;
+  right: 96%;
   top: 30%;
   padding: 3px 10px;
   border: 1.5px solid var(--ds-slate-800);
@@ -80,12 +83,13 @@
   font-weight: 700;
   white-space: nowrap;
   box-shadow: var(--ds-window-shadow);
-  animation: mg-roti-rolling-word 1100ms ease-out forwards;
+  animation: mg-roti-rolling-word 2000ms ease-out forwards;
 }
+.mg-roti-rolling-harbans:not([data-figure]) .mg-roti-rolling-harbans-word { right: 8px; top: 8px; }
 @keyframes mg-roti-rolling-word {
   0% { opacity: 0; transform: translateY(4px); }
-  12% { opacity: 1; transform: translateY(0); }
-  80% { opacity: 1; }
+  6% { opacity: 1; transform: translateY(0); }
+  86% { opacity: 1; }
   100% { opacity: 0; }
 }
 .mg-roti-rolling { display: block; width: 100%; height: 100%; overflow: visible; }

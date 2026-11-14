@@ -112,24 +112,38 @@ function windowOf(game: RotiGame, view: Pick<ShapeDragView, "hand" | "rolls">) {
   return { index, slot, stroked: count > 0, full: count >= (slot?.kind === "pause" ? 2 : 1) };
 }
 
-/** Harbans's word for the moment (shown, never in the story), and what it is keyed on (a new key shows it afresh). */
+/** His word as a window of the twist or the climax begins (the long pause, the quick pair, the hot tava), if it has one. */
+function slotWord(game: RotiGame, index: number): string | null {
+  const slot = game.windows[index];
+  if (!slot || (index > 0 && game.windows[index - 1].kind === slot.kind)) return null;
+  return slot.kind === "pause" ? "鉄板を見てくる。二回、押せ" : slot.kind === "quick" ? "速くするぞ" : slot.kind === "hot" ? "鉄板が熱い。急げ" : null;
+}
+
+/**
+ * Harbans's word for the moment (shown, never in the story), and what it is keyed on (a new key shows it afresh). A word
+ * stays over the moment after it until something new is said (2026-11-14 playtest: they faded within about a second): a
+ * window's word over his hand's visit after it, his 「粉だ」 over the breath after the feint.
+ */
 export function rotiHarbansWord(game: RotiGame, seed: number, view: ShapeDragView): { key: string; word: string } | null {
   if (view.outcome !== null || view.pin) return null;
   if (view.hand?.phase && view.hand.deg === 0) return { key: `feint${view.hand.visit}`, word: "粉だ" };
   const { index, slot, stroked } = windowOf(game, view);
+  // His hand on the dough after a window that had no stroke: that window's word stays (visit v follows window v).
+  const closed = index < 0 && view.hand ? view.hand.visit : -1;
+  const closedWindow = closed >= 0 ? game.windows[closed] : undefined;
+  const closedWord = closedWindow && !view.rolls.some((roll) => roll.at >= closedWindow.from && roll.at <= closedWindow.to) ? slotWord(game, closed) : null;
+  if (closedWord) return { key: `slot${closed}`, word: closedWord };
   if (stroked || (index < 0 && view.strokes > 0)) {
     const key = `stroke${view.strokes}`;
     if (view.rolls.at(-1)?.skid) return { key, word: "おっと、手だ" };
     if (game.note(view.measures)) return { key, word: "おっと" };
     return rotiFollowedArrow(seed, view.rolls) ? { key, word: "そうだ" } : null;
   }
-  // The twist and the climax, as each begins: the long pause, the quick pair, the hot tava.
-  if (slot && (index === 0 || game.windows[index - 1].kind !== slot.kind)) {
-    if (slot.kind === "pause") return { key: `slot${index}`, word: "鉄板を見てくる。二回、押せ" };
-    if (slot.kind === "quick") return { key: `slot${index}`, word: "速くするぞ" };
-    if (slot.kind === "hot") return { key: `slot${index}`, word: "鉄板が熱い。急げ" };
-  }
-  return null;
+  // The breath after the feint, before a stroke: his 「粉だ」 stays.
+  if (slot?.kind === "breath" && game.hand.turns[index - 1]?.deg === 0) return { key: `feint${index - 1}`, word: "粉だ" };
+  // The twist and the climax, as each begins.
+  const word = slot ? slotWord(game, index) : null;
+  return word ? { key: `slot${index}`, word } : null;
 }
 
 /** The roti's skin built from its game (the story's, or Debug's room's edited numbers: play.ts retune). */
@@ -147,11 +161,12 @@ export function rotiSkinFor(game: RotiGame): ShapeDragSkin<RotiParams, RotiOutco
         {art.kitchen && <img className="mg-roti-rolling-kitchen mg-photo" src={art.kitchen} alt="" draggable={false} />}
         {/* The tava, waiting in the corner: it glows in the hot windows at the end. */}
         <span className="mg-roti-rolling-tava" data-hot={hot || undefined} data-still={still || undefined} data-testid="roti-tava" />
-        {/* Harbans (the scene's speaker), looking on from the table's far corner; a word now and then. */}
-        {cast.person && (
-          <span className="mg-roti-rolling-harbans">
-            <span className="mg-roti-rolling-harbans-figure">{cast.person}</span>
-            {said && <span className="mg-roti-rolling-harbans-word" key={said.key}>{said.word}</span>}
+        {/* Harbans (the scene's speaker), looking on from the table's far corner; a word now and then, from his corner
+            even where the scene gives no figure (Debug's room: 2026-11-14 playtest, the twist and the climax went unsaid). */}
+        {(cast.person || said) && (
+          <span className="mg-roti-rolling-harbans" data-figure={cast.person ? true : undefined}>
+            {cast.person && <span className="mg-roti-rolling-harbans-figure">{cast.person}</span>}
+            {said && <span className="mg-roti-rolling-harbans-word" key={said.key} data-testid="roti-word">{said.word}</span>}
           </span>
         )}
       </div>
@@ -361,7 +376,7 @@ export function rotiSkinFor(game: RotiGame): ShapeDragSkin<RotiParams, RotiOutco
     tuning,
     classifier: game.shapes,
     rules: game.rules,
-    hintJa: "ハルバンスが回すあいだに、矢印の向きに一回ずつ",
+    hintJa: "ハルバンスが回す合間に、矢印の向きに一回ずつ",
     doneJa: "できた",
     doneHintJa: "ローティーを伸ばし終えるときに押します。押さなくても、ハルバンスが鉄板に運ぶときに終わります。",
     autoJa: "おまかせで伸ばしています",

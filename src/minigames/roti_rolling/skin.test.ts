@@ -104,7 +104,7 @@ describe("the roti's field", () => {
     expect(backdrop({})).not.toContain('data-hot="true"');
   });
 
-  it("gives Harbans a word for the twist, the feint, a skid, a stroke the arrow's way (shown only with a speaker)", () => {
+  it("gives Harbans a word for the twist, the feint, a skid, a stroke the arrow's way (from his corner, his figure with a speaker)", () => {
     const at = (ms: number, change: Partial<ShapeDragView> = {}) => rotiHarbansWord(ROTI_GAME, 7, { ...view, hand: shapeHandView(ROTI_HAND, ms), ...change })?.word ?? null;
     const begins = (kind: string) => ROTI_WINDOWS[ROTI_WINDOWS.findIndex((window) => window.kind === kind)].from + 100;
     expect(at(100)).toBeNull();
@@ -112,18 +112,29 @@ describe("the roti's field", () => {
     expect(at(begins("quick"))).toBe("速くするぞ");
     expect(at(begins("hot"))).toBe("鉄板が熱い。急げ");
     expect(at(ROTI_HAND.turns.find((item) => item.deg === 0)!.at)).toBe("粉だ");
+    // A word stays over the moment after it, to be read (2026-11-14 playtest: they faded within about a second): a window's
+    // over his hand's visit after it (with no stroke in it), his 「粉だ」 over the breath after the feint.
+    const quick = ROTI_WINDOWS.findIndex((window) => window.kind === "quick");
+    expect(at(ROTI_HAND.turns[quick].at)).toBe("速くするぞ");
+    const breath = ROTI_WINDOWS.findIndex((window) => window.kind === "breath");
+    expect(at(ROTI_WINDOWS[breath].from + 100)).toBe("粉だ");
+    expect(at(ROTI_WINDOWS[breath + 1].from + 100)).toBe("鉄板が熱い。急げ");
     const followed = [roll([], 400)];
     expect(at(600, { rolls: followed, strokes: 1 })).toBe("そうだ");
     expect(at(600, { rolls: [roll([], 400, 90)], strokes: 1 })).toBeNull();
     expect(at(600, { rolls: [{ ...followed[0], skid: true }], strokes: 1 })).toBe("おっと、手だ");
     expect(rotiFollowedArrow(7, followed)).toBe(true);
     expect(rotiFollowedArrow(7, [roll([], 400, 30)])).toBe(false);
-    // On the field: only with the scene's speaker.
+    // On the field: his figure with the scene's speaker; his word from his corner without one too (Debug's room: 2026-11-14
+    // playtest), nothing of him while he has nothing to say.
     const withHim = renderToStaticMarkup(createElement(rotiSkin.Backdrop,
       { ...props({}, { rolls: followed, strokes: 1, hand: shapeHandView(ROTI_HAND, 600) }), cast: { heroine: null, person: createElement("i", { "data-testid": "harbans" }) } }));
     expect(withHim).toContain('data-testid="harbans"');
     expect(withHim).toContain("そうだ");
-    expect(backdrop({}, { rolls: followed, strokes: 1 })).not.toContain("mg-roti-rolling-harbans");
+    const alone = backdrop({}, { rolls: followed, strokes: 1, hand: shapeHandView(ROTI_HAND, 600) });
+    expect(alone).toContain("そうだ");
+    expect(alone).not.toContain("mg-roti-rolling-harbans-figure");
+    expect(backdrop({}, { hand: shapeHandView(ROTI_HAND, 100) })).not.toContain("mg-roti-rolling-harbans");
     expect(centreStroke(0, 0.5)).toBeTruthy();
   });
 

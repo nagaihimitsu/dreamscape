@@ -237,7 +237,7 @@ INCLUDE modules.ink
     }
 * [ローティー：地図のような形になった # option: country]
     # speaker: narrator
-    伸ばした生地は、丸とも四角ともつかない形になった。ハルバンスが、目を細める。
+    生地は、思ったようには伸びてくれなかった。ハルバンスが、目を細める。
     # speaker: gt_harbans
     ほう。こっちはスリランカだ。インドの南には、島がないとな
     { romance_result == "negative":

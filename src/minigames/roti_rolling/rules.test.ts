@@ -171,6 +171,10 @@ describe("the roti's shapes", () => {
     const box = measuresOf(ROTI_AUTO.truck_bed);
     expect(rotiDetail(box, "truck_bed")).toBe(`四角さ ${Math.round(box.boxiness * 100)}%`);
     expect(rotiDetail(measuresOf(ROTI_AUTO.country), "country")).toMatch(/^丸さ \d+%$/u);
+    // A ball never rolled, or barely, says so (2026-11-14 playtest: doing nothing read 「丸さ 100%」 on the ball).
+    expect(rotiDetail(measuresOf([]), "country")).toBe("まだ玉のまま");
+    expect(rotiDetail(measuresOf([inWindow(centreStroke(UP, 0.5), 0)]), "country")).toBe("伸ばし足りない");
+    expect(rotiRules.rate!([], {})).toEqual({ stars: 1, scoreJa: "まだ玉のまま" });
   });
 
   it("rates in step with the outcome: まん丸 (big, 88%) ★3, other round ★2, a box, a country or a hole ★1", () => {
