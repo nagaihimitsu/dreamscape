@@ -21,7 +21,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_red_fort_guide_002
 あっ、カムラさんの暗号！　これは大事なものです、すみません
 # speaker: narrator
-係員が先に拾い上げ、一行目のヒンディー語を読んで、少し笑った。「夜に、また来るのね」
+係員が先に拾い上げ、一行目のヒンディー語を読んで、「暗くなってから、ね」とだけ言って少し笑った。次の鞄が、もう台に載っている。
 # speaker: narrator
 返ってきた切れ端の一行目を、指でなぞる。赤い城、暗くなってから。今は、まだ明るい昼間だ。
 # speaker: heroine
@@ -229,8 +229,10 @@ INCLUDE modules.ink
 # ambience: gt_amb_street_traffic
 # speaker: narrator
 赤い城、暗くなってから。カムラの一覧の一行目が気になって、二人はもう一度、レッド・フォートの城門の前に来ていた。
+# speaker: narrator
+メモを見せると、門の係員は首をかしげた。
 # speaker: gt_delhi_red_fort_guide
-暗くなってから？　昼の見学は日没までですよ。そのあとは、夜のショーの券がある人だけ
+暗くなってから？　昼の券で入れるのは、日没までですよ
 # speaker: narrator
 # se: phone_ring
 夜まで待つか、出直すか。顔を見合わせたところへ、宿の主人から電話が入った。
@@ -265,7 +267,7 @@ INCLUDE modules.ink
 # speaker: narrator
 デリーに着いた日に、カムラが書いてくれた見どころの一覧。五行の場所と、一行ずつの妙な注釈。アマンは読み進めるほど、顔をこわばらせた。
 # speaker: enemy
-『鉄の柱、もう抱けない、腹立たしい』『東の門から三本目の木陰』……。誰かに話しかけてるみたいな書き方だ
+『鉄の柱、もう抱けない、腹立たしい』『東の門から三本目の木陰』……。誰かに文句を言ってるみたいだ
 # speaker: enemy
 最近の祖母は、亡くなった祖父に話しかけるんです。誰もいない椅子に、『プラカーシュ』って。これも、きっと
 # speaker: narrator
@@ -327,7 +329,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # se: gt_auto_rickshaw_horn
-日が傾くころ、アマンが路地の出口でオートリキシャを止めた。
+日が傾くころ、アマンがオートリキシャを止めた。
 # speaker: gt_delhi_auto_driver
 メーターは壊れてるよ
 # speaker: narrator

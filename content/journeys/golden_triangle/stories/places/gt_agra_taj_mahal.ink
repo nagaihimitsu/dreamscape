@@ -244,7 +244,7 @@ INCLUDE modules.ink
 # background: gt_bg_agra_mehtab_bagh
 # ambience: amb_wind
 # speaker: narrator
-日が傾くころ、一行は川を渡った。メヘターブ・バーグの岸辺。夕日に染まるタージが、川向こうに正面から見えた。
+夕方、一行は川を渡った。メヘターブ・バーグの岸辺。夕日に染まるタージが、川向こうに正面から見えた。
 # speaker: enemy
 皇帝は、この岸に、自分のための黒いタージを建てるつもりだった。白い妃と、黒い皇帝。川を挟んで、永遠に見つめ合うはずだったのです
 # speaker: narrator
@@ -339,7 +339,7 @@ INCLUDE modules.ink
 # speaker: narrator
 {heroine_name}は、川向こうの白い墓から、杖を握るアンワルの手に目を移した。
 # speaker: narrator
-切られたと語られてきた手は、次の都を建てに行ったと伝わる。墓と一緒に生まれた町には、七代続く家がある。
+切られたと語られてきた手は、切られずに、次の都を建てに行ったと伝わる。
 # speaker: heroine
 # bgm: touching_moments_four
 アンワルさん。わたし、今日聞いた中で一番泣けるのは、アンワルさんの話だと思います

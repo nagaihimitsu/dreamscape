@@ -109,7 +109,7 @@ INCLUDE modules.ink
 # speaker: narrator
 三つ目の主張は、一番下に、一番大きな字で書いてあった。
 # speaker: narrator
-この墓を建てた皇妃ヌール・ジャハーンは、タージ・マハルの設計にも関わった。
+『この墓を建てた皇妃ヌール・ジャハーンは、タージ・マハルの設計にも関わった』
 # speaker: narrator
 {heroine_name}のペンが、紙の上で止まった。ヴィムラーがその手元をのぞき込む。
 # speaker: enemy

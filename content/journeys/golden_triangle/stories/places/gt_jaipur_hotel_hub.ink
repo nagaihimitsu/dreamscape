@@ -23,7 +23,7 @@ INCLUDE modules.ink
 花婿の行列は、旅の最後の夜、旧市街のハワー・マハルの近くを通ります
 # speaker: gt_aman
 # phone: received
-祖母も、もうジャイプールに移っています。あなたに踊らせると言っています。逃げ道はありません
+祖母も、もうジャイプールの叔父の家に移っています。あなたに踊らせると言っています。逃げ道はありません
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 お、踊らせる……！？　行くとは言ったけど、踊るとは言ってない……！

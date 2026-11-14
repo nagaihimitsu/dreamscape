@@ -146,7 +146,7 @@ INCLUDE modules.ink
 # speaker: narrator
 翌朝六時、路地。宿の主人と、娘のルーヒーも、眠そうな顔で出てきている。
 # speaker: narrator
-車の窓が下り、カムラが顔を出した。見送りに来た二人を見ても、表情は変えない。
+車の窓が下り、カムラが顔を出した。見送りに来た{heroine_name}たちを見ても、表情は変えない。
 # speaker: gt_kamla
 アーグラでも、言いたいことは言いなさい
 # speaker: narrator

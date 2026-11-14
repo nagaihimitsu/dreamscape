@@ -95,7 +95,7 @@ INCLUDE modules.ink
     # speaker: heroine
     ニキルさんは、結婚式の段取りも三十枚のスライドにしてる。それで、タンヴィさんに『次は、場所から一緒に決めて』って言われてる
     # speaker: narrator
-    タージ・マハルのベンチで、指輪を出しそびれた二人だ。
+    タージ・マハルのベンチで、指輪を出しそびれた二人。
 }
 {
 - cond("date gt_agra_date_guru_ka_taal"):
@@ -107,7 +107,7 @@ INCLUDE modules.ink
     # speaker: heroine
     ソニアさんは、十年後に州の代表。写真代も、ずっと高くなってるね
     # speaker: narrator
-    メヘターブ・バーグの外の空き地で会った、十二歳のキャプテンだ。
+    メヘターブ・バーグの外の空き地の、十二歳のキャプテン。
 - else:
     # speaker: heroine
     道を教えてくれた人たち。全員、違う方向を指さした人たち。今ごろ、次の旅行者にも、自信満々で違う方向を教えてる
@@ -118,7 +118,7 @@ INCLUDE modules.ink
 # speaker: heroine
 # emotion: teasing
 じゃあ、最後の噂。わたしたちのことは、みんな、何て言ってると思う？
-* [「サミールさんは、まだ新婚だと思ってる」 # option: rumor_newlyweds]
+* [「サミールさんの帳面には、また何か書いてある」 # option: rumor_newlyweds]
     # profile: playful
     { romance_result == "negative":
         # speaker: heroine
