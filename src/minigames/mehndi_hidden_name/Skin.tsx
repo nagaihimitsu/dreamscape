@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type FocusEvent, type PointerEvent, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties, type FocusEvent, type PointerEvent, type ReactNode } from "react";
 import type { SearchFieldProps, SearchSkin } from "../engines/search/EnginePlay";
 import { useMiniGameKit } from "../host/kit";
 import { fieldPoint } from "../host/seed";
@@ -9,13 +9,19 @@ import {
 import "./skin.css";
 
 // The hidden name's field (a search skin): her right palm held out in the night, the mehndi's broad lines dim; where the
-// lamp is held (a soft-edged pool of light that flickers a little), the fine lines come out, and at one place, writing
-// that pretends to be pattern. Drag to move the lamp (it rides a little above a finger, so the finger does not hide what
-// it lights), tap to point. A wrong place: her word by it and a dashed ring (the look goes on); from the third on, she
-// only hints the area (a dotted ring round it for a moment, 「このへん、かな」): the find is always the player's. The six
-// places are buttons for Tab and the screen reader; a pointer hits them by where it lands. Finding the writing is the one moment of impact: a short stop, stars from the writing (the host's
-// juice). With the use's art (`art.palm`, `art.lamp`), those pictures in place of the drawn hand and lamp; the writing is
-// drawn by the game either way.
+// lamp is held (a small soft-edged pool of light that flickers a little), the fine lines come out, and at one place,
+// writing that pretends to be pattern. Round 3 (2026-11-14) made the look a hunt: the pool is small, so the palm must be
+// explored; at each other place the fine lines curl into something that looks like writing at a glance (never letters of
+// any script); the real writing catches the light now and then (a glint, the tell); and her hand is the hot and cold: with
+// the lamp near the writing her fingers curl in and she teases once (「ふふ……どうかな」: she knows what is written), or, in
+// the branch where she does not know (FARHANA), she leans in (「ん？　そこ、何か……」); the lamp held long on another
+// place, 「そこ、じっと見すぎ」 once. Drag to move the lamp (it rides a little above a finger, so the finger does not hide
+// what it lights), tap to point. A wrong place: her word by it, her teasing face and a dashed ring (the look goes on);
+// from the third on, she only hints the area (a dotted ring round it for a moment, 「このへん、かな」): the find is always
+// the player's. The six places are buttons for Tab and the screen reader; a pointer hits them by where it lands. Finding
+// the writing is the one moment of impact: a short stop, the pool opening over the whole palm, the writing swelling, her
+// surprised face, stars from it (the host's juice). With the use's art (`art.palm`, `art.lamp`), those pictures in place
+// of the drawn hand and lamp; the writing and the curls are drawn by the game either way.
 
 /** The hand's drawing, in its own units (the field keeps this shape: 5 wide to 7 high). */
 const W = 300;
@@ -45,6 +51,19 @@ const WRITING: Record<MehndiTarget, { x: number; y: number; rotate: number; widt
 /** Where the central vine's line breaks behind the writing hidden in it (in the writing's own frame): lit only, so the
  * dark shows no gap to give it away. */
 const VINE_GAP = { x: -16, y: -11, width: 32, height: 21 };
+/**
+ * The curls at each place that look like writing at a glance (lit only; drawn where the writing is not): a row of loops
+ * (count, height, width of each), a slant, an offset from the place's centre, and a dotted underline or not. No letters
+ * of any script: loops and dots only.
+ */
+const LOOKALIKES: Record<MehndiSpot, { loops: number; h: number; w: number; rotate: number; dx: number; dy: number; dots: boolean }> = {
+  index: { loops: 3, h: 6, w: 6, rotate: -15, dx: 0, dy: 20, dots: true },
+  pinky: { loops: 4, h: 5, w: 6, rotate: 10, dx: 2, dy: 22, dots: false },
+  peacock: { loops: 3, h: 8, w: 5, rotate: -8, dx: 0, dy: 12, dots: true },
+  thumb: { loops: 3, h: 6, w: 7, rotate: -22, dx: -2, dy: 20, dots: false },
+  vine: { loops: 4, h: 6, w: 6, rotate: -14, dx: 4, dy: -2, dots: true },
+  wrist: { loops: 5, h: 4, w: 6, rotate: 0, dx: 0, dy: -8, dots: false },
+};
 /** Her word at a wrong place (the look goes on), by the place, then before the hints; and her hint of the area. */
 const WRONG_JA: Record<MehndiSpot, string> = {
   index: "そこは、ただの花びら",
@@ -56,6 +75,17 @@ const WRONG_JA: Record<MehndiSpot, string> = {
 };
 const AGAIN_JA = "そこでもないよ。次も外れたら、教えちゃうね";
 const HINT_JA = "このへん、かな";
+/**
+ * Her hand as the hot and cold: the lamp near the writing (she knows it is there / she does not), held long elsewhere.
+ * They come again, in turn, each time the lamp comes near again or rests on another place again (2026-11-14 playtest: once
+ * each, a long sweep went silent), at most once in TELL_AGAIN_MS.
+ */
+const NEAR_KNOWS_JA = ["ふふ……どうかな", "……さあ、どうでしょう", "あ、そこは……ううん、なんでもない"] as const;
+const NEAR_WONDERS_JA = ["ん？　そこ、何か……", "え、そこ？　何かある？", "……そこだけ、模様がこみいってる"] as const;
+const LINGER_JA = ["そこ、じっと見すぎ", "そこばっかり見てる", "……そこ、そんなに気になる？"] as const;
+const TELL_AGAIN_MS = 3500;
+/** The lamp near the writing this long before her hand tells (a lamp only passing by does not). */
+const NEAR_DWELL_MS = 200;
 /** How long her word (and her hint's ring) shows (the play's clock). */
 const SAID_MS = 1600;
 /** The stop as the writing is found (ms). */
@@ -64,6 +94,16 @@ const FOUND_STOP_MS = 120;
 const DRAG_PX = 10;
 /** A finger's lamp rides this far above it (px). */
 const FINGER_LIFT_PX = 52;
+/**
+ * What a lifted finger points at (2026-11-14 playtest: a finger held still to light what was above it, then lifted, pointed
+ * at the place under the finger): a finger that holds the lamp still over a place for AIM_MS aims at what is lit (a ring
+ * and 「離すと、ここ」), and lifting it points there; a tap (lifted sooner, not moved) points under the finger, and the lamp
+ * goes there; a drag, or a still finger whose lamp lit no place, points at nothing. A finger's lamp shows LAMP_SHOW_MS after
+ * it goes down (a tap never flashes the lamp above the finger first).
+ */
+const AIM_MS = 450;
+const LAMP_SHOW_MS = 120;
+const AIM_JA = "離すと、ここ";
 const SOUNDS = { found: "clue_new", wrong: "ui_tap" } as const;
 
 /** The place a point (in the hand's units) points at: the nearest within `reach`, if any. */
@@ -73,11 +113,32 @@ export function mehndiSpotAt(x: number, y: number, reach = MEHNDI_HIT): number |
   return distances[nearest] <= reach ? nearest : null;
 }
 
+/**
+ * Whether a point of the lamp (in the hand's units) is near the place to point at for the writing (her hand's hot and cold):
+ * centred on the place a point finds, so it never fires nearer another place (2026-11-14 playtest: the thumb's tell fired
+ * with the lamp nearer the central vine).
+ */
+export function mehndiNear(x: number, y: number, target: MehndiTarget, units = MEHNDI_TUNING.nearUnits): boolean {
+  return Math.hypot(MEHNDI_PLACES[target].x - x, MEHNDI_PLACES[target].y - y) <= units;
+}
+
 /** The writing's size: the name as typed, smaller for a long one, never cut (docs/13 2.10). */
 export function writingSize(text: string, width: number): { fontSize: number; squeeze: boolean } {
   const em = [...text].reduce((sum, char) => sum + ((char.codePointAt(0) ?? 0) >= 0x2e80 ? 1 : 0.62), 0) || 1;
   const fontSize = Math.min(11, width / em);
   return fontSize >= 4.5 ? { fontSize, squeeze: false } : { fontSize: 4.5, squeeze: true };
+}
+
+/** A row of loops like a hurried hand's writing (no letters): `loops` loops `h` high and `w` wide, centred on 0. */
+export function mehndiLoops(loops: number, h: number, w: number): string {
+  let d = `M${(-loops * w) / 2} 0`;
+  for (let index = 0; index < loops; index += 1) {
+    // Up and over into a small loop, then on along the line (each a little taller or shorter, like a hand's).
+    const tall = h * (index % 2 ? 0.75 : 1);
+    d += ` c${(w * 0.25).toFixed(1)} ${(-tall).toFixed(1)} ${(w * 0.9).toFixed(1)} ${(-tall).toFixed(1)} ${(w * 0.45).toFixed(1)} 0`;
+    d += ` c${(-w * 0.1).toFixed(1)} ${(tall * 0.35).toFixed(1)} ${(w * 0.35).toFixed(1)} ${(tall * 0.35).toFixed(1)} ${(w * 0.55).toFixed(1)} 0`;
+  }
+  return d;
 }
 
 /** Three turns of a vine, round the thumb's base (an Archimedean spiral; the same lines every time). */
@@ -153,7 +214,10 @@ function BroadLines({ target, lit }: { target: MehndiTarget; lit: boolean }) {
   );
 }
 
-/** The fine lines the lamp brings out: dots, inner petals, the feather's barbs, leaves on the vine. */
+/**
+ * The fine lines the lamp brings out: dots, inner petals, the feather's barbs, leaves on the vine; and at each place but
+ * the writing's, curls that look like writing at a glance (the temptation to point too soon).
+ */
 function FineLines({ target }: { target: MehndiTarget }) {
   const dots = (points: [number, number][]) => points.map(([x, y]) => <circle key={`${x}-${y}`} cx={x} cy={y} r="1.4" className="mg-mehndi-hidden-name-fill" />);
   return (
@@ -165,6 +229,19 @@ function FineLines({ target }: { target: MehndiTarget }) {
       <circle cx={MEHNDI_PLACES.index.x} cy={MEHNDI_PLACES.index.y} r="15" />
       <circle cx={MEHNDI_PLACES.pinky.x} cy={MEHNDI_PLACES.pinky.y} r="18" />
       {target !== "peacock" && <path d="M142 246 c4 6 12 6 16 0 M144 254 c4 4 8 4 12 0" />}
+      {MEHNDI_SPOTS.filter((spot) => spot !== target).map((spot) => {
+        const look = LOOKALIKES[spot];
+        const at = MEHNDI_PLACES[spot];
+        return (
+          <g key={spot} className="mg-mehndi-hidden-name-lookalike" data-place={spot}
+            transform={`translate(${at.x + look.dx} ${at.y + look.dy}) rotate(${look.rotate})`}>
+            <path d={mehndiLoops(look.loops, look.h, look.w)} />
+            {look.dots && Array.from({ length: look.loops + 1 }, (_, index) => (
+              <circle key={index} cx={((index - look.loops / 2) * look.w).toFixed(1)} cy="4" r="0.9" className="mg-mehndi-hidden-name-fill" />
+            ))}
+          </g>
+        );
+      })}
     </g>
   );
 }
@@ -195,11 +272,20 @@ function Writing({ params, name }: { params: MehndiParams; name: string }) {
   );
 }
 
-const mehndiFieldFor = (hintAfter: number) => function MehndiField({ params, setup, view, live, search, active, frames, names, art, still, sound, vibrate }: SearchFieldProps<MehndiParams, MehndiOutcome>) {
+const mehndiFieldFor = (tuning: MehndiTuning) => function MehndiField({ params, setup, view, live, search, active, frames, names, art, still, sound, vibrate }: SearchFieldProps<MehndiParams, MehndiOutcome>) {
   const palm = useRef<HTMLDivElement>(null);
   // The lamp starts over the fingers, away from every place the writing may hide.
   const lamp = useRef({ x: 150 / W, y: 60 / H });
-  const press = useRef<{ id: number; x: number; y: number; moved: boolean } | null>(null);
+  /**
+   * A finger (or the mouse) down on the palm: where it went down and when, whether it has moved (a drag), whether its lamp
+   * shows yet, where its lamp would be, and when and where the lamp last came to rest (an aim needs it still).
+   */
+  const press = useRef<{
+    id: number; x: number; y: number; at: number; moved: boolean; shown: boolean; lamp: { x: number; y: number };
+    restAt: number; restX: number; restY: number;
+  } | null>(null);
+  /** The place a resting lamp aims at (lifting the finger points there), shown by a ring. */
+  const [aim, setAim] = useState<number | null>(null);
   const play = useRef({ sound, vibrate });
   play.current = { sound, vibrate };
   const kit = useMiniGameKit();
@@ -210,34 +296,86 @@ const mehndiFieldFor = (hintAfter: number) => function MehndiField({ params, set
   const ending = view.ending;
   const [said, setSaid] = useState<{ spot: number; textJa: string; at: number; hint?: boolean } | null>(null);
   const clockMs = useRef(0);
+  /**
+   * Her hand's hot and cold: whether the lamp is near the writing and since when, when the lamp last moved, when she last
+   * said something, whether she has for this visit near it or this rest elsewhere, and how many of each she has said.
+   */
+  const near = useRef(false);
+  const nearSince = useRef(0);
+  const movedAt = useRef(0);
+  const told = useRef({ at: Number.NEGATIVE_INFINITY, near: false, linger: false, nearCount: 0, lingerCount: 0 });
+  const liveRef = useRef(live);
+  liveRef.current = live && !ending;
 
   const place = (x: number, y: number, glide: boolean) => {
-    lamp.current = { x: Math.min(1, Math.max(0, x)), y: Math.min(1, Math.max(0, y)) };
+    const next = { x: Math.min(1, Math.max(0, x)), y: Math.min(1, Math.max(0, y)) };
+    // A move to another place lets her tease a long look there again.
+    if (Math.hypot((next.x - lamp.current.x) * W, (next.y - lamp.current.y) * H) > MEHNDI_HIT / 2) told.current.linger = false;
+    lamp.current = next;
+    movedAt.current = clockMs.current;
     const box = palm.current;
     if (!box) return;
     box.style.setProperty("--mehndi-lamp-x", `${lamp.current.x * 100}%`);
     box.style.setProperty("--mehndi-lamp-y", `${lamp.current.y * 100}%`);
     box.toggleAttribute("data-glide", glide);
+    // The lamp near the writing: her fingers curl in (each time it comes near); her word comes from the frames.
+    const close = mehndiNear(lamp.current.x * W, lamp.current.y * H, params.target, tuning.nearUnits);
+    if (close !== near.current) {
+      near.current = close;
+      nearSince.current = clockMs.current;
+      if (!close) told.current.near = false;
+      box.toggleAttribute("data-near", close);
+    }
   };
   useEffect(() => { place(lamp.current.x, lamp.current.y, false); }, []);
-  // The lamp's flame flickers a little (the pool's edge breathes; not with less motion); her word fades on the play's clock.
+  /** Her word for the hot and cold, in turn from its list, at most once in TELL_AGAIN_MS. */
+  const tell = (kind: "near" | "linger", ms: number) => {
+    const state = told.current;
+    state.at = ms;
+    if (kind === "near") {
+      state.near = true;
+      // She knows what is written where (her name for the player, her own secret), or not (FARHANA's own).
+      const lines = params.text === "farhana" ? NEAR_WONDERS_JA : NEAR_KNOWS_JA;
+      kitRef.current.react(params.text === "farhana" ? "surprise" : "tease", lines[state.nearCount++ % lines.length]);
+    } else {
+      state.linger = true;
+      kitRef.current.react("tease", LINGER_JA[state.lingerCount++ % LINGER_JA.length]);
+    }
+  };
+  // The lamp's flame flickers a little (the pool's edge breathes; not with less motion); her word fades on the play's
+  // clock; a finger's lamp shows a moment after it goes down, and resting still over a place it aims there; the lamp a
+  // moment near the writing, or held long on another place, brings her hot and cold again and again (TELL_AGAIN_MS apart).
   useEffect(() => frames((ms) => {
     clockMs.current = ms;
     if (!still) palm.current?.style.setProperty("--mehndi-lamp-k", (1 + 0.014 * Math.sin(ms * 0.0377) + 0.008 * Math.sin(ms * 0.0911)).toFixed(4));
     setSaid((current) => (current && ms - current.at >= SAID_MS ? null : current));
+    const down = press.current;
+    if (down && !down.shown && ms - down.at >= LAMP_SHOW_MS) {
+      down.shown = true;
+      place(down.lamp.x, down.lamp.y, false);
+    }
+    const aiming = down && down.shown && liveRef.current && ms - down.restAt >= AIM_MS ? mehndiSpotAt(lamp.current.x * W, lamp.current.y * H) : null;
+    setAim((current) => (current === aiming ? current : aiming));
+    if (!liveRef.current || ms - told.current.at < TELL_AGAIN_MS || (down && !down.shown)) return;
+    if (near.current && !told.current.near && ms - nearSince.current >= NEAR_DWELL_MS) tell("near", ms);
+    else if (!near.current && !told.current.linger && ms - movedAt.current >= tuning.lingerMs) {
+      const spot = mehndiSpotAt(lamp.current.x * W, lamp.current.y * H);
+      if (spot !== null && spot !== target) tell("linger", ms);
+    }
   }), [frames, still]);
   // Her word at a wrong place: by the place, then before the hints that the next one brings one; from then on, her hint:
   // 「このへん、かな」 over a dotted ring round the writing's area (the lamp stays where the player pointed).
   const say = (spot: number, misses: number) => {
-    if (misses >= hintAfter) {
+    if (misses >= tuning.hintAfter) {
       setSaid({ spot: target, textJa: HINT_JA, at: clockMs.current, hint: true });
       return;
     }
-    const textJa = misses < hintAfter - 1 ? WRONG_JA[MEHNDI_SPOTS[spot]] : AGAIN_JA;
+    // The first wrong point teases (「ふふ、」: round 2 playtest), the next warns that a hint comes, then the hints.
+    const textJa = misses < tuning.hintAfter - 1 ? `${misses === 1 ? "ふふ、" : ""}${WRONG_JA[MEHNDI_SPOTS[spot]]}` : AGAIN_JA;
     setSaid({ spot, textJa, at: clockMs.current });
   };
   // A place pointed at (by hand or by おまかせ): the lamp goes to it; the writing found rings; a wrong place, her word or
-  // her hint.
+  // her hint, and her teasing face.
   const pointed = view.searched.length;
   useEffect(() => {
     if (!pointed) return;
@@ -245,48 +383,81 @@ const mehndiFieldFor = (hintAfter: number) => function MehndiField({ params, set
     const spot = MEHNDI_PLACES[MEHNDI_SPOTS[last]];
     place(spot.x / W, spot.y / H, true);
     if (last === target) {
-      // The find: the writing lit, a short stop, stars from it.
+      // The find: the writing lit, a short stop, stars from it, her face.
       play.current.sound(SOUNDS.found);
       play.current.vibrate("success");
       kitRef.current.juice.hitStop(FOUND_STOP_MS);
       kitRef.current.juice.burst(writingRing.current, "star", 0.9);
+      // Her surprise always shows at the find (over a hot-and-cold word or a tease just before: 2026-11-14 playtest).
+      kitRef.current.react("surprise", undefined, { over: true });
     } else {
       play.current.sound(SOUNDS.wrong);
+      kitRef.current.react("tease");
       say(last, pointed);
     }
   }, [pointed]); // each place pointed at once
 
+  /** Points at a place: the look's search, or her word again for a wrong place pointed at again (the look counts it once). */
+  const pointAt = (spot: number) => {
+    if (view.searched.includes(spot) && spot !== target) say(spot, 1);
+    else search(spot);
+  };
+  /** Where a pointer's lamp is (in the palm's share): a finger's rides above it, so the finger does not hide what it lights. */
+  const lampOf = (event: PointerEvent<HTMLDivElement>, box: HTMLDivElement) => {
+    const lift = event.pointerType === "touch" ? FINGER_LIFT_PX / box.getBoundingClientRect().height : 0;
+    const point = fieldPoint(event, box);
+    return { x: point.x, y: point.y - lift, lifted: lift > 0 };
+  };
   const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
     if (event.button !== 0 || !live || !palm.current) return;
     palm.current.setPointerCapture?.(event.pointerId);
-    press.current = { id: event.pointerId, x: event.clientX, y: event.clientY, moved: false };
-    const lift = event.pointerType === "touch" ? FINGER_LIFT_PX / palm.current.getBoundingClientRect().height : 0;
-    const point = fieldPoint(event, palm.current);
-    place(point.x, point.y - lift, false);
+    const at = lampOf(event, palm.current);
+    const now = clockMs.current;
+    // A finger's lamp shows a moment later (the frames), a mouse's at once (it is the pointer).
+    press.current = {
+      id: event.pointerId, x: event.clientX, y: event.clientY, at: now, moved: false, shown: !at.lifted, lamp: { x: at.x, y: at.y },
+      restAt: now, restX: event.clientX, restY: event.clientY,
+    };
+    if (!at.lifted) place(at.x, at.y, false);
     active();
   };
   const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
     const down = press.current;
     if (!down || down.id !== event.pointerId || !palm.current) return;
     if (Math.hypot(event.clientX - down.x, event.clientY - down.y) > DRAG_PX) down.moved = true;
-    const lift = event.pointerType === "touch" ? FINGER_LIFT_PX / palm.current.getBoundingClientRect().height : 0;
-    const point = fieldPoint(event, palm.current);
-    place(point.x, point.y - lift, false);
+    // The lamp comes to rest where it stays within a small reach (a finger's tremble keeps it at rest).
+    if (Math.hypot(event.clientX - down.restX, event.clientY - down.restY) > DRAG_PX) {
+      down.restAt = clockMs.current;
+      down.restX = event.clientX;
+      down.restY = event.clientY;
+    }
+    const at = lampOf(event, palm.current);
+    down.lamp = { x: at.x, y: at.y };
+    if (down.moved) down.shown = true;
+    if (down.shown) place(at.x, at.y, false);
     active();
   };
   const onPointerUp = (event: PointerEvent<HTMLDivElement>) => {
     const down = press.current;
     press.current = null;
-    if (!down || down.id !== event.pointerId || !palm.current || down.moved || !live) return;
-    // A tap: the lamp to it, and a place there pointed at.
-    const point = fieldPoint(event, palm.current);
-    place(point.x, point.y, true);
-    const width = palm.current.getBoundingClientRect().width;
-    const spot = mehndiSpotAt(point.x * W, point.y * H, Math.max(MEHNDI_HIT, width ? (FINGER_HIT_PX * W) / width : 0));
-    if (spot === null) return;
-    // A wrong place pointed at again: her word again (the look counts it once).
-    if (view.searched.includes(spot) && spot !== target) say(spot, 1);
-    else search(spot);
+    setAim(null);
+    if (!down || down.id !== event.pointerId || !palm.current || !live) return;
+    const now = clockMs.current;
+    // The lamp held still over a place (its aim ring showing), then the finger lifted: what is lit is what is pointed at.
+    const aimed = down.shown && now - down.restAt >= AIM_MS ? mehndiSpotAt(lamp.current.x * W, lamp.current.y * H) : null;
+    if (aimed !== null) {
+      pointAt(aimed);
+      return;
+    }
+    if (!down.moved && now - down.at < AIM_MS) {
+      // A tap (lifted before any aim): the lamp to it, and a place there pointed at (what is lit then is what was pointed at).
+      const point = fieldPoint(event, palm.current);
+      place(point.x, point.y, true);
+      const width = palm.current.getBoundingClientRect().width;
+      const spot = mehndiSpotAt(point.x * W, point.y * H, Math.max(MEHNDI_HIT, width ? (FINGER_HIT_PX * W) / width : 0));
+      if (spot !== null) pointAt(spot);
+    }
+    // Else a look (a drag, or a still finger whose lamp lit no place): nothing is pointed at.
   };
   const onFocus = (event: FocusEvent<HTMLButtonElement>, spot: MehndiSpot) => {
     // Tab brings the lamp (a focus the host gives at the start, after a finger, does not move it).
@@ -306,13 +477,17 @@ const mehndiFieldFor = (hintAfter: number) => function MehndiField({ params, set
   const shownWriting = ending?.kind === "found";
   const wrongs = view.searched.filter((spot) => spot !== target);
   const at = (spot: number) => ({ left: `${(MEHNDI_PLACES[MEHNDI_SPOTS[spot]].x / W) * 100}%`, top: `${(MEHNDI_PLACES[MEHNDI_SPOTS[spot]].y / H) * 100}%` });
+  // The pool never smaller than a fingertip on a small phone.
+  const pool = { "--mehndi-lamp-r": `max(${tuning.lampPct}cqw, 18px)`, "--mehndi-glint-every": `${Math.max(400, tuning.glintEveryMs)}ms` } as CSSProperties;
   return (
     <div className="mg-mehndi-hidden-name" data-ending={ending?.kind} data-art-palm={art.palm ? true : undefined}>
-      <div className="mg-mehndi-hidden-name-palm" ref={palm} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
-        onPointerCancel={() => { press.current = null; }}>
+      <div className="mg-mehndi-hidden-name-palm" ref={palm} style={pool} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
+        onPointerCancel={() => { press.current = null; setAim(null); }}>
         <div className="mg-mehndi-hidden-name-dark" aria-hidden="true">{drawn(false)}</div>
         <div className="mg-mehndi-hidden-name-lit" aria-hidden="true">
           {drawn(true)}
+          {/* With the use's palm picture, the curls that look like writing are drawn over it too (the game's, like the writing). */}
+          {art.palm && <svg viewBox={`0 0 ${W} ${H}`} className="mg-mehndi-hidden-name-picture" focusable="false"><FineLines target={params.target} /></svg>}
           <svg viewBox={`0 0 ${W} ${H}`} className="mg-mehndi-hidden-name-picture" focusable="false"><Writing params={params} name={names.player} /></svg>
         </div>
         <span className="mg-mehndi-hidden-name-glow" aria-hidden="true" />
@@ -327,6 +502,11 @@ const mehndiFieldFor = (hintAfter: number) => function MehndiField({ params, set
           )}
         </span>
         {wrongs.map((spot) => <span key={spot} className="mg-mehndi-hidden-name-mark-ring" data-wrong style={at(spot)} aria-hidden="true" />)}
+        {/* The place a resting lamp aims at: lifting the finger points there (what is lit is what is chosen). */}
+        {aim !== null && (
+          <span key={`aim-${aim}`} className="mg-mehndi-hidden-name-aim" style={at(aim)}
+            data-testid="mehndi-aim" aria-hidden="true"><span>{AIM_JA}</span></span>
+        )}
         {shownWriting && <span ref={writingRing} className="mg-mehndi-hidden-name-mark-ring" data-writing style={at(target)} aria-hidden="true" />}
         {said?.hint && <span key={`hint-${said.at}`} className="mg-mehndi-hidden-name-hint-ring" style={at(target)} aria-hidden="true" />}
         {said && (
@@ -358,6 +538,6 @@ export const mehndiSkinFor = (tuning: MehndiTuning): SearchSkin<MehndiParams, Me
   autoJa: "おまかせで探しています",
   // The writing lit and ringed, or the lamp going out, before the outcome shows.
   endDelayMs: (ending, still) => (still ? 900 : ending.kind === "found" ? 1500 : 1100),
-  Field: mehndiFieldFor(tuning.hintAfter),
+  Field: mehndiFieldFor(tuning),
 });
 export const mehndiSkin = mehndiSkinFor(MEHNDI_TUNING);

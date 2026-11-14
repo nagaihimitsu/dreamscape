@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { contentId as id } from "./content-id";
 import { conditionSchema, RELATIONSHIP_AXES } from "./condition-schemas";
 import { rewardRuleSchema } from "./journey-schemas";
 import { quizQuestionSchema } from "./schemas";
@@ -8,15 +9,15 @@ import { japaneseText } from "./text-language";
 /**
  * The scene list content:build writes (`generated/scenes.json`; the unified event design,
  * stage 3a, 3.3): every scene the head tags of the place files describe (`origin: "place"`),
- * the head `# on_done:` of the one-scene files (`origin: "file"`) and today's encounter
- * catalogs read as the same table (`origin: "catalog"`, Milan: content:build converts them, so
- * the same scenes run where and when they ran). Each scene keeps its choices' effects by
+ * the head `# on_done:` of the one-scene files (`origin: "file"`) and the encounter
+ * catalogs read as the same table (`origin: "catalog"`: content:build converts them, so the
+ * same scenes run where and when they ran; no journey has one since Milan moved to place files
+ * on 2026-11-13, and tests/fixtures/catalog-encounters keeps the form covered). Each scene keeps its choices' effects by
  * option ID (the game applies them before passing the choice to Ink) and what it does when it
  * is done. The AP rules of the tags (`scene_tag`) are written next to the scenes.
  * Light module (zod only): the runtime parses the generated file with it.
  */
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/u);
 const signed = z.number().int().safe();
 /** `tour_leg`: a tour leg's narration (tour stage 2b), found by its `# at: tour <tour> <leg>` (no catalog points at it). */
 export const SCENE_KINDS = ["talk", "encounter", "guide", "battle", "date", "arrival", "epilogue", "tour_leg"] as const;
@@ -188,7 +189,8 @@ export type StoryStateCatalog = z.infer<typeof storyStateCatalogSchema>;
 
 /**
  * The scene JSON (`scenes/catalog.json`, 3.7): what tags cannot say, by scene ID. Stage 3a
- * reads `sources` (B4); a place file's quiz and alternative AP stay in today's encounter catalog.
+ * reads `sources` (B4); a place scene's alternative AP is its `# on_done: reward`, and an encounter's quiz stays a
+ * catalog encounter's (encounters/catalog.json).
  */
 export const sceneDataCatalogSchema = z.object({
   schemaVersion: z.literal(1),

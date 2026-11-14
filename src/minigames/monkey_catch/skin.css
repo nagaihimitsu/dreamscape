@@ -40,8 +40,9 @@
 }
 /* A wall picture shows its own wall. */
 .mg-monkey-catch[data-art-wall] .mg-monkey-catch-wall { display: none; }
-/* The monkey, placed by its hand (at 20%, 50% of its picture) on the thing's first place. Its grip gives (it fidgets),
-   it lets go (a jerk back, then it leans to watch the drop), and after the play it bobs (a catch) or leans over to look. */
+/* The monkey, placed by its hand (at 20%, 50% of its picture) on the thing's first place. It teases: its arm jerks down
+   (the fist closed), it opens its hand (it let go: it leans back to watch), its hand snaps down (the snatch); after the
+   play it bobs (a catch) or leans over to look. */
 .mg-monkey-catch-monkey {
   position: absolute;
   z-index: 2;
@@ -52,14 +53,16 @@
   transform: translate(-20%, -50%);
 }
 .mg-monkey-catch-monkey-lean { display: block; width: 100%; height: 100%; transform-origin: 55% 83%; transition: transform 320ms ease-out; }
-.mg-monkey-catch-monkey[data-grip="slip"] .mg-monkey-catch-monkey-lean { animation: mg-monkey-catch-fidget 140ms ease-in-out infinite alternate; }
-.mg-monkey-catch-monkey[data-grip="let_go"] .mg-monkey-catch-monkey-lean { transform: rotate(-7deg); animation: mg-monkey-catch-jerk 320ms ease-out; }
+.mg-monkey-catch-monkey[data-grip="jerk"] .mg-monkey-catch-monkey-lean { animation: mg-monkey-catch-feint 320ms ease-in-out; }
+.mg-monkey-catch-monkey[data-grip="open"] .mg-monkey-catch-monkey-lean { transform: rotate(-7deg); animation: mg-monkey-catch-jerk 320ms ease-out; }
+.mg-monkey-catch-monkey[data-grip="snatch"] .mg-monkey-catch-monkey-lean { transform: rotate(12deg) translateY(6%); transition-duration: 90ms; }
 .mg-monkey-catch-monkey[data-react="cheer"] .mg-monkey-catch-monkey-lean { animation: mg-monkey-catch-cheer 200ms ease-in-out 3 alternate; }
 .mg-monkey-catch-monkey[data-react="peer"] .mg-monkey-catch-monkey-lean { transform: rotate(-16deg); }
-@keyframes mg-monkey-catch-fidget { from { transform: rotate(-2deg); } to { transform: rotate(3deg) translateY(-2%); } }
+@keyframes mg-monkey-catch-feint { 40% { transform: rotate(9deg) translateY(5%); } }
 @keyframes mg-monkey-catch-jerk { 0% { transform: rotate(0); } 35% { transform: rotate(8deg) translateY(-4%); } 100% { transform: rotate(-7deg); } }
 @keyframes mg-monkey-catch-cheer { from { transform: rotate(-4deg) translateY(0); } to { transform: rotate(2deg) translateY(-12%); } }
 .mg-monkey-catch[data-still] .mg-monkey-catch-monkey-lean { transition: none; animation: none; transform: none; }
+.mg-monkey-catch[data-still] .mg-monkey-catch-monkey[data-grip="snatch"] .mg-monkey-catch-monkey-lean { transform: translateY(4%); }
 .mg-monkey-catch-monkey-figure, .mg-monkey-catch-monkey-lean > img { display: block; width: 100%; height: 100%; object-fit: contain; }
 /* Where the thing meets the hands: a gold ring over a dark one (seen on bright stone and dark shade alike), tightening as
    the thing comes (the play's frames scale it), gone once the hands close. */
@@ -156,3 +159,23 @@
   background: #141416;
   transform: translateX(-50%);
 }
+
+/* Round 3: the carved ledge half way down the wall (the thing clips it and comes on later), and the peanut shells the
+   monkey drops (small, dull brown: not hers). The ledge has a lit top edge and a shadow under it, over a photo too. */
+.mg-monkey-catch-ledge {
+  position: absolute;
+  z-index: 1;
+  left: 32%;
+  width: 22%;
+  height: 15px;
+  border-radius: 2px 2px 1px 1px;
+  /* A sandstone cornice: a lit lip, then a row of small carved brackets in its shadow. */
+  background:
+    linear-gradient(to bottom, #efb48e 0 4px, #c0663f 4px 7px, transparent 7px),
+    repeating-linear-gradient(to right, #8f4128 0 5px, #5e2716 5px 7px);
+  box-shadow: 0 5px 6px rgba(40, 14, 6, 0.5), 0 0 0 1px rgba(40, 14, 6, 0.75);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.mg-monkey-catch-shell { position: absolute; z-index: 5; left: 58%; top: 25%; width: 34px; height: 22px; opacity: 0; pointer-events: none; }
+.mg-monkey-catch-shell-figure { display: block; width: 100%; height: 100%; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5)); }

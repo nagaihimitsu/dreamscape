@@ -1,6 +1,6 @@
 /**
- * Debug launch URLs (development only): `?debug&city=…&scene=…&target=…` opens
- * a scene directly. Pure and free of game content, so tests (also Playwright on
+ * Debug launch URLs (the development server, or a production build with Debug mode on: src/main.tsx):
+ * `?debug&city=…&scene=…&target=…` opens a scene directly. Pure and free of game content, so tests (also Playwright on
  * Node) can build and read the URLs; the scene itself is resolved and checked
  * against the content by resolveDebugLaunch in debug-state.ts.
  * The format is for development and may change without compatibility.
@@ -9,7 +9,7 @@
 export const debugScenes = ["tourism", "battle", "encounter", "date", "epilogue", "occasion", "tour"] as const;
 export type DebugScene = (typeof debugScenes)[number];
 export const debugSceneLabels: Record<DebugScene, string> = {
-  tourism: "観光・場所", battle: "バトル", encounter: "人物との交流", date: "デート", epilogue: "エピローグ", occasion: "観光地の時点（場面から始める）",
+  tourism: "観光・場所", battle: "クイズ", encounter: "人物との交流", date: "デート", epilogue: "エピローグ", occasion: "観光地の時点（場面から始める）",
   tour: "ツアー",
 };
 export type DebugDataMode = "real" | "fixture";

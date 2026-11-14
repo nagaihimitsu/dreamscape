@@ -39,6 +39,7 @@
 | デート | `content/journeys/golden_triangle/stories/places/gt_<都市>_<行き先>.ink` の knot（デートID）。宿の屋上の告白・「待って」の後（ジャイプールは彼女の返事も）は `places/gt_<都市>_hotel_hub_dates.ink`（`romance/date_catalog.json` の `storyId` から参照） |
 | 都市の締め | `content/journeys/golden_triangle/stories/places/gt_{delhi,agra,jaipur}_hotel_hub.ink` の knot `gt_<都市>_epilogue`（フィナーレの `epilogueStoryId` から参照） |
 | 差し込みの場面（宿の夜と朝、デリーの出発、アーグラの到着、ジャイプールのフィナーレの前後、インド門のデートの後） | `content/journeys/golden_triangle/stories/places/gt_{delhi,agra,jaipur}_inserts.ink` の knot（時点は頭の `# at:`・`# priority:`）。土地の事実を言う場面の出典は `content/journeys/golden_triangle/scenes/catalog.json`、ほかは `# sources: none` |
+| ファテープル・シークリーの日帰りツアー | 行程は `content/journeys/golden_triangle/tours/gt_agra_tour_fatehpur_sikri.json`、行程の場面（区間の語り・車の中の交流・前後の会話）は `content/journeys/golden_triangle/stories/places/gt_agra_tour_fatehpur_sikri.ink` の knot |
 | クイズ | `content/journeys/golden_triangle/quizzes/gt_*_quiz.json` |
 | 対訳・語義 | `content/journeys/golden_triangle/learning/translations.json`、語義はインド編だけで使う語を `content/journeys/golden_triangle/learning/word-meanings.json`、ほかの旅行編とも使う語を共通の `content/learning/word-meanings.json` |
 | 旅行・画像・地点・出典 | 既存の都市bundleおよび `content/journeys/golden_triangle/` の都市・移動・各カタログ（画像は `content/journeys/golden_triangle/public/assets/tourism/india/`）。編集手順は `authoring/CITY_BUNDLES.md` |
@@ -51,6 +52,8 @@ npm run journey:readiness -- --journey golden_triangle
 npm run verify
 npm run test:e2e
 ```
+
+1行目は、都市ごとにも `--city` なしでも通る（2026-11-14 に確かめた）。その日に、アーグラとジャイプールの `narrative.json`（都市別とまとめたもの）のフィナーレの `placeId` を、2026-11-07 の改稿で移した今の会場（`agra_taj_mahal`・`jaipur_hawa_mahal`）に直した。直したのは地点だけで、フィナーレの題・相手・説明の文は旧稿のまま。
 
 脚本検査は、案内・バトル・デート・エピローグがどれも場所のファイルの knot なので公開済みとして数え（結果の `placeKnots`）、この検査では読み直さない。その選択肢と関係の分岐、通常戦・都市ボスの正誤と得点、エピローグは `content:build` が場面として通しで確かめる。到着会話3本の効果・選択肢・背景所属と、公開判定も既存コンテンツ検査で行う。
 

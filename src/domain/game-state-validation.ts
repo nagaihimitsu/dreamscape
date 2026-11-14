@@ -184,9 +184,10 @@ export function validateActiveDateState(state: GameState): void {
 }
 
 /**
- * The story state of the common condition system: every saved line, step and
- * flag must be declared (stage 3 declares them in progression/story.json).
- * No journey declares any yet, so only the empty records are valid.
+ * The story state of the common condition system: every saved flag must be
+ * declared in progression/story.json (stage 3a). The lines and the flags that
+ * last a day or a stay have no declaration and nothing sets them, so only
+ * their empty records are valid.
  */
 export function validateStoryProgress(state: GameState): void {
   // Flags (stage 3a): every one declared in progression/story.json; the lines of the earlier design were dropped (answer 5).

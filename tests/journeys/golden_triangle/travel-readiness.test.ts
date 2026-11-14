@@ -9,7 +9,7 @@ import { DAY_END, DAY_START, planOvernight, planTravel, planTravelEvent } from "
 import { findTravelHomeRoutes } from "../../../src/domain/travel-routes";
 
 const cities = ["delhi", "agra", "jaipur"] as const;
-/** The journey's budget (generous until the final balance pass; the finale test below checks the money it really needs). */
+/** The journey's budget (₹38,000 since 2026-11-13: what the cheapest way through needs; the finale test below checks the money it really needs). */
 const budget = getJourney("golden_triangle")!.initialBudget!;
 const ledgerOf = (cityId: string) =>
   transitLedgerSchema.parse(JSON.parse(readFileSync(`content/journeys/golden_triangle/travel/${cityId}-transit.json`, "utf8")));

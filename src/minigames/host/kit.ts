@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import type { MiniGameEndOptions, MiniGameJuice, MiniGameReaction } from "../contract";
+import type { MiniGameEndOptions, MiniGameJuice, MiniGameReaction, MiniGameReactOptions } from "../contract";
 import { NO_JUICE } from "./no-juice";
 
 // What the host gives every part of a play, also deep in a skin's field (docs/13 2.6): the juice toolkit, the heroine's
@@ -10,7 +10,7 @@ import { NO_JUICE } from "./no-juice";
 
 export interface MiniGameKit {
   juice: MiniGameJuice;
-  react(kind: MiniGameReaction, lineJa?: string): void;
+  react(kind: MiniGameReaction, lineJa?: string, options?: MiniGameReactOptions): void;
   practice: boolean;
   still: boolean;
   /** The play's end (MiniGamePlayProps.end): the first call of a play counts. */

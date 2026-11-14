@@ -1,4 +1,4 @@
-// Development only (Debug): what a condition (src/content/condition-schemas.ts) reads and why
+// Debug only (the development server, or a production build with Debug mode on): what a condition (src/content/condition-schemas.ts) reads and why
 // it is false. The game itself gives no reason text for a condition (hidden values stay hidden).
 import { battles, dates, episodes, getCities, landmarks } from "../content";
 import { encounters } from "../content/encounters";
@@ -27,7 +27,7 @@ function leafLabel(state: Readonly<GameState>, leaf: Leaf): string {
   if ("episodeCompleted" in leaf) return `エピソード「${episodes.find((item) => item.id === leaf.episodeCompleted)?.titleJa ?? leaf.episodeCompleted}」を終えた`;
   if ("episodesCompleted" in leaf) return `${cityName(leaf.episodesCompleted.city)}のエピソードを${leaf.episodesCompleted.atLeast}つ以上終えた`;
   if ("cityCompleted" in leaf) return `${cityName(leaf.cityCompleted)}の旅を終えた`;
-  if ("battlePlayed" in leaf) return `バトル「${battles.find((item) => item.id === leaf.battlePlayed)?.titleJa ?? leaf.battlePlayed}」を遊んだ`;
+  if ("battlePlayed" in leaf) return `クイズ「${battles.find((item) => item.id === leaf.battlePlayed)?.titleJa ?? leaf.battlePlayed}」を遊んだ`;
   if ("landmarkVisited" in leaf) return `${landmarkName(leaf.landmarkVisited)}を訪れた`;
   if ("guideRead" in leaf) return `${landmarkName(leaf.guideRead)}の案内を最後まで読んだ`;
   if ("encounterCompleted" in leaf) return `交流「${encounters.encounters.find((item) => item.id === leaf.encounterCompleted)?.titleJa ?? leaf.encounterCompleted}」を終えた`;
@@ -41,7 +41,7 @@ function leafLabel(state: Readonly<GameState>, leaf: Leaf): string {
   if ("weekday" in leaf) return `${leaf.weekday.map((day) => WEEKDAYS[day]).join("・")}曜日`;
   if ("rides" in leaf) return `${transportLabel(state.currentCityId, leaf.rides.mode)}に${leaf.rides.atLeast}回以上乗った`;
   if ("rented" in leaf) return `${transportLabel(state.currentCityId, leaf.rented)}を借りた`;
-  if ("battlesPlayed" in leaf) return `${cityName(leaf.battlesPlayed.city)}のバトル（フィナーレを除く）を${leaf.battlesPlayed.atLeast}つ以上遊んだ`;
+  if ("battlesPlayed" in leaf) return `${cityName(leaf.battlesPlayed.city)}のクイズ（フィナーレを除く）を${leaf.battlesPlayed.atLeast}つ以上遊んだ`;
   if ("relationship" in leaf) return `${relationshipAxisLabels[leaf.relationship.axis]}が${bounds(leaf.relationship)}（今は${state[leaf.relationship.axis]}）`;
   if ("money" in leaf) return `使えるお金が${bounds(leaf.money)}`;
   if ("romanceStage" in leaf) return `恋愛の段階が${bounds(leaf.romanceStage)}（今は${state.romanceStage}）`;

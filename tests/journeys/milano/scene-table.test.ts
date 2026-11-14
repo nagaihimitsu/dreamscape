@@ -1,4 +1,4 @@
-// Milan's scene list. Its guides, battles, dates (but its confession), encounters and talks are knots of its place files;
+// Milan's scene list. Its guides, battles, dates (its confession too), encounters and talks are knots of its place files;
 // since the rewrite of 2026-11-13 (the Milano scenario plan) no Milan encounter is left in the encounter catalog.
 // This pins each inserted scene's moment, order, condition, money, items, people and 「また今度」 as the rewrite wrote
 // them (the table below), and that the main parts do nothing of their own.
@@ -57,7 +57,7 @@ describe("Milan's scene list", () => {
       .toEqual(inserted.map((item) => item.id).sort());
     // The guides, battles and epilogue: no choices, tags or moments. The dates' choices are their romance choices.
     const mains = listed.filter((scene) => scene.main && scene.kind !== "date");
-    expect(mains.map((scene) => scene.kind).sort()).toEqual([...Array<string>(9).fill("battle"), "epilogue", ...Array<string>(6).fill("guide")]);
+    expect(mains.map((scene) => scene.kind).sort()).toEqual([...Array<string>(7).fill("battle"), "epilogue", ...Array<string>(6).fill("guide")]);
     for (const scene of mains) {
       expect([scene.origin, scene.at, scene.options, scene.done, scene.then, scene.when], scene.id).toEqual(["place", [], [], {}, undefined, undefined]);
     }

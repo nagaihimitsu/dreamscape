@@ -14,58 +14,6 @@
       "backgroundId": "milano_refectory"
     },
     {
-      "id": "milano_last_supper_b01",
-      "titleJa": "原因欄はひとつだけ",
-      "descriptionJa": "何でも「同上」で済ませる男。その大きすぎる断言に、資料を一枚突きつける。全3問のうち第2問は矛盾追及。",
-      "enemyNameJa": "ニーノ・ウニコ",
-      "enemyTitleJa": "原因をひとつにする帳簿係",
-      "enemyDescriptionJa": "帳簿の原因欄をひとつに統一し、「同上」の印を押し続ける男。調べる前に片付ける癖があるが、余白だけはたっぷり取っている。",
-      "storyId": "places/milano_last_supper.milano_last_supper_b01",
-      "quizId": "milano_special_b_last_supper_quiz",
-      "format": "B",
-      "landmarkId": "last_supper",
-      "backgroundId": "milano_refectory",
-      "reasoning": {
-        "kind": "contradiction",
-        "roundIndex": 1,
-        "caseClueIds": [
-          "last_supper_perspective",
-          "last_supper_doorway",
-          "last_supper_apostle_groups"
-        ],
-        "correctClueIds": [
-          "last_supper_doorway"
-        ]
-      }
-    },
-    {
-      "id": "milano_last_supper_c01",
-      "titleJa": "仕切りの向こうで会いましょう",
-      "descriptionJa": "名前と名字まで別々にしまう男。二枚の資料を結び、絵の中の関係を考える。全3問のうち第3問は証拠連結。",
-      "enemyNameJa": "エットレ・セパラート",
-      "enemyTitleJa": "関係を仕切る分類家",
-      "enemyDescriptionJa": "隣り合うものの間には仕切りを入れる男。パンとチーズにも容赦しない。一つずつ丁寧に見たい気持ちが、いつの間にか孤立の規則になった。",
-      "storyId": "places/milano_last_supper.milano_last_supper_c01",
-      "quizId": "milano_special_c_last_supper_quiz",
-      "format": "C",
-      "landmarkId": "last_supper",
-      "backgroundId": "milano_refectory",
-      "reasoning": {
-        "kind": "connection",
-        "roundIndex": 2,
-        "caseClueIds": [
-          "last_supper_perspective",
-          "last_supper_apostle_groups",
-          "last_supper_doorway",
-          "last_supper_technique_card"
-        ],
-        "correctClueIds": [
-          "last_supper_apostle_groups",
-          "last_supper_perspective"
-        ]
-      }
-    },
-    {
       "id": "milano_duomo_01",
       "titleJa": "無人の広場、一名追加",
       "descriptionJa": "広場で録音中の男が、小さな布を頭からかぶった。",

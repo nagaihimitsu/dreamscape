@@ -3,8 +3,9 @@ import { searchFairness, type SearchRecord } from "../engines/search/engine";
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { mehndiHiddenName } from "./definition";
 import { searchProgress } from "../engines/search/engine";
-import { MEHNDI_SPOTS, MEHNDI_TARGETS, MEHNDI_TEXTS, MEHNDI_TUNING, mehndiRules, mehndiSetup, type MehndiOutcome, type MehndiParams } from "./rules";
-import { MEHNDI_HIT, MEHNDI_PLACES, mehndiSpotAt, writingSize } from "./Skin";
+import { MEHNDI_SPOTS, MEHNDI_TARGETS, MEHNDI_TEXTS, MEHNDI_TUNING, mehndiFairness, mehndiRules, mehndiSetup, type MehndiOutcome, type MehndiParams } from "./rules";
+import { MEHNDI_HIT, MEHNDI_PLACES, mehndiLoops, mehndiNear, mehndiSpotAt, writingSize } from "./Skin";
+import { fairness } from "./play";
 
 const record = (actions: SearchRecord["actions"], lapse: SearchRecord["lapse"] = null): SearchRecord => ({ actions, lapse });
 const spot = (name: (typeof MEHNDI_SPOTS)[number]) => ({ spot: MEHNDI_SPOTS.indexOf(name) });
@@ -76,6 +77,36 @@ describe("the hidden name's field", () => {
     expect(mehndiSpotAt(145, 295, 60)).toBe(MEHNDI_SPOTS.indexOf("vine"));
     const places = Object.values(MEHNDI_PLACES);
     for (const a of places) for (const b of places) if (a !== b) expect(Math.hypot(a.x - b.x, a.y - b.y), `${a.labelJa}–${b.labelJa}`).toBeGreaterThan(MEHNDI_HIT * 2);
+  });
+
+  it("curls her fingers only with the lamp near the writing's place, never nearer another place", () => {
+    for (const target of MEHNDI_TARGETS) {
+      const writingPlace = MEHNDI_PLACES[target];
+      expect(mehndiNear(writingPlace.x, writingPlace.y, target), target).toBe(true);
+      for (const spot of MEHNDI_SPOTS) if (spot !== target) expect(mehndiNear(MEHNDI_PLACES[spot].x, MEHNDI_PLACES[spot].y, target), `${target} at ${spot}`).toBe(false);
+      // Wherever her hand tells, the lamp is nearer the place to point at than any other (a point under it finds the writing).
+      for (let x = 0; x <= 300; x += 4) for (let y = 0; y <= 420; y += 4) {
+        if (!mehndiNear(x, y, target)) continue;
+        const own = Math.hypot(writingPlace.x - x, writingPlace.y - y);
+        for (const spot of MEHNDI_SPOTS) if (spot !== target) expect(Math.hypot(MEHNDI_PLACES[spot].x - x, MEHNDI_PLACES[spot].y - y), `${target} at ${x},${y}`).toBeGreaterThan(own);
+      }
+    }
+    expect(mehndiNear(150, 60, "thumb")).toBe(false);
+    // The 2026-11-14 playtest: with the lamp at (180, 330), nearer the central vine, her hand curled for the thumb's writing.
+    expect(mehndiNear(180, 330, "thumb")).toBe(false);
+  });
+
+  it("calls a tuning misleading where the pool lights the palm, her hand curls at the next place, or she teases a pause", () => {
+    expect(mehndiFairness(MEHNDI_TUNING)).toEqual([]);
+    expect(fairness(MEHNDI_TUNING)).toEqual([]);
+    expect(mehndiFairness({ ...MEHNDI_TUNING, lampPct: 30 }).join()).toContain("lampPct 30");
+    expect(mehndiFairness({ ...MEHNDI_TUNING, nearUnits: 80 }).join()).toContain("nearUnits 80");
+    expect(mehndiFairness({ ...MEHNDI_TUNING, nearUnits: 46 }).join()).toContain("nearUnits 46");
+    expect(mehndiFairness({ ...MEHNDI_TUNING, lingerMs: 300 }).join()).toContain("lingerMs 300");
+  });
+
+  it("draws the curls that look like writing as loops only (well-formed paths, no letters)", () => {
+    for (const loops of [3, 4, 5]) expect(mehndiLoops(loops, 6, 6)).toMatch(/^M-?[\d.]+ 0( c[-\d. ]+)+$/u);
   });
 
   it("writes the name as typed, smaller for a long one, never cut", () => {

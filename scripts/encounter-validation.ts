@@ -12,7 +12,7 @@ import { bindItemReader, type ItemStatus } from "../src/story/items";
 import { bindMemoryReader } from "../src/story/memory";
 import { unique } from "./content-validation-utils";
 
-/** Validate dialogue separately: battle Ink remains choice- and effect-free. */
+/** An encounter's story walked on its own (each cond assignment, item status and reaction): its choices match its options, and it applies no Ink effect. */
 export function validateEncounterStory(
   compiled: string,
   context: TagContext,
@@ -143,7 +143,7 @@ export function validateEncounterContent({
   unique(catalog.items.map((item) => item.id), "encounter item ID");
   unique(catalog.encounters.map((event) => event.id), "encounter ID");
   const itemIds = new Set([...catalog.items, ...carriedItems].map((item) => item.id));
-  // The current route has one city; journey data also lets isolated tests
+  // Called for one city at a time (content-validation.ts); journey data also lets isolated tests
   // exercise another city without registering new production content.
   const knownCities = new Set([cityId, ...journey.episodes.map((episode) => episode.cityId)]);
   for (const item of catalog.items)

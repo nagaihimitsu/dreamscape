@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { playSe, playSound, preloadSound } from "../../audio/sound-effects";
 import { vibrate, type VibrationKind } from "../../audio/vibration";
 import { CharacterFace, CharacterFigure } from "../../components/CharacterPortrait";
-import type { MiniGameCast, MiniGameEndOptions, MiniGameModule, MiniGameRating, MiniGameReaction } from "../contract";
+import type { MiniGameCast, MiniGameEndOptions, MiniGameModule, MiniGameRating, MiniGameReaction, MiniGameReactOptions } from "../contract";
 import { availableOutcome } from "../fallback";
 import { miniGameDefinition } from "../registry";
 import { miniGameArtPath, miniGameParams, type MiniGameTag } from "../tag";
@@ -239,9 +239,10 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     [run, still, seed]);
   const juiceRef = useRef(juice);
   juiceRef.current = juice;
-  const react = useCallback((kind: MiniGameReaction, lineJa?: string) => {
+  const react = useCallback((kind: MiniGameReaction, lineJa?: string, options?: MiniGameReactOptions) => {
     const now = performance.now();
-    if (now - lastReactAt.current < MINI_GAME_REACT_GAP_MS) return;
+    // A moment that must show (a find) goes over the gap and over the reaction on show.
+    if (!options?.over && now - lastReactAt.current < MINI_GAME_REACT_GAP_MS) return;
     lastReactAt.current = now;
     setEmotion(REACTION_EMOTION[kind]);
     setReaction({ key: now, kind, ...(lineJa ? { lineJa: fillNames(lineJa, latest.current.names) } : {}) });
@@ -513,9 +514,12 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
           onPointerDown={onLayerPointer} onKeyDown={onLayerKey} onClick={(event) => event.stopPropagation()}>
           {tag.bg && environment.backdrop && <div className="minigame-backdrop mg-photo" aria-hidden="true">{environment.backdrop(tag.bg)}</div>}
           <header className="minigame-band">
-            <span className="minigame-band-title">{definition.titleJa}</span>
-            {run.practice && <span className="minigame-band-practice" data-testid="minigame-practice-label">練習</span>}
-            <span className="minigame-band-status" data-testid="minigame-status">{status}</span>
+            {/* The name, 「練習」 and the status wrap onto a second line where they do not fit beside 「中断する」 (320 px). */}
+            <span className="minigame-band-info">
+              <span className="minigame-band-title">{definition.titleJa}</span>
+              {run.practice && <span className="minigame-band-practice" data-testid="minigame-practice-label">練習</span>}
+              <span className="minigame-band-status" data-testid="minigame-status">{status}</span>
+            </span>
             {showQuit && <button type="button" className="minigame-quit" data-testid="minigame-quit" data-minigame-quit onClick={quit}>中断する</button>}
           </header>
           <div ref={stage} className="minigame-stage" onPointerDownCapture={dropBlocked} onPointerUpCapture={dropBlocked} onClickCapture={dropBlocked}

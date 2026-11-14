@@ -1,9 +1,9 @@
 import { z } from "zod";
+import { contentId as id } from "./content-id";
 import { japaneseText as japanese } from "./text-language";
 import { conditionSchema } from "./condition-schemas";
 import { storyAddressSchema } from "./story-address";
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 
 export const episodeSchema = z
   .object({

@@ -132,7 +132,7 @@ describe("Debug launch URLs against the content", () => {
 
   it.each([
     [{ dataMode: "real", cityId: "atlantis", scene: "battle" }, "都市「atlantis」は登録されていません。仮の場面の都市なら data=fixture を付けます。"],
-    [{ dataMode: "real", cityId: "milano", scene: "battle", target: "gt_delhi_main_red_fort_battle" }, "「gt_delhi_main_red_fort_battle」はミラノの「バトル」にありません。"],
+    [{ dataMode: "real", cityId: "milano", scene: "battle", target: "gt_delhi_main_red_fort_battle" }, "「gt_delhi_main_red_fort_battle」はミラノの「クイズ」にありません。"],
     [{ dataMode: "real", cityId: "delhi", scene: "encounter" }, "デリーには「人物との交流」の場面がありません。"],
     [{ dataMode: "real", cityId: "milano", scene: "map" }, "地図・交通の確認（scene=map）は制作中の都市だけで使えます。"],
     [{ dataMode: "real", cityId: "samarkand", scene: "battle" }, "サマルカンドは制作中の都市で、物語・クイズはまだありません。地図・交通は scene=map で確認できます。"],

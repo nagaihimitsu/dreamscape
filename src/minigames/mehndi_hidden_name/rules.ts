@@ -6,8 +6,9 @@ import { searchRules, type SearchGame, type SearchSetup } from "../engines/searc
 // writing after that is still `wrong_spot` (the story then remembers the wrong point). Wrong points never end the look
 // (2026-11-14 playtest: the story says the player found it): from the third on she only hints the area (the field's), and
 // the find is always the player's. 「明日にする」 is later. There is no time limit and no idle limit (user decision
-// 2026-11-13: the player looks as long as they like, and 「逃げたね」 follows only their own 「明日にする」).
-// Nothing is random. Pure.
+// 2026-11-13: the player looks as long as they like, and 「逃げたね」 follows only their own 「明日にする」). Round 3
+// (2026-11-14: 「もっと楽しく」) made the look a hunt: a smaller lamp, curls at the other places that look like writing,
+// the real writing's glint, and her hand as the hot and cold (the field's: looks only). Nothing is random. Pure.
 
 export type MehndiOutcome = "found" | "wrong_spot" | "later";
 /** Where the writing hides, and what it is (2.10: the name as typed; an illegible mark where the story says Hindi letters). */
@@ -30,8 +31,33 @@ export type MehndiTuning = {
    * never end the look): two wrong points get her word, the third and after her 「このへん、かな」 and a ring.
    */
   hintAfter: number;
+  /** The lamp's pool: fully lit within this share of the palm's width (%), fading out to 1.75 times it. */
+  lampPct: number;
+  /**
+   * The lamp this near the place where the writing is pointed at (the hand's units, 300 across): her fingers curl in (she
+   * knows) or she leans in. Under half the gap between the two nearest places, so it never fires nearer another place.
+   */
+  nearUnits: number;
+  /** The lamp held still this long on another place: her 「そこ、じっと見すぎ」 (again after the lamp moves on and rests). */
+  lingerMs: number;
+  /** The real writing catches the light this often (a glint; the curls that look like writing never do). */
+  glintEveryMs: number;
 };
-export const MEHNDI_TUNING: MehndiTuning = { hintAfter: 3 };
+export const MEHNDI_TUNING: MehndiTuning = { hintAfter: 3, lampPct: 8, nearUnits: 34, lingerMs: 2500, glintEveryMs: 1600 };
+/** Half the gap between the two nearest places (the pinky's flower and the peacock's base, about 70 apart). */
+export const MEHNDI_NEAR_MAX = 35;
+/** Why a tuning would mislead or stall the look (Debug's room lists them; none: fine). */
+export function mehndiFairness(tuning: MehndiTuning): string[] {
+  const problems: string[] = [];
+  if (tuning.hintAfter < 1) problems.push("hintAfter is under 1: her hint would come before any wrong point");
+  if (tuning.lampPct < 5) problems.push(`lampPct ${tuning.lampPct} is under 5: the pool is smaller than a fingertip`);
+  if (tuning.lampPct > 20) problems.push(`lampPct ${tuning.lampPct} is over 20: the pool lights the whole palm (nothing to look for)`);
+  // The places stand about 70 of the hand's units apart at the nearest: past half of it, the lamp can be nearer another place.
+  if (tuning.nearUnits >= MEHNDI_NEAR_MAX) problems.push(`nearUnits ${tuning.nearUnits} reaches toward the next place: her hand would curl nearer another one`);
+  if (tuning.lingerMs < 1000) problems.push(`lingerMs ${tuning.lingerMs} is under 1000: she would tease a lamp that only paused`);
+  return problems;
+}
+
 export const mehndiSetupFor = (_tuning: MehndiTuning) => (params: MehndiParams): SearchSetup => ({
   rounds: [{ spots: MEHNDI_SPOTS.length, targets: [MEHNDI_SPOTS.indexOf(params.target)] }],
   // Pointing is saying 「ここ」: she answers a wrong place, and the look goes on.

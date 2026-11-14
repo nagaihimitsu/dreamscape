@@ -110,7 +110,7 @@ function itemEncounter(page: Page): Promise<ItemEncounter | undefined> {
   }, devModules);
 }
 
-// AGENTS.md 「英語は…道中交流で主人公の返答・行動を選ぶ3択に用いる」「品物は所属都市を登録し、その都市で入手する…」.
+// AGENTS.md 「英語は基本的にクイズと、道中交流で主人公の返答・行動を選ぶ選択肢（ふつうは3択。数は制作者が決める）に用いる」「品物は所属都市を登録し、その都市で入手する…」.
 test("an encounter answered in English gives its item, and its moment goes on (to the observation, or to free time after a battle)", { tag: tier.debug }, async ({ page }) => {
   const encounter = await itemEncounter(page);
   expect(encounter, "an encounter with an item that Debug can open").toBeDefined();
@@ -147,7 +147,7 @@ test("an encounter answered in English gives its item, and its moment goes on (t
   await ops.backToDebugSettings(page);
 });
 
-// docs/07 acceptance 3, 4 and AGENTS.md 「恋愛の選択は固定正解とせず…保存済み乱数によって…変わる」:
+// docs/07 acceptance 3, 4 and AGENTS.md 「恋愛の選択では、言葉の特性・現在の関係・保存済み乱数によって会話と複数軸の影響が変わる噛み合いも使える」:
 // with the most favourable (0) and the least favourable (9999) saved ticket, a date plays to its end.
 for (const roll of ["positive", "negative"] as const) {
   test(`a date with the ${roll} reaction ticket plays to its end`, { tag: tier.debug }, async ({ page }) => {
@@ -197,7 +197,7 @@ test("a Debug launch URL opens its scene and offers the same URL", { tag: tier.d
 test("a Debug launch URL that does not fit the content says why and links back to the scene picker", { tag: tier.debug }, async ({ page }) => {
   await page.goto("/?debug&city=milano&scene=battle&target=gt_delhi_main_red_fort_battle");
   await ops.debugShown(page.getByRole("alert"));
-  await expect(page.getByRole("alert")).toHaveText("「gt_delhi_main_red_fort_battle」はミラノの「バトル」にありません。");
+  await expect(page.getByRole("alert")).toHaveText("「gt_delhi_main_red_fort_battle」はミラノの「クイズ」にありません。");
   // The link loads the scene picker as a new page (a dev server serves it module by module):
   // wait for that page's load, as page.goto does, and then for Debug, which loads after it.
   await Promise.all([

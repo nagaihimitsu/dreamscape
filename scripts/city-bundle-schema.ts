@@ -1,11 +1,12 @@
 import { z } from "zod";
+import { contentId } from "../src/content/content-id";
 import { citySchema, presentationSchema } from "../src/content/schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { landmarkSchema, tourismAssetSchema, tourismClueSchema } from "../src/content/tourism-schemas";
 import { dateDestinationSchema } from "../src/content/date-destinations";
 import { compactTravelSchema } from "./city-bundle-routes";
 
-export const idSchema = z.string().regex(/^[a-z][a-z0-9_]*$/).refine((value) => !["constructor", "prototype", "__proto__"].includes(value), "Reserved city ID");
+export const idSchema = contentId.refine((value) => !["constructor", "prototype", "__proto__"].includes(value), "Reserved city ID");
 const backgroundSchema = presentationSchema.shape.backgrounds;
 /**
  * The directed working form (version 1): the game's own route catalogs. The CLI writes and reads the

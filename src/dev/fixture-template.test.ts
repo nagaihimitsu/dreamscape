@@ -77,13 +77,13 @@ describe("the template city of Debug's 仮の場面", () => {
       normal: ["gt_delhi_main_red_fort", "delhi_red_fort", "gt_delhi_main_red_fort_battle", "delhi_red_fort"], finale: "gt_delhi_finale",
       specialB: undefined, specialC: undefined, encounter: undefined,
       date: ["gt_delhi_date_india_gate", "delhi_india_gate"], missing: ["special_b", "special_c", "encounter"],
-      note: "元にしたデリーに特殊戦B（矛盾追及）・特殊戦C（証拠連結）・品物をくれる道中交流がないため、仮の場面にもありません。",
+      note: "元にしたデリーに推理クイズB（矛盾追及）・推理クイズC（証拠連結）・品物をくれる道中交流がないため、仮の場面にもありません。",
     });
   });
 
   it("explains that no city can be copied", () => {
     expect(() => findDebugTemplate(contentOf(["uzbekistan", "luang_prabang"]))).toThrow(noTemplateMessage);
-    expect(noTemplateMessage).toBe("仮の場面の元になる都市がありません。公開中の旅行編のどれかに、案内と対決のある観光地の通常エピソード、" +
+    expect(noTemplateMessage).toBe("仮の場面の元になる都市がありません。公開中の旅行編のどれかに、案内とクイズのある観光地の通常エピソード、" +
       "その出来事の地点と徒歩の経路、エピローグのある都市フィナーレを持つ都市が必要です。");
   });
 
@@ -120,7 +120,7 @@ describe("the template city of Debug's 仮の場面", () => {
       const template = findDebugTemplate(content);
       expect(template.city.city.id).toBe("milano");
       expect(template.missing).toEqual(["special_b", "encounter"]);
-      expect(template.note).toBe("元にしたミラノに特殊戦B（矛盾追及）・品物をくれる道中交流がないため、仮の場面にもありません。");
+      expect(template.note).toBe("元にしたミラノに推理クイズB（矛盾追及）・品物をくれる道中交流がないため、仮の場面にもありません。");
     } finally {
       scene.options[0] = kept;
     }
@@ -130,7 +130,7 @@ describe("the template city of Debug's 仮の場面", () => {
     expect(findDebugTemplate(contentOf(repositoryJourneys), "delhi").city.city.id).toBe("delhi");
     expect(findDebugTemplate(contentOf(repositoryJourneys), "milano").missing).toEqual([]);
     expect(() => findDebugTemplate(contentOf(repositoryJourneys), "tashkent")).toThrow(
-      "都市「tashkent」は仮の場面の元にできません。元にする都市には、案内と対決のある観光地の通常エピソード、その出来事の地点と徒歩の経路、エピローグのある都市フィナーレが必要です。");
+      "都市「tashkent」は仮の場面の元にできません。元にする都市には、案内とクイズのある観光地の通常エピソード、その出来事の地点と徒歩の経路、エピローグのある都市フィナーレが必要です。");
     expect(() => findDebugTemplate(contentOf(repositoryJourneys), "atlantis")).toThrow("都市「atlantis」は仮の場面の元にできません。");
   });
 });

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { RHYTHM_TAP_BOTS, rhythmTapBotRandom, rhythmTapBotTally, rhythmTapBotTaps } from "../engines/rhythm_tap/bot";
 import { rhythmTapFairness } from "../engines/rhythm_tap/engine";
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { sayTogether } from "./definition";
@@ -48,11 +49,29 @@ describe("saying it together's four words (the result card)", () => {
   const judge = (taps: readonly number[]) => SAY_GAME.judge(record(taps));
   const rate = (taps: readonly number[]) => sayTogetherRules.rate!(record(taps), {});
 
-  it("says the four words on her beat, one a beat after 「せー」「の」", () => {
+  it("says the first word on the beat after 「せー」「の」, then in her own rhythm: late, quick, held, a breath, the last", () => {
+    const { beatMs, settleMs, stretchMs, catchUpMs, holdMs, breathMs } = SAY_NUMBERS;
     expect(wordsAt).toHaveLength(SAY_WORD_COUNT);
-    expect(countAt).toEqual([SAY_NUMBERS.settleMs, SAY_NUMBERS.settleMs + SAY_NUMBERS.beatMs]);
-    for (const [index, at] of wordsAt.entries()) expect(at).toBe(SAY_NUMBERS.settleMs + SAY_NUMBERS.beatMs * (index + 2));
+    expect(countAt).toEqual([settleMs, settleMs + beatMs]);
+    expect(wordsAt[0]).toBe(settleMs + beatMs * 2);
+    expect(wordsAt.slice(1).map((at, index) => at - wordsAt[index])).toEqual([beatMs + stretchMs, beatMs - catchUpMs, beatMs + holdMs + breathMs]);
+    // No two gaps alike: the count's beat is not the words' rhythm.
+    expect(new Set([beatMs, ...wordsAt.slice(1).map((at, index) => at - wordsAt[index])]).size).toBe(4);
+    expect(SAY_GAME.holdAt).toEqual({ from: wordsAt[2], to: wordsAt[3] - breathMs });
+    expect(SAY_GAME.breathAt).toEqual({ from: wordsAt[3] - breathMs, to: wordsAt[3] });
     expect(SAY_END_MS).toBe(wordsAt[3] + SAY_NUMBERS.endAfterMs);
+    expect(SAY_END_MS).toBeLessThan(6000);
+  });
+
+  it("does not take the old beat for her held word: a tap where the count's beat would put the last word spoils it", () => {
+    const oldBeat = wordsAt[2] + SAY_NUMBERS.beatMs;
+    expect(oldBeat).toBeLessThan(wordsAt[3] - SAY_NUMBERS.cleanEarlyMs);
+    expect(judge([...wordsAt.slice(0, 3), oldBeat]).words[3]).toBe("off");
+    expect(judge([...wordsAt.slice(0, 3), oldBeat, wordsAt[3]]).words[3]).toBe("off");
+    // On her rhythm all four are together; tapping on the count's beat, only the first is.
+    expect(judge(wordsAt).together).toBe(4);
+    const steady = Array.from({ length: SAY_WORD_COUNT }, (_, index) => wordsAt[0] + SAY_NUMBERS.beatMs * index);
+    expect(judge(steady)).toMatchObject({ outcome: "together", together: 1 });
   });
 
   it("counts a word together with one tap in its window; a second tap on the same word, or a tap off it, is not", () => {
@@ -108,10 +127,39 @@ describe("saying it together's four words (the result card)", () => {
     expect(rhythmTapFairness(SAY_GAME.tuning)).toEqual([]);
     expect([SAY_NUMBERS.cleanEarlyMs, SAY_NUMBERS.cleanLateMs, SAY_NUMBERS.laterLateMs]).toEqual([110, 170, 200]);
     expect(sayGame({ ...SAY_NUMBERS, laterLateMs: 150 }).fairness().length).toBeGreaterThan(0);
-    expect(sayGame({ ...SAY_NUMBERS, beatMs: 500 }).fairness()).toEqual([]);
+    expect(sayGame({ ...SAY_NUMBERS, beatMs: 560 }).fairness()).toEqual([]);
     expect(sayGame({ ...SAY_NUMBERS, cleanLateMs: 400 }).fairness().length).toBeGreaterThan(0);
     expect(sayGame({ ...SAY_NUMBERS, settleMs: 200 }).fairness().length).toBeGreaterThan(0);
-    // The edited game counts her words on its own beat.
-    expect(sayGame({ ...SAY_NUMBERS, beatMs: 500 }).wordsAt).toEqual([2000, 2500, 3000, 3500]);
+    // Her quick third word too close for its window: the room says so.
+    expect(sayGame({ ...SAY_NUMBERS, catchUpMs: 300 }).fairness().join()).toContain("word 2's window");
+    // The edited game says her words on its own beat and rhythm.
+    expect(sayGame({ ...SAY_NUMBERS, beatMs: 560 }).wordsAt).toEqual([2120, 2900, 3330, 4490]);
+  });
+});
+
+// Round 3's seeded players (engines/rhythm_tap/bot.ts), 500 plays each. Her count keeps its beat in the thumb (the bot's
+// pull), and while she holds her syllable the old beat may still tap (the count's next beat, a rest shown from the start).
+// A sweet moment, not a test (2026-11-14): the first word as easy as before; all four together for most average players,
+// fewer than before for the careless.
+describe("saying it together, played by round 3's bots", () => {
+  const play = (bot: (typeof RHYTHM_TAP_BOTS)[number], seed: number) => {
+    const random = rhythmTapBotRandom(seed);
+    const scene = { beats: wordsAt, rests: [{ at: wordsAt[2] + SAY_NUMBERS.beatMs }], leadGapMs: SAY_NUMBERS.beatMs };
+    return rhythmTapBotTally(Array.from({ length: 500 }, () => {
+      const played = record(rhythmTapBotTaps(scene, bot, random));
+      return { outcome: sayTogetherRules.outcomeOf(played, {}), stars: sayTogetherRules.rate!(played, {})?.stars ?? null };
+    }));
+  };
+  const [skilled, average, careless] = RHYTHM_TAP_BOTS;
+
+  it("keeps the first word easy and all four together for most, the careless less often", () => {
+    const tally = { skilled: play(skilled, 21), average: play(average, 22), careless: play(careless, 23) };
+    expect(tally.average.outcomes.together).toBeGreaterThan(0.9);
+    expect(tally.careless.outcomes.together).toBeGreaterThan(0.7);
+    expect(tally.average.stars["★3"]).toBeGreaterThan(0.6);
+    expect(tally.average.stars["★3"]).toBeLessThan(0.9);
+    expect(tally.skilled.stars["★3"]).toBeGreaterThan(tally.average.stars["★3"]);
+    expect(tally.careless.stars["★3"]).toBeLessThan(0.45);
+    for (const id of ["together", "early", "late"]) expect(tally.careless.outcomes[id], id).toBeGreaterThan(0);
   });
 });

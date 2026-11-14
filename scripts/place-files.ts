@@ -12,7 +12,7 @@ import { AFTER_PARTS, type AfterPart, type RelationshipDelta, type SceneAt, type
 // numbers stay) and compiles the file with the game's modules.ink.
 //
 // The choices' effect tags (3.1 「選択肢の札」) are read the same way in the one-scene files that
-// may have choices (guides, arrivals, epilogues): readChoiceTables.
+// may have choices (guides, arrivals, epilogues): readFileChoices.
 //
 // Light module (no content loading): unit tests use it directly.
 
@@ -422,7 +422,7 @@ export type PlaceHead = {
   hint?: string;
 };
 
-/** Read a knot's head tags; throws for a value of the wrong form and for a moment or position of a later stage (A3). */
+/** Read a knot's head tags; throws for a value of the wrong form and for a position its moment lacks (A2, positionProblem). */
 export function readHead(knot: PlaceKnot, apCap: number): PlaceHead | undefined {
   if (!knot.head.length) return undefined;
   const values = (key: string) => knot.head.filter((tag) => tag.key === key).map((tag) => tag.value);

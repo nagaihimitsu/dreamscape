@@ -1,10 +1,10 @@
 import { defineConfig, devices } from "@playwright/test";
-import { shared } from "./playwright.config";
+import { chromiumLaunch, shared } from "./playwright.config";
 
 // Screens for people checking by eye: `npm run screens` (scripts/dev/screens.ts)
 // runs this config and builds artifacts/screens/index.html. Not a gate and not
 // part of the E2E tiers; the same development server as the E2E (reused when running).
-const phone = { defaultBrowserType: "chromium" as const, reducedMotion: "reduce" as const };
+const phone = { defaultBrowserType: "chromium" as const, reducedMotion: "reduce" as const, ...chromiumLaunch };
 
 export default defineConfig({
   ...shared,

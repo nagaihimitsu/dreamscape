@@ -1,5 +1,5 @@
 /* Raju's haggle (Skin.tsx): over the scene's picture (the fort's gate), Raju on the left from the bottom, his bubble over
-   him (his words, his face and his patience), the paper of his prices on the right. */
+   him (his face and his words), the paper of his prices on the right. */
 .mg-raju-haggle { position: absolute; inset: 0; color: var(--ds-ink); container-type: size; }
 /* Raju: his standing picture, feet at the bottom, about the left half (the paper keeps the right). */
 .mg-raju-haggle-raju { position: absolute; left: 0; bottom: 0; width: 56%; height: 68%; transform-origin: 50% 100%; }
@@ -7,28 +7,44 @@
 .mg-raju-haggle-flinch > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
 .mg-raju-haggle-raju[data-figure="drawn"] .mg-raju-haggle-flinch { display: flex; align-items: center; justify-content: center; }
 .mg-raju-haggle-drawn-map { width: 86%; height: auto; transform: rotate(-6deg); filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35)); }
-/* His mood, big enough to read on a phone: glad, he bobs; unsure, he leans back; sulky, he leans further and edges away;
-   given up, he turns his back and walks off out of the field with his map (his one picture holds the map out with a grin,
-   which must not stay on show under 「もういい！」). */
-.mg-raju-haggle[data-mood="glad"] .mg-raju-haggle-raju { animation: mg-raju-haggle-bob 700ms ease-in-out infinite alternate; }
-.mg-raju-haggle[data-mood="unsure"] .mg-raju-haggle-raju { transform: rotate(-5deg); transition: transform 200ms ease-out; }
-.mg-raju-haggle[data-mood="sulky"] .mg-raju-haggle-raju { transform: translateX(-4%) rotate(-8deg); transition: transform 200ms ease-out; }
+/* His look, big enough to read on a phone (round 3: how a stare lands is read from him, so each look has its own pose,
+   and his bubble's face and words say it too): boasting, chin up and puffed out, bobbing; eyes wandering, he fidgets
+   from side to side, leaning back; recovering after a landed stare, he shrinks back; the fake walk-away, he turns his
+   back and edges off (peeking back, he leans round); coming back, he turns to face the player again; at his floor,
+   ₹30, he hops in protest. Given up, he turns his back and walks off out of the field with his map (his one picture
+   holds the map out with a grin, which must not stay on show under 「もういい！」). */
+.mg-raju-haggle-raju { transition: transform 220ms ease-out; }
+.mg-raju-haggle[data-look="boast"] .mg-raju-haggle-raju { animation: mg-raju-haggle-boast 760ms ease-in-out infinite alternate; }
+.mg-raju-haggle[data-look="wobble"] .mg-raju-haggle-raju { animation: mg-raju-haggle-fidget 520ms ease-in-out infinite alternate; }
+.mg-raju-haggle[data-look="recover"] .mg-raju-haggle-raju { transform: translateX(-5%) scale(0.95); }
+.mg-raju-haggle[data-look="turn"] .mg-raju-haggle-raju { transform: translateX(-24%) scale(-0.88, 0.88); opacity: 0.9; }
+.mg-raju-haggle[data-look="peek"] .mg-raju-haggle-raju { transform: translateX(-24%) scale(-0.88, 0.88) rotate(-8deg); opacity: 0.9; }
+.mg-raju-haggle[data-look="back"] .mg-raju-haggle-raju { transform: translateX(-4%) rotate(3deg); }
+.mg-raju-haggle[data-look="floor"] .mg-raju-haggle-raju { animation: mg-raju-haggle-hop 340ms ease-out infinite alternate; }
 .mg-raju-haggle[data-away] .mg-raju-haggle-raju { animation: mg-raju-haggle-off 650ms ease-in both; }
 @keyframes mg-raju-haggle-off {
   0% { transform: scaleX(-1); }
   25% { transform: translate(-6%, -2%) scaleX(-1); opacity: 1; }
   100% { transform: translateX(-110%) scaleX(-1); opacity: 0; }
 }
-@keyframes mg-raju-haggle-bob { from { transform: translateY(0); } to { transform: translateY(-4%); } }
-/* A stare: he flinches back. */
-.mg-raju-haggle-flinch[data-stared] { animation: mg-raju-haggle-flinch 220ms ease-out; }
+@keyframes mg-raju-haggle-boast { from { transform: translateY(0) scale(1.03) rotate(2deg); } to { transform: translateY(-4%) scale(1.05) rotate(3deg); } }
+@keyframes mg-raju-haggle-fidget { from { transform: translateX(-2%) rotate(-5deg); } to { transform: translateX(2%) rotate(-1deg); } }
+@keyframes mg-raju-haggle-hop { from { transform: translateY(0); } to { transform: translateY(-5%); } }
+/* A stare: he flinches back (it landed) or leans in glaring (it bounced). */
+.mg-raju-haggle-flinch[data-stared="landed"], .mg-raju-haggle-flinch[data-stared="called"] { animation: mg-raju-haggle-flinch 220ms ease-out; }
+.mg-raju-haggle-flinch[data-stared="bounced"] { animation: mg-raju-haggle-glare 260ms ease-out; }
 @keyframes mg-raju-haggle-flinch { 35% { transform: translate(-5%, 2%) scale(0.95, 1.05); } }
-/* Less motion: his moods are still states, at once (given up, he is gone at once); no bob, no flinch. */
+@keyframes mg-raju-haggle-glare { 40% { transform: translateX(5%) scale(1.06); } }
+/* His pride nearly gone: his bubble's edge turns red (his face's puffed cheeks and the band's words say it too). */
+.mg-raju-haggle[data-pride="1"] .mg-raju-haggle-bubble { border: 2px solid #c8302a; }
+/* Less motion: his looks are still poses, at once (given up, he is gone at once); no bob, fidget, hop or flinch. */
 .mg-raju-haggle[data-still] .mg-raju-haggle-raju { animation: none; transition: none; }
+.mg-raju-haggle[data-still][data-look="boast"] .mg-raju-haggle-raju { transform: scale(1.04) rotate(2deg); }
+.mg-raju-haggle[data-still][data-look="wobble"] .mg-raju-haggle-raju { transform: rotate(-5deg); }
 .mg-raju-haggle[data-still][data-away] .mg-raju-haggle-raju { opacity: 0; }
 .mg-raju-haggle[data-still] .mg-raju-haggle-flinch { animation: none; }
 
-/* Her word at his last dot (the host's reaction, which sits under the band, where his bubble is): low on the left, just
+/* Her words at his last bit of pride and at his peek (the host's reaction, which sits under the band, where his bubble is): low on the left, just
    over the hint above the buttons (on his legs), so his bubble, his face and the paper stay readable at the climax. The
    offset is the engine's controls (engine.css: padding, two lines of hint, the 64px or 56px buttons). On a field too
    short for his picture the skin does not call it. */
@@ -37,7 +53,7 @@
   .minigame-layer[data-game="raju_haggle"] > .minigame-react { bottom: calc(128px + env(safe-area-inset-bottom, 0px)); }
 }
 
-/* His words: a speech bubble over him, its tail down to his head; his face and his patience in it. */
+/* His words: a speech bubble over him, its tail down to his head; his face in it. */
 .mg-raju-haggle-bubble {
   position: absolute;
   z-index: 2;
@@ -68,15 +84,9 @@
   transform: rotate(45deg);
 }
 @keyframes mg-raju-haggle-say { from { opacity: 0; transform: translateY(4px); } }
-.mg-raju-haggle-face { flex: none; width: 34px; height: 34px; }
-.mg-raju-haggle-words { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.mg-raju-haggle-face { flex: none; width: 40px; height: 40px; }
 /* Breaks only between phrases (Skin.tsx marks them), never inside a word, on a 320px phone too. */
 .mg-raju-haggle-line { font-size: 15px; font-weight: 600; line-height: 1.45; word-break: keep-all; word-break: auto-phrase; overflow-wrap: anywhere; }
-/* His patience: five dots, filled while it lasts, hollow rings once spent. */
-.mg-raju-haggle-patience { display: flex; align-items: center; gap: 4px; color: var(--ds-ink-muted); font-size: 11px; font-weight: 600; }
-.mg-raju-haggle-patience-label { margin-right: 2px; }
-.mg-raju-haggle-patience > i { display: block; width: 10px; height: 10px; border: 2px solid #7a2e22; border-radius: 50%; background: #c8302a; }
-.mg-raju-haggle-patience > i[data-spent] { background: transparent; border-color: rgba(59, 47, 42, 0.45); }
 
 /* The paper of his prices: a page torn from a notebook, the price on show large in a frame with a mark, passed ones struck
    out, coming ones faint (not colour alone). */

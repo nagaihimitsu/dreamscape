@@ -92,7 +92,7 @@ export function resolveDebugLaunch(query: DebugQuery): DebugLaunch {
   if (!city) throw new Error(`都市「${cityId}」は登録されていません。${query.dataMode === "fixture" ? "" : "仮の場面の都市なら data=fixture を付けます。"}`);
   const prototype = city.productionStatus === "prototype";
   if (query.scene === "map") {
-    if (!prototype) throw new Error(`地図・交通の確認（scene=map）は制作中の都市だけで使えます。${city.nameJa}では観光・バトルなどの場面を指定してください。`);
+    if (!prototype) throw new Error(`地図・交通の確認（scene=map）は制作中の都市だけで使えます。${city.nameJa}では観光・クイズなどの場面を指定してください。`);
     return { kind: "map", cityId };
   }
   if (prototype) throw new Error(`${city.nameJa}は制作中の都市で、物語・クイズはまだありません。地図・交通は scene=map で確認できます。`);

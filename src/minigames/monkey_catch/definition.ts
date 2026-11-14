@@ -5,38 +5,46 @@ import { defineMiniGame } from "../contract";
 export const MONKEY_THINGS = ["bottle", "glasses"] as const;
 
 /**
- * `monkey_catch` (a skin of `cue_tap`): Akbar's Tomb, the monkey on the gate's wall lets go of what it took (the tag's
- * `thing`: the small bottle, or sunglasses; its grip gives first, the thing slipping in its fingers), and the player
- * catches it with one tap as it reaches the ring over the hands: right then (`caught`), a little early or late so it
- * bounces off the fingers (`fumbled`), far off or no tap so it falls past (`missed`). Hands closed while the monkey still
- * holds it do not count.
+ * `monkey_catch` (a skin of `cue_tap`): Akbar's Tomb, the monkey on the gate's wall gives back what it took (the tag's
+ * `thing`: the small bottle, or sunglasses), and the player catches it with one tap as it reaches the ring over the
+ * hands: right then (`caught`), a little early or late so it bounces off the fingers (`fumbled`), far off or no tap so it
+ * falls past (`missed`). Hands closed before the monkey starts teasing do not count.
  *
- * The host's flow (docs/13 2.6): practice before the real catch, no 3・2・1 (the monkey's slipping grip is the cue), the
- * play ends as the thing meets the hands or goes past them (★ from the tap: clean ★3, a little off ★2, far off ★1, no tap
- * none), and the heroine's face and line: her first breath at her bottle or sunglasses caught (the story's lines follow
- * at once: for the bottle her 「わたしの雨、無事だった！」), never what she says next, and right for either thing; her face
- * alone when it gets away (the bottle breaks, and she says nothing for a while). The catch snaps (a short high knock right
- * as the hands meet it, the pouch's settle under it) with a small shake.
+ * Round 3 (rules.ts monkeyPlan): the monkey teases first — its arm jerks down with the fist closed (a feint), its other
+ * hand drops a peanut shell (small, dull brown: let it fall; the heroine laughs 「殻だった。セーフ」), it lets go of the thing
+ * and snatches it back in mid-air (the catch its fall promised does not come), then opens its hand wide and lets go, a
+ * second shell beside it: the shell falls straight and reaches the hands first, the thing clips the carved ledge half way
+ * down (a knock, a puff of dust) and comes on a moment later. Hands closed on the second shell bounce the thing off the
+ * fingers (fumbled); at the feint, on the first shell or on the snatched-back fall it falls past them (missed): the
+ * monkey laughs and tosses it down past them at once (its teasing over: the play ends about a second after the tap), and
+ * the card's score names the tease (「フェイントで手を閉じた」「殻で手を閉じた」「取り返された時に手を閉じた」).
  *
- * Accessibility: 「受け止める」 is 64px at the bottom (thumb reach), Space and Enter close the hands; a gold ring with a
- * dark edge marks where the thing meets the hands and tightens as it comes, and the meter's gold zone is brighter and
- * narrower than the near zone (neither told by colour alone); with less motion the thing does not tumble, the monkey
- * does not fidget, lean or bob and the hands do not slide (its fall, the ring and the needle still move); the outcome is
- * read out by the host.
+ * The host's flow (docs/13 2.6): practice before the real catch, no 3・2・1 (the monkey holds it out first), the play ends
+ * as the thing meets the hands or goes past them (★ from the tap: clean ★3, a little off ★2, far off ★1, no tap none), and
+ * the heroine's face and line: her first breath at her bottle or sunglasses caught (the story's lines follow at once: for
+ * the bottle her 「わたしの雨、無事だった！」), never what she says next, and right for either thing; her face alone when it
+ * gets away (the bottle breaks, and she says nothing for a while). The catch snaps (a short high knock right as the hands
+ * meet it, the pouch's settle under it) with a small shake.
+ *
+ * Accessibility: 「受け止める」 is 64px at the bottom (thumb reach), Space and Enter close the hands; no meter: a gold ring
+ * with a dark edge marks where things meet the hands and tightens for whatever is about to arrive (the shells too: the
+ * thing's look says what, never colour alone: the shell is small, dull and of another shape); the ledge's knock has its
+ * puff of dust; with less motion the thing and the shells do not turn and the monkey does not lean (its fall, the snatch
+ * and the ring still move); the outcome is read out by the host.
  */
 export const monkeyCatch = defineMiniGame({
   id: "monkey_catch",
   engine: "cue_tap",
   titleJa: "猿の落とし物",
-  howToJa: "壁の上の猿の手から離れて落ちてくる物（小瓶かサングラス）が、両手の上の輪に届く瞬間に、「受け止める」を1回押して受け止める（約3秒）",
+  howToJa: "壁の上の猿が返してくる落とし物（小瓶かサングラス）が、両手の上の輪に届く瞬間に、「受け止める」を1回押して受け止める。猿はからかって、腕だけ振る・殻を落とす・落としてすぐ取り返す。最後は殻と一緒に落とし、落とし物は壁の飾りの出っ張りに当たって少し遅れて来る（約7秒）",
   outcomes: [
     { id: "caught", labelJa: "受け止めた", noteJa: "輪に届く瞬間（針が金色の所）に押した", finishJa: "キャッチ！",
       reaction: { kind: "surprise", linesJa: ["わっ、取った！", "ナイスキャッチ！"] } },
     // Her face only when it gets away: for her bottle the story goes on to the glass breaking and 「しばらく何も言わなかった」,
     // and its next line tells the slip (指先に…跳ねて／手の先をかすめて) itself.
-    { id: "fumbled", labelJa: "指先で弾いた", noteJa: "少し早いか、少し遅い", finishJa: "つるっ！", finishTone: "plain",
+    { id: "fumbled", labelJa: "指先で弾いた", noteJa: "少し早いか、少し遅い（一緒に落ちた殻で手を閉じたときも）", finishJa: "つるっ！", finishTone: "plain",
       reaction: { kind: "oops" } },
-    { id: "missed", labelJa: "受け止められなかった", noteJa: "早すぎるか遅すぎる、または押さなかった", finishJa: "落ちた！", finishTone: "oops",
+    { id: "missed", labelJa: "受け止められなかった", noteJa: "早すぎるか遅すぎる（フェイント・最初の殻・取り返された時も）、または押さなかった", finishJa: "落ちた！", finishTone: "oops",
       reaction: { kind: "oops" } },
   ],
   defaultAuto: "caught",
@@ -45,12 +53,12 @@ export const monkeyCatch = defineMiniGame({
   }).strict(),
   examples: [{}, { thing: "glasses" }],
   startJa: "構える",
-  hintJa: "落ちてくる物が輪に届く瞬間に「受け止める」",
-  goalJa: "猿が落とした物が輪に届く瞬間に「受け止める」で両手に収める",
+  hintJa: "落とし物が輪に届く瞬間に「受け止める」",
+  goalJa: "猿のフェイントや殻につられず、落とし物が輪に届く瞬間に「受け止める」",
   controls: "timing",
-  durationSec: 3,
+  durationSec: 7,
   practice: {},
-  // The monkey's grip giving is the cue (the story: 「考えるより先に、両手が出ていた」): no 3・2・1 before it.
+  // The monkey's teasing is the cue (the story: 「考えるより先に、両手が出ていた」): no 3・2・1 before it.
   countdown: "own",
   music: "bright",
   // The catch is at the bottom, in the hands: the result card sits high (over the wall), leaving it in view.

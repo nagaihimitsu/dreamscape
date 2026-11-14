@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import {
-  rhythmTapBeats, rhythmTapEnd, rhythmTapFairness, rhythmTapInterval, rhythmTapJudge, rhythmTapRecordOf, rhythmTapRules, rhythmTapThen,
-  rhythmTapTuningSchema, rhythmTapVsPartner, rhythmTapWindow, type RhythmTapTuning,
+  rhythmTapBeats, rhythmTapEnd, rhythmTapFairness, rhythmTapInterval, rhythmTapJudge, rhythmTapPick, rhythmTapRecordOf, rhythmTapRules,
+  rhythmTapSteps, rhythmTapThen, rhythmTapTuningSchema, rhythmTapVsPartner, rhythmTapWindow, type RhythmTapTuning,
 } from "./engine";
+import { RHYTHM_TAP_BOTS, rhythmTapBotRandom, rhythmTapBotTally, rhythmTapBotTaps } from "./bot";
 
 // The rhythm_tap engine's rules in its own words (docs/13 6.2): a skin's test passes its tuning through rhythmTapFairness.
 const beats = [1000, 1600, 2200, 2800, 3400];
@@ -56,6 +57,18 @@ describe("the rhythm_tap engine", () => {
     expect(rhythmTapJudge({ taps: [1000, 1600, 2200], stopMs: 2700 }, peaked)).toMatchObject({ ended: "stop", misses: 0 });
     expect(rhythmTapFairness(peaked)).toEqual([]);
     expect(rhythmTapFairness({ ...peaked, peak: { ...peaked.peak, missLimit: 2 } }).join()).toContain("peak.missLimit 2");
+  });
+
+  it("starts the peak's smaller miss limit at its limitFrom beat: a slip before it is an ordinary one (its window still narrow)", () => {
+    const peaked = { ...tuning, missLimit: 2, strayLimit: 3, peak: { from: 3, earlyMs: 100, lateMs: 120, missLimit: 1, limitFrom: 4 } };
+    // The peak's first beat missed: one left, the play goes on; a slip at the next (limitFrom) ends it.
+    expect(rhythmTapJudge({ taps: [1000, 1600, 2200, 3400], stopMs: null }, peaked)).toMatchObject({ ended: "end", misses: 1 });
+    expect(rhythmTapJudge({ taps: [1000, 1600, 2200, 2800], stopMs: null }, peaked)).toMatchObject({ ended: "misses", misses: 1, endMs: 3400 + 120 });
+    // Its window is the peak's all the same.
+    expect(rhythmTapWindow(peaked, 3)).toEqual({ earlyMs: 100, lateMs: 120 });
+    expect(rhythmTapFairness(peaked)).toEqual([]);
+    expect(rhythmTapFairness({ ...peaked, peak: { ...peaked.peak, limitFrom: 2 } }).join()).toContain("peak.limitFrom 2");
+    expect(rhythmTapFairness({ ...peaked, peak: { ...peaked.peak, limitFrom: 5 } }).join()).toContain("peak.limitFrom 5");
   });
 
   it("fills the stray gauge with each stray and empties a drop with each hit; a full gauge counts as a miss toward the limit", () => {
@@ -159,8 +172,77 @@ describe("the rhythm_tap engine", () => {
     expect(() => rules.autoRecord("other" as "still", {})).toThrow();
   });
 
+  it("writes a beat map as phrases, each at its own pace, the same every time; bar lines take no time", () => {
+    const written = rhythmTapSteps(1000, [{ stepMs: 300, steps: "x.x. x..o" }, { stepMs: 250.5, steps: "|XX|" }]);
+    expect(written.steps).toEqual([
+      { char: "x", at: 1000 }, { char: "x", at: 1600 }, { char: "x", at: 2200 }, { char: "o", at: 3100 }, { char: "X", at: 3400 }, { char: "X", at: 3651 },
+    ]);
+    expect(written.endMs).toBe(3901);
+    expect(rhythmTapPick(written.steps, "xX")).toEqual([1000, 1600, 2200, 3400, 3651]);
+    expect(rhythmTapPick(written.steps, "o")).toEqual([3100]);
+    expect(rhythmTapSteps(1000, [{ stepMs: 300, steps: "x.x. x..o" }, { stepMs: 250.5, steps: "|XX|" }])).toEqual(written);
+  });
+
+  it("calls a tap in a rest's window fooled: a stray that weighs more on the gauge; a rest passed without a tap is kept", () => {
+    const rested: RhythmTapTuning = { ...tuning, strayLimit: 3, missLimit: 2, rests: { at: [1950, 3150], earlyMs: 100, lateMs: 120, weight: 2 } };
+    expect(rhythmTapFairness(rested)).toEqual([]);
+    // Every beat, no rest tapped: both kept.
+    expect(rhythmTapJudge({ taps: beats, stopMs: null }, rested)).toMatchObject({ hits: 5, strays: 0, fooled: 0, rests: ["kept", "kept"] });
+    // A tap at the first rest (its window's edges count): fooled, two drops of the gauge; the hit after empties one.
+    expect(rhythmTapJudge({ taps: [1000, 1600, 1850, 2200], stopMs: null }, rested, 2300)).toMatchObject({ strays: 1, fooled: 1, gauge: 1, rests: ["fooled"] });
+    expect(rhythmTapJudge({ taps: [1000, 1600, 2070], stopMs: null }, rested, 2100)).toMatchObject({ fooled: 1, gauge: 2 });
+    expect(rhythmTapJudge({ taps: [1000, 1600, 2071], stopMs: null }, rested, 2100)).toMatchObject({ strays: 1, fooled: 0, gauge: 1, rests: ["kept"] });
+    // Fooled and then a stray: the gauge overflows (a miss toward the limit).
+    expect(rhythmTapJudge({ taps: [1000, 1600, 1950, 2075], stopMs: null }, rested, 2100)).toMatchObject({ fooled: 1, overflows: 1, gauge: 0 });
+    // As of a moment: a rest whose window is still open is not judged yet; a stop before it leaves it unjudged.
+    expect(rhythmTapJudge({ taps: [1000, 1600], stopMs: null }, rested, 1950).rests).toEqual([]);
+    expect(rhythmTapJudge({ taps: [1000, 1600], stopMs: null }, rested, 2070).rests).toEqual(["kept"]);
+    expect(rhythmTapJudge({ taps: [1000, 1600], stopMs: 1700 }, rested).rests).toEqual([]);
+    // Without a gauge, fooled taps are strays only.
+    expect(rhythmTapJudge({ taps: [1950, 1950, 3150], stopMs: null }, { ...tuning, rests: rested.rests })).toMatchObject({ fooled: 3, overflows: 0, rests: ["fooled", "fooled"] });
+  });
+
+  it("calls rests unfair when a tap could be both a hit and fooled, no tap counts at one, or two touch", () => {
+    const rests = (at: number[], earlyMs = 100, lateMs = 120) => rhythmTapFairness({ ...tuning, rests: { at, earlyMs, lateMs } }).join();
+    expect(rests([1350])).toBe("");
+    expect(rests([1250])).toContain("touches beat 1's");
+    expect(rests([1450])).toContain("touches beat 2's");
+    expect(rests([1600])).toContain("on a beat");
+    expect(rests([500])).toContain("before the first beat's window opens");
+    expect(rests([3900])).toContain("not over before the play ends");
+    expect(rests([1300, 1320], 20, 20)).toContain("touches the rest before");
+    expect(rests([1900, 1350])).toContain("not in order");
+  });
+
+  it("plays a seeded bot the same every time: steadier hands hit more", () => {
+    const scene = { beats: [1000, 1500, 2000, 2350, 2700, 3600, 3950] };
+    const play = (seed: number, index: number) => rhythmTapBotTaps(scene, RHYTHM_TAP_BOTS[index], rhythmTapBotRandom(seed));
+    expect(play(3, 1)).toEqual(play(3, 1));
+    const window: RhythmTapTuning = { beats: scene.beats, earlyMs: 100, lateMs: 140, endAfterMs: 600 };
+    const hits = RHYTHM_TAP_BOTS.map((_, index) => {
+      let sum = 0;
+      for (let seed = 1; seed <= 300; seed += 1) sum += rhythmTapJudge({ taps: play(seed, index), stopMs: null }, window).hits;
+      return sum;
+    });
+    expect(hits[0]).toBeGreaterThan(hits[1]);
+    expect(hits[1]).toBeGreaterThan(hits[2]);
+    // A rest shown from the start is tapped only by a slip of rhythm; a feint shown late fools more.
+    const fooledBy = (tellMs?: number) => {
+      let fooled = 0;
+      const random = rhythmTapBotRandom(9);
+      for (let play = 0; play < 400; play += 1)
+        fooled += rhythmTapBotTaps({ beats: [1000, 2000], rests: [{ at: 1500, tellMs }] }, RHYTHM_TAP_BOTS[1], random).filter((tap) => tap > 1300 && tap < 1700).length;
+      return fooled;
+    };
+    expect(fooledBy(200)).toBeGreaterThan(fooledBy(400));
+    expect(fooledBy(400)).toBeGreaterThan(0);
+    expect(rhythmTapBotTally([{ outcome: "a", stars: 3 }, { outcome: "b", stars: null }])).toEqual({ outcomes: { a: 0.5, b: 0.5 }, stars: { "★3": 0.5, "-": 0.5 } });
+  });
+
   it("keeps its rules pure: no randomness, clock, DOM or React", () => {
-    const source = readFileSync(new URL("./engine.ts", import.meta.url), "utf8");
-    for (const banned of ["Math.random", "crypto", "Date.now", "performance.now", "from \"react\"", "content/generated"]) expect(source).not.toContain(banned);
+    for (const file of ["./engine.ts", "./bot.ts"]) {
+      const source = readFileSync(new URL(file, import.meta.url), "utf8");
+      for (const banned of ["Math.random", "crypto", "Date.now", "performance.now", "from \"react\"", "content/generated"]) expect(source, file).not.toContain(banned);
+    }
   });
 });

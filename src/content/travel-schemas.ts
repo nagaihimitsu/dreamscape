@@ -1,10 +1,10 @@
 import { z } from "zod";
+import { contentId as id } from "./content-id";
 import { conditionSchema } from "./condition-schemas";
 import { japaneseText } from "./text-language";
 import { tourismSourceSchema } from "./tourism-schemas";
 
 // Shared input contract for each registered city's travel data.
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const text = z.string().trim().min(1);
 const minute = z.number().int().min(0).max(1440);
 const timeWindowSchema = z.object({ start: minute, end: minute }).strict()

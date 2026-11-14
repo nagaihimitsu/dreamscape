@@ -77,13 +77,16 @@
 .mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-her:not([data-art]) img { width: 200%; max-width: none; height: auto; margin-left: -50%; }
 .mg-golgappa-duel-her > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
 .mg-golgappa-duel-her[data-eating] { animation: mg-golgappa-duel-bob 240ms ease-out; }
+/* Her bluff's joke: she thumps her chest (a little bob; none with less motion). */
+.minigame-layer:not([data-still]) .mg-golgappa-duel-her[data-thump] { animation: mg-golgappa-duel-bob 180ms ease-out 2; }
 @keyframes mg-golgappa-duel-bob { 50% { transform: translateX(-50%) translateY(2%); } }
-/* The vendor's hand, waiting over the bowl of the next one to drop. */
+/* The vendor's hand, waiting over the bowl of the next one to drop (low enough that a feint's raised, shaking hand stays
+   inside the field on a short screen: 40% of its height up, ±9° and its gold edge). */
 .mg-golgappa-duel-hand {
   position: absolute;
   z-index: 4;
   left: 50%;
-  top: 4%;
+  top: max(4%, 28px);
   height: min(46px, 18%);
   aspect-ratio: 34 / 46;
   border-radius: 40% 40% 45% 45% / 30% 30% 35% 35%;
@@ -102,6 +105,29 @@
   border-radius: 999px;
   background: #9a6340;
 }
+/* The golgappa in the vendor's fingers while the hand waits over a bowl (a slow tease shows it long). */
+.mg-golgappa-duel-held {
+  position: absolute;
+  left: 50%;
+  bottom: -38%;
+  width: 30px;
+  height: 26px;
+  opacity: 0;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.mg-golgappa-duel-held > img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.mg-golgappa-duel-hand[data-holding="yes"] .mg-golgappa-duel-held { opacity: 1; }
+/* A feint's wind-up (its tell, with the lane's mark turning into a rest): the hand rises high and shakes; with less motion
+   it only rises, with a gold edge. After it the hand wags a moment (it gave nothing). */
+.mg-golgappa-duel-hand[data-windup="up"] {
+  translate: 0 -40%;
+  box-shadow: 0 0 0 3px #f6d27a, 0 3px 6px rgba(0, 0, 0, 0.35);
+}
+.minigame-layer:not([data-still]) .mg-golgappa-duel-hand[data-windup="up"] { animation: mg-golgappa-duel-windup 140ms ease-in-out infinite alternate; }
+@keyframes mg-golgappa-duel-windup { from { rotate: -9deg; } to { rotate: 9deg; } }
+.minigame-layer:not([data-still]) .mg-golgappa-duel-hand[data-grin="yes"] { animation: mg-golgappa-duel-wag 250ms ease-in-out 3; }
+@keyframes mg-golgappa-duel-wag { 50% { rotate: 14deg; } }
 /* The leaf bowls: the player's a little larger (nearer). */
 .mg-golgappa-duel-bowl {
   position: absolute;
@@ -201,6 +227,38 @@
 }
 .mg-golgappa-duel-say-her[data-shown] { visibility: visible; animation: mg-golgappa-duel-pop 300ms ease-out both; }
 .mg-golgappa-duel-say svg { width: 22px; height: 22px; fill: var(--ds-marker); }
+/* Her bluff beside her face: a plain bubble (no gold ring), the palm only half up, smaller; then her joke. Her warning
+   (「わたし、次でバス」) in the same place after it, plain too, until her 「バス！」 takes its place. */
+.mg-golgappa-duel-bluff, .mg-golgappa-duel-warn { top: 30%; font-size: 16px; animation: mg-golgappa-duel-pop 240ms ease-out both; }
+.mg-golgappa-duel-bluff svg { width: 18px; height: 18px; rotate: 55deg; opacity: 0.8; }
+.mg-golgappa-duel-bluff[data-joke] svg { rotate: 100deg; }
+/* The vendor's 「フェイント！」 under his hand (a bite at his feint), and the player's 「見切った！」 over the bowl (held still). */
+.mg-golgappa-duel-feint, .mg-golgappa-duel-seen {
+  position: absolute;
+  z-index: 6;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  pointer-events: none;
+  font-weight: 700;
+  animation: mg-golgappa-duel-pop 300ms ease-out both;
+}
+.mg-golgappa-duel-feint {
+  top: 30%;
+  padding: 2px 10px;
+  border: 2px solid #ffe0b8;
+  border-radius: 10px;
+  background: #a04826;
+  color: #fffaf1;
+  font-size: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+.mg-golgappa-duel-seen {
+  color: #ffd76a;
+  font-size: 22px;
+  -webkit-text-stroke: 3px #2a1a0c;
+  paint-order: stroke fill;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+}
 .mg-golgappa-duel-say-choke { font-style: italic; }
 /* The choke gauge beside the player's bowl: three drops of the sour water, hollow until a bite at nothing fills one. */
 .mg-golgappa-duel-gauge {
@@ -251,8 +309,8 @@
   .mg-golgappa-duel-count small { font-size: 10px; }
 }
 /* A short screen: the engine sends 「バス」 up into the field (its top left); here it goes to the top right instead, under
-   where her face and bubble show (her 「わたし、次でバス」 is the play's only spoken cue), clear of the band's 「中断する」 and
-   right of the player's falling golgappa; the palm over the word keeps it narrow (still 44 px and more each way). */
+   where the host shows her face (her 10th, a laugh at a bitten feint), clear of the band's 「中断する」 and right of the
+   player's falling golgappa; the palm over the word keeps it narrow (still 44 px and more each way). */
 @media (max-height: 620px) {
   .mg-engine-rhythm-tap:has(.mg-golgappa-duel) .mg-rhythm-tap-top[data-stop] { left: auto; right: 6px; top: 72px; }
   .mg-engine-rhythm-tap:has(.mg-golgappa-duel) .mg-rhythm-tap-stop {

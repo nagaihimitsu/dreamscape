@@ -18,10 +18,7 @@ describe("learning content", () => {
     expect(() => validateLearning(catalog, battleQuizzes, ids)).not.toThrow();
     const published = ids.flatMap((id) => battleQuizzes[id].questions.map((question) => question.id));
     expect(Object.keys(catalog.questions).sort()).toEqual([...new Set(published)].sort());
-    expect(published).toEqual(expect.arrayContaining([
-      "milano_last_supper_b_doorway_counterexample", "milano_last_supper_c_shared_focus",
-      "milano_la_scala_b_q2", "milano_brera_c_q3",
-    ]));
+    expect(published).toEqual(expect.arrayContaining(["milano_la_scala_b_q2", "milano_brera_c_q3"]));
     for (const entry of Object.values(catalog.questions))
       expect(Object.keys(entry.optionsJa).sort()).toEqual(["A", "B", "C"]);
   });

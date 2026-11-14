@@ -1,7 +1,9 @@
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { journeysDirectory } from "./content-layout";
-import { journeyFolderFiles, readSampleJourney, sampleLeftovers, sampleMarks, SAMPLE_SOURCE_URL } from "./sample-journey";
+import {
+  describeSampleLeftovers, journeyFolderFiles, readSampleJourney, SAMPLE_SETTINGS, sampleLeftovers, sampleMarks, SAMPLE_SOURCE_URL,
+} from "./sample-journey";
 
 // What journey:readiness counts as sample content left in a journey copied
 // from the sample (journey:new): example.com sources, the sample's images and
@@ -83,5 +85,28 @@ describe("sample leftovers", () => {
       "progression/journey.json": json({ episodes: [], rewards }),
       "manifest.json": json({ id: "kyoto_trip", nameJa: "京都の旅", currency: manifest.currency }),
     }))).toEqual([]);
+  });
+
+  it("describes the leftovers in one line per kind, with the files inside the journey folder", () => {
+    expect(describeSampleLeftovers("content/journeys/kyoto_trip", [
+      { file: "public/assets/tourism/kyoto_trip/tower.png", kind: "image", count: 1 },
+      { file: "quizzes/q.json", kind: "source", count: 3 },
+      { file: "quizzes/q.json", kind: "text", count: 32 },
+      { file: "travel/kyoto.json", kind: "source", count: 6 },
+    ])).toEqual([
+      "見本の出典（example.com）が残っています（2ファイル・計9件）: content/journeys/kyoto_trip/ の quizzes/q.json（3）、travel/kyoto.json（6）",
+      "見本の画像のままです（1ファイル）: content/journeys/kyoto_trip/ の public/assets/tourism/kyoto_trip/tower.png",
+      "見本の文章が残っています（1ファイル・計32か所）: content/journeys/kyoto_trip/ の quizzes/q.json（32）",
+    ]);
+  });
+
+  it("names the sample's own settings that readiness notes (country code, coordinates near 0,0, currency and budget)", () => {
+    const read = (file: string) => JSON.parse(sample.files.get(file)!.toString("utf8"));
+    const manifest = read("manifest.json");
+    expect({ currencyCode: manifest.currency.code, initialBudget: manifest.initialBudget })
+      .toEqual({ currencyCode: SAMPLE_SETTINGS.currencyCode, initialBudget: SAMPLE_SETTINGS.initialBudget });
+    expect(read("cities/mihon.json").countryCode).toBe(SAMPLE_SETTINGS.countryCode);
+    for (const place of read("travel/mihon.json").places as { latitude: number; longitude: number }[])
+      expect(Math.max(Math.abs(place.latitude), Math.abs(place.longitude))).toBeLessThan(SAMPLE_SETTINGS.maxCoordinate);
   });
 });

@@ -18,9 +18,7 @@ import "./free-time-hub.css";
 export type FreeTimeHubProps = {
   game: GameState;
   onClaimRewards: () => void;
-  onStartEpisode: (id: string) => void;
   onEpilogue: (id: string) => void;
-  onBattle: (id: string) => void;
   onTravelEvent: (id: string, mode: TravelRoute["mode"]) => void;
   onRent: (modeId: string) => boolean;
   onBookTour: (tourId: string, offerId: string) => boolean;
@@ -52,9 +50,7 @@ export function FreeTimeHub(props: FreeTimeHubProps) {
 export function MapListFreeTime({
   game,
   onClaimRewards,
-  onStartEpisode,
   onEpilogue,
-  onBattle,
   onTravelEvent,
   onRent,
   onBookTour,
@@ -94,7 +90,7 @@ export function MapListFreeTime({
         <span>{city.nameJa}の行き先</span>
         <Icon name="plane" className="free-time-banner-plane" />
       </h1>
-      <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} showNext={false} />
+      <CityProgress game={game} onEpilogue={onEpilogue} />
 
       <TravelMenu key={game.currentCityId} game={game} api={selection} onRent={onRent} onBookTour={onBookTour} onCancelTour={onCancelTour} />
 

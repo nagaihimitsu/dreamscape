@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { parseConditionText } from "../src/content/condition-text";
 import { headEntryRule, readEncounterHead } from "./encounter-head";
 
-// The head tags of an encounter's Ink (the unified event design, stage 1): what content:build reads, removes and refuses.
+// The head tags of a catalog encounter's Ink (the unified event design, stage 1): what content:build reads, removes and refuses.
 const names = 'VAR player_name = ""\nVAR heroine_name = ""\n';
 const body = "# background: smp_bg\n# speaker: narrator\n時計塔の下で。\n* [Hello. # option: hello]\n    -> END\n";
 
@@ -25,11 +25,11 @@ describe("encounter head tags", () => {
     [`${body}# at: visit x\n`, "Head tag outside the head (line 8)"],
     ["# priority: -1\n", "An encounter's head needs # at: visit <landmark>"],
     ["# at: visit x\n", "An encounter's head needs # priority:"],
-    ["# at: visit x\n# at: visit y\n# priority: -1\n", "Stage 1 takes one # at:"],
-    ["# at: place x\n# priority: -1\n", "# at: place x is not available yet"],
-    ["# at: visit any\n# priority: -1\n", "# at: visit any is not available yet"],
+    ["# at: visit x\n# at: visit y\n# priority: -1\n", "A catalog encounter's head takes one # at:"],
+    ["# at: place x\n# priority: -1\n", "# at: place x is written in a place file's scene"],
+    ["# at: visit any\n# priority: -1\n", "# at: visit any is written in a place file's scene"],
     ["# at: visit x\n# priority: 0\n", "# priority: 0 is the main part itself"],
-    ["# at: visit x\n# priority: after battle\n", "# priority: after battle is not available yet (stage 3)"],
+    ["# at: visit x\n# priority: after battle\n", "# priority: after battle is written in a place file's scene"],
     ["# at: visit x\n# priority: soon\n", "Unknown # priority: soon"],
     ["# at: visit x\n# priority: -1\n# priority: +1\n", "Write # priority: once"],
     ["# at: visit x\n# priority: -1\n# repeat: twice\n", "Unknown # repeat: twice"],

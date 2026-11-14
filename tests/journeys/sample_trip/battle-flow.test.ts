@@ -3,11 +3,10 @@
 // checked with validateGameState) without scoring, recording, rewarding or applying a choice's tags twice, and the
 // conversation's choices apply their tags once per battle (decision 10): on its first play, once in a run.
 import { readFileSync } from "node:fs";
-import { afterEach, describe, expect, it } from "vitest";
-import { battles, scenes, stories } from "../../../src/content";
+import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
+import { battles, presentation, scenes, stories } from "../../../src/content";
 import { fnvHash } from "../../../src/content/fingerprint";
 import type { SceneEntry, SceneOption } from "../../../src/content/scene-schemas";
-import { storyFileOf } from "../../../src/content/story-address";
 import {
   advanceBattle, answerBattle, battleChrome, battleDialogueStop, chooseBattle, getActiveBattleContent, getReasoningContext, leaveBattle, pressBattleClaim,
   selectReasoningClue, startBattle, submitBattleEvidence,
@@ -430,21 +429,23 @@ describe("a special battle's claim and rebuttal on the battle screen (stage 5)",
 });
 
 // The clue book's claim and press (stage 5): read with the names, memories and items, as the flow reads them, and never
-// stopping the screen. Milan's special battle B (a knot of the Last Supper's place file, the first with a claim there),
-// with names in its claim and press.
+// stopping the screen. The market's special battle B (a knot of its place file), with names in its claim and press; the
+// file's afterEach above puts the market's story back.
 describe("the clue book's claim and press (stage 5)", () => {
-  const milanB = "milano_last_supper_b01";
-  const storyId = storyFileOf(battles.find((battle) => battle.id === milanB)!.storyId);
-  const keptMilan = stories[storyId];
-  afterEach(() => {
-    stories[storyId] = keptMilan;
-  });
-  const named = readFileSync(`content/journeys/milano/stories/${storyId}.ink`, "utf8")
+  const named = source(marketStory)
     .replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, "$1「{player_name}さん、{heroine_name}さん、聞きなさい」\n");
-  const compile = (source: string) => compileInk(readPlaceFile(storyId, source).source, "milan-b.ink", { [MODULES_FILE]: MODULES_INK });
-  /** Play Milan's B to its stop point, press, and read the clue book's claim and press. */
+  const compile = (written: string) => compileInk(readPlaceFile(marketStory, written).source, "market.ink", { [MODULES_FILE]: MODULES_INK });
+  // The sample declares no memories: the claim reads one registered for these tests only.
+  const memoryId = "smp_test_claim_memory";
+  beforeAll(() => {
+    presentation.memories[memoryId] = { titleJa: "テストの思い出", descriptionJa: "主張が思い出を読むかを確かめるためだけの思い出。" };
+  });
+  afterAll(() => {
+    delete presentation.memories[memoryId];
+  });
+  /** Play the market's B to its stop point, press, and read the clue book's claim and press. */
   function clueBook(): { claimText: string; pressedText: string | null } {
-    let state = openBattleScene(cityStart("milano", ["たいち", "あゆみ"]), milanB);
+    let state = openBattleScene(cityStart("mihon", ["たいち", "あゆみ"]), MARKET);
     for (let step = 0; state.activeBattle!.phase !== "reasoning"; step++) {
       expect(step).toBeLessThan(80);
       const active = state.activeBattle!;
@@ -456,7 +457,7 @@ describe("the clue book's claim and press (stage 5)", () => {
   it("shows the claim and press with the names", () => {
     expect(named).toContain("{player_name}さん、{heroine_name}さん");
     const withPressName = named.replace(/(=== \w*_press ===\n(?:#[^\n]*\n)*)/u, "$1「{heroine_name}さんも、そう思うだろう」\n");
-    stories[storyId] = compile(withPressName);
+    stories[marketStory] = compile(withPressName);
     const { claimText, pressedText } = clueBook();
     expect(claimText).toContain("「たいちさん、あゆみさん、聞きなさい」");
     expect(pressedText).toContain("「あゆみさんも、そう思うだろう」");
@@ -466,10 +467,10 @@ describe("the clue book's claim and press (stage 5)", () => {
     const line = "「あの店の音を、まだ覚えているか」";
     // A place file's top is its two lines: the declaration goes in the knot (Ink reads it anywhere).
     const remembering = named
-      .replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, `$1EXTERNAL has_memory(memory_id)\n{ has_memory("sound_memory_cafe_01"): ${line} }\n`);
-    stories[storyId] = compile(remembering);
-    for (const memories of [[], ["sound_memory_cafe_01"]]) {
-      const opened = openBattleScene(cityStart("milano"), milanB);
+      .replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, `$1EXTERNAL has_memory(memory_id)\n{ has_memory("${memoryId}"): ${line} }\n`);
+    stories[marketStory] = compile(remembering);
+    for (const memories of [[], [memoryId]]) {
+      const opened = openBattleScene(cityStart("mihon"), MARKET);
       let state: GameState = { ...opened, memories };
       const lines: string[] = [];
       for (let step = 0; state.activeBattle!.phase !== "reasoning"; step++) {
@@ -487,11 +488,11 @@ describe("the clue book's claim and press (stage 5)", () => {
   });
 
   it("never stops the screen when a claim reaches a choice or errors (content:build stops such a knot)", () => {
-    stories[storyId] = compile(named.replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, "$1「まず聞こう」\n* [「はい」]\n- \n"));
-    const state = openBattleScene(cityStart("milano"), milanB);
+    stories[marketStory] = compile(named.replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, "$1「まず聞こう」\n* [「はい」]\n- \n"));
+    const state = openBattleScene(cityStart("mihon"), MARKET);
     expect(getReasoningContext(state)).toEqual({ claimText: "「まず聞こう」", pressedText: null });
     // A claim that stops with an error (here a condition not in the scene conditions): the clue book shows no claim.
-    stories[storyId] = compile(named.replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, "$1{cond(\"dreamscape_unknown\"): 「x」}\n"));
-    expect(getReasoningContext(openBattleScene(cityStart("milano"), milanB))).toEqual({ claimText: "", pressedText: null });
+    stories[marketStory] = compile(named.replace(/(=== \w*_claim ===\n(?:#[^\n]*\n)*)/u, "$1{cond(\"dreamscape_unknown\"): 「x」}\n"));
+    expect(getReasoningContext(openBattleScene(cityStart("mihon"), MARKET))).toEqual({ claimText: "", pressedText: null });
   });
 });

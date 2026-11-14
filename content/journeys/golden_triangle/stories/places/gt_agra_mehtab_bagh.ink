@@ -159,7 +159,7 @@ INCLUDE modules.ink
 // 場面の中の選択なので噛み合いはない。彼女の声は、一球目の噛み合いの romance_result のまま）
 === gt_agra_mehtab_bagh_another_ball ===
 # speaker: narrator
-# minigame: cricket_batting prefix again letgo plank auto over_wall bg gt_bg_agra_mehtab_bagh_lawn
+# minigame: cricket_batting prefix again ball slower letgo plank auto over_wall bg gt_bg_agra_mehtab_bagh_lawn
 ソニアがボールを投げ返す。彼女はそれを両手で受け取って、もう一度、土の盛り上がりに立った。
 * [もう一球：まっすぐ打ち返した # option: again_six]
     -> gt_agra_mehtab_bagh_ball_six ->
@@ -214,7 +214,7 @@ INCLUDE modules.ink
     振った板きれが、思った以上に大きな音を立てた。彼女が一瞬、肩をすくめる。
 - else:
     # speaker: narrator
-    ボールは、思ったよりまっすぐ来た。振った板きれに、手ごたえがあった。
+    振った板きれに、手ごたえがあった。
 }
 # speaker: narrator
 # photo: gt_album_a32 # photo_caption: 最後の一球、塀を越えてアウト

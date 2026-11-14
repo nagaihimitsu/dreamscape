@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { contentId as id } from "./content-id";
 import { storyFileOf } from "./story-address";
 
 /** Named display assets only; these do not change the story or game state. */
@@ -9,7 +10,6 @@ export const REACTION_MARKS = [
 export type ReactionMark = (typeof REACTION_MARKS)[number];
 export type ReactionTarget = "heroine" | "enemy";
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const storyId = z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/);
 const reactionEntrySchema = z.object({
   storyId,

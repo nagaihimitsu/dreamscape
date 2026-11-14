@@ -195,7 +195,7 @@ describe("Debug: the candidate table and 「場面から始める」", () => {
         message = (error as Error).message;
       }
       expect(message).toBe("場面 smp_mihon_clock_gears はこの時点で始まりませんでした。偽の部品：品物「青いピック」を持っている。" +
-        "ミラノの品物 blue_pick を持っていることが要ります（Debug は前の都市を本筋（到着・バトル・フィナーレと、エピローグの後に次の都市へ進む旅行編ではエピローグ。観光の案内は飛ばす）に沿って遊んでから始まるので、" +
+        "ミラノの品物 blue_pick を持っていることが要ります（Debug は前の都市を本筋（到着・クイズ・フィナーレと、エピローグの後に次の都市へ進む旅行編ではエピローグ。観光の案内は飛ばす）に沿って遊んでから始まるので、" +
         "デート・差し込み・観光の案内・道中交流でしかもらえない品物や、選択肢で渡した・使った記録はないことがあります。prep= は同じ都市の場面だけを流します）。");
       expect(message).not.toMatch(/品物をくれる場面|duomo_string/u);
     } finally {

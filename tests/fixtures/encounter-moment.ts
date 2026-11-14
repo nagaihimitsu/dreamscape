@@ -9,11 +9,12 @@ import { closeTourism, openTourism, skipTourismGuide } from "../../src/domain/to
 import { finishTravelEventIfComplete } from "../../src/domain/travel-game";
 import { playBattleToResult, startEncounterScene } from "../../src/dev/scenario-builders";
 
-// Encounters start only at their landmark's visit (the free-time start was
-// removed with the save format v14; condition system decision 7): most while
-// observing it, those with head tags (the unified event design, stage 1) before
-// or after its main part. These helpers meet an encounter that way with the
-// game's own functions, for unit tests whose states are planted or built.
+// An encounter never starts from free time (that start was removed with the save
+// format v14; condition system decision 7). These helpers meet one at its
+// landmark's visit (while observing it, or before or after its main part by its
+// # priority:) with the game's own functions, for unit tests whose states are
+// planted or built. The scenes of other moments (a date, the finale, the hotel,
+// a trip…; stage 4) run through their moment instead (occasion.ts, moments.ts).
 
 const landmarkOf = (encounterId: string): string => {
   const encounter = encounters.encounters.find((item) => item.id === encounterId);

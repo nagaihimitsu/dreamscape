@@ -8,7 +8,8 @@ import type { DialogueObserver } from "./dialogue-expression-validation";
 import { unique } from "./content-validation-utils";
 
 /**
- * Tourism is optional; the content contract never grants effects or asks Ink choices.
+ * Tourism is optional. A guide walked here grants no effects and asks no Ink choices; a guide with choices
+ * (or in a place file) is walked as a scene instead (walkedAsScene).
  * The image files themselves are checked by checkTourismImages (content-images.ts).
  */
 export function validateTourism(

@@ -8,7 +8,7 @@ import { mehndiSkin } from "./Skin";
 
 // The hidden name's field (docs/13 2.10, 2.12–2.13): the writing as text (the name as typed, never HTML), an illegible mark
 // with no letters where the story says Hindi, six places as buttons named by the pattern, and the use's art in its slots.
-const view: SearchView = { total: 1, round: 0, searched: [], done: [], presses: {}, last: null, nudge: null, ending: null };
+const view: SearchView = { total: 1, round: 0, searched: [], done: [], presses: {}, last: null, roundAt: 0, nudge: null, ending: null };
 const field = (params: MehndiParams, player = "Haruto", art: Record<string, string> = {}, shown: SearchView = view) => renderToStaticMarkup(createElement(mehndiSkin.Field, {
   params, still: false, seed: 1, cast: { heroine: null }, names: { player, heroine: "ヒロイン" }, art, sound: () => undefined, vibrate: () => undefined,
   setup: mehndiSetup(params), view: shown, live: true, search: () => undefined, active: () => undefined, frames: () => () => undefined,
@@ -50,6 +50,17 @@ describe("the hidden name's field", () => {
     // One line for how to play, before and during the play; no line under the label (she never shows the place).
     expect(mehndiSkin.hintJa).toBe(mehndiHiddenName.hintJa);
     expect(mehndiSkin.detailJa).toBeUndefined();
+  });
+
+  it("curls the five other places like writing (lit only), never the writing's own, and gives the pool the tuning's size", () => {
+    for (const target of ["thumb", "peacock", "vine"] as const) {
+      const html = field({ target, text: "player" });
+      const places = [...html.matchAll(/mg-mehndi-hidden-name-lookalike" data-place="([a-z]+)"/gu)].map((match) => match[1]);
+      expect(places.sort(), target).toEqual(["index", "peacock", "pinky", "thumb", "vine", "wrist"].filter((spot) => spot !== target).sort());
+      // Only in the lit layer (the dark shows the broad lines only).
+      expect(html.split("mg-mehndi-hidden-name-lit")[0]).not.toContain("lookalike");
+    }
+    expect(field({ target: "thumb", text: "player" })).toContain("--mehndi-lamp-r:max(8cqw, 18px)");
   });
 
   it("breaks the central vine's line behind the writing hidden in it, in the lit pattern only", () => {

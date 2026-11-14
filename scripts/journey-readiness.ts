@@ -15,7 +15,7 @@ import { journeyCatalogOf, journeyFolderPath, loadContentSources, parseCatalog, 
 import { servedFile } from "./public-assets";
 import { cityTransitPath, cityTransitPlan } from "./journey-transit";
 import { inspectCityTransit } from "./transit-ledger";
-import { describeSampleLeftover, sampleLeftovers, type SampleLeftover } from "./sample-journey";
+import { describeSampleLeftovers, SAMPLE_SETTINGS, sampleLeftovers, type SampleLeftover } from "./sample-journey";
 
 /** Report from real catalog entries; no additional hand-maintained content list. */
 export type JourneyReadinessInput = {
@@ -37,14 +37,17 @@ export type JourneyReadinessInput = {
   translations: z.infer<typeof learningCatalogSchema>["questions"];
   storyExists: (id: string) => boolean;
   assetExists: (assetPath: string) => boolean;
-  /** Sample content left in the journey's folder (paths relative to the repository); none for the sample itself. */
-  sampleLeftovers: SampleLeftover[];
+  /** Sample content left in the journey's folder (`folder` relative to the repository, the files inside it); none for the sample itself. */
+  sampleLeftovers: { folder: string; leftovers: SampleLeftover[] };
 };
 
 export type JourneyReadinessIssue = { code: string; detail: string };
 export type JourneyEventReadiness = { id: string; cityId: string; category: "main" | "date"; placeId: string; issues: JourneyReadinessIssue[] };
 export type JourneyCityReadiness = { cityId: string; events: JourneyEventReadiness[]; issues: JourneyReadinessIssue[] };
-export type JourneyReadinessReport = { journeyId: string; ready: boolean; readyForPromotion: boolean; issues: JourneyReadinessIssue[]; cities: JourneyCityReadiness[] };
+/** `notes`: the sample's settings a journey:new copy still has (sampleSettingNotes); they never make it unready. */
+export type JourneyReadinessReport = {
+  journeyId: string; ready: boolean; readyForPromotion: boolean; issues: JourneyReadinessIssue[]; notes: JourneyReadinessIssue[]; cities: JourneyCityReadiness[];
+};
 
 /** Check actual authored references and binaries, not a manually maintained ready flag. */
 export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyReadinessReport {
@@ -54,7 +57,7 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
   if (!trip.cityPlan) throw new Error(`旅行編「${trip.id}」の manifest.json に都市の計画（cityPlan）がないため、準備を確かめられません（journey:readiness は cityPlan を持つ旅行編を確かめます）。`);
   if (trip.status !== "available") problem(issues, "journey_unavailable", "旅行編は準備中です。");
   // A journey copied from the sample (journey:new) keeps its fictional sources, images and texts until they are replaced.
-  for (const leftover of input.sampleLeftovers) problem(issues, "sample_content_left", describeSampleLeftover(leftover));
+  for (const line of describeSampleLeftovers(input.sampleLeftovers.folder, input.sampleLeftovers.leftovers)) problem(issues, "sample_content_left", line);
   const seenEventIds = new Set<string>();
   const seenPlaceIds = new Set<string>();
   const checkImage = (backgroundId: string, list: JourneyReadinessIssue[], allowNeutral = false) => {
@@ -200,7 +203,30 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
   });
   const readyForPromotion = issues.every((issue) => issue.code === "journey_unavailable") &&
     cities.every((city) => city.issues.every((issue) => issue.code === "city_incomplete") && city.events.every((event) => event.issues.every((issue) => issue.code === "event_pending")));
-  return { journeyId: trip.id, readyForPromotion, ready: readyForPromotion && issues.length === 0 && cities.every((city) => city.issues.length === 0 && city.events.every((event) => event.issues.length === 0)), issues, cities };
+  return { journeyId: trip.id, readyForPromotion, ready: readyForPromotion && issues.length === 0 && cities.every((city) => city.issues.length === 0 && city.events.every((event) => event.issues.length === 0)),
+    issues, notes: sampleSettingNotes(input), cities };
+}
+
+/**
+ * The sample's settings left in a journey (SAMPLE_SETTINGS; a journey:new copy
+ * starts with them): a city's country code XX, places at sea near 0,0, the
+ * sample's currency and budget. Notes, not issues: the files' texts and images
+ * are the sample leftovers that stop a release.
+ */
+function sampleSettingNotes(input: JourneyReadinessInput): JourneyReadinessIssue[] {
+  const notes: JourneyReadinessIssue[] = [];
+  const nearZero = (value: number) => Math.abs(value) < SAMPLE_SETTINGS.maxCoordinate;
+  for (const { city, travel } of input.cities) {
+    if (city.countryCode === SAMPLE_SETTINGS.countryCode)
+      notes.push({ code: "sample_country_code", detail: `国コードが見本のまま（${SAMPLE_SETTINGS.countryCode}）です: 都市 ${city.id} の cities/${city.id}.json の countryCode` });
+    const atSea = travel.places.filter((place) => nearZero(place.latitude) && nearZero(place.longitude)).length;
+    if (atSea)
+      notes.push({ code: "sample_coordinates", detail: `座標が見本のまま（海上の 0,0 付近）です: 都市 ${city.id} の${atSea}地点（travel/${city.id}.json の latitude・longitude）` });
+  }
+  if (input.trip.currency.code === SAMPLE_SETTINGS.currencyCode && input.trip.initialBudget === SAMPLE_SETTINGS.initialBudget)
+    notes.push({ code: "sample_money", detail: `通貨と開始資金が見本のまま（${SAMPLE_SETTINGS.currencyCode}・${SAMPLE_SETTINGS.initialBudget}）です: ` +
+      "manifest.json の currency・initialBudget（この旅に合わせて決めた値なら、そのままでかまいません）" });
+  return notes;
 }
 
 export function loadJourneyReadiness(root: string, journeyId: string): JourneyReadinessInput {
@@ -244,12 +270,12 @@ export function journeyReadinessInput(sources: ContentSources, journeyId: string
  * The sample content left in a journey's own folder (sample-journey.ts): the
  * data files as loaded, the images (only listed by the loader) read from disk.
  */
-function journeySampleLeftovers(sources: ContentSources, journeyId: string): SampleLeftover[] {
-  if (journeyId === SAMPLE_JOURNEY_ID) return [];
+function journeySampleLeftovers(sources: ContentSources, journeyId: string): JourneyReadinessInput["sampleLeftovers"] {
   const folder = journeyFolderPath(sources.tree, journeyId);
+  if (journeyId === SAMPLE_JOURNEY_ID) return { folder, leftovers: [] };
   const files = new Map([...sources.tree.files].filter(([treePath]) => treePath.startsWith(`${folder}/`)).map(([treePath, bytes]) => {
     const file = path.join(sources.root, treePath);
     return [treePath.slice(folder.length + 1), bytes ?? (existsSync(file) ? readFileSync(file) : null)];
   }));
-  return sampleLeftovers(files).map((leftover) => ({ ...leftover, file: `${folder}/${leftover.file}` }));
+  return { folder, leftovers: sampleLeftovers(files) };
 }

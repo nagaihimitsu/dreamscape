@@ -3,7 +3,7 @@ INCLUDE modules.ink
 
 // ナーハルガル砦のデート（二人きり。噛み合いの選択は2回）。
 // かくれんぼはミニゲーム「かくれんぼ」（# minigame: nahargarh_hide_seek）。選択肢の代わりに、同じ形の扉が並ぶ廊下で彼女を探す。
-// 彼女は七つ目の扉（hide 7）。扉を開ける（1つ目か2つ目で見つけたら door_quick、3つ目より後なら door_by_door）・
+// 彼女は七つ目の扉（hide 7）。扉を開ける（1つ目か2つ目で見つけたら door_quick、3つ目以降なら door_by_door）・
 // 「名前を呼ぶ」を3回（call_her_name）・何もしないで待つ（just_wait）。結果の選択肢の # profile: で1回目の噛み合いが決まる。
 // 扉には名前を描かない（扉に王妃の名前が書かれていたことは、公的な資料で確かめられていない。地の文の「伝えられている」のまま）。
 
@@ -42,7 +42,7 @@ INCLUDE modules.ink
     # memory: gt_jaipur_date_nahargarh_fort_memory
     { romance_result == "negative":
         # speaker: narrator
-        名前を呼ぶと、声が廊下に跳ね返って、四方から同じ名前が返ってきた。それきり、返事はない。五回目に呼んだとき、ようやく角の向こうから彼女が出てきた。
+        名前を呼ぶと、声が廊下に跳ね返って、四方から同じ名前が返ってきた。こだまにまじって、小さな笑い声がしたきり、返事はない。三回目に呼んだとき、ようやく扉の陰から彼女が出てきた。
         # speaker: heroine
         # emotion: exasperated
         呼ばれたら、出たら負けな気がして。かくれんぼ、終わっちゃうでしょ
@@ -89,7 +89,7 @@ INCLUDE modules.ink
         ……早すぎ。ちゃんと百、数えた？
         # speaker: heroine
         # emotion: worried
-        隠れる場所も、まだ決めてなかったのに。かくれんぼって、もう少し、探してほしいんだけどな
+        ちょっと、のぞいてみただけなのに。かくれんぼって、もう少し、探してほしいんだけどな
     - else:
         # speaker: narrator
         # se: door_creak
@@ -99,7 +99,7 @@ INCLUDE modules.ink
         えっ、もう？
         # speaker: heroine
         # emotion: teasing
-        ずるい。始まったばっかりなのに、かくれんぼ、終わっちゃった。……足音、聞いてたでしょ
+        ずるい。始まったばっかりなのに、かくれんぼ、終わっちゃった。……のぞいたの、見えちゃった？
         # speaker: heroine
         # emotion: smile
         次は、わたしが探す番。すぐ見つけてあげるから、覚悟してね

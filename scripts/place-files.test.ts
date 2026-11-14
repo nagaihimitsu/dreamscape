@@ -71,7 +71,7 @@ describe("place files", () => {
     expect(() => reachableKnots(variable, "smp_x_a")).toThrow("A divert goes to no knot, stitch or label");
   });
 
-  it("refuses positions and moments of later stages (A3) and reads # on_done:", () => {
+  it("reads every moment and its positions, refuses a position its moment lacks (A2), and reads # on_done:", () => {
     const head = (lines: string) => readHead(readPlaceFile("places/smp_x_tower", talk(lines)).knots[0], 12);
     // Stage 3b opens place, visit any, several moments and after guide / after battle; the other moments are stage 4.
     expect(head("# at: place x\n# at: visit any\n# priority: after guide\n")).toMatchObject({ at: [{ place: "x" }, { visit: "any" }], priority: "after guide" });

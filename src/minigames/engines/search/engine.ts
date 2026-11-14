@@ -3,17 +3,18 @@ import type { MiniGameRules } from "../../contract";
 
 // The `search` engine's rules (docs/13 2.2): one or more rounds, each a field of places to search (spots) with the thing
 // to find at one of them; a few extra buttons (「名前を呼ぶ」「明日にする」「どこ？」); a time limit or none; an idle limit or
-// none. A round ends when its thing is found, or when the player is helped through it (a round's button, or doing nothing
-// in a game whose idle limit helps); the play ends when the last round does, or at the first event that ends the play: a
+// none. A round ends when its thing is found, or when the player is helped through it (a round's button, doing nothing
+// in a game whose idle limit helps, or the round's own time running out: the thing walks off); the play ends when the last round does, or at the first event that ends the play: a
 // wrong spot past the limit, a play button's last press, the time running out, or the player doing nothing (always, or
 // only before their first action). The outcome comes from that and what came before it (how many wrong spots, how many
 // rounds were helped); nothing is random. Pure: no clock, DOM or React (EnginePlay.tsx times and draws; a skin draws).
 
 /**
  * One thing the player did: searched a spot of the round on show (by its index in the skin's field for that round),
- * pressed one of the buttons (by its ID), or did nothing for the idle limit (only recorded where that helps a round on).
+ * pressed one of the buttons (by its ID), or did nothing for the idle limit (only recorded where that helps a round on);
+ * or the round on show ran out of its own time (`gone`: its thing went out of reach, only for a round with `limitMs`).
  */
-export type SearchAction = { spot: number } | { button: string } | { idle: true };
+export type SearchAction = { spot: number } | { button: string } | { idle: true } | { gone: true };
 
 /** A play's record: what the player did, in order, and what stopped the play when none of that did. */
 export interface SearchRecord {
@@ -47,6 +48,11 @@ const ID = /^[a-z][a-z0-9_]*$/u;
 export const searchRoundSchema = z.object({
   spots: z.number().int().min(2).max(24),
   targets: z.array(z.number().int().min(0)).min(1),
+  /**
+   * The round's own time (ms from when it came on show): its thing goes out of reach then (a child walks off into a side
+   * street), and the round is helped through, as by its button. Absent: the round waits for the player.
+   */
+  limitMs: z.number().int().positive().optional(),
 }).strict();
 export type SearchRound = z.infer<typeof searchRoundSchema>;
 
@@ -86,6 +92,8 @@ export const SEARCH_MIN_IDLE_MS = 6000;
 /** After a round left to doing nothing (the player is waiting, not searching), a shorter idle limit is fair down to this. */
 export const SEARCH_MIN_IDLE_AFTER_LEFT_MS = 3000;
 export const SEARCH_MIN_TIME_MS = 10000;
+/** A round's own time (limitMs) leaves at least this long to look. */
+export const SEARCH_MIN_ROUND_MS = 4000;
 /** 「おまかせ」's pace: its first action after the start's double-tap guard (450 ms) and a look, then one action a step. */
 export const SEARCH_AUTO_LEAD_MS = 1000;
 export const SEARCH_AUTO_STEP_MS = 600;
@@ -102,6 +110,7 @@ export function searchFairness(setup: SearchSetup): string[] {
     for (const target of round.targets) if (target >= round.spots) problems.push(`${name}target ${target} is not one of the ${round.spots} spots`);
     if (new Set(round.targets).size !== round.targets.length) problems.push(`${name}a target is listed twice`);
     if (round.targets.length >= round.spots) problems.push(`${name}every spot hides the thing: nothing to search`);
+    if (round.limitMs !== undefined && round.limitMs < SEARCH_MIN_ROUND_MS) problems.push(`${name}limitMs ${round.limitMs} is shorter than ${SEARCH_MIN_ROUND_MS} (time to look)`);
   });
   if (new Set(setup.buttons.map((button) => button.id)).size !== setup.buttons.length) problems.push("a button ID is listed twice");
   if (setup.wrongLimit !== null && setup.wrongLimit > wrongSpots(setup.rounds[0]).length)
@@ -189,6 +198,12 @@ export function searchProgress(actions: readonly SearchAction[], setup: SearchSe
       helped += 1;
       const ending = over(false, -1);
       if (ending) return progress(ending);
+    } else if ("gone" in action) {
+      // The round on show ran out of its own time: helped through (nothing for a round without one).
+      if (action.gone !== true || rounds[round].limitMs === undefined) continue;
+      helped += 1;
+      const ending = over(false, -1);
+      if (ending) return progress(ending);
     } else if (action.idle === true) {
       // Doing nothing: helps the round through, or ends the play (always, or before the first action), or nothing (a hint).
       if (setup.idleEnds === "round") {
@@ -200,6 +215,22 @@ export function searchProgress(actions: readonly SearchAction[], setup: SearchSe
     }
   }
   return progress(null);
+}
+
+/**
+ * When the round on show came on show, after an action at `ms` (the play's clock): a round that comes on show now; the
+ * play's end keeps the last round's (its field stays as it was at the end, not back at the round's start).
+ */
+export function searchRoundAt(before: Pick<SearchProgress, "done">, after: Pick<SearchProgress, "done" | "ending">, ms: number, current: number): number {
+  return after.done.length > before.done.length && !after.ending ? ms : current;
+}
+
+/**
+ * The time of the round on show that a field draws (ms from when it came on show): the play's time, held at the moment
+ * the play ended once it has (the field freezes as it was at the end while the host holds it).
+ */
+export function searchFieldMs(view: { roundAt: number; endedAt?: number }, ms: number): number {
+  return (view.endedAt ?? ms) - view.roundAt;
 }
 
 /** The idle limit now (ms): shorter once a round was left to doing nothing, where the setup says so; null: none. */

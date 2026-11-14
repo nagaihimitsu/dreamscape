@@ -56,12 +56,9 @@ describe("special battle content contract", () => {
     const result = await buildContent(fixture, false);
     const milan = result.battles.filter(inMilan);
     expect(milan[0].id).toBe(plainA.id);
-    expect(
-      milan.slice(0, 3).map((battle) => battle.format ?? "A"),
-    ).toEqual(["A", "B", "C"]);
-    // The two published cases remain available for saved games; the main
-    // journey now uses two distinct cases at Scala and Brera.
-    expect(milan.filter((battle) => battle.reasoning)).toHaveLength(4);
+    expect(new Set(milan.map((battle) => battle.format ?? "A"))).toEqual(new Set(["A", "B", "C"]));
+    // Milan's two special battles are its cases at Scala and Brera (none at the Last Supper, the A battle's stage).
+    expect(milan.filter((battle) => battle.reasoning)).toHaveLength(2);
     expect(result.reasoningBattles).toBe(result.battles.filter((battle) => battle.reasoning).length);
     expect(result.battleScenarios).toBeGreaterThanOrEqual(59);
     const original = result.journey.episodes.find(
@@ -96,14 +93,10 @@ describe("special battle content contract", () => {
         ),
       ).toHaveLength(1);
     }
-    expect(special("B").reasoning!.correctClueIds).toEqual([
-      "last_supper_doorway",
-    ]);
-    expect(new Set(special("C").reasoning!.correctClueIds)).toEqual(
-      new Set(["last_supper_apostle_groups", "last_supper_perspective"]),
-    );
-    const newB = result.battles.find((battle) => battle.id === "milano_la_scala_b01")!;
-    const newC = result.battles.find((battle) => battle.id === "milano_brera_c01")!;
+    const newB = special("B");
+    const newC = special("C");
+    expect(newB.id).toBe("milano_la_scala_b01");
+    expect(newC.id).toBe("milano_brera_c01");
     expect(newB.landmarkId).toBe("la_scala_case");
     expect(newB.reasoning!.correctClueIds).toEqual(["scala_mobile"]);
     expect(newC.landmarkId).toBe("brera_case");
@@ -163,8 +156,8 @@ describe("special battle content contract", () => {
         reasoning: {
           ...battle.reasoning,
           correctClueIds: [
-            "last_supper_perspective",
-            "last_supper_perspective",
+            battle.reasoning!.correctClueIds[0],
+            battle.reasoning!.correctClueIds[0],
           ],
         },
       }),
@@ -183,7 +176,9 @@ describe("special battle content contract", () => {
 
   it("rejects missing case evidence and evidence from a different landmark", async () => {
     await changeBattle("B", (battle) => {
-      battle.reasoning!.caseClueIds[0] = "missing_clue";
+      // A case clue that is not the proof (a missing proof fails the schema first).
+      const reasoning = battle.reasoning!;
+      reasoning.caseClueIds[reasoning.caseClueIds.findIndex((id) => !reasoning.correctClueIds.includes(id))] = "missing_clue";
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Unknown or mismatched battle evidence",
@@ -191,7 +186,7 @@ describe("special battle content contract", () => {
     await changeBattle("B", () => {});
     const tourism = tourismCatalogSchema.parse(structuredClone(tourismData));
     tourism.clues.find(
-      (clue) => clue.id === "last_supper_doorway",
+      (clue) => clue.id === special("B").reasoning!.correctClueIds[0],
     )!.landmarkId = "duomo_milano";
     expect(() => validateBattleEvidence(special("B"), tourism.clues)).toThrow(
       "Unknown or mismatched battle evidence",

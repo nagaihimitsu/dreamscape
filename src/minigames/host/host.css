@@ -114,8 +114,19 @@
   background: rgba(20, 24, 32, 0.55);
   font-size: 13px;
 }
-.minigame-band-title { font-weight: 700; white-space: nowrap; }
-.minigame-band-status { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ds-on-slate-muted); }
+/* The name, 「練習」 and the status: one line where they fit; on a narrow phone the status (or 「練習」 too) wraps under the
+   name instead of being cut (two lines still fit the band's 44 px: no jump when the status first shows). */
+.minigame-band-info {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 8px;
+  min-width: 0;
+  line-height: 1.25;
+}
+.minigame-band-title { max-width: 100%; overflow: hidden; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.minigame-band-status { flex: 0 1 auto; max-width: 100%; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ds-on-slate-muted); }
 .minigame-layer .minigame-quit {
   flex: none;
   min-width: 44px;
@@ -130,7 +141,7 @@
 /* 「練習」 in the band: a chip, so a practice play is never mistaken for the real one. */
 .minigame-band-practice {
   flex: none;
-  padding: 2px 8px;
+  padding: 1px 8px;
   border: 1px solid var(--ds-gold-hairline);
   border-radius: 999px;
   color: var(--ds-marker-selected);

@@ -39,7 +39,7 @@ export type DebugTemplateContent = {
 export type OptionalTemplateRole = "special_b" | "special_c" | "encounter" | "date";
 export const optionalTemplateRoles: readonly OptionalTemplateRole[] = ["special_b", "special_c", "encounter", "date"];
 export const optionalTemplateRoleLabels: Record<OptionalTemplateRole, string> = {
-  special_b: "特殊戦B（矛盾追及）", special_c: "特殊戦C（証拠連結）", encounter: "品物をくれる道中交流", date: "デート",
+  special_b: "推理クイズB（矛盾追及）", special_c: "推理クイズC（証拠連結）", encounter: "品物をくれる道中交流", date: "デート",
 };
 
 export type TemplateSpecial = { storyBattle: StoryBattle; battle: BattleDefinition; landmark: LandmarkDefinition };
@@ -60,7 +60,7 @@ export type DebugTemplate = {
   note: string;
 };
 
-const requiredRolesJa = "案内と対決のある観光地の通常エピソード、その出来事の地点と徒歩の経路、エピローグのある都市フィナーレ";
+const requiredRolesJa = "案内とクイズのある観光地の通常エピソード、その出来事の地点と徒歩の経路、エピローグのある都市フィナーレ";
 export const noTemplateMessage = `仮の場面の元になる都市がありません。公開中の旅行編のどれかに、${requiredRolesJa}を持つ都市が必要です。`;
 
 /**

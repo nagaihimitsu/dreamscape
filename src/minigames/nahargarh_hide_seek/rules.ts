@@ -4,7 +4,9 @@ import { searchRules, type SearchGame, type SearchSetup } from "../engines/searc
 // `hide`, the 7th in the Nahargarh date: 「七つ目の扉」). The play ends at what the player did: opened her door (within two
 // doors, or after more), called her name a third time, or did nothing at all for a while (only before opening a door or
 // calling: a player who stops to think after that is still searching, and the field gives a hint instead). The outcomes
-// are how the player chose to search, not skill: no rating. Nothing is random. Pure.
+// are how the player chose to search, not skill: no rating. She plays too (round 3, 2026-11-14: 「もっと楽しく」): she
+// peeks out of her door and ducks back now and then (hideSeekPeek: the field's look, on the play's clock; never in the
+// outcome), so a bold player who watches can go straight to her. Nothing is random. Pure.
 
 export type HideSeekOutcome = "call_her_name" | "door_by_door" | "door_quick" | "just_wait";
 export interface HideSeekParams {
@@ -27,12 +29,44 @@ export type HideSeekTuning = {
   hintMs: number;
   /** Her door among the first this many opened: door_quick; later: door_by_door. */
   quickDoors: number;
+  /**
+   * She peeks out of her door (fingers round its edge) first at this time and then this often, for this long, and leaves
+   * it ajar (a line of light) a while after ducking back. Looks only: the outcome never reads them.
+   */
+  peekFirstMs: number;
+  peekEveryMs: number;
+  peekMs: number;
+  ajarMs: number;
+  /** Before the player has opened a door or called: her muffled 「……まだかな」 from her side at this time (before idleMs). */
+  askMs: number;
+  /** An empty room this many doors from hers or nearer leans toward her (warm); farther, it is quiet (cold). Looks only. */
+  warmDoors: number;
 };
-export const HIDE_SEEK_TUNING: HideSeekTuning = { calls: 3, idleMs: 9000, hintMs: 6000, quickDoors: 2 };
+export const HIDE_SEEK_TUNING: HideSeekTuning = {
+  calls: 3, idleMs: 9000, hintMs: 6000, quickDoors: 2, peekFirstMs: 3000, peekEveryMs: 6500, peekMs: 700, ajarMs: 2000, askMs: 6000, warmDoors: 3,
+};
 export const HIDE_SEEK_CALLS = HIDE_SEEK_TUNING.calls;
 export const HIDE_SEEK_IDLE_MS = HIDE_SEEK_TUNING.idleMs;
 export const HIDE_SEEK_HINT_MS = HIDE_SEEK_TUNING.hintMs;
 export const HIDE_SEEK_QUICK_DOORS = HIDE_SEEK_TUNING.quickDoors;
+
+/** Her door at a time of the play (ms from its start): she peeks out (`peek`), it stands ajar after (`ajar`), or it is shut. */
+export function hideSeekPeek(ms: number, tuning: HideSeekTuning = HIDE_SEEK_TUNING): "peek" | "ajar" | null {
+  if (ms < tuning.peekFirstMs) return null;
+  const into = (ms - tuning.peekFirstMs) % Math.max(1, tuning.peekEveryMs);
+  return into < tuning.peekMs ? "peek" : into < tuning.peekMs + tuning.ajarMs ? "ajar" : null;
+}
+
+/** Why a tuning would make the corridor unfair or its moments overlap (Debug's room lists them; none: fine). */
+export function hideSeekFairness(tuning: HideSeekTuning): string[] {
+  const problems: string[] = [];
+  if (tuning.peekFirstMs >= tuning.idleMs) problems.push("peekFirstMs is not before idleMs: a player who waits never sees her peek");
+  if (tuning.askMs >= tuning.idleMs) problems.push("askMs is not before idleMs: her 「まだかな」 never comes");
+  if (tuning.peekMs + tuning.ajarMs >= tuning.peekEveryMs) problems.push("a peek and its ajar door last longer than peekEveryMs: the door is never shut");
+  if (tuning.peekMs < 300) problems.push(`peekMs ${tuning.peekMs} is shorter than 300: a flicker, not a peek`);
+  if (tuning.ajarMs < 1000) problems.push(`ajarMs ${tuning.ajarMs} is shorter than 1000: no time to scroll to her door`);
+  return problems;
+}
 
 export function hideSeekSetupFor(tuning: HideSeekTuning) {
   return (params: HideSeekParams): SearchSetup => ({

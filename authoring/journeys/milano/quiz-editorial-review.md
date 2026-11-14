@@ -1,8 +1,10 @@
 # 公開問題の編集メモ
 
+> **記録です。** 2026-11-01 ごろの本番23問の棚卸しです。2026-11-13 のミラノ編の書き直しで問題は29問になり（2026-11-14 に『最後の晩餐』の古い推理クイズB・Cの6問を消して23問）、この表のうち今もゲームにある問題は、`galleria_bull_city`（今の `milano_galleria_bull_city`）だけです。今の問題は `content/journeys/milano/quizzes/` にあります。
+
 本番23問の題材を新基準で棚卸しした暫定案。維持候補は史実・文章の承認を意味しない。変更案は未検証であり、既存の問題・正解・脚本は変更しない。資料の該当箇所を再確認してから採否を決める。
 
-問題IDは、セーブ版 v14 で改名した（例：`last_supper_b_slow_revision` → `milano_last_supper_b_slow_revision`）。表で今のゲームの問題を指すのは `milano_last_supper_b_…`・`milano_last_supper_c_…` の6件で、新しい名前にしてある。ほかのIDは下書きの案の名前で、ゲームのIDではない。
+問題IDは、セーブ版 v14 で改名した（例：`last_supper_b_slow_revision` → `milano_last_supper_b_slow_revision`）。表の `milano_last_supper_b_…`・`milano_last_supper_c_…` の6件は v14 の名前にしてあるが、2026-11-14 にゲームから消した（『最後の晩餐』の古い推理クイズB・C）。ほかのIDは下書きの案の名前で、ゲームのIDではない。
 
 | 問題ID | 区分 | 理由 | 切り口の案 |
 | --- | --- | --- | --- |

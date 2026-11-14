@@ -19,12 +19,21 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 | `<共通>/romance/progression.json` | 4段階の閾値・必要な履歴・敬称、告白が成立する条件（思い出の引用は `<旅行編>`） |
 | `<旅行編>/romance/presentation.json` | 背景・思い出。表情・エンディングの文章と既定背景は `<共通>` |
 | `<共通>/romance/balance.json` | APの上限・名前の既定値・名前の長さ |
-| `<旅行編>/progression/journey.json` | 観光と特殊戦が開く条件・都市フィナーレ・章末の表示文・一度かぎりのAP報酬の条件 |
+| `<旅行編>/progression/journey.json` | 観光と特殊戦が開く条件・都市フィナーレ・エピソードの題と、終えたときの題と短い文（`clearTitleJa`・`clearDescriptionJa`）・一度かぎりのAP報酬の条件 |
 | `<旅行編>/cities/<都市ID>.json` | 都市名・予定の観光地・初回クリア報酬（`firstClearReward`） |
 | `<旅行編>/battles/catalog.json` | A/B/Cの形式、相手、クイズ・Inkの参照、推理の問い、ケース資料・正解の証拠 |
 | `<旅行編>/quizzes/*.json` | 通常3問・都市フィナーレ5問、正解ID、語句、ヒント、正誤の解説、難易度、出典 |
 | `<旅行編>/tourism/catalog.json` | 観光地・画像の出典と権利・発見の範囲・説明・史実とクイズの参照 |
 | `<旅行編>/public/assets/tourism/` | 同梱する資料の画像。外部サイトの画像へ直接リンクしない |
+| `<旅行編>/romance/date_destinations.json` | デートの行き先と、その場所の事実・出典（下の「デートで訪れる観光地」） |
+| `<旅行編>/travel/<都市ID>.json`・`<都市ID>-settings.json` | 地点・経路・地図の出来事（`events`）、宿・予算・借りる乗り物（[都市データの編集](CITY_BUNDLES.md)、下の「都市内の移動（乗り物）」） |
+| `<旅行編>/scenes/catalog.json` | 差し込みの場面（道中交流・会話・ツアーの語り）の出典。場面のIDごと |
+| `<旅行編>/progression/story.json` | 物語のフラグ `flags`、名前で話す人 `people`、名前付きの条件 `conditions` |
+| `<旅行編>/encounters/catalog.json` | 品物 `items`（クイズとくじのある道中交流のカタログの形では `encounters` も） |
+| `<旅行編>/learning/` | 単語の意味・対訳・英語ノートの解説・その国の言葉（下の「単語の意味」から） |
+| `<旅行編>/glossary/terms.json` | 旅の図鑑の言葉（任意。下の「旅の図鑑の言葉」） |
+| `<旅行編>/presentation/` | 人物の絵（`characters.json`）、BGM・環境音・効果音（`music.json`・`ambience.json`・`sounds.json`。共通の分は `<共通>/presentation/`）、自作の絵の一覧（`own-artwork.json`） |
+| `<旅行編>/tours/<ツアーID>.json` | 日帰りツアー（任意。下の「ツアー」） |
 
 ## Inkで会話と演出を作る
 
@@ -205,60 +214,84 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 
 ## 簡単な道中交流を追加する
 
-`content/journeys/milano/stories/encounters/milano_duomo_new_event.ink` を作り（名前は [IDの付け方](../docs/02_TECH_ARCHITECTURE.md#idの付け方) の `encounters/<頭>_<交流>`）、名前用変数、会話、英語の選択（ふつうは3択。選択肢の数は自由）と分岐を書きます。英文はInkを正とします。訳を付ける場合は **選択肢の角括弧の中** にタグを置きます。
+道中交流は、その場所の場所のファイル（`<旅行編>/stories/places/` の `.ink`）に knot を1つ足して書きます。knot の名前が場面のIDです（名前は [IDの付け方](../docs/02_TECH_ARCHITECTURE.md#idの付け方) の `<頭>_<交流>`。保存に入るので、公開した後は変えません）。カタログ（`encounters/catalog.json` の `encounters`）には足しません。例は、ミラノのドゥオモの場所のファイル `content/journeys/milano/stories/places/milano_duomo.ink` に足す場合です。
 
 ```ink
-VAR player_name = ""
-VAR heroine_name = ""
+=== milano_duomo_new_event ===
+# scene: encounter
+# title: ドゥオモの新しい出会い
+# at: visit duomo_milano
+# priority: +1
+# sources: none
 # background: milano_duomo
 # speaker: narrator
 広場で声をかけられた。
-* [Look closer. # translation: 近くで見てみる。]
+* [Look closer. # option: look # translation: 近くで見てみる。]
+    # rel: trust +1
     # speaker: heroine
     # reaction: heroine,smile,sparkle
-    「一緒に見てみよう」
+    一緒に見てみよう
     -> END
-* [Ask a question. # translation: 質問する。]
+* [Ask a question. # option: ask # translation: 質問する。]
+    # speaker: heroine
+    何を聞くの？
     -> END
-* [Keep walking. # translation: 先へ進む。]
+* [Maybe next time. # option: later # translation: また今度にします。]
+    # later
     -> END
 ```
 
-`content/journeys/milano/encounters/catalog.json` の `encounters` に、既存の観光地IDを使って次のように追加します。都市は観光地から導かれ、説明はタイトル、各選択肢の費用は0、再プレイ不可が標準です。新しい事実を扱う場合は、確認した出典も `sources` に追加します。
-
-```json
-{
-  "id": "milano_duomo_new_event",
-  "landmarkId": "duomo_milano",
-  "titleJa": "ドゥオモの新しい出会い",
-  "storyId": "encounters/milano_duomo_new_event"
-}
-```
-
-購入やアイテム使用など選択肢ごとのルールがある場合は、カタログに `options` を、Inkの選択肢と同じ数だけ（ふつうは3件）追加し、各選択肢に `* [Tea # option: tea # translation: お茶を頼む。]` のような安定IDを指定します。カタログ側は `{ "id": "tea", "cost": 4 }` のようにルールだけを記述し、英文は重複させません。選択肢の順序を変えてもIDで対応します。金額は所属する旅行編の通貨の整数単位で、選択肢の支払いは `cost`、交流を終えたときに受け取る金額は `completionMoney` に書きます（ユーロ専用だった `costEuro`・`completionMoneyEuro` は v14 でこの2つにまとめ、使えなくなりました）。所持金・アイテムの変更はゲーム側が処理します。
+- 頭の札：`# scene: encounter`、`# title:`（日本語の題）、`# at:`（いつ起きるか。`visit <観光地>`・`place <場所>` など）、`# priority:`（本筋の前の負の数・`after observe`・本筋の後の正の数）は必須です。出会える条件は `# when:`・`# until:`、繰り返しは `# repeat:` で書きます（[場面の時点と順番](../docs/02_TECH_ARCHITECTURE.md#場面の時点と順番)、下の「[道中の交流](#道中の交流)」）。
+- 出典：本当の土地の事実を言う場面は、場面のIDで `<旅行編>/scenes/catalog.json` の `scenes` に出典を書きます。事実を言わない場面だけ、頭に `# sources: none` を書きます。
+- 英語の選択（ふつうは3択。数は自由）には正誤を付けません。英文はInkを正とし、訳は選択肢の角括弧の中の `# translation:` に書きます。
+- 効果は、選択肢のすぐ次の行の札（品物の `# give:`・`# use:`、お金の `# money: -300`、関係値の `# rel:`、APの `# ap:`、フラグの `# set:`、「また今度」の `# later` など）と、頭の `# on_done:` に書きます。効果のある選択肢には、角括弧の中に `# option: <ID>` が要ります（保存に入るので、公開した後は変えません）。
+- 品物は `encounters/catalog.json` の `items` に登録し、くれる場面（`# on_done: item <品物>` など）を書きます。手本は見本の編のしおりの露店と、しおりを渡す場面（`stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_bookmark_stall`・`smp_mihon_bookmark_gift`）です。
+- クイズとくじのある道中交流だけは、カタログの形（1場面1ファイルの `stories/encounters/<頭>_<交流>.ink` と、`encounters/catalog.json` の `encounters` の項目）で書きます（今はどの旅行編も使っておらず、テストの元データ `tests/fixtures/catalog-encounters/` が手本です）。この形では、選択肢ごとの費用をカタログの `options`（`{ "id": "tea", "cost": 4 }`。IDはInkの `# option:` と同じ）、終えたときに受け取る金額を `completionMoney` に書きます（旅行編の通貨の整数）。
 
 ## 簡単な通常デートを追加する
 
-新しいInk（`content/journeys/milano/stories/dates/milano_date_new.ink`。名前は `dates/<頭>_date_<行き先・出来事>`）に1場面1ファイルのデート（例：テストの元データ `tests/fixtures/one-scene-date-cafe.ink`）と同様の名前用変数、デートの定義の `choiceCount` の回数（ふつう2回）の選択（選択肢はふつう3つ。数は自由）、結果別の反応を記述します。各分岐では、1回目に `# effect: common_date_first_attentive`、2回目に `# effect: common_date_second_attentive` のような共通効果を使えます。末尾は `attentive`、`playful`、`honest`、`bold`、`provocative` から、その返答に合う既存の確率特性を選びます。結果は `romance_result` の `positive` / `negative` で描き分けます。共通効果は個別の思い出を保存しません。場所固有の思い出が必要な場合は従来どおり固有effectとmemoryを追加します。
+デートの会話は、デートで行く場所の場所のファイルに knot を1つ足して書きます。knot の名前はデートID（`<頭>_date_<行き先・出来事>`）です。例は、見本の編の時計塔広場のデート（`stories/places/smp_mihon_clock_tower.ink` の `smp_mihon_date_tower_square`）を短くしたものです。
 
-`content/journeys/milano/romance/date_catalog.json` の `dates` には、例えば次の最小設定を追加できます。開く条件 `when` は `{ "episodesCompleted": { "city": "milano", "atLeast": 1 } }`（その都市のエピソードを1つ終えたら）が標準で、2 AP、一度限り、交際後も利用可能が既定です。`when` を書かないデートは、進行の条件なしに最初から開きます。特定の観光地を訪れた後に開きたい場合は、`destinationId` と `when: { "episodeCompleted": "<エピソードID>" }` などを書いてください（書き方は[条件の書き方](#条件の書き方)）。
-
-```json
-{
-  "id": "milano_new_date",
-  "chapterId": "milano",
-  "titleJa": "新しいデート",
-  "storyId": "dates/milano_date_new",
-  "when": { "episodesCompleted": { "city": "milano", "atLeast": 1 } },
-  "backgroundId": "milano_cafe"
-}
+```ink
+=== smp_mihon_date_tower_square ===
+# scene: date
+# when: episodes mihon >= 1
+# background: smp_bg_mihon_clock_tower
+# speaker: heroine
+ここ、空いてます。三時までの席だけど、いい？
+* [「三時になるまで、ここで待とう」 # option: first_wait]
+    # profile: attentive
+    { romance_result == "negative":
+        # speaker: heroine
+        あの時計、ずっと三時だよ。……待つなら、何か話して
+    - else:
+        # speaker: heroine
+        # emotion: smile
+        うん。急がなくていい待ち合わせって、ちょっといいね
+    }
+    -> tea
+* [「もう三時は過ぎてるって、言ってもいい？」 # option: first_tease]
+    # profile: playful
+    （同じように、噛み合ったときと、噛み合わなかったときの返事）
+    -> tea
+= tea
+（2回目の選択も同じ形。最後の行で、思い出を残すなら # memory: <思い出ID>）
+-> END
 ```
+
+- 頭の札：`# scene: date`。地図に出る条件は頭の `# when:` か、デートのカタログの `when` のどちらか一方に書きます（両方に書くと止まります）。任意で `# hint:`（Debugモードで、鍵のかかった札に出す一言）。
+- 選択：デートの定義の `choiceCount` の回数（ふつう2回）、選択肢（ふつう3つ。数は自由）を書きます。噛み合いの選択には `# option:` と `# profile:`（`content/romance/response_profiles.json` の `attentive`・`playful`・`honest`・`bold`・`provocative`）を付け、返事を `romance_result` の `positive`・`negative` で書き分けます。決まった増減は `# rel:` です。書き方は下の「[恋愛とInk](#恋愛とink)」にあります。
+- 登録するもの：
+  - `<旅行編>/romance/date_catalog.json` の `dates`：`id`（knot の名前と同じ）、`kind: "normal"`、`chapterId`（都市ID）、`titleJa`、`descriptionJa`、`apCost`、`storyId`（`places/<場所のファイル>.<knot>`）、`destinationId`、`backgroundId`、`choiceCount`・`effectCount`（[通常デートのデータ](#通常デートのデータ)）。
+  - `<旅行編>/travel/<都市ID>.json` の `events`：同じIDで、`placeId`（行く地点）、`category: "date"`、`titleJa`、`activityMinutes`、`apCost`。
+  - 行き先 `<旅行編>/romance/date_destinations.json` と背景・思い出 `<旅行編>/romance/presentation.json`（[デートで訪れる観光地](#デートで訪れる観光地)）。
+- 実在の旅行編の例：ミラノ編の `places/milano_roastery.ink` の `milano_cafe_01`、インド編の `places/gt_delhi_lodhi_garden.ink`。
 
 公開済みInkを編集・差し替えると途中セーブの指紋が変わり、過去のセーブや途中の会話が再開できなくなる場合があります。開発中は誤字修正や改稿のたびに旧セーブ再開用の旧稿を保存する必要はありません。現在のゲームが使っている脚本・データは誤って削除しないでください。安全に読めないデータは勝手に消さず、利用者が案内に従って消去し、最初から始められます。古い外部演出の行や脚本がなくなった場合は警告されます。`npm run content:check` は差分だけでなく全コンテンツの参照と分岐を検証し、ゲーム用データを生成します。
 
 ## 見本の編（雛形）
 
-ファイルの書き方の手本は、架空の「見本の街」を舞台にした遊べる最小の旅行編 [見本の編](templates/sample_trip/README.md)（`templates/sample_trip/`、開発・テスト専用）です。観光案内・通常戦・デート・都市フィナーレ・エピローグの必須の20ファイルと、任意の特殊戦B（矛盾追及）・特殊戦C（証拠連結）・品物つきの道中交流があり、各Inkの冒頭のコメントにその種類の脚本の規則を書いています。新しい旅行編は `npm run journey:new` で見本から作れます（[新しい編を追加する手順](../docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順)）。既存の旅行編に項目を足すときも、見本の同じ種類の項目を写してIDと内容を置き換えます。見本の文章・出典（`https://example.com/dreamscape-sample`）・画像は架空なので、写したら実在の観光地、実際に確認した出典、権利を確認した画像に置き換えます（残っていると `npm run journey:readiness` が示し、`npm run journey:release` は公開を止めます）。カタログのファイルは、既存のカタログの配列に項目を追加します。例でカタログ全体を上書きしないでください。
+ファイルの書き方の手本は、架空の「見本の街」を舞台にした遊べる最小の旅行編 [見本の編](templates/sample_trip/README.md)（`templates/sample_trip/`、開発・テスト専用）です。観光案内・通常戦・デート・都市フィナーレ・エピローグの必須の19ファイルと、任意の特殊戦B（矛盾追及）・特殊戦C（証拠連結）・品物つきの道中交流があり、各Inkの冒頭のコメントにその種類の脚本の規則を書いています。新しい旅行編は `npm run journey:new` で見本から作れます（[新しい編を追加する手順](../docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順)）。既存の旅行編に項目を足すときも、見本の同じ種類の項目を写してIDと内容を置き換えます。見本の文章・出典（`https://example.com/dreamscape-sample`）・画像は架空なので、写したら実在の観光地、実際に確認した出典、権利を確認した画像に置き換えます（残っていると `npm run journey:readiness` が示し、`npm run journey:release` は公開を止めます）。カタログのファイルは、既存のカタログの配列に項目を追加します。例でカタログ全体を上書きしないでください。
 
 配置先の `<旅行編>` は `content/journeys/<旅行編ID>/`（ミラノ編なら `content/journeys/milano/`）です。見本の中も同じ相対配置です。
 
@@ -383,7 +416,7 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 ヒントは、ヒロインの小さな顔と「（ヒロインの名前）の耳打ち」という吹き出しで、問いの下にいつも出ます（開くボタンはありません）。`hintJa` は地の文のままでかまいません（彼女の言葉としてかぎかっこで囲んだりはしません）。問いごとに、次の2つを任意で書けます（書かなければ今までどおり）。例は見本の編の `quizzes/smp_mihon_main_clock_tower_quiz.json`。
 
 - `hintHeroineJa`：ヒントを彼女の言葉で書いたもの。書くと、`hintJa` の代わりにこれが吹き出しに出ます（`hintJa` も必須のまま書きます）。
-- `heroineCorrectJa`：正解したとき、解説のすぐ下に、彼女の顔と名前つきの吹き出しで出る短い一言（不正解では出ません）。得点や関係の値は出しません。答えた後の会話（`-> quiz(n) ->` の後の行）とは別で、そちらは「敵の反応を見る」の後に流れます。
+- `heroineCorrectJa`：正解したとき、解説のすぐ下に、彼女の顔と名前つきの吹き出しで出る短い一言（不正解では出ません）。得点や関係の値は出しません。答えた後の会話（`-> quiz(n) ->` の後の行）とは別で、そちらは「相手の反応を見る」の後に流れます。
 
 どちらも彼女の台詞なので、[キャラクターバイブル](../docs/09_HEROINE_CHARACTER_BIBLE.md)に照らして1〜2文で書きます。吹き出しで彼女の言葉と分かるので、かぎかっこは要りません（書いたとおりに出ます）。名前はベタ書きしません。ヒントで正解そのものを言わないようにします。
 
@@ -396,13 +429,13 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 
 ### 敵・バトルの項目
 
-`battle_*.json` の `id`、`titleJa`、`descriptionJa`、`enemyNameJa`、`enemyTitleJa`、`enemyDescriptionJa` は対決と人物の識別・表示。相手の名札（`enemyTitleJa` の役どころと `enemyNameJa` の名前）は、相手の名前が初めて出る `# speaker: enemy` の行に `# cutin: name` を書くと、少しのあいだ出ます（「場面の演出の札」）。任意の `enemyQuoteJa` を書くと、名札に相手の一言が1行添えられます（書いたとおりに出るので、台詞ならかぎかっこも書きます。例は見本の編の `battles/catalog.json`）。`landmarkId`、`storyId`、`quizId`、`backgroundId` は観光地・Ink・問題セット・登録済み背景への参照です。対決の会話は1本の流れ（下）で書きます。`format` はAでは省略可能、B/Cは明示。任意の `portrait` は既存で定義済みの表示種別に限られます。新規の立ち絵種類には実装作業が別途必要です。
+`battles/catalog.json` の `battles` の各項目の `id`、`titleJa`、`descriptionJa`、`enemyNameJa`、`enemyTitleJa`、`enemyDescriptionJa` は対決と人物の識別・表示。相手の名札（`enemyTitleJa` の役どころと `enemyNameJa` の名前）は、相手の名前が初めて出る `# speaker: enemy` の行に `# cutin: name` を書くと、少しのあいだ出ます（「場面の演出の札」）。任意の `enemyQuoteJa` を書くと、名札に相手の一言が1行添えられます（書いたとおりに出るので、台詞ならかぎかっこも書きます。例は見本の編の `battles/catalog.json`）。`landmarkId`、`storyId`、`quizId`、`backgroundId` は観光地・Ink・問題セット・登録済み背景への参照です。対決の会話は1本の流れ（下）で書きます。`format` はAでは省略可能、B/Cは明示。任意の `portrait` は既存で定義済みの表示種別に限られます。新規の立ち絵種類には実装作業が別途必要です。
 
 B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）、0から数える `roundIndex`（何問目の前で資料を選ぶか）、候補 `caseClueIds`、正解 `correctClueIds` を記入します。正解証拠はBが1つ、Cは異なる2つを順不同で組み合わせます。証拠は未発見でもケース資料として開けるよう候補に含めます。英語3択の正解はクイズ側で別に指定します。主張・追及・資料の後の台詞は、対決のInkに書きます（下）。
 
 `format` を省くとA（ふつうのクイズ）です。Bは `format: "B"` と `reasoning.kind: "contradiction"`、Cは `format: "C"` と `reasoning.kind: "connection"` を書きます。`caseClueIds` は観光の `clues` を使い回す証拠のID（3〜5枚）で、Cの正解の2枚は順不同で判定します。推理の結論は、同じ `roundIndex` のクイズの `correctOptionId` で決めます。証拠の選択と英語の採点は別で、証拠だけで3択に答えることはしません。台詞はInk、証拠と条件はJSON、判定と保存はTypeScript、入力と描画はReactが持ちます。ビルドは、形式と推理の種類、証拠の枚数・重なり・正解が候補に入っているか、証拠IDと観光地が合うか、問いの位置の範囲、主張の knot と止まる所を確かめます。正しい証拠と結論が理屈のうえで1つに決まるかは、出典と脚本でも照らし合わせてください。
 
-推理クイズを本編に置くには、`progression/journey.json` の `storyBattles` に、対決ID、前後のエピソードID、案内文とボタン名を書きます。そこに書いた `completionReward` は、共通の報酬の処理で `battle_complete` の報酬として扱います。B/Cの戦績を完了の記録に使い、観光エピソードや報酬を重ねて登録しません。ミラノの『最後の晩餐』を舞台にした古いB/C（`milano_last_supper_b01`・`milano_last_supper_c01`）はカタログに残っていますが、`storyBattles` にないので新しい旅には出ません。
+推理クイズを本編に置くには、`progression/journey.json` の `storyBattles` に、対決ID、前後のエピソードID、案内文とボタン名を書きます。そこに書いた `completionReward` は、共通の報酬の処理で `battle_complete` の報酬として扱います。B/Cの戦績を完了の記録に使い、観光エピソードや報酬を重ねて登録しません。
 
 新しい通常のクイズは、3問のクイズのJSONとInkを用意し、`battles/catalog.json` に登録するだけで遊べます（画面を直す必要はありません）。今の数は、ミラノが7セット（通常4、推理クイズB・C各1、都市フィナーレ1）、インドが都市ごとに5セット（通常4、都市フィナーレ1）です。正解の位置（A・B・C）が偏らないようにします。日本語の導入や、証拠を示せたときの台詞が、続く英語の答えを直接教えていないか、史実が正しいかは、脚本のレビューでも確かめます。
 
@@ -455,10 +488,8 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 2. 権利を確認した写真を `content/journeys/<旅行編ID>/public/assets/tourism/` に置き、`content/journeys/<旅行編ID>/tourism/catalog.json` の `assets` に実寸・作者・出典URL・ライセンス・加工内容を登録します。同じ旅行編の `romance/presentation.json` の背景から `imageAssetId` で参照し、必要なら `imagePosition` の x / y を0〜100で指定します。写真家の権利だけでなく被写体の権利も確認してください。近隣の風景を使う場合は実際の場所を代替テキスト・クレジットに明記します。確認できる画像がない場合は `fallback: "neutral"` を使います。出典は会話中の操作メニューから確認できます。出典のある写真ではなく Dreamscape のために作った絵（品物のアイコン、タイトルの絵など）は `tourism/catalog.json` に登録せず、その旅行編の `presentation/own-artwork.json` に配信時のパスを1行ずつ書きます（共通の `public/` に置く絵は `content/presentation/own-artwork.json`）。配信するどの画像も、どちらか一方に登録されていないと `npm run content:build` が「出典のない画像」で止まります（アルバムの絵 `public/assets/album/` だけは登録しません。上の「写真の札」。[技術設計](../docs/02_TECH_ARCHITECTURE.md#画像の出典と自作の絵)）。
    背景に訪問対象が写っていないときは、行き先に任意の `referenceImage`（HTTPSの `url`、リンク名 `labelJa`、背景についての `backgroundNoteJa`）を追加し、実物を確認できる公式資料へ案内できます。外部リンクは写真のゲーム内への転載許諾を意味しません。
 3. `content/journeys/<旅行編ID>/romance/date_catalog.json` の通常デートに `destinationId` と開く条件 `when` を指定します。デートの `chapterId`、行き先の `cityId`、双方の背景IDを一致させます。訪問後に開放する通常デートでは、`when` にそのエピソードだけを書けます（例：`"when": { "episodeCompleted": "milano_galleria_episode" }`）。交際後も同じ短編を遊べる場合は `allowAfterEnding` を指定します。
-4. Inkには、その場所で見られるものや出典を確認した小話を、ヒロインの関心や会話に自然につなげて書きます。選択にかかわらず観光を楽しめるようにします。選択をデートの定義の `choiceCount` の回数（ふつう2回）書き（選択肢はふつう3つ。数は自由）、選択肢には共通または固有の `effect` を指定します。固有の思い出を残す場合は対応する `memory` も登録します。必要な表情は `# emotion:`、無言の反応は `# reaction:` で指定します。既存の恋愛進行に新イベントを必須条件として追加するかは、別途慎重に検討してください。
+4. Inkには、その場所で見られるものや出典を確認した小話を、ヒロインの関心や会話に自然につなげて書きます。選択にかかわらず観光を楽しめるようにします。選択をデートの定義の `choiceCount` の回数（ふつう2回）書き（選択肢はふつう3つ。数は自由）、選択肢には `# option:` と、噛み合いの `# profile:` を付けます。思い出を残すときは `# memory:` を書き、その思い出を `presentation.json` の `memories` に登録します（1場面1ファイルの古い形では、選択肢に `# effect:` を書きます）。必要な表情は `# emotion:`、無言の反応は `# reaction:` で指定します。既存の恋愛進行に新イベントを必須条件として追加するかは、別途慎重に検討してください。
 5. `npm run content:check` でIDの重複、都市・エピソード・背景の参照、出典形式、全分岐と効果を確認し、スマートフォンの画面と脚本をレビューします。
-
-現在の都市読み込みはミラノ前提です。別都市の実装には、後述の都市選択・進行・セーブなどの対応が必要です。
 
 ### 関係の空気を会話へ反映する
 
@@ -478,7 +509,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 
 Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受け取ります（`player_address` は関係の段階に応じた敬称つきの呼び方）。恋愛の場面では、`romance_stage`、過去の思い出を引く `memory_callback`、告白が成立する状態かを示す `confession_ready` も使えます。AP・段階・告白の条件の計算はTypeScriptが行い、Inkには結果だけを渡します。`# speaker: narrator` / `heroine` / `player` / `enemy` / 登録した人物のID（[Inkで会話と演出を作る](#inkで会話と演出を作る)）、`# background: 登録済みID`、`# emotion: 登録済みID` を使い、本文はふつう日本語で書きます（英語の台詞や選択肢も書けます。ビルドは止めません）。デートの `* [選択肢]` と各分岐直後の札（`# option:` と `# profile:`）、`->` の合流例は見本の場所のファイル `stories/places/smp_mihon_clock_tower.ink` のデート `smp_mihon_date_tower_square` を参照（今の1場面1ファイルのデートは、各分岐直後に `# effect: 登録済みID`）。通常デートは3択を2回、各選択直後・最初の発話の前に対応する `# effect:` を1つ置きます。Inkで `romance_result` と `affection_delta`・`trust_delta`・`spark_delta` を宣言し、`romance_result` の positive と negative それぞれで異なる人物らしい反応を書きます。確率計算と乱数はInkに書きません。告白は確定的な別契約です（場所のファイルの告白は `# profile:` も結果の `# effect:` も書かず、始めたときにゲームが関係状態から決めた `confession_result` で返事を分けます。デートの knot の中の選択の回数が `choiceCount` です。例：インド編の `places/gt_delhi_hotel_hub_dates.ink`）。案内とバトルには恋愛effectを置きません。バトルの会話は1本の流れで書きます（[対決の会話を1本の流れで書く](#対決の会話を1本の流れで書く段階5)。`-> quiz(n) ->` でクイズを呼び、戻ると `quiz_correct`・`battle_score` で分岐する）。場所のファイル（`stories/places/`）では、変数はゲームが用意する `modules.ink` が宣言するので、`VAR` を書きません（1場面1ファイルのバトルも、1行目を `INCLUDE modules.ink` にして `VAR` を書かない）。案内にも選択肢と効果の札を書けます（読み直しでは当てない）。特殊戦の主張（`<バトル>_claim`）・追及（`<バトル>_press`）・証拠成功／失敗（`evidence_result` の分かれ道）の例は見本の `stories/places/smp_mihon_market.ink`（B）と `stories/places/smp_mihon_library.ink`（C）にあります。
 
-会話中の無言リアクションは、通常はInkの `# reaction:` で指定します。既存の `content/journeys/milano/presentation/dialogue-reactions.json` は、公開済みの脚本を変えずに演出を付けた旧指定として維持します。外部指定では固定台詞の完全一致が必要で、変数を含む行には指定できません。脚本を更新した場合、参照先の消えた旧指定は検証時に警告されます。
+会話中の無言リアクションは、通常はInkの `# reaction:` で指定します。脚本を変えずに演出を付けるときは、各旅行編の `presentation/dialogue-reactions.json` に外から指定することもできます（今はどの旅行編も使っていません）。外部指定では固定台詞の完全一致が必要で、変数を含む行には指定できません。脚本を更新した場合、参照先の消えた旧指定は検証時に警告されます。
 
 漫符IDは `question`、`exclamation`、`interrobang`、`anger`、`sweat`、`blush`、`gloom`、`dizzy`、`music`、`heart`、`sparkle`、`sleep`、`sigh` です。`exasperated` は呆れの表情で、画像が未登録の衣装では同じ衣装の `neutral` を使います。演出は対象人物が表示されている間だけ現れ、ゲームの進行や保存には影響しません。台詞ごとに機械的に付けず、必要な瞬間を選んでください。
 
@@ -533,7 +564,7 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 
 ## 条件の書き方
 
-デートの開く条件 `when`・閉じる条件 `until`（`romance/date_catalog.json`）と、道中交流の入場ルールの `when`（`encounters/entry-rules.json`）は、共通条件管理システムの同じ形の JSON で書きます。ゲームは条件を1つの関数（`src/domain/conditions.ts` の `meets`）で判定し、条件が真になっても何も記録しません。条件を書かなければ「条件なし」です。今使えるのは、今の記録を読む部品だけです（段階1と2a）。場面のInkの中では、同じ部品を文字で書いた `cond("…")` で分岐できます（下の「場面の中の分岐」）。
+デートの開く条件 `when`・閉じる条件 `until`（`romance/date_catalog.json`）と、道中交流の入場ルールの `when`（`encounters/entry-rules.json`）は、共通条件管理システムの同じ形の JSON で書きます。ゲームは条件を1つの関数（`src/domain/conditions.ts` の `meets`）で判定し、条件が真になっても何も記録しません。条件を書かなければ「条件なし」です。下の表の部品は、どれも使えます。地図に出る条件（`progression/journey.json` のエピソード・特殊戦の `when`）と、場面のInkの頭の札 `# when:`・`# until:`・`# requires:` も同じ部品です。場面のInkの中では、同じ部品を文字で書いた `cond("…")` で分岐できます（下の「場面の中の分岐」）。
 
 条件は、キーが1つだけのオブジェクトです。組み合わせは入れ子にできます。
 
@@ -568,6 +599,10 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 | 使えるお金 | `{ "money": { "atLeast": 300 } }` | 旅行予算から帰りの交通費の取り置きを引いた額（`atMost` も） |
 | 恋愛の段階 | `{ "romanceStage": { "atLeast": 2 } }` | 今の段階（1〜4。`atMost` も） |
 | 交際している | `{ "couple": true }` | 告白が成立した |
+| 使えるAP | `{ "ap": { "atLeast": 2 } }` | AP から取り置きを引いた数（`atMost` も。保留APは入らない） |
+| フラグ | `{ "flag": "<フラグID>" }` | 場面の `set:`・`on_done: set` で立てたフラグ（`progression/story.json` の `flags` に宣言する。どの都市でも読める） |
+| 会った | `{ "met": "<人物ID>" }` | 頭の `# person:` にその人の名前がある場面を見た（`progression/story.json` の `people`） |
+| 名前付きの条件 | `{ "condition": "<名前>" }` | `progression/story.json` の `conditions` に名前を付けて書いた条件 |
 
 品物の `is` は5つです。
 
@@ -588,7 +623,7 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 
 - デートは `when` が真で、`until` が偽で、恋愛の欄（`minRomanceStage`・`minAffection`・`needsDeferred`）を満たすときに開きます。一度地図に出た特別な出来事も、`until` が真になると閉じます（`needsDeferred` のデートは、保留が終わると閉じます）。始めた後のデートは、セーブを読み込み直しても条件を調べ直しません。
 - デートが開かない理由の文は今のままの順です（`when` のすぐ下の部品で、都市のクリア → エピソード → `until` → 告白の待ち時間 → そのほか）。ゲームは条件の中身や関係値を理由に出しません。Debugだけが、満たしていない部品を表示します。
-- まだ使えない部品（`flag`・`met`・名前付き条件 `condition`・`ap`、品物の `encounter`・`to`）や、観察以外の時点（`at` の `afterBattle` など）は、ビルドが「まだ使えません（段階…）」で止めます。後の段階で足します。
+- 道中交流の入場ルール（`encounters/entry-rules.json`）の `at` は、観察の `["observe"]` だけです。ほかの時点に置く交流は、Inkの頭の札で書きます（[場面の時点と順番](../docs/02_TECH_ARCHITECTURE.md#場面の時点と順番)）。
 - `npm run content:build` が止めるのは、形の誤り、存在しないID、旅行編が宣言していない乗り物（徒歩も数えない）、読める場所でない品物の `held`・`left_behind`、入手元のない品物です。止めずに注意として知らせるのは、決して満たされない条件（`never-offered`：観察だけで調べる交流が自分の観光地のエピソードやバトルを条件にしている、同じ旅の後の都市の進行を前の都市で読む、暦のない旅の `journeyDay`・`weekday`、互いを待つデート）と、デートの条件の `time`・`rides`・`money`（`date-condition-trip`：行き先へ向かう移動で変わるので、地図に出ても着くと始まらないことがある。時間や曜日で限るデートは、行き先の時間窓 `startWindows`・`openingWindows`・`closedWeekdays` で書けます）です。
 
 ### 場面の中の分岐
@@ -614,7 +649,7 @@ EXTERNAL cond(text)
 ```
 
 - 今の「1場面1ファイル」のInk（`VAR` で始まる形）で `cond` を使うときは、`VAR` の行の後に `EXTERNAL cond(text)` を1行、ファイルの最後に、Inkyで下書きを見るための代わりの関数 `=== function cond(text) ===` と `~ return false` の2行を書きます（`EXTERNAL has_memory(memory_id)` と同じ書き方）。宣言がないと、`npm run content:build` が直し方を示して止めます。代わりの関数はInkyだけが使い、ゲームは本当の値を渡します。
-- 書ける文字：`item <品物> held`（`obtained`・`gifted`・`used`・`left_behind`）、`seen <交流>`・`done <交流>`、`visited <観光地>`・`guide <観光地>`、`battle <バトル>`・`episode <エピソード>`・`city <都市>`、`episodes <都市> >= 1`、`battles <都市> >= 2`、`date <デート>`・`epilogue <都市>`、`time day`・`time night`、`day >= 2`（`<=` も）、`journey_day >= 5`、`weekday 5,6`、`rides <乗り物> >= 1`・`rented <乗り物>`、`rel affection >= 3`（`trust`・`spark`、`<=` も）、`money >= 300`（`<=` も）、`stage >= 2`（`<=` も）、`couple`。それぞれ上の表の部品と同じ意味です。`flag`・`met`・`ap`・名前付き条件は段階3からです。
+- 書ける文字：`item <品物> held`（`obtained`・`gifted`・`used`・`left_behind`）、`seen <交流>`・`done <交流>`、`visited <観光地>`・`guide <観光地>`、`battle <バトル>`・`episode <エピソード>`・`city <都市>`、`episodes <都市> >= 1`、`battles <都市> >= 2`、`date <デート>`・`epilogue <都市>`、`time day`・`time night`、`day >= 2`（`<=` も）、`journey_day >= 5`、`weekday 5,6`、`rides <乗り物> >= 1`・`rented <乗り物>`、`rel affection >= 3`（`trust`・`spark`、`<=` も）、`money >= 300`（`<=` も）、`stage >= 2`（`<=` も）、`couple`、`ap >= 2`（`<=` も）、`flag <フラグ>`、`met <人物>`、`condition <名前>`。それぞれ上の表の部品と同じ意味です。
 - 引数は、引用符で囲んだ文字だけです（変数や式は書けません）。
 - `npm run content:build` は、`cond` の文字を頭の札と同じ読み方で条件にし、ほかの条件と同じ検査（形・存在しない名前・品物の都市など）をして、誤りがあれば止めます。そのうえで、代表の組み合わせ（全部偽・全部真・1つだけ真）で、全部の道が最後まで進むかを確かめます。全部の組み合わせは確かめません。
 - 選択肢を選んだ直後の行の `cond` は、その選択肢の効果（品物を渡した・関係の値が変わった など）の後の状態を読みます。
@@ -666,7 +701,7 @@ EXTERNAL cond(text)
 
 報酬の `id`、`episodeId`、`trigger`、`ap`、`minScore`、`titleJa` は安定ID、対象、発生条件、付与量、得点条件、表示文です。`trigger` は `guide_read` / `battle_complete` / `battle_score` / `episode_clear` / `city_clear`（このほかに、ビルドが場面の札 `# ap: +N` から作る `scene_tag` がありますが、作者はこのJSONに書きません。書くと `content:build` が止まります）。`minScore` は `battle_score` のみ正の数、それ以外は `null`。AP上限や報酬IDの重複防止はゲームルール側で処理します。
 
-報酬の対象は、通常の `episodeId` か、特殊戦の `battleId` のどちらか一方です。特殊戦の `episode_clear` はその対決を初めて終えたときで、観光エピソードの数や都市のクリアの条件は増やしません。ミラノの `firstClearReward`（`chapter_milano_first_clear`、4AP）は『最後の晩餐』の `episode_clear` の報酬で、都市クリアのIDとは別です。章末の短い地の文はこのJSON、人物の台詞はInkに置きます。
+報酬の対象は、通常の `episodeId` か、特殊戦の `battleId` のどちらか一方です。特殊戦の `episode_clear` はその対決を初めて終えたときで、観光エピソードの数や都市のクリアの条件は増やしません。ミラノの `firstClearReward`（`chapter_milano_first_clear`、4AP）は『最後の晩餐』の `episode_clear` の報酬で、都市クリアのIDとは別です。エピソードを終えたときの題と短い地の文（`clearTitleJa`・`clearDescriptionJa`）はこのJSON、人物の台詞はInkに置きます。
 
 エピソードが地図に出る条件：`when` を書かないときは、`requiredEpisodeIds` のエピソードと、その都市の特殊戦をすべて終えたときです（ミラノのフィナーレは4観光地と2つの特殊戦、インドは各都市の4観光地）。エピソード・特殊戦・フィナーレには `when`（全部・どれか・いくつ以上。バトルの数・お金・品物・恋愛の値など。[条件の書き方](#条件の書き方)）も書けます。`when` を書くときは `requiredEpisodeIds` を空にします。バトル・デートの knot の頭に `# when:` を書くと、ビルドが同じ `when` に変えます（JSON と両方に書くと止まります）。実在しない5番目の観光地は作りません。
 
@@ -751,7 +786,7 @@ EXTERNAL cond(text)
 
 - 人物の配置は人物ごとの `placement`、衣装・ポーズごとの補正は同じポーズの `placement` で書きます。`x`・`bottom`・`width`・`height`・`scale`・`originX`・`originY` を差分の間で共有し、画像をゆがめずに出します。`imagePath`、`variants`、相手の `battleCharacters` の設定も使えます。観察用の画像と座標は別に管理します。
 - `heroine` の `defaultCostume` と `defaultPose` が、地域に属さない基本の衣装とポーズです。`wardrobe` の `cities`・`countries`・`regions` で、都市・国・地域ごとの標準の衣装を指定できます。今の `milano` → `IT` → `south_europe` → `south_europe_01` の設定は残していますが、南欧の衣装は届いていないので、今は基本の衣装を出します。優先の順は、`scenes`、都市、国、地域の標準の衣装、基本の衣装、仮の素材です。`scenes` のキーにはデートID・バトルID・観光地ID・都市エピローグのエピソードIDを使い、たとえば `"milano_cafe_01": { "costume": "south_europe_01", "pose": "standing_01" }` と書きます。届いていない衣装から、表情だけが別の衣装に切り替わることはありません。
-- すでにある台詞に表情を付けるときは、各旅行編の `presentation/dialogue-expressions.json`（例：[ミラノ編](../content/journeys/milano/presentation/dialogue-expressions.json)）に `storyId`・`speaker`・`text`・`emotion` を書けます。名前などの変数を含まない Ink の原文の1行を、完全に一致させて登録します。台詞に `emotion` の札があればそちらを使い、同じ行に重ねて指定しません。`npm run content:check` は、登録した検証の文脈の分岐で、話者と台詞があるか、表情IDと札がぶつからないかを確かめます。脚本を変えたときは、検証していない分岐も含めて、表情と札の対応を編集者が確かめてください。表情の指定は見た目だけで、保存した会話の位置や関係の値は変えません。Ink そのものを書き直すと、途中のセーブの指紋が変わる点に気をつけてください。
+- すでにある台詞に表情を付けるときは、各旅行編の `presentation/dialogue-expressions.json`（今はどの旅行編も使っていません）に `storyId`・`speaker`・`text`・`emotion` を書けます。名前などの変数を含まない Ink の原文の1行を、完全に一致させて登録します。台詞に `emotion` の札があればそちらを使い、同じ行に重ねて指定しません。`npm run content:check` は、登録した検証の文脈の分岐で、話者と台詞があるか、表情IDと札がぶつからないかを確かめます。脚本を変えたときは、検証していない分岐も含めて、表情と札の対応を編集者が確かめてください。表情の指定は見た目だけで、保存した会話の位置や関係の値は変えません。Ink そのものを書き直すと、途中のセーブの指紋が変わる点に気をつけてください。
 
 ### プレビュー
 

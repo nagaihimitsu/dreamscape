@@ -2,9 +2,10 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
   centreStroke, convexHull, keyStroke, polygonArea, regularPolygon, shapeClassify, shapeDragFairness, shapeDragRules, shapeDragTuningSchema,
-  shapeEnds, shapeHeavy, shapeMeasures, shapeOfRecord, shapeRoll, shapeStart,
-  type ShapeClassifier, type ShapeDragTuning, type ShapeStroke,
+  shapeEnds, shapeHandAt, shapeHandWindows, shapeHeavy, shapeMeasures, shapeOfRecord, shapeRoll, shapeSkids, shapeStart, shapeTurn, strokeTimes,
+  type ShapeClassifier, type ShapeDragTuning, type ShapeHand, type ShapeStroke,
 } from "./engine";
+import { shapeHandView } from "./EnginePlay";
 
 // The shape_drag engine's rules in its own words (docs/13 6.2): the geometry of a stroke, the measures, the classes, and
 // fairness. A skin's test passes its tuning and shapes through shapeDragFairness.
@@ -187,5 +188,82 @@ describe("the shape_drag fairness", () => {
   it("keeps its rules pure: no randomness, clock, DOM or React", () => {
     const source = readFileSync(new URL("./engine.ts", import.meta.url), "utf8");
     for (const banned of ["Math.random", "crypto", "Date.now", "performance.now", "from \"react\"", "content/generated"]) expect(source).not.toContain(banned);
+  });
+});
+
+// A hand (round 3): someone else turns the shape on their own beat; strokes carry their times and are rolled in time.
+describe("the shape_drag hand", () => {
+  const hand: ShapeHand = {
+    turns: [{ at: 1500, deg: 90 }, { at: 3000, deg: 0 }, { at: 4500, deg: 90 }], comeMs: 300, leadMs: 250, stayMs: 200, endMs: 6500,
+    skid: { gain: 0.6, band: 0.08, shift: 0.15 },
+  };
+  const handed: ShapeDragTuning = { ...tuning, turnDeg: 0, timeMs: null, maxStrokes: null, hand };
+  const at = (stroke: ShapeStroke, down: number, up = down + 200): ShapeStroke => ({ ...stroke, downMs: down, upMs: up });
+
+  it("leaves windows between its visits, and says where it is", () => {
+    expect(shapeHandWindows(hand)).toEqual([{ from: 0, to: 1250 }, { from: 1700, to: 2750 }, { from: 3200, to: 4250 }, { from: 4700, to: 6500 }]);
+    expect([0, 1249, 1250, 1700, 1701, 3100, 6000].map((ms) => shapeHandAt(hand, ms))).toEqual([-1, -1, 0, 0, -1, 1, -1]);
+    expect(shapeSkids(at(centreStroke(0, 0.5), 1000, 1200), hand)).toBe(false);
+    expect(shapeSkids(at(centreStroke(0, 0.5), 1100, 1300), hand)).toBe(true);
+    expect(shapeSkids(at(centreStroke(0, 0.5), 1600, 1800), hand)).toBe(true);
+    expect(shapeSkids(at(centreStroke(0, 0.5), 1750, 1950), hand)).toBe(false);
+    expect(shapeSkids(centreStroke(0, 0.5), undefined)).toBe(false);
+    // A stroke without times is at 0; a key's is down and up at once.
+    expect(strokeTimes(centreStroke(0, 0.5))).toEqual({ down: 0, up: 0 });
+    expect(strokeTimes({ ...centreStroke(0, 0.5), upMs: 900 })).toEqual({ down: 900, up: 900 });
+    expect(keyStroke("ArrowUp", false, handed, 800)).toMatchObject({ downMs: 800, upMs: 800 });
+  });
+
+  it("draws the hand coming, on the shape and away, with the window's fuse", () => {
+    expect(shapeHandView(hand, 100)).toMatchObject({ visit: 0, phase: null, opening: 0 });
+    expect(shapeHandView(hand, 100).openingLeft).toBeCloseTo((1250 - 100) / 1250, 6);
+    expect(shapeHandView(hand, 1100)).toMatchObject({ visit: 0, phase: "coming", opening: 0, deg: 90 });
+    expect(shapeHandView(hand, 1300)).toMatchObject({ visit: 0, phase: "on", opening: -1, openingLeft: 0 });
+    expect(shapeHandView(hand, 3000)).toMatchObject({ visit: 1, phase: "on", deg: 0 });
+    expect(shapeHandView(hand, 6000)).toMatchObject({ visit: 3, phase: null, opening: 3, leftMs: 500 });
+  });
+
+  it("turns the shape at its moments, not after each stroke, and rolls each stroke when it lifted", () => {
+    const up = centreStroke(270, 0.5);
+    // Two strokes the same way of the screen: the same way of the shape before its turn, across it after.
+    const before = shapeOfRecord([at(up, 200), at(up, 800)], handed, shapes);
+    const across = shapeOfRecord([at(up, 200), at(up, 2000)], handed, shapes);
+    expect(before.turned).toBe(0);
+    expect(across.turned).toBe(90);
+    expect(before.rolls.map((roll) => Math.round(roll.degrees))).toEqual([90, 90]);
+    expect(across.rolls.map((roll) => Math.round(roll.degrees))).toEqual([90, 0]);
+    expect(shapeMeasures(before, handed).roundness).toBeLessThan(shapeMeasures(across, handed).roundness);
+    // The feint turns nothing; the drawing's `untilMs` takes the turns up to then.
+    expect(shapeOfRecord([], handed, shapes, 3500).turned).toBe(90);
+    expect(shapeOfRecord([], handed, shapes, 99999).turned).toBe(180);
+    expect(shapeTurn(shapeStart(handed), 0)).toEqual(shapeStart(handed));
+  });
+
+  it("skids a stroke that meets the hand: weaker and lopsided", () => {
+    const clean = shapeOfRecord([at(centreStroke(270, 0.5), 600)], handed, shapes);
+    const skid = shapeOfRecord([at(centreStroke(270, 0.5), 1200)], handed, shapes);
+    expect(skid.rolls[0]).toMatchObject({ skid: true });
+    expect(clean.rolls[0]).toMatchObject({ skid: false });
+    expect(shapeMeasures(skid, handed).area).toBeLessThan(shapeMeasures(clean, handed).area);
+    // Lopsided: its centre of mass moved (recentred, so its corners no longer mirror about the middle).
+    const mirror = (points: readonly { x: number; y: number }[]) => Math.max(...points.map((point) => point.x)) + Math.min(...points.map((point) => point.x));
+    expect(Math.abs(mirror(skid.points))).toBeGreaterThan(Math.abs(mirror(clean.points)) + 0.005);
+  });
+
+  it("takes no stroke after the end", () => {
+    expect(shapeOfRecord([at(centreStroke(270, 0.5), 6400, 6600)], handed, shapes).strokes).toBe(0);
+    expect(shapeOfRecord([at(centreStroke(270, 0.5), 6300, 6500)], handed, shapes).strokes).toBe(1);
+  });
+
+  it("is fair only with room to roll: turnDeg 0, no timeMs, the hand seen coming, windows of a reaction and a stroke", () => {
+    expect(shapeDragFairness(handed, shapes)).toEqual([]);
+    expect(shapeDragFairness({ ...handed, turnDeg: 90 }, shapes).join()).toContain("turnDeg 90 with a hand");
+    expect(shapeDragFairness({ ...handed, timeMs: 15000 }, shapes).join()).toContain("timeMs with a hand");
+    expect(shapeDragFairness({ ...handed, hand: { ...hand, comeMs: 100 } }, shapes).join()).toContain("no time to hold back");
+    expect(shapeDragFairness({ ...handed, hand: { ...hand, endMs: 5000 } }, shapes).join()).toContain("endMs 5000");
+    expect(shapeDragFairness({ ...handed, hand: { ...hand, turns: [{ at: 1500, deg: 90 }, { at: 2000, deg: 90 }] } }, shapes).join()).toContain("window before the hand's turn 1");
+    expect(shapeDragFairness({ ...handed, hand: { ...hand, turns: [{ at: 3000, deg: 90 }, { at: 1500, deg: 90 }] } }, shapes).join()).toContain("not after the one before");
+    expect(shapeDragFairness({ ...handed, hand: { ...hand, skid: { ...hand.skid, gain: 1 } } }, shapes).join()).toContain("skid's gain");
+    expect(shapeDragTuningSchema.parse(handed)).toEqual(handed);
   });
 });

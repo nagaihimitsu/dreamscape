@@ -4,6 +4,6 @@
 
 `clues` は既存の観察スキーマ、`images` は観光地IDごとの実画像パスとSHA-256、`provenance` は観察IDごとの確認記録です。生成器がこれらを検証して観光カタログへ統合します。写真が変わった場合は観察領域と内容を見直してください。ハッシュだけを機械的に更新しないでください。
 
-現在の地点・交通・料金・背景の正本は `content/` です。最初の調査・取り込み記録は `authoring/journeys/uzbekistan/research/uzbekistan-20261104/` にあり、そこにある `catalog-fragments.json` は初回取り込みの記録です。編集済みの正本へ再適用するための同期元ではありません。
+現在の地点・交通・料金・背景の正本は `content/journeys/uzbekistan/` です。最初の調査・取り込み記録は `authoring/journeys/uzbekistan/research/uzbekistan-20261104/` にあり、そこにある `catalog-fragments.json` は初回取り込みの記録です。編集済みの正本へ再適用するための同期元ではありません。
 
 制作と検証は [共通のシナリオ取り込み手順](../../../JOURNEY_AUTHORING.md) を参照してください。
