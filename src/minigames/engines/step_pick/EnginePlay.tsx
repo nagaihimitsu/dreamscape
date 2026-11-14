@@ -1,12 +1,29 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type ComponentType } from "react";
 import type { MiniGamePlayProps, MiniGameRules } from "../../contract";
-import { stepPickCounted, stepPickEnding, stepPickStepOf, type StepPickEnding, type StepPickRecord, type StepPickTuning } from "./engine";
+import {
+  stepPickCounted, stepPickEnding, stepPickRoutine, stepPickStanding, stepPickStretchAt,
+  type StepPickEnding, type StepPickMood, type StepPickPushResult, type StepPickRecord, type StepPickTuning,
+} from "./engine";
 import "./engine.css";
 
 // The step_pick engine's play (docs/13 2.2): the skin's field shows the step on show (a price) and the other side's
-// patience; three buttons sit at the bottom in thumb reach: the leave button (narrow, left), the push button (the main
-// one, in the middle) that moves the steps on, and the take button (right) that takes the step on show. The host's clock
-// times the idle limit; the skin's rules decide; the host shows the outcome and takes its choice.
+// patience (with moods, its mood now: round 3); three buttons sit at the bottom in thumb reach: the leave button (narrow,
+// left), the push button (the main one, in the middle) that moves the steps on, and the take button (right) that takes
+// the step on show. The host's clock times the idle limit and the moods; the skin's rules decide; the host shows the
+// outcome and takes its choice.
+
+/** With moods: the other side's mood now (its stretch: how a push lands, the skin's look), and when it began. */
+export interface StepPickMoodView {
+  mood: StepPickMood;
+  look: string;
+  /** The stretch's place in its routine (counting the turns of its last two): a new number is a new stretch. */
+  index: number;
+  /** When its routine began (the start, or the push that brought the play where it stands) and when this stretch did. */
+  since: number;
+  from: number;
+  /** How long it lasts. */
+  ms: number;
+}
 
 /** What the field shows: the step on show, the counted pushes, when the idle time started, and the ending once there is one. */
 export interface StepPickView<Outcome extends string> {
@@ -14,6 +31,11 @@ export interface StepPickView<Outcome extends string> {
   step: number;
   /** The counted pushes so far. */
   pushes: number;
+  /** With moods: the pushes landed on the step on show, the bounces so far, what the last push did, and the mood now (else 0, 0, null, null). */
+  landed: number;
+  bounces: number;
+  lastPush: StepPickPushResult | null;
+  mood: StepPickMoodView | null;
   /** When the latest counted push was (the host's clock); null: none yet. */
   pushedAt: number | null;
   /** When doing nothing started to count (the start, or the latest counted push). */
@@ -69,13 +91,24 @@ export interface StepPickSkin<Params, Outcome extends string> {
   Field: ComponentType<StepPickFieldProps<Params, Outcome>>;
 }
 
+/** With moods: the other side's stretch at `ms`, its routine (where the play stands) having begun at `since`; else null. */
+export function moodView(tuning: StepPickTuning, step: number, landed: number, since: number, ms: number): StepPickMoodView | null {
+  if (!tuning.moods) return null;
+  const { stretch, index, intoMs } = stepPickStretchAt(stepPickRoutine(tuning, { step, landed }), ms - since);
+  return { mood: stretch.mood, look: stretch.look, index, since, from: ms - intoMs, ms: stretch.ms };
+}
+
 /** The play of a step_pick skin. */
 export function stepPickPlay<Params, Outcome extends string>(skin: StepPickSkin<Params, Outcome>): ComponentType<MiniGamePlayProps<Params, Outcome>> {
   const { tuning } = skin;
   return function StepPickPlay(props: MiniGamePlayProps<Params, Outcome>) {
     const { params, auto, available, clock, still, seed, cast, names, art, sound, vibrate } = props;
-    const [view, setView] = useState<StepPickView<Outcome>>({ step: 0, pushes: 0, pushedAt: null, activeAt: 0, denied: 0, ending: null, outcome: null });
+    const [view, setView] = useState<StepPickView<Outcome>>(() => ({
+      step: 0, pushes: 0, landed: 0, bounces: 0, lastPush: null, mood: moodView(tuning, 0, 0, 0, 0), pushedAt: null, activeAt: 0, denied: 0, ending: null, outcome: null,
+    }));
     const pushes = useRef<number[]>([]);
+    /** Where the play stands (with moods: its routine began at `since`). */
+    const standing = useRef({ step: 0, landed: 0, since: 0 });
     const decided = useRef<{ outcome: Outcome } | null>(null);
     const draws = useRef(new Set<(ms: number) => void>());
     const latest = useRef(props);
@@ -105,7 +138,12 @@ export function stepPickPlay<Params, Outcome extends string>(skin: StepPickSkin<
       if (counted.length === pushes.current.length) return;
       pushes.current = counted;
       const record: StepPickRecord = { pushes: counted, end: null };
-      setView((current) => ({ ...current, step: stepPickStepOf(counted.length, tuning), pushes: counted.length, pushedAt: ms, activeAt: ms }));
+      const now = stepPickStanding(counted, tuning);
+      standing.current = now.standing;
+      setView((current) => ({
+        ...current, step: now.standing.step, landed: now.standing.landed, bounces: now.standing.bounces, lastPush: now.results.at(-1) ?? null,
+        mood: moodView(tuning, now.standing.step, now.standing.landed, now.standing.since, ms), pushes: counted.length, pushedAt: ms, activeAt: ms,
+      }));
       if (stepPickEnding(record, tuning).kind === "out") decide(record);
     }, [decide]);
     const finish = useCallback((kind: "take" | "leave", ms: number) => {
@@ -124,6 +162,11 @@ export function stepPickPlay<Params, Outcome extends string>(skin: StepPickSkin<
             if (autoIndex >= autoRecord.pushes.length && autoRecord.end && ms >= autoRecord.end.ms) finish(autoRecord.end.kind, autoRecord.end.ms);
             else if (!autoRecord.end && autoIndex >= autoRecord.pushes.length && ms - latestView.current.activeAt >= tuning.idleMs) decide(autoRecord);
           } else if (ms - latestView.current.activeAt >= tuning.idleMs) decide({ pushes: pushes.current, end: null });
+          // The other side's mood as its routine goes on (a new stretch: the field draws it).
+          const { step, landed, since } = standing.current;
+          const mood = moodView(tuning, step, landed, since, ms);
+          const shownMood = latestView.current.mood;
+          if (mood && (!shownMood || shownMood.index !== mood.index || shownMood.since !== mood.since)) setView((current) => ({ ...current, mood }));
         }
         if (skin.statusJa) {
           const text = skin.statusJa(latestView.current, latest.current.available);
