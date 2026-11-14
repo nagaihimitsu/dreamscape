@@ -23,7 +23,7 @@ INCLUDE modules.ink
 # speaker: gt_delhi_india_gate_boy
 Photo, please!
 # speaker: narrator
-振り返ると、敷物の上に十二人いた。腰の曲がった祖母から、よちよち歩きの子まで。ハリヤーナーの村から、年に一度のデリー見物に来たのだという。
+振り返ると、敷物の上に十二人いた。腰の曲がった祖母から、よちよち歩きの子まで。ハリヤーナー州の村から、年に一度のデリー見物に来たのだという。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_delhi_date_india_gate_002
@@ -34,7 +34,7 @@ Photo, please!
 # speaker: gt_monu
 # cutin: name
 # local_word: gt_delhi_word_dadi
-ぼく、モヌ。ダーディーが、あなたも入れって。外国の人と撮ると、村で自慢できるから
+ぼく、モヌ。ダーディー……おばあちゃんが、あなたも入れって。外国の人と撮ると、村で自慢できるから
 # speaker: heroine
 # voice: gt_delhi_date_india_gate_003
 正直！　でも、わたしが入ったら、撮る人がいなくなっちゃう
@@ -97,7 +97,9 @@ Photo, please!
 # speaker: gt_monu
 ダーディーのおじいさんの名前が、あの門に彫ってあるんだって。最初の世界大戦で、遠い国で死んだ兵士。毎年探して、毎年見つからない
 # speaker: narrator
-インド門の壁には、第一次世界大戦などで亡くなった兵士たちの名前が刻まれている。その数、一万三千を超える。
+祖母が見上げているのは、第一次世界大戦などで、イギリス軍として戦って亡くなったインドの兵士たちの記念門だ。
+# speaker: narrator
+壁には、その兵士たちの名前が、一万三千を超えて刻まれている。
 # speaker: heroine
 # emotion: serious
 # voice: gt_delhi_date_india_gate_010
