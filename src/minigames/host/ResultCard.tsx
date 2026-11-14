@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import type { MiniGameRating } from "../contract";
 import { countedScore, resultButtons, resultCardCompact, type ScreenSpan } from "./flow";
 import { MINI_GAME_RESULT_GUARD_MS, MINI_GAME_SCORE_COUNT_MS, MINI_GAME_STAR_STEP_MS } from "./timing";
@@ -30,8 +30,9 @@ export interface ResultCardProps {
   /** When the card came (performance.now): the guard counts from it. */
   shownAt: number;
   onNext(): void;
-  onRetry(): void;
-  onToReal(): void;
+  /** 「もう一回」 and 「本番へ」, with the button pressed (the next play's start guard reads its place). */
+  onRetry(from: Element): void;
+  onToReal(from: Element): void;
 }
 
 /** Whether the card's guard has passed (a press now is the player's own). */
@@ -64,8 +65,8 @@ export function ResultCard({ label, rating, score, detail, face, line, practice,
   useEffect(() => {
     primary.current?.focus({ preventScroll: true });
   }, [compact]);
-  const guarded = (action: () => void) => () => {
-    if (resultCardReady(shownAt)) action();
+  const guarded = (action: (from: Element) => void) => (event: MouseEvent<HTMLButtonElement>) => {
+    if (resultCardReady(shownAt)) action(event.currentTarget);
   };
   const stars = rating ? [1, 2, 3].map((index) => (
     <span key={index} className="minigame-star" data-on={index <= rating.stars || undefined} data-big={rating.stars === 3 && index === 3 || undefined}

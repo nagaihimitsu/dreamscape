@@ -116,6 +116,15 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
     ...(stage?.delay ? { inputDelayMs: stage.delay } : {}),
   }), [stage?.auto, stage?.still, stage?.closed, stage?.tuning, stage?.delay, definition, round]);
   const pictured = useMemo(() => (stage ? picturedUses(stage.gameId) : []), [stage]);
+  // What the edited numbers would make unfair (the game's engine checks; the play still runs, to feel it).
+  const unfair = useMemo<readonly string[]>(() => {
+    if (!module?.fairness || !module.tuning || !stage || !Object.keys(stage.tuning).length) return [];
+    try {
+      return module.fairness({ ...module.tuning, ...stage.tuning });
+    } catch (error) {
+      return [`公平さを調べられませんでした：${error instanceof Error ? error.message : String(error)}`];
+    }
+  }, [module, stage]);
   const tag = useMemo<MiniGameTag | undefined>(() => {
     if (!stage || !definition) return undefined;
     const params = definition.examples[stage.example] ?? {};
@@ -199,6 +208,12 @@ export function MiniGameRoom({ onClose }: { onClose: () => void }) {
               {stage.tuning[key] !== undefined && stage.tuning[key] !== value && <span className="minigame-room-was">（元は {value}）</span>}
             </label>
           ))}
+          {unfair.length > 0 && (
+            <div className="minigame-room-unfair" role="status" data-testid="minigame-room-unfair">
+              <p>この値では、スマートフォンで公平に遊べないかもしれません（エンジンの公平さの検査）：</p>
+              <ul>{unfair.map((problem) => <li key={problem}>{problem}</li>)}</ul>
+            </div>
+          )}
           {Object.keys(stage.tuning).length > 0 && <button type="button" className="secondary" data-testid="minigame-room-tuning-reset"
             onClick={() => change({ tuning: {} })}>元の値に戻す</button>}
         </>}
