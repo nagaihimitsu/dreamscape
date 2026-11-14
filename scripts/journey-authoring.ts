@@ -1,8 +1,8 @@
 import { z } from "zod";
+import { contentId as id } from "../src/content/content-id";
 import { readJourneyManifests } from "./content-sources";
 import { schemaIssueLines } from "./content-validation-utils";
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 /** A relative posix path: no absolute path, drive letter or backslash, and no empty, "." or ".." segment. */
 export function isRelativePath(value: string): boolean {
   return !value.startsWith("/") && !/^[A-Za-z]:/u.test(value) && !value.includes("\\") &&

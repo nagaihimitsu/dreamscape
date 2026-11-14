@@ -20,7 +20,7 @@
 
 {{files}}
 
-任意の部分（特殊戦B・特殊戦C・道中交流と品物）は `--with-optional` を付けたときだけ複製されます。仕組みと外し方は見本の `authoring/templates/sample_trip/README.md` の「任意の部分」にあります。
+任意の部分（特殊戦B・特殊戦C・道中交流と品物・ほかの時点の場面・貸し自転車・その国の言葉・旅の図鑑）は `--with-optional` を付けたときだけ複製されます。仕組みと外し方は見本の `authoring/templates/sample_trip/README.md` の「任意の部分」にあります。
 
 ## 次の手順
 

@@ -1,9 +1,9 @@
 import { z } from "zod";
+import { contentId as id } from "./content-id";
 import { englishText, japaneseText, quizQuestionSchema } from "./schemas";
 import { storyAddressSchema } from "./story-address";
 import { conditionSchema } from "./condition-schemas";
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const storyId = storyAddressSchema;
 const money = z.number().int().nonnegative().safe();
 const optionSchema = z.object({

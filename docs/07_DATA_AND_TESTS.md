@@ -98,8 +98,8 @@
 - `seenEncounterIds`（見た道中交流）：最後まで終えた道中交流のID。「また今度」で終えたものも含め、1回だけ記録する。終えた交流（`completedEncounterIds`、「また今度」以外で終えたもの）は必ずこの中にある。今の都市か、クリアした都市の交流だけ。書くのは交流が終わるとき（`finishEncounter`）。
 - `itemUses`（品物を渡した・使った記録）：渡した・使った品物ごとに、その交流と選んだ選択肢のID。選択肢を選んで品物の状態が「渡した」「使った」になるのと同じときに書く（`chooseEncounter`）。読み込み時に、渡した・使った品物と1対1であること、その選択肢が本当にその品物を渡す（`giftItemId`）・使う（`consumeItemId`）こと、その交流が終わっているか、その選択肢を選んで進行中であることを確かめる。都市を出ても残る。
 - `travel.rideCounts`（乗った回数）：その都市で、徒歩以外の乗り物ごとに地図の出来事へ乗って出かけた回数。乗り物で場所が変わったときだけ数え（`beginTravelEvent`）、徒歩、宿へ帰る道、今いる場所の出来事を始めるときは数えない。次の都市へ出発すると空になる。読み込み時に、旅行編が宣言した徒歩以外の乗り物であること、借りる乗り物なら借りていることを確かめる。
-- `storyProgress`（物語の状態：筋の段 `lines` とずっと続く印 `flags`）と `travel.temporaryFlags`（その日・その都市にいる間の印）：作者が決める物語の進み具合。使う筋と印を宣言する仕組みはまだないので、空でなければ読み込まない。
-- `activeEncounter.afterBattle`（戦いの結果を出たときに始まった交流）・`activeEncounter.trip`（地図の出来事へ出かけるときに始まった交流）：頭の札で本筋の後・本筋の前に置いた交流（今は見本の編だけ）が書く。進行中の交流が持てる続き先は、観察への戻り先（`returnTourism`）を含めて1つまで。読み込み時に、続き先の出来事・バトル・交流の位置が今の内容と合うことを確かめ、合わなければ読み込まない。続き先のない進行中の交流（なくした自由時間から始める道の形）も読み込まない。
+- `storyProgress`（物語の状態：筋の段 `lines` とずっと続く印 `flags`）と `travel.temporaryFlags`（その日・その都市にいる間の印）：作者が決める物語の進み具合。`flags` には、場面の `set:`・`on_done: set` が立てたフラグを入れる（`progression/story.json` の `flags` に宣言したものだけ。宣言にないフラグがあれば読み込まない）。`lines` と `temporaryFlags` は使う仕組みがまだないので、空でなければ読み込まない（`src/domain/game-state-validation.ts` の `validateStoryProgress`）。
+- 進行中の交流の続き先：交流を終えた後にどこへ進むか（観察へ戻る・本筋の続き・地図の出来事へ向かう移動の続き）は、交流ではなく時点の記録 `occasion`（v16）が持つ。読み込み時に、時点の記録の形が今の内容（出来事・観光地・本筋の組・場面）と合い、止まる所にいることを確かめ、合わなければ読み込まない（`src/domain/occasion.ts` の `validateOccasionState`。条件は調べ直さない）。
 
 ## 古い保存データの整理
 設定の「古い保存データの整理」は、このブラウザに残る、今のゲームが使わない保存データを一覧し、利用者が選んだものだけを消す。押さない限り何も消えず、ゲームが自動で消すことはない。何を一覧に出すかと消し方の判定は画面ではなく `src/persistence/old-data.ts`（`listOldData`・`removeOldData`、選んだ項目の旅行編の排他だけを取って消す `removeChosenOldData`。単体テスト `old-data.test.ts`）が持ち、排他の取り方は `runWithSlotLocks`（`src/persistence/journey-lock.ts`。`journey-lock.test.ts`）が持つ。Debugの画面には出さない。
@@ -112,26 +112,55 @@
 - 消すときは2段階で確かめる：項目を選んで「選んだデータを消去する」を押し、確認の画面（消す項目・キー名・影響、「元には戻せません」、残るもの）で「消去する」を押す。確認の画面の「消去する」は、画面が出てから0.5秒は押せない（前の画面のボタンを素早く2回押したとき、2回目が入れ替わった「消去する」に当たって消えないように。「保存データの消去」の確認の「保存データを消去する」も同じ）。一覧と確認の画面は大きさとボタンの位置が同じで、「選んだデータを消去する」があった位置には「消去せず戻る」、「閉じる」があった位置には「消去する」が出る。「選んだデータを消去する」を2回押すと、速くてもゆっくりでも、2回目は「消去せず戻る」に当たって一覧に戻る（何も消えない）。結果が出た後の一覧の「閉じる」と「選んだデータを消去する」も0.5秒は押せない（「消去する」を素早く2回押したとき、2回目の「閉じる」で結果を見ないまま画面が閉じないように）。一覧を開いた後に値が変わった・無くなったキーが1つでもあれば何も消さず、一覧を読み直して選び直してもらう。消している途中で消せないキーがあれば、そこで止めて、消したキーの数と止まったキーを示し、一覧を読み直す。
 - 別タブ：選んだ項目の旅行編の排他（旅行編を開くときと同じWeb Locksの名前）を待たずに取り、別のタブがその旅行編を開いていれば何も消さずに案内する（「〇〇を別のタブで開いているため、何も消去しませんでした。…」）。開いている旅行編のバックアップは、このタブが排他を持っているので取らない。以前のミラノ編のキーを使っていた版は排他を取らなかったので、その項目にはない。Web Locksのないブラウザでは消さない（旅行編もそもそも開けない）。
 
-## GameState概念例
+## GameStateの例
+ミラノ編の新しい旅で、ドゥオモの案内を読み、クイズで3問正解した後の保存の主な項目（`tests/fixtures/current-game.ts` の `seedCurrentFreeTime` が作る状態を、v23 の形で書き出したもの。空の欄と `null` の欄の多くは省いた）。
 ```
 {
-  "schemaVersion": 19,
+  "schemaVersion": 23,
+  "revision": 42,
   "playerName": "たいち",
   "heroineName": "あゆみ",
-  "ap": 2,
-  "affection": 3,
-  "trust": 1,
-  "spark": 1,
+  "currentCityId": "milano",
+  "travelBudget": 60,
+  "ap": 4,
+  "affection": 0,
+  "trust": 0,
+  "spark": 0,
   "romanceStage": 1,
+  "confessionStatus": "none",
+  "claimedRewardIds": ["guide_duomo_first", "battle_duomo_first", "victory_duomo_first", "episode_duomo_first"],
+  "completedGuideIds": ["duomo_milano"],
+  "visitedLandmarkIds": ["duomo_milano"],
   "completedEpisodeIds": ["milano_duomo_episode"],
-  "claimedRewardIds": ["episode_duomo_first"],
-  "playedDateIds": ["milano_cafe_01"],
-  "memories": ["milano_promise"],
+  "battleRecords": [
+    { "battleId": "milano_duomo_01", "attempts": 1, "firstScore": 3, "bestScore": 3, "lastScore": 3 }
+  ],
+  "playedDateIds": [],
+  "memories": [],
+  "album": [],
+  "glossary": [],
+  "inventory": {},
+  "storyProgress": { "lines": {}, "flags": [] },
   "activeDate": null,
-  "storyState": null
+  "activeBattle": null,
+  "occasion": null,
+  "travel": {
+    "currentPlaceId": "p_hotel",
+    "hotelPlaceId": "p_hotel",
+    "day": 1,
+    "minute": 540,
+    "returnReserve": 0,
+    "returnDeadline": 1260,
+    "activeEvent": null,
+    "rentedModeIds": [],
+    "rideCounts": {},
+    "temporaryFlags": [],
+    "todayPlaceIds": [],
+    "todayEpisodeIds": ["milano_duomo_episode"]
+  }
 }
 ```
-※セーブ詳細のデータ構造はTypeScript実装で確定させる。上は旅行状態などを省略した設計例であり、そのままの形では保存できない。
+※保存の形の正本は `src/domain/game-state-schema.ts` の `gameStateSchema`。上は一部の項目だけで、このままでは保存として読み込めない。
 
 ## 受け入れテストの最低限
 1. 空のセーブで開始し、デフォルト名/変更名の両方が表示できる。
@@ -146,7 +175,7 @@
 9. 狭い画面で文字が切れない。長文の名前を入力してもレイアウトが大きく壊れない。
 10. セーブデータ破損時は明確に案内し、利用者の他データを勝手に消さない。古い保存データの整理は、旧版・バックアップ・以前のミラノ編・この版にない旅行編のキーだけを、キー名と影響を示して2段階の確認のあとに消し、別タブでその旅行編を開いている間は消さない。読めないセーブから新しく始めても元のバイト列は残り、別タブで同じ旅行編は開けず、手動セーブで保存していない進行は離れる前に確かめる。これらの判定は画面ではなく関数が持ち、単体テストで確かめる（[画面の保護を担う関数](10_DEVELOPMENT_CHECKS.md#画面の保護を担う関数)）。
 11. ビルド/型チェック/テストの実行手順を[開発の手引き](12_DEVELOPMENT.md)に記載し、変更内容と影響範囲に応じて必要な確認を選ぶ。公開前や大きな変更では[開発時の確認](10_DEVELOPMENT_CHECKS.md)の全体確認を行う。
-12. 旅行編フォルダを1つ追加して `npm run content:build` を実行すると、コードを変更せずに旅行編一覧・会話・クイズ・画像に加わる。どの旅行編フォルダを外しても生成と検証が通る（`scripts/journey-folders.test.ts`。追加の確認には見本の編を使う）。見本の編は共通データだけと組み合わせても生成でき、README に挙げた必須の20ファイルのどれを外しても決まったエラーで止まり、任意の部分（特殊戦B・C、道中交流、乗り物（貸し自転車））を外した最小構成でも生成できる（`tests/journeys/sample_trip/sample-journey.test.ts`）。見本の編はタイトルからエピローグまで実際のゲームの関数で遊べ（`tests/journeys/sample_trip/route.test.ts`）、画面でも新しい旅から旅の終わりまで近道なしで遊べる（`tests/e2e/sample-journey.spec.ts`、E2Eの見本の編の段）。`npm run journey:new` で見本から作った旅行編は、最小構成でも任意の部分を含めても準備中として生成・検証を通り（CIでは、作った旅行編がタイトル画面で準備中として開くこともE2Eの見本の編の段が確かめる）、日本語名がない・既にあるID・使用中の接頭辞は何も書かずに拒否する。見本の出典・画像・文章が残っているうちは `journey:readiness` が示し `journey:release` が止まり、置き換えれば公開の確認を通る（`scripts/journey-new.test.ts`、`scripts/sample-leftovers.test.ts`）。公開中にした旅行編に見本の出典（example.com）が残っていれば `content:build` が止まる（`scripts/content-validation.test.ts`）。
+12. 旅行編フォルダを1つ追加して `npm run content:build` を実行すると、コードを変更せずに旅行編一覧・会話・クイズ・画像に加わる。どの旅行編フォルダを外しても生成と検証が通る（`scripts/journey-folders.test.ts`。追加の確認には見本の編を使う）。見本の編は共通データだけと組み合わせても生成でき、README に挙げた必須の19ファイルのどれを外しても決まったエラーで止まり、任意の部分（特殊戦B・C、道中交流、乗り物（貸し自転車））を外した最小構成でも生成できる（`tests/journeys/sample_trip/sample-journey.test.ts`）。見本の編はタイトルからエピローグまで実際のゲームの関数で遊べ（`tests/journeys/sample_trip/route.test.ts`）、画面でも新しい旅から旅の終わりまで近道なしで遊べる（`tests/e2e/sample-journey.spec.ts`、E2Eの見本の編の段）。`npm run journey:new` で見本から作った旅行編は、最小構成でも任意の部分を含めても準備中として生成・検証を通り（CIでは、作った旅行編がタイトル画面で準備中として開くこともE2Eの見本の編の段が確かめる）、日本語名がない・既にあるID・使用中の接頭辞は何も書かずに拒否する。見本の出典・画像・文章が残っているうちは `journey:readiness` が示し `journey:release` が止まり、置き換えれば公開の確認を通る（`scripts/journey-new.test.ts`、`scripts/sample-leftovers.test.ts`）。公開中にした旅行編に見本の出典（example.com）が残っていれば `content:build` が止まる（`scripts/content-validation.test.ts`）。
 13. 共通のテストは特定の旅行編・都市を対象にするときはその範囲に絞って数え、旅行編を追加しても失敗しない。単体テストの生成物には公開中の見本の編が常に加わるため、この条件は毎回の単体テストで確かめられる。
 14. Debug・素材のプレビュー・場面の組み立て部品（`src/dev/`）は、本番ビルドではタイトル画面で読み込まない別のファイルにだけ入り、テスト用の読み取り口・テスト用の仮データ・見本の編は本番ビルドに入らない（`npm run build` の `dist/` の検査）。Debugモードがオフの間、本番ビルドでは `?debug` を付けても通常のタイトルが出てDebugのファイルを読み込まず（`boot.spec.ts` の本番ビルドの段）、ゲームの設定（上の帯の⚙設定から開く）でパスワード（`adminmode`。秘密ではない）を入れてオンにすると「場面の確認」を開ける（`debug-mode.spec.ts`。本番ビルドの段。開発サーバーでも、Debugを開くまで `src/dev/` を読み込まないことは `debug-mode-dev.spec.ts`）。Debugは起動URLから開いても通常のセーブ・英語ノート・表示設定を変えない（`debug-scenes.spec.ts`。各テストの前後で保存領域全体を比べる。`debug-mode.spec.ts` も本番で確かめる）。関係の変化の表示はDebugモードがオンの間だけ出て（オフの間の返答の変化は、後で同じ場面でオンにしても出ない）、会話ログにもセーブにも入らない（`relationship-change.spec.ts`、オフの通常プレイでは出ないことを `play.spec.ts`）。Debugでの場面確認は保存・再開の確認に数えない（[テストの3つの道](10_DEVELOPMENT_CHECKS.md#テストの3つの道)）。
 15. 1つの旅行編の内容・経路・制作ツールだけを確かめる単体テストは `tests/journeys/<旅行編ID>/` に置き、共通のテストの変更なしに単体テストへ加わる（新しい旅行編は同じ名前のフォルダを作ってテストを置くだけでよい）。共通のコード・制作ツール・テストはこのフォルダと `scripts/journeys/` を読み込まず、1つの旅行編のフォルダもほかの旅行編のフォルダを読み込まない。旅行編を外したときに残ったフォルダはテストが知らせる（`scripts/content-boundary.test.ts`。[旅行編ごとのテスト](10_DEVELOPMENT_CHECKS.md#旅行編ごとのテスト)）。旅行編を外してそのフォルダを消しても、この検査と本番ビルドの検査（`scripts/dist-guard.test.ts`）は変更なしで通る（その旅行編を例に使う共通のテストは書き直す。[技術設計](02_TECH_ARCHITECTURE.md#新しい編を追加する手順)の「旅行編をやめる場合」）。
