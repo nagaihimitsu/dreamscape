@@ -19,7 +19,7 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 | `<共通>/romance/progression.json` | 4段階の閾値・必要な履歴・敬称、告白が成立する条件（思い出の引用は `<旅行編>`） |
 | `<旅行編>/romance/presentation.json` | 背景・思い出。表情・エンディングの文章と既定背景は `<共通>` |
 | `<共通>/romance/balance.json` | APの上限・名前の既定値・名前の長さ |
-| `<旅行編>/progression/journey.json` | 観光と特殊戦が開く条件・都市フィナーレ・章末の表示文・一度かぎりのAP報酬の条件 |
+| `<旅行編>/progression/journey.json` | 観光と特殊戦が開く条件・都市フィナーレ・エピソードの題と、終えたときの題と短い文（`clearTitleJa`・`clearDescriptionJa`）・一度かぎりのAP報酬の条件 |
 | `<旅行編>/cities/<都市ID>.json` | 都市名・予定の観光地・初回クリア報酬（`firstClearReward`） |
 | `<旅行編>/battles/catalog.json` | A/B/Cの形式、相手、クイズ・Inkの参照、推理の問い、ケース資料・正解の証拠 |
 | `<旅行編>/quizzes/*.json` | 通常3問・都市フィナーレ5問、正解ID、語句、ヒント、正誤の解説、難易度、出典 |
@@ -701,7 +701,7 @@ EXTERNAL cond(text)
 
 報酬の `id`、`episodeId`、`trigger`、`ap`、`minScore`、`titleJa` は安定ID、対象、発生条件、付与量、得点条件、表示文です。`trigger` は `guide_read` / `battle_complete` / `battle_score` / `episode_clear` / `city_clear`（このほかに、ビルドが場面の札 `# ap: +N` から作る `scene_tag` がありますが、作者はこのJSONに書きません。書くと `content:build` が止まります）。`minScore` は `battle_score` のみ正の数、それ以外は `null`。AP上限や報酬IDの重複防止はゲームルール側で処理します。
 
-報酬の対象は、通常の `episodeId` か、特殊戦の `battleId` のどちらか一方です。特殊戦の `episode_clear` はその対決を初めて終えたときで、観光エピソードの数や都市のクリアの条件は増やしません。ミラノの `firstClearReward`（`chapter_milano_first_clear`、4AP）は『最後の晩餐』の `episode_clear` の報酬で、都市クリアのIDとは別です。章末の短い地の文はこのJSON、人物の台詞はInkに置きます。
+報酬の対象は、通常の `episodeId` か、特殊戦の `battleId` のどちらか一方です。特殊戦の `episode_clear` はその対決を初めて終えたときで、観光エピソードの数や都市のクリアの条件は増やしません。ミラノの `firstClearReward`（`chapter_milano_first_clear`、4AP）は『最後の晩餐』の `episode_clear` の報酬で、都市クリアのIDとは別です。エピソードを終えたときの題と短い地の文（`clearTitleJa`・`clearDescriptionJa`）はこのJSON、人物の台詞はInkに置きます。
 
 エピソードが地図に出る条件：`when` を書かないときは、`requiredEpisodeIds` のエピソードと、その都市の特殊戦をすべて終えたときです（ミラノのフィナーレは4観光地と2つの特殊戦、インドは各都市の4観光地）。エピソード・特殊戦・フィナーレには `when`（全部・どれか・いくつ以上。バトルの数・お金・品物・恋愛の値など。[条件の書き方](#条件の書き方)）も書けます。`when` を書くときは `requiredEpisodeIds` を空にします。バトル・デートの knot の頭に `# when:` を書くと、ビルドが同じ `when` に変えます（JSON と両方に書くと止まります）。実在しない5番目の観光地は作りません。
 
