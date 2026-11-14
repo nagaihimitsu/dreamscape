@@ -21,3 +21,16 @@ export function moneyLength(text: string): "regular" | "long" | "longer" {
   const length = Array.from(text).length;
   return length >= 12 ? "longer" : length >= 9 ? "long" : "regular";
 }
+
+/**
+ * The line under the menu's セーブ・ロード while saving is automatic (2026-11-14 user decision): how long ago this tab last
+ * saved the game, at `now`. Said as a time ago, never as a clock time, which would read as the game's own clock in the
+ * header; 「オン」 before this tab has saved (a resumed game is its save until the first action).
+ */
+export function autoSaveLine(savedAt: number | null, now: number): string {
+  if (savedAt === null) return "自動保存：オン";
+  const minutes = Math.floor(Math.max(0, now - savedAt) / 60_000);
+  if (minutes < 1) return "自動保存：たった今";
+  if (minutes < 60) return `自動保存：${minutes}分前`;
+  return `自動保存：${Math.floor(minutes / 60)}時間前`;
+}

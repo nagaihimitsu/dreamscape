@@ -272,15 +272,15 @@ export const ops = {
     await page.getByLabel("ヒロインの名前").fill(names[1]);
   },
   /**
-   * The header's ⚙設定: a button whose small panel holds セーブ, ロード, 旅の記録, アルバム, 英語ノート, 写真の出典 (free time)
-   * or 画像の出典 (a story scene's photo) and ゲームの設定 (openMenu). While 英語ノート has a new entry, its name and
-   * 「英語ノート」's go on with 「、…新しい項目あり」 (its dot; the browser may put a space before it, as the words are a
-   * separate visually hidden span).
+   * The header's ≡メニュー (named 「設定」 until 2026-11-14): a button whose small panel holds セーブ, ロード, 旅の記録,
+   * アルバム, 英語ノート, 写真の出典 (free time) or 画像の出典 (a story scene's photo) and ゲームの設定 (openMenu). While
+   * 英語ノート has a new entry, its name and 「英語ノート」's go on with 「、…新しい項目あり」 (its dot; the browser may put a
+   * space before it, as the words are a separate visually hidden span).
    */
   settingsButton(page: Page): Locator {
-    return page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: /^設定\s*(?:、|$)/u });
+    return page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: /^メニュー\s*(?:、|$)/u });
   },
-  /** Opens ⚙設定's panel (if it is not open yet) and returns it. */
+  /** Opens ≡メニュー's panel (if it is not open yet) and returns it. */
   async openMenu(page: Page): Promise<Locator> {
     const button = ops.settingsButton(page);
     if (await button.getAttribute("aria-expanded") !== "true") await button.click();
@@ -288,13 +288,13 @@ export const ops = {
     await expect(panel).toBeVisible();
     return panel;
   },
-  /** One of ⚙設定's items, pressed from its panel (inside the header's 「旅の操作」). */
+  /** One of ≡メニュー's items, pressed from its panel (inside the header's 「旅の操作」). */
   async menuItem(page: Page, name: "セーブ" | "ロード" | "旅の記録" | "アルバム" | "旅の図鑑" | "英語ノート" | "写真の出典" | "画像の出典" | "ゲームの設定") {
     await ops.openMenu(page);
     await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: new RegExp(`^${name}\\s*(?:、|$)`, "u") }).click();
   },
   /**
-   * ⚙設定 → 「ゲームの設定」: returns the settings dialog (文字送り, 自動保存, names, the saved data)
+   * ≡メニュー → 「ゲームの設定」: returns the settings dialog (文字送り, 自動保存, names, the saved data)
    * once it takes presses (it opens under the finger and waits a moment: Modal's settlePresses).
    */
   async openSettings(page: Page): Promise<Locator> {
@@ -304,7 +304,10 @@ export const ops = {
     await expect(settings).not.toHaveAttribute("data-settling");
     return settings;
   },
-  /** Settings → 「古い保存データの整理」 (the settings dialog closes, the cleanup dialog opens). */
+  /**
+   * Settings → 「古い保存データの整理」 (listed only while there is old data): the cleanup opens over the settings, and
+   * closes back to them.
+   */
   async openOldDataCleanup(page: Page): Promise<Locator> {
     const settings = await ops.openSettings(page);
     await settings.getByRole("button", { name: "古い保存データの整理" }).click();
@@ -313,7 +316,7 @@ export const ops = {
     return cleanup;
   },
   /**
-   * 「出典・権利の一覧」 from the title screen (under its note) or from ⚙設定 → ゲームの設定 (which closes);
+   * 「出典・権利の一覧」 from the title screen (under its note) or from ≡メニュー → ゲームの設定 (over which it opens);
    * returns the dialog once it takes presses (it opens under the finger: Modal's settlePresses).
    */
   async openCredits(page: Page, from: "title" | "settings"): Promise<Locator> {
@@ -363,40 +366,54 @@ export const ops = {
     await ops.closeDialog(settings);
   },
   /**
-   * ⚙設定 → ゲームの設定 → 「Debugモード」 → 「Debugモードをオンにする」, the password (「adminmode」, not a
+   * ゲームの設定's 「Debugモード」 section, inside its 「制作者向け」 (folded away while Debug mode is off, 2026-11-14):
+   * unfolds it if it is folded.
+   */
+  async debugModeSection(settings: Locator): Promise<Locator> {
+    const fold = settings.locator("details.settings-creator");
+    if (!(await fold.evaluate((details: HTMLDetailsElement) => details.open))) await fold.getByText("制作者向け", { exact: true }).click();
+    const section = settings.getByTestId("debug-mode-setting");
+    await expect(section).toBeVisible();
+    return section;
+  },
+  /**
+   * ≡メニュー → ゲームの設定 → 「制作者向け」 → 「Debugモードをオンにする」, the password (「adminmode」, not a
    * secret: src/app/debug-mode.ts) and 「オンにする」; closes ゲームの設定 again. The switch is this device's preference.
    */
   async turnOnDebugMode(page: Page, password = "adminmode") {
     const settings = await ops.openSettings(page);
-    const section = settings.getByTestId("debug-mode-setting");
+    const section = await ops.debugModeSection(settings);
     await section.getByRole("button", { name: "Debugモードをオンにする" }).click();
     await section.getByLabel("パスワード").fill(password);
     await section.getByRole("button", { name: "オンにする", exact: true }).click();
     await expect(section.getByText("Debugモードはオンです（この端末だけ）。")).toBeVisible();
     await ops.closeDialog(settings);
   },
-  /** ⚙設定 → ゲームの設定 → 「Debugモードをオフにする」 (no password; it waits out its 0.5 s settle); closes ゲームの設定 again. */
+  /** ≡メニュー → ゲームの設定 → 「Debugモードをオフにする」 (no password; it waits out its 0.5 s settle); closes ゲームの設定 again. */
   async turnOffDebugMode(page: Page) {
     const settings = await ops.openSettings(page);
-    const section = settings.getByTestId("debug-mode-setting");
+    const section = await ops.debugModeSection(settings);
     await section.getByRole("button", { name: "Debugモードをオフにする" }).click();
     await expect(section.getByText("Debugモードをオフにしました。")).toBeVisible();
     await ops.closeDialog(settings);
   },
-  /** The 「閉じる」 of the notice shown at the top of the screen (after 「セーブ」, for one). */
-  noticeClose(page: Page): Locator {
-    return page.getByRole("main").getByRole("status").getByRole("button", { name: "閉じる", exact: true });
+  /**
+   * The session's word under the header for a moment (「現在の場面を保存しました。」 after 「セーブ」, a load's, a tour's end;
+   * 2026-11-14: no longer a notice that pushes the screen down until closed).
+   */
+  sessionToast(page: Page): Locator {
+    return page.getByTestId("session-toast");
   },
-  /** ⚙設定 → 「セーブ」. */
+  /** ≡メニュー → 「セーブ」. */
   async manualSave(page: Page) {
     await ops.menuItem(page, "セーブ");
   },
-  /** ⚙設定 → 「ロード」: with nothing unsaved the saved scene comes back at once (with unsaved progress it asks first: askToLoad). */
+  /** ≡メニュー → 「ロード」: with nothing unsaved the saved scene comes back at once (with unsaved progress it asks first: askToLoad). */
   async loadSaved(page: Page) {
     await ops.menuItem(page, "ロード");
   },
   /**
-   * ⚙設定 → 「ロード」 while progress is unsaved (manual saving): returns the confirmation
+   * ≡メニュー → 「ロード」 while progress is unsaved (manual saving): returns the confirmation
    * 「保存した場面を読み込みますか？」 with its 「ロードする」 (`loadButton`), once it takes presses
    * (it opens under the finger and waits a moment, like the settings).
    */
@@ -407,7 +424,7 @@ export const ops = {
     await expect(dialog).not.toHaveAttribute("data-settling");
     return { dialog, loadButton: dialog.getByRole("button", { name: "ロードする", exact: true }) };
   },
-  /** ⚙設定 → 「旅の記録」 (its first line, `city-progress`, is the city's progress: 観光・クイズ / 都市クリア); returns that dialog. */
+  /** ≡メニュー → 「旅の記録」 (its first line, `city-progress`, is the city's progress: 観光・クイズ / 都市クリア); returns that dialog. */
   async openRecords(page: Page): Promise<Locator> {
     await ops.menuItem(page, "旅の記録");
     const records = page.getByRole("dialog", { name: "旅の記録" });
@@ -435,7 +452,7 @@ export const ops = {
     await expect(detail).toBeVisible();
     return detail;
   },
-  /** ⚙設定 → 「英語ノート」. */
+  /** ≡メニュー → 「英語ノート」. */
   async openEnglishNote(page: Page): Promise<Locator> {
     await ops.menuItem(page, "英語ノート");
     const note = page.getByRole("dialog", { name: "英語ノート" });
@@ -673,7 +690,7 @@ export const ops = {
     await expect(page.locator("[data-answer-settling], [data-tap-settling], html[data-tap-hold], [data-testid=travel-transition], [data-testid=night-rest], [data-testid=night-leaving], [data-testid=night-fade], [data-testid=episode-title-card], [data-testid=packing-scene]")).toHaveCount(0);
   },
   /**
-   * 旅の図鑑's cards over a line (`# term:`, the first time a term shows in the game): 「とじる」 on each, as a player
+   * 旅の図鑑's cards over a line (`# term:`, the first time a term shows in the game): 「閉じる」 on each, as a player
    * reads them, until none is left (each takes no tap for the moment of a double tap: settled waits for it).
    */
   async closeTermCards(page: Page) {

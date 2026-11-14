@@ -106,7 +106,7 @@
 
 /* Row 2: what is pressed, side by side at the row's right end (user decision
    2026-11-11): the held items, then the screen's own tool (free time's 「地図」,
-   a guide's or a battle's 「手がかり帳」), then ⚙設定. On other screens the tool's
+   a guide's or a battle's 「手がかり帳」), then ≡メニュー. On other screens the tool's
    place is empty and takes no room. Words stay at every width. */
 .hud-actions { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: flex-end; gap: 4px; }
 .hud-actions > * { flex: none; }
@@ -140,7 +140,7 @@
 .hud-tool[aria-expanded="true"] { background: var(--ds-slate-900); border-color: var(--ds-gold); }
 
 /* Over a story scene that waits for no choice (hud-view.ts, user decision
-   2026-11-11) the header shows only the place and time and ⚙設定. The budget
+   2026-11-11) the header shows only the place and time and ≡メニュー. The budget
    and AP, the held items and the screen's tool (手がかり帳) keep their room,
    so neither the header nor the scene under it moves when they show at a
    choice; hidden, they are neither seen, pressed, focused nor read. */
@@ -150,7 +150,7 @@
    The line, the window's tools and 「会話を表示」 stay where they are. */
 .journey-hud[data-view="quiet"] { visibility: hidden; }
 
-/* ⚙設定's panel: under the header, its right edge on the button's; on a short
+/* ≡メニュー's panel: under the header, its right edge on the button's; on a short
    screen (or with large text) its items scroll inside it. */
 .hud-menu-panel {
   position: absolute;
@@ -191,11 +191,13 @@
   text-align: left;
 }
 .hud-menu-panel .icon { width: 20px; height: 20px; color: var(--ds-slate-800); }
+/* Under セーブ・ロード while saving is automatic (2026-11-14): when it last saved; display only, never pressed. */
+.hud-menu-note { margin: -2px 4px 2px; color: var(--ds-ink-muted); font-size: 12px; line-height: 1.4; }
 @keyframes hud-menu-in {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: none; }
 }
-/* The held items' detail hangs from the header as ⚙設定's panel does, and opens as it does. */
+/* The held items' detail hangs from the header as ≡メニュー's panel does, and opens as it does. */
 .journey-hud .held-item-detail { animation: hud-menu-in var(--motion-fast) var(--ease-out); }
 
 /* A change the player sees (JourneyHud's useSeenChange; display only, the new value shows

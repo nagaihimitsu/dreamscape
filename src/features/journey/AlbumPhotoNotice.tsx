@@ -15,7 +15,7 @@ export const FIRST_ALBUM_PHOTO_NOTICE_MS = 6000;
 export type AlbumPhotoNoticeState = { id: number; photo: AlbumPhoto; first: boolean; fromLarge?: boolean };
 
 /** Where the album is, said once, with the journey's first photo. */
-export const ALBUM_PLACE_HINT_JA = "⚙設定の「アルバム」で見られます";
+export const ALBUM_PLACE_HINT_JA = "メニューの「アルバム」で見られます";
 
 /**
  * 「写真の札」 (2026-11-12 user decision): a small card right under the header when a line's `# photo:` has just put a

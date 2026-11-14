@@ -21,13 +21,14 @@ import { tourLegUnderway } from "../domain/tour";
 import { getGameWeekday, getTimePeriod } from "../domain/travel";
 import { hudPlaceName, placeDisplayName, type MapCity } from "../features/journey/travel-labels";
 import { formatTravelTime } from "../features/journey/travel-time";
-import { moneyLength, weekdayLabel } from "./journey-hud-text";
+import { autoSaveLine, moneyLength, weekdayLabel } from "./journey-hud-text";
 import type { HudView } from "./hud-view";
 import { flightTokens, itemsChange, numberChange, type Direction } from "./hud-cues";
 import { FLIGHT_TOTAL_MS, HudFlight } from "./HudFlight";
 import { ItemGainNotice } from "./ItemGainNotice";
 import { ItemShowFlight } from "../components/ItemShow";
 import type { ItemShowLeave } from "./useItemShowLeave";
+import type { SessionToast } from "./useGameSession";
 import { useMeasuredHeight } from "../components/useMeasuredHeight";
 import "./journey-hud.css";
 import "./hud-effects.css";
@@ -38,12 +39,12 @@ const mapCities = (): MapCity[] => getCities().map((city) => {
   return { hotelPlaceId: travelSettings.hotelPlaceId, places: travel.places };
 });
 
-/** How long a save's ribbon plays on ⚙設定 (milliseconds; hud-effects.css). */
+/** How long a save's ribbon plays on ≡メニュー (milliseconds; hud-effects.css). */
 const SAVE_MARK_MS = 900;
 
 /**
  * The header's popovers open one at a time, all hanging from its bottom edge:
- * ⚙設定's panel and the held items' detail close each other (a press outside
+ * ≡メニュー's panel and the held items' detail close each other (a press outside
  * either closes it), and opening one of them also closes the previous free-time
  * screen's open 待機 menu in its bottom band (MapListFreeTime; a `<details>`,
  * which closes only when its own summary is pressed).
@@ -53,12 +54,17 @@ function closeWaitMenu() {
 }
 
 /**
- * What ⚙設定's panel opens; 写真の出典 only while free time shows photos (cards, a backdrop photo), 画像の出典 only while a
+ * What ≡メニュー's panel opens; 写真の出典 only while free time shows photos (cards, a backdrop photo), 画像の出典 only while a
  * story scene shows a registered photo (its credits: the scene shows no 出典 of its own).
  */
 type MenuActions = {
-  /** セーブ: whether the scene was saved (a ribbon then drops onto ⚙設定). */
+  /** セーブ: whether the scene was saved (a ribbon then drops onto ≡メニュー). */
   onSave: () => boolean;
+  /**
+   * Automatic saving, while it is on (else null): when this tab last saved the game (null before it has), said in a
+   * small line under セーブ・ロード (2026-11-14 user decision), so the two are seen to have the game already saved.
+   */
+  autoSave?: { savedAt: number | null } | null;
   onLoad: () => void;
   onRecords: () => void;
   /** 「アルバム」: the photos the journey's lines took (AlbumDialog). */
@@ -79,18 +85,20 @@ type MenuActions = {
  * the right end; the place name is never cut: it wraps), row 2 holds what can be
  * pressed, side by side at its right end (user decision 2026-11-11): the held
  * items, the screen's own tool (free time's 「地図」, a guide's or a battle's
- * 「手がかり帳」; HudScreenTool) and ⚙設定 with セーブ・ロード・旅の記録・アルバム・旅の図鑑・英語ノート・
- * (free time) 写真の出典・(a story scene) 画像の出典・ゲームの設定. Over a story scene
+ * 「手がかり帳」; HudScreenTool) and ≡メニュー (the game's main menu, named 「設定」 until 2026-11-14) with
+ * セーブ・ロード・旅の記録・アルバム・旅の図鑑・英語ノート・(free time) 写真の出典・(a story scene) 画像の出典・ゲームの設定.
+ * Over a story scene
  * that waits for no choice (`view` "talk", hud-view.ts) the budget and AP, the held
  * items and the screen's tool keep their room but are not shown (journey-hud.css).
  * Its height is measured as `--hud-h` for the reserves of the scenes it lies over.
  * Its feedback (2026-11-13 user decision; display only, for changes in play): the held items' キラリ, their
  * 「NEW」 and their float as one is given away, 「…を手に入れました」 under it (ItemGainNotice), coins and
- * stars flying into a rising budget and AP (HudFlight), the dots of 英語ノート and 旅の図鑑 and a save's ribbon on ⚙設定, and a
- * line's item card (`# item_show:`) flying into the held items as its line goes (ItemShowFlight).
+ * stars flying into a rising budget and AP (HudFlight), the dots of 英語ノート and 旅の図鑑 and a save's ribbon on ≡メニュー, and a
+ * line's item card (`# item_show:`) flying into the held items as its line goes (ItemShowFlight). The session's short words
+ * (`toast`: a save, a load, a tour's end) show in the same place for a moment, the item notices waiting behind them.
  */
 export function JourneyHud({ game, place, view, sceneBackgroundId, replaced = 0, seenItemIds, onItemsSeen, englishNew = false, glossaryNew = false, holdNotices = false,
-  itemFlight = null, ...actions }: {
+  itemFlight = null, toast = null, ...actions }: {
   game: GameState; place: TravelPlace | undefined; view: HudView;
   /**
    * The background the story scene on screen draws its picture from (GameApp; none in free time or where a landmark's
@@ -103,10 +111,12 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, replaced = 0,
   seenItemIds?: ReadonlySet<string>;
   /** The detail opened on these held items: they are seen. */
   onItemsSeen?: (ids: readonly string[]) => void;
-  /** 英語ノート has an entry the player has not opened it on: a dot on ⚙設定 and on its 「英語ノート」. */
+  /** 英語ノート has an entry the player has not opened it on: a dot on ≡メニュー and on its 「英語ノート」. */
   englishNew?: boolean;
-  /** 旅の図鑑 has a term the player has not opened it on: a dot on ⚙設定 and on its 「旅の図鑑」. */
+  /** 旅の図鑑 has a term the player has not opened it on: a dot on ≡メニュー and on its 「旅の図鑑」. */
   glossaryNew?: boolean;
+  /** The session's word for a moment (useGameSession's SessionToast; it goes by itself). */
+  toast?: SessionToast | null;
   /** Holds 「…を手に入れました」 while something else shows under the header (ItemGainNotice's `hold`). */
   holdNotices?: boolean;
   /** A line's item card on its way out (`# item_show:`, GameApp's useItemShowLeave): into the bag when held and shown, else it fades. */
@@ -188,7 +198,12 @@ export function JourneyHud({ game, place, view, sceneBackgroundId, replaced = 0,
           <HudMenu {...actions} englishNew={englishNew} glossaryNew={glossaryNew} />
         </nav>
       </div>
-      <ItemGainNotice inventory={game.inventory} replaced={replaced} hold={holdNotices || view === "quiet"} />
+      <ItemGainNotice inventory={game.inventory} replaced={replaced} hold={holdNotices || view === "quiet" || !!toast} />
+      {/* The session's word (a save, a load, a tour's end): under the header like 「…を手に入れました」, taking no press and
+          pushing nothing down; also over a quiet line (journey-hud.css), as it answers what the player just did. */}
+      <div className="hud-toast-region" role="status" data-testid="session-toast">
+        {toast && <p key={toast.key} className="item-gain-notice hud-toast">{toast.text}</p>}
+      </div>
       {coinsFlying && <HudFlight key={`coins-${budgetCue?.count}`} kind="coin" count={coins} to={budgetRef} />}
       {starsFlying && <HudFlight key={`stars-${apCue?.count}`} kind="star" count={stars} to={apRef} />}
       {itemFlight && <ItemShowFlight key={itemFlight.key} itemId={itemFlight.itemId} toBag={itemFlight.held && shown} />}
@@ -249,22 +264,23 @@ const playApGain = (before: number, now: number) => {
 /**
  * A press on the header's text (the place, the money) keeps the focus where it
  * is, as on a page's plain text, instead of dropping it to the page: the open
- * ⚙設定 panel then gives it back to its button (HudMenu).
+ * ≡メニュー panel then gives it back to its button (HudMenu).
  */
 function keepFocusOffControls(event: { target: EventTarget; preventDefault: () => void }) {
   if (event.target instanceof Element && !event.target.closest("button, a, input, select, summary, [tabindex]")) event.preventDefault();
 }
 
 /**
- * ⚙設定 (U2, U24): a disclosure button with its small panel of セーブ, ロード,
+ * ≡メニュー (U2, U24; 「設定」 with a gear until 2026-11-14, renamed as it is the game's main menu): a disclosure button
+ * with its small panel of セーブ, ロード (and, while saving is automatic, a line saying when it last saved),
  * 旅の記録, アルバム, 旅の図鑑 (a journey with terms), 英語ノート, 写真の出典 (free time's photos) or 画像の出典 (a story
  * scene's photo) and ゲームの設定 (U28) right under the header (APG Disclosure,
  * not an ARIA menu: ordinary buttons, and Tab works as everywhere else). Opening
  * moves the focus to セーブ (ArrowUp/ArrowDown also move between the items); Esc closes and
- * returns it to ⚙設定; leaving the group with the focus or a press elsewhere
+ * returns it to ≡メニュー; leaving the group with the focus or a press elsewhere
  * closes it. A tap on the page outside the header only closes it (DismissLayer).
- * Choosing an item closes the panel and puts the focus on ⚙設定 before the action
- * runs, so a dialog it opens gives the focus back to ⚙設定 when it closes. The
+ * Choosing an item closes the panel and puts the focus on ≡メニュー before the action
+ * runs, so a dialog it opens gives the focus back to ≡メニュー when it closes. The
  * panel then leaves from under the finger: ロード and ゲームの設定 open dialogs
  * that take no press for a moment (or a load holds taps), and セーブ, which opens
  * none, holds the page's taps for that moment itself (holdTaps), so the second
@@ -273,14 +289,16 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
  * dialogs at once, as their own buttons did (the second tap lands inside the dialog);
  * アルバム's and 旅の図鑑's dialogs take no press for that moment, as their cards open larger on a tap.
  * Its marks (2026-11-13 user decision): while 英語ノート has an entry the player has not
- * opened it on (`englishNew`), a dot on ⚙設定 and on 「英語ノート」, said in their names;
- * likewise for 旅の図鑑's terms (`glossaryNew`) on ⚙設定 and 「旅の図鑑」;
- * a manual save that succeeded drops a small ribbon onto ⚙設定, which fades.
+ * opened it on (`englishNew`), a dot on ≡メニュー and on 「英語ノート」, said in their names;
+ * likewise for 旅の図鑑's terms (`glossaryNew`) on ≡メニュー and 「旅の図鑑」;
+ * a manual save that succeeded drops a small ribbon onto ≡メニュー, which fades.
  */
-function HudMenu({ onSave, onLoad, onRecords, onAlbum, onGlossary, onEnglish, onPhotoCredits, onSceneCredits, onSettings, onReturnToFreeTime, englishNew,
+function HudMenu({ onSave, autoSave, onLoad, onRecords, onAlbum, onGlossary, onEnglish, onPhotoCredits, onSceneCredits, onSettings, onReturnToFreeTime, englishNew,
   glossaryNew }: MenuActions & { englishNew: boolean; glossaryNew: boolean }) {
   const newIn = [englishNew && "英語ノート", glossaryNew && "旅の図鑑"].filter(Boolean).join("と");
   const [open, setOpen] = useState(false);
+  // The time the panel opened: its line of the last automatic save is said from then.
+  const [openedAt, setOpenedAt] = useState(0);
   // Counts the manual saves that succeeded: each new count drops the ribbon once.
   const [saved, setSaved] = useState(0);
   const savePlaying = useCuePlaying(saved, SAVE_MARK_MS);
@@ -303,7 +321,7 @@ function HudMenu({ onSave, onLoad, onRecords, onAlbum, onGlossary, onEnglish, on
     };
     // A press on the header outside the group (another of its buttons, its text):
     // the panel closes and that button works as usual; on the text the focus,
-    // which the press leaves where it was, goes back to ⚙設定. The dismiss layer
+    // which the press leaves where it was, goes back to ≡メニュー. The dismiss layer
     // handles presses on the rest of the page.
     const onPointerDown = (event: PointerEvent) => {
       const target = event.target instanceof Element ? event.target : null;
@@ -351,12 +369,15 @@ function HudMenu({ onSave, onLoad, onRecords, onAlbum, onGlossary, onEnglish, on
         aria-expanded={open}
         aria-controls="hud-menu-panel"
         onClick={() => {
-          if (!open) closeWaitMenu();
-          // No sound as ⚙設定's panel opens or closes (user decision 2026-11-14): it is pressed often.
+          if (!open) {
+            closeWaitMenu();
+            setOpenedAt(Date.now());
+          }
+          // No sound as the menu's panel opens or closes (user decision 2026-11-14): it is pressed often.
           setOpen(!open);
         }}
       >
-        <Icon name="gear" /><span className="hud-tool-word">設定</span>
+        <Icon name="menu" /><span className="hud-tool-word">メニュー</span>
         {newIn && <NewDot label={`${newIn}に新しい項目あり`} />}
         {savePlaying && <span key={saved} className="hud-save-mark" aria-hidden="true"><span className="hud-save-ribbon" /></span>}
       </button>
@@ -365,6 +386,7 @@ function HudMenu({ onSave, onLoad, onRecords, onAlbum, onGlossary, onEnglish, on
           if (onSave()) setSaved((count) => count + 1);
         }, true)}><Icon name="save" />セーブ</button>
         <button type="button" onClick={choose(onLoad)}><Icon name="load" />ロード</button>
+        {autoSave && <p className="hud-menu-note">{autoSaveLine(autoSave.savedAt, openedAt)}</p>}
         <button type="button" onClick={choose(onRecords)}><Icon name="stamp" />旅の記録</button>
         <button type="button" onClick={choose(onAlbum)}><Icon name="camera" />アルバム</button>
         {onGlossary && <button type="button" onClick={choose(onGlossary)}><Icon name="lens" />旅の図鑑{glossaryNew && <NewDot label="新しい言葉あり" />}</button>}

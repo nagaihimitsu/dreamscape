@@ -46,6 +46,19 @@ export function answeredQuestions(game: GameState, learning: Pick<Learning, "dat
   return recordedQuestions(game.activeBattle ? { [game.activeBattle.battleId]: game.activeBattle } : savedRecords(game, learning));
 }
 /**
+ * The question 英語ノート opens on when nothing names one (2026-11-14 user decision; the menu's 「英語ノート」): the
+ * one answered last, i.e. the last answer of the battle on screen, else of the battle this save recorded last (its
+ * battleRecords keep the order of the results); null while nothing is answered.
+ */
+export function latestAnsweredQuestionId(game: GameState, learning: Pick<Learning, "data">): string | null {
+  const entries = answeredQuestions(game, learning);
+  const order = (battleId: string) => game.battleRecords.findIndex((record) => record.battleId === battleId);
+  // A battle's answers come together, in the order given: the last one of the latest battle wins.
+  const latest = entries.reduce<(typeof entries)[number] | null>(
+    (best, entry) => (!best || game.activeBattle || order(entry.battle.id) >= order(best.battle.id) ? entry : best), null);
+  return latest?.question.id ?? null;
+}
+/**
  * The questions whose words the word book holds for this save (前に出た単語, met-words.ts): those of the battles it has
  * fought, the run on screen standing for its own battle.
  */
@@ -129,6 +142,7 @@ export function EnglishReview({
       labelledBy="english-review-title"
       onClose={onClose}
       className="english-review"
+      closeOnBackdrop
     >
       <ModalTitle id="english-review-title" className="english-review-header" onClose={onClose}>英語ノート</ModalTitle>
       {(allEntries.length > 0 || localGroups.length > 0) && (

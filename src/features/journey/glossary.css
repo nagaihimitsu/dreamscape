@@ -1,5 +1,5 @@
 /* 旅の図鑑 (2026-11-13 user decision): the card a line's # term: shows over the story (GlossaryTermWindow), and the
-   collection in ⚙設定 (GlossaryDialog). Parchment tiles with a hairline all round, as the item card (item-show.css): no
+   collection in ≡メニュー (GlossaryDialog). Parchment tiles with a hairline all round, as the item card (item-show.css): no
    thick edge on one side. Every pressable is at least 44 px. */
 
 /* The card over the story: the whole screen takes the tap that closes it; its middle darkens most, its edges least, so
@@ -230,7 +230,7 @@ button.glossary-card:not([data-met]) .glossary-card-photo img { opacity: 0.55; }
 dialog.modal.glossary-entry {
   --modal-pad-top: 16px;
   --modal-pad-inline: 16px;
-  width: min(92vw, 560px);
+  width: min(560px, calc(100% - 24px));
   max-width: 560px;
 }
 .glossary-entry .modal-title-bar { margin-bottom: 4px; }

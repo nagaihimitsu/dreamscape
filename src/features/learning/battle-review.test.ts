@@ -5,7 +5,7 @@ import { playBattleToResult } from "../../dev/scenario-builders";
 import { enterFreeTime, startEpisode } from "../../domain/chapter";
 import { createGame, validateGameState, type GameState } from "../../domain/game";
 import { startTourismBattle } from "../../domain/tourism";
-import { answeredQuestions, metQuestions } from "./EnglishReview";
+import { answeredQuestions, latestAnsweredQuestionId, metQuestions } from "./EnglishReview";
 import { metWordKey, metWordKeys } from "./met-words";
 import type { Learning } from "./useLearning";
 
@@ -51,6 +51,23 @@ describe("review of current battle answers", () => {
     expect(answeredQuestions(game, learning)).toHaveLength(3);
     const unknown = { data: { records: { [active.battleId]: { ...record, contentHash: "unknown" } } } } as unknown as Learning;
     expect(answeredQuestions(game, unknown)).toEqual([]);
+  });
+});
+
+// 英語ノート opened with no question named (2026-11-14 user decision) shows the question answered last, never none.
+describe("the question 英語ノート opens on", () => {
+  it("is the last answer of the battle on screen, then of the battle recorded last, and none before any answer", () => {
+    const question = currentBattle();
+    expect(latestAnsweredQuestionId(question, emptyLearning)).toBeNull();
+    const feedback = answer(question);
+    expect(latestAnsweredQuestionId(feedback, emptyLearning)).toBe(feedback.activeBattle!.answers[0].questionId);
+    const state = playBattleToResult(question);
+    const active = state.activeBattle!;
+    expect(latestAnsweredQuestionId(state, emptyLearning)).toBe(active.answers.at(-1)!.questionId);
+    const game = enterFreeTime(state, state.revision);
+    const learning = { data: { records: { [active.battleId]: { runId: active.runId, contentHash: active.contentHash, answers: active.answers } } } } as unknown as Learning;
+    expect(latestAnsweredQuestionId(game, learning)).toBe(active.answers.at(-1)!.questionId);
+    expect(latestAnsweredQuestionId(game, emptyLearning)).toBeNull();
   });
 });
 

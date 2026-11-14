@@ -13,11 +13,11 @@ import "./glossary.css";
  * 旅の図鑑's card in the story (2026-11-13 user decision): the terms a line's `# term:` has just put in 旅の図鑑 (GameApp:
  * termsAdded on an action, not during 高速送り), one card after another, over the scene without changing screens: the
  * middle of the screen darkens, and a card shows the term's photo, its name with its reading or other name, its one line
- * and a small 「旅の図鑑に追加」. A tap anywhere, Esc or 「とじる」 closes the card (the next one, if the line named more)
+ * and a small 「旅の図鑑に追加」. A tap anywhere, Esc or 「閉じる」 closes the card (the next one, if the line named more)
  * without reading on: the window holds the scene's reading (HOLDS_READING_ATTRIBUTE: auto mode waits, a tap or a key
  * reads nothing), while the line goes on writing itself under it and its voice plays on. Each card rings card_new as it
  * shows (not on a quiet line), takes no tap for the moment of a double tap (DOUBLE_TAP_WINDOW_MS: the tap that brought the
- * line must not close it unseen), and comes in softly (not under reduced motion). A dialog: the focus goes to 「とじる」
+ * line must not close it unseen), and comes in softly (not under reduced motion). A dialog: the focus goes to 「閉じる」
  * and back where it was; readers hear the name and the line. A term the content does not have shows nothing.
  */
 export function GlossaryTermWindow({ termIds, quiet = false, onDone }: { termIds: readonly string[]; quiet?: boolean; onDone: () => void }) {
@@ -36,7 +36,7 @@ export function GlossaryTermWindow({ termIds, quiet = false, onDone }: { termIds
   };
   const closeRef = useRef(close);
   closeRef.current = close;
-  // The focus: on 「とじる」 while the cards show, then back where it was; where it was lost (the line it was on gave way to
+  // The focus: on 「閉じる」 while the cards show, then back where it was; where it was lost (the line it was on gave way to
   // the new line under the card), on the line on screen, so a key reads on from there (its ring only after a key).
   useEffect(() => {
     const before = document.activeElement instanceof HTMLElement && document.activeElement !== document.body ? document.activeElement : null;
@@ -48,7 +48,7 @@ export function GlossaryTermWindow({ termIds, quiet = false, onDone }: { termIds
       }
     };
   }, []);
-  // Each card: its sound, the focus on its 「とじる」, and the moment it takes no tap.
+  // Each card: its sound, the focus on its 「閉じる」, and the moment it takes no tap.
   useEffect(() => {
     if (!term) {
       closeRef.current();
@@ -62,7 +62,7 @@ export function GlossaryTermWindow({ termIds, quiet = false, onDone }: { termIds
   // Once a card (the line's quiet is read as it shows).
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index]);
-  // Esc closes the card before anything else hears it (a guide's Esc would close the guide); Tab stays on 「とじる」.
+  // Esc closes the card before anything else hears it (a guide's Esc would close the guide); Tab stays on 「閉じる」.
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -96,7 +96,7 @@ export function GlossaryTermWindow({ termIds, quiet = false, onDone }: { termIds
         {subtitle && <p className="glossary-term-subtitle">{subtitle}</p>}
         <p className="glossary-term-line" id={lineId}>{term.lineJa}</p>
         <button ref={closeButton} type="button" className="secondary glossary-term-close" data-testid="glossary-term-close" onClick={tap}>
-          とじる{termIds.length > 1 && <span className="glossary-term-count">（{index + 1} / {termIds.length}）</span>}
+          閉じる{termIds.length > 1 && <span className="glossary-term-count">（{index + 1} / {termIds.length}）</span>}
         </button>
       </div>
     </div>

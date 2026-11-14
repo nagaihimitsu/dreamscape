@@ -9,11 +9,13 @@ import "./album.css";
 const imageSource = (photo: AlbumPhotoView) => `${import.meta.env.BASE_URL}${photo.path}`;
 
 /**
- * 「アルバム」 (⚙設定, 2026-11-11 user decision): the photos the lines' `# photo:` took, one page per city in the
+ * 「アルバム」 (≡メニュー, 2026-11-11 user decision): the photos the lines' `# photo:` took, one page per city in the
  * journey's order (album-pages.ts), each the author's illustration in a 3:2 frame (album.css) with its caption,
  * 「n日目 hh:mm」 and its place; no credit (the album shows only Dreamscape's own artwork). 「前の街」「次の街」, a
- * sideways swipe on the page and the arrow keys turn the pages; a photo opens larger, whole, in its own dialog. Opened
- * from ⚙設定's panel, it takes no press for a moment (settlePresses). It shows no relationship value.
+ * sideways swipe on the page and the arrow keys turn the pages; a photo opens larger, whole, in its own dialog over the
+ * album, which it closes back to. Opened from the header menu's panel, it takes no press for a moment (settlePresses).
+ * Both are dialogs for viewing (2026-11-14): 「× 閉じる」 in the title bar, a tap on the dimmed page around, or Esc.
+ * It shows no relationship value.
  */
 export function AlbumDialog({ album, currentCityId, onClose }: { album: readonly AlbumPhoto[]; currentCityId: string; onClose: () => void }) {
   const pages = useMemo(() => albumPages(album, journeyAlbumContent(currentCityId)), [album, currentCityId]);
@@ -60,7 +62,7 @@ export function AlbumDialog({ album, currentCityId, onClose }: { album: readonly
   }, [enlarged, pages.length]);
 
   return <>
-    <Modal labelledBy="album-title" className="album-modal" onClose={onClose} settlePresses>
+    <Modal labelledBy="album-title" className="album-modal" onClose={onClose} settlePresses closeOnBackdrop>
       <ModalTitle id="album-title" onClose={onClose} closeTestId="album-close">アルバム</ModalTitle>
       {!page ? <p className="album-empty" data-testid="album-empty">まだ写真はありません。</p> : <div className="album-book" ref={book}>
         <section
@@ -118,11 +120,10 @@ export function AlbumDialog({ album, currentCityId, onClose }: { album: readonly
         </nav>}
       </div>}
     </Modal>
-    {enlarged && <Modal labelledBy="album-photo-title" className="album-photo-viewer" onClose={() => setEnlarged(null)}>
-      <ModalTitle id="album-photo-title">{enlarged.caption ?? enlarged.placeJa}</ModalTitle>
+    {enlarged && <Modal labelledBy="album-photo-title" className="album-photo-viewer" onClose={() => setEnlarged(null)} closeOnBackdrop>
+      <ModalTitle id="album-photo-title" onClose={() => setEnlarged(null)}>{enlarged.caption ?? enlarged.placeJa}</ModalTitle>
       <img src={imageSource(enlarged)} alt={enlarged.altJa} data-testid="album-photo-large" />
       <p className="album-meta">{enlarged.whenJa} · {enlarged.placeJa}</p>
-      <button type="button" className="secondary" onClick={() => setEnlarged(null)}>閉じる</button>
     </Modal>}
   </>;
 }

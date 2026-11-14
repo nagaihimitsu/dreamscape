@@ -59,6 +59,20 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   // 「閉じる」 gets a quick double tap: its second tap would land on the scene the note leaves
   // behind, and a header's close holds every tap for a moment (Modal.tsx, 2026-11-14).
   await ops.closeDialog(await ops.openDialogueLog(page));
+  // Its 「× 閉じる」 (2026-11-14: in the title bar, no longer at the foot) holds the taps for a moment; the page's clock
+  // is held here, so it is moved on past that moment.
+  await expect(page.locator("html[data-tap-hold]")).toHaveCount(1);
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  // A tap on the dimmed page beside the log closes it as well (a dialog for viewing, 2026-11-14), and reads nothing on:
+  // it holds the taps for a moment like its 「× 閉じる」.
+  const log = await ops.openDialogueLog(page);
+  const logBox = (await log.boundingBox())!;
+  await page.touchscreen.tap(logBox.x + logBox.width / 2, logBox.y / 2);
+  await expect(log).toBeHidden();
+  await expect(page.locator("html[data-tap-hold]"), "the tap beside the log holds the taps").toHaveCount(1);
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  expect((await readSave(page)).revision).toBe(first.revision + 3);
+  await expect(line).toHaveAttribute("data-ready", "false");
   const note = await ops.openEnglishNote(page);
   const closeNote = await ops.centerOf(note.getByRole("button", { name: "閉じる", exact: true }));
   await ops.doubleTap(page, closeNote);
@@ -223,20 +237,13 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   expect((await readSave(page)).revision).toBe(opened.revision);
   // The date's heading names its destination (for screen readers; the header shows the place).
   await expect(ops.sceneHeading(page)).toHaveText(/／/u);
-  // A notice above the scene (here after 「セーブ」) pushes the date down; its 「閉じる」 lets the date
-  // move back up under the finger. A press on any control of the page, also outside the scene,
-  // settles the scene for a moment: a quick tap on the picture right after does not read on
-  // (where the second tap of a double tap on 「閉じる」 lands depends on the notice's length).
-  const sceneryAfterNotice = await ops.sceneBackgroundPoint(page);
+  // 「セーブ」's word (2026-11-14: a moment under the header, no longer a notice above the scene that pushed the date
+  // down until closed) lies over the date: the date stays where it was under the finger, and reads nothing on.
+  const lineBefore = await line.boundingBox();
   await ops.manualSave(page);
-  const closeNotice = await ops.centerOf(ops.noticeClose(page));
-  await ops.settled(page);
-  await ops.holdClock(page);
-  await page.touchscreen.tap(closeNotice.x, closeNotice.y);
-  await expect(ops.noticeClose(page)).toHaveCount(0);
-  await page.touchscreen.tap(sceneryAfterNotice.x, sceneryAfterNotice.y);
-  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
-  await page.clock.resume();
+  await expect(ops.sessionToast(page)).toHaveText("現在の場面を保存しました。");
+  expect(await line.boundingBox(), "the word pushes nothing down").toEqual(lineBefore);
+  await expect(page.getByRole("main").getByRole("status").getByRole("button", { name: "閉じる", exact: true })).toHaveCount(0);
   await ops.settled(page);
   await expect(line).toHaveText(dateLine!);
   expect((await readSave(page)).revision).toBe(opened.revision);
@@ -245,7 +252,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   // 「ロードする」 does not read the restored line on: a load holds taps like a scene start.
   await ops.setAutoSave(page, false);
   await ops.manualSave(page);
-  await expect(ops.noticeClose(page)).toBeVisible();
+  await expect(ops.sessionToast(page)).toHaveText("現在の場面を保存しました。");
   const saved = await readSave(page);
   await ops.tapAt(page, await ops.sceneBackgroundPoint(page));
   await expect(line).not.toHaveText(dateLine!);

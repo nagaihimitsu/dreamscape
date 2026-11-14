@@ -29,7 +29,7 @@ export function freeTimePhotos(game: GameState): ShownPhoto[] {
 
 /** 「写真の出典」 (UI redesign §3.4 item 6): the credit and licence of each photo on the free-time screen. */
 export function PhotoCredits({ photos, onClose }: { photos: ShownPhoto[]; onClose: () => void }) {
-  return <Modal labelledBy="photo-credits-title" className="photo-credits-modal" onClose={onClose}>
+  return <Modal labelledBy="photo-credits-title" className="photo-credits-modal" onClose={onClose} closeOnBackdrop>
     <ModalTitle id="photo-credits-title" onClose={onClose}>写真の出典</ModalTitle>
     <p className="fine-print">{DERIVED_PHOTO_NOTE_JA}</p>
     <ul className="photo-credits-list" data-testid="photo-credits">
