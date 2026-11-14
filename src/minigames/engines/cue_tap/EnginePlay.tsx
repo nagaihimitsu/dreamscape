@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type ComponentType, type CSSProperties, type KeyboardEvent, type PointerEvent } from "react";
 import type { MiniGamePlayProps, MiniGameRules } from "../../contract";
-import { cueTapCounts, cueTapEnd, cueTapMeter, cueTapZones, type CueTapRecord, type CueTapTuning } from "./engine";
+import { cueTapCounts, cueTapEnd, cueTapMeter, cueTapMoment, cueTapZones, type CueTapRecord, type CueTapTuning } from "./engine";
 import "./engine.css";
 
 // The cue_tap engine's play (docs/13 2.2): the field a skin draws, a meter whose needle crosses the zone where the thing
-// arrives (or the skin's own gauge), and one big button at the bottom (a tap on the field and Space or Enter do the same).
+// arrives (in time, or along the thing's own way: the skin's progress), or the skin's own gauge, or none (the field is the
+// gauge), and one big button at the bottom (a tap on the field and Space or Enter do the same).
 // The host's clock times it; the skin's rules decide; the host shows the outcome and takes its choice. A tap before the
 // thing starts coming does not count (the player can still tap): it is turned away with the host's light refusal, never
 // taken. The play ends (the host's finish, then its result card) at the moment the field shows the outcome (the skin's
@@ -40,7 +41,8 @@ export type CueTapDecided<Outcome extends string> = { outcome: Outcome; tapMs: C
 
 /** A skin of cue_tap: its timing, its rules (cueTapRules), its words and its field. */
 export interface CueTapSkin<Params, Outcome extends string> {
-  tuning: CueTapTuning;
+  /** Its timing: the same for every play, or worked out from the tag's keys (the cricket's ball). */
+  tuning: CueTapTuning | ((params: Params) => CueTapTuning);
   rules: MiniGameRules<Params, Outcome, CueTapRecord>;
   /** How to play, right above the meter (not while おまかせ plays); the same words as the definition's hintJa. */
   hintJa: string;
@@ -51,25 +53,57 @@ export interface CueTapSkin<Params, Outcome extends string> {
   /** In place of the button while おまかせ plays. */
   autoJa: string;
   /** When the field has shown what happened, once the outcome is decided (the end of the host's hold). */
-  endAt(decided: CueTapDecided<Outcome>, still: boolean): number;
+  endAt(decided: CueTapDecided<Outcome>, still: boolean, params: Params): number;
   /**
    * When the field shows the outcome (the catch, the scream): the engine ends the play then, the host's finish over it.
    * Without it, the engine ends the play at endAt (a skin that ends it itself from its field, as the cricket does, ends it
    * first; the first end counts).
    */
-  impactAt?(decided: CueTapDecided<Outcome>, still: boolean): number;
+  impactAt?(decided: CueTapDecided<Outcome>, still: boolean, params: Params): number;
   Field: ComponentType<CueTapFieldProps<Params, Outcome>>;
-  /** In place of the meter: the skin's own gauge of the coming moment (the flap's steps). Without it, the meter. */
-  Gauge?: ComponentType<CueTapGaugeProps<Params, Outcome>>;
+  /**
+   * Where the meter's needle is (0 to 1) at `ms`, along the thing's own way (the ball's travel: it speeds up as the ball
+   * skids on); it never goes back, and the gold zone is where it is through the clean window, so the needle in gold is
+   * always a clean tap. Without it, the needle crosses the meter at one pace in time.
+   */
+  progress?(ms: number, params: Params): number;
+  /**
+   * Whether a tap at `ms` counts, where the play has more than one stretch to tap in (the cricket's bouncer and its real
+   * ball, not her walk back between them): one that does not is turned away like one before the start. Without it, from
+   * the start to the end.
+   */
+  counts?(ms: number, params: Params): boolean;
+  /**
+   * In place of the meter: the skin's own gauge of the coming moment (the flap's steps); null: none, the field is the
+   * gauge (the ring over the monkey's catch, which tightens for whatever falls). Without it, the meter.
+   */
+  Gauge?: ComponentType<CueTapGaugeProps<Params, Outcome>> | null;
 }
 
 /** The play of a cue_tap skin. */
 export function cueTapPlay<Params, Outcome extends string>(skin: CueTapSkin<Params, Outcome>): ComponentType<MiniGamePlayProps<Params, Outcome>> {
-  const end = cueTapEnd(skin.tuning);
-  const zones = cueTapZones(skin.tuning);
+  const tuningOf = (params: Params): CueTapTuning => (typeof skin.tuning === "function" ? skin.tuning(params) : skin.tuning);
   const span = ([from, to]: [number, number]): CSSProperties => ({ left: `${from * 100}%`, width: `${(to - from) * 100}%` });
+  /** The needle at `ms` and the meter's zones: in time, or along the skin's progress (the zones where the needle is through each window). */
+  const meterOf = (params: Params, tuning: CueTapTuning) => {
+    const { progress } = skin;
+    if (!progress) return { needle: (ms: number) => cueTapMeter(ms, tuning), zones: cueTapZones(tuning) };
+    const moment = cueTapMoment(tuning);
+    const at = (ms: number) => Math.min(1, Math.max(0, progress(ms, params)));
+    return {
+      needle: at,
+      zones: {
+        near: [at(moment - tuning.nearEarlyMs), at(moment + tuning.nearLateMs)] as [number, number],
+        clean: [at(moment - tuning.cleanEarlyMs), at(moment + tuning.cleanLateMs)] as [number, number],
+      },
+    };
+  };
   return function CueTapPlay(props: MiniGamePlayProps<Params, Outcome>) {
     const { params, auto, clock, still, seed, cast, names, art, sound, vibrate } = props;
+    // The play's timing and meter (the tag's keys do not change during a play).
+    const tuning = useMemo(() => tuningOf(params), [params]);
+    const end = cueTapEnd(tuning);
+    const meter = useMemo(() => meterOf(params, tuning), [params, tuning]);
     const decided = useRef<{ tapMs: CueTapRecord; outcome: Outcome; impactAt: number; endAt: number } | null>(null);
     const [outcome, setOutcome] = useState<Outcome | null>(null);
     const needle = useRef<HTMLSpanElement>(null);
@@ -88,8 +122,8 @@ export function cueTapPlay<Params, Outcome extends string>(skin: CueTapSkin<Para
       if (decided.current) return;
       const { still: less, params: current } = latest.current;
       const result = skin.rules.outcomeOf(tapMs, current);
-      const endAt = skin.endAt({ outcome: result, tapMs }, less);
-      const impactAt = Math.min(endAt, skin.impactAt?.({ outcome: result, tapMs }, less) ?? endAt);
+      const endAt = skin.endAt({ outcome: result, tapMs }, less, current);
+      const impactAt = Math.min(endAt, skin.impactAt?.({ outcome: result, tapMs }, less, current) ?? endAt);
       decided.current = { tapMs, outcome: result, impactAt, endAt };
       setOutcome(result);
       // The field still shows what the tap did: the real play's one try is spent (no leaving it now).
@@ -99,7 +133,7 @@ export function cueTapPlay<Params, Outcome extends string>(skin: CueTapSkin<Para
     // light refusal (a small wiggle of the button and its sound) says so; never a penalty.
     const tap = (ms: number) => {
       if (latest.current.auto !== null || decided.current || ms > end) return;
-      if (!cueTapCounts(ms, skin.tuning)) {
+      if (!cueTapCounts(ms, tuning) || (skin.counts && !skin.counts(ms, latest.current.params))) {
         latest.current.juice.denied(button.current);
         return;
       }
@@ -112,7 +146,7 @@ export function cueTapPlay<Params, Outcome extends string>(skin: CueTapSkin<Para
         if (!decided.current && autoTap !== undefined && autoTap !== null && ms >= autoTap) decide(autoTap);
         if (!decided.current && ms > end) decide(null);
         const done = decided.current;
-        if (needle.current) needle.current.style.left = `${cueTapMeter(done?.tapMs ?? ms, skin.tuning) * 100}%`;
+        if (needle.current) needle.current.style.left = `${meter.needle(done?.tapMs ?? ms) * 100}%`;
         const view: CueTapView<Outcome> = {
           ms, tapMs: done?.tapMs ?? null, outcome: done?.outcome ?? null, impactAt: done?.impactAt ?? null, endAt: done?.endAt ?? null,
         };
@@ -124,7 +158,7 @@ export function cueTapPlay<Params, Outcome extends string>(skin: CueTapSkin<Para
           latest.current.end(done.outcome, undefined, { record: done.tapMs, holdMs: Math.max(0, done.endAt - ms) });
         }
       });
-    }, [clock, autoTap, decide]);
+    }, [clock, autoTap, decide, end, meter]);
 
     const frames = useCallback((draw: (view: CueTapView<Outcome>) => void) => {
       draws.current.add(draw);
@@ -146,10 +180,10 @@ export function cueTapPlay<Params, Outcome extends string>(skin: CueTapSkin<Para
         </div>
         <div className="mg-cue-tap-controls">
           {auto === null && <p className="mg-cue-tap-hint">{skin.hintJa}</p>}
-          {Gauge ? <Gauge still={still} frames={frames} /> : (
+          {Gauge ? <Gauge still={still} frames={frames} /> : Gauge === null ? null : (
             <div className="mg-cue-tap-meter" aria-hidden="true">
-              <span className="mg-cue-tap-meter-near" style={span(zones.near)} />
-              <span className="mg-cue-tap-meter-clean" style={span(zones.clean)} />
+              <span className="mg-cue-tap-meter-near" style={span(meter.zones.near)} />
+              <span className="mg-cue-tap-meter-clean" style={span(meter.zones.clean)} />
               <span className="mg-cue-tap-meter-needle" ref={needle} />
             </div>
           )}
