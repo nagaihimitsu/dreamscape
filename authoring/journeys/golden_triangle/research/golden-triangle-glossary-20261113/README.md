@@ -53,7 +53,7 @@ Commons に Sehra の分類はない）、Openverse で Flickr の CC BY・CC BY
 
 | 候補 | 作者 | ライセンス | 判断 |
 | --- | --- | --- | --- |
-| **File:Dulha of udaipur 2015.jpg**（Flickr 22141280892「dulha, udaipur」） | nevil zaveri | CC BY 2.0（Commons は `{{cc-by-2.0}}`・FlickreviewR 2025-07-01 合格。Flickr のページも 2026-11-14 に CC BY 2.0） | **採用**。ウダイプールの婚礼の行列（Flickr の札：baraat・udaipur・rajasthan・bridegroom・nikkah・veil）。金と銀の房が花婿の顔をすっかり覆い、飾った馬の頭も写る。EXIF の作者と著作権表示は撮影者本人の名前で、Flickr のアカウントと一致。Commons のファイルは Flickr の原寸（535×800px）とSHA-1まで同じ。解像度は低めだが、正方形に切り抜いて531×531pxで使う。 |
+| **File:Dulha of udaipur 2015.jpg**（Flickr 22141280892「dulha, udaipur」） | nevil zaveri | CC BY 2.0（Commons は `{{cc-by-2.0}}`・FlickreviewR 2025-07-01 合格。Flickr のページも 2026-11-14 に CC BY 2.0） | **採用**。ウダイプールの婚礼の行列（Flickr の札：baraat・udaipur・rajasthan・bridegroom・nikkah・veil）。金と銀の房が花婿の顔をすっかり覆い、飾った馬の頭も写る。EXIF の作者と著作権表示は撮影者本人の名前で、Flickr のアカウントと一致。Commons のファイルは Flickr の原寸（535×800px）とSHA-1まで同じ。解像度は低めだが、正方形に切り抜いて531×531pxで使う。下端の「COPYRIGHT © NEVIL ZAVERI」は切り抜きで外れるため、CC BY 2.0 の「著作権表示をそのまま残す」に合わせて、クレジットを「写真：© nevil zaveri／…」とした。 |
 | Flickr 6264450244・6263900501「Sawai Madhopur, groom during baraat」 | Arian Zwegers | CC BY 2.0（Flickr のページで確認） | ラージャスターンで、房のある花婿も写るが、房を額に上げて顔と子どもの顔が見えている。ぼかすと房の見せ方が悪くなる。 |
 | File:Rajput wedding riding.jpg | Jaisingh Rathore | CC BY 2.5／GFDL（2006年に英語版へ本人が投稿） | ラージプートの婚礼。金の房はあるが横顔が見え、周りの人の顔も主題になっている。 |
 | Flickr 2720232518 ほか「Sehra」（File:Sehra.jpg） | apsaramokashi | CC BY 2.0（Flickr のページで確認） | 房を結んでいる場面。房は顔を覆っておらず、花婿の顔が主題。 |
