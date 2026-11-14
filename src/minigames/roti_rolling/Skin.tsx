@@ -245,9 +245,10 @@ export function rotiSkinFor(game: RotiGame): ShapeDragSkin<RotiParams, RotiOutco
     meter: (view) => {
       const { percent, boxy, small } = game.roundness(view.measures);
       const rolled = view.strokes > 0 || view.pin !== null;
-      // A box, or a ball barely rolled, is not a round roti however round it measures: the bar does not light, the words say why.
+      // A box, or a ball barely rolled, is not a round roti however round it measures: the bar does not light, the words say
+      // why; one round and big enough to be まん丸 says so (the card's ★3).
       const roundEnough = view.measures.roundness >= numbers.roundness;
-      const why = boxy ? "（四角い）" : small && roundEnough ? "（まだ小さい）" : "";
+      const why = boxy ? "（四角い）" : small && roundEnough ? "（まだ小さい）" : game.perfect(view.measures) ? "（まん丸）" : "";
       return {
         labelJa: "丸さ", value: rolled ? view.measures.roundness : null, mark: numbers.roundness,
         over: rolled && roundEnough && !boxy && !small, textJa: rolled ? `${percent}%${why}` : "—",

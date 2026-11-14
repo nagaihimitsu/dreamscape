@@ -1,6 +1,6 @@
 import type { MiniGameRating, MiniGameRules } from "../contract";
 import {
-  rhythmTapBeats, rhythmTapInterval, rhythmTapRules, rhythmTapThen, type RhythmTapRecord, type RhythmTapSummary, type RhythmTapTuning,
+  rhythmTapBeats, rhythmTapInterval, rhythmTapOpens, rhythmTapRules, rhythmTapThen, type RhythmTapRecord, type RhythmTapSummary, type RhythmTapTuning,
 } from "../engines/rhythm_tap/engine";
 
 // The baraat dance's rules (docs/13 2.4): a rhythm_tap skin. The band's drum counts four (not to tap: taps then are not
@@ -21,7 +21,9 @@ export const BARAAT_BIG_BEATS = 2;
  * The dance's numbers. The drum's own tempo (not the scene's music, docs/13 2.11): 96 a minute for the count-in and the
  * first 8 beats, then 108. About 12.5 s. Generous windows, wider late (the drum is heard after it is seen); ぴったり within
  * −50 to +90 ms. In step: 12 of the 16 met with no more than 4 extra taps; stumbling: extra taps at least as many as the
- * beats met, and at least 8 (mashing). ★3 for 10 beats or more right on the drum.
+ * beats met, and at least 8 (mashing), or more than 4 with 12 met (every beat met, then mashing in the excitement: group2
+ * N7). ★3 for 10 beats or more right on the drum. The field shows the feet tangling from the second extra tap of a beat
+ * (tangleExtra; display only, group2 N6: baraatFeet).
  */
 export const BARAAT_NUMBERS = {
   bpm: 96,
@@ -37,6 +39,7 @@ export const BARAAT_NUMBERS = {
   inStepExtra: 4,
   stumbleExtra: 8,
   threeStarPerfects: 10,
+  tangleExtra: 2,
 } as const;
 export type BaraatNumbers = { readonly [Key in keyof typeof BARAAT_NUMBERS]: number };
 
@@ -54,6 +57,40 @@ export interface BaraatGame {
  * extra: it is a miss already.
  */
 export const baraatExtraTaps = (summary: RhythmTapSummary): number => Math.max(0, summary.taps - summary.came);
+
+/**
+ * The feet as of `ms` (the field's look only, never the outcome: group2 N6). Each beat to dance owns the time nearest it
+ * (from halfway after the beat before to halfway before the next; the first from its window's opening, so the count-in's
+ * clapping is never in one): taps there beyond the first are its extra taps. `extra`: the extra taps so far in the beat
+ * whose time `ms` is in (a tap that makes it `tangleExtra` tangles the feet: the dancers stagger); `tangled`: that beat or
+ * the one before has `tangleExtra` or more (a beat met then shows no success: no bangles, no burst, no word). One
+ * double tap, or a tap far off its beat, never tangles; mashing (three taps a beat) does, as it happens.
+ */
+export function baraatFeet(taps: readonly number[], ms: number, tuning: RhythmTapTuning, tangleExtra: number = BARAAT_NUMBERS.tangleExtra): {
+  extra: number; tangled: boolean;
+} {
+  const { beats } = tuning;
+  const opens = rhythmTapOpens(tuning);
+  /** The beat whose time `time` is in (-1 before the first window opens). */
+  const beatOf = (time: number) => {
+    if (time < opens) return -1;
+    let index = 0;
+    while (index + 1 < beats.length && time >= (beats[index] + beats[index + 1]) / 2) index += 1;
+    return index;
+  };
+  const now = beatOf(ms);
+  if (now < 0) return { extra: 0, tangled: false };
+  const counts = [0, 0];
+  for (const tap of taps) {
+    if (!Number.isFinite(tap) || tap > ms) continue;
+    const at = beatOf(tap);
+    if (at === now) counts[0] += 1;
+    else if (at === now - 1) counts[1] += 1;
+  }
+  const limit = Math.max(1, Math.round(tangleExtra));
+  const extra = Math.max(0, counts[0] - 1);
+  return { extra, tangled: extra >= limit || counts[1] - 1 >= limit };
+}
 
 /** The dance from its numbers (the story's: BARAAT_NUMBERS; Debug's room's edited ones). */
 export function baraatGame(numbers: BaraatNumbers = BARAAT_NUMBERS): BaraatGame {
@@ -74,8 +111,9 @@ export function baraatGame(numbers: BaraatNumbers = BARAAT_NUMBERS): BaraatGame 
   const outcome = (summary: RhythmTapSummary): BaraatOutcome => {
     if (summary.taps === 0) return "stood_still";
     const extra = baraatExtraTaps(summary);
+    // Mashing, or every beat met and then mashing (group2 N7: 「ずれたまま」 did not fit a dance with all 16 met).
     if (extra >= Math.max(numbers.stumbleExtra, summary.hits)) return "stumble";
-    if (summary.hits >= numbers.inStepHits && extra <= numbers.inStepExtra) return "in_step";
+    if (summary.hits >= numbers.inStepHits) return extra <= numbers.inStepExtra ? "in_step" : "stumble";
     return "off_beat_together";
   };
   /**

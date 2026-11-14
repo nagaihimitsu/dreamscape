@@ -4,7 +4,7 @@ import { describeMiniGameRules } from "../testing/rules-contract";
 import { baraatDance } from "./definition";
 import {
   BARAAT_BEATS, BARAAT_COUNT_IN_BEATS, BARAAT_FAST_INTERVAL_MS, BARAAT_IN_STEP_EXTRA, BARAAT_IN_STEP_HITS, BARAAT_INTERVAL_MS,
-  BARAAT_NUMBERS, BARAAT_SLOW_BEATS, BARAAT_TUNING, baraatGame, baraatRules,
+  BARAAT_NUMBERS, BARAAT_SLOW_BEATS, BARAAT_TUNING, baraatFeet, baraatGame, baraatRules,
 } from "./rules";
 
 const { beats } = BARAAT_TUNING;
@@ -37,12 +37,48 @@ describe("the baraat dance", () => {
     expect(outcome({ hit: (index) => index < BARAAT_IN_STEP_HITS })).toBe("in_step");
     expect(outcome({ hit: (index) => index < BARAAT_IN_STEP_HITS - 1 })).toBe("off_beat_together");
     expect(taps(beats.map((beat, index) => beat + (index % 2 ? 150 : -100)))).toBe("in_step");
-    // Extra taps (a second one on a beat): a few are forgiven, more are not in step.
-    const doubled = (count: number) => beats.flatMap((beat, index) => (index < count ? [beat, beat + 140] : [beat]));
+    // Extra taps (a second one on a beat): a few are forgiven; more with most beats met is a stumble (group2 N7), with
+    // fewer met dancing off the beat.
+    const doubled = (count: number, met = beats.length) => beats.flatMap((beat, index) =>
+      index >= met ? [beat + 300] : index < count ? [beat, beat + 140] : [beat]);
     expect(taps(doubled(BARAAT_IN_STEP_EXTRA))).toBe("in_step");
-    expect(taps(doubled(BARAAT_IN_STEP_EXTRA + 1))).toBe("off_beat_together");
+    expect(taps(doubled(BARAAT_IN_STEP_EXTRA + 1))).toBe("stumble");
+    expect(taps(doubled(BARAAT_IN_STEP_EXTRA + 1, BARAAT_IN_STEP_HITS - 1))).toBe("off_beat_together");
     // A tap that tried for a beat and missed its window is a miss, not an extra tap.
     expect(taps(beats.map((beat, index) => (index < 4 ? beat + 250 : beat)))).toBe("in_step");
+  });
+
+  it("stumbles when every beat is met and then mashed in the excitement at the end (group2 N7)", () => {
+    // 14 beats met, then a tap every 120 ms over the last 1.5 s: 16 met, 11 extra.
+    const climax = [...beats.slice(0, 14).map((beat) => beat + 30), ...Array.from({ length: 13 }, (_, index) => beats[13] + 500 + index * 120)];
+    const summary = rhythmTapJudge({ taps: climax, stopMs: null }, BARAAT_TUNING);
+    expect(summary.hits).toBeGreaterThanOrEqual(BARAAT_IN_STEP_HITS);
+    expect(taps(climax)).toBe("stumble");
+  });
+
+  it("shows the feet tangling from a beat's second extra tap, never for a double tap or a tap far off (group2 N6)", () => {
+    const feet = (list: readonly number[], ms: number) => baraatFeet(list, ms, BARAAT_TUNING);
+    const [first, second, third] = beats;
+    expect(feet([], second)).toEqual({ extra: 0, tangled: false });
+    // A double tap: one extra, no tangle. A third tap on the same beat: tangled, and the next beat still is.
+    expect(feet([second, second + 150], second + 200)).toEqual({ extra: 1, tangled: false });
+    expect(feet([second - 100, second + 50, second + 200], second + 250)).toEqual({ extra: 2, tangled: true });
+    expect(feet([second - 100, second + 50, second + 200, third], third + 10)).toEqual({ extra: 0, tangled: true });
+    expect(feet([second - 100, second + 50, second + 200, third, beats[3]], beats[3] + 10).tangled).toBe(false);
+    // A late tap and the next beat's early one: each in its own beat's time.
+    expect(feet([first + 250, second - 200], second - 150)).toEqual({ extra: 0, tangled: false });
+    // Taps not yet made, and the count-in's clapping, do not count.
+    expect(feet([second, second + 100, second + 200], second + 50).extra).toBe(0);
+    expect(feet([...BARAAT_COUNT_IN_BEATS, BARAAT_COUNT_IN_BEATS[3] + 100, BARAAT_COUNT_IN_BEATS[3] + 200], first - 200)).toEqual({ extra: 0, tangled: false });
+    // Over a mash every 200 ms, most beats met show no success; over a dance with a double tap now
+    // and then (never two beats running), every beat met does.
+    const tangledHits = (record: readonly number[]) => beats.filter((at) => {
+      const hit = record.find((tap) => tap >= at - 120 && tap <= at + 180);
+      return hit !== undefined && feet(record, hit).tangled;
+    }).length;
+    expect(tangledHits(mash(200))).toBeGreaterThanOrEqual(BARAAT_BEATS * 0.75);
+    const careful = beats.flatMap((at, index) => (index % 3 === 1 ? [at + 20, at + 180] : [at + 20]));
+    expect(tangledHits(careful)).toBe(0);
   });
 
   it("does not count taps along the count-in: clapping along is no fault, and alone it is standing still", () => {

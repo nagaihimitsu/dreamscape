@@ -7,7 +7,8 @@ import {
 // The roti's rules (docs/13 2.4): a shape_drag skin. The player rolls a ball of dough on the board with a pin, 8 strokes;
 // after each stroke the dough turns a quarter (the roll-and-turn way of keeping a roti round). The board shows the way of
 // each stroke (an eighth round further each time; looks only, from the seed) and how round the dough is. The rolled shape
-// gives Harbans's joke: round (a dull map), a box (a truck's bed), some country, or a hole. Nothing is random; the same
+// gives Harbans's joke: round (a dull map), a box (a truck's bed), some country, or a hole (well round and big is まん丸:
+// ★3 on the result card only). Nothing is random; the same
 // strokes give the same roti. Pure. Every number to tune is in ROTI_NUMBERS (E1; Debug's room edits them: play.ts retune).
 
 export type RotiOutcome = "round" | "truck_bed" | "country" | "torn";
@@ -20,7 +21,8 @@ export type RotiParams = object;
  * the dough off; rolling a new way each time rounds it. A stroke of half the board pushes about a tenth of it; eight such
  * strokes make a roti about three quarters of the board. Near a tear (across 0.8 of the board, or 7.5 times the ball's
  * area) the hint warns and the pin gets heavy; at 0.95 or 10.5 it tears. A box (boxiness 0.9) is told before round
- * (roundness 0.8 and three times the ball); round and across the dotted ring (0.66) is a big one (◎).
+ * (roundness 0.8 and three times the ball); round and across the dotted ring (0.66) is a big one (◎); big and roundness
+ * 0.88 is まん丸 (★3: an egg of 0.8 is round, not まん丸; group2 N3).
  */
 export const ROTI_NUMBERS = {
   startRadius: 0.13,
@@ -40,6 +42,7 @@ export const ROTI_NUMBERS = {
   roundness: 0.8,
   roundArea: 3,
   bigSpan: 0.66,
+  perfectRoundness: 0.88,
 } as const;
 export type RotiNumbers = { readonly [Key in keyof typeof ROTI_NUMBERS]: number };
 
@@ -52,7 +55,9 @@ export interface RotiGame {
   note(measures: ShapeMeasures): string | null;
   /** The roundness the meter shows (0 to 100), and whether the dough is boxy or still small (not round however round it measures). */
   roundness(measures: ShapeMeasures): { percent: number; boxy: boolean; small: boolean };
-  /** The score line: how round (and big) the roti came out (shown only; never in the story); none for a hole. */
+  /** Round and big enough, and as round as まん丸 (by the percent shown, so 「88%」 is always まん丸): the ★3 roti. */
+  perfect(measures: ShapeMeasures): boolean;
+  /** The score line: how round (and big) the roti came out, how boxy a box (shown only; never in the story); none for a hole. */
   score(measures: ShapeMeasures, outcome: RotiOutcome): string | undefined;
   rules: MiniGameRules<RotiParams, RotiOutcome, ShapeDragRecord>;
 }
@@ -112,23 +117,28 @@ export function rotiGame(numbers: RotiNumbers = ROTI_NUMBERS): RotiGame {
   const roundness = (measures: ShapeMeasures) => ({
     percent: Math.round(measures.roundness * 100), boxy: measures.boxiness >= numbers.boxiness, small: measures.area < numbers.roundArea,
   });
+  const perfect = (measures: ShapeMeasures) =>
+    measures.span >= numbers.bigSpan && Math.round(measures.roundness * 100) >= Math.round(numbers.perfectRoundness * 100);
+  // A box says how boxy (group2 N2: 「丸さ 81%」 on a box read like a round one); まん丸 only on the ★3 roti (N3).
   const score = (measures: ShapeMeasures, outcome: RotiOutcome): string | undefined => {
     if (outcome === "torn") return undefined;
+    if (outcome === "truck_bed") return `四角さ ${Math.round(measures.boxiness * 100)}%`;
     const round = `丸さ ${roundness(measures).percent}%`;
-    return outcome === "round" && measures.span >= numbers.bigSpan ? `${round}・大きさ ◎` : round;
+    if (outcome !== "round" || measures.span < numbers.bigSpan) return round;
+    return perfect(measures) ? `${round}・まん丸・大きさ ◎` : `${round}・大きさ ◎`;
   };
   /**
    * The result card's ★ (display only: never saved, never in Ink; docs/13 4.1), in step with the outcome: round ★2, round
-   * and big (across the dotted ring) ★3, a box, a country or a hole ★1 (Harbans's jokes all).
+   * and big (across the dotted ring) and as round as まん丸 ★3, a box, a country or a hole ★1 (Harbans's jokes all).
    */
   const rate = (record: ShapeDragRecord): MiniGameRating => {
     const measures = shapeMeasures(shapeOfRecord(record, tuning, shapes), tuning);
     const outcome = shapeClassify(measures, shapes);
-    const stars = outcome !== "round" ? 1 : measures.span >= numbers.bigSpan ? 3 : 2;
+    const stars = outcome !== "round" ? 1 : perfect(measures) ? 3 : 2;
     const scoreJa = score(measures, outcome);
     return scoreJa ? { stars, scoreJa } : { stars };
   };
-  return { numbers, tuning, shapes, note, roundness, score, rules: { ...shapeDragRules<RotiParams, RotiOutcome>(tuning, shapes, ROTI_AUTO), rate } };
+  return { numbers, tuning, shapes, note, roundness, perfect, score, rules: { ...shapeDragRules<RotiParams, RotiOutcome>(tuning, shapes, ROTI_AUTO), rate } };
 }
 
 /** The story's roti. */
