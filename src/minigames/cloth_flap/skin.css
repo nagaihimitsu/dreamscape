@@ -59,9 +59,10 @@
   pointer-events: none;
 }
 .mg-cloth-flap-mark-step[data-lit] { background: #fff8ea; }
+/* (At least 28 × 9 px: on a 320-px phone 7.2% alone is a thin strip.) */
 .mg-cloth-flap-mark-step[data-gold] {
-  width: 7.2%;
-  height: 7px;
+  width: max(7.2%, 28px);
+  height: 9px;
   border-radius: 3px;
   background: rgba(240, 200, 96, 0.75);
   box-shadow: 0 0 0 1.5px rgba(60, 36, 10, 0.8), 0 0 8px rgba(240, 200, 96, 0.55);

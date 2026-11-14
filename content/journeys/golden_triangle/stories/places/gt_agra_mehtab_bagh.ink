@@ -214,7 +214,7 @@ INCLUDE modules.ink
     振った板きれが、思った以上に大きな音を立てた。彼女が一瞬、肩をすくめる。
 - else:
     # speaker: narrator
-    ボールは、思ったよりまっすぐ来た。振った板きれに、手ごたえがあった。
+    振った板きれに、手ごたえがあった。
 }
 # speaker: narrator
 # photo: gt_album_a32 # photo_caption: 最後の一球、塀を越えてアウト

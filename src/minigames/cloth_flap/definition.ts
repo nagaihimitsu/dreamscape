@@ -16,7 +16,8 @@ import { defineMiniGame } from "../contract";
  * A flap at any of them is early. The heroine whispers 「まだ……」 as Jasmeet freezes.
  *
  * The host's flow (docs/13 2.6): practice before the real flap, no 3・2・1 (her steps are the count), the play ends as she
- * reacts (★ from the tap: clean ★3, a little off ★2, far off ★1, no tap none), the finish word a sound or a call, and the
+ * reacts (★ from the tap: clean ★3, a little off ★2, far off ★1, no tap none; the score names the fake-out a flap fell
+ * for: 「男の子で広げた」「立ち止まりで広げた」「踏み出しかけで広げた」「はずみの途中で広げた」), the finish word a sound or a call, and the
  * heroine's face and line from beside the niche: her first breath at the prank (Jasmeet's scream and the story's lines
  * follow at once), never what she says next.
  *

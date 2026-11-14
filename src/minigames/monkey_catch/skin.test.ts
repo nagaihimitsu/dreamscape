@@ -75,6 +75,15 @@ describe("the catch's field", () => {
     expect(impactOf("missed", MONKEY_RELEASE_MS + 100)).toBeGreaterThan(MONKEY_HANDS_MS);
     expect(impactOf("missed", MONKEY_HANDS_MS + 400)).toBe(MONKEY_HANDS_MS + 400);
     expect(impactOf("missed", null)).toBe(MONKEY_END_MS);
+    // Closed at a tease: tossed down past them at once (no shell dropped after it), over about a second after the tap.
+    const { plan, thingAt, shellAt, HANDS } = MONKEY_FIELD_POINTS;
+    for (const tap of [plan.feint + 200, plan.shells[0].hands, plan.fake.drop + 100, plan.fake.snatch + 300]) {
+      expect(impactOf("missed", tap) - tap, String(tap)).toBeLessThanOrEqual(1250);
+      expect(monkeyCatchSkin.endAt({ outcome: "missed", tapMs: tap }, false, { thing: "bottle" }) - tap, String(tap)).toBeLessThanOrEqual(2100);
+      expect(thingAt(impactOf("missed", tap) - 120, tap, "missed").at.y, String(tap)).toBeCloseTo(HANDS.y, 0);
+    }
+    expect(shellAt(0, plan.shells[0].drop + 100, plan.feint + 200)).toBeNull();
+    expect(shellAt(1, plan.shells[1].drop + 100, plan.shells[0].hands)).toBeNull();
     for (const [outcome, tapMs] of [["caught", MONKEY_HANDS_MS], ["fumbled", MONKEY_HANDS_MS + 200], ["missed", null]] as const)
       expect(monkeyCatchSkin.endAt({ outcome, tapMs }, false, { thing: "bottle" })).toBeGreaterThan(monkeyCatchSkin.impactAt!({ outcome, tapMs }, false, { thing: "bottle" }));
   });

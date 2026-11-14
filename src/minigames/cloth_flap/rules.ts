@@ -153,12 +153,33 @@ export function clothPlan(t: ClothTuning): ClothPlan {
   return { moves, poses, feint: { lift: feintLift, back: feintLift + t.feintMs }, bobs, boy, script, tuning: cueTapTuningFor(script, t) };
 }
 
+/**
+ * The fake-out a flap fell for, for the score line (like the cricket's 「高い球に振った」; the words of the early outcome's
+ * note), or null (the seconds off: during her steady first steps, or her leap itself): her stop on the third step, the boy
+ * running past (until she steps on), her stop on the fourth, her foot reached toward the gold step and her step back up,
+ * her bobbing and the held bob.
+ */
+export function clothTrapJa(plan: ClothPlan, tapMs: number): string | null {
+  const wary = plan.poses.find((pose) => pose.pose === "wary")?.from ?? Number.POSITIVE_INFINITY;
+  const onFourth = plan.moves.find((move) => move.to === CLOTH_STEPS.freeze)?.lift ?? Number.POSITIVE_INFINITY;
+  const backOnThird = plan.moves.find((move) => move.kind === "back")?.land ?? Number.POSITIVE_INFINITY;
+  const leap = plan.moves.find((move) => move.kind === "leap")?.lift ?? Number.NEGATIVE_INFINITY;
+  if (tapMs < wary || tapMs >= leap) return null;
+  if (tapMs >= backOnThird) return "はずみの途中で広げた";
+  if (tapMs >= plan.feint.lift) return "踏み出しかけで広げた";
+  if (tapMs >= plan.boy[0].lift && tapMs < onFourth) return "男の子で広げた";
+  return "立ち止まりで広げた";
+}
+
 /** The flap's rules with a tuning (the story's, or Debug's room's edited one). Clean: right in front of her. Any tap
  * before: early (the boy, her freeze, her feint: she sees it coming); any after: late (far off too, by its side). No tap:
- * frozen. ★ from the engine: clean ★3, a little off ★2, far off ★1 (its outcome is early or late all the same), no tap none. */
+ * frozen. ★ from the engine: clean ★3, a little off ★2, far off ★1 (its outcome is early or late all the same), no tap none;
+ * the score line names the fake-out a flap fell for. */
 export function clothFlapRulesFor(tuning: ClothTuning): MiniGameRules<ClothFlapParams, ClothFlapOutcome, CueTapRecord> {
-  return cueTapRules<ClothFlapParams, ClothFlapOutcome>(clothPlan(tuning).tuning,
-    { clean: "perfect", early: "early", late: "late", miss: { early: "early", late: "late" }, none: "frozen" });
+  const plan = clothPlan(tuning);
+  return cueTapRules<ClothFlapParams, ClothFlapOutcome>(plan.tuning,
+    { clean: "perfect", early: "early", late: "late", miss: { early: "early", late: "late" }, none: "frozen" },
+    { trapJa: (tapMs) => clothTrapJa(plan, tapMs) });
 }
 
 /** Why an edited tuning would make the flap unfair (the engine's checks of her walk's script; none: fair). */

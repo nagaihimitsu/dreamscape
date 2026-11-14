@@ -234,10 +234,13 @@ export type CueTapMap<Outcome extends string> = Readonly<Record<Exclude<CueTapOu
 /**
  * A skin's rules from the engine's (docs/13 2.4): `map` gives each engine outcome the skin's outcome. 「おまかせ」 to a
  * skin outcome taps as the first engine outcome mapped to it (in the order clean, early, late, miss early, miss late, none).
- * The ★ are the engine's (cueTapRating); a skin may give its own rate in their place.
+ * The ★ are the engine's (cueTapRating); a skin may give its own rate in their place. A scripted skin may name the trap a
+ * tap fell for (`trapJa`: 「殻で手を閉じた」, as the cricket's 「高い球に振った」): the score line says it in place of the
+ * seconds off (null: the seconds).
  */
 export function cueTapRules<Params, Outcome extends string>(
   tuning: CueTapTuning | ((params: Params) => CueTapTuning), map: CueTapMap<Outcome>,
+  options: { trapJa?(record: number, params: Params): string | null } = {},
 ): MiniGameRules<Params, Outcome, CueTapRecord> {
   const { miss } = map;
   const missEarly = typeof miss === "string" ? miss : miss.early;
@@ -264,6 +267,10 @@ export function cueTapRules<Params, Outcome extends string>(
       if (!tap) throw new Error(`No cue_tap outcome gives ${outcome}`);
       return tap[1];
     },
-    rate: (record, params) => cueTapRating(record, tuningOf(params)),
+    rate: (record, params) => {
+      const rating = cueTapRating(record, tuningOf(params));
+      const trap = rating && record !== null ? options.trapJa?.(record, params) ?? null : null;
+      return rating && trap ? { ...rating, scoreJa: trap } : rating;
+    },
   };
 }

@@ -9,9 +9,11 @@ import { defineMiniGame } from "../contract";
  * have had enough. She bluffs at her 12th (her palm half up: 「バ……なんてね」), says the next is her last after her
  * 13th, and raises her hand after her 14th (the lane's flag meets the ring then); after it the vendor's climax (a fast
  * run, a second feint, a hold, a last double) has narrower windows and no longer waits (one missed there, the next lands
- * on it: a choke). Raising it with her (from just before her hand until the player's 16th lands) is `together`; before
- * that (the bluff's trap), `you_first`; two left in the bowl, `choke` (a bite at nothing fills the choke gauge, and a full
- * gauge leaves one: mashing chokes); after her by two or more, or never, `outlast`.
+ * on it: a choke; its first, the player's 15th, lands as the thumb goes to 「バス」, and a slip there is an ordinary one).
+ * Raising it with her (from just before her hand until the player has eaten their 16th) is `together`; before that (the
+ * bluff's trap), `you_first`; two left in the bowl, `choke` (a bite at nothing fills the choke gauge, and a full gauge
+ * leaves one: mashing chokes); after eating two or more past her, or never, `outlast`. The card's line under the score
+ * says what ★3 asks for when a play with her or past her missed it (rules.ts golgappaDetail).
  *
  * The host's flow (docs/13 2.6): practice (a contest at a stall: no romance or route choice hangs on it; the story's
  * choices after it carry no relationship effects), the host's 3・2・1 (「よーい、どん」 of an eating contest), the scene's
@@ -37,13 +39,13 @@ export const golgappaDuel = defineMiniGame({
   howToJa: "屋台の男が器に落とすゴルガッパを、落ちるたびに「食べる」で食べる。速さが変わり、高く振りかぶるだけのフェイントもある。彼女は14個目で「バス」と手を上げる（旗が輪に重なる時）。一緒に「バス」か、もっと食べるか（その後は速く、1つ食べそびれるとむせる。約17秒）",
   outcomes: [
     // Her first breath only: the story's next lines (「引き分け！　今の、…」, 「…はい、水」, 「負けた……。」) are never said here.
-    { id: "together", labelJa: "二人同時に手を上げた", noteJa: "彼女が手を上げる0.15秒前から、自分の16個目が落ちる前までに「バス」", finishJa: "同時！",
+    { id: "together", labelJa: "二人同時に手を上げた", noteJa: "彼女が手を上げる0.15秒前から、自分の16個目を食べる前までに「バス」（15個目を食べそびれても）", finishJa: "同時！",
       reaction: { kind: "surprise", linesJa: ["せーの、って言ってないのに"] } },
     { id: "you_first", labelJa: "先に「バス」と言った", noteJa: "彼女が手を上げるより前に「バス」（12個目の手は冗談）", finishJa: "バス！",
       reaction: { kind: "tease", linesJa: ["あれ、もうおしまい？", "ふふ、早い早い"] } },
-    { id: "choke", labelJa: "器にたまって、むせた", noteJa: "器に2つたまった（食べそびれるか、何もない時に押して「むせ」が3つたまると1つ残る。フェイントで押すと「むせ」が2つたまる。彼女が手を上げた後は、1つ食べそびれると次が落ちてくる。連打はむせる）", finishJa: "ごほっ！", finishTone: "oops",
+    { id: "choke", labelJa: "器にたまって、むせた", noteJa: "器に2つたまった（食べそびれるか、何もない時に押して「むせ」が3つたまると1つ残る。フェイントで押すと「むせ」が2つたまる。16個目からは、1つ食べそびれると次が落ちてくる。連打はむせる）", finishJa: "ごほっ！", finishTone: "oops",
       reaction: { kind: "oops", linesJa: ["わっ、大丈夫！？"] } },
-    { id: "outlast", labelJa: "彼女より長く食べた", noteJa: "16個目が落ちた後で「バス」か、むせずに最後まで食べ続けた（彼女の後は速く、フェイントもあり、1つも食べそびれられない）", finishJa: "粘った！",
+    { id: "outlast", labelJa: "彼女より長く食べた", noteJa: "16個目を食べた後で「バス」か、むせずに最後まで食べ続けた（彼女の後は速く、フェイントもあり、16個目からは1つも食べそびれられない）", finishJa: "粘った！",
       reaction: { kind: "surprise", linesJa: ["まだ食べるの！？", "え、どこに入ってるの？"] } },
   ],
   defaultAuto: "together",

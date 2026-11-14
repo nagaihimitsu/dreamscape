@@ -59,6 +59,18 @@ describe("the rhythm_tap engine", () => {
     expect(rhythmTapFairness({ ...peaked, peak: { ...peaked.peak, missLimit: 2 } }).join()).toContain("peak.missLimit 2");
   });
 
+  it("starts the peak's smaller miss limit at its limitFrom beat: a slip before it is an ordinary one (its window still narrow)", () => {
+    const peaked = { ...tuning, missLimit: 2, strayLimit: 3, peak: { from: 3, earlyMs: 100, lateMs: 120, missLimit: 1, limitFrom: 4 } };
+    // The peak's first beat missed: one left, the play goes on; a slip at the next (limitFrom) ends it.
+    expect(rhythmTapJudge({ taps: [1000, 1600, 2200, 3400], stopMs: null }, peaked)).toMatchObject({ ended: "end", misses: 1 });
+    expect(rhythmTapJudge({ taps: [1000, 1600, 2200, 2800], stopMs: null }, peaked)).toMatchObject({ ended: "misses", misses: 1, endMs: 3400 + 120 });
+    // Its window is the peak's all the same.
+    expect(rhythmTapWindow(peaked, 3)).toEqual({ earlyMs: 100, lateMs: 120 });
+    expect(rhythmTapFairness(peaked)).toEqual([]);
+    expect(rhythmTapFairness({ ...peaked, peak: { ...peaked.peak, limitFrom: 2 } }).join()).toContain("peak.limitFrom 2");
+    expect(rhythmTapFairness({ ...peaked, peak: { ...peaked.peak, limitFrom: 5 } }).join()).toContain("peak.limitFrom 5");
+  });
+
   it("fills the stray gauge with each stray and empties a drop with each hit; a full gauge counts as a miss toward the limit", () => {
     const gauged = { strayLimit: 3, missLimit: 2 };
     // Two strays, a hit (one drop off), two more: the gauge is full once, a miss.

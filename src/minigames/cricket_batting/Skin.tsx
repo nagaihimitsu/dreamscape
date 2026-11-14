@@ -9,7 +9,7 @@ import "./skin.css";
 
 // The cricket's field (a cue_tap skin): the batter's view of the pitch over the scene, the bowler small at the far end,
 // three stacked bricks behind the bat. She runs up and bowls twice (rules.ts cricketPlan): first a ball that lands on a
-// crack and kicks up over the bat and the bricks (the bouncer: Sonia calls it dead; a swing at it tips it high over the
+// crack and kicks up over the bat and the bricks (the bouncer: Sonia calls it dead; a swing at it skies it high over the
 // side), then, after she walks back, her real ball, which changes pace where it bounces (the tag's `ball`). The meter's
 // needle follows only the real ball (it waits through the bouncer). With the use's art (`art.pitch`, `art.bowler`) the
 // drawn pitch and the heroine's standing picture give way to those pictures.

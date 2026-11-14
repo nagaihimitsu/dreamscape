@@ -29,7 +29,7 @@ describe("the cricket's timing", () => {
     expect(outcome(0)).toBe("no_swing");
   });
 
-  it("tips a swing at the bouncer over the side wall (however timed); a swing once it is gone, or during her walk back, does not count", () => {
+  it("skies a swing at the bouncer over the side wall (however timed); a swing once it is gone, or during her walk back, does not count", () => {
     for (const ms of [bouncer.release, bouncer.bounce, bouncer.bat, bouncer.reach]) expect(outcome(ms), String(ms)).toBe("over_wall");
     expect(cricketRules.rate!(bouncer.bat, {})).toEqual({ stars: 1, scoreJa: "高い球に振った" });
     for (const ms of [bouncer.reach + 1, bouncer.gone, CRICKET_RELEASE_MS - 1]) {

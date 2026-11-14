@@ -36,10 +36,13 @@ export const rhythmTapTuningSchema = z.object({
   /**
    * The play's peak: from the beat at index `from` (from 0) on, these windows (narrower than the others), and a smaller
    * miss limit if given (`missLimit`: misses in all, the stray gauge's overflows with them, that end the play once a beat
-   * of the peak is missed or the gauge overflows in it: a slip there costs more).
+   * of the peak is missed or the gauge overflows in it: a slip there costs more). The smaller limit starts at the beat at
+   * index `limitFrom` if given (at or after `from`: a first beat of the peak whose slip is still an ordinary one, the
+   * golgappa's 15th while 「バス」 can still be with her), else at `from`.
    */
   peak: z.object({
     from: z.number().int().nonnegative(), earlyMs: windowMs, lateMs: windowMs, missLimit: z.number().int().positive().optional(),
+    limitFrom: z.number().int().nonnegative().optional(),
   }).strict().optional(),
   /** A hit this close to its beat is right on it (ぴったり): a finer grade inside every window; none: one grade. */
   perfect: z.object({ earlyMs: windowMs, lateMs: windowMs }).strict().optional(),
@@ -163,6 +166,8 @@ export function rhythmTapFairness(tuning: RhythmTapTuning): string[] {
     if (perfect && (perfect.earlyMs > earlyMs || perfect.lateMs > lateMs)) problems.push(`the perfect window is wider than the ${name}hit window`);
   }
   if (peak && peak.from >= beats.length) problems.push(`peak.from ${peak.from} is past the last beat`);
+  if (peak?.limitFrom !== undefined && (peak.limitFrom < peak.from || peak.limitFrom >= beats.length))
+    problems.push(`peak.limitFrom ${peak.limitFrom} is not a beat of the peak`);
   if (peak?.missLimit !== undefined && tuning.missLimit !== undefined && peak.missLimit >= tuning.missLimit)
     problems.push(`peak.missLimit ${peak.missLimit} is not smaller than missLimit ${tuning.missLimit}`);
   if (perfect) {
@@ -213,9 +218,9 @@ export function rhythmTapJudge(record: RhythmTapRecord, tuning: RhythmTapTuning,
   const restTapped = (rests?.at ?? []).map(() => false);
   /** The rest whose window `time` is in (-1: none). */
   const restOf = (time: number) => (rests ? rests.at.findIndex((at) => time >= at - rests.earlyMs && time <= at + rests.lateMs) : -1);
-  /** Whether the misses so far end the play, as of a slip at the beat at `index` (the peak's own limit from its first beat on). */
+  /** Whether the misses so far end the play, as of a slip at the beat at `index` (the peak's own limit from its limitFrom on). */
   const limited = (index: number) => {
-    const limit = peak?.missLimit !== undefined && index >= peak.from ? Math.min(peak.missLimit, missLimit ?? peak.missLimit) : missLimit;
+    const limit = peak?.missLimit !== undefined && index >= (peak.limitFrom ?? peak.from) ? Math.min(peak.missLimit, missLimit ?? peak.missLimit) : missLimit;
     return limit !== undefined && misses + overflows >= limit;
   };
   /** Misses every beat whose window closed before `time` (or at it, when `inclusive`); true when that reached the limit. */
