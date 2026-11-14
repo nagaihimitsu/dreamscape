@@ -1,6 +1,6 @@
 /**
- * Debug launch URLs (development only): `?debug&city=…&scene=…&target=…` opens
- * a scene directly. Pure and free of game content, so tests (also Playwright on
+ * Debug launch URLs (the development server, or a production build with Debug mode on: src/main.tsx):
+ * `?debug&city=…&scene=…&target=…` opens a scene directly. Pure and free of game content, so tests (also Playwright on
  * Node) can build and read the URLs; the scene itself is resolved and checked
  * against the content by resolveDebugLaunch in debug-state.ts.
  * The format is for development and may change without compatibility.

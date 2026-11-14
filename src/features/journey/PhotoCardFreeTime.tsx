@@ -197,7 +197,7 @@ export function PhotoCardFreeTime({
 
     <section className="photo-menu" aria-label={`${city.nameJa}の行き先`} data-testid="travel-menu">
       {/* 「待機」 is named only while one of its waits can be made (late in the evening none can). Out of money for good in this
-          city, the line says so and points to ロード instead (B1, 2026-11-13: no money is kept back and nothing ends the trip). */}
+          city, the line says so and points to ロード instead (B1, 2026-11-13: running short is part of play, and nothing ends the trip). */}
       {noPlace && <p className="photo-menu-note">{outOfMoney
         ? <>旅行予算が足りず、この街で今できることがありません。<span className="photo-menu-note-word">⚙設定</span>の「ロード」で前のセーブに戻れます。</>
         : wait ? "今すぐ行ける場所はありません。「ホテルに戻る」で休むか、「待機」で時間を待てます。" : "今すぐ行ける場所はありません。「ホテルに戻る」で休めます。"}</p>}

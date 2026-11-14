@@ -346,7 +346,7 @@ export function journeyContents(sources: ContentSources): JourneyContents[] {
 
 /**
  * One line for content:build, headed by the journey's Japanese name and ID (as journey:readiness and
- * journey:transit head theirs), e.g. `Journey ミラノ編（milano） (available): cities 1, stories 63, …; battles 9, …`.
+ * journey:transit head theirs), e.g. `Journey ミラノ編（milano） (available): cities 1, stories 14, …; battles 9, …`.
  */
 export function formatJourneyContents(contents: JourneyContents): string {
   const [files, entries] = [contents.counts.slice(0, 4), contents.counts.slice(4)];
