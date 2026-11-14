@@ -141,5 +141,5 @@ export function createJuice(surface: JuiceSurface): MiniGameJuice {
 }
 
 /** A toolkit that does nothing (outside a play: a skin's field rendered on its own, a test). */
-export const NO_JUICE: MiniGameJuice = { hitStop() {}, shake() {}, flash() {}, burst() {}, squash() {}, denied() {} };
+export { NO_JUICE } from "./no-juice";
 

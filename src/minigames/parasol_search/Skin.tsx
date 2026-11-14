@@ -619,8 +619,12 @@ function ParasolField({ params, setup, view, live, search, active, frames, art, 
     const at = view.last.at;
     setRecent({ round: count - 1, found: view.done[count - 1].found, at });
     // The next round's first place takes the focus when the pressed place went with the round (its buttons are new).
-    if (count < setup.rounds.length && fieldRef.current && (!document.activeElement || document.activeElement === document.body))
-      fieldRef.current.querySelector<HTMLElement>("[data-first]")?.focus({ preventScroll: true });
+    // The page is read through the field's own node (ownerDocument), not the global: skins stay free of page globals
+    // (story-validation-cache.test.ts), since the story validator loads them through their definitions.
+    const field = fieldRef.current;
+    const page = field?.ownerDocument;
+    if (count < setup.rounds.length && field && page && (!page.activeElement || page.activeElement === page.body))
+      field.querySelector<HTMLElement>("[data-first]")?.focus({ preventScroll: true });
     return frames((ms) => { if (ms - at >= RECENT_MS) setRecent((current) => (current?.at === at ? null : current)); });
   }, [view.done.length]); // each round over once
 
