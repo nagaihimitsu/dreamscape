@@ -1,18 +1,43 @@
 /* Raju's haggle (Skin.tsx): over the scene's picture (the fort's gate), Raju on the left from the bottom, his bubble over
-   him, the paper of his prices on the right. */
+   him (his words, his face and his patience), the paper of his prices on the right. */
 .mg-raju-haggle { position: absolute; inset: 0; color: var(--ds-ink); container-type: size; }
 /* Raju: his standing picture, feet at the bottom, about the left half (the paper keeps the right). */
-.mg-raju-haggle-raju { position: absolute; left: 0; bottom: 0; width: 56%; height: 68%; }
-.mg-raju-haggle-raju > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
-.mg-raju-haggle-raju[data-figure="drawn"] { display: flex; align-items: center; justify-content: center; }
+.mg-raju-haggle-raju { position: absolute; left: 0; bottom: 0; width: 56%; height: 68%; transform-origin: 50% 100%; }
+.mg-raju-haggle-flinch { display: block; width: 100%; height: 100%; }
+.mg-raju-haggle-flinch > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
+.mg-raju-haggle-raju[data-figure="drawn"] .mg-raju-haggle-flinch { display: flex; align-items: center; justify-content: center; }
 .mg-raju-haggle-drawn-map { width: 86%; height: auto; transform: rotate(-6deg); filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35)); }
-/* His glad face bobs a little; sulky, he turns a little away. */
+/* His mood, big enough to read on a phone: glad, he bobs; unsure, he leans back; sulky, he leans further and edges away;
+   given up, he turns his back and walks off out of the field with his map (his one picture holds the map out with a grin,
+   which must not stay on show under 「もういい！」). */
 .mg-raju-haggle[data-mood="glad"] .mg-raju-haggle-raju { animation: mg-raju-haggle-bob 700ms ease-in-out infinite alternate; }
-.mg-raju-haggle[data-mood="sulky"] .mg-raju-haggle-raju { transform: rotate(-2deg) translateX(-2%); transform-origin: 50% 100%; transition: transform 200ms ease-out; }
-@keyframes mg-raju-haggle-bob { from { transform: translateY(0); } to { transform: translateY(-1.5%); } }
-.mg-raju-haggle[data-still] .mg-raju-haggle-raju { animation: none; transform: none; }
+.mg-raju-haggle[data-mood="unsure"] .mg-raju-haggle-raju { transform: rotate(-5deg); transition: transform 200ms ease-out; }
+.mg-raju-haggle[data-mood="sulky"] .mg-raju-haggle-raju { transform: translateX(-4%) rotate(-8deg); transition: transform 200ms ease-out; }
+.mg-raju-haggle[data-away] .mg-raju-haggle-raju { animation: mg-raju-haggle-off 650ms ease-in both; }
+@keyframes mg-raju-haggle-off {
+  0% { transform: scaleX(-1); }
+  25% { transform: translate(-6%, -2%) scaleX(-1); opacity: 1; }
+  100% { transform: translateX(-110%) scaleX(-1); opacity: 0; }
+}
+@keyframes mg-raju-haggle-bob { from { transform: translateY(0); } to { transform: translateY(-4%); } }
+/* A stare: he flinches back. */
+.mg-raju-haggle-flinch[data-stared] { animation: mg-raju-haggle-flinch 220ms ease-out; }
+@keyframes mg-raju-haggle-flinch { 35% { transform: translate(-5%, 2%) scale(0.95, 1.05); } }
+/* Less motion: his moods are still states, at once (given up, he is gone at once); no bob, no flinch. */
+.mg-raju-haggle[data-still] .mg-raju-haggle-raju { animation: none; transition: none; }
+.mg-raju-haggle[data-still][data-away] .mg-raju-haggle-raju { opacity: 0; }
+.mg-raju-haggle[data-still] .mg-raju-haggle-flinch { animation: none; }
 
-/* His words: a speech bubble over him, its tail down to his head. */
+/* Her word at his last dot (the host's reaction, which sits under the band, where his bubble is): low on the left, just
+   over the hint above the buttons (on his legs), so his bubble, his face and the paper stay readable at the climax. The
+   offset is the engine's controls (engine.css: padding, two lines of hint, the 64px or 56px buttons). On a field too
+   short for his picture the skin does not call it. */
+.minigame-layer[data-game="raju_haggle"] > .minigame-react { top: auto; bottom: calc(140px + env(safe-area-inset-bottom, 0px)); }
+@media (max-height: 620px) {
+  .minigame-layer[data-game="raju_haggle"] > .minigame-react { bottom: calc(128px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* His words: a speech bubble over him, its tail down to his head; his face and his patience in it. */
 .mg-raju-haggle-bubble {
   position: absolute;
   z-index: 2;
@@ -21,16 +46,13 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  max-width: min(76%, 300px);
+  max-width: min(84%, 320px);
   margin: 0;
   padding: 8px 12px 8px 8px;
   border: 1px solid var(--ds-parchment-line);
   border-radius: 14px;
   background: var(--ds-parchment);
   box-shadow: var(--ds-card-shadow);
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.45;
   animation: mg-raju-haggle-say 200ms var(--ease-out, ease-out) both;
 }
 .mg-raju-haggle-bubble::after {
@@ -46,13 +68,21 @@
   transform: rotate(45deg);
 }
 @keyframes mg-raju-haggle-say { from { opacity: 0; transform: translateY(4px); } }
-.mg-raju-haggle-face { flex: none; width: 32px; height: 32px; }
+.mg-raju-haggle-face { flex: none; width: 34px; height: 34px; }
+.mg-raju-haggle-words { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+/* Breaks only between phrases (Skin.tsx marks them), never inside a word, on a 320px phone too. */
+.mg-raju-haggle-line { font-size: 15px; font-weight: 600; line-height: 1.45; word-break: keep-all; word-break: auto-phrase; overflow-wrap: anywhere; }
+/* His patience: five dots, filled while it lasts, hollow rings once spent. */
+.mg-raju-haggle-patience { display: flex; align-items: center; gap: 4px; color: var(--ds-ink-muted); font-size: 11px; font-weight: 600; }
+.mg-raju-haggle-patience-label { margin-right: 2px; }
+.mg-raju-haggle-patience > i { display: block; width: 10px; height: 10px; border: 2px solid #7a2e22; border-radius: 50%; background: #c8302a; }
+.mg-raju-haggle-patience > i[data-spent] { background: transparent; border-color: rgba(59, 47, 42, 0.45); }
 
 /* The paper of his prices: a page torn from a notebook, the price on show large in a frame with a mark, passed ones struck
-   out, coming ones faint (not colour alone); the bar under it is the time before he lowers it. */
+   out, coming ones faint (not colour alone). */
 .mg-raju-haggle-paper {
   position: absolute;
-  top: 25%;
+  top: 27%;
   right: 4%;
   width: 44%;
   max-width: 210px;
@@ -90,31 +120,31 @@
 .mg-raju-haggle-paper li[data-state="now"] .mg-raju-haggle-mark { font-size: 16px; }
 /* Nothing he could sell for what the player has: the prices are the paper's words, smaller. */
 .mg-raju-haggle-paper[data-none] li[data-state] { font-size: 15px; }
-/* The time left on the price on show. */
-.mg-raju-haggle-time { display: block; height: 6px; margin: 8px 4px 0; overflow: hidden; border-radius: 3px; background: rgba(59, 47, 42, 0.15); }
-.mg-raju-haggle-time > span { display: block; height: 100%; background: var(--ds-gold); transform-origin: 0 50%; }
-/* The deal: a red ink stamp over its price; no deal: over the paper. */
+/* The deal or no deal: a red ink stamp, on one line however narrow the phone: at the end of the deal's row (its price
+   left readable), or across the middle of the paper for no deal. */
 .mg-raju-haggle-stamp {
   position: absolute;
-  right: -6px;
-  top: 50%;
-  padding: 0 6px;
+  left: 50%;
+  top: 54%;
+  padding: 0 8px;
   border: 2px solid #c8302a;
   border-radius: 6px;
-  background: rgba(255, 250, 241, 0.85);
+  background: rgba(255, 250, 241, 0.88);
   color: #b2241f;
-  font-size: 14px;
+  font-size: clamp(14px, 4.2vw, 20px);
   font-weight: 700;
   line-height: 1.6;
-  transform: translateY(-50%) rotate(-10deg);
+  white-space: nowrap;
+  transform: translate(-50%, -50%) rotate(-12deg);
   animation: mg-raju-haggle-stamp 220ms var(--ease-out, ease-out) both;
 }
-.mg-raju-haggle-stamp-off { top: 46%; right: 50%; font-size: 18px; transform: translate(50%, -50%) rotate(-10deg); }
+.mg-raju-haggle-stamp[data-on="row"] { left: auto; right: -8px; top: 50%; font-size: clamp(13px, 3.6vw, 16px); transform: translateY(-50%) rotate(-12deg); }
 @keyframes mg-raju-haggle-stamp { from { opacity: 0; scale: 1.6; } }
 
 @media (max-height: 620px) {
-  .mg-raju-haggle-bubble { top: 2%; font-size: 14px; }
-  .mg-raju-haggle-paper { top: 24%; }
+  .mg-raju-haggle-bubble { top: 2%; }
+  .mg-raju-haggle-line { font-size: 14px; }
+  .mg-raju-haggle-paper { top: 28%; }
   .mg-raju-haggle-paper li { min-height: 30px; font-size: 17px; }
   .mg-raju-haggle-paper li[data-state="now"] { font-size: 22px; }
 }
@@ -129,7 +159,6 @@
   .mg-raju-haggle-paper li, .mg-raju-haggle-paper[data-none] li[data-state] { justify-content: center; min-height: 0; font-size: 15px; }
   .mg-raju-haggle-paper li[data-state="now"] { font-size: 20px; }
   .mg-raju-haggle-paper li[data-state="coming"] { font-size: 15px; }
-  .mg-raju-haggle-time { margin-top: 4px; }
 }
 /* Very short (Debug's notes over the scene): the prices only; his words would cover them. */
 @container (max-height: 150px) {

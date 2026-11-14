@@ -34,5 +34,21 @@ export function describeMiniGameRules<Params, Outcome extends string, PlayRecord
         expect(rules.outcomeOf(record, params)).toBe(outcome);
       }
     });
+
+    // The result card's ★ (docs/13 2.4): a rate, when the rules have one, gives ★1–3 (or null) for every record, the same
+    // every time, and a score line in Japanese or numbers. Display only: never saved, never in Ink.
+    it.runIf(!!rules.rate)("rates every record (おまかせ's of each outcome and the edge ones) with ★1–3 or nothing, the same every time", () => {
+      const rate = rules.rate!;
+      for (const { raw, params } of examples()) {
+        for (const record of [...outcomes.map((outcome) => rules.autoRecord(outcome, params)), ...records]) {
+          const rating = rate(record, params);
+          const where = `${JSON.stringify(raw)}: ${String(record)}`;
+          expect(rate(record, params), where).toEqual(rating);
+          if (rating === null) continue;
+          expect([1, 2, 3], where).toContain(rating.stars);
+          if (rating.scoreJa !== undefined) expect(rating.scoreJa, where).toMatch(/[\d぀-ヿ一-鿿]/u);
+        }
+      }
+    });
   });
 }

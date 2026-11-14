@@ -1,60 +1,73 @@
 import { useEffect, useRef, useState } from "react";
-import type { CueTapFieldProps, CueTapSkin } from "../engines/cue_tap/EnginePlay";
-import { SAY_COUNT_MS, SAY_END_MS, SAY_FIELD, SAY_TUNING, SAY_WORDS_MS, sayTogetherRules, type SayTogetherOutcome, type SayTogetherParams } from "./rules";
+import type { RhythmTapFieldProps, RhythmTapSkin } from "../engines/rhythm_tap/EnginePlay";
+import { useMiniGameKit } from "../host/kit";
+import { SAY_GAME, SAY_WORD_COUNT, sayFirstDetail, type SayGame, type SayRecord, type SayTogetherOutcome, type SayTogetherParams, type SayWord } from "./rules";
 import "./skin.css";
 
-// Saying it together's field (a cue_tap skin): the player's view across a wide morning lawn, a stone tomb far off on the
-// left, her standing a step away on the right. Her bubble over her head counts the beats (「せー」「の」, one dot a beat,
-// the third dot gold) and shows her words from the third; the player's bubble rises from the bottom left on the tap. On
-// the beat both bubbles glow together. With the use's art (`art.lawn`, `art.heroine`) the drawn lawn and her standing
-// picture give way to those pictures.
+// Saying it together's field (a rhythm_tap skin): the player's view across a wide morning lawn, a stone tomb far off on
+// the left, her standing a step away on the right. Her bubble over her head counts 「せー」「の」 and then says the four
+// words, one a beat; the player's bubble rises from the bottom left and says each word the player taps, gold when it
+// came on her beat (both bubbles glow), plain when off it. The lane under the field shows her beats (her count as
+// crosses, the words as marks). The last word, 「デーン！」, is the peak: together, the play stops on it with stars on both
+// bubbles, a shake and the host's finish (the skin ends the play there). With the use's art (`art.lawn`, `art.heroine`)
+// the drawn lawn and her standing picture give way to those pictures. As the play ends, the player's bubble lifts clear
+// of the result card (group2 N9).
 
-/** The words, as said: one more shows each SAY_FIELD.wordsAtMs. Katakana as the story writes them (not a name). */
+/** The words, as said: one a beat from her first. Katakana as the story writes them (not a name). */
 const WORDS = ["ヤートリーガン、", "クリプヤー、", "ディヤーン、", "デーン！"] as const;
-/** Her count, a word a beat (the third beat is the words). */
+/** Her count, a word a beat. */
 const COUNT = ["せー", "の"] as const;
-/** When each count beat falls. */
-const BEATS_AT = Array.from({ length: SAY_FIELD.countBeats }, (_, beat) => SAY_COUNT_MS + SAY_FIELD.beatMs * beat);
 /** Her nod on a count beat lasts this long (not with less motion). */
 const NOD_MS = 180;
-/** The sounds of a play (definition `sounds`): a tick on each count, a chime when a voice starts (two voices this close: one). */
+/** The field still shows the end this long (the last word's glow, her turning) before the result card; less with less motion. */
+const HOLD_MS = 900;
+const HOLD_STILL_MS = 400;
+/** The sounds of a play (definition `sounds`): a tick on each count, a chime with each word (brighter when the two meet). */
 const SOUNDS = { tick: "ui_tap", voice: "local_word" } as const;
 
-/** How many words have been said `ms` after a voice started at `from` (0 before it). */
-function wordsSaid(ms: number, from: number): number {
-  return SAY_FIELD.wordsAtMs.filter((at) => ms >= from + at).length;
-}
-
-/** How many dots of her count are lit at `ms`: one a beat, the third with the words. */
-function beatsLit(ms: number): number {
-  return BEATS_AT.filter((at) => ms >= at).length + (ms >= SAY_WORDS_MS ? 1 : 0);
-}
-
 /** What the field draws at a frame (only changes re-render). */
-interface SayView {
+export interface SayView {
+  /** Her count's beats come (0–2) and her words said (0–4). */
   lit: number;
   her: number;
-  yours: number | null;
+  /** The player's words so far (her order; null: not said). */
+  yours: readonly SayWord[];
   nod: boolean;
-  together: boolean;
+  /** The word she is saying now came together: both bubbles glow. */
+  glow: boolean;
+  /** The last word came together: the peak. */
+  peak: boolean;
+  /** She said them alone and the play is over: she turns to look at the player. */
   look: boolean;
+  /** The play is over: the player's bubble lifts clear of the result card. */
+  lifted: boolean;
 }
-const sameView = (a: SayView, b: SayView) =>
-  a.lit === b.lit && a.her === b.her && a.yours === b.yours && a.nod === b.nod && a.together === b.together && a.look === b.look;
+const sameView = (a: SayView, b: SayView) => a.lit === b.lit && a.her === b.her && a.nod === b.nod && a.glow === b.glow && a.peak === b.peak &&
+  a.look === b.look && a.lifted === b.lifted && a.yours.length === b.yours.length && a.yours.every((word, index) => word === b.yours[index]);
 
-function viewAt(ms: number, tapMs: number | null, outcome: SayTogetherOutcome | null, still: boolean): SayView {
+/** The field's view at `ms` of a play (pure: the tests read it). */
+export function sayView(game: SayGame, ms: number, record: SayRecord, ended: boolean, still: boolean): SayView {
+  const judgement = game.judge(record, ms);
+  const lit = game.countAt.filter((at) => ms >= at).length;
+  const her = game.wordsAt.filter((at) => ms >= at).length;
   return {
-    lit: beatsLit(ms),
-    her: wordsSaid(ms, SAY_WORDS_MS),
-    yours: tapMs === null ? null : wordsSaid(ms, tapMs),
-    nod: !still && BEATS_AT.some((at) => ms >= at && ms < at + NOD_MS),
-    together: outcome === "together" && ms >= Math.max(SAY_WORDS_MS, tapMs ?? SAY_WORDS_MS),
-    // A play without a tap ends (silent) once she has said them all: she turns to look at the player.
-    look: outcome === "silent",
+    lit, her, yours: judgement.words,
+    nod: !still && game.countAt.some((at) => ms >= at && ms < at + NOD_MS),
+    glow: her > 0 && judgement.words[her - 1] === "together",
+    peak: judgement.words[SAY_WORD_COUNT - 1] === "together",
+    look: ended && judgement.outcome === "silent",
+    lifted: ended,
   };
 }
 
-const START: SayView = { lit: 0, her: 0, yours: null, nod: false, together: false, look: false };
+/**
+ * When the play ends (the skin ends it, the host's finish over it): on the last word as both voices say it (the peak:
+ * its tap on her beat, from her word on), else as its window closes.
+ */
+export function sayEndsAt(game: SayGame, ms: number, record: SayRecord): boolean {
+  const last = game.wordsAt[SAY_WORD_COUNT - 1];
+  return (game.judge(record, ms).words[SAY_WORD_COUNT - 1] === "together" && ms >= last) || ms >= last + game.lateOf(SAY_WORD_COUNT - 1);
+}
 
 /** The tomb far off across the lawn (drawn when the use gives no picture): a Lodi-era tomb's outline, a dome and two kiosks. */
 function FarTomb() {
@@ -72,103 +85,156 @@ function FarTomb() {
   );
 }
 
-/** The words said so far (at least the first), each kept whole on a line: a line breaks between words, never inside one. */
-function Words({ count }: { count: number }) {
-  return <>{WORDS.slice(0, Math.max(1, count)).map((word) => <span key={word} className="mg-say-together-word">{word}</span>)}</>;
+/** Her words said so far, each kept whole on a line (a line breaks between words, never inside one). */
+function HerWords({ count }: { count: number }) {
+  return <>{WORDS.slice(0, count).map((word, index) => (
+    <span key={word} className="mg-say-together-word" data-last={index === WORDS.length - 1 || undefined}>{word}</span>
+  ))}</>;
 }
 
-function Dots({ lit }: { lit: number }) {
-  return (
-    <span className="mg-say-together-dots">
-      {[0, 1, 2].map((dot) => <span key={dot} data-lit={dot < lit || undefined} data-words={dot === 2 || undefined} />)}
-    </span>
-  );
+/** The player's words said so far (a word skipped is not there): gold on her beat, plain off it. */
+function YourWords({ words }: { words: readonly SayWord[] }) {
+  return <>{words.map((state, index) => state && (
+    <span key={WORDS[index]} className="mg-say-together-word" data-state={state} data-last={index === WORDS.length - 1 || undefined}>{WORDS[index]}</span>
+  ))}</>;
 }
 
-function SayTogetherField({ cast, names, still, art, sound, vibrate, frames }: CueTapFieldProps<SayTogetherParams, SayTogetherOutcome>) {
-  const [view, setView] = useState<SayView>(START);
-  const play = useRef({ sound, vibrate });
-  play.current = { sound, vibrate };
-  useEffect(() => {
-    let ticked = 0;
-    let herVoice = false;
-    let yourVoice = false;
-    const chimed: number[] = [];
-    // A chime when a voice starts; two voices starting within the together window ring once (they sound as one).
-    const chime = (at: number) => {
-      if (chimed.some((other) => Math.abs(other - at) <= SAY_TUNING.cleanMs)) return;
-      chimed.push(at);
-      play.current.sound(SOUNDS.voice);
-    };
-    let shown = START;
-    return frames(({ ms, tapMs, outcome }) => {
-      while (ticked < BEATS_AT.length && ms >= BEATS_AT[ticked]) {
-        ticked += 1;
-        play.current.sound(SOUNDS.tick);
-        play.current.vibrate("clue");
-      }
-      if (tapMs !== null && !yourVoice) {
-        yourVoice = true;
-        chime(tapMs);
-      }
-      if (ms >= SAY_WORDS_MS && !herVoice) {
-        herVoice = true;
-        chime(SAY_WORDS_MS);
-      }
-      const next = viewAt(ms, tapMs, outcome, still);
-      if (!sameView(next, shown)) {
-        shown = next;
-        setView(next);
-      }
-    });
-  }, [frames, still]);
-  const herText = view.her > 0 ? <Words count={view.her} /> : view.lit > 0 ? COUNT[Math.min(view.lit, COUNT.length) - 1] : "……";
-  return (
-    <div className="mg-say-together" data-art-lawn={art.lawn ? true : undefined} data-still={still || undefined}>
-      {art.lawn ? <img className="mg-say-together-backdrop" src={art.lawn} alt="" draggable={false} /> : <>
-        <span className="mg-say-together-lawn" />
-        <span className="mg-say-together-tomb"><FarTomb /></span>
-      </>}
-      <span className="mg-say-together-her" data-nod={view.nod || undefined} data-art={art.heroine ? true : undefined}>
-        <span className="mg-say-together-her-body">
-          {art.heroine ? <img src={art.heroine} alt="" draggable={false} /> : cast.heroine}
+/** Saying it together's skin from its game (the story's; Debug's room plays an edited one: play.ts retune). */
+export function sayTogetherSkinFor(game: SayGame): RhythmTapSkin<SayTogetherParams, SayTogetherOutcome> {
+  const firstWord = game.wordsAt[0];
+  const START: SayView = { lit: 0, her: 0, yours: [null, null, null, null], nod: false, glow: false, peak: false, look: false, lifted: false };
+
+  function SayTogetherField({ cast, names, still, art, sound, vibrate, frames }: RhythmTapFieldProps<SayTogetherParams, SayTogetherOutcome>) {
+    const [view, setView] = useState<SayView>(START);
+    const herBubble = useRef<HTMLSpanElement>(null);
+    const yourBubble = useRef<HTMLSpanElement>(null);
+    const kit = useMiniGameKit();
+    const live = useRef({ sound, vibrate, kit, still });
+    live.current = { sound, vibrate, kit, still };
+    useEffect(() => {
+      let ticked = 0;
+      let spoken = 0;
+      let said: readonly SayWord[] = START.yours;
+      let first: "pending" | "told" = "pending";
+      let ended = false;
+      let locked = false;
+      let shown = START;
+      return frames(({ ms, record }) => {
+        const { juice, react } = live.current.kit;
+        const judgement = game.judge(record, ms);
+        // Her count: a tick a beat.
+        while (ticked < game.countAt.length && ms >= game.countAt[ticked] && !ended) {
+          ticked += 1;
+          live.current.sound(SOUNDS.tick);
+          live.current.vibrate("clue");
+        }
+        // Each of the player's words as it is said: gold on her beat (a bright chime, a ring on both bubbles), plain off it;
+        // a second tap on a word she has met turns it plain (a small refusal on the bubble).
+        judgement.words.forEach((state, word) => {
+          if (state === said[word]) return;
+          if (state === "together") {
+            live.current.sound(SOUNDS.voice, { rate: 1.2 });
+            juice.burst(yourBubble.current, "ring", 0.7);
+            juice.burst(herBubble.current, "ring", 0.6);
+            // The last word's buzz is the peak's.
+            if (word < SAY_WORD_COUNT - 1) live.current.vibrate("tap");
+          } else if (state === "off") {
+            if (said[word] === "together") juice.denied(yourBubble.current);
+            else live.current.sound(SOUNDS.voice, { volume: 0.4, rate: 0.85 });
+          }
+        });
+        said = judgement.words;
+        // Her words, one a beat (her chime, unless the player's word already met hers).
+        while (spoken < SAY_WORD_COUNT && ms >= game.wordsAt[spoken] && !ended) {
+          if (judgement.words[spoken] !== "together") live.current.sound(SOUNDS.voice, { volume: 0.6 });
+          spoken += 1;
+        }
+        // The first word said is the story's outcome: the real play's one try is spent (no leaving it now).
+        if (judgement.firstMs !== null && !locked) {
+          locked = true;
+          live.current.kit.decided();
+        }
+        // Her face as the first word tells: the voices meeting, the player's first (surprise), hers alone first (oops).
+        if (first === "pending" && !ended) {
+          const told = judgement.outcome === "together" ? ms >= firstWord : judgement.outcome === "early" || ms > firstWord + game.numbers.cleanLateMs;
+          if (told) {
+            first = "told";
+            react(judgement.outcome === "together" || judgement.outcome === "early" ? "surprise" : "oops");
+          }
+        }
+        // The end: on the last word as both voices say it (the peak), else as its window closes.
+        if (!ended && sayEndsAt(game, ms, record)) {
+          ended = true;
+          const kept: SayRecord = { taps: [...record.taps], stopMs: null };
+          const final = game.judge(kept);
+          if (final.words[SAY_WORD_COUNT - 1] === "together") {
+            juice.hitStop(90, herBubble.current);
+            juice.burst(herBubble.current, "star", 1.2);
+            juice.burst(yourBubble.current, "star", 1.2);
+            juice.squash(herBubble.current, "pop");
+            juice.squash(yourBubble.current, "pop");
+            juice.shake("m");
+            live.current.vibrate("success");
+            react("cheer");
+          } else if (final.outcome === "silent") react("oops");
+          live.current.kit.end(final.outcome, sayFirstDetail(final, game), { record: kept, holdMs: live.current.still ? HOLD_STILL_MS : HOLD_MS });
+        }
+        const next = sayView(game, ms, record, ended, live.current.still);
+        if (!sameView(next, shown)) {
+          shown = next;
+          setView(next);
+        }
+      });
+    }, [frames]);
+    const herText = view.her > 0 ? <HerWords count={view.her} /> : view.lit > 0 ? COUNT[Math.min(view.lit, COUNT.length) - 1] : "……";
+    const anyYours = view.yours.some((word) => word !== null);
+    return (
+      <div className="mg-say-together" data-art-lawn={art.lawn ? true : undefined} data-still={still || undefined}>
+        {art.lawn ? <img className="mg-say-together-backdrop mg-photo" src={art.lawn} alt="" draggable={false} /> : <>
+          <span className="mg-say-together-lawn" />
+          <span className="mg-say-together-tomb"><FarTomb /></span>
+        </>}
+        <span className="mg-say-together-her" data-nod={view.nod || undefined} data-art={art.heroine ? true : undefined}>
+          <span className="mg-say-together-her-body mg-play-object">
+            {art.heroine ? <img src={art.heroine} alt="" draggable={false} /> : cast.heroine}
+          </span>
+          <span ref={herBubble} className="mg-say-together-bubble mg-say-together-bubble-her" data-words={view.her > 0 || undefined}
+            data-together={view.glow || undefined} data-peak={view.peak || undefined}>
+            <small>{names.heroine}</small>
+            <span className="mg-say-together-text" key={view.her}>{herText}</span>
+          </span>
+          {view.look && <span className="mg-say-together-mark">？</span>}
         </span>
-        <span className="mg-say-together-bubble mg-say-together-bubble-her" data-words={view.her > 0 || undefined} data-together={view.together || undefined}>
-          <span className="mg-say-together-bubble-head"><small>{names.heroine}</small><Dots lit={view.lit} /></span>
-          <span className="mg-say-together-text">{herText}</span>
-        </span>
-        {view.look && <span className="mg-say-together-mark">？</span>}
-      </span>
-      {view.yours !== null && (
-        <span className="mg-say-together-bubble mg-say-together-bubble-yours" data-together={view.together || undefined}>
-          <small>{names.player}</small>
-          <span className="mg-say-together-text"><Words count={view.yours} /></span>
-        </span>
-      )}
-    </div>
-  );
+        {anyYours && (
+          <span ref={yourBubble} className="mg-say-together-bubble mg-say-together-bubble-yours" data-together={view.glow || undefined}
+            data-peak={view.peak || undefined} data-lifted={view.lifted || undefined} data-testid="say-yours">
+            <small>{names.player}</small>
+            <span className="mg-say-together-text"><YourWords words={view.yours} /></span>
+          </span>
+        )}
+      </div>
+    );
+  }
+
+  return {
+    tuning: game.tuning,
+    rules: game.rules,
+    hintJa: "「せー」「の」の次の拍から、拍ごとに「言う」",
+    actionJa: "言う",
+    actionHintJa: "彼女が「せー」「の」と数えた次の拍から、言葉を1つずつ、拍ごとに押します（4回）。最初の言葉がそろうと、声がそろいます。",
+    autoJa: "おまかせで言っています",
+    stop: null,
+    countIn: game.countAt,
+    // Her breath before 「せー」: a tap then is no tap (turned away; the player can still say it with her).
+    ignoreBeforeMs: game.countAt[0],
+    statusJa: (summary) => (summary.came > 0 ? `のこり${SAY_WORD_COUNT - summary.came}語` : ""),
+    // The skin ends the play itself (on the last word, with the card's lines): the engine's own end is a fallback.
+    detailJa: () => undefined,
+    endDelayMs: (_, still) => (still ? HOLD_STILL_MS : HOLD_MS),
+    Field: SayTogetherField,
+  };
 }
 
-/** Saying it together as a cue_tap skin: its timing, rules, words and field. */
-export const sayTogetherSkin: CueTapSkin<SayTogetherParams, SayTogetherOutcome> = {
-  tuning: SAY_TUNING,
-  rules: sayTogetherRules,
-  hintJa: "「せー」「の」の次の拍で「言う」",
-  actionJa: "言う",
-  actionHintJa: "彼女が「せー」「の」と数えた次の拍で押すと、二人の声がそろいます。",
-  autoJa: "おまかせで言っています",
-  // Both voices to the end (together), her voice following (early), the player's following (late), or her turning to
-  // look (silent), before the outcome shows.
-  endAt: ({ outcome, tapMs }) => {
-    switch (outcome) {
-      case "together": return SAY_WORDS_MS + SAY_FIELD.wordsMs + 300;
-      case "early": return SAY_WORDS_MS + 900;
-      case "late": return (tapMs ?? SAY_WORDS_MS) + 900;
-      case "silent": return SAY_END_MS + 700;
-    }
-  },
-  Field: SayTogetherField,
-};
-
-/** For the tests: the field's view at a frame, and her count's beats. */
-export const SAY_FIELD_POINTS = { viewAt, beatsLit, wordsSaid, BEATS_AT, WORDS } as const;
+/** Saying it together as a rhythm_tap skin: its timing, rules, words and field. */
+export const sayTogetherSkin = sayTogetherSkinFor(SAY_GAME);
+export const SAY_WORDS_TEXT = WORDS;

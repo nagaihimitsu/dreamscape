@@ -73,6 +73,20 @@ describe.each(MINI_GAME_IDS)("the mini-game %s", (id) => {
     expect(() => schema.parse({ unknown_key: "1" })).toThrow();
   });
 
+  it("writes the host's card, finish and reactions in Japanese (names as placeholders), and practice keys its zod reads", () => {
+    if (definition.goalJa !== undefined) expect(definition.goalJa).toMatch(japanese);
+    if (definition.durationSec !== undefined) expect(definition.durationSec).toBeGreaterThan(0);
+    if (definition.practice) expect(() => definition.params(context).parse({ ...definition.examples[0], ...definition.practice && definition.practice.params })).not.toThrow();
+    for (const outcome of definition.outcomes) {
+      if (typeof outcome.finishJa === "string") expect(outcome.finishJa, outcome.id).toMatch(japanese);
+      for (const line of outcome.reaction?.linesJa ?? []) {
+        expect(line, outcome.id).toMatch(japanese);
+        // Names are the player's: only {heroine_name} and {player_name} (AGENTS).
+        expect(line.replaceAll("{heroine_name}", "").replaceAll("{player_name}", ""), outcome.id).not.toMatch(/[{}]/u);
+      }
+    }
+  });
+
   it("rings only shared sounds, uses only its own listed art, and names its art slots", () => {
     for (const sound of definition.sounds) expect(sounds, sound).toContain(sound);
     for (const path of definition.art) {

@@ -17,6 +17,7 @@ INCLUDE modules.ink
 # background: gt_bg_agra_akbar_tomb
 # speaker: narrator
 シカンドラのアクバル廟は、門だけで一つの宮殿のようだった。赤い砂岩の大門をくぐると、広い芝生の向こうに、墓廟が低く横たわっている。
+# term: gt_term_blackbuck
 芝生の上で、背中の黒い獣が数頭、草を食んでいた。ねじれた長い角。ブラックバックだ。この廟の庭では、その群れが見られる。
 # speaker: heroine
 # reaction: heroine,surprised_big,sparkle
@@ -240,7 +241,7 @@ INCLUDE modules.ink
     # use: gt_delhi_rain_attar
     # set: gt_agra_rain_on_lawn
     # speaker: narrator
-    伸ばした手の、ほんの少し先を、小瓶は落ちていった。
+    伸ばした手の先をかすめて、小瓶は落ちていった。
 - ->->
 
 // 【3】手伝いの knot：サングラスを盗まれたとき（噛み合いでない選択）

@@ -19,8 +19,10 @@ INCLUDE modules.ink
 門をくぐると、庭の奥に白い墓廟が座っていた。タージよりずっと小さい。けれど、壁一面に、色のついた石で模様が描かれている。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
+# term: gt_term_parchin_kari
 あ……模様が、絵の具じゃない。石がはめ込んであるんだ。花も、瓶も、ぜんぶ石
 # speaker: narrator
+# term: gt_term_jali
 近づくほど細かくなる模様に、{heroine_name}の歩幅が小さくなる。窓には、石を透かし彫りにした格子がはまっていた。
 # speaker: heroine
 格子を通った光が、床に模様を作ってる。石なのに、レースみたい
@@ -30,6 +32,7 @@ INCLUDE modules.ink
 # reaction: heroine,happy,music
 通称、ベビー・タージ、だって。かわいい名前。……確かに、タージを小さくしたみたいだもんね
 # speaker: narrator
+# term: gt_term_neem
 庭の隅のニームの木の下で、白髪の女性が一人、布の手提げを膝に置いて座っていた。その目が、こちらを向いた気がした。
 -> END
 

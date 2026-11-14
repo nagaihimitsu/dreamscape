@@ -85,6 +85,13 @@
     },
     {
       "fileMatch": [
+        "/content/journeys/*/glossary/terms.json",
+        "/authoring/templates/*/glossary/terms.json"
+      ],
+      "url": "./authoring/schemas/glossary-terms.schema.json"
+    },
+    {
+      "fileMatch": [
         "/content/journeys/*/learning/details.json",
         "/authoring/templates/*/learning/details.json"
       ],

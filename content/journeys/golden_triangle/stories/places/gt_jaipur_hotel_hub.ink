@@ -17,6 +17,7 @@ INCLUDE modules.ink
 荷物を置くなり、{heroine_name}は携帯を開いた。アマンからの連絡だ。
 # speaker: gt_aman
 # phone: received
+# term: gt_term_baraat
 花婿の行列は、旅の最後の夜、旧市街のハワー・マハルの近くを通ります
 # speaker: gt_aman
 # phone: received

@@ -1,13 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { centreStroke, shapeDragFairness, shapeMeasures, shapeOfRecord, type ShapeStroke } from "../engines/shape_drag/engine";
+import { centreStroke, shapeDragFairness, shapeHeavy, shapeMeasures, shapeOfRecord, shapeRoll, shapeStart, type ShapeStroke } from "../engines/shape_drag/engine";
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { rotiRolling } from "./definition";
-import { ROTI_AUTO, ROTI_SHAPES, ROTI_TUNING, rotiNote, rotiRules } from "./rules";
+import { ROTI_AUTO, ROTI_BIG_SPAN, ROTI_GAME, ROTI_NUMBERS, ROTI_SHAPES, ROTI_TUNING, rotiDetail, rotiGame, rotiNote, rotiRoundness, rotiRules } from "./rules";
+import { rotiArrowDegrees } from "./Skin";
 
 const UP = 270;
 const times = (count: number, stroke: (index: number) => ShapeStroke) => Array.from({ length: count }, (_, index) => stroke(index));
+const measuresOf = (record: readonly ShapeStroke[]) => shapeMeasures(shapeOfRecord(record, ROTI_TUNING, ROTI_SHAPES), ROTI_TUNING);
 
-// Edge records: nothing rolled (the time ran out), one stroke, a tap, strokes beside the board, far too many strokes.
+// Edge records: nothing rolled, one stroke, a tap, strokes beside the board, far too many strokes.
 describeMiniGameRules(rotiRolling, rotiRules, {
   records: [
     [],
@@ -21,20 +23,32 @@ describeMiniGameRules(rotiRolling, rotiRules, {
 describe("the roti's shapes", () => {
   const outcome = (strokes: readonly ShapeStroke[]) => rotiRules.outcomeOf(strokes, {});
 
-  it("is fair: a tap is no stroke, keys roll, the time is long enough, a tear stays a tear", () => {
+  it("is fair: a tap is no stroke, keys roll, 8 strokes end it, a tear stays a tear, the pin gets heavier near it", () => {
     expect(shapeDragFairness(ROTI_TUNING, ROTI_SHAPES)).toEqual([]);
+    expect(ROTI_TUNING.maxStrokes).toBe(8);
+    expect(ROTI_TUNING.timeMs).toBeNull();
+    expect(shapeOfRecord(times(12, (index) => centreStroke(index * 45, 0.3)), ROTI_TUNING, ROTI_SHAPES).strokes).toBe(8);
   });
 
-  it("squares the dough off when rolled up and down only (the quarter turns do the rest): Harbans's truck bed", () => {
+  it("rounds it when rolled the arrows' way (an eighth round further each time), from any first way", () => {
+    for (const first of [0, 45, 90, 135, 180, 225, 270, 315]) expect(outcome(times(8, (index) => centreStroke(first + index * 45, 0.5))), `from ${first}`).toBe("round");
+    // Shorter strokes round it too, only smaller; 「できた」 after four already round.
+    expect(outcome(times(8, (index) => centreStroke(index * 45, 0.35)))).toBe("round");
+    expect(outcome(times(4, (index) => centreStroke(index * 45, 0.5)))).toBe("round");
+    // The skin's arrows: the first from the seed, then an eighth round further each stroke.
+    expect(rotiArrowDegrees(7, 1) - rotiArrowDegrees(7, 0)).toSatisfy((turn: number) => turn === 45 || turn === -315);
+    expect(rotiArrowDegrees(7, 0) % 45).toBe(0);
+  });
+
+  it("squares the dough off when rolled up and down only (the quarter turns do the rest): Harbans's truck bed, before round", () => {
     expect(outcome(times(6, () => centreStroke(UP, 0.5)))).toBe("truck_bed");
     expect(outcome(times(8, (index) => centreStroke(index % 2 ? 90 : UP, 0.45)))).toBe("truck_bed");
     // The keys' way: the same arrow every time.
     expect(outcome(times(7, () => centreStroke(UP, ROTI_TUNING.keyStroke)))).toBe("truck_bed");
-  });
-
-  it("rounds it when rolled a new way each time (straight and slanting strokes mixed)", () => {
-    expect(outcome(times(8, (index) => centreStroke(index * 45, 0.5)))).toBe("round");
-    expect(outcome(times(8, (index) => centreStroke(index % 4 < 2 ? UP : UP + 45, 0.5)))).toBe("round");
+    // A rounded box can be round enough by the meter: the meter says it is boxy.
+    const box = measuresOf(times(6, () => centreStroke(UP, 0.5)));
+    expect(box.roundness).toBeGreaterThanOrEqual(0.8);
+    expect(rotiRoundness(box).boxy).toBe(true);
   });
 
   it("makes some country of a lopsided or barely rolled dough", () => {
@@ -44,23 +58,93 @@ describe("the roti's shapes", () => {
   });
 
   it("tears when rolled too thin or past the board, and the play ends there", () => {
-    expect(outcome(times(12, (index) => centreStroke(index * 45, 0.6)))).toBe("torn");
+    expect(outcome(times(8, (index) => centreStroke(index * 45, 0.75)))).toBe("torn");
     expect(outcome(times(8, () => centreStroke(UP, 1)))).toBe("torn");
-    const torn = shapeOfRecord(ROTI_AUTO.torn, ROTI_TUNING, ROTI_SHAPES);
-    expect(torn.strokes).toBeLessThan(ROTI_AUTO.torn.length);
+    const torn = shapeOfRecord(times(8, (index) => centreStroke(index * 45, 0.9)), ROTI_TUNING, ROTI_SHAPES);
+    expect(torn.strokes).toBeLessThan(8);
   });
 
-  it("says so before a tear", () => {
-    const start = shapeMeasures(shapeOfRecord([], ROTI_TUNING, ROTI_SHAPES), ROTI_TUNING);
+  it("says so before a tear, and the pin pushes less from then on", () => {
+    const start = shapeMeasures(shapeStart(ROTI_TUNING), ROTI_TUNING);
     expect(rotiNote(start)).toBeNull();
     expect(rotiNote({ ...start, area: 9 })).toBe("生地がうすくなってきた");
     expect(rotiNote({ ...start, span: 0.9 })).toBe("板からはみ出しそう");
     // Every way to a tear passes a warning first, at the stroke before it.
-    for (const record of [times(12, (index) => centreStroke(index * 45, 0.5)), times(12, () => centreStroke(UP, 0.5)), times(8, (index) => centreStroke(index % 2 ? 0 : UP, 0.5))]) {
+    for (const record of [times(8, (index) => centreStroke(index * 45, 0.8)), times(8, () => centreStroke(UP, 0.8)), times(8, (index) => centreStroke(index % 2 ? 0 : UP, 0.5))]) {
       const torn = shapeOfRecord(record, ROTI_TUNING, ROTI_SHAPES);
       expect(rotiRules.outcomeOf(record, {})).toBe("torn");
-      const before = shapeMeasures(shapeOfRecord(record.slice(0, torn.strokes - 1), ROTI_TUNING, ROTI_SHAPES), ROTI_TUNING);
+      const before = measuresOf(record.slice(0, torn.strokes - 1));
       expect(rotiNote(before), JSON.stringify(before)).not.toBeNull();
     }
+    // Heavy near a tear: the same stroke pushes less.
+    const near = shapeOfRecord(times(7, (index) => centreStroke(index * 45, 0.6)), ROTI_TUNING, ROTI_SHAPES);
+    expect(shapeHeavy(near, ROTI_TUNING)).toBe(true);
+    const stroke = centreStroke(0, 0.6);
+    const light = shapeMeasures(shapeRoll(near, stroke, { ...ROTI_TUNING, heavy: undefined }), ROTI_TUNING);
+    const heavy = shapeMeasures(shapeRoll(near, stroke, ROTI_TUNING), ROTI_TUNING);
+    expect(heavy.area).toBeLessThan(light.area);
+  });
+
+  it("shows how round (and big) it came out, how boxy a box, never for a hole; まん丸 only for the ★3 one (group2 N2, N3)", () => {
+    const round = measuresOf(times(8, (index) => centreStroke(index * 45, 0.5)));
+    expect(round.span).toBeGreaterThanOrEqual(ROTI_BIG_SPAN);
+    expect(round.roundness).toBeGreaterThanOrEqual(ROTI_NUMBERS.perfectRoundness);
+    expect(rotiDetail(round, "round")).toBe(`丸さ ${Math.round(round.roundness * 100)}%・まん丸・大きさ ◎`);
+    const small = measuresOf(times(4, (index) => centreStroke(index * 45, 0.5)));
+    expect(rotiDetail(small, "round")).toBe(`丸さ ${Math.round(small.roundness * 100)}%`);
+    // Big but egg-shaped (round enough, not まん丸): no まん丸.
+    const egg = { ...round, roundness: 0.84 };
+    expect(rotiDetail(egg, "round")).toBe("丸さ 84%・大きさ ◎");
+    expect(ROTI_GAME.perfect(egg)).toBe(false);
+    // By the percent shown: 「88%」 is always まん丸.
+    expect(ROTI_GAME.perfect({ ...round, roundness: 0.8751 })).toBe(true);
+    expect(ROTI_GAME.perfect({ ...round, roundness: 0.8749 })).toBe(false);
+    expect(rotiDetail(round, "torn")).toBeUndefined();
+    // A box: how boxy, never a roundness that reads like a round one's.
+    const box = measuresOf(ROTI_AUTO.truck_bed);
+    expect(rotiDetail(box, "truck_bed")).toBe(`四角さ ${Math.round(box.boxiness * 100)}%`);
+    expect(rotiDetail(measuresOf(ROTI_AUTO.country), "country")).toMatch(/^丸さ \d+%$/u);
+  });
+
+  it("rates in step with the outcome: まん丸 (big, 88%) ★3, other round ★2, a box, a country or a hole ★1", () => {
+    const rate = (strokes: readonly ShapeStroke[]) => rotiRules.rate!(strokes, {});
+    const big = times(8, (index) => centreStroke(index * 45, 0.5));
+    expect(rate(big)).toEqual({ stars: 3, scoreJa: rotiDetail(measuresOf(big), "round") });
+    const small = times(8, (index) => centreStroke(index * 45, 0.3));
+    expect(rotiRules.outcomeOf(small, {})).toBe("round");
+    expect(rate(small)).toMatchObject({ stars: 2 });
+    // Round but egg-shaped, however big: ★2.
+    let eggs = 0;
+    for (let skew = 0; skew <= 30; skew += 2) {
+      const strokes = times(8, (index) => centreStroke(index * 45 + (index % 2 ? skew : -skew), 0.55 + (index % 3) * 0.02));
+      const measures = measuresOf(strokes);
+      if (rotiRules.outcomeOf(strokes, {}) !== "round" || measures.span < ROTI_BIG_SPAN) continue;
+      expect(rate(strokes)?.stars, `skew ${skew}`).toBe(ROTI_GAME.perfect(measures) ? 3 : 2);
+      if (!ROTI_GAME.perfect(measures)) eggs += 1;
+    }
+    expect(eggs, "a big egg-shaped roti in the sweep").toBeGreaterThan(0);
+    expect(rate(ROTI_AUTO.truck_bed)).toMatchObject({ stars: 1, scoreJa: expect.stringMatching(/^四角さ \d+%$/u) });
+    expect(rate(ROTI_AUTO.country)).toMatchObject({ stars: 1 });
+    expect(rate(ROTI_AUTO.torn)).toEqual({ stars: 1 });
+    // Over many plays, a round one never has fewer ★ than any other.
+    let seed = 11;
+    const random = () => { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; };
+    let lowestRound = 3;
+    let highestOther = 1;
+    for (let play = 0; play < 300; play++) {
+      const strokes = times(8, (index) => centreStroke(index * 45 + (random() - 0.5) * 60, 0.3 + random() * 0.5));
+      const stars = rate(strokes)?.stars ?? 0;
+      if (rotiRules.outcomeOf(strokes, {}) === "round") lowestRound = Math.min(lowestRound, stars);
+      else highestOther = Math.max(highestOther, stars);
+    }
+    expect(highestOther).toBeLessThanOrEqual(lowestRound);
+  });
+
+  it("builds the same roti from its numbers, and another from edited ones (Debug's room)", () => {
+    expect(rotiGame(ROTI_NUMBERS).tuning).toEqual(ROTI_TUNING);
+    const longer = rotiGame({ ...ROTI_NUMBERS, maxStrokes: 10, roundness: 0.9 });
+    expect(longer.tuning.maxStrokes).toBe(10);
+    expect(shapeDragFairness(longer.tuning, longer.shapes)).toEqual([]);
+    expect(longer.shapes.classes.find((item) => item.outcome === "round")?.atLeast?.roundness).toBe(0.9);
   });
 });

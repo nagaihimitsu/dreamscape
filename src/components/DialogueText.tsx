@@ -2,7 +2,7 @@ import { useEffect, useImperativeHandle, useMemo, useRef, useState, type CSSProp
 import type { LineDelivery, SceneShakeSize } from "../content/tags";
 import { vibrate } from "../audio/vibration";
 import { SCENE_SHAKES, sceneShakeFrames } from "./scene-atmosphere";
-import { dialogueObstructed } from "./dialogueObstructed";
+import { dialogueObstructed, readingHeld } from "./dialogueObstructed";
 import { DIALOGUE_LINE_ATTRIBUTE } from "./scene-tap";
 import { useLineVoice, type VoiceLink } from "./useVoice";
 import { sceneCuesQuiet, useLineSounds } from "../audio/sound-effects";
@@ -201,9 +201,9 @@ export function DialogueText({
     vibrate("shake");
   } : undefined);
   function activate() {
-    // A compact settings menu is not a native modal, so its open state must
-    // also block taps on the text behind it.
-    if (dialogueObstructed() || textRef.current?.closest("[inert]")) return;
+    // A compact settings menu is not a native modal, so its open state must also block taps on the text behind it; nor
+    // does 旅の図鑑's card read on (readingHeld), though the line writes itself on under it.
+    if (readingHeld() || textRef.current?.closest("[inert]")) return;
     if (!ready) {
       window.clearTimeout(pauseRef.current);
       window.clearInterval(timerRef.current);

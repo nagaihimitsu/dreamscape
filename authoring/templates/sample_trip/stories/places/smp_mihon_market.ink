@@ -12,12 +12,17 @@ INCLUDE modules.ink
 // - 規則は通常の観光案内と同じ：選択肢・# effect なし、日本語、表示される行は40行以内。
 // - 特殊戦は地図の地点から直接始まるため、この案内は観光地の情報として登録しておく。
 // - 最初の行の # photo: は、朝市の絵（public/assets/album/smp_album_market.webp）をアルバムに入れる例（説明の札なし）。
+// - 2行目の # term: は、旅の図鑑の言葉（glossary/terms.json の架空の「三時パン」）の札の例。その言葉が初めて出る行の前に置くと、
+//   その行で写真と1行の説明の小窓が出て、旅の図鑑に入る（同じセーブでは二度と出ない）。
 === smp_mihon_market_guide ===
 # scene: guide
 # background: smp_bg_mihon_market
 # speaker: narrator
 # photo: smp_album_market
 朝市には、色違いの屋根の店が三軒並んでいる。真ん中のパン屋から、焼きたての匂いがした。
+# speaker: narrator
+# term: smp_term_mihon_sanji_pan
+棚には、針の模様を焼きつけた丸い三時パンが並んでいる。
 # speaker: heroine
 # emotion: happy
 わ、いい匂い。……でもあの人、なんだか怒ってない？

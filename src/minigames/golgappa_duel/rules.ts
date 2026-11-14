@@ -1,59 +1,132 @@
-import { rhythmTapBeats, rhythmTapRules, rhythmTapVsPartner, type RhythmTapSummary, type RhythmTapTuning } from "../engines/rhythm_tap/engine";
+import type { MiniGameRating, MiniGameRules } from "../contract";
+import {
+  rhythmTapBeats, rhythmTapRules, rhythmTapThen, rhythmTapVsPartner, type RhythmTapRecord, type RhythmTapSummary, type RhythmTapTuning,
+} from "../engines/rhythm_tap/engine";
 
 // The golgappa duel's rules (docs/13 2.4): a rhythm_tap skin. The player's golgappa are the beats; she gets hers between
-// them (the field draws them) and raises her hand after her 14th. Two left in the bowl end the play (a choke); the
-// player's 「バス」 against her 14th decides the rest. Nothing is random. Pure.
+// them (the field draws them) and raises her hand after her 14th. Two left in the bowl end the play (a choke), and so
+// does mashing: a bite at nothing (a stray) fills the choke gauge, a golgappa eaten empties a drop, and a full gauge
+// leaves one in the bowl. After her 14th the vendor goes faster still and no longer waits: the windows narrow, and one
+// golgappa missed there (or a full gauge) is a choke (the next lands on it): going on past her is a real risk.
+// The player's 「バス」 against her hand decides the rest. Nothing is random. Pure. Every number to tune is in
+// GOLGAPPA_NUMBERS (E1; Debug's room edits them: play.ts retune).
 
 export type GolgappaOutcome = "together" | "you_first" | "choke" | "outlast";
 /** The duel has no keys of its own. */
 export type GolgappaParams = object;
 
-/** She raises her hand after her 14th (the scene's count: 「十四で、二人とも同時に手を上げた」). */
+/** She raises her hand after her 14th (the scene's count: 「十四の声に重なって」; the hints say 14 too, so it stays). */
 export const GOLGAPPA_HER_STOP = 14;
-/** Raising the hand this many golgappa before or after her is 「同時」. */
-export const GOLGAPPA_TOGETHER_WITHIN = 1;
+/** Raising the hand this many golgappa after her (the player's own count) is still 「同時」. */
+export const GOLGAPPA_TOGETHER_AFTER = 1;
 
 /**
- * The player's golgappa: the first after the vendor's reach, 1.2 s apart, faster evenly to 0.6 s by the 14th, then
- * steady; 17 in all (about 15 s). Generous windows: a golgappa can be eaten as it lands and a while after; a missed one
- * stays in the bowl, and the second one there ends the play.
+ * The duel's numbers (ms unless named otherwise). The player's golgappa: the first after the vendor's reach, 1.2 s apart,
+ * faster evenly to 0.6 s by the 14th; then the peak after her hand goes up, 0.46, 0.40 and 0.36 s apart with narrower
+ * windows (−110/+200: the late side stays wide for a phone's lag, the early side narrows for a thumb that runs ahead of
+ * the speed-up); 17 in all (about 15 s). Generous windows before it: a golgappa can be eaten as it lands and a while after
+ * (ぴったり within −60/+90). A missed one stays in the bowl; a full choke gauge (three bites at nothing, less the golgappa
+ * eaten since) leaves one too; the second one there ends the play, and in the peak the first does (peakMissLimit: the
+ * vendor no longer waits, the next lands on it). With her hand the player is safe; eating on past her, a steady thumb
+ * still gets through (about 84% of casual players in the round-2 simulation, half of first tries). 「同時」 from 0.15 s
+ * before her hand. A golgappa falls for 280 ms (less than the shortest time between two drops: one falls at a time); she
+ * eats hers in 250 ms.
  */
-export const GOLGAPPA_TUNING: RhythmTapTuning = {
-  beats: rhythmTapBeats({ firstMs: 1400, count: 17, intervalMs: 1200, endIntervalMs: 600, rampBeats: GOLGAPPA_HER_STOP }),
+export const GOLGAPPA_NUMBERS = {
+  firstMs: 1400,
+  firstGapMs: 1200,
+  herStopGapMs: 600,
+  peakGap1Ms: 460,
+  peakGap2Ms: 400,
+  peakGap3Ms: 360,
   earlyMs: 150,
   lateMs: 300,
+  peakEarlyMs: 110,
+  peakLateMs: 200,
+  peakMissLimit: 1,
+  perfectEarlyMs: 60,
+  perfectLateMs: 90,
   endAfterMs: 700,
   missLimit: 2,
-  partnerStop: GOLGAPPA_HER_STOP,
-};
+  strayLimit: 3,
+  togetherBeforeMs: 150,
+  fallMs: 280,
+  herEatMs: 250,
+} as const;
+export type GolgappaNumbers = { readonly [Key in keyof typeof GOLGAPPA_NUMBERS]: number };
 
-/** The field's moments: how long a golgappa falls (less than half the shortest gap: one falls at a time), and how long she takes to eat hers and (after her 14th) raise her hand. */
-export const GOLGAPPA_FIELD = { fallMs: 280, herEatMs: 250 } as const;
+/** A duel built from its numbers: the beats and windows, her landings and hand, the rules. */
+export interface GolgappaGame {
+  numbers: GolgappaNumbers;
+  tuning: RhythmTapTuning;
+  /** When each of her 14 lands (halfway before each of the player's: the vendor gives hers first in each round). */
+  herLandings: readonly number[];
+  /** When she raises her hand: her 14th eaten (just before the player's 14th lands). */
+  handMs: number;
+  rules: MiniGameRules<GolgappaParams, GolgappaOutcome, RhythmTapRecord>;
+}
 
-/** When her golgappa lands: halfway before each of the player's (the vendor gives hers first in each round). */
-export function golgappaHerLandings(tuning: RhythmTapTuning = GOLGAPPA_TUNING): number[] {
+/** When her golgappa lands: halfway before each of the player's first 14. */
+export function golgappaHerLandings(tuning: RhythmTapTuning): number[] {
   const { beats } = tuning;
   const gapBefore = (index: number) => (index === 0 ? beats[1] - beats[0] : beats[index] - beats[index - 1]);
   return beats.slice(0, GOLGAPPA_HER_STOP).map((beat, index) => beat - Math.round(gapBefore(index) / 2));
 }
-/** When she raises her hand: her 14th eaten. */
-export const GOLGAPPA_HER_HAND_MS = golgappaHerLandings()[GOLGAPPA_HER_STOP - 1] + GOLGAPPA_FIELD.herEatMs;
 
-/** The outcome of what the player did. */
-export function golgappaOutcome(summary: RhythmTapSummary): GolgappaOutcome {
-  if (summary.ended === "misses") return "choke";
-  const ahead = rhythmTapVsPartner(summary, GOLGAPPA_TUNING);
-  // Never raised: ate every one the vendor had.
-  if (ahead === null) return "outlast";
-  if (ahead < -GOLGAPPA_TOGETHER_WITHIN) return "you_first";
-  return ahead <= GOLGAPPA_TOGETHER_WITHIN ? "together" : "outlast";
+/**
+ * The result card's ★ (display only: never saved, never in Ink; docs/13 4.1), in step with the outcome: a choke or an
+ * early 「バス」 ★1; with her or past her ★3 when nothing was left in the bowl, else ★2. The score counts the golgappa
+ * eaten and those right on the landing.
+ */
+export function golgappaRating(summary: RhythmTapSummary, outcome: GolgappaOutcome): MiniGameRating {
+  const clean = summary.misses === 0 && summary.overflows === 0;
+  const stars = outcome === "choke" || outcome === "you_first" ? 1 : clean ? 3 : 2;
+  return { stars, scoreJa: `${summary.hits}個食べた・ぴったり${summary.perfects}` };
 }
 
 const all = () => true;
-/** Together: every one eaten, 「バス」 after the 14th. First: after the 10th. Choke: the 9th and 10th left. Outlast: all 17. */
-export const golgappaRules = rhythmTapRules<GolgappaParams, GolgappaOutcome>(GOLGAPPA_TUNING, golgappaOutcome, {
-  together: { hit: all, stopAfter: GOLGAPPA_HER_STOP },
-  you_first: { hit: all, stopAfter: 10 },
-  choke: { hit: (index) => index < 8 },
-  outlast: { hit: all },
-});
+
+/** The duel from its numbers (the story's: GOLGAPPA_NUMBERS; Debug's room's edited ones). */
+export function golgappaGame(numbers: GolgappaNumbers = GOLGAPPA_NUMBERS): GolgappaGame {
+  const tuning: RhythmTapTuning = {
+    beats: rhythmTapThen(
+      rhythmTapBeats({ firstMs: numbers.firstMs, count: GOLGAPPA_HER_STOP, intervalMs: numbers.firstGapMs, endIntervalMs: numbers.herStopGapMs }),
+      [numbers.peakGap1Ms, numbers.peakGap2Ms, numbers.peakGap3Ms],
+    ),
+    earlyMs: numbers.earlyMs,
+    lateMs: numbers.lateMs,
+    peak: { from: GOLGAPPA_HER_STOP, earlyMs: numbers.peakEarlyMs, lateMs: numbers.peakLateMs, missLimit: numbers.peakMissLimit },
+    perfect: { earlyMs: numbers.perfectEarlyMs, lateMs: numbers.perfectLateMs },
+    endAfterMs: numbers.endAfterMs,
+    missLimit: numbers.missLimit,
+    strayLimit: numbers.strayLimit,
+    partnerStop: GOLGAPPA_HER_STOP,
+  };
+  const herLandings = golgappaHerLandings(tuning);
+  const handMs = herLandings[GOLGAPPA_HER_STOP - 1] + numbers.herEatMs;
+  /** The outcome of what the player did. */
+  const outcome = (summary: RhythmTapSummary): GolgappaOutcome => {
+    if (summary.ended === "misses") return "choke";
+    const ahead = rhythmTapVsPartner(summary, tuning);
+    // Never raised: ate every one the vendor had.
+    if (ahead === null) return "outlast";
+    // Just before her hand (her 14th in her mouth): nobody could tell who was first.
+    if (ahead === -1) return (summary.endMs ?? 0) >= handMs - numbers.togetherBeforeMs ? "together" : "you_first";
+    if (ahead < 0) return "you_first";
+    return ahead <= GOLGAPPA_TOGETHER_AFTER ? "together" : "outlast";
+  };
+  // Together: every one eaten, 「バス」 after the 14th. First: after the 10th. Choke: the 9th and 10th left. Outlast: all 17.
+  const rules = rhythmTapRules<GolgappaParams, GolgappaOutcome>(tuning, outcome, {
+    together: { hit: all, stopAfter: GOLGAPPA_HER_STOP },
+    you_first: { hit: all, stopAfter: 10 },
+    choke: { hit: (index) => index < 8 },
+    outlast: { hit: all },
+  }, golgappaRating);
+  return { numbers, tuning, herLandings, handMs, rules };
+}
+
+/** The story's duel. */
+export const GOLGAPPA_GAME = golgappaGame();
+export const GOLGAPPA_TUNING = GOLGAPPA_GAME.tuning;
+export const GOLGAPPA_HER_HAND_MS = GOLGAPPA_GAME.handMs;
+export const golgappaRules = GOLGAPPA_GAME.rules;

@@ -43,6 +43,7 @@ INCLUDE modules.ink
 # speaker: narrator
 サリー姿の女性と、二十代半ばの青年。青年の手には、荷物の重さを測る小さな秤。女性の手提げからは、ガラス瓶がのぞいている。
 # speaker: gt_jaipur_city_palace_young_man
+# term: gt_term_achar
 母さん、預け荷物は二十三キロまでなんだ。漬物だけで五キロは無理だって
 # speaker: gt_vishal
 # cutin: name

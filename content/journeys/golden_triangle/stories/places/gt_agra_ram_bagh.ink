@@ -102,6 +102,7 @@ INCLUDE modules.ink
     文句ばっかりの人が、雨は褒めたんだ。ちょっと、かわいいね
 }
 # speaker: narrator
+# term: gt_term_maggi
 庭を出ると、道の向かいに小さな茶屋があった。プラスチックの椅子が三つと、湯気の立つ大鍋。注文は、インスタントのマギーの麺と、チャイを二つ。
 麺を運んできた主人が、二人を見比べて、にやりとした。
 # speaker: gt_agra_ram_bagh_tea_master

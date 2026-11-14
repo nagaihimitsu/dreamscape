@@ -1,6 +1,9 @@
-/* The hidden name's field (Skin.tsx): her palm in the courtyard's night, dim; the lamp's circle shows it lit, with the fine
-   lines and the writing (a second copy of the hand clipped to the circle). With the use's art.palm and art.lamp, those
-   pictures in place of the drawn hand and lamp. */
+/* The hidden name's field (Skin.tsx): her palm in the courtyard's night, dim; the lamp's pool of light shows it lit, with
+   the fine lines and the writing (a second copy of the hand, masked to a soft-edged circle whose edge breathes with the
+   flame). With the use's art.palm and art.lamp, those pictures in place of the drawn hand and lamp. */
+/* The lamp's place, registered so that it glides (a tap, a Tab, おまかせ) instead of jumping. */
+@property --mehndi-lamp-x { syntax: "<percentage>"; inherits: true; initial-value: 50%; }
+@property --mehndi-lamp-y { syntax: "<percentage>"; inherits: true; initial-value: 14%; }
 .mg-mehndi-hidden-name {
   position: absolute;
   inset: 0;
@@ -10,8 +13,10 @@
   background: radial-gradient(ellipse 70% 62% at 50% 48%, rgba(24, 18, 12, 0.5), rgba(10, 8, 6, 0.86));
 }
 .mg-mehndi-hidden-name-palm {
-  --lamp-x: 50%;
-  --lamp-y: 14%;
+  --mehndi-lamp-x: 50%;
+  --mehndi-lamp-y: 14%;
+  /* The flame's flicker (Skin.tsx sets it from the play's clock; 1 with less motion). */
+  --mehndi-lamp-k: 1;
   position: relative;
   width: min(100cqw - 32px, (100cqh - 12px) * 5 / 7);
   aspect-ratio: 5 / 7;
@@ -24,12 +29,18 @@
 .mg-mehndi-hidden-name-picture { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; }
 /* The night: the broad lines only just show. */
 .mg-mehndi-hidden-name-dark { filter: brightness(0.32) saturate(0.7); }
-/* The lamp's circle: the same hand, lit, with the fine lines and the writing. */
-.mg-mehndi-hidden-name-lit { clip-path: circle(19cqw at var(--lamp-x) var(--lamp-y)); }
+/* The lamp's pool: the same hand, lit, with the fine lines and the writing, full in the middle, fading out to its edge
+   (light, not a hole cut in the dark). */
+.mg-mehndi-hidden-name-lit {
+  --mehndi-pool: radial-gradient(circle at var(--mehndi-lamp-x) var(--mehndi-lamp-y), #000 0 calc(13cqw * var(--mehndi-lamp-k)),
+    rgba(0, 0, 0, 0.55) calc(17cqw * var(--mehndi-lamp-k)), transparent calc(22cqw * var(--mehndi-lamp-k)));
+  -webkit-mask-image: var(--mehndi-pool);
+  mask-image: var(--mehndi-pool);
+}
 .mg-mehndi-hidden-name-glow {
   position: absolute;
-  left: var(--lamp-x);
-  top: var(--lamp-y);
+  left: var(--mehndi-lamp-x);
+  top: var(--mehndi-lamp-y);
   width: 46cqw;
   aspect-ratio: 1;
   border-radius: 50%;
@@ -41,8 +52,8 @@
 /* The lamp itself, held a little above and to the right of what it lights. */
 .mg-mehndi-hidden-name-lamp {
   position: absolute;
-  left: calc(var(--lamp-x) + 13cqw);
-  top: calc(var(--lamp-y) - 15cqw);
+  left: calc(var(--mehndi-lamp-x) + 13cqw);
+  top: calc(var(--mehndi-lamp-y) - 15cqw);
   width: max(22px, 8cqw);
   filter: drop-shadow(0 0 6px rgba(255, 200, 120, 0.6));
   pointer-events: none;
@@ -50,8 +61,7 @@
 }
 .mg-mehndi-hidden-name-lamp > img, .mg-mehndi-hidden-name-lamp > svg { display: block; width: 100%; height: auto; }
 /* Not while a finger drags it: then the lamp glides (a tap, a Tab, おまかせ). */
-.mg-mehndi-hidden-name-palm[data-glide] .mg-mehndi-hidden-name-lit { transition: clip-path 320ms ease-out; }
-.mg-mehndi-hidden-name-palm[data-glide] :is(.mg-mehndi-hidden-name-glow, .mg-mehndi-hidden-name-lamp) { transition: left 320ms ease-out, top 320ms ease-out; }
+.mg-mehndi-hidden-name-palm[data-glide] { transition: --mehndi-lamp-x 320ms ease-out, --mehndi-lamp-y 320ms ease-out; }
 /* The drawn hand and its mehndi. */
 .mg-mehndi-hidden-name-skin { fill: #e2b690; }
 .mg-mehndi-hidden-name-ink { fill: none; stroke: #8f3f17; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
@@ -78,7 +88,7 @@
   transform: translate(-50%, -50%);
 }
 .mg-mehndi-hidden-name-spot:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; }
-/* The place pointed at, once the look ends: gold where the writing is, a dashed ring where it is not. */
+/* The places pointed at: a dashed ring where the writing is not; gold where it is, once found or shown. */
 .mg-mehndi-hidden-name-mark-ring {
   position: absolute;
   width: 24cqw;
@@ -90,8 +100,50 @@
   animation: mg-mehndi-hidden-name-ring 420ms ease-out both;
 }
 @keyframes mg-mehndi-hidden-name-ring { from { opacity: 0; transform: translate(-50%, -50%) scale(1.4); } }
-.mg-mehndi-hidden-name[data-ending="found"] .mg-mehndi-hidden-name-mark-ring { border: 2px solid #f0c860; box-shadow: 0 0 12px rgba(240, 200, 96, 0.7); }
+.mg-mehndi-hidden-name-mark-ring[data-writing] { border: 2px solid #f0c860; box-shadow: 0 0 12px rgba(240, 200, 96, 0.7); }
 .mg-mehndi-hidden-name[data-ending="found"] .mg-mehndi-hidden-name-writing { filter: drop-shadow(0 0 2px rgba(255, 224, 160, 0.95)); }
+/* Her hint of the area (from the third wrong place): a dotted ring round the writing's area (about 70px across at 390
+   wide), for as long as her word; the lamp stays where the player pointed. */
+.mg-mehndi-hidden-name-hint-ring {
+  position: absolute;
+  z-index: 1;
+  width: 39cqw;
+  aspect-ratio: 1;
+  border: 3px dotted rgba(255, 236, 190, 0.95);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255, 214, 140, 0.35);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: mg-mehndi-hidden-name-hint 1600ms ease-out both;
+}
+@keyframes mg-mehndi-hidden-name-hint { 0% { opacity: 0; transform: translate(-50%, -50%) scale(1.25); } 15%, 80% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; } }
+/* Her word by a place pointed at (a wrong one, or the writing as she shows it): above it, or below one near the top. */
+.mg-mehndi-hidden-name-said {
+  position: absolute;
+  z-index: 2;
+  width: max-content;
+  max-width: min(78cqw, 260px);
+  margin: 0;
+  padding: 5px 10px;
+  border: 1px solid var(--ds-parchment-line);
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  box-shadow: var(--ds-card-shadow);
+  color: var(--ds-ink);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: center;
+  word-break: auto-phrase;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 14cqw));
+  animation: mg-mehndi-hidden-name-said 220ms ease-out both;
+}
+.mg-mehndi-hidden-name-said[data-below] { transform: translate(-50%, 14cqw); }
+/* Her hint's word: above the ring (or below it near the top). */
+.mg-mehndi-hidden-name-said[data-hint] { transform: translate(-50%, calc(-100% - 21cqw)); }
+.mg-mehndi-hidden-name-said[data-hint][data-below] { transform: translate(-50%, 21cqw); }
+@keyframes mg-mehndi-hidden-name-said { from { opacity: 0; } }
 /* 「明日にする」 or the night run out: the lamp goes out. */
 .mg-mehndi-hidden-name:is([data-ending="button"], [data-ending="timeout"], [data-ending="idle"]) :is(.mg-mehndi-hidden-name-lit, .mg-mehndi-hidden-name-glow, .mg-mehndi-hidden-name-lamp) {
   opacity: 0;

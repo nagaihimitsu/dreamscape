@@ -21,9 +21,11 @@ INCLUDE modules.ink
 待って、それ、ほどけかけてる。じっとして。はい。うん、さっきより、ずっとそれっぽい
 # speaker: narrator
 # local_word: gt_delhi_word_langar
+# term: gt_term_langar
 靴を預け、素足で白い石の上を歩く。祈りの歌が、中の広間から流れてくる。その奥に、大きな台所があった。ランガル。来た人なら誰でも、無料で食事ができる。毎日、何千人分。作るのも配るのも、ほとんどが奉仕の人たちだ。
 巨大な鍋で豆が煮え、長い台の前に何十人もが並んで、黙々と生地を丸めている。その一人、白いひげの大柄な老人が、二人を手招きした。
 # speaker: gt_delhi_bangla_old_man
+# term: gt_term_roti
 見てるだけか。手を洗って、こっちへ来なさい。ローティーは、見るより丸める方がうまい
 # speaker: gt_harbans
 # cutin: name
@@ -197,7 +199,7 @@ INCLUDE modules.ink
 # speaker: narrator
 ハルバンスが、新しい生地の玉を一つ、こちらの前に置いた。麺棒を渡される。
 # speaker: gt_harbans
-# minigame: roti_rolling auto truck_bed art.kitchen gt_img_delhi_bangla_sahib_langar
+# minigame: roti_rolling auto truck_bed art.kitchen gt_img_delhi_bangla_sahib_langar retry yes
 押して、回す。押して、回す。……あとは、手に聞け
 * [ローティー：まん丸に伸ばした # option: round]
     # speaker: narrator

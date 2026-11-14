@@ -256,8 +256,7 @@ export function TourismScreen({
               />
             </LineStage>
             {frame.choices.length > 0 && onChooseGuide && <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
-              heroine: <CharacterFigure characterId="heroine" emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, guideStoryId, frame)}
-                sceneId={landmark.id} cityId={landmark.cityId} />,
+              heroine: { emotion: reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, guideStoryId, frame), sceneId: landmark.id, cityId: landmark.cityId },
               ...(personId ? { person: <CharacterFigure characterId={personId} /> } : {}),
             }}>
               <SceneChoices choices={guideChoices} disabled={!ready} onChoose={onChooseGuide} testId="guide-choice" />

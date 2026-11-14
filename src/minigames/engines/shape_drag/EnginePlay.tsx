@@ -2,7 +2,7 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState, type Componen
 import type { MiniGamePlayProps, MiniGameRules } from "../../contract";
 import { fieldPoint } from "../../host/seed";
 import {
-  keyStroke, shapeEnds, shapeMeasures, shapeRoll, shapeStart,
+  keyStroke, SHAPE_DRAG_IDLE_HINT_MS, shapeEnds, shapeMeasures, shapeOfRecord, shapeRoll, shapeStart,
   type ShapeClassifier, type ShapeDragRecord, type ShapeDragTuning, type ShapeMeasures, type ShapePoint, type ShapeState, type ShapeStroke,
 } from "./engine";
 import "./engine.css";
@@ -10,8 +10,11 @@ import "./engine.css";
 // The shape_drag engine's play (docs/13 2.2): a square board in the middle of the field with the shape on it. One finger
 // drags a stroke across the board; the shape stretches under the finger while it drags, and when the finger lifts the
 // shape turns a little (the skin's turnDeg). The arrows roll through the centre (Shift: the diagonal clockwise of it).
-// At the bottom, one big 「done」 button. Time (the host's clock), a stroke limit or an ending shape (a tear) also ends the
-// play. The skin's rules decide the outcome from the strokes; the host shows it and takes its choice.
+// At the bottom, the skin's meter (if any), the hint and one big 「done」 button (pressed too soon, it says why). A stroke
+// limit, an ending shape (a tear) or a time from the first stroke (if the skin has one) also ends the play. Left without a
+// stroke for a while, the board is told to show how to roll (`idle`). The skin's rules decide the outcome from the
+// strokes, and the play ends at that moment (end with the strokes for the ★, the shape settling as the hold); the host
+// shows the finish and the result card and takes its choice.
 
 /** What a skin's board draws: the shape as it looks now (in board offsets from the centre, -0.5 to 0.5). */
 export interface ShapeDragView {
@@ -24,6 +27,22 @@ export interface ShapeDragView {
   strokes: number;
   /** The play's outcome, once decided (the board can show it: a tear's hole). */
   outcome: string | null;
+  /** The last stroke that rolled the shape (board 0 to 1), or null before the first. */
+  lastStroke: ShapeStroke | null;
+  /** No stroke for a while (from the start or the last stroke) while the play waits for one: the board may show how. */
+  idle: boolean;
+}
+
+/** A skin's meter over the hint (「丸さ 72%」): a bar from 0 to 1 with a mark, and its words. */
+export interface ShapeDragMeter {
+  labelJa: string;
+  /** 0 to 1; null: nothing to show yet (the bar is empty, the words say so). */
+  value: number | null;
+  /** Where the bar's mark stands (0 to 1). */
+  mark: number;
+  /** Whether it counts as past the mark (the bar lights): the value past it, unless something else holds it back. */
+  over: boolean;
+  textJa: string;
 }
 
 /** What a skin's board and backdrop are given. */
@@ -45,6 +64,12 @@ export interface ShapeDragSkin<Params, Outcome extends string> {
   autoJa: string;
   /** A short warning in place of the hint (「うすくなってきた」), from the shape's measures; null: none. */
   noteJa(measures: ShapeMeasures): string | null;
+  /** In place of the hint for a moment when 「done」 is pressed before it works (「まず生地をなぞって伸ばそう」). */
+  notReadyJa: string;
+  /** A meter over the hint (a measure the outcome reads), from the view; none: no meter. */
+  meter?(view: ShapeDragView): ShapeDragMeter;
+  /** The line under the outcome (a measure to show; never in the story: docs/13 4.1). */
+  detailJa?(measures: ShapeMeasures, outcome: Outcome): string | undefined;
   /** The sound of a stroke (one of the definition's sounds), or null. */
   strokeSound: string | null;
   /** Behind the board, over the whole field. */
@@ -68,6 +93,8 @@ export function shapePath(points: readonly ShapePoint[]): string {
 /** How long the shape takes to turn after a stroke, and how long the outcome's shape stays before the host shows it. */
 const TURN_MS = 320;
 const SETTLE_MS = 650;
+/** How long the hint says why 「done」 does not work yet. */
+const NOT_READY_MS = 1600;
 /** 「おまかせ」: one stroke's drag, and the wait after it. */
 const AUTO_DRAG_MS = 420;
 const AUTO_GAP_MS = 380;
@@ -91,6 +118,7 @@ export function shapeDragPlay<Params, Outcome extends string>(skin: ShapeDragSki
     const latest = useRef(props);
     latest.current = props;
     const board = useRef<HTMLDivElement>(null);
+    const doneButton = useRef<HTMLButtonElement>(null);
     const hintId = useId();
     /** The committed shape and strokes (the record the rules read). */
     const shape = useRef<ShapeState>(shapeStart(tuning));
@@ -102,17 +130,27 @@ export function shapeDragPlay<Params, Outcome extends string>(skin: ShapeDragSki
     const decided = useRef<{ outcome: Outcome; endAt: number } | null>(null);
     const [view, setView] = useState<ShapeDragView>(() => {
       const start = shapeStart(tuning);
-      return { points: start.points, pin: null, measures: shapeMeasures(start, tuning), strokes: 0, outcome: null };
+      return { points: start.points, pin: null, measures: shapeMeasures(start, tuning), strokes: 0, outcome: null, lastStroke: null, idle: false };
     });
     const [strokes, setStrokes] = useState(0);
+    const [notReady, setNotReady] = useState(false);
+    /** When the last stroke rolled the shape (the play's time; 0 before the first). */
+    const strokedAt = useRef(0);
     const autoRecord = useMemo(() => (auto === null ? null : skin.rules.autoRecord(auto, params)), [auto, params]);
 
     const finish = useCallback(() => {
       if (decided.current) return;
       rolling.current = null;
       const outcome = skin.rules.outcomeOf(record.current, latest.current.params);
-      decided.current = { outcome, endAt: clock.now() + (latest.current.still ? SETTLE_MS / 2 : SETTLE_MS) };
+      const holdMs = latest.current.still ? SETTLE_MS / 2 : SETTLE_MS;
+      decided.current = { outcome, endAt: clock.now() + holdMs };
+      // The end at the moment it is decided (docs/13 2.6): the record for the ★, the shape's settling as the hold.
+      const strokes = [...record.current];
+      latest.current.end(outcome, skin.detailJa?.(shapeMeasures(shapeOfRecord(strokes, tuning, classifier), tuning), outcome), { record: strokes, holdMs });
     }, [clock]);
+    // A time limit (if the skin has one) runs from the first stroke: before it, nothing has been rolled to end.
+    const timer = useRef<{ cancel: () => void; startedAt: number } | null>(null);
+    useEffect(() => () => timer.current?.cancel(), []);
 
     /** Rolls a stroke into the shape (a tap or a stroke beside the shape changes nothing and is not counted). */
     const commit = useCallback((stroke: ShapeStroke) => {
@@ -123,7 +161,10 @@ export function shapeDragPlay<Params, Outcome extends string>(skin: ShapeDragSki
       shape.current = next;
       record.current = [...record.current, stroke];
       turnedAt.current = clock.now();
+      strokedAt.current = clock.now();
+      if (tuning.timeMs !== null && !timer.current) timer.current = { cancel: clock.after(tuning.timeMs, finish), startedAt: clock.now() };
       setStrokes(next.strokes);
+      setNotReady(false);
       if (skin.strokeSound) latest.current.sound(skin.strokeSound);
       const measures = shapeMeasures(next, tuning);
       if (shapeEnds(measures, classifier)) {
@@ -131,9 +172,6 @@ export function shapeDragPlay<Params, Outcome extends string>(skin: ShapeDragSki
         finish();
       } else if (tuning.maxStrokes !== null && next.strokes >= tuning.maxStrokes) finish();
     }, [clock, finish]);
-
-    // The play's time, and its end.
-    useEffect(() => clock.after(tuning.timeMs, finish), [clock, finish]);
 
     // 「おまかせ」: rolls the skin's record for its outcome, one stroke at a time, then finishes.
     useEffect(() => {
@@ -166,7 +204,6 @@ export function shapeDragPlay<Params, Outcome extends string>(skin: ShapeDragSki
 
     // Each frame: the shape as it looks (stretching under the stroke, or turning after it), the status, the end.
     useEffect(() => {
-      let ended = false;
       let shown = "";
       return clock.onFrame((ms) => {
         const done = decided.current;
@@ -186,19 +223,18 @@ export function shapeDragPlay<Params, Outcome extends string>(skin: ShapeDragSki
           if (t < 1) points = turnPoints(points, -tuning.turnDeg * (1 - easeOut(t)));
           else turnedAt.current = null;
         }
-        setView((current) => (current.points === points && current.pin === pin && current.outcome === (done?.outcome ?? null) ? current
-          : { points, pin, measures: shapeMeasures(measured, tuning), strokes: shape.current.strokes, outcome: done?.outcome ?? null }));
-        if (!done) {
-          const left = Math.max(0, Math.ceil((tuning.timeMs - ms) / 1000));
-          const text = `のこり${left}秒`;
-          if (text !== shown) {
-            shown = text;
-            latest.current.status(text);
-          }
-        }
-        if (done && !ended && ms >= done.endAt) {
-          ended = true;
-          latest.current.end(done.outcome);
+        const idle = !done && !roll && latest.current.auto === null && ms - strokedAt.current >= SHAPE_DRAG_IDLE_HINT_MS;
+        const lastStroke = record.current[record.current.length - 1] ?? null;
+        setView((current) => (current.points === points && current.pin === pin && current.outcome === (done?.outcome ?? null)
+          && current.idle === idle && current.lastStroke === lastStroke ? current
+          : { points, pin, measures: shapeMeasures(measured, tuning), strokes: shape.current.strokes, outcome: done?.outcome ?? null, lastStroke, idle }));
+        // The strokes left (a stroke limit), else the seconds left (a time limit, from the first stroke).
+        const since = timer.current ? ms - timer.current.startedAt : 0;
+        const text = tuning.maxStrokes !== null ? `のこり${Math.max(0, tuning.maxStrokes - shape.current.strokes)}回`
+          : tuning.timeMs !== null && !done ? `のこり${Math.max(0, Math.ceil((tuning.timeMs - since) / 1000))}秒` : shown;
+        if (text !== shown) {
+          shown = text;
+          latest.current.status(text);
         }
       });
     }, [clock]);
@@ -231,11 +267,19 @@ export function shapeDragPlay<Params, Outcome extends string>(skin: ShapeDragSki
       commit(stroke);
     };
     const onDone = () => {
-      if (playing() && strokes >= tuning.minStrokesToFinish) finish();
+      if (!playing()) return;
+      if (strokes >= tuning.minStrokesToFinish) finish();
+      // Pressed too soon: turned away (the host's refusal), and the hint says why for a moment.
+      else {
+        latest.current.juice.denied(doneButton.current);
+        setNotReady(true);
+        clock.after(NOT_READY_MS, () => setNotReady(false));
+      }
     };
     const ready = strokes >= tuning.minStrokesToFinish;
-    // Near the end of the shape's way (a tear): the skin's word in place of how to play.
-    const note = view.outcome === null ? skin.noteJa(view.measures) : null;
+    // Near the end of the shape's way (a tear): the skin's word in place of how to play; 「done」 too soon: why not yet.
+    const note = view.outcome !== null ? null : notReady ? skin.notReadyJa : skin.noteJa(view.measures);
+    const meter = skin.meter?.(view);
     const fieldProps = { params, still, seed, cast, names, art, view };
     const { Backdrop, Board } = skin;
     return (
@@ -249,9 +293,20 @@ export function shapeDragPlay<Params, Outcome extends string>(skin: ShapeDragSki
           </div>
         </div>
         <div className="mg-shape-drag-controls">
+          {meter && (
+            <div className="mg-shape-drag-meter" data-testid="minigame-meter">
+              <span className="mg-shape-drag-meter-label">{meter.labelJa}</span>
+              <span className="mg-shape-drag-meter-bar" aria-hidden="true">
+                <span className="mg-shape-drag-meter-fill" data-over={meter.over || undefined}
+                  style={{ width: `${Math.round(Math.min(1, Math.max(0, meter.value ?? 0)) * 100)}%` }} />
+                <span className="mg-shape-drag-meter-mark" style={{ left: `${Math.round(meter.mark * 100)}%` }} />
+              </span>
+              <span className="mg-shape-drag-meter-text">{meter.textJa}</span>
+            </div>
+          )}
           {auto === null && <p className="mg-shape-drag-hint" aria-live="polite" data-note={note ? true : undefined}>{note ?? skin.hintJa}</p>}
           {auto !== null ? <p className="mg-shape-drag-auto">{skin.autoJa}</p> : (
-            <button type="button" className="primary mg-shape-drag-done" data-testid="minigame-action" data-minigame-primary
+            <button ref={doneButton} type="button" className="primary mg-shape-drag-done" data-testid="minigame-action" data-minigame-primary
               aria-disabled={!ready || view.outcome !== null || undefined} aria-describedby={hintId} onClick={onDone}>{skin.doneJa}</button>
           )}
           <span id={hintId} className="sr-only">{skin.doneHintJa}</span>

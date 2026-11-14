@@ -255,7 +255,8 @@ export function RomanceScene({
             {frame.choices.length ? (
               // A line's # minigame: plays instead of the choices; its outcome takes its choice (ChoicePoint).
               <ChoicePoint minigame={frame.minigame} ready={ready} cast={{
-                heroine: <CharacterFigure characterId="heroine" emotion="serious" sceneId={active.dateId} cityId={game.currentCityId} />,
+                // Her face on the line (it follows her reactions while the game plays), never a fixed one.
+                heroine: { emotion, sceneId: active.dateId, cityId: game.currentCityId },
                 ...(personId ? { person: <CharacterFigure characterId={personId} /> } : {}),
               }}>
               <div className="choices">

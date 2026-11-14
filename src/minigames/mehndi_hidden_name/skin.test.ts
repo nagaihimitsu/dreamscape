@@ -8,10 +8,10 @@ import { mehndiSkin } from "./Skin";
 
 // The hidden name's field (docs/13 2.10, 2.12–2.13): the writing as text (the name as typed, never HTML), an illegible mark
 // with no letters where the story says Hindi, six places as buttons named by the pattern, and the use's art in its slots.
-const view: SearchView = { searched: [], presses: {}, last: null, ending: null };
-const field = (params: MehndiParams, player = "Haruto", art: Record<string, string> = {}) => renderToStaticMarkup(createElement(mehndiSkin.Field, {
+const view: SearchView = { total: 1, round: 0, searched: [], done: [], presses: {}, last: null, nudge: null, ending: null };
+const field = (params: MehndiParams, player = "Haruto", art: Record<string, string> = {}, shown: SearchView = view) => renderToStaticMarkup(createElement(mehndiSkin.Field, {
   params, still: false, seed: 1, cast: { heroine: null }, names: { player, heroine: "ヒロイン" }, art, sound: () => undefined, vibrate: () => undefined,
-  setup: mehndiSetup(params), view, live: true, search: () => undefined, active: () => undefined, frames: () => () => undefined,
+  setup: mehndiSetup(params), view: shown, live: true, search: () => undefined, active: () => undefined, frames: () => () => undefined,
 }));
 
 describe("the hidden name's field", () => {
@@ -37,6 +37,25 @@ describe("the hidden name's field", () => {
     const html = field({ target: "vine", text: "farhana" });
     for (const label of ["人差し指の花", "小指の側の花", "孔雀の羽の付け根", "親指の付け根の蔓", "真ん中の蔓", "手首の模様"]) expect(html).toContain(`aria-label="${label}"`);
     expect(html).not.toMatch(/aria-label="[^"]*(文字|名前)/u);
+  });
+
+  it("rings each wrong place pointed at while the look goes on, and the writing once the player found it", () => {
+    const thumb: MehndiParams = { target: "thumb", text: "player" };
+    const looking = field(thumb, "Haruto", {}, { ...view, searched: [0, 2, 5] });
+    expect(looking.match(/mg-mehndi-hidden-name-mark-ring" data-wrong="true"/gu)).toHaveLength(3);
+    expect(looking).not.toContain("data-writing");
+    const found = field(thumb, "Haruto", {}, { ...view, searched: [0, 2, 3], ending: { kind: "found", spot: 3, misses: 2, helped: 0 } });
+    expect(found.match(/data-wrong="true"/gu)).toHaveLength(2);
+    expect(found).toContain("data-writing");
+    // One line for how to play, before and during the play; no line under the label (she never shows the place).
+    expect(mehndiSkin.hintJa).toBe(mehndiHiddenName.hintJa);
+    expect(mehndiSkin.detailJa).toBeUndefined();
+  });
+
+  it("breaks the central vine's line behind the writing hidden in it, in the lit pattern only", () => {
+    const vine = field({ target: "vine", text: "farhana" });
+    expect(vine.match(/mask="url\(#[^)]*vinegap\)"/gu)).toHaveLength(1);
+    expect(field({ target: "thumb", text: "farhana" })).not.toContain("vinegap");
   });
 
   it("puts the use's pictures in its declared slots", () => {

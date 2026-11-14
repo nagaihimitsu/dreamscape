@@ -28,6 +28,7 @@ INCLUDE modules.ink
 # item_show: gt_delhi_kamla_memo
 カムラは段ボールの切れ端に、ヒンディー語で五行書いた。一行ずつ、ぶっきらぼうに訳してくれる。
 # speaker: enemy
+# term: gt_term_nihari
 わたしのデリー。赤い城、暗くなってから。クトゥブ・ミナール、鉄の柱、もう抱けない、腹立たしい。フマユーン廟、東の門から三本目の木陰。ジャーマー・マスジド、朝のニハーリー、階段の下の店。
 # speaker: narrator
 五行目だけは、場所の名前がなかった。
@@ -77,6 +78,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # se: door_knock
 # shake: small
+# term: gt_term_kulhad
 戸を叩く音。アマンが、素焼きの小さなカップのチャイを三つ、器用に指に挟んで立っていた。
 # speaker: enemy
 さっきは、失礼なことを言いました。あなたたちが祖母を連れ出したと決めつけて

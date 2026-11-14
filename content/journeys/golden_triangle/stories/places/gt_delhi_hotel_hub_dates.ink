@@ -168,6 +168,7 @@ INCLUDE modules.ink
 # tint: off
 # bgm: stages_of_grief
 # speaker: narrator
+# term: gt_term_kulhad
 宿の屋上に上がると、彼女が素焼きのカップを二つ持って待っていた。湯気が、二本並んで上っている。
 # speaker: heroine
 # voice: gt_delhi_date_reassurance_001

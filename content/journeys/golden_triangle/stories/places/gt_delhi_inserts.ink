@@ -259,6 +259,7 @@ INCLUDE modules.ink
 }
 # speaker: gt_delhi_hotel_okami
 # local_word: gt_delhi_word_khichdi
+# term: gt_term_khichdi
 キチュリー。米と豆を、やわらかく煮たの。うちでは、お腹を壊したら、これ。……外国の人は、みんなゴルガッパでやられるの。チャンドニー・チョークでしょ。分かるのよ、顔で
 { cond("seen gt_delhi_hotel_homework"):
     # speaker: enemy

@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import { searchFairness, type SearchRecord } from "../engines/search/engine";
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { mehndiHiddenName } from "./definition";
-import { MEHNDI_SPOTS, MEHNDI_TARGETS, MEHNDI_TEXTS, mehndiRules, mehndiSetup, type MehndiOutcome, type MehndiParams } from "./rules";
+import { searchProgress } from "../engines/search/engine";
+import { MEHNDI_SPOTS, MEHNDI_TARGETS, MEHNDI_TEXTS, MEHNDI_TUNING, mehndiRules, mehndiSetup, type MehndiOutcome, type MehndiParams } from "./rules";
 import { MEHNDI_HIT, MEHNDI_PLACES, mehndiSpotAt, writingSize } from "./Skin";
 
 const record = (actions: SearchRecord["actions"], lapse: SearchRecord["lapse"] = null): SearchRecord => ({ actions, lapse });
@@ -10,17 +11,27 @@ const spot = (name: (typeof MEHNDI_SPOTS)[number]) => ({ spot: MEHNDI_SPOTS.inde
 
 describeMiniGameRules(mehndiHiddenName, mehndiRules, { records: [
   record([]), record([], "timeout"), record([], "idle"), record([{ spot: 0 }]), record([{ spot: 40 }, { button: "call" }]),
-  record([{ button: "later" }]), record([{ spot: 3 }, { spot: 2 }], "timeout"),
+  record([{ button: "later" }]), record([{ spot: 3 }, { spot: 2 }], "timeout"), record([{ spot: 0 }, { spot: 1 }, { spot: 2 }]),
 ] });
 
 describe("the hidden name's rules", () => {
   const thumb: MehndiParams = { target: "thumb", text: "player" };
   const outcome = (actions: SearchRecord["actions"], lapse: SearchRecord["lapse"] = null, params = thumb) => mehndiRules.outcomeOf(record(actions, lapse), params);
 
-  it("finds the writing where the tag hid it; a place without it is a wrong spot, and the look ends there", () => {
+  it("finds the writing where the tag hid it first; after a wrong point the look goes on, and finding it is a wrong spot", () => {
     expect(outcome([spot("thumb")])).toBe("found");
-    expect(outcome([spot("peacock")])).toBe("wrong_spot");
+    // One or two wrong points: the look goes on (a record that stops there reads as 「明日にする」, never sent by the play).
+    expect(mehndiRules.outcomeOf(record([spot("peacock")]), thumb)).toBe("later");
     expect(outcome([spot("peacock"), spot("thumb")])).toBe("wrong_spot");
+    expect(outcome([spot("peacock"), spot("index"), spot("thumb")])).toBe("wrong_spot");
+    // The same petal twice is one wrong point; wrong points never end the look (from the third she only hints the area:
+    // the find is always the player's, as the story says).
+    expect(outcome([spot("peacock"), spot("peacock"), spot("thumb")])).toBe("wrong_spot");
+    expect(outcome([spot("peacock"), spot("index"), spot("wrist"), spot("thumb")])).toBe("wrong_spot");
+    expect(searchProgress([spot("peacock"), spot("index"), spot("wrist"), spot("pinky"), spot("vine")], mehndiSetup(thumb)).ending).toBeNull();
+    expect(outcome([spot("peacock"), spot("index"), spot("wrist"), spot("pinky"), spot("vine"), spot("thumb")])).toBe("wrong_spot");
+    expect(mehndiSetup(thumb).wrongLimit).toBeNull();
+    expect(MEHNDI_TUNING.hintAfter).toBe(3);
     expect(outcome([spot("peacock")], null, { target: "peacock", text: "illegible" })).toBe("found");
     expect(outcome([spot("vine")], null, { target: "vine", text: "farhana" })).toBe("found");
   });
@@ -30,14 +41,17 @@ describe("the hidden name's rules", () => {
     expect(outcome([{ button: "later" }, spot("thumb")])).toBe("later");
     for (const target of MEHNDI_TARGETS) expect(mehndiSetup({ target, text: "player" })).toMatchObject({ timeLimitMs: null, idleMs: null });
     expect(mehndiHiddenName.timed).toBe(false);
+    // No time on its card, and the scene's own music (a quiet night for two) goes on.
+    expect(mehndiHiddenName.durationSec).toBeUndefined();
+    expect(mehndiHiddenName.music).toBe("scene");
     // A record with a lapse cannot come from a play now; the rules still read it (as later) rather than fail.
     expect(outcome([], "timeout")).toBe("later");
   });
 
-  it("plays 「おまかせ」 by the player's own acts: the place, a wrong place or 「明日にする」, never by waiting", () => {
+  it("plays 「おまかせ」 by the player's own acts: the place, a wrong place then the place, or 「明日にする」, never by waiting", () => {
     const plans: Record<MehndiOutcome, SearchRecord> = {
       found: record([spot("thumb")]),
-      wrong_spot: record([spot("index")]),
+      wrong_spot: record([spot("index"), spot("thumb")]),
       later: record([{ button: "later" }]),
     };
     for (const item of mehndiHiddenName.outcomes) expect(mehndiRules.autoRecord(item.id as MehndiOutcome, thumb), item.id).toEqual(plans[item.id as MehndiOutcome]);

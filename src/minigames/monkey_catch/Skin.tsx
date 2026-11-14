@@ -1,73 +1,218 @@
 import { useEffect, useRef, useState } from "react";
 import type { CueTapFieldProps, CueTapSkin } from "../engines/cue_tap/EnginePlay";
-import { MONKEY_FIELD, MONKEY_HANDS_MS, MONKEY_RELEASE_MS, MONKEY_TUNING, monkeyCatchRules, type MonkeyCatchOutcome, type MonkeyCatchParams } from "./rules";
+import { cueTapEnd, cueTapMoment, type CueTapTuning } from "../engines/cue_tap/engine";
+import { useMiniGameKit } from "../host/kit";
+import { MONKEY_FIELD, MONKEY_TUNING, monkeyCatchRulesFor, type MonkeyCatchOutcome, type MonkeyCatchParams } from "./rules";
 import "./skin.css";
 
 // The catch's field (a cue_tap skin): the player at the foot of the gate's wall, looking up. The monkey sits on the wall's
-// edge holding the thing out (the tag's `thing`: a small bottle, or sunglasses); it lets go, the thing tumbles down and
-// grows as it comes, and the player's hands wait at the bottom. With the use's art (`art.wall`, `art.monkey`) the drawn
-// wall and monkey give way to those pictures.
+// edge holding the thing out (the tag's `thing`: a small bottle, or sunglasses); its grip gives (the thing wobbles and
+// slips in its fingers: the cue), it lets go, the thing tumbles down and grows as it comes, and the player's hands wait at
+// the bottom with a ring where it will meet them (the ring tightens as it comes). Past the fingertips it slides down the
+// palms and drops out. With the use's art (`art.wall`, `art.monkey`) the drawn wall and monkey give way to those pictures.
+//
+// The host's flow (docs/13 2.6): the play ends as the field shows the outcome (the thing landing in the hands, bouncing
+// off the fingers, or gone past them), with its juice there and the heroine's face; the monkey reacts after.
 
 type Point = { x: number; y: number; size: number };
 const mix = (from: Point, to: Point, t: number): Point => ({ x: from.x + (to.x - from.x) * t, y: from.y + (to.y - from.y) * t, size: from.size + (to.size - from.size) * t });
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
+const easeOut = (t: number) => 1 - (1 - t) * (1 - t);
 
-// In percent of the field. The monkey's hand (the bottle before it falls) and the cup of the player's hands. The monkey's
+// In percent of the field. The monkey's hand (the thing before it falls) and the cup of the player's hands. The monkey's
 // picture is placed by its hand: the hand is at (20%, 50%) of the picture, its seat on the wall's edge at about 83%, so the
-// wall's top edge is at about 30% of the field (the art request says so).
-const HELD: Point = { x: 46, y: 22, size: 0.45 };
-const HANDS: Point = { x: 50, y: 80, size: 1 };
-/** Its speed as it reaches the hands (percent of the field per millisecond; the fall speeds up as it comes). */
-const ARRIVAL_SPEED = (2 * (HANDS.y - HELD.y)) / MONKEY_TUNING.approachMs;
+// wall's top edge is at about 30% of the field (the art request says so). Sizes: the thing's scale (1 = its drawn size).
+const HELD: Point = { x: 46, y: 22, size: 0.75 };
+const HANDS: Point = { x: 50, y: 80, size: 1.25 };
+/** How far past the cup it slides down the palms before it drops out below them (percent of the field). */
+const THROUGH_DEPTH = 11;
+/** The ring where the thing meets the hands tightens over this long before it arrives. */
+const RING_TIGHTEN_MS = 300;
 
-/** Where the falling bottle is `ms` after the start, untouched: in the monkey's hand, falling, past the fingertips and out below. */
-function untouched(ms: number): Point {
-  if (ms <= MONKEY_RELEASE_MS) return HELD;
-  if (ms <= MONKEY_HANDS_MS) {
-    const s = (ms - MONKEY_RELEASE_MS) / MONKEY_TUNING.approachMs;
-    return mix(HELD, HANDS, s * s);
+/**
+ * The catch's moments with a tuning (the story's, or Debug's room's edited one): the monkey's grip gives, it lets go
+ * (the lead's end), the thing reaches the hands (the moment), slides down the palms through the late window, and is gone.
+ */
+function monkeyMoments(tuning: CueTapTuning) {
+  const release = tuning.leadMs;
+  const hands = cueTapMoment(tuning);
+  return {
+    slip: Math.max(0, release - MONKEY_FIELD.slipMs),
+    release,
+    hands,
+    approach: tuning.approachMs,
+    through: Math.max(MONKEY_FIELD.throughMs, tuning.nearLateMs + 20),
+    gone: MONKEY_FIELD.goneMs,
+    end: cueTapEnd(tuning),
+  };
+}
+type Moments = ReturnType<typeof monkeyMoments>;
+
+/** How much it wobbles in the monkey's slipping grip at `ms` (0 before its grip gives, 1 as it lets go). */
+const slipAt = (ms: number, m: Moments) => (m.release <= m.slip ? (ms >= m.release ? 1 : 0) : clamp01((ms - m.slip) / (m.release - m.slip)));
+
+/** Where the thing is `ms` after the start, untouched: in the monkey's slipping grip, falling, sliding down the palms, then out below. */
+function untouched(ms: number, m: Moments): Point {
+  if (ms <= m.release) {
+    // It sinks a little in the fingers as the grip gives.
+    const slip = slipAt(ms, m);
+    return { ...HELD, y: HELD.y + 1.5 * slip * slip };
   }
-  // Past the hands it brushes the fingertips aside a little and goes on falling (out of the field by MONKEY_FIELD.goneMs).
-  const u = ms - MONKEY_HANDS_MS;
-  return { x: HANDS.x + 8 * Math.min(1, u / MONKEY_FIELD.goneMs), y: HANDS.y + ARRIVAL_SPEED * u + 0.00012 * u * u, size: HANDS.size + 0.15 * clamp01(u / MONKEY_FIELD.goneMs) };
+  if (ms <= m.hands) {
+    const s = (ms - m.release) / m.approach;
+    return mix({ ...HELD, y: HELD.y + 1.5 }, HANDS, s * s);
+  }
+  // Past the fingertips it slides down the palms (the fingers brush it aside a little), then drops out of the field.
+  const u = ms - m.hands;
+  if (u <= m.through) {
+    const t = easeOut(u / m.through);
+    return { x: HANDS.x + 3 * t, y: HANDS.y + THROUGH_DEPTH * t, size: HANDS.size };
+  }
+  const w = (u - m.through) / m.gone;
+  return { x: HANDS.x + 3 + 4 * w, y: HANDS.y + THROUGH_DEPTH + 34 * w * w + 6 * w, size: HANDS.size * (1 + 0.1 * clamp01(w)) };
 }
 
-/** A bottle that bounced off the fingers, `u` ms after it hit them at `from`: a little hop up and aside, then down and out. */
+/** Hands closed far too soon: it falls just beyond the fingertips (it veers past the closed hands, never into them). */
+function pastClosedHands(ms: number, m: Moments): Point {
+  const base = ms <= m.hands ? untouched(ms, m) : { ...HANDS, y: HANDS.y + 0.13 * (ms - m.hands) + 0.0003 * (ms - m.hands) ** 2 };
+  const veer = clamp01((ms - (m.hands - 320)) / 320);
+  return { ...base, x: base.x + 17 * veer * veer };
+}
+
+/** A thing that bounced off the fingers, `u` ms after it hit them at `from`: a little hop up and aside, then down and out. */
 function bounced(from: Point, u: number): Point {
   return { x: from.x + 16 * Math.min(1, u / 600), y: from.y - 0.093 * u + 0.00031 * u * u, size: from.size * (1 + 0.1 * Math.min(1, u / 600)) };
 }
 
-/** When a tapped play's bottle meets the hands: the tap, or its arrival when the hands closed before it came. */
-const meetsAt = (tapMs: number) => Math.max(tapMs, MONKEY_HANDS_MS);
+/** When a tapped play's thing meets the hands: the tap, or its arrival when the hands closed before it came. */
+const meetsAt = (tapMs: number, m: Moments) => Math.max(tapMs, m.hands);
 
-/** The sounds of a play (definition `sounds`): the hands closing on nothing, and the bottle landing in them. */
-const SOUNDS = { grab: "cloth_grab", catch: "item_pouch" } as const;
+/** Where the thing is at `ms` once the play is decided (or before). */
+function thingAt(ms: number, tapMs: number | null, outcome: MonkeyCatchOutcome | null, m: Moments): { at: Point; held: boolean } {
+  if (outcome === "caught" && tapMs !== null && ms >= meetsAt(tapMs, m)) {
+    // In the hands: closed before it came, it lands there; closed as it slid down the palms, they take it back up.
+    return { at: mix(untouched(meetsAt(tapMs, m), m), HANDS, clamp01((ms - meetsAt(tapMs, m)) / 90)), held: true };
+  }
+  if (outcome === "fumbled" && tapMs !== null && ms >= meetsAt(tapMs, m)) return { at: bounced(untouched(meetsAt(tapMs, m), m), ms - meetsAt(tapMs, m)), held: false };
+  if (outcome === "missed" && tapMs !== null && tapMs < m.hands) return { at: pastClosedHands(ms, m), held: false };
+  return { at: untouched(ms, m), held: false };
+}
 
-/** The monkey (drawn when the use gives no picture): grey-brown, on the wall's edge, one arm held out; its hand at (20%, 50%). */
-function MonkeyFigure() {
+/**
+ * When the field shows each outcome (the play ends there): the catch or the bounce as it meets the hands; a miss as it
+ * goes past the hands closed too soon, as hands close too late on nothing, or (no tap) once the play is over.
+ */
+function impactOf(outcome: MonkeyCatchOutcome, tapMs: number | null, m: Moments): number {
+  if (tapMs === null) return m.end;
+  if (outcome === "missed") return tapMs < m.hands ? m.hands + 120 : tapMs;
+  return meetsAt(tapMs, m);
+}
+
+/**
+ * How the thing turns as it falls: around a point below its middle (its heavy end), faster as it falls and unevenly (a
+ * wobble on the spin), drawn the same every time. In the monkey's slipping grip it rocks; once held, it rests upright.
+ */
+function turnAt(ms: number, thing: MonkeyCatchParams["thing"], m: Moments): number {
+  if (ms <= m.release) {
+    const slip = slipAt(ms, m);
+    return slip * (8 + 18 * slip) * Math.sin(ms / 45);
+  }
+  const s = (ms - m.release) / m.approach;
+  const spin = thing === "glasses" ? 300 : 420;
+  return spin * Math.pow(Math.min(s, 1.6), 1.4) + 22 * Math.sin(s * 7.5);
+}
+/** Sunglasses flip edge-on and back as they tumble (their width narrows); a bottle is round and does not. */
+const flipAt = (ms: number, thing: MonkeyCatchParams["thing"], m: Moments) =>
+  thing === "glasses" && ms > m.release ? 0.55 + 0.45 * Math.abs(Math.cos((ms - m.release) / 140)) : 1;
+
+/** The ring where the thing meets the hands: it tightens over the last moments before it arrives (0 to 1). */
+const ringAt = (ms: number, m: Moments) => clamp01((ms - (m.hands - RING_TIGHTEN_MS)) / RING_TIGHTEN_MS);
+
+/**
+ * The sounds of a play (definition `sounds`): the hands closing on nothing; the catch, a sharp snap of the palms right as
+ * they meet it (a short, high wooden knock: its attack 10 ms in) under the pouch's softer settle.
+ */
+const SOUNDS = { grab: "cloth_grab", snap: "bat_hit", catch: "item_pouch" } as const;
+const CATCH_SNAP = { volume: 0.55, rate: 1.5 } as const;
+const CATCH_SETTLE = { volume: 0.7 } as const;
+
+/**
+ * The moment the field shows each outcome (group3 6.4's values): the stop on the thing, the burst where it meets the hands
+ * (a catch's stars, a bounce's ring), the small shake and the hands' squash on a catch; and the heroine's face (it is her
+ * bottle or her sunglasses).
+ */
+const IMPACTS: Readonly<Record<MonkeyCatchOutcome, { stopMs?: number; burst?: { kind: "star" | "ring" | "dust"; size: number }; shake?: "s"; react: "surprise" | "oops" }>> = {
+  caught: { stopMs: 90, burst: { kind: "star", size: 1 }, shake: "s", react: "surprise" },
+  fumbled: { stopMs: 60, burst: { kind: "ring", size: 0.9 }, react: "oops" },
+  missed: { react: "oops" },
+};
+
+/** The monkey after the play: it bobs (the catch impressed it), or leans over the edge to see where the thing went. */
+type MonkeyReact = "cheer" | "peer";
+const monkeyReactOf = (outcome: MonkeyCatchOutcome): MonkeyReact => (outcome === "caught" ? "cheer" : "peer");
+
+/**
+ * The monkey (drawn when the use gives no picture): a grey-brown macaque hunched on the wall's edge, one arm held out, its
+ * hand at (20%, 50%). Drawn to sit with the photos and the standing pictures (D1): a dark outline round every part, fur
+ * shaded from a light upper left, a few strokes of fur, a pink face with a brow and a muzzle.
+ */
+function MonkeyFigure({ open }: { open: boolean }) {
   return (
     <svg viewBox="0 0 100 120" className="mg-monkey-catch-monkey-figure" aria-hidden="true">
-      <path d="M78 92 C 92 100, 96 112, 88 120" fill="none" stroke="#6f6658" strokeWidth="5" strokeLinecap="round" />
-      <path d="M48 94 L 44 118 M66 94 L 70 118" stroke="#7d7466" strokeWidth="9" strokeLinecap="round" />
-      <ellipse cx="57" cy="72" rx="23" ry="28" fill="#8d8475" />
-      <ellipse cx="60" cy="78" rx="12" ry="15" fill="#a39a88" />
-      <circle cx="37" cy="22" r="5.5" fill="#7d7466" />
-      <circle cx="67" cy="22" r="5.5" fill="#7d7466" />
-      <circle cx="52" cy="27" r="16" fill="#8d8475" />
-      <ellipse cx="52" cy="31" rx="10" ry="11" fill="#d4b29a" />
-      <circle cx="48" cy="28" r="1.8" fill="#2a221c" />
-      <circle cx="56" cy="28" r="1.8" fill="#2a221c" />
-      <path d="M41 54 Q 30 56, 20 60" fill="none" stroke="#8d8475" strokeWidth="9" strokeLinecap="round" />
-      <circle cx="20" cy="60" r="6" fill="#a39a88" />
+      <defs>
+        <radialGradient id="mg-monkey-catch-fur" cx="0.36" cy="0.28" r="0.85">
+          <stop offset="0" stopColor="#b8aa92" />
+          <stop offset="0.55" stopColor="#8b7d68" />
+          <stop offset="1" stopColor="#5c5143" />
+        </radialGradient>
+        <radialGradient id="mg-monkey-catch-face" cx="0.42" cy="0.32" r="0.8">
+          <stop offset="0" stopColor="#f2cbb2" />
+          <stop offset="1" stopColor="#c88c71" />
+        </radialGradient>
+      </defs>
+      <g stroke="#2a211c" strokeWidth="2.2" strokeLinejoin="round" strokeLinecap="round">
+        {/* The tail hangs down over the wall's edge (an outline under a fur stroke). */}
+        <path d="M74 97 C 89 100, 95 110, 87 119" fill="none" strokeWidth="7.5" />
+        <path d="M74 97 C 89 100, 95 110, 87 119" fill="none" stroke="#7a6d5b" strokeWidth="3.6" />
+        <path d="M45 92 Q 39 105, 43 117 L 52 117 Q 51 105, 56 95 Z" fill="#6c604f" />
+        <path d="M39 59 Q 35 80, 43 96 Q 58 105, 75 96 Q 83 79, 74 58 Q 66 46, 54 47 Q 43 49, 39 59 Z" fill="url(#mg-monkey-catch-fur)" />
+        <ellipse cx="60" cy="81" rx="9.5" ry="12.5" fill="#b7aa93" stroke="none" opacity="0.85" />
+        <path d="M58 89 Q 72 83, 79 96 Q 81 106, 72 110 L 75 117 L 61 117 Q 57 104, 58 89 Z" fill="url(#mg-monkey-catch-fur)" />
+        <path d="M47 64 l 3 4 M66 60 l 3 4 M70 73 l 3 3.5 M50 78 l 2.5 4" fill="none" stroke="#54493c" strokeWidth="1.3" />
+        {/* The arm held out over the edge, the hand open (it let go) or gripping. */}
+        <path d="M47 53 Q 34 53, 21 56 L 21 64 Q 34 63, 48 62 Z" fill="url(#mg-monkey-catch-fur)" />
+        {open ? (
+          <g fill="url(#mg-monkey-catch-face)">
+            <path d="M23 57 Q 15 55, 12 58 Q 12 62, 15 63 Q 19 65, 23 63 Z" />
+            <path d="M15 57 L 11 52 M18 56 L 16 50 M21 56 L 22 50" fill="none" strokeWidth="2.6" />
+          </g>
+        ) : <circle cx="20" cy="60" r="5.6" fill="url(#mg-monkey-catch-face)" />}
+        <circle cx="36.5" cy="23" r="5.8" fill="#7a6d5b" />
+        <circle cx="67.5" cy="23" r="5.8" fill="#7a6d5b" />
+        <circle cx="36.5" cy="23" r="2.6" fill="#d9a48b" stroke="none" />
+        <circle cx="67.5" cy="23" r="2.6" fill="#d9a48b" stroke="none" />
+        <circle cx="52" cy="27" r="16" fill="url(#mg-monkey-catch-fur)" />
+        <path d="M38.5 21 Q 44 9.5, 52 10.5 Q 60 9.5, 65.5 21 Q 58 15.5, 52 16.5 Q 46 15.5, 38.5 21 Z" fill="#5c5143" stroke="none" />
+        <path d="M42 28 Q 42 20.5, 52 21.5 Q 62 20.5, 62 28 Q 63 38, 56.5 43 Q 52 45.5, 47.5 43 Q 41 38, 42 28 Z" fill="url(#mg-monkey-catch-face)" />
+      </g>
+      <path d="M44.5 26 Q 48 23.8, 51 25.6 M53 25.6 Q 56 23.8, 59.5 26" fill="none" stroke="#5a3a2c" strokeWidth="1.6" strokeLinecap="round" />
+      <circle cx="48" cy="29" r="2" fill="#2a221c" />
+      <circle cx="56" cy="29" r="2" fill="#2a221c" />
+      <circle cx="48.6" cy="28.4" r="0.6" fill="#fff" />
+      <circle cx="56.6" cy="28.4" r="0.6" fill="#fff" />
+      <ellipse cx="52" cy="36.5" rx="5.2" ry="4.2" fill="#e5b398" />
+      <path d="M50.6 34.6 h 0.1 M53.3 34.6 h 0.1" stroke="#5a3a2c" strokeWidth="1.3" strokeLinecap="round" />
+      {open ? <ellipse cx="52" cy="38.4" rx="2.4" ry="1.8" fill="#5a2e24" />
+        : <path d="M49.4 38.2 Q 52 39.6, 54.6 38.2" fill="none" stroke="#5a2e24" strokeWidth="1.3" strokeLinecap="round" />}
     </svg>
   );
 }
 
-/** One of the player's hands, palm toward the coming bottle (the right one is the same, mirrored). */
+/** One of the player's hands, palm toward the coming thing (the right one is the same, mirrored). */
 function Hand({ side }: { side: "left" | "right" }) {
   return (
     <svg viewBox="0 0 60 80" className={`mg-monkey-catch-hand mg-monkey-catch-hand-${side}`} aria-hidden="true">
-      <g fill="#f3dfcc" stroke="rgba(70, 46, 30, 0.55)" strokeWidth="2" transform={side === "right" ? "translate(60 0) scale(-1 1)" : undefined}>
+      <g fill="#f3dfcc" stroke="#6b4630" strokeWidth="2.5" strokeLinejoin="round" transform={side === "right" ? "translate(60 0) scale(-1 1)" : undefined}>
         <rect x="9" y="10" width="9" height="34" rx="4.5" />
         <rect x="19" y="4" width="9" height="40" rx="4.5" />
         <rect x="29" y="6" width="9" height="38" rx="4.5" />
@@ -79,86 +224,132 @@ function Hand({ side }: { side: "left" | "right" }) {
   );
 }
 
-function MonkeyCatchField({ params, still, art, sound, frames }: CueTapFieldProps<MonkeyCatchParams, MonkeyCatchOutcome>) {
-  const thing = useRef<HTMLSpanElement>(null);
-  const [dropped, setDropped] = useState(false);
-  const [closed, setClosed] = useState(false);
-  const [holding, setHolding] = useState(false);
-  const play = useRef(sound);
-  play.current = sound;
-  useEffect(() => {
-    let released = false;
-    let shut = false;
-    let held = false;
-    return frames(({ ms, tapMs, outcome }) => {
-      if (!released && ms >= MONKEY_RELEASE_MS) {
-        released = true;
-        setDropped(true);
-      }
-      if (tapMs !== null && !shut) {
-        shut = true;
-        setClosed(true);
-        if (outcome !== "caught") play.current(SOUNDS.grab);
-      }
-      let where = untouched(ms);
-      let hidden = false;
-      if (outcome === "caught" && tapMs !== null && ms >= meetsAt(tapMs)) {
-        // In the hands: closed before it came, it lands there; closed just after it touched them, they take it back in.
-        const from = untouched(meetsAt(tapMs));
-        where = mix(from, HANDS, clamp01((ms - meetsAt(tapMs)) / 90));
-        if (!held) {
+/** The catch's skin with a tuning (the story's; Debug's room plays an edited one: play.ts retune). */
+export function monkeyCatchSkinFor(tuning: CueTapTuning): CueTapSkin<MonkeyCatchParams, MonkeyCatchOutcome> {
+  const m = monkeyMoments(tuning);
+
+  function MonkeyCatchField({ params, still, art, sound, vibrate, frames }: CueTapFieldProps<MonkeyCatchParams, MonkeyCatchOutcome>) {
+    const thing = useRef<HTMLSpanElement>(null);
+    const ring = useRef<HTMLSpanElement>(null);
+    const hands = useRef<HTMLSpanElement>(null);
+    const [grip, setGrip] = useState<"hold" | "slip" | "let_go">("hold");
+    const [closed, setClosed] = useState(false);
+    const [holding, setHolding] = useState(false);
+    const [react, setReact] = useState<MonkeyReact | null>(null);
+    const kit = useMiniGameKit();
+    const live = useRef({ sound, vibrate, kit });
+    live.current = { sound, vibrate, kit };
+    useEffect(() => {
+      let shownGrip = "hold";
+      let shut = false;
+      let held = false;
+      let struck = false;
+      let reacted = false;
+      return frames(({ ms, tapMs, outcome, impactAt, endAt }) => {
+        const { juice } = live.current.kit;
+        const nextGrip = ms >= m.release ? "let_go" : ms >= m.slip ? "slip" : "hold";
+        if (nextGrip !== shownGrip) {
+          shownGrip = nextGrip;
+          setGrip(nextGrip);
+        }
+        if (tapMs !== null && !shut) {
+          shut = true;
+          setClosed(true);
+          live.current.vibrate("tap");
+          if (outcome !== "caught") live.current.sound(SOUNDS.grab);
+        }
+        const { at, held: inHands } = thingAt(ms, tapMs, outcome, m);
+        if (inHands && !held) {
           held = true;
           setHolding(true);
-          play.current(SOUNDS.catch);
+          live.current.sound(SOUNDS.snap, CATCH_SNAP);
+          live.current.sound(SOUNDS.catch, CATCH_SETTLE);
         }
-      } else if (outcome === "fumbled" && tapMs !== null && ms >= meetsAt(tapMs)) {
-        where = bounced(untouched(meetsAt(tapMs)), ms - meetsAt(tapMs));
-      }
-      if (where.y > 120) hidden = true;
-      const element = thing.current;
-      if (!element) return;
-      // It tumbles as it falls (drawn the same every time; with less motion it does not turn).
-      const turn = still || held ? 0 : -14 + 400 * clamp01((ms - MONKEY_RELEASE_MS) / MONKEY_TUNING.approachMs) + Math.max(0, ms - MONKEY_HANDS_MS) * 0.5;
-      element.style.left = `${where.x}%`;
-      element.style.top = `${where.y}%`;
-      element.style.transform = `translate(-50%, -50%) scale(${where.size}) rotate(${turn}deg)`;
-      element.style.opacity = hidden ? "0" : "1";
-    });
-  }, [frames, still]);
-  return (
-    <div className="mg-monkey-catch" data-art-wall={art.wall ? true : undefined} data-still={still || undefined}>
-      {art.wall && <img className="mg-monkey-catch-backdrop" src={art.wall} alt="" draggable={false} />}
-      <span className="mg-monkey-catch-wall"><span className="mg-monkey-catch-coping" /><span className="mg-monkey-catch-inlay" /></span>
-      <span className="mg-monkey-catch-monkey" data-dropped={dropped || undefined}>
-        <span className="mg-monkey-catch-monkey-lean">
-          {art.monkey ? <img src={art.monkey} alt="" draggable={false} /> : <MonkeyFigure />}
+        const element = thing.current;
+        // It tumbles as it falls (drawn the same every time; with less motion it does not turn).
+        const turn = still || inHands ? 0 : turnAt(ms, params.thing, m);
+        const flip = still || inHands ? 1 : flipAt(ms, params.thing, m);
+        if (element) {
+          element.style.left = `${at.x}%`;
+          element.style.top = `${at.y}%`;
+          element.style.transform = `translate(-50%, -50%) scale(${at.size * flip}, ${at.size}) rotate(${turn}deg)`;
+          element.style.opacity = at.y > 125 ? "0" : "1";
+        }
+        // The moment the field shows the outcome (the engine ends the play in this frame): its juice, and her face.
+        if (outcome && impactAt !== null && ms >= impactAt && !struck) {
+          struck = true;
+          const it = IMPACTS[outcome];
+          if (it.stopMs) juice.hitStop(it.stopMs, element);
+          if (it.burst) juice.burst(element, it.burst.kind, it.burst.size);
+          if (it.shake) juice.shake(it.shake);
+          if (outcome === "caught") {
+            juice.squash(hands.current, "land");
+            live.current.vibrate("hit");
+          }
+          live.current.kit.react(it.react);
+        }
+        // Once it is settled in the hands (or gone), the monkey on the wall reacts.
+        if (outcome && endAt !== null && !reacted && ms >= endAt - 420) {
+          reacted = true;
+          setReact(monkeyReactOf(outcome));
+        }
+        const ringElement = ring.current;
+        if (ringElement) ringElement.style.transform = `translate(-50%, -50%) scale(${1 - 0.18 * ringAt(ms, m)})`;
+      });
+    }, [frames, still, params.thing]);
+    return (
+      <div className="mg-monkey-catch" data-art-wall={art.wall ? true : undefined} data-still={still || undefined}>
+        {art.wall && <img className="mg-monkey-catch-backdrop mg-photo" src={art.wall} alt="" draggable={false} />}
+        <span className="mg-monkey-catch-wall"><span className="mg-monkey-catch-coping" /><span className="mg-monkey-catch-inlay" /></span>
+        <span className="mg-monkey-catch-monkey mg-play-object" data-grip={grip} data-react={react ?? undefined}>
+          <span className="mg-monkey-catch-monkey-lean">
+            {art.monkey ? <img src={art.monkey} alt="" draggable={false} /> : <MonkeyFigure open={grip === "let_go"} />}
+          </span>
         </span>
-      </span>
-      <span className="mg-monkey-catch-ring" data-done={closed || undefined} />
-      <span className="mg-monkey-catch-hands" data-closed={closed || undefined} data-holding={holding || undefined}>
-        <Hand side="left" />
-        <Hand side="right" />
-      </span>
-      <span className="mg-monkey-catch-thing" ref={thing} data-thing={params.thing}>
-        {params.thing === "glasses" ? <span className="mg-monkey-catch-glasses"><span /><span /></span> : <span className="mg-monkey-catch-bottle" />}
-      </span>
-    </div>
-  );
+        <span className="mg-monkey-catch-ring" ref={ring} data-done={closed || undefined} />
+        <span className="mg-monkey-catch-hands mg-play-object" ref={hands} data-closed={closed || undefined} data-holding={holding || undefined}>
+          <Hand side="left" />
+          <Hand side="right" />
+        </span>
+        <span className="mg-monkey-catch-thing" ref={thing} data-thing={params.thing}>
+          {params.thing === "glasses" ? <span className="mg-monkey-catch-glasses mg-play-object"><span /><span /></span>
+            : <span className="mg-monkey-catch-bottle mg-play-object" />}
+        </span>
+      </div>
+    );
+  }
+
+  return {
+    tuning,
+    rules: monkeyCatchRulesFor(tuning),
+    hintJa: "落ちてくる物が輪に届く瞬間に「受け止める」",
+    actionJa: "受け止める",
+    actionHintJa: "猿の手から離れて落ちてくる物が、両手の上の輪に届くのに合わせて押します。",
+    autoJa: "おまかせで受け止めています",
+    // The play ends as it meets the hands (a catch, a bounce) or goes past them, the host's finish over it…
+    impactAt: ({ outcome, tapMs }) => impactOf(outcome, tapMs, m),
+    // …and the field goes on: the catch settling in the hands (the monkey on the wall reacting), the bounce off the
+    // fingers, or the thing falling out of sight, before the result card.
+    endAt: ({ outcome, tapMs }, still) => {
+      if (outcome === "caught" && tapMs !== null) return meetsAt(tapMs, m) + (still ? 450 : 800);
+      if (outcome === "fumbled" && tapMs !== null) return meetsAt(tapMs, m) + (still ? 450 : 750);
+      return Math.max(tapMs ?? 0, m.hands + m.through + m.gone) + 350;
+    },
+    Field: MonkeyCatchField,
+  };
 }
 
 /** The catch as a cue_tap skin: its timing, rules, words and field. */
-export const monkeyCatchSkin: CueTapSkin<MonkeyCatchParams, MonkeyCatchOutcome> = {
-  tuning: MONKEY_TUNING,
-  rules: monkeyCatchRules,
-  hintJa: "針が金色の所に来たら「受け止める」",
-  actionJa: "受け止める",
-  actionHintJa: "落ちてくる物が手に届くのに合わせて押します。",
-  autoJa: "おまかせで受け止めています",
-  // The catch settling in the hands, the bounce off the fingers, or the bottle falling out of sight, before the outcome shows.
-  endAt: ({ outcome, tapMs }, still) => {
-    if (outcome === "caught" && tapMs !== null) return meetsAt(tapMs) + (still ? 300 : 650);
-    if (outcome === "fumbled" && tapMs !== null) return meetsAt(tapMs) + (still ? 350 : 650);
-    return Math.max(tapMs ?? 0, MONKEY_HANDS_MS + MONKEY_FIELD.goneMs) + 300;
-  },
-  Field: MonkeyCatchField,
-};
+export const monkeyCatchSkin = monkeyCatchSkinFor(MONKEY_TUNING);
+
+/** For the tests: where the thing is, its turn, the ring and the monkey's grip (the story's tuning). */
+const MOMENTS = monkeyMoments(MONKEY_TUNING);
+export const MONKEY_FIELD_POINTS = {
+  untouched: (ms: number) => untouched(ms, MOMENTS),
+  thingAt: (ms: number, tapMs: number | null, outcome: MonkeyCatchOutcome | null) => thingAt(ms, tapMs, outcome, MOMENTS),
+  ringAt: (ms: number) => ringAt(ms, MOMENTS),
+  slipAt: (ms: number) => slipAt(ms, MOMENTS),
+  impactOf: (outcome: MonkeyCatchOutcome, tapMs: number | null) => impactOf(outcome, tapMs, MOMENTS),
+  monkeyMoments,
+  HELD, HANDS, THROUGH_DEPTH,
+} as const;

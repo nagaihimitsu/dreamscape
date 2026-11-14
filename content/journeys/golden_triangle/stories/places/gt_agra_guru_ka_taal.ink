@@ -18,6 +18,7 @@ INCLUDE modules.ink
 # voice: gt_agra_date_guru_ka_taal_001
 道路の音が、すごい。でも、池の方を向くと、少しだけ静かになるね
 # speaker: narrator
+# term: gt_term_langar
 礼拝所の食堂で、湯気の立つ豆の皿を受け取ったときだった。
 { cond("date gt_delhi_date_bangla_sahib"):
     # speaker: narrator

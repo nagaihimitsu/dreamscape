@@ -9,7 +9,7 @@ const context = { effectIds: [], backgroundIds: ["bg_pitch"], emotionIds: ["neut
 
 // A game with keys of its own, to read the game keys through the same reader (the registry's games may have none).
 const keyed: AnyMiniGameDefinition = defineMiniGame({
-  ...cricketBatting,
+  ...(cricketBatting as AnyMiniGameDefinition),
   id: "keyed_game",
   params: (tagContext) => z.object({
     level: z.enum(["easy", "hard"]).optional().describe("難しさ（easy・hard）"),
@@ -44,7 +44,7 @@ describe("a line's # minigame:", () => {
     expect(() => parseMiniGameTag("cricket_batting auto")).toThrow("the key auto has no value");
     expect(() => parseMiniGameTag("cricket_batting prefix")).toThrow("the key prefix has no value");
     expect(() => parseMiniGameTag("cricket_batting auto six auto edge")).toThrow("the key auto is written twice");
-    expect(() => parseMiniGameTag("cricket_batting fast yes")).toThrow("Unknown key of the minigame cricket_batting: fast (its keys: art.pitch:");
+    expect(() => parseMiniGameTag("cricket_batting fast yes")).toThrow("Unknown key of the minigame cricket_batting: fast (its keys: letgo:");
     expect(() => parseMiniGameTag("keyed_game speed 3", context, games)).toThrow("its keys: level: 難しさ（easy・hard）; count: 回数（1〜9）");
     expect(() => parseMiniGameTag("cricket_batting prefix Again")).toThrow("Invalid minigame prefix: Again");
     expect(() => parseMiniGameTag("cricket_batting prefix a_b")).toThrow("Invalid minigame prefix");
@@ -97,6 +97,15 @@ describe("a line's # minigame:", () => {
     expect(isValidMiniGameTag({ ...tag, auto: "home_run" }, context)).toBe(false);
     expect(isValidMiniGameTag({ ...tag, id: "tennis" }, context)).toBe(false);
     expect(isValidMiniGameTag({ ...tag, art: { sky: "pitch_x" } }, context)).toBe(false);
+  });
+
+  it("reads the host's retry yes (the result card offers 「もう一回」), and nothing else for it", () => {
+    const tag = parseMiniGameTag("cricket_batting retry yes", context);
+    expect(tag).toEqual({ id: "cricket_batting", auto: "six", retry: true });
+    expect(miniGameTagText(tag)).toBe("cricket_batting auto six retry yes");
+    expect(isValidMiniGameTag(tag, context)).toBe(true);
+    expect(parseMiniGameTag("cricket_batting", context).retry).toBeUndefined();
+    expect(() => parseMiniGameTag("cricket_batting retry no", context)).toThrow("retry takes yes");
   });
 
   it("takes the choice whose option ID is the outcome's, after the prefix when the tag has one", () => {

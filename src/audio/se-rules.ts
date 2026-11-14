@@ -14,3 +14,18 @@ export const SE_LATE_MS = 1000;
 export function admitsSe(lastStart: number | undefined, playing: number, now: number): boolean {
   return playing < SE_MAX_PLAYING && (lastStart === undefined || now - lastStart >= SE_REPEAT_MS);
 }
+
+/** A sound's own level for one play (a mini-game's fading echo, a lower creak): its volume share and playback rate. */
+export interface SeLevel {
+  /** A share of the sound's registered volume, 0 to 1 (default 1). */
+  volume?: number;
+  /** Its playback rate, 0.5 to 2 (default 1; below 1 lower and longer). */
+  rate?: number;
+}
+
+/** The gain and rate a sound plays at: its registered volume times the asked share, and the asked rate, each kept in range. */
+export function seLevel(registered: number, level: SeLevel = {}): { gain: number; rate: number } {
+  const share = Number.isFinite(level.volume) ? Math.min(1, Math.max(0, level.volume!)) : 1;
+  const rate = Number.isFinite(level.rate) ? Math.min(2, Math.max(0.5, level.rate!)) : 1;
+  return { gain: registered * share, rate };
+}

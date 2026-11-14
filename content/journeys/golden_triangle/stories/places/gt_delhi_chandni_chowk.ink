@@ -28,6 +28,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_chandni_chowk_001
 見て。あの人たち、丸いのを一口で食べてる。中に、水が入ってるの？
 # speaker: narrator
+# term: gt_term_golgappa
 ゴルガッパ。薄く揚げた空洞の玉に、男が親指で穴を開け、じゃがいもを少し詰め、酸っぱくて辛い緑の水にくぐらせる。それを、客の器に一つずつ置いていく。
 # speaker: heroine
 # voice: gt_delhi_date_chandni_chowk_002
@@ -212,7 +213,7 @@ INCLUDE modules.ink
 屋台の男は事情を察したらしい。二人の器に、交互に置き始めた。一つ置くごとに、手が速くなる。周りの客が数を数え出す。
 * [ゴルガッパの勝負：十四で、二人同時に手を上げた # option: together]
     # speaker: narrator
-    七。八。九。十二で、彼女が胸を叩いた。十三で、こちらがむせた。十四で、二人とも同時に手を上げた。
+    七。八。九。十二で、彼女が胸を叩いた。十三で、こちらの目に涙がにじんだ。十四の声に重なって、二人ともほとんど同時に手を上げた。
     # speaker: heroine
     # reaction: heroine,teasing_big,music
     # voice: gt_delhi_date_chandni_chowk_011
