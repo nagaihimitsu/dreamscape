@@ -19,8 +19,9 @@ import { defineMiniGame } from "../contract";
  *
  * Accessibility: 「じっと見る」 (64px, middle, the focus starts there), 「この値段で」 with the price on it (64px, right; its
  * name says the price) and 「やめておく」 (48px, left) sit at the bottom in thumb reach, Tab between them and Enter or Space
- * presses. The top band reads out the price on show and what Raju is doing (「いまの値段 ₹40　ラージュー：目が泳いでいる」),
- * so his moods are not only seen; his bubble's face and words change with each look (not his pose alone), and his hurt
+ * presses. The top band shows the price on show and the landed stares it still takes (「₹40　あと1回で値下げ」), never his
+ * mood (2026-11-14 playtest: that made the read a label); a screen reader hears what Raju is doing (「ラージュー：目が泳いで
+ * いる」, a live line of the field), so his moods are not only seen; his bubble's face and words change with each look (not his pose alone), and his hurt
  * pride shows as a cross mark, then puffed cheeks and a red bubble edge, and in his words. The price list shows the price
  * on show by size, a frame and a mark (not colour alone), the passed ones struck out. With less motion his looks are still
  * poses (no bob, fidget, hop or flinch), his giving up takes him off at once, and the stamp does not pop. The host reads

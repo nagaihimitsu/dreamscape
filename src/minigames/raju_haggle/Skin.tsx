@@ -27,6 +27,8 @@ import "./skin.css";
 type Mood = "glad" | "unsure" | "sulky";
 type Face = "proud" | "wobble" | "peek" | "glad" | "unsure" | "sulky";
 const SOUNDS = { page: "ui_page", stamp: "stamp", stare: "ui_tap", snatch: "snatch", step: "footstep" } as const;
+/** What a stare did (his huff, his 「わかったよ！」) stays at least this long over his routine's next look. */
+export const RAJU_SAY_MS = 1300;
 /** A field this short hides his picture (skin.css's container query): no place for her word that covers nothing. */
 const SHORT_FIELD_PX = 300;
 /** Her word when his pride is down to its last bit, and when she sees him peek back on his fake walk-away. */
@@ -56,8 +58,13 @@ const pick = <T,>(list: readonly T[], seed: number, index: number): T => list[Ma
 /** His look now (the stretch's, or none once decided). */
 const lookOf = (view: StepPickView<RajuHaggleOutcome>): RajuLook | null => (view.ending ? null : (view.mood?.look as RajuLook | undefined) ?? null);
 
-/** His words now: his end, a nudge, what his last stare did, else his look's. */
-export function rajuCallJa(view: StepPickView<RajuHaggleOutcome>, available: readonly string[], waiting: boolean, seed: number, pride: number, full: number): string {
+/**
+ * His words now: his end, a nudge, what his last stare did, else his look's. What a stare did stays while its moment lasts,
+ * and `holding` (a stare within RAJU_SAY_MS) keeps it over his routine's next look a while, so it can be read (2026-11-14
+ * playtest: 「もう無理だってば！」 stayed 0.1–0.7 s).
+ */
+export function rajuCallJa(view: StepPickView<RajuHaggleOutcome>, available: readonly string[], waiting: boolean, seed: number, pride: number, full: number,
+  holding = false): string {
   if (view.ending?.kind === "out") return "もういい！　地図は売らない！";
   if (view.ending?.kind === "none") return "……買わないの？";
   if (waiting) return "……買うの？　買わないの？";
@@ -68,7 +75,7 @@ export function rajuCallJa(view: StepPickView<RajuHaggleOutcome>, available: rea
   const look = lookOf(view);
   const index = view.mood?.index ?? 0;
   // What the last stare did, while its moment lasts (a stare that moved the price on starts his routine afresh).
-  const fresh = view.pushedAt !== null && view.mood !== null && view.pushedAt >= view.mood.from;
+  const fresh = view.pushedAt !== null && view.mood !== null && (view.pushedAt >= view.mood.from || holding);
   if (fresh && view.lastPush === "bounced") return step >= RAJU_MAP.steps.length - 1 ? "もう無理だってば！" : pick(HUFFS, seed, view.pushes);
   if (fresh && view.lastPush === "called") return taken === "haggle_map" ? "わ、わかったよ！　三十！" : "わ、わかったよ！";
   if (fresh && view.lastPush === "landed" && view.landed === 0 && step > 0) {
@@ -105,7 +112,9 @@ function moodOf(look: RajuLook | null, pride: number, decided: RajuHaggleOutcome
 /** His face in the bubble, by his look. */
 function faceOf(look: RajuLook | null, mood: Mood): Face {
   if (look === "boast" || look === "back") return mood === "sulky" ? "sulky" : "proud";
-  if (look === "wobble" || look === "recover") return "wobble";
+  if (look === "wobble") return "wobble";
+  // On guard after a landed stare (a stare now bounces): not his wobble's face.
+  if (look === "recover") return "unsure";
   if (look === "peek") return "peek";
   return mood;
 }
@@ -178,6 +187,7 @@ function RajuHaggleField({ available, still, seed, cast, art, sound, vibrate, vi
   buzz.current = vibrate;
   const full = tuning.moods?.patience ?? 0;
   const [waiting, setWaiting] = useState(false);
+  const [holding, setHolding] = useState(false);
   // The deal as the host takes it (a price the player cannot pay falls back, as on the paper).
   const decided = view.outcome ? (availableOutcome(rajuHaggle, view.outcome, available) ?? view.outcome) as RajuHaggleOutcome : null;
   const pride = prideOf(tuning, view);
@@ -220,15 +230,17 @@ function RajuHaggleField({ available, still, seed, cast, art, sound, vibrate, vi
     kitRef.current.juice.squash(paper.current?.querySelector(".mg-raju-haggle-stamp") ?? null, "land");
     kitRef.current.juice.shake("s");
   }, [decided]);
-  // A long while with nothing done: he asks once more before he gives up asking.
+  // A long while with nothing done: he asks once more before he gives up asking. What a stare did, held a while.
   useEffect(() => frames((ms) => {
     const now = !view.ending && ms - view.activeAt >= tuning.idleMs - RAJU_NUDGE_BEFORE_MS;
     setWaiting((current) => (current === now ? current : now));
-  }), [frames, view.activeAt, view.ending]);
+    const held = view.pushedAt !== null && ms - view.pushedAt < RAJU_SAY_MS;
+    setHolding((current) => (current === held ? current : held));
+  }), [frames, view.activeAt, view.ending, view.pushedAt]);
 
   const picture = art[`raju_${mood}`];
   const showBubble = !decided || away;
-  const words = rajuCallJa(view, available, waiting, seed, pride, full);
+  const words = rajuCallJa(view, available, waiting, seed, pride, full, holding);
   return (
     <div ref={root} className="mg-raju-haggle" data-mood={mood} data-look={look ?? undefined} data-pride={pride} data-away={away || undefined}
       data-still={still || undefined} data-decided={decided ?? undefined}>
@@ -244,6 +256,9 @@ function RajuHaggleField({ available, still, seed, cast, art, sound, vibrate, vi
           <span className="mg-raju-haggle-line"><Phrased text={words} /></span>
         </div>
       )}
+      {/* His look in words, for a screen reader only: the band shows the price and the stares left, never his mood (his face,
+          his pose and his words carry it: 2026-11-14 playtest). */}
+      <p className="sr-only" aria-live="polite" data-testid="raju-look">{lookJa(view, tuning)}</p>
       <div className="mg-raju-haggle-paper mg-play-object" ref={paper} data-none={nothingPayable || undefined}>
         <p className="mg-raju-haggle-paper-title">地図の値段</p>
         <ol>
@@ -270,19 +285,30 @@ function RajuHaggleField({ available, still, seed, cast, art, sound, vibrate, vi
   );
 }
 
-/** His look in words for the top band (read out): how a stare would land now, said as what he is doing. */
+/** His look in words (a screen reader's, never on show): how a stare would land now, said as what he is doing. */
 const LOOK_JA: Record<RajuLook, string> = {
   boast: "胸を張っている", wobble: "目が泳いでいる", recover: "たじろいでいる", turn: "背を向けた", peek: "ちらっとこっちを見た", back: "戻ってきた",
   floor: "もう下げられないと言っている",
 };
-
-/** The top band: the price on show and what Raju is doing, in words (read out). */
-function status(view: StepPickView<RajuHaggleOutcome>, available: readonly RajuHaggleOutcome[], tuning: StepPickTuning): string {
-  const amount = price(takenAt(Math.min(view.step, RAJU_MAP.steps.length - 1), available));
+export function lookJa(view: StepPickView<RajuHaggleOutcome>, tuning: StepPickTuning): string {
   const look = lookOf(view);
-  const pride = prideOf(tuning, view);
-  const doing = !look ? "" : look === "boast" && pride <= 1 ? "むくれている" : LOOK_JA[look];
-  return `${amount === null ? "買える値段がない" : `₹${amount}`}${doing ? `　${doing}` : ""}`;
+  if (!look) return "";
+  return `ラージュー：${look === "boast" && prideOf(tuning, view) <= 1 ? "むくれている" : LOOK_JA[look]}`;
+}
+
+/**
+ * The top band: the price on show and the landed stares it still takes to come down (2026-11-14 playtest: his mood in the
+ * band turned reading him into reading a label; it is his face, pose and words now). A stare that bounces leaves it as it
+ * was; at ₹30 it says he will go no lower.
+ */
+function status(view: StepPickView<RajuHaggleOutcome>, available: readonly RajuHaggleOutcome[], tuning: StepPickTuning): string {
+  const step = Math.min(view.step, RAJU_MAP.steps.length - 1);
+  const amount = price(takenAt(step, available));
+  if (amount === null) return "買える値段がない";
+  if (view.ending) return `₹${amount}`;
+  const needed = tuning.pushesPerStep[step];
+  const left = needed === undefined ? null : Math.max(1, needed - view.landed);
+  return `₹${amount}　${left === null ? "もう下がらない" : `あと${left}回で値下げ`}`;
 }
 
 /** The haggle as a step_pick skin for a tuning (Debug's room retunes it): its steps, rules, words and field. */

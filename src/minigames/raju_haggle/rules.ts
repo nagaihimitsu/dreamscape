@@ -53,11 +53,15 @@ export type RajuTuning = {
   peekMs: number;
   backMs: number;
 };
+// A stare that ignores him does not work (2026-11-14 playtest: one a second, never reading him, reached ₹30): after a
+// landed stare he is on guard a while (recoverMs), his boasts at ₹40 are long and he takes a moment to turn away, so a
+// steady starer bounces off him (rules.test.ts: one a second never reaches ₹30; any steady pace from 0.6 to 1.6 s about
+// 1 in 6, against 7 in 10 before), while one who stares in his wobbles still gets there.
 export const RAJU_HAGGLE_TUNING: RajuTuning = {
   staresPerPrice: 2, pride: 3, stareGapMs: 350, idleMs: 12000,
-  boastFirstMs: 1400, wobbleMs: 1800, boastMs: 1200, recoverMs: 800,
-  boast40Ms: 1600, wobble40Ms: 1200,
-  turnMs: 700, peekMs: 1500, backMs: 1300,
+  boastFirstMs: 1400, wobbleMs: 1800, boastMs: 1200, recoverMs: 1500,
+  boast40Ms: 1800, wobble40Ms: 1200,
+  turnMs: 1100, peekMs: 1500, backMs: 1300,
 };
 
 const ms = (value: number) => Math.max(1, Math.round(value));

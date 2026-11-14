@@ -89,6 +89,34 @@ describe("Raju's haggle: a staring contest you read", () => {
     expect(rajuHaggleRules.outcomeOf({ pushes: staresIn(2), end: { kind: "leave", ms: 9000 } }, {})).toBe("decline_map");
   });
 
+  it("does not give way to a stare that ignores him: a steady starer bounces off him, one who reads him gets to ₹30", () => {
+    /** How far a steady starer gets (the highest price step reached before his pride gives out), from `first` every `period`. */
+    const steady = (first: number, period: number) => {
+      const pushes: number[] = [];
+      let best = 0;
+      for (let at = first; at < RAJU_HAGGLE_TUNING.idleMs; at += period) {
+        pushes.push(at);
+        const { standing } = stepPickStanding(pushes, RAJU_TUNING);
+        if (standing.bounces >= RAJU_PRIDE) break;
+        best = Math.max(best, standing.step);
+        if (best === 2) break;
+      }
+      return best;
+    };
+    // Once a second (2026-11-14 playtest: it reached ₹30), from any moment: never ₹30.
+    for (let first = 450; first < 1450; first += 25) expect(steady(first, 1000), `from ${first}`).toBeLessThan(2);
+    // Any steady pace from 0.6 to 1.6 s, from any moment: about 1 in 6 reach ₹30 (7 in 10 before).
+    let plays = 0;
+    let thirty = 0;
+    for (let period = 600; period <= 1600; period += 50) for (let phase = 0; phase < period; phase += 50) {
+      plays += 1;
+      if (steady(450 + phase, period) === 2) thirty += 1;
+    }
+    expect(thirty / plays).toBeLessThan(0.2);
+    // Staring in each of his wobbles (and at his peek) still brings ₹30.
+    expect(takeAfter(staresIn(4))).toBe("haggle_map");
+  });
+
   it("counts stares closer than 350 ms once: mashing the button is one stare", () => {
     expect(RAJU_TUNING.pushGapMs).toBe(350);
     const wobble = whenLook([], "wobble");

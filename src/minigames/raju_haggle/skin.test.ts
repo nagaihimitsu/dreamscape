@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { moodView, type StepPickView } from "../engines/step_pick/EnginePlay";
 import { rajuHaggle } from "./definition";
 import { RAJU_HAGGLE_TUNING, RAJU_TUNING, type RajuHaggleOutcome } from "./rules";
-import { RAJU_TELLS, rajuCallJa, rajuHaggleSkin, rajuTell } from "./Skin";
+import { RAJU_SAY_MS, RAJU_TELLS, rajuCallJa, rajuHaggleSkin, rajuTell } from "./Skin";
 
 // The haggle's field (docs/13 2.12, 4.2; round 3): his look drawn and said (his face, his words, his pose), his hurt pride
 // in his face (no dots), a price the player cannot pay drawn lowered to its fallback's, the stamp, and the use's pictures
@@ -96,14 +96,31 @@ describe("the haggle's field", () => {
     expect(rajuHaggleSkin.takeOpen?.(2, ["haggle_map", "decline_map"])).toBe(true);
   });
 
-  it("puts the price on the take button, and the price and what he is doing in the top band", () => {
+  it("puts the price on the take button, and in the top band the price and the stares left, never his mood (a screen reader hears it)", () => {
     expect(rajuHaggleSkin.takeDetailJa?.(1, ALL)).toBe("₹40");
     expect(rajuHaggleSkin.takeDetailJa?.(0, ["haggle_map", "decline_map"])).toBe("₹30");
     expect(rajuHaggleSkin.takeDetailJa?.(0, ["decline_map"])).toBe("");
-    expect(rajuHaggleSkin.statusJa?.(at(BOAST), ALL)).toBe("₹50　胸を張っている");
-    expect(rajuHaggleSkin.statusJa?.(at(WOBBLE), ALL)).toBe("₹50　目が泳いでいる");
-    expect(rajuHaggleSkin.statusJa?.({ ...at(BOAST), bounces: 2 }, ALL)).toBe("₹50　むくれている");
-    expect(rajuHaggleSkin.statusJa?.(at(BOAST), ["decline_map"])).toBe("買える値段がない　胸を張っている");
+    // The same band in his boast and his wobble (2026-11-14 playtest: 「目が泳いでいる」 in the band was a label, not a read).
+    expect(rajuHaggleSkin.statusJa?.(at(BOAST), ALL)).toBe("₹50　あと2回で値下げ");
+    expect(rajuHaggleSkin.statusJa?.(at(WOBBLE), ALL)).toBe("₹50　あと2回で値下げ");
+    expect(rajuHaggleSkin.statusJa?.({ ...at(BOAST), bounces: 2 }, ALL)).toBe("₹50　あと2回で値下げ");
+    expect(rajuHaggleSkin.statusJa?.(at(100, 0, 1, 0), ALL)).toBe("₹50　あと1回で値下げ");
+    expect(rajuHaggleSkin.statusJa?.(at(100, 2), ALL)).toBe("₹30　もう下がらない");
+    expect(rajuHaggleSkin.statusJa?.(at(BOAST), ["decline_map"])).toBe("買える値段がない");
+    for (const ms of [BOAST, WOBBLE]) expect(rajuHaggleSkin.statusJa?.(at(ms), ALL)).not.toMatch(/泳|張|むくれ/u);
+    // His look, said for a screen reader only.
+    expect(field({ ms: WOBBLE })).toMatch(/class="sr-only"[^>]*>ラージュー：目が泳いでいる</u);
+    expect(field()).toMatch(/class="sr-only"[^>]*>ラージュー：胸を張っている</u);
+  });
+
+  it("holds what a stare did over his routine's next look a while, so it can be read", () => {
+    // A stare that bounced in his first boast; his wobble has begun since.
+    const bounced: StepPickView<RajuHaggleOutcome> = { ...at(WOBBLE), pushes: 1, bounces: 1, lastPush: "bounced", pushedAt: RAJU_HAGGLE_TUNING.boastFirstMs - 200 };
+    expect(rajuCallJa(bounced, ALL, false, 1, 2, 3, true)).toMatch(/じろじろ|ふん/u);
+    expect(rajuCallJa(bounced, ALL, false, 1, 2, 3, false)).not.toMatch(/じろじろ|ふん/u);
+    expect(RAJU_SAY_MS).toBeGreaterThanOrEqual(1200);
+    // On guard after a landed stare: not his wobble's face.
+    expect(field({ view: at(100, 0, 1, 0) })).toContain('data-face="unsure"');
   });
 
   it("asks once more before doing nothing ends it", () => {
