@@ -128,16 +128,21 @@ const flipAt = (ms: number, thing: MonkeyCatchParams["thing"], m: Moments) =>
 /** The ring where the thing meets the hands: it tightens over the last moments before it arrives (0 to 1). */
 const ringAt = (ms: number, m: Moments) => clamp01((ms - (m.hands - RING_TIGHTEN_MS)) / RING_TIGHTEN_MS);
 
-/** The sounds of a play (definition `sounds`): the hands closing on nothing, and the thing landing in them. */
-const SOUNDS = { grab: "cloth_grab", catch: "item_pouch" } as const;
+/**
+ * The sounds of a play (definition `sounds`): the hands closing on nothing; the catch, a sharp snap of the palms right as
+ * they meet it (a short, high wooden knock: its attack 10 ms in) under the pouch's softer settle.
+ */
+const SOUNDS = { grab: "cloth_grab", snap: "bat_hit", catch: "item_pouch" } as const;
+const CATCH_SNAP = { volume: 0.55, rate: 1.5 } as const;
+const CATCH_SETTLE = { volume: 0.7 } as const;
 
 /**
  * The moment the field shows each outcome (group3 6.4's values): the stop on the thing, the burst where it meets the hands
- * (a catch's stars, a bounce's ring), the hands' squash on a catch; and the heroine's face (it is her bottle or her
- * sunglasses).
+ * (a catch's stars, a bounce's ring), the small shake and the hands' squash on a catch; and the heroine's face (it is her
+ * bottle or her sunglasses).
  */
-const IMPACTS: Readonly<Record<MonkeyCatchOutcome, { stopMs?: number; burst?: { kind: "star" | "ring" | "dust"; size: number }; react: "surprise" | "oops" }>> = {
-  caught: { stopMs: 90, burst: { kind: "star", size: 1 }, react: "surprise" },
+const IMPACTS: Readonly<Record<MonkeyCatchOutcome, { stopMs?: number; burst?: { kind: "star" | "ring" | "dust"; size: number }; shake?: "s"; react: "surprise" | "oops" }>> = {
+  caught: { stopMs: 90, burst: { kind: "star", size: 1 }, shake: "s", react: "surprise" },
   fumbled: { stopMs: 60, burst: { kind: "ring", size: 0.9 }, react: "oops" },
   missed: { react: "oops" },
 };
@@ -146,24 +151,59 @@ const IMPACTS: Readonly<Record<MonkeyCatchOutcome, { stopMs?: number; burst?: { 
 type MonkeyReact = "cheer" | "peer";
 const monkeyReactOf = (outcome: MonkeyCatchOutcome): MonkeyReact => (outcome === "caught" ? "cheer" : "peer");
 
-/** The monkey (drawn when the use gives no picture): grey-brown, on the wall's edge, one arm held out; its hand at (20%, 50%). */
+/**
+ * The monkey (drawn when the use gives no picture): a grey-brown macaque hunched on the wall's edge, one arm held out, its
+ * hand at (20%, 50%). Drawn to sit with the photos and the standing pictures (D1): a dark outline round every part, fur
+ * shaded from a light upper left, a few strokes of fur, a pink face with a brow and a muzzle.
+ */
 function MonkeyFigure({ open }: { open: boolean }) {
   return (
     <svg viewBox="0 0 100 120" className="mg-monkey-catch-monkey-figure" aria-hidden="true">
-      <path d="M78 92 C 92 100, 96 112, 88 120" fill="none" stroke="#6f6658" strokeWidth="5" strokeLinecap="round" />
-      <path d="M48 94 L 44 118 M66 94 L 70 118" stroke="#7d7466" strokeWidth="9" strokeLinecap="round" />
-      <ellipse cx="57" cy="72" rx="23" ry="28" fill="#8d8475" />
-      <ellipse cx="60" cy="78" rx="12" ry="15" fill="#a39a88" />
-      <circle cx="37" cy="22" r="5.5" fill="#7d7466" />
-      <circle cx="67" cy="22" r="5.5" fill="#7d7466" />
-      <circle cx="52" cy="27" r="16" fill="#8d8475" />
-      <ellipse cx="52" cy="31" rx="10" ry="11" fill="#d4b29a" />
-      <circle cx="48" cy="28" r="1.8" fill="#2a221c" />
-      <circle cx="56" cy="28" r="1.8" fill="#2a221c" />
-      {open ? <ellipse cx="52" cy="36" rx="2.6" ry="2" fill="#5a2e24" /> : <path d="M49 36 Q 52 37.5, 55 36" fill="none" stroke="#5a2e24" strokeWidth="1.3" strokeLinecap="round" />}
-      <path d="M41 54 Q 30 56, 20 60" fill="none" stroke="#8d8475" strokeWidth="9" strokeLinecap="round" />
-      {open ? <path d="M15 56 L 12 51 M20 54 L 19 48 M25 56 L 27 51" stroke="#a39a88" strokeWidth="3" strokeLinecap="round" />
-        : <circle cx="20" cy="60" r="6" fill="#a39a88" />}
+      <defs>
+        <radialGradient id="mg-monkey-catch-fur" cx="0.36" cy="0.28" r="0.85">
+          <stop offset="0" stopColor="#b8aa92" />
+          <stop offset="0.55" stopColor="#8b7d68" />
+          <stop offset="1" stopColor="#5c5143" />
+        </radialGradient>
+        <radialGradient id="mg-monkey-catch-face" cx="0.42" cy="0.32" r="0.8">
+          <stop offset="0" stopColor="#f2cbb2" />
+          <stop offset="1" stopColor="#c88c71" />
+        </radialGradient>
+      </defs>
+      <g stroke="#2a211c" strokeWidth="2.2" strokeLinejoin="round" strokeLinecap="round">
+        {/* The tail hangs down over the wall's edge (an outline under a fur stroke). */}
+        <path d="M74 97 C 89 100, 95 110, 87 119" fill="none" strokeWidth="7.5" />
+        <path d="M74 97 C 89 100, 95 110, 87 119" fill="none" stroke="#7a6d5b" strokeWidth="3.6" />
+        <path d="M45 92 Q 39 105, 43 117 L 52 117 Q 51 105, 56 95 Z" fill="#6c604f" />
+        <path d="M39 59 Q 35 80, 43 96 Q 58 105, 75 96 Q 83 79, 74 58 Q 66 46, 54 47 Q 43 49, 39 59 Z" fill="url(#mg-monkey-catch-fur)" />
+        <ellipse cx="60" cy="81" rx="9.5" ry="12.5" fill="#b7aa93" stroke="none" opacity="0.85" />
+        <path d="M58 89 Q 72 83, 79 96 Q 81 106, 72 110 L 75 117 L 61 117 Q 57 104, 58 89 Z" fill="url(#mg-monkey-catch-fur)" />
+        <path d="M47 64 l 3 4 M66 60 l 3 4 M70 73 l 3 3.5 M50 78 l 2.5 4" fill="none" stroke="#54493c" strokeWidth="1.3" />
+        {/* The arm held out over the edge, the hand open (it let go) or gripping. */}
+        <path d="M47 53 Q 34 53, 21 56 L 21 64 Q 34 63, 48 62 Z" fill="url(#mg-monkey-catch-fur)" />
+        {open ? (
+          <g fill="url(#mg-monkey-catch-face)">
+            <path d="M23 57 Q 15 55, 12 58 Q 12 62, 15 63 Q 19 65, 23 63 Z" />
+            <path d="M15 57 L 11 52 M18 56 L 16 50 M21 56 L 22 50" fill="none" strokeWidth="2.6" />
+          </g>
+        ) : <circle cx="20" cy="60" r="5.6" fill="url(#mg-monkey-catch-face)" />}
+        <circle cx="36.5" cy="23" r="5.8" fill="#7a6d5b" />
+        <circle cx="67.5" cy="23" r="5.8" fill="#7a6d5b" />
+        <circle cx="36.5" cy="23" r="2.6" fill="#d9a48b" stroke="none" />
+        <circle cx="67.5" cy="23" r="2.6" fill="#d9a48b" stroke="none" />
+        <circle cx="52" cy="27" r="16" fill="url(#mg-monkey-catch-fur)" />
+        <path d="M38.5 21 Q 44 9.5, 52 10.5 Q 60 9.5, 65.5 21 Q 58 15.5, 52 16.5 Q 46 15.5, 38.5 21 Z" fill="#5c5143" stroke="none" />
+        <path d="M42 28 Q 42 20.5, 52 21.5 Q 62 20.5, 62 28 Q 63 38, 56.5 43 Q 52 45.5, 47.5 43 Q 41 38, 42 28 Z" fill="url(#mg-monkey-catch-face)" />
+      </g>
+      <path d="M44.5 26 Q 48 23.8, 51 25.6 M53 25.6 Q 56 23.8, 59.5 26" fill="none" stroke="#5a3a2c" strokeWidth="1.6" strokeLinecap="round" />
+      <circle cx="48" cy="29" r="2" fill="#2a221c" />
+      <circle cx="56" cy="29" r="2" fill="#2a221c" />
+      <circle cx="48.6" cy="28.4" r="0.6" fill="#fff" />
+      <circle cx="56.6" cy="28.4" r="0.6" fill="#fff" />
+      <ellipse cx="52" cy="36.5" rx="5.2" ry="4.2" fill="#e5b398" />
+      <path d="M50.6 34.6 h 0.1 M53.3 34.6 h 0.1" stroke="#5a3a2c" strokeWidth="1.3" strokeLinecap="round" />
+      {open ? <ellipse cx="52" cy="38.4" rx="2.4" ry="1.8" fill="#5a2e24" />
+        : <path d="M49.4 38.2 Q 52 39.6, 54.6 38.2" fill="none" stroke="#5a2e24" strokeWidth="1.3" strokeLinecap="round" />}
     </svg>
   );
 }
@@ -222,7 +262,8 @@ export function monkeyCatchSkinFor(tuning: CueTapTuning): CueTapSkin<MonkeyCatch
         if (inHands && !held) {
           held = true;
           setHolding(true);
-          live.current.sound(SOUNDS.catch);
+          live.current.sound(SOUNDS.snap, CATCH_SNAP);
+          live.current.sound(SOUNDS.catch, CATCH_SETTLE);
         }
         const element = thing.current;
         // It tumbles as it falls (drawn the same every time; with less motion it does not turn).
@@ -240,6 +281,7 @@ export function monkeyCatchSkinFor(tuning: CueTapTuning): CueTapSkin<MonkeyCatch
           const it = IMPACTS[outcome];
           if (it.stopMs) juice.hitStop(it.stopMs, element);
           if (it.burst) juice.burst(element, it.burst.kind, it.burst.size);
+          if (it.shake) juice.shake(it.shake);
           if (outcome === "caught") {
             juice.squash(hands.current, "land");
             live.current.vibrate("hit");
