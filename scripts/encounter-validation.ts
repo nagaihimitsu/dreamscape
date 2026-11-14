@@ -12,7 +12,7 @@ import { bindItemReader, type ItemStatus } from "../src/story/items";
 import { bindMemoryReader } from "../src/story/memory";
 import { unique } from "./content-validation-utils";
 
-/** Validate dialogue separately: battle Ink remains choice- and effect-free. */
+/** An encounter's story walked on its own (each cond assignment, item status and reaction): its choices match its options, and it applies no Ink effect. */
 export function validateEncounterStory(
   compiled: string,
   context: TagContext,

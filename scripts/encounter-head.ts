@@ -4,8 +4,9 @@ import type { EncounterEntryRule, VisitPriority } from "../src/content/encounter
 
 // The head tags of a catalog encounter's Ink (the unified event design, stage 1; a place file's
 // scenes have their own heads: place-files.ts): written at the top of the file (after the VAR
-// lines, before the first line of text), they place the encounter at its landmark's visit. content:build reads and removes them before compiling the Ink (so the story
-// runs as before), and turns them into the encounter's entry rule (and `repeatable`):
+// lines, before the first line of text), they place the encounter at its landmark's visit.
+// content:build reads and removes them before compiling the Ink (so the story runs as before),
+// and turns them into the encounter's entry rule (and `repeatable`):
 //
 //   # at: visit <landmark>              the landmark's visit (one: the catalog's landmark)
 //   # priority: -1 | after observe | +1 before the main part, while observing, after it

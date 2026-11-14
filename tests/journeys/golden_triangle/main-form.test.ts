@@ -6,7 +6,7 @@ import { itemUsableIn } from "../../../src/domain/item-cities";
 
 /**
  * GT-3a (the main story in the new form): the guides, arrivals and epilogues are knots of place files,
- * and the head `# on_done:` lines added to them and to four battle files give the decided items and pay
+ * and the head `# on_done:` lines added to them and to four battles (knots of place files too) give the decided items and pay
  * the drafted prices (provisional until the balance pass) once.
  */
 describe("Golden Triangle main story in place files (GT-3a)", () => {
