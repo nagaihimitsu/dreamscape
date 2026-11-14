@@ -22,13 +22,16 @@ export const SAY_WORD_COUNT = 4;
 /**
  * Saying it together's numbers. Her breath (a tap in it is no tap), one beat (her count's and the words'), each word's
  * window (two voices starting this close sound as one; wider after her beat: a phone's touch and screen land a tap late,
- * group2's playtest of 2026-11-13: −110/+170), and how long after the last word the play ends at the latest.
+ * group2's playtest of 2026-11-13: −110/+170 for the first word, the story's), the later words' late side (the ★ only:
+ * +200, so a slow phone is not marked down on them; 2026-11-14), and how long after the last word the play ends at the
+ * latest.
  */
 export const SAY_NUMBERS = {
   settleMs: 1000,
   beatMs: 650,
   cleanEarlyMs: 110,
   cleanLateMs: 170,
+  laterLateMs: 200,
   endAfterMs: 400,
 } as const;
 export type SayNumbers = { readonly [Key in keyof typeof SAY_NUMBERS]: number };
@@ -59,6 +62,8 @@ export interface SayGame {
   endMs: number;
   /** The rhythm_tap tuning the play runs on (the lane's marks, the count-in's crosses). */
   tuning: RhythmTapTuning;
+  /** A word's window after her beat: the first word's (the story's), or the later words' (the ★ only). */
+  lateOf(word: number): number;
   /** Whether a tap is in a word's window. */
   inWindow(ms: number, word: number): boolean;
   judge(record: SayRecord, now?: number): SayJudgement;
@@ -74,14 +79,18 @@ export function sayGame(numbers: SayNumbers = SAY_NUMBERS): SayGame {
   const beat = Math.max(1, Math.round(numbers.beatMs));
   const countAt = Array.from({ length: SAY_COUNT_BEATS }, (_, index) => Math.round(numbers.settleMs) + beat * index);
   const wordsAt = Array.from({ length: SAY_WORD_COUNT }, (_, index) => countAt[0] + beat * (SAY_COUNT_BEATS + index));
+  // The engine's lane lights each word's window as the judge reads it: the first word's, then the later words' (its
+  // `peak`, here wider than the first: the later words count for the ★ only).
   const tuning: RhythmTapTuning = {
     beats: wordsAt,
     earlyMs: Math.round(numbers.cleanEarlyMs),
     lateMs: Math.round(numbers.cleanLateMs),
+    peak: { from: 1, earlyMs: Math.round(numbers.cleanEarlyMs), lateMs: Math.round(numbers.laterLateMs) },
     endAfterMs: Math.round(numbers.endAfterMs),
   };
   const endMs = rhythmTapEnd(tuning);
-  const inWindow = (ms: number, word: number) => ms >= wordsAt[word] - numbers.cleanEarlyMs && ms <= wordsAt[word] + numbers.cleanLateMs;
+  const lateOf = (word: number) => (word === 0 ? numbers.cleanLateMs : numbers.laterLateMs);
+  const inWindow = (ms: number, word: number) => ms >= wordsAt[word] - numbers.cleanEarlyMs && ms <= wordsAt[word] + lateOf(word);
   /** Each word's own time: from halfway after the word before to halfway before the next (the first from 「せー」, the last to the end). */
   const wordOf = (ms: number) => {
     let word = 0;
@@ -125,13 +134,14 @@ export function sayGame(numbers: SayNumbers = SAY_NUMBERS): SayGame {
   const fairness = () => {
     const problems = rhythmTapFairness(tuning);
     if (numbers.settleMs < 450) problems.push(`settleMs ${numbers.settleMs} ends her breath inside the start's double-tap guard (450 ms)`);
-    if (numbers.cleanEarlyMs >= beat / 2 || numbers.cleanLateMs >= beat / 2)
-      problems.push(`a word's window (−${numbers.cleanEarlyMs}/+${numbers.cleanLateMs}) reaches past half a beat (${beat / 2} ms): a tap could say two words`);
+    for (const late of [numbers.cleanLateMs, numbers.laterLateMs]) if (numbers.cleanEarlyMs >= beat / 2 || late >= beat / 2)
+      problems.push(`a word's window (−${numbers.cleanEarlyMs}/+${late}) reaches past half a beat (${beat / 2} ms): a tap could say two words`);
+    if (numbers.laterLateMs < numbers.cleanLateMs) problems.push(`laterLateMs ${numbers.laterLateMs} is narrower than the first word's cleanLateMs ${numbers.cleanLateMs}`);
     if (numbers.cleanLateMs < numbers.cleanEarlyMs + 30) problems.push(`cleanLateMs ${numbers.cleanLateMs} is not 30 ms wider than cleanEarlyMs (a phone lands a tap late)`);
     return problems;
   };
   return {
-    numbers, countAt, wordsAt, endMs, tuning, inWindow, judge, fairness,
+    numbers, countAt, wordsAt, endMs, tuning, lateOf, inWindow, judge, fairness,
     rules: { outcomeOf: (record) => judge(record).outcome, autoRecord, rate },
   };
 }

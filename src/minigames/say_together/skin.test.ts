@@ -70,8 +70,9 @@ describe("saying it together's field", () => {
     expect(sayEndsAt(SAY_GAME, last - 1, record(wordsAt.map((at, index) => (index === 3 ? last - 60 : at))))).toBe(false);
     expect(sayEndsAt(SAY_GAME, last, record(wordsAt.map((at, index) => (index === 3 ? last - 60 : at))))).toBe(true);
     expect(sayEndsAt(SAY_GAME, last + 100, record(wordsAt.slice(0, 3)))).toBe(false);
-    expect(sayEndsAt(SAY_GAME, last + SAY_GAME.numbers.cleanLateMs, record([]))).toBe(true);
+    expect(sayEndsAt(SAY_GAME, last + SAY_GAME.numbers.laterLateMs - 1, record([]))).toBe(false);
+    expect(sayEndsAt(SAY_GAME, last + SAY_GAME.numbers.laterLateMs, record([]))).toBe(true);
     // Always before the engine's own end (its fallback).
-    expect(last + SAY_GAME.numbers.cleanLateMs).toBeLessThan(SAY_GAME.endMs);
+    expect(last + SAY_GAME.numbers.laterLateMs).toBeLessThan(SAY_GAME.endMs);
   });
 });

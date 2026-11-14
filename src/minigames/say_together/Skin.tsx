@@ -66,7 +66,7 @@ export function sayView(game: SayGame, ms: number, record: SayRecord, ended: boo
  */
 export function sayEndsAt(game: SayGame, ms: number, record: SayRecord): boolean {
   const last = game.wordsAt[SAY_WORD_COUNT - 1];
-  return (game.judge(record, ms).words[SAY_WORD_COUNT - 1] === "together" && ms >= last) || ms >= last + game.numbers.cleanLateMs;
+  return (game.judge(record, ms).words[SAY_WORD_COUNT - 1] === "together" && ms >= last) || ms >= last + game.lateOf(SAY_WORD_COUNT - 1);
 }
 
 /** The tomb far off across the lawn (drawn when the use gives no picture): a Lodi-era tomb's outline, a dome and two kiosks. */

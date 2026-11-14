@@ -66,6 +66,10 @@ describe("saying it together's four words (the result card)", () => {
     // Early or late: the first word is off; the others count on their own.
     expect(judge([countAt[1], ...wordsAt.slice(1)])).toMatchObject({ outcome: "early", together: 3 });
     expect(judge(wordsAt.slice(1))).toMatchObject({ outcome: "late", together: 3, words: [null, "together", "together", "together"] });
+    // The later words (the ★ only) take a tap up to +200 ms; the first (the story's) up to +170 ms.
+    expect(judge([wordsAt[0] + 185, wordsAt[1] + 185, wordsAt[2] + 200, wordsAt[3] + 201])).toMatchObject({
+      outcome: "late", words: ["off", "together", "together", "off"],
+    });
     // As of a moment: taps not yet made do not count.
     expect(SAY_GAME.judge(record(wordsAt), wordsAt[1]).together).toBe(2);
   });
@@ -102,7 +106,8 @@ describe("saying it together's four words (the result card)", () => {
   it("is fair on a phone (−110/+170 ms, wider after her beat; each window inside its word's half beat) and so is the room's edit, until it is not", () => {
     expect(SAY_GAME.fairness()).toEqual([]);
     expect(rhythmTapFairness(SAY_GAME.tuning)).toEqual([]);
-    expect([SAY_NUMBERS.cleanEarlyMs, SAY_NUMBERS.cleanLateMs]).toEqual([110, 170]);
+    expect([SAY_NUMBERS.cleanEarlyMs, SAY_NUMBERS.cleanLateMs, SAY_NUMBERS.laterLateMs]).toEqual([110, 170, 200]);
+    expect(sayGame({ ...SAY_NUMBERS, laterLateMs: 150 }).fairness().length).toBeGreaterThan(0);
     expect(sayGame({ ...SAY_NUMBERS, beatMs: 500 }).fairness()).toEqual([]);
     expect(sayGame({ ...SAY_NUMBERS, cleanLateMs: 400 }).fairness().length).toBeGreaterThan(0);
     expect(sayGame({ ...SAY_NUMBERS, settleMs: 200 }).fairness().length).toBeGreaterThan(0);
