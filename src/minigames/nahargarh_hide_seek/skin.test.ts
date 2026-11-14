@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import type { SearchView } from "../engines/search/EnginePlay";
 import { nahargarhHideSeek } from "./definition";
 import { hideSeekSetup } from "./rules";
-import { HIDE_SEEK_ROOM_EVENTS, hideSeekRoomEvents, hideSeekSkin } from "./Skin";
+import { HIDE_SEEK_ROOM_EVENTS, hideSeekLean, hideSeekRoomEvents, hideSeekRoomJa, hideSeekSkin } from "./Skin";
 
 // The hide-and-seek's field (docs/13 2.12–2.13): twelve door buttons named by number only, her behind hers once opened,
 // an empty room's small event, her peeking out when the play ran out, and the use's art in its declared slots (the echo's
@@ -28,7 +28,7 @@ describe("the hide-and-seek's field", () => {
 
   it("shows her behind her door once it is opened, and peeking out when the play ran out", () => {
     const found = field({}, view({ searched: [2, 6], ending: { kind: "found", spot: 6, misses: 1, helped: 0 } }));
-    expect(found).toContain('aria-label="扉3：空っぽの部屋"');
+    expect(found).toContain('aria-label="扉3：空っぽの部屋。しんとしている"');
     expect(found).toContain('aria-label="扉7：見つけた"');
     expect(found).toContain("standing-picture");
     expect(field({}, view({ ending: { kind: "idle", misses: 0, helped: 0 } }))).toContain("mg-nahargarh-hide-seek-peek");
@@ -46,6 +46,36 @@ describe("the hide-and-seek's field", () => {
     const html = field({}, view({ searched: [0] }));
     expect(html).toContain(`data-event="${events[0]}"`);
     expect(html.match(/data-event=/gu)).toHaveLength(1);
+  });
+
+  it("leans an empty room near her door toward it (warm), not a far one (cold), in the picture and the door's name; next door, her gasp", () => {
+    // Her door is the 7th (index 6): rooms within three doors lean toward it, farther ones are quiet.
+    expect(hideSeekLean(3, 6)).toEqual({ toward: "right", next: false });
+    expect(hideSeekLean(9, 6)).toEqual({ toward: "left", next: false });
+    expect(hideSeekLean(5, 6)).toEqual({ toward: "right", next: true });
+    expect(hideSeekLean(7, 6)).toEqual({ toward: "left", next: true });
+    expect(hideSeekLean(0, 6)).toEqual({ toward: null, next: false });
+    expect(hideSeekLean(11, 6)).toEqual({ toward: null, next: false });
+    const cold = field({}, view({ searched: [0] }));
+    expect(cold).toContain('data-toward="none"');
+    expect(cold).toContain('aria-label="扉1：空っぽの部屋。しんとしている"');
+    const warm = field({}, view({ searched: [3] }));
+    expect(warm).toContain('data-toward="right"');
+    expect(warm).toMatch(/aria-label="扉4：空っぽの部屋。[^"]*右[^"]*"/u);
+    const beyond = field({}, view({ searched: [9] }));
+    expect(beyond).toContain('data-toward="left"');
+    expect(beyond).toMatch(/aria-label="扉10：空っぽの部屋。[^"]*左[^"]*"/u);
+    for (const event of HIDE_SEEK_ROOM_EVENTS) {
+      expect(hideSeekRoomJa(event, 3, 6)).toContain("右");
+      expect(hideSeekRoomJa(event, 9, 6)).toContain("左");
+      expect(hideSeekRoomJa(event, 0, 6)).toBe("しんとしている");
+      expect(hideSeekRoomJa(event, 5, 6)).toBe("右の壁の向こうで、小さな声がした");
+    }
+  });
+
+  it("draws her fingers ready at her shut door (shown when she peeks), never at another door or once found", () => {
+    expect(field({}).match(/mg-nahargarh-hide-seek-fingers/gu)).toHaveLength(1);
+    expect(field({}, view({ searched: [6], ending: { kind: "found", spot: 6, misses: 0, helped: 0 } }))).not.toContain("mg-nahargarh-hide-seek-fingers");
   });
 
   it("warns before the call that brings her out: the button and the band", () => {
