@@ -33,7 +33,33 @@
 | ティフィン | File:Tiffin box.jpg | Nipunbayas | CC BY-SA 3.0（`{{self\|cc-by-sa-3.0}}`） |
 | 隊商宿 | File:Caravan Sarai, Fatehpur Sikri.jpg | Bruno Girin（Flickr） | CC BY-SA 2.0（`{{cc-by-sa-2.0}}`、flickrreview 確認済み） |
 | 細密画 | File:Northwestern India, Rajasthan, Jaipur - A Sakhi brings Radha to Krishna - 2018.172 - Cleveland Museum of Art.tif | 作者不詳（クリーブランド美術館所蔵、1790〜1800年ごろ） | CC0 1.0（`{{cc-zero}}`、同館のオープンアクセス） |
-| セーラー | File:Sehragroom.jpg | SynthContibutor | CC BY-SA 4.0（`{{self\|cc-by-sa-4.0}}`。花婿の顔は房で隠れ、ほかの人の顔は写っていない） |
+| セーラー | File:Dulha of udaipur 2015.jpg（2026-11-14に差し替え。下の節） | nevil zaveri（Flickr） | CC BY 2.0（`{{cc-by-2.0}}`、FlickreviewR 確認済み。花婿の顔は房で隠れている。バルコニーの小さな人影はぼかした） |
+
+### セーラーの写真の差し替え（2026-11-14）
+
+最初に選んだ File:Sehragroom.jpg（SynthContibutor、`{{self|cc-by-sa-4.0}}`、「own work」）は、投稿者の名前から本物の写真か疑問が出たので調べ直した。
+
+- AIで作った画像ではなさそう：EXIF に Canon EOS 5D Mark IV・63mm・1/200秒・f/2.8・ISO 800・撮影 2017-12-30、Lightroom 6.7 での書き出し（2020-02-12、+05:30）が残り、房・ひげ・布の模様にも不自然な所はない。
+  名前の「Synth」は、2012年に英語版ウィキペディアでピアノ練習ソフト「Synthesia」の記事を編集していたアカウントだから（AIとは関係がない）。
+- ただし、作者が投稿者本人とは確かめられない：EXIF の作者は「Duke Photography」、著作権は「Duke Photography Inc.」、キーワードは「dukeimages」（婚礼写真の会社の名前）。
+  投稿者のCommonsでの投稿はこの1枚だけ（2022-06-06、英語版の Sehra (headdress) を編集しながらアップロード）で、
+  許諾の記録（VRT）もない。667×1000px というウェブ用の小さな書き出しでもあり、写真会社の作品を「own work」として載せた可能性が残る。
+  ページに削除依頼や警告はまだ付いていない。撮影地も分からない（分類にはインド・パキスタン・バングラデシュが並ぶ）。
+- そこで、作者とライセンスがはっきりしていて、北インドで撮られた写真に替えた。
+
+探した所：Commons の検索（sehra・sehrabandi・groom sehra・dulha・ghudchadi など、ヒンディー語・ウルドゥー語・パンジャーブ語の綴りも）、
+分類（Grooms of India・Groom of Rajasthan・Baraat・Hindu weddings in India・Wedding clothes of India・Wedding traditions in India。
+Commons に Sehra の分類はない）、Openverse で Flickr の CC BY・CC BY-SA・CC0・PDM の写真、WordPress の写真集。
+
+| 候補 | 作者 | ライセンス | 判断 |
+| --- | --- | --- | --- |
+| **File:Dulha of udaipur 2015.jpg**（Flickr 22141280892「dulha, udaipur」） | nevil zaveri | CC BY 2.0（Commons は `{{cc-by-2.0}}`・FlickreviewR 2025-07-01 合格。Flickr のページも 2026-11-14 に CC BY 2.0） | **採用**。ウダイプールの婚礼の行列（Flickr の札：baraat・udaipur・rajasthan・bridegroom・nikkah・veil）。金と銀の房が花婿の顔をすっかり覆い、飾った馬の頭も写る。EXIF の作者と著作権表示は撮影者本人の名前で、Flickr のアカウントと一致。Commons のファイルは Flickr の原寸（535×800px）とSHA-1まで同じ。解像度は低めだが、正方形に切り抜いて531×531pxで使う。 |
+| Flickr 6264450244・6263900501「Sawai Madhopur, groom during baraat」 | Arian Zwegers | CC BY 2.0（Flickr のページで確認） | ラージャスターンで、房のある花婿も写るが、房を額に上げて顔と子どもの顔が見えている。ぼかすと房の見せ方が悪くなる。 |
+| File:Rajput wedding riding.jpg | Jaisingh Rathore | CC BY 2.5／GFDL（2006年に英語版へ本人が投稿） | ラージプートの婚礼。金の房はあるが横顔が見え、周りの人の顔も主題になっている。 |
+| Flickr 2720232518 ほか「Sehra」（File:Sehra.jpg） | apsaramokashi | CC BY 2.0（Flickr のページで確認） | 房を結んでいる場面。房は顔を覆っておらず、花婿の顔が主題。 |
+| File:Sehra (YS).jpg | YVSREDDY | CC BY-SA 3.0 | 飾った馬と行列の写真。携帯電話の低い画質で、房の形が分かりにくい。 |
+| WordPress 写真集「Dulhe ka Sehra」 | Makarand Mane | CC0 | 写っているのは房の付かない婚礼のターバン（サファ）で、セーラーではない。 |
+| File:Bridegroom headgear for Indian wedding.jpg ほか | Wikilover90 ほか | CC BY-SA 4.0 | ターバンや飾りだけで、セーラーは写っていない。 |
 
 ---
 
