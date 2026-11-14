@@ -1,7 +1,7 @@
-# 02 技術設計 / 第一候補
+# 02 技術設計
 
 ## 原則
-既存リポジトリを最初に調査。作成時にはREADMEのみ確認されていたが、変更がありうる。構成が空に近い場合、以下を第一候補とする。
+最初の計画で第一候補とした次の構成で作っている（作業の前にリポジトリを調べ、今の実装を壊さない。[AGENTS.md](../AGENTS.md)）。
 - Vite + React + TypeScript（ブラウザゲーム、スマホ優先、静的配信）。
 - `.ink`（編集用の会話原稿）、Inkコンパイラ（ビルド時）、`inkjs`（ブラウザの実行時）。**原稿の独自パーサーを作らない。**
 - `.json`（都市/観光地/クイズ/デート定義/数値バランス）。スキーマ検証（Zodなど）は必要な範囲だけ導入。
@@ -40,7 +40,8 @@ content/                      # 共通データ（全旅行編で共有：恋愛
     manifest.json             # 登録（名前・並び順 order・公開状態・都市の順序・通貨・初期値・任意のタイトルの絵）
     cities/ travel/           # 都市・都市内の地点と移動
     stories/**/*.ink quizzes/ # 会話とクイズ
-    battles/ progression/ romance/ tourism/ encounters/ learning/ presentation/  # 各カタログ（必要なものだけ）
+    battles/ progression/ romance/ tourism/ encounters/ learning/ presentation/ scenes/ glossary/  # 各カタログ（必要なものだけ）
+    tours/                    # 日帰りツアー（1ファイルに1つ。下の「ツアー」）
     public/assets/            # その旅行編だけが使う画像
 public/                       # ファビコン・アプリアイコン（npm run icons:build で生成）・manifest.webmanifest（index.html から相対パスで参照）
   assets/                     # 全旅行編で共有する画像・音声（ヒロイン、演出、共通アイコン）
@@ -81,18 +82,23 @@ tests/journeys/<journeyId>/   # その旅行編だけの内容・経路・制作
 | `battles/catalog.json` | `battles` を連結 |
 | `encounters/catalog.json` | `items`・`encounters` を連結 |
 | `encounters/entry-rules.json` | `entries` を連結 |
+| `glossary/terms.json` | `terms` を連結（任意。旅の図鑑。下の「旅の図鑑」） |
 | `learning/details.json` | `questions` をキーごとに統合（問題ごとに学習会話の `storyId` を持つ） |
 | `learning/local-words.json` | `words` を連結（任意。その国の言葉） |
 | `learning/translations.json` | `questions` をキーごとに統合 |
 | `learning/word-meanings.json` | `words` をキーごとに統合（同じ内容の重複だけ許可） |
 | `presentation/characters.json` | `characters` を連結、`battleCharacters`・`wardrobe.cities`・`wardrobe.scenes` をキーごとに統合。`expressionIds`・`wardrobe.regions`・`wardrobe.countries` は共通データのみ |
 | `presentation/dialogue-expressions.json`・`dialogue-reactions.json` | `entries` を連結 |
+| `presentation/music.json`・`ambience.json` | `sources`・`tracks` を連結。どこで何を流すか（`play`）は、統合せずに層ごとに分けて持つ（共通データの分と、各旅行編の分。下の「UX/スマホ」の音楽・環境音） |
+| `presentation/sounds.json` | `sources`・`sounds` を連結（効果音） |
 | `presentation/own-artwork.json` | `artworks` を連結。ただし各層の一覧は、その層の `public/` が配信する画像だけを扱う（下の「画像の出典と自作の絵」）。どの層にもなければエラー（共通データが持つ） |
 | `progression/journey.json` | `episodes`・`storyBattles`・`rewards` を連結 |
+| `progression/story.json` | `flags`・`people` を連結、名前付きの条件 `conditions` をキーごとに統合（作者が宣言する物語の状態） |
 | `romance/balance.json`・`romance/response_profiles.json` | ファイル全体を共通データだけが持つ |
 | `romance/date_catalog.json`・`date_destinations.json`・`effect_catalog.json` | `dates`・`destinations`・`effects` を連結 |
 | `romance/presentation.json` | `backgrounds`・`memories` をキーごとに統合。`ending`・`emotions` は共通データのみ |
 | `romance/progression.json` | `memoryCallbacks` を連結。`stages`・`confession`・`fallbackMemoryCallbackJa` は共通データのみ |
+| `scenes/catalog.json` | `scenes` を連結（場所のファイルの札に書けないこと。今は差し込みの場面の出典 `sources`） |
 | `tourism/catalog.json` | `assets`・`landmarks`・`clues` を連結 |
 | `journeys/catalog.json` | 各 `manifest.json` から生成（`schemaVersion`・`order`・`authoring` を除き、`order` 順） |
 
@@ -399,7 +405,7 @@ tests/journeys/<journeyId>/   # その旅行編だけの内容・経路・制作
 
 ## 開発中の保存とシナリオ更新
 
-開発中は、更新後に以前のセーブを利用できることや、自動移行を保証しない。現在のゲームセーブはv23（今日の見出し `travel.todayEpisodeIds` を保存する。v22でアルバムの写真、v21で今日の道のり `travel.todayPlaceIds` を加えた。旅の図鑑の言葉 `glossary` は、版を上げずに足した省略できる項目。[データとテスト](07_DATA_AND_TESTS.md)）で、v1〜v22の自動移行は行わず読み込み対象外とする（元のデータは消さず、旧版として案内する）。セーブは旅行の日数・時刻・現在地と活動中の時間枠を保持し、デートの章はエピソードの記録から求めて保存しない。共通条件管理システムが読む記録（見た道中交流 `seenEncounterIds`、品物を渡した・使った交流と選択肢 `itemUses`、乗り物に乗った回数 `travel.rideCounts`）と、ツアーの記録（予約中・参加中のツアー `tour`、終えたツアー `completedTourIds`）も保存し、物語の状態（`storyProgress`・`travel.temporaryFlags`）は空のまま持つ（v14〜v20で変えたことは [セーブの版](07_DATA_AND_TESTS.md#セーブの版)、記録の意味は [共通条件管理システムの記録](07_DATA_AND_TESTS.md#共通条件管理システムの記録)）。保存先は旅行編ごとに分かれ、ミラノ編を含むすべての旅行編が `dreamscape.journey.<旅行編ID>.save.v1`（ゲーム進行）と `dreamscape.journey.<旅行編ID>.learning.v1`（英語ノート）を使う。以前のミラノ編の `dreamscape.save.v1` / `dreamscape.learning.v1` は読み込まず、ゲームが自動で消すこともない（設定の「古い保存データの整理」で利用者が選んで消せる。[古い保存データの整理](07_DATA_AND_TESTS.md#古い保存データの整理)）。各旅行編はWeb Locksで別タブからの同時編集を防ぐ。`schemaVersion` と保存された場面の指紋・状態を検証し、内容が異なる脚本や問題を無理に復元しない。誤字修正や改稿のたびに旧セーブ再開用のInk・定義を残すことは必須ではない。一方、読み込めるデータを更新のたびに無条件で無効化しない。
+開発中は、更新後に以前のセーブを利用できることや、自動移行を保証しない。今のゲームセーブは v23 で、v1〜v22 は読み込まず、元のデータを消さずに旧版として案内する。保存先・保存するもの・別タブの扱いは[データ契約の「保存の仕組み」](07_DATA_AND_TESTS.md#保存の仕組み)、版ごとに変えたことは[「セーブの版」](07_DATA_AND_TESTS.md#セーブの版)、条件が読む記録の意味は[「共通条件管理システムの記録」](07_DATA_AND_TESTS.md#共通条件管理システムの記録)、以前のミラノ編のキーなどは[「古い保存データの整理」](07_DATA_AND_TESTS.md#古い保存データの整理)にある（保存の決まりの置き場所は07）。`schemaVersion` と保存された場面の指紋・状態を検証し、内容が異なる脚本や問題を無理に復元しない。誤字修正や改稿のたびに旧セーブ再開用のInk・定義を残すことは必須ではない。一方、読み込めるデータを更新のたびに無条件で無効化しない。
 
 安全に読めないデータは自動削除・上書きせず、原因を断定できない場合もその旨を案内する。利用者が確認した場合だけ対象のDreamscape管理キーを消去できるようにし、別タブ競合と他アプリ・バックアップの保護を維持する。現在のバージョン内の保存・再開と二重適用防止は維持する。一般公開時には必要に応じて互換性方針を再検討する。
 
@@ -407,7 +413,7 @@ tests/journeys/<journeyId>/   # その旅行編だけの内容・経路・制作
 - 縦画面最優先（約360〜430px幅）。PCでは適切な最大幅を設定。
 - 選択肢は大きなタップ領域、文字切れ防止。読みやすい文字送り・戻れない選択時の確認・スキップ機能は段階的に実装。
 - 会話の場面（観光案内・デート・道中の交流・到着とエピローグ・バトルの会話）では、場面のどこを押しても台詞を押したのと同じく、書きかけの行を最後まで表示し、次の1回で先へ進む。場面より広い画面では `<main>` 自身の余白（`data-page-margin`。その中の通知などは含めない）も場面と同じに扱う。ただし操作（ボタン・リンク・入力欄・`summary`・ダイアログ（`role="dialog"` を含む）、操作の `role`、編集できる要素、`data-no-advance` の付いた範囲。会話枠の頭の「隠す」（観光案内では「閉じる」）「ログ」「高速送り」の並び、デートの訪問先の写真欄はこの印で除く）の上とその中、場面の外（画面上部の旅の情報と操作など）、ログ・ゲームの設定・英語ノートなどが開いている間と、上の帯の⚙設定の一覧と所持アイテムの詳細（`role="dialog"`）が開いている間（`dialogueObstructed`。開いた `dialog` と、一覧や詳細を開いている間だけ上の帯の下でページ全体を覆う透明な層（`src/components/DismissLayer.tsx`、`data-obstructs-dialogue`）。キーボード・文字送り・自動送りも止まる。層のタップは一覧や詳細を閉じるだけで、場面の外なので台詞も進まず下のものも押さない）と、移動の演出（`TravelTransition`）と時間が過ぎる演出（`TimePassage`）が出ている間（タップだけ。UI 段階1.6から、演出は出ている間ポインターのタップを受けて何もしない（UI 再設計 H22。`pointer-events: auto`、どちらも `aria-hidden`）。行き先の二重タップの2回目は演出に当たり、始まった場面を読み進めない。演出が消える瞬間に中央の絵の上で下ろした指は、`tapsObstructed` が指を下ろした位置で除く。それまでは演出がタップを下の場面へ通し、中央の絵の外のタップは場面を読み進めた）、隠したウィンドウを戻す1回、選択肢が出ている間（書きかけの行を表示し終えるだけ）は進まない。ウィンドウを隠せる場面では、隠している間は会話を表示するボタンが場面全体を覆う（観光案内の「閉じる」は案内そのものを閉じるので、余白の横でウィンドウが隠れていることはない）。このボタンは字を出さず（2026-11-11のユーザー判断で「タップして会話を表示」の字をなくした。読み上げの名前は「会話を表示」）、下に目の印だけを置き、出たときに印の輪が2回広がって消える（動きを減らす設定では輪は出ない）。**場面の名前の札の行はない**（2026-11-11のユーザー判断。iPhoneで見て、会話の上を軽くした。それまでは観光案内・バトル・デート・道中交流の上の帯のすぐ下に、場面の名前の札と「出典」「手がかり帳」の行があった。UI 再設計 §3.2、段階1.3）：今いる場所は上の帯の1行目が示し（ツアーの車の中、区間の語りが始まってから動くまでは、その区間の名前 `labelJa`。場面の背景が場所を名乗る間はその場所。下の「上の帯の場所の札」）、場面の名前（観光地名・バトルの場所（都市フィナーレでは対決の題）・デートの行き先（行き先のないデートは「デート」）・道中交流の場所。走っているツアーでは前に「ツアー」「ツアー・見学」）は画面に出さない読み上げ用の見出し（`src/components/SceneHeading.tsx` の `SceneHeading`）にだけ残す。「出典」は⚙設定の「画像の出典」に、「手がかり帳」は上の帯に移した（下）。観光地のない場面（宿・出発・移動・デートの後などの場面）の見出しは、場面の `# background:` が出典つきの写真なら、その背景の `nameJa`（`romance/presentation.json`）で、「画像の出典」はその写真の出典を開く。写真のない背景なら、今いる地点の名前で、「画像の出典」は出さない（`src/features/journey/travel-labels.ts` の `sceneBackdropPhoto`）。見出しの言葉は背景の `nameJa` で決まるので、場所の名前にしておく。台詞そのものはボタンなので、1回の操作で進むのは1歩だけ。道中の交流の英語3択の判定と解説は会話の行ではなく、バトルの解説と同じく、ボタン（「続きを読む」）だけで進む（解説と訳・語句を読む画面で、場面を押しても進まない）。判定は `src/components/scene-tap.ts` の `shouldAdvanceOnTap`（単体テストあり）、場面への取り付けは `useSceneTap`。キーボードと読み上げでは今までどおり台詞と各ボタンを使う（移動の演出が出ていても台詞のEnterや読み上げの操作で進み、文字送りと自動送りも止まらない。ポインターのないクリック（`detail` が0。読み上げの操作、ボタンのEnter）は上にあるものの上からのタップとして扱わない）。場面にボタン以外の操作を足すときは `data-no-advance` を付ける。
-- 二重タップの2回目（`src/components/double-tap.ts` の `DOUBLE_TAP_WINDOW_MS`＝350ms以内）は、押した操作で画面が変わった後に別のものへ当たるので無視する（選択肢の誤タップ防止）。その時間に、先に押した点の近く（24px以内。`DOUBLE_TAP_SLOP_PX`）で会話枠の頭の操作（「隠す」「閉じる」「ログ」「高速送り」）に当たったタップも、先に押したものと同じ操作でなければ何も押さない（返答を選ぶと会話枠が縮み、ログを閉じると会話枠が現れて、2回目のタップの下に会話枠の頭が来ることがあるため。`src/components/scene-tap.ts` の `windowToolAt`・`ignoresWindowToolTap`、単体テストあり）。回答ボタンの後のバトル画面（`data-answer-settling`）に加え、会話の場面が出ている間は、ページの操作（場面の返答・選択肢・会話枠のボタン・隠したウィンドウを戻す操作・リンクと、場面の外の画面上部の操作・ダイアログの「閉じる」やダイアログそのもの。台詞・絵・`data-no-advance` の範囲・ただの文字は含めない。判定は `pressesControl`。`useSceneTap` が文書全体でキャプチャして受ける）を押した後と、場面の上にあるもの（`tapsObstructed`。ログ・所持アイテムの詳細・移動の演出の中央の絵など）の上からのタップ（指を下ろしたときにその位置にあった。それを閉じるタップを含み、パンで取り消された指とポインターのないクリックは含めない）の後のその時間、場面のタップでも台詞のタップでも進まない（場面に `data-tap-settling` が付き、台詞はポインターを受けない）。場面の上からのタップそのものも、台詞の上なら台詞に届かない（台詞は自分のクリックで進むので、`useSceneTap` がキャプチャで止める）。会話の場面が始まったとき（行き先から始まるデート・観光案内、「進む」で始まるバトルの会話、「敵の反応を見る」、「エピローグへ進む」など）と終わったとき（デートの終わり、観光案内から観察へ、「問題へ進む」、エピローグ・道中交流の終わり、特殊戦の主張・反論から資料を選ぶ画面へ）と、ロードで保存した場面に戻ったとき（同じ場面でも、デート・バトル・道中の交流は新しく作り直される）、旅行編の切り替え（「切り替える」など）と別タブの案内の「再試行」で画面を作り直したとき（新しい `GameApp` は保存した場面を最初から出すので、場面の始まりとしては見つからない）は、新しい画面が指の下に出るので、その時間はページのどのタップも受け付けない（`GameApp` が `src/app/story-scene-change.ts` の `storySceneOnScreen`・`storySceneChanged` で場面の始まりと終わりを見つけ、ロードでは `loadSavedGame` が、切り替えと再試行では `App.tsx` の `switchJourney`・`retryLock` が、押したときに `src/components/tap-hold.ts` の `holdTaps` でルート要素に `data-tap-hold` を付けてポインターを止める。キーボードは止めない）。行き先から始まる場面では移動の演出がこの時間より長く出るが、演出が出ている間のタップは演出が受け、下の場面を読み進めない（上のとおり。キーボードと読み上げは止めない）。
+- 二重タップの2回目（`src/components/double-tap.ts` の `DOUBLE_TAP_WINDOW_MS`＝350ms以内）は、押した操作で画面が変わった後に別のものへ当たるので無視する（選択肢の誤タップ防止）。その時間に、先に押した点の近く（24px以内。`DOUBLE_TAP_SLOP_PX`）で会話枠の頭の操作（「隠す」「閉じる」「ログ」「高速送り」）に当たったタップも、先に押したものと同じ操作でなければ何も押さない（返答を選ぶと会話枠が縮み、ログを閉じると会話枠が現れて、2回目のタップの下に会話枠の頭が来ることがあるため。`src/components/scene-tap.ts` の `windowToolAt`・`ignoresWindowToolTap`、単体テストあり）。回答ボタンの後のバトル画面（`data-answer-settling`）に加え、会話の場面が出ている間は、ページの操作（場面の返答・選択肢・会話枠のボタン・隠したウィンドウを戻す操作・リンクと、場面の外の画面上部の操作・ダイアログの「閉じる」やダイアログそのもの。台詞・絵・`data-no-advance` の範囲・ただの文字は含めない。判定は `pressesControl`。`useSceneTap` が文書全体でキャプチャして受ける）を押した後と、場面の上にあるもの（`tapsObstructed`。ログ・所持アイテムの詳細・移動の演出の中央の絵など）の上からのタップ（指を下ろしたときにその位置にあった。それを閉じるタップを含み、パンで取り消された指とポインターのないクリックは含めない）の後のその時間、場面のタップでも台詞のタップでも進まない（場面に `data-tap-settling` が付き、台詞はポインターを受けない）。場面の上からのタップそのものも、台詞の上なら台詞に届かない（台詞は自分のクリックで進むので、`useSceneTap` がキャプチャで止める）。会話の場面が始まったとき（行き先から始まるデート・観光案内、「進む」で始まるバトルの会話、「相手の反応を見る」、「エピローグへ進む」など）と終わったとき（デートの終わり、観光案内から観察へ、「問題へ進む」、エピローグ・道中交流の終わり、特殊戦の主張・反論から資料を選ぶ画面へ）と、ロードで保存した場面に戻ったとき（同じ場面でも、デート・バトル・道中の交流は新しく作り直される）、旅行編の切り替え（「切り替える」など）と別タブの案内の「再試行」で画面を作り直したとき（新しい `GameApp` は保存した場面を最初から出すので、場面の始まりとしては見つからない）は、新しい画面が指の下に出るので、その時間はページのどのタップも受け付けない（`GameApp` が `src/app/story-scene-change.ts` の `storySceneOnScreen`・`storySceneChanged` で場面の始まりと終わりを見つけ、ロードでは `loadSavedGame` が、切り替えと再試行では `App.tsx` の `switchJourney`・`retryLock` が、押したときに `src/components/tap-hold.ts` の `holdTaps` でルート要素に `data-tap-hold` を付けてポインターを止める。キーボードは止めない）。行き先から始まる場面では移動の演出がこの時間より長く出るが、演出が出ている間のタップは演出が受け、下の場面を読み進めない（上のとおり。キーボードと読み上げは止めない）。
 - 会話の窓（UI 再設計 §3.3）：話し手の名前札と窓の操作を、窓の上の縁に半分（22px）またがる1行（窓の頭。`src/components/DialogueControls.tsx` の `DialogueWindowHead`）に並べる。長い名前は操作の手前で折り返し、頭は窓の中へ下に伸びる（操作の下に潜らない。決定H）。操作は観光案内では「閉じる」（案内を閉じて観察へ）、ほかの場面では「隠す」（窓を隠すだけ。U6）、「ログ」「高速送り」。窓の幅が窓の字で24字ぶん（ふつうの文字の大きさで360px）未満では字だけ、それ以上は印と字（字は消さない。字を大きくすると広い画面でも字だけになる）。名前札が操作の横に5.5em（札の字でおよそ4字）も取れないとき（狭い画面で文字を大きくしたとき）は、操作を札の下の行の右へ回す（頭は下へ伸びるだけ）。▼は窓の右下に置き、文字送り中と完了後で行の折り返しは変わらない。窓は上の帯の8px下まで伸びられ、長い文や大きくした文字は窓の中でスクロールして読む（バトルの会話の窓は今までの置き方のまま。ただし人物の顔のために空ける高さより、窓の高さ9em（文字200%で頭と台詞およそ2行）を優先し、場面の高さまでは伸びられる。ふつうの文字ではどの画面でも顔の分を空けたほうが高い）。
 - 行の見せ方の札（2026-11-11、任意）：Inkの行の `# pause: <ミリ秒>`（100〜3000）・`# shake: window`・`# size: large` を `parseStoryTags`（`src/content/tags.ts`）が読み、フレームの `delivery`（その行だけ。保存される任意の項目）に入れる。`DialogueText` が、字の前の間（タップで行を全部出す。「一括表示」「高速送り」では間なし）、字が出始めるときの窓（`data-dialogue-window`）の1回の横揺れ（`translate`。動きを減らす設定では揺れない）、大きな字にする。書き方は [CONTENT_GUIDE](../authoring/CONTENT_GUIDE.md#inkで会話と演出を作る)。
 - 場面の揺れ（2026-11-13のユーザー判断）：`# shake`（`# shake: small|large`）は `delivery.sceneShake` に入り、字が出始めるとき `DialogueText` が場面の絵・天気・人物の層だけを1回揺らし（0.3〜0.45秒、`translate`。絵は少し拡大して縁を見せない。`src/components/scene-atmosphere.ts` の `sceneShakeFrames`、単体テストあり）、`vibrate("shake")` を鳴らす。行の音と同じ `useLineSounds` の合図なので、ロードで戻った行・高速送り・同じ行の描き直しでは出ない。動きを減らす設定では揺れず振動だけ。
