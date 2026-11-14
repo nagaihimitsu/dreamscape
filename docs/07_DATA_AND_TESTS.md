@@ -99,7 +99,7 @@
 - `itemUses`（品物を渡した・使った記録）：渡した・使った品物ごとに、その交流と選んだ選択肢のID。選択肢を選んで品物の状態が「渡した」「使った」になるのと同じときに書く（`chooseEncounter`）。読み込み時に、渡した・使った品物と1対1であること、その選択肢が本当にその品物を渡す（`giftItemId`）・使う（`consumeItemId`）こと、その交流が終わっているか、その選択肢を選んで進行中であることを確かめる。都市を出ても残る。
 - `travel.rideCounts`（乗った回数）：その都市で、徒歩以外の乗り物ごとに地図の出来事へ乗って出かけた回数。乗り物で場所が変わったときだけ数え（`beginTravelEvent`）、徒歩、宿へ帰る道、今いる場所の出来事を始めるときは数えない。次の都市へ出発すると空になる。読み込み時に、旅行編が宣言した徒歩以外の乗り物であること、借りる乗り物なら借りていることを確かめる。
 - `storyProgress`（物語の状態：筋の段 `lines` とずっと続く印 `flags`）と `travel.temporaryFlags`（その日・その都市にいる間の印）：作者が決める物語の進み具合。`flags` には、場面の `set:`・`on_done: set` が立てたフラグを入れる（`progression/story.json` の `flags` に宣言したものだけ。宣言にないフラグがあれば読み込まない）。`lines` と `temporaryFlags` は使う仕組みがまだないので、空でなければ読み込まない（`src/domain/game-state-validation.ts` の `validateStoryProgress`）。
-- `activeEncounter.afterBattle`（戦いの結果を出たときに始まった交流）・`activeEncounter.trip`（地図の出来事へ出かけるときに始まった交流）：頭の札で本筋の後・本筋の前に置いた交流（今は見本の編だけ）が書く。進行中の交流が持てる続き先は、観察への戻り先（`returnTourism`）を含めて1つまで。読み込み時に、続き先の出来事・バトル・交流の位置が今の内容と合うことを確かめ、合わなければ読み込まない。続き先のない進行中の交流（なくした自由時間から始める道の形）も読み込まない。
+- 進行中の交流の続き先：交流を終えた後にどこへ進むか（観察へ戻る・本筋の続き・地図の出来事へ向かう移動の続き）は、交流ではなく時点の記録 `occasion`（v16）が持つ。読み込み時に、時点の記録の形が今の内容（出来事・観光地・本筋の組・場面）と合い、止まる所にいることを確かめ、合わなければ読み込まない（`src/domain/occasion.ts` の `validateOccasionState`。条件は調べ直さない）。
 
 ## 古い保存データの整理
 設定の「古い保存データの整理」は、このブラウザに残る、今のゲームが使わない保存データを一覧し、利用者が選んだものだけを消す。押さない限り何も消えず、ゲームが自動で消すことはない。何を一覧に出すかと消し方の判定は画面ではなく `src/persistence/old-data.ts`（`listOldData`・`removeOldData`、選んだ項目の旅行編の排他だけを取って消す `removeChosenOldData`。単体テスト `old-data.test.ts`）が持ち、排他の取り方は `runWithSlotLocks`（`src/persistence/journey-lock.ts`。`journey-lock.test.ts`）が持つ。Debugの画面には出さない。
