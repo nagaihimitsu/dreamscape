@@ -1,4 +1,4 @@
-// Development only (Debug): what a condition (src/content/condition-schemas.ts) reads and why
+// Debug only (the development server, or a production build with Debug mode on): what a condition (src/content/condition-schemas.ts) reads and why
 // it is false. The game itself gives no reason text for a condition (hidden values stay hidden).
 import { battles, dates, episodes, getCities, landmarks } from "../content";
 import { encounters } from "../content/encounters";

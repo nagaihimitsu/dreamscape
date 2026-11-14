@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { contentId as id } from "./content-id";
 import { japaneseText } from "./text-language";
 import { tourismSourceSchema } from "./tourism-schemas";
 
@@ -7,7 +8,6 @@ import { tourismSourceSchema } from "./tourism-schemas";
 // `# local_word: <id>` tag (src/content/tags.ts) teaches one when the line is shown in normal play; this device
 // remembers it (src/features/learning/local-words.ts), never the save. Light module (zod only).
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const text = z.string().trim().min(1);
 
 /**

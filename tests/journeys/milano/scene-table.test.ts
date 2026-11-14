@@ -1,4 +1,4 @@
-// Milan's scene list. Its guides, battles, dates (but its confession), encounters and talks are knots of its place files;
+// Milan's scene list. Its guides, battles, dates (its confession too), encounters and talks are knots of its place files;
 // since the rewrite of 2026-11-13 (the Milano scenario plan) no Milan encounter is left in the encounter catalog.
 // This pins each inserted scene's moment, order, condition, money, items, people and 「また今度」 as the rewrite wrote
 // them (the table below), and that the main parts do nothing of their own.

@@ -269,3 +269,44 @@
 .mg-cloth-flap-gauge > span[data-gold][data-lit] { background: #ffd970; box-shadow: 0 0 0 2px rgba(60, 36, 10, 0.6), 0 0 14px 3px rgba(255, 214, 110, 0.9); }
 .mg-cloth-flap-gauge > span[data-gold][data-past] { background: rgba(240, 200, 96, 0.4); box-shadow: none; }
 @media (max-height: 620px) { .mg-cloth-flap-gauge { height: 22px; margin-bottom: 6px; } }
+
+/* Round 3: her tells and the boy. She crouches as she bobs to leap (the play's frames set --mg-cloth-flap-crouch, 0 to 1;
+   with less motion only the held crouch shows). A tell's mark (？ as she looks along the niches, … as she freezes) is
+   smaller and plainer than a reaction's. */
+.mg-cloth-flap-walker-body { scale: 1 calc(1 - 0.14 * var(--mg-cloth-flap-crouch, 0)); }
+.mg-cloth-flap-bubble[data-tell] {
+  min-width: 28px;
+  height: 28px;
+  border-width: 1.5px;
+  border-radius: 14px;
+  background: rgba(255, 250, 241, 0.9);
+  font-size: 17px;
+}
+/* The boy who runs down past her: smaller than her, in front of her on the stairs, a dark edge and a shadow at his feet. */
+.mg-cloth-flap-boy {
+  position: absolute;
+  z-index: 4;
+  left: 14%;
+  top: 43.5%;
+  height: 19%;
+  aspect-ratio: 30 / 64;
+  opacity: 0;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+}
+.mg-cloth-flap-boy::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: 110%;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(30, 20, 12, 0.4);
+  transform: translateX(-50%);
+  z-index: -1;
+}
+.mg-cloth-flap-boy-figure { display: block; width: 100%; height: 100%; filter: drop-shadow(0 0 1px rgba(20, 14, 8, 0.9)); }
+.mg-cloth-flap-boy[data-startled] .mg-cloth-flap-boy-figure { animation: mg-cloth-flap-boy-jump 320ms ease-out both; }
+@keyframes mg-cloth-flap-boy-jump { 40% { transform: translateY(-18%) rotate(8deg); } }
+.mg-cloth-flap[data-still] .mg-cloth-flap-boy-figure { animation: none; }

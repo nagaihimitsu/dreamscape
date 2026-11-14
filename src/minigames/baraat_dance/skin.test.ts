@@ -35,9 +35,9 @@ describe("the baraat dance's field", () => {
     expect(html).not.toContain(`class="mg-baraat-dance-drum"`);
   });
 
-  it("has no stop button: the dance ends with the drum, within 14 s left alone (the generic E2E waits 15 s after 続ける)", () => {
+  it("has no stop button: the dance ends with the drum, within 20 s left alone (the generic E2E jumps 60 s after 続ける)", () => {
     expect(baraatSkin.stop).toBeNull();
     expect(baraatSkin.actionJa).toBe("踊る");
-    expect(rhythmTapEnd(baraatSkin.tuning) + baraatSkin.endDelayMs("stood_still", false)).toBeLessThan(14_000);
+    expect(rhythmTapEnd(baraatSkin.tuning) + baraatSkin.endDelayMs("stood_still", false)).toBeLessThan(20_000);
   });
 });

@@ -1,9 +1,9 @@
 import { z } from "zod";
+import { contentId as id } from "./content-id";
 import { conditionSchema } from "./condition-schemas";
 import { storyAddressSchema } from "./story-address";
 import { imageRegionSchema } from "./tourism-schemas";
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const text = z.string().trim().min(1);
 const version = z.literal(1);
 /** The fields and values of a date validation context, whatever their order. */

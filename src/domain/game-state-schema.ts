@@ -90,8 +90,8 @@ const travelStateSchema = z.object({
   // Rides by vehicle in the current city, per declared mode other than walking
   // (beginTravelEvent counts a trip that changes place; no key = no ride yet).
   rideCounts: z.record(stableContentId, z.number().int().positive().safe()),
-  // Story flags that last the day or the stay in this city (common condition system, stage 3: declared in
-  // progression/story.json, set by encounter effects, cleared by sleeping and departing). None is declared yet.
+  // Story flags meant to last the day or the stay in this city (common condition system). progression/story.json
+  // declares only lasting flags and no scene sets one of these, so it stays empty (validateStoryProgress).
   temporaryFlags: uniqueStrings,
   // Today's route (save v21; the night screen's map): the places the party moved to today, in order, written by the
   // moves (travel.ts moveToPlace); the day starts at the hotel. Emptied by the night and on departure.
@@ -160,8 +160,8 @@ export const gameStateSchema = z.object({
   // The encounter and option that gave away or used each gifted/used item, written with its inventory status.
   // A scene's `# on_done: use` records the scene without an option (stage 3a); the field keeps its name.
   itemUses: z.record(stableContentId, z.object({ encounterId: stableContentId, optionId: stableContentId.optional() }).strict()),
-  // The authored story state of the common condition system (stage 3: lines → reached step, permanent flags,
-  // declared in progression/story.json and written by encounter effects). None is declared yet, so it stays empty.
+  // The authored story state of the common condition system: the flags (stage 3a) that progression/story.json declares
+  // and a scene's `# set:` writes, each once. `lines` (lines → reached step) belongs to a dropped design and stays empty.
   storyProgress: z.object({ lines: z.record(stableContentId, stableContentId), flags: uniqueStrings }).strict(),
   encounterRewards: z.record(stableContentId, z.object({
     roll: z.number().int().min(0).max(9999),

@@ -1,7 +1,7 @@
 import { z } from "zod";
+import { contentId as id } from "./content-id";
 import { storyFileOf } from "./story-address";
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const storyId = z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/);
 
 /** Presentation-only annotations: neither the Ink source nor saved frames change. */

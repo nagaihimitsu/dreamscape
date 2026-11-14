@@ -3,8 +3,8 @@ import { debugSessionExampleUrls } from "../../../scripts/dev/screen-gallery";
 import { DEBUG_HOOK_NAME } from "../../../src/dev/debug-hook";
 import { bothStorages, devModules, expect, journeyCatalog, ops, placeSave, saveKey, test, tier, type Page } from "../helpers";
 
-// Weekly monkey (docs/10「探索テスト」; research E2E-8). Not a gate: it runs only with
-// playwright.explore.config.ts (`npm run test:e2e:explore`, weekly and manual CI).
+// The monkey (docs/10「探索テスト」; research E2E-8). Not a gate: it runs only with
+// playwright.explore.config.ts (`npm run test:e2e:explore`, and e2e-explore.yml, run by hand).
 // From each start point it presses a seeded random visible, enabled control of the game
 // (#main, free time's 待機・休む included, or the open dialog) — never deletion, journey switching,
 // links or leaving Debug — and checks after every press:

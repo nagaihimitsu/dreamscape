@@ -5,7 +5,7 @@ import { mergedMusicCatalogSchema } from "../src/content/music";
 import { mergedAmbienceCatalogSchema } from "../src/content/ambience";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { characterCatalogSchema } from "../src/content/character-assets";
 import { dateDestinationsSchema } from "../src/content/date-destinations";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
@@ -33,18 +33,19 @@ import { journeyCatalogOf, listFiles, loadContentSources, readJourneyManifests }
 
 // Acceptance tests of the journey-folder layout: a journey is one folder below
 // content/journeys/, so adding, renaming or removing a folder is all it takes
-// (plus `npm run content:build`). Every test works on one temporary copy of
-// the repository's content and restores the copy's folders afterwards.
+// (plus `npm run content:build`). Every test works on a temporary copy of the
+// repository's content of its own, so a test that times out halfway (under a
+// heavy load) cannot leave the next test a half-changed copy.
 
 const repository = path.resolve(".");
 const sampleJourney = path.join(repository, SAMPLE_JOURNEY_DIRECTORY);
 let root: string;
 
-beforeAll(async () => {
+beforeEach(async () => {
   root = mkdtempSync(path.join(tmpdir(), "dreamscape-journey-folders-"));
   await prepareContentFixture(root);
-});
-afterAll(() => {
+}, 60_000);
+afterEach(() => {
   rmSync(root, { recursive: true, force: true });
 });
 

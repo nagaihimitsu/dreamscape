@@ -1,5 +1,7 @@
 # インド編「三分間の旅」全面改稿記録
 
+> **旧稿の記録です。** 2026-11-04 の旧稿「三分間の旅」のもので、2026-11-07 の全面改稿で脚本・クイズは置き換わりました（[改稿の設計](../SCENARIO_REWRITE.md)。今の本文は `content/journeys/golden_triangle/` の Ink とクイズが正本）。
+
 > 記録の注記：本文のパス・コマンドは作成当時の配置のままです。現在、この旅行編のデータは `content/journeys/golden_triangle/`、制作資料は `authoring/journeys/golden_triangle/` にあります（[旧配置との対応表](../../../README.md#当時の配置と現在の配置)）。
 
 対象は `golden_triangle` のデリー→アーグラ→ジャイプール。2026-11-04付の改修指示書に基づく。脚本の正本は `content/stories/`、紹介文・人物設定・思い出は既存カタログに置く。初期登録用の `narrative.json` や交通ドラフトを本番へ再反映しない。

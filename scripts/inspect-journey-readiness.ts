@@ -18,6 +18,8 @@ if (args.includes("--json")) console.log(JSON.stringify(report, null, 2));
 else {
   console.log(`${namedJa(input.trip)}: ${report.ready ? "参照の準備完了" : "準備中"}`);
   for (const issue of report.issues) console.log(`  - ${issue.detail}`);
+  if (report.notes.length) console.log("  確かめること（準備完了と公開は止めません）:");
+  for (const note of report.notes) console.log(`  - ${note.detail}`);
   for (const city of report.cities) {
     console.log(`\n${namedJa(input.trip.cities.find((entry) => entry.id === city.cityId) ?? { id: city.cityId })}: ${city.events.length} 候補`);
     for (const issue of city.issues) console.log(`  - ${issue.detail}`);

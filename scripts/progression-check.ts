@@ -679,7 +679,7 @@ export function progressionWarnings(content: ProgressionContent, clueUses: reado
         if (reachCity(content, city, start, { without: new Set([event.battleId]) }).finale)
           warnings.push({ kind: "battle-after-epilogue", message: `Battle left after the epilogue: in city ${cityId}, the finale can show on the map before ` +
             `${event.battleId} is played; the journey moves on after the epilogue, so that battle may never be played (keep the finale's condition, ` +
-            `or let a later stage's then: epilogue choose when the epilogue starts)` });
+            `or let a scene's # then: epilogue choose when the epilogue starts)` });
     const laterCities = new Set(journeyOf(content, cityId)?.cities.slice(city.order + 1).map((item) => item.id) ?? []);
     for (const date of content.dates.filter((item) => item.chapterId === cityId && item.when)) {
       const later = conditionLeaves(date.when!).some((leaf) => {

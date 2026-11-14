@@ -1,21 +1,6 @@
 .city-progress {
   margin-bottom: 22px;
 }
-.next-destination {
-  padding: 18px 0 6px;
-}
-.next-destination h3 {
-  font-family: "Noto Serif JP", serif;
-  font-size: 1.2rem;
-  margin: 6px 0 12px;
-  line-height: 1.6;
-}
-.next-destination > p:not(.eyebrow):not(.fine-print),
-.city-complete > p {
-  font-size: 0.9rem;
-  line-height: 1.9;
-  margin-bottom: 14px;
-}
 .city-records summary {
   cursor: pointer;
   min-height: 48px;

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 /**
  * A story's address (the unified event design, stage 3a, 3.1): a story file's ID
- * (`dates/milano_date_confession`, the file's place under stories/), and for a scene of a place file
+ * (`learning/milano_english`, the file's place under stories/), and for a scene of a place file
  * also its knot after a dot (`places/smp_mihon_clock_tower.smp_mihon_clock_bookmark_stall`).
  * The game starts that Ink path (a knot, or a knot's stitch) by name (beginStory). Light module (zod only).
  */

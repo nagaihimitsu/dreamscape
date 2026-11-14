@@ -1,4 +1,5 @@
-// Development only (Debug, the unified event design 4.8 「この時点の候補」): the running occasion's
+// Debug only (the unified event design 4.8 「この時点の候補」; the development server, or a production build with Debug
+// mode on): the running occasion's
 // steps with their position, whether each started, runs next or was passed and why, each condition
 // part's truth, the open choice point's hidden choices with their false parts, and the map
 // conditions' parts. It reads the game's own functions (the order and the entry rules the game uses).

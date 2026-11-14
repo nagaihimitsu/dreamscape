@@ -1,8 +1,8 @@
 import { z } from "zod";
+import { contentId as id } from "./content-id";
 import { tourismSourceSchema } from "./tourism-schemas";
 import { japaneseText as japanese } from "./text-language";
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const text = z.string().trim().min(1);
 
 /** Real places visited on dates; they do not imply an observation or battle. */

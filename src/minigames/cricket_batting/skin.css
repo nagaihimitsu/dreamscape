@@ -34,13 +34,17 @@
   transform-origin: 50% 100%;
 }
 .mg-cricket-batting-bowler > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
-/* Her short run-up: a step nearer, bobbing, until the ball leaves her hand (CRICKET_FIELD settle and run-up; the delays
-   come from the tuning: Skin.tsx), a little squash at the end and a stretch as she lets go. */
-.mg-cricket-batting-bowler[data-running] {
+/* Her short run-ups (Skin.tsx phaseAt; their lengths from the tuning): ready at her mark, a step nearer, bobbing, until
+   the ball leaves her hand, a little squash at the end and a stretch as she lets go; after the bouncer she walks back to
+   her mark, then runs in again. With less motion she stands at the crease. */
+.mg-cricket-batting-bowler[data-phase="ready"] { transform: translateX(-50%) translateY(-7%) scale(0.86); }
+.mg-cricket-batting-bowler[data-phase="run1"], .mg-cricket-batting-bowler[data-phase="run2"] {
   animation:
-    mg-cricket-batting-run-up 1100ms linear var(--mg-cricket-batting-settle, 200ms) both,
-    mg-cricket-batting-release 260ms ease-out calc(var(--mg-cricket-batting-release, 1300ms) - 150ms) both;
+    mg-cricket-batting-run-up var(--mg-cricket-batting-run, 1100ms) linear both,
+    mg-cricket-batting-release 260ms ease-out calc(var(--mg-cricket-batting-run, 1100ms) - 150ms) both;
 }
+.mg-cricket-batting-bowler[data-phase="walk"] { animation: mg-cricket-batting-run-up var(--mg-cricket-batting-walk, 600ms) ease-in-out reverse both; }
+.mg-cricket-batting[data-still] .mg-cricket-batting-bowler { animation: none; transform: translateX(-50%); }
 @keyframes mg-cricket-batting-release { 0% { scale: 1; } 55% { scale: 1.06 0.94; } 70% { scale: 0.96 1.08; } 100% { scale: 1; } }
 @keyframes mg-cricket-batting-run-up {
   0% { transform: translateX(-50%) translateY(-7%) scale(0.86); }
@@ -130,3 +134,21 @@
 .mg-cricket-batting-kids[data-cheer] .mg-cricket-batting-kid:nth-child(2) { animation-delay: 70ms; }
 @keyframes mg-cricket-batting-hop { to { transform: translateY(-16%); } }
 .mg-cricket-batting[data-still] .mg-cricket-batting-kid { animation: none; }
+
+/* Sonia's call as the bouncer goes over (round 3): a short call by her side of the children, dark ink on a pale chip. */
+.mg-cricket-batting-call {
+  position: absolute;
+  z-index: 5;
+  right: 3%;
+  bottom: 52%;
+  padding: 4px 10px;
+  border: 1.5px solid #2a211c;
+  border-radius: 12px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}

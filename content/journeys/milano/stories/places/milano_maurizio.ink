@@ -1,7 +1,7 @@
 INCLUDE modules.ink
 -> DONE
 
-// サン・マウリツィオ教会の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
+// サン・マウリツィオ教会の場所のファイル（2026-11-13 に1場面1ファイルから移した）。
 // デート。
 
 // デート（本筋）。romance/date_catalog.json の milano_maurizio_date_sound の storyId がこの knot を指す。

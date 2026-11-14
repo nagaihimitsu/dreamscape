@@ -3,7 +3,7 @@ INCLUDE modules.ink
 
 // ファテープル・シークリー日帰りツアー（tours/gt_agra_tour_fatehpur_sikri.json）の場面。8場面。
 // 札：# scene: tour_leg（区間の語り）・# at: tour <ツアー> <行程>・# priority: after leg（車の中の交流）・-1・+1。書き方は authoring/CONTENT_GUIDE.md の「ツアー」。
-// 流れ：out の前（宿の朝）→ out の語り → out の車の中 → out の後（着いた所）→ visit（本筋：観光案内・観察・バトル）
+// 流れ：out の前（宿の朝）→ out の語り → out の車の中 → out の後（着いた所）→ visit（本筋：観光案内・バトル。インド編の観光地に観察はない）
 //       → visit の後（車に戻る前）→ back の語り → back の車の中 → back の後（宿）。
 // 本筋より前の場面では、観光案内とバトルの中身（町が丸ごとあること・尾根の上の眺め・門の碑文・聖者と跡継ぎ・皇帝が町を出たこと）を先に言わない。
 // 本筋のバトル（ムケーシュ）にふれる文は cond("battle gt_agra_main_fatehpur_sikri_battle") の中だけに書く。

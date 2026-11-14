@@ -121,7 +121,7 @@ export type TourismPhoto = {
 /**
  * The tourism photos of the loaded content, in catalog order. `assets` are
  * the validated records of the merged tourism catalog (same order as its
- * provenance), `landmarkImageIds` the landmarks' imageAssetId.
+ * provenance), `landmarks` give the landmarks' imageAssetId.
  */
 export function tourismPhotos(
   sources: ContentSources,

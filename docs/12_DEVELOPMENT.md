@@ -4,27 +4,12 @@ Dreamscapeを開発・制作する人の入口です。起動とコマンド、�
 
 ## 資料の案内
 
-| 知りたいこと | 資料 |
-| --- | --- |
-| 決まった企画・遊びの流れ | [01 ゲーム企画](01_GAME_DESIGN.md) |
-| 技術設計：フォルダ構成、旅行編フォルダと統合、生成物、IDの付け方、責務の分担、画面の決まり | [02 技術設計](02_TECH_ARCHITECTURE.md) |
-| 恋愛の仕組み | [03 恋愛システム](03_ROMANCE_SYSTEM.md) |
-| 観光とクイズの仕組み | [04 観光・英語クイズ](04_BATTLE_TOURISM.md) |
-| 受け入れ条件の元の順序 | [05 ロードマップ](05_ROADMAP.md) |
-| 文章の質の決まり | [06 文章の規格](06_WRITING_STANDARDS.md) |
-| データ契約・保存の仕組み・セーブの版・受け入れテスト | [07 データ契約・検証・テスト](07_DATA_AND_TESTS.md) |
-| 使っている版と公式資料 | [08 公式資料](08_REFERENCES.md) |
-| ヒロインの人物像 | [09 キャラクターバイブル](09_HEROINE_CHARACTER_BIBLE.md) |
-| 変更ごとの確認、テストの組、E2E、探索テスト、Debug起動URL、CI | [10 開発時の確認](10_DEVELOPMENT_CHECKS.md) |
-| 遊ぶ人への案内 | [11 遊び方](11_HOW_TO_PLAY.md) |
-| ミニゲームの仕組みと、ゲームを足す人のチェックリスト（7章） | [13 ミニゲームの仕組み](13_MINIGAMES.md) |
-| 会話・クイズ・観光・デート・人物の絵の作り方 | [コンテンツ制作ガイド](../authoring/CONTENT_GUIDE.md) |
-| 新しい都市を1つ足す順番と、同時に進められる作業 | [新しい都市を1つ足す手引き](../authoring/NEW_CITY_GUIDE.md) |
-| 旅行編へシナリオとクイズを取り込む | [旅行編の制作手順](../authoring/JOURNEY_AUTHORING.md) |
-| 都市のデータをまとめて編集する | [都市データの編集](../authoring/CITY_BUNDLES.md)、[都市の追加手順](../authoring/FUTURE_CITIES.md) |
-| 遊べる最小の旅行編（開発・テスト専用） | [見本の編](../authoring/templates/sample_trip/README.md) |
-| 旅行編ごとの下書き・調査記録 | [旅行編ごとの制作資料](../authoring/journeys/README.md) |
-| 画面の作り方と点検 | [UI_RULES.md](../UI_RULES.md)、[UI_REVIEW_CHECKLIST.md](../UI_REVIEW_CHECKLIST.md) |
+すべての資料と、それぞれの役目は [README の「資料」](../README.md#資料) にあります。開発でよく開くのは次の資料です。
+
+- [02 技術設計](02_TECH_ARCHITECTURE.md)：フォルダ構成、旅行編フォルダと統合、生成時の検査、生成物、IDの付け方、場面の時点と順番、画面の決まり。
+- [07 データ契約・検証・テスト](07_DATA_AND_TESTS.md)：保存の仕組み、セーブの版、受け入れテスト。
+- [10 開発時の確認](10_DEVELOPMENT_CHECKS.md)：変更ごとの確認、テストの組、E2E、探索テスト、Debug起動URL、CI。
+- [コンテンツ制作ガイド](../authoring/CONTENT_GUIDE.md)と[新しい都市を1つ足す手引き](../authoring/NEW_CITY_GUIDE.md)：会話・クイズ・データの書き方と、都市を足す順番。
 
 ## 準備と起動
 
@@ -45,6 +30,7 @@ Dreamscapeを開発・制作する人の入口です。起動とコマンド、�
 | `npm run content:build`（`content:check`） | 共通データと全旅行編を検証・統合し、`src/content/generated/` に書き出す。成功すると旅行編ごとに提供内容の件数を1行ずつ表示し、警告は件数だけ出す（`-- --verbose` で一覧。[生成時の検査と報告](02_TECH_ARCHITECTURE.md#生成時の検査と報告)）。会話の全分岐検査は前回の成功結果を再利用する（`-- --no-cache` で再利用せずに全部検査。[キャッシュ](10_DEVELOPMENT_CHECKS.md#会話の全分岐検査のキャッシュ)）。`-- --with-sample` で見本の編も加える（単体テストの前の生成はこの形） |
 | `npm run content:watch` | 生成を1回行い、その後は `content/`・`public/` のファイル（Ink・JSON・画像）を保存するたびに生成し直す（`-- --with-sample` で見本の編も含めて監視）。失敗しても監視を続け、生成物は前回のまま。Ctrl+C で終了 |
 | `npm run dev:watch` | `content:watch` と開発サーバーを一緒に起動し、保存した Ink・JSON・画像を開いている画面へ反映する。開発サーバーは最初に生成に成功してから起動する（`npm run dev` と同じ）。Ctrl+C で両方を終了（`-- --with-sample` で見本の編も） |
+| `npm run typecheck` | 型検査（`tsc --noEmit`）。生成物を読むので、空のチェックアウトでは先に `npm run content:check` |
 | `npm run test:quick` | コンテンツを生成してから速い組の単体テスト（日常の確認。全件は `npm test`・`verify`。[テストの組](10_DEVELOPMENT_CHECKS.md#単体テストの組と所要時間)） |
 | `npm test` | コンテンツを生成してから全単体テスト |
 | `npm run test:saves` | コンテンツを生成してから保存関連の単体テスト（`src/persistence/`）だけ。過去のセーブが更新後に再開できることを保証するものではない |
@@ -59,8 +45,12 @@ Dreamscapeを開発・制作する人の入口です。起動とコマンド、�
 | `npm run test:e2e:webkit` | `@smoke` のテストを iPhone 13 の WebKit で実行（WebKit を入れた環境だけ。CIでは手動の実行だけ） |
 | `npm run screens` | 主要な画面を320px・390pxで撮り `artifacts/screens/index.html` にまとめる（人の確認用。`-- --previous <前の一覧>` で変わった画面に印。[人が画面を確かめる](10_DEVELOPMENT_CHECKS.md#人が画面を確かめる)） |
 | `npm run content:inspect -- <ファイル>` | 1ファイルの形式とInkコンパイルを確認（使い方は[制作ガイドの「確認と公開前レビュー」](../authoring/CONTENT_GUIDE.md#確認と公開前レビュー)） |
-| `npm run journey:new -- <旅行編ID> --name <日本語名> --city <都市ID> --city-name <日本語名>` | 見本の編を複製して新しい旅行編（準備中）を `content/journeys/<旅行編ID>/` に作る。`--prefix <接頭辞>`（省略時は旅行編ID）、`--with-optional`（特殊戦B・C、道中交流も複製）。置き換えるものは作った旅行編の `CHECKLIST.md`。見本の出典・画像・文章が残っているうちは `journey:readiness` が示し、`journey:release` は止まる（[新しい編を追加する手順](02_TECH_ARCHITECTURE.md#新しい編を追加する手順)） |
+| `npm run journey:new -- <旅行編ID> --name <日本語名> --city <都市ID> --city-name <日本語名>` | 見本の編を複製して新しい旅行編（準備中）を `content/journeys/<旅行編ID>/` に作る。`--prefix <接頭辞>`（省略時は旅行編ID）、`--with-optional`（見本の README の「任意の部分」も複製：特殊戦B・C、道中交流と品物、ほかの時点の場面、貸し自転車、その国の言葉、旅の図鑑）。置き換えるものは作った旅行編の `CHECKLIST.md`。見本の出典・画像・文章が残っているうちは `journey:readiness` が示し、`journey:release` は止まる（[新しい編を追加する手順](02_TECH_ARCHITECTURE.md#新しい編を追加する手順)） |
 | `npm run journey:scaffold`・`journey:readiness`・`journey:release` | 旅行編へシナリオとクイズを取り込む制作ツール（[手順](../authoring/JOURNEY_AUTHORING.md)） |
+| `npm run journey:scenario -- --journey <旅行編ID> --directory <下書きのフォルダ> [--city <都市ID>]` | 下書きの場所のファイル（`authoring/journeys/<旅行編ID>/drafts/scenario` など）を、`content:build` と同じく全部の道を歩いて確かめる（[手順](../authoring/JOURNEY_AUTHORING.md#クイズより先に脚本を制作する場合)） |
+| `npm run journey:readthrough -- --journey <旅行編ID>` | 観光地ごとの場面の並びと、各場面の行を道ごとに書き出す（点検の読み物。何も検査しない。先に `npm run content:build`） |
+| `npm run story:move-memos -- --journey <旅行編ID> --from <ストーリーID> --to <ストーリーID> [--write]` | 場面を場所のファイルへ移したときに、表情と無言の反応のメモ（`presentation/dialogue-expressions.json`・`dialogue-reactions.json`）のストーリーIDを書き換える（`--write` なしでは件数だけ） |
+| `npm run india:draft`・`india:check`・`india:scaffold`・`india:readiness`・`india:release` | インド編だけの制作ツールと、共通の `journey:*` をインド編で動かす短い名前（[旅行編の制作手順](../authoring/JOURNEY_AUTHORING.md)） |
 | `npm run journey:transit -- --journey <旅行編ID>` | 都市ごと・乗り物ごとの交通判断（使う・使わない・走っていない・特定できず）の件数と、徒歩の経路がない向き・出典のない経路（どちらも注意）を表示（`--json` も可。「特定できず」が残ると終了コード1。[乗り物と交通判断台帳](02_TECH_ARCHITECTURE.md#乗り物と交通判断台帳)） |
 | `npm run balance:report -- [--journey <旅行編ID>] [--out <ファイル>]` | 旅行編のお金・AP・関係値の出入りと合計を、都市ごとに Markdown の表にする（開発用。先に `npm run content:build`。[お金・AP・関係値のまとめ](10_DEVELOPMENT_CHECKS.md#お金ap関係値のまとめ)） |
 | `npm run voice:script -- --journey <旅行編ID> [--out <フォルダ>]` | ヒロインの台詞を、声を作る人に渡す台本（`heroine_lines.txt`）とそのデータ（`entries.json`）にして `artifacts/voice/<旅行編ID>/` に書く（1行＝1ファイル。ID は前に渡した台本・`# voice:` のまま変わらない。[台詞の声の台本](../authoring/CONTENT_GUIDE.md#台詞の声の台本と台詞が変わったときの確認2026-11-13)） |
@@ -96,7 +86,10 @@ Dreamscapeを開発・制作する人の入口です。起動とコマンド、�
 
 ## 今の実装の範囲
 
-- 遊べる旅行編：ミラノ編（1都市）と、インド・ゴールデントライアングル編（デリー・アーグラ・ジャイプールの3都市）。観光・クイズ・都市フィナーレ・エピローグ・デートがあります。ミラノ編には推理クイズB・C、写真の観察、告白と交際の結末があります。インド編には推理クイズB・Cはありません。インド編の観光地の観察は、2026-11-11のユーザー判断でなくしました。
+- 遊べる旅行編：ミラノ編（1都市）と、インド・ゴールデントライアングル編（デリー・アーグラ・ジャイプールの3都市）。どちらにも観光・クイズ・都市フィナーレ・エピローグ・道中交流・デート・告白（受け入れ・保留・断り）・彼女の返事があります。
+  - ミラノ編：推理クイズB・C、写真の観察。
+  - インド編：都市ごとの告白、アーグラの日帰りツアー、ミニゲーム、旅の図鑑、アルバムの絵、ヒロインの台詞の声、旅行編のBGM、オープニングムービー。推理クイズB・Cはありません。観光地の観察は、2026-11-11のユーザー判断でなくしました。
+  - 共通の仕組み：効果音・BGM・環境音（[技術設計の「UX/スマホ」](02_TECH_ARCHITECTURE.md#uxスマホ)）、Debugモード（上の「Debugモード」）。
 - 準備中の旅行編：ウズベキスタン編（4都市）とルアンパパーン編（市街地）。どちらもシナリオとクイズは未制作で、本番では旅の準備（名前の保存）までです。登録してある内容は[旅行編の制作手順](../authoring/JOURNEY_AUTHORING.md#ウズベキスタン編の例)にあります。
 - 対象外：世界地図、3D、アカウント、オンラインの保存、恋人になった後の長い章。
 - 絵：観光の画面と手がかり帳は、利用条件を確かめた実物の写真です。画像を登録していない会話の背景と、専用の絵を登録していないクイズの相手は、簡単なSVGの絵か抽象的な表示です。文字は Noto Sans JP / Noto Serif JP（Google Fonts、SIL OFL）を読み込めたときに使い、読み込めなくてもシステムの文字で動きます。
