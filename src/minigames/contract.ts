@@ -272,6 +272,8 @@ export interface MiniGameDefinition<Params = unknown, Outcome extends string = s
   resultAnchor?: "top" | "bottom";
   /** The finish word shows in the middle of the field (the default) or high under the band, off a key picture in the middle. */
   finishAnchor?: "top" | "center";
+  /** The field cheers on its own at its best moment (the crowd's applause): the ★3 card then plays no applause of its own. */
+  fieldCheers?: boolean;
   /** Played against time: a hidden page pauses it with 「続ける」. */
   timed: boolean;
   /** How to play with keys; null: not by keys (the host says ⚙設定's おまかせ is there). */

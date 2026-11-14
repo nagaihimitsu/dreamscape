@@ -315,7 +315,9 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
       if (still) playSound(stars === 3 ? "quiz_perfect" : "ui_tap");
       else for (let index = 0; index < stars; index++)
         timersHere.push(window.setTimeout(() => playSound(index === 2 ? "quiz_perfect" : "ui_tap"), index * MINI_GAME_STAR_STEP_MS));
-      if (stars === 3) timersHere.push(window.setTimeout(() => playSound("applause"), still ? 0 : 3 * MINI_GAME_STAR_STEP_MS));
+      // A field that cheered on its own (fieldCheers) is not cheered twice.
+      if (stars === 3 && !definition?.fieldCheers)
+        timersHere.push(window.setTimeout(() => playSound("applause"), still ? 0 : 3 * MINI_GAME_STAR_STEP_MS));
     }
     if (buttons.autoAdvance) timersHere.push(window.setTimeout(() => choose(ended.outcome), MINI_GAME_RESULT_MS));
     return () => { for (const timer of timersHere) window.clearTimeout(timer); };

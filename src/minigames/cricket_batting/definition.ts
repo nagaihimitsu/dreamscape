@@ -59,6 +59,8 @@ export const cricketBatting = defineMiniGame({
   practice: {},
   countdown: "host",
   music: "bright",
+  // The children cheer in the field right after a six (Skin): the card adds no applause of its own.
+  fieldCheers: true,
   timed: true,
   keysJa: "Space・Enter で振る",
   sounds: ["bat_hit", "bricks_fall", "applause"],
