@@ -1,7 +1,7 @@
 INCLUDE modules.ink
 -> DONE
 
-// ナヴィリオ地区の場所のファイル（1場面1ファイルからの移し替え。文は今のまま）。
+// ナヴィリオ地区の場所のファイル（2026-11-13 に1場面1ファイルから移した）。
 // デート。
 
 // デート（本筋）。romance/date_catalog.json の milano_night_01 の storyId がこの knot を指す。

@@ -2,33 +2,43 @@ import type { MiniGameRating, MiniGameRules } from "../contract";
 import { rhythmTapEnd, rhythmTapFairness, type RhythmTapRecord, type RhythmTapTuning } from "../engines/rhythm_tap/engine";
 
 // Saying it together (docs/13 2.4): a rhythm_tap skin. She counts 「せー」「の」 on a steady beat and says the four words
-// on the next four, one a beat (ヤートリーガン、クリプヤー、ディヤーン、デーン！); the player says each with a tap on its
-// beat. The story takes the first word, as before the four words (group2 S4, 2026-11-14): on her beat the two voices
-// overlap (together); before it, the player's voice comes alone first (early, from 「せー」 on); after it, hers comes
-// alone first (late, until the play ends); no tap at all: she says them alone (silent). The result card's ★ and score
-// count the words said together: one tap inside a word's window (a second tap on the same word is no longer together;
-// the first word together is the story's together). Timing only (2026-11-13 user decision: 「大きさじゃなくてタイミング
-// を合わせる」); nothing is random. Pure. Every number to tune is in SAY_NUMBERS (E1; Debug's room edits them).
+// after it (ヤートリーガン、クリプヤー、ディヤーン、デーン！) the way the phrase is said (round 3, 2026-11-14): the first on
+// the beat after 「の」, then her own rhythm: she stretches the long first word (the second comes a little late), catches
+// up (the third a little quick), holds its long syllable and takes a breath before the last. The player says each with a
+// tap on her word. The story takes the first word, as before the four words (group2 S4, 2026-11-14): on her beat the two
+// voices overlap (together); before it, the player's voice comes alone first (early, from 「せー」 on); after it, hers
+// comes alone first (late, until the play ends); no tap at all: she says them alone (silent). The result card's ★ and
+// score count the words said together: one tap inside a word's window (a second tap on the same word is no longer
+// together; the first word together is the story's together). Timing only (2026-11-13 user decision: 「大きさじゃなくて
+// タイミングを合わせる」); nothing is random. Pure. Every number to tune is in SAY_NUMBERS (E1; Debug's room edits them).
 
 export type SayTogetherOutcome = "together" | "early" | "late" | "silent";
 /** The game has no keys of its own. */
 export type SayTogetherParams = object;
 export type SayRecord = RhythmTapRecord;
 
-/** Her count before the words (「せー」「の」), and the words (one a beat). */
+/** Her count before the words (「せー」「の」), and the words. */
 export const SAY_COUNT_BEATS = 2;
 export const SAY_WORD_COUNT = 4;
 
 /**
- * Saying it together's numbers. Her breath (a tap in it is no tap), one beat (her count's and the words'), each word's
- * window (two voices starting this close sound as one; wider after her beat: a phone's touch and screen land a tap late,
- * group2's playtest of 2026-11-13: −110/+170 for the first word, the story's), the later words' late side (the ★ only:
- * +200, so a slow phone is not marked down on them; 2026-11-14), and how long after the last word the play ends at the
- * latest.
+ * Saying it together's numbers. Her breath before the count (a tap in it is no tap), her count's beat (the first word
+ * comes on the beat after 「の」), her phrasing after it: the second word this much later than a beat (she stretches
+ * ヤートリーガン), the third this much sooner (she catches up), and before the last her held syllable (ディヤーーン) and
+ * a breath, each this much on top of a beat; each word's window (two voices starting this close sound as one; wider
+ * after her word: a phone's touch and screen land a tap late, group2's playtest of 2026-11-13: −110/+170 for the first
+ * word, the story's), the later words' late side (the ★ only: +200, so a slow phone is not marked down on them;
+ * 2026-11-14), and how long after the last word the play ends at the latest. Her words come 0.87, 0.52 and 1.25 s apart
+ * after a 0.65 s count. Round 3's bots (rules.test.ts): the first word as before; all four together for about four in
+ * five average players and a third of careless ones (a sweet moment, not a test: 2026-11-14).
  */
 export const SAY_NUMBERS = {
   settleMs: 1000,
   beatMs: 650,
+  stretchMs: 220,
+  catchUpMs: 130,
+  holdMs: 380,
+  breathMs: 220,
   cleanEarlyMs: 110,
   cleanLateMs: 170,
   laterLateMs: 200,
@@ -36,7 +46,7 @@ export const SAY_NUMBERS = {
 } as const;
 export type SayNumbers = { readonly [Key in keyof typeof SAY_NUMBERS]: number };
 
-/** A word as the player said it so far: on her beat (together), off it, or not yet (null). */
+/** A word as the player said it so far: on her word (together), off it, or not yet (null). */
 export type SayWord = "together" | "off" | null;
 
 /** What a record did as of a moment. */
@@ -56,13 +66,16 @@ export interface SayGame {
   numbers: SayNumbers;
   /** When she says 「せー」 and 「の」 (the first: her breath's end; a tap before it is no tap). */
   countAt: readonly number[];
-  /** When she says each word (on the beat after 「の」, then one a beat). */
+  /** When she says each word (the first on the beat after 「の」, then in her own rhythm). */
   wordsAt: readonly number[];
+  /** Her held syllable (ディヤーーン) from its word to the breath, and the breath before the last word. */
+  holdAt: { from: number; to: number };
+  breathAt: { from: number; to: number };
   /** The play's end at the latest (after the last word's window). */
   endMs: number;
   /** The rhythm_tap tuning the play runs on (the lane's marks, the count-in's crosses). */
   tuning: RhythmTapTuning;
-  /** A word's window after her beat: the first word's (the story's), or the later words' (the ★ only). */
+  /** A word's window after her word: the first word's (the story's), or the later words' (the ★ only). */
   lateOf(word: number): number;
   /** Whether a tap is in a word's window. */
   inWindow(ms: number, word: number): boolean;
@@ -78,7 +91,12 @@ const isTime = (value: unknown): value is number => typeof value === "number" &&
 export function sayGame(numbers: SayNumbers = SAY_NUMBERS): SayGame {
   const beat = Math.max(1, Math.round(numbers.beatMs));
   const countAt = Array.from({ length: SAY_COUNT_BEATS }, (_, index) => Math.round(numbers.settleMs) + beat * index);
-  const wordsAt = Array.from({ length: SAY_WORD_COUNT }, (_, index) => countAt[0] + beat * (SAY_COUNT_BEATS + index));
+  // Her phrasing: the first word on the beat, then the gaps of how she says it (never under 1 ms: Debug's room's numbers).
+  const gaps = [beat + numbers.stretchMs, beat - numbers.catchUpMs, beat + numbers.holdMs + numbers.breathMs].map((gap) => Math.max(1, Math.round(gap)));
+  const wordsAt = [countAt[SAY_COUNT_BEATS - 1] + beat];
+  for (const gap of gaps) wordsAt.push(wordsAt[wordsAt.length - 1] + gap);
+  const breathAt = { from: wordsAt[3] - Math.round(numbers.breathMs), to: wordsAt[3] };
+  const holdAt = { from: wordsAt[2], to: breathAt.from };
   // The engine's lane lights each word's window as the judge reads it: the first word's, then the later words' (its
   // `peak`, here wider than the first: the later words count for the ★ only).
   const tuning: RhythmTapTuning = {
@@ -94,7 +112,7 @@ export function sayGame(numbers: SayNumbers = SAY_NUMBERS): SayGame {
   /** Each word's own time: from halfway after the word before to halfway before the next (the first from 「せー」, the last to the end). */
   const wordOf = (ms: number) => {
     let word = 0;
-    while (word + 1 < SAY_WORD_COUNT && ms >= wordsAt[word] + beat / 2) word += 1;
+    while (word + 1 < SAY_WORD_COUNT && ms >= (wordsAt[word] + wordsAt[word + 1]) / 2) word += 1;
     return word;
   };
   const judge = (record: SayRecord, now = Number.POSITIVE_INFINITY): SayJudgement => {
@@ -123,25 +141,31 @@ export function sayGame(numbers: SayNumbers = SAY_NUMBERS): SayGame {
     const stars = outcome === "together" ? (together === SAY_WORD_COUNT ? 3 : 2) : together >= 2 ? 2 : 1;
     return { stars, scoreJa: `${together}語そろった（${SAY_WORD_COUNT}語中）` };
   };
-  /** 「おまかせ」: the first word as the outcome asks (half way into its side), the others on her beat; silent says none. */
+  /** 「おまかせ」: the first word as the outcome asks (half way into its side), the others on her words; silent says none. */
   const autoRecord = (outcome: SayTogetherOutcome): SayRecord => {
     if (outcome === "silent") return { taps: [], stopMs: null };
     const first = outcome === "together" ? wordsAt[0]
       : outcome === "early" ? Math.max(countAt[0], wordsAt[0] - (numbers.cleanEarlyMs + beat / 2) / 2)
-      : wordsAt[0] + (numbers.cleanLateMs + beat / 2) / 2;
+      : wordsAt[0] + (numbers.cleanLateMs + (wordsAt[1] - wordsAt[0]) / 2) / 2;
     return { taps: [Math.round(first), ...wordsAt.slice(1)], stopMs: null };
   };
   const fairness = () => {
     const problems = rhythmTapFairness(tuning);
     if (numbers.settleMs < 450) problems.push(`settleMs ${numbers.settleMs} ends her breath inside the start's double-tap guard (450 ms)`);
-    for (const late of [numbers.cleanLateMs, numbers.laterLateMs]) if (numbers.cleanEarlyMs >= beat / 2 || late >= beat / 2)
-      problems.push(`a word's window (−${numbers.cleanEarlyMs}/+${late}) reaches past half a beat (${beat / 2} ms): a tap could say two words`);
+    // Each word's window inside its own time (halfway to the word before, or to 「の」, and to the word after).
+    for (let word = 0; word < SAY_WORD_COUNT; word += 1) {
+      const before = (wordsAt[word] - (word === 0 ? countAt[SAY_COUNT_BEATS - 1] : wordsAt[word - 1])) / 2;
+      const after = word + 1 < SAY_WORD_COUNT ? (wordsAt[word + 1] - wordsAt[word]) / 2 : Number.POSITIVE_INFINITY;
+      if (numbers.cleanEarlyMs >= before || lateOf(word) >= after)
+        problems.push(`word ${word + 1}'s window (−${numbers.cleanEarlyMs}/+${lateOf(word)}) reaches past halfway to the next or the one before: a tap could say two words`);
+    }
     if (numbers.laterLateMs < numbers.cleanLateMs) problems.push(`laterLateMs ${numbers.laterLateMs} is narrower than the first word's cleanLateMs ${numbers.cleanLateMs}`);
     if (numbers.cleanLateMs < numbers.cleanEarlyMs + 30) problems.push(`cleanLateMs ${numbers.cleanLateMs} is not 30 ms wider than cleanEarlyMs (a phone lands a tap late)`);
+    if (numbers.holdMs < 0 || numbers.breathMs < 0) problems.push("holdMs and breathMs cannot be negative (the last word would come before her breath)");
     return problems;
   };
   return {
-    numbers, countAt, wordsAt, endMs, tuning, lateOf, inWindow, judge, fairness,
+    numbers, countAt, wordsAt, holdAt, breathAt, endMs, tuning, lateOf, inWindow, judge, fairness,
     rules: { outcomeOf: (record) => judge(record).outcome, autoRecord, rate },
   };
 }

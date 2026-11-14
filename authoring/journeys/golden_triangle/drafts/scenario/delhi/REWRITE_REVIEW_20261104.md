@@ -1,5 +1,7 @@
 # デリー本番脚本の全面改稿レビュー（2026-11-04）
 
+> **旧稿の記録です。** 2026-11-04 の旧稿「三分間の旅」のもので、2026-11-07 の全面改稿で脚本・クイズは置き換わりました（[改稿の設計](../../SCENARIO_REWRITE.md)。今の本文は `content/journeys/golden_triangle/` の Ink とクイズが正本）。
+
 > 記録の注記：本文のパス・コマンドは作成当時の配置のままです。現在、この旅行編のデータは `content/journeys/golden_triangle/`、制作資料は `authoring/journeys/golden_triangle/` にあります（[旧配置との対応表](../../../../README.md#当時の配置と現在の配置)）。
 
 本書は制作判断の記録。脚本の正本は `content/stories/`、表示文の正本は本番各カタログ。従来の `narrative.json`・`quiz-hooks.json` は初回取込み時の資料であり、ここから再生成して上書きしない。

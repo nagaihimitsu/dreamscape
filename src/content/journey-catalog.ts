@@ -1,7 +1,7 @@
 import { z } from "zod";
+import { contentId as id } from "./content-id";
 import { transportModeSchema } from "./transport-schemas";
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const text = z.string().trim().min(1);
 /**
  * Kept as written, not trimmed: a symbol of letters ends with the one space that keeps

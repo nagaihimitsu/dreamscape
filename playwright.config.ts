@@ -5,9 +5,18 @@ import { defineConfig, devices } from "@playwright/test";
 // test is never retried, so an unstable test shows up instead of passing.
 const ci = !!process.env.CI;
 
+/**
+ * The Chromium executable to launch instead of the one this Playwright version
+ * installs (DREAMSCAPE_CHROMIUM, an absolute path), for a machine whose installed
+ * browsers belong to another Playwright version, e.g.
+ * `DREAMSCAPE_CHROMIUM=/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell npx playwright test`.
+ * Unset (CI), Playwright's own browser. Every Chromium config spreads it into its devices.
+ */
+export const chromiumLaunch = process.env.DREAMSCAPE_CHROMIUM ? { launchOptions: { executablePath: process.env.DREAMSCAPE_CHROMIUM } } : {};
+
 /** The phone every tier emulates. Lines show at once and decorative motion is
  * short (prefers-reduced-motion); a test that checks the typewriter turns it off. */
-export const phone = { ...devices["iPhone 13"], defaultBrowserType: "chromium" as const, reducedMotion: "reduce" as const };
+export const phone = { ...devices["iPhone 13"], defaultBrowserType: "chromium" as const, reducedMotion: "reduce" as const, ...chromiumLaunch };
 
 /** Settings shared with playwright.prod.config.ts. */
 export const shared = {

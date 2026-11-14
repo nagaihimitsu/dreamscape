@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { describeRelationshipChange, relationshipAxisLabels, relationshipChange, type RelationshipChangeState } from "./relationship-change";
+import {
+  describeRelationshipChange, relationshipAxisLabels, relationshipChange, relationshipChangeLines, type RelationshipChangeState,
+} from "./relationship-change";
 
 // User decision 2026-11-08 ②: while Debug mode is on, each choice's relationship changes are shown.
 // Hand-built states (the parts the change is read from); relationship-change-play.test.ts plays real dates.
@@ -96,5 +98,12 @@ describe("describeRelationshipChange", () => {
       .toEqual(["信頼 +1（0→1）", "反応：噛み合った"]);
     expect(describeRelationshipChange({ axes: [{ axis: "spark", before: 0, after: 2, delta: 2 }], reaction: null, replay: false }))
       .toEqual(["恋愛の意識 +2（0→2）"]);
+  });
+
+  it("gives each value with its numbers as one part, which the display keeps whole", () => {
+    expect(relationshipChangeLines({
+      axes: [{ axis: "affection", before: 3, after: 5, delta: 2 }, { axis: "spark", before: 0, after: 1, delta: 1 }],
+      reaction: { result: "positive", chancePercent: 62 }, replay: false,
+    })).toEqual([["親しさ +2（3→5）", "恋愛の意識 +1（0→1）"], ["反応：噛み合った（噛み合う確率 62%）"]]);
   });
 });

@@ -12,9 +12,11 @@
 - Vite: https://vite.dev/guide/ （セットアップとNodeの要件）
 - React: https://react.dev/
 - TypeScript: https://www.typescriptlang.org/docs/
+- Leaflet（大きな地図）: https://leafletjs.com/
+- sharp（画像の変換。生成と制作ツールで使い、ゲームには入らない）: https://sharp.pixelplumbing.com/
 
 ### 採用している版
-依存関係は `package-lock.json` で固定している。動作を確かめた版：Vite 8.3.5（Nodeの要件 `^20.19.0 || >=22.12.0`）、React 19.3.1、TypeScript 7.0.2、inkjs 2.4.0、Zod 4.6.7、Vitest 5.0.5、Playwright 1.64.1。ライセンスは、inkjs・Vite・React・Zod・Vitest が MIT、TypeScript・Playwright が Apache-2.0。inkjs の公式 README で、コンパイラと互換性を確かめている。
+依存関係は `package-lock.json` で固定している。動作を確かめた版：Vite 8.3.5（Nodeの要件 `^20.19.0 || >=22.12.0`）、React 19.3.1、TypeScript 7.0.2、inkjs 2.4.0、Zod 4.6.7、Vitest 5.0.5、Playwright 1.64.1、Leaflet 1.9.4、sharp 0.35.5。ライセンスは、inkjs・Vite・React・Zod・Vitest が MIT、TypeScript・Playwright・sharp が Apache-2.0、Leaflet が BSD-2-Clause。inkjs の公式 README で、コンパイラと互換性を確かめている。
 
 ## ミラノ『最後の晩餐』 — 史実の検証先
 - 最後の晩餐美術館公式: https://cenacolovinciano.org/en/

@@ -9,7 +9,7 @@ INCLUDE modules.ink
 // - 日本語の選択肢と、選択肢のすぐ次の行の効果の札（# rel: など）を書ける（段階3a）。# effect は置かない。
 //   効果のある選択肢には # option: を付ける。お金や AP を減らす札（ゲームが自分で始めるエピローグの # on_done:）は書かない。
 // - romance_stage（1〜4）と ending_reached で少しだけ分岐してよい。全組合せで台詞が出るようにする。
-// - # speaker: enemy はフィナーレの対戦相手の名前で表示される。ほかの人物の言葉は地の文に入れる。
+// - # speaker: enemy はフィナーレの対戦相手の名前で表示される。ほかの人は progression/story.json の people に宣言すれば、# speaker: <人物ID> で話せる。
 // - 行の札の例：「思い出しそう」の行の # recall:（その行だけ、アルバムの時計塔の絵 smp_album_clock_tower が背景に
 //   うっすら出る。アルバムには入らない）と # quiet: line（その行だけ静かに：上の帯が隠れ、字が少しゆっくり、背景が落ち着く）。
 === smp_mihon_epilogue ===
