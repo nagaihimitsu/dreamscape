@@ -5,7 +5,8 @@ import "./engine.css";
 
 // The rhythm_tap engine's play (docs/13 2.2): the field a skin draws, a lane whose marks slide to a ring at each beat
 // (the beats on screen: it plays the same with the sound off; a count-in's beats pass as hollow crosses, not to tap; a
-// partner's stop rides the lane as a flag), the skin's stop button (if any) away from the big tap button at the bottom
+// rest passes as a hollow bar, not to tap either: a feint's looks like a beat's until shortly before; a big beat's mark
+// is bigger; a partner's stop rides the lane as a flag), the skin's stop button (if any) away from the big tap button at the bottom
 // (a tap on the field and Space or Enter tap too; S stops). The host's clock times it; the engine judges the record as it
 // grows; the skin's rules decide, and the play ends at that moment (end with the record for the ★, the field's hold after
 // it); the host shows the finish and the result card and takes its choice.
@@ -48,6 +49,13 @@ export interface RhythmTapSkin<Params, Outcome extends string> {
   /** A count-in's beats (not to tap): the lane shows them as hollow crosses coming to the ring. */
   countIn?: readonly number[];
   /**
+   * The tuning's rests (not to tap) come on the lane as hollow bars; a feint's mark looks like a beat's until this long
+   * before it (its tell: the field shows the same moment). None: a rest's bar from the start.
+   */
+  restRevealMs?: number;
+  /** The beats (by index from 0) whose marks are bigger (a big drum beat, a last word). */
+  bigBeats?: readonly number[];
+  /**
    * Before this moment a tap is no tap: turned away with the host's light refusal and left out of the record (her breath
    * before her count). None: every tap is recorded (without a count-in, one before the first window is turned away too).
    */
@@ -85,6 +93,8 @@ const Palm = () => (
 /** The play of a rhythm_tap skin. */
 export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSkin<Params, Outcome>): ComponentType<MiniGamePlayProps<Params, Outcome>> {
   const { beats } = skin.tuning;
+  const rests = skin.tuning.rests?.at ?? [];
+  const big = new Set(skin.bigBeats ?? []);
   const countIn = skin.countIn ?? [];
   const opens = rhythmTapOpens(skin.tuning);
   const laneAt = (beat: number, ms: number) => {
@@ -105,6 +115,7 @@ export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSki
     const [stopped, setStopped] = useState(false);
     const marks = useRef<(HTMLSpanElement | null)[]>([]);
     const counts = useRef<(HTMLSpanElement | null)[]>([]);
+    const restMarks = useRef<(HTMLSpanElement | null)[]>([]);
     const flag = useRef<HTMLSpanElement>(null);
     const ring = useRef<HTMLSpanElement>(null);
     const stopButton = useRef<HTMLButtonElement>(null);
@@ -179,6 +190,15 @@ export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSki
           place(mark, laneAt(beat, ms), state === "miss" || state === "coming");
         });
         countIn.forEach((beat, index) => place(counts.current[index], laneAt(beat, ms), !summary.ended));
+        // A rest: a hollow bar (a feint's a beat's mark until its reveal), crossed out when tapped, passing dim when kept.
+        rests.forEach((at, index) => {
+          const mark = restMarks.current[index];
+          if (!mark) return;
+          const state = index < summary.rests.length ? summary.rests[index]
+            : summary.ended ? "gone" : skin.restRevealMs !== undefined && at - ms > skin.restRevealMs ? "coming" : "rest";
+          mark.dataset.state = state;
+          place(mark, laneAt(at, ms), state !== "gone");
+        });
         if (skin.partner) {
           place(flag.current, laneAt(skin.partner.atMs, ms), !summary.ended);
           const lit = ms >= skin.partner.atMs && ms < skin.partner.atMs + PARTNER_LIGHT_MS && !summary.ended;
@@ -238,8 +258,13 @@ export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSki
             {countIn.map((beat, index) => (
               <span key={`count-${beat}`} className="mg-rhythm-tap-mark" data-state="count" ref={(element) => { counts.current[index] = element; }} />
             ))}
+            {rests.map((at, index) => (
+              <span key={`rest-${at}`} className="mg-rhythm-tap-mark" data-rest data-state={skin.restRevealMs === undefined ? "rest" : "coming"}
+                ref={(element) => { restMarks.current[index] = element; }} />
+            ))}
             {beats.map((beat, index) => (
-              <span key={beat} className="mg-rhythm-tap-mark" data-state="coming" ref={(element) => { marks.current[index] = element; }} />
+              <span key={beat} className="mg-rhythm-tap-mark" data-state="coming" data-big={big.has(index) || undefined}
+                ref={(element) => { marks.current[index] = element; }} />
             ))}
             {skin.partner && <span className="mg-rhythm-tap-flag" ref={flag}><span>{skin.partner.flagJa}</span></span>}
           </div>

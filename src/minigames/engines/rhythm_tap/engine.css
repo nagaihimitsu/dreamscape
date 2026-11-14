@@ -125,6 +125,38 @@
   transform: translate(-50%, -50%) rotate(45deg);
 }
 .mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-state="count"]::after { transform: translate(-50%, -50%) rotate(-45deg); }
+/* A big beat (the drum's ドン, a last word): a bigger mark with a gold edge. */
+.mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-big][data-state="coming"] {
+  width: 30px;
+  height: 30px;
+  box-shadow: 0 0 0 2px var(--ds-slate-900), 0 0 0 4px rgba(240, 200, 96, 0.9);
+}
+/* A rest (not to tap: the dance's break, the vendor's feint once it shows): a hollow circle with a bar across (a rest
+   sign); tapped, the bar turns into a cross on a terracotta ring; kept, it passes dim. Shape, not colour alone. */
+.mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest]:is([data-state="rest"], [data-state="kept"], [data-state="fooled"]) {
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(255, 250, 241, 0.8);
+  background: rgba(31, 36, 48, 0.85);
+  box-shadow: none;
+}
+.mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest]:is([data-state="rest"], [data-state="kept"])::before,
+.mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest][data-state="fooled"]::before,
+.mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest][data-state="fooled"]::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 3px;
+  border-radius: 1.5px;
+  background: rgba(255, 250, 241, 0.85);
+  transform: translate(-50%, -50%);
+}
+.mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest][data-state="kept"] { opacity: 0.4; }
+.mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest][data-state="fooled"] { border-color: #e39a6c; background: rgba(160, 72, 38, 0.6); }
+.mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest][data-state="fooled"]::before { transform: translate(-50%, -50%) rotate(45deg); }
+.mg-engine-rhythm-tap .mg-rhythm-tap-mark[data-rest][data-state="fooled"]::after { transform: translate(-50%, -50%) rotate(-45deg); }
 /* The partner's flag: a small plum tag on a stem, riding the lane to the ring when they stop. */
 .mg-engine-rhythm-tap .mg-rhythm-tap-flag {
   position: absolute;
