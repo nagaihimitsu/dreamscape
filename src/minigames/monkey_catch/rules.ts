@@ -1,4 +1,5 @@
-import { cueTapEnd, cueTapMoment, cueTapRules, type CueTapTuning } from "../engines/cue_tap/engine";
+import type { MiniGameRules } from "../contract";
+import { cueTapEnd, cueTapMoment, cueTapRules, type CueTapRecord, type CueTapTuning } from "../engines/cue_tap/engine";
 import type { MONKEY_THINGS } from "./definition";
 
 // The monkey's catch (docs/13 2.4): a cue_tap skin. The monkey on the wall lets go of what it took; one tap closes the
@@ -21,8 +22,9 @@ export const MONKEY_FIELD = {
 } as const;
 
 /**
- * Generous windows (a phone's tap has its own lag; the game is a moment of the story), wider after the thing reaches the
- * hands: a phone lands a tap late, and a thing a little past the fingertips is still inside the cupped hands.
+ * The catch's tuning (E1; Debug's room edits these numbers): generous windows (a phone's tap has its own lag; the game is
+ * a moment of the story), wider after the thing reaches the hands: a phone lands a tap late, and a thing a little past the
+ * fingertips is still inside the cupped hands.
  */
 export const MONKEY_TUNING: CueTapTuning = {
   leadMs: MONKEY_FIELD.holdMs + MONKEY_FIELD.slipMs,
@@ -41,6 +43,13 @@ export const MONKEY_RELEASE_MS = MONKEY_TUNING.leadMs;
 export const MONKEY_HANDS_MS = cueTapMoment(MONKEY_TUNING);
 export const MONKEY_END_MS = cueTapEnd(MONKEY_TUNING);
 
-/** Clean: caught. A little early or late: it bounces off the fingers. Far off, or no tap: it falls past the hands. */
-export const monkeyCatchRules = cueTapRules<MonkeyCatchParams, MonkeyCatchOutcome>(MONKEY_TUNING,
-  { clean: "caught", early: "fumbled", late: "fumbled", miss: "missed", none: "missed" });
+/**
+ * The catch's rules with a tuning (the story's, or Debug's room's edited one). Clean: caught. A little early or late: it
+ * bounces off the fingers. Far off, or no tap: it falls past the hands. ★ from the engine: clean ★3, a little off ★2, far
+ * off ★1, no tap none.
+ */
+export function monkeyCatchRulesFor(tuning: CueTapTuning): MiniGameRules<MonkeyCatchParams, MonkeyCatchOutcome, CueTapRecord> {
+  return cueTapRules<MonkeyCatchParams, MonkeyCatchOutcome>(tuning, { clean: "caught", early: "fumbled", late: "fumbled", miss: "missed", none: "missed" });
+}
+
+export const monkeyCatchRules = monkeyCatchRulesFor(MONKEY_TUNING);

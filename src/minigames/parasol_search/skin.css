@@ -1,8 +1,8 @@
 /* The parasol's field (Skin.tsx): the pierced stone wall of the palace's upper floor all round, a window in it as wide as
-   the field and at most as tall as wide (the street from above under a cusped arch), the stone sill under it. Places are
-   in % of the window; sizes in --u, a unit of the window's smaller side, so the three rows keep apart on a short phone.
-   The umbrellas are the buttons; a looked-at one slides aside to show who is under it. With the use's art.street, that
-   picture in place of the drawn street. */
+   the field allows and most of its height (the street from above under a cusped arch), the stone sill under it. Places are
+   in % of the window; sizes in --u, a unit of the window's width, so the rows keep apart on a short phone too. The
+   umbrellas, customers and children are the buttons (each at least 52px); a looked-at umbrella slides aside to show who is
+   under it. With the use's art.street, that picture in place of the drawn street. */
 .mg-parasol-search {
   position: absolute;
   inset: 0;
@@ -20,13 +20,13 @@
   content: "";
   pointer-events: none;
 }
+/* The window: most of the field's height (the lattice a band above and under it), the street's three rows apart. */
 .mg-parasol-search-window {
-  --side: min(100cqw - 20px, 560px);
   --u: calc(min(100cqw, 170cqh) / 240);
   position: relative;
   z-index: 1;
-  width: var(--side);
-  height: min(100cqh - 16px, var(--side));
+  width: min(100cqw - 20px, 560px);
+  height: min(76cqh, 100cqh - 24px, 150cqw);
   overflow: hidden;
   container-type: size;
   border-radius: 3px 3px 0 0;
@@ -38,7 +38,7 @@
 .mg-parasol-search-place { position: absolute; display: block; line-height: 0; transform: translate(-50%, -50%); pointer-events: none; }
 .mg-parasol-search-thing { display: block; width: calc(var(--size) * var(--u)); height: auto; }
 /* The window's arch over the top corners, and the sill the player leans on (just under the window, over its edge). */
-.mg-parasol-search-arch { position: absolute; z-index: 3; top: 0; left: 0; display: block; width: 100%; height: min(20cqh, 14cqw); pointer-events: none; }
+.mg-parasol-search-arch { position: absolute; z-index: 3; top: 0; left: 0; display: block; width: 100%; height: min(14cqh, 14cqw); pointer-events: none; }
 .mg-parasol-search-sill {
   position: absolute;
   z-index: 3;
@@ -50,11 +50,13 @@
   box-shadow: 0 -2px 4px rgba(30, 10, 8, 0.35);
   pointer-events: none;
 }
-/* The umbrellas: buttons as big as the umbrella, never under 44px, the drawing (with the stall beside it) centred on them. */
+/* The things of the street: buttons while their round is on show, as big as the thing and never under 52px, the
+   drawing (with the stall's cloth in front) centred on them; the other rounds' things are drawings only. */
 .mg-parasol-search-spot {
   position: absolute;
   z-index: 1;
-  width: max(44px, calc(var(--r) * 2 * var(--u) + 4px));
+  display: block;
+  width: max(52px, calc(var(--r) * 2 * var(--u) + 8px));
   min-height: 0;
   aspect-ratio: 1;
   padding: 0;
@@ -65,8 +67,11 @@
   transform: translate(-50%, -50%);
   touch-action: manipulation;
   cursor: pointer;
+  pointer-events: none;
 }
+button.mg-parasol-search-spot { z-index: 2; pointer-events: auto; }
 .mg-parasol-search-spot[data-walker] { z-index: 2; }
+button.mg-parasol-search-spot[data-walker] { z-index: 3; }
 .mg-parasol-search-spot[aria-disabled="true"] { cursor: default; }
 .mg-parasol-search-spot:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; }
 .mg-parasol-search-unit {
@@ -80,10 +85,14 @@
   pointer-events: none;
   transform: translate(-50%, -50%);
 }
-/* A looked-at umbrella slides toward the road and tips, showing who is under it; the wrong ones fade a little. */
+/* A looked-at umbrella slides toward the road and tips, showing who is under it (hers stays so after round 1); the wrong
+   ones fade a little. */
 .mg-parasol-search-canopy { transform-box: fill-box; transform-origin: 50% 50%; transition: transform 380ms ease-out, opacity 380ms ease-out; }
 .mg-parasol-search-spot[data-shown] .mg-parasol-search-canopy { transform: translate(14%, -42%) rotate(-10deg) scale(0.86); }
-.mg-parasol-search-spot[data-searched]:not([data-target]) .mg-parasol-search-canopy { opacity: 0.62; }
+.mg-parasol-search-spot[data-shown][data-searched] .mg-parasol-search-canopy { opacity: 0.62; }
+/* A round's things come in (round 2's customers to the stalls, round 3's children into the street). */
+button.mg-parasol-search-spot { animation: mg-parasol-search-arrive 260ms ease-out both; }
+@keyframes mg-parasol-search-arrive { from { opacity: 0; } }
 .mg-parasol-search-ring-wrong { fill: none; stroke: rgba(255, 250, 241, 0.95); stroke-width: 1.6; stroke-dasharray: 4 3; }
 .mg-parasol-search-ring-found, .mg-parasol-search-ring-pointed { fill: none; stroke: #f3c95c; stroke-width: 2.4; filter: drop-shadow(0 0 3px rgba(255, 220, 140, 0.9)); }
 .mg-parasol-search-ring-pointed { stroke-dasharray: 6 3; animation: mg-parasol-search-point 900ms ease-out 2 both; }

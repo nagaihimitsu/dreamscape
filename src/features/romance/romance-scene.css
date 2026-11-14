@@ -22,6 +22,9 @@
   justify-content: flex-end;
   min-height: min(720px, 78dvh);
   overflow: hidden;
+  /* Clipped, never a scroll box: a figure standing `apart` reaches past the right edge, and a focus or scroll into view
+     must not shift the whole scene (and a play over it) sideways (2026-11-13: 22 px in the Nahargarh hide-and-seek). */
+  overflow: clip;
   background: #5b6258;
 }
 .conversation-active .journey-stage { display: none; }

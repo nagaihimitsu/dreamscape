@@ -40,5 +40,8 @@ for (const game of GAMES) {
     await expect(action).toHaveAttribute("aria-disabled", "true");
     await expect(play).toHaveAttribute("data-outcome", /.+/u, { timeout: 10_000 });
     await expect(play).not.toHaveAttribute("data-outcome", game.none);
+    // The result card rates the tap that counted (★1–3 with how far off it was), never the one turned away.
+    await expect(page.getByTestId("minigame-stars")).toHaveAttribute("data-stars", /^[123]$/u);
+    await expect(page.getByTestId("minigame-score")).toContainText("秒");
   });
 }

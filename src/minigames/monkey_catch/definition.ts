@@ -11,6 +11,11 @@ export const MONKEY_THINGS = ["bottle", "glasses"] as const;
  * bounces off the fingers (`fumbled`), far off or no tap so it falls past (`missed`). Hands closed while the monkey still
  * holds it do not count.
  *
+ * The host's flow (docs/13 2.6): practice before the real catch, no 3・2・1 (the monkey's slipping grip is the cue), the
+ * play ends as the thing meets the hands or goes past them (★ from the tap: clean ★3, a little off ★2, far off ★1, no tap
+ * none), and the heroine's face and line: her first breath at her bottle or sunglasses (the story's lines follow at
+ * once: for the bottle her 「わたしの雨、無事だった！」), never what she says next, and right for either thing.
+ *
  * Accessibility: 「受け止める」 is 64px at the bottom (thumb reach), Space and Enter close the hands; a gold ring with a
  * dark edge marks where the thing meets the hands and tightens as it comes, and the meter's gold zone is brighter and
  * narrower than the near zone (neither told by colour alone); with less motion the thing does not tumble, the monkey
@@ -23,9 +28,12 @@ export const monkeyCatch = defineMiniGame({
   titleJa: "猿の落とし物",
   howToJa: "壁の上の猿の手から離れて落ちてくる物（小瓶かサングラス）が、両手の上の輪に届く瞬間に、「受け止める」を1回押して受け止める（約3秒）",
   outcomes: [
-    { id: "caught", labelJa: "受け止めた", noteJa: "輪に届く瞬間（針が金色の所）に押した" },
-    { id: "fumbled", labelJa: "指先で弾いた", noteJa: "少し早いか、少し遅い" },
-    { id: "missed", labelJa: "受け止められなかった", noteJa: "早すぎるか遅すぎる、または押さなかった" },
+    { id: "caught", labelJa: "受け止めた", noteJa: "輪に届く瞬間（針が金色の所）に押した", finishJa: "キャッチ！",
+      reaction: { kind: "surprise", linesJa: ["わっ、取った……！", "ナイスキャッチ……！"] } },
+    { id: "fumbled", labelJa: "指先で弾いた", noteJa: "少し早いか、少し遅い", finishJa: "つるっ！",
+      reaction: { kind: "oops", linesJa: ["あっ、つるって……！", "惜しいっ……！"] } },
+    { id: "missed", labelJa: "受け止められなかった", noteJa: "早すぎるか遅すぎる、または押さなかった", finishJa: "落ちた！",
+      reaction: { kind: "oops", linesJa: ["今の、かすった……！"] } },
   ],
   defaultAuto: "caught",
   params: () => z.object({
@@ -34,6 +42,15 @@ export const monkeyCatch = defineMiniGame({
   examples: [{}, { thing: "glasses" }],
   startJa: "構える",
   hintJa: "落ちてくる物が輪に届く瞬間に「受け止める」",
+  goalJa: "猿が落とした物が輪に届く瞬間に「受け止める」で両手に収める",
+  controls: "timing",
+  durationSec: 3,
+  practice: {},
+  // The monkey's grip giving is the cue (the story: 「考えるより先に、両手が出ていた」): no 3・2・1 before it.
+  countdown: "own",
+  music: "bright",
+  // The catch is at the bottom, in the hands: the result card sits high (over the wall), leaving it in view.
+  resultAnchor: "top",
   timed: true,
   keysJa: "Space・Enter で受け止める",
   sounds: ["cloth_grab", "item_pouch"],

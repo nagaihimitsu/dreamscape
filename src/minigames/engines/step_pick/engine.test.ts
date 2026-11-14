@@ -1,54 +1,78 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
-  STEP_PICK_GUARD_MS, STEP_PICK_MIN_STEP_MS, stepPickAutoRecord, stepPickEnd, stepPickEnding, stepPickFairness, stepPickRules, stepPickStarts,
-  stepPickStepAt, type StepPickEnding, type StepPickTuning,
+  STEP_PICK_AUTO_LEAD_MS, STEP_PICK_GUARD_MS, stepPickAutoRecord, stepPickCounted, stepPickEnding, stepPickFairness, stepPickRules, stepPickStepOf,
+  stepPickSteps, stepPickThresholds, type StepPickEnding, type StepPickRecord, type StepPickTuning,
 } from "./engine";
 
-// The step_pick engine in its own words (docs/13 6.2): which step a take lands on, how a play ends, its fairness, and that
-// 「おまかせ」 reaches every ending.
+// The step_pick engine in its own words (docs/13 6.2): presses move the steps on (never time), the push gap, the push
+// limit, the idle end, its fairness, and that 「おまかせ」 reaches every ending.
 
-const TUNING: StepPickTuning = { stepsMs: [1600, 1400, 2400] };
+const TUNING: StepPickTuning = { pushesPerStep: [2, 2], pushLimit: 5, pushGapMs: 350, idleMs: 12000 };
+const take = (pushes: number[], ms: number): StepPickRecord => ({ pushes, end: { kind: "take", ms } });
 
 describe("the step_pick engine", () => {
-  it("shows each step for its time, one after another, and ends after the last", () => {
-    expect(stepPickStarts(TUNING)).toEqual([0, 1600, 3000]);
-    expect(stepPickEnd(TUNING)).toBe(5400);
-    expect([0, 1599, 1600, 2999, 3000, 5399, 5400].map((ms) => stepPickStepAt(ms, TUNING))).toEqual([0, 0, 1, 1, 2, 2, 3]);
+  it("moves the steps on by counted pushes only, two a step here, the last step staying", () => {
+    expect(stepPickSteps(TUNING)).toBe(3);
+    expect(stepPickThresholds(TUNING)).toEqual([0, 2, 4]);
+    expect([0, 1, 2, 3, 4, 5, 9].map((count) => stepPickStepOf(count, TUNING))).toEqual([0, 0, 1, 1, 2, 2, 2]);
+    // Time alone changes nothing: a take long after the start, with no push, takes the first step.
+    expect(stepPickEnding(take([], 11000), TUNING)).toEqual({ kind: "take", step: 0 });
   });
 
-  it("ends on the step on show when taken, on a leave, or when the steps run out", () => {
-    expect(stepPickEnding({ kind: "take", ms: 1599 }, TUNING)).toEqual({ kind: "take", step: 0 });
-    expect(stepPickEnding({ kind: "take", ms: 1600 }, TUNING)).toEqual({ kind: "take", step: 1 });
-    expect(stepPickEnding({ kind: "take", ms: 5399 }, TUNING)).toEqual({ kind: "take", step: 2 });
-    expect(stepPickEnding({ kind: "leave", ms: 4000 }, TUNING)).toEqual({ kind: "leave" });
+  it("counts a push only at least the push gap after the last counted one (no mashing)", () => {
+    expect(stepPickCounted([1000, 1100, 1349, 1350, 1360, 2000], TUNING)).toEqual([1000, 1350, 2000]);
+    expect(stepPickCounted([1000, 900, -5, Number.NaN, 1400], TUNING)).toEqual([1000, 1400]);
+    expect(stepPickEnding(take([1000, 1100, 1200], 2000), TUNING)).toEqual({ kind: "take", step: 0 });
+    expect(stepPickEnding(take([1000, 1400], 2000), TUNING)).toEqual({ kind: "take", step: 1 });
+  });
+
+  it("takes the step on show when taken, leaves on a leave, ends at the push limit, and runs out after the idle time", () => {
+    expect(stepPickEnding(take([1000, 1500, 2000, 2500], 3000), TUNING)).toEqual({ kind: "take", step: 2 });
+    // A take before a push counts the pushes before it only.
+    expect(stepPickEnding(take([1000, 1500, 4000], 3000), TUNING)).toEqual({ kind: "take", step: 1 });
+    expect(stepPickEnding({ pushes: [1000], end: { kind: "leave", ms: 1200 } }, TUNING)).toEqual({ kind: "leave" });
+    // The fifth push: the other side gives up, whatever came after.
+    expect(stepPickEnding(take([1000, 1500, 2000, 2500, 3000], 3500), TUNING)).toEqual({ kind: "out" });
+    expect(stepPickEnding({ pushes: [1000, 1500, 2000, 2500, 3000], end: null }, TUNING)).toEqual({ kind: "out" });
+    // Nothing done for the idle time (from the start, or from the last push) ends it with nothing.
+    expect(stepPickEnding({ pushes: [], end: null }, TUNING)).toEqual({ kind: "none" });
+    expect(stepPickEnding(take([], 12000), TUNING)).toEqual({ kind: "none" });
+    expect(stepPickEnding(take([1000], 12999), TUNING)).toEqual({ kind: "take", step: 0 });
+    expect(stepPickEnding(take([1000, 13500], 14000), TUNING)).toEqual({ kind: "none" });
+    // A record of no shape reads as nothing done.
     expect(stepPickEnding(null, TUNING)).toEqual({ kind: "none" });
-    // After the end nothing counts; a take before the start (never sent by the play) takes the first step.
-    expect(stepPickEnding({ kind: "take", ms: 5400 }, TUNING)).toEqual({ kind: "none" });
-    expect(stepPickEnding({ kind: "leave", ms: 5400 }, TUNING)).toEqual({ kind: "none" });
-    expect(stepPickEnding({ kind: "take", ms: -5 }, TUNING)).toEqual({ kind: "take", step: 0 });
-    expect(stepPickEnding({ kind: "take", ms: Number.NaN }, TUNING)).toEqual({ kind: "none" });
+    expect(stepPickEnding({ pushes: "x", end: { kind: "jump", ms: 1 } } as never, TUNING)).toEqual({ kind: "none" });
   });
 
-  it("plays 「おまかせ」 to every ending, a take in the middle of its step", () => {
-    const endings: StepPickEnding[] = [{ kind: "take", step: 0 }, { kind: "take", step: 1 }, { kind: "take", step: 2 }, { kind: "leave" }, { kind: "none" }];
+  it("plays 「おまかせ」 to every ending, after the start's guard, its presses wider apart than the push gap", () => {
+    const endings: StepPickEnding[] = [{ kind: "take", step: 0 }, { kind: "take", step: 1 }, { kind: "take", step: 2 }, { kind: "leave" }, { kind: "out" }, { kind: "none" }];
     for (const ending of endings) expect(stepPickEnding(stepPickAutoRecord(ending, TUNING), TUNING), JSON.stringify(ending)).toEqual(ending);
-    expect(stepPickAutoRecord({ kind: "take", step: 1 }, TUNING)).toEqual({ kind: "take", ms: 2300 });
+    expect(stepPickAutoRecord({ kind: "take", step: 1 }, TUNING)).toEqual({ pushes: [1000, 1700], end: { kind: "take", ms: 2400 } });
+    expect(STEP_PICK_AUTO_LEAD_MS).toBeGreaterThan(STEP_PICK_GUARD_MS);
   });
 
-  it("is fair: every step on show long enough to decide, the first one after the start's double-tap guard", () => {
+  it("is fair: the last step can be taken before the push limit, deliberate presses count, time to decide", () => {
     expect(stepPickFairness(TUNING)).toEqual([]);
-    expect(stepPickFairness({ stepsMs: [1600, STEP_PICK_MIN_STEP_MS - 1] })).toHaveLength(1);
-    expect(stepPickFairness({ stepsMs: [STEP_PICK_GUARD_MS + STEP_PICK_MIN_STEP_MS - 1, 1200] })).toHaveLength(1);
-    expect(stepPickFairness({ stepsMs: [1600] })[0]).toContain("not a step_pick tuning");
+    expect(stepPickFairness({ ...TUNING, pushLimit: 4 }).join()).toContain("push limit 4");
+    expect(stepPickFairness({ ...TUNING, pushGapMs: 900 }).join()).toContain("drops deliberate presses");
+    expect(stepPickFairness({ ...TUNING, idleMs: 3000 }).join()).toContain("time to decide");
+    expect(stepPickFairness({ ...TUNING, pushesPerStep: [] })[0]).toContain("not a step_pick tuning");
+    expect(stepPickFairness({ ...TUNING, pushLimit: null })).toEqual([]);
   });
 
-  it("makes a skin's rules from its table: a step's outcome, the leave's, the run-out's", () => {
-    const rules = stepPickRules<object, "high" | "mid" | "low" | "gone">(TUNING, { steps: ["high", "mid", "low"], leave: "gone", none: "gone" });
-    expect(rules.outcomeOf({ kind: "take", ms: 100 }, {})).toBe("high");
-    expect(rules.outcomeOf({ kind: "take", ms: 3100 }, {})).toBe("low");
-    expect(rules.outcomeOf(null, {})).toBe("gone");
-    // 「おまかせ」 to the leave's outcome presses the leave button (sooner than letting the steps run out).
-    expect(rules.autoRecord("gone", {})).toEqual({ kind: "leave", ms: 800 });
-    expect(() => stepPickRules(TUNING, { steps: ["high", "mid"], leave: "gone", none: "gone" })).toThrow("2 step outcomes for 3 steps");
+  it("makes a skin's rules from its table: a step's outcome, the leave's, the push limit's, the run-out's", () => {
+    const rules = stepPickRules<object, "high" | "mid" | "low" | "gone">(TUNING, { steps: ["high", "mid", "low"], leave: "gone", out: "gone", none: "gone" });
+    expect(rules.outcomeOf(take([], 600), {})).toBe("high");
+    expect(rules.outcomeOf(take([1000, 1400, 1800, 2200], 2600), {})).toBe("low");
+    expect(rules.outcomeOf({ pushes: [], end: null }, {})).toBe("gone");
+    // 「おまかせ」 to the leave's outcome presses the leave button (sooner than staring him out or waiting).
+    expect(rules.autoRecord("gone", {})).toEqual({ pushes: [], end: { kind: "leave", ms: 1000 } });
+    expect(() => stepPickRules(TUNING, { steps: ["high", "mid"], leave: "gone", out: "gone", none: "gone" })).toThrow("2 step outcomes for 3 steps");
+  });
+
+  it("keeps its rules pure: no randomness, clock, DOM or React", () => {
+    const source = readFileSync(new URL("./engine.ts", import.meta.url), "utf8");
+    for (const banned of ["Math.random", "crypto", "Date.now", "performance.now", "from \"react\"", "content/generated"]) expect(source).not.toContain(banned);
   });
 });

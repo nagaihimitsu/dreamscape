@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { MiniGameRules } from "../../contract";
+import type { MiniGameRating, MiniGameRules } from "../../contract";
 
 // The `rhythm_tap` engine's rules (docs/13 2.2, 2.4, 2.11): beats come one after another (the skin's beat map, written
 // out or made from a tempo by rhythmTapBeats) and the player taps each as it comes. A tap inside a beat's window hits
@@ -237,13 +237,13 @@ export interface RhythmTapPlan {
 /** The record of a plan: a hit right on its beat; the stop between the windows (rhythmTapJudge reads the plan back). */
 export function rhythmTapRecordOf(plan: RhythmTapPlan, tuning: RhythmTapTuning): RhythmTapRecord {
   const { beats, endAfterMs } = tuning;
-  const window = (index: number) => rhythmTapWindow(tuning, index);
+  const windowOf = (index: number) => rhythmTapWindow(tuning, index);
   let stopMs: number | null = null;
   if (plan.stopAfter !== undefined) {
     const after = Math.min(Math.max(0, Math.floor(plan.stopAfter)), beats.length);
-    stopMs = after === 0 ? Math.max(0, beats[0] - window(0).earlyMs - 1)
-      : after === beats.length ? beats[after - 1] + Math.floor((window(after - 1).lateMs + endAfterMs) / 2)
-      : Math.floor((beats[after - 1] + window(after - 1).lateMs + beats[after] - window(after).earlyMs) / 2);
+    stopMs = after === 0 ? Math.max(0, beats[0] - windowOf(0).earlyMs - 1)
+      : after === beats.length ? beats[after - 1] + Math.floor((windowOf(after - 1).lateMs + endAfterMs) / 2)
+      : Math.floor((beats[after - 1] + windowOf(after - 1).lateMs + beats[after] - windowOf(after).earlyMs) / 2);
   }
   const taps = [...beats.filter((_, index) => plan.hit?.(index) ?? false), ...(plan.strays ?? [])]
     .filter((time) => stopMs === null || time <= stopMs).sort((a, b) => a - b);
@@ -276,15 +276,22 @@ export const rhythmTapInterval = (bpm: number): number => Math.round(60000 / bpm
 
 /**
  * A skin's rules from the engine's (docs/13 2.4): `outcomeOf` reads the whole record's summary; 「おまかせ」 to an outcome
- * plays its plan.
+ * plays its plan; `rate` (optional: the result card's ★) reads the summary and the outcome it gave.
  */
 export function rhythmTapRules<Params, Outcome extends string>(tuning: RhythmTapTuning, outcomeOf: (summary: RhythmTapSummary) => Outcome,
-  plans: Readonly<Record<Outcome, RhythmTapPlan>>): MiniGameRules<Params, Outcome, RhythmTapRecord> {
+  plans: Readonly<Record<Outcome, RhythmTapPlan>>, rate?: (summary: RhythmTapSummary, outcome: Outcome) => MiniGameRating | null,
+): MiniGameRules<Params, Outcome, RhythmTapRecord> {
   return {
     outcomeOf: (record) => outcomeOf(rhythmTapJudge(record, tuning)),
     autoRecord: (outcome) => {
       if (!Object.hasOwn(plans, outcome)) throw new Error(`No rhythm_tap plan gives ${outcome}`);
       return rhythmTapRecordOf(plans[outcome], tuning);
     },
+    ...(rate ? {
+      rate: (record: RhythmTapRecord) => {
+        const summary = rhythmTapJudge(record, tuning);
+        return rate(summary, outcomeOf(summary));
+      },
+    } : {}),
   };
 }

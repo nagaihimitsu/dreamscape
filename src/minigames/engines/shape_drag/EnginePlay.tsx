@@ -13,7 +13,8 @@ import "./engine.css";
 // At the bottom, the skin's meter (if any), the hint and one big 「done」 button (pressed too soon, it says why). A stroke
 // limit, an ending shape (a tear) or a time from the first stroke (if the skin has one) also ends the play. Left without a
 // stroke for a while, the board is told to show how to roll (`idle`). The skin's rules decide the outcome from the
-// strokes; the host shows it and takes its choice.
+// strokes, and the play ends at that moment (end with the strokes for the ★, the shape settling as the hold); the host
+// shows the finish and the result card and takes its choice.
 
 /** What a skin's board draws: the shape as it looks now (in board offsets from the centre, -0.5 to 0.5). */
 export interface ShapeDragView {
@@ -117,6 +118,7 @@ export function shapeDragPlay<Params, Outcome extends string>(skin: ShapeDragSki
     const latest = useRef(props);
     latest.current = props;
     const board = useRef<HTMLDivElement>(null);
+    const doneButton = useRef<HTMLButtonElement>(null);
     const hintId = useId();
     /** The committed shape and strokes (the record the rules read). */
     const shape = useRef<ShapeState>(shapeStart(tuning));
@@ -140,7 +142,11 @@ export function shapeDragPlay<Params, Outcome extends string>(skin: ShapeDragSki
       if (decided.current) return;
       rolling.current = null;
       const outcome = skin.rules.outcomeOf(record.current, latest.current.params);
-      decided.current = { outcome, endAt: clock.now() + (latest.current.still ? SETTLE_MS / 2 : SETTLE_MS) };
+      const holdMs = latest.current.still ? SETTLE_MS / 2 : SETTLE_MS;
+      decided.current = { outcome, endAt: clock.now() + holdMs };
+      // The end at the moment it is decided (docs/13 2.6): the record for the ★, the shape's settling as the hold.
+      const strokes = [...record.current];
+      latest.current.end(outcome, skin.detailJa?.(shapeMeasures(shapeOfRecord(strokes, tuning, classifier), tuning), outcome), { record: strokes, holdMs });
     }, [clock]);
     // A time limit (if the skin has one) runs from the first stroke: before it, nothing has been rolled to end.
     const timer = useRef<{ cancel: () => void; startedAt: number } | null>(null);
@@ -198,7 +204,6 @@ export function shapeDragPlay<Params, Outcome extends string>(skin: ShapeDragSki
 
     // Each frame: the shape as it looks (stretching under the stroke, or turning after it), the status, the end.
     useEffect(() => {
-      let ended = false;
       let shown = "";
       return clock.onFrame((ms) => {
         const done = decided.current;
@@ -230,10 +235,6 @@ export function shapeDragPlay<Params, Outcome extends string>(skin: ShapeDragSki
         if (text !== shown) {
           shown = text;
           latest.current.status(text);
-        }
-        if (done && !ended && ms >= done.endAt) {
-          ended = true;
-          latest.current.end(done.outcome, skin.detailJa?.(shapeMeasures(shapeOfRecord(record.current, tuning, classifier), tuning), done.outcome));
         }
       });
     }, [clock]);
@@ -268,8 +269,9 @@ export function shapeDragPlay<Params, Outcome extends string>(skin: ShapeDragSki
     const onDone = () => {
       if (!playing()) return;
       if (strokes >= tuning.minStrokesToFinish) finish();
-      // Pressed too soon: the hint says why for a moment (a press that does nothing still answers).
+      // Pressed too soon: turned away (the host's refusal), and the hint says why for a moment.
       else {
+        latest.current.juice.denied(doneButton.current);
         setNotReady(true);
         clock.after(NOT_READY_MS, () => setNotReady(false));
       }
@@ -304,7 +306,7 @@ export function shapeDragPlay<Params, Outcome extends string>(skin: ShapeDragSki
           )}
           {auto === null && <p className="mg-shape-drag-hint" aria-live="polite" data-note={note ? true : undefined}>{note ?? skin.hintJa}</p>}
           {auto !== null ? <p className="mg-shape-drag-auto">{skin.autoJa}</p> : (
-            <button type="button" className="primary mg-shape-drag-done" data-testid="minigame-action" data-minigame-primary
+            <button ref={doneButton} type="button" className="primary mg-shape-drag-done" data-testid="minigame-action" data-minigame-primary
               aria-disabled={!ready || view.outcome !== null || undefined} aria-describedby={hintId} onClick={onDone}>{skin.doneJa}</button>
           )}
           <span id={hintId} className="sr-only">{skin.doneHintJa}</span>

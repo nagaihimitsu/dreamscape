@@ -30,6 +30,18 @@ describe("the flap's timing", () => {
     expect(cueTapOutcome(CLOTH_START_MS - 1, CLOTH_TUNING)).toBe("none");
   });
 
+  it("rates a flap for the result card in step with its outcome: perfect ★3, early or late ★2 near and ★1 far, frozen none", () => {
+    const stars = new Map<string, Set<number | null>>();
+    for (let ms = CLOTH_START_MS; ms <= CLOTH_END_MS + 50; ms += 5) {
+      const rated = clothFlapRules.rate!(ms, {})?.stars ?? null;
+      stars.set(outcome(ms), (stars.get(outcome(ms)) ?? new Set()).add(rated));
+    }
+    stars.set("frozen", new Set([clothFlapRules.rate!(null, {})?.stars ?? null]));
+    expect(Object.fromEntries([...stars].map(([key, set]) => [key, [...set].sort()]))).toEqual({ perfect: [3], early: [1, 2], late: [1, 2], frozen: [null] });
+    expect(clothFlapRules.rate!(CLOTH_NICHE_MS + 30, {})).toEqual({ stars: 3, scoreJa: "0.03秒差" });
+    expect(clothFlapRules.rate!(CLOTH_NICHE_MS - CLOTH_FIELD.stepMs, {})).toEqual({ stars: 1, scoreJa: "0.44秒早い" });
+  });
+
   it("is fair on a phone, the gold step's beat is her fifth, and she goes on down before the end", () => {
     expect(cueTapFairness(CLOTH_TUNING)).toEqual([]);
     expect(CLOTH_NICHE_MS).toBe(CLOTH_START_MS + CLOTH_FIELD.stepMs * CLOTH_FIELD.stepsToNiche);

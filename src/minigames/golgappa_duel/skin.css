@@ -4,7 +4,7 @@
 .mg-golgappa-duel-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; pointer-events: none; }
 /* A stall picture (a photo has heaps of golgappa of its own) is a little darker, and the falling ones have a dark edge,
    so the eye follows the one that falls. */
-.mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-backdrop { filter: blur(1.5px) saturate(0.8) brightness(0.7); }
+.mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-backdrop.mg-photo { filter: saturate(0.78) contrast(0.9) brightness(0.7) blur(1.5px); }
 .mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-fall .mg-golgappa-duel-puri-drawn { box-shadow: 0 0 0 2px #2a1a0c, 0 3px 6px rgba(0, 0, 0, 0.6); }
 .mg-golgappa-duel[data-art-stall] .mg-golgappa-duel-fall > img { filter: drop-shadow(0 0 1.5px #2a1a0c) drop-shadow(0 3px 4px rgba(0, 0, 0, 0.6)); }
 /* The vendor's side: a steel pot of green water on the left, a heap of fried shells on the right, the wooden counter. */
@@ -170,10 +170,10 @@
 .mg-golgappa-duel-bite[data-kind="perfect"] { color: #ffd76a; font-size: 26px; }
 @keyframes mg-golgappa-duel-pop { from { opacity: 0.4; transform: translate(-50%, -20%) scale(0.8); } }
 .mg-golgappa-duel-clack { color: #c9ccd2; font-size: 15px; }
-/* The onlookers' count, at the top in the middle. */
+/* The onlookers' count, below the vendor's hand (clear of her face under the band when she reacts). */
 .mg-golgappa-duel-crowd {
-  left: 50%;
-  top: 9%;
+  left: 60%;
+  top: 21%;
   color: #fffaf1;
   font-size: 24px;
   animation: mg-golgappa-duel-pop 300ms ease-out both;
@@ -197,8 +197,9 @@
   padding: 6px 14px 6px 10px;
   border: 3px solid #e2b54e;
   font-size: 22px;
-  animation: mg-golgappa-duel-pop 300ms ease-out both;
+  visibility: hidden;
 }
+.mg-golgappa-duel-say-her[data-shown] { visibility: visible; animation: mg-golgappa-duel-pop 300ms ease-out both; }
 .mg-golgappa-duel-say svg { width: 22px; height: 22px; fill: var(--ds-marker); }
 .mg-golgappa-duel-say-choke { font-style: italic; }
 /* The choke gauge beside the player's bowl: three drops of the sour water, hollow until a bite at nothing fills one. */

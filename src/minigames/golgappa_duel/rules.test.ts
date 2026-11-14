@@ -3,7 +3,7 @@ import { rhythmTapEnd, rhythmTapFairness, rhythmTapJudge, rhythmTapRecordOf, rhy
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { golgappaDuel } from "./definition";
 import {
-  GOLGAPPA_FIELD, GOLGAPPA_HER_HAND_MS, GOLGAPPA_HER_STOP, GOLGAPPA_TOGETHER_BEFORE_MS, GOLGAPPA_TUNING, golgappaHerLandings,
+  GOLGAPPA_HER_HAND_MS, GOLGAPPA_HER_STOP, GOLGAPPA_NUMBERS, GOLGAPPA_TUNING, golgappaGame, golgappaHerLandings,
   golgappaRules,
 } from "./rules";
 
@@ -33,16 +33,16 @@ describe("the golgappa duel", () => {
   });
 
   it("drops hers halfway before each of the player's, falling no longer than the gap, and her hand goes up just before the player's 14th", () => {
-    const hers = golgappaHerLandings();
+    const hers = golgappaHerLandings(GOLGAPPA_TUNING);
     expect(hers).toHaveLength(GOLGAPPA_HER_STOP);
     hers.forEach((land, index) => {
       expect(land).toBeLessThan(beats[index]);
       if (index > 0) expect(land).toBeGreaterThan(beats[index - 1]);
     });
-    expect(hers[0]).toBeGreaterThan(GOLGAPPA_FIELD.fallMs);
+    expect(hers[0]).toBeGreaterThan(GOLGAPPA_NUMBERS.fallMs);
     // One falls at a time: each drop (hers or the player's) starts after the one before has landed.
     const drops = [...hers, ...beats].sort((a, b) => a - b);
-    for (const [index, drop] of drops.slice(1).entries()) expect(drop - drops[index], `drop ${index + 2}`).toBeGreaterThan(GOLGAPPA_FIELD.fallMs);
+    for (const [index, drop] of drops.slice(1).entries()) expect(drop - drops[index], `drop ${index + 2}`).toBeGreaterThan(GOLGAPPA_NUMBERS.fallMs);
     expect(GOLGAPPA_HER_HAND_MS).toBeGreaterThan(beats[GOLGAPPA_HER_STOP - 2]);
     expect(GOLGAPPA_HER_HAND_MS).toBeLessThan(beats[GOLGAPPA_HER_STOP - 1]);
   });
@@ -56,8 +56,8 @@ describe("the golgappa duel", () => {
     expect(outcome({ hit: all })).toBe("outlast");
     // After her 13th: together only when nobody could tell (within 0.15 s before her hand).
     const at = (stopMs: number) => golgappaRules.outcomeOf({ taps: beats.filter((beat) => beat < stopMs), stopMs }, {});
-    expect(at(GOLGAPPA_HER_HAND_MS - GOLGAPPA_TOGETHER_BEFORE_MS)).toBe("together");
-    expect(at(GOLGAPPA_HER_HAND_MS - GOLGAPPA_TOGETHER_BEFORE_MS - 1)).toBe("you_first");
+    expect(at(GOLGAPPA_HER_HAND_MS - GOLGAPPA_NUMBERS.togetherBeforeMs)).toBe("together");
+    expect(at(GOLGAPPA_HER_HAND_MS - GOLGAPPA_NUMBERS.togetherBeforeMs - 1)).toBe("you_first");
     expect(at(beats[GOLGAPPA_HER_STOP - 2] + 10)).toBe("you_first");
     // One left in the bowl does not stop the duel.
     expect(outcome({ hit: (index) => index !== 3, stopAfter: 14 })).toBe("together");
@@ -83,5 +83,40 @@ describe("the golgappa duel", () => {
     expect(golgappaRules.outcomeOf({ taps: doubled, stopMs: null }, {})).toBe("outlast");
     // Taps while the vendor reaches for the first (before its window) are not counted.
     expect(rhythmTapJudge({ taps: [600, 900, 1100], stopMs: null }, GOLGAPPA_TUNING, 1200)).toMatchObject({ taps: 0, strays: 0, gauge: 0 });
+  });
+
+  it("rates in step with the outcome: a choke or an early バス ★1, with her or past her ★3 when nothing was left, else ★2", () => {
+    const rate = (record: { taps: readonly number[]; stopMs: number | null }) => golgappaRules.rate!(record, {});
+    const plan = (hit: (index: number) => boolean, stopAfter?: number) => rhythmTapRecordOf({ hit, ...(stopAfter === undefined ? {} : { stopAfter }) }, GOLGAPPA_TUNING);
+    expect(rate(plan(all, 14))).toEqual({ stars: 3, scoreJa: "14個食べた・ぴったり14" });
+    expect(rate(plan((index) => index !== 3, 14))).toMatchObject({ stars: 2 });
+    expect(rate(plan(all))).toMatchObject({ stars: 3, scoreJa: "17個食べた・ぴったり17" });
+    expect(rate(plan((index) => index !== 3))).toMatchObject({ stars: 2 });
+    expect(rate(plan(all, 10))).toMatchObject({ stars: 1, scoreJa: "10個食べた・ぴったり10" });
+    expect(rate(plan((index) => index < 8))).toMatchObject({ stars: 1 });
+    expect(rate({ taps: mash(150), stopMs: null })).toMatchObject({ stars: 1 });
+    // Over many plays: no record of a better outcome has fewer ★ than one of a worse (choke, you_first < together, outlast).
+    let seed = 7;
+    const random = () => { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; };
+    const worst = { together: 3, outlast: 3, you_first: 1, choke: 1 } as Record<string, number>;
+    const best = { together: 0, outlast: 0, you_first: 0, choke: 0 } as Record<string, number>;
+    for (let play = 0; play < 400; play++) {
+      const stopAt = random() < 0.7 ? Math.round(9000 + random() * 6000) : null;
+      const record = { taps: beats.map((beat) => beat + 40 + (random() - 0.5) * 400).filter((tap) => stopAt === null || tap < stopAt), stopMs: stopAt };
+      const outcome = golgappaRules.outcomeOf(record, {});
+      const stars = rate(record)?.stars ?? 0;
+      worst[outcome] = Math.min(worst[outcome], stars);
+      best[outcome] = Math.max(best[outcome], stars);
+    }
+    expect(Math.max(best.choke, best.you_first)).toBeLessThanOrEqual(Math.min(worst.together, worst.outlast));
+  });
+
+  it("builds the same duel from its numbers, and another from edited ones (Debug's room)", () => {
+    expect(golgappaGame(GOLGAPPA_NUMBERS).tuning).toEqual(GOLGAPPA_TUNING);
+    const slower = golgappaGame({ ...GOLGAPPA_NUMBERS, firstGapMs: 1500, peakLateMs: 250 });
+    expect(slower.tuning.beats[1] - slower.tuning.beats[0]).toBe(1500);
+    expect(slower.tuning.peak?.lateMs).toBe(250);
+    expect(rhythmTapFairness(slower.tuning)).toEqual([]);
+    expect(slower.handMs).toBeGreaterThan(GOLGAPPA_HER_HAND_MS);
   });
 });

@@ -103,19 +103,21 @@ INCLUDE modules.ink
 # speaker: narrator
 # minigame: parasol_search at middle auto found art.street gt_img_jaipur_view_from_hawa_mahal
 通りのあちこちに、傘が開いていた。あの中のどれかが、ガウラの日傘だ。
-// 日傘探し：選択肢の代わりにミニゲーム「日傘を探す」（格子の窓から通りの傘を押す）。古い日傘は手前の歩道の真ん中（at middle）。
+// 日傘探し：選択肢の代わりにミニゲーム「日傘を探す」（格子の窓から通りを見下ろし、古い日傘・値段で揉める客・トマトを
+// もらう子どもを順に押す）。古い日傘は手前の歩道の真ん中（at middle）。見間違いは3つを合わせて数え、pointed は3つの
+// どれかを彼女が指さしたとき（どれかは物語に渡らないので、台詞はどれにも合う形にする）。
 // どの結果も同じ見下ろしの場面へ合流する。手間取ったときだけフラグを立て、クイズ3の後の報告の前に一往復が増える（関係値なし）。
 * [日傘：すぐに見つけた # option: found]
     # speaker: narrator
     古い日傘はすぐに見つかった。
-* [日傘：何本か見間違えてから見つけた # option: found_slow]
+* [日傘：何度か見間違えてから見つけた # option: found_slow]
     # set: gt_jaipur_parasol_hard_to_find
     # speaker: narrator
-    上から見ると、傘はどれも同じ丸に見えた。いくつか見間違えてから、やっと古い日傘が見つかった。
-* [日傘：彼女が先に見つけた # option: pointed]
+    上から見ると、傘も人も、どれも同じ丸に見えた。いくつか見間違えてから、やっと全部見つけた。
+* [日傘：彼女と一緒に見つけた # option: pointed]
     # speaker: heroine
-    # reaction: heroine,surprised,exclamation
-    あ、いた！　ほら、あそこ。竿にくくりつけてある日傘
+    # reaction: heroine,teasing,question
+    ほら、あそこ。……ね、見えた？
 -
 # speaker: narrator
 # photo: gt_album_j13 # photo_caption: 格子の小窓から見下ろす、古い日傘

@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import type { MiniGameEndOptions, MiniGameJuice, MiniGameReaction } from "../contract";
-import { NO_JUICE } from "./juice";
+import { NO_JUICE } from "./no-juice";
 
 // What the host gives every part of a play, also deep in a skin's field (docs/13 2.6): the juice toolkit, the heroine's
 // quick reaction, whether it is practice, and the play's end. The play's props carry the same; a skin whose engine does

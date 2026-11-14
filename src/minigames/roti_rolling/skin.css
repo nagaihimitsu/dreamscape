@@ -11,7 +11,7 @@
     linear-gradient(to bottom, rgba(196, 190, 178, 0.55), rgba(176, 170, 158, 0.94) 18%, #a9a395);
 }
 .mg-roti-rolling-table[data-art-kitchen] { background: none; }
-/* A kitchen photo is the far table (taken from the side): softened and dimmed, so the drawn board seen from above stands
+/* A kitchen photo is the far table (taken from the side): softened as every photo (mg-photo), so the drawn board seen from above stands
    in front of it rather than beside it (D1). */
 .mg-roti-rolling-kitchen {
   position: absolute;
@@ -20,8 +20,6 @@
   height: 100%;
   object-fit: cover;
   object-position: 50% 50%;
-  filter: blur(3px) saturate(0.7) brightness(0.78);
-  transform: scale(1.04);
 }
 /* Harbans looking on from the far corner: his head and shoulders (the standing picture's top), a word beside him. */
 .mg-roti-rolling-harbans { position: absolute; top: 0; right: 0; width: 30%; max-width: 150px; height: 26%; }
@@ -68,25 +66,10 @@
 .mg-roti-rolling-dough { stroke: rgba(170, 128, 72, 0.7); stroke-width: 0.006; stroke-linejoin: round; }
 /* Near a tear: the dough's edge turns to a dark dotted line (the hint says so too). */
 .mg-roti-rolling[data-warn] .mg-roti-rolling-dough { stroke: #8a2f1f; stroke-width: 0.01; stroke-dasharray: 0.018 0.012; }
-/* A stroke presses the dough: it squashes and springs back as the pin lifts. */
-.mg-roti-rolling-press[data-pressed] {
-  transform-box: view-box;
-  transform-origin: 50% 50%;
-  animation: mg-roti-rolling-press 180ms ease-out;
-}
-@keyframes mg-roti-rolling-press { from { transform: scale(1.04, 0.96); } }
-/* Flour puffing from the pin's ends. */
-.mg-roti-rolling-flour-puff circle {
-  fill: #fffaf1;
-  stroke: rgba(150, 110, 60, 0.6);
-  stroke-width: 0.003;
-  opacity: 0;
-  animation: mg-roti-rolling-puff 340ms ease-out;
-}
-@keyframes mg-roti-rolling-puff {
-  from { opacity: 0.95; transform: translate(0, 0); }
-  to { opacity: 0; transform: translate(var(--puff-x), var(--puff-y)); }
-}
+/* The dough squashes as the pin lifts (the host's squash), about the board's middle. */
+.mg-roti-rolling-press { transform-box: view-box; transform-origin: 50% 50%; }
+/* Where the pin last lifted: an anchor for the flour's burst, never drawn. */
+.mg-roti-rolling-lift { fill: none; }
 /* The next stroke's way: a pale arrow with a dark edge (readable on the dough and the board). */
 .mg-roti-rolling-arrow line { stroke: rgba(255, 250, 241, 0.92); stroke-width: 0.018; stroke-linecap: round; }
 .mg-roti-rolling-arrow path { fill: rgba(255, 250, 241, 0.92); stroke: #5a3a1c; stroke-width: 0.006; stroke-linejoin: round; }

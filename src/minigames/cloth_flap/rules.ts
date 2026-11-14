@@ -1,4 +1,5 @@
-import { cueTapEnd, cueTapMoment, cueTapRules, type CueTapTuning } from "../engines/cue_tap/engine";
+import type { MiniGameRules } from "../contract";
+import { cueTapEnd, cueTapMoment, cueTapRules, type CueTapRecord, type CueTapTuning } from "../engines/cue_tap/engine";
 
 // The cloth flap (docs/13 2.4): a cue_tap skin. Hidden in a niche of the stepwell, the player spreads the cloth once as the
 // one coming down the stairs reaches the step in front of it. A far-off tap still tells its side: spread while she is
@@ -21,9 +22,10 @@ export const CLOTH_FIELD = {
 } as const;
 
 /**
- * Generous windows (a phone's tap has its own lag; the game is a moment of the story), wider after the moment (a phone
- * lands a tap late). She stands on each step from cleanEarlyMs before its beat to cleanLateMs after it (Skin.tsx), so a
- * clean tap always finds her on the gold step, an early one on her way down to it, a late one stepping off it.
+ * The flap's tuning (E1; Debug's room edits these numbers): generous windows (a phone's tap has its own lag; the game is a
+ * moment of the story), wider after the moment (a phone lands a tap late). She stands on each step from cleanEarlyMs
+ * before its beat to cleanLateMs after it (Skin.tsx), so a clean tap always finds her on the gold step, an early one on
+ * her way down to it, a late one stepping off it. Her pace is the approach over her steps to the niche.
  */
 export const CLOTH_TUNING: CueTapTuning = {
   leadMs: CLOTH_FIELD.settleMs,
@@ -42,6 +44,14 @@ export const CLOTH_START_MS = CLOTH_TUNING.leadMs;
 export const CLOTH_NICHE_MS = cueTapMoment(CLOTH_TUNING);
 export const CLOTH_END_MS = cueTapEnd(CLOTH_TUNING);
 
-/** Clean: right in front of her. Any tap before: early; any after: late (far off too, by its side). No tap: frozen. */
-export const clothFlapRules = cueTapRules<ClothFlapParams, ClothFlapOutcome>(CLOTH_TUNING,
-  { clean: "perfect", early: "early", late: "late", miss: { early: "early", late: "late" }, none: "frozen" });
+/**
+ * The flap's rules with a tuning (the story's, or Debug's room's edited one). Clean: right in front of her. Any tap
+ * before: early; any after: late (far off too, by its side). No tap: frozen. ★ from the engine: clean ★3, a little off
+ * ★2, far off ★1 (its outcome is early or late all the same), no tap none.
+ */
+export function clothFlapRulesFor(tuning: CueTapTuning): MiniGameRules<ClothFlapParams, ClothFlapOutcome, CueTapRecord> {
+  return cueTapRules<ClothFlapParams, ClothFlapOutcome>(tuning,
+    { clean: "perfect", early: "early", late: "late", miss: { early: "early", late: "late" }, none: "frozen" });
+}
+
+export const clothFlapRules = clothFlapRulesFor(CLOTH_TUNING);

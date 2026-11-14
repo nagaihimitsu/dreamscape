@@ -4,7 +4,7 @@ import { soundPath, type SystemSoundId } from "../content/sounds";
 import {
   audioContext, decodedSoundCache, fetchSound, madeAudioContext, onAudioStateChange, onPageHidden, runningAudioContext, wantAudio,
 } from "./audio-context";
-import { admitsSe, SE_LATE_MS, SE_MAX_PLAYING } from "./se-rules";
+import { admitsSe, SE_LATE_MS, SE_MAX_PLAYING, seLevel, type SeLevel } from "./se-rules";
 
 // The sound effects (2026-11-12): the sounds the game plays by itself (playSe: a tap, a dialog, a quiz's answer, a ride)
 // and a line's `# se:` (useLineSounds). Fire and forget, several at once (se-rules.ts), on the page's AudioContext
@@ -71,9 +71,10 @@ onAudioStateChange((state) => {
 /**
  * Plays the registered sound `id` once, fire and forget, over any playing: a line's `# se:`, a transport mode's `se`.
  * Skipped when it is not registered, the setting is off or the page hidden, the same sound started within SE_REPEAT_MS,
- * SE_MAX_PLAYING sounds play, or it is ready only after SE_LATE_MS.
+ * SE_MAX_PLAYING sounds play, or it is ready only after SE_LATE_MS. `level`: this play's share of its volume and its rate
+ * (a mini-game's fading echo, a lower creak; seLevel).
  */
-export function playSound(id: string): void {
+export function playSound(id: string, level?: SeLevel): void {
   const volume = Object.hasOwn(volumes, id) ? volumes[id] : undefined;
   if (volume === undefined || !settings.enabled || document.hidden) return;
   const asked = performance.now();
@@ -89,8 +90,10 @@ export function playSound(id: string): void {
         performance.now() - asked > SE_LATE_MS) return;
     const source = audio.createBufferSource();
     source.buffer = buffer;
+    const played = seLevel(volume, level);
+    source.playbackRate.value = played.rate;
     const gain = audio.createGain();
-    gain.gain.value = volume;
+    gain.gain.value = played.gain;
     source.connect(gain);
     gain.connect(seBus(audio));
     source.onended = () => {

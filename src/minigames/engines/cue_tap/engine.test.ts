@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import {
-  CUE_TAP_OUTCOMES, cueTapAutoRecord, cueTapCounts, cueTapEnd, cueTapFairness, cueTapLateMissRecord, cueTapMeter, cueTapMoment, cueTapOutcome, cueTapRules,
+  CUE_TAP_OUTCOMES, cueTapAutoRecord, cueTapCounts, cueTapEnd, cueTapFairness, cueTapLateMissRecord, cueTapMeter, cueTapMoment, cueTapOutcome, cueTapRating, cueTapRules,
   cueTapStart, cueTapTuningSchema, cueTapZones, type CueTapTuning,
 } from "./engine";
 
@@ -109,6 +109,18 @@ describe("the cue_tap engine", () => {
     expect(rules.outcomeOf(moment + tuning.nearLateMs + 1, {})).toBe("d");
     expect(rules.outcomeOf(cueTapStart(tuning), {})).toBe("d");
     expect(rules.outcomeOf(0, {})).toBe("e");
+  });
+
+  it("rates a tap for the result card in step with its outcome (clean ★3, near ★2, a miss ★1, no tap none), saying how far off", () => {
+    expect(cueTapRating(moment, tuning)).toEqual({ stars: 3, scoreJa: "0.00秒差" });
+    expect(cueTapRating(moment + tuning.cleanLateMs, tuning)).toEqual({ stars: 3, scoreJa: "0.12秒差" });
+    expect(cueTapRating(moment - 150, tuning)).toEqual({ stars: 2, scoreJa: "0.15秒早い" });
+    expect(cueTapRating(moment + 200, tuning)).toEqual({ stars: 2, scoreJa: "0.20秒遅い" });
+    expect(cueTapRating(moment + tuning.nearLateMs + 1, tuning)?.stars).toBe(1);
+    expect(cueTapRating(null, tuning)).toBeNull();
+    expect(cueTapRating(0, tuning)).toBeNull();
+    const rules = cueTapRules<object, "a" | "b" | "c" | "d" | "e">(tuning, { clean: "a", early: "b", late: "c", miss: "d", none: "e" });
+    for (let ms = 0; ms <= cueTapEnd(tuning) + 50; ms += 5) expect(rules.rate!(ms, {})).toEqual(cueTapRating(ms, tuning));
   });
 
   it("keeps its rules pure: no randomness, clock, DOM or React", () => {
