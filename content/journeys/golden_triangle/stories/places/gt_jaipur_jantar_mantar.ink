@@ -23,6 +23,7 @@ INCLUDE modules.ink
 # emotion: neutral
 影が、すごくくっきりしてる。……ここだと、影も道具の一部なのかもね
 # speaker: narrator
+# term: gt_term_dhoti
 一番大きな三角の壁の日陰で、白い腰布の老人が、古い冊子を膝に広げて座っていた。そこへ、眼鏡の若い女性が、まっすぐ歩いていく。
 # speaker: heroine
 # reaction: heroine,worried,question

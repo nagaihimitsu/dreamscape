@@ -28,6 +28,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_chandni_chowk_001
 見て。あの人たち、丸いのを一口で食べてる。中に、水が入ってるの？
 # speaker: narrator
+# term: gt_term_golgappa
 ゴルガッパ。薄く揚げた空洞の玉に、男が親指で穴を開け、じゃがいもを少し詰め、酸っぱくて辛い緑の水にくぐらせる。それを、客の器に一つずつ置いていく。
 # speaker: heroine
 # voice: gt_delhi_date_chandni_chowk_002

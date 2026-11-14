@@ -200,6 +200,7 @@ INCLUDE modules.ink
 # ambience: amb_crowd_outdoor
 夜の旧市街。照明に浮かぶハワー・マハルの前を、花婿の行列がゆっくり進んでいた。
 # speaker: narrator
+# term: gt_term_sehra
 赤い制服の楽隊。頭に灯りを載せて歩く男たち。白い馬の上には、花の房で顔を隠したアマン。その前で、親戚たちが道いっぱいに踊っている。
 # speaker: narrator
 招待客の二人は、行列の端を歩いていた。踊る人たちの輪から、半歩だけ離れて。
@@ -324,11 +325,13 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_hawa_mahal_night
 { quiz_correct:
     # speaker: heroine
+    # term: gt_term_gangaur
     ガンガウル。女神さまを敬う、春のお祭り
 - else:
     # speaker: narrator
     窓の上から、しわがれた声が答えた。
     # speaker: gt_jaipur_bride_grandmother
+    # term: gt_term_gangaur
     ガンガウルよ。女神さまの、春のお祭り
 }
 # speaker: narrator

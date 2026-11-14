@@ -119,6 +119,7 @@ INCLUDE modules.ink
 # speaker: gt_agra_mariam_daughter
 おばあちゃんは、結婚してから、ずっと『誰々の嫁』『誰々の母』だったから。……初めて聞いた、そんな話
 # speaker: narrator
+# term: gt_term_tiffin
 父親が、弁当箱のふたを持ったまま、黙りこんだ。祖母は涼しい顔で、揚げ菓子をもう一つ取った。
 # speaker: heroine
 # emotion: serious

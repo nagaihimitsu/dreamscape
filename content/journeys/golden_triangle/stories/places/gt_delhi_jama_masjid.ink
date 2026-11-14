@@ -24,6 +24,7 @@ INCLUDE modules.ink
 階段を上っただけなのに、旧市街が全部見える気がする
 # speaker: narrator
 # se: bicycle_bell
+# term: gt_term_cycle_rickshaw
 見学を終えて、また長い階段を下りる。段の下は、もう別の世界だった。焼いた肉の煙、呼び込みの声、自転車リキシャの鈴。
 # speaker: narrator
 {heroine_name}は段ボールの切れ端を出した。四行目。ジャーマー・マスジド、朝のニハーリー、階段の下の店。
@@ -57,6 +58,7 @@ INCLUDE modules.ink
 # speaker: narrator
 甘くて、少し煙たい匂い。小さな店の棚に、色の違う液体の小瓶が何十本も並んでいる。
 # speaker: gt_delhi_jama_old_man
+# term: gt_term_attar
 アタル。花や木を、油に閉じこめたものだ。手首を
 # speaker: narrator
 白い髭の老人が、ガラス棒を瓶に浸し、{heroine_name}の手首にひと筋つけた。

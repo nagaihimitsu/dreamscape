@@ -73,6 +73,7 @@ INCLUDE modules.ink
 # speaker: gt_delhi_humayun_man
 メヘル！
 # speaker: narrator
+# term: gt_term_kurta
 返事より先に、太い声が飛んできた。口ひげ、腹の上で張ったクルタ、手にはなぜか新聞。大股で近づいてくる。
 # speaker: gt_delhi_humayun_man
 こんな所で何をしている。……そっちの若いのは誰だ

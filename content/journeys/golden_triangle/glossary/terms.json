@@ -1,0 +1,302 @@
+{
+  "schemaVersion": 1,
+  "terms": [
+    {
+      "id": "gt_term_nihari",
+      "nameJa": "ニハーリー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "food",
+      "lineJa": "肉を長い時間じっくり煮込んだ、香辛料の濃い煮込み。もとは朝の料理。",
+      "imageId": "gt_img_term_nihari"
+    },
+    {
+      "id": "gt_term_golgappa",
+      "nameJa": "ゴルガッパ",
+      "readingJa": null,
+      "aliasJa": "パーニー・プーリー",
+      "category": "food",
+      "lineJa": "薄く揚げた空洞の玉に、酸っぱく辛い香草水を注いで一口で食べる屋台の軽食。",
+      "imageId": "gt_img_term_golgappa"
+    },
+    {
+      "id": "gt_term_dupatta",
+      "nameJa": "ドゥパッター",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "thing",
+      "lineJa": "長いショールのような布。肩や胸元に掛けたり、頭からかぶったりする。",
+      "imageId": "gt_img_term_dupatta"
+    },
+    {
+      "id": "gt_term_langar",
+      "nameJa": "ランガル",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "シク教の礼拝所にある無料の食堂。誰もが床に並んで座り、同じ食事をとる。",
+      "imageId": "gt_img_term_langar"
+    },
+    {
+      "id": "gt_term_roti",
+      "nameJa": "ローティー",
+      "readingJa": null,
+      "aliasJa": "チャパーティー",
+      "category": "food",
+      "lineJa": "全粒粉の生地を薄く丸くのばして焼く、インドの毎日の平たいパン。",
+      "imageId": "gt_img_term_roti"
+    },
+    {
+      "id": "gt_term_tiffin",
+      "nameJa": "ティフィン",
+      "readingJa": null,
+      "aliasJa": "段重ねの弁当箱",
+      "category": "thing",
+      "lineJa": "丸い金属の器を何段も重ね、取っ手で留めて運ぶインドの弁当箱。",
+      "imageId": "gt_img_term_tiffin"
+    },
+    {
+      "id": "gt_term_achar",
+      "nameJa": "アチャール",
+      "readingJa": null,
+      "aliasJa": "インドの漬物",
+      "category": "food",
+      "lineJa": "果物や野菜を油と香辛料、塩で漬けた、酸っぱく辛いインドの漬物。",
+      "imageId": "gt_img_term_achar"
+    },
+    {
+      "id": "gt_term_kulhad",
+      "nameJa": "クルハル",
+      "readingJa": null,
+      "aliasJa": "素焼きのカップ",
+      "category": "thing",
+      "lineJa": "釉薬をかけない素焼きの小さな器。チャイを入れ、飲んだら使い捨てにする。",
+      "imageId": "gt_img_term_kulhad"
+    },
+    {
+      "id": "gt_term_cycle_rickshaw",
+      "nameJa": "自転車リキシャ",
+      "readingJa": null,
+      "aliasJa": "サイクルリキシャ",
+      "category": "transport",
+      "lineJa": "人がペダルをこいで客を運ぶ、三輪の自転車タクシー。",
+      "imageId": "gt_img_term_cycle_rickshaw"
+    },
+    {
+      "id": "gt_term_attar",
+      "nameJa": "アタル",
+      "readingJa": null,
+      "aliasJa": "イッタル",
+      "category": "thing",
+      "lineJa": "花や木の香りを蒸留して油に閉じこめた、南アジアの伝統的な香油。",
+      "imageId": "gt_img_term_attar"
+    },
+    {
+      "id": "gt_term_kurta",
+      "nameJa": "クルタ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "thing",
+      "lineJa": "ゆったりした襟なしの長い上着。男女とも、ズボンと合わせて着る。",
+      "imageId": "gt_img_term_kurta"
+    },
+    {
+      "id": "gt_term_khichdi",
+      "nameJa": "キチュリー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "food",
+      "lineJa": "米と豆をいっしょにやわらかく煮た料理。お腹を壊したときにも食べる。",
+      "imageId": "gt_img_term_khichdi"
+    },
+    {
+      "id": "gt_term_auto_rickshaw",
+      "nameJa": "オートリキシャ",
+      "readingJa": null,
+      "aliasJa": "オート",
+      "category": "transport",
+      "lineJa": "エンジンで走る三輪の小さなタクシー。屋根つきの後ろの席に客を乗せる。",
+      "imageId": "gt_img_term_auto_rickshaw"
+    },
+    {
+      "id": "gt_term_paratha",
+      "nameJa": "パラーター",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "food",
+      "lineJa": "生地に油を塗って折り重ねて焼く、層のある平たいパン。具を包むことも。",
+      "imageId": "gt_img_term_paratha"
+    },
+    {
+      "id": "gt_term_jalebi",
+      "nameJa": "ジャレビー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "food",
+      "lineJa": "生地を渦巻きの形に油で揚げ、甘いシロップに浸した菓子。",
+      "imageId": "gt_img_term_jalebi"
+    },
+    {
+      "id": "gt_term_blackbuck",
+      "nameJa": "ブラックバック",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "creature",
+      "lineJa": "インドの草原にすむレイヨウ。雄は背が黒く、らせん状にねじれた長い角をもつ。",
+      "imageId": "gt_img_term_blackbuck"
+    },
+    {
+      "id": "gt_term_maggi",
+      "nameJa": "マギー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "food",
+      "lineJa": "インドで広く食べられている即席麺。香辛料のきいた粉で味をつける。",
+      "imageId": "gt_img_term_maggi"
+    },
+    {
+      "id": "gt_term_parchin_kari",
+      "nameJa": "パルチン・カーリー",
+      "readingJa": null,
+      "aliasJa": "石の象眼（ピエトラ・ドゥーラ）",
+      "category": "building",
+      "lineJa": "色とりどりの石を切って磨き、大理石にはめこんで花や模様を描く技。",
+      "imageId": "gt_img_term_parchin_kari"
+    },
+    {
+      "id": "gt_term_jali",
+      "nameJa": "ジャーリー",
+      "readingJa": null,
+      "aliasJa": "透かし彫りの格子",
+      "category": "building",
+      "lineJa": "石を幾何学や花の模様に透かし彫りにした格子。光と風を通す。",
+      "imageId": "gt_img_term_jali"
+    },
+    {
+      "id": "gt_term_neem",
+      "nameJa": "ニーム",
+      "readingJa": null,
+      "aliasJa": "インドセンダン",
+      "category": "creature",
+      "lineJa": "インドでよく見る大きな常緑の木。昔からインドの民間の薬に使われてきた。",
+      "imageId": "gt_img_term_neem"
+    },
+    {
+      "id": "gt_term_horn_ok_please",
+      "nameJa": "ホーン・オーケー・プリーズ",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "thing",
+      "lineJa": "インドのトラックの後ろによく描かれる文字。追い越すなら警笛を、の合図。",
+      "imageId": "gt_img_term_horn_ok_please"
+    },
+    {
+      "id": "gt_term_nimbu_mirchi",
+      "nameJa": "ニンブー・ミルチ",
+      "readingJa": null,
+      "aliasJa": "レモンと青唐辛子の魔よけ",
+      "category": "custom",
+      "lineJa": "レモンと青唐辛子を糸に通した魔よけ。車や店の入口に下げ、悪い目を防ぐ。",
+      "imageId": "gt_img_term_nimbu_mirchi"
+    },
+    {
+      "id": "gt_term_mathri",
+      "nameJa": "マトリー",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "food",
+      "lineJa": "小麦粉の生地を平たく揚げた、塩気のあるサクサクした軽食。",
+      "imageId": "gt_img_term_mathri"
+    },
+    {
+      "id": "gt_term_ajwain",
+      "nameJa": "アジョワン",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "food",
+      "lineJa": "種のような小さな実で、強い香りの香辛料。揚げ菓子やパンに混ぜる。",
+      "imageId": "gt_img_term_ajwain"
+    },
+    {
+      "id": "gt_term_caravanserai",
+      "nameJa": "隊商宿",
+      "readingJa": "たいしょうやど",
+      "aliasJa": "キャラバンサライ",
+      "category": "building",
+      "lineJa": "旅の商人や荷を運ぶ動物が泊まった、中庭を囲む宿。",
+      "imageId": "gt_img_term_caravanserai"
+    },
+    {
+      "id": "gt_term_petha",
+      "nameJa": "ペーター",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "food",
+      "lineJa": "冬瓜を砂糖で煮つめた、白く半透明のお菓子。アーグラの名物。",
+      "imageId": "gt_img_term_petha"
+    },
+    {
+      "id": "gt_term_baraat",
+      "nameJa": "バラート",
+      "readingJa": null,
+      "aliasJa": "花婿の行列",
+      "category": "custom",
+      "lineJa": "花婿が親族や楽隊と式の場へ向かう、踊りながら進む行列。白い馬に乗ることも。",
+      "imageId": "gt_img_term_baraat"
+    },
+    {
+      "id": "gt_term_dhoti",
+      "nameJa": "ドーティー",
+      "readingJa": null,
+      "aliasJa": "腰布",
+      "category": "thing",
+      "lineJa": "縫わない一枚の長い布を、腰から脚に巻きつけてはく男性の衣服。",
+      "imageId": "gt_img_term_dhoti"
+    },
+    {
+      "id": "gt_term_miniature",
+      "nameJa": "細密画",
+      "readingJa": "さいみつが",
+      "aliasJa": "ミニアチュール",
+      "category": "thing",
+      "lineJa": "極細の筆で細部まで描きこむ小さな絵。インドの宮廷で栄えた。",
+      "imageId": "gt_img_term_miniature"
+    },
+    {
+      "id": "gt_term_mehndi",
+      "nameJa": "メヘンディ",
+      "readingJa": null,
+      "aliasJa": "ヘナ",
+      "category": "custom",
+      "lineJa": "ヘナの練り物で手足に細かな模様を描く装い。花嫁の支度でも描かれる。",
+      "imageId": "gt_img_term_mehndi"
+    },
+    {
+      "id": "gt_term_lac_bangles",
+      "nameJa": "ラックの腕輪",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "thing",
+      "lineJa": "虫が出す樹脂ラックを熱して形にし、色ガラスや石で飾った腕輪。",
+      "imageId": "gt_img_term_lac_bangles"
+    },
+    {
+      "id": "gt_term_sehra",
+      "nameJa": "セーラー",
+      "readingJa": null,
+      "aliasJa": "花婿の顔を覆う花の房",
+      "category": "thing",
+      "lineJa": "婚礼で花婿の額から垂らし、顔を覆う花や飾りの房。",
+      "imageId": "gt_img_term_sehra"
+    },
+    {
+      "id": "gt_term_gangaur",
+      "nameJa": "ガンガウル",
+      "readingJa": null,
+      "aliasJa": null,
+      "category": "custom",
+      "lineJa": "女神ガウリーを祝う、ラージャスターンの春の祭り。女性たちの行列が出る。",
+      "imageId": "gt_img_term_gangaur"
+    }
+  ]
+}

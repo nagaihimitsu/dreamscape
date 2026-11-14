@@ -90,7 +90,8 @@ export function GlossaryTermWindow({ termIds, quiet = false, onDone }: { termIds
       data-testid="glossary-term-window" data-tap-settling={settling || undefined} {...{ [HOLDS_READING_ATTRIBUTE]: "" }} onClick={tap}>
       <div key={term.id} className="glossary-term-card">
         <p className="glossary-term-mark" id={markId}><Icon name="lens" />旅の図鑑に追加</p>
-        {asset && <img className="glossary-term-photo" src={`${import.meta.env.BASE_URL}${asset.path}`} alt={asset.altJa} decoding="async" />}
+        {asset && <img className="glossary-term-photo" src={`${import.meta.env.BASE_URL}${asset.path}`} alt={asset.altJa} width={asset.width}
+          height={asset.height} decoding="async" />}
         <h2 className="glossary-term-name" id={nameId}>{term.nameJa}</h2>
         {subtitle && <p className="glossary-term-subtitle">{subtitle}</p>}
         <p className="glossary-term-line" id={lineId}>{term.lineJa}</p>

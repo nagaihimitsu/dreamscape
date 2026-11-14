@@ -45,6 +45,7 @@ INCLUDE modules.ink
 # on_done: money -300
 # background: gt_bg_jaipur_amber_fort
 # speaker: narrator
+# term: gt_term_miniature
 十分前、{heroine_name}は一枚の絵を買った。中庭の隅の小さな露店で、若い画家が描いていた、アンベール城の細密画。手のひらほどの紙に、門も宮殿も、細い筆で描き込まれている。
 # speaker: narrator
 誰かへのお土産ではなく、自分のための買い物。旅に出てから、たぶん初めてだった。
