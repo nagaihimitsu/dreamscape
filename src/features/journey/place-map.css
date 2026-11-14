@@ -75,27 +75,57 @@
   background: var(--ds-parchment);
   color: var(--ds-ink);
 }
-/* The expanded map (§3.5): a fixed header, then a scroll area with the map (sticky at its
-   top), the legend, 「地点を名前で探す」 and the 「選んだ行き先」 slot. */
+/* The expanded map (§3.5): the shared title band with 「× 閉じる」 (ModalTitle) across its top, then a scroll area with
+   the map (sticky at its top), the legend, 「地点を名前で探す」 and the 「選んだ行き先」 slot, and in free time the bar of the
+   selection pinned at its foot (its way and 「行く」 or 「休む」: always in reach, 2026-11-14 the UI audit). */
 dialog.modal.travel-map-modal {
+  --modal-pad-top: 12px;
+  --modal-pad-inline: 12px;
   width: min(760px, calc(100% - 24px));
   max-height: calc(100dvh - 24px);
   padding: 12px;
   overflow: hidden;
 }
 dialog.modal.travel-map-modal[open] { display: flex; flex-direction: column; }
+.travel-map-modal .modal-title-bar { flex: none; margin-bottom: 8px; }
 .travel-map-modal-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
 .travel-map-modal-map { position: sticky; z-index: 1; top: 0; padding-bottom: 6px; background: var(--ds-parchment); isolation: isolate; }
 .travel-map-modal-body > .travel-map-legend { margin-top: 2px; }
 .travel-map-selection { margin-top: 8px; padding: 0 0 4px; touch-action: manipulation; }
 .travel-map-selection h3 { margin: 0 0 4px; font-size: 15px; }
 .travel-map-selection > p { margin: 4px 0; font-size: 13px; line-height: 1.5; }
-.travel-map-modal-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
-.travel-map-modal-heading h2 { margin: 0; font-size: 18px; }
-.travel-map-modal-heading button { flex: none; width: auto; min-height: 44px; padding: 6px 12px; }
-dialog.modal.travel-map-modal .travel-map-frame { height: clamp(180px, calc(100svh - 356px), 520px); }
+/* The map leaves room for the title band and, in free time, the bar. */
+dialog.modal.travel-map-modal .travel-map-frame { height: clamp(180px, calc(100svh - 420px), 520px); }
 .travel-map-modal-place { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 13px; }
 .travel-map-modal-place select { flex: 1; min-width: 0; min-height: 44px; font: inherit; }
+/* The selection's bar at the foot: a display-only parchment band like the title band (its hairline on top), the name and
+   the way (or why not) at the left, 「行く」 or 「休む」 at the right under the thumb. */
+.travel-map-bar {
+  flex: none;
+  margin: 0 -12px -12px;
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--ds-parchment-line);
+  background: var(--ds-parchment-2);
+  touch-action: manipulation;
+}
+.map-go-bar { display: flex; align-items: center; gap: 10px; }
+.map-go-bar-text { display: grid; flex: 1 1 auto; gap: 2px; min-width: 0; margin: 0; }
+.map-go-bar-name { font-family: "Noto Serif JP", serif; font-size: 15px; font-weight: 600; line-height: 1.35; overflow-wrap: anywhere; }
+.map-go-bar-detail { color: var(--ds-ink); font-size: 12px; font-weight: 600; line-height: 1.5; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.map-go-bar-detail .place-card-tag { margin-right: 6px; }
+.map-go-bar-detail.is-unavailable { color: var(--ds-ink-muted); font-weight: 500; }
+.travel-map-bar .map-go-bar-go {
+  flex: none;
+  justify-content: center;
+  width: auto;
+  min-width: 96px;
+  min-height: 48px;
+  margin: 0;
+  padding: 8px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+}
 @media (max-height: 500px) and (orientation: landscape) {
-  dialog.modal.travel-map-modal .travel-map-frame { height: max(140px, 42dvh); }
+  dialog.modal.travel-map-modal .travel-map-frame { height: max(120px, 36dvh); }
 }

@@ -501,7 +501,8 @@ export const ops = {
   },
   /**
    * The same from the expanded map: the header's 「地図」 (「地図を大きく見る」), the place's marker by keyboard (Enter
-   * selects it), then the same steps in the dialog's 「選んだ行き先」 (its own introduction card).
+   * selects it), then the same choices in the dialog's 「選んだ行き先」 (its own introduction card) and 「行く」 in the bar
+   * pinned at the dialog's foot (`map-selection`).
    */
   async goToFromMap(page: Page, placeId: string, choice: TravelChoice = {}) {
     await page.getByRole("button", { name: "地図を大きく見る" }).click();
@@ -509,7 +510,7 @@ export const ops = {
     await expect(dialog).toBeVisible();
     await dialog.getByTestId(`map-marker-${placeId}`).focus();
     await page.keyboard.press("Enter");
-    await chooseInCard(dialog.getByTestId("map-selection").getByTestId("place-card"), placeId, choice);
+    await chooseInCard(dialog.getByTestId("map-selection-detail").getByTestId("place-card"), placeId, choice, dialog.getByTestId("map-selection"));
   },
   /**
    * 「ホテルに戻る」, the last card of free time's row: returns its card (休む's ways home, one always chosen, and its 「休む」)
@@ -531,8 +532,11 @@ export const ops = {
     const card = await ops.stay(page);
     const way = card.getByTestId(`travel-sleep-route-${mode}${viaPlaceId ? `-${viaPlaceId}` : ""}`);
     expect(await way.count(), `a way home by ${mode}${viaPlaceId ? ` via ${viaPlaceId}` : ""}`).toBe(1);
-    await way.click();
-    await expect(way).toHaveAttribute("aria-pressed", "true");
+    // Several ways home are chips (a press chooses one); the only one is a line (nothing to choose: UI audit 2026-11-14).
+    if (await way.evaluate((element) => element.tagName === "BUTTON")) {
+      await way.click();
+      await expect(way).toHaveAttribute("aria-pressed", "true");
+    }
     await ops.pressGo(card.getByTestId("travel-sleep-go"));
   },
   /** The tour's card in free time's row (tour stage 2a; B案): a booked tour's line with its cancel, and 「ツアーを見る」. */
@@ -772,7 +776,8 @@ export const ops = {
 export type TravelChoice = { eventId?: string; mode?: string };
 
 /** The steps in a selected place's introduction card (on the page, in the date sheet or in the expanded map's slot): see ops.goTo. */
-async function chooseInCard(card: Locator, placeId: string, { eventId, mode = "walk" }: TravelChoice) {
+/** The event and mode in an introduction card, then its 「行く」 (in `goIn` when another part holds it: the expanded map's bar). */
+async function chooseInCard(card: Locator, placeId: string, { eventId, mode = "walk" }: TravelChoice, goIn?: Locator) {
   await expect(card).toHaveAttribute("data-place-id", placeId);
   await expect(card).toHaveAttribute("data-armed", "true");
   const ids = await card.locator('[data-testid^="place-event-"]').evaluateAll((items) => items.map((item) => item.getAttribute("data-testid")!.slice("place-event-".length)));
@@ -797,7 +802,7 @@ async function chooseInCard(card: Locator, placeId: string, { eventId, mode = "w
     await chip.click();
     await expect(chip).toHaveAttribute("aria-pressed", "true");
   }
-  const go = block.getByTestId(`travel-go-${event}`);
+  const go = (goIn ?? block).getByTestId(`travel-go-${event}`);
   const offered = await go.getAttribute("data-mode");
   if (offered !== mode) throw new Error(`${placeId} (${event}) is not reached by ${mode}; offered: ${offered}`);
   await ops.pressGo(go);

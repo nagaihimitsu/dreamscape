@@ -126,7 +126,7 @@ describe("the row of cards", () => {
     expect(cardTarget(wait)).toBeNull();
   });
 
-  it("keeps the chosen card the selection, and turns to the card the expanded map chose", () => {
+  it("keeps the chosen card the selection, and turns to the card the expanded map chose once it closes", () => {
     const cards = rowCards(photoCardEntries(places, map), { tour: true });
     const [, b, c, , , tour, stay] = cards;
     expect(syncRow(cards, b, { kind: "place", placeId: "b" })).toBeNull();
@@ -135,11 +135,15 @@ describe("the row of cards", () => {
     // Nothing selected yet (or the selection gone after a wait): the chosen card is selected.
     expect(syncRow(cards, b, null)).toEqual({ select: { kind: "place", placeId: "b" } });
     expect(syncRow(cards, stay, null)).toEqual({ select: { kind: "sleep" } });
-    // The map chose another card's place or the hotel: the row turns to that card.
-    expect(syncRow(cards, b, { kind: "place", placeId: "c" })).toEqual({ turn: c.id });
-    expect(syncRow(cards, tour, { kind: "sleep" })).toEqual({ turn: STAY_CARD_ID });
+    // The map chose another card's place or the hotel: once it closes, the row turns to that card.
+    expect(syncRow(cards, b, { kind: "place", placeId: "c" }, { fromMap: true })).toEqual({ turn: c.id });
+    expect(syncRow(cards, tour, { kind: "sleep" }, { fromMap: true })).toEqual({ turn: STAY_CARD_ID });
     // The map chose a place without a card (the current place): the chosen card is selected again.
-    expect(syncRow(cards, tour, { kind: "place", placeId: "here" })).toEqual({ select: null });
+    expect(syncRow(cards, tour, { kind: "place", placeId: "here" }, { fromMap: true })).toEqual({ select: null });
+    // Any other selection follows the row: the new day's first place over yesterday's 「ホテルに戻る」 (UI audit 2026-11-14:
+    // a habitual swipe up must not rest again), a card that joined over the one chosen before it.
+    expect(syncRow(cards, b, { kind: "sleep" })).toEqual({ select: { kind: "place", placeId: "b" } });
+    expect(syncRow(cards, c, { kind: "place", placeId: "b" })).toEqual({ select: { kind: "place", placeId: "c" } });
     expect(cardOfTarget(cards, { kind: "place", placeId: "here" })).toBeNull();
   });
 
