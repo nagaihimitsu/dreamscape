@@ -43,6 +43,8 @@ INCLUDE modules.ink
         # recall: gt_album_a01
         絶対、毎晩、白鳥の折り方を練習してる。新しいお客さんが来るたびに、首の角度を変えてると思う
     }
+    # speaker: narrator
+    アーグラの宿で、『ハネムーン・スペシャル』の白鳥を飾った支配人のことだ。
 * [「カムラさんから」 # option: gossip_kamla]
     # profile: honest
     # memory: gt_jaipur_date_panna_meena_kund_memory
@@ -55,6 +57,8 @@ INCLUDE modules.ink
         # emotion: teasing
         ジャイプールに着いたその日に、もう誰かを値切ってると思う。運転手さんとか。三十秒で
     }
+    # speaker: narrator
+    デリーの路地で会ったカムラは、もう、ジャイプールの息子の家に越している。
 * [「君から、どうぞ」 # option: gossip_you_first]
     # profile: attentive
     # memory: gt_jaipur_date_panna_meena_kund_memory
@@ -67,7 +71,9 @@ INCLUDE modules.ink
         わたしから？　じゃあ……
     }
     # speaker: heroine
-    アマンさん。結婚式の前の晩、花嫁さんに言う言葉を、鏡の前で三十回は練習してる。カムラさんに『毎日言葉にしなさい』って言われたから
+    アマンさん。毎晩、花嫁さんに言う言葉を、鏡の前で三十回は練習してる。カムラさんに『毎日言葉にしなさい』って言われたから
+    # speaker: narrator
+    カムラの孫で、二人を結婚式に招いてくれた花婿のことだ。
 -
 # speaker: heroine
 それから……
@@ -76,22 +82,32 @@ INCLUDE modules.ink
     # speaker: heroine
     # emotion: teasing
     スレーシュさんとミーナさん。もう、笑う会の外でも会ってるよね。絶対。薔薇、毎回違う色にしてる
+    # speaker: narrator
+    フマユーン廟で会った元調査官と、笑う会で隣にいた、彼の大学の同級生だ。
 - cond("episode gt_delhi_main_humayun_tomb"):
     # speaker: heroine
     # emotion: teasing
     スレーシュさん。今ごろ、胸ポケットの薔薇を、新聞で隠しながら歩いてる
+    # speaker: narrator
+    フマユーン廟で、姪とその同級生を問い詰めていた元調査官だ。
 }
 { cond("episode gt_agra_main_taj_mahal"):
     # speaker: heroine
     ニキルさんは、結婚式の段取りも三十枚のスライドにしてる。それで、タンヴィさんに『次は、場所から一緒に決めて』って言われてる
+    # speaker: narrator
+    タージ・マハルのベンチで、指輪を出しそびれた二人だ。
 }
 {
 - cond("date gt_agra_date_guru_ka_taal"):
     # speaker: heroine
     ハルバンスさんは、カナダで絶対、洗車係じゃ終わらない。三日目には、息子さんの会社の配車表を書き直してると思う
+    # speaker: narrator
+    グル・カ・タールの食堂で会った、四十年トラックを走らせてきた人だ。
 - cond("date gt_agra_date_mehtab_bagh"):
     # speaker: heroine
     ソニアさんは、十年後に州の代表。写真代も、ずっと高くなってるね
+    # speaker: narrator
+    メヘターブ・バーグの外の空き地で会った、十二歳のキャプテンだ。
 - else:
     # speaker: heroine
     道を教えてくれた人たち。全員、違う方向を指さした人たち。今ごろ、次の旅行者にも、自信満々で違う方向を教えてる

@@ -116,7 +116,7 @@ INCLUDE modules.ink
     { cond("flag gt_jaipur_mehndi_her_secret") and cond("seen gt_jaipur_hotel_mehndi_morning"):
         # speaker: narrator
         # recall: gt_album_j26
-        彼女は、手のひらを一度開いて、また閉じた。メヘンディの模様は、まだ濃く残っている。
+        彼女は、手のひらを一度開いて、また閉じた。孔雀の羽の付け根に、こちらの名前が、まだ濃く残っている。
     }
 - else:
     {
