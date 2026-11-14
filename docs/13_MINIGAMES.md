@@ -147,9 +147,9 @@ src/minigames/
 | `cue_tap` | `cricket_batting` クリケットの打席 | アーグラ、メヘターブ・バーグのデート（最後の一球と、`prefix again` のもう一球） |
 | `cue_tap` | `monkey_catch` 猿の落とし物 | アーグラ、アクバル廟のデート（デリーで買った「雨の匂いの小瓶」を持っていれば小瓶、持っていなければ `prefix glasses` のサングラス） |
 | `cue_tap` | `cloth_flap` 鳩の役 | デリー、アグラセン・キ・バーオリーのデート |
-| `cue_tap` | `say_together` 一緒に言う | デリー、ローディー・ガーデンのデート（フマーユーン廟のエピソードの前だけの「一緒に言おう」） |
-| `shape_drag` | `roti_rolling` ローティーを伸ばす | デリー、バングラ・サーヒブのデート |
+| `shape_drag` | `roti_rolling` ローティーを伸ばす | デリー、バングラ・サーヒブのデート（`retry yes`：穴の後のハルバンスの「生地は、何度でもやり直せる」） |
 | `rhythm_tap` | `golgappa_duel` ゴルガッパの勝負 | デリー、チャンドニー・チョークのデート |
+| `rhythm_tap` | `say_together` 一緒に言う | デリー、ローディー・ガーデンのデート（フマーユーン廟のエピソードの前だけの「一緒に言おう」）。2026-11-14 に `cue_tap` の1回押しから、拍ごとに4語を押す形へ（group2 S4。物語の結果は今までどおり最初の言葉のタイミング、★は4語のそろい方） |
 | `rhythm_tap` | `baraat_dance` 花婿の行列で踊る | ジャイプール、都市フィナーレ（ハワー・マハル）のバトルの会話 |
 | `search` | `nahargarh_hide_seek` かくれんぼ | ジャイプール、ナーハルガル・フォートのデート（噛み合いの選択肢の代わり） |
 | `search` | `mehndi_hidden_name` 手のひらの模様 | ジャイプールの宿の夜の差し込みの場面（ジャル・マハルのデートの後。分かれ道ごとに3つの札） |
@@ -196,7 +196,7 @@ export const cricketBatting = defineMiniGame({
 });
 ```
 
-- `outcomes`：2つ以上。ID は `# option:` になる形（`[a-z][a-z0-9_]*`）。`labelJa` は、結果を見せる文・読み上げる文・Debug のボタン（`{heroine_name}`・`{player_name}` を書ける）。任意の `noteJa` は書く人への説明（Debug の部屋に出る）。任意の `finishJa` は終わりの言葉（書かなければ「そこまで！」、`null` は言葉・光・音なし。態度を選ぶゲーム向け）、任意の `reaction` は結果カードのヒロインの顔と一言（`{ kind, linesJa }`。2.6）。
+- `outcomes`：2つ以上。ID は `# option:` になる形（`[a-z][a-z0-9_]*`）。`labelJa` は、結果を見せる文・読み上げる文・Debug のボタン（`{heroine_name}`・`{player_name}` を書ける）。任意の `noteJa` は書く人への説明（Debug の部屋に出る）。任意の `finishJa` は終わりの言葉（書かなければ「そこまで！」、`null` は言葉・光・音なし。態度を選ぶゲーム向け）、任意の `finishTone` は終わりの調子（`great`・`good`・`plain`・`oops`。書かなければ★から。言葉と★が食い違う結果だけに書く：2.6）、任意の `reaction` は結果カードのヒロインの顔と一言（`{ kind, linesJa }`。2.6）。
 - `params`：札の引数の zod（`z.object(…).strict()`）を返す関数。引数は `TagContext`（今の札と同じ一覧：品物・その国の言葉・背景など）で、ID の引数を調べるときに使う。実行時は一覧の無い所を調べない（今の札と同じ）。各キーに `.describe("日本語の説明")` を付ける（エラーの文と Debug の部屋に出る）。値は札の語（文字列）なので、数は `z.coerce.number()` で読む。`auto`・`prefix` はキーにできない（枠のキー）。
 - `examples`：Debug の部屋と規則のテストで使う引数の例。引数を書かずに使えるなら、最初は `{}`。
 - `timed`：時間で進むか。ページから戻ったときに「続ける」を出す（2.7）。
@@ -211,8 +211,9 @@ export const cricketBatting = defineMiniGame({
   - `durationSec`：だいたいの長さ（カードに「約N秒」）。時間の無い探すゲームは書かない。
   - `practice`：`false`（既定）か `{ params? }`。「練習する」を出す。`params` は札の引数に重ねる。態度を選ぶゲーム（かくれんぼ・地図・手のひら）は書かない。
   - `countdown`：`"host"`（枠の 3・2・1・スタート）、`"own"`（場の中に自分の数え）、`"none"`（既定）。
-  - `music`：`"scene"`（既定）・`"calm"`（探す）・`"bright"`（タイミング）（2.11）。リズムのゲームは `"scene"` のまま（拍が曲）。
+  - `music`：`"scene"`（既定）・`"calm"`（探す）・`"bright"`（タイミング）（2.11）。リズムのゲームと、彼女の声が拍のゲーム（一緒に言う）は `"scene"` のまま（拍が曲）。
   - `resultAnchor`：結果カードの場所。`"bottom"`（既定。止まった操作の上）か `"top"`（場の大事な絵が下にあるとき）。
+  - `finishAnchor`：終わりの言葉の場所。`"center"`（既定。場の真ん中）か `"top"`（帯の下。場の真ん中に大事な絵があるとき：布で鳩の叫び声）。
 
 ### 2.4 規則（`rules.ts`。純粋関数）
 
@@ -254,14 +255,15 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
   end(outcome: Outcome, detailJa?: string, options?: { record?: unknown; holdMs?: number }): void;
   // 終わり。決まった瞬間に呼ぶ。record は rate に渡す記録、holdMs は場がまだ見せる時間（球が飛ぶ、煉瓦が落ちる）。
   // 最初の1回だけが効く。detailJa は結果カードの数の行（rate の scoreJa が無いとき）
+  decided(): void;                // end の前に結果が決まった（決めた押しの後、場がまだ見せている）：本番の「中断する」を消す
   practice: boolean;              // 練習（物語は結果を選ばない）
   juice: MiniGameJuice;           // 手応えの道具（2.6）
   react(kind: MiniGameReaction, lineJa?: string): void; // ヒロインの短い反応（2.6）
 }
 ```
 
-- 皮の場（`Field`）にエンジンが渡さない物は、`useMiniGameKit()`（`host/kit.ts`）で読む：`{ juice, react, practice, still, end }`。エンジンを直さずに、皮が道具を使える。皮は、エンジンより良く分かる瞬間（クリケット：板が球に当たった、煉瓦が落ちた）で `end(結果, undefined, { record, holdMs })` を呼んでよい（最初の1回が効く）。
-- 振動（`vibrate`）の種類：`item`・`clue`・`shake` に、`tap`（10ms）・`hit`（25ms）・`success`（15・40・15）・`fail`（40ms）を足した。
+- 皮の場（`Field`）にエンジンが渡さない物は、`useMiniGameKit()`（`host/kit.ts`）で読む：`{ juice, react, practice, still, end, decided }`。エンジンを直さずに、皮が道具を使える。皮は、エンジンより良く分かる瞬間（クリケット：板が球に当たった、煉瓦が落ちた）で `end(結果, undefined, { record, holdMs })` を呼んでよい（最初の1回が効く）。
+- 振動（`vibrate`）の種類：`item`・`clue`・`shake` に、`tap`（10ms）・`hit`（25ms）・`success`（15・40・15）・`fail`（40ms）を足した。枠は、皮の振動の100ms以内には終わりの振動を出さず、終わりの振動の100ms以内の皮の振動も出さない（1つの瞬間に1回。group2 N11）。
 
 - `Play` が描くのは、場（フィールド）と下の操作の所だけ。上の帯・結果・中断・一時停止は描かない（枠が描く）。
 - 結果は `Play` が規則で決めて `end` に渡す。枠は、結果が定義の `outcomes` にあることを確かめる。
@@ -272,19 +274,20 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
 `src/minigames/host/MiniGameHost.tsx` が、全てのゲームで次を受け持つ。ゲームは書かない。
 
 - 流れ（2026-11-13、試遊の後）：**説明カード →（練習）→ 3・2・1・スタート → 遊び → そこまで！ → 結果カード → 物語**。全て枠が持ち、皮は 2.3 の項目を宣言し、2.5 の道具を呼ぶだけ。値は `host/timing.ts` と `host/flow.ts`（純粋関数、`flow.test.ts`）。
-- 説明カード（開始の前。選択肢の所＝会話の窓の中。画面は変えない）：手の絵（`controls`）、題（`titleJa`）と「約N秒」（`durationSec`）、1行（`goalJa`、無ければ `hintJa`。おまかせなら「おまかせで遊びます。」）、「練習する」（`practice` があり、おまかせでないとき。外枠だけの控えめなボタン）と開始のボタン（`startJa`）。そのゲームを一度遊ぶと、その旅（ページを開いている間。保存しない）の間は1行に畳む（題と長さを隠し、手を小さく）。行が出て、選択肢の待ち（今の0.3秒）が過ぎるまで押せない。Debug モードなら、その下に結果ごとのボタン（「Debug：結果を選ぶ」）。
+- 説明カード（開始の前。選択肢の所＝会話の窓の中。画面は変えない）：手の絵（`controls`）、題（`titleJa`）と「約N秒」（`durationSec`）、1行（`goalJa`、無ければ `hintJa`。おまかせなら「おまかせで遊びます。」）、「練習する」（`practice` があり、おまかせでないとき。外枠だけの控えめなボタン）と開始のボタン（`startJa`）。そのゲームを一度遊ぶと、その旅（ページを開いている間。保存しない）の間は1行に畳む（題と長さを隠し、手を小さく）。行が出て、選択肢の待ち（今の0.3秒）が過ぎるまで押せない。Debug モードなら、その下に結果ごとのボタン（「Debug：結果を選ぶ」）。説明カードが出たときに、定義の `sounds` と枠の終わり・結果カードの音（`HOST_SOUNDS`）を先に読む（開始の押しで音が目覚めた後、もう一度読んで解く）。回線が遅くても、最初の当たりの音が遅れたり落ちたりしない（group2 N16）。
 - 練習：同じ遊びを、帯に「練習」の札を付けて遊ぶ。結果は物語に選ばれない。結果カードは「もう一回」（数えなしで「スタート！」からすぐ）と「本番へ」（数えから）。「中断する」でカードへ戻る。
 - 3・2・1・スタート（`countdown: "host"`、おまかせでないとき）：「3」「2」「1」各300ms、時計は「スタート！」で動き出す（「スタート！」は300ms残る）。数える間、時計の時刻は0のまま、毎フレームは0で場の始めを描き、タイマーは待ち、場の CSS の動きは止まる（`data-counting`）。数える間の押しは遊びに届かない（枠が捨てる。Esc と「中断する」は効く）。ページが裏に回ると数えも止まる。音は `ui_tap` を3回と `ui_confirm`。動きを減らすと、数字を入れ替えるだけ。
-- そこまで！（`end` を受けた瞬間）：止め（★3で120ms、★2で90ms、★1か評価なしで60ms。時計を止め、場の CSS の動きも止める）、明→暗のフラッシュ（★3は2往復。白一色にしない）、言葉（outcome の `finishJa`、無ければ「そこまで！」）を40pxで0.5秒、音（★2以上 `quiz_correct`、ほか `whistle`）と振動（`success`・`fail`）。`finishJa: null` は止めだけ。`end` の `holdMs` の間は場が動き続け（時計は動く、押しは捨てる）、結果カードは0.5秒と `holdMs` の遅い方の後（足さない）。動きを減らすと、フラッシュをやめ、止めと言葉と音は残す。
+- そこまで！（`end` を受けた瞬間）：調子ごとの止め（`great` 120ms・`good` 90ms・`plain` 60ms・`oops` 80ms。調子は結果の `finishTone`、無ければ★から：★3 `great`、★2 `good`、★1か評価なし `plain`。時計を止め、場の CSS の動きも止める）、明→暗のフラッシュ（★3は2往復。白一色にしない）、言葉（outcome の `finishJa`、無ければ「そこまで！」）を40pxで0.5秒（`finishAnchor: "top"` なら帯の下）、音（`great`・`good` は `quiz_correct`、`plain` は終わりの笛 `whistle`、`oops` はしくじりの `impact_thud`）と振動（`great`・`good` は `success`、ほか `fail`。皮が直前100ms以内に振動させていれば出さない）。`finishJa: null` は止めだけ。`end` の `holdMs` の間は場が動き続け（時計は動く、押しは捨てる）、結果カードは0.5秒と `holdMs` の遅い方の後（足さない）。動きを減らすと、フラッシュをやめ、止めと言葉と音は残す。
+- 終わりの調子（2026-11-14、group2 N8・group3 全体1）：★だけで音を決めると、★1の良い言葉（「踊りきった！」「見つけた！」）に笛と失敗の振動が、★2の近い外れ（「フライング！」「出遅れ！」）に成功の音が鳴る。言葉と★が食い違う結果には `finishTone` を書く：良い言葉の★1は `good`、近い外れの★2は `plain`、穴・もつれ・こぼれのようなしくじりは `oops`。書いた所：花婿の行列 `off_beat_together` `good`・`stumble` `oops`、ローティー `torn` `oops`、一緒に言う `early`・`late` `plain`。ほかの皮（日傘の `found_slow` など）も同じ形で書ける。
 - 結果カード（今の結果の札の代わり。場の下寄せ、`resultAnchor: "top"` で上寄せ）：上から★（`rate` があるときだけ。120msごとに1つずつ `ui_tap`、★3は大きく `quiz_perfect` と `applause`）、結果の名、数の行（`scoreJa`、無ければ `detailJa`。400msで0から数え上げ）、ヒロインの顔と一言（outcome の `reaction`。一言は `seed` で選ぶ）、ボタン。ボタンは、本番は「次へ」（金の主ボタン）、札に `retry yes` があるか Debug の部屋なら「もう一回」も、練習は「もう一回」「本番へ」。「次へ」だけのときは2.5秒で自分で進む。出てから450msは押しを捨てる。カードのボタンは、カードが出る前に下りた指の押しを受けない（押し続けている人が結果を読める。2026-11-13 の試遊で、連打で118msに飛んだ不具合の直し）。本番を終えた後は「中断する」を出さない（物語の本番は1回きり：やり直しは `retry yes` だけ）。読み上げは、結果の名・数・★の数・一言。動きを減らすと、★は一度に、数え上げなし。遊ぶ層の高さが700px以下（320×568〜375×667）か、ふつうのカードが場（エンジンの場）の45%より多くを隠すときは、小さいカード：★と結果の名を1行に、小さな顔の横に数の行と一言、余白を詰める（ボタンは44px以上。`flow.ts` の `resultCardCompact`）。場の大事な絵（バス！、穴、こぼれた器）が見えるように（2026-11-13）。
 - 読み込み：フレームが出たら `load()` を始める。読めるまで開始のボタンは「準備中…」で押せない。読めなければ「読み込めませんでした」と、「もう一度」「おまかせで進める」（札の `auto` の結果を同じ道で選ぶ）を出す。遊べなくても先へ進めるように。
 - 層：場面の画面全体に重なる。上の帯（ゲームの名前、`status` の文、「中断する」）、真ん中に場、下に操作。遊ぶ間、人物・会話の窓・道具は隠し、場面の絵と天気だけを残す（今のクリケットと同じ）。旅の上の帯（現在地・予算・⚙設定）と、その下に重なる表示（Debug モードの関係の変化と場面の条件、「ことばを覚えた」、写真の札。Debug のページでは上の帯と「この時点の候補」も）も退き、遊びは画面のいちばん上から使う（小さい画面で場を広げるため、2026-11-13。`quiet` の行で上の帯が退くのと同じ形）。終えるか中断すると、全て元に戻る。CSS の `:has(.minigame-layer)` だけで決め、皮は何もしない。
-- 中断：「中断する」と Esc で、何も選ばずに開始のボタンへ戻る。押し間違えて始めたときや、前の行を読み直したいときのため。
+- 中断：「中断する」と Esc で、何も選ばずに開始のボタンへ戻る。押し間違えて始めたときや、前の行を読み直したいときのため。本番は、結果が決まったら（`end` の後、または `decided()` の後：押しで結果が決まり、場がまだそれを見せている間）「中断する」を消し、Esc でも戻らない（物語の本番は1回きり。決めた押しの後に中断してやり直せた不具合の直し、2026-11-14）。`cue_tap` は押しが決めた瞬間に、一緒に言うは最初の言葉で `decided()` を呼ぶ。練習はいつでも中断できる。
 - おまかせ：`Play` に `auto` を渡す。遊ぶ間、画面のどこかを押すか Enter・Space で、すぐ結果へ飛ぶ（待ち時間を減らす決まり、2026-11-13）。
 - ヒロインの反応：遊ぶ間、皮が `react(kind, lineJa?)` で、帯の左下に彼女の顔（立ち絵の顔の切り抜き `CharacterFace`、64px）と短い吹き出しを0.9秒出す（1.5秒に1回まで）。`kind` と顔：`cheer` 嬉しい（happy）・`surprise` 大きな驚き（surprised_big）・`laugh` 笑う（teasing_big）・`tease` からかう（teasing）・`oops` あっ（surprised）。場の彼女の立ち絵（`cast.heroine`）も同じ顔になる。画面は `cast` に彼女の見た目（その行の表情・場面の衣装）だけを渡し、枠が描く（デートの画面が遊ぶ間ずっと真顔だった不具合の直し）。台詞はキャラクターバイブルを読んでから書く（AGENTS）。
 - 手応えの道具（`juice`。値は試遊の報告 group3 6.4）：`hitStop(ms?, target?)`（40〜150ms、既定90。時計を止め、当たった物を±3→±1pxで震わせる）、`shake("s" | "m" | "l")`（縦2px・120ms、縦横4px・200ms、8px・320ms。0.85倍ずつ収まる）、`flash("hit" | "big")`、`burst(要素か場の0〜1の点, "star" | "ring" | "dust" | "splash", size?)`（6つまで、濃い2pxの縁で明るい写真の上でも見える、400ms以内）、`squash(target, "press" | "land" | "pop")`、`denied(target)`（押しても何も起きない物：小さく揺れて `ui_denied`。押して無反応を作らない）。Web Animations の `translate`・`scale` で描くので、皮の `transform` と重なる。動きを減らすと、`shake`・`flash`・`burst`・`squash` は何もせず、`hitStop` は止めるだけ、`denied` は音だけ。
 - 選ぶ：`onMiniGameOutcome(outcome)`。1回の遊びで選ぶのは1回だけ。ゲームが断ったら（起きないはず。6.3 が確かめる）、「今はこの結果を選べません」と出して開始のボタンへ戻る。
-- 二度押し：枠の数えが無い遊び（と「もう一回」）を始めた直後（今の0.45秒）の押しは、開始のボタンの2回目として捨てる。
+- 二度押し：枠の数えが無い遊び（と「もう一回」）を始めた直後（今の0.45秒）の押しは、開始のボタンの2回目として捨てる。ただし、なぞるゲーム（`controls: "drag"`。最初のなぞりをすぐ始めてよい）では、押したボタンのあった所（周り12px）に落ちた押しだけを捨てる（キーの押しは時間だけで捨てる）。ローティーで0.45秒以内に始めたなぞりが消えた不具合の直し（group2 N10）。
 - 動きを減らす：`still` を渡し、層に `data-still` を付けて、CSS のアニメーションと transition を止める。遊びに要る動き（飛んでくる球、針）は、`Play` が時計から JS で描くので止まらない。
 - フォーカス：始めると、層の主な操作（`data-minigame-primary` の要素。無ければ層）へ。中断すると開始のボタンへ。結果の後は、次のフレームの画面の決まりのまま。
 - 音楽：`quietScene` のゲームの間だけ、場面の音楽と環境音を下げる（音楽の下げ方 `MusicDuck` に1つ足す）。`music` のゲームは、スタートから結果カードまで、その曲に切り替える（2.11）。
@@ -324,8 +327,8 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
 - 効果音は、共通の `content/presentation/sounds.json` に登録した音だけを使う。ゲームはどの旅行編でも使えるコードなので、旅行編の音は使わない。定義の `sounds` に書き、`Play` は `sound(id)` で鳴らす。
 - 場面の音楽と環境音は、遊ぶ間もそのまま流す。リズムのゲームは `quietScene: true` で下げる。
 - ミニゲームの曲（任意、2026-11-13）：定義の `music` が `calm`（探す）・`bright`（タイミング）なら、スタートで曲 `mg_calm`・`mg_bright` へ切り替え（今の曲の切り替えと同じ1.5秒のクロスフェード。⚙設定の「BGMを流す」「BGMの大きさ」に従う）、結果カードで場面の曲へ戻す（`host/music.ts`、GameApp の `onMusic`、`scene-music.ts` の `miniGameTrack`）。曲は共通の一覧（`content/presentation/music.json`、ファイルは `public/assets/bgm/<ID>.mp3`）にあり、出典・権利の一覧に出る：`mg_calm` は Kevin MacLeod「Derp Nugget」（約110 BPM）、`mg_bright` は同「Desert of Lost Souls」（約134 BPM）。どちらも CC BY 4.0。曲を差し替えるときは ID を変えずに、ファイルとその出典だけを替える。登録の無い曲を名指すと、場面の曲がそのまま続く（エラーにもビルドの失敗にもならない）。
-- リズムのゲーム（ゴルガッパ・花婿の行列）には曲を付けない（2026-11-13）。ゲームの太鼓の拍（96 BPM、50→100 BPM）が音楽で、150 BPM 前後の曲を重ねると拍がずれて聞こえるため。`music` は `"scene"` のまま、`quietScene` で場面の曲を下げる。
-- 結果の音（枠）：そこまで！で `quiz_correct` か `whistle`、結果カードの★で `ui_tap`、★3で `quiz_perfect` と `applause`。皮は同じ音を重ねない（クリケットの拍手は枠に任せた）。
+- リズムのゲーム（ゴルガッパ・花婿の行列）には曲を付けない（2026-11-13）。ゲームの太鼓の拍（96 BPM、50→100 BPM）が音楽で、150 BPM 前後の曲を重ねると拍がずれて聞こえるため。`music` は `"scene"` のまま、`quietScene` で場面の曲を下げる。 一緒に言う（彼女の「せー」「の」と4つの言葉が約92 BPMの拍）も同じ（2026-11-14、group2 N4：134 BPM の曲が4秒の間に出入りし、拍とぶつかった）。
+- 結果の音（枠）：そこまで！で `quiz_correct`・`whistle`・`impact_thud`（終わりの調子：2.6）、結果カードの★で `ui_tap`、★3で `quiz_perfect` と `applause`。皮は同じ音を重ねない（クリケットの拍手は枠に任せた）。
 - リズムの判定は画面の拍（時計）に合わせ、音の遅れに合わせない。幅を広めにして、端末ごとのずれの調整は今は作らない。調整が要ると分かったら、⚙設定の項目として足す（そのときに決める）。拍の並びは皮の定義に書く。場面の音楽の曲には合わせない（ゲームの音で拍を鳴らす）。
 
 ### 2.12 絵と置き場所
@@ -552,7 +555,7 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
 ### 6.6 Debug の結果のボタンと見本の部屋
 
 - Debug モードの間、開始のボタンの下に結果ごとのボタンを出す（今のまま。枠が全てのゲームで出す）。押すと、遊ばずにその結果を選ぶ（今のクリケットと同じく通常の保存の中で選ぶ。Debug モードをオンにした端末だけ）。
-- 部屋の調整（2026-11-13、E1〜E3）：結果カードはいつも「もう一回」を出す（すぐやり直す）。押す遅れ（+0・+60・+120ms）で遅い端末を試す。ゲームが `play.ts` で `tuning`（1つの名前の付いた数の組）と `retune(数の組)`（その数で作り直した `{ Play, rules }`）を出していれば、数ごとの入力欄を出し、変えると次の1回からその数で遊ぶ（保存しない。物語では使わない）。
+- 部屋の調整（2026-11-13、E1〜E3）：結果カードはいつも「もう一回」を出す（すぐやり直す）。押す遅れ（+0・+60・+120ms）で遅い端末を試す。ゲームが `play.ts` で `tuning`（1つの名前の付いた数の組）と `retune(数の組)`（その数で作り直した `{ Play, rules }`）を出していれば、数ごとの入力欄を出し、変えると次の1回からその数で遊ぶ（保存しない。物語では使わない）。 `play.ts` が `fairness(数の組)`（その数で作るエンジンの調整を、エンジンの公平さの決まりに通した問題の一覧）も出していれば、変えた数がスマートフォンで公平でなくなるとき、部屋がその理由を数の下に出す（遊ぶことはできる。2026-11-14）。ローティー・花婿の行列・一緒に言うが出している。
 - Debug の「ミニゲームの見本」（新しい部屋。`src/dev/`）：登録の全てのゲームを並べ、`examples` の引数で、普通に・おまかせの各結果で・動きを減らして遊べる。物語もセーブも無しに、遊び心地をスマートフォンで確かめられる（音と演出の見本と同じく、保存・設定に書かない）。ゲームの説明（`howToJa`・結果・引数の説明）を出すので、書く人がゲームの一覧として使える。使い所（`minigame-uses.json`）から、その場面を Debug で開くリンクも出す。舞台は、使い所が書いた絵（`bg`・`art.<枠>`。写真も）で開き、「絵」の選択で、ほかの使い所の絵や、ゲームが描く絵に切り替えられる（2026-11-13。写真の上で読めるかを確かめるため）。
 
 ## 7. ゲームを足す手順（作る人へ）
@@ -563,14 +566,14 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
 
 - [ ] ID を決めた（`[a-z][a-z0-9_]*`。場所の名前より遊びの名前。例 `monkey_catch`）。フォルダ名と同じで、公開後は変えない。
 - [ ] `src/minigames/<gameId>/definition.ts`：`defineMiniGame({...})`（2.3）。結果は2つ以上（ID は置き換える場面の `# option:` に合わせられる）、`labelJa` と任意の `noteJa`、`defaultAuto`、`params`（引数が無ければ `() => z.object({}).strict()`、あれば各キーに `.describe("日本語の説明")`。`auto`・`prefix`・`bg`・`art…` はキーにしない）、`examples`（最初は `{}`）、`startJa`・`hintJa`・`howToJa`・`titleJa`、`timed`、`keysJa`（キーで遊べなければ `null`）、`sounds`（共通の `content/presentation/sounds.json` の音だけ）、`quietScene`、`art`（ゲーム自身の絵のファイル。ふつう `[]`）、`artSlots`（旅行編の絵を入れられる枠。下）、`load: () => import("./play")`。定義から、遊ぶ画面・規則・CSS を静的に import しない（タイトル画面の読み込みに入るため）。読みやすさの注意（キー、動きを減らしたときの見え方、読み上げ）を定義のコメントに書く。
-- [ ] 枠の流れの項目（2.3・2.6）：`goalJa`（何を・どうする）、`controls`、`durationSec`、`countdown`（物語の中に数えがあれば `own`、探すゲームは `none`）、`practice`（態度を選ぶゲームは書かない）、`music`、各結果の `finishJa`（態度を選ぶゲームは `null` も）と `reaction`（バイブルを読んでから。続く物語の台詞と重ねず、どの分かれ道とも食い違わない短い一言）、必要なら `resultAnchor`。
+- [ ] 枠の流れの項目（2.3・2.6）：`goalJa`（何を・どうする）、`controls`、`durationSec`、`countdown`（物語の中に数えがあれば `own`、探すゲームは `none`）、`practice`（態度を選ぶゲームは書かない）、`music`、各結果の `finishJa`（態度を選ぶゲームは `null` も）と、言葉と★が食い違う結果の `finishTone`と `reaction`（バイブルを読んでから。続く物語の台詞と重ねず、どの分かれ道とも食い違わない短い一言）、必要なら `resultAnchor`。
 - [ ] `rules.ts`：エンジンの規則から自分の結果へ。表で足りれば表だけ（`cueTapRules(TUNING, { clean: …, early: …, late: …, miss: …, none: … })`）、足りなければ関数。調整の値（`tuning`）はここにコードで書く（札には書かない）。乱数・時刻・DOM・React・生成物を読まない（登録の検査が文を調べる）。
 - [ ] `rate`（任意）：★を出すゲームだけ。結果と食い違わない（良い結果ほど★が少なくならない）こと、数の行（`scoreJa`）。雛形が★の形を確かめる。
 - [ ] `rules.test.ts`：雛形を1行（`describeMiniGameRules(definition, rules, { records: [何もしない・すぐ終える・時間切れ…] })`）と、自分の細かいテスト。調整の値はエンジンの決まりに通す（`cue_tap` なら `expect(cueTapFairness(TUNING)).toEqual([])`）。
 - [ ] `Skin.tsx` と `skin.css`：エンジンの場に描く絵（`cue_tap` なら `CueTapSkin`：`tuning`・`rules`・`hintJa`・`actionJa`（ボタン）・`actionHintJa`（読み上げ）・`autoJa`・`endAt`（場が見せ終える時刻）・`Field`、任意で `impactAt`（場が結果を見せる瞬間。エンジンはそこで `end(結果, undefined, { record: 押した時刻, holdMs })` を呼ぶ。無ければ `endAt`）とメーターの代わりの `Gauge`（鳩の役の段の印）。★はエンジンの `cueTapRating`（ちょうど★3・近い★2・外れ★1・押さない★なし）を `cueTapRules` が `rate` に入れる）。場の根の class は `mg-<game-id>`（ID の `_` を `-` に）で、CSS はその中だけに効かせる（本番ビルドの検査の目印）。色は `--ds-*`、カードや説明の左の太い線は使わない。人物は `cast`（立ち絵）、名前は `names` を React の文字で（HTML にしない）。見た目の揺らぎは `seed`（`host/seed.ts` の `seededRandom`）から作る。時間は `clock` だけ（`performance.now`・`setTimeout` を使わない）。音は `sound(id)`（定義の `sounds` の音だけ鳴る）。動きを減らす（`still`）ときは、遊びに要らない動きを止める。
 - [ ] 絵の枠（任意）：旅行編の絵を入れたい所を `artSlots` に宣言する（`{ id, kind: "backdrop" | "sprite", labelJa }`。`labelJa` は何を描いた絵かを、絵を頼む人に分かるように）。`Field` は `art[枠]`（配信の URL）があればその絵を、無ければ CSS の見た目で描く。絵の位置は場の大きさの割合で決め、絵を頼むときに、ゲームが重ねて描く所（操作・メーター・上の帯）と、絵の中で合わせる所（例：遠くの三柱門の位置）を伝える。背景の枠には出典つきの観光写真も入る（2.12）ので、ゲームが動かす物（扉の板・階段・落ちる物）は、背景の絵の上にも描けるようにする。
 - [ ] 手応えと反応（2.6）：決まった瞬間に `juice`（止め・粒・揺れ・潰し）と `react`、押しても何も起きない物に `denied`。場（`Field`）では `useMiniGameKit()` から。決まった瞬間に `end(結果, detail, { record, holdMs })`（エンジンがしていなければ皮から）。背景の枠の `<img>` に `mg-photo`、押す物・見る物に `mg-play-object`。
-- [ ] `play.ts`：`export const Play = <エンジン>Play(skin)` と `export { <rules> as rules }`。調整の値は `export const tuning = <名前の付いた数の組>` と `export function retune(数の組) { return { Play, rules } }`（Debug の部屋で数を変えて試す。皮が数から場を作る形にする：`cricket_batting/Skin.tsx` の `cricketSkinFor`）。
+- [ ] `play.ts`：`export const Play = <エンジン>Play(skin)` と `export { <rules> as rules }`。調整の値は `export const tuning = <名前の付いた数の組>` と `export function retune(数の組) { return { Play, rules } }`（Debug の部屋で数を変えて試す。皮が数から場を作る形にする：`cricket_batting/Skin.tsx` の `cricketSkinFor`）。 公平さの決まりがあるエンジンなら `export function fairness(数の組) { return <エンジン>Fairness(…) }` も（部屋が問題を出す）。
 - [ ] `src/minigames/registry-list.ts` に1行（アルファベット順の場所）：`export { <name> } from "./<gameId>/definition";`。
 - [ ] 実在の場所・習慣を絵や結果の文に出すときは、AGENTS の「観光と学習」の決まり（事実・伝説の区別、出典を作らない）に従った。
 - [ ] Debug の「ミニゲームの見本」（`?debug` → 「ミニゲームの見本を開く」）で、スマートフォンの幅（390・320）、片手、自分で・練習・おまかせの各結果・動きを減らす・キーボード・押す遅れ +120ms で遊び、調整の値を変えて試した。結果カードが場の大事な絵を隠さないか見た（隠すなら `resultAnchor`）。[UI_RULES.md](../UI_RULES.md) を見て、[UI_REVIEW_CHECKLIST.md](../UI_REVIEW_CHECKLIST.md) で自己レビューした。
@@ -582,7 +585,7 @@ interface MiniGamePlayProps<Params, Outcome extends string> {
 - [ ] 最初の皮と一緒に作る。同じエンジンの2つ目の皮は、エンジンが入ってから作る（同じエンジンを2人で同時に作らない）。
 - [ ] `src/minigames/engines/<engineId>/engine.ts`：記録の型、純粋な規則（記録→エンジンの結果、おまかせの記録、調整の値の zod、公平さの決まり。`cue_tap` の `cueTapFairness` のように、端末の押す遅れより広い幅（押す遅れは遅い側にだけ出るので、ちょうどの幅は遅い側を早い側より広く。`cleanEarlyMs`・`cleanLateMs`・`nearEarlyMs`・`nearLateMs`）、開始の二度押しの間（`host/timing.ts` の 450ms）に終わらないこと。`cue_tap` は合図の前（前置き `leadMs` の間）の押しを数えず、次の押しで決める（2026-11-13）、皮の表から規則を作る関数。乱数・時刻・DOM・React を読まない。
 - [ ] `engine.test.ts`：調整の値の決まりと、おまかせでどのエンジンの結果にも届くことを、エンジンの言葉で。
-- [ ] `EnginePlay.tsx`：入力（タップ・長押し・1本指でなぞる・キー。2本指・マイク・カメラ・傾きは使わない）と時計（`clock.onFrame`・`clock.after`・入力の時刻は `clock.at(event.timeStamp)`）と下の操作（親指の届く所、44px 以上、主な操作は 64px 程度で `data-minigame-primary`）。皮の絵を受け取る所を型にする。なぞる場は `touch-action: none` と `overscroll-behavior: contain`、座標は `host/seed.ts` の `fieldPoint`。上の帯・結果・中断・一時停止は描かない（枠が描く）。結果は規則で決めて `end(outcome)`。
+- [ ] `EnginePlay.tsx`：入力（タップ・長押し・1本指でなぞる・キー。2本指・マイク・カメラ・傾きは使わない）と時計（`clock.onFrame`・`clock.after`・入力の時刻は `clock.at(event.timeStamp)`）と下の操作（親指の届く所、44px 以上、主な操作は 64px 程度で `data-minigame-primary`）。皮の絵を受け取る所を型にする。なぞる場は `touch-action: none` と `overscroll-behavior: contain`、座標は `host/seed.ts` の `fieldPoint`。上の帯・結果・中断・一時停止は描かない（枠が描く）。結果は規則で決めて `end(outcome)`。 押しで結果が決まってから `end` までの間がある（場が結果を見せる）なら、決まった瞬間に `decided()` を呼ぶ（本番の中断を止める）。
 - [ ] `engine.css`：根の class は `mg-engine-<engine-id>`（本番ビルドの検査の目印）。
 - [ ] 枠に足りない物があれば（新しい入力の種類の補助など）、自分で枠を直さず、まとめ役に頼む（7.3）。
 
