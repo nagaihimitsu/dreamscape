@@ -4,6 +4,8 @@
 /* The lamp's place, registered so that it glides (a tap, a Tab, おまかせ) instead of jumping. */
 @property --mehndi-lamp-x { syntax: "<percentage>"; inherits: true; initial-value: 50%; }
 @property --mehndi-lamp-y { syntax: "<percentage>"; inherits: true; initial-value: 14%; }
+/* The pool's full radius (Skin.tsx sets it from the tuning's lampPct), registered so the find can open it over the palm. */
+@property --mehndi-lamp-r { syntax: "<length>"; inherits: true; initial-value: 0px; }
 .mg-mehndi-hidden-name {
   position: absolute;
   inset: 0;
@@ -32,8 +34,8 @@
 /* The lamp's pool: the same hand, lit, with the fine lines and the writing, full in the middle, fading out to its edge
    (light, not a hole cut in the dark). */
 .mg-mehndi-hidden-name-lit {
-  --mehndi-pool: radial-gradient(circle at var(--mehndi-lamp-x) var(--mehndi-lamp-y), #000 0 calc(13cqw * var(--mehndi-lamp-k)),
-    rgba(0, 0, 0, 0.55) calc(17cqw * var(--mehndi-lamp-k)), transparent calc(22cqw * var(--mehndi-lamp-k)));
+  --mehndi-pool: radial-gradient(circle at var(--mehndi-lamp-x) var(--mehndi-lamp-y), #000 0 calc(var(--mehndi-lamp-r) * var(--mehndi-lamp-k)),
+    rgba(0, 0, 0, 0.55) calc(var(--mehndi-lamp-r) * 1.35 * var(--mehndi-lamp-k)), transparent calc(var(--mehndi-lamp-r) * 1.75 * var(--mehndi-lamp-k)));
   -webkit-mask-image: var(--mehndi-pool);
   mask-image: var(--mehndi-pool);
 }
@@ -41,7 +43,7 @@
   position: absolute;
   left: var(--mehndi-lamp-x);
   top: var(--mehndi-lamp-y);
-  width: 46cqw;
+  width: calc(var(--mehndi-lamp-r) * 3.6);
   aspect-ratio: 1;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255, 214, 140, 0.2), rgba(255, 200, 120, 0.08) 58%, transparent 70%);
@@ -52,8 +54,8 @@
 /* The lamp itself, held a little above and to the right of what it lights. */
 .mg-mehndi-hidden-name-lamp {
   position: absolute;
-  left: calc(var(--mehndi-lamp-x) + 13cqw);
-  top: calc(var(--mehndi-lamp-y) - 15cqw);
+  left: calc(var(--mehndi-lamp-x) + var(--mehndi-lamp-r) + 5cqw);
+  top: calc(var(--mehndi-lamp-y) - var(--mehndi-lamp-r) - 7cqw);
   width: max(22px, 8cqw);
   filter: drop-shadow(0 0 6px rgba(255, 200, 120, 0.6));
   pointer-events: none;
@@ -101,7 +103,25 @@
 }
 @keyframes mg-mehndi-hidden-name-ring { from { opacity: 0; transform: translate(-50%, -50%) scale(1.4); } }
 .mg-mehndi-hidden-name-mark-ring[data-writing] { border: 2px solid #f0c860; box-shadow: 0 0 12px rgba(240, 200, 96, 0.7); }
-.mg-mehndi-hidden-name[data-ending="found"] .mg-mehndi-hidden-name-writing { filter: drop-shadow(0 0 2px rgba(255, 224, 160, 0.95)); }
+/* The real writing catches the light now and then (the tell; the curls that look like writing never do). */
+.mg-mehndi-hidden-name-writing { animation: mg-mehndi-hidden-name-glint var(--mehndi-glint-every, 1600ms) ease-in-out infinite; }
+@keyframes mg-mehndi-hidden-name-glint {
+  0%, 68%, 100% { filter: none; }
+  82% { filter: drop-shadow(0 0 1.6px rgba(255, 236, 190, 0.95)) brightness(1.4); }
+}
+/* Found: the pool opens over the whole palm and the writing glows (twice, then stays lit). */
+.mg-mehndi-hidden-name[data-ending="found"] .mg-mehndi-hidden-name-palm { --mehndi-lamp-r: 90cqw !important; transition: --mehndi-lamp-r 700ms ease-out; }
+.mg-mehndi-hidden-name[data-ending="found"] .mg-mehndi-hidden-name-writing {
+  filter: drop-shadow(0 0 2px rgba(255, 224, 160, 0.95));
+  animation: mg-mehndi-hidden-name-found 520ms ease-out 2;
+}
+@keyframes mg-mehndi-hidden-name-found { 50% { filter: drop-shadow(0 0 4px rgba(255, 236, 190, 1)) brightness(1.5); } }
+/* The lamp near the writing: her hand twitches as her fingers curl in a little (each time it comes near). */
+.mg-mehndi-hidden-name-palm[data-near] :is(.mg-mehndi-hidden-name-dark, .mg-mehndi-hidden-name-lit) {
+  transform-origin: 50% 100%;
+  animation: mg-mehndi-hidden-name-twitch 420ms ease-out both;
+}
+@keyframes mg-mehndi-hidden-name-twitch { 30% { transform: rotate(0.8deg) scaleY(0.985); } 65% { transform: rotate(-0.4deg) scaleY(0.992); } }
 /* Her hint of the area (from the third wrong place): a dotted ring round the writing's area (about 70px across at 390
    wide), for as long as her word; the lamp stays where the player pointed. */
 .mg-mehndi-hidden-name-hint-ring {

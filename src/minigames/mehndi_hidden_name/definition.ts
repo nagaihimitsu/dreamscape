@@ -4,10 +4,14 @@ import { defineMiniGame } from "../contract";
 /**
  * `mehndi_hidden_name` (a skin of `search`): the Jaipur hotel's night, her palm with the mehndi drawn at Jal Mahal. The
  * night is dim; a small lamp brings out the fine lines where it is held. Somewhere in the pattern there is writing that
- * pretends to be pattern (the tag's `target`: the thumb's base, the peacock feather's base, the central vine). The player
- * drags the lamp over her palm and taps where the writing is (`found`). A place where there is none gets her word ("only a
- * petal") and the look goes on; finding the writing after one is `wrong_spot` (the story remembers it). From the third
- * wrong place she only hints the area (a dotted ring, 「このへん、かな」): the find is always the player's (2026-11-14).
+ * pretends to be pattern (the tag's `target`: the thumb's base, the peacock feather's base, the central vine). Round 3
+ * (2026-11-14) made the look a hunt: the lamp's pool is small; at each other place the fine lines curl into something that
+ * looks like writing at a glance (loops and dots, never letters); the real writing glints now and then; her hand is the
+ * hot and cold (her fingers curl in with the lamp near the writing, once with 「ふふ……どうかな」, or, where she does not know
+ * what is there, 「ん？　そこ、何か……」; the lamp held long elsewhere, 「そこ、じっと見すぎ」). The player drags the lamp over
+ * her palm and taps where the writing is (`found`). A place where there is none gets her word ("only a petal") and the look
+ * goes on; finding the writing after one is `wrong_spot` (the story remembers it). From the third wrong place she only
+ * hints the area (a dotted ring, 「このへん、かな」): the find is always the player's (2026-11-14).
  * Or the player presses 「明日にする」 (`later`). No time limit (2026-11-13): only those end the look, so the game does not
  * run on time (`timed: false`: a hidden page needs no 「続ける」; no `durationSec` on its card). The scene's own music goes
  * on (`music: "scene"`: the hotel night's waltz, a quiet romance scene). An attitude, not a
@@ -28,7 +32,7 @@ export const mehndiHiddenName = defineMiniGame({
   id: "mehndi_hidden_name",
   engine: "search",
   titleJa: "手のひらの模様",
-  howToJa: "暗い中で灯りを動かし、手のひらの模様にまぎれた文字を探して押す。違う所を指すと彼女が答え、3回目からはだいたいの場所を教えてくれる（見つけるのは自分）。「明日にする」でやめる（時間の制限は無い）",
+  howToJa: "暗い中で小さな灯りを動かし、手のひらの模様にまぎれた文字を探して押す。文字に見える渦巻きもある（本物は時々光る。灯りが近いと彼女の指が動く）。違う所を指すと彼女が答え、3回目からはだいたいの場所を教えてくれる（見つけるのは自分）。「明日にする」でやめる（時間の制限は無い）",
   // An attitude more than a skill: no finish word, flash or sound, no ★, no practice (a practice would show the place). Her
   // face on the result card only: the story goes on with her own words about what was written.
   outcomes: [

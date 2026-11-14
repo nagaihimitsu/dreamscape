@@ -66,6 +66,19 @@ describe("the search engine", () => {
     expect(searchProgress([{ button: "ask" }, { button: "ask" }, { button: "ask" }], twice)).toMatchObject({ round: 1, presses: { ask: 1 } });
   });
 
+  it("helps a round with its own time through when that runs out (its thing gone), and only such a round", () => {
+    const walkOff: SearchSetup = { ...rounds, rounds: [rounds.rounds[0], rounds.rounds[1], { ...rounds.rounds[2], limitMs: 6000 }] };
+    expect(searchFairness(walkOff)).toEqual([]);
+    expect(searchActionEnding([{ spot: 3 }, { spot: 0 }, { gone: true }], walkOff)).toEqual({ kind: "helped", misses: 0, helped: 1 });
+    // A round without its own time: a walk-off does nothing (the round waits for the player).
+    expect(searchProgress([{ gone: true }], walkOff)).toMatchObject({ round: 0, helped: 0, ending: null });
+    expect(searchActionEnding([{ gone: true }, { spot: 3 }, { spot: 0 }, { spot: 2 }], walkOff)).toEqual({ kind: "found", spot: 2, misses: 0, helped: 0 });
+    // Not left to her (left: doing nothing in a round with nothing searched), and not a first action.
+    expect(searchProgress([{ spot: 3 }, { spot: 0 }, { gone: true }], walkOff)).toMatchObject({ left: false });
+    expect(searchFairness({ ...walkOff, rounds: [{ spots: 5, targets: [3], limitMs: 2000 }] }).join()).toContain("limitMs 2000");
+    expect(() => searchSetupSchema.parse({ ...walkOff, rounds: [{ spots: 5, targets: [3], limitMs: 0 }] })).toThrow();
+  });
+
   it("shortens the idle limit after a round left to doing nothing, where the setup says so", () => {
     const shorter: SearchSetup = { ...rounds, idleAfterLeftMs: 4000 };
     expect(searchIdleMs(searchProgress([], shorter), shorter)).toBe(8000);

@@ -2,8 +2,9 @@ import { describe, expect, it } from "vitest";
 import { searchFairness, type SearchRecord } from "../engines/search/engine";
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { nahargarhHideSeek } from "./definition";
-import { HIDE_SEEK_DOORS, HIDE_SEEK_HINT_MS, HIDE_SEEK_IDLE_MS, hideSeekRules, hideSeekSetup } from "./rules";
+import { HIDE_SEEK_DOORS, HIDE_SEEK_HINT_MS, HIDE_SEEK_IDLE_MS, HIDE_SEEK_TUNING, hideSeekFairness, hideSeekPeek, hideSeekRules, hideSeekSetup } from "./rules";
 import { searchProgress } from "../engines/search/engine";
+import { fairness } from "./play";
 
 const record = (actions: SearchRecord["actions"], lapse: SearchRecord["lapse"] = null): SearchRecord => ({ actions, lapse });
 
@@ -53,6 +54,28 @@ describe("the hide-and-seek's rules", () => {
     expect(hideSeekRules.autoRecord("door_by_door", params)).toEqual(record(doors(1, 2, 3, 4, 5, 6, 7)));
     expect(hideSeekRules.autoRecord("door_quick", params)).toEqual(record(doors(7)));
     expect(hideSeekRules.autoRecord("door_by_door", { hide: 1 }).actions).toHaveLength(3);
+  });
+
+  it("has her peek out now and then (looks only): first before a waiting player's end, the door ajar a while after", () => {
+    const t = HIDE_SEEK_TUNING;
+    expect(hideSeekPeek(0)).toBeNull();
+    expect(hideSeekPeek(t.peekFirstMs)).toBe("peek");
+    expect(hideSeekPeek(t.peekFirstMs + t.peekMs)).toBe("ajar");
+    expect(hideSeekPeek(t.peekFirstMs + t.peekMs + t.ajarMs)).toBeNull();
+    expect(hideSeekPeek(t.peekFirstMs + t.peekEveryMs + 1)).toBe("peek");
+    // A waiting player sees her peek, then hears her 「まだかな」, before she comes out of the corner.
+    expect(t.peekFirstMs + t.peekMs + t.ajarMs).toBeLessThanOrEqual(t.askMs);
+    expect(t.askMs).toBeLessThan(t.idleMs);
+    // The outcome never reads them: the same record, the same outcome, whatever the time.
+    expect(hideSeekRules.outcomeOf(record([{ spot: 1 }, { spot: 6 }]), params)).toBe("door_quick");
+  });
+
+  it("calls a tuning unfair where she never peeks for a waiting player or her door never shuts", () => {
+    expect(hideSeekFairness(HIDE_SEEK_TUNING)).toEqual([]);
+    expect(fairness(HIDE_SEEK_TUNING)).toEqual([]);
+    expect(hideSeekFairness({ ...HIDE_SEEK_TUNING, peekFirstMs: 9500 }).join()).toContain("peekFirstMs");
+    expect(hideSeekFairness({ ...HIDE_SEEK_TUNING, ajarMs: 6000 }).join()).toContain("never shut");
+    expect(fairness({ ...HIDE_SEEK_TUNING, idleMs: 3000 }).join()).toContain("idleMs 3000");
   });
 
   it("is a fair search: twelve doors, her door the tag's (the 7th by default), time to look before waiting ends it", () => {
