@@ -27,9 +27,11 @@ INCLUDE modules.ink
 # voice: gt_agra_arrival_001
 は、ハネムーン！？　ち、違います、わたしたち、新婚じゃ……！
 # speaker: gt_samir
-皆さん、最初はそうおっしゃいます
+皆さん、最初はそうおっしゃいます。お若いお二人で、お部屋は隣同士。照れていらっしゃるだけです
 # speaker: narrator
-三回説明して、三回とも笑顔で流された。去り際にサミールが置いていった名刺には、こう添えてあった。「叔父はアーグラ一のガイドです。愛の物語なら、叔父に」
+三回説明して、三回とも笑顔で流された。
+# speaker: narrator
+去り際にサミールが置いていった名刺には、こう添えてあった。「叔父アンワルは、アーグラ一のガイドです。愛の物語なら、叔父に」
 { ending_reached:
     # speaker: heroine
     # reaction: heroine,shy_deep,blush
@@ -42,7 +44,7 @@ INCLUDE modules.ink
     どうしよう。白鳥、すごく仲良さそう。……見ないで、白鳥
 }
 # speaker: narrator
-彼女は花びらを集め、捨てようとして手を止めた。洗面所のグラスに水を張り、そこへ浮かべる。
+彼女は花びらを集め、捨てようとして手を止めた。洗面所のグラスに水を張って浮かべ、窓辺に置く。
 # speaker: heroine
 # voice: gt_agra_arrival_004
 用意してくれた人がいるんだもんね
@@ -67,7 +69,7 @@ INCLUDE modules.ink
 # on_done: use gt_agra_anwar_petha
 # background: gt_bg_agra_hotel_hub
 # speaker: narrator
-宿に戻ると、ロビーの長椅子で、アンワルが甥とチャイを飲んでいた。銀の杖が、壁に立てかけてある。
+宿に戻ると、ロビーの長椅子で、アンワルが甥のサミールとチャイを飲んでいた。銀の杖が、壁に立てかけてある。
 # speaker: enemy
 おお、本当の話のお嬢さん。今日の客の一人がね、明日もう一度タージへ行くそうだ。壁の書家の名前を、自分の目で探しに
 # speaker: heroine
@@ -80,11 +82,15 @@ INCLUDE modules.ink
 彼はチャイを飲み干し、甥の肩を叩いて立ち上がった。
 # speaker: enemy
 部屋のことは、片付けさせておいたよ
+# speaker: gt_samir
+叔父から、電話で聞きました。新婚では、なかったんですね。……失礼いたしました
+# speaker: narrator
+サミールは帳面を開き、一行に、ていねいに線を引いた。それから、その横に、また何か書き足した。
 # background: gt_bg_agra_hotel_room
-# leave: gt_anwar
+# leave: gt_samir
 # speaker: narrator
 # recall: gt_album_a01
-二つの部屋の扉を開けると、どちらも、花びらの道も白鳥も消えていた。寝台は、ただの白い寝台に戻っている。
+二つの部屋の扉を開けると、白鳥が消え、寝台はただの白い寝台に戻っていた。こちらの部屋の花びらの道も、もうない。
 {
 - ending_reached:
     # speaker: heroine
@@ -121,7 +127,9 @@ INCLUDE modules.ink
 # voice: gt_agra_epilogue_007
 でも今日、自分の言葉で言えた。カムラさんに、報告できる
 # speaker: narrator
-彼女は鞄から、デリーでアマンにもらった案内を取り出した。ジャイプールの結婚式の日付を、指でなぞる。
+彼女は鞄から、折りたたんだ紙を取り出した。デリーの最後の夜、カムラの孫のアマンがくれた、彼の結婚式の案内だ。
+# speaker: narrator
+行くかどうかは自分で決めたい、とあの夜は返事を待ってもらった。ジャイプールの式の日付を、指でなぞる。
 # speaker: heroine
 # voice: gt_agra_epilogue_008
 ジャイプールの結婚式、行きたい。誘われたからじゃなくて、わたしが行きたいの。……一緒に、来てくれる？

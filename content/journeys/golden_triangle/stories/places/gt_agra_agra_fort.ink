@@ -63,8 +63,10 @@ INCLUDE modules.ink
 # speaker: gt_riya
 # cutin: name
 大佐、バスが出ます。ジャイプールまで五時間なんです
+# speaker: narrator
+バス、と聞いたとたん、老人は駐車場の方から顔をそむけた。
 # speaker: gt_agra_fort_old_man
-シャー・ジャハーンは、この塔に八年座っていた。わしは八十分でいい。これは座り込みだ。平和的な抗議である
+タージを建てたシャー・ジャハーンは、この塔に八年座っていた。わしは八十分でいい。これは座り込みだ。平和的な抗議である
 # speaker: narrator
 老人の視線が、近くにいた{heroine_name}たちを捉えた。背筋がさらに伸びる。
 # speaker: gt_agra_fort_old_man
