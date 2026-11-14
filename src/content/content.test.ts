@@ -84,7 +84,7 @@ describe("content build acceptance", () => {
       .toFile(path.join(fixture, "content/journeys/milano/public", photo));
     const record = { id: "milano_content_test_photo", path: photo, width: 2000, height: 1000, altJa: "試験用の写真。", isPlaceholder: false,
       sourceUrl: "https://commons.wikimedia.org/wiki/File:Content_test.jpg", licenseName: "CC BY-SA 4.0",
-      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0", creditJa: "写真：試験", modificationJa: "試験用の写真。", checkedAt: "2026-11-08" };
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0", creditJa: "写真：試験", modificationJa: "試験用の写真。変換版もCC BY-SA 4.0で提供。", checkedAt: "2026-11-08" };
     const catalogFile = path.join(fixture, "content/journeys/milano/tourism/catalog.json");
     const catalog = JSON.parse(await readFile(catalogFile, "utf8"));
     const warningsAbout = async (assets: unknown[], id = record.id) => {
