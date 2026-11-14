@@ -32,7 +32,11 @@ INCLUDE modules.ink
 青年が、二人に気づいた。正確には、彼女に。
 # speaker: gt_kunal
 # cutin: name
-クナールです。こっちはジャスミート。怖い動画を撮って、ネットに載せてるんです。お願いがあります。一人で底まで下りていく外国の旅行者、の役。最後に悲鳴を一つ。三十秒で終わります
+クナールです。こっちはジャスミート。怖い動画を撮って、ネットに載せてるんです。叫ぶ役は、いつも彼女
+# speaker: gt_kunal
+お願いがあります。一人で底まで下りていく外国の旅行者、の役。最後に悲鳴を一つ。三十秒で終わります
+# speaker: narrator
+隣で、ジャスミートが白いドゥパッターの端を握りしめた。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 # voice: gt_delhi_date_agrasen_baoli_002
@@ -58,6 +62,8 @@ INCLUDE modules.ink
     }
     # speaker: gt_kunal
     カット。……幽霊は、靴を履き替えてください
+    # speaker: narrator
+    幽霊の案は、そこで没になった。撮り直しは最初の筋書きどおり、彼女が一人で底まで下りる。
 * [「一緒に下まで降りよう」 # option: go_down_together]
     # profile: attentive
     # memory: gt_delhi_date_agrasen_baoli_memory
@@ -181,10 +187,10 @@ INCLUDE modules.ink
     -> gt_delhi_agrasen_baoli_pigeon_flap ->
 - else:
     # speaker: narrator
-    彼女がくぼみに隠れた。ドゥパッターを両手で広げて、羽ばたく準備をしている。たぶん、鳩のつもりだ。
+    彼女はジャスミートのドゥパッターを借りて、くぼみに隠れた。両手で広げて、羽ばたく準備をしている。たぶん、鳩のつもりだ。
     # speaker: narrator
     # se: cloth_flap
-    ジャスミートが階段を下りてくる。三、二、一。白い布が、ばさりと広がった。
+    ジャスミートが階段を途中まで上り直し、もう一度下りてくる。三、二、一。白い布が、ばさりと広がった。
 }
 # speaker: gt_jasmeet
 きゃあああっ！
@@ -228,7 +234,9 @@ INCLUDE modules.ink
 // どの結果も、戻った先のジャスミートの本物の悲鳴へつながる（後の動画の話：布を広げて飛び出す鳩の役）。
 === gt_delhi_agrasen_baoli_pigeon_flap ===
 # speaker: narrator
-鳩の役は、こちらだった。くぼみに隠れ、ドゥパッターを両手に持って、羽ばたく準備をする。
+鳩の役は、こちらだった。ジャスミートのドゥパッターを借りてくぼみに隠れ、両手に持って、羽ばたく準備をする。
+# speaker: narrator
+ジャスミートが、階段を途中まで上り直した。
 # speaker: narrator
 # minigame: cloth_flap auto perfect art.wall gt_img_delhi_agrasen_baoli_wall
 上から、ジャスミートの足音が下りてくる。一段、また一段。くぼみの前の段まで、あと少し。

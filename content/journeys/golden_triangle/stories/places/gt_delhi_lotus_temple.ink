@@ -13,6 +13,8 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_lotus_temple
 # speaker: narrator
 芝生の向こうに、白い花びらを重ねた建物が浮かんでいた。大理石の花びらは二十七枚。三枚ずつ組になって、九つの面をつくっている。
+# speaker: narrator
+ロータス寺院。蓮の花をかたどった、バハイ信仰の礼拝堂だ。
 入口の手前で、ボランティアの若者が、並んだ人たちに静かに説明していた。どの宗教の人でも入れる。決まった儀式も、説教も、楽器の演奏もない。いちばん大事な決まりは一つ。話さないこと。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat

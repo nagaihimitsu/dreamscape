@@ -117,6 +117,8 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_lodhi_garden_011
 ハ、ハ……はい。ハ
 # speaker: narrator
+フマユーン廟で、全員で口裏を合わせた、あの一言だった。
+# speaker: narrator
 # se: camera_shutter
 会の最後に、ドゥベイが集合写真を撮った。新入りにも送るからと、二人の番号を聞いていく。スレーシュは写真の端で、新聞で顔を隠していた。
 それから、観念したように、女性を連れてやってきた。
@@ -170,7 +172,7 @@ INCLUDE modules.ink
         # speaker: gt_suresh
         わしが？　自分から？　……それは、自主申告というやつだな
         # speaker: gt_meena
-        いい考えね。わたしは、隠れるのは四十年で十分
+        いい考えね。四十年ぶりに会えたのに、隠れてばかりなのは、もう十分
     }
     # speaker: narrator
     スレーシュは携帯を取り出し、さっきの集合写真を開いたまま、しばらく固まっていた。送ったかどうかは、分からない。

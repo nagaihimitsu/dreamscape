@@ -81,6 +81,8 @@ INCLUDE modules.ink
 # speaker: narrator
 生地を丸めながら、ハルバンスは街道の話をした。どの町の茶屋のチャイが一番濃いか。夜中の検問で、どうやって眠気をこらえたか。川が溢れて、三日動けなかった夏のこと。
 # speaker: gt_harbans
+米も、セメントも、祭りの花も運んだ。荷台が空のまま走った日は、ほとんどない
+# speaker: gt_harbans
 息子はカナダだ。向こうでトラックの会社をやっている。三台持っているそうだ。こっちへ来い、来い、と毎週電話してくる
 # speaker: gt_harbans
 寒い国は嫌だ。道が白い。白い道は、走ったことがない
@@ -152,9 +154,13 @@ INCLUDE modules.ink
 # voice: gt_delhi_date_bangla_sahib_016
 わたしの地図だ！　焼けると、ちゃんとおいしそうに見える
 # speaker: narrator
+ほかに丸めた何枚もは、籠に混ざったまま、知らない人たちの皿へ配られていった。
+# speaker: narrator
 豆の煮込みを桶から注いで回る人が、彼女の皿の前で止まった。ここでは、残さずに食べるのが決まりだ。皿は床に置いたまま、持ち上げない。
 {
 - cond("flag gt_delhi_said_bas"):
+    # speaker: narrator
+    チャンドニー・チョークの屋台で、彼女は「もう十分」の一言を覚えていた。
     # speaker: heroine
     # emotion: smile
     # voice: gt_delhi_date_bangla_sahib_017
@@ -166,6 +172,8 @@ INCLUDE modules.ink
     # voice: gt_delhi_date_bangla_sahib_018
     ね。もう、ちゃんと言えるんだから
 - cond("flag gt_delhi_bas_for_her"):
+    # speaker: narrator
+    チャンドニー・チョークの屋台では、「もう十分」の一言を、こちらが代わりに言った。
     # speaker: heroine
     # size: large
     # voice: gt_delhi_date_bangla_sahib_019
@@ -181,7 +189,9 @@ INCLUDE modules.ink
     残しちゃいけないんだよね。うん。食べる。食べるけど……断り方、誰か教えて
 }
 # speaker: narrator
-外に出ると、大きな池が、金色の丸屋根を逆さに映していた。この池の水には、病を癒やす力があると信じられている。昔、ここに滞在した八代目のグルが、天然痘やコレラに苦しむ人たちを、井戸の水で助けたという話が伝わっている。
+外に出ると、大きな池が、金色の丸屋根を逆さに映していた。この池の水には、病を癒やす力があると信じられている。
+# speaker: narrator
+昔、ここに滞在したシク教の師、八代目のグルが、天然痘やコレラに苦しむ人たちを、井戸の水で助けたという話が伝わっている。
 二人は池をめぐる白い回廊に腰を下ろした。大理石が、素足にひんやりする。
 # speaker: heroine
 # voice: gt_delhi_date_bangla_sahib_021
