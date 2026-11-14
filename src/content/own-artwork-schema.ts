@@ -30,10 +30,10 @@ export const ownArtworkGroupSchema = z
   .object({
     /** What these files are and who made them (for the people editing the list; never shown in the game). */
     noteJa: japaneseText,
+    /** The served paths (a path listed twice, in one group or in two, is content:build's Japanese error: scripts/image-rights.ts). */
     paths: z
       .array(z.string().regex(OWN_ARTWORK_PATH, "Expected a served image path such as assets/effects/heart.svg"))
-      .min(1)
-      .refine((paths) => new Set(paths).size === paths.length, "Duplicate own artwork path"),
+      .min(1),
   })
   .strict();
 

@@ -45,7 +45,7 @@ it("lists as own artwork only the images the fixture serves, and lets a test reg
   // A journey's own images (India's characters and backdrops) are linked, so its whole list stays.
   for (const layer of ["milano", "golden_triangle"])
     expect([...listed.get(layer)!.keys()], layer).toEqual([...repository.get(layer)!.keys()]);
-  const tourismAssets = (tourismData.assets as { path: string }[]);
+  const tourismAssets = tourismData.assets;
   expect(() => checkImageRights(sources, tourismAssets)).not.toThrow();
   // An added image is refused until the test registers it, in its layer's list (created when the layer has none:
   // Uzbekistan, whose served images are all tourism photos).
