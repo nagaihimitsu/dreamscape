@@ -136,7 +136,8 @@ export function usePresentationSettings(storage: StorageLike = window.localStora
   });
   const raw = useRef(initial.raw);
   // Unknown or unreadable settings must not silently enable automatic writes.
-  const [value, setValue] = useState(initial.value ?? { ...defaults, autoSave: false });
+  // Nor speech: the automatic reading (on by default) is off until they can be read, its switch being locked meanwhile.
+  const [value, setValue] = useState(initial.value ?? { ...defaults, autoSave: false, autoReadAloud: false });
   const [error, setError] = useState(
     initial.error ||
       (initial.value

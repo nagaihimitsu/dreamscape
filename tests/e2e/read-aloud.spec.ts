@@ -3,8 +3,9 @@ import { devModules, expect, ops, playUntil, presentationKey, savedGame, test, t
 // 「問題が出たら英語を自動で読み上げる」 (2026-11-14 user decision; ReadAloud.tsx useAutoReadAloud): on by default, a
 // quiz's question is read aloud once as it shows, with no press, and its reading stops at the answer; turned off in
 // ゲームの設定, nothing is read. The first tap primes the page's speech (an empty, silent utterance: iOS Safari speaks with
-// no gesture only after one). The browser's speech here is a fake put in before the page's code: it records what the page
-// speaks, keeps a reading going until it is cancelled (Chromium ends a cut one with "error") and ends an empty one at once.
+// no gesture only after one); a question shown before any tap (a reload on it) is not read. The browser's speech here is a
+// fake put in before the page's code: it records what the page speaks, starts a reading at once ("start") and keeps it
+// going until it is cancelled (Chromium ends a cut one with "error"), and ends an empty one at once.
 // State shortcut (lane 2 in docs/10), as in short-screen.spec.ts: the page's own scene builders open the default Debug
 // city's first ordinary battle on a cleared city and the game's saveGame stores it as a normal save; the quiz is played
 // in the UI.
@@ -32,7 +33,7 @@ function fakeSpeech() {
     speak(utterance: SpeechSynthesisUtterance) {
       spoken.push({ text: utterance.text, volume: utterance.volume, lang: utterance.lang });
       live.push(utterance);
-      if (!utterance.text) setTimeout(() => end(utterance, "end"), 0);
+      setTimeout(() => (utterance.text ? utterance.dispatchEvent(new Event("start")) : end(utterance, "end")), 0);
     },
     cancel() {
       record.cancels++;
@@ -46,7 +47,7 @@ function fakeSpeech() {
 
 const said = (text: string) => text.replace(/\s+/gu, " ").trim();
 
-test("a quiz's question is read aloud as it shows, stops at the answer, and not with the setting off", { tag: tier.debug }, async ({ page }) => {
+test("a quiz's question is read aloud as it shows, stops at the answer, waits for a tap after a reload, and not with the setting off", { tag: tier.debug }, async ({ page }) => {
   await page.addInitScript(fakeSpeech);
   await page.goto("/");
   const placed = await page.evaluate(async ({ modules }) => {
@@ -68,8 +69,8 @@ test("a quiz's question is read aloud as it shows, stops at the answer, and not 
     };
   }, { modules: devModules });
   expect(placed.saved, "the battle placed as a normal save").toEqual({ ok: true });
-  expect(placed.questions.length, "the battle has two questions or more").toBeGreaterThanOrEqual(2);
-  const [first, second] = placed.questions;
+  expect(placed.questions.length, "the battle has three questions or more").toBeGreaterThanOrEqual(3);
+  const [first, second, third] = placed.questions;
   const spoken = () => page.evaluate(() => (window as unknown as { __speech: { spoken: Spoken[] } }).__speech.spoken);
   const cancels = () => page.evaluate(() => (window as unknown as { __speech: { cancels: number } }).__speech.cancels);
 
@@ -97,6 +98,21 @@ test("a quiz's question is read aloud as it shows, stops at the answer, and not 
   await expect.poll(cancels, { message: "the answer stopped the reading" }).toBeGreaterThan(before);
   await expect.poll(async () => (await source(page))!.activeBattle?.phase).toBe("feedback");
 
+  // The next question is read as it shows (the page stays primed).
+  await playUntil(page, (state) => state.activeBattle?.phase === "question" && state.activeBattle.roundIndex === 1, { source });
+  await expect.poll(async () => (await spoken()).map((item) => item.text), { message: "the second question read" }).toContain(said(second.en));
+
+  // Reloaded on that question, before any tap: not read (iOS would stay silent there). A key primes the speech, and the
+  // question shown before it is not read late.
+  await page.reload();
+  await expect(page.getByTestId("battle-question")).toBeVisible();
+  await page.waitForTimeout(1_000);
+  expect(await spoken(), "nothing read before a tap").toEqual([]);
+  await page.keyboard.press("Shift");
+  await expect.poll(spoken, { message: "the key primed the speech" }).toEqual([{ text: "", volume: 0, lang: "" }]);
+  await page.waitForTimeout(1_000);
+  expect((await spoken()).filter((item) => item.text), "the question shown before the tap is not read late").toEqual([]);
+
   // Turned off in ゲームの設定 (and kept as this device's preference), the next question is not read.
   const settings = await ops.openSettings(page);
   const auto = settings.getByRole("checkbox", { name: "問題が出たら英語を自動で読み上げる" });
@@ -104,7 +120,7 @@ test("a quiz's question is read aloud as it shows, stops at the answer, and not 
   await auto.uncheck();
   await ops.closeDialog(settings);
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!).autoReadAloud, presentationKey)).toBe(false);
-  await playUntil(page, (state) => state.activeBattle?.phase === "question" && state.activeBattle.roundIndex === 1, { source });
+  await playUntil(page, (state) => state.activeBattle?.phase === "question" && state.activeBattle.roundIndex === 2, { source });
   await page.waitForTimeout(1_000);
-  expect((await spoken()).map((item) => item.text), "the second question not read with the setting off").not.toContain(said(second.en));
+  expect((await spoken()).map((item) => item.text), "the third question not read with the setting off").not.toContain(said(third.en));
 });

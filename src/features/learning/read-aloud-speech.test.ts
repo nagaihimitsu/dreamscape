@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { createSpeechAudio } from "../../audio/speech-audio";
-import { createSpeechReader, type SpeechScope, type UtteranceLike } from "./read-aloud-speech";
+import { createSpeechReader, UNPROMPTED_START_MS, type SpeechScope, type UtteranceLike } from "./read-aloud-speech";
 
 // The read-aloud buttons' speech and the page's sound (2026-11-13 user decision), with a fake speechSynthesis and a fake
 // AudioContext: while English is read the music is lowered as for a voice and a voice stops; when the reading ends, is
@@ -12,10 +12,10 @@ class FakeUtterance implements UtteranceLike {
   volume = 1;
   private readonly listeners = new Map<string, (() => void)[]>();
   constructor(readonly text: string) {}
-  addEventListener(type: "end" | "error", listener: () => void) {
+  addEventListener(type: "start" | "end" | "error", listener: () => void) {
     this.listeners.set(type, [...(this.listeners.get(type) ?? []), listener]);
   }
-  fire(type: "end" | "error") {
+  fire(type: "start" | "end" | "error") {
     for (const listener of this.listeners.get(type) ?? []) listener();
   }
 }
@@ -202,5 +202,65 @@ describe("priming the speech for the automatic reading", () => {
     reader.prime();
     expect(reader.primed()).toBe(true);
     expect(reader.key()).toBeNull();
+  });
+});
+
+// The automatic reading starts with no gesture. iOS ignores a speak() it does not allow, without an event, so one that has
+// not started in time is given up: the sound comes back and the page waits to be primed by a tap again.
+describe("an automatic (unprompted) reading", () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("does not prime the page itself, as a press's reading does", () => {
+    const { reader } = fakePage();
+    reader.start("a|question", "Hello", { unprompted: true });
+    expect(reader.primed()).toBe(false);
+    reader.start("a|A", "Goodbye");
+    expect(reader.primed()).toBe(true);
+  });
+
+  it("is given up when it has not started in time: the sound comes back and the page is no longer primed", () => {
+    vi.useFakeTimers();
+    const { reader, synth, page } = fakePage();
+    reader.prime();
+    reader.start("a|question", "Hello", { unprompted: true });
+    const cancels = synth.cancels;
+    expect(reader.key()).toBe("a|question");
+    vi.advanceTimersByTime(UNPROMPTED_START_MS - 1);
+    expect(reader.key()).toBe("a|question");
+    vi.advanceTimersByTime(1);
+    expect(reader.key()).toBeNull();
+    expect(reader.primed()).toBe(false);
+    expect(synth.cancels).toBe(cancels + 1);
+    expect(page.ducks.at(-1)).toBe(false);
+  });
+
+  it("goes on once it has started, and a press's reading has no such limit", () => {
+    vi.useFakeTimers();
+    const unprompted = fakePage();
+    unprompted.reader.prime();
+    unprompted.reader.start("a|question", "Hello", { unprompted: true });
+    unprompted.spoken.at(-1)!.fire("start");
+    vi.advanceTimersByTime(UNPROMPTED_START_MS * 2);
+    expect(unprompted.reader.key()).toBe("a|question");
+    expect(unprompted.reader.primed()).toBe(true);
+    const pressed = fakePage();
+    pressed.reader.start("a|question", "Hello");
+    vi.advanceTimersByTime(UNPROMPTED_START_MS * 2);
+    expect(pressed.reader.key()).toBe("a|question");
+  });
+
+  it("leaves alone a later reading when the one given up was already cut", () => {
+    vi.useFakeTimers();
+    const { reader, synth } = fakePage();
+    reader.prime();
+    reader.start("a|question", "Hello", { unprompted: true });
+    reader.start("a|A", "Goodbye");
+    const cancels = synth.cancels;
+    vi.advanceTimersByTime(UNPROMPTED_START_MS);
+    expect(reader.key()).toBe("a|A");
+    expect(reader.primed()).toBe(true);
+    expect(synth.cancels).toBe(cancels);
   });
 });

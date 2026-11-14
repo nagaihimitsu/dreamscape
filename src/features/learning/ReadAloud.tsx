@@ -57,9 +57,12 @@ export function useReadAloud(enabled: boolean, scope: string, auto = false) {
       if (speech.key() === owner + part) speech.stop();
       else speech.start(owner + part, text);
     },
-    /** Reads `text` as `part` (its button, when shown, says so), unless that part is being read already. */
-    read: (part: string, text: string) => {
-      if (speech.key() !== owner + part) speech.start(owner + part, text);
+    /**
+     * The automatic reading: reads `text` as `part` (its button, when shown, says so) with no gesture, unless anything is
+     * being read (a press's reading is not cut).
+     */
+    readUnprompted: (part: string, text: string) => {
+      if (speech.key() === null) speech.start(owner + part, text, { unprompted: true });
     },
     /** Stops what this screen's buttons or its automatic reading are reading. */
     stop: () => speech.stop(owner),
@@ -70,8 +73,9 @@ export type ReadAloud = ReturnType<typeof useReadAloud>;
 /**
  * 「問題が出たら英語を自動で読み上げる」 (2026-11-14 user decision): reads `text` as `part` once for each `key` (a question
  * shown in a run; null: nothing due), AUTO_READ_DELAY_MS after it shows, so that the card lands first. Not read when the
- * key goes before then (answered, the card gone), when the page is hidden, or before the page is primed (its first tap,
- * primeSpeechOnGesture; iOS Safari would stay silent). A key that went unread is not read later.
+ * key goes before then (answered, the card gone), when the page is hidden, while something is being read (a press's
+ * reading goes on), or before the page is primed (a tap, primeSpeechOnGesture; iOS Safari would stay silent). A key
+ * that went unread is not read later.
  */
 export function useAutoReadAloud(reader: ReadAloud, key: string | null, part: string, text: string) {
   const latest = useRef({ reader, part, text });
@@ -82,28 +86,27 @@ export function useAutoReadAloud(reader: ReadAloud, key: string | null, part: st
     const timer = window.setTimeout(() => {
       done.current = key;
       if (document.hidden || !speech.primed()) return;
-      latest.current.reader.read(latest.current.part, latest.current.text);
+      latest.current.reader.readUnprompted(latest.current.part, latest.current.text);
     }, AUTO_READ_DELAY_MS);
     return () => window.clearTimeout(timer);
   }, [key]);
 }
 
 /**
- * Primes the page's speech at its next tap or key (click, touchend or keydown, in their own handlers: iOS Safari's
- * gesture), once, for the automatic reading. Returns the way to stop waiting (the setting turned off).
+ * Primes the page's speech for the automatic reading at a tap or key (click, touchend or keydown, in their own handlers:
+ * iOS Safari's gesture) while it is not primed: at the first one, and again after an automatic reading the browser did
+ * not let start (iOS does not count a swipe's or a long press's touchend). Returns the way to stop listening (the
+ * setting turned off).
  */
 export function primeSpeechOnGesture(): () => void {
-  if (speech.primed()) return () => undefined;
   const events = ["click", "touchend", "keydown"] as const;
-  const stop = () => {
+  const onGesture = (event: Event) => {
+    if (event.isTrusted && !speech.primed()) speech.prime();
+  };
+  for (const type of events) document.addEventListener(type, onGesture, { capture: true, passive: true });
+  return () => {
     for (const type of events) document.removeEventListener(type, onGesture, true);
   };
-  function onGesture() {
-    stop();
-    speech.prime();
-  }
-  for (const type of events) document.addEventListener(type, onGesture, { capture: true, passive: true });
-  return stop;
 }
 
 /**
