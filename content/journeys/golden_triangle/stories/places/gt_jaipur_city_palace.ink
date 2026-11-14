@@ -57,6 +57,8 @@ INCLUDE modules.ink
 # reaction: heroine,surprised,question
 は、はい。日本から……
 # speaker: enemy
+この子ったら、向こうで漬物の匂いがしたら恥ずかしいって言うの。あなた、審判をしてちょうだい
+# speaker: enemy
 教えて。外国に家の味を持っていくのは、恥ずかしいこと？
 # speaker: narrator
 二組の目が、同時に{heroine_name}を見た。母親の目と、息子の目。どちらに答えても、片方が傷つく。

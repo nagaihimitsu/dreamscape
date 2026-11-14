@@ -95,6 +95,8 @@ INCLUDE modules.ink
 # speaker: enemy
 鏡の間。天井を見ろ
 # speaker: narrator
+二枚とも、絵の隅に、城の奥の鏡の間が天井まで描き込まれている。
+# speaker: narrator
 印刷の方の天井には、金色の星が描かれていた。サリームの絵の天井は、細かな点の集まりで埋め尽くされている。
 # speaker: heroine
 ……サリームさん、これ、何日描いたんですか
