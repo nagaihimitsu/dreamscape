@@ -52,6 +52,17 @@ describe("the hidden name's field", () => {
     expect(mehndiSkin.detailJa).toBeUndefined();
   });
 
+  it("curls the five other places like writing (lit only), never the writing's own, and gives the pool the tuning's size", () => {
+    for (const target of ["thumb", "peacock", "vine"] as const) {
+      const html = field({ target, text: "player" });
+      const places = [...html.matchAll(/mg-mehndi-hidden-name-lookalike" data-place="([a-z]+)"/gu)].map((match) => match[1]);
+      expect(places.sort(), target).toEqual(["index", "peacock", "pinky", "thumb", "vine", "wrist"].filter((spot) => spot !== target).sort());
+      // Only in the lit layer (the dark shows the broad lines only).
+      expect(html.split("mg-mehndi-hidden-name-lit")[0]).not.toContain("lookalike");
+    }
+    expect(field({ target: "thumb", text: "player" })).toContain("--mehndi-lamp-r:max(8cqw, 18px)");
+  });
+
   it("breaks the central vine's line behind the writing hidden in it, in the lit pattern only", () => {
     const vine = field({ target: "vine", text: "farhana" });
     expect(vine.match(/mask="url\(#[^)]*vinegap\)"/gu)).toHaveLength(1);
