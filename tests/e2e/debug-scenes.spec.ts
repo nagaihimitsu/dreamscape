@@ -60,6 +60,13 @@ for (const [kind, label] of [["contradiction", "B（矛盾追及）"], ["connect
     await playUntil(page, (state) => state.activeBattle?.phase === "reasoning", { source: debugGame });
     await ops.passReasoningIntro(page);
     await ops.chooseEvidence(page, special!.correctClueIds);
+    // Back from the clue book with the evidence chosen (「推理に戻る」), the now enabled submit is in view and has the
+    // focus (2026-11-14, the phone UI audit: on a short phone it stayed below the fold).
+    const submit = page.getByTestId("reasoning-submit");
+    await expect(submit).toBeEnabled();
+    await expect(submit).toBeFocused();
+    // (Brought just into the reading area's edge: a fraction of a pixel may fall outside it.)
+    await expect(submit).toBeInViewport({ ratio: 0.95 });
     const count = special!.correctClueIds.length;
     await expect(page.getByTestId("selected-evidence")).toContainText(`選んだ証拠 ${count} / ${count}枚`);
     const chosen = (await debugGame(page))!.activeBattle!.reasoning!.selectedClueIds;
@@ -70,6 +77,8 @@ for (const [kind, label] of [["contradiction", "B（矛盾追及）"], ["connect
       await expect(page.getByTestId("clue-picker").locator(`option[value="${clueId}"]`)).toContainText("（選択中）");
     await page.getByTestId("cluebook-close").click();
     expect((await debugGame(page))!.activeBattle!.reasoning!.selectedClueIds).toEqual(chosen);
+    // Its 「閉じる」 brings the submit forward the same way.
+    await expect(submit).toBeFocused();
 
     await page.getByTestId("reasoning-submit").click();
     const result = await playUntil(page, (state) => state.activeBattle?.phase === "result", { source: debugGame });
@@ -128,6 +137,20 @@ test("an encounter answered in English gives its item, and its moment goes on (t
     const keeping = active?.frame.choices.findIndex((choice) => !encounter!.usingChoices.includes(`${active.encounterId}:${choice.optionId}`)) ?? 0;
     return String.fromCharCode(65 + Math.max(keeping, 0));
   };
+  // Its English replies are laid out as a quiz's options (2026-11-14, the phone UI audit): the letter that chooses at
+  // the left, each 「訳を見る」 44 px high at its row's right (it was under the words, 40 px high).
+  await playUntil(page, (state) => state.activeEncounter?.phase === "quiz" || !!state.activeEncounter?.frame.choices.length, { source: debugGame, pick });
+  const replies = page.getByRole("button", { name: /^[A-Z]を選ぶ$/u });
+  await expect(replies.first()).toBeVisible();
+  for (const reply of await replies.all()) {
+    const choose = (await reply.boundingBox())!;
+    expect(choose.height).toBeGreaterThanOrEqual(44);
+    const translate = reply.locator("xpath=..").getByRole("button", { name: /^選択肢[A-Z]の訳を(見る|閉じる)$/u });
+    if (!(await translate.count())) continue;
+    const box = (await translate.boundingBox())!;
+    expect(box.height).toBeGreaterThanOrEqual(44);
+    expect(box.x, "「訳を見る」 at the right of the reply").toBeGreaterThan(choose.x + choose.width + 40);
+  }
   const done = await playUntil(page, (state) => state.completedEncounterIds.includes(encounter!.encounterId), { source: debugGame, pick });
   expect(done.inventory[encounter!.itemId]).toBe("held");
   // Debug meets the encounter at its moment, as play does: met while observing, it ends back in that observation (encounters

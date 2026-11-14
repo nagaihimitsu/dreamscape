@@ -72,6 +72,8 @@
   padding-inline: 10px;
   text-align: center;
 }
+/* The submit, brought into view on the return from the clue book (ReasoningPanel), stops a little inside the edge. */
+.reasoning-panel > .primary { scroll-margin-block: 16px; }
 .reasoning-ready {
   font-size: 0.85rem;
   line-height: 1.8;

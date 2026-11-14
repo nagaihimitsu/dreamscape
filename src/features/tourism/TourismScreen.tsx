@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { tourSceneBadge } from "../../domain/tour";
 import {
   landmarks,
@@ -35,11 +35,12 @@ import { DialogueControls, DialogueWindowHead } from "../../components/DialogueC
 import { SceneChoices, type SceneChoiceView } from "../../components/SceneChoices";
 import { Icon } from "../../components/icons";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
-import { DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
+import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { SceneHeading, SceneNotebookTool } from "../../components/SceneHeading";
 import { useSceneTap } from "../../components/useSceneTap";
 import { ObservationViewer } from "./ObservationViewer";
 import { ClueDetails } from "./ClueDetails";
+import { guideSkipDestination } from "./guide-skip";
 import "./tourism.css";
 import "../journey/encounter.css";
 
@@ -108,6 +109,7 @@ export function TourismScreen({
   const selected = clues.find((clue) => clue.id === selectedId);
   const frame = active.frame;
   const guideStoryId = activeGuideStoryId(active) ?? landmark.guideStoryId ?? "";
+  const skipDestination = guideSkipDestination(landmark, !!active.replay);
   const reaction = frame && active.phase === "guide"
     ? resolveDialogueReaction(dialogueReactions, guideStoryId, frame, "heroine")
     : undefined;
@@ -158,6 +160,12 @@ export function TourismScreen({
       .querySelector('[data-testid="observation-viewport"]')
       ?.scrollIntoView({ block: "start" });
   }, [focusRequest, selected?.kind, compactObservation]);
+
+  // Another clue's explanation starts at its heading (the sheet scrolls on its own when it is long).
+  const detailRef = useRef<HTMLElement>(null);
+  useLayoutEffect(() => {
+    if (detailRef.current) detailRef.current.scrollTop = 0;
+  }, [selectedId]);
 
   useEffect(() => {
     if (!detailOpen) return;
@@ -226,6 +234,15 @@ export function TourismScreen({
               <CharacterPortrait key={personId} characterId={personId} focus={focus.opposite} />
             </div>}
           </div>
+          {/* 「案内をとばす」 (2026-11-14, the phone UI audit): top left under the header, away from the window's head,
+              whose place by 「ログ」 holds the harmless 「隠す」 in every scene. Not at a choice (the guide stops there:
+              choose first), on its last line (「観察を始める」 reads it to the end) or while the window is hidden. */}
+          {!frame.ended && !frame.choices.length && !windowVisibility.hidden && (
+            <button type="button" className="guide-skip" data-testid="tourism-skip" onClick={onSkip}>
+              案内をとばす{skipDestination && <span className="guide-skip-to">（{skipDestination}）</span>}
+              <Icon name="chevron-right" />
+            </button>
+          )}
           <div
             className="tourism-guide paper vn-dialogue"
             {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }}
@@ -237,7 +254,7 @@ export function TourismScreen({
               speaker={showsSpeakerPlate(frame) && speaker}
               narration={plate.narration}
               cutIn={nameCut}
-              controls={<DialogueControls close={<button type="button" className="text-button" data-testid="tourism-skip" aria-label="観光案内を閉じる" onClick={onSkip}><Icon name="close" />閉じる</button>} entries={entries} auto={autoAdvance} />}
+              controls={<DialogueControls close={<DialogueWindowHide state={windowVisibility} />} entries={entries} auto={autoAdvance} />}
             />
             <div ref={dialogueRef} className="vn-window-body">
             <LineStage frame={frame} names={{ heroine: game.heroineName, player: game.playerName }} compact={frame.choices.length > 0}>
@@ -289,8 +306,11 @@ export function TourismScreen({
             onReplayGuide={landmark.guideStoryId ? onReplayGuide : undefined}
             onSelect={(id) => selectClue(id, false)}
           />
+          {/* On a phone held upright, a sheet over the lower part of the observation (tourism.css): its heading and
+              「説明を閉じる」 at its top, the explanation readable at once (2026-11-14, the phone UI audit). */}
           {selected && detailOpen && (
             <article
+              ref={detailRef}
               className="discovery-detail observation-detail"
               data-testid="discovery-detail"
               aria-live="polite"

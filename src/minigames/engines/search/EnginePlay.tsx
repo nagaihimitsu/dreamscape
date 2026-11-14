@@ -203,7 +203,7 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
           <Field params={params} still={still} seed={seed} cast={cast} names={names} art={art} sound={sound} vibrate={vibrate}
             setup={setup} view={view} live={live} search={search} active={active} frames={frames} />
         </div>
-        <div className="mg-search-controls">
+        <div className="mg-search-controls" data-minigame-controls>
           {/* The play starts here (the host focuses it, and the result card sits just above it, over the controls): read out,
               it says how to play; Tab goes on to the buttons, Shift+Tab back to the places. */}
           {auto === null && <p className="mg-search-hint" id={hintId} tabIndex={-1} data-minigame-primary>{hint}</p>}

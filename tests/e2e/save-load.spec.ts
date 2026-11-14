@@ -206,6 +206,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   expect(manual.activeTourism?.landmarkId).toBe("duomo_milano");
 
   // Progress after the manual save is not stored. Switching journeys asks first; 戻る keeps this scene.
+  // 「案内をとばす」 (top left under the header since 2026-11-14) steps below the save's notice, which lies there.
   await page.getByTestId("tourism-skip").click();
   await expect(page.getByTestId("tourism-guide")).toHaveCount(0);
   const otherJourney = journeyCatalog().journeys.find((journey) => journey.id !== "milano")!.id;

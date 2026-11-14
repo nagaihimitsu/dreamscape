@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import soundData from "../../../content/presentation/sounds.json";
 import {
   burstAngles, countedScore, countPhase, fillNames, FINISH, finishLevel, finishWord, hitStopMs, HOST_SOUNDS, pickLine, RESULT_CARD_MAX_COVER, RESULT_CARD_SHORT_PX,
-  playLeavable, resultButtons, resultCardCompact, resultCardDelay, START_BUTTON_MARGIN_PX, startGuardDrops, vibrationDoubles,
+  playLeavable, quitShown, resultButtons, resultCardCompact, resultCardDelay, START_BUTTON_MARGIN_PX, startGuardDrops, vibrationDoubles,
 } from "./flow";
 import { MINI_GAME_COUNT_MS, MINI_GAME_FINISH_MS, MINI_GAME_GO_MS, MINI_GAME_START_GUARD_MS, MINI_GAME_VIBRATE_GAP_MS } from "./timing";
 
@@ -30,6 +30,14 @@ describe("leaving a play", () => {
     expect(playLeavable({ practice: false, ended: true, decided: true })).toBe(false);
     expect(playLeavable({ practice: true, ended: false, decided: true })).toBe(true);
     expect(playLeavable({ practice: true, ended: true, decided: true })).toBe(true);
+  });
+
+  it("shows 「中断する」 while the play may be left, never over the result card (practice's included)", () => {
+    expect(quitShown({ practice: false, ended: false, decided: false, cardShown: false })).toBe(true);
+    expect(quitShown({ practice: false, ended: false, decided: true, cardShown: false })).toBe(false);
+    expect(quitShown({ practice: true, ended: true, decided: true, cardShown: false })).toBe(true);
+    expect(quitShown({ practice: true, ended: true, decided: true, cardShown: true })).toBe(false);
+    expect(quitShown({ practice: false, ended: true, decided: true, cardShown: true })).toBe(false);
   });
 });
 

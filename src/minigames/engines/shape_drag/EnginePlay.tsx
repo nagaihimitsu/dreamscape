@@ -400,7 +400,7 @@ export function shapeDragPlay<Params, Outcome extends string>(skin: ShapeDragSki
             <Board {...fieldProps} />
           </div>
         </div>
-        <div className="mg-shape-drag-controls">
+        <div className="mg-shape-drag-controls" data-minigame-controls>
           {meter && (
             <div className="mg-shape-drag-meter" data-testid="minigame-meter">
               <span className="mg-shape-drag-meter-label">{meter.labelJa}</span>

@@ -169,9 +169,11 @@
 .vn-dialogue .fine-print, .vn-dialogue .eyebrow { color: var(--vn-muted); }
 .vn-dialogue .choices { margin-top: 4px; padding-top: 6px; border-color: rgba(255, 255, 255, .24); }
 .vn-dialogue .choice-hint { margin-bottom: 4px; color: var(--vn-muted); }
+/* 8 px between two choices, which cannot be undone (AGENTS 選択肢の誤タップ防止; 2026-11-14, the phone UI audit:
+   they were 4–5 px apart). */
 .vn-dialogue .choice {
   min-height: 44px;
-  margin: 5px 0;
+  margin: 8px 0;
   padding: 7px 14px;
   line-height: 1.5;
   color: var(--vn-text);
@@ -218,5 +220,5 @@
   .vn-scene .vn-window-body { padding: 0 14px 10px; }
   .vn-dialogue .dialogue-text { font-size: 17px; line-height: 1.6; }
   .vn-character-layer { transform: translateY(-27%); clip-path: polygon(-50% 37.714%, 150% 37.714%, 150% 200%, -50% 200%); }
-  .vn-dialogue .choice { line-height: 1.4; padding: 7px 11px; margin: 4px 0; }
+  .vn-dialogue .choice { line-height: 1.4; padding: 7px 11px; margin: 8px 0; }
 }

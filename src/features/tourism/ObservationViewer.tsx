@@ -32,7 +32,7 @@ interface Props {
   landmarkName: string;
   onNotebook: () => void;
   onProceed: () => void;
-  /** 「観光案内をもう一度読む」, beside 「進む」 (a landmark with a guide; 2026-11-13 user decision). */
+  /** 「観光案内をもう一度読む」, before 「進む」 (a landmark with a guide; 2026-11-13 user decision). */
   onReplayGuide?: () => void;
   onSelect: (id: string) => void;
 }
@@ -203,7 +203,9 @@ export function ObservationViewer({
   }
 
   const fitted = fittedSize(asset, viewport);
-  const proceed = <button type="button" className="primary observation-proceed" data-testid="observation-proceed" onClick={onProceed}>進む</button>;
+  const proceed = <button type="button" className="primary observation-proceed" data-testid="observation-proceed" onClick={onProceed}>
+    進む<span aria-hidden="true"> →</span>
+  </button>;
   return (
     <div className="observation-viewer" inert={inert}>
       <div
@@ -345,13 +347,13 @@ export function ObservationViewer({
         >
           {markersVisible ? "印を隠す" : "印を表示"}
         </button>
-        {!onReplayGuide && proceed}
       </div>
-      {/* With a guide to read again: its own row, the guide's button beside 「進む」 (a phone's toolbar has no room for it). */}
-      {onReplayGuide && <div className="observation-next">
-        <button type="button" className="observation-replay" data-testid="guide-replay" onClick={onReplayGuide}>観光案内をもう一度読む</button>
+      {/* 「進む」 on a row of its own under the toolbar, the row's wide part (2026-11-14, the phone UI audit: it was the
+          smallest button); a guide to read again puts its button before it. */}
+      <div className="observation-next">
+        {onReplayGuide && <button type="button" className="observation-replay" data-testid="guide-replay" onClick={onReplayGuide}>観光案内をもう一度読む</button>}
         {proceed}
-      </div>}
+      </div>
       {/* For screen readers only (2026-11-11, the user's decision): on screen the numbered marks not yet found
           call for a tap with a ring that spreads as the observation opens (observation.css). */}
       <p id="observation-help" className="sr-only">

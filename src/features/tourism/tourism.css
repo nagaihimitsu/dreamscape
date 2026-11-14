@@ -3,6 +3,43 @@
   max-width: 760px;
   margin: auto;
 }
+/* A guide's 「案内をとばす」 (2026-11-14, the phone UI audit): top left under the header (a date's reference photo has
+   the same place), away from the window's head and its 「隠す」, so a habitual tap there never ends the guide. A
+   pressable rectangle with the gold hairline on its own slate backing over the photo (§2.3, §2.4); where it leads in
+   lighter type. */
+.guide-skip {
+  position: absolute;
+  z-index: 1;
+  top: calc(var(--scene-top, 0px) + 8px);
+  left: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  max-width: calc(100% - 16px);
+  min-height: 44px;
+  margin: 0;
+  padding: 4px 8px 4px 12px;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 12px;
+  background: var(--ds-chip-bg);
+  color: var(--ds-on-slate);
+  box-shadow: var(--ds-pill-shadow);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: left;
+}
+.guide-skip-to { font-weight: 400; }
+.guide-skip .icon { flex: none; width: 18px; height: 18px; color: var(--ds-gold); }
+.guide-skip:focus-visible { outline: 3px solid var(--ds-focus); outline-offset: 0; box-shadow: 0 0 0 6px var(--ds-slate-900); }
+/* Below 「仮画像です…」, which lies in the same place over a placeholder picture (styles.css). */
+.image-placeholder-note ~ .vn-scene .guide-skip { top: calc(var(--scene-top, 0px) + 40px); }
+/* Below a notice of the session (「現在の場面を保存しました。」…), which lies over the scene right under the header
+   until it is closed (styles.css): one row with its 44-px 「閉じる」 on a phone, its words over a block button wider. */
+.mobile-play-active:has(> main > .notice) .guide-skip { top: calc(var(--scene-top, 0px) + 108px); }
+@media (max-width: 600px) {
+  .mobile-play-active:has(> main > .notice) .guide-skip { top: calc(var(--scene-top, 0px) + 60px); }
+}
 /* 手がかり帳 on the page: a secondary pressable (§2.3). */
 .notebook-button {
   color: var(--ds-ink);
@@ -342,21 +379,34 @@
   .mobile-observation-active .observation-options { flex: none; }
   /* 「観光案内をもう一度読む」 and 「進む」 on a row of their own under the toolbar. */
   .mobile-observation-active .observation-next { flex: 1 0 100%; margin: 0 0 2px; }
-  /* The image and the explanation have separate space: neither covers the
-     selected point, and the picture stays draggable while the clue is open. */
+  /* A found clue's explanation (2026-11-14, the phone UI audit: it opened at the screen's bottom edge in a 159-px
+     scroll box): a sheet over the lower part of the observation, its heading and 「説明を閉じる」 at its top, readable
+     at once. It is as tall as its text, up to the room under the picture or 60 % of the screen, whichever is more:
+     on a short phone it lies over the picture's lower part, which stays draggable above it with its other points;
+     a longer text scrolls inside it. 「説明を閉じる」 (or Esc) puts it away, uncovering the zoom and 「進む」. */
   .mobile-observation-active .observation-detail {
-    flex: 0 1 auto;
+    position: absolute;
+    z-index: 4;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: max(60%, calc(100% - clamp(250px, 43dvh, 440px) - 16px));
     min-height: 0;
-    max-height: min(28dvh, 180px);
     overflow-y: auto;
     overscroll-behavior: contain;
-    margin: 0 0 4px;
-    padding: 0 10px 8px;
+    margin: 0;
+    padding: 0 16px calc(12px + env(safe-area-inset-bottom, 0px));
+    border: 1px solid var(--ds-parchment-line);
+    border-bottom: 0;
+    border-radius: 16px 16px 0 0;
+    background: var(--ds-parchment-2);
+    box-shadow: 0 -4px 18px rgba(20, 24, 32, 0.28);
   }
   .mobile-observation-active .observation-detail .clue-heading {
     position: sticky;
     z-index: 1;
     top: 0;
+    padding-top: 6px;
     background: var(--ds-parchment-2);
   }
   .mobile-observation-active .observation-detail .clue-kind {

@@ -178,7 +178,7 @@ export function cueTapPlay<Params, Outcome extends string>(skin: CueTapSkin<Para
         <div className="mg-cue-tap-field" onPointerDown={onPointer} aria-hidden="true">
           <Field params={params} still={still} seed={seed} cast={cast} names={names} art={art} sound={sound} vibrate={vibrate} frames={frames} />
         </div>
-        <div className="mg-cue-tap-controls">
+        <div className="mg-cue-tap-controls" data-minigame-controls>
           {auto === null && <p className="mg-cue-tap-hint">{skin.hintJa}</p>}
           {Gauge ? <Gauge still={still} frames={frames} /> : Gauge === null ? null : (
             <div className="mg-cue-tap-meter" aria-hidden="true">

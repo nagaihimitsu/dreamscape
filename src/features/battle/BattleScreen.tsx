@@ -546,49 +546,6 @@ export function BattleScreen({
               </p>
             </div>
             <BattleRewards game={game} onClaim={onClaimRewards} />
-            {nextStoryBattle && onNextStoryBattle && (
-              <p className="next-story-battle-note">{nextStoryBattle.descriptionJa}</p>
-            )}
-            <div className="battle-result-actions">
-              {nextStoryBattle && onNextStoryBattle && (
-                <button
-                  className="primary"
-                  data-testid={`next-story-battle-${nextStoryBattle.battleId}`}
-                  onClick={onNextStoryBattle}
-                >
-                  {nextStoryBattle.actionLabelJa} <span aria-hidden="true">→</span>
-                </button>
-              )}
-              {onEpilogue && (
-                <button
-                  className="primary"
-                  data-testid="city-epilogue-start"
-                  onClick={onEpilogue}
-                >
-                  エピローグへ進む <span aria-hidden="true">→</span>
-                </button>
-              )}
-              {onLeave && <button
-                className={onEpilogue || onNextStoryBattle ? "secondary" : "primary"}
-                onClick={onLeave}
-              >
-                {leaveLabel ?? (isSpecial ? "自由時間へ戻る" : "自由時間へ進む")}{" "}
-                <span aria-hidden="true">→</span>
-              </button>}
-              {onNextEpisode && (
-                <button
-                  className="secondary"
-                  data-testid="next-tourism"
-                  onClick={onNextEpisode}
-                >
-                  {nextIsFinale ? "都市ボスに挑む" : "次の観光地へ進む"}{" "}
-                  <span aria-hidden="true">→</span>
-                </button>
-              )}
-              <button className="secondary" onClick={() => onEnglish()}>
-                回答した問題を振り返る
-              </button>
-            </div>
             <details className="battle-result-history">
               <summary>今回の正誤と成績</summary>
               <ol className="answer-history">
@@ -608,6 +565,53 @@ export function BattleScreen({
                 </p>
               )}
             </details>
+            {/* What to do next, at the card's bottom in thumb reach (2026-11-14, the phone UI audit: it floated
+                mid-card), held there while a long result scrolls above it (battle.css). */}
+            <div className="battle-result-foot">
+              {nextStoryBattle && onNextStoryBattle && (
+                <p className="next-story-battle-note">{nextStoryBattle.descriptionJa}</p>
+              )}
+              <div className="battle-result-actions">
+                {nextStoryBattle && onNextStoryBattle && (
+                  <button
+                    className="primary"
+                    data-testid={`next-story-battle-${nextStoryBattle.battleId}`}
+                    onClick={onNextStoryBattle}
+                  >
+                    {nextStoryBattle.actionLabelJa} <span aria-hidden="true">→</span>
+                  </button>
+                )}
+                {onEpilogue && (
+                  <button
+                    className="primary"
+                    data-testid="city-epilogue-start"
+                    onClick={onEpilogue}
+                  >
+                    エピローグへ進む <span aria-hidden="true">→</span>
+                  </button>
+                )}
+                {onLeave && <button
+                  className={onEpilogue || onNextStoryBattle ? "secondary" : "primary"}
+                  onClick={onLeave}
+                >
+                  {leaveLabel ?? (isSpecial ? "自由時間へ戻る" : "自由時間へ進む")}{" "}
+                  <span aria-hidden="true">→</span>
+                </button>}
+                {onNextEpisode && (
+                  <button
+                    className="secondary"
+                    data-testid="next-tourism"
+                    onClick={onNextEpisode}
+                  >
+                    {nextIsFinale ? "都市ボスに挑む" : "次の観光地へ進む"}{" "}
+                    <span aria-hidden="true">→</span>
+                  </button>
+                )}
+                <button className="secondary" onClick={() => onEnglish()}>
+                  回答した問題を振り返る
+                </button>
+              </div>
+            </div>
           </div>
         ) : isDialogue && frame ? (
           <>
