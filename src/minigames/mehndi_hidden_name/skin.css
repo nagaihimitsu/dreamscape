@@ -101,7 +101,22 @@
 }
 @keyframes mg-mehndi-hidden-name-ring { from { opacity: 0; transform: translate(-50%, -50%) scale(1.4); } }
 .mg-mehndi-hidden-name-mark-ring[data-writing] { border: 2px solid #f0c860; box-shadow: 0 0 12px rgba(240, 200, 96, 0.7); }
-.mg-mehndi-hidden-name:is([data-ending="found"], [data-ending="wrong"]) .mg-mehndi-hidden-name-writing { filter: drop-shadow(0 0 2px rgba(255, 224, 160, 0.95)); }
+.mg-mehndi-hidden-name[data-ending="found"] .mg-mehndi-hidden-name-writing { filter: drop-shadow(0 0 2px rgba(255, 224, 160, 0.95)); }
+/* Her hint of the area (from the third wrong place): a dotted ring round the writing's area (about 70px across at 390
+   wide), for as long as her word; the lamp stays where the player pointed. */
+.mg-mehndi-hidden-name-hint-ring {
+  position: absolute;
+  z-index: 1;
+  width: 39cqw;
+  aspect-ratio: 1;
+  border: 3px dotted rgba(255, 236, 190, 0.95);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255, 214, 140, 0.35);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: mg-mehndi-hidden-name-hint 1600ms ease-out both;
+}
+@keyframes mg-mehndi-hidden-name-hint { 0% { opacity: 0; transform: translate(-50%, -50%) scale(1.25); } 15%, 80% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; } }
 /* Her word by a place pointed at (a wrong one, or the writing as she shows it): above it, or below one near the top. */
 .mg-mehndi-hidden-name-said {
   position: absolute;
@@ -125,6 +140,9 @@
   animation: mg-mehndi-hidden-name-said 220ms ease-out both;
 }
 .mg-mehndi-hidden-name-said[data-below] { transform: translate(-50%, 14cqw); }
+/* Her hint's word: above the ring (or below it near the top). */
+.mg-mehndi-hidden-name-said[data-hint] { transform: translate(-50%, calc(-100% - 21cqw)); }
+.mg-mehndi-hidden-name-said[data-hint][data-below] { transform: translate(-50%, 21cqw); }
 @keyframes mg-mehndi-hidden-name-said { from { opacity: 0; } }
 /* 「明日にする」 or the night run out: the lamp goes out. */
 .mg-mehndi-hidden-name:is([data-ending="button"], [data-ending="timeout"], [data-ending="idle"]) :is(.mg-mehndi-hidden-name-lit, .mg-mehndi-hidden-name-glow, .mg-mehndi-hidden-name-lamp) {

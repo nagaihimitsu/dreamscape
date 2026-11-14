@@ -10,10 +10,13 @@ import "./skin.css";
 // The hide-and-seek's field (a search skin): a stretch of the palace corridor, a row of identical arched doors on one wall
 // that runs on past the screen's edge (it scrolls), under the ceiling's beams and the wall lamps' light. An opened door
 // shows an empty room with something small going on in it (looks only, from the seed), or her. 「名前を呼ぶ」 sends her name
-// back from every door, and from hers a giggle after it (a clue for the ear: the third call ends the play). Once the player
-// has opened a door or called, doing nothing brings a hint: a giggle, her door's handles move, and her face in the
-// band (react). Doing nothing at all from the start ends with her peeking from the corner. Finding her is the one moment
-// of impact: a short stop, her door's leaves swing past open and back, a ring and stars at her face (the host's juice).
+// back from every door, and from hers a giggle after it (a clue for the ear; with her door out of view, the giggle comes
+// from the corridor's edge on her side and its chevron pulses). The third call ends the play: before it, the button says
+// 「最後に呼ぶ」 and the band 「次で出てくる」. Once the player has opened a door or called, doing nothing brings a hint: a
+// giggle, her door's handles move, and her face in the band (react). Doing nothing at all from the start ends with her
+// peeking from the corner. Finding her is the play's climax: a short stop, the creak and a success chime after it, a
+// buzz, her door's leaves swing past open and back, her surprised face (react: in the band and at the door), a large
+// ring and stars at her face (the host's juice).
 // No names on the doors. With the use's art (`art.bay`, `art.room`, `art.peek`), those pictures in place of the drawn
 // wall and doorway (the photos as the back layer, `mg-photo`; its leaves still drawn over it and opened, `mg-play-object`),
 // room and her standing picture.
@@ -31,7 +34,15 @@ const CALL_TAP_VOLUME = [0.6, 0.35, 0.2];
 const EMPTY_CREAK_RATE = 0.85;
 /** The stop as her door opens (ms). */
 const FOUND_STOP_MS = 90;
-const SOUNDS = { creak: "door_creak", call: "ui_tap", pigeon: "pigeon_flutter" } as const;
+/** The success chime about 140 ms after her door's creak (on the play's clock, which the stop holds first). */
+const FOUND_CHIME_AFTER_MS = 140 - FOUND_STOP_MS;
+const FOUND_CHIME_VOLUME = 0.7;
+/** The find's ring and stars, larger than a hit's (over the room's photo). */
+const FOUND_BURST_SIZE = 1.5;
+const SOUNDS = { creak: "door_creak", call: "ui_tap", pigeon: "pigeon_flutter", chime: "quiz_correct" } as const;
+
+/** Where her door is against the corridor's view: in it (its middle shows), or out of it on the left or the right. */
+type Side = "door" | "left" | "right";
 
 /** What goes on in an empty room as its door opens (looks only; the seed deals them out to the empty doors). */
 export type HideSeekRoomEvent = "dust" | "pigeon" | "curtain" | "light" | "portrait";
@@ -55,11 +66,15 @@ export function hideSeekRoomEvents(seed: number, target: number): (HideSeekRoomE
   return Array.from({ length: HIDE_SEEK_DOORS }, (_, door) => (door === target ? null : deal[next++]));
 }
 
-/** The top band: what the player has done (nothing yet: empty). */
-function status(view: SearchView): string {
+/** Whether the next call is the one that brings her out (the play's end). */
+const lastCallNext = (view: SearchView, calls: number) => (view.presses.call ?? 0) === calls - 1;
+
+/** The top band: what the player has done (nothing yet: empty), and a warning before the call that brings her out. */
+function status(view: SearchView, calls: number): string {
   const opened = view.searched.length;
-  const calls = view.presses.call ?? 0;
-  return [opened ? `開けた扉 ${opened}` : "", calls ? `呼んだ ${calls}回` : ""].filter(Boolean).join("・");
+  const called = view.presses.call ?? 0;
+  const callsJa = called ? `呼んだ ${called}回${lastCallNext(view, calls) ? "（次で出てくる）" : ""}` : "";
+  return [opened ? `開けた扉 ${opened}` : "", callsJa].filter(Boolean).join("・");
 }
 
 /** What happens in an empty room (drawn over the room's picture, inside the doorway). */
@@ -114,13 +129,23 @@ function HideSeekField({ setup, view, live, search, active, frames, cast, names,
   const scroller = useRef<HTMLDivElement>(null);
   const doors = useRef<(HTMLButtonElement | null)[]>([]);
   const [more, setMore] = useState({ left: false, right: true });
-  const [echo, setEcho] = useState<number | null>(null);
-  const [giggle, setGiggle] = useState<{ at: number; where: "door" | "left" | "right" } | null>(null);
+  const [echo, setEcho] = useState<{ at: number; where: Side } | null>(null);
+  const [giggle, setGiggle] = useState<{ at: number; where: Side } | null>(null);
   const play = useRef({ sound, vibrate });
   play.current = { sound, vibrate };
   const target = setup.rounds[0].targets[0];
   const events = useMemo(() => hideSeekRoomEvents(seed, target), [seed, target]);
   const peeking = view.ending?.kind === "idle" || view.ending?.kind === "timeout";
+  /** Her door against the corridor's view now (its middle in view, or out on a side). */
+  const sideOfHer = (): Side => {
+    const box = scroller.current?.getBoundingClientRect();
+    const door = doors.current[target]?.getBoundingClientRect();
+    if (!box || !door) return "door";
+    const middle = (door.left + door.right) / 2;
+    return middle < box.left + 16 ? "left" : middle > box.right - 16 ? "right" : "door";
+  };
+  // The find's moment on the play's clock (her door the latest action), for its chime.
+  const foundAt = view.last && "spot" in view.last.action && view.last.action.spot === target ? view.last.at : null;
 
   // A door opened: its creak (an empty room's lower, and the room's own sound), the corridor brought to it (おまかせ opens
   // doors out of view); hers, the find: a short stop on her door, then a ring and stars at her face.
@@ -130,10 +155,11 @@ function HideSeekField({ setup, view, live, search, active, frames, cast, names,
     const door = view.searched[opened - 1];
     if (door === target) {
       play.current.sound(SOUNDS.creak);
-      play.current.vibrate("hit");
+      play.current.vibrate("success");
       kitRef.current.juice.hitStop(FOUND_STOP_MS, doors.current[door]);
-      kitRef.current.juice.burst(face.current, "ring", 1.2);
-      kitRef.current.juice.burst(face.current, "star");
+      kitRef.current.juice.burst(face.current, "ring", FOUND_BURST_SIZE);
+      kitRef.current.juice.burst(face.current, "star", FOUND_BURST_SIZE);
+      kitRef.current.react("surprise");
     } else {
       play.current.sound(SOUNDS.creak, { rate: EMPTY_CREAK_RATE });
       if (events[door] === "pigeon") play.current.sound(SOUNDS.pigeon);
@@ -144,15 +170,26 @@ function HideSeekField({ setup, view, live, search, active, frames, cast, names,
     if (box && bay && (bay.offsetLeft < box.scrollLeft || bay.offsetLeft + bay.offsetWidth > box.scrollLeft + box.clientWidth))
       box.scrollTo({ left: bay.offsetLeft + bay.offsetWidth / 2 - box.clientWidth / 2, behavior: still ? "auto" : "smooth" });
   }, [opened]); // each newly opened door once
-  // A call: its echo from every door for a moment, and three soft taps for its sound (timed on the play's clock, so a
-  // paused play holds them).
+  // The find's chime, just after her door's creak.
+  useEffect(() => {
+    if (foundAt === null) return undefined;
+    let rung = false;
+    return frames((ms) => {
+      if (rung || ms - foundAt < FOUND_CHIME_AFTER_MS) return;
+      rung = true;
+      play.current.sound(SOUNDS.chime, { volume: FOUND_CHIME_VOLUME });
+    });
+  }, [frames, foundAt]);
+  // A call: its echo from every door for a moment (her giggle at the corridor's edge when her door is out of view), and
+  // three soft taps for its sound (timed on the play's clock, so a paused play holds them).
   useEffect(() => {
     const last = view.last;
     const call = last && "button" in last.action ? last.at : null;
+    const where = call === null ? "door" : sideOfHer();
     let taps = 0;
     return frames((ms) => {
-      const showing = call !== null && ms - call < ECHO_MS ? call : null;
-      setEcho((current) => (current === showing ? current : showing));
+      const showing = call !== null && ms - call < ECHO_MS ? { at: call, where } : null;
+      setEcho((current) => (current?.at === showing?.at ? current : showing));
       while (call !== null && taps < CALL_TAP_MS.length && ms - call >= CALL_TAP_MS[taps]) {
         play.current.sound(SOUNDS.call, { volume: CALL_TAP_VOLUME[taps] });
         taps += 1;
@@ -165,10 +202,7 @@ function HideSeekField({ setup, view, live, search, active, frames, cast, names,
     const at = view.nudge;
     if (at === null) return undefined;
     kitRef.current.react("tease");
-    const box = scroller.current?.getBoundingClientRect();
-    const door = doors.current[target]?.getBoundingClientRect();
-    const where = !box || !door || (door.right > box.left + 8 && door.left < box.right - 8) ? "door" : door.left >= box.right - 8 ? "right" : "left";
-    setGiggle({ at, where });
+    setGiggle({ at, where: sideOfHer() });
     return frames((ms) => { if (ms - at >= GIGGLE_MS) setGiggle((current) => (current?.at === at ? null : current)); });
   }, [frames, view.nudge, target]);
   const onScroll = () => {
@@ -182,7 +216,7 @@ function HideSeekField({ setup, view, live, search, active, frames, cast, names,
 
   return (
     <div className="mg-nahargarh-hide-seek" data-art-bay={art.bay ? true : undefined} data-more-left={more.left || undefined}
-      data-more-right={more.right || undefined}>
+      data-more-right={more.right || undefined} data-echo-side={echo && echo.where !== "door" ? echo.where : undefined}>
       <div className="mg-nahargarh-hide-seek-corridor" ref={scroller} onScroll={onScroll} onPointerDown={active}>
         <div className="mg-nahargarh-hide-seek-row">
           {Array.from({ length: HIDE_SEEK_DOORS }, (_, door) => {
@@ -214,7 +248,7 @@ function HideSeekField({ setup, view, live, search, active, frames, cast, names,
                   </span>
                 </span>
                 {echo !== null && (
-                  <span key={echo} className="mg-nahargarh-hide-seek-echo" data-hers={hers || undefined} aria-hidden="true"
+                  <span key={echo.at} className="mg-nahargarh-hide-seek-echo" data-hers={hers || undefined} aria-hidden="true"
                     style={{ animationDelay: `${(door % 5) * 70 + (hers ? HER_ECHO_DELAY_MS : 0)}ms` }}>
                     <span>{names.heroine}……</span>
                     {/* Her own voice, under the echo of her name: the ear can tell which door. */}
@@ -227,12 +261,17 @@ function HideSeekField({ setup, view, live, search, active, frames, cast, names,
           })}
         </div>
       </div>
+      {/* The corridor's edges: a hint's giggle or a call's 「……ふふっ」 on her side when her door is out of view (her side's
+          chevron pulses with the call's). */}
       <span className="mg-nahargarh-hide-seek-fade mg-nahargarh-hide-seek-fade-left" aria-hidden="true">
         {giggle?.where === "left" && <span key={giggle.at} className="mg-nahargarh-hide-seek-giggle">くすっ</span>}
+        {echo?.where === "left" && <span key={`echo-${echo.at}`} className="mg-nahargarh-hide-seek-giggle" data-echo>……ふふっ</span>}
+        <span className="mg-nahargarh-hide-seek-chevron" key={echo?.where === "left" ? echo.at : undefined}>‹</span>
       </span>
       <span className="mg-nahargarh-hide-seek-fade mg-nahargarh-hide-seek-fade-right" aria-hidden="true">
         {giggle?.where === "right" && <span key={giggle.at} className="mg-nahargarh-hide-seek-giggle">くすっ</span>}
-        <span className="mg-nahargarh-hide-seek-chevron">›</span>
+        {echo?.where === "right" && <span key={`echo-${echo.at}`} className="mg-nahargarh-hide-seek-giggle" data-echo>……ふふっ</span>}
+        <span className="mg-nahargarh-hide-seek-chevron" key={echo?.where === "right" ? echo.at : undefined}>›</span>
       </span>
       {peeking && (
         <span className="mg-nahargarh-hide-seek-peek" aria-hidden="true">
@@ -249,11 +288,14 @@ export const hideSeekSkinFor = (tuning: HideSeekTuning): SearchSkin<HideSeekPara
   game: hideSeekGameFor(tuning),
   rules: hideSeekRulesFor(tuning),
   hintJa: "扉を押して開ける。廊下は横に続いている",
-  buttons: [{ id: "call", labelJa: "名前を呼ぶ", hintJa: "廊下に向かって、彼女の名前を呼びます。こだまの中に、返事がまじるかもしれません。", tone: "secondary" }],
+  buttons: [{
+    id: "call", labelJa: (view) => (lastCallNext(view, tuning.calls) ? "最後に呼ぶ" : "名前を呼ぶ"), tone: "secondary",
+    hintJa: `廊下に向かって、彼女の名前を呼びます。こだまの中に、返事がまじるかもしれません。${tuning.calls}回目で、彼女が出てきます。`,
+  }],
   autoJa: "おまかせで探しています",
   // Her in the open door, the last echo, or her peeking from the corner, before the outcome shows.
   endDelayMs: (ending, still) => (still ? 700 : ending.kind === "found" ? 1400 : ending.kind === "button" ? 1300 : 1500),
-  statusJa: (view) => status(view),
+  statusJa: (view) => status(view, tuning.calls),
   nudgeMs: tuning.hintMs,
   Field: HideSeekField,
 });

@@ -16,11 +16,15 @@ import "./skin.css";
 // brings his price down; the last dot gone, he turns away with the map. A price the player cannot pay now shows lowered to
 // the one its outcome falls back to (the host takes that one); with none, the paper says so and only 「やめておく」 is left
 // (「この値段で」 refuses when pressed: the host's denied). With one dot of patience left, she feels for him (her face and a
-// word in the band); the stamp lands with a squash and a small shake. With the use's art (`art.raju_glad`,
-// `art.raju_unsure`, `art.raju_sulky`) his mood's picture stands in place of his standing picture.
+// word, low on the left over his legs: skin.css moves the host's reaction there so his bubble and face stay readable); the
+// stamp lands with a squash and a small shake: a deal with the stamp's sound and a buzz, no deal with a softer, lower
+// stamp, and his turning away with the sound of the map snatched back as he walks off and fades. With the use's art
+// (`art.raju_glad`, `art.raju_unsure`, `art.raju_sulky`) his mood's picture stands in place of his standing picture.
 
 type Mood = "glad" | "unsure" | "sulky";
-const SOUNDS = { page: "ui_page", stamp: "stamp", stare: "ui_tap" } as const;
+const SOUNDS = { page: "ui_page", stamp: "stamp", stare: "ui_tap", snatch: "snatch" } as const;
+/** A field this short hides his picture (skin.css's container query): no place for her word that covers nothing. */
+const SHORT_FIELD_PX = 300;
 /** Her word when his patience is down to its last dot (her face in the band). */
 const PITY_JA = "ちょっと、かわいそうかも……";
 /** His patience in dots: all of it at the start, none once he gives up. */
@@ -110,13 +114,16 @@ function DrawnMap() {
   );
 }
 
-function RajuHaggleField({ available, still, cast, art, sound, view, frames, tuning }: StepPickFieldProps<RajuHaggleParams, RajuHaggleOutcome>) {
+function RajuHaggleField({ available, still, cast, art, sound, vibrate, view, frames, tuning }: StepPickFieldProps<RajuHaggleParams, RajuHaggleOutcome>) {
   const kit = useMiniGameKit();
   const kitRef = useRef(kit);
   kitRef.current = kit;
+  const root = useRef<HTMLDivElement>(null);
   const paper = useRef<HTMLDivElement>(null);
   const play = useRef(sound);
   play.current = sound;
+  const buzz = useRef(vibrate);
+  buzz.current = vibrate;
   const thresholds = stepPickThresholds(tuning);
   const total = tuning.pushLimit ?? 0;
   const [waiting, setWaiting] = useState(false);
@@ -127,17 +134,25 @@ function RajuHaggleField({ available, still, cast, art, sound, view, frames, tun
   const away = view.ending?.kind === "out" || view.ending?.kind === "none";
   const nothingPayable = RAJU_MAP.steps.every((_, step) => price(takenAt(step, available)) === null);
 
-  // A stare: a soft tap (his last dot: she feels for him); a new price: the page's sound; the stamp: its sound, a squash
-  // and a small shake (a deal, or no deal).
+  // A stare: a soft tap (his last dot: she feels for him, but not on a field too short for a free place); a new price: the
+  // page's sound; the stamp: a squash and a small shake, a deal with its sound and a buzz, no deal with a softer, lower
+  // stamp (his turning away: the map snatched back first).
   useEffect(() => {
     if (!view.pushes) return;
     play.current(SOUNDS.stare);
-    if (patienceOf(tuning, view.pushes) === 1 && !view.ending) kitRef.current.react("oops", PITY_JA);
+    const roomy = (root.current?.clientHeight ?? 0) > SHORT_FIELD_PX;
+    if (patienceOf(tuning, view.pushes) === 1 && !view.ending && roomy) kitRef.current.react("oops", PITY_JA);
   }, [view.pushes]);
   useEffect(() => { if (view.step > 0 && !view.ending) play.current(SOUNDS.page); }, [view.step, view.ending]);
   useEffect(() => {
     if (!decided) return;
-    if (price(decided) !== null) play.current(SOUNDS.stamp);
+    if (price(decided) !== null) {
+      play.current(SOUNDS.stamp);
+      buzz.current("hit");
+    } else {
+      if (away) play.current(SOUNDS.snatch, { volume: 0.7 });
+      play.current(SOUNDS.stamp, { volume: 0.8, rate: 0.85 });
+    }
     kitRef.current.juice.squash(paper.current?.querySelector(".mg-raju-haggle-stamp") ?? null, "land");
     kitRef.current.juice.shake("s");
   }, [decided]);
@@ -150,7 +165,7 @@ function RajuHaggleField({ available, still, cast, art, sound, view, frames, tun
   const picture = art[`raju_${mood}`];
   const showBubble = !decided || away;
   return (
-    <div className="mg-raju-haggle" data-mood={mood} data-away={away || undefined} data-still={still || undefined} data-decided={decided ?? undefined}>
+    <div ref={root} className="mg-raju-haggle" data-mood={mood} data-away={away || undefined} data-still={still || undefined} data-decided={decided ?? undefined}>
       <span className="mg-raju-haggle-raju mg-play-object" data-figure={picture ? "art" : cast.person ? "cast" : "drawn"}>
         {/* Each stare flinches him (the key starts it again). */}
         <span className="mg-raju-haggle-flinch" key={view.pushes} data-stared={view.pushes > 0 || undefined}>

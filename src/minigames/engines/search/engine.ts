@@ -66,6 +66,11 @@ export const searchSetupSchema = z.object({
   /** The player doing nothing this long (ms since their last action or look); null: nothing happens. */
   idleMs: z.number().int().positive().nullable(),
   /**
+   * With `idleEnds: "round"`: once a round was left to doing nothing (helped through with nothing searched in it), the
+   * idle limit of the rounds after it (a player who is watching her point waits less); absent or null: `idleMs` throughout.
+   */
+  idleAfterLeftMs: z.number().int().positive().nullable().optional(),
+  /**
    * What doing nothing for `idleMs` does: ends the play (`play`); ends it only before the player's first action, after
    * which the search goes on (`before_action`: the field may give a hint); helps the round on show through (`round`).
    */
@@ -78,6 +83,8 @@ export type SearchSetup = z.infer<typeof searchSetupSchema>;
  * time to search; doing nothing can happen before the time runs out; the spots and buttons are what the setup says.
  */
 export const SEARCH_MIN_IDLE_MS = 6000;
+/** After a round left to doing nothing (the player is waiting, not searching), a shorter idle limit is fair down to this. */
+export const SEARCH_MIN_IDLE_AFTER_LEFT_MS = 3000;
 export const SEARCH_MIN_TIME_MS = 10000;
 /** 「おまかせ」's pace: its first action after the start's double-tap guard (450 ms) and a look, then one action a step. */
 export const SEARCH_AUTO_LEAD_MS = 1000;
@@ -100,6 +107,12 @@ export function searchFairness(setup: SearchSetup): string[] {
   if (setup.wrongLimit !== null && setup.wrongLimit > wrongSpots(setup.rounds[0]).length)
     problems.push(`wrongLimit ${setup.wrongLimit} is more than the first round's wrong spots: 「おまかせ」 could not reach it`);
   if (setup.idleMs !== null && setup.idleMs < SEARCH_MIN_IDLE_MS) problems.push(`idleMs ${setup.idleMs} is shorter than ${SEARCH_MIN_IDLE_MS} (time to look)`);
+  const afterLeft = setup.idleAfterLeftMs ?? null;
+  if (afterLeft !== null) {
+    if (setup.idleEnds !== "round" || setup.idleMs === null) problems.push("idleAfterLeftMs needs doing nothing to help a round on (idleEnds round, idleMs)");
+    else if (afterLeft > setup.idleMs) problems.push(`idleAfterLeftMs ${afterLeft} is longer than idleMs ${setup.idleMs}`);
+    if (afterLeft < SEARCH_MIN_IDLE_AFTER_LEFT_MS) problems.push(`idleAfterLeftMs ${afterLeft} is shorter than ${SEARCH_MIN_IDLE_AFTER_LEFT_MS}`);
+  }
   if (setup.timeLimitMs !== null && setup.timeLimitMs < SEARCH_MIN_TIME_MS) problems.push(`timeLimitMs ${setup.timeLimitMs} is shorter than ${SEARCH_MIN_TIME_MS}`);
   if (setup.idleMs !== null && setup.timeLimitMs !== null && setup.idleMs >= setup.timeLimitMs) problems.push("the time runs out before doing nothing could end the play");
   const searchAll = setup.rounds.reduce((sum, round) => sum + round.spots, 0);
@@ -122,6 +135,8 @@ export interface SearchProgress {
   helped: number;
   /** The player has searched a spot or pressed a button. */
   acted: boolean;
+  /** A round was left to doing nothing: helped through by the idle limit with nothing searched in it. */
+  left: boolean;
   /** What ended the play, once something has (null: it goes on). */
   ending: SearchEnding | null;
 }
@@ -136,8 +151,9 @@ export function searchProgress(actions: readonly SearchAction[], setup: SearchSe
   let misses = 0;
   let helped = 0;
   let acted = false;
+  let left = false;
   const roundButtons = setup.buttons.filter((button) => button.ends === "round").map((button) => button.id);
-  const progress = (ending: SearchEnding | null): SearchProgress => ({ round, searched, done, presses, misses, helped, acted, ending });
+  const progress = (ending: SearchEnding | null): SearchProgress => ({ round, searched, done, presses, misses, helped, acted, left, ending });
   // The round on show is over (found by the player, or helped); the next comes on show, or the play ends (the last round
   // stays on show, with what was searched in it).
   const over = (found: boolean, spot: number): SearchEnding | null => {
@@ -177,12 +193,18 @@ export function searchProgress(actions: readonly SearchAction[], setup: SearchSe
       // Doing nothing: helps the round through, or ends the play (always, or before the first action), or nothing (a hint).
       if (setup.idleEnds === "round") {
         helped += 1;
+        if (!searched.length) left = true;
         const ending = over(false, -1);
         if (ending) return progress(ending);
       } else if (setup.idleEnds === "play" || !acted) return progress({ kind: "idle", misses, helped });
     }
   }
   return progress(null);
+}
+
+/** The idle limit now (ms): shorter once a round was left to doing nothing, where the setup says so; null: none. */
+export function searchIdleMs(progress: Pick<SearchProgress, "left">, setup: SearchSetup): number | null {
+  return progress.left && setup.idleAfterLeftMs != null && setup.idleMs !== null ? setup.idleAfterLeftMs : setup.idleMs;
 }
 
 /** The ending an action brought, as the play goes (null: the play goes on). */

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import {
-  SEARCH_AUTO_LEAD_MS, searchActionEnding, searchAutoActionAt, searchAutoRecord, searchEnding, searchFairness, searchProgress, searchRules,
+  SEARCH_AUTO_LEAD_MS, searchActionEnding, searchAutoActionAt, searchAutoRecord, searchEnding, searchFairness, searchIdleMs, searchProgress, searchRules,
   searchSetupSchema, type SearchEnding, type SearchPlan, type SearchSetup,
 } from "./engine";
 
@@ -64,6 +64,22 @@ describe("the search engine", () => {
     // A round button's presses count again in the next round.
     const twice: SearchSetup = { ...rounds, buttons: [{ id: "ask", presses: 2, ends: "round" }] };
     expect(searchProgress([{ button: "ask" }, { button: "ask" }, { button: "ask" }], twice)).toMatchObject({ round: 1, presses: { ask: 1 } });
+  });
+
+  it("shortens the idle limit after a round left to doing nothing, where the setup says so", () => {
+    const shorter: SearchSetup = { ...rounds, idleAfterLeftMs: 4000 };
+    expect(searchIdleMs(searchProgress([], shorter), shorter)).toBe(8000);
+    // Left to her: nothing searched in the round, doing nothing helped it through.
+    expect(searchProgress([{ idle: true }], shorter).left).toBe(true);
+    expect(searchIdleMs(searchProgress([{ idle: true }], shorter), shorter)).toBe(4000);
+    // Not left: a look first, or her help asked for.
+    expect(searchIdleMs(searchProgress([{ spot: 1 }, { idle: true }], shorter), shorter)).toBe(8000);
+    expect(searchIdleMs(searchProgress([{ button: "ask" }], shorter), shorter)).toBe(8000);
+    expect(searchIdleMs(searchProgress([{ idle: true }], rounds), rounds)).toBe(8000);
+    expect(searchFairness(shorter)).toEqual([]);
+    expect(searchFairness({ ...shorter, idleAfterLeftMs: 2000 }).join()).toContain("idleAfterLeftMs 2000");
+    expect(searchFairness({ ...shorter, idleAfterLeftMs: 9000 }).join()).toContain("longer than idleMs");
+    expect(searchFairness({ ...setup, idleAfterLeftMs: 4000 }).join()).toContain("idleEnds round");
   });
 
   it("plays 「おまかせ」 to every kind of ending, after the start's guard and in time", () => {

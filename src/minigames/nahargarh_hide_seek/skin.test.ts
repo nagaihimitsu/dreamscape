@@ -48,6 +48,15 @@ describe("the hide-and-seek's field", () => {
     expect(html.match(/data-event=/gu)).toHaveLength(1);
   });
 
+  it("warns before the call that brings her out: the button and the band", () => {
+    const [call] = hideSeekSkin.buttons;
+    const label = (presses: number) => (typeof call.labelJa === "function" ? call.labelJa(view({ presses: { call: presses } })) : call.labelJa);
+    expect([0, 1, 2].map(label)).toEqual(["名前を呼ぶ", "名前を呼ぶ", "最後に呼ぶ"]);
+    expect(hideSeekSkin.statusJa?.(view({ presses: { call: 1 } }), null)).toBe("呼んだ 1回");
+    expect(hideSeekSkin.statusJa?.(view({ searched: [0], presses: { call: 2 } }), null)).toBe("開けた扉 1・呼んだ 2回（次で出てくる）");
+    expect(call.hintJa).toContain("3回目で、彼女が出てきます");
+  });
+
   it("puts the use's pictures in its declared slots", () => {
     expect(nahargarhHideSeek.artSlots.map((slot) => [slot.id, slot.kind])).toEqual([["bay", "backdrop"], ["room", "backdrop"], ["peek", "sprite"]]);
     const html = field({ bay: "/assets/minigames/bay.webp", room: "/assets/minigames/room.webp", peek: "/assets/minigames/peek.webp" },
