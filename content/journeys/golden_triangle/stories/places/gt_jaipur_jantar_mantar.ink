@@ -52,7 +52,9 @@ INCLUDE modules.ink
 # reaction: heroine,surprised,question
 それで、直接、抗議に……？
 # speaker: enemy
-ええ。それに、この人の時刻には根拠がない。正午は十二時。太陽が一番高いのも十二時。十一時四十三分なんて、ただの思いつきです
+ええ。この人は、太陽で決めた時刻だと言うんです。でも、根拠がない
+# speaker: enemy
+正午は十二時。太陽が一番高いのも十二時。十一時四十三分なんて、ただの思いつきです
 # speaker: narrator
 シャーストリーは何も言わず、日時計の斜面に落ちた影を、杖の先で示した。
 # speaker: enemy

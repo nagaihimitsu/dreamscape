@@ -14,14 +14,16 @@ INCLUDE modules.ink
 本当に、町じゅうがピンク……。写真より、ちょっと赤っぽいね。夕方の空みたいな色
 # background: gt_bg_jaipur_hotel_room
 # speaker: narrator
-荷物を置くなり、{heroine_name}は携帯を開いた。アマンからの連絡だ。
+荷物を置くなり、{heroine_name}は携帯を開いた。カムラの孫、アマンからの連絡だ。
+# speaker: narrator
+デリーで招かれた結婚式の、花婿その人だ。
 # speaker: gt_aman
 # phone: received
 # term: gt_term_baraat
 花婿の行列は、旅の最後の夜、旧市街のハワー・マハルの近くを通ります
 # speaker: gt_aman
 # phone: received
-祖母が、あなたに踊らせると言っています。逃げ道はありません
+祖母も、もうジャイプールに移っています。あなたに踊らせると言っています。逃げ道はありません
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 お、踊らせる……！？　行くとは言ったけど、踊るとは言ってない……！
@@ -51,6 +53,8 @@ INCLUDE modules.ink
 # se: gt_auto_rickshaw_horn
 翌朝、宿の中庭。荷物をまとめ終えた二人の前に、オートリキシャが止まった。降りてきたのは、桃色のサリーのカムラだった。
 # speaker: narrator
+デリーでは、二人がカムラを見送った。今朝は、カムラの方から来た。
+# speaker: narrator
 運転手が何か文句を言っている。料金を半分に値切られたらしい。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
@@ -69,7 +73,11 @@ INCLUDE modules.ink
 # reaction: heroine,shy,blush
 ……それ、わたしの、ですか
 # speaker: enemy
-わたしのよ。でも、あんたにもあげる。ナーニーは昨日、この家に来て六十年で初めて、行列と一緒に通りを歩いたわ。来年のガンガウルは、二人で行列を見に行くの。窓じゃなくて、下から
+わたしのよ。でも、あんたにもあげる
+# speaker: enemy
+花嫁のおばあさんはね、ゆうべ、嫁いで六十年で初めて、行列と一緒に通りを歩いたの
+# speaker: enemy
+来年のガンガウルは、あの人と二人で見に行く。窓じゃなくて、下から
 # speaker: narrator
 # recall: gt_album_d01
 # se: pen_click
@@ -106,6 +114,8 @@ INCLUDE modules.ink
 # speaker: narrator
 # quiet: scene
 {heroine_name}は段ボールの切れ端を見つめた。デリーの五行と、ジャイプールの一行。アーグラの分は、空いている。
+# speaker: narrator
+アーグラでは、名物ガイドの伝説の代わりに、人前で本当の話をした。
 # speaker: heroine
 アーグラは、自分で書かなきゃね。……本当の話の方を、短く
 {
