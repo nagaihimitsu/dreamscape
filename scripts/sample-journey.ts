@@ -223,11 +223,32 @@ export function journeyFolderFiles(folder: string): Map<string, Buffer | null> {
   return new Map(existsSync(folder) ? listFiles(folder).map((file): [string, Buffer | null] => [file, readFileSync(path.join(folder, file))]) : []);
 }
 
-/** One line per leftover, in Japanese, for the readiness report and journey:release. */
-export function describeSampleLeftover(leftover: SampleLeftover): string {
-  switch (leftover.kind) {
-    case "source": return `見本の出典（example.com）が残っています: ${leftover.file}（${leftover.count}件）`;
-    case "image": return `見本の画像のままです: ${leftover.file}`;
-    case "text": return `見本の文章が残っています: ${leftover.file}（${leftover.count}か所）`;
-  }
+/**
+ * One line per kind of leftover, in Japanese, for the readiness report and
+ * journey:release: the number of files and occurrences, then the files inside
+ * `folder` (the journey folder, relative to the repository) with their counts.
+ * A fresh journey:new copy has about 20 files with leftovers.
+ */
+export function describeSampleLeftovers(folder: string, leftovers: readonly SampleLeftover[]): string[] {
+  const kinds = [
+    { kind: "source", label: "見本の出典（example.com）が残っています", unit: "件" },
+    { kind: "image", label: "見本の画像のままです", unit: "" },
+    { kind: "text", label: "見本の文章が残っています", unit: "か所" },
+  ] as const;
+  return kinds.flatMap(({ kind, label, unit }) => {
+    const found = leftovers.filter((leftover) => leftover.kind === kind);
+    if (!found.length) return [];
+    const total = found.reduce((sum, leftover) => sum + leftover.count, 0);
+    const files = found.map((leftover) => unit ? `${leftover.file}（${leftover.count}）` : leftover.file).join("、");
+    return [`${label}（${found.length}ファイル${unit ? `・計${total}${unit}` : ""}）: ${folder}/ の ${files}`];
+  });
 }
+
+/**
+ * The sample's settings that are not content (journey:readiness notes them,
+ * without stopping a release: an author may choose the same currency and
+ * budget): the cities' country code, the places' coordinates (at sea, within
+ * one degree of 0,0) and the manifest's currency and starting budget.
+ * scripts/sample-leftovers.test.ts checks them against the sample's files.
+ */
+export const SAMPLE_SETTINGS = { countryCode: "XX", maxCoordinate: 1, currencyCode: "EUR", initialBudget: 100 } as const;

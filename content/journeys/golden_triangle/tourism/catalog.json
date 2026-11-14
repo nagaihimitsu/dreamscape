@@ -604,18 +604,18 @@
       "checkedAt": "2026-11-13"
     },
     {
-      "id": "gt_img_india_wedding_flower_bed",
-      "path": "assets/tourism/india/india_wedding_flower_bed.webp",
-      "width": 1600,
-      "height": 1200,
-      "altJa": "インド・パンジャーブ州で婚礼のために飾られた寝室。赤い掛け布の寝台の上に花びらで模様が作られ、マリーゴールドの花綱が天蓋のように垂れている。アーグラの宿の「ハネムーン・スペシャル」の飾りを表すイメージ。",
+      "id": "gt_img_hotel_room_towel_swans",
+      "path": "assets/tourism/india/hotel_room_towel_swans.webp",
+      "width": 1200,
+      "height": 1600,
+      "altJa": "アメリカ・ペンシルベニア州ランカスターのホテルの客室を、開けた扉の脇から見た写真。白い寝台の奥で、タオルで折った白鳥が二羽、くちばしを寄せ合って首でハートを作っている。寝台の上と、扉の足もとまでの絨毯に、造花の赤い薔薇の花びらが点々と散っている。アーグラの宿の「ハネムーン・スペシャル」の飾りを表すイメージ。",
       "isPlaceholder": false,
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Flower-bed-indian-wedding.jpg",
+      "sourceUrl": "https://www.flickr.com/photos/65067366@N00/29245280148/",
       "licenseName": "CC BY 2.0",
       "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-      "creditJa": "写真：Alicia Nijdam／Wikimedia Commons／CC BY 2.0",
-      "modificationJa": "元画像は3264×2448px。縦横比を維持し、切り抜き・描き足し・AI生成は行っていません。表示時は画面比率により端が切れる場合があります。さらに縦横比を保って1600×1200pxに縮小し、WebP形式（品質80）に変換。",
-      "checkedAt": "2026-11-13"
+      "creditJa": "写真：Steam Pipe Trunk Distribution Venue／Flickr／CC BY 2.0",
+      "modificationJa": "Flickr配信の元画像（3024×4032px）を使用。縦横比を維持し、切り抜き・ぼかし・描き足し・AI生成は行っていません。画像に埋め込まれた撮影情報（撮影位置を含む）は除きました。表示時は画面比率により端が切れる場合があります。さらに縦横比を保って1200×1600pxに縮小し、WebP形式（品質80）に変換。",
+      "checkedAt": "2026-11-14"
     },
     {
       "id": "gt_img_delhi_paharganj_corridor",

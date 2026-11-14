@@ -1,8 +1,8 @@
 import { z } from "zod";
+import { contentId as id } from "./content-id";
 import { japaneseText as japanese } from "./text-language";
 import { storyAddressSchema } from "./story-address";
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const text = z.string().trim().min(1);
 const https = z.url({ protocol: /^https$/ });
 const uniqueIds = z

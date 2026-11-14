@@ -14,7 +14,8 @@ const root = path.join(path.sep, "virtual", "dreamscape");
 const json = (value: unknown) => JSON.stringify(value);
 const trip = "content/journeys/trip_a";
 const own = (...groups: string[][]) => json({ schemaVersion: 1, artworks: groups.map((paths) => ({ noteJa: "テスト用の自作の絵", paths })) });
-const asset = (assetPath: string) => ({ path: assetPath });
+const asset = (assetPath: string, licenseName = "CC BY 4.0", modificationJa = "改変なし。") =>
+  ({ id: path.posix.basename(assetPath, path.posix.extname(assetPath)), path: assetPath, licenseName, modificationJa });
 
 /** One journey (trip_a) with a tourism photo and an item icon, and the root public/ with a reaction mark and a browser icon. */
 function files(): Record<string, string | null> {
@@ -89,9 +90,25 @@ describe("image rights", () => {
       `${trip}/presentation/own-artwork.json にも自作の絵として載っています。どちらか一方にしてください` +
       "（Image both credited and listed as own artwork: assets/tourism/trip_a/spot.webp）。");
     const twice = { ...files(), [`content/${OWN_ARTWORK_KIND}`]: own(["assets/effects/heart.svg"], ["favicon-16.png", "assets/effects/heart.svg"]) };
-    expect(check(twice)).toThrow(
-      "自作の絵の一覧で同じファイルが2回あります：content/presentation/own-artwork.json の \"assets/effects/heart.svg\"。" +
-      "1か所にまとめてください（Duplicate own artwork path: assets/effects/heart.svg）。");
+    const twiceMessage = "自作の絵の一覧で同じファイルが2回あります：content/presentation/own-artwork.json の \"assets/effects/heart.svg\"。" +
+      "1か所にまとめてください（Duplicate own artwork path: assets/effects/heart.svg）。";
+    expect(check(twice)).toThrow(twiceMessage);
+    // A repeat inside one group gets the same Japanese message (the schema does not refuse it first).
+    expect(check({ ...files(), [`content/${OWN_ARTWORK_KIND}`]: own(["assets/effects/heart.svg", "assets/effects/heart.svg"], ["favicon-16.png"]) }))
+      .toThrow(twiceMessage);
+  });
+
+  it("refuses a CC BY-SA photo whose note does not say that the served version keeps the licence", () => {
+    // The sentence images:optimize writes after its conversion (hasShareAlikeStatement reads the other wordings).
+    const converted = "Commons原本を使用。さらに同じ寸法のままWebP形式（品質80）に変換。";
+    const spot = "assets/tourism/trip_a/spot.webp";
+    expect(check(files(), [asset(spot, "CC BY-SA 4.0", `${converted}変換版もCC BY-SA 4.0で提供。`)])).not.toThrow();
+    expect(check(files(), [asset(spot, "CC BY-SA 4.0", converted)])).toThrow(
+      "継承の条件（BY-SA）のある写真に、配信する版も同じライセンスで提供するという一文がありません：tourism/catalog.json の \"spot\"（CC BY-SA 4.0）。" +
+      "modificationJa の最後のWebPへの変換の文の後（変換の文がなければどこでも）に、「変換版もCC BY-SA 4.0で提供。」のように書いてください" +
+      "（Share-alike image without a same-licence statement after its last conversion: spot）。");
+    // Other licences need no such sentence.
+    expect(check(files(), [asset(spot, "CC BY 4.0", converted)])).not.toThrow();
   });
 
   it("asks nothing for a journey's album images (public/assets/album/), and refuses a credit for one", () => {
@@ -123,7 +140,8 @@ describe("image rights", () => {
       "assets/effects/", "assets/effects/heart.txt", "assets/effects/heart"])
       expect(parse([bad]), bad).toBe(false);
     expect(parse([])).toBe(false);
-    expect(parse(["favicon-16.png", "favicon-16.png"])).toBe(false);
+    // A repeated path is the image-rights check's Japanese error, not a schema rule.
+    expect(parse(["favicon-16.png", "favicon-16.png"])).toBe(true);
     // The note's language is content:build's data-language warning (decision 32), not a schema rule.
     const english = { schemaVersion: 1, artworks: [{ noteJa: "own art", paths: ["favicon-16.png"] }] };
     expect(ownArtworkCatalogSchema.safeParse(english).success).toBe(true);

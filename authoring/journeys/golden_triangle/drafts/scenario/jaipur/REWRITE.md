@@ -1,5 +1,7 @@
 # ジャイプール改稿記録（2026-11-04）
 
+> **旧稿の記録です。** 2026-11-04 の旧稿「三分間の旅」のもので、2026-11-07 の全面改稿で脚本・クイズは置き換わりました（[改稿の設計](../../SCENARIO_REWRITE.md)。今の本文は `content/journeys/golden_triangle/` の Ink とクイズが正本）。
+
 > 記録の注記：本文のパス・コマンドは作成当時の配置のままです。現在、この旅行編のデータは `content/journeys/golden_triangle/`、制作資料は `authoring/journeys/golden_triangle/` にあります（[旧配置との対応表](../../../../README.md#当時の配置と現在の配置)）。
 
 この資料は編集判断の記録。実行脚本の正本は `content/stories/`。初期登録用 `narrative.json` を再投入して本番カタログを戻さない。

@@ -311,13 +311,18 @@ describe("journey:new in a copy of the repository", () => {
   it("is reported by journey:readiness and refused by journey:release until the sample content is replaced", async () => {
     const { journeyId: k, cityId: kc, prefix: kp } = first;
     const report = inspectJourneyReadiness(loadJourneyReadiness(root, k));
+    // One line per kind (sources, images, texts), each with its files inside the journey folder.
     const left = report.issues.filter((issue) => issue.code === "sample_content_left").map((issue) => issue.detail);
-    expect(left).toEqual(expect.arrayContaining([
-      `見本の出典（example.com）が残っています: content/journeys/${k}/quizzes/${kp}_${kc}_main_clock_tower_quiz.json（3件）`,
-      `見本の画像のままです: content/journeys/${k}/public/assets/tourism/${k}/${kc}_clock_tower.png`,
-    ]));
+    expect(left).toHaveLength(3);
+    const [sources, images, texts] = left;
+    expect(sources).toMatch(new RegExp(`^見本の出典（example\\.com）が残っています（\\d+ファイル・計\\d+件）: content/journeys/${k}/ の `, "u"));
+    expect(sources).toContain(`quizzes/${kp}_${kc}_main_clock_tower_quiz.json（3）`);
+    expect(images).toMatch(/^見本の画像のままです（\d+ファイル）: /u);
+    expect(images).toContain(`public/assets/tourism/${k}/${kc}_clock_tower.png`);
     // The clock tower's place file (stage 3a) keeps the sample's guide, battle and date lines.
-    expect(left.some((detail) => detail.startsWith(`見本の文章が残っています: content/journeys/${k}/stories/places/${kp}_${kc}_clock_tower.ink（`))).toBe(true);
+    expect(texts).toMatch(new RegExp(`^見本の文章が残っています（.+、stories/places/${kp}_${kc}_clock_tower\\.ink（\\d+）`, "u"));
+    // The sample's settings are notes, which stop nothing.
+    expect(report.notes.map((note) => note.code)).toEqual(["sample_country_code", "sample_coordinates", "sample_money"]);
     expect(report).toMatchObject({ ready: false, readyForPromotion: false });
     await expect(prepareJourneyRelease(root, k, false)).rejects.toThrow(/^見本の内容が残っているため公開できません。[\s\S]*見本の画像のままです/u);
 

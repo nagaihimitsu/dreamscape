@@ -1,10 +1,12 @@
 import { z } from "zod";
 import type { MiniGameRating, MiniGameRules } from "../../contract";
 
-// The `rhythm_tap` engine's rules (docs/13 2.2, 2.4, 2.11): beats come one after another (the skin's beat map, written
-// out or made from a tempo by rhythmTapBeats) and the player taps each as it comes. A tap inside a beat's window hits
-// it (one inside the finer `perfect` window is right on it: ぴったり); a beat whose window closes without one is missed;
-// a tap that meets no beat (or a beat already hit) is a stray. Taps before the first beat's window opens (a count-in,
+// The `rhythm_tap` engine's rules (docs/13 2.2, 2.4, 2.11): beats come one after another (the skin's beat map: written
+// as phrases by rhythmTapSteps, each phrase its own pace, or made from a tempo by rhythmTapBeats) and the player taps
+// each as it comes. A tap inside a beat's window hits it (one inside the finer `perfect` window is right on it:
+// ぴったり); a beat whose window closes without one is missed; a tap that meets no beat (or a beat already hit) is a
+// stray. A skin may also set rests: moments in the rhythm that are not to be tapped (the dance's break, the vendor's
+// feint): a tap inside a rest's window is a stray that fooled the player (it weighs more on the stray gauge). Taps before the first beat's window opens (a count-in,
 // the vendor's reach) are not counted at all: tapping along with a count is no fault. A skin may narrow the last beats'
 // windows (the play's peak; a smaller limit of misses there too), give the player a stop button (the play ends when they
 // press it), a partner who stops after a fixed beat, a limit of misses that ends the play, and a stray gauge (each stray
@@ -49,6 +51,13 @@ export const rhythmTapTuningSchema = z.object({
   strayLimit: z.number().int().positive().optional(),
   /** The partner stops after this many beats (none: no partner). The skin draws them; the summary compares the stop. */
   partnerStop: z.number().int().positive().optional(),
+  /**
+   * Moments in the rhythm not to tap (a rest of the dance, a feint), ascending: a tap from `earlyMs` before one to
+   * `lateMs` after it is fooled (a stray that fills the stray gauge by `weight`, 1 if none). None: no rests.
+   */
+  rests: z.object({
+    at: z.array(z.number().int().nonnegative()).min(1), earlyMs: windowMs, lateMs: windowMs, weight: z.number().int().positive().optional(),
+  }).strict().optional(),
 }).strict();
 export type RhythmTapTuning = z.infer<typeof rhythmTapTuningSchema>;
 
@@ -66,8 +75,12 @@ export interface RhythmTapSummary {
   perfects: number;
   /** Beats missed (the stray gauge's overflows are counted apart). */
   misses: number;
-  /** Taps that met no beat, or a beat already hit (taps before the first window are not counted at all). */
+  /** Taps that met no beat, or a beat already hit (taps before the first window are not counted at all); with the fooled ones. */
   strays: number;
+  /** Strays inside a rest's window (fooled by a rest or a feint). */
+  fooled: number;
+  /** Each rest judged so far, in order: tapped (fooled), or its window closed without a tap (kept). */
+  rests: readonly ("kept" | "fooled")[];
   /** The stray gauge as it is now (0 to strayLimit − 1). */
   gauge: number;
   /** How many times the stray gauge filled (each one counted as a miss toward missLimit). */
@@ -111,6 +124,32 @@ export function rhythmTapPerfect(tuning: RhythmTapTuning, offset: number): boole
 /** When the first beat's window opens: taps before it are not counted (a count-in). */
 export const rhythmTapOpens = (tuning: RhythmTapTuning): number => tuning.beats[0] - rhythmTapWindow(tuning, 0).earlyMs;
 
+/** A rest's window: the taps that it fools. */
+const restWindow = (rests: NonNullable<RhythmTapTuning["rests"]>, at: number) => ({ from: at - rests.earlyMs, to: at + rests.lateMs });
+
+/** Why rests would be unfair: a tap that could be both a hit and fooled, a rest no tap counts at, rests that touch. */
+function restProblems(tuning: RhythmTapTuning, rests: NonNullable<RhythmTapTuning["rests"]>): string[] {
+  const { beats } = tuning;
+  const problems: string[] = [];
+  const opens = rhythmTapOpens(tuning);
+  const end = rhythmTapEnd(tuning);
+  rests.at.forEach((at, index) => {
+    const { from, to } = restWindow(rests, at);
+    if (index > 0 && from <= restWindow(rests, rests.at[index - 1]).to) problems.push(`rest ${index + 1}'s window touches the rest before`);
+    if (from < opens) problems.push(`rest ${index + 1} (${at} ms) comes before the first beat's window opens (no tap counts there)`);
+    if (to >= end) problems.push(`rest ${index + 1} (${at} ms) is not over before the play ends`);
+    const after = beats.findIndex((beat) => beat > at);
+    const before = after === -1 ? beats.length - 1 : after - 1;
+    if (beats.includes(at)) problems.push(`rest ${index + 1} (${at} ms) is on a beat`);
+    else {
+      if (before >= 0 && beats[before] + rhythmTapWindow(tuning, before).lateMs >= from) problems.push(`rest ${index + 1}'s window touches beat ${before + 1}'s (a tap could be both)`);
+      if (after >= 0 && beats[after] - rhythmTapWindow(tuning, after).earlyMs <= to) problems.push(`rest ${index + 1}'s window touches beat ${after + 1}'s (a tap could be both)`);
+    }
+  });
+  if (rests.at.some((at, index) => index > 0 && at <= rests.at[index - 1])) problems.push("the rests are not in order");
+  return problems;
+}
+
 /** The reasons a tuning is not fair on a phone (none: fair). */
 export function rhythmTapFairness(tuning: RhythmTapTuning): string[] {
   const parsed = rhythmTapTuningSchema.safeParse(tuning);
@@ -139,6 +178,7 @@ export function rhythmTapFairness(tuning: RhythmTapTuning): string[] {
   if (rhythmTapOpens(tuning) < RHYTHM_TAP_GUARD_MS) problems.push(`the first beat's window opens inside the start's double-tap guard (${RHYTHM_TAP_GUARD_MS} ms)`);
   if (endAfterMs <= rhythmTapWindow(tuning, beats.length - 1).lateMs) problems.push(`endAfterMs ${endAfterMs} ends the play inside the last beat's window`);
   if (partnerStop !== undefined && partnerStop >= beats.length) problems.push(`partnerStop ${partnerStop} leaves no beat after the partner stops`);
+  if (tuning.rests) problems.push(...restProblems(tuning, tuning.rests));
   return problems;
 }
 
@@ -153,7 +193,7 @@ const isTime = (value: unknown): value is number => typeof value === "number" &&
  * the end. Nothing after the end counts (taps, the stop), nor taps before the first beat's window.
  */
 export function rhythmTapJudge(record: RhythmTapRecord, tuning: RhythmTapTuning, now = Number.POSITIVE_INFINITY): RhythmTapSummary {
-  const { beats, missLimit, peak, strayLimit } = tuning;
+  const { beats, missLimit, peak, strayLimit, rests } = tuning;
   const last = rhythmTapEnd(tuning);
   const stop = isTime(record.stopMs) && record.stopMs <= last ? record.stopMs : null;
   let ended: RhythmTapEnd | null = stop !== null && stop <= now ? "stop" : last <= now ? "end" : null;
@@ -169,6 +209,10 @@ export function rhythmTapJudge(record: RhythmTapRecord, tuning: RhythmTapTuning,
   let gauge = 0;
   let overflows = 0;
   let tapped = 0;
+  let fooled = 0;
+  const restTapped = (rests?.at ?? []).map(() => false);
+  /** The rest whose window `time` is in (-1: none). */
+  const restOf = (time: number) => (rests ? rests.at.findIndex((at) => time >= at - rests.earlyMs && time <= at + rests.lateMs) : -1);
   /** Whether the misses so far end the play, as of a slip at the beat at `index` (the peak's own limit from its first beat on). */
   const limited = (index: number) => {
     const limit = peak?.missLimit !== undefined && index >= peak.from ? Math.min(peak.missLimit, missLimit ?? peak.missLimit) : missLimit;
@@ -206,8 +250,13 @@ export function rhythmTapJudge(record: RhythmTapRecord, tuning: RhythmTapTuning,
       continue;
     }
     strays += 1;
+    const rest = restOf(tap);
+    if (rest >= 0) {
+      fooled += 1;
+      restTapped[rest] = true;
+    }
     if (strayLimit === undefined) continue;
-    gauge += 1;
+    gauge += rest >= 0 ? rests?.weight ?? 1 : 1;
     if (gauge < strayLimit) continue;
     gauge = 0;
     overflows += 1;
@@ -226,8 +275,15 @@ export function rhythmTapJudge(record: RhythmTapRecord, tuning: RhythmTapTuning,
     streak = judgment === "hit" ? streak + 1 : 0;
     longestStreak = Math.max(longestStreak, streak);
   }
+  // A rest is judged when tapped, or kept once its window has closed before the end (in order: their windows do not touch).
+  const restJudged: ("kept" | "fooled")[] = [];
+  for (const [index, at] of (rests?.at ?? []).entries()) {
+    if (restTapped[index]) restJudged.push("fooled");
+    else if (rests && at + rests.lateMs <= cutoff) restJudged.push("kept");
+    else break;
+  }
   return {
-    judged, offsets, hits: judged.length - misses, perfects, misses, strays, gauge, overflows, taps: tapped, streak, longestStreak,
+    judged, offsets, hits: judged.length - misses, perfects, misses, strays, fooled, rests: restJudged, gauge, overflows, taps: tapped, streak, longestStreak,
     came: beats.filter((beat) => beat <= cutoff).length,
     stopCount: ended === "stop" && stop !== null ? beats.filter((beat) => beat <= stop).length : null,
     ended,
@@ -287,6 +343,34 @@ export function rhythmTapThen(beats: readonly number[], gaps: readonly number[])
 
 /** A tempo's beat interval in milliseconds. */
 export const rhythmTapInterval = (bpm: number): number => Math.round(60000 / bpm);
+
+/** A phrase of a written beat map: each character of `steps` lasts `stepMs` (spaces and `|` are bar lines: no time). */
+export interface RhythmTapPhrase { stepMs: number; steps: string }
+/** A written step: its character and its moment. */
+export interface RhythmTapStep { char: string; at: number }
+
+/**
+ * A beat map written as phrases, one after another from `firstMs` (the first phrase's first step), each at its own pace:
+ * every character but `.` (a step with nothing in it) is a step's mark, at its moment (rounded); what each character
+ * means is the skin's (by convention `x` a beat, `X` a big one, `o` a rest). The same every time. `endMs`: where the
+ * last phrase ends (a step after its last).
+ */
+export function rhythmTapSteps(firstMs: number, phrases: readonly RhythmTapPhrase[]): { steps: RhythmTapStep[]; endMs: number } {
+  const steps: RhythmTapStep[] = [];
+  let at = firstMs;
+  for (const { stepMs, steps: written } of phrases) {
+    for (const char of written) {
+      if (char === " " || char === "|") continue;
+      if (char !== ".") steps.push({ char, at: Math.round(at) });
+      at += stepMs;
+    }
+  }
+  return { steps, endMs: Math.round(at) };
+}
+
+/** The moments of the steps written with any of `chars` (rhythmTapSteps), in order. */
+export const rhythmTapPick = (steps: readonly RhythmTapStep[], chars: string): number[] =>
+  steps.filter((step) => chars.includes(step.char)).map((step) => step.at);
 
 /**
  * A skin's rules from the engine's (docs/13 2.4): `outcomeOf` reads the whole record's summary; 「おまかせ」 to an outcome

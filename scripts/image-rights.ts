@@ -1,7 +1,9 @@
 import path from "node:path";
 import { IMAGE_EXTENSIONS, ownArtworkCatalogSchema } from "../src/content/own-artwork-schema";
+import type { TourismAsset } from "../src/content/tourism-schemas";
 import { albumFolderLayer } from "./album-images";
 import { displayPath, parseCatalog, type ContentLayer, type ContentSources } from "./content-sources";
+import { hasShareAlikeStatement } from "./image-optimization";
 
 // Rights of the served images (docs/02 「画像の出典と自作の絵」): every image
 // the game serves is either a credited tourism image (tourism/catalog.json
@@ -36,7 +38,8 @@ export function layerOfFile(layers: readonly ContentLayer[], file: string): Cont
 
 /**
  * The own-artwork paths of each layer (layer ID → served path → the file that
- * lists it) and the paths one layer lists twice (as error messages).
+ * lists it) and the paths one layer lists twice, in one group or in two (as
+ * error messages; the schema leaves repeats to this check).
  */
 export function ownArtworkByLayer(sources: Pick<ContentSources, "root" | "layers" | "catalogs">): {
   byLayer: Map<string, Map<string, string>>; duplicates: string[];
@@ -71,7 +74,11 @@ export function ownArtworkByLayer(sources: Pick<ContentSources, "root" | "layers
  * 4. a path listed twice by one layer (ownArtworkByLayer);
  * 5. an album image (a file of a journey's public/assets/album/) that the
  *    tourism catalog credits: the album shows only Dreamscape's own artwork,
- *    which never needs a list line or a credit.
+ *    which never needs a list line or a credit;
+ * 6. a CC BY-SA tourism image whose modification note does not say that the
+ *    served version keeps the licence (hasShareAlikeStatement): images:optimize
+ *    writes that sentence when it converts, but a photo converted or edited by
+ *    hand would pass without it.
  * Served files that are not images (the web app manifest, the voices of
  * public/assets/voice/: their rights are not decided yet; the sound effects of
  * public/assets/se/, whose sources presentation/sounds.json lists:
@@ -80,7 +87,7 @@ export function ownArtworkByLayer(sources: Pick<ContentSources, "root" | "layers
  */
 export function checkImageRights(
   sources: Pick<ContentSources, "root" | "layers" | "catalogs" | "publicFiles">,
-  tourismAssets: readonly { path: string }[],
+  tourismAssets: readonly Pick<TourismAsset, "id" | "path" | "licenseName" | "modificationJa">[],
 ): void {
   const { root } = sources;
   const show = (file: string) => displayPath(root, file);
@@ -120,6 +127,16 @@ export function checkImageRights(
       errors.push(`自作の絵の一覧にあるファイルがありません：${show(listedBy)} の "${assetPath}" は ${publicFolder(layer)}/${assetPath} にありません。` +
         `ファイルを消したり移したりしたなら、この行も直してください（Own artwork not served by its layer: ${assetPath}）。`);
     }
+
+  // The merged catalog keeps its records in provenance order: the file of each record.
+  const assetFiles = sources.catalogs["tourism/catalog.json"]?.provenance.items.assets ?? [];
+  tourismAssets.forEach((asset, index) => {
+    if (!/BY-SA/u.test(asset.licenseName) || hasShareAlikeStatement(asset.modificationJa)) return;
+    const catalogFile = assetFiles[index] ? show(assetFiles[index]) : "tourism/catalog.json";
+    errors.push(`継承の条件（BY-SA）のある写真に、配信する版も同じライセンスで提供するという一文がありません：${catalogFile} の "${asset.id}"（${asset.licenseName}）。` +
+      `modificationJa の最後のWebPへの変換の文の後（変換の文がなければどこでも）に、「変換版も${asset.licenseName}で提供。」のように書いてください` +
+      `（Share-alike image without a same-licence statement after its last conversion: ${asset.id}）。`);
+  });
 
   if (errors.length) throw new Error(errors.join("\n"));
 }

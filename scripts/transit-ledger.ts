@@ -1,5 +1,6 @@
 import { isDeepStrictEqual } from "node:util";
 import { z } from "zod";
+import { contentId as id } from "../src/content/content-id";
 import { tourismSourceSchema } from "../src/content/tourism-schemas";
 import { isTourOnlyPlace, type TravelCatalog, type TravelRoute } from "../src/content/travel-schemas";
 import { WALK_MODE_ID } from "../src/content/transport-schemas";
@@ -18,7 +19,6 @@ type TourismSource = z.infer<typeof tourismSourceSchema>;
 // the ledger against the routes (transport-validation.ts); `inconclusive`
 // builds but is not ready for release (journey:transit, city:bundle apply).
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 
 /**
  * available: a route of this mode exists. not_suitable: the service exists

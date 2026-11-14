@@ -12,7 +12,7 @@ INCLUDE modules.ink
 # background: gt_bg_agra_hotel_room_heart
 # speaker: narrator
 # se: door_open
-寝台の上に、薔薇の花びらで大きなハート。その真ん中で、タオルで折った白鳥が二羽、くちばしを寄せ合っている。
+足もとから寝台まで、薔薇の花びらが点々と道を作っていた。寝台の上では、タオルで折った白鳥が二羽、くちばしを寄せ合い、首でハートを描いている。
 # speaker: gt_samir
 # cutin: name
 # photo: gt_album_a01 # photo_caption: ハネムーン・スペシャルの白鳥
@@ -21,7 +21,7 @@ INCLUDE modules.ink
 サミールは胸を張った。
 # speaker: narrator
 # pause: 700
-隣のこちらの部屋の寝台にも、まったく同じハートと白鳥が待っていた。
+隣のこちらの部屋にも、まったく同じ花びらの道と白鳥のハートが待っていた。
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 # voice: gt_agra_arrival_001
@@ -82,7 +82,7 @@ INCLUDE modules.ink
 # leave: gt_anwar
 # speaker: narrator
 # recall: gt_album_a01
-二つの部屋の扉を開けると、どちらも、ハートも白鳥も消えていた。寝台は、ただの白い寝台に戻っている。
+二つの部屋の扉を開けると、どちらも、花びらの道も白鳥も消えていた。寝台は、ただの白い寝台に戻っている。
 {
 - ending_reached:
     # speaker: heroine
