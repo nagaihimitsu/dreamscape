@@ -34,7 +34,7 @@ export const cricketBatting = defineMiniGame({
     { id: "six", labelJa: "まっすぐ打ち返した", noteJa: "針が金色の所で振った", finishJa: "六点！",
       reaction: { kind: "surprise", linesJa: ["……うそ、川まで？"] } },
     // Her face only: the story's 「一瞬の静けさ」 comes before Sonia's call and her laugh.
-    { id: "over_wall", labelJa: "横へ高く上がった", noteJa: "少し早く振った", finishJa: "アウト！",
+    { id: "over_wall", labelJa: "横へ高く上がった", noteJa: "少し早く振った", finishJa: "アウト！", finishTone: "plain",
       reaction: { kind: "surprise" } },
     { id: "edge", labelJa: "板の端に当たった", noteJa: "少し遅く振った", finishJa: "当たった！",
       reaction: { kind: "oops", linesJa: ["わっ、足もとまで来た"] } },

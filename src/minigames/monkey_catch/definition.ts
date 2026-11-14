@@ -34,9 +34,9 @@ export const monkeyCatch = defineMiniGame({
       reaction: { kind: "surprise", linesJa: ["わっ、取った！", "ナイスキャッチ！"] } },
     // Her face only when it gets away: for her bottle the story goes on to the glass breaking and 「しばらく何も言わなかった」,
     // and its next line tells the slip (指先に…跳ねて／手の先をかすめて) itself.
-    { id: "fumbled", labelJa: "指先で弾いた", noteJa: "少し早いか、少し遅い", finishJa: "つるっ！",
+    { id: "fumbled", labelJa: "指先で弾いた", noteJa: "少し早いか、少し遅い", finishJa: "つるっ！", finishTone: "plain",
       reaction: { kind: "oops" } },
-    { id: "missed", labelJa: "受け止められなかった", noteJa: "早すぎるか遅すぎる、または押さなかった", finishJa: "落ちた！",
+    { id: "missed", labelJa: "受け止められなかった", noteJa: "早すぎるか遅すぎる、または押さなかった", finishJa: "落ちた！", finishTone: "oops",
       reaction: { kind: "oops" } },
   ],
   defaultAuto: "caught",

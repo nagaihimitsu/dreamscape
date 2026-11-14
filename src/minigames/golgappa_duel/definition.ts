@@ -36,7 +36,7 @@ export const golgappaDuel = defineMiniGame({
       reaction: { kind: "surprise", linesJa: ["せーの、って言ってないのに"] } },
     { id: "you_first", labelJa: "先に「バス」と言った", noteJa: "彼女が手を上げるより前に「バス」", finishJa: "バス！",
       reaction: { kind: "tease", linesJa: ["あれ、もうおしまい？", "ふふ、早い早い"] } },
-    { id: "choke", labelJa: "器にたまって、むせた", noteJa: "器に2つたまった（食べそびれるか、何もない時に押して「むせ」が3つたまると1つ残る。彼女が手を上げた後は、1つ食べそびれると次が落ちてくる。連打はむせる）", finishJa: "ごほっ！",
+    { id: "choke", labelJa: "器にたまって、むせた", noteJa: "器に2つたまった（食べそびれるか、何もない時に押して「むせ」が3つたまると1つ残る。彼女が手を上げた後は、1つ食べそびれると次が落ちてくる。連打はむせる）", finishJa: "ごほっ！", finishTone: "oops",
       reaction: { kind: "oops", linesJa: ["わっ、大丈夫！？"] } },
     { id: "outlast", labelJa: "彼女より長く食べた", noteJa: "16個目が落ちた後で「バス」か、むせずに最後まで食べ続けた（彼女の後は速く、1つも食べそびれられない）", finishJa: "粘った！",
       reaction: { kind: "surprise", linesJa: ["まだ食べるの！？", "え、どこに入ってるの？"] } },

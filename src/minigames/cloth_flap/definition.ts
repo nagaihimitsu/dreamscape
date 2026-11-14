@@ -27,9 +27,9 @@ export const clothFlap = defineMiniGame({
   outcomes: [
     { id: "perfect", labelJa: "目の前で広げた", noteJa: "金色の段に立っている間に押した", finishJa: "ばさっ！",
       reaction: { kind: "laugh", linesJa: ["鳩、上手すぎ！", "今の、完璧な鳩だった"] } },
-    { id: "early", labelJa: "早すぎた", noteJa: "金色の段に足が着く前に押した", finishJa: "バレた！",
+    { id: "early", labelJa: "早すぎた", noteJa: "金色の段に足が着く前に押した", finishJa: "バレた！", finishTone: "plain",
       reaction: { kind: "tease", linesJa: ["ふふ、せっかちな鳩"] } },
-    { id: "late", labelJa: "遅すぎた", noteJa: "金色の段から足が離れてから押した", finishJa: "後ろから！",
+    { id: "late", labelJa: "遅すぎた", noteJa: "金色の段から足が離れてから押した", finishJa: "後ろから！", finishTone: "plain",
       reaction: { kind: "laugh", linesJa: ["後ろから来る鳩、初めて見た"] } },
     { id: "frozen", labelJa: "広げられなかった", noteJa: "最後まで押さなかった", finishJa: "固まった！",
       reaction: { kind: "tease", linesJa: ["……鳩、固まってる？"] } },
