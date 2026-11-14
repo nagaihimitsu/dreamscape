@@ -59,13 +59,15 @@
   letter-spacing: 0.04em;
 }
 .glossary-term-mark .icon { width: 14px; height: 14px; }
+/* The photo whole, in its own shape (a tall one stays tall), as wide as the card and no taller than its share of the
+   screen; the file's size (its width and height attributes) keeps its room before it loads. */
 .glossary-term-photo {
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
   height: auto;
   max-height: min(190px, 28dvh);
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
+  margin: 0 auto;
   border-radius: 10px;
   background: #e9dcc4;
 }
@@ -97,6 +99,13 @@
   font-size: 14px;
 }
 .glossary-term-count { margin-left: 4px; font-size: 12px; color: var(--ds-ink-muted); }
+/* A short phone held upright (320×568): a tighter card higher up, so the dialogue window's lines stay in sight below it. */
+@media (orientation: portrait) and (max-height: 700px) {
+  .glossary-term-window { padding-top: max(10px, 4dvh, env(safe-area-inset-top)); }
+  .glossary-term-card { gap: 4px; padding: 10px 14px; }
+  .glossary-term-photo { max-height: min(190px, 24dvh); }
+  .glossary-term-close.secondary { margin-top: 2px; }
+}
 /* A short screen held sideways: the photo beside the words, so the card stays within the screen. */
 @media (orientation: landscape) and (max-height: 500px) {
   .glossary-term-window { padding-top: max(8px, env(safe-area-inset-top)); }

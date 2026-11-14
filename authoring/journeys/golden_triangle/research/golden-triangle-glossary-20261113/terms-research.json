@@ -1,0 +1,2271 @@
+[
+ {
+  "id": "gt_term_golgappa",
+  "nameJa": "ゴルガッパ",
+  "readingJa": null,
+  "aliasJa": "パーニー・プーリー",
+  "category": "food",
+  "lineJa": "薄く揚げた空洞の玉に、酸っぱく辛い香草水を注いで一口で食べる屋台の軽食。",
+  "imageId": "gt_img_term_golgappa",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_chandni_chowk.ink",
+    "knot": "gt_delhi_date_chandni_chowk",
+    "line": "ゴルガッパ。薄く揚げた空洞の玉に、男が親指で穴を開け、じゃがいもを少し詰め、酸っぱくて辛い緑の水にくぐらせる。それを、客の器に一つずつ置いていく。",
+    "lineNo": 31,
+    "noteJa": "デリーのデート「バス、と言うまで」（任意）。ゴルガッパが物語に出るのはこの行が最初。宿の翌朝・駅前の詐欺の場面・勝負の選択肢での再登場は、どれもこのデートの後（フラグ条件つき）なので札は不要。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_golgappa",
+   "previewFile": "photos/gt_term_golgappa/A.jpg",
+   "title": "File:Crispy Pani Puri.jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Crispy_Pani_Puri.jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Crispy_Pani_Puri.jpg",
+   "width": 2592,
+   "height": 1944,
+   "author": "Teena Sometimes",
+   "licenseName": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "licenseCheckJa": "{{self|cc-by-sa-4.0}}（author 欄：[[User:Teena Sometimes|Teena Sometimes]]）",
+   "date": "2015-06-15 14:45:55",
+   "imagePosition": {
+    "x": 50,
+    "y": 50
+   },
+   "cropJa": "正方形に切るなら中央。皿の上の揚げ玉と、真ん中の緑の水が入る。",
+   "altJa": "皿に並んだゴルガッパの写真。薄く揚げた丸い玉の上部に穴があき、真ん中の器に緑色の香草水が入っている。",
+   "creditJa": "写真：Teena Sometimes／Wikimedia Commons／CC BY-SA 4.0",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "緑の水と、穴をあけた揚げ玉が一目で分かる。皿の飾り（薄切りの玉ねぎ・唐辛子）が少し華やかすぎる。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Panipuri, Golgappa, Phuchka.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Panipuri,_Golgappa,_Phuchka.jpg",
+    "author": "Rupamdas75",
+    "licenseName": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 1200,
+    "height": 800,
+    "noteJa": "揚げ玉に具をのせ、中央の器に香草水。茶色の台。具が多く、玉の形がやや見えにくい。",
+    "previewFile": "photos/gt_term_golgappa/B.jpg"
+   }
+  },
+  "priority": "高",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Panipuri",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Panipuri（英語版ウィキペディア）：揚げた空洞のプーリーに具を詰め、味つけした水に浸す、屋台の軽食（チャート）。"
+   }
+  ],
+  "notesJa": "地図のデート一覧の説明文（romance/date_catalog.json）にも「ゴルガッパ」とあり、遊ぶ人は物語より先に字だけ見ることがある。"
+ },
+ {
+  "id": "gt_term_blackbuck",
+  "nameJa": "ブラックバック",
+  "readingJa": null,
+  "aliasJa": null,
+  "category": "creature",
+  "lineJa": "インドの草原にすむレイヨウ。雄は背が黒く、らせん状にねじれた長い角をもつ。",
+  "imageId": "gt_img_term_blackbuck",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_agra_akbar_tomb.ink",
+    "knot": "gt_agra_date_akbar_tomb",
+    "line": "芝生の上で、背中の黒い獣が数頭、草を食んでいた。ねじれた長い角。ブラックバックだ。この廟の庭では、その群れが見られる。",
+    "lineNo": 20,
+    "noteJa": "アーグラのデート「猿との取引」（任意）の冒頭。猿の場面（gt_agra_akbar_tomb_monkey_attar）での再登場はこの後。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_blackbuck",
+   "previewFile": "photos/gt_term_blackbuck/A.jpg",
+   "title": "File:Blackbuck in Tal Chhapar Sanctuary November 2025 by Tisha Mukherjee 06.jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blackbuck_in_Tal_Chhapar_Sanctuary_November_2025_by_Tisha_Mukherjee_06.jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5e/Blackbuck_in_Tal_Chhapar_Sanctuary_November_2025_by_Tisha_Mukherjee_06.jpg",
+   "width": 4265,
+   "height": 3199,
+   "author": "Tisha Mukherjee",
+   "licenseName": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "licenseCheckJa": "{{self|cc-by-sa-4.0}}（author 欄：[[User:Tisha Mukherjee|Tisha Mukherjee]]）",
+   "date": "2025-11-26 08:35:29",
+   "imagePosition": {
+    "x": 50,
+    "y": 50
+   },
+   "cropJa": "横長。正方形なら x≈50 で、体と角が収まる。",
+   "altJa": "乾いた草地を歩く雄のブラックバックの写真。背は黒く腹は白く、らせん状にねじれた長い角がある。",
+   "creditJa": "写真：Tisha Mukherjee／Wikimedia Commons／CC BY-SA 4.0",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "雄の黒い背、白い腹、らせんの角がはっきり見える。背景は枯れ草で単純。撮影はラージャスターン州のタール・チャーパル保護区（アクバル廟ではない）。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:BBR-Male-Blackbuck-walking (16120302957).jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:BBR-Male-Blackbuck-walking_(16120302957).jpg",
+    "author": "Navin Sigamany",
+    "licenseName": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "width": 2000,
+    "height": 1335,
+    "noteJa": "歩く雄の横向き。茶色の地面の前で、黒い体と角がくっきりしている。CC BY 2.0（継承なし）。",
+    "previewFile": "photos/gt_term_blackbuck/B.jpg"
+   }
+  },
+  "priority": "高",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Blackbuck",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Blackbuck（英語版ウィキペディア）：インドとネパールの草原にすむ中型のレイヨウ。雄はらせん状の角をもち、体の上側が黒褐色〜黒。"
+   },
+   {
+    "url": "https://agra.nic.in/tourist-place/akbars-tomb/",
+    "checkedAt": "2026-11-13",
+    "noteJa": "リポジトリの場面の出典（アーグラ県、2026-11-08確認）：アクバル廟の庭でブラックバックが草を食む。"
+   }
+  ]
+ },
+ {
+  "id": "gt_term_attar",
+  "nameJa": "アタル",
+  "readingJa": null,
+  "aliasJa": "イッタル",
+  "category": "thing",
+  "lineJa": "花や木の香りを蒸留して油に閉じこめた、南アジアの伝統的な香油。",
+  "imageId": "gt_img_term_attar",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_jama_masjid.ink",
+    "knot": "gt_delhi_main_jama_masjid_battle",
+    "line": "アタル。花や木を、油に閉じこめたものだ。手首を",
+    "lineNo": 60,
+    "noteJa": "デリーの観光クイズ（ジャーマー・マスジド、必須）。ほかの場面では「雨の匂いの小瓶」と呼ばれ、「アタル」の語はここだけ。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_attar",
+   "previewFile": "photos/gt_term_attar/A.jpg",
+   "title": "File:Perfume bottles displayed at a shop near Charminar in Hyderabad, India.jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Perfume_bottles_displayed_at_a_shop_near_Charminar_in_Hyderabad,_India.jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Perfume_bottles_displayed_at_a_shop_near_Charminar_in_Hyderabad%2C_India.jpg",
+   "width": 6120,
+   "height": 8160,
+   "author": "Dev Jadiya",
+   "licenseName": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "licenseCheckJa": "{{self|cc-by-sa-4.0}}（author 欄：[[User:Dev Jadiya|Dev Jadiya]]）",
+   "date": "2026-07-09 19:23:44",
+   "imagePosition": {
+    "x": 50,
+    "y": 50
+   },
+   "cropJa": "縦長。正方形なら中央で、金色の台に並んだ小瓶の列が入る。",
+   "altJa": "香油の店に並ぶ小さなガラス瓶の写真。色の違う液体の入った飾り瓶が、金色の台に何十本も並んでいる。",
+   "creditJa": "写真：Dev Jadiya／Wikimedia Commons／CC BY-SA 4.0",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "台本の「色の違う液体の小瓶が何十本も並んでいる」に近い。撮影はハイデラバードのチャールミナール近くの店で、デリーではない。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Camel skin Perfume Bottles from Kannauj.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Camel_skin_Perfume_Bottles_from_Kannauj.jpg",
+    "author": "David Prasad",
+    "licenseName": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "width": 4928,
+    "height": 3264,
+    "noteJa": "カナウジ（アタルの産地）の、ラクダの革で作った香油の入れ物。伝統の道具だが、小瓶の店先とは違う。",
+    "previewFile": "photos/gt_term_attar/B.jpg"
+   }
+  },
+  "priority": "高",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Ittar",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Attar（英語版ウィキペディア）：植物などから水蒸気蒸留などで得る香油。ittar とも。"
+   },
+   {
+    "url": "https://thebetterindia.com/59606/scent-rain-mitti-attar-kannauj",
+    "checkedAt": "2026-11-13",
+    "noteJa": "リポジトリの場面の出典（2026-11-08確認）：ミッティの香油は焼いた土の匂いを閉じこめた雨の匂い。"
+   }
+  ],
+  "notesJa": "同じ場面の「ミッティ」（土の匂いのアタル）は、すでに土地の言葉（gt_delhi_word_mitti）がある。"
+ },
+ {
+  "id": "gt_term_petha",
+  "nameJa": "ペーター",
+  "readingJa": null,
+  "aliasJa": null,
+  "category": "food",
+  "lineJa": "冬瓜を砂糖で煮つめた、白く半透明のお菓子。アーグラの名物。",
+  "imageId": "gt_img_term_petha",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_agra_taj_mahal.ink",
+    "knot": "gt_agra_finale_battle",
+    "line": "帰りぎわ、アンワルは甥の支配人に電話をかけ、何か短く言った。それから、二人に紙の箱を差し出した。アーグラ名物の菓子、ペーター。",
+    "lineNo": 358,
+    "noteJa": "アーグラのフィナーレ（必須）の終わり。エピローグ（gt_agra_hotel_hub の gt_agra_epilogue、107行）の再登場は必ずこの後なので札は不要。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_petha",
+   "previewFile": "photos/gt_term_petha/A.jpg",
+   "title": "File:Petha-from-Agra.JPG",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Petha-from-Agra.JPG",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b4/Petha-from-Agra.JPG",
+   "width": 2224,
+   "height": 1428,
+   "author": "Rsrikanth05",
+   "licenseName": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "licenseCheckJa": "{{self|cc-by-sa-4.0}}（author 欄：[[User:Rsrikanth05|Rsrikanth05]]）",
+   "date": "2015-06-30 02:03:48",
+   "imagePosition": {
+    "x": 50,
+    "y": 50
+   },
+   "cropJa": "横長。正方形なら中央で、二切れとも入る。",
+   "altJa": "黒い背景に置かれたアーグラのペーター二切れの写真。白っぽく半透明で、砂糖の粒が光っている。",
+   "creditJa": "写真：Rsrikanth05／Wikimedia Commons／CC BY-SA 4.0",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "半透明の質感がよく分かる。説明に「アーグラのペーター」とある。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Agra sweet petha.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Agra_sweet_petha.jpg",
+    "author": "Muralikrishna m",
+    "licenseName": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "width": 335,
+    "height": 386,
+    "noteJa": "一切れの寄り。335×386と小さい。CC BY 4.0。",
+    "previewFile": "photos/gt_term_petha/B.jpg"
+   }
+  },
+  "priority": "高",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Petha",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Petha（英語版ウィキペディア）：トウガン（ash gourd）などから作る半透明の菓子。"
+   },
+   {
+    "url": "https://www.thenationalnews.com/lifestyle/food/how-the-indian-delicacy-petha-pays-bittersweet-tribute-to-the-taj-mahal-1.1200568",
+    "checkedAt": "2026-11-13",
+    "noteJa": "The National（検索結果の要約で確認）：ペーターはアーグラを代表する菓子。トウガンを石灰水に浸してから砂糖のシロップで煮る。"
+   },
+   {
+    "url": "https://dsal.uchicago.edu/cgi-bin/app/mcgregor_query.py?qs=%E0%A4%AA%E0%A5%87%E0%A4%A0%E0%A4%BE&searchhws=yes",
+    "checkedAt": "2026-11-13",
+    "noteJa": "リポジトリの土地の言葉の出典（2026-11-12確認）：पेठा の項「トウガン」「砂糖漬けにしたペーターの切り身」。"
+   }
+  ],
+  "notesJa": "土地の言葉 gt_agra_word_petha（エピローグ106行）と重なる。品物の名前（encounters/catalog.json の「ペーター」）にもなっている。"
+ },
+ {
+  "id": "gt_term_mathri",
+  "nameJa": "マトリー",
+  "readingJa": null,
+  "aliasJa": null,
+  "category": "food",
+  "lineJa": "小麦粉の生地を平たく揚げた、塩気のあるサクサクした軽食。",
+  "imageId": "gt_img_term_mathri",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_agra_tour_fatehpur_sikri.ink",
+    "knot": "gt_agra_tour_mathri",
+    "line": "包みの中は、狐色の平たい揚げ菓子だった。マトリーというらしい。ヴィノードの母のは、アジョワンという種が入っている。",
+    "lineNo": 212,
+    "noteJa": "ファテープル・シークリーへの車のツアー（運転手ヴィノード）を選んだときだけ。同じ行に「アジョワン」もある。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_mathri",
+   "previewFile": "photos/gt_term_mathri/A.jpg",
+   "title": "File:Masala Mathri.JPG",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Masala_Mathri.JPG",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Masala_Mathri.JPG",
+   "width": 4896,
+   "height": 3672,
+   "author": "Mdsmds0",
+   "licenseName": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "licenseCheckJa": "{{self|cc-by-sa-4.0}}（author 欄：[[User:Mdsmds0|Mdsmds0]]）",
+   "date": "2015-06-11 11:23:20",
+   "imagePosition": {
+    "x": 50,
+    "y": 50
+   },
+   "cropJa": "横長。正方形なら中央で、皿の上の数枚が入る。",
+   "altJa": "金属の皿に盛ったマトリーの写真。狐色に揚がった平たい丸い揚げ菓子が重なっている。",
+   "creditJa": "写真：Mdsmds0／Wikimedia Commons／CC BY-SA 4.0",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "狐色で平たく、台本の「狐色の平たい揚げ菓子」に近い。黒い背景で形が読みやすい。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Mathri.JPG",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mathri.JPG",
+    "author": "Randhir",
+    "licenseName": "Public domain",
+    "licenseUrl": "",
+    "width": 1600,
+    "height": 1200,
+    "noteJa": "鉄の皿に盛った緑がかったマトリー（香草入り）。パブリックドメイン。",
+    "previewFile": "photos/gt_term_mathri/B.jpg"
+   }
+  },
+  "priority": "高",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Mathri",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Mathri（英語版ウィキペディア）：ラージャスターン生まれの、層になった塩味の揚げ菓子。小麦粉・水、好みでアジョワン（carom seeds）。"
+   }
+  ]
+ },
+ {
+  "id": "gt_term_mehndi",
+  "nameJa": "メヘンディ",
+  "readingJa": null,
+  "aliasJa": "ヘナ",
+  "category": "custom",
+  "lineJa": "ヘナの練り物で手足に細かな模様を描く装い。花嫁の支度でも描かれる。",
+  "imageId": "gt_img_term_mehndi",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_jaipur_jal_mahal.ink",
+    "knot": "gt_jaipur_date_jal_mahal",
+    "line": "メヘンディ、どう？　手に描く模様。ヘナで描いて、二週間くらい残るの",
+    "lineNo": 29,
+    "noteJa": "ジャイプールのデート「手のひらに隠した名前」（任意）。宿の夜・朝、フィナーレの前、屋上の場面での再登場は、どれもこのデートが条件なので札は不要。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_mehndi",
+   "previewFile": "photos/gt_term_mehndi/A.jpg",
+   "title": "File:Mehndi front.JPG",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mehndi_front.JPG",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Mehndi_front.JPG",
+   "width": 4578,
+   "height": 3170,
+   "author": "AKS.9955",
+   "licenseName": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "licenseCheckJa": "{{self|cc-by-sa-4.0}}（author 欄：[[User:AKS.9955|AKS.9955]]）",
+   "date": "2015-10-30 13:04:50",
+   "imagePosition": {
+    "x": 50,
+    "y": 50
+   },
+   "cropJa": "横長。正方形なら中央で、二つの手の甲と指先の模様が入る。",
+   "altJa": "メヘンディを描いた二つの手の写真。手の甲から指先まで、こげ茶色の細かな網目や花の模様が描かれている。",
+   "creditJa": "写真：AKS.9955／Wikimedia Commons／CC BY-SA 4.0",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "黒い背景で、細い線の模様まで読める。手の甲側で、手のひらではない。人の顔は写っていない（手だけ）。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Hand with mehndi design.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hand_with_mehndi_design.jpg",
+    "author": "Rajettan",
+    "licenseName": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 960,
+    "height": 539,
+    "noteJa": "赤茶色に染まった手のひらの模様と腕輪。台本の「手のひら」に近い。960×539と小さめ。",
+    "previewFile": "photos/gt_term_mehndi/B.jpg"
+   }
+  },
+  "priority": "高",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Mehndi",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Mehndi（英語版ウィキペディア）：ヘナのペーストで肌を一時的に飾る、南アジアで広く行われる装い。"
+   },
+   {
+    "url": "https://www.cathaypacific.com/cx/en_GB/inspiration/travel/look-indias-henna-tradition.html",
+    "checkedAt": "2026-11-13",
+    "noteJa": "リポジトリの場面の出典（scenes/catalog.json、2026-11-08確認）：色が濃く出るほど結婚がうまくいくと言われる。"
+   }
+  ],
+  "notesJa": "同じ行の直前に土地の言葉 gt_jaipur_word_mehndi の札がある（二つの窓が続けて出ないよう、表示の順を決める必要あり）。"
+ },
+ {
+  "id": "gt_term_nimbu_mirchi",
+  "nameJa": "ニンブー・ミルチ",
+  "readingJa": null,
+  "aliasJa": "レモンと青唐辛子の魔よけ",
+  "category": "custom",
+  "lineJa": "レモンと青唐辛子を糸に通した魔よけ。車や店の入口に下げ、悪い目を防ぐ。",
+  "imageId": "gt_img_term_nimbu_mirchi",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_agra_tour_fatehpur_sikri.ink",
+    "knot": "gt_agra_tour_out_leg",
+    "line": "バックミラーの下で、糸に通した小さなレモンと青唐辛子が揺れていた。彼女の視線に気づいて、ヴィノードが顎で示す。",
+    "lineNo": 91,
+    "noteJa": "ファテープル・シークリーへの車のツアーの行き（gt_agra_tour_out_leg）。台本に「ニンブー・ミルチ」の語はなく、「糸に通した小さなレモンと青唐辛子」。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_nimbu_mirchi",
+   "previewFile": "photos/gt_term_nimbu_mirchi/A.jpg",
+   "title": "File:Nimbu-Mirchi Totka à Jaipur (2).jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nimbu-Mirchi_Totka_%C3%A0_Jaipur_(2).jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/9/99/Nimbu-Mirchi_Totka_%C3%A0_Jaipur_%282%29.jpg",
+   "width": 3648,
+   "height": 5472,
+   "author": "Ji-Elle",
+   "licenseName": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "licenseCheckJa": "{{self|cc-by-sa-4.0}}（author 欄：[[User:Ji-Elle|Ji-Elle]]）",
+   "date": "2019-11-19 05:11:50",
+   "imagePosition": {
+    "x": 50,
+    "y": 60
+   },
+   "cropJa": "縦長。上端に店の看板の文字が少し写るので、y≈60 で下寄りに切り、看板を外す。",
+   "altJa": "店先に吊るされたニンブー・ミルチの写真。糸に通したレモンと、緑と赤の唐辛子が下がっている。",
+   "creditJa": "写真：Ji-Elle／Wikimedia Commons／CC BY-SA 4.0",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "ジャイプールで撮った、まさに店先の魔よけ。糸・レモン・唐辛子がはっきり見える。車のバックミラーではない。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Nimbu-Mirchi Totka à Jaipur (1).jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nimbu-Mirchi_Totka_%C3%A0_Jaipur_(1).jpg",
+    "author": "Ji-Elle",
+    "licenseName": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 3648,
+    "height": 5472,
+    "noteJa": "同じ撮影者が同じ町で撮った別の一本。配線の箱の前に下がっていて、背景が少し雑然としている。",
+    "previewFile": "photos/gt_term_nimbu_mirchi/B.jpg"
+   }
+  },
+  "priority": "高",
+  "factSources": [
+   {
+    "url": "https://folklore.usc.edu/?p=60216",
+    "checkedAt": "2026-11-13",
+    "noteJa": "リポジトリの場面の出典（scenes/catalog.json、2026-11-10確認）：レモンと青唐辛子を糸に通したお守りを車のバックミラーや家の入口に下げ、悪い目（ナザル）よけにする。"
+   },
+   {
+    "url": "https://en.wikipedia.org/wiki/Nazar_(amulet)",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Nazar（英語版ウィキペディア）：悪い目（evil eye）よけのお守り。"
+   }
+  ],
+  "notesJa": "名前に「ニンブー・ミルチ」を使うか、台本どおり「レモンと青唐辛子の魔よけ」を名前にするかは、書き手の判断。"
+ },
+ {
+  "id": "gt_term_roti",
+  "nameJa": "ローティー",
+  "readingJa": null,
+  "aliasJa": "チャパーティー",
+  "category": "food",
+  "lineJa": "全粒粉の生地を薄く丸くのばして焼く、インドの毎日の平たいパン。",
+  "imageId": "gt_img_term_roti",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_bangla_sahib.ink",
+    "knot": "gt_delhi_date_bangla_sahib",
+    "line": "見てるだけか。手を洗って、こっちへ来なさい。ローティーは、見るより丸める方がうまい",
+    "lineNo": 27,
+    "noteJa": "デリーのデート「世界地図のローティー」（任意）。グル・カ・タール（アーグラ）の再登場はこのデートが条件なので札は不要。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_roti",
+   "previewFile": "photos/gt_term_roti/A.jpg",
+   "title": "File:Chapati 2.jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chapati_2.jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Chapati_2.jpg",
+   "width": 3648,
+   "height": 2736,
+   "author": "Manavatha",
+   "licenseName": "CC BY-SA 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "licenseCheckJa": "{{Self|1=GFDL|2=cc-by-sa-3.0|author={{User at project|Manavatha|w|en}}|migration=redundant}}（GFDL と CC BY-SA 3.0 の二重ライセンス）",
+   "date": "0017-01-14",
+   "imagePosition": {
+    "x": 50,
+    "y": 50
+   },
+   "cropJa": "横長。正方形なら中央で、焼き目のある丸い面が画面いっぱいに入る。",
+   "altJa": "金属の皿に重ねたローティー（チャパーティー）の写真。薄く丸い生地に、ところどころ茶色の焼き目がある。",
+   "creditJa": "写真：Manavatha／Wikimedia Commons／CC BY-SA 3.0",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "焼き目のある薄い丸い生地がはっきり分かる。寄りの写真で、丸い形が画面からはみ出し気味。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Chapati 1.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chapati_1.jpg",
+    "author": "Gaurav Dhwaj Khadka",
+    "licenseName": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 3024,
+    "height": 4032,
+    "noteJa": "白い皿に一枚のチャパーティーと小皿の漬物。黒い背景で形が読みやすい。",
+    "previewFile": "photos/gt_term_roti/B.jpg"
+   }
+  },
+  "priority": "高",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Roti",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Roti（英語版ウィキペディア）：インド亜大陸生まれの丸い平たいパン。石臼でひいた全粒粉（アター）で作る。"
+   }
+  ],
+  "notesJa": "デートの題名（地図のカード）にも「ローティー」が出る。"
+ },
+ {
+  "id": "gt_term_dupatta",
+  "nameJa": "ドゥパッター",
+  "readingJa": null,
+  "aliasJa": null,
+  "category": "thing",
+  "lineJa": "長いショールのような布。肩や胸元に掛けたり、頭からかぶったりする。",
+  "imageId": "gt_img_term_dupatta",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_agrasen_baoli.ink",
+    "knot": "gt_delhi_date_agrasen_baoli",
+    "line": "階段の途中で、大学生くらいの二人が言い争っていた。携帯を構えた青年と、白いドゥパッターを頭からかぶった女の子。",
+    "lineNo": 24,
+    "noteJa": "デリーのデート「本物の悲鳴」（任意）。この後、幽霊や鳩の役の小道具になる。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_dupatta",
+   "previewFile": "photos/gt_term_dupatta/A.jpg",
+   "title": "File:Bandhani Dupatta (5788125979).jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bandhani_Dupatta_(5788125979).jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f8/Bandhani_Dupatta_%285788125979%29.jpg",
+   "width": 2048,
+   "height": 1536,
+   "author": "goblinbox (queen_of_ad_hoc_bento)",
+   "licenseName": "CC BY 2.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+   "licenseCheckJa": "{{FlickrVerifiedByUploadWizard|cc-by-2.0}}・{{cc-by-2.0}}（座標はアメリカ合衆国ワシントン州。インドで撮った布ではない）",
+   "date": "2011-05-28 15:23:18",
+   "imagePosition": {
+    "x": 50,
+    "y": 50
+   },
+   "cropJa": "横長。どこを切っても布が画面いっぱいに入る。",
+   "altJa": "桃色の絞り染めのドゥパッターの寄りの写真。薄い布に白い小さな点の模様が並び、ゆるくひだを作っている。",
+   "creditJa": "写真：goblinbox (queen_of_ad_hoc_bento)／Wikimedia Commons／CC BY 2.0",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "薄く長い布の質感は分かるが、どう身に着けるか（肩や頭に掛ける）は見えない。顔の写らない「着ている写真」は見つからなかった。撮影地はアメリカ（ファイルページの座標）。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:At The Fair (5823095519).jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:At_The_Fair_(5823095519).jpg",
+    "author": "Koshy Koshy",
+    "licenseName": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "width": 1000,
+    "height": 1510,
+    "noteJa": "ハリヤーナー州ファリーダーバードの祭りで、女性たちが頭から布をかぶって歩く写真。着方は分かるが、顔が主題なので、切り出しかぼかしが必要。",
+    "previewFile": "photos/gt_term_dupatta/B.jpg"
+   }
+  },
+  "priority": "高",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Dupatta",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Dupatta（英語版ウィキペディア）：インド亜大陸で着る、長いショールのような布。"
+   }
+  ],
+  "notesJa": "ジャイプールの観光地の説明（travel/jaipur.json）にも語が出る。"
+ },
+ {
+  "id": "gt_term_lac_bangles",
+  "nameJa": "ラックの腕輪",
+  "readingJa": null,
+  "aliasJa": null,
+  "category": "thing",
+  "lineJa": "虫が出す樹脂ラックを熱して形にし、色ガラスや石で飾った腕輪。",
+  "imageId": "gt_img_term_lac_bangles",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_jaipur_johari_bazaar.ink",
+    "knot": "gt_jaipur_date_johari_bazaar",
+    "line": "アーケードの端に、一軒だけ、まるで色の洪水のような店があった。天井まで積み上げられた、ラックの腕輪。赤、緑、黄、桃色。小さなガラスや石がはめこまれて、裸電球の下で光っている。",
+    "lineNo": 23,
+    "noteJa": "ジャイプールのデート「欲しいものは、欲しいと」（任意）。フィナーレ前の「腕輪は…」の再登場はこのデートが条件。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_lac_bangles",
+   "previewFile": "photos/gt_term_lac_bangles/A.jpg",
+   "title": "File:Lac Bangles making Hyderabad (29986).jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lac_Bangles_making_Hyderabad_(29986).jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Lac_Bangles_making_Hyderabad_%2829986%29.jpg",
+   "width": 4096,
+   "height": 3072,
+   "author": "PJeganathan",
+   "licenseName": "CC BY-SA 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "licenseCheckJa": "{{self|cc-by-sa-3.0}}（author 欄：[[User:PJeganathan|PJeganathan]]）",
+   "date": "30 August 2026 (according to Exif data)",
+   "imagePosition": {
+    "x": 50,
+    "y": 45
+   },
+   "cropJa": "横長。正方形なら中央やや上で、腕輪を掛けた棒の段が入る。",
+   "altJa": "店の棒に何段も掛けられたラックの腕輪の写真。赤、緑、黄、桃色の腕輪に、小さな石や模様が並ぶ。",
+   "creditJa": "写真：PJeganathan／Wikimedia Commons／CC BY-SA 3.0",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "色とりどりの腕輪が棚いっぱいに並び、台本の「色の洪水」に近い。撮影はハイデラバードのラード・バザールで、ジャイプールではない。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Lac Bangles making Hyderabad.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lac_Bangles_making_Hyderabad.jpg",
+    "author": "PJeganathan",
+    "licenseName": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "width": 3072,
+    "height": 4096,
+    "noteJa": "同じ撮影者・同じ店の縦長の写真。腕輪の棚を正面から。",
+    "previewFile": "photos/gt_term_lac_bangles/B.jpg"
+   }
+  },
+  "priority": "高",
+  "factSources": [
+   {
+    "url": "https://livehistoryindia.com/story/living-history/lac-bangles-jaipur",
+    "checkedAt": "2026-11-13",
+    "noteJa": "LiveHistory India（リポジトリの場面の出典、2026-11-09確認。今回も検索で確認）：ラックは虫が木の枝に出す樹脂。熱でやわらげて形にし、石やガラスで飾る。ジャイプールのマニハーロン・カ・ラースターが産地。"
+   }
+  ],
+  "notesJa": "品物の名前（encounters/catalog.json の「ラックの腕輪」）にもなっている。"
+ },
+ {
+  "id": "gt_term_jalebi",
+  "nameJa": "ジャレビー",
+  "readingJa": null,
+  "aliasJa": null,
+  "category": "food",
+  "lineJa": "生地を渦巻きの形に油で揚げ、甘いシロップに浸した菓子。",
+  "imageId": "gt_img_term_jalebi",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_red_fort.ink",
+    "knot": "gt_delhi_finale_battle",
+    "line": "ああ、あのばあさんか。ジャレビー百グラムで三回値切った。それから聞かれたよ。一年分の香辛料を、一番安く買えるのはどこかって",
+    "lineNo": 335,
+    "noteJa": "デリーのフィナーレ（必須）。チャンドニー・チョークの揚げ菓子屋の台詞。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_jalebi",
+   "previewFile": "photos/gt_term_jalebi/A.jpg",
+   "title": "File:Jalebi 2.jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jalebi_2.jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e8/Jalebi_2.jpg",
+   "width": 2832,
+   "height": 2128,
+   "author": "Haroldandkumar",
+   "licenseName": "Public domain",
+   "licenseUrl": "",
+   "licenseCheckJa": "{{PD-user-en|Haroldandkumar}}（author 欄：{{user at project|Haroldandkumar|wikipedia|en}}）",
+   "date": "12 February 2007 (original upload date)",
+   "imagePosition": {
+    "x": 50,
+    "y": 50
+   },
+   "cropJa": "横長。正方形なら中央で、器の中の渦巻きがほぼ全部入る。",
+   "altJa": "ガラスの器に盛ったジャレビーの写真。明るい橙色の、渦巻きの形の揚げ菓子がつやつや光っている。",
+   "creditJa": "写真：Haroldandkumar／Wikimedia Commons／パブリックドメイン",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "色と渦巻きの形がはっきりしている。器と背景も単純。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Jalebi 1.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jalebi_1.jpg",
+    "author": "Gaurav Dhwaj Khadka",
+    "licenseName": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 3024,
+    "height": 4032,
+    "noteJa": "金属の器に大きな渦巻きが一つ。形はいちばん分かりやすいが、縦長。",
+    "previewFile": "photos/gt_term_jalebi/B.jpg"
+   }
+  },
+  "priority": "中",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Jalebi",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Jalebi（英語版ウィキペディア）：南アジアなどで広く食べられる甘い揚げ菓子。生地を渦に絞って揚げ、砂糖のシロップに浸す。"
+   }
+  ]
+ },
+ {
+  "id": "gt_term_nihari",
+  "nameJa": "ニハーリー",
+  "readingJa": null,
+  "aliasJa": null,
+  "category": "food",
+  "lineJa": "肉を長い時間じっくり煮込んだ、香辛料の濃い煮込み。もとは朝の料理。",
+  "imageId": "gt_img_term_nihari",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_hotel_hub.ink",
+    "knot": "gt_delhi_arrival",
+    "line": "わたしのデリー。赤い城、暗くなってから。クトゥブ・ミナール、鉄の柱、もう抱けない、腹立たしい。フマユーン廟、東の門から三本目の木陰。ジャーマー・マスジド、朝のニハーリー、階段の下の店。",
+    "lineNo": 31,
+    "noteJa": "デリー到着（必須・旅の最初の場面）。カムラの「五行の地図」の四行目。説明があるのはジャーマー・マスジドの案内（gt_delhi_jama_masjid 34行）。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_nihari",
+   "previewFile": "photos/gt_term_nihari/A.jpg",
+   "title": "File:Nihari.JPG",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nihari.JPG",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/2/24/Nihari.JPG",
+   "width": 2816,
+   "height": 2112,
+   "author": "Miansari66",
+   "licenseName": "Public domain",
+   "licenseUrl": "",
+   "licenseCheckJa": "{{PD-self}}（author 欄：[[User:Miansari66|Miansari66]]）",
+   "date": "2007",
+   "imagePosition": {
+    "x": 40,
+    "y": 50
+   },
+   "cropJa": "横長。正方形なら x≈40 で、煮込みの皿が中心に入り、右の薬味の小皿は端にかかる。",
+   "altJa": "皿に盛ったニハーリーの写真。骨つきの肉が赤茶色の濃い煮込みに沈み、横の小皿にレモン・生姜・青唐辛子の薬味がある。",
+   "creditJa": "写真：Miansari66／Wikimedia Commons／パブリックドメイン",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "骨つきのすね肉と油の浮いた煮込み、薬味の小皿がそろい、この料理らしい。下の布の柄が少しにぎやか。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Nihari taj.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nihari_taj.jpg",
+    "author": "赤猫法師",
+    "licenseName": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 3511,
+    "height": 2340,
+    "noteJa": "器に盛った煮込みに香菜と生姜。いちばん整った見た目だが、撮影地は日本（埼玉県八潮市のインド・パキスタン料理店）。",
+    "previewFile": "photos/gt_term_nihari/B.jpg"
+   }
+  },
+  "priority": "中",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Nihari",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Nihari（英語版ウィキペディア）：肉（すね肉など）を長時間煮込んだ煮込み料理。名はアラビア語の「朝」から来て、もとはムガル朝の貴族が朝の礼拝のあとに食べた。"
+   }
+  ],
+  "notesJa": "土地の言葉 gt_delhi_word_nihari は「朝ごはん」の意味で、ジャーマー・マスジドの案内（32行）に札がある。図鑑は料理の写真を見せる。到着の行は地名の並ぶ長い行なので、説明のあるジャーマー・マスジド34行へ札を移す案もある（その場合、到着の行では窓が出ない）。"
+ },
+ {
+  "id": "gt_term_khichdi",
+  "nameJa": "キチュリー",
+  "readingJa": null,
+  "aliasJa": null,
+  "category": "food",
+  "lineJa": "米と豆をいっしょにやわらかく煮た料理。お腹を壊したときにも食べる。",
+  "imageId": "gt_img_term_khichdi",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_inserts.ink",
+    "knot": "gt_delhi_hotel_sick_morning",
+    "line": "キチュリー。米と豆を、やわらかく煮たの。うちでは、お腹を壊したら、これ。……外国の人は、みんなゴルガッパでやられるの。チャンドニー・チョークでしょ。分かるのよ、顔で",
+    "lineNo": 262,
+    "noteJa": "ゴルガッパで腹を壊した翌朝の宿の場面（gt_delhi_hotel_sick_morning）だけ。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_khichdi",
+   "previewFile": "photos/gt_term_khichdi/A.jpg",
+   "title": "File:Masala Khichadi.jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Masala_Khichadi.jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/1/10/Masala_Khichadi.jpg",
+   "width": 5184,
+   "height": 3456,
+   "author": "Dkgohil",
+   "licenseName": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "licenseCheckJa": "{{self|cc-by-sa-4.0}}（author 欄：[[User:Dkgohil|Dkgohil]]）",
+   "date": "2015-04-22 08:44:39",
+   "imagePosition": {
+    "x": 50,
+    "y": 50
+   },
+   "cropJa": "横長。正方形なら中央で、鍋の中のキチュリーが入る。",
+   "altJa": "金属の鍋に入ったキチュリーの写真。黄色く煮えた米と豆に、トマトや香辛料の葉がまじっている。",
+   "creditJa": "写真：Dkgohil／Wikimedia Commons／CC BY-SA 4.0",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "やわらかく煮た米と豆の様子が分かる。香辛料の入った「マサラ・キチュリー」で、病人向けの白っぽいものより色が濃い。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:ভুনা খিচুড়ি 1.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E0%A6%AD%E0%A7%81%E0%A6%A8%E0%A6%BE_%E0%A6%96%E0%A6%BF%E0%A6%9A%E0%A7%81%E0%A6%A1%E0%A6%BC%E0%A6%BF_1.jpg",
+    "author": "Dolon Prova",
+    "licenseName": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 5000,
+    "height": 3391,
+    "noteJa": "皿のキチュリーの横に、生の米と数種の豆を並べた写真。材料が一目で分かる。バングラデシュの炒め煮風（やや固め）。",
+    "previewFile": "photos/gt_term_khichdi/B.jpg"
+   }
+  },
+  "priority": "中",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Khichdi",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Khichdi（英語版ウィキペディア）：米と豆（ダール）を煮た南アジアの料理。"
+   },
+   {
+    "url": "https://gulfnews.com/food/indias-comfort-food-in-a-bowl-khichdi-1.1668672572023",
+    "checkedAt": "2026-11-13",
+    "noteJa": "リポジトリの場面の出典（2026-11-09確認）：お腹にやさしく、病人の食べ物とも呼ばれる。"
+   }
+  ],
+  "notesJa": "土地の言葉 gt_delhi_word_khichdi（261行）と重なる。"
+ },
+ {
+  "id": "gt_term_maggi",
+  "nameJa": "マギー",
+  "readingJa": null,
+  "aliasJa": null,
+  "category": "food",
+  "lineJa": "インドで広く食べられている即席麺。香辛料のきいた粉で味をつける。",
+  "imageId": "gt_img_term_maggi",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_agra_ram_bagh.ink",
+    "knot": "gt_agra_date_ram_bagh",
+    "line": "庭を出ると、道の向かいに小さな茶屋があった。プラスチックの椅子が三つと、湯気の立つ大鍋。注文は、インスタントのマギーの麺と、チャイを二つ。",
+    "lineNo": 105,
+    "noteJa": "アーグラのデート「皇帝の不満リスト」（任意）の終わり、茶屋の場面。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_maggi",
+   "previewFile": "photos/gt_term_maggi/A.jpg",
+   "title": "File:Maggi Bowl.jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Maggi_Bowl.jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/8/8b/Maggi_Bowl.jpg",
+   "width": 720,
+   "height": 1280,
+   "author": "Mrudit161187",
+   "licenseName": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "licenseCheckJa": "{{self|cc-by-sa-4.0}}（author 欄：[[User:Mrudit161187|Mrudit161187]]）",
+   "date": "2015-06-16",
+   "imagePosition": {
+    "x": 50,
+    "y": 45
+   },
+   "cropJa": "縦長（720×1280と小さめ）。正方形なら y≈45 で器全体が入る。",
+   "altJa": "白い器に入ったマギーの即席麺の写真。香辛料で黄色く色づいた細い麺に、スプーンが添えてある。",
+   "creditJa": "写真：Mrudit161187／Wikimedia Commons／CC BY-SA 4.0",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "器に盛った麺だけで、袋の商標は写っていない。写真は小さめ（720×1280）。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Maggi - 1.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Maggi_-_1.jpg",
+    "author": "Ashok Kumar P S",
+    "licenseName": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 1024,
+    "height": 576,
+    "noteJa": "鍋で野菜と一緒に煮ているところ。横長（1024×576）。",
+    "previewFile": "photos/gt_term_maggi/B.jpg"
+   }
+  },
+  "priority": "中",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Maggi",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Maggi（英語版ウィキペディア）：ネスレの調味料・即席麺の商標。インドで即席麺の代名詞。"
+   }
+  ],
+  "notesJa": "商標の名前。写真は袋の商標が目立たないもの（器に盛った麺）を選んだ。"
+ },
+ {
+  "id": "gt_term_achar",
+  "nameJa": "アチャール",
+  "readingJa": null,
+  "aliasJa": "インドの漬物",
+  "category": "food",
+  "lineJa": "果物や野菜を油と香辛料、塩で漬けた、酸っぱく辛いインドの漬物。",
+  "imageId": "gt_img_term_achar",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_india_gate.ink",
+    "knot": "gt_delhi_date_india_gate",
+    "stitch": "family_talk",
+    "line": "帰りぎわ、母親たちが弁当箱を差し出した。揚げたパンに、辛い漬物。断ると、もう一つ増えた。",
+    "lineNo": 204,
+    "noteJa": "デリーのデート「十三人目」（任意）の終わり（= family_talk。どの道からも通る）。同じ行に「揚げたパン」（プーリー）もある。"
+   },
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_jaipur_city_palace.ink",
+    "knot": "gt_jaipur_main_city_palace_battle",
+    "line": "母さん、預け荷物は二十三キロまでなんだ。漬物だけで五キロは無理だって",
+    "lineNo": 46,
+    "noteJa": "ジャイプールの観光クイズ（シティ・パレス、必須）。インド門のデートをしていなければ、ここが最初。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_achar",
+   "previewFile": "photos/gt_term_achar/A.jpg",
+   "title": "File:Indian Mango Pickles.JPG",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Indian_Mango_Pickles.JPG",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/7/70/Indian_Mango_Pickles.JPG",
+   "width": 4608,
+   "height": 3456,
+   "author": "Sidg13",
+   "licenseName": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "licenseCheckJa": "{{self|cc-by-sa-4.0}}（author 欄：[[User:Sidg13|Sidg13]]）",
+   "date": "2015-05-02 22:59:01",
+   "imagePosition": {
+    "x": 50,
+    "y": 50
+   },
+   "cropJa": "横長。どこを切っても漬物が画面いっぱいに入る。",
+   "altJa": "赤い香辛料と油をまとったマンゴーのアチャールの寄りの写真。緑の皮のついた果肉が、ごろごろ入っている。",
+   "creditJa": "写真：Sidg13／Wikimedia Commons／CC BY-SA 4.0",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "香辛料と油で漬けた、日本の漬物とは違う見た目がよく分かる。台本のライムではなくマンゴーの漬物。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Mango Pickle Home Made Style.JPG",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mango_Pickle_Home_Made_Style.JPG",
+    "author": "Miansari66",
+    "licenseName": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "width": 2816,
+    "height": 2112,
+    "noteJa": "白い皿に盛った手作りのマンゴーの漬物。CC0。",
+    "previewFile": "photos/gt_term_achar/B.jpg"
+   }
+  },
+  "priority": "中",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/South_Asian_pickle",
+    "checkedAt": "2026-11-13",
+    "noteJa": "South Asian pickle（英語版ウィキペディア）：achar とも。果物・野菜を塩水・酢・油と香辛料で漬けた、辛い保存食。"
+   }
+  ],
+  "notesJa": "台本の語は「漬物」で、「アチャール」は出ない。品物「ライムの漬物（二百グラム）」もある。"
+ },
+ {
+  "id": "gt_term_kurta",
+  "nameJa": "クルタ",
+  "readingJa": null,
+  "aliasJa": null,
+  "category": "thing",
+  "lineJa": "ゆったりした襟なしの長い上着。男女とも、ズボンと合わせて着る。",
+  "imageId": "gt_img_term_kurta",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_humayun_tomb.ink",
+    "knot": "gt_delhi_main_humayun_tomb_battle",
+    "line": "返事より先に、太い声が飛んできた。口ひげ、腹の上で張ったクルタ、手にはなぜか新聞。大股で近づいてくる。",
+    "lineNo": 76,
+    "noteJa": "デリーの観光クイズ（フマユーン廟、必須）。アーグラ（チーニー・カ・ラウザー、タージ・マハル2か所）の再登場は、都市の順で必ずこの後。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_kurta",
+   "previewFile": "photos/gt_term_kurta/A.jpg",
+   "title": "File:Blue khadi kurta.jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blue_khadi_kurta.jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Blue_khadi_kurta.jpg",
+   "width": 600,
+   "height": 800,
+   "author": "Purva4u",
+   "licenseName": "CC BY-SA 3.0",
+   "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+   "licenseCheckJa": "{{GFDL-user-en-no-disclaimers|Purva4u|migration = relicense}}（author 欄：[[:en:User:Purva4u|Purva4u]] ([[:en:User talk:Purva4u|talk]]) ([[:en:Special:ListFiles/Purva4u|Uploads]])）（GFDL から CC BY-SA 3.0 へのライセンス移行済み）",
+   "date": "2007-10-16",
+   "imagePosition": {
+    "x": 50,
+    "y": 50
+   },
+   "cropJa": "縦長（600×800と小さめ）。正方形なら中央で、襟元から裾まで入れるには縦長のまま使う。",
+   "altJa": "水色の手織り木綿のクルタの写真。襟なしで、膝近くまである長い上着。",
+   "creditJa": "写真：Purva4u／Wikimedia Commons／CC BY-SA 3.0",
+   "peopleJa": "首から上は写っていない（顔なし）。",
+   "fitJa": "クルタの形（襟なし・長い丈）が一目で分かる。写真が小さい。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Kurta closeup sandalwood buttons.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kurta_closeup_sandalwood_buttons.jpg",
+    "author": "Fowler&fowler",
+    "licenseName": "Public domain",
+    "licenseUrl": "",
+    "width": 1690,
+    "height": 1111,
+    "noteJa": "生成りのクルタの胸元の寄り。白檀のボタン。上端にあごの先が少し写るので、切り出しで外す。パブリックドメイン。",
+    "previewFile": "photos/gt_term_kurta/B.jpg"
+   }
+  },
+  "priority": "中",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Kurta",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Kurta（英語版ウィキペディア）：南アジアの、ゆったりした襟なしのシャツ・チュニック。"
+   }
+  ]
+ },
+ {
+  "id": "gt_term_dhoti",
+  "nameJa": "ドーティー",
+  "readingJa": null,
+  "aliasJa": "腰布",
+  "category": "thing",
+  "lineJa": "縫わない一枚の長い布を、腰から脚に巻きつけてはく男性の衣服。",
+  "imageId": "gt_img_term_dhoti",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_jaipur_jantar_mantar.ink",
+    "knot": "gt_jaipur_jantar_mantar_guide",
+    "line": "一番大きな三角の壁の日陰で、白い腰布の老人が、古い冊子を膝に広げて座っていた。そこへ、眼鏡の若い女性が、まっすぐ歩いていく。",
+    "lineNo": 26,
+    "noteJa": "ジャイプールの観光の案内（ジャンタル・マンタル、必須）。台本の語は「白い腰布」。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_dhoti",
+   "previewFile": "photos/gt_term_dhoti/A.jpg",
+   "title": "File:A man in dhoti tied north Indian style.jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:A_man_in_dhoti_tied_north_Indian_style.jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fe/A_man_in_dhoti_tied_north_Indian_style.jpg",
+   "width": 2336,
+   "height": 3504,
+   "author": "Abigail Batchelder",
+   "licenseName": "CC BY 2.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+   "licenseCheckJa": "{{cc-by-2.0}}・{{User:FlickreviewR/reviewed-pass|abbybatchelder|https://flickr.com/photos/17668216@N00/3402225732|2017-03-17 09:09:14|cc-by-2.0|}}（author 欄：[https://www.flickr.com/people/17668216@N00 Abigail Batchelder]）",
+   "date": "2009-03-29 11:38",
+   "imagePosition": {
+    "x": 50,
+    "y": 72
+   },
+   "cropJa": "縦長。顔が写っているので、胸より下（y≈45〜100%）だけを切り出し、腰から足首までの白いドーティーを見せる。",
+   "altJa": "白いドーティーをはいた男性の下半身の写真。一枚の布を腰に巻き、脚の間を通して、ゆったりしたズボンのように着ている。",
+   "creditJa": "写真：Abigail Batchelder／Wikimedia Commons／CC BY 2.0",
+   "peopleJa": "**顔が写っている。胸より下だけを切り出すこと**（切り出せないなら顔をぼかす）。",
+   "fitJa": "北インド式の巻き方がよく分かる。上は普通のTシャツ。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Dhoti.tif",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dhoti.tif",
+    "author": "David Ring",
+    "licenseName": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "width": 1680,
+    "height": 2350,
+    "noteJa": "「ドーティー」の着付けを描いた線画（写真ではない）。CC0。顔の問題がない代わりに、写真ではない。",
+    "previewFile": "photos/gt_term_dhoti/B.jpg"
+   }
+  },
+  "priority": "中",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Dhoti",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Dhoti（英語版ウィキペディア）：縫わない長方形の布を腰と脚に巻く、インド亜大陸の男性の衣服。"
+   }
+  ]
+ },
+ {
+  "id": "gt_term_horn_ok_please",
+  "nameJa": "ホーン・オーケー・プリーズ",
+  "readingJa": null,
+  "aliasJa": "HORN OK PLEASE",
+  "category": "thing",
+  "lineJa": "インドのトラックの後ろによく描かれる文字。追い越すなら警笛を、の合図。",
+  "imageId": "gt_img_term_horn_ok_please",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_agra_tour_fatehpur_sikri.ink",
+    "knot": "gt_agra_tour_out_leg",
+    "line": "やがて道は西へまっすぐ伸び、建物の間に畑がのぞきはじめた。前を走るトラックの荷台の後ろに、色とりどりの文字が描いてある。HORN OK PLEASE。",
+    "lineNo": 80,
+    "noteJa": "ファテープル・シークリーへの車のツアーの行き（gt_agra_tour_out_leg）。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_horn_ok_please",
+   "previewFile": "photos/gt_term_horn_ok_please/A.jpg",
+   "title": "File:Mumbai (Bombay), RTW 2012 (8404896932).jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mumbai_(Bombay),_RTW_2012_(8404896932).jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b4/Mumbai_%28Bombay%29%2C_RTW_2012_%288404896932%29.jpg",
+   "width": 1936,
+   "height": 2592,
+   "author": "Ana Raquel S. Hernandes",
+   "licenseName": "CC BY-SA 2.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+   "licenseCheckJa": "{{cc-by-sa-2.0}}（author 欄：[https://www.flickr.com/people/23930118@N04 Ana Raquel S. Hernandes] from Sao Paulo, Brazil）",
+   "date": "2012-11-26 18:08",
+   "imagePosition": {
+    "x": 50,
+    "y": 55
+   },
+   "cropJa": "縦長。正方形なら y≈55 で、荷台の後ろの「OK」と「HORN PLEASE」の文字が入る。",
+   "altJa": "ムンバイのトラックの荷台の後ろの写真。白い扉に赤い「OK」と、「HORN PLEASE」の文字が描かれている。",
+   "creditJa": "写真：Ana Raquel S. Hernandes／Wikimedia Commons／CC BY-SA 2.0",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "トラックの後ろに描かれた文字そのもの。にぎやかな絵柄のトラック・アートではなく、白地の簡素な描き方。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Horn Ok sign on a Bangalore truck.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Horn_Ok_sign_on_a_Bangalore_truck.jpg",
+    "author": "Subhashish Panigrahi",
+    "licenseName": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "width": 2448,
+    "height": 2448,
+    "noteJa": "ベンガルールのトラックの黄色い板に、大きく「Horn」「K」と赤い反射板。字が大きく読みやすいが、「PLEASE」は写っていない。",
+    "previewFile": "photos/gt_term_horn_ok_please/B.jpg"
+   }
+  },
+  "priority": "中",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Horn_OK_Please",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Horn OK Please（英語版ウィキペディア）：インドの商用車によく描かれる言葉。後ろから追い越す車に警笛を鳴らすよう促す。"
+   },
+   {
+    "url": "https://en.wikipedia.org/wiki/Horn_OK_Please",
+    "checkedAt": "2026-11-13",
+    "noteJa": "リポジトリの場面の出典（2026-11-10確認）と同じ。"
+   }
+  ],
+  "notesJa": "「OK」の由来は諸説ある（台本でも「運転手の数だけ説がある」）。説明文では由来に触れない。"
+ },
+ {
+  "id": "gt_term_auto_rickshaw",
+  "nameJa": "オートリキシャ",
+  "readingJa": null,
+  "aliasJa": "オート",
+  "category": "transport",
+  "lineJa": "エンジンで走る三輪の小さなタクシー。屋根つきの後ろの席に客を乗せる。",
+  "imageId": "gt_img_term_auto_rickshaw",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_red_fort.ink",
+    "knot": "gt_delhi_finale_battle",
+    "line": "待ってください。あの日のカムラさん、すごくはっきりしてました。オートの運転手とはすぐ喧嘩になるから、出かけるときは地下鉄の女性車両に乗るんだって",
+    "lineNo": 267,
+    "noteJa": "デリーのフィナーレ（必須）。台本の語は「オートの運転手」。同じ場面の321行「アマンがオートリキシャを止めた。」（警笛の効果音つき）の方が窓を出す場所として自然なので、札をそちらに置く案もある。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_auto_rickshaw",
+   "previewFile": "photos/gt_term_auto_rickshaw/A.jpg",
+   "title": "File:Auto Rickshaws outside Purana Qila, Delhi.jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Auto_Rickshaws_outside_Purana_Qila,_Delhi.jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1b/Auto_Rickshaws_outside_Purana_Qila%2C_Delhi.jpg",
+   "width": 6000,
+   "height": 4000,
+   "author": "Slyronit",
+   "licenseName": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "licenseCheckJa": "{{self|cc-by-sa-4.0}}（author 欄：[[User:Slyronit|Slyronit]]）",
+   "date": "2014-03-05 16:27:29",
+   "imagePosition": {
+    "x": 30,
+    "y": 55
+   },
+   "cropJa": "横長。手前の一台が左にあるので、x≈30 で切ると一台が大きく入る。",
+   "altJa": "デリーのプラーナー・キラーの前に並ぶオートリキシャの写真。緑の車体に黄色の幌の、三輪の小さなタクシー。",
+   "creditJa": "写真：Slyronit／Wikimedia Commons／CC BY-SA 4.0",
+   "peopleJa": "人は遠くに小さく写るだけで、顔は見分けられない（原寸で要確認）。",
+   "fitJa": "デリーのCNG車の緑と黄の配色。側面から見て三輪の形が分かる。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Auto-rickshaw.JPG",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Auto-rickshaw.JPG",
+    "author": "J. Miers",
+    "licenseName": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 3072,
+    "height": 2304,
+    "noteJa": "一台を斜め前から大きく写した写真。形はいちばん分かりやすいが、運転席の人の顔を原寸で確かめる必要がある。",
+    "previewFile": "photos/gt_term_auto_rickshaw/B.jpg"
+   }
+  },
+  "priority": "中",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Auto_rickshaw",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Auto rickshaw（英語版ウィキペディア）：エンジンで走る三輪の乗り物。トゥクトゥクとも呼ばれる。"
+   }
+  ],
+  "notesJa": "移動の手段（manifest.json の transportModes）として地図の画面にも「オートリキシャ」が出るため、遊ぶ人は物語より先に字を見ている。"
+ },
+ {
+  "id": "gt_term_cycle_rickshaw",
+  "nameJa": "自転車リキシャ",
+  "readingJa": null,
+  "aliasJa": "サイクルリキシャ",
+  "category": "transport",
+  "lineJa": "人がペダルをこいで客を運ぶ、三輪の自転車タクシー。",
+  "imageId": "gt_img_term_cycle_rickshaw",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_jama_masjid.ink",
+    "knot": "gt_delhi_jama_masjid_guide",
+    "line": "見学を終えて、また長い階段を下りる。段の下は、もう別の世界だった。焼いた肉の煙、呼び込みの声、自転車リキシャの鈴。",
+    "lineNo": 27,
+    "noteJa": "デリーの観光の案内（ジャーマー・マスジド、必須）。"
+   },
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_red_fort.ink",
+    "knot": "gt_delhi_finale_battle",
+    "line": "夜のチャンドニー・チョークは、昼より人が多い。揚げたてのパラーターの匂い。自転車リキシャの鈴。ショールの老婦人なら、百人はいる。",
+    "lineNo": 331,
+    "noteJa": "デリーのフィナーレ（必須）。主な観光を全部終えてから始まるなら、ここは必ず2回目（念のための札）。同じ行に「パラーター」もある。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_cycle_rickshaw",
+   "previewFile": "photos/gt_term_cycle_rickshaw/A.jpg",
+   "title": "File:Cycle Rickshaw - Chandni Chowk Road - Delhi 2014-05-13 3518.JPG",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cycle_Rickshaw_-_Chandni_Chowk_Road_-_Delhi_2014-05-13_3518.JPG",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/8/8e/Cycle_Rickshaw_-_Chandni_Chowk_Road_-_Delhi_2014-05-13_3518.JPG",
+   "width": 6016,
+   "height": 4000,
+   "author": "Biswarup Ganguly",
+   "licenseName": "CC BY 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+   "licenseCheckJa": "{{self|GFDL|cc-by-3.0|author=Biswarup Ganguly}}・{{self|GFDL|cc-by-3.0}}（author 欄：[[User:Gangulybiswarup|Biswarup Ganguly]]）",
+   "date": "2014-05-13 17:57:02",
+   "imagePosition": {
+    "x": 50,
+    "y": 55
+   },
+   "cropJa": "横長。正方形なら中央で、こぎ手と後ろの客席が入る。",
+   "altJa": "デリーのチャンドニー・チョークの通りを走る自転車リキシャの写真。人がペダルをこぎ、後ろに幌つきの客席がある。",
+   "creditJa": "写真：Biswarup Ganguly／Wikimedia Commons／CC BY 3.0",
+   "peopleJa": "こぎ手が写っている（横向きで小さい）。原寸で顔が見分けられるなら、ぼかしが要る。",
+   "fitJa": "物語の舞台と同じチャンドニー・チョークの通り。前の自転車と後ろの客席の形が分かる。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Old Delhi rickshaw 2011.JPG",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Old_Delhi_rickshaw_2011.JPG",
+    "author": "Marcin Białek",
+    "licenseName": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 3008,
+    "height": 2000,
+    "noteJa": "オールド・デリーの赤い自転車リキシャを横から。こぎ手が写る。",
+    "previewFile": "photos/gt_term_cycle_rickshaw/B.jpg"
+   }
+  },
+  "priority": "中",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Cycle_rickshaw",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Cycle rickshaw（英語版ウィキペディア）：客を運ぶための三輪の自転車。"
+   }
+  ]
+ },
+ {
+  "id": "gt_term_neem",
+  "nameJa": "ニーム",
+  "readingJa": null,
+  "aliasJa": "インドセンダン",
+  "category": "creature",
+  "lineJa": "インドでよく見る大きな常緑の木。昔からインドの民間の薬に使われてきた。",
+  "imageId": "gt_img_term_neem",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_agra_itimad_tomb.ink",
+    "knot": "gt_agra_itimad_tomb_guide",
+    "line": "庭の隅のニームの木の下で、白髪の女性が一人、布の手提げを膝に置いて座っていた。その目が、こちらを向いた気がした。",
+    "lineNo": 33,
+    "noteJa": "アーグラの観光の案内（イティマード・ウッダウラ廟、必須）。クイズの場面（48行）の再登場はこの後。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_neem",
+   "previewFile": "photos/gt_term_neem/A.jpg",
+   "title": "File:Neem Tree (Azadirachta indica) 1.jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Neem_Tree_(Azadirachta_indica)_1.jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Neem_Tree_%28Azadirachta_indica%29_1.jpg",
+   "width": 3920,
+   "height": 2204,
+   "author": "Mokkie",
+   "licenseName": "CC BY-SA 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "licenseCheckJa": "{{self|cc-by-sa-3.0}}（author 欄：[[User:Mokkie|Mokkie]]）",
+   "date": "2014-04-07 13:27:54",
+   "imagePosition": {
+    "x": 50,
+    "y": 50
+   },
+   "cropJa": "横長。どこを切っても、細長い小葉が羽のように並ぶ葉が入る。",
+   "altJa": "ニームの木の葉の寄りの写真。ふちがぎざぎざの細長い小葉が、羽のように左右に並んでいる。",
+   "creditJa": "写真：Mokkie／Wikimedia Commons／CC BY-SA 3.0",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "葉の形がはっきり分かる。木全体の姿は写っていない（台本は「ニームの木の下で」）。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Qutb Minar with Neem Tree.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Qutb_Minar_with_Neem_Tree.jpg",
+    "author": "Shikhers",
+    "licenseName": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 3000,
+    "height": 4500,
+    "noteJa": "クトゥブ・ミナールの塔の上に、ニームの枝と葉が広がるのを見上げた写真。木陰の感じは出るが、葉は小さい。",
+    "previewFile": "photos/gt_term_neem/B.jpg"
+   }
+  },
+  "priority": "中",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Azadirachta_indica",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Azadirachta indica（英語版ウィキペディア）：ニーム。インド亜大陸原産のセンダン科の常緑樹（乾いた冬に葉を多く落とす）。インドでは何世紀も民間の薬に使われてきた。小枝を歯ブラシにする話はよく聞くが、今回は確かめていないので書かなかった。"
+   }
+  ]
+ },
+ {
+  "id": "gt_term_jali",
+  "nameJa": "ジャーリー",
+  "readingJa": null,
+  "aliasJa": "透かし彫りの格子",
+  "category": "building",
+  "lineJa": "石を幾何学や花の模様に透かし彫りにした格子。光と風を通す。",
+  "imageId": "gt_img_term_jali",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_agra_itimad_tomb.ink",
+    "knot": "gt_agra_itimad_tomb_guide",
+    "line": "近づくほど細かくなる模様に、{heroine_name}の歩幅が小さくなる。窓には、石を透かし彫りにした格子がはまっていた。",
+    "lineNo": 24,
+    "noteJa": "アーグラの観光の案内（イティマード・ウッダウラ廟、必須）。アーグラは必ずジャイプールより先なので、ハワー・マハルの「格子」はどれも後。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_jali",
+   "previewFile": "photos/gt_term_jali/A.jpg",
+   "title": "File:Itimad-ud-Daula’s Tomb 730 (crop).jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Itimad-ud-Daula%E2%80%99s_Tomb_730_(crop).jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Itimad-ud-Daula%E2%80%99s_Tomb_730_%28crop%29.jpg",
+   "width": 2208,
+   "height": 2635,
+   "author": "Anupamg",
+   "licenseName": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "licenseCheckJa": "{{cc-by-sa-4.0}}（author 欄：Anupamg）",
+   "date": "2016-09-19",
+   "imagePosition": {
+    "x": 50,
+    "y": 55
+   },
+   "cropJa": "縦長。正方形なら y≈55 で、六角形の透かし格子の窓が中心に入る。",
+   "altJa": "アーグラのイティマード・ウッダウラ廟の、透かし彫りの石の格子窓の写真。六角形の穴が規則正しく並ぶ。",
+   "creditJa": "写真：Anupamg／Wikimedia Commons／CC BY-SA 4.0",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "物語と同じ廟のジャーリー。正面から撮っていて、格子の細かさが分かる。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Jali ITIMAD UD DAULAH.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jali_ITIMAD_UD_DAULAH.jpg",
+    "author": "Ajaykumarkatnauri",
+    "licenseName": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 3120,
+    "height": 4160,
+    "noteJa": "同じ廟の別の格子窓。縦長。周りの彫刻も入る。",
+    "previewFile": "photos/gt_term_jali/B.jpg"
+   }
+  },
+  "priority": "中",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Jali",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Jali（英語版ウィキペディア）：模様を透かし彫りにした石などの格子。インドの建築に多い。光と風を通し、日差しと雨をやわらげる（Yatin Pandya の説明として）。"
+   },
+   {
+    "url": "https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/",
+    "checkedAt": "2026-11-13",
+    "noteJa": "リポジトリの観光地の出典（アーグラ県、2026-11-11確認）：イティマード廟は繊細なジャーリーと象嵌をもつ。"
+   }
+  ],
+  "notesJa": "ジャイプールのフィナーレのクイズ5問目が「ハワー・マハルの格子窓は何のため？」（答え：見られずに見るため）。説明文に「見られずに見る」は書かず、答えを先に言わないようにした。アーグラの観光地の説明（travel/agra.json）にも「ジャーリー」が出る。"
+ },
+ {
+  "id": "gt_term_baraat",
+  "nameJa": "バラート",
+  "readingJa": null,
+  "aliasJa": "花婿の行列",
+  "category": "custom",
+  "lineJa": "花婿が親族や楽隊と式の場へ向かう、踊りながら進む行列。白い馬に乗ることも。",
+  "imageId": "gt_img_term_baraat",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_jaipur_hotel_hub.ink",
+    "knot": "gt_jaipur_arrival",
+    "line": "花婿の行列は、旅の最後の夜、旧市街のハワー・マハルの近くを通ります",
+    "lineNo": 20,
+    "noteJa": "ジャイプール到着（必須）。アマンからの連絡「花婿の行列は、旅の最後の夜…」。行列そのものの描写はフィナーレ（gt_jaipur_hawa_mahal 201・203行）。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_baraat",
+   "previewFile": "photos/gt_term_baraat/A.jpg",
+   "title": "File:Baraat à Varanasi (1).jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Baraat_%C3%A0_Varanasi_(1).jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/5/53/Baraat_%C3%A0_Varanasi_%281%29.jpg",
+   "width": 2885,
+   "height": 2885,
+   "author": "Ji-Elle",
+   "licenseName": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "licenseCheckJa": "{{self|cc-by-sa-4.0}}（author 欄：[[User:Ji-Elle|Ji-Elle]]）",
+   "date": "2019-11-30 07:14:37",
+   "imagePosition": {
+    "x": 50,
+    "y": 45
+   },
+   "cropJa": "正方形。中央やや上で、飾りをつけた馬と、その上の花婿が入る。",
+   "altJa": "ヴァーラーナシーの通りを進むバラートの写真。きらびやかな布で飾った白い馬に花婿が乗り、行列の人々が続く。",
+   "creditJa": "写真：Ji-Elle／Wikimedia Commons／CC BY-SA 4.0",
+   "peopleJa": "**通りの人と花婿の顔が写る。小さな画面でも見分けられる顔は、ぼかしが要る**（馬と飾りが主題）。",
+   "fitJa": "昼の通りで、飾った馬に乗る花婿という、行列の形がひと目で分かる。物語の舞台はジャイプールの夜で、場所と時間が違う。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:A Baraat procession, Jaipur.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:A_Baraat_procession,_Jaipur.jpg",
+    "author": "Christian Haugen",
+    "licenseName": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "width": 3900,
+    "height": 2598,
+    "noteJa": "ジャイプールの夜のバラート。台本の「頭に灯りを載せて歩く男たち」がそのまま写るが、暗く、小さな画面ではほとんど黒に見える。CC BY 2.0。",
+    "previewFile": "photos/gt_term_baraat/B.jpg"
+   }
+  },
+  "priority": "中",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Baraat",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Baraat（英語版ウィキペディア）：花婿が家族や友人を連れて式場へ向かう婚礼の行列。"
+   }
+  ],
+  "notesJa": "台本に「バラート」の語はない。名前を「花婿の行列」にして、別名に「バラート」を置く案もある。"
+ },
+ {
+  "id": "gt_term_gangaur",
+  "nameJa": "ガンガウル",
+  "readingJa": null,
+  "aliasJa": null,
+  "category": "custom",
+  "lineJa": "女神ガウリーを祝う、ラージャスターンの春の祭り。女性たちの行列が出る。",
+  "imageId": "gt_img_term_gangaur",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_jaipur_hawa_mahal.ink",
+    "knot": "gt_jaipur_finale_battle",
+    "line": "ガンガウル。女神さまを敬う、春のお祭り",
+    "lineNo": 327,
+    "noteJa": "ジャイプールのフィナーレ（必須）。クイズ4問目に正しく答えたとき（主人公側が答える行）。"
+   },
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_jaipur_hawa_mahal.ink",
+    "knot": "gt_jaipur_finale_battle",
+    "line": "ガンガウルよ。女神さまの、春のお祭り",
+    "lineNo": 332,
+    "noteJa": "同じクイズを間違えたとき（花嫁の祖母が答える行）。エピローグ（gt_jaipur_hotel_hub 71行）はこの後。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_gangaur",
+   "previewFile": "photos/gt_term_gangaur/A.jpg",
+   "title": "File:Gangaur Idols for celebrating Gangaur Festival.jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gangaur_Idols_for_celebrating_Gangaur_Festival.jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/7/74/Gangaur_Idols_for_celebrating_Gangaur_Festival.jpg",
+   "width": 3072,
+   "height": 4080,
+   "author": "Kaushlendrapathe",
+   "licenseName": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "licenseCheckJa": "{{self|cc-by-sa-4.0}}（author 欄：[[User:Kaushlendrapathe|Kaushlendrapathe]]）",
+   "date": "30 March 2025 (according to Exif data)",
+   "imagePosition": {
+    "x": 45,
+    "y": 60
+   },
+   "cropJa": "縦長。右上に店の人が少し写るので、y≈60 で下寄りに切り、色とりどりの像だけを入れる。",
+   "altJa": "ガンガウルの祭りのために並べられた、女神ガウリーとイーサルの像の写真。赤や緑の衣装を着た小さな像がたくさん並ぶ。",
+   "creditJa": "写真：Kaushlendrapathe／Wikimedia Commons／CC BY-SA 4.0",
+   "peopleJa": "右上に人が写る（顔が入るなら、切り出しで外すか、ぼかす）。",
+   "fitJa": "祭りの主役の像がはっきり見える。行列そのものではない。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:The Festival of Gangaur - Google Art Project.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_Festival_of_Gangaur_-_Google_Art_Project.jpg",
+    "author": "作者不詳（17世紀の絵画）",
+    "licenseName": "Public domain",
+    "licenseUrl": "",
+    "width": 3328,
+    "height": 5001,
+    "noteJa": "ガンガウルの行列を描いた昔の絵（パブリックドメイン）。人の顔の問題はないが、写真ではない。",
+    "previewFile": "photos/gt_term_gangaur/B.jpg"
+   }
+  },
+  "priority": "中",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Gangaur",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Gangaur（英語版ウィキペディア）：ラージャスターンなどで祝うヒンドゥーの祭り。"
+   },
+   {
+    "url": "https://utsav.gov.in/view-event/gangaur-festival",
+    "checkedAt": "2026-11-13",
+    "noteJa": "リポジトリのクイズの出典（Utsav、インド観光省、2026-11-07確認）：チャイトラ月（春）に女神ガウリーを敬う祭りで、特に女性が祝う。ジャイプールでは行列がシティ・パレスから旧市街を進む。"
+   }
+  ],
+  "notesJa": "クイズの選択肢（英語）にも Gangaur が出る。札はクイズの後の行なので、答えを先に言うことはない。"
+ },
+ {
+  "id": "gt_term_langar",
+  "nameJa": "ランガル",
+  "readingJa": null,
+  "aliasJa": null,
+  "category": "custom",
+  "lineJa": "シク教の礼拝所にある無料の食堂。誰もが床に並んで座り、同じ食事をとる。",
+  "imageId": "gt_img_term_langar",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_bangla_sahib.ink",
+    "knot": "gt_delhi_date_bangla_sahib",
+    "line": "靴を預け、素足で白い石の上を歩く。祈りの歌が、中の広間から流れてくる。その奥に、大きな台所があった。ランガル。来た人なら誰でも、無料で食事ができる。毎日、何千人分。作るのも配るのも、ほとんどが奉仕の人たちだ。",
+    "lineNo": 24,
+    "noteJa": "デリーのデート「世界地図のローティー」（任意）。"
+   },
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_agra_guru_ka_taal.ink",
+    "knot": "gt_agra_date_guru_ka_taal",
+    "line": "礼拝所の食堂で、湯気の立つ豆の皿を受け取ったときだった。",
+    "lineNo": 21,
+    "noteJa": "アーグラのデート「寒い国へは、夏だけ」（任意）。台本の語は「礼拝所の食堂」で「ランガル」は出ない。バングラー・サーヒブのデートをしていない人にも見せたいときだけ置く（任意の札）。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_langar",
+   "previewFile": "photos/gt_term_langar/A.jpg",
+   "title": "File:Gurudwara Bangla Sahib-Langar (17).jpg",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gurudwara_Bangla_Sahib-Langar_(17).jpg",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Gurudwara_Bangla_Sahib-Langar_%2817%29.jpg",
+   "width": 5472,
+   "height": 3648,
+   "author": "Ji-Elle",
+   "licenseName": "CC BY-SA 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "licenseCheckJa": "{{self|cc-by-sa-4.0}}（author 欄：[[User:Ji-Elle|Ji-Elle]]）",
+   "date": "2019-11-28 07:17:28",
+   "imagePosition": {
+    "x": 50,
+    "y": 55
+   },
+   "cropJa": "横長。正方形なら中央で、並んだ大鍋が入る。",
+   "altJa": "デリーのグルドワーラー・バングラー・サーヒブのランガルの台所の写真。火にかけた大きな鍋がいくつも並んでいる。",
+   "creditJa": "写真：Ji-Elle／Wikimedia Commons／CC BY-SA 4.0",
+   "peopleJa": "奥に人が小さく写る（原寸で顔が見分けられるなら、ぼかしが要る）。",
+   "fitJa": "物語と同じバングラー・サーヒブの台所。台本の「巨大な鍋で豆が煮え」に近い。床に並んで座って食べる広間ではない。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:Gurudwara Bangla Sahib-Langar (26).jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gurudwara_Bangla_Sahib-Langar_(26).jpg",
+    "author": "Ji-Elle",
+    "licenseName": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 5472,
+    "height": 2279,
+    "noteJa": "同じ台所で、何人もが台を囲んでローティーの生地をのばしている横長の写真。台本の場面そのものだが、人の顔が写るのでぼかしが要る。",
+    "previewFile": "photos/gt_term_langar/B.jpg"
+   }
+  },
+  "priority": "中",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Langar_(Sikhism)",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Langar（英語版ウィキペディア）：グルドワーラーの共同の台所。宗教や身分に関係なく誰にでも無料で食事を出し、人々は床に座ってともに食べる。"
+   },
+   {
+    "url": "https://www.incredibleindia.gov.in/en/delhi/delhi/gurudwara-bangla-sahib",
+    "checkedAt": "2026-11-13",
+    "noteJa": "リポジトリの場面の出典（インド観光省、2026-11-08確認）：バングラー・サーヒブのランガルは毎日何千人分の食事を出す。"
+   }
+  ],
+  "notesJa": "土地の言葉 gt_delhi_word_langar（23行）と重なる。"
+ },
+ {
+  "id": "gt_term_parchin_kari",
+  "nameJa": "パルチン・カーリー",
+  "readingJa": null,
+  "aliasJa": "石の象眼（ピエトラ・ドゥーラ）",
+  "category": "building",
+  "lineJa": "色とりどりの石を切って磨き、大理石にはめこんで花や模様を描く技。",
+  "imageId": "gt_img_term_parchin_kari",
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_agra_itimad_tomb.ink",
+    "knot": "gt_agra_itimad_tomb_guide",
+    "line": "あ……模様が、絵の具じゃない。石がはめ込んであるんだ。花も、瓶も、ぜんぶ石",
+    "lineNo": 22,
+    "noteJa": "アーグラの観光の案内（イティマード・ウッダウラ廟、必須）。19行で模様が出て、22行で「石がはめ込んであるんだ」と気づく。気づきの行に置く案（19行に置くと、気づく前に答えを見せてしまう）。"
+   }
+  ],
+  "photo": {
+   "imageId": "gt_img_term_parchin_kari",
+   "previewFile": "photos/gt_term_parchin_kari/A.jpg",
+   "title": "File:Pietra Dura - Pillar - Musamman Burj - Agra Fort - Agra 2014-05-14 4143.JPG",
+   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pietra_Dura_-_Pillar_-_Musamman_Burj_-_Agra_Fort_-_Agra_2014-05-14_4143.JPG",
+   "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Pietra_Dura_-_Pillar_-_Musamman_Burj_-_Agra_Fort_-_Agra_2014-05-14_4143.JPG",
+   "width": 4000,
+   "height": 6016,
+   "author": "Biswarup Ganguly",
+   "licenseName": "CC BY 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+   "licenseCheckJa": "{{self|GFDL|cc-by-3.0|author=Biswarup Ganguly}}・{{self|GFDL|cc-by-3.0}}（author 欄：[[User:Gangulybiswarup|Biswarup Ganguly]]）",
+   "date": "2014-05-14 16:58:37",
+   "imagePosition": {
+    "x": 50,
+    "y": 50
+   },
+   "cropJa": "縦長。正方形なら中央で、花と蔓の象眼が一組入る。",
+   "altJa": "白い大理石の柱に、色とりどりの石をはめこんで描いた花と蔓の模様の寄りの写真。",
+   "creditJa": "写真：Biswarup Ganguly／Wikimedia Commons／CC BY 3.0",
+   "peopleJa": "人物の顔は写っていない。",
+   "fitJa": "石の象眼の細かさがよく分かる。撮影はアーグラ城のムサンマン・ブルジュの柱で、イティマード・ウッダウラ廟ではない（同じ町の同じ技）。",
+   "checkedAt": "2026-11-13",
+   "runnerUp": {
+    "title": "File:PIETRA DURA - Agra - India.png",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:PIETRA_DURA_-_Agra_-_India.png",
+    "author": "MyotisSI",
+    "licenseName": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "width": 1772,
+    "height": 1772,
+    "noteJa": "丸い大理石の卓に、花の模様を象眼した工芸品。白い背景で読みやすいが、今の土産物。",
+    "previewFile": "photos/gt_term_parchin_kari/B.jpg"
+   }
+  },
+  "priority": "中",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Pietra_dura",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Pietra dura（英語版ウィキペディア）：磨いた色石を切ってはめこみ、絵を描く象眼。インド亜大陸では parchin kari と呼ぶ。"
+   },
+   {
+    "url": "https://www.sahapedia.org/the-mausoleum-of-itimad-ud-daula",
+    "checkedAt": "2026-11-13",
+    "noteJa": "リポジトリのクイズの出典（Sahapedia、2026-11-07確認）：この廟の外装の象嵌は、タージ・マハルのピエトラ・ドゥーラの先駆けとされる。"
+   }
+  ],
+  "notesJa": "アーグラのクイズ（イティマード廟）1問目は「タージより先か」。説明文には「タージより先」と書かない。"
+ },
+ {
+  "id": "gt_term_paratha",
+  "nameJa": "パラーター",
+  "readingJa": null,
+  "aliasJa": null,
+  "category": "food",
+  "lineJa": "生地に油を塗って折り重ねて焼く、層のある平たいパン。具を包むことも。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_red_fort.ink",
+    "knot": "gt_delhi_finale_battle",
+    "line": "夜のチャンドニー・チョークは、昼より人が多い。揚げたてのパラーターの匂い。自転車リキシャの鈴。ショールの老婦人なら、百人はいる。",
+    "lineNo": 331,
+    "noteJa": "デリーのフィナーレ（必須）。匂いだけの登場。同じ行に「自転車リキシャ」（念のための札）もある。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Paratha",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Paratha（英語版ウィキペディア）：ギーを塗って折り重ね、層にして焼く平たいパン。じゃがいもなどを詰めることも多い。"
+   }
+  ]
+ },
+ {
+  "id": "gt_term_ajwain",
+  "nameJa": "アジョワン",
+  "readingJa": null,
+  "aliasJa": null,
+  "category": "food",
+  "lineJa": "種のような小さな実で、強い香りの香辛料。揚げ菓子やパンに混ぜる。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_agra_tour_fatehpur_sikri.ink",
+    "knot": "gt_agra_tour_mathri",
+    "line": "母は、何にでもアジョワンを入れます。お腹にいい、と言って",
+    "lineNo": 220,
+    "noteJa": "ツアーの「マトリー」の場面。初出は212行（マトリーと同じ行）なので、窓が重ならないよう、二度目に出るこの行（母は、何にでもアジョワンを入れます）に置く案。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Ajwain",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Ajwain（英語版ウィキペディア）：セリ科の草。種のような実（ふつう種と呼ばれる）を食べる。"
+   },
+   {
+    "url": "https://en.wikipedia.org/wiki/Mathri",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Mathri（英語版ウィキペディア）：マトリーに好みでアジョワンを入れる。"
+   }
+  ]
+ },
+ {
+  "id": "gt_term_kulhad",
+  "nameJa": "クルハル",
+  "readingJa": null,
+  "aliasJa": "素焼きのカップ",
+  "category": "thing",
+  "lineJa": "釉薬をかけない素焼きの小さな器。チャイを入れ、飲んだら使い捨てにする。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_hotel_hub_dates.ink",
+    "knot": "gt_delhi_date_reassurance",
+    "line": "宿の屋上に上がると、彼女が素焼きのカップを二つ持って待っていた。湯気が、二本並んで上っている。",
+    "lineNo": 171,
+    "noteJa": "デリーの夜のデート「チャイが冷めるまで」（告白の返事を待つときだけ）。エピローグより先に来うる。"
+   },
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_hotel_hub.ink",
+    "knot": "gt_delhi_epilogue",
+    "line": "戸を叩く音。アマンが、素焼きの小さなカップのチャイを三つ、器用に指に挟んで立っていた。",
+    "lineNo": 80,
+    "noteJa": "デリーのエピローグ（必須）。上のデートをしていなければ、ここが最初。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Kulhar",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Kulhar（英語版ウィキペディア）：飾りも釉薬もない、取っ手のない素焼きの器。ふつう使い捨て。"
+   }
+  ],
+  "notesJa": "台本に「クルハル」の語はなく、「素焼きの（小さな）カップ」。"
+ },
+ {
+  "id": "gt_term_tiffin",
+  "nameJa": "ティフィン",
+  "readingJa": null,
+  "aliasJa": "段重ねの弁当箱",
+  "category": "thing",
+  "lineJa": "丸い金属の器を何段も重ね、取っ手で留めて運ぶインドの弁当箱。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_india_gate.ink",
+    "knot": "gt_delhi_date_india_gate",
+    "line": "インド門の前の芝生は、敷物でまだら模様になっていた。風船売り、アイスの屋台、銀の弁当箱を開ける家族。戦没者の記念門の足もとで、デリーの人たちは、日曜の居間みたいにくつろいでいる。",
+    "lineNo": 15,
+    "noteJa": "デリーのデート「十三人目」（任意）の冒頭。台本の語は「銀の弁当箱」。"
+   },
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_agra_mariam_tomb.ink",
+    "knot": "gt_agra_date_mariam_tomb",
+    "stitch": "grandmother",
+    "line": "父親が、弁当箱のふたを持ったまま、黙りこんだ。祖母は涼しい顔で、揚げ菓子をもう一つ取った。",
+    "lineNo": 122,
+    "noteJa": "アーグラのデート「本当の名前」（任意）。インド門のデートをしていなければ、ここが最初（台本の語は「弁当箱」）。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Tiffin_carrier",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Tiffin carrier（英語版ウィキペディア）：アジアで広く使われる段重ねの弁当箱（ダッバー）。"
+   }
+  ]
+ },
+ {
+  "id": "gt_term_puri",
+  "nameJa": "プーリー",
+  "readingJa": null,
+  "aliasJa": "揚げたパン",
+  "category": "food",
+  "lineJa": "小麦粉の生地を丸くのばして油で揚げ、ぷくっとふくらませた平たいパン。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_india_gate.ink",
+    "knot": "gt_delhi_date_india_gate",
+    "stitch": "family_talk",
+    "line": "帰りぎわ、母親たちが弁当箱を差し出した。揚げたパンに、辛い漬物。断ると、もう一つ増えた。",
+    "lineNo": 204,
+    "noteJa": "デリーのデート「十三人目」（任意）。同じ行に「漬物」（アチャール）もある。どちらか一つにする案。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Puri_(food)",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Puri（英語版ウィキペディア）：小麦の生地を揚げた平たいパン。チャパーティーに似るが、揚げる。"
+   }
+  ]
+ },
+ {
+  "id": "gt_term_rose_ringed_parakeet",
+  "nameJa": "ワカケホンセイインコ",
+  "readingJa": null,
+  "aliasJa": null,
+  "category": "creature",
+  "lineJa": "インドなどにすむ緑色の中型のインコ。英語では「首に輪のあるインコ」。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_humayun_tomb.ink",
+    "knot": "gt_delhi_humayun_tomb_guide",
+    "line": "クラクションの洪水を抜けてきた耳に、鳥の声がやけに大きく聞こえる。オウムの緑が、木から木へ飛んだ。",
+    "lineNo": 18,
+    "noteJa": "デリーの観光の案内（フマユーン廟、必須）。台本の語は「オウムの緑」。ラーム・バーグ（アーグラ）の「緑のインコ」はこの後。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Rose-ringed_parakeet",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Rose-ringed parakeet（英語版ウィキペディア）：インド亜大陸などにすむ中型のインコ。別名 ring-necked parakeet（首に輪のあるインコ）。"
+   }
+  ],
+  "notesJa": "台本は鳥の種類を名指ししていない。インドの町で最もよく見る緑のインコとして推定した（未確定）。"
+ },
+ {
+  "id": "gt_term_e_rickshaw",
+  "nameJa": "電動リキシャ",
+  "readingJa": null,
+  "aliasJa": "イー・リキシャ",
+  "category": "transport",
+  "lineJa": "電気モーターで走る三輪の小さな乗り物。客を乗せて短い距離を運ぶ。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_agra_itimad_tomb.ink",
+    "knot": "gt_agra_itimad_tomb_guide",
+    "line": "電動リキシャでヤムナー川の橋を渡ると、町の音が一段遠くなった。対岸の道は細く、牛がのんびり横切っていく。",
+    "lineNo": 12,
+    "noteJa": "アーグラの観光の案内（イティマード・ウッダウラ廟、必須）の最初の行。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Electric_rickshaw",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Electric rickshaw（英語版ウィキペディア）：電気モーターで走る小さな三輪の乗り物。"
+   }
+  ]
+ },
+ {
+  "id": "gt_term_iron_pillar",
+  "nameJa": "デリーの鉄柱",
+  "readingJa": null,
+  "aliasJa": "鉄の柱",
+  "category": "building",
+  "lineJa": "クトゥブの中庭に立つ、高さ約7mの古い鉄の柱。錆びにくいことで知られる。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_hotel_hub.ink",
+    "knot": "gt_delhi_arrival",
+    "line": "わたしのデリー。赤い城、暗くなってから。クトゥブ・ミナール、鉄の柱、もう抱けない、腹立たしい。フマユーン廟、東の門から三本目の木陰。ジャーマー・マスジド、朝のニハーリー、階段の下の店。",
+    "lineNo": 31,
+    "noteJa": "デリー到着（必須）。カムラの「五行の地図」の二行目（「ニハーリー」と同じ行）。観光地の一部なので、図鑑に入れないか、クトゥブ・ミナールの案内（gt_delhi_qutb_minar 29行「黒っぽい鉄の柱が立っていた」）に置く案。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Iron_pillar_of_Delhi",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Iron pillar of Delhi（英語版ウィキペディア）：高さ7.21m、クトゥブ複合体に立つ鉄の柱。"
+   }
+  ],
+  "notesJa": "クイズ（クトゥブ・ミナール）が、柵の理由・錆びない理由・元の場所を問う。説明文はどれにも答えないようにした。"
+ },
+ {
+  "id": "gt_term_caravanserai",
+  "nameJa": "隊商宿",
+  "readingJa": null,
+  "aliasJa": "キャラバンサライ",
+  "category": "building",
+  "lineJa": "旅の商人や荷を運ぶ動物が泊まった、中庭を囲む宿。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_agra_taj_mahal.ink",
+    "knot": "gt_agra_finale_battle",
+    "line": "タージ・ガンジは、市場と隊商宿の町。最初から、タージの計画の一部だったんですよね",
+    "lineNo": 324,
+    "noteJa": "アーグラのフィナーレ（必須）。クイズ5問目に正しく答えたとき。"
+   },
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_agra_taj_mahal.ink",
+    "knot": "gt_agra_finale_battle",
+    "line": "市場と隊商宿だよ。タージの南門の外に、最初から造られた町だ。墓と一緒に生まれた町なんだ",
+    "lineNo": 327,
+    "noteJa": "同じクイズを間違えたとき（アンワルが答える行）。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Caravanserai",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Caravanserai（英語版ウィキペディア）：旅人・商人・隊商を泊めた宿。"
+   }
+  ]
+ },
+ {
+  "id": "gt_term_miniature",
+  "nameJa": "細密画",
+  "readingJa": null,
+  "aliasJa": "ミニアチュール",
+  "category": "thing",
+  "lineJa": "極細の筆で細部まで描きこむ小さな絵。インドの宮廷で栄えた。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_jaipur_albert_hall.ink",
+    "knot": "gt_jaipur_date_albert_hall",
+    "line": "博物館の中は、ひんやりしていた。細密画、陶器、絨毯、鎧。ひときわ賑やかなのは、制服の子どもたちの遠足の一団だった。先生に連れられて、地下の展示室への階段を、列になって下りていく。",
+    "lineNo": 72,
+    "noteJa": "ジャイプールのデート「ミイラより鳩」（任意）。"
+   },
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_jaipur_amber_fort.ink",
+    "knot": "gt_jaipur_main_amber_fort_battle",
+    "line": "十分前、{heroine_name}は一枚の絵を買った。中庭の隅の小さな露店で、若い画家が描いていた、アンベール城の細密画。手のひらほどの紙に、門も宮殿も、細い筆で描き込まれている。",
+    "lineNo": 48,
+    "noteJa": "ジャイプールの観光クイズ（アンベール城、必須）。上のデートをしていなければ、ここが最初。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Rajput_painting",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Rajput painting（英語版ウィキペディア）：ムガル時代の地方のヒンドゥー宮廷の絵画（16世紀末〜19世紀半ば）。"
+   }
+  ]
+ },
+ {
+  "id": "gt_term_gangajali",
+  "nameJa": "銀の大壺",
+  "readingJa": null,
+  "aliasJa": "ガンガージャリ",
+  "category": "thing",
+  "lineJa": "シティ・パレスの中庭に並ぶ、人の背丈ほどもある大きな銀の壺。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_jaipur_city_palace.ink",
+    "knot": "gt_jaipur_city_palace_guide",
+    "line": "ある中庭の真ん中で、{heroine_name}の足が止まった。人の背丈ほどもある銀の壺が、二つ並んでいる。",
+    "lineNo": 23,
+    "noteJa": "ジャイプールの観光の案内（シティ・パレス、必須）。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/City_Palace,_Jaipur",
+    "checkedAt": "2026-11-13",
+    "noteJa": "City Palace, Jaipur（英語版ウィキペディア）。（壺の詳細は未確認）"
+   }
+  ],
+  "notesJa": "クイズ（シティ・パレス）1問目が「なぜ英国へ運んだか」（答え：ガンジスの水）。説明文に用途を書かず、答えを先に言わないようにした。観光地の一部なので図鑑に入れない案もある。"
+ },
+ {
+  "id": "gt_term_laughter_club",
+  "nameJa": "笑う会",
+  "readingJa": null,
+  "aliasJa": "笑いヨガ",
+  "category": "custom",
+  "lineJa": "理由なく声を出して笑い、それを体操にする集まり。インドで始まった。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_lodhi_garden.ink",
+    "knot": "gt_delhi_date_lodhi_garden",
+    "line": "ドゥベイと申します。鉄道の駅で、三十年、列車の案内放送をしておりました。ここは、笑うために集まる会。理由がなくても笑う。作り笑いを続けているうちに、本当の笑いに変わっていくんです",
+    "lineNo": 32,
+    "noteJa": "デリーのデート「笑う会の秘密」（任意）。ドゥベイが会を説明する台詞。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Laughter_yoga",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Laughter yoga（英語版ウィキペディア）：笑いと呼吸法を組み合わせた運動。1995年にムンバイで始まった。"
+   }
+  ],
+  "notesJa": "「公園で朝に開く」は一般にそう言われるが未確認なので書かなかった。"
+ },
+ {
+  "id": "gt_term_jaivana",
+  "nameJa": "ジャイヴァーナ",
+  "readingJa": null,
+  "aliasJa": null,
+  "category": "thing",
+  "lineJa": "ジャイガル砦にある、車輪のついた巨大な大砲。18世紀に砦で造られた。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_jaipur_jaigarh_fort.ink",
+    "knot": "gt_jaipur_date_jaigarh_fort",
+    "line": "最初の印は、巨大な大砲だった。屋根の下に、車輪のついた砲身が横たわっている。ジャイヴァーナ。1720年にこの砦で造られ、当時、車輪のついた大砲としては世界最大だったという。",
+    "lineNo": 29,
+    "noteJa": "ジャイプールのデート「最後のバツ印」（任意）。台本がすぐ後で詳しく説明している。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Jaivana_Cannon",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Jaivana Cannon（英語版ウィキペディア）：ジャイガル砦にある18世紀の大砲。1720年の製造時、車輪つきの大砲として世界最大。"
+   }
+  ],
+  "notesJa": "台本自身が説明しているので、図鑑に入れない案もある。"
+ },
+ {
+  "id": "gt_term_shagun",
+  "nameJa": "祝い金の一ルピー",
+  "readingJa": null,
+  "aliasJa": "シャグン",
+  "category": "custom",
+  "lineJa": "祝いの現金は端数の一ルピーを足して包む。割り切れない数が縁起よいとされる。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_jaipur_hotel_hub.ink",
+    "knot": "gt_jaipur_arrival",
+    "line": "何を着ていくのか、お祝いには何を持っていくのか。宿のフロントの女性に尋ねると、笑って教えてくれた。封筒に入れた現金がふつうで、金額の最後に一ルピーを足す。割り切れない数は、縁起がいいから。",
+    "lineNo": 29,
+    "noteJa": "ジャイプール到着（必須）。フロントの女性に教わる行。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "",
+    "checkedAt": "2026-11-13",
+    "noteJa": "未確認（一次資料を見ていない）。台本どおりの説明で、事実の確認が要る。"
+   }
+  ],
+  "notesJa": "台本自身が同じことを説明しているので、図鑑に入れない案もある。"
+ },
+ {
+  "id": "gt_term_sehra",
+  "nameJa": "セーラー",
+  "readingJa": null,
+  "aliasJa": "花婿の顔を覆う花の房",
+  "category": "thing",
+  "lineJa": "婚礼で花婿の額から垂らし、顔を覆う花や飾りの房。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_jaipur_hawa_mahal.ink",
+    "knot": "gt_jaipur_finale_battle",
+    "line": "赤い制服の楽隊。頭に灯りを載せて歩く男たち。白い馬の上には、花の房で顔を隠したアマン。その前で、親戚たちが道いっぱいに踊っている。",
+    "lineNo": 203,
+    "noteJa": "ジャイプールのフィナーレ（必須）。台本の語は「花の房」。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Sehra_(headdress)",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Sehra（英語版ウィキペディア）：インド亜大陸の婚礼で、花婿（や花嫁）が額に着ける花などの飾り。"
+   }
+  ]
+ },
+ {
+  "id": "gt_term_panchang",
+  "nameJa": "パンチャーング",
+  "readingJa": null,
+  "aliasJa": "ヒンドゥーの暦",
+  "category": "thing",
+  "lineJa": "日の吉凶や祭りの日取りを計算して載せた、ヒンドゥーの暦の冊子。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_jaipur_jantar_mantar.ink",
+    "knot": "gt_jaipur_main_jantar_mantar_battle",
+    "line": "声の主は、眼鏡の若い女性だった。向かいの石段には、白い腰布の老人が座っている。膝の上に、使い込んだ暦の冊子。",
+    "lineNo": 41,
+    "noteJa": "ジャイプールの観光クイズ（ジャンタル・マンタル、必須）。台本の語は「暦の冊子」。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "https://en.wikipedia.org/wiki/Panchangam",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Panchangam（英語版ウィキペディア）：ヒンドゥーの暦・暦書。大事な日取りと計算を表にしたもの。"
+   }
+  ]
+ },
+ {
+  "id": "gt_term_leaf_bowl",
+  "nameJa": "葉の器",
+  "readingJa": null,
+  "aliasJa": "ドーナー",
+  "category": "thing",
+  "lineJa": "乾いた葉を重ねて固めた、使い捨ての小さな器。屋台の軽食を入れる。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_chandni_chowk.ink",
+    "knot": "gt_delhi_date_chandni_chowk",
+    "line": "人だかりのできた屋台があった。客はみんな、葉っぱを固めた小さな器を手に、屋台の男の前に半円を作っている。",
+    "lineNo": 25,
+    "noteJa": "デリーのデート「バス、と言うまで」（任意）。ゴルガッパの札（31行）の少し前。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "",
+    "checkedAt": "2026-11-13",
+    "noteJa": "未確認（一次資料を見ていない）。"
+   }
+  ],
+  "notesJa": "ゴルガッパの窓の直前なので、窓が続く。図鑑に入れない案もある。"
+ },
+ {
+  "id": "gt_term_chishti_thread",
+  "nameJa": "願いの糸",
+  "readingJa": null,
+  "aliasJa": "サリーム・チシュティー廟の糸",
+  "category": "custom",
+  "lineJa": "聖者の廟の石の格子に糸を結んで願う習わし。子を願う人も多い。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_agra_tour_fatehpur_sikri.ink",
+    "knot": "gt_agra_tour_back_leg",
+    "line": "それに母は、聖者のお墓に糸を結んで、わたしを授かったそうです。だから、聖者のそばを離れない。皇帝は王子をもらって、母はわたしをもらった。母は、それで十分だと言います",
+    "lineNo": 276,
+    "noteJa": "ファテープル・シークリーへの車のツアーの帰り（gt_agra_tour_back_leg）。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "https://www.nonprod.lonelyplanet.com/points-of-interest/jama-masjid/1294054",
+    "checkedAt": "2026-11-13",
+    "noteJa": "リポジトリの場面の出典（scenes/catalog.json、2026-11-10確認）：サリーム・チシュティの墓には、子どもを望む女性が格子（ジャーリー）に糸を結びに来る。"
+   },
+   {
+    "url": "https://en.wikipedia.org/wiki/Tomb_of_Salim_Chishti",
+    "checkedAt": "2026-11-13",
+    "noteJa": "Tomb of Salim Chishti（英語版ウィキペディア）：ファテープル・シークリーのジャーマー・マスジドの中庭にある聖者の廟。"
+   }
+  ]
+ },
+ {
+  "id": "gt_term_sahayak",
+  "nameJa": "サハーヤク",
+  "readingJa": null,
+  "aliasJa": "駅の荷運び",
+  "category": "person",
+  "lineJa": "インドの駅で客の荷物を運ぶ、鉄道公認の荷運び。赤いシャツが目じるし。",
+  "imageId": null,
+  "tags": [
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_inserts.ink",
+    "knot": "gt_delhi_depart_scam",
+    "stitch": "across_the_road",
+    "line": "階段を駆け下り、道を渡る。駅の入口で、赤いシャツの荷運びの男が、こちらの出てきた路地を見て、首を振った。",
+    "lineNo": 461,
+    "noteJa": "デリーを発つ日（必須）、駅前の詐欺の場面の終わり（台本の語は「赤いシャツの荷運びの男」）。"
+   },
+   {
+    "file": "content/journeys/golden_triangle/stories/places/gt_delhi_inserts.ink",
+    "knot": "gt_delhi_depart_station",
+    "line": "ホームは、発車を待つ人であふれていた。赤いシャツに真鍮の腕章をつけた荷運びの男たちが、スーツケースを三つ、頭の上に積んで、人の間をすり抜けていく。",
+    "lineNo": 521,
+    "noteJa": "その後の駅のホームの場面（gt_delhi_depart_station）。語「サハーヤク」は523行。"
+   }
+  ],
+  "photo": null,
+  "priority": "低",
+  "factSources": [
+   {
+    "url": "https://www.thegoan.net/goa-news/no-more-coolie-they-are-now-sahayaks/11901.html",
+    "checkedAt": "2026-11-13",
+    "noteJa": "リポジトリの場面の出典（2026-11-08確認）：呼び名が「クーリー」から「サハーヤク」に変わった。"
+   },
+   {
+    "url": "https://eparlib.nic.in/bitstream/123456789/619684/1/120990.pdf",
+    "checkedAt": "2026-11-13",
+    "noteJa": "インド下院の答弁（検索結果の要約で確認）：公認の荷運びは鉄道の職員ではなく免許を受けた人で、制服として赤いシャツが支給される。台本の「真鍮の腕章」は確認できなかったので書かなかった。"
+   }
+  ],
+  "notesJa": "土地の言葉 gt_delhi_word_sahayak（522行）と重なる。"
+ }
+]

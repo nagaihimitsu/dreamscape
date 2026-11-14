@@ -321,9 +321,11 @@ INCLUDE modules.ink
 # background: gt_bg_agra_mehtab_bagh
 { quiz_correct:
     # speaker: heroine
+    # term: gt_term_caravanserai
     タージ・ガンジは、市場と隊商宿の町。最初から、タージの計画の一部だったんですよね
 - else:
     # speaker: enemy
+    # term: gt_term_caravanserai
     市場と隊商宿だよ。タージの南門の外に、最初から造られた町だ。墓と一緒に生まれた町なんだ
 }
 # speaker: heroine
@@ -355,6 +357,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # item_show: gt_agra_anwar_petha
+# term: gt_term_petha
 帰りぎわ、アンワルは甥の支配人に電話をかけ、何か短く言った。それから、二人に紙の箱を差し出した。アーグラ名物の菓子、ペーター。
 # speaker: enemy
 詫びの印だ。新婚でなくても、甘いものは食べられる

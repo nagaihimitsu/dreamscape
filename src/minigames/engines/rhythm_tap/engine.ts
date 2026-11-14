@@ -237,13 +237,13 @@ export interface RhythmTapPlan {
 /** The record of a plan: a hit right on its beat; the stop between the windows (rhythmTapJudge reads the plan back). */
 export function rhythmTapRecordOf(plan: RhythmTapPlan, tuning: RhythmTapTuning): RhythmTapRecord {
   const { beats, endAfterMs } = tuning;
-  const window = (index: number) => rhythmTapWindow(tuning, index);
+  const windowOf = (index: number) => rhythmTapWindow(tuning, index);
   let stopMs: number | null = null;
   if (plan.stopAfter !== undefined) {
     const after = Math.min(Math.max(0, Math.floor(plan.stopAfter)), beats.length);
-    stopMs = after === 0 ? Math.max(0, beats[0] - window(0).earlyMs - 1)
-      : after === beats.length ? beats[after - 1] + Math.floor((window(after - 1).lateMs + endAfterMs) / 2)
-      : Math.floor((beats[after - 1] + window(after - 1).lateMs + beats[after] - window(after).earlyMs) / 2);
+    stopMs = after === 0 ? Math.max(0, beats[0] - windowOf(0).earlyMs - 1)
+      : after === beats.length ? beats[after - 1] + Math.floor((windowOf(after - 1).lateMs + endAfterMs) / 2)
+      : Math.floor((beats[after - 1] + windowOf(after - 1).lateMs + beats[after] - windowOf(after).earlyMs) / 2);
   }
   const taps = [...beats.filter((_, index) => plan.hit?.(index) ?? false), ...(plan.strays ?? [])]
     .filter((time) => stopMs === null || time <= stopMs).sort((a, b) => a - b);

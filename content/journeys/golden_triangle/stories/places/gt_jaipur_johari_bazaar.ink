@@ -20,6 +20,7 @@ INCLUDE modules.ink
 # reaction: heroine,exasperated,sweat
 どのお店も、まぶしすぎる……。値札、見るのも怖い
 # speaker: narrator
+# term: gt_term_lac_bangles
 アーケードの端に、一軒だけ、まるで色の洪水のような店があった。天井まで積み上げられた、ラックの腕輪。赤、緑、黄、桃色。小さなガラスや石がはめこまれて、裸電球の下で光っている。
 店番の女性が、顔を上げた。
 # speaker: gt_nasreen

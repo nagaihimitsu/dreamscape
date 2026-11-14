@@ -264,6 +264,7 @@ INCLUDE modules.ink
 彼は警察と病院の番号を探し始めた。指が震えて、二度、画面を押し間違える。
 # speaker: heroine
 # voice: gt_delhi_finale_003
+# term: gt_term_auto_rickshaw
 待ってください。あの日のカムラさん、すごくはっきりしてました。オートの運転手とはすぐ喧嘩になるから、出かけるときは地下鉄の女性車両に乗るんだって
 # speaker: enemy
 # reaction: enemy,anger
@@ -328,10 +329,13 @@ INCLUDE modules.ink
 # speaker: narrator
 値段が半分になるまで、三十秒。{heroine_name}は思わず小さく笑った。言い方が、路地で会ったカムラにそっくりだった。
 # speaker: narrator
+# term: gt_term_paratha
+# term: gt_term_cycle_rickshaw
 夜のチャンドニー・チョークは、昼より人が多い。揚げたてのパラーターの匂い。自転車リキシャの鈴。ショールの老婦人なら、百人はいる。
 # speaker: narrator
 アマンが写真を見せて回る。三軒目の揚げ菓子屋で、店主が手を打った。
 # speaker: gt_delhi_sweet_shopkeeper
+# term: gt_term_jalebi
 ああ、あのばあさんか。ジャレビー百グラムで三回値切った。それから聞かれたよ。一年分の香辛料を、一番安く買えるのはどこかって
 # speaker: enemy
 一年分……？　ジャイプールにも店はあるのに

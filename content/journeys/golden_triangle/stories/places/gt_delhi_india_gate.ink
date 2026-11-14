@@ -12,6 +12,7 @@ INCLUDE modules.ink
 # hint: デリーの観光を一つ終えてから
 # background: gt_bg_delhi_india_gate
 # speaker: narrator
+# term: gt_term_tiffin
 インド門の前の芝生は、敷物でまだら模様になっていた。風船売り、アイスの屋台、銀の弁当箱を開ける家族。戦没者の記念門の足もとで、デリーの人たちは、日曜の居間みたいにくつろいでいる。
 # speaker: heroine
 # reaction: heroine,surprised,question
@@ -201,6 +202,7 @@ Photo, please!
 
 = family_talk
 # speaker: narrator
+# term: gt_term_achar
 帰りぎわ、母親たちが弁当箱を差し出した。揚げたパンに、辛い漬物。断ると、もう一つ増えた。
 # speaker: gt_monu
 あと、ダーディーが聞いてって。二人はいつ結婚するのかって。……ごめん、うちの村ではこれ、あいさつだから

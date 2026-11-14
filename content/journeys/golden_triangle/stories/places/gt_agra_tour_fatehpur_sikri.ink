@@ -77,6 +77,7 @@ INCLUDE modules.ink
 牛は、鳴らしても急ぎません。急ぐのは、こっちの心臓だけ
 # background: gt_bg_agra_tour_road
 # speaker: narrator
+# term: gt_term_horn_ok_please
 やがて道は西へまっすぐ伸び、建物の間に畑がのぞきはじめた。前を走るトラックの荷台の後ろに、色とりどりの文字が描いてある。HORN OK PLEASE。
 # speaker: heroine
 # reaction: heroine,surprised,question
@@ -88,6 +89,7 @@ INCLUDE modules.ink
 # speaker: gt_vinod
 書いてあると、なんだか安心する。それだけです
 # speaker: narrator
+# term: gt_term_nimbu_mirchi
 バックミラーの下で、糸に通した小さなレモンと青唐辛子が揺れていた。彼女の視線に気づいて、ヴィノードが顎で示す。
 # speaker: gt_vinod
 母が付けます。悪い目よけ。シークリーへ行くたびに、新しいのに替えてくれる
@@ -209,6 +211,7 @@ INCLUDE modules.ink
 # speaker: gt_vinod
 母からです。お二人に、と
 # speaker: narrator
+# term: gt_term_mathri
 包みの中は、狐色の平たい揚げ菓子だった。マトリーというらしい。ヴィノードの母のは、アジョワンという種が入っている。
 # speaker: heroine
 # reaction: heroine,surprised,exclamation
@@ -217,6 +220,7 @@ INCLUDE modules.ink
 # emotion: happy
 でも、この香り、好き。ちょっと薬草みたいで、口の中がすっとする
 # speaker: gt_vinod
+# term: gt_term_ajwain
 母は、何にでもアジョワンを入れます。お腹にいい、と言って
 {
 - cond("flag gt_agra_tour_she_answered"):

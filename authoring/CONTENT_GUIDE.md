@@ -333,7 +333,7 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 
 言葉を1つ足す手順：
 
-1. 写真を、その旅行編の `public/assets/tourism/<旅行編の画像フォルダ>/` に置き、`tourism/catalog.json` の `assets` に出典つきで登録します（ほかの観光写真と同じ欄：`id`・`path`・`width`・`height`・`altJa`・`isPlaceholder`・`sourceUrl`・`licenseName`・`licenseUrl`・`creditJa`・`modificationJa`・`checkedAt`）。作者が描いた絵を使うときも、ここに登録し、`creditJa` に自作の旨を書きます（アルバムの絵 `public/assets/album/` は使えません）。`altJa` は小窓と図鑑の写真の代わりの文になるので、何が写っているかを書きます。出典は図鑑の大きな表示と「出典・権利の一覧」に出ます。
+1. 写真を、その旅行編の `public/assets/tourism/<旅行編の画像フォルダ>/` に置き、`tourism/catalog.json` の `assets` に出典つきで登録します（ほかの観光写真と同じ欄：`id`・`path`・`width`・`height`・`altJa`・`isPlaceholder`・`sourceUrl`・`licenseName`・`licenseUrl`・`creditJa`・`modificationJa`・`checkedAt`）。作者が描いた絵を使うときも、ここに登録し、`creditJa` に自作の旨を書きます（アルバムの絵 `public/assets/album/` は使えません）。`altJa` は小窓と図鑑の写真の代わりの文になるので、何が写っているかを書きます。出典は図鑑の大きな表示と「出典・権利の一覧」に出ます。小窓は写真をその形のまま（縦長は縦長に）出し、図鑑の一覧は中央を正方形に切り抜くので、主題が真ん中に来るよう切り抜いておきます。長い辺1200pxほどの WebP（品質80）で足ります。人の顔・ナンバープレート・店の看板などは、ほかの観光写真と同じく切り落とすかぼかし、そのことを `modificationJa` に書きます（例はインド編の `gt_img_term_…`。調べた記録は `authoring/journeys/golden_triangle/research/golden-triangle-glossary-20261113/`）。
 2. その旅行編の `content/journeys/<旅行編ID>/glossary/terms.json` に言葉を足します（ファイルがなければ作ります）。
 3. 言葉が初めて出る台詞・地の文の行のすぐ上に `# term: <言葉のID>` を書きます（行の後ろに `# term: …` と続けてもかまいません）。
 4. `npm run content:build` を実行し、エラーと注意（`--verbose`）を確かめます。
