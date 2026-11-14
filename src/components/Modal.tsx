@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { useSettling } from "./ConfirmActionButton";
 import { Icon } from "./icons";
+import { holdTaps } from "./tap-hold";
 import { playSe } from "../audio/sound-effects";
 /**
  * Native modal keeps keyboard focus inside and the underlying page inert.
@@ -112,7 +113,11 @@ export function ModalTitle({ id, children, eyebrow, onClose, closeTestId, classN
     <div className={`modal-title-bar ${className}`.trim()}>
       {eyebrow ? <div className="modal-title-text"><p className="eyebrow">{eyebrow}</p>{heading}</div> : heading}
       {onClose && (
-        <button type="button" className="modal-close" data-testid={closeTestId} onClick={onClose}>
+        <button type="button" className="modal-close" data-testid={closeTestId} onClick={() => {
+          // At the top right, over the top bar's ⚙設定: the second tap of a quick double tap would open its panel again.
+          holdTaps();
+          onClose();
+        }}>
           <Icon name="close" />閉じる
         </button>
       )}

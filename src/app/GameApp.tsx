@@ -1340,7 +1340,7 @@ export function GameApp({
       )}
       {settings && game && (
         <Modal labelledBy="settings-title" onClose={() => setSettings(false)} settlePresses>
-          <ModalTitle id="settings-title">ゲームの設定</ModalTitle>
+          <ModalTitle id="settings-title" onClose={() => setSettings(false)}>ゲームの設定</ModalTitle>
           {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} />}
           <label className="translation-setting">
             <input type="checkbox" checked={displaySettings.value.autoSave} disabled={!!displaySettings.error}
@@ -1499,13 +1499,6 @@ export function GameApp({
             onClick={() => { setSettings(false); setOldDataOpen(true); }}>古い保存データの整理</button>}
           <button className="text-button delete-entry" onClick={requestDelete}>
             {isDebug ? "Debug用の一時データの消去" : "保存データの消去"}
-          </button>
-          <button
-            className="secondary"
-            autoFocus
-            onClick={() => setSettings(false)}
-          >
-            閉じる
           </button>
         </Modal>
       )}
