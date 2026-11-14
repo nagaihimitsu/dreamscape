@@ -34,14 +34,16 @@ export const baraatDance = defineMiniGame({
   howToJa: "楽隊の太鼓が4つ数えてから、太鼓が鳴るたびに「踊る」を押す。途中でテンポが上がる。連打すると足がもつれる（約13秒）",
   outcomes: [
     { id: "in_step", labelJa: "拍に乗って踊れた", noteJa: "16拍のうち12拍以上に合わせ、余計な押しは4回まで", finishJa: "決まった！",
-      reaction: { kind: "surprise", linesJa: ["え、ちゃんと踊れてる……！", "いつ練習したの……？"] } },
+      reaction: { kind: "surprise", linesJa: ["いつ練習したの？"] } },
+    // Her face only: the story's very next line says the drum would not wait, and hers after it (二人で同じだけずれてる) closes it.
     { id: "off_beat_together", labelJa: "ずれたまま、二人で踊った", noteJa: "押したが、合ったのは11拍まで（連打ではない）", finishJa: "踊りきった！",
-      finishTone: "good", reaction: { kind: "laugh", linesJa: ["あはは、太鼓が待ってくれない……！"] } },
+      finishTone: "good", reaction: { kind: "laugh" } },
     { id: "stumble", labelJa: "足がもつれた", noteJa: "余計な押し（1拍に2回目からの押し）が8回以上で、合った拍の数以上（連打）。または、12拍以上合わせても余計な押しが5回以上",
       finishJa: "おっとっと！", finishTone: "oops", reaction: { kind: "oops", linesJa: ["わっ、足、足！"] } },
-    // No call: nobody danced. Her face says it, and the story's line (she pulls the player in) follows.
+    // No call: nobody danced. Her face only: the story's very next line says the feet would not move, and her serious line
+    // (she pulls the player in) follows.
     { id: "stood_still", labelJa: "立ったままだった", noteJa: "一度も押さなかった（太鼓が数える4拍の間の押しは数えない）", finishJa: null,
-      reaction: { kind: "oops", linesJa: ["……あれ、止まってる？"] } },
+      reaction: { kind: "oops" } },
   ],
   defaultAuto: "off_beat_together",
   params: () => z.object({}).strict(),

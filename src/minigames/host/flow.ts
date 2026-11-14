@@ -134,6 +134,14 @@ export function burstAngles(count: number, seed: number): number[] {
   return Array.from({ length: count }, (_, index) => offset + (360 / count) * index + (random() * 30 - 15));
 }
 
+/**
+ * Whether 「中断する」 and Esc may leave the play now: practice always; the real play only until its outcome is decided
+ * (the deciding tap, though the field still shows what it did) or it has ended. Its one try is spent then (group1 round
+ * 2: a quit between the deciding tap and the result redid the story's one real play).
+ */
+export const playLeavable = ({ practice, ended, decided }: { practice: boolean; ended: boolean; decided: boolean }): boolean =>
+  practice || (!ended && !decided);
+
 /** A box on the screen (client pixels). */
 export interface ScreenBox { left: number; top: number; right: number; bottom: number }
 /** A press this close around the start button counts as on it (a second tap lands a little off the first). */

@@ -117,6 +117,7 @@ export function sayTogetherSkinFor(game: SayGame): RhythmTapSkin<SayTogetherPara
       let said: readonly SayWord[] = START.yours;
       let first: "pending" | "told" = "pending";
       let ended = false;
+      let locked = false;
       let shown = START;
       return frames(({ ms, record }) => {
         const { juice, react } = live.current.kit;
@@ -146,6 +147,11 @@ export function sayTogetherSkinFor(game: SayGame): RhythmTapSkin<SayTogetherPara
         while (spoken < SAY_WORD_COUNT && ms >= game.wordsAt[spoken] && !ended) {
           if (judgement.words[spoken] !== "together") live.current.sound(SOUNDS.voice, { volume: 0.6 });
           spoken += 1;
+        }
+        // The first word said is the story's outcome: the real play's one try is spent (no leaving it now).
+        if (judgement.firstMs !== null && !locked) {
+          locked = true;
+          live.current.kit.decided();
         }
         // Her face as the first word tells: the voices meeting, the player's first (surprise), hers alone first (oops).
         if (first === "pending" && !ended) {

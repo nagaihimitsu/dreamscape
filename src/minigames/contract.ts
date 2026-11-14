@@ -150,6 +150,12 @@ export interface MiniGamePlayProps<Params = unknown, Outcome extends string = st
   /** A short text in the host's top band (「2/3」「のこり8秒」), read out politely. */
   status(textJa: string): void;
   /**
+   * The outcome is decided before `end` (a tap whose result the field still shows: the ball on its way): from now on the
+   * real play can no longer be left (「中断する」 hides, Esc stays), since its one try is spent; `end` does the same. A play
+   * that decides as it ends need not call it. Practice can always be left.
+   */
+  decided(): void;
+  /**
    * The play is over: the host's finish (stop, flash, 「そこまで！」), then the result card (the outcome's label, `detailJa`
    * or the rating's score, ★ from rules.rate of `options.record`), then its choice. Call it at the moment the outcome is
    * decided, with `holdMs` for what the field still shows; input to the play is dropped from then on.
@@ -264,6 +270,8 @@ export interface MiniGameDefinition<Params = unknown, Outcome extends string = s
   music?: MiniGameMusic;
   /** The result card sits low (the default, over the controls) or high, to keep the field's key picture in view. */
   resultAnchor?: "top" | "bottom";
+  /** The finish word shows in the middle of the field (the default) or high under the band, off a key picture in the middle. */
+  finishAnchor?: "top" | "center";
   /** Played against time: a hidden page pauses it with 「続ける」. */
   timed: boolean;
   /** How to play with keys; null: not by keys (the host says ⚙設定's おまかせ is there). */

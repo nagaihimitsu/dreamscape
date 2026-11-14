@@ -45,6 +45,7 @@ export const clothFlap = defineMiniGame({
   practice: {},
   // Her steps are the count (the marks light one a step): no 3・2・1 before her walk.
   countdown: "own",
+  finishAnchor: "top",
   music: "bright",
   timed: true,
   keysJa: "Space・Enter で広げる",

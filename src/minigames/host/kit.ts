@@ -15,10 +15,12 @@ export interface MiniGameKit {
   still: boolean;
   /** The play's end (MiniGamePlayProps.end): the first call of a play counts. */
   end(outcome: string, detailJa?: string, options?: MiniGameEndOptions): void;
+  /** The outcome is decided before the end (MiniGamePlayProps.decided): the real play can no longer be left. */
+  decided(): void;
 }
 
 /** Outside a play (a field rendered on its own in a test): everything does nothing. */
-const NO_KIT: MiniGameKit = { juice: NO_JUICE, react() {}, practice: false, still: false, end() {} };
+const NO_KIT: MiniGameKit = { juice: NO_JUICE, react() {}, practice: false, still: false, end() {}, decided() {} };
 
 export const MiniGameKitContext = createContext<MiniGameKit>(NO_KIT);
 

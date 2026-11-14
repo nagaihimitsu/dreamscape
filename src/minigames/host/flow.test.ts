@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import soundData from "../../../content/presentation/sounds.json";
 import {
   burstAngles, countedScore, countPhase, fillNames, FINISH, finishLevel, finishWord, hitStopMs, HOST_SOUNDS, pickLine, RESULT_CARD_MAX_COVER, RESULT_CARD_SHORT_PX,
-  resultButtons, resultCardCompact, resultCardDelay, START_BUTTON_MARGIN_PX, startGuardDrops, vibrationDoubles,
+  playLeavable, resultButtons, resultCardCompact, resultCardDelay, START_BUTTON_MARGIN_PX, startGuardDrops, vibrationDoubles,
 } from "./flow";
 import { MINI_GAME_COUNT_MS, MINI_GAME_FINISH_MS, MINI_GAME_GO_MS, MINI_GAME_START_GUARD_MS, MINI_GAME_VIBRATE_GAP_MS } from "./timing";
 
@@ -20,6 +20,16 @@ describe("the host's start guard", () => {
     expect(startGuardDrops({ sinceMs: 150, drag: true, point: null, startBox })).toBe(true);
     expect(startGuardDrops({ sinceMs: 150, drag: true, point: { x: 200, y: 300 }, startBox: null })).toBe(true);
     expect(startGuardDrops({ sinceMs: MINI_GAME_START_GUARD_MS, drag: true, point: { x: 200, y: 720 }, startBox })).toBe(false);
+  });
+});
+
+describe("leaving a play", () => {
+  it("leaves practice any time, the real play only until its outcome is decided (its one try spent) or it has ended", () => {
+    expect(playLeavable({ practice: false, ended: false, decided: false })).toBe(true);
+    expect(playLeavable({ practice: false, ended: false, decided: true })).toBe(false);
+    expect(playLeavable({ practice: false, ended: true, decided: true })).toBe(false);
+    expect(playLeavable({ practice: true, ended: false, decided: true })).toBe(true);
+    expect(playLeavable({ practice: true, ended: true, decided: true })).toBe(true);
   });
 });
 

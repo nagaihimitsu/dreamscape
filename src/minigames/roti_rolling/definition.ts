@@ -38,7 +38,7 @@ export const rotiRolling = defineMiniGame({
     { id: "country", labelJa: "地図のような形になった", noteJa: "形がいびつ（向きがばらばら、伸ばし足りない、端だけ伸ばした）", finishJa: "……ん？",
       reaction: { kind: "laugh", linesJa: ["……どこかで見た形かも"] } },
     { id: "torn", labelJa: "穴が開いた", noteJa: "伸ばしすぎた（うすくしすぎたか、板からはみ出すほど長い）。その場で終わる", finishJa: "ぷすっ！",
-      finishTone: "oops", reaction: { kind: "oops", linesJa: ["あっ、穴……！"] } },
+      finishTone: "oops", reaction: { kind: "oops", linesJa: ["あっ、穴！"] } },
   ],
   defaultAuto: "truck_bed",
   params: () => z.object({}).strict(),

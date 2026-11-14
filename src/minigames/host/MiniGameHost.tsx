@@ -11,7 +11,7 @@ import type { MiniGameStageCast } from "./ChoicePoint";
 import { browserClockDriver, createPlayClock, type HostClock } from "./clock";
 import {
   countPhase, fillNames, FINISH, finishLevel, finishWord, HOST_SOUNDS, pickLine, REACTION_EMOTION, resultButtons, resultCardDelay, vibrationDoubles, type CountPhase,
-  startGuardDrops, type FinishLevel, type ScreenBox, type ScreenSpan,
+  playLeavable, startGuardDrops, type FinishLevel, type ScreenBox, type ScreenSpan,
 } from "./flow";
 import { HandDemo } from "./HandDemo";
 import { createJuice, NO_JUICE } from "./juice";
@@ -74,6 +74,8 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
   const [finishing, setFinishing] = useState(false);
   const [count, setCount] = useState<CountPhase>(null);
   const [paused, setPaused] = useState(false);
+  /** The play's outcome is decided (its one try spent) though it has not ended yet: no leaving the real play. */
+  const [locked, setLocked] = useState(false);
   const [status, setStatus] = useState("");
   const [refused, setRefused] = useState(false);
   const [reaction, setReaction] = useState<Reaction | null>(null);
@@ -88,6 +90,7 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
   const runRef = useRef<Run | null>(null);
   runRef.current = run;
   const endedRef = useRef(false);
+  const lockedRef = useRef(false);
   const lastReactAt = useRef(Number.NEGATIVE_INFINITY);
   /** When the play last vibrated, and when the host's finish did (neither doubles the other: group2 N11). */
   const playVibratedAt = useRef(Number.NEGATIVE_INFINITY);
@@ -162,6 +165,8 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
   const reset = () => {
     clearTimers();
     endedRef.current = false;
+    lockedRef.current = false;
+    setLocked(false);
     setEnded(null);
     setFinishing(false);
     setCount(null);
@@ -206,6 +211,14 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     const startBox = box && box.width > 0 ? { left: box.left, top: box.top, right: box.right, bottom: box.bottom } : null;
     setRun((current) => ({ id: (current?.id ?? 0) + 1, clock, practice, count: countKind, startedAt: performance.now() + leadMs, startBox }));
   };
+  /** The outcome is decided before the end: the real play's one try is spent, so it can no longer be left (practice can). */
+  const decided = useCallback(() => {
+    if (lockedRef.current || !runRef.current) return;
+    lockedRef.current = true;
+    setLocked(true);
+  }, []);
+  /** Whether 「中断する」 and Esc may leave now: practice always, the real play until its outcome is decided. */
+  const leavable = () => playLeavable({ practice: !!runRef.current?.practice, ended: endedRef.current, decided: lockedRef.current });
   const quit = useCallback(() => {
     setRun((current) => { current?.clock.stop(); return null; });
     reset();
@@ -248,6 +261,7 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
       return;
     }
     endedRef.current = true;
+    lockedRef.current = true;
     const outcomeTaken = taken(outcome);
     let rating: MiniGameRating | null = null;
     if (options && "record" in options && played?.rules.rate) {
@@ -358,7 +372,7 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
         if (definition?.timed) setPaused(true);
       } else if (!definition?.timed) run.clock.resume();
     };
-    const onKey = (event: globalThis.KeyboardEvent) => { if (event.key === "Escape") quit(); };
+    const onKey = (event: globalThis.KeyboardEvent) => { if (event.key === "Escape" && leavable()) quit(); };
     document.addEventListener("visibilitychange", onVisibility);
     document.addEventListener("keydown", onKey);
     return () => {
@@ -375,7 +389,7 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     return () => latest.current.onQuiet?.(false);
   }, [quiet]);
 
-  const kit = useMemo<MiniGameKit>(() => ({ juice, react, practice: !!run?.practice, still, end }), [juice, react, run?.practice, still, end]);
+  const kit = useMemo<MiniGameKit>(() => ({ juice, react, practice: !!run?.practice, still, end, decided }), [juice, react, run?.practice, still, end, decided]);
   // Her figure on the field follows her reactions (the line's own face before any: docs/13, group2 H4).
   const heroineEmotion = emotion ?? cast.heroine.emotion;
   const { sceneId, cityId } = cast.heroine;
@@ -415,7 +429,7 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
   const onLayerKey = (event: KeyboardEvent) => {
     if (event.key === "Escape") {
       event.preventDefault();
-      if (!endedRef.current || run?.practice) quit();
+      if (leavable()) quit();
       return;
     }
     if (!isPressKey(event) || isQuit(event) || event.repeat) return;
@@ -445,7 +459,8 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     ended.rating?.scoreJa && ended.detail ? ended.detail : "", filledLine ? `「${filledLine}」` : "",
   ].filter(Boolean).join("。") : "";
   const goal = auto !== null ? "おまかせで遊びます。" : definition.goalJa ?? definition.hintJa;
-  const showQuit = !ended || !!run?.practice;
+  // The real play's 「中断する」 goes once its outcome is decided (its one try spent: group1 round 2), as after its end.
+  const showQuit = playLeavable({ practice: !!run?.practice, ended: !!ended, decided: locked });
 
   return (
     <div className="choices minigame-ready" data-testid="minigame" data-game={tag.id}>
@@ -505,7 +520,8 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
             onKeyDownCapture={dropBlocked}>
             <MiniGameKitContext.Provider value={kit}>
               <Play key={run.id} params={playParams.value} auto={auto} available={available} still={still} seed={seed} clock={run.clock} cast={playCast}
-                names={names} art={art} sound={sound} vibrate={playVibrate} status={setStatus} end={end} practice={run.practice} juice={juice} react={react} />
+                names={names} art={art} sound={sound} vibrate={playVibrate} status={setStatus} end={end} decided={decided} practice={run.practice}
+                juice={juice} react={react} />
             </MiniGameKitContext.Provider>
             <div ref={fx} className="minigame-fx" aria-hidden="true" />
           </div>
@@ -515,7 +531,8 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
             </div>
           )}
           {count && <p key={count} className="minigame-count" data-phase={count} data-testid="minigame-count" aria-hidden="true">{count === "go" ? "スタート！" : count}</p>}
-          {finishing && ended?.word && <p className="minigame-finish" data-level={ended.level} data-testid="minigame-finish" aria-hidden="true">{ended.word}</p>}
+          {finishing && ended?.word && <p className="minigame-finish" data-level={ended.level} data-anchor={definition.finishAnchor ?? "center"}
+            data-testid="minigame-finish" aria-hidden="true">{ended.word}</p>}
           {cardShown && ended && (
             <ResultCard label={label(ended.outcome)} rating={ended.rating} {...(score ? { score } : {})}
               {...(ended.rating?.scoreJa && ended.detail ? { detail: ended.detail } : {})}
@@ -528,7 +545,7 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
             <div className="minigame-pause" role="group" aria-label="一時停止中" data-testid="minigame-pause">
               <p>一時停止中</p>
               <button type="button" className="primary" data-testid="minigame-resume" onClick={resume}>続ける</button>
-              <button type="button" className="secondary" data-minigame-quit onClick={quit}>中断する</button>
+              {showQuit && <button type="button" className="secondary" data-minigame-quit onClick={quit}>中断する</button>}
             </div>
           )}
           <p className="sr-only" role="status" data-testid="minigame-announce">{announced}</p>
