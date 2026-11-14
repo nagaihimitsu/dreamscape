@@ -67,6 +67,89 @@ export function cueTapFairness(tuning: CueTapTuning): string[] {
   return problems;
 }
 
+/** A tuning's windows (a scripted skin's tuning holds them beside its own numbers). */
+export type CueTapWindows = Pick<CueTapTuning, "cleanEarlyMs" | "cleanLateMs" | "nearEarlyMs" | "nearLateMs">;
+
+/**
+ * A scripted play's timeline (docs/13 2.2, 2026-11-14): from when a tap counts, the moment to tap, and when a play without
+ * a tap ends. A skin whose play is more than one thing coming at one pace (her steps that stop and hurry, a monkey's
+ * feints) works these out from its own numbers and gives the engine its tuning (cueTapTuningFor).
+ */
+export interface CueTapTiming {
+  start: number;
+  moment: number;
+  end: number;
+}
+
+/** The engine's tuning of a timing and its windows. */
+export function cueTapTuningFor(timing: CueTapTiming, windows: CueTapWindows): CueTapTuning {
+  return { leadMs: timing.start, approachMs: timing.moment - timing.start, noneAfterMs: timing.end - timing.moment, ...windows };
+}
+
+/**
+ * Something in a play that looks like the moment to tap and is not (docs/13 2.2). A tap at it is a tap at the wrong time:
+ * the engine judges it against the real moment like any other (far before it: a miss, or the skin's early side). Each kind
+ * shows what it is:
+ * - `feint`: a movement that is not the cue (the monkey's arm jerks down, its fist still closed): only a flinch falls for it.
+ * - `decoy`: something else coming the same way (a peanut shell, a boy running down the stairs), different to look at all
+ *   along; `tellAt` is when it can be told apart.
+ * - `rest`: a beat the pattern so far expects that does not come (she stays on a step); `tellAt` is when it shows.
+ */
+export interface CueTapTrap {
+  kind: "feint" | "decoy" | "rest";
+  /** When a player who falls for it taps (the decoy reaching the hands, the beat that does not come). */
+  at: number;
+  tellAt: number;
+}
+
+/**
+ * How a scripted play's moment reads (docs/13 2.2): before its last change, the pattern so far puts the moment at
+ * `guessAt` (the pace of the ball before it bounces, her steps before she hurries); the change shows at `tellAt` (the
+ * bounce, her first quick step), from when the true moment can be read. A moment with no change reads from its start.
+ */
+export interface CueTapRead {
+  guessAt: number;
+  tellAt: number;
+}
+
+/** A scripted play (a skin's pure script): its timeline, how its moment reads, and its traps in order. */
+export interface CueTapScript extends CueTapTiming {
+  read: CueTapRead;
+  traps: readonly CueTapTrap[];
+}
+
+/**
+ * A fair surprise (docs/13 2.2): a decoy or a rest shows what it is at least this long before a player who falls for it
+ * would tap (a reaction and a little more), and the moment's last change shows at least CUE_TAP_READ_MS before it.
+ */
+export const CUE_TAP_TELL_MS = 300;
+/** The moment's last change shows at least this long before it (about a reaction: a quick player can still meet it). */
+export const CUE_TAP_READ_MS = 250;
+
+/**
+ * The reasons a scripted play is not fair (none: fair): its tuning's (cueTapFairness), its moment's tells and its traps.
+ * A moment that comes later than the pattern so far says is a rest of its own (its last change shows CUE_TAP_TELL_MS
+ * before where the pattern put it).
+ */
+export function cueTapScriptFairness(script: CueTapScript, windows: CueTapWindows): string[] {
+  const problems = cueTapFairness(cueTapTuningFor(script, windows));
+  const { start, moment, end, read } = script;
+  if (!(start < moment && moment < end)) problems.push(`the timeline is out of order (start ${start}, moment ${moment}, end ${end})`);
+  if (moment - read.tellAt < CUE_TAP_READ_MS) problems.push(`the moment's last change shows ${moment - read.tellAt} ms before it (less than ${CUE_TAP_READ_MS})`);
+  if (read.guessAt < moment && read.guessAt - read.tellAt < CUE_TAP_TELL_MS)
+    problems.push(`the moment's last change shows ${read.guessAt - read.tellAt} ms before where the pattern put it (less than ${CUE_TAP_TELL_MS})`);
+  let last = start;
+  for (const [index, trap] of script.traps.entries()) {
+    const name = `trap ${index + 1} (${trap.kind})`;
+    if (trap.at < last) problems.push(`${name} at ${trap.at} comes before the start or the trap before it`);
+    if (trap.at >= moment - windows.cleanEarlyMs) problems.push(`${name} at ${trap.at} is not before the moment's clean window`);
+    if (trap.kind !== "feint" && trap.at - trap.tellAt < CUE_TAP_TELL_MS)
+      problems.push(`${name} shows what it is ${trap.at - trap.tellAt} ms before it (less than ${CUE_TAP_TELL_MS})`);
+    last = trap.at;
+  }
+  return problems;
+}
+
 /** When the thing starts coming (the meter's needle leaves 0): from then on, a tap counts. */
 export const cueTapStart = (tuning: CueTapTuning): number => tuning.leadMs;
 /** The moment to tap: when the thing arrives. */
@@ -153,29 +236,34 @@ export type CueTapMap<Outcome extends string> = Readonly<Record<Exclude<CueTapOu
  * skin outcome taps as the first engine outcome mapped to it (in the order clean, early, late, miss early, miss late, none).
  * The ★ are the engine's (cueTapRating); a skin may give its own rate in their place.
  */
-export function cueTapRules<Params, Outcome extends string>(tuning: CueTapTuning, map: CueTapMap<Outcome>): MiniGameRules<Params, Outcome, CueTapRecord> {
+export function cueTapRules<Params, Outcome extends string>(
+  tuning: CueTapTuning | ((params: Params) => CueTapTuning), map: CueTapMap<Outcome>,
+): MiniGameRules<Params, Outcome, CueTapRecord> {
   const { miss } = map;
   const missEarly = typeof miss === "string" ? miss : miss.early;
   const missLate = typeof miss === "string" ? miss : miss.late;
-  const taps: readonly (readonly [Outcome, CueTapRecord])[] = [
-    [map.clean, cueTapAutoRecord("clean", tuning)],
-    [map.early, cueTapAutoRecord("early", tuning)],
-    [map.late, cueTapAutoRecord("late", tuning)],
-    [missEarly, cueTapAutoRecord("miss", tuning)],
-    [missLate, cueTapLateMissRecord(tuning)],
-    [map.none, cueTapAutoRecord("none", tuning)],
+  // A skin whose timing depends on its tag's keys (the cricket's ball) gives a function of them.
+  const tuningOf = typeof tuning === "function" ? tuning : () => tuning;
+  const taps = (of: CueTapTuning): readonly (readonly [Outcome, CueTapRecord])[] => [
+    [map.clean, cueTapAutoRecord("clean", of)],
+    [map.early, cueTapAutoRecord("early", of)],
+    [map.late, cueTapAutoRecord("late", of)],
+    [missEarly, cueTapAutoRecord("miss", of)],
+    [missLate, cueTapLateMissRecord(of)],
+    [map.none, cueTapAutoRecord("none", of)],
   ];
   return {
-    outcomeOf: (record) => {
-      const engine = cueTapOutcome(record, tuning);
+    outcomeOf: (record, params) => {
+      const of = tuningOf(params);
+      const engine = cueTapOutcome(record, of);
       if (engine !== "miss") return map[engine];
-      return (record as number) < cueTapMoment(tuning) ? missEarly : missLate;
+      return (record as number) < cueTapMoment(of) ? missEarly : missLate;
     },
-    autoRecord: (outcome) => {
-      const tap = taps.find(([mapped]) => mapped === outcome);
+    autoRecord: (outcome, params) => {
+      const tap = taps(tuningOf(params)).find(([mapped]) => mapped === outcome);
       if (!tap) throw new Error(`No cue_tap outcome gives ${outcome}`);
       return tap[1];
     },
-    rate: (record) => cueTapRating(record, tuning),
+    rate: (record, params) => cueTapRating(record, tuningOf(params)),
   };
 }
