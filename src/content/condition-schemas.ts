@@ -117,7 +117,7 @@ const LEAF_VALUE_SCHEMAS: { [K in LeafKind]: z.ZodType<LeafValues[K]> } = {
 };
 export const LEAF_KINDS = Object.keys(LEAF_VALUE_SCHEMAS) as LeafKind[];
 const COMBINATORS = ["all", "any", "not", "atLeast"] as const;
-/** Parts planned for later stages of the condition system (docs: the unified event design's condition table). */
+/** Parts planned for later stages of the condition system (docs: the unified event design's condition table); none now. */
 const LATER_PARTS: Record<string, number> = {};
 
 type Issue = { message: string; path: (string | number)[] };

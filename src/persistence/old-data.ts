@@ -9,7 +9,7 @@ import { runWithSlotLocks, slotLockName, type LockedRun, type LockManagerLike } 
  * 対象キーと影響範囲を示し、明示確認と別タブ競合の保護を維持する」, docs/07 「古い保存データの整理」).
  *
  * Listed (each item = keys removed together):
- * - another journey's game save identified as an old version (loadGame `legacy`: v1 to v14);
+ * - another journey's game save identified as an old version (loadGame `legacy`: from v1 to the one before GAME_STATE_VERSION);
  * - backups of unreadable saves (`….save.v1.backup.<time>[.<n>]`, as backupAndCreate names them),
  *   of every journey including this one;
  * - the keys Milan used before journeys had their own slots (`dreamscape.save.v1` with its backups,
@@ -19,8 +19,8 @@ import { runWithSlotLocks, slotLockName, type LockedRun, type LockManagerLike } 
  * Never listed: this journey's own save slot (its title and 「保存データの消去」 handle it), any game
  * save that loads in this version (also as a backup), another journey's save that is not an old
  * version (damaged, newer, preparation draft), the English notes, the read lines and the words learned of a journey this version has,
- * the display settings, the remembered journey (`dreamscape.last-journey.v1`) and the Debug-mode switch
- * (`dreamscape.debug-mode.v1`, src/app/debug-mode.ts; all three per-device preferences), every key outside
+ * the display settings, the remembered journey (`dreamscape.last-journey.v1`), the Debug-mode switch and Debug's voice
+ * speed (`dreamscape.debug-mode.v1`, `dreamscape.debug-voice-rate.v1`, src/app/debug-mode.ts; all per-device preferences), every key outside
  * the patterns above (other sites on the same origin included). Debug's play keeps its data in memory
  * only, so nothing of it is in browser storage.
  */

@@ -41,9 +41,9 @@ const ruleSchema = z.object({
    * An encounter with a quiz that waits for the landmark's battle: it can be
    * met during the first observation, before its `when` holds (its story
    * then ends without the quiz); met after the battle was played, it goes on
-   * to the quiz. In Milan no observation of the Galleria opens after its
-   * battle today, so its quiz is reached only once stage 3's after-battle
-   * moment exists.
+   * to the quiz. No journey uses it since Milan's encounters became place
+   * file scenes (2026-11-13); tests/fixtures/catalog-encounters keeps it
+   * covered.
    */
   quizAfterLandmarkBattle: z.literal(true).optional(),
 }).strict().refine((rule) => rule.at === undefined || rule.priority === undefined,

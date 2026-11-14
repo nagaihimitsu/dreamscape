@@ -212,7 +212,7 @@ function readEncounterHeads(sources: ContentSources, encounters: readonly { id: 
     if (!head) continue;
     if (head.landmarkId !== event.landmarkId)
       throw new Error(`Encounter head names another landmark: ${storyLabel(id)} has # at: visit ${head.landmarkId}, encounters/catalog.json gives ${event.id} the landmark ${event.landmarkId}`);
-    // Every landmark has an observation until stage 2b lets a place leave it out.
+    // Here only that the landmark exists: one with observation: false (stage 2b) is refused below, after the entry rules.
     if (head.priority === "after observe" && !landmarks.some((landmark) => landmark.id === event.landmarkId))
       throw new Error(`# priority: after observe needs a landmark with an observation: ${storyLabel(id)}`);
     heads.set(id, head);

@@ -63,7 +63,7 @@ export function writeContentOutputs(
   // Every journey's tours (src/content/index.ts imports the file, so it is written even with no tour: `[]`).
   writeFileSync(path.join(directory, "tours.json"), `${JSON.stringify(validated.tours ?? [], null, 2)}\n`);
   writeFileSync(path.join(directory, "stories.json"), `${JSON.stringify(validated.stories, null, 2)}\n`);
-  // The game reads the stories, quizzes and city travel per journey (src/content/journey-parts.ts): the other files keep
+  // The game reads the stories, quizzes and city travel per journey (src/content/index.ts, loadJourneyContent): the other files keep
   // every journey together for the tools and the tests.
   writeJourneyParts(root, journeyParts(sources, validated.stories, validated.quizzes));
   // The scenes' cond("…") texts and their conditions (scripts/scene-conditions.ts; read by src/domain/scene-conditions.ts).
@@ -96,7 +96,7 @@ export function writeContentOutputs(
   assemblePublicDirectory(new Map([...sources.publicFiles, ...derivedFiles]), generatedPublicDirectory(root));
 }
 
-/** A journey's part of the game's content (src/content/journey-parts.ts reads it). */
+/** A journey's part of the game's content (src/content/index.ts reads it, through journey-part-files.ts). */
 export type JourneyPart = {
   /** JOURNEY_PART_MARKER (scripts/dist-guard.ts) and the journey ID: the production build check finds each part's file by it. */
   marker: string;

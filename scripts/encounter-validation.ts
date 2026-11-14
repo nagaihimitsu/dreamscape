@@ -143,7 +143,7 @@ export function validateEncounterContent({
   unique(catalog.items.map((item) => item.id), "encounter item ID");
   unique(catalog.encounters.map((event) => event.id), "encounter ID");
   const itemIds = new Set([...catalog.items, ...carriedItems].map((item) => item.id));
-  // The current route has one city; journey data also lets isolated tests
+  // Called for one city at a time (content-validation.ts); journey data also lets isolated tests
   // exercise another city without registering new production content.
   const knownCities = new Set([cityId, ...journey.episodes.map((episode) => episode.cityId)]);
   for (const item of catalog.items)

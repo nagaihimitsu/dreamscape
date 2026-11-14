@@ -1,6 +1,6 @@
 // Loading in the background (2026-11-13 user request 「ロードを速くする工夫を入れたい」): the pictures and sounds a scene is
 // about to show are fetched before they are needed, so a line's picture and voice are there when it appears. This file
-// holds the rules as pure functions and a small queue that runs any loader it is given (src/app/preload.ts gives the
+// holds the rules as pure functions and a small queue that runs any loader it is given (src/media/preload.ts gives the
 // browser's): which priorities a connection allows, the order of the requests, how many load at once. Presentation only:
 // nothing here changes the game or its save, and a load that fails is left to the screen, which loads its own as before.
 
