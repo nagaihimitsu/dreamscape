@@ -50,6 +50,6 @@
 .minigame-room-was { flex-basis: 100%; font-family: inherit; font-size: 12px; text-align: right; }
 .minigame-room-tuning .secondary { min-height: 44px; margin-top: 4px; }
 /* Numbers the engine finds unfair: said in words under them (not colour alone), on a warm ground, no edge on one side. */
-.minigame-room-unfair { margin: 6px 0 2px; padding: 8px 10px; border: 1px solid var(--ds-marker); border-radius: 8px; background: var(--ds-chip-bg); }
+.minigame-room-unfair { margin: 6px 0 2px; padding: 8px 10px; border: 1.5px solid var(--ds-marker); border-radius: 8px; background: var(--ds-parchment-2); color: var(--ds-ink); }
 .minigame-room-unfair p { margin: 0 0 4px; font-weight: 600; }
 .minigame-room-unfair li { font-family: ui-monospace, monospace; font-size: 12px; }
