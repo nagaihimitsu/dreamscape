@@ -14,12 +14,12 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   const line = page.getByTestId("dialogue-text");
   const card = page.getByTestId("glossary-term-window");
   await expect(line).toHaveAttribute("data-ready", "true");
-  // The guide's first line names no term: no card, and the gear has no dot.
+  // The guide's first line names no term: no card, and the menu has no dot.
   await expect(card).toHaveCount(0);
-  await expect(ops.settingsButton(page)).toHaveAccessibleName("設定");
+  await expect(ops.settingsButton(page)).toHaveAccessibleName("メニュー");
 
   // The second line names 三時パン (read on from the keyboard, so the focus is on the line): its card shows over the
-  // scene, a dialog that says the name and the line, with the focus on 「とじる」.
+  // scene, a dialog that says the name and the line, with the focus on 「閉じる」.
   await ops.settled(page);
   await line.focus();
   await page.keyboard.press("Enter");
@@ -67,6 +67,6 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   await page.getByTestId("glossary-close").click();
   await expect(book).toHaveCount(0);
   // Seen: the dots are gone, and the card does not come back for the term.
-  await expect(ops.settingsButton(page)).toHaveAccessibleName("設定");
+  await expect(ops.settingsButton(page)).toHaveAccessibleName("メニュー");
   await expect(card).toHaveCount(0);
 });

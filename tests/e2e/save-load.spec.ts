@@ -40,14 +40,20 @@ test("autosaved progress, a battle question, the English note and the text speed
   expect(progress.ap).toBe(result.ap);
 
   // The English note (its own save) keeps the answered questions and the marks,
-  // and the text speed (the presentation settings) is kept as chosen.
+  // and the text speed (the presentation settings) is kept as chosen. The note opens on the question answered
+  // last, then on the one it showed last, never on an empty 「問題を選んでください」 (2026-11-14 user decision).
   const note = await ops.openEnglishNote(page);
   const picker = note.getByLabel("回答した問題を選ぶ");
+  await expect(note.getByTestId("review-question")).toBeVisible();
+  await expect(picker).toHaveValue((await picker.locator("option").last().getAttribute("value"))!);
   const firstQuestion = await picker.locator("option").nth(1).getAttribute("value");
   await picker.selectOption(firstQuestion!);
   await note.getByRole("button", { name: "あとで復習する" }).click();
   await expect(note.getByRole("button", { name: "復習の登録を解除" })).toHaveAttribute("aria-pressed", "true");
   await ops.closeDialog(note);
+  const again = await ops.openEnglishNote(page);
+  await expect(again.getByLabel("回答した問題を選ぶ")).toHaveValue(firstQuestion!);
+  await ops.closeDialog(again);
   await ops.setTextSpeed(page, 45);
   const kept = await allStorage(page);
   expect(kept[learningKey()]).toBeDefined();
@@ -106,15 +112,17 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await page.clock.install();
   await ops.startJourney(page);
 
-  // セーブ・ロード・旅の記録・アルバム・英語ノート・写真の出典 (in free time)・ゲームの設定 live in the header's ⚙設定
-  // (UI redesign §3.1, U2/U24/U28), a disclosure: by keyboard it opens on セーブ, the arrows move
-  // between its items, Esc closes it back on ⚙設定, and leaving it with Tab closes it.
+  // セーブ・ロード・旅の記録・アルバム・英語ノート・写真の出典 (in free time)・ゲームの設定 live in the header's ≡メニュー
+  // (UI redesign §3.1, U2/U24/U28; named 「設定」 until 2026-11-14), a disclosure: by keyboard it opens on セーブ, the
+  // arrows move between its items, Esc closes it back on ≡メニュー, and leaving it with Tab closes it. While saving is
+  // automatic, a line under セーブ・ロード says when it last saved (display only: the arrows and Tab pass it).
   const gear = ops.settingsButton(page);
   const panel = page.getByTestId("hud-menu-panel");
   const item = (name: string) => panel.getByRole("button", { name, exact: true });
   await gear.focus();
   await page.keyboard.press("Enter");
   await expect(panel.getByRole("button")).toHaveText(["セーブ", "ロード", "旅の記録", "アルバム", "英語ノート", "写真の出典", "ゲームの設定"]);
+  await expect(panel.getByText(/^自動保存：(?:たった今|オン)$/u)).toBeVisible();
   await expect(item("セーブ")).toBeFocused();
   await page.keyboard.press("ArrowDown");
   await expect(item("ロード")).toBeFocused();
@@ -125,15 +133,17 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await expect(item("セーブ")).toBeFocused();
   for (let step = 0; step < 7; step++) await page.keyboard.press("Tab");
   await expect(panel).toBeHidden();
-  // ゲームの設定 opens the settings dialog, which gives the focus back to ⚙設定 when it closes.
+  // ゲームの設定 opens the settings dialog on its title bar's 「× 閉じる」 (2026-11-14), and gives the focus back to
+  // ≡メニュー when it closes.
   await gear.focus();
   await page.keyboard.press("Enter");
   await item("ゲームの設定").focus();
   await page.keyboard.press("Enter");
+  await expect(page.getByRole("dialog", { name: "ゲームの設定" }).getByRole("button", { name: "閉じる", exact: true })).toBeFocused();
   await ops.closeDialog(page.getByRole("dialog", { name: "ゲームの設定" }));
   await expect(gear).toBeFocused();
   // A tap outside the panel only closes it: nothing under it is pressed (here a destination),
-  // the save stays as it was, and the focus is back on ⚙設定.
+  // the save stays as it was, and the focus is back on ≡メニュー.
   const untouched = await readSave(page);
   await ops.openMenu(page);
   await expect(item("セーブ")).toBeFocused();
@@ -143,7 +153,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await expect(page.getByTestId("travel-menu")).toBeVisible();
   expect(await readSave(page)).toEqual(untouched);
   // A quick double tap on 「ゲームの設定」 (AGENTS.md 選択肢の誤タップ防止): the dialog opens under the
-  // finger, and on a phone the point is one of its controls (the autosave checkbox at 320–390 px).
+  // finger, and on a phone the point lies on it, among its settings (文字と表示's rows at 320–390 px).
   // The second tap changes nothing, as the dialog takes no press for a moment (Modal's
   // settlePresses), then takes them as usual. The page's clock is held, so the second tap comes
   // within that moment however slow the machine.
@@ -153,18 +163,17 @@ test("a manual save keeps the saved position and settings when unsaved changes a
     await page.touchscreen.tap(point.x, point.y);
     const settings = page.getByRole("dialog", { name: "ゲームの設定" });
     await expect(settings).toBeVisible();
-    const autosave = settings.getByLabel("自動保存する");
-    const speed = settings.getByLabel("文字送り");
-    await expect(autosave).toBeChecked();
-    const speedBefore = await speed.inputValue();
-    expect(await settings.evaluate((dialog, { x, y }) => [...dialog.querySelectorAll("label, button, select, input")].some((control) => {
-      const box = control.getBoundingClientRect();
+    // Every setting's state (checkboxes, the select, the sliders): the second tap changes none of them.
+    const states = () => settings.evaluate((dialog) => [...dialog.querySelectorAll("input, select")].map((control) =>
+      control instanceof HTMLInputElement && control.type === "checkbox" ? control.checked : (control as HTMLInputElement).value));
+    const before = await states();
+    expect(await settings.evaluate((dialog, { x, y }) => {
+      const box = dialog.getBoundingClientRect();
       return x >= box.left && x <= box.right && y >= box.top && y <= box.bottom;
-    }), point), "the second tap's point is one of the settings' controls").toBe(true);
+    }, point), "the second tap's point lies on the settings").toBe(true);
     await page.touchscreen.tap(point.x, point.y);
     await expect(settings).toBeVisible();
-    await expect(autosave).toBeChecked();
-    expect(await speed.inputValue()).toBe(speedBefore);
+    expect(await states()).toEqual(before);
     await page.clock.fastForward(CONFIRM_SETTLE_MS);
     await page.clock.resume();
     await expect(settings).not.toHaveAttribute("data-settling");
@@ -215,6 +224,10 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await expect(switching).toContainText("手動セーブしていない進行は失われます。");
   await switching.getByRole("button", { name: "戻る", exact: true }).click();
   await expect(switching).toBeHidden();
+  // 「戻る」 goes back to ゲームの設定, which the confirmation opened over (2026-11-14), on this journey.
+  await expect(settings).toBeVisible();
+  await expect(settings.getByLabel("旅行編")).toHaveValue("milano");
+  await ops.closeDialog(settings);
   await expect(page.getByTestId("tourism-guide")).toHaveCount(0);
   await expect(page.getByText("現在地：ドゥオモ広場")).toBeVisible();
 
@@ -229,8 +242,8 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await expect(reopened.getByLabel("自動保存する")).not.toBeChecked();
   await ops.closeDialog(reopened);
 
-  // ロード asks too: 戻る keeps the scene and gives the focus back to ⚙設定, and loading brings
-  // the manual save's scene back.
+  // ロード asks too: 戻る keeps the scene and gives the focus back to ≡メニュー, and loading brings
+  // the manual save's scene back (its word shows under the header for a moment).
   await page.getByTestId("tourism-skip").click();
   const asked = await ops.askToLoad(page);
   await asked.dialog.getByRole("button", { name: "戻る", exact: true }).click();
@@ -651,8 +664,9 @@ test("from another journey, the cleanup lists that journey's own old data, and a
 });
 
 // User decision 2026-11-08 (answer 9), AGENTS.md 「明示確認」「誤タップ防止」: the confirmation's buttons take
-// the places of the list's, so 「消去せず戻る」 is exactly where 「選んだデータを消去する」 was and 「消去する」
-// where 「閉じる」 was. A slow second tap at the same place, after 「消去する」 has stopped waiting (0.5 s),
+// the places of the list's, so 「消去せず戻る」 is exactly where 「選んだデータを消去する」 was (the left half of the
+// foot, 2026-11-14: every confirmation's 「やめる」 is on the left) and 「消去する」 where the list's line of what is
+// chosen was. A slow second tap at the same place, after 「消去する」 has stopped waiting (0.5 s),
 // goes back to the list and removes nothing. Checked at the gate's phone and the narrowest one.
 for (const size of [{ width: 390, height: 844 }, { width: 320, height: 568 }]) {
   test(`a slow second tap where 「選んだデータを消去する」 was goes back to the list and removes nothing (${size.width}×${size.height})`, { tag: tier.gate }, async ({ page }) => {
@@ -686,9 +700,10 @@ for (const size of [{ width: 390, height: 844 }, { width: 320, height: 568 }]) {
     expect(await allStorage(page)).toEqual(before);
   });
 
-  // The other way round: after the result, 「閉じる」 is where 「消去する」 was. A quick second tap of a
-  // double tap on 「消去する」 (200 ms, the page's clock held) must not close the dialog before the
-  // result line is seen: the list's buttons wait a moment after a result (OldDataCleanup).
+  // The other way round: after the result, the list's line of what is chosen is where 「消去する」 was (2026-11-14:
+  // the list closes from its title bar, no longer from a 「閉じる」 at that place). A quick second tap of a double tap
+  // on 「消去する」 (200 ms, the page's clock held) presses nothing and leaves the result line shown, and the list's
+  // 「選んだデータを消去する」 waits a moment after a result too (OldDataCleanup).
   test(`a quick second tap where 「消去する」 was keeps the result shown (${size.width}×${size.height})`, { tag: tier.gate }, async ({ page }) => {
     await page.setViewportSize(size);
     await page.clock.install();
@@ -711,14 +726,14 @@ for (const size of [{ width: 390, height: 844 }, { width: 320, height: 568 }]) {
     const result = cleanup.getByRole("status");
     await expect(result).toHaveText("消去しました（キー1個）。");
     await page.clock.runFor(200);
-    const close = cleanup.getByRole("button", { name: "閉じる", exact: true });
-    expect(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest("button")?.textContent, point)).toBe("閉じる");
-    await expect(close).toBeDisabled();
+    expect(await page.evaluate(({ x, y }) => {
+      const element = document.elementFromPoint(x, y);
+      return { button: element?.closest("button")?.textContent ?? null, line: !!element?.closest(".old-data-hint") };
+    }, point)).toEqual({ button: null, line: true });
     await page.touchscreen.tap(point.x, point.y);
     await expect(cleanup).toBeVisible();
     await expect(result).toBeVisible();
     await page.clock.resume();
-    await expect(close).toBeEnabled();
     await expect(result).toBeVisible();
     expect(await allStorage(page)).toEqual(kept);
   });

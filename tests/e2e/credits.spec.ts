@@ -42,14 +42,30 @@ test("「出典・権利の一覧」 opens from the title and from ゲームの�
   await expect(credits).toBeHidden();
   await expect(entry).toBeFocused();
 
+  // From ゲームの設定 it opens over the settings and closes back to them where they were, the focus on its entry
+  // (2026-11-14 user decision), by Esc or by a tap on the dimmed page around it.
   await ops.startJourney(page);
   const settings = await ops.openSettings(page);
-  await settings.getByRole("button", { name: "出典・権利の一覧", exact: true }).focus();
+  const settingsEntry = settings.getByRole("button", { name: "出典・権利の一覧", exact: true });
+  await settingsEntry.focus();
+  const scrolled = await settings.evaluate((dialog) => dialog.scrollTop);
+  expect(scrolled, "the entry lies below the settings' first screen").toBeGreaterThan(0);
   await page.keyboard.press("Enter");
   const fromSettings = page.getByRole("dialog", { name: "出典・権利の一覧" });
   await expect(fromSettings.getByRole("button", { name: "閉じる", exact: true })).toBeFocused();
-  await expect(settings).toHaveCount(0);
+  await expect(settings).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(fromSettings).toBeHidden();
+  await expect(settings).toBeVisible();
+  await expect(settingsEntry).toBeFocused();
+  expect(await settings.evaluate((dialog) => dialog.scrollTop)).toBe(scrolled);
+  await settingsEntry.click();
+  await expect(fromSettings).not.toHaveAttribute("data-settling");
+  await ops.tapAt(page, { x: 4, y: (page.viewportSize()!.height) / 2 });
+  await expect(fromSettings).toBeHidden();
+  await expect(settings).toBeVisible();
+  await ops.settled(page);
+  await page.keyboard.press("Escape");
+  await expect(settings).toBeHidden();
   await expect(ops.settingsButton(page)).toBeFocused();
 });

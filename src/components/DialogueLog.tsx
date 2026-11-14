@@ -88,9 +88,10 @@ export function DialogueLog({
       <button className="text-button" aria-label="会話ログ" onClick={() => setOpen(true)}>
         <Icon name="log" />{label}
       </button>
+      {/* A dialog for viewing (2026-11-14): 「× 閉じる」 in its title bar, a tap on the dimmed page around it, or Esc. */}
       {open && (
-        <Modal labelledBy={titleId} onClose={() => setOpen(false)}>
-          <ModalTitle id={titleId}>会話ログ</ModalTitle>
+        <Modal labelledBy={titleId} onClose={() => setOpen(false)} closeOnBackdrop>
+          <ModalTitle id={titleId} onClose={() => setOpen(false)}>会話ログ</ModalTitle>
           {entries.length ? (
             <ol className="vn-log" ref={list}>
               {entries.map((entry) => (
@@ -103,9 +104,6 @@ export function DialogueLog({
           ) : (
             <p>まだ読み終えた台詞はありません。</p>
           )}
-          <button className="secondary" onClick={() => setOpen(false)}>
-            閉じる
-          </button>
         </Modal>
       )}
     </>

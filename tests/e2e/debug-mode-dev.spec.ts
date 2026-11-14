@@ -23,7 +23,7 @@ test("with Debug mode on, the development server serves nothing from src/dev/ un
   // A device whose Debug mode is on opens the game without Debug's code.
   await page.reload();
   const settings = await ops.openSettings(page);
-  const section = settings.getByTestId("debug-mode-setting");
+  const section = await ops.debugModeSection(settings);
   await expect(section.getByText("Debugモードはオンです（この端末だけ）。")).toBeVisible();
   expect(requested).toContain("/src/main.tsx");
   expect(fromDev()).toEqual([]);

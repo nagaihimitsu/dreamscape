@@ -94,7 +94,7 @@ dialog.modal.album-modal {
 dialog.modal.album-photo-viewer {
   --modal-pad-top: 16px;
   --modal-pad-inline: 16px;
-  width: min(92vw, 760px);
+  width: min(760px, calc(100% - 24px));
   max-width: 760px;
 }
 .album-photo-viewer .modal-title-bar { margin-bottom: 8px; }
@@ -108,7 +108,6 @@ dialog.modal.album-photo-viewer {
   border-radius: 8px;
 }
 .album-photo-viewer > .album-meta { margin: 6px 0 8px; }
-.album-photo-viewer > .secondary { min-height: 44px; }
 @media (orientation: landscape) and (max-height: 500px) {
   .album-photo-viewer > img { max-height: 52dvh; }
 }

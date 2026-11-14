@@ -17,7 +17,7 @@ class LoadFailure extends Component<{ onClose: () => void; children: ReactNode }
   }
   render() {
     if (!this.state.failed) return this.props.children;
-    return <Modal labelledBy="lazy-dialog-failed-title" onClose={this.props.onClose}>
+    return <Modal labelledBy="lazy-dialog-failed-title" onClose={this.props.onClose} closeOnBackdrop>
       <ModalTitle id="lazy-dialog-failed-title" onClose={this.props.onClose}>開けませんでした</ModalTitle>
       <p role="alert">この画面のデータを読み込めませんでした。通信を確かめて、ページを読み込み直してください。閉じれば、ほかはそのまま続けられます。</p>
     </Modal>;

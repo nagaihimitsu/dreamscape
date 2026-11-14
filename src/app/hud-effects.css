@@ -4,7 +4,8 @@
 
 /* 「{品物名}を手に入れました」: a parchment pill hanging from the header's bottom edge (below Debug mode's strip when
    it shows a change), over the screen; the region takes no presses and has no size of its own. */
-.item-gain-notice-region {
+.item-gain-notice-region,
+.hud-toast-region {
   position: absolute;
   top: calc(100% + 6px + var(--change-h, 0px));
   left: 8px;
@@ -29,6 +30,10 @@
   overflow-wrap: anywhere;
   animation: item-gain-notice 2500ms var(--ease-out) both;
 }
+/* The session's word (a save, a load, a tour's end; SessionToast): the same pill without an icon. It answers what the
+   player just did, so it shows over a quiet line too, while the rest of the header steps aside. */
+.journey-hud .hud-toast { padding: 7px 16px; }
+.journey-hud[data-view="quiet"] .hud-toast-region { visibility: visible; }
 .item-gain-notice img {
   flex: none;
   width: 28px;
@@ -95,7 +100,7 @@
   .hud-flight { display: none; }
 }
 
-/* ⚙設定's marks: the English note's dot (fx.css; on the panel's parchment the markers' rose, 5.9:1, at the item's end),
+/* ≡メニュー's marks: the English note's dot (fx.css; on the panel's parchment the markers' rose, 5.9:1, at the item's end),
    and a manual save's ribbon bookmark that drops onto the button's top right corner and fades (a brief highlight of
    the button under reduced motion). */
 .hud-menu-panel .fx-dot {

@@ -16,6 +16,17 @@ export type GameStorage = StorageLike & { removeItem(key: string): void };
 /** Called after every player action that changed the game (not after a load, a new game or a deletion). */
 export type CommitListener = (previous: GameState, next: GameState) => void;
 
+/**
+ * A short word that something went as asked (「現在の場面を保存しました。」, 「保存した場面から再開しました。」, a tour's
+ * end): shown for a moment under the header and gone by itself, never pushing the screen down (2026-11-14 user
+ * decision). `key` is new for each one, so the same words said twice show twice. What went wrong stays in `notice`.
+ */
+export type SessionToast = { key: number; text: string };
+/** How long a SessionToast stays (milliseconds; hud-effects.css plays its coming and going in that time). */
+export const SESSION_TOAST_MS = 2500;
+/** Where a refused write says why: the page's notice by default, or the place that asked (ゲームの設定). */
+export type NoticeReport = (message: string) => void;
+
 /** Owns the in-memory game and the snapshots used to protect persisted progress. */
 export function useGameSession(storage: GameStorage, autoSave: boolean, onCommitted?: CommitListener) {
   const [loaded] = useState(() => loadGame(storage));
@@ -27,6 +38,15 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
   const protectedOriginalRef = useRef<string | null>(null);
   const [invalid, setInvalid] = useState(loaded.status === "invalid" ? loaded.message : "");
   const [notice, setNotice] = useState("");
+  const [toast, setToast] = useState<SessionToast | null>(null);
+  // When this tab last wrote the game to the save (Date.now()), for the menu's line under セーブ・ロード; null until it has.
+  const [savedAt, setSavedAt] = useState<number | null>(null);
+  const showToast = (text: string) => setToast((last) => ({ key: (last?.key ?? 0) + 1, text }));
+  useEffect(() => {
+    if (!toast) return;
+    const timer = window.setTimeout(() => setToast(null), SESSION_TOAST_MS);
+    return () => window.clearTimeout(timer);
+  }, [toast]);
 
   function getCurrent() { return gameRef.current; }
   function hasUnsavedProgress() {
@@ -42,6 +62,7 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
       const saved = saveGame(storage, next, savedGameRef.current);
       if (!saved.ok) { setNotice(saved.message); return false; }
       savedGameRef.current = next;
+      setSavedAt(Date.now());
     }
     adopt(next);
     setNotice("");
@@ -81,11 +102,12 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
   }, [game]);
 
   /** Keep what a successful write says this tab now knows about its slot; report a refusal. */
-  function adoptBaseline(result: BaselineResult) {
+  function adoptBaseline(result: BaselineResult, report: NoticeReport = setNotice) {
     if (!result.ok) {
-      if (result.message !== null) setNotice(result.message);
+      if (result.message !== null) report(result.message);
       return false;
     }
+    if (result.baseline.savedGame) setSavedAt(Date.now());
     savedGameRef.current = result.baseline.savedGame;
     protectedOriginalRef.current = result.baseline.protectedOriginal;
     return true;
@@ -100,17 +122,18 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
     setInvalid("");
     setNotice("");
   }
-  /** Shared by manual save and enabling automatic saving. */
-  function persistCurrent() {
+  /** Shared by manual save and enabling automatic saving (whose refusal ゲームの設定 shows: `report`). */
+  function persistCurrent(report: NoticeReport = setNotice) {
     const current = gameRef.current;
     if (!current) return true;
     return adoptBaseline(writeExplicitSave(storage, current,
-      { savedGame: savedGameRef.current, protectedOriginal: protectedOriginalRef.current }));
+      { savedGame: savedGameRef.current, protectedOriginal: protectedOriginalRef.current }), report);
   }
-  /** The manual save (⚙設定's セーブ); whether the scene was saved. */
+  /** The manual save (the menu's セーブ); whether the scene was saved. */
   function save(): boolean {
     if (!gameRef.current || !persistCurrent()) return false;
-    setNotice("現在の場面を保存しました。");
+    setNotice("");
+    showToast("現在の場面を保存しました。");
     return true;
   }
   function restore() {
@@ -122,24 +145,26 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCommit
     savedGameRef.current = restored.state;
     protectedOriginalRef.current = null;
     adopt(restored.state);
-    setNotice("保存した場面から再開しました。");
+    setNotice("");
+    showToast("保存した場面から再開しました。");
     return true;
   }
-  function prepareDelete(): { snapshot?: DeleteSnapshot; closeSettings: boolean } {
-    const { notice: message, ...result } = checkDeleteRequest(storage, {
+  /** Before 保存データの消去's confirmation: what it would delete, or why it cannot (said where it was asked: `report`). */
+  function prepareDelete(report: NoticeReport = setNotice): DeleteSnapshot | null {
+    const { notice: message, snapshot } = checkDeleteRequest(storage, {
       hasGame: !!gameRef.current, savedGame: savedGameRef.current,
       protectedOriginal: protectedOriginalRef.current, loaded,
     });
-    if (message) setNotice(message);
-    return result;
+    if (message) report(message);
+    return snapshot ?? null;
   }
-  function deleteConfirmed(snapshot: DeleteSnapshot) {
+  function deleteConfirmed(snapshot: DeleteSnapshot, report: NoticeReport = setNotice) {
     const result = deleteSaveData(storage, snapshot);
-    if (!result.ok) { setNotice(result.message); return false; }
+    if (!result.ok) { report(result.message); return false; }
     // Explicit deletion confirms that any unsaved in-memory progress is discarded.
     gameRef.current = null;
     return true;
   }
-  return { game, loaded, invalid, notice, setNotice, getCurrent, hasUnsavedProgress,
+  return { game, loaded, invalid, notice, setNotice, toast, showToast, savedAt, getCurrent, hasUnsavedProgress,
     commit, replace, begin, persistCurrent, save, restore, prepareDelete, deleteConfirmed };
 }
