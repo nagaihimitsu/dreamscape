@@ -354,13 +354,13 @@
     },
     "gt_bg_agra_hotel_room_heart": {
       "nameJa": "滞在先のホテルの部屋・ハネムーンの飾り（アーグラ）",
-      "captionJa": "アーグラ ／ 滞在先の部屋（インドの婚礼の寝台の花飾りを用いたイメージ）",
-      "color": "#887c71",
+      "captionJa": "アーグラ ／ 滞在先の部屋（アメリカ・ランカスターのホテルの客室の飾りを用いたイメージ）",
+      "color": "#935e35",
       "fallback": "neutral",
-      "imageAssetId": "gt_img_india_wedding_flower_bed",
+      "imageAssetId": "gt_img_hotel_room_towel_swans",
       "imagePosition": {
-        "x": 50,
-        "y": 50
+        "x": 55,
+        "y": 12
       },
       "placeId": "agra_hotel_hub"
     },
