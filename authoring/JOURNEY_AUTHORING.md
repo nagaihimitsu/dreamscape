@@ -63,7 +63,7 @@ npm run journey:scenario -- --journey <旅行編ID> --directory authoring/journe
 npm run journey:scenario -- --journey <旅行編ID> --directory authoring/journeys/<旅行編ID>/drafts/scenario --city <都市ID>
 ```
 
-インド編の下書き（`authoring/journeys/golden_triangle/drafts/scenario`）で今通るのは `--city delhi` だけです。アーグラとジャイプールの下書きの `narrative.json` は、フィナーレの会場を移す前の地点（`agra_agra_fort`・`jaipur_jantar_mantar`）のままなので、ほかの都市や `--city` なしでは「下書きの Ink ファイルが要るものと合いません」で止まります（2026-11-14 に確かめた。[制作記録](journeys/golden_triangle/drafts/scenario/README.md)）。
+インド編の下書き（`authoring/journeys/golden_triangle/drafts/scenario`）は、都市ごとにも `--city` なしでも通ります（2026-11-14 に確かめた。その日にアーグラとジャイプールのフィナーレの地点を今の会場に直した。[制作記録](journeys/golden_triangle/drafts/scenario/README.md)）。
 
 この検査は、場所のファイルを `content:build` と同じく読み、計画の knot を場面として通しで歩きます。ファイルと knot の対応、頭の札、都市内の背景、デートの `# profile:` と思い出、3択の全経路、関係段階と反応、対決のクイズの全部の正誤（クイズを第1問から順に1回ずつ呼ぶか）を確認します。場所のファイルが `INCLUDE modules.ink` と `-> DONE` で始まらないときは止まります。計画にない knot（差し込みの場面など）は、この検査では歩きません（移した後に `content:build` が確かめます）。デートの選択肢でのみ返答する脚本を想定し、主人公の直接台詞（`# speaker: player`）があると注意を出します（止めません）。仮クイズや公開カタログは作りません。成功は脚本の契約検証であり、公開準備完了を意味しません。
 
