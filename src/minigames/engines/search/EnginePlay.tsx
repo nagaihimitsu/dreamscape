@@ -4,8 +4,8 @@ import { searchAutoActionAt, searchEnding, searchIdleMs, searchProgress, type Se
 import "./engine.css";
 
 // The search engine's play (docs/13 2.2): the skin's field of spots (it draws them as buttons and says which one the
-// player searched), the skin's extra buttons at the bottom in thumb reach, the time limit and the idle limit on the
-// host's clock. The skin's rules decide; the host shows the outcome and takes its choice.
+// player searched), the skin's extra buttons at the bottom in thumb reach, the time limit, the idle limit and a round's
+// own time on the host's clock. The skin's rules decide; the host shows the outcome and takes its choice.
 
 /** What the field shows: where the play is (the engine's progress), the latest action, a hint, and the ending once there is one. */
 export interface SearchView extends Omit<SearchProgress, "ending" | "misses" | "helped" | "acted" | "left"> {
@@ -13,6 +13,8 @@ export interface SearchView extends Omit<SearchProgress, "ending" | "misses" | "
   total: number;
   /** The latest action and when it was done (the host's clock), for a field that shows it for a moment (an echo, a creak). */
   last: { action: SearchAction; at: number } | null;
+  /** When the round on show came on show (the host's clock; 0 for the first): a field times its round's moments from it. */
+  roundAt: number;
   /**
    * When the latest hint was due (the host's clock): the player has acted, then done nothing for the skin's `nudgeMs`, in a
    * play that goes on (a giggle, a door's handle). null: none yet.
@@ -74,8 +76,8 @@ function lapseAt(record: SearchRecord, setup: SearchSetup): number {
   return after + (setup.idleMs ?? setup.timeLimitMs ?? 3000);
 }
 
-const viewOf = (progress: SearchProgress, total: number, last: SearchView["last"], nudge: number | null): SearchView => ({
-  total, round: progress.round, searched: progress.searched, done: progress.done, presses: progress.presses, last, nudge, ending: progress.ending,
+const viewOf = (progress: SearchProgress, total: number, last: SearchView["last"], nudge: number | null, roundAt: number): SearchView => ({
+  total, round: progress.round, searched: progress.searched, done: progress.done, presses: progress.presses, last, roundAt, nudge, ending: progress.ending,
 });
 
 /** The play of a search skin. */
@@ -84,11 +86,13 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
     const { params, auto, clock, still, seed, cast, names, art, sound, vibrate } = props;
     const setup = useMemo(() => skin.game.setup(params), [params]);
     const autoRecord = useMemo(() => (auto === null ? null : skin.rules.autoRecord(auto, params)), [auto, params]);
-    const [view, setView] = useState<SearchView>(() => viewOf(searchProgress([], setup), setup.rounds.length, null, null));
+    const [view, setView] = useState<SearchView>(() => viewOf(searchProgress([], setup), setup.rounds.length, null, null, 0));
     const actions = useRef<SearchAction[]>([]);
     const decided = useRef<{ outcome: Outcome } | null>(null);
     const lastActive = useRef(0);
     const lastNudge = useRef(0);
+    /** When the round on show came on show (its own time, limitMs, counts from it). */
+    const roundAt = useRef(0);
     const draws = useRef(new Set<(ms: number) => void>());
     const latest = useRef(props);
     latest.current = props;
@@ -113,11 +117,14 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
       lastActive.current = ms;
       const before = searchProgress(actions.current, setup);
       const after = searchProgress([...actions.current, action], setup);
-      // A spot searched already, or no such spot or button: only a look (the record keeps what changed something).
+      // A spot searched already, or no such spot or button, or a round's time where it has none: only a look (the record
+      // keeps what changed something).
       if ("spot" in action && after.searched.length === before.searched.length && after.round === before.round && !after.ending) return;
       if ("button" in action && !setup.buttons.some((button) => button.id === action.button)) return;
+      if ("gone" in action && after.done.length === before.done.length && !after.ending) return;
       actions.current = [...actions.current, action];
-      setView(viewOf(after, setup.rounds.length, { action, at: ms }, latestView.current.nudge));
+      if (after.done.length > before.done.length) roundAt.current = ms;
+      setView(viewOf(after, setup.rounds.length, { action, at: ms }, latestView.current.nudge, roundAt.current));
       if (after.ending) finish({ actions: actions.current, lapse: null }, ms);
     }, [setup, finish]);
 
@@ -125,6 +132,8 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
       let autoIndex = 0;
       let shown: string | null = null;
       const idleNow = () => searchIdleMs(searchProgress(actions.current, setup), setup);
+      /** The round on show's own time (none: it waits for the player). */
+      const roundLimit = () => setup.rounds[searchProgress(actions.current, setup).round]?.limitMs;
       return clock.onFrame((ms) => {
         if (!decided.current) {
           if (autoRecord) {
@@ -132,8 +141,10 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
               if (ms >= searchAutoActionAt(autoIndex)) act(autoRecord.actions[autoIndex++], ms);
             } else if (autoRecord.lapse && ms >= lapseAt(autoRecord, setup)) finish(autoRecord, ms);
           } else if (setup.timeLimitMs !== null && ms >= setup.timeLimitMs) finish({ actions: actions.current, lapse: "timeout" }, ms);
+          // The round on show ran out of its own time (its thing walked off): helped through, at that moment.
+          else if (ms - roundAt.current >= (roundLimit() ?? Infinity)) act({ gone: true }, roundAt.current + roundLimit()!);
           else if (setup.idleMs !== null && ms - lastActive.current >= (idleNow() ?? setup.idleMs)) {
-            const acted = actions.current.some((action) => !("idle" in action));
+            const acted = actions.current.some((action) => "spot" in action || "button" in action);
             // Doing nothing: the round on show is helped through (each idle limit gone by, at its own time: a frame late
             // after a long stall helps as many rounds; a round left to her shortens the next ones' where the setup says),
             // or the play ends (before the first action only, for some).

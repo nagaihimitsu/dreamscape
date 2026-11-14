@@ -99,3 +99,52 @@ button.mg-parasol-search-spot { animation: mg-parasol-search-arrive 260ms ease-o
 .mg-parasol-search-ring-found { animation: mg-parasol-search-ring 420ms ease-out both; }
 @keyframes mg-parasol-search-ring { from { opacity: 0; stroke-width: 6; } }
 @keyframes mg-parasol-search-point { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
+/* Round 2: a customer's gesture (arms and mark) shows while they do it (the argument's bursts, the feints between them; the
+   calmer gestures all along), popping in; between, they stand with their arms down. With less motion it shows at once. */
+.mg-parasol-search-act { opacity: 0; transition: opacity 90ms linear; }
+.mg-parasol-search-spot[data-active] .mg-parasol-search-act { opacity: 1; }
+.mg-parasol-search-spot[data-active] > .mg-parasol-search-unit { animation: mg-parasol-search-flare 220ms ease-out both; }
+@keyframes mg-parasol-search-flare { 40% { transform: translate(-50%, -50%) scale(1.12); } }
+/* Round 3: the tomato in the child's hands only once handed over; a child who walked out of the window fades and is no
+   longer pressed. */
+.mg-parasol-search-spot[data-tomato]:not([data-handed]) .mg-parasol-search-held { opacity: 0; }
+.mg-parasol-search-spot[data-tomato][data-handed] .mg-parasol-search-held { animation: mg-parasol-search-pop 260ms ease-out both; transform-box: fill-box; transform-origin: 50% 50%; }
+@keyframes mg-parasol-search-pop { from { opacity: 0; } 50% { opacity: 1; } }
+.mg-parasol-search-spot[data-gone] { opacity: 0; pointer-events: none; transition: opacity 300ms ease-out; }
+/* Her arm from under the parasol (the near pavement) up to the child in front of the stall, the tomato going up along it. */
+.mg-parasol-search-handover {
+  --reach: 0;
+  position: absolute;
+  z-index: 1;
+  top: 66%;
+  width: 0;
+  height: 16%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms linear;
+}
+.mg-parasol-search-handover[data-on] { opacity: 1; }
+.mg-parasol-search-handover-arm {
+  position: absolute;
+  left: calc(-2.4 * var(--u));
+  bottom: 0;
+  width: calc(4.8 * var(--u));
+  height: calc(var(--reach) * 70%);
+  border: 1px solid #2a211c;
+  border-radius: calc(2.4 * var(--u));
+  background: #b07a55;
+}
+.mg-parasol-search-handover-tomato {
+  position: absolute;
+  left: calc(-4.4 * var(--u));
+  bottom: calc(var(--reach) * 70% - 4.4 * var(--u));
+  width: calc(8.8 * var(--u));
+  aspect-ratio: 1;
+  border: 1px solid #2a211c;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 18%, #4f9a3a 0 22%, transparent 24%), #d8342c;
+}
+/* Less motion (the host's data-still): the gestures and the tomato show at once. */
+[data-still] .mg-parasol-search-spot[data-active] > .mg-parasol-search-unit,
+[data-still] .mg-parasol-search-spot[data-tomato][data-handed] .mg-parasol-search-held { animation: none; }
+[data-still] .mg-parasol-search-act { transition: none; }

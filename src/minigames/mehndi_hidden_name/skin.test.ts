@@ -8,7 +8,7 @@ import { mehndiSkin } from "./Skin";
 
 // The hidden name's field (docs/13 2.10, 2.12–2.13): the writing as text (the name as typed, never HTML), an illegible mark
 // with no letters where the story says Hindi, six places as buttons named by the pattern, and the use's art in its slots.
-const view: SearchView = { total: 1, round: 0, searched: [], done: [], presses: {}, last: null, nudge: null, ending: null };
+const view: SearchView = { total: 1, round: 0, searched: [], done: [], presses: {}, last: null, roundAt: 0, nudge: null, ending: null };
 const field = (params: MehndiParams, player = "Haruto", art: Record<string, string> = {}, shown: SearchView = view) => renderToStaticMarkup(createElement(mehndiSkin.Field, {
   params, still: false, seed: 1, cast: { heroine: null }, names: { player, heroine: "ヒロイン" }, art, sound: () => undefined, vibrate: () => undefined,
   setup: mehndiSetup(params), view: shown, live: true, search: () => undefined, active: () => undefined, frames: () => () => undefined,

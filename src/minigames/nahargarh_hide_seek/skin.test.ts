@@ -9,7 +9,7 @@ import { HIDE_SEEK_ROOM_EVENTS, hideSeekRoomEvents, hideSeekSkin } from "./Skin"
 // The hide-and-seek's field (docs/13 2.12–2.13): twelve door buttons named by number only, her behind hers once opened,
 // an empty room's small event, her peeking out when the play ran out, and the use's art in its declared slots (the echo's
 // clue and the hint run on the play's clock: tests/e2e/minigame-nahargarh_hide_seek.spec.ts).
-const view = (change: Partial<SearchView> = {}): SearchView => ({ total: 1, round: 0, searched: [], done: [], presses: {}, last: null, nudge: null, ending: null, ...change });
+const view = (change: Partial<SearchView> = {}): SearchView => ({ total: 1, round: 0, searched: [], done: [], presses: {}, last: null, roundAt: 0, nudge: null, ending: null, ...change });
 const field = (art: Record<string, string>, shown: SearchView = view()) => renderToStaticMarkup(createElement(hideSeekSkin.Field, {
   params: { hide: 7 }, still: false, seed: 1, cast: { heroine: createElement("i", { "data-testid": "standing-picture" }) },
   names: { player: "主人公", heroine: "ヒロイン" }, art, sound: () => undefined, vibrate: () => undefined,

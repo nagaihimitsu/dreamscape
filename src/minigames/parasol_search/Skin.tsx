@@ -3,8 +3,8 @@ import type { SearchFieldProps, SearchSkin, SearchView } from "../engines/search
 import { useMiniGameKit } from "../host/kit";
 import { seededRandom } from "../host/seed";
 import {
-  PARASOL_CHILDREN, PARASOL_CUSTOMERS, PARASOL_PLACES, PARASOL_SPOTS, PARASOL_TUNING, parasolGameFor, parasolRulesFor, parasolTargets,
-  type ParasolOutcome, type ParasolParams, type ParasolPlace, type ParasolSpot, type ParasolTuning,
+  PARASOL_CHILDREN, PARASOL_CUSTOMERS, PARASOL_PLACES, PARASOL_SPOTS, PARASOL_TOMATO_CHILD, PARASOL_TUNING, parasolActive, parasolGameFor, parasolRulesFor,
+  parasolTargets, type ParasolGesture, type ParasolOutcome, type ParasolParams, type ParasolPlace, type ParasolSpot, type ParasolTuning,
 } from "./rules";
 import "./skin.css";
 
@@ -12,10 +12,13 @@ import "./skin.css";
 // cusped arch over it, a sill under it), and through it the old city's street from above: the far pavement with five
 // stalls, the road with three people walking to and fro under umbrellas (a cow, an auto-rickshaw and a cycle-rickshaw
 // among them), the near pavement under the window with five stalls. Three rounds, the three things the heroine later
-// tells the seller she saw: her old parasol (a looked-at umbrella slides aside to show who is under it; hers stays aside
-// after), then the customers come to the stalls (one argues with her over the price, its ₹ in a jagged burst; two more
-// have their arms up, glad or stretching), then children walk by (one holds the tomato she gave, its green crown on it;
-// others a red ball or a red flower). The hints say what to find, never where. The window takes most of the field's height, as wide as the field allows; places are in % of the window, sizes
+// tells the seller she saw, each a different kind of looking (round 3, 2026-11-14): her old parasol (compare: a looked-at
+// umbrella slides aside to show who is under it; hers stays aside after); then the customers come to the stalls and the
+// argument with her comes in bursts (arms flung up, its ₹ in a jagged burst), while two others throw their arms up
+// between the bursts, glad or stretching, with no ₹ (watch: the feints); then three children stop at her stall, her arm
+// hands the tomato to the one in front of it, and they walk off toward the far side as two more cross the other way (catch:
+// the tomato child turns into the side street at the round's own time, red balls and flowers about it). The hints say
+// what to find, never where. The window takes most of the field's height, as wide as the field allows; places are in % of the window, sizes
 // in a unit of its width (`--u`). Which stall stands where, what the customers do and what the children hold is shuffled
 // by the seed (looks only: her stall is the tag's `at`; the arguing customer is hers, the tomato child the second). With the use's art (`art.street`), that picture in place of the drawn street, cow
 // and traffic, as the back layer (the host's mg-photo); the umbrellas, stalls and people are drawn by the game either way,
@@ -60,7 +63,6 @@ const OTHER_STALLS: readonly ParasolKind[] = ["juice", "chai", "fruit", "bangles
 const WALKERS: Readonly<Record<"road_1" | "road_2" | "road_3", ParasolKind>> = { road_1: "black", road_2: "floral", road_3: "white" };
 
 /** What a customer does (round 2): hers argues over the price; the others are shuffled by the seed (two with arms up too). */
-export type ParasolGesture = "argue" | "ask" | "laugh" | "wave" | "basket" | "cheer" | "stretch";
 const GESTURES: Record<ParasolGesture, string> = {
   argue: "両手を振り上げている",
   ask: "指を3本立てて、何か聞いている",
@@ -111,22 +113,16 @@ export const PARASOL_FIELD: Record<ParasolSpot, Place> = {
 };
 /** The customers stand in front of their stalls, at the lane's edge. */
 export const PARASOL_CUSTOMER_FIELD: Record<(typeof PARASOL_CUSTOMERS)[number], Place> = {
-  far_2: { x: 30, y: ROW.farLane, r: 13 },
-  far_3: { x: 50, y: ROW.farLane, r: 13 },
-  far_4: { x: 70, y: ROW.farLane, r: 13 },
-  near_1: { x: 10, y: ROW.nearLane, r: 13 },
-  near_2: { x: 30, y: ROW.nearLane, r: 13 },
-  near_3: { x: 50, y: ROW.nearLane, r: 13 },
-  near_4: { x: 70, y: ROW.nearLane, r: 13 },
+  far_2: { x: 30, y: ROW.farLane, r: 15 },
+  far_3: { x: 50, y: ROW.farLane, r: 15 },
+  far_4: { x: 70, y: ROW.farLane, r: 15 },
+  near_1: { x: 10, y: ROW.nearLane, r: 15 },
+  near_2: { x: 30, y: ROW.nearLane, r: 15 },
+  near_3: { x: 50, y: ROW.nearLane, r: 15 },
+  near_4: { x: 70, y: ROW.nearLane, r: 15 },
 };
-/** The children walk slowly along the lanes (9 to 10 seconds one way), each lane's in step (so never closer), apart. */
-export const PARASOL_CHILD_FIELD: Record<(typeof PARASOL_CHILDREN)[number], Place> = {
-  child_1: { x: 30, y: ROW.farLane, r: 14, walk: { amp: 14, periodMs: 18000, phase: 0 } },
-  child_2: { x: 70, y: ROW.farLane, r: 14, walk: { amp: 14, periodMs: 18000, phase: 0 } },
-  child_3: { x: 25, y: ROW.nearLane, r: 14, walk: { amp: 8, periodMs: 20000, phase: 1 } },
-  child_4: { x: 50, y: ROW.nearLane, r: 14, walk: { amp: 8, periodMs: 20000, phase: 1 } },
-  child_5: { x: 75, y: ROW.nearLane, r: 14, walk: { amp: 8, periodMs: 20000, phase: 1 } },
-};
+/** A child's size (round 3; in the window's unit): a little larger than round 1's walkers, what they hold readable. */
+export const PARASOL_CHILD_R = 15;
 
 /** What stands at each stall for the tag's `at` and the seed: the old parasol at hers, the others shuffled. */
 export function parasolKinds(at: ParasolPlace, seed = 0): Record<ParasolSpot, ParasolKind> {
@@ -156,16 +152,56 @@ export function parasolGestures(at: ParasolPlace, seed = 0): ParasolGesture[] {
   return PARASOL_CUSTOMERS.map((_, index) => (index === hers ? "argue" : others.shift()!));
 }
 
-/** What each child holds for the seed: the tomato child the tomato, the others shuffled. */
+/**
+ * What each child holds for the seed: the tomato child the tomato; the two who walk with it the red look-alikes (a red
+ * ball, a red flower), the two across the road a kite and a blue ball, each pair in the seed's order.
+ */
 export function parasolHoldings(seed = 0): ParasolHolding[] {
   const random = seededRandom(seed ^ 0x27d4eb2f);
-  const others = [...OTHER_HOLDINGS];
-  for (let index = others.length - 1; index > 0; index -= 1) {
-    const swap = Math.floor(random() * (index + 1));
-    [others[index], others[swap]] = [others[swap], others[index]];
+  const [near, far]: ParasolHolding[][] = random() < 0.5 ? [["red_ball", "flower"], ["kite", "ball"]] : [["flower", "red_ball"], ["ball", "kite"]];
+  if (random() < 0.5) far.reverse();
+  return PARASOL_CHILDREN.map((_, index) => (index === PARASOL_TOMATO_CHILD ? "tomato" : index < 3 ? near.shift()! : far.shift()!));
+}
+
+/** The side street's mouth: a child past this far from the window's side (% of its width) has walked out of it. */
+export const PARASOL_STREET_EDGE = 4;
+/** The near group's children walk this far apart (% of the width: over 52px on the smallest window). */
+const GROUP_GAP = 21;
+/** The children across the road walk at this share of the near group's pace. */
+const FAR_PACE = 0.7;
+
+/**
+ * Where a round-3 child is at a time of the round, for the tag's `at` (x, y in % of the window): the tomato child (1)
+ * stands in front of her stall with the two who walk with it (0 and 2, the nearer one first), takes the tomato, and from
+ * `walkFromMs` they walk toward the farther side of the window, the tomato child reaching the side street's mouth at
+ * `walkOffMs`; the two across the road (3 and 4) cross the other way all along. `gone`: walked out of the window.
+ */
+export function parasolChildAt(index: number, at: ParasolPlace, ms: number, tuning: ParasolTuning = PARASOL_TUNING): { x: number; y: number; gone: boolean } {
+  const stall = PARASOL_FIELD[PARASOL_PLACES[at] ?? PARASOL_PLACES.middle].x;
+  const dir = stall > 50 ? -1 : 1;
+  const edge = dir > 0 ? 100 - PARASOL_STREET_EDGE : PARASOL_STREET_EDGE;
+  /** % a millisecond: the tomato child reaches the edge as the round's own time runs out. */
+  const pace = (edge - stall) / Math.max(1, tuning.walkOffMs - tuning.walkFromMs);
+  // The group round her stall: the tomato child at it, the others on the side with room (both sides in the middle).
+  const offsets = stall < 50 ? [GROUP_GAP, 2 * GROUP_GAP] : stall > 50 ? [-2 * GROUP_GAP, -GROUP_GAP] : [-GROUP_GAP, GROUP_GAP];
+  let x: number;
+  let y: number;
+  if (index === PARASOL_TOMATO_CHILD) {
+    // It stops at the side street's mouth (where the round's own time runs out; ringed there if she points it out).
+    x = stall + pace * Math.min(Math.max(0, ms - tuning.walkFromMs), Math.max(1, tuning.walkOffMs - tuning.walkFromMs));
+    y = ROW.nearLane;
+  } else if (index < 3) {
+    x = stall + offsets[index === 0 ? 0 : 1] + pace * Math.max(0, ms - tuning.walkFromMs);
+    y = ROW.nearLane;
+  } else {
+    // Across the road, the other way, from the far side's two places.
+    const start = dir > 0 ? [82, 58][index - 3] : [18, 42][index - 3];
+    x = start - FAR_PACE * pace * Math.max(0, ms);
+    y = ROW.farLane;
   }
-  const tomato = parasolTargets({ at: "middle" })[2];
-  return PARASOL_CHILDREN.map((_, index) => (index === tomato ? "tomato" : others.shift()!));
+  const gone = x > 100 - PARASOL_STREET_EDGE + 1e-6 || x < PARASOL_STREET_EDGE - 1e-6
+    || (index === PARASOL_TOMATO_CHILD && ms >= tuning.walkOffMs);
+  return { x, y, gone };
 }
 
 /** Where a thing is at a time of the play (one that walks goes to and fro; with less motion, it stands at its start). */
@@ -188,12 +224,15 @@ const vehicleX = (vehicle: (typeof VEHICLES)[number], ms: number) => {
 const COW = { x: 34, y: 57 } as const;
 
 const SOUNDS = { found: "clue_new", look: "ui_tap" } as const;
-/** How long the round just over shows its find (or her pointing) over the next round. */
-const RECENT_MS = 1200;
+/**
+ * How long the round just over shows its find (or her pointing) over the next round: a beat only, so round 1's ring
+ * does not point the way to round 2's customer at the same stall (that shortcut is for those who remember it).
+ */
+const RECENT_MS = 500;
 const ROUND_WORDS = [
   { hintJa: "野菜を並べた、古い日傘を押す", lookedJa: "見た傘" },
   { hintJa: "値段で揉めている客を押す", lookedJa: "見た人" },
-  { hintJa: "トマトをもらった子どもを押す", lookedJa: "見た子" },
+  { hintJa: "トマトをもらった子を、行ってしまう前に押す", lookedJa: "見た子" },
 ] as const;
 const RIBS = 8;
 const OUTLINE = "#2a211c";
@@ -415,8 +454,10 @@ function Customer({ gesture, place, ring }: { gesture: ParasolGesture; place: Pl
     argue: ["#d0a03a", "#2a211c"], ask: ["#4f6fa8", "#2a211c"], laugh: ["#a8486a", "#2a211c"], wave: ["#5f8f5a", "#2a211c"], basket: ["#e2dccb", "#2a211c"],
     cheer: ["#c8642a", "#2a211c"], stretch: ["#7a6aa8", "#2a211c"],
   };
+  // The argument's mark: a jagged burst with the ₹!, a size larger than the others' (2026-11-14 playtest: the marks were
+  // 10–16 px on a phone), out toward the stall.
   const mark = gesture === "argue" ? (
-    <g transform={`translate(0 ${fixed(face * r * 1.4)})`}>
+    <g transform={`translate(0 ${fixed(face * r * 1.5)}) scale(1.35)`}>
       <path d="M-9 0 L-5 -3 L-6 -8 L-1 -5 L2 -9 L4 -4 L9 -5 L6 0 L9 4 L4 4 L2 9 L-1 5 L-6 8 L-5 3 Z" fill="#fff4dc" stroke="#b2241f" strokeWidth="1.2" />
       <text y="2.6" textAnchor="middle" fontSize="7.4" fontWeight="700" fill="#b2241f">₹!</text>
     </g>
@@ -438,21 +479,25 @@ function Customer({ gesture, place, ring }: { gesture: ParasolGesture; place: Pl
       ))}
     </g>
   ) : null;
+  // The gesture (arms and mark) is its own layer: the field shows it while the customer does it (the argument's bursts,
+  // the feints between them; the calmer gestures all along); between, they stand with their arms down.
   return (
     <svg className="mg-parasol-search-unit" viewBox={`${-reach} ${-reach} ${reach * 2} ${reach * 2}`} style={{ "--reach": reach } as CSSProperties}
       aria-hidden="true" focusable="false">
       <ellipse cx="0" cy={fixed(r * 0.25)} rx={fixed(r * 0.9)} ry={fixed(r * 0.6)} fill="rgba(30,20,15,0.3)" />
-      <Person body={colours[gesture][0]} head={colours[gesture][1]} r={r * 1.3}>{arms[gesture]}</Person>
-      {gesture === "basket" && <g transform={`scale(${fixed((r * 1.3) / 16)})`}>{mark}</g>}
-      {gesture !== "basket" && mark}
+      <Person body={colours[gesture][0]} head={colours[gesture][1]} r={r * 1.3}><g className="mg-parasol-search-act">{arms[gesture]}</g></Person>
+      <g className="mg-parasol-search-act">
+        {gesture === "basket" && <g transform={`scale(${fixed((r * 1.3) / 16)})`}>{mark}</g>}
+        {gesture !== "basket" && mark}
+      </g>
       <RingMark ring={ring} r={r * 1.25} />
     </svg>
   );
 }
 
 /** A child walking by, from above, with what they hold out in front (a tomato's green crown, a kite's tail, a ball's stripe, a flower's stem). */
-function Child({ holding, place, ring }: { holding: ParasolHolding; place: Place; ring: Ring }) {
-  const { r } = place;
+function Child({ holding, ring }: { holding: ParasolHolding; ring: Ring }) {
+  const r = PARASOL_CHILD_R;
   const reach = r * 2.6;
   const held = holding === "tomato" ? (
     <g transform="translate(0 -11)">
@@ -486,7 +531,8 @@ function Child({ holding, place, ring }: { holding: ParasolHolding; place: Place
       <Person body={CHILD_BODY[holding]} head="#2a211c" r={r * 1.1}>
         <path d="M-6 -1 l4 -5 M6 -1 l-4 -5" stroke={OUTLINE} strokeWidth="1.8" strokeLinecap="round" />
       </Person>
-      <g transform={`scale(${fixed((r * 1.1) / 16)})`}>{held}</g>
+      {/* What they hold, a size up (readable on a phone); the tomato child's only once it is handed over. */}
+      <g className="mg-parasol-search-held" transform={`scale(${fixed((r * 1.35) / 16)})`}>{held}</g>
       <RingMark ring={ring} r={r * 1.5} />
     </svg>
   );
@@ -601,13 +647,20 @@ function status(view: SearchView): string {
   return `${round + 1}/${view.total}　${ROUND_WORDS[round].lookedJa} ${looked}`;
 }
 
-function ParasolField({ params, setup, view, live, search, active, frames, art, seed, still, sound, vibrate }: SearchFieldProps<ParasolParams, ParasolOutcome>) {
+/** Her face as the tomato child nears the side street, this long before it turns into it (round 3). */
+const LEAVING_MS = 1800;
+const LEAVING_JA = "あ、行っちゃう！";
+/** The stop at a round's find before the last (the last one's is the host's finish). */
+const FIND_STOP_MS = 70;
+
+const parasolFieldFor = (tuning: ParasolTuning) => function ParasolField({ params, setup, view, live, search, active, frames, art, seed, still, sound, vibrate }: SearchFieldProps<ParasolParams, ParasolOutcome>) {
   const kit = useMiniGameKit();
   const kitRef = useRef(kit);
   kitRef.current = kit;
   const jali = `${useId().replace(/[^a-zA-Z0-9]/gu, "")}jali`;
-  const kinds = useMemo(() => parasolKinds(params.at, seed), [params.at, seed]);
-  const gestures = useMemo(() => parasolGestures(params.at, seed), [params.at, seed]);
+  const at = params.at;
+  const kinds = useMemo(() => parasolKinds(at, seed), [at, seed]);
+  const gestures = useMemo(() => parasolGestures(at, seed), [at, seed]);
   const holdings = useMemo(() => parasolHoldings(seed), [seed]);
   const targets = setup.rounds.map((round) => round.targets[0]);
   const round = view.round;
@@ -615,25 +668,27 @@ function ParasolField({ params, setup, view, live, search, active, frames, art, 
   const walkers = useRef(new Map<string, HTMLElement | null>());
   const sways = useRef(new Map<string, SVGGElement | null>());
   const vehicles = useRef<(HTMLSpanElement | null)[]>([]);
+  const customers = useRef<(HTMLElement | null)[]>([]);
+  const children = useRef<(HTMLElement | null)[]>([]);
+  const handover = useRef<HTMLSpanElement>(null);
   const play = useRef({ sound, vibrate });
   play.current = { sound, vibrate };
+  const latestView = useRef(view);
+  latestView.current = view;
   // The round just over, for a moment over the next: its find, or her pointing at it.
   const [recent, setRecent] = useState<{ round: number; found: boolean; at: number } | null>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
 
-  // Whatever walks walks on the play's clock (a paused play holds it); with less motion, all stand still.
+  // The street's life that is only a look walks on the play's clock (a paused play holds it); with less motion, it stands.
   useEffect(() => {
     if (still) return undefined;
-    const walking = [
-      ...PARASOL_SPOTS.filter((spot) => PARASOL_FIELD[spot].walk).map((spot) => [spot, PARASOL_FIELD[spot]] as const),
-      ...PARASOL_CHILDREN.map((child) => [child, PARASOL_CHILD_FIELD[child]] as const),
-    ];
+    const walking = PARASOL_SPOTS.filter((spot) => PARASOL_FIELD[spot].walk).map((spot) => [spot, PARASOL_FIELD[spot]] as const);
     return frames((ms) => {
       for (const [id, place] of walking) {
-        const at = parasolPosition(place, ms);
+        const now = parasolPosition(place, ms);
         const element = walkers.current.get(id);
-        if (element) element.style.left = `${at.x.toFixed(2)}%`;
-        sways.current.get(id)?.setAttribute("transform", `rotate(${fixed(at.sway)})`);
+        if (element) element.style.left = `${now.x.toFixed(2)}%`;
+        sways.current.get(id)?.setAttribute("transform", `rotate(${fixed(now.sway)})`);
       }
       VEHICLES.forEach((vehicle, index) => {
         const element = vehicles.current[index];
@@ -641,19 +696,70 @@ function ParasolField({ params, setup, view, live, search, active, frames, art, 
       });
     });
   }, [frames, still]);
-  // A look (by hand or by おまかせ): a soft tap; a find, the chime.
+  // What the play needs moves with less motion too (on the round's clock): round 2's bursts and feints, round 3's handover
+  // and the children walking off (the tomato child to the side street's mouth, where the round's own time runs out).
+  useEffect(() => {
+    let leaving = -1;
+    return frames((ms) => {
+      const shown = latestView.current;
+      const t = ms - shown.roundAt;
+      if (shown.round === 1) {
+        gestures.forEach((gesture, index) => customers.current[index]?.toggleAttribute("data-active", parasolActive(gesture, t, tuning)));
+      }
+      if (shown.round !== 2) return;
+      PARASOL_CHILDREN.forEach((_, index) => {
+        const element = children.current[index];
+        if (!element) return;
+        const now = parasolChildAt(index, at, t, tuning);
+        element.style.left = `${now.x.toFixed(2)}%`;
+        // A child who walked out of the window is no longer a place to press (the tomato child stays, ringed, at the end).
+        const out = now.gone && index !== PARASOL_TOMATO_CHILD;
+        if (out !== element.hasAttribute("data-gone")) {
+          element.toggleAttribute("data-gone", out);
+          if (out) {
+            element.setAttribute("tabindex", "-1");
+            element.setAttribute("aria-hidden", "true");
+          }
+        }
+        if (index === PARASOL_TOMATO_CHILD) element.toggleAttribute("data-handed", t >= tuning.handoverMs);
+      });
+      // Her arm from under the parasol, the tomato going up to the child's hands, then back.
+      const arm = handover.current;
+      if (arm) {
+        const reach = Math.min(1, Math.max(0, (t - (tuning.handoverMs - 500)) / 500));
+        arm.style.setProperty("--reach", reach.toFixed(3));
+        arm.toggleAttribute("data-on", t >= tuning.handoverMs - 500 && t < tuning.handoverMs + 250);
+      }
+      if (!shown.ending && t >= tuning.walkOffMs - LEAVING_MS && leaving !== shown.roundAt) {
+        leaving = shown.roundAt;
+        kitRef.current.react("surprise", LEAVING_JA);
+      }
+    });
+  }, [frames, gestures, at]);
+  // A look (by hand or by おまかせ): a soft tap; a find, the chime, a ring and (before the last) a short stop and stars; her
+  // pointing (「どこ？」, doing nothing, the child gone): her teasing face and a tap.
   const roundsOver = useRef(0);
   useEffect(() => {
     const last = view.last;
     const over = view.done.length > roundsOver.current;
     roundsOver.current = view.done.length;
-    if (!last || !("spot" in last.action)) return;
-    if (over && view.done[view.done.length - 1].found) {
+    if (!last) return;
+    if (over && !view.done[view.done.length - 1].found) {
+      play.current.sound(SOUNDS.look, { volume: 0.6 });
+      kitRef.current.react("tease");
+      return;
+    }
+    if (!("spot" in last.action)) return;
+    if (over) {
       play.current.sound(SOUNDS.found);
       play.current.vibrate("clue");
       // A ring from the thing found (the last round's find ends the play: the host's finish comes over it).
       const found = fieldRef.current?.querySelector(`[data-found-of="${view.done.length - 1}"]`) ?? null;
       kitRef.current.juice.burst(found, "ring");
+      if (view.done.length < setup.rounds.length) {
+        kitRef.current.juice.hitStop(FIND_STOP_MS, found);
+        kitRef.current.juice.burst(found, "star", 0.8);
+      }
     } else play.current.sound(SOUNDS.look);
   }, [view.last]); // each action once
   // A round over: its find (or her pointing) shown a moment over the next round.
@@ -682,16 +788,18 @@ function ParasolField({ params, setup, view, live, search, active, frames, art, 
     if (over && showing && index === targets[roundIndex]) return over.found ? "found" : "pointed";
     return null;
   };
-  /** A thing of a round: a button while its round is on show (the last stays one at the end), else a drawing only. */
-  const thing = (roundIndex: number, index: number, labelJa: string, place: Place, id: string, drawing: ReactNode, shown = false) => {
+  /**
+   * A thing of a round: a button while its round is on show (the last stays one at the end), else a drawing only. Where it
+   * stands is its first place; the frames move what walks (React never writes the place again: it does not change).
+   */
+  const thing = (roundIndex: number, index: number, labelJa: string, place: { x: number; y: number; r: number; walk?: unknown }, id: string, drawing: ReactNode,
+    { shown = false, ref, marks: extra = {} }: { shown?: boolean; ref?: (element: HTMLElement | null) => void; marks?: Record<string, true | undefined> } = {}) => {
     const searched = wrongLook(roundIndex, index);
     const interactive = roundIndex === round;
-    const at = parasolPosition(place, 0);
-    const style = { left: `${at.x.toFixed(2)}%`, top: `${at.y}%`, "--r": place.r } as CSSProperties;
-    const ref = (element: HTMLElement | null) => { if (place.walk) walkers.current.set(id, element); };
+    const style = { left: `${place.x.toFixed(2)}%`, top: `${place.y}%`, "--r": place.r } as CSSProperties;
     const marks = {
       "data-walker": place.walk ? true : undefined, "data-searched": searched || undefined, "data-shown": shown || undefined,
-      "data-found-of": index === targets[roundIndex] ? roundIndex : undefined,
+      "data-found-of": index === targets[roundIndex] ? roundIndex : undefined, ...extra,
     };
     if (!interactive) return <span key={id} ref={ref} className="mg-parasol-search-spot mg-play-object" {...marks} style={style} aria-hidden="true">{drawing}</span>;
     return (
@@ -699,6 +807,8 @@ function ParasolField({ params, setup, view, live, search, active, frames, art, 
         data-first={index === 0 || undefined} {...marks}
         aria-disabled={!live || searched || undefined} aria-label={`${labelJa}${searched ? "：違った" : ""}`} style={style}
         onClick={(event) => {
+          // A child already walked out of the window: nothing there to press.
+          if (event.currentTarget.hasAttribute("data-gone")) return;
           if (live && !searched) search(index);
           // One looked at already: a small refusal, never a dead tap.
           else if (live) kit.juice.denied(event.currentTarget);
@@ -710,8 +820,10 @@ function ParasolField({ params, setup, view, live, search, active, frames, art, 
 
   // Her stall stays shown once round 1 is over (the parasol aside: her, in her red sari, at her vegetables).
   const herStall = targets[0];
-  // The customers while round 2 is on show; after it, a moment more for hers only (the find, or her pointing at it).
-  const customerShown = (index: number) => round === 1 || (recent?.round === 1 && index === targets[1]);
+  const stallPlace = PARASOL_FIELD[PARASOL_SPOTS[herStall]];
+  // The customers while round 2 is on show (they leave with it: round 3's child stands where hers stood; the find's ring
+  // came from the juice).
+  const customerShown = () => round === 1;
   const childrenShown = round >= 2;
   return (
     <div className="mg-parasol-search" ref={fieldRef} data-round={Math.min(round, setup.rounds.length - 1) + 1} data-ending={ending?.kind}
@@ -738,19 +850,34 @@ function ParasolField({ params, setup, view, live, search, active, frames, art, 
           const place = PARASOL_FIELD[spot];
           const shown = (round === 0 && view.searched.includes(index)) || (view.done.length > 0 && index === herStall);
           const drawing = <Umbrella kind={kind} place={place} ring={ringOf(0, index)} swayRef={(element) => { sways.current.set(spot, element); }} />;
-          return thing(0, index, KINDS[kind].labelJa, place, spot, drawing, shown);
+          const first = parasolPosition(place, 0);
+          const ref = place.walk ? (element: HTMLElement | null) => { walkers.current.set(spot, element); } : undefined;
+          return thing(0, index, KINDS[kind].labelJa, { ...place, x: first.x, y: first.y }, spot, drawing, { shown, ref });
         })}
         {PARASOL_CUSTOMERS.map((stall, index) => {
-          if (!customerShown(index)) return null;
+          if (!customerShown()) return null;
           const place = PARASOL_CUSTOMER_FIELD[stall];
           const gesture = gestures[index];
           const labelJa = `${KINDS[kinds[stall]].stallJa}の前の客、${GESTURES[gesture]}`;
-          return thing(1, index, labelJa, place, `customer-${stall}`, <Customer gesture={gesture} place={place} ring={ringOf(1, index)} />);
+          return thing(1, index, labelJa, place, `customer-${stall}`, <Customer gesture={gesture} place={place} ring={ringOf(1, index)} />, {
+            ref: (element) => { customers.current[index] = element; },
+            marks: { "data-active": parasolActive(gesture, 0, tuning) || undefined },
+          });
         })}
+        {childrenShown && (
+          // Her arm reaching out from under the parasol with the tomato (round 3's first moment).
+          <span ref={handover} className="mg-parasol-search-handover" style={{ left: `${stallPlace.x}%` }} aria-hidden="true">
+            <i className="mg-parasol-search-handover-arm" /><i className="mg-parasol-search-handover-tomato" />
+          </span>
+        )}
         {childrenShown && PARASOL_CHILDREN.map((child, index) => {
-          const place = PARASOL_CHILD_FIELD[child];
           const holding = holdings[index];
-          return thing(2, index, `通りを行く子ども、${HOLDING_JA[holding]}`, place, child, <Child holding={holding} place={place} ring={ringOf(2, index)} />);
+          const first = parasolChildAt(index, at, 0, tuning);
+          return thing(2, index, `通りを行く子ども、${HOLDING_JA[holding]}`, { x: first.x, y: first.y, r: PARASOL_CHILD_R, walk: true }, child,
+            <Child holding={holding} ring={ringOf(2, index)} />, {
+              ref: (element) => { children.current[index] = element; },
+              marks: { "data-tomato": index === PARASOL_TOMATO_CHILD || undefined },
+            });
         })}
         <svg className="mg-parasol-search-arch" viewBox="0 0 240 40" preserveAspectRatio="none" aria-hidden="true" focusable="false">
           <path d={ARCH} fill="#a8625a" stroke="#7d3f37" strokeWidth="2" vectorEffect="non-scaling-stroke" />
@@ -759,7 +886,7 @@ function ParasolField({ params, setup, view, live, search, active, frames, art, 
       </div>
     </div>
   );
-}
+};
 
 /** The parasol as a search skin for a tuning (Debug's room retunes it): its game, rules, words and field. */
 export const parasolSkinFor = (tuning: ParasolTuning): SearchSkin<ParasolParams, ParasolOutcome> => ({
@@ -771,6 +898,6 @@ export const parasolSkinFor = (tuning: ParasolTuning): SearchSkin<ParasolParams,
   // The child found and ringed (or pointed out), before the outcome shows.
   endDelayMs: (_, still) => (still ? 700 : 1400),
   statusJa: (view) => status(view),
-  Field: ParasolField,
+  Field: parasolFieldFor(tuning),
 });
 export const parasolSkin = parasolSkinFor(PARASOL_TUNING);
