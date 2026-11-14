@@ -130,4 +130,9 @@ describe("the flap's field", () => {
   it("says the same words before the play and in it", () => {
     expect(clothFlapSkin.hintJa).toBe(clothFlap.hintJa);
   });
+
+  it("keeps the card's lines short: one 「……」 at most (her pause at the frozen pigeon)", () => {
+    const lines = clothFlap.outcomes.flatMap((outcome) => outcome.reaction?.linesJa ?? []);
+    expect(lines.filter((line) => line.includes("……"))).toEqual(["……鳩、固まってる？"]);
+  });
 });

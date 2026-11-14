@@ -35,4 +35,14 @@ describe("the golgappa duel's field", () => {
     expect(golgappaSkin.actionJa).toBe("食べる");
     expect(golgappaSkin.stop?.labelJa).toBe("バス");
   });
+
+  it("keeps the card's lines her first breath: no line that the story's next one says again, one 「……」 at most", () => {
+    const lines = golgappaDuel.outcomes.flatMap((outcome) => outcome.reaction?.linesJa ?? []);
+    expect(lines.filter((line) => line.includes("……")).length).toBeLessThanOrEqual(1);
+    // The story goes on with 「引き分け！　今の、…」 and 「…はい、水。」: neither is said here first.
+    for (const line of lines) {
+      expect(line).not.toContain("今の");
+      expect(line).not.toContain("水");
+    }
+  });
 });
