@@ -186,7 +186,6 @@ INCLUDE modules.ink
 # speaker: gt_zoheb
 うちの親父、その時間にここで毎年、同じ瓶を買ってた
 # speaker: narrator
-# item_show: gt_delhi_rain_attar
 柱時計が、賭けの一時間まであと数分を指している。{heroine_name}はミッティの小瓶を手に取った。
 # speaker: heroine
 # emotion: serious
@@ -221,6 +220,9 @@ INCLUDE modules.ink
 代金を出すと、ハミードは一ルピーもまけなかった。
 # speaker: enemy
 値引きは、同情だからな
+# speaker: narrator
+# item_show: gt_delhi_rain_attar
+ハミードは小瓶を小さな布袋に入れ、{heroine_name}の手にのせた。
 # speaker: narrator
 # se: phone_keypad
 店を出るとき、背中で電話のボタンを押す音がした。ゆっくり、一つずつ。ゾヘブは自分の店に戻り、充電器の列を、意味もなく並べ直していた。
