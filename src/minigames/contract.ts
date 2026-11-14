@@ -165,8 +165,16 @@ export interface MiniGamePlayProps<Params = unknown, Outcome extends string = st
   practice: boolean;
   /** The host's juice toolkit (also from useMiniGameKit() deep in a skin's field). */
   juice: MiniGameJuice;
-  /** The heroine reacts: her face (and `lineJa` in a bubble) for a moment, at most once in 1.5 s; her figure (cast) takes the face. */
-  react(kind: MiniGameReaction, lineJa?: string): void;
+  /**
+   * The heroine reacts: her face (and `lineJa` in a bubble) for a moment, at most once in 1.5 s; her figure (cast) takes the
+   * face. `over`: a moment that must show (a find), over the 1.5 s and over the reaction on show.
+   */
+  react(kind: MiniGameReaction, lineJa?: string, options?: MiniGameReactOptions): void;
+}
+
+/** How a reaction comes (react's options). */
+export interface MiniGameReactOptions {
+  over?: boolean;
 }
 
 export interface MiniGameCast {

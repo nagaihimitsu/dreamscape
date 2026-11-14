@@ -116,12 +116,43 @@
   animation: mg-mehndi-hidden-name-found 520ms ease-out 2;
 }
 @keyframes mg-mehndi-hidden-name-found { 50% { filter: drop-shadow(0 0 4px rgba(255, 236, 190, 1)) brightness(1.5); } }
-/* The lamp near the writing: her hand twitches as her fingers curl in a little (each time it comes near). */
+/* The lamp near the writing: her hand twitches as her fingers curl in (each time it comes near), enough to see on a phone
+   (2026-11-14 playtest: a 0.8° twitch went unnoticed); with less motion, it only stays a little curled while near. */
 .mg-mehndi-hidden-name-palm[data-near] :is(.mg-mehndi-hidden-name-dark, .mg-mehndi-hidden-name-lit) {
   transform-origin: 50% 100%;
-  animation: mg-mehndi-hidden-name-twitch 420ms ease-out both;
+  animation: mg-mehndi-hidden-name-twitch 520ms ease-out both;
 }
-@keyframes mg-mehndi-hidden-name-twitch { 30% { transform: rotate(0.8deg) scaleY(0.985); } 65% { transform: rotate(-0.4deg) scaleY(0.992); } }
+@keyframes mg-mehndi-hidden-name-twitch { 30% { transform: rotate(2.4deg) scaleY(0.955); } 65% { transform: rotate(-1deg) scaleY(0.975); } }
+[data-still] .mg-mehndi-hidden-name-palm[data-near] :is(.mg-mehndi-hidden-name-dark, .mg-mehndi-hidden-name-lit) { animation: none; transform: scaleY(0.98); }
+/* A finger holding the lamp still over a place aims at it: a gold ring closes round the place and 「離すと、ここ」 over it
+   (lifting the finger points there; the words above, clear of writing that lies under a place). */
+.mg-mehndi-hidden-name-aim {
+  position: absolute;
+  z-index: 2;
+  width: 24cqw;
+  aspect-ratio: 1;
+  border: 2px solid rgba(255, 224, 150, 0.95);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255, 214, 140, 0.55);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: mg-mehndi-hidden-name-aim 220ms ease-out both;
+}
+@keyframes mg-mehndi-hidden-name-aim { from { opacity: 0; transform: translate(-50%, -50%) scale(1.5); } }
+.mg-mehndi-hidden-name-aim > span {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 4px);
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(20, 14, 8, 0.82);
+  color: #ffe9b8;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+[data-still] .mg-mehndi-hidden-name-aim { animation: none; }
 /* Her hint of the area (from the third wrong place): a dotted ring round the writing's area (about 70px across at 390
    wide), for as long as her word; the lamp stays where the player pointed. */
 .mg-mehndi-hidden-name-hint-ring {

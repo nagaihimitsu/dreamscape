@@ -79,13 +79,21 @@ describe("the hidden name's field", () => {
     for (const a of places) for (const b of places) if (a !== b) expect(Math.hypot(a.x - b.x, a.y - b.y), `${a.labelJa}–${b.labelJa}`).toBeGreaterThan(MEHNDI_HIT * 2);
   });
 
-  it("curls her fingers only with the lamp near the writing, never at another place", () => {
+  it("curls her fingers only with the lamp near the writing's place, never nearer another place", () => {
     for (const target of MEHNDI_TARGETS) {
       const writingPlace = MEHNDI_PLACES[target];
       expect(mehndiNear(writingPlace.x, writingPlace.y, target), target).toBe(true);
       for (const spot of MEHNDI_SPOTS) if (spot !== target) expect(mehndiNear(MEHNDI_PLACES[spot].x, MEHNDI_PLACES[spot].y, target), `${target} at ${spot}`).toBe(false);
+      // Wherever her hand tells, the lamp is nearer the place to point at than any other (a point under it finds the writing).
+      for (let x = 0; x <= 300; x += 4) for (let y = 0; y <= 420; y += 4) {
+        if (!mehndiNear(x, y, target)) continue;
+        const own = Math.hypot(writingPlace.x - x, writingPlace.y - y);
+        for (const spot of MEHNDI_SPOTS) if (spot !== target) expect(Math.hypot(MEHNDI_PLACES[spot].x - x, MEHNDI_PLACES[spot].y - y), `${target} at ${x},${y}`).toBeGreaterThan(own);
+      }
     }
     expect(mehndiNear(150, 60, "thumb")).toBe(false);
+    // The 2026-11-14 playtest: with the lamp at (180, 330), nearer the central vine, her hand curled for the thumb's writing.
+    expect(mehndiNear(180, 330, "thumb")).toBe(false);
   });
 
   it("calls a tuning misleading where the pool lights the palm, her hand curls at the next place, or she teases a pause", () => {
@@ -93,6 +101,7 @@ describe("the hidden name's field", () => {
     expect(fairness(MEHNDI_TUNING)).toEqual([]);
     expect(mehndiFairness({ ...MEHNDI_TUNING, lampPct: 30 }).join()).toContain("lampPct 30");
     expect(mehndiFairness({ ...MEHNDI_TUNING, nearUnits: 80 }).join()).toContain("nearUnits 80");
+    expect(mehndiFairness({ ...MEHNDI_TUNING, nearUnits: 46 }).join()).toContain("nearUnits 46");
     expect(mehndiFairness({ ...MEHNDI_TUNING, lingerMs: 300 }).join()).toContain("lingerMs 300");
   });
 
