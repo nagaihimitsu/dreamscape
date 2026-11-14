@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 // GitHub Actions sets CI. There a leftover test.only fails the run, failures
-// are annotated on the pull request and kept as an HTML report, and a failing
+// are annotated on the run and kept as an HTML report, and a failing
 // test is never retried, so an unstable test shows up instead of passing.
 const ci = !!process.env.CI;
 

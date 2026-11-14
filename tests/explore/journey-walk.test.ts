@@ -27,8 +27,8 @@
 // Apart from those progress checks, which content the walks reached is printed as a summary, never
 // asserted: it shows content that normal play cannot reach (e.g. most Milano place encounters,
 // ideas2 [WP06a]) without failing.
-// PR/verify: the fixed run. Weekly: DREAMSCAPE_WALK_SEEDS (comma-separated) and
-// DREAMSCAPE_WALK_STEPS (steps per seed) widen it.
+// `npm test`, `npm run verify` and `npm run test:walk`: the fixed run. DREAMSCAPE_WALK_SEEDS (comma-separated) and
+// DREAMSCAPE_WALK_STEPS (steps per seed) widen it (e2e-explore.yml's walk job, run by hand).
 import { screenFor } from "../../src/domain/screen";
 import { itemUsableIn } from "../../src/domain/item-cities";
 import { usableAp, usableMoney } from "../../src/domain/reservations";
@@ -415,7 +415,7 @@ describe("random walk through the game functions", () => {
   afterAll(() => {
     const text = summary();
     console.log(text);
-    // Also kept as a file (artifacts/ is not committed), for the weekly run's artifact.
+    // Also kept as a file (artifacts/ is not committed), for the artifact of e2e-explore.yml's walk job.
     mkdirSync("artifacts/explore", { recursive: true });
     writeFileSync("artifacts/explore/journey-walk-coverage.txt", `${text}\n`);
   });

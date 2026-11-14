@@ -3,8 +3,8 @@ import { conditionIssues, ITEM_STATUSES, RELATIONSHIP_AXES, type Condition } fro
 /**
  * The text form of a condition, as Ink's head tags (`# when: item smp_x held`) and a scene's
  * `cond("…")` write it: one part, optionally after `not`. It becomes the JSON condition of
- * condition-schemas.ts. The unified event design's stages 1 and 2a read the parts today's
- * records answer; the parts of later stages are refused with their stage, since they could
+ * condition-schemas.ts. Every part of the table below is read; a part planned for a later stage
+ * (LATER_PARTS, condition-schemas.ts; none now) would be refused with its stage, since it could
  * never be true until then.
  *
  * | text | JSON leaf |

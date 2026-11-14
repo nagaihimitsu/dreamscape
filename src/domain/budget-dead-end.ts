@@ -11,7 +11,7 @@ import { findTravelHomeRoutes } from "./travel-routes";
 
 /**
  * Whether the trip has run out of money in this city (B1, user decision 2026-11-13): free time then says so and points to
- * ロード. Running short is part of play (AGENTS.md: no money is kept back and nothing ends the trip), so this only names the
+ * ロード. Running short is part of play (AGENTS.md 「お金を使いすぎて旅を続けられなくなるのは、壊れているのではなく遊びの結果とする」), so this only names the
  * state, when waiting and resting cannot change it:
  * - something is still open in the city (a map event shown now, tonight or tomorrow morning, or a tour on offer), and the
  *   money pays for none of it at its cheapest: from here, or from the inn after resting by the cheapest way home (the night's

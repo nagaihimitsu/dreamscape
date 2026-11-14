@@ -127,7 +127,7 @@ describe("the actions a player can take now", () => {
   });
 
   // docs/04: 「失敗しても各対決の完了は記録され、旅を続けられる」 — a lost finale clears its city too.
-  it.each(transitions)("%s: a battle lost with every answer wrong (DEFEAT) still completes, and its result has the same ways out as a win (%s), so the journey goes on", (journeyId, transition) => {
+  it.each(transitions)("%s: a battle with every answer wrong (outcome defeat, shown as NICE TRY) still completes, and its result has the same ways out as a win (%s), so the journey goes on", (journeyId, transition) => {
     const results = everyBattleResult(journeyId, wrongAnswer);
     expectWaysOut(journeyId, transition, results);
     const finales = results.filter((result) => getActiveBattleContent(result.activeBattle!).battle.scope === "city_finale");

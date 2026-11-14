@@ -10,8 +10,9 @@ import { choiceOption, moduleCalls, readHead, reachableKnots, type PlaceFile, ty
 
 // The scene table of content:build (the unified event design, stage 3a, 3.3): the scenes of the
 // place files with their option tables, the head `# on_done:` of one-scene main files, and
-// today's encounter catalogs read as the same table (Milan, unchanged: the same scenes at the same
-// moments with the same money). Also the AP rules of the tags that give AP (`scene_tag`, made
+// the encounter catalogs read as the same table (the same scenes at the same moments with the
+// same money; no journey has one since Milan moved to place files on 2026-11-13). Also the AP
+// rules of the tags that give AP (`scene_tag`, made
 // statically from the Ink text, so a tag in a branch the walk does not take still has its rule),
 // with the check that their IDs do not collide with the authors' reward IDs.
 // Pure: the caller passes the read place files and the parsed catalogs.
@@ -176,7 +177,7 @@ export function insertedSceneEncounter(entry: SceneEntry, landmarkName: (landmar
   };
 }
 
-/** Today's encounter catalog read as the scene table (Milan: content:build converts it, nothing is moved; the equivalence test compares). */
+/** The encounter catalog read as the scene table (content:build converts it, nothing is moved; only the tests' fixtures write one now). */
 export function catalogScenes(encounters: readonly EncounterDefinition[], rules: readonly EncounterEntryRule[], fingerprint: (storyId: string) => string): SceneEntry[] {
   return encounters.map((event, order) => {
     const rule = rules.find((item) => item.encounterId === event.id);

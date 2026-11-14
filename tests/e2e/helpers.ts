@@ -36,12 +36,13 @@ export async function expectNoDebugCode(page: Page, paths: readonly string[], al
  * Tiers (docs/10「E2Eの段」): each test names the tiers it runs in, and every
  * tier is its own CI job. A test without one of these tags runs nowhere,
  * which scripts/e2e-specs.test.ts refuses.
- * - gate: every pull request and push to main, on the development server.
+ * - gate: the main flows, on the development server.
  * - debug: Debug as a scene launchpad (development server only; never counted as a save/resume check).
  * - prod: also against the production build (`vite preview` of `npm run build`).
  * - sample: the sample journey's own development server, built with the sample (playwright.sample.config.ts).
- * - smoke: also in the weekly WebKit (iPhone) run (playwright.webkit.config.ts); explore: the weekly
- *   monkey (tests/e2e/explore/, playwright.explore.config.ts). Neither is a gate.
+ * - smoke: also in the WebKit (iPhone) run (playwright.webkit.config.ts); explore: the monkey
+ *   (tests/e2e/explore/, playwright.explore.config.ts). Neither is a gate.
+ * Every job runs by hand (e2e.yml, e2e-explore.yml); pull requests check only the build (ci.yml).
  */
 export const tier = { gate: "@gate", debug: "@debug", prod: "@prod", sample: "@sample", smoke: "@smoke", explore: "@explore" } as const;
 
