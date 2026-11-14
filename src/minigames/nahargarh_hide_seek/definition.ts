@@ -6,7 +6,8 @@ import { defineMiniGame } from "../contract";
  * runs on to the side (it scrolls, twelve doors); she hides behind one of them (the tag's `hide`, 7 in the date:
  * 「七つ目の扉」). The player opens doors (an empty room each, with something small going on in it, until hers), presses
  * 「名前を呼ぶ」 (her name echoes back from every door, and from hers a giggle: an ear can find her; the third call ends the
- * play), or, before doing either, does nothing until she peeks out from the corner. Once the player has opened a door or
+ * play, and before it the button says 「最後に呼ぶ」), or, before doing either, does nothing until she peeks out from the
+ * corner. Finding her is the climax (a success chime after the creak, her surprised face, a large ring and stars). Once the player has opened a door or
  * called, stopping to think never ends the play: after a while she giggles and her door's handles rattle (a hint), and the
  * search goes on (「中断する」 leaves it). Outcomes are how the player searched: found her among the first two doors opened
  * (`door_quick`) or later (`door_by_door`), called (`call_her_name`), waited (`just_wait`). An attitude, not a skill: no
@@ -14,7 +15,8 @@ import { defineMiniGame } from "../contract";
  * confirmed; the game shows none).
  *
  * Accessibility: each door is a button (「扉1」〜「扉12」, the label never tells which one hides her) in the tab order, and
- * focus scrolls the corridor to it; Enter or Space opens it; 「名前を呼ぶ」 is a 56px button at the bottom. The echo's giggle
+ * focus scrolls the corridor to it; Enter or Space opens it; 「名前を呼ぶ」 is a 56px button at the bottom (its name says
+ * 「最後に呼ぶ」 before the call that ends the play, and the top band 「次で出てくる」). The echo's giggle
  * and the hint are seen, not read out (a screen-reader player finds her by opening doors). With less motion the doors open
  * at once, the echoes, giggles and rooms show still and she does not slide in. The outcome is read out by the host.
  */
@@ -47,7 +49,7 @@ export const nahargarhHideSeek = defineMiniGame({
   resultAnchor: "top",
   timed: true,
   keysJa: "Tab で扉を選び、Enter・Space で開ける",
-  sounds: ["door_creak", "ui_tap", "pigeon_flutter"],
+  sounds: ["door_creak", "ui_tap", "pigeon_flutter", "quiz_correct"],
   quietScene: false,
   art: [],
   artSlots: [

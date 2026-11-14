@@ -40,7 +40,8 @@ export type SearchFieldProps<Params, Outcome extends string> =
 /** One of the skin's extra buttons (the setup's button of the same ID says how many presses end what). */
 export interface SearchButton {
   id: string;
-  labelJa: string;
+  /** Its label; by the view for one that changes as it is pressed (「最後に呼ぶ」 before the press that ends the play). */
+  labelJa: string | ((view: SearchView) => string);
   /** What it does, read out with it. */
   hintJa: string;
   tone: "primary" | "secondary";
@@ -186,7 +187,7 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
                 <button key={button.id} type="button" className={`${button.tone} mg-search-button`} data-testid={`minigame-button-${button.id}`}
                   aria-disabled={!live || undefined} aria-describedby={`${hintId}-${button.id}`}
                   onClick={() => { if (live) act({ button: button.id }, clock.now()); }}>
-                  {button.labelJa}
+                  {typeof button.labelJa === "function" ? button.labelJa(view) : button.labelJa}
                 </button>
               ))}
               {skin.buttons.map((button) => <span key={button.id} id={`${hintId}-${button.id}`} className="sr-only">{button.hintJa}</span>)}
