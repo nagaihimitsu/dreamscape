@@ -3,8 +3,9 @@ import { defineMiniGame } from "../contract";
 
 /**
  * `say_together` (a skin of `rhythm_tap`): saying the words at the same moment as her. She counts 「せー」「の」 on a steady
- * beat and says the four words on the next four beats, one a beat; the player taps 「言う」 on each (group2 S4,
- * 2026-11-14: four words, not one tap). The story takes the first word, as it always did: on her beat (`together`),
+ * beat and says the four words after it the way the phrase is said (round 3, 2026-11-14): the first on the next beat,
+ * then her own rhythm (the second a little late after the long first word, the third quick, its long syllable held, a
+ * breath before the last); the player taps 「言う」 on each (group2 S4, 2026-11-14: four words, not one tap). The story takes the first word, as it always did: on her beat (`together`),
  * before it (`early`: the player's voice alone first), after it (`late`: hers alone first), or no tap at all (`silent`:
  * she says them alone). The result card counts the words said together (★). Timing, not volume (2026-11-13 user
  * decision). A tap while she takes her breath, before 「せー」, does not count. First use: the Lodhi Garden date's
@@ -17,8 +18,8 @@ import { defineMiniGame } from "../contract";
  * beat, so the scene's music stays, lowered (group2 N4: a 134 BPM track for 4 s clashed with her 92).
  *
  * Accessibility: 「言う」 is 64px at the bottom (thumb reach), Space and Enter say a word; the beat reads without sound (her
- * bubble shows 「せー」「の」 and a word a beat; the lane shows her count as crosses and each word as a mark meeting the
- * ring) and with sound (a tick on each count, a chime with each word, brighter when the voices meet); a word on her beat
+ * bubble shows 「せー」「の」 and each word as she says it, the held one's ー growing and her breath 「すっ」 before the last;
+ * the lane shows her count as crosses and each word as a mark meeting the ring, the last one bigger) and with sound (a tick on each count, a chime with each word, brighter when the voices meet); a word on her beat
  * is gold with a thicker edge in both bubbles (not colour alone: a word off it is plain and lighter). With less motion she
  * does not nod and the bubbles appear without popping (the lane, the words still move). The outcome is read out by the
  * host.
@@ -27,7 +28,7 @@ export const sayTogether = defineMiniGame({
   id: "say_together",
   engine: "rhythm_tap",
   titleJa: "一緒に言う",
-  howToJa: "彼女の「せー」「の」の次の拍から、4つの言葉を1つずつ拍に合わせて「言う」を押し、声をそろえる。物語の結果は最初の言葉で決まる（約5秒）",
+  howToJa: "彼女の「せー」「の」の次の拍から、4つの言葉を1つずつ、彼女の言い方に合わせて「言う」を押し、声をそろえる（2つ目は少し遅れ、3つ目は伸ばし、息を吸ってから最後）。物語の結果は最初の言葉で決まる（約6秒）",
   // Her face only, no line on the result card: her first words follow at once in the story, and differ with the mood of
   // the choice before (delighted, or quiet and a little embarrassed); a line here would get ahead of one or the other.
   outcomes: [
@@ -42,10 +43,10 @@ export const sayTogether = defineMiniGame({
   params: () => z.object({}).strict(),
   examples: [{}],
   startJa: "息を吸う",
-  hintJa: "「せー」「の」の次の拍から、拍ごとに「言う」",
-  goalJa: "「せー」「の」の後、拍ごとに4回「言う」で声をそろえる",
+  hintJa: "「せー」「の」の次から、彼女の言葉に合わせて「言う」",
+  goalJa: "「せー」「の」の後、彼女が言う4つの言葉に合わせて「言う」で声をそろえる",
   controls: "rhythm",
-  durationSec: 5,
+  durationSec: 6,
   practice: {},
   // Her 「せー」「の」 is the count.
   countdown: "own",
