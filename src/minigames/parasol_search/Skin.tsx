@@ -13,10 +13,11 @@ import "./skin.css";
 // stalls, the road with three people walking to and fro under umbrellas (a cow, an auto-rickshaw and a cycle-rickshaw
 // among them), the near pavement under the window with five stalls. Three rounds, the three things the heroine later
 // tells the seller she saw: her old parasol (a looked-at umbrella slides aside to show who is under it; hers stays aside
-// after), then the customers come to the stalls (one argues with her), then children walk by (one holds the tomato she
-// gave). The window takes most of the field's height, as wide as the field allows; places are in % of the window, sizes
-// in a unit of its width (`--u`). Which stall stands where, and what the customers do, is shuffled by the seed (looks
-// only: her stall is the tag's `at`). With the use's art (`art.street`), that picture in place of the drawn street, cow
+// after), then the customers come to the stalls (one argues with her over the price, its ₹ in a jagged burst; two more
+// have their arms up, glad or stretching), then children walk by (one holds the tomato she gave, its green crown on it;
+// others a red ball or a red flower). The hints say what to find, never where. The window takes most of the field's height, as wide as the field allows; places are in % of the window, sizes
+// in a unit of its width (`--u`). Which stall stands where, what the customers do and what the children hold is shuffled
+// by the seed (looks only: her stall is the tag's `at`; the arguing customer is hers, the tomato child the second). With the use's art (`art.street`), that picture in place of the drawn street, cow
 // and traffic, as the back layer (the host's mg-photo); the umbrellas, stalls and people are drawn by the game either way,
 // as the play layer (mg-play-object: a dark edge and a shadow under them). Each round's find: a ring from it.
 
@@ -58,20 +59,26 @@ const KINDS: Record<ParasolKind, KindLook> = {
 const OTHER_STALLS: readonly ParasolKind[] = ["juice", "chai", "fruit", "bangles", "spices", "greens", "marigold", "old_garland", "new_greens"];
 const WALKERS: Readonly<Record<"road_1" | "road_2" | "road_3", ParasolKind>> = { road_1: "black", road_2: "floral", road_3: "white" };
 
-/** What a customer does (round 2): hers argues over the price; the others are shuffled by the seed. */
-export type ParasolGesture = "argue" | "ask" | "laugh" | "wave" | "basket";
+/** What a customer does (round 2): hers argues over the price; the others are shuffled by the seed (two with arms up too). */
+export type ParasolGesture = "argue" | "ask" | "laugh" | "wave" | "basket" | "cheer" | "stretch";
 const GESTURES: Record<ParasolGesture, string> = {
   argue: "両手を振り上げている",
   ask: "指を3本立てて、何か聞いている",
   laugh: "笑っている",
   wave: "片手を振っている",
   basket: "頭にかごを載せている",
+  cheer: "喜んで両手を上げている",
+  stretch: "伸びをしている",
 };
-const OTHER_GESTURES: readonly ParasolGesture[] = ["ask", "laugh", "wave", "basket"];
-/** What each child holds (round 3): the second one the tomato she gave. */
-export type ParasolHolding = "kite" | "tomato" | "ball";
-const HOLDINGS: readonly ParasolHolding[] = ["kite", "tomato", "ball"];
-const HOLDING_JA: Record<ParasolHolding, string> = { kite: "凧を持っている", tomato: "トマトを持っている", ball: "青いボールを持っている" };
+const OTHER_GESTURES: readonly ParasolGesture[] = ["ask", "laugh", "wave", "basket", "cheer", "stretch"];
+/** What each child holds (round 3): the second one the tomato she gave; the others shuffled by the seed (two red things too). */
+export type ParasolHolding = "kite" | "tomato" | "ball" | "red_ball" | "flower";
+const OTHER_HOLDINGS: readonly ParasolHolding[] = ["kite", "ball", "red_ball", "flower"];
+const HOLDING_JA: Record<ParasolHolding, string> = {
+  kite: "凧を持っている", tomato: "トマトを持っている", ball: "青いボールを持っている", red_ball: "赤いボールを持っている", flower: "赤い花を持っている",
+};
+/** Each child's shirt, by what they hold. */
+const CHILD_BODY: Record<ParasolHolding, string> = { kite: "#6a9ad0", tomato: "#e8b84a", ball: "#c46a8a", red_ball: "#7aa05a", flower: "#9a7ac0" };
 
 /**
  * Where each thing is (x, y in % of the window), its radius (in the window's unit), and, for one that walks, how far it
@@ -105,16 +112,20 @@ export const PARASOL_FIELD: Record<ParasolSpot, Place> = {
 /** The customers stand in front of their stalls, at the lane's edge. */
 export const PARASOL_CUSTOMER_FIELD: Record<(typeof PARASOL_CUSTOMERS)[number], Place> = {
   far_2: { x: 30, y: ROW.farLane, r: 13 },
+  far_3: { x: 50, y: ROW.farLane, r: 13 },
   far_4: { x: 70, y: ROW.farLane, r: 13 },
+  near_1: { x: 10, y: ROW.nearLane, r: 13 },
   near_2: { x: 30, y: ROW.nearLane, r: 13 },
   near_3: { x: 50, y: ROW.nearLane, r: 13 },
   near_4: { x: 70, y: ROW.nearLane, r: 13 },
 };
-/** The children walk slowly along the lanes (8 to 10 seconds one way), the two on the near lane in step, apart. */
+/** The children walk slowly along the lanes (9 to 10 seconds one way), each lane's in step (so never closer), apart. */
 export const PARASOL_CHILD_FIELD: Record<(typeof PARASOL_CHILDREN)[number], Place> = {
-  child_1: { x: 50, y: ROW.farLane, r: 14, walk: { amp: 22, periodMs: 18000, phase: 0 } },
-  child_2: { x: 30, y: ROW.nearLane, r: 14, walk: { amp: 14, periodMs: 20000, phase: 1 } },
-  child_3: { x: 70, y: ROW.nearLane, r: 14, walk: { amp: 10, periodMs: 20000, phase: 1 } },
+  child_1: { x: 30, y: ROW.farLane, r: 14, walk: { amp: 14, periodMs: 18000, phase: 0 } },
+  child_2: { x: 70, y: ROW.farLane, r: 14, walk: { amp: 14, periodMs: 18000, phase: 0 } },
+  child_3: { x: 25, y: ROW.nearLane, r: 14, walk: { amp: 8, periodMs: 20000, phase: 1 } },
+  child_4: { x: 50, y: ROW.nearLane, r: 14, walk: { amp: 8, periodMs: 20000, phase: 1 } },
+  child_5: { x: 75, y: ROW.nearLane, r: 14, walk: { amp: 8, periodMs: 20000, phase: 1 } },
 };
 
 /** What stands at each stall for the tag's `at` and the seed: the old parasol at hers, the others shuffled. */
@@ -145,6 +156,18 @@ export function parasolGestures(at: ParasolPlace, seed = 0): ParasolGesture[] {
   return PARASOL_CUSTOMERS.map((_, index) => (index === hers ? "argue" : others.shift()!));
 }
 
+/** What each child holds for the seed: the tomato child the tomato, the others shuffled. */
+export function parasolHoldings(seed = 0): ParasolHolding[] {
+  const random = seededRandom(seed ^ 0x27d4eb2f);
+  const others = [...OTHER_HOLDINGS];
+  for (let index = others.length - 1; index > 0; index -= 1) {
+    const swap = Math.floor(random() * (index + 1));
+    [others[index], others[swap]] = [others[swap], others[index]];
+  }
+  const tomato = parasolTargets({ at: "middle" })[2];
+  return PARASOL_CHILDREN.map((_, index) => (index === tomato ? "tomato" : others.shift()!));
+}
+
 /** Where a thing is at a time of the play (one that walks goes to and fro; with less motion, it stands at its start). */
 export function parasolPosition(place: Place, ms: number): { x: number; y: number; sway: number } {
   if (!place.walk) return { x: place.x, y: place.y, sway: 0 };
@@ -169,7 +192,7 @@ const SOUNDS = { found: "clue_new", look: "ui_tap" } as const;
 const RECENT_MS = 1200;
 const ROUND_WORDS = [
   { hintJa: "野菜を並べた、古い日傘を押す", lookedJa: "見た傘" },
-  { hintJa: "その日傘の店で、値段で揉めている客を押す", lookedJa: "見た人" },
+  { hintJa: "値段で揉めている客を押す", lookedJa: "見た人" },
   { hintJa: "トマトをもらった子どもを押す", lookedJa: "見た子" },
 ] as const;
 const RIBS = 8;
@@ -384,9 +407,13 @@ function Customer({ gesture, place, ring }: { gesture: ParasolGesture; place: Pl
     laugh: null,
     wave: <path d={`M8 0 l7 ${-5 * face}`} stroke={OUTLINE} strokeWidth="2.4" strokeLinecap="round" />,
     basket: null,
+    // Both arms up as well, wide apart (glad), or close together over the head (stretching): no ₹ burst.
+    cheer: <path d={`M-8 ${1 * face} l-7 ${4 * face} M8 ${1 * face} l7 ${4 * face}`} stroke={OUTLINE} strokeWidth="2.4" strokeLinecap="round" />,
+    stretch: <path d={`M-3 ${3 * face} l-1 ${9 * face} M3 ${3 * face} l1 ${9 * face}`} stroke={OUTLINE} strokeWidth="2.4" strokeLinecap="round" />,
   };
   const colours: Record<ParasolGesture, [string, string]> = {
     argue: ["#d0a03a", "#2a211c"], ask: ["#4f6fa8", "#2a211c"], laugh: ["#a8486a", "#2a211c"], wave: ["#5f8f5a", "#2a211c"], basket: ["#e2dccb", "#2a211c"],
+    cheer: ["#c8642a", "#2a211c"], stretch: ["#7a6aa8", "#2a211c"],
   };
   const mark = gesture === "argue" ? (
     <g transform={`translate(0 ${fixed(face * r * 1.4)})`}>
@@ -403,7 +430,14 @@ function Customer({ gesture, place, ring }: { gesture: ParasolGesture; place: Pl
       <ellipse rx="6" ry="4.6" fill="#fffaf1" stroke={OUTLINE} strokeWidth="0.9" />
       <text y="2.4" textAnchor="middle" fontSize="6.4" fontWeight="700" fill="#a8486a">♪</text>
     </g>
-  ) : gesture === "basket" ? <circle r="6.4" fill="#c99a5a" stroke={OUTLINE} strokeWidth="1" strokeDasharray="2 1.2" /> : null;
+  ) : gesture === "basket" ? <circle r="6.4" fill="#c99a5a" stroke={OUTLINE} strokeWidth="1" strokeDasharray="2 1.2" /> : gesture === "cheer" ? (
+    // Glad: two small yellow sparkles by the head.
+    <g fill="#f2c230" stroke={OUTLINE} strokeWidth="0.6">
+      {[-1, 1].map((side) => (
+        <path key={side} transform={`translate(${fixed(side * r * 0.9)} ${fixed(-face * r * 0.9)})`} d="M0 -4 L1 -1 L4 0 L1 1 L0 4 L-1 1 L-4 0 L-1 -1 Z" />
+      ))}
+    </g>
+  ) : null;
   return (
     <svg className="mg-parasol-search-unit" viewBox={`${-reach} ${-reach} ${reach * 2} ${reach * 2}`} style={{ "--reach": reach } as CSSProperties}
       aria-hidden="true" focusable="false">
@@ -416,7 +450,7 @@ function Customer({ gesture, place, ring }: { gesture: ParasolGesture; place: Pl
   );
 }
 
-/** A child walking by, from above, with what they hold out in front (a tomato's green crown, a kite's tail, a ball's stripe). */
+/** A child walking by, from above, with what they hold out in front (a tomato's green crown, a kite's tail, a ball's stripe, a flower's stem). */
 function Child({ holding, place, ring }: { holding: ParasolHolding; place: Place; ring: Ring }) {
   const { r } = place;
   const reach = r * 2.6;
@@ -430,9 +464,18 @@ function Child({ holding, place, ring }: { holding: ParasolHolding; place: Place
       <path d="M0 -6 L5 0 L0 6 L-5 0 Z" fill="#f2c230" stroke={OUTLINE} strokeWidth="0.9" />
       <path d="M0 6 q3 4 0 7 q-3 3 0 6" fill="none" stroke={OUTLINE} strokeWidth="0.8" />
     </g>
+  ) : holding === "flower" ? (
+    <g transform="translate(0 -11)">
+      <path d="M0 2 q1 5 -1 8" fill="none" stroke="#4f9a3a" strokeWidth="1.2" />
+      {[0, 1, 2, 3, 4].map((petal) => {
+        const angle = (petal / 5) * Math.PI * 2 - Math.PI / 2;
+        return <circle key={petal} cx={fixed(2.6 * Math.cos(angle))} cy={fixed(2.6 * Math.sin(angle))} r="2" fill="#d8342c" stroke={OUTLINE} strokeWidth="0.5" />;
+      })}
+      <circle r="1.4" fill="#f2c230" />
+    </g>
   ) : (
     <g transform="translate(0 -11)">
-      <circle r="4.4" fill="#2f6fc0" stroke={OUTLINE} strokeWidth="0.9" />
+      <circle r="4.4" fill={holding === "red_ball" ? "#d8342c" : "#2f6fc0"} stroke={OUTLINE} strokeWidth="0.9" />
       <path d="M-4.2 -1 Q0 1.6 4.2 -1" fill="none" stroke="#fffaf1" strokeWidth="1.2" />
     </g>
   );
@@ -440,7 +483,7 @@ function Child({ holding, place, ring }: { holding: ParasolHolding; place: Place
     <svg className="mg-parasol-search-unit" viewBox={`${-reach} ${-reach} ${reach * 2} ${reach * 2}`} style={{ "--reach": reach } as CSSProperties}
       aria-hidden="true" focusable="false">
       <ellipse cx="0" cy={fixed(r * 0.25)} rx={fixed(r * 0.8)} ry={fixed(r * 0.55)} fill="rgba(30,20,15,0.3)" />
-      <Person body={holding === "tomato" ? "#e8b84a" : holding === "kite" ? "#6a9ad0" : "#c46a8a"} head="#2a211c" r={r * 1.1}>
+      <Person body={CHILD_BODY[holding]} head="#2a211c" r={r * 1.1}>
         <path d="M-6 -1 l4 -5 M6 -1 l-4 -5" stroke={OUTLINE} strokeWidth="1.8" strokeLinecap="round" />
       </Person>
       <g transform={`scale(${fixed((r * 1.1) / 16)})`}>{held}</g>
@@ -565,6 +608,7 @@ function ParasolField({ params, setup, view, live, search, active, frames, art, 
   const jali = `${useId().replace(/[^a-zA-Z0-9]/gu, "")}jali`;
   const kinds = useMemo(() => parasolKinds(params.at, seed), [params.at, seed]);
   const gestures = useMemo(() => parasolGestures(params.at, seed), [params.at, seed]);
+  const holdings = useMemo(() => parasolHoldings(seed), [seed]);
   const targets = setup.rounds.map((round) => round.targets[0]);
   const round = view.round;
   const ending = view.ending;
@@ -705,7 +749,7 @@ function ParasolField({ params, setup, view, live, search, active, frames, art, 
         })}
         {childrenShown && PARASOL_CHILDREN.map((child, index) => {
           const place = PARASOL_CHILD_FIELD[child];
-          const holding = HOLDINGS[index];
+          const holding = holdings[index];
           return thing(2, index, `通りを行く子ども、${HOLDING_JA[holding]}`, place, child, <Child holding={holding} place={place} ring={ringOf(2, index)} />);
         })}
         <svg className="mg-parasol-search-arch" viewBox="0 0 240 40" preserveAspectRatio="none" aria-hidden="true" focusable="false">

@@ -39,11 +39,19 @@ describe("the parasol's field", () => {
   it("brings the customers in round 2 (her stall's one arguing) and the children in round 3, as buttons in place of the umbrellas", () => {
     const hers = parasolTargets({ at: "middle" })[0];
     const second = field({ at: "middle" }, view({ round: 1, done: [{ searched: [hers], found: true }] }));
-    expect(labels(second)).toHaveLength(5);
+    expect(labels(second)).toHaveLength(7);
     expect(labels(second)[parasolTargets({ at: "middle" })[1]]).toBe("古い日傘の野菜の店の前の客、両手を振り上げている");
+    // Two more with their arms up (no ₹ burst): the hint says what, never where.
+    expect(labels(second).filter((name) => /両手を上げている|伸びをしている/u.test(name))).toHaveLength(2);
+    expect(second.match(/₹!/gu)).toHaveLength(1);
+    expect(parasolSkin.hintJa).toBeTypeOf("function");
+    if (typeof parasolSkin.hintJa === "function") expect(parasolSkin.hintJa(view({ round: 1 }))).toBe("値段で揉めている客を押す");
     expect(second).toContain("data-shown=\"true\"");
-    const third = field({ at: "middle" }, view({ round: 2, done: [{ searched: [hers], found: true }, { searched: [3], found: true }] }));
-    expect(labels(third)).toEqual(["通りを行く子ども、凧を持っている", "通りを行く子ども、トマトを持っている", "通りを行く子ども、青いボールを持っている"]);
+    const third = field({ at: "middle" }, view({ round: 2, done: [{ searched: [hers], found: true }, { searched: [5], found: true }] }));
+    expect(labels(third)).toHaveLength(5);
+    expect(labels(third)[1]).toBe("通りを行く子ども、トマトを持っている");
+    expect([...labels(third)].sort()).toEqual(["通りを行く子ども、トマトを持っている", "通りを行く子ども、凧を持っている", "通りを行く子ども、赤いボールを持っている",
+      "通りを行く子ども、赤い花を持っている", "通りを行く子ども、青いボールを持っている"].sort());
   });
 
   it("draws every customer's gesture on either side of the road as well-formed shapes, whatever the seed deals", () => {
@@ -59,7 +67,7 @@ describe("the parasol's field", () => {
     expect(labels(looked)[1]).toMatch(/：違った$/u);
     expect(looked).toContain("mg-parasol-search-ring-wrong");
     // At the end the last round stays on show, its find in its list.
-    const done = [{ searched: [10], found: true }, { searched: [3], found: true }, { searched: [0, 1], found: true }];
+    const done = [{ searched: [10], found: true }, { searched: [5], found: true }, { searched: [0, 1], found: true }];
     const found = field({ at: "middle" }, view({ round: 2, searched: [0, 1], done, ending: { kind: "found", spot: 1, misses: 1, helped: 0 } }));
     expect(found).toContain("mg-parasol-search-ring-found");
     expect(labels(found)[1]).toBe("通りを行く子ども、トマトを持っている");

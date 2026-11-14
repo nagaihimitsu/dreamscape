@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type ComponentType } from "react";
 import type { MiniGamePlayProps, MiniGameRules } from "../../contract";
-import { searchAutoActionAt, searchEnding, searchProgress, type SearchAction, type SearchEnding, type SearchGame, type SearchProgress, type SearchRecord, type SearchSetup } from "./engine";
+import { searchAutoActionAt, searchEnding, searchIdleMs, searchProgress, type SearchAction, type SearchEnding, type SearchGame, type SearchProgress, type SearchRecord, type SearchSetup } from "./engine";
 import "./engine.css";
 
 // The search engine's play (docs/13 2.2): the skin's field of spots (it draws them as buttons and says which one the
@@ -8,7 +8,7 @@ import "./engine.css";
 // host's clock. The skin's rules decide; the host shows the outcome and takes its choice.
 
 /** What the field shows: where the play is (the engine's progress), the latest action, a hint, and the ending once there is one. */
-export interface SearchView extends Omit<SearchProgress, "ending" | "misses" | "helped" | "acted"> {
+export interface SearchView extends Omit<SearchProgress, "ending" | "misses" | "helped" | "acted" | "left"> {
   /** How many rounds the play has (most games: one). */
   total: number;
   /** The latest action and when it was done (the host's clock), for a field that shows it for a moment (an echo, a creak). */
@@ -124,6 +124,7 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
     useEffect(() => {
       let autoIndex = 0;
       let shown: string | null = null;
+      const idleNow = () => searchIdleMs(searchProgress(actions.current, setup), setup);
       return clock.onFrame((ms) => {
         if (!decided.current) {
           if (autoRecord) {
@@ -131,13 +132,17 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
               if (ms >= searchAutoActionAt(autoIndex)) act(autoRecord.actions[autoIndex++], ms);
             } else if (autoRecord.lapse && ms >= lapseAt(autoRecord, setup)) finish(autoRecord, ms);
           } else if (setup.timeLimitMs !== null && ms >= setup.timeLimitMs) finish({ actions: actions.current, lapse: "timeout" }, ms);
-          else if (setup.idleMs !== null && ms - lastActive.current >= setup.idleMs) {
+          else if (setup.idleMs !== null && ms - lastActive.current >= (idleNow() ?? setup.idleMs)) {
             const acted = actions.current.some((action) => !("idle" in action));
             // Doing nothing: the round on show is helped through (each idle limit gone by, at its own time: a frame late
-            // after a long stall helps as many rounds), or the play ends (before the first action only, for some).
+            // after a long stall helps as many rounds; a round left to her shortens the next ones' where the setup says),
+            // or the play ends (before the first action only, for some).
             if (setup.idleEnds === "round") {
-              for (let guard = 0; guard < setup.rounds.length && !decided.current && ms - lastActive.current >= setup.idleMs; guard++)
-                act({ idle: true }, lastActive.current + setup.idleMs);
+              for (let guard = 0; guard < setup.rounds.length && !decided.current; guard++) {
+                const limit = idleNow() ?? setup.idleMs;
+                if (ms - lastActive.current < limit) break;
+                act({ idle: true }, lastActive.current + limit);
+              }
             } else if (setup.idleEnds === "play" || !acted) finish({ actions: actions.current, lapse: "idle" }, ms);
           }
           // A hint once the player has acted and then done nothing for a while, again after as long, in a play that goes on.

@@ -7,8 +7,10 @@ import { defineMiniGame } from "../contract";
  * a cow, an auto-rickshaw and a cycle-rickshaw. Three rounds, the three things the heroine later tells the vegetable
  * seller she saw (2026-11-13 playtest): her old parasol (the tag's `at`: left, middle or right on the near pavement; two
  * other old parasols and two other vegetable stalls make the player look at both clues), the customer arguing with her
- * over the price, the child she gave a tomato to. The player taps to look (a wrong one is only looked at, and the round
- * goes on), or presses 「どこ？」, or does nothing until she points it out (the next round comes either way). Outcomes:
+ * over the price (among six, two more with their arms up), the child she gave a tomato to (among five, a red ball and a
+ * red flower among them); the hints never say where. The player taps to look (a wrong one is only looked at, and the
+ * round goes on), or presses 「どこ？」, or does nothing until she points it out (8 s; 4 s in the rounds after one the
+ * player left to her), and the next round comes either way. Outcomes:
  * all three found by the player with at most one wrong look in all (`found`), with more (`found_slow`), or any of them
  * pointed out by her (`pointed`). Nothing is random (the seed only shuffles which other stall stands where); the street
  * claims nothing about the place (an ordinary street from above).
@@ -29,10 +31,10 @@ export const parasolSearch = defineMiniGame({
   outcomes: [
     { id: "found", labelJa: "すぐに見つけた", noteJa: "3つとも自分で見つけ、違うものを見たのは合わせて1つまで", finishJa: "見つけた！",
       reaction: { kind: "cheer", linesJa: ["ちゃんと、見えたね"] } },
-    { id: "found_slow", labelJa: "何本か見て見つけた", noteJa: "3つとも自分で見つけ、違うものを2つ以上見た", finishJa: "見つけた！",
-      reaction: { kind: "cheer", linesJa: ["ふう……やっと、全部見えた"] } },
+    { id: "found_slow", labelJa: "何度か見間違えて見つけた", noteJa: "3つとも自分で見つけ、違うものを2つ以上見た", finishJa: "見つけた！",
+      reaction: { kind: "cheer", linesJa: ["ふう……目がまわりそう"] } },
     // Her name in the label: two women are on the scene (the heroine and the seller).
-    { id: "pointed", labelJa: "{heroine_name}と一緒に見つけた", noteJa: "どれかで「どこ？」を押したか、8秒何もしなかった（彼女が指さして、次へ進む）",
+    { id: "pointed", labelJa: "{heroine_name}と一緒に見つけた", noteJa: "どれかで「どこ？」を押したか、8秒何もしなかった（彼女が指さして、次へ進む。任せた次からは4秒）",
       finishJa: null, reaction: { kind: "tease" } },
   ],
   defaultAuto: "found",

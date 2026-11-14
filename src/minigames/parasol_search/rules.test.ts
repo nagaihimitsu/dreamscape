@@ -6,7 +6,7 @@ import {
   PARASOL_CHILDREN, PARASOL_CUSTOMERS, PARASOL_IDLE_MS, PARASOL_SPOTS, PARASOL_TOMATO_CHILD, PARASOL_TUNING, parasolRules, parasolSetup, parasolTargets,
   type ParasolParams, type ParasolPlace,
 } from "./rules";
-import { PARASOL_CHILD_FIELD, PARASOL_CUSTOMER_FIELD, PARASOL_FIELD, parasolGestures, parasolKinds, parasolPosition } from "./Skin";
+import { PARASOL_CHILD_FIELD, PARASOL_CUSTOMER_FIELD, PARASOL_FIELD, parasolGestures, parasolHoldings, parasolKinds, parasolPosition } from "./Skin";
 
 const record = (actions: SearchRecord["actions"], lapse: SearchRecord["lapse"] = null): SearchRecord => ({ actions, lapse });
 const stall = (name: (typeof PARASOL_SPOTS)[number]): SearchAction => ({ spot: PARASOL_SPOTS.indexOf(name) });
@@ -33,7 +33,7 @@ describe("the parasol's rules", () => {
       expect(PARASOL_SPOTS[hers]).toBe({ left: "near_2", middle: "near_3", right: "near_4" }[at]);
       expect(PARASOL_CUSTOMERS[arguing]).toBe(PARASOL_SPOTS[hers]);
       expect(PARASOL_CHILDREN[tomato]).toBe("child_2");
-      expect(parasolSetup({ at }).rounds.map((round) => [round.spots, round.targets])).toEqual([[13, [hers]], [5, [arguing]], [3, [tomato]]]);
+      expect(parasolSetup({ at }).rounds.map((round) => [round.spots, round.targets])).toEqual([[13, [hers]], [7, [arguing]], [5, [tomato]]]);
     }
   });
 
@@ -74,16 +74,23 @@ describe("the parasol's rules", () => {
       for (const decoy of ["chai", "old_garland", "greens", "new_greens"]) expect(Object.values(kinds)).toContain(decoy);
       // The walkers stay walkers; only the stalls are shuffled.
       expect([kinds.road_1, kinds.road_2, kinds.road_3]).toEqual(["black", "floral", "white"]);
-      expect(parasolGestures(at, seed)[parasolTargets({ at })[1]]).toBe("argue");
-      expect(parasolGestures(at, seed).filter((gesture) => gesture === "argue")).toHaveLength(1);
+      // Round 2: one arguing (hers), two more with their arms up; round 3: one tomato, a red ball and a red flower too.
+      const gestures = parasolGestures(at, seed);
+      expect(gestures[parasolTargets({ at })[1]]).toBe("argue");
+      expect(gestures.filter((gesture) => gesture === "argue")).toHaveLength(1);
+      expect(new Set(gestures)).toEqual(new Set(["argue", "ask", "laugh", "wave", "basket", "cheer", "stretch"]));
+      const holdings = parasolHoldings(seed);
+      expect(holdings[PARASOL_TOMATO_CHILD]).toBe("tomato");
+      expect(new Set(holdings)).toEqual(new Set(["tomato", "kite", "ball", "red_ball", "flower"]));
     }
     // The seed changes the street's look (and only its look).
     expect([1, 2, 3, 4].some((seed) => JSON.stringify(parasolKinds("middle", seed)) !== JSON.stringify(parasolKinds("middle", 0)))).toBe(true);
   });
 
-  it("is a fair search: eight seconds of looking in each round before she points", () => {
+  it("is a fair search: eight seconds of looking in each round before she points, four after a round left to her", () => {
     for (const at of PLACES) expect(searchFairness(parasolSetup({ at }))).toEqual([]);
     expect(PARASOL_IDLE_MS).toBe(8000);
+    expect(parasolSetup(middle).idleAfterLeftMs).toBe(4000);
     const schema = parasolSearch.params({ effectIds: [], backgroundIds: [], emotionIds: [] });
     expect(schema.parse({})).toEqual({ at: "middle", rounds: 3 });
     expect(schema.parse({ at: "left", rounds: "1" })).toEqual({ at: "left", rounds: 1 });
@@ -103,14 +110,15 @@ describe("the parasol's rules", () => {
 
   it("rates the look for the result card in step with the outcome: ★3 quick and clean, ★2 found, ★1 found slowly, none pointed", () => {
     const middle: ParasolParams = { at: "middle" };
-    const all = (endMs: number | undefined, ...wrong: SearchAction[]): SearchRecord => ({ actions: [...wrong, stall("near_3"), { spot: 3 }, child(PARASOL_TOMATO_CHILD)], lapse: null, endMs });
+    const all = (endMs: number | undefined, ...wrong: SearchAction[]): SearchRecord => ({ actions: [...wrong, stall("near_3"), customer("near_3"), child(PARASOL_TOMATO_CHILD)], lapse: null, endMs });
     expect(parasolRules.rate?.(all(12400), middle)).toEqual({ stars: 3, scoreJa: "12.4秒で見つけた" });
     expect(parasolRules.rate?.(all(PARASOL_TUNING.starMsPerRound * 3 + 1), middle)?.stars).toBe(2);
-    expect(parasolRules.rate?.(all(9000, stall("far_1")), middle)).toEqual({ stars: 2, scoreJa: "9.0秒で見つけた" });
-    expect(parasolRules.rate?.(all(20000, stall("far_1"), stall("far_2")), middle)).toEqual({ stars: 1, scoreJa: "20.0秒で見つけた" });
+    // With wrong looks, the score says how many (what took the ★ off).
+    expect(parasolRules.rate?.(all(9000, stall("far_1")), middle)).toEqual({ stars: 2, scoreJa: "9.0秒・見間違い 1" });
+    expect(parasolRules.rate?.(all(4600, stall("far_1"), stall("far_2")), middle)).toEqual({ stars: 1, scoreJa: "4.6秒・見間違い 2" });
     expect(parasolRules.rate?.(all(undefined), middle)).toEqual({ stars: 2 });
     expect(parasolRules.rate?.(record([ask, ask, ask]), middle)).toBeNull();
-    expect(parasolRules.rate?.(record([stall("near_3"), ask, child(1)]), middle)).toBeNull();
+    expect(parasolRules.rate?.(record([stall("near_3"), ask, child(PARASOL_TOMATO_CHILD)]), middle)).toBeNull();
     // One round: ★3 within one round's time.
     expect(parasolRules.rate?.({ actions: [stall("near_2")], lapse: null, endMs: 4000 }, { at: "left", rounds: 1 })?.stars).toBe(3);
     // Every outcome's ★ follows the outcome (the template checks rate does not throw).
@@ -151,6 +159,8 @@ describe("the parasol's street", () => {
       expect(parasolPosition(place, 12345)).toEqual({ x: place.x, y: place.y, sway: 0 });
     }
     for (const place of Object.values(PARASOL_CUSTOMER_FIELD)) expect(place.walk).toBeUndefined();
+    expect(Object.keys(PARASOL_CUSTOMER_FIELD)).toEqual([...PARASOL_CUSTOMERS]);
+    expect(Object.keys(PARASOL_CHILD_FIELD)).toEqual([...PARASOL_CHILDREN]);
     for (const place of Object.values(PARASOL_CHILD_FIELD)) expect(place.walk!.periodMs / 2).toBeGreaterThanOrEqual(8000);
     for (const place of Object.values(PARASOL_CHILD_FIELD)) expect(place.walk!.periodMs / 2).toBeLessThanOrEqual(10000);
   });
