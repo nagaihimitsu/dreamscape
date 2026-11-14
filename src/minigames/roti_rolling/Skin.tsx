@@ -125,7 +125,7 @@ export function rotiHarbansWord(game: RotiGame, seed: number, view: ShapeDragVie
   }
   // The twist and the climax, as each begins: the long pause, the quick pair, the hot tava.
   if (slot && (index === 0 || game.windows[index - 1].kind !== slot.kind)) {
-    if (slot.kind === "pause") return { key: `slot${index}`, word: "待て……今のうちに二回" };
+    if (slot.kind === "pause") return { key: `slot${index}`, word: "鉄板を見てくる。二回、押せ" };
     if (slot.kind === "quick") return { key: `slot${index}`, word: "速くするぞ" };
     if (slot.kind === "hot") return { key: `slot${index}`, word: "鉄板が熱い。急げ" };
   }
