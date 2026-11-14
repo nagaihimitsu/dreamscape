@@ -384,7 +384,7 @@ tests/journeys/<journeyId>/   # その旅行編だけの内容・経路・制作
 既存の入口を保ちながら、次の単位で処理を分担する。
 
 - 画面（`src/app/`・`src/components/`・`src/features/`）は表示・操作と、保存した後の状態の反映だけを持つ。APや関係の値の計算はしない。
-- `src/domain/battle.ts`：採点・問いの順・結果・成績、資料の選択・追及・組み合わせ。クイズを終えたときに共通の章の進行を呼ぶ。`src/domain/tourism.ts`：案内・訪問・発見・クイズとの行き来。案内を読み終えたときに共通の報酬の処理へ知らせる。`src/domain/chapter.ts`：エピソードと特殊戦が開く条件、エピソードと都市の完了の記録、自由時間。デートの開く条件（`when`・`until`）と道中交流の入場ルールの条件は、`src/domain/conditions.ts` の `meets` がエピソードなどの記録から決める（何も保存しない）。`src/domain/epilogue.ts`：到着の会話とエピローグの開始・途中の保存・読了。`src/domain/rewards.ts`：一度かぎりのAP、上限を超えた残り、結果の画面の報酬の記録。`src/domain/travel.ts`・`travel-game.ts`：旅行の事前の計算と、現在地・時刻・支払いの状態の更新。
+- `src/domain/battle.ts`：採点・問いの順・結果・成績、資料の選択・追及・組み合わせ。`startBattle` は遊んだことのあるクイズも始められる（Debugと単体テストが使う。地図は終えた出来事を `isTravelEventVisible` で隠すので、遊ぶ人は遊び直せない。報酬は二重に当てない。[観光・クイズ](04_BATTLE_TOURISM.md#バトル)）。クイズを終えたときに共通の章の進行を呼ぶ。`src/domain/tourism.ts`：案内・訪問・発見・クイズとの行き来。案内を読み終えたときに共通の報酬の処理へ知らせる。`src/domain/chapter.ts`：エピソードと特殊戦が開く条件、エピソードと都市の完了の記録、自由時間。デートの開く条件（`when`・`until`）と道中交流の入場ルールの条件は、`src/domain/conditions.ts` の `meets` がエピソードなどの記録から決める（何も保存しない）。`src/domain/epilogue.ts`：到着の会話とエピローグの開始・途中の保存・読了。`src/domain/rewards.ts`：一度かぎりのAP、上限を超えた残り、結果の画面の報酬の記録。`src/domain/travel.ts`・`travel-game.ts`：旅行の事前の計算と、現在地・時刻・支払いの状態の更新。
 - `src/features/tourism/viewport.ts`：観察の画像の座標・拡大・動かせる範囲の計算。
 - 都市のデータは登録したカタログから読み、観光・バトル・デート・背景は今の都市に絞って参照する（都市の追加と所属の検証は[都市の追加手順](../authoring/FUTURE_CITIES.md)）。
 - `src/story/`：inkjs の公式の `Continue`・`currentChoices`・`ChooseChoiceIndex` と状態のJSONを包むアダプタ。
