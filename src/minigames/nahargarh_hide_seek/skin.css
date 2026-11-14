@@ -233,17 +233,27 @@
 .mg-nahargarh-hide-seek-fade-left > .mg-nahargarh-hide-seek-giggle { left: 8px; transform: none; animation-name: mg-nahargarh-hide-seek-giggle-edge; }
 .mg-nahargarh-hide-seek-fade-right > .mg-nahargarh-hide-seek-giggle { left: auto; right: 8px; transform: none; animation-name: mg-nahargarh-hide-seek-giggle-edge; }
 @keyframes mg-nahargarh-hide-seek-giggle-edge { 0% { opacity: 0; } 15%, 75% { opacity: 1; } 100% { opacity: 0; } }
-/* The corridor goes on: the edges darken where it scrolls on, with a chevron on the right. */
+/* A call's giggle at the edge (her door out of view): larger, under the chevron (clear of the doors' echoes at their tops),
+   which pulses once on her side. */
+.mg-nahargarh-hide-seek-fade > .mg-nahargarh-hide-seek-giggle[data-echo] { top: calc(50% + 24px); font-size: 19px; }
+.mg-nahargarh-hide-seek[data-echo-side="left"] .mg-nahargarh-hide-seek-fade-left > .mg-nahargarh-hide-seek-chevron,
+.mg-nahargarh-hide-seek[data-echo-side="right"] .mg-nahargarh-hide-seek-fade-right > .mg-nahargarh-hide-seek-chevron {
+  opacity: 1;
+  animation: mg-nahargarh-hide-seek-pulse 300ms ease-out;
+}
+@keyframes mg-nahargarh-hide-seek-pulse { 50% { transform: scale(1.3); } }
+/* The corridor goes on: the edges darken where it scrolls on, with a chevron. */
 .mg-nahargarh-hide-seek-fade { position: absolute; top: 0; bottom: 0; display: flex; align-items: center; width: 30px; pointer-events: none; }
 .mg-nahargarh-hide-seek-fade::before { position: absolute; inset: 0; content: ""; opacity: 0; transition: opacity 200ms; }
 .mg-nahargarh-hide-seek-fade-left { left: 0; }
 .mg-nahargarh-hide-seek-fade-left::before { background: linear-gradient(to right, rgba(40, 30, 20, 0.5), transparent); }
 .mg-nahargarh-hide-seek-fade-right { right: 0; justify-content: flex-end; }
 .mg-nahargarh-hide-seek-fade-right::before { background: linear-gradient(to left, rgba(40, 30, 20, 0.5), transparent); }
-.mg-nahargarh-hide-seek-chevron { position: relative; padding-right: 4px; color: var(--ds-on-slate); font-size: 30px; line-height: 1; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); opacity: 0; transition: opacity 200ms; }
+.mg-nahargarh-hide-seek-chevron { position: relative; padding: 0 4px; color: var(--ds-on-slate); font-size: 30px; line-height: 1; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); opacity: 0; transition: opacity 200ms; }
 .mg-nahargarh-hide-seek[data-more-left] .mg-nahargarh-hide-seek-fade-left::before,
 .mg-nahargarh-hide-seek[data-more-right] .mg-nahargarh-hide-seek-fade-right::before,
-.mg-nahargarh-hide-seek[data-more-right] .mg-nahargarh-hide-seek-chevron { opacity: 1; }
+.mg-nahargarh-hide-seek[data-more-left] .mg-nahargarh-hide-seek-fade-left > .mg-nahargarh-hide-seek-chevron,
+.mg-nahargarh-hide-seek[data-more-right] .mg-nahargarh-hide-seek-fade-right > .mg-nahargarh-hide-seek-chevron { opacity: 1; }
 /* Doing nothing: she leans out from behind the corridor's corner, at the right edge. */
 .mg-nahargarh-hide-seek-peek { position: absolute; z-index: 2; inset: 0; pointer-events: none; }
 /* Most of her stays behind the corner: leaning, her head and a shoulder come out past its edge. */

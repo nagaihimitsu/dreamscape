@@ -747,6 +747,14 @@
       "fromJa": "footstep00〜06 を並べた"
     },
     {
+      "id": "footstep",
+      "useJa": "一歩の足音（ミニゲーム）",
+      "sources": [
+        "kenney_rpg"
+      ],
+      "fromJa": "footstep00 の一歩（travel_walk の頭の0.23秒を切り出した）"
+    },
+    {
       "id": "scissors_snip",
       "useJa": "はさみで切る",
       "sources": [

@@ -1,17 +1,18 @@
 import type { MiniGameRating, MiniGameRules } from "../contract";
 import { cueTapEnd, cueTapMoment, cueTapOutcome, cueTapRules, type CueTapRecord, type CueTapTuning } from "../engines/cue_tap/engine";
+import type { CRICKET_LET_GO } from "./definition";
 
 // The cricket's rules (docs/13 2.4): a cue_tap skin. One ball, one tap: the swing's time against the ball's arrival at the
 // bat. Nothing is random (the taped ball's wobble on screen is drawn the same every time and changes nothing). Pure.
 
 export type CricketOutcome = "six" | "over_wall" | "edge" | "bowled" | "no_swing";
-/** The cricket has no keys of its own. */
-export type CricketParams = object;
+/** The tag's keys: where a ball the batter lets go goes (definition.ts CRICKET_LET_GO; the picture, and which late swings count). */
+export type CricketParams = { letgo?: (typeof CRICKET_LET_GO)[number] };
 
 /** The field's own moments: her stance before the run-up, the run-up, the bounce (part of the flight) and the bricks behind the bat. */
 export const CRICKET_FIELD = {
-  /** Before her run-up: the player sees the pitch, the meter and the button. */
-  settleMs: 600,
+  /** Before her run-up (after the host's 3・2・1, during which the player already sees the pitch, the meter and the button). */
+  settleMs: 200,
   /** Her short run-up, to the ball leaving her hand. */
   runUpMs: 1100,
   /** The ball's one bounce, at this part of its flight. */
@@ -58,12 +59,25 @@ export function cricketRating(record: CueTapRecord, tuning: CueTapTuning = CRICK
   };
 }
 
+/**
+ * A swing after a ball let go onto the plank (`letgo plank`) has met it: the ball has knocked against the still plank and
+ * rolls off to her feet, so the swing is at nothing and the ball was let go all the same (the story's 「板きれは、また
+ * 動かなかった」). Only a late swing past the near window: earlier ones meet the ball as on any ball.
+ */
+function swungAfterPlank(record: CueTapRecord, params: CricketParams, tuning: CueTapTuning): boolean {
+  return params.letgo === "plank" && record !== null && cueTapOutcome(record, tuning) === "miss" && record > cueTapMoment(tuning);
+}
+
 /** The cricket's rules with a tuning (the story's, or Debug's room's edited one). */
 export function cricketRulesFor(tuning: CueTapTuning): MiniGameRules<CricketParams, CricketOutcome, CueTapRecord> {
   // Clean: straight back. A little early: pulled over the side. A little late: off the edge. Far off: bowled. No swing (a
   // swing during her run-up, before the ball leaves her hand, does not count: the batter can still swing at it).
   const rules = cueTapRules<CricketParams, CricketOutcome>(tuning, { clean: "six", early: "over_wall", late: "edge", miss: "bowled", none: "no_swing" });
-  return { ...rules, rate: (record) => cricketRating(record, tuning) };
+  return {
+    ...rules,
+    outcomeOf: (record, params) => (swungAfterPlank(record, params, tuning) ? "no_swing" : rules.outcomeOf(record, params)),
+    rate: (record, params) => (swungAfterPlank(record, params, tuning) ? null : cricketRating(record, tuning)),
+  };
 }
 
 export const cricketRules = cricketRulesFor(CRICKET_TUNING);

@@ -6,7 +6,8 @@ import {
 // The golgappa duel's rules (docs/13 2.4): a rhythm_tap skin. The player's golgappa are the beats; she gets hers between
 // them (the field draws them) and raises her hand after her 14th. Two left in the bowl end the play (a choke), and so
 // does mashing: a bite at nothing (a stray) fills the choke gauge, a golgappa eaten empties a drop, and a full gauge
-// leaves one in the bowl. After her 14th the vendor goes faster and the windows narrow: going on past her is a risk.
+// leaves one in the bowl. After her 14th the vendor goes faster still and no longer waits: the windows narrow, and one
+// golgappa missed there (or a full gauge) is a choke (the next lands on it): going on past her is a real risk.
 // The player's 「バス」 against her hand decides the rest. Nothing is random. Pure. Every number to tune is in
 // GOLGAPPA_NUMBERS (E1; Debug's room edits them: play.ts retune).
 
@@ -21,22 +22,28 @@ export const GOLGAPPA_TOGETHER_AFTER = 1;
 
 /**
  * The duel's numbers (ms unless named otherwise). The player's golgappa: the first after the vendor's reach, 1.2 s apart,
- * faster evenly to 0.6 s by the 14th; then the peak after her hand goes up, 0.48, 0.42 and 0.42 s apart with a narrower
- * late window; 17 in all (about 15 s). Generous windows: a golgappa can be eaten as it lands and a while after (ぴったり
- * within −60/+90). A missed one stays in the bowl; a full choke gauge (three bites at nothing, less the golgappa eaten
- * since) leaves one too; the second one there ends the play. 「同時」 from 0.15 s before her hand. A golgappa falls for
- * 280 ms (less than half the shortest gap: one falls at a time); she eats hers in 250 ms.
+ * faster evenly to 0.6 s by the 14th; then the peak after her hand goes up, 0.46, 0.40 and 0.36 s apart with narrower
+ * windows (−110/+200: the late side stays wide for a phone's lag, the early side narrows for a thumb that runs ahead of
+ * the speed-up); 17 in all (about 15 s). Generous windows before it: a golgappa can be eaten as it lands and a while after
+ * (ぴったり within −60/+90). A missed one stays in the bowl; a full choke gauge (three bites at nothing, less the golgappa
+ * eaten since) leaves one too; the second one there ends the play, and in the peak the first does (peakMissLimit: the
+ * vendor no longer waits, the next lands on it). With her hand the player is safe; eating on past her, a steady thumb
+ * still gets through (about 84% of casual players in the round-2 simulation, half of first tries). 「同時」 from 0.15 s
+ * before her hand. A golgappa falls for 280 ms (less than the shortest time between two drops: one falls at a time); she
+ * eats hers in 250 ms.
  */
 export const GOLGAPPA_NUMBERS = {
   firstMs: 1400,
   firstGapMs: 1200,
   herStopGapMs: 600,
-  peakGap1Ms: 480,
-  peakGap2Ms: 420,
-  peakGap3Ms: 420,
+  peakGap1Ms: 460,
+  peakGap2Ms: 400,
+  peakGap3Ms: 360,
   earlyMs: 150,
   lateMs: 300,
+  peakEarlyMs: 110,
   peakLateMs: 200,
+  peakMissLimit: 1,
   perfectEarlyMs: 60,
   perfectLateMs: 90,
   endAfterMs: 700,
@@ -88,7 +95,7 @@ export function golgappaGame(numbers: GolgappaNumbers = GOLGAPPA_NUMBERS): Golga
     ),
     earlyMs: numbers.earlyMs,
     lateMs: numbers.lateMs,
-    peak: { from: GOLGAPPA_HER_STOP, earlyMs: numbers.earlyMs, lateMs: numbers.peakLateMs },
+    peak: { from: GOLGAPPA_HER_STOP, earlyMs: numbers.peakEarlyMs, lateMs: numbers.peakLateMs, missLimit: numbers.peakMissLimit },
     perfect: { earlyMs: numbers.perfectEarlyMs, lateMs: numbers.perfectLateMs },
     endAfterMs: numbers.endAfterMs,
     missLimit: numbers.missLimit,

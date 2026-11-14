@@ -70,6 +70,14 @@ describe("the catch's field", () => {
     expect(monkeyCatchSkin.hintJa).toBe(monkeyCatch.hintJa);
   });
 
+  it("shows only her face when it gets away (the bottle breaks; the story's next line tells the slip), a short cry at a catch", () => {
+    const reaction = (id: string) => monkeyCatch.outcomes.find((outcome) => outcome.id === id)?.reaction;
+    expect(reaction("fumbled")).toEqual({ kind: "oops" });
+    expect(reaction("missed")).toEqual({ kind: "oops" });
+    for (const line of reaction("caught")?.linesJa ?? []) expect(line).not.toContain("……");
+    expect(monkeyCatch.sounds).toContain("bat_hit");
+  });
+
   it("puts the use's pictures in its declared slots", () => {
     expect(monkeyCatch.artSlots.map((slot) => [slot.id, slot.kind])).toEqual([["wall", "backdrop"], ["monkey", "sprite"]]);
     const html = field({ wall: "/assets/minigames/wall.webp", monkey: "/assets/minigames/monkey.webp" });

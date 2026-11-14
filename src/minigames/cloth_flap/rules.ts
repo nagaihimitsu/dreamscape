@@ -13,7 +13,7 @@ export type ClothFlapParams = object;
 export const CLOTH_FIELD = {
   /** She stands at the top of the flight: the player sees the stairs, the steps' marks and the button. */
   settleMs: 900,
-  /** One step down: she stands on a step, then steps down to the next (the shared footsteps sound keeps about this pace). */
+  /** One step down: she stands on a step, then steps down to the next (a footstep rings as her foot lands on each). */
   stepMs: 440,
   /** Steps from the top to the one in front of the niche (the gold one). */
   stepsToNiche: 5,

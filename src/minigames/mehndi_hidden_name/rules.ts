@@ -3,9 +3,10 @@ import { searchRules, type SearchGame, type SearchSetup } from "../engines/searc
 // The hidden name's rules (docs/13 2.4): a search skin. Her palm has a few places the eye stops at (MEHNDI_SPOTS); one of
 // them hides what was written there (the tag's `target`, chosen by the Jal Mahal date's flags through cond()). Pointing at
 // it first is found. Pointing at another is a wrong spot: she says it is only a petal, and the look goes on; finding the
-// writing after that is still `wrong_spot` (the story then remembers the wrong point), and a third wrong point ends the
-// look as `wrong_spot` too (she shows where it is). 「明日にする」 is later. There is no time limit and no idle limit (user
-// decision 2026-11-13: the player looks as long as they like, and 「逃げたね」 follows only their own 「明日にする」).
+// writing after that is still `wrong_spot` (the story then remembers the wrong point). Wrong points never end the look
+// (2026-11-14 playtest: the story says the player found it): from the third on she only hints the area (the field's), and
+// the find is always the player's. 「明日にする」 is later. There is no time limit and no idle limit (user decision
+// 2026-11-13: the player looks as long as they like, and 「逃げたね」 follows only their own 「明日にする」).
 // Nothing is random. Pure.
 
 export type MehndiOutcome = "found" | "wrong_spot" | "later";
@@ -25,19 +26,18 @@ export const MEHNDI_TEXTS: readonly MehndiText[] = ["player", "illegible", "farh
 /** The hidden name's numbers (E1; Debug's room may change them for its next play). */
 export type MehndiTuning = {
   /**
-   * The wrong point that ends the look (2026-11-13 playtest: a first tap to light a flower ended it at once, while the
-   * story said 「もっとちゃんと見て」): two wrong points are looks with her word, the third ends it.
+   * The wrong point from which she hints the area instead of naming the pattern (looks only: the field's; wrong points
+   * never end the look): two wrong points get her word, the third and after her 「このへん、かな」 and a ring.
    */
-  wrongLimit: number;
+  hintAfter: number;
 };
-export const MEHNDI_TUNING: MehndiTuning = { wrongLimit: 3 };
-export const MEHNDI_WRONG_LIMIT = MEHNDI_TUNING.wrongLimit;
-export const mehndiSetupFor = (tuning: MehndiTuning) => (params: MehndiParams): SearchSetup => ({
+export const MEHNDI_TUNING: MehndiTuning = { hintAfter: 3 };
+export const mehndiSetupFor = (_tuning: MehndiTuning) => (params: MehndiParams): SearchSetup => ({
   rounds: [{ spots: MEHNDI_SPOTS.length, targets: [MEHNDI_SPOTS.indexOf(params.target)] }],
-  // Pointing is saying 「ここ」: she answers a wrong place, and the last one ends the look (never more than there are).
-  wrongLimit: Math.min(MEHNDI_SPOTS.length - 1, Math.max(1, Math.round(tuning.wrongLimit))),
-    buttons: [{ id: "later", presses: 1, ends: "play" }],
-  // Only finding the place, the third wrong place or 「明日にする」 ends the look (2026-11-13).
+  // Pointing is saying 「ここ」: she answers a wrong place, and the look goes on.
+  wrongLimit: null,
+  buttons: [{ id: "later", presses: 1, ends: "play" }],
+  // Only finding the place or 「明日にする」 ends the look (2026-11-13, 2026-11-14).
   timeLimitMs: null,
   idleMs: null,
   idleEnds: "play",
@@ -50,6 +50,7 @@ export const mehndiGameFor = (tuning: MehndiTuning): SearchGame<MehndiParams, Me
     switch (ending.kind) {
       // Found first time; after a wrong point, the story remembers it (wrong_spot, in the past tense).
       case "found": return ending.misses === 0 ? "found" : "wrong_spot";
+      // No wrong limit: never sent; were there one, the wrong points are what the story remembers.
       case "wrong": return "wrong_spot";
       // 「明日にする」. A lapse never ends this play (no time or idle limit); a record that stops with nothing reads as later.
       // There is one round, nothing to be helped through; were there, the writing was shown, as after wrong points.

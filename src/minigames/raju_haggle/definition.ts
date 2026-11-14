@@ -16,8 +16,8 @@ import { defineMiniGame } from "../contract";
  * name says the price) and 「やめておく」 (48px, left) sit at the bottom in thumb reach, Tab between them and Enter or Space
  * presses. The top band reads out the price on show and his patience (「いまの値段 ₹40　がまん 3/5」). The price list shows
  * the price on show by size, a frame and a mark (not colour alone), the passed ones struck out; his patience is filled
- * and hollow dots with his face. With less motion he does not bob or flinch and the stamp does not pop. The host reads out
- * the outcome.
+ * and hollow dots with his face. With less motion he does not bob or flinch, his giving up takes him off at once, and the
+ * stamp does not pop. The host reads out the outcome.
  */
 export const rajuHaggle = defineMiniGame({
   id: "raju_haggle",
@@ -48,7 +48,7 @@ export const rajuHaggle = defineMiniGame({
   music: "scene",
   timed: true,
   keysJa: "Tab で選び、Enter・Space で押す（最初は「じっと見る」）",
-  sounds: ["ui_page", "stamp", "ui_tap"],
+  sounds: ["ui_page", "stamp", "ui_tap", "snatch"],
   quietScene: false,
   art: [],
   artSlots: [

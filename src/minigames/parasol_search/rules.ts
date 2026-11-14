@@ -4,11 +4,12 @@ import { searchEnding, searchRules, type SearchGame, type SearchRecord, type Sea
 // The parasol's rules (docs/13 2.4): a search skin of three rounds, the three things the heroine later tells the vegetable
 // seller she saw from the window (2026-11-13 playtest: the game now looks at what the story reports). Round 1, her old
 // parasol among the street's umbrellas (the tag's `at`: one of the near pavement's stalls); round 2, the customer arguing
-// with her over the price; round 3, the child she gave a tomato to. A wrong one is only looked at (the round goes on);
-// 「どこ？」 or doing nothing for a while has her point it out, and the next round comes. Outcomes: every round found by the
-// player with at most one wrong look in all (`found`), with more (`found_slow`), or any round pointed out (`pointed`).
-// The rating (★, the result card only) adds the time. The tag's `rounds` may play fewer (the practice: the parasol only).
-// Nothing is random. Pure.
+// with her over the price, among six others (two of them with their arms up too); round 3, the child she gave a tomato
+// to, among four others (one with a red ball, one with a red flower). A wrong one is only looked at (the round goes on);
+// 「どこ？」 or doing nothing for a while has her point it out, and the next round comes (sooner after a round the player
+// left to her). Outcomes: every round found by the player with at most one wrong look in all (`found`), with more
+// (`found_slow`), or any round pointed out (`pointed`). The rating (★, the result card only) adds the time. The tag's
+// `rounds` may play fewer (the practice: the parasol only). Nothing is random. Pure.
 
 export type ParasolOutcome = "found" | "found_slow" | "pointed";
 /** Where on the near pavement the old parasol is. */
@@ -26,10 +27,10 @@ export const PARASOL_SPOTS = [
 export type ParasolSpot = (typeof PARASOL_SPOTS)[number];
 /** The near pavement's stalls where the old parasol may be (the tag's `at`). */
 export const PARASOL_PLACES: Record<ParasolPlace, ParasolSpot> = { left: "near_2", middle: "near_3", right: "near_4" };
-/** Round 2's customers, in the field's order: each stands in front of a stall (two across the road, three on the near pavement). */
-export const PARASOL_CUSTOMERS = ["far_2", "far_4", "near_2", "near_3", "near_4"] as const satisfies readonly ParasolSpot[];
-/** Round 3's children walking by, in the field's order; one of them holds the tomato she gave. */
-export const PARASOL_CHILDREN = ["child_1", "child_2", "child_3"] as const;
+/** Round 2's customers, in the field's order: each stands in front of a stall (three across the road, four on the near pavement). */
+export const PARASOL_CUSTOMERS = ["far_2", "far_3", "far_4", "near_1", "near_2", "near_3", "near_4"] as const satisfies readonly ParasolSpot[];
+/** Round 3's children walking by, in the field's order (two across the road, three on the near side); one holds the tomato she gave. */
+export const PARASOL_CHILDREN = ["child_1", "child_2", "child_3", "child_4", "child_5"] as const;
 export const PARASOL_TOMATO_CHILD = 1;
 export const PARASOL_ROUNDS = 3;
 
@@ -37,12 +38,14 @@ export const PARASOL_ROUNDS = 3;
 export type ParasolTuning = {
   /** Doing nothing this long in a round: she points it out, and the next round comes. */
   idleMs: number;
+  /** After a round the player left to her (nothing looked at, doing nothing): the next rounds' wait before she points. */
+  idleAfterLeftMs: number;
   /** Every round found with at most this many wrong looks in all: found; more: found_slow. */
   quickMisses: number;
   /** ★3: no wrong look, and every round found within this long a round (about 15 s for the three). */
   starMsPerRound: number;
 };
-export const PARASOL_TUNING: ParasolTuning = { idleMs: 8000, quickMisses: 1, starMsPerRound: 5000 };
+export const PARASOL_TUNING: ParasolTuning = { idleMs: 8000, idleAfterLeftMs: 4000, quickMisses: 1, starMsPerRound: 5000 };
 export const PARASOL_QUICK_MISSES = PARASOL_TUNING.quickMisses;
 export const PARASOL_IDLE_MS = PARASOL_TUNING.idleMs;
 
@@ -68,6 +71,7 @@ export const parasolSetupFor = (tuning: ParasolTuning) => (params: ParasolParams
     buttons: [{ id: "ask", presses: 1, ends: "round" }],
     timeLimitMs: null,
     idleMs: Math.max(1, Math.round(tuning.idleMs)),
+    idleAfterLeftMs: Math.max(1, Math.round(tuning.idleAfterLeftMs)),
     idleEnds: "round",
   };
 };
@@ -101,13 +105,15 @@ export const parasolGame = parasolGameFor(PARASOL_TUNING);
 
 /**
  * How well the look went (the result card's ★ only; never saved, never Ink), in step with the outcome: found with no
- * wrong look and every round within its time ★3, found ★2, found_slow ★1, pointed out not rated. The score is the time.
+ * wrong look and every round within its time ★3, found ★2, found_slow ★1, pointed out not rated. The score is the time,
+ * and the wrong looks when there were any (what took a ★ off a quick find): 「4.6秒・見間違い 2」.
  */
 export function parasolRating(record: SearchRecord, params: ParasolParams, tuning: ParasolTuning = PARASOL_TUNING): MiniGameRating | null {
   const ending = searchEnding(record, parasolSetupFor(tuning)(params));
   if (ending.kind !== "found" || ending.helped > 0) return null;
   const endMs = typeof record?.endMs === "number" && Number.isFinite(record.endMs) ? record.endMs : null;
-  const scoreJa = endMs === null ? undefined : `${(endMs / 1000).toFixed(1)}秒で見つけた`;
+  const seconds = endMs === null ? null : `${(endMs / 1000).toFixed(1)}秒`;
+  const scoreJa = seconds === null ? undefined : ending.misses > 0 ? `${seconds}・見間違い ${ending.misses}` : `${seconds}で見つけた`;
   if (ending.misses > tuning.quickMisses) return { stars: 1, ...(scoreJa ? { scoreJa } : {}) };
   const quick = ending.misses === 0 && endMs !== null && endMs <= tuning.starMsPerRound * parasolRounds(params);
   return { stars: quick ? 3 : 2, ...(scoreJa ? { scoreJa } : {}) };

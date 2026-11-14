@@ -7,16 +7,35 @@
 .mg-raju-haggle-flinch > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
 .mg-raju-haggle-raju[data-figure="drawn"] .mg-raju-haggle-flinch { display: flex; align-items: center; justify-content: center; }
 .mg-raju-haggle-drawn-map { width: 86%; height: auto; transform: rotate(-6deg); filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35)); }
-/* His glad face bobs a little; unsure, he leans; sulky, he turns a little away; given up, he turns his back with the map. */
+/* His mood, big enough to read on a phone: glad, he bobs; unsure, he leans back; sulky, he leans further and edges away;
+   given up, he turns his back and walks off out of the field with his map (his one picture holds the map out with a grin,
+   which must not stay on show under 「もういい！」). */
 .mg-raju-haggle[data-mood="glad"] .mg-raju-haggle-raju { animation: mg-raju-haggle-bob 700ms ease-in-out infinite alternate; }
-.mg-raju-haggle[data-mood="unsure"] .mg-raju-haggle-raju { transform: rotate(-2deg); transition: transform 200ms ease-out; }
-.mg-raju-haggle[data-mood="sulky"] .mg-raju-haggle-raju { transform: rotate(-2deg) translateX(-2%); transition: transform 200ms ease-out; }
-.mg-raju-haggle[data-away] .mg-raju-haggle-raju { transform: scaleX(-1) translateX(4%); transition: transform 240ms ease-out; }
-@keyframes mg-raju-haggle-bob { from { transform: translateY(0); } to { transform: translateY(-1.5%); } }
-/* A stare: he flinches back a little. */
+.mg-raju-haggle[data-mood="unsure"] .mg-raju-haggle-raju { transform: rotate(-5deg); transition: transform 200ms ease-out; }
+.mg-raju-haggle[data-mood="sulky"] .mg-raju-haggle-raju { transform: translateX(-4%) rotate(-8deg); transition: transform 200ms ease-out; }
+.mg-raju-haggle[data-away] .mg-raju-haggle-raju { animation: mg-raju-haggle-off 650ms ease-in both; }
+@keyframes mg-raju-haggle-off {
+  0% { transform: scaleX(-1); }
+  25% { transform: translate(-6%, -2%) scaleX(-1); opacity: 1; }
+  100% { transform: translateX(-110%) scaleX(-1); opacity: 0; }
+}
+@keyframes mg-raju-haggle-bob { from { transform: translateY(0); } to { transform: translateY(-4%); } }
+/* A stare: he flinches back. */
 .mg-raju-haggle-flinch[data-stared] { animation: mg-raju-haggle-flinch 220ms ease-out; }
-@keyframes mg-raju-haggle-flinch { 30% { transform: translate(-2%, 1%) scale(0.98, 1.02); } }
-.mg-raju-haggle[data-still] .mg-raju-haggle-raju { animation: none; }
+@keyframes mg-raju-haggle-flinch { 35% { transform: translate(-5%, 2%) scale(0.95, 1.05); } }
+/* Less motion: his moods are still states, at once (given up, he is gone at once); no bob, no flinch. */
+.mg-raju-haggle[data-still] .mg-raju-haggle-raju { animation: none; transition: none; }
+.mg-raju-haggle[data-still][data-away] .mg-raju-haggle-raju { opacity: 0; }
+.mg-raju-haggle[data-still] .mg-raju-haggle-flinch { animation: none; }
+
+/* Her word at his last dot (the host's reaction, which sits under the band, where his bubble is): low on the left, just
+   over the hint above the buttons (on his legs), so his bubble, his face and the paper stay readable at the climax. The
+   offset is the engine's controls (engine.css: padding, two lines of hint, the 64px or 56px buttons). On a field too
+   short for his picture the skin does not call it. */
+.minigame-layer[data-game="raju_haggle"] > .minigame-react { top: auto; bottom: calc(140px + env(safe-area-inset-bottom, 0px)); }
+@media (max-height: 620px) {
+  .minigame-layer[data-game="raju_haggle"] > .minigame-react { bottom: calc(128px + env(safe-area-inset-bottom, 0px)); }
+}
 
 /* His words: a speech bubble over him, its tail down to his head; his face and his patience in it. */
 .mg-raju-haggle-bubble {

@@ -14,8 +14,9 @@ import "./skin.css";
 //
 // Her walk is the judgement drawn: she stands on each step from cleanEarlyMs before its beat to cleanLateMs after it,
 // and steps down to the next in between. So a perfect flap always finds her standing on the gold step, an early one on
-// her way down to it (or further up), a late one stepping off it (or further down). In place of the meter, the gauge
-// counts her steps: one mark lights as her foot lands on each, the last one gold, lit exactly while a flap is perfect.
+// her way down to it (or further up), a late one stepping off it (or further down: she finishes that step, then turns).
+// In place of the meter, the gauge counts her steps: one mark lights and one footstep rings as her foot lands on each,
+// the last one gold, lit exactly while a flap is perfect.
 
 type Foot = { x: number; y: number };
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
@@ -108,7 +109,23 @@ function clothWalk(tuning: CueTapTuning) {
     while (landed < LAST_STEP && ms >= landingOf(landed + 1)) landed += 1;
     return landed;
   };
-  return { nicheMs: cueTapMoment(tuning), endMs: cueTapEnd(tuning), standAfter, beatOf, landingOf, walkerAt, stepsLanded };
+  /** When she next stands still at or after `ms`: at once when she is standing on a step, else as her foot lands on the next one. */
+  const standsAt = (ms: number): number => {
+    const sinceLeaving = ms - beatOf(0) - standAfter;
+    if (sinceLeaving <= 0) return ms;
+    const left = Math.floor(sinceLeaving / stepMs);
+    if (left >= LAST_STEP) return ms;
+    const into = sinceLeaving - left * stepMs;
+    return into >= moveMs ? ms : ms + moveMs - into;
+  };
+  /**
+   * When she stops walking: as the cloth spreads in front of her or as she sees it coming (she freezes there); a late flap
+   * catches her stepping off the gold step, and she finishes that step before she turns (the story's 「もうくぼみの前の段
+   * を離れていた」); without a flap, never (she walks on down to her last step).
+   */
+  const stopsAt = (outcome: ClothFlapOutcome | null, tapMs: number | null): number =>
+    tapMs === null ? Number.POSITIVE_INFINITY : outcome === "late" ? standsAt(tapMs) : tapMs;
+  return { nicheMs: cueTapMoment(tuning), endMs: cueTapEnd(tuning), standAfter, beatOf, landingOf, walkerAt, stepsLanded, standsAt, stopsAt };
 }
 type ClothWalk = ReturnType<typeof clothWalk>;
 
@@ -117,25 +134,27 @@ const PIGEON_AFTER_MS = 450;
 const PIGEON_FLIGHT_MS = 650;
 /** Where the pigeon is along its flight (0 to 1) at part `t` of it; with less motion, two still places (no glide). */
 const pigeonAlong = (t: number, still: boolean) => (still ? (t < 0.5 ? 0.15 : 0.85) : clamp01(t));
+/** The sounds of a play (definition `sounds`): one footstep a landing (its footfall 10 ms in), the cloth, the pigeon. */
+const SOUNDS = { step: "footstep", cloth: "cloth_flap", pigeon: "pigeon_flutter" } as const;
 /**
- * The footsteps sound (four footfalls about a step apart, the first 20 ms in) rings as her foot lands on the first step
- * and again on the gold one: the player can count four, and the next is it.
+ * A footstep as her foot lands on step k: the player counts four, and the fifth (the gold step) rings a little higher and
+ * louder; the steps on down past the niche fade as she walks away. None once she stops.
  */
-const footstepsAt = (walk: ClothWalk) => [walk.landingOf(1) - 20, walk.landingOf(CLOTH_FIELD.stepsToNiche) - 20];
-/** The sounds of a play (definition `sounds`). */
-const SOUNDS = { steps: "travel_walk", cloth: "cloth_flap", pigeon: "pigeon_flutter" } as const;
+const footstepLevel = (k: number): { volume: number; rate?: number } =>
+  k === CLOTH_FIELD.stepsToNiche ? { volume: 1, rate: 1.15 } : k < CLOTH_FIELD.stepsToNiche ? { volume: 0.75 } : { volume: 0.55 };
 
 type Pose = "scream" | "laugh" | "peek";
 /**
  * Her reaction once the play is decided: what her figure does and the mark over her head, from when. The first is the
  * moment the field shows the outcome (the play ends there, the host's finish over it).
  */
-function reactionOf(outcome: ClothFlapOutcome, tapMs: number | null, endMs: number): { at: number; react: Pose; turned: boolean; then?: { at: number; react: "scream" } } {
+function reactionOf(outcome: ClothFlapOutcome, tapMs: number | null, walk: ClothWalk): { at: number; react: Pose; turned: boolean; then?: { at: number; react: "scream" } } {
   switch (outcome) {
     case "perfect": return { at: (tapMs ?? 0) + 120, react: "scream", turned: false };
     case "early": return { at: (tapMs ?? 0) + 120, react: "laugh", turned: false, then: { at: (tapMs ?? 0) + PIGEON_AFTER_MS + 120, react: "scream" } };
-    case "late": return { at: (tapMs ?? 0) + 160, react: "scream", turned: true };
-    case "frozen": return { at: endMs, react: "peek", turned: true };
+    // Behind her back: she turns once her foot is down on the step past the niche.
+    case "late": return { at: Math.max((tapMs ?? 0) + 160, walk.stopsAt(outcome, tapMs) + 40), react: "scream", turned: true };
+    case "frozen": return { at: walk.endMs, react: "peek", turned: true };
   }
 }
 
@@ -224,7 +243,6 @@ function StepMarks({ landed }: { landed: number }) {
 /** The flap's skin with a tuning (the story's; Debug's room plays an edited one: play.ts retune). */
 export function clothFlapSkinFor(tuning: CueTapTuning): CueTapSkin<ClothFlapParams, ClothFlapOutcome> {
   const walk = clothWalk(tuning);
-  const footsteps = footstepsAt(walk);
 
   function ClothFlapField({ still, art, sound, vibrate, frames }: CueTapFieldProps<ClothFlapParams, ClothFlapOutcome>) {
     const walker = useRef<HTMLSpanElement>(null);
@@ -238,7 +256,6 @@ export function clothFlapSkinFor(tuning: CueTapTuning): CueTapSkin<ClothFlapPara
     const live = useRef({ sound, vibrate, kit });
     live.current = { sound, vibrate, kit };
     useEffect(() => {
-      let rung = 0;
       let spread = false;
       let flown = false;
       let struck = false;
@@ -246,11 +263,6 @@ export function clothFlapSkinFor(tuning: CueTapTuning): CueTapSkin<ClothFlapPara
       let lit = 0;
       return frames(({ ms, tapMs, outcome, impactAt }) => {
         const { juice } = live.current.kit;
-        // Her footsteps, while nothing has happened yet.
-        while (!outcome && rung < footsteps.length && ms >= footsteps[rung]) {
-          rung += 1;
-          live.current.sound(SOUNDS.steps);
-        }
         if (tapMs !== null && !spread) {
           spread = true;
           setOpen(true);
@@ -258,15 +270,17 @@ export function clothFlapSkinFor(tuning: CueTapTuning): CueTapSkin<ClothFlapPara
           live.current.vibrate("tap");
           juice.squash(cloth.current, "pop");
         }
-        // She walks until the cloth spreads (she stops where she is), or on down to her last step when it never does.
-        const at = tapMs !== null ? Math.min(ms, tapMs) : ms;
+        // She walks until the cloth spreads (she stops there, or a step on when it comes behind her back), or on down to
+        // her last step when it never does; each landing rings a footstep, none once she has stopped.
+        const at = Math.min(ms, walk.stopsAt(outcome, tapMs));
         const steps = walk.stepsLanded(at);
         if (steps !== lit) {
+          if (steps > lit) live.current.sound(SOUNDS.step, footstepLevel(steps));
           lit = steps;
           setLanded(steps);
         }
         const { foot, lift } = walk.walkerAt(at);
-        const reaction = outcome ? reactionOf(outcome, tapMs, walk.endMs) : null;
+        const reaction = outcome ? reactionOf(outcome, tapMs, walk) : null;
         const now = reaction?.then && ms >= reaction.then.at ? reaction.then.react : reaction && ms >= reaction.at ? reaction.react : null;
         if (now !== shown) {
           shown = now;
@@ -343,8 +357,8 @@ export function clothFlapSkinFor(tuning: CueTapTuning): CueTapSkin<ClothFlapPara
     useEffect(() => {
       let lit = -1;
       let gone = false;
-      return frames(({ ms, tapMs }) => {
-        const at = tapMs !== null ? Math.min(ms, tapMs) : ms;
+      return frames(({ ms, tapMs, outcome }) => {
+        const at = Math.min(ms, walk.stopsAt(outcome, tapMs));
         const steps = walk.stepsLanded(at);
         if (steps !== lit) {
           lit = steps;
@@ -377,10 +391,10 @@ export function clothFlapSkinFor(tuning: CueTapTuning): CueTapSkin<ClothFlapPara
     actionHintJa: "階段を下りてくる人の足音に合わせて、くぼみの前の金色の段に足が着くときに押します。",
     autoJa: "おまかせで広げています",
     // The play ends as she reacts (her scream, her laugh at the cloth, her peering back), the host's finish over it…
-    impactAt: ({ outcome, tapMs }) => reactionOf(outcome, tapMs, walk.endMs).at,
+    impactAt: ({ outcome, tapMs }) => reactionOf(outcome, tapMs, walk).at,
     // …and the field goes on to show the rest (after an early flap, the pigeon and her scream) before the result card.
     endAt: ({ outcome, tapMs }, still) => {
-      const reaction = reactionOf(outcome, tapMs, walk.endMs);
+      const reaction = reactionOf(outcome, tapMs, walk);
       const last = reaction.then?.at ?? reaction.at;
       return last + (still ? 500 : outcome === "early" ? 900 : 850);
     },
@@ -393,4 +407,8 @@ export function clothFlapSkinFor(tuning: CueTapTuning): CueTapSkin<ClothFlapPara
 export const clothFlapSkin = clothFlapSkinFor(CLOTH_TUNING);
 
 /** For the tests: where her foot is on a step, when it lands and leaves, and how many steps it has landed on (the story's tuning). */
-export const CLOTH_FIELD_POINTS = { footOn, NICHE, ...clothWalk(CLOTH_TUNING), pigeonAlong, reactionOf, clothWalk, LAST_STEP } as const;
+const STORY_WALK = clothWalk(CLOTH_TUNING);
+export const CLOTH_FIELD_POINTS = {
+  footOn, NICHE, ...STORY_WALK, pigeonAlong, footstepLevel, clothWalk, LAST_STEP,
+  reactionOf: (outcome: ClothFlapOutcome, tapMs: number | null) => reactionOf(outcome, tapMs, STORY_WALK),
+} as const;

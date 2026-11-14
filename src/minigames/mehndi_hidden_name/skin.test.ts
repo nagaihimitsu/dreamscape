@@ -39,18 +39,23 @@ describe("the hidden name's field", () => {
     expect(html).not.toMatch(/aria-label="[^"]*(文字|名前)/u);
   });
 
-  it("rings each wrong place pointed at while the look goes on, and the writing once found or shown", () => {
+  it("rings each wrong place pointed at while the look goes on, and the writing once the player found it", () => {
     const thumb: MehndiParams = { target: "thumb", text: "player" };
-    const looking = field(thumb, "Haruto", {}, { ...view, searched: [0, 2] });
-    expect(looking.match(/mg-mehndi-hidden-name-mark-ring" data-wrong="true"/gu)).toHaveLength(2);
+    const looking = field(thumb, "Haruto", {}, { ...view, searched: [0, 2, 5] });
+    expect(looking.match(/mg-mehndi-hidden-name-mark-ring" data-wrong="true"/gu)).toHaveLength(3);
     expect(looking).not.toContain("data-writing");
-    const shown = field(thumb, "Haruto", {}, { ...view, searched: [0, 2, 5], ending: { kind: "wrong", spot: 5, misses: 2, helped: 0 } });
-    expect(shown.match(/data-wrong="true"/gu)).toHaveLength(3);
-    expect(shown).toContain("data-writing");
-    expect(shown).toContain('data-ending="wrong"');
-    // One line for how to play, before and during the play.
+    const found = field(thumb, "Haruto", {}, { ...view, searched: [0, 2, 3], ending: { kind: "found", spot: 3, misses: 2, helped: 0 } });
+    expect(found.match(/data-wrong="true"/gu)).toHaveLength(2);
+    expect(found).toContain("data-writing");
+    // One line for how to play, before and during the play; no line under the label (she never shows the place).
     expect(mehndiSkin.hintJa).toBe(mehndiHiddenName.hintJa);
-    expect(mehndiSkin.detailJa?.({ kind: "wrong", spot: 5, misses: 2, helped: 0 })).toContain("3回目");
+    expect(mehndiSkin.detailJa).toBeUndefined();
+  });
+
+  it("breaks the central vine's line behind the writing hidden in it, in the lit pattern only", () => {
+    const vine = field({ target: "vine", text: "farhana" });
+    expect(vine.match(/mask="url\(#[^)]*vinegap\)"/gu)).toHaveLength(1);
+    expect(field({ target: "thumb", text: "farhana" })).not.toContain("vinegap");
   });
 
   it("puts the use's pictures in its declared slots", () => {
