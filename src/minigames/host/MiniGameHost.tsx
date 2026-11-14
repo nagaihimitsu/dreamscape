@@ -513,9 +513,12 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
           onPointerDown={onLayerPointer} onKeyDown={onLayerKey} onClick={(event) => event.stopPropagation()}>
           {tag.bg && environment.backdrop && <div className="minigame-backdrop mg-photo" aria-hidden="true">{environment.backdrop(tag.bg)}</div>}
           <header className="minigame-band">
-            <span className="minigame-band-title">{definition.titleJa}</span>
-            {run.practice && <span className="minigame-band-practice" data-testid="minigame-practice-label">練習</span>}
-            <span className="minigame-band-status" data-testid="minigame-status">{status}</span>
+            {/* The name, 「練習」 and the status wrap onto a second line where they do not fit beside 「中断する」 (320 px). */}
+            <span className="minigame-band-info">
+              <span className="minigame-band-title">{definition.titleJa}</span>
+              {run.practice && <span className="minigame-band-practice" data-testid="minigame-practice-label">練習</span>}
+              <span className="minigame-band-status" data-testid="minigame-status">{status}</span>
+            </span>
             {showQuit && <button type="button" className="minigame-quit" data-testid="minigame-quit" data-minigame-quit onClick={quit}>中断する</button>}
           </header>
           <div ref={stage} className="minigame-stage" onPointerDownCapture={dropBlocked} onPointerUpCapture={dropBlocked} onClickCapture={dropBlocked}
