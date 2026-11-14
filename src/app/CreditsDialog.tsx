@@ -175,7 +175,7 @@ export function CreditsList({ photos, sounds = [], music = [], ambience = [], vo
   </div>;
 }
 
-/** 「出典・権利の一覧」 (WP20b), opened from the title screen and from ⚙設定 → ゲームの設定. */
+/** 「出典・権利の一覧」 (WP20b), opened from the title screen and from ≡メニュー → ゲームの設定. */
 export function CreditsDialog({ onClose }: { onClose: () => void }) {
   const [photos] = useState(photoCredits);
   const [sounds] = useState(soundCredits);

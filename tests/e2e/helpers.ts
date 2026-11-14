@@ -824,7 +824,7 @@ async function act(page: Page, state: GameState, pick: Pick) {
   const encounter = state.activeEncounter;
   if (state.activeBattle?.phase === "question") return page.getByTestId(`answer-${pick(state)}`).click();
   // A line's # minigame: in any scene (docs/13 6.4) shows its start in place of the choices. Started, a tap on the play
-  // after the start's double-tap guard ends it: with ⚙設定's おまかせ on (a play-through test writes it in the presentation
+  // after the start's double-tap guard ends it: with ≡メニュー's おまかせ on (a play-through test writes it in the presentation
   // settings' key) it skips to the tag's auto outcome; otherwise the game's field takes the tap (the cricket swings) and
   // the play ends by itself. The outcome's choice is then taken, which the poll below sees saved.
   if (openMiniGame(state)) {

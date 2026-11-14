@@ -487,7 +487,7 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
         </div>
       )}
       {auto === null && (definition.keysJa === null
-        ? <p className="fine-print minigame-keys">キーボードでは遊べません。⚙設定の「ミニゲームをおまかせにする」で進められます。</p>
+        ? <p className="fine-print minigame-keys">キーボードでは遊べません。「メニュー」→「ゲームの設定」の「ミニゲームをおまかせにする」で進められます。</p>
         : <p className="fine-print minigame-keys">{definition.keysJa}</p>)}
       {refused && <p className="fine-print" role="alert">今はこの結果を選べません。</p>}
       {environment.debug && (

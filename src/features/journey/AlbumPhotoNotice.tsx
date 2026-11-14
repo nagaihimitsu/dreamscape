@@ -21,7 +21,7 @@ export const ALBUM_PLACE_HINT_JA = "メニューの「アルバム」で見ら�
  * 「写真の札」 (2026-11-12 user decision): a small card right under the header when a line's `# photo:` has just put a
  * photo in the album (GameApp: photoTaken on an action): the picture's small copy in a white frame, 「アルバムに入れました」
  * and its caption, and with the journey's first photo where the album is. It takes no taps and no focus (a tap on it
- * reaches the scene below), comes in, stays a few seconds and goes up toward ⚙設定 (album-photo-notice.css; still under
+ * reaches the scene below), comes in, stays a few seconds and goes up toward ≡メニュー (album-photo-notice.css; still under
  * reduced motion and 「演出を短縮する」). Its status region stays mounted through the story scene (GameApp), so screen
  * readers announce the words politely when they are put into it. No credit: the album shows only the author's art.
  */

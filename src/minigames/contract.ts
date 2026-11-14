@@ -284,7 +284,7 @@ export interface MiniGameDefinition<Params = unknown, Outcome extends string = s
   fieldCheers?: boolean;
   /** Played against time: a hidden page pauses it with 「続ける」. */
   timed: boolean;
-  /** How to play with keys; null: not by keys (the host says ⚙設定's おまかせ is there). */
+  /** How to play with keys; null: not by keys (the host says ≡メニュー's おまかせ is there). */
   keysJa: string | null;
   /** The shared sounds (content/presentation/sounds.json) its play rings. */
   sounds: readonly string[];

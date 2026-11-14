@@ -189,7 +189,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await ops.goTo(page, "p_duomo");
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   expect(await readSave(page)).toEqual(initial);
-  // A quick double tap on ⚙設定 → 「セーブ」 over the guide (AGENTS.md 選択肢の誤タップ防止): the panel
+  // A quick double tap on ≡メニュー → 「セーブ」 over the guide (AGENTS.md 選択肢の誤タップ防止): the panel
   // leaves from under the finger, and on a phone the guide's picture lies under セーブ's point, where a
   // tap reads the line on. The scene is saved, and the second tap reads nothing on: no tap reaches the
   // page for a moment after セーブ, as after a scene change. The page's clock is held, so the second tap

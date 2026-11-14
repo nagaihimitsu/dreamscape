@@ -125,8 +125,8 @@ export function writeDebugVoiceRate(storage: DebugModeStorage, rate: number): De
 }
 
 /**
- * The speed for Debug's control (⚙設定, 音と演出の見本): a change applies at once, also when the storage refuses it
- * (then `message` says it will not stay). `refresh` reads the stored value again (when ⚙設定 opens, as the switch).
+ * The speed for Debug's control (≡メニュー, 音と演出の見本): a change applies at once, also when the storage refuses it
+ * (then `message` says it will not stay). `refresh` reads the stored value again (when ≡メニュー opens, as the switch).
  */
 export function useDebugVoiceRate(storage: DebugModeStorage) {
   const [rate, setRate] = useState(() => readDebugVoiceRate(storage));

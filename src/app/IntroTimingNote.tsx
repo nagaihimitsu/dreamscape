@@ -1,6 +1,6 @@
 import { INTRO_MILESTONES, type IntroMilestone, type IntroTiming } from "./intro-timing";
 
-// 最初の3分の計測's words (2026-11-13; Debug mode only): loaded lazily by GameApp's ⚙設定 while Debug mode is on, so
+// 最初の3分の計測's words (2026-11-13; Debug mode only): loaded lazily by GameApp's ≡メニュー while Debug mode is on, so
 // none of it is in the files the title page loads (scripts/dist-guard.ts lazyDebugMarkers).
 
 const MILESTONE_JA: Readonly<Record<IntroMilestone, string>> = {
@@ -33,7 +33,7 @@ export function introTimingJa(timing: IntroTiming): string {
 }
 
 /**
- * The note in ⚙設定 → ゲームの設定 under 「Debugモード」 (Debug mode on): the measure since the last 「旅をはじめる」 in this
+ * The note in ≡メニュー → ゲームの設定 under 「Debugモード」 (Debug mode on): the measure since the last 「旅をはじめる」 in this
  * tab, or how to start one. Marked 「Debug」, as the relationship changes are; not a live region.
  */
 export default function IntroTimingNote({ timing }: { timing: IntroTiming | null }) {

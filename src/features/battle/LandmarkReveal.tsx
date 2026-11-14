@@ -10,7 +10,7 @@ const percent = (fraction: number) => `${fraction * 100}%`;
  * battle's landmark photo (the one behind the battle; the same file, already loaded) in a small frame at its own
  * proportions, slowly zooming toward the region while an outline around it fades in (battle.css; under reduced
  * motion the photo stays whole and the outline shows at once), the question's one-line caption when it has one,
- * and the photo's credit line as the clue book shows it (⚙設定's 「画像の出典」 opens the same photo's credits).
+ * and the photo's credit line as the clue book shows it (≡メニュー's 「画像の出典」 opens the same photo's credits).
  * Nothing in it takes a tap but the credit's links. A photo that cannot load leaves the reveal out.
  */
 export function LandmarkReveal({ asset, region, captionJa }: { asset: TourismAsset; region: ObservationRegion; captionJa?: string }) {

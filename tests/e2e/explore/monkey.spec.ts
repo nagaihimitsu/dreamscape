@@ -78,7 +78,7 @@ function choose(page: Page, roll: number) {
   return page.evaluate(({ roll, excludedLabels }) => {
     document.querySelectorAll("[data-monkey-target]").forEach((element) => element.removeAttribute("data-monkey-target"));
     const dialogs = [...document.querySelectorAll("dialog[open]")];
-    // Free time (its cards, 待機 and 休む included) is inside #main; the header (⚙設定) stays out.
+    // Free time (its cards, 待機 and 休む included) is inside #main; the header (≡メニュー) stays out.
     const roots = dialogs.length ? [dialogs[dialogs.length - 1]] : [document.getElementById("main")];
     const label = (element: Element) => (element.getAttribute("aria-label") ?? element.textContent ?? "").trim().replace(/\s+/gu, " ").slice(0, 60);
     const shown = (element: Element) => {

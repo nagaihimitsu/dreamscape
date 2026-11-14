@@ -1,5 +1,5 @@
 /*
- * Debug's 台詞の声の速さ (DebugVoiceRate.tsx): in ⚙設定 → ゲームの設定 after 「Debugモード」 and in Debug's 音と演出の見本.
+ * Debug's 台詞の声の速さ (DebugVoiceRate.tsx): in ≡メニュー → ゲームの設定 after 「Debugモード」 and in Debug's 音と演出の見本.
  * Loaded with it (never by the title page). The slider fills its 44 px row between its label and its value; the
  * reset is a secondary button of 48 px, as the Debug-mode section's. No thick left border (AGENTS.md).
  */

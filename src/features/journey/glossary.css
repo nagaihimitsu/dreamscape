@@ -127,7 +127,7 @@
   .glossary-term-close.secondary { grid-area: close; }
 }
 
-/* 「旅の図鑑」 in ⚙設定: the shared frame, how far it has come under its title, then a group per category (told apart
+/* 「旅の図鑑」 in ≡メニュー: the shared frame, how far it has come under its title, then a group per category (told apart
    by its heading) of small square cards, three or more to a row on a phone. */
 dialog.modal.glossary-modal {
   --modal-pad-top: 16px;

@@ -39,7 +39,7 @@ const STALL_GRACE_MS = 1500;
 const HANDOVER_DRIFT_S = 0.08;
 
 /**
- * ⚙設定's 「台詞の声を出す」 and 「声の大きさ」 (GameApp: useVoiceSettings), off until the settings are read; the rate
+ * ≡メニュー's 「台詞の声を出す」 and 「声の大きさ」 (GameApp: useVoiceSettings), off until the settings are read; the rate
  * (useVoiceRate: Debug's, 1 with Debug mode off).
  */
 const settings = { enabled: false, volume: 0.8, rate: 1 };
@@ -279,7 +279,7 @@ export function preloadVoice(voiceId: string): Promise<void> {
 }
 
 /**
- * Applies ⚙設定's 「台詞の声を出す」 (`enabled`) and 「声の大きさ」 (`volume`, 0 to 1) to every line's voice: off stops the
+ * Applies ≡メニュー's 「台詞の声を出す」 (`enabled`) and 「声の大きさ」 (`volume`, 0 to 1) to every line's voice: off stops the
  * voice playing (and nothing is fetched); a new volume applies to it at once. Called by GameApp.
  */
 export function useVoiceSettings(enabled: boolean, volume: number): void {

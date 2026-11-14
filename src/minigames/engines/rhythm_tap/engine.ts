@@ -18,7 +18,7 @@ import type { MiniGameRating, MiniGameRules } from "../../contract";
 // ear some tens of milliseconds after the clock's beat (more over Bluetooth), and a picture reaches the eye a frame or
 // two after it, so the window is generous and wider on the late side (rhythmTapFairness); the game is played by the
 // beats on screen (the lane's marks, the field), so it plays the same with the sound off. If a device turns out to need
-// an offset, it is a ⚙設定 item for later (docs/13 2.11). Pure: no clock, DOM or React (EnginePlay.tsx draws and times).
+// an offset, it is a ≡メニュー item for later (docs/13 2.11). Pure: no clock, DOM or React (EnginePlay.tsx draws and times).
 
 /** A play's record: the taps' times, and when the player pressed the stop button (null: never). */
 export type RhythmTapRecord = { taps: readonly number[]; stopMs: number | null };

@@ -2,7 +2,7 @@ import { debugGame, expect, ops, test, tier } from "./helpers";
 
 // 旅の図鑑 (2026-11-13 user decision) on the sample journey's fictional 三時パン: Debug opens the market's guide (lane 3,
 // docs/10「Debugを場面の起動台にする」), whose second line names the term (# term:). Its card shows over the scene the
-// first time; a tap anywhere closes it without reading on, and the focus comes back; 旅の図鑑 in ⚙設定 then has the term,
+// first time; a tap anywhere closes it without reading on, and the focus comes back; 旅の図鑑 in ≡メニュー then has the term,
 // with the dots that say it is new and its 「NEW」. The sample is built only into the sample tier's server
 // (playwright.sample.config.ts), so this runs there, through Debug as the @debug tier does. The recording rule (once a
 // save, not opened during 高速送り, the save's round trip) is src/domain/glossary.test.ts's.
@@ -45,7 +45,7 @@ test("旅の図鑑: a term's card over its first line closes without reading on,
   await expect(line).toHaveText(text!);
   await expect(line).toBeFocused();
 
-  // ⚙設定 and its 「旅の図鑑」 carry the dot of something new; 旅の図鑑 shows the term with 「NEW」 and 1 / 1.
+  // ≡メニュー and its 「旅の図鑑」 carry the dot of something new; 旅の図鑑 shows the term with 「NEW」 and 1 / 1.
   await expect(ops.settingsButton(page)).toHaveAccessibleName(/旅の図鑑に新しい項目あり/u);
   const panel = await ops.openMenu(page);
   await expect(panel.getByRole("button", { name: /^旅の図鑑\s*、新しい言葉あり$/u })).toBeVisible();

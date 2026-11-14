@@ -1,6 +1,6 @@
 import { GLOSSARY_CATEGORIES, GLOSSARY_CATEGORY_LABELS_JA, type GlossaryCategory, type ListedTerm } from "../../content/glossary";
 
-// 「旅の図鑑」 (⚙設定, 2026-11-13 user decision; GlossaryDialog): a journey's terms as a grid of cards by group, the ones
+// 「旅の図鑑」 (≡メニュー, 2026-11-13 user decision; GlossaryDialog): a journey's terms as a grid of cards by group, the ones
 // the save has met and the ones it has not, and how far it has come. Pure, so it is tested without a browser.
 
 /** One card of 旅の図鑑: its term, whether the save has met it, and whether it came since 旅の図鑑 was last opened. */

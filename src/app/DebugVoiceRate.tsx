@@ -2,7 +2,7 @@ import { useId, useRef } from "react";
 import { VOICE_RATE_DEFAULT, VOICE_RATE_MAX, VOICE_RATE_MIN, VOICE_RATE_STEP, voiceRateJa } from "../audio/voice-rate";
 import "./debug-voice-rate.css";
 
-// Debug's speed of the lines' voices (2026-11-13 user request; Debug mode only): loaded lazily by GameApp's ⚙設定 while
+// Debug's speed of the lines' voices (2026-11-13 user request; Debug mode only): loaded lazily by GameApp's ≡メニュー while
 // Debug mode is on, and shown in Debug's 音と演出の見本, so none of it is in the files the title page loads
 // (scripts/dist-guard.ts lazyDebugMarkers). The rule is src/audio/voice-rate.ts, the stored value src/app/debug-mode.ts.
 

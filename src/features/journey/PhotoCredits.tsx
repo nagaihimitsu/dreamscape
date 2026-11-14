@@ -12,7 +12,7 @@ import { getTravelDestinations } from "../../domain/travel-destinations";
 export type ShownPhoto = { key: string; labelJa: string; asset: TourismAsset; kind: "backdrop" | "card" };
 
 /**
- * Every photo free time shows now (⚙設定's 「写真の出典」 lists them): the city's backdrop photo and each place's photo.
+ * Every photo free time shows now (≡メニュー's 「写真の出典」 lists them): the city's backdrop photo and each place's photo.
  * A city's own-artwork backdrop (backdropImagePath) is not a photo and has no credit: getCityBackdrop never returns it,
  * like the credits list leaves out every artwork made for Dreamscape (OWN_ARTWORK_NOTE_JA).
  */

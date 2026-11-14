@@ -2,7 +2,7 @@ import { DEBUG_MODE_KEY } from "../../src/app/debug-mode";
 import { debugQueryString } from "../../src/dev/debug-query";
 import { allStorage, bothStorages, expect, expectNoDebugCode, ops, test, tier, type Page } from "./helpers";
 
-// User decision 2026-11-08: anyone can turn Debug mode on in ゲームの設定 (⚙設定) with the password 「adminmode」
+// User decision 2026-11-08: anyone can turn Debug mode on in ゲームの設定 (≡メニュー) with the password 「adminmode」
 // (not a secret: anyone may see it; it only prevents turning it on by accident). While it is on,
 // the production build opens Debug's 「場面の確認」, and choices show their relationship changes.
 // Production tier only (docs/10): the gate expression (`import.meta.env.DEV || readDebugMode(…)`) and the

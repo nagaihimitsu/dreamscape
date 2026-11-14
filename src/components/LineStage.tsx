@@ -10,7 +10,7 @@ import "./line-stage.css";
 /**
  * A line's `# recall:`: the album image of that ID (the author's illustration; src/content/album-images.ts), faint, over
  * the scene's picture and under the portraits and the window (it covers no face and no text). It has no credit, so it
- * adds nothing to ⚙設定's 「画像の出典」.
+ * adds nothing to ≡メニュー's 「画像の出典」.
  */
 export function RecallLayer({ imageId }: { imageId?: string }) {
   const image = imageId ? getAlbumImage(imageId) : undefined;

@@ -64,7 +64,7 @@
   font-size: 13px;
   line-height: 1.5;
 }
-/* The name of a header button (「⚙設定」) kept on one line. */
+/* The name of a header button (「≡メニュー」) kept on one line. */
 .photo-menu-note-word { white-space: nowrap; }
 
 /* The row's measures follow the stage's width (container units: the screen less its side gutters): three cards show

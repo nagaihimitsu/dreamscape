@@ -10,7 +10,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   // A name that looks like markup is shown as plain text (AGENTS.md: player input is text, never HTML).
   await ops.startJourney(page, "milano", ["<b>航</b>", "澪"]);
   const menu = page.getByTestId("travel-menu");
-  // The names head 旅の記録 (opened from ⚙設定).
+  // The names head 旅の記録 (opened from ≡メニュー).
   const records = await ops.openRecords(page);
   await expect(records.getByTestId("travelers")).toContainText("<b>航</b>");
   await expect(records.getByTestId("travelers").locator("b")).toHaveCount(0);
@@ -31,7 +31,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   const skip = page.getByTestId("tourism-skip");
   await expect(skip).toHaveText("案内をとばす（観察へ）");
   expect((await skip.boundingBox())!.y, "「案内をとばす」 above the window").toBeLessThan((await page.getByTestId("tourism-guide").boundingBox())!.y);
-  // Over the guide the header shows the place and time and ⚙設定; the budget and AP wait for a choice (user decision 2026-11-11).
+  // Over the guide the header shows the place and time and ≡メニュー; the budget and AP wait for a choice (user decision 2026-11-11).
   await expect(page.getByText("現在地：ドゥオモ広場")).toBeVisible();
   await expect(page.getByLabel("残り0AP")).toBeHidden();
   await expect(page.getByTestId("travel-transition")).toHaveCount(0);
@@ -91,9 +91,9 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
     "the second tap's point is over the guide").toBe(true);
   expect((await readSave(page)).revision).toBe(first.revision + 3);
   await expect(line).toHaveAttribute("data-ready", "false");
-  // ⚙設定's panel over the guide (UI redesign §3.1): while it is open the line is not written
+  // ≡メニュー's panel over the guide (UI redesign §3.1): while it is open the line is not written
   // on (the clock moves 2 s), and a tap on the picture only closes the panel (its layer takes
-  // the tap, outside the scene) and gives the focus back to ⚙設定; the line stays as it was.
+  // the tap, outside the scene) and gives the focus back to ≡メニュー; the line stays as it was.
   // That tap counts as a tap over something, so the tap on the line below is still its second.
   const unrevealed = () => line.locator(".unrevealed").evaluate((element) => element.textContent!.length);
   const left = await unrevealed();
@@ -116,7 +116,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await page.clock.resume();
   // The line now being written finishes by itself; later lines appear whole.
   await expect(line).toHaveAttribute("data-ready", "true");
-  // 自動送り (ゲームの設定) waits while ⚙設定's panel is open too (UI redesign §5.3). With the line
+  // 自動送り (ゲームの設定) waits while ≡メニュー's panel is open too (UI redesign §5.3). With the line
   // written in full and the clock held, the clock moves past the longest wait (7 s) with the panel
   // open: the story stays. Once the panel is closed the line reads on by itself. 自動送り is turned
   // off again for the rest of the journey.

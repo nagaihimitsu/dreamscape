@@ -54,7 +54,7 @@ import "./effects-room.css";
 // reads and writes no save, English notebook, presentation setting or Debug-mode key, and changes no game: its sound
 // settings live in its own memory (the game's defaults to start with), its sample header shows a state built in memory
 // by the scene builders and never saved. Everything it plays stops as it closes. Only Debug's speed of the voices is
-// this device's (src/app/debug-mode.ts, the same value as ⚙設定's Debug part), as the voices are auditioned here.
+// this device's (src/app/debug-mode.ts, the same value as ≡メニュー's Debug part), as the voices are auditioned here.
 
 const parsedLayers = audioLayersSchema.safeParse(audioLayersJson);
 const LAYERS = parsedLayers.success ? parsedLayers.data.layers : [];
@@ -105,7 +105,7 @@ const VIBRATIONS: readonly { kind: VibrationKind; labelJa: string }[] = [
 const STAGE_CITIES = getCities().filter((city) => city.productionStatus !== "prototype");
 
 type MemoryStorage = { getItem(key: string): string | null; setItem(key: string, value: string): void };
-/** The room's own sound settings live here (never the device's ⚙設定). */
+/** The room's own sound settings live here (never the device's ≡メニュー). */
 function memoryStorage(): MemoryStorage {
   const data = new Map<string, string>();
   return { getItem: (key) => data.get(key) ?? null, setItem: (key, value) => { data.set(key, value); } };
@@ -185,7 +185,7 @@ export function EffectsRoom({ onClose }: { onClose: () => void }) {
       </header>
       <p className="effects-room-note">
         Debug専用の確認の部屋です。登録されている効果音・BGM・環境音・声を一つずつ鳴らし、天気・揺れ・品物の札・上の帯の手応えなどの演出を、遊ばずにゲームと同じ部品で見られます。
-        セーブ・英語ノート・⚙設定・ゲームの進行は何も変えません。ここでの音の設定はこの部屋だけのもので（初めはゲームの初期値）、閉じると流している音はすべて止まります。ただし「台詞の声の速さ」はDebugの設定で、⚙設定のDebugの欄と同じ値がこの端末に残ります。
+        セーブ・英語ノート・ゲームの設定・ゲームの進行は何も変えません。ここでの音の設定はこの部屋だけのもので（初めはゲームの初期値）、閉じると流している音はすべて止まります。ただし「台詞の声の速さ」はDebugの設定で、ゲームの設定の「制作者向け」の欄と同じ値がこの端末に残ります。
       </p>
       {LIST_PROBLEMS.length > 0 && <p className="effects-room-off" role="alert">
         {LIST_PROBLEMS.join("・")}を読めませんでした。npm run content:build で作り直してから開き直してください。読めた一覧だけを出しています。

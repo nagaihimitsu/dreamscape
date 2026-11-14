@@ -271,7 +271,7 @@ export function PlaceMapDialog({ game, events, places, selectedId, onMarker, onF
   const { city } = getCityContent(game.currentCityId);
   const ownMapRef = useRef<L.Map | null>(null);
   const bar = selection?.bar ?? null;
-  return <Modal labelledBy="travel-map-expanded-title" className="travel-map-modal" onClose={onClose}>
+  return <Modal labelledBy="travel-map-expanded-title" className="travel-map-modal" onClose={onClose} closeOnBackdrop>
     <ModalTitle id="travel-map-expanded-title" onClose={onClose}>{city.nameJa}の地図</ModalTitle>
     <div className="travel-map-modal-body">
       <div className="travel-map-modal-map">
