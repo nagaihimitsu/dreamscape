@@ -136,7 +136,8 @@ export function sayTogetherSkinFor(game: SayGame): RhythmTapSkin<SayTogetherPara
             live.current.sound(SOUNDS.voice, { rate: 1.2 });
             juice.burst(yourBubble.current, "ring", 0.7);
             juice.burst(herBubble.current, "ring", 0.6);
-            live.current.vibrate("tap");
+            // The last word's buzz is the peak's.
+            if (word < SAY_WORD_COUNT - 1) live.current.vibrate("tap");
           } else if (state === "off") {
             if (said[word] === "together") juice.denied(yourBubble.current);
             else live.current.sound(SOUNDS.voice, { volume: 0.4, rate: 0.85 });

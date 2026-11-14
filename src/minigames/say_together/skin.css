@@ -70,16 +70,23 @@
 /* Hers: over her head, a little wider than her, to her right edge; its tail at her head. */
 .mg-say-together-bubble-her { right: 0; bottom: calc(100% + 6px); width: max(118%, 150px); min-height: 64px; }
 .mg-say-together-bubble-her::after { right: 40%; margin-right: -6px; }
-/* The player's: up from the bottom left (the player's own place, off the field). As the play ends it lifts to the middle
-   of the left, clear of the result card that comes low over the controls (group2 N9); at once with less motion. */
+/* The player's: up from the bottom left (the player's own place, off the field). As the play ends it lifts beside hers,
+   level with her head and no wider than the room left of hers, clear of the result card that comes low over the
+   controls (group2 N9); at once with less motion. (Her box and bubble sizes as above.) */
 .mg-say-together-bubble-yours {
   left: 3%;
   bottom: 5%;
-  max-width: 50%;
+  max-width: 46%;
   transform-origin: 10% 100%;
   transition: bottom 200ms ease-out;
 }
-.mg-say-together-bubble-yours[data-lifted] { bottom: 50%; }
+.mg-say-together-bubble-yours[data-lifted] {
+  bottom: calc(min(72cqh, 75cqw, calc(100cqh - 104px)) + 6px);
+  max-width: calc(96cqw - max(min(72cqh, 75cqw, calc(100cqh - 104px)) * 0.787, 150px) - 8px);
+  padding: 5px 8px 7px;
+}
+/* Lifted, its words smaller: the longest (ヤートリーガン、) stays on one line even at 320 px. */
+.mg-say-together-bubble-yours[data-lifted] .mg-say-together-text { font-size: 12px; }
 .mg-say-together-bubble-yours::after { left: 18px; }
 .mg-say-together[data-still] .mg-say-together-bubble-yours { transition: none; }
 /* A word as it is said: pops in (not with less motion). The player's word on her beat is gold and heavy; off it, plain
