@@ -57,7 +57,7 @@ describe("Milan's scene list", () => {
       .toEqual(inserted.map((item) => item.id).sort());
     // The guides, battles and epilogue: no choices, tags or moments. The dates' choices are their romance choices.
     const mains = listed.filter((scene) => scene.main && scene.kind !== "date");
-    expect(mains.map((scene) => scene.kind).sort()).toEqual([...Array<string>(9).fill("battle"), "epilogue", ...Array<string>(6).fill("guide")]);
+    expect(mains.map((scene) => scene.kind).sort()).toEqual([...Array<string>(7).fill("battle"), "epilogue", ...Array<string>(6).fill("guide")]);
     for (const scene of mains) {
       expect([scene.origin, scene.at, scene.options, scene.done, scene.then, scene.when], scene.id).toEqual(["place", [], [], {}, undefined, undefined]);
     }

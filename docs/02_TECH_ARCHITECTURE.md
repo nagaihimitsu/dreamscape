@@ -247,7 +247,7 @@ tests/journeys/<journeyId>/   # その旅行編だけの内容・経路・制作
 問題ID ＝ `<頭>_<観光地>_<要点>`。対決のクイズ・例のクイズ・道中交流のクイズに使う。
 
 - 問題IDの「観光地」は、もっと短くしてよい。観光地IDの中の続いた語を使う（例：`agra_fort` → `fort`、`taj_mahal` → `taj`、`city_palace` → `palace`）。1つのクイズの中では同じ名前を使う。都市フィナーレは `finale`。
-- 特殊戦B・Cの問題は、観光地のあとに `b`・`c` を付ける（例：`milano_last_supper_b_slow_revision`、`smp_mihon_market_b_q1`）。同じ観光地に対決が3つあっても分けられる。
+- 特殊戦B・Cの問題は、観光地のあとに `b`・`c` を付ける（例：`milano_la_scala_b_q2`、`smp_mihon_market_b_q1`）。同じ観光地に対決が3つあっても分けられる。
 - 例のクイズの問題は、観光地のあとに `example` を付ける（例：`milano_last_supper_example_dry_technique`）。
 - 道中交流のクイズの問題も同じ形（例：テストの元データ `tests/fixtures/catalog-encounters/catalog.json` の `test_galleria_wish_bull_city`）。
 - 要点は短い英語（1〜3語。数字も使える。例：`gt_delhi_qutb_iron_pillar_fence` の `iron_pillar_fence`、`gt_delhi_humayun_1857_arrest` の `1857_arrest`）か、`q1`〜`q5`。

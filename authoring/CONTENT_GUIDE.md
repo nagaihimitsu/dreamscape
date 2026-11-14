@@ -435,7 +435,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 
 `format` を省くとA（ふつうのクイズ）です。Bは `format: "B"` と `reasoning.kind: "contradiction"`、Cは `format: "C"` と `reasoning.kind: "connection"` を書きます。`caseClueIds` は観光の `clues` を使い回す証拠のID（3〜5枚）で、Cの正解の2枚は順不同で判定します。推理の結論は、同じ `roundIndex` のクイズの `correctOptionId` で決めます。証拠の選択と英語の採点は別で、証拠だけで3択に答えることはしません。台詞はInk、証拠と条件はJSON、判定と保存はTypeScript、入力と描画はReactが持ちます。ビルドは、形式と推理の種類、証拠の枚数・重なり・正解が候補に入っているか、証拠IDと観光地が合うか、問いの位置の範囲、主張の knot と止まる所を確かめます。正しい証拠と結論が理屈のうえで1つに決まるかは、出典と脚本でも照らし合わせてください。
 
-推理クイズを本編に置くには、`progression/journey.json` の `storyBattles` に、対決ID、前後のエピソードID、案内文とボタン名を書きます。そこに書いた `completionReward` は、共通の報酬の処理で `battle_complete` の報酬として扱います。B/Cの戦績を完了の記録に使い、観光エピソードや報酬を重ねて登録しません。ミラノの『最後の晩餐』を舞台にした古いB/C（`milano_last_supper_b01`・`milano_last_supper_c01`）はカタログに残っていますが、`storyBattles` にないので新しい旅には出ません。
+推理クイズを本編に置くには、`progression/journey.json` の `storyBattles` に、対決ID、前後のエピソードID、案内文とボタン名を書きます。そこに書いた `completionReward` は、共通の報酬の処理で `battle_complete` の報酬として扱います。B/Cの戦績を完了の記録に使い、観光エピソードや報酬を重ねて登録しません。
 
 新しい通常のクイズは、3問のクイズのJSONとInkを用意し、`battles/catalog.json` に登録するだけで遊べます（画面を直す必要はありません）。今の数は、ミラノが7セット（通常4、推理クイズB・C各1、都市フィナーレ1）、インドが都市ごとに5セット（通常4、都市フィナーレ1）です。正解の位置（A・B・C）が偏らないようにします。日本語の導入や、証拠を示せたときの台詞が、続く英語の答えを直接教えていないか、史実が正しいかは、脚本のレビューでも確かめます。
 
@@ -509,7 +509,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 
 Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受け取ります（`player_address` は関係の段階に応じた敬称つきの呼び方）。恋愛の場面では、`romance_stage`、過去の思い出を引く `memory_callback`、告白が成立する状態かを示す `confession_ready` も使えます。AP・段階・告白の条件の計算はTypeScriptが行い、Inkには結果だけを渡します。`# speaker: narrator` / `heroine` / `player` / `enemy` / 登録した人物のID（[Inkで会話と演出を作る](#inkで会話と演出を作る)）、`# background: 登録済みID`、`# emotion: 登録済みID` を使い、本文はふつう日本語で書きます（英語の台詞や選択肢も書けます。ビルドは止めません）。デートの `* [選択肢]` と各分岐直後の札（`# option:` と `# profile:`）、`->` の合流例は見本の場所のファイル `stories/places/smp_mihon_clock_tower.ink` のデート `smp_mihon_date_tower_square` を参照（今の1場面1ファイルのデートは、各分岐直後に `# effect: 登録済みID`）。通常デートは3択を2回、各選択直後・最初の発話の前に対応する `# effect:` を1つ置きます。Inkで `romance_result` と `affection_delta`・`trust_delta`・`spark_delta` を宣言し、`romance_result` の positive と negative それぞれで異なる人物らしい反応を書きます。確率計算と乱数はInkに書きません。告白は確定的な別契約です（場所のファイルの告白は `# profile:` も結果の `# effect:` も書かず、始めたときにゲームが関係状態から決めた `confession_result` で返事を分けます。デートの knot の中の選択の回数が `choiceCount` です。例：インド編の `places/gt_delhi_hotel_hub_dates.ink`）。案内とバトルには恋愛effectを置きません。バトルの会話は1本の流れで書きます（[対決の会話を1本の流れで書く](#対決の会話を1本の流れで書く段階5)。`-> quiz(n) ->` でクイズを呼び、戻ると `quiz_correct`・`battle_score` で分岐する）。場所のファイル（`stories/places/`）では、変数はゲームが用意する `modules.ink` が宣言するので、`VAR` を書きません（1場面1ファイルのバトルも、1行目を `INCLUDE modules.ink` にして `VAR` を書かない）。案内にも選択肢と効果の札を書けます（読み直しでは当てない）。特殊戦の主張（`<バトル>_claim`）・追及（`<バトル>_press`）・証拠成功／失敗（`evidence_result` の分かれ道）の例は見本の `stories/places/smp_mihon_market.ink`（B）と `stories/places/smp_mihon_library.ink`（C）にあります。
 
-会話中の無言リアクションは、通常はInkの `# reaction:` で指定します。既存の `content/journeys/milano/presentation/dialogue-reactions.json` は、公開済みの脚本を変えずに演出を付けた旧指定として維持します。外部指定では固定台詞の完全一致が必要で、変数を含む行には指定できません。脚本を更新した場合、参照先の消えた旧指定は検証時に警告されます。
+会話中の無言リアクションは、通常はInkの `# reaction:` で指定します。脚本を変えずに演出を付けるときは、各旅行編の `presentation/dialogue-reactions.json` に外から指定することもできます（今はどの旅行編も使っていません）。外部指定では固定台詞の完全一致が必要で、変数を含む行には指定できません。脚本を更新した場合、参照先の消えた旧指定は検証時に警告されます。
 
 漫符IDは `question`、`exclamation`、`interrobang`、`anger`、`sweat`、`blush`、`gloom`、`dizzy`、`music`、`heart`、`sparkle`、`sleep`、`sigh` です。`exasperated` は呆れの表情で、画像が未登録の衣装では同じ衣装の `neutral` を使います。演出は対象人物が表示されている間だけ現れ、ゲームの進行や保存には影響しません。台詞ごとに機械的に付けず、必要な瞬間を選んでください。
 
@@ -786,7 +786,7 @@ EXTERNAL cond(text)
 
 - 人物の配置は人物ごとの `placement`、衣装・ポーズごとの補正は同じポーズの `placement` で書きます。`x`・`bottom`・`width`・`height`・`scale`・`originX`・`originY` を差分の間で共有し、画像をゆがめずに出します。`imagePath`、`variants`、相手の `battleCharacters` の設定も使えます。観察用の画像と座標は別に管理します。
 - `heroine` の `defaultCostume` と `defaultPose` が、地域に属さない基本の衣装とポーズです。`wardrobe` の `cities`・`countries`・`regions` で、都市・国・地域ごとの標準の衣装を指定できます。今の `milano` → `IT` → `south_europe` → `south_europe_01` の設定は残していますが、南欧の衣装は届いていないので、今は基本の衣装を出します。優先の順は、`scenes`、都市、国、地域の標準の衣装、基本の衣装、仮の素材です。`scenes` のキーにはデートID・バトルID・観光地ID・都市エピローグのエピソードIDを使い、たとえば `"milano_cafe_01": { "costume": "south_europe_01", "pose": "standing_01" }` と書きます。届いていない衣装から、表情だけが別の衣装に切り替わることはありません。
-- すでにある台詞に表情を付けるときは、各旅行編の `presentation/dialogue-expressions.json`（例：[ミラノ編](../content/journeys/milano/presentation/dialogue-expressions.json)）に `storyId`・`speaker`・`text`・`emotion` を書けます。名前などの変数を含まない Ink の原文の1行を、完全に一致させて登録します。台詞に `emotion` の札があればそちらを使い、同じ行に重ねて指定しません。`npm run content:check` は、登録した検証の文脈の分岐で、話者と台詞があるか、表情IDと札がぶつからないかを確かめます。脚本を変えたときは、検証していない分岐も含めて、表情と札の対応を編集者が確かめてください。表情の指定は見た目だけで、保存した会話の位置や関係の値は変えません。Ink そのものを書き直すと、途中のセーブの指紋が変わる点に気をつけてください。
+- すでにある台詞に表情を付けるときは、各旅行編の `presentation/dialogue-expressions.json`（今はどの旅行編も使っていません）に `storyId`・`speaker`・`text`・`emotion` を書けます。名前などの変数を含まない Ink の原文の1行を、完全に一致させて登録します。台詞に `emotion` の札があればそちらを使い、同じ行に重ねて指定しません。`npm run content:check` は、登録した検証の文脈の分岐で、話者と台詞があるか、表情IDと札がぶつからないかを確かめます。脚本を変えたときは、検証していない分岐も含めて、表情と札の対応を編集者が確かめてください。表情の指定は見た目だけで、保存した会話の位置や関係の値は変えません。Ink そのものを書き直すと、途中のセーブの指紋が変わる点に気をつけてください。
 
 ### プレビュー
 
