@@ -16,6 +16,8 @@ permissions:
   contents: read
 
 concurrency:
+  # Started by hand only, so every run gets a group of its own (its run id)
+  # and always finishes; the pull_request parts below never apply.
   group: e2e-explore-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
@@ -30,8 +32,8 @@ jobs:
       matrix:
         slot: [1, 2, 3]
     env:
-      # A new set of seeds every run (printed in the log and kept in the report); a manual
-      # run can replay one seed in every slot.
+      # A new set of seeds every run (printed in the log and kept in the report); a run
+      # started with a seed replays that seed in every slot.
       MONKEY_SEED: ${{ inputs.seed || format('{0}{1}', github.run_number, matrix.slot) }}
       MONKEY_SECONDS: ${{ inputs.seconds || '55' }}
     steps:
@@ -109,8 +111,8 @@ jobs:
 
   walk:
     # The random walk through the game functions with more seeds and steps than the
-    # pull request run (tests/explore/journey-walk.test.ts); its reached-content
-    # summary is kept as an artifact.
+    # fixed run of npm test and npm run verify (tests/explore/journey-walk.test.ts);
+    # its reached-content summary is kept as an artifact.
     name: Random walk (more seeds)
     runs-on: ubuntu-latest
     timeout-minutes: 25

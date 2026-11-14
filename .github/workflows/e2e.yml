@@ -3,15 +3,15 @@ name: E2E
 # Browser tests (Playwright), run by hand. Each tier (docs/10「E2Eの段」) is
 # its own job, and all jobs run in parallel.
 on:
-  # By hand only: pull requests and main check the build (ci.yml).
+  # By hand only: pull requests check only the build (ci.yml).
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  # A newer push to the same pull request cancels the unfinished run. Runs
-  # on main and manual runs get a group of their own and always finish.
+  # Started by hand only, so every run gets a group of its own (its run id)
+  # and always finishes; the pull_request parts below never apply.
   group: e2e-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
