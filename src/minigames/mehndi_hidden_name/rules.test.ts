@@ -3,7 +3,7 @@ import { searchFairness, type SearchRecord } from "../engines/search/engine";
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { mehndiHiddenName } from "./definition";
 import { searchProgress } from "../engines/search/engine";
-import { MEHNDI_SPOTS, MEHNDI_TARGETS, MEHNDI_TEXTS, MEHNDI_WRONG_LIMIT, mehndiRules, mehndiSetup, type MehndiOutcome, type MehndiParams } from "./rules";
+import { MEHNDI_SPOTS, MEHNDI_TARGETS, MEHNDI_TEXTS, MEHNDI_TUNING, mehndiRules, mehndiSetup, type MehndiOutcome, type MehndiParams } from "./rules";
 import { MEHNDI_HIT, MEHNDI_PLACES, mehndiSpotAt, writingSize } from "./Skin";
 
 const record = (actions: SearchRecord["actions"], lapse: SearchRecord["lapse"] = null): SearchRecord => ({ actions, lapse });
@@ -24,12 +24,14 @@ describe("the hidden name's rules", () => {
     expect(mehndiRules.outcomeOf(record([spot("peacock")]), thumb)).toBe("later");
     expect(outcome([spot("peacock"), spot("thumb")])).toBe("wrong_spot");
     expect(outcome([spot("peacock"), spot("index"), spot("thumb")])).toBe("wrong_spot");
-    // The same petal twice is one wrong point; the third wrong point ends the look.
+    // The same petal twice is one wrong point; wrong points never end the look (from the third she only hints the area:
+    // the find is always the player's, as the story says).
     expect(outcome([spot("peacock"), spot("peacock"), spot("thumb")])).toBe("wrong_spot");
     expect(outcome([spot("peacock"), spot("index"), spot("wrist"), spot("thumb")])).toBe("wrong_spot");
-    expect(searchProgress([spot("peacock"), spot("index"), spot("wrist")], mehndiSetup(thumb)).ending)
-      .toEqual({ kind: "wrong", spot: MEHNDI_SPOTS.indexOf("wrist"), misses: 2, helped: 0 });
-    expect(MEHNDI_WRONG_LIMIT).toBe(3);
+    expect(searchProgress([spot("peacock"), spot("index"), spot("wrist"), spot("pinky"), spot("vine")], mehndiSetup(thumb)).ending).toBeNull();
+    expect(outcome([spot("peacock"), spot("index"), spot("wrist"), spot("pinky"), spot("vine"), spot("thumb")])).toBe("wrong_spot");
+    expect(mehndiSetup(thumb).wrongLimit).toBeNull();
+    expect(MEHNDI_TUNING.hintAfter).toBe(3);
     expect(outcome([spot("peacock")], null, { target: "peacock", text: "illegible" })).toBe("found");
     expect(outcome([spot("vine")], null, { target: "vine", text: "farhana" })).toBe("found");
   });
@@ -39,6 +41,9 @@ describe("the hidden name's rules", () => {
     expect(outcome([{ button: "later" }, spot("thumb")])).toBe("later");
     for (const target of MEHNDI_TARGETS) expect(mehndiSetup({ target, text: "player" })).toMatchObject({ timeLimitMs: null, idleMs: null });
     expect(mehndiHiddenName.timed).toBe(false);
+    // No time on its card, and the scene's own music (a quiet night for two) goes on.
+    expect(mehndiHiddenName.durationSec).toBeUndefined();
+    expect(mehndiHiddenName.music).toBe("scene");
     // A record with a lapse cannot come from a play now; the rules still read it (as later) rather than fail.
     expect(outcome([], "timeout")).toBe("later");
   });
