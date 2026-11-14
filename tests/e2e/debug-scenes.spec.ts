@@ -197,7 +197,7 @@ test("a Debug launch URL opens its scene and offers the same URL", { tag: tier.d
 test("a Debug launch URL that does not fit the content says why and links back to the scene picker", { tag: tier.debug }, async ({ page }) => {
   await page.goto("/?debug&city=milano&scene=battle&target=gt_delhi_main_red_fort_battle");
   await ops.debugShown(page.getByRole("alert"));
-  await expect(page.getByRole("alert")).toHaveText("「gt_delhi_main_red_fort_battle」はミラノの「バトル」にありません。");
+  await expect(page.getByRole("alert")).toHaveText("「gt_delhi_main_red_fort_battle」はミラノの「クイズ」にありません。");
   // The link loads the scene picker as a new page (a dev server serves it module by module):
   // wait for that page's load, as page.goto does, and then for Debug, which loads after it.
   await Promise.all([

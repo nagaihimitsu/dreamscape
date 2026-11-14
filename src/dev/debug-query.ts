@@ -9,7 +9,7 @@
 export const debugScenes = ["tourism", "battle", "encounter", "date", "epilogue", "occasion", "tour"] as const;
 export type DebugScene = (typeof debugScenes)[number];
 export const debugSceneLabels: Record<DebugScene, string> = {
-  tourism: "観光・場所", battle: "バトル", encounter: "人物との交流", date: "デート", epilogue: "エピローグ", occasion: "観光地の時点（場面から始める）",
+  tourism: "観光・場所", battle: "クイズ", encounter: "人物との交流", date: "デート", epilogue: "エピローグ", occasion: "観光地の時点（場面から始める）",
   tour: "ツアー",
 };
 export type DebugDataMode = "real" | "fixture";

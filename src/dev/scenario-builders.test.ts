@@ -114,7 +114,7 @@ describe("scenario builders", () => {
 
   it("stops with a message instead of looping when an action changes nothing", () => {
     const fresh = newJourney("milano");
-    expect(() => playBattleToResult(fresh)).toThrow("対決が始まっていません。");
+    expect(() => playBattleToResult(fresh)).toThrow("クイズが始まっていません。");
     expect(() => playEpisodeToResult(fresh, finaleOf("milano").id)).toThrow("この操作では状態が変わりませんでした");
     expect(readGuide(fresh)).toEqual(fresh);
   });

@@ -110,9 +110,9 @@ export function playBattleToResult(initial: GameState, options: PlayOptions = {}
   let state = initial;
   for (let step = 0; state.activeBattle?.phase !== "result"; step++) {
     const active = state.activeBattle;
-    if (!active) throw new Error("対決が始まっていません。");
-    if (step > MAX_STEPS) throw new Error(`対決 ${active.battleId} を結果まで進められませんでした。`);
-    const what = `対決 ${active.battleId}（${active.phase}）`;
+    if (!active) throw new Error("クイズが始まっていません。");
+    if (step > MAX_STEPS) throw new Error(`クイズ ${active.battleId} を結果まで進められませんでした。`);
+    const what = `クイズ ${active.battleId}（${active.phase}）`;
     const { battle, quiz } = getActiveBattleContent(active);
     if (active.phase === "reasoning") {
       for (const clueId of battle.reasoning!.correctClueIds)
@@ -152,7 +152,7 @@ function tourismToBattle(initial: GameState, options: EpisodePlayOptions): GameS
     }
   }
   if (state.activeTourism)
-    state = act(state, (current) => startTourismBattle(current, current.revision), "観光地の対決", options);
+    state = act(state, (current) => startTourismBattle(current, current.revision), "観光地のクイズ", options);
   return state;
 }
 
@@ -167,7 +167,7 @@ export function playEpisodeToResult(state: GameState, episodeId: string, options
  * scenes) with their first choices, back to free time.
  */
 function leaveResult(result: GameState, options: PlayOptions): GameState {
-  return settleScenes(act(result, (current) => leaveBattleResult(current, current.revision), "対決の結果を閉じる", options), 0);
+  return settleScenes(act(result, (current) => leaveBattleResult(current, current.revision), "クイズの結果を閉じる", options), 0);
 }
 
 /**
@@ -204,7 +204,7 @@ export function playCityToFinaleResult(initial: GameState, options: CityPlayOpti
     if (count > 50) throw new Error(`${cityId} のフィナーレまで進められませんでした。`);
     const special = getNextStoryBattle(state);
     const episode = special ? null : getNextEpisode(state);
-    if (!special && !episode) throw new Error(`${cityId} に次の対決がありません。`);
+    if (!special && !episode) throw new Error(`${cityId} に次のクイズがありません。`);
     // A battle at a tour-only place is played on its tour, as in play (tour stage 2a): booked, the night, the visit, the way back.
     const tour = tourOf(state, special?.battleId ?? episode!.id);
     if (tour) {
@@ -212,7 +212,7 @@ export function playCityToFinaleResult(initial: GameState, options: CityPlayOpti
       continue;
     }
     state = special
-      ? playBattleToResult(act(state, (current) => startBattle(current, special.battleId), `特殊戦 ${special.battleId} を始める`, options), options)
+      ? playBattleToResult(act(state, (current) => startBattle(current, special.battleId), `推理クイズ ${special.battleId} を始める`, options), options)
       : playEpisodeToResult(state, episode!.id, options);
     options.onResult?.(state);
     if (episode?.kind === "city_finale") {
@@ -345,9 +345,9 @@ export function cityMidway(cityId: string, options: CityPlayOptions & { names?: 
       continue;
     }
     const result = special
-      ? playBattleToResult(act(state, (current) => startBattle(current, special.battleId), `特殊戦 ${special.battleId} を始める`, options), options)
+      ? playBattleToResult(act(state, (current) => startBattle(current, special.battleId), `推理クイズ ${special.battleId} を始める`, options), options)
       : playEpisodeToResult(state, episode!.id, options);
-    state = act(result, (current) => leaveBattleResult(current, current.revision), "対決の結果を閉じる", options);
+    state = act(result, (current) => leaveBattleResult(current, current.revision), "クイズの結果を閉じる", options);
   }
   return validateGameState(state);
 }
@@ -508,7 +508,7 @@ export function openBattleScene(state: GameState, battleId: string): GameState {
   const landmarkId = battles.find((item) => item.id === battleId)?.landmarkId ?? undefined;
   const eventId = episodes.find((item) => item.cityId === state.currentCityId && item.battleId === battleId)?.id ?? battleId;
   const next = startBattle(atPlace(state, scenePlaceId(state.currentCityId, eventId, landmarkId)), battleId);
-  if (!next.activeBattle) throw new Error("この進行状態ではバトルを始められません。");
+  if (!next.activeBattle) throw new Error("この進行状態ではクイズを始められません。");
   return validateGameState(next);
 }
 
@@ -545,11 +545,11 @@ function untilEncounter(initial: GameState, encounterId: string, ticket: number)
 function throughObservation(initial: GameState, ticket: number): GameState {
   let state = initial;
   for (let step = 0; !state.activeBattle; step++) {
-    if (step > MAX_STEPS) throw new Error("観察から対決へ進めませんでした。");
+    if (step > MAX_STEPS) throw new Error("観察からクイズへ進めませんでした。");
     if (state.activeTourism?.phase === "guide") state = act(state, guideSkip, "観光案内を飛ばす");
     else if (state.activeEncounter) state = playEncounterFirstChoice(state, ticket);
     else if (state.activeTourism) state = act(state, (current) => proceedFromTourism(current, current.revision, () => ticket), "観察の「進む」");
-    else throw new Error("観察から対決へ進めませんでした。");
+    else throw new Error("観察からクイズへ進めませんでした。");
   }
   return state;
 }
@@ -603,7 +603,7 @@ export function startEncounterScene(state: GameState, encounterId: string, ticke
       if (next.activeEncounter) throw new Error(unmetRule(next));
       const arrived = next;
       const afterBattle = (atBattle: GameState) => untilEncounter(act(playBattleToResult(atBattle, {}),
-        (current) => leaveBattleToFreeTime(current, current.revision, () => ticket), "対決の結果を閉じる"), encounterId, ticket);
+        (current) => leaveBattleToFreeTime(current, current.revision, () => ticket), "クイズの結果を閉じる"), encounterId, ticket);
       next = afterBattle(tourismToBattle(arrived, {}));
       // A scene whose condition a scene of the observation meets (Rina's crest room after the Galleria's wish): the visit
       // again, through its observation's scenes with their first choices, as play meets them.
@@ -671,7 +671,7 @@ export function startOccasionScene(state: GameState, landmarkId: string, from: s
         .map((item) => item.id);
       throw new Error(`場面 ${from} はこの時点で始まりませんでした。${unmet.length ? `偽の部品：${unmet.join("、")}。` : ""}` +
         `${earlier.length ? `${earlier.map((item) => `${item.cityNameJa}の品物 ${item.itemId} ${item.statusJa}こと`).join("、")}が要ります` +
-          "（Debug は前の都市を本筋（到着・バトル・フィナーレと、エピローグの後に次の都市へ進む旅行編ではエピローグ。観光の案内は飛ばす）に沿って遊んでから始まるので、デート・差し込み・観光の案内・道中交流でしかもらえない品物や、" +
+          "（Debug は前の都市を本筋（到着・クイズ・フィナーレと、エピローグの後に次の都市へ進む旅行編ではエピローグ。観光の案内は飛ばす）に沿って遊んでから始まるので、デート・差し込み・観光の案内・道中交流でしかもらえない品物や、" +
           "選択肢で渡した・使った記録はないことがあります。prep= は同じ都市の場面だけを流します）。" : ""}` +
         `${givers.length ? `品物をくれる場面：${givers.join("、")}（prep= で先に流せます）。` : ""}`);
     }
@@ -697,7 +697,7 @@ function playOccasionStep(state: GameState, ticket: number): GameState {
   if (state.activeEpilogue?.kind === "tour_leg") return act(state, epilogueStep, "ツアーの区間の語り");
   if (state.activeTourism?.phase === "guide") return guideSkip(state);
   if (state.activeTourism) return act(state, (current) => proceedFromTourism(current, current.revision, () => ticket), "観察の「進む」");
-  if (state.activeBattle?.phase === "result") return act(state, (current) => leaveBattleToFreeTime(current, current.revision, () => ticket), "対決の結果を閉じる");
+  if (state.activeBattle?.phase === "result") return act(state, (current) => leaveBattleToFreeTime(current, current.revision, () => ticket), "クイズの結果を閉じる");
   if (state.activeBattle) return playBattleToResult(state);
   if (state.occasion?.romanceEnding) return act(state, (current) => closeRomanceEnding(current, current.revision, () => ticket), "「交際開始」");
   throw new Error("この時点を進められませんでした。");

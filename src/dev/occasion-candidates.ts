@@ -23,7 +23,7 @@ const positionOf = (id: string) => {
   const priority = encounterEntryRule(id)?.priority;
   return typeof priority === "number" ? (priority > 0 ? `+${priority}` : String(priority)) : priority ?? "after observe";
 };
-const partNames = { guide: "案内", observe: "観察", battle: "バトル", date: "デート", ending: "「交際開始」の画面", move: "移動", ticket: "入場",
+const partNames = { guide: "案内", observe: "観察", battle: "クイズ", date: "デート", ending: "「交際開始」の画面", move: "移動", ticket: "入場",
   sleep: "眠る", epilogue: "エピローグ", depart: "出発", logo: "ロゴ", arrival: "到着の会話", leg: "区間の語り", leg_move: "区間の移動" } as const;
 const sceneName = (id: string) => sceneById(id)?.title ?? encounters.encounters.find((event) => event.id === id)?.titleJa ?? id;
 
@@ -74,7 +74,7 @@ export function occasionCandidates(state: GameState): OccasionCandidates {
     const option = sceneOption(scene, choice.optionId);
     return { text: choice.text, parts: (option?.requires ?? []).flatMap((condition) => partsOf(state, condition)).filter((part) => !part.value) };
   }) : [];
-  const kindNames = { date: "デート", battle: "バトル", hotel: "宿", epilogue: "エピローグ", depart: "都市の出発", arrive: "到着", tour: "ツアーの区間" } as const;
+  const kindNames = { date: "デート", battle: "クイズ", hotel: "宿", epilogue: "エピローグ", depart: "都市の出発", arrive: "到着", tour: "ツアーの区間" } as const;
   const tourStep = occasion.tour ? `${occasion.tour.id} ${occasion.tour.step}` : undefined;
   const title = (occasion.trip ? `移動（${occasion.trip.modeId}：${occasion.trip.from} → ${occasion.trip.to}）→ ` : "") + (occasion.ticket ? "窓口 → " : "") +
     (occasion.kind === "visit" ? (occasion.landmarkId === null ? "自由時間（観光地なし）" : `観光地：${landmark?.nameJa ?? occasion.landmarkId}${occasion.eventId ? "" : "（本筋なし）"}` +
