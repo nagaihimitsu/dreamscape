@@ -56,15 +56,19 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await expect(line).toHaveAttribute("data-ready", "false");
   // The log (a control in the window) and the English note (in the header above the scene)
   // open and close without moving the story or finishing the line, also when the note's
-  // 「閉じる」 gets a quick double tap: its second tap lands on the scene the note leaves
-  // behind, and a press on any control of the page settles the scene for a moment.
+  // 「閉じる」 gets a quick double tap: its second tap would land on the scene the note leaves
+  // behind, and a header's close holds every tap for a moment (Modal.tsx, 2026-11-14).
   await ops.closeDialog(await ops.openDialogueLog(page));
   const note = await ops.openEnglishNote(page);
   const closeNote = await ops.centerOf(note.getByRole("button", { name: "閉じる", exact: true }));
   await ops.doubleTap(page, closeNote);
   await expect(note).toBeHidden();
+  await expect(page.locator("html[data-tap-hold]"), "the close holds the taps for a moment").toHaveCount(1);
+  expect((await readSave(page)).revision).toBe(first.revision + 3);
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await expect(page.locator("html[data-tap-hold]"), "and lets them go").toHaveCount(0);
   expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest("#tourism-screen"), closeNote),
-    "the second tap landed on the guide").toBe(true);
+    "the second tap's point is over the guide").toBe(true);
   expect((await readSave(page)).revision).toBe(first.revision + 3);
   await expect(line).toHaveAttribute("data-ready", "false");
   // ⚙設定's panel over the guide (UI redesign §3.1): while it is open the line is not written
@@ -100,6 +104,8 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await settings.getByLabel("自動送りする").check();
   await ops.holdClock(page);
   await ops.closeDialog(settings);
+  // The header's close holds taps for a moment (Modal.tsx); the held clock lets them go.
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
   const waiting = await readSave(page);
   const waitingText = await line.textContent();
   const menuPanel = await ops.openMenu(page);
