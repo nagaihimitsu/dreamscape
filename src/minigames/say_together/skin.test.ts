@@ -65,6 +65,19 @@ describe("saying it together's field", () => {
     expect(view(SAY_GAME.endMs, [], true)).toMatchObject({ lifted: true, look: true });
   });
 
+  it("grows her held syllable as she holds it and shows her breath before the last word, then the last word", () => {
+    const view = (ms: number, ended = false) => sayView(SAY_GAME, ms, record([]), ended, false);
+    const { holdAt, breathAt } = SAY_GAME;
+    expect(view(holdAt.from - 1)).toMatchObject({ her: 2, held: 0, breath: false });
+    expect(view(holdAt.from)).toMatchObject({ her: 3, held: 0 });
+    expect(view(holdAt.from + 1).held).toBe(1);
+    expect(view(holdAt.to - 1).held).toBe(3);
+    expect(view(breathAt.from)).toMatchObject({ held: 3, breath: true });
+    expect(view(breathAt.to)).toMatchObject({ her: 4, breath: false });
+    expect(view(breathAt.from, true).breath).toBe(false);
+    expect(sayTogetherSkin.bigBeats).toEqual([3]);
+  });
+
   it("ends the play on the last word as both voices say it, else as its window closes", () => {
     const last = wordsAt[3];
     expect(sayEndsAt(SAY_GAME, last - 1, record(wordsAt.map((at, index) => (index === 3 ? last - 60 : at))))).toBe(false);
