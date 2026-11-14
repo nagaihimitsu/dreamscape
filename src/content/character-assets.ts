@@ -1,6 +1,6 @@
 import { z } from "zod";
+import { contentId as id } from "./content-id";
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const countryId = z.string().regex(/^[A-Z]{2}$/);
 // Paths are relative to public/. Null is reserved for existing temporary artwork.
 const assetPath = z.string().regex(/^assets\/(?!.*\.\.)[a-zA-Z0-9_./-]+\.(?:png|webp|svg)$/);

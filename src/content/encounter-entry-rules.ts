@@ -1,7 +1,7 @@
 import { z } from "zod";
+import { contentId as id } from "./content-id";
 import { conditionSchema } from "./condition-schemas";
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/u);
 /**
  * When an encounter is looked up: the observation at the encounter's own
  * landmark (also when `at` and `priority` are left out). An encounter whose Ink

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { contentId as id } from "./content-id";
 import { conditionSchema } from "./condition-schemas";
 import { japaneseText as japanese } from "./text-language";
 import { tourismSourceSchema } from "./tourism-schemas";
@@ -14,7 +15,6 @@ import { transportKinds } from "./transport-schemas";
  * so they never change once the journey is public. Light module (zod only).
  */
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/u);
 const sources = z.array(tourismSourceSchema).min(1);
 
 /** A drive, ride or walk of the tour: the party is moved to `toPlaceId` and `minutes` pass. */

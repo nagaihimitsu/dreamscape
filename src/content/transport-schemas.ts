@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { contentId as id } from "./content-id";
 import { japaneseText as japanese } from "./text-language";
 import { SOUND_ID } from "./sounds";
 
@@ -14,7 +15,6 @@ export type TransportKind = typeof transportKinds[number];
 export type TransportArtKind = "walk" | TransportKind;
 export const WALK_MODE_ID = "walk";
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 
 
 export const transportModeSchema = z.object({

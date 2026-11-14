@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { contentId as id } from "./content-id";
 import { conditionSchema, RELATIONSHIP_AXES } from "./condition-schemas";
 import { rewardRuleSchema } from "./journey-schemas";
 import { quizQuestionSchema } from "./schemas";
@@ -16,7 +17,6 @@ import { japaneseText } from "./text-language";
  * Light module (zod only): the runtime parses the generated file with it.
  */
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/u);
 const signed = z.number().int().safe();
 /** `tour_leg`: a tour leg's narration (tour stage 2b), found by its `# at: tour <tour> <leg>` (no catalog points at it). */
 export const SCENE_KINDS = ["talk", "encounter", "guide", "battle", "date", "arrival", "epilogue", "tour_leg"] as const;
