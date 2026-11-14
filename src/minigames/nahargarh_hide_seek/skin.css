@@ -4,9 +4,10 @@
    large). With the use's art.bay / art.room / art.peek, those pictures in place of the drawn wall and doorway (the leaves
    stay), room and her. */
 .mg-nahargarh-hide-seek {
-  /* A bay (a door and the wall beside it) takes most of the field's height; its width keeps the doorway photo's shape
-     (618 × 1100, a little cropped at the sides): about two doors show on a phone, more on a short one. */
-  --bay-h: 64cqh;
+  /* A bay (a door and the wall beside it) takes most of the field's height, or a third of its width (three doors show on a
+     phone: 2026-11-14 playtest, about two showed and a door-by-door search ran long); its width keeps the doorway photo's
+     shape (618 × 1100, a little cropped at the sides). */
+  --bay-h: min(64cqh, 100cqw / 3 / 0.46);
   --bay-w: calc(var(--bay-h) * 0.46);
   position: absolute;
   inset: 0;
@@ -21,7 +22,8 @@
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior: contain;
-  scroll-snap-type: x proximity;
+  /* One door a flick (a natural flick went two doors past the one meant). */
+  scroll-snap-type: x mandatory;
   scrollbar-width: none;
   touch-action: pan-x;
 }
@@ -57,6 +59,7 @@
   background: linear-gradient(to bottom, transparent 64%, #dccaa6 64%, #d5c09a 87.4%, #7d6b56 87.4%, #7d6b56 88%, #ad9b82 88%, #8e7d67 100%);
   color: inherit;
   scroll-snap-align: center;
+  scroll-snap-stop: always;
   cursor: pointer;
   touch-action: pan-x;
 }

@@ -103,15 +103,23 @@ export function hideSeekRoomJa(event: HideSeekRoomEvent, door: number, target: n
   }
 }
 
+/** Scrolled this many doors' width from the corridor's start, the player is searching (not waiting). */
+export const HIDE_SEEK_SCROLL_DOORS = 1;
+
 /** Whether the next call is the one that brings her out (the play's end). */
 const lastCallNext = (view: SearchView, calls: number) => (view.presses.call ?? 0) === calls - 1;
 
-/** The top band: what the player has done (nothing yet: empty), and a warning before the call that brings her out. */
-function status(view: SearchView, calls: number): string {
+/**
+ * The top band: what the player has done (nothing yet: empty), and a warning before the call that brings her out, first
+ * (2026-11-14 playtest: at 320px the band cut 「（次で出てくる）」 off its end); nothing once the play is over (she is out).
+ */
+export function hideSeekStatus(view: SearchView, calls: number): string {
+  if (view.ending) return "";
   const opened = view.searched.length;
   const called = view.presses.call ?? 0;
-  const callsJa = called ? `呼んだ ${called}回${lastCallNext(view, calls) ? "（次で出てくる）" : ""}` : "";
-  return [opened ? `開けた扉 ${opened}` : "", callsJa].filter(Boolean).join("・");
+  // Before the last call, the warning in place of the calls' count (the button says 「最後に呼ぶ」 too).
+  const callsJa = lastCallNext(view, calls) ? "次で出てくる" : called ? `呼んだ ${called}回` : "";
+  return [callsJa, opened ? `開けた扉 ${opened}` : ""].filter(Boolean).join("・");
 }
 
 /** What happens in an empty room (drawn over the room's picture, inside the doorway), leaning toward her door or nowhere. */
@@ -178,6 +186,8 @@ const hideSeekFieldFor = (tuning: HideSeekTuning) => function HideSeekField({ se
   const scroller = useRef<HTMLDivElement>(null);
   const doors = useRef<(HTMLButtonElement | null)[]>([]);
   const [more, setMore] = useState({ left: false, right: true });
+  /** The player has scrolled the corridor a door or more: searching, not waiting. */
+  const scrolled = useRef(false);
   const [echo, setEcho] = useState<{ at: number; where: Side; call: number } | null>(null);
   /** A moment of hers by her door, or at the corridor's edge on her side: a giggle, her 「まだかな」, a peek. */
   const [voice, setVoice] = useState<{ at: number; where: Side; textJa: string; kind: "giggle" | "ask" | "peek" } | null>(null);
@@ -285,7 +295,7 @@ const hideSeekFieldFor = (tuning: HideSeekTuning) => function HideSeekField({ se
         }
         shown = state;
       }
-      const acted = now.searched.length > 0 || (now.presses.call ?? 0) > 0;
+      const acted = now.searched.length > 0 || (now.presses.call ?? 0) > 0 || scrolled.current;
       if (!asked && !acted && !now.ending && ms >= tuning.askMs) {
         asked = true;
         say("ask", ASK_JA, ms);
@@ -295,8 +305,12 @@ const hideSeekFieldFor = (tuning: HideSeekTuning) => function HideSeekField({ se
     });
   }, [frames, target]);
   const onScroll = () => {
-    active();
     const box = scroller.current;
+    // Scrolling the corridor a door's width or more is searching (2026-11-14 playtest: scrolling, then stopping, ended as
+    // 「廊下で待った」): stopping after it brings her hints, as after a door or a call, never the waiting ending.
+    const bay = doors.current[0]?.offsetWidth ?? 0;
+    if (box && bay > 0 && Math.abs(box.scrollLeft) >= bay * HIDE_SEEK_SCROLL_DOORS) scrolled.current = true;
+    active(scrolled.current);
     if (!box) return;
     const left = box.scrollLeft > 4;
     const right = box.scrollLeft + box.clientWidth < box.scrollWidth - 4;
@@ -313,7 +327,7 @@ const hideSeekFieldFor = (tuning: HideSeekTuning) => function HideSeekField({ se
     <div className="mg-nahargarh-hide-seek" data-art-bay={art.bay ? true : undefined} data-more-left={more.left || undefined}
       data-more-right={more.right || undefined}
       data-echo-side={(echo && echo.where !== "door" ? echo.where : undefined) ?? (voice && voice.kind === "peek" && voice.where !== "door" ? voice.where : undefined)}>
-      <div className="mg-nahargarh-hide-seek-corridor" ref={scroller} onScroll={onScroll} onPointerDown={active}>
+      <div className="mg-nahargarh-hide-seek-corridor" ref={scroller} onScroll={onScroll} onPointerDown={() => active()}>
         <div className="mg-nahargarh-hide-seek-row">
           {Array.from({ length: HIDE_SEEK_DOORS }, (_, door) => {
             const open = view.searched.includes(door);
@@ -400,7 +414,7 @@ export const hideSeekSkinFor = (tuning: HideSeekTuning): SearchSkin<HideSeekPara
   autoJa: "おまかせで探しています",
   // Her in the open door, the last echo, or her peeking from the corner, before the outcome shows.
   endDelayMs: (ending, still) => (still ? 700 : ending.kind === "found" ? 1400 : ending.kind === "button" ? 1300 : 1500),
-  statusJa: (view) => status(view, tuning.calls),
+  statusJa: (view) => hideSeekStatus(view, tuning.calls),
   nudgeMs: tuning.hintMs,
   Field: hideSeekFieldFor(tuning),
 });

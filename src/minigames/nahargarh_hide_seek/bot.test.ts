@@ -16,8 +16,8 @@ import { hideSeekLean } from "./Skin";
 const DOOR_MS = 420;
 const LOOK_MS = 300;
 const SWIPE_MS = 400;
-/** About two doors show on a 390-wide phone. */
-const IN_VIEW = 2;
+/** Three doors show on a phone (2026-11-14 playtest: about two did, and a door-by-door search ran past the card's 15 s). */
+const IN_VIEW = 3;
 /** The share of rooms whose lean the player reads and follows, by kind of player. */
 const READS: Record<SearchBotProfile["id"], number> = { skilled: 0.9, average: 0.6, careless: 0.25 };
 

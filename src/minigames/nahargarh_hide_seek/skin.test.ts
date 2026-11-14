@@ -83,7 +83,9 @@ describe("the hide-and-seek's field", () => {
     const label = (presses: number) => (typeof call.labelJa === "function" ? call.labelJa(view({ presses: { call: presses } })) : call.labelJa);
     expect([0, 1, 2].map(label)).toEqual(["名前を呼ぶ", "名前を呼ぶ", "最後に呼ぶ"]);
     expect(hideSeekSkin.statusJa?.(view({ presses: { call: 1 } }), null)).toBe("呼んだ 1回");
-    expect(hideSeekSkin.statusJa?.(view({ searched: [0], presses: { call: 2 } }), null)).toBe("開けた扉 1・呼んだ 2回（次で出てくる）");
+    // The warning first (at 320px the band's end is cut: 2026-11-14 playtest), and nothing once she is out.
+    expect(hideSeekSkin.statusJa?.(view({ searched: [0], presses: { call: 2 } }), null)).toBe("次で出てくる・開けた扉 1");
+    expect(hideSeekSkin.statusJa?.(view({ searched: [0, 6], presses: { call: 2 }, ending: { kind: "found", spot: 6, misses: 1, helped: 0 } }), null)).toBe("");
     expect(call.hintJa).toContain("3回目で、彼女が出てきます");
   });
 

@@ -33,9 +33,9 @@ export const nahargarhHideSeek = defineMiniGame({
   // goes on at once with her own first words (in both of its romance branches), so the card never speaks for her.
   outcomes: [
     { id: "call_her_name", labelJa: "名前を呼んだ", noteJa: "「名前を呼ぶ」を3回押した", finishJa: null, reaction: { kind: "tease" } },
-    { id: "door_by_door", labelJa: "一つずつ開けて見つけた", noteJa: "3つ目より後に開けた扉で見つけた", finishJa: null, reaction: { kind: "oops" } },
+    { id: "door_by_door", labelJa: "一つずつ開けて見つけた", noteJa: "3つ目以降に開けた扉で見つけた", finishJa: null, reaction: { kind: "oops" } },
     { id: "door_quick", labelJa: "すぐに見つけた", noteJa: "1つ目か2つ目に開けた扉で見つけた（彼女がのぞいた扉を開ければ、すぐ）", finishJa: null, reaction: { kind: "surprise" } },
-    { id: "just_wait", labelJa: "廊下で待った", noteJa: "扉を開けたり呼んだりする前に、何もしないで9秒たった（3秒で彼女が扉からのぞき、6秒で「……まだかな」。その後で手を止めても終わらない。6秒ごとに彼女の扉から笑い声）",
+    { id: "just_wait", labelJa: "廊下で待った", noteJa: "扉を開けたり呼んだり、廊下を扉1枚分より先へ動かしたりする前に、何もしないで9秒たった（3秒で彼女が扉からのぞき、6秒で「……まだかな」。その後で手を止めても終わらない。6秒ごとに彼女の扉から笑い声）",
       finishJa: null, reaction: { kind: "oops" } },
   ],
   defaultAuto: "door_by_door",
