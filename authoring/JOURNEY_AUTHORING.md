@@ -1,8 +1,8 @@
 # 旅行編へシナリオとクイズを取り込む
 
-都市の地点・旅行データ・背景・観察資料が用意された旅行編に、脚本とクイズを追加する手順です。旅行編フォルダそのものは `npm run journey:new` で見本の編から作れます（[技術設計](../docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順)）。作った旅行編は `authoring`（`eventPrefix` など）を持つので、`journey:readiness`・`journey:release` と都市データの [city:bundle](CITY_BUNDLES.md) はすぐに使えます。`journey:scaffold` は、観察資料（`authoring.observationFile`。`journey:new` はパスだけを決め、ファイルは作りません）に仮でない JPEG（`.jpg`）または WebP（`.webp`）の観光画像ごとの記録と出典を確かめた観察ポイントを置き、背景の画像を差し替えてから（見本の画像は PNG で仮の扱い）、`journey:transit` は、`manifest.json` の `transportModes` に乗り物を宣言したら、都市ごとの交通判断台帳 `travel/<都市ID>-transit.json` を置いて使います（乗り物を宣言しないうちは徒歩だけで、台帳は要りません。下の「編集するもの」）。見本の出典・画像・文章が残っているうちは `journey:readiness` が「見本の…が残っています」と示し、`journey:release` は止まります。インド編、ウズベキスタン編、ルアンパパーン編は同じ生成・検査・反映処理を使います。都市数や都市の順序は各旅行編の `content/journeys/<旅行編ID>/manifest.json` に従います。
+都市の地点・旅行データ・背景・観察資料が用意された旅行編に、脚本とクイズを追加する手順です。旅行編フォルダそのものは `npm run journey:new` で見本の編から作れます（[技術設計](../docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順)）。作った旅行編は `authoring`（`eventPrefix` など）を持つので、`journey:readiness`・`journey:release` と都市データの [city:bundle](CITY_BUNDLES.md) はすぐに使えます。`journey:scaffold` は、観察資料（`authoring.observationFile`。`journey:new` はパスだけを決め、ファイルは作りません）に仮でない JPEG（`.jpg`）または WebP（`.webp`）の観光画像ごとの記録と出典を確かめた観察ポイントを置き、背景の画像を差し替えてから使います（見本の画像は PNG で仮の扱い）。`journey:transit` は、`manifest.json` の `transportModes` に乗り物を宣言したら、都市ごとの交通判断台帳 `travel/<都市ID>-transit.json` を置いて使います（乗り物を宣言しないうちは徒歩だけで、台帳は要りません。下の「編集するもの」）。見本の出典・画像・文章が残っているうちは `journey:readiness` が「見本の…が残っています」と示し、`journey:release` は止まります。インド編、ウズベキスタン編、ルアンパパーン編は同じ生成・検査・反映処理を使います。都市数や都市の順序は各旅行編の `content/journeys/<旅行編ID>/manifest.json` に従います。
 
-インド3都市は、本筋の場面58（どれも場所のファイルの knot：観光案内12・バトル15（都市フィナーレ3を含む）・デート25（宿の屋上の告白と「待って」の後の6件と、ジャイプールの彼女の返事を含む）・到着3・エピローグ3）、差し込みの場面21（会話17・道中交流2・ツアーの語り2）、クイズ51問（15本）を登録済みです（2026-11-14）。今の脚本の設計は[インド編改稿の設計](journeys/golden_triangle/drafts/SCENARIO_REWRITE.md)、旧稿の脚本・出典・検証の方法は[完成版の構成と制作記録](journeys/golden_triangle/drafts/scenario/README.md)にあります。登録済みInkは `content/journeys/golden_triangle/stories/` のみを編集し、クイズは同じフォルダの `quizzes/` と対訳、メタデータは対応するカタログを更新します。制作時の `narrative.json` は初期登録入力として残し、更新内容を自動同期する正本にはしません。以下の新規登録手順は、未制作のウズベキスタン編などにも利用できます。
+インド3都市は、本筋の場面58（どれも場所のファイルの knot：観光案内12・バトル15（都市フィナーレ3を含む）・デート25（宿の屋上の告白と「待って」の後の6件と、ジャイプールの彼女の返事を含む）・到着3・エピローグ3）、差し込みの場面21（会話17・道中交流2・ツアーの語り2）、クイズ51問（15本）を登録済みです（2026-11-14）。脚本の設計は[インド編改稿の設計](journeys/golden_triangle/drafts/SCENARIO_REWRITE.md)（2026-11-07 の全面改稿の記録）、旧稿の脚本・出典・検証の方法は[完成版の構成と制作記録](journeys/golden_triangle/drafts/scenario/README.md)にあります。登録済みInkは `content/journeys/golden_triangle/stories/` のみを編集し、クイズは同じフォルダの `quizzes/` と対訳、メタデータは対応するカタログを更新します。制作時の `narrative.json` は初期登録入力として残し、更新内容を自動同期する正本にはしません。以下の新規登録手順は、未制作のウズベキスタン編などにも利用できます。
 
 都市を1つ足すときの作業の順番と、同時に進められる作業は [新しい都市を1つ足す手引き](NEW_CITY_GUIDE.md) にあります。
 
@@ -18,13 +18,13 @@
 
 機械的なエピソード・対決・報酬・デート条件・反応ID・思い出IDの登録は生成器が行います。人物、質問、解答、根拠となる新しい事実を自動で創作するものではありません。
 
-新しい対戦人物の専用立ち絵がない間は `portrait: "abstract"` を生成し、既存の抽象人物表示を使います。別人のミラノ用イラストは流用しません。専用画像を用意したら、その旅行編フォルダの `content/journeys/<旅行編ID>/presentation/characters.json` に人物登録（`characters`）と `battleCharacters` の割り当てを追加し、画像は同じフォルダの `public/assets/` に置きます。共通の `content/presentation/characters.json` には旅行編の人物を登録しません。人物の背の高さや姿勢（前かがみ・座っているなど）で絵が大きく見えるときは、その人物に `"figureScale": 0.88` のように書くと、足の位置はそのままで絵が小さくなります（0.5〜1.2。書かなければ1。例：インド編の `gt_mehr`）。
+新しい対戦人物の専用立ち絵がない間は `portrait: "abstract"` を生成し、既存の抽象人物表示を使います。別人のミラノ用イラストは流用しません。専用画像を用意したら、その旅行編フォルダの `content/journeys/<旅行編ID>/presentation/characters.json` に人物登録（`characters`）と `battleCharacters` の割り当てを追加し、画像は同じフォルダの `public/assets/` に置きます。共通の `content/presentation/characters.json` には旅行編の人物を登録しません。人物の背の高さや姿勢（前かがみ・座っているなど）で絵が大きく見えるときは、その人物に `"figureScale": 0.88` のように書くと、足の位置はそのままで絵が小さくなります（0.5〜1.2。1より大きくすると大きくなる。書かなければ1。例：インド編の `gt_mehr`）。
 
 ## ウズベキスタン編の例
 
 `uzbekistan` 旅行編（準備中）には、タシュケント・サマルカンド・ブハラ・ヒヴァの4都市を登録しています。各都市に、主な観光地4件とデート6件の場所・画像・観察の素材・市内の移動・料金と出典を用意しました。シナリオとクイズはまだ作っていないので、本番では旅の準備（名前を別に保存する）までです。
 
-移動は徒歩・地下鉄（タシュケント）・タクシーです。タクシーの料金は、配車アプリの料金表の式から計算したゲーム用の見積もりです（料金表の有効期限は[データ契約の「セーブの版」](../docs/07_DATA_AND_TESTS.md#セーブの版)の最後の項。公開の前に確かめ直します）。初めの予算300万スム、宿泊は無料、都市クリアの4APは、ゲーム用の仮の値です。各都市のエピローグの後に、次の公開済みの都市へ進みます。都市の間の地図の移動はありません。調べた結果と制限は[4都市の制作資料](journeys/uzbekistan/research/uzbekistan-20261104/README.md)にあります。
+移動は徒歩・地下鉄（タシュケント）・タクシーです。タクシーの料金は、配車アプリの料金表の式から計算したゲーム用の見積もりです（料金表の有効期限は[データ契約の「セーブの版」](../docs/07_DATA_AND_TESTS.md#セーブの版)の、料金の出典の有効期限の項。2026年11月10日までで、もう切れています。公開の前に確かめ直します）。初めの予算300万スム、宿泊は無料、都市クリアの4APは、ゲーム用の仮の値です。各都市のエピローグの後に、次の公開済みの都市へ進みます。都市の間の地図の移動はありません。調べた結果と制限は[4都市の制作資料](journeys/uzbekistan/research/uzbekistan-20261104/README.md)にあります。
 
 ```sh
 # 固定ID、Inkの置き場所、入力メタデータの雛形を表示（--requirements は省略できます）
@@ -58,10 +58,12 @@ npm run journey:release -- --check --journey uzbekistan --through tashkent --nar
 未登録のInkを `content/journeys/<旅行編ID>/stories/` へ入れると、公開用の検証契約がないためビルドは失敗します。脚本だけを先に仕上げるときは `authoring/journeys/<旅行編ID>/drafts/scenario/<都市ID>/stories/` に、requirementsと同じ相対パスで場所のファイルを保存します（`stories/places/<接頭辞>_<地点>.ink`。その場所の knot をまとめて書く）。各都市に `narrative.json`、scenario直下に各都市を結合した `narrative.json` を置きます。
 
 ```sh
-npm run journey:scenario -- --journey golden_triangle --directory authoring/journeys/golden_triangle/drafts/scenario
+npm run journey:scenario -- --journey <旅行編ID> --directory authoring/journeys/<旅行編ID>/drafts/scenario
 # 制作途中では一都市だけでも確認できます
-npm run journey:scenario -- --journey golden_triangle --directory authoring/journeys/golden_triangle/drafts/scenario --city delhi
+npm run journey:scenario -- --journey <旅行編ID> --directory authoring/journeys/<旅行編ID>/drafts/scenario --city <都市ID>
 ```
+
+インド編の下書き（`authoring/journeys/golden_triangle/drafts/scenario`）で今通るのは `--city delhi` だけです。アーグラとジャイプールの下書きの `narrative.json` は、フィナーレの会場を移す前の地点（`agra_agra_fort`・`jaipur_jantar_mantar`）のままなので、ほかの都市や `--city` なしでは「下書きの Ink ファイルが要るものと合いません」で止まります（2026-11-14 に確かめた。[制作記録](journeys/golden_triangle/drafts/scenario/README.md)）。
 
 この検査は、場所のファイルを `content:build` と同じく読み、計画の knot を場面として通しで歩きます。ファイルと knot の対応、頭の札、都市内の背景、デートの `# profile:` と思い出、3択の全経路、関係段階と反応、対決のクイズの全部の正誤（クイズを第1問から順に1回ずつ呼ぶか）を確認します。場所のファイルが `INCLUDE modules.ink` と `-> DONE` で始まらないときは止まります。計画にない knot（差し込みの場面など）は、この検査では歩きません（移した後に `content:build` が確かめます）。デートの選択肢でのみ返答する脚本を想定し、主人公の直接台詞（`# speaker: player`）があると注意を出します（止めません）。仮クイズや公開カタログは作りません。成功は脚本の契約検証であり、公開準備完了を意味しません。
 
@@ -71,7 +73,7 @@ npm run journey:scenario -- --journey golden_triangle --directory authoring/jour
 
 都市定義 `content/journeys/<旅行編ID>/cities/<city>.json` の任意項目 `arrivalStoryId` に、宿の場所のファイルの knot の住所（例：`places/gt_delhi_hotel_hub.gt_delhi_arrival`。頭の札は `# scene: arrival`）を指定します。1場面1ファイル（`arrivals/<city>`、本文は `stories/arrivals/`）も使えます。都市bundleにもこの参照は含まれます。登録された都市フィナーレと、その都市の背景が必要です。
 
-会話として検証します（話者は、ヒロインとナレーションのほか、主人公と、その都市のフィナーレの対戦相手も使えます。日本語の選択肢と効果の札も書けます。お金やAPを減らす `on_done:` は書けません。会話の後の行き先 `then:` も書けます）。旅行編の開始時と次都市への出発時に、都市名のロゴから会話へ進みます。通常のロードで再開以外の新規会話は始めません。既存の都市会話の保存処理を使い、札を書かないかぎり、関係値、AP、予算を変えません。時刻と思い出は変えません。
+会話として検証します（話者は、ヒロインとナレーションのほか、主人公と、その都市のフィナーレの対戦相手（`enemy`）と、`progression/story.json` の `people` に宣言した人も使えます。日本語の選択肢と効果の札も書けます。お金やAPを減らす `on_done:` は書けません。会話の後の行き先 `then:` も書けます）。旅行編の開始時と次都市への出発時に、都市名のロゴから会話へ進みます。通常のロードで再開以外の新規会話は始めません。既存の都市会話の保存処理を使い、札を書かないかぎり、関係値、AP、予算を変えません。時刻と思い出は変えません。
 
 ## ルアンパパーン編
 

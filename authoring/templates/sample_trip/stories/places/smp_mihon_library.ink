@@ -7,7 +7,7 @@ INCLUDE modules.ink
 -> DONE
 
 // ───── 案内（本筋。tourism/catalog.json の guideStoryId がこの住所を指す）。
-// - 規則は通常の観光案内と同じ：選択肢・# effect なし、日本語、表示される行は40行以内。
+// - 規則は通常の観光案内と同じ：# effect は置かない。選択肢は書ける（段階3a。例は時計塔の案内）。日本語が基本。長さの目安は40行以内（ビルドでは確かめない）。
 // - 最初の行の # photo: は、図書室の絵（public/assets/album/smp_album_library.webp）をアルバムに入れる例（説明の札なし）。
 === smp_mihon_library_guide ===
 # scene: guide

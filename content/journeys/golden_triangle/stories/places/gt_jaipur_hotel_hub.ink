@@ -1,7 +1,7 @@
 INCLUDE modules.ink
 -> DONE
 
-// 宿の場所のファイル：到着とエピローグ（新しい書き方への形の移し替え。文は今のまま）
+// 宿の場所のファイル：到着とエピローグ（2026-11-10 に新しい書き方へ形を移した）
 
 // 到着。cities/<都市>.json の arrivalStoryId がこの knot を指す。
 === gt_jaipur_arrival ===
