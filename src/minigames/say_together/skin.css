@@ -1,6 +1,7 @@
 /* Saying it together's field (Skin.tsx): the view across a wide lawn, a tomb far off on the left, her a step away on the
-   right with her bubble over her head, the player's bubble from the bottom left. Over the scene's picture (or the use's
-   bg); with the use's art.lawn, that picture in place of the drawn lawn and tomb. */
+   right with her bubble over her head, the player's bubble from the bottom left (lifted clear of the result card as the
+   play ends). Over the scene's picture (or the use's bg); with the use's art.lawn, that picture in place of the drawn lawn
+   and tomb. */
 .mg-say-together { position: absolute; inset: 0; overflow: hidden; container-type: size; }
 .mg-say-together-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; pointer-events: none; }
 /* The drawn lawn: a hazy morning sky over the scene's picture, a line of trees, the grass from the horizon (46%) down. */
@@ -30,7 +31,7 @@
 }
 .mg-say-together-her-body { position: absolute; inset: 0; transition: transform 90ms ease-out; }
 .mg-say-together-her-body > img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
-/* Her nod on each count beat (not with less motion: the dots and the words still count). */
+/* Her nod on each count beat (not with less motion: her bubble's words and the lane still count). */
 .mg-say-together-her[data-nod] .mg-say-together-her-body { transform: translateY(1.6%); }
 .mg-say-together[data-still] .mg-say-together-her-body { transition: none; transform: none; }
 /* The bubbles: parchment, a name, the words; on the beat together both glow gold with a thicker edge (not colour alone). */
@@ -69,48 +70,28 @@
 /* Hers: over her head, a little wider than her, to her right edge; its tail at her head. */
 .mg-say-together-bubble-her { right: 0; bottom: calc(100% + 6px); width: max(118%, 150px); min-height: 64px; }
 .mg-say-together-bubble-her::after { right: 40%; margin-right: -6px; }
-/* The player's: up from the bottom left (the player's own place, off the field). */
+/* The player's: up from the bottom left (the player's own place, off the field). As the play ends it lifts to the middle
+   of the left, clear of the result card that comes low over the controls (group2 N9); at once with less motion. */
 .mg-say-together-bubble-yours {
   left: 3%;
   bottom: 5%;
-  max-width: 46%;
-  animation: mg-say-together-pop 140ms cubic-bezier(0.2, 0.9, 0.3, 1.2);
+  max-width: 50%;
   transform-origin: 10% 100%;
+  transition: bottom 200ms ease-out;
 }
+.mg-say-together-bubble-yours[data-lifted] { bottom: 50%; }
 .mg-say-together-bubble-yours::after { left: 18px; }
+.mg-say-together[data-still] .mg-say-together-bubble-yours { transition: none; }
+/* A word as it is said: pops in (not with less motion). The player's word on her beat is gold and heavy; off it, plain
+   and lighter with a dotted underline (not colour alone). */
+.mg-say-together-word { animation: mg-say-together-pop 140ms cubic-bezier(0.2, 0.9, 0.3, 1.2); }
+.mg-say-together[data-still] .mg-say-together-word { animation: none; }
 @keyframes mg-say-together-pop { from { transform: scale(0.8); opacity: 0.4; } }
-.mg-say-together[data-still] .mg-say-together-bubble-yours { animation: none; }
-/* Her bubble's first row: her name, and her count on the right. */
-.mg-say-together-bubble-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-/* Her count: three dots, one lit a beat (「せー」「の」); the third, larger with a gold edge, is the beat of the words. */
-.mg-say-together-dots { display: flex; flex: none; align-items: center; gap: 6px; }
-.mg-say-together-dots > span {
-  width: 10px;
-  height: 10px;
-  border: 2px solid var(--ds-ink-muted);
-  border-radius: 50%;
-}
-.mg-say-together-dots > span[data-words] { position: relative; width: 14px; height: 14px; border-color: #c08a2a; }
-.mg-say-together-dots > span[data-lit] { border-color: var(--ds-ink); background: var(--ds-ink); }
-.mg-say-together-dots > span[data-words][data-lit] { border-color: #c08a2a; background: #f0c860; box-shadow: 0 0 8px rgba(240, 200, 96, 0.9); }
-/* Through the last beat (「の」 to the words), a ring closes on the gold dot: it lands on it on her beat (the play's frames
-   size it; it is the count, so it moves with less motion too, as the needle does). */
-.mg-say-together-closing {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 14px;
-  height: 14px;
-  box-sizing: border-box;
-  border: 2px solid #c08a2a;
-  border-radius: 50%;
-  opacity: 0;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-/* The last word, 「デーン！」, is the loudest: written large; together, it glows in both bubbles. */
+.mg-say-together-word[data-state="together"] { color: #7a4c08; }
+.mg-say-together-word[data-state="off"] { color: var(--ds-ink-muted); font-weight: 500; text-decoration: underline dotted 1.5px; text-underline-offset: 3px; }
+/* The last word, 「デーン！」, is the loudest: written large; together (the peak), it glows in both bubbles. */
 .mg-say-together-word[data-last] { font-size: 1.3em; line-height: 1.15; letter-spacing: 0.02em; }
-.mg-say-together-bubble[data-together] .mg-say-together-word[data-last] { color: #8a5a10; text-shadow: 0 0 10px rgba(240, 200, 96, 0.9); }
+.mg-say-together-bubble[data-peak] .mg-say-together-word[data-last] { color: #8a5a10; text-shadow: 0 0 10px rgba(240, 200, 96, 0.9); }
 /* After she said them alone: she turns to the player (？ by her head, on the side away from the outcome's label). */
 .mg-say-together-mark {
   position: absolute;
