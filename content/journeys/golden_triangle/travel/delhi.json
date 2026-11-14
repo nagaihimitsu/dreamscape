@@ -87,7 +87,7 @@
           "url": "https://www.business-standard.com/india-news/red-fort-to-remain-open-on-all-days-of-week-asi-126022100547_1.html",
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
-          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。時間枠は毎日同じ。休館の曜日は場所の closedWeekdays で扱い、曜日ごとの時間の違いと祝日などの特別日は扱わない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
@@ -196,7 +196,7 @@
           "url": "https://dmnorth.delhi.gov.in/tourist-place/rameshwar/",
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
-          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。時間枠は毎日同じ。休館の曜日は場所の closedWeekdays で扱い、曜日ごとの時間の違いと祝日などの特別日は扱わない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
@@ -297,7 +297,7 @@
           "url": "https://www.delhitourism.gov.in/tourist_place/humayun_tomb.html",
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
-          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。時間枠は毎日同じ。休館の曜日は場所の closedWeekdays で扱い、曜日ごとの時間の違いと祝日などの特別日は扱わない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
@@ -390,7 +390,7 @@
           "url": "https://delhitourism.gov.in/tourist_place/india_gate.html",
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
-          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。時間枠は毎日同じ。休館の曜日は場所の closedWeekdays で扱い、曜日ごとの時間の違いと祝日などの特別日は扱わない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
@@ -499,7 +499,7 @@
           "url": "https://delhitourism.gov.in/tourist_place/jama_masjid.html",
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
-          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。時間枠は毎日同じ。休館の曜日は場所の closedWeekdays で扱い、曜日ごとの時間の違いと祝日などの特別日は扱わない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
@@ -584,7 +584,7 @@
           "url": "https://new.delhimetrorail.com/en",
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
-          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。時間枠は毎日同じ。休館の曜日は場所の closedWeekdays で扱い、曜日ごとの時間の違いと祝日などの特別日は扱わない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
@@ -653,7 +653,7 @@
           "url": "https://delhitourism.gov.in/tourist_place/lodi_tomb.html",
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
-          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。時間枠は毎日同じ。休館の曜日は場所の closedWeekdays で扱い、曜日ごとの時間の違いと祝日などの特別日は扱わない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
@@ -746,7 +746,7 @@
           "url": "https://www.delhitourism.gov.in/dt/explore_the_city/agrasen_ki_baoli.html",
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
-          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。時間枠は毎日同じ。休館の曜日は場所の closedWeekdays で扱い、曜日ごとの時間の違いと祝日などの特別日は扱わない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
@@ -823,7 +823,7 @@
           "url": "https://bahaihouseofworship.in/plan-a-visit/",
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
-          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。時間枠は毎日同じ。休館の曜日は場所の closedWeekdays で扱い、曜日ごとの時間の違いと祝日などの特別日は扱わない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
@@ -887,7 +887,7 @@
           "url": "https://delhitourism.gov.in/tourist_place/lodi_tomb.html",
           "checkedAt": "2026-11-03",
           "claimType": "hypothesis",
-          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。時間枠は毎日同じ。休館の曜日は場所の closedWeekdays で扱い、曜日ごとの時間の違いと祝日などの特別日は扱わない。"
         },
         {
           "publisher": "Dreamscape ゲーム編集",
