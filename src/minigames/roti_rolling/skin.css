@@ -21,6 +21,40 @@
   object-fit: cover;
   object-position: 50% 50%;
 }
+/* The tava waiting in the near corner: a dark iron disc, half off the table; in the hot windows at the end it glows
+   orange and pulses (still: it glows without pulsing). */
+.mg-roti-rolling-tava {
+  position: absolute;
+  left: -9%;
+  bottom: -7%;
+  width: 30%;
+  max-width: 150px;
+  aspect-ratio: 1;
+}
+/* The iron disc (after the glow, so in front of it). */
+.mg-roti-rolling-tava::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 3px solid #1d1a17;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 38%, #4a443d, #2a2622 70%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+/* The glow: a soft orange ring around it, faded in (its pulse is opacity only: cheap every frame). */
+.mg-roti-rolling-tava::before {
+  content: "";
+  position: absolute;
+  inset: -22%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 140, 50, 0.85) 40%, rgba(255, 140, 50, 0) 70%);
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+.mg-roti-rolling-tava[data-hot]::after { background: radial-gradient(circle at 40% 38%, #8a4a22, #3a2014 72%); }
+.mg-roti-rolling-tava[data-hot]::before { opacity: 1; animation: mg-roti-rolling-hot 700ms ease-in-out infinite alternate; }
+.mg-roti-rolling-tava[data-hot][data-still]::before { animation: none; }
+@keyframes mg-roti-rolling-hot { from { opacity: 0.65; } to { opacity: 1; } }
 /* Harbans looking on from the far corner: his head and shoulders (the standing picture's top), a word beside him. */
 .mg-roti-rolling-harbans { position: absolute; top: 0; right: 0; width: 30%; max-width: 150px; height: 26%; }
 .mg-roti-rolling-harbans-figure {
@@ -56,7 +90,9 @@
 }
 .mg-roti-rolling { display: block; width: 100%; height: 100%; overflow: visible; }
 /* The board stands in front of a photo: a dark rim and a deeper shadow. */
-.mg-roti-rolling-board-face { filter: drop-shadow(0 0.012px 0.02px rgba(0, 0, 0, 0.45)); stroke: #5a3a1c; stroke-width: 0.006; }
+.mg-roti-rolling-board-face { stroke: #5a3a1c; stroke-width: 0.006; }
+/* The board's shadow on the table: a dark disc under it (no filter: the board stays cheap to draw every frame). */
+.mg-roti-rolling-board-shadow { fill: rgba(0, 0, 0, 0.32); }
 .mg-roti-rolling-board-ring { fill: none; stroke: rgba(80, 48, 22, 0.28); stroke-width: 0.006; }
 .mg-roti-rolling-flour { fill: rgba(255, 252, 244, 0.55); }
 /* How big a good roti is: a dotted ring, gold once the dough reaches it. */
@@ -70,10 +106,30 @@
 .mg-roti-rolling-press { transform-box: view-box; transform-origin: 50% 50%; }
 /* Where the pin last lifted: an anchor for the flour's burst, never drawn. */
 .mg-roti-rolling-lift { fill: none; }
-/* The next stroke's way: a pale arrow with a dark edge (readable on the dough and the board). */
-.mg-roti-rolling-arrow line { stroke: rgba(255, 250, 241, 0.92); stroke-width: 0.018; stroke-linecap: round; }
+/* The next stroke's way: a pale arrow with a dark edge (readable on the dough and the board). Its shaft is a fuse: the
+   bright part burns down from the head while the window lasts (the spent part stays a thin dark line); with his hand
+   coming the whole arrow fades (and his hand shows: not by the fuse alone). */
+.mg-roti-rolling-arrow .mg-roti-rolling-arrow-fuse { stroke: rgba(255, 250, 241, 0.95); stroke-width: 0.022; stroke-linecap: round; }
+.mg-roti-rolling-arrow .mg-roti-rolling-arrow-spent { stroke: rgba(59, 36, 16, 0.55); stroke-width: 0.01; stroke-linecap: round; stroke-dasharray: 0.014 0.01; }
 .mg-roti-rolling-arrow path { fill: rgba(255, 250, 241, 0.92); stroke: #5a3a1c; stroke-width: 0.006; stroke-linejoin: round; }
-.mg-roti-rolling-arrow { filter: drop-shadow(0 0 0.006px #3b2410) drop-shadow(0 0.004px 0.006px rgba(0, 0, 0, 0.5)); }
+.mg-roti-rolling-arrow { transition: opacity 120ms ease-out; }
+/* A dark casing under the shaft and the head (no filter: the fuse changes every frame). */
+.mg-roti-rolling-arrow .mg-roti-rolling-arrow-case { stroke: rgba(59, 36, 16, 0.85); stroke-width: 0.034; stroke-linecap: round; }
+.mg-roti-rolling-arrow[data-coming] { opacity: 0.35; }
+/* Harbans's hand: a brown hand in a white kurta's sleeve, a dark edge round the whole of it (its parts outlined, then
+   filled over) so it reads on the dough and the board; a soft shadow under it. */
+.mg-roti-rolling-sleeve { fill: #f4efe4; }
+.mg-roti-rolling-palm { fill: #a8714b; }
+.mg-roti-rolling-hand-shadow > * { fill: rgba(0, 0, 0, 0.26); }
+.mg-roti-rolling-hand-outline > * { stroke: #3a2414; stroke-width: 0.014; stroke-linejoin: round; }
+.mg-roti-rolling-hand-line { stroke: rgba(58, 36, 20, 0.75); stroke-width: 0.005; stroke-linecap: round; }
+/* The window has had its stroke: a faint turning sign in the dough's middle (his turn next). */
+.mg-roti-rolling-wait path { fill: none; stroke: rgba(90, 58, 28, 0.55); stroke-width: 0.012; stroke-linecap: round; }
+.mg-roti-rolling-wait .mg-roti-rolling-wait-head { fill: rgba(90, 58, 28, 0.55); stroke: none; }
+/* The feint: flour falls from his fingers. */
+.mg-roti-rolling-flour-fall { fill: #fffaf0; stroke: rgba(74, 44, 24, 0.6); stroke-width: 0.003; }
+/* A stroke into his hand: the pin skids, tilted and reddened. */
+.mg-roti-rolling-pin[data-skid] .mg-roti-rolling-pin-body { fill: #d98b62; }
 /* Left alone: a faint fingertip rolls along the arrow, again and again (still: it waits at the arrow's tail). */
 .mg-roti-rolling-finger {
   fill: rgba(255, 250, 241, 0.55);
@@ -91,4 +147,4 @@
 .mg-roti-rolling-hole { fill: #8f5f35; stroke: #f3e2bd; stroke-width: 0.008; stroke-linejoin: round; }
 .mg-roti-rolling-pin-body { fill: #c99a62; stroke: rgba(90, 58, 28, 0.85); stroke-width: 0.005; }
 .mg-roti-rolling-pin-handle { fill: #9c6c3c; stroke: rgba(60, 36, 14, 0.8); stroke-width: 0.004; }
-.mg-roti-rolling-pin { filter: drop-shadow(0 0.012px 0.01px rgba(0, 0, 0, 0.35)); }
+.mg-roti-rolling-pin-shadow { fill: rgba(0, 0, 0, 0.25); }
