@@ -46,7 +46,8 @@ import {
   revealTranslation,
 } from "../learning/Translations";
 import { InteractiveEnglish } from "../learning/InteractiveEnglish";
-import { ReadAloudButton, useReadAloud } from "../learning/ReadAloud";
+import { ReadAloudButton, useAutoReadAloud, useReadAloud } from "../learning/ReadAloud";
+import { autoReadKey } from "../learning/read-aloud";
 import { metQuestions } from "../learning/EnglishReview";
 import { metWordKeys } from "../learning/met-words";
 import type { Learning } from "../learning/useLearning";
@@ -127,6 +128,8 @@ interface Props {
   reduceMotion: boolean;
   /** 「英語を読み上げるボタンを出す」 is on and this browser can read aloud: a speaker button by each English text (ReadAloud.tsx). */
   readAloud?: boolean;
+  /** 「問題が出たら英語を自動で読み上げる」 is on and this browser can read aloud: the question read as it shows (ReadAloud.tsx). */
+  autoReadAloud?: boolean;
   /** An episode's title card waits or shows over the opening (GameApp's useJourneyMoments): a name plate comes after it. */
   introHeld?: boolean;
   onSpeed: (speed: number) => void;
@@ -156,6 +159,7 @@ export function BattleScreen({
   speed,
   reduceMotion,
   readAloud = false,
+  autoReadAloud = false,
   introHeld = false,
   autoAdvanceEnabled = false,
   readSkip,
@@ -398,7 +402,16 @@ export function BattleScreen({
     !!battle.reasoning && battle.reasoning.roundIndex === active.roundIndex;
   // The quiz card (a question and its explanation): its speaker buttons stop reading when it goes or the next question comes.
   const quizCard = active.phase === "question" || active.phase === "feedback";
-  const reader = useReadAloud(readAloud, quizCard ? `${active.roundIndex}:${question?.id}` : "");
+  const reader = useReadAloud(readAloud, quizCard ? `${active.roundIndex}:${question?.id}` : "", autoReadAloud);
+  // 「問題が出たら英語を自動で読み上げる」 (2026-11-14): the question read once as it shows; the answer stops it (below).
+  useAutoReadAloud(reader, autoReadKey(autoReadAloud, active.phase, active.runId, active.roundIndex, question?.id), "question",
+    question?.questionEn ?? "");
+  // However the answer came (the answer button stops it in its own press, for iOS's sound; Debug answers too), the English
+  // being read stops as the explanation comes. A button pressed during the explanation reads as before.
+  const stopReading = reader.stop;
+  useEffect(() => {
+    if (active.phase === "feedback") stopReading();
+  }, [active.phase, active.roundIndex]);
   // 前に出た単語 (met-words.ts): the words of the word book's other questions (this save's battles, this run's earlier
   // rounds), marked where the question and its options use them again. Read again when an answer or a record changes.
   const metWords = useMemo(
@@ -702,6 +715,8 @@ export function BattleScreen({
                         disabled={active.phase !== "question"}
                         onClick={() => {
                           if (onAnswer(option.id)) {
+                            // The English being read (the automatic reading, or a button's) stops at the answer.
+                            reader.stop();
                             answeredAt.current = performance.now();
                             setAnswerSettling(true);
                             const key = `${battle.id}:${active.roundIndex}:${option.id}`;

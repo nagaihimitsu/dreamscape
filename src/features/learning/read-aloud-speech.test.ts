@@ -9,6 +9,7 @@ import { createSpeechReader, type SpeechScope, type UtteranceLike } from "./read
 class FakeUtterance implements UtteranceLike {
   lang = "";
   voice: SpeechSynthesisVoice | null = null;
+  volume = 1;
   private readonly listeners = new Map<string, (() => void)[]>();
   constructor(readonly text: string) {}
   addEventListener(type: "end" | "error", listener: () => void) {
@@ -152,5 +153,54 @@ describe("reading English aloud", () => {
     failing.finish("error");
     expect(failing.reader.key()).toBeNull();
     expect(failing.page.ducks).toEqual([true, false]);
+  });
+});
+
+// 「問題が出たら英語を自動で読み上げる」 (2026-11-14 user decision): the automatic reading starts with no press, so the page's
+// first tap primes the speech (iOS Safari speaks with no gesture only once the page has spoken in a gesture).
+describe("priming the speech for the automatic reading", () => {
+  it("speaks one empty, silent utterance, once, and is no reading: no key, no lowered music, no voice stopped", () => {
+    const { reader, spoken, page } = fakePage();
+    const heard: (string | null)[] = [];
+    reader.subscribe(() => heard.push(reader.key()));
+    expect(reader.primed()).toBe(false);
+    reader.prime();
+    expect(reader.primed()).toBe(true);
+    expect(spoken.map((utterance) => [utterance.text, utterance.volume])).toEqual([["", 0]]);
+    reader.prime();
+    expect(spoken).toHaveLength(1);
+    expect(reader.key()).toBeNull();
+    expect(heard).toEqual([]);
+    expect(page.ducks.every((ducked) => !ducked)).toBe(true);
+    expect(page.voiceStops).toBe(0);
+  });
+
+  it("wakes the audio the empty utterance interrupted as it ends (iOS)", () => {
+    const { reader, page, finish } = fakePage();
+    reader.prime();
+    page.audio.state = "interrupted";
+    finish();
+    expect(page.audio.resumes).toBe(1);
+  });
+
+  it("is primed by a press's reading, and speaks nothing over a reading going on", () => {
+    const pressed = fakePage();
+    pressed.reader.start("a|question", "Hello");
+    expect(pressed.reader.primed()).toBe(true);
+    pressed.reader.prime();
+    expect(pressed.spoken.map((utterance) => utterance.text)).toEqual(["Hello"]);
+    // Something already reading (another tab's page, a press the reader did not see): primed, nothing spoken over it.
+    const busy = fakePage();
+    busy.synth.pending = true;
+    busy.reader.prime();
+    expect(busy.reader.primed()).toBe(true);
+    expect(busy.spoken).toEqual([]);
+  });
+
+  it("is primed even when the browser's speech fails, leaving the readings to the presses", () => {
+    const { reader } = fakePage({ speakThrows: true });
+    reader.prime();
+    expect(reader.primed()).toBe(true);
+    expect(reader.key()).toBeNull();
   });
 });

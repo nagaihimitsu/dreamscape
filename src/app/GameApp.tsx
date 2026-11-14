@@ -68,6 +68,7 @@ import { useLocalWords } from "../features/learning/useLocalWords";
 import { LocalWordNotice } from "../features/learning/LocalWordNotice";
 import { lineFrameOnScreen, lineWordsOnScreen } from "../features/learning/local-words";
 import { readAloudSupported } from "../features/learning/read-aloud";
+import { primeSpeechOnGesture } from "../features/learning/ReadAloud";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import type { SeenCards } from "../features/journey/photo-cards";
 import { nightButtons, NightScreen } from "../features/journey/NightScreen";
@@ -196,6 +197,12 @@ export function GameApp({
   // 「英語を読み上げるボタンを出す」 (ReadAloud.tsx): the setting and the buttons only where the browser can read aloud.
   const [readAloudAvailable] = useState(() => readAloudSupported(typeof window === "undefined" ? undefined : window));
   const readAloud = readAloudAvailable && displaySettings.value.readAloud;
+  // 「問題が出たら英語を自動で読み上げる」 (ReadAloud.tsx useAutoReadAloud, 2026-11-14): on, the page's next tap primes the
+  // speech, so that a question can be read with no press (iOS Safari speaks with no gesture only after one).
+  const autoReadAloud = readAloudAvailable && displaySettings.value.autoReadAloud;
+  useEffect(() => (autoReadAloud ? primeSpeechOnGesture() : undefined), [autoReadAloud]);
+  // Said once under the reading settings, below the first one turned on.
+  const noEnglishVoiceJa = "英語の声がない端末では、読まないか、ほかの言葉の声で読みます。";
   // 「台詞の声を出す」 and 「声の大きさ」 for every line's `# voice:` (useVoice.ts).
   useVoiceSettings(displaySettings.value.voice, displaySettings.value.voiceVolume);
   const voicePercent = Math.round(displaySettings.value.voiceVolume * 100);
@@ -1041,6 +1048,7 @@ export function GameApp({
             key={`${game.activeBattle.runId}-${sceneEpoch}`}
             reduceMotion={displaySettings.value.reduceMotion}
             readAloud={readAloud}
+            autoReadAloud={autoReadAloud}
             introHeld={moments.titleHolding}
             learning={learning}
             onEnglish={openEnglish}
@@ -1375,10 +1383,15 @@ export function GameApp({
           </label>
           {displaySettings.value.miniGameAuto && <p className="fine-print">ミニゲームは押さずに自動で進み、場面ごとに決まった結果になります。</p>}
           {readAloudAvailable && <label className="translation-setting">
+            <input type="checkbox" checked={displaySettings.value.autoReadAloud} disabled={!!displaySettings.error}
+              onChange={(event) => displaySettings.update({ autoReadAloud: event.target.checked })} /> 問題が出たら英語を自動で読み上げる
+          </label>}
+          {autoReadAloud && <p className="fine-print">クイズの問題文を、出たときに一度読みます。答えると止まります。{noEnglishVoiceJa}</p>}
+          {readAloudAvailable && <label className="translation-setting">
             <input type="checkbox" checked={displaySettings.value.readAloud} disabled={!!displaySettings.error}
               onChange={(event) => displaySettings.update({ readAloud: event.target.checked })} /> 英語を読み上げるボタンを出す
           </label>}
-          {readAloud && <p className="fine-print">クイズと英語ノートの英文の横に出ます。英語の声がない端末では、読まないか、ほかの言葉の声で読みます。</p>}
+          {readAloud && <p className="fine-print">クイズと英語ノートの英文の横に出ます。{autoReadAloud ? "" : noEnglishVoiceJa}</p>}
           <label className="translation-setting">
             <input
               type="checkbox"

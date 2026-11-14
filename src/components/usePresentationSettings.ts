@@ -18,6 +18,11 @@ interface Preferences {
   skipUnread: boolean;
   /** 「英語を読み上げるボタンを出す」 (ReadAloud.tsx): on, a speaker button beside the quizzes' English. Off by default. */
   readAloud: boolean;
+  /**
+   * 「問題が出たら英語を自動で読み上げる」 (ReadAloud.tsx useAutoReadAloud): on, a quiz's question is read aloud once as it
+   * shows, and stops at the answer. On by default (user decision 2026-11-14).
+   */
+  autoReadAloud: boolean;
   /** 「台詞の声を出す」 (useVoice.ts): on, a line's `# voice:` plays its recording. On by default. */
   voice: boolean;
   /** 「声の大きさ」: the voices' volume, from 0 to 1 (the slider's 0 to 100 in tens). */
@@ -46,6 +51,7 @@ const defaults: Preferences = {
   autoAdvance: false,
   skipUnread: true,
   readAloud: false,
+  autoReadAloud: true,
   voice: true,
   voiceVolume: 0.8,
   se: true,
@@ -74,6 +80,7 @@ export function readPresentationSettings(raw: string | null): Preferences | null
       (item.autoAdvance !== undefined && typeof item.autoAdvance !== "boolean") ||
       (item.skipUnread !== undefined && typeof item.skipUnread !== "boolean") ||
       (item.readAloud !== undefined && typeof item.readAloud !== "boolean") ||
+      (item.autoReadAloud !== undefined && typeof item.autoReadAloud !== "boolean") ||
       (item.voice !== undefined && typeof item.voice !== "boolean") ||
       (item.voiceVolume !== undefined && !isVolume(item.voiceVolume)) ||
       (item.se !== undefined && typeof item.se !== "boolean") ||
@@ -85,7 +92,7 @@ export function readPresentationSettings(raw: string | null): Preferences | null
       (item.miniGameAuto !== undefined && typeof item.miniGameAuto !== "boolean") ||
       (item.dialogueSpeed !== undefined && ![0, 25, 45].includes(item.dialogueSpeed as number)) ||
       Object.keys(item).some((name) => !["schemaVersion", "confirmChoices", "reduceMotion", "autoSave", "dialogueSpeed", "autoAdvance", "skipUnread", "readAloud",
-        "voice", "voiceVolume", "se", "seVolume", "bgm", "bgmVolume", "ambience", "vibration", "miniGameAuto"].includes(name))
+        "autoReadAloud", "voice", "voiceVolume", "se", "seVolume", "bgm", "bgmVolume", "ambience", "vibration", "miniGameAuto"].includes(name))
     )
       return null;
     return {
@@ -97,6 +104,7 @@ export function readPresentationSettings(raw: string | null): Preferences | null
       autoAdvance: item.autoAdvance === undefined ? false : item.autoAdvance as boolean,
       skipUnread: item.skipUnread === undefined ? true : item.skipUnread as boolean,
       readAloud: item.readAloud === undefined ? false : item.readAloud as boolean,
+      autoReadAloud: item.autoReadAloud === undefined ? true : item.autoReadAloud as boolean,
       voice: item.voice === undefined ? true : item.voice as boolean,
       voiceVolume: item.voiceVolume === undefined ? 0.8 : item.voiceVolume as number,
       se: item.se === undefined ? true : item.se as boolean,
@@ -137,7 +145,7 @@ export function usePresentationSettings(storage: StorageLike = window.localStora
   );
   function update(
     change: Partial<Pick<Preferences, "confirmChoices" | "reduceMotion" | "autoSave" | "dialogueSpeed" | "autoAdvance" | "skipUnread" | "readAloud"
-      | "voice" | "voiceVolume" | "se" | "seVolume" | "bgm" | "bgmVolume" | "ambience" | "vibration" | "miniGameAuto">>,
+      | "autoReadAloud" | "voice" | "voiceVolume" | "se" | "seVolume" | "bgm" | "bgmVolume" | "ambience" | "vibration" | "miniGameAuto">>,
   ): boolean {
     if (error) return false;
     try {
