@@ -8,7 +8,8 @@ import type { MiniGameRating, MiniGameRules } from "../../contract";
 // the vendor's reach) are not counted at all: tapping along with a count is no fault. A skin may narrow the last beats'
 // windows (the play's peak; a smaller limit of misses there too), give the player a stop button (the play ends when they
 // press it), a partner who stops after a fixed beat, a limit of misses that ends the play, and a stray gauge (each stray
-// fills it, each hit empties one; full, it counts as a miss: mashing does not pay). Times are milliseconds of the host's clock from the play's start.
+// fills it, each hit empties one; full, it counts as a miss: mashing does not pay). Times are milliseconds of the host's
+// clock from the play's start.
 //
 // Audio latency (docs/13 2.11): the beats are judged against the screen's beat on the host's clock (input times through
 // clock.at(event.timeStamp)), never against the sound, and there is no per-device offset setting. A sound reaches the
