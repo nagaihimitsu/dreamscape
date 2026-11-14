@@ -11,7 +11,7 @@ import type { MiniGameStageCast } from "./ChoicePoint";
 import { browserClockDriver, createPlayClock, type HostClock } from "./clock";
 import {
   countPhase, fillNames, FINISH, finishLevel, finishWord, HOST_SOUNDS, pickLine, REACTION_EMOTION, resultButtons, resultCardDelay, vibrationDoubles, type CountPhase,
-  playLeavable, startGuardDrops, type FinishLevel, type ScreenBox, type ScreenSpan,
+  playLeavable, quitShown, startGuardDrops, type FinishLevel, type ScreenBox, type ScreenSpan,
 } from "./flow";
 import { HandDemo } from "./HandDemo";
 import { createJuice, NO_JUICE } from "./juice";
@@ -44,8 +44,6 @@ type Run = {
 };
 type Ended = {
   outcome: string; detail?: string; rating: MiniGameRating | null; word: string | null; level: FinishLevel; cardAt: number | null;
-  /** How far above the layer's bottom the card sits: over the play's main control, so a finger still tapping it hits nothing. */
-  cardBottom?: number;
   /** The play's field on the screen as the card comes (the card goes compact rather than hide too much of it). */
   field?: ScreenSpan;
 };
@@ -292,16 +290,10 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     later(MINI_GAME_FINISH_MS, () => setFinishing(false));
     later(resultCardDelay(options?.holdMs), () => {
       runRef.current?.clock.stop();
-      // The card sits just above the play's main control (the thumb's button): taps that go on there reach the dead play.
-      const primary = stage.current?.querySelector("[data-minigame-primary]")?.getBoundingClientRect();
-      const box = layer.current?.getBoundingClientRect();
-      const cardBottom = primary && box && primary.height > 0 ? Math.round(box.bottom - primary.top + 8) : undefined;
       // The play's field (an engine's first part, above its controls): the card goes compact rather than hide too much of it.
       const play = stage.current?.firstElementChild?.firstElementChild?.getBoundingClientRect();
       const field = play && play.height > 0 ? { top: Math.round(play.top), bottom: Math.round(play.bottom) } : undefined;
-      setEnded((state) => (state ? {
-        ...state, cardAt: performance.now(), ...(cardBottom !== undefined ? { cardBottom } : {}), ...(field ? { field } : {}),
-      } : state));
+      setEnded((state) => (state ? { ...state, cardAt: performance.now(), ...(field ? { field } : {}) } : state));
     });
   }, [definition, tag.id, taken, played, params, practiceParams, later]);
 
@@ -462,8 +454,9 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
     ended.rating?.scoreJa && ended.detail ? ended.detail : "", filledLine ? `「${filledLine}」` : "",
   ].filter(Boolean).join("。") : "";
   const goal = auto !== null ? "おまかせで遊びます。" : definition.goalJa ?? definition.hintJa;
-  // The real play's 「中断する」 goes once its outcome is decided (its one try spent: group1 round 2), as after its end.
-  const showQuit = playLeavable({ practice: !!run?.practice, ended: !!ended, decided: locked });
+  // The real play's 「中断する」 goes once its outcome is decided (its one try spent: group1 round 2), as after its end;
+  // practice's goes as its result card comes (the card's own buttons are what comes next).
+  const showQuit = quitShown({ practice: !!run?.practice, ended: !!ended, decided: locked, cardShown });
 
   return (
     <div className="choices minigame-ready" data-testid="minigame" data-game={tag.id}>
@@ -511,6 +504,8 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
         <section ref={layer} tabIndex={-1} role="region" aria-label={definition.titleJa} className="minigame-layer" data-testid="minigame-play"
           data-game={tag.id} data-still={still || undefined} data-outcome={ended?.outcome} data-paused={paused || undefined} data-no-advance
           data-practice={run.practice || undefined} data-counting={count && count !== "go" ? true : undefined}
+          // Over the result card the play's dead controls are hidden and the card takes their place (host.css).
+          data-result={cardShown || undefined}
           onPointerDown={onLayerPointer} onKeyDown={onLayerKey} onClick={(event) => event.stopPropagation()}>
           {tag.bg && environment.backdrop && <div className="minigame-backdrop mg-photo" aria-hidden="true">{environment.backdrop(tag.bg)}</div>}
           <header className="minigame-band">
@@ -543,7 +538,7 @@ export function MiniGameHost({ tag, ready, cast, environment, slot }: {
             <ResultCard label={label(ended.outcome)} rating={ended.rating} {...(score ? { score } : {})}
               {...(ended.rating?.scoreJa && ended.detail ? { detail: ended.detail } : {})}
               {...(outcome?.reaction ? { face: face(outcome.reaction.kind) } : {})} {...(filledLine ? { line: filledLine } : {})}
-              practice={run.practice} retry={!!(environment.retry || tag.retry)} anchor={definition.resultAnchor ?? "bottom"} {...(ended.cardBottom !== undefined ? { bottom: ended.cardBottom } : {})}
+              practice={run.practice} retry={!!(environment.retry || tag.retry)} anchor={definition.resultAnchor ?? "bottom"}
               {...(ended.field ? { field: ended.field } : {})} still={still} shownAt={ended.cardAt!}
               onNext={() => choose(ended.outcome)} onRetry={(from) => start(run.practice, true, from)} onToReal={(from) => start(false, false, from)} />
           )}

@@ -25,6 +25,12 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await ops.goTo(page, "p_duomo");
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
+  // The window's head holds the harmless 「隠す」 as in every scene; 「案内をとばす（観察へ）」 lies apart, top left under the
+  // header, so a habitual tap on the head never ends the guide (2026-11-14, the user's decision after the phone UI audit).
+  await expect(page.getByTestId("tourism-guide").getByRole("button", { name: "会話ウィンドウを隠す", exact: true })).toBeVisible();
+  const skip = page.getByTestId("tourism-skip");
+  await expect(skip).toHaveText("案内をとばす（観察へ）");
+  expect((await skip.boundingBox())!.y, "「案内をとばす」 above the window").toBeLessThan((await page.getByTestId("tourism-guide").boundingBox())!.y);
   // Over the guide the header shows the place and time and ⚙設定; the budget and AP wait for a choice (user decision 2026-11-11).
   await expect(page.getByText("現在地：ドゥオモ広場")).toBeVisible();
   await expect(page.getByLabel("残り0AP")).toBeHidden();
@@ -137,6 +143,19 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await page.emulateMedia({ reducedMotion: "reduce" });
   await playUntil(page, (state) => state.activeTourism?.phase === "exploring");
   await expect(page.getByTestId("observation-viewport")).toBeVisible();
+  // 「進む →」 is the wide part of its row (2026-11-14, the phone UI audit: it was the smallest button). A point's
+  // explanation opens as a sheet over the observation's lower part, its heading and 「説明を閉じる」 in view at once (it
+  // opened at the screen's bottom edge, in a small scroll box); 「説明を閉じる」 puts it away.
+  expect((await page.getByTestId("observation-proceed").boundingBox())!.width)
+    .toBeGreaterThan((await page.getByTestId("guide-replay").boundingBox())!.width);
+  const lowest = await page.locator('[data-testid^="hotspot-"]').evaluateAll((points) => points
+    .map((point) => ({ id: point.getAttribute("data-testid")!, y: point.getBoundingClientRect().y })).sort((a, b) => b.y - a.y)[0].id);
+  await page.getByTestId(lowest).click();
+  const detail = page.getByTestId("discovery-detail");
+  await expect(detail.getByRole("heading", { level: 3 })).toBeInViewport({ ratio: 1 });
+  await expect(detail.getByRole("button", { name: "説明を閉じる", exact: true })).toBeInViewport({ ratio: 1 });
+  await detail.getByRole("button", { name: "説明を閉じる", exact: true }).click();
+  await expect(detail).toHaveCount(0);
 
   // The guide leads into the quiz battle; every answer and line is saved before the next.
   await page.getByRole("button", { name: "進む", exact: true }).click();
@@ -177,6 +196,10 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   // The result heading shows English but is named in Japanese (OutcomeHeading; its unit test pins each word).
   await expect(page.getByTestId("battle-result").getByRole("heading", { level: 2, name: /^(全問正解|クリア|ナイストライ)$/u })).toBeVisible();
   await expect(page.getByTestId("battle-rewards")).toBeVisible();
+  // What to do next sits at the card's bottom in thumb reach (2026-11-14, the phone UI audit: it floated mid-card).
+  const resultCard = (await page.locator("#battle-content").boundingBox())!;
+  const review = (await page.getByRole("button", { name: "回答した問題を振り返る", exact: true }).boundingBox())!;
+  expect(resultCard.y + resultCard.height - (review.y + review.height), "the result's buttons at its bottom").toBeLessThan(32);
   expect(result.activeBattle!.answers.length).toBeGreaterThan(0);
   expect(result.completedEpisodeIds).toEqual(["milano_duomo_episode"]);
   expect(result.ap).toBeGreaterThan(0);
@@ -290,6 +313,10 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   const choosing = await playUntil(page, (state) => !!state.activeDate?.frame.choices.length);
   const reply = page.getByTestId("date-choice").first();
   await expect(reply).toBeEnabled();
+  // Replies, which cannot be undone, stand 8 px apart (2026-11-14, the phone UI audit: 4–5 px).
+  const replyBoxes = await page.getByTestId("date-choice").evaluateAll((items) => items.map((item) => item.getBoundingClientRect().toJSON() as DOMRect));
+  for (let index = 1; index < replyBoxes.length; index++)
+    expect(replyBoxes[index].top - replyBoxes[index - 1].bottom).toBeGreaterThanOrEqual(7.5);
   await ops.tapAt(page, await ops.sceneBackgroundPoint(page));
   expect((await readSave(page)).revision).toBe(choosing.revision);
   const replyBox = (await reply.boundingBox())!;
@@ -306,6 +333,11 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   // time then appears under the finger: neither the double tap's second tap nor a tap on a
   // destination there acts for a moment (it would start another date or a walk).
   const last = await playUntil(page, (state) => !!state.activeDate?.frame.ended);
+  // Its 「デートを終える →」 is the right-aligned end of every scene (2026-11-14, the phone UI audit: a full-width bar).
+  const finish = (await page.getByTestId("date-finish").boundingBox())!;
+  const dateWindow = (await page.getByRole("region", { name: "デートの会話" }).boundingBox())!;
+  expect(finish.width).toBeLessThan(dateWindow.width / 2);
+  expect(dateWindow.x + dateWindow.width - (finish.x + finish.width)).toBeLessThan(40);
   const end = await ops.sceneBackgroundPoint(page);
   await ops.holdClock(page);
   await ops.doubleTap(page, end);

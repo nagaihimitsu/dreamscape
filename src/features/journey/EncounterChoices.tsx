@@ -14,6 +14,11 @@ export type EncounterChoiceView = {
   unavailableReason?: string;
 };
 
+/**
+ * An encounter's English replies, laid out as a quiz's three options (2026-11-14, the phone UI audit): 「すべての訳を見る」
+ * at the top right, then a row per reply with its letter (the press that chooses it) on the left, its words, and its
+ * 「訳を見る」 on the right, 44 px high; the translation opens under the words.
+ */
 export function EncounterChoices({
   id,
   choices,
@@ -33,12 +38,14 @@ export function EncounterChoices({
   const hasPrices = choices.some((choice) => (choice.cost ?? 0) > 0);
   return (
     <div className="encounter-choices" aria-label="返答を選ぶ">
-      {choices.some((choice) => choice.translationJa) && <TranslationAll learning={learning} id={id} parts={["question", ...choices.map((_, ordinal) => choiceMark(ordinal))]} />}
+      {choices.some((choice) => choice.translationJa) && <div className="encounter-translation-tools">
+        <TranslationAll learning={learning} id={id} parts={["question", ...choices.map((_, ordinal) => choiceMark(ordinal))]} />
+      </div>}
       {choices.map((choice, ordinal) => {
         const part = choiceMark(ordinal);
         const isOpen = visible(learning, id, part);
         return (
-          <div className="encounter-choice" key={choice.index}>
+          <div className="encounter-choice" key={choice.index} data-translated={choice.translationJa ? true : undefined}>
             <button
               type="button"
               className="encounter-choice-select"
@@ -56,21 +63,22 @@ export function EncounterChoices({
                 label={`選択肢${part}`}
                 onDoubleTap={() => { if (choice.translationJa) revealTranslation(learning, id, part); }}
               />
-              <div className="encounter-choice-meta">
+              {(hasPrices || !!choice.apCost) && <div className="encounter-choice-meta">
                 {hasPrices && <span>{choice.cost ? formatMoney(choice.cost) : "無料"}</span>}
                 {choice.apCost ? <span>AP {choice.apCost}</span> : null}
-                {choice.translationJa && <button
-                  type="button"
-                  className="text-button"
-                  aria-expanded={isOpen}
-                  onClick={() => toggleTranslation(learning, id, part)}
-                >
-                  {isOpen ? "訳を閉じる" : "訳を見る"}
-                </button>}
-              </div>
-              {isOpen && choice.translationJa && <p lang="ja">{choice.translationJa}</p>}
-              {choice.unavailableReason && <p id={`${id}-${part}-reason`} className="encounter-choice-reason">{choice.unavailableReason}</p>}
+              </div>}
             </div>
+            {choice.translationJa && <button
+              type="button"
+              className="text-button encounter-choice-translate"
+              aria-expanded={isOpen}
+              aria-label={`選択肢${part}の訳を${isOpen ? "閉じる" : "見る"}`}
+              onClick={() => toggleTranslation(learning, id, part)}
+            >
+              {isOpen ? "訳を閉じる" : "訳を見る"}
+            </button>}
+            {isOpen && choice.translationJa && <p className="encounter-choice-translation" lang="ja">{choice.translationJa}</p>}
+            {choice.unavailableReason && <p id={`${id}-${part}-reason`} className="encounter-choice-reason">{choice.unavailableReason}</p>}
           </div>
         );
       })}

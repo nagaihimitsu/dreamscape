@@ -253,7 +253,7 @@ export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSki
         <div className="mg-rhythm-tap-field" onPointerDown={onPointer} aria-hidden="true">
           <Field params={params} still={still} seed={seed} cast={cast} names={names} art={art} sound={sound} vibrate={vibrate} frames={frames} />
         </div>
-        <div className="mg-rhythm-tap-controls">
+        <div className="mg-rhythm-tap-controls" data-minigame-controls>
           <div className="mg-rhythm-tap-top" data-stop={(auto === null && !!skin.stop) || undefined}>
             {auto === null && <p className="mg-rhythm-tap-hint">{skin.hintJa}</p>}
             {auto === null && skin.stop && (
