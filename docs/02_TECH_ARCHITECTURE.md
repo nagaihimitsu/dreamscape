@@ -1,7 +1,7 @@
-# 02 技術設計 / 第一候補
+# 02 技術設計
 
 ## 原則
-既存リポジトリを最初に調査。作成時にはREADMEのみ確認されていたが、変更がありうる。構成が空に近い場合、以下を第一候補とする。
+最初の計画で第一候補とした次の構成で作っている（作業の前にリポジトリを調べ、今の実装を壊さない。[AGENTS.md](../AGENTS.md)）。
 - Vite + React + TypeScript（ブラウザゲーム、スマホ優先、静的配信）。
 - `.ink`（編集用の会話原稿）、Inkコンパイラ（ビルド時）、`inkjs`（ブラウザの実行時）。**原稿の独自パーサーを作らない。**
 - `.json`（都市/観光地/クイズ/デート定義/数値バランス）。スキーマ検証（Zodなど）は必要な範囲だけ導入。
@@ -40,7 +40,8 @@ content/                      # 共通データ（全旅行編で共有：恋愛
     manifest.json             # 登録（名前・並び順 order・公開状態・都市の順序・通貨・初期値・任意のタイトルの絵）
     cities/ travel/           # 都市・都市内の地点と移動
     stories/**/*.ink quizzes/ # 会話とクイズ
-    battles/ progression/ romance/ tourism/ encounters/ learning/ presentation/  # 各カタログ（必要なものだけ）
+    battles/ progression/ romance/ tourism/ encounters/ learning/ presentation/ scenes/ glossary/  # 各カタログ（必要なものだけ）
+    tours/                    # 日帰りツアー（1ファイルに1つ。下の「ツアー」）
     public/assets/            # その旅行編だけが使う画像
 public/                       # ファビコン・アプリアイコン（npm run icons:build で生成）・manifest.webmanifest（index.html から相対パスで参照）
   assets/                     # 全旅行編で共有する画像・音声（ヒロイン、演出、共通アイコン）
@@ -81,18 +82,23 @@ tests/journeys/<journeyId>/   # その旅行編だけの内容・経路・制作
 | `battles/catalog.json` | `battles` を連結 |
 | `encounters/catalog.json` | `items`・`encounters` を連結 |
 | `encounters/entry-rules.json` | `entries` を連結 |
+| `glossary/terms.json` | `terms` を連結（任意。旅の図鑑。下の「旅の図鑑」） |
 | `learning/details.json` | `questions` をキーごとに統合（問題ごとに学習会話の `storyId` を持つ） |
 | `learning/local-words.json` | `words` を連結（任意。その国の言葉） |
 | `learning/translations.json` | `questions` をキーごとに統合 |
 | `learning/word-meanings.json` | `words` をキーごとに統合（同じ内容の重複だけ許可） |
 | `presentation/characters.json` | `characters` を連結、`battleCharacters`・`wardrobe.cities`・`wardrobe.scenes` をキーごとに統合。`expressionIds`・`wardrobe.regions`・`wardrobe.countries` は共通データのみ |
 | `presentation/dialogue-expressions.json`・`dialogue-reactions.json` | `entries` を連結 |
+| `presentation/music.json`・`ambience.json` | `sources`・`tracks` を連結。どこで何を流すか（`play`）は、統合せずに層ごとに分けて持つ（共通データの分と、各旅行編の分。下の「UX/スマホ」の音楽・環境音） |
+| `presentation/sounds.json` | `sources`・`sounds` を連結（効果音） |
 | `presentation/own-artwork.json` | `artworks` を連結。ただし各層の一覧は、その層の `public/` が配信する画像だけを扱う（下の「画像の出典と自作の絵」）。どの層にもなければエラー（共通データが持つ） |
 | `progression/journey.json` | `episodes`・`storyBattles`・`rewards` を連結 |
+| `progression/story.json` | `flags`・`people` を連結、名前付きの条件 `conditions` をキーごとに統合（作者が宣言する物語の状態） |
 | `romance/balance.json`・`romance/response_profiles.json` | ファイル全体を共通データだけが持つ |
 | `romance/date_catalog.json`・`date_destinations.json`・`effect_catalog.json` | `dates`・`destinations`・`effects` を連結 |
 | `romance/presentation.json` | `backgrounds`・`memories` をキーごとに統合。`ending`・`emotions` は共通データのみ |
 | `romance/progression.json` | `memoryCallbacks` を連結。`stages`・`confession`・`fallbackMemoryCallbackJa` は共通データのみ |
+| `scenes/catalog.json` | `scenes` を連結（場所のファイルの札に書けないこと。今は差し込みの場面の出典 `sources`） |
 | `tourism/catalog.json` | `assets`・`landmarks`・`clues` を連結 |
 | `journeys/catalog.json` | 各 `manifest.json` から生成（`schemaVersion`・`order`・`authoring` を除き、`order` 順） |
 
