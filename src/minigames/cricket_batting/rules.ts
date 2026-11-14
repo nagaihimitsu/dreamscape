@@ -6,7 +6,7 @@ import type { CRICKET_BALLS, CRICKET_LET_GO } from "./definition";
 
 // The cricket's rules (docs/13 2.4): a cue_tap skin with a script. Her first delivery comes like any ball until it lands
 // on a crack in the dusty pitch and kicks up steeply over the bat and the bricks (a bouncer: leave it, and Sonia calls it
-// dead; a swing at it only tips it high over the side wall). Then she walks back and bowls her real last ball, which changes pace where it bounces (the tag's
+// dead; a swing at it gets under it and skies it over the side wall: a big hit off the wrong ball). Then she walks back and bowls her real last ball, which changes pace where it bounces (the tag's
 // `ball`): `quick` comes flat and fast and grips the dusty pitch, holding up after the bounce (a swing timed by its first
 // part is early); `slower` is tossed up slower and skids on (a swing timed by its first part is late). One tap, the swing:
 // its time against the real ball's arrival at the bat. Nothing is random (the taped ball's wobble on screen is drawn the
@@ -59,7 +59,7 @@ export type CricketTuning = typeof CRICKET_TUNING;
 
 /** The over with a tuning: the bouncer, the real ball (its release, bounce, arrival at the bat and the bricks), and the play's script. */
 export interface CricketPlan {
-  /** The bouncer: from her hand, its bounce, over the bat, the last moment a swing can still tip it, gone over the bricks. */
+  /** The bouncer: from her hand, its bounce, over the bat, the last moment a swing can still meet it, gone over the bricks. */
   bouncer: { release: number; bounce: number; bat: number; reach: number; gone: number };
   release: number;
   bounce: number;
@@ -104,7 +104,7 @@ export function cricketCounts(plan: CricketPlan, ms: number): boolean {
   return cricketAtBouncer(plan, ms) || (ms >= plan.release && ms <= plan.script.end);
 }
 
-/** Whether a swing at `ms` is at the bouncer (the plank's edge tips it high over the side wall, however it is timed). */
+/** Whether a swing at `ms` is at the bouncer (the plank gets under it and skies it over the side wall, however it is timed). */
 export function cricketAtBouncer(plan: CricketPlan, ms: number): boolean {
   return ms >= plan.bouncer.release && ms <= plan.bouncer.reach;
 }

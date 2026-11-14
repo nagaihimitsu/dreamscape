@@ -22,7 +22,7 @@ export const CRICKET_BALLS = ["quick", "slower"] as const;
  *
  * Round 3 (rules.ts cricketPlan): her first delivery comes like any ball until it lands on a crack in the dusty pitch and
  * kicks up steeply over the bat and the bricks (a bouncer: leave it, and Sonia calls 「高い！ 今のはなし」 while she says
- * 「ごめん、もう一球！」; a swing at it only tips it high over the side wall: over_wall, ★1). She walks back and bowls her
+ * 「ごめん、もう一球！」; a swing at it skies it over the side wall: over_wall, ★1). She walks back and bowls her
  * real last ball, which changes pace where it bounces (the tag's `ball`): `quick` holds up off the pitch (a swing timed by
  * its first part is early), `slower` is tossed up and skids on (one timed by its first part is late). The meter's needle
  * follows only the real ball's travel (it waits through the bouncer, and slows or quickens at the bounce); the gold zone
