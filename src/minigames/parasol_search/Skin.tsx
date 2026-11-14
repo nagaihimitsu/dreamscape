@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { searchFieldMs } from "../engines/search/engine";
 import type { SearchFieldProps, SearchSkin, SearchView } from "../engines/search/EnginePlay";
 import { useMiniGameKit } from "../host/kit";
 import { seededRandom } from "../host/seed";
@@ -14,10 +15,11 @@ import "./skin.css";
 // among them), the near pavement under the window with five stalls. Three rounds, the three things the heroine later
 // tells the seller she saw, each a different kind of looking (round 3, 2026-11-14): her old parasol (compare: a looked-at
 // umbrella slides aside to show who is under it; hers stays aside after); then the customers come to the stalls and the
-// argument with her comes in bursts (arms flung up, its ₹ in a jagged burst), while two others throw their arms up
-// between the bursts, glad or stretching, with no ₹ (watch: the feints); then three children stop at her stall, her arm
-// hands the tomato to the one in front of it, and they walk off toward the far side as two more cross the other way (catch:
-// the tomato child turns into the side street at the round's own time, red balls and flowers about it). The hints say
+// argument with her comes in bursts (arms flung up, its ₹ in a jagged burst), while two others throw the same arms up
+// between the bursts, glad (♪!) or stretching (ん〜) in the same burst with no ₹ (watch: the feints); then three children
+// stop at her stall, her arm hands the tomato to the one in front of it, and they run off toward the far side as two more
+// cross the other way (catch, the climax: at the round's own time the tomato child reaches the side street's mouth and she
+// points it out, 「あ、行っちゃう！」; red balls and flowers about it). Once the play ends the field stays as it was. The hints say
 // what to find, never where. The window takes most of the field's height, as wide as the field allows; places are in % of the window, sizes
 // in a unit of its width (`--u`). Which stall stands where, what the customers do and what the children hold is shuffled
 // by the seed (looks only: her stall is the tag's `at`; the arguing customer is hers, the tomato child the second). With the use's art (`art.street`), that picture in place of the drawn street, cow
@@ -438,30 +440,43 @@ function Customer({ gesture, place, ring }: { gesture: ParasolGesture; place: Pl
   const reach = r * 2.4;
   // They face the stall: up from the far lane's edge toward the far pavement, down toward the near one.
   const face = place.y < ROW.road ? -1 : 1;
+  // Arms flung up toward the stall, big enough to read on a phone (2026-11-14 playtest: 1–2px lines read as nothing): a dark
+  // edge, the arm, a hand at its end. The argument and the two feints throw up the same arms; only the argument has the ₹.
+  const arm = (from: readonly [number, number], to: readonly [number, number]) => (
+    <g key={`${from.join()}-${to.join()}`}>
+      <path d={`M${from[0]} ${from[1] * face} L${to[0]} ${to[1] * face}`} stroke={OUTLINE} strokeWidth="5" strokeLinecap="round" />
+      <path d={`M${from[0]} ${from[1] * face} L${to[0]} ${to[1] * face}`} stroke="#b07a55" strokeWidth="3" strokeLinecap="round" />
+      <circle cx={to[0]} cy={to[1] * face} r="2.6" fill="#b07a55" stroke={OUTLINE} strokeWidth="0.9" />
+    </g>
+  );
+  const armsUp = [arm([-7, 1], [-15, 11]), arm([7, 1], [15, 11])];
   const arms: Record<ParasolGesture, ReactNode> = {
-    argue: <path d={`M-8 ${2 * face} l-5 ${7 * face} M8 ${2 * face} l5 ${7 * face}`} stroke={OUTLINE} strokeWidth="2.4" strokeLinecap="round" />,
+    argue: armsUp,
     // An arm out to the stall, three fingers up at its end.
     ask: <path d={`M5 ${2 * face} l3 ${7 * face} m-1.6 0 v${fixed(2.4 * face)} m1.6 ${fixed(-2.4 * face)} v${fixed(2.6 * face)} m1.6 ${fixed(-2.6 * face)} v${fixed(2.4 * face)}`}
       stroke={OUTLINE} strokeWidth="1.6" strokeLinecap="round" />,
     laugh: null,
-    wave: <path d={`M8 0 l7 ${-5 * face}`} stroke={OUTLINE} strokeWidth="2.4" strokeLinecap="round" />,
+    // One arm up and waving (a weaker feint).
+    wave: arm([7, 1], [15, 11]),
     basket: null,
-    // Both arms up as well, wide apart (glad), or close together over the head (stretching): no ₹ burst.
-    cheer: <path d={`M-8 ${1 * face} l-7 ${4 * face} M8 ${1 * face} l7 ${4 * face}`} stroke={OUTLINE} strokeWidth="2.4" strokeLinecap="round" />,
-    stretch: <path d={`M-3 ${3 * face} l-1 ${9 * face} M3 ${3 * face} l1 ${9 * face}`} stroke={OUTLINE} strokeWidth="2.4" strokeLinecap="round" />,
+    // Both arms up as well, the same as the argument's (glad), or close together over the head (stretching): no ₹.
+    cheer: armsUp,
+    stretch: [arm([-3, 2], [-4, 14]), arm([3, 2], [4, 14])],
   };
   const colours: Record<ParasolGesture, [string, string]> = {
     argue: ["#d0a03a", "#2a211c"], ask: ["#4f6fa8", "#2a211c"], laugh: ["#a8486a", "#2a211c"], wave: ["#5f8f5a", "#2a211c"], basket: ["#e2dccb", "#2a211c"],
     cheer: ["#c8642a", "#2a211c"], stretch: ["#7a6aa8", "#2a211c"],
   };
   // The argument's mark: a jagged burst with the ₹!, a size larger than the others' (2026-11-14 playtest: the marks were
-  // 10–16 px on a phone), out toward the stall.
-  const mark = gesture === "argue" ? (
+  // 10–16 px on a phone), out toward the stall. The two feints shout too, in the same burst: glad (♪!) and stretching
+  // (ん〜), in their own colour: the ₹ is what tells the argument (round 3 playtest: the feints must read as feints).
+  const burst = (ink: string, text: string) => (
     <g transform={`translate(0 ${fixed(face * r * 1.5)}) scale(1.35)`}>
-      <path d="M-9 0 L-5 -3 L-6 -8 L-1 -5 L2 -9 L4 -4 L9 -5 L6 0 L9 4 L4 4 L2 9 L-1 5 L-6 8 L-5 3 Z" fill="#fff4dc" stroke="#b2241f" strokeWidth="1.2" />
-      <text y="2.6" textAnchor="middle" fontSize="7.4" fontWeight="700" fill="#b2241f">₹!</text>
+      <path d="M-9 0 L-5 -3 L-6 -8 L-1 -5 L2 -9 L4 -4 L9 -5 L6 0 L9 4 L4 4 L2 9 L-1 5 L-6 8 L-5 3 Z" fill="#fff4dc" stroke={ink} strokeWidth="1.2" />
+      <text y="2.6" textAnchor="middle" fontSize={text.length > 2 ? 5.6 : 7.4} fontWeight="700" fill={ink}>{text}</text>
     </g>
-  ) : gesture === "ask" ? (
+  );
+  const mark = gesture === "argue" ? burst("#b2241f", "₹!") : gesture === "cheer" ? burst("#c26a12", "♪!") : gesture === "stretch" ? burst("#5f5a9a", "ん〜") : gesture === "ask" ? (
     <g transform={`translate(${fixed(r * 1.3)} ${fixed(-r * 0.9)})`}>
       <ellipse rx="6" ry="4.6" fill="#fffaf1" stroke={OUTLINE} strokeWidth="0.9" />
       <text y="2.4" textAnchor="middle" fontSize="6.4" fontWeight="700" fill={OUTLINE}>?</text>
@@ -471,14 +486,7 @@ function Customer({ gesture, place, ring }: { gesture: ParasolGesture; place: Pl
       <ellipse rx="6" ry="4.6" fill="#fffaf1" stroke={OUTLINE} strokeWidth="0.9" />
       <text y="2.4" textAnchor="middle" fontSize="6.4" fontWeight="700" fill="#a8486a">♪</text>
     </g>
-  ) : gesture === "basket" ? <circle r="6.4" fill="#c99a5a" stroke={OUTLINE} strokeWidth="1" strokeDasharray="2 1.2" /> : gesture === "cheer" ? (
-    // Glad: two small yellow sparkles by the head.
-    <g fill="#f2c230" stroke={OUTLINE} strokeWidth="0.6">
-      {[-1, 1].map((side) => (
-        <path key={side} transform={`translate(${fixed(side * r * 0.9)} ${fixed(-face * r * 0.9)})`} d="M0 -4 L1 -1 L4 0 L1 1 L0 4 L-1 1 L-4 0 L-1 -1 Z" />
-      ))}
-    </g>
-  ) : null;
+  ) : gesture === "basket" ? <circle r="6.4" fill="#c99a5a" stroke={OUTLINE} strokeWidth="1" strokeDasharray="2 1.2" /> : null;
   // The gesture (arms and mark) is its own layer: the field shows it while the customer does it (the argument's bursts,
   // the feints between them; the calmer gestures all along); between, they stand with their arms down.
   return (
@@ -647,8 +655,7 @@ function status(view: SearchView): string {
   return `${round + 1}/${view.total}　${ROUND_WORDS[round].lookedJa} ${looked}`;
 }
 
-/** Her face as the tomato child nears the side street, this long before it turns into it (round 3). */
-const LEAVING_MS = 1800;
+/** Her word as the tomato child reaches the side street's mouth (round 3's own time: she points it out). */
 const LEAVING_JA = "あ、行っちゃう！";
 /** The stop at a round's find before the last (the last one's is the host's finish). */
 const FIND_STOP_MS = 70;
@@ -697,12 +704,13 @@ const parasolFieldFor = (tuning: ParasolTuning) => function ParasolField({ param
     });
   }, [frames, still]);
   // What the play needs moves with less motion too (on the round's clock): round 2's bursts and feints, round 3's handover
-  // and the children walking off (the tomato child to the side street's mouth, where the round's own time runs out).
+  // and the children running off (the tomato child to the side street's mouth, where the round's own time runs out). Once
+  // the play has ended, all of it stays as it was at that moment (2026-11-14 playtest: the children jumped back to the
+  // round's start, and the find's ring or her point landed away from the tap).
   useEffect(() => {
-    let leaving = -1;
     return frames((ms) => {
       const shown = latestView.current;
-      const t = ms - shown.roundAt;
+      const t = searchFieldMs(shown, ms);
       if (shown.round === 1) {
         gestures.forEach((gesture, index) => customers.current[index]?.toggleAttribute("data-active", parasolActive(gesture, t, tuning)));
       }
@@ -730,14 +738,11 @@ const parasolFieldFor = (tuning: ParasolTuning) => function ParasolField({ param
         arm.style.setProperty("--reach", reach.toFixed(3));
         arm.toggleAttribute("data-on", t >= tuning.handoverMs - 500 && t < tuning.handoverMs + 250);
       }
-      if (!shown.ending && t >= tuning.walkOffMs - LEAVING_MS && leaving !== shown.roundAt) {
-        leaving = shown.roundAt;
-        kitRef.current.react("surprise", LEAVING_JA);
-      }
     });
   }, [frames, gestures, at]);
   // A look (by hand or by おまかせ): a soft tap; a find, the chime, a ring and (before the last) a short stop and stars; her
-  // pointing (「どこ？」, doing nothing, the child gone): her teasing face and a tap.
+  // pointing (「どこ？」, doing nothing): her teasing face and a tap; the tomato child at the side street's mouth: her
+  // 「あ、行っちゃう！」 as she points (the find is hers then, not the player's: 「一緒に見つけた」).
   const roundsOver = useRef(0);
   useEffect(() => {
     const last = view.last;
@@ -746,7 +751,8 @@ const parasolFieldFor = (tuning: ParasolTuning) => function ParasolField({ param
     if (!last) return;
     if (over && !view.done[view.done.length - 1].found) {
       play.current.sound(SOUNDS.look, { volume: 0.6 });
-      kitRef.current.react("tease");
+      if ("gone" in last.action) kitRef.current.react("surprise", LEAVING_JA);
+      else kitRef.current.react("tease");
       return;
     }
     if (!("spot" in last.action)) return;
@@ -827,7 +833,7 @@ const parasolFieldFor = (tuning: ParasolTuning) => function ParasolField({ param
   const childrenShown = round >= 2;
   return (
     <div className="mg-parasol-search" ref={fieldRef} data-round={Math.min(round, setup.rounds.length - 1) + 1} data-ending={ending?.kind}
-      data-art-street={art.street ? true : undefined} onPointerDown={active}>
+      data-art-street={art.street ? true : undefined} onPointerDown={() => active()}>
       <svg className="mg-parasol-search-wall" aria-hidden="true" focusable="false">
         <defs><JaliPattern id={jali} /></defs>
         <rect width="100%" height="100%" fill={`url(#${jali})`} />

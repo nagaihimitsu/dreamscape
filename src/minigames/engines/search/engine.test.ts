@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import {
-  SEARCH_AUTO_LEAD_MS, searchActionEnding, searchAutoActionAt, searchAutoRecord, searchEnding, searchFairness, searchIdleMs, searchProgress, searchRules,
+  SEARCH_AUTO_LEAD_MS, searchActionEnding, searchAutoActionAt, searchAutoRecord, searchEnding, searchFairness, searchFieldMs, searchIdleMs, searchProgress,
+  searchRoundAt, searchRules,
   searchSetupSchema, type SearchEnding, type SearchPlan, type SearchSetup,
 } from "./engine";
 
@@ -138,6 +139,23 @@ describe("the search engine", () => {
     for (const outcome of ["found", "lost"] as const) expect(rules.outcomeOf(rules.autoRecord(outcome, {}), {})).toBe(outcome);
     // A record of no shape at all reads as doing nothing (the rules never throw).
     expect(rules.outcomeOf(null as never, {})).toBe("lost");
+  });
+
+  it("times a round from when it came on show, and holds the field as it was at the play's end (2026-11-14 playtest)", () => {
+    // A find that brings the next round: it comes on show then.
+    const first = searchProgress([], rounds);
+    const second = searchProgress([{ spot: 3 }], rounds);
+    expect(searchRoundAt(first, second, 2100, 0)).toBe(2100);
+    // A wrong look changes no round.
+    expect(searchRoundAt(second, searchProgress([{ spot: 3 }, { spot: 1 }], rounds), 2600, 2100)).toBe(2100);
+    // The last round's find ends the play: its round keeps its start (the children stay where they were, not back at it).
+    const last = searchProgress([{ spot: 3 }, { spot: 0 }], rounds);
+    const ended = searchProgress([{ spot: 3 }, { spot: 0 }, { spot: 2 }], rounds);
+    expect(ended.ending?.kind).toBe("found");
+    expect(searchRoundAt(last, ended, 7400, 4000)).toBe(4000);
+    // The field's time goes on with the play, then stays at the end's moment.
+    expect(searchFieldMs({ roundAt: 4000 }, 6500)).toBe(2500);
+    expect(searchFieldMs({ roundAt: 4000, endedAt: 7400 }, 8800)).toBe(3400);
   });
 
   it("keeps its rules pure: no randomness, clock, DOM or React", () => {

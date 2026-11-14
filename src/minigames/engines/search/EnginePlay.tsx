@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type ComponentType } from "react";
 import type { MiniGamePlayProps, MiniGameRules } from "../../contract";
-import { searchAutoActionAt, searchEnding, searchIdleMs, searchProgress, type SearchAction, type SearchEnding, type SearchGame, type SearchProgress, type SearchRecord, type SearchSetup } from "./engine";
+import { searchAutoActionAt, searchEnding, searchIdleMs, searchProgress, searchRoundAt, type SearchAction, type SearchEnding, type SearchGame, type SearchProgress, type SearchRecord, type SearchSetup } from "./engine";
 import "./engine.css";
 
 // The search engine's play (docs/13 2.2): the skin's field of spots (it draws them as buttons and says which one the
@@ -22,6 +22,8 @@ export interface SearchView extends Omit<SearchProgress, "ending" | "misses" | "
   nudge: number | null;
   /** How the play ended, once it has (the field shows it until the host takes the outcome). */
   ending: SearchEnding | null;
+  /** When it ended (the host's clock): a field holds its moving things there (searchFieldMs). Absent: it goes on. */
+  endedAt?: number;
 }
 
 /** What a skin's field is given: the play's props it draws with, the setup, the view, and how to search. */
@@ -33,8 +35,12 @@ export type SearchFieldProps<Params, Outcome extends string> =
     live: boolean;
     /** Searches a spot of the round on show (nothing when the input is not taken, or the spot was searched already). */
     search(spot: number): void;
-    /** The player is looking (a drag, a scroll): the idle limit starts again. */
-    active(): void;
+    /**
+     * The player is looking (a drag, a scroll): the idle limit starts again. `searching`: the look is a search of its own
+     * (a corridor scrolled a door's width or more), so doing nothing after it is stopping to think, as after an action: a
+     * play that doing nothing ends only before the first action goes on (with the skin's hints), never to that ending.
+     */
+    active(searching?: boolean): void;
     /** Subscribes `draw` to every frame of the play (its time on the host's clock); returns the unsubscribe. */
     frames(draw: (ms: number) => void): () => void;
   };
@@ -91,6 +97,8 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
     const decided = useRef<{ outcome: Outcome } | null>(null);
     const lastActive = useRef(0);
     const lastNudge = useRef(0);
+    /** The player has searched by looking (a corridor scrolled far enough): stopping after it is not "doing nothing at all". */
+    const searchedByLooking = useRef(false);
     /** When the round on show came on show (its own time, limitMs, counts from it). */
     const roundAt = useRef(0);
     const draws = useRef(new Set<(ms: number) => void>());
@@ -109,7 +117,7 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
       const outcome = skin.rules.outcomeOf(kept, latest.current.params);
       const holdMs = skin.endDelayMs(ending, latest.current.still);
       decided.current = { outcome };
-      setView((current) => ({ ...current, ending }));
+      setView((current) => ({ ...current, ending, endedAt: ms }));
       latest.current.end(outcome, skin.detailJa?.(ending), { record: kept, holdMs });
     }, [setup]);
     const act = useCallback((action: SearchAction, ms: number) => {
@@ -123,7 +131,7 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
       if ("button" in action && !setup.buttons.some((button) => button.id === action.button)) return;
       if ("gone" in action && after.done.length === before.done.length && !after.ending) return;
       actions.current = [...actions.current, action];
-      if (after.done.length > before.done.length) roundAt.current = ms;
+      roundAt.current = searchRoundAt(before, after, ms, roundAt.current);
       setView(viewOf(after, setup.rounds.length, { action, at: ms }, latestView.current.nudge, roundAt.current));
       if (after.ending) finish({ actions: actions.current, lapse: null }, ms);
     }, [setup, finish]);
@@ -144,7 +152,7 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
           // The round on show ran out of its own time (its thing walked off): helped through, at that moment.
           else if (ms - roundAt.current >= (roundLimit() ?? Infinity)) act({ gone: true }, roundAt.current + roundLimit()!);
           else if (setup.idleMs !== null && ms - lastActive.current >= (idleNow() ?? setup.idleMs)) {
-            const acted = actions.current.some((action) => "spot" in action || "button" in action);
+            const acted = searchedByLooking.current || actions.current.some((action) => "spot" in action || "button" in action);
             // Doing nothing: the round on show is helped through (each idle limit gone by, at its own time: a frame late
             // after a long stall helps as many rounds; a round left to her shortens the next ones' where the setup says),
             // or the play ends (before the first action only, for some).
@@ -158,7 +166,7 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
           }
           // A hint once the player has acted and then done nothing for a while, again after as long, in a play that goes on.
           const nudgeMs = skin.nudgeMs;
-          if (!autoRecord && nudgeMs && !decided.current && actions.current.length
+          if (!autoRecord && nudgeMs && !decided.current && (actions.current.length || searchedByLooking.current)
             && ms - Math.max(lastActive.current, lastNudge.current) >= nudgeMs) {
             lastNudge.current = ms;
             setView((current) => ({ ...current, nudge: ms }));
@@ -178,8 +186,10 @@ export function searchPlay<Params, Outcome extends string>(skin: SearchSkin<Para
     const search = useCallback((spot: number) => {
       if (latest.current.auto === null) act({ spot }, clock.now());
     }, [act, clock]);
-    const active = useCallback(() => {
-      if (latest.current.auto === null && !decided.current) lastActive.current = clock.now();
+    const active = useCallback((searching?: boolean) => {
+      if (latest.current.auto !== null || decided.current) return;
+      lastActive.current = clock.now();
+      if (searching === true) searchedByLooking.current = true;
     }, [clock]);
     const frames = useCallback((draw: (ms: number) => void) => {
       draws.current.add(draw);

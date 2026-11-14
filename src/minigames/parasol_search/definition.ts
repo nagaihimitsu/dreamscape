@@ -8,10 +8,10 @@ import { defineMiniGame } from "../contract";
  * seller she saw (2026-11-13 playtest), each a different kind of looking (round 3, 2026-11-14: 「難しく、楽しく」):
  * compare — her old parasol (the tag's `at`: left, middle or right on the near pavement; two other old parasols and two
  * other vegetable stalls make the player look at both clues); watch — the customer arguing with her over the price, whose
- * argument comes in bursts (arms up and the ₹!) while three others throw an arm or both up about them with no ₹ (the
- * feints, the first before the first burst); catch — she hands a tomato to the child in front of her stall, and the
- * children walk off (red balls and flowers about it), the tomato child into the side street at 6.5 s (the round's own
- * time: she points it out). The hints never say where. The player taps to look (a wrong one is only looked at, and the
+ * argument comes in bursts (arms up and the ₹! burst) while three others throw an arm or both up about them, two of them
+ * shouting in the same burst with no ₹ (the feints, the first before the first burst); catch, the climax — she hands a
+ * tomato to the child in front of her stall, and the children run off (red balls and flowers about it), the tomato child
+ * to the side street's mouth at 4.3 s (the round's own time: 「あ、行っちゃう！」, she points it out). The hints never say where. The player taps to look (a wrong one is only looked at, and the
  * round goes on), or presses 「どこ？」, or does nothing until she points it out (8 s; 4 s in the rounds after one the
  * player left to her), and the next round comes either way. Outcomes: all three found by the player with at most one
  * wrong look in all (`found`), with more (`found_slow`), or any of them pointed out by her (`pointed`). ★3 asks for no
@@ -29,7 +29,7 @@ export const parasolSearch = defineMiniGame({
   id: "parasol_search",
   engine: "search",
   titleJa: "日傘を探す",
-  howToJa: "格子の窓から見下ろした通りで、古い日傘（似た傘がある）・値段で揉める客（言い争いは時々。腕を上げるだけの人もいる）・トマトをもらった子ども（通りを出ていく）を順に押して見つける。「どこ？」で彼女に教えてもらう（約10秒）",
+  howToJa: "格子の窓から見下ろした通りで、古い日傘（似た傘がある）・値段で揉める客（言い争いは時々。₹ の印が目じるしで、腕を上げて叫ぶだけの人もいる）・トマトをもらった子ども（走って通りを出ていく）を順に押して見つける。「どこ？」で彼女に教えてもらう（約10秒）",
   // The finish word for the player's own find; her face (and a word that does not get ahead of the story's next lines: the
   // narration of what the seller did, then her thought about the window) on the result card.
   outcomes: [
@@ -39,7 +39,7 @@ export const parasolSearch = defineMiniGame({
     { id: "found_slow", labelJa: "何度か見間違えて見つけた", noteJa: "3つとも自分で見つけ、違うものを2つ以上見た", finishJa: "見つけた！",
       finishTone: "good", reaction: { kind: "cheer", linesJa: ["ふう……目がまわりそう"] } },
     // Her name in the label: two women are on the scene (the heroine and the seller).
-    { id: "pointed", labelJa: "{heroine_name}と一緒に見つけた", noteJa: "どれかで「どこ？」を押したか、8秒何もしなかったか、トマトの子が通りを出ていった（6.5秒。彼女が指さして、次へ進む。任せた次からは4秒）",
+    { id: "pointed", labelJa: "{heroine_name}と一緒に見つけた", noteJa: "どれかで「どこ？」を押したか、8秒何もしなかったか、トマトの子が横道の入口まで行った（4.3秒。彼女が「あ、行っちゃう！」と指さす）。彼女が指さすと次へ進む（任せた次からは4秒）",
       finishJa: null, reaction: { kind: "tease" } },
   ],
   defaultAuto: "found",

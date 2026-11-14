@@ -217,6 +217,22 @@ export function searchProgress(actions: readonly SearchAction[], setup: SearchSe
   return progress(null);
 }
 
+/**
+ * When the round on show came on show, after an action at `ms` (the play's clock): a round that comes on show now; the
+ * play's end keeps the last round's (its field stays as it was at the end, not back at the round's start).
+ */
+export function searchRoundAt(before: Pick<SearchProgress, "done">, after: Pick<SearchProgress, "done" | "ending">, ms: number, current: number): number {
+  return after.done.length > before.done.length && !after.ending ? ms : current;
+}
+
+/**
+ * The time of the round on show that a field draws (ms from when it came on show): the play's time, held at the moment
+ * the play ended once it has (the field freezes as it was at the end while the host holds it).
+ */
+export function searchFieldMs(view: { roundAt: number; endedAt?: number }, ms: number): number {
+  return (view.endedAt ?? ms) - view.roundAt;
+}
+
 /** The idle limit now (ms): shorter once a round was left to doing nothing, where the setup says so; null: none. */
 export function searchIdleMs(progress: Pick<SearchProgress, "left">, setup: SearchSetup): number | null {
   return progress.left && setup.idleAfterLeftMs != null && setup.idleMs !== null ? setup.idleAfterLeftMs : setup.idleMs;

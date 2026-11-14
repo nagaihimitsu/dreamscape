@@ -153,10 +153,12 @@ describe("the parasol's rules", () => {
     expect(parasolRules.rate?.(all(4900), middle)).toEqual({ stars: 3, scoreJa: "4.9秒で見つけた" });
     // ★3 asks for the whole look within 5.1 s (about 3 in 10 average players: bot.test.ts); a slower clean look is ★2.
     expect(PARASOL_TUNING.starMsPerRound * 3).toBe(5100);
-    expect(parasolRules.rate?.(all(PARASOL_TUNING.starMsPerRound * 3 + 1), middle)).toEqual({ stars: 2, scoreJa: "5.1秒で見つけた" });
+    // A ★2 says what ★3 asks (2026-11-14 playtest); the tenths round up, so a time past the bar never reads as the bar.
+    expect(parasolRules.rate?.(all(PARASOL_TUNING.starMsPerRound * 3 + 1), middle)).toEqual({ stars: 2, scoreJa: "5.2秒（★3は5.1秒まで）" });
     expect(parasolRules.rate?.(all(12400), middle)?.stars).toBe(2);
     // With wrong looks, the score says how many (what took the ★ off).
-    expect(parasolRules.rate?.(all(4000, stall("far_1")), middle)).toEqual({ stars: 2, scoreJa: "4.0秒・見間違い 1" });
+    expect(parasolRules.rate?.(all(4000, stall("far_1")), middle)).toEqual({ stars: 2, scoreJa: "4.0秒・見間違い 1（★3は見間違いなし）" });
+    expect(parasolRules.rate?.(all(6000, stall("far_1")), middle)).toEqual({ stars: 2, scoreJa: "6.0秒・見間違い 1（★3は見間違いなしで5.1秒まで）" });
     expect(parasolRules.rate?.(all(4600, stall("far_1"), stall("far_2")), middle)).toEqual({ stars: 1, scoreJa: "4.6秒・見間違い 2" });
     expect(parasolRules.rate?.(all(undefined), middle)).toEqual({ stars: 2 });
     expect(parasolRules.rate?.(record([ask, ask, ask]), middle)).toBeNull();

@@ -6,9 +6,9 @@ import { searchEnding, searchRules, type SearchGame, type SearchRecord, type Sea
 // kind of looking (2026-11-14, round 3: 「難しく、楽しく」). Round 1, compare: her old parasol among the street's umbrellas
 // (the tag's `at`: one of the near pavement's stalls; two more old parasols, two more vegetable stalls). Round 2, watch:
 // the customer arguing with her over the price, among six others; the argument comes in bursts (arms up and the ₹!), and
-// two others throw their arms up between them with no ₹ (the feints). Round 3, catch: she hands a tomato to the child in
-// front of her stall, then the children walk off; the tomato child turns into the side street at `walkOffMs` (the round's
-// own time: she points it out). A wrong one is only looked at (the round goes on); 「どこ？」 or doing nothing for a while
+// two others throw their arms up between them, shouting too, with no ₹ (the feints). Round 3, catch (the climax): she
+// hands a tomato to the child in front of her stall, then the children run off; the tomato child reaches the side street
+// at `walkOffMs` (the round's own time: 「あ、行っちゃう！」, she points it out, and the find is hers). A wrong one is only looked at (the round goes on); 「どこ？」 or doing nothing for a while
 // has her point it out, and the next round comes (sooner after a round the player left to her). Outcomes: every round
 // found by the player with at most one wrong look in all (`found`), with more (`found_slow`), or any round pointed out
 // (`pointed`). The rating (★, the result card only) adds the time. The tag's `rounds` may play fewer. The bursts, feints
@@ -60,7 +60,10 @@ export type ParasolTuning = {
   feintWaveMs: number;
   feintStretchMs: number;
   feintForMs: number;
-  /** Round 3: the tomato in the child's hands, then the children walk off; the tomato child turns into the side street. */
+  /**
+   * Round 3: the tomato in the child's hands, then the children run off; the tomato child reaches the side street's mouth
+   * (she points it out: a player still looking then found it with her).
+   */
   handoverMs: number;
   walkFromMs: number;
   walkOffMs: number;
@@ -68,7 +71,9 @@ export type ParasolTuning = {
 export const PARASOL_TUNING: ParasolTuning = {
   idleMs: 8000, idleAfterLeftMs: 4000, quickMisses: 1, starMsPerRound: 1700,
   argueFirstMs: 1500, argueEveryMs: 2600, argueForMs: 1000, feintGladMs: 450, feintWaveMs: 1950, feintStretchMs: 2550, feintForMs: 900,
-  handoverMs: 800, walkFromMs: 900, walkOffMs: 6500,
+  // The climax (2026-11-14 playtest: at 6.5 s, waiting for her warning still caught the child): a beat at the stall after
+  // the handover, then they run off and the round is over at 4.3 s.
+  handoverMs: 700, walkFromMs: 1300, walkOffMs: 4300,
 };
 export const PARASOL_QUICK_MISSES = PARASOL_TUNING.quickMisses;
 export const PARASOL_IDLE_MS = PARASOL_TUNING.idleMs;
@@ -113,7 +118,7 @@ export function parasolFairness(tuning: ParasolTuning): string[] {
   if (tuning.argueFirstMs + tuning.argueForMs > tuning.idleMs) problems.push("the first burst ends after the idle limit: she points before it can be seen");
   if (tuning.feintForMs < PARASOL_MIN_TELL_MS) problems.push(`feintForMs ${tuning.feintForMs} is shorter than ${PARASOL_MIN_TELL_MS}`);
   if (tuning.handoverMs > tuning.walkFromMs) problems.push("handoverMs is after walkFromMs: the children walk off before the tomato is handed over");
-  if (tuning.walkOffMs - tuning.handoverMs < 4000) problems.push("less than 4 s between the handover and the walk-off: no time to find the tomato child");
+  if (tuning.walkOffMs - tuning.handoverMs < 3000) problems.push("less than 3 s between the handover and the walk-off: no time to find the tomato child");
   if (tuning.starMsPerRound * 3 < tuning.argueFirstMs + tuning.handoverMs + 1500) problems.push("starMsPerRound is too short for ★3 to be reachable after the first burst and the handover");
   return problems;
 }
@@ -124,7 +129,7 @@ export const parasolSetupFor = (tuning: ParasolTuning) => (params: ParasolParams
     rounds: [
       { spots: PARASOL_SPOTS.length, targets: [stall] },
       { spots: PARASOL_CUSTOMERS.length, targets: [customer] },
-      // The tomato child walks off into the side street: the round's own time.
+      // The tomato child reaches the side street's mouth (she points it out): the round's own time.
       { spots: PARASOL_CHILDREN.length, targets: [child], limitMs: Math.max(1, Math.round(tuning.walkOffMs)) },
     ].slice(0, parasolRounds(params)),
     // A wrong one is only a look: the player looks at the next.
@@ -167,17 +172,24 @@ export const parasolGame = parasolGameFor(PARASOL_TUNING);
 /**
  * How well the look went (the result card's ★ only; never saved, never Ink), in step with the outcome: found with no
  * wrong look and every round within its time ★3, found ★2, found_slow ★1, pointed out not rated. The score is the time,
- * and the wrong looks when there were any (what took a ★ off a quick find): 「4.6秒・見間違い 2」.
+ * and the wrong looks when there were any (what took a ★ off a quick find): 「4.6秒・見間違い 2」; a ★2 says what ★3
+ * asks (2026-11-14 playtest: 「5.8秒で見つけた」 did not say why it was not ★3): 「5.8秒（★3は5.1秒まで）」.
  */
 export function parasolRating(record: SearchRecord, params: ParasolParams, tuning: ParasolTuning = PARASOL_TUNING): MiniGameRating | null {
   const ending = searchEnding(record, parasolSetupFor(tuning)(params));
   if (ending.kind !== "found" || ending.helped > 0) return null;
   const endMs = typeof record?.endMs === "number" && Number.isFinite(record.endMs) ? record.endMs : null;
-  const seconds = endMs === null ? null : `${(endMs / 1000).toFixed(1)}秒`;
-  const scoreJa = seconds === null ? undefined : ending.misses > 0 ? `${seconds}・見間違い ${ending.misses}` : `${seconds}で見つけた`;
-  if (ending.misses > tuning.quickMisses) return { stars: 1, ...(scoreJa ? { scoreJa } : {}) };
-  const quick = ending.misses === 0 && endMs !== null && endMs <= tuning.starMsPerRound * parasolRounds(params);
-  return { stars: quick ? 3 : 2, ...(scoreJa ? { scoreJa } : {}) };
+  // Tenths rounded up: a time over the ★3 bar never reads as the bar itself.
+  const seconds = endMs === null ? null : `${(Math.ceil(endMs / 100) / 10).toFixed(1)}秒`;
+  const starMs = tuning.starMsPerRound * parasolRounds(params);
+  const looked = seconds === null ? undefined : ending.misses > 0 ? `${seconds}・見間違い ${ending.misses}` : `${seconds}で見つけた`;
+  if (ending.misses > tuning.quickMisses) return { stars: 1, ...(looked ? { scoreJa: looked } : {}) };
+  const inTime = endMs !== null && endMs <= starMs;
+  if (ending.misses === 0 && inTime) return { stars: 3, ...(looked ? { scoreJa: looked } : {}) };
+  const limitJa = `${(starMs / 1000).toFixed(1)}秒まで`;
+  const bar = ending.misses === 0 ? limitJa : inTime ? "見間違いなし" : `見間違いなしで${limitJa}`;
+  const scoreJa = seconds === null ? undefined : `${ending.misses > 0 ? looked : seconds}（★3は${bar}）`;
+  return { stars: 2, ...(scoreJa ? { scoreJa } : {}) };
 }
 
 export function parasolRulesFor(tuning: ParasolTuning): MiniGameRules<ParasolParams, ParasolOutcome, SearchRecord> {

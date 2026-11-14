@@ -18,8 +18,12 @@ import { parasolChildAt, parasolGestures, parasolHoldings, parasolKinds } from "
 /** How strongly a glance takes each thing for the one asked for. */
 const STALL_PULL: Record<string, number> = { chai: 0.1, old_garland: 0.1, new_greens: 0.08, greens: 0.04, black: 0.004, floral: 0.004, white: 0.004 };
 const OTHER_PULL = 0.008;
-/** A glad or stretching customer pulls a little with arms down, much more with the arms up and no ₹ (the feint); a waver half as much. */
-const FEINT_PULL: Record<string, number> = { cheer: 0.15, stretch: 0.15, wave: 0.075 };
+/**
+ * A glad or stretching customer pulls a little with arms down, much more with the arms up and its own shout in the same
+ * burst as the argument's, only no ₹ (the feint, as drawn since the 2026-11-14 playtest: big arms, a burst); a waver,
+ * one arm and no burst, less.
+ */
+const FEINT_PULL: Record<string, number> = { cheer: 0.3, stretch: 0.26, wave: 0.1 };
 const GESTURE_PULL: Record<string, number> = { cheer: 0.04, stretch: 0.04, wave: 0.02 };
 /** A red ball or a red flower taken for the tomato (the tomato's green crown tells them apart). */
 const HOLD_PULL: Record<string, number> = { red_ball: 0.08, flower: 0.06, ball: 0.02 };
