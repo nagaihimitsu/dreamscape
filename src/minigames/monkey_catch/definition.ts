@@ -15,7 +15,9 @@ export const MONKEY_THINGS = ["bottle", "glasses"] as const;
  * and snatches it back in mid-air (the catch its fall promised does not come), then opens its hand wide and lets go, a
  * second shell beside it: the shell falls straight and reaches the hands first, the thing clips the carved ledge half way
  * down (a knock, a puff of dust) and comes on a moment later. Hands closed on the second shell bounce the thing off the
- * fingers (fumbled); at the feint, on the first shell or on the snatched-back fall it falls past them (missed).
+ * fingers (fumbled); at the feint, on the first shell or on the snatched-back fall it falls past them (missed): the
+ * monkey laughs and tosses it down past them at once (its teasing over: the play ends about a second after the tap), and
+ * the card's score names the tease (「フェイントで手を閉じた」「殻で手を閉じた」「取り返された時に手を閉じた」).
  *
  * The host's flow (docs/13 2.6): practice before the real catch, no 3・2・1 (the monkey holds it out first), the play ends
  * as the thing meets the hands or goes past them (★ from the tap: clean ★3, a little off ★2, far off ★1, no tap none), and

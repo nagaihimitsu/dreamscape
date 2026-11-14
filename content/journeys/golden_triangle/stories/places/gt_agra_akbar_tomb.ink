@@ -220,7 +220,7 @@ INCLUDE modules.ink
 === gt_agra_akbar_tomb_monkey_catch_attar ===
 # speaker: narrator
 # minigame: monkey_catch auto fumbled art.wall gt_img_agra_akbar_tomb_gate
-小瓶が、壁の上から落ちてくる。考えるより先に、両手が出ていた。
+小瓶が、壁の上から落ち――かけて、猿の手に戻った。考えるより先に、両手が出ていた。
 * [落ちてきた小瓶を、両手で受け止めた # option: caught]
     # speaker: narrator
     両手の中に、ひやりとした小さな重みが収まった。指を開くと、小瓶は割れずにそこにあった。
@@ -297,7 +297,7 @@ INCLUDE modules.ink
 === gt_agra_akbar_tomb_monkey_catch_glasses ===
 # speaker: narrator
 # minigame: monkey_catch prefix glasses thing glasses auto caught art.wall gt_img_agra_akbar_tomb_gate
-サングラスが、壁の上から落ちてくる。考えるより先に、両手が出ていた。
+サングラスが、壁の上から落ち――かけて、猿の手に戻った。考えるより先に、両手が出ていた。
 * [落ちてきたサングラスを、両手で受け止めた # option: glasses_caught]
     # speaker: narrator
     両手の中に、サングラスがすとんと収まった。

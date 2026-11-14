@@ -122,6 +122,13 @@ describe("the cue_tap engine", () => {
     expect(cueTapRating(0, tuning)).toBeNull();
     const rules = cueTapRules<object, "a" | "b" | "c" | "d" | "e">(tuning, { clean: "a", early: "b", late: "c", miss: "d", none: "e" });
     for (let ms = 0; ms <= cueTapEnd(tuning) + 50; ms += 5) expect(rules.rate!(ms, {})).toEqual(cueTapRating(ms, tuning));
+    // A skin's trap names (a tap a trap fooled) take the seconds' place in the score line; the ★ stay the engine's.
+    const named = cueTapRules<object, "a" | "b" | "c" | "d" | "e">(tuning, { clean: "a", early: "b", late: "c", miss: "d", none: "e" },
+      { trapJa: (ms) => (ms < moment - 300 ? "罠で押した" : null) });
+    expect(named.rate!(moment - 400, {})).toEqual({ stars: 1, scoreJa: "罠で押した" });
+    expect(named.rate!(moment - 150, {})).toEqual(cueTapRating(moment - 150, tuning));
+    expect(named.rate!(null, {})).toBeNull();
+    expect(named.rate!(0, {})).toBeNull();
   });
 
   it("keeps its rules pure: no randomness, clock, DOM or React", () => {

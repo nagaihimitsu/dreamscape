@@ -3,7 +3,9 @@ import { CUE_TAP_PLAYERS, cueTapBotTally, cueTapShares } from "../engines/cue_ta
 import { CUE_TAP_TELL_MS, cueTapCounts, cueTapOutcome } from "../engines/cue_tap/engine";
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { monkeyCatch } from "./definition";
-import { MONKEY_END_MS, MONKEY_HANDS_MS, MONKEY_PLAN, MONKEY_RELEASE_MS, MONKEY_START_MS, MONKEY_TUNING, monkeyCatchFairness, monkeyCatchRules, monkeyPlan } from "./rules";
+import {
+  MONKEY_END_MS, MONKEY_HANDS_MS, MONKEY_PLAN, MONKEY_RELEASE_MS, MONKEY_START_MS, MONKEY_TUNING, monkeyCatchFairness, monkeyCatchRules, monkeyEarlyFall, monkeyPlan,
+} from "./rules";
 
 describeMiniGameRules(monkeyCatch, monkeyCatchRules, { records: [null, 0, MONKEY_START_MS, MONKEY_RELEASE_MS, MONKEY_END_MS, MONKEY_END_MS + 1, Number.NaN] });
 
@@ -59,11 +61,45 @@ describe("the catch's timing", () => {
     expect(monkeyCatchRules.rate!(MONKEY_HANDS_MS + 60, { thing: "glasses" })).toEqual({ stars: 3, scoreJa: "0.06秒差" });
   });
 
+  it("names the tease the hands closed at in the score line (as the cricket's 「高い球に振った」); else the seconds off", () => {
+    const score = (ms: number) => monkeyCatchRules.rate!(ms, { thing: "bottle" })?.scoreJa;
+    expect(score(feint.at)).toBe("フェイントで手を閉じた");
+    expect(score(shell.at)).toBe("殻で手を閉じた");
+    expect(score(MONKEY_PLAN.fake.drop + 200)).toBe("取り返された時に手を閉じた");
+    expect(score(snatched.at)).toBe("取り返された時に手を閉じた");
+    expect(monkeyCatchRules.rate!(second.at, { thing: "bottle" })).toEqual({ stars: 2, scoreJa: "殻で手を閉じた" });
+    // Not a tease: before the monkey moves, on the real fall, a catch, a late one.
+    expect(score(MONKEY_START_MS + 100)).toMatch(/秒早い$/u);
+    expect(score(MONKEY_RELEASE_MS + 200)).toMatch(/秒早い$/u);
+    expect(score(MONKEY_HANDS_MS)).toBe("0.00秒差");
+    expect(score(MONKEY_HANDS_MS + cleanLateMs + 20)).toMatch(/秒遅い$/u);
+  });
+
+  it("bounces it off the fingers for hands closed on the second shell, a little either side of its arrival", () => {
+    for (const off of [-80, -40, 0, 40, 80]) expect(outcome(second.at + off), `${off} ms`).toBe("fumbled");
+    expect(MONKEY_HANDS_MS - nearEarlyMs).toBeLessThanOrEqual(second.at - 80);
+  });
+
+  it("tosses the thing down at once after hands closed at a tease, so the play ends about a second after the tap", () => {
+    for (const tap of [feint.at, MONKEY_PLAN.feint + 50, shell.at, MONKEY_PLAN.fake.drop + 100, snatched.at, MONKEY_PLAN.fake.snatch + 100, MONKEY_RELEASE_MS - 10]) {
+      const fall = monkeyEarlyFall(MONKEY_PLAN, MONKEY_TUNING, tap);
+      expect(fall, String(tap)).not.toBeNull();
+      expect(fall!.drop + fall!.fallMs, String(tap)).toBeGreaterThan(tap);
+      expect(fall!.drop + fall!.fallMs - tap, String(tap)).toBeLessThanOrEqual(1100);
+    }
+    // At the feint it waits for the jerk to end; the fall it would have snatched back goes on (no snatch).
+    expect(monkeyEarlyFall(MONKEY_PLAN, MONKEY_TUNING, MONKEY_PLAN.feint + 10)!.drop).toBe(MONKEY_PLAN.feint + MONKEY_TUNING.feintMs);
+    expect(monkeyEarlyFall(MONKEY_PLAN, MONKEY_TUNING, MONKEY_PLAN.fake.drop + 100)).toEqual({ drop: MONKEY_PLAN.fake.drop, fallMs: MONKEY_TUNING.fallMs });
+    // Once it has let go for real, nothing changes.
+    expect(monkeyEarlyFall(MONKEY_PLAN, MONKEY_TUNING, MONKEY_RELEASE_MS)).toBeNull();
+  });
+
   it("is fair on a phone and in its tells, and an edited teasing that breaks them is called unfair", () => {
     expect(monkeyCatchFairness(MONKEY_TUNING)).toEqual([]);
     expect(monkeyCatchFairness({ ...MONKEY_TUNING, snatchMs: 900 }).join()).toContain("snatches the thing back after");
     expect(monkeyCatchFairness({ ...MONKEY_TUNING, ledgeMs: 600 }).join()).toContain("before where the pattern put it");
     expect(monkeyCatchFairness({ ...MONKEY_TUNING, cleanLateMs: 80 }).join()).toContain("a phone lands a tap late");
+    expect(monkeyCatchFairness({ ...MONKEY_TUNING, tossMs: 0 }).join()).toContain("too quick to see");
     expect(monkeyPlan({ ...MONKEY_TUNING, afterLedgeMs: 500 }).hands).toBe(MONKEY_HANDS_MS + 40);
   });
 });

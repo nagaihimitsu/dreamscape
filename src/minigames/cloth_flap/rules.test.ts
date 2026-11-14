@@ -40,6 +40,24 @@ describe("the flap's timing", () => {
     expect(CLOTH_PLAN.boy[CLOTH_STEPS.gold - 1].land).toBeLessThan(toFreeze.lift);
   });
 
+  it("names the fake-out a flap fell for in the score line (the early outcome's words), else the seconds off", () => {
+    const score = (ms: number) => clothFlapRules.rate!(ms, {})?.scoreJa;
+    const wary = CLOTH_PLAN.poses.find((pose) => pose.pose === "wary")!.from;
+    expect(score(wary + 50)).toBe("立ち止まりで広げた");
+    expect(score(decoy.at)).toBe("男の子で広げた");
+    expect(score(freeze.tellAt)).toBe("立ち止まりで広げた");
+    // The beat her count expected on the fourth comes as her foot reaches toward the gold step: what the player saw.
+    expect(score(freeze.at)).toBe("踏み出しかけで広げた");
+    expect(score(feint.at)).toBe("踏み出しかけで広げた");
+    expect(score(CLOTH_PLAN.moves[4].lift + 100)).toBe("踏み出しかけで広げた");
+    for (const bob of CLOTH_PLAN.bobs) expect(score(bob)).toBe("はずみの途中で広げた");
+    // Her steady first steps and the leap itself (a tap timed by the held bob lands in it) are only early: the seconds.
+    expect(score(CLOTH_START_MS + 300)).toMatch(/秒早い$/u);
+    expect(score(held.at)).toMatch(/秒早い$/u);
+    expect(score(CLOTH_NICHE_MS)).toBe("0.00秒差");
+    expect(score(CLOTH_NICHE_MS + cleanLateMs + 30)).toMatch(/秒遅い$/u);
+  });
+
   it("puts the climax last: a leap two steps down onto the gold step, off the beat of her bobs", () => {
     const leap = CLOTH_PLAN.moves.find((move) => move.kind === "leap")!;
     expect([leap.from, leap.to]).toEqual([CLOTH_STEPS.wary, CLOTH_STEPS.gold]);
