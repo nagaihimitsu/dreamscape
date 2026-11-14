@@ -23,6 +23,9 @@ export const MINI_GAME_STAR_STEP_MS = 120;
 /** The result card's score counts up from 0 over this long. */
 export const MINI_GAME_SCORE_COUNT_MS = 400;
 
+/** The host's finish does not vibrate this soon after the play's own vibration (nor the play this soon after the finish's). */
+export const MINI_GAME_VIBRATE_GAP_MS = 100;
+
 /** The heroine's reaction (react) stays this long … */
 export const MINI_GAME_REACT_MS = 900;
 /** … and comes at most once in this long (more is noise). */

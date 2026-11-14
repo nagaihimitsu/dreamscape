@@ -92,6 +92,8 @@ export function cueTapPlay<Params, Outcome extends string>(skin: CueTapSkin<Para
       const impactAt = Math.min(endAt, skin.impactAt?.({ outcome: result, tapMs }, less) ?? endAt);
       decided.current = { tapMs, outcome: result, impactAt, endAt };
       setOutcome(result);
+      // The field still shows what the tap did: the real play's one try is spent (no leaving it now).
+      latest.current.decided();
     }, []);
     // A tap before the thing starts coming is turned away: it decides nothing, and the next tap still counts. The host's
     // light refusal (a small wiggle of the button and its sound) says so; never a penalty.

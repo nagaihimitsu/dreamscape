@@ -1,6 +1,37 @@
 import { describe, expect, it } from "vitest";
-import { burstAngles, countedScore, countPhase, fillNames, FINISH, finishLevel, finishWord, hitStopMs, pickLine, RESULT_CARD_MAX_COVER, RESULT_CARD_SHORT_PX, resultButtons, resultCardCompact, resultCardDelay } from "./flow";
-import { MINI_GAME_COUNT_MS, MINI_GAME_FINISH_MS, MINI_GAME_GO_MS } from "./timing";
+import soundData from "../../../content/presentation/sounds.json";
+import {
+  burstAngles, countedScore, countPhase, fillNames, FINISH, finishLevel, finishWord, hitStopMs, HOST_SOUNDS, pickLine, RESULT_CARD_MAX_COVER, RESULT_CARD_SHORT_PX,
+  playLeavable, resultButtons, resultCardCompact, resultCardDelay, START_BUTTON_MARGIN_PX, startGuardDrops, vibrationDoubles,
+} from "./flow";
+import { MINI_GAME_COUNT_MS, MINI_GAME_FINISH_MS, MINI_GAME_GO_MS, MINI_GAME_START_GUARD_MS, MINI_GAME_VIBRATE_GAP_MS } from "./timing";
+
+describe("the host's start guard", () => {
+  const startBox = { left: 100, top: 700, right: 300, bottom: 748 };
+  it("drops every press just after a start without the count, but in a drag game only one on the start button (group2 N10)", () => {
+    expect(startGuardDrops({ sinceMs: 100, drag: false, point: { x: 10, y: 10 }, startBox })).toBe(true);
+    expect(startGuardDrops({ sinceMs: MINI_GAME_START_GUARD_MS, drag: false, point: { x: 200, y: 720 }, startBox })).toBe(false);
+    // A drag game: the first stroke on the dough goes through; the start button's second tap does not.
+    expect(startGuardDrops({ sinceMs: 150, drag: true, point: { x: 200, y: 300 }, startBox })).toBe(false);
+    expect(startGuardDrops({ sinceMs: 150, drag: true, point: { x: 200, y: 720 }, startBox })).toBe(true);
+    expect(startGuardDrops({ sinceMs: 150, drag: true, point: { x: 100 - START_BUTTON_MARGIN_PX, y: 700 - START_BUTTON_MARGIN_PX }, startBox })).toBe(true);
+    expect(startGuardDrops({ sinceMs: 150, drag: true, point: { x: 100 - START_BUTTON_MARGIN_PX - 1, y: 720 }, startBox })).toBe(false);
+    // A key's press has no place: by the time alone; nor without the button's place.
+    expect(startGuardDrops({ sinceMs: 150, drag: true, point: null, startBox })).toBe(true);
+    expect(startGuardDrops({ sinceMs: 150, drag: true, point: { x: 200, y: 300 }, startBox: null })).toBe(true);
+    expect(startGuardDrops({ sinceMs: MINI_GAME_START_GUARD_MS, drag: true, point: { x: 200, y: 720 }, startBox })).toBe(false);
+  });
+});
+
+describe("leaving a play", () => {
+  it("leaves practice any time, the real play only until its outcome is decided (its one try spent) or it has ended", () => {
+    expect(playLeavable({ practice: false, ended: false, decided: false })).toBe(true);
+    expect(playLeavable({ practice: false, ended: false, decided: true })).toBe(false);
+    expect(playLeavable({ practice: false, ended: true, decided: true })).toBe(false);
+    expect(playLeavable({ practice: true, ended: false, decided: true })).toBe(true);
+    expect(playLeavable({ practice: true, ended: true, decided: true })).toBe(true);
+  });
+});
 
 describe("the host's count", () => {
   it("counts 3・2・1 through the lead (about 1.2 s with スタート), then shows スタート！ for a moment as the clock runs", () => {
@@ -24,6 +55,30 @@ describe("the host's finish", () => {
     expect(finishLevel(null)).toBe("plain");
     expect(FINISH.great.stopMs).toBeGreaterThan(FINISH.good.stopMs);
     expect(FINISH.good.stopMs).toBeGreaterThan(FINISH.plain.stopMs);
+  });
+
+  it("takes the outcome's own tone where its word and its ★ disagree (group3 全体1, group2 N8)", () => {
+    // 「踊りきった！」 on ★1 is a good end; 「フライング！」 on ★2 the end whistle; a hole a thud.
+    expect(finishLevel({ stars: 1 }, "good")).toBe("good");
+    expect(finishLevel({ stars: 2 }, "plain")).toBe("plain");
+    expect(finishLevel(null, "oops")).toBe("oops");
+    expect(FINISH.good.sound).toBe(FINISH.great.sound);
+    expect(new Set([FINISH.good.sound, FINISH.plain.sound, FINISH.oops.sound]).size).toBe(3);
+    expect([FINISH.great.vibration, FINISH.good.vibration]).toEqual(["success", "success"]);
+    expect([FINISH.plain.vibration, FINISH.oops.vibration]).toEqual(["fail", "fail"]);
+  });
+
+  it("rings only registered sounds, which load as the instruction card shows (group2 N16)", () => {
+    const registered = new Set(soundData.sounds.map((sound) => sound.id));
+    for (const id of HOST_SOUNDS) expect(registered, id).toContain(id);
+    for (const finish of Object.values(FINISH)) expect(HOST_SOUNDS).toContain(finish.sound);
+  });
+
+  it("does not vibrate twice for one moment: the finish not just after the play's own, nor the play just after the finish's (group2 N11)", () => {
+    expect(vibrationDoubles(Number.NEGATIVE_INFINITY, 0)).toBe(false);
+    expect(vibrationDoubles(1000, 1001)).toBe(true);
+    expect(vibrationDoubles(1000, 1000 + MINI_GAME_VIBRATE_GAP_MS - 1)).toBe(true);
+    expect(vibrationDoubles(1000, 1000 + MINI_GAME_VIBRATE_GAP_MS)).toBe(false);
   });
 
   it("says 「そこまで！」 unless the outcome has its own word, and nothing when it says null", () => {

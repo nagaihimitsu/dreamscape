@@ -1,6 +1,7 @@
-import type { MiniGameRating, MiniGameReaction } from "../contract";
+import type { MiniGameFinishTone, MiniGameRating, MiniGameReaction } from "../contract";
+import type { VibrationKind } from "../../audio/vibration";
 import { seededRandom } from "./seed";
-import { MINI_GAME_COUNT_STEP_MS, MINI_GAME_FINISH_MS, MINI_GAME_GO_MS } from "./timing";
+import { MINI_GAME_COUNT_STEP_MS, MINI_GAME_FINISH_MS, MINI_GAME_GO_MS, MINI_GAME_START_GUARD_MS, MINI_GAME_VIBRATE_GAP_MS } from "./timing";
 
 // The host's flow as pure functions (docs/13 2.6): the count before a play, the finish's strength, the result card's
 // buttons and its counted score, the heroine's line and face. MiniGameHost.tsx draws them; the tests read them here.
@@ -16,17 +17,34 @@ export function countPhase(leadLeft: number, playMs: number): CountPhase {
   return playMs < MINI_GAME_GO_MS ? "go" : null;
 }
 
-/** The finish's strength: by the play's ★ when it is rated (3: great, 2: good, 1: plain), plain when it is not. */
-export type FinishLevel = "great" | "good" | "plain";
-export const finishLevel = (rating: MiniGameRating | null | undefined): FinishLevel =>
-  rating?.stars === 3 ? "great" : rating?.stars === 2 ? "good" : "plain";
+/**
+ * The finish's tone: the outcome's own (`finishTone`), else by the play's ★ when it is rated (3: great, 2: good, 1:
+ * plain), plain when it is not.
+ */
+export type FinishLevel = MiniGameFinishTone;
+export const finishLevel = (rating: MiniGameRating | null | undefined, tone?: MiniGameFinishTone): FinishLevel =>
+  tone ?? (rating?.stars === 3 ? "great" : rating?.stars === 2 ? "good" : "plain");
 
-/** The finish of each strength (group3 6.4): its stop, its flashes and its sound (content/presentation/sounds.json). */
-export const FINISH: Readonly<Record<FinishLevel, { stopMs: number; flashes: number; sound: string }>> = {
-  great: { stopMs: 120, flashes: 2, sound: "quiz_correct" },
-  good: { stopMs: 90, flashes: 1, sound: "quiz_correct" },
-  plain: { stopMs: 60, flashes: 1, sound: "whistle" },
+/**
+ * The finish of each tone (group3 6.4): its stop, its flashes, its sound (content/presentation/sounds.json) and its
+ * vibration. great and good ring the success chime; plain the end whistle (a near miss, a funny shape, time up); oops a
+ * thud (a hole, a stumble).
+ */
+export const FINISH: Readonly<Record<FinishLevel, { stopMs: number; flashes: number; sound: string; vibration: VibrationKind }>> = {
+  great: { stopMs: 120, flashes: 2, sound: "quiz_correct", vibration: "success" },
+  good: { stopMs: 90, flashes: 1, sound: "quiz_correct", vibration: "success" },
+  plain: { stopMs: 60, flashes: 1, sound: "whistle", vibration: "fail" },
+  oops: { stopMs: 80, flashes: 1, sound: "impact_thud", vibration: "fail" },
 };
+
+/** Every sound the host's finish and result card may ring (preloaded as the instruction card shows: group2 N16). */
+export const HOST_SOUNDS: readonly string[] = [...new Set([...Object.values(FINISH).map((finish) => finish.sound), "ui_tap", "ui_denied", "quiz_perfect", "applause"])];
+
+/**
+ * Whether a vibration now would double one just felt (group2 N11): the host's finish does not vibrate when the play
+ * vibrated within MINI_GAME_VIBRATE_GAP_MS, nor the play just after the finish did.
+ */
+export const vibrationDoubles = (lastAt: number, now: number): boolean => now - lastAt < MINI_GAME_VIBRATE_GAP_MS;
 
 /** The finish word: the outcome's own, 「そこまで！」 when it has none, nothing when it says null. */
 export const finishWord = (finishJa: string | null | undefined): string | null => (finishJa === null ? null : finishJa ?? "そこまで！");
@@ -114,4 +132,31 @@ export function burstAngles(count: number, seed: number): number[] {
   const random = seededRandom(seed);
   const offset = random() * 360;
   return Array.from({ length: count }, (_, index) => offset + (360 / count) * index + (random() * 30 - 15));
+}
+
+/**
+ * Whether 「中断する」 and Esc may leave the play now: practice always; the real play only until its outcome is decided
+ * (the deciding tap, though the field still shows what it did) or it has ended. Its one try is spent then (group1 round
+ * 2: a quit between the deciding tap and the result redid the story's one real play).
+ */
+export const playLeavable = ({ practice, ended, decided }: { practice: boolean; ended: boolean; decided: boolean }): boolean =>
+  practice || (!ended && !decided);
+
+/** A box on the screen (client pixels). */
+export interface ScreenBox { left: number; top: number; right: number; bottom: number }
+/** A press this close around the start button counts as on it (a second tap lands a little off the first). */
+export const START_BUTTON_MARGIN_PX = 12;
+
+/**
+ * Whether a press this soon after a play started without the host's count is the start button's second tap (dropped):
+ * any press within MINI_GAME_START_GUARD_MS; but in a drag game, whose first stroke may begin at once (group2 N10), only
+ * one that lands on the start button (a key's press, which has no place, still by the time alone).
+ */
+export function startGuardDrops({ sinceMs, drag, point, startBox }: {
+  sinceMs: number; drag: boolean; point?: { x: number; y: number } | null; startBox?: ScreenBox | null;
+}): boolean {
+  if (sinceMs >= MINI_GAME_START_GUARD_MS) return false;
+  if (!drag || !point || !startBox) return true;
+  const margin = START_BUTTON_MARGIN_PX;
+  return point.x >= startBox.left - margin && point.x <= startBox.right + margin && point.y >= startBox.top - margin && point.y <= startBox.bottom + margin;
 }

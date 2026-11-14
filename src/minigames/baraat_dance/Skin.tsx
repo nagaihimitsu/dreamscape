@@ -3,7 +3,7 @@ import { useMiniGameKit } from "../host/kit";
 import { seededRandom } from "../host/seed";
 import type { RhythmTapFieldProps, RhythmTapSkin } from "../engines/rhythm_tap/EnginePlay";
 import { rhythmTapPerfect } from "../engines/rhythm_tap/engine";
-import { BARAAT_BEATS, BARAAT_BIG_BEATS, BARAAT_GAME, baraatExtraTaps, type BaraatGame, type BaraatOutcome, type BaraatParams } from "./rules";
+import { BARAAT_BEATS, BARAAT_BIG_BEATS, BARAAT_GAME, baraatExtraTaps, baraatFeet, type BaraatGame, type BaraatOutcome, type BaraatParams } from "./rules";
 import "./skin.css";
 
 // The baraat dance's field (a rhythm_tap skin): the procession's street over the scene, warm with the procession's lights;
@@ -11,7 +11,9 @@ import "./skin.css";
 // count-in's four numbered on its face, the last two beats bigger); Kamla and the heroine dancing to it, a sway one way
 // then the other with a dip on each beat; the player's raised hands going up with each tap (clapping along with the
 // count-in too); a beat met rings the bangles and bursts over the drum, with a word for how (ぴったり, いいね) and the run
-// of beats met from four on; 「テンポが上がる！」 as the band speeds up (her face says it too). With the use's art
+// of beats met from four on; 「テンポが上がる！」 as the band speeds up (her face says it too). Mashing shows as it happens
+// (group2 N6): from a beat's second extra tap, a beat met rings and bursts nothing, the hands go askew, and the dancers
+// stagger into each other for a moment with 「もつれそう」 (rules.ts baraatFeet). With the use's art
 // (`art.street`, `art.drummer`, `art.kamla`, `art.heroine`) those pictures take the drawn ones' places (Kamla's falls
 // back to the speaker's figure).
 
@@ -19,6 +21,9 @@ import "./skin.css";
 const BEAT_MS = 140;
 const HANDS_MS = 180;
 const GRADE_MS = 360;
+/** The dancers' stagger as the feet tangle, and its word (a little longer, to be read). */
+const TANGLE_MS = 140;
+const TANGLE_WORD_MS = 420;
 /** The run of beats met that the field counts aloud (「4コンボ」). */
 const RUN_FROM = 4;
 /** The procession's lights over the dark street: how many. */
@@ -66,6 +71,8 @@ export function baraatSkinFor(game: BaraatGame): RhythmTapSkin<BaraatParams, Bar
     const [hands, setHands] = useState<"down" | "met" | "off">("down");
     const [grade, setGrade] = useState<{ kind: "perfect" | "good"; run: number; at: number } | null>(null);
     const [faster, setFaster] = useState(false);
+    const [tangle, setTangle] = useState<"l" | "r" | null>(null);
+    const [tangleWord, setTangleWord] = useState(false);
     const [outcome, setOutcome] = useState<BaraatOutcome | null>(null);
     const drumFace = useRef<HTMLSpanElement>(null);
     const kit = useMiniGameKit();
@@ -90,6 +97,9 @@ export function baraatSkinFor(game: BaraatGame): RhythmTapSkin<BaraatParams, Bar
       let handsMet = false;
       let gradeAt = Number.NEGATIVE_INFINITY;
       let strays = 0;
+      /** When the dancers last staggered (the feet tangling), and which way. */
+      let tangledAt = Number.NEGATIVE_INFINITY;
+      let tangleSide: "l" | "r" = "r";
       let warned = false;
       /** The run of beats met with no tap beside them (a missed beat or an extra tap ends it: mashing is no run). */
       let run = 0;
@@ -111,16 +121,28 @@ export function baraatSkinFor(game: BaraatGame): RhythmTapSkin<BaraatParams, Bar
           warned = true;
           live.current.kit.react("surprise", HER_FASTER);
         }
-        // The player's hands: up with each tap (the count-in's clapping too), lit when it met a beat.
+        // The player's hands: up with each tap (the count-in's clapping too), lit when it met a beat. A beat's second extra
+        // tap (and on) tangles the feet: the dancers stagger.
+        const feet = baraatFeet(record.taps, ms, tuning, numbers.tangleExtra);
         if (record.taps.length > taps) {
           taps = record.taps.length;
           handsAt = ms;
           handsMet = summary.hits > hits;
+          if (feet.extra >= numbers.tangleExtra && playing) {
+            tangledAt = ms;
+            tangleSide = tangleSide === "l" ? "r" : "l";
+          }
         }
         if (summary.strays > strays || summary.streak === 0) run = 0;
         strays = summary.strays;
         // A beat met: the bangles, a burst over the drum (a star right on it) and the drum pressed; the last big ones shake.
-        if (summary.hits > hits) {
+        // Met while the feet tangle (mashing): none of it, and the hands askew.
+        const tangled = summary.hits > hits && feet.tangled;
+        if (tangled) {
+          run = 0;
+          handsMet = false;
+        }
+        if (summary.hits > hits && !tangled) {
           run += summary.hits - hits;
           live.current.sound(SOUNDS.hit);
           const offset = summary.offsets[summary.offsets.length - 1];
@@ -138,13 +160,15 @@ export function baraatSkinFor(game: BaraatGame): RhythmTapSkin<BaraatParams, Bar
         hits = summary.hits;
         if (ms - gradeAt >= GRADE_MS) setGrade(null);
         setHands(ms - handsAt < HANDS_MS ? (handsMet ? "met" : "off") : "down");
+        setTangle(ms - tangledAt < TANGLE_MS && playing ? tangleSide : null);
+        setTangleWord(ms - tangledAt < TANGLE_WORD_MS && playing);
         setOutcome(decided);
       });
     }, [frames]);
 
     return (
       <div className="mg-baraat-dance" data-art-street={art.street ? true : undefined} data-beat={beat || undefined} data-step={step}
-        data-big={big || undefined} data-outcome={outcome ?? undefined}>
+        data-big={big || undefined} data-tangle={tangle ?? undefined} data-outcome={outcome ?? undefined}>
         {art.street && <img className="mg-baraat-dance-backdrop mg-photo" src={art.street} alt="" draggable={false} />}
         <span className="mg-baraat-dance-lights" aria-hidden="true">
           {lights.map((light, index) => (
@@ -169,6 +193,7 @@ export function baraatSkinFor(game: BaraatGame): RhythmTapSkin<BaraatParams, Bar
           </span>
         )}
         {faster && <span className="mg-baraat-dance-faster">テンポが上がる！</span>}
+        {tangleWord && <span className="mg-baraat-dance-tangle" data-testid="baraat-tangle">もつれそう</span>}
       </div>
     );
   }

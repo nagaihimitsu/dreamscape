@@ -30,11 +30,23 @@ export interface MiniGameOutcomeDefinition<Outcome extends string = string> {
    */
   finishJa?: string | null;
   /**
+   * The finish's tone (docs/13 2.6: its stop, flash, sound and vibration) where the word and the ★ disagree; from the ★
+   * when left out (★3 great, ★2 good, ★1 or unrated plain). A good word on a low ★ (「踊りきった！」 ★1) takes "good"; a
+   * mishap ("oops": 「ぷすっ！」「おっとっと！」) or a near miss on a ★2 (「フライング！」: "plain") takes the one its word says.
+   */
+  finishTone?: MiniGameFinishTone;
+  /**
    * The heroine's reaction on the result card: her face (`kind`) and one of `linesJa` chosen by the play's seed
    * ({heroine_name} and {player_name} are filled in). Read the character bible first (AGENTS). None: no face on the card.
    */
   reaction?: { kind: MiniGameReaction; linesJa?: readonly string[] };
 }
+
+/**
+ * The finish's tone (host/flow.ts FINISH): a big success (great), a success (good), a plain end (plain: the end
+ * whistle), or a mishap (oops: a thud).
+ */
+export type MiniGameFinishTone = "great" | "good" | "plain" | "oops";
 
 /** How a game is played, for the hand on the instruction card (host/HandDemo.tsx). */
 export type MiniGameControl = "tap" | "tap-target" | "drag" | "timing" | "rhythm";
@@ -138,6 +150,12 @@ export interface MiniGamePlayProps<Params = unknown, Outcome extends string = st
   /** A short text in the host's top band (「2/3」「のこり8秒」), read out politely. */
   status(textJa: string): void;
   /**
+   * The outcome is decided before `end` (a tap whose result the field still shows: the ball on its way): from now on the
+   * real play can no longer be left (「中断する」 hides, Esc stays), since its one try is spent; `end` does the same. A play
+   * that decides as it ends need not call it. Practice can always be left.
+   */
+  decided(): void;
+  /**
    * The play is over: the host's finish (stop, flash, 「そこまで！」), then the result card (the outcome's label, `detailJa`
    * or the rating's score, ★ from rules.rate of `options.record`), then its choice. Call it at the moment the outcome is
    * decided, with `holdMs` for what the field still shows; input to the play is dropped from then on.
@@ -199,6 +217,13 @@ export interface MiniGameModule<Params = unknown, Outcome extends string = strin
   /** The same play and rules with another tuning (Debug's room only; never in a story). */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   retune?(tuning: any): Pick<MiniGameModule<Params, Outcome>, "Play" | "rules">;
+  /**
+   * Why a tuning would make the play unfair on a phone (its engine's fairness checks of what `retune` builds from it:
+   * windows narrower than a tap's lag, a beat inside the start's guard…); none: fair. Debug's room lists them as the
+   * numbers change.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  fairness?(tuning: any): readonly string[];
 }
 
 /** A game's definition (docs/13 2.3): light, in the title page's load. */
@@ -245,6 +270,8 @@ export interface MiniGameDefinition<Params = unknown, Outcome extends string = s
   music?: MiniGameMusic;
   /** The result card sits low (the default, over the controls) or high, to keep the field's key picture in view. */
   resultAnchor?: "top" | "bottom";
+  /** The finish word shows in the middle of the field (the default) or high under the band, off a key picture in the middle. */
+  finishAnchor?: "top" | "center";
   /** Played against time: a hidden page pauses it with 「続ける」. */
   timed: boolean;
   /** How to play with keys; null: not by keys (the host says ⚙設定's おまかせ is there). */

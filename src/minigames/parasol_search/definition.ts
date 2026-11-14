@@ -31,8 +31,9 @@ export const parasolSearch = defineMiniGame({
   outcomes: [
     { id: "found", labelJa: "すぐに見つけた", noteJa: "3つとも自分で見つけ、違うものを見たのは合わせて1つまで", finishJa: "見つけた！",
       reaction: { kind: "cheer", linesJa: ["ちゃんと、見えたね"] } },
+    // Found all the same (★1 for the wrong looks): 「見つけた！」 finishes as a good end, not the whistle (docs/13 2.6).
     { id: "found_slow", labelJa: "何度か見間違えて見つけた", noteJa: "3つとも自分で見つけ、違うものを2つ以上見た", finishJa: "見つけた！",
-      reaction: { kind: "cheer", linesJa: ["ふう……目がまわりそう"] } },
+      finishTone: "good", reaction: { kind: "cheer", linesJa: ["ふう……目がまわりそう"] } },
     // Her name in the label: two women are on the scene (the heroine and the seller).
     { id: "pointed", labelJa: "{heroine_name}と一緒に見つけた", noteJa: "どれかで「どこ？」を押したか、8秒何もしなかった（彼女が指さして、次へ進む。任せた次からは4秒）",
       finishJa: null, reaction: { kind: "tease" } },

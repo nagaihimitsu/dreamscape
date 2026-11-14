@@ -150,6 +150,29 @@
 .mg-baraat-dance[data-beat][data-step="l"] .mg-baraat-dance-heroine > span { transform: translateY(3%) scaleY(0.96) rotate(-3deg); }
 .mg-baraat-dance[data-beat][data-step="r"] .mg-baraat-dance-heroine > span { transform: translateY(3%) scaleY(0.96) rotate(3deg); }
 .minigame-layer[data-still] .mg-baraat-dance .mg-baraat-dance-dancer > span { transform: none; }
+/* The feet tangling (mashing, group2 N6): the two stagger into each other for a moment, ±10° and a little down (not with
+   less motion: the word says it). */
+.minigame-layer:not([data-still]) .mg-baraat-dance[data-tangle="l"] .mg-baraat-dance-kamla > span { transform: translateY(3%) rotate(10deg); }
+.minigame-layer:not([data-still]) .mg-baraat-dance[data-tangle="l"] .mg-baraat-dance-heroine > span { transform: translateY(3%) rotate(-10deg); }
+.minigame-layer:not([data-still]) .mg-baraat-dance[data-tangle="r"] .mg-baraat-dance-kamla > span { transform: translateY(3%) rotate(-10deg); }
+.minigame-layer:not([data-still]) .mg-baraat-dance[data-tangle="r"] .mg-baraat-dance-heroine > span { transform: translateY(3%) rotate(10deg); }
+/* 「もつれそう」: small, between the dancers' heads (the band's speed-up word stays above it). */
+.mg-baraat-dance-tangle {
+  position: absolute;
+  z-index: 5;
+  left: 54%;
+  top: 27%;
+  padding: 2px 10px;
+  border-radius: 12px;
+  background: rgba(42, 26, 12, 0.82);
+  color: #fffaf1;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  animation: mg-baraat-dance-grade 200ms ease-out both;
+  pointer-events: none;
+}
 /* The player's hands, from the bottom right of the middle: up with a tap, lit gold when it met the beat, askew when not. */
 .mg-baraat-dance-hands {
   position: absolute;

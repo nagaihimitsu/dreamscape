@@ -47,6 +47,11 @@ export interface RhythmTapSkin<Params, Outcome extends string> {
   stop: { labelJa: string; hintJa: string } | null;
   /** A count-in's beats (not to tap): the lane shows them as hollow crosses coming to the ring. */
   countIn?: readonly number[];
+  /**
+   * Before this moment a tap is no tap: turned away with the host's light refusal and left out of the record (her breath
+   * before her count). None: every tap is recorded (without a count-in, one before the first window is turned away too).
+   */
+  ignoreBeforeMs?: number;
   /** The partner's stop on the lane: a flag (`flagJa`, a word or two) that meets the ring when they stop; the stop button lights then. */
   partner?: { atMs: number; flagJa: string };
   /** The host's top band as the play goes (「12個目」). */
@@ -114,6 +119,10 @@ export function rhythmTapPlay<Params, Outcome extends string>(skin: RhythmTapSki
     const playing = () => latest.current.auto === null && !decided.current && stopMs.current === null;
     const tap = (ms: number) => {
       if (!playing() || ms < 0) return;
+      if (skin.ignoreBeforeMs !== undefined && ms < skin.ignoreBeforeMs) {
+        latest.current.juice.denied(actionButton.current);
+        return;
+      }
       taps.current.push(ms);
       // Before the first beat's window the tap counts for nothing (rhythmTapJudge). With a count-in it is clapping along
       // (the skin's field shows it); without one, the button turns it away (a press never does nothing at all).

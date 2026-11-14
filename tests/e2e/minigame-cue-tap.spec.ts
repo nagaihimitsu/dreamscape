@@ -1,8 +1,8 @@
 import { MINI_GAME_START_GUARD_MS } from "../../src/minigames/host/timing";
 import { expect, test, tier, type Page } from "./helpers";
 
-// The cue_tap engine's real input (docs/13 6.4), in Debug's 「ミニゲームの見本」: a tap before the thing starts coming (her
-// breath before 「せー」, the walker still standing at the top of the stairs) does not count. The play goes on, the button
+// The cue_tap engine's real input (docs/13 6.4), in Debug's 「ミニゲームの見本」: a tap before the thing starts coming (the
+// walker still standing at the top of the stairs) does not count. The play goes on, the button
 // still takes a tap, and the next tap decides (a play the story cannot retry is never decided by a tap made too soon).
 // Taps by touch, as on a phone (a pointerdown and then a click). Timing margins of hundreds of milliseconds: no game is
 // played to a precise moment here (the rules' tests do that).
@@ -10,7 +10,6 @@ import { expect, test, tier, type Page } from "./helpers";
 /** Each game: its lead (taps before it do not count), and the outcome of a play without a tap that counts. */
 const GAMES = [
   { id: "cloth_flap", leadMs: 900, none: "frozen" },
-  { id: "say_together", leadMs: 1000, none: "silent" },
 ] as const;
 
 async function openGame(page: Page, id: string): Promise<void> {

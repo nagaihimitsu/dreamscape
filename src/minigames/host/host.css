@@ -180,6 +180,8 @@
 .minigame-layer .minigame-finish { font-size: 40px; animation: minigame-finish-in 160ms var(--ease-out, ease-out) both; }
 .minigame-layer .minigame-finish[data-level="great"] { color: var(--ds-marker-selected); }
 @keyframes minigame-finish-in { from { opacity: 0; transform: translateY(-50%) scale(1.4); } }
+/* High, under the band (finishAnchor "top"): off a key picture in the middle of the field (her scream). */
+.minigame-layer .minigame-finish[data-anchor="top"] { top: 22%; }
 
 /* The heroine's quick reaction: her face (64 px) and a short bubble, under the band on the left, for 0.9 s. */
 .minigame-react {

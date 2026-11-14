@@ -5,7 +5,8 @@ import { defineMiniGame } from "../contract";
  * `baraat_dance` (a skin of `rhythm_tap`): the Jaipur finale's last moment, dancing in the groom's procession. The
  * band's drum counts four (taps then are not counted), then beats 8 times at 96 a minute and 8 more at 108, the last two
  * the big 「ドン・ドン」; the player taps 「踊る」 on each. Most beats met with few extra taps is `in_step`; mashing (extra
- * taps at least as many as the beats met), `stumble`; no tap at all, `stood_still`; anything else, `off_beat_together`
+ * taps at least as many as the beats met, or many with most beats met), `stumble`; no tap at all, `stood_still`; anything
+ * else, `off_beat_together`
  * (the finale's own words: 「下手なのは、二人とも同じだから」). The outcome changes only the closing lines' colour,
  * never the ending.
  *
@@ -15,7 +16,9 @@ import { defineMiniGame } from "../contract";
  *
  * The host's flow (docs/13 2.6): practice (the finale's dance carries no relationship effects and every outcome joins the
  * same closing lines), the drum's own count-in in place of the host's 3・2・1, ★ from the beats right on the drum
- * (rules.ts), a finish word per outcome (none for standing still) and her face on the card. Her reaction lines are her
+ * (rules.ts), a finish word per outcome (none for standing still; 「踊りきった！」 rings as a good end though it is ★1, a
+ * stumble as a mishap) and her face on the card. While the player mashes, a beat met shows no success and the dancers
+ * stagger (「もつれそう」). Her reaction lines are her
  * first breath at the end; the story's lines (Kamla's, then hers) follow at once and are never repeated here.
  *
  * Accessibility: 「踊る」 is 64px at the bottom (thumb reach), Space and Enter tap; the drum stands right over the lane's
@@ -31,14 +34,16 @@ export const baraatDance = defineMiniGame({
   howToJa: "楽隊の太鼓が4つ数えてから、太鼓が鳴るたびに「踊る」を押す。途中でテンポが上がる。連打すると足がもつれる（約13秒）",
   outcomes: [
     { id: "in_step", labelJa: "拍に乗って踊れた", noteJa: "16拍のうち12拍以上に合わせ、余計な押しは4回まで", finishJa: "決まった！",
-      reaction: { kind: "surprise", linesJa: ["え、ちゃんと踊れてる……！", "いつ練習したの……？"] } },
-    { id: "off_beat_together", labelJa: "ずれたまま、二人で踊った", noteJa: "押したが、合ったのは11拍まで（か、余計な押しが5回以上）", finishJa: "踊りきった！",
-      reaction: { kind: "laugh", linesJa: ["あはは、太鼓が待ってくれない……！"] } },
-    { id: "stumble", labelJa: "足がもつれた", noteJa: "余計な押し（1拍に2回目からの押し）が8回以上で、合った拍の数以上（連打）", finishJa: "おっとっと！",
-      reaction: { kind: "oops", linesJa: ["わっ、足、足！"] } },
-    // No call: nobody danced. Her face says it, and the story's line (she pulls the player in) follows.
+      reaction: { kind: "surprise", linesJa: ["いつ練習したの？"] } },
+    // Her face only: the story's very next line says the drum would not wait, and hers after it (二人で同じだけずれてる) closes it.
+    { id: "off_beat_together", labelJa: "ずれたまま、二人で踊った", noteJa: "押したが、合ったのは11拍まで（連打ではない）", finishJa: "踊りきった！",
+      finishTone: "good", reaction: { kind: "laugh" } },
+    { id: "stumble", labelJa: "足がもつれた", noteJa: "余計な押し（1拍に2回目からの押し）が8回以上で、合った拍の数以上（連打）。または、12拍以上合わせても余計な押しが5回以上",
+      finishJa: "おっとっと！", finishTone: "oops", reaction: { kind: "oops", linesJa: ["わっ、足、足！"] } },
+    // No call: nobody danced. Her face only: the story's very next line says the feet would not move, and her serious line
+    // (she pulls the player in) follows.
     { id: "stood_still", labelJa: "立ったままだった", noteJa: "一度も押さなかった（太鼓が数える4拍の間の押しは数えない）", finishJa: null,
-      reaction: { kind: "oops", linesJa: ["……あれ、止まってる？"] } },
+      reaction: { kind: "oops" } },
   ],
   defaultAuto: "off_beat_together",
   params: () => z.object({}).strict(),

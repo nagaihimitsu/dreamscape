@@ -6,12 +6,15 @@ import { defineMiniGame } from "../contract";
  * dough with one finger, 8 strokes; after each stroke the dough turns a quarter. An arrow on the dough shows each stroke's
  * way (an eighth round further each time: following it rounds the roti) and a meter how round it is now. The 8th stroke
  * or 「できた」 ends it (no time limit: it waits for the first stroke), and the shape decides what Harbans calls it: a box
- * like a truck's bed (`truck_bed`), else round (`round`, roundness 80% or more), else some country (`country`), or a hole
- * when rolled too thin or past the board (`torn`, at once; near it the pin gets heavy and the hint warns).
+ * like a truck's bed (`truck_bed`), else round (`round`, roundness 80% or more; 88% and across the dotted ring is まん丸,
+ * ★3 on the card only), else some country (`country`), or a hole when rolled too thin or past the board (`torn`, at once;
+ * near it the pin gets heavy and the hint warns).
  *
  * The host's flow (docs/13 2.6): practice (the roti is the date's helper scene after the choice to aim round: its
  * outcomes carry no relationship effects), no count (it waits for the first stroke), the calm mini-game track, ★ from
- * how round and big (rules.ts), a finish word per outcome and her face on the card (Harbans reacts in the field). Her
+ * how round and big (rules.ts), a finish word per outcome (a hole's tone is a mishap's thud) and her face on the card
+ * (Harbans reacts in the field). The tag's use lets the real play be rolled again (`retry yes`: Harbans's 「生地は、何度でも
+ * やり直せる」 after a hole; a helper scene with no relationship effects). Her
  * reaction lines are her first breath at the end and fit both of the story's branches after it (romance_result); the
  * story's lines (Harbans's joke, then hers) follow at once and are never repeated here.
  *
@@ -26,23 +29,23 @@ export const rotiRolling = defineMiniGame({
   id: "roti_rolling",
   engine: "shape_drag",
   titleJa: "ローティーを伸ばす",
-  howToJa: "生地を指でなぞって麺棒で伸ばし、形を作る（8回）。伸ばすたびに生地が四分の一回る。矢印の向きに伸ばすと丸くなる。「丸さ」が80%以上でまん丸",
+  howToJa: "生地を指でなぞって麺棒で伸ばし、形を作る（8回）。伸ばすたびに生地が四分の一回る。矢印の向きに伸ばすと丸くなる。「丸さ」80%以上で丸く伸び、点線の輪まで大きく88%以上ならまん丸（★3）",
   outcomes: [
-    { id: "round", labelJa: "まん丸に伸びた", noteJa: "矢印のとおり、いろいろな向きに、ほどよく伸ばした（丸さ80%以上）", finishJa: "まん丸！",
-      reaction: { kind: "surprise", linesJa: ["わ、まんまる……！"] } },
+    { id: "round", labelJa: "丸く伸びた", noteJa: "矢印のとおり、いろいろな向きに、ほどよく伸ばした（丸さ80%以上。点線の輪まで大きく88%以上なら、カードでまん丸 ★3）",
+      finishJa: "丸い！", reaction: { kind: "surprise", linesJa: ["わ、丸い！"] } },
     { id: "truck_bed", labelJa: "四角くなった", noteJa: "同じ向きばかりに伸ばした（四角か細長い形。丸より先に見る）", finishJa: "四角！",
       reaction: { kind: "surprise", linesJa: ["えっ、角ができてる"] } },
     { id: "country", labelJa: "地図のような形になった", noteJa: "形がいびつ（向きがばらばら、伸ばし足りない、端だけ伸ばした）", finishJa: "……ん？",
       reaction: { kind: "laugh", linesJa: ["……どこかで見た形かも"] } },
     { id: "torn", labelJa: "穴が開いた", noteJa: "伸ばしすぎた（うすくしすぎたか、板からはみ出すほど長い）。その場で終わる", finishJa: "ぷすっ！",
-      reaction: { kind: "oops", linesJa: ["あっ、穴……！"] } },
+      finishTone: "oops", reaction: { kind: "oops", linesJa: ["あっ、穴！"] } },
   ],
   defaultAuto: "truck_bed",
   params: () => z.object({}).strict(),
   examples: [{}],
   startJa: "麺棒を持つ",
-  hintJa: "矢印の向きになぞって伸ばす（8回）。「丸さ」80%以上で、まん丸",
-  goalJa: "矢印の向きに生地をなぞって、8回で丸く伸ばす（「丸さ」80%以上で、まん丸）",
+  hintJa: "矢印の向きになぞって伸ばす（8回）。「丸さ」80%以上で丸く、点線の輪まで大きく88%以上で、まん丸",
+  goalJa: "矢印の向きに8回なぞって、丸く大きく伸ばす",
   controls: "drag",
   durationSec: 10,
   practice: {},

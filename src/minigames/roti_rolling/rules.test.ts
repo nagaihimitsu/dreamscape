@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { centreStroke, shapeDragFairness, shapeHeavy, shapeMeasures, shapeOfRecord, shapeRoll, shapeStart, type ShapeStroke } from "../engines/shape_drag/engine";
 import { describeMiniGameRules } from "../testing/rules-contract";
 import { rotiRolling } from "./definition";
-import { ROTI_AUTO, ROTI_BIG_SPAN, ROTI_NUMBERS, ROTI_SHAPES, ROTI_TUNING, rotiDetail, rotiGame, rotiNote, rotiRoundness, rotiRules } from "./rules";
+import { ROTI_AUTO, ROTI_BIG_SPAN, ROTI_GAME, ROTI_NUMBERS, ROTI_SHAPES, ROTI_TUNING, rotiDetail, rotiGame, rotiNote, rotiRoundness, rotiRules } from "./rules";
 import { rotiArrowDegrees } from "./Skin";
 
 const UP = 270;
@@ -85,23 +85,45 @@ describe("the roti's shapes", () => {
     expect(heavy.area).toBeLessThan(light.area);
   });
 
-  it("shows how round (and big) it came out, never for a hole", () => {
+  it("shows how round (and big) it came out, how boxy a box, never for a hole; まん丸 only for the ★3 one (group2 N2, N3)", () => {
     const round = measuresOf(times(8, (index) => centreStroke(index * 45, 0.5)));
     expect(round.span).toBeGreaterThanOrEqual(ROTI_BIG_SPAN);
-    expect(rotiDetail(round, "round")).toBe(`丸さ ${Math.round(round.roundness * 100)}%・大きさ ◎`);
+    expect(round.roundness).toBeGreaterThanOrEqual(ROTI_NUMBERS.perfectRoundness);
+    expect(rotiDetail(round, "round")).toBe(`丸さ ${Math.round(round.roundness * 100)}%・まん丸・大きさ ◎`);
     const small = measuresOf(times(4, (index) => centreStroke(index * 45, 0.5)));
     expect(rotiDetail(small, "round")).toBe(`丸さ ${Math.round(small.roundness * 100)}%`);
+    // Big but egg-shaped (round enough, not まん丸): no まん丸.
+    const egg = { ...round, roundness: 0.84 };
+    expect(rotiDetail(egg, "round")).toBe("丸さ 84%・大きさ ◎");
+    expect(ROTI_GAME.perfect(egg)).toBe(false);
+    // By the percent shown: 「88%」 is always まん丸.
+    expect(ROTI_GAME.perfect({ ...round, roundness: 0.8751 })).toBe(true);
+    expect(ROTI_GAME.perfect({ ...round, roundness: 0.8749 })).toBe(false);
     expect(rotiDetail(round, "torn")).toBeUndefined();
+    // A box: how boxy, never a roundness that reads like a round one's.
+    const box = measuresOf(ROTI_AUTO.truck_bed);
+    expect(rotiDetail(box, "truck_bed")).toBe(`四角さ ${Math.round(box.boxiness * 100)}%`);
+    expect(rotiDetail(measuresOf(ROTI_AUTO.country), "country")).toMatch(/^丸さ \d+%$/u);
   });
 
-  it("rates in step with the outcome: round and big ★3, round ★2, a box, a country or a hole ★1", () => {
+  it("rates in step with the outcome: まん丸 (big, 88%) ★3, other round ★2, a box, a country or a hole ★1", () => {
     const rate = (strokes: readonly ShapeStroke[]) => rotiRules.rate!(strokes, {});
     const big = times(8, (index) => centreStroke(index * 45, 0.5));
     expect(rate(big)).toEqual({ stars: 3, scoreJa: rotiDetail(measuresOf(big), "round") });
     const small = times(8, (index) => centreStroke(index * 45, 0.3));
     expect(rotiRules.outcomeOf(small, {})).toBe("round");
     expect(rate(small)).toMatchObject({ stars: 2 });
-    expect(rate(ROTI_AUTO.truck_bed)).toMatchObject({ stars: 1, scoreJa: expect.stringMatching(/^丸さ \d+%$/u) });
+    // Round but egg-shaped, however big: ★2.
+    let eggs = 0;
+    for (let skew = 0; skew <= 30; skew += 2) {
+      const strokes = times(8, (index) => centreStroke(index * 45 + (index % 2 ? skew : -skew), 0.55 + (index % 3) * 0.02));
+      const measures = measuresOf(strokes);
+      if (rotiRules.outcomeOf(strokes, {}) !== "round" || measures.span < ROTI_BIG_SPAN) continue;
+      expect(rate(strokes)?.stars, `skew ${skew}`).toBe(ROTI_GAME.perfect(measures) ? 3 : 2);
+      if (!ROTI_GAME.perfect(measures)) eggs += 1;
+    }
+    expect(eggs, "a big egg-shaped roti in the sweep").toBeGreaterThan(0);
+    expect(rate(ROTI_AUTO.truck_bed)).toMatchObject({ stars: 1, scoreJa: expect.stringMatching(/^四角さ \d+%$/u) });
     expect(rate(ROTI_AUTO.country)).toMatchObject({ stars: 1 });
     expect(rate(ROTI_AUTO.torn)).toEqual({ stars: 1 });
     // Over many plays, a round one never has fewer ★ than any other.
