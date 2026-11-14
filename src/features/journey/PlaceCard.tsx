@@ -10,8 +10,8 @@ import { compareRouteTime } from "../../domain/travel-routes";
 import { HeroineNote } from "../battle/HeroineNote";
 import { withNames } from "../romance/names";
 import {
-  blockedSleepWays, blockedWays, chooseSleepWay, chooseWay, chosenEvent, eventKindJa, sleepWayKey, sleepWayLabelJa, WAIT_BLOCKED_JA, waitKey,
-  waitLabelJa, type DeparturePlan, type PhotoCardEntry,
+  blockedSleepWays, blockedWays, chooseSleepWay, chooseWay, chosenEvent, departureOf, eventKindJa, refusalReasonsJa, sleepRefusalReasonsJa, sleepWayKey,
+  sleepWayLabelJa, WAIT_BLOCKED_JA, waitKey, waitLabelJa, type DeparturePlan, type PhotoCardEntry,
 } from "./photo-cards";
 import { placeHeroineLine } from "./place-heroine-line";
 import { PlaceInsetMap } from "./PlaceInsetMap";
@@ -44,9 +44,10 @@ function CardName({ id, name, heading }: { id: string; name: string; heading: bo
  * reserve, and the small map of the current place and this one. The event and the way chosen here (`plan`) are what a
  * swipe up on the place's photo card takes; its 「行く」 takes them too (`quietGo`: in the row, where the swipe departs, for
  * screen readers and keys only), through the shared selection's pressRoute (its arming waits out a double tap), and
- * only while this place is the selection.
+ * only while this place is the selection. In the expanded map the bar at the dialog's foot goes instead (`go` false:
+ * PlaceGoBar).
  */
-export function PlaceCard({ game, entry, api, plan, onPlan, scope = "page", map = true, heading = true, quietGo = false }: {
+export function PlaceCard({ game, entry, api, plan, onPlan, scope = "page", map = true, heading = true, quietGo = false, go = true }: {
   game: GameState;
   entry: PhotoCardEntry;
   api: TravelSelectionApi;
@@ -60,6 +61,8 @@ export function PlaceCard({ game, entry, api, plan, onPlan, scope = "page", map 
   heading?: boolean;
   /** 「行く」 for screen readers and keys only (the row, where a swipe up on the photo card departs). */
   quietGo?: boolean;
+  /** Its own 「行く」 (none in the expanded map, whose bar at the foot goes: PlaceGoBar). */
+  go?: boolean;
 }) {
   const id = useId();
   const cityId = game.currentCityId;
@@ -76,7 +79,7 @@ export function PlaceCard({ game, entry, api, plan, onPlan, scope = "page", map 
   const line = scope === "page" ? placeHeroineLine(game, place) : null;
   const events = entry.events.map((choice) => <PlaceEvent key={choice.event.id} game={game} placeId={place.id} choice={choice} several={several}
     chosen={choice.event.id === chosen} onChoose={() => onPlan({ eventId: choice.event.id })}
-    way={{ isCurrent, selected, api, scope, picked: plan.mode, onPick: (mode) => onPlan({ mode }), quietGo }} />);
+    way={{ isCurrent, selected, api, scope, picked: plan.mode, onPick: (mode) => onPlan({ mode }), quietGo, go }} />);
   return <section className={`place-card${entry.available ? "" : " is-unavailable"}`} data-testid="place-card" data-place-id={place.id}
     data-armed={selected && api.armed ? "true" : undefined} aria-labelledby={`${id}-name`}>
     <CardName id={`${id}-name`} name={name} heading={heading} />
@@ -101,6 +104,7 @@ type WayContext = {
   picked: TravelMode | null;
   onPick: (mode: TravelMode) => void;
   quietGo: boolean;
+  go: boolean;
 };
 
 /**
@@ -138,9 +142,10 @@ function PlaceEvent({ game, placeId, choice, several, chosen, onChoose, way }: {
  * The way to go (B案 §3): several ways are one row of modes, each with its time and fare (pressing one only chooses
  * it; the fastest that can be taken is chosen first); one way is a line 「徒歩　約5分 · ₹0」 (in the row; elsewhere its
  * button says it). Then 「行く　約12分 · ₹80」 (one way: 「徒歩で行く　約5分 · ₹0」), which takes the chosen way (`quietGo`:
- * for screen readers and keys only). Ways that cannot be taken are greyed, each reason said once under them.
+ * for screen readers and keys only; none with `go` false: the expanded map's bar says the way and goes). Ways that cannot
+ * be taken are greyed, each reason said once under them.
  */
-function WayPicker({ cityId, placeId, eventId, routes, isCurrent, selected, api, scope, picked, onPick, quietGo }: WayContext & {
+function WayPicker({ cityId, placeId, eventId, routes, isCurrent, selected, api, scope, picked, onPick, quietGo, go }: WayContext & {
   cityId: string;
   placeId: string;
   eventId: string;
@@ -164,16 +169,101 @@ function WayPicker({ cityId, placeId, eventId, routes, isCurrent, selected, api,
     {!several && quietGo && !isCurrent && <p className={`place-card-way${way ? "" : " is-unavailable"}`}>
       {label(route.mode)}<span className="place-card-mode-cost"> {cost(route)}</span>
     </p>}
-    <button type="button" className={`primary place-card-go${quietGo ? " is-quiet" : ""}`} data-testid={`travel-go-${eventId}`} data-mode={route.mode}
+    {go && <button type="button" className={`primary place-card-go${quietGo ? " is-quiet" : ""}`} data-testid={`travel-go-${eventId}`} data-mode={route.mode}
       disabled={!way || !selected} onKeyDown={ignoreRepeat}
       onClick={(click) => { if (way) api.pressRoute(placeId, eventId, way.route.mode, pressKindOf(click), scope); }}>
       <span>{isCurrent ? "ここで始める" : several ? "行く" : `${label(route.mode)}で行く`}</span>
       {!isCurrent && <span className="place-card-go-cost">{cost(route)}</span>}
-    </button>
+    </button>}
     {blockedWays(routes).map(({ modes, reason }) => {
       const names = modes.map(label).join("・");
       return <p key={reason} className="fine-print place-card-reason">{!several || modes.length === routes.length || reason.startsWith(names) ? reason : `${names}：${reason}`}</p>;
     })}
+  </div>;
+}
+
+/** One of 「待機」's waits or 「ホテルに戻る」's ways home (CardOptions). */
+type CardOption = { key: string; testId: string; label: string; cost: string | null; available: boolean };
+
+/**
+ * 「待機」's waits and 「ホテルに戻る」's ways home (2026-11-14, the UI audit): pressing one only chooses it (the swipe up
+ * waits or rests), so they are chips, not buttons that look like actions: an outline, the chosen one with ✓ (its edge
+ * thicker, on the darker paper). Pressing the chosen one again calls `onAgain` (the row nudges the photo card's swipe
+ * cue: what waits or rests is the swipe). One choice is a line of text (nothing to choose), greyed when it cannot be taken.
+ */
+function CardOptions({ label, options, chosenKey, onPick, onAgain }: {
+  label: string;
+  options: readonly CardOption[];
+  chosenKey: string | null;
+  onPick: (key: string) => void;
+  onAgain?: () => void;
+}) {
+  if (options.length === 1) {
+    const [only] = options;
+    return <p className={`place-card-way${only.available ? "" : " is-unavailable"}`} data-testid={only.testId}>
+      {only.label}{only.cost && <span className="place-card-mode-cost"> {only.cost}</span>}
+    </p>;
+  }
+  return <div className="place-card-options" role="group" aria-label={label}>{options.map((option) => {
+    const chosen = option.key === chosenKey;
+    return <button key={option.key} type="button" className="place-card-option" data-testid={option.testId} aria-pressed={chosen}
+      disabled={!option.available} onKeyDown={ignoreRepeat} onClick={() => (chosen ? onAgain?.() : onPick(option.key))}>
+      {chosen && <span className="place-card-option-mark" aria-hidden="true">✓</span>}
+      <span className="place-card-option-text">{option.label}{option.cost && <span className="place-card-mode-cost">{option.cost}</span>}</span>
+    </button>;
+  })}</div>;
+}
+
+/**
+ * The expanded map's bar for a place (2026-11-14, the UI audit: pinned at the dialog's foot, so it never sits below the
+ * fold after a marker press): the name, the chosen event's tag and chosen way with its time and fare (else why it cannot
+ * go now), and 「行く」 (「ここで始める」 at the current place). It takes what the card above chose (`plan`, as the photo
+ * card's swipe does) through the shared selection's pressRoute, only while the place is the selection.
+ */
+export function PlaceGoBar({ game, entry, api, plan }: { game: GameState; entry: PhotoCardEntry; api: TravelSelectionApi; plan: DeparturePlan }) {
+  const cityId = game.currentCityId;
+  const place = entry.place.events[0].place;
+  const isCurrent = place.id === game.travel.currentPlaceId;
+  const selected = api.isSelected({ kind: "place", placeId: place.id });
+  const { event, way } = departureOf(entry, plan);
+  // With no way open, the bar says why (the button stays greyed, with the fastest way's mode).
+  const { route } = way ?? [...event.routes].sort((a, b) => compareRouteTime(a.route, b.route))[0];
+  const detail = !way ? refusalReasonsJa(event)
+    : isCurrent ? "現在地" : `${transportLabel(cityId, route.mode)} 約${route.minutes}分 · ${formatMoneyForCity(cityId, route.cost)}`;
+  return <div className="map-go-bar" data-armed={selected && api.armed ? "true" : undefined}>
+    <p className="map-go-bar-text">
+      <span className="map-go-bar-name">{placeDisplayName(game, place)}</span>
+      <span className={`map-go-bar-detail${way ? "" : " is-unavailable"}`}>
+        <span className={`place-card-tag${event.event.category === "date" ? " is-date" : ""}`}>{eventKindJa(event.event.category)}</span>{detail}
+      </span>
+    </p>
+    <button type="button" className="primary map-go-bar-go" data-testid={`travel-go-${event.event.id}`} data-mode={route.mode}
+      disabled={!way || !selected} onKeyDown={ignoreRepeat}
+      onClick={(click) => { if (way) api.pressRoute(place.id, event.event.id, way.route.mode, pressKindOf(click), "dialog"); }}>
+      {isCurrent ? "ここで始める" : "行く"}
+    </button>
+  </div>;
+}
+
+/** The expanded map's bar for 「ホテルに戻る」 (as PlaceGoBar): the chosen way home with its time and fare, and 「休む」. */
+export function StayGoBar({ game, api, picked }: { game: GameState; api: TravelSelectionApi; picked: string | null }) {
+  const cityId = game.currentCityId;
+  const { options } = api.sleep;
+  const way = chooseSleepWay(options, picked);
+  const selected = api.isSelected({ kind: "sleep" });
+  const atHotel = game.travel.currentPlaceId === game.travel.hotelPlaceId;
+  const detail = !way ? sleepRefusalReasonsJa(options)
+    : atHotel ? sleepWayJa(game, way.route) : `${sleepWayJa(game, way.route)} 約${way.route.minutes}分 · ${formatMoneyForCity(cityId, way.route.cost)}`;
+  return <div className="map-go-bar" data-armed={selected && api.armed ? "true" : undefined}>
+    <p className="map-go-bar-text">
+      <span className="map-go-bar-name">ホテルに戻る</span>
+      <span className={`map-go-bar-detail${way ? "" : " is-unavailable"}`}>{detail}</span>
+    </p>
+    <button type="button" className="primary map-go-bar-go" data-testid="travel-sleep-go" data-mode={way?.route.mode}
+      disabled={!way || !selected} onKeyDown={ignoreRepeat}
+      onClick={(click) => { if (way) api.pressSleepRoute(way.route.mode, way.route.viaPlaceId ?? null, pressKindOf(click), "dialog"); }}>
+      休む
+    </button>
   </div>;
 }
 
@@ -187,23 +277,28 @@ export function sleepWayJa(game: GameState, route: SleepOption["route"]): string
 const usesAssistance = (plan: SleepOption["plan"]) => plan.ok && plan.usedAssistance;
 
 /**
- * 「ホテルに戻る」's card: 休む, today's ways home as one row of choices with their time and fare, one always chosen
- * (`picked`, else the first that can be taken, the fastest: the card chosen afresh starts there; at the hotel
- * 「ホテルに戻って休む」). A way that cannot be taken is greyed and cannot be chosen, each reason said once under them.
- * Going back is resting (the game has no going back without resting): a swipe up on its photo card rests by the chosen
- * way (user decision 2026-11-11), as does its 「休む」 (`quietGo`: in the row, for screen readers and keys only), through
- * the shared selection's pressSleepRoute (its arming waits out a double tap), and only while 「ホテルに戻る」 is the selection.
+ * 「ホテルに戻る」's card: 休む, today's ways home as chips with their time and fare, one always chosen (`picked`, else the
+ * first that can be taken, the fastest: the card chosen afresh and each new day start there; CardOptions: one way is a
+ * line, at the hotel 「ホテルに戻って休む」). A way that cannot be taken is greyed and cannot be chosen, each reason said once
+ * under them. Going back is resting (the game has no going back without resting): a swipe up on its photo card rests by
+ * the chosen way (user decision 2026-11-11), as does its 「休む」 (`quietGo`: in the row, for screen readers and keys only;
+ * in the expanded map the bar at its foot: StayGoBar), through the shared selection's pressSleepRoute (its arming waits
+ * out a double tap), and only while 「ホテルに戻る」 is the selection.
  */
-export function StayCard({ game, api, picked, onPick, scope = "page", heading = true, quietGo = false }: {
+export function StayCard({ game, api, picked, onPick, onAgain, scope = "page", heading = true, quietGo = false, go = true }: {
   game: GameState;
   api: TravelSelectionApi;
   /** The way home picked here (photo-cards.ts sleepWayKey; shared with the photo card's swipe and the expanded map's card). */
   picked: string | null;
   onPick: (key: string) => void;
+  /** The chosen way pressed again (the row: its photo card's swipe cue nudges). */
+  onAgain?: () => void;
   scope?: PressScope;
   heading?: boolean;
   /** 「休む」 for screen readers and keys only (the row, where a swipe up on the photo card rests). */
   quietGo?: boolean;
+  /** Its own 「休む」 (none in the expanded map, whose bar at the foot rests: StayGoBar). */
+  go?: boolean;
 }) {
   const id = useId();
   const cityId = game.currentCityId;
@@ -220,21 +315,17 @@ export function StayCard({ game, api, picked, onPick, scope = "page", heading = 
       <h3 className="place-card-event-title">休む</h3>
       <p className="place-card-hook">ホテルに戻って休み、翌日9:00に出発します。{game.tour?.status === "booked" && "明日の朝、予約したツアーが始まります。"}宿泊費は{formatMoneyForCity(cityId, travelSettings.lodgingCost)}、APは使いません。予算の不足分は補助されます。</p>
       {options.length > 0 && <div className="place-card-ways">
-        <div className="place-card-modes is-wrapping" role="group" aria-label="帰り方">{options.map(({ route, plan }) => {
-          const key = sleepWayKey(route);
-          return <button key={key} type="button" className="place-card-mode" data-testid={`travel-sleep-route-${route.mode}${route.viaPlaceId ? `-${route.viaPlaceId}` : ""}`}
-            aria-pressed={key === chosenKey} disabled={!plan.ok} onKeyDown={ignoreRepeat} onClick={() => onPick(key)}>
-            <span>{sleepWayJa(game, route)}</span>
-            {!atHotel && <span className="place-card-mode-cost">{cost(route)}</span>}
-          </button>;
-        })}</div>
+        <CardOptions label="帰り方" chosenKey={chosenKey} onPick={onPick} onAgain={onAgain} options={options.map(({ route, plan }) => ({
+          key: sleepWayKey(route), testId: `travel-sleep-route-${route.mode}${route.viaPlaceId ? `-${route.viaPlaceId}` : ""}`,
+          label: sleepWayJa(game, route), cost: atHotel ? null : cost(route), available: plan.ok,
+        }))} />
         {way && usesAssistance(way.plan) && <p className="fine-print">この帰り方では、宿泊費の不足分が補助されます。</p>}
-        <button type="button" className={`primary place-card-go${quietGo ? " is-quiet" : ""}`} data-testid="travel-sleep-go" data-mode={way?.route.mode}
+        {go && <button type="button" className={`primary place-card-go${quietGo ? " is-quiet" : ""}`} data-testid="travel-sleep-go" data-mode={way?.route.mode}
           disabled={!way || !selected} onKeyDown={ignoreRepeat}
           onClick={(click) => { if (way) api.pressSleepRoute(way.route.mode, way.route.viaPlaceId ?? null, pressKindOf(click), scope); }}>
           <span>休む</span>
           {way && !atHotel && <span className="place-card-go-cost">{cost(way.route)}</span>}
-        </button>
+        </button>}
         {blockedSleepWays(options).map(({ options: held, reason }) => <p key={reason} className="fine-print place-card-reason">
           {held.length === options.length ? reason : `${held.map((option) => sleepWayJa(game, option.route)).join("、")}：${reason}`}
         </p>)}
@@ -245,18 +336,21 @@ export function StayCard({ game, api, picked, onPick, scope = "page", heading = 
 }
 
 /**
- * 「待機」's card: today's waits where the party is (「30分待つ」 and, while it is day, 「夜（18:00）まで待つ」) as one row of
- * choices, one always chosen (`wait`: the card chosen afresh starts at 「30分待つ」). A wait that cannot be waited is greyed
- * and cannot be chosen, its reason said under them. A swipe up on its photo card waits the chosen one (user decision
- * 2026-11-11), as does its 「待つ」 (`quietGo`: in the row, for screen readers and keys only), through the same onTravelWait.
+ * 「待機」's card: today's waits where the party is (「30分待つ」 and, while it is day, 「夜（18:00）まで待つ」) as chips, one
+ * always chosen (`wait`: the card chosen afresh and each new day start at 「30分待つ」; CardOptions: one wait is a line). A
+ * wait that cannot be waited is greyed and cannot be chosen, its reason said under them. A swipe up on its photo card
+ * waits the chosen one (user decision 2026-11-11), as does its 「待つ」 (`quietGo`: in the row, for screen readers and keys
+ * only), through the same onTravelWait.
  */
-export function WaitCard({ game, options, wait, onPick, onWait, heading = true, quietGo = false }: {
+export function WaitCard({ game, options, wait, onPick, onAgain, onWait, heading = true, quietGo = false }: {
   game: GameState;
   /** Today's waits (getTravelWaitOptions). */
   options: readonly TravelWaitOption[];
   /** The chosen wait (photo-cards.ts chooseWait), null when none can be waited. */
   wait: TravelWaitOption | null;
   onPick: (key: string) => void;
+  /** The chosen wait pressed again (the row: its photo card's swipe cue nudges). */
+  onAgain?: () => void;
   onWait: (wait: TravelWaitOption) => void;
   heading?: boolean;
   /** 「待つ」 for screen readers and keys only (the row, where a swipe up on the photo card waits). */
@@ -268,11 +362,9 @@ export function WaitCard({ game, options, wait, onPick, onWait, heading = true, 
     <CardName id={`${id}-name`} name="待機" heading={heading} />
     <p className="place-card-hook">今いる場所で時間を進めます。</p>
     <div className="place-card-ways">
-      <div className="place-card-modes is-wrapping" role="group" aria-label="待ち方">{options.map((option) => {
-        const key = waitKey(option);
-        return <button key={key} type="button" className="place-card-mode" data-testid={`travel-wait-option-${key}`} aria-pressed={key === chosenKey}
-          disabled={!option.available} onKeyDown={ignoreRepeat} onClick={() => onPick(key)}>{waitLabelJa(option)}</button>;
-      })}</div>
+      <CardOptions label="待ち方" chosenKey={chosenKey} onPick={onPick} onAgain={onAgain} options={options.map((option) => ({
+        key: waitKey(option), testId: `travel-wait-option-${waitKey(option)}`, label: waitLabelJa(option), cost: null, available: option.available,
+      }))} />
       <button type="button" className={`primary place-card-go${quietGo ? " is-quiet" : ""}`} data-testid="travel-wait-go" disabled={!wait}
         onKeyDown={ignoreRepeat} onClick={() => { if (wait) onWait(wait); }}>
         <span>待つ</span>

@@ -119,6 +119,13 @@
   transform: scale(var(--card-scale));
   pointer-events: auto;
 }
+/* The side cards show their photo only (2026-11-14, the UI audit: scaled to 0.38 their names and marks were about 6 px
+   tall): the name, the swipe cue and the marks over the photo fade in as a card comes to the centre (its --card-scale
+   past 0.7) and are whole on the chosen card. The card's mat keeps its fill (what the place holds); readers hear every
+   card's name and marks (its label). */
+.photo-cards:not(.is-list) > li > .photo-card :is(.photo-card-text, .photo-card-chip) {
+  opacity: clamp(0, calc((var(--card-scale, 1) - 0.7) / 0.25), 1);
+}
 /* Fingers scroll the row; a mouse keeps the scrollbar. */
 @media (pointer: coarse) {
   .photo-cards { scrollbar-width: none; }
@@ -298,6 +305,38 @@
 .reduce-motion .photo-card-cue::after { opacity: 0.9; animation: none; }
 .reduce-motion .photo-card-cue::after { top: 1px; }
 .reduce-motion .photo-cards:not(.is-list) .photo-card[data-cue] { animation: none; }
+
+/* The chosen wait or way home pressed again (PhotoCardFreeTime useCueNudge, 2026-11-14 the UI audit: such a press only
+   chooses): the cue shows the swipe that waits or rests. The card hops up twice and both chevrons rise together; under
+   reduced motion the chevrons only blink twice where they stand. The card's own lift stays first in the list, so it does
+   not run again when the nudge ends. */
+.photo-cards:not(.is-list) .photo-card[data-cue][data-nudge]:not(.photo-card-ghost) {
+  animation: photo-card-lift 900ms var(--ease-out) 600ms both, photo-card-nudge 700ms var(--ease-out);
+}
+.photo-card[data-cue][data-nudge] .photo-card-cue::before,
+.photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-nudge 350ms ease-out 2; }
+@keyframes photo-card-nudge {
+  0%, 50%, 100% { translate: 0 0; }
+  22% { translate: 0 -14px; }
+  72% { translate: 0 -8px; }
+}
+@keyframes photo-card-cue-nudge {
+  0% { opacity: 0; translate: 0 6px; }
+  40% { opacity: 1; }
+  100% { opacity: 0; translate: 0 -10px; }
+}
+@keyframes photo-card-cue-blink {
+  0% { opacity: 0.15; }
+  50% { opacity: 0.9; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .photo-cards:not(.is-list) .photo-card[data-cue][data-nudge]:not(.photo-card-ghost) { animation: none; }
+  .photo-card[data-cue][data-nudge] .photo-card-cue::before,
+  .photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-blink 350ms steps(1) 2; }
+}
+.reduce-motion .photo-cards:not(.is-list) .photo-card[data-cue][data-nudge]:not(.photo-card-ghost) { animation: none; }
+.reduce-motion .photo-card[data-cue][data-nudge] .photo-card-cue::before,
+.reduce-motion .photo-card[data-cue][data-nudge] .photo-card-cue::after { animation: photo-card-cue-blink 350ms steps(1) 2; }
 
 /* The row's drags (useCardGestures, user decision 2026-11-11). On the row a sideways drag stays the row's own scroll
    and a drag up lifts the chosen card, so the row leaves the browser its sideways panning only. Elsewhere on the screen
@@ -494,12 +533,9 @@
 
 /* The way: the modes in one row, each with its time and fare (pressing one only chooses it), or the one way as a line;
    then the button that goes (in the row for screen readers and keys only: a swipe up departs). 「待機」's waits and
-   「ホテルに戻る」's ways home take the same row and button (「待つ」, 「休む」); their longer words wrap the row, each choice
-   at least about eight characters wide (2026-11-11). */
+   「ホテルに戻る」's ways home are chips (below), then the same button (「待つ」, 「休む」). */
 .place-card-ways { display: grid; gap: 6px; margin-top: 2px; }
 .place-card-modes { display: flex; gap: 6px; }
-.place-card-modes.is-wrapping { flex-wrap: wrap; }
-.place-card-modes.is-wrapping > .place-card-mode { flex: 1 1 8em; }
 .place-card-mode {
   flex: 1 1 0;
   min-width: 0;
@@ -520,7 +556,37 @@
 .place-card-mode[aria-pressed="true"] { background: var(--ds-slate-800); color: var(--ds-on-slate); }
 .place-card-mode:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); cursor: default; }
 .place-card-mode-cost { display: block; font-size: 12px; font-weight: 500; font-variant-numeric: tabular-nums; }
-/* The one way: display only (no edge, no ground), greyed while it cannot be taken. */
+/* 「待機」's waits and 「ホテルに戻る」's ways home (PlaceCard CardOptions, 2026-11-14 the UI audit): a press only chooses,
+   so they are chips, not the filled look of a button that acts: pills with the pressables' slate edge on the paper, the
+   chosen one with ✓, its edge drawn thicker inside and the darker paper (the event choice's way). Their longer words wrap
+   the row, each chip at least about eight characters wide; a greyed one cannot be chosen. */
+.place-card-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.place-card-option {
+  display: inline-flex;
+  flex: 1 1 8em;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  min-height: 44px;
+  margin: 0;
+  padding: 4px 14px;
+  border: 1.5px solid var(--ds-slate-800);
+  border-radius: 999px;
+  background: var(--ds-parchment);
+  color: var(--ds-ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+.place-card-option[aria-pressed="true"] { background: var(--ds-parchment-2); box-shadow: inset 0 0 0 1.5px var(--ds-slate-800); }
+.place-card-option:disabled { opacity: 1; border-color: transparent; background: var(--ds-disabled-bg); color: var(--ds-disabled-ink); cursor: default; }
+.place-card-option-mark { flex: none; font-size: 15px; font-weight: 700; line-height: 1; }
+.place-card-option-text { min-width: 0; }
+/* The one way (and the one wait or way home): display only (no edge, no ground), greyed while it cannot be taken. */
 .place-card-way { margin: 0 2px; font-size: 13px; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
 .place-card-way .place-card-mode-cost { display: inline; }
 .place-card-way.is-unavailable { color: var(--ds-disabled-ink); }

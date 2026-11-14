@@ -130,13 +130,16 @@ export function cardOfTarget(cards: readonly RowCard[], target: SelectionTarget 
 }
 
 /**
- * What keeps the chosen card the selection: null while they agree; else `turn` the row to the card the selection
- * stands for (the expanded map chose it), or `select` the chosen card's target (none for the tour).
+ * What keeps the chosen card the selection: null while they agree; else, right after the expanded map closed
+ * (`fromMap`: it chose for itself while open), `turn` the row to the card the selection stands for; or `select` the
+ * chosen card's target (none for the tour): the row's choice wins over any other selection, such as yesterday's after a
+ * rest (the row starts the new day at the first place: 2026-11-14, the UI audit) or the one before a card joined.
  */
-export function syncRow(cards: readonly RowCard[], chosen: RowCard, target: SelectionTarget | null): { turn: string } | { select: SelectionTarget | null } | null {
+export function syncRow(cards: readonly RowCard[], chosen: RowCard, target: SelectionTarget | null, { fromMap = false }: { fromMap?: boolean } = {}):
+  { turn: string } | { select: SelectionTarget | null } | null {
   const wanted = cardTarget(chosen);
   if (wanted ? !!target && sameTarget(wanted, target) : !target) return null;
-  const shown = cardOfTarget(cards, target);
+  const shown = fromMap ? cardOfTarget(cards, target) : null;
   return shown ? { turn: shown.id } : { select: wanted };
 }
 
