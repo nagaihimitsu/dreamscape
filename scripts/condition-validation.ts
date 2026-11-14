@@ -280,7 +280,7 @@ function visitWarnings(content: ConditionContent, rules: readonly EntryRule[]): 
     return deferred && visitsOf(encounter.landmarkId) <= 1 && !content.returningScenes?.has(encounter.id)
       ? [{ kind: "later-never-again", message: `「また今度」 leads to no later moment: ${encounter.id} (priority ${shown(priority)} at the visit of ${encounter.landmarkId}) ` +
         `can be ended with 「また今度」 (option ${deferred.id}), but the map leads to ${encounter.landmarkId} only once, so it is never met again there ` +
-        `(a later stage lets it come back at the place's other moments)` }]
+        `(write it as a place file's scene with another moment where it can come back)` }]
       : [];
   });
   const groups = new Map<string, typeof placed>();

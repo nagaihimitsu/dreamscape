@@ -189,7 +189,8 @@ export type StoryStateCatalog = z.infer<typeof storyStateCatalogSchema>;
 
 /**
  * The scene JSON (`scenes/catalog.json`, 3.7): what tags cannot say, by scene ID. Stage 3a
- * reads `sources` (B4); a place file's quiz and alternative AP stay in today's encounter catalog.
+ * reads `sources` (B4); a place scene's alternative AP is its `# on_done: reward`, and an encounter's quiz stays a
+ * catalog encounter's (encounters/catalog.json).
  */
 export const sceneDataCatalogSchema = z.object({
   schemaVersion: z.literal(1),

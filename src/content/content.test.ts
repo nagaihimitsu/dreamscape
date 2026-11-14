@@ -484,7 +484,7 @@ describe("content build acceptance", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow(/Unrecognized key: .*when/);
   });
 
-  it("builds a normal date that waits for another date (the author decides; the old rule against it is gone)", async () => {
+  it("builds a normal date that waits for another date (the author decides)", async () => {
     const when = { all: [{ episodesCompleted: { city: "milano", atLeast: 1 } }, { datePlayed: "milano_walk_01" }] };
     await changeDate("milano_cafe_01", (date) => {
       (date as { when: unknown }).when = when;

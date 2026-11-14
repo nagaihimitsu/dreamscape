@@ -205,7 +205,7 @@ function readEncounterHeads(sources: ContentSources, encounters: readonly { id: 
     const event = encounters.find((item) => item.storyId === id);
     if (!event) {
       if (headTag.test(source))
-        throw new Error(`Head tags (# at:, # priority:, # when:, # until:, # repeat:) are written only in an encounter's story for now: ${storyLabel(id)}`);
+        throw new Error(`Head tags (# at:, # priority:, # when:, # until:, # repeat:) are written in a place file's knot (stories/places/) or a catalog encounter's story: ${storyLabel(id)}`);
       continue;
     }
     const { head } = withContext(storyLabel(id), () => readEncounterHead(source));

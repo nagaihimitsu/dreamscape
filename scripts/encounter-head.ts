@@ -2,12 +2,12 @@ import type { Condition } from "../src/content/condition-schemas";
 import { combineWhenUntil, parseConditionText } from "../src/content/condition-text";
 import type { EncounterEntryRule, VisitPriority } from "../src/content/encounter-entry-rules";
 
-// The head tags of an encounter's Ink (the unified event design, stage 1): written at the top of
-// the file (after the VAR lines, before the first line of text), they place the encounter at its
-// landmark's visit. content:build reads and removes them before compiling the Ink (so the story
+// The head tags of a catalog encounter's Ink (the unified event design, stage 1; a place file's
+// scenes have their own heads: place-files.ts): written at the top of the file (after the VAR
+// lines, before the first line of text), they place the encounter at its landmark's visit. content:build reads and removes them before compiling the Ink (so the story
 // runs as before), and turns them into the encounter's entry rule (and `repeatable`):
 //
-//   # at: visit <landmark>              the landmark's visit (stage 1: one, the catalog's landmark)
+//   # at: visit <landmark>              the landmark's visit (one: the catalog's landmark)
 //   # priority: -1 | after observe | +1 before the main part, while observing, after it
 //   # when: <condition>                 every one must hold (condition-text.ts)
 //   # until: <condition>                none may hold
@@ -43,15 +43,15 @@ function parsePriority(value: string): VisitPriority {
     return number;
   }
   if (/^after\s/u.test(value))
-    throw new Error(`# priority: ${value} is not available yet (stage 3); stage 1 takes a negative number, after observe or a positive number`);
+    throw new Error(`# priority: ${value} is written in a place file's scene (stories/places/); a catalog encounter's head takes a negative number, after observe or a positive number`);
   throw new Error(`Unknown # priority: ${value} (write -1, after observe or +1)`);
 }
 
 /**
  * Read the head tags of an encounter's Ink. Returns the source with those lines blanked (the
  * line numbers of compiler messages stay the same) and the head, undefined when the file has no
- * head tags. Throws for a head tag outside the head, a malformed value, a position or condition
- * part of a later stage, and a head without `at` and `priority`.
+ * head tags. Throws for a head tag outside the head, a malformed value, a moment or position that
+ * only a place file's scene takes, and a head without `at` and `priority`.
  */
 export function readEncounterHead(source: string): { source: string; head?: EncounterHead } {
   const lines = source.split("\n");
@@ -86,10 +86,10 @@ export function readEncounterHead(source: string): { source: string; head?: Enco
     return found[0];
   };
   const at = values("at");
-  if (at.length !== 1) throw new Error(at.length ? "Stage 1 takes one # at: (visit <landmark>)" : "An encounter's head needs # at: visit <landmark>");
+  if (at.length !== 1) throw new Error(at.length ? "A catalog encounter's head takes one # at: (visit <landmark>)" : "An encounter's head needs # at: visit <landmark>");
   const visit = /^visit\s+([a-z][a-z0-9_]*)$/u.exec(at[0]);
   if (!visit || visit[1] === "any")
-    throw new Error(`# at: ${at[0]} is not available yet: stage 1 takes # at: visit <landmark> (other moments come at stages 3 and 4)`);
+    throw new Error(`# at: ${at[0]} is written in a place file's scene (stories/places/); a catalog encounter's head takes # at: visit <landmark>`);
   const priority = single("priority");
   if (priority === undefined) throw new Error("An encounter's head needs # priority: (-1, after observe or +1)");
   const condition = (text: string, key: string) => {
