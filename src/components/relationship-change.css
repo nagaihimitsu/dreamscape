@@ -40,3 +40,9 @@
 .relationship-change-lines p {
   margin: 0;
 }
+/* A value with its numbers (「恋愛の意識 +1（0→1）」) moves to the next line whole; it breaks
+   inside only when it is wider than the strip. */
+.relationship-change-part {
+  display: inline-block;
+  max-width: 100%;
+}

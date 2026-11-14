@@ -1,6 +1,7 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+import { describeRelationshipChange } from "../domain/relationship-change";
 import { RelationshipChangeNote } from "./RelationshipChangeNote";
 
 // Debug mode's change strip: the status region is rendered (empty) before a change is put into it,
@@ -16,7 +17,16 @@ describe("relationship-change strip", () => {
     const change = { axes: [{ axis: "affection" as const, before: 3, after: 5, delta: 2 }], reaction: { result: "positive" as const, chancePercent: 62 }, replay: false };
     expect(renderToStaticMarkup(createElement(RelationshipChangeNote, { change }))).toBe(`${region}` +
       '<section class="relationship-change" data-testid="relationship-change"><span class="relationship-change-label" aria-hidden="true">Debug</span>' +
-      '<div class="relationship-change-lines"><p>親しさ +2（3→5）</p><p>反応：噛み合った（噛み合う確率 62%）</p></div></section></div></div>');
+      '<div class="relationship-change-lines"><p><span class="relationship-change-part">親しさ +2（3→5）</span></p>' +
+      '<p><span class="relationship-change-part">反応：噛み合った（噛み合う確率 62%）</span></p></div></section></div></div>');
+  });
+
+  it("keeps each value with its numbers in a box of its own, and the line's text as describeRelationshipChange gives it", () => {
+    const change = { axes: [{ axis: "affection" as const, before: 3, after: 5, delta: 2 }, { axis: "spark" as const, before: 0, after: 1, delta: 1 }],
+      reaction: null, replay: false };
+    const markup = renderToStaticMarkup(createElement(RelationshipChangeNote, { change }));
+    expect(markup).toContain('<p><span class="relationship-change-part">親しさ +2（3→5）</span>　<span class="relationship-change-part">恋愛の意識 +1（0→1）</span></p>');
+    expect(markup.replace(/<[^>]+>/gu, "")).toBe(`Debug${describeRelationshipChange(change).join("")}`);
   });
 
   it("lists the scene's cond texts with their truth values under the status region, outside it (stage 2a)", () => {

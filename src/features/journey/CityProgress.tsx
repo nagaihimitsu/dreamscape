@@ -5,7 +5,7 @@ import {
   episodes,
   landmarks,
 } from "../../content";
-import { getEpisodeAvailability, getNextEpisode, getNextStoryBattle, storyBattlesForCity } from "../../domain/chapter";
+import { getEpisodeAvailability, storyBattlesForCity } from "../../domain/chapter";
 import type { GameState } from "../../domain/game";
 import { isTourOnlyPlace } from "../../content/travel-schemas";
 import { battlePlayed } from "../../domain/conditions";
@@ -14,83 +14,30 @@ import { cityProgressParts, type CityProgressCounts } from "./city-progress-labe
 import { playSe } from "../../audio/sound-effects";
 import "./city.css";
 
-export function CityProgress({
-  game,
-  onStart,
-  onStoryBattle,
-  onEpilogue,
-  showNext = true,
-}: {
-  game: GameState;
-  onStart: (id: string) => void;
-  onStoryBattle: (id: string) => void;
-  onEpilogue: (cityId: string) => void;
-  showNext?: boolean;
-}) {
+/**
+ * 「エピローグを読む」 once the city's epilogue can be read (free time's primary action then); nothing before.
+ * The next stop and special battle are reached on the map (travel events), not from here.
+ */
+export function CityProgress({ game, onEpilogue }: { game: GameState; onEpilogue: (cityId: string) => void }) {
   const { city } = getCityContent(game.currentCityId);
-  const next = getNextEpisode(game);
-  const nextBattle = getNextStoryBattle(game);
-  const epilogue = canReadCityEpilogue(game, city.id);
-  if (!showNext && !epilogue) return null;
+  if (!canReadCityEpilogue(game, city.id)) return null;
   return (
     <section
       className="city-progress paper"
       aria-label={`${city.nameJa}の旅の記録`}
     >
-      {showNext && nextBattle && (
-        <div className="next-destination">
-          <p className="eyebrow">旅の続き</p>
-          <h3>{nextBattle.titleJa}</h3>
-          <p>{nextBattle.descriptionJa}</p>
-          <button
-            className="primary"
-            data-testid={`next-story-battle-${nextBattle.battleId}`}
-            onClick={() => {
-              playSe("ui_confirm");
-              onStoryBattle(nextBattle.battleId);
-            }}
-          >
-            {nextBattle.actionLabelJa} <span aria-hidden="true">→</span>
-          </button>
-        </div>
-      )}
-      {showNext && !nextBattle && next && (
-        <div className="next-destination">
-          <p className="eyebrow">
-            {next.kind === "city_finale" ? "旅を結ぶ最後のクイズ" : "次の目的地"}
-          </p>
-          <h3>{next.titleJa}</h3>
-          <p>{next.descriptionJa}</p>
-          <button
-            className="primary"
-            data-testid={`next-episode-${next.id}`}
-            onClick={() => {
-              playSe("ui_confirm");
-              onStart(next.id);
-            }}
-          >
-            {next.kind === "city_finale"
-              ? "都市ボスに挑む"
-              : "次の観光地へ進む"}{" "}
-            <span aria-hidden="true">→</span>
-          </button>
-          <p className="fine-print">自由時間は、この下から楽しめます。</p>
-        </div>
-      )}
-      {epilogue && (
-        <div className="city-complete">
-          <button
-            className="secondary"
-            data-testid="city-epilogue"
-            onClick={() => {
-              playSe("ui_confirm");
-              onEpilogue(city.id);
-            }}
-          >
-            エピローグを読む
-          </button>
-        </div>
-      )}
+      <div className="city-complete">
+        <button
+          className="secondary"
+          data-testid="city-epilogue"
+          onClick={() => {
+            playSe("ui_confirm");
+            onEpilogue(city.id);
+          }}
+        >
+          エピローグを読む
+        </button>
+      </div>
     </section>
   );
 }

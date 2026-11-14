@@ -34,6 +34,11 @@
 /* Her nod on each count beat (not with less motion: her bubble's words and the lane still count). */
 .mg-say-together-her[data-nod] .mg-say-together-her-body { transform: translateY(1.6%); }
 .mg-say-together[data-still] .mg-say-together-her-body { transition: none; transform: none; }
+/* Her breath before the last word: her shoulders rise a little (not with less motion: her bubble's 「すっ」 says it). */
+.mg-say-together-her[data-breath] .mg-say-together-her-body { transform: translateY(-1.4%) scaleY(1.01); transition-duration: 200ms; }
+.mg-say-together-breath { display: inline-block; margin-left: 4px; color: var(--ds-ink-muted); font-size: 0.85em; font-weight: 500; font-style: italic; }
+/* Her held syllable (ディヤーーン): the word a little wider as it grows. */
+.mg-say-together-word[data-held] { letter-spacing: 0.04em; }
 /* The bubbles: parchment, a name, the words; on the beat together both glow gold with a thicker edge (not colour alone). */
 .mg-say-together-bubble {
   position: absolute;

@@ -45,7 +45,7 @@ import "./photo-free-time.css";
  * shared selection (useTravelSelection) travels and rests through the same handlers.
  */
 export function PhotoCardFreeTime({
-  game, onClaimRewards, onStartEpisode, onEpilogue, onBattle, onTravelEvent, onRent, onBookTour, onCancelTour, onTravelWait, onTravelSleep, nextCityName, onDepart,
+  game, onClaimRewards, onEpilogue, onTravelEvent, onRent, onBookTour, onCancelTour, onTravelWait, onTravelSleep, nextCityName, onDepart,
   seenCards, debug = false,
 }: FreeTimeHubProps) {
   const { city } = getCityContent(game.currentCityId);
@@ -193,7 +193,7 @@ export function PhotoCardFreeTime({
         <Icon name="map" /><span className="hud-tool-word">地図</span>
       </button>
     </HudScreenTool>
-    <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} showNext={false} />
+    <CityProgress game={game} onEpilogue={onEpilogue} />
 
     <section className="photo-menu" aria-label={`${city.nameJa}の行き先`} data-testid="travel-menu">
       {/* 「待機」 is named only while one of its waits can be made (late in the evening none can). Out of money for good in this

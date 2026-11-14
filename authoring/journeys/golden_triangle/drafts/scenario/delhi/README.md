@@ -1,5 +1,7 @@
 # デリー脚本 — 三分間の旅
 
+> **旧稿の記録です。** 2026-11-04 の旧稿「三分間の旅」のもので、2026-11-07 の全面改稿で脚本・クイズは置き換わりました（[改稿の設計](../../SCENARIO_REWRITE.md)。今の本文は `content/journeys/golden_triangle/` の Ink とクイズが正本）。
+
 観光案内 4 本、通常戦 4 本、デート 6 本、都市フィナーレ 1 本、エピローグ 1 本。`stories/` 以下は本番の `content/journeys/golden_triangle/stories/` と同じ相対パスを使う。
 
 `narrative.json` は既存の journey scaffold に渡す表示文のデリー分。`quiz-hooks.json` は質問番号と回答後の会話を合わせる契約。`research-notes.json` は追加確認した出典と演出上の制約。クイズ本体は別担当で制作・統合する。

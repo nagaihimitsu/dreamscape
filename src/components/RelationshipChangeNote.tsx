@@ -1,4 +1,5 @@
-import { describeRelationshipChange, type RelationshipChange } from "../domain/relationship-change";
+import { Fragment } from "react";
+import { RELATIONSHIP_PART_GAP, relationshipChangeLines, type RelationshipChange } from "../domain/relationship-change";
 import { useMeasuredHeight } from "./useMeasuredHeight";
 import "./relationship-change.css";
 
@@ -9,7 +10,8 @@ export type SceneConditionTruth = { text: string; met: boolean };
  * Debug mode's display of a choice's relationship changes (user decision 2026-11-08):
  * shown above the scene, never in the dialogue window, the message log or the save.
  * Marked 「Debug」 so nobody reads it as story text; outside the scene, so a tap on it
- * neither reads on nor counts as a control press (scene-tap.ts).
+ * neither reads on nor counts as a control press (scene-tap.ts). Each value keeps its
+ * numbers on a narrow screen: a line's parts are boxes of their own (relationshipChangeLines).
  * GameApp keeps the status region mounted (empty while `change` is null) for as long as
  * Debug mode is on, so it is on the page before a change is put into it: screen readers
  * often do not announce a live region that is added together with its text.
@@ -30,7 +32,11 @@ export function RelationshipChangeNote({ change, conditions = [] }: { change: Re
           <section className="relationship-change" data-testid="relationship-change">
             <span className="relationship-change-label" aria-hidden="true">Debug</span>
             <div className="relationship-change-lines">
-              {describeRelationshipChange(change).map((line) => <p key={line}>{line}</p>)}
+              {relationshipChangeLines(change).map((parts) => (
+                <p key={parts.join(RELATIONSHIP_PART_GAP)}>
+                  {parts.map((part, index) => <Fragment key={index}>{index > 0 && RELATIONSHIP_PART_GAP}<span className="relationship-change-part">{part}</span></Fragment>)}
+                </p>
+              ))}
             </div>
           </section>
         )}

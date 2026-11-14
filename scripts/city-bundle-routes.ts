@@ -1,9 +1,9 @@
 import { isDeepStrictEqual } from "node:util";
 import { z } from "zod";
+import { contentId as id } from "../src/content/content-id";
 import { tourismSourceSchema } from "../src/content/tourism-schemas";
 import { nightLinesSchema, travelEventSchema, travelPlaceSchema, travelRouteSchema, type TravelRoute } from "../src/content/travel-schemas";
 
-const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const sourceId = id.refine((value) => !["constructor", "prototype", "__proto__"].includes(value), "Reserved source ID");
 const sharedRoute = {
   sourceRef: sourceId,

@@ -203,3 +203,10 @@
 .mg-baraat-dance-hands[data-hands="off"] > span { transform: translateY(14%) rotate(-28deg); }
 .mg-baraat-dance-hands[data-hands="off"] > span:last-child { transform: translateY(24%) rotate(4deg); }
 .mg-baraat-dance[data-outcome="stumble"] .mg-baraat-dance-hands { transform: translateX(-50%) rotate(-10deg); }
+/* A rest (the break, the stop before the finale): the drum is silent with its stick held high, and the dancers freeze
+   upright, a little lifted; with less motion nothing moves but the stick. */
+.mg-baraat-dance[data-freeze] .mg-baraat-dance-drum > span { transform: rotate(-12deg) translateY(-12%); }
+.minigame-layer:not([data-still]) .mg-baraat-dance[data-freeze] .mg-baraat-dance-dancer > span { transform: translateY(-3%) scaleY(1.02); }
+/* A rest's word over the drum: held (gold, like ぴったり), tapped (terracotta, smaller). */
+.mg-baraat-dance-grade[data-kind="kept"] { color: #ffd76a; font-size: 20px; }
+.mg-baraat-dance-grade[data-kind="fooled"] { color: #ffb08a; }

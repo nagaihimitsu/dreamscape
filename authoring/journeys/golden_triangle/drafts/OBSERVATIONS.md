@@ -1,8 +1,8 @@
 # インド編・観察カード制作資料
 
-`observation-cards.json` は12観光地の制作資料で、観光カタログを登録するときの入力です。統合調査の `TOURISM_FACTS.json` と `SOURCES.json` を正本として `npx tsx scripts/journeys/golden_triangle/prepare-india-observations.ts --write` で作成し、`--check` で差分を検出します。現在の観察内容は `content/journeys/golden_triangle/tourism/catalog.json` に登録済みです。制作資料の `relatedQuestionIds` は空のままで、クイズの完成状況を表しません。脚本・クイズの出典は [制作記録](scenario/README.md) を参照してください。
+`observation-cards.json` は12観光地の制作資料で、観光カタログを登録するときの入力です。統合調査の `TOURISM_FACTS.json` と `SOURCES.json` を正本として `npx tsx scripts/journeys/golden_triangle/prepare-india-observations.ts --write` で作成し、`--check` で差分を検出します。インド編の本番では 2026-11-11 に観察をなくしたので（#61。`content/journeys/golden_triangle/tourism/catalog.json` のどの観光地も `observation: false` で、`clues` は空）、この資料の観察カードはゲームに出ません。`journey:scaffold`・`journey:scenario` は、今もこの資料を入力に読みます。制作資料の `relatedQuestionIds` は空のままで、クイズの完成状況を表しません。脚本・クイズの出典は [制作記録](scenario/README.md) を参照してください。
 
-29件のうち9件は画像で対象物を確認した `hotspot` です。その他は写真に写らない、または特定できなかったため `document` としています。画像の全体表示に対する正規化座標と、確認対象の簡単な説明を記録しています。画像の SHA-256 が変わった場合、座標の適否を必ず目視確認してから再生成してください。画像の差し替えが確認なしで進むとテストと `--check` が失敗します。
+29件のうち10件は画像で対象物を確認した `hotspot` です。その他は写真に写らない、または特定できなかったため `document` としています。画像の全体表示に対する正規化座標と、確認対象の簡単な説明を記録しています。画像の SHA-256 が変わった場合、座標の適否を必ず目視確認してから再生成してください。画像の差し替えが確認なしで進むとテストと `--check` が失敗します。
 
 元調査の事実分類・出典・確認日・確度を保っています。`interpretation` の4件は元調査が追加調査を求めていましたが、インド政府観光省と宮殿博物館の別資料で再確認しました。出典を追補した後も解釈の分類と元調査へのリンクを保持しています。シティ・パレスの門は採用した写真に写っていないため、博物館の資料に基づく文面に改め、写真に写っていないことを明示しています。仮説は含めていません。出典の時間依存性、写真の対象、正式なランドマーク ID、シナリオ・クイズとの関連を公開前に確認する必要があります。
 
