@@ -50,9 +50,6 @@ dialog.modal.credits-modal {
   overflow-wrap: anywhere;
 }
 .credits-list .credits-own-artwork { margin-top: 12px; }
-/* The entries: the title screen's below its note, ゲームの設定's above the data entries. */
+/* The entries: the title screen's below its note, ゲームの設定's first in its データ. */
 .credits-entry { display: block; min-height: 44px; }
 .intro > .credits-entry { margin: 4px auto 0; }
-.modal .credits-entry { margin-top: 22px; }
-.modal .credits-entry + .old-data-entry,
-.modal .credits-entry + .delete-entry { margin-top: 4px; }

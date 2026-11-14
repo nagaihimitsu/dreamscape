@@ -1,8 +1,12 @@
+/* An encounter's English replies, laid out as a quiz's options (2026-11-14, the phone UI audit; battle.css): the same
+   rows 5 px apart, 「すべての訳を見る」 at the top right, each 「訳を見る」 at its row's right, 44 px high. */
 .encounter-choices {
   display: grid;
   gap: 5px;
   margin-top: 8px;
 }
+.encounter-translation-tools { display: flex; justify-content: flex-end; }
+.encounter-translation-tools > .translation-all { min-height: 44px; margin: 0; padding: 4px 2px; font-size: 12px; }
 
 /* An English choice of an encounter (UI redesign stage 2.4): a display row in the window
    (its words and translation are reading targets); the letter is its pressable, slate with
@@ -10,15 +14,29 @@
 .encounter-choice {
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr);
-  gap: 8px;
-  padding: 5px;
+  align-items: center;
+  gap: 3px 6px;
+  padding: 4px 7px;
   border: 1px solid rgba(255, 255, 255, .22);
   border-radius: 12px;
   background: rgba(255, 255, 255, .06);
 }
+.encounter-choice[data-translated] { grid-template-columns: 44px minmax(0, 1fr) 64px; }
+.encounter-choice > .encounter-choice-select { grid-column: 1; grid-row: 1; }
+.encounter-choice > .encounter-choice-content { grid-column: 2; grid-row: 1; }
+.encounter-choice > .encounter-choice-translate {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+  min-height: 44px;
+  margin: 0;
+  padding: 4px 2px;
+  font-size: 12px;
+}
+/* The translation and a reason it cannot be chosen: under the words, across to the row's right edge. */
+.encounter-choice > p { grid-column: 2 / -1; }
 
 .encounter-choice-select {
-  align-self: start;
   min-width: 44px;
   min-height: 44px;
   padding: 5px;
@@ -47,22 +65,18 @@
   line-height: 1.4;
 }
 
+/* Its price and AP under its words. */
 .encounter-choice-meta {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
   font-size: 13px;
 }
 
-.encounter-choice-meta .text-button {
-  min-height: 40px;
-  margin-left: auto;
-}
-
-.encounter-choice-content p {
-  margin: 2px 0 4px;
+.encounter-choice > p {
+  margin: 2px 0 8px;
   font-size: 14px;
+  line-height: 1.5;
 }
 
 .encounter-choice-reason { font-weight: 700; }

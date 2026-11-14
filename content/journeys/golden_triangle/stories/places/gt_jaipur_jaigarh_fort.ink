@@ -94,14 +94,14 @@ INCLUDE modules.ink
 # speaker: narrator
 最後のバツ印は、門のすぐ外だった。古い木の台の上に、湯気の立つ鍋。小さな茶屋で、白いひげの老人が、チャイを煮ていた。
 # speaker: gt_raju
-宝は、ここ。うちのナーナーのチャイ。……ジャイプールでいちばんうまいんだ。本当だよ
+宝は、ここ。うちのナーナー……じいちゃんのチャイ。ジャイプールでいちばんうまいんだ。本当だよ
 # speaker: heroine
 # reaction: heroine,surprised_big,exclamation
 やられた！　ふふっ、最後の印、お茶屋さんだった！
 # speaker: narrator
 老人は孫の頭を軽く叩き、素焼きのカップを二つ並べた。
 # speaker: gt_jaipur_jaigarh_old_man
-わしは子どものころ、あの宝探しの兵隊たちに、水を運んでおった
+わしは子どものころ、あの宝探しで掘っていた兵隊たちに、水を運んでおった
 # speaker: narrator
 本人の話では、だが。
 # speaker: gt_jaipur_jaigarh_old_man
@@ -176,7 +176,7 @@ INCLUDE modules.ink
 * [地図の値段：₹40で話がまとまった # option: fair_map]
     # money: -40
     # speaker: gt_raju
-    四十。……うん、決まり。ナーナーが言ってた。ちょっとだけ値切るお客さんは、ちゃんと最後まで地図を読むって
+    四十。……うん、決まり。じいちゃんが言ってた。ちょっとだけ値切るお客さんは、ちゃんと最後まで地図を読むって
     # speaker: narrator
     ラージューは地図のしわを手のひらで伸ばしてから、両手で差し出した。
     # speaker: heroine

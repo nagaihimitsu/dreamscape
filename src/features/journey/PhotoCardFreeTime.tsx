@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { getCityContent } from "../../content";
 import { getCityBackdropPath } from "../../content/city-backdrop";
 import { HudScreenTool } from "../../components/HudScreenTool";
@@ -14,7 +14,7 @@ import { FreeTimeExtras } from "./FreeTimeExtras";
 import { SIDE_BY_SIDE_QUERY } from "./free-time-layout";
 import { timeOfDayTint } from "./time-of-day";
 import { PhotoCardPicker, rowCardName } from "./PhotoCardPicker";
-import { LockedCard, PlaceCard, sleepWayJa, StayCard, TourCard, WaitCard } from "./PlaceCard";
+import { LockedCard, PlaceCard, PlaceGoBar, sleepWayJa, StayCard, StayGoBar, TourCard, WaitCard } from "./PlaceCard";
 import { Announce, mapPlaces, PlaceMapDialog } from "./PlaceMap";
 import { hintedLockedDates } from "../../domain/date-rules";
 import {
@@ -63,8 +63,29 @@ export function PhotoCardFreeTime({
     },
   });
   const { layout, arrangement } = useFreeTimeArrangement();
+  const hub = useRef<HTMLElement | null>(null);
+  const hubRef = useCallback((element: HTMLElement | null) => {
+    hub.current = element;
+    const cleanup = layout(element);
+    return () => {
+      hub.current = null;
+      cleanup?.();
+    };
+  }, [layout]);
+  const nudgeCue = useCueNudge(hub);
   const [mapOpen, setMapOpen] = useState(false);
   const [pick, setPick] = useState<string | null>(null);
+  // A new day (after a rest; 2026-11-14, the UI audit): the row starts again at the first place's card, with 「30分待つ」
+  // and the fastest way home, so a habitual swipe up never waits or rests again by yesterday's choice (adjusted while
+  // rendering; the selection follows the row: the sync below).
+  const day = game.travel.day;
+  const [rowDay, setRowDay] = useState(day);
+  if (rowDay !== day) {
+    setRowDay(day);
+    setPick(null);
+    setWaitPick(null);
+    setSleepPick(null);
+  }
   // Each place's chosen event and way (its card's choices; a swipe up and 「行く」 take them).
   const [plans, setPlans] = useState<ReadonlyMap<string, DeparturePlan>>(() => new Map());
   const planOf = (placeId: string) => plans.get(placeId) ?? NO_PLAN;
@@ -109,10 +130,17 @@ export function PhotoCardFreeTime({
   const target = api.selection?.target ?? null;
 
   // The chosen card is the selection (quietly: the screen chose it, not the player). When the expanded map has chosen
-  // another card's place (or the hotel), the row turns to that card; the map chooses for itself while it is open.
+  // another card's place (or the hotel), the row turns to that card once it closes; the map chooses for itself while it
+  // is open. Any other difference (yesterday's selection on a new day, a card joining the row) follows the row.
+  const mapWasOpen = useRef(false);
   useLayoutEffect(() => {
-    if (mapOpen) return;
-    const step = syncRow(cards, chosen, target);
+    if (mapOpen) {
+      mapWasOpen.current = true;
+      return;
+    }
+    const fromMap = mapWasOpen.current;
+    mapWasOpen.current = false;
+    const step = syncRow(cards, chosen, target, { fromMap });
     if (step && "turn" in step) setPick(step.turn);
     else if (step) api.choose(step.select, { quiet: true });
   });
@@ -144,14 +172,19 @@ export function PhotoCardFreeTime({
     const heading = scope === "dialog" || arrangement === "row";
     // In the row a swipe up on the photo card goes, waits or rests: the card's own button is for readers and keys only.
     const quietGo = scope === "page" && arrangement === "row";
+    // The chosen wait or way home pressed again: in the row (where the swipe up waits or rests) the photo card's cue nudges.
+    const onAgain = quietGo ? nudgeCue : undefined;
+    // In the expanded map the bar at its foot goes or rests (mapBar), not the card's own button.
+    const go = scope === "page";
     if (card.kind === "wait")
-      return <WaitCard game={game} options={waitOptions} wait={wait} onPick={setWaitPick} onWait={(chosenWait) => onTravelWait(chosenWait.minutes)}
+      return <WaitCard game={game} options={waitOptions} wait={wait} onPick={setWaitPick} onAgain={onAgain} onWait={(chosenWait) => onTravelWait(chosenWait.minutes)}
         heading={heading} quietGo={quietGo} />;
-    if (card.kind === "stay") return <StayCard game={game} api={api} picked={sleepPick} onPick={setSleepPick} scope={scope} heading={heading} quietGo={quietGo} />;
+    if (card.kind === "stay")
+      return <StayCard game={game} api={api} picked={sleepPick} onPick={setSleepPick} onAgain={onAgain} scope={scope} heading={heading} quietGo={quietGo} go={go} />;
     if (card.kind === "tour") return <TourCard game={game} onBook={onBookTour} onCancel={onCancelTour} heading={heading} />;
     if (card.kind === "locked") return <LockedCard hintJa={card.hintJa} heading={heading} />;
     return <PlaceCard game={game} entry={card.entry} api={api} scope={scope} map={scope === "page"} heading={heading}
-      plan={planOf(card.id)} onPlan={(change) => changePlan(card.id, change)} quietGo={quietGo} />;
+      plan={planOf(card.id)} onPlan={(change) => changePlan(card.id, change)} quietGo={quietGo} go={go} />;
   };
   const readyAt = api.selection ? armedAt(api.selection) : 0;
   /** A place card's swipe up: its chosen event by its chosen way, while the place is the selection (else why not). */
@@ -181,8 +214,11 @@ export function PhotoCardFreeTime({
   const slot = selectedCard ? cardOf(selectedCard, "dialog")
     : target?.kind === "place" ? <p>{current.nameJa}（現在地）には、ここで始められる予定はありません。</p>
     : <p>地図の印か「地点を名前で探す」で選ぶと、ここに行き先が出ます。</p>;
+  // Its bar at the dialog's foot: the selected place's or 「ホテルに戻る」's way and 「行く」 or 「休む」 (none otherwise).
+  const mapBar = selectedCard?.kind === "place" ? <PlaceGoBar game={game} entry={selectedCard.entry} api={api} plan={planOf(selectedCard.id)} />
+    : selectedCard?.kind === "stay" ? <StayGoBar game={game} api={api} picked={sleepPick} /> : null;
 
-  return <section className="free-time-hub photo-free-time" data-testid="free-time-hub" ref={layout}>
+  return <section className="free-time-hub photo-free-time" data-testid="free-time-hub" ref={hubRef}>
     {backdrop ? <FreeTimeBackdrop cityId={game.currentCityId} /> : <div className="photo-backdrop" aria-hidden="true" />}
     {/* The colour of the time of day over it (time-of-day.ts; it eases over when the clock moves while the screen shows). */}
     <div className="free-time-tint" aria-hidden="true" style={{ backgroundColor: timeOfDayTint(game.travel.minute) }} />
@@ -199,7 +235,7 @@ export function PhotoCardFreeTime({
       {/* 「待機」 is named only while one of its waits can be made (late in the evening none can). Out of money for good in this
           city, the line says so and points to ロード instead (B1, 2026-11-13: running short is part of play, and nothing ends the trip). */}
       {noPlace && <p className="photo-menu-note">{outOfMoney
-        ? <>旅行予算が足りず、この街で今できることがありません。<span className="photo-menu-note-word">⚙設定</span>の「ロード」で前のセーブに戻れます。</>
+        ? <>旅行予算が足りず、この街で今できることがありません。<span className="photo-menu-note-word">メニュー</span>の「ロード」で前のセーブに戻れます。</>
         : wait ? "今すぐ行ける場所はありません。「ホテルに戻る」で休むか、「待機」で時間を待てます。" : "今すぐ行ける場所はありません。「ホテルに戻る」で休めます。"}</p>}
       <div className="photo-stage">
         <CardProbe />
@@ -216,8 +252,31 @@ export function PhotoCardFreeTime({
 
     {mapOpen && <PlaceMapDialog game={game} events={candidates} places={mapMarks} selectedId={api.selectedMarkerId}
       onMarker={(placeId, kind) => api.pressMarker(placeId, kind, false, "dialog")} onFocusEnd={api.focusEnd} onClose={() => setMapOpen(false)}
-      selection={{ message: api.message, slot }} />}
+      selection={{ message: api.message, slot, bar: mapBar }} />}
   </section>;
+}
+
+/** How long a nudge of the swipe cue lasts (photo-free-time.css photo-card-nudge, with some room). */
+const NUDGE_MS = 800;
+
+/**
+ * The chosen 「待機」 wait or way home pressed again (2026-11-14, the UI audit: a press there only chooses): the chosen
+ * photo card's swipe cue nudges (photo-free-time.css `data-nudge`), since the swipe up is what waits or rests. In the
+ * row only (the list and the expanded map show their own 「待つ」 and 「休む」).
+ */
+function useCueNudge(hub: { current: HTMLElement | null }) {
+  const timer = useRef(0);
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+  return useCallback(() => {
+    const card = hub.current?.querySelector<HTMLElement>(".photo-cards:not(.is-list) > li[data-selected] > .photo-card[data-cue]");
+    if (!card) return;
+    // Again from the start when pressed again while it runs (a style read in between restarts the animation).
+    card.removeAttribute("data-nudge");
+    card.getBoundingClientRect();
+    card.setAttribute("data-nudge", "");
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => card.removeAttribute("data-nudge"), NUDGE_MS);
+  }, [hub]);
 }
 
 /** When a joining card's motion starts (photo-free-time.css photo-card-join's delay: the screen has appeared). */

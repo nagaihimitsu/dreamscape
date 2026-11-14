@@ -33,8 +33,8 @@ export function DialogueWindowHead({ speaker, controls, narration = false, plate
 }
 
 /**
- * Presentation-only tools in the window's head, in this order: 「隠す」 or, in a
- * sightseeing guide, 「閉じる」 (U6), 「ログ」, 「高速送り」, a group named
+ * Presentation-only tools in the window's head, in this order: 「隠す」 (U6; a
+ * sightseeing guide's too since 2026-11-14), 「ログ」, 「高速送り」, a group named
  * 「会話の操作」. Words only in a window narrower than 24 of its characters (360 px
  * at normal text), icon and word in a wider one (dialogue-controls.css). A tap in
  * the gaps between them is a near miss, not a tap on the scene.

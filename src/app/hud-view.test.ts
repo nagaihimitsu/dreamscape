@@ -7,7 +7,7 @@ const choices = { choices: [{ index: 0, text: "Let's go." }, { index: 1, text: "
 const quizCall = { choices: [{ index: 0, text: "quiz", call: "quiz" as const }] };
 
 // User decision 2026-11-11 (after playing on an iPhone): over a conversation the header shows the place and
-// time and ⚙設定; the budget and AP, the held items and 手がかり帳 only while a choice waits.
+// time and ≡メニュー; the budget and AP, the held items and 手がかり帳 only while a choice waits.
 describe("what the header shows", () => {
   it("shows every part outside a story scene: free time, the observation, before the journey", () => {
     expect(hudView(null)).toBe("all");

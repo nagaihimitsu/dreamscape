@@ -3,7 +3,7 @@ import "./dismiss-layer.css";
 
 /**
  * A transparent layer over the whole page, under the header, while one of the
- * header's popovers is open (the ⚙設定 panel, the held items' detail). A tap on it
+ * header's popovers is open (the ≡メニュー panel, the held items' detail). A tap on it
  * only closes the popover: the layer is outside every scene root (a portal on
  * `document.body`), so the story does not read on, and nothing under it is
  * pressed, since the layer stays until its own click. A pan that starts on it

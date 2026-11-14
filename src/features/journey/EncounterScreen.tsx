@@ -42,7 +42,7 @@ export type EncounterScreenView = {
   /** The scene's heading: the name of the place where it happens (unified event design, decision 1). */
   placeJa: string;
   background: string;
-  /** The place's registered photo, shown as the background (⚙設定's 画像の出典 opens its credits). */
+  /** The place's registered photo, shown as the background (≡メニュー's 画像の出典 opens its credits). */
   backgroundAsset?: TourismAsset;
   speaker: string;
   /** The line is the narration (「旅の風景」), no one's words. */

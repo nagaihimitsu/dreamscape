@@ -142,6 +142,13 @@ export function burstAngles(count: number, seed: number): number[] {
 export const playLeavable = ({ practice, ended, decided }: { practice: boolean; ended: boolean; decided: boolean }): boolean =>
   practice || (!ended && !decided);
 
+/**
+ * Whether the band shows 「中断する」: while the play may be left (playLeavable), but not over the result card, whose own
+ * buttons say what comes next (2026-11-14, the phone UI audit: it stayed on practice's card). Esc still leaves practice.
+ */
+export const quitShown = (state: { practice: boolean; ended: boolean; decided: boolean; cardShown: boolean }): boolean =>
+  !state.cardShown && playLeavable(state);
+
 /** A box on the screen (client pixels). */
 export interface ScreenBox { left: number; top: number; right: number; bottom: number }
 /** A press this close around the start button counts as on it (a second tap lands a little off the first). */

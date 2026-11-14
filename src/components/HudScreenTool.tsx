@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 
-/** The id of the header's place for the screen's own tool (JourneyHud's second row, before ⚙設定). */
+/** The id of the header's place for the screen's own tool (JourneyHud's second row, before ≡メニュー). */
 export const HUD_SCREEN_TOOL_ID = "hud-screen-tool";
 
 /**

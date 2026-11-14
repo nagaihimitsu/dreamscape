@@ -6,7 +6,7 @@
  * they are and screen readers read the new screen's name.
  *
  * Only a lost focus moves: one that a screen or a dialog has placed (a battle's
- * feedback, a cut-in's skip button, ⚙設定 after ロード, the journey selector
+ * feedback, a cut-in's skip button, ≡メニュー after ロード, the journey selector
  * after a switch) stays where it is. A heading that takes the focus has
  * `tabIndex={-1}` (a target, not a stop in the Tab order) and the two-tone ring
  * of styles.css while the focus is visible.

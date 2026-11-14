@@ -39,12 +39,16 @@ function VoicePlayback({ voiceId, onState }: { voiceId: string; onState: (state:
 type VoicePlay = { id: string; count: number; state: LineVoiceState | "stopped" };
 
 /**
- * 旅の音楽室 (2026-11-13 user decision; rules in music-room.ts), opened from 旅の記録 once a city is cleared: the tracks
+ * 旅の音楽室 (2026-11-13 user decision; rules in music-room.ts), opened from the top of 旅の記録 once a city is cleared
+ * (over it: closing goes back to it, 2026-11-14): the tracks
  * of the places visited and of the scenes completed, and the heroine's voiced lines of those scenes that this device has
  * read (`isRead`: read-skip's record, the one 高速送り reads; a branch not taken is not listed), with their text.
  * A track plays through the game's music player (GameApp asks for it: `playing`, `onPlay`), at 「BGMの大きさ」, with
  * no ambience; a voice through the voice player, at 「声の大きさ」. With 「BGMを流す」 or 「台詞の声を出す」 off its
- * buttons are off and say why. Closing the room gives the screen its own music back. Nothing is saved.
+ * buttons are off and say why. The track playing is named in the title bar, which stays at the top while the room
+ * scrolls, with its 「止める」 (2026-11-14); the line keeps its height while nothing plays, so the list never moves under
+ * the finger as a track starts. A dialog for viewing: 「× 閉じる」 in the title bar, a tap on the dimmed page around it,
+ * or Esc. Closing the room gives the screen its own music back. Nothing is saved.
  */
 export function MusicRoom({ game, isRead, playing, onPlay, bgmOn, voiceOn, onClose }: {
   game: GameState;
@@ -92,8 +96,15 @@ export function MusicRoom({ game, isRead, playing, onPlay, bgmOn, voiceOn, onClo
     setVoice((last) => (last && last.count === voiceCountNow ? { ...last, state: state ?? "stopped" } : last));
   const playingLabel = tracks.find((track) => track.id === playing)?.labelJa;
   const voiceCountTotal = voices.reduce((sum, group) => sum + group.voices.length, 0);
-  return <Modal labelledBy={titleId} onClose={onClose} className="music-room" settlePresses>
-    <ModalTitle id={titleId} onClose={onClose}>旅の音楽室</ModalTitle>
+  // The line under the title: what plays, with its 止める, or how to start one (readers hear the change from the status below).
+  const nowPlaying = bgmOn && tracks.length > 0 && <p className="music-room-now">
+    {playingLabel ? <>
+      <Icon name="music" /><span className="music-room-now-label">{playingLabel}</span>
+      <button type="button" className="secondary music-room-stop" aria-label="曲を止める" onClick={() => onPlay(null)}>止める</button>
+    </> : <span className="music-room-now-idle">曲を選ぶと、ここに出ます。</span>}
+  </p>;
+  return <Modal labelledBy={titleId} onClose={onClose} className="music-room" settlePresses closeOnBackdrop>
+    <ModalTitle id={titleId} onClose={onClose} subline={nowPlaying}>旅の音楽室</ModalTitle>
     <p className="fine-print">旅で聞いた曲と、この端末で読んだ台詞の{game.heroineName}の声を、もう一度聞けます。閉じると、元の曲に戻ります。</p>
     <section className="music-room-part" aria-labelledby={`${titleId}-tracks`}>
       <h3 id={`${titleId}-tracks`}>曲（{tracks.length}）</h3>
@@ -106,7 +117,6 @@ export function MusicRoom({ game, isRead, playing, onPlay, bgmOn, voiceOn, onClo
           </button>
         </li>)}
       </ul> : <p>まだ聞いた曲はありません。</p>}
-      {playing && <button type="button" className="secondary" onClick={() => onPlay(null)}>曲を止める</button>}
     </section>
     <section className="music-room-part" aria-labelledby={`${titleId}-voices`}>
       <h3 id={`${titleId}-voices`}>{game.heroineName}の声（{voiceCountTotal}）</h3>
@@ -123,9 +133,8 @@ export function MusicRoom({ game, isRead, playing, onPlay, bgmOn, voiceOn, onClo
         </ul>
       </details>) : <p>まだ聞いた声はありません。</p>}
     </section>
-    {/* What plays now, for readers (the pressed buttons show it). */}
+    {/* What plays now, for readers (the line under the title and the pressed buttons show it). */}
     <p className="sr-only" role="status">{playingLabel ? `曲：${playingLabel}を流しています。` : ""}</p>
     {voice && <VoicePlayback key={voice.count} voiceId={voice.id} onState={voiceState} />}
-    <button type="button" className="secondary" onClick={onClose}>閉じる</button>
   </Modal>;
 }

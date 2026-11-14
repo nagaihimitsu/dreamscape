@@ -205,7 +205,7 @@ export function stepPickPlay<Params, Outcome extends string>(skin: StepPickSkin<
           <Field params={params} available={available} still={still} seed={seed} cast={cast} names={names} art={art} sound={sound} vibrate={vibrate}
             tuning={tuning} view={view} frames={frames} />
         </div>
-        <div className="mg-step-pick-controls">
+        <div className="mg-step-pick-controls" data-minigame-controls>
           {auto === null && <p className="mg-step-pick-hint">{live && !canTake && skin.takeClosedJa ? skin.takeClosedJa : skin.hintJa}</p>}
           {auto !== null ? <p className="mg-step-pick-auto">{skin.autoJa}</p> : (
             <div className="mg-step-pick-buttons">

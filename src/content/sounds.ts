@@ -8,7 +8,7 @@ import { japaneseText } from "./text-language";
 // content/journeys/<journeyId>/presentation/sounds.json for that journey's). A line's `# se: <ID>` (src/content/tags.ts)
 // plays one; the game plays the system sounds below by itself (src/audio/sound-effects.ts). content:build checks the
 // lists, the files and the tags (scripts/sound-files.ts) and writes each sound's volume to
-// src/content/generated/sound-volumes.json; ⚙設定's 「出典・権利の一覧」 lists the sources (src/content/credits.ts).
+// src/content/generated/sound-volumes.json; ≡メニュー's 「出典・権利の一覧」 lists the sources (src/content/credits.ts).
 
 /** A sound's ID: its file name without `.mp3` (a source's ID has the same form). */
 export const SOUND_ID = /^[a-z0-9_]+$/u;

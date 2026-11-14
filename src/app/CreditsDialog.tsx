@@ -175,7 +175,7 @@ export function CreditsList({ photos, sounds = [], music = [], ambience = [], vo
   </div>;
 }
 
-/** 「出典・権利の一覧」 (WP20b), opened from the title screen and from ⚙設定 → ゲームの設定. */
+/** 「出典・権利の一覧」 (WP20b), opened from the title screen and from ≡メニュー → ゲームの設定. */
 export function CreditsDialog({ onClose }: { onClose: () => void }) {
   const [photos] = useState(photoCredits);
   const [sounds] = useState(soundCredits);
@@ -183,7 +183,7 @@ export function CreditsDialog({ onClose }: { onClose: () => void }) {
   const [ambience] = useState(ambienceCredits);
   const [voices] = useState(voiceCredits);
   const licences = useThirdPartyLicenses();
-  return <Modal labelledBy="credits-title" className="credits-modal" onClose={onClose} settlePresses>
+  return <Modal labelledBy="credits-title" className="credits-modal" onClose={onClose} settlePresses closeOnBackdrop>
     <ModalTitle id="credits-title" onClose={onClose} closeTestId="credits-close">出典・権利の一覧</ModalTitle>
     <CreditsList photos={photos} sounds={sounds} music={music} ambience={ambience} voices={voices} licences={licences} />
   </Modal>;

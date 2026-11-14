@@ -4,7 +4,7 @@ import { japaneseText } from "./text-language";
 // 旅の図鑑 (2026-11-13 user decision): words a Japanese traveller cannot picture at once (ゴルガッパ, ブラックバック). A
 // journey's optional catalog `glossary/terms.json` lists them, merged across the journeys like the other catalogs; a
 // line's `# term: <id>` (src/content/tags.ts) shows the term's card over the scene the first time the line is on screen
-// in a game (src/domain/glossary.ts), and the term stays in the save's 旅の図鑑 (⚙設定). content:build checks the catalog
+// in a game (src/domain/glossary.ts), and the term stays in the save's 旅の図鑑 (≡メニュー). content:build checks the catalog
 // and the tags (scripts/glossary-terms.ts) and lists the terms with their journeys in src/content/generated/glossary.json,
 // which src/content/index.ts reads. Light module (zod only).
 

@@ -221,8 +221,12 @@
 }
 @keyframes minigame-react-in { from { opacity: 0; transform: scale(0.85); transform-origin: 32px 32px; } }
 
-/* The result card (ResultCard.tsx): low over the play's dead controls, so the field's key picture stays in view (or high:
-   resultAnchor). ★, the label, the score, her face and line, its buttons. */
+/* The result card (ResultCard.tsx): at the bottom in the place of the play's controls, which are hidden as it comes
+   (2026-11-14, the phone UI audit: the dead 「振る」 under the card still looked pressable), so its buttons lie where the
+   thumb was and the field's key picture stays in view above it (or its words high: resultAnchor, below). ★, the label,
+   the score, her face and line, its buttons. Its words have no box of their own here. */
+.minigame-layer[data-result] [data-minigame-controls] { visibility: hidden; }
+.minigame-result-body { display: contents; }
 .minigame-result {
   position: absolute;
   z-index: 9;
@@ -245,8 +249,12 @@
   text-align: center;
   animation: minigame-result-in 220ms var(--ease-out, ease-out) both;
 }
-.minigame-result { overflow-y: auto; overscroll-behavior: contain; }
-.minigame-result[data-anchor="top"] { top: calc(var(--scene-top, 0px) + 52px); bottom: auto; }
+/* Never under the band (its 44 px and a gap): a card taller than the room left scrolls inside. */
+.minigame-result {
+  max-height: calc(100% - var(--scene-top, 0px) - 64px - env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
 /* Compact (ResultCard's data-compact: a play 700 px high or less, or where the full card would cover more than 45% of
    the field): ★ beside the label on one row, a small face beside the score and her line, tight padding; the buttons stay
    44 px. The key picture of the field stays in view above it. */
@@ -296,6 +304,43 @@
 .minigame-result-actions > .primary:focus-visible { box-shadow: 0 0 0 3px var(--ds-slate-900), 0 0 0 5px var(--ds-focus); }
 .minigame-result-actions > .secondary { border-color: rgba(255, 250, 241, 0.55); background: transparent; color: var(--ds-on-slate); font-size: 14px; }
 .minigame-result-actions > .secondary:hover:enabled { background: rgba(255, 250, 241, 0.12); }
+/* High (resultAnchor "top", a field whose key picture is low): the words are a card of their own under the band, and
+   the buttons a bar of their own at the bottom in the controls' place, as on every other game (2026-11-14). Between
+   them the field shows, and a press there reaches the ended play, which takes none. */
+.minigame-layer .minigame-result[data-anchor="top"] {
+  top: calc(var(--scene-top, 0px) + 52px);
+  justify-content: space-between;
+  max-height: none;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  pointer-events: none;
+}
+.minigame-result[data-anchor="top"] > .minigame-result-body,
+.minigame-result[data-anchor="top"] > .minigame-result-actions {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid var(--ds-gold-hairline);
+  border-radius: 16px;
+  background: rgba(31, 36, 48, 0.96);
+  box-shadow: var(--ds-window-shadow);
+  pointer-events: auto;
+}
+.minigame-result[data-anchor="top"] > .minigame-result-body {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 12px 14px 14px;
+}
+.minigame-layer .minigame-result[data-anchor="top"][data-compact] > .minigame-result-body { gap: 2px; padding: 6px 10px 8px; }
+.minigame-result[data-anchor="top"] > .minigame-result-actions { flex: none; margin-top: 0; padding: 8px; }
 
 /* Photos and drawn art together (D1, group3 6.5): the photo is the back layer, a little greyer, darker and soft (the host
    gives it to a use's bg and to the scene's own picture under a play; a skin's backdrop slot image takes `mg-photo`), and

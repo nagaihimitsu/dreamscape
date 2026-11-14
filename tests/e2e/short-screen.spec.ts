@@ -79,7 +79,7 @@ test("battle on a 320×480 screen: after a wrong answer the round bar and the ex
   expect(start.shown, "the first line of the explanation shows, not the journey bar or the round bar over it").toBe(true);
   expect(start.below, "the first line starts just below the round bar").toBeLessThanOrEqual(12);
 
-  // Scrolled back to the top of the page, the header's controls show again, and ⚙設定 →
+  // Scrolled back to the top of the page, the header's controls show again, and ≡メニュー →
   // ゲームの設定 opens.
   await page.evaluate(() => scrollTo({ top: 0 }));
   await expect(ops.settingsButton(page)).toBeInViewport();

@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useId, useState } from "react";
+import { Fragment, useCallback, useEffect, useId, useRef, useState } from "react";
 import type { LineDelivery } from "../content/tags";
 import { emphasisSpans } from "../content/emphasis";
 import { Icon } from "./icons";
@@ -77,16 +77,23 @@ export function DialogueLog({
 }) {
   const [open, setOpen] = useState(false);
   const titleId = useId();
+  const list = useRef<HTMLOListElement>(null);
+  // Opened, the log shows its newest line at the bottom; older lines are above it (user decision 2026-11-14). After
+  // Modal's own effect (a child's runs first) has shown the dialog, so the list has its height.
+  useEffect(() => {
+    if (open && list.current) list.current.scrollTop = list.current.scrollHeight;
+  }, [open]);
   return (
     <>
       <button className="text-button" aria-label="会話ログ" onClick={() => setOpen(true)}>
         <Icon name="log" />{label}
       </button>
+      {/* A dialog for viewing (2026-11-14): 「× 閉じる」 in its title bar, a tap on the dimmed page around it, or Esc. */}
       {open && (
-        <Modal labelledBy={titleId} onClose={() => setOpen(false)}>
-          <ModalTitle id={titleId}>会話ログ</ModalTitle>
+        <Modal labelledBy={titleId} onClose={() => setOpen(false)} closeOnBackdrop>
+          <ModalTitle id={titleId} onClose={() => setOpen(false)}>会話ログ</ModalTitle>
           {entries.length ? (
-            <ol className="vn-log">
+            <ol className="vn-log" ref={list}>
               {entries.map((entry) => (
                 <li key={entry.revision}>
                   <strong>{entry.speaker}</strong>
@@ -97,9 +104,6 @@ export function DialogueLog({
           ) : (
             <p>まだ読み終えた台詞はありません。</p>
           )}
-          <button className="secondary" onClick={() => setOpen(false)}>
-            閉じる
-          </button>
         </Modal>
       )}
     </>

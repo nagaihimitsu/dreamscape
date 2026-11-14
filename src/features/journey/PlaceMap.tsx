@@ -5,7 +5,7 @@ import { getCityContent } from "../../content";
 import type { TravelEvent, TravelPlace } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
 import { Icon } from "../../components/icons";
-import { Modal } from "../../components/Modal";
+import { Modal, ModalTitle } from "../../components/Modal";
 import { fitZoom, getFocusView, labelMaxWidth } from "./map-focus";
 import { placeDisplayName } from "./travel-labels";
 import { FOCUS_MS, type PressKind } from "./travel-selection";
@@ -59,6 +59,26 @@ function LeafletMapCanvas({ L, game, events, places, selectedId, onMarker, onFoc
   onMarkerRef.current = onMarker;
   const onFocusEndRef = useRef(onFocusEnd);
   onFocusEndRef.current = onFocusEnd;
+  // What the first view reads when the frame has its size (it may come after this render).
+  const latest = useRef({ places, selectedId });
+  latest.current = { places, selectedId };
+  /** Whether the map has its first view (it waits until its frame has a size). */
+  const placed = useRef(false);
+
+  /**
+   * The selection's focus (map-focus.ts): the destination at the centre, zoomed in as far as the current place still
+   * shows, for the frame's size now; null without a selection or a size.
+   */
+  function focusView(map: L.Map, placeId: string | null): MapView | null {
+    const { places: marks } = latest.current;
+    const place = marks.find((item) => item.id === placeId);
+    const size = map.getSize();
+    if (!place || !size.x || !size.y) return null;
+    const frame = { width: size.x, height: size.y };
+    const current = marks.find((item) => item.id === game.travel.currentPlaceId) ?? null;
+    const view = getFocusView({ destination: place, current, frame, overviewZoom: fitZoom(marks, frame, 24, 15) });
+    return { center: L.latLng(view.center.latitude, view.center.longitude), zoom: view.zoom };
+  }
 
   useEffect(() => {
     if (!container.current) return;
@@ -79,16 +99,26 @@ function LeafletMapCanvas({ L, game, events, places, selectedId, onMarker, onFoc
       onTilesFailed?.();
     }).addTo(map);
     markersRef.current = L.layerGroup().addTo(map);
-    // A modal's children mount before showModal(): wait until it has a visible size.
-    const start = requestAnimationFrame(() => {
+    // The first view, once the frame has a visible size (a modal's children mount before showModal(), and its size may
+    // come later still): the view it was opened with (the small map's), else the selection's focus (2026-11-14, the UI
+    // audit: the expanded map opened with the selected place off the frame), else every mark.
+    const firstView = () => {
       map.invalidateSize();
-      if (initialView) map.setView(initialView.center, initialView.zoom, { animate: false });
-      else map.fitBounds(L.latLngBounds(places.map((place) => [place.latitude, place.longitude])), { padding: [24, 24], maxZoom: 15 });
+      const size = map.getSize();
+      if (!size.x || !size.y) return;
+      placed.current = true;
+      const view = initialView ?? focusView(map, latest.current.selectedId);
+      if (view) map.setView(view.center, view.zoom, { animate: false });
+      else map.fitBounds(L.latLngBounds(latest.current.places.map((place) => [place.latitude, place.longitude])), { padding: [24, 24], maxZoom: 15 });
+    };
+    const start = requestAnimationFrame(() => {
+      if (!placed.current) firstView();
     });
     // The sticky frame's height follows the header and the band: keep Leaflet's size and the
     // selected label's width (the frame less both side paddings) in step.
     const resized = new ResizeObserver(() => {
-      map.invalidateSize();
+      if (placed.current) map.invalidateSize();
+      else firstView();
       frame.style.setProperty("--map-label-max", `${labelMaxWidth(frame.clientWidth)}px`);
     });
     resized.observe(frame);
@@ -102,6 +132,7 @@ function LeafletMapCanvas({ L, game, events, places, selectedId, onMarker, onFoc
       (map as unknown as { _animatingZoom?: boolean })._animatingZoom = false;
       mapRef.current = null;
       markersRef.current = null;
+      placed.current = false;
     };
   // A map is initialized once per opening; marker updates do not reset its pan or zoom.
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -169,20 +200,14 @@ function LeafletMapCanvas({ L, game, events, places, selectedId, onMarker, onFoc
     }
   }, [places, events, selectedId, game]);
 
-  // The selection's focus: the destination at the centre, zoomed in as far as the current place still shows (map-focus.ts).
+  // A new selection moves the map to its focus (before the first view, that view takes it).
   useEffect(() => {
     const map = mapRef.current;
-    const place = places.find((item) => item.id === selectedId);
-    if (!map || !place) return;
-    const size = map.getSize();
-    if (!size.x || !size.y) return;
-    const frame = { width: size.x, height: size.y };
-    const current = places.find((item) => item.id === game.travel.currentPlaceId) ?? null;
-    const view = getFocusView({ destination: place, current, frame, overviewZoom: fitZoom(places, frame, 24, 15) });
-    const center = L.latLng(view.center.latitude, view.center.longitude);
+    const view = map && placed.current ? focusView(map, selectedId) : null;
+    if (!map || !view) return;
     const reduced = reducedMotion();
-    if (reduced) map.setView(center, view.zoom, { animate: false });
-    else map.flyTo(center, view.zoom, { duration: FOCUS_MS / 1000 });
+    if (reduced) map.setView(view.center, view.zoom, { animate: false });
+    else map.flyTo(view.center, view.zoom, { duration: FOCUS_MS / 1000 });
     onFocusEndRef.current?.(performance.now() + (reduced ? 0 : FOCUS_MS));
   // Only a new selection moves the map; clearing keeps the view.
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -226,9 +251,12 @@ export function mapPlaces(game: GameState, events: readonly TravelEvent[], desti
 }
 
 /**
- * The expanded map (UI redesign §3.5): every marker, the legend, 「地点を名前で探す」 (U12: choosing a name selects, it
- * never travels) and, in free time, the live region and the slot 「選んだ行き先」. Opened from the map block's 「大きく」
- * (PlaceMap) and from B案's 「地図」 (PhotoCardFreeTime).
+ * The expanded map (UI redesign §3.5): the shared title band with 「× 閉じる」 (ModalTitle), every marker, the legend,
+ * 「地点を名前で探す」 (U12: choosing a name selects, it never travels) and, in free time, the live region and the slot
+ * 「選んだ行き先」 (the selected card). With a `bar` (B案: the way and 「行く」 or 「休む」 of the selection), the bar is
+ * pinned at the dialog's foot under the scrolling part, so 「行く」 is in reach after every marker press (2026-11-14, the UI
+ * audit); it is then the selection's part that a keyboard marker press focuses (`map-selection`). Opened from the map
+ * block's 「大きく」 (PlaceMap) and from B案's 「地図」 (PhotoCardFreeTime).
  */
 export function PlaceMapDialog({ game, events, places, selectedId, onMarker, onFocusEnd, mapRef, initialView = null, onClose, selection }: Props & {
   places: Place[];
@@ -238,12 +266,13 @@ export function PlaceMapDialog({ game, events, places, selectedId, onMarker, onF
   mapRef?: { current: L.Map | null };
   initialView?: MapView | null;
   onClose: () => void;
-  selection?: { message: { text: string; key: number }; slot: ReactNode };
+  selection?: { message: { text: string; key: number }; slot: ReactNode; bar?: ReactNode };
 }) {
   const { city } = getCityContent(game.currentCityId);
   const ownMapRef = useRef<L.Map | null>(null);
-  return <Modal labelledBy="travel-map-expanded-title" className="travel-map-modal" onClose={onClose}>
-    <div className="travel-map-modal-heading"><h2 id="travel-map-expanded-title">{city.nameJa}の地図</h2><button type="button" className="secondary" onClick={onClose}>閉じる</button></div>
+  const bar = selection?.bar ?? null;
+  return <Modal labelledBy="travel-map-expanded-title" className="travel-map-modal" onClose={onClose} closeOnBackdrop>
+    <ModalTitle id="travel-map-expanded-title" onClose={onClose}>{city.nameJa}の地図</ModalTitle>
     <div className="travel-map-modal-body">
       <div className="travel-map-modal-map">
         <MapCanvas game={game} events={events} places={places} selectedId={selectedId} onMarker={onMarker} onFocusEnd={onFocusEnd} mapRef={mapRef ?? ownMapRef} initialView={initialView} expanded />
@@ -255,12 +284,13 @@ export function PlaceMapDialog({ game, events, places, selectedId, onMarker, onF
       </select></label>
       {selection && <>
         <Announce message={selection.message} testId="map-announce" />
-        <section className="travel-map-selection" data-testid="map-selection" aria-label="選んだ行き先">
+        <section className="travel-map-selection" data-testid={bar ? "map-selection-detail" : "map-selection"} aria-label="選んだ行き先">
           <h3>選んだ行き先</h3>
           {selection.slot}
         </section>
       </>}
     </div>
+    {bar && <section className="travel-map-bar" data-testid="map-selection" aria-label="選んだ行き先へ">{bar}</section>}
   </Modal>;
 }
 

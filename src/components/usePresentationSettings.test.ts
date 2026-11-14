@@ -107,3 +107,17 @@ describe("the presentation settings' mini-game おまかせ", () => {
       expect(readPresentationSettings(stored(extra)), JSON.stringify(extra)).toBeNull();
   });
 });
+
+// 「問題が出たら英語を自動で読み上げる」 (2026-11-14 user decision, `autoReadAloud`): on by default, a device preference.
+describe("the presentation settings' automatic reading", () => {
+  it("is on for settings stored without it and with none stored, and reads what was stored", () => {
+    expect(readPresentationSettings(stored())).toMatchObject({ autoReadAloud: true, readAloud: false });
+    expect(readPresentationSettings(null)).toMatchObject({ autoReadAloud: true });
+    expect(readPresentationSettings(stored({ autoReadAloud: false }))).toMatchObject({ autoReadAloud: false, reduceMotion: false });
+  });
+
+  it("refuses a switch that is not true or false", () => {
+    for (const extra of [{ autoReadAloud: "on" }, { autoReadAloud: 0 }, { autoReadAloud: null }])
+      expect(readPresentationSettings(stored(extra)), JSON.stringify(extra)).toBeNull();
+  });
+});

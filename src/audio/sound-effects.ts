@@ -8,7 +8,7 @@ import { admitsSe, SE_LATE_MS, SE_MAX_PLAYING, seLevel, type SeLevel } from "./s
 
 // The sound effects (2026-11-12): the sounds the game plays by itself (playSe: a tap, a dialog, a quiz's answer, a ride)
 // and a line's `# se:` (useLineSounds). Fire and forget, several at once (se-rules.ts), on the page's AudioContext
-// (audio-context.ts) through their own gain, ⚙設定's 「効果音の大きさ」, apart from the voices. Only the sounds content:build
+// (audio-context.ts) through their own gain, ≡メニュー's 「効果音の大きさ」, apart from the voices. Only the sounds content:build
 // registered play (generated/sound-volumes.json): any other ID, a system sound missing from the list included, is skipped
 // in silence. Nothing plays while the page is hidden or 「効果音を出す」 is off. Presentation only: a sound that cannot load
 // or play is skipped and the game goes on. No sound tells a relationship value.
@@ -22,7 +22,7 @@ const CACHE_SIZE = 32;
 /** A sound that has not loaded by then is skipped. */
 const LOAD_TIMEOUT_MS = 10_000;
 
-/** ⚙設定's 「効果音を出す」 and 「効果音の大きさ」 (GameApp: useSoundEffectSettings). Off until the settings are read. */
+/** ≡メニュー's 「効果音を出す」 and 「効果音の大きさ」 (GameApp: useSoundEffectSettings). Off until the settings are read. */
 const settings = { enabled: false, volume: 0.7 };
 const load = decodedSoundCache(CACHE_SIZE, LOAD_TIMEOUT_MS);
 const playing = new Set<AudioBufferSourceNode>();
@@ -159,7 +159,7 @@ export function playCue(id: SystemSoundId): void {
 }
 
 /**
- * Applies ⚙設定's 「効果音を出す」 (`enabled`) and 「効果音の大きさ」 (`volume`, 0 to 1) to every sound effect: off stops
+ * Applies ≡メニュー's 「効果音を出す」 (`enabled`) and 「効果音の大きさ」 (`volume`, 0 to 1) to every sound effect: off stops
  * the sounds playing (and nothing is fetched); a new volume applies at once, to the sounds playing too. Called by GameApp.
  */
 export function useSoundEffectSettings(enabled: boolean, volume: number): void {

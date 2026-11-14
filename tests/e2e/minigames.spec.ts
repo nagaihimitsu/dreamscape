@@ -80,6 +80,10 @@ test("every mini-game starts into its play, stops with 中断する and Esc, and
       await play.click();
       await expect(play, `${id}: おまかせ ${outcome}`).toHaveAttribute("data-outcome", outcome);
       await expect(page.getByTestId("minigame-result")).toBeVisible();
+      // The card takes the place of the play's controls, which are hidden under it (2026-11-14: the dead ones still
+      // looked pressable), and 「中断する」 does not show over it.
+      await expect(play.locator("[data-minigame-controls]"), `${id}: its controls under the card`).toBeHidden();
+      await expect(page.getByTestId("minigame-quit")).toHaveCount(0);
       await expect(page.getByTestId("minigame-announce")).not.toHaveText("");
       await pressOnCard(page, "minigame-next");
       await expect(last).toContainText(`（${outcome}）`);
@@ -122,6 +126,13 @@ test("a game with practice and the host's count: 練習 → もう一回 → 本
     await expect(card).toBeVisible();
     await expect(card).toContainText("練習");
     await expect(page.getByTestId("minigame-next")).toHaveCount(0);
+    // Practice's card too (2026-11-14, the phone UI audit; before, 「中断する」 stayed over it and the dead 「振る」 looked
+    // pressable under it): no 「中断する」, the play's controls hidden, and the card's buttons at the bottom where they were.
+    await expect(page.getByTestId("minigame-quit")).toHaveCount(0);
+    await expect(play.locator("[data-minigame-controls]")).toBeHidden();
+    const layer = (await play.boundingBox())!;
+    const again = (await page.getByTestId("minigame-again").boundingBox())!;
+    expect(layer.y + layer.height - (again.y + again.height), "the card's buttons at the bottom").toBeLessThan(64);
     await page.clock.runFor(MINI_GAME_RESULT_GUARD_MS + 50);
     await page.getByTestId("minigame-again").click();
     await expect(card).toHaveCount(0);

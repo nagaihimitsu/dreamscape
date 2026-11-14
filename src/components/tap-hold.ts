@@ -12,7 +12,7 @@ function answerHeldTap(event: PointerEvent) {
 /**
  * Let no tap reach the page for DOUBLE_TAP_WINDOW_MS, after a story scene starts
  * or ends (src/app/story-scene-change.ts), a load brings back a saved scene, a
- * journey switch or the lock's 再試行 rebuilds the screen (App.tsx), or ⚙設定's
+ * journey switch or the lock's 再試行 rebuilds the screen (App.tsx), or ≡メニュー's
  * panel closes after セーブ (JourneyHud), and a new screen appears under the
  * finger, or the page that lay under the panel: the root carries `data-tap-hold`,
  * and styles.css takes pointer events off every element meanwhile. A tap meanwhile

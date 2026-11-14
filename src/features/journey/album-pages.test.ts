@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { AlbumPhoto } from "../../domain/album-state";
 import { ALBUM_SWIPE_PX, albumPages, albumSwipeStep, initialAlbumPage, type AlbumContent } from "./album-pages";
 
-// The album's pages (⚙設定 → 「アルバム」): one per city in the journey's order, the page it opens on, the swipe. Each photo
+// The album's pages (≡メニュー → 「アルバム」): one per city in the journey's order, the page it opens on, the swipe. Each photo
 // is the author's illustration (public/assets/album/<ID>.<ext>), shown by its served path with no credit.
 
 const served = (id: string) => `assets/album/${id}.webp`;

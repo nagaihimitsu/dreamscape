@@ -12,7 +12,7 @@ import { getTravelDestinations } from "../../domain/travel-destinations";
 export type ShownPhoto = { key: string; labelJa: string; asset: TourismAsset; kind: "backdrop" | "card" };
 
 /**
- * Every photo free time shows now (⚙設定's 「写真の出典」 lists them): the city's backdrop photo and each place's photo.
+ * Every photo free time shows now (≡メニュー's 「写真の出典」 lists them): the city's backdrop photo and each place's photo.
  * A city's own-artwork backdrop (backdropImagePath) is not a photo and has no credit: getCityBackdrop never returns it,
  * like the credits list leaves out every artwork made for Dreamscape (OWN_ARTWORK_NOTE_JA).
  */
@@ -29,7 +29,7 @@ export function freeTimePhotos(game: GameState): ShownPhoto[] {
 
 /** 「写真の出典」 (UI redesign §3.4 item 6): the credit and licence of each photo on the free-time screen. */
 export function PhotoCredits({ photos, onClose }: { photos: ShownPhoto[]; onClose: () => void }) {
-  return <Modal labelledBy="photo-credits-title" className="photo-credits-modal" onClose={onClose}>
+  return <Modal labelledBy="photo-credits-title" className="photo-credits-modal" onClose={onClose} closeOnBackdrop>
     <ModalTitle id="photo-credits-title" onClose={onClose}>写真の出典</ModalTitle>
     <p className="fine-print">{DERIVED_PHOTO_NOTE_JA}</p>
     <ul className="photo-credits-list" data-testid="photo-credits">

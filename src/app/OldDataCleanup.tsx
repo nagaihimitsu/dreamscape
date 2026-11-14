@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ConfirmActionButton, useSettling } from "../components/ConfirmActionButton";
-import { Modal } from "../components/Modal";
+import { Modal, ModalAnswers, ModalTitle } from "../components/Modal";
 import {
   formatOldDataSize, readOldData, removeChosenOldData,
   type KeyedStorage, type OldDataContext, type OldDataItem, type OldDataListing,
@@ -37,10 +37,10 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
   const pressed = useRef(false);
   const [working, setWorking] = useState(false);
   const [notice, setNotice] = useState<Notice | null>(null);
-  // After a result the list's foot waits as well: 「閉じる」 is where 「消去する」 was, so the quick
-  // second tap of a double tap on 「消去する」 would close the dialog before the result line is seen.
-  // Each result is a new notice, and opening the confirmation clears it, so the list that
-  // 「消去せず戻る」 returns to does not wait (its focus goes to 「選んだデータを消去する」).
+  // After a result the list's 「選んだデータを消去する」 waits a moment as well, so the result line is
+  // seen before another confirmation can open (where 「消去する」 was, the list shows its line of what
+  // is chosen, which takes no press). Each result is a new notice, and opening the confirmation clears
+  // it, so the list that 「消去せず戻る」 returns to does not wait (its focus goes to 「選んだデータを消去する」).
   const footSettling = useSettling(notice);
   // A step change rebuilds the dialog's content: the confirmation starts at its heading (read first,
   // scrolled into view); a result at its line, which is rendered already filled, so a screen reader
@@ -92,16 +92,20 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
     }
   }
 
-  // The dialog keeps one size and its buttons stay at its foot in both steps (styles.css,
-  // dialog.old-data), so the confirmation's 「消去せず戻る」 takes the place of 「選んだデータを消去する」
-  // and 「消去する」 that of 「閉じる」 (user decision 2026-11-08). The second tap of a double tap on
-  // 「選んだデータを消去する」, quick or slow, lands on 「消去せず戻る」 and goes back to the list; nothing
-  // is removed. ConfirmActionButton's wait covers a quick tap that does reach 「消去する」. After a
-  // result, the list's foot buttons wait too (footSettling).
-  return <Modal labelledBy="old-data-title" className="old-data" onClose={onClose}>
+  const back = () => { setConfirming(false); setFocusRequest({ target: "remove" }); };
+  // The dialog keeps one size in both steps (styles.css, dialog.old-data) and its buttons stay at its foot, side by
+  // side (user decisions 2026-11-08 and 2026-11-14): the list's 「選んだデータを消去する」 on the left, beside a line of
+  // what is chosen; the confirmation's 「消去せず戻る」 takes exactly its place and 「消去する」 that of the line. The
+  // second tap of a double tap on 「選んだデータを消去する」, quick or slow, lands on 「消去せず戻る」 and goes back to
+  // the list; nothing is removed. ConfirmActionButton's wait covers a quick tap that does reach 「消去する」. After a
+  // result, 「選んだデータを消去する」 waits too (footSettling). The list closes from its title bar's 「× 閉じる」 (or Esc);
+  // the confirmation, like every confirmation, has only its two answers (Esc goes back to the list).
+  return <Modal labelledBy="old-data-title" className="old-data" onClose={confirming ? back : onClose}>
+    {confirming
+      ? <ModalTitle id="old-data-title" headingRef={heading}>選んだ保存データを消去しますか？</ModalTitle>
+      : <ModalTitle id="old-data-title" headingRef={heading} onClose={onClose}>古い保存データの整理</ModalTitle>}
     <div className="old-data-body" ref={body}>
       {confirming ? <>
-        <h2 id="old-data-title" ref={heading} tabIndex={-1}>選んだ保存データを消去しますか？</h2>
         <p>次の{chosenItems.length}件（キー{chosenKeys}個）を消去します。元には戻せません。</p>
         <ul className="old-data-list">
           {chosenItems.map((item) => <li key={item.id}>
@@ -112,7 +116,6 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
         </ul>
         <p className="fine-print">一覧にないデータ（開いている旅行編のセーブ、今の版で読み込めるセーブ、この版にある旅行編の英語ノート、表示設定など）は残ります。選んだ旅行編を別のタブで開いている間は消去できません。</p>
       </> : <>
-        <h2 id="old-data-title" ref={heading} tabIndex={-1}>古い保存データの整理</h2>
         <p>このブラウザに残っている、今のゲームでは使わない保存データです。消去するものを選んでください。</p>
         {notice && <p className="old-data-notice" role={notice.role} ref={noticeLine} tabIndex={-1}>{notice.text}</p>}
         {!listing ? <p role="alert">保存データを読み取れませんでした。ブラウザの保存設定を確認してください。</p>
@@ -131,16 +134,16 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
         <p className="fine-print">開いている旅行編のセーブ、今の版で読み込めるセーブ、この版にある旅行編の英語ノート、表示設定などは一覧に出ず、消去しません。ほかのサイトのデータにも触れません。</p>
       </>}
     </div>
-    <div className="old-data-actions">
-      {confirming ? <>
-        <button type="button" className="secondary" onClick={() => { setConfirming(false); setFocusRequest({ target: "remove" }); }}>消去せず戻る</button>
-        <ConfirmActionButton className="danger-button" disabled={working} onClick={() => void remove()}>消去する</ConfirmActionButton>
-      </> : <>
-        {items.length > 0 && !chosenItems.length && <p className="fine-print old-data-hint">消去するものにチェックを付けると押せます。</p>}
-        {items.length > 0 && <button type="button" className="danger-button" ref={removeButton} disabled={!chosenItems.length || footSettling}
-          onClick={() => { setNotice(null); setConfirming(true); setFocusRequest({ target: "heading" }); }}>選んだデータを消去する</button>}
-        <button type="button" className="secondary" disabled={footSettling} onClick={onClose}>閉じる</button>
-      </>}
-    </div>
+    {confirming ? <div className="old-data-actions">
+      <ModalAnswers
+        cancel={<button type="button" className="secondary" onClick={back}>消去せず戻る</button>}
+        action={<ConfirmActionButton className="danger-button" disabled={working} onClick={() => void remove()}>消去する</ConfirmActionButton>} />
+    </div> : items.length > 0 && <div className="old-data-actions">
+      <div className="modal-answers">
+        <button type="button" className="danger-button" ref={removeButton} disabled={!chosenItems.length || footSettling}
+          onClick={() => { setNotice(null); setConfirming(true); setFocusRequest({ target: "heading" }); }}>選んだデータを消去する</button>
+        <p className="fine-print old-data-hint">{chosenItems.length ? `${chosenItems.length}件を選んでいます。` : "消去するものにチェックを付けると押せます。"}</p>
+      </div>
+    </div>}
   </Modal>;
 }

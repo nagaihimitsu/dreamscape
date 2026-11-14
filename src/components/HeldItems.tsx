@@ -28,7 +28,7 @@ const NewTag = () => <span className="held-item-new"><span aria-hidden="true">NE
  * Either opens a detail under the header (the item, or every held item), closed
  * by its ×, by Esc (the focus goes back to the button), by a tap anywhere else,
  * which does nothing else (DismissLayer), or by the focus leaving the group (Tab
- * past the detail, Shift+Tab before the button), as ⚙設定's panel does: the
+ * past the detail, Shift+Tab before the button), as ≡メニュー's panel does: the
  * detail pauses the scene while it is open, so it never stays open behind the
  * focus. `onOpen` runs as it opens (the header closes its other popovers). Items
  * are read-only here: using them remains part of their events. `gained`: how many

@@ -1,6 +1,6 @@
 // 「英語を読み上げるボタン」 (2026-11-11 user decision): when the buttons show, what they read and with which voice.
 import { describe, expect, it } from "vitest";
-import { pickEnglishVoice, readAloudLabel, readAloudSupported, readAloudText, type VoiceLike } from "./read-aloud";
+import { autoReadKey, pickEnglishVoice, readAloudLabel, readAloudSupported, readAloudText, type VoiceLike } from "./read-aloud";
 
 const voice = (name: string, lang: string, extra: Partial<VoiceLike> = {}): VoiceLike =>
   ({ name, lang, voiceURI: name, default: false, ...extra });
@@ -60,5 +60,21 @@ describe("the voice", () => {
     expect(pickEnglishVoice([])).toBeNull();
     expect(pickEnglishVoice([voice("Kyoko", "ja-JP", { default: true })])).toBeNull();
     expect(pickEnglishVoice([voice("Bells", "en-US"), voice("Zarvox", "en-US")])).toBeNull();
+  });
+});
+
+// 「問題が出たら英語を自動で読み上げる」 (2026-11-14 user decision): what a quiz screen reads with no press.
+describe("the automatic reading", () => {
+  it("is due for a question waiting for its answer, once per question shown in a run", () => {
+    expect(autoReadKey(true, "question", "b:3", 0, "q1")).toBe("b:3:0:q1");
+    expect(autoReadKey(true, "question", "b:3", 1, "q2")).toBe("b:3:1:q2");
+    // Played again (a new run), the same question is shown anew.
+    expect(autoReadKey(true, "question", "b:4", 0, "q1")).toBe("b:4:0:q1");
+  });
+
+  it("is not due with the setting off, without a question, or once it is answered or gone", () => {
+    expect(autoReadKey(false, "question", "b:3", 0, "q1")).toBeNull();
+    expect(autoReadKey(true, "question", "b:3", 0, undefined)).toBeNull();
+    for (const phase of ["dialogue", "feedback", "reasoning", "result"]) expect(autoReadKey(true, phase, "b:3", 0, "q1"), phase).toBeNull();
   });
 });

@@ -143,7 +143,7 @@ INCLUDE modules.ink
 - else:
     # speaker: heroine
     # emotion: smile
-    でも、きれいに出てよかった。結婚式の夜まで、ちゃんと残りそう
+    でも、きれいに出てよかった。しばらく、ちゃんと残りそう
     -> END
 }
 
@@ -155,7 +155,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # photo: gt_album_j26 # photo_caption: 読み上げられた名前
 # pause: 900
-中庭に、短い沈黙が落ちた。彼女は、ゆっくり手のひらを閉じた。
+帳場の前に、短い沈黙が落ちた。彼女は、ゆっくり手のひらを閉じた。
 # speaker: heroine
 # reaction: heroine,shy_deep,blush
 教えないって、言ったのに。……もう。聞かなかったことに、してくれる？
@@ -208,9 +208,11 @@ INCLUDE modules.ink
     # speaker: heroine
     # emotion: smile
     アマンさんに、毎日言葉にしてくださいって、書く。カムラさんの言葉の、受け売りだけど
+    # speaker: narrator
+    デリーの最後の夜に、アマンから聞いた言葉だ。祖母に、毎日ちゃんと言葉にしなさいと言われた、と。
 -
 # speaker: narrator
-封筒の表に、彼女は二人の名前を並べて書いた。それから、今夜のための支度を一つずつ確かめていく。
+封筒の表に、彼女は自分とこちらの名前を並べて書いた。それから、今夜のための支度を一つずつ確かめていく。
 { cond("item gt_jaipur_lac_bangles held"):
     # speaker: heroine
     # emotion: smile
@@ -227,6 +229,8 @@ INCLUDE modules.ink
     # speaker: heroine
     デリーの雨を、少しだけ、ジャイプールの結婚式に持っていく。全部は使わない。日本の分も、残しておくの
 - cond("flag gt_agra_rain_on_lawn"):
+    # speaker: narrator
+    デリーで買った雨の匂いの小瓶は、もう無い。アーグラの廟で猿に取られ、石の通路で割れてしまった。
     # speaker: heroine
     # reaction: heroine,teasing,music
     # recall: gt_album_a39
@@ -249,7 +253,7 @@ INCLUDE modules.ink
 # tint: off
 # bgm: gt_naraina
 # speaker: narrator
-踊りの輪がひと息ついたころ、彼女は鞄から封筒を取り出して、カムラに差し出した。
+踊りの輪がひと息ついたころ、彼女は鞄から封筒を取り出して、花婿の祖母のカムラに差し出した。
 # speaker: heroine
 アマンさんに
 # speaker: narrator
@@ -288,6 +292,8 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,interrobang
 こ、ここまで！？　ジャイプールにまで！
+# speaker: narrator
+デリーの階段井戸で、頼まれて出た怖い動画だ。その最後に、彼女の「きゃー？」が、おまけで入っている。
 # speaker: gt_pooja
 さっきの問題に答えた声で、分かった。質問みたいな声だったから。……ねえ、もう一回やって。『きゃー？』って
 # speaker: heroine

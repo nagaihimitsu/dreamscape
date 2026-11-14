@@ -10,12 +10,13 @@ const photoOf = (term: ListedTerm) => tourismAssets.find((asset) => asset.id ===
 const source = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
 /**
- * 「旅の図鑑」 (⚙設定, 2026-11-13 user decision): the journey's terms as small cards by group (glossary-book.ts), with how
+ * 「旅の図鑑」 (the header menu, 2026-11-13 user decision): the journey's terms as small cards by group (glossary-book.ts), with how
  * far the save has come (「12 / 30」). A term met shows its photo and name (「NEW」 on one met since 旅の図鑑 was last
  * opened, `newIds`); a term not met yet is an empty card with neither. A card opens larger in its own dialog: the photo
  * whole, the name with its reading or other name, its group, the line and the photo's credit, 「閉じる」 in its title
- * bar. In Debug mode (`revealAll`) every term shows, those not met marked 「未入手」. Opened from ⚙設定's panel, it takes
- * no press for a moment (settlePresses). It shows no relationship value.
+ * bar, over the book, which it closes back to. In Debug mode (`revealAll`) every term shows, those not met marked 「未入手」.
+ * Opened from the header menu's panel, it takes no press for a moment (settlePresses). Both are dialogs for viewing: a tap
+ * on the dimmed page around also closes them (2026-11-14). It shows no relationship value.
  */
 export function GlossaryDialog({ journeyId, met, newIds, revealAll = false, onClose }: {
   journeyId: string; met: readonly string[]; newIds: readonly string[]; revealAll?: boolean; onClose: () => void;
@@ -25,7 +26,7 @@ export function GlossaryDialog({ journeyId, met, newIds, revealAll = false, onCl
   const openedPhoto = opened && photoOf(opened.term);
   const openedSubtitle = opened && termSubtitle(opened.term);
   return <>
-    <Modal labelledBy="glossary-title" className="glossary-modal" onClose={onClose} settlePresses>
+    <Modal labelledBy="glossary-title" className="glossary-modal" onClose={onClose} settlePresses closeOnBackdrop>
       <ModalTitle id="glossary-title" onClose={onClose} closeTestId="glossary-close">旅の図鑑</ModalTitle>
       <p className="glossary-progress" data-testid="glossary-progress">
         <span aria-hidden="true">{glossaryProgress(book)}</span><span className="sr-only">{glossaryProgressSpoken(book)}</span>
@@ -57,7 +58,7 @@ export function GlossaryDialog({ journeyId, met, newIds, revealAll = false, onCl
         </ul>
       </section>)}
     </Modal>
-    {opened && <Modal labelledBy="glossary-entry-title" className="glossary-entry" onClose={() => setOpened(null)}>
+    {opened && <Modal labelledBy="glossary-entry-title" className="glossary-entry" onClose={() => setOpened(null)} closeOnBackdrop>
       <ModalTitle id="glossary-entry-title" eyebrow={GLOSSARY_CATEGORY_LABELS_JA[opened.term.category]} onClose={() => setOpened(null)}
         closeTestId="glossary-entry-close">{opened.term.nameJa}</ModalTitle>
       {openedSubtitle && <p className="glossary-entry-subtitle">{openedSubtitle}</p>}

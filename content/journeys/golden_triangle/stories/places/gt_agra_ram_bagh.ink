@@ -82,7 +82,7 @@ INCLUDE modules.ink
     }
 -
 # speaker: narrator
-二人で、一つずつ裏返していった。帰ったら、恋しくなるもののリストに。
+二人で、さっきの不満のリストを頭から読み返した。今度は一つずつ、帰ったら恋しくなるものに裏返して。
 # speaker: heroine
 クラクションがないと、静かすぎて眠れなくなるかも。チャイは、日本のコンビニには売ってない。道を聞いたら、知らない人が全員で考えてくれる国も、たぶん、ここだけ
 # speaker: heroine
@@ -110,6 +110,8 @@ INCLUDE modules.ink
 # speaker: heroine
 # reaction: heroine,surprised_big,sweat
 ど、どうして知ってるんですか！　しかも新婚じゃないです！
+# speaker: gt_agra_ram_bagh_tea_master
+サミールが、会う人ごとに話してるからな。この町じゃ、噂は麺より早く茹で上がる
 * [「新婚じゃありません」 # option: not_newlyweds]
     # profile: honest
     { romance_result == "negative":

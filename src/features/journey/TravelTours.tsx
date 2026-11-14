@@ -3,7 +3,7 @@ import { getTour } from "../../content";
 import { formatMoneyForCity } from "../../content/currency";
 import { getJourneyForCity } from "../../content/journeys";
 import { ConfirmActionButton } from "../../components/ConfirmActionButton";
-import { Modal, ModalTitle } from "../../components/Modal";
+import { Modal, ModalAnswers, ModalTitle } from "../../components/Modal";
 import { meets } from "../../domain/conditions";
 import type { GameState } from "../../domain/game";
 import { getTourOffers, type TourOfferChoice } from "../../domain/tour";
@@ -54,14 +54,16 @@ export function TourCancelDialog({ game, onCancel, onClose }: { game: GameState;
   return <Modal labelledBy="travel-tour-cancel-title" className="travel-choice-modal" onClose={onClose}>
     <ModalTitle id="travel-tour-cancel-title">予約を取り消す</ModalTitle>
     <p>予約を取り消しますか？ 代金{formatMoneyForCity(game.currentCityId, booked.pricePaid)}は戻り、このツアーの予約はなくなります。</p>
-    <ConfirmActionButton className="primary" data-testid="travel-tour-cancel-confirm" onClick={() => { if (onCancel()) onClose(); }}>取り消す</ConfirmActionButton>
-    <button type="button" className="secondary" onClick={onClose}>やめる</button>
+    <ModalAnswers
+      cancel={<button type="button" className="secondary" onClick={onClose}>やめる</button>}
+      action={<ConfirmActionButton className="primary" data-testid="travel-tour-cancel-confirm" onClick={() => { if (onCancel()) onClose(); }}>取り消す</ConfirmActionButton>} />
   </Modal>;
 }
 
 /**
- * The tours sheet 「ツアー」 (the offers here) and, from one of its offers, the booking's confirmation; `onClose` ends both
- * (also after a booking). Free time's 「ツアーを見る」 and the night screen's open it.
+ * The tours sheet 「ツアー」 (the offers here) and, from one of its offers, the booking's confirmation over it (its
+ * 「やめる」 goes back to the sheet where it was); `onClose` ends both (also after a booking). Free time's 「ツアーを見る」
+ * and the night screen's open it. The sheet is for viewing: a tap on the dimmed page around it also closes it.
  */
 export function TourBooking({ game, onBook, onClose }: {
   game: GameState;
@@ -75,7 +77,7 @@ export function TourBooking({ game, onBook, onClose }: {
   const forTwo = getJourneyForCity(cityId)?.farePartySize === 2 ? "（2人分）" : "";
   const tours = [...new Map(offers.map((choice) => [choice.tour.id, choice.tour])).values()];
   return <>
-    {!confirm && <Modal labelledBy="travel-tours-title" className="travel-choice-modal travel-tours-modal" onClose={onClose}>
+    <Modal labelledBy="travel-tours-title" className="travel-choice-modal travel-tours-modal" onClose={onClose} closeOnBackdrop>
       <ModalTitle id="travel-tours-title" onClose={onClose}>ツアー</ModalTitle>
       <p>明日の朝9:00に宿を出る日帰りのツアーです。予約すると代金を今払い、取り消すと戻ります。料金はゲーム内の目安です。</p>
       {tours.map((tour) => {
@@ -102,14 +104,15 @@ export function TourBooking({ game, onBook, onClose }: {
           {elsewhere.map((offer) => <p key={offer.id} className="fine-print">{offer.sellerJa}では{money(offer.price)}{forTwo}で予約できます。</p>)}
         </section>;
       })}
-    </Modal>}
+    </Modal>
     {confirm && <Modal labelledBy="travel-tour-confirm-title" className="travel-choice-modal" onClose={() => setConfirm(null)}>
       <ModalTitle id="travel-tour-confirm-title">{confirm.tour.titleJa}を予約</ModalTitle>
       <p>明日の朝、このツアーに参加します。代金{money(confirm.offer.price)}{forTwo}を支払いますか？</p>
-      <ConfirmActionButton className="primary" data-testid="travel-tour-confirm" onClick={() => {
-        if (onBook(confirm.tour.id, confirm.offer.id)) { setConfirm(null); onClose(); }
-      }}>予約する</ConfirmActionButton>
-      <button type="button" className="secondary" onClick={() => setConfirm(null)}>やめる</button>
+      <ModalAnswers
+        cancel={<button type="button" className="secondary" onClick={() => setConfirm(null)}>やめる</button>}
+        action={<ConfirmActionButton className="primary" data-testid="travel-tour-confirm" onClick={() => {
+          if (onBook(confirm.tour.id, confirm.offer.id)) { setConfirm(null); onClose(); }
+        }}>予約する</ConfirmActionButton>} />
     </Modal>}
   </>;
 }

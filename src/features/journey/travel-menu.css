@@ -210,7 +210,7 @@ dialog.modal.travel-choice-modal { --modal-pad-top: 16px; --modal-pad-inline: 16
 .travel-other[open] > summary .icon { transform: rotate(180deg); }
 
 /* The bottom band (§3.4 item 7): opaque, fixed to the screen's bottom, under the
-   header (z 20) and ⚙設定's dismiss layer (z 19), over the stuck map (z 3). */
+   header (z 20) and ≡メニュー's dismiss layer (z 19), over the stuck map (z 3). */
 .travel-band {
   position: fixed;
   z-index: 10;

@@ -6,7 +6,7 @@ import type { MusicDuck, SceneMusic } from "./scene-music";
 
 // The background music (2026-11-12): the track the screen asks for (src/audio/scene-music.ts) streamed from
 // `assets/bgm/<ID>.mp3` by a looping player (loop-player.ts: two audio elements on the page's AudioContext, a 1.5 s
-// crossfade, the quiz's muffle, the lowerings and ⚙設定's 「BGMの大きさ」). Nothing plays while the page is hidden, the
+// crossfade, the quiz's muffle, the lowerings and ≡メニュー's 「BGMの大きさ」). Nothing plays while the page is hidden, the
 // page's audio is suspended or 「BGMを流す」 is off, and nothing is fetched while it is off. Presentation only: a track
 // that cannot load or play is skipped in silence and the game goes on; the music tells nothing (no relationship value,
 // no answer).
@@ -67,7 +67,7 @@ export function duckMusicForSpeech(reading: boolean): void {
 }
 
 /**
- * Applies ⚙設定's 「BGMを流す」 (`enabled`) and 「BGMの大きさ」 (`volume`, 0 to 1): off fades the music out and pauses it
+ * Applies ≡メニュー's 「BGMを流す」 (`enabled`) and 「BGMの大きさ」 (`volume`, 0 to 1): off fades the music out and pauses it
  * (nothing is fetched while it is off); on plays the screen's track again; a new volume applies at once. Called by GameApp.
  */
 export function useBgmSettings(enabled: boolean, volume: number): void {

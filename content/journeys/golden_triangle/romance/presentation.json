@@ -16,8 +16,8 @@
       "imageAssetId": "gt_img_agra_akbar_tomb"
     },
     "gt_bg_agra_chini_rauza": {
-      "nameJa": "チーニー・カ・ラウザ",
-      "captionJa": "アーグラ ／ チーニー・カ・ラウザ",
+      "nameJa": "チーニー・カ・ラウザー",
+      "captionJa": "アーグラ ／ チーニー・カ・ラウザー",
       "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_chini_rauza"
@@ -59,8 +59,8 @@
       "placeId": "agra_mehtab_bagh"
     },
     "gt_bg_agra_ram_bagh": {
-      "nameJa": "ラム・バーグ",
-      "captionJa": "アーグラ ／ ラム・バーグ",
+      "nameJa": "ラーム・バーグ",
+      "captionJa": "アーグラ ／ ラーム・バーグ",
       "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_agra_ram_bagh"

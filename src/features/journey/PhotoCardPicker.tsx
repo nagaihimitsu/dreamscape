@@ -284,7 +284,7 @@ function PlainTile({ color, children }: { color?: string; children: ReactNode })
 }
 
 /**
- * A place's photo: the reduced `card` copy of its registered photo (its credit is in ⚙設定's 「写真の出典」), or, for a
+ * A place's photo: the reduced `card` copy of its registered photo (its credit is in ≡メニュー's 「写真の出典」), or, for a
  * place without one, today's plain tile in its background colour with the mark of what is there (♡ dates only, else ◇).
  */
 function PlacePhoto({ game, entry }: { game: GameState; entry: PhotoCardEntry }) {

@@ -30,7 +30,8 @@ describe("city arrival conversations", () => {
     expect(completeArrivalLogo(current, logo.revision)).toBe(current);
     expect(completeArrivalLogo(current, current.revision)).toBe(current);
     for (let line = 0; current.activeEpilogue; line++) {
-      expect(line).toBeLessThan(20);
+      // A guard against a loop that never ends, not a length rule (Delhi's arrival runs past 20 lines since the 2026-11-14 clarity pass).
+      expect(line).toBeLessThan(40);
       // Delhi's arrival: Kamla (the knot's # person:) speaks as enemy; Agra's Samir and Jaipur's Aman by name (# speaker: <person ID>).
       const { frame } = current.activeEpilogue;
       expect(["heroine", "narrator", "enemy", "person"]).toContain(frame.speaker);

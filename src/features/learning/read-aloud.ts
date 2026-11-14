@@ -16,6 +16,21 @@ export function readAloudText(text: string): string {
   return /\p{L}/u.test(said) ? said : "";
 }
 
+/**
+ * 「問題が出たら英語を自動で読み上げる」 (2026-11-14 user decision): how long after a question shows its automatic reading
+ * starts (milliseconds), so that the card lands first (and a quick answer comes before it).
+ */
+export const AUTO_READ_DELAY_MS = 400;
+
+/**
+ * What a quiz screen reads automatically: its question, once each time it is shown in a run (`run` the battle's run,
+ * `round` its question's index), while the question waits for its answer and the setting is `on`; null when nothing is
+ * due (the setting off, no question shown, the question answered).
+ */
+export function autoReadKey(on: boolean, phase: string, run: string, round: number, questionId: string | undefined): string | null {
+  return on && phase === "question" && questionId ? `${run}:${round}:${questionId}` : null;
+}
+
 /** A button's name (its aria-label): which English it reads, the question ("question") or an option (its mark). */
 export function readAloudLabel(part: string): string {
   return part === "question" ? "問題文の英文を読み上げる" : `選択肢${part}の英文を読み上げる`;

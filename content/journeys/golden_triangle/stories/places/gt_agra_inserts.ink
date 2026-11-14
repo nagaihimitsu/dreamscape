@@ -13,7 +13,7 @@ INCLUDE modules.ink
 # background: gt_bg_agra_hotel_hub
 # bgm: gt_jalandhar
 # speaker: narrator
-帳場の前を通りかかると、サミールが携帯の画面と彼女の顔を、三回見比べた。
+帳場の前で、彼女がサミールに声をかけた。とたんに彼は携帯の画面を見て、彼女を見て、もう一度画面を見た。
 # speaker: gt_samir
 # recall: gt_album_d55
 失礼ですが……デリーの階段井戸の動画の方ですよね？　最後の、『きゃー？』の

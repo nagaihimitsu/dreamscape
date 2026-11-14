@@ -2,7 +2,7 @@ import { DEBUG_MODE_KEY } from "../../src/app/debug-mode";
 import { debugQueryString } from "../../src/dev/debug-query";
 import { allStorage, bothStorages, expect, expectNoDebugCode, ops, test, tier, type Page } from "./helpers";
 
-// User decision 2026-11-08: anyone can turn Debug mode on in ゲームの設定 (⚙設定) with the password 「adminmode」
+// User decision 2026-11-08: anyone can turn Debug mode on in ゲームの設定 (≡メニュー) with the password 「adminmode」
 // (not a secret: anyone may see it; it only prevents turning it on by accident). While it is on,
 // the production build opens Debug's 「場面の確認」, and choices show their relationship changes.
 // Production tier only (docs/10): the gate expression (`import.meta.env.DEV || readDebugMode(…)`) and the
@@ -39,7 +39,9 @@ test("Debug mode: the password in ゲームの設定 turns it on for this device
   await ops.startJourney(page);
   let settings = await ops.openSettings(page);
   const before = await allStorage(page);
-  const section = settings.getByTestId("debug-mode-setting");
+  // While it is off, it waits folded in ゲームの設定's 「制作者向け」 (2026-11-14), the last group.
+  await expect(settings.locator("details.settings-creator")).not.toHaveAttribute("open");
+  const section = await ops.debugModeSection(settings);
   const start = section.getByRole("button", { name: "Debugモードをオンにする" });
 
   // The password form: an empty field cannot be sent; a wrong password says so and changes nothing.
@@ -71,7 +73,8 @@ test("Debug mode: the password in ゲームの設定 turns it on for this device
   expect(await allStorage(page)).toEqual({ ...before, [DEBUG_MODE_KEY]: "on" });
   await ops.closeDialog(settings);
 
-  // A preference of this device: still on after a reload; ゲームの設定 then shows Debug's 台詞の声の速さ.
+  // A preference of this device: still on after a reload; ゲームの設定 then shows Debug's 台詞の声の速さ, its
+  // 「制作者向け」 open.
   await page.reload();
   settings = await ops.openSettings(page);
   await expect(on).toBeVisible();

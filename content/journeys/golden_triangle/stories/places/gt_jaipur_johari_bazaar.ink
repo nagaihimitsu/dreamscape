@@ -35,11 +35,13 @@ INCLUDE modules.ink
     # emotion: worried
     あのあと、結局、言いそびれちゃった。欲しいって。……カムラさんに、欲しいものは欲しいと言いなさいって、言われたばっかりだったのに
 }
+# speaker: narrator
+この町の結婚式に呼ばれた、と{heroine_name}が話すと、ナスリーンの目が光った。
 # speaker: gt_nasreen
 結婚式？　あなた、花嫁さん？
 # speaker: heroine
 # reaction: heroine,surprised_big,blush
-ち、違います！　招待されてるだけです！
+ち、違います！　ただの招待客です！
 { cond("flag gt_agra_said_for_now"):
     # speaker: heroine
     # reaction: heroine,teasing,question
@@ -168,7 +170,7 @@ INCLUDE modules.ink
 # speaker: narrator
 ナスリーンは、腕輪を新聞紙で一組ずつ包み、紙袋に入れてくれた。
 # speaker: gt_nasreen
-割れやすいから、結婚式の日まで、はめっぱなしにしない方がいいわ
+割れやすいから、はめっぱなしにしない方がいいわ。はめるのは、特別な日だけ
 # speaker: narrator
 # se: bangles_clink
 アーケードの下を歩くと、彼女の手首で、試しにはめたままの一本が小さく鳴った。一歩ごとに、からん、と。

@@ -1,6 +1,6 @@
 /**
  * The scene must not advance or reveal text while a reading control is open: a
- * modal `dialog`, or a popover of the header (the ⚙設定 panel, the held items'
+ * modal `dialog`, or a popover of the header (the ≡メニュー panel, the held items'
  * detail) while its dismiss layer marks the page with `data-obstructs-dialogue`
  * (DismissLayer).
  */

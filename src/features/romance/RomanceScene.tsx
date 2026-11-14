@@ -279,7 +279,8 @@ export function RomanceScene({
               </div>
               </ChoicePoint>
             ) : frame.ended ? (
-              <button disabled={!ready} className="primary" data-testid="date-finish" onClick={advance}>
+              // The scene's last step in the right-aligned 「… →」 of every scene's end (2026-11-14, the phone UI audit).
+              <button disabled={!ready} className="next" data-testid="date-finish" onClick={advance}>
                 {date?.kind === "normal"
                   ? "デートを終える"
                   : "この時間を終える"}{" "}

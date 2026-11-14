@@ -7,7 +7,7 @@ import type { MusicDuck, SceneMusic } from "./scene-music";
 // The ambience (環境音, 2026-11-13 user decision): a quiet looping sound of the place under the background music, the
 // track the screen asks for (src/audio/scene-ambience.ts) streamed from `assets/ambience/<ID>.mp3` by its own looping
 // player (loop-player.ts: the music's two decks, crossfade, quiz muffle and lowerings). Its level is half the music's
-// 「BGMの大きさ」; ⚙設定's 「環境音を流す」 turns it off. Nothing plays while the page is hidden or its audio is suspended,
+// 「BGMの大きさ」; ≡メニュー's 「環境音を流す」 turns it off. Nothing plays while the page is hidden or its audio is suspended,
 // and nothing is fetched while it is off. Presentation only: a track that cannot load or play is skipped in silence.
 
 const EMPTY_DATA: AmbienceData = { schemaVersion: 1, sources: [], tracks: [], journeys: {} };
@@ -51,11 +51,11 @@ export function duckAmbienceForSpeech(reading: boolean): void {
   player.duckForSpeech(reading);
 }
 
-/** The ambience's volume from ⚙設定's 「BGMの大きさ」 (0 to 1): half of it. */
+/** The ambience's volume from ≡メニュー's 「BGMの大きさ」 (0 to 1): half of it. */
 export const ambienceVolume = (bgmVolume: number): number => Math.max(0, Math.min(1, bgmVolume)) * AMBIENCE_LEVEL;
 
 /**
- * Applies ⚙設定's 「環境音を流す」 (`enabled`) and 「BGMの大きさ」 (`bgmVolume`, 0 to 1; the ambience plays at half of it):
+ * Applies ≡メニュー's 「環境音を流す」 (`enabled`) and 「BGMの大きさ」 (`bgmVolume`, 0 to 1; the ambience plays at half of it):
  * off fades the ambience out and pauses it (nothing is fetched while it is off); on plays the screen's track again.
  * Called by GameApp.
  */

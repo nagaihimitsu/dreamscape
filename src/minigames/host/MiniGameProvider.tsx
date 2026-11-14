@@ -5,7 +5,7 @@ import type { TagContext } from "../../content/tags";
 // MiniGameSlot and the cast it passes. The Debug room gives its own (no game, no save).
 
 export interface MiniGameEnvironment {
-  /** ⚙設定「ミニゲームをおまかせにする」: every play plays itself to its tag's `auto`. */
+  /** ≡メニュー「ミニゲームをおまかせにする」: every play plays itself to its tag's `auto`. */
   auto: boolean;
   /** Debug mode: a button per outcome under the start button. */
   debug: boolean;

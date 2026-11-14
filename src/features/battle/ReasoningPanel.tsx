@@ -1,6 +1,10 @@
+import { useEffect, useRef } from "react";
 import { canSubmitBattleEvidence, getActiveBattleContent, getReasoningContext, reasoningEvidenceCount } from "../../domain/battle";
 import type { GameState } from "../../domain/game";
 import "./reasoning.css";
+
+/** The clue book (ClueNotebook's dialog) while it is on the page. */
+const notebookOpen = () => !!document.querySelector("dialog.clue-notebook");
 
 export function ReasoningPanel({
   game,
@@ -21,6 +25,20 @@ export function ReasoningPanel({
   const selecting = active.phase === "reasoning";
   const count = reasoningEvidenceCount(rule);
   const selected = reasoning?.selectedClueIds ?? [];
+  const canSubmit = canSubmitBattleEvidence(game);
+  // Back from the clue book (「推理に戻る」, its ×, Esc) with the evidence chosen: the now enabled submit comes into
+  // view and takes the focus (2026-11-14, the phone UI audit: on a short phone it stayed below the fold). After the
+  // book's own return of the focus, which runs as it goes (Modal), before this effect of the same render.
+  const submit = useRef<HTMLButtonElement>(null);
+  const bookWasOpen = useRef(false);
+  useEffect(() => {
+    const open = notebookOpen();
+    if (bookWasOpen.current && !open && selecting && canSubmit && submit.current) {
+      submit.current.scrollIntoView({ block: "nearest" });
+      submit.current.focus({ preventScroll: true });
+    }
+    bookWasOpen.current = open;
+  });
   return (
     <section
       className="reasoning-panel"
@@ -89,9 +107,10 @@ export function ReasoningPanel({
             )}
           </div>
           <button
+            ref={submit}
             className="primary"
             data-testid="reasoning-submit"
-            disabled={!canSubmitBattleEvidence(game)}
+            disabled={!canSubmit}
             onClick={onSubmit}
           >
             {rule.kind === "contradiction"

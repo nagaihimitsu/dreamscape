@@ -33,7 +33,7 @@ INCLUDE modules.ink
 わたしはファルハーナ。この遊歩道で、毎日、旅行者や地元の娘さんたちの手に描いてるの。いつか、扇風機と鏡のある自分のお店を持つのが夢
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
-わ、きれい！　ちょうど、結婚式に呼ばれてるんです。描いてもらっても、いいですか
+わ、きれい！　この町で、結婚式に呼ばれたんです。描いてもらっても、いいですか
 # speaker: gt_farhana
 結婚式なら、手の甲と手のひら、両方ね。……花嫁さんの手には、模様の中に花婿の名前を隠すの。初夜に、花婿がそれを探すのよ。見つけられないと、からかわれる
 # speaker: gt_farhana
@@ -105,7 +105,7 @@ INCLUDE modules.ink
 # reaction: heroine,exasperated,sweat
 食べたい。今、いちばん食べたい。でも、手が使えない
 # speaker: narrator
-屋台で一本買って戻ると、彼女の目が、とうもろこしから離れなくなった。
+ファルハーナに代金を払い、屋台で一本買って戻ると、彼女の目が、とうもろこしから離れなくなった。
 * [口もとまで持っていく # option: feed_corn]
     # profile: bold
     { romance_result == "negative":
@@ -153,7 +153,13 @@ INCLUDE modules.ink
 遊歩道のはずれで、二人は湖を眺めた。彼女は、乾きかけた両手を、まだ胸の前に上げている。
 # speaker: heroine
 手が使えないと、何にもできないね。やってもらうの、慣れてないから、変な感じ。でも、今日は、ちょっと楽しかった
-# speaker: heroine
-# emotion: smile
-この模様、結婚式の夜まで、持つかな。持ってほしいな
+{ cond("episode gt_jaipur_finale"):
+    # speaker: heroine
+    # emotion: smile
+    結婚式には、間に合わなかったけど。この模様、日本に帰るまで、持つかな。持ってほしいな
+- else:
+    # speaker: heroine
+    # emotion: smile
+    この模様、結婚式の夜まで、持つかな。持ってほしいな
+}
 -> END

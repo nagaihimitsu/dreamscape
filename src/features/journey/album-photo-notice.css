@@ -1,7 +1,7 @@
 /* 「写真の札」 (AlbumPhotoNotice, 2026-11-12 user decision): a parchment card right under the header, over the scene, for
    a few seconds, below 「ことばを覚えた」 when both come together (GameApp's .scene-notices). The region takes no taps (a tap
    there reaches the scene below) and has no size of its own. The card comes in, stays, and at the end goes up and to the
-   right, smaller, toward ⚙設定 where the album is; its length is the notice's (--album-notice-ms). */
+   right, smaller, toward ≡メニュー where the album is; its length is the notice's (--album-notice-ms). */
 .album-photo-notice-region {
   display: flex;
   justify-content: center;

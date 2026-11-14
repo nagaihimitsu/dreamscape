@@ -60,3 +60,19 @@
   cursor: pointer;
   font-weight: 600;
 }
+
+/* The title bar's line (ModalTitle's subline, 2026-11-14): the track playing with its 「止める」, or a quiet hint while
+   none plays, at one height (44 px, the button's), so the list under it never moves as a track starts or stops. */
+.music-room-now {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin: 2px 0 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.music-room-now .icon { flex: none; width: 18px; height: 18px; }
+.music-room-now-label { flex: 1 1 auto; min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
+.music-room-now-idle { color: var(--ds-ink-muted); font-size: 13px; }
+.music-room-now .music-room-stop { flex: none; width: auto; min-height: 44px; margin: 0; padding: 4px 14px; }

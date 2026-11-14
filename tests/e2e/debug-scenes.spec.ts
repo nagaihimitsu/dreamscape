@@ -60,6 +60,13 @@ for (const [kind, label] of [["contradiction", "B（矛盾追及）"], ["connect
     await playUntil(page, (state) => state.activeBattle?.phase === "reasoning", { source: debugGame });
     await ops.passReasoningIntro(page);
     await ops.chooseEvidence(page, special!.correctClueIds);
+    // Back from the clue book with the evidence chosen (「推理に戻る」), the now enabled submit is in view and has the
+    // focus (2026-11-14, the phone UI audit: on a short phone it stayed below the fold).
+    const submit = page.getByTestId("reasoning-submit");
+    await expect(submit).toBeEnabled();
+    await expect(submit).toBeFocused();
+    // (Brought just into the reading area's edge: a fraction of a pixel may fall outside it.)
+    await expect(submit).toBeInViewport({ ratio: 0.95 });
     const count = special!.correctClueIds.length;
     await expect(page.getByTestId("selected-evidence")).toContainText(`選んだ証拠 ${count} / ${count}枚`);
     const chosen = (await debugGame(page))!.activeBattle!.reasoning!.selectedClueIds;
@@ -70,6 +77,8 @@ for (const [kind, label] of [["contradiction", "B（矛盾追及）"], ["connect
       await expect(page.getByTestId("clue-picker").locator(`option[value="${clueId}"]`)).toContainText("（選択中）");
     await page.getByTestId("cluebook-close").click();
     expect((await debugGame(page))!.activeBattle!.reasoning!.selectedClueIds).toEqual(chosen);
+    // Its 「閉じる」 brings the submit forward the same way.
+    await expect(submit).toBeFocused();
 
     await page.getByTestId("reasoning-submit").click();
     const result = await playUntil(page, (state) => state.activeBattle?.phase === "result", { source: debugGame });
@@ -128,6 +137,20 @@ test("an encounter answered in English gives its item, and its moment goes on (t
     const keeping = active?.frame.choices.findIndex((choice) => !encounter!.usingChoices.includes(`${active.encounterId}:${choice.optionId}`)) ?? 0;
     return String.fromCharCode(65 + Math.max(keeping, 0));
   };
+  // Its English replies are laid out as a quiz's options (2026-11-14, the phone UI audit): the letter that chooses at
+  // the left, each 「訳を見る」 44 px high at its row's right (it was under the words, 40 px high).
+  await playUntil(page, (state) => state.activeEncounter?.phase === "quiz" || !!state.activeEncounter?.frame.choices.length, { source: debugGame, pick });
+  const replies = page.getByRole("button", { name: /^[A-Z]を選ぶ$/u });
+  await expect(replies.first()).toBeVisible();
+  for (const reply of await replies.all()) {
+    const choose = (await reply.boundingBox())!;
+    expect(choose.height).toBeGreaterThanOrEqual(44);
+    const translate = reply.locator("xpath=..").getByRole("button", { name: /^選択肢[A-Z]の訳を(見る|閉じる)$/u });
+    if (!(await translate.count())) continue;
+    const box = (await translate.boundingBox())!;
+    expect(box.height).toBeGreaterThanOrEqual(44);
+    expect(box.x, "「訳を見る」 at the right of the reply").toBeGreaterThan(choose.x + choose.width + 40);
+  }
   const done = await playUntil(page, (state) => state.completedEncounterIds.includes(encounter!.encounterId), { source: debugGame, pick });
   expect(done.inventory[encounter!.itemId]).toBe("held");
   // Debug meets the encounter at its moment, as play does: met while observing, it ends back in that observation (encounters
@@ -407,19 +430,27 @@ test("tourism: on a wide screen the page's margin beside the guide reads one ste
   expect((await debugGame(page))!.revision).toBe(before.revision + 1);
 });
 
-// The credits of a story scene's photo (licence attribution) are in ⚙設定 while the scene shows: over a
+// The credits of a story scene's photo (licence attribution) are in ≡メニュー while the scene shows: over a
 // conversation only the header shows (user decision 2026-11-11). Over a landmark battle's question,
-// 「画像の出典」 opens the photo with its credits.
-test("battle: ⚙設定's 「画像の出典」 opens the battle's photo and its credits", { tag: tier.debug }, async ({ page }) => {
+// 「画像の出典」 opens the photo with its credits shown at once, under the item's own name (2026-11-14). A dialog
+// for viewing: a tap on the dimmed page around it closes it as its 「× 閉じる」 does, holding taps for a moment.
+test("battle: ≡メニュー's 「画像の出典」 opens the battle's photo and its credits", { tag: tier.debug }, async ({ page }) => {
   const target = (await tapTargets(page)).battle;
   expect(target, "a landmark battle that Debug opens in its default city").toBeDefined();
   await ops.openDebugScene(page, settings(target!));
-  await playUntil(page, (state) => state.activeBattle?.phase === "question", { source: debugGame });
+  const question = await playUntil(page, (state) => state.activeBattle?.phase === "question", { source: debugGame });
   await ops.menuItem(page, "画像の出典");
-  const viewer = page.getByRole("dialog", { name: "背景画像" });
+  const viewer = page.getByRole("dialog", { name: "画像の出典" });
   await expect(viewer).toBeVisible();
-  await viewer.getByText("画像の説明・出典と利用条件").click();
   await expect(viewer.getByRole("link", { name: "画像の出典" })).toBeVisible();
   await ops.closeDialog(viewer);
+  await ops.menuItem(page, "画像の出典");
+  await expect(viewer).toBeVisible();
+  const box = (await viewer.boundingBox())!;
+  await ops.tapAt(page, { x: box.x + box.width / 2, y: Math.max(2, box.y / 2) });
+  await expect(viewer).toBeHidden();
+  await expect(page.locator("html[data-tap-hold]"), "the tap beside it holds the taps for a moment").toHaveCount(1);
+  await ops.settled(page);
+  expect((await debugGame(page))!.revision, "the question stays as it was").toBe(question.revision);
   await ops.backToDebugSettings(page);
 });

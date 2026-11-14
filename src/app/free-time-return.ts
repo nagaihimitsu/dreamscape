@@ -2,7 +2,7 @@ import type { GameState } from "../domain/game";
 import { screenFor } from "../domain/screen";
 
 /**
- * Debug's 「移動画面に戻る（Debug）」 (user decision 2026-11-11): while Debug mode is on, ⚙設定 on a
+ * Debug's 「移動画面に戻る（Debug）」 (user decision 2026-11-11): while Debug mode is on, ≡メニュー on a
  * screen other than free time (a conversation, a quiz or battle, an encounter, a date, a tour's leg…)
  * offers to go back to the free-time screen as it last was, undoing everything since: fares and
  * admission, AP, the time, items spent or gained, flags, relationship values, memories, the records
@@ -29,7 +29,7 @@ export function nextFreeTimeReturn(previous: FreeTimeReturn | null, state: GameS
   return previous?.journeyId === journeyId ? previous : null;
 }
 
-/** Whether ⚙設定 offers 「移動画面に戻る（Debug）」: Debug mode on, a screen other than free time, and a return point of this journey. */
+/** Whether ≡メニュー offers 「移動画面に戻る（Debug）」: Debug mode on, a screen other than free time, and a return point of this journey. */
 export function canReturnToFreeTime(point: FreeTimeReturn | null, current: GameState | null, journeyId: string, debugOn: boolean): boolean {
   return debugOn && !!point && !!current && point.journeyId === journeyId && screenFor(current) !== "free_time";
 }

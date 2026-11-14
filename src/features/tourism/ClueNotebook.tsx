@@ -67,6 +67,7 @@ export function ClueNotebook({
       labelledBy="cluebook-title"
       onClose={onClose}
       className={`clue-notebook${reasoning ? " case-notebook" : ""}`}
+      closeOnBackdrop
     >
       <ModalTitle
         id="cluebook-title"
