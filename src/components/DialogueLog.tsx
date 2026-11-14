@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useId, useState } from "react";
+import { Fragment, useCallback, useEffect, useId, useRef, useState } from "react";
 import type { LineDelivery } from "../content/tags";
 import { emphasisSpans } from "../content/emphasis";
 import { Icon } from "./icons";
@@ -77,6 +77,12 @@ export function DialogueLog({
 }) {
   const [open, setOpen] = useState(false);
   const titleId = useId();
+  const list = useRef<HTMLOListElement>(null);
+  // Opened, the log shows its newest line at the bottom; older lines are above it (user decision 2026-11-14). After
+  // Modal's own effect (a child's runs first) has shown the dialog, so the list has its height.
+  useEffect(() => {
+    if (open && list.current) list.current.scrollTop = list.current.scrollHeight;
+  }, [open]);
   return (
     <>
       <button className="text-button" aria-label="会話ログ" onClick={() => setOpen(true)}>
@@ -86,7 +92,7 @@ export function DialogueLog({
         <Modal labelledBy={titleId} onClose={() => setOpen(false)}>
           <ModalTitle id={titleId}>会話ログ</ModalTitle>
           {entries.length ? (
-            <ol className="vn-log">
+            <ol className="vn-log" ref={list}>
               {entries.map((entry) => (
                 <li key={entry.revision}>
                   <strong>{entry.speaker}</strong>

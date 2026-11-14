@@ -298,7 +298,6 @@ function HudMenu({ onSave, onLoad, onRecords, onAlbum, onGlossary, onEnglish, on
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "Escape" || document.querySelector("dialog[open]")) return;
       event.preventDefault();
-      playSe("ui_close");
       setOpen(false);
       backToGear();
     };
@@ -353,7 +352,7 @@ function HudMenu({ onSave, onLoad, onRecords, onAlbum, onGlossary, onEnglish, on
         aria-controls="hud-menu-panel"
         onClick={() => {
           if (!open) closeWaitMenu();
-          playSe(open ? "ui_close" : "ui_open");
+          // No sound as ⚙設定's panel opens or closes (user decision 2026-11-14): it is pressed often.
           setOpen(!open);
         }}
       >
@@ -377,7 +376,6 @@ function HudMenu({ onSave, onLoad, onRecords, onAlbum, onGlossary, onEnglish, on
         {onReturnToFreeTime && <button type="button" onClick={choose(onReturnToFreeTime)}><Icon name="map" />移動画面に戻る（Debug）</button>}
       </div>
       {open && <DismissLayer owner={group.current} onClose={(focusWasInside) => {
-        playSe("ui_close");
         setOpen(false);
         if (focusWasInside) backToGear();
       }} />}
