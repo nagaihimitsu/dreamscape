@@ -32,7 +32,7 @@ INCLUDE modules.ink
 # reaction: heroine,worried,gloom
 # local_word: gt_delhi_word_nihari
 # voice: gt_delhi_jama_masjid_guide_003
-ニハーリーって、一晩じっくり煮込む朝ごはんなんだって。……今、お昼過ぎ。完全に出遅れた
+ニハーリーって、一晩じっくり煮込む朝ごはんなんだって。……朝ごはんの時間、もう過ぎちゃった。完全に出遅れた
 # speaker: narrator
 彼女は本気で悔しがり、通りの鍋を一つずつのぞき込んだ。どの鍋も、もう底が見えている。
 # speaker: heroine

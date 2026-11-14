@@ -21,7 +21,9 @@ INCLUDE modules.ink
 # voice: gt_delhi_red_fort_guide_002
 あっ、カムラさんの暗号！　これは大事なものです、すみません
 # speaker: narrator
-拾い上げて、一行目を指でなぞる。赤い城、暗くなってから。今は昼の十一時。
+係員が先に拾い上げ、一行目のヒンディー語を読んで、少し笑った。「夜に、また来るのね」
+# speaker: narrator
+返ってきた切れ端の一行目を、指でなぞる。赤い城、暗くなってから。今は、まだ明るい昼間だ。
 # speaker: heroine
 # voice: gt_delhi_red_fort_guide_003
 暗くなってからって、何だろう。夕日がきれい、とか？　カムラさんの言い方だと、もっと何かありそう
@@ -59,7 +61,7 @@ INCLUDE modules.ink
 # speaker: narrator
 ショールを肩に掛け直した女性が、笛を首から下げたまま頭を下げる。下げ方が速い。謝り慣れている。
 # speaker: enemy
-英語の宿題なんです。『外国人観光客に遺産について質問する』。一時半にバスが出ます。さっき韓国の団体に逃げられました
+英語の宿題なんです。『外国人観光客に遺産について質問する』。一時間後にバスが出ます。さっき韓国の団体に逃げられました
 # speaker: heroine
 # emotion: worried
 # voice: gt_delhi_main_red_fort_002
@@ -226,8 +228,12 @@ INCLUDE modules.ink
 # background: gt_bg_delhi_red_fort
 # ambience: gt_amb_street_traffic
 # speaker: narrator
+赤い城、暗くなってから。カムラの一覧の一行目が気になって、二人はもう一度、レッド・フォートの城門の前に来ていた。
+# speaker: gt_delhi_red_fort_guide
+暗くなってから？　昼の見学は日没までですよ。そのあとは、夜のショーの券がある人だけ
+# speaker: narrator
 # se: phone_ring
-赤い城、暗くなってから。カムラの一覧の一行目が気になって、二人はもう一度、レッド・フォートの城門の前に来ていた。そこへ、宿の主人から電話が入った。
+夜まで待つか、出直すか。顔を見合わせたところへ、宿の主人から電話が入った。
 # speaker: gt_delhi_hotel_owner
 隣のカムラさんのお孫さんが、お二人を探しています
 # background: gt_bg_delhi_hotel_alley
@@ -259,7 +265,9 @@ INCLUDE modules.ink
 # speaker: narrator
 デリーに着いた日に、カムラが書いてくれた見どころの一覧。五行の場所と、一行ずつの妙な注釈。アマンは読み進めるほど、顔をこわばらせた。
 # speaker: enemy
-『鉄の柱、もう抱けない、腹立たしい』『東の門から三本目の木陰』……。最近、祖母は亡くなった祖父に話しかけるんです。これも、きっと
+『鉄の柱、もう抱けない、腹立たしい』『東の門から三本目の木陰』……。誰かに話しかけてるみたいな書き方だ
+# speaker: enemy
+最近の祖母は、亡くなった祖父に話しかけるんです。誰もいない椅子に、『プラカーシュ』って。これも、きっと
 # speaker: narrator
 彼は警察と病院の番号を探し始めた。指が震えて、二度、画面を押し間違える。
 # speaker: heroine
@@ -295,7 +303,7 @@ INCLUDE modules.ink
 # letter: note
 月が水に落ちた所で、最後の買い物
 # speaker: enemy
-旧市街に川なんてない。池もない。……祖母は、また昔の話を
+旧市街の通りに、池なんてない。……祖母は、また昔の話を
 # speaker: heroine
 # emotion: serious
 # voice: gt_delhi_finale_005
@@ -319,7 +327,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # se: gt_auto_rickshaw_horn
-アマンがオートリキシャを止めた。
+日が傾くころ、アマンが路地の出口でオートリキシャを止めた。
 # speaker: gt_delhi_auto_driver
 メーターは壊れてるよ
 # speaker: narrator
@@ -360,7 +368,7 @@ INCLUDE modules.ink
 # speaker: narrator
 アマンは香辛料の袋に手をつき、深く息を吐いた。
 # speaker: enemy
-祖母は、誰にも何も頼まない人なんです。結婚式の準備で、家族はみんな僕に頼みごとをする。祖母だけは何も言わない。だから、何を考えてるのか分からない
+祖母は、誰にも何も頼まない人なんです。僕の結婚式の準備で、家族はみんな僕に頼みごとをする。祖母だけは何も言わない。だから、何を考えてるのか分からない
 # speaker: heroine
 # voice: gt_delhi_finale_008
 カムラさん、迷子じゃないと思います。行きたい所に、一つずつ行ってるだけ
@@ -392,19 +400,23 @@ INCLUDE modules.ink
     光と音のショーか。城の中を歩いて回る……。暗くなってから、って、そういうことか
 }
 # speaker: narrator
+三人は城へ急いだ。昼の見学は、とうに終わっている。問屋の言った『城の灯り』は、きっと夜のショーのことだ。
+# speaker: narrator
 # se: switch_clunk
-ラホール門で、次の回の券を三枚買う。暗い城壁に光が走り、録音の声が、皇帝たちの時代を語り始めた。
+ラホール門で、次の回の券を三枚買う。中へ入ると、暗い城壁に光が走った。
+# speaker: narrator
+語り手の姿はどこにもない。どこからか、録音の語りが流れ出した。この城の皇帝たちの時代の話だ。
 # speaker: narrator
 観客の列について歩きながら、アマンが首を振る。
 # speaker: enemy
-祖父は堅物だったんです。映画も見ない人だった。こんなものに、祖母を連れてきたはずがない
+祖父は堅物でした。結婚も親の決めた縁談で、映画も見ない人だった。こんなものに、祖母を連れてきたはずがない
 # speaker: heroine
 # voice: gt_delhi_finale_011
 でも、一覧の一行目は、ここなんです
 # speaker: enemy
-六十年前ですよ。光のショーなんて、あったはずがない。祖母の思い出は、どこかで混ざってるんです
+二人が結婚したのは、六十年前ですよ。光のショーなんて、あったはずがない。祖母の思い出は、どこかで混ざってるんです
 # speaker: narrator
-光が、内謁の間の白いアーチを照らし出した。その奥に、まだ誰の姿も見えない。
+光が、内謁の間の白いアーチを照らし出した。遠足の子が指さした『楽園』の広間だ。その奥に、まだ人の姿は見えない。
 -> quiz(5) ->
 # background: gt_bg_delhi_red_fort
 { quiz_correct:
@@ -420,7 +432,9 @@ INCLUDE modules.ink
 # speaker: enemy
 ……六十年前。祖母は、十九だ
 # speaker: narrator
-内謁の間のアーチの下、光の届かない端の段に、小さな人影が座っていた。膝の上に、香辛料の袋。唇が動いている。
+内謁の間のアーチの下、光の届かない端の段に、ショールの小さな人影が座っていた。膝の上に、香辛料の袋。カムラだ。
+# speaker: narrator
+すぐ隣は、空いている。カムラはそちらへ顔を向け、誰かと話すように唇を動かしていた。
 # speaker: narrator
 # photo: gt_album_d79 # photo_caption: 光と音のショー、内謁の間の小さな人影
 駆け出しかけたアマンの前に、{heroine_name}が立った。
@@ -431,14 +445,16 @@ INCLUDE modules.ink
 # speaker: narrator
 # quiet: scene
 # bgm: touching_moments_four
-録音の声の切れ目に、カムラの声が聞こえた。
+録音の語りが途切れた。静かになった広間に、カムラの声が聞こえた。
 # speaker: gt_kamla
-プラカーシュ。あの冬の夜、ここで言ったでしょう。暗いから顔が見えない、なんてずるい言い方で。わたしは返事をしなかった。恥ずかしくて。それから六十年、一度も
+プラカーシュ。あの冬の夜、ここのショーの暗がりで、言ったでしょう。好きだ、って
+# speaker: gt_kamla
+暗いから顔が見えない、なんてずるい言い方で。わたしは返事をしなかった。恥ずかしくて。それから六十年、一度も
 # speaker: gt_kamla
 # pause: 1000
 ……わたしも。わたしも、です。遅くなったけど
 # speaker: narrator
-アマンが、息を止めた。光が移り、三人の姿が照らし出される。カムラが振り向いた。
+アマンが、息を止めた。光が移り、三人の姿が照らし出される。カムラが振り向き、孫を見て、それから{heroine_name}を見た。
 # speaker: gt_kamla
 ……あんたが連れてきたの
 # speaker: heroine
@@ -447,10 +463,10 @@ INCLUDE modules.ink
 # speaker: gt_kamla
 生意気な外国の娘だね
 # speaker: narrator
-カムラの声は怒っていた。けれど、孫が隣に座るのを、止めはしなかった。
+カムラの声は怒っていた。けれど、空いていた隣に孫が座るのを、止めはしなかった。
 # speaker: enemy
 # local_word: gt_delhi_word_dadi
-ダーディー。……最初から教えて。祖父が、何を言ったのか
+ダーディー。……最初から教えて。祖父と、ここで何があったのか
 # speaker: narrator
 # pause: 1200
 長い沈黙のあと、カムラは香辛料の袋を膝から下ろした。
