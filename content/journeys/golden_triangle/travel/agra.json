@@ -566,9 +566,9 @@
     {
       "id": "agra_ram_bagh",
       "cityId": "agra",
-      "nameJa": "ラム・バーグ",
+      "nameJa": "ラーム・バーグ",
       "nameEn": "Ram Bagh",
-      "descriptionJa": "ラム・バーグは、アーグラのヤムナー川左岸にある庭園で、1528年ごろに皇帝バーブルが造営した。インドに現存する最古のムガル庭園とされ、段になった通路や水路、川を望むあずまやが残る。のちにタージ・マハルの庭へと受け継がれる、四分割庭園の伝統の原型といわれる。",
+      "descriptionJa": "ラーム・バーグは、アーグラのヤムナー川左岸にある庭園で、1528年ごろに皇帝バーブルが造営した。インドに現存する最古のムガル庭園とされ、段になった通路や水路、川を望むあずまやが残る。のちにタージ・マハルの庭へと受け継がれる、四分割庭園の伝統の原型といわれる。",
       "latitude": 27.205306,
       "longitude": 78.038639,
       "backgroundId": "gt_bg_agra_ram_bagh",
@@ -643,9 +643,9 @@
     {
       "id": "agra_chini_rauza",
       "cityId": "agra",
-      "nameJa": "チーニー・カ・ラウザ",
+      "nameJa": "チーニー・カ・ラウザー",
       "nameEn": "Chini ka Rauza",
-      "descriptionJa": "チーニー・カ・ラウザは、アーグラのヤムナー川左岸にある墓廟。シャー・ジャハーンの宰相を務めた学者・詩人アフザル・ハーンが眠り、1635年ごろに建てられた。全面をペルシア風の彩釉タイル（カーシー／チーニー）で飾った、アーグラでただ一つの建造物とされる。",
+      "descriptionJa": "チーニー・カ・ラウザーは、アーグラのヤムナー川左岸にある墓廟。シャー・ジャハーンの宰相を務めた学者・詩人アフザル・ハーンが眠り、1635年ごろに建てられた。全面をペルシア風の彩釉タイル（カーシー／チーニー）で飾った、アーグラでただ一つの建造物とされる。",
       "latitude": 27.20086,
       "longitude": 78.03439,
       "backgroundId": "gt_bg_agra_chini_rauza",
@@ -6761,7 +6761,7 @@
       "cityId": "agra",
       "placeId": "agra_ram_bagh",
       "category": "date",
-      "titleJa": "ラム・バーグで過ごす",
+      "titleJa": "ラーム・バーグで過ごす",
       "activityMinutes": 60,
       "apCost": 4,
       "admissionCost": 600
@@ -6771,7 +6771,7 @@
       "cityId": "agra",
       "placeId": "agra_chini_rauza",
       "category": "date",
-      "titleJa": "チーニー・カ・ラウザで過ごす",
+      "titleJa": "チーニー・カ・ラウザーで過ごす",
       "activityMinutes": 45,
       "apCost": 2,
       "admissionCost": 0

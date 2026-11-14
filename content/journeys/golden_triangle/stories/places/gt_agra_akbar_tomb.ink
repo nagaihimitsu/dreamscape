@@ -162,13 +162,15 @@ INCLUDE modules.ink
 # se: whistle
 笛の音がして、若い番人が走ってきた。猿を見上げて、ため息をつく。
 # speaker: gt_agra_akbar_guard
-追いかけちゃだめです。取引しないと。何か飲み物と交換すれば、落としてくれます。ヴリンダーヴァンの猿は、眼鏡を盗んで、果物のジュースと交換するので有名なんですよ。ここのは、まだ見習いですけど
+追いかけちゃだめです。取引しないと。何か飲み物と交換すれば、落としてくれます
+# speaker: gt_agra_akbar_guard
+ヴリンダーヴァンって町の猿は、眼鏡を盗んでジュースと交換するので有名なんですよ。ここのは、まだ見習いですけど
 * [売店でパックのジュースを買って、交換を申し込む # option: attar_trade]
     # money: -20
     # rel: trust +1
     # speaker: narrator
     パックのジュースを高く掲げてみせると、猿は首をかしげた。布袋から小瓶をつまみ出して、小瓶と、こちらのジュースを、何度も見比べる。
-    ジュースを壁の上へ放ると、猿は両手で受け取った。小瓶を持っていた方の手も、使って。
+    ジュースを壁の上へ放ると、猿は片手で受け取った。もう片方の手は、まだ小瓶を握っている。
     -> gt_agra_akbar_tomb_monkey_catch_attar ->
     { cond("item gt_delhi_rain_attar held"):
         # speaker: narrator
@@ -220,7 +222,7 @@ INCLUDE modules.ink
 === gt_agra_akbar_tomb_monkey_catch_attar ===
 # speaker: narrator
 # minigame: monkey_catch auto fumbled art.wall gt_img_agra_akbar_tomb_gate
-小瓶が、壁の上から落ち――かけて、猿の手に戻った。考えるより先に、両手が出ていた。
+小瓶が、壁の上から落ち――かけて、猿の手に戻った。からかっている。考えるより先に、両手が出ていた。
 * [落ちてきた小瓶を、両手で受け止めた # option: caught]
     # speaker: narrator
     両手の中に、ひやりとした小さな重みが収まった。指を開くと、小瓶は割れずにそこにあった。
@@ -259,12 +261,14 @@ INCLUDE modules.ink
 # se: whistle
 笛の音がして、若い番人が走ってきた。猿を見上げて、ため息をつく。
 # speaker: gt_agra_akbar_guard
-追いかけちゃだめです。取引しないと。何か飲み物と交換すれば、落としてくれます。ヴリンダーヴァンの猿は、眼鏡を盗んで、果物のジュースと交換するので有名なんですよ。ここのは、まだ見習いですけど
+追いかけちゃだめです。取引しないと。何か飲み物と交換すれば、落としてくれます
+# speaker: gt_agra_akbar_guard
+ヴリンダーヴァンって町の猿は、眼鏡を盗んでジュースと交換するので有名なんですよ。ここのは、まだ見習いですけど
 * [売店でパックのジュースを買って、交換を申し込む # option: glasses_trade]
     # money: -20
     # rel: trust +1
     # speaker: narrator
-    パックのジュースを高く掲げてみせると、猿はサングラスとジュースを何度も見比べ、やがて、ぱっと手を離した。
+    パックを高く掲げてみせると、猿はサングラスのつるをかじりながら、ジュースと何度も見比べた。やがて、ぱっと手を離した。
     -> gt_agra_akbar_tomb_monkey_catch_glasses ->
     # speaker: heroine
     # reaction: heroine,teasing,music
@@ -279,7 +283,7 @@ INCLUDE modules.ink
     # voice: gt_agra_akbar_tomb_monkey_glasses_003
     似合ってる。ふふっ、どうしよう、すごく似合ってる
     # speaker: narrator
-    彼女が笑いながら写真を撮ると、猿はまぶしそうに空を見上げ、サングラスを外して、ぽいと放った。思ったより暗かったらしい。
+    彼女が笑いながら写真を撮ると、猿はまぶしそうに空を見上げ、サングラスを外して、ぽいと放り上げた。思ったより暗かったらしい。
     -> gt_agra_akbar_tomb_monkey_catch_glasses ->
 * [「待とう。猿にも、考える時間がいる」 # option: glasses_wait]
     # rel: affection +1
@@ -297,7 +301,7 @@ INCLUDE modules.ink
 === gt_agra_akbar_tomb_monkey_catch_glasses ===
 # speaker: narrator
 # minigame: monkey_catch prefix glasses thing glasses auto caught art.wall gt_img_agra_akbar_tomb_gate
-サングラスが、壁の上から落ち――かけて、猿の手に戻った。考えるより先に、両手が出ていた。
+サングラスが、壁の上から落ち――かけて、猿の手に戻った。からかっている。考えるより先に、両手が出ていた。
 * [落ちてきたサングラスを、両手で受け止めた # option: glasses_caught]
     # speaker: narrator
     両手の中に、サングラスがすとんと収まった。
