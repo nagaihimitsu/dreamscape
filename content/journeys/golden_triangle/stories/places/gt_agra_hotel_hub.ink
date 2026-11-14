@@ -26,8 +26,10 @@ INCLUDE modules.ink
 # reaction: heroine,surprised_big,interrobang
 # voice: gt_agra_arrival_001
 は、ハネムーン！？　ち、違います、わたしたち、新婚じゃ……！
+# speaker: gt_samir
+皆さん、最初はそうおっしゃいます
 # speaker: narrator
-皆さん、最初はそうおっしゃいます。三回説明して、三回とも笑顔で流された。去り際に置いていった名刺には、こう添えてあった。叔父はアーグラ一のガイドです。愛の物語なら、叔父に。
+三回説明して、三回とも笑顔で流された。去り際にサミールが置いていった名刺には、こう添えてあった。「叔父はアーグラ一のガイドです。愛の物語なら、叔父に」
 { ending_reached:
     # speaker: heroine
     # reaction: heroine,shy_deep,blush
