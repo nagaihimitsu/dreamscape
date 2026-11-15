@@ -39,6 +39,7 @@ INCLUDE modules.ink
     ハルバンス・シンだ。四十年、トラックで国じゅうを走ってきた
 }
 # speaker: narrator
+# together: gt_harbans gt_gurmeet
 ハルバンスの隣には、同じ鼻と同じ肩幅の、四十代くらいの男が座っていた。二人のあいだには、ちょうど一人分の隙間が空いている。
 # speaker: gt_harbans
 息子のグルミートだ。カナダから来た。わしを連れて帰るつもりで
@@ -159,13 +160,15 @@ INCLUDE modules.ink
 { cond("date gt_delhi_date_bangla_sahib"):
     # speaker: gt_harbans
     世界地図の娘。カナダの地図のローティーを、いつか焼いてやる。……たぶん、また違う国になるがな
-    // 次の行は else の行と同じ文。下ろす人だけが違う（最後に話したのが父か息子か）。文を直すときは両方。
+    // 次の行は else の行と同じ文。どちらでも、父と息子の2人とも下ろす（together の札で並んで立っている）。文を直すときは両方。
     # speaker: narrator
     # leave: gt_harbans
+    # leave: gt_gurmeet
     食堂を出て、古い貯水池のふちに立つ。
 - else:
     # speaker: narrator
     # leave: gt_gurmeet
+    # leave: gt_harbans
     食堂を出て、古い貯水池のふちに立つ。
 }
 # speaker: narrator

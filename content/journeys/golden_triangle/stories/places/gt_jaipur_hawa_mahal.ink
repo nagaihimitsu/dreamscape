@@ -223,6 +223,7 @@ INCLUDE modules.ink
 # speaker: narrator
 押し問答をしているうちに、行列が止まった。ハワー・マハルの向かいの、古い屋敷の門の前。花嫁の家だ。
 # speaker: narrator
+# together: enemy gt_pooja
 門には赤いリボンが張られ、その前に、花嫁のいとこたちが腕を組んで立ちはだかっていた。先頭の娘が、高らかに宣言する。
 # speaker: gt_jaipur_bride_cousin
 花婿さんを通すには、五万一千ルピー！　まけてほしかったら、ジャイプールの問題に答えてもらいます！

@@ -268,6 +268,7 @@ INCLUDE modules.ink
     彼女の部屋の扉が、細く開いた。
 }
 # speaker: gt_delhi_hotel_okami
+# together: gt_delhi_hotel_okami enemy
 # local_word: gt_delhi_word_khichdi
 # term: gt_term_khichdi
 キチュリー。うちでは、お腹を壊したら、これ

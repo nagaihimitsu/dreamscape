@@ -1,10 +1,11 @@
-import { LEAVE_WHO, RESERVED_SPEAKERS } from "../src/content/tags";
+import { LEAVE_WHO, readTogether, RESERVED_SPEAKERS } from "../src/content/tags";
 import { withoutComments } from "./place-files";
 
 // content:build's check of the people a line names (2026-11-11): a line's `# speaker:` is narrator,
 // heroine, player or enemy, or the ID of a person of progression/story.json people; a line's
-// `# leave:` (2026-11-13) is heroine, enemy or such a person. Read from the Ink source (statically,
-// so a line in a branch no walk takes is checked too), with the knot named.
+// `# leave:` (2026-11-13) is heroine, enemy or such a person, and so is each of the two of a line's
+// `# together:` (2026-11-15; enemy or a person). Read from the Ink source (statically, so a line in a
+// branch no walk takes is checked too), with the knot named.
 // Light module (no content loading): unit tests use it directly.
 
 const KNOT_LINE = /^\s*={2,}\s*(?:function\s+)?([A-Za-z_][A-Za-z0-9_]*)/u;
@@ -15,7 +16,7 @@ const PEOPLE_TAGS = [
     hint: "heroine, enemy, or a person declared in progression/story.json people" },
 ];
 
-/** Throws at the first `# speaker:` or `# leave:` that names no one declared: its knot (if any), its line and the ID. */
+/** Throws at the first `# speaker:`, `# leave:` or `# together:` that names no one declared: its knot (if any), its line and the ID. */
 export function checkSpeakerPeople(source: string, people: ReadonlySet<string>): void {
   let knot: string | undefined;
   withoutComments(source).split("\n").forEach((line, index) => {
@@ -27,5 +28,13 @@ export function checkSpeakerPeople(source: string, people: ReadonlySet<string>):
         if (!value || named.includes(value) || people.has(value)) continue;
         throw new Error(`Undeclared person in # ${tag}: ${knot ? `of the knot ${knot} ` : ""}(line ${index + 1}): ${value} (${hint})`);
       }
+    for (const match of line.matchAll(/#\s*together\s*:\s*([^#]*)/gu)) {
+      const where = `${knot ? `knot ${knot} の` : ""}${index + 1}行目の # together: ${match[1].trim()}`;
+      try {
+        readTogether(match[1].trim(), [...people]);
+      } catch (error) {
+        throw new Error(`${where}：${(error as Error).message}`, { cause: error });
+      }
+    }
   });
 }

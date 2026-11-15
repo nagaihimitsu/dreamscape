@@ -25,7 +25,7 @@ import { SceneHeading, SceneNotebookTool } from "../../components/SceneHeading";
 import { CharacterFigure, CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
-import { oppositeIsEnemy, sceneStageOf, stageLine } from "../../components/scene-stage";
+import { figureIsEnemy, oppositeFigures, sceneStageOf, stageLine, type PortraitFocus, type StageFigure } from "../../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useSceneStage } from "../../components/useSceneStage";
 import { useNameCutIn } from "../../components/NameCutIn";
@@ -358,10 +358,30 @@ export function BattleScreen({
   const stageScene = sceneStageOf("battle", opponentFigure);
   const line = isDialogue && frame ? stageLine(frame, storyState.people, { heroine: !!heroineReaction, enemy: !!enemyReaction }) : { enemyCue: true };
   const { stage, focus } = useSceneStage(line, stageScene);
-  const opponentStands = oppositeIsEnemy(stage, stageScene);
-  const personId = opponentStands ? undefined : stage.opposite?.figure;
+  // Who stands opposite her (two in a stretch of `# together:`: the first in the opponent's place, the second beside it).
+  // In the quiz (no line) the opponent asks, alone in their place, as without the tag.
+  const opposite = oppositeFigures(stage, focus).filter(({ figure }) => isDialogue || figureIsEnemy(figure, stageScene));
+  const inPlace = opposite[0];
+  const beside = isDialogue ? opposite[1] : undefined;
   const opponentSpeaks = frame?.speaker === "enemy" || line.personFigure === opponentFigure;
   const enemyEmotion = enemyReaction?.expression ?? (opponentSpeaks && frame ? frame.emotion : "neutral");
+  /** A figure opposite her: the opponent with their expression, mark and drawn fallback, or a person's one picture. */
+  const oppositePortrait = (figure: StageFigure, at: PortraitFocus | undefined) => !figureIsEnemy(figure, stageScene)
+    ? <CharacterPortrait key={figure.figure} characterId={figure.figure} focus={at} />
+    : <CharacterPortrait
+      characterId={opponentFigure}
+      emotion={enemyEmotion}
+      focus={at}
+      fallback={battle.portrait === "abstract" ? undefined :
+        <EnemyPortrait
+          emotion={enemyEmotion}
+          variant={battle.format}
+          portrait={battle.portrait}
+        />
+      }
+    >
+      {enemyReaction?.mark && <ComicEffect effect={enemyReaction.mark} reduceMotion={reduceMotion} cueKey={displayedStoryState ?? ""} />}
+    </CharacterPortrait>;
   const plate = speakerPlate(frame ?? { speaker: "narrator" }, { heroine: game.heroineName, player: game.playerName, enemy: battle.enemyNameJa },
     storyState.people);
   const speaker = plate.name;
@@ -492,7 +512,7 @@ export function BattleScreen({
           <h2>{battle.enemyNameJa}</h2>
           <p className="enemy-detail">{battle.enemyDescriptionJa}</p>
         </div>
-        <div className="battle-characters">
+        <div className="battle-characters" data-together={beside ? "three" : undefined}>
           {isDialogue && stage.heroine && (
             <div className="battle-character-slot battle-heroine">
               <CharacterPortrait
@@ -507,23 +527,8 @@ export function BattleScreen({
               </CharacterPortrait>
             </div>
           )}
-          <div className="battle-character-slot battle-enemy">
-            {personId ? <CharacterPortrait key={personId} characterId={personId} focus={focus.opposite} /> : opponentStands &&
-            <CharacterPortrait
-              characterId={opponentFigure}
-              emotion={enemyEmotion}
-              focus={focus.opposite}
-              fallback={battle.portrait === "abstract" ? undefined :
-                <EnemyPortrait
-                  emotion={enemyEmotion}
-                  variant={battle.format}
-                  portrait={battle.portrait}
-                />
-              }
-            >
-              {enemyReaction?.mark && <ComicEffect effect={enemyReaction.mark} reduceMotion={reduceMotion} cueKey={displayedStoryState ?? ""} />}
-            </CharacterPortrait>}
-          </div>
+          <div className="battle-character-slot battle-enemy">{inPlace && oppositePortrait(inPlace.figure, inPlace.focus)}</div>
+          {beside && <div className="battle-character-slot battle-beside">{oppositePortrait(beside.figure, beside.focus)}</div>}
         </div>
       </div>
       <div className="battle-paper-shell" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} aria-hidden={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined} inert={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined}>

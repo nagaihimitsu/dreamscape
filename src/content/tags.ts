@@ -71,6 +71,8 @@ export interface StoryTags {
   cutin?: CutInKind;
   /** `# leave: <who>` (one tag per figure): who goes off the scene's stage at this line (src/components/scene-stage.ts). */
   leave?: string[];
+  /** `# together: <who> <who>` (2026-11-15): the two who stand opposite the heroine from this line (src/components/scene-stage.ts). */
+  together?: string[];
   /** `# voice: <ID>`: the recording of the line, a journey's public/assets/voice/<ID>.mp3 (the line it is written on only). */
   voiceId?: string;
   /** `# se: <ID>`: a sound effect played as the line starts, a registered public/assets/se/<ID>.mp3 (the line it is written on only). */
@@ -156,6 +158,28 @@ export type CutInKind = (typeof CUTIN_KINDS)[number];
  * battle's opponent) or a person of progression/story.json people. Narrator and player never stand there.
  */
 export const LEAVE_WHO = ["heroine", "enemy"] as const;
+
+/**
+ * `# together: <who> <who>` (2026-11-15 user decision): from its line, two people stand opposite the heroine instead of
+ * one (src/components/scene-stage.ts). Each is the scene's `enemy` or a person of progression/story.json people, two
+ * different ones, separated by a space. Whether each has a figure there is content:build's walk's check (scene-walk.ts).
+ */
+export function readTogether(value: string, personIds: readonly string[] | undefined): string[] {
+  const names = value.split(/\s+/u).filter(Boolean);
+  const form = "# together: <人物ID> <人物ID>（場面の相手は enemy）";
+  if (names.length !== 2)
+    throw new Error(`# together: には、向かいに立つ2人を書きます：${form} のように、2人の ID を空白で区切って書いてください` +
+      `（Invalid together tag: ${value}; name two people）。`);
+  for (const name of names) {
+    if (name === "enemy") continue;
+    if ((RESERVED_SPEAKERS as readonly string[]).includes(name) || !/^[a-z][a-z0-9_]*$/u.test(name) || (personIds && !personIds.includes(name)))
+      throw new Error(`# together: の ${name} は、向かいに立てる人ではありません。enemy か、progression/story.json の people の人物ID を書いてください` +
+        `（ヒロイン・地の文・主人公は向かいに立ちません。Unknown person in together: ${name}）。`);
+  }
+  if (names[0] === names[1])
+    throw new Error(`# together: に同じ人を2回書いています：${value}。別の2人を書いてください（Same person twice in together: ${names[0]}）。`);
+  return names;
+}
 
 type SceneTagKey = "phone" | "letter" | "quiet" | "stand" | "cutin";
 const SCENE_TAG_VALUES: Record<SceneTagKey, readonly string[]> = {
@@ -293,6 +317,10 @@ export function parseStoryTags(
         throw new Error(`Unknown leave: ${value} (heroine, enemy, or a person of progression/story.json people; the narrator and the player never stand on the stage)`);
       if (result.leave?.includes(value)) throw new Error(`Duplicate leave tag: ${value}`);
       result.leave = [...(result.leave ?? []), value];
+    } else if (key === "together") {
+      const names = readTogether(value, context.personIds);
+      if (result.together) throw new Error(`1つの行に # together: が2つあります：${value}。1つにしてください（Duplicate together tag）。`);
+      result.together = names;
     } else if (key === "background") {
       if (!context.backgroundIds.includes(value))
         throw new Error(`Unknown background: ${value}`);

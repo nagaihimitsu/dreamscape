@@ -73,6 +73,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_main_jama_masjid_001
 わ……。薔薇なのに、甘すぎない。ずっと嗅いでいられる
 # speaker: gt_delhi_jama_young_man
+# together: enemy gt_zoheb
 客だ！　時計、スタート！
 # speaker: narrator
 隣の店から若い男が顔を出した。店先には、スマートフォンのケースと充電器がぶら下がっている。
@@ -229,6 +230,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # se: phone_keypad
 # leave: enemy
+# leave: gt_zoheb
 店を出るとき、背中で電話のボタンを押す音がした。ゆっくり、一つずつ。ゾヘブは自分の店に戻り、充電器の列を、意味もなく並べ直していた。
 # speaker: heroine
 # emotion: smile

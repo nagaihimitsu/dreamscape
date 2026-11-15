@@ -7,7 +7,7 @@ import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
-import { sceneStageOf, stageLine } from "../../components/scene-stage";
+import { oppositeFigures, sceneStageOf, stageCast, stageLine } from "../../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useNameCutIn } from "../../components/NameCutIn";
 import { ComicEffect } from "../../components/ComicEffect";
@@ -81,6 +81,7 @@ export function RomanceScene({
   const { stage, focus } = useSceneStage(stageLine(frame, storyState.people,
     { heroine: !!reaction, enemy: !!resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy") }), DATE_STAGE);
   const personId = stage.opposite?.figure;
+  const cast = stageCast(stage);
   const { name: speaker, narration } = speakerPlate(frame, { heroine: game.heroineName, player: game.playerName }, storyState.people);
   // A line's `# cutin: name` shows its speaker's name plate for a moment (NameCutIn; a person's: a date has no one opposite).
   const nameCut = useNameCutIn(nameCutIn(frame, undefined, storyState.people), active.storyState);
@@ -200,8 +201,10 @@ export function RomanceScene({
         </aside>
       )}
       {/* With a person on stage the two stand side by side (the encounter's slots), the person alone in the middle while
-          she is off stage; her portrait keeps its place in the tree, so it is not drawn again when they come in. */}
-      <div className={`vn-character-layer${personId ? " encounter-character-layer" : ""}`} data-two-characters={stage.heroine && personId ? true : undefined}>
+          she is off stage; her portrait keeps its place in the tree, so it is not drawn again when they come in. Two
+          people opposite her (# together:) stand beside each other (stageCast; each keeps its portrait as the other goes). */}
+      <div className={`vn-character-layer${personId ? " encounter-character-layer" : ""}`} data-two-characters={cast.two ? true : undefined}
+        data-together={cast.together}>
         {stage.heroine && <div className={personId ? "encounter-character-slot encounter-character-heroine" : undefined}>
           <CharacterPortrait
             characterId="heroine"
@@ -214,9 +217,11 @@ export function RomanceScene({
             {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
           </CharacterPortrait>
         </div>}
-        {personId && <div className="encounter-character-slot encounter-character-enemy">
-          <CharacterPortrait key={personId} characterId={personId} focus={focus.opposite} />
-        </div>}
+        {oppositeFigures(stage, focus).map(({ figure, place, focus: at }) => (
+          <div key={figure.figure} className={`encounter-character-slot encounter-character-${place === "beside" ? "beside" : "enemy"}`}>
+            <CharacterPortrait characterId={figure.figure} focus={at} />
+          </div>
+        ))}
       </div>
       <section
         className="vn-dialogue paper story-paper"

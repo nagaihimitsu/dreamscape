@@ -19,7 +19,7 @@ import { CanalScene } from "../../components/CanalScene";
 import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPortrait";
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
-import { oppositeIsEnemy, sceneStageOf, stageLine } from "../../components/scene-stage";
+import { figureIsEnemy, oppositeFigures, sceneStageOf, stageCast, stageLine } from "../../components/scene-stage";
 import { nameCutIn, speakerPlate } from "../../components/speaker-plate";
 import { useNameCutIn } from "../../components/NameCutIn";
 import { useSceneStage } from "../../components/useSceneStage";
@@ -83,7 +83,9 @@ export function EpilogueScreen({
   const stageScene = sceneStageOf(active.kind ?? "epilogue", person?.characterId);
   const { stage, focus } = useSceneStage(stageLine(frame, storyState.people, { heroine: !!reaction, enemy: !!personReaction }), stageScene);
   const opposite = stage.opposite?.figure;
-  const personLooks = oppositeIsEnemy(stage, stageScene);
+  const cast = stageCast(stage);
+  // The scene's person's expression and mark, on their figure wherever it stands (the other people have one picture each).
+  const personEmotion = personReaction?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral");
   const finaleOpponent = battles.find((battle) => battle.id === episode?.battleId);
   const enemyName = person?.nameJa ?? finaleOpponent?.enemyNameJa;
   const { name: speaker, narration } = speakerPlate(frame, { heroine: game.heroineName, player: game.playerName, enemy: enemyName },
@@ -140,8 +142,10 @@ export function EpilogueScreen({
         <ItemOutLayer card={showLogo ? undefined : itemOutCard(game, frame.itemOut)} quiet={!!frame.quiet} />
         {/* With the scene's person on stage the two stand side by side (the encounter's slots), the person alone in the
             middle while she is off stage; her portrait keeps its place in the tree, so it is not drawn again when they
-            come in. */}
-        <div className={`vn-character-layer${opposite ? " encounter-character-layer" : ""}`} data-two-characters={stage.heroine && opposite ? true : undefined}>
+            come in. Two people opposite her (# together:) stand beside each other (stageCast; each keeps its portrait as
+            the other goes). */}
+        <div className={`vn-character-layer${opposite ? " encounter-character-layer" : ""}`} data-two-characters={cast.two ? true : undefined}
+          data-together={cast.together}>
           {stage.heroine && <div className={opposite ? "encounter-character-slot encounter-character-heroine" : undefined}>
             <CharacterPortrait
               characterId="heroine"
@@ -154,16 +158,14 @@ export function EpilogueScreen({
               {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
             </CharacterPortrait>
           </div>}
-          {opposite && <div className="encounter-character-slot encounter-character-enemy">
-            <CharacterPortrait
-              key={opposite}
-              characterId={opposite}
-              emotion={personLooks ? personReaction?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral") : "neutral"}
-              focus={focus.opposite}
-            >
-              {personLooks && personReaction?.mark && <ComicEffect effect={personReaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
-            </CharacterPortrait>
-          </div>}
+          {oppositeFigures(stage, focus).map(({ figure, place, focus: at }) => {
+            const personLooks = figureIsEnemy(figure, stageScene);
+            return <div key={figure.figure} className={`encounter-character-slot encounter-character-${place === "beside" ? "beside" : "enemy"}`}>
+              <CharacterPortrait characterId={figure.figure} emotion={personLooks ? personEmotion : "neutral"} focus={at}>
+                {personLooks && personReaction?.mark && <ComicEffect effect={personReaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
+              </CharacterPortrait>
+            </div>;
+          })}
         </div>
         <section
           className="paper story-paper vn-dialogue"

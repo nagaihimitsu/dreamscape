@@ -20,7 +20,7 @@ import { CharacterFigure, CharacterPortrait } from "../../components/CharacterPo
 import { ChoicePoint } from "../../minigames/host/ChoicePoint";
 import { MiniGameSlot } from "../../minigames/host/MiniGameProvider";
 import type { MiniGameTag } from "../../minigames/tag";
-import { oppositeIsEnemy, type StageLine, type StageScene } from "../../components/scene-stage";
+import { figureIsEnemy, oppositeFigures, stageCast, type StageLine, type StageScene } from "../../components/scene-stage";
 import { useSceneStage } from "../../components/useSceneStage";
 import { useNameCutIn } from "../../components/NameCutIn";
 import type { NameCutIn } from "../../components/speaker-plate";
@@ -137,7 +137,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
   const nameCut = useNameCutIn(quiz ? undefined : view.cutIn, String(view.revision));
   // The heroine from her first line (or reaction) and the one opposite her, each to the scene's end or until another comes in.
   const { stage, focus } = useSceneStage(view.stage.line, view.stage.scene);
-  const enemyLook = oppositeIsEnemy(stage, view.stage.scene) ? view.stage.enemy : undefined;
+  const cast = stageCast(stage);
   // The quiz (its question, its feedback) shows no line: the line's staging waits for the next one.
   const staging = quiz ? undefined : view.staging;
   const autoAdvance = useAutoAdvance({ ready, canAdvance: !view.ended && !quiz && view.choices.length === 0 && !windowVisibility.hidden,
@@ -156,19 +156,24 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
       <ItemShowLayer itemId={staging?.itemShow} quiet={!!staging?.quiet} />
       <ItemOutLayer card={quiz ? undefined : view.itemOut} quiet={!!staging?.quiet} />
       <SceneHeading label={view.placeJa} badge={view.badgeJa} />
-      {!quiz && (stage.heroine || stage.opposite) && <div className="vn-character-layer encounter-character-layer" data-two-characters={stage.heroine && !!stage.opposite}>
+      {/* Two people opposite her (# together:) stand beside each other (stageCast; each keeps its portrait as the other goes). */}
+      {!quiz && (stage.heroine || stage.opposite) && <div className="vn-character-layer encounter-character-layer" data-two-characters={cast.two}
+        data-together={cast.together}>
         {stage.heroine && <div className="encounter-character-slot encounter-character-heroine">
           <CharacterPortrait characterId="heroine" cityId={view.cityId} sceneId={view.sceneId} emotion={view.stage.heroine.emotion} focus={focus.heroine}
             stand={view.staging?.stand}>
             {view.stage.heroine.mark && <ComicEffect effect={view.stage.heroine.mark} reduceMotion={reduceMotion} cueKey={String(view.revision)} />}
           </CharacterPortrait>
         </div>}
-        {stage.opposite && <div className="encounter-character-slot encounter-character-enemy">
-          <CharacterPortrait key={stage.opposite.figure} characterId={stage.opposite.figure} cityId={view.cityId} sceneId={view.sceneId}
-            emotion={enemyLook?.emotion ?? "neutral"} focus={focus.opposite}>
-            {enemyLook?.mark && <ComicEffect effect={enemyLook.mark} reduceMotion={reduceMotion} cueKey={String(view.revision)} />}
-          </CharacterPortrait>
-        </div>}
+        {oppositeFigures(stage, focus).map(({ figure, place, focus: at }) => {
+          // The enemy's expression and mark on their figure (or the stranger's) wherever it stands.
+          const enemyLook = figureIsEnemy(figure, view.stage.scene) ? view.stage.enemy : undefined;
+          return <div key={figure.figure} className={`encounter-character-slot encounter-character-${place === "beside" ? "beside" : "enemy"}`}>
+            <CharacterPortrait characterId={figure.figure} cityId={view.cityId} sceneId={view.sceneId} emotion={enemyLook?.emotion ?? "neutral"} focus={at}>
+              {enemyLook?.mark && <ComicEffect effect={enemyLook.mark} reduceMotion={reduceMotion} cueKey={String(view.revision)} />}
+            </CharacterPortrait>
+          </div>;
+        })}
       </div>}
       <section className="vn-dialogue paper story-paper encounter-dialogue" {...{ [DIALOGUE_WINDOW_ATTRIBUTE]: "" }} aria-label="寄り道の会話" data-has-choices={!!quiz || view.choices.length > 0} inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
         <DialogueWindowHead

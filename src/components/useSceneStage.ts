@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { stageAfter, stageFocus, type Stage, type StageFocus, type StageLine, type StageScene } from "./scene-stage";
 
-const sameStage = (a: Stage, b: Stage) =>
-  a.heroine === b.heroine && a.opposite?.figure === b.opposite?.figure && !!a.opposite?.standIn === !!b.opposite?.standIn;
+const sameFigure = (a: Stage["opposite"], b: Stage["opposite"]) => a?.figure === b?.figure && !!a?.standIn === !!b?.standIn;
+const sameStage = (a: Stage, b: Stage) => a.heroine === b.heroine && sameFigure(a.opposite, b.opposite) && sameFigure(a.beside, b.beside) &&
+  a.together?.recent === b.together?.recent;
 
 /**
  * Who stands on the scene's stage at the line on screen, and who comes forward (scene-stage.ts): the stage after the
