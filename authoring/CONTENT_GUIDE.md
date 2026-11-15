@@ -665,7 +665,7 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 - デートは `when` が真で、`until` が偽で、恋愛の欄（`minRomanceStage`・`minAffection`・`needsDeferred`）を満たすときに開きます。一度地図に出た特別な出来事も、`until` が真になると閉じます（`needsDeferred` のデートは、保留が終わると閉じます）。始めた後のデートは、セーブを読み込み直しても条件を調べ直しません。
 - デートが開かない理由の文は今のままの順です（`when` のすぐ下の部品で、都市のクリア → エピソード → `until` → 断られた後の待ち（`dateSinceRejection`。「新しいひとときを過ごしてから、もう一度話せます。」） → 通常デートを選べる（`not normalDateAvailable`。「今は別のひとときを選べます。」） → そのほか）。ゲームは条件の中身や関係値を理由に出しません。Debugだけが、満たしていない部品を表示します。
 - 道中交流の入場ルール（`encounters/entry-rules.json`）の `at` は、観察の `["observe"]` だけです。ほかの時点に置く交流は、Inkの頭の札で書きます（[場面の時点と順番](../docs/02_TECH_ARCHITECTURE.md#場面の時点と順番)）。
-- `npm run content:build` が止めるのは、形の誤り、存在しないID、旅行編が宣言していない乗り物（徒歩も数えない）、読める場所でない品物の `held`・`left_behind`、入手元のない品物、通常デートの条件（名前付きの条件の中も）の `normalDateAvailable` です。止めずに注意として知らせるのは、決して満たされない条件（`never-offered`：観察だけで調べる交流が自分の観光地のエピソードやバトルを条件にしている、同じ旅の後の都市の進行を前の都市で読む、暦のない旅の `journeyDay`・`weekday`、互いを待つデート）と、デートの条件の `time`・`rides`・`money`（`date-condition-trip`：行き先へ向かう移動で変わるので、地図に出ても着くと始まらないことがある。時間や曜日で限るデートは、行き先の時間窓 `startWindows`・`openingWindows`・`closedWeekdays` で書けます）です。
+- `npm run content:build` が止めるのは、形の誤り、存在しないID、旅行編が宣言していない乗り物（徒歩も数えない）、読める場所でない品物の `held`・`left_behind`、入手元のない品物、通常デートの条件（名前付きの条件の中も）の `normalDateAvailable`、互いを読み合って輪になる名前付きの条件（判定が終わらなくなる）です。止めずに注意として知らせるのは、決して満たされない条件（`never-offered`：観察だけで調べる交流が自分の観光地のエピソードやバトルを条件にしている、同じ旅の後の都市の進行を前の都市で読む、暦のない旅の `journeyDay`・`weekday`、互いを待つデート）と、デートの条件の `time`・`rides`・`money`（`date-condition-trip`：行き先へ向かう移動で変わるので、地図に出ても着くと始まらないことがある。時間や曜日で限るデートは、行き先の時間窓 `startWindows`・`openingWindows`・`closedWeekdays` で書けます）です。
 
 ### 場面の中の分岐
 

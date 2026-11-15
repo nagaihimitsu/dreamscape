@@ -178,9 +178,36 @@ export function selfReadingDateErrors(content: Pick<ConditionContent, "dates" | 
       "(an ordinary date can be started only when its own conditions hold); write the part on another kind of date, an encounter or a scene"));
 }
 
+/**
+ * Named conditions (progression/story.json `conditions`) that reach themselves through `{ "condition": <name> }`: the game
+ * would read them without end, so the build stops them. Each loop is reported once, from its first name in file order.
+ */
+export function namedConditionCycleErrors(content: Pick<ConditionContent, "namedConditions">): string[] {
+  const named = content.namedConditions ?? {};
+  const refs = (name: string): string[] => conditionLeaves(named[name]).flatMap((leaf) =>
+    "condition" in leaf && Object.hasOwn(named, leaf.condition) ? [leaf.condition] : []);
+  const reported = new Set<string>();
+  const errors: string[] = [];
+  const walk = (name: string, path: readonly string[]): void => {
+    const at = path.indexOf(name);
+    if (at >= 0) {
+      const loop = path.slice(at);
+      if (loop.some((step) => reported.has(step))) return;
+      loop.forEach((step) => reported.add(step));
+      errors.push(`Named conditions read each other without end: ${[...loop, name].join(" → ")} ` +
+        "(break the loop: a named condition cannot reach itself through { \"condition\": <name> })");
+      return;
+    }
+    refs(name).forEach((next) => walk(next, [...path, name]));
+  };
+  Object.keys(named).forEach((name) => walk(name, []));
+  return errors;
+}
+
 /** Throw one error listing every problem of the owners' conditions (and of the ordinary dates that would read themselves). */
 export function checkConditions(content: ConditionContent, owners: readonly ConditionOwner[]): void {
-  const errors = [...new Set([...conditionErrors(content, owners), ...selfReadingDateErrors(content)])];
+  const errors = [...new Set([...conditionErrors(content, owners), ...selfReadingDateErrors(content),
+    ...namedConditionCycleErrors(content)])];
   if (errors.length) throw new Error(errors.join("\n"));
 }
 

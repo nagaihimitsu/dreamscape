@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import type { Condition } from "../src/content/condition-schemas";
 import {
-  checkConditions, conditionErrors, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, selfReadingDateErrors, type ConditionContent,
+  checkConditions, conditionErrors, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, namedConditionCycleErrors, selfReadingDateErrors,
+  type ConditionContent,
 } from "./condition-validation";
 import { CONTENT_WARNING_LABELS } from "./content-report";
 
@@ -101,6 +102,18 @@ describe("condition build checks", () => {
     const owners = dateConditionOwners({ dates: [{ id: "probe", chapterId: "beta", when: { cityCompleted: "nowhere" }, until: { datePlayed: "nothing" } }] });
     expect(() => checkConditions(content, owners)).toThrow(
       "Unknown city in a condition of date probe (when): nowhere\nUnknown date in a condition of date probe (until): nothing");
+  });
+
+  it("refuses named conditions that read each other without end, each loop once; a shared condition is no loop", () => {
+    const day: Condition = { cityDay: { atLeast: 1 } };
+    expect(namedConditionCycleErrors({ namedConditions: { base: day, a: { condition: "base" }, b: { all: [{ condition: "base" }, { condition: "a" }] } } }))
+      .toEqual([]);
+    expect(namedConditionCycleErrors({ namedConditions: { self: { not: { condition: "self" } } } }))
+      .toEqual([expect.stringMatching(/^Named conditions read each other without end: self → self /)]);
+    expect(namedConditionCycleErrors({ namedConditions: {
+      start: { condition: "ping" }, ping: { any: [day, { condition: "pong" }] }, pong: { condition: "ping" },
+    } })).toEqual([expect.stringMatching(/^Named conditions read each other without end: ping → pong → ping /)]);
+    expect(() => checkConditions({ ...content, namedConditions: { self: { condition: "self" } } }, [])).toThrow(/self → self/);
   });
 
   it("refuses an ordinary date that reads normal_date_available, also through a named condition: it would read itself (2026-11-15)", () => {
