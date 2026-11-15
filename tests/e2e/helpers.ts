@@ -689,8 +689,16 @@ export const ops = {
    * has just started takes no reading tap on the travel transition's card, so this also
    * waits for the transition to go, for the day's end visuals (night-rest, night-leaving, night-fade: a tap ends each) and for
    * the journey's moments that cover a screen by themselves (an episode's title card, a departure's packing; each ends by itself).
+   * The night's 「ホテルで休みました。」 cards (night-rest, night-leaving) wait for a tap (2026-11-15): it taps each once, as a
+   * player does, after the moment of a double tap has passed.
    */
   async settled(page: Page) {
+    const nightCard = page.locator("[data-testid=night-rest], [data-testid=night-leaving]");
+    for (let shown = 0; shown < 4 && await nightCard.count() > 0; shown++) {
+      await expect(page.locator("html[data-tap-hold]")).toHaveCount(0);
+      // A tap anywhere ends it (its middle: clear of the header over the night screen). Bounded: the card may already be gone.
+      await nightCard.first().click({ timeout: 2000 }).catch(() => undefined);
+    }
     await expect(page.locator("[data-answer-settling], [data-tap-settling], html[data-tap-hold], [data-testid=travel-transition], [data-testid=night-rest], [data-testid=night-leaving], [data-testid=night-fade], [data-testid=episode-title-card], [data-testid=packing-scene]")).toHaveCount(0);
   },
   /**

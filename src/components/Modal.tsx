@@ -2,7 +2,6 @@ import { useEffect, useRef, type ReactNode, type Ref } from "react";
 import { useSettling } from "./ConfirmActionButton";
 import { Icon } from "./icons";
 import { holdTaps } from "./tap-hold";
-import { playSe } from "../audio/sound-effects";
 
 /** A press on the dialog's ::backdrop: the event's target is the dialog itself, at a point outside its box. */
 function onBackdrop(event: { target: EventTarget; currentTarget: HTMLDialogElement; clientX: number; clientY: number }) {
@@ -58,15 +57,10 @@ export function Modal({
       scrollPositions.push({ element: ancestor, top: ancestor.scrollTop, left: ancestor.scrollLeft });
     }
     const pagePosition = { top: window.scrollY, left: window.scrollX };
+    // No sound as it opens or closes (2026-11-15 user decision, as ≡メニュー's panel since 2026-11-14).
     element.showModal();
-    // Its sounds: ui_open as it opens, ui_close once it has gone from the page (StrictMode's second run of this
-    // effect leaves it on the page, and plays one ui_open: sound-effects.ts plays the same sound once within 80 ms).
-    playSe("ui_open");
     return () => {
       element.close();
-      window.setTimeout(() => {
-        if (!element.isConnected) playSe("ui_close");
-      });
       // If the trigger was replaced (for example by starting a date), the
       // new scene owns its own focus and scroll position.
       if (!previouslyFocused?.isConnected) return;
@@ -108,14 +102,17 @@ export function Modal({
         event.preventDefault();
         onClose();
       }}
-      onPointerDown={closeOnBackdrop ? (event) => { pressOnBackdrop.current = onBackdrop(event); } : undefined}
-      onClick={closeOnBackdrop ? (event) => {
+      onPointerDown={closeOnBackdrop ? (event) => { pressOnBackdrop.current = event.isPrimary && onBackdrop(event); } : undefined}
+      // Closed as the finger lifts, not on the click that follows: iPhone Safari does not always send a click for a tap
+      // on the dimmed page (2026-11-15). A press that turns into a scroll is cancelled and closes nothing.
+      onPointerUp={closeOnBackdrop ? (event) => {
         const fromBackdrop = pressOnBackdrop.current;
         pressOnBackdrop.current = false;
         if (!fromBackdrop || !onBackdrop(event)) return;
         holdTaps();
         onClose();
       } : undefined}
+      onPointerCancel={closeOnBackdrop ? () => { pressOnBackdrop.current = false; } : undefined}
     >
       {children}
     </dialog>

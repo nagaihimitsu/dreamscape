@@ -77,7 +77,7 @@ import { MetPeople } from "../features/journey/MetPeople";
 import { JourneyNumbersCard } from "../features/journey/JourneyNumbers";
 import { musicRoomOpen } from "../features/journey/music-room";
 import { journeyNumbers } from "../features/journey/journey-numbers";
-import { freeTimePhotos, PhotoCredits } from "../features/journey/PhotoCredits";
+import { freeTimePhotos, PhotoCredits, recapPhotos } from "../features/journey/PhotoCredits";
 import { ALBUM_PHOTO_NOTICE_MS, AlbumPhotoNotice, FIRST_ALBUM_PHOTO_NOTICE_MS, type AlbumPhotoNoticeState } from "../features/journey/AlbumPhotoNotice";
 import { OpeningMovie } from "../features/journey/OpeningMovie";
 import { DepartureLuggage } from "../features/journey/JourneyMoments";
@@ -628,9 +628,8 @@ export function GameApp({
     !game.activeBattle &&
     !game.activeTourism &&
     !game.activeEpilogue;
-  // Free time on show: ≡メニュー then offers 「写真の出典」 of its photos (the cards' and a backdrop photo's).
+  // Free time on show (its photos are in ≡メニュー's 「写真の出典」: creditPhotos below).
   const freeTimeShown = !!idle && !showRomanceEnding && !nightScreen;
-  const creditPhotos = useMemo(() => (game && freeTimeShown ? freeTimePhotos(game) : []), [game, freeTimeShown]);
   const nextEpisode = game ? getNextEpisode(game) : null;
   const nextStoryBattle = game ? getNextStoryBattle(game) : null;
   const frame = active?.frame;
@@ -664,6 +663,12 @@ export function GameApp({
   const moments = useJourneyMoments({ game, screen, resumed: !isDebug && loaded.status === "loaded",
     reduceMotion: displaySettings.value.reduceMotion, effectPlaying: travelEffectPlaying, learnedWords: learnedWords.learned });
   momentsRef.current = moments.committed;
+  // ≡メニュー's 「写真の出典」: the photos free time shows (the cards' and a backdrop photo's) and, in free time or on the night
+  // screen, the recap card's place photo while it shows (2026-11-15: the card shows no credit of its own).
+  const creditPhotos = useMemo(() => [
+    ...recapPhotos(moments.recapPicture),
+    ...(game && freeTimeShown ? freeTimePhotos(game) : []),
+  ], [game, freeTimeShown, moments.recapPicture]);
   // The music of what this screen shows (src/audio/scene-music.ts): the journey's tracks (the game's own journey, also in
   // Debug), the scene's # bgm:, and the quiz's, a quiet line's and a ride's lowering. Never anything of the relationship.
   const musicJourneyId = (game && getJourneyForCity(game.currentCityId)?.id) ?? journeyId;

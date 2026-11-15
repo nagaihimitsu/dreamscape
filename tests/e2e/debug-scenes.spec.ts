@@ -75,10 +75,22 @@ for (const [kind, label] of [["contradiction", "B（矛盾追及）"], ["connect
     await page.getByTestId("reasoning-notebook").click();
     for (const clueId of special!.correctClueIds)
       await expect(page.getByTestId("clue-picker").locator(`option[value="${clueId}"]`)).toContainText("（選択中）");
+    // The clue's photo shows no credit of its own (2026-11-15 user decision; before, a line in 「根拠と解釈を確認する」).
+    const cluePhoto = await page.getByTestId("cluebook").locator("svg image").first().getAttribute("href");
+    expect(cluePhoto, "the clue book shows its landmark's photo").toBeTruthy();
+    await expect(page.getByTestId("cluebook").locator("a", { hasText: /^(?:画像の出典|利用条件)$/u })).toHaveCount(0);
     await page.getByTestId("cluebook-close").click();
     expect((await debugGame(page))!.activeBattle!.reasoning!.selectedClueIds).toEqual(chosen);
     // Its 「閉じる」 brings the submit forward the same way.
     await expect(submit).toBeFocused();
+    // In the clue book (a dialog) ≡メニュー cannot be opened; on the battle, its 「画像の出典」 shows the same landmark photo
+    // with its credit, and closes back on ≡メニュー.
+    await ops.menuItem(page, "画像の出典");
+    const viewer = page.getByRole("dialog", { name: "画像の出典" });
+    await expect(viewer.getByRole("img")).toHaveAttribute("src", cluePhoto!);
+    await expect(viewer.getByRole("link", { name: "画像の出典" })).toBeVisible();
+    await ops.closeDialog(viewer);
+    await expect(ops.settingsButton(page)).toBeFocused();
 
     await page.getByTestId("reasoning-submit").click();
     const result = await playUntil(page, (state) => state.activeBattle?.phase === "result", { source: debugGame });

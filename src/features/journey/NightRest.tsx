@@ -7,12 +7,8 @@ import { hasNightRecap, headlinesSentenceJa, routeSentenceJa, type NightRecap } 
 import { NightRecapView } from "./NightRecap";
 import "./night-rest.css";
 
-/** How long the card shows (ms): the night falls, the line, the fade to what lies under it. Reduced motion: the line, still. */
-const NIGHT_REST_MS = 2800;
-const NIGHT_REST_REDUCED_MS = 2000;
-/** The same with today's route or the heroine's line under the line (night-rest.css .has-recap keeps its timeline in step). */
-const NIGHT_REST_RECAP_MS = 4800;
-const NIGHT_REST_RECAP_REDUCED_MS = 3600;
+/** Under a card that waits for the player (NightRest, the night screen's NightLeaving): how it ends. */
+export const NIGHT_TAP_HINT_JA = "タップして次へ";
 /** The plain fade to the morning after the hotel's scenes of a night screen's rest (ms; none with reduced motion). */
 const NIGHT_FADE_MS = 700;
 /** The live region is in the page a moment before its line, so a screen reader hears the line as an announcement. */
@@ -51,10 +47,11 @@ export function useAnnounced(): boolean {
 /**
  * The ending of a night card that covers what a rest led to (NightRest, the night screen's NightLeaving, NightFade): taps are held
  * as it appears and as it goes (holdTaps: the second tap of a double tap presses nothing under it), it ends after `ms` (`reducedMs`
- * with reduced motion) or at once on a tap (the caller's `end`) or Enter, Space or Esc, and `onEnd` runs once. `announced` turns
+ * with reduced motion) or at once on a tap (the caller's `end`) or Enter, Space or Esc, and `onEnd` runs once. `ms: null` waits
+ * for the tap or key (the night's 「ホテルで休みました」, 2026-11-15: the player may still be reading today's route). `announced` turns
  * true a moment after it appears, for its live region.
  */
-export function useNightCard({ reduceMotion, ms, reducedMs, onEnd }: { reduceMotion: boolean; ms: number; reducedMs: number; onEnd: () => void }) {
+export function useNightCard({ reduceMotion, ms, reducedMs, onEnd }: { reduceMotion: boolean; ms: number | null; reducedMs: number | null; onEnd: () => void }) {
   const onEndRef = useRef(onEnd);
   onEndRef.current = onEnd;
   const [reduced] = useState(() => reducedMotionNow(reduceMotion));
@@ -72,7 +69,8 @@ export function useNightCard({ reduceMotion, ms, reducedMs, onEnd }: { reduceMot
   useEffect(() => {
     // The tap that led here (or a double tap's second) must not end the card at once.
     holdTaps();
-    const timer = window.setTimeout(() => endRef.current(), reduced ? reducedMs : ms);
+    const wait = reduced ? reducedMs : ms;
+    const timer = wait === null ? undefined : window.setTimeout(() => endRef.current(), wait);
     const onKey = (event: KeyboardEvent) => {
       if (event.repeat || !ENDING_KEYS.has(event.key)) return;
       // The key ends the card, not a control or a line under it.
@@ -93,11 +91,11 @@ export function useNightCard({ reduceMotion, ms, reducedMs, onEnd }: { reduceMot
  * The day's end card (21:00; GameApp, getDayEnd with no night action): the game has already rested at the hotel by itself, as
  * 「休む」 does, and saved. It covers what the night led to (the next morning, or the hotel's scenes after waking) until it ends:
  * the screen turns to the night colour, a crescent moon and a few stars come out with 「夜も更けたので、ホテルで休みました。」,
- * then the card fades. Under the line: the night's headlines, today's route and the heroine's line when there are any (`recap`, the night
- * before the rest; NightRecap, 2026-11-11), and the card then stays longer (4.8 s; reduced motion 3.6 s). It plays once a night:
- * when the rest sleeps at once, or after the hotel's scenes before the night (useTravelEffects). A tap (once the double-tap
- * moment of holdTaps has passed) or Enter, Space or Esc ends it at once, and it always ends by itself. With reduced motion
- * nothing moves: the line shows plainly until a tap or 2 s. Screen readers hear the line (and the route and her line) from a
+ * and 「タップして次へ」 under it. Under the line: the night's headlines, today's route and the heroine's line when there are any
+ * (`recap`, the night before the rest; NightRecap, 2026-11-11). It plays once a night: when the rest sleeps at once, or after the
+ * hotel's scenes before the night (useTravelEffects). It stays until a tap anywhere on it (once the double-tap moment of holdTaps
+ * has passed) or Enter, Space or Esc (2026-11-15 user decision: it used to end by itself, while the player read today's route).
+ * With reduced motion nothing moves. Screen readers hear the line (and the route and her line) from a
  * live region; the focus stays where it is. It never changes the game.
  * The same card, its `line` 「ホテルで休みました。」, is the night of a rest before 21:00 whose night has a recap (2026-11-13;
  * night-recap.ts restNightCard), in place of 「次の日」.
@@ -111,8 +109,7 @@ export function NightRest({ recap, line = DAY_END_REST_JA, reduceMotion, onEnd }
 }) {
   useEffect(() => playSe("night_rest"), []);
   const shown = hasNightRecap(recap) ? recap : undefined;
-  const { reduced, announced, end } = useNightCard({ reduceMotion, ms: shown ? NIGHT_REST_RECAP_MS : NIGHT_REST_MS,
-    reducedMs: shown ? NIGHT_REST_RECAP_REDUCED_MS : NIGHT_REST_REDUCED_MS, onEnd });
+  const { reduced, announced, end } = useNightCard({ reduceMotion, ms: null, reducedMs: null, onEnd });
   const heard = shown ? [line, headlinesSentenceJa(shown.headlines), routeSentenceJa(shown.route), shown.line === null ? "" : `${shown.heroineName}：${shown.line}`].join("") : line;
   // `data-obstructs-dialogue`: a scene under the card (the hotel's after waking, a tour's morning) waits for it as for an open
   // dialog (dialogueObstructed: no typing, auto-advance or reading on), and the tap that ends it does not read on either.
@@ -123,8 +120,9 @@ export function NightRest({ recap, line = DAY_END_REST_JA, reduceMotion, onEnd }
       {/* Seen here; read from the live region below (not twice). */}
       <p className="night-rest-text" aria-hidden="true">{line}</p>
       {shown && <div aria-hidden="true"><NightRecapView recap={shown} /></div>}
+      <p className="night-tap-hint" aria-hidden="true">{NIGHT_TAP_HINT_JA}</p>
     </div>
-    <p className="sr-only" role="status">{announced ? heard : ""}</p>
+    <p className="sr-only" role="status">{announced ? `${heard}${NIGHT_TAP_HINT_JA}。` : ""}</p>
   </div>, document.body);
 }
 

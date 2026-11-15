@@ -194,7 +194,7 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_hawa_mahal
 # ambience: gt_amb_street_traffic
 # speaker: narrator
-旅の最後の日。昼のうちに、二人はハワー・マハルの前で、行列が通る道を確かめておいた。そして、日が暮れた。
+旅の最後の日。昼のうちに、二人はハワー・マハルに上り、窓から行列が通る道を確かめておいた。そして、日が暮れた。
 # background: gt_bg_jaipur_hawa_mahal_night
 # tint: off
 # speaker: narrator

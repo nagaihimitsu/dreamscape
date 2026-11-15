@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { landmarks, tourismAssets, type TourismClue } from "../../content";
-import { ImageCreditLine } from "../../components/ImageCredit";
 
 function clueAsset(clue: TourismClue) {
   const landmark = landmarks.find((item) => item.id === clue.landmarkId);
   return landmark && tourismAssets.find((item) => item.id === landmark.imageAssetId);
 }
 
-/** A view of the same source image; the outlined region never modifies the asset. */
+/**
+ * A view of the same source image; the outlined region never modifies the asset. No credit beside it (2026-11-15 user
+ * decision; before, a line at the end of 「根拠と解釈を確認する」): the photo is its landmark's, whose credit is in
+ * 出典・権利の一覧 and, behind the clue book, in the scene's own (≡メニュー's 「画像の出典」 over a guide or a battle,
+ * the observation's 「画像の出典と利用条件」).
+ */
 export function ClueImage({ clue }: { clue: TourismClue }) {
   const [zoomed, setZoomed] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -73,11 +77,4 @@ export function ClueImage({ clue }: { clue: TourismClue }) {
       )}
     </figure>
   );
-}
-
-/** Keep attribution with the existing source details rather than adding another panel. */
-export function ClueImageCredits({ clue }: { clue: TourismClue }) {
-  const asset = clueAsset(clue);
-  if (!asset) return null;
-  return <ImageCreditLine asset={asset} className="case-image-credits" />;
 }

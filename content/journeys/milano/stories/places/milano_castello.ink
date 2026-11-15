@@ -156,6 +156,8 @@ INCLUDE modules.ink
     豪快に隣の弦をはじき、本人がいちばん驚いた。
     # speaker: heroine
     いまのでお願いします。二回目は、違う音になっちゃうから
+    # speaker: narrator
+    ピックは、そのままティノの指に残った。
     -> END
 
 * [I'll hold on to it for now. # option: keep # translation: 今は自分で持っておくよ。]

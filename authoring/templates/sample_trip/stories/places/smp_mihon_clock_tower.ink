@@ -588,7 +588,7 @@ Come back at three. Any three will do.
 * [「直してもらおうか」 # option: fix_saddle]
     # money: -50
     # speaker: narrator
-    貸し出しの人が、手早くサドルを下げてくれた。
+    貸し出しの人が、手早くサドルを下げてくれた。直し賃は五十ユーロ。
 * [「このままで行こう」 # option: as_is]
     # speaker: heroine
     ……ちょっと高いけど、景色はよく見えるね

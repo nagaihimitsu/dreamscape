@@ -177,8 +177,6 @@ dialog.modal.clue-notebook {
 }
 .case-image .fine-print,
 .clue-image-unavailable { margin: 4px 0 0; font-size: 11px; line-height: 1.4; }
-.case-image-credits { color: var(--ds-ink-muted); font-size: 11px; line-height: 1.6; }
-.case-image-credits a { color: var(--ds-ink); min-height: 44px; padding: 12px 8px 8px 0; }
 .case-footer {
   flex-shrink: 0;
   padding: 6px 20px max(8px, env(safe-area-inset-bottom));

@@ -184,7 +184,7 @@ INCLUDE modules.ink
 この子、知らない人とは靴の話しかしないの。それを最後まで聞いてくれたら、十分
 # speaker: narrator
 # item_show: galleria_ticket
-券の角には、切り込みが一つだけ入っていた。
+受け取った券の角には、切り込みが一つだけ入っていた。
 -> END
 
 // 道中交流「リナの紋章室」（knot の名前 galleria_print が交流のID。2026-11-13 の改稿で「券を一枚、手の中へ」（galleria_ticket_press）をまとめた）。

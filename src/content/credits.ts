@@ -258,7 +258,8 @@ export const OWN_ARTWORK_NOTE_JA =
 export const DERIVED_PHOTO_NOTE_JA = "この画面では、写真を縮小して表示しています（一覧の写真は切り抜きもしています）。";
 
 /**
- * The same note under the one photo of the resume recap (2026-11-13; journey-moments.ts recapPicture): a place's photo in
- * its `recap` copy, reduced and cropped to the card's 3:2 frame (derived-images.ts), beside its credit line.
+ * The same note on the one photo of the resume recap (2026-11-13; journey-moments.ts recapPicture): a place's photo in
+ * its `recap` copy, reduced and cropped to the card's 3:2 frame (derived-images.ts), with its credit in ≡メニュー's
+ * 「写真の出典」 while the card shows (2026-11-15; PhotoCredits.tsx recapPhotos).
  */
 export const RECAP_PHOTO_NOTE_JA = "写真を縮小して表示しています（枠に合わせて切り抜きもしています）。";

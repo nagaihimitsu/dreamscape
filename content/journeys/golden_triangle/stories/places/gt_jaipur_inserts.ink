@@ -183,7 +183,6 @@ INCLUDE modules.ink
 # tint: off
 # bgm: morning
 # speaker: narrator
-# item_show: gt_jaipur_wedding_envelope
 今朝、宿の中庭のテーブルに、彼女が白い封筒を一枚置いた。着いた日に、フロントの女性に教わったとおり。お祝いは現金で、金額の最後に一ルピーを足す。
 # speaker: heroine
 割り切れない数は、縁起がいい。終わりにしないで、続いていく感じ、だったよね
@@ -212,6 +211,7 @@ INCLUDE modules.ink
     デリーの最後の夜に、アマンから聞いた言葉だ。祖母に、毎日ちゃんと言葉にしなさいと言われた、と。
 -
 # speaker: narrator
+# item_show: gt_jaipur_wedding_envelope
 封筒の表に、彼女は自分とこちらの名前を並べて書いた。それから、今夜のための支度を一つずつ確かめていく。
 { cond("item gt_jaipur_lac_bangles held"):
     # speaker: heroine

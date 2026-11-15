@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { journeyTerms, tourismAssets } from "../../content";
 import { GLOSSARY_CATEGORY_LABELS_JA, termSubtitle, type ListedTerm } from "../../content/glossary";
-import { ImageCredit } from "../../components/ImageCredit";
 import { Modal, ModalTitle } from "../../components/Modal";
 import { glossaryBook, glossaryProgress, glossaryProgressSpoken } from "./glossary-book";
 import "./glossary.css";
@@ -13,8 +12,10 @@ const source = (path: string) => `${import.meta.env.BASE_URL}${path}`;
  * 「旅の図鑑」 (the header menu, 2026-11-13 user decision): the journey's terms as small cards by group (glossary-book.ts), with how
  * far the save has come (「12 / 30」). A term met shows its photo and name (「NEW」 on one met since 旅の図鑑 was last
  * opened, `newIds`); a term not met yet is an empty card with neither. A card opens larger in its own dialog: the photo
- * whole, the name with its reading or other name, its group, the line and the photo's credit, 「閉じる」 in its title
- * bar, over the book, which it closes back to. In Debug mode (`revealAll`) every term shows, those not met marked 「未入手」.
+ * whole, the name with its reading or other name, its group and the line, 「閉じる」 in its title bar, over the book,
+ * which it closes back to. The photo's credit is not shown here (2026-11-15 user decision): ゲームの設定 →
+ * 出典・権利の一覧 lists every tourism photo the journey serves, these included. In Debug mode (`revealAll`) every term
+ * shows, those not met marked 「未入手」.
  * Opened from the header menu's panel, it takes no press for a moment (settlePresses). Both are dialogs for viewing: a tap
  * on the dimmed page around also closes them (2026-11-14). It shows no relationship value.
  */
@@ -65,11 +66,6 @@ export function GlossaryDialog({ journeyId, met, newIds, revealAll = false, onCl
       {openedPhoto && <img className="glossary-entry-photo" src={source(openedPhoto.path)} alt={openedPhoto.altJa} data-testid="glossary-entry-photo" />}
       <p className="glossary-entry-line">{opened.term.lineJa}</p>
       {!opened.met && <p className="fine-print">Debug：この言葉には、まだ出会っていません。</p>}
-      {openedPhoto && <section className="glossary-entry-credit" aria-labelledby="glossary-entry-credit">
-        <h3 id="glossary-entry-credit">写真の出典</h3>
-        {openedPhoto.isPlaceholder && <p><strong>仮画像</strong></p>}
-        <ImageCredit asset={openedPhoto} />
-      </section>}
     </Modal>}
   </>;
 }
