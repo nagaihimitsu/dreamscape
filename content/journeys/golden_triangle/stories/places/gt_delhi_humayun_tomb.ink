@@ -17,6 +17,7 @@ INCLUDE modules.ink
 # speaker: narrator
 クラクションの洪水を抜けてきた耳に、鳥の声がやけに大きく聞こえる。オウムの緑が、木から木へ飛んだ。
 # speaker: narrator
+# item_out: gt_delhi_kamla_memo 3
 {heroine_name}は段ボールの切れ端を開き、三行目を読み上げた。フマユーン廟、東の門から三本目の木陰。
 # speaker: heroine
 # voice: gt_delhi_humayun_tomb_guide_002
