@@ -90,6 +90,7 @@ export function RomanceScene({
     speaker,
     frame.text,
     frame.delivery,
+    frame.letter?.translationJa,
   );
   const windowVisibility = useDialogueWindow();
   const dialogueRef = useDialogueScrollReset<HTMLDivElement>(active.storyState);

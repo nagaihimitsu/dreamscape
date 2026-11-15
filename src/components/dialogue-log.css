@@ -3,6 +3,8 @@
 .vn-log p { margin: 4px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 /* A line's # em: and # em_shake: words (2026-11-13): bold in the accent colour on parchment, without motion. */
 .vn-log .vn-log-em { color: var(--ds-marker); font-weight: 700; }
+/* A letter's line with its # translation: (2026-11-15): the Japanese under the English, smaller and quieter, as on the paper. */
+.vn-log .vn-log-translation { margin-top: 2px; color: var(--ds-ink-muted); font-size: 0.88em; }
 /* The log's dialog lies inside the window's controls (DialogueControls): their head icons' rules (hidden on a narrow
    window, gold) must not reach its 「× 閉じる」, which shows its × as every dialog does. */
 .dialogue-controls dialog .modal-close .icon { display: inline-block; width: 18px; height: 18px; color: inherit; }

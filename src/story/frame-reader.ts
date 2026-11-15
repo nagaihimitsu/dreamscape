@@ -25,10 +25,14 @@ export interface PhoneLine {
   side: PhoneSide;
   earlier?: PhoneMessage[];
 }
+/** An earlier line of a sheet: its text, or, for a line with a `# translation:`, its text (English) and that Japanese. */
+export type LetterEarlier = string | { text: string; translationJa: string };
 /** A line's `# letter:`: its paper, below the earlier lines written on the same sheet (oldest first). */
 export interface LetterLine {
   kind: LetterKind;
-  earlier?: string[];
+  /** The line's `# translation:` (2026-11-15): its text is English, shown with this Japanese under it. */
+  translationJa?: string;
+  earlier?: LetterEarlier[];
 }
 /** The earlier messages or lines a phone's screen or a sheet keeps at most (the oldest go first; it bounds the saved frame). */
 export const STACK_MAX = 40;
@@ -176,7 +180,8 @@ function readTags(
     delete frame.letter;
   }
   if (parsed.letter) {
-    frame.letter = { kind: parsed.letter };
+    // A letter's line may carry its translation (`# translation:`; a choice's is storyChoicesOf's).
+    frame.letter = { kind: parsed.letter, ...(parsed.translationJa ? { translationJa: parsed.translationJa } : {}) };
     delete frame.phone;
   }
   if (parsed.quiet) frame.quiet = parsed.quiet;
@@ -253,12 +258,14 @@ export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<
   const phoneEarlier = tagged.phone && before?.phone
     ? [...(before.phone.earlier ?? []), { side: before.phone.side, speaker: before.speaker,
       ...(before.speakerPersonId ? { personId: before.speakerPersonId } : {}), text: before.text }].slice(-STACK_MAX) : [];
-  const letterEarlier = tagged.letter && before?.letter?.kind === tagged.letter.kind
-    ? [...(before.letter.earlier ?? []), before.text].slice(-STACK_MAX) : [];
+  const letterEarlier: LetterEarlier[] = tagged.letter && before?.letter?.kind === tagged.letter.kind
+    ? [...(before.letter.earlier ?? []),
+      before.letter.translationJa ? { text: before.text, translationJa: before.letter.translationJa } : before.text].slice(-STACK_MAX) : [];
   return shown({
     recall: tagged.recall,
     phone: tagged.phone && { side: tagged.phone.side, ...(phoneEarlier.length ? { earlier: phoneEarlier } : {}) },
-    letter: tagged.letter && { kind: tagged.letter.kind, ...(letterEarlier.length ? { earlier: letterEarlier } : {}) },
+    letter: tagged.letter && { kind: tagged.letter.kind, ...(tagged.letter.translationJa ? { translationJa: tagged.letter.translationJa } : {}),
+      ...(letterEarlier.length ? { earlier: letterEarlier } : {}) },
     quiet: previous?.quiet === "scene" ? "scene" : tagged.quiet,
     itemShow: tagged.itemShow,
     itemOut: tagged.itemOut,

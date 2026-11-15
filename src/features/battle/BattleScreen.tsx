@@ -371,6 +371,7 @@ export function BattleScreen({
     speaker,
     frame?.text ?? "",
     frame?.delivery,
+    frame?.letter?.translationJa,
   );
   const advanceSafely = () => {
     if (cutIn || (isDialogue && !ready) || windowVisibility.hidden || dialogueObstructed() || choosing) return;

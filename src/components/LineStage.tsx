@@ -87,7 +87,20 @@ function PhoneMessage({ bubble, children }: { bubble: PhoneBubble; children: Rea
 function LetterSheet({ letter, children }: { letter: LetterLine; children: ReactNode }) {
   const sheet = useScrolledToEnd<HTMLDivElement>(letter);
   return <div className="letter-sheet" role="group" aria-label={LETTER_LABELS[letter.kind]} data-kind={letter.kind} ref={sheet}>
-    {letter.earlier?.map((text, index) => <p className="letter-line" key={index}>{text}</p>)}
+    {letter.earlier?.map((line, index) => typeof line === "string"
+      ? <p className="letter-line" key={index}>{line}</p>
+      : <TranslatedLetterLine key={index} translationJa={line.translationJa}><p className="letter-line">{line.text}</p></TranslatedLetterLine>)}
+    {letter.translationJa ? <TranslatedLetterLine translationJa={letter.translationJa}>{children}</TranslatedLetterLine> : children}
+  </div>;
+}
+
+/**
+ * A letter's line with its `# translation:` (2026-11-15 user decision): the English as written (marked English for
+ * screen readers), its Japanese under it in smaller type, both read in order.
+ */
+function TranslatedLetterLine({ translationJa, children }: { translationJa: string; children: ReactNode }) {
+  return <div className="letter-entry" lang="en">
     {children}
+    <p className="letter-translation" lang="ja">{translationJa}</p>
   </div>;
 }
