@@ -47,6 +47,7 @@ INCLUDE modules.ink
 # reaction: heroine,happy,sparkle
 わあ……これが『ベビー・タージ』だね。名前どおり、かわいい
 # speaker: gt_agra_itimad_woman
+# leave: gt_agra_itimad_woman
 ベビーではありません！
 # speaker: narrator
 ニームの木陰から、サリー姿の女性が立ち上がった。白髪をきっちり結い、布の手提げを肩にかけている。手提げから、紙の束がのぞいていた。
