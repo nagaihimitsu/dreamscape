@@ -29,12 +29,15 @@ INCLUDE modules.ink
 お、踊らせる……！？　行くとは言ったけど、踊るとは言ってない……！
 # background: gt_bg_jaipur_hotel_hub
 # speaker: narrator
-何を着ていくのか、お祝いには何を持っていくのか。宿のフロントの女性に尋ねると、笑って教えてくれた。封筒に入れた現金がふつうで、金額の最後に一ルピーを足す。割り切れない数は、縁起がいいから。
+何を着ていくのか、お祝いには何を持っていくのか。帳場で尋ねると、フロントの女性が笑った。
+# speaker: gt_jaipur_hotel_front
+お祝いはね、封筒に入れた現金。金額の最後に、一ルピー足すの。割り切れない数は、縁起がいいから
 # speaker: heroine
 # reaction: heroine,smile,question
 割り切れない方が、縁起がいいんだ。……いい考え方だね。終わりにしないで、続いていく感じ
 # speaker: narrator
-彼女はノートに書き留めた。封筒、一ルピー、踊りは要相談。最後の項目に、二本線が引かれた。
+# leave: gt_jaipur_hotel_front
+帳場を離れて、彼女はノートに書き留めた。封筒、一ルピー、踊りは要相談。最後の項目に、二本線が引かれた。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
 相談の余地、なさそうだもんね。カムラさんだし
@@ -111,6 +114,7 @@ INCLUDE modules.ink
     それで十分。最初の一言は、それくらいがいい
 }
 # speaker: narrator
+# leave: enemy
 カムラは立ち上がり、待たせていたオートリキシャに乗り込んだ。運転手がまた何か言い、カムラが言い返す。笑い声と一緒に、桃色の町の角へ消えていった。
 # speaker: narrator
 # quiet: scene

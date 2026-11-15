@@ -124,6 +124,7 @@ INCLUDE modules.ink
     # profile: attentive
     { romance_result == "negative":
         # speaker: narrator
+        # emotion: worried
         彼女は何度か、助けを求めるようにこちらを振り返った。こちらが黙っていると、小さくため息をついて、ナスリーンに向き直った。
         # speaker: gt_nasreen
         正直な人には、少しだけね

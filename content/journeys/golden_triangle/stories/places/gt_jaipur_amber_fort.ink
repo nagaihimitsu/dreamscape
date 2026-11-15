@@ -23,7 +23,7 @@ INCLUDE modules.ink
 # reaction: heroine,happy,sparkle
 わ……門の模様まで、ちゃんと描いてある。この筆、まつげみたいに細い
 # speaker: narrator
-画家は顔を上げず、黙って値段だけを言った。{heroine_name}は財布を開きかけ、手を止めた。
+画家は顔を上げず、「手描き」と値段だけを言った。{heroine_name}は財布を開きかけ、手を止めた。
 # speaker: heroine
 # emotion: neutral
 ……お土産、じゃないの。誰かにあげるんじゃなくて、わたしが欲しい
@@ -46,11 +46,10 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_amber_fort
 # speaker: narrator
 # term: gt_term_miniature
-十分前、{heroine_name}は一枚の絵を買った。中庭の隅の小さな露店で、若い画家が描いていた、アンベール城の細密画。手のひらほどの紙に、門も宮殿も、細い筆で描き込まれている。
+# leave: enemy
+門の脇の土産物屋の前で、{heroine_name}は鞄の包みに手を当てた。中庭の露店で、自分のために買ったばかりの、この城の細密画。
 # speaker: narrator
-誰かへのお土産ではなく、自分のための買い物。旅に出てから、たぶん初めてだった。
-# speaker: narrator
-その絵が、門の近くの大きな土産物屋に、三十枚並んでいた。同じ構図。同じ色。値段は三分の一。光沢のある紙に、印刷されている。
+その絵が、店先に三十枚並んでいた。同じ構図。同じ色。値段は三分の一。光沢のある紙に、印刷されている。
 # speaker: heroine
 # reaction: heroine,surprised,gloom
 ……同じ絵。手描きだって、言ってたのに
