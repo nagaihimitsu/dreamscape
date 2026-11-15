@@ -21,8 +21,10 @@ INCLUDE modules.ink
 # voice: gt_delhi_red_fort_guide_002
 あっ、カムラさんの暗号！　これは大事なものです、すみません
 # speaker: narrator
+# item_out: gt_delhi_kamla_memo 1
 係員が先に拾い上げ、一行目のヒンディー語を読んで、「暗くなってから、ね」とだけ言って少し笑った。次の鞄が、もう台に載っている。
 # speaker: narrator
+# item_out: gt_delhi_kamla_memo 1
 返ってきた切れ端の一行目を、指でなぞる。赤い城、暗くなってから。今は、まだ明るい昼間だ。
 # speaker: heroine
 # voice: gt_delhi_red_fort_guide_003
@@ -230,6 +232,7 @@ INCLUDE modules.ink
 # speaker: narrator
 赤い城、暗くなってから。カムラの一覧の一行目が気になって、二人はもう一度、レッド・フォートの城門の前に来ていた。
 # speaker: narrator
+# item_out: gt_delhi_kamla_memo 1
 メモを見せると、門の係員は首をかしげた。
 # speaker: gt_delhi_red_fort_guide
 暗くなってから？　昼の券で入れるのは、日没までですよ
@@ -261,12 +264,15 @@ INCLUDE modules.ink
 # speaker: enemy
 祖母に何を言ったんですか。どこかへ連れていく約束でも？　観光客についていく人じゃないんです
 # speaker: heroine
+# item_out: gt_delhi_kamla_memo
 # emotion: serious
 # voice: gt_delhi_finale_002
 何も。……これを、もらっただけです
 # speaker: narrator
+# item_out: gt_delhi_kamla_memo
 デリーに着いた日に、カムラが書いてくれた見どころの一覧。五行の場所と、一行ずつの妙な注釈。アマンは読み進めるほど、顔をこわばらせた。
 # speaker: enemy
+# item_out: gt_delhi_kamla_memo
 『鉄の柱、もう抱けない、腹立たしい』『東の門から三本目の木陰』……。誰かに文句を言ってるみたいだ
 # speaker: enemy
 最近の祖母は、亡くなった祖父に話しかけるんです。誰もいない椅子に、『プラカーシュ』って。これも、きっと
@@ -300,6 +306,7 @@ INCLUDE modules.ink
 # voice: gt_delhi_finale_004
 地下鉄に乗れるなら、どこへだって行けます。……それと、この一覧、最後の行だけ場所の名前がないんです
 # speaker: narrator
+# item_out: gt_delhi_kamla_memo 5
 五行目。カムラの字は、そこだけ大きかった。
 # speaker: narrator
 # letter: note
@@ -386,6 +393,7 @@ INCLUDE modules.ink
 # speaker: enemy
 でも、城はもう閉まってる。日が暮れたら入れない
 # speaker: narrator
+# item_out: gt_delhi_kamla_memo 1
 {heroine_name}は一覧を開いた。一行目。赤い城、と書いた横の注釈は、最初の日からずっと気になっていた。
 # speaker: narrator
 # letter: note
