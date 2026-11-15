@@ -212,6 +212,7 @@ INCLUDE modules.ink
 床の雄牛は、トリノの紋章。ミラノの真ん中に、よその街の牛がいる。私はそういう物を刷るのが好きなの
 { cond("item galleria_ticket held"):
     # speaker: milano_rina
+    # item_out: galleria_ticket
     その券、使う？　切り込みを入れる代わりに、好きな版で一枚刷ってあげる
     # speaker: narrator
     もう一枚の版には、細い線が格子に組まれていた。ガラスの面を、鉄の骨が区切っている。頭の上の屋根と同じ形だ。

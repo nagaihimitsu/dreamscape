@@ -26,6 +26,7 @@ INCLUDE modules.ink
 # speaker: narrator
 ポケットの中で、青いピックの角が指に当たった。
 # speaker: heroine
+# item_out: blue_pick
 ねえ、これ。あのケースの跡と、同じ形
 
 * [Here, this is yours. # option: give # translation: はい、これはきみの。]
