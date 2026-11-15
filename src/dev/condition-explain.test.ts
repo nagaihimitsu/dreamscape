@@ -36,4 +36,11 @@ describe("Debug's explanation of a condition", () => {
     ]);
     expect(unmetConditionLabels(base, { cityDay: { atLeast: 1 } })).toEqual([]);
   });
+
+  it("names the wait after a rejection a writer wrote on a date (2026-11-15)", () => {
+    const rejected = { ...base, confessionStatus: "rejected" as const, lastRejectedDateCount: 0 };
+    expect(unmetConditionLabels(rejected, { all: [{ dateSinceRejection: true }, { not: { couple: true } }] }))
+      .toEqual(["断られた後に、新しいデートか再交流を終えた（断られていなければ成り立つ）"]);
+    expect(unmetConditionLabels(base, { dateSinceRejection: true })).toEqual([]);
+  });
 });

@@ -4,6 +4,7 @@ INCLUDE modules.ink
 // デリーの宿の屋上：告白のデートと、「待って」と言われた後のデート（どちらも2026-11-09 に足すと決めたデート）。
 // 告白のデートでは噛み合いの札（# profile:）と関係値の札を書かない。返事は confession_result で分ける。前置きも、同じ返事で分ける（2026-11-09 の直し）。
 // 都市ごとに同じ形のファイルがある（gt_agra_hotel_hub_dates.ink・gt_jaipur_hotel_hub_dates.ink）。
+// デリーの告白は旅で最初の告白で、1回だけ。断られた後の待ち（# when: date_since_rejection）は書かない（アーグラ・ジャイプールには書く）。
 
 // 【3】
 === gt_delhi_date_confession ===

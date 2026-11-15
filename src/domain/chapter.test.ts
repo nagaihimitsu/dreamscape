@@ -191,8 +191,9 @@ describe("integrated tourism, battle, and free time", () => {
   });
 
   it("continues a zero-score journey after rejection, deferral and eventual acceptance", () => {
-    // The repeat mechanism, on Milan's confession made repeatable for the test (the journey's own is played once).
-    onTestFinished(installRepeatableDate("milano_confession_01"));
+    // The repeat mechanism, on Milan's confession made repeatable for the test with the wait after a rejection its writer
+    // would write (# when: date_since_rejection; the journey's own is played once).
+    onTestFinished(installRepeatableDate("milano_confession_01", { waitsAfterRejection: true }));
     let state = startEpisode(createGame(), "milano_last_supper_episode");
     state = finishBattle(startTourismBattle(state, state.revision), 0);
     state = enterFreeTime(state, state.revision);

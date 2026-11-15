@@ -403,7 +403,7 @@ function rawLeaf(content: ProgressionContent, city: City, now: ProgressionSnapsh
     canFalse: leaf.romanceStage.atLeast === undefined || now.romanceStage < leaf.romanceStage.atLeast };
   if ("couple" in leaf) return { canTrue: true, canFalse: !now.couple };
   if ("rented" in leaf) return both;
-  // time, weekday, rides, relationship: they come round, or either way (3.3 check 9).
+  // time, weekday, rides, relationship, the wait after a rejection (dateSinceRejection): they come round, or either way (3.3 check 9).
   return both;
 }
 

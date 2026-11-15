@@ -4,6 +4,7 @@ INCLUDE modules.ink
 // アーグラの宿の屋上：告白のデートと、「待って」と言われた後のデート（どちらも2026-11-09 に足すと決めたデート）。
 // 告白のデートでは噛み合いの札（# profile:）と関係値の札を書かない。返事は confession_result で分ける。前置きも、同じ返事で分ける（2026-11-09 の直し）。
 // 都市ごとに同じ形のファイルがある（gt_delhi_hotel_hub_dates.ink ほか）。
+// 前の都市の告白で断られた後は、新しい通常デートを1つ終えてから告白のデートが出る（# when: date_since_rejection。2026-11-15 から書く人が決める）。
 
 // 【3】
 === gt_agra_date_confession ===
@@ -12,6 +13,7 @@ INCLUDE modules.ink
 # when: episodes agra >= 1
 # when: not couple
 # when: time night
+# when: date_since_rejection
 # background: gt_bg_hotel_rooftop_night
 # tint: off
 # bgm: immersed

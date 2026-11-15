@@ -3,13 +3,14 @@ import { contentSourcesFromTree, readContentTree, selectJourneys } from "../../.
 import { validateContent } from "../../../scripts/content-validation";
 import { dates, scenes } from "../../../src/content";
 import { cityStart, clearCity, departFromClearedCity, finishEpisode, newJourney, nextMorning, withAp, withRelationship } from "../../../src/dev/scenario-builders";
-import { meets } from "../../../src/domain/conditions";
+import type { Condition } from "../../../src/content/condition-schemas";
+import { completedDateCount, meets } from "../../../src/domain/conditions";
 import { evaluateProgression } from "../../../src/domain/date-rules";
 import { advanceDate, chooseDate, dateChoiceDisplay, finishDate, getDateAvailability, isEventVisible, startDate, validateGameState, type GameState } from "../../../src/domain/game";
 import { closeRomanceEnding } from "../../../src/domain/occasion";
 import { applyPlayerAction } from "../../../src/domain/player-action";
 import { screenFor } from "../../../src/domain/screen";
-import { beginTravelEvent, isCompletedTravelEvent } from "../../../src/domain/travel-game";
+import { beginTravelEvent, isCompletedTravelEvent, isTravelEventUnlocked } from "../../../src/domain/travel-game";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 import { installRepeatableDate } from "../../fixtures/repeatable-date";
 
@@ -81,8 +82,15 @@ const evening = (state: GameState, values: Values): GameState => atNight(evaluat
 const delhiEvening = (values: Values): GameState => evening(delhiAfterDates(), values);
 /** The reason a date already played gives (date-rules.ts getDateAvailability). */
 const played = { available: false, reason: "このひとときは、もう思い出になりました。" };
-/** The reason a confession gives after a rejection, until a new date or a recovery. */
+/** The reason a confession gives after a rejection, until a new date or a recovery, when its writer wrote the wait (# when: date_since_rejection). */
 const waiting = { available: false, reason: "新しいひとときを過ごしてから、もう一度話せます。" };
+/** The wait after a rejection, as a part of a date's `when` (2026-11-15: written per date; the game makes no confession wait by itself). */
+const WAIT: Condition = { dateSinceRejection: true };
+/** The top-level parts of a date's `when`. */
+const whenParts = (dateId: string): Condition[] => {
+  const when = dates.find((date) => date.id === dateId)!.when;
+  return !when ? [] : "all" in when ? when.all : [when];
+};
 
 describe("Golden Triangle rooftop dates (GT-3b)", () => {
   it("has eight dates in each city: six at a destination and the two rooftop dates at the hotel; Jaipur also her answer", () => {
@@ -139,8 +147,9 @@ describe("Golden Triangle rooftop dates (GT-3b)", () => {
   }, 60_000);
 
   it("plays a confession its writer made repeatable again: at once after a deferral, after another date after a rejection", () => {
-    // The repeat mechanism, on Delhi's confession made repeatable for the test (the journey's own is played once).
-    onTestFinished(installRepeatableDate("gt_delhi_date_confession"));
+    // The repeat mechanism, on Delhi's confession made repeatable for the test with the wait after a rejection its writer
+    // would write (# when: date_since_rejection; the journey's own is played once, the journey's first).
+    onTestFinished(installRepeatableDate("gt_delhi_date_confession", { waitsAfterRejection: true }));
     const deferred = playDate(delhiEvening(outcomeValues.deferred), "gt_delhi_date_confession").state;
     expect(deferred.confessionStatus).toBe("deferred");
     // A second attempt after a deferral (retry): the outcome is read again from the values.
@@ -153,6 +162,27 @@ describe("Golden Triangle rooftop dates (GT-3b)", () => {
     const another = atNight(playDate(rejected.state, normalDates("delhi")[3]).state);
     expect(getDateAvailability(another, "gt_delhi_date_confession")).toEqual({ available: true, reason: "" });
   }, 60_000);
+
+  it("makes no confession wait by itself: one its writer made repeatable without the wait is offered right after a rejection", () => {
+    // 2026-11-15: the wait after a rejection is the writer's part (# when: date_since_rejection), not a rule of the game.
+    onTestFinished(installRepeatableDate("gt_delhi_date_confession"));
+    expect(whenParts("gt_delhi_date_confession")).not.toContainEqual(WAIT);
+    const rejected = atNight(playDate(delhiEvening(outcomeValues.rejected), "gt_delhi_date_confession").state);
+    expect(rejected.confessionStatus).toBe("rejected");
+    expect(meets(rejected, WAIT)).toBe(false);
+    expect(getDateAvailability(rejected, "gt_delhi_date_confession")).toEqual({ available: true, reason: "" });
+    expect(isTravelEventUnlocked(rejected, "gt_delhi_date_confession")).toBe(true);
+  }, 60_000);
+
+  it("writes the wait after a rejection on Agra's and Jaipur's confessions, not on Delhi's, the journey's first (2026-11-15)", () => {
+    expect(whenParts("gt_delhi_date_confession")).not.toContainEqual(WAIT);
+    for (const dateId of ["gt_agra_date_confession", "gt_jaipur_date_confession"])
+      expect(whenParts(dateId)).toContainEqual(WAIT);
+    // No other date of the journey writes it.
+    expect(dates.filter((date) => date.chapterId && ["delhi", "agra", "jaipur"].includes(date.chapterId) &&
+      whenParts(date.id).some((part) => "dateSinceRejection" in part)).map((date) => date.id).sort())
+      .toEqual(["gt_agra_date_confession", "gt_jaipur_date_confession"]);
+  });
 
   it("opens Agra's confession after a deferral in Delhi once its own conditions hold; after a rejection, also a new date", () => {
     // Delhi cleared after its three dates; its confession on the last evening, then the departure to Agra.
@@ -177,11 +207,15 @@ describe("Golden Triangle rooftop dates (GT-3b)", () => {
     // Her lead remembers the confession in Delhi.
     expect(accepted.lines).toContain("今夜は、わたしが誘ったの。前に言ってくれたこと、あれからずっと考えてた");
 
-    // After a rejection in Delhi, Agra's confession also waits for a new date (or a recovery).
+    // After a rejection in Delhi, Agra's confession also waits for a new date (or a recovery): the part its writer wrote
+    // (# when: date_since_rejection) is the only one of its conditions not met.
     const afterRejection = atNight(toAgra("rejected"));
     expect(getDateAvailability(afterRejection, "gt_agra_date_confession")).toEqual(waiting);
+    expect(isTravelEventUnlocked(afterRejection, "gt_agra_date_confession")).toBe(false);
+    expect(whenParts("gt_agra_date_confession").filter((part) => !meets(afterRejection, part))).toEqual([WAIT]);
     const another = atNight(playDate(afterRejection, normalDates("agra")[0]).state);
     expect(getDateAvailability(another, "gt_agra_date_confession")).toEqual({ available: true, reason: "" });
+    expect(isTravelEventUnlocked(another, "gt_agra_date_confession")).toBe(true);
   }, 300_000);
 
   it("breaks the attar at Akbar's tomb, and gives the lac bangles and charges Johari Bazaar once", () => {
@@ -410,5 +444,18 @@ describe("a confession after one in an earlier city (2026-11-15)", () => {
     const answer = playDate(evaluateProgression(withRelationship(nextMorning(wait.state), outcomeValues.deferred)), "gt_jaipur_date_answer");
     expect(answer.lines).toContain("屋上で、夜のせいにしたくないって言ったでしょ。楽隊と、灯りのせいに。だから、昼にしたの。いちばん普通の時間に");
     expect(answer.state.confessionStatus).toBe("rejected");
+  }, 300_000);
+
+  it("in Jaipur, right after a rejection in Agra: waits for a new date, as its writer wrote (# when: date_since_rejection)", () => {
+    const jaipur = afterDates("jaipur", "gt_jaipur_main_hawa_mahal");
+    // Rejected in Agra with no date since (the count when she said no is the count now).
+    const justRejected = validateGameState({ ...confessedBefore(jaipur, ["gt_agra_date_confession"], "rejected"),
+      lastRejectedDateCount: completedDateCount(jaipur) });
+    const night = evening(justRejected, outcomeValues.accepted);
+    expect(getDateAvailability(night, "gt_jaipur_date_confession")).toEqual(waiting);
+    expect(isTravelEventUnlocked(night, "gt_jaipur_date_confession")).toBe(false);
+    const another = evening(playDate(justRejected, normalDates("jaipur")[3]).state, outcomeValues.accepted);
+    expect(getDateAvailability(another, "gt_jaipur_date_confession")).toEqual({ available: true, reason: "" });
+    expect(isTravelEventUnlocked(another, "gt_jaipur_date_confession")).toBe(true);
   }, 300_000);
 });

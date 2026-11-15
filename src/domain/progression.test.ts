@@ -215,8 +215,9 @@ describe("confession and relationship ending", () => {
     expect(validateGameState(JSON.parse(JSON.stringify(state)))).toEqual(state);
   });
   it("requires another shared date after rejection and can eventually accept without the invitation", () => {
-    // The wait after a rejection, on Milan's confession made repeatable for the test (the journey's own is played once).
-    onTestFinished(installRepeatableDate(confession));
+    // The wait after a rejection, on Milan's confession made repeatable for the test with the wait its writer would write
+    // (# when: date_since_rejection; the journey's own is played once, and no confession can follow it).
+    onTestFinished(installRepeatableDate(confession, { waitsAfterRejection: true }));
     let state = { ...toWalk(), trust: 0 };
     expect(canConfessSuccessfully(state)).toBe(false);
     const transcript: string[] = [];
