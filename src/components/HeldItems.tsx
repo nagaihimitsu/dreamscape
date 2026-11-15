@@ -3,7 +3,6 @@ import { DEFAULT_ITEM_ICON } from "../content/code-images";
 import { DismissLayer } from "./DismissLayer";
 import { NewDot, Sparkle, SPARKLE_MS, useCuePlaying } from "./fx";
 import { Icon } from "./icons";
-import { playSe } from "../audio/sound-effects";
 import "./held-items.css";
 
 /** `iconPath`: the item's own icon from its catalog entry; a generic icon otherwise. */
@@ -63,7 +62,6 @@ export function HeldItems({ items, gained, spent, newIds = [], onOpen, onSeen }:
     if (!shown) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "Escape" || document.querySelector("dialog[open]")) return;
-      playSe("ui_close");
       setOpen(false);
       buttonRef.current?.focus();
     };
@@ -102,7 +100,6 @@ export function HeldItems({ items, gained, spent, newIds = [], onOpen, onSeen }:
   if (!items.length) return ghost && <span className="held-items-gone" aria-hidden="true">{ghost}</span>;
   const isNew = (item: HeldItem) => openedNew.includes(item.id);
   const close = (focusWasInside: boolean) => {
-    playSe("ui_close");
     setOpen(false);
     if (focusWasInside) buttonRef.current?.focus({ preventScroll: true });
   };
@@ -130,7 +127,6 @@ export function HeldItems({ items, gained, spent, newIds = [], onOpen, onSeen }:
             setOpenedNew(newIds);
             if (fresh) onSeen?.();
           }
-          playSe(shown ? "ui_close" : "ui_open");
           setOpen(!shown);
         }}
       >
@@ -152,7 +148,6 @@ export function HeldItems({ items, gained, spent, newIds = [], onOpen, onSeen }:
             <strong id={`${id}-name`}>{single ? single.name : `所持品（${items.length}個）`}</strong>
             {single && isNew(single) && <NewTag />}
             <button type="button" className="held-item-close" aria-label={single ? "アイテムの詳細を閉じる" : "所持品を閉じる"} onClick={() => {
-              playSe("ui_close");
               setOpen(false);
               buttonRef.current?.focus();
             }}>×</button>
