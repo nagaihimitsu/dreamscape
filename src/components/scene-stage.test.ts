@@ -204,6 +204,35 @@ describe("a figure taken off the stage (# leave:, 2026-11-13)", () => {
     expect(quiz.stage).toEqual({ heroine: false, opposite: { figure: "nidhi" } });
   });
 
+  it("keeps a battle's opponent off from its first line to their first line (an opponent introduced after the narration)", () => {
+    const battle: StageScene = { heroineFromStart: true, enemyFigure: "nidhi", enemyFromStart: true };
+    const [first, crowd, her, nidhi] = read(battle, [leaving(narration, "enemy"), narration, said("heroine"), said("enemy")]);
+    expect(first).toEqual({ stage: { heroine: true }, focus: {} });
+    expect(crowd).toEqual({ stage: { heroine: true }, focus: {} });
+    expect(her).toEqual({ stage: { heroine: true }, focus: { heroine: "speaking" } });
+    expect(nidhi).toEqual({ stage: { heroine: true, opposite: { figure: "nidhi" } }, focus: { heroine: "listening", opposite: "speaking" } });
+  });
+
+  it("lets a person in a battle speak from off stage: no figure for them, and the place opposite left empty, not the opponent's", () => {
+    const battle: StageScene = { heroineFromStart: true, enemyFigure: "nidhi", enemyFromStart: true };
+    const [opening, voice, after, nidhi] = read(battle, [narration, leaving(said("person", "anjali"), { figure: "anjali" }), narration,
+      said("enemy")]);
+    expect(opening.stage).toEqual({ heroine: true, opposite: { figure: "nidhi" } });
+    // One at a time: the person comes in for their line (the opponent steps back) and goes at once.
+    expect(voice).toEqual({ stage: { heroine: true }, focus: {} });
+    expect(after.stage).toEqual({ heroine: true });
+    expect(nidhi.stage).toEqual({ heroine: true, opposite: { figure: "nidhi" } });
+  });
+
+  it("keeps a person who walked away off until they speak again, through her lines and their reaction-less narration (an epilogue)", () => {
+    const epilogue: StageScene = { heroineFromStart: true, enemyFigure: "aman" };
+    const [, kamla, gone, her, still, again] = read(epilogue, [said("enemy"), said("person", "kamla"), leaving(narration, { figure: "kamla" }),
+      said("heroine"), narration, said("person", "kamla")]);
+    expect(kamla.stage.opposite).toEqual({ figure: "kamla" });
+    expect([gone, her, still].map((step) => step.stage)).toEqual([{ heroine: true }, { heroine: true }, { heroine: true }]);
+    expect(again.stage).toEqual({ heroine: true, opposite: { figure: "kamla" } });
+  });
+
   it("tells whether the one it names stands on the stage", () => {
     const scene: StageScene = { enemyFigure: "roohi" };
     const stage: Stage = { heroine: true, opposite: { figure: "roohi" } };

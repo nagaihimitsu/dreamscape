@@ -75,9 +75,11 @@ export function RomanceScene({
   const reaction = resolveDialogueReaction(dialogueReactions, storyId, frame, "heroine");
   const emotion = reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame);
   // She stands from the start; a person with a figure who speaks in their own name stands opposite her from that line
-  // (scene-stage.ts); `# speaker: enemy` or its reaction (no one with a figure in a date) sends them off.
+  // (scene-stage.ts); `# speaker: enemy` or its reaction (no one with a figure in a date) sends them off. A line's
+  // `# leave:` takes her or them off until they come again (her next line or reaction, their next line). Only who
+  // stands there is drawn.
   const { stage, focus } = useSceneStage(stageLine(frame, storyState.people,
-    { enemy: !!resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy") }), DATE_STAGE);
+    { heroine: !!reaction, enemy: !!resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy") }), DATE_STAGE);
   const personId = stage.opposite?.figure;
   const { name: speaker, narration } = speakerPlate(frame, { heroine: game.heroineName, player: game.playerName }, storyState.people);
   // A line's `# cutin: name` shows its speaker's name plate for a moment (NameCutIn; a person's: a date has no one opposite).
@@ -196,10 +198,10 @@ export function RomanceScene({
           </a>
         </aside>
       )}
-      {/* With a person on stage the two stand side by side (the encounter's slots); her portrait
-          keeps its place in the tree, so it is not drawn again when they come in. */}
-      <div className={`vn-character-layer${personId ? " encounter-character-layer" : ""}`} data-two-characters={personId ? true : undefined}>
-        <div className={personId ? "encounter-character-slot encounter-character-heroine" : undefined}>
+      {/* With a person on stage the two stand side by side (the encounter's slots), the person alone in the middle while
+          she is off stage; her portrait keeps its place in the tree, so it is not drawn again when they come in. */}
+      <div className={`vn-character-layer${personId ? " encounter-character-layer" : ""}`} data-two-characters={stage.heroine && personId ? true : undefined}>
+        {stage.heroine && <div className={personId ? "encounter-character-slot encounter-character-heroine" : undefined}>
           <CharacterPortrait
             characterId="heroine"
             sceneId={active.dateId}
@@ -210,7 +212,7 @@ export function RomanceScene({
           >
             {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
           </CharacterPortrait>
-        </div>
+        </div>}
         {personId && <div className="encounter-character-slot encounter-character-enemy">
           <CharacterPortrait key={personId} characterId={personId} focus={focus.opposite} />
         </div>}
