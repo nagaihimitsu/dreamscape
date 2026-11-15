@@ -75,7 +75,7 @@
           "url": "https://delhitourism.gov.in/tourist_place/lodi_tomb.html",
           "checkedAt": "2026-11-03",
           "claimType": "documented_fact",
-          "claimJa": "ロディ庭園にサイイド朝とロディ朝の廟やモスクがある。"
+          "claimJa": "ロディ・ガーデンにサイイド朝とロディ朝の廟やモスクがある。"
         },
         {
           "publisher": "HistoryHit",
@@ -83,7 +83,7 @@
           "url": "https://www.historyhit.com/locations/lodi-gardens/",
           "checkedAt": "2026-11-08",
           "claimType": "documented_fact",
-          "claimJa": "ローディー・ガーデンは1930年代に、それ以前からあった墓のまわりに造られた公園。"
+          "claimJa": "ロディ・ガーデンは1930年代に、それ以前からあった墓のまわりに造られた公園。"
         },
         {
           "publisher": "Wikipedia",
@@ -226,6 +226,14 @@
           "checkedAt": "2026-11-08",
           "claimType": "documented_fact",
           "claimJa": "ランガルでは頭を覆い、床に並んで座り、ローティーは両手を椀の形にして受け取る。残さずに食べる。"
+        },
+        {
+          "publisher": "Sikh Missionary Society (UK)",
+          "title": "Gurdwara, The Sikh House of Worship - Discipline and Procedures (Dr. Kulwant Singh Khokhar)",
+          "url": "https://www.sikhmissionarysociety.org/sms/smspublications/Gurdwara%20-%20Discipline%20and%20Procedures.pdf",
+          "checkedAt": "2026-11-15",
+          "claimType": "documented_fact",
+          "claimJa": "ランガルの広間の作法として、残さずに食べられる分だけもらい、食べ残しを出さないようにと書いている。（皿を床に置いたまま持ち上げないという作法は、この本にも政府観光局の案内にも見つからず、皿を差し出して受け取ると書く案内もあったので、脚本では言わない。2026-11-15）"
         }
       ]
     },
@@ -505,23 +513,31 @@
           "url": "https://en.wikipedia.org/wiki/Nahargarh_Fort",
           "checkedAt": "2026-11-08",
           "claimType": "legend",
-          "claimJa": "砦の名は、工事を邪魔したと伝えられるナーハル・シンの霊にちなむ。"
+          "claimJa": "砦の名は、工事を邪魔したと伝えられるナハル・シンの霊にちなむ。"
         },
         {
           "publisher": "Incredible India",
           "title": "Nahargarh Fort Jaipur: Unveiling Royal Heritage | Incredible India",
           "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/nahargarh-fort",
-          "checkedAt": "2026-11-09",
+          "checkedAt": "2026-11-15",
           "claimType": "documented_fact",
-          "claimJa": "マーダヴェーンドラ・バワンは二階建てで、王と九人の王妃の部屋が廊下でつながる。扉には王妃の名前が書かれていた。（2026-11-09 に確かめた：この出典には、マーダヴェーンドラ・バワンが二階建てで王と王妃たちの部屋があり九つの区画に分かれるとだけあり、部屋が廊下でつながることと、扉に王妃の名前が書かれていたことは書かれていない。未確認）"
+          "claimJa": "マーダヴェーンドラ・バワンは二階建てで、王と王妃たちの部屋がある。九つの区画に分かれ、それぞれに控えの間・寝室・手洗い・台所・物置がある。（部屋が廊下でつながることと、扉に王妃の名前が書かれていたことは、この出典には書かれていない）"
         },
         {
-          "publisher": "Incredible India",
-          "title": "Nahargarh Fort Jaipur: Unveiling Royal Heritage | Incredible India",
-          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/nahargarh-fort",
-          "checkedAt": "2026-11-09",
-          "claimType": "interpretation",
-          "claimJa": "王は廊下を通って、ほかの王妃に知られずに会いに行けたと説明されている。（2026-11-09 に確かめた：この出典には、マーダヴェーンドラ・バワンが二階建てで王と王妃たちの部屋があり九つの区画に分かれるとだけあり、廊下を通ってほかの王妃に知られずに会いに行けたことは書かれていない。未確認）"
+          "publisher": "Wikipedia",
+          "title": "Nahargarh Fort",
+          "url": "https://en.wikipedia.org/wiki/Nahargarh_Fort",
+          "checkedAt": "2026-11-15",
+          "claimType": "documented_fact",
+          "claimJa": "マーダヴェーンドラ・バワンの部屋どうしは廊下でつながり、繊細な壁画がいくつか今も残る。"
+        },
+        {
+          "publisher": "Rajasthan Explored (Caper Travel)",
+          "title": "Nahargarh Fort",
+          "url": "https://www.rajasthanexplored.com/rajasthan-travel/jaipur/nahargarh-fort.html",
+          "checkedAt": "2026-11-15",
+          "claimType": "legend",
+          "claimJa": "王が、ほかの王妃に見られずに、どの王妃の部屋にも行けるように造られた、と旅行案内で語られる。公的な資料では確かめられていないので、脚本では言い伝えとして書く。"
         }
       ]
     },
@@ -556,6 +572,14 @@
           "checkedAt": "2026-11-08",
           "claimType": "documented_fact",
           "claimJa": "アルバート・ホールのミイラは神官の家の女性とされ、およそ2,300年前のもので、1887年にカイロから来た。トゥトゥと呼ばれる。"
+        },
+        {
+          "publisher": "ThePrint",
+          "title": "2,300-yr-old mummy in Jaipur's Albert Hall Museum taken out of box to rescue it from rains",
+          "url": "https://theprint.in/india/2300-yr-old-mummy-in-jaipurs-albert-hall-museum-taken-out-of-box-to-rescue-it-from-rains/484389/",
+          "checkedAt": "2026-11-15",
+          "claimType": "documented_fact",
+          "claimJa": "2020年8月、ミイラを置いていた地下が大雨で水に浸かり、職員がガラスの箱を割って上の階へ移した。（今どの階で見られるかは、博物館や州の公式資料で確かめられていないので、脚本では展示室の階を書かない。2026-11-15）"
         }
       ]
     },
