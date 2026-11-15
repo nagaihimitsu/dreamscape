@@ -93,7 +93,9 @@ INCLUDE modules.ink
 }
 { cond("episode gt_agra_main_taj_mahal"):
     # speaker: heroine
-    ニキルさんは、結婚式の段取りも三十枚のスライドにしてる。それで、タンヴィさんに『次は、場所から一緒に決めて』って言われてる
+    ニキルさんは、結婚式の段取りも三十枚のスライドにしてる
+    # speaker: heroine
+    それで、タンヴィさんに『次は、場所から一緒に決めて』って言われてる
     # speaker: narrator
     タージ・マハルのベンチで、指輪を出しそびれた二人。
 }

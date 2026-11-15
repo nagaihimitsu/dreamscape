@@ -144,7 +144,7 @@ INCLUDE modules.ink
 # speaker: narrator
 彼女は芝生の端で立ち止まり、少し迷うように、こちらを見た。
 # speaker: heroine
-ねえ。わたし、{player_address}って呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ
+ねえ。わたし、いつもの呼び方で呼んでるでしょ。最初に、そう呼んでいいか、ちゃんと聞いたっけ
 * [「そのままがいい」 # option: keep_as_is]
     # profile: attentive
     { romance_result == "negative":

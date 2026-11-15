@@ -120,7 +120,9 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_jantar_mantar
 { quiz_correct:
     # speaker: heroine
-    携帯の時刻は、国の標準時ですよね。ジャイプールの太陽の時刻にするには、経度の差と、季節のずれを直さないといけないんだと思います
+    携帯の時刻は、国の標準時ですよね
+    # speaker: heroine
+    ジャイプールの太陽の時刻にするには、経度の差と、季節のずれを直さないといけないんだと思います
 - else:
     # speaker: narrator
     斜面の脇の案内板に、換算の説明があった。日時計の地方時を標準時に直すには、経度の差と季節のずれを補正する。

@@ -122,7 +122,10 @@ INCLUDE modules.ink
         動かずに待った。長い時間がたった。やがて、廊下の角から、彼女がそっと顔を出した。ちょっと不満そうな顔だった。
         # speaker: heroine
         # emotion: exasperated
-        探してくれないの？　かくれんぼってね、隠れるのが楽しいんじゃなくて、見つけてもらうのが楽しいんだよ。今の、ちゃんと覚えておいてね
+        探してくれないの？　かくれんぼってね、隠れるのが楽しいんじゃなくて、見つけてもらうのが楽しいんだよ
+        # speaker: heroine
+        # emotion: teasing
+        今の、ちゃんと覚えておいてね
     }
 -
 # speaker: narrator
@@ -167,7 +170,10 @@ INCLUDE modules.ink
 -
 # speaker: heroine
 # emotion: serious
-わたしは、見られてもいいから、正面から来てほしいな。廊下じゃなくて、中庭を通って。……それから、自分からも、行きたい。待つだけじゃなくて
+わたしは、見られてもいいから、正面から来てほしいな。廊下じゃなくて、中庭を通って
+# speaker: heroine
+# emotion: serious
+……それから、自分からも、行きたい。待つだけじゃなくて
 # speaker: narrator
 宮殿の屋上に出ると、町の全部が見えた。桃色の屋根、白い寺院の塔、遠くの湖の光。
 # speaker: heroine
