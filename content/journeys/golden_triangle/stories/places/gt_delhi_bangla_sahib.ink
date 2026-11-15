@@ -14,15 +14,18 @@ INCLUDE modules.ink
 # speaker: narrator
 # local_word: gt_delhi_word_gurdwara
 金色の丸屋根の下で、入口の人たちが、次々に頭を布で覆っていた。グルドワーラー・バングラー・サーヒブ。シク教の礼拝所で、ここでは男も女も、頭を覆って入る。
+# emotion: happy
 入口で配られる橙色の布を、彼女は手際よく結んだ。それから、こちらを見て、こらえきれずに笑った。
 # speaker: heroine
 # reaction: heroine,teasing,music
 # voice: gt_delhi_date_bangla_sahib_001
 待って、それ、ほどけかけてる。じっとして。はい。うん、さっきより、ずっとそれっぽい
 # speaker: narrator
+靴を預け、素足で白い石の上を歩く。祈りの歌が、中の広間から流れてくる。
+# speaker: narrator
 # local_word: gt_delhi_word_langar
 # term: gt_term_langar
-靴を預け、素足で白い石の上を歩く。祈りの歌が、中の広間から流れてくる。その奥に、大きな台所があった。ランガル。来た人なら誰でも、無料で食事ができる。毎日、何千人分。作るのも配るのも、ほとんどが奉仕の人たちだ。
+その奥に、大きな台所があった。ランガル。毎日、何千人分。作るのも配るのも、ほとんどが奉仕の人たちだ。
 巨大な鍋で豆が煮え、長い台の前に何十人もが並んで、黙々と生地を丸めている。その一人、白いひげの大柄な老人が、二人を手招きした。
 # speaker: gt_delhi_bangla_old_man
 # term: gt_term_roti
@@ -147,13 +150,14 @@ INCLUDE modules.ink
 -
 # speaker: narrator
 食事の広間では、細長い敷物が何列も敷かれ、人々が床に並んで座っていた。隣はスーツの男、その隣は裸足の子ども。誰がどこに座っても、出てくるものは同じだ。
-奉仕の人が籠を持って回ってくる。ローティーは、両手をお椀の形にして、上に差し出して受け取る。額のあたりまで持ち上げて、ありがとうの気持ちを示す人もいる。
+奉仕の人が籠を持って回ってくる。二人は、裸足の子どもの手つきを真似て、両手をお椀の形にして差し出した。
 ハルバンスが、わざわざ二枚を選んで、二人の手のひらに落とした。インドの形と、もう一枚。自分で丸めたものが、自分の手に戻ってきた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
 # voice: gt_delhi_date_bangla_sahib_016
 わたしの地図だ！　焼けると、ちゃんとおいしそうに見える
 # speaker: narrator
+# leave: gt_harbans
 ほかに丸めた何枚もは、籠に混ざったまま、知らない人たちの皿へ配られていった。
 # speaker: narrator
 豆の煮込みを桶から注いで回る人が、彼女の皿の前で止まった。ここでは、残さずに食べるのが決まりだ。皿は床に置いたまま、持ち上げない。

@@ -29,7 +29,7 @@ Photo, please!
 # voice: gt_delhi_date_india_gate_002
 十二人！　ええと、もう少し寄ってください。あ、寄りすぎ。おばあさんが、おじさんの肘で隠れてる
 # speaker: narrator
-祖母が、細い手で彼女を招いた。撮る人も入りなさい、という仕草だった。
+祖母が、細い手で彼女を招いた。
 男の子が、通訳する。
 # speaker: gt_monu
 # cutin: name
@@ -48,14 +48,16 @@ Photo, please!
         わたしだけ？　……一緒に、がよかったな。ううん、いいの。撮って
     - else:
         # speaker: heroine
-        # reaction: heroine,shy,blush
+        # emotion: shy
         # voice: gt_delhi_date_india_gate_005
         じゃあ、お願い。……変な顔してたら、撮り直してね
     }
     # speaker: narrator
+    彼女は祖母の隣に押し込まれた。祖母はその手を握ったまま離さない。
+    # speaker: narrator
     # photo: gt_album_d25 # photo_caption: 十三人目 # photo_show: large
     # se: camera_shutter
-    彼女は祖母の隣に押し込まれた。祖母はその手を握ったまま離さない。画面の中で、一人だけ顔立ちの違う十三人目が、困ったように笑っていた。
+    画面の中で、一人だけ顔立ちの違う十三人目が、困ったように笑っていた。
 * [写真屋を呼んで、二人とも入る # option: hire_photographer]
     # profile: bold
     # memory: gt_delhi_date_india_gate_memory
@@ -68,7 +70,7 @@ Photo, please!
         二人で並ぶの？　家族の人たち、絶対に何か勘違いするよ
     - else:
         # speaker: heroine
-        # reaction: heroine,happy,music
+        # emotion: happy
         # voice: gt_delhi_date_india_gate_007
         二人とも？　うん、それがいい。せっかくだもん
     }
@@ -85,7 +87,7 @@ Photo, please!
         えっ、今？　十二人、わたし一人で並べるの？
     - else:
         # speaker: heroine
-        # reaction: heroine,teasing,music
+        # emotion: teasing
         # voice: gt_delhi_date_india_gate_009
         人数分って、十四本だよ？　いってらっしゃい。並べておくね
     }
@@ -93,19 +95,17 @@ Photo, please!
     十四本のアイスを抱えて戻ると、写真はもう撮り終わっていた。撮ったのは彼女で、写っていたのは十二人と、両手にアイスを抱えて走ってくる一人だった。
 -
 # speaker: narrator
-写真のあと、祖母は門を見上げたまま動かなくなった。モヌが、面倒くさそうに通訳する。
+写真のあと、祖母は門を見上げたまま動かなくなった。イギリス軍として戦って亡くなった、インドの兵士たちの記念門だ。
+# speaker: narrator
+モヌが、面倒くさそうに通訳する。
 # speaker: gt_monu
 ダーディーのおじいさんの名前が、あの門に彫ってあるんだって。最初の世界大戦で、遠い国で死んだ兵士。毎年探して、毎年見つからない
-# speaker: narrator
-祖母が見上げているのは、第一次世界大戦などで、イギリス軍として戦って亡くなったインドの兵士たちの記念門だ。
-# speaker: narrator
-壁には、その兵士たちの名前が、一万三千を超えて刻まれている。
 # speaker: heroine
 # emotion: serious
 # voice: gt_delhi_date_india_gate_010
 毎年……。それでも、毎年来てるんだ
 # speaker: gt_monu
-去年も柵の前で一時間。僕は飽きた。名前が多すぎるし、遠くて読めない
+去年も柵の前で一時間。僕は飽きた。名前が一万三千もあって、遠くて読めないんだ
 # speaker: heroine
 # voice: gt_delhi_date_india_gate_011
 ……探したいな。おばあさんが見たいのは、たぶん写真より、そっちだと思う
@@ -169,7 +169,7 @@ Photo, please!
 # speaker: narrator
 画面に、同じ名前がいくつも並んだ。ラーム・シン。ラーム・シン。もう一人、ラーム・シン。
 # speaker: heroine
-# reaction: heroine,surprised_big,exclamation
+# emotion: surprised_big
 # voice: gt_delhi_date_india_gate_017
 同じ名前が、こんなに！　どれがおばあさんのおじいさんなんだろう
 # speaker: narrator
@@ -211,7 +211,7 @@ Photo, please!
 {
 - cond("couple"):
     # speaker: heroine
-    # reaction: heroine,shy_deep,blush
+    # emotion: shy_deep
     # voice: gt_delhi_date_india_gate_021
     け、結婚は、まだ。でも、ちゃんと付き合ってます。……それ、通訳しなくていいからね！
     # speaker: narrator
