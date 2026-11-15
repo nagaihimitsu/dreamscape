@@ -25,7 +25,7 @@ INCLUDE modules.ink
 # speaker: narrator
 二人は、井戸のふちの日陰に腰を下ろした。昔、ここには村の女たちが水をくみに集まり、そのついでに、家の話や町の噂を交わしていたのだという。
 # speaker: heroine
-# reaction: heroine,teasing,music
+# emotion: teasing
 それって、文字どおりの井戸端会議だね。日本語の『井戸端会議』って、本当に井戸の端でしてたんだもんね
 # speaker: heroine
 ねえ、しよう。井戸端会議。この旅で会った人たちの噂話。悪口じゃなくて、勝手な想像だけ

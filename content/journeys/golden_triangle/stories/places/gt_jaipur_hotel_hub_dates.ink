@@ -23,13 +23,14 @@ INCLUDE modules.ink
 -> gt_jaipur_confession_lead ->
 * [「この旅が終わっても、一緒にいたい。付き合ってほしい」 # option: stay_together]
     # speaker: narrator
-    彼女は、息を吸ったまま、しばらく動かなかった。
+    眼下の旧市街を、よその花婿の行列が、ゆっくり横切っていく。彼女は息を止めたまま、それが角を曲がるまで動かなかった。
 * [「好きだ。君は、どう思ってる？」 # option: ask_her_heart]
     # speaker: narrator
     遠くの楽隊の音が、ふっと途切れた。彼女は、こちらから目をそらさなかった。
 * [「黙っていたら、誰も気づかない。だから言う。……好きです」 # option: say_it_now]
     # speaker: narrator
-    カムラの言葉だと気づいた彼女は、目を丸くして、それから、少しだけ笑った。
+    # emotion: smile
+    カムラから借りた言葉だ。言った本人も、今はこの町のどこかにいる。彼女は旧市街の方をちらりと見て、ふっと笑った。
 -
 {
 - confession_result == "accepted":
@@ -54,7 +55,7 @@ INCLUDE modules.ink
     # speaker: heroine
     でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから
     # speaker: narrator
-    彼女は目をそらさなかった。言葉は短く、迷いがなかった。
+    どこか遠くの通りで、また別の楽隊が鳴りはじめた。
     # speaker: heroine
     # emotion: smile
     旅は、最後まで一緒に行きたい。それも、本当。明日も、いつもみたいに、どこへ行くか一緒に決めてくれる？
@@ -69,7 +70,7 @@ INCLUDE modules.ink
     待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？
     # speaker: narrator
     # stand: close
-    彼女は、そう言ってから、こちらの袖のはしを、ほんの少しだけつまんだ。離れたいわけじゃない、と言うかわりに。
+    言い終えると、彼女は橙色の町を見下ろしたまま、指先で、こちらの袖のはしを小さくつまんだ。
 }
 -> END
 
@@ -82,7 +83,7 @@ INCLUDE modules.ink
 === gt_jaipur_confession_lead ===
 # speaker: narrator
 # quiet: scene
-しばらく、二人とも黙っていた。黙っていても気まずくない、と気づいたのは、いつからだっただろう。
+下の通りの店の灯りが、一つ、また一つと消えていく。黙っていても気まずくない、と気づいたのは、どの町でだっただろう。
 {
 - confession_result == "accepted":
     {
@@ -152,7 +153,7 @@ INCLUDE modules.ink
 # tint: off
 # bgm: stages_of_grief
 # speaker: narrator
-宿の屋上に上がると、彼女が素焼きのカップを二つ持って待っていた。湯気が、二本並んで上っている。
+宿の屋上に上がると、彼女が素焼きのカップを二つ持って待っていた。橙色の旧市街を背に、湯気が二本、並んで上っている。
 # speaker: heroine
 チャイ、二つもらってきた。一つは、そっちの
 # speaker: heroine
