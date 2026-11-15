@@ -78,9 +78,10 @@
 .vn-character[data-stand="near"] { --stand-x: 0%; --stand-y: 0%; --stand-scale: 1; }
 .vn-character[data-stand="apart"] { --stand-x: 14%; --stand-y: 4%; --stand-scale: 0.88; }
 .vn-character[data-stand="close"] { --stand-x: 0%; --stand-y: 2%; --stand-scale: 1.1; }
-/* Beside the opponent (a battle, an encounter with two portraits) she steps away from the middle, to the left. */
+/* Beside the opponent (a battle, an encounter with two portraits or three: # together:) she steps away from the middle, to the left. */
 .battle-heroine .vn-character[data-stand="apart"],
-.encounter-character-layer[data-two-characters="true"] .encounter-character-heroine .vn-character[data-stand="apart"] {
+.encounter-character-layer[data-two-characters="true"] .encounter-character-heroine .vn-character[data-stand="apart"],
+.encounter-character-layer[data-together] .encounter-character-heroine .vn-character[data-stand="apart"] {
   --stand-x: -8%;
 }
 .vn-character[data-stand].is-speaking { scale: calc(var(--stand-scale) * 1.04); }

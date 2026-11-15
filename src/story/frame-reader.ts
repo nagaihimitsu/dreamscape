@@ -25,10 +25,14 @@ export interface PhoneLine {
   side: PhoneSide;
   earlier?: PhoneMessage[];
 }
+/** An earlier line of a sheet: its text, or, for a line with a `# translation:`, its text (English) and that Japanese. */
+export type LetterEarlier = string | { text: string; translationJa: string };
 /** A line's `# letter:`: its paper, below the earlier lines written on the same sheet (oldest first). */
 export interface LetterLine {
   kind: LetterKind;
-  earlier?: string[];
+  /** The line's `# translation:` (2026-11-15): its text is English, shown with this Japanese under it. */
+  translationJa?: string;
+  earlier?: LetterEarlier[];
 }
 /** The earlier messages or lines a phone's screen or a sheet keeps at most (the oldest go first; it bounds the saved frame). */
 export const STACK_MAX = 40;
@@ -70,6 +74,11 @@ export interface StoryFrame {
    * person's ID, as written); src/components/scene-stage.ts keeps them off until they come on again.
    */
   leave?: string[];
+  /**
+   * The line's `# together:` (only the line it is written on; 2026-11-15): the two who stand opposite the heroine from it
+   * (enemy or a person's ID, as written); src/components/scene-stage.ts keeps two places opposite her from there.
+   */
+  together?: string[];
   /** The line's `# voice:` (only the line it is written on): its recording, played as its text starts (useVoice.ts). */
   voiceId?: string;
   /** The line's `# se:` (only the line it is written on): its sound effect, played as its text starts (src/audio/sound-effects.ts). */
@@ -176,13 +185,15 @@ function readTags(
     delete frame.letter;
   }
   if (parsed.letter) {
-    frame.letter = { kind: parsed.letter };
+    // A letter's line may carry its translation (`# translation:`; a choice's is storyChoicesOf's).
+    frame.letter = { kind: parsed.letter, ...(parsed.translationJa ? { translationJa: parsed.translationJa } : {}) };
     delete frame.phone;
   }
   if (parsed.quiet) frame.quiet = parsed.quiet;
   if (parsed.stand) frame.stand = parsed.stand;
   if (parsed.cutin) frame.cutin = parsed.cutin;
   if (parsed.leave) frame.leave = [...new Set([...(frame.leave ?? []), ...parsed.leave])];
+  if (parsed.together) frame.together = parsed.together;
   if (parsed.voiceId) frame.voiceId = parsed.voiceId;
   if (parsed.seId) frame.seId = parsed.seId;
   if (parsed.bgm === BGM_DEFAULT) delete frame.bgm;
@@ -210,7 +221,7 @@ function readTags(
 }
 
 /** What the scene tags put on a frame. */
-export type FrameStaging = Pick<StoryFrame, "recall" | "phone" | "letter" | "quiet" | "stand" | "itemShow" | "itemOut" | "leave">;
+export type FrameStaging = Pick<StoryFrame, "recall" | "phone" | "letter" | "quiet" | "stand" | "itemShow" | "itemOut" | "leave" | "together">;
 
 /**
  * The parts of a frame that last from their line to the scene's end (`# bgm:`, `# weather:`, `# tint:`, `# ambience:`):
@@ -238,8 +249,8 @@ export function stickyOf(from: FrameSticky | null | undefined): FrameSticky {
  *   lines: a line without `# phone:` ends it), a letter's line after the lines of the frame before it when that was
  *   written on the same kind of paper; the oldest go first beyond STACK_MAX;
  * - when no new line was read (the story stopped at a choice or its end first), the line on screen is the previous
- *   one: it keeps that line's recall, phone, letter, quiet, item cards (`# item_show:`, `# item_out:`) and who left at it
- *   (`# leave:`).
+ *   one: it keeps that line's recall, phone, letter, quiet, item cards (`# item_show:`, `# item_out:`), who left at it
+ *   (`# leave:`) and who stood together from it (`# together:`).
  */
 export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<StoryFrame, "speaker" | "speakerPersonId" | "text">) | undefined,
   lineRead: boolean): FrameStaging {
@@ -248,21 +259,24 @@ export function stageFrame(tagged: FrameStaging, previous: (FrameStaging & Pick<
     .filter(([, value]) => value !== undefined)) as FrameStaging;
   if (!lineRead && previous)
     return shown({ recall: previous.recall, phone: previous.phone, letter: previous.letter, quiet: previous.quiet, itemShow: previous.itemShow,
-      itemOut: previous.itemOut, leave: previous.leave });
+      itemOut: previous.itemOut, leave: previous.leave, together: previous.together });
   const before = previous?.text ? previous : undefined;
   const phoneEarlier = tagged.phone && before?.phone
     ? [...(before.phone.earlier ?? []), { side: before.phone.side, speaker: before.speaker,
       ...(before.speakerPersonId ? { personId: before.speakerPersonId } : {}), text: before.text }].slice(-STACK_MAX) : [];
-  const letterEarlier = tagged.letter && before?.letter?.kind === tagged.letter.kind
-    ? [...(before.letter.earlier ?? []), before.text].slice(-STACK_MAX) : [];
+  const letterEarlier: LetterEarlier[] = tagged.letter && before?.letter?.kind === tagged.letter.kind
+    ? [...(before.letter.earlier ?? []),
+      before.letter.translationJa ? { text: before.text, translationJa: before.letter.translationJa } : before.text].slice(-STACK_MAX) : [];
   return shown({
     recall: tagged.recall,
     phone: tagged.phone && { side: tagged.phone.side, ...(phoneEarlier.length ? { earlier: phoneEarlier } : {}) },
-    letter: tagged.letter && { kind: tagged.letter.kind, ...(letterEarlier.length ? { earlier: letterEarlier } : {}) },
+    letter: tagged.letter && { kind: tagged.letter.kind, ...(tagged.letter.translationJa ? { translationJa: tagged.letter.translationJa } : {}),
+      ...(letterEarlier.length ? { earlier: letterEarlier } : {}) },
     quiet: previous?.quiet === "scene" ? "scene" : tagged.quiet,
     itemShow: tagged.itemShow,
     itemOut: tagged.itemOut,
     leave: tagged.leave,
+    together: tagged.together,
   });
 }
 
@@ -313,7 +327,7 @@ export function readStoryFrame(
     delete frame.seId;
   }
   const staging = stageFrame(frame, previous, lineRead);
-  for (const key of ["recall", "phone", "letter", "quiet", "stand", "itemShow", "itemOut", "leave"] as const) delete frame[key];
+  for (const key of ["recall", "phone", "letter", "quiet", "stand", "itemShow", "itemOut", "leave", "together"] as const) delete frame[key];
   Object.assign(frame, staging);
   frame.choices = storyChoicesOf(story, context);
   if (frame.choices.some((choice) => choice.call) && frame.choices.length !== 1)

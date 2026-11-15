@@ -115,3 +115,64 @@ describe("stageFrame", () => {
     expect(next.phone?.earlier?.at(-1)).toEqual({ side: "sent", speaker: "heroine", text: "前の行" });
   });
 });
+
+describe("a letter's line with its # translation: (2026-11-15)", () => {
+  const translated = `# speaker: narrator
+# letter: card
+# translation: 一行目の訳。
+The first line.
+# letter: card
+The second line.
+# letter: card
+# translation: 三行目の訳。
+The third line.
+* [Read it. # translation: 読む。]
+-
+# letter: card
+The next sheet.
+-> END
+`;
+
+  /** Every frame, each saved and loaded again (the first choice at each choice, its tags read with the next line). */
+  function framesOf(source: string): StoryFrame[] {
+    const story = new Story(compileInk(source));
+    const frames: StoryFrame[] = [];
+    let previous: StoryFrame | undefined;
+    let choiceTags: readonly string[] = [];
+    for (let step = 0; step < 10 && !previous?.ended; step++) {
+      const { frame } = readStoryFrame(story, context, previous, choiceTags);
+      frames.push(storyFrameSchema.parse(JSON.parse(JSON.stringify(frame))));
+      previous = frame;
+      choiceTags = frame.choices.length ? story.currentChoices[0].tags ?? [] : [];
+      if (frame.choices.length) story.ChooseChoiceIndex(0);
+    }
+    return frames;
+  }
+
+  it("keeps the line's English as its text and stacks each earlier line with its own Japanese, if it has one", () => {
+    const frames = framesOf(translated);
+    expect(frames.map((frame) => frame.text)).toEqual(["The first line.", "The second line.", "The third line.", "The next sheet."]);
+    expect(frames[0].letter).toEqual({ kind: "card", translationJa: "一行目の訳。" });
+    expect(frames[1].letter).toEqual({ kind: "card", earlier: [{ text: "The first line.", translationJa: "一行目の訳。" }] });
+    // The third line stops at the choice: its own translation and the choice's, each where it belongs.
+    expect(frames[2].letter).toEqual({ kind: "card", translationJa: "三行目の訳。",
+      earlier: [{ text: "The first line.", translationJa: "一行目の訳。" }, "The second line."] });
+    expect(frames[2].choices).toEqual([{ index: 0, text: "Read it.", translationJa: "読む。" }]);
+    // The sheet goes on after the choice; the choice's translation (read with the next line's tags) never goes on it.
+    expect(frames[3].letter).toEqual({ kind: "card", earlier: [{ text: "The first line.", translationJa: "一行目の訳。" }, "The second line.",
+      { text: "The third line.", translationJa: "三行目の訳。" }] });
+  });
+
+  it("reads a translation only on a letter's line (content:build stops it elsewhere: scripts/line-translation.ts)", () => {
+    const frames = framesOf("# translation: 訳。\nA line.\n-> END\n");
+    expect(frames[0]).not.toHaveProperty("letter");
+    expect(JSON.stringify(frames[0])).not.toContain("訳。");
+  });
+
+  it("loads a saved sheet of lines with and without translations, and refuses an earlier line's empty translation", () => {
+    const frame = framesOf(translated)[2];
+    expect(storyFrameSchema.parse(frame)).toEqual(frame);
+    expect(storyFrameSchema.safeParse({ ...frame, letter: { kind: "card", earlier: [{ text: "A line.", translationJa: "" }] } }).success).toBe(false);
+    expect(storyFrameSchema.safeParse({ ...frame, letter: { kind: "card", translationJa: "" } }).success).toBe(false);
+  });
+});

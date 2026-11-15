@@ -69,6 +69,12 @@ export type LeafValues = {
   romanceStage: { atLeast?: number; atMost?: number };
   /** The confession was accepted (the two are a couple). Stage 2a. */
   couple: true;
+  /**
+   * No rejection waits: the last confession's answer was not a rejection, or a new ordinary date or a recovery was
+   * completed since it (true when she never said no). Read from the progress only, no relationship value
+   * (2026-11-15: a writer writes it on a confession that waits after a rejection; the game no longer makes every one wait).
+   */
+  dateSinceRejection: true;
   /** The AP that can be spent: the AP less the AP kept back for a main part (stored AP not counted). Stage 3a. */
   ap: { atLeast?: number; atMost?: number };
   /** A story flag (progression/story.json) was set by a scene's `# set:`; flags never clear. Stage 3a. */
@@ -113,6 +119,7 @@ const LEAF_VALUE_SCHEMAS: { [K in LeafKind]: z.ZodType<LeafValues[K]> } = {
   money: ordered(z.object({ atLeast: z.number().int().min(0).optional(), atMost: z.number().int().min(0).optional() }).strict()),
   romanceStage: ordered(z.object({ atLeast: z.number().int().min(1).max(4).optional(), atMost: z.number().int().min(1).max(4).optional() }).strict()),
   couple: z.literal(true),
+  dateSinceRejection: z.literal(true),
   ap: ordered(z.object({ atLeast: z.number().int().min(0).optional(), atMost: z.number().int().min(0).optional() }).strict()),
   flag: id,
   met: id,

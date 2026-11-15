@@ -2,7 +2,7 @@ import { dates, dateDestinations, getCityContent, progression, type DateDefiniti
 import type { GameState, ActiveDate } from "./game-state-schema";
 import { storyFingerprint } from "../story/runtime";
 import type { Availability } from "./game";
-import { meets } from "./conditions";
+import { completedDateCount, dateSinceRejection, meets } from "./conditions";
 import { isLeaf, type Leaf } from "../content/condition-schemas";
 
 /** A true `until` closes the date for good (before its `when`, and even after an unlock was recorded). */
@@ -16,16 +16,6 @@ function meetsDateConditions(state: GameState, date: DateDefinition): boolean {
     (date.minAffection === 0 || state.affection >= date.minAffection) &&
     (!date.needsDeferred || state.confessionStatus === "deferred")
   );
-}
-
-/**
- * After a rejection, a confession waits for a new ordinary date or a completed recovery: a later city's confession
- * (each city's is played once, 2026-11-13) or one its writer made repeatable (`repeatable`).
- */
-function isConfessionOnCooldown(state: GameState, date: DateDefinition): boolean {
-  return date.kind === "confession" && state.confessionStatus === "rejected" &&
-    state.lastRejectedDateCount !== null && completedDateCount(state) <= state.lastRejectedDateCount &&
-    !state.recoveryAfterRejection;
 }
 
 /** Destinations own their city; destination-less events belong to a city's travel catalog. */
@@ -50,15 +40,11 @@ export function hintedLockedDates(state: GameState): { dateId: string; hintJa: s
 /** Progress and relationship requirements only; AP and opening hours do not hide a destination. */
 export function isDateUnlockedForTravel(state: GameState, dateId: string): boolean {
   const date = dates.find((item) => item.id === dateId);
-  return !!date && dateBelongsToCity(state, date) && !isConfessionOnCooldown(state, date) &&
-    meetsDateConditions(state, date);
+  return !!date && dateBelongsToCity(state, date) && meetsDateConditions(state, date);
 }
 
-/** Count completed ordinary dates and up to three real recovery conversations. */
-export function completedDateCount(state: GameState): number {
-  const ordinary = state.playedDateIds.filter((id) => dates.some((date) => date.id === id && date.kind === "normal")).length;
-  return ordinary + state.completedRecoveryCount;
-}
+/** Count completed ordinary dates and up to three real recovery conversations (conditions.ts, beside the part that reads it). */
+export { completedDateCount };
 
 /** Re-evaluate only at durable event boundaries. Unlocks remain recorded after their first appearance. */
 export function evaluateProgression(state: GameState): GameState {
@@ -140,9 +126,7 @@ export function decidingOutcome(state: GameState, date: Pick<DateDefinition, "ki
 /** A repeatable conversation prevents random setbacks from permanently blocking recovery. */
 function canRecoverRelationship(state: GameState): boolean {
   if (state.endingReached || completedDateCount(state) === 0) return false;
-  const needsRepair = !canConfessSuccessfully(state) ||
-    (state.confessionStatus === "rejected" && !state.recoveryAfterRejection &&
-      state.lastRejectedDateCount !== null && completedDateCount(state) <= state.lastRejectedDateCount);
+  const needsRepair = !canConfessSuccessfully(state) || !dateSinceRejection(state);
   if (!needsRepair) return false;
   return !dates.some((date) => date.kind === "normal" && getDateAvailability(state, date.id).available);
 }
@@ -193,8 +177,9 @@ export function getDateAvailability(
       reason: "このひとときは、もう思い出になりました。",
     };
   // The reasons keep their order: an unmet city clear, an unmet episode (the
-  // top-level parts of `when`), a reached `until`; any other unmet part gives
-  // the general reason below.
+  // top-level parts of `when`), a reached `until`, then an unmet wait after a
+  // rejection (a top-level `dateSinceRejection` its writer wrote; 2026-11-15);
+  // any other unmet part gives the general reason below.
   const parts: Leaf[] = !date.when ? [] : "all" in date.when ? date.when.all.filter(isLeaf) : isLeaf(date.when) ? [date.when] : [];
   if (parts.some((part) => "cityCompleted" in part && !meets(state, part)))
     return {
@@ -205,7 +190,7 @@ export function getDateAvailability(
     return { available: false, reason: "旅を進めると、この場所に誘えます。" };
   if (untilReached(state, date))
     return { available: false, reason: "この機会は過ぎました。" };
-  if (isConfessionOnCooldown(state, date))
+  if (parts.some((part) => "dateSinceRejection" in part && !meets(state, part)))
     return { available: false, reason: "新しいひとときを過ごしてから、もう一度話せます。" };
   if (!meetsDateConditions(state, date))
     return { available: false, reason: "もう少し、一緒の時間を過ごしてから。" };

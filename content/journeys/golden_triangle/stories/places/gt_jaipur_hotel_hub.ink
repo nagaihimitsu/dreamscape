@@ -43,7 +43,10 @@ INCLUDE modules.ink
 相談の余地、なさそうだもんね。カムラさんだし
 # speaker: heroine
 # emotion: smile
-結婚式は最後の夜。それまでに、この町をちゃんと見ておきたいな。お城も、窓だらけの宮殿も、空を測る道具も。……今度は、行きたい所、わたしからも言うね
+結婚式は最後の夜。それまでに、この町をちゃんと見ておきたいな。お城も、窓だらけの宮殿も、空を測る道具も
+# speaker: heroine
+# emotion: smile
+……今度は、行きたい所、わたしからも言うね
 -> END
 
 // エピローグ。progression/journey.json のフィナーレの epilogueStoryId がこの knot を指す。

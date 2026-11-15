@@ -41,9 +41,13 @@ describe("place photos", () => {
     expect(getPlacePhoto("milano", "p_unknown")).toBeNull();
   });
 
-  it("give the India journey's inns the rooftop night view (their photoAssetId)", () => {
-    for (const [cityId, hotelId] of [["delhi", "delhi_hotel_hub"], ["agra", "agra_hotel_hub"], ["jaipur", "jaipur_hotel_hub"]])
-      expect(getPlacePhoto(cityId, hotelId)?.id, cityId).toBe("gt_img_hotel_rooftop_night");
+  it("give the India journey's inns their own city's rooftop night view (their photoAssetId)", () => {
+    for (const [cityId, hotelId, photoId] of [
+      ["delhi", "delhi_hotel_hub", "gt_img_hotel_rooftop_night"],
+      ["agra", "agra_hotel_hub", "gt_img_agra_tajganj_rooftops_night"],
+      ["jaipur", "jaipur_hotel_hub", "gt_img_jaipur_old_city_night"],
+    ])
+      expect(getPlacePhoto(cityId, hotelId)?.id, cityId).toBe(photoId);
   });
 });
 

@@ -352,7 +352,8 @@ INCLUDE modules.ink
 # speaker: narrator
 # emotion: smile
 値段が半分になるまで、三十秒。{heroine_name}は思わず小さく笑った。言い方が、路地で会ったカムラにそっくりだった。
-# background: gt_bg_delhi_chandni_chowk
+# background: gt_bg_delhi_chandni_chowk_night
+# tint: off
 # ambience: gt_amb_bazaar
 # speaker: narrator
 # term: gt_term_paratha
@@ -366,7 +367,7 @@ INCLUDE modules.ink
 # speaker: enemy
 一年分……？　ジャイプールにも店はあるのに
 -> quiz(3) ->
-# background: gt_bg_delhi_chandni_chowk
+# background: gt_bg_delhi_chandni_chowk_night
 { quiz_correct:
     # speaker: heroine
     # voice: gt_delhi_finale_007
@@ -405,7 +406,7 @@ INCLUDE modules.ink
 # item_out: gt_delhi_kamla_memo 1
 {heroine_name}は一覧を開いた。一行目。赤い城、と書いた横の注釈は、最初の日からずっと気になっていた。
 -> quiz(4) ->
-# background: gt_bg_delhi_chandni_chowk
+# background: gt_bg_delhi_chandni_chowk_night
 { quiz_correct:
     # speaker: heroine
     # voice: gt_delhi_finale_010
@@ -414,7 +415,7 @@ INCLUDE modules.ink
     # speaker: enemy
     光と音のショーか。城の中を歩いて回る……。暗くなってから、って、そういうことか
 }
-# background: gt_bg_delhi_red_fort
+# background: gt_bg_delhi_red_fort_night
 # ambience: gt_amb_street_traffic
 # speaker: narrator
 三人は城へ急いだ。昼の見学は、とうに終わっている。ラホール門で、アマンが次の回の券を三枚買った。
@@ -435,7 +436,7 @@ INCLUDE modules.ink
 # speaker: narrator
 光が、内謁の間の白いアーチを照らし出した。遠足の子が指さした『楽園』の広間だ。その奥に、まだ人の姿は見えない。
 -> quiz(5) ->
-# background: gt_bg_delhi_red_fort
+# background: gt_bg_delhi_red_fort_night
 { quiz_correct:
     # speaker: heroine
     # voice: gt_delhi_finale_012
@@ -465,6 +466,7 @@ INCLUDE modules.ink
 録音の語りが途切れた。静かになった広間に、カムラの声が聞こえた。
 # speaker: gt_kamla
 # leave: gt_kamla
+# together: gt_kamla enemy
 プラカーシュ。あの冬の夜、ここのショーの暗がりで、言ったでしょう。好きだ、って
 # speaker: gt_kamla
 # leave: gt_kamla
@@ -474,6 +476,7 @@ INCLUDE modules.ink
 # leave: gt_kamla
 ……わたしも。わたしも、です。遅くなったけど
 # speaker: narrator
+# together: gt_kamla enemy
 アマンが、息を止めた。光が移り、三人の姿が照らし出される。カムラが振り向き、孫を見て、それから{heroine_name}を見た。
 # speaker: gt_kamla
 ……あんたが連れてきたの
@@ -505,6 +508,7 @@ INCLUDE modules.ink
 }
 # speaker: narrator
 # leave: enemy
+# leave: gt_kamla
 二人はそっと、観客の列へ戻った。背中のほうで、カムラの声が、話の続きをしている。
 # speaker: gt_kamla
 # leave: gt_kamla

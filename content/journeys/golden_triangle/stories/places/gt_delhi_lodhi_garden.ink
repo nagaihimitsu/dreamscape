@@ -1,7 +1,7 @@
 INCLUDE modules.ink
 -> DONE
 
-// ローディー・ガーデンのデート（噛み合いの選択は2回。2回目は、フマユーン廟の回を終えたかで別の場面になる）。
+// ロディ・ガーデンのデート（噛み合いの選択は2回。2回目は、フマユーン廟の回を終えたかで別の場面になる）。
 // 終えていれば、スレーシュと「大学の同級生」に再会する。終えていなければ、二人を知らないまま、胸に薔薇をさした老人を見かけるだけ。
 // 後の道で「一緒に言おう」を選ぶと、ミニゲーム「一緒に言う」（# minigame: say_together）で、彼女の「せーの」に声を合わせる（手伝いの knot）。
 
@@ -13,7 +13,7 @@ INCLUDE modules.ink
 # hint: デリーの観光を一つ終えてから
 # background: gt_bg_delhi_lodhi_garden
 # speaker: narrator
-ローディー・ガーデンの芝生には、五百年以上前の墓が、まるで大きな置物のように点々と座っている。散歩の人、走る人、ベンチで新聞を読む人。
+ロディ・ガーデンの芝生には、五百年以上前の墓が、まるで大きな置物のように点々と座っている。散歩の人、走る人、ベンチで新聞を読む人。
 # speaker: heroine
 # voice: gt_delhi_date_lodhi_garden_001
 お墓の間を、みんなジョギングしてる。日本だと、ちょっと考えられないね
@@ -131,6 +131,7 @@ INCLUDE modules.ink
 # speaker: narrator
 # se: camera_shutter
 会の最後に、ドゥベイが集合写真を撮った。新入りにも送るからと、二人の番号を聞いていく。スレーシュは写真の端で、新聞で顔を隠していた。
+# together: gt_suresh gt_meena
 それから、観念したように、女性を連れてやってきた。
 # speaker: gt_suresh
 ミーナだ。大学の同級生。……週に二回、ここで笑っている。健康のためだ。あくまで健康の
@@ -165,12 +166,14 @@ INCLUDE modules.ink
         ……それで、いいのかな
         # speaker: narrator
         # leave: gt_suresh
+        # leave: gt_meena
         彼女の小さな声は、東の門へ歩いていく二人には届かなかった。
     - else:
         # speaker: gt_suresh
         よろしい。申告に誤りなし
         # speaker: narrator
         # leave: gt_suresh
+        # leave: gt_meena
         スレーシュは胸の薔薇を指で直し、ミーナと並んで東の門へ歩いていった。笑う会の後なのに、背中が少し誇らしげだった。
     }
     # speaker: narrator
@@ -195,6 +198,7 @@ INCLUDE modules.ink
     結果は、笑う会の連絡で知らせる
     # speaker: narrator
     # leave: gt_suresh
+    # leave: gt_meena
     それだけ言って、帰っていった。
     # speaker: narrator
     人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
@@ -208,6 +212,7 @@ INCLUDE modules.ink
         スレーシュは返事のかわりに、咳払いを一つした。
         # speaker: narrator
         # leave: gt_meena
+        # leave: gt_suresh
         人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
     - else:
         # speaker: gt_meena
@@ -220,6 +225,7 @@ INCLUDE modules.ink
         たぶん、本物の方だった。
         # speaker: narrator
         # leave: gt_suresh
+        # leave: gt_meena
         人がいなくなった芝生を、二人で歩いた。大きなドームの墓の階段に腰を下ろすと、日陰の石は、まだ少しひんやりしていた。
     }
 - -> two_of_us

@@ -12,6 +12,8 @@ export interface DialogueLogEntry {
   /** The line's `# em:` and `# em_shake:` words (2026-11-13): the log shows both in bold, without motion. */
   em?: string;
   emShake?: string;
+  /** A letter's line with its `# translation:` (2026-11-15): the text is English, this its Japanese, shown under it. */
+  translationJa?: string;
 }
 
 /** Only completely displayed lines are kept, in memory and for one event. */
@@ -22,6 +24,8 @@ export function useDialogueLog(
   text: string,
   /** The line's delivery: its emphasised words go into the log with it. */
   delivery?: Pick<LineDelivery, "em" | "emShake">,
+  /** A letter's line's `# translation:` (the frame's `letter.translationJa`): it goes into the log under the line. */
+  translationJa?: string,
 ) {
   const em = delivery?.em;
   const emShake = delivery?.emShake;
@@ -46,12 +50,13 @@ export function useDialogueLog(
           readyRevision: ready ? revision : null,
           entries:
             ready && text && !entries.some((entry) => entry.revision === revision)
-              ? [...entries, { revision, speaker, text, ...(em ? { em } : {}), ...(emShake ? { emShake } : {}) }].slice(-100)
+              ? [...entries, { revision, speaker, text, ...(em ? { em } : {}), ...(emShake ? { emShake } : {}),
+                ...(translationJa ? { translationJa } : {}) }].slice(-100)
               : entries,
         };
       });
     },
-    [eventKey, revision, speaker, text, em, emShake],
+    [eventKey, revision, speaker, text, em, emShake, translationJa],
   );
   return {
     ready: state.eventKey === eventKey && state.readyRevision === revision,
@@ -97,7 +102,8 @@ export function DialogueLog({
               {entries.map((entry) => (
                 <li key={entry.revision}>
                   <strong>{entry.speaker}</strong>
-                  <p><LoggedText entry={entry} /></p>
+                  <p lang={entry.translationJa ? "en" : undefined}><LoggedText entry={entry} /></p>
+                  {entry.translationJa && <p className="vn-log-translation">{entry.translationJa}</p>}
                 </li>
               ))}
             </ol>

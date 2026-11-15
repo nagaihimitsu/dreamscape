@@ -80,15 +80,20 @@ INCLUDE modules.ink
 # speaker: narrator
 # leave: gt_agra_akbar_guard
 番人が門の方へ戻っていくと、彼女はスマートフォンで廟の英語の案内を開いた。二人で、画面をのぞきこむ。
+// 案内の英文と訳（2026-11-15のユーザー判断「英語の原文を出し、下に日本語の訳を添える」）。読めなかったことは
+// 「伝えられている」に留める（出典は romance/date_destinations.json の agra_akbar_tomb の facts）。
 # speaker: narrator
 # letter: card
-アクバルは、生涯、文字を読めなかったと伝えられている。
+# translation: アクバルは、生涯、文字を読めなかったと伝えられている。
+Akbar is said to have never learned to read.
 # speaker: narrator
 # letter: card
-それでも本が大好きで、毎日、人に読み上げさせていた。
+# translation: それでも本が大好きで、毎日、人に読み上げさせていた。
+Still, he loved books, and every day he had people read them aloud to him.
 # speaker: narrator
 # letter: card
-宮廷には、たくさんの写本が集められていた。
+# translation: 宮廷には、たくさんの写本が集められていた。
+Many handwritten books were collected at his court.
 # speaker: heroine
 # reaction: heroine,surprised,question
 # voice: gt_agra_date_akbar_tomb_008

@@ -4,6 +4,7 @@ INCLUDE modules.ink
 // アーグラの宿の屋上：告白のデートと、「待って」と言われた後のデート（どちらも2026-11-09 に足すと決めたデート）。
 // 告白のデートでは噛み合いの札（# profile:）と関係値の札を書かない。返事は confession_result で分ける。前置きも、同じ返事で分ける（2026-11-09 の直し）。
 // 都市ごとに同じ形のファイルがある（gt_delhi_hotel_hub_dates.ink ほか）。
+// 前の都市の告白で断られた後は、新しい通常デートを1つ終えてから告白のデートが出る（# when: date_since_rejection。2026-11-15 から書く人が決める）。
 
 // 【3】
 === gt_agra_date_confession ===
@@ -12,7 +13,8 @@ INCLUDE modules.ink
 # when: episodes agra >= 1
 # when: not couple
 # when: time night
-# background: gt_bg_hotel_rooftop_night
+# when: date_since_rejection
+# background: gt_bg_agra_hotel_rooftop_night
 # tint: off
 # bgm: immersed
 # speaker: narrator
@@ -59,34 +61,69 @@ INCLUDE modules.ink
     # emotion: smile
     # voice: gt_agra_date_confession_006
     旅が終わったあとのことは、一緒に決めようね。どこに行くかも、何を食べるかも。決めてもらうんじゃなくて、二人で
+// デリーで告白していた場合（2026-11-15）：デリーと同じ断り方・「待って」を二度聞かせない。
+// デリーの返事が断りだったか「待って」だったかはゲームの記録で分けられないので、どちらの後でも本当になる言い方にする。
 - confession_result == "rejected":
-    # speaker: heroine
-    # emotion: serious
-    # voice: gt_agra_date_confession_007
-    ありがとう。言ってくれて、うれしかった。それは、本当
-    # speaker: heroine
-    # voice: gt_agra_date_confession_008
-    でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから
-    # speaker: narrator
-    # emotion: serious
-    彼女は縁から立ち上がった。肩の向こうのドームが、その背中に隠れる。
-    # speaker: heroine
-    # emotion: smile
-    # voice: gt_agra_date_confession_009
-    旅は、最後まで一緒に行きたい。それも、本当。明日も、いつもみたいに、どこへ行くか一緒に決めてくれる？
+    {
+    - cond("date gt_delhi_date_confession"):
+        # speaker: heroine
+        # emotion: serious
+        デリーの屋上でも、今夜も、言ってくれた。二回目って、一回目よりこわいよね
+        # speaker: heroine
+        だから、わたしもごまかさない。ごめんなさい。今は、その気持ちに応えられない
+        # speaker: narrator
+        # emotion: smile
+        彼女は、自分の腰かけている縁の隣を、手のひらでぽんと叩いた。
+        # speaker: heroine
+        # emotion: smile
+        座って。こっち向きの席、半分あげる。ドームの見えない、地味な席だけど
+    - else:
+        # speaker: heroine
+        # emotion: serious
+        # voice: gt_agra_date_confession_007
+        ありがとう。言ってくれて、うれしかった。それは、本当
+        # speaker: heroine
+        # voice: gt_agra_date_confession_008
+        でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから
+        # speaker: narrator
+        # emotion: serious
+        彼女は縁から立ち上がった。肩の向こうのドームが、その背中に隠れる。
+        # speaker: heroine
+        # emotion: smile
+        # voice: gt_agra_date_confession_009
+        旅は、最後まで一緒に行きたい。それも、本当。明日も、いつもみたいに、どこへ行くか一緒に決めてくれる？
+    }
 - else:
-    # speaker: heroine
-    # emotion: serious
-    # voice: gt_agra_date_confession_010
-    うれしい。本当に、うれしい
-    # speaker: heroine
-    でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、遠くのドームと、夜の風のせいに。……それは、嫌なの。ちゃんと、わたしが決めたいから
-    # speaker: heroine
-    # emotion: worried
-    待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？
-    # speaker: narrator
-    # stand: close
-    彼女はこちらの袖のはしを、そっとつまんだ。タージの方は、一度も振り返らなかった。
+    {
+    - cond("date gt_delhi_date_confession"):
+        # speaker: heroine
+        # emotion: serious
+        デリーの夜のこと、忘れてないよ。今夜の言葉も、ちゃんと届いてる
+        # speaker: heroine
+        # emotion: worried
+        でも、まだ答えが出ないの。こっち向きに座って、ちゃんと考えてるのに
+        # speaker: heroine
+        # emotion: serious
+        いいかげんな『はい』も、『いいえ』も、したくない。もう少しだけ、待ってて
+        # speaker: narrator
+        # stand: close
+        彼女は少し座り直して、こちらの手の横に、自分の手を置いた。重ねは、しなかった。
+    - else:
+        # speaker: heroine
+        # emotion: serious
+        # voice: gt_agra_date_confession_010
+        うれしい。本当に、うれしい
+        # speaker: heroine
+        でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、遠くのドームと、夜の風のせいに
+        # speaker: heroine
+        ……それは、嫌なの。ちゃんと、わたしが決めたいから
+        # speaker: heroine
+        # emotion: worried
+        待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？
+        # speaker: narrator
+        # stand: close
+        彼女はこちらの袖のはしを、そっとつまんだ。タージの方は、一度も振り返らなかった。
+    }
 }
 -> END
 
@@ -125,7 +162,9 @@ INCLUDE modules.ink
     { cond("flag gt_delhi_back_word_secret"):
         # speaker: heroine
         # recall: gt_album_d61
-        あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ。あれね、『まだいたい』って書いたの
+        あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ
+        # speaker: heroine
+        あれね、『まだいたい』って書いたの
         # speaker: heroine
         # reaction: heroine,shy,blush
         背中じゃなくて、声で言うって約束したから。……はい、言った。じゃあ、次はそっちの番
@@ -159,7 +198,7 @@ INCLUDE modules.ink
 # when: not couple
 # when: time night
 # until: date gt_delhi_date_reassurance
-# background: gt_bg_hotel_rooftop_night
+# background: gt_bg_agra_hotel_rooftop_night
 # tint: off
 # bgm: stages_of_grief
 # speaker: narrator

@@ -5,6 +5,7 @@ INCLUDE modules.ink
 // 告白のデートでは噛み合いの札（# profile:）と関係値の札を書かない。返事は confession_result で分ける。前置きも、同じ返事で分ける（2026-11-09 の直し）。
 // 都市ごとに同じ形のファイルがある（gt_delhi_hotel_hub_dates.ink ほか）。
 // ジャイプールだけ、最後に「待って」の後の彼女の返事（gt_jaipur_date_answer。2026-11-13）がある。地図の出来事は宿で、場面は宿の近くの通り。
+// 前の都市の告白で断られた後は、新しい通常デートを1つ終えてから告白のデートが出る（# when: date_since_rejection。2026-11-15 から書く人が決める）。
 
 // 【3】
 === gt_jaipur_date_confession ===
@@ -13,7 +14,8 @@ INCLUDE modules.ink
 # when: episodes jaipur >= 1
 # when: not couple
 # when: time night
-# background: gt_bg_hotel_rooftop_night
+# when: date_since_rejection
+# background: gt_bg_jaipur_hotel_rooftop_night
 # tint: off
 # bgm: immersed
 # speaker: narrator
@@ -40,7 +42,10 @@ INCLUDE modules.ink
     ……うん。わたしも、好き
     # speaker: heroine
     # emotion: serious
-    迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて。……わたしも、一緒にいたい。旅が終わっても
+    迷ったけど、ちゃんと、わたしの言葉で言いたかった。言われたから、うなずくんじゃなくて
+    # speaker: heroine
+    # emotion: serious
+    ……わたしも、一緒にいたい。旅が終わっても
     # speaker: heroine
     # reaction: heroine,teasing,heart
     # photo: gt_album_j43 # photo_caption: 楽隊の音の屋上の告白
@@ -48,29 +53,64 @@ INCLUDE modules.ink
     # speaker: heroine
     # emotion: smile
     旅が終わったあとのことは、一緒に決めようね。どこに行くかも、何を食べるかも。決めてもらうんじゃなくて、二人で
+// 前の町（デリーかアーグラ）で告白していた場合（2026-11-15）：前と同じ断り方・「待って」を二度聞かせない。
+// 前の返事が断りだったか「待って」だったかはゲームの記録で分けられないので、どちらの後でも本当になる言い方にする。
+// ここの「待って」の後は、次の日の昼の返事（gt_jaipur_date_answer）が「楽隊と、灯りのせいに」を受けるので、その言葉を残す。
 - confession_result == "rejected":
-    # speaker: heroine
-    # emotion: serious
-    ありがとう。言ってくれて、うれしかった。それは、本当
-    # speaker: heroine
-    でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから
-    # speaker: narrator
-    どこか遠くの通りで、また別の楽隊が鳴りはじめた。
-    # speaker: heroine
-    # emotion: smile
-    旅は、最後まで一緒に行きたい。それも、本当。明日も、いつもみたいに、どこへ行くか一緒に決めてくれる？
+    {
+    - cond("date gt_delhi_date_confession") or cond("date gt_agra_date_confession") or cond("date gt_jaipur_date_confession"):
+        # speaker: heroine
+        # emotion: serious
+        前の屋上のことも、ちゃんと覚えてる。だから、今夜は、ぼかさずに言うね
+        # speaker: heroine
+        ごめんなさい。恋人にはなれない。最後の町まで考えて、そう決めたの
+        # speaker: narrator
+        遠くの通りで、楽隊がひときわ大きく鳴った。どこかの花婿が、角を曲がったらしい。
+        # speaker: heroine
+        # emotion: smile
+        あれは、よその人のお祝い。……でも、ここまで一緒に来た旅は、わたしたちのだよ
+    - else:
+        # speaker: heroine
+        # emotion: serious
+        ありがとう。言ってくれて、うれしかった。それは、本当
+        # speaker: heroine
+        でも、ごめんなさい。今のわたしは、同じ気持ちで返せない。うそで返すのは、もっと嫌だから
+        # speaker: narrator
+        どこか遠くの通りで、また別の楽隊が鳴りはじめた。
+        # speaker: heroine
+        # emotion: smile
+        旅は、最後まで一緒に行きたい。それも、本当。明日も、いつもみたいに、どこへ行くか一緒に決めてくれる？
+    }
 - else:
-    # speaker: heroine
-    # emotion: serious
-    うれしい。本当に、うれしい
-    # speaker: heroine
-    でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、楽隊の音と、遠くの灯りのせいに。……それは、嫌なの。ちゃんと、わたしが決めたいから
-    # speaker: heroine
-    # emotion: worried
-    待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？
-    # speaker: narrator
-    # stand: close
-    言い終えると、彼女は橙色の町を見下ろしたまま、指先で、こちらの袖のはしを小さくつまんだ。
+    {
+    - cond("date gt_delhi_date_confession") or cond("date gt_agra_date_confession") or cond("date gt_jaipur_date_confession"):
+        # speaker: heroine
+        # emotion: serious
+        前の夜も、今夜も、ちゃんと聞いてた。軽く聞いたことは、一回もないよ
+        # speaker: heroine
+        # emotion: worried
+        でも、今夜答えたら、楽隊と灯りのせいにしちゃう。……こんなに、にぎやかなんだもん
+        # speaker: heroine
+        # emotion: smile
+        だから、明るいところで、わたしから言う。今度は、答えを持っていくから
+        # speaker: narrator
+        # stand: close
+        遠くの楽隊が、また鳴りはじめた。彼女はその拍子に合わせて、肩をこちらの肩に一度だけぶつけた。
+    - else:
+        # speaker: heroine
+        # emotion: serious
+        うれしい。本当に、うれしい
+        # speaker: heroine
+        でも、今ここで答えたら、旅の夜のせいにしちゃいそうで。屋上と、楽隊の音と、遠くの灯りのせいに
+        # speaker: heroine
+        ……それは、嫌なの。ちゃんと、わたしが決めたいから
+        # speaker: heroine
+        # emotion: worried
+        待たせるの、ずるいって分かってる。でも、軽く返したくない。……少しだけ、待ってくれる？
+        # speaker: narrator
+        # stand: close
+        言い終えると、彼女は橙色の町を見下ろしたまま、指先で、こちらの袖のはしを小さくつまんだ。
+    }
 }
 -> END
 
@@ -109,7 +149,9 @@ INCLUDE modules.ink
     { cond("flag gt_delhi_back_word_secret"):
         # speaker: heroine
         # recall: gt_album_d61
-        あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ。あれね、『まだいたい』って書いたの
+        あ、その前に、一つだけ。ロータス寺院で、背中に書いた字。読めなかったって言ってたでしょ
+        # speaker: heroine
+        あれね、『まだいたい』って書いたの
         # speaker: heroine
         # reaction: heroine,shy,blush
         背中じゃなくて、声で言うって約束したから。……はい、言った。じゃあ、次はそっちの番
@@ -128,8 +170,16 @@ INCLUDE modules.ink
             # speaker: narrator
             答えは彼女から、と一度は言われていた。それでも、言わずにいられなかった。
         }
-        # speaker: heroine
-        話、あるんでしょ。いいよ。最後まで、ちゃんと聞く
+        // デリーとアーグラの両方で告白していれば、アーグラで「話、あるんでしょ」をもう聞いている（2026-11-15）。三度目は、別の言い出しにする。
+        {
+        - cond("date gt_delhi_date_confession") and cond("date gt_agra_date_confession"):
+            # speaker: heroine
+            # emotion: smile
+            今夜も、話があるんだね。いいよ。楽隊に負けないくらいの声で、聞かせて
+        - else:
+            # speaker: heroine
+            話、あるんでしょ。いいよ。最後まで、ちゃんと聞く
+        }
     - else:
         # speaker: narrator
         夕食のあと、少し涼もうと屋上に誘ったのは、こちらだった。彼女は手すりにもたれて、遠くの楽隊に合わせて、指で拍子をとっている。
@@ -149,7 +199,7 @@ INCLUDE modules.ink
 # when: time night
 # until: date gt_delhi_date_reassurance
 # until: date gt_agra_date_reassurance
-# background: gt_bg_hotel_rooftop_night
+# background: gt_bg_jaipur_hotel_rooftop_night
 # tint: off
 # bgm: stages_of_grief
 # speaker: narrator

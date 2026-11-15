@@ -13,11 +13,13 @@ INCLUDE modules.ink
 # when: episodes delhi >= 1
 # hint: デリーの観光を一つ終えてから
 # on_done: money -40
-# background: gt_bg_delhi_chandni_chowk
 { cond("time night"):
+    # background: gt_bg_delhi_chandni_chowk_night
+    # tint: off
     # speaker: narrator
     日が落ちても、チャンドニー・チョークの路地は眠らない。頭の上で電線が黒い毛糸玉みたいに絡まり、裸電球の下で、大鍋の油がずっと鳴っている。
 - else:
+    # background: gt_bg_delhi_chandni_chowk
     # speaker: narrator
     チャンドニー・チョークの路地は、昼でも薄暗い。頭の上で電線が黒い毛糸玉みたいに絡まり、その下で、大鍋の油がずっと鳴っている。
 }

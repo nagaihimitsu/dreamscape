@@ -268,6 +268,7 @@ INCLUDE modules.ink
     彼女の部屋の扉が、細く開いた。
 }
 # speaker: gt_delhi_hotel_okami
+# together: gt_delhi_hotel_okami enemy
 # local_word: gt_delhi_word_khichdi
 # term: gt_term_khichdi
 キチュリー。うちでは、お腹を壊したら、これ
@@ -585,7 +586,7 @@ No, thank you.
 - cond("flag gt_delhi_suresh_encouraged"):
     # speaker: narrator
     # se: phone_vibrate
-    携帯が震えた。ローディー・ガーデンの笑う会の連絡に、長い伝言が一つ流れてきた。差出人は、新聞で顔を隠していた、あの人だ。
+    携帯が震えた。ロディ・ガーデンの笑う会の連絡に、長い伝言が一つ流れてきた。差出人は、新聞で顔を隠していた、あの人だ。
     # speaker: gt_suresh
     # phone: received
     自主申告をした。夕食の席で。誰も笑わなかった。最初に拍手をしたのは、メヘルだった
@@ -598,7 +599,7 @@ No, thank you.
     二人とも、自分の口で言えたんだ。叔父さんが先に言ったから、メヘルさんも言えたのかな
 - cond("flag gt_delhi_suresh_kept_secret"):
     # speaker: narrator
-    笑う会の連絡に、写真が一枚流れてきた。ローディー・ガーデンの集合写真。端の一人の顔にだけ、大きな薔薇の絵が貼ってある。その人から、一行だけ添えられていた。
+    笑う会の連絡に、写真が一枚流れてきた。ロディ・ガーデンの集合写真。端の一人の顔にだけ、大きな薔薇の絵が貼ってある。その人から、一行だけ添えられていた。
     # speaker: gt_suresh
     # phone: received
     この写真には、誰も写っていない

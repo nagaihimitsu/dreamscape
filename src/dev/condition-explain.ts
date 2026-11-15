@@ -47,6 +47,7 @@ function leafLabel(state: Readonly<GameState>, leaf: Leaf): string {
   if ("money" in leaf) return `使えるお金が${bounds(leaf.money)}`;
   if ("romanceStage" in leaf) return `恋愛の段階が${bounds(leaf.romanceStage)}（今は${state.romanceStage}）`;
   if ("couple" in leaf) return "交際している";
+  if ("dateSinceRejection" in leaf) return "断られた後に、新しいデートか再交流を終えた（断られていなければ成り立つ）";
   return leafKind(leaf);
 }
 

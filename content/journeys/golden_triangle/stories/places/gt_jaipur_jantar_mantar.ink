@@ -39,6 +39,7 @@ INCLUDE modules.ink
 # speaker: gt_jaipur_jantar_woman
 十一時四十三分？　天体物理学の博士論文を、占いの時刻に提出しろって言うんですか！
 # speaker: narrator
+# together: enemy gt_shastri
 声の主は、眼鏡の若い女性だった。向かいの石段には、白い腰布の老人が座っている。膝の上に、使い込んだ暦の冊子。
 # speaker: narrator
 老人は、こちらに軽く会釈した。
@@ -120,7 +121,9 @@ INCLUDE modules.ink
 # background: gt_bg_jaipur_jantar_mantar
 { quiz_correct:
     # speaker: heroine
-    携帯の時刻は、国の標準時ですよね。ジャイプールの太陽の時刻にするには、経度の差と、季節のずれを直さないといけないんだと思います
+    携帯の時刻は、国の標準時ですよね
+    # speaker: heroine
+    ジャイプールの太陽の時刻にするには、経度の差と、季節のずれを直さないといけないんだと思います
 - else:
     # speaker: narrator
     斜面の脇の案内板に、換算の説明があった。日時計の地方時を標準時に直すには、経度の差と季節のずれを補正する。

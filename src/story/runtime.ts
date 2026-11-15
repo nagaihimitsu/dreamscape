@@ -64,13 +64,18 @@ export const storyFrameSchema = z
     }).strict().optional(),
     letter: z.object({
       kind: z.enum(LETTER_KINDS),
-      earlier: z.array(z.string().min(1)).min(1).max(STACK_MAX).optional(),
+      // A line's `# translation:` (2026-11-15): the Japanese under its English; an earlier line with one keeps it.
+      translationJa: z.string().min(1).optional(),
+      earlier: z.array(z.union([z.string().min(1), z.object({ text: z.string().min(1), translationJa: z.string().min(1) }).strict()]))
+        .min(1).max(STACK_MAX).optional(),
     }).strict().optional(),
     quiet: z.enum(QUIET_SPANS).optional(),
     stand: z.enum(STAND_POSITIONS).optional(),
     cutin: z.enum(CUTIN_KINDS).optional(),
     // `# leave:` (2026-11-13): who goes off the scene's stage at the line, as written (heroine, enemy or a person's ID).
     leave: z.array(imageIdSchema).min(1).optional(),
+    // `# together:` (2026-11-15): the two who stand opposite the heroine from the line, as written (enemy or a person's ID).
+    together: z.array(imageIdSchema).length(2).optional(),
     voiceId: z.string().regex(VOICE_ID).optional(),
     seId: z.string().regex(SOUND_ID).optional(),
     // `# bgm:` (a track's ID or `stop`), kept to the scene's end (frame-reader.ts); a frame saved without it has the scene's usual track.
@@ -388,6 +393,8 @@ export function validateStorySnapshot(
     (frame.speakerPersonId !== undefined && !tagContext.personIds.includes(frame.speakerPersonId)) ||
     // Who leaves the stage at the line: the heroine, the scene's enemy or a declared person (as parseStoryTags reads `# leave:`).
     (frame.leave?.some((who) => !(LEAVE_WHO as readonly string[]).includes(who) && !tagContext.personIds.includes(who)) ?? false) ||
+    // Who stands together from the line: the scene's enemy or declared people (as parseStoryTags reads `# together:`).
+    (frame.together?.some((who) => who !== "enemy" && !tagContext.personIds.includes(who)) ?? false) ||
     // A line's # minigame: reads now as the tag reader reads it: a registered game, its outcome, keys and pictures (docs/13 4.6).
     (frame.minigame !== undefined && !isValidMiniGameTag(frame.minigame, tagContext))
   )

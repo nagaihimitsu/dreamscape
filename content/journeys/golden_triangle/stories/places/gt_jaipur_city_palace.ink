@@ -41,6 +41,7 @@ INCLUDE modules.ink
 # speaker: gt_jaipur_city_palace_woman
 五キロ！　五キロのどこが多いの！
 # speaker: narrator
+# together: enemy gt_vishal
 サリー姿の女性と、二十代半ばの青年。青年が女性の手提げを荷物用の秤に吊るすと、中の瓶が鳴り、針が大きく振れた。
 # speaker: gt_jaipur_city_palace_young_man
 # term: gt_term_achar
