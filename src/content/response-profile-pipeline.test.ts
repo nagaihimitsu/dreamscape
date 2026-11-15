@@ -57,15 +57,27 @@ describe("response profile cross-file validation", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow(/Ink randomness is forbidden.*RANDOM/);
   }, 30_000);
 
-  it("rejects a recovery event that cannot repeat (its AP is a warning, decision 32)", async () => {
+  // 2026-11-15: a relationship repair's kind, repetition, choices and effects are its writer's; a repair that cannot
+  // repeat is a warning (as its AP is, decision 32), and only an ordinary date marked as one stops (counted twice).
+  it("only warns about a recovery event that cannot repeat, whatever its choices and effects", async () => {
     await changeCatalogEntry(fixture, "romance/date_catalog.json", "dates", "milano_invitation_01", (date: any) => {
       expect(date.kind).toBe("special");
       date.recovery = true;
       date.repeatable = false;
       date.rewardOnlyOnce = false;
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/Recovery event must be a repeatable special with one choice and effect/);
-  });
+    const { warnings } = await buildContent(fixture, false);
+    expect(warnings.filter((warning) => warning.kind === "recovery-date").map((warning) => warning.message)).toEqual([
+      expect.stringMatching(/^繰り返して関係を築き直せない関係修復のデートです：milano_invitation_01 は、繰り返さない/)]);
+  }, 120_000);
+
+  it("rejects a recovery event on an ordinary date: its one play would count twice", async () => {
+    await changeCatalogEntry(fixture, "romance/date_catalog.json", "dates", "milano_cafe_01", (date: any) => {
+      expect(date.kind ?? "normal").toBe("normal");
+      date.recovery = true;
+    });
+    await expect(buildContent(fixture, false)).rejects.toThrow(/A relationship repair \(recovery\) cannot be an ordinary date \(kind normal\): milano_cafe_01/);
+  }, 120_000);
 
   it("rejects an unused memoryless effect even if its response profile exists", async () => {
     // A new effect next to the shared date effects.

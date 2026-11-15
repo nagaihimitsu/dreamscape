@@ -75,6 +75,13 @@ describe("condition texts", () => {
     // 2026-11-15: the wait after a rejection, written by the writer on a date that waits.
     ["date_since_rejection", { dateSinceRejection: true }],
     ["not date_since_rejection", { not: { dateSinceRejection: true } }],
+    // 2026-11-15: the parts a relationship repair is written with (the completed dates, a ready confession, an ordinary date).
+    ["dates >= 1", { datesCompleted: { atLeast: 1 } }],
+    ["dates <= 0", { datesCompleted: { atMost: 0 } }],
+    ["confession_ready", { confessionReady: true }],
+    ["not confession_ready", { not: { confessionReady: true } }],
+    ["normal_date_available", { normalDateAvailable: true }],
+    ["not normal_date_available", { not: { normalDateAvailable: true } }],
   ])("reads %s", (text, condition) => {
     expect(parseConditionText(text)).toEqual(condition);
   });
@@ -86,6 +93,9 @@ describe("condition texts", () => {
     ["rel charm >= 3", "rel affection|trust|spark"], ["rel affection > 3", "rel affection >= N"], ["rel affection >= 1.5", "rel affection >= N"],
     ["money >= -1", "Invalid condition"], ["stage >= 5", "Invalid condition"], ["couple yes", 'Write the condition part "couple" as: couple'],
     ["date_since_rejection agra", 'Write the condition part "date_since_rejection" as: date_since_rejection'],
+    ["dates milano >= 1", "dates >= N (or <= N)"], ["dates >= -1", "Invalid condition"],
+    ["confession_ready now", 'Write the condition part "confession_ready" as: confession_ready'],
+    ["normal_date_available milano", 'Write the condition part "normal_date_available" as: normal_date_available'],
     ["battles mihon <= 2", "battles <city> >= N"], ["wish upon a star", "Unknown condition part: wish"],
   ])("refuses %j", (text, message) => {
     expect(() => parseConditionText(text)).toThrow(message);

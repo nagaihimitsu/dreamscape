@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import type { Condition } from "../src/content/condition-schemas";
-import { checkConditions, conditionErrors, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, type ConditionContent } from "./condition-validation";
+import {
+  checkConditions, conditionErrors, conditionWarnings, dateConditionOwners, entryRuleConditionOwners, selfReadingDateErrors, type ConditionContent,
+} from "./condition-validation";
 import { CONTENT_WARNING_LABELS } from "./content-report";
 
 /** A two-city journey (alpha → beta) and a one-city journey (gamma), in memory. */
@@ -99,6 +101,24 @@ describe("condition build checks", () => {
     const owners = dateConditionOwners({ dates: [{ id: "probe", chapterId: "beta", when: { cityCompleted: "nowhere" }, until: { datePlayed: "nothing" } }] });
     expect(() => checkConditions(content, owners)).toThrow(
       "Unknown city in a condition of date probe (when): nowhere\nUnknown date in a condition of date probe (until): nothing");
+  });
+
+  it("refuses an ordinary date that reads normal_date_available, also through a named condition: it would read itself (2026-11-15)", () => {
+    const open: Condition = { not: { normalDateAvailable: true } };
+    const named = { namedConditions: { no_date_left: open, still_none: { condition: "no_date_left" } } };
+    // A relationship repair (a special date), an encounter or a scene may read it.
+    expect(selfReadingDateErrors({ ...named, dates: [{ id: "repair", chapterId: "alpha", kind: "special", when: open }] })).toEqual([]);
+    expect(selfReadingDateErrors({ ...named, dates: [{ id: "plain", chapterId: "alpha", kind: "normal", when: { cityDay: { atLeast: 1 } } }] })).toEqual([]);
+    expect(selfReadingDateErrors({ ...named, dates: [{ id: "walk", chapterId: "alpha", when: { all: [{ cityDay: { atLeast: 1 } }, open] } },
+      { id: "cafe", chapterId: "alpha", kind: "normal", until: { condition: "still_none" } }] })).toEqual([
+      expect.stringMatching(/^An ordinary date cannot read normal_date_available \(normalDateAvailable\): date walk \(when\) would read itself/),
+      expect.stringMatching(/^An ordinary date cannot read normal_date_available \(normalDateAvailable\): date cafe \(until\) would read itself/),
+    ]);
+    // Named conditions that name each other are followed once.
+    expect(selfReadingDateErrors({ namedConditions: { a: { condition: "b" }, b: { condition: "a" } },
+      dates: [{ id: "loop", chapterId: "alpha", kind: "normal", when: { condition: "a" } }] })).toEqual([]);
+    expect(() => checkConditions({ ...content, ...named, dates: [{ id: "walk", chapterId: "alpha", kind: "normal", when: open }] }, []))
+      .toThrow(/date walk \(when\) would read itself/);
   });
 });
 

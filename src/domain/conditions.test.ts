@@ -1,14 +1,21 @@
 import { describe, expect, it } from "vitest";
-import { battles, dates, episodes, landmarks } from "../content";
+import { battles, dates, episodes, landmarks, progression } from "../content";
 import { LEAF_KINDS, type Condition, type Leaf } from "../content/condition-schemas";
-import { battlePlayed, completedDateCount, meets } from "./conditions";
-import { createGame, type GameState } from "./game";
+import { battlePlayed, canConfessSuccessfully, completedDateCount, meets } from "./conditions";
+import { createGame, getDateAvailability, type GameState } from "./game";
 import { sleepAtHotel } from "./travel-game";
 
 const base = createGame();
 const at = (minute: number): GameState => ({ ...base, travel: { ...base.travel, minute } });
 const record = (battleId: string, attempts = 1): GameState["battleRecords"][number] =>
   ({ battleId, attempts, firstScore: 0, bestScore: 0, lastScore: 0 });
+/** The new game's city: its ordinary dates, and a state where its episodes are done and AP is plenty (an ordinary date opens). */
+const ordinaryHere = dates.filter((date) => date.kind === "normal" && date.chapterId === base.currentCityId).map((date) => date.id);
+const datesOpen: GameState = { ...base, ap: 12,
+  completedEpisodeIds: episodes.filter((episode) => episode.cityId === base.currentCityId).map((episode) => episode.id) };
+/** The confession's thresholds met (romance/progression.json): the relationship values and the ordinary dates it counts. */
+const ready: GameState = { ...base, affection: progression.confession.minAffection, trust: progression.confession.minTrust,
+  spark: progression.confession.minSpark, playedDateIds: ordinaryHere.slice(0, progression.confession.minCompletedDates) };
 /** Each leaf: a state where it is true and one where it is false (both from a new game). */
 const TRUTH: Record<(typeof LEAF_KINDS)[number], [Leaf, GameState, GameState]> = {
   episodeCompleted: [{ episodeCompleted: "e1" }, { ...base, completedEpisodeIds: ["e1"] }, { ...base, completedEpisodeIds: ["e2"] }],
@@ -62,6 +69,12 @@ const TRUTH: Record<(typeof LEAF_KINDS)[number], [Leaf, GameState, GameState]> =
   couple: [{ couple: true }, { ...base, confessionStatus: "accepted" }, { ...base, confessionStatus: "deferred" }],
   // 2026-11-15: no rejection waits (none at all here); a rejection with no date since it.
   dateSinceRejection: [{ dateSinceRejection: true }, base, { ...base, confessionStatus: "rejected", lastRejectedDateCount: 0 }],
+  // 2026-11-15: the completed dates (an ordinary date counts, a confession does not), a confession that would succeed, an
+  // ordinary date of the city that can be started (none once they are all played).
+  datesCompleted: [{ datesCompleted: { atLeast: 1 } }, { ...base, playedDateIds: ordinaryHere.slice(0, 1) },
+    { ...base, playedDateIds: [dates.find((date) => date.kind === "confession")!.id] }],
+  confessionReady: [{ confessionReady: true }, ready, { ...ready, spark: ready.spark - 1 }],
+  normalDateAvailable: [{ normalDateAvailable: true }, datesOpen, { ...datesOpen, playedDateIds: ordinaryHere }],
   // Stage 3a: the AP that can be spent, a flag, a person met (a seen scene naming them), a named condition.
   ap: [{ ap: { atLeast: 2 } }, { ...base, ap: 2 }, { ...base, ap: 1 }],
   flag: [{ flag: "smp_mihon_lili_told_why" }, { ...base, storyProgress: { lines: {}, flags: ["smp_mihon_lili_told_why"] } }, base],
@@ -119,6 +132,49 @@ describe("meets", () => {
       recoveryAfterRejection: true }, wait)).toBe(true);
     // It reads no relationship value.
     expect(meets({ ...rejected, affection: 99, trust: 99, spark: 99, romanceStage: 4 }, wait)).toBe(false);
+  });
+
+  it("counts the completed dates as the romance stages do: ordinary dates and up to three recoveries", () => {
+    const recovery = dates.find((date) => date.recovery)!.id;
+    const twoDates = { ...base, playedDateIds: ordinaryHere.slice(0, 2) };
+    expect(meets(twoDates, { datesCompleted: { atLeast: 2 } })).toBe(true);
+    expect(meets(twoDates, { datesCompleted: { atLeast: 3 } })).toBe(false);
+    expect(meets(twoDates, { datesCompleted: { atMost: 2 } })).toBe(true);
+    expect(meets(base, { datesCompleted: { atMost: 0 } })).toBe(true);
+    // A recovery counts as often as it was finished, up to three times (its record), like completedDateCount.
+    const repaired = { ...twoDates, playedDateIds: [...twoDates.playedDateIds, recovery], completedRecoveryCount: 3 };
+    expect(completedDateCount(repaired)).toBe(5);
+    expect(meets(repaired, { datesCompleted: { atLeast: 5, atMost: 5 } })).toBe(true);
+    // Other kinds of dates (a special date, a confession) are not counted.
+    const special = dates.find((date) => date.kind === "special" && !date.recovery)!.id;
+    expect(meets({ ...base, playedDateIds: [special] }, { datesCompleted: { atLeast: 1 } })).toBe(false);
+  });
+
+  it("reads a confession that would succeed from the hidden relationship values and the completed dates", () => {
+    expect(meets(ready, { confessionReady: true })).toBe(canConfessSuccessfully(ready));
+    expect(meets(ready, { confessionReady: true })).toBe(true);
+    // Each threshold of romance/progression.json counts; nothing is random.
+    for (const short of [{ affection: ready.affection - 1 }, { trust: ready.trust - 1 }, { spark: ready.spark - 1 },
+      { playedDateIds: ready.playedDateIds.slice(1) }])
+      expect(meets({ ...ready, ...short }, { confessionReady: true })).toBe(false);
+    expect(meets({ ...ready, affection: 99, trust: 99, spark: 99 }, { confessionReady: true })).toBe(true);
+  });
+
+  it("reads an ordinary date that can be started now: open, not played, AP enough, no other scene running", () => {
+    const part: Condition = { normalDateAvailable: true };
+    const available = (state: GameState) => dates.some((date) => date.kind === "normal" && getDateAvailability(state, date.id).available);
+    expect(meets(datesOpen, part)).toBe(true);
+    expect(meets(base, part)).toBe(available(base));
+    // Without AP no ordinary date starts; one costing no more than the AP left does.
+    const cheapest = Math.min(...dates.filter((date) => ordinaryHere.includes(date.id)).map((date) => date.apCost));
+    expect(meets({ ...datesOpen, ap: cheapest - 1 }, part)).toBe(false);
+    expect(meets({ ...datesOpen, ap: cheapest }, part)).toBe(true);
+    // All played, or a scene running (the availability's own rule): none can be started.
+    expect(meets({ ...datesOpen, playedDateIds: ordinaryHere }, part)).toBe(false);
+    expect(meets({ ...datesOpen, activeEncounter: {} as GameState["activeEncounter"] }, part)).toBe(false);
+    expect(meets({ ...datesOpen, ap: 0 }, { not: part })).toBe(true);
+    for (const state of [base, datesOpen, { ...datesOpen, ap: 1 }, { ...datesOpen, playedDateIds: ordinaryHere.slice(1) }])
+      expect(meets(state, part)).toBe(available(state));
   });
 
   it("counts a read epilogue as started, and another city's epilogue as not", () => {

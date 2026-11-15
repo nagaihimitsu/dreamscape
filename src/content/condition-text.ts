@@ -27,6 +27,9 @@ import { conditionIssues, ITEM_STATUSES, RELATIONSHIP_AXES, type Condition } fro
  * | `stage >= 2` / `stage <= 3` (2a) | `romanceStage` |
  * | `couple` (2a) | `couple` |
  * | `date_since_rejection` (no rejection waits: a new ordinary date or a recovery since it; 2026-11-15) | `dateSinceRejection` |
+ * | `dates >= 1` / `dates <= 3` (the completed dates the stages count; 2026-11-15) | `datesCompleted` |
+ * | `confession_ready` (a confession would be accepted now; 2026-11-15) | `confessionReady` |
+ * | `normal_date_available` (an ordinary date of the city can be started now; 2026-11-15) | `normalDateAvailable` |
  * | `ap >= 2` / `ap <= 0` (3a) | `ap` |
  * | `flag <flag>` (3a) | `flag` |
  * | `met <person>` (3a) | `met` |
@@ -93,6 +96,9 @@ function leafOf(words: string[]): Condition {
     case "stage": return { romanceStage: compared("stage >= N (or <= N), N from 1 to 4", 0) };
     case "couple": return rest.length ? fail("couple") : { couple: true };
     case "date_since_rejection": return rest.length ? fail("date_since_rejection") : { dateSinceRejection: true };
+    case "dates": return { datesCompleted: compared("dates >= N (or <= N)", 0, integer) };
+    case "confession_ready": return rest.length ? fail("confession_ready") : { confessionReady: true };
+    case "normal_date_available": return rest.length ? fail("normal_date_available") : { normalDateAvailable: true };
     case "ap": return { ap: compared("ap >= N (or <= N)", 0, integer) };
     case "flag": return { flag: one("flag <flag>") };
     case "met": return { met: one("met <person>") };

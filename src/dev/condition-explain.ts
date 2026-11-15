@@ -4,7 +4,7 @@ import { battles, dates, episodes, getCities, landmarks } from "../content";
 import { encounters } from "../content/encounters";
 import { transportLabel } from "../content/transport";
 import { isLeaf, leafKind, type Condition, type Leaf } from "../content/condition-schemas";
-import { meets } from "../domain/conditions";
+import { completedDateCount, meets } from "../domain/conditions";
 import type { GameState } from "../domain/game";
 import { relationshipAxisLabels } from "../domain/relationship-change";
 
@@ -48,6 +48,9 @@ function leafLabel(state: Readonly<GameState>, leaf: Leaf): string {
   if ("romanceStage" in leaf) return `恋愛の段階が${bounds(leaf.romanceStage)}（今は${state.romanceStage}）`;
   if ("couple" in leaf) return "交際している";
   if ("dateSinceRejection" in leaf) return "断られた後に、新しいデートか再交流を終えた（断られていなければ成り立つ）";
+  if ("datesCompleted" in leaf) return `終えたデート（再交流は3回まで）が${bounds(leaf.datesCompleted)}（今は${completedDateCount(state)}）`;
+  if ("confessionReady" in leaf) return "今告白すれば受け入れられる（関係の値と終えたデートの数を読む）";
+  if ("normalDateAvailable" in leaf) return "この都市で、通常デートを今始められる（APも足りる）";
   return leafKind(leaf);
 }
 
